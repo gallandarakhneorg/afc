@@ -1,0 +1,49 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>afc</artifactId>
+		<groupId>org.arakhne.afc</groupId>
+		<version>5.1-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>maventools</artifactId>
+	<version>3.6-SNAPSHOT</version>
+	<name>Tools for Maven Plugins</name>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.apache.maven</groupId>
+			<artifactId>maven-plugin-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.maven</groupId>
+			<artifactId>maven-artifact</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.maven</groupId>
+			<artifactId>maven-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.maven</groupId>
+			<artifactId>maven-project</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.tmatesoft.svnkit</groupId>
+			<artifactId>svnkit</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.sonatype.aether</groupId>
+			<artifactId>aether-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.sonatype.aether</groupId>
+			<artifactId>aether-util</artifactId>
+		</dependency>
+	</dependencies>
+
+</project>

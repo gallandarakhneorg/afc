@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<!-- === CAUTION === CAUTION === CAUTION === The parent module is not arakhneVmutils 
+		to avoid cyclic compilation problems -->
+	<parent>
+		<artifactId>afc</artifactId>
+		<groupId>org.arakhne.afc</groupId>
+		<version>5.1-SNAPSHOT</version>
+		<relativePath>../..</relativePath>
+	</parent>
+
+	<artifactId>arakhneVmutils-java</artifactId>
+	<packaging>jar</packaging>
+	<version>7.3-SNAPSHOT</version>
+	<name>VM Utilities</name>
+	<url>http://www.arakhne.org/arakhneVmutils/</url>
+
+	<properties>
+		<manifest.file>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifest.file>
+	</properties>
+
+	<!-- ======================================= -->
+	<!-- ==== Project Information === -->
+	<!-- ======================================= -->
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<extensions>true</extensions>
+				<executions>
+					<execution>
+						<id>bundle-manifest</id>
+						<phase>process-classes</phase>
+						<goals>
+							<goal>manifest</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+
+					<supportedProjectTypes>
+						<supportedProjectType>jar</supportedProjectType>
+						<supportedProjectType>bundle</supportedProjectType>
+						<supportedProjectType>war</supportedProjectType>
+					</supportedProjectTypes>
+
+					<archive>
+						<manifestFile>${manifest.file}</manifestFile>
+						<manifest>
+							<mainClass>org.arakhne.vmutil.OperatingSystemInfo</mainClass>
+						</manifest>
+					</archive>
+
+					<instructions>
+						<Export-Package>org.arakhne.vmutil.*;version=${project.version}</Export-Package>
+						<Bundle-Name>arakhneVmutils</Bundle-Name>
+						<Bundle-SymbolicName>org.arakhne.afc.arakhneVmutils</Bundle-SymbolicName>
+						<Bundle-ClassPath>.,{maven-dependencies}</Bundle-ClassPath>
+						<Import-Package>
+							!sun.reflect,!sun.misc,!sun,*;resolution:=optional
+						</Import-Package>
+						<Embed-Dependency>*;scope=compile|runtime;inline=false</Embed-Dependency>
+					</instructions>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifestFile>${manifest.file}</manifestFile>
+						<manifest>
+							<mainClass>org.arakhne.vmutil.OperatingSystemInfo</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>jar-no-fork</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.arakhne.afc</groupId>
+				<artifactId>tag-replacer</artifactId>
+				<executions>
+					<execution>
+						<id>property_preparation</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>replaceresource</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>source_generation</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>generatereplacesrc</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<projectGroupId>${project.groupId}</projectGroupId>
+					<projectArtifactId>arakhneVmutils</projectArtifactId>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.arakhne.afc</groupId>
+				<artifactId>license-installer</artifactId>
+				<executions>
+					<execution>
+						<phase>compile</phase>
+						<goals>
+							<goal>installlicense</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<name>${project.name}</name>
+					<licenses>
+						<param>lgplv3</param>
+					</licenses>
+					<copyrightDates>${project.inceptionYear}-${year}</copyrightDates>
+					<copyrighters>Arakhn&amp;ecirc;.org Consortium</copyrighters>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<configuration>
+					<skip>true</skip>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+
+	<!-- ======================================== -->
+	<!-- ==== Project Dependencies === -->
+	<!-- ======================================== -->
+
+
+	<dependencies>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.felix</groupId>
+			<artifactId>org.osgi.core</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.felix</groupId>
+			<artifactId>org.apache.felix.main</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+	</dependencies>
+
+</project>

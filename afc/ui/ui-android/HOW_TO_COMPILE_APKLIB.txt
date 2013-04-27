@@ -1,0 +1,93 @@
+---------------------------------------
+HOW TO COMPILE APKLIB ON CL WITH MAVEN?
+---------------------------------------
+
+1) Add the following code in the "pom.xml"; update it according to your configuration.
+	<properties>
+		<android.sdk.path>/opt/android-sdk</android.sdk.path>
+		<android.platform>15</android.platform>
+		<android.emulator>acer500</android.emulator>
+	</properties>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>com.jayway.maven.plugins.android.generation2</groupId>
+				<artifactId>android-maven-plugin</artifactId>
+				<configuration>
+					<androidManifestFile>${project.basedir}/AndroidManifest.xml</androidManifestFile>
+					<assetsDirectory>${project.basedir}/assets</assetsDirectory>
+					<resourceDirectory>${project.basedir}/res</resourceDirectory>
+					<nativeLibrariesDirectory>${project.basedir}/native</nativeLibrariesDirectory>
+					<sdk>
+						<path>${android.sdk.path}</path>
+						<platform>${android.platform}</platform>
+					</sdk>
+					<emulator>
+						<avd>${android.emulator}</avd>
+					</emulator>
+					<deleteConflictingFiles>true</deleteConflictingFiles>
+					<undeployBeforeDeploy>true</undeployBeforeDeploy>
+				</configuration>
+				<extensions>true</extensions>
+			</plugin>
+		</plugins>
+	</build>
+	
+2) Change the type of the project in "pom.xml"
+   <packaging>apklib</packaging>
+   
+3) Add in the dependencies of the project all the standard Jar files and the
+   apklibs that are used by your project.
+
+---------------------------------
+HOW TO COMPILE APKLIB IN ECLIPSE?
+---------------------------------
+
+1) Install the development platform. See http://www.janus-project.org/Android_SDK_Tutorial.
+
+2) Check out the source of this current project into a project inside your
+   workspace. Let say the name of the project "MyApkLib".
+   If necessary, configure your project to be compilable on CL (see previous section).
+
+3) Add the following code into the "pom.xml"; copy/paste the dependencies to
+   apklibs only. Change the types of the dependencies from "apklib" to "jar".
+   <profiles>
+		<profile>
+			<id>m2e</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<dependencies>
+				<dependency>
+					<groupId>...</groupId>
+					<artifactId>...</artifactId>
+					<type>jar</type>
+				</dependency>
+			</dependencies>
+		</profile>
+	</profiles>
+
+6) For each apklib in the dependencies of this project:
+   a) check out or import the sources of the dependency into a Maven/Android project
+      inside your current workspace. Let say this project has the name "MyDep".
+   b) Configure the project MyDep properly.
+
+8) Activate the m2e profile:
+   a) Right-click on the project to open the popup menu.
+   b) Select "Properties".
+   c) In the dialog box, select "Maven".
+   d) Put "m2e" in the field "Active Maven Profiles", and click "ok".
+
+9) Update the reference paths in the file "project.properties" to point
+   to the correct path on your file system:
+   a) Right-click on the project to open the popup menu.
+   b) Select "Properties".
+   c) In the dialog box, select "Android".
+   d) Remove all the broken references in the "Library" section.
+   d) All all the references to the "MyDep" projects in the "Library" section.
+
+   CAUTION: When you have "unexpected compilation errors", check if the ADT tools
+            have not put incorrect values for reference paths.
+
+10) Clean and compile. 
+

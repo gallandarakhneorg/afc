@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/textEditorSaveMenu"
+        android:checkable="false"
+        android:icon="@drawable/ic_menu_save_selector"
+        android:menuCategory="container"
+        android:orderInCategory="1"
+        android:showAsAction="always"
+        android:title="@string/save">
+    </item>
+    <item
+        android:id="@+id/textEditorUploadMenu"
+        android:checkable="false"
+        android:icon="@drawable/ic_menu_save_upload_selector"
+        android:menuCategory="container"
+        android:orderInCategory="2"
+        android:showAsAction="always"
+        android:title="@string/save_upload">
+    </item>
+    
+</menu>

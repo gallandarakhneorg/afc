@@ -1,4 +1,0 @@
-afc
-===
-
-Arakhnê Foundation Classes

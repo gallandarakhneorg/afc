@@ -1,0 +1,369 @@
+/* 
+ * $Id$
+ * 
+ * Copyright (C) 2013 Stephane GALLAND.
+ * 
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ * 
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * This program is free software; you can redistribute it and/or modify
+ */
+package org.arakhne.afc.progress;
+
+/**
+ * Utilities around task progression.
+ *
+ * @author $Author: galland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
+public class ProgressionUtil {
+
+	/** Initialize the given task progression if not <code>null</code>.
+	 * 
+	 * @param model is the task progression to initialize.
+	 * @param value is the progression value. 
+	 * @param min is the minimum value.
+	 * @param max is the maximum value.
+	 * @param isAdjusting indicates if the value is still under changes.
+	 * @param isInderterminate indicates if the progression value is inderterminate or not.
+	 */
+	public static void init(Progression model, int value, int min, int max, boolean isAdjusting, boolean isInderterminate) {
+		if (model!=null) {
+			model.setProperties(value, min, max, isAdjusting);
+			model.setIndeterminate(isInderterminate);
+		}
+	}
+
+	/** Initialize the given task progression if not <code>null</code>.
+	 * <p>
+	 * The inderterminate state is not changed.
+	 * 
+	 * @param model is the task progression to initialize.
+	 * @param min is the minimum value.
+	 * @param max is the maximum value.
+	 * @param isAdjusting indicates if the value is still under changes.
+	 */
+	public static void init(Progression model, int min, int max, boolean isAdjusting) {
+		if (model!=null) {
+			model.setProperties(min, min, max, isAdjusting);
+		}
+	}
+
+	/** Initialize the given task progression if not <code>null</code>.
+	 * <p>
+	 * The inderterminate state is not changed.
+	 * The adjusting state is set to <code>false</code>.
+	 * 
+	 * @param model is the task progression to initialize.
+	 * @param min is the minimum value.
+	 * @param max is the maximum value.
+	 */
+	public static void init(Progression model, int min, int max) {
+		if (model!=null) {
+			model.setProperties(min, min, max, false);
+		}
+	}
+
+	/** Initialize the given task progression if not <code>null</code>.
+	 * 
+	 * @param model is the task progression to initialize.
+	 * @param value is the progression value. 
+	 * @param min is the minimum value.
+	 * @param max is the maximum value.
+	 * @param isAdjusting indicates if the value is still under changes.
+	 * @param isInderterminate indicates if the progression value is inderterminate or not
+	 * @param comment is the text associated with the progression.
+	 */
+	public static void init(Progression model, int value, int min, int max, boolean isAdjusting, boolean isInderterminate, String comment) {
+		if (model!=null) {
+			model.setProperties(value, min, max, isAdjusting, comment);
+			model.setIndeterminate(isInderterminate);
+		}
+	}
+
+	/** Initialize the given task progression if not <code>null</code>.
+	 * <p>
+	 * The inderterminate state is not changed.
+	 * 
+	 * @param model is the task progression to initialize.
+	 * @param min is the minimum value.
+	 * @param max is the maximum value.
+	 * @param isAdjusting indicates if the value is still under changes.
+	 * @param comment is the text associated with the progression.
+	 */
+	public static void init(Progression model, int min, int max, boolean isAdjusting, String comment) {
+		if (model!=null) {
+			model.setProperties(min, min, max, isAdjusting, comment);
+		}
+	}
+
+	/** Initialize the given task progression if not <code>null</code>.
+	 * <p>
+	 * The inderterminate state is not changed.
+	 * The adjusting state is set to <code>false</code>.
+	 * 
+	 * @param model is the task progression to initialize.
+	 * @param min is the minimum value.
+	 * @param max is the maximum value.
+	 * @param comment is the text associated with the progression.
+	 */
+	public static void init(Progression model, int min, int max, String comment) {
+		if (model!=null) {
+			model.setProperties(min, min, max, false, comment);
+		}
+	}
+
+	/** Create and replies a task progression model that is for
+	 * a subtask of the task associated to the given progression model.
+	 * <p>
+	 * The subtask progression model is not initialized.
+	 * When the subtask progression model reaches its end,
+	 * the value of the task progression is {@code s + extent}
+	 * where {@code s} is the value of the task progression when
+	 * this function is called.
+	 *  
+	 * @param model is the model to derivate
+	 * @param extent is the size of the subtask progression that is
+	 * covered in the task progression.
+	 * @return the subtask progression model; or <code>null</code>.
+	 */
+	public static Progression sub(Progression model, int extent) {
+		if (model!=null) {
+			return model.subTask(extent);
+		}
+		return null;
+	}
+
+	/** Create and replies a task progression model that is for
+	 * a subtask of the task associated to the given progression model.
+	 * <p>
+	 * The subtask progression model is not initialized.
+	 * When the subtask progression model reaches its end,
+	 * the value of the task progression is {@code s + extent}
+	 * where {@code s} is the value of the task progression when
+	 * this function is called.
+	 *  
+	 * @param model is the model to derivate
+	 * @param extent is the size of the subtask progression that is
+	 * covered in the task progression.
+	 * @param overwriteComment indicates if the comment of this task model may
+	 * be overwritten by the comment of the subtask when it is disconnected.
+	 * @return the subtask progression model; or <code>null</code>.
+	 */
+	public static Progression sub(Progression model, int extent, boolean overwriteComment) {
+		if (model!=null) {
+			return model.subTask(extent, overwriteComment);
+		}
+		return null;
+	}
+	
+	/** Create and replies a task progression model that is for
+	 * a subtask of the task associated to the given progression model.
+	 * <p>
+	 * The subtask progression model is not initialized.
+	 * When the subtask progression model reaches its end,
+	 * the value of the task progression is equal to the maximum.
+	 *  
+	 * @param model is the model to derivate
+	 * @return the subtask progression model; or <code>null</code>.
+	 */
+	public static Progression subToEnd(Progression model) {
+		if (model!=null) {
+			return model.subTask(model.getMaximum() - model.getValue());
+		}
+		return null;
+	}
+
+	/** Create and replies a task progression model that is for
+	 * a subtask of the task associated to the given progression model.
+	 * <p>
+	 * The subtask progression model is not initialized.
+	 * When the subtask progression model reaches its end,
+	 * the value of the task progression is equal to the maximum.
+	 *  
+	 * @param model is the model to derivate
+	 * @param overwriteComment indicates if the comment of this task model may
+	 * be overwritten by the comment of the subtask when it is disconnected.
+	 * @return the subtask progression model; or <code>null</code>.
+	 */
+	public static Progression subToEnd(Progression model, boolean overwriteComment) {
+		if (model!=null) {
+			return model.subTask(model.getMaximum() - model.getValue(), overwriteComment);
+		}
+		return null;
+	}
+
+	/** Increment the value of the given task progression,
+	 * if not <code>null</code>, by the given amount.
+	 * 
+	 * @param model is the progression to change
+	 * @param value is the value to add to the progression value.
+	 */
+	public static void advance(Progression model, int value) {
+		if (model!=null && value>0) {
+			SubProgressionModel sub = (SubProgressionModel)model.getSubTask();
+			float base;
+			if (sub==null) {
+				base = model.getValue();
+			}
+			else {
+				base = sub.getMinInParent();
+				model.ensureNoSubTask();
+			}
+			model.setValue((int)base + value);
+		}
+	}
+
+	/** Increment the value of the given task progression,
+	 * if not <code>null</code>, by {@code 1}.
+	 * 
+	 * @param model is the progression to change
+	 */
+	public static void advance(Progression model) {
+		advance(model, 1);
+	}
+
+	/** Increment the value of the given task progression,
+	 * if not <code>null</code>, by the given amount.
+	 * 
+	 * @param model is the progression to change
+	 * @param value is the value to add to the progression value.
+	 * @param comment is the comment associated to the progression.
+	 */
+	public static void advance(Progression model, int value, String comment) {
+		if (model!=null && value>0) {
+			model.setValue(model.getValue() + value, comment);
+		}
+	}
+
+	/** Increment the value of the given task progression,
+	 * if not <code>null</code>, by {@code 1}.
+	 * 
+	 * @param model is the progression to change
+	 * @param comment is the comment associated to the progression.
+	 */
+	public static void advance(Progression model, String comment) {
+		advance(model, 1, comment);
+	}
+
+	/** Replies the value of the given task progression,
+	 * if not <code>null</code>.
+	 * 
+	 * @param model is the progression to change
+	 * @return the value or {@code 0} if there is no progession model.
+	 */
+	public static int getValue(Progression model) {
+		if (model!=null) {
+			return model.getValue();
+		}
+		return 0;
+	}
+
+	/** Replies the value from the current progression value
+	 * to the maximal progression value of the given task progression,
+	 * if not <code>null</code>.
+	 * 
+	 * @param model is the progression to change
+	 * @return the positive value to end or {@code 0} if there is no progession model.
+	 */
+	public static int getValueToEnd(Progression model) {
+		if (model!=null) {
+			return model.getMaximum() - model.getValue();
+		}
+		return 0;
+	}
+
+	/** Replies the percent of progression for the given task progression,
+	 * if not <code>null</code>.
+	 * 
+	 * @param model is the progression to change
+	 * @return the percent of progress or {@link Float#NaN}
+	 * if there is no progession model.
+	 */
+	public static float getPercent(Progression model) {
+		if (model!=null) {
+			return model.getPercent();
+		}
+		return Float.NaN;
+	}
+
+	/** Set the value of the given task progression,
+	 * if not <code>null</code>.
+	 * The value must be greater than the current progression value.
+	 * 
+	 * @param model is the progression to change
+	 * @param value is the value to add to the progression value.
+	 */
+	public static void setValue(Progression model, int value) {
+		if (model!=null && value>model.getValue()) {
+			model.setValue(value);
+		}
+	}
+
+	/** Set the value of the given task progression,
+	 * if not <code>null</code>.
+	 * The value must be greater than the current progression value.
+	 * 
+	 * @param model is the progression to change
+	 * @param value is the value to add to the progression value.
+	 * @param comment is the comment associated to the progression.
+	 */
+	public static void setValue(Progression model, int value, String comment) {
+		if (model!=null && value>model.getValue()) {
+			model.setValue(value, comment);
+		}
+	}
+
+	/** Force the given task progression, if not <code>null</code>,
+	 * to have its value equals to the maximal value.
+	 * <p>
+	 * The inderterminate and adjusting states are not changed.
+	 * The comment is reset.
+	 * 
+	 * @param model is the task progression to initialize.
+	 */
+	public static void end(Progression model) {
+		if (model!=null) {
+			model.end();
+			model.setComment(null);
+		}
+	}
+
+	/** Ensure that there is no opened subtask.
+	 * If a subtask is existing, it is ended().
+	 * 
+	 * @param model is the task progression to initialize.
+	 */
+	public static void ensureNoSubTask(Progression model) {
+		if (model!=null) {
+			model.ensureNoSubTask();
+		}
+	}
+
+	/** Replies if the given progression indicators has its value
+	 * equal to its min value.
+	 * 
+	 * @param model is the task progression to initialize.
+	 * @return <code>true</code> if the indicator is at its min value or
+	 * if <var>model</var> is <code>null</code>.
+	 */
+	public static boolean isMinValue(Progression model) {
+		if (model!=null) {
+			return model.getValue()<=model.getMinimum();
+		}
+		return true;
+	}
+
+}

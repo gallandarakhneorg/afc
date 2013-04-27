@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<artifactId>afc</artifactId>
+		<groupId>org.arakhne.afc</groupId>
+		<version>5.1-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>arakhneUi</artifactId>
+	<packaging>pom</packaging>
+	<version>1.1-SNAPSHOT</version>
+	<name>User Interface Tools</name>
+
+	<modules>
+		<module>ui-base</module>
+		<module>ui-awt</module>
+		<module>ui-swing</module>
+		<module>ui-vector</module>
+		<module>ui-vector-awt</module>
+		<module>ui-vector-android</module>
+		<module>ui-android</module>
+	</modules>
+
+</project>
