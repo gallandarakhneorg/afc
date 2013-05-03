@@ -120,7 +120,7 @@
 						<param>lgplv3</param>
 					</licenses>
 					<copyrightDates>${project.inceptionYear}-${year}</copyrightDates>
-					<copyrighters>Arakhn&amp;ecirc;.org Consortium</copyrighters>
+					<copyrighters>${copyrighters}</copyrighters>
 				</configuration>
 			</plugin>
 		</plugins>

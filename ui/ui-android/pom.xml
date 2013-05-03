@@ -11,7 +11,8 @@
 	<artifactId>ui-android</artifactId>
 	<name>Android Utilities</name>
 	<packaging>apklib</packaging>
-
+	<inceptionYear>2013</inceptionYear>
+	
 	<properties>
 		<android.sdk.path>/opt/android-sdk</android.sdk.path>
 		<android.platform>15</android.platform>
@@ -69,6 +70,46 @@
 					<release>true</release>
 				</configuration>
 				<extensions>true</extensions>
+			</plugin>
+			<plugin>
+				<groupId>org.arakhne.afc</groupId>
+				<artifactId>tag-replacer</artifactId>
+				<executions>
+					<execution>
+						<id>property_preparation</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>replaceresource</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>source_generation</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>generatereplacesrc</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.arakhne.afc</groupId>
+				<artifactId>license-installer</artifactId>
+				<executions>
+					<execution>
+						<phase>compile</phase>
+						<goals>
+							<goal>installlicense</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<name>${project.name}</name>
+					<licenses>
+						<param>lgplv3</param>
+					</licenses>
+					<copyrightDates>${project.inceptionYear}-${year}</copyrightDates>
+					<copyrighters>${copyrighters}</copyrighters>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

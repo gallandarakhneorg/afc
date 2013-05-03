@@ -13,6 +13,7 @@
 
 	<properties>
 		<year>2013</year>
+		<copyrighter>Arakhn&amp;ecirc;.org Members</copyrighter>
 		<sourceEncoding>UTF-8</sourceEncoding>
 	</properties>
 
@@ -22,9 +23,8 @@
 
 	<dependencyManagement>
 		<dependencies>
-			<!-- ##################################################
-			     Arakhne Foundation Classes (AFC)
-			     ################################################## -->
+			<!-- ################################################## Arakhne Foundation 
+				Classes (AFC) ################################################## -->
 			<dependency>
 				<groupId>org.arakhne.afc</groupId>
 				<artifactId>arakhneVmutils</artifactId>
@@ -116,9 +116,8 @@
 				<version>3.6-SNAPSHOT</version>
 			</dependency>
 
-			<!-- ##################################################
-			     Third-Party Libraries
-			     ################################################## -->
+			<!-- ################################################## Third-Party Libraries 
+				################################################## -->
 			<dependency>
 				<groupId>org.swinglabs</groupId>
 				<artifactId>pdf-renderer</artifactId>
@@ -223,12 +222,6 @@
 			<distribution>repo</distribution>
 			<comments>For the Android Color Picker only</comments>
 		</license>
-		<license>
-			<name>GNU General Public License v2.1</name>
-			<url>http://www.gnu.org/licenses/gpl.html</url>
-			<distribution>repo</distribution>
-			<comments>From 2001 to 2002</comments>
-		</license>
 	</licenses>
 
 	<mailingLists>
@@ -332,8 +325,8 @@
 	</distributionManagement>
 
 	<scm>
-		<connection>scm:svn:svn://svn.tuxfamily.org/svnroot/arakhne/afc/trunk</connection>
-		<developerConnection>scm:svn:svn+ssh://svn.tuxfamily.org/svnroot/arakhne/afc/trunk</developerConnection>
+		<connection>scm:git:git://github.com/gallandarakhneorg/afc.git</connection>
+		<developerConnection>scm:git:https://github.com/gallandarakhneorg/afc.git</developerConnection>
 	</scm>
 
 	<build>
@@ -538,8 +531,7 @@
 					</links>
 					<docfilessubdirs>true</docfilessubdirs>
 					<bottom>&lt;small&gt;Copyright &amp;copy;
-						${project.inceptionYear}-${year} Arakhn&amp;ecirc;.org
-						Consortium.
+						${project.inceptionYear}-${year} ${copyrighters}.
 						All rights
 						reserved under LGPL license
 						terms.&lt;/small&gt;</bottom>
