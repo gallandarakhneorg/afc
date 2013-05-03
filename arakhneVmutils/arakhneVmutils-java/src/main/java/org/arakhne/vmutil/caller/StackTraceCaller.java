@@ -1,12 +1,12 @@
 /* 
  * $Id$
  * 
- * Copyright (C) 2012 Stephane GALLAND.
+ * Copyright (C) 2012-13 Stephane GALLAND.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  * 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -36,17 +36,11 @@ import org.arakhne.vmutil.ClassLoaderFinder;
  */
 public class StackTraceCaller implements Caller {
 
-	/**
-	 */
-	public StackTraceCaller() {
-		//
-	}
-	
 	/** Load a class but avoid any exception.
-	 * 
-	 * @param name the class name.
-	 * @return the class or <code>null</code>.
-	 */
+     *
+     * @param name the class name.
+     * @return the class or {@code null}.
+     */
 	public static Class<?> loadClass(String name) {
 		try {
 			return ClassLoaderFinder.findClassLoader().loadClass(name);
@@ -60,21 +54,21 @@ public class StackTraceCaller implements Caller {
 	}
 
 	/** Replies the stack trace element for the given level.
-	 * <p>
-	 * The given <var>level</var> permits to specify which class to reply:
-	 * <ul>
-	 * <li><code>0</code>: the class where is defined the function (<code>f<sub>0</sub></code>) 
-	 * that has called one function of <code>Caller</code></li>
-	 * <li><code>1</code>: the class where is defined the function (<code>f<sub>1</sub></code>) 
-	 * that has called <code>f<sub>0</sub></code></li>
-	 * <li><code>2</code>: the class where is defined the function (<code>f<sub>2</sub></code>) 
-	 * that has called <code>f<sub>1</sub></code></li>
-	 * <li>etc.</li>
-	 * </ul>
-	 * 
-	 * @param level is the desired level.
-	 * @return the stack trace element; or <code>null</code>.
-	 */
+     * <p>
+     * The given <var>level</var> permits to specify which class to reply:
+     * <ul>
+     * <li>{@code 0}: the class where is defined the function ({@code f<sub>0</sub>})
+     * that has called one function of {@code Caller}</li>
+     * <li>{@code 1}: the class where is defined the function ({@code f<sub>1</sub>})
+     * that has called {@code f<sub>0</sub>}</li>
+     * <li>{@code 2}: the class where is defined the function ({@code f<sub>2</sub>})
+     * that has called {@code f<sub>1</sub>}</li>
+     * <li>etc.</li>
+     * </ul>
+     *
+     * @param level is the desired level.
+     * @return the stack trace element; or {@code null}.
+     */
 	protected static StackTraceElement getTraceElementAt(int level) {
 		if (level<0) return null;
 		try {
