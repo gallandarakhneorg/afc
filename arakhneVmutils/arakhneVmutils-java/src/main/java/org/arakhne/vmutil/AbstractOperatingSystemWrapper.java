@@ -2,12 +2,12 @@
   * $Id$
  * 
  * Copyright (C) 2004-2009 Stephane GALLAND.
- * Copyright (C) 2012 Stephane GALLAND.
+ * Copyright (C) 2012-13 Stephane GALLAND.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  * 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -42,13 +42,13 @@ abstract class AbstractOperatingSystemWrapper implements OperatingSystemWrapper 
 
 	/**
 	 */
-	public AbstractOperatingSystemWrapper() {
-		//
-	}
+	protected AbstractOperatingSystemWrapper() {
+        super();
+    }
 	
 	/** Run a shell command.
 	 * 
-	 * @param command is the sheel command.
+	 * @param command is the shell command to run.
 	 * @return the standard output
 	 */
 	protected static String runCommand(String... command) {
@@ -109,7 +109,7 @@ abstract class AbstractOperatingSystemWrapper implements OperatingSystemWrapper 
 	 * @param delimiter is the delmiter to use to cut.
 	 * @param column is the number of the column to reply.
 	 * @param lineText is the line to cut.
-	 * @return the column or <code>null</code>.
+	 * @return the column or {@code null}.
 	 */
 	protected static String cut(String delimiter, int column, String lineText) {
 		if (lineText==null || lineText.isEmpty()) return null;

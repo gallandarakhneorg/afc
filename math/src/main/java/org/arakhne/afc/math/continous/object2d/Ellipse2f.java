@@ -6,7 +6,7 @@
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  * 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -160,7 +160,7 @@ public class Ellipse2f extends AbstractRectangularShape2f<Ellipse2f> {
 	 * @param y2 is the second point of the line.
 	 * @return <code>true</code> if the two shapes are intersecting; otherwise
 	 * <code>false</code>
-	 * @see http://blog.csharphelper.com/2012/09/24/calculate-where-a-line-segment-and-an-ellipse-intersect-in-c.aspx
+	 * @see "http://blog.csharphelper.com/2012/09/24/calculate-where-a-line-segment-and-an-ellipse-intersect-in-c.aspx"
 	 */
 	public static boolean intersectsEllipseLine(float ex, float ey, float ew, float eh, float x1, float y1, float x2, float y2) {
 		// If the ellipse or line segment are empty, return no intersections.
@@ -211,7 +211,7 @@ public class Ellipse2f extends AbstractRectangularShape2f<Ellipse2f> {
 	 * @param y2 is the second point of the segment.
 	 * @return <code>true</code> if the two shapes are intersecting; otherwise
 	 * <code>false</code>
-	 * @see http://blog.csharphelper.com/2012/09/24/calculate-where-a-line-segment-and-an-ellipse-intersect-in-c.aspx
+	 * @see "http://blog.csharphelper.com/2012/09/24/calculate-where-a-line-segment-and-an-ellipse-intersect-in-c.aspx"
 	 */
 	public static boolean intersectsEllipseSegment(float ex, float ey, float ew, float eh, float x1, float y1, float x2, float y2) {
 		// If the ellipse or line segment are empty, return no intersections.

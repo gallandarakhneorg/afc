@@ -6,7 +6,7 @@
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  * 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -296,7 +296,7 @@ public abstract class AbstractReplaceMojo extends AbstractArakhneMojo implements
 	 * @param detectEncoding
 	 *            when <code>true</code> the encoding of the file will be detected and preserved. When <code>false</code> the encoding may be loose.
 	 * @throws MojoExecutionException
-	 * @see {@link #replaceInFile(File, File, ReplacementType, File[], boolean)}
+	 * @see #replaceInFile(File, File, ReplacementType, File[], boolean)
 	 */
 	protected synchronized void replaceInFileBuffered(File sourceFile, File targetFile, ReplacementType replacementType, File[] classpath, boolean detectEncoding) throws MojoExecutionException {
 		if (this.replacementTreatedFiles.contains(targetFile)
@@ -321,7 +321,7 @@ public abstract class AbstractReplaceMojo extends AbstractArakhneMojo implements
 	 * @param detectEncoding
 	 *            when <code>true</code> the encoding of the file will be detected and preserved. When <code>false</code> the encoding may be loose.
 	 * @throws MojoExecutionException
-	 * @see {@link #replaceInFileBuffered(File, File, ReplacementType, File[], boolean)}
+	 * @see #replaceInFileBuffered(File, File, ReplacementType, File[], boolean)
 	 */
 	protected synchronized void replaceInFile(File sourceFile, File targetFile, ReplacementType replacementType, File[] classpath, boolean detectEncoding) throws MojoExecutionException {
 		File outputFile, inputFile;

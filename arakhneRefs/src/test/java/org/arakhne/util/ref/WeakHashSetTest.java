@@ -5,7 +5,7 @@
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  * 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -19,7 +19,6 @@
  */
 package org.arakhne.util.ref;
 
-import java.util.Collection;
 import java.util.Set;
 
 /**
@@ -28,7 +27,7 @@ import java.util.Set;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class WeakHashSetTest extends AbstractCollectionTestCase<String,Set<String>> {
+public class WeakHashSetTest extends AbstractCollectionTestCase<Set<String>> {
 
 	/**
 	 */
@@ -37,24 +36,8 @@ public class WeakHashSetTest extends AbstractCollectionTestCase<String,Set<Strin
 	}
 
 	@Override
-	protected String createContentInstance() {
-		return randomString();
-	}
-
-	@Override
 	protected Set<String> createCollection() {
 		return new WeakHashSet<String>();
-	}
-
-	@Override
-	protected void initCollectionWith(Collection<String> toAdd) {
-		this.collection.clear();
-		this.collection.addAll(toAdd);
-	}
-
-	@Override
-	protected void fillCollectionWith(Collection<String> toAdd) {
-		this.collection.addAll(toAdd);
 	}
 
 }

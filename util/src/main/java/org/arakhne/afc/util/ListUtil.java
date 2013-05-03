@@ -7,7 +7,7 @@
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  * 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -23,6 +23,7 @@ package org.arakhne.afc.util;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.NavigableSet;
 
 /**
  * Utilities on lists.
@@ -102,7 +103,7 @@ public class ListUtil {
 	 * @param allowMultipleOccurencesOfSameValue indicates if multiple
 	 * occurrences of the same value are allowed in the list.
 	 * @return <code>true</code> if the data was added, otherwise <code>false</code>
-	 * @deprecated see {@link #add(List, Comparator, Object, boolean)}
+	 * @deprecated see {@link #add(List, Comparator, Object, boolean, boolean)}
 	 */
 	@Deprecated
 	public static <E> boolean dichotomicAdd(List<E> list, Comparator<? super E> comparator, E data, boolean allowMultipleOccurencesOfSameValue) {

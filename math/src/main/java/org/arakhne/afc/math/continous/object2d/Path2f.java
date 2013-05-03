@@ -7,7 +7,7 @@
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  * 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -1476,7 +1476,7 @@ public class Path2f extends AbstractShape2f<Path2f> {
 	 * @param onlyIntersectWhenOpen indicates if the crossings is set to 0 when
 	 * the path is open and there is not SHAPE_INTERSECT.
 	 * @return the crossings.
-	 * @see Weiler–Atherton clipping algorithm 
+	 * @see "Weiler–Atherton clipping algorithm"
 	 */
 	static int computeCrossingsFromPath(
 			PathIterator2f iterator1, 
@@ -1745,7 +1745,6 @@ public class Path2f extends AbstractShape2f<Path2f> {
 	 * The replied bounding box includes the (invisible) control points.
 	 * 
 	 * @param box is the rectangle to set with the bounds.
-	 * @return the bounding box with the control points.
 	 * @see #toBoundingBox()
 	 */
 	public void toBoundingBoxWithCtrlPoints(Rectangle2f box) {
@@ -3062,6 +3061,9 @@ public class Path2f extends AbstractShape2f<Path2f> {
 		private final Path2f path;
 		private final Rectangle2f bounds;
 
+		/**
+		 * @param path
+		 */
 		public PathShadow(Path2f path) {
 			this.path = path;
 			this.bounds = this.path.toBoundingBox();

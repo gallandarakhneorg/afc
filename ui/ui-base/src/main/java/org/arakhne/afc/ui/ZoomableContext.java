@@ -7,7 +7,7 @@
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  * 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -93,7 +93,7 @@ public interface ZoomableContext {
 	 *  into the screen space.
 	 *
 	 * @param p is the path in the logical.
-	 * @param the path is screen path.
+	 * @return the path is screen path.
 	 */
 	public PathIterator2f logical2pixel(PathIterator2f p);
 
@@ -164,7 +164,7 @@ public interface ZoomableContext {
 	/** Translates the specified ellipse
 	 *  into the logical space.
 	 *
-	 * @param r is the ellipse in the screen space when input and the
+	 * @param e is the ellipse in the screen space when input and the
 	 * same ellipse in logical space when output.
 	 */
 	public void pixel2logical(Ellipse2f e);
@@ -211,6 +211,7 @@ public interface ZoomableContext {
 	 *
 	 * @param s is the shape in the logical space when input and the
 	 * same shape in screen space when output.
+	 * @return the translated shape.
 	 */
 	public Shape2f logical2pixel(Shape2f s);
 
@@ -224,6 +225,7 @@ public interface ZoomableContext {
 	 *
 	 * @param s is the shape in the screen space when input and the
 	 * same shape in logical space when output.
+	 * @return the translated shape.
 	 */
 	public Shape2f pixel2logical(Shape2f s);
 

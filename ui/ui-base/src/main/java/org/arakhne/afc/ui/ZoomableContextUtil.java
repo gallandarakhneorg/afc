@@ -7,7 +7,7 @@
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  * 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -51,7 +51,7 @@ public class ZoomableContextUtil {
 	 * system from the "global" logical coordinate system to/from the "centered" logical coordinate
 	 * system.
 	 * @param zoom is the current zooming factor of the view.
-	 * @param the path is screen path.
+	 * @return the path is screen path.
 	 */
 	public static PathIterator2f logical2pixel(PathIterator2f p,
 			CenteringTransform centeringTransform,
@@ -238,7 +238,7 @@ public class ZoomableContextUtil {
 	/** Translates the specified ellipse
 	 *  into the logical space.
 	 *
-	 * @param r is the ellipse in the screen space when input and the
+	 * @param e is the ellipse in the screen space when input and the
 	 * same ellipse in logical space when output.
 	 * @param centeringTransform is the transform to apply to the points to change from/to the coordinate
 	 * system from the "global" logical coordinate system to/from the "centered" logical coordinate
@@ -543,6 +543,11 @@ public class ZoomableContextUtil {
 		private final CenteringTransform ct;
 		private final float z;
 		
+		/**
+		 * @param it is the iterator to translate from pixel to logical coordinate system.
+		 * @param ct is the transformation to apply to center the transformation on the view.
+		 * @param z is the scaling factor for the translation.
+		 */
 		public P2LPathIterator(PathIterator2f it, CenteringTransform ct, float z) {
 			this.it = it;
 			this.ct = ct;
@@ -597,6 +602,11 @@ public class ZoomableContextUtil {
 		private final CenteringTransform ct;
 		private final float z;
 		
+		/**
+		 * @param it is the iterator to translate from logical to pixel coordinate system.
+		 * @param ct is the transformation to apply to center the transformation on the view.
+		 * @param z is the scaling factor for the translation.
+		 */
 		public L2PPathIterator(PathIterator2f it, CenteringTransform ct, float z) {
 			this.it = it;
 			this.ct = ct;
