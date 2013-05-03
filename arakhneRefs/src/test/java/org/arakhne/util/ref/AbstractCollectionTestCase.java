@@ -7,7 +7,7 @@
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * version 3 of the License, or (at your option) any later version.
  * 
  * This library is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -27,23 +27,22 @@ import java.util.Iterator;
 import java.util.Random;
 
 /**
- * @param <OBJ>
  * @param <COL>
  * @author $Author: galland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public abstract class AbstractCollectionTestCase<OBJ,COL extends Collection<OBJ>> extends AbstractTestCase {
+public abstract class AbstractCollectionTestCase<COL extends Collection<String>> extends AbstractTestCase {
 
 	private final Random RANDOM = new Random();
 	
 	/**
 	 */
-	protected ArrayList<OBJ> reference;
+	protected ArrayList<String> reference;
 	/**
 	 */
-	protected ArrayList<OBJ> unreference;
+	protected ArrayList<String> unreference;
 	/**
 	 */
 	protected COL collection;
@@ -51,25 +50,19 @@ public abstract class AbstractCollectionTestCase<OBJ,COL extends Collection<OBJ>
 	@Override
 	public void setUp() throws Exception {
 		super.setUp();
-		int count = this.RANDOM.nextInt(400)+100;
-		this.reference = new ArrayList<OBJ>(count);
-		for(int idx=0; idx<count; idx++) {
-			this.reference.add(createContentInstance());
+		int refCount = 10;
+		this.reference = new ArrayList<String>(refCount);
+		for(int idx=0; idx<refCount; idx++) {
+			this.reference.add("REF_"+idx); //$NON-NLS-1$
 		}
 		
-		count = this.RANDOM.nextInt(5)+5;
-		this.unreference = new ArrayList<OBJ>(count);
-		for(int idx=0; idx<count; idx++) {
-			this.unreference.add(createContentInstance());
+		this.unreference = new ArrayList<String>(5);
+		for(int idx=0; idx<5; idx++) {
+			this.unreference.add("UNREF_"+idx); //$NON-NLS-1$
 		}
 
 		this.collection = createCollection();
 	}
-	
-	/**
-	 * @return an instance
-	 */
-	protected abstract OBJ createContentInstance();
 	
 	/**
 	 * @return a collection
@@ -79,11 +72,17 @@ public abstract class AbstractCollectionTestCase<OBJ,COL extends Collection<OBJ>
 	/**
 	 * @param toAdd
 	 */
-	protected abstract void initCollectionWith(Collection<OBJ> toAdd);
+	protected final void initCollectionWith(Collection<String> toAdd) {
+		this.collection.clear();
+		this.collection.addAll(toAdd);
+	}
+	
 	/**
 	 * @param toAdd
 	 */
-	protected abstract void fillCollectionWith(Collection<OBJ> toAdd);
+	protected final void fillCollectionWith(Collection<String> toAdd) {
+		this.collection.addAll(toAdd);
+	}
 	
 	@Override
 	public void tearDown() throws Exception {
@@ -130,7 +129,7 @@ public abstract class AbstractCollectionTestCase<OBJ,COL extends Collection<OBJ>
         
         count = this.RANDOM.nextInt(5)+5;
         int index;
-        OBJ elt;
+        String elt;
         for(int idx=0; idx<count; idx++) {
         	index = this.RANDOM.nextInt(this.unreference.size());
         
@@ -145,8 +144,8 @@ public abstract class AbstractCollectionTestCase<OBJ,COL extends Collection<OBJ>
         initCollectionWith(this.reference);        
 	
         // Test the content
-    	OBJ s;
-    	Iterator<OBJ> iter = this.collection.iterator();
+    	String s;
+    	Iterator<String> iter = this.collection.iterator();
     	boolean asOne = false;
     	while (iter.hasNext()) {
     		s = iter.next();
@@ -218,7 +217,7 @@ public abstract class AbstractCollectionTestCase<OBJ,COL extends Collection<OBJ>
         	msg = "test "+(i+1)+"/"+testCount; //$NON-NLS-1$ //$NON-NLS-2$
         
 	        // Add an element
-	        OBJ newElement = createContentInstance();
+	        String newElement = "NEWELT"+i; //$NON-NLS-1$
 	        this.reference.add(newElement);
 	        assertTrue(msg,this.collection.add(newElement));
 	        assertEquals(msg,this.reference.size(), this.collection.size());
@@ -241,7 +240,7 @@ public abstract class AbstractCollectionTestCase<OBJ,COL extends Collection<OBJ>
 
             initCollectionWith(this.reference);        
 
-            OBJ toRemove = this.reference.get(removalIndex);
+            String toRemove = this.reference.get(removalIndex);
             
 	        // Remove elements
 	        assertTrue(msg,this.collection.remove(toRemove));
