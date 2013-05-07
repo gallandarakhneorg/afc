@@ -12,10 +12,13 @@
 	<name>Android Utilities</name>
 	<packaging>apklib</packaging>
 	<inceptionYear>2013</inceptionYear>
-	
+
 	<properties>
+		<!-- Path where your Android SDK is installed -->
 		<android.sdk.path>/opt/android-sdk</android.sdk.path>
+		<!-- Minimal version of the Android SDK -->
 		<android.platform>15</android.platform>
+		<!-- Name of the emulator you want to use when debugging -->
 		<android.emulator>acer500</android.emulator>
 	</properties>
 
@@ -49,28 +52,56 @@
 
 	<build>
 		<plugins>
+			<!-- Android Plugin -->
 			<plugin>
 				<groupId>com.jayway.maven.plugins.android.generation2</groupId>
 				<artifactId>android-maven-plugin</artifactId>
 				<configuration>
+					<!-- Path to the manifest file -->
 					<androidManifestFile>${project.basedir}/AndroidManifest.xml</androidManifestFile>
+					<!-- Path to the assets -->
 					<assetsDirectory>${project.basedir}/assets</assetsDirectory>
+					<!-- Path to the Android resources -->
 					<resourceDirectory>${project.basedir}/res</resourceDirectory>
+					<!-- Path to the native libraries -->
 					<nativeLibrariesDirectory>${project.basedir}/native</nativeLibrariesDirectory>
+					<!-- Definition of the Android SDK used for compilation -->
 					<sdk>
 						<path>${android.sdk.path}</path>
 						<platform>${android.platform}</platform>
 					</sdk>
+					<!-- Definition of the AVD -->
 					<emulator>
 						<avd>${android.emulator}</avd>
 					</emulator>
+					<!-- Definition of the AVD -->
 					<deleteConflictingFiles>true</deleteConflictingFiles>
+					<!-- whether to undeploy an apk from the device before deploying it -->
 					<undeployBeforeDeploy>true</undeployBeforeDeploy>
+					<!-- whether to attach sources to the build, which can be depended on 
+						by other apk projects, for including them in their builds -->
 					<attachSources>true</attachSources>
+					<!-- whether to create a release build (default is false / debug build) -->
 					<release>true</release>
 				</configuration>
 				<extensions>true</extensions>
+				<!-- Update the Manifest according to currenty Maven configuration -->
+				<executions>
+					<execution>
+						<id>update-manifest</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>manifest-update</goal>
+						</goals>
+						<configuration>
+							<manifest>
+								<versionCodeUpdateFromVersion>true</versionCodeUpdateFromVersion>
+							</manifest>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
+			<!-- Replacing the "Arakhne" tags in the sources and in resources -->
 			<plugin>
 				<groupId>org.arakhne.afc</groupId>
 				<artifactId>tag-replacer</artifactId>
@@ -91,6 +122,7 @@
 					</execution>
 				</executions>
 			</plugin>
+			<!--  Put the license files into the distribution jar file -->
 			<plugin>
 				<groupId>org.arakhne.afc</groupId>
 				<artifactId>license-installer</artifactId>

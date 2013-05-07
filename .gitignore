@@ -20,6 +20,9 @@ bin/
 # Maven
 target/
 
+# Android
+gen/*
+
 # Compiled files
 *.class
 *.o
