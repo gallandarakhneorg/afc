@@ -220,28 +220,28 @@ public class InstallLicenseMojo extends AbstractArakhneMojo implements Constants
 				Matcher matcher = re1.matcher(tpl);
 				if (matcher.matches()) {
 					String l = matcher.group(1);
-					String f = matcher.group(2);
+					String g = matcher.group(2);
+					String a = matcher.group(3);
 					lic = License.parse(l, null);
 					if (lic != null) {
-						StringBuilder sb = new StringBuilder();
-						sb.append(this.name);
-						sb.append("_"); //$NON-NLS-1$
-						String b = f.replaceAll("[/\\:]", "."); //$NON-NLS-1$ //$NON-NLS-2$
-						b = b.replaceAll("^\\.", ""); //$NON-NLS-1$ //$NON-NLS-2$
-						sb.append(b);
-						includedLicenses.put(sb.toString(), lic);
+						String depName = "mvndep_"+g+"_"+a; //$NON-NLS-1$ //$NON-NLS-2$
+						includedLicenses.put(depName, lic);
 					}
 				}
 				else {
 					matcher = re2.matcher(tpl);
 					if (matcher.matches()) {
 						String l = matcher.group(1);
-						String g = matcher.group(2);
-						String a = matcher.group(3);
+						String f = matcher.group(2);
 						lic = License.parse(l, null);
 						if (lic != null) {
-							String depName = "mvndep_"+g+"_"+a; //$NON-NLS-1$ //$NON-NLS-2$
-							includedLicenses.put(depName, lic);
+							StringBuilder sb = new StringBuilder();
+							sb.append(this.name);
+							sb.append("_"); //$NON-NLS-1$
+							String b = f.replaceAll("[/\\:]", "."); //$NON-NLS-1$ //$NON-NLS-2$
+							b = b.replaceAll("^\\.", ""); //$NON-NLS-1$ //$NON-NLS-2$
+							sb.append(b);
+							includedLicenses.put(sb.toString(), lic);
 						}
 					}
 				}
