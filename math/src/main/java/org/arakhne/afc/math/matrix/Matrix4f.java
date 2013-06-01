@@ -25,6 +25,10 @@ import java.io.Serializable;
 
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
+import org.arakhne.afc.math.continous.object3d.Point3f;
+import org.arakhne.afc.math.continous.object3d.Quaternion;
+import org.arakhne.afc.math.continous.object3d.Vector3f;
+import org.arakhne.afc.math.continous.object4d.AxisAngle4f;
 
 /**
  * Is represented internally as a 4x4 floating point matrix. The mathematical
@@ -1959,4 +1963,556 @@ public class Matrix4f implements Serializable, Cloneable, MathConstants {
 				&& MathUtil.isEpsilonEqual(this.m33, 1f);
 	}
 
+
+	 /**
+	 * Transforms the normal parameter by this transform and places the value
+	 * back into normal.  The fourth element of the normal is assumed to be zero.
+	 * @param normal   the input normal to be transformed.
+	  */
+	public void transform(Vector3f normal) {
+      float x, y;
+
+      x =  this.m00*normal.getX() + this.m01*normal.getY() + this.m02*normal.getZ();
+      y =  this.m10*normal.getX() + this.m11*normal.getY() + this.m12*normal.getZ();
+      normal.setX(this.m20*normal.getX() + this.m21*normal.getY() + this.m22*normal.getZ());
+      normal.setY(x);
+      normal.setZ(y);
+	}
+
+	  /**
+	   * Transforms the point parameter with this Matrix4f and
+	   * places the result back into point.  The fourth element of the
+	   * point input paramter is assumed to be one.
+	   * @param point  the input point to be transformed.
+	   */
+	public final void transform(Point3f point)
+	{
+	    float  x, y;
+	    x = this.m00*point.getX() + this.m01*point.getY() + this.m02*point.getZ() + this.m03;
+	    y = this.m10*point.getX() + this.m11*point.getY() + this.m12*point.getZ() + this.m13;
+	    point.setZ(this.m20*point.getX() + this.m21*point.getY() + this.m22*point.getZ() + this.m23);
+	    point.setX(x);
+	    point.setY(y);
+	}
+	    
+  /**
+   * Sets the value of this matrix to the matrix conversion of the
+   * double precision quaternion argument.
+   * @param q1 the quaternion to be converted
+   */
+  public final void set(Quaternion q1)
+  {
+	this.m00 = 1.0f - 2.0f*q1.getY()*q1.getY() - 2.0f*q1.getZ()*q1.getZ();
+	this.m10 = 2.0f*(q1.getX()*q1.getY() + q1.getW()*q1.getZ());
+	this.m20 = 2.0f*(q1.getX()*q1.getZ() - q1.getW()*q1.getY());
+
+	this.m01 = 2.0f*(q1.getX()*q1.getY() - q1.getW()*q1.getZ());
+	this.m11 = (float) (1.0f - 2.0*q1.getX()*q1.getX() - 2.0*q1.getZ()*q1.getZ());
+	this.m21 = 2.0f*(q1.getY()*q1.getZ() + q1.getW()*q1.getX());
+
+	this.m02 = 2.0f*(q1.getX()*q1.getZ() + q1.getW()*q1.getY());
+	this.m12 = 2.0f*(q1.getY()*q1.getZ() - q1.getW()*q1.getX());
+	this.m22 = 1.0f - 2.0f*q1.getX()*q1.getX() - 2.0f*q1.getY()*q1.getY();
+
+	this.m03 = 0.0f;
+	this.m13 = 0.0f;
+	this.m23 = 0.0f;
+
+	this.m30 = 0.0f;
+	this.m31 = 0.0f;
+	this.m32 = 0.0f;
+	this.m33 = 1.0f;
+  }
+
+  /**
+   * Sets the value of this matrix to the matrix conversion of the
+   * (single precision) axis and angle argument.
+   * @param a1 the axis and angle to be converted
+   */
+  public final void set(AxisAngle4f a1)
+  {
+    float mag = (float)Math.sqrt( a1.x*a1.x + a1.y*a1.y + a1.z*a1.z);
+    if( mag < 1.0E-8 ) {
+	 this.m00 = 1.0f;
+	 this.m01 = 0.0f;
+	 this.m02 = 0.0f;
+
+	 this.m10 = 0.0f;
+	 this.m11 = 1.0f;
+	 this.m12 = 0.0f;
+
+	 this.m20 = 0.0f;
+	 this.m21 = 0.0f;
+	 this.m22 = 1.0f;
+    } else {
+	 mag = 1.0f/mag;
+       float ax = a1.x*mag;
+       float ay = a1.y*mag;
+       float az = a1.z*mag;
+
+       float sinTheta = (float)Math.sin(a1.angle);
+       float cosTheta = (float)Math.cos(a1.angle);
+       float t = 1.0f - cosTheta;
+       
+       float xz = ax * az;
+       float xy = ax * ay;
+       float yz = ay * az;
+       
+       this.m00 = t * ax * ax + cosTheta;
+       this.m01 = t * xy - sinTheta * az;
+       this.m02 = t * xz + sinTheta * ay;
+
+       this.m10 = t * xy + sinTheta * az;
+       this.m11 = t * ay * ay + cosTheta;
+       this.m12 = t * yz - sinTheta * ax;
+
+       this.m20 = t * xz - sinTheta * ay;
+       this.m21 = t * yz + sinTheta * ax;
+       this.m22 = t * az * az + cosTheta;
+    }
+    this.m03 = 0.0f;
+    this.m13 = 0.0f;
+    this.m23 = 0.0f;
+
+    this.m30 = 0.0f;
+    this.m31 = 0.0f;
+    this.m32 = 0.0f;
+    this.m33 = 1.0f;
+  }
+
+  /**
+   * Modifies the translational components of this matrix to the values
+   * of the Vector3f argument; the other values of this matrix are not
+   * modified.
+   * @param trans  the translational component
+   */  
+  public final void setTranslation(Vector3f trans)
+  {
+     this.m03 = trans.getX(); 
+     this.m13 = trans.getY();
+     this.m23 = trans.getZ();
+  }
+  
+  /**
+   * Sets the value of this matrix to the matrix inverse
+   * of the passed (user declared) matrix m1.
+   * @param m1 the matrix to be inverted
+   */
+  public final void invert(Matrix4f m1)
+  {
+
+     invertGeneral( m1);    
+  }
+
+  /**
+   * Inverts this matrix in place.
+   */
+  public final void invert()
+  {
+     invertGeneral( this );    
+  }
+
+    /**
+     * General invert routine.  Inverts m1 and places the result in "this".
+     * Note that this routine handles both the "this" version and the
+     * non-"this" version.
+     *
+     * Also note that since this routine is slow anyway, we won't worry
+     * about allocating a little bit of garbage.
+     */
+    final void invertGeneral(Matrix4f  m1) {
+	float temp[] = new float[16];
+	float result[] = new float[16];
+	int row_perm[] = new int[4];
+	int i, r, c;
+
+	// Use LU decomposition and backsubstitution code specifically
+	// for floating-point 4x4 matrices.
+
+	// Copy source matrix to t1tmp 
+        temp[0] = m1.m00;
+        temp[1] = m1.m01;
+        temp[2] = m1.m02;
+        temp[3] = m1.m03;
+ 
+        temp[4] = m1.m10;
+        temp[5] = m1.m11;
+        temp[6] = m1.m12;
+        temp[7] = m1.m13;
+ 
+        temp[8] = m1.m20;
+        temp[9] = m1.m21;
+        temp[10] = m1.m22;
+        temp[11] = m1.m23;
+ 
+        temp[12] = m1.m30;
+        temp[13] = m1.m31;
+        temp[14] = m1.m32;
+        temp[15] = m1.m33;
+
+	// Calculate LU decomposition: Is the matrix singular? 
+	if (!luDecomposition(temp, row_perm)) {
+	    // Matrix has no inverse 
+	    throw new SingularMatrixException("cannot invert matrix");
+	}
+
+	// Perform back substitution on the identity matrix 
+        for(i=0;i<16;i++) result[i] = 0.0f;
+        result[0] = 1.0f; result[5] = 1.0f; result[10] = 1.0f; result[15] = 1.0f;
+	luBacksubstitution(temp, row_perm, result);
+
+        this.m00 = result[0];
+        this.m01 = result[1];
+        this.m02 = result[2];
+        this.m03 = result[3];
+
+        this.m10 = result[4];
+        this.m11 = result[5];
+        this.m12 = result[6];
+        this.m13 = result[7];
+ 
+        this.m20 = result[8];
+        this.m21 = result[9];
+        this.m22 = result[10];
+        this.m23 = result[11];
+ 
+        this.m30 = result[12];
+        this.m31 = result[13];
+        this.m32 = result[14];
+        this.m33 = result[15];
+
+    }
+    
+    /**
+     * Given a 4x4 array "matrix0", this function replaces it with the 
+     * LU decomposition of a row-wise permutation of itself.  The input 
+     * parameters are "matrix0" and "dimen".  The array "matrix0" is also 
+     * an output parameter.  The vector "row_perm[4]" is an output 
+     * parameter that contains the row permutations resulting from partial 
+     * pivoting.  The output parameter "even_row_xchg" is 1 when the 
+     * number of row exchanges is even, or -1 otherwise.  Assumes data 
+     * type is always float.
+     *
+     * This function is similar to luDecomposition, except that it
+     * is tuned specifically for 4x4 matrices.
+     *
+     * @return true if the matrix is nonsingular, or false otherwise.
+     */
+    //
+    // Reference: Press, Flannery, Teukolsky, Vetterling, 
+    //	      _Numerical_Recipes_in_C_, Cambridge University Press, 
+    //	      1988, pp 40-45.
+    //
+    static boolean luDecomposition(float[] matrix0,
+				   int[] row_perm) {
+
+	float row_scale[] = new float[4];
+
+	// Determine implicit scaling information by looping over rows 
+	{
+	    int i, j;
+	    int ptr, rs;
+	    float big, temp;
+
+	    ptr = 0;
+	    rs = 0;
+
+	    // For each row ... 
+	    i = 4;
+	    while (i-- != 0) {
+		big = 0.0f;
+
+		// For each column, find the largest element in the row 
+		j = 4;
+		while (j-- != 0) {
+		    temp = matrix0[ptr++];
+		    temp = Math.abs(temp);
+		    if (temp > big) {
+			big = temp;
+		    }
+		}
+
+		// Is the matrix singular? 
+		if (big == 0.0) {
+		    return false;
+		}
+		row_scale[rs++] = 1.0f / big;
+	    }
+	}
+
+	{
+	    int j;
+	    int mtx;
+
+	    mtx = 0;
+
+	    // For all columns, execute Crout's method 
+	    for (j = 0; j < 4; j++) {
+		int i, imax, k;
+		int target, p1, p2;
+		float sum, big, temp;
+
+		// Determine elements of upper diagonal matrix U 
+		for (i = 0; i < j; i++) {
+		    target = mtx + (4*i) + j;
+		    sum = matrix0[target];
+		    k = i;
+		    p1 = mtx + (4*i);
+		    p2 = mtx + j;
+		    while (k-- != 0) {
+			sum -= matrix0[p1] * matrix0[p2];
+			p1++;
+			p2 += 4;
+		    }
+		    matrix0[target] = sum;
+		}
+
+		// Search for largest pivot element and calculate
+		// intermediate elements of lower diagonal matrix L.
+		big = 0.0f;
+		imax = -1;
+		for (i = j; i < 4; i++) {
+		    target = mtx + (4*i) + j;
+		    sum = matrix0[target];
+		    k = j;
+		    p1 = mtx + (4*i);
+		    p2 = mtx + j;
+		    while (k-- != 0) {
+			sum -= matrix0[p1] * matrix0[p2];
+			p1++;
+			p2 += 4;
+		    }
+		    matrix0[target] = sum;
+
+		    // Is this the best pivot so far? 
+		    if ((temp = row_scale[i] * Math.abs(sum)) >= big) {
+			big = temp;
+			imax = i;
+		    }
+		}
+
+		if (imax < 0) {
+		    throw new RuntimeException("Logic error: imax < 0");
+		}
+
+		// Is a row exchange necessary? 
+		if (j != imax) {
+		    // Yes: exchange rows 
+		    k = 4;
+		    p1 = mtx + (4*imax);
+		    p2 = mtx + (4*j);
+		    while (k-- != 0) {
+			temp = matrix0[p1];
+			matrix0[p1++] = matrix0[p2];
+			matrix0[p2++] = temp;
+		    }
+
+		    // Record change in scale factor 
+		    row_scale[imax] = row_scale[j];
+		}
+
+		// Record row permutation 
+		row_perm[j] = imax;
+
+		// Is the matrix singular 
+		if (matrix0[(mtx + (4*j) + j)] == 0.0) {
+		    return false;
+		}
+
+		// Divide elements of lower diagonal matrix L by pivot 
+		if (j != (4-1)) {
+		    temp = 1.0f / (matrix0[(mtx + (4*j) + j)]);
+		    target = mtx + (4*(j+1)) + j;
+		    i = 3 - j;
+		    while (i-- != 0) {
+			matrix0[target] *= temp;
+			target += 4;
+		    }
+		}
+	    }
+	}
+
+	return true;
+    }
+    
+    /**
+     * Solves a set of linear equations.  The input parameters "matrix1",
+     * and "row_perm" come from luDecompostionD4x4 and do not change
+     * here.  The parameter "matrix2" is a set of column vectors assembled
+     * into a 4x4 matrix of floating-point values.  The procedure takes each
+     * column of "matrix2" in turn and treats it as the right-hand side of the
+     * matrix equation Ax = LUx = b.  The solution vector replaces the
+     * original column of the matrix.
+     *
+     * If "matrix2" is the identity matrix, the procedure replaces its contents
+     * with the inverse of the matrix from which "matrix1" was originally
+     * derived.
+     */
+    //
+    // Reference: Press, Flannery, Teukolsky, Vetterling, 
+    //	      _Numerical_Recipes_in_C_, Cambridge University Press, 
+    //	      1988, pp 44-45.
+    //
+    static void luBacksubstitution(float[] matrix1,
+				   int[] row_perm,
+				   float[] matrix2) {
+
+	int i, ii, ip, j, k;
+	int rp;
+	int cv, rv;
+	
+	//	rp = row_perm;
+	rp = 0;
+
+	// For each column vector of matrix2 ... 
+	for (k = 0; k < 4; k++) {
+	    //	    cv = &(matrix2[0][k]);
+	    cv = k;
+	    ii = -1;
+
+	    // Forward substitution 
+	    for (i = 0; i < 4; i++) {
+		float sum;
+
+		ip = row_perm[rp+i];
+		sum = matrix2[cv+4*ip];
+		matrix2[cv+4*ip] = matrix2[cv+4*i];
+		if (ii >= 0) {
+		    //		    rv = &(matrix1[i][0]);
+		    rv = i*4;
+		    for (j = ii; j <= i-1; j++) {
+			sum -= matrix1[rv+j] * matrix2[cv+4*j];
+		    }
+		}
+		else if (sum != 0.0) {
+		    ii = i;
+		}
+		matrix2[cv+4*i] = sum;
+	    }
+
+	    // Backsubstitution 
+	    //	    rv = &(matrix1[3][0]);
+	    rv = 3*4;
+	    matrix2[cv+4*3] /= matrix1[rv+3];
+
+	    rv -= 4;
+	    matrix2[cv+4*2] = (matrix2[cv+4*2] -
+			    matrix1[rv+3] * matrix2[cv+4*3]) / matrix1[rv+2];
+
+	    rv -= 4;
+	    matrix2[cv+4*1] = (matrix2[cv+4*1] -
+			    matrix1[rv+2] * matrix2[cv+4*2] -
+			    matrix1[rv+3] * matrix2[cv+4*3]) / matrix1[rv+1];
+
+	    rv -= 4;
+	    matrix2[cv+4*0] = (matrix2[cv+4*0] -
+			    matrix1[rv+1] * matrix2[cv+4*1] -
+			    matrix1[rv+2] * matrix2[cv+4*2] -
+			    matrix1[rv+3] * matrix2[cv+4*3]) / matrix1[rv+0];
+	}
+    }
+
+    /**
+     * Sets the rotational component (upper 3x3) of this matrix to the
+     * matrix equivalent values of the quaternion argument; the other
+     * elements of this matrix are unchanged; a singular value
+     * decomposition is performed on this object's upper 3x3 matrix to
+     * factor out the scale, then this object's upper 3x3 matrix components
+     * are replaced by the matrix equivalent of the quaternion,  
+     * and then the scale is reapplied to the rotational components.
+     * @param q1    the quaternion that specifies the rotation
+     */  
+    public void setRotation(Quaternion q1){  
+	float[]    tmp_rot = new float[9];  // scratch matrix
+	float[]    tmp_scale = new float[3];  // scratch matrix
+        getScaleRotate( tmp_scale, tmp_rot );
+ 
+        this.m00 = (1.0f - 2.0f*q1.getY()*q1.getY() - 2.0f*q1.getZ()*q1.getZ())*tmp_scale[0];
+        this.m10 = (2.0f*(q1.getX()*q1.getY() + q1.getW()*q1.getZ()))*tmp_scale[0];
+        this.m20 = (2.0f*(q1.getX()*q1.getZ() - q1.getW()*q1.getY()))*tmp_scale[0];
+ 
+        this.m01 = (2.0f*(q1.getX()*q1.getY() - q1.getW()*q1.getZ()))*tmp_scale[1];
+        this.m11 = (1.0f - 2.0f*q1.getX()*q1.getX() - 2.0f*q1.getZ()*q1.getZ())*tmp_scale[1];
+        this.m21 = (2.0f*(q1.getY()*q1.getZ() + q1.getW()*q1.getX()))*tmp_scale[1];
+ 
+        this.m02 = (2.0f*(q1.getX()*q1.getZ() + q1.getW()*q1.getY()))*tmp_scale[2];
+        this.m12 = (2.0f*(q1.getY()*q1.getZ() - q1.getW()*q1.getX()))*tmp_scale[2];
+        this.m22 = (1.0f - 2.0f*q1.getX()*q1.getX() - 2.0f*q1.getY()*q1.getY())*tmp_scale[2];
+ 
+    }
+
+    private final void getScaleRotate(float scales[], float rots[]) {
+   	 
+		float[]    tmp = new float[9];  // scratch matrix
+		tmp[0] = this.m00;
+		tmp[1] = this.m01;
+		tmp[2] = this.m02;
+	 
+		tmp[3] = this.m10;
+		tmp[4] = this.m11;
+		tmp[5] = this.m12;
+	 
+		tmp[6] = this.m20;
+		tmp[7] = this.m21;
+		tmp[8] = this.m22;
+	 
+		Matrix3f.compute_svd( tmp, scales, rots);
+    }
+
+    /** 
+     * Performs an SVD normalization of this matrix in order to acquire 
+     * the normalized rotational component; the values are placed into 
+     * the Quaternion parameter. 
+     * @param q1  quaternion into which the rotation component is placed 
+     */
+    public void get(Quaternion q1){
+	float[]    tmp_rot = new float[9];  // scratch matrix
+	float[]    tmp_scale = new float[3];  // scratch matrix
+	getScaleRotate( tmp_scale, tmp_rot );
+
+        float ww;
+
+        ww = 0.25f*(1.0f + tmp_rot[0] + tmp_rot[4] + tmp_rot[8]);
+        if(!((ww<0?-ww:ww) < 1.0e-30)) {
+          q1.setW((float)Math.sqrt(ww));
+          ww = 0.25f/q1.getW();
+          q1.setX((tmp_rot[7] - tmp_rot[5])*ww);
+          q1.setY((tmp_rot[2] - tmp_rot[6])*ww);
+          q1.setZ((tmp_rot[3] - tmp_rot[1])*ww);
+          return;
+        }
+
+        q1.setW(0.0f);
+        ww = -0.5f*(tmp_rot[4] + tmp_rot[8]);
+        if(!((ww<0?-ww:ww) < 1.0e-30)) {
+          q1.setX((float)Math.sqrt(ww));
+          ww = 0.5f/q1.getX();
+          q1.setY(tmp_rot[3]*ww);
+          q1.setZ(tmp_rot[6]*ww);
+          return;
+        }
+
+        q1.setX(0.0f);
+        ww = 0.5f*(1.0f - tmp_rot[8]);
+        if(!((ww<0?-ww:ww) < 1.0e-30)) {
+          q1.setY((float)(Math.sqrt(ww)));
+          q1.setZ(tmp_rot[7]/(2.0f*q1.getY()));
+          return;
+        }  
+     
+        q1.setY(0.0f);
+        q1.setZ(1.0f);
+
+    }
+
+    /**
+     * Retrieves the translational components of this matrix.
+     * @param trans  the vector that will receive the translational component
+     */
+    public final void get(Vector3f trans)
+    {  
+        trans.setX(this.m03);
+        trans.setY(this.m13);
+        trans.setZ(this.m23);
+    }
 }

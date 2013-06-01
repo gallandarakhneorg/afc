@@ -303,4 +303,9 @@ public class Vector2f extends Tuple2f<Vector2D> implements Vector2D {
 		this.y -= t1.getY();
 	}
 
+	public void sub(Point2D t1) {
+		this.x -= t1.getX();
+		this.y -= t1.getY();
+	}
+
 }

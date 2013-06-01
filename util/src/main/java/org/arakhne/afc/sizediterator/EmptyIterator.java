@@ -56,7 +56,7 @@ implements SizedIterator<M> {
 	
 	/**
 	 */
-	protected EmptyIterator() {
+	public EmptyIterator() {
 		//
 	}
 	

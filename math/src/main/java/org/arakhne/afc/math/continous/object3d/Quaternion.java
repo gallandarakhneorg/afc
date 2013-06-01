@@ -22,6 +22,7 @@ package org.arakhne.afc.math.continous.object3d;
 
 import java.io.Serializable;
 
+import org.arakhne.afc.math.continous.object4d.AxisAngle4f;
 import org.arakhne.afc.math.generic.Vector3D;
 import org.arakhne.afc.math.matrix.Matrix3f;
 import org.arakhne.afc.math.matrix.Matrix4f;
@@ -85,6 +86,17 @@ public class Quaternion implements Cloneable, Serializable {
 		setAxisAngle(axis, angle);
 	}
 
+	/**
+	 * 
+	 * @param quaternion
+	 */
+	public Quaternion(Quaternion q) {
+		this.setX(q.getX());
+		this.setY(q.getY());
+		this.setZ(q.getZ());
+		this.setW(q.getW());
+	}
+	
 	/** {@inheritDoc}
 	 */
 	@Override
@@ -693,4 +705,42 @@ public class Quaternion implements Cloneable, Serializable {
 		this.y = (float)(s1*q1.y + s2*q2.y);
 		this.z = (float)(s1*q1.z + s2*q2.z);
 	}
+	
+    /**
+     * Sets the value of this quaternion to the equivalent rotation
+     * of the AxisAngle argument.
+     * @param a  the AxisAngle to be emulated
+     */
+    public final void set(AxisAngle4f a)
+    {
+		float mag,amag;
+		// Quat = cos(theta/2) + sin(theta/2)(roation_axis) 
+		amag = (float)Math.sqrt( a.x*a.x + a.y*a.y + a.z*a.z);
+		if (amag < EPS ) {
+		    this.w = 0.0f;
+		    this.x = 0.0f;
+		    this.y = 0.0f;
+		    this.z = 0.0f;
+		} else {  
+		    amag = 1.0f/amag; 
+		    mag = (float)Math.sin(a.angle/2.0);
+		    this.w = (float)Math.cos(a.angle/2.0);
+		    this.x = a.x*amag*mag;
+		    this.y = a.y*amag*mag;
+		    this.z = a.z*amag*mag;
+		}
+    }
+    
+    /**
+     * Sets the value of this quaternion to the equivalent rotation
+     * of the Quaternion argument.
+     * @param a  the Quaternion to be emulated
+     */
+    public final void set(Quaternion a)
+    {
+    	this.x = a.x;
+    	this.y = a.y;
+    	this.z = a.z;
+    	this.w = a.w;
+    }
 }
