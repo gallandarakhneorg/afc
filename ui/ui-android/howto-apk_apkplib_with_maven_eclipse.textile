@@ -12,16 +12,19 @@ It is assumed that you want to create a Apk/Apklib using Maven. You must create 
 h3. 1.1. General Properties
 
 To have a unique location where to update parameters for the Android plugins, I recommend to define the following properties in you @pom.xml@:
-<pre><code>  <properties>
-    <android.sdk.path>/opt/android-sdk</android.sdk.path>
-    <android.platform>15</android.platform>
-    <android.emulator>acer500</android.emulator>
-  </properties>
-</code></pre>
+
+<pre><code><properties>
+...
+  <android.sdk.path>/opt/android-sdk</android.sdk.path>
+  <android.platform>15</android.platform>
+  <android.emulator>acer500</android.emulator>
+...
+</properties></code></pre>
 
 h3. 1.2. Adding dependencies to Android API
 
 To compile you Apk/Apklib, you need to be dependent on the Android API. Add the following dependencies in your @pom.xml@. The first is mandatory, second is usefull for compatibility purpose. 
+
 <pre><code><dependencies>
 ...
    <dependency>
@@ -36,17 +39,17 @@ To compile you Apk/Apklib, you need to be dependent on the Android API. Add the 
       <version>r7</version>
    </dependency>
 ...
-</dependencies>
-</code></pre>
+</dependencies></code></pre>
 
 The provided version numbers may be not the last available versions. Please find the last version number from "The Central Repository":http://search.maven.org.
 
 h3. 1.3. Maven Plugin Configuration
 
 You add and configure the android-maven-plugin to generate the correct Apk/Apklib files. Add the following code in the @pom.xml@; and update it according to your configuration.
+
 <pre><code><build>
    <plugins>
-...
+   ...
       <plugin>
          <groupId>com.jayway.maven.plugins.android.generation2</groupId>
          <artifactId>android-maven-plugin</artifactId>
@@ -72,9 +75,7 @@ You add and configure the android-maven-plugin to generate the correct Apk/Apkli
             <execution>
                <id>update-manifest</id>
                <phase>process-resources</phase>
-               <goals>
-                  <goal>manifest-update</goal>
-               </goals>
+               <goals><goal>manifest-update</goal></goals>
                <configuration>
                   <manifest>
                      <versionCodeUpdateFromVersion>true</versionCodeUpdateFromVersion>
@@ -83,22 +84,22 @@ You add and configure the android-maven-plugin to generate the correct Apk/Apkli
             </execution>
          </executions>
       </plugin>
-...
+   ...
    </plugins>
-</build>
-</code></pre>
+</build></code></pre>
 
 The @execution@ section above permits to the @android-maven-plugin@ to automatically update the version code of your project according to the version of your project.
 	
 h3. 1.4. Type of Maven module
 
 Change the type of the project in @pom.xml@ according to the type of your project:
-* For Apk: <pre><code><packaging>apk</packaging></code></pre>
-* For Apklib: <pre><code><packaging>apklib</packaging></code></pre>
+* For Apk: @<packaging>apk</packaging>@
+* For Apklib: @<packaging>apklib</packaging>@
    
 h3. 1.5. Maven Dependencies
 
 In the dependency section of your @pom.xml@, add all the dependencies to other Jar files (not Apklibs):
+
 <pre><code><dependencies>
 ...
    <dependency>
@@ -107,11 +108,11 @@ In the dependency section of your @pom.xml@, add all the dependencies to other J
       <version>...</version>
    </dependency>
 ...
-</dependencies>
-</code></pre>
+</dependencies></code></pre>
 
 
 Additionnally, you must add a dependency for each Apklib you want to use in your project:
+
 <pre><code><dependencies>
 ...
    <dependency>
@@ -121,8 +122,7 @@ Additionnally, you must add a dependency for each Apklib you want to use in your
       <type>apklib</type>
    </dependency>
 ...
-</dependencies>
-</code></pre>
+</dependencies></code></pre>
 
 h2. 2. How to compile an Apk/Apklib in Eclipse?
 
@@ -151,22 +151,23 @@ Add the following code into the @pom.xml@ by copying the dependencies of the apk
 
 After copying and pasting the dependencies, change the types of the dependencies from @apklib@ to @jar@.
 
-<pre><code>   <profiles>
-      <profile>
-         <id>m2e</id>
-         <activation>
-            <activeByDefault>false</activeByDefault>
-         </activation>
-         <dependencies>
-            <dependency>
-               <groupId>...</groupId>
-               <artifactId>...</artifactId>
-               <type>jar</type>
-            </dependency>
-         </dependencies>
-      </profile>
-   </profiles>
-</code></pre>
+<pre><code><profiles>
+...
+   <profile>
+      <id>m2e</id>
+      <activation>
+         <activeByDefault>false</activeByDefault>
+      </activation>
+      <dependencies>
+         <dependency>
+            <groupId>...</groupId>
+            <artifactId>...</artifactId>
+            <type>jar</type>
+         </dependency>
+      </dependencies>
+   </profile>
+...
+</profiles></code></pre>
 
 This code include the Jar files of the Apklibs only if the Maven profile @m2e@ is manually activated. We will activate it inside Eclipse to avoid compilation problems on the CLI.
 
