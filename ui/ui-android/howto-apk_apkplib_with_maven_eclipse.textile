@@ -1,0 +1,207 @@
+h1=. HOW TO COMPILE APK/APKLIB WITH MAVEN
+
+p>. Version: 2013-06-01
+Author: "Stéphane Galland":http://www.arakhne.org/homes/galland.html
+
+This file explains how to compile Apk or Apklib on CLI with Maven and how to do the same thing inside Eclipse IDE.
+
+h2. 1. How to compile Apk/Apklib on CLI with Maven?
+
+It is assumed that you want to create a Apk/Apklib using Maven. You must create the correct directory/file structure for your Maven project.
+
+h3. 1.1. General Properties
+
+To have a unique location where to update parameters for the Android plugins, I recommend to define the following properties in you @pom.xml@:
+<pre><code>  &lt;properties&gt;
+    &lt;android.sdk.path&gt;/opt/android-sdk&lt;/android.sdk.path&gt;
+    &lt;android.platform&gt;15&lt;/android.platform&gt;
+    &lt;android.emulator&gt;acer500&lt;/android.emulator&gt;
+  &lt;/properties&gt;
+</code></pre>
+
+h3. 1.2. Adding dependencies to Android API
+
+To compile you Apk/Apklib, you need to be dependent on the Android API. Add the following dependencies in your @pom.xml@. The first is mandatory, second is usefull for compatibility purpose. 
+<pre><code>&lt;dependencies&gt;
+&#8230;
+   &lt;dependency&gt;
+      &lt;groupId&gt;com.google.&lt;/groupId&gt;
+      &lt;artifactId&gt;android&lt;/artifactId&gt;
+      &lt;scope&gt;provided</scope&gt;
+      &lt;version&gt;4.1.1.4&lt;/version&gt;
+   &lt;/dependency&gt;
+   &lt;dependency&gt;
+      &lt;groupId&gt;com.google.android&lt;/groupId&gt;
+      &lt;artifactId&gt;support-v4&lt;/artifactId&gt;
+      &lt;version&gt;r7&lt;/version&gt;
+   &lt;/dependency&gt;
+&#8230;
+&lt;/dependencies&gt;
+</code></pre>
+
+The provided version numbers may be not the last available versions. Please find the last version number from "The Central Repository":http://search.maven.org.
+
+h3. 1.3. Maven Plugin Configuration
+
+You add and configure the android-maven-plugin to generate the correct Apk/Apklib files. Add the following code in the @pom.xml@; and update it according to your configuration.
+<pre><code>&lt;build&gt;
+   &lt;plugins&gt;
+&#8230;
+      &lt;plugin&gt;
+         &lt;groupId&gt;com.jayway.maven.plugins.android.generation2&lt;/groupId&gt;
+         &lt;artifactId&gt;android-maven-plugin&lt;/artifactId&gt;
+         &lt;version&gt;3.6.0&lt;/version&gt;
+         &lt;configuration&gt;
+            &lt;androidManifestFile&gt;${project.basedir}/AndroidManifest.xml&lt;/androidManifestFile&gt;
+            &lt;assetsDirectory&gt;${project.basedir}/assets&lt;/assetsDirectory&gt;
+            &lt;resourceDirectory&gt;${project.basedir}/res&lt;/resourceDirectory&gt;
+            &lt;nativeLibrariesDirectory&gt;${project.basedir}/native&lt;/nativeLibrariesDirectory&gt;
+            &lt;deleteConflictingFiles&gt;true&lt;/deleteConflictingFiles&gt;
+            &lt;undeployBeforeDeploy&gt;true&lt;/undeployBeforeDeploy&gt;
+            &lt;sdk&gt;
+               &lt;path&gt;${android.sdk.path}&lt;/path&gt;
+               &lt;platform&gt;${android.platform}&lt;/platform&gt;
+            &lt;/sdk&gt;
+            &lt;emulator&gt;
+               &lt;avd&gt;${android.emulator}&lt;/avd&gt;
+            &lt;/emulator&gt;
+         &lt;/configuration&gt;
+         &lt;extensions&gt;true&lt;/extensions&gt;
+         &lt;!-- Update the Manifest according to currenty Maven configuration --&gt;
+         &lt;executions&gt;
+            &lt;execution&gt;
+               &lt;id&gt;update-manifest&lt;/id&gt;
+               &lt;phase&gt;process-resources&lt;/phase&gt;
+               &lt;goals&gt;
+                  &lt;goal&gt;manifest-update&lt;/goal&gt;
+               &lt;/goals&gt;
+               &lt;configuration&gt;
+                  &lt;manifest&gt;
+                     &lt;versionCodeUpdateFromVersion>true&lt;/versionCodeUpdateFromVersion&gt;
+                  &lt;/manifest&gt;
+               &lt;/configuration&gt;
+            &lt;/execution&gt;
+         &lt;/executions&gt;
+      &lt;/plugin&gt;
+&#8230;
+   &lt;/plugins&gt;
+&lt;/build&gt;
+</code></pre>
+
+The @execution@ section above permits to the @android-maven-plugin@ to automatically update the version code of your project according to the version of your project.
+	
+h3. 1.4. Type of Maven module
+
+Change the type of the project in @pom.xml@ according to the type of your project:
+* For Apk: <pre><code>&lt;packaging&gt;apk&lt;/packaging&gt;</code></pre>
+* For Apklib: <pre><code>&lt;packaging&gt;apklib&lt;/packaging&gt;</code></pre>
+   
+h3. 1.5. Maven Dependencies
+
+In the dependency section of your @pom.xml@, add all the dependencies to other Jar files (not Apklibs):
+<pre><code>&lt;dependencies&gt;
+&#8230;
+   &lt;dependency&gt;
+      &lt;groupId&gt;...&lt;/groupId&gt;
+      &lt;artifactId&gt;...&lt;/artifactId&gt;
+      &lt;version&gt;...&lt;/version&gt;
+   &lt;/dependency&gt;
+&#8230;
+&lt;/dependencies&gt;
+</code></pre>
+
+
+Additionnally, you must add a dependency for each Apklib you want to use in your project:
+<pre><code>&lt;dependencies&gt;
+&#8230;
+   &lt;dependency&gt;
+      &lt;groupId&gt;...&lt;/groupId&gt;
+      &lt;artifactId&gt;...&lt;/artifactId&gt;
+      &lt;version&gt;...&lt;/version&gt;
+      &lt;type&gt;apklib&lt;/type&gt;
+   &lt;/dependency&gt;
+&#8230;
+&lt;/dependencies&gt;
+</code></pre>
+
+h2. 2. How to compile an Apk/Apklib in Eclipse?
+
+This section describes how to compile an Apk/Apklib inside Eclipse with Maven.
+
+h3. 2.1. Installation
+
+Install the ADT development platform and the Android-m2e plugin. See "this tutorial":http://www.janus-project.org/Android_SDK_Tutorial for details.
+
+h3. 2.2. Source checkout
+
+Check out the source of the current project into an Maven project inside your Eclipse workspace. Let say the name of the project @MyApkLib@.
+
+*You must configure your project to be compilable on CLI* (see the previous section).
+
+h3. 2.3. Supporting Apklib in Eclipse IDE
+
+Until now, the ADT and the android-m2e plugins is not able to find the Java source code of an Apklib that your project is using. They do not download and install the source code of the Apklibs, as it is done by the android-maven-plugin.
+The main symptom of this problem is a compilation error such as _Class not defined/found_ on a class given by the Apklibs.
+
+To fix this problem, you need to following the sections below. The main idea is to force Eclipse (and the ADT/Maven plugin) to use the Jar file of the Apklib, and not the Apklib files themelves.
+
+h4. 2.3.1.  Add dependencies to the Jar files
+
+Add the following code into the @pom.xml@ by copying the dependencies of the apklibs *only* that are mentionned in the CLI configuration.
+
+After copying and pasting the dependencies, change the types of the dependencies from @apklib@ to @jar@.
+
+<pre><code>   &lt;profiles&gt;
+      &lt;profile&gt;
+         &lt;id&gt;m2e&lt;/id&gt;
+         &lt;activation&gt;
+            &lt;activeByDefault&gt;false&lt;/activeByDefault&gt;
+         &lt;/activation&gt;
+         &lt;dependencies&gt;
+            &lt;dependency&gt;
+               &lt;groupId&gt;...&lt;/groupId&gt;
+               &lt;artifactId&gt;...&lt;/artifactId&gt;
+               &lt;type&gt;jar&lt;/type&gt;
+            &lt;/dependency&gt;
+         &lt;/dependencies&gt;
+      &lt;/profile&gt;
+   &lt;/profiles&gt;
+</code></pre>
+
+This code include the Jar files of the Apklibs only if the Maven profile @m2e@ is manually activated. We will activate it inside Eclipse to avoid compilation problems on the CLI.
+
+h4. 2.3.2. Apklib imports
+
+For each Apklib in the dependencies of your project:
+# check out or import the sources of the dependency into a Maven/Android project inside your current workspace. Let say this project has the name @MyDep@.
+# Configure the project @MyDep@ properly, if not already done.
+
+h4. 2.3.3. Activation of the profile <code>m2e</code>
+
+# Right-click on the project to open the popup menu.
+# Select _Properties_.
+# In the dialog box, select _Maven_.
+# Put @m2e@ in the field _Active Maven Profiles_, and click on _ok_.
+
+h4. 2.3.4. Fixing the paths of the Android references
+
+Android projects contains the file @project.properties@, which contains several informations on the project. The relative paths to the included Apklibs are mentionned inside. Unfortunatelly, the default value of these paths may be wrong if you are coding your Apklib as a Maven submodule.
+
+To fix this problem, you need to:
+# Right-click on the project to open the popup menu.
+# Select _Properties_.
+# In the dialog box, select _Android_.
+# Remove all the broken references in the _Library_ section.
+# Add the reference path to the @MyDep@ project in the _Library_ section.
+
+*CAUTION:* When you have _"unexpected compilation errors"_, check if the ADT tools have not put again some incorrect values for these reference paths.
+
+h3. 2.4. Finalization
+
+Clean and compile your project. 
+
+h3. 2.5. Examples
+
+You could find examples of @pom.xml@ in the following projects:
+* Apk: "Android Editor for Finite State Machine":https://github.com/gallandarakhneorg/neteditor/blob/master/neteditor-fsm/fsm-droideditor/pom.xml; 
+* Apklib: "Android Graph Editor View":https://github.com/gallandarakhneorg/neteditor/blob/master/neteditor-androidpanel/pom.xml. 
