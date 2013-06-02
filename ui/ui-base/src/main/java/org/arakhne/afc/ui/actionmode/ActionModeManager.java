@@ -31,6 +31,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
+import org.arakhne.afc.math.continous.object2d.Circle2f;
+import org.arakhne.afc.math.continous.object2d.Shape2f;
 import org.arakhne.afc.ui.ZoomableContext;
 import org.arakhne.afc.ui.event.KeyEvent;
 import org.arakhne.afc.ui.event.PointerEvent;
@@ -67,7 +69,7 @@ public class ActionModeManager<DRAW extends Selectable, CANVAS, COLOR> {
 	
 	private ActionMode<? super DRAW,CANVAS,COLOR> exclusiveMode = null;
 	
-	private boolean isFigureUnderTheMouseComputed = false;
+	private Shape2f selectionShapeForFigureUnderTheMouse = null;
 	private WeakReference<DRAW> figureUnderTheMouse = null;
 	
 	private boolean isForceHitResetWhenRelease = true;
@@ -536,7 +538,7 @@ public class ActionModeManager<DRAW extends Selectable, CANVAS, COLOR> {
      */
     public void pointerPressed(PointerEvent e) {
     	if (this.isForceHitResetWhenRelease) {
-    		this.isFigureUnderTheMouseComputed = false;
+    		this.selectionShapeForFigureUnderTheMouse = null;
     		this.figureUnderTheMouse = null;
     	}
 		updatePointerInfo(e, false);
@@ -573,7 +575,7 @@ public class ActionModeManager<DRAW extends Selectable, CANVAS, COLOR> {
 		}
 		// This is convenient for devices that cannot handle the POINTER_MOVE events.
 		if (this.isForceHitResetWhenRelease) {
-			this.isFigureUnderTheMouseComputed = false;
+			this.selectionShapeForFigureUnderTheMouse = null;
 			this.figureUnderTheMouse = null;
 		}
     }
@@ -644,27 +646,42 @@ public class ActionModeManager<DRAW extends Selectable, CANVAS, COLOR> {
 			}
 		}
     }
+    
+    /** Replies the area that permits to hit the figure under
+     * the mouse.
+     * 
+     * @return the hit area, or <code>null</code> if there is
+     * no figure hitted.
+     */
+    public Shape2f getFigureHitArea() {
+    	return this.selectionShapeForFigureUnderTheMouse;
+    }
 
 	private void updatePointedData() {
-		if (!this.isFigureUnderTheMouseComputed
+		if (this.selectionShapeForFigureUnderTheMouse==null
 			&& this.lastPointerEvent!=null) {
 			DRAW fig = null;
 			this.figureUnderTheMouse = null;
 			ActionModeManagerOwner<DRAW,CANVAS,COLOR> container = getModeManagerOwner();
 			if (container!=null) {
+				Shape2f selectionArea = null;
 				if (this.lastPointerEvent.isToolAreaSupported()) {
 					for(int i=0; fig==null && i<this.lastPointerEvent.getPointerCount(); ++i) {
-						fig = container.getFigureOn(this.lastPointerEvent.getToolArea(i));
+						selectionArea = this.lastPointerEvent.getToolArea(i);
+						fig = container.getFigureOn(selectionArea);
 					}
 				}
 				else {
 					fig = container.getFigureAt(this.lastPointerEvent.getX(), this.lastPointerEvent.getY());
+					if (fig!=null) {
+						selectionArea = new Circle2f(this.lastPointerEvent.getX(), this.lastPointerEvent.getY(), 1);
+					}
 				}
 				if (fig!=null) {
 					this.figureUnderTheMouse = new WeakReference<DRAW>(fig);
+					this.selectionShapeForFigureUnderTheMouse = selectionArea;
 				}
 			}
-			this.isFigureUnderTheMouseComputed = true;
 		}
 	}
 	
@@ -706,7 +723,7 @@ public class ActionModeManager<DRAW extends Selectable, CANVAS, COLOR> {
 	 */
 	void updatePointerInfo(PointerEvent e, boolean invalidateHitFigure) {
 		if (invalidateHitFigure) {
-			this.isFigureUnderTheMouseComputed = false;
+			this.selectionShapeForFigureUnderTheMouse = null;
 			this.figureUnderTheMouse = null;
 		}
 		ZoomableContext zc = null;
