@@ -34,7 +34,6 @@ import org.arakhne.afc.ui.CenteringTransform;
 import org.arakhne.afc.ui.ZoomableContext;
 import org.arakhne.afc.ui.ZoomableContextUtil;
 import org.arakhne.afc.ui.android.R;
-import org.arakhne.afc.ui.android.event.PointerEventAndroid;
 import org.arakhne.afc.ui.event.PointerEvent;
 
 import android.app.Activity;
@@ -45,7 +44,6 @@ import android.graphics.RectF;
 import android.os.Looper;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.widget.Toast;
 
@@ -82,11 +80,6 @@ import android.widget.Toast;
  */
 public abstract class ZoomableView extends View implements ZoomableContext {
 
-	/** Constant that is the identifier representing of an invalid pointer
-	 * on the droid device.
-	 */
-	public static final int INVALID_POINTER_ID = -1;
-
 	/** Current position of the workspace.
 	 * This position permits to scroll the view.
 	 */
@@ -96,22 +89,6 @@ public abstract class ZoomableView extends View implements ZoomableContext {
 	 * This position permits to scroll the view.
 	 */
 	private float focusY = 0f;
-
-	/** Scale gesture detector.
-	 */
-	private final ScaleGestureDetector scaleGestureDetector;
-	
-	/** Manager of the scaling events.
-	 */
-	private final ScaleGestureManager scaleGestureManager;
-
-	/** Move gesture detector.
-	 */
-	private final MoveGestureDetector moveGestureDetector;
-
-	/** Listener on clicks.
-	 */
-	private final ClickListener clickListener;
 
 	/** Current scaling factor.
 	 */
@@ -153,6 +130,10 @@ public abstract class ZoomableView extends View implements ZoomableContext {
 	 */
 	private boolean isYAxisInverted = false;
 
+	/** Manager of touch events.
+	 */
+	private final TouchManager touchManager;
+	
 	/**
 	 * @param context is the droid context of the view.
 	 */
@@ -175,15 +156,9 @@ public abstract class ZoomableView extends View implements ZoomableContext {
 	 */
 	public ZoomableView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
-		this.scaleGestureManager = new ScaleGestureManager();
-		this.scaleGestureDetector = new ScaleGestureDetector(context, this.scaleGestureManager);
-		this.moveGestureDetector = new MoveGestureDetector();
-		this.clickListener = new ClickListener();
 		this.globalListener = createEventHandler();
-		setClickable(true);
-		setLongClickable(true);
-		super.setOnLongClickListener(this.clickListener);
-		super.setOnClickListener(this.clickListener);
+		this.touchManager = new TouchManager(this);
+		this.touchManager.init();
 	}
 	
 	@Override
@@ -228,12 +203,12 @@ public abstract class ZoomableView extends View implements ZoomableContext {
 
 	@Override
 	public final void setOnLongClickListener(OnLongClickListener l) {
-		this.clickListener.onLongClickListener = l;
+		super.setOnLongClickListener(this.touchManager.setOnLongClickListener(l));
 	}
 
 	@Override
 	public final void setOnClickListener(OnClickListener l) {
-		this.clickListener.onClickListener = l;
+		super.setOnClickListener(this.touchManager.setOnClickListener(l));
 	}
 
 	/** Set if the repaint requests are ignored or not.
@@ -841,35 +816,13 @@ public abstract class ZoomableView extends View implements ZoomableContext {
 	 */
 	@Override
 	public final boolean onTouchEvent(MotionEvent ev) {
-		// A disabled view that is clickable still consumes the touch
-		// events, it just doesn't respond to them.
-		if (!isEnabled()) return isClickable() || isLongClickable();
-
-		boolean consumed = false;
-		boolean underScalingGesture;
-
-		// Let the ScaleGestureDetector inspect all events.
-		underScalingGesture = this.scaleGestureDetector.onTouchEvent(ev);
-		if (underScalingGesture) {
-			consumed = true;
+		byte c = this.touchManager.onTouchEvent(ev);
+		if ((c&2)!=0) {
+			if (super.onTouchEvent(ev)) {
+				c |= 1;
+			}
 		}
-
-		// Let the move gesture detector inspect all events
-		if (this.moveGestureDetector.onTouchEvent(ev,
-				this.scaleGestureDetector.isInProgress(),
-				this.scaleGestureDetector.getFocusX(),
-				this.scaleGestureDetector.getFocusY())) {
-			consumed = true;
-		}
-
-		// Let the inherited function inspect all events for click and long click events.
-		if (!this.scaleGestureDetector.isInProgress()
-			&& !this.moveGestureDetector.isInProgress()
-			&& super.onTouchEvent(ev)) {
-			consumed = true;
-		}
-		
-		return consumed;
+		return ((c&1)!=0);
 	}
 
 	/** Invoked when the a touch-down event is detected.
@@ -961,315 +914,17 @@ public abstract class ZoomableView extends View implements ZoomableContext {
 		}
 	}
 
-	/**
+	/** This class permits to display a toast message outside
+	 * the main UI thread.
+	 * <p>
+	 * A toast message is a small notification message to put on the UI.
+	 * The location of this message depends on the Android API.
+	 * 
 	 * @author $Author: galland$
 	 * @version $Name$ $Revision$ $Date$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
-	 */
-	private class ScaleGestureManager extends ScaleGestureDetector.SimpleOnScaleGestureListener {
-
-		/**
-		 */
-		public ScaleGestureManager() {
-			//
-		}
-		
-		@Override
-		public boolean onScale(ScaleGestureDetector detector) {
-			if (ZoomableView.this.onScale(
-					detector.getFocusX(), detector.getFocusY(),
-					detector.getScaleFactor())) {
-				repaint();
-			}
-			return true;
-		}
-
-	}
-
-	/**
-	 * @author $Author: galland$
-	 * @version $Name$ $Revision$ $Date$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 */
-	private class ClickListener implements OnLongClickListener, OnClickListener {
-
-		public OnLongClickListener onLongClickListener = null;
-		public OnClickListener onClickListener = null;
-		private boolean isClickEnabled = true;
-
-		/**
-		 */
-		public ClickListener() {
-			//
-		}
-
-		/** Reset the internal flags of this click listener.
-		 */
-		public void reset() {
-			this.isClickEnabled = true;
-		}
-
-		@SuppressWarnings("synthetic-access")
-		@Override
-		public boolean onLongClick(View v) {
-			boolean b = false;
-			this.isClickEnabled = false;
-			if (isLongClickable()
-				&& !ZoomableView.this.scaleGestureDetector.isInProgress()
-				&& !ZoomableView.this.moveGestureDetector.isInProgress()) {
-				if (this.onLongClickListener!=null) {
-					b = this.onLongClickListener.onLongClick(v);
-				}
-				if (!b) {
-					PointerEventAndroid e = ZoomableView.this.moveGestureDetector.lastPointerEvent;
-					if (e!=null) {
-						e.unconsume();
-						e.setWhen(System.currentTimeMillis());
-						ZoomableView.this.onLongClick(e);
-						b = e.isConsumed();
-					}
-				}
-			}
-			return b;
-		}
-
-		@SuppressWarnings("synthetic-access")
-		@Override
-		public void onClick(View v) {
-			if (isClickable()
-				&& !ZoomableView.this.scaleGestureDetector.isInProgress()
-				&& !ZoomableView.this.moveGestureDetector.isInProgress()) {
-				if (this.isClickEnabled) {
-					if (this.onClickListener!=null) {
-						this.onClickListener.onClick(v);
-					}
-					PointerEventAndroid e = ZoomableView.this.moveGestureDetector.lastPointerEvent;
-					if (e!=null) {
-						e.unconsume();
-						e.setWhen(System.currentTimeMillis());
-						ZoomableView.this.onClick(e);
-					}
-				}
-			}
-			this.isClickEnabled = true;
-		}
-
-	}
-
-	/** 
-	 * @author $Author: galland$
-	 * @version $Name$ $Revision$ $Date$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 */
-	private class MoveGestureDetector {
-
-		/** Coordinate of the last touch.
-		 */
-		private float lastTouchX = Float.NaN;
-
-		/** Coordinate of the last touch.
-		 */
-		private float lastTouchY = Float.NaN;
-
-		/** Indicates if the move gesture is activated (by a touch down for example).
-		 */
-		private boolean isActivated = false;
-
-		/** Indicates if the move gesture is in progress, ie.
-		 * touch down and move events were found.
-		 */
-		private boolean inProgress = false;
-
-		/** Identifier of the current active pointer.
-		 */
-		private int activePointerId = INVALID_POINTER_ID;
-
-		public PointerEventAndroid lastPointerEvent = null;
-
-		/**
-		 */
-		public MoveGestureDetector() {
-			//
-		}
-		
-		/** Replies if a move gesture is in progress.
-		 * 
-		 * @return <code>true</code> if a move gesture is in progress;
-		 * otherwise <code>false</code>.
-		 */
-		public boolean isInProgress() {
-			return this.inProgress;
-		}
-
-		/** Invoked for detecting touch gestures.
-		 * 
-		 * @param ev
-		 * @param isScaleGestureInProgression indicates if the scale gesture is under progress
-		 * @param scaleGestureX is the X coordinate of the scale gesture, if under progress; otherwise the value is indetermined.
-		 * @param scaleGestureY is the Y coordinate of the scale gesture, if under progress; otherwise the value is indetermined.
-		 * @return <code>true</code> if the event is consumed;
-		 * <code>false</code> otherwise.
-		 */
-		@SuppressWarnings("synthetic-access")
-		public boolean onTouchEvent(MotionEvent ev,
-				boolean isScaleGestureInProgression,
-				float scaleGestureX,
-				float scaleGestureY) {
-			int pointerIndex, pointerId;
-			float x, y;
-			int action = ev.getActionMasked();
-
-			if (isScaleGestureInProgression) {
-				x = scaleGestureX;
-				y = scaleGestureY;
-			}
-			else {
-				x = ev.getX();
-				y = ev.getY();
-			}
-
-			this.lastPointerEvent = new PointerEventAndroid(
-					ZoomableView.this,
-					x,
-					y,
-					ev);
-
-			boolean consumed = false;
-
-			switch (action) {
-			case MotionEvent.ACTION_DOWN:
-				// The screen was touched. The touch-down event permits
-				// to initialize the attributes.
-				this.activePointerId = INVALID_POINTER_ID;
-				this.lastPointerEvent.unconsume();
-				if (!isScaleGestureInProgression) {
-					onPointerPressed(this.lastPointerEvent);
-				}
-				consumed = this.lastPointerEvent.isConsumed();
-				if (!consumed) {
-					this.isActivated = true;
-					this.inProgress = false;
-					this.activePointerId = ev.getPointerId(0);
-					this.lastTouchX = ev.getX(0);
-					this.lastTouchY = ev.getY(0);
-					consumed = true;
-					this.lastPointerEvent.setXY(this.lastTouchX, this.lastTouchY);
-				}
-				ZoomableView.this.clickListener.reset();
-				break;
-
-			case MotionEvent.ACTION_MOVE:
-				if (this.isActivated) {
-					this.inProgress = true;
-					
-					pointerIndex = ev.findPointerIndex(this.activePointerId);
-					x = ev.getX(pointerIndex);
-					y = ev.getY(pointerIndex);
-
-					this.lastPointerEvent.setXY(x, y);
-					float dx = pixel2logical_size(x - this.lastTouchX);
-					float dy = pixel2logical_size(y - this.lastTouchY);
-
-					this.lastTouchX = x;
-					this.lastTouchY = y;
-
-					if (isMoveDirectionInverted()) {
-						translateFocusPoint(dx, dy);
-					}
-					else {
-						translateFocusPoint(-dx, -dy);
-					}
-
-					// Always consume the event on moves
-					consumed = true;
-				}
-				else if (!isScaleGestureInProgression) {
-					this.lastPointerEvent.unconsume();
-					onPointerDragged(this.lastPointerEvent);
-					consumed = this.lastPointerEvent.isConsumed();
-				}
-				break;
-
-			case MotionEvent.ACTION_UP:
-				this.lastTouchX = ev.getX();
-				this.lastTouchY = ev.getY();
-				if (this.isActivated) {
-					this.isActivated = false;
-					this.inProgress = false;
-					this.activePointerId = INVALID_POINTER_ID;
-					repaint();
-					consumed = true;
-				}
-				else {
-					this.lastPointerEvent.unconsume();
-					if (!isScaleGestureInProgression) {
-						onPointerReleased(this.lastPointerEvent);
-					}
-					consumed = this.lastPointerEvent.isConsumed();
-				}
-				break;
-
-			case MotionEvent.ACTION_CANCEL:
-				this.lastTouchX = ev.getX();
-				this.lastTouchY = ev.getY();
-				if (this.isActivated) {
-					this.isActivated = false;
-					this.inProgress = false;
-					this.activePointerId = INVALID_POINTER_ID;
-					repaint();
-					consumed = true;
-				}
-				else {
-					this.lastPointerEvent.unconsume();
-					if (!isScaleGestureInProgression) {
-						onPointerReleased(this.lastPointerEvent);
-					}
-					consumed = this.lastPointerEvent.isConsumed();
-				}
-				break;
-
-			case MotionEvent.ACTION_POINTER_UP:
-				if (this.isActivated) {
-					pointerIndex = ((ev.getAction() & MotionEvent.ACTION_POINTER_INDEX_MASK) >> MotionEvent.ACTION_POINTER_INDEX_SHIFT);
-					pointerId = ev.getPointerId(pointerIndex);
-					if (pointerId == this.activePointerId) {
-						// This was our active pointer going up. Choose a new
-						// active pointer and adjust accordingly.
-						int newPointerIndex = pointerIndex == 0 ? 1 : 0;
-						this.lastTouchX = ev.getX(newPointerIndex);
-						this.lastTouchY = ev.getY(newPointerIndex);
-						this.activePointerId = ev.getPointerId(newPointerIndex);
-						repaint();
-						consumed = true;
-					}
-					else {
-						this.lastTouchX = ev.getX();
-						this.lastTouchY = ev.getY();
-					}
-				}
-				else {
-					this.lastTouchX = ev.getX();
-					this.lastTouchY = ev.getY();
-				}
-				break;
-
-			default:
-				// The other events are ignored.
-			}
-
-			return consumed;
-		}
-
-	} // class MoveGestureDetector
-
-	/**
-	 * @author $Author: galland$
-	 * @version $Name$ $Revision$ $Date$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
+	 * @see Toast
 	 */
 	private static class AsynchronousToaster implements Runnable {
 
@@ -1315,6 +970,6 @@ public abstract class ZoomableView extends View implements ZoomableContext {
 						this.isLong ? Toast.LENGTH_LONG : Toast.LENGTH_SHORT).show();
 			}
 		}
-	}
-
+	} // class AsynchronousToaster
+	
 }
