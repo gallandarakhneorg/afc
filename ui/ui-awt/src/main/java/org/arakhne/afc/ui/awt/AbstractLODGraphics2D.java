@@ -158,7 +158,7 @@ public abstract class AbstractLODGraphics2D<G extends Graphics2D> extends Graphi
 	 * @return the rendering graphics
 	 */
 	public Graphics2D getRenderingGraphics() {
-		return this.getRenderingGraphics();
+		return this.target;
 	}
 	
 	/** {@inheritDoc}
