@@ -136,6 +136,8 @@ public abstract class VectorToolkit {
 	 */
 	public static void prepareDrawing(VectorGraphics2D context) {
 		assert(context!=null);
+		// Ensure that the default font is not the "Dialog" font
+		context.setFont(context.getDefaultFont());
 		SINGLETON.preDrawing(context);
 	}
 

@@ -124,28 +124,15 @@ class AwtFont implements Font, NativeWrapper {
 		return new AwtFont(aFont);
 	}
 	
-	private static int toAwt(FontStyle style) {
-		switch(style) {
-		case BOLD:
-			return java.awt.Font.BOLD;
-		case ITALIC:
-			return java.awt.Font.ITALIC;
-		case BOLD_ITALIC:
-			return java.awt.Font.BOLD|java.awt.Font.ITALIC;
-		default:
-			return java.awt.Font.PLAIN;
-		}
-	}
-
 	@Override
 	public Font deriveFont(FontStyle style, float size) {
-		java.awt.Font aFont = this.font.deriveFont(toAwt(style), size);
+		java.awt.Font aFont = this.font.deriveFont(toAWT(style), size);
 		return new AwtFont(aFont);
 	}
 
 	@Override
 	public Font deriveFont(FontStyle style) {
-		java.awt.Font aFont = this.font.deriveFont(toAwt(style));
+		java.awt.Font aFont = this.font.deriveFont(toAWT(style));
 		return new AwtFont(aFont);
 	}
 
