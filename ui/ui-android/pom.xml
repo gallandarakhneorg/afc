@@ -83,6 +83,10 @@
 					<attachSources>true</attachSources>
 					<!-- whether to create a release build (default is false / debug build) -->
 					<release>true</release>
+					<!-- The version code is automatically update according to the version number -->
+					<manifest>
+						<versionCodeUpdateFromVersion>true</versionCodeUpdateFromVersion>
+					</manifest>
 				</configuration>
 				<extensions>true</extensions>
 				<!-- Update the Manifest according to currenty Maven configuration -->
@@ -93,11 +97,6 @@
 						<goals>
 							<goal>manifest-update</goal>
 						</goals>
-						<configuration>
-							<manifest>
-								<versionCodeUpdateFromVersion>true</versionCodeUpdateFromVersion>
-							</manifest>
-						</configuration>
 					</execution>
 				</executions>
 			</plugin>
@@ -122,7 +121,7 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!--  Put the license files into the distribution jar file -->
+			<!-- Put the license files into the distribution jar file -->
 			<plugin>
 				<groupId>org.arakhne.afc</groupId>
 				<artifactId>license-installer</artifactId>
