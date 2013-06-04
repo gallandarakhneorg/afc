@@ -135,14 +135,16 @@ public abstract class VectorToolkit {
 	 * @param context
 	 */
 	public static void prepareDrawing(VectorGraphics2D context) {
+		assert(context!=null);
 		SINGLETON.preDrawing(context);
 	}
 
 	/** Must be invoked to finalize the drawing in the given context.
 	 * 
-	 * @param context
+	 * @param context is the context to finalize. It must be never <code>null</code>.
 	 */
 	public static void finalizeDrawing(VectorGraphics2D context) {
+		assert(context!=null);
 		SINGLETON.postDrawing(context);
 	}
 
@@ -215,6 +217,7 @@ public abstract class VectorToolkit {
 	 * @return the shape.
 	 */
 	public static Shape2f shape(Object nativeObject) {
+		if (nativeObject==null) return null;
 		return SINGLETON.createShape(nativeObject);
 	}
 
@@ -241,6 +244,7 @@ public abstract class VectorToolkit {
 	 * @return the transform
 	 */
 	public static Transform2D makeTransform(Object affineTransform) {
+		if (affineTransform==null) return null;
 		return SINGLETON.createTransform(affineTransform);
 	}
 
@@ -315,6 +319,7 @@ public abstract class VectorToolkit {
 	 * @return the paint
 	 */
 	public static Paint paint(Object paintObject) {
+		if (paintObject==null) return null;
 		return SINGLETON.createPaint(paintObject);
 	}
 
@@ -341,6 +346,7 @@ public abstract class VectorToolkit {
 	 * @return the composite
 	 */
 	public static Composite composite(Object compositeObject) {
+		if (compositeObject==null) return null;
 		return SINGLETON.createComposite(compositeObject);
 	}
 
@@ -349,7 +355,7 @@ public abstract class VectorToolkit {
 	 * The type of the native composite depends on the underlying graphic
 	 * API. It is a <code>java.awt.Composite</code> for AWT.
 	 * 
-	 * @param compositeObject
+	 * @param compositeObject is the native composite. It is never <code>null</code>.
 	 * @return the composite
 	 */
 	protected abstract Composite createComposite(Object compositeObject);
@@ -403,6 +409,7 @@ public abstract class VectorToolkit {
 	 * @return the font.
 	 */
 	public static Font font(Object fontObject) {
+		if (fontObject==null) return null;
 		return SINGLETON.createFont(fontObject);
 	}
 
@@ -439,6 +446,7 @@ public abstract class VectorToolkit {
 	 * @return the font metrics.
 	 */
 	public static FontMetrics fontMetrics(Object metricsObject) {
+		if (metricsObject==null) return null;
 		return SINGLETON.createFontMetrics(metricsObject);
 	}
 
@@ -458,6 +466,7 @@ public abstract class VectorToolkit {
 	 * @return the font metrics.
 	 */
 	public static FontMetrics fontMetrics(Font font) {
+		if (font==null) return null;
 		return SINGLETON.createFontMetrics(font);
 	}
 
@@ -478,6 +487,7 @@ public abstract class VectorToolkit {
 	 * @return the image
 	 */
 	public static Image image(URL url) {
+		if (url==null) return null;
 		return SINGLETON.createImage(url);
 	}
 
@@ -534,6 +544,7 @@ public abstract class VectorToolkit {
 	 * @return the font.
 	 */
 	public static Image image(Object imageObject) {
+		if (imageObject==null) return null;
 		return SINGLETON.createImage(imageObject);
 	}
 
@@ -759,6 +770,7 @@ public abstract class VectorToolkit {
 	 * @return the stroke
 	 */
 	public static Stroke stroke(Object strokeObject) {
+		if (strokeObject==null) return null;
 		return SINGLETON.createStroke(strokeObject);
 	}
 
@@ -974,6 +986,7 @@ public abstract class VectorToolkit {
 	 * @return the generic color.
 	 */
 	public static Color color(Object rawColorObject) {
+		if (rawColorObject==null) return null;
 		return SINGLETON.createColor(rawColorObject);
 	}
 
@@ -982,7 +995,7 @@ public abstract class VectorToolkit {
 	 * The type of the native affine transform depends on the underlying graphic
 	 * API. It is a <code>java.awt.Color</code> for AWT.
 	 * 
-	 * @param rawColorObject is the color in the AWT, SWT or Android API. 
+	 * @param rawColorObject is the color in the AWT, SWT or Android API. It is never <code>null</code>. 
 	 * @return the generic color.
 	 */
 	protected abstract Color createColor(Object rawColorObject);
@@ -999,6 +1012,7 @@ public abstract class VectorToolkit {
 	 * @return the generic color.
 	 */
 	public static Color color(String c) {
+		if (c==null) return null;
 		if ("red".equalsIgnoreCase(c)) return RED; //$NON-NLS-1$
 		if ("blue".equalsIgnoreCase(c)) return BLUE; //$NON-NLS-1$
 		if ("green".equalsIgnoreCase(c)) return GREEN; //$NON-NLS-1$
