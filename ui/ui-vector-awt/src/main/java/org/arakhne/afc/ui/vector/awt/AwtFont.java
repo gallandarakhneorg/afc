@@ -22,6 +22,7 @@
 package org.arakhne.afc.ui.vector.awt;
 
 import java.awt.geom.Rectangle2D;
+import java.util.Locale;
 
 import org.arakhne.afc.math.continous.object2d.Rectangle2f;
 import org.arakhne.afc.ui.awt.AwtUtil;
@@ -52,7 +53,8 @@ class AwtFont implements Font, NativeWrapper {
 	}
 	
 	private final java.awt.Font font;
-	
+	private String postscriptName = null;
+
 	/**
 	 * @param name
 	 * @param style
@@ -61,7 +63,7 @@ class AwtFont implements Font, NativeWrapper {
 	public AwtFont(String name, FontStyle style, float size) {
 		this(new java.awt.Font(name, toAWT(style), (int)Math.ceil(size)));
 	}
-	
+
 	/**
 	 * @param font
 	 */
@@ -77,7 +79,7 @@ class AwtFont implements Font, NativeWrapper {
 	public java.awt.Font getFont() {
 		return this.font;
 	}
-	
+
 	@Override
 	public String toString() {
 		return this.font.toString();
@@ -121,19 +123,25 @@ class AwtFont implements Font, NativeWrapper {
 	@Override
 	public Font deriveFont(float size) {
 		java.awt.Font aFont = this.font.deriveFont(size);
-		return new AwtFont(aFont);
+		AwtFont f = new AwtFont(aFont);
+		f.postscriptName = this.postscriptName;
+		return f;
 	}
-	
+
 	@Override
 	public Font deriveFont(FontStyle style, float size) {
 		java.awt.Font aFont = this.font.deriveFont(toAWT(style), size);
-		return new AwtFont(aFont);
+		AwtFont f = new AwtFont(aFont);
+		f.postscriptName = this.postscriptName;
+		return f;
 	}
 
 	@Override
 	public Font deriveFont(FontStyle style) {
 		java.awt.Font aFont = this.font.deriveFont(toAWT(style));
-		return new AwtFont(aFont);
+		AwtFont f = new AwtFont(aFont);
+		f.postscriptName = this.postscriptName;
+		return f;
 	}
 
 	@Override
@@ -150,13 +158,30 @@ class AwtFont implements Font, NativeWrapper {
 	}
 
 	@Override
-	public String getPSName() {
-		return this.font.getPSName();
+	public synchronized String getPSName() {
+		if (this.postscriptName==null) {
+			this.postscriptName = getPhysicalPSName();
+		}
+		return this.postscriptName;
 	}
 
 	@Override
 	public float getItalicAngle() {
 		return this.font.getItalicAngle();
+	}
+
+	@SuppressWarnings("restriction")
+	private String getPhysicalPSName() {
+		Locale loc = Locale.getDefault();
+		String logFontName = this.font.getFontName();
+		for(sun.font.Font2D candidate : sun.font.FontManager.getRegisteredFonts()) {
+			if (candidate instanceof sun.font.CompositeFont
+				&& candidate.getFontName(loc).equals(logFontName)) {
+				sun.font.PhysicalFont physicalFont = ((sun.font.CompositeFont) candidate).getSlotFont(0);
+				return physicalFont.getPostscriptName();
+			}
+		}
+		return this.font.getPSName();
 	}
 
 }
