@@ -1,7 +1,7 @@
 /* 
  * $Id$
  * 
- * Copyright (C) 2010-2012 Stephane GALLAND.
+ * Copyright (C) 2010-2013 Stephane GALLAND.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -318,4 +318,9 @@ public class Vector3f extends Tuple3f<Vector3D> implements Vector3D {
 		this.z -= t1.getZ();
 	}
 
+	public void sub(Tuple3D<?> t1) {
+		this.x -= t1.getX();
+		this.y -= t1.getY();
+		this.z -= t1.getZ();
+	}
 }

@@ -207,6 +207,17 @@ public class Point3f extends Tuple3f<Point3D> implements Point3D {
 		this.y += t1.getY();
 		this.z += t1.getZ();
 	}
+	
+    /**  
+     * Sets the value of this tuple to the vector sum of itself and tuple t1.
+     * @param t1 the other tuple
+     */  
+    public final void add(Point3D t1)
+    {
+        this.x += t1.getX();
+        this.y += t1.getY();
+        this.z += t1.getZ();
+    }
 
 	@Override
 	public void scaleAdd(int s, Vector3D t1, Point3D t2) {
@@ -263,5 +274,12 @@ public class Point3f extends Tuple3f<Point3D> implements Point3D {
 		this.y -= t1.getY();
 		this.z -= t1.getZ();
 	}
+	
+    public final void sub(Point3D t1)
+    {
+        this.x -= t1.getX();
+        this.y -= t1.getY();
+        this.z -= t1.getZ();
+    }
 
 }

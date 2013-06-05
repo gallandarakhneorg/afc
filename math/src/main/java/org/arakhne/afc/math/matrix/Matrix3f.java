@@ -1893,7 +1893,7 @@ public class Matrix3f implements Serializable, Cloneable, MathConstants {
 		return Math.abs(a-b) <=  MathConstants.EPSILON;
 	}
 
-	private static void compute_svd(float[] m, float[] outScale, float[] outRot) {
+	public static void compute_svd(float[] m, float[] outScale, float[] outRot) {
 		int i;
 		float g;
 		float[] u1 = new float[9];
@@ -3494,4 +3494,11 @@ public class Matrix3f implements Serializable, Cloneable, MathConstants {
 				&& MathUtil.isEpsilonEqual(this.m22, 1f);
 	}
 
+	public void transform(Vector3f t) {
+	     float x,y,z;
+	     x = this.m00* t.getX() + this.m01*t.getY() + this.m02*t.getZ(); 
+	     y = this.m10* t.getX() + this.m11*t.getY() + this.m12*t.getZ(); 
+	     z = this.m20* t.getX() + this.m21*t.getY() + this.m22*t.getZ(); 
+	     t.set(x,y,z);
+	}
 }

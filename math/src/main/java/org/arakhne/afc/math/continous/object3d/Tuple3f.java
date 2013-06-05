@@ -151,6 +151,29 @@ public class Tuple3f<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 		this.y += y;
 		this.z += z;
 	}
+	
+    /**  
+     * Sets the value of this tuple to the vector sum of itself and tuple t1.
+     * @param t1 the other tuple
+     */  
+    public final void add(Tuple3D t1)
+    {
+        this.x += t1.getX();
+        this.y += t1.getY();
+        this.z += t1.getZ();
+    }
+    
+    /**
+     * Sets the value of this tuple to the vector sum of tuples t1 and t2.
+     * @param t1 the first tuple
+     * @param t2 the second tuple
+     */
+    public final void add(Tuple3D t1, Tuple3D t2)
+    {
+	this.x = t1.getX() + t2.getX();
+	this.y = t1.getY() + t2.getY();
+	this.z = t1.getZ() + t2.getZ();
+    }
 
 	/**
 	 * {@inheritDoc}

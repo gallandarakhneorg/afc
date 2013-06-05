@@ -21,6 +21,7 @@
 package org.arakhne.afc.math.continous.object2d;
 
 import org.arakhne.afc.math.generic.Tuple2D;
+import org.arakhne.afc.math.generic.Tuple3D;
 
 /** 2D tuple with 2 floating-point numbers.
  * 
@@ -137,6 +138,27 @@ public class Tuple2f<T extends Tuple2D<? super T>> implements Tuple2D<T> {
 		this.x += x;
 		this.y += y;
 	}
+	
+    /**  
+     * Sets the value of this tuple to the vector sum of itself and tuple t1.
+     * @param t1 the other tuple
+     */  
+    public final void add(Tuple2D t1)
+    {
+        this.x += t1.getX();
+        this.y += t1.getY();
+    }
+    
+    /**
+     * Sets the value of this tuple to the vector sum of tuples t1 and t2.
+     * @param t1 the first tuple
+     * @param t2 the second tuple
+     */
+    public final void add(Tuple2D t1, Tuple2D t2)
+    {
+	this.x = t1.getX() + t2.getX();
+	this.y = t1.getY() + t2.getY();
+    }
 
 	/**
 	 * {@inheritDoc}
