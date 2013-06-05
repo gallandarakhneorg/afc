@@ -53,7 +53,10 @@ class AwtFont implements Font, NativeWrapper {
 	}
 	
 	private final java.awt.Font font;
-	private String postscriptName = null;
+	
+	@SuppressWarnings("restriction")
+	private sun.font.PhysicalFont physicalFont = null;
+	private boolean physicalFontDetected = false;
 
 	/**
 	 * @param name
@@ -124,7 +127,8 @@ class AwtFont implements Font, NativeWrapper {
 	public Font deriveFont(float size) {
 		java.awt.Font aFont = this.font.deriveFont(size);
 		AwtFont f = new AwtFont(aFont);
-		f.postscriptName = this.postscriptName;
+		f.physicalFont = this.physicalFont;
+		f.physicalFontDetected = this.physicalFontDetected;
 		return f;
 	}
 
@@ -132,7 +136,8 @@ class AwtFont implements Font, NativeWrapper {
 	public Font deriveFont(FontStyle style, float size) {
 		java.awt.Font aFont = this.font.deriveFont(toAWT(style), size);
 		AwtFont f = new AwtFont(aFont);
-		f.postscriptName = this.postscriptName;
+		f.physicalFont = this.physicalFont;
+		f.physicalFontDetected = this.physicalFontDetected;
 		return f;
 	}
 
@@ -140,7 +145,8 @@ class AwtFont implements Font, NativeWrapper {
 	public Font deriveFont(FontStyle style) {
 		java.awt.Font aFont = this.font.deriveFont(toAWT(style));
 		AwtFont f = new AwtFont(aFont);
-		f.postscriptName = this.postscriptName;
+		f.physicalFont = this.physicalFont;
+		f.physicalFontDetected = this.physicalFontDetected;
 		return f;
 	}
 
@@ -158,11 +164,11 @@ class AwtFont implements Font, NativeWrapper {
 	}
 
 	@Override
+	@SuppressWarnings("restriction")
 	public synchronized String getPSName() {
-		if (this.postscriptName==null) {
-			this.postscriptName = getPhysicalPSName();
-		}
-		return this.postscriptName;
+		sun.font.PhysicalFont font = getPhysicalFont();
+		if (font==null) return this.font.getPSName();
+		return font.getPostscriptName();
 	}
 
 	@Override
@@ -171,17 +177,22 @@ class AwtFont implements Font, NativeWrapper {
 	}
 
 	@SuppressWarnings("restriction")
-	private String getPhysicalPSName() {
-		Locale loc = Locale.getDefault();
-		String logFontName = this.font.getFontName();
-		for(sun.font.Font2D candidate : sun.font.FontManager.getRegisteredFonts()) {
-			if (candidate instanceof sun.font.CompositeFont
-				&& candidate.getFontName(loc).equals(logFontName)) {
-				sun.font.PhysicalFont physicalFont = ((sun.font.CompositeFont) candidate).getSlotFont(0);
-				return physicalFont.getPostscriptName();
+	private synchronized sun.font.PhysicalFont getPhysicalFont() {
+		if (this.physicalFont==null && !this.physicalFontDetected) {
+			this.physicalFontDetected = true;
+			Locale loc = Locale.getDefault();
+			String logFontName = this.font.getFontName();
+			sun.font.Font2D[] candidates = sun.font.FontManager.getRegisteredFonts();
+			sun.font.Font2D candidate;
+			for(int i=0; this.physicalFont==null && i<candidates.length; ++i) {
+				candidate = candidates[i];
+				if (candidate instanceof sun.font.CompositeFont
+					&& candidate.getFontName(loc).equals(logFontName)) {
+					this.physicalFont = ((sun.font.CompositeFont) candidate).getSlotFont(0);
+				}
 			}
 		}
-		return this.font.getPSName();
+		return this.physicalFont;
 	}
 
 }
