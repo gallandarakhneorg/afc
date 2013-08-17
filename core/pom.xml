@@ -1,27 +1,25 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-
 	<parent>
 		<artifactId>afc</artifactId>
 		<groupId>org.arakhne.afc</groupId>
 		<version>10.0-SNAPSHOT</version>
 	</parent>
 
-	<groupId>org.arakhne.afc.ui</groupId>
-	<artifactId>ui</artifactId>
+	<groupId>org.arakhne.afc.core</groupId>
+	<artifactId>core</artifactId>
+	<name>AFC Core Modules</name>
 	<packaging>pom</packaging>
-	<name>User Interface Tools</name>
 
 	<modules>
-		<module>base</module>
-		<module>awt</module>
-		<module>swing</module>
-		<module>vector</module>
-		<module>vector-awt</module>
-		<module>vector-android</module>
-		<module>android</module>
+		<module>vmutils-java</module>
+		<module>vmutils-native</module>
+		<module>vmutils</module>
+		<module>references</module>
+		<module>util</module>
+		<module>text</module>
+		<module>math</module>
 	</modules>
 
 	<build>

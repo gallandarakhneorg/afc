@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="10000000" android:versionName="10.0-SNAPSHOT" package="org.arakhne.afc.ui.android">
+
+    <uses-sdk android:minSdkVersion="15"/>
+
+</manifest>

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<artifactId>core</artifactId>
+		<groupId>org.arakhne.afc.core</groupId>
+		<version>10.0-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>vmutils</artifactId>
+	<packaging>pom</packaging>
+	<name>Java and Native VM Utilities</name>
+	<description>Additional tools dedicated to low-level and virtual machine features</description>
+
+
+	<properties>
+		<manifest.file>../vmutils-java/target/classes/META-INF/MANIFEST.MF</manifest.file>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.arakhne.afc.core.vmutils</groupId>
+			<artifactId>vmutils-java</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.arakhne.afc.core.vmutils</groupId>
+			<artifactId>vmutils-java</artifactId>
+			<classifier>sources</classifier>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.arakhne.afc.core.vmutils.josuuid</groupId>
+			<artifactId>mingw32</artifactId>
+			<type>dll</type>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.arakhne.afc.core.vmutils.josuuid</groupId>
+			<artifactId>mingw64</artifactId>
+			<type>dll</type>
+			<optional>true</optional>
+		</dependency>
+	</dependencies>
+
+	<!-- ======================================= -->
+	<!-- ==== Project Information === -->
+	<!-- ======================================= -->
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>make-bin-assembly</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<configuration>
+							<appendAssemblyId>false</appendAssemblyId>
+							<descriptors>
+								<descriptor>bin.xml</descriptor>
+							</descriptors>
+							<archive>
+								<manifestFile>${manifest.file}</manifestFile>
+							</archive>
+						</configuration>
+					</execution>
+					<execution>
+						<id>make-source-assembly</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<configuration>
+							<appendAssemblyId>true</appendAssemblyId>
+							<descriptors>
+								<descriptor>sources.xml</descriptor>
+							</descriptors>
+							<archive>
+								<manifestFile>${manifest.file}</manifestFile>
+							</archive>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

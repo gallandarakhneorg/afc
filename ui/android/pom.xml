@@ -1,0 +1,94 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.arakhne.afc.ui</groupId>
+		<artifactId>ui</artifactId>
+		<version>10.0-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>android</artifactId>
+	<name>Android Widgets</name>
+	<packaging>apklib</packaging>
+	<inceptionYear>2013</inceptionYear>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.arakhne.afc.core</groupId>
+			<artifactId>references</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.arakhne.afc.ui</groupId>
+			<artifactId>vector-android</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.google.android</groupId>
+			<artifactId>support-v4</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.google.android</groupId>
+			<artifactId>android</artifactId>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<!-- Android Plugin -->
+			<plugin>
+				<groupId>com.jayway.maven.plugins.android.generation2</groupId>
+				<artifactId>android-maven-plugin</artifactId>
+				<configuration>
+					<!-- Path to the manifest file -->
+					<androidManifestFile>${project.basedir}/AndroidManifest.xml</androidManifestFile>
+					<!-- Path to the assets -->
+					<assetsDirectory>${project.basedir}/assets</assetsDirectory>
+					<!-- Path to the Android resources -->
+					<resourceDirectory>${project.basedir}/res</resourceDirectory>
+					<!-- Path to the native libraries -->
+					<nativeLibrariesDirectory>${project.basedir}/native</nativeLibrariesDirectory>
+					<!-- Definition of the Android SDK used for compilation -->
+					<sdk>
+						<path>${android.sdk.path}</path>
+						<platform>${android.platform}</platform>
+					</sdk>
+					<!-- Definition of the AVD -->
+					<emulator>
+						<avd>${android.emulator}</avd>
+					</emulator>
+					<!-- Definition of the AVD -->
+					<deleteConflictingFiles>true</deleteConflictingFiles>
+					<!-- whether to undeploy an apk from the device before deploying it -->
+					<undeployBeforeDeploy>true</undeployBeforeDeploy>
+					<!-- whether to attach sources to the build, which can be depended on 
+						by other apk projects, for including them in their builds -->
+					<attachSources>true</attachSources>
+					<!-- whether to create a release build (default is false / debug build) -->
+					<release>true</release>
+				</configuration>
+				<extensions>true</extensions>
+				<!-- Update the Manifest according to currenty Maven configuration -->
+				<executions>
+					<execution>
+						<id>update-manifest</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>manifest-update</goal>
+						</goals>
+						<configuration>
+							<!-- The version code is automatically updated according to the version 
+								number -->
+							<manifest>
+								<versionCode></versionCode>
+								<versionName>${project.version}</versionName>
+								<versionCodeUpdateFromVersion>true</versionCodeUpdateFromVersion>
+								<versionCodeAutoIncrement>false</versionCodeAutoIncrement>
+							</manifest>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

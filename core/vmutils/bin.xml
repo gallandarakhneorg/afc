@@ -1,0 +1,33 @@
+<assembly>
+  <id>bin-with-native</id>
+  <formats>
+    <format>dir</format>
+    <format>jar</format>
+  </formats>
+  <includeBaseDirectory>false</includeBaseDirectory>
+  <dependencySets>
+    <dependencySet>
+      <includes>
+        <include>org.arakhne.afc.core.vmutils:vmutils-java</include>
+      </includes>
+      <outputDirectory></outputDirectory>
+      <unpack>true</unpack>
+    </dependencySet>
+    <dependencySet>
+      <includes>
+        <include>org.arakhne.afc.core.vmutils.josuuid:mingw32</include>
+      </includes>
+      <outputDirectory>org/arakhne/afc/vmutil</outputDirectory>
+      <unpack>false</unpack>
+      <outputFileNameMapping>josuuid32.dll</outputFileNameMapping>
+    </dependencySet>
+    <dependencySet>
+      <includes>
+        <include>org.arakhne.afc.core.vmutils.josuuid:mingw64</include>
+      </includes>
+      <outputDirectory>org/arakhne/afc/vmutil</outputDirectory>
+      <unpack>false</unpack>
+      <outputFileNameMapping>josuuid64.dll</outputFileNameMapping>
+    </dependencySet>
+  </dependencySets>
+</assembly>

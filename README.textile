@@ -1,0 +1,84 @@
+h1. Arakhnê Foundation Classes
+
+The Arakhnê Foundation Classes is a collection of Java libraries that may be used to build applications.
+
+The Arakhnê Foundatation Classes provides tools that are not directly available in the standard Java API.
+
+
+h1. Issues
+
+Issues related to the Janus platform are tracked on "GitHub":https://github.com/gallandarakhneorg/afc/issues
+You must use this issue tracker to report and follow your issues.
+
+h1. Building the AFC from CLI with Maven
+
+h2. Requirements
+
+* Java Development Toolkit (JDK) 1.6, but not the version 1.7 if you want to create an Android application.
+* Maven 3.1 or higher.
+
+h2. Compilation on Windows
+
+# Open a DOS terminal
+# Go into the directory where the source code is located (inside which this README file is, also).
+# Type the following command line: @mvn install@
+
+h2. Compilation on Unix
+
+# Open a Shell terminal
+# Go into the directory where the source code is located (inside which this README file is, also).
+# Type the following command line: @mvn install@
+
+h1. Cleaning the Directories from CLI
+
+h2. Cleaning on Windows
+
+# Open a DOS terminal
+# Go into the directory where the source code is located (inside which this README file is, also).
+# Type the following command line: @mvn clean@
+
+h2. Cleaning on Unix
+
+# Open a Shell terminal
+# Go into the directory where the source code is located (inside which this README file is, also).
+# Type the following command line: @mvn clean@
+
+h1. Using AFC in a Maven project
+
+To use the AFC inside your Maven project, you must:
+
+Add a dependency to the AFC module you want to use (replace @X.X@ by the correct version number):
+
+For example, if you want to use the "vmutils" module:
+<dependency>
+    <groupId>org.janus-project.core</groupId>
+    <artifactId>vmutils</artifactId>
+    <version>X.X</version>
+</dependency>
+
+
+Add the Maven repositories of AFC:
+
+<repositories>
+    <repository>
+	<id>org.arakhne-maven</id>
+	<name>Arakhnê.org Snapshots</name>
+	<url>http://download.tuxfamily.org/arakhne/maven/</url>
+    </repository>
+</repositories>
+<pluginRepositories>
+    <pluginRepository>
+	<id>org.arakhne-maven</id>
+	<name>Arakhnê.org Snapshots</name>
+	<url>http://download.tuxfamily.org/arakhne/maven/</url>
+	<snapshots>
+		<enabled>true</enabled>
+	</snapshots>
+    </pluginRepository>
+</pluginRepositories>
+
+
+h1. AFC License
+
+The AFC is distributed under the terms of the GNU Lesser General Public License.
+
