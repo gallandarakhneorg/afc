@@ -39,10 +39,8 @@ import org.apache.maven.model.Developer;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.project.MavenProjectBuilder;
+import org.apache.maven.repository.RepositorySystem;
 import org.arakhne.maven.AbstractArakhneMojo;
-import org.eclipse.aether.RepositorySystem;
-import org.eclipse.aether.RepositorySystemSession;
-import org.eclipse.aether.repository.RemoteRepository;
 import org.sonatype.plexus.build.incremental.BuildContext;
 
 /**
@@ -161,7 +159,7 @@ public class InstallLicenseMojo extends AbstractArakhneMojo implements Constants
 	 * @parameter default-value="${repositorySystemSession}"
 	 * @readonly
 	 */
-	private RepositorySystemSession repoSession;
+	private Object repoSession;
 
 	/**
 	 * The project's remote repositories to use for the resolution of plugins and their dependencies.
@@ -169,7 +167,7 @@ public class InstallLicenseMojo extends AbstractArakhneMojo implements Constants
 	 * @parameter default-value="${project.remoteProjectRepositories}"
 	 * @readonly
 	 */
-	private List<RemoteRepository> remoteRepos;
+	private List<?> remoteRepos;
 
 	/** The context of building, compatible with M2E and CLI.
 	 * @component
@@ -443,7 +441,7 @@ public class InstallLicenseMojo extends AbstractArakhneMojo implements Constants
 	 * {@inheritDoc}
 	 */
 	@Override
-	public RepositorySystemSession getRepositorySystemSession() {
+	public Object getRepositorySystemSession() {
 		return this.repoSession;
 	}
 
@@ -451,7 +449,7 @@ public class InstallLicenseMojo extends AbstractArakhneMojo implements Constants
 	 * {@inheritDoc}
 	 */
 	@Override
-	public List<RemoteRepository> getRemoteRepositoryList() {
+	public List<?> getRemoteRepositoryList() {
 		return this.remoteRepos;
 	}
 

@@ -82,14 +82,8 @@ import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.project.MavenProjectBuilder;
 import org.apache.maven.project.ProjectBuildingException;
+import org.apache.maven.repository.RepositorySystem;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
-import org.eclipse.aether.RepositorySystem;
-import org.eclipse.aether.RepositorySystemSession;
-import org.eclipse.aether.artifact.DefaultArtifact;
-import org.eclipse.aether.repository.RemoteRepository;
-import org.eclipse.aether.resolution.ArtifactRequest;
-import org.eclipse.aether.resolution.ArtifactResolutionException;
-import org.eclipse.aether.resolution.ArtifactResult;
 import org.sonatype.plexus.build.incremental.BuildContext;
 import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.wc.SVNClientManager;
@@ -529,48 +523,7 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 	 * @return the maven session
 	 */
 	public abstract MavenSession getMavenSession();
-
-	/**
-	 * Replies the repository system used by this maven instance. Basically it is an internal component of Maven.
-	 * <p>
-	 * It is an attribute defined as: <code><pre>
-	 * <span>/</span>* <span>@</span>component
-	 * <span>*</span>/
-	 * private RepositorySystem repoSystem;
-	 * </pre></code>
-	 * 
-	 * @return the repository system
-	 */
-	public abstract RepositorySystem getRepositorySystem();
-
-	/**
-	 * Replies the current repository/network configuration of Maven..
-	 * <p>
-	 * It is an attribute defined as: <code><pre>
-	 * <span>/</span>* <span>@</span>parameter default-value="&dollar;{repositorySystemSession}"
-	 * <span>@</span>readonly
-	 * <span>*</span>/
-	 * private RepositorySystemSession repoSession;
-	 * </pre></code>
-	 * 
-	 * @return the repository system
-	 */
-	public abstract RepositorySystemSession getRepositorySystemSession();
-
-	/**
-	 * Replies the project's remote repositories to use for the resolution of plugins and their dependencies..
-	 * <p>
-	 * It is an attribute defined as: <code><pre>
-	 * <span>/</span>* <span>@</span>parameter default-value="&dollar;{project.remoteProjectRepositories}"
-	 * <span>*</span>/
-	 * private List<RemoteRepository> remoteRepos;
-	 * </pre></code>
-	 * 
-	 * @return the repository system
-	 */
-	public abstract  List<RemoteRepository> getRemoteRepositoryList();
-
-
+	
 	/**
 	 * Search and reply the maven artifact which is corresponding to the given file.
 	 * 
@@ -612,6 +565,80 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 				"The maven module for this file cannot be retreived.", //$NON-NLS-1$
 				BuildContext.SEVERITY_WARNING, null);
 		return null;
+	}
+
+	/**
+	 * Replies the project's remote repositories to use for the resolution of plugins and their dependencies..
+	 * <p>
+	 * It is an attribute defined as: <code><pre>
+	 * <span>/</span>* <span>@</span>parameter default-value="&dollar;{project.remoteProjectRepositories}"
+	 * <span>*</span>/
+	 * private List<RemoteRepository> remoteRepos;
+	 * </pre></code>
+	 * 
+	 * @return the repository system
+	 */
+	public abstract  List<?> getRemoteRepositoryList();
+
+	/**
+	 * Replies the repository system used by this maven instance. Basically it is an internal component of Maven.
+	 * <p>
+	 * It is an attribute defined as: <code><pre>
+	 * <span>/</span>* <span>@</span>component
+	 * <span>*</span>/
+	 * private RepositorySystem repoSystem;
+	 * </pre></code>
+	 * 
+	 * @return the repository system
+	 */
+	public abstract RepositorySystem getRepositorySystem();
+
+	/**
+	 * Replies the current repository/network configuration of Maven..
+	 * <p>
+	 * It is an attribute defined as: <code><pre>
+	 * <span>/</span>* <span>@</span>parameter default-value="&dollar;{repositorySystemSession}"
+	 * <span>@</span>readonly
+	 * <span>*</span>/
+	 * private RepositorySystemSession repoSession;
+	 * </pre></code>
+	 * 
+	 * @return the repository system
+	 */
+	public abstract Object getRepositorySystemSession();
+
+	/**
+	 * Retreive the extended artifact definition of the given artifact.
+	 * @param mavenArtifact - the artifact to resolve
+	 * @return the artifact definition.
+	 * @throws MojoExecutionException
+	 */
+	public final Artifact resolveArtifact(Artifact mavenArtifact) throws MojoExecutionException {
+		return AetherBridge.resolveArtifact(
+				mavenArtifact,
+				getRemoteRepositoryList(),
+				getRepositorySystem(),
+				getRepositorySystemSession());
+	}
+
+	/**
+	 * Retreive the extended artifact definition of the given artifact id.
+	 * 
+	 * @param groupId
+	 *            is the identifier of the group.
+	 * @param artifactId
+	 *            is the identifier of the artifact.
+	 * @param version
+	 *            is the version of the artifact to retreive.
+	 * @return the artifact definition.
+	 * @throws MojoExecutionException 
+	 */
+	public final Artifact resolveArtifact(String groupId, String artifactId, String version) throws MojoExecutionException {
+		return AetherBridge.resolveArtifact(
+				groupId, artifactId, version,
+				getRemoteRepositoryList(),
+				getRepositorySystem(),
+				getRepositorySystemSession());
 	}
 
 	/**
@@ -739,110 +766,6 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 			getLog().debug("Found " //$NON-NLS-1$
 					+ nbFiles + " file(s)"); //$NON-NLS-1$
 		}
-	}
-
-	/**
-	 * Log an information message.
-	 * 
-	 * @param message
-	 * @deprecated see {@link #getBuildContext()}
-	 */
-	@Deprecated
-	public final synchronized void info(Object... message) {
-		StringBuilder b = new StringBuilder();
-		for (Object o : message) {
-			if (o != null) {
-				b.append(o.toString());
-			}
-		}
-		getLog().info(b.toString());
-	}
-
-	/**
-	 * Log an information message.
-	 * 
-	 * @param error
-	 * @param message
-	 * @deprecated see {@link #getBuildContext()}
-	 */
-	@Deprecated
-	public final synchronized void info(Throwable error, Object... message) {
-		StringBuilder b = new StringBuilder();
-		for (Object o : message) {
-			if (o != null) {
-				b.append(o.toString());
-			}
-		}
-		getLog().info(b.toString(), error);
-	}
-
-	/**
-	 * Log debugging message.
-	 * 
-	 * @param messages
-	 *            are the messages to log.
-	 * @deprecated see {@link #getBuildContext()}
-	 */
-	@Deprecated
-	public final void debug(Object... messages) {
-		StringBuilder buffer = new StringBuilder();
-		for (Object s : messages) {
-			if (s != null)
-				buffer.append(s);
-		}
-		getLog().debug(buffer.toString());
-	}
-
-	/**
-	 * Log warning message.
-	 * 
-	 * @param messages
-	 *            are the messages to log.
-	 * @deprecated see {@link #getBuildContext()}
-	 */
-	@Deprecated
-	public final void warn(Object... messages) {
-		StringBuilder buffer = new StringBuilder();
-		for (Object s : messages) {
-			if (s != null)
-				buffer.append(s);
-		}
-		getLog().warn(buffer.toString());
-	}
-
-	/**
-	 * Log an error message.
-	 * 
-	 * @param message
-	 * @deprecated see {@link #getBuildContext()}
-	 */
-	@Deprecated
-	public final synchronized void error(Object... message) {
-		StringBuilder b = new StringBuilder();
-		for (Object o : message) {
-			if (o != null) {
-				b.append(o.toString());
-			}
-		}
-		getLog().error(b.toString());
-	}
-
-	/**
-	 * Log an error message.
-	 * 
-	 * @param error
-	 * @param message
-	 * @deprecated see {@link #getBuildContext()}
-	 */
-	@Deprecated
-	public final synchronized void error(Throwable error, Object... message) {
-		StringBuilder b = new StringBuilder();
-		for (Object o : message) {
-			if (o != null) {
-				b.append(o.toString());
-			}
-		}
-		getLog().error(b.toString(), error);
 	}
 
 	/**
@@ -1024,88 +947,6 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 	}
 
 
-
-	/**
-	 * Retreive the extended artifact definition of the given artifact id.
-	 * 
-	 * @param groupId
-	 *            is the identifier of the group.
-	 * @param artifactId
-	 *            is the identifier of the artifact.
-	 * @param version
-	 *            is the version of the artifact to retreive.
-	 * @return the artifact definition.
-	 * @throws MojoExecutionException 
-	 */
-	public final org.eclipse.aether.artifact.Artifact resolveArtifact(String groupId, String artifactId, String version) throws MojoExecutionException {
-		return resolveArtifact(new DefaultArtifact(groupId, artifactId,"jar", version));//$NON-NLS-1$
-	}
-
-	/**
-	 * Retreive the extended artifact definition of the given artifact.
-	 * @param mavenArtifact - the artifact to resolve
-	 * @return the artifact definition.
-	 * @throws MojoExecutionException
-	 */
-	public final org.eclipse.aether.artifact.Artifact resolveArtifact(org.eclipse.aether.artifact.Artifact mavenArtifact) throws MojoExecutionException {		
-		assert(mavenArtifact!=null);
-		ArtifactRequest request = new ArtifactRequest();
-		request.setArtifact(mavenArtifact);
-		request.setRepositories(getRemoteRepositoryList());
-
-		getLog().debug("Resolving artifact " + mavenArtifact.toString() + " from " + getRemoteRepositoryList());  //$NON-NLS-1$//$NON-NLS-2$
-
-		ArtifactResult result;
-		try {
-			result = getRepositorySystem().resolveArtifact(getRepositorySystemSession(), request);
-		}
-		catch (ArtifactResolutionException e) {
-			throw new MojoExecutionException(e.getMessage(), e);
-		}
-
-		getLog().debug("Resolved artifact " + mavenArtifact.toString() + " to " + result.getArtifact().getFile() + " from " + result.getRepository());//$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
-
-		return result.getArtifact();
-	}
-
-	/**
-	 * Retreive the extended artifact definition of the given artifact.
-	 * @param mavenArtifact - the artifact to resolve
-	 * @return the artifact definition.
-	 * @throws MojoExecutionException
-	 */
-	public final Artifact resolveArtifact(Artifact mavenArtifact) throws MojoExecutionException {		
-		org.eclipse.aether.artifact.Artifact a = createArtifact(mavenArtifact);
-		a = resolveArtifact(a);
-		return createArtifact(a);
-	}
-
-	/** Replies the Aether artifact for the maven API artifact.
-	 * 
-	 * @param mavenArtifact
-	 * @return the aether artifact
-	 */
-	public static final org.eclipse.aether.artifact.Artifact createArtifact(Artifact mavenArtifact) {
-		if (mavenArtifact==null) return null;
-		return new DefaultArtifact(
-				mavenArtifact.getGroupId(),
-				mavenArtifact.getArtifactId(),
-				"jar", //$NON-NLS-1$
-				mavenArtifact.getVersion());
-	}
-
-	/** Replies the Maven artifact for the Aether API artifact.
-	 * 
-	 * @param aetherArtifact
-	 * @return the aether artifact
-	 */
-	public final Artifact createArtifact(org.eclipse.aether.artifact.Artifact aetherArtifact) {
-		if (aetherArtifact==null) return null;
-		return createArtifact(
-				aetherArtifact.getGroupId(),
-				aetherArtifact.getArtifactId(),
-				aetherArtifact.getVersion());
-	}
 
 	/**
 	 * Create an Jar runtime artifact from the given values.

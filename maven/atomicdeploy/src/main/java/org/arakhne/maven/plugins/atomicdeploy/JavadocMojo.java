@@ -31,10 +31,8 @@ import org.apache.maven.model.Site;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.project.MavenProjectBuilder;
+import org.apache.maven.repository.RepositorySystem;
 import org.arakhne.maven.AbstractArakhneMojo;
-import org.eclipse.aether.RepositorySystem;
-import org.eclipse.aether.RepositorySystemSession;
-import org.eclipse.aether.repository.RemoteRepository;
 import org.sonatype.plexus.build.incremental.BuildContext;
 
 /**
@@ -121,7 +119,7 @@ public class JavadocMojo extends AbstractArakhneMojo {
 	 * @parameter default-value="${repositorySystemSession}"
 	 * @readonly
 	 */
-	private RepositorySystemSession repoSession;
+	private Object repoSession;
 
 	/**
 	 * The project's remote repositories to use for the resolution of plugins and their dependencies.
@@ -129,7 +127,7 @@ public class JavadocMojo extends AbstractArakhneMojo {
 	 * @parameter default-value="${project.remoteProjectRepositories}"
 	 * @readonly
 	 */
-	private List<RemoteRepository> remoteRepos;
+	private List<?> remoteRepos;
 
 	/**
 	 * {@inheritDoc}
@@ -167,7 +165,7 @@ public class JavadocMojo extends AbstractArakhneMojo {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public RepositorySystemSession getRepositorySystemSession() {
+	public Object getRepositorySystemSession() {
 		return this.repoSession;
 	}
 
@@ -175,7 +173,7 @@ public class JavadocMojo extends AbstractArakhneMojo {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public List<RemoteRepository> getRemoteRepositoryList() {
+	public List<?> getRemoteRepositoryList() {
 		return this.remoteRepos;
 	}
 

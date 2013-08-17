@@ -35,16 +35,6 @@
 			<groupId>org.tmatesoft.svnkit</groupId>
 			<artifactId>svnkit</artifactId>
 		</dependency>
-		<!-- Sonatype Aether for Maven 3.0.x -->
-		<dependency>
-			<groupId>org.sonatype.aether</groupId>
-			<artifactId>aether-api</artifactId>
-		</dependency>
-		<!-- Eclipse Aether for Maven 3.1.x -->
-		<dependency>
-			<groupId>org.eclipse.aether</groupId>
-			<artifactId>aether-api</artifactId>
-		</dependency>
 	</dependencies>
 
 </project>
