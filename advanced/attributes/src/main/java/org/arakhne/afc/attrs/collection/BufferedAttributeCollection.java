@@ -39,9 +39,9 @@ import org.arakhne.afc.attrs.attr.AttributeImpl;
 import org.arakhne.afc.attrs.attr.AttributeType;
 import org.arakhne.afc.attrs.attr.AttributeValue;
 import org.arakhne.afc.attrs.attr.AttributeValueImpl;
+import org.arakhne.afc.references.SoftValueTreeMap;
 import org.arakhne.afc.ui.vector.Color;
 import org.arakhne.afc.ui.vector.Image;
-import org.arakhne.util.ref.SoftValueTreeMap;
 
 /**
  * This class implements an abstract attribute provider that use

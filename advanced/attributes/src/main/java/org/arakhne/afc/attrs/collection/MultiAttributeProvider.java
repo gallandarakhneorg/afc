@@ -36,7 +36,7 @@ import org.arakhne.afc.attrs.attr.AttributeImpl;
 import org.arakhne.afc.attrs.attr.AttributeType;
 import org.arakhne.afc.attrs.attr.AttributeValue;
 import org.arakhne.afc.attrs.attr.AttributeValueImpl;
-import org.arakhne.util.ref.SoftValueTreeMap;
+import org.arakhne.afc.references.SoftValueTreeMap;
 
 /**
  * This class contains a collection of attribute containers and

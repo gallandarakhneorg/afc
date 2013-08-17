@@ -26,13 +26,13 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.arakhne.afc.references.SoftValueHashMap;
 import org.arakhne.afc.ui.android.R;
 import org.arakhne.afc.ui.undo.AbstractUndoable;
 import org.arakhne.afc.ui.undo.UndoManager;
 import org.arakhne.afc.util.Pair;
 import org.arakhne.afc.util.PropertyOwner;
 import org.arakhne.afc.vmutil.ReflectionUtil;
-import org.arakhne.util.ref.SoftValueHashMap;
 
 import android.app.AlertDialog;
 import android.content.Context;
