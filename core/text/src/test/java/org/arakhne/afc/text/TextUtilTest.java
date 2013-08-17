@@ -24,10 +24,11 @@
  * This program is free software; you can redistribute it and/or modify
  */
 
-package org.arakhne.util.text;
+package org.arakhne.afc.text;
 
 import java.util.List;
 
+import org.arakhne.afc.text.TextUtil;
 import org.arakhne.afc.vmutil.locale.Locale;
 
 import junit.framework.TestCase;

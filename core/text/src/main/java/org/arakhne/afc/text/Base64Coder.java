@@ -23,7 +23,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  * This program is free software; you can redistribute it and/or modify
  */
-package org.arakhne.util.text;
+package org.arakhne.afc.text;
 
 import org.arakhne.afc.vmutil.locale.Locale;
 

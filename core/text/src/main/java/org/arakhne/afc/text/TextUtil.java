@@ -24,7 +24,7 @@
  * This program is free software; you can redistribute it and/or modify
  */
 
-package org.arakhne.util.text;
+package org.arakhne.afc.text;
 
 import java.lang.ref.SoftReference;
 import java.text.DecimalFormat;
