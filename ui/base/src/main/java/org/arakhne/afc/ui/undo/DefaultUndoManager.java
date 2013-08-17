@@ -24,7 +24,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 import org.arakhne.afc.util.ListenerCollection;
-import org.arakhne.vmutil.locale.Locale;
+import org.arakhne.afc.vmutil.locale.Locale;
 
 /** Manager of undoable actions.
  *

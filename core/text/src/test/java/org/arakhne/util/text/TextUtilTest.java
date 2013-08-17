@@ -28,7 +28,7 @@ package org.arakhne.util.text;
 
 import java.util.List;
 
-import org.arakhne.vmutil.locale.Locale;
+import org.arakhne.afc.vmutil.locale.Locale;
 
 import junit.framework.TestCase;
 

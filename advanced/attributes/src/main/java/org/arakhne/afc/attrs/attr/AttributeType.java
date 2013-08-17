@@ -47,7 +47,7 @@ import org.arakhne.afc.ui.vector.Color;
 import org.arakhne.afc.ui.vector.Colors;
 import org.arakhne.afc.ui.vector.Image;
 import org.arakhne.afc.ui.vector.VectorToolkit;
-import org.arakhne.vmutil.locale.Locale;
+import org.arakhne.afc.vmutil.locale.Locale;
 
 /**
  * List of supported types for the metadata.

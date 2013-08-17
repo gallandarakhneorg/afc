@@ -22,7 +22,7 @@
  */
 package org.arakhne.afc.util;
 
-import org.arakhne.vmutil.locale.Locale;
+import org.arakhne.afc.vmutil.locale.Locale;
 
 /** Utilities class that permits to represent a collection of values
  * and indicating if they are all the same or not.

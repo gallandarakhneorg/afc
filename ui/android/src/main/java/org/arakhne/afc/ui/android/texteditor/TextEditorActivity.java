@@ -28,7 +28,7 @@ import java.net.URI;
 import java.net.URL;
 
 import org.arakhne.afc.ui.android.R;
-import org.arakhne.vmutil.FileSystem;
+import org.arakhne.afc.vmutil.FileSystem;
 
 import android.app.Activity;
 import android.content.Intent;

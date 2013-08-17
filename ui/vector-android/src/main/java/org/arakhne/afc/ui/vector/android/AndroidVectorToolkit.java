@@ -42,7 +42,7 @@ import org.arakhne.afc.ui.vector.Stroke.EndCap;
 import org.arakhne.afc.ui.vector.Stroke.LineJoin;
 import org.arakhne.afc.ui.vector.VectorGraphics2D;
 import org.arakhne.afc.ui.vector.VectorToolkit;
-import org.arakhne.vmutil.OperatingSystem;
+import org.arakhne.afc.vmutil.OperatingSystem;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;

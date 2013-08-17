@@ -20,7 +20,7 @@
  */
 package org.arakhne.afc.io.filefilter ;
 
-import org.arakhne.vmutil.locale.Locale;
+import org.arakhne.afc.vmutil.locale.Locale;
 
 /** File filter for Java source file document.
  * 

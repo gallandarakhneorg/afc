@@ -29,7 +29,7 @@ import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.continous.object3d.Point3f;
 import org.arakhne.afc.math.continous.object3d.Tuple3f;
 import org.arakhne.afc.math.continous.object3d.Vector3f;
-import org.arakhne.vmutil.locale.Locale;
+import org.arakhne.afc.vmutil.locale.Locale;
 
 /**
  * Is represented internally as a 3x3 floating point matrix. The mathematical

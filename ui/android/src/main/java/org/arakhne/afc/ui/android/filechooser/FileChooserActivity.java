@@ -24,7 +24,7 @@ import java.io.File;
 import java.io.FileFilter;
 
 import org.arakhne.afc.ui.android.R;
-import org.arakhne.vmutil.FileSystem;
+import org.arakhne.afc.vmutil.FileSystem;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

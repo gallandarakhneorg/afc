@@ -34,7 +34,7 @@ import javax.imageio.ImageIO;
 import junit.framework.TestCase;
 
 import org.arakhne.afc.math.MathConstants;
-import org.arakhne.vmutil.FileSystem;
+import org.arakhne.afc.vmutil.FileSystem;
 
 /**
  * @author $Author: galland$

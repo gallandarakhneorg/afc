@@ -25,7 +25,7 @@
  */
 package org.arakhne.util.text;
 
-import org.arakhne.vmutil.locale.Locale;
+import org.arakhne.afc.vmutil.locale.Locale;
 
 /**
  * A RFC 1521 compliant Base64 Encoder and Decoder.

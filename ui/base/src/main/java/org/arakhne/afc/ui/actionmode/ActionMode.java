@@ -29,7 +29,7 @@ import org.arakhne.afc.ui.MouseCursor;
 import org.arakhne.afc.ui.ZoomableContext;
 import org.arakhne.afc.ui.event.KeyEvent;
 import org.arakhne.afc.ui.selection.Selectable;
-import org.arakhne.vmutil.locale.Locale;
+import org.arakhne.afc.vmutil.locale.Locale;
 
 /** This is the abstract superclass of all editor modes.  A Mode is
  *  responsible for handling most of the events that come to the

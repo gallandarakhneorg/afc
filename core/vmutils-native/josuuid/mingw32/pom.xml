@@ -94,7 +94,7 @@
 						<phase>generate-sources</phase>
 						<configuration>
 							<javahClassNames>
-								<className>org.arakhne.vmutil.OperatingSystemNativeWrapper</className>
+								<className>org.arakhne.afc.vmutil.OperatingSystemNativeWrapper</className>
 							</javahClassNames>
 						</configuration>
 						<goals>

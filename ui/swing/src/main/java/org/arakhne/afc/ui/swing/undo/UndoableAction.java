@@ -30,7 +30,7 @@ import javax.swing.Icon;
 import javax.swing.undo.UndoManager;
 
 import org.arakhne.afc.ui.swing.StandardAction;
-import org.arakhne.vmutil.ReflectionUtil;
+import org.arakhne.afc.vmutil.ReflectionUtil;
 
 /** Implementation of an action that is creating and 
  * adding an UndoableEdit into the given undo manager.

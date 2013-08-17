@@ -22,7 +22,7 @@ package org.arakhne.afc.io.filefilter ;
 
 import java.io.File;
 
-import org.arakhne.vmutil.FileSystem;
+import org.arakhne.afc.vmutil.FileSystem;
 
 /** Abstract implementation of a file filter that may be
  * used in all the standard Java tools.

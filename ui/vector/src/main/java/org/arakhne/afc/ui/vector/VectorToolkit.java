@@ -32,7 +32,7 @@ import org.arakhne.afc.math.continous.object2d.Shape2f;
 import org.arakhne.afc.math.matrix.Transform2D;
 import org.arakhne.afc.ui.vector.Stroke.EndCap;
 import org.arakhne.afc.ui.vector.Stroke.LineJoin;
-import org.arakhne.vmutil.locale.Locale;
+import org.arakhne.afc.vmutil.locale.Locale;
 
 /** Utilities to create the widgets according
  * to the currently graphical API.

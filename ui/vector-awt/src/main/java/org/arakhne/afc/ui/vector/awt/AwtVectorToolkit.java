@@ -72,7 +72,7 @@ import org.arakhne.afc.ui.vector.Stroke;
 import org.arakhne.afc.ui.vector.Stroke.EndCap;
 import org.arakhne.afc.ui.vector.Stroke.LineJoin;
 import org.arakhne.afc.ui.vector.VectorToolkit;
-import org.arakhne.vmutil.OperatingSystem;
+import org.arakhne.afc.vmutil.OperatingSystem;
 
 /** AWT implementation of the generic Window toolkit.
  *

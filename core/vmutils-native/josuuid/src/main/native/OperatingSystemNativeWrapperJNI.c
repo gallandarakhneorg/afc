@@ -26,7 +26,7 @@
 #include <jni.h>
 #include <stdlib.h>
 
-#include "org_arakhne_vmutil_OperatingSystemNativeWrapper.h"
+#include "org_arakhne_afc_vmutil_OperatingSystemNativeWrapper.h"
 
 /* Replies the serial number of the system */
 char* getOSSerial(int enableSuperUser, int enableGUI);
@@ -35,12 +35,12 @@ char* getOSSerial(int enableSuperUser, int enableGUI);
 char* getOSUUID(int enableSuperUser, int enableGUI);
 
 /*
- * Class:     org_arakhne_vmutil_OperatingSystemNativeWrapper
+ * Class:     org_arakhne_afc_vmutil_OperatingSystemNativeWrapper
  * Method:    getOSSerialNumber
  * Signature: ()Ljava/lang/String;
  */
 JNIEXPORT jstring JNICALL
-Java_org_arakhne_vmutil_OperatingSystemNativeWrapper_getOSSerialNumber
+Java_org_arakhne_afc_vmutil_OperatingSystemNativeWrapper_getOSSerialNumber
 (JNIEnv * env, jobject instance, jboolean enableSuperUser,
  jboolean enableGUI) {
 	jstring jSerial = NULL;
@@ -56,12 +56,12 @@ Java_org_arakhne_vmutil_OperatingSystemNativeWrapper_getOSSerialNumber
 
 
 /*
- * Class:     org_arakhne_vmutil_OperatingSystemNativeWrapper
+ * Class:     org_arakhne_afc_vmutil_OperatingSystemNativeWrapper
  * Method:    getOSUUID
  * Signature: ()Ljava/lang/String;
  */
 JNIEXPORT jstring JNICALL
-Java_org_arakhne_vmutil_OperatingSystemNativeWrapper_getOSUUID
+Java_org_arakhne_afc_vmutil_OperatingSystemNativeWrapper_getOSUUID
 (JNIEnv *env, jobject instance, jboolean enableSuperUser,
  jboolean enableGUI) {
 	jstring jUUID = NULL;

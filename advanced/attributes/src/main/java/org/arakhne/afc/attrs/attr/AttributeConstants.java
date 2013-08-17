@@ -22,7 +22,7 @@
  */
 package org.arakhne.afc.attrs.attr;
 
-import org.arakhne.vmutil.URISchemeType;
+import org.arakhne.afc.vmutil.URISchemeType;
 
 /**
  * This interface contains several constant names.

@@ -31,7 +31,7 @@ import org.arakhne.afc.math.continous.object2d.Shape2f;
 import org.arakhne.afc.math.generic.Point2D;
 import org.arakhne.afc.ui.Graphics2DLOD;
 import org.arakhne.afc.ui.TextAlignment;
-import org.arakhne.vmutil.Resources;
+import org.arakhne.afc.vmutil.Resources;
 
 /** This graphic context permits to display
  *  something with a level of details.
