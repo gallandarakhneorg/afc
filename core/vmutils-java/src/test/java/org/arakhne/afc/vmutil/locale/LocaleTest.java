@@ -43,8 +43,8 @@ import junit.framework.TestCase;
 public class LocaleTest extends TestCase {
 
 	private final LocaleStub tmp = new LocaleStub();
-	private static final String RESOURCE1 = "org/arakhne/vmutil/locale/LocaleTest"; //$NON-NLS-1$
-	private static final String RESOURCE2 = "org/arakhne/vmutil/locale/LocaleStub"; //$NON-NLS-1$
+	private static final String RESOURCE1 = "org/arakhne/afc/vmutil/locale/LocaleTest"; //$NON-NLS-1$
+	private static final String RESOURCE2 = "org/arakhne/afc/vmutil/locale/LocaleStub"; //$NON-NLS-1$
 	private static final String NOKEY = "NOKEY"; //$NON-NLS-1$
 	private static final String KEY1 = "ONE"; //$NON-NLS-1$
 	private static final String KEY2 = "TWO"; //$NON-NLS-1$

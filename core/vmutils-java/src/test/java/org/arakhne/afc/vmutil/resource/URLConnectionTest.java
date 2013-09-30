@@ -40,6 +40,8 @@ import junit.framework.TestCase;
  */
 public class URLConnectionTest extends TestCase {
 
+	private static final String RESOURCE_URL = "resource:org/arakhne/afc/vmutil/test.txt"; //$NON-NLS-1$
+	
 	private URLConnection connection;
 	
 	/**
@@ -49,7 +51,7 @@ public class URLConnectionTest extends TestCase {
 	public void setUp() throws Exception {
 		super.setUp();
 		URLHandlerUtil.installArakhneHandlers();
-		URL resourceUrl = new URL("resource:org/arakhne/vmutil/test.txt"); //$NON-NLS-1$
+		URL resourceUrl = new URL(RESOURCE_URL);
 		assertNotNull(resourceUrl);
 		this.connection = new URLConnection(resourceUrl);
 	}

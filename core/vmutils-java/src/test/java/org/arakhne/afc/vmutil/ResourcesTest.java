@@ -36,15 +36,21 @@ import junit.framework.TestCase;
  */
 public class ResourcesTest extends TestCase {
 
+	private static final String TEST_NAME_1 = "/org/arakhne/afc/vmutil/test.txt"; //$NON-NLS-1$
+	private static final String TEST_NAME_2 = "org/arakhne/afc/vmutil/test.txt"; //$NON-NLS-1$
+	private static final String TEST_NAME_3 = "test.txt"; //$NON-NLS-1$
+	private static final String TEST_NAME_4 = "/test.txt"; //$NON-NLS-1$
+	private static final String PACKAGE_NAME = "org.arakhne.afc.vmutil"; //$NON-NLS-1$
+	
 	/**
 	 */
 	public static void testGetResourceString() {
 		assertNull(Resources.getResource(null));
 
-		URL u1 = Resources.getResource("/org/arakhne/vmutil/test.txt"); //$NON-NLS-1$
+		URL u1 = Resources.getResource(TEST_NAME_1);
 		assertNotNull(u1);
 
-		URL u2 = Resources.getResource("org/arakhne/vmutil/test.txt"); //$NON-NLS-1$
+		URL u2 = Resources.getResource(TEST_NAME_2);
 		assertNotNull(u2);
 
 		assertEquals(u1,u2);
@@ -55,13 +61,13 @@ public class ResourcesTest extends TestCase {
 	public static void testGetResourceClassString() {
 		assertNull(Resources.getResource(ResourcesTest.class, null));
 
-		URL u1 = Resources.getResource(ResourcesTest.class, "/org/arakhne/vmutil/test.txt"); //$NON-NLS-1$
+		URL u1 = Resources.getResource(ResourcesTest.class, TEST_NAME_1);
 		assertNotNull(u1);
 
-		URL u2 = Resources.getResource(ResourcesTest.class, "org/arakhne/vmutil/test.txt"); //$NON-NLS-1$
+		URL u2 = Resources.getResource(ResourcesTest.class, TEST_NAME_2);
 		assertNotNull(u2);
 
-		URL u3 = Resources.getResource(ResourcesTest.class, "test.txt"); //$NON-NLS-1$
+		URL u3 = Resources.getResource(ResourcesTest.class, TEST_NAME_3);
 		assertNotNull(u3);
 
 		assertEquals(u1,u2);
@@ -69,10 +75,10 @@ public class ResourcesTest extends TestCase {
 
 		assertNull(Resources.getResource((Class<?>)null, null));
 
-		u1 = Resources.getResource((Class<?>)null, "/org/arakhne/vmutil/test.txt"); //$NON-NLS-1$
+		u1 = Resources.getResource((Class<?>)null, TEST_NAME_1);
 		assertNull(u1);
 
-		u2 = Resources.getResource((Class<?>)null, "org/arakhne/vmutil/test.txt"); //$NON-NLS-1$
+		u2 = Resources.getResource((Class<?>)null, TEST_NAME_2);
 		assertNull(u2);
 	}
 
@@ -80,29 +86,29 @@ public class ResourcesTest extends TestCase {
 	 */
 	public static void testGetResourcePackageString() {
 		ClassLoader l = ResourcesTest.class.getClassLoader();
-		Package p = Package.getPackage("org.arakhne.vmutil"); //$NON-NLS-1$
+		Package p = Package.getPackage(PACKAGE_NAME);
 		assertNull(Resources.getResource(ResourcesTest.class, null));
 
-		URL u1 = Resources.getResource(l, p, "/org/arakhne/vmutil/test.txt"); //$NON-NLS-1$
+		URL u1 = Resources.getResource(l, p, TEST_NAME_1);
 		assertNull(u1);
 
-		URL u2 = Resources.getResource(l, p, "org/arakhne/vmutil/test.txt"); //$NON-NLS-1$
+		URL u2 = Resources.getResource(l, p, TEST_NAME_2);
 		assertNull(u2);
 
-		URL u3 = Resources.getResource(l, p, "test.txt"); //$NON-NLS-1$
+		URL u3 = Resources.getResource(l, p, TEST_NAME_3);
 		assertNotNull(u3);
 
-		URL u4 = Resources.getResource(l, p, "/test.txt"); //$NON-NLS-1$
+		URL u4 = Resources.getResource(l, p, TEST_NAME_4);
 		assertNotNull(u4);
 
 		assertEquals(u3, u4);
 
 		assertNull(Resources.getResource(l, (Package)null, null));
 
-		u1 = Resources.getResource(l, (Package)null, "test.txt"); //$NON-NLS-1$
+		u1 = Resources.getResource(l, (Package)null, TEST_NAME_3);
 		assertNull(u1);
 
-		u2 = Resources.getResource(l, (Package)null, "/test.txt"); //$NON-NLS-1$
+		u2 = Resources.getResource(l, (Package)null, TEST_NAME_4);
 		assertNull(u2);
 	}
 
@@ -111,20 +117,20 @@ public class ResourcesTest extends TestCase {
 	public static void testGetResourceClassLoaderString() {
 		assertNull(Resources.getResource(ResourcesTest.class.getClassLoader(), null));    	
 
-		URL u1 = Resources.getResource(ResourcesTest.class.getClassLoader(), "/org/arakhne/vmutil/test.txt"); //$NON-NLS-1$
+		URL u1 = Resources.getResource(ResourcesTest.class.getClassLoader(), TEST_NAME_1);
 		assertNotNull(u1);
 
-		URL u2 = Resources.getResource(ResourcesTest.class.getClassLoader(), "org/arakhne/vmutil/test.txt"); //$NON-NLS-1$
+		URL u2 = Resources.getResource(ResourcesTest.class.getClassLoader(), TEST_NAME_2);
 		assertNotNull(u2);
 
 		assertEquals(u1,u2);
 
 		assertNull(Resources.getResource((ClassLoader)null, null));    	
 
-		u1 = Resources.getResource((ClassLoader)null, "/org/arakhne/vmutil/test.txt"); //$NON-NLS-1$
+		u1 = Resources.getResource((ClassLoader)null, TEST_NAME_1);
 		assertNotNull(u1);
 
-		u2 = Resources.getResource((ClassLoader)null, "org/arakhne/vmutil/test.txt"); //$NON-NLS-1$
+		u2 = Resources.getResource((ClassLoader)null, TEST_NAME_2);
 		assertNotNull(u2);
 
 		assertEquals(u1,u2);
@@ -136,7 +142,7 @@ public class ResourcesTest extends TestCase {
 	public static void testGetResourceAsStreamString() throws IOException {
 		assertNull(Resources.getResourceAsStream(null));
 
-		InputStream is = Resources.getResourceAsStream("/org/arakhne/vmutil/test.txt"); //$NON-NLS-1$;
+		InputStream is = Resources.getResourceAsStream(TEST_NAME_1);
 		try {
 			assertNotNull(is);
 		}
@@ -144,7 +150,7 @@ public class ResourcesTest extends TestCase {
 			if (is!=null) is.close();
 		}
 
-		is = Resources.getResourceAsStream("org/arakhne/vmutil/test.txt"); //$NON-NLS-1$
+		is = Resources.getResourceAsStream(TEST_NAME_2);
 		try {
 			assertNotNull(is);
 		}
@@ -159,7 +165,7 @@ public class ResourcesTest extends TestCase {
 	public static void testGetResourceAsStreamClassString() throws IOException {
 		assertNull(Resources.getResourceAsStream(ResourcesTest.class, null));
 
-		InputStream is = Resources.getResourceAsStream(ResourcesTest.class, "/org/arakhne/vmutil/test.txt");//$NON-NLS-1$
+		InputStream is = Resources.getResourceAsStream(ResourcesTest.class, TEST_NAME_1);
 		try {
 			assertNotNull(is);
 		}
@@ -167,7 +173,7 @@ public class ResourcesTest extends TestCase {
 			if (is!=null) is.close();
 		}
 
-		is = Resources.getResourceAsStream(ResourcesTest.class, "org/arakhne/vmutil/test.txt"); //$NON-NLS-1$
+		is = Resources.getResourceAsStream(ResourcesTest.class, TEST_NAME_2);
 		try {
 			assertNotNull(is);
 		}
@@ -175,7 +181,7 @@ public class ResourcesTest extends TestCase {
 			if (is!=null) is.close();
 		}
 
-		is = Resources.getResourceAsStream(ResourcesTest.class, "/test.txt"); //$NON-NLS-1$
+		is = Resources.getResourceAsStream(ResourcesTest.class, TEST_NAME_3);
 		try {
 			assertNotNull(is);
 		}
@@ -183,7 +189,7 @@ public class ResourcesTest extends TestCase {
 			if (is!=null) is.close();
 		}
 
-		is = Resources.getResourceAsStream(ResourcesTest.class, "test.txt"); //$NON-NLS-1$
+		is = Resources.getResourceAsStream(ResourcesTest.class, TEST_NAME_4);
 		try {
 			assertNotNull(is);
 		}
@@ -193,7 +199,7 @@ public class ResourcesTest extends TestCase {
 
 		assertNull(Resources.getResourceAsStream((Class<?>)null, null));
 
-		is = Resources.getResourceAsStream((Class<?>)null, "/org/arakhne/vmutil/test.txt"); //$NON-NLS-1$
+		is = Resources.getResourceAsStream((Class<?>)null, TEST_NAME_1);
 		try {
 			assertNull(is);
 		}
@@ -201,7 +207,7 @@ public class ResourcesTest extends TestCase {
 			if (is!=null) is.close();
 		}
 
-		is = Resources.getResourceAsStream((Class<?>)null, "org/arakhne/vmutil/test.txt"); //$NON-NLS-1$
+		is = Resources.getResourceAsStream((Class<?>)null, TEST_NAME_2);
 		try {
 			assertNull(is);
 		}
@@ -209,7 +215,7 @@ public class ResourcesTest extends TestCase {
 			if (is!=null) is.close();
 		}
 
-		is = Resources.getResourceAsStream((Class<?>)null, "test.txt"); //$NON-NLS-1$
+		is = Resources.getResourceAsStream((Class<?>)null, TEST_NAME_3);
 		try {
 			assertNull(is);
 		}
@@ -223,10 +229,10 @@ public class ResourcesTest extends TestCase {
 	 */
 	public static void testGetResourceAsStreamPackageString() throws IOException {
 		ClassLoader l = ResourcesTest.class.getClassLoader();
-		Package p = Package.getPackage("org.arakhne.vmutil"); //$NON-NLS-1$
+		Package p = Package.getPackage(PACKAGE_NAME);
 		assertNull(Resources.getResourceAsStream(ResourcesTest.class, null));
 
-		InputStream is = Resources.getResourceAsStream(l, p, "/org/arakhne/vmutil/test.txt"); //$NON-NLS-1$
+		InputStream is = Resources.getResourceAsStream(l, p, TEST_NAME_1);
 		try {
 			assertNull(is);
 		}
@@ -234,7 +240,7 @@ public class ResourcesTest extends TestCase {
 			if (is!=null) is.close();
 		}
 
-		is = Resources.getResourceAsStream(l, p, "org/arakhne/vmutil/test.txt"); //$NON-NLS-1$
+		is = Resources.getResourceAsStream(l, p, TEST_NAME_2);
 		try {
 			assertNull(is);
 		}
@@ -242,7 +248,7 @@ public class ResourcesTest extends TestCase {
 			if (is!=null) is.close();
 		}
 
-		is = Resources.getResourceAsStream(l, p, "/test.txt"); //$NON-NLS-1$
+		is = Resources.getResourceAsStream(l, p, TEST_NAME_3);
 		try {
 			assertNotNull(is);
 		}
@@ -250,7 +256,7 @@ public class ResourcesTest extends TestCase {
 			if (is!=null) is.close();
 		}
 
-		is = Resources.getResourceAsStream(l, p, "test.txt"); //$NON-NLS-1$
+		is = Resources.getResourceAsStream(l, p, TEST_NAME_4);
 		try {
 			assertNotNull(is);
 		}
@@ -260,7 +266,7 @@ public class ResourcesTest extends TestCase {
 
 		assertNull(Resources.getResourceAsStream(l, (Package)null, null));
 
-		is = Resources.getResourceAsStream(l, (Package)null, "/org/arakhne/vmutil/test.txt"); //$NON-NLS-1$
+		is = Resources.getResourceAsStream(l, (Package)null, TEST_NAME_1);
 		try {
 			assertNull(is);
 		}
@@ -268,7 +274,7 @@ public class ResourcesTest extends TestCase {
 			if (is!=null) is.close();
 		}
 
-		is = Resources.getResourceAsStream(l, (Package)null, "org/arakhne/vmutil/test.txt"); //$NON-NLS-1$
+		is = Resources.getResourceAsStream(l, (Package)null, TEST_NAME_2);
 		try {
 			assertNull(is);
 		}
@@ -276,7 +282,7 @@ public class ResourcesTest extends TestCase {
 			if (is!=null) is.close();
 		}
 
-		is = Resources.getResourceAsStream(l, (Package)null, "test.txt"); //$NON-NLS-1$
+		is = Resources.getResourceAsStream(l, (Package)null, TEST_NAME_3);
 		try {
 			assertNull(is);
 		}
@@ -291,7 +297,7 @@ public class ResourcesTest extends TestCase {
 	public static void testGetResourceAsStreamClassLoaderString() throws IOException {
 		assertNull(Resources.getResourceAsStream(ResourcesTest.class.getClassLoader(), null));
 
-		InputStream is = Resources.getResourceAsStream(ResourcesTest.class.getClassLoader(), "/org/arakhne/vmutil/test.txt"); //$NON-NLS-1$
+		InputStream is = Resources.getResourceAsStream(ResourcesTest.class.getClassLoader(), TEST_NAME_1);
 		try {
 			assertNotNull(is);
 		}
@@ -299,7 +305,7 @@ public class ResourcesTest extends TestCase {
 			if (is!=null) is.close();
 		}
 
-		is = Resources.getResourceAsStream(ResourcesTest.class.getClassLoader(), "org/arakhne/vmutil/test.txt"); //$NON-NLS-1$
+		is = Resources.getResourceAsStream(ResourcesTest.class.getClassLoader(), TEST_NAME_2);
 		try {
 			assertNotNull(is);
 		}
@@ -309,7 +315,7 @@ public class ResourcesTest extends TestCase {
 
 		assertNull(Resources.getResourceAsStream((ClassLoader)null, null));
 
-		is = Resources.getResourceAsStream((ClassLoader)null, "/org/arakhne/vmutil/test.txt"); //$NON-NLS-1$
+		is = Resources.getResourceAsStream((ClassLoader)null, TEST_NAME_1);
 		try {
 			assertNotNull(is);
 		}
@@ -317,7 +323,7 @@ public class ResourcesTest extends TestCase {
 			if (is!=null) is.close();
 		}
 
-		is = Resources.getResourceAsStream((ClassLoader)null, "org/arakhne/vmutil/test.txt"); //$NON-NLS-1$
+		is = Resources.getResourceAsStream((ClassLoader)null, TEST_NAME_2);
 		try {
 			assertNotNull(is);
 		}

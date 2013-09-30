@@ -57,21 +57,21 @@ public class FileSystemTest extends TestCase {
 	private static final String PARENT_TEST_URL1 = "http://toto:titi@www.arakhne.org/path/to/"; //$NON-NLS-1$
 	private static final String WOEXT_TEST_URL1 = "http://toto:titi@www.arakhne.org/path/to/file.x.z?toto#frag"; //$NON-NLS-1$
 	private static final String REPEXT_TEST_URL1 = "http://toto:titi@www.arakhne.org/path/to/file.x.z.toto?toto#frag"; //$NON-NLS-1$
-	private static final String TEST_URL2 = "jar:file:/home/test/j.jar!/org/arakhne/vmutil/file.x.z.z"; //$NON-NLS-1$
-	private static final String PARENT_TEST_URL2 = "jar:file:/home/test/j.jar!/org/arakhne/vmutil/"; //$NON-NLS-1$
-	private static final String JOIN_TEST_URL2 = "jar:file:/home/test/j.jar!/org/arakhne/vmutil/file.x.z.z/home/test.x.z.z"; //$NON-NLS-1$
-	private static final String WOEXT_TEST_URL2 = "jar:file:/home/test/j.jar!/org/arakhne/vmutil/file.x.z"; //$NON-NLS-1$
-	private static final String REPEXT_TEST_URL2 = "jar:file:/home/test/j.jar!/org/arakhne/vmutil/file.x.z.toto"; //$NON-NLS-1$
+	private static final String TEST_URL2 = "jar:file:/home/test/j.jar!/org/arakhne/afc/vmutil/file.x.z.z"; //$NON-NLS-1$
+	private static final String PARENT_TEST_URL2 = "jar:file:/home/test/j.jar!/org/arakhne/afc/vmutil/"; //$NON-NLS-1$
+	private static final String JOIN_TEST_URL2 = "jar:file:/home/test/j.jar!/org/arakhne/afc/vmutil/file.x.z.z/home/test.x.z.z"; //$NON-NLS-1$
+	private static final String WOEXT_TEST_URL2 = "jar:file:/home/test/j.jar!/org/arakhne/afc/vmutil/file.x.z"; //$NON-NLS-1$
+	private static final String REPEXT_TEST_URL2 = "jar:file:/home/test/j.jar!/org/arakhne/afc/vmutil/file.x.z.toto"; //$NON-NLS-1$
 	private static final String JARPART_TEST_URL2 = "file:/home/test/j.jar"; //$NON-NLS-1$
 	private static final File f3 = new File("/home/test/j.jar"); //$NON-NLS-1$
-	private static final File f4 = new File("/org/arakhne/vmutil/file.x.z.z"); //$NON-NLS-1$
-	private static final String TEST_URL3 = "jar:jar:http://www.arakhne.org/j.jar!/inner/myjar.jar!/org/arakhne/vmutil/file.x.z.z"; //$NON-NLS-1$
-	private static final String PARENT_TEST_URL3 = "jar:jar:http://www.arakhne.org/j.jar!/inner/myjar.jar!/org/arakhne/vmutil/"; //$NON-NLS-1$
+	private static final File f4 = new File("/org/arakhne/afc/vmutil/file.x.z.z"); //$NON-NLS-1$
+	private static final String TEST_URL3 = "jar:jar:http://www.arakhne.org/j.jar!/inner/myjar.jar!/org/arakhne/afc/vmutil/file.x.z.z"; //$NON-NLS-1$
+	private static final String PARENT_TEST_URL3 = "jar:jar:http://www.arakhne.org/j.jar!/inner/myjar.jar!/org/arakhne/afc/vmutil/"; //$NON-NLS-1$
 	private static final String JARPART_TEST_URL3 = "jar:http://www.arakhne.org/j.jar!/inner/myjar.jar"; //$NON-NLS-1$
-	private static final String JOIN_TEST_URL3 = "jar:jar:http://www.arakhne.org/j.jar!/inner/myjar.jar!/org/arakhne/vmutil/file.x.z.z/home/test.x.z.z"; //$NON-NLS-1$
+	private static final String JOIN_TEST_URL3 = "jar:jar:http://www.arakhne.org/j.jar!/inner/myjar.jar!/org/arakhne/afc/vmutil/file.x.z.z/home/test.x.z.z"; //$NON-NLS-1$
 	private static final String JARJAR_TEST_URL1 = "jar:file:/home/test/j.jar!/inner/myjar.jar"; //$NON-NLS-1$
-	private static final String JARJAR_TEST_URL2 = "/org/arakhne/vmutil/file.x.z.z/home/test.x.z.z"; //$NON-NLS-1$
-	private static final String JARJAR_TEST_URL3 = "jar:jar:file:/home/test/j.jar!/inner/myjar.jar!/org/arakhne/vmutil/file.x.z.z/home/test.x.z.z"; //$NON-NLS-1$
+	private static final String JARJAR_TEST_URL2 = "/org/arakhne/afc/vmutil/file.x.z.z/home/test.x.z.z"; //$NON-NLS-1$
+	private static final String JARJAR_TEST_URL3 = "jar:jar:file:/home/test/j.jar!/inner/myjar.jar!/org/arakhne/afc/vmutil/file.x.z.z/home/test.x.z.z"; //$NON-NLS-1$
 
 	private static final String STRING_WITH_SPACE = "/the path/to/file with space.toto"; //$NON-NLS-1$
 	private static final URL URL_WITH_SPACE;
@@ -649,6 +649,7 @@ public class FileSystemTest extends TestCase {
 					"", //$NON-NLS-1$
 					"org", //$NON-NLS-1$
 					"arakhne", //$NON-NLS-1$
+					"afc", //$NON-NLS-1$
 					"vmutil", //$NON-NLS-1$
 					"file.x.z.z", //$NON-NLS-1$
 				},
@@ -660,6 +661,7 @@ public class FileSystemTest extends TestCase {
 					"", //$NON-NLS-1$
 					"org", //$NON-NLS-1$
 					"arakhne", //$NON-NLS-1$
+					"afc", //$NON-NLS-1$
 					"vmutil", //$NON-NLS-1$
 					"file.x.z.z", //$NON-NLS-1$
 				},
@@ -936,10 +938,10 @@ public class FileSystemTest extends TestCase {
 				 FileSystem.convertStringToURL("file:./toto", false)); //$NON-NLS-1$
 
 		// CAUTION: testing right-formed jar URL.
-		assertEquals(new URL("jar", "", "file:/home/test/j.jar!/org/arakhne/vmutil/ff.properties"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-				FileSystem.convertStringToURL("jar:file:/home/test/j.jar!/org/arakhne/vmutil/ff.properties", true)); //$NON-NLS-1$
-		assertEquals(new URL("jar", "", "file:/home/test/j.jar!/org/arakhne/vmutil/ff.properties"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-				FileSystem.convertStringToURL("jar:file:/home/test/j.jar!/org/arakhne/vmutil/ff.properties", false)); //$NON-NLS-1$
+		assertEquals(new URL("jar", "", "file:/home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				FileSystem.convertStringToURL("jar:file:/home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties", true)); //$NON-NLS-1$
+		assertEquals(new URL("jar", "", "file:/home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				FileSystem.convertStringToURL("jar:file:/home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties", false)); //$NON-NLS-1$
 
 		// CAUTION: testing malformed jar URL. Right syntax is: jar:{url}!/{entry}
 		assertEquals(new URL("file", "", "/home/test/j.jar"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -948,35 +950,35 @@ public class FileSystemTest extends TestCase {
 				FileSystem.convertStringToURL("jar:/home/test/j.jar", false)); //$NON-NLS-1$
 
 		// CAUTION: testing malformed jar URL. Right syntax is: jar:{url}!/{entry}
-		assertEquals(new URL("jar", "", "file:/home/test/j.jar!/org/arakhne/vmutil/ff.properties"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-				FileSystem.convertStringToURL("jar:/home/test/j.jar!/org/arakhne/vmutil/ff.properties", true)); //$NON-NLS-1$
-		assertEquals(new URL("jar", "", "file:/home/test/j.jar!/org/arakhne/vmutil/ff.properties"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-				FileSystem.convertStringToURL("jar:/home/test/j.jar!/org/arakhne/vmutil/ff.properties", false)); //$NON-NLS-1$
+		assertEquals(new URL("jar", "", "file:/home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				FileSystem.convertStringToURL("jar:/home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties", true)); //$NON-NLS-1$
+		assertEquals(new URL("jar", "", "file:/home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				FileSystem.convertStringToURL("jar:/home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties", false)); //$NON-NLS-1$
 		
-		URL testResource = Resources.getResource("/org/arakhne/vmutil/test.txt"); //$NON-NLS-1$
+		URL testResource = Resources.getResource("/org/arakhne/afc/vmutil/test.txt"); //$NON-NLS-1$
 		assertNotNull(testResource);
-		URL testResourceFileRel = new URL("file","", "org/arakhne/vmutil/test.txt"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		URL testResourceFileAbs = new File("/org/arakhne/vmutil/test.txt").toURI().toURL(); //$NON-NLS-1$
+		URL testResourceFileRel = new URL("file","", "org/arakhne/afc/vmutil/test.txt"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		URL testResourceFileAbs = new File("/org/arakhne/afc/vmutil/test.txt").toURI().toURL(); //$NON-NLS-1$
 		
 		assertEquals(testResource,
-				 FileSystem.convertStringToURL("resource:/org/arakhne/vmutil/test.txt", true)); //$NON-NLS-1$
+				 FileSystem.convertStringToURL("resource:/org/arakhne/afc/vmutil/test.txt", true)); //$NON-NLS-1$
 		assertEquals(null,
-				 FileSystem.convertStringToURL("resource:/org/arakhne/vmutil/test.txt", false)); //$NON-NLS-1$
+				 FileSystem.convertStringToURL("resource:/org/arakhne/afc/vmutil/test.txt", false)); //$NON-NLS-1$
 
 		assertEquals(testResource,
-				 FileSystem.convertStringToURL("resource:org/arakhne/vmutil/test.txt", true)); //$NON-NLS-1$
+				 FileSystem.convertStringToURL("resource:org/arakhne/afc/vmutil/test.txt", true)); //$NON-NLS-1$
 		assertEquals(null,
-				 FileSystem.convertStringToURL("resource:org/arakhne/vmutil/test.txt", false)); //$NON-NLS-1$
+				 FileSystem.convertStringToURL("resource:org/arakhne/afc/vmutil/test.txt", false)); //$NON-NLS-1$
 
 		assertEquals(testResource,
-				 FileSystem.convertStringToURL("/org/arakhne/vmutil/test.txt", true)); //$NON-NLS-1$
+				 FileSystem.convertStringToURL("/org/arakhne/afc/vmutil/test.txt", true)); //$NON-NLS-1$
 		assertEquals(testResourceFileAbs,
-				 FileSystem.convertStringToURL("/org/arakhne/vmutil/test.txt", false)); //$NON-NLS-1$
+				 FileSystem.convertStringToURL("/org/arakhne/afc/vmutil/test.txt", false)); //$NON-NLS-1$
 
 		assertEquals(testResource,
-				 FileSystem.convertStringToURL("org/arakhne/vmutil/test.txt", true)); //$NON-NLS-1$
+				 FileSystem.convertStringToURL("org/arakhne/afc/vmutil/test.txt", true)); //$NON-NLS-1$
 		assertEquals(testResourceFileRel,
-				 FileSystem.convertStringToURL("org/arakhne/vmutil/test.txt", false)); //$NON-NLS-1$
+				 FileSystem.convertStringToURL("org/arakhne/afc/vmutil/test.txt", false)); //$NON-NLS-1$
 
 		assertEquals(new URL("file:"+STRING_WITH_SPACE),  //$NON-NLS-1$
 				FileSystem.convertStringToURL(STRING_WITH_SPACE, false));
@@ -1079,14 +1081,14 @@ public class FileSystemTest extends TestCase {
 		assertEquals(new URL("ftp://www.arakhne.org/./toto"), //$NON-NLS-1$
 				FileSystem.makeAbsolute(new URL("ftp://www.arakhne.org/./toto"), root)); //$NON-NLS-1$
 
-		assertEquals(new URL("jar:file:/home/test/j.jar!/org/arakhne/vmutil/ff.properties"), //$NON-NLS-1$
-				FileSystem.makeAbsolute(new URL("jar:file:/home/test/j.jar!/org/arakhne/vmutil/ff.properties"), (File)null)); //$NON-NLS-1$
-		assertEquals(new URL("jar:file:home/test/j.jar!/org/arakhne/vmutil/ff.properties"), //$NON-NLS-1$
-				FileSystem.makeAbsolute(new URL("jar:file:home/test/j.jar!/org/arakhne/vmutil/ff.properties"), (File)null)); //$NON-NLS-1$
-		assertEquals(new URL("jar:file:/home/test/j.jar!/org/arakhne/vmutil/ff.properties"), //$NON-NLS-1$
-				FileSystem.makeAbsolute(new URL("jar:file:/home/test/j.jar!/org/arakhne/vmutil/ff.properties"), root)); //$NON-NLS-1$
-		assertEquals(new URL("jar:file:/myroot/home/test/j.jar!/org/arakhne/vmutil/ff.properties"), //$NON-NLS-1$
-				FileSystem.makeAbsolute(new URL("jar:file:home/test/j.jar!/org/arakhne/vmutil/ff.properties"), root)); //$NON-NLS-1$
+		assertEquals(new URL("jar:file:/home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties"), //$NON-NLS-1$
+				FileSystem.makeAbsolute(new URL("jar:file:/home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties"), (File)null)); //$NON-NLS-1$
+		assertEquals(new URL("jar:file:home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties"), //$NON-NLS-1$
+				FileSystem.makeAbsolute(new URL("jar:file:home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties"), (File)null)); //$NON-NLS-1$
+		assertEquals(new URL("jar:file:/home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties"), //$NON-NLS-1$
+				FileSystem.makeAbsolute(new URL("jar:file:/home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties"), root)); //$NON-NLS-1$
+		assertEquals(new URL("jar:file:/myroot/home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties"), //$NON-NLS-1$
+				FileSystem.makeAbsolute(new URL("jar:file:home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties"), root)); //$NON-NLS-1$
 	}
 
 	/**
@@ -1134,14 +1136,14 @@ public class FileSystemTest extends TestCase {
 		assertEquals(new URL("ftp://www.arakhne.org/./toto"), //$NON-NLS-1$
 				FileSystem.makeAbsolute(new URL("ftp://www.arakhne.org/./toto"), root)); //$NON-NLS-1$
 
-		assertEquals(new URL("jar:file:/home/test/j.jar!/org/arakhne/vmutil/ff.properties"), //$NON-NLS-1$
-				FileSystem.makeAbsolute(new URL("jar:file:/home/test/j.jar!/org/arakhne/vmutil/ff.properties"), (URL)null)); //$NON-NLS-1$
-		assertEquals(new URL("jar:file:home/test/j.jar!/org/arakhne/vmutil/ff.properties"), //$NON-NLS-1$
-				FileSystem.makeAbsolute(new URL("jar:file:home/test/j.jar!/org/arakhne/vmutil/ff.properties"), (URL)null)); //$NON-NLS-1$
-		assertEquals(new URL("jar:file:/home/test/j.jar!/org/arakhne/vmutil/ff.properties"), //$NON-NLS-1$
-				FileSystem.makeAbsolute(new URL("jar:file:/home/test/j.jar!/org/arakhne/vmutil/ff.properties"), root)); //$NON-NLS-1$
-		assertEquals(new URL("jar:file:/myroot/home/test/j.jar!/org/arakhne/vmutil/ff.properties"), //$NON-NLS-1$
-				FileSystem.makeAbsolute(new URL("jar:file:home/test/j.jar!/org/arakhne/vmutil/ff.properties"), root)); //$NON-NLS-1$
+		assertEquals(new URL("jar:file:/home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties"), //$NON-NLS-1$
+				FileSystem.makeAbsolute(new URL("jar:file:/home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties"), (URL)null)); //$NON-NLS-1$
+		assertEquals(new URL("jar:file:home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties"), //$NON-NLS-1$
+				FileSystem.makeAbsolute(new URL("jar:file:home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties"), (URL)null)); //$NON-NLS-1$
+		assertEquals(new URL("jar:file:/home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties"), //$NON-NLS-1$
+				FileSystem.makeAbsolute(new URL("jar:file:/home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties"), root)); //$NON-NLS-1$
+		assertEquals(new URL("jar:file:/myroot/home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties"), //$NON-NLS-1$
+				FileSystem.makeAbsolute(new URL("jar:file:home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties"), root)); //$NON-NLS-1$
 	}
 	
 	/**
@@ -1189,14 +1191,14 @@ public class FileSystemTest extends TestCase {
 		assertEquals(new URL("ftp://www.arakhne.org/./toto"), //$NON-NLS-1$
 				FileSystem.makeAbsolute(new URL("ftp://www.arakhne.org/./toto"), root)); //$NON-NLS-1$
 
-		assertEquals(new URL("jar:file:/home/test/j.jar!/org/arakhne/vmutil/ff.properties"), //$NON-NLS-1$
-				FileSystem.makeAbsolute(new URL("jar:file:/home/test/j.jar!/org/arakhne/vmutil/ff.properties"), (URL)null)); //$NON-NLS-1$
-		assertEquals(new URL("jar:file:home/test/j.jar!/org/arakhne/vmutil/ff.properties"), //$NON-NLS-1$
-				FileSystem.makeAbsolute(new URL("jar:file:home/test/j.jar!/org/arakhne/vmutil/ff.properties"), (URL)null)); //$NON-NLS-1$
-		assertEquals(new URL("jar:file:/home/test/j.jar!/org/arakhne/vmutil/ff.properties"), //$NON-NLS-1$
-				FileSystem.makeAbsolute(new URL("jar:file:/home/test/j.jar!/org/arakhne/vmutil/ff.properties"), root)); //$NON-NLS-1$
-		assertEquals(new URL("jar:http://maven.arakhne.org/home/test/j.jar!/org/arakhne/vmutil/ff.properties"), //$NON-NLS-1$
-				FileSystem.makeAbsolute(new URL("jar:file:home/test/j.jar!/org/arakhne/vmutil/ff.properties"), root)); //$NON-NLS-1$
+		assertEquals(new URL("jar:file:/home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties"), //$NON-NLS-1$
+				FileSystem.makeAbsolute(new URL("jar:file:/home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties"), (URL)null)); //$NON-NLS-1$
+		assertEquals(new URL("jar:file:home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties"), //$NON-NLS-1$
+				FileSystem.makeAbsolute(new URL("jar:file:home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties"), (URL)null)); //$NON-NLS-1$
+		assertEquals(new URL("jar:file:/home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties"), //$NON-NLS-1$
+				FileSystem.makeAbsolute(new URL("jar:file:/home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties"), root)); //$NON-NLS-1$
+		assertEquals(new URL("jar:http://maven.arakhne.org/home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties"), //$NON-NLS-1$
+				FileSystem.makeAbsolute(new URL("jar:file:home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties"), root)); //$NON-NLS-1$
 	}
 
 	/**
@@ -1370,8 +1372,8 @@ public class FileSystemTest extends TestCase {
 		try {
 			File f1 = new File("/toto"); //$NON-NLS-1$
 			URL u1 = f1.toURI().toURL();
-			URL u2 = Resources.getResource("org/arakhne/vmutil/test.txt"); //$NON-NLS-1$
-			URL u2e = new URL("resource:org/arakhne/vmutil/test.txt"); //$NON-NLS-1$
+			URL u2 = Resources.getResource("org/arakhne/afc/vmutil/test.txt"); //$NON-NLS-1$
+			URL u2e = new URL("resource:org/arakhne/afc/vmutil/test.txt"); //$NON-NLS-1$
 			File f2 = FileSystem.convertURLToFile(u2);
 			
 			URL actual;
@@ -1398,8 +1400,8 @@ public class FileSystemTest extends TestCase {
 		try {
 			File f1 = new File("/toto"); //$NON-NLS-1$
 			URL u1 = f1.toURI().toURL();
-			URL u2 = Resources.getResource("org/arakhne/vmutil/test.txt"); //$NON-NLS-1$
-			URL u2e = new URL("resource:org/arakhne/vmutil/test.txt"); //$NON-NLS-1$
+			URL u2 = Resources.getResource("org/arakhne/afc/vmutil/test.txt"); //$NON-NLS-1$
+			URL u2e = new URL("resource:org/arakhne/afc/vmutil/test.txt"); //$NON-NLS-1$
 			
 			URL actual;
 			
@@ -1556,11 +1558,11 @@ public class FileSystemTest extends TestCase {
 				FileSystem.makeCanonicalURL(new URL(TEST_URL1)));
 
 		assertEquals(
-				new URL("jar:file:/home/test/j.jar!/org/arakhne/vmutil/file.x.z.z"), //$NON-NLS-1$
+				new URL("jar:file:/home/test/j.jar!/org/arakhne/afc/vmutil/file.x.z.z"), //$NON-NLS-1$
 				FileSystem.makeCanonicalURL(new URL(TEST_URL2)));
 
 		assertEquals(
-				new URL("jar:jar:http://www.arakhne.org/j.jar!/inner/myjar.jar!/org/arakhne/vmutil/file.x.z.z"), //$NON-NLS-1$
+				new URL("jar:jar:http://www.arakhne.org/j.jar!/inner/myjar.jar!/org/arakhne/afc/vmutil/file.x.z.z"), //$NON-NLS-1$
 				FileSystem.makeCanonicalURL(new URL(TEST_URL3)));
 		
 		assertEquals(
