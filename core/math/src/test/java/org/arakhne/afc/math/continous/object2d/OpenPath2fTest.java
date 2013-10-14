@@ -111,7 +111,7 @@ public class OpenPath2fTest extends AbstractPath2fTestCase {
 	/**
 	 */
 	@Override
-	public void testGetClosestPointTo() {
+	public void testGetClosestPointToPoint2D() {
 		Point2D p;
 
 		p = this.r.getClosestPointTo(new Point2f(0f, 0f));
@@ -131,6 +131,28 @@ public class OpenPath2fTest extends AbstractPath2fTestCase {
 		assertEpsilonEquals(1f, p.getY());
 	}
 
+	/**
+	 */
+	@Override
+	public void testGetClosestPointToPathIterator2fFloatFloat() {
+		Point2D p;
+
+		p = Path2f.getClosestPointTo(this.r.getPathIterator(), 0f, 0f);
+		assertEpsilonEquals(1f, p.getX());
+		assertEpsilonEquals(1f, p.getY());
+
+		p = Path2f.getClosestPointTo(this.r.getPathIterator(), 4f, 0f);
+		assertEpsilonEquals(3f, p.getX());
+		assertEpsilonEquals(1.25f, p.getY());
+
+		p = Path2f.getClosestPointTo(this.r.getPathIterator(), 4f, 2f);
+		assertEpsilonEquals(4.28125f, p.getX());
+		assertEpsilonEquals(2.11724f, p.getY());
+
+		p = Path2f.getClosestPointTo(this.r.getPathIterator(), 1f, 0f);
+		assertEpsilonEquals(1f, p.getX());
+		assertEpsilonEquals(1f, p.getY());
+	}
 
 	@Override
 	public void testDistancePoint2D() {

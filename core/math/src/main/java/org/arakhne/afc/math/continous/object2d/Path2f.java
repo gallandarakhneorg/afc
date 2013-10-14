@@ -29,6 +29,7 @@ import java.util.NoSuchElementException;
 
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
+import org.arakhne.afc.math.generic.Path2D;
 import org.arakhne.afc.math.generic.PathElementType;
 import org.arakhne.afc.math.generic.PathWindingRule;
 import org.arakhne.afc.math.generic.Point2D;
@@ -42,13 +43,94 @@ import org.arakhne.afc.math.matrix.Transform2D;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class Path2f extends AbstractShape2f<Path2f> {
+public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Rectangle2f,PathElement2f,PathIterator2f> {
 
 	private static final long serialVersionUID = -873231223923726975L;
 
 	/** Multiple of cubic & quad curve size.
 	 */
 	static final int GROW_SIZE = 24;
+
+	/** Replies the point on the path that is closest to the given point.
+	 * 
+	 * @param pi is the iterator on the elements of the path.
+	 * @param x
+	 * @param y
+	 * @return the closest point on the shape; or the point itself
+	 * if it is inside the shape.
+	 */
+	public static Point2D getClosestPointTo(PathIterator2f pi, float x, float y) {
+		Point2D closest = null;
+		float bestDist = Float.POSITIVE_INFINITY;
+		Point2D candidate;
+		PathElement2f pe;
+
+		int mask = (pi.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 1);
+		int crossings = 0;
+
+		while (pi.hasNext()) {
+			pe = pi.next();
+
+			candidate = null;
+
+			switch(pe.type) {
+			case MOVE_TO:
+				candidate = new Point2f(pe.toX, pe.toY);
+				break;
+			case LINE_TO:
+			{
+				float factor =  MathUtil.projectsPointOnLine(
+						x, y,
+						pe.fromX, pe.fromY, pe.toX, pe.toY);
+				factor = MathUtil.clamp(factor, 0f, 1f);
+				Vector2f v = new Vector2f(pe.toX, pe.toY);
+				v.sub(pe.fromX, pe.fromY);
+				v.scale(factor);
+				candidate = new Point2f(
+						pe.fromX + v.getX(),
+						pe.fromY + v.getY());
+				crossings += Segment2f.computeCrossingsFromPoint(
+						x, y,
+						pe.fromX, pe.fromY, pe.toX, pe.toY);
+				break;
+			}
+			case CLOSE:
+				crossings += Segment2f.computeCrossingsFromPoint(
+						x, y,
+						pe.fromX, pe.fromY, pe.toX, pe.toY);
+				if ((crossings & mask) != 0) return new Point2f(x, y);
+
+				if (!pe.isEmpty()) {
+					float factor =  MathUtil.projectsPointOnLine(
+							x, y,
+							pe.fromX, pe.fromY, pe.toX, pe.toY);
+					factor = MathUtil.clamp(factor, 0f, 1f);
+					Vector2f v = new Vector2f(pe.toX, pe.toY);
+					v.sub(pe.fromX, pe.fromY);
+					v.scale(factor);
+					candidate = new Point2f(
+							pe.fromX + v.getX(),
+							pe.fromY + v.getY());
+				}
+				crossings = 0;
+				break;
+			case QUAD_TO:
+			case CURVE_TO:
+			default:
+				throw new IllegalStateException();
+			}
+
+			if (candidate!=null) {
+				float d = candidate.distanceSquared(new Point2f(x,y));
+				if (d<bestDist) {
+					bestDist = d;
+					closest = candidate;
+				}
+			}
+		}
+
+		return closest;
+	}
 
 	/**
 	 * Tests if the specified coordinates are inside the closed
@@ -184,7 +266,7 @@ public class Path2f extends AbstractShape2f<Path2f> {
 	 * the path is open and there is not SHAPE_INTERSECT.
 	 * @return the crossing
 	 */
-	static int computeCrossingsFromPoint(
+	public static int computeCrossingsFromPoint(
 			PathIterator2f pi,
 			float px, float py,
 			boolean closeable,
@@ -338,7 +420,7 @@ public class Path2f extends AbstractShape2f<Path2f> {
 	 * the path is open and there is not SHAPE_INTERSECT.
 	 * @return the crossing or {@link MathConstants#SHAPE_INTERSECTS}
 	 */
-	static int computeCrossingsFromEllipse(
+	public static int computeCrossingsFromEllipse(
 			int crossings, 
 			PathIterator2f pi, 
 			float ex, float ey, float ew, float eh, 
@@ -492,7 +574,7 @@ public class Path2f extends AbstractShape2f<Path2f> {
 	 * the path is open and there is not SHAPE_INTERSECT.
 	 * @return the crossing
 	 */
-	static int computeCrossingsFromCircle(
+	public static int computeCrossingsFromCircle(
 			int crossings, 
 			PathIterator2f pi,
 			float cx, float cy, float radius,
@@ -646,7 +728,7 @@ public class Path2f extends AbstractShape2f<Path2f> {
 	 * @param closeable indicates if the shape is automatically closed or not.
 	 * @return the crossing
 	 */
-	static int computeCrossingsFromSegment(int crossings, PathIterator2f pi, float x1, float y1, float x2, float y2, boolean closeable) {	
+	public static int computeCrossingsFromSegment(int crossings, PathIterator2f pi, float x1, float y1, float x2, float y2, boolean closeable) {	
 		// Copied from the AWT API
 		if (!pi.hasNext() || crossings==MathConstants.SHAPE_INTERSECTS) return crossings;
 		PathElement2f element;
@@ -806,7 +888,7 @@ public class Path2f extends AbstractShape2f<Path2f> {
 	 * the path is open and there is not SHAPE_INTERSECT.
 	 * @return the crossings.
 	 */
-	static int computeCrossingsFromRect(PathIterator2f pi,
+	public static int computeCrossingsFromRect(PathIterator2f pi,
 			float rxmin, float rymin,
 			float rxmax, float rymax,
 			boolean closeable,
@@ -1042,10 +1124,7 @@ public class Path2f extends AbstractShape2f<Path2f> {
 		return clone;
 	}
 
-	/** Replies the winding rule for the path.
-	 * 
-	 * @return the winding rule for the path.
-	 */
+	@Override
 	public PathWindingRule getWindingRule() {
 		return this.windingRule;
 	}
@@ -1211,26 +1290,7 @@ public class Path2f extends AbstractShape2f<Path2f> {
 		}
 	}
 
-	/** Replies an iterator on the path elements.
-	 * <p>
-	 * Only {@link PathElementType#MOVE_TO},
-	 * {@link PathElementType#LINE_TO}, and 
-	 * {@link PathElementType#CLOSE} types are returned by the iterator.
-	 * <p>
-	 * The amount of subdivision of the curved segments is controlled by the 
-	 * flatness parameter, which specifies the maximum distance that any point 
-	 * on the unflattened transformed curve can deviate from the returned
-	 * flattened path segments. Note that a limit on the accuracy of the
-	 * flattened path might be silently imposed, causing very small flattening
-	 * parameters to be treated as larger values. This limit, if there is one,
-	 * is defined by the particular implementation that is used.
-	 * <p>
-	 * The iterator for this class is not multi-threaded safe.
-	 * 
-	 * @param flatness is the maximum distance that the line segments used to approximate
-	 * the curved segments are allowed to deviate from any point on the original curve.
-	 * @return an iterator on the path elements.
-	 */
+	@Override
 	public PathIterator2f getPathIterator(float flatness) {
 		return new FlatteningPathIterator(getWindingRule(), getPathIterator(null), flatness, 10);
 	}
@@ -1439,7 +1499,7 @@ public class Path2f extends AbstractShape2f<Path2f> {
 		int mask = (this.windingRule == PathWindingRule.NON_ZERO ? -1 : 2);
 		int crossings = computeCrossingsFromPath(
 				s.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
-				new PathShadow(this),
+				new PathShadow2f(this),
 				false,
 				true);
 		return (crossings == MathConstants.SHAPE_INTERSECTS ||
@@ -1451,7 +1511,7 @@ public class Path2f extends AbstractShape2f<Path2f> {
 		int mask = (this.windingRule == PathWindingRule.NON_ZERO ? -1 : 2);
 		int crossings = computeCrossingsFromPath(
 				s,
-				new PathShadow(this),
+				new PathShadow2f(this),
 				false,
 				true);
 		return (crossings == MathConstants.SHAPE_INTERSECTS ||
@@ -1478,9 +1538,9 @@ public class Path2f extends AbstractShape2f<Path2f> {
 	 * @return the crossings.
 	 * @see "Weiler–Atherton clipping algorithm"
 	 */
-	static int computeCrossingsFromPath(
+	public static int computeCrossingsFromPath(
 			PathIterator2f iterator1, 
-			PathShadow shadow,
+			PathShadow2f shadow,
 			boolean closeable,
 			boolean onlyIntersectWhenOpen) {
 		if (!iterator1.hasNext()) return 0;
@@ -1759,77 +1819,7 @@ public class Path2f extends AbstractShape2f<Path2f> {
 
 	@Override
 	public Point2D getClosestPointTo(Point2D p) {
-		Point2D closest = null;
-		float bestDist = Float.POSITIVE_INFINITY;
-		Point2D candidate;
-		PathIterator2f pi = getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO);
-		PathElement2f pe;
-
-		int mask = (pi.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 1);
-		int crossings = 0;
-
-		while (pi.hasNext()) {
-			pe = pi.next();
-
-			candidate = null;
-
-			switch(pe.type) {
-			case MOVE_TO:
-				candidate = new Point2f(pe.toX, pe.toY);
-				break;
-			case LINE_TO:
-			{
-				float factor =  MathUtil.projectsPointOnLine(
-						p.getX(), p.getY(),
-						pe.fromX, pe.fromY, pe.toX, pe.toY);
-				factor = MathUtil.clamp(factor, 0f, 1f);
-				Vector2f v = new Vector2f(pe.toX, pe.toY);
-				v.sub(pe.fromX, pe.fromY);
-				v.scale(factor);
-				candidate = new Point2f(
-						pe.fromX + v.getX(),
-						pe.fromY + v.getY());
-				crossings += Segment2f.computeCrossingsFromPoint(
-						p.getX(), p.getY(),
-						pe.fromX, pe.fromY, pe.toX, pe.toY);
-				break;
-			}
-			case CLOSE:
-				crossings += Segment2f.computeCrossingsFromPoint(
-						p.getX(), p.getY(),
-						pe.fromX, pe.fromY, pe.toX, pe.toY);
-				if ((crossings & mask) != 0) return p;
-
-				if (!pe.isEmpty()) {
-					float factor =  MathUtil.projectsPointOnLine(
-							p.getX(), p.getY(),
-							pe.fromX, pe.fromY, pe.toX, pe.toY);
-					factor = MathUtil.clamp(factor, 0f, 1f);
-					Vector2f v = new Vector2f(pe.toX, pe.toY);
-					v.sub(pe.fromX, pe.fromY);
-					v.scale(factor);
-					candidate = new Point2f(
-							pe.fromX + v.getX(),
-							pe.fromY + v.getY());
-				}
-				crossings = 0;
-				break;
-			case QUAD_TO:
-			case CURVE_TO:
-			default:
-				throw new IllegalStateException();
-			}
-
-			if (candidate!=null) {
-				float d = p.distanceSquared(candidate);
-				if (d<bestDist) {
-					bestDist = d;
-					closest = candidate;
-				}
-			}
-		}
-
-		return closest;
+		return getClosestPointTo(getPathIterator(), p.getX(), p.getY());
 	}
 
 	@Override
@@ -3045,434 +3035,6 @@ public class Path2f extends AbstractShape2f<Path2f> {
 			if (p==null)
 				throw new NoSuchElementException();
 			Path2f.this.remove(p.getX(), p.getY());
-		}
-
-	}
-
-	/** Shadow of a path.
-	 *
-	 * @author $Author: galland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 */
-	static class PathShadow {
-
-		private final Path2f path;
-		private final Rectangle2f bounds;
-
-		/**
-		 * @param path
-		 */
-		public PathShadow(Path2f path) {
-			this.path = path;
-			this.bounds = this.path.toBoundingBox();
-		}
-
-		/** Compute the crossings between this shadow and
-		 * the given segment.
-		 * 
-		 * @param crossings is the initial value of the crossings.
-		 * @param x0 is the first point of the segment.
-		 * @param y0 is the first point of the segment.
-		 * @param x1 is the second point of the segment.
-		 * @param y1 is the second point of the segment.
-		 * @return the crossings or {@link MathConstants#SHAPE_INTERSECTS}.
-		 */
-		public int computeCrossings(
-				int crossings,
-				float x0, float y0,
-				float x1, float y1) {
-			if (this.bounds==null) return crossings;
-
-			int numCrosses = 
-					Segment2f.computeCrossingsFromRect(crossings,
-							this.bounds.getMinX(),
-							this.bounds.getMinY(),
-							this.bounds.getMaxX(),
-							this.bounds.getMaxY(),
-							x0, y0, 
-							x1, y1);
-
-			if (numCrosses==MathConstants.SHAPE_INTERSECTS) {
-				// The segment is intersecting the bounds of the shadow path.
-				// We must consider the shape of shadow path now.
-				PathShadowData data = new PathShadowData(
-						this.bounds.getMaxX(),
-						this.bounds.getMinY(),
-						this.bounds.getMaxY());
-				
-				computeCrossings1(
-						this.path.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
-						x0, y0, x1, y1,
-						false,
-						data);
-				numCrosses = data.crossings;
-				
-				int mask = (this.path.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2);
-				if (numCrosses == MathConstants.SHAPE_INTERSECTS ||
-					(numCrosses & mask) != 0) {
-					// The given line is intersecting the path shape
-					return MathConstants.SHAPE_INTERSECTS;
-				}
-				
-				// There is no intersection with the shadow path's shape.
-				int inc = 0;
-				if (data.hasX4ymin && 
-					data.x4ymin>=data.xmin4ymin) {
-					++inc;
-				}
-				if (data.hasX4ymax && 
-					data.x4ymax>=data.xmin4ymax) {
-					++inc;
-				}
-
-				if (y0<y1) {
-					numCrosses += inc;
-				}
-				else {
-					numCrosses -= inc;
-				}
-				
-				// Apply the previously computed crossings
-				numCrosses += crossings;
-			}
-
-			return numCrosses;
-		}
-
-		private static void computeCrossings1(
-				PathIterator2f pi, 
-				float x1, float y1, float x2, float y2, 
-				boolean closeable, PathShadowData data) {	
-			if (!pi.hasNext() || data.crossings==MathConstants.SHAPE_INTERSECTS) return;
-			PathElement2f element;
-
-			element = pi.next();
-			if (element.type != PathElementType.MOVE_TO) {
-				throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
-			}
-
-			float movx = element.toX;
-			float movy = element.toY;
-			float curx = movx;
-			float cury = movy;
-			float endx, endy;
-			while (data.crossings!=MathConstants.SHAPE_INTERSECTS && pi.hasNext()) {
-				element = pi.next();
-				switch (element.type) {
-				case MOVE_TO:
-					movx = curx = element.toX;
-					movy = cury = element.toY;
-					break;
-				case LINE_TO:
-					endx = element.toX;
-					endy = element.toY;
-					computeCrossings2(
-							curx, cury,
-							endx, endy,
-							x1, y1, x2, y2,
-							data);
-					if (data.crossings==MathConstants.SHAPE_INTERSECTS) {
-						return;
-					}
-					curx = endx;
-					cury = endy;
-					break;
-				case QUAD_TO:
-				{
-					endx = element.toX;
-					endy = element.toY;
-					Path2f localPath = new Path2f();
-					localPath.moveTo(curx, cury);
-					localPath.quadTo(
-							element.ctrlX1, element.ctrlY1,
-							endx, endy);
-					computeCrossings1(
-							localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
-							x1, y1, x2, y2,
-							false,
-							data);
-					if (data.crossings==MathConstants.SHAPE_INTERSECTS) {
-						return;
-					}
-					curx = endx;
-					cury = endy;
-					break;
-				}
-				case CURVE_TO:
-					endx = element.toX;
-					endy = element.toY;
-					Path2f localPath = new Path2f();
-					localPath.moveTo(curx, cury);
-					localPath.curveTo(
-							element.ctrlX1, element.ctrlY1,
-							element.ctrlX2, element.ctrlY2,
-							endx, endy);
-					computeCrossings1(
-							localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
-							x1, y1, x2, y2,
-							false,
-							data);
-					if (data.crossings==MathConstants.SHAPE_INTERSECTS) {
-						return;
-					}
-					curx = endx;
-					cury = endy;
-					break;
-				case CLOSE:
-					if (cury != movy || curx != movx) {
-						computeCrossings2(
-								curx, cury,
-								movx, movy,
-								x1, y1, x2, y2,
-								data);
-					}
-					if (data.crossings!=0)	return;
-					curx = movx;
-					cury = movy;
-					break;
-				default:
-				}
-			}
-
-			assert(data.crossings!=MathConstants.SHAPE_INTERSECTS);
-
-			boolean isOpen = (curx != movx) || (cury != movy);
-
-			if (isOpen) {
-				if (closeable) {
-					computeCrossings2(
-							curx, cury,
-							movx, movy,
-							x1, y1, x2, y2,
-							data);
-				}
-				else {
-					// Assume that when is the path is open, only
-					// SHAPE_INTERSECTS may be return
-					data.crossings = 0;
-				}
-			}
-		}
-
-		private static void computeCrossings2(
-				float shadow_x0, float shadow_y0,
-				float shadow_x1, float shadow_y1,
-				float sx0, float sy0,
-				float sx1, float sy1,
-				PathShadowData data) {
-			float shadow_xmin = Math.min(shadow_x0, shadow_x1);
-			float shadow_xmax = Math.max(shadow_x0, shadow_x1);
-			float shadow_ymin = Math.min(shadow_y0, shadow_y1);
-			float shadow_ymax = Math.max(shadow_y0, shadow_y1);
-			
-			data.updateShadowLimits(shadow_x0, shadow_y0, shadow_x1, shadow_y1);
-
-			if (sy0<=shadow_ymin && sy1<=shadow_ymin) return;
-			if (sy0>=shadow_ymax && sy1>=shadow_ymax) return;
-			if (sx0<=shadow_xmin && sx1<=shadow_xmin) return;
-			if (sx0>=shadow_xmax && sx1>=shadow_xmax) {
-				float xintercept;
-				// The line is entirely at the right of the shadow
-				float alpha = (sx1 - sx0) / (sy1 - sy0);
-				if (sy0<sy1) {
-					if (sy0<=shadow_ymin) {
-						xintercept = sx0 + (shadow_ymin - sy0) * alpha;
-						data.setCrossingForYMin(xintercept, shadow_ymin);
-						++data.crossings;
-					}
-					if (sy1>=shadow_ymax) {
-						xintercept = sx0 + (shadow_ymax - sy0) * alpha;
-						data.setCrossingForYMax(xintercept, shadow_ymax);
-						++data.crossings;
-					}
-				}
-				else {
-					if (sy1<=shadow_ymin) {
-						xintercept = sx0 + (shadow_ymin - sy0) * alpha;
-						data.setCrossingForYMin(xintercept, shadow_ymin);
-						--data.crossings;
-					}
-					if (sy0>=shadow_ymax) {
-						xintercept = sx0 + (shadow_ymax - sy0) * alpha;
-						data.setCrossingForYMax(xintercept, shadow_ymax);
-						--data.crossings;
-					}
-				}
-			}
-			else if (Segment2f.intersectsSegmentSegmentWithoutEnds(
-					shadow_x0, shadow_y0, shadow_x1, shadow_y1,
-					sx0, sy0, sx1, sy1)) {
-				data.crossings = MathConstants.SHAPE_INTERSECTS;
-			}
-			else {
-				int side1, side2;
-				boolean isUp = (shadow_y0<=shadow_y1);
-				if (isUp) {
-					side1 = MathUtil.sidePointLine(
-							shadow_x0, shadow_y0,
-							shadow_x1, shadow_y1,
-							sx0, sy0, false);
-					side2 = MathUtil.sidePointLine(
-							shadow_x0, shadow_y0,
-							shadow_x1, shadow_y1,
-							sx1, sy1, false);
-				}
-				else {
-					side1 = MathUtil.sidePointLine(
-							shadow_x1, shadow_y1,
-							shadow_x0, shadow_y0,
-							sx0, sy0, false);
-					side2 = MathUtil.sidePointLine(
-							shadow_x1, shadow_y1,
-							shadow_x0, shadow_y0,
-							sx1, sy1, false);
-				}
-				if (side1>0 || side2>0) {
-					computeCrossings3(
-							shadow_x0, shadow_y0,
-							sx0, sy0, sx1, sy1,
-							data, isUp);
-					computeCrossings3(
-							shadow_x1, shadow_y1,
-							sx0, sy0, sx1, sy1,
-							data, !isUp);
-				}
-			}
-		}
-
-		private static void computeCrossings3(
-				float shadowx, float shadowy,
-				float sx0, float sy0,
-				float sx1, float sy1,
-				PathShadowData data,
-				boolean isUp) {
-			if (shadowy <  sy0 && shadowy <  sy1) return;
-			if (shadowy > sy0 && shadowy > sy1) return;
-			if (shadowx > sx0 && shadowx > sx1) return;
-			float xintercept = sx0 + (shadowy - sy0) * (sx1 - sx0) / (sy1 - sy0);
-			if (shadowx > xintercept) return;
-			if (isUp) {
-				data.setCrossingForYMax(xintercept, shadowy);
-			}
-			else {
-				data.setCrossingForYMin(xintercept, shadowy);
-			}
-			data.crossings += (sy0 < sy1) ? 1 : -1;
-		}
-
-	} // class PathShadow
-
-	/** 
-	 * @author $Author: galland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 */
-	private static class PathShadowData {
-
-		public int crossings = 0;
-		public boolean hasX4ymin = false;
-		public boolean hasX4ymax = false;
-		public float x4ymin;
-		public float x4ymax;
-		public float xmin4ymin;
-		public float xmin4ymax;
-		public float ymin;
-		public float ymax;
-		
-		@Override
-		public String toString() {
-			StringBuilder b = new StringBuilder();
-			b.append("SHADOW {\n\tlow: ( "); //$NON-NLS-1$
-			b.append(this.xmin4ymin);
-			b.append(" | "); //$NON-NLS-1$
-			b.append(this.ymin);
-			b.append(" )\n\thigh: ( "); //$NON-NLS-1$
-			b.append(this.xmin4ymax);
-			b.append(" | "); //$NON-NLS-1$
-			b.append(this.ymax);
-			b.append(")\n}\nCROSSINGS {\n\tcrossings="); //$NON-NLS-1$
-			b.append(this.crossings);
-			b.append("\n\tlow: "); //$NON-NLS-1$
-			if (this.hasX4ymin) {
-				b.append("( "); //$NON-NLS-1$
-				b.append(this.x4ymin);
-				b.append(" | "); //$NON-NLS-1$
-				b.append(this.ymin);
-				b.append(" )\n"); //$NON-NLS-1$
-			}
-			else {
-				b.append("none\n"); //$NON-NLS-1$
-			}
-			b.append("\thigh: "); //$NON-NLS-1$
-			if (this.hasX4ymax) {
-				b.append("( "); //$NON-NLS-1$
-				b.append(this.x4ymax);
-				b.append(" | "); //$NON-NLS-1$
-				b.append(this.ymax);
-				b.append(" )\n"); //$NON-NLS-1$
-			}
-			else {
-				b.append("none\n"); //$NON-NLS-1$
-			}
-			b.append("}\n"); //$NON-NLS-1$
-			return b.toString();
-		}
-		
-		public PathShadowData(float xmax, float miny, float maxy) {
-			this.x4ymin = this.x4ymax = xmax;
-			this.xmin4ymax = this.xmin4ymin = xmax;
-			this.ymin = miny;
-			this.ymax = maxy;
-		}
-		
-		public void setCrossingForYMax(float x, float y) {
-			if (y>=this.ymax) {
-				if (x<this.x4ymax) {
-					this.x4ymax = x;
-					this.hasX4ymax = true;
-				}
-			}
-		}
-		
-		public void setCrossingForYMin(float x, float y) {
-			if (y<=this.ymin) {
-				if (x<this.x4ymin) {
-					this.x4ymin = x;
-					this.hasX4ymin = true;
-				}
-			}
-		}
-
-		public void updateShadowLimits(float shadow_x0, float shadow_y0, float shadow_x1, float shadow_y1) {
-			float xl, yl;
-			float xh, yh;
-			if (shadow_y0<shadow_y1) {
-				xl = shadow_x0;
-				yl = shadow_y0;
-				xh = shadow_x1;
-				yh = shadow_y1;
-			}
-			else if (shadow_y1<shadow_y0) {
-				xl = shadow_x1;
-				yl = shadow_y1;
-				xh = shadow_x0;
-				yh = shadow_y0;
-			}
-			else {
-				xl = xh = Math.min(shadow_x0, shadow_x1);
-				yl = yh = shadow_y0;
-			}
-
-			if (yl<=this.ymin && xl<this.xmin4ymin) {
-				this.xmin4ymin = xl;
-			}
-			
-			if (yh>=this.ymax && xh<this.xmin4ymax) {
-				this.xmin4ymax = xh;
-			}
 		}
 
 	}

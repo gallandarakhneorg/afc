@@ -142,7 +142,11 @@ public abstract class AbstractPath2fTestCase extends AbstractShape2fTestCase<Pat
 	
 	/**
 	 */
-	public abstract void testGetClosestPointTo();	
+	public abstract void testGetClosestPointToPoint2D();	
+
+	/**
+	 */
+	public abstract void testGetClosestPointToPathIterator2fFloatFloat();	
 
 	/**
 	 */
