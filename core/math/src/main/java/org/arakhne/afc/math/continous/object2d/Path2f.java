@@ -50,8 +50,14 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Rectangle2
 	/** Multiple of cubic & quad curve size.
 	 */
 	static final int GROW_SIZE = 24;
-
+	
 	/** Replies the point on the path that is closest to the given point.
+	 * <p>
+	 * <strong>CAUTION:</strong> This function works only on path iterators
+	 * that are replying polyline primitives, ie. if the
+	 * {@link PathIterator2f#isPolyline()} of <var>pi</var> is replying
+	 * <code>true</code>.
+	 * {@link #getClosestPointTo(Point2D)} avoids this restriction.
 	 * 
 	 * @param pi is the iterator on the elements of the path.
 	 * @param x
@@ -117,7 +123,8 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Rectangle2
 			case QUAD_TO:
 			case CURVE_TO:
 			default:
-				throw new IllegalStateException();
+				throw new IllegalStateException(
+						pe.type==null ? null : pe.type.toString());
 			}
 
 			if (candidate!=null) {
@@ -1042,6 +1049,11 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Rectangle2
 	 */
 	private Boolean isEmpty = Boolean.TRUE;
 
+	/** Indicates if the path contains base primitives
+	 * (no curve).
+	 */
+	private Boolean isPolyline = Boolean.TRUE;
+
 	/** Buffer for the bounds of the path that corresponds
 	 * to the points really on the path (eg, the pixels
 	 * drawn). The control points of the curves are
@@ -1097,6 +1109,7 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Rectangle2
 		this.numCoords = 0;
 		this.numTypes = 0;
 		this.isEmpty = true;
+		this.isPolyline = true;
 		this.graphicalBounds = null;
 		this.logicalBounds = null;
 	}
@@ -1240,6 +1253,7 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Rectangle2
 		this.coords[this.numCoords++] = x2;
 		this.coords[this.numCoords++] = y2;
 		this.isEmpty = null;
+		this.isPolyline = false;
 		this.graphicalBounds = null;
 		this.logicalBounds = null;
 	}
@@ -1271,6 +1285,7 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Rectangle2
 		this.coords[this.numCoords++] = x3;
 		this.coords[this.numCoords++] = y3;
 		this.isEmpty = null;
+		this.isPolyline = false;
 		this.graphicalBounds = null;
 		this.logicalBounds = null;
 	}
@@ -1819,7 +1834,9 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Rectangle2
 
 	@Override
 	public Point2D getClosestPointTo(Point2D p) {
-		return getClosestPointTo(getPathIterator(), p.getX(), p.getY());
+		return getClosestPointTo(
+				getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+				p.getX(), p.getY());
 	}
 
 	@Override
@@ -1998,16 +2015,33 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Rectangle2
 			this.isEmpty = Boolean.TRUE;
 			PathIterator2f pi = getPathIterator();
 			PathElement2f pe;
-			while (this.isEmpty()==Boolean.TRUE && pi.hasNext()) {
+			while (this.isEmpty==Boolean.TRUE && pi.hasNext()) {
 				pe = pi.next();
 				if (pe.isDrawable()) { 
 					this.isEmpty = Boolean.FALSE;
 				}
 			}
 		}
-		return this.isEmpty;
+		return this.isEmpty.booleanValue();
 	}
 
+	@Override
+	public boolean isPolyline() {
+		if (this.isPolyline==null) {
+			this.isPolyline = Boolean.TRUE;
+			PathIterator2f pi = getPathIterator();
+			PathElement2f pe;
+			PathElementType t;
+			while (this.isPolyline==Boolean.TRUE && pi.hasNext()) {
+				pe = pi.next();
+				t = pe.getType();
+				if (t==PathElementType.CURVE_TO || t==PathElementType.QUAD_TO) { 
+					this.isPolyline = Boolean.FALSE;
+				}
+			}
+		}
+		return this.isPolyline.booleanValue();
+	}
 	/** Replies if the given points exists in the coordinates of this path.
 	 * 
 	 * @param p
@@ -2042,6 +2076,7 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Rectangle2
 					--this.numTypes;
 					System.arraycopy(this.coords, i+2, this.coords, i, this.numCoords);
 					System.arraycopy(this.types, j+1, this.types, j, this.numTypes);
+					this.isEmpty = null;
 					return true;
 				}
 				i += 2;
@@ -2055,6 +2090,8 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Rectangle2
 					--this.numTypes;
 					System.arraycopy(this.coords, i+6, this.coords, i, this.numCoords);
 					System.arraycopy(this.types, j+1, this.types, j, this.numTypes);
+					this.isEmpty = null;
+					this.isPolyline = null;
 					return true;
 				}
 				i += 6;
@@ -2067,6 +2104,8 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Rectangle2
 					--this.numTypes;
 					System.arraycopy(this.coords, i+4, this.coords, i, this.numCoords);
 					System.arraycopy(this.types, j+1, this.types, j, this.numTypes);
+					this.isEmpty = null;
+					this.isPolyline = null;
 					return true;
 				}
 				i += 4;
@@ -2096,9 +2135,11 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Rectangle2
 				break;
 			case CURVE_TO:
 				this.numCoords -= 6;
+				this.isPolyline = null;
 				break;
 			case QUAD_TO:
 				this.numCoords -= 4;
+				this.isPolyline = null;
 				break;
 			default:
 				throw new IllegalStateException();
@@ -2244,6 +2285,11 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Rectangle2
 			return Path2f.this.getWindingRule();
 		}
 
+		@Override
+		public boolean isPolyline() {
+			return Path2f.this.isPolyline();
+		}
+
 	} // class CopyPathIterator
 
 	/** A path iterator that transforms the coordinates.
@@ -2364,6 +2410,11 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Rectangle2
 		@Override
 		public PathWindingRule getWindingRule() {
 			return Path2f.this.getWindingRule();
+		}
+
+		@Override
+		public boolean isPolyline() {
+			return Path2f.this.isPolyline();
 		}
 
 	}  // class TransformPathIterator
@@ -2866,6 +2917,11 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Rectangle2
 		@Override
 		public PathWindingRule getWindingRule() {
 			return this.windingRule;
+		}
+		
+		@Override
+		public boolean isPolyline() {
+			return false; // Because the iterator flats the path, this is no curve inside.
 		}
 		
 	} // class FlatteningPathIterator

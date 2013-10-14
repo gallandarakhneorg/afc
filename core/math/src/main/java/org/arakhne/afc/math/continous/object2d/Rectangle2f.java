@@ -803,6 +803,11 @@ public class Rectangle2f extends AbstractRectangularShape2f<Rectangle2f> {
 			return PathWindingRule.NON_ZERO;
 		}
 		
+		@Override
+		public boolean isPolyline() {
+			return true;
+		}
+
 	}
 
 	/** Iterator on the path elements of the rectangle.
@@ -914,6 +919,11 @@ public class Rectangle2f extends AbstractRectangularShape2f<Rectangle2f> {
 			return PathWindingRule.NON_ZERO;
 		}
 		
+		@Override
+		public boolean isPolyline() {
+			return true;
+		}
+
 	}
 
 }

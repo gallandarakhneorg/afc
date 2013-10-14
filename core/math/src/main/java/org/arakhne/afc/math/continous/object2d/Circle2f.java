@@ -575,6 +575,11 @@ public class Circle2f extends AbstractShape2f<Circle2f> {
 			return PathWindingRule.NON_ZERO;
 		}
 		
+		@Override
+		public boolean isPolyline() {
+			return false;
+		}
+
 	}
 	
 	/** Iterator on the path elements of the circle.
@@ -672,6 +677,11 @@ public class Circle2f extends AbstractShape2f<Circle2f> {
 		@Override
 		public PathWindingRule getWindingRule() {
 			return PathWindingRule.NON_ZERO;
+		}
+
+		@Override
+		public boolean isPolyline() {
+			return false;
 		}
 
 	}

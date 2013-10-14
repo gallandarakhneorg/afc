@@ -21,6 +21,7 @@
  */
 package org.arakhne.afc.math.continous.object2d;
 
+import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.generic.PathElementType;
 import org.arakhne.afc.math.generic.Point2D;
 import org.arakhne.afc.math.matrix.Transform2D;
@@ -138,19 +139,19 @@ public class ClosePath2fTest extends AbstractPath2fTestCase {
 	public void testGetClosestPointToPathIterator2fFloatFloat() {
 		Point2D p;
 		
-		p = Path2f.getClosestPointTo(this.r.getPathIterator(), 0f, 0f);
+		p = Path2f.getClosestPointTo(this.r.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), 0f, 0f);
 		assertEpsilonEquals(1f, p.getX());
 		assertEpsilonEquals(1f, p.getY());
 
-		p = Path2f.getClosestPointTo(this.r.getPathIterator(), 4f, 0f);
+		p = Path2f.getClosestPointTo(this.r.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), 4f, 0f);
 		assertEpsilonEquals(4f, p.getX());
 		assertEpsilonEquals(0f, p.getY());
 
-		p = Path2f.getClosestPointTo(this.r.getPathIterator(), 4f, 2f);
+		p = Path2f.getClosestPointTo(this.r.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), 4f, 2f);
 		assertEpsilonEquals(4f, p.getX());
 		assertEpsilonEquals(2f, p.getY());
 
-		p = Path2f.getClosestPointTo(this.r.getPathIterator(), 1f, 0f);
+		p = Path2f.getClosestPointTo(this.r.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), 1f, 0f);
 		assertEpsilonEquals(1.5f, p.getX());
 		assertEpsilonEquals(.5f, p.getY());
 	}

@@ -41,4 +41,14 @@ public interface PathIterator2f extends Iterator<PathElement2f> {
 	 */
 	public PathWindingRule getWindingRule();
 	
+	/** Replies the iterator may reply only elements of type
+	 * <code>MOVE_TO</code>, <code>LINE_TO</code>, or
+	 * <code>CLOSE</code> (no curve).
+	 * 
+	 * @return <code>true</code> if the iterator does not
+	 * contain curve primitives, <code>false</code>
+	 * otherwise.
+	 */
+	public boolean isPolyline();
+
 }

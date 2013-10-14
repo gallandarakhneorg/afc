@@ -47,6 +47,16 @@ public interface Path2D<B extends Shape2D, E extends PathElement2D, I extends It
 	 */
 	public PathWindingRule getWindingRule();
 	
+	/** Replies the path is composed only by
+	 * <code>MOVE_TO</code>, <code>LINE_TO</code>
+	 * or <code>CLOSE</code> primitives (no curve).
+	 * 
+	 * @return <code>true</code> if the path does not
+	 * contain curve primitives, <code>false</code>
+	 * otherwise.
+	 */
+	public boolean isPolyline();
+
 	/** Replies an iterator on the path elements.
 	 * <p>
 	 * Only {@link PathElementType#MOVE_TO},

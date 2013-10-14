@@ -585,6 +585,11 @@ public class ZoomableContextUtil {
 		public PathWindingRule getWindingRule() {
 			return this.it.getWindingRule();
 		}
+
+		@Override
+		public boolean isPolyline() {
+			return this.it.isPolyline();
+		}
 				
 	}
 	
@@ -643,6 +648,11 @@ public class ZoomableContextUtil {
 		@Override
 		public PathWindingRule getWindingRule() {
 			return this.it.getWindingRule();
+		}
+
+		@Override
+		public boolean isPolyline() {
+			return this.it.isPolyline();
 		}
 				
 	}

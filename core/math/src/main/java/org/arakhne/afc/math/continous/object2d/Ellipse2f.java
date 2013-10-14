@@ -588,6 +588,11 @@ public class Ellipse2f extends AbstractRectangularShape2f<Ellipse2f> {
 			return PathWindingRule.NON_ZERO;
 		}
 
+		@Override
+		public boolean isPolyline() {
+			return false;
+		}
+
 	}
 
 	/**
@@ -684,6 +689,11 @@ public class Ellipse2f extends AbstractRectangularShape2f<Ellipse2f> {
 		@Override
 		public PathWindingRule getWindingRule() {
 			return PathWindingRule.NON_ZERO;
+		}
+
+		@Override
+		public boolean isPolyline() {
+			return false;
 		}
 
 	}

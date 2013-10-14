@@ -79,6 +79,11 @@ class AndroidPath implements Shape2f, Path2D<Rectangle2f,PathElement2f,PathItera
 		}
 	}
 
+	@Override
+	public boolean isPolyline() {
+		return true;
+	}
+
 	/** Replies the native path.
 	 * 
 	 * @return the native path.
@@ -377,6 +382,11 @@ class AndroidPath implements Shape2f, Path2D<Rectangle2f,PathElement2f,PathItera
 		@Override
 		public PathWindingRule getWindingRule() {
 			return AndroidPath.this.getWindingRule();
+		}
+
+		@Override
+		public boolean isPolyline() {
+			return true; // Because the iterator flats the path.
 		}
 
 	} // class CopyIterator

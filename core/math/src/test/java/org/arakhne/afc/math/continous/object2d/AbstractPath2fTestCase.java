@@ -73,6 +73,48 @@ public abstract class AbstractPath2fTestCase extends AbstractShape2fTestCase<Pat
 		assertFalse(this.r.isEmpty());
 	}
 
+	/**
+	 */
+	public void testIsPolyline() {
+		assertFalse(this.r.isPolyline());
+
+		this.r.clear();
+		assertTrue(this.r.isPolyline());
+		
+		this.r.moveTo(1f, 2f);
+		assertTrue(this.r.isPolyline());
+		this.r.moveTo(3f, 4f);
+		assertTrue(this.r.isPolyline());
+		this.r.lineTo(5f, 6f);
+		assertTrue(this.r.isPolyline());
+		this.r.closePath();
+		assertTrue(this.r.isPolyline());
+
+		this.r.clear();
+		assertTrue(this.r.isPolyline());
+
+		this.r.moveTo(1f, 2f);
+		assertTrue(this.r.isPolyline());
+		this.r.moveTo(3f, 4f);
+		assertTrue(this.r.isPolyline());
+		this.r.curveTo(5f, 6f, 7f, 8f, 9f, 10f);
+		assertFalse(this.r.isPolyline());
+		this.r.closePath();
+		assertFalse(this.r.isPolyline());
+
+		this.r.clear();
+		assertTrue(this.r.isPolyline());
+
+		this.r.moveTo(1f, 2f);
+		assertTrue(this.r.isPolyline());
+		this.r.moveTo(3f, 4f);
+		assertTrue(this.r.isPolyline());
+		this.r.quadTo(5f, 6f, 7f, 8f);
+		assertFalse(this.r.isPolyline());
+		this.r.lineTo(5f, 6f);
+		assertFalse(this.r.isPolyline());
+	}
+
 	@Override
 	public void testClear() {
 		this.r.clear();

@@ -1032,6 +1032,11 @@ public class Segment2f extends AbstractShape2f<Segment2f> {
 			return PathWindingRule.NON_ZERO;
 		}
 
+		@Override
+		public boolean isPolyline() {
+			return true;
+		}
+
 	}
 
 }
