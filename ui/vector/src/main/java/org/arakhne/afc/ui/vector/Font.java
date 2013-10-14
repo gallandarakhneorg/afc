@@ -192,4 +192,12 @@ public interface Font {
      */
     public GlyphList createGlyphList(VectorGraphics2D g, char... characters);
    
+    /** Replies the glyphs for the given text.
+     * 
+     * @param g is the graphical context.
+     * @param text
+     * @return the list of glyphs.
+     */
+    public GlyphList createGlyphList(VectorGraphics2D g, String text);
+
 }

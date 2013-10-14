@@ -22,17 +22,20 @@
 package org.arakhne.afc.ui.vector.awt;
 
 import java.awt.Graphics2D;
+import java.awt.Shape;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
 import java.awt.geom.Rectangle2D;
 import java.util.Locale;
 
 import org.arakhne.afc.math.continous.object2d.Rectangle2f;
+import org.arakhne.afc.math.continous.object2d.Shape2f;
 import org.arakhne.afc.ui.awt.AwtUtil;
 import org.arakhne.afc.ui.vector.Font;
 import org.arakhne.afc.ui.vector.FontStyle;
 import org.arakhne.afc.ui.vector.GlyphList;
 import org.arakhne.afc.ui.vector.VectorGraphics2D;
+import org.arakhne.afc.ui.vector.VectorToolkit;
 
 /** AWT implementation of the generic font.
  *
@@ -210,6 +213,11 @@ class AwtFont implements Font, NativeWrapper {
 		return new AwtGlyphList((Graphics2D)g.getNativeGraphics2D(), characters);
 	}
 
+	@Override
+	public GlyphList createGlyphList(VectorGraphics2D g, String text) {
+		return new AwtGlyphList((Graphics2D)g.getNativeGraphics2D(), text);
+	}
+
 	/** Internal implementation of a GlyphList for AWT.
 	 * 
 	 * @author $Author: galland$
@@ -236,6 +244,21 @@ class AwtFont implements Font, NativeWrapper {
 			this.vector = AwtFont.this.getFont().createGlyphVector(frc, characters);
 		}
 
+		/**
+		 * @param g
+		 * @param text
+		 */
+		public AwtGlyphList(Graphics2D g, String text) {
+			FontRenderContext frc;
+			if (g==null) {
+				frc = new FontRenderContext(null, true, false);
+			}
+			else {
+				frc = g.getFontRenderContext();
+			}
+			this.vector = AwtFont.this.getFont().createGlyphVector(frc, text);
+		}
+
 		@Override
 		public int size() {
 			return this.vector.getNumGlyphs();
@@ -255,6 +278,78 @@ class AwtFont implements Font, NativeWrapper {
 		public float getWidthAt(int index) {
 			Rectangle2D r = this.vector.getGlyphMetrics(index).getBounds2D();
 			return (float)r.getWidth();
+		}
+
+		@Override
+		public Shape2f getOutlineAt(int index) {
+			Shape s = this.vector.getGlyphOutline(index);
+			assert(s!=null);
+			return VectorToolkit.shape(s);
+		}
+
+		@Override
+		public Shape2f getOutlineAt(int index, float x, float y) {
+			Shape s = this.vector.getGlyphOutline(index, x, y);
+			assert(s!=null);
+			return VectorToolkit.shape(s);
+		}
+
+		@Override
+		public Shape2f getOutline() {
+			Shape s = this.vector.getOutline();
+			assert(s!=null);
+			return VectorToolkit.shape(s);
+		}
+
+		@Override
+		public Shape2f getOutline(float x, float y) {
+			Shape s = this.vector.getOutline(x, y);
+			assert(s!=null);
+			return VectorToolkit.shape(s);
+		}
+
+		@Override
+		public Rectangle2f getBoundsAt(int index) {
+			Shape s = this.vector.getGlyphLogicalBounds(index);
+			Rectangle2D r = s.getBounds2D();
+			return new Rectangle2f(
+					(float)r.getMinX(),
+					(float)r.getMinY(),
+					(float)r.getWidth(),
+					(float)r.getHeight());
+		}
+
+		@Override
+		public Rectangle2f getBoundsAt(int index, float x, float y) {
+			Shape s = this.vector.getGlyphLogicalBounds(index);
+			Rectangle2D r = s.getBounds2D();
+			return new Rectangle2f(
+					(float)r.getMinX() + x,
+					(float)r.getMinY() + y,
+					(float)r.getWidth(),
+					(float)r.getHeight());
+		}
+
+		@Override
+		public Rectangle2f getBounds() {
+			Shape s = this.vector.getLogicalBounds();
+			Rectangle2D r = s.getBounds2D();
+			return new Rectangle2f(
+					(float)r.getMinX(),
+					(float)r.getMinY(),
+					(float)r.getWidth(),
+					(float)r.getHeight());
+		}
+
+		@Override
+		public Rectangle2f getBounds(float x, float y) {
+			Shape s = this.vector.getLogicalBounds();
+			Rectangle2D r = s.getBounds2D();
+			return new Rectangle2f(
+					(float)r.getMinX() + x,
+					(float)r.getMinY() + y,
+					(float)r.getWidth(),
+					(float)r.getHeight());
 		}
 
 	} // class AwtGlyphList

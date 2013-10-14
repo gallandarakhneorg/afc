@@ -20,7 +20,10 @@
  */
 package org.arakhne.afc.ui.vector.android;
 
+import java.lang.ref.SoftReference;
+
 import org.arakhne.afc.math.continous.object2d.Rectangle2f;
+import org.arakhne.afc.math.continous.object2d.Shape2f;
 import org.arakhne.afc.ui.vector.Font;
 import org.arakhne.afc.ui.vector.FontMetrics;
 import org.arakhne.afc.ui.vector.FontStyle;
@@ -33,6 +36,7 @@ import android.graphics.Paint;
 import android.graphics.Paint.Cap;
 import android.graphics.Paint.Join;
 import android.graphics.Paint.Style;
+import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 
@@ -389,6 +393,11 @@ class AndroidPaint implements Stroke, org.arakhne.afc.ui.vector.Paint, Font, Fon
 		return new AndroidGlyphList(characters);
 	}
 
+	@Override
+	public GlyphList createGlyphList(VectorGraphics2D g, String text) {
+		return new AndroidGlyphList(text);
+	}
+
 	/**
 	 * @author $Author: galland$
 	 * @version $FullVersion$
@@ -398,16 +407,22 @@ class AndroidPaint implements Stroke, org.arakhne.afc.ui.vector.Paint, Font, Fon
 	private class AndroidGlyphList implements GlyphList {
 
 		private final char[] characters;
-		private final float[] widths;
+		private SoftReference<float[]> widths = null;
+		private SoftReference<AndroidPath> globalPath = null;
+		private SoftReference<Rectangle2f> globalBounds = null;
 		
 		/**
 		 * @param characters
 		 */
 		public AndroidGlyphList(char... characters) {
 			this.characters = characters;
-			this.widths = new float[this.characters.length];
-			Paint paint = getPaint();
-			paint.getTextWidths(characters, 0, this.widths.length, this.widths);
+		}
+
+		/**
+		 * @param text
+		 */
+		public AndroidGlyphList(String text) {
+			this.characters = text.toCharArray();
 		}
 
 		@Override
@@ -427,7 +442,97 @@ class AndroidPaint implements Stroke, org.arakhne.afc.ui.vector.Paint, Font, Fon
 
 		@Override
 		public float getWidthAt(int index) {
-			return this.widths[index];
+			float[] tab = (this.widths==null) ? null : this.widths.get();
+			if (tab==null) {
+				tab = new float[this.characters.length];
+				Paint paint = getPaint();
+				paint.getTextWidths(this.characters, 0, tab.length, tab);
+				this.widths = new SoftReference<float[]>(tab);
+			}
+			return tab[index];
+		}
+
+		@Override
+		public Shape2f getOutlineAt(int index) {
+			Path path = new Path();
+			Paint paint = getPaint();
+			paint.getTextPath(this.characters, index, 1, 0, 0, path);
+			return new AndroidPath(path);
+		}
+
+		@Override
+		public Shape2f getOutlineAt(int index, float x, float y) {
+			Path path = new Path();
+			Paint paint = getPaint();
+			paint.getTextPath(this.characters, index, 1, x, y, path);
+			return new AndroidPath(path);
+		}
+
+		@Override
+		public Shape2f getOutline() {
+			AndroidPath p = (this.globalPath==null) ? null : this.globalPath.get();
+			if (p==null) {
+				Path path = new Path();
+				Paint paint = getPaint();
+				paint.getTextPath(this.characters, 0, this.characters.length, 0, 0, path);
+				p = new AndroidPath(path);
+				this.globalPath = new SoftReference<AndroidPath>(p);
+			}
+			return p;
+		}
+
+		@Override
+		public Shape2f getOutline(float x, float y) {
+			Path path = new Path();
+			Paint paint = getPaint();
+			paint.getTextPath(this.characters, 0, this.characters.length, 0, 0, path);
+			return new AndroidPath(path);
+		}
+
+		@Override
+		public Rectangle2f getBoundsAt(int index) {
+			Rect rect = new Rect();
+			Paint paint = getPaint();
+			paint.getTextBounds(this.characters, index, 1, rect);
+			return new Rectangle2f(
+					rect.left, rect.top,
+					rect.width(), rect.height());
+		}
+
+		@Override
+		public Rectangle2f getBoundsAt(int index, float x, float y) {
+			Rect rect = new Rect();
+			Paint paint = getPaint();
+			paint.getTextBounds(this.characters, index, 1, rect);
+			return new Rectangle2f(
+					rect.left + x, rect.top + y,
+					rect.width(), rect.height());
+		}
+
+		@Override
+		public Rectangle2f getBounds() {
+			Rectangle2f p = (this.globalBounds==null) ? null : this.globalBounds.get();
+			if (p==null) {
+				Rect rect = new Rect();
+				Paint paint = getPaint();
+				paint.getTextBounds(this.characters, 0, this.characters.length, rect);
+				p = new Rectangle2f(
+						rect.left, rect.top,
+						rect.width(), rect.height());
+				this.globalBounds = new SoftReference<Rectangle2f>(p);
+			}
+			return p;
+		}
+
+		@Override
+		public Rectangle2f getBounds(float x, float y) {
+			Rect rect = new Rect();
+			Paint paint = getPaint();
+			paint.getTextBounds(this.characters, 0, this.characters.length, rect);
+			return new Rectangle2f(
+					rect.left + x, rect.top + y,
+					rect.width(), rect.height());
+			
 		}
 		
 	} // class AndroidGlyphList
