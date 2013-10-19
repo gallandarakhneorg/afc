@@ -69,7 +69,9 @@ import org.arakhne.afc.ui.TextAlignment;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see Arakhne vector API
  */
+@Deprecated
 public abstract class AbstractLODGraphics2D<G extends Graphics2D> extends Graphics2D implements LODGraphics2D {
 
 	/** Is the minimal size of the displayed figures when

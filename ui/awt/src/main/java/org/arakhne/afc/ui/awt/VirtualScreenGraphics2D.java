@@ -34,7 +34,9 @@ import org.arakhne.afc.ui.ZoomableContext;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated
  */
+@Deprecated
 public interface VirtualScreenGraphics2D extends LODGraphics2D, ZoomableContext {
 
 	//
