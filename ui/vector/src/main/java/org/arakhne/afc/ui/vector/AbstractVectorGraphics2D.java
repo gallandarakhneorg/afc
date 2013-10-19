@@ -49,16 +49,16 @@ public abstract class AbstractVectorGraphics2D implements VectorGraphics2D {
 	private Color outlineColor = null;
 	private Color fillColor = null;
 	private Paint paint = null;
-	
+
 	private static SoftReference<Image> noPictureBuffer = null;
 	private static SoftReference<Image> noTransparentPictureBuffer = null;
-	
+
 	/**
 	 */
 	public AbstractVectorGraphics2D() {
 		//
 	}
-	
+
 	private static Image getNoPicture() {
 		Image noPictureImage = noPictureBuffer==null ? null : noPictureBuffer.get();
 		if (noPictureImage==null) {
@@ -76,7 +76,7 @@ public abstract class AbstractVectorGraphics2D implements VectorGraphics2D {
 		}
 		return noPictureImage;
 	}
-	
+
 	private static Image getTransparentNoPicture() {
 		Image noPictureImage = noTransparentPictureBuffer==null ? null : noTransparentPictureBuffer.get();
 		if (noPictureImage==null) {
@@ -98,7 +98,7 @@ public abstract class AbstractVectorGraphics2D implements VectorGraphics2D {
 		else {
 			noPictureImage = getNoPicture();
 		}
-		
+
 		if (noPictureImage!=null) {
 			drawImage(
 					null,
@@ -114,7 +114,7 @@ public abstract class AbstractVectorGraphics2D implements VectorGraphics2D {
 			draw(bounds);
 		}
 	}
-	
+
 	/**
 	 * @param fillColor is the initial filling color.
 	 * @param outlineColor is the initial outline color.
@@ -157,7 +157,7 @@ public abstract class AbstractVectorGraphics2D implements VectorGraphics2D {
 	protected void log(String message) {
 		System.out.println(toString()+": "+message); //$NON-NLS-1$
 	}
-	
+
 	/** Log the given message.
 	 * 
 	 * @param message is the message to log out.
@@ -218,6 +218,24 @@ public abstract class AbstractVectorGraphics2D implements VectorGraphics2D {
 		Color o = this.outlineColor;
 		this.outlineColor = color;
 		return o;
+	}
+
+	@Override
+	public void setColors(Color fillingColor, Color outlineColor) {
+		if (fillingColor!=null) {
+			setFillColor(fillingColor);
+			setInteriorPainted(true);
+		}
+		else {
+			setInteriorPainted(false);
+		}
+		if (outlineColor!=null) {
+			setOutlineColor(fillingColor);
+			setOutlineDrawn(true);
+		}
+		else {
+			setOutlineDrawn(false);
+		}
 	}
 
 	/**
@@ -366,7 +384,7 @@ public abstract class AbstractVectorGraphics2D implements VectorGraphics2D {
 	public void setInteriorText(String interiorText) {
 		this.interiorText = interiorText;
 	}
-	
+
 	/** This method paint a string into the rectangle of this figure and
 	 * not outside.
 	 *
@@ -403,5 +421,5 @@ public abstract class AbstractVectorGraphics2D implements VectorGraphics2D {
 		drawString( text, p.getX(), p.getY() );
 		setClip( oldClipArea );
 	}
-	
+
 }
