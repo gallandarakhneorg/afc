@@ -27,8 +27,7 @@ import java.awt.image.BufferedImage;
 
 import org.arakhne.afc.math.continous.object2d.Rectangle2f;
 import org.arakhne.afc.ui.Graphics2DLOD;
-import org.arakhne.afc.ui.awt.DefaultLODGraphics2D;
-import org.arakhne.afc.ui.awt.LODGraphics2D;
+import org.arakhne.afc.ui.StringAnchor;
 import org.arakhne.afc.ui.vector.Image;
 import org.arakhne.afc.ui.vector.ImageObserver;
 import org.arakhne.afc.ui.vector.Raster;
@@ -76,8 +75,9 @@ class AwtBufferedImage extends BufferedImage implements Image, NativeWrapper {
 	@Override
 	public VectorGraphics2D getVectorGraphics() {
 		Graphics2D g2d = (Graphics2D)getGraphics();
-		LODGraphics2D lg = new DefaultLODGraphics2D(g2d, null, Graphics2DLOD.HIGH_LEVEL_OF_DETAIL);
-		return new DelegatedVectorGraphics2D<LODGraphics2D>(lg);
+		return new AwtVectorGraphics2D<Graphics2D>(
+				g2d, Graphics2DLOD.NORMAL_LEVEL_OF_DETAIL,
+				StringAnchor.LEFT_BASELINE);
 	}
 
 	@Override
