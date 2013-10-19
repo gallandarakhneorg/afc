@@ -20,8 +20,6 @@
  */
 package org.arakhne.afc.ui.android.zoom;
 
-import java.util.EventListener;
-
 import org.arakhne.afc.math.continous.object2d.Circle2f;
 import org.arakhne.afc.math.continous.object2d.Ellipse2f;
 import org.arakhne.afc.math.continous.object2d.PathIterator2f;
@@ -68,7 +66,7 @@ import android.widget.Toast;
  * </body>
  * </table>
  * <p>
- * The function #@link {@link #onDrawView(Canvas, float, CenteringTransform)}} may
+ * The function {@link #onDrawView(Canvas, float, CenteringTransform)}} may
  * use an instance of the graphical context {@link DroidZoomableGraphics2D} to draw
  * the elements according to the zooming attributes.
  * 
@@ -102,10 +100,6 @@ public abstract class ZoomableView extends View implements ZoomableContext {
 	 */
 	private float maxScaleFactor = 100.f;
 
-	/** Handler of events.
-	 */
-	private final EventListener globalListener;
-
 	/** Zooming sensibility.
 	 */
 	private float zoomingSensitivity = 1.5f;
@@ -117,7 +111,7 @@ public abstract class ZoomableView extends View implements ZoomableContext {
 	/** Indicates if the repaint requests are ignored.
 	 */
 	private boolean isIgnoreRepaint = false;
-	
+
 	/** Transformation to center the view used when rendering the view.
 	 */
 	private final CenteringTransform centeringTransform = new CenteringTransform();
@@ -125,7 +119,7 @@ public abstract class ZoomableView extends View implements ZoomableContext {
 	/** Indicates if the X axis is inverted or not.
 	 */
 	private boolean isXAxisInverted = false;
-	
+
 	/** Indicates if the Y axis is inverted or not.
 	 */
 	private boolean isYAxisInverted = false;
@@ -133,7 +127,11 @@ public abstract class ZoomableView extends View implements ZoomableContext {
 	/** Manager of touch events.
 	 */
 	private final TouchManager touchManager;
-	
+
+	/** Wrapper to the viewed document.
+	 */
+	private DocumentWrapper documentWrapper = null;
+
 	/**
 	 * @param context is the droid context of the view.
 	 */
@@ -156,16 +154,25 @@ public abstract class ZoomableView extends View implements ZoomableContext {
 	 */
 	public ZoomableView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
-		this.globalListener = createEventHandler();
+		this.documentWrapper = createDocumentWrapper();
 		this.touchManager = new TouchManager(this);
 		this.touchManager.init();
 	}
 	
+	/** Invoked by the constructor to create a wrapper to the
+	 * data of the viewed document.
+	 * If there is no wrapper, several functions of ZoomableView
+	 * will not work.
+	 * 
+	 * @return the wrapper or <code>null</code>.
+	 */
+	protected abstract DocumentWrapper createDocumentWrapper();
+
 	@Override
 	public final boolean isXAxisInverted() {
 		return this.isXAxisInverted;
 	}
-	
+
 	@Override
 	public final boolean isYAxisInverted() {
 		return this.isYAxisInverted;
@@ -185,7 +192,7 @@ public abstract class ZoomableView extends View implements ZoomableContext {
 			repaint();
 		}
 	}
-	
+
 	/** Invert or not the Y axis.
 	 * <p>
 	 * If the Y axis is inverted, the positives are to the left;
@@ -326,24 +333,6 @@ public abstract class ZoomableView extends View implements ZoomableContext {
 		if (r!=null) {
 			repaint(r.left, r.top, r.right, r.bottom);
 		}
-	}
-
-	/** Invoked to create the instance of the event handler that must
-	 * be used by this view.
-	 * 
-	 * @return the event handler.
-	 */
-	protected abstract EventListener createEventHandler();
-
-	/** Replies the event handler of the given type.
-	 * 
-	 * @param type
-	 * @return the event handler of the given type.
-	 */
-	public final <T> T getEventHandler(Class<T> type) {
-		if (this.globalListener!=null && type.isInstance(this.globalListener))
-			return type.cast(this.globalListener);
-		throw new IllegalStateException(type.toString());
 	}
 
 	/** Replies if the direction of moving is inverted.
@@ -518,7 +507,7 @@ public abstract class ZoomableView extends View implements ZoomableContext {
 	public final void setScalingSensitivity(float sensivility) {
 		this.zoomingSensitivity = Math.max(sensivility, Float.MIN_NORMAL);
 	}
-	
+
 	/** Replies the X coordinate of the center of the viewport (in screen coordinate).
 	 * 
 	 * @return the center of the viewport.
@@ -571,6 +560,21 @@ public abstract class ZoomableView extends View implements ZoomableContext {
 		return false;
 	}
 
+	/** Change the scaling factor to have the specified
+	 * ratio between 1 pixel and 1 unit in the document.
+	 * <p>
+	 * Each unit from the displayed document will
+	 * have the same graphical size as the amount of 
+	 * pixels specified by the <var>ratio</var>.
+	 * 
+	 * @param ratio 
+	 */
+	public void setScalingFactorForPixelRatio(float ratio) {
+		float onePixel = pixel2logical_size(1);
+		float factor = onePixel * ratio;
+		setScalingFactor(factor);
+	}
+
 	/** Set the scaling factor. This function does not repaint.
 	 *
 	 * @param scalingX is the coordinate of the point (on the screen) where the focus occurs.
@@ -586,7 +590,7 @@ public abstract class ZoomableView extends View implements ZoomableContext {
 			normalizedFactor = this.minScaleFactor;
 		if (normalizedFactor>this.maxScaleFactor)
 			normalizedFactor = this.maxScaleFactor;
-		
+
 		// Determine the new position of the focus.
 		// The new position of the focus depends on the current position,
 		// the new scaling factor and where the scaling occured.
@@ -603,7 +607,7 @@ public abstract class ZoomableView extends View implements ZoomableContext {
 
 			float newX = sX + vectorToScreenCenterX / normalizedFactor;
 			float newY = sY + vectorToScreenCenterY / normalizedFactor;
-			
+
 			if (normalizedFactor!=this.scaleFactor || newX!=this.focusX || newY!=this.focusY) {
 				this.scaleFactor = normalizedFactor;
 				this.focusX = newX;
@@ -617,14 +621,17 @@ public abstract class ZoomableView extends View implements ZoomableContext {
 			onUpdateViewParameters();
 			return true;
 		}
-		
+
 		return false;
 	}
 
 	/** Zoom the view in.
 	 */
 	public final void zoomIn() {
-		if (onScale(getFocusX(), getFocusY(), getScalingSensitivity())) {
+		if (onScale(
+				getViewportCenterX(),
+				getViewportCenterY(),
+				getScalingSensitivity())) {
 			repaint();
 		}
 	}
@@ -632,7 +639,10 @@ public abstract class ZoomableView extends View implements ZoomableContext {
 	/** Zoom the view out.
 	 */
 	public final void zoomOut() {
-		if (onScale(getFocusX(), getFocusY(), 1f/getScalingSensitivity())) {
+		if (onScale(
+				getViewportCenterX(),
+				getViewportCenterY(),
+				1f/getScalingSensitivity())) {
 			repaint();
 		}
 	}
@@ -723,34 +733,34 @@ public abstract class ZoomableView extends View implements ZoomableContext {
 		this.translateToCenterX = -(getFocusX() - w/2f);
 		this.translateToCenterY = -(getFocusY() - h/2f);*/
 		float t;
-		
+
 		t = pixel2logical_size(getViewportCenterX());
 		if (isXAxisInverted()) {
-    		this.centeringTransform.setCenteringX(
-    				true,
-    				-1,
-    				t + this.focusX);
-    	}
-    	else {
-    		this.centeringTransform.setCenteringX(
-    				false,
-    				1,
-    				t - this.focusX);
-    	}
-		
+			this.centeringTransform.setCenteringX(
+					true,
+					-1,
+					t + this.focusX);
+		}
+		else {
+			this.centeringTransform.setCenteringX(
+					false,
+					1,
+					t - this.focusX);
+		}
+
 		t = pixel2logical_size(getViewportCenterY());
 		if (isYAxisInverted()) {
-    		this.centeringTransform.setCenteringY(
-    				true,
-    				-1,
-    				t + this.focusY);
-    	}
-    	else {
-    		this.centeringTransform.setCenteringY(
-    				false,
-    				1,
-    				t - this.focusY);
-    	}
+			this.centeringTransform.setCenteringY(
+					true,
+					-1,
+					t + this.focusY);
+		}
+		else {
+			this.centeringTransform.setCenteringY(
+					false,
+					1,
+					t - this.focusY);
+		}
 	}
 
 	/** Replies the preferred position of the focus point.
@@ -781,6 +791,67 @@ public abstract class ZoomableView extends View implements ZoomableContext {
 			}
 
 			toast(getContext().getString(R.string.reset_view_done), false);
+
+			return true;
+		}
+		return false;
+	}
+
+	/** Replies the scaling factor that may be used
+	 * to fit the content of the document to the
+	 * drawing area.
+	 * <p>
+	 * If there is no wrapper replied by {@link #createDocumentWrapper()},
+	 * this function replies <code>1</code>.
+	 * 
+	 * @return the scaling factor that permits to fit the
+	 * document.
+	 */
+	public float getScalingFactorToFit() {
+		if (this.documentWrapper!=null) {
+			Rectangle2f documentBounds = this.documentWrapper.getDocumentBounds();
+			if (documentBounds!=null) {
+				float drawingAreaSize, documentSize;
+
+				// horizontal fitting
+				drawingAreaSize = getWidth();
+				documentSize = documentBounds.getWidth();
+				float horizontalFactor = ZoomableContextUtil.determineFactor(
+						documentSize, drawingAreaSize);
+
+				// vertical fitting
+				drawingAreaSize = getHeight();
+				documentSize = documentBounds.getHeight();
+				float verticalFactor = ZoomableContextUtil.determineFactor(
+						documentSize, drawingAreaSize);
+
+				return Math.min(horizontalFactor, verticalFactor);
+			}
+		}
+		return 1f;
+	}
+
+	/** Reset the view so that the document is fitting the
+	 * drawing area.
+	 * <p>
+	 * If there is no wrapper replied by {@link #createDocumentWrapper()},
+	 * this function does the same as {@link #resetView()}.
+	 * 
+	 * @return <code>true</code> if the view has changed; <code>false</code> otherwise.
+	 */
+	public final boolean fitView() {
+		float px = getPreferredFocusX();
+		float py = getPreferredFocusY();
+		float fitFactor = getScalingFactorToFit();
+		if (this.focusX!=px || this.focusY!=py || getScalingFactor()!=fitFactor) {
+			this.focusX = px;
+			this.focusY = py;
+			if (!setScalingFactor(fitFactor)) {
+				onUpdateViewParameters();
+				repaint(); // Force to refresh the UI
+			}
+
+			toast(getContext().getString(R.string.fit_view_done), false);
 
 			return true;
 		}
@@ -971,5 +1042,5 @@ public abstract class ZoomableView extends View implements ZoomableContext {
 			}
 		}
 	} // class AsynchronousToaster
-	
+
 }
