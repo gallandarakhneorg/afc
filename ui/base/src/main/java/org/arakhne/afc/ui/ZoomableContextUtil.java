@@ -43,6 +43,20 @@ import org.arakhne.afc.math.generic.PathWindingRule;
 */
 public class ZoomableContextUtil {
 
+	/** Replies the scaling factor that permits to pass
+	 * from the given size expressed in the logical space to
+	 * the given size expressed in the pixel space.
+	 * 
+	 * @param sizeInLogicalSpace is the size in the logical space. Must not be strictly positive.
+	 * @param sizeInPixelSpace is the size in the screen/pixel space. Must not be strictly positive.
+	 * @return the scaling factor to pass from the logical size to the pixel size.
+	 */
+	public static float determineFactor(float sizeInLogicalSpace, float sizeInPixelSpace) {
+		assert(sizeInLogicalSpace>0f) : "sizeInLogicalSpace is not strictly positive"; //$NON-NLS-1$
+		assert(sizeInPixelSpace>0f) : "sizeInPixelSpace is not strictly positive"; //$NON-NLS-1$
+		return sizeInPixelSpace / sizeInLogicalSpace;
+	}
+	
 	/** Translates the specified path
 	 *  into the screen space.
 	 *
