@@ -1992,6 +1992,16 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Rectangle2
 				this.coords[index*2+1]);
 	}
 
+	/** Replies the last point in the path.
+	 *
+	 * @return the last point.
+	 */
+	public Point2f getCurrentPoint() {
+		return new Point2f(
+				this.coords[this.coords.length-1],
+				this.coords[this.coords.length-2]);
+	}
+
 	/** Replies the number of points in the path.
 	 *
 	 * @return the number of points in the path.
