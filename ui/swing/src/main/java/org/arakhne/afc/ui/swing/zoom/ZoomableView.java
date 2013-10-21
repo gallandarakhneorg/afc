@@ -29,10 +29,12 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
@@ -63,7 +65,9 @@ import org.arakhne.afc.ui.CenteringTransform;
 import org.arakhne.afc.ui.Graphics2DLOD;
 import org.arakhne.afc.ui.ZoomableContext;
 import org.arakhne.afc.ui.ZoomableContextUtil;
+import org.arakhne.afc.ui.event.KeyEvent;
 import org.arakhne.afc.ui.event.PointerEvent;
+import org.arakhne.afc.ui.swing.event.KeyEventSwing;
 import org.arakhne.afc.ui.swing.event.PointerEventSwing;
 import org.arakhne.afc.ui.swing.zoom.ScrollingMethod.ScrollingMethodListener;
 
@@ -99,6 +103,11 @@ public abstract class ZoomableView extends JPanel implements ZoomableContext, Pr
 
 	private static final long serialVersionUID = -5703191414584605699L;
 
+	/** Size of the border that is automatically added
+	 * when {@link #repaint(float, float, float, float)} is invoked. 
+	 */
+	public static final int REPAINT_BORDER = 5;
+	
 	/** Indicates if the anti-aliasing flag is set or not.
 	 */
 	private boolean antialiasing = false;
@@ -255,10 +264,13 @@ public abstract class ZoomableView extends JPanel implements ZoomableContext, Pr
 			this.vscroll = null;
 		}
 
-		addComponentListener(handler);
-		addMouseListener(handler);
-		addMouseMotionListener(handler);
-		addMouseWheelListener(handler);
+		// Events
+		JPanel viewport = getViewport();
+		viewport.addComponentListener(handler);
+		viewport.addMouseListener(handler);
+		viewport.addMouseMotionListener(handler);
+		viewport.addMouseWheelListener(handler);
+		viewport.addKeyListener(handler);
 	}
 
 	/** Invoked to update the scrollbars and the graphical context
@@ -459,47 +471,63 @@ public abstract class ZoomableView extends JPanel implements ZoomableContext, Pr
 	}
 
 	/** Repaint this view wherever this function is invoked.
+	 * <p>
+	 * This function gets values in the logical coordinate space,
+	 * not in the screen coordinate space. To repaint with screen
+	 * coordinates, see {@link #repaint(int, int, int, int)}. 
+	 * <p>
+	 * This function the given area extended with a border of 5 pixels. 
 	 * 
-	 * @param x
-	 * @param y
-	 * @param width
-	 * @param height
+	 * @param x is the position in the logical space (not the screen space).
+	 * @param y is the position in the logical space (not the screen space).
+	 * @param width is the width in the logical space (not the screen space).
+	 * @param height is the height in the logical space (not the screen space).
 	 * @see #getIgnoreRepaint()
+	 * @see #repaint(int, int, int, int)
+	 * @see #repaint(Rectangle2f)
+	 * @see #REPAINT_BORDER
 	 */
 	public final void repaint(float x, float y, float width, float height) {
-		int l = (int)logical2pixel_x(x)-5;
-		int t = (int)logical2pixel_y(y)-5;
-		int w = (int)logical2pixel_size(width)+10;
-		int h = (int)logical2pixel_size(height)+10;
+		int l = (int)logical2pixel_x(x)-REPAINT_BORDER;
+		int t = (int)logical2pixel_y(y)-REPAINT_BORDER;
+		int w = (int)logical2pixel_size(width)+REPAINT_BORDER*2;
+		int h = (int)logical2pixel_size(height)+REPAINT_BORDER*2;
 		if (this.viewport==null)
 			repaint(l, t, w, h);
 		else
 			this.viewport.repaint(l, t, w, h);
 	}
-
-	/** Invalidate this view wherever this function is invoked.
+	
+	/** Repaint this view wherever this function is invoked.
+	 * <p>
+	 * This function gets values in the logical coordinate space,
+	 * not in the screen coordinate space. To repaint with screen
+	 * coordinates, see {@link #repaint(Rectangle)}. 
 	 * 
-	 * @param r
+	 * @param r is the rectangle to repaint (in logical coordinate space).
+	 * @see #repaint(Rectangle)
+	 * @see #repaint(float, float, float, float)
 	 */
 	public final void repaint(Rectangle2f r) {
 		if (r!=null) {
-			if (this.viewport==null)
-				repaint(r.getMinX(), r.getMinY(), r.getWidth(), r.getHeight());
-			else
-				this.viewport.repaint((int)r.getMinX(), (int)r.getMinY(), (int)r.getWidth(), (int)r.getHeight());
+			repaint(r.getMinX(), r.getMinY(), r.getWidth(), r.getHeight());
 		}
 	}
 
-	/** Invalidate this view wherever this function is invoked.
+	/** Repaint this view wherever this function is invoked.
+	 * <p>
+	 * This function gets values in the logical coordinate space,
+	 * not in the screen coordinate space. To repaint with screen
+	 * coordinates, see {@link #repaint(Rectangle)}. 
 	 * 
-	 * @param r
+	 * @param r is the rectangle to repaint (in logical coordinate space).
+	 * @see #repaint(Rectangle)
+	 * @see #repaint(float, float, float, float)
 	 */
-	public final void repaint(Rectangle2D r) {
+	public final void repaint(Shape2f r) {
 		if (r!=null) {
-			if (this.viewport==null)
-				repaint((int)r.getMinX(), (int)r.getMinY(), (int)r.getWidth(), (int)r.getHeight());
-			else
-				this.viewport.repaint((int)r.getMinX(), (int)r.getMinY(), (int)r.getWidth(), (int)r.getHeight());
+			Rectangle2f bounds = r.toBoundingBox();
+			repaint(bounds.getMinX(), bounds.getMinY(), bounds.getWidth(), bounds.getHeight());
 		}
 	}
 
@@ -1136,7 +1164,52 @@ public abstract class ZoomableView extends JPanel implements ZoomableContext, Pr
 	 */
 	protected abstract void onDrawView(Graphics2D canvas, float scaleFactor, CenteringTransform centeringTransform);
 
-	/** Invoked when the a touch-down event is detected.
+	/**
+     * Invoked when a key has been typed.
+     * See the class description for {@link KeyEvent} for a definition of
+     * a key typed event.
+     * <p>
+     * The KEY_TYPED event may be unavailable on several components.
+     * You must read the document of the component on which the action management
+     * is applied to be sure that the KEY_TYPED event is handled.
+     * 
+     * @param e
+     */
+	protected void onKeyTyped(KeyEvent e) {
+    	//
+    }
+
+    /**
+     * Invoked when a key has been pressed.
+     * See the class description for {@link KeyEvent} for a definition of
+     * a key pressed event.
+     * <p>
+     * The KEY_PRESSED event may be unavailable on several components.
+     * You must read the document of the component on which the action management
+     * is applied to be sure that the KEY_PRESSED event is handled.
+     * 
+     * @param e
+     */
+    protected void onKeyPressed(KeyEvent e) {
+    	//
+    }
+
+    /**
+     * Invoked when a key has been released.
+     * See the class description for {@link KeyEvent} for a definition of
+     * a key released event.
+     * <p>
+     * The KEY_RELEASED event may be unavailable on several components.
+     * You must read the document of the component on which the action management
+     * is applied to be sure that the KEY_RELEASED event is handled.
+     * 
+     * @param e
+     */
+    protected void onKeyReleased(KeyEvent e) {
+    	//
+    }
+
+    /** Invoked when the a touch-down event is detected.
 	 * 
 	 * @param e
 	 */
@@ -1239,7 +1312,8 @@ public abstract class ZoomableView extends JPanel implements ZoomableContext, Pr
 	 */
 	private class SwingEventHandler implements ComponentListener, 
 	MouseInputListener, MouseWheelListener,
-	ScrollingMethodListener, AdjustmentListener, ChangeListener {
+	ScrollingMethodListener, AdjustmentListener, ChangeListener,
+	KeyListener {
 
 		/** Save the number of wheel clicks between two calls to
 		 * {@link #mouseWheelMoved(MouseWheelEvent)}.
@@ -1515,6 +1589,21 @@ public abstract class ZoomableView extends JPanel implements ZoomableContext, Pr
 		@Override
 		public void stateChanged(ChangeEvent e) {
 			updateScrollbars();
+		}
+
+		@Override
+		public void keyTyped(java.awt.event.KeyEvent e) {
+			onKeyTyped(new KeyEventSwing(e));
+		}
+
+		@Override
+		public void keyPressed(java.awt.event.KeyEvent e) {
+			onKeyPressed(new KeyEventSwing(e));
+		}
+
+		@Override
+		public void keyReleased(java.awt.event.KeyEvent e) {
+			onKeyReleased(new KeyEventSwing(e));
 		}
 
 	} // class SwingEventHandler

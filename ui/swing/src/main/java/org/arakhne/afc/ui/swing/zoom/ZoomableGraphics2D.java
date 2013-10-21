@@ -26,6 +26,8 @@ import java.awt.BasicStroke;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.Shape;
+import java.awt.font.FontRenderContext;
+import java.awt.font.GlyphVector;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
@@ -60,6 +62,7 @@ import org.arakhne.afc.ui.vector.Font;
 import org.arakhne.afc.ui.vector.FontMetrics;
 import org.arakhne.afc.ui.vector.Image;
 import org.arakhne.afc.ui.vector.ImageObserver;
+import org.arakhne.afc.ui.vector.Paint;
 import org.arakhne.afc.ui.vector.Stroke;
 import org.arakhne.afc.ui.vector.VectorToolkit;
 
@@ -274,7 +277,8 @@ implements ZoomableContext {
 				: RenderingHints.VALUE_ANTIALIAS_OFF);
 		this.canvas.setComposite(AlphaComposite.SrcOver);
 		this.canvas.setStroke(new BasicStroke());
-		this.canvas.setFont(this.defaultAwtFont);
+		float rawSize = logical2pixel_size(this.defaultAwtFont.getSize2D());
+		this.canvas.setFont(this.defaultAwtFont.deriveFont(rawSize));
 	}
 	
 	/** {@inheritDoc}
@@ -321,9 +325,9 @@ implements ZoomableContext {
 		preDrawing();
 		float px = ZoomableContextUtil.logical2pixel_x(x, this.centeringTransform, this.scale);
 		float py = ZoomableContextUtil.logical2pixel_y(y, this.centeringTransform, this.scale);
-		this.canvas.draw(new Rectangle2D.Float(
-				px-.5f, py-.5f,
-				px+.5f, py+.5f));
+		this.tmpRect2.setFrame(px-.5f, py-.5f, 1f, 1f);
+		appliesOutlineAttributes();
+		this.canvas.fill(this.tmpRect2);
 		postDrawing();
 	}
 
@@ -420,14 +424,15 @@ implements ZoomableContext {
 		else {
 			obs = new ObserverWrapper(observer);
 		}
-		this.canvas.drawImage(
+		boolean b = this.canvas.drawImage(
 				bitmap,
 				(int)this.tmpRect.getMinX(), (int)this.tmpRect.getMinY(),
 				(int)this.tmpRect.getMaxX(), (int)this.tmpRect.getMaxY(),
+				sx1, sy1, sx2, sy2,
 				VectorToolkit.nativeUIObject(java.awt.Color.class, getBackground()),
 				obs);
 		postDrawing();
-		return true;
+		return b;
 	}
 
 	private Shape toAwt(Shape2f s) {
@@ -441,14 +446,18 @@ implements ZoomableContext {
 					Rectangle2f r = (Rectangle2f)s;
 					this.tmpRect.set(r);
 					ZoomableContextUtil.logical2pixel(this.tmpRect, this.centeringTransform, this.scale);
-					this.tmpRect2.setFrame(this.tmpRect.getMinX(), this.tmpRect.getMinY(), this.tmpRect.getWidth(), this.tmpRect.getHeight());
+					this.tmpRect2.setFrame(
+							this.tmpRect.getMinX(), this.tmpRect.getMinY(),
+							this.tmpRect.getWidth(), this.tmpRect.getHeight());
 					return this.tmpRect2;
 				}
 				if (s instanceof Ellipse2f) {
 					Ellipse2f r = (Ellipse2f)s;
 					this.tmpRect.set(r);
 					ZoomableContextUtil.logical2pixel(this.tmpRect, this.centeringTransform, this.scale);
-					Ellipse2D se = new Ellipse2D.Float(this.tmpRect.getMinX(), this.tmpRect.getMinY(), this.tmpRect.getMaxX(), this.tmpRect.getMaxY());
+					Ellipse2D se = new Ellipse2D.Float(
+							this.tmpRect.getMinX(), this.tmpRect.getMinY(),
+							this.tmpRect.getWidth(), this.tmpRect.getHeight());
 					return se;
 				}
 				if (s instanceof Circle2f) {
@@ -457,7 +466,9 @@ implements ZoomableContext {
 					float cy = ZoomableContextUtil.logical2pixel_y(r.getY(), this.centeringTransform, this.scale);
 					float radius = ZoomableContextUtil.logical2pixel_size(r.getRadius(), this.scale);
 					float diameter = radius * 2f;
-					Ellipse2D se = new Ellipse2D.Float(cx-radius, cy-radius, diameter, diameter);
+					Ellipse2D se = new Ellipse2D.Float(
+							cx-radius, cy-radius,
+							diameter, diameter);
 					return se;
 				}
 				if (s instanceof RoundRectangle2f) {
@@ -467,7 +478,8 @@ implements ZoomableContext {
 					float aw = ZoomableContextUtil.logical2pixel_size(r.getArcWidth()/2f, this.scale);
 					float ah = ZoomableContextUtil.logical2pixel_size(r.getArcHeight()/2f, this.scale);
 					RoundRectangle2D rr = new RoundRectangle2D.Float(
-							this.tmpRect.getMinX(), this.tmpRect.getMinY(), this.tmpRect.getWidth(), this.tmpRect.getHeight(),
+							this.tmpRect.getMinX(), this.tmpRect.getMinY(),
+							this.tmpRect.getWidth(), this.tmpRect.getHeight(),
 							aw, ah);
 					return rr;
 				}
@@ -524,7 +536,14 @@ implements ZoomableContext {
 	}
 	
 	private void appliesFillAttributes() {
-		this.canvas.setColor(toAwt(getFillColor()));
+		Paint painter = getPaint();
+		java.awt.Paint awtPaint = VectorToolkit.nativeUIObject(java.awt.Paint.class, painter);
+		if (awtPaint!=null) {
+			this.canvas.setPaint(awtPaint);
+		}
+		else {
+			this.canvas.setColor(toAwt(getFillColor()));
+		}
 	}
 	
 	private void appliesOutlineAttributes() {
@@ -568,10 +587,17 @@ implements ZoomableContext {
 	public void drawString(String str, float x, float y) {
 		preDrawing();
 		appliesTextAttributes();
-		this.canvas.drawString(
-				str,
+		FontRenderContext frc = this.canvas.getFontRenderContext();
+		GlyphVector glyphs = this.canvas.getFont().createGlyphVector(frc, str);
+		Shape s = glyphs.getOutline(
 				ZoomableContextUtil.logical2pixel_x(x, this.centeringTransform, this.scale),
 				ZoomableContextUtil.logical2pixel_y(y, this.centeringTransform, this.scale));
+		assert(s!=null);
+		this.canvas.fill(s);
+		/*this.canvas.drawString(
+				str,
+				ZoomableContextUtil.logical2pixel_x(x, this.centeringTransform, this.scale),
+				ZoomableContextUtil.logical2pixel_y(y, this.centeringTransform, this.scale));*∕*/
 		postDrawing();
 	}
 
@@ -581,10 +607,17 @@ implements ZoomableContext {
 		Shape2f c = getClip();
 		clip(clip);
 		appliesTextAttributes();
-		this.canvas.drawString(
-				str,
+		FontRenderContext frc = this.canvas.getFontRenderContext();
+		GlyphVector glyphs = this.canvas.getFont().createGlyphVector(frc, str);
+		Shape s = glyphs.getOutline(
 				ZoomableContextUtil.logical2pixel_x(x, this.centeringTransform, this.scale),
 				ZoomableContextUtil.logical2pixel_y(y, this.centeringTransform, this.scale));
+		assert(s!=null);
+		this.canvas.fill(s);
+		/*this.canvas.drawString(
+				str,
+				ZoomableContextUtil.logical2pixel_x(x, this.centeringTransform, this.scale),
+				ZoomableContextUtil.logical2pixel_y(y, this.centeringTransform, this.scale));*/
 		setClip(c);
 		postDrawing();
 	}
