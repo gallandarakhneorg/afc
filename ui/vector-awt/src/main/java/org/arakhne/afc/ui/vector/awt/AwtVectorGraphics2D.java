@@ -189,7 +189,7 @@ public class AwtVectorGraphics2D<G extends Graphics2D> extends AbstractVectorGra
 		setOutlineColor();
 		String text = getInteriorText();
 		if (text!=null && !text.isEmpty()) {
-			paintClippedString(
+			paintString(
 					text,
 					s.toBoundingBox(),
 					s);
@@ -202,22 +202,17 @@ public class AwtVectorGraphics2D<G extends Graphics2D> extends AbstractVectorGra
 	}
 
 	@Override
-	public void drawString(String str, float x, float y) {
-		preDrawing();
+	protected void paintString(String text, float x, float y, Shape2f clip) {
 		setOutlineColor();
-		this.delegate.drawString(str, x, y);
-		postDrawing();
-	}
-
-	@Override
-	public void drawString(String str, float x, float y, Shape2f clip) {
-		preDrawing();
-		setOutlineColor();
-		Shape old = this.delegate.getClip();
-		this.delegate.setClip(VectorToolkit.nativeUIObject(Shape.class, clip));
-		this.delegate.drawString(str, x, y);
-		this.delegate.setClip(old);
-		postDrawing();
+		if (clip==null) {
+			this.delegate.drawString(text, x, y);
+		}
+		else {
+			Shape old = this.delegate.getClip();
+			this.delegate.clip(VectorToolkit.nativeUIObject(Shape.class, clip));
+			this.delegate.drawString(text, x, y);
+			this.delegate.setClip(old);
+		}
 	}
 
 	@Override

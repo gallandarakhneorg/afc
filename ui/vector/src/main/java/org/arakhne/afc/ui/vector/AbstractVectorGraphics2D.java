@@ -386,27 +386,41 @@ public abstract class AbstractVectorGraphics2D implements VectorGraphics2D {
 	}
 
 	/** This method paint a string into the rectangle of this figure and
-	 * not outside.
-	 *
-	 * @param text the text to draw.
-	 * @param clip is the clipping shape.
-	 * @param x x coordinate where the text must be draw.
-	 * @param y y coordinate where the text must be draw.
-	 */
-	protected void paintClippedString(String text, Shape2f clip, float x, float y ) {
-		drawString( text, x, y, clip );
-	}
-
-	/** This method paint a string into the rectangle of this figure and
 	 * not outside. The text is centered on the figure.
 	 *
 	 * @param text the text to draw.
 	 * @param figureBounds are the bounds of the figure that may be used during the drawing.
 	 * @param clip is the shape that should be used for clipping.
 	 */
-	protected void paintClippedString(String text, Rectangle2f figureBounds, Shape2f clip) {
+	protected final void paintString(String text, Rectangle2f figureBounds, Shape2f clip) {
 		Point2D p = computeTextPosition(text, figureBounds, TextAlignment.CENTER_ALIGN, TextAlignment.CENTER_ALIGN);
-		drawString( text, p.getX(), p.getY(), clip );
+		paintString( text, p.getX(), p.getY(), clip );
 	}
+	
+	/** This method paint a string into the rectangle of this figure and
+	 * not outside. The text is centered on the figure.
+	 * In opposite to {@link #drawString(String, float, float, Shape2f)},
+	 * thius function does not invoke {@link #preDrawing()} nor
+	 * {@link #postDrawing()}.
+	 *
+	 * @param text the text to draw.
+	 * @param x is the position of the text.
+	 * @param y is the position of the text.
+	 * @param clip is the shape that should be used for clipping.
+	 */
+	protected abstract void paintString(String text, float x, float y, Shape2f clip);
 
+	@Override
+	public final void drawString(String str, float x, float y) {
+		preDrawing();
+		paintString(str, x,  y, null);
+		postDrawing();
+	}
+	
+	@Override
+	public final void drawString(String str, float x, float y, Shape2f clip) {
+		preDrawing();
+		paintString(str, x,  y, null);
+		postDrawing();
+	}
 }

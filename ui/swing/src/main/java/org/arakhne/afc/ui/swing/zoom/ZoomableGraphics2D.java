@@ -579,7 +579,7 @@ implements ZoomableContext {
 		}
 		String text = getInteriorText();
 		if (text!=null && !text.isEmpty()) {
-			paintClippedString(
+			paintString(
 					text,
 					s.toBoundingBox(),
 					s);
@@ -592,11 +592,15 @@ implements ZoomableContext {
 	}
 	
 	@Override
-	public void drawString(String str, float x, float y) {
-		preDrawing();
+	protected void paintString(String text, float x, float y, Shape2f clip) {
+		Shape2f oldClip = null;
+		if (clip!=null) {
+			oldClip = getClip();
+			clip(clip);
+		}
 		appliesTextAttributes();
 		FontRenderContext frc = this.canvas.getFontRenderContext();
-		GlyphVector glyphs = this.canvas.getFont().createGlyphVector(frc, str);
+		GlyphVector glyphs = this.canvas.getFont().createGlyphVector(frc, text);
 		Shape s = glyphs.getOutline(
 				ZoomableContextUtil.logical2pixel_x(x, this.centeringTransform, this.scale),
 				ZoomableContextUtil.logical2pixel_y(y, this.centeringTransform, this.scale));
@@ -606,30 +610,11 @@ implements ZoomableContext {
 				str,
 				ZoomableContextUtil.logical2pixel_x(x, this.centeringTransform, this.scale),
 				ZoomableContextUtil.logical2pixel_y(y, this.centeringTransform, this.scale));*∕*/
-		postDrawing();
+		if (clip!=null) {
+			setClip(oldClip);
+		}
 	}
-
-	@Override
-	public void drawString(String str, float x, float y, Shape2f clip) {
-		preDrawing();
-		Shape2f c = getClip();
-		clip(clip);
-		appliesTextAttributes();
-		FontRenderContext frc = this.canvas.getFontRenderContext();
-		GlyphVector glyphs = this.canvas.getFont().createGlyphVector(frc, str);
-		Shape s = glyphs.getOutline(
-				ZoomableContextUtil.logical2pixel_x(x, this.centeringTransform, this.scale),
-				ZoomableContextUtil.logical2pixel_y(y, this.centeringTransform, this.scale));
-		assert(s!=null);
-		this.canvas.fill(s);
-		/*this.canvas.drawString(
-				str,
-				ZoomableContextUtil.logical2pixel_x(x, this.centeringTransform, this.scale),
-				ZoomableContextUtil.logical2pixel_y(y, this.centeringTransform, this.scale));*/
-		setClip(c);
-		postDrawing();
-	}
-
+	
 	@Override
 	public void translate(float tx, float ty) {
 		this.canvas.translate(

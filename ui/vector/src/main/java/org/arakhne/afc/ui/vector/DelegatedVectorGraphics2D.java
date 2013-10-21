@@ -245,23 +245,15 @@ public class DelegatedVectorGraphics2D<G extends VectorGraphics2D> extends Abstr
 		this.delegate.draw(s);
 		postDrawing();
 	}
-
+	
 	@Override
-	public void drawString(String str, float x, float y) {
-		preDrawing();
+	protected void paintString(String text, float x, float y, Shape2f clip) {
 		onAttributePainting(getFillColor(), getOutlineColor(), getPaint(),
 				isInteriorPainted(), isOutlineDrawn(), getInteriorText());
-		this.delegate.drawString(str, x, y);
-		postDrawing();
-	}
-
-	@Override
-	public void drawString(String str, float x, float y, Shape2f clip) {
-		preDrawing();
-		onAttributePainting(getFillColor(), getOutlineColor(), getPaint(),
-				isInteriorPainted(), isOutlineDrawn(), getInteriorText());
-		this.delegate.drawString(str, x, y, clip);
-		postDrawing();
+		if (clip==null)
+			this.delegate.drawString(text, x, y);
+		else
+			this.delegate.drawString(text, x, y, clip);
 	}
 
 	@Override
