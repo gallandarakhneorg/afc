@@ -36,7 +36,7 @@
 			android:id="@+id/colorpicker_warnaBaru"
 			android:background="#aaf" />
 	</LinearLayout>
-	<org.arakhne.afc.android.colorpicker.ColorPickerView
+	<org.arakhne.afc.ui.android.colorpicker.ColorPickerView
 		android:id="@+id/colorpicker_viewSatBri"
 		android:layout_width="@dimen/colorpicker_hsvWidth"
 		android:layout_height="@dimen/colorpicker_hsvHeight"
