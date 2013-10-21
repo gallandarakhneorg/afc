@@ -336,16 +336,6 @@ public class DroidZoomableGraphics2D extends AbstractVectorGraphics2D implements
 		Log.d(toString(), message, exception);
 	}
 
-	/** Replies the droid canvas.
-	 * 
-	 * @return the droid canvas.
-	 * @deprecated see {@link #getNativeGraphics2D()}
-	 */
-	@Deprecated
-	public Canvas getCanvas() {
-		return getNativeGraphics2D();
-	}
-
 	@Override
 	public Color setOutlineColor(Color color) {
 		setColor(this.linePainter, color);
