@@ -424,14 +424,20 @@ public class DroidZoomableGraphics2D extends AbstractVectorGraphics2D implements
 	public void setClip(Shape2f clip) {
 		Rectangle2f r = clip.toBoundingBox();
 		ZoomableContextUtil.logical2pixel(r, this.centeringTransform, this.scale);
-		this.canvas.clipRect(r.getMinX(), r.getMinY(), r.getMaxX(), r.getMaxY(), Op.REPLACE);
+		this.canvas.clipRect(
+				r.getMinX(), r.getMinY(),
+				r.getMaxX(), r.getMaxY(),
+				Op.REPLACE);
 	}
 
 	@Override
 	public void clip(Shape2f clip) {
 		Rectangle2f r = clip.toBoundingBox();
 		ZoomableContextUtil.logical2pixel(r, this.centeringTransform, this.scale);
-		this.canvas.clipRect(r.getMinX(), r.getMinY(), r.getMaxX(), r.getMaxY(), Op.UNION);
+		this.canvas.clipRect(
+				r.getMinX(), r.getMinY(),
+				r.getMaxX(), r.getMaxY(),
+				Op.INTERSECT);
 	}
 
 	@Override
@@ -572,40 +578,36 @@ public class DroidZoomableGraphics2D extends AbstractVectorGraphics2D implements
 		if (isInteriorPainted()) {
 			drawOnCanvas(s, this.fillPainter);
 		}
+		if (isOutlineDrawn()) {
+			drawOnCanvas(s, this.linePainter);
+		}
 		String text = getInteriorText();
 		if (text!=null && !text.isEmpty()) {
-			paintClippedString(
+			paintString(
 					text,
 					s.toBoundingBox(),
 					s);
-		}
-		if (isOutlineDrawn()) {
-			drawOnCanvas(s, this.linePainter);
 		}
 		postDrawing();
 	}
 	
 	@Override
-	public void drawString(String str, float x, float y) {
-		preDrawing();
-		this.canvas.drawText(str,
-				ZoomableContextUtil.logical2pixel_x(x, this.centeringTransform, this.scale),
-				ZoomableContextUtil.logical2pixel_y(y, this.centeringTransform, this.scale),
-				this.fontPainter);
-		postDrawing();
-	}
-
-	@Override
-	public void drawString(String str, float x, float y, Shape2f clip) {
-		preDrawing();
-		Shape2f c = getClip();
-		clip(clip);
-		this.canvas.drawText(str,
-				ZoomableContextUtil.logical2pixel_x(x, this.centeringTransform, this.scale),
-				ZoomableContextUtil.logical2pixel_y(y, this.centeringTransform, this.scale),
-				this.fontPainter);
-		setClip(c);
-		postDrawing();
+	protected void paintString(String text, float x, float y, Shape2f clip) {
+		if (clip==null) {
+			this.canvas.drawText(text,
+					ZoomableContextUtil.logical2pixel_x(x, this.centeringTransform, this.scale),
+					ZoomableContextUtil.logical2pixel_y(y, this.centeringTransform, this.scale),
+					this.fontPainter);
+		}
+		else {
+			Shape2f c = getClip();
+			clip(clip);
+			this.canvas.drawText(text,
+					ZoomableContextUtil.logical2pixel_x(x, this.centeringTransform, this.scale),
+					ZoomableContextUtil.logical2pixel_y(y, this.centeringTransform, this.scale),
+					this.fontPainter);
+			setClip(c);
+		}
 	}
 
 	@Override
