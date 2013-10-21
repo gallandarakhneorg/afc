@@ -394,12 +394,7 @@ public abstract class AbstractVectorGraphics2D implements VectorGraphics2D {
 	 * @param y y coordinate where the text must be draw.
 	 */
 	protected void paintClippedString(String text, Shape2f clip, float x, float y ) {
-		Shape2f oldClipArea = getClip();
-		if (clip!=null) {
-			setClip(clip);
-		}
-		drawString( text, x, y );
-		setClip( oldClipArea );
+		drawString( text, x, y, clip );
 	}
 
 	/** This method paint a string into the rectangle of this figure and
@@ -410,16 +405,8 @@ public abstract class AbstractVectorGraphics2D implements VectorGraphics2D {
 	 * @param clip is the shape that should be used for clipping.
 	 */
 	protected void paintClippedString(String text, Rectangle2f figureBounds, Shape2f clip) {
-		Shape2f oldClipArea = getClip();
-		if (clip!=null) {
-			setClip(clip);
-		}
-		else {
-			setClip(figureBounds);
-		}
 		Point2D p = computeTextPosition(text, figureBounds, TextAlignment.CENTER_ALIGN, TextAlignment.CENTER_ALIGN);
-		drawString( text, p.getX(), p.getY() );
-		setClip( oldClipArea );
+		drawString( text, p.getX(), p.getY(), clip );
 	}
 
 }
