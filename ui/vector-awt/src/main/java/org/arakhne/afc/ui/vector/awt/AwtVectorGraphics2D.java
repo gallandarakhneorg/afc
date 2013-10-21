@@ -165,6 +165,14 @@ public class AwtVectorGraphics2D<G extends Graphics2D> extends AbstractVectorGra
 				(int)dx1, (int)dy1, (int)dx2, (int)dy2,
 				sx1, sy1, sx2, sy2,
 				obs);
+		if (isOutlineDrawn()) {
+			setOutlineColor();
+			int x = Math.min((int)dx1, (int)dx2);
+			int y = Math.min((int)dy1, (int)dy2);
+			int w = Math.abs((int)dx1 - (int)dx2);
+			int h = Math.abs((int)dy1 - (int)dy2);
+			this.delegate.drawRect(x, y, w, h);
+		}
 		postDrawing();
 		return drawn;
 	}

@@ -431,6 +431,14 @@ implements ZoomableContext {
 				sx1, sy1, sx2, sy2,
 				VectorToolkit.nativeUIObject(java.awt.Color.class, getBackground()),
 				obs);
+		if (isOutlineDrawn()) {
+			appliesOutlineAttributes();
+			int x = Math.min((int)this.tmpRect.getMinX(), (int)this.tmpRect.getMaxX());
+			int y = Math.min((int)this.tmpRect.getMinY(), (int)this.tmpRect.getMaxY());
+			int w = Math.abs((int)this.tmpRect.getMinX() - (int)this.tmpRect.getMaxX());
+			int h = Math.abs((int)this.tmpRect.getMinY() - (int)this.tmpRect.getMaxY());
+			this.canvas.drawRect(x, y, w, h);
+		}
 		postDrawing();
 		return b;
 	}

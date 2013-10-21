@@ -437,16 +437,7 @@ public class DroidZoomableGraphics2D extends AbstractVectorGraphics2D implements
 	@Override
 	public boolean drawImage(URL imageURL, Image img, float dx1, float dy1,
 			float dx2, float dy2, int sx1, int sy1, int sx2, int sy2) {
-		preDrawing();
-		Bitmap bitmap = VectorToolkit.nativeUIObject(Bitmap.class, img);
-		assert(bitmap!=null);
-		this.tmpRect.setFromCorners(dx1, dy1, dx2, dy2);
-		ZoomableContextUtil.logical2pixel(this.tmpRect, this.centeringTransform, this.scale);
-		Rect srcRect = new Rect(sx1, sy1, sx2, sy2);
-		RectF dstRect = new RectF(this.tmpRect.getMinX(), this.tmpRect.getMinY(), this.tmpRect.getMaxX(), this.tmpRect.getMaxY());
-		this.canvas.drawBitmap(bitmap, srcRect, dstRect, VectorToolkit.getObjectWithId(0, Paint.class));
-		postDrawing();
-		return true;
+		return drawImage(imageURL, img, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, null);
 	}
 
 	@Override
@@ -461,6 +452,12 @@ public class DroidZoomableGraphics2D extends AbstractVectorGraphics2D implements
 		Rect srcRect = new Rect(sx1, sy1, sx2, sy2);
 		RectF dstRect = new RectF(this.tmpRect.getMinX(), this.tmpRect.getMinY(), this.tmpRect.getMaxX(), this.tmpRect.getMaxY());
 		this.canvas.drawBitmap(bitmap, srcRect, dstRect, VectorToolkit.getObjectWithId(0, Paint.class));
+		if (isOutlineDrawn()) {
+			this.canvas.drawRect(
+					this.tmpRect.getMinX(), this.tmpRect.getMinY(),
+					this.tmpRect.getMaxX(), this.tmpRect.getMaxY(),
+					this.linePainter);
+		}
 		postDrawing();
 		return true;
 	}
