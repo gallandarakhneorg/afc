@@ -19,7 +19,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  * This program is free software; you can redistribute it and/or modify
  */
-package org.arakhne.afc.ui.vector.android;
+package org.arakhne.afc.ui.vector;
 
 import java.net.URL;
 
@@ -245,23 +245,15 @@ public class DelegatedVectorGraphics2D<G extends VectorGraphics2D> extends Abstr
 		this.delegate.draw(s);
 		postDrawing();
 	}
-
+	
 	@Override
-	public void drawString(String str, float x, float y) {
-		preDrawing();
+	protected void paintString(String text, float x, float y, Shape2f clip) {
 		onAttributePainting(getFillColor(), getOutlineColor(), getPaint(),
 				isInteriorPainted(), isOutlineDrawn(), getInteriorText());
-		this.delegate.drawString(str, x, y);
-		postDrawing();
-	}
-
-	@Override
-	public void drawString(String str, float x, float y, Shape2f clip) {
-		preDrawing();
-		onAttributePainting(getFillColor(), getOutlineColor(), getPaint(),
-				isInteriorPainted(), isOutlineDrawn(), getInteriorText());
-		this.delegate.drawString(str, x, y, clip);
-		postDrawing();
+		if (clip==null)
+			this.delegate.drawString(text, x, y);
+		else
+			this.delegate.drawString(text, x, y, clip);
 	}
 
 	@Override

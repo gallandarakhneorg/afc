@@ -38,7 +38,9 @@ import org.arakhne.afc.ui.Graphics2DLOD;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see Arakhne vector API 
  */
+@Deprecated
 public class DefaultLODGraphics2D extends AbstractLODGraphics2D<Graphics2D> {
 
 	////////////////////////////////////////////////////////////

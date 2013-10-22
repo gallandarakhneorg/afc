@@ -36,7 +36,6 @@ import org.arakhne.afc.ui.vector.FontMetrics;
 import org.arakhne.afc.ui.vector.FontStyle;
 import org.arakhne.afc.ui.vector.Image;
 import org.arakhne.afc.ui.vector.Margins;
-import org.arakhne.afc.ui.vector.Pdf;
 import org.arakhne.afc.ui.vector.Stroke;
 import org.arakhne.afc.ui.vector.Stroke.EndCap;
 import org.arakhne.afc.ui.vector.Stroke.LineJoin;
@@ -273,11 +272,6 @@ public class AndroidVectorToolkit extends VectorToolkit {
 		}
 		if (o!=null && type.isInstance(o)) return type.cast(o);
 		return null;
-	}
-
-	@Override
-	protected Pdf wrapPdf(URL url) throws IOException {
-		return new AndroidPdf(url);
 	}
 
 	@Override

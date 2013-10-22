@@ -1,8 +1,9 @@
-/* 
- * $Id$
+/* $Id$
  * 
- * Copyright (C) 2005-09 Stephane GALLAND.
- * Copyright (C) 2012 Stephane GALLAND.
+ * This is a part of NetEditor project from Arakhne.org:
+ * package org.arakhne.neteditor.zoompanel.
+ * 
+ * Copyright (C) 2013  St&eacute;phane GALLAND
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,26 +20,40 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  * This program is free software; you can redistribute it and/or modify
  */
+package org.arakhne.afc.ui.android.zoom;
+
+import org.arakhne.afc.math.continous.object2d.Rectangle2f;
 
 
-package org.arakhne.afc.ui.awt;
-
-import org.arakhne.afc.ui.ZoomableContext;
-
-
-/** This graphic context permits to display
- *  something on a screen with virtual
- *  coordinate system and with a level of details.
+/** This interface represents a piece of document
+ * that could be graphically rendered.
  *
  * @author $Author: galland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @deprecated
  */
-@Deprecated
-public interface VirtualScreenGraphics2D extends LODGraphics2D, ZoomableContext {
-
-	//
+public interface DocumentWrapper {
 	
+	/** Replies the bounds of the document.
+	 * 
+	 * @return the bounds in the logical coordinate space (not necessary the screen space);
+	 * or <code>null</code> if the bounds are not known.
+	 */
+	public Rectangle2f getDocumentBounds();
+	
+	/**
+	 *  Add a listener on the changes in this document.
+	 *  
+	 * @param listener
+	 */
+	public void addChangeListener(ChangeListener listener);
+	
+	/**
+	 *  Remove a listener on the changes in this document.
+	 *  
+	 * @param listener
+	 */
+	public void removeChangeListener(ChangeListener listener);
+
 }

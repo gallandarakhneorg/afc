@@ -64,7 +64,9 @@ import org.arakhne.afc.ui.TextAlignment;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see the Arakhne vector API.
  */
+@Deprecated
 public interface LODGraphics2D {
 
 	/** Sets the URL of an image to draw.

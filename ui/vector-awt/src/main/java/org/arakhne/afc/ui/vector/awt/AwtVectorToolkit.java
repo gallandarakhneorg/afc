@@ -67,7 +67,6 @@ import org.arakhne.afc.ui.vector.FontStyle;
 import org.arakhne.afc.ui.vector.Image;
 import org.arakhne.afc.ui.vector.Margins;
 import org.arakhne.afc.ui.vector.Paint;
-import org.arakhne.afc.ui.vector.Pdf;
 import org.arakhne.afc.ui.vector.Stroke;
 import org.arakhne.afc.ui.vector.Stroke.EndCap;
 import org.arakhne.afc.ui.vector.Stroke.LineJoin;
@@ -423,11 +422,6 @@ public class AwtVectorToolkit extends VectorToolkit {
 	@Override
 	protected <T> T findObjectWithId(int id, Class<T> type) {
 		return null;
-	}
-
-	@Override
-	protected Pdf wrapPdf(URL url) throws IOException {
-		return new AwtPdf(url);
 	}
 
 	@Override

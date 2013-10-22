@@ -786,101 +786,6 @@ public abstract class VectorToolkit {
 	 */
 	protected abstract Stroke createStroke(Object strokeObject);
 
-	//------------------------------
-	// COLOR
-	//------------------------------
-	
-    /**
-     * The color white.  In the default sRGB space.
-     * @deprecated see {@link Colors#WHITE}
-     */
-	@Deprecated
-    public final static Color WHITE;
-
-    /**
-     * The color light gray.  In the default sRGB space.
-     * @deprecated see {@link Colors#LIGHT_GRAY}
-     */
-	@Deprecated
-    public final static Color LIGHT_GRAY;
-
-    /**
-     * The color gray.  In the default sRGB space.
-     * @deprecated see {@link Colors#GRAY}
-     */
-	@Deprecated
-    public final static Color GRAY;
-
-    /**
-     * The color dark gray.  In the default sRGB space.
-     * @deprecated see {@link Colors#DARK_GRAY}
-     */
-	@Deprecated
-    public final static Color DARK_GRAY;
-
-    /**
-     * The color black.  In the default sRGB space.
-     * @deprecated see {@link Colors#BLACK}
-     */
-	@Deprecated
-    public final static Color BLACK;
-
-    /**
-     * The color red.  In the default sRGB space.
-     * @deprecated see {@link Colors#RED}
-     */
-	@Deprecated
-    public final static Color RED;
-
-    /**
-     * The color pink.  In the default sRGB space.
-     * @deprecated see {@link Colors#PINK}
-     */
-	@Deprecated
-    public final static Color PINK;
-
-    /**
-     * The color orange.  In the default sRGB space.
-     * @deprecated see {@link Colors#ORANGE}
-     */
-	@Deprecated
-    public final static Color ORANGE;
-
-    /**
-     * The color yellow.  In the default sRGB space.
-     * @deprecated see {@link Colors#YELLOW}
-     */
-	@Deprecated
-    public final static Color YELLOW;
-
-    /**
-     * The color green.  In the default sRGB space.
-     * @deprecated see {@link Colors#GREEN}
-     */
-	@Deprecated
-    public final static Color GREEN;
-
-    /**
-     * The color magenta.  In the default sRGB space.
-     * @deprecated see {@link Colors#MAGENTA}
-     */
-	@Deprecated
-    public final static Color MAGENTA;
-
-    /**
-     * The color cyan.  In the default sRGB space.
-     * @deprecated see {@link Colors#CYAN}
-     */
-	@Deprecated
-    public final static Color CYAN;
-
-    /**
-     * The color blue.  In the default sRGB space.
-     * @deprecated see {@link Colors#BLUE}
-     */
-	@Deprecated
-    public final static Color BLUE;
-
     /** Create a color.
 	 * 
 	 * @param red is the red component in [0;255].
@@ -1015,19 +920,19 @@ public abstract class VectorToolkit {
 	 */
 	public static Color color(String c) {
 		if (c==null) return null;
-		if ("red".equalsIgnoreCase(c)) return RED; //$NON-NLS-1$
-		if ("blue".equalsIgnoreCase(c)) return BLUE; //$NON-NLS-1$
-		if ("green".equalsIgnoreCase(c)) return GREEN; //$NON-NLS-1$
-		if ("black".equalsIgnoreCase(c)) return BLACK; //$NON-NLS-1$
-		if ("white".equalsIgnoreCase(c)) return WHITE; //$NON-NLS-1$
-		if ("gray".equalsIgnoreCase(c)) return GRAY; //$NON-NLS-1$
-		if ("cyan".equalsIgnoreCase(c)) return CYAN; //$NON-NLS-1$
-		if ("magenta".equalsIgnoreCase(c)) return MAGENTA; //$NON-NLS-1$
-		if ("yellow".equalsIgnoreCase(c)) return YELLOW; //$NON-NLS-1$
-		if ("lightgray".equalsIgnoreCase(c)) return LIGHT_GRAY; //$NON-NLS-1$
-		if ("darkgray".equalsIgnoreCase(c)) return DARK_GRAY; //$NON-NLS-1$
-		if ("orange".equalsIgnoreCase(c)) return ORANGE; //$NON-NLS-1$
-		if ("pink".equalsIgnoreCase(c)) return PINK; //$NON-NLS-1$
+		if ("red".equalsIgnoreCase(c)) return Colors.RED; //$NON-NLS-1$
+		if ("blue".equalsIgnoreCase(c)) return Colors.BLUE; //$NON-NLS-1$
+		if ("green".equalsIgnoreCase(c)) return Colors.GREEN; //$NON-NLS-1$
+		if ("black".equalsIgnoreCase(c)) return Colors.BLACK; //$NON-NLS-1$
+		if ("white".equalsIgnoreCase(c)) return Colors.WHITE; //$NON-NLS-1$
+		if ("gray".equalsIgnoreCase(c)) return Colors.GRAY; //$NON-NLS-1$
+		if ("cyan".equalsIgnoreCase(c)) return Colors.CYAN; //$NON-NLS-1$
+		if ("magenta".equalsIgnoreCase(c)) return Colors.MAGENTA; //$NON-NLS-1$
+		if ("yellow".equalsIgnoreCase(c)) return Colors.YELLOW; //$NON-NLS-1$
+		if ("lightgray".equalsIgnoreCase(c)) return Colors.LIGHT_GRAY; //$NON-NLS-1$
+		if ("darkgray".equalsIgnoreCase(c)) return Colors.DARK_GRAY; //$NON-NLS-1$
+		if ("orange".equalsIgnoreCase(c)) return Colors.ORANGE; //$NON-NLS-1$
+		if ("pink".equalsIgnoreCase(c)) return Colors.PINK; //$NON-NLS-1$
 		Integer intval = Integer.decode(c);
         int i = intval.intValue();
         int a;
@@ -1084,41 +989,6 @@ public abstract class VectorToolkit {
 	
 	static {
 		init();
-		WHITE = color(255, 255, 255, 255);
-		LIGHT_GRAY = color(192, 192, 192, 255);
-		GRAY = color(128, 128, 128, 255);
-		DARK_GRAY = color(64, 64, 64, 255);
-		BLACK = color(0, 0, 0, 255);
-		RED = color(255, 0, 0, 255);
-		PINK = color(255, 175, 175, 255);
-		ORANGE = color(255, 200, 0, 255);
-		YELLOW = color(255, 255, 0, 255);
-		GREEN = color(0, 255, 0, 255);
-		MAGENTA = color(255, 0, 255, 255);
-		CYAN = color(0, 255, 255, 255);
-		BLUE = color(0, 0, 255, 255);
 	}
-
-	//------------------------------
-	// PDF
-	//------------------------------
-	
-	/** Read a PDF file and reply its wrapper.
-	 * 
-	 * @param url is the address of the stream to read.
-	 * @return the PDF wrapper.
-	 * @throws IOException
-	 */
-	public static Pdf pdf(URL url) throws IOException {
-		return SINGLETON.wrapPdf(url);
-	}
-
-	/** Read a PDF file and reply its wrapper.
-	 * 
-	 * @param url is the address of the stream to read.
-	 * @return the PDF wrapper.
-	 * @throws IOException
-	 */
-	protected abstract Pdf wrapPdf(URL url) throws IOException;
 
 }

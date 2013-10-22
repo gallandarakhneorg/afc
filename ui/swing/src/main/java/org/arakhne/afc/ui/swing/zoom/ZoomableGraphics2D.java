@@ -1,7 +1,8 @@
 /* 
  * $Id$
  * 
- * Copyright (C) 2013 Stephane GALLAND.
+ * Copyright (C) 2002  St&eacute;phane GALLAND, Mahdi Hannoun
+ * Copyright (C) 2004-2013  St&eacute;phane GALLAND
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,9 +19,24 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  * This program is free software; you can redistribute it and/or modify
  */
-package org.arakhne.afc.ui.android.zoom;
+package org.arakhne.afc.ui.swing.zoom;
 
+import java.awt.AlphaComposite;
+import java.awt.BasicStroke;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.Shape;
+import java.awt.font.FontRenderContext;
+import java.awt.font.GlyphVector;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Line2D;
+import java.awt.geom.Path2D;
+import java.awt.geom.Rectangle2D;
+import java.awt.geom.RoundRectangle2D;
 import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.arakhne.afc.math.continous.object2d.Circle2f;
 import org.arakhne.afc.math.continous.object2d.Ellipse2f;
@@ -46,101 +62,66 @@ import org.arakhne.afc.ui.vector.Font;
 import org.arakhne.afc.ui.vector.FontMetrics;
 import org.arakhne.afc.ui.vector.Image;
 import org.arakhne.afc.ui.vector.ImageObserver;
+import org.arakhne.afc.ui.vector.Paint;
 import org.arakhne.afc.ui.vector.Stroke;
 import org.arakhne.afc.ui.vector.VectorToolkit;
 
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.DashPathEffect;
-import android.graphics.Matrix;
-import android.graphics.Paint;
-import android.graphics.Paint.Cap;
-import android.graphics.Paint.Join;
-import android.graphics.Paint.Style;
-import android.graphics.Path;
-import android.graphics.Path.FillType;
-import android.graphics.PathEffect;
-import android.graphics.Rect;
-import android.graphics.RectF;
-import android.graphics.Region.Op;
-import android.graphics.drawable.Drawable;
-import android.util.Log;
-
 /**
- * This is the droid-based implementation of a VectorGraphics2D and a ZoomableContext.
+ * This is the swing-based implementation of a VectorGraphics2D and a ZoomableContext.
  *  
  * @author $Author: galland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class DroidZoomableGraphics2D extends AbstractVectorGraphics2D implements ZoomableContext {
-	
-	/** Convert the droid matrix to Arakhne transformation matrix.
+public class ZoomableGraphics2D extends AbstractVectorGraphics2D
+implements ZoomableContext {
+
+	/** Convert the Awt affine transformation to Arakhne transformation matrix.
 	 * 
 	 * @param m is the matrix to convert to a transformation.
 	 * @param scale is the scaling factor to apply.
 	 * @return the Arakhne transformation matrix.
 	 */
-	public static Transform2D convertMatrix(Matrix m, float scale) {
+	public static Transform2D convertAffineTransform(AffineTransform m, float scale) {
 		assert(m!=null);
 		if (m.isIdentity()) return new Transform2D();
-		float[] values = new float[9];
-		m.getValues(values);
 		return new Transform2D(
-				ZoomableContextUtil.pixel2logical_size(values[0], scale),
-				values[1],
-				ZoomableContextUtil.pixel2logical_size(values[2], scale),
-				values[3],
-				ZoomableContextUtil.pixel2logical_size(values[4], scale),
-				ZoomableContextUtil.pixel2logical_size(values[5], scale));
+				ZoomableContextUtil.pixel2logical_size((float)m.getScaleX(), scale),
+				(float)m.getShearX(),
+				ZoomableContextUtil.pixel2logical_size((float)m.getTranslateX(), scale),
+				(float)m.getShearY(),
+				ZoomableContextUtil.pixel2logical_size((float)m.getScaleY(), scale),
+				ZoomableContextUtil.pixel2logical_size((float)m.getTranslateY(), scale));
 	}
-
+	
 	/** Convert the Arakhne transformation matrix to droid matrix.
 	 * 
 	 * @param t is the transformation to convert to a matrix.
 	 * @param scale is the scaling factor to apply.
 	 * @return droid matrix.
 	 */
-	public static Matrix convertTransformation(Transform2D t, float scale) {
+	public static AffineTransform convertTransformation(Transform2D t, float scale) {
 		assert(t!=null);
-		Matrix at = new Matrix();
+		AffineTransform at;
 		if (!t.isIdentity()) {
-			float[] values = new float[] {
+			at = new AffineTransform(
 					ZoomableContextUtil.logical2pixel_size(t.m00, scale),
 					t.m01,
 					ZoomableContextUtil.logical2pixel_size(t.m02, scale),
 					t.m10,
 					ZoomableContextUtil.logical2pixel_size(t.m11, scale),
-					ZoomableContextUtil.logical2pixel_size(t.m12, scale),
-					t.m20, t.m21, t.m22
-			};
-			at.setValues(values);
+					ZoomableContextUtil.logical2pixel_size(t.m12, scale));
+		}
+		else {
+			at = new AffineTransform();
 		}
 		return at;
 	}
 
-	/** Set the color of the given paint to the given color.
-	 * This function tries the Android color objects that
-	 * are able to represent a color (ARGB color, Drawable).
-	 * 
-	 * @param paint
-	 * @param color
+	/** Swing canvas.
 	 */
-	protected static void setColor(Paint paint, Color color) {
-		Object androidColor = VectorToolkit.nativeUIObject(Object.class, color);
-		if (androidColor instanceof Drawable) {
-			//paint.setColor((Drawable)androidColor);
-		}
-		else if (androidColor instanceof Number) {
-			paint.setColor(((Number)androidColor).intValue());
-		}
-	}
-
-
-	/** Android canvas.
-	 */
-	protected final Canvas canvas;
+	protected final Graphics2D canvas;
 
 	/** Default color to draw the background.
 	 * 
@@ -160,26 +141,12 @@ public class DroidZoomableGraphics2D extends AbstractVectorGraphics2D implements
 	 */
 	protected Graphics2DLOD levelOfDetail;
 
-	/** Android painter to use for filling the shapes.
-	 */
-	protected Paint fillPainter;
-
-	/** Android painter to use for drawing the outlines of the shapes.
-	 */
-	protected Paint linePainter;
-
-	/** Android painter to use for drawing the texts.
-	 */
-	protected Paint fontPainter;
-
 	/** Current background color.
 	 * 
 	 * @see #defaultBackground
 	 */
 	protected Color background;
 
-	private final int initialSaveCount;
-	
 	/** Scaling factor to apply when drawing.
 	 */
 	protected final float scale;
@@ -192,15 +159,15 @@ public class DroidZoomableGraphics2D extends AbstractVectorGraphics2D implements
 	 */
 	protected final Rectangle2f tmpRect = new Rectangle2f();
 
+	/** Temp rectangle used in internal computations.
+	 */
+	protected final Rectangle2D tmpRect2 = new Rectangle2D.Float();
+
 	/** Default color to fill the shapes.
-	 * 
-	 * @see #fillPainter
 	 */
 	protected final Color defaultFillColor;
 
 	/** Default color to outline the shapes.
-	 * 
-	 * @see #linePainter
 	 */
 	protected final Color defaultLineColor;
 
@@ -223,9 +190,13 @@ public class DroidZoomableGraphics2D extends AbstractVectorGraphics2D implements
 	/** Minimal value for the scale factor.
 	 */
 	protected final float minScale;
+	
+	/** Default Awt font.
+	 */
+	private final java.awt.Font defaultAwtFont;
 
 	/**
-	 * @param canvas
+	 * @param canvas is the Swing context into which to draw.
 	 * @param defaultFillColor is the default color for filling.
 	 * @param defaultLineColor is the default color for the lines.
 	 * @param scaleFactor is the scaling factor to apply.
@@ -238,8 +209,8 @@ public class DroidZoomableGraphics2D extends AbstractVectorGraphics2D implements
 	 * @param minScaleFactor is the minimal allowed scaling factor.
 	 * @param maxScaleFactor is the maximal allowed scaling factor.
 	 */
-	public DroidZoomableGraphics2D(
-			Canvas canvas,
+	public ZoomableGraphics2D(
+			Graphics2D canvas,
 			Color defaultFillColor,
 			Color defaultLineColor,
 			float scaleFactor,
@@ -258,6 +229,7 @@ public class DroidZoomableGraphics2D extends AbstractVectorGraphics2D implements
 				true,
 				true,
 				null);
+		this.defaultAwtFont = canvas.getFont();
 		this.defaultFillColor = defaultFillColor;
 		this.defaultLineColor = defaultLineColor;
 		this.scalingSensitivity = scalingSensitivity;
@@ -269,22 +241,18 @@ public class DroidZoomableGraphics2D extends AbstractVectorGraphics2D implements
 		this.scale = scaleFactor;
 		this.centeringTransform = centeringTransform;
 		this.defaultBackground = this.background = background;
-		this.initialSaveCount = canvas.getSaveCount();
 		this.defaultLevelOfDetail = this.levelOfDetail = isAntiAlias ? Graphics2DLOD.NORMAL_LEVEL_OF_DETAIL : Graphics2DLOD.LOW_LEVEL_OF_DETAIL;
 		resetPainters();
 	}
 
 	@Override
-	public Canvas getNativeGraphics2D() {
+	public Graphics2D getNativeGraphics2D() {
 		return this.canvas;
 	}
 
 	@Override
 	public void dispose() {
 		this.background = null;
-		this.fillPainter = null;
-		this.fontPainter = null;
-		this.linePainter = null;
 		this.levelOfDetail = null;
 		super.dispose();
 	}
@@ -297,56 +265,34 @@ public class DroidZoomableGraphics2D extends AbstractVectorGraphics2D implements
 		setFillColor(this.defaultFillColor);
 		setOutlineColor(this.defaultLineColor);
 		resetPainters();
-		while (this.canvas.getSaveCount() > this.initialSaveCount) {
-			this.canvas.restore();
-		}
 	}
 
 	/** Reset the painters to the default attribute values.
 	 */
 	protected void resetPainters() {
 		boolean isNormalLod = this.levelOfDetail.compareTo(Graphics2DLOD.NORMAL_LEVEL_OF_DETAIL)>=0;
-
-		this.fillPainter = new Paint();
-		this.fillPainter.setStyle(Style.FILL);
-		this.fillPainter.setAntiAlias(isNormalLod);
-		this.linePainter = new Paint();
-		this.linePainter.setStyle(Style.STROKE);
-		this.linePainter.setAntiAlias(isNormalLod);
-		this.fontPainter = new Paint();
-		this.fontPainter.setStyle(Style.FILL_AND_STROKE);
-		this.fontPainter.setAntiAlias(isNormalLod);
-		this.fontPainter.setTextSize(
-				ZoomableContextUtil.logical2pixel_size(
-						this.fontPainter.getTextSize(),
-						this.scale));
+		this.canvas.setRenderingHint(RenderingHints.KEY_ANTIALIASING, 
+				isNormalLod
+				? RenderingHints.VALUE_ANTIALIAS_ON
+				: RenderingHints.VALUE_ANTIALIAS_OFF);
+		this.canvas.setComposite(AlphaComposite.SrcOver);
+		this.canvas.setStroke(new BasicStroke());
+		float rawSize = logical2pixel_size(this.defaultAwtFont.getSize2D());
+		this.canvas.setFont(this.defaultAwtFont.deriveFont(rawSize));
 	}
-
+	
 	/** {@inheritDoc}
 	 */
 	@Override
 	protected void log(String message) {
-		Log.d(toString(), message);
+		Logger.getLogger(getClass().getCanonicalName()).log(Level.FINEST, message);
 	}
 
 	/** {@inheritDoc}
 	 */
 	@Override
 	protected void log(String message, Throwable exception) {
-		Log.d(toString(), message, exception);
-	}
-
-	@Override
-	public Color setOutlineColor(Color color) {
-		setColor(this.linePainter, color);
-		setColor(this.fontPainter, color);
-		return super.setOutlineColor(color);
-	}
-
-	@Override
-	public Color setFillColor(Color color) {
-		setColor(this.fillPainter, color);
-		return super.setFillColor(color);
+		Logger.getLogger(getClass().getCanonicalName()).log(Level.FINEST, message, exception);
 	}
 
 	@Override
@@ -362,9 +308,10 @@ public class DroidZoomableGraphics2D extends AbstractVectorGraphics2D implements
 		if (lod!=null) {
 			this.levelOfDetail = lod;
 			boolean isNormalLod = this.levelOfDetail.compareTo(Graphics2DLOD.NORMAL_LEVEL_OF_DETAIL)>=0;
-			this.fillPainter.setAntiAlias(isNormalLod);
-			this.linePainter.setAntiAlias(isNormalLod);
-			this.fontPainter.setAntiAlias(isNormalLod);
+			this.canvas.setRenderingHint(RenderingHints.KEY_ANTIALIASING, 
+					isNormalLod
+					? RenderingHints.VALUE_ANTIALIAS_ON
+					: RenderingHints.VALUE_ANTIALIAS_OFF);
 		}
 	}
 
@@ -378,33 +325,37 @@ public class DroidZoomableGraphics2D extends AbstractVectorGraphics2D implements
 		preDrawing();
 		float px = ZoomableContextUtil.logical2pixel_x(x, this.centeringTransform, this.scale);
 		float py = ZoomableContextUtil.logical2pixel_y(y, this.centeringTransform, this.scale);
-		this.canvas.drawRect(px-.5f, py-.5f, px+.5f, py+.5f, this.fillPainter);
+		this.tmpRect2.setFrame(px-.5f, py-.5f, 1f, 1f);
+		appliesOutlineAttributes();
+		this.canvas.fill(this.tmpRect2);
 		postDrawing();
 	}
 
 	@Override
 	public Font getFont() {
-		Paint scaledFont = new Paint(this.fontPainter);
-		scaledFont.setTextSize(
-				ZoomableContextUtil.pixel2logical_size(this.fontPainter.getTextSize(), this.scale));
-		return VectorToolkit.font(scaledFont);
+		java.awt.Font f = this.canvas.getFont();
+		f = f.deriveFont(
+				ZoomableContextUtil.pixel2logical_size(
+						f.getSize(),
+						this.scale));
+		return VectorToolkit.font(f);
 	}
 
 	@Override
 	public void setFont(Font font) {
-		Paint p = VectorToolkit.nativeUIObject(Paint.class, font);
-		assert(p!=null);
-		this.fontPainter = new Paint(p);
-		this.fontPainter.setTextSize(
-				ZoomableContextUtil.logical2pixel_size(p.getTextSize(), this.scale));
+		java.awt.Font f = VectorToolkit.nativeUIObject(java.awt.Font.class, font);
+		assert(f!=null);
+		f = f.deriveFont(
+				ZoomableContextUtil.logical2pixel_size(f.getSize(), this.scale));
+		this.canvas.setFont(f);
 	}
 
 	@Override
 	public FontMetrics getFontMetrics() {
-		Paint scaledFont = new Paint(this.fontPainter);
-		scaledFont.setTextSize(
-				ZoomableContextUtil.pixel2logical_size(this.fontPainter.getTextSize(), this.scale));
-		return VectorToolkit.fontMetrics(scaledFont);
+		java.awt.Font f = this.canvas.getFont();
+		f = f.deriveFont(
+				ZoomableContextUtil.pixel2logical_size(f.getSize(), this.scale));
+		return VectorToolkit.fontMetrics(this.canvas.getFontMetrics(f));
 	}
 
 	@Override
@@ -414,30 +365,41 @@ public class DroidZoomableGraphics2D extends AbstractVectorGraphics2D implements
 
 	@Override
 	public Shape2f getClip() {
-		Rect r = this.canvas.getClipBounds();
-		Rectangle2f rr = new Rectangle2f(r.left, r.right, r.width(), r.height());
-		ZoomableContextUtil.pixel2logical(rr, this.centeringTransform, this.scale);
+		Rectangle2f rr = null;
+		Shape r = this.canvas.getClip();
+		if (r!=null) {
+			Rectangle2D b = r.getBounds2D();
+			rr = new Rectangle2f(
+					(float)b.getMinX(), (float)b.getMinY(),
+					(float)b.getWidth(), (float)b.getHeight());
+			ZoomableContextUtil.pixel2logical(rr, this.centeringTransform, this.scale);
+		}
 		return rr;
 	}
 
 	@Override
 	public void setClip(Shape2f clip) {
-		Rectangle2f r = clip.toBoundingBox();
-		ZoomableContextUtil.logical2pixel(r, this.centeringTransform, this.scale);
-		this.canvas.clipRect(
-				r.getMinX(), r.getMinY(),
-				r.getMaxX(), r.getMaxY(),
-				Op.REPLACE);
+		if (clip!=null) {
+			Rectangle2f r = clip.toBoundingBox();
+			ZoomableContextUtil.logical2pixel(r, this.centeringTransform, this.scale);
+			this.tmpRect2.setFrame(
+					r.getMinX(), r.getMinY(),
+					r.getWidth(), r.getHeight());
+			this.canvas.setClip(this.tmpRect2);
+		}
+		else {
+			this.canvas.setClip(null);
+		}
 	}
 
 	@Override
 	public void clip(Shape2f clip) {
 		Rectangle2f r = clip.toBoundingBox();
 		ZoomableContextUtil.logical2pixel(r, this.centeringTransform, this.scale);
-		this.canvas.clipRect(
+		this.tmpRect2.setFrame(
 				r.getMinX(), r.getMinY(),
-				r.getMaxX(), r.getMaxY(),
-				Op.INTERSECT);
+				r.getWidth(), r.getHeight());
+		this.canvas.clip(this.tmpRect2);
 	}
 
 	@Override
@@ -451,38 +413,37 @@ public class DroidZoomableGraphics2D extends AbstractVectorGraphics2D implements
 			float dx2, float dy2, int sx1, int sy1, int sx2, int sy2,
 			ImageObserver observer) {
 		preDrawing();
-		Bitmap bitmap = VectorToolkit.nativeUIObject(Bitmap.class, img);
+		java.awt.Image bitmap = VectorToolkit.nativeUIObject(java.awt.Image.class, img);
 		assert(bitmap!=null);
 		this.tmpRect.setFromCorners(dx1, dy1, dx2, dy2);
 		ZoomableContextUtil.logical2pixel(this.tmpRect, this.centeringTransform, this.scale);
-		Rect srcRect = new Rect(sx1, sy1, sx2, sy2);
-		RectF dstRect = new RectF(this.tmpRect.getMinX(), this.tmpRect.getMinY(), this.tmpRect.getMaxX(), this.tmpRect.getMaxY());
-		this.canvas.drawBitmap(bitmap, srcRect, dstRect, VectorToolkit.getObjectWithId(0, Paint.class));
+		ObserverWrapper obs;
+		if (observer==null) {
+			obs = null;
+		}
+		else {
+			obs = new ObserverWrapper(observer);
+		}
+		boolean b = this.canvas.drawImage(
+				bitmap,
+				(int)this.tmpRect.getMinX(), (int)this.tmpRect.getMinY(),
+				(int)this.tmpRect.getMaxX(), (int)this.tmpRect.getMaxY(),
+				sx1, sy1, sx2, sy2,
+				VectorToolkit.nativeUIObject(java.awt.Color.class, getBackground()),
+				obs);
 		if (isOutlineDrawn()) {
-			this.canvas.drawRect(
-					this.tmpRect.getMinX(), this.tmpRect.getMinY(),
-					this.tmpRect.getMaxX(), this.tmpRect.getMaxY(),
-					this.linePainter);
+			appliesOutlineAttributes();
+			int x = Math.min((int)this.tmpRect.getMinX(), (int)this.tmpRect.getMaxX());
+			int y = Math.min((int)this.tmpRect.getMinY(), (int)this.tmpRect.getMaxY());
+			int w = Math.abs((int)this.tmpRect.getMinX() - (int)this.tmpRect.getMaxX());
+			int h = Math.abs((int)this.tmpRect.getMinY() - (int)this.tmpRect.getMaxY());
+			this.canvas.drawRect(x, y, w, h);
 		}
 		postDrawing();
-		return true;
+		return b;
 	}
 
-	@Override
-	public void clear(Shape2f s) {
-		Paint old = this.fillPainter;
-		this.fillPainter = VectorToolkit.getObjectWithId(0, Paint.class);
-		this.fillPainter.setAlpha(1);
-		Color b = getBackground();
-		if (b!=null) {
-			setColor(this.fillPainter, b);
-		}
-		drawOnCanvas(s, this.fillPainter);
-		this.fillPainter = old;
-		postDrawing();
-	}
-
-	private void drawOnCanvas(Shape2f s, Paint painter) {
+	private Shape toAwt(Shape2f s) {
 		if (s!=null) {
 			PathIterator2f path = null;
 			if (s instanceof Path2f) {
@@ -493,24 +454,30 @@ public class DroidZoomableGraphics2D extends AbstractVectorGraphics2D implements
 					Rectangle2f r = (Rectangle2f)s;
 					this.tmpRect.set(r);
 					ZoomableContextUtil.logical2pixel(this.tmpRect, this.centeringTransform, this.scale);
-					this.canvas.drawRect(this.tmpRect.getMinX(), this.tmpRect.getMinY(), this.tmpRect.getMaxX(), this.tmpRect.getMaxY(), painter);
-					return;
+					this.tmpRect2.setFrame(
+							this.tmpRect.getMinX(), this.tmpRect.getMinY(),
+							this.tmpRect.getWidth(), this.tmpRect.getHeight());
+					return this.tmpRect2;
 				}
 				if (s instanceof Ellipse2f) {
 					Ellipse2f r = (Ellipse2f)s;
 					this.tmpRect.set(r);
 					ZoomableContextUtil.logical2pixel(this.tmpRect, this.centeringTransform, this.scale);
-					this.canvas.drawOval(
-							new RectF(this.tmpRect.getMinX(), this.tmpRect.getMinY(), this.tmpRect.getMaxX(), this.tmpRect.getMaxY()), painter);
-					return;
+					Ellipse2D se = new Ellipse2D.Float(
+							this.tmpRect.getMinX(), this.tmpRect.getMinY(),
+							this.tmpRect.getWidth(), this.tmpRect.getHeight());
+					return se;
 				}
 				if (s instanceof Circle2f) {
 					Circle2f r = (Circle2f)s;
 					float cx = ZoomableContextUtil.logical2pixel_x(r.getX(), this.centeringTransform, this.scale);
 					float cy = ZoomableContextUtil.logical2pixel_y(r.getY(), this.centeringTransform, this.scale);
 					float radius = ZoomableContextUtil.logical2pixel_size(r.getRadius(), this.scale);
-					this.canvas.drawCircle(cx, cy, radius, painter);
-					return;
+					float diameter = radius * 2f;
+					Ellipse2D se = new Ellipse2D.Float(
+							cx-radius, cy-radius,
+							diameter, diameter);
+					return se;
 				}
 				if (s instanceof RoundRectangle2f) {
 					RoundRectangle2f r = (RoundRectangle2f)s;
@@ -518,68 +485,97 @@ public class DroidZoomableGraphics2D extends AbstractVectorGraphics2D implements
 					ZoomableContextUtil.logical2pixel(this.tmpRect, this.centeringTransform, this.scale);
 					float aw = ZoomableContextUtil.logical2pixel_size(r.getArcWidth()/2f, this.scale);
 					float ah = ZoomableContextUtil.logical2pixel_size(r.getArcHeight()/2f, this.scale);
-					this.canvas.drawRoundRect(
-							new RectF(this.tmpRect.getMinX(), this.tmpRect.getMinY(), this.tmpRect.getMaxX(), this.tmpRect.getMaxY()),
-							aw, ah, painter);
-					return;
+					RoundRectangle2D rr = new RoundRectangle2D.Float(
+							this.tmpRect.getMinX(), this.tmpRect.getMinY(),
+							this.tmpRect.getWidth(), this.tmpRect.getHeight(),
+							aw, ah);
+					return rr;
 				}
 				if (s instanceof Segment2f) {
 					Segment2f l = (Segment2f)s;
-					this.canvas.drawLine(
+					Line2D sl = new Line2D.Float(
 							ZoomableContextUtil.logical2pixel_x(l.getX1(), this.centeringTransform, this.scale),
 							ZoomableContextUtil.logical2pixel_y(l.getY1(), this.centeringTransform, this.scale),
 							ZoomableContextUtil.logical2pixel_x(l.getX2(), this.centeringTransform, this.scale),
-							ZoomableContextUtil.logical2pixel_y(l.getY2(), this.centeringTransform, this.scale),
-							painter);
-					return;
+							ZoomableContextUtil.logical2pixel_y(l.getY2(), this.centeringTransform, this.scale));
+					return sl;
 				}
 
 				path = s.getPathIterator();
 			}
 			if (path!=null) {
 				path = ZoomableContextUtil.logical2pixel(path, this.centeringTransform, this.scale);
-				Path droidPath = new Path();
+				Path2D sp = new Path2D.Float();
 				if (path.getWindingRule()==PathWindingRule.EVEN_ODD) {
-					droidPath.setFillType(FillType.EVEN_ODD);
+					sp.setWindingRule(Path2D.WIND_EVEN_ODD);
 				}
 				PathElement2f e;
 				while (path.hasNext()) {
 					e = path.next();
 					switch(e.type) {
 					case MOVE_TO:
-						droidPath.moveTo(e.toX, e.toY);
+						sp.moveTo(e.toX, e.toY);
 						break;
 					case LINE_TO:
-						droidPath.lineTo(e.toX, e.toY);
+						sp.lineTo(e.toX, e.toY);
 						break;
 					case CURVE_TO:
-						droidPath.cubicTo(e.ctrlX1, e.ctrlY1, e.ctrlX2, e.ctrlY2, e.toX, e.toY);
+						sp.curveTo(e.ctrlX1, e.ctrlY1, e.ctrlX2, e.ctrlY2, e.toX, e.toY);
 						break;
 					case QUAD_TO:
-						droidPath.quadTo(e.ctrlX1, e.ctrlY1, e.toX, e.toY);
+						sp.quadTo(e.ctrlX1, e.ctrlY1, e.toX, e.toY);
 						break;
 					case CLOSE:
-						droidPath.close();
+						sp.closePath();
 						break;
 					default:
 					}
 				}
-				this.canvas.drawPath(droidPath, painter);
+				return sp;
 			}
-			else {
-				throw new IllegalArgumentException(s.toString());
-			}
+			throw new IllegalArgumentException(s.toString());
 		}
+		throw new IllegalArgumentException();
+	}
+
+	private java.awt.Color toAwt(Color c) {
+		if (c==null) return this.canvas.getBackground();
+		return new java.awt.Color(c.getRGB(),true);
+	}
+	
+	private void appliesFillAttributes() {
+		Paint painter = getPaint();
+		java.awt.Paint awtPaint = VectorToolkit.nativeUIObject(java.awt.Paint.class, painter);
+		if (awtPaint!=null) {
+			this.canvas.setPaint(awtPaint);
+		}
+		else {
+			this.canvas.setColor(toAwt(getFillColor()));
+		}
+	}
+	
+	private void appliesOutlineAttributes() {
+		this.canvas.setColor(toAwt(getOutlineColor()));
+	}
+
+	private void appliesTextAttributes() {
+		this.canvas.setColor(toAwt(getOutlineColor()));
 	}
 
 	@Override
+	public void clear(Shape2f s) {
+		this.canvas.setColor(toAwt(getBackground()));
+		this.canvas.fill(toAwt(s));
+		postDrawing();
+	}
+	
+	@Override
 	public void draw(Shape2f s) {
 		preDrawing();
+		Shape awt = toAwt(s);
 		if (isInteriorPainted()) {
-			drawOnCanvas(s, this.fillPainter);
-		}
-		if (isOutlineDrawn()) {
-			drawOnCanvas(s, this.linePainter);
+			appliesFillAttributes();
+			this.canvas.fill(awt);
 		}
 		String text = getInteriorText();
 		if (text!=null && !text.isEmpty()) {
@@ -588,28 +584,37 @@ public class DroidZoomableGraphics2D extends AbstractVectorGraphics2D implements
 					s.toBoundingBox(),
 					s);
 		}
+		if (isOutlineDrawn()) {
+			appliesOutlineAttributes();
+			this.canvas.draw(awt);
+		}
 		postDrawing();
 	}
 	
 	@Override
 	protected void paintString(String text, float x, float y, Shape2f clip) {
-		if (clip==null) {
-			this.canvas.drawText(text,
-					ZoomableContextUtil.logical2pixel_x(x, this.centeringTransform, this.scale),
-					ZoomableContextUtil.logical2pixel_y(y, this.centeringTransform, this.scale),
-					this.fontPainter);
-		}
-		else {
-			Shape2f c = getClip();
+		Shape2f oldClip = null;
+		if (clip!=null) {
+			oldClip = getClip();
 			clip(clip);
-			this.canvas.drawText(text,
-					ZoomableContextUtil.logical2pixel_x(x, this.centeringTransform, this.scale),
-					ZoomableContextUtil.logical2pixel_y(y, this.centeringTransform, this.scale),
-					this.fontPainter);
-			setClip(c);
+		}
+		appliesTextAttributes();
+		FontRenderContext frc = this.canvas.getFontRenderContext();
+		GlyphVector glyphs = this.canvas.getFont().createGlyphVector(frc, text);
+		Shape s = glyphs.getOutline(
+				ZoomableContextUtil.logical2pixel_x(x, this.centeringTransform, this.scale),
+				ZoomableContextUtil.logical2pixel_y(y, this.centeringTransform, this.scale));
+		assert(s!=null);
+		this.canvas.fill(s);
+		/*this.canvas.drawString(
+				str,
+				ZoomableContextUtil.logical2pixel_x(x, this.centeringTransform, this.scale),
+				ZoomableContextUtil.logical2pixel_y(y, this.centeringTransform, this.scale));*∕*/
+		if (clip!=null) {
+			setClip(oldClip);
 		}
 	}
-
+	
 	@Override
 	public void translate(float tx, float ty) {
 		this.canvas.translate(
@@ -631,26 +636,26 @@ public class DroidZoomableGraphics2D extends AbstractVectorGraphics2D implements
 
 	@Override
 	public void shear(float shx, float shy) {
-		this.canvas.skew(
+		this.canvas.shear(
 				ZoomableContextUtil.logical2pixel_size(shx, this.scale),
 				ZoomableContextUtil.logical2pixel_size(shy, this.scale));
 	}
 
 	@Override
 	public void transform(Transform2D Tx) {
-		this.canvas.concat(convertTransformation(Tx, this.scale));
+		this.canvas.transform(convertTransformation(Tx, this.scale));
 	}
 
 	@Override
 	public Transform2D setTransform(Transform2D Tx) {
-		Transform2D old = convertMatrix(this.canvas.getMatrix(), this.scale);
-		this.canvas.setMatrix(convertTransformation(Tx, this.scale));
+		Transform2D old = convertAffineTransform(this.canvas.getTransform(), this.scale);
+		this.canvas.setTransform(convertTransformation(Tx, this.scale));
 		return old;
 	}
 
 	@Override
 	public Transform2D getTransform() {
-		return convertMatrix(this.canvas.getMatrix(), this.scale);
+		return convertAffineTransform(this.canvas.getTransform(), this.scale);
 	}
 
 	@Override
@@ -665,71 +670,24 @@ public class DroidZoomableGraphics2D extends AbstractVectorGraphics2D implements
 
 	@Override
 	public void setComposite(Composite composite) {
-		int alpha = (int)(composite.getAlpha() * 255);
-		this.fillPainter.setAlpha(alpha);
-		this.linePainter.setAlpha(alpha);
-		this.fontPainter.setAlpha(alpha);
+		java.awt.Composite ac = VectorToolkit.nativeUIObject(java.awt.Composite.class, composite);
+		this.canvas.setComposite(ac);
 	}
 
 	@Override
 	public Composite getComposite() {
-		return VectorToolkit.composite(1);
+		return VectorToolkit.composite(this.canvas.getComposite());
 	}
 
 	@Override
 	public void setStroke(Stroke stroke) {
-		this.linePainter.setStrokeMiter(stroke.getMiterLimit());
-		this.fontPainter.setStrokeMiter(stroke.getMiterLimit());
-
-		Cap cap;
-		switch(stroke.getEndCap()) {
-		case BUTT:
-			cap = Cap.BUTT;
-			break;
-		case SQUARE:
-			cap = Cap.SQUARE;
-			break;
-		case ROUND:
-			cap = Cap.ROUND;
-			break;
-		default:
-			throw new IllegalStateException();
-		}
-		this.linePainter.setStrokeCap(cap);
-		this.fontPainter.setStrokeCap(cap);
-
-		Join join;
-		switch(stroke.getLineJoin()) {
-		case BEVEL:
-			join = Join.BEVEL;
-			break;
-		case MITER:
-			join = Join.MITER;
-			break;
-		case ROUND:
-			join = Join.ROUND;
-			break;
-		default:
-			throw new IllegalStateException();
-		}
-		this.linePainter.setStrokeJoin(join);
-		this.fontPainter.setStrokeJoin(join);
-
-		this.linePainter.setStrokeWidth(stroke.getLineWidth());
-		this.fontPainter.setStrokeWidth(stroke.getLineWidth());
-
-		float[] dashes = stroke.getDashArray();
-		PathEffect pe = null;
-		if (dashes!=null && dashes.length>=2) {
-			pe = new DashPathEffect(dashes, stroke.getDashPhase());
-		}
-		this.linePainter.setPathEffect(pe);
-		this.fontPainter.setPathEffect(pe);
+		java.awt.Stroke as = VectorToolkit.nativeUIObject(java.awt.Stroke.class, stroke);
+		this.canvas.setStroke(as);
 	}
 
 	@Override
 	public Stroke getStroke() {
-		return VectorToolkit.stroke(this.linePainter);
+		return VectorToolkit.stroke(this.canvas.getStroke());
 	}
 
 	@Override
@@ -883,4 +841,35 @@ public class DroidZoomableGraphics2D extends AbstractVectorGraphics2D implements
 		return this.centeringTransform.isYAxisFlipped();
 	}
 
+	/**
+	 * This is the swing-based implementation of a VectorGraphics2D and a ZoomableContext.
+	 *  
+	 * @author $Author: galland$
+	 * @version $Name$ $Revision$ $Date$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	private static class ObserverWrapper implements java.awt.image.ImageObserver {
+
+		private final ImageObserver observer;
+		
+		/**
+		 * @param observer
+		 */
+		public ObserverWrapper(ImageObserver observer) {
+			assert(observer!=null);
+			this.observer = observer;
+		}
+
+		@Override
+		public boolean imageUpdate(
+				java.awt.Image img, int infoflags, int x,
+				int y, int width, int height) {
+			assert(this.observer!=null);
+			return this.observer.imageUpdate(
+					VectorToolkit.image(img), x, y, width, height);
+		}
+		
+	}
+	
 }

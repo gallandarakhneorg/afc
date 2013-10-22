@@ -49,16 +49,16 @@ public abstract class AbstractVectorGraphics2D implements VectorGraphics2D {
 	private Color outlineColor = null;
 	private Color fillColor = null;
 	private Paint paint = null;
-	
+
 	private static SoftReference<Image> noPictureBuffer = null;
 	private static SoftReference<Image> noTransparentPictureBuffer = null;
-	
+
 	/**
 	 */
 	public AbstractVectorGraphics2D() {
 		//
 	}
-	
+
 	private static Image getNoPicture() {
 		Image noPictureImage = noPictureBuffer==null ? null : noPictureBuffer.get();
 		if (noPictureImage==null) {
@@ -76,7 +76,7 @@ public abstract class AbstractVectorGraphics2D implements VectorGraphics2D {
 		}
 		return noPictureImage;
 	}
-	
+
 	private static Image getTransparentNoPicture() {
 		Image noPictureImage = noTransparentPictureBuffer==null ? null : noTransparentPictureBuffer.get();
 		if (noPictureImage==null) {
@@ -98,7 +98,7 @@ public abstract class AbstractVectorGraphics2D implements VectorGraphics2D {
 		else {
 			noPictureImage = getNoPicture();
 		}
-		
+
 		if (noPictureImage!=null) {
 			drawImage(
 					null,
@@ -114,7 +114,7 @@ public abstract class AbstractVectorGraphics2D implements VectorGraphics2D {
 			draw(bounds);
 		}
 	}
-	
+
 	/**
 	 * @param fillColor is the initial filling color.
 	 * @param outlineColor is the initial outline color.
@@ -157,7 +157,7 @@ public abstract class AbstractVectorGraphics2D implements VectorGraphics2D {
 	protected void log(String message) {
 		System.out.println(toString()+": "+message); //$NON-NLS-1$
 	}
-	
+
 	/** Log the given message.
 	 * 
 	 * @param message is the message to log out.
@@ -218,6 +218,24 @@ public abstract class AbstractVectorGraphics2D implements VectorGraphics2D {
 		Color o = this.outlineColor;
 		this.outlineColor = color;
 		return o;
+	}
+
+	@Override
+	public void setColors(Color fillingColor, Color outlineColor) {
+		if (fillingColor!=null) {
+			setFillColor(fillingColor);
+			setInteriorPainted(true);
+		}
+		else {
+			setInteriorPainted(false);
+		}
+		if (outlineColor!=null) {
+			setOutlineColor(fillingColor);
+			setOutlineDrawn(true);
+		}
+		else {
+			setOutlineDrawn(false);
+		}
 	}
 
 	/**
@@ -366,23 +384,6 @@ public abstract class AbstractVectorGraphics2D implements VectorGraphics2D {
 	public void setInteriorText(String interiorText) {
 		this.interiorText = interiorText;
 	}
-	
-	/** This method paint a string into the rectangle of this figure and
-	 * not outside.
-	 *
-	 * @param text the text to draw.
-	 * @param clip is the clipping shape.
-	 * @param x x coordinate where the text must be draw.
-	 * @param y y coordinate where the text must be draw.
-	 */
-	protected void paintClippedString(String text, Shape2f clip, float x, float y ) {
-		Shape2f oldClipArea = getClip();
-		if (clip!=null) {
-			setClip(clip);
-		}
-		drawString( text, x, y );
-		setClip( oldClipArea );
-	}
 
 	/** This method paint a string into the rectangle of this figure and
 	 * not outside. The text is centered on the figure.
@@ -391,17 +392,35 @@ public abstract class AbstractVectorGraphics2D implements VectorGraphics2D {
 	 * @param figureBounds are the bounds of the figure that may be used during the drawing.
 	 * @param clip is the shape that should be used for clipping.
 	 */
-	protected void paintClippedString(String text, Rectangle2f figureBounds, Shape2f clip) {
-		Shape2f oldClipArea = getClip();
-		if (clip!=null) {
-			setClip(clip);
-		}
-		else {
-			setClip(figureBounds);
-		}
+	protected final void paintString(String text, Rectangle2f figureBounds, Shape2f clip) {
 		Point2D p = computeTextPosition(text, figureBounds, TextAlignment.CENTER_ALIGN, TextAlignment.CENTER_ALIGN);
-		drawString( text, p.getX(), p.getY() );
-		setClip( oldClipArea );
+		paintString( text, p.getX(), p.getY(), clip );
 	}
 	
+	/** This method paint a string into the rectangle of this figure and
+	 * not outside. The text is centered on the figure.
+	 * In opposite to {@link #drawString(String, float, float, Shape2f)},
+	 * thius function does not invoke {@link #preDrawing()} nor
+	 * {@link #postDrawing()}.
+	 *
+	 * @param text the text to draw.
+	 * @param x is the position of the text.
+	 * @param y is the position of the text.
+	 * @param clip is the shape that should be used for clipping.
+	 */
+	protected abstract void paintString(String text, float x, float y, Shape2f clip);
+
+	@Override
+	public final void drawString(String str, float x, float y) {
+		preDrawing();
+		paintString(str, x,  y, null);
+		postDrawing();
+	}
+	
+	@Override
+	public final void drawString(String str, float x, float y, Shape2f clip) {
+		preDrawing();
+		paintString(str, x,  y, null);
+		postDrawing();
+	}
 }

@@ -22,8 +22,10 @@
 
 package org.arakhne.afc.ui.vector.awt;
 
+import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
 import java.net.URL;
 
 import org.arakhne.afc.math.continous.object2d.Rectangle2f;
@@ -31,7 +33,6 @@ import org.arakhne.afc.math.continous.object2d.Shape2f;
 import org.arakhne.afc.math.matrix.Transform2D;
 import org.arakhne.afc.ui.Graphics2DLOD;
 import org.arakhne.afc.ui.StringAnchor;
-import org.arakhne.afc.ui.awt.LODGraphics2D;
 import org.arakhne.afc.ui.vector.AbstractVectorGraphics2D;
 import org.arakhne.afc.ui.vector.Color;
 import org.arakhne.afc.ui.vector.Font;
@@ -50,17 +51,24 @@ import org.arakhne.afc.ui.vector.VectorToolkit;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$ */
-public class DelegatedVectorGraphics2D<G extends LODGraphics2D> extends AbstractVectorGraphics2D {
+public class AwtVectorGraphics2D<G extends Graphics2D> extends AbstractVectorGraphics2D {
 
 	/** Delegate.
 	 */
 	protected final G delegate;
 
+	private final Graphics2DLOD lod;
+	private final StringAnchor stringAnchor;
+	
 	/**
 	 * @param delegate
+	 * @param lod
+	 * @param stringAnchor
 	 */
-	public DelegatedVectorGraphics2D(G delegate) {
+	public AwtVectorGraphics2D(G delegate, Graphics2DLOD lod, StringAnchor stringAnchor) {
 		this.delegate = delegate;
+		this.lod = lod;
+		this.stringAnchor = stringAnchor;
 	}
 	
 	@Override
@@ -68,16 +76,6 @@ public class DelegatedVectorGraphics2D<G extends LODGraphics2D> extends Abstract
 		return this.delegate;
 	}
 	
-	/** Replies the delegated Graphics2D.
-	 * 
-	 * @return the delegated Graphics2D.
-	 * @deprecated see {@link #getNativeGraphics2D()}
-	 */
-	@Deprecated
-	public G getDelegatedGraphics2D() {
-		return getNativeGraphics2D();
-	}
-
 	private void setPaint() {
 		Color c = getFillColor();
 		if (c!=null) this.delegate.setColor(VectorToolkit.nativeUIObject(java.awt.Color.class, c));
@@ -92,19 +90,19 @@ public class DelegatedVectorGraphics2D<G extends LODGraphics2D> extends Abstract
 
 	@Override
 	public Graphics2DLOD getLOD() {
-		return this.delegate.getLOD();
+		return this.lod;
 	}
 
 	@Override
 	public StringAnchor getStringAnchor() {
-		return this.delegate.getStringAnchor();
+		return this.stringAnchor;
 	}
 
 	@Override
 	public void drawPoint(float x, float y) {
 		preDrawing();
 		setPaint();
-		this.delegate.fillRect(x-.5f, y-.5f, 1f, 1f);
+		this.delegate.fill(new Rectangle2D.Float(x-.5f, y-.5f, 1f, 1f));
 		postDrawing();
 	}
 
@@ -147,12 +145,7 @@ public class DelegatedVectorGraphics2D<G extends LODGraphics2D> extends Abstract
 	@Override
 	public boolean drawImage(URL imageURL, Image img, float dx1, float dy1,
 			float dx2, float dy2, int sx1, int sy1, int sx2, int sy2) {
-		preDrawing();
-		boolean drawn = this.delegate.drawImage(
-				VectorToolkit.nativeUIObject(java.awt.Image.class, img),
-				dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, null);
-		postDrawing();
-		return drawn;
+		return drawImage(imageURL, img, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, null);
 	}
 
 	@Override
@@ -160,10 +153,26 @@ public class DelegatedVectorGraphics2D<G extends LODGraphics2D> extends Abstract
 			float dx2, float dy2, int sx1, int sy1, int sx2, int sy2,
 			ImageObserver observer) {
 		preDrawing();
+		java.awt.image.ImageObserver obs;
+		if (observer==null) {
+			obs = null;
+		}
+		else {
+			obs = new ObserverWrapper(observer);
+		}
 		boolean drawn = this.delegate.drawImage(
 				VectorToolkit.nativeUIObject(java.awt.Image.class, img),
-				dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2,
-				null);
+				(int)dx1, (int)dy1, (int)dx2, (int)dy2,
+				sx1, sy1, sx2, sy2,
+				obs);
+		if (isOutlineDrawn()) {
+			setOutlineColor();
+			int x = Math.min((int)dx1, (int)dx2);
+			int y = Math.min((int)dy1, (int)dy2);
+			int w = Math.abs((int)dx1 - (int)dx2);
+			int h = Math.abs((int)dy1 - (int)dy2);
+			this.delegate.drawRect(x, y, w, h);
+		}
 		postDrawing();
 		return drawn;
 	}
@@ -180,7 +189,7 @@ public class DelegatedVectorGraphics2D<G extends LODGraphics2D> extends Abstract
 		setOutlineColor();
 		String text = getInteriorText();
 		if (text!=null && !text.isEmpty()) {
-			paintClippedString(
+			paintString(
 					text,
 					s.toBoundingBox(),
 					s);
@@ -193,22 +202,17 @@ public class DelegatedVectorGraphics2D<G extends LODGraphics2D> extends Abstract
 	}
 
 	@Override
-	public void drawString(String str, float x, float y) {
-		preDrawing();
+	protected void paintString(String text, float x, float y, Shape2f clip) {
 		setOutlineColor();
-		this.delegate.drawString(str, x, y);
-		postDrawing();
-	}
-
-	@Override
-	public void drawString(String str, float x, float y, Shape2f clip) {
-		preDrawing();
-		setOutlineColor();
-		Shape old = this.delegate.getClip();
-		this.delegate.setClip(VectorToolkit.nativeUIObject(Shape.class, clip));
-		this.delegate.drawString(str, x, y);
-		this.delegate.setClip(old);
-		postDrawing();
+		if (clip==null) {
+			this.delegate.drawString(text, x, y);
+		}
+		else {
+			Shape old = this.delegate.getClip();
+			this.delegate.clip(VectorToolkit.nativeUIObject(Shape.class, clip));
+			this.delegate.drawString(text, x, y);
+			this.delegate.setClip(old);
+		}
 	}
 
 	@Override
@@ -285,11 +289,12 @@ public class DelegatedVectorGraphics2D<G extends LODGraphics2D> extends Abstract
 	@Override
 	public void clear(Shape2f s) {
 		Rectangle2f bb = s.toBoundingBox();
-		this.delegate.clearRect(
+		this.delegate.setColor(this.delegate.getBackground());
+		this.delegate.fill(new Rectangle2D.Float(
 				bb.getMinX(),
 				bb.getMinY(),
 				bb.getWidth(),
-				bb.getHeight());
+				bb.getHeight()));
 	}
 
 	@Override
@@ -310,6 +315,37 @@ public class DelegatedVectorGraphics2D<G extends LODGraphics2D> extends Abstract
 	@Override
 	public void shear(float shx, float shy) {
 		this.delegate.shear(shx, shy);
+	}
+
+	/**
+	 * This is the swing-based implementation of a VectorGraphics2D and a ZoomableContext.
+	 *  
+	 * @author $Author: galland$
+	 * @version $Name$ $Revision$ $Date$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	private static class ObserverWrapper implements java.awt.image.ImageObserver {
+
+		private final ImageObserver observer;
+		
+		/**
+		 * @param observer
+		 */
+		public ObserverWrapper(ImageObserver observer) {
+			assert(observer!=null);
+			this.observer = observer;
+		}
+
+		@Override
+		public boolean imageUpdate(
+				java.awt.Image img, int infoflags, int x,
+				int y, int width, int height) {
+			assert(this.observer!=null);
+			return this.observer.imageUpdate(
+					VectorToolkit.image(img), x, y, width, height);
+		}
+		
 	}
 
 }

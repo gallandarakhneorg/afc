@@ -90,6 +90,29 @@ public interface VectorGraphics2D {
 	 * otherwise <code>false</code>.
 	 */
 	public void setOutlineDrawn(boolean outlined);
+	
+	/** Set the filling and outline colors and
+	 * set the corresponding drawing flags.
+	 * It is equivalent to:
+	 * <pre><code>
+	 * if (fillingColor!=null) {
+	 *    setFillingColor(fillingColor);
+	 *    setInteriorPainted(true);
+	 * } else {
+	 *    setInteriorPainted(false);
+	 * }
+	 * if (outlineColor!=null) {
+	 *    setOutlineColor(fillingColor);
+	 *    setOutlineDrawn(true);
+	 * } else {
+	 *    setOutlineDrawn(false);
+	 * }
+	 * </code></pre>
+	 *  
+	 * @param fillingColor is the color used for filling.
+	 * @param outlineColor is the color used for drawing the lines.
+	 */
+	public void setColors(Color fillingColor, Color outlineColor);
 
 	/** Replies if the text to put inside the next dranw shape.
 	 * 

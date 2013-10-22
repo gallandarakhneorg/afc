@@ -20,6 +20,14 @@
 			<groupId>org.arakhne.afc.ui</groupId>
 			<artifactId>awt</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.arakhne.afc.ui</groupId>
+			<artifactId>vector</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.arakhne.afc.ui</groupId>
+			<artifactId>vector-awt</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>

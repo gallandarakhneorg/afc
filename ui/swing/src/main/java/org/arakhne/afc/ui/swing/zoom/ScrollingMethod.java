@@ -21,7 +21,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  * This program is free software; you can redistribute it and/or modify
  */
-package org.arakhne.afc.ui.swing.zoompanel;
+package org.arakhne.afc.ui.swing.zoom;
 
 import java.awt.event.MouseEvent;
 
@@ -43,7 +43,7 @@ public enum ScrollingMethod {
 		@Override
 		void tryScroll(MouseEvent me, ScrollingMethodListener listener) {
 			if (SwingUtilities.isMiddleMouseButton(me)) {
-				listener.startScolling(me, 0);
+				listener.startScrolling(me, 0);
 			}
 		}
 	},
@@ -53,7 +53,7 @@ public enum ScrollingMethod {
 		@Override
 		void tryScroll(MouseEvent me, ScrollingMethodListener listener) {
 			if (SwingUtilities.isLeftMouseButton(me)) {
-				listener.startScolling(me, 500);
+				listener.startScrolling(me, 500);
 			}
 		}
 	};
@@ -79,13 +79,13 @@ public enum ScrollingMethod {
 		 * @param event
 		 * @param delay is the delay (ms) to wait before starting to scroll.
 		 */
-		public void startScolling(MouseEvent event, int delay);
+		public void startScrolling(MouseEvent event, int delay);
 		
 		/** Stop to scroll.
 		 * 
 		 * @param event
 		 */
-		public void stopScolling(MouseEvent event);
+		public void stopScrolling(MouseEvent event);
 
 	}
 	
