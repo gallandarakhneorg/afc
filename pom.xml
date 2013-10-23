@@ -414,7 +414,7 @@
 							<pluginExecutions>
 								<pluginExecution>
 									<pluginExecutionFilter>
-										<groupId>org.arakhne.afc</groupId>
+										<groupId>org.arakhne.afc.maven</groupId>
 										<artifactId>tag-replacer</artifactId>
 										<versionRange>[1.1-SNAPSHOT,)</versionRange>
 										<goals>
