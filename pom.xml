@@ -5,14 +5,15 @@
 	<groupId>org.arakhne.afc</groupId>
 	<artifactId>afc</artifactId>
 	<packaging>pom</packaging>
-	<version>10.0</version>
+	<version>11.0-SNAPSHOT</version>
 	<name>Arakhnê Foundation Classes</name>
 	<inceptionYear>2006</inceptionYear>
 	<url>http://www.arakhne.org/afc/</url>
 	<description>Collection of Java utilities.</description>
 
 	<properties>
-		<afc.version>10.0</afc.version>
+		<afc.version>11.0-SNAPSHOT</afc.version>
+		<previous.stable.afc.version>10.0</previous.stable.afc.version>
 		<year>2013</year>
 		<copyrighters>Arakhn&amp;ecirc;.org Members</copyrighters>
 		<sourceEncoding>UTF-8</sourceEncoding>
@@ -320,14 +321,14 @@
 		<pluginManagement>
 			<plugins>
 				<plugin>
-					<groupId>org.arakhne.afc</groupId>
+					<groupId>org.arakhne.afc.maven</groupId>
 					<artifactId>tag-replacer</artifactId>
-					<version>2.5</version>
+					<version>${previous.stable.afc.version}</version>
 				</plugin>
 				<plugin>
-					<groupId>org.arakhne.afc</groupId>
+					<groupId>org.arakhne.afc.maven</groupId>
 					<artifactId>license-installer</artifactId>
-					<version>2.5</version>
+					<version>${previous.stable.afc.version}</version>
 				</plugin>
 
 				<plugin>

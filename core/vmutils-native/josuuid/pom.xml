@@ -6,7 +6,7 @@
 	<parent>
 		<artifactId>vmutils-native</artifactId>
 		<groupId>org.arakhne.afc.core.vmutils</groupId>
-		<version>10.0</version>
+		<version>11.0-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>josuuid</artifactId>
