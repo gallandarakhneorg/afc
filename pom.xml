@@ -528,9 +528,6 @@
 					<show>package</show>
 					<detectLinks>true</detectLinks>
 					<detectJavaApiLink>true</detectJavaApiLink>
-					<links>
-						<link>http://download.java.net/media/java3d/javadoc/1.5.2/</link>
-					</links>
 					<docfilessubdirs>true</docfilessubdirs>
 					<bottom>&lt;small&gt;Copyright &amp;copy;
 						${project.inceptionYear}-${year} ${copyrighters}.

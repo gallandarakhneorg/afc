@@ -84,6 +84,14 @@
 					<skip>true</skip>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.arakhne.afc.maven</groupId>
+				<artifactId>tag-replacer</artifactId>
+				<configuration>
+					<projectArtifactId>vmutils</projectArtifactId>
+					<projectGroupId>org.arakhne.afc.core</projectGroupId>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
