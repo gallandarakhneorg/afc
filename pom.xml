@@ -319,16 +319,16 @@
 	<build>
 		<pluginManagement>
 			<plugins>
-				<!-- <plugin>
-					<groupId>org.arakhne.afc.maven</groupId>
+				<plugin>
+					<groupId>org.arakhne.afc</groupId>
 					<artifactId>tag-replacer</artifactId>
-					<version>${afc.version}</version>
+					<version>2.5</version>
 				</plugin>
 				<plugin>
-					<groupId>org.arakhne.afc.maven</groupId>
+					<groupId>org.arakhne.afc</groupId>
 					<artifactId>license-installer</artifactId>
-					<version>${afc.version}</version>
-				</plugin>-->
+					<version>2.5</version>
+				</plugin>
 
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
