@@ -36,6 +36,11 @@ import org.arakhne.afc.vmutil.locale.Locale;
 
 /** Utilities to create the widgets according
  * to the currently graphical API.
+ * <p>
+ * To use the vector API, you must include the implementation.
+ * of the API for a specific graphical API (AWT, Android, SWT...).
+ * The <code>VectorToolkit</code> search for an implementation
+ * in the classpath.
  *
  * @author $Author: galland$
  * @version $FullVersion$
@@ -93,13 +98,13 @@ public abstract class VectorToolkit {
 					}
 				}
 			}
+			throw new Error("Unable to find a generic Window Toolkit. " //$NON-NLS-1$
+					+"The supported toolkit classes are: " //$NON-NLS-1$
+					+toolkits
+					+". You must update your classpath with the Java archive that is containing one of them.", //$NON-NLS-1$
+					error);
 		}
-		
-		throw new Error("Unable to find a generic Window Toolkit. " //$NON-NLS-1$
-				+"The supported toolkit classes are: " //$NON-NLS-1$
-				+toolkits
-				+". You must update your classpath with the Java archive that is containing one of them.", //$NON-NLS-1$
-				error);
+		throw new Error("Unable to find the resource file 'VectorToolkit.properties' in which the list of the toolkits is stored. Have you correctly installed all the file of this Java module?"); //$NON-NLS-1$
 	}
 	
 	/** Replies if this toolkit may be used according to the current JVM settings.
@@ -133,6 +138,7 @@ public abstract class VectorToolkit {
 	/** Must be invoked to prepare to draw in the given context.
 	 * 
 	 * @param context
+	 * @see #finalizeDrawing(VectorGraphics2D)
 	 */
 	public static void prepareDrawing(VectorGraphics2D context) {
 		assert(context!=null);
@@ -144,6 +150,7 @@ public abstract class VectorToolkit {
 	/** Must be invoked to finalize the drawing in the given context.
 	 * 
 	 * @param context is the context to finalize. It must be never <code>null</code>.
+	 * @see #prepareDrawing(VectorGraphics2D)
 	 */
 	public static void finalizeDrawing(VectorGraphics2D context) {
 		assert(context!=null);
@@ -170,10 +177,15 @@ public abstract class VectorToolkit {
 	
 	/** Replies the current drawing context.
 	 * 
-	 * @return the current drawing context.
+	 * @return the current drawing context, never <code>null</code>.
 	 */
 	public VectorGraphics2D getCurrentDrawingContext() {
-		return this.currentContext;
+		VectorGraphics2D g = this.currentContext;
+		if (g==null) {
+			throw new IllegalStateException(
+					Locale.getString("NO_PRE_DRAWING")); //$NON-NLS-1$
+		}
+		return g;
 	}
 
 	//------------------------------
