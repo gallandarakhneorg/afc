@@ -25,7 +25,7 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
-import org.arakhne.afc.math.continous.object2d.Rectangle2f;
+import org.arakhne.afc.math.discrete.object2d.Rectangle2i;
 import org.arakhne.afc.ui.Graphics2DLOD;
 import org.arakhne.afc.ui.StringAnchor;
 import org.arakhne.afc.ui.vector.Image;
@@ -81,13 +81,13 @@ class AwtBufferedImage extends BufferedImage implements Image, NativeWrapper {
 	}
 
 	@Override
-	public Raster getData(Rectangle2f area) {
+	public Raster getData(Rectangle2i area) {
 		java.awt.image.Raster awtRaster = getData(
 				new Rectangle(
-						(int)area.getMinX(),
-						(int)area.getMinY(),
-						(int)area.getWidth(),
-						(int)area.getHeight()));
+						area.getMinX(),
+						area.getMinY(),
+						area.getWidth(),
+						area.getHeight()));
 		return new AwtRaster(awtRaster);
 	}
 

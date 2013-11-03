@@ -20,7 +20,7 @@
  */
 package org.arakhne.afc.ui.vector;
 
-import org.arakhne.afc.math.continous.object2d.Rectangle2f;
+import org.arakhne.afc.math.discrete.object2d.Rectangle2i;
 
 
 /** Interface that is representing a color. 
@@ -85,6 +85,6 @@ public interface Image {
      * @param area is the area for which a raster must be returned.
      * @return the raster.
      */
-    public Raster getData(Rectangle2f area);
+    public Raster getData(Rectangle2i area);
     
 }
