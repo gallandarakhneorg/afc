@@ -31,7 +31,7 @@ import android.graphics.drawable.Drawable;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-class AndroidColor implements Color, NativeWrapper {
+class AndroidColor implements Color, NativeWrapper, Cloneable {
 
 	private static final long serialVersionUID = -3729571234595878175L;
 
@@ -86,6 +86,16 @@ class AndroidColor implements Color, NativeWrapper {
 		if (this.originalDrawable!=null)
 			return this.originalDrawable.hashCode(); 
 		return this.original;
+	}
+	
+	@Override
+	public AndroidColor clone() {
+		try {
+			return (AndroidColor)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+			throw new Error(e);
+		}
 	}
 	
 	@Override

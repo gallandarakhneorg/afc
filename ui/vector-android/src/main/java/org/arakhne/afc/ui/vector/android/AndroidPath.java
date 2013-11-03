@@ -57,12 +57,13 @@ class AndroidPath implements Shape2f, Path2D<Rectangle2f,PathElement2f,PathItera
 
 	private static final long serialVersionUID = 3395487582331474537L;
 
-	private final Path path;
+	private Path path;
 
 	/**
 	 * @param path
 	 */
 	public AndroidPath(Path path) {
+		assert(path!=null);
 		this.path = path;
 		if (this.path.isInverseFillType()) {
 			this.path.toggleInverseFillType();
@@ -72,7 +73,9 @@ class AndroidPath implements Shape2f, Path2D<Rectangle2f,PathElement2f,PathItera
 	@Override
 	public AndroidPath clone() {
 		try {
-			return (AndroidPath)super.clone();
+			AndroidPath p = (AndroidPath)super.clone();
+			p.path = new Path(this.path);
+			return p;
 		}
 		catch (CloneNotSupportedException e) {
 			throw new Error(e);

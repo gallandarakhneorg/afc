@@ -47,7 +47,7 @@ import android.graphics.Typeface;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-class AndroidPaint implements Stroke, org.arakhne.afc.ui.vector.Paint, Font, FontMetrics, NativeWrapper {
+class AndroidPaint implements Stroke, org.arakhne.afc.ui.vector.Paint, Font, FontMetrics, NativeWrapper, Cloneable {
 
 	private static int toAndroid(FontStyle fs) {
 		switch(fs) {
@@ -88,12 +88,13 @@ class AndroidPaint implements Stroke, org.arakhne.afc.ui.vector.Paint, Font, Fon
 		return new AndroidPaint(pt);
 	}
 
-	private final Paint paint;
+	private Paint paint;
 
 	/**
 	 * @param paint
 	 */
 	public AndroidPaint(Paint paint) {
+		assert(paint!=null);
 		this.paint = paint;
 	}
 
@@ -147,6 +148,18 @@ class AndroidPaint implements Stroke, org.arakhne.afc.ui.vector.Paint, Font, Fon
 		}
 		if (dashes!=null && dashes.length>=2) {
 			this.paint.setPathEffect(new DashPathEffect(dashes, dashPhase));
+		}
+	}
+
+	@Override
+	public AndroidPaint clone() {
+		try {
+			AndroidPaint p = (AndroidPaint)super.clone();
+			p.paint = new Paint(this.paint);
+			return p;
+		}
+		catch (CloneNotSupportedException e) {
+			throw new Error(e);
 		}
 	}
 

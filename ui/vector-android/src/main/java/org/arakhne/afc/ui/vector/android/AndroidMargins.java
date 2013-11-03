@@ -29,7 +29,7 @@ import org.arakhne.afc.ui.vector.Margins;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-class AndroidMargins implements Margins {
+class AndroidMargins implements Margins, Cloneable {
 
 	private float top;
 	private float left;
@@ -47,6 +47,16 @@ class AndroidMargins implements Margins {
 		this.left = l;
 		this.right = r;
 		this.bottom = b;
+	}
+
+	@Override
+	public AndroidMargins clone() {
+		try {
+			return (AndroidMargins)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+			throw new Error(e);
+		}
 	}
 
 	@Override

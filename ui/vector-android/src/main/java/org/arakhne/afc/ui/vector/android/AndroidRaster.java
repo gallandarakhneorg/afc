@@ -20,7 +20,7 @@
  */
 package org.arakhne.afc.ui.vector.android;
 
-import org.arakhne.afc.math.continous.object2d.Rectangle2f;
+import org.arakhne.afc.math.discrete.object2d.Rectangle2i;
 import org.arakhne.afc.ui.vector.Raster;
 
 import android.graphics.Bitmap;
@@ -32,9 +32,9 @@ import android.graphics.Bitmap;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-class AndroidRaster implements Raster {
+class AndroidRaster implements Raster, Cloneable {
 
-	private final Bitmap image;
+	private Bitmap image;
 	private final int x;
 	private final int y;
 	private final int width;
@@ -44,12 +44,25 @@ class AndroidRaster implements Raster {
 	 * @param img
 	 * @param area
 	 */
-	public AndroidRaster(Bitmap img, Rectangle2f area) {
+	public AndroidRaster(Bitmap img, Rectangle2i area) {
+		assert(img!=null);
 		this.image = img;
-		this.x = (int)area.getMinX();
-		this.y = (int)area.getMinY();
-		this.width = (int)Math.ceil(area.getWidth());
-		this.height = (int)Math.ceil(area.getHeight());
+		this.x = area.getMinX();
+		this.y = area.getMinY();
+		this.width = area.getWidth();
+		this.height = area.getHeight();
+	}
+
+	@Override
+	public AndroidRaster clone() {
+		try {
+			AndroidRaster r = (AndroidRaster)super.clone();
+			r.image = Bitmap.createBitmap(this.image);
+			return r;
+		}
+		catch (CloneNotSupportedException e) {
+			throw new Error(e);
+		}
 	}
 
 	@Override

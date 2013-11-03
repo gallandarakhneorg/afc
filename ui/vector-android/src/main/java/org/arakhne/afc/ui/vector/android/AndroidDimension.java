@@ -30,7 +30,7 @@ import org.arakhne.afc.util.HashCodeUtil;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-class AndroidDimension implements Dimension {
+class AndroidDimension implements Dimension, Cloneable {
 
 	private final float w;
 	private final float h;
@@ -42,6 +42,16 @@ class AndroidDimension implements Dimension {
 	public AndroidDimension(float w, float h) {
 		this.w = w;
 		this.h = h;
+	}
+
+	@Override
+	public AndroidDimension clone() {
+		try {
+			return (AndroidDimension)super.clone();
+		}
+		catch (CloneNotSupportedException e) {
+			throw new Error(e);
+		}
 	}
 
 	@Override

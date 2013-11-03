@@ -22,7 +22,7 @@ package org.arakhne.afc.ui.vector.android;
 
 import java.io.InputStream;
 
-import org.arakhne.afc.math.continous.object2d.Rectangle2f;
+import org.arakhne.afc.math.discrete.object2d.Rectangle2i;
 import org.arakhne.afc.ui.vector.Image;
 import org.arakhne.afc.ui.vector.ImageObserver;
 import org.arakhne.afc.ui.vector.Raster;
@@ -40,14 +40,15 @@ import android.graphics.Color;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-class AndroidImage implements Image, NativeWrapper {
+class AndroidImage implements Image, NativeWrapper, Cloneable {
 
-	private final Bitmap image;
+	private Bitmap image;
 
 	/**
 	 * @param img
 	 */
 	public AndroidImage(Bitmap img) {
+		assert(img!=null);
 		this.image = img;
 	}
 
@@ -73,6 +74,18 @@ class AndroidImage implements Image, NativeWrapper {
 		}
 	}
 	
+	@Override
+	public AndroidImage clone() {
+		try {
+			AndroidImage i = (AndroidImage)super.clone();
+			i.image = Bitmap.createBitmap(this.image);
+			return i;
+		}
+		catch (CloneNotSupportedException e) {
+			throw new Error(e);
+		}
+	}
+
 	/** Replies the droid bitmap.
 	 * 
 	 * @return the droid bitmap.
@@ -112,7 +125,7 @@ class AndroidImage implements Image, NativeWrapper {
 	}
 
 	@Override
-	public Raster getData(Rectangle2f area) {
+	public Raster getData(Rectangle2i area) {
 		return new AndroidRaster(this.image, area);
 	}
 

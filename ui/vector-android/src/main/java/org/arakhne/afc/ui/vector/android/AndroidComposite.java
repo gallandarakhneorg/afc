@@ -32,14 +32,15 @@ import android.graphics.Paint.Style;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-class AndroidComposite implements Composite, NativeWrapper {
+class AndroidComposite implements Composite, NativeWrapper, Cloneable {
 
-	private final Paint original;
+	private Paint original;
 
 	/**
 	 * @param paint
 	 */
 	public AndroidComposite(Paint paint) {
+		assert(paint!=null);
 		this.original = paint;
 	}
 
@@ -50,6 +51,18 @@ class AndroidComposite implements Composite, NativeWrapper {
 		this.original = new Paint();
 		this.original.setStyle(Style.FILL_AND_STROKE);
 		this.original.setAlpha((int)(alpha * 255));
+	}
+
+	@Override
+	public AndroidComposite clone() {
+		try {
+			AndroidComposite c = (AndroidComposite)super.clone();
+			c.original = new Paint(this.original);
+			return c;
+		}
+		catch (CloneNotSupportedException e) {
+			throw new Error(e);
+		}
 	}
 
 	@Override
