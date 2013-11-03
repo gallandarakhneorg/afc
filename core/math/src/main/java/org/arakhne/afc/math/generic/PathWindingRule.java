@@ -31,7 +31,7 @@ package org.arakhne.afc.math.generic;
  */
 public enum PathWindingRule {
 
-	/** he winding rule constant for specifying an even-odd rule
+	/** The winding rule constant for specifying an even-odd rule
      * for determining the interior of a path.
      * The even-odd rule specifies that a point lies inside the
      * path if a ray drawn in any direction from that point to
