@@ -26,10 +26,10 @@ import java.util.Arrays;
 
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
-import org.arakhne.afc.math.continous.object2d.Point2f;
-import org.arakhne.afc.math.continous.object2d.Tuple2f;
-import org.arakhne.afc.math.continous.object2d.Vector2f;
-import org.arakhne.afc.math.generic.Vector2D;
+import org.arakhne.afc.math.geometry.Vector2D;
+import org.arakhne.afc.math.geometry.continuous.object2d.Point2f;
+import org.arakhne.afc.math.geometry.continuous.object2d.Tuple2f;
+import org.arakhne.afc.math.geometry.continuous.object2d.Vector2f;
 
 /**
  * Is represented internally as a 2x2 floating point matrix. The mathematical

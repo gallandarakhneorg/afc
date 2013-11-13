@@ -26,9 +26,9 @@ import java.util.Arrays;
 
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
-import org.arakhne.afc.math.continous.object3d.Point3f;
-import org.arakhne.afc.math.continous.object3d.Tuple3f;
-import org.arakhne.afc.math.continous.object3d.Vector3f;
+import org.arakhne.afc.math.geometry.continuous.object3d.Point3f;
+import org.arakhne.afc.math.geometry.continuous.object3d.Tuple3f;
+import org.arakhne.afc.math.geometry.continuous.object3d.Vector3f;
 import org.arakhne.afc.vmutil.locale.Locale;
 
 /**

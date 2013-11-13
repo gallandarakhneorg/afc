@@ -22,10 +22,11 @@
 package org.arakhne.afc.math;
 
 import java.math.BigDecimal;
+import java.util.Random;
 
 import junit.framework.TestCase;
 
-import org.arakhne.afc.math.continous.object2d.Tuple2f;
+import org.arakhne.afc.math.geometry.continuous.object2d.Tuple2f;
 
 /**
  * @author $Author: galland$
@@ -35,13 +36,15 @@ import org.arakhne.afc.math.continous.object2d.Tuple2f;
  */
 public abstract class AbstractMathTestCase extends TestCase {
 	
+	protected static final Random RANDOM = new Random();
+	
 	/** Precision of the floating point number epsilon-tests.
 	 */
 	protected final static int DEFAULT_DECIMAL_COUNT = 8;
 	
 	private int decimalPrecision = DEFAULT_DECIMAL_COUNT;
 	
-	/** Set the epsilon used ben testing floating-point values.
+	/** Set the epsilon used for testing floating-point values.
 	 * 
 	 * @param precision is the count of decimal digits to support
 	 */
@@ -49,12 +52,21 @@ public abstract class AbstractMathTestCase extends TestCase {
 		this.decimalPrecision = Math.max(0, precision);
 	}
 	
-	/** Set the epsilon used ben testing floating-point values to
+	/** Set the epsilon used for testing floating-point values to
 	 * its default value.
 	 */
 	protected void setDefaultDecimalPrecision() {
 		this.decimalPrecision = DEFAULT_DECIMAL_COUNT;
 	}
+	
+	/**Test if the actual value is NaN.
+	 * 
+	 * @param actual
+	 */
+	protected void assertNaN(float actual){
+		assertTrue(Float.isNaN(actual));
+	}
+	
 	
 	/** Test if the actual value is equal to the expected value with
 	 * a distance of epsilon.
@@ -76,7 +88,7 @@ public abstract class AbstractMathTestCase extends TestCase {
 		assertNotEpsilonEquals(null, expected, actual);
 	}
 
-	/** Replies if two values are equals at espilon.
+	/** Replies if two values are equals at epsilon.
 	 * 
 	 * @param a
 	 * @param b
