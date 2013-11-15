@@ -38,13 +38,13 @@ import org.arakhne.afc.math.generic.PathWindingRule;
  */
 public class PathShadow2f {
 
-	private final Path2D<Rectangle2f,PathElement2f,PathIterator2f> path;
+	private final Path2D<?,Rectangle2f,PathElement2f,PathIterator2f> path;
 	private final Rectangle2f bounds;
 
 	/**
 	 * @param path
 	 */
-	public PathShadow2f(Path2D<Rectangle2f,PathElement2f,PathIterator2f> path) {
+	public PathShadow2f(Path2D<?,Rectangle2f,PathElement2f,PathIterator2f> path) {
 		this.path = path;
 		this.bounds = this.path.toBoundingBox();
 	}

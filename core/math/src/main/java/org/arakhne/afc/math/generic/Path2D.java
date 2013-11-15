@@ -24,6 +24,7 @@ import java.util.Iterator;
 
 /** 2D Path.
  * 
+ * @param <PT> is the type of the path implementation.
  * @param <B> is the type of the bounding box.
  * @param <E> is the type of the elements of the path.
  * @param <I> is the type of the iterator used to obtain the elements of the path.
@@ -32,7 +33,7 @@ import java.util.Iterator;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public interface Path2D<B extends Shape2D, E extends PathElement2D, I extends Iterator<E>> extends Shape2D {
+public interface Path2D<PT extends Shape2D<? super PT>, B extends Shape2D<?>, E extends PathElement2D, I extends Iterator<E>> extends Shape2D<PT> {
 
 	/**
 	 * Replies the bounds of this path.

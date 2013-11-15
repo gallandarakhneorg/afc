@@ -73,6 +73,13 @@ extends AbstractShape2f<T> {
 	/** {@inheritDoc}
 	 */
 	@Override
+	public Rectangle2f toBoundingBox() {
+		return new Rectangle2f(getMinX(), getMinY(), getMaxX(), getMaxY());
+	}
+	
+	/** {@inheritDoc}
+	 */
+	@Override
 	public void toBoundingBox(Rectangle2f box) {
 		box.setFromCorners(this.minx, this.minx, this.maxx, this.maxy);
 	}
@@ -103,11 +110,9 @@ extends AbstractShape2f<T> {
 		setFromCorners(min.getX(), min.getY(), max.getX(), max.getY());
 	}
 	
-	/** Change the frame of te rectangle.
-	 * 
-	 * @param r
-	 */
-	public void set(AbstractRectangularShape2f<?> r) {
+	@Override
+	public void set(Shape2f s) {
+		Rectangle2f r = s.toBoundingBox();
 		setFromCorners(r.getMinX(), r.getMinY(), r.getMaxX(), r.getMaxY());
 	}
 

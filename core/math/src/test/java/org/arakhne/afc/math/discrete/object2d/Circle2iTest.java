@@ -391,4 +391,13 @@ public class Circle2iTest extends AbstractShape2iTestCase<Circle2i> {
 		assertNoElement(pi);
 	}
 
+	/**
+	 */
+	public void testSetShape2i() {
+		this.r.set(new Rectangle2i(10, 12, 14, 16));
+		assertEquals(17, this.r.getX());
+		assertEquals(20, this.r.getY());
+		assertEquals(7, this.r.getRadius());
+	}
+
 }

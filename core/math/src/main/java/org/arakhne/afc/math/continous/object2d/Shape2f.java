@@ -31,14 +31,11 @@ import org.arakhne.afc.math.matrix.Transform2D;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public interface Shape2f extends Shape2D {
-
-	/** {@inheritDoc}
-	 */
-	@Override
-	public Shape2f clone();
+public interface Shape2f extends Shape2D<Shape2f> {
 
 	/** Replies the bounds of the shape.
+	 * If the current shape is a Rectangle2f, this function
+	 * replies the current shape, NOT A CLONE.
 	 * 
 	 * @return the bounds of the shape.
 	 */

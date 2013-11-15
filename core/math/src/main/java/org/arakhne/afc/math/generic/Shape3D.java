@@ -22,7 +22,7 @@ package org.arakhne.afc.math.generic;
 
 import java.io.Serializable;
 
-/** 2D shape.
+/** 3D shape.
  * 
  * @param <ST> is the type of the shape implementation.
  * @author $Author: galland$
@@ -30,7 +30,7 @@ import java.io.Serializable;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public interface Shape2D<ST extends Shape2D<? super ST>>
+public interface Shape3D<ST extends Shape3D<? super ST>>
 extends Cloneable, Serializable {
 
 	/** Replies if this shape is empty.
@@ -60,7 +60,7 @@ extends Cloneable, Serializable {
 	 * @return <code>true</code> if the given shape is intersecting this
 	 * shape, otherwise <code>false</code>.
 	 */
-	public boolean contains(Point2D p);
+	public boolean contains(Point3D p);
 	
 	/** Replies the point on the shape that is closest to the given point.
 	 * 
@@ -68,8 +68,8 @@ extends Cloneable, Serializable {
 	 * @return the closest point on the shape; or the point itself
 	 * if it is inside the shape.
 	 */
-	public Point2D getClosestPointTo(Point2D p);
-	
+	public Point3D getClosestPointTo(Point3D p);
+
 	/** Set this shape with the attributes of the given shape.
 	 * 
 	 * @param s

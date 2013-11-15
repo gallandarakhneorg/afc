@@ -644,5 +644,15 @@ public class Ellipse2fTest extends AbstractRectangularShape2fTestCase<Ellipse2f>
 		p.closePath();
 		assertTrue(this.r.intersects(p.getPathIterator()));
 	}
+	
+	/**
+	 */
+	public void testSetShape2f() {
+		this.r.set(new Rectangle2f(10, 12, 14, 16));
+		assertEpsilonEquals(10f, this.r.getMinX());
+		assertEpsilonEquals(12f, this.r.getMinY());
+		assertEpsilonEquals(24f, this.r.getMaxX());
+		assertEpsilonEquals(28f, this.r.getMaxY());
+	}
 
 }

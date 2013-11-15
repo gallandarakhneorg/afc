@@ -92,11 +92,7 @@ public class Rectangle2iTest extends AbstractShape2iTestCase<Rectangle2i> {
 	@Override
 	public void testToBoundingBox() {
 		Rectangle2i r = this.r.toBoundingBox();
-		assertNotSame(this.r, r);
-		assertEpsilonEquals(this.r.getMinX(), r.getMinX());
-		assertEpsilonEquals(this.r.getMinY(), r.getMinY());
-		assertEpsilonEquals(this.r.getMaxX(), r.getMaxX());
-		assertEpsilonEquals(this.r.getMaxY(), r.getMaxY());
+		assertSame(this.r, r);
 	}
 
 	/**
@@ -490,6 +486,16 @@ public class Rectangle2iTest extends AbstractShape2iTestCase<Rectangle2i> {
 		assertElement(pi, PathElementType.LINE_TO, -2,9);
 		assertElement(pi, PathElementType.CLOSE);
 		assertNoElement(pi);
+	}
+
+	/**
+	 */
+	public void testSetShape2i() {
+		this.r.set(new Circle2i(10, 12, 14));
+		assertEquals(-4, this.r.getMinX());
+		assertEquals(-2, this.r.getMinY());
+		assertEquals(24, this.r.getMaxX());
+		assertEquals(26, this.r.getMaxY());
 	}
 
 }

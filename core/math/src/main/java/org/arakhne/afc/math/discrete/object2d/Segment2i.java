@@ -726,6 +726,15 @@ public class Segment2i extends AbstractShape2i<Segment2i> {
 		this.bx = b.x();
 		this.by = b.y();
 	}
+	
+	@Override
+	public void set(Shape2i s) {
+		Rectangle2i r = s.toBoundingBox();
+		this.ax = r.getMinX();
+		this.ay = r.getMinY();
+		this.bx = r.getMaxX();
+		this.by = r.getMaxY();
+	}
 
 	/** Replies the X of the first point.
 	 * 
@@ -775,8 +784,6 @@ public class Segment2i extends AbstractShape2i<Segment2i> {
 		return new Point2i(this.bx, this.by);
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public Rectangle2i toBoundingBox() {
 		Rectangle2i r = new Rectangle2i();
@@ -786,6 +793,15 @@ public class Segment2i extends AbstractShape2i<Segment2i> {
 				this.bx,
 				this.by);
 		return r;
+	}
+
+	@Override
+	public void toBoundingBox(Rectangle2i box) {
+		box.setFromCorners(
+				this.ax,
+				this.ay,
+				this.bx,
+				this.by);
 	}
 
 	/** {@inheritDoc}

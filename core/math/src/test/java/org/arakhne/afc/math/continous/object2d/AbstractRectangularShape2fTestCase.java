@@ -21,9 +21,6 @@
  */
 package org.arakhne.afc.math.continous.object2d;
 
-import org.arakhne.afc.math.continous.object2d.AbstractRectangularShape2f;
-import org.arakhne.afc.math.continous.object2d.Point2f;
-import org.arakhne.afc.math.continous.object2d.Rectangle2f;
 
 
 /**
@@ -55,17 +52,6 @@ public abstract class AbstractRectangularShape2fTestCase<T extends AbstractRecta
 		assertEpsilonEquals(5.6f, this.r.getMaxY());
 	}
 	
-	/**
-	 */
-	public void testSetRectangularShape2f() {
-		Rectangle2f rr = new Rectangle2f(2.3f, 3.4f, 4.5f, 5.6f);
-		this.r.set(rr);
-		assertEpsilonEquals(2.3f, this.r.getMinX());
-		assertEpsilonEquals(3.4f, this.r.getMinY());
-		assertEpsilonEquals(4.5f, this.r.getWidth());
-		assertEpsilonEquals(5.6f, this.r.getHeight());
-	}
-
 	/**
 	 */
 	public void testSetWidth() {

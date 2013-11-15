@@ -347,13 +347,6 @@ public class Ellipse2f extends AbstractRectangularShape2f<Ellipse2f> {
 	/** {@inheritDoc}
 	 */
 	@Override
-	public Rectangle2f toBoundingBox() {
-		return new Rectangle2f(getMinX(), getMinY(), getMaxX(), getMaxY());
-	}
-
-	/** {@inheritDoc}
-	 */
-	@Override
 	public float distanceSquared(Point2D p) {
 		Point2D r = getClosestPointTo(p);
 		return r.distanceSquared(p);

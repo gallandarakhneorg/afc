@@ -218,11 +218,16 @@ public class Rectangle2i extends AbstractRectangularShape2i<Rectangle2i> {
 		setFromCorners(x, y, x+width, y+height);
 	}
 
+	@Override
+	public void set(Shape2i s) {
+		s.toBoundingBox(this);
+	}
+	
 	/** {@inheritDoc}
 	 */
 	@Override
 	public Rectangle2i toBoundingBox() {
-		return clone();
+		return this;
 	}
 	
 	/** {@inheritDoc}

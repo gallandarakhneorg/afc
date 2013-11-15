@@ -1196,6 +1196,27 @@ public class Path2i extends AbstractShape2i<Path2i> {
 		}
 		return bb;
 	}
+	
+	@Override
+	public void toBoundingBox(Rectangle2i box) {
+		Rectangle2i bb = this.bounds==null ? null : this.bounds.get();
+		if (bb==null) {
+			int xmin = Integer.MAX_VALUE;
+			int ymin = Integer.MAX_VALUE;
+			int xmax = Integer.MIN_VALUE;
+			int ymax = Integer.MIN_VALUE;
+			for(int i=0; i<this.numCoords; i+= 2) {
+				if (this.coords[i]<xmin) xmin = this.coords[i];
+				if (this.coords[i+1]<ymin) ymin = this.coords[i+1];
+				if (this.coords[i]>xmax) xmax = this.coords[i];
+				if (this.coords[i+1]>ymax) ymax = this.coords[i+1];
+			}
+			bb = new Rectangle2i();
+			bb.setFromCorners(xmin, ymin, xmax, ymax);
+			this.bounds = new SoftReference<Rectangle2i>(bb);
+		}
+		box.set(bb);
+	}
 
 	@Override
 	public Point2D getClosestPointTo(Point2D p) {
@@ -1543,6 +1564,12 @@ public class Path2i extends AbstractShape2i<Path2i> {
 			this.coords[this.numCoords-1] = y;
 			this.bounds = null;
 		}
+	}
+	
+	@Override
+	public void set(Shape2i s) {
+		clear();
+		add(s.getPathIterator());
 	}
 
 	/** Replies the points along the path.

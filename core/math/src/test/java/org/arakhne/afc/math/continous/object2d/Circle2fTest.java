@@ -569,4 +569,13 @@ public class Circle2fTest extends AbstractShape2fTestCase<Circle2f> {
 		assertTrue(this.r.intersects(p.getPathIterator()));
 	}
 
+	/**
+	 */
+	public void testSetShape2f() {
+		this.r.set(new Rectangle2f(10, 12, 14, 16));
+		assertEpsilonEquals(17f, this.r.getX());
+		assertEpsilonEquals(20f, this.r.getY());
+		assertEpsilonEquals(7f, this.r.getRadius());
+	}
+
 }

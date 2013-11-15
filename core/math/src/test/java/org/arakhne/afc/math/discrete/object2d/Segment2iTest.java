@@ -642,4 +642,14 @@ public class Segment2iTest extends AbstractShape2iTestCase<Segment2i> implements
     			Segment2i.computeCrossingsFromCircle(0, /**/ 4, 6, 3, /**/ 10, 12, 7, 8));
     }
 
+	/**
+	 */
+	public void testSetShape2i() {
+		this.r.set(new Rectangle2i(10, 12, 14, 16));
+		assertEquals(10, this.r.getX1());
+		assertEquals(12, this.r.getY1());
+		assertEquals(24, this.r.getX2());
+		assertEquals(28, this.r.getY2());
+	}
+
 }

@@ -51,6 +51,20 @@ public abstract class AbstractRectangularShape2i<T extends Shape2i> extends Abst
 		//
 	}
 	
+	/** {@inheritDoc}
+	 */
+	@Override
+	public Rectangle2i toBoundingBox() {
+		return new Rectangle2i(getMinX(), getMinY(), getMaxX(), getMaxY());
+	}
+	
+	/** {@inheritDoc}
+	 */
+	@Override
+	public void toBoundingBox(Rectangle2i box) {
+		box.setFromCorners(this.minx, this.minx, this.maxx, this.maxy);
+	}
+	
 	@Override
 	public void clear() {
 		this.minx = this.miny = this.maxx = this.maxy = 0;
@@ -85,6 +99,12 @@ public abstract class AbstractRectangularShape2i<T extends Shape2i> extends Abst
 	 */
 	public void set(int x, int y, int width, int height) {
 		setFromCorners(x, y, x+width, y+height);
+	}
+	
+	@Override
+	public void set(Shape2i s) {
+		Rectangle2i r = s.toBoundingBox();
+		setFromCorners(r.getMinX(), r.getMinY(), r.getMaxX(), r.getMaxY());
 	}
 	
 	/** Change the frame of te rectangle.
@@ -156,6 +176,14 @@ public abstract class AbstractRectangularShape2i<T extends Shape2i> extends Abst
 		return this.minx;
 	}
 
+	/** Replies the center x.
+	 * 
+	 * @return the center x.
+	 */
+	public int getCenterX() {
+		return (this.minx + this.maxx) / 2;
+	}
+
 	/** Replies the max x.
 	 * 
 	 * @return the max x.
@@ -170,6 +198,14 @@ public abstract class AbstractRectangularShape2i<T extends Shape2i> extends Abst
 	 */
 	public int getMinY() {
 		return this.miny;
+	}
+
+	/** Replies the center y.
+	 * 
+	 * @return the center y.
+	 */
+	public int getCenterY() {
+		return (this.miny + this.maxy) / 2;
 	}
 
 	/** Replies the max y.

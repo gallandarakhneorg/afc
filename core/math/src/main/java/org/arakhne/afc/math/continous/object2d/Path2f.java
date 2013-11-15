@@ -43,7 +43,7 @@ import org.arakhne.afc.math.matrix.Transform2D;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Rectangle2f,PathElement2f,PathIterator2f> {
+public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Shape2f,Rectangle2f,PathElement2f,PathIterator2f> {
 
 	private static final long serialVersionUID = -873231223923726975L;
 
@@ -1774,7 +1774,7 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Rectangle2
 					bb);
 			this.graphicalBounds = new SoftReference<Rectangle2f>(bb);
 		}
-		return bb.clone();
+		return bb;
 	}
 
 	/** Replies the bounding box of all the points added in this path.
@@ -1791,7 +1791,7 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Rectangle2
 			buildLogicalBoundingBox(bb);
 			this.logicalBounds = new SoftReference<Rectangle2f>(bb);
 		}
-		return bb.clone();
+		return bb;
 	}
 
 	/**
@@ -2173,6 +2173,12 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Rectangle2
 			this.graphicalBounds = null;
 			this.logicalBounds = null;
 		}
+	}
+
+	@Override
+	public void set(Shape2f s) {
+		clear();
+		add(s.getPathIterator());
 	}
 
 	/** A path iterator that does not transform the coordinates.

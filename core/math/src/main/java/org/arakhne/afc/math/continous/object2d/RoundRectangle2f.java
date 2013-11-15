@@ -401,11 +401,6 @@ public class RoundRectangle2f extends AbstractRectangularShape2f<RoundRectangle2
 	}
 
 	@Override
-	public Rectangle2f toBoundingBox() {
-		return new Rectangle2f(getMinX(), getMinY(), getWidth(), getHeight());
-	}
-
-	@Override
 	public boolean intersects(Rectangle2f s) {
 		return Rectangle2f.intersectsRectangleRectangle(
 				getMinX(), getMinY(),

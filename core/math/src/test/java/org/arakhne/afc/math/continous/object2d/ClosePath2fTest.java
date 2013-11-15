@@ -688,4 +688,18 @@ public class ClosePath2fTest extends AbstractPath2fTestCase {
 		assertFalse(this.r.containsPoint(new Point2f(1234f, 5678f)));
 	}
 
+	/**
+	 */
+	public void testSetShape2f() {
+		this.r.set(new Rectangle2f(10, 12, 14, 16));
+		PathIterator2f pi = this.r.getPathIterator();
+		assertElement(pi, PathElementType.MOVE_TO, 10f, 12f);
+		assertElement(pi, PathElementType.LINE_TO, 24f, 12f);
+		assertElement(pi, PathElementType.LINE_TO, 24f, 28f);
+		assertElement(pi, PathElementType.LINE_TO, 10f, 28f);
+		assertElement(pi, PathElementType.LINE_TO, 10f, 12f);
+		assertElement(pi, PathElementType.CLOSE);
+		assertNoElement(pi);
+	}
+
 }

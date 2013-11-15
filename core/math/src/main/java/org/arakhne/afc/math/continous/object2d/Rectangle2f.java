@@ -282,12 +282,17 @@ public class Rectangle2f extends AbstractRectangularShape2f<Rectangle2f> {
 	public Rectangle2f(float x, float y, float width, float height) {
 		super(x, y, width, height);
 	}
+	
+	@Override
+	public void set(Shape2f s) {
+		s.toBoundingBox(this);
+	}
 
 	/** {@inheritDoc}
 	 */
 	@Override
 	public Rectangle2f toBoundingBox() {
-		return clone();
+		return this;
 	}
 
 	/** {@inheritDoc}

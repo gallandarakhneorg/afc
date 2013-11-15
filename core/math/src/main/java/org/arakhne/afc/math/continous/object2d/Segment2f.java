@@ -679,6 +679,15 @@ public class Segment2f extends AbstractShape2f<Segment2f> {
 		this.by = b.getY();
 	}
 
+	@Override
+	public void set(Shape2f s) {
+		Rectangle2f r = s.toBoundingBox();
+		this.ax = r.getMinX();
+		this.ay = r.getMinY();
+		this.bx = r.getMaxX();
+		this.by = r.getMaxY();
+	}
+
 	/** Replies the X of the first point.
 	 * 
 	 * @return the x of the first point.

@@ -250,6 +250,14 @@ public class Circle2f extends AbstractShape2f<Circle2f> {
 		this.radius = Math.abs(radius);
 	}
 
+	@Override
+	public void set(Shape2f s) {
+		Rectangle2f r = s.toBoundingBox();
+		this.cx = r.getCenterX();
+		this.cy = r.getCenterY();
+		this.radius = Math.min(r.getWidth(), r.getHeight()) / 2f;
+	}
+
 	/** Replies the center X.
 	 * 
 	 * @return the center x.

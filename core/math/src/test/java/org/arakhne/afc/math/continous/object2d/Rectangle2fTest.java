@@ -248,11 +248,7 @@ public class Rectangle2fTest extends AbstractRectangularShape2fTestCase<Rectangl
 	@Override
 	public void testToBoundingBox() {
 		Rectangle2f b = this.r.toBoundingBox();
-		assertNotSame(this.r, b);
-		assertEpsilonEquals(this.r.getMinX(), b.getMinX());
-		assertEpsilonEquals(this.r.getMinY(), b.getMinY());
-		assertEpsilonEquals(this.r.getMaxX(), b.getMaxX());
-		assertEpsilonEquals(this.r.getMaxY(), b.getMaxY());
+		assertSame(this.r, b);
 	}
 	
 	/**
@@ -695,4 +691,14 @@ public class Rectangle2fTest extends AbstractRectangularShape2fTestCase<Rectangl
 		assertTrue(this.r.intersects(p.getPathIterator()));
 	}
 
+	/**
+	 */
+	public void testSetShape2f() {
+		this.r.set(new Circle2f(10, 12, 14));
+		assertEpsilonEquals(-4f, this.r.getMinX());
+		assertEpsilonEquals(-2f, this.r.getMinY());
+		assertEpsilonEquals(24f, this.r.getMaxX());
+		assertEpsilonEquals(26f, this.r.getMaxY());
+	}
+	
 }

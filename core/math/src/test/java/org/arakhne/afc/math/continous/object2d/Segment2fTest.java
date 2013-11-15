@@ -1415,4 +1415,14 @@ public class Segment2fTest extends AbstractShape2fTestCase<Segment2f> {
 		assertTrue(this.r.intersects(p.getPathIterator()));
 	}
 
+	/**
+	 */
+	public void testSetShape2f() {
+		this.r.set(new Rectangle2f(10, 12, 14, 16));
+		assertEpsilonEquals(10f, this.r.getX1());
+		assertEpsilonEquals(12f, this.r.getY1());
+		assertEpsilonEquals(24f, this.r.getX2());
+		assertEpsilonEquals(28f, this.r.getY2());
+	}
+	
 }
