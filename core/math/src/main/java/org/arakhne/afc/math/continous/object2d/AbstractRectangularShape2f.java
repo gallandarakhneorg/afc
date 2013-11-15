@@ -70,6 +70,16 @@ extends AbstractShape2f<T> {
 		setFromCorners(x, y, x+width, y+height);
 	}
 	
+	/**
+	 * @param s
+	 */
+	public AbstractRectangularShape2f(AbstractRectangularShape2f<?> s) {
+		this.minx = s.minx;
+		this.miny = s.miny;
+		this.maxx = s.maxx;
+		this.maxy = s.maxy;
+	}
+
 	/** {@inheritDoc}
 	 */
 	@Override

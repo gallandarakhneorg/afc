@@ -210,6 +210,15 @@ public class Circle2f extends AbstractShape2f<Circle2f> {
 		set(x, y, radius);
 	}
 	
+	/** Construct a circle from a circle.
+	 * @param c
+	 */
+	public Circle2f(Circle2f c) {
+		this.cx = c.cx;
+		this.cy = c.cy;
+		this.radius = c.radius;
+	}
+
 	@Override
 	public void clear() {
 		this.cx = this.cy = 0f;

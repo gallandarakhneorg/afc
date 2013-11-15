@@ -179,6 +179,13 @@ public class RoundRectangle2f extends AbstractRectangularShape2f<RoundRectangle2
 	}
 
 	/**
+	 * @param rr
+	 */
+	public RoundRectangle2f(RoundRectangle2f rr) {
+		super(rr);
+	}
+
+	/**
 	 * @param x
 	 * @param y
 	 * @param width

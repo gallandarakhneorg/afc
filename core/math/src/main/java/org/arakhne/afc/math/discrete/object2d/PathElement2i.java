@@ -21,8 +21,7 @@
  */
 package org.arakhne.afc.math.discrete.object2d;
 
-import java.io.Serializable;
-
+import org.arakhne.afc.math.generic.PathElement2D;
 import org.arakhne.afc.math.generic.PathElementType;
 
 /** An element of the path.
@@ -32,7 +31,7 @@ import org.arakhne.afc.math.generic.PathElementType;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public abstract class PathElement2i implements Serializable {
+public abstract class PathElement2i implements PathElement2D {
 	
 	private static final long serialVersionUID = 7757419973445894032L;
 
@@ -121,22 +120,6 @@ public abstract class PathElement2i implements Serializable {
 		this.toY = toy;
 	}
 
-	/** Replies if the element is empty, ie. the points are the same.
-	 * 
-	 * @return <code>true</code> if the points are
-	 * the same; otherwise <code>false</code>.
-	 */
-	public abstract boolean isEmpty();
-	
-	/** Replies if the element is not empty and its drawable.
-	 * Only the path elements that may produce pixels on the screen
-	 * must reply <code>true</code> in this function.
-	 * 
-	 * @return <code>true</code> if the path element
-	 * is drawable; otherwise <code>false</code>.
-	 */
-	public abstract boolean isDrawable();
-
 	/** Copy the coords into the given array, except the source point.
 	 * 
 	 * @param array
@@ -174,6 +157,11 @@ public abstract class PathElement2i implements Serializable {
 			super(PathElementType.MOVE_TO,
 					0, 0, 0, 0, 0, 0,
 					x, y);
+		}
+		
+		@Override
+		public final PathElementType getType() {
+			return PathElementType.MOVE_TO;
 		}
 
 		@Override
@@ -237,6 +225,11 @@ public abstract class PathElement2i implements Serializable {
 		}
 		
 		@Override
+		public final PathElementType getType() {
+			return PathElementType.LINE_TO;
+		}
+
+		@Override
 		public boolean isEmpty() {
 			return (this.fromX==this.toX) && (this.fromY==this.toY);
 		}
@@ -299,6 +292,11 @@ public abstract class PathElement2i implements Serializable {
 					tox, toy);
 		}
 		
+		@Override
+		public final PathElementType getType() {
+			return PathElementType.QUAD_TO;
+		}
+
 		@Override
 		public boolean isEmpty() {
 			return (this.fromX==this.toX) && (this.fromY==this.toY) &&
@@ -371,6 +369,11 @@ public abstract class PathElement2i implements Serializable {
 					tox, toy);
 		}
 		
+		@Override
+		public final PathElementType getType() {
+			return PathElementType.CURVE_TO;
+		}
+
 		@Override
 		public boolean isEmpty() {
 			return (this.fromX==this.toX) && (this.fromY==this.toY) &&
@@ -445,6 +448,11 @@ public abstract class PathElement2i implements Serializable {
 					tox, toy);
 		}
 		
+		@Override
+		public final PathElementType getType() {
+			return PathElementType.CLOSE;
+		}
+
 		@Override
 		public boolean isEmpty() {
 			return (this.fromX==this.toX) && (this.fromY==this.toY);

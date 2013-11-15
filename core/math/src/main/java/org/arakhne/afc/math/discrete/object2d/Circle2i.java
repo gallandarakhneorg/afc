@@ -348,6 +348,16 @@ public class Circle2i extends AbstractShape2i<Circle2i> {
 		set(x, y, radius);
 	}
 
+	/**
+	 * @param c
+	 * 
+	 */
+	public Circle2i(Circle2i c) {
+		this.cx = c.cx;
+		this.cy = c.cy;
+		this.radius = c.radius;
+	}
+
 	/** {@inheritDoc}
 	 */
 	@Override
@@ -877,6 +887,11 @@ public class Circle2i extends AbstractShape2i<Circle2i> {
 			return PathWindingRule.NON_ZERO;
 		}
 
+		@Override
+		public boolean isPolyline() {
+			return false;
+		}
+		
 	}
 
 	/** Iterator on the path elements of the circle.
@@ -976,6 +991,11 @@ public class Circle2i extends AbstractShape2i<Circle2i> {
 			return PathWindingRule.NON_ZERO;
 		}
 
+		@Override
+		public boolean isPolyline() {
+			return false;
+		}
+		
 	}
 
 }

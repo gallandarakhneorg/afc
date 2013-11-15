@@ -626,6 +626,16 @@ public class Segment2f extends AbstractShape2f<Segment2f> {
 	}
 
 	/**
+	 * @param s
+	 */
+	public Segment2f(Segment2f s) {
+		this.ax = s.ax;
+		this.ay = s.ay;
+		this.bx = s.bx;
+		this.by = s.by;
+	}
+
+	/**
 	 * @param x1
 	 * @param y1
 	 * @param x2

@@ -53,7 +53,7 @@ import android.graphics.RectF;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-class AndroidPath implements Shape2f, Path2D<Rectangle2f,PathElement2f,PathIterator2f>, NativeWrapper {
+class AndroidPath implements Shape2f, Path2D<Shape2f,Rectangle2f,PathElement2f,PathIterator2f>, NativeWrapper {
 
 	private static final long serialVersionUID = 3395487582331474537L;
 
@@ -83,8 +83,41 @@ class AndroidPath implements Shape2f, Path2D<Rectangle2f,PathElement2f,PathItera
 	}
 
 	@Override
+	public void set(Shape2f s) {
+		this.path.reset();
+		PathIterator2f iterator = s.getPathIterator();
+		PathElement2f element;
+		while (iterator.hasNext()) {
+			element = iterator.next();
+			switch(element.getType()) {
+			case MOVE_TO:
+				this.path.moveTo(element.toX, element.toY);
+				break;
+			case LINE_TO:
+				this.path.lineTo(element.toX, element.toY);
+				break;
+			case QUAD_TO:
+				this.path.quadTo(
+						element.ctrlX1, element.ctrlY1,
+						element.toX, element.toY);
+				break;
+			case CURVE_TO:
+				this.path.cubicTo(
+						element.ctrlX1, element.ctrlY1,
+						element.ctrlX2, element.ctrlY2,
+						element.toX, element.toY);
+				break;
+			case CLOSE:
+				this.path.close();
+				break;
+			default:
+			}
+		}
+	}
+	
+	@Override
 	public boolean isPolyline() {
-		return true;
+		return false;
 	}
 
 	/** Replies the native path.

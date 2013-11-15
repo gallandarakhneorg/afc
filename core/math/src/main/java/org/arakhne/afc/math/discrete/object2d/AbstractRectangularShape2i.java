@@ -51,6 +51,16 @@ public abstract class AbstractRectangularShape2i<T extends Shape2i> extends Abst
 		//
 	}
 	
+	/**
+	 * @param s
+	 */
+	public AbstractRectangularShape2i(AbstractRectangularShape2i<?> s) {
+		this.minx = s.minx;
+		this.miny = s.miny;
+		this.maxx = s.maxx;
+		this.maxy = s.maxy;
+	}
+
 	/** {@inheritDoc}
 	 */
 	@Override

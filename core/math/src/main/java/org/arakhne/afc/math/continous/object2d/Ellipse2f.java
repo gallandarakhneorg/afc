@@ -344,6 +344,13 @@ public class Ellipse2f extends AbstractRectangularShape2f<Ellipse2f> {
 		super(x, y, width, height);
 	}
 
+	/**
+	 * @param e
+	 */
+	public Ellipse2f(Ellipse2f e) {
+		super(e);
+	}
+
 	/** {@inheritDoc}
 	 */
 	@Override

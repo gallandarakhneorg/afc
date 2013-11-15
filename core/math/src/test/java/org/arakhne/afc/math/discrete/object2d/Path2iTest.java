@@ -808,9 +808,19 @@ public class Path2iTest extends AbstractShape2iTestCase<Path2i> {
 		assertEquals(0, bb.getMinX());
 		assertEquals(-5, bb.getMinY());
 		assertEquals(7, bb.getMaxX());
+		assertEquals(3, bb.getMaxY());
+	}
+
+	/**
+	 */
+	public void testToBoundingBoxWithCtrlPoints() {
+		Rectangle2i bb = this.r.toBoundingBoxWithCtrlPoints();
+		assertEquals(0, bb.getMinX());
+		assertEquals(-5, bb.getMinY());
+		assertEquals(7, bb.getMaxX());
 		assertEquals(5, bb.getMaxY());
 	}
-	
+
 	/**
 	 */
 	public void testRemoveLast() {

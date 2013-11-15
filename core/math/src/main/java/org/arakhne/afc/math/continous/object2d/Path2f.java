@@ -1101,6 +1101,27 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Shape2f,Re
 		add(iterator);
 	}
 
+	/**
+	 * @param p
+	 */
+	public Path2f(Path2f p) {
+		this.coords = p.coords.clone();
+		this.isEmpty = p.isEmpty;
+		this.isPolyline = p.isPolyline;
+		this.numCoords = p.numCoords;
+		this.types = p.types.clone();
+		this.windingRule = p.windingRule;
+		Rectangle2f box;
+		box = p.graphicalBounds==null ? null : p.graphicalBounds.get();
+		if (box!=null) {
+			this.graphicalBounds = new SoftReference<Rectangle2f>(box.clone());
+		}
+		box = p.logicalBounds==null ? null : p.logicalBounds.get();
+		if (box!=null) {
+			this.logicalBounds = new SoftReference<Rectangle2f>(box.clone());
+		}
+	}
+
 	@Override
 	public void clear() {
 		this.types = new PathElementType[GROW_SIZE];
@@ -1108,8 +1129,8 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Shape2f,Re
 		this.windingRule = PathWindingRule.NON_ZERO;
 		this.numCoords = 0;
 		this.numTypes = 0;
-		this.isEmpty = true;
-		this.isPolyline = true;
+		this.isEmpty = Boolean.TRUE;
+		this.isPolyline = Boolean.TRUE;
 		this.graphicalBounds = null;
 		this.logicalBounds = null;
 	}
@@ -1253,7 +1274,7 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Shape2f,Re
 		this.coords[this.numCoords++] = x2;
 		this.coords[this.numCoords++] = y2;
 		this.isEmpty = null;
-		this.isPolyline = false;
+		this.isPolyline = Boolean.FALSE;
 		this.graphicalBounds = null;
 		this.logicalBounds = null;
 	}
@@ -1285,7 +1306,7 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Shape2f,Re
 		this.coords[this.numCoords++] = x3;
 		this.coords[this.numCoords++] = y3;
 		this.isEmpty = null;
-		this.isPolyline = false;
+		this.isPolyline = Boolean.FALSE;
 		this.graphicalBounds = null;
 		this.logicalBounds = null;
 	}

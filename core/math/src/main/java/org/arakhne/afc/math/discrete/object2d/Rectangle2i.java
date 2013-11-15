@@ -209,6 +209,13 @@ public class Rectangle2i extends AbstractRectangularShape2i<Rectangle2i> {
 	}
 	
 	/**
+	 * @param r
+	 */
+	public Rectangle2i(Rectangle2i r) {
+		super(r);
+	}
+
+	/**
 	 * @param x
 	 * @param y
 	 * @param width
@@ -465,6 +472,11 @@ public class Rectangle2i extends AbstractRectangularShape2i<Rectangle2i> {
 			return PathWindingRule.NON_ZERO;
 		}
 		
+		@Override
+		public boolean isPolyline() {
+			return false;
+		}
+		
 	}
 
 	/** Iterator on the path elements of the rectangle.
@@ -574,6 +586,11 @@ public class Rectangle2i extends AbstractRectangularShape2i<Rectangle2i> {
 		@Override
 		public PathWindingRule getWindingRule() {
 			return PathWindingRule.NON_ZERO;
+		}
+		
+		@Override
+		public boolean isPolyline() {
+			return false;
 		}
 		
 	}
