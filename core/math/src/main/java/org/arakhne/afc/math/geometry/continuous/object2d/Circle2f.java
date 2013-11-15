@@ -264,8 +264,8 @@ public class Circle2f extends AbstractShape2f<Circle2f> {
 	
 	@Override
 	public boolean contains(Rectangle2f r) {
-		return GeometryUtil.isInsideRectangleCircle(getX(), getY(), getRadius(),
-				r.getMinX(), r.getMinY(), r.getWidth(), r.getHeight());
+		return GeometryUtil.isInsideRectangleCircle(r.getMinX(), r.getMinY(), r.getWidth(), r.getHeight(),
+				getX(), getY(), getRadius());
 	}
 
 	/** {@inheritDoc}

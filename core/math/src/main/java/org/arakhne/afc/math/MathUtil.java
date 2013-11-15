@@ -83,6 +83,8 @@ public final class MathUtil implements MathConstants {
 	 * 
 	 * @param value
 	 *            is the value to test.
+	 * @param epsilon
+	 * 			  the accuracy parameter must be the same unit of measurement as the other parameter 
 	 * @return <code>true</code> if the given <var>value</var> is near zero,
 	 *         otherwise <code>false</code>.
 	 */
@@ -95,6 +97,8 @@ public final class MathUtil implements MathConstants {
 	 * 
 	 * @param v1
 	 * @param v2
+	 * @param epsilon
+	 * 			  the accuracy parameter must be the same unit of measurement as others parameters 
 	 * @return <code>true</code> if the given <var>v1</var> is near
 	 *         <var>v2</var>, otherwise <code>false</code>.
 	 */
@@ -385,6 +389,7 @@ public final class MathUtil implements MathConstants {
 	 * 
 	 * @param value1
 	 * @param value2
+	 * @param epsilon the accuracy parameter must be the same unit of measurement as others parameters 
 	 * @return a negative value if the parameter <var>value1</var> is lower than
 	 *         <var>value2</var>, a positive if <var>value1</var> is greater
 	 *         than <var>value2</var>, zero if the two parameters are

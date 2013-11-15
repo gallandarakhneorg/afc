@@ -431,7 +431,7 @@ public final class GeometryUtil implements MathConstants{
 	 *            the Y coordinate of the specified point to be compared with the specified line segment
 	 * @return the positive or negative distance from the point to the line
 	 * @see GeometryUtil#ccw(float, float, float, float, float, float, boolean)
-	 * @see #sidePointLine(float, float, float, float, float, float, boolean)
+	 * @see #getPointSideOfLine(float, float, float, float, float, float, boolean)
 	 * @see #distancePointLine(float, float, float, float, float, float)
 	 */
 	public static float distanceRelativeLinePoint(float x1, float y1, float x2, float y2, float px, float py) {
@@ -687,12 +687,13 @@ public final class GeometryUtil implements MathConstants{
 	 *            is the X coordinate of the second point of the second line.
 	 * @param y4
 	 *            is the Y coordinate of the second point of the second line.
+	 * @param epsilon the accuracy parameter (distance) must be the same unit of measurement as others parameters 
 	 * @return <code>true</code> if the two given lines are parallel.
 	 * @see #isEqualLines(float, float, float, float, float, float, float, float)
 	 * @since 3.0
 	 */
-	public static boolean isParallelLines(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4) {
-		return GeometryUtil.isCollinearVectors(x2 - x1, y2 - y1, x4 - x3, y4 - y3);
+	public static boolean isParallelLines(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4,float epsilon) {
+		return GeometryUtil.isCollinearVectors(x2 - x1, y2 - y1, x4 - x3, y4 - y3, epsilon);
 	}
 
 	/**
@@ -728,11 +729,12 @@ public final class GeometryUtil implements MathConstants{
 	 *            is the Y coordinate of the second point of the second line.
 	 * @param z4
 	 *            is the Z coordinate of the second point of the second line.
+	 * @param epsilon the accuracy parameter (distance) must be the same unit of measurement as others parameters 
 	 * @return <code>true</code> if the two given lines are parallel.
 	 * @since 3.0
 	 */
-	public static boolean isParallelLines(float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3, float x4, float y4, float z4) {
-		return GeometryUtil.isCollinearVectors(x2 - x1, y2 - y1, z2 - z1, x4 - x3, y4 - y3, z4 - z3);
+	public static boolean isParallelLines(float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3, float x4, float y4, float z4,float epsilon) {
+		return GeometryUtil.isCollinearVectors(x2 - x1, y2 - y1, z2 - z1, x4 - x3, y4 - y3, z4 - z3, epsilon);
 	}
 
 	/**
@@ -740,7 +742,7 @@ public final class GeometryUtil implements MathConstants{
 	 * <p>
 	 * Trivial approach is: points are collinear iff |AB| + |AC| = |BC|, where A B C are the three points.
 	 * <p>
-	 * This function uses the equal-to-zero test with the error {@link #EPSILON}.
+	 * This function uses the equal-to-zero test with the error
 	 * 
 	 * @param x1
 	 *            is the X coordinate of the first point
@@ -754,17 +756,18 @@ public final class GeometryUtil implements MathConstants{
 	 *            is the X coordinate of the third point
 	 * @param y3
 	 *            is the Y coordinate of the third point
+	 * @param epsilon the accuracy parameter (distance) must be the same unit of measurement as others parameters 
 	 * @return <code>true</code> if the three given points are collinear.
 	 * @since 3.0
 	 * @see MathUtil#isEpsilonZero(float)
 	 */
-	public static boolean isCollinearPoints(float x1, float y1, float x2, float y2, float x3, float y3) {
+	public static boolean isCollinearPoints(float x1, float y1, float x2, float y2, float x3, float y3, float epsilon) {
 		// Test if three points are collinear
 		// iff det( [ x1 x2 x3 ]
 		// [ y1 y2 y3 ]
 		// [ 1 1 1 ] ) = 0
 		// Do not invoked MathUtil.determinant() to limit computations.
-		return MathUtil.isEpsilonZero(x1 * (y2 - y3) + x2 * (y3 - y1) + x3 * (y1 - y2));
+		return MathUtil.isEpsilonZero(x1 * (y2 - y3) + x2 * (y3 - y1) + x3 * (y1 - y2), epsilon);
 	}
 
 	/**
@@ -772,7 +775,7 @@ public final class GeometryUtil implements MathConstants{
 	 * <p>
 	 * Trival approach is: points are collinear iff |AB| + |AC| = |BC|, where A B C are the three points.
 	 * <p>
-	 * This function uses the equal-to-zero test with the error {@link #EPSILON}.
+	 * This function uses the equal-to-zero test with the error.
 	 * 
 	 * @param x1
 	 *            is the X coordinate of the first point
@@ -792,11 +795,12 @@ public final class GeometryUtil implements MathConstants{
 	 *            is the Y coordinate of the third point
 	 * @param z3
 	 *            is the Z coordinate of the third point
-	 * @return <code>true</code> if the three given points are colinear.
+	 * @param epsilon the accuracy parameter (distance) must be the same unit of measurement as others parameters 
+	 * @return <code>true</code> if the three given points are collinear.
 	 * @since 3.0
 	 * @see MathUtil#isEpsilonZero(float)
 	 */
-	public static boolean isCollinearPoints(float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3) {
+	public static boolean isCollinearPoints(float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3,float epsilon) {
 		float dx1 = x2 - x1;
 		float dy1 = y2 - y1;
 		float dz1 = z2 - z1;
@@ -810,7 +814,7 @@ public final class GeometryUtil implements MathConstants{
 	
 		float sum = cx * cx + cy * cy + cz * cz;
 	
-		return MathUtil.isEpsilonZero(sum);
+		return MathUtil.isEpsilonZero(sum, epsilon);
 	}
 
 	/**
@@ -836,12 +840,13 @@ public final class GeometryUtil implements MathConstants{
 	 *            is the X coordinate of the second point of the second line.
 	 * @param y4
 	 *            is the Y coordinate of the second point of the second line.
+	 * @param epsilon the accuracy parameter (distance) must be the same unit of measurement as others parameters 
 	 * @return <code>true</code> if the two given lines are collinear.
 	 * @see #isParallelLines(float, float, float, float, float, float, float, float)
 	 * @see #isCollinearPoints(float, float, float, float, float, float)
 	 */
-	public static boolean isEqualLines(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4) {
-		return (isParallelLines(x1, y1, x2, y2, x3, y3, x4, y4) && isCollinearPoints(x1, y1, x2, y2, x3, y3));
+	public static boolean isEqualLines(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4,float epsilon) {
+		return (isParallelLines(x1, y1, x2, y2, x3, y3, x4, y4, epsilon) && isCollinearPoints(x1, y1, x2, y2, x3, y3, epsilon));
 	}
 
 	/**
@@ -875,12 +880,13 @@ public final class GeometryUtil implements MathConstants{
 	 *            is the Y coordinate of the second point of the second line.
 	 * @param z4
 	 *            is the Z coordinate of the second point of the second line.
+	 * @param epsilon the accuracy parameter (distance) must be the same unit of measurement as others parameters 
 	 * @return <code>true</code> if the two given lines are collinear.
 	 * @see #isParallelLines(float, float, float, float, float, float, float, float, float, float, float, float)
 	 * @see #isCollinearPoints(float, float, float, float, float, float, float, float, float)
 	 */
-	public static boolean isEqualLines(float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3, float x4, float y4, float z4) {
-		return (isParallelLines(x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4) && isCollinearPoints(x1, y1, z1, x2, y2, z2, x3, y3, z3));
+	public static boolean isEqualLines(float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3, float x4, float y4, float z4,float epsilon) {
+		return (isParallelLines(x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4, epsilon) && isCollinearPoints(x1, y1, z1, x2, y2, z2, x3, y3, z3, epsilon));
 	}
 
 	/** Clip the given segment against the clipping rectangle
@@ -1128,8 +1134,8 @@ public final class GeometryUtil implements MathConstants{
 	 *            the X coordinate of the specified point to be compared with the specified line segment
 	 * @param py
 	 *            the Y coordinate of the specified point to be compared with the specified line segment
-	 * @param approximateZero
-	 *            indicates if zero may be approximated or not.
+	 * @param epsilon
+	 * 			  the accuracy parameter (distance) must be the same unit of measurement as others parameters 
 	 * @return an integer that indicates the position of the third specified coordinates with respect to the line segment formed by the first two specified coordinates.
 	 * @see relativeDistancePointToLine
 	 * @see sidePointLine
@@ -1140,8 +1146,8 @@ public final class GeometryUtil implements MathConstants{
 		float cpx = px - x1;
 		float cpy = py - y1;
 		float ccw = cpx * cy2 - cpy * cx2;
-		if ((approximateZero && MathUtil.isEpsilonZero(ccw)) || (!approximateZero && ccw == 0.)) {
-			// The point is colinear, classify based on which side of
+		if (MathUtil.isEpsilonZero(ccw, epsilon)) {
+			// The point is collinear, classify based on which side of
 			// the segment the point falls on. We can calculate a
 			// relative value using the projection of px,py onto the
 			// segment - a negative value indicates the point projects
@@ -1311,7 +1317,7 @@ public final class GeometryUtil implements MathConstants{
 	 *	 		[y1 y2] ) = 0
 	 * 
 	 * <p>
-	 * This function uses the equal-to-zero test with the error {@link #EPSILON}.
+	 * This function uses the equal-to-zero test with the error.
 	 * 
 	 * @param x1
 	 *            is the X coordinate of the first vector
@@ -1321,6 +1327,8 @@ public final class GeometryUtil implements MathConstants{
 	 *            is the X coordinate of the second vector
 	 * @param y2
 	 *            is the Y coordinate of the second vector
+	 * @param epsilon
+	 * 			  the accuracy parameter (distance) must be the same unit of measurement as others parameters 
 	 * @return <code>true</code> if the two given vectors are colinear.
 	 * @since 3.0
 	 * @see MathUtil#isEpsilonZero(float)
@@ -1333,7 +1341,7 @@ public final class GeometryUtil implements MathConstants{
 	/**
 	 * Replies if two vectors are colinear.
 	 * <p>
-	 * This function uses the equal-to-zero test with the error {@link #EPSILON}.
+	 * This function uses the equal-to-zero test with the error.
 	 * 
 	 * @param x1
 	 *            is the X coordinate of the first vector
@@ -1347,6 +1355,8 @@ public final class GeometryUtil implements MathConstants{
 	 *            is the Y coordinate of the second vector
 	 * @param z2
 	 *            is the Z coordinate of the second vector
+	 * @param epsilon 
+	 * 			  the accuracy parameter (distance) must be the same unit of measurement as others parameters 
 	 * @return <code>true</code> if the two given vectors are colinear.
 	 * @since 3.0
 	 * @see MathUtil#isEpsilonZero(float)
@@ -1706,6 +1716,7 @@ public final class GeometryUtil implements MathConstants{
      * @param Cy is the Y coordinate of segment CD start point
      * @param Dx is the X coordinate of segment CD start point
      * @param Dy is the Y coordinate of segment CD start point
+     * @param epsilon the accuracy parameter (distance) must be the same unit of measurement as others parameters 
      * @return the distance
      */
     public static float distanceSegmentSegment(float Ax, float Ay, float Bx, float By, float Cx, float Cy, float Dx, float Dy, float epsilon) {
@@ -1739,17 +1750,17 @@ public final class GeometryUtil implements MathConstants{
 
 	/** Replies if a rectangle is inside in the circle.
 	 * 
-	 * @param cx is the center of the circle.
-	 * @param cy is the center of the circle.
-	 * @param radius is the radius of the circle.
 	 * @param rx is the lowest corner of the rectangle.
 	 * @param ry is the lowest corner of the rectangle.
 	 * @param rwidth is the width of the rectangle.
 	 * @param rheight is the height of the rectangle.
+	 * @param cx is the center of the circle.
+	 * @param cy is the center of the circle.
+	 * @param radius is the radius of the circle.
 	 * @return <code>true</code> if the given rectangle is inside the circle;
 	 * otherwise <code>false</code>.
-	 *///TODO : change parameters order
-	public static boolean isInsideRectangleCircle(float cx, float cy, float radius, float rx, float ry, float rwidth, float rheight) {
+	 */
+	public static boolean isInsideRectangleCircle(float rx, float ry, float rwidth, float rheight, float cx, float cy, float radius) {
 		float rcx = (rx + rwidth/2f);
 		float rcy = (ry + rheight/2f);
 		float farX;
@@ -1787,4 +1798,54 @@ public final class GeometryUtil implements MathConstants{
 		else farY = ry;
 		return isInsidePointEllipse(farX, farY, ex, ey, ewidth, eheight);
 	}
+	
+	/**
+	 * Replies on which side of a line the given point is located.
+	 * <p>
+	 * A return value of 1 indicates that the line segment must turn in the direction
+	 * that takes the positive X axis towards the negative Y axis. In the default
+	 * coordinate system used by Java 2D, this direction is counterclockwise.
+	 * <p>
+	 * A return value of -1 indicates that the line segment must turn in the direction that takes the positive X axis towards the positive Y axis. In the default coordinate system, this direction is clockwise.
+	 * <p>
+	 * A return value of 0 indicates that the point lies exactly on the line segment. Note that an indicator value of 0 is rare and not useful for determining colinearity because of floating point rounding issues.
+	 * <p>
+	 * This function uses the equal-to-zero test with the error.
+	 * <p>
+	 * In opposite of {@link #ccw(float, float, float, float, float, float, boolean)},
+	 * this function does not try to classify the point if it is colinear
+	 * to the segment. If the point is colinear, O is always returns. 
+	 * 
+	 * @param x1
+	 *            the X coordinate of the start point of the specified line segment
+	 * @param y1
+	 *            the Y coordinate of the start point of the specified line segment
+	 * @param x2
+	 *            the X coordinate of the end point of the specified line segment
+	 * @param y2
+	 *            the Y coordinate of the end point of the specified line segment
+	 * @param px
+	 *            the X coordinate of the specified point to be compared with the specified line segment
+	 * @param py
+	 *            the Y coordinate of the specified point to be compared with the specified line segment
+	 * @param epsilon
+	 * 			  the accuracy parameter (distance) must be the same unit of measurement as others parameters 
+	 * @return an integer that indicates the position of the third specified coordinates with respect to the line segment formed by the first two specified coordinates.
+	 * @see #relativeDistancePointToLine(float, float, float, float, float, float)
+	 * @see #isEpsilonZero(float)
+	 * @see #ccw(float, float, float, float, float, float, boolean)
+	 */
+	public static int getPointSideOfLine(float x1, float y1, float x2, float y2, float px, float py, float epsilon) {
+	        float cx2 = x2 - x1;
+	        float cy2 = y2 - y1;
+	        float cpx = px - x1;
+	        float cpy = py - y1;
+	        float side = cpx * cy2 - cpy * cx2;
+	        if (MathUtil.isEpsilonZero(side, epsilon)) {
+	                side = 0f;
+	        }
+	        return (side < 0f) ? -1 : ((side > 0f) ? 1 : 0);
+	}
+
 }
+

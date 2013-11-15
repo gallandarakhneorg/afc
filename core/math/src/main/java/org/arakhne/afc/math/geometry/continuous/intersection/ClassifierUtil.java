@@ -564,6 +564,7 @@ public final class ClassifierUtil implements MathConstants{
 	 * @param boxExtentAxis1 is the 'Axis1' size of the OBB.
 	 * @param boxExtentAxis2 is the 'Axis2' size of the OBB.
 	 * @param boxExtentAxis3 is the 'Axis3' size of the OBB.
+	 * @param epsilon the accuracy parameter (distance) must be the same unit of measurement as others parameters 
 	 * @return the value {@link IntersectionType#INSIDE} if the sphere is inside
 	 * the box; {@link IntersectionType#OUTSIDE} if the sphere is 
 	 * outside the box; {@link IntersectionType#ENCLOSING} if the 
@@ -576,7 +577,7 @@ public final class ClassifierUtil implements MathConstants{
 			   float boxAxis1x, float boxAxis1y, float boxAxis1z,
 			   float boxAxis2x, float boxAxis2y, float boxAxis2z,
 			   float boxAxis3x, float boxAxis3y, float boxAxis3z,
-			   float boxExtentAxis1, float boxExtentAxis2, float boxExtentAxis3) {
+			   float boxExtentAxis1, float boxExtentAxis2, float boxExtentAxis3,float epsilon) {
 		assert(sphereRadius>=0);
 		assert(boxExtentAxis1>=0);
 		assert(boxExtentAxis2>=0);
@@ -605,13 +606,13 @@ public final class ClassifierUtil implements MathConstants{
 		
 		// Compute (squared) distance to closest point
 		float d = GeometryUtil.distanceSquaredPointPoint(closest.getX(),closest.getY(), closest.getZ(), sphereCenterx, sphereCentery, sphereCenterz);
-		if (d>squaredRadius+MathConstants.EPSILON) return IntersectionType.OUTSIDE;
+		if (d>squaredRadius+epsilon) return IntersectionType.OUTSIDE;
 	
 		// If the sphere center is inside the box and the
 		// radius is inside the box's extents, then the
 		// sphere is inside the box.
 		
-		if (MathUtil.isEpsilonZero(d)) {
+		if (MathUtil.isEpsilonZero(d, epsilon)) {
 			
 			float vx= sphereCenterx - boxCenterx;
 			float vy= sphereCentery - boxCentery;
@@ -647,6 +648,7 @@ public final class ClassifierUtil implements MathConstants{
 	 * @param rectangleAxis2y is the Y coordinate of the Axis2 unit vector.
 	 * @param rectangleExtentAxis1 is the 'Axis1' size of the OBR.
 	 * @param rectangleExtentAxis2 is the 'Axis2' size of the OBR.
+	 * @param epsilon the accuracy parameter (distance) must be the same unit of measurement as others parameters 
 	 * @return the value {@link IntersectionType#INSIDE} if the circle is inside
 	 * the rectangle; {@link IntersectionType#OUTSIDE} if the circle is 
 	 * outside the rectangle; {@link IntersectionType#ENCLOSING} if the 
@@ -659,7 +661,7 @@ public final class ClassifierUtil implements MathConstants{
 			   float rectangleAxis1x, float rectangleAxis1y,
 			   float rectangleAxis2x, float rectangleAxis2y,
 			   float rectangleAxis3x, float rectangleAxis3y,
-			   float rectangleExtentAxis1, float rectangleExtentAxis2) {
+			   float rectangleExtentAxis1, float rectangleExtentAxis2,float epsilon) {
 		assert(circleRadius>=0);
 		assert(rectangleExtentAxis1>=0);
 		assert(rectangleExtentAxis2>=0);
@@ -686,13 +688,13 @@ public final class ClassifierUtil implements MathConstants{
 		
 		// Compute (squared) distance to closest point
 		float d = GeometryUtil.distanceSquaredPointPoint(closest.getX(),closest.getY(), circleCenterx, circleCentery);
-		if (d>squaredRadius+MathConstants.EPSILON) return IntersectionType.OUTSIDE;
+		if (d>squaredRadius+epsilon) return IntersectionType.OUTSIDE;
 	
 		// If the sphere center is inside the rectangle and the
 		// radius is inside the rectangle's extents, then the
 		// sphere is inside the rectangle.
 		
-		if (MathUtil.isEpsilonZero(d)) {
+		if (MathUtil.isEpsilonZero(d, epsilon)) {
 			
 			float vx= circleCenterx - centerx;
 			float vy= circleCentery - centery;
@@ -1346,6 +1348,7 @@ public final class ClassifierUtil implements MathConstants{
 	 * @param capsuleBy is the Y coordinate of medial line segment end point of the capsule
 	 * @param capsuleBz is the Z coordinate of medial line segment end point of the capsule
 	 * @param capsuleRadius - radius of the capsule
+	 * @param epsilon the accuracy parameter (distance) must be the same unit of measurement as others parameters 
 	 * @return the value {@link IntersectionType#INSIDE} if the capsule is inside
 	 * the box; {@link IntersectionType#OUTSIDE} if the capsule is 
 	 * outside the box; {@link IntersectionType#ENCLOSING} if the 
@@ -1355,7 +1358,7 @@ public final class ClassifierUtil implements MathConstants{
 			float centerx,float  centery,float  centerz,
 			float axis1x, float axis1y, float axis1z, float axis2x, float axis2y, float axis2z,	float axis3x, float axis3y, float axis3z,
 			float extentAxis1, float extentAxis2, float extentAxis3,
-			float capsule1Ax, float capsule1Ay, float capsule1Az, float capsule1Bx, float capsule1By, float capsule1Bz, float capsule1Radius) {
+			float capsule1Ax, float capsule1Ay, float capsule1Az, float capsule1Bx, float capsule1By, float capsule1Bz, float capsule1Radius,float epsilon) {
 
 		
 		Point3f closestFromA = new Point3f();
@@ -1371,23 +1374,23 @@ public final class ClassifierUtil implements MathConstants{
 				capsule1Bx, capsule1By, capsule1Bz,
 				closestFromB, farestFromB);
 		
-		float distanceToNearest = GeometryUtil.distanceSegmentSegment(capsule1Ax, capsule1Ay, capsule1Bx, capsule1By, closestFromA.getX(), closestFromA.getY(), closestFromB.getX(), closestFromB.getY());
+		float distanceToNearest = GeometryUtil.distanceSegmentSegment(capsule1Ax, capsule1Ay, capsule1Bx, capsule1By, closestFromA.getX(), closestFromA.getY(), closestFromB.getX(), closestFromB.getY(), epsilon);
 		
 		if (distanceToNearest > capsule1Radius) {
 			return IntersectionType.OUTSIDE;
 		}
 		
-		float distanceToFarest = GeometryUtil.distanceSegmentSegment(capsule1Ax, capsule1Ay, capsule1Bx, capsule1By, farestFromA.getX(), farestFromA.getY(), farestFromB.getX(), farestFromB.getY());
+		float distanceToFarest = GeometryUtil.distanceSegmentSegment(capsule1Ax, capsule1Ay, capsule1Bx, capsule1By, farestFromA.getX(), farestFromA.getY(), farestFromB.getX(), farestFromB.getY(), epsilon);
 		if(distanceToFarest <= capsule1Radius) {
 			return IntersectionType.ENCLOSING;
 		}
 		
 		IntersectionType onSphereA = ClassifierUtil.classifiesSolidSphereOrientedBox(
 				capsule1Ax, capsule1Ay, capsule1Az, capsule1Radius,
-				centerx, centery, centerz, axis1x, axis1y, axis1z, axis2x, axis2y, axis2z, axis3x, axis3y, axis3z, extentAxis1, extentAxis2, extentAxis3);
+				centerx, centery, centerz, axis1x, axis1y, axis1z, axis2x, axis2y, axis2z, axis3x, axis3y, axis3z, extentAxis1, extentAxis2, extentAxis3, epsilon);
 		IntersectionType onSphereB = ClassifierUtil.classifiesSolidSphereOrientedBox(
 				capsule1Bx, capsule1By, capsule1Bz, capsule1Radius, 
-				centerx, centery, centerz, axis1x, axis1y, axis1z, axis2x, axis2y, axis2z, axis3x, axis3y, axis3z, extentAxis1, extentAxis2, extentAxis3);
+				centerx, centery, centerz, axis1x, axis1y, axis1z, axis2x, axis2y, axis2z, axis3x, axis3y, axis3z, extentAxis1, extentAxis2, extentAxis3, epsilon);
 	
 		if(onSphereA.equals(IntersectionType.INSIDE)&&onSphereB.equals(IntersectionType.INSIDE)) {
 			return IntersectionType.INSIDE;

@@ -291,21 +291,21 @@ class PathShadow2f {//TODO : clarify documentation
 			int side1, side2;
 			boolean isUp = (shadow_y0<=shadow_y1);
 			if (isUp) {
-				side1 = GeometryUtil.sidePointLine(
+				side1 = GeometryUtil.getPointSideOfLine(
 						shadow_x0, shadow_y0,
 						shadow_x1, shadow_y1,
 						sx0, sy0, false);
-				side2 = GeometryUtil.sidePointLine(
+				side2 = GeometryUtil.getPointSideOfLine(
 						shadow_x0, shadow_y0,
 						shadow_x1, shadow_y1,
 						sx1, sy1, false);
 			}
 			else {
-				side1 = GeometryUtil.sidePointLine(
+				side1 = GeometryUtil.getPointSideOfLine(
 						shadow_x1, shadow_y1,
 						shadow_x0, shadow_y0,
 						sx0, sy0, false);
-				side2 = GeometryUtil.sidePointLine(
+				side2 = GeometryUtil.getPointSideOfLine(
 						shadow_x1, shadow_y1,
 						shadow_x0, shadow_y0,
 						sx1, sy1, false);

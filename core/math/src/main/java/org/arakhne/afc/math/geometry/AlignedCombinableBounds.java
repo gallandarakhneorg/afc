@@ -21,7 +21,6 @@
 
 package org.arakhne.afc.math.geometry;
 
-import org.arakhne.afc.math.geometry.continuous.euclide.EuclidianPoint;
 
 /** This interface representes an aligned bounds which
  * is able to be combined with other bounds.

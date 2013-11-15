@@ -154,12 +154,12 @@ public class Segment2f extends AbstractShape2f<Segment2f> {
 		else {
 			int side1, side2;
 			if (sy1<=sy2) {
-				side1 = GeometryUtil.sidePointLine(sx1, sy1, sx2, sy2, x0, y0, false);
-				side2 = GeometryUtil.sidePointLine(sx1, sy1, sx2, sy2, x1, y1, false);
+				side1 = GeometryUtil.getPointSideOfLine(sx1, sy1, sx2, sy2, x0, y0, false);
+				side2 = GeometryUtil.getPointSideOfLine(sx1, sy1, sx2, sy2, x1, y1, false);
 			}
 			else {
-				side1 = GeometryUtil.sidePointLine(sx2, sy2, sx1, sy1, x0, y0, false);
-				side2 = GeometryUtil.sidePointLine(sx2, sy2, sx1, sy1, x1, y1, false);
+				side1 = GeometryUtil.getPointSideOfLine(sx2, sy2, sx1, sy1, x0, y0, false);
+				side2 = GeometryUtil.getPointSideOfLine(sx2, sy2, sx1, sy1, x1, y1, false);
 			}
 			if (side1>0 || side2>0) {
 				int n1 = computeCrossingsFromPoint(sx1, sy1, x0, y0, x1, y1);

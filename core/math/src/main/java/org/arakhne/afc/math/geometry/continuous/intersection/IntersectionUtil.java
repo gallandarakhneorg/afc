@@ -61,7 +61,7 @@ public final class IntersectionUtil implements MathConstants{
      * @param sphereCenter are the coordinates of the sphere center.
      * @param radius is the radius of the sphere.
      * @param lower coordinates of the lowest point of the box.
-     * @param upper coordinates of the uppest point of the box.
+     * @param upper coordinates of the uppermost point of the box.
      * @return <code>true</code> if intersecting, otherwise <code>false</code>
      */
     public static boolean intersectsHollowSphereHollowAlignedBox(float sphereCenterx, float sphereCentery, float sphereCenterz, float radius,
@@ -155,7 +155,7 @@ public final class IntersectionUtil implements MathConstants{
      * @param sphereCenter are the coordinates of the sphere center.
      * @param radius is the radius of the sphere.
      * @param lower coordinates of the lowest point of the box.
-     * @param upper coordinates of the uppest point of the box.
+     * @param upper coordinates of the uppermost point of the box.
      * @return <code>true</code> if intersecting, otherwise <code>false</code>
      */
     public static boolean intersectsSolidSphereHollowAlignedBox(float sphereCenterx, float sphereCentery, float sphereCenterz, float radius,
@@ -227,7 +227,7 @@ public final class IntersectionUtil implements MathConstants{
      * @param sphereCenter are the coordinates of the sphere center.
      * @param radius is the radius of the sphere.
      * @param lower coordinates of the lowest point of the box.
-     * @param upper coordinates of the uppest point of the box.
+     * @param upper coordinates of the uppermost point of the box.
      * @return <code>true</code> if intersecting, otherwise <code>false</code>
      */
     public static boolean intersectsHollowSphereSolidAlignedBox(float sphereCenterx, float sphereCentery, float sphereCenterz, float radius,
@@ -288,7 +288,7 @@ public final class IntersectionUtil implements MathConstants{
      * @param sphereCenter are the coordinates of the sphere center.
      * @param radius is the radius of the sphere.
      * @param lower coordinates of the lowest point of the box.
-     * @param upper coordinates of the uppest point of the box.
+     * @param upper coordinates of the uppermost point of the box.
      * @return <code>true</code> if intersecting, otherwise <code>false</code>
      */
     public static boolean intersectsSolidSphereSolidAlignedBox(float sphereCenterx, float sphereCentery, float sphereCenterz, float radius,
@@ -345,7 +345,7 @@ public final class IntersectionUtil implements MathConstants{
      * @param circleCenter are the coordinates of the circle center.
      * @param radius is the radius of the circle.
      * @param lower coordinates of the lowest point of the rectangle.
-     * @param upper coordinates of the uppest point of the rectangle.
+     * @param upper coordinates of the uppermost point of the rectangle.
      * @return <code>true</code> if intersecting, otherwise <code>false</code>
      */
     public static boolean intersectsSolidCircleSolidAlignedRectangle(float circleCenterx, float circleCentery, float circleCenterz, float radius,
@@ -391,7 +391,7 @@ public final class IntersectionUtil implements MathConstants{
      * @param x2 the X coordinate of the end point of the
      *           specified line segment
      * @param y2 the Y coordinate of the end point of the
-     *           first specified line segment
+     *           first specified line segments
      * @param x3 the X coordinate of the start point of the
      *           first specified line segment
      * @param y3 the Y coordinate of the start point of the
@@ -400,15 +400,16 @@ public final class IntersectionUtil implements MathConstants{
      *           specified line segment
      * @param y4 the Y coordinate of the end point of the
      *           first specified line segment
+     * @param epsilon the accuracy parameter (a distance here) must be the same unit of measurement as others parameters 
      * @return <code>true</code> if this line segments intersect each 
      * other; <code>false</code> otherwise.
      * @since 3.0
      */
-    public static boolean intersectsSegments(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4) {
-    	return ((GeometryUtil.ccw(x1, y1, x2, y2, x3, y3, false) *
-    			GeometryUtil.ccw(x1, y1, x2, y2, x4, y4, false) <= 0)
-    			&& (GeometryUtil.ccw(x3, y3, x4, y4, x1, y1, false) *
-    					GeometryUtil.ccw(x3, y3, x4, y4, x2, y2, false) <= 0));
+    public static boolean intersectsSegments(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4, float epsilon) {
+    	return ((GeometryUtil.ccw(x1, y1, x2, y2, x3, y3, epsilon) *
+    			GeometryUtil.ccw(x1, y1, x2, y2, x4, y4, epsilon) <= 0)
+    			&& (GeometryUtil.ccw(x3, y3, x4, y4, x1, y1, epsilon) *
+    					GeometryUtil.ccw(x3, y3, x4, y4, x2, y2, epsilon) <= 0));
     }
 
     /**
@@ -424,13 +425,14 @@ public final class IntersectionUtil implements MathConstants{
      * @param y3 the Y coordinate of the start point of the line segment
      * @param x4 the X coordinate of the end point of the line segment
      * @param y4 the Y coordinate of the end point of the line segment
+     * @param epsilon the accuracy parameter (distance) must be the same unit of measurement as others parameters 
      * @return <code>true</code> if this line intersects the line segment,
      * <code>false</code> otherwise.
      * @since 3.0
      */
-    public static boolean intersectsLineSegment(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4) {
-    	return (GeometryUtil.ccw(x1, y1, x2, y2, x3, y3, false) *
-    			GeometryUtil.ccw(x1, y1, x2, y2, x4, y4, false) <= 0);
+    public static boolean intersectsLineSegment(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4, float epsilon) {
+    	return (GeometryUtil.ccw(x1, y1, x2, y2, x3, y3, epsilon) *
+    			GeometryUtil.ccw(x1, y1, x2, y2, x4, y4, epsilon) <= 0);
     }
 
     /**
@@ -448,13 +450,14 @@ public final class IntersectionUtil implements MathConstants{
      * @param y3 the Y coordinate of the start point of the second line
      * @param x4 the X coordinate of the end point of the second line
      * @param y4 the Y coordinate of the end point of the second line
+     * @param epsilon the accuracy parameter (distance) must be the same unit of measurement as others parameters 
      * @return <code>true</code> if this line segments intersect each 
      * other; <code>false</code> otherwise.
      * @since 3.0
      */
-    public static boolean intersectsLines(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4) {
-    	if (GeometryUtil.isParallelLines(x1, y1, x2, y2, x3, y3, x4, y4)) {
-    		return GeometryUtil.isCollinearPoints(x1, y1, x2, y2, x3, y3);
+    public static boolean intersectsLines(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4, float epsilon) {
+    	if (GeometryUtil.isParallelLines(x1, y1, x2, y2, x3, y3, x4, y4, epsilon)) {
+    		return GeometryUtil.isCollinearPoints(x1, y1, x2, y2, x3, y3, epsilon);
     	}
     	return true;
     }
@@ -542,6 +545,7 @@ public final class IntersectionUtil implements MathConstants{
      * @param by the Y coordinate of the second point of the triangle
      * @param cx the X coordinate of the third point of the triangle
      * @param cy the Y coordinate of the third point of the triangle
+     * @param epsilon the accuracy parameter (distance) must be the same unit of measurement as others parameters 
      * @return <code>true</code> if the points is coplanar to the triangle and
      * lies inside it, otherwise <code>false</code>
      * @since 3.0
@@ -550,7 +554,7 @@ public final class IntersectionUtil implements MathConstants{
     		float px, float py, 
     		float ax, float ay,
     		float bx, float by,
-    		float cx, float cy) {
+    		float cx, float cy, float epsilon) {
     	/* The comment code is the trivial trigonometric implementation:
     	float vx1 = x1 - px;
     	float vy1 = y1 - py;
@@ -602,9 +606,9 @@ public final class IntersectionUtil implements MathConstants{
     	float v = (dot00 * dot12 - dot01 * dot02) * invDenom;
 
     	// Check if point is in triangle
-    	return (MathUtil.epsilonCompareTo(u, 0.f) >= 0)
-    			&& (MathUtil.epsilonCompareTo(v, 0.f) >= 0) 
-    		    && (MathUtil.epsilonCompareTo(u + v, 1.f) <= 0);
+    	return (MathUtil.epsilonCompareTo(u, 0.f, epsilon) >= 0)
+    			&& (MathUtil.epsilonCompareTo(v, 0.f, epsilon) >= 0) 
+    		    && (MathUtil.epsilonCompareTo(u + v, 1.f, epsilon) <= 0);
     }
 
     /**
@@ -759,6 +763,7 @@ public final class IntersectionUtil implements MathConstants{
      * @param forceCoplanar is <code>true</code> to force to test
      * if the given point is coplanar to the triangle, <code>false</code>
      * to not consider coplanarity of the point.
+     * @param epsilon the accuracy parameter (distance) must be the same unit of measurement as others parameters 
      * @return <code>true</code> if the points is coplanar - or not,
      * depending on <var>forceCoplanar</var> - to the triangle and
      * lies inside it, otherwise <code>false</code>
@@ -769,7 +774,7 @@ public final class IntersectionUtil implements MathConstants{
     		float ax, float ay, float az,
     		float bx, float by, float bz,
     		float cx, float cy, float cz,
-    		boolean forceCoplanar) {
+    		boolean forceCoplanar, float epsilon) {
 
     	//
     	// Compute vectors        
@@ -809,9 +814,9 @@ public final class IntersectionUtil implements MathConstants{
     	float v = (dot00 * dot12 - dot01 * dot02) * invDenom;
 
     	// Check if point is in triangle
-    	if ((MathUtil.epsilonCompareTo(u, 0.f) >= 0)
-			&& (MathUtil.epsilonCompareTo(v, 0.f) >= 0) 
-		    && (MathUtil.epsilonCompareTo(u + v, 1.f) <= 0)) {
+    	if ((MathUtil.epsilonCompareTo(u, 0.f, epsilon) >= 0)
+			&& (MathUtil.epsilonCompareTo(v, 0.f, epsilon) >= 0) 
+		    && (MathUtil.epsilonCompareTo(u + v, 1.f, epsilon) <= 0)) {
     		if (forceCoplanar) {
     			// Triangle's plane equation:
     			// nx = ay * (bz - cz) + by * (cz - az) + cy * (az - bz)
@@ -826,7 +831,7 @@ public final class IntersectionUtil implements MathConstants{
     			dot11 = - (dot00 * ax + dot01 * ay + dot02 * az);
     			dot12 = dot00 * px + dot01 * py + dot02 * pz + dot11;
     			
-    			return MathUtil.isEpsilonZero(dot12);
+    			return MathUtil.isEpsilonZero(dot12,0.f);
     		}
     		return true;
     	}
@@ -916,6 +921,7 @@ public final class IntersectionUtil implements MathConstants{
      * @param forceCollinear is <code>true</code> to force to test
      * if the given point is collinear to the segment, <code>false</code>
      * to not consider collinearity of the point.
+     * @param epsilon the accuracy parameter (distance) must be the same unit of measurement as others parameters 
      * @return <code>true</code> if the points is on segment,
      * otherwise <code>false</code>
      * @since 3.0
@@ -924,7 +930,7 @@ public final class IntersectionUtil implements MathConstants{
     		float px, float py, float pz,
     		float ax, float ay, float az,
     		float bx, float by, float bz,
-    		boolean forceCollinear) {
+    		boolean forceCollinear, float epsilon) {
     	float ratio = GeometryUtil.getPointProjectionFactorOnSegment(px, py, pz, ax, ay, az, bx, by, bz); //Todo : create this
 		
 		if (ratio>=0. && ratio<=1.) {
@@ -932,7 +938,7 @@ public final class IntersectionUtil implements MathConstants{
     			return GeometryUtil.isCollinearPoints(
     					ax, ay, az,
     		    		bx, by, bz,
-    					px, py, pz);
+    					px, py, pz, epsilon);
     		}
     		return true;
 		}
@@ -955,6 +961,7 @@ public final class IntersectionUtil implements MathConstants{
      * @param ay the Y coordinate of the first point of the segment
      * @param bx the X coordinate of the second point of the segment
      * @param by the Y coordinate of the second point of the segment
+     * @param epsilon the accuracy parameter (distance) must be the same unit of measurement as others parameters 
      * @return <code>true</code> if the points is on segment,
      * otherwise <code>false</code>
      * @since 3.0
@@ -962,8 +969,8 @@ public final class IntersectionUtil implements MathConstants{
     public static boolean intersectsPointSegment(
     		float px, float py,
     		float ax, float ay,
-    		float bx, float by) {
-    	return GeometryUtil.ccw(ax, ay, bx, by, px, py, true)==0;
+    		float bx, float by, float epsilon) {
+    	return GeometryUtil.ccw(ax, ay, bx, by, px, py, epsilon)==0;
     }
 
     /**
@@ -996,12 +1003,12 @@ public final class IntersectionUtil implements MathConstants{
      *
      * @param lx1 the X coordinate of the lowest point of the first rectangle.
      * @param ly1 the Y coordinate of the lowest point of the first rectangle.
-     * @param ux1 the X coordinate of the uppest point of the first rectangle.
-     * @param uy1 the Y coordinate of the uppest point of the first rectangle.
+     * @param ux1 the X coordinate of the uppermost point of the first rectangle.
+     * @param uy1 the Y coordinate of the uppermost point of the first rectangle.
      * @param lx2 the X coordinate of the lowest point of the second rectangle.
      * @param ly2 the Y coordinate of the lowest point of the second rectangle.
-     * @param ux2 the X coordinate of the uppest point of the second rectangle.
-     * @param uy2 the Y coordinate of the uppest point of the second rectangle.
+     * @param ux2 the X coordinate of the uppermost point of the second rectangle.
+     * @param uy2 the Y coordinate of the uppermost point of the second rectangle.
      * @return <code>true</code> if the two 2D rectangles intersect each 
      * other; <code>false</code> otherwise.
      */
@@ -1031,9 +1038,9 @@ public final class IntersectionUtil implements MathConstants{
      * or equal to <var>uy1</var>, and so on.
      *
      * @param lower1 coordinates of the lowest point of the first box.
-     * @param upper1 coordinates of the uppest point of the first box.
+     * @param upper1 coordinates of the uppermost point of the first box.
      * @param lower2 coordinates of the lowest point of the second box.
-     * @param upper2 coordinates of the uppest point of the second box.
+     * @param upper2 coordinates of the uppermost point of the second box.
      * @return <code>true</code> if the two 3D boxes intersect each 
      * other; <code>false</code> otherwise.
      */
@@ -1071,9 +1078,9 @@ public final class IntersectionUtil implements MathConstants{
      * or equal to <var>uy1</var>.
      *
      * @param lower1 coordinates of the lowest point of the first rectangle.
-     * @param upper1 coordinates of the uppest point of the first rectangle.
+     * @param upper1 coordinates of the uppermost point of the first rectangle.
      * @param lower2 coordinates of the lowest point of the second rectangle.
-     * @param upper2 coordinates of the uppest point of the second rectangle.
+     * @param upper2 coordinates of the uppermost point of the second rectangle.
      * @return <code>true</code> if the two 2D rectangles intersect each 
      * other; <code>false</code> otherwise.
      */
@@ -1103,6 +1110,7 @@ public final class IntersectionUtil implements MathConstants{
      * @param boxCenter is the center point of the oriented box.
      * @param boxAxis are the unit vectors of the oriented box axis.
      * @param boxExtent are the sizes of the oriented box.
+     * @param epsilon the accuracy parameter (distance) must be the same unit of measurement as others parameters 
 	 * @return <code>true</code> if intersecting, otherwise <code>false</code>
      */
     public static boolean intersectsSolidSphereOrientedBox(float sphereCenterx, float sphereCentery, float sphereCenterz, float sphereRadius,
@@ -1110,7 +1118,7 @@ public final class IntersectionUtil implements MathConstants{
 			 											   float boxAxis1x, float boxAxis1y, float boxAxis1z,
 			 											   float boxAxis2x, float boxAxis2y, float boxAxis2z,
 			 											   float boxAxis3x, float boxAxis3y, float boxAxis3z,
-			 											   float boxExtentAxis1, float boxExtentAxis2, float boxExtentAxis3) {
+			 											   float boxExtentAxis1, float boxExtentAxis2, float boxExtentAxis3, float epsilon) {
 		// Find points on OBB closest and farest to sphere center
     	Point3f closest = new Point3f();
         Point3f farest = new Point3f();
@@ -1129,7 +1137,7 @@ public final class IntersectionUtil implements MathConstants{
 		float squaredRadius = sphereRadius * sphereRadius;
 		
 		if (GeometryUtil.distanceSquaredPointPoint(sphereCenterx, sphereCentery, sphereCenterz,
-													 closest.getX(), closest.getY(), closest.getZ())>squaredRadius+MathConstants.EPSILON) return false;
+													 closest.getX(), closest.getY(), closest.getZ())>squaredRadius+epsilon) return false;
 		
 		return true;
     }
@@ -1141,18 +1149,19 @@ public final class IntersectionUtil implements MathConstants{
     * @param obrCenter is the center point of the OBR.
     * @param obrAxis are the unit vectors of the OBR axis.
     * @param obrExtent are the sizes of the OBR.
+    * @param epsilon the accuracy parameter (distance) must be the same unit of measurement as others parameters 
 	* @return <code>true</code> if intersecting, otherwise <code>false</code>
     */
    public static boolean intersectsSolidCircleOrientedRectangle(float circleCenterx, float circleCentery, float circleRadius,
 															    float obrCenterx, float obrCentery,
 																float obrAxis1x, float obrAxis1y,
 																float obrAxis2x, float obrAxis2y,
-																float obrExtentAxis1, float obrExtentAxis2) {
+																float obrExtentAxis1, float obrExtentAxis2, float epsilon) {
 		// Find points on OBR closest and farest to sphere center
 		Point2f closest = new Point2f();
 		Point2f farest = new Point2f();
 	
-		GeometryUtil.computeClosestFarestOBRPoints( obrCenterx,  obrCentery,
+		GeometryUtil.closestFarthestPointsOBRPoint( obrCenterx,  obrCentery,
 											 	obrAxis1x,  obrAxis1y,
 												obrAxis2x,  obrAxis2y,
 												obrExtentAxis1,  obrExtentAxis2,
@@ -1164,7 +1173,7 @@ public final class IntersectionUtil implements MathConstants{
 		float squaredRadius = circleRadius * circleRadius;
 		
 		if (GeometryUtil.distanceSquaredPointPoint(obrCenterx, obrCentery,
-				closest.getX(), closest.getY())>squaredRadius+MathConstants.EPSILON) return false;
+				closest.getX(), closest.getY())>squaredRadius+epsilon) return false;
 		
 		return true;
    }
@@ -1440,7 +1449,7 @@ public final class IntersectionUtil implements MathConstants{
      * {@link #intersectsOrientedBoxes(float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float)}
      *
      * @param lower coordinates of the lowest point of the first AABB box.
-     * @param upper coordinates of the uppest point of the first AABB box.
+     * @param upper coordinates of the uppermost point of the first AABB box.
      * @param center is the center point of the second oriented box.
      * @param axis are the unit vectors of the second oriented box axis.
      * @param extent are the sizes of the second oriented box.
@@ -1499,7 +1508,7 @@ public final class IntersectionUtil implements MathConstants{
      * {@link #intersectsOrientedBoxes(float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float)}
      *
      * @param lower coordinates of the lowest point of the first MBR.
-     * @param upper coordinates of the uppest point of the first MBR.
+     * @param upper coordinates of the uppermost point of the first MBR.
      * @param center is the center point of the second OBR.
      * @param axis are the unit vectors of the second OBR axis.
      * @param extent are the sizes of the second OBR.
@@ -1580,13 +1589,14 @@ public final class IntersectionUtil implements MathConstants{
 	 * @param capsule1A - capsule medial line segment start point
 	 * @param capsule1B - capsule medial line segment end point
 	 * @param capsule1Radius - capsule radius
+	 * @param epsilon the accuracy parameter (distance) must be the same unit of measurement as others parameters 
 	 * @return <code>true</code> if intersecting, otherwise <code>false</code>
 	 */
 	public static boolean intersectsOrientedBoxCapsule(
 				float centerx,float  centery,float  centerz,
 				float axis1x, float axis1y, float axis1z, float axis2x, float axis2y, float axis2z,	float axis3x, float axis3y, float axis3z,
 				float extentAxis1, float extentAxis2, float extentAxis3,
-				float capsule1Ax, float capsule1Ay, float capsule1Az, float capsule1Bx, float capsule1By, float capsule1Bz, float capsule1Radius) {
+				float capsule1Ax, float capsule1Ay, float capsule1Az, float capsule1Bx, float capsule1By, float capsule1Bz, float capsule1Radius, float epsilon) {
 
 		Point3f closestFromA = new Point3f();
 		Point3f closestFromB = new Point3f();
@@ -1600,7 +1610,7 @@ public final class IntersectionUtil implements MathConstants{
 				capsule1Bx, capsule1By, capsule1Bz,
 				closestFromB,null);
 		
-		float distance = GeometryUtil.distanceSegmentSegment(capsule1Ax, capsule1Ay, capsule1Bx, capsule1By, closestFromA.getX(), closestFromA.getY(), closestFromB.getX(), closestFromB.getY());
+		float distance = GeometryUtil.distanceSegmentSegment(capsule1Ax, capsule1Ay, capsule1Bx, capsule1By, closestFromA.getX(), closestFromA.getY(), closestFromB.getX(), closestFromB.getY(), epsilon);
 		
 		return (distance <= capsule1Radius);
 	}
@@ -1971,17 +1981,18 @@ public final class IntersectionUtil implements MathConstants{
 	 * @param y3 is the first point of the line.
 	 * @param x4 is the second point of the line.
 	 * @param y4 is the second point of the line.
+	 * @param epsilon the accuracy parameter (distance) must be the same unit of measurement as others parameters 
 	 * @return <code>true</code> if the two shapes are intersecting; otherwise
 	 * <code>false</code>
 	 */
-	public static boolean intersectsRectangleLine(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4) {
+	public static boolean intersectsRectangleLine(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4, float epsilon) {
 		int a, b;
-		a = GeometryUtil.ccw(x3, y3, x4, y4, x1, y1, false);
-		b = GeometryUtil.ccw(x3, y3, x4, y4, x2, y1, false);
+		a = GeometryUtil.ccw(x3, y3, x4, y4, x1, y1, epsilon);
+		b = GeometryUtil.ccw(x3, y3, x4, y4, x2, y1, epsilon);
 		if (a!=b && b!=0) return true;
-		b = GeometryUtil.ccw(x3, y3, x4, y4, x2, y2, false);
+		b = GeometryUtil.ccw(x3, y3, x4, y4, x2, y2, epsilon);
 		if (a!=b && b!=0) return true;
-		b = GeometryUtil.ccw(x3, y3, x4, y4, x1, y2, false);
+		b = GeometryUtil.ccw(x3, y3, x4, y4, x1, y2, epsilon);
 		return (a!=b && b!=0);
 	}
 
@@ -2082,32 +2093,34 @@ public final class IntersectionUtil implements MathConstants{
 	 * @param y3 is the first point of the second line.
 	 * @param x4 is the second point of the second line.
 	 * @param y4 is the second point of the second line.
+	 * @param epsilon the accuracy parameter (distance) must be the same unit of measurement as others parameters 
 	 * @return <code>true</code> if the two shapes are intersecting; otherwise
 	 * <code>false</code>
 	 */
-	public static boolean intersectsLineLine(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4) {
-		if (GeometryUtil.isParallelLines(x1, y1, x2, y2, x3, y3, x4, y4)) {
-			return GeometryUtil.isCollinearPoints(x1, y1, x2, y2, x3, y3);
+	public static boolean intersectsLineLine(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4, float epsilon) {
+		if (GeometryUtil.isParallelLines(x1, y1, x2, y2, x3, y3, x4, y4, epsilon)) {
+			return GeometryUtil.isCollinearPoints(x1, y1, x2, y2, x3, y3, epsilon);
 		}
 		return true;
 	}
 
 	/** Replies if a segment and a line are intersecting.
 	 * 
-	 * @param x1 is the first point of the first segment.
-	 * @param y1 is the first point of the first segment.
-	 * @param x2 is the second point of the first segment.
-	 * @param y2 is the second point of the first segment.
-	 * @param x3 is the first point of the second line.
-	 * @param y3 is the first point of the second line.
-	 * @param x4 is the second point of the second line.
-	 * @param y4 is the second point of the second line.
+	 * @param x1 is the first point of the segment.
+	 * @param y1 is the first point of the segment.
+	 * @param x2 is the second point of the segment.
+	 * @param y2 is the second point of the segment.
+	 * @param x3 is the first point of the line.
+	 * @param y3 is the first point of the line.
+	 * @param x4 is the second point of the line.
+	 * @param y4 is the second point of the line.
+	 * @param epsilon the accuracy parameter (distance) must be the same unit of measurement as others parameters 
 	 * @return <code>true</code> if the two shapes are intersecting; otherwise
 	 * <code>false</code>
 	 */
-	public static boolean intersectsSegmentLine(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4) {
-		return (GeometryUtil.sidePointLine(x3, y3, x4, y4, x1, y1, true) *
-				GeometryUtil.sidePointLine(x3, y3, x4, y4, x2, y2, true)) <= 0;
+	public static boolean intersectsSegmentLine(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4, float epsilon) {
+		return (GeometryUtil.getPointSideOfLine(x3, y3, x4, y4, x1, y1, epsilon) *
+				GeometryUtil.getPointSideOfLine(x3, y3, x4, y4, x2, y2, epsilon)) <= 0;
 	}
 
 	private static boolean intersectsSSWE(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4) {
