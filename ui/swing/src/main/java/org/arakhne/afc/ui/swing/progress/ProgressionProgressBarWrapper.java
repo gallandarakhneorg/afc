@@ -22,7 +22,6 @@
  */
 package org.arakhne.afc.ui.swing.progress;
 
-import javax.swing.BoundedRangeModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -46,7 +45,7 @@ import org.arakhne.afc.progress.ProgressionListener;
  * @mavenartifactid $ArtifactId$
  */
 final class ProgressionProgressBarWrapper
-implements BoundedRangeModel {
+implements ProgressionWrapper {
 
 	private final Progression model;
 	
@@ -57,10 +56,7 @@ implements BoundedRangeModel {
 		this.model = model;
 	}
 
-	/** Replies the wrapped model.
-	 * 
-	 * @return the wrapped model.
-	 */
+	@Override
 	public Progression getWrappedModel() {
 		return this.model;
 	}
