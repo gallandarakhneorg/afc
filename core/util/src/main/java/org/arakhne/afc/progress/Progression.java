@@ -384,5 +384,53 @@ public interface Progression {
 	 * @return the depth of the task.
 	 */
 	public int getTaskDepth();
+	
+	/** Increment the current value by the given amount.
+	 * <p>
+	 * This function is equivalent to:
+	 * <pre><code>
+	 * this.setValue(this.getValue()+amount);
+	 * </code></pre>
+	 * 
+	 * @param amount is the amount to add to the current value.
+	 * @since 11.0
+	 */
+	public void increment(int amount);
+
+	/** Increment the current value by the given amount.
+	 * <p>
+	 * This function is equivalent to:
+	 * <pre><code>
+	 * this.setValue(this.getValue()+amount, comment);
+	 * </code></pre>
+	 * 
+	 * @param amount is the amount to add to the current value.
+	 * @param comment is the comment to display.
+	 * @since 11.0
+	 */
+	public void increment(int amount, String comment);
+
+	/** Increment the current value by 1.
+	 * <p>
+	 * This function is equivalent to:
+	 * <pre><code>
+	 * this.setValue(this.getValue()+1);
+	 * </code></pre>
+	 * 
+	 * @since 11.0
+	 */
+	public void increment();
+
+	/** Increment the current value by 1.
+	 * <p>
+	 * This function is equivalent to:
+	 * <pre><code>
+	 * this.setValue(this.getValue()+1, comment);
+	 * </code></pre>
+	 * 
+	 * @param comment is the comment to display.
+	 * @since 11.0
+	 */
+	public void increment(String comment);
 
 }
