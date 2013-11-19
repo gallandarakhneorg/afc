@@ -65,7 +65,7 @@ public abstract class AbstractRectangularShape2i<T extends Shape2i> extends Abst
 	 */
 	@Override
 	public Rectangle2i toBoundingBox() {
-		return new Rectangle2i(getMinX(), getMinY(), getMaxX(), getMaxY());
+		return new Rectangle2i(this.minx, this.miny, this.maxx-this.minx, this.maxy-this.miny);
 	}
 	
 	/** {@inheritDoc}

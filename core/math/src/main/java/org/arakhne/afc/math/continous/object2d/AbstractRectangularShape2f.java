@@ -84,7 +84,7 @@ extends AbstractShape2f<T> {
 	 */
 	@Override
 	public Rectangle2f toBoundingBox() {
-		return new Rectangle2f(getMinX(), getMinY(), getMaxX(), getMaxY());
+		return new Rectangle2f(this.minx, this.miny, this.maxx-this.minx, this.maxy-this.miny);
 	}
 	
 	/** {@inheritDoc}
