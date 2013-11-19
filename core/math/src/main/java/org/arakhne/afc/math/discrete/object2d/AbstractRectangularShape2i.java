@@ -72,7 +72,7 @@ public abstract class AbstractRectangularShape2i<T extends Shape2i> extends Abst
 	 */
 	@Override
 	public void toBoundingBox(Rectangle2i box) {
-		box.setFromCorners(this.minx, this.minx, this.maxx, this.maxy);
+		box.setFromCorners(this.minx, this.miny, this.maxx, this.maxy);
 	}
 	
 	@Override

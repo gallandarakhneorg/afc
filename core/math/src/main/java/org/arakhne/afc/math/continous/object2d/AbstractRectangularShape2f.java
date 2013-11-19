@@ -91,7 +91,7 @@ extends AbstractShape2f<T> {
 	 */
 	@Override
 	public void toBoundingBox(Rectangle2f box) {
-		box.setFromCorners(this.minx, this.minx, this.maxx, this.maxy);
+		box.setFromCorners(this.minx, this.miny, this.maxx, this.maxy);
 	}
 
 
