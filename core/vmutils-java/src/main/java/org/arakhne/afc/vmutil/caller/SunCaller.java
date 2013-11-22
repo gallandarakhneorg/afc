@@ -33,8 +33,10 @@ import sun.reflect.Reflection;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated the background API will be removed from JDK 1.7.
  */
 @SuppressWarnings("restriction")
+@Deprecated
 public class SunCaller extends StackTraceCaller {
 	
 	/**

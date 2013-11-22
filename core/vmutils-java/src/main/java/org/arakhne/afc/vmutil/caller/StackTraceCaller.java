@@ -40,7 +40,9 @@ public class StackTraceCaller implements Caller {
      *
      * @param name the class name.
      * @return the class or {@code null}.
+     * @deprecated No replacement.
      */
+	@Deprecated
 	public static Class<?> loadClass(String name) {
 		try {
 			return ClassLoaderFinder.findClassLoader().loadClass(name);

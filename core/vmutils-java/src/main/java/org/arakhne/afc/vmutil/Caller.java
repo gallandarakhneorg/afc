@@ -24,7 +24,6 @@ package org.arakhne.afc.vmutil;
 import java.lang.reflect.Method;
 
 import org.arakhne.afc.vmutil.caller.StackTraceCaller;
-import org.arakhne.afc.vmutil.caller.SunCaller;
 
 /**
  * This utility class provides a way to determine which class
@@ -49,12 +48,7 @@ public class Caller {
 	public static org.arakhne.afc.vmutil.caller.Caller getCaller() {
 		synchronized(Caller.class) {
 			if (caller==null) {
-				if (StackTraceCaller.loadClass("sun.reflect.Reflection")!=null) { //$NON-NLS-1$
-					caller = new SunCaller();
-				}
-				else {
-					caller = new StackTraceCaller();
-				}
+				caller = new StackTraceCaller();
 			}
 			return caller;
 		}
