@@ -155,7 +155,7 @@ public class TriangularStochasticLaw extends StochasticLaw {
 	/** {@inheritDoc}
 	 */
 	@Override
-	public MathFunctionRange[] getBounds() {
+	public MathFunctionRange[] getRange() {
 		return MathFunctionRange.createSet(this.minX, this.maxX);
 	}
 	

@@ -114,7 +114,7 @@ public class GaussianStochasticLaw extends StochasticLaw {
 	/** {@inheritDoc}
 	 */
 	@Override
-	public MathFunctionRange[] getBounds() {
+	public MathFunctionRange[] getRange() {
 		return MathFunctionRange.createInfinitySet();
 	}
 	

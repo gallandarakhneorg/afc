@@ -116,7 +116,7 @@ public class LogNormalStochasticLaw extends StochasticLaw {
 	/** {@inheritDoc}
 	 */
 	@Override
-	public MathFunctionRange[] getBounds() {
+	public MathFunctionRange[] getRange() {
 		return new MathFunctionRange[] {new MathFunctionRange(0, false, Float.POSITIVE_INFINITY, false) };
 	}
 	

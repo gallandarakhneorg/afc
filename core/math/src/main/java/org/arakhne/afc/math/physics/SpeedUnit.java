@@ -21,7 +21,7 @@ package org.arakhne.afc.math.physics;
 
 import java.util.concurrent.TimeUnit;
 
-import org.arakhne.vmutil.locale.Locale;
+import org.arakhne.afc.vmutil.locale.Locale;
 
 /**
  * A <tt>SpeedUnit</tt> represents speed at a given unit of

@@ -60,7 +60,7 @@ public class ConstantStochasticLaw extends StochasticLaw {
 	}
 
 	@Override
-	public MathFunctionRange[] getBounds() {
+	public MathFunctionRange[] getRange() {
 		return new MathFunctionRange[] {
 				new MathFunctionRange(this.value)
 		};

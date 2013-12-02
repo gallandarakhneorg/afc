@@ -32,7 +32,7 @@ import org.arakhne.afc.math.graph.GraphPath;
 import org.arakhne.afc.math.graph.GraphPoint;
 import org.arakhne.afc.math.graph.GraphPoint.GraphPointConnection;
 import org.arakhne.afc.math.graph.GraphSegment;
-import org.arakhne.afc.util.CollectionUtil;
+import org.arakhne.afc.util.ListUtil;
 
 
 /** This class provides an implementation of the 
@@ -505,7 +505,7 @@ public class AStar<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<ST,PT
 	
 						// Reopen node if better cost
 						idx = (isClosedNodeReopeningEnabled())
-								? CollectionUtil.indexOf(cComparator, reachableCandidate, closeList)
+								? ListUtil.indexOf(closeList, cComparator, reachableCandidate)
 								: -1;
 						if (idx>=0) {
 							reachedCandidate = closeList.get(idx);
@@ -516,9 +516,11 @@ public class AStar<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<ST,PT
 										g,
 										h,
 										segment); 
-								CollectionUtil.add(oComparatorWithoutRef,
+								ListUtil.add(
+										openList,
+										oComparatorWithoutRef,
 										nn,
-										openList);
+										true, false);
 								fireNodeOpened(nn, openList);
 							}
 						}
@@ -534,9 +536,10 @@ public class AStar<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<ST,PT
 											g,
 											h,
 											segment);
-									CollectionUtil.add(oComparatorWithoutRef,
+									ListUtil.add(openList,
+											oComparatorWithoutRef,
 											nn,
-											openList);
+											true, false);
 									fireNodeReopened(nn, openList);
 								}
 							}
@@ -547,9 +550,10 @@ public class AStar<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<ST,PT
 										g,
 										h,
 										segment);
-								CollectionUtil.add(oComparatorWithoutRef,
+								ListUtil.add(openList,
+										oComparatorWithoutRef,
 										nn,
-										openList);
+										true, false);
 								fireNodeOpened(nn, openList);
 							}
 						}
@@ -558,7 +562,7 @@ public class AStar<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<ST,PT
 			}
 				
 			// Refresh the close list
-			idx = CollectionUtil.add(cComparator, ocandidate, closeList, false, true);
+			idx = ListUtil.add(closeList, cComparator, ocandidate, false, true);
 			fireNodeClosed(ocandidate, closeList);
 			assert(idx>=0);
 		}
@@ -582,7 +586,7 @@ public class AStar<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<ST,PT
 		CloseComparator<ST,PT> cComparator = new CloseComparator<ST,PT>();
 
 		node = newAStarNode(endPoint, Float.NaN, Float.NaN, null);
-		idx = CollectionUtil.indexOf(cComparator, node, closeList);
+		idx = ListUtil.indexOf(closeList, cComparator, node);
 		
 		if (idx>=0) {
 			node = closeList.remove(idx);
@@ -594,7 +598,7 @@ public class AStar<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<ST,PT
 				do {
 					point = segment.getOtherSidePoint(point);
 					node = newAStarNode(point, Float.NaN, Float.NaN, null);
-					idx = CollectionUtil.indexOf(cComparator, node, closeList);
+					idx = ListUtil.indexOf(closeList, cComparator, node);
 					if (idx>=0) {
 						node = closeList.remove(idx);
 						segment = node.getArrivalConnection();

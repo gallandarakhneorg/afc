@@ -20,7 +20,7 @@
  */
 package org.arakhne.afc.math.physics.kinematic.angular;
 
-import org.arakhne.afc.math.geometry.continuous.object4d.AxisAngle4f;
+import org.arakhne.afc.math.geometry3d.continuous.Quaternion;
 import org.arakhne.afc.math.physics.AngularUnit;
 
 /**
@@ -65,7 +65,7 @@ public interface AngularInstantVelocityKinematic {
 	 * 
 	 * @return the velocity of the object. 
 	 */
-	public AxisAngle4f getAngularVelocity3D();
+	public Quaternion getAngularVelocity3D();
 	
 	/** Replies the instant velocity of the object.
 	 * The velocity is the motion vector with a length

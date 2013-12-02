@@ -27,7 +27,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.arakhne.afc.math.graph.GraphPoint;
-import org.arakhne.util.ref.WeakArrayList;
+import org.arakhne.afc.references.WeakArrayList;
 
 /** This class provides a simple implementation of a graph's point
  * for a {@link SGraph}.

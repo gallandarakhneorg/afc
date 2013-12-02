@@ -19,10 +19,18 @@
  */
 package org.arakhne.afc.math.geometry;
 
+import java.util.Arrays;
+
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
-import org.arakhne.afc.math.geometry.continuous.object2d.Point2f;
-import org.arakhne.afc.math.geometry.continuous.object3d.Point3f;
+import org.arakhne.afc.math.Matrix2f;
+import org.arakhne.afc.math.Matrix3f;
+import org.arakhne.afc.math.geometry2d.Point2D;
+import org.arakhne.afc.math.geometry2d.continuous.Point2f;
+import org.arakhne.afc.math.geometry2d.continuous.Vector2f;
+import org.arakhne.afc.math.geometry3d.Point3D;
+import org.arakhne.afc.math.geometry3d.continuous.Point3f;
+import org.arakhne.afc.math.geometry3d.continuous.Vector3f;
 
 /** Geometric utilities.
  * 
@@ -52,7 +60,10 @@ public final class GeometryUtil implements MathConstants{
 	 */
 	public static final float distancePointSegment(float px, float py, float x1, float y1, float x2, float y2, Point2D pts) {
 		float r_denomenator = (x2-x1)*(x2-x1) + (y2-y1)*(y2-y1);
-		if (r_denomenator==0.) return distancePointPoint(px, py, x1, y1);
+		if (r_denomenator==0.) {
+			if (pts!=null) pts.set(x1, y1);
+			return distancePointPoint(px, py, x1, y1);
+		}
 		float r_numerator = (px-x1)*(x2-x1) + (py-y1)*(y2-y1);
 		float ratio = r_numerator / r_denomenator;
 	
@@ -67,8 +78,8 @@ public final class GeometryUtil implements MathConstants{
 		}
 	
 		if (pts!=null) pts.set(
-				ratio * (x2-x1),
-				ratio * (y2-y1));
+				x1 + ratio * (x2-x1),
+				y1 + ratio * (y2-y1));
 	
 		float s =  ((y1-py)*(x2-x1)-(x1-px)*(y2-y1) ) / r_denomenator;
 		return (float)(Math.abs(s) * Math.sqrt(r_denomenator));
@@ -194,7 +205,7 @@ public final class GeometryUtil implements MathConstants{
 	 * @param y2 vertical position of the second point of the line.
 	 * @return the distance between the point and the line.
 	 * @see #distanceSquaredPointLine(float, float, float, float, float, float)
-	 * @see #distanceRelativeLinePoint(float, float, float, float, float, float)
+	 * @see #distanceRelativePointLine(float, float, float, float, float, float)
 	 */
 	public static final float distancePointLine(float px, float py, float x1, float y1, float x2, float y2) {
 		float r_denomenator = (x2-x1)*(x2-x1) + (y2-y1)*(y2-y1);
@@ -381,42 +392,54 @@ public final class GeometryUtil implements MathConstants{
 	 *            is the X coordinate of the second point of the second segment.
 	 * @param y4
 	 *            is the Y coordinate of the second point of the second segment.
-	 * @return the intersection point or <code>null</code> if none.
+	 * @param intersection TODO
 	 */
-	public static Point2D getIntersectionPointSegmentSegment(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4) {
+	public static void getIntersectionPointSegmentSegment(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4, Point2D intersection) {
 		float m = getIntersectionFactorSegmentSegment(x1, y1, x2, y2, x3, y3, x4, y4);
-		if (Float.isNaN(m))
-			return null;
-		return new Point2f(x1 + m * (x2 - x1), y1 + m * (y2 - y1));
+		if (Float.isNaN(m)){
+			intersection = null;
+			return;
+		}
+			
+		intersection.set(x1 + m * (x2 - x1), y1 + m * (y2 - y1));
+		return;
 	}
 
 	/** Compute the intersection of two lines specified
 	 * by the specified points and vectors.
-	 * 
+	 * @param intersection TODO
 	 * @param p1 is a point of the first line.
 	 * @param v1 is the direction of the first line.
 	 * @param p2 is a point of the second line.
 	 * @param v2 is the direction of the second line.
-	 * @return the intersection point or <code>null</code> if there is no intersection.
 	 */
-	public static Point2D getIntersectionPointLineLine(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4){
+	public static void getIntersectionPointLineLine(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4, Point2D intersection){
 		
-		float denom = (y4-y3)*(x2-x1) - (x4-x3)*(y2-y1);
-		if (denom==0.) return null;
-		float ua = ((x4-x3)*(y1-y3) - (y4-y3)*(x1-x3));
-		float ub = ((x2-x1)*(y1-y3) - (y2-y1)*(x1-x3));
-		if (ua==ub) return null;
-		ua = ua / denom;
-		return new Point2f(
-				x1 + ua * (x2 - x1),
-				y1 + ua * (y2 - y1));
+		if(intersection != null){
+			float denom = (x1-x2)*(y3-y4) - (y1-y2)*(x3-x4);
+			if (denom==0.){
+				intersection = null;
+				return;//if colinear
+			}
+			float v1 = (x1*y2-y1*x2);
+			float v2 = (x3*y4-y3*x4);
+			
+			intersection.set(
+					(v1*(x3-x4) - (x1-x2)*v2) / denom,
+					(v1*(y3-y4) - (y1-y2)*v2) / denom);
+		}
+		return;
 	}
 
 	/**
 	 * Replies the relative distance from the given point to the given line.
 	 * The replied distance may be negative, depending on which side of 
-	 * the line the point is.
-	 * 
+	 * the line the point is. The sign of the result depends on the order of the points of the line:
+	 * <pre><code>distanceRelativePointLine(x, y, x1, y1, x2, y2) == -distanceRelativePointLine(x, y, x2, y2, x1, y1)</code></pre>
+	 * @param px
+	 *            the X coordinate of the specified point to be compared with the specified line segment
+	 * @param py
+	 *            the Y coordinate of the specified point to be compared with the specified line segment
 	 * @param x1
 	 *            the X coordinate of the start point of the specified line segment
 	 * @param y1
@@ -425,18 +448,15 @@ public final class GeometryUtil implements MathConstants{
 	 *            the X coordinate of the end point of the specified line segment
 	 * @param y2
 	 *            the Y coordinate of the end point of the specified line segment
-	 * @param px
-	 *            the X coordinate of the specified point to be compared with the specified line segment
-	 * @param py
-	 *            the Y coordinate of the specified point to be compared with the specified line segment
+	 * 
 	 * @return the positive or negative distance from the point to the line
 	 * @see GeometryUtil#ccw(float, float, float, float, float, float, boolean)
 	 * @see #getPointSideOfLine(float, float, float, float, float, float, boolean)
 	 * @see #distancePointLine(float, float, float, float, float, float)
 	 */
-	public static float distanceRelativeLinePoint(float x1, float y1, float x2, float y2, float px, float py) {
+	public static float distanceRelativePointLine(float px, float py, float x1, float y1, float x2, float y2) {
 		float r_denomenator = (x2-x1)*(x2-x1) + (y2-y1)*(y2-y1);
-		if (r_denomenator==0.) return distancePointPoint(px, py, x1, y1);
+		if (r_denomenator==0f) return distancePointPoint(px, py, x1, y1);
 		float s = ((y1-py)*(x2-x1)-(x1-px)*(y2-y1) ) / r_denomenator;
 		return (float)(s * Math.sqrt(r_denomenator));
 	}
@@ -465,6 +485,8 @@ public final class GeometryUtil implements MathConstants{
 	 * outside on the side of the second segment point.
 	 */
 	public static float getPointProjectionFactorOnLine(float px, float py, float s1x, float s1y, float s2x, float s2y) {
+		assert(s2x!=s1x || s2y!=s1y);
+		
 		float r_numerator = (px-s1x)*(s2x-s1x) + (py-s1y)*(s2y-s1y);
 		float r_denomenator = (s2x-s1x)*(s2x-s1x) + (s2y-s1y)*(s2y-s1y);
 		return r_numerator / r_denomenator;
@@ -535,12 +557,10 @@ public final class GeometryUtil implements MathConstants{
 	 */
 	public static boolean isInsidePointEllipse(float px, float py, float ellx, float elly, float ellw, float ellh) {
 		// Copied from AWT Ellipse2D
-	
+		assert(ellw >= 0f);
+		assert(ellh >= 0f);
 		// Normalize the coordinates compared to the ellipse
 		// having a center at 0,0 and a radius of 0.5.
-		if (ellw <= 0f || ellh <= 0f) {
-			return false;
-		}
 		float normx = (px - ellx) / ellw - 0.5f;
 		float normy = (py - elly) / ellh - 0.5f;
 		return (normx * normx + normy * normy) < 0.25f;
@@ -575,23 +595,37 @@ public final class GeometryUtil implements MathConstants{
 	 * @param returnNullWhenInside indicates if a <code>null</code> value
 	 * may be returned when the point is inside the ellipse, if
 	 * <code>true</code>; or a point all the time if <code>false</code>.
-	 * @return the closest point in the ellipse
-	 * @see #closestPointPointShallowEllipse(float, float, float, float, float, float)
+	 * @param closest TODO
+	 * @see #closestPointPointShallowEllipse(float, float, float, float, float, float, Point2D)
 	 */
-	public static Point2D closestPointPointSolidEllipse(float px, float py, float ex, float ey, float ew, float eh, boolean returnNullWhenInside) {
+	public static void closestPointPointSolidEllipse(float px, float py, float ex, float ey, float ew, float eh, boolean returnNullWhenInside, Point2D closest) {
+		
+		assert(closest != null);
+		assert(ew>=0f);
+		assert(eh>=0f);
+		
 		float x, y;
-		if (ew<=0f || eh<=0f) {
+		Point2D p;
+		
+		if (ew==0f && eh==0f) {
 			x = ex;
 			y = ey;
-		}
-		else {
+		}else if(ew == 0f || eh == 0f){
+			p = new Point2f();
+			distancePointSegment(px, py, ex, ey, ex+ew, ey+eh, p);
+			x = p.getX();
+			y = p.getY();
+		}else {
 			// Normalize the coordinates compared to the ellipse
 			// having a center at 0,0 and a radius of 0.5.
 			float normx = (px - ex) / ew - 0.5f;
 			float normy = (py - ey) / eh - 0.5f;
-			if ((normx * normx + normy * normy) < 0.25f) {
+			if ((normx * normx + normy * normy) <= 0.25f) {//TODO : to check
 				// The point is inside the ellipse
-				if (returnNullWhenInside) return null;
+				if (returnNullWhenInside) {
+					closest = null;
+					return;
+				}
 				x = px;
 				y = py;
 			}
@@ -616,7 +650,8 @@ public final class GeometryUtil implements MathConstants{
 				y += (ey + b);
 			}
 		}
-		return new Point2f(x, y);
+		closest.set(x, y);
+		return;
 	}
 
 	/** Replies the closest point from the given point in the shallow ellipse.
@@ -628,11 +663,14 @@ public final class GeometryUtil implements MathConstants{
 	 * @param ey is the coordinate of the min corner of the ellipse
 	 * @param ew is the width of the ellipse
 	 * @param eh is the height of the ellipse
-	 * @return the closest point in the ellipse, or <code>null</code> if 
-	 * the given point is exactly at the center of the ellipse.
+	 * @param closest TODO
 	 */
-	public static Point2D closestPointPointShallowEllipse(float px, float py, float ex, float ey, float ew, float eh) {
+	public static void closestPointPointShallowEllipse(float px, float py, float ex, float ey, float ew, float eh, Point2D closest) {
+		
+		assert(closest != null);
+		
 		float x, y;
+		
 		if (ew<=0f || eh<=0f) {
 			x = ex;
 			y = ey;
@@ -648,8 +686,9 @@ public final class GeometryUtil implements MathConstants{
 			float denom = a*a*y0*y0 + b*b*x0*x0;
 			if (denom==0f) {
 				// The point is at the center of the ellipse.
-				// Replies allways the same point.
-				return null;
+				// Replies always the same point.
+				closest = null;
+				return;
 			}
 	
 			denom = (float)Math.sqrt(denom);
@@ -661,7 +700,8 @@ public final class GeometryUtil implements MathConstants{
 			x += (ex + a);
 			y += (ey + b);
 		}
-		return new Point2f(x, y);
+		closest.set(x, y);
+		return;
 	}
 
 	/**
@@ -902,7 +942,7 @@ public final class GeometryUtil implements MathConstants{
 	 * rectangle and the segment was clipped; <code>false</code> if the segment
 	 * does not intersect the rectangle.
 	 */
-	public static boolean clipSegmentToRectangle(Point2D p1, Point2D p2, float rxmin, float rymin, float rxmax, float rymax) {
+	public static boolean clipSegmentToAlignedRectangle(Point2D p1, Point2D p2, float rxmin, float rymin, float rxmax, float rymax) {
 		
 		float x0 = p1.getX();
 		float y0 = p1.getY();
@@ -1086,8 +1126,9 @@ public final class GeometryUtil implements MathConstants{
 	 * @return the interpolate point.
 	 */
 	public static Point2D interpolate(float p1x, float p1y, float p2x, float p2y, float factor) {
-		float f = (factor<0f) ? 0f : factor;
-		if (f>1f) f = 1f;
+		
+		assert(factor >= 0.f && factor <= 1.f);
+		
 		float vx = p2x - p1x;
 		float vy = p2y - p1y;
 		return new Point2f(
@@ -1103,7 +1144,7 @@ public final class GeometryUtil implements MathConstants{
 	 *  order to point at the specified point {@code (px,py)}.
 	 * In other words, given three point P1, P2, and P, is the segments (P1-P2-P) a counterclockwise turn?
 	 * <p>
-	 * In opposite to {@link sidePointLine},
+	 * In opposite to {@link #getPointSideOfLine(float, float, float, float, float, float, float)},
 	 * this function tries to classifies the point if it is colinear to the segment.
 	 * The classification is explained below.
 	 * <p>
@@ -1292,25 +1333,6 @@ public final class GeometryUtil implements MathConstants{
 		return angle;
 	}
 
-	/** Replies the <var>value</var> clamped in
-	 * the specified interval assuming the
-	 * it is a angle in radians.
-	 *
-	 * @param value is the value to clamp.
-	 * @param min is the minimal allowed value.
-	 * @param max is the maximal allowed value.
-	 * @return the clamped value.
-	 */
-	public static float clampAngle( float value, float min, float max ) {
-		assert(min<=max);
-		float v = value;
-		while (v>max) {
-			v -= 2*Math.PI;
-		}
-		if (v<min) return min;
-		return v;
-	}
-
 	/**
 	 * Replies if two vectors are colinear. i.e.
 	 * if  det( [x1 x2]
@@ -1450,7 +1472,7 @@ public final class GeometryUtil implements MathConstants{
 
 	/**
 	 * Given a point p, this function computes the point q1 on (or in) 
-	 * this OBB, closest to p and the point q2 on farest to p.
+	 * this OBB, closest to p and the point q2 on farthest to p.
 	 * 
 	 * @param boxCenterx is the X coordinate of the box center.
 	 * @param boxCentery is the Y coordinate of the box center.
@@ -1471,7 +1493,7 @@ public final class GeometryUtil implements MathConstants{
 	 * @param py is the Y coordinate of the point to test.
 	 * @param pz is the Z coordinate of the point to test.
 	 * @param q1 is the closest point or <var>q1</var>, or <code>null</code>.
-	 * @param q2 is the farest point or <var>q2</var>, or <code>null</code>.
+	 * @param q2 is the farthest point or <var>q2</var>, or <code>null</code>.
 	 */
 	public static void closestFarthestPointsOBBPoint(
 				float boxCenterx, float boxCentery, float boxCenterz,
@@ -1535,8 +1557,9 @@ public final class GeometryUtil implements MathConstants{
 
 	/**
 	 * Given a point p, this function computes the point q1 on (or in) 
-	 * this OBR, closest to p and the point q2 on farest to p.
-	 * 
+	 * this OBR, closest to p and the point q2 on farthest to p.
+	 * @param px is the X coordinate of the point to test.
+	 * @param py is the Y coordinate of the point to test.
 	 * @param boxCenterx is the X coordinate of the box center.
 	 * @param boxCentery is the Y coordinate of the box center.
 	 * @param boxAxis1x is the X coordinate of the Axis1 unit vector.
@@ -1545,17 +1568,15 @@ public final class GeometryUtil implements MathConstants{
 	 * @param boxAxis2y is the Y coordinate of the Axis2 unit vector.
 	 * @param boxExtentAxis1 is the 'Axis1' size of the OBB.
 	 * @param boxExtentAxis2 is the 'Axis2' size of the OBB.
-	 * @param px is the X coordinate of the point to test.
-	 * @param py is the Y coordinate of the point to test.
 	 * @param closest is the closest point or <var>q1</var>, or <code>null</code>.
-	 * @param farest is the farest point or <var>q2</var>, or <code>null</code>.
+	 * @param farthest is the farthest point or <var>q2</var>, or <code>null</code>.
 	 */
 	public static void closestFarthestPointsOBRPoint(
-			float boxCenterx, float boxCentery,
-			float boxAxis1x, float boxAxis1y,			
+			float px, float py,
+			float boxCenterx, float boxCentery,			
+			float boxAxis1x, float boxAxis1y,
 			float boxAxis2x, float boxAxis2y,
 			float extent1, float extent2,
-			float px, float py,
 			Point2D q1, Point2D q2) {
 	
 	assert(extent1>=0);
@@ -1690,7 +1711,7 @@ public final class GeometryUtil implements MathConstants{
                             }
                     }
             }
-            //TODO réutiliser les variables  a e f.
+            //TODO reuse variables  a & f.
             if(c1 != null){
 	            // c1 = p1 + d1 * s;
 	            c1.set(p1x + (q1x-p1x)*s , p1y + (q1y-p1y)*s, p1z + (q1z-p1z)*s);
@@ -1785,7 +1806,7 @@ public final class GeometryUtil implements MathConstants{
 	 * @return <code>true</code> if the given rectangle is inside the ellipse;
 	 * otherwise <code>false</code>.
 	 */
-	public static boolean containsEllipseRectangle(float ex, float ey, float ewidth, float eheight, float rx, float ry, float rwidth, float rheight) {
+	public static boolean isInsideRectangleEllipse(float ex, float ey, float ewidth, float eheight, float rx, float ry, float rwidth, float rheight) {
 		float ecx = (ex + ewidth/2f);
 		float ecy = (ey + eheight/2f);
 		float rcx = (rx + rwidth/2f);
@@ -1847,5 +1868,865 @@ public final class GeometryUtil implements MathConstants{
 	        return (side < 0f) ? -1 : ((side > 0f) ? 1 : 0);
 	}
 
+    /**
+     * Compute and replies the perpendicular distance from a point to a line.
+     * <p>
+     * Call the point in space <code>(i,j,k)</code> and let <code>(a,b,c)</code> and <code>(x,y,z)</code> be two points on the line (call it line A). The crucial fact we'll use is that the minimum distance between the point and the line is the perpendicular distance. So we're looking for a point <code>(L,M,N)</code> which is on A, and such that the line connecting <code>(L,M,N)</code> and <code>(i,j,k)</code> is perpendicular to A.
+     * <p>
+     * See <a href="#pointsegmentdetails">Point Segment Geometry</a> for details.
+     * 
+     * @param px
+     *            is the X coord of the point
+     * @param py
+     *            is the Y coord of the point
+     * @param pz
+     *            is the Z coord of the point
+     * @param sx1
+     *            is the X coord of the first point of the segment
+     * @param sy1
+     *            is the Y coord of the first point of the segment
+     * @param sz1
+     *            is the Z coord of the first point of the segment
+     * @param sx2
+     *            is the X coord of the second point of the segment
+     * @param sy2
+     *            is the Y coord of the second point of the segment
+     * @param sz2
+     *            is the Z coord of the second point of the segment
+     * @return the distance
+     */
+    public static float distancePointLine(float px, float py, float pz, float sx1, float sy1, float sz1, float sx2, float sy2, float sz2) {
+            // We use the method of the parallelogram
+            // P
+            // o------+------o
+            // \ | \
+            // \ |h \
+            // \ | \
+            // ------o--+----------o-----------
+            // S1 S2
+
+            // vector S1S2 = <vx1, vy1, vz1>
+            float vx1 = sx2 - sx1;
+            float vy1 = sy2 - sy1;
+            float vz1 = sz2 - sz1;
+
+            // vector S1P = <vx2, vy2, vz2>
+            float vx2 = px - sx1;
+            float vy2 = py - sy1;
+            float vz2 = pz - sz1;
+
+            // Let's take the cross product S1S2 X S1P.
+            Vector3f cross = MathUtil.crossProductRightHand(vx1, vy1, vz1, vx2, vy2, vz2);
+
+            // Let's let (a) be the length of S1S2 X S1P.
+            float a = cross.length();
+
+            // If you divide (a) by the distance S1S2 you will get the distance of P
+            // from line S1S2.
+            float s1s2 = (float) Math.sqrt(vx1 * vx1 + vy1 * vy1 + vz1 * vz1);
+
+            // Thus the distance we are looking for is a/s1s2.
+            return a / s1s2;
+    }
+	
+    
+    public static void computeClosestFarestOBBPoints(
+            Point3f center, Vector3f[] axis,  float[] extent,
+            Point3f p, Point3f closest, Point3f farest) {
+    assert(axis.length==3);
+    assert(extent.length==3);
+    assert(extent[0]>=0);
+    assert(extent[1]>=0);
+    assert(extent[2]>=0);
+
+    Vector3f d = new Vector3f();
+        d.sub(p, center); // d = p - center
+
+        // Start results at center of box; make steps from there
+        if (closest!=null) closest.set(center);                
+        if (farest!=null) farest.set(center);                
+        
+        // For each OBB axis...
+        float d1, d2;
+        
+        for (int i=0; i<axis.length; ++i) {
+                // ...project d onto that axis to get the distance along the axis of d from the box center
+                d1 = d2 = d.dot(axis[i]);
+                
+                if (closest!=null) {
+                        // If distance farther than the box extents, clamp to the box
+                        if (d1 > extent[i]) d1 = extent[i];
+                        else if (d1 < -extent[i]) d1 = -extent[i];
+
+                        // Step that distance along the axis to get world coordinate
+                        //q += dist * this.axis[i];
+                        closest.scaleAdd(d1, axis[i], closest);
+                }
+
+                if (farest!=null) {
+                        // Clamp to the other side of the box
+                        if (d2 >= 0.) d2 = - extent[i];
+                        else d2 = extent[i];
+                        
+                        // Step that distance along the axis to get world coordinate
+                        //q += dist * this.axis[i];
+                        farest.scaleAdd(d2, axis[i], farest);
+                }
+        }
+    }
+    
+    public static Iterable<Point2D> getProjectionOnXYPlane(Iterable<? extends Point3D> points) {
+    	return new PointFilterXYIterable(points);
+    }
+
+    public static Iterable<Point2D> getProjectionOnXZPlane(Iterable<? extends Point3D> points) {
+    	return new PointFilterXZIterable(points);
+    }
+
+    public static Iterable<Point2D> getProjectionOnYZPlane(Iterable<? extends Point3D> points) {
+    	return new PointFilterYZIterable(points);
+    }
+
+    public static float distanceL1PointPoint(float x1, float y1, float x2, float y2){
+    	return Math.abs(x1 - x2)+Math.abs(y1 - y2);
+    }
+    
+    public static float distanceLInfPointPoint(float x1, float y1, float x2, float y2){
+    	return  MathUtil.max(Math.abs(x1 - x2), Math.abs(y1 - y2));
+    }
+
+	public static void closestPointPointCircle(float x , float y, float cx, float cy , float radius, Point2f closest) {
+		
+		assert(closest != null);
+		assert(radius > 0);
+		
+		float dx, dy;
+		
+		dx = x - cx;
+		dy = y - cy;
+		
+		float l = distanceSquaredPointPoint(x, y, cx, cy);
+		if (l<=(radius*radius)) {
+			if (closest != null)
+				closest.set(x,y);
+		}
+		float s = radius/(float)Math.sqrt(l);
+
+		if (closest != null)
+			closest.set(cx + s*dx, cy + s*dy);
+	}
+
+	/** Replies if a rectangle is inside in the rectangle.
+	 * 
+	 * @param min1x is the lowest corner of the enclosing-candidate rectangle.
+	 * @param min1y is the lowest corner of the enclosing-candidate rectangle.
+	 * @param max1x is the width of the enclosing-candidate rectangle.
+	 * @param max1y is the height of the enclosing-candidate rectangle.
+	 * @param min2x is the lowest corner of the inner-candidate rectangle.
+	 * @param min2y is the lowest corner of the inner-candidate rectangle.
+	 * @param max2x is the width of the inner-candidate rectangle.
+	 * @param max2y is the height of the inner-candidate rectangle.
+	 * @return <code>true</code> if the given rectangle is inside the ellipse;
+	 * otherwise <code>false</code>.
+	 */
+	public static boolean isInsideRectangleRectangle(float min1x, float min1y, float max1x, float max1y, float min2x, float min2y, float max2x, float max2y) {
+		
+		assert(max2x >= min2x && max2y >= min2y);
+		
+		if (max1x==0f || max1y==0) {
+			return false;
+		}
+		return (min2x >= min1x &&
+				min2y >= min1y &&
+				max2x <= max1x &&
+				max2y <= max1y);
+	}
+
+
+	public static boolean isInsidePointRectangle(float x, float y, float minX, float minY, float maxX, float maxY) {
+		assert(maxX >= minX && maxY >= minY);
+		
+		return (x>=minX && x<=maxX)
+				&&
+				(y>=minY && y<=maxY);
+	}
+
+	public static float distanceSquaredPointRectangle(float x , float y,  float minX, float minY, float maxX, float maxY) {
+		
+		assert(maxX >= minX && maxY >= minY);
+		
+		float dx;
+		if (x<minX) {
+			dx = minX - x;
+		}
+		else if (x>maxX) {
+			dx = x - maxX;
+		}
+		else {
+			dx = 0f;
+		}
+		float dy;
+		if (y<minY) {
+			dy = minY - y;
+		}
+		else if (y>maxY) {
+			dy = y - maxY;
+		}
+		else {
+			dy = 0f;
+		}
+		return dx*dx+dy*dy;
+	}
+	
+	
+	public static void closestPointPointRectangle(float x, float y , float minX, float minY, float maxX, float maxY, Point2D closest) {
+		
+		assert(maxX >= minX && maxY >= minY);
+		assert(closest!= null);
+				
+		x = MathUtil.clamp(x, minX, maxX);
+
+		y = MathUtil.clamp(y, minY, maxY);
+		
+		closest.set(x,y);
+	}
+	
+	/** Replies if a rectangle is inside a round rectangle.
+	 * 
+	 * @param minX1 is the lowest corner of the inner-candidate rectangle.
+	 * @param minY1 is the lowest corner of the inner-candidate rectangle.
+	 * @param maxX1 is the width of the inner-candidate rectangle.
+	 * @param maxY1 is the height of the inner-candidate rectangle.
+	 * @param minX2 is the lowest corner of the round rectangle.
+	 * @param minY2 is the lowest corner of the round rectangle.
+	 * @param maxX2 is the width of the round rectangle.
+	 * @param maxY2 is the height of the round rectangle.
+	 * @param awidth is the width of the arc of the round rectangle.
+	 * @param aheight is the height of the arc of the round rectangle.
+	 * @return <code>true</code> if the given rectangle is inside the given round rectangle;
+	 * otherwise <code>false</code>.
+	 */
+	public static boolean isInsideRectangleRoundRectangle(float minX1, float minY1, float maxX1, float maxY1, float minX2, float minY2, float maxX2, float maxY2, float awidth, float aheight) {
+		
+		assert(maxX1 >= minX1 && maxY1 >= minY1);
+		assert(maxX2 >= minX2 && maxY2 >= minY2);
+		
+		if(isInsideRectangleRectangle(minX1, minY1, maxX1, maxY1, minX2, minY2, maxX2, maxY2))
+			return false;
+		
+		float farX, farY;
+		
+		if((minX1-minX2) < (maxX2 -maxX1))
+			farX = minX1;
+		else
+			farX = maxX1;
+		
+		if((minY1-minY2) < (maxY2 -maxY1))
+			farY = minY1;
+		else
+			farY = maxY1;
+		
+		return isInsidePointRoundRectangle(minX2, minY2, maxX2, maxY2, awidth, aheight, farX, farY);
+	}
+
+	/** Replies if a point is inside in the round rectangle.
+	 * 
+	 * @param px is the point.
+	 * @param py is the point.
+	 * @param rx is the lowest corner of the round rectangle.
+	 * @param ry is the lowest corner of the round rectangle.
+	 * @param rwidth is the width of the round rectangle.
+	 * @param rheight is the height of the round rectangle.
+	 * @param awidth is the width of the arc of the round rectangle.
+	 * @param aheight is the height of the arc of the round rectangle.
+	 * @return <code>true</code> if the given rectangle is inside the ellipse;
+	 * otherwise <code>false</code>.
+	 */
+	public static boolean isInsidePointRoundRectangle(float x, float y , float minX, float minY, float maxX, float maxY, float awidth, float aheight) {
+		
+		assert(maxX >= minX && maxY >= minY);
+		
+		if (minX == maxX && minY == minY) {
+			return x==minX && y==minY;
+		}
+
+		// Check for trivial rejection - point is outside bounding rectangle
+		if (x < minX || y < minY || x >= maxX || y >= maxY) {
+			return false;
+		}
+		float aw = Math.min(maxX -minX, Math.abs(awidth)) / 2f;
+		float ah = Math.min(maxY - minY, Math.abs(aheight)) / 2f;
+		// Check which corner point is in and do circular containment
+		// test - otherwise simple acceptance
+		if (x >= (minX += aw) && x < (minX = maxX - aw)) {
+			return true;
+		}
+		if (y >= (minY += ah) && y < (minY = maxY - ah)) {
+			return true;
+		}
+		float xx = (x - minX) / aw;
+		float yy = (y - minY) / ah;
+		return (xx * xx + yy * yy <= 1f);
+	}
+	
+	
+	public static void closestPointPointRoundRectangle(float px, float py, float rx1, float ry1, float rx2, float ry2, float aw, float ah, Point2D closest) {
+
+		assert(closest != null);
+		
+		float x, y;
+
+		if (px<rx1+aw) {
+			if (py<ry1+ah) {
+				GeometryUtil.closestPointPointSolidEllipse(
+						px, py,
+						rx1, ry1,
+						aw, ah, false, closest);
+			}
+			if (py>ry2-ah) {
+				GeometryUtil.closestPointPointSolidEllipse(
+						px, py,
+						rx1, ry2-ah,
+						aw, ah, false, closest);
+				return;
+			}
+		}
+		else if (px>rx2-aw) {
+			if (py<ry1+ah) {
+				GeometryUtil.closestPointPointSolidEllipse(
+						px, py,
+						rx2-aw, ry1,
+						aw, ah, false, closest);
+				return;
+			}
+			if (py>ry2-ah) {
+				GeometryUtil.closestPointPointSolidEllipse(
+						px, py,
+						rx2-aw, ry2-ah,
+						aw, ah, false, closest);
+				return;
+			}
+		}
+
+		x = MathUtil.clamp(px, rx1, rx2);
+
+		y = MathUtil.clamp(py, ry1, ry2);
+		
+		closest.set(x,y);
+		
+		return;
+	}
+
+
+	/**
+	 * Calculates the number of times the line from (x0,y0) to (x1,y1)
+	 * crosses the ray extending to the right from (px,py).
+	 * If the point lies on the line, then no crossings are recorded.
+	 * +1 is returned for a crossing where the Y coordinate is increasing
+	 * -1 is returned for a crossing where the Y coordinate is decreasing
+	 * 
+	 * @param px is the reference point to test.
+	 * @param py is the reference point to test.
+	 * @param x0 is the first point of the line.
+	 * @param y0 is the first point of the line.
+	 * @param x1 is the second point of the line.
+	 * @param y1 is the secondpoint of the line.
+	 * @return the crossing.
+	 */
+	public static int computeCrossingsFromPoint(
+			float px, float py,
+			float x0, float y0,
+			float x1, float y1) {
+		// Copied from AWT API
+		if (py <  y0 && py <  y1) return 0;
+		if (py >= y0 && py >= y1) return 0;
+		// assert(y0 != y1);
+		if (px >= x0 && px >= x1) return 0;
+		if (px <  x0 && px <  x1) return (y0 < y1) ? 1 : -1;
+		float xintercept = x0 + (py - y0) * (x1 - x0) / (y1 - y0);
+		if (px >= xintercept) return 0;
+		return (y0 < y1) ? 1 : -1;
+	}
+
+
+	/**
+	 * Calculates the number of times the line from (x0,y0) to (x1,y1)
+	 * crosses the ray extending to the right from (px,py).
+	 * If the point lies on the line, then no crossings are recorded.
+	 * +1 is returned for a crossing where the Y coordinate is increasing
+	 * -1 is returned for a crossing where the Y coordinate is decreasing
+	 * <p>
+	 * This function differs from {@link #computeCrossingsFromPoint(float, float, float, float, float, float)}.
+	 * The equality test is not used in this function.
+	 * 
+	 * @param px is the reference point to test.
+	 * @param py is the reference point to test.
+	 * @param x0 is the first point of the line.
+	 * @param y0 is the first point of the line.
+	 * @param x1 is the second point of the line.
+	 * @param y1 is the secondpoint of the line.
+	 * @return the crossing.
+	 */
+	private static int computeCrossingsFromPoint1(
+			float px, float py,
+			float x0, float y0,
+			float x1, float y1) {
+		// Copied from AWT API
+		if (py <  y0 && py <  y1) return 0;
+		if (py > y0 && py > y1) return 0;
+		// assert(y0 != y1);
+		if (px > x0 && px > x1) return 0;
+		if (px <  x0 && px <  x1) return (y0 < y1) ? 1 : -1;
+		float xintercept = x0 + (py - y0) * (x1 - x0) / (y1 - y0);
+		if (px > xintercept) return 0;
+		return (y0 < y1) ? 1 : -1;
+	}
+
+
+	/**
+	 * Calculates the number of times the line from (x0,y0) to (x1,y1)
+	 * crosses the segment (sx0,sy0) to (sx1,sy1) extending to the right.
+	 * 
+	 * @param crossings is the initial value for the number of crossings.
+	 * @param sx1 is the first point of the segment to extend.
+	 * @param sy1 is the first point of the segment to extend.
+	 * @param sx2 is the second point of the segment to extend.
+	 * @param sy2 is the second point of the segment to extend.
+	 * @param x0 is the first point of the line.
+	 * @param y0 is the first point of the line.
+	 * @param x1 is the second point of the line.
+	 * @param y1 is the secondpoint of the line.
+	 * @return the crossing, or {@link MathConstants#SHAPE_INTERSECTS}
+	 */
+	public static int computeCrossingsFromSegment(
+			int crossings,
+			float sx1, float sy1,
+			float sx2, float sy2,
+			float x0, float y0,
+			float x1, float y1) {
+		int numCrosses = crossings;
+	
+		float xmin = Math.min(sx1, sx2);
+		float xmax = Math.max(sx1, sx2);
+		float ymin = Math.min(sy1, sy2);
+		float ymax = Math.max(sy1, sy2);
+	
+		if (y0<=ymin && y1<=ymin) return numCrosses;
+		if (y0>=ymax && y1>=ymax) return numCrosses;
+		if (x0<=xmin && x1<=xmin) return numCrosses;
+		if (x0>=xmax && x1>=xmax) {
+			// The line is entirely at the right of the shadow
+			if (y0<y1) {
+				if (y0<=ymin) ++numCrosses;
+				if (y1>=ymax) ++numCrosses;
+			}
+			else {
+				if (y1<=ymin) --numCrosses;
+				if (y0>=ymax) --numCrosses;
+			}
+		}
+		else if (IntersectionUtil.intersectsSegmentSegmentWithoutEnds(x0, y0, x1, y1, sx1, sy1, sx2, sy2)) {
+			return MathConstants.SHAPE_INTERSECTS;
+		}
+		else {
+			int side1, side2;
+			if (sy1<=sy2) {
+				side1 = getPointSideOfLine(sx1, sy1, sx2, sy2, x0, y0, 0f);
+				side2 = getPointSideOfLine(sx1, sy1, sx2, sy2, x1, y1, 0f);
+			}
+			else {
+				side1 = getPointSideOfLine(sx2, sy2, sx1, sy1, x0, y0, 0f);
+				side2 = getPointSideOfLine(sx2, sy2, sx1, sy1, x1, y1, 0f);
+			}
+			if (side1>0 || side2>0) {
+				int n1 = computeCrossingsFromPoint(sx1, sy1, x0, y0, x1, y1);
+				int n2;
+				if (n1!=0) {
+					n2 = computeCrossingsFromPoint1(sx2, sy2, x0, y0, x1, y1);
+				}
+				else {
+					n2 = computeCrossingsFromPoint(sx2, sy2, x0, y0, x1, y1);
+				}
+				numCrosses += n1;
+				numCrosses += n2;
+			}
+		}
+	
+		return numCrosses;
+	}
+
+
+	/**
+	 * Calculates the number of times the line from (x0,y0) to (x1,y1)
+	 * crosses the ellipse (ex0,ey0) to (ex1,ey1) extending to the right.
+	 * 
+	 * @param crossings is the initial value for the number of crossings.
+	 * @param ex is the first corner of the ellipse to extend.
+	 * @param ey is the first corner of the ellipse to extend.
+	 * @param ew is the width of the ellipse to extend.
+	 * @param eh is the height of the ellipse  to extend.
+	 * @param x0 is the first point of the line.
+	 * @param y0 is the first point of the line.
+	 * @param x1 is the second point of the line.
+	 * @param y1 is the secondpoint of the line.
+	 * @return the crossing, or {@link MathConstants#SHAPE_INTERSECTS}.
+	 */
+	public static int computeCrossingsFromEllipse(
+			int crossings,
+			float ex, float ey,
+			float ew, float eh,
+			float x0, float y0,
+			float x1, float y1) {
+		int numCrosses = crossings;
+	
+		float xmin = ex;
+		float ymin = ey;
+		float xmax = ex + ew;
+		float ymax = ey + eh;
+	
+		if (y0<=ymin && y1<=ymin) return numCrosses;
+		if (y0>=ymax && y1>=ymax) return numCrosses;
+		if (x0<=xmin && x1<=xmin) return numCrosses;
+	
+		if (x0>=xmax && x1>=xmax) {
+			// The line is entirely at the right of the shadow
+			if (y0<y1) {
+				if (y0<=ymin) ++numCrosses;
+				if (y1>=ymax) ++numCrosses;
+			}
+			else {
+				if (y1<=ymin) --numCrosses;
+				if (y0>=ymax) --numCrosses;
+			}
+		}
+		else if (IntersectionUtil.intersectsEllipseSegment(
+				xmin, ymin, xmax-xmin, ymax-ymin,
+				x0, y0, x1, y1)) {
+			return MathConstants.SHAPE_INTERSECTS;
+		}
+		else {
+			float xcenter = (xmin+xmax)/2f;
+			numCrosses += computeCrossingsFromPoint(xcenter, ymin, x0, y0, x1, y1);
+			numCrosses += computeCrossingsFromPoint(xcenter, ymax, x0, y0, x1, y1);
+		}
+	
+		return numCrosses;
+	}
+
+
+	/**
+	 * Calculates the number of times the line from (x0,y0) to (x1,y1)
+	 * crosses the ellipse (ex0,ey0) to (ex1,ey1) extending to the right.
+	 * 
+	 * @param crossings is the initial value for the number of crossings.
+	 * @param cx is the center of the circle to extend.
+	 * @param cy is the center of the circle to extend.
+	 * @param radius is the radius of the circle to extend.
+	 * @param x0 is the first point of the line.
+	 * @param y0 is the first point of the line.
+	 * @param x1 is the second point of the line.
+	 * @param y1 is the secondpoint of the line.
+	 * @return the crossing, or {@link MathConstants#SHAPE_INTERSECTS}.
+	 */
+	public static int computeCrossingsFromCircle(
+			int crossings,
+			float cx, float cy,
+			float radius,
+			float x0, float y0,
+			float x1, float y1) {
+		int numCrosses = crossings;
+	
+		float xmin = cx - Math.abs(radius);
+		float ymin = cy - Math.abs(radius);
+		float ymax = cy + Math.abs(radius);
+	
+		if (y0<=ymin && y1<=ymin) return numCrosses;
+		if (y0>=ymax && y1>=ymax) return numCrosses;
+		if (x0<=xmin && x1<=xmin) return numCrosses;
+	
+		if (x0>=cx+radius && x1>=cx+radius) {
+			// The line is entirely at the right of the shadow
+			if (y0<y1) {
+				if (y0<=ymin) ++numCrosses;
+				if (y1>=ymax) ++numCrosses;
+			}
+			else {
+				if (y1<=ymin) --numCrosses;
+				if (y0>=ymax) --numCrosses;
+			}
+		}
+		else if (IntersectionUtil.intersectsCircleSegment(
+				cx, cy, radius,
+				x0, y0, x1, y1)) {
+			return MathConstants.SHAPE_INTERSECTS;
+		}
+		else {
+			numCrosses += computeCrossingsFromPoint(cx, ymin, x0, y0, x1, y1);
+			numCrosses += computeCrossingsFromPoint(cx, ymax, x0, y0, x1, y1);
+		}
+	
+		return numCrosses;
+	}
+
+
+	/**
+	 * Accumulate the number of times the line crosses the shadow
+	 * extending to the right of the rectangle.  See the comment
+	 * for the {@link MathUtil#SHAPE_INTERSECTS} constant for more complete details.
+	 * 
+	 * @param crossings is the initial value for the number of crossings.
+	 * @param rxmin is the first corner of the rectangle.
+	 * @param rymin is the first corner of the rectangle.
+	 * @param rxmax is the second corner of the rectangle.
+	 * @param rymax is the second corner of the rectangle.
+	 * @param x0 is the first point of the line.
+	 * @param y0 is the first point of the line.
+	 * @param x1 is the second point of the line.
+	 * @param y1 is the secondpoint of the line.
+	 * @return the crossing, or {@link MathConstants#SHAPE_INTERSECTS}.
+	 */
+	public static int computeCrossingsFromRect(
+			int crossings,
+			float rxmin, float rymin,
+			float rxmax, float rymax,
+			float x0, float y0,
+			float x1, float y1) {
+		int numCrosses = crossings;
+	
+		if (y0 >= rymax && y1 >= rymax) return numCrosses;
+		if (y0 <= rymin && y1 <= rymin) return numCrosses;
+		if (x0 <= rxmin && x1 <= rxmin) return numCrosses;
+		if (x0 >= rxmax && x1 >= rxmax) {
+			// Line is entirely to the right of the rect
+			// and the vertical ranges of the two overlap by a non-empty amount
+			// Thus, this line segment is partially in the "right-shadow"
+			// Path may have done a complete crossing
+			// Or path may have entered or exited the right-shadow
+			if (y0 < y1) {
+				// y-increasing line segment...
+				// We know that y0 < rymax and y1 > rymin
+				if (y0 <= rymin) ++numCrosses;
+				if (y1 >= rymax) ++numCrosses;
+			}
+			else if (y1 < y0) {
+				// y-decreasing line segment...
+				// We know that y1 < rymax and y0 > rymin
+				if (y1 <= rymin) --numCrosses;
+				if (y0 >= rymax) --numCrosses;
+			}
+			return numCrosses;
+		}
+		// Remaining case:
+		// Both x and y ranges overlap by a non-empty amount
+		// First do trivial INTERSECTS rejection of the cases
+		// where one of the endpoints is inside the rectangle.
+		if ((x0 > rxmin && x0 < rxmax && y0 > rymin && y0 < rymax) ||
+				(x1 > rxmin && x1 < rxmax && y1 > rymin && y1 < rymax)) {
+			return MathConstants.SHAPE_INTERSECTS;
+		}
+		// Otherwise calculate the y intercepts and see where
+		// they fall with respect to the rectangle
+		float xi0 = x0;
+		if (y0 < rymin) {
+			xi0 += ((rymin - y0) * (x1 - x0) / (y1 - y0));
+		}
+		else if (y0 > rymax) {
+			xi0 += ((rymax - y0) * (x1 - x0) / (y1 - y0));
+		}
+		float xi1 = x1;
+		if (y1 < rymin) {
+			xi1 += ((rymin - y1) * (x0 - x1) / (y0 - y1));
+		}
+		else if (y1 > rymax) {
+			xi1 += ((rymax - y1) * (x0 - x1) / (y0 - y1));
+		}
+		if (xi0 <= rxmin && xi1 <= rxmin) return numCrosses;
+		if (xi0 >= rxmax && xi1 >= rxmax) {
+			if (y0 < y1) {
+				// y-increasing line segment...
+				// We know that y0 < rymax and y1 > rymin
+				if (y0 <= rymin) ++numCrosses;
+				if (y1 >= rymax) ++numCrosses;
+			}
+			else if (y1 < y0) {
+				// y-decreasing line segment...
+				// We know that y1 < rymax and y0 > rymin
+				if (y1 <= rymin) --numCrosses;
+				if (y0 >= rymax) --numCrosses;
+			}
+			return numCrosses;
+		}
+		return MathConstants.SHAPE_INTERSECTS;
+	}
+
+	/**
+	 * <p>
+	 * This function uses the equal-to-zero test with the error {@link MathConstants#EPSILON}.
+	 * 
+	 * @see MathUtil#isEpsilonZero(float)
+	 */
+	public static boolean isInsidePointSegment(float x, float y, float ax, float ay, float bx, float by, float epsilon) {
+		return MathUtil.isEpsilonZero(GeometryUtil.distanceSquaredPointSegment(x, y, ax, ay, bx, by, null), epsilon);
+	}
+
+
+	public static void closestPointPointSegment(float x, float y, float ax, float ay,float bx, float by, Point2D closest) {
+
+		assert(closest != null);
+		
+		float ratio = GeometryUtil.getPointProjectionFactorOnLine(x, y, ax, ay, bx, by);
+		ratio = MathUtil.clamp(ratio, 0, 1);
+		closest.set(ax + (bx - ax) * ratio, ay + (by - ay) * ratio); 
+		return;
+	}
+
+	public static boolean isInsidePointPointOrientedRectangle(float x, float y, float cx, float cy, float rx,
+			float ry, float sx, float sy, float extentR, float extentS) {
+		
+		float px, py;
+		//Changing P(x,y) coordinate basis.
+		px = (x-cx) * sy - (y-cy) * sx;
+		py = (y-cy) * rx - (x-cx) * ry;
+		
+		return GeometryUtil.isInsidePointRectangle(px, py,extentR/-2, extentS/-2, extentR/2, extentS/2);
+	}
+	
+	public static boolean isInsideRectangleRectangleOrientedRectangle(
+			float minx, float miny, float maxx, float maxy,
+			float cx, float cy, float rx, float ry, float sx, float sy, float extentR, float extentS) {
+		
+		if(GeometryUtil.isInsidePointPointOrientedRectangle(1.5f*minx + maxx, 1.5f*miny + maxy, cx, cy, rx, ry, sx, sy, extentR, extentS))
+			return !IntersectionUtil.intersectsAlignedRectangleOrientedRectangle(
+				minx, miny, maxy, maxy,
+				cx, cy, rx, ry, sx, sy, extentR, extentS);
+		return false;
+	}
+	
+	
+	 /**
+     * Compute the covariance matrix for the given set of points.
+     * <p>
+     * The computed matrix is symmetric.
+     * 
+     * @param cov is the matrix to fill with the covariance elements.
+     * @param points are the points.
+     * @return the mean of the points.
+     */
+    public static Point3f cov(Matrix3f cov, Point3f... points) {
+            return cov(cov, Arrays.asList(points));
+    }
+
+    /**
+     * Compute the covariance matrix for the given set of points.
+     * <p>
+     * The computed matrix is symmetric.
+     * 
+     * @param cov is the matrix to fill with the covariance elements.
+     * @param points are the points.
+     * @return the mean of the points.
+     */
+    public static Point2f cov(Matrix2f cov, Point2f... points) {
+            return cov(cov, Arrays.asList(points));
+    }
+
+    /**
+     * Compute the covariance matrix for the given set of points.
+     * <p>
+     * The computed matrix is symmetric.
+     * 
+     * @param cov is the matrix to fill with the covariance elements.
+     * @param points are the points.
+     * @return the mean of the points.
+     */
+    public static Point2f cov(Matrix2f cov, Iterable<? extends Point2f> points) {
+            assert(cov!=null);
+
+            cov.setZero();
+            
+            // Compute the mean m
+            Point2f m = new Point2f();
+            int count = 0;
+            for(Point2f p : points) {
+                    m.add(new Vector2f(p.getX(),p.getY()));
+                    count ++;
+            }
+            
+            if (count==0) return null;
+            
+            m.scale(1.f/count);
+            
+            // Compute the covariance term [Gottshalk2000]
+            // c_ij = sum(p'_i * p'_j) / n
+            // c_ij = sum((p_i - m_i) * (p_j - m_j)) / n
+            for(Point2f p : points) {
+                    cov.m00 += (p.getX() - m.getX()) * (p.getX() - m.getX());
+                    cov.m01 += (p.getX() - m.getX()) * (p.getY() - m.getY()); // same as m10
+                    //cov.m10 += (p.getY() - m.getY()) * (p.getX() - m.getX()); // same as m01
+                    cov.m11 += (p.getY() - m.getY()) * (p.getY() - m.getY());
+            }
+            
+            cov.m00 /= count;
+            cov.m01 /= count;
+            cov.m10 = cov.m01;
+            cov.m11 /= count;
+            
+            return m;
+    }
+
+    /**
+     * Compute the covariance matrix for the given set of points.
+     * <p>
+     * The computed matrix is symmetric.
+     * 
+     * @param cov is the matrix to fill with the covariance elements.
+     * @param points are the points.
+     * @return the mean of the points.
+     */
+    public static Point3f cov(Matrix3f cov, Iterable<? extends Point3f> points) {
+            assert(cov!=null);
+
+            cov.setZero();
+            
+            // Compute the mean m
+            Point3f m = new Point3f();
+            int count = 0;
+            for(Point3f p : points) {
+                    m.add(new Vector3f(p.getX(),p.getY(), p.getZ()));
+                    count ++;
+            }
+            
+            if (count==0) return null;
+            
+            m.scale(1.f/count);
+            
+            // Compute the covariance term [Gottshalk2000]
+            // c_ij = sum(p'_i * p'_j) / n
+            // c_ij = sum((p_i - m_i) * (p_j - m_j)) / n
+            for(Point3f p : points) {
+                    cov.m00 += (p.getX() - m.getX()) * (p.getX() - m.getX());
+                    cov.m01 += (p.getX() - m.getX()) * (p.getY() - m.getY()); // same as m10
+                    cov.m02 += (p.getX() - m.getX()) * (p.getZ() - m.getZ()); // same as m20
+                    //cov.m10 += (p.getY() - m.getY()) * (p.getX() - m.getX()); // same as m01
+                    cov.m11 += (p.getY() - m.getY()) * (p.getY() - m.getY());
+                    cov.m12 += (p.getY() - m.getY()) * (p.getZ() - m.getZ()); // same as m21
+                    //cov.m20 += (p.getZ() - m.getZ()) * (p.getX() - m.getX()); // same as m02
+                    //cov.m21 += (p.getZ() - m.getZ()) * (p.getY() - m.getY()); // same as m12
+                    cov.m22 += (p.getZ() - m.getZ()) * (p.getZ() - m.getZ());
+            }
+            
+            cov.m00 /= count;
+            cov.m01 /= count;
+            cov.m02 /= count;
+            cov.m10 = cov.m01;
+            cov.m11 /= count;
+            cov.m12 /= count;
+            cov.m20 = cov.m02;
+            cov.m21 = cov.m12;
+            cov.m22 /= count;
+            
+            return m;
+    }
+	
 }
+//TODO public Point3f getProjection(Point3D point) 
 

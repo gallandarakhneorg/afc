@@ -26,7 +26,8 @@ import java.util.Random;
 
 import junit.framework.TestCase;
 
-import org.arakhne.afc.math.geometry.continuous.object2d.Tuple2f;
+import org.arakhne.afc.math.geometry2d.continuous.Tuple2f;
+import org.arakhne.afc.math.geometry3d.continuous.Tuple3f;
 
 /**
  * @author $Author: galland$
@@ -42,7 +43,10 @@ public abstract class AbstractMathTestCase extends TestCase {
 	 */
 	protected final static int DEFAULT_DECIMAL_COUNT = 8;
 	
+	protected static final float epsilon = 1e-12f;
+	
 	private int decimalPrecision = DEFAULT_DECIMAL_COUNT;
+	
 	
 	/** Set the epsilon used for testing floating-point values.
 	 * 
@@ -269,6 +273,90 @@ public abstract class AbstractMathTestCase extends TestCase {
 			fail((message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
 					+"same value, expecting not equal to:"+ //$NON-NLS-1$
 					expected);
+		}
+	}
+	
+	
+
+	/** Test if the actual value is equal to the expected value with
+	 * a distance of epsilon.
+	 * 
+	 * @param expected
+	 * @param actual
+	 */
+	protected void assertEpsilonEquals(Tuple3f<?> expected, Tuple3f<?> actual) {
+		assertEpsilonEquals(null, expected, actual);
+	}
+
+	/** Test if the actual value is not equal to the expected value with
+	 * a distance of epsilon.
+	 * 
+	 * @param expected
+	 * @param actual
+	 */
+	protected void assertNotEpsilonEquals(Tuple3f<?> expected, Tuple3f<?> actual) {
+		assertNotEpsilonEquals(null, expected, actual);
+	}
+
+	/** Test if the actual value is equal to the expected value with
+	 * a distance of epsilon.
+	 * 
+	 * @param message
+	 * @param expected
+	 * @param actual
+	 */
+	protected void assertEpsilonEquals(String message, Tuple3f<?> expected, Tuple3f<?> actual) {
+		if (!isEpsilonEquals(expected.getX(), actual.getX())) {
+			fail((message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
+					+"not same x value, expected:"+ //$NON-NLS-1$
+					expected.getX()
+					+", actual:"+actual.getX()); //$NON-NLS-1$
+			return;
+		}
+		if (!isEpsilonEquals(expected.getY(), actual.getY())) {
+			fail((message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
+					+"not same y value, expected:"+ //$NON-NLS-1$
+					expected.getY()
+					+", actual:"+actual.getY()); //$NON-NLS-1$
+			return;
+		}
+		if (!isEpsilonEquals(expected.getZ(), actual.getZ())) {
+			fail((message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
+					+"not same z value, expected:"+ //$NON-NLS-1$
+					expected.getZ()
+					+", actual:"+actual.getZ()); //$NON-NLS-1$
+			return;
+		}
+	}
+	
+	/** Test if the actual value is not equal to the expected value with
+	 * a distance of epsilon.
+	 * 
+	 * @param message
+	 * @param expected
+	 * @param actual
+	 */
+	protected void assertNotEpsilonEquals(String message, Tuple3f<?> expected, Tuple3f<?> actual) {
+		if (isEpsilonEquals(expected.getX(), actual.getX(), false)) {
+			fail((message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
+					+"same x value, unexpected:"+ //$NON-NLS-1$
+					expected.getX()
+					+", actual:"+actual.getX()); //$NON-NLS-1$
+			return;
+		}
+		if (isEpsilonEquals(expected.getY(), actual.getY(), false)) {
+			fail((message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
+					+"not same y value, expected:"+ //$NON-NLS-1$
+					expected.getY()
+					+", actual:"+actual.getY()); //$NON-NLS-1$
+			return;
+		}
+		if (isEpsilonEquals(expected.getZ(), actual.getZ(),false)) {
+			fail((message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
+					+"not same z value, expected:"+ //$NON-NLS-1$
+					expected.getZ()
+					+", actual:"+actual.getZ()); //$NON-NLS-1$
+			return;
 		}
 	}
 

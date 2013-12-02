@@ -19,7 +19,8 @@
  */
 package org.arakhne.afc.math.physics;
 
-import org.arakhne.vmutil.locale.Locale;
+import org.arakhne.afc.vmutil.locale.Locale;
+
 
 /**
  * A <tt>SpaceUnit</tt> represents space distance at a given unit of

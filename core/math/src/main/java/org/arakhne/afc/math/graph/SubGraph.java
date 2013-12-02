@@ -26,8 +26,8 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.arakhne.util.ref.ComparableWeakReference;
-import org.arakhne.util.ref.WeakArrayList;
+import org.arakhne.afc.references.ComparableWeakReference;
+import org.arakhne.afc.references.WeakArrayList;
 
 /**
  * A subgraph.

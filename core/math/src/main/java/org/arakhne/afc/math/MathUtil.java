@@ -19,6 +19,8 @@
  */
 package org.arakhne.afc.math;
 
+import org.arakhne.afc.math.geometry3d.continuous.Vector3f;
+
 /**
  * Mathematic utilities.
  * 
@@ -186,10 +188,7 @@ public final class MathUtil implements MathConstants {
 	 * @return normalized angle
 	 */
 	public static float clampRadian0To2PI(float radian) {
-		if ((!Float.isNaN(radian)) && (!Float.isInfinite(radian))) {
-			return clampTrigo(radian, 0, 2f * PI);
-		}
-		return radian;
+		return clampCyclic(radian, 0, 2f * PI);
 	}
 
 	/**
@@ -200,10 +199,7 @@ public final class MathUtil implements MathConstants {
 	 * @return normalized angle
 	 */
 	public static float clampRadianMinusPIToPI(float radian) {
-		if ((!Float.isNaN(radian)) && (!Float.isInfinite(radian))) {
-			return clampTrigo(radian, -PI, PI);
-		}
-		return radian;
+		return clampCyclic(radian, -PI, PI);
 	}
 
 	/**
@@ -214,10 +210,7 @@ public final class MathUtil implements MathConstants {
 	 * @return normalized angle
 	 */
 	public static float clampDegree0To360(float degree) {
-		if ((!Float.isNaN(degree)) && (!Float.isInfinite(degree))) {
-			return clampTrigo(degree, 0, 360);
-		}
-		return degree;
+		return clampCyclic(degree, 0, 360);
 	}
 
 	/**
@@ -228,10 +221,7 @@ public final class MathUtil implements MathConstants {
 	 * @return normalized angle
 	 */
 	public static float clampDegreeMinus180To180(float degree) {
-		if ((!Float.isNaN(degree)) && (!Float.isInfinite(degree))) {
-			return clampTrigo(degree, -180, 180);
-		}
-		return degree;
+		return clampCyclic(degree, -180, 180);
 	}
 
 	/**
@@ -248,24 +238,19 @@ public final class MathUtil implements MathConstants {
 	 * @param max
 	 * @return the clamped value
 	 */
-	public static float clampTrigo(float value, float min, float max) {
-		if (Float.isNaN(max)) { // NaN is lower than all the number according to
-								// float.compareTo()
-			return Float.NaN;
-		}
-		if (Float.isNaN(min)) {
-			// Clamp max only
-			if (value > max)
-				return max - Float.MAX_VALUE + value;
-		} else {
-			assert (min <= max);
+	public static float clampCyclic(float value, float min, float max) {
+
+		assert (!Float.isNaN(min));
+		assert (!Float.isNaN(max));
+		assert (min <= max);
+		if ((!Float.isNaN(value)) && (!Float.isInfinite(value))) {		
 			if (min == max)
 				return min; // special case: empty interval
 			if (value < min || value > max) {
 				float perimeter = max - min;
-				float nvalue = value - min;
+				float nvalue = (value < min)? min - value : value - min;
 				float rest = nvalue % perimeter;
-				return (value < 0) ? max + rest : rest + min;
+				return (value < min) ? max - rest : rest + min;
 			}
 		}
 		return value;
@@ -403,5 +388,324 @@ public final class MathUtil implements MathConstants {
 		return (Math.abs(value1 - value2) <= epsilon) ? 0 : Float.compare(
 				value1, value2);
 	}
+	
+	   /** Compute the right-handed cross-product of two vectors.
+     * <p>
+     * The right-handed cross product is described by the following figure:<br>
+     * <a href="doc-files/right_handed_cross_product.png"><img src="doc-files/right_handed_cross_product.png" alt="[Right Handed Cross Product]" width="200" border="0"></a>
+     * 
+     * @param x1
+     * @param y1
+     * @param z1
+     * @param x2
+     * @param y2
+     * @param z2
+     * @return the cross-product.
+     * @see #crossProductLeftHand(float, float, float, float, float, float)
+     * @see #crossProductRightHand(float, float, float, float, float, float, Vector3f)
+     */
+    public static Vector3f crossProductRightHand(float x1, float y1, float z1, float x2, float y2, float z2) {
+            float x = y1*z2 - z1*y2;
+            float y = z1*x2 - x1*z2;
+            float z = x1*y2 - y1*x2;
+            return new Vector3f(x,y,z);
+    }
+    
+    /** Compute the left-handed cross-product of two vectors.
+     * <p>
+     * The left-handed cross product is described by the following figure:<br>
+     * <a href="doc-files/left_handed_cross_product.png"><img src="doc-files/left_handed_cross_product.png" alt="[Left Handed Cross Product]" width="200" border="0"></a>
+     * 
+     * @param x1
+     * @param y1
+     * @param z1
+     * @param x2
+     * @param y2
+     * @param z2
+     * @return the cross-product.
+     * @see #crossProductLeftHand(float, float, float, float, float, float, Vector3f)
+     * @see #crossProductRightHand(float, float, float, float, float, float)
+     */
+    public static Vector3f crossProductLeftHand(float x1, float y1, float z1, float x2, float y2, float z2) {
+            float x = y2*z1 - z2*y1;
+            float y = z2*x1 - x2*z1;
+            float z = x2*y1 - y2*x1;
+            return new Vector3f(x,y,z);
+    }
+    
+    /**
+     * Compute the eigenvectors of the given symmetric matrix
+     * according to the Jacobi Cyclic Method.
+     * 
+     * @param matrix is the symmetric matrix.
+     * @param eigenVectors are the matrix of vectors to fill. Eigen vectors are the
+     * columns of the matrix.
+     * @return the eigenvalues which are corresponding to the <var>eigenVectors</var> columns.
+     * @see #eigenVectorsOfSymmetricMatrix(Matrix3, Matrix3) 
+     */
+    public static float[] eigenVectorsOfSymmetricMatrix(Matrix2f matrix, Matrix2f eigenVectors) {
 
+            // Copy values up to the diagonal
+            float m11 = matrix.getElement(0,0);
+            float m12 = matrix.getElement(0,1);
+            float m22 = matrix.getElement(1,1);
+            
+            eigenVectors.setIdentity();
+            
+            boolean sweepsConsumed = true;
+            int i;
+            float u, u2, u2p1, t, c, s;
+            float ri0, ri1;
+            
+            for(int a=0; a<JACOBI_MAX_SWEEPS; ++a) {
+                    
+                    // Exit loop if off-diagonal entries are small enough
+                    if ((Math.abs(m12) < MathConstants.JVM_MIN_FLOAT_EPSILON)) {
+                            sweepsConsumed = false;
+                            break;
+                    }
+                    
+                    // Annihilate (1,2) entry
+                    if (m12 != 0.) {
+                            u = (m22 - m11) *.5f / m12;
+                            u2 = u*u;
+                            u2p1 = u2 + 1.f;
+                            
+                            if (u2p1!=u2)
+                                    t = (float) (Math.signum(u) * (Math.sqrt(u2p1) - Math.abs(u)));
+                            else
+                                    t = .5f / u;
+                            
+                            c = (float) (1.f / Math.sqrt(t*t + 1));
+                            s = c * t;
+                            
+                            m11 -= t * m12;
+                            m22 += t * m12;
+                            m12 = 0.f;
+                            
+                            for(i=0; i<2; ++i) {
+                                    ri0 = eigenVectors.getElement(i,0);
+                                    ri1 = eigenVectors.getElement(i,1);
+                                    eigenVectors.setElement(i, 0, c * ri0 - s * ri1);
+                                    eigenVectors.setElement(i, 1, s * ri0 + c * ri1);
+                            }
+                    }
+            }
+            
+            assert(!sweepsConsumed) : "Sweep count consumed during eigenvector computation"; //$NON-NLS-1$
+            
+            // eigenvalues are on the diagonal
+            return new float[] { m11, m22 };
+    }
+    
+
+    /**
+     * Compute the eigenvectors of the given symmetric matrix
+     * according to the Jacobi Cyclic Method.
+     * <p>
+     * Given the n x n real symmetric matrix A, the routine 
+     * Jacobi_Cyclic_Method calculates the eigenvalues and 
+     * eigenvectors of A by successively sweeping through the 
+     * matrix A annihilating off-diagonal non-zero elements 
+     * by a rotation of the row and column in which the 
+     * non-zero element occurs.  
+     * <p>
+     * The Jacobi procedure for finding the eigenvalues and eigenvectors of a
+     * symmetric matrix A is based on finding a similarity transformation
+     * which diagonalizes A.  The similarity transformation is given by a
+     * product of a sequence of orthogonal (rotation) matrices each of which
+     * annihilates an off-diagonal element and its transpose.  The rotation
+     * effects only the rows and columns containing the off-diagonal element 
+     * and its transpose, i.e. if a[i][j] is an off-diagonal element, then
+     * the orthogonal transformation rotates rows a[i][] and a[j][], and
+     * equivalently it rotates columns a[][i] and a[][j], so that a[i][j] = 0
+     * and a[j][i] = 0.
+     * The cyclic Jacobi method considers the off-diagonal elements in the
+     * following order: (0,1),(0,2),...,(0,n-1),(1,2),...,(n-2,n-1).  If the
+     * the magnitude of the off-diagonal element is greater than a treshold,
+     * then a rotation is performed to annihilate that off-diagnonal element.
+     * The process described above is called a sweep.  After a sweep has been
+     * completed, the threshold is lowered and another sweep is performed
+     * with the new threshold. This process is completed until the final
+     * sweep is performed with the final threshold.
+     * The orthogonal transformation which annihilates the matrix element
+     * a[k][m], k != m, is Q = q[i][j], where q[i][j] = 0 if i != j, i,j != k
+     * i,j != m and q[i][j] = 1 if i = j, i,j != k, i,j != m, q[k][k] =
+     * q[m][m] = cos(phi), q[k][m] = -sin(phi), and q[m][k] = sin(phi), where
+     * the angle phi is determined by requiring a[k][m] -> 0.  This condition
+     * on the angle phi is equivalent to<br>
+     * cot(2 phi) = 0.5 * (a[k][k] - a[m][m]) / a[k][m]<br>
+     * Since tan(2 phi) = 2 tan(phi) / (1.0 - tan(phi)^2),<br>
+     * tan(phi)^2 + 2cot(2 phi) * tan(phi) - 1 = 0.<br>
+     * Solving for tan(phi), choosing the solution with smallest magnitude,
+     * tan(phi) = - cot(2 phi) + sgn(cot(2 phi)) sqrt(cot(2phi)^2 + 1).
+     * Then cos(phi)^2 = 1 / (1 + tan(phi)^2) and sin(phi)^2 = 1 - cos(phi)^2.
+     * Finally by taking the sqrts and assigning the sign to the sin the same
+     * as that of the tan, the orthogonal transformation Q is determined.
+     * Let A" be the matrix obtained from the matrix A by applying the
+     * similarity transformation Q, since Q is orthogonal, A" = Q'AQ, where Q'
+     * is the transpose of Q (which is the same as the inverse of Q).  Then
+     * a"[i][j] = Q'[i][p] a[p][q] Q[q][j] = Q[p][i] a[p][q] Q[q][j],
+     * where repeated indices are summed over.
+     * If i is not equal to either k or m, then Q[i][j] is the Kronecker
+     * delta.   So if both i and j are not equal to either k or m,
+     * a"[i][j] = a[i][j].
+     * If i = k, j = k,<br>
+     * a"[k][k] = a[k][k]*cos(phi)^2 + a[k][m]*sin(2 phi) + a[m][m]*sin(phi)^2<br>
+     * If i = k, j = m,<br>
+     * a"[k][m] = a"[m][k] = 0 = a[k][m]*cos(2 phi) + 0.5 * (a[m][m] - a[k][k])*sin(2 phi)<br>
+     * If i = k, j != k or m,<br>
+     * a"[k][j] = a"[j][k] = a[k][j] * cos(phi) + a[m][j] * sin(phi)<br>
+     * If i = m, j = k, a"[m][k] = 0<br>
+     * If i = m, j = m,<br>
+     * a"[m][m] = a[m][m]*cos(phi)^2 - a[k][m]*sin(2 phi) + a[k][k]*sin(phi)^2<br>
+     * If i= m, j != k or m,<br>
+     * a"[m][j] = a"[j][m] = a[m][j] * cos(phi) - a[k][j] * sin(phi)
+     * <p>
+     * If X is the matrix of normalized eigenvectors stored so that the ith
+     * column corresponds to the ith eigenvalue, then AX = X Lamda, where
+     * Lambda is the diagonal matrix with the ith eigenvalue stored at
+     * Lambda[i][i], i.e. X'AX = Lambda and X is orthogonal, the eigenvectors
+     * are normalized and orthogonal.  So, X = Q1 Q2 ... Qs, where Qi is
+     * the ith orthogonal matrix,  i.e. X can be recursively approximated by
+     * the recursion relation X" = X Q, where Q is the orthogonal matrix and
+     * the initial estimate for X is the identity matrix.<br>
+     * If j = k, then x"[i][k] = x[i][k] * cos(phi) + x[i][m] * sin(phi),<br>
+     * if j = m, then x"[i][m] = x[i][m] * cos(phi) - x[i][k] * sin(phi), and<br>
+     * if j != k and j != m, then x"[i][j] = x[i][j].
+     *  
+     * @param matrix is the symmetric matrix.
+     * @param eigenVectors are the matrix of vectors to fill. Eigen vectors are the
+     * columns of the matrix.
+     * @return the eigenvalues which are corresponding to the <var>eigenVectors</var> columns.
+     * @see "Mathematics for 3D Game Programming and Computer Graphics, 2nd edition; pp.437." 
+     */
+    public static float[] eigenVectorsOfSymmetricMatrix(Matrix3f matrix, Matrix3f eigenVectors) {
+            return eigenVectorsJacobi(new Matrix3f(matrix), new Matrix3f(eigenVectors));
+    }
+
+
+    private static float[] eigenVectorsJacobi(Matrix3f m, Matrix3f r) {
+
+            // Copy values up to the diagonal
+            float m11 = m.getElement(0,0);
+            float m12 = m.getElement(0,1);
+            float m13 = m.getElement(0,2);
+            float m22 = m.getElement(1,1);
+            float m23 = m.getElement(1,2);
+            float m33 = m.getElement(2,2);
+            
+            r.setIdentity();
+            
+            boolean sweepsConsumed = true;
+            int i;
+            float u, u2, u2p1, t, c, s;
+            float tmp, ri0, ri1, ri2;
+            
+            for(int a=0; a<JACOBI_MAX_SWEEPS; ++a) {
+                    
+                    // Exit loop if off-diagonal entries are small enough
+                    if ((Math.abs(m12) < MathConstants.JVM_MIN_FLOAT_EPSILON)
+                            && (Math.abs(m13) < MathConstants.JVM_MIN_FLOAT_EPSILON)
+                            && (Math.abs(m23) < MathConstants.JVM_MIN_FLOAT_EPSILON)) {
+                            sweepsConsumed = false;
+                            break;
+                    }
+                    
+                    // Annihilate (1,2) entry
+                    if (m12 != 0.) {
+                            u = (m22 - m11) *.5f / m12;
+                            u2 = u*u;
+                            u2p1 = u2 + 1.f;
+                            
+                            if (u2p1!=u2)
+                                    t = (float) (Math.signum(u) * (Math.sqrt(u2p1) - Math.abs(u)));
+                            else
+                                    t = .5f / u;
+                            
+                            c = (float) (1.f / Math.sqrt(t*t + 1));
+                            s = c * t;
+                            
+                            m11 -= t * m12;
+                            m22 += t * m12;
+                            m12 = 0.f;
+                            
+                            tmp = c * m13 - s * m23;
+                            m23 = s * m13 + c * m23;
+                            m13 = tmp;
+                            
+                            for(i=0; i<3; ++i) {
+                                    ri0 = r.getElement(i,0);
+                                    ri1 = r.getElement(i,1);
+                                    r.setElement(i, 0, c * ri0 - s * ri1);
+                                    r.setElement(i, 1, s * ri0 + c * ri1);
+                            }
+                    }
+                    
+                    // Annihilate (1,3) entry
+                    if (m13 != 0.) {
+                            u = (m33 - m11) *.5f / m13;
+                            u2 = u*u;
+                            u2p1 = u2 + 1.f;
+                            
+                            if (u2p1!=u2)
+                                    t = (float) (Math.signum(u) * (Math.sqrt(u2p1) - Math.abs(u)));
+                            else
+                                    t = .5f / u;
+                            
+                            c = (float) (1.f / Math.sqrt(t*t + 1));
+                            s = c * t;
+                            
+                            m11 -= t * m13;
+                            m33 += t * m13;
+                            m13 = 0.f;
+                            
+                            tmp = c * m12 - s * m23;
+                            m23 = s * m12 + c * m23;
+                            m12 = tmp;
+                            
+                            for(i=0; i<3; ++i) {
+                                    ri0 = r.getElement(i,0);
+                                    ri2 = r.getElement(i,2);
+                                    r.setElement(i, 0, c * ri0 - s * ri2);
+                                    r.setElement(i, 2, s * ri0 + c * ri2);
+                            }
+                    }
+
+                    // Annihilate (2,3) entry
+                    if (m23 != 0.) {
+                            u = (m33 - m22) *.5f / m23;
+                            u2 = u*u;
+                            u2p1 = u2 + 1.f;
+                            
+                            if (u2p1!=u2)
+                                    t = (float) (Math.signum(u) * (Math.sqrt(u2p1) - Math.abs(u)));
+                            else
+                                    t = .5f / u;
+                            
+                            c = (float) (1.f / Math.sqrt(t*t + 1));
+                            s = c * t;
+                            
+                            m22 -= t * m23;
+                            m33 += t * m23;
+                            m23 = 0.f;
+                            
+                            tmp = c * m12 - s * m13;
+                            m13 = s * m12 + c * m13;
+                            m12 = tmp;
+                            
+                            for(i=0; i<3; ++i) {
+                                    ri1 = r.getElement(i,1);
+                                    ri2 = r.getElement(i,2);
+                                    r.setElement(i, 1, c * ri1 - s * ri2);
+                                    r.setElement(i, 2, s * ri1 + c * ri2);
+                            }
+                    }
+            }
+            
+            assert(!sweepsConsumed) : "Sweep count consumed during eigenvector computation"; //$NON-NLS-1$
+            
+            // eigenvalues are on the diagonal
+            return new float[] { m11, m22, m33 };
+    }    
 }

@@ -112,7 +112,7 @@ public class LogisticStochasticLaw extends StochasticLaw {
 	/** {@inheritDoc}
 	 */
 	@Override
-	public MathFunctionRange[] getBounds() {
+	public MathFunctionRange[] getRange() {
 		return MathFunctionRange.createInfinitySet();
 	}
 	

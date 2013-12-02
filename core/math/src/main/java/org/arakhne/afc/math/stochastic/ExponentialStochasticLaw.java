@@ -111,7 +111,7 @@ public class ExponentialStochasticLaw extends StochasticLaw {
 	/** {@inheritDoc}
 	 */
 	@Override
-	public MathFunctionRange[] getBounds() {
+	public MathFunctionRange[] getRange() {
 		return MathFunctionRange.createSet(this.xmin,Float.POSITIVE_INFINITY);
 	}
 	

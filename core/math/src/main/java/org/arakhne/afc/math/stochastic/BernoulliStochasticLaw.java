@@ -106,7 +106,7 @@ public class BernoulliStochasticLaw extends StochasticLaw {
 	/** {@inheritDoc}
 	 */
 	@Override
-	public MathFunctionRange[] getBounds() {
+	public MathFunctionRange[] getRange() {
 		return MathFunctionRange.createDiscreteSet(0.f, 1.f);
 	}
 	
