@@ -21,7 +21,6 @@
 
 package org.arakhne.afc.vmutil;
 
-import org.arakhne.afc.vmutil.locale.Locale;
 
 /**
  * This is a list of supported operating system.  
@@ -352,20 +351,9 @@ public enum OperatingSystem {
 			if (error==null) {
 				nativeWrapper = new OperatingSystemNativeWrapper(type);
 			}
-		}
-
-		if (nativeWrapper==null) {
-			try {
-				String errorMsg = Locale.getString("NATIVE_NOT_SUPPORTED"); //$NON-NLS-1$
-				if (errorMsg!=null && !"".equals(errorMsg)) { //$NON-NLS-1$
-					System.err.println(errorMsg);
-				}
-				else {
-					if (error!=null) error.printStackTrace();
-				}
-			}
-			catch(Throwable e) {
-				e.printStackTrace();
+			else {
+				// Cannot load native wrapper; then use the default one.
+				nativeWrapper = new OperatingSystemUnknownOsWrapper();
 			}
 		}
 	}
