@@ -96,14 +96,14 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Rectangle2
 						pe.fromX + v.getX(),
 						pe.fromY + v.getY());
 				crossings += GeometryUtil.computeCrossingsFromPoint(
-						x, y,
-						pe.fromX, pe.fromY, pe.toX, pe.toY);
+						pe.fromX, pe.fromY,
+						pe.toX, pe.toY, x, y);
 				break;
 			}
 			case CLOSE:
 				crossings += GeometryUtil.computeCrossingsFromPoint(
-						x, y,
-						pe.fromX, pe.fromY, pe.toX, pe.toY);
+						pe.fromX, pe.fromY,
+						pe.toX, pe.toY, x, y);
 				if ((crossings & mask) != 0) return new Point2f(x, y);
 
 				if (!pe.isEmpty()) {
@@ -266,9 +266,9 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Rectangle2
 				if (endx==px && endy==py)
 					return MathConstants.SHAPE_INTERSECTS;
 				crossings += GeometryUtil.computeCrossingsFromPoint(
-						px, py,
 						curx, cury,
-						endx, endy);
+						endx, endy,
+						px, py);
 				curx = endx;
 				cury = endy;
 				break;
@@ -321,9 +321,9 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Rectangle2
 					if (movx==px && movy==py)
 						return MathConstants.SHAPE_INTERSECTS;
 					crossings += GeometryUtil.computeCrossingsFromPoint(
-							px, py,
 							curx, cury,
-							movx, movy);
+							movx, movy,
+							px, py);
 				}
 				curx = movx;
 				cury = movy;
@@ -342,9 +342,9 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Rectangle2
 				if (movx==px && movy==py)
 					return MathConstants.SHAPE_INTERSECTS;
 				crossings += GeometryUtil.computeCrossingsFromPoint(
-						px, py,
 						curx, cury,
-						movx, movy);
+						movx, movy,
+						px, py);
 			}
 			else if (onlyIntersectWhenOpen) {
 				// Assume that when is the path is open, only

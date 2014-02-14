@@ -135,8 +135,8 @@ public class Ellipse2f extends AbstractRectangularShape2f<Ellipse2f> {
 	@Override
 	public boolean contains(Rectangle2f r) {
 		return GeometryUtil.isInsideRectangleEllipse(
-				getMinX(), getMinY(), getWidth(), getHeight(),
-				r.getMinX(), r.getMinY(), r.getWidth(), r.getHeight());
+				r.getMinX(), r.getMinY(), r.getWidth(), r.getHeight(),
+				getMinX(), getMinY(), getWidth(), getHeight());
 	}
 
 	/** {@inheritDoc}

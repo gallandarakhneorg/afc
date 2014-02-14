@@ -697,12 +697,12 @@ public class Tuple3f<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public String toString() {
+	public String toString() { //A couple is written (a,b,c) and not (a;b;c) by convention
 		return "(" //$NON-NLS-1$
 				+this.x
-				+";" //$NON-NLS-1$
+				+"," //$NON-NLS-1$
 				+this.y
-				+";" //$NON-NLS-1$
+				+"," //$NON-NLS-1$
 				+this.z
 				+")"; //$NON-NLS-1$
 	}

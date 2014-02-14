@@ -597,10 +597,10 @@ public class Tuple2f<T extends Tuple2D<? super T>> implements Tuple2D<T> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public String toString() {
+	public String toString() {//A couple is written (a,b) and not (a;b) by convention
 		return "(" //$NON-NLS-1$
 				+this.x
-				+";" //$NON-NLS-1$
+				+"," //$NON-NLS-1$
 				+this.y
 				+")"; //$NON-NLS-1$
 	}

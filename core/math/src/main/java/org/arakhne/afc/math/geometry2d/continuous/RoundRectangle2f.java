@@ -220,7 +220,7 @@ public class RoundRectangle2f extends AbstractRectangularShape2f<RoundRectangle2
 	public Point2D getClosestPointTo(Point2D p) {
 		
 		Point2f closest = new Point2f();
-		GeometryUtil.closestPointPointRoundRectangle(p.getX(), p.getY(), getMinX(), getMinY(), getMaxX(), getMaxY(), getArcWidth(), getArcHeight(), closest);
+		GeometryUtil.closestPointPointRoundRectangle(p.getX(), p.getY(), getMinX(), getMinY(), getMaxX(), getMaxY(), getArcWidth(), getArcHeight(), closest,MathConstants.JVM_MIN_FLOAT_EPSILON);
 		return closest;
 	}
 

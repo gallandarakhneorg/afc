@@ -230,7 +230,7 @@ public class OrientedRectangle2f extends AbstractShape2f<OrientedRectangle2f>{
 	
 	public OrientedRectangle2f(Point2f center, Vector2f axis1, float axis1Extent, float axis2Extent){
 		
-		assert(axis1.lengthSquared() == 1);
+		//assert(axis1.isUnitVector()); //TODO:
 		assert(axis1Extent > 0 && axis2Extent > 0);
 		
 		if(axis1 != null && center != null){
@@ -463,14 +463,14 @@ public class OrientedRectangle2f extends AbstractShape2f<OrientedRectangle2f>{
 	@Override
 	public float distanceSquared(Point2D p) {
 		Point2f closest = new Point2f();
-		GeometryUtil.closestFarthestPointsOBRPoint(p.getX(), p.getY(), cx, cx, rx, ry, sx, sx, extentR, extentS, closest, null);
+		GeometryUtil.closestFarthestPointsPointOBR(p.getX(), p.getY(), cx, cx, rx, ry, sx, sx, extentR, extentS, closest, (Point2f) null);
 		return GeometryUtil.distanceSquaredPointPoint(p.getX(), p.getY(), closest.getX(), closest.getY());
 	}
 
 	@Override
 	public float distanceL1(Point2D p) {
 		Point2f closest = new Point2f();
-		GeometryUtil.closestFarthestPointsOBRPoint(p.getX(), p.getY(), cx, cx, rx, ry, sx, sx, extentR, extentS, closest, null);
+		GeometryUtil.closestFarthestPointsPointOBR(p.getX(), p.getY(), cx, cx, rx, ry, sx, sx, extentR, extentS, closest, null);
 	
 		return 	GeometryUtil.distanceL1PointPoint(p.getX(), p.getY(), closest.getX(), closest.getY());
 	}
@@ -478,7 +478,7 @@ public class OrientedRectangle2f extends AbstractShape2f<OrientedRectangle2f>{
 	@Override
 	public float distanceLinf(Point2D p) {
 		Point2f closest = new Point2f();
-		GeometryUtil.closestFarthestPointsOBRPoint(p.getX(), p.getY(), cx, cx, rx, ry, sx, sx, extentR, extentS, closest, null);
+		GeometryUtil.closestFarthestPointsPointOBR(p.getX(), p.getY(), cx, cx, rx, ry, sx, sx, extentR, extentS, closest, null);
 	
 		return 	GeometryUtil.distanceLInfPointPoint(p.getX(), p.getY(), closest.getX(), closest.getY());
 	}
@@ -492,13 +492,13 @@ public class OrientedRectangle2f extends AbstractShape2f<OrientedRectangle2f>{
 	@Override
 	public boolean contains(float x, float y) {
 		
-		return GeometryUtil.isInsidePointPointOrientedRectangle(x, y, this.cx, this.cy, this.rx, this.ry, this.sx, this.sy, extentR, extentS);
+		return GeometryUtil.isInsidePointOrientedRectangle(x, y, this.cx, this.cy, this.rx, this.ry, this.sx, this.sy, extentR, extentS);
 	}
 
 	@Override
 	public boolean contains(Rectangle2f r) {
 		
-		GeometryUtil.isInsideRectangleRectangleOrientedRectangle(
+		GeometryUtil.isInsideRectangleOrientedRectangle(
 			r.minx, r.miny, r.maxy, r.maxy,
 			this.cx, this.cy, this.rx, this.ry, this.sx, this.sy, extentR, extentS);
 		return false;
@@ -644,7 +644,7 @@ public class OrientedRectangle2f extends AbstractShape2f<OrientedRectangle2f>{
 	@Override
 	public Point2D getClosestPointTo(Point2D p) {
 		Point2f closest = new Point2f();
-		GeometryUtil.closestFarthestPointsOBRPoint(
+		GeometryUtil.closestFarthestPointsPointOBR(
 				p.getX(), p.getY(),this.cx, this.cy, this.rx, this.ry, this.sx, this.sy, extentR, extentS, closest, null);
 		return closest;
 	}

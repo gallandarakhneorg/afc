@@ -584,13 +584,13 @@ public final class ClassifierUtil implements MathConstants{
 		// Find points on OBB closest and farest to sphere center
 		Point3f closest = new Point3f();
 		Point3f farest = new Point3f();
-		GeometryUtil.closestFarthestPointsOBBPoint(
-				boxCenterx,  boxCentery,  boxCenterz,
+		GeometryUtil.closestFarthestPointsPointOBB(
+				sphereCenterx,  sphereCentery,  sphereCenterz,
+				boxCenterx, boxCentery, boxCenterz,
 				boxAxis1x, boxAxis1y, boxAxis1z,
 				boxAxis2x, boxAxis2y, boxAxis2z,
 				boxAxis3x, boxAxis3y, boxAxis3z,
 				boxExtentAxis1, boxExtentAxis2, boxExtentAxis3,
-				sphereCenterx, sphereCentery, sphereCenterz,
 				closest,
 				farest);
 		
@@ -1363,13 +1363,13 @@ public final class ClassifierUtil implements MathConstants{
 		Point3f closestFromB = new Point3f();
 		Point3f farestFromA = new Point3f();
 		Point3f farestFromB = new Point3f();
-		GeometryUtil.closestFarthestPointsOBBPoint(
-				centerx, centery, centerz,axis1x, axis1y, axis1z, axis2x, axis2y, axis2z,	axis3x, axis3y, axis3z,extentAxis1, extentAxis2, extentAxis3,
-				capsule1Ax, capsule1Ay, capsule1Az,
+		GeometryUtil.closestFarthestPointsPointOBB(
+				capsule1Ax, capsule1Ay, capsule1Az,centerx, centery, centerz, axis1x, axis1y, axis1z,	axis2x, axis2y, axis2z,axis3x, axis3y, axis3z,
+				extentAxis1, extentAxis2, extentAxis3,
 				closestFromA, farestFromA);
-		GeometryUtil.closestFarthestPointsOBBPoint(
-				centerx, centery, centerz, axis1x, axis1y, axis1z, axis2x, axis2y, axis2z, axis3x, axis3y, axis3z, extentAxis1, extentAxis2, extentAxis3,
-				capsule1Bx, capsule1By, capsule1Bz,
+		GeometryUtil.closestFarthestPointsPointOBB(
+				capsule1Bx, capsule1By, capsule1Bz, centerx, centery, centerz, axis1x, axis1y, axis1z, axis2x, axis2y, axis2z, axis3x, axis3y, axis3z,
+				extentAxis1, extentAxis2, extentAxis3,
 				closestFromB, farestFromB);
 		
 		float distanceToNearest = GeometryUtil.distanceSegmentSegment(capsule1Ax, capsule1Ay, capsule1Bx, capsule1By, closestFromA.getX(), closestFromA.getY(), closestFromB.getX(), closestFromB.getY(), epsilon);

@@ -292,23 +292,23 @@ class PathShadow2f {//TODO : clarify documentation
 			boolean isUp = (shadow_y0<=shadow_y1);
 			if (isUp) {
 				side1 = GeometryUtil.getPointSideOfLine(
+						sx0, sy0,
 						shadow_x0, shadow_y0,
-						shadow_x1, shadow_y1,
-						sx0, sy0, 0f);
+						shadow_x1, shadow_y1, 0f);
 				side2 = GeometryUtil.getPointSideOfLine(
+						sx1, sy1,
 						shadow_x0, shadow_y0,
-						shadow_x1, shadow_y1,
-						sx1, sy1, 0f);
+						shadow_x1, shadow_y1, 0f);
 			}
 			else {
 				side1 = GeometryUtil.getPointSideOfLine(
+						sx0, sy0,
 						shadow_x1, shadow_y1,
-						shadow_x0, shadow_y0,
-						sx0, sy0, 0f);
+						shadow_x0, shadow_y0, 0f);
 				side2 = GeometryUtil.getPointSideOfLine(
+						sx1, sy1,
 						shadow_x1, shadow_y1,
-						shadow_x0, shadow_y0,
-						sx1, sy1, 0f);
+						shadow_x0, shadow_y0, 0f);
 			}
 			if (side1>0 || side2>0) {
 				computeCrossings3(

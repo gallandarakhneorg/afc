@@ -1122,12 +1122,12 @@ public final class IntersectionUtil implements MathConstants{//TODO faire les JU
     	Point3f closest = new Point3f();
         Point3f farest = new Point3f();
 		
-		GeometryUtil.closestFarthestPointsOBBPoint( boxCenterx,  boxCentery,  boxCenterz,
+		GeometryUtil.closestFarthestPointsPointOBB( sphereCenterx,  sphereCentery,  sphereCenterz,
+				 								boxCenterx, boxCentery, boxCenterz,
 				 								boxAxis1x, boxAxis1y, boxAxis1z,
 				 								boxAxis2x, boxAxis2y, boxAxis2z,
 				 								boxAxis3x, boxAxis3y, boxAxis3z,
-				 								boxExtentAxis1, boxExtentAxis2, boxExtentAxis3,
-												sphereCenterx, sphereCentery, sphereCenterz,
+												boxExtentAxis1, boxExtentAxis2, boxExtentAxis3,
 												closest,
 												farest);
 		
@@ -1160,7 +1160,7 @@ public final class IntersectionUtil implements MathConstants{//TODO faire les JU
 		Point2f closest = new Point2f();
 		Point2f farest = new Point2f();
 	
-		GeometryUtil.closestFarthestPointsOBRPoint( circleCenterx,  circleCentery,
+		GeometryUtil.closestFarthestPointsPointOBR( circleCenterx,  circleCentery,
 											 	obrCenterx,  obrCentery,
 												obrAxis1x,  obrAxis1y,
 												obrAxis2x,  obrAxis2y,
@@ -1600,13 +1600,13 @@ public final class IntersectionUtil implements MathConstants{//TODO faire les JU
 		Point3f closestFromA = new Point3f();
 		Point3f closestFromB = new Point3f();
 		
-		GeometryUtil.closestFarthestPointsOBBPoint(
-				centerx, centery, centerz,axis1x, axis1y, axis1z, axis2x, axis2y, axis2z,	axis3x, axis3y, axis3z,extentAxis1, extentAxis2, extentAxis3,
-				capsule1Ax, capsule1Ay, capsule1Az,
+		GeometryUtil.closestFarthestPointsPointOBB(
+				capsule1Ax, capsule1Ay, capsule1Az,centerx, centery, centerz, axis1x, axis1y, axis1z,	axis2x, axis2y, axis2z,axis3x, axis3y, axis3z,
+				extentAxis1, extentAxis2, extentAxis3,
 				closestFromA, null);
-		GeometryUtil.closestFarthestPointsOBBPoint(
-				centerx, centery, centerz, axis1x, axis1y, axis1z, axis2x, axis2y, axis2z, axis3x, axis3y, axis3z, extentAxis1, extentAxis2, extentAxis3,
-				capsule1Bx, capsule1By, capsule1Bz,
+		GeometryUtil.closestFarthestPointsPointOBB(
+				capsule1Bx, capsule1By, capsule1Bz, centerx, centery, centerz, axis1x, axis1y, axis1z, axis2x, axis2y, axis2z, axis3x, axis3y, axis3z,
+				extentAxis1, extentAxis2, extentAxis3,
 				closestFromB,null);
 		
 		float distance = GeometryUtil.distanceSegmentSegment(capsule1Ax, capsule1Ay, capsule1Bx, capsule1By, closestFromA.getX(), closestFromA.getY(), closestFromB.getX(), closestFromB.getY(), epsilon);
@@ -2118,8 +2118,8 @@ public final class IntersectionUtil implements MathConstants{//TODO faire les JU
 	 * <code>false</code>
 	 */
 	public static boolean intersectsSegmentLine(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4, float epsilon) {
-		return (GeometryUtil.getPointSideOfLine(x3, y3, x4, y4, x1, y1, epsilon) *
-				GeometryUtil.getPointSideOfLine(x3, y3, x4, y4, x2, y2, epsilon)) <= 0;
+		return (GeometryUtil.getPointSideOfLine(x1, y1, x3, y3, x4, y4, epsilon) *
+				GeometryUtil.getPointSideOfLine(x2, y2, x3, y3, x4, y4, epsilon)) <= 0;
 	}
 
 	private static boolean intersectsSSWE(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4) {
@@ -2340,4 +2340,6 @@ public final class IntersectionUtil implements MathConstants{//TODO faire les JU
 		return intersectsRectangleSegment(ax, ay,  bx,  by, -extentR, -extentS, extentR, extentS);
 	}
 	
+	//TODO IntersectTriangleTriangle http://www.exaflop.org/docs/cgafaq/cga5.html#Subject 5.22: How do I determine if two triangles in 3D intersect?
+
 }

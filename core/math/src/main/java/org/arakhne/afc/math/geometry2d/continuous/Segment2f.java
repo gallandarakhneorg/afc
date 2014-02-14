@@ -348,7 +348,11 @@ public class Segment2f extends AbstractShape2f<Segment2f> {
 				getX1(), getY1(),
 				getX2(), getY2());
 	}
-
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * <h3>CAUTION :</h3> The default implementation in Segment2f calls {@link IntersectionUtil#intersectsSegmentSegmentWithoutEnds(float, float, float, float, float, float, float, float).
+	 */
 	@Override
 	public boolean intersects(Segment2f s) {
 		return IntersectionUtil.intersectsSegmentSegmentWithoutEnds(

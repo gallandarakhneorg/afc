@@ -105,7 +105,7 @@ public final class MathUtil implements MathConstants {
 	 *         <var>v2</var>, otherwise <code>false</code>.
 	 */
 	public static boolean isEpsilonEqual(float v1, float v2 , float epsilon) {
-		return Math.abs(v1 - v2) <= epsilon;
+		return  Math.abs(v1 - v2) <= epsilon;
 	}
 
 	/**

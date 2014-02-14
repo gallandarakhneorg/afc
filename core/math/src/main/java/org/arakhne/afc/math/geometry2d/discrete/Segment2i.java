@@ -184,12 +184,12 @@ public class Segment2i extends AbstractShape2i<Segment2i> {
 			int side1, side2;
 			boolean firstIsTop = (sy1<=sy2);
 			if (firstIsTop) {
-				side1 = GeometryUtil.getPointSideOfLine(sx1, sy1, sx2, sy2, x0, y0, 0f);
-				side2 = GeometryUtil.getPointSideOfLine(sx1, sy1, sx2, sy2, x1, y1, 0f);
+				side1 = GeometryUtil.getPointSideOfLine(x0, y0, sx1, sy1, sx2, sy2, 0f);
+				side2 = GeometryUtil.getPointSideOfLine(x1, y1, sx1, sy1, sx2, sy2, 0f);
 			}
 			else {
-				side1 = GeometryUtil.getPointSideOfLine(sx2, sy2, sx1, sy1, x0, y0, 0f);
-				side2 = GeometryUtil.getPointSideOfLine(sx2, sy2, sx1, sy1, x1, y1, 0f);
+				side1 = GeometryUtil.getPointSideOfLine(x0, y0, sx2, sy2, sx1, sy1, 0f);
+				side2 = GeometryUtil.getPointSideOfLine(x1, y1, sx2, sy2, sx1, sy1, 0f);
 			}
 			if (side1>=0 || side2>=0) {
 				// At least one point is on the side of the shadow.
@@ -506,8 +506,8 @@ public class Segment2i extends AbstractShape2i<Segment2i> {
 	 * <code>false</code>
 	 */
 	public static boolean intersectsSegmentSegment(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4) {
-		int side1 = GeometryUtil.getPointSideOfLine(x1, y1, x2, y2, x3, y3, 0f);
-		int side2 = GeometryUtil.getPointSideOfLine(x1, y1, x2, y2, x4, y4, 0f);
+		int side1 = GeometryUtil.getPointSideOfLine(x3, y3, x1, y1, x2, y2, 0f);
+		int side2 = GeometryUtil.getPointSideOfLine(x4, y4, x1, y1, x2, y2, 0f);
 		if ((side1*side2)<=0) {
 			return intersectsSegmentSegment1(x1, y1, x2, y2, x3, y3, x4, y4, true, true, null)!=0;
 		}
