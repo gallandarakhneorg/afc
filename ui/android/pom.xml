@@ -79,10 +79,7 @@
 							<!-- The version code is automatically updated according to the version 
 								number -->
 							<manifest>
-								<versionCode></versionCode>
 								<versionName>${project.version}</versionName>
-								<versionCodeUpdateFromVersion>true</versionCodeUpdateFromVersion>
-								<versionCodeAutoIncrement>false</versionCodeAutoIncrement>
 							</manifest>
 						</configuration>
 					</execution>
