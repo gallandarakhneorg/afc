@@ -37,10 +37,11 @@
 		</dependency>
 
 		<!-- Sonatype Aether for Maven 3.0.x -->
-		<dependency>
+		<!-- <dependency>
 			<groupId>org.sonatype.aether</groupId>
 			<artifactId>aether-api</artifactId>
-		</dependency>
+			<scope>provided</scope>
+		</dependency> -->
 		<!-- Eclipse Aether for Maven 3.1.x -->
 		<dependency>
 			<groupId>org.eclipse.aether</groupId>
