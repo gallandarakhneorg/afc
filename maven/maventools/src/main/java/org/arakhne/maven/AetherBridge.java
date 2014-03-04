@@ -37,7 +37,9 @@ import org.apache.maven.repository.RepositorySystem;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated
  */
+@Deprecated
 class AetherBridge {
 
 	/** Indicates if the current implementation of the 

@@ -50,9 +50,11 @@ import org.apache.maven.model.Organization;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.project.MavenProjectBuilder;
-import org.apache.maven.repository.RepositorySystem;
 import org.arakhne.maven.AbstractArakhneMojo;
 import org.arakhne.maven.ExtendedArtifact;
+import org.eclipse.aether.RepositorySystem;
+import org.eclipse.aether.RepositorySystemSession;
+import org.eclipse.aether.repository.RemoteRepository;
 import org.sonatype.plexus.build.incremental.BuildContext;
 
 /**
@@ -240,7 +242,7 @@ public abstract class AbstractReplaceMojo extends AbstractArakhneMojo implements
 	 * @parameter default-value="${repositorySystemSession}"
 	 * @readonly
 	 */
-	private Object repoSession;
+	private RepositorySystemSession repoSession;
 
 	/**
 	 * The directory where Maven may found the sources. 
@@ -255,7 +257,7 @@ public abstract class AbstractReplaceMojo extends AbstractArakhneMojo implements
 	 * @parameter default-value="${project.remoteProjectRepositories}"
 	 * @readonly
 	 */
-	private List<?> remoteRepos;
+	private List<RemoteRepository> remoteRepos;
 
 	private final Set<File> replacementTreatedFiles = new TreeSet<File>();
 	
@@ -949,7 +951,7 @@ public abstract class AbstractReplaceMojo extends AbstractArakhneMojo implements
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Object getRepositorySystemSession() {
+	public RepositorySystemSession getRepositorySystemSession() {
 		return this.repoSession;
 	}
 
@@ -957,7 +959,7 @@ public abstract class AbstractReplaceMojo extends AbstractArakhneMojo implements
 	 * {@inheritDoc}
 	 */
 	@Override
-	public List<?> getRemoteRepositoryList() {
+	public List<RemoteRepository> getRemoteRepositoryList() {
 		return this.remoteRepos;
 	}
 
