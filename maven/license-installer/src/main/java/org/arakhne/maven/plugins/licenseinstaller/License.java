@@ -27,7 +27,9 @@ import java.net.URL;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated
  */
+@Deprecated
 public enum License {
 
 	/** GNU General Public License v3. */
