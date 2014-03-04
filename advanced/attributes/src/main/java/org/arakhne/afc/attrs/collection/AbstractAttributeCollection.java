@@ -40,6 +40,8 @@ import org.arakhne.afc.attrs.collection.AttributeChangeEvent.Type;
  */
 public abstract class AbstractAttributeCollection extends AbstractAttributeProvider implements AttributeCollection {
 	
+	private static final long serialVersionUID = 8103647267018484556L;
+	
 	private List<AttributeChangeListener> listenerList = null;
 	private boolean isEventFirable = true;
 

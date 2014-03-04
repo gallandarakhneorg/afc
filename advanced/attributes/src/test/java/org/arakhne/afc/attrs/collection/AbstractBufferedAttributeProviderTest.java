@@ -40,6 +40,8 @@ import org.arakhne.afc.attrs.attr.AttributeValue;
  */
 class ReadOnlyCacheProviderStub extends AbstractBufferedAttributeProvider {
 
+	private static final long serialVersionUID = 6750547004777893458L;
+	
 	private final Attribute[] attributes;
 	
 	/**

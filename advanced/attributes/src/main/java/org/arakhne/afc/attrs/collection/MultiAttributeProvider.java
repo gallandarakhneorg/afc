@@ -66,6 +66,8 @@ import org.arakhne.afc.references.SoftValueTreeMap;
  */
 public class MultiAttributeProvider extends AbstractAttributeProvider {
 
+	private static final long serialVersionUID = -2673023673767450220L;
+
 	/** Cache of the attribute values.
 	 */
 	transient Map<String,AttributeValue> cache = new SoftValueTreeMap<String,AttributeValue>();
@@ -335,6 +337,8 @@ public class MultiAttributeProvider extends AbstractAttributeProvider {
 	 */
 	static class ManyValueAttributeValue extends AttributeValueImpl {
 
+		private static final long serialVersionUID = -5153126369737554181L;
+		
 		private boolean hasMultipleValues = false;
 		private AttributeType topType = null;
 		

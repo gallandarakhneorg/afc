@@ -56,6 +56,8 @@ import org.arakhne.afc.ui.vector.Image;
  */
 public abstract class BufferedAttributeCollection extends AbstractAttributeCollection {
 	
+	private static final long serialVersionUID = 1865614675044905721L;
+	
 	private transient Map<String,AttributeValue> cache = new SoftValueTreeMap<String,AttributeValue>();
 	
 	/** Make a deep copy of this object and replies the copy.

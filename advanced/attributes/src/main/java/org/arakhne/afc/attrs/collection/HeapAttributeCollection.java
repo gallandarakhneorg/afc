@@ -58,6 +58,8 @@ import org.arakhne.afc.ui.vector.Image;
  */
 public class HeapAttributeCollection extends AbstractAttributeCollection {
 	
+	private static final long serialVersionUID = 4362736589775617590L;
+	
 	private Map<String,Object> heap = new TreeMap<String,Object>(new AttributeNameStringComparator());
 	
 	/** Make a deep copy of this object and replies the copy.

@@ -46,6 +46,8 @@ import org.arakhne.afc.references.SoftValueTreeMap;
  */
 public abstract class AbstractBufferedAttributeProvider extends AbstractAttributeProvider {
 	
+	private static final long serialVersionUID = -4231000555346674004L;
+	
 	private transient Map<String,AttributeValue> cache = new SoftValueTreeMap<String,AttributeValue>();
 	
 	/** Make a deep copy of this object and replies the copy.
