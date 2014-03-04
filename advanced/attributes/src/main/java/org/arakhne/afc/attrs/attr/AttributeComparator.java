@@ -22,6 +22,7 @@
  */
 package org.arakhne.afc.attrs.attr;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 
@@ -34,9 +35,11 @@ import java.util.Comparator;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class AttributeComparator implements Comparator<Attribute> {
+public class AttributeComparator implements Comparator<Attribute>, Serializable {
 	
-    /**
+	private static final long serialVersionUID = -5930539797174658160L;
+
+	/**
      * Compares its two arguments for order.  Returns a negative integer,
      * zero, or a positive integer as the first argument is less than, equal
      * to, or greater than the second.<p>

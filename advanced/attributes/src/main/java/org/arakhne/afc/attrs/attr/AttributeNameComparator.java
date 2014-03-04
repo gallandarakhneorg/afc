@@ -22,6 +22,7 @@
  */
 package org.arakhne.afc.attrs.attr;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 
@@ -34,7 +35,9 @@ import java.util.Comparator;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class AttributeNameComparator implements Comparator<Attribute> {
+public class AttributeNameComparator implements Comparator<Attribute>, Serializable {
+
+	private static final long serialVersionUID = -2416416144079568908L;
 
 	/** {@inheritDoc}
 	 */
