@@ -22,6 +22,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -60,20 +61,8 @@ class AetherBridge {
 	/**
 	 */
 	private AetherBridge() {
-		//
+		Logger.getAnonymousLogger().info("AETHER API: " + (IS_ECLIPSE_API ? "Eclipse" : "Sonatype")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
-	/*	
-	<!-- Eclipse Aether for Maven 3.1.x -->
-	<dependency>
-		<groupId>org.eclipse.aether</groupId>
-		<artifactId>aether-api</artifactId>
-	</dependency>
-	<!-- Sonatype Aether for Maven 3.0.x -->
-	<dependency>
-		<groupId>org.sonatype.aether</groupId>
-		<artifactId>aether-api</artifactId>
-	</dependency>
-	 */
 
 	private static <T> T newInstance(String classname, Class<T> instanceType, Object... parameters) throws MojoExecutionException {
 		try {
