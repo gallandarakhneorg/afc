@@ -41,13 +41,15 @@ public class ProgressionConsoleMonitor implements ProgressionListener {
 	private final NumberFormat numberFormat;
 	private Progression model = new DefaultProgression();
 	private Logger logger;
+	private int previousValue;
 	
 	/**
 	 */
 	public ProgressionConsoleMonitor() {
 		this.numberFormat = NumberFormat.getPercentInstance();
 		this.numberFormat.setMaximumFractionDigits(0);
-		this.logger = Logger.getAnonymousLogger();
+		this.logger = null;
+		this.previousValue = this.model.getValue();
 		this.model.addProgressionListener(new WeakListener(this, this.model));
 	}
 	
@@ -71,6 +73,7 @@ public class ProgressionConsoleMonitor implements ProgressionListener {
 		else {
 			this.model = model;
 		}
+		this.previousValue = this.model.getValue();
 		this.model.addProgressionListener(new WeakListener(this, this.model));
 	}
 	
@@ -90,12 +93,7 @@ public class ProgressionConsoleMonitor implements ProgressionListener {
 	 * @param logger - the new logger.
 	 */
 	public void setLogger(Logger logger) {
-		if (logger==null) {
-			this.logger = Logger.getAnonymousLogger();
-		}
-		else {
-			this.logger = logger;
-		}
+		this.logger = logger;
 	}
 
 	@Override
@@ -105,13 +103,20 @@ public class ProgressionConsoleMonitor implements ProgressionListener {
 
 	@Override
 	public void onProgressionValueChanged(ProgressionEvent event) {
-		if (!event.isIndeterminate()) {
-			this.logger.info(buildMessage(
+		if (!event.isIndeterminate() && event.getValue()!=this.previousValue) {
+			this.previousValue = event.getValue();
+			String m = buildMessage(
 					event.getProgressionFactor(),
 					event.getComment(),
 					event.isRoot(),
 					event.isFinished(),
-					this.numberFormat));
+					this.numberFormat);
+			if (this.logger==null) {
+				System.out.println(m);
+			}
+			else {
+				this.logger.info(m);
+			}
 		}
 	}
 	
