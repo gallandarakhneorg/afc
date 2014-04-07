@@ -107,7 +107,7 @@ public class ProgressionConsoleMonitor implements ProgressionListener {
 	public void onProgressionValueChanged(ProgressionEvent event) {
 		if (!event.isIndeterminate()) {
 			this.logger.info(buildMessage(
-					event.getPercent(),
+					event.getProgressionFactor(),
 					event.getComment(),
 					event.isRoot(),
 					event.isFinished(),
@@ -118,17 +118,17 @@ public class ProgressionConsoleMonitor implements ProgressionListener {
 	/** Build the logging message from the given data.
 	 * This function is defined for enabling overriding in sub classes.
 	 * 
-	 * @param percent - progression indicator.
+	 * @param progress - progression indicator between 0 and 1 
 	 * @param comment - associated comment.
 	 * @param isRoot - indicates if the progression model is a root model.
 	 * @param isFinished - indicates if the task is finished.
 	 * @param numberFormat - instance of the number formatter.
 	 * @return the message.
 	 */
-	protected String buildMessage(float percent, String comment, boolean isRoot, boolean isFinished, NumberFormat numberFormat) {
+	protected String buildMessage(float progress, String comment, boolean isRoot, boolean isFinished, NumberFormat numberFormat) {
 		StringBuilder txt = new StringBuilder();
 		txt.append('[');
-		txt.append(numberFormat.format(percent));
+		txt.append(numberFormat.format(progress));
 		txt.append("] "); //$NON-NLS-1$
 		if (comment!=null) {
 			txt.append(comment);
