@@ -23,6 +23,7 @@
 package org.arakhne.afc.progress;
 
 import java.lang.ref.WeakReference;
+import java.text.NumberFormat;
 import java.util.logging.Logger;
 
 /**
@@ -36,13 +37,16 @@ import java.util.logging.Logger;
  * @mavenartifactid $ArtifactId$
  */
 public class ProgressionConsoleMonitor implements ProgressionListener {
-	
+
+	private final NumberFormat numberFormat;
 	private Progression model = new DefaultProgression();
 	private Logger logger;
 	
 	/**
 	 */
 	public ProgressionConsoleMonitor() {
+		this.numberFormat = NumberFormat.getPercentInstance();
+		this.numberFormat.setMaximumFractionDigits(0);
 		this.logger = Logger.getAnonymousLogger();
 		this.model.addProgressionListener(new WeakListener(this, this.model));
 	}
@@ -102,18 +106,34 @@ public class ProgressionConsoleMonitor implements ProgressionListener {
 	@Override
 	public void onProgressionValueChanged(ProgressionEvent event) {
 		if (!event.isIndeterminate()) {
-			StringBuilder txt = new StringBuilder();
-			Progression p = event.getTaskProgression();
-			
-			txt.append('[');
-			txt.append("%] "); //$NON-NLS-1$
-			String comment = p.getComment();
-			if (comment!=null) {
-				txt.append(comment);
-			}
-			
-			this.logger.info(txt.toString());
+			this.logger.info(buildMessage(
+					event.getPercent(),
+					event.getComment(),
+					event.isRoot(),
+					event.isFinished(),
+					this.numberFormat));
 		}
+	}
+	
+	/** Build the logging message from the given data.
+	 * This function is defined for enabling overriding in sub classes.
+	 * 
+	 * @param percent - progression indicator.
+	 * @param comment - associated comment.
+	 * @param isRoot - indicates if the progression model is a root model.
+	 * @param isFinished - indicates if the task is finished.
+	 * @param numberFormat - instance of the number formatter.
+	 * @return the message.
+	 */
+	protected String buildMessage(float percent, String comment, boolean isRoot, boolean isFinished, NumberFormat numberFormat) {
+		StringBuilder txt = new StringBuilder();
+		txt.append('[');
+		txt.append(numberFormat.format(percent));
+		txt.append("] "); //$NON-NLS-1$
+		if (comment!=null) {
+			txt.append(comment);
+		}
+		return txt.toString();
 	}
 
 	/**
