@@ -20,6 +20,8 @@
  */
 package org.arakhne.afc.util;
 
+import java.io.Serializable;
+
 /** This class implements triplet of values. 
  *
  * @param <A> is the type of the first value.
@@ -30,8 +32,10 @@ package org.arakhne.afc.util;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class Triplet<A,B,C> {
+public class Triplet<A,B,C> implements Serializable {
 
+	private static final long serialVersionUID = -6979156649417633870L;
+	
 	private A a;
 	private B b;
 	private C c;

@@ -20,6 +20,8 @@
  */
 package org.arakhne.afc.util;
 
+import java.io.Serializable;
+
 /** This class implements pair of values. 
  *
  * @param <A> is the type of the first value.
@@ -29,8 +31,10 @@ package org.arakhne.afc.util;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class Pair<A,B> {
+public class Pair<A,B> implements Serializable {
 
+	private static final long serialVersionUID = -1234576771288320365L;
+	
 	private A a;
 	private B b;
 
