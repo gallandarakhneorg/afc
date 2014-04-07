@@ -70,8 +70,20 @@ public class ProgressionEvent extends EventObject {
 	 * 
 	 * @return <code>true</code> if the task progression is a root,
 	 * otherwise <code>false</code>.
+	 * @deprecated see {@link #isRoot()}
 	 */
+	@Deprecated
 	public boolean isRootTaskProgression() {
+		return isRoot();
+	}
+
+	/** Replies if this event was fired by an task progression source
+	 * which is a root source.
+	 * 
+	 * @return <code>true</code> if the task progression is a root,
+	 * otherwise <code>false</code>.
+	 */
+	public boolean isRoot() {
 		return this.isRoot;
 	}
 
@@ -82,16 +94,40 @@ public class ProgressionEvent extends EventObject {
 	 * 
 	 * @return <code>true</code> if the task was finished,
 	 * otherwise <code>false</code>.
+	 * @deprecated see {@link #isFinished()}
 	 */
+	@Deprecated
 	public boolean isTaskFinished() {
+		return isFinished();
+	}
+
+	/** Replies if the associated task was marked as finished,
+	 * ie the current value is greater or equal to the maximum
+	 * value AND the associated task progression object is a root
+	 * task.
+	 * 
+	 * @return <code>true</code> if the task was finished,
+	 * otherwise <code>false</code>.
+	 */
+	public boolean isFinished() {
 		return this.isRoot && this.value>=this.max;
 	}
 
 	/** Replies the task progression which generate this event.
 	 * 
 	 * @return the model.
+	 * @deprecated see {@link #getProgression()}
 	 */
+	@Deprecated
 	public Progression getTaskProgression() {
+		return getProgression();
+	}
+
+	/** Replies the task progression which generate this event.
+	 * 
+	 * @return the model.
+	 */
+	public Progression getProgression() {
 		return (Progression) getSource();
 	}
 
