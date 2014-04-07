@@ -101,5 +101,29 @@ public class Pair<A,B> implements Serializable {
 	public String toString() {
 		return "<"+this.a+";"+this.b+">";  //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj==this) return true;
+		if (obj instanceof Pair) {
+			Pair<?,?> p = (Pair<?,?>)obj;
+			return innerEqual(this.a, p.a)
+					&& innerEqual(this.b, p.b);
+		}
+		return false;
+	}
+	
+	private static boolean innerEqual(Object a, Object b) {
+		if (a==b) return true;
+		if (a==null || b==null) return false;
+		return a.equals(b);
+	}
+	
+	@Override
+	public int hashCode() {
+		int h = HashCodeUtil.hash(this.a);
+		h = HashCodeUtil.hash(h, this.b);
+		return h;
+	}
 
 }

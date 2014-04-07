@@ -124,4 +124,30 @@ public class Triplet<A,B,C> implements Serializable {
 		return "<"+this.a+";"+this.b+";"+this.c+">";  //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (obj==this) return true;
+		if (obj instanceof Triplet) {
+			Triplet<?,?,?> p = (Triplet<?,?,?>)obj;
+			return innerEqual(this.a, p.a)
+					&& innerEqual(this.b, p.b)
+					&& innerEqual(this.c, p.c);
+		}
+		return false;
+	}
+	
+	private static boolean innerEqual(Object a, Object b) {
+		if (a==b) return true;
+		if (a==null || b==null) return false;
+		return a.equals(b);
+	}
+	
+	@Override
+	public int hashCode() {
+		int h = HashCodeUtil.hash(this.a);
+		h = HashCodeUtil.hash(h, this.b);
+		h = HashCodeUtil.hash(h, this.c);
+		return h;
+	}
+
 }
