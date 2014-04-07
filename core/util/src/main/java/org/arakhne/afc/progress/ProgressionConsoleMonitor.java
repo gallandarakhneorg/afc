@@ -22,6 +22,7 @@
  */
 package org.arakhne.afc.progress;
 
+import java.lang.ref.WeakReference;
 import java.util.logging.Logger;
 
 /**
@@ -36,12 +37,12 @@ import java.util.logging.Logger;
  */
 public class ProgressionConsoleMonitor implements ProgressionListener {
 	
-	private final DefaultProgression model = new DefaultProgression();
+	private Progression model = new DefaultProgression();
 	
 	/**
 	 */
 	public ProgressionConsoleMonitor() {
-		//
+		this.model.addProgressionListener(new WeakListener(this, this.model));
 	}
 	
 	/** Replies the task progression model.
@@ -50,6 +51,21 @@ public class ProgressionConsoleMonitor implements ProgressionListener {
 	 */
 	public Progression getModel() {
 		return this.model;
+	}
+
+	/** Change the task progression model.
+	 * 
+	 * @param model - the task progression model.
+	 */
+	public void setModel(Progression model) {
+		this.model.removeProgressionListener(new WeakListener(this, this.model));
+		if (model==null) {
+			this.model = new DefaultProgression();
+		}
+		else {
+			this.model = model;
+		}
+		this.model.addProgressionListener(new WeakListener(this, this.model));
 	}
 
 	@Override
@@ -72,6 +88,57 @@ public class ProgressionConsoleMonitor implements ProgressionListener {
 			
 			Logger.getAnonymousLogger().info(txt.toString());
 		}
+	}
+
+	/**
+	 * @author $Author: galland$
+	 * @version $Name$ $Revision$ $Date$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	private static class WeakListener implements ProgressionListener {
+		
+		private final WeakReference<ProgressionListener> listener;
+		private final WeakReference<Progression> model;
+		
+		/**
+		 * @param listener
+		 * @param model
+		 */
+		public WeakListener(ProgressionListener listener, Progression model) {
+			this.listener = new WeakReference<ProgressionListener>(listener);
+			this.model = new WeakReference<Progression>(model);
+		}
+
+		@Override
+		public void onProgressionValueChanged(ProgressionEvent event) {
+			ProgressionListener l = this.listener.get();
+			if (l!=null) {
+				l.onProgressionValueChanged(event);
+			}
+			else {
+				removeListener();
+			}
+		}
+
+		@Override
+		public void onProgressionStateChanged(ProgressionEvent event) {
+			ProgressionListener l = this.listener.get();
+			if (l!=null) {
+				l.onProgressionStateChanged(event);
+			}
+			else {
+				removeListener();
+			}
+		}
+		
+		private void removeListener() {
+			Progression p = this.model.get();
+			if (p!=null) {
+				p.removeProgressionListener(this);
+			}
+		}
+		
 	}
 	
 }
