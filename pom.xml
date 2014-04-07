@@ -14,7 +14,7 @@
 	<properties>
 		<afc.version>11.0-SNAPSHOT</afc.version>
 		<previous.stable.afc.version>10.0</previous.stable.afc.version>
-		<year>2013</year>
+		<year>2014</year>
 		<copyrighters>Arakhn&amp;ecirc;.org Members</copyrighters>
 		<sourceEncoding>UTF-8</sourceEncoding>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -134,22 +134,22 @@
 			<dependency>
 				<groupId>org.apache.maven</groupId>
 				<artifactId>maven-plugin-api</artifactId>
-				<version>3.1.1</version>
+				<version>3.2.1</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.maven</groupId>
 				<artifactId>maven-artifact</artifactId>
-				<version>3.1.0</version>
+				<version>3.2.1</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.maven</groupId>
 				<artifactId>maven-core</artifactId>
-				<version>3.1.1</version>
+				<version>3.2.1</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.maven</groupId>
 				<artifactId>maven-compat</artifactId>
-				<version>3.1.1</version>
+				<version>3.2.1</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.maven</groupId>
@@ -171,12 +171,12 @@
 			<dependency>
 				<groupId>org.eclipse.aether</groupId>
 				<artifactId>aether-api</artifactId>
-				<version>0.9.0.M3</version>
+				<version>0.9.0.v20140226</version>
 			</dependency>
 			<dependency>
 				<groupId>org.tmatesoft.svnkit</groupId>
 				<artifactId>svnkit</artifactId>
-				<version>1.7.8</version>
+				<version>1.8.1-1</version>
 			</dependency>
 			<dependency>
 				<groupId>junit</groupId>
@@ -355,7 +355,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-plugin-plugin</artifactId>
-					<version>3.1</version>
+					<version>3.2</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -370,7 +370,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-plugin</artifactId>
-					<version>2.16</version>
+					<version>2.17</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -400,7 +400,7 @@
 				<plugin>
 					<groupId>com.jayway.maven.plugins.android.generation2</groupId>
 					<artifactId>android-maven-plugin</artifactId>
-					<version>3.8.2</version>
+					<version>3.9.0-rc.1</version>
 				</plugin>
 				<!-- This plugin's configuration is used to store Eclipse m2e settings 
 					only. It has no influence on the Maven build itself. This plugin configuration 
