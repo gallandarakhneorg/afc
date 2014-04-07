@@ -38,10 +38,12 @@ import java.util.logging.Logger;
 public class ProgressionConsoleMonitor implements ProgressionListener {
 	
 	private Progression model = new DefaultProgression();
+	private Logger logger;
 	
 	/**
 	 */
 	public ProgressionConsoleMonitor() {
+		this.logger = Logger.getAnonymousLogger();
 		this.model.addProgressionListener(new WeakListener(this, this.model));
 	}
 	
@@ -67,6 +69,30 @@ public class ProgressionConsoleMonitor implements ProgressionListener {
 		}
 		this.model.addProgressionListener(new WeakListener(this, this.model));
 	}
+	
+	/** Replies the logger used by this monitor.
+	 * 
+	 * @return the logger, never <code>null</code>
+	 */
+	public Logger getLogger() {
+		return this.logger;
+	}
+	
+	/** Change the logger used by this monitor.
+	 * If the given logger is <code>null</code>, then
+	 * the {@link Logger#getAnonymousLogger() default anonymous logger}
+	 * will be used.
+	 * 
+	 * @param logger - the new logger.
+	 */
+	public void setLogger(Logger logger) {
+		if (logger==null) {
+			this.logger = Logger.getAnonymousLogger();
+		}
+		else {
+			this.logger = logger;
+		}
+	}
 
 	@Override
 	public void onProgressionStateChanged(ProgressionEvent event) {
@@ -86,7 +112,7 @@ public class ProgressionConsoleMonitor implements ProgressionListener {
 				txt.append(comment);
 			}
 			
-			Logger.getAnonymousLogger().info(txt.toString());
+			this.logger.info(txt.toString());
 		}
 	}
 
