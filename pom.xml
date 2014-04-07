@@ -176,7 +176,7 @@
 			<dependency>
 				<groupId>org.tmatesoft.svnkit</groupId>
 				<artifactId>svnkit</artifactId>
-				<version>1.8.1-1</version>
+				<version>1.8.3-1</version>
 			</dependency>
 			<dependency>
 				<groupId>junit</groupId>
@@ -418,6 +418,7 @@
 										<artifactId>native-maven-plugin</artifactId>
 										<versionRange>[0.1,)</versionRange>
 										<goals>
+										    <goal>default-resource-compile</goal>
 											<goal>javah</goal>
 											<goal>initialize</goal>
 											<goal>manifest</goal>
