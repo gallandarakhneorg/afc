@@ -24,25 +24,25 @@ package org.arakhne.afc.vmutil;
 import java.util.Comparator;
 
 /**
- * This comparator permits to compare two class objects.
+ * This comparator permits to compare two objects according to there references.
  * 
  * @author $Author: galland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 7.0
+ * @since 11.0
  */
-public class ClassComparator implements Comparator<Class<?>> {
+public class ObjectReferenceComparator implements Comparator<Object> {
 
 	/**
 	 * Singleton of a class comparator.
 	 */
-	public static final ClassComparator SINGLETON = new ClassComparator();
+	public static final ObjectReferenceComparator SINGLETON = new ObjectReferenceComparator();
 	
 	/**
 	 * @see #SINGLETON
 	 */
-	protected ClassComparator() {
+	protected ObjectReferenceComparator() {
 		//
 	}
 
@@ -50,16 +50,13 @@ public class ClassComparator implements Comparator<Class<?>> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public int compare(Class<?> o1, Class<?> o2) {
+	public int compare(Object o1, Object o2) {
 		if (o1==o2) return 0;
 		if (o1==null) return Integer.MIN_VALUE;
 		if (o2==null) return Integer.MAX_VALUE;
-		String n1 = o1.getCanonicalName();
-		String n2 = o2.getCanonicalName();
-		if (n1==n2) return 0;
-		if (n1==null) return Integer.MIN_VALUE;
-		if (n2==null) return Integer.MAX_VALUE;
-		return n1.compareTo(n2);
+		int ref1 = System.identityHashCode(o1);
+		int ref2 = System.identityHashCode(o2);
+		return ref1 - ref2;
 	}
 	
 }
