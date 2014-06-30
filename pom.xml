@@ -5,14 +5,14 @@
 	<groupId>org.arakhne.afc</groupId>
 	<artifactId>afc</artifactId>
 	<packaging>pom</packaging>
-	<version>11.0</version>
+	<version>12.0-SNAPSHOT</version>
 	<name>Arakhnê Foundation Classes</name>
 	<inceptionYear>2006</inceptionYear>
 	<url>http://www.arakhne.org/afc/</url>
 	<description>Collection of Java utilities.</description>
 
 	<properties>
-		<afc.version>11.0</afc.version>
+		<afc.version>12.0-SNAPSHOT</afc.version>
 		<year>2014</year>
 		<copyrighters>Arakhn&amp;ecirc;.org Members</copyrighters>
 		<sourceEncoding>UTF-8</sourceEncoding>
@@ -83,29 +83,6 @@
 				<groupId>org.arakhne.afc.maven</groupId>
 				<artifactId>maventools</artifactId>
 				<version>${afc.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.arakhne.afc.core.vmutils</groupId>
-				<artifactId>vmutils-java</artifactId>
-				<version>${afc.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.arakhne.afc.core.vmutils</groupId>
-				<artifactId>vmutils-java</artifactId>
-				<version>${afc.version}</version>
-				<classifier>sources</classifier>
-			</dependency>
-			<dependency>
-				<groupId>org.arakhne.afc.core.vmutils.josuuid</groupId>
-				<artifactId>mingw32</artifactId>
-				<version>${afc.version}</version>
-				<type>dll</type>
-			</dependency>
-			<dependency>
-				<groupId>org.arakhne.afc.core.vmutils.josuuid</groupId>
-				<artifactId>mingw64</artifactId>
-				<version>${afc.version}</version>
-				<type>dll</type>
 			</dependency>
 
 			<!-- ################################################## Third-Party Libraries 

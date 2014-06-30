@@ -6,7 +6,7 @@
 	<parent>
 		<artifactId>afc</artifactId>
 		<groupId>org.arakhne.afc</groupId>
-		<version>11.0</version>
+		<version>12.0-SNAPSHOT</version>
 	</parent>
 
 	<groupId>org.arakhne.afc.ui</groupId>
