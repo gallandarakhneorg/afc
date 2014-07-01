@@ -13,6 +13,7 @@
 
 	<properties>
 		<afc.version>12.0-SNAPSHOT</afc.version>
+		<afc.plugins.version>11.0</afc.plugins.version>
 		<year>2014</year>
 		<copyrighters>Arakhn&amp;ecirc;.org Members</copyrighters>
 		<sourceEncoding>UTF-8</sourceEncoding>
@@ -373,6 +374,11 @@
 					<artifactId>maven-gpg-plugin</artifactId>
 					<version>1.5</version>
 				</plugin>
+				<plugin>
+					<groupId>org.arakhne.afc.maven</groupId>
+					<artifactId>tag-replacer</artifactId>
+					<version>${afc.plugins.version}</version>
+				</plugin>
 				<!-- This plugin's configuration is used to store Eclipse m2e settings 
 					only. It has no influence on the Maven build itself. This plugin configuration 
 					may be removed if all the developpers are using m2e 1.1 or higher. -->
@@ -545,33 +551,40 @@
 								</goals>
 							</execution>
 						</executions>
+						<configuration>
+						</configuration>
+					</plugin>
+					<plugin>
+						<groupId>org.arakhne.afc.maven</groupId>
+						<artifactId>tag-replacer</artifactId>
+						<executions>
+							<execution>
+								<id>update-source-tags</id>
+								<phase>process-sources</phase>
+								<goals>
+									<goal>generatereplacesrc</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+						</configuration>
 					</plugin>
 				</plugins>
 			</build>
+		      <pluginRepositories>
+			<pluginRepository>
+			  <id>org.arakhne-maven</id>
+			  <releases>
+			    <enabled>true</enabled>
+			  </releases>
+			  <snapshots>
+			    <enabled>true</enabled>
+			  </snapshots>
+			  <url>http://download.tuxfamily.org/arakhne/maven</url>
+			  <layout>default</layout>
+			</pluginRepository>
+		      </pluginRepositories>
 		</profile>
 	</profiles>
-
-	<!-- ======================================= -->
-	<!-- ==== Repositories === -->
-	<!-- ======================================= -->
-
-	<!-- For snapshots only
-	<repositories>
-		<repository>
-			<id>org.arakhne-maven</id>
-			<name>Arakhn&amp;ecirc; Maven Repository</name>
-			<url>http://download.tuxfamily.org/arakhne/maven/</url>
-		</repository>
-	</repositories>
-	<pluginRepositories>
-		<pluginRepository>
-			<id>org.arakhne-maven</id>
-			<name>Arakhn&amp;ecirc; Maven Repository</name>
-			<url>http://download.tuxfamily.org/arakhne/maven/</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</pluginRepository>
-	</pluginRepositories> -->
 
 </project>
