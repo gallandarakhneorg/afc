@@ -660,7 +660,7 @@ public final class GeometryUtil implements MathConstants {
 	 *            similar and there is an infinity of intersection's point so
 	 *            intersection will be set to the Point (inf,inf).
 	 */
-	public static void getIntersectionPointLineLine(float x1, float y1,
+	public static void getIntersectionPointLineLin(float x1, float y1,
 			float x2, float y2, float x3, float y3, float x4, float y4,
 			Point2D intersection) {
 
