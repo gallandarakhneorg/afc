@@ -550,6 +550,17 @@ public class Quaternion implements Cloneable, Serializable {
 		this.d = w*mag;
 	}
 
+	/** Set the quaternion coordinates.
+	 * 
+	 * @param q
+	 */
+	public void set(Quaternion q) {
+		this.x = q.x;
+		this.y = q.y;
+		this.z = q.z;
+		this.w = q.w;
+	}
+
 	/**
 	 * Sets the value of this quaternion to the equivalent rotation
 	 * of the Axis-Angle arguments.

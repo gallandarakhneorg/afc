@@ -39,13 +39,13 @@ import org.arakhne.afc.math.geometry2d.Path2D;
  */
 class PathShadow2f {//TODO : clarify documentation
 
-	private final Path2D<Rectangle2f,PathElement2f,PathIterator2f> path;
+	private final Path2D<?,Rectangle2f,PathElement2f,PathIterator2f> path;
 	private final Rectangle2f bounds;
 
 	/**
 	 * @param path
 	 */
-	public PathShadow2f(Path2D<Rectangle2f,PathElement2f,PathIterator2f> path) {
+	public PathShadow2f(Path2D<?,Rectangle2f,PathElement2f,PathIterator2f> path) {
 		this.path = path;
 		this.bounds = this.path.toBoundingBox();
 	}

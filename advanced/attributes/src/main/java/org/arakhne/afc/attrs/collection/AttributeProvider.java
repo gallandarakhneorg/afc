@@ -22,6 +22,7 @@
  */
 package org.arakhne.afc.attrs.collection;
 
+import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.URI;
@@ -47,7 +48,7 @@ import org.arakhne.afc.ui.vector.Image;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public interface AttributeProvider { 
+public interface AttributeProvider  extends Cloneable, Serializable { 
 
 	/** Make a deep copy of this object and replies the copy.
 	 * 

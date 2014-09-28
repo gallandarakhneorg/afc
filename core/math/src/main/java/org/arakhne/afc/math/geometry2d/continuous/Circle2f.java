@@ -100,6 +100,15 @@ public class Circle2f extends AbstractShape2f<Circle2f> {
 		set(x, y, radius);
 	}
 	
+	/** Construct a circle from a circle.
+	 * @param c
+	 */
+	public Circle2f(Circle2f c) {
+		this.cx = c.cx;
+		this.cy = c.cy;
+		this.radius = c.radius;
+	}
+
 	@Override
 	public void clear() {
 		this.cx = this.cy = 0f;
@@ -138,6 +147,14 @@ public class Circle2f extends AbstractShape2f<Circle2f> {
 		this.cx = center.getX();
 		this.cy = center.getY();
 		this.radius = Math.abs(radius);
+	}
+
+	@Override
+	public void set(Shape2f s) {
+		Rectangle2f r = s.toBoundingBox();
+		this.cx = r.getCenterX();
+		this.cy = r.getCenterY();
+		this.radius = Math.min(r.getWidth(), r.getHeight()) / 2f;
 	}
 
 	/** Replies the center X.

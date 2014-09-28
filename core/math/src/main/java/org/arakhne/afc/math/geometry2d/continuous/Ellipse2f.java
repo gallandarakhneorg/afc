@@ -91,11 +91,11 @@ public class Ellipse2f extends AbstractRectangularShape2f<Ellipse2f> {
 		super(x, y, width, height);
 	}
 
-	/** {@inheritDoc}
+	/**
+	 * @param e
 	 */
-	@Override
-	public Rectangle2f toBoundingBox() {
-		return new Rectangle2f(getMinX(), getMinY(), getMaxX(), getMaxY());
+	public Ellipse2f(Ellipse2f e) {
+		super(e);
 	}
 
 	/** {@inheritDoc}

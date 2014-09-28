@@ -428,4 +428,24 @@ public class DefaultProgression implements Progression {
 				true, true, false, null);
 	}
 
+	@Override
+	public void increment(int amount) {
+		setProperties((int)this.current+amount, this.min, this.max, this.isAdjusting, this.comment, false, true, false, null);
+	}
+
+	@Override
+	public void increment(int amount, String comment) {
+		setProperties((int)this.current+amount, this.min, this.max, this.isAdjusting, comment, true, true, false, null);
+	}
+
+	@Override
+	public void increment() {
+		setProperties((int)this.current+1, this.min, this.max, this.isAdjusting, this.comment, false, true, false, null);
+	}
+
+	@Override
+	public void increment(String comment) {
+		setProperties((int)this.current+1, this.min, this.max, this.isAdjusting, comment, true, true, false, null);
+	}
+
 }

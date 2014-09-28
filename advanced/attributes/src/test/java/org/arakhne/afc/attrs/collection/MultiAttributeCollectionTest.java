@@ -932,6 +932,8 @@ public class MultiAttributeCollectionTest extends AbstractAttrTestCase {
 	 */
 	private static class AttributeContainerStub extends AbstractAttributeProvider {
 
+		private static final long serialVersionUID = 4440233943216959812L;
+		
 		/** Attribute provider wrapped by this stub.
 		 */
 		public final HeapAttributeCollection provider = new HeapAttributeCollection();

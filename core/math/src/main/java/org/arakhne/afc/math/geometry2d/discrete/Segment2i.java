@@ -683,6 +683,16 @@ public class Segment2i extends AbstractShape2i<Segment2i> {
 		set(x1, y1, x2, y2);
 	}
 
+	/**
+	 * @param s
+	 */
+	public Segment2i(Segment2i s) {
+		this.ax = s.ax;
+		this.ay = s.ay;
+		this.bx = s.bx;
+		this.by = s.by;
+	}
+
 	@Override
 	public void clear() {
 		this.ax = this.ay = this.bx = this.by = 0;
@@ -725,6 +735,15 @@ public class Segment2i extends AbstractShape2i<Segment2i> {
 		this.ay = a.y();
 		this.bx = b.x();
 		this.by = b.y();
+	}
+	
+	@Override
+	public void set(Shape2i s) {
+		Rectangle2i r = s.toBoundingBox();
+		this.ax = r.getMinX();
+		this.ay = r.getMinY();
+		this.bx = r.getMaxX();
+		this.by = r.getMaxY();
 	}
 
 	/** Replies the X of the first point.
@@ -775,8 +794,6 @@ public class Segment2i extends AbstractShape2i<Segment2i> {
 		return new Point2i(this.bx, this.by);
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public Rectangle2i toBoundingBox() {
 		Rectangle2i r = new Rectangle2i();
@@ -786,6 +803,15 @@ public class Segment2i extends AbstractShape2i<Segment2i> {
 				this.bx,
 				this.by);
 		return r;
+	}
+
+	@Override
+	public void toBoundingBox(Rectangle2i box) {
+		box.setFromCorners(
+				this.ax,
+				this.ay,
+				this.bx,
+				this.by);
 	}
 
 	/** {@inheritDoc}
@@ -1127,6 +1153,11 @@ public class Segment2i extends AbstractShape2i<Segment2i> {
 			return PathWindingRule.NON_ZERO;
 		}
 
+		@Override
+		public boolean isPolyline() {
+			return false;
+		}
+		
 	}
 
 	/** The Bresenham line algorithm is an algorithm which determines which points in 

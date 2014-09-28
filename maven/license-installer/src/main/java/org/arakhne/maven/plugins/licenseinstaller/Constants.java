@@ -25,7 +25,9 @@ package org.arakhne.maven.plugins.licenseinstaller;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated
  */
+@Deprecated
 public interface Constants {
 
 	/**

@@ -735,6 +735,11 @@ public class Path2i extends AbstractShape2i<Path2i> {
 	 * (a path with a line or a curve).
 	 */
 	private Boolean isEmpty = Boolean.TRUE;
+	
+	/** Indicates if the path contains base primitives
+	 * (no curve).
+	 */
+	private Boolean isPolyline = Boolean.TRUE;
 
 	/** Buffer for the bounds of the path.
 	 */
@@ -773,6 +778,27 @@ public class Path2i extends AbstractShape2i<Path2i> {
 		this.coords = new int[GROW_SIZE];
 		this.windingRule = windingRule;
 		add(iterator);
+	}
+
+	/**
+	 * @param p
+	 */
+	public Path2i(Path2i p) {
+		this.coords = p.coords.clone();
+		this.isEmpty = p.isEmpty;
+		this.isPolyline = p.isPolyline;
+		this.numCoords = p.numCoords;
+		this.types = p.types.clone();
+		this.windingRule = p.windingRule;
+		Rectangle2i box;
+		box = p.graphicalBounds==null ? null : p.graphicalBounds.get();
+		if (box!=null) {
+			this.graphicalBounds = new SoftReference<Rectangle2i>(box.clone());
+		}
+		box = p.logicalBounds==null ? null : p.logicalBounds.get();
+		if (box!=null) {
+			this.logicalBounds = new SoftReference<Rectangle2i>(box.clone());
+		}
 	}
 
 	@Override
@@ -1175,6 +1201,75 @@ public class Path2i extends AbstractShape2i<Path2i> {
 		return (crossings == MathConstants.SHAPE_INTERSECTS ||
 				(crossings & mask) != 0);
 	}
+	
+	private static boolean buildGraphicalBoundingBox(PathIterator2i iterator, Rectangle2i box) {
+		boolean foundOneLine = false;
+		int xmin = Integer.MAX_VALUE;
+		int ymin = Integer.MAX_VALUE;
+		int xmax = Integer.MIN_VALUE;
+		int ymax = Integer.MIN_VALUE;
+		PathElement2i element;
+		Path2i subPath;
+		while (iterator.hasNext()) {
+			element = iterator.next();
+			switch(element.type) {
+			case LINE_TO:
+				if (element.fromX<xmin) xmin = element.fromX;
+				if (element.fromY<ymin) ymin = element.fromY;
+				if (element.fromX>xmax) xmax = element.fromX;
+				if (element.fromY>ymax) ymax = element.fromY;
+				if (element.toX<xmin) xmin = element.toX;
+				if (element.toY<ymin) ymin = element.toY;
+				if (element.toX>xmax) xmax = element.toX;
+				if (element.toY>ymax) ymax = element.toY;
+				foundOneLine = true;
+				break;
+			case CURVE_TO:
+				subPath = new Path2i();
+				subPath.moveTo(element.fromX, element.fromY);
+				subPath.curveTo(
+						element.ctrlX1, element.ctrlY1,
+						element.ctrlX2, element.ctrlY2,
+						element.toX, element.toY);
+				if (buildGraphicalBoundingBox(
+						subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						box)) {
+					if (box.getMinX()<xmin) xmin = box.getMinX();
+					if (box.getMinY()<ymin) ymin = box.getMinY();
+					if (box.getMaxX()>xmax) xmax = box.getMaxX();
+					if (box.getMinX()>ymax) ymax = box.getMinX();
+					foundOneLine = true;
+				}
+				break;
+			case QUAD_TO:
+				subPath = new Path2i();
+				subPath.moveTo(element.fromX, element.fromY);
+				subPath.quadTo(
+						element.ctrlX1, element.ctrlY1,
+						element.toX, element.toY);
+				if (buildGraphicalBoundingBox(
+						subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						box)) {
+					if (box.getMinX()<xmin) xmin = box.getMinX();
+					if (box.getMinY()<ymin) ymin = box.getMinY();
+					if (box.getMaxX()>xmax) xmax = box.getMaxX();
+					if (box.getMinX()>ymax) ymax = box.getMinX();
+					foundOneLine = true;
+				}
+				break;
+			case MOVE_TO:
+			case CLOSE:
+			default:
+			}
+		}
+		if (foundOneLine) {
+			box.setFromCorners(xmin, ymin, xmax, ymax);
+		}
+		else {
+			box.clear();
+		}
+		return foundOneLine;
+	}
 
 	@Override
 	public Rectangle2i toBoundingBox() {
@@ -1190,11 +1285,84 @@ public class Path2i extends AbstractShape2i<Path2i> {
 				if (this.coords[i]>xmax) xmax = this.coords[i];
 				if (this.coords[i+1]>ymax) ymax = this.coords[i+1];
 			}
+			box.setFromCorners(xmin,  ymin, xmax, ymax);
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * The replied bounding box does not consider the control points
+	 * of the path. Only the "visible" points are considered.
+	 * 
+	 * @see #toBoundingBoxWithCtrlPoints()
+	 */
+	@Override
+	public Rectangle2i toBoundingBox() {
+		Rectangle2i bb = this.graphicalBounds==null ? null : this.graphicalBounds.get();
+		if (bb==null) {
 			bb = new Rectangle2i();
 			bb.setFromCorners(xmin, ymin, xmax, ymax);
 			this.bounds = new SoftReference<Rectangle2i>(bb);
 		}
 		return bb;
+	}
+	
+	/** Replies the bounding box of all the points added in this path.
+	 * <p>
+	 * The replied bounding box includes the (invisible) control points.
+	 * 
+	 * @return the bounding box with the control points.
+	 * @see #toBoundingBox()
+	 */
+	public Rectangle2i toBoundingBoxWithCtrlPoints() {
+		Rectangle2i bb = this.logicalBounds==null ? null : this.logicalBounds.get();
+		if (bb==null) {
+			bb = new Rectangle2i();
+			buildLogicalBoundingBox(bb);
+			this.logicalBounds = new SoftReference<Rectangle2i>(bb);
+		}
+		return bb;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * The replied bounding box does not consider the control points
+	 * of the path. Only the "visible" points are considered.
+	 * 
+	 * @see #toBoundingBoxWithCtrlPoints(Rectangle2i)
+	 */
+	@Override
+	public void toBoundingBox(Rectangle2i box) {
+		Rectangle2i bb = this.graphicalBounds==null ? null : this.graphicalBounds.get();
+		if (bb==null) {
+			bb = new Rectangle2i();
+			buildGraphicalBoundingBox(
+					getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+					bb);
+			this.graphicalBounds = new SoftReference<Rectangle2i>(bb);
+		}
+		box.set(bb);
+	}
+
+	/** Compute the bounding box of all the points added in this path.
+	 * <p>
+	 * The replied bounding box includes the (invisible) control points.
+	 * 
+	 * @param box is the rectangle to set with the bounds.
+	 * @see #toBoundingBox()
+	 */
+	public void toBoundingBoxWithCtrlPoints(Rectangle2i box) {
+		Rectangle2i bb = this.logicalBounds==null ? null : this.logicalBounds.get();
+		if (bb==null) {
+			bb = new Rectangle2i();
+			buildLogicalBoundingBox(bb);
+			this.logicalBounds = new SoftReference<Rectangle2i>(bb);
+		}
+		box.set(bb);
 	}
 
 	@Override
@@ -1465,6 +1633,7 @@ public class Path2i extends AbstractShape2i<Path2i> {
 					--this.numTypes;
 					System.arraycopy(this.coords, i+2, this.coords, i, this.numCoords);
 					System.arraycopy(this.types, j+1, this.types, j, this.numTypes);
+					this.isEmpty = null;
 					return true;
 				}
 				i += 2;
@@ -1478,6 +1647,8 @@ public class Path2i extends AbstractShape2i<Path2i> {
 					--this.numTypes;
 					System.arraycopy(this.coords, i+6, this.coords, i, this.numCoords);
 					System.arraycopy(this.types, j+1, this.types, j, this.numTypes);
+					this.isEmpty = null;
+					this.isPolyline = null;
 					return true;
 				}
 				i += 6;
@@ -1490,6 +1661,8 @@ public class Path2i extends AbstractShape2i<Path2i> {
 					--this.numTypes;
 					System.arraycopy(this.coords, i+4, this.coords, i, this.numCoords);
 					System.arraycopy(this.types, j+1, this.types, j, this.numTypes);
+					this.isEmpty = null;
+					this.isPolyline = null;
 					return true;
 				}
 				i += 4;
@@ -1519,9 +1692,11 @@ public class Path2i extends AbstractShape2i<Path2i> {
 				break;
 			case CURVE_TO:
 				this.numCoords -= 6;
+				this.isPolyline = null;
 				break;
 			case QUAD_TO:
 				this.numCoords -= 4;
+				this.isPolyline = null;
 				break;
 			default:
 				throw new IllegalStateException();
@@ -1544,6 +1719,12 @@ public class Path2i extends AbstractShape2i<Path2i> {
 			this.bounds = null;
 		}
 	}
+	
+	@Override
+	public void set(Shape2i s) {
+		clear();
+		add(s.getPathIterator());
+	}
 
 	/** Replies the points along the path.
 	 * <p>
@@ -1557,6 +1738,24 @@ public class Path2i extends AbstractShape2i<Path2i> {
 	public Iterator<Point2i> getPointIterator() {
 		PathIterator2i pathIterator = getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO);
 		return new PixelIterator(pathIterator);
+	}
+
+	@Override
+	public boolean isPolyline() {
+		if (this.isPolyline==null) {
+			this.isPolyline = Boolean.TRUE;
+			PathIterator2i pi = getPathIterator();
+			PathElement2i pe;
+			PathElementType t;
+			while (this.isPolyline==Boolean.TRUE && pi.hasNext()) {
+				pe = pi.next();
+				t = pe.getType();
+				if (t==PathElementType.CURVE_TO || t==PathElementType.QUAD_TO) { 
+					this.isPolyline = Boolean.FALSE;
+				}
+			}
+		}
+		return this.isPolyline.booleanValue();
 	}
 
 	/** A path iterator that does not transform the coordinates.
@@ -1677,6 +1876,11 @@ public class Path2i extends AbstractShape2i<Path2i> {
 		@Override
 		public PathWindingRule getWindingRule() {
 			return Path2i.this.getWindingRule();
+		}
+		
+		@Override
+		public boolean isPolyline() {
+			return Path2i.this.isPolyline();
 		}
 
 	} // class CopyPathIterator
@@ -1799,6 +2003,11 @@ public class Path2i extends AbstractShape2i<Path2i> {
 		@Override
 		public PathWindingRule getWindingRule() {
 			return Path2i.this.getWindingRule();
+		}
+
+		@Override
+		public boolean isPolyline() {
+			return Path2i.this.isPolyline();
 		}
 
 	}  // class TransformPathIterator
@@ -2561,6 +2770,11 @@ public class Path2i extends AbstractShape2i<Path2i> {
 		@Override
 		public PathWindingRule getWindingRule() {
 			return this.windingRule;
+		}
+		
+		@Override
+		public boolean isPolyline() {
+			return false; // Because the iterator flats the path, this is no curve inside.
 		}
 
 	} // class FlatteningPathIterator

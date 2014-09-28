@@ -22,6 +22,7 @@
  */
 package org.arakhne.afc.attrs.attr;
 
+import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.URI;
 import java.net.URL;
@@ -43,7 +44,7 @@ import org.arakhne.afc.ui.vector.Image;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public interface AttributeValue {
+public interface AttributeValue extends Cloneable, Serializable {
 
 	/**
 	 * Replies a comparator suitable for attribute values.

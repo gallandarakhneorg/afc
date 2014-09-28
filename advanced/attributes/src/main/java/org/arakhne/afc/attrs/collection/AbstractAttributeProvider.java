@@ -48,8 +48,10 @@ import org.arakhne.afc.ui.vector.Image;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public abstract class AbstractAttributeProvider implements AttributeProvider, Iterable<Attribute>, Cloneable {
+public abstract class AbstractAttributeProvider implements AttributeProvider, Iterable<Attribute> {
 		
+	private static final long serialVersionUID = 1219373996718945571L;
+
 	/** Ensure that the <code>null</code> value for <var>rawAttributeValue</var>
 	 * is catched and replaced by a dedicated representant object.
 	 * This function permits to keep the type of a value even if it is <code>null</code>.

@@ -348,6 +348,16 @@ public class Circle2i extends AbstractShape2i<Circle2i> {
 		set(x, y, radius);
 	}
 
+	/**
+	 * @param c
+	 * 
+	 */
+	public Circle2i(Circle2i c) {
+		this.cx = c.cx;
+		this.cy = c.cy;
+		this.radius = c.radius;
+	}
+
 	/** {@inheritDoc}
 	 */
 	@Override
@@ -377,6 +387,14 @@ public class Circle2i extends AbstractShape2i<Circle2i> {
 		this.cx = x;
 		this.cy = y;
 		this.radius = Math.abs(radius);
+	}
+	
+	@Override
+	public void set(Shape2i s) {
+		Rectangle2i r = s.toBoundingBox();
+		this.cx = r.getCenterX();
+		this.cy = r.getCenterY();
+		this.radius = Math.min(r.getWidth(), r.getHeight()) / 2;
 	}
 
 	/** Change the frame of te circle.
@@ -422,8 +440,6 @@ public class Circle2i extends AbstractShape2i<Circle2i> {
 		return this.radius;
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public Rectangle2i toBoundingBox() {
 		Rectangle2i r = new Rectangle2i();
@@ -433,6 +449,15 @@ public class Circle2i extends AbstractShape2i<Circle2i> {
 				this.cx+this.radius,
 				this.cy+this.radius);
 		return r;
+	}
+
+	@Override
+	public void toBoundingBox(Rectangle2i box) {
+		box.setFromCorners(
+				this.cx-this.radius,
+				this.cy-this.radius,
+				this.cx+this.radius,
+				this.cy+this.radius);
 	}
 
 	/** {@inheritDoc}
@@ -862,6 +887,11 @@ public class Circle2i extends AbstractShape2i<Circle2i> {
 			return PathWindingRule.NON_ZERO;
 		}
 
+		@Override
+		public boolean isPolyline() {
+			return false;
+		}
+		
 	}
 
 	/** Iterator on the path elements of the circle.
@@ -961,6 +991,11 @@ public class Circle2i extends AbstractShape2i<Circle2i> {
 			return PathWindingRule.NON_ZERO;
 		}
 
+		@Override
+		public boolean isPolyline() {
+			return false;
+		}
+		
 	}
 
 }

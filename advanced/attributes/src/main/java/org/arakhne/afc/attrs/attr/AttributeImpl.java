@@ -45,6 +45,8 @@ import org.arakhne.afc.ui.vector.Image;
  */
 public class AttributeImpl extends AttributeValueImpl implements Attribute {
 	
+	private static final long serialVersionUID = -3805997544158892016L;
+
 	/** Compare the two specified attributes.
 	 *
 	 * @param arg0

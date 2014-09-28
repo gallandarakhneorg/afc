@@ -22,6 +22,8 @@
  */
 package org.arakhne.afc.progress;
 
+import java.lang.ref.WeakReference;
+import java.text.NumberFormat;
 import java.util.logging.Logger;
 
 /**
@@ -35,13 +37,20 @@ import java.util.logging.Logger;
  * @mavenartifactid $ArtifactId$
  */
 public class ProgressionConsoleMonitor implements ProgressionListener {
-	
-	private final DefaultProgression model = new DefaultProgression();
+
+	private final NumberFormat numberFormat;
+	private Progression model = new DefaultProgression();
+	private Logger logger;
+	private int previousValue;
 	
 	/**
 	 */
 	public ProgressionConsoleMonitor() {
-		//
+		this.numberFormat = NumberFormat.getPercentInstance();
+		this.numberFormat.setMaximumFractionDigits(0);
+		this.logger = null;
+		this.previousValue = this.model.getValue();
+		this.model.addProgressionListener(new WeakListener(this, this.model));
 	}
 	
 	/** Replies the task progression model.
@@ -52,6 +61,41 @@ public class ProgressionConsoleMonitor implements ProgressionListener {
 		return this.model;
 	}
 
+	/** Change the task progression model.
+	 * 
+	 * @param model - the task progression model.
+	 */
+	public void setModel(Progression model) {
+		this.model.removeProgressionListener(new WeakListener(this, this.model));
+		if (model==null) {
+			this.model = new DefaultProgression();
+		}
+		else {
+			this.model = model;
+		}
+		this.previousValue = this.model.getValue();
+		this.model.addProgressionListener(new WeakListener(this, this.model));
+	}
+	
+	/** Replies the logger used by this monitor.
+	 * 
+	 * @return the logger, never <code>null</code>
+	 */
+	public Logger getLogger() {
+		return this.logger;
+	}
+	
+	/** Change the logger used by this monitor.
+	 * If the given logger is <code>null</code>, then
+	 * the {@link Logger#getAnonymousLogger() default anonymous logger}
+	 * will be used.
+	 * 
+	 * @param logger - the new logger.
+	 */
+	public void setLogger(Logger logger) {
+		this.logger = logger;
+	}
+
 	@Override
 	public void onProgressionStateChanged(ProgressionEvent event) {
 		//
@@ -59,19 +103,93 @@ public class ProgressionConsoleMonitor implements ProgressionListener {
 
 	@Override
 	public void onProgressionValueChanged(ProgressionEvent event) {
-		if (!event.isIndeterminate()) {
-			StringBuilder txt = new StringBuilder();
-			Progression p = event.getTaskProgression();
-			
-			txt.append('[');
-			txt.append("%] "); //$NON-NLS-1$
-			String comment = p.getComment();
-			if (comment!=null) {
-				txt.append(comment);
+		if (!event.isIndeterminate() && event.getValue()!=this.previousValue) {
+			this.previousValue = event.getValue();
+			String m = buildMessage(
+					event.getProgressionFactor(),
+					event.getComment(),
+					event.isRoot(),
+					event.isFinished(),
+					this.numberFormat);
+			if (this.logger==null) {
+				System.out.println(m);
 			}
-			
-			Logger.getAnonymousLogger().info(txt.toString());
+			else {
+				this.logger.info(m);
+			}
 		}
+	}
+	
+	/** Build the logging message from the given data.
+	 * This function is defined for enabling overriding in sub classes.
+	 * 
+	 * @param progress - progression indicator between 0 and 1 
+	 * @param comment - associated comment.
+	 * @param isRoot - indicates if the progression model is a root model.
+	 * @param isFinished - indicates if the task is finished.
+	 * @param numberFormat - instance of the number formatter.
+	 * @return the message.
+	 */
+	protected String buildMessage(float progress, String comment, boolean isRoot, boolean isFinished, NumberFormat numberFormat) {
+		StringBuilder txt = new StringBuilder();
+		txt.append('[');
+		txt.append(numberFormat.format(progress));
+		txt.append("] "); //$NON-NLS-1$
+		if (comment!=null) {
+			txt.append(comment);
+		}
+		return txt.toString();
+	}
+
+	/**
+	 * @author $Author: galland$
+	 * @version $Name$ $Revision$ $Date$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	private static class WeakListener implements ProgressionListener {
+		
+		private final WeakReference<ProgressionListener> listener;
+		private final WeakReference<Progression> model;
+		
+		/**
+		 * @param listener
+		 * @param model
+		 */
+		public WeakListener(ProgressionListener listener, Progression model) {
+			this.listener = new WeakReference<ProgressionListener>(listener);
+			this.model = new WeakReference<Progression>(model);
+		}
+
+		@Override
+		public void onProgressionValueChanged(ProgressionEvent event) {
+			ProgressionListener l = this.listener.get();
+			if (l!=null) {
+				l.onProgressionValueChanged(event);
+			}
+			else {
+				removeListener();
+			}
+		}
+
+		@Override
+		public void onProgressionStateChanged(ProgressionEvent event) {
+			ProgressionListener l = this.listener.get();
+			if (l!=null) {
+				l.onProgressionStateChanged(event);
+			}
+			else {
+				removeListener();
+			}
+		}
+		
+		private void removeListener() {
+			Progression p = this.model.get();
+			if (p!=null) {
+				p.removeProgressionListener(this);
+			}
+		}
+		
 	}
 	
 }

@@ -206,3 +206,15 @@ h3. 2.5. Examples
 You could find examples of @pom.xml@ in the following projects:
 * Apk: "Android Editor for Finite State Machine":https://github.com/gallandarakhneorg/neteditor/blob/master/neteditor-fsm/fsm-droideditor/pom.xml; 
 * Apklib: "Android Graph Editor View":https://github.com/gallandarakhneorg/neteditor/blob/master/neteditor-androidpanel/pom.xml. 
+
+h3. 2.6. Cannot find source code in Eclipse
+
+When debugging, Eclipse may indicates that it cannot find the source code of an Apklib (because the source code seems to be provided by the Android dependencies that are read-only).
+In this case, we recommend to edit the lookup of the sources during the debugging.
+# Put a breakpoint
+# Run the program in debug mode until the breakpoint is reached.
+# Open the debug view, where the stack trace is output.
+# Right-click on the root item (the application) in the tree of the stack trace.
+# Select _Edit lookup source_.
+# Add the Apklib project(s) in the displayed list, if missed.
+# Move the Apklib projects at the top of the list.

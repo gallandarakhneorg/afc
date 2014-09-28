@@ -110,6 +110,13 @@ public class RoundRectangle2f extends AbstractRectangularShape2f<RoundRectangle2
 	}
 
 	/**
+	 * @param rr
+	 */
+	public RoundRectangle2f(RoundRectangle2f rr) {
+		super(rr);
+	}
+
+	/**
 	 * @param x
 	 * @param y
 	 * @param width
@@ -266,11 +273,6 @@ public class RoundRectangle2f extends AbstractRectangularShape2f<RoundRectangle2
 		bits = 31L * bits + floatToIntBits(getArcWidth());
 		bits = 31L * bits + floatToIntBits(getArcHeight());
 		return (int) (bits ^ (bits >> 32));
-	}
-
-	@Override
-	public Rectangle2f toBoundingBox() {
-		return new Rectangle2f(getMinX(), getMinY(), getWidth(), getHeight());
 	}
 
 	@Override

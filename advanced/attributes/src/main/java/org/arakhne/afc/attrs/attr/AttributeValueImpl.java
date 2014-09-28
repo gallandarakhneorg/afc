@@ -60,6 +60,8 @@ import org.arakhne.afc.ui.vector.VectorToolkit;
  */
 public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 
+	private static final long serialVersionUID = 4014368008512085546L;
+
 	/** Replies the best attribute value that is representing
 	 * the given text.
 	 * 

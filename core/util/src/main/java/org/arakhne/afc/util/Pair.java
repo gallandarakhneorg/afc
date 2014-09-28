@@ -20,6 +20,8 @@
  */
 package org.arakhne.afc.util;
 
+import java.io.Serializable;
+
 /** This class implements pair of values. 
  *
  * @param <A> is the type of the first value.
@@ -29,8 +31,10 @@ package org.arakhne.afc.util;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class Pair<A,B> {
+public class Pair<A,B> implements Serializable {
 
+	private static final long serialVersionUID = -1234576771288320365L;
+	
 	private A a;
 	private B b;
 
@@ -96,6 +100,30 @@ public class Pair<A,B> {
 	@Override
 	public String toString() {
 		return "<"+this.a+";"+this.b+">";  //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj==this) return true;
+		if (obj instanceof Pair) {
+			Pair<?,?> p = (Pair<?,?>)obj;
+			return innerEqual(this.a, p.a)
+					&& innerEqual(this.b, p.b);
+		}
+		return false;
+	}
+	
+	private static boolean innerEqual(Object a, Object b) {
+		if (a==b) return true;
+		if (a==null || b==null) return false;
+		return a.equals(b);
+	}
+	
+	@Override
+	public int hashCode() {
+		int h = HashCodeUtil.hash(this.a);
+		h = HashCodeUtil.hash(h, this.b);
+		return h;
 	}
 
 }

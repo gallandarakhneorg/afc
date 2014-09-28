@@ -33,7 +33,7 @@ import org.arakhne.afc.math.geometry2d.continuous.Transform2D;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public interface Shape2i extends Shape2D {
+public interface Shape2i extends Shape2D<Shape2i> {
 
 	/** Replies the bounding box of this shape.
 	 * 
@@ -41,11 +41,12 @@ public interface Shape2i extends Shape2D {
 	 */
 	public abstract Rectangle2i toBoundingBox();
 	
-	/** {@inheritDoc}
+	/** Replies the bounds of the shape.
+	 * 
+	 * @param box is set with the bounds of the shape.
 	 */
-	@Override
-	public Shape2i clone();
-	
+	public void toBoundingBox(Rectangle2i box);
+
 	/** Replies the minimal distance from this shape to the given point.
 	 * 
 	 * @param p

@@ -85,7 +85,7 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Rectangle2
 				break;
 			case LINE_TO:
 			{
-				float factor =  GeometryUtil.getPointProjectionFactorOnLine(
+				float factor =  MathUtil.projectsPointOnLine(
 						x, y,
 						pe.fromX, pe.fromY, pe.toX, pe.toY);
 				factor = MathUtil.clamp(factor, 0f, 1f);
@@ -95,19 +95,19 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Rectangle2
 				candidate = new Point2f(
 						pe.fromX + v.getX(),
 						pe.fromY + v.getY());
-				crossings += GeometryUtil.computeCrossingsFromPoint(
-						pe.fromX, pe.fromY,
-						pe.toX, pe.toY, x, y);
+				crossings += Segment2f.computeCrossingsFromPoint(
+						x, y,
+						pe.fromX, pe.fromY, pe.toX, pe.toY);
 				break;
 			}
 			case CLOSE:
-				crossings += GeometryUtil.computeCrossingsFromPoint(
-						pe.fromX, pe.fromY,
-						pe.toX, pe.toY, x, y);
+				crossings += Segment2f.computeCrossingsFromPoint(
+						x, y,
+						pe.fromX, pe.fromY, pe.toX, pe.toY);
 				if ((crossings & mask) != 0) return new Point2f(x, y);
 
 				if (!pe.isEmpty()) {
-					float factor =  GeometryUtil.getPointProjectionFactorOnLine(
+					float factor =  MathUtil.projectsPointOnLine(
 							x, y,
 							pe.fromX, pe.fromY, pe.toX, pe.toY);
 					factor = MathUtil.clamp(factor, 0f, 1f);
@@ -192,6 +192,47 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Rectangle2
 	}
 
 	/**
+	 * Tests if the interior of the specified {@link PathIterator2f}
+	 * intersects the interior of a specified set of rectangular
+	 * coordinates.
+	 * <p>
+	 * This method provides a basic facility for implementors of
+	 * the {@link Shape2f} interface to implement support for the
+	 * {@code intersects()} method.
+	 * <p>
+	 * This method object may conservatively return true in
+	 * cases where the specified rectangular area intersects a
+	 * segment of the path, but that segment does not represent a
+	 * boundary between the interior and exterior of the path.
+	 * Such a case may occur if some set of segments of the
+	 * path are retraced in the reverse direction such that the
+	 * two sets of segments cancel each other out without any
+	 * interior area between them.
+	 * To determine whether segments represent true boundaries of
+	 * the interior of the path would require extensive calculations
+	 * involving all of the segments of the path and the winding
+	 * rule and are thus beyond the scope of this implementation.
+	 *
+	 * @param pi the specified {@code PathIterator}
+	 * @param x the specified X coordinate
+	 * @param y the specified Y coordinate
+	 * @param w the width of the specified rectangular coordinates
+	 * @param h the height of the specified rectangular coordinates
+	 * @return {@code true} if the specified {@code PathIterator} and
+	 *         the interior of the specified set of rectangular
+	 *         coordinates intersect each other; {@code false} otherwise.
+	 */
+	public static boolean intersects(PathIterator2f pi, float x, float y, float w, float h) {
+		if (w <= 0f || h <= 0f) {
+			return false;
+		}
+		int mask = (pi.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2);
+		int crossings = computeCrossingsFromRect(pi, x, y, x+w, y+h, false, true);
+		return (crossings == MathConstants.SHAPE_INTERSECTS ||
+				(crossings & mask) != 0);
+	}
+
+	/**
 	 * Calculates the number of times the given path
 	 * crosses the ray extending to the right from (px,py).
 	 * If the point lies on a part of the path,
@@ -265,10 +306,10 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Rectangle2
 				endy = element.toY;
 				if (endx==px && endy==py)
 					return MathConstants.SHAPE_INTERSECTS;
-				crossings += GeometryUtil.computeCrossingsFromPoint(
+				crossings += Segment2f.computeCrossingsFromPoint(
+						px, py,
 						curx, cury,
-						endx, endy,
-						px, py);
+						endx, endy);
 				curx = endx;
 				cury = endy;
 				break;
@@ -320,10 +361,10 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Rectangle2
 				if (cury != movy || curx != movx) {
 					if (movx==px && movy==py)
 						return MathConstants.SHAPE_INTERSECTS;
-					crossings += GeometryUtil.computeCrossingsFromPoint(
+					crossings += Segment2f.computeCrossingsFromPoint(
+							px, py,
 							curx, cury,
-							movx, movy,
-							px, py);
+							movx, movy);
 				}
 				curx = movx;
 				cury = movy;
@@ -341,10 +382,10 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Rectangle2
 				// Not closed
 				if (movx==px && movy==py)
 					return MathConstants.SHAPE_INTERSECTS;
-				crossings += GeometryUtil.computeCrossingsFromPoint(
+				crossings += Segment2f.computeCrossingsFromPoint(
+						px, py,
 						curx, cury,
-						movx, movy,
-						px, py);
+						movx, movy);
 			}
 			else if (onlyIntersectWhenOpen) {
 				// Assume that when is the path is open, only
@@ -417,7 +458,7 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Rectangle2
 			case LINE_TO:
 				endx = element.toX;
 				endy = element.toY;
-				numCrosses = GeometryUtil.computeCrossingsFromEllipse(
+				numCrosses = Segment2f.computeCrossingsFromEllipse(
 						numCrosses,
 						ex, ey, ew, eh,
 						curx, cury,
@@ -473,7 +514,7 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Rectangle2
 				break;
 			case CLOSE:
 				if (cury != movy || curx != movx) {
-					numCrosses = GeometryUtil.computeCrossingsFromEllipse(
+					numCrosses = Segment2f.computeCrossingsFromEllipse(
 							numCrosses,
 							ex, ey, ew, eh,
 							curx, cury,
@@ -496,7 +537,7 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Rectangle2
 		if (isOpen) {
 			if (closeable) {
 				// Not closed
-				numCrosses = GeometryUtil.computeCrossingsFromEllipse(
+				numCrosses = Segment2f.computeCrossingsFromEllipse(
 						numCrosses,
 						ex, ey, ew, eh,
 						curx, cury,
@@ -571,7 +612,7 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Rectangle2
 			case LINE_TO:
 				endx = element.toX;
 				endy = element.toY;
-				numCrosses = GeometryUtil.computeCrossingsFromCircle(
+				numCrosses = Segment2f.computeCrossingsFromCircle(
 						numCrosses,
 						cx, cy, radius,
 						curx, cury,
@@ -627,7 +668,7 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Rectangle2
 				break;
 			case CLOSE:
 				if (cury != movy || curx != movx) {
-					numCrosses = GeometryUtil.computeCrossingsFromCircle(
+					numCrosses = Segment2f.computeCrossingsFromCircle(
 							numCrosses,
 							cx, cy, radius,
 							curx, cury,
@@ -650,7 +691,7 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Rectangle2
 		if (isOpen) {
 			if (closeable) {
 				// Not closed
-				numCrosses = GeometryUtil.computeCrossingsFromCircle(
+				numCrosses = Segment2f.computeCrossingsFromCircle(
 						numCrosses,
 						cx, cy, radius,
 						curx, cury,
@@ -720,7 +761,7 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Rectangle2
 			case LINE_TO:
 				endx = element.toX;
 				endy = element.toY;
-				numCrosses = GeometryUtil.computeCrossingsFromSegment(
+				numCrosses = Segment2f.computeCrossingsFromSegment(
 						numCrosses,
 						x1, y1, x2, y2,
 						curx, cury,
@@ -771,7 +812,7 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Rectangle2
 				break;
 			case CLOSE:
 				if (cury != movy || curx != movx) {
-					numCrosses = GeometryUtil.computeCrossingsFromSegment(
+					numCrosses = Segment2f.computeCrossingsFromSegment(
 							numCrosses,
 							x1, y1, x2, y2,
 							curx, cury,
@@ -791,7 +832,7 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Rectangle2
 
 		if (isOpen) {
 			if (closeable) {
-				numCrosses = GeometryUtil.computeCrossingsFromSegment(
+				numCrosses = Segment2f.computeCrossingsFromSegment(
 						numCrosses,
 						x1, y1, x2, y2,
 						curx, cury,
@@ -889,7 +930,7 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Rectangle2
 			case LINE_TO:
 				endx = pathElement.toX;
 				endy = pathElement.toY;
-				crossings = GeometryUtil.computeCrossingsFromRect(crossings,
+				crossings = Segment2f.computeCrossingsFromRect(crossings,
 						rxmin, rymin,
 						rxmax, rymax,
 						curx, cury,
@@ -942,7 +983,7 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Rectangle2
 				break;
 			case CLOSE:
 				if (curx != movx || cury != movy) {
-					crossings = GeometryUtil.computeCrossingsFromRect(crossings,
+					crossings = Segment2f.computeCrossingsFromRect(crossings,
 							rxmin, rymin,
 							rxmax, rymax,
 							curx, cury,
@@ -964,7 +1005,7 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Rectangle2
 		if (isOpen) {
 			if (closeable) {
 				// Not closed
-				crossings = GeometryUtil.computeCrossingsFromRect(crossings,
+				crossings = Segment2f.computeCrossingsFromRect(crossings,
 						rxmin, rymin,
 						rxmax, rymax,
 						curx, cury,
@@ -1060,6 +1101,27 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Rectangle2
 		add(iterator);
 	}
 
+	/**
+	 * @param p
+	 */
+	public Path2f(Path2f p) {
+		this.coords = p.coords.clone();
+		this.isEmpty = p.isEmpty;
+		this.isPolyline = p.isPolyline;
+		this.numCoords = p.numCoords;
+		this.types = p.types.clone();
+		this.windingRule = p.windingRule;
+		Rectangle2f box;
+		box = p.graphicalBounds==null ? null : p.graphicalBounds.get();
+		if (box!=null) {
+			this.graphicalBounds = new SoftReference<Rectangle2f>(box.clone());
+		}
+		box = p.logicalBounds==null ? null : p.logicalBounds.get();
+		if (box!=null) {
+			this.logicalBounds = new SoftReference<Rectangle2f>(box.clone());
+		}
+	}
+
 	@Override
 	public void clear() {
 		this.types = new PathElementType[GROW_SIZE];
@@ -1067,8 +1129,8 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Rectangle2
 		this.windingRule = PathWindingRule.NON_ZERO;
 		this.numCoords = 0;
 		this.numTypes = 0;
-		this.isEmpty = true;
-		this.isPolyline = true;
+		this.isEmpty = Boolean.TRUE;
+		this.isPolyline = Boolean.TRUE;
 		this.graphicalBounds = null;
 		this.logicalBounds = null;
 	}
@@ -1212,7 +1274,7 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Rectangle2
 		this.coords[this.numCoords++] = x2;
 		this.coords[this.numCoords++] = y2;
 		this.isEmpty = null;
-		this.isPolyline = false;
+		this.isPolyline = Boolean.FALSE;
 		this.graphicalBounds = null;
 		this.logicalBounds = null;
 	}
@@ -1464,20 +1526,6 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Rectangle2
 				getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
 				s.getX1(), s.getY1(), s.getX2(), s.getY2(),
 				false);
-		return (crossings == MathConstants.SHAPE_INTERSECTS ||
-				(crossings & mask) != 0);
-	}
-	
-
-	@Override
-	public boolean intersects(OrientedRectangle2f s) {
-		int mask = (this.windingRule == PathWindingRule.NON_ZERO ? -1 : 2);
-		Transform2D trans = new Transform2D(s.getSy(),-s.getSx(), 0 , -s.getRy(),s.getRx(), 0);
-		int crossings = computeCrossingsFromRect(
-				getPathIterator(trans, MathConstants.SPLINE_APPROXIMATION_RATIO),
-				-s.getExtentR(),-s.getExtentS(),s.getExtentR(),s.getExtentS(),
-				false,
-				true);
 		return (crossings == MathConstants.SHAPE_INTERSECTS ||
 				(crossings & mask) != 0);
 	}

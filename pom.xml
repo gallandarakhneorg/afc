@@ -5,16 +5,16 @@
 	<groupId>org.arakhne.afc</groupId>
 	<artifactId>afc</artifactId>
 	<packaging>pom</packaging>
-	<version>11.0-SNAPSHOT</version>
+	<version>12.0-SNAPSHOT</version>
 	<name>Arakhnê Foundation Classes</name>
 	<inceptionYear>2006</inceptionYear>
 	<url>http://www.arakhne.org/afc/</url>
 	<description>Collection of Java utilities.</description>
 
 	<properties>
-		<afc.version>11.0-SNAPSHOT</afc.version>
-		<previous.stable.afc.version>10.0</previous.stable.afc.version>
-		<year>2013</year>
+		<afc.version>12.0-SNAPSHOT</afc.version>
+		<afc.plugins.version>11.0</afc.plugins.version>
+		<year>2014</year>
 		<copyrighters>Arakhn&amp;ecirc;.org Members</copyrighters>
 		<sourceEncoding>UTF-8</sourceEncoding>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -85,29 +85,6 @@
 				<artifactId>maventools</artifactId>
 				<version>${afc.version}</version>
 			</dependency>
-			<dependency>
-				<groupId>org.arakhne.afc.core.vmutils</groupId>
-				<artifactId>vmutils-java</artifactId>
-				<version>${afc.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.arakhne.afc.core.vmutils</groupId>
-				<artifactId>vmutils-java</artifactId>
-				<version>${afc.version}</version>
-				<classifier>sources</classifier>
-			</dependency>
-			<dependency>
-				<groupId>org.arakhne.afc.core.vmutils.josuuid</groupId>
-				<artifactId>mingw32</artifactId>
-				<version>${afc.version}</version>
-				<type>dll</type>
-			</dependency>
-			<dependency>
-				<groupId>org.arakhne.afc.core.vmutils.josuuid</groupId>
-				<artifactId>mingw64</artifactId>
-				<version>${afc.version}</version>
-				<type>dll</type>
-			</dependency>
 
 			<!-- ################################################## Third-Party Libraries 
 				################################################## -->
@@ -129,27 +106,27 @@
 			<dependency>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>org.apache.felix.main</artifactId>
-				<version>4.2.1</version>
+				<version>4.4.0</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.maven</groupId>
 				<artifactId>maven-plugin-api</artifactId>
-				<version>3.1.1</version>
+				<version>3.2.2</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.maven</groupId>
 				<artifactId>maven-artifact</artifactId>
-				<version>3.1.0</version>
+				<version>3.2.2</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.maven</groupId>
 				<artifactId>maven-core</artifactId>
-				<version>3.1.1</version>
+				<version>3.2.2</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.maven</groupId>
 				<artifactId>maven-compat</artifactId>
-				<version>3.1.1</version>
+				<version>3.2.2</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.maven</groupId>
@@ -171,12 +148,12 @@
 			<dependency>
 				<groupId>org.eclipse.aether</groupId>
 				<artifactId>aether-api</artifactId>
-				<version>0.9.0.M3</version>
+				<version>1.0.0.v20140518</version>
 			</dependency>
 			<dependency>
 				<groupId>org.tmatesoft.svnkit</groupId>
 				<artifactId>svnkit</artifactId>
-				<version>1.7.8</version>
+				<version>1.8.3-1</version>
 			</dependency>
 			<dependency>
 				<groupId>junit</groupId>
@@ -313,6 +290,7 @@
 	</distributionManagement>
 
 	<scm>
+		<url>https://github.com/gallandarakhneorg/afc</url>
 		<connection>scm:git:git://github.com/gallandarakhneorg/afc.git</connection>
 		<developerConnection>scm:git:https://github.com/gallandarakhneorg/afc.git</developerConnection>
 	</scm>
@@ -320,17 +298,6 @@
 	<build>
 		<pluginManagement>
 			<plugins>
-				<plugin>
-					<groupId>org.arakhne.afc.maven</groupId>
-					<artifactId>tag-replacer</artifactId>
-					<version>${previous.stable.afc.version}</version>
-				</plugin>
-				<plugin>
-					<groupId>org.arakhne.afc.maven</groupId>
-					<artifactId>license-installer</artifactId>
-					<version>${previous.stable.afc.version}</version>
-				</plugin>
-
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-source-plugin</artifactId>
@@ -355,7 +322,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-plugin-plugin</artifactId>
-					<version>3.2</version>
+					<version>3.3</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -370,7 +337,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-plugin</artifactId>
-					<version>2.16</version>
+					<version>2.17</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -390,17 +357,27 @@
 				<plugin>
 					<groupId>org.apache.felix</groupId>
 					<artifactId>maven-bundle-plugin</artifactId>
-					<version>2.4.0</version>
+					<version>2.5.0</version>
 				</plugin>
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>native-maven-plugin</artifactId>
-					<version>1.0-alpha-7</version>
+					<version>1.0-alpha-8</version>
 				</plugin>
 				<plugin>
 					<groupId>com.jayway.maven.plugins.android.generation2</groupId>
 					<artifactId>android-maven-plugin</artifactId>
-					<version>3.7.0</version>
+					<version>3.9.0-rc.1</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-gpg-plugin</artifactId>
+					<version>1.5</version>
+				</plugin>
+				<plugin>
+					<groupId>org.arakhne.afc.maven</groupId>
+					<artifactId>tag-replacer</artifactId>
+					<version>${afc.plugins.version}</version>
 				</plugin>
 				<!-- This plugin's configuration is used to store Eclipse m2e settings 
 					only. It has no influence on the Maven build itself. This plugin configuration 
@@ -414,37 +391,11 @@
 							<pluginExecutions>
 								<pluginExecution>
 									<pluginExecutionFilter>
-										<groupId>org.arakhne.afc.maven</groupId>
-										<artifactId>tag-replacer</artifactId>
-										<versionRange>[1.1-SNAPSHOT,)</versionRange>
-										<goals>
-											<goal>replaceresource</goal>
-											<goal>generatereplacesrc</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<execute />
-									</action>
-								</pluginExecution>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>org.arakhne.afc</groupId>
-										<artifactId>license-installer</artifactId>
-										<versionRange>[1.1-SNAPSHOT,)</versionRange>
-										<goals>
-											<goal>installlicense</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<execute />
-									</action>
-								</pluginExecution>
-								<pluginExecution>
-									<pluginExecutionFilter>
 										<groupId>org.codehaus.mojo</groupId>
 										<artifactId>native-maven-plugin</artifactId>
 										<versionRange>[0.1,)</versionRange>
 										<goals>
+										    <goal>default-resource-compile</goal>
 											<goal>javah</goal>
 											<goal>initialize</goal>
 											<goal>manifest</goal>
@@ -456,19 +407,6 @@
 									</pluginExecutionFilter>
 									<action>
 										<ignore />
-									</action>
-								</pluginExecution>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>com.jayway.maven.plugins.android.generation2</groupId>
-										<artifactId>android-maven-plugin</artifactId>
-										<versionRange>[0.1,)</versionRange>
-										<goals>
-											<goal>manifest-update</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<execute />
 									</action>
 								</pluginExecution>
 								<pluginExecution>
@@ -497,7 +435,33 @@
 										<ignore />
 									</action>
 								</pluginExecution>
-							</pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>com.jayway.maven.plugins.android.generation2</groupId>
+										<artifactId>android-maven-plugin</artifactId>
+										<versionRange>[0.1,)</versionRange>
+										<goals>
+											<goal>manifest-update</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<execute />
+									</action>
+								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>com.jayway.maven.plugins.android.generation2</groupId>
+										<artifactId>android-maven-plugin</artifactId>
+										<versionRange>[3.8.2,)</versionRange>
+										<goals>
+											<goal>consume-aar</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore />
+									</action>
+								</pluginExecution>
+								</pluginExecutions>
 						</lifecycleMappingMetadata>
 					</configuration>
 				</plugin>
@@ -512,6 +476,19 @@
 					<source>1.6</source>
 					<encoding>UTF-8</encoding>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>jar-no-fork</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -551,31 +528,63 @@
 		</plugins>
 	</build>
 
-	<!-- ======================================= -->
-	<!-- ==== Repositories === -->
-	<!-- ======================================= -->
-
-	<repositories>
-		<repository>
-			<id>org.codehaus-arakhne</id>
-			<name>Codehaus</name>
-			<url>http://snapshots.repository.codehaus.org/</url>
-		</repository>
-		<repository>
-			<id>org.arakhne-maven</id>
-			<name>Arakhn&amp;ecirc; Maven Repository</name>
-			<url>http://download.tuxfamily.org/arakhne/maven/</url>
-		</repository>
-	</repositories>
-	<pluginRepositories>
-		<pluginRepository>
-			<id>org.arakhne-maven</id>
-			<name>Arakhn&amp;ecirc; Maven Repository</name>
-			<url>http://download.tuxfamily.org/arakhne/maven/</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</pluginRepository>
-	</pluginRepositories>
+	<profiles>
+		<profile>
+			<id>release-signed-artifacts</id>
+			<activation>
+				<property>
+					<name>performRelease</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+						</configuration>
+					</plugin>
+					<plugin>
+						<groupId>org.arakhne.afc.maven</groupId>
+						<artifactId>tag-replacer</artifactId>
+						<executions>
+							<execution>
+								<id>update-source-tags</id>
+								<phase>process-sources</phase>
+								<goals>
+									<goal>generatereplacesrc</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		      <pluginRepositories>
+			<pluginRepository>
+			  <id>org.arakhne-maven</id>
+			  <releases>
+			    <enabled>true</enabled>
+			  </releases>
+			  <snapshots>
+			    <enabled>true</enabled>
+			  </snapshots>
+			  <url>http://download.tuxfamily.org/arakhne/maven</url>
+			  <layout>default</layout>
+			</pluginRepository>
+		      </pluginRepositories>
+		</profile>
+	</profiles>
 
 </project>

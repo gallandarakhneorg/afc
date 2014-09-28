@@ -39,8 +39,10 @@ import org.apache.maven.model.Developer;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.project.MavenProjectBuilder;
-import org.apache.maven.repository.RepositorySystem;
 import org.arakhne.maven.AbstractArakhneMojo;
+import org.eclipse.aether.RepositorySystem;
+import org.eclipse.aether.RepositorySystemSession;
+import org.eclipse.aether.repository.RemoteRepository;
 import org.sonatype.plexus.build.incremental.BuildContext;
 
 /**
@@ -59,7 +61,9 @@ import org.sonatype.plexus.build.incremental.BuildContext;
  * @phase compile
  * @requireProject true
  * @threadSafe
+ * @deprecated
  */
+@Deprecated
 public class InstallLicenseMojo extends AbstractArakhneMojo implements Constants {
 
 	/**
@@ -159,7 +163,7 @@ public class InstallLicenseMojo extends AbstractArakhneMojo implements Constants
 	 * @parameter default-value="${repositorySystemSession}"
 	 * @readonly
 	 */
-	private Object repoSession;
+	private RepositorySystemSession repoSession;
 
 	/**
 	 * The project's remote repositories to use for the resolution of plugins and their dependencies.
@@ -167,7 +171,7 @@ public class InstallLicenseMojo extends AbstractArakhneMojo implements Constants
 	 * @parameter default-value="${project.remoteProjectRepositories}"
 	 * @readonly
 	 */
-	private List<?> remoteRepos;
+	private List<RemoteRepository> remoteRepos;
 
 	/** The context of building, compatible with M2E and CLI.
 	 * @component
@@ -441,7 +445,7 @@ public class InstallLicenseMojo extends AbstractArakhneMojo implements Constants
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Object getRepositorySystemSession() {
+	public RepositorySystemSession getRepositorySystemSession() {
 		return this.repoSession;
 	}
 
@@ -449,7 +453,7 @@ public class InstallLicenseMojo extends AbstractArakhneMojo implements Constants
 	 * {@inheritDoc}
 	 */
 	@Override
-	public List<?> getRemoteRepositoryList() {
+	public List<RemoteRepository> getRemoteRepositoryList() {
 		return this.remoteRepos;
 	}
 

@@ -60,7 +60,6 @@ import java.util.regex.Pattern;
 
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.ArtifactUtils;
-import org.apache.maven.artifact.factory.DefaultArtifactFactory;
 import org.apache.maven.artifact.handler.ArtifactHandler;
 import org.apache.maven.artifact.handler.manager.ArtifactHandlerManager;
 import org.apache.maven.artifact.repository.ArtifactRepository;
@@ -82,8 +81,14 @@ import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.project.MavenProjectBuilder;
 import org.apache.maven.project.ProjectBuildingException;
-import org.apache.maven.repository.RepositorySystem;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
+import org.eclipse.aether.RepositorySystem;
+import org.eclipse.aether.RepositorySystemSession;
+import org.eclipse.aether.artifact.DefaultArtifact;
+import org.eclipse.aether.repository.RemoteRepository;
+import org.eclipse.aether.resolution.ArtifactRequest;
+import org.eclipse.aether.resolution.ArtifactResolutionException;
+import org.eclipse.aether.resolution.ArtifactResult;
 import org.sonatype.plexus.build.incremental.BuildContext;
 import org.tmatesoft.svn.core.SVNException;
 import org.tmatesoft.svn.core.wc.SVNClientManager;
@@ -578,7 +583,7 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 	 * 
 	 * @return the repository system
 	 */
-	public abstract  List<?> getRemoteRepositoryList();
+	public abstract  List<RemoteRepository> getRemoteRepositoryList();
 
 	/**
 	 * Replies the repository system used by this maven instance. Basically it is an internal component of Maven.
@@ -605,8 +610,8 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 	 * 
 	 * @return the repository system
 	 */
-	public abstract Object getRepositorySystemSession();
-
+	public abstract RepositorySystemSession getRepositorySystemSession();
+	
 	/**
 	 * Retreive the extended artifact definition of the given artifact.
 	 * @param mavenArtifact - the artifact to resolve
@@ -614,11 +619,18 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 	 * @throws MojoExecutionException
 	 */
 	public final Artifact resolveArtifact(Artifact mavenArtifact) throws MojoExecutionException {
-		return AetherBridge.resolveArtifact(
-				mavenArtifact,
-				getRemoteRepositoryList(),
-				getRepositorySystem(),
-				getRepositorySystemSession());
+		org.eclipse.aether.artifact.Artifact aetherArtifact = createArtifact(mavenArtifact);
+		ArtifactRequest request = new ArtifactRequest();
+        request.setArtifact(aetherArtifact);
+        request.setRepositories(getRemoteRepositoryList());
+        ArtifactResult result;
+		try {
+			result = getRepositorySystem().resolveArtifact( getRepositorySystemSession(), request );
+		}
+		catch (ArtifactResolutionException e) {
+			 throw new MojoExecutionException( e.getMessage(), e );
+		}
+        return createArtifact(result.getArtifact());
 	}
 
 	/**
@@ -634,11 +646,7 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 	 * @throws MojoExecutionException 
 	 */
 	public final Artifact resolveArtifact(String groupId, String artifactId, String version) throws MojoExecutionException {
-		return AetherBridge.resolveArtifact(
-				groupId, artifactId, version,
-				getRemoteRepositoryList(),
-				getRepositorySystem(),
-				getRepositorySystemSession());
+		return resolveArtifact(createArtifact(groupId, artifactId, version));
 	}
 
 	/**
@@ -960,6 +968,29 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 		return createArtifact(groupId, artifactId, version, "runtime", "jar"); //$NON-NLS-1$//$NON-NLS-2$
 	}
 
+	/** Convert the maven artifact to Aether artifact.
+	 * 
+	 * @param a - the maven artifact.
+	 * @return the Aether artifact.
+	 */
+	protected final static org.eclipse.aether.artifact.Artifact createArtifact(Artifact a) {
+		return new DefaultArtifact(
+				a.getGroupId(),
+				a.getArtifactId(),
+				a.getClassifier(),
+				a.getType(),
+				a.getVersion());
+	}
+
+	/** Convert the Aether artifact to maven artifact.
+	 * 
+	 * @param a - the Aether artifact.
+	 * @return the maven artifact.
+	 */
+	protected final Artifact createArtifact(org.eclipse.aether.artifact.Artifact a) {
+		return createArtifact(a.getGroupId(), a.getArtifactId(), a.getVersion());
+	}
+
 	/**
 	 * Create an artifact from the given values.
 	 * 
@@ -969,7 +1000,6 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 	 * @param scope
 	 * @param type
 	 * @return the artifact
-	 * @see DefaultArtifactFactory
 	 */
 	public final Artifact createArtifact(String groupId, String artifactId, String version, String scope, String type) {
 		VersionRange versionRange = null;
