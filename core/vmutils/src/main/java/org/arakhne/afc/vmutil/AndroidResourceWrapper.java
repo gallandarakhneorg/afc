@@ -66,7 +66,10 @@ class AndroidResourceWrapper implements ResourceWrapper {
 		catch (AndroidException e) {
 			//
 		}
-		return classLoader.getResource(resourceName);
+		if (classLoader != null) {
+			return classLoader.getResource(resourceName);
+		}
+		return null;
     }
 
     /**
@@ -85,7 +88,10 @@ class AndroidResourceWrapper implements ResourceWrapper {
 		catch (AndroidException e) {
 			//
 		}
-		return classLoader.getResourceAsStream(resourceName);
+		if (classLoader != null) {
+			return classLoader.getResourceAsStream(resourceName);
+		}
+		return null;
     }
     
 	/**
