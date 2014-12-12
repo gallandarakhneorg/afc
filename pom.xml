@@ -21,9 +21,9 @@
 		<!-- Path where your Android SDK is installed -->
 		<android.sdk.path>/opt/android-sdk</android.sdk.path>
 		<!-- Minimal version of the Android SDK -->
-		<android.platform>15</android.platform>
+		<android.platform>16</android.platform>
 		<!-- Name of the emulator you want to use when debugging -->
-		<android.emulator>acer500</android.emulator>
+		<android.emulator>emulated</android.emulator>
 	</properties>
 
 	<!-- ======================================= -->
@@ -530,7 +530,7 @@
 
 	<profiles>
 		<profile>
-			<id>release-signed-artifacts</id>
+			<id>release-tasks</id>
 			<activation>
 				<property>
 					<name>performRelease</name>
