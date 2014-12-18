@@ -163,6 +163,19 @@ public enum OperatingSystem {
 	public static String getCurrentOSVersion() {
 		return System.getProperty("os.version"); //$NON-NLS-1$
 	}
+	
+	/** Force the type of the current OS replied by the functions of
+	 * this class.
+	 *
+	 * If the given OS is <code>null</code>, the current OS will be auto-detected
+	 * at the next call of {@link #getCurrentOS()}.
+	 *
+	 * @param os - the OS to consider for the next calls to {@link #getCurrentOS()}.
+	 * @since 12.0
+	 */
+	public static void setCurrentOS(OperatingSystem os) {
+		currentOSInstance = os;
+	}
 
 	/** Replies the current operating system.
 	 * 
