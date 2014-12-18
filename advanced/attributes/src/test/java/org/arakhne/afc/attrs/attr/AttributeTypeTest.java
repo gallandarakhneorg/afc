@@ -301,6 +301,7 @@ public class AttributeTypeTest extends AbstractAttrTestCase {
 		URL url = new URL("http://set.utbm.fr"); //$NON-NLS-1$
 		URI uri = new URI("http://set.utbm.fr"); //$NON-NLS-1$
 		InetAddress ipAddress = InetAddress.getLocalHost();
+		InetAddress worldAddress = InetAddress.getByName(vStrB.toString());
 		String vIpStr = ipAddress.toString();
 		AttributeType enumeration = randomEnum(AttributeType.class);
 		String vEnumStr = AttributeType.class.getCanonicalName()+"."+AttributeType.values()[1].name(); //$NON-NLS-1$
@@ -799,7 +800,7 @@ public class AttributeTypeTest extends AbstractAttrTestCase {
 		assertCastException(type,vDouble);
 		assertCastException(type,vStr);
 		assertEquals(ipAddress,type.cast(vIpStr));
-		assertCastException(type,vStrB);
+		assertEquals(worldAddress, type.cast(vStrB));
 		assertCastException(type,cal);
 		assertCastException(type,dt);
 		assertCastException(type,col);
