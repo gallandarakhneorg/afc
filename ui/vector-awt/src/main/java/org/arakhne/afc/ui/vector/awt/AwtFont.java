@@ -195,7 +195,7 @@ class AwtFont implements Font, NativeWrapper {
 			this.physicalFontDetected = true;
 			Locale loc = Locale.getDefault();
 			String logFontName = this.font.getFontName();
-			sun.font.Font2D[] candidates = sun.font.FontManager.getRegisteredFonts();
+			sun.font.Font2D[] candidates = sun.font.SunFontManager.getInstance().getRegisteredFonts();
 			sun.font.Font2D candidate;
 			for(int i=0; this.physicalFont==null && i<candidates.length; ++i) {
 				candidate = candidates[i];
