@@ -270,6 +270,14 @@
 				<role>Developer</role>
 			</roles>
 		</developer>
+		<developer>
+			<id>mgrolleau</id>
+			<name>Maxime Grolleau</name>
+			<email>maxime.grolleau@utbm.fr</email>
+			<roles>
+				<role>Developer</role>
+			</roles>
+		</developer>
 	</developers>
 
 	<!-- ======================================= -->
