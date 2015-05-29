@@ -54,12 +54,6 @@ public interface MathConstants {
 	 */
 	public static final float E = (float)Math.E;
 
-	/** Epsilon value, smallest such that 1.0+EPSILON != 1.0
-	 * <p>
-	 * Given by the Java3D's implementation of the Matrix3d class.
-	 */
-	public static final double EPSILON = 1.110223024E-16;
-
 	/** 2 * PI
 	 */
 	public static final float TWO_PI = 2f * PI;
@@ -93,11 +87,6 @@ public interface MathConstants {
 	 * Max sweeps in the Ellipse's algorithms.
 	 */
 	public static final int ELLIPSE_MAX_SWEEPS = 32;
-
-	/** This is the maximale distance that
-	 *  permits to detect hits.
-	 */
-	public static final float HIT_DISTANCE = 5f ;
 
 	/** The maximum distance that the line 
 	 *  segments used to approximate the 
@@ -141,5 +130,22 @@ public interface MathConstants {
      * further processing is ever needed if an intersection occurs.
      */
     public static final int SHAPE_INTERSECTS = 0x80000000;
-
+    
+	/** Epsilon value, smallest such that 1.0+EPSILON != 1.0 on JVM.
+	 * <p>
+	 * Given by the Java3D's implementation of the Matrix3d class.
+	 * This constant is used to fix the problem of variable == 0 on floating point value.
+	 * 
+	 * @see #JVM_MIN_FLOAT_EPSILON
+	 */
+	public static final double JVM_MIN_DOUBLE_EPSILON = 1.110223024E-16;
+	
+	
+	/** Epsilon value, smallest such that 1.0+EPSILON != 1.0 on JVM.
+	 * <p>
+	 * Given by the Java3D's implementation of the Matrix3d class.
+	 * This constant is used to fix the problem of variable == 0 on floating point value.
+	 * @see #JVM_MIN_DOUBLE_EPSILON
+	 */
+	public static final float JVM_MIN_FLOAT_EPSILON = (float)JVM_MIN_DOUBLE_EPSILON;
 }
