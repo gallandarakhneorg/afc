@@ -26,12 +26,15 @@
 
 package org.arakhne.afc.text;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import java.util.List;
 
-import org.arakhne.afc.text.TextUtil;
 import org.arakhne.afc.vmutil.locale.Locale;
-
-import junit.framework.TestCase;
+import org.junit.Assert;
+import org.junit.Test;
 
 /**
  * @author $Author: galland$
@@ -39,12 +42,14 @@ import junit.framework.TestCase;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class TextUtilTest extends TestCase {
+@SuppressWarnings("static-method")
+public class TextUtilTest {
 
 	/**
 	 * @throws Exception
 	 */
-	public static void testCutStringAsArray() throws Exception {
+	@Test
+	public void testCutStringAsArray() throws Exception {
 		String src;
 		String[] res;
 		String[] actual;
@@ -53,78 +58,80 @@ public class TextUtilTest extends TestCase {
 		res = Locale.getString("A_RESULT").split("\n"); //$NON-NLS-1$ //$NON-NLS-2$
 		actual = TextUtil.cutStringAsArray(src, 80);
 		assertNotNull(actual);
-		assertEquals(res.length, actual.length);
+		Assert.assertEquals(res.length, actual.length);
 		for(int i=0; i<res.length; i++) {
 			assertTrue("A:Line Size "+(i+1)+": "+actual[i]+" = "+actual[i].length(), actual[i].length()<=80); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			assertEquals("A:Line "+(i+1), res[i], actual[i]); //$NON-NLS-1$
+			Assert.assertEquals("A:Line "+(i+1), res[i], actual[i]); //$NON-NLS-1$
 		}
 
 		src = Locale.getString("B_SOURCE"); //$NON-NLS-1$
 		res = Locale.getString("B_RESULT").split("\n"); //$NON-NLS-1$ //$NON-NLS-2$
 		actual = TextUtil.cutStringAsArray(src, 80);
 		assertNotNull(actual);
-		assertEquals(res.length, actual.length);
+		Assert.assertEquals(res.length, actual.length);
 		for(int i=0; i<res.length; i++) {
 			assertTrue("B:Line Size "+(i+1)+": "+actual[i]+" = "+actual[i].length(), actual[i].length()<=80); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			assertEquals("B:Line "+(i+1), res[i], actual[i]); //$NON-NLS-1$
+			Assert.assertEquals("B:Line "+(i+1), res[i], actual[i]); //$NON-NLS-1$
 		}
 
 		src = Locale.getString("C_SOURCE"); //$NON-NLS-1$
 		res = Locale.getString("C_RESULT").split("\n"); //$NON-NLS-1$ //$NON-NLS-2$
 		actual = TextUtil.cutStringAsArray(src, 80);
 		assertNotNull(actual);
-		assertEquals(res.length, actual.length);
+		Assert.assertEquals(res.length, actual.length);
 		for(int i=0; i<res.length; i++) {
 			assertTrue("C:Line Size "+(i+1)+": "+actual[i]+" = "+actual[i].length(), actual[i].length()<=80); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			assertEquals("C:Line "+(i+1), res[i], actual[i]); //$NON-NLS-1$
+			Assert.assertEquals("C:Line "+(i+1), res[i], actual[i]); //$NON-NLS-1$
 		}
 
 		src = Locale.getString("D_SOURCE"); //$NON-NLS-1$
 		res = Locale.getString("D_RESULT").split("\n"); //$NON-NLS-1$ //$NON-NLS-2$
 		actual = TextUtil.cutStringAsArray(src, 80);
 		assertNotNull(actual);
-		assertEquals(res.length, actual.length);
+		Assert.assertEquals(res.length, actual.length);
 		for(int i=0; i<res.length; i++) {
 			assertTrue("D:Line Size "+(i+1)+": "+actual[i]+" = "+actual[i].length(), actual[i].length()<=80); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-			assertEquals("D:Line "+(i+1), res[i], actual[i]); //$NON-NLS-1$
+			Assert.assertEquals("D:Line "+(i+1), res[i], actual[i]); //$NON-NLS-1$
 		}
 	}
 
 	/**
 	 * @throws Exception
 	 */
-	public static void testCutString() throws Exception {
+	@Test
+	public void testCutString() throws Exception {
 		String src, res, actual;
 		
 		src = Locale.getString("A_SOURCE"); //$NON-NLS-1$
 		res = Locale.getString("A_RESULT"); //$NON-NLS-1$
 		actual = TextUtil.cutString(src, 80);
 		assertNotNull(actual);
-		assertEquals("A:", res, actual); //$NON-NLS-1$
+		Assert.assertEquals("A:", res, actual); //$NON-NLS-1$
 
 		src = Locale.getString("B_SOURCE"); //$NON-NLS-1$
 		res = Locale.getString("B_RESULT"); //$NON-NLS-1$
 		actual = TextUtil.cutString(src, 80);
 		assertNotNull(actual);
-		assertEquals("B:", res, actual); //$NON-NLS-1$
+		Assert.assertEquals("B:", res, actual); //$NON-NLS-1$
 
 		src = Locale.getString("C_SOURCE"); //$NON-NLS-1$
 		res = Locale.getString("C_RESULT"); //$NON-NLS-1$
 		actual = TextUtil.cutString(src, 80);
 		assertNotNull(actual);
-		assertEquals("C:", res, actual); //$NON-NLS-1$
+		Assert.assertEquals("C:", res, actual); //$NON-NLS-1$
 
 		src = Locale.getString("D_SOURCE"); //$NON-NLS-1$
 		res = Locale.getString("D_RESULT"); //$NON-NLS-1$
 		actual = TextUtil.cutString(src, 80);
 		assertNotNull(actual);
-		assertEquals("D:", res, actual); //$NON-NLS-1$
+		Assert.assertEquals("D:", res, actual); //$NON-NLS-1$
 	}
 	
 	/**
 	 * @throws Exception
 	 */
-	public static void testSplitBrackets() throws Exception {
+	@Test
+	public void testSplitBrackets() throws Exception {
 		String[] tab;
 		
 		tab = TextUtil.splitBrackets("{a}{b}{c}{d}"); //$NON-NLS-1$
@@ -183,7 +190,8 @@ public class TextUtilTest extends TestCase {
 	/**
 	 * @throws Exception
 	 */
-	public static void testSplitCharCharStr() throws Exception {
+	@Test
+	public void testSplitCharCharStr() throws Exception {
 		String[] tab;
 		
 		tab = TextUtil.split('(',']',"(a](b](c](d]"); //$NON-NLS-1$
@@ -242,7 +250,8 @@ public class TextUtilTest extends TestCase {
 	/**
 	 * @throws Exception
 	 */
-	public static void testSplitBracketsAsList() throws Exception {
+	@Test
+	public void testSplitBracketsAsList() throws Exception {
 		List<String> tab;
 		
 		tab = TextUtil.splitBracketsAsList("{a}{b}{c}{d}"); //$NON-NLS-1$
@@ -301,7 +310,8 @@ public class TextUtilTest extends TestCase {
 	/**
 	 * @throws Exception
 	 */
-	public static void testSplitAsListCharCharStr() throws Exception {
+	@Test
+	public void testSplitAsListCharCharStr() throws Exception {
 		List<String> tab;
 		
 		tab = TextUtil.splitAsList('|','=',"|a=|b=|c=|d="); //$NON-NLS-1$
@@ -357,12 +367,12 @@ public class TextUtilTest extends TestCase {
 			}, tab);
 	}
 
-	private static void assertEquals(String[] expected, String[] actual) {
-		assertEquals("arrays have not same size;", //$NON-NLS-1$
+	private void assertEquals(String[] expected, String[] actual) {
+		Assert.assertEquals("arrays have not same size;", //$NON-NLS-1$
 				expected.length,
 				actual.length);
 		for(int i=0; i<expected.length; i++) {
-			assertEquals("invalid value for element at position " //$NON-NLS-1$
+			Assert.assertEquals("invalid value for element at position " //$NON-NLS-1$
 					+i
 					+";", //$NON-NLS-1$
 					expected[i],
@@ -370,12 +380,12 @@ public class TextUtilTest extends TestCase {
 		}
 	}
 
-	private static void assertEquals(String[] expected, List<String> actual) {
-		assertEquals("arrays have not same size;", //$NON-NLS-1$
+	private void assertEquals(String[] expected, List<String> actual) {
+		Assert.assertEquals("arrays have not same size;", //$NON-NLS-1$
 				expected.length,
 				actual.size());
 		for(int i=0; i<expected.length; i++) {
-			assertEquals("invalid value for element at position " //$NON-NLS-1$
+			Assert.assertEquals("invalid value for element at position " //$NON-NLS-1$
 					+i
 					+";", //$NON-NLS-1$
 					expected[i],
@@ -385,7 +395,8 @@ public class TextUtilTest extends TestCase {
 	
 	/**
 	 */
-	public static void testParseHTML() {
+	@Test
+	public void testParseHTML() {
 		String source, expected, actual;
 		
 		source = Locale.getString("HTML_JAVA_SOURCE"); //$NON-NLS-1$
@@ -394,12 +405,13 @@ public class TextUtilTest extends TestCase {
 		assertNull(TextUtil.parseHTML(null));
 		
 		actual = TextUtil.parseHTML(source);
-		assertEquals(expected, actual);
+		Assert.assertEquals(expected, actual);
 	}
 
 	/**
 	 */
-	public static void testToHTML() {
+	@Test
+	public void testToHTML() {
 		String source, expected, actual;
 		
 		source = Locale.getString("JAVA_HTML_SOURCE"); //$NON-NLS-1$
@@ -408,7 +420,7 @@ public class TextUtilTest extends TestCase {
 		assertNull(TextUtil.toHTML(null));
 		
 		actual = TextUtil.toHTML(source);
-		assertEquals(expected, actual);
+		Assert.assertEquals(expected, actual);
 	}
 
 }

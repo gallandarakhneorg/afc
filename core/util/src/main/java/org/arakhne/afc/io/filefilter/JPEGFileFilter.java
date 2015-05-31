@@ -28,7 +28,9 @@ import org.arakhne.afc.vmutil.locale.Locale;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see <code>org.arakhne.afc.core:inputoutput</code> maven artifact.
  */
+@Deprecated
 public class JPEGFileFilter extends AbstractFileFilter {
 
 	/** A standard extension for the JPEG pictures.

@@ -42,7 +42,7 @@ import org.arakhne.afc.math.tree.IterableNode;
 public abstract class AbstractBroadFirstTreeIterator<P extends IterableNode<? extends C>, C extends IterableNode<?>>
 implements Iterator<P> {
 
-	private final Queue<P> availableNodes = new LinkedList<P>();
+	private final Queue<P> availableNodes = new LinkedList<>();
 	private P lastReplied = null;
 	private BroadFirstIterationListener levelListener = null;
 	

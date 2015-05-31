@@ -21,6 +21,14 @@
  */
 package org.arakhne.afc.util;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
@@ -30,8 +38,9 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.arakhne.afc.util.IntegerList.IntegerSegment;
-
-import junit.framework.TestCase;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * @author $Author: sgalland$
@@ -40,13 +49,15 @@ import junit.framework.TestCase;
  * @mavenartifactid $ArtifactId$
  * @since 4.0
  */
-public class IntegerListTest extends TestCase {
+public class IntegerListTest {
 
 	private IntegerList list;
 	
-	@Override
+	/**
+	 * @throws Exception
+	 */
+	@Before
 	public void setUp() throws Exception {
-		super.setUp();
 		this.list = new IntegerList();
 		this.list.add(1);
 		this.list.add(2);
@@ -60,20 +71,24 @@ public class IntegerListTest extends TestCase {
 		this.list.add(25);
 	}
 	
-	@Override
+	/**
+	 * @throws Exception
+	 */
+	@After
 	public void tearDown() throws Exception {
 		this.list = null;
-		super.tearDown();
 	}
 	
 	/**
      */
+	@Test
 	public void testComparator() {
 		assertNull(this.list.comparator());
 	}
 
     /**
      */
+	@Test
 	public void testGetLastValueOnSegmentInt() {
 		assertEquals(3, this.list.getLastValueOnSegment(0));
 		assertEquals(10, this.list.getLastValueOnSegment(2));
@@ -82,6 +97,7 @@ public class IntegerListTest extends TestCase {
 
     /**
      */
+	@Test
 	public void testGetFirstValueOnSegmentInt() {
 		assertEquals(1, this.list.getFirstValueOnSegment(0));
 		assertEquals(10, this.list.getFirstValueOnSegment(2));
@@ -90,6 +106,7 @@ public class IntegerListTest extends TestCase {
 
     /**
      */
+	@Test
 	public void testGetSegmentIndexForInt() {
 		assertEquals(-1, this.list.getSegmentIndexFor(0));
 		assertEquals(0, this.list.getSegmentIndexFor(1));
@@ -126,6 +143,7 @@ public class IntegerListTest extends TestCase {
 
 	/**
 	 */
+	@Test
 	public void testRemoveElementInSegmentIntInt() {
 		Iterator<Integer> i;
 
@@ -156,6 +174,7 @@ public class IntegerListTest extends TestCase {
 
     /**
      */
+	@Test
 	public void testSize() {
 		assertEquals(10, this.list.size());
 		assertTrue(this.list.add(Integer.valueOf(34)));
@@ -168,18 +187,21 @@ public class IntegerListTest extends TestCase {
 
     /**
      */
+	@Test
 	public void testAddIntInteger() {
 		testAddInteger();
 	}
 
     /**
      */
+	@Test
 	public void testAddAllIntCollection() {
 		testAddAllCollection();
 	}
 
 	/**
      */
+	@Test
 	public void testAddInteger() {
 		Iterator<Integer> i;
 
@@ -256,12 +278,14 @@ public class IntegerListTest extends TestCase {
 
 	/**
      */
+	@Test
 	public void testFirst() {
 		assertEquals(Integer.valueOf(1), this.list.first());
 	}
 
     /**
      */
+	@Test
 	public void testHeadSetInteger() {
 		SortedSet<Integer> s;
 		Iterator<Integer> i;
@@ -288,12 +312,14 @@ public class IntegerListTest extends TestCase {
 
     /**
      */
+	@Test
 	public void testLast() {
 		assertEquals(Integer.valueOf(25), this.list.last());
 	}
 
     /**
      */
+	@Test
 	public void testSubSetIntegerInteger() {
 		SortedSet<Integer> s;
 		Iterator<Integer> i;
@@ -333,6 +359,7 @@ public class IntegerListTest extends TestCase {
 
     /**
      */
+	@Test
 	public void testTailSetInteger() {
 		SortedSet<Integer> s;
 		Iterator<Integer> i;
@@ -363,6 +390,7 @@ public class IntegerListTest extends TestCase {
 
     /**
      */
+	@Test
 	public void testAddAllCollection() {
 		Iterator<Integer> i;
 
@@ -418,6 +446,7 @@ public class IntegerListTest extends TestCase {
 
     /**
      */
+	@Test
 	public void testClear() {
 		Iterator<Integer> i;
 
@@ -429,6 +458,7 @@ public class IntegerListTest extends TestCase {
 
     /**
      */
+	@Test
 	public void testContainsObject() {
 		assertFalse(this.list.contains(0));
 		assertTrue(this.list.contains(1));
@@ -450,6 +480,7 @@ public class IntegerListTest extends TestCase {
 
     /**
      */
+	@Test
 	public void testContainsAllCollection() {
 		assertFalse(this.list.containsAll(Collections.singleton(0)));
 		assertTrue(this.list.containsAll(Arrays.asList(1, 2, 3)));
@@ -459,6 +490,7 @@ public class IntegerListTest extends TestCase {
 
     /**
      */
+	@Test
 	public void testIsEmpty() {
 		assertFalse(this.list.isEmpty());
 		this.list.clear();
@@ -467,6 +499,7 @@ public class IntegerListTest extends TestCase {
 
     /**
      */
+	@Test
 	public void testIterator() {
 		Iterator<Integer> i;
 
@@ -496,6 +529,7 @@ public class IntegerListTest extends TestCase {
 
     /**
      */
+	@Test
 	public void testSegmentIterator() {
 		Iterator<IntegerSegment> i = this.list.segmentIterator();
 		IntegerSegment s;
@@ -520,6 +554,7 @@ public class IntegerListTest extends TestCase {
 
     /**
      */
+	@Test
 	public void testToSegmentIterable() {
 		Iterable<IntegerSegment> it = this.list.toSegmentIterable();
 		Iterator<IntegerSegment> i = it.iterator();
@@ -545,6 +580,7 @@ public class IntegerListTest extends TestCase {
 
 	/**
      */
+	@Test
 	public void testRemoveObject() {
 		Iterator<Integer> i;
 
@@ -626,6 +662,7 @@ public class IntegerListTest extends TestCase {
 	
 	/**
 	 */
+	@Test
 	public void testRemoveSegmentInt() {
 		Iterator<Integer> i;
 
@@ -706,6 +743,7 @@ public class IntegerListTest extends TestCase {
 	
     /**
      */
+	@Test
 	public void testRemoveAllCollection() {
 		Iterator<Integer> i;
 
@@ -788,6 +826,7 @@ public class IntegerListTest extends TestCase {
 
     /**
      */
+	@Test
 	public void testRetainAllCollection() {
 		Iterator<Integer> i;
 
@@ -808,9 +847,10 @@ public class IntegerListTest extends TestCase {
 	
 	/**
 	 */
+	@Test
 	public void testSetSortedSet() {
 		Iterator<Integer> i;
-		SortedSet<Integer> set = new TreeSet<Integer>();
+		SortedSet<Integer> set = new TreeSet<>();
 		
 		set.add(Integer.valueOf(00));
 		set.add(Integer.valueOf(10));
@@ -836,6 +876,7 @@ public class IntegerListTest extends TestCase {
 
     /**
      */
+	@Test
 	public void testGetSegmentCount() {
 		assertEquals(3, this.list.getSegmentCount());
 
@@ -850,6 +891,7 @@ public class IntegerListTest extends TestCase {
 
     /**
      */
+	@Test
 	public void testGetIntIntArray() {
 		int[] tab = new int[2];
 		
@@ -876,6 +918,7 @@ public class IntegerListTest extends TestCase {
 
 	/**
      */
+	@Test
 	public void testToArray() {
 		Object[] tab = this.list.toArray();
 		
@@ -893,6 +936,7 @@ public class IntegerListTest extends TestCase {
 
 	/**
      */
+	@Test
 	public void testToIntArray() {
 		int[] tab = this.list.toIntArray();
 		
@@ -910,6 +954,7 @@ public class IntegerListTest extends TestCase {
 
 	/**
      */
+	@Test
 	public void testToArrayTArray() {
 		Object[] tab, tab2;
 		
@@ -945,6 +990,7 @@ public class IntegerListTest extends TestCase {
 	
 	/**
 	 */
+	@Test
 	public void testToSortedSet() {
 		SortedSet<Integer> set;
 		Iterator<Integer> i;
@@ -977,6 +1023,7 @@ public class IntegerListTest extends TestCase {
 
     /**
      */
+	@Test
 	public void testGetInt() {
 		assertEquals(Integer.valueOf(1), this.list.get(0));
 		assertEquals(Integer.valueOf(2), this.list.get(1));
@@ -992,6 +1039,7 @@ public class IntegerListTest extends TestCase {
 
     /**
      */
+	@Test
 	public void testIndexOfObject() {
 		assertEquals(-1, this.list.indexOf(Integer.valueOf(0)));
 		assertEquals(0,  this.list.indexOf(Integer.valueOf(1)));
@@ -1028,6 +1076,7 @@ public class IntegerListTest extends TestCase {
 
     /**
      */
+	@Test
 	public void testLastIndexOfObject() {
 		assertEquals(-1, this.list.lastIndexOf(Integer.valueOf(0)));
 		assertEquals(0,  this.list.lastIndexOf(Integer.valueOf(1)));
@@ -1064,6 +1113,7 @@ public class IntegerListTest extends TestCase {
 
     /**
      */
+	@Test
 	public void testListIterator() {
 		ListIterator<Integer> i;
 		
@@ -1125,6 +1175,7 @@ public class IntegerListTest extends TestCase {
 
     /**
      */
+	@Test
 	public void testListIteratorInt() {
 		ListIterator<Integer> i;
 		
@@ -1176,6 +1227,7 @@ public class IntegerListTest extends TestCase {
 
     /**
      */
+	@Test
 	public void testRemoveInt() {
 		Iterator<Integer> i;
 		
@@ -1224,6 +1276,7 @@ public class IntegerListTest extends TestCase {
 
     /**
      */
+	@Test
 	public void testSetIntInteger() {
 		Iterator<Integer> i;
 		
@@ -1278,6 +1331,7 @@ public class IntegerListTest extends TestCase {
 
     /**
      */
+	@Test
 	public void testSubListIntInt() {
 		List<Integer> l;
 		Iterator<Integer> i;

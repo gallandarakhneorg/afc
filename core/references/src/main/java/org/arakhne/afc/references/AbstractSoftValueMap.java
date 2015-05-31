@@ -58,7 +58,7 @@ public abstract class AbstractSoftValueMap<K,V> extends AbstractReferencedValueM
 	 */
 	@Override
 	protected final ReferencableValue<K,V> makeValue(K k, V v, ReferenceQueue<V> queue) {
-		return new SoftReferencedValue<K,V>(k, v, queue);
+		return new SoftReferencedValue<>(k, v, queue);
 	}
 
 }

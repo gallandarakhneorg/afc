@@ -39,7 +39,7 @@ public class WeakHashSetTest extends AbstractCollectionTestCase<Set<String>> {
 
 	@Override
 	protected Set<String> createCollection() {
-		return new WeakHashSet<String>();
+		return new WeakHashSet<>();
 	}
 
 }

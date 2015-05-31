@@ -51,7 +51,7 @@ import java.util.Set;
 public abstract class AbstractReferencedSet<E,R extends Reference<E>> extends AbstractSet<E> {
 
 	private boolean autoExpurge = false;
-	private final ReferenceQueue<E> queue = new ReferenceQueue<E>();
+	private final ReferenceQueue<E> queue = new ReferenceQueue<>();
 
 	private final Class<? super R> referenceType;
 	private final Set<R> theSet;

@@ -42,7 +42,7 @@ public class SoftValueTreeMapTest extends AbstractReferencableValueMapTestCase {
 	 */
 	@Override
 	protected Map<String,String> createMap() {
-		return new SoftValueTreeMap<String,String>();
+		return new SoftValueTreeMap<>();
 	}
 
 }

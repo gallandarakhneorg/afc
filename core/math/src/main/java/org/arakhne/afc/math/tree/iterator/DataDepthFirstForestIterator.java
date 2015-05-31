@@ -78,7 +78,7 @@ implements Iterator<D> {
 				this.treeIterator = tree.dataDepthFirstIterator(this.order);
 		}
 		if (this.treeIterator!=null && this.treeIterator.hasNext()) {
-			this.nextData = new DataPair<D>(this.treeIterator.next(), this.treeIterator);
+			this.nextData = new DataPair<>(this.treeIterator.next(), this.treeIterator);
 			assert(this.nextData!=null);
 		}
 	}

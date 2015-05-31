@@ -23,8 +23,8 @@ package org.arakhne.afc.math.stochastic;
 import java.util.Map;
 import java.util.Random;
 
-import org.arakhne.afc.math.MathFunctionRange;
 import org.arakhne.afc.math.MathException;
+import org.arakhne.afc.math.MathFunctionRange;
 
 /**
  * Law that representes an uniform density.
@@ -55,14 +55,14 @@ public class UniformStochasticLaw extends StochasticLaw {
 	 * @return a value depending of the stochastic law parameters
 	 * @throws MathException 
 	 */
-	public static float random(float minX, float maxX) throws MathException {
+	public static double random(double minX, double maxX) throws MathException {
 		return StochasticGenerator.generateRandomValue(new UniformStochasticLaw(minX, maxX));
 	}
 
-	private final float minX;
-	private final float maxX;
+	private final double minX;
+	private final double maxX;
 	
-	private final float delta;
+	private final double delta;
 	
 	/**
 	 * Construct a law with the following parameters.
@@ -84,7 +84,7 @@ public class UniformStochasticLaw extends StochasticLaw {
 	 * @param minX is the lower bound
 	 * @param maxX is the upper bound
 	 */
-	public UniformStochasticLaw(float minX, float maxX) {
+	public UniformStochasticLaw(double minX, double maxX) {
 		if (minX<maxX) {
 			this.minX = minX;
 			this.maxX = maxX;
@@ -100,7 +100,7 @@ public class UniformStochasticLaw extends StochasticLaw {
 	/** {@inheritDoc}
 	 */
 	@Override
-	public float f(float x)  throws MathException {
+	public double f(double x)  throws MathException {
 		if ((x<this.minX)||(x>this.maxX))
 			throw new OutsideDomainException(x);
 		return 1.f/this.delta;
@@ -120,7 +120,7 @@ public class UniformStochasticLaw extends StochasticLaw {
 	 * @throws MathException in case {@code F<sup>-1</sup>(u)} could not be computed
 	 */
 	@Override
-	public float inverseF(float u) throws MathException {
+	public double inverseF(double u) throws MathException {
 		return this.delta*u + this.minX;
 	}
 

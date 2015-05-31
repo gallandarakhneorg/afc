@@ -41,11 +41,11 @@ implements Iterator<D> {
 
 	/** List of the node to treat.
 	 */
-	private final Queue<TreeNode<D,?>> availableNodes = new LinkedList<TreeNode<D,?>>();
+	private final Queue<TreeNode<D,?>> availableNodes = new LinkedList<>();
 	
 	/** List of the data to replies.
 	 */
-	private final Queue<DataPair<D>> availableData = new LinkedList<DataPair<D>>();
+	private final Queue<DataPair<D>> availableData = new LinkedList<>();
 	
 	private DataPair<D> lastlyReplied = null;
 	private boolean isStarted = false;
@@ -78,7 +78,7 @@ implements Iterator<D> {
 			for(int i=0; i<prt.getUserDataCount(); ++i) {
 				D d = prt.getUserDataAt(i);
 				if (d!=null) {
-					this.availableData.add(new DataPair<D>(d,prt));
+					this.availableData.add(new DataPair<>(d,prt));
 				}
 			}
 			

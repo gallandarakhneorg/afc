@@ -41,7 +41,7 @@ import org.arakhne.afc.math.graph.GraphIterator;
 public class SGraph
 implements Graph<SGraphSegment,SGraphPoint> {
 
-	private final Collection<SGraphSegment> segments = new ArrayList<SGraphSegment>();
+	private final Collection<SGraphSegment> segments = new ArrayList<>();
 	private int pointCount = 0;
 	
 	/**
@@ -111,7 +111,7 @@ implements Graph<SGraphSegment,SGraphPoint> {
 			||starting_point.getGraph()!=this) {
 			throw new IllegalArgumentException();
 		}
-		return new GraphIterator<SGraphSegment,SGraphPoint>(
+		return new GraphIterator<>(
 				this,
 				starting_segment,
 				starting_point,
@@ -125,14 +125,14 @@ implements Graph<SGraphSegment,SGraphPoint> {
 	 */
 	@Override
 	public GraphIterator<SGraphSegment, SGraphPoint> depthIterator(
-			SGraphSegment startingSegment, float depth,
-			float position_from_starting_point, SGraphPoint startingPoint,
+			SGraphSegment startingSegment, double depth,
+			double position_from_starting_point, SGraphPoint startingPoint,
 			boolean allowManyReplies, boolean assumeOrientedSegments) {
 		if (startingSegment.getGraph()!=this
 				||startingPoint.getGraph()!=this) {
 				throw new IllegalArgumentException();
 			}
-			return new DepthGraphIterator<SGraphSegment, SGraphPoint>(
+			return new DepthGraphIterator<>(
 					this,
 					depth,
 					startingSegment,

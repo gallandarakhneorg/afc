@@ -20,6 +20,8 @@
  */
 package org.arakhne.afc.references;
 
+import static org.junit.Assert.fail;
+
 import java.awt.geom.Point2D;
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
@@ -29,11 +31,10 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.Map.Entry;
+import java.util.Random;
 
-import junit.framework.AssertionFailedError;
-import junit.framework.TestCase;
+import org.junit.Assert;
 
 /** Test case with utility functions.
  *
@@ -42,7 +43,7 @@ import junit.framework.TestCase;
  * @mavengroupid org.arakhne.afc
  * @mavenartifactid arakhneRefs
  */
-public abstract class AbstractTestCase extends TestCase {
+public abstract class AbstractTestCase {
 	
 	private static String arrayToString(Object o) {
 		if (o==null) return null;
@@ -284,7 +285,7 @@ public abstract class AbstractTestCase extends TestCase {
 	 * 
 	 * @param expected is the expected value during the unit test.
 	 * @param actual is the actual value of the object during the unit test.
-	 * @see #assertEquals(Object, Object)
+	 * @see Assert#assertEquals(Object, Object)
 	 * @see #assertEquals(Object[], Object)
 	 * @see #assertEquals(Object[], Object[])
 	 */
@@ -300,7 +301,7 @@ public abstract class AbstractTestCase extends TestCase {
 	 * @param message is the error message to put inside the assertion.
 	 * @param expected is the expected value during the unit test.
 	 * @param actual is the actual value of the object during the unit test.
-	 * @see #assertEquals(Object, Object)
+	 * @see Assert#assertEquals(Object, Object)
 	 * @see #assertEquals(Object[], Object)
 	 * @see #assertEquals(Object[], Object[])
 	 */
@@ -311,7 +312,7 @@ public abstract class AbstractTestCase extends TestCase {
 			else
 				assertEquals(message, (Object[])expected, actual);
 		}
-		else assertEquals(message, expected, actual);
+		else Assert.assertEquals(message, expected, actual);
 	}
 
 	/** Asserts that the actuel similar is equal to one of the expected objects. If not
@@ -366,7 +367,7 @@ public abstract class AbstractTestCase extends TestCase {
 	}
 	
 	private static <T> boolean similars(Collection<T> c1, Collection<T> c2) {
-		ArrayList<T> a = new ArrayList<T>();
+		ArrayList<T> a = new ArrayList<>();
 		a.addAll(c2);
 		for(T elt : c1) {
 			if (!a.remove(elt)) {
@@ -460,7 +461,7 @@ public abstract class AbstractTestCase extends TestCase {
 		else if (expected.getClass().isArray())
 			assertSimilars(message, (X[])expected, (X[])actual);
 		else
-			assertEquals(message, expected, actual);
+			Assert.assertEquals(message, expected, actual);
 	}
 
 	/** Asserts that the actual object is equal to one of the expected objects. If not
@@ -477,11 +478,7 @@ public abstract class AbstractTestCase extends TestCase {
 			try {
 				assertSimilars(message,expected, actual);
 			}
-			catch(AssertionError _) {
-				// ok
-				return;
-			}
-			catch(AssertionFailedError _) {
+			catch(Throwable _) {
 				// ok
 				return;
 			}
@@ -503,10 +500,7 @@ public abstract class AbstractTestCase extends TestCase {
 			assertSimilars(null,obj1, obj2);
 			return true;
 		}
-		catch(AssertionError _) {
-			return false;
-		}
-		catch(AssertionFailedError _) {
+		catch(Throwable _) {
 			return false;
 		}
 	}
@@ -664,7 +658,7 @@ public abstract class AbstractTestCase extends TestCase {
 	protected static <T> T[] extractRandomValues(T[] availableValues) {
 		Random rnd = new Random();
 		int count = rnd.nextInt(500);
-		ArrayList<T> tab = new ArrayList<T>(count);
+		ArrayList<T> tab = new ArrayList<>(count);
 		for(int i=0; i<count; i++) {
 			tab.add(availableValues[rnd.nextInt(availableValues.length)]);
 		}
@@ -769,7 +763,7 @@ public abstract class AbstractTestCase extends TestCase {
 	 * @param actual
 	 */
 	protected static <T> void assertEpsilonEquals(String message, Collection<? extends T> expected, Collection<? extends T> actual) {
-		ArrayList<T> l = new ArrayList<T>(actual);
+		ArrayList<T> l = new ArrayList<>(actual);
 		for(T e : expected) {
 			if (!l.remove(e)) {
 				fail((message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
@@ -804,7 +798,7 @@ public abstract class AbstractTestCase extends TestCase {
 	 * @param actual
 	 */
 	protected static <T> void assertEpsilonEquals(String message, T[] expected, T[] actual) {
-		ArrayList<T> l = new ArrayList<T>(Arrays.asList(actual));
+		ArrayList<T> l = new ArrayList<>(Arrays.asList(actual));
 		for(T e : expected) {
 			if (!l.remove(e)) {
 				fail((message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
@@ -839,7 +833,7 @@ public abstract class AbstractTestCase extends TestCase {
 	 * @param actual
 	 */
 	protected static <T> void assertNotEpsilonEquals(String message, T[] expected, T[] actual) {
-		ArrayList<T> l = new ArrayList<T>(Arrays.asList(actual));
+		ArrayList<T> l = new ArrayList<>(Arrays.asList(actual));
 		for(T e : expected) {
 			if (!l.remove(e)) return;
 		}

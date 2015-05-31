@@ -21,7 +21,10 @@
  */
 package org.arakhne.afc.util;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
+import org.junit.Test;
 
 /** 
  * @author $Author: galland$
@@ -29,13 +32,14 @@ import junit.framework.TestCase;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class NaturalOrderComparatorTest extends TestCase {
+@SuppressWarnings("static-method")
+public class NaturalOrderComparatorTest {
 
-	
 	/**
 	 */
-	public static void testCompare() {
-		NaturalOrderComparator<Object> comparator = new NaturalOrderComparator<Object>();
+	@Test
+	public void testCompare() {
+		NaturalOrderComparator<Object> comparator = new NaturalOrderComparator<>();
 		
 		Integer o1 = 1;
 		Integer o2 = 2;

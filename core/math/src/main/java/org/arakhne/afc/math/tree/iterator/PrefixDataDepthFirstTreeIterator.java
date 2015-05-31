@@ -96,7 +96,7 @@ extends AbstractDataTreeIterator<D,N> {
 	 * @param dataSelector permits to filter the user data replied by this iterator.
 	 */
 	public PrefixDataDepthFirstTreeIterator(N node, NodeSelector<N> nodeSelector, DataSelector<D> dataSelector) {
-		super(new PrefixDepthFirstTreeIterator<N>(node, nodeSelector), dataSelector);
+		super(new PrefixDepthFirstTreeIterator<>(node, nodeSelector), dataSelector);
 	}
 
 }

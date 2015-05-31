@@ -23,8 +23,8 @@ package org.arakhne.afc.math.stochastic;
 import java.util.Map;
 import java.util.Random;
 
-import org.arakhne.afc.math.MathFunctionRange;
 import org.arakhne.afc.math.MathException;
+import org.arakhne.afc.math.MathFunctionRange;
 
 /**
  * Law that representes a triangular density.
@@ -49,12 +49,12 @@ public class ExponentialStochasticLaw extends StochasticLaw {
 	 * @return a value depending of the stochastic law parameters
 	 * @throws MathException 
 	 */
-	public static float random(float lambda, float xmin) throws MathException {
+	public static double random(double lambda, double xmin) throws MathException {
 		return StochasticGenerator.generateRandomValue(new ExponentialStochasticLaw(lambda,xmin));
 	}
 
-	private final float lambda;
-	private final float xmin;
+	private final double lambda;
+	private final double xmin;
 
 	/**
 	 * Construct a law with the following parameters.
@@ -78,7 +78,7 @@ public class ExponentialStochasticLaw extends StochasticLaw {
 	 * @param xmin
 	 * @throws OutsideDomainException when lambda is outside its domain
 	 */
-	public ExponentialStochasticLaw(float lambda, float xmin) throws OutsideDomainException {
+	public ExponentialStochasticLaw(double lambda, double xmin) throws OutsideDomainException {
 		if (lambda<=0) throw new OutsideDomainException(lambda);
 		this.lambda = lambda;
 		this.xmin = xmin;
@@ -103,9 +103,9 @@ public class ExponentialStochasticLaw extends StochasticLaw {
 	/** {@inheritDoc}
 	 */
 	@Override
-	public float f(float x)  throws MathException {
+	public double f(double x)  throws MathException {
 		if (x<this.xmin) throw new OutsideDomainException(x);
-		return (float) (this.lambda * Math.exp(-this.lambda*(x-this.xmin))); 
+		return this.lambda * Math.exp(-this.lambda*(x-this.xmin)); 
 	}
 
 	/** {@inheritDoc}
@@ -122,8 +122,8 @@ public class ExponentialStochasticLaw extends StochasticLaw {
 	 * @throws MathException in case {@code F<sup>-1</sup>(u)} could not be computed
 	 */
 	@Override
-	public float inverseF(float u) throws MathException {
-		return (float) (this.xmin - (Math.log(u)/this.lambda));
+	public double inverseF(double u) throws MathException {
+		return this.xmin - (Math.log(u)/this.lambda);
 	}
 
 }

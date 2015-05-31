@@ -279,7 +279,7 @@ public class VMCommandLine {
 		int osize = commandLineOptions==null ? 0 : commandLineOptions.size();
 		int psize = commandLineParameters==null ? 0 : commandLineParameters.length;
 		int tsize = (osize>0 && psize>0) ? 1 : 0;
-		List<String> params = new ArrayList<String>(osize+tsize);
+		List<String> params = new ArrayList<>(osize+tsize);
 		if (osize>0) {
 			List<Object> values;
 			String name, prefix, v;
@@ -391,7 +391,7 @@ public class VMCommandLine {
 		
 		List<Object> values = options.get(name);
 		if (values==null) {
-			values = new ArrayList<Object>();
+			values = new ArrayList<>();
 			options.put(name, values);
 		}
 		switch(type) {
@@ -517,12 +517,12 @@ public class VMCommandLine {
 	public static void splitOptionsAndParameters(String... optionDefinitions) {
 		if (analyzed) return;
 		
-		List<String> params = new ArrayList<String>();
-		SortedMap<String,List<Object>> options = new TreeMap<String,List<Object>>();
+		List<String> params = new ArrayList<>();
+		SortedMap<String,List<Object>> options = new TreeMap<>();
 		String opt;
 
 		// Analyze definitions
-		Map<String,OptionType> defs = new TreeMap<String,OptionType>();
+		Map<String,OptionType> defs = new TreeMap<>();
 		for (String def : optionDefinitions) {
 			if (def.endsWith("!")) { //$NON-NLS-1$
 				opt = def.substring(0, def.length()-1);

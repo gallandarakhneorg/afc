@@ -153,7 +153,7 @@ extends AbstractDataTreeIterator<D,N> {
 	 * @param dataSelector permits to filter the user data replied by this iterator.
 	 */
 	public InfixDataDepthFirstTreeIterator(N node, NodeSelector<N> nodeSelector, DataSelector<D> dataSelector) {
-		super(new InfixDepthFirstTreeIterator<N>(node, nodeSelector), dataSelector);
+		super(new InfixDepthFirstTreeIterator<>(node, nodeSelector), dataSelector);
 	}
 	
 	/**
@@ -189,7 +189,7 @@ extends AbstractDataTreeIterator<D,N> {
 	 * @param dataSelector permits to filter the user data replied by this iterator.
 	 */
 	public InfixDataDepthFirstTreeIterator(N node, int infixPosition, NodeSelector<N> nodeSelector, DataSelector<D> dataSelector) {
-		super(new InfixDepthFirstTreeIterator<N>(node, infixPosition, nodeSelector), dataSelector);
+		super(new InfixDepthFirstTreeIterator<>(node, infixPosition, nodeSelector), dataSelector);
 	}
 
 }

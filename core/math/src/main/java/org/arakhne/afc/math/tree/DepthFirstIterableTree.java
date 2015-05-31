@@ -20,6 +20,7 @@ package org.arakhne.afc.math.tree;
 import java.util.Iterator;
 
 import org.arakhne.afc.math.tree.iterator.DepthFirstNodeOrder;
+import org.arakhne.afc.math.tree.iterator.InfixDepthFirstTreeIterator;
 
 
 /**

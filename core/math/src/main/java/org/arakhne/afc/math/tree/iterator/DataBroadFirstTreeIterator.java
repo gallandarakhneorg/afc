@@ -97,7 +97,7 @@ extends AbstractDataTreeIterator<D,N> {
 	 * @param dataSelector permits to filter the user data repliable by this iterator.
 	 */
 	public DataBroadFirstTreeIterator(N node, NodeSelector<N> nodeSelector, DataSelector<D> dataSelector) {
-		this(new BroadFirstTreeIterator<N>(node, nodeSelector), dataSelector);
+		this(new BroadFirstTreeIterator<>(node, nodeSelector), dataSelector);
 	}
 
 	/**

@@ -70,11 +70,11 @@ public abstract class AbstractTree<D,N extends TreeNode<D,N>> implements DepthFi
 	public final Iterator<N> depthFirstIterator(DepthFirstNodeOrder nodeOrder) {
 		switch(nodeOrder) {
 		case POSTFIX:
-			return new PostfixDepthFirstTreeIterator<N>(this);
+			return new PostfixDepthFirstTreeIterator<>(this);
 		case INFIX:
-			return new InfixDepthFirstTreeIterator<N>(this);
+			return new InfixDepthFirstTreeIterator<>(this);
 		default:
-			return new PrefixDepthFirstTreeIterator<N>(this);
+			return new PrefixDepthFirstTreeIterator<>(this);
 		}
 	}
 
@@ -83,29 +83,29 @@ public abstract class AbstractTree<D,N extends TreeNode<D,N>> implements DepthFi
 	@Override
 	public final Iterator<N> depthFirstIterator(int infixPosition) {
 		if (infixPosition<=0)
-			return new PrefixDepthFirstTreeIterator<N>(this);
-		return new InfixDepthFirstTreeIterator<N>(this,infixPosition);
+			return new PrefixDepthFirstTreeIterator<>(this);
+		return new InfixDepthFirstTreeIterator<>(this,infixPosition);
 	}
 
 	/** {@inheritDoc}
 	 */
 	@Override
 	public final Iterator<N> depthFirstIterator() {
-		return new PrefixDepthFirstTreeIterator<N>(this);
+		return new PrefixDepthFirstTreeIterator<>(this);
 	}
 
 	/** {@inheritDoc}
 	 */
 	@Override
 	public final Iterator<N> broadFirstIterator() {
-		return new BroadFirstTreeIterator<N>(this);
+		return new BroadFirstTreeIterator<>(this);
 	}
 
 	/** {@inheritDoc}
 	 */
 	@Override
 	public final Iterator<D> dataDepthFirstIterator() {
-		return new PrefixDataDepthFirstTreeIterator<D, N>(this);
+		return new PrefixDataDepthFirstTreeIterator<>(this);
 	}
 
 	/** {@inheritDoc}
@@ -114,11 +114,11 @@ public abstract class AbstractTree<D,N extends TreeNode<D,N>> implements DepthFi
 	public final Iterator<D> dataDepthFirstIterator(DepthFirstNodeOrder nodeOrder) {
 		switch(nodeOrder) {
 		case POSTFIX:
-			return new PostfixDataDepthFirstTreeIterator<D, N>(this);
+			return new PostfixDataDepthFirstTreeIterator<>(this);
 		case INFIX:
-			return new InfixDataDepthFirstTreeIterator<D, N>(this);
+			return new InfixDataDepthFirstTreeIterator<>(this);
 		default:
-			return new PrefixDataDepthFirstTreeIterator<D, N>(this);
+			return new PrefixDataDepthFirstTreeIterator<>(this);
 		}
 	}
 
@@ -127,8 +127,8 @@ public abstract class AbstractTree<D,N extends TreeNode<D,N>> implements DepthFi
 	@Override
 	public final Iterator<D> dataDepthFirstIterator(int infixPosition) {
 		if (infixPosition<=0)
-			return new PrefixDataDepthFirstTreeIterator<D, N>(this);
-		return new InfixDataDepthFirstTreeIterator<D, N>(this,infixPosition);
+			return new PrefixDataDepthFirstTreeIterator<>(this);
+		return new InfixDataDepthFirstTreeIterator<>(this,infixPosition);
 	}
 
 
@@ -136,7 +136,7 @@ public abstract class AbstractTree<D,N extends TreeNode<D,N>> implements DepthFi
 	 */
 	@Override
 	public final Iterator<D> dataBroadFirstIterator() {
-		return new DataBroadFirstTreeIterator<D, N>(this);
+		return new DataBroadFirstTreeIterator<>(this);
 	}
 
 	/** {@inheritDoc}

@@ -58,7 +58,7 @@ public abstract class AbstractWeakValueMap<K,V> extends AbstractReferencedValueM
 	 */
 	@Override
 	protected final ReferencableValue<K,V> makeValue(K k, V v, ReferenceQueue<V> queue) {
-		return new WeakReferencedValue<K,V>(k, v, queue);
+		return new WeakReferencedValue<>(k, v, queue);
 	}
 
 }

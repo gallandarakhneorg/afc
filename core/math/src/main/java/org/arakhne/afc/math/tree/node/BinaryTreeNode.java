@@ -22,6 +22,8 @@ import java.io.ObjectInputStream;
 import java.util.Collection;
 import java.util.List;
 
+import org.arakhne.afc.math.tree.TreeNode;
+
 
 /**
  * This is the generic implementation of a binary

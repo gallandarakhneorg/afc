@@ -52,7 +52,7 @@ public class URLHandlerUtil {
 	}
 	
 	private static void install(String... packageNames) {
-		List<String> array = new LinkedList<String>();
+		List<String> array = new LinkedList<>();
 
 		String str = System.getProperty(HANDLER_PACKAGES);
 		if (str!=null && !"".equals(str)) { //$NON-NLS-1$
@@ -79,7 +79,7 @@ public class URLHandlerUtil {
 	}
 
 	private static void uninstall(String... packageNames) {
-		List<String> array = new LinkedList<String>();
+		List<String> array = new LinkedList<>();
 
 		String str = System.getProperty(HANDLER_PACKAGES);
 		if (str!=null && !"".equals(str)) { //$NON-NLS-1$

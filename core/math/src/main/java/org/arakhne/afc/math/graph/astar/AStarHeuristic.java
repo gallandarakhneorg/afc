@@ -41,6 +41,6 @@ public interface AStarHeuristic<PT extends GraphPoint<PT,?>> {
 	 * @param p2
 	 * @return the evaluated distance between <var>p1</var> and <var>p2</var>.
 	 */
-	public float evaluate(PT p1, PT p2);
+	public double evaluate(PT p1, PT p2);
 
 }

@@ -30,7 +30,9 @@ import java.util.List;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see <code>org.arakhne.afc.core:inputoutput</code> maven artifact.
  */
+@Deprecated
 public class MultiFileFilter implements FileFilter {
 
 	private final boolean acceptDirectories;
@@ -88,7 +90,7 @@ public class MultiFileFilter implements FileFilter {
 
 	@Override
 	public String[] getExtensions() {
-		List<String> extensions = new ArrayList<String>();
+		List<String> extensions = new ArrayList<>();
 		for(FileFilter ff : this.filters) {
 			extensions.addAll(Arrays.asList(ff.getExtensions()));
 		}

@@ -20,8 +20,8 @@
  */
 package org.arakhne.afc.math.physics;
 
-import org.arakhne.afc.math.geometry2d.continuous.Vector2f;
-import org.arakhne.afc.math.geometry3d.continuous.Vector3f;
+import org.arakhne.afc.math.geometry.d2.continuous.Vector2f;
+import org.arakhne.afc.math.geometry.d3.continuous.Vector3f;
 
 /**
  * Some physic utility functions implementing in Java.
@@ -53,10 +53,10 @@ public interface PhysicsEngine {
 	 * @param dt is the time
 	 * @return a motion
 	 */
-	public float motionNewtonLaw(
-			float speed,
-			float acceleration, 
-			float dt);
+	public double motionNewtonLaw(
+			double speed,
+			double acceleration, 
+			double dt);
 
 	/** Compute and replies a motion according
 	 * to high school physics Newton's equations for motion.
@@ -81,14 +81,14 @@ public interface PhysicsEngine {
 	 * @return the motion
 	 * @see "http://en.wikibooks.org/wiki/High_School_Physics/Velocity"
 	 */
-	public float motionNewtonLaw1D(
-			float velocity,
-			float minSpeed,
-			float maxSpeed,
-			float acceleration, 
-			float minAcceleration,
-			float maxAcceleration,
-			float dt);
+	public double motionNewtonLaw1D(
+			double velocity,
+			double minSpeed,
+			double maxSpeed,
+			double acceleration, 
+			double minAcceleration,
+			double maxAcceleration,
+			double dt);
 
 	/** Compute and replies a motion according
 	 * to high school physics Newton's equations for motion.
@@ -115,12 +115,12 @@ public interface PhysicsEngine {
 	 */
 	public Vector2f motionNewtonLaw1D5(
 			Vector2f velocity,
-			float minSpeed,
-			float maxSpeed,
+			double minSpeed,
+			double maxSpeed,
 			Vector2f acceleration, 
-			float minAcceleration,
-			float maxAcceleration,
-			float dt);
+			double minAcceleration,
+			double maxAcceleration,
+			double dt);
 
 	/** Compute and replies a motion according
 	 * to high school physics Newton's equations for motion.
@@ -147,12 +147,12 @@ public interface PhysicsEngine {
 	 */
 	public Vector2f motionNewtonLaw2D(
 			Vector2f velocity,
-			float minSpeed,
-			float maxSpeed,
+			double minSpeed,
+			double maxSpeed,
 			Vector2f acceleration, 
-			float minAcceleration,
-			float maxAcceleration,
-			float dt);
+			double minAcceleration,
+			double maxAcceleration,
+			double dt);
 	
 	/** Compute and replies a motion according
 	 * to high school physics Newton's equations for motion.
@@ -179,12 +179,12 @@ public interface PhysicsEngine {
 	 */
 	public Vector3f motionNewtonLaw2D5(
 			Vector3f velocity,
-			float minSpeed,
-			float maxSpeed,
+			double minSpeed,
+			double maxSpeed,
 			Vector3f acceleration, 
-			float minAcceleration,
-			float maxAcceleration,
-			float dt);
+			double minAcceleration,
+			double maxAcceleration,
+			double dt);
 	
 	/** Compute and replies a motion according
 	 * to high school physics Newton's equations for motion.
@@ -211,12 +211,12 @@ public interface PhysicsEngine {
 	 */
 	public Vector3f motionNewtonLaw3D(
 			Vector3f velocity,
-			float minSpeed,
-			float maxSpeed,
+			double minSpeed,
+			double maxSpeed,
 			Vector3f acceleration, 
-			float minAcceleration,
-			float maxAcceleration,
-			float dt);
+			double minAcceleration,
+			double maxAcceleration,
+			double dt);
 
 	/** Compute and replies a motion according
 	 * to Newton-Euler-1 equations for motion
@@ -230,9 +230,9 @@ public interface PhysicsEngine {
 	 * @param dt is the time
 	 * @return a motion
 	 */
-	public float motionNewtonEuler1Law(
-			float speed,
-			float dt);
+	public double motionNewtonEuler1Law(
+			double speed,
+			double dt);
 	
 	/** Compute and replies a motion according
 	 * to Newton-Euler-1 equations for motion
@@ -247,11 +247,11 @@ public interface PhysicsEngine {
 	 * @param dt is the time
 	 * @return a motion
 	 */
-	public float motionNewtonEuler1Law1D(
-			float velocity,
-			float minSpeed,
-			float maxSpeed,
-			float dt);
+	public double motionNewtonEuler1Law1D(
+			double velocity,
+			double minSpeed,
+			double maxSpeed,
+			double dt);
 
 	/** Compute and replies a motion according
 	 * to Newton-Euler-1 equations for motion
@@ -268,9 +268,9 @@ public interface PhysicsEngine {
 	 */
 	public Vector2f motionNewtonEuler1Law1D5(
 			Vector2f velocity,
-			float minSpeed,
-			float maxSpeed,
-			float dt);
+			double minSpeed,
+			double maxSpeed,
+			double dt);
 
 	/** Compute and replies a motion according
 	 * to Newton-Euler-1 equations for motion
@@ -287,9 +287,9 @@ public interface PhysicsEngine {
 	 */
 	public Vector2f motionNewtonEuler1Law2D(
 			Vector2f velocity,
-			float minSpeed,
-			float maxSpeed,
-			float dt);
+			double minSpeed,
+			double maxSpeed,
+			double dt);
 
 	/** Compute and replies a motion according
 	 * to Newton-Euler-1 equations for motion
@@ -306,9 +306,9 @@ public interface PhysicsEngine {
 	 */
 	public Vector3f motionNewtonEuler1Law2D5(
 			Vector3f velocity,
-			float minSpeed,
-			float maxSpeed,
-			float dt);
+			double minSpeed,
+			double maxSpeed,
+			double dt);
 
 	/** Compute and replies a motion according
 	 * to Newton-Euler-1 equations for motion
@@ -325,9 +325,9 @@ public interface PhysicsEngine {
 	 */
 	public Vector3f motionNewtonEuler1Law3D(
 			Vector3f velocity,
-			float minSpeed,
-			float maxSpeed,
-			float dt);
+			double minSpeed,
+			double maxSpeed,
+			double dt);
 
 	/** Replies the new speed according to a previous velocity and
 	 * a mouvement during a given time.
@@ -338,10 +338,10 @@ public interface PhysicsEngine {
 	 * @param movement is the movement distance.
 	 * @param dt is the time
 	 * @return a new speed
-	 * @deprecated see {@link #speed(float, float)}
+	 * @deprecated see {@link #speed(double, double)}
 	 */
 	@Deprecated
-	public float velocity(float movement, float dt);
+	public double velocity(double movement, double dt);
 
 	/** Replies the new speed according to a previous speed and
 	 * a mouvement during a given time.
@@ -354,7 +354,7 @@ public interface PhysicsEngine {
 	 * @return a new speed
 	 * @since 4.1
 	 */
-	public float speed(float movement, float dt);
+	public double speed(double movement, double dt);
 
 	/** Replies the new  acceleration according to a previous 
 	 * speed and a current speed, and given time.
@@ -367,9 +367,9 @@ public interface PhysicsEngine {
 	 * @param dt is the time
 	 * @return a new acceleration
 	 */
-	public float acceleration(
-			float previousSpeed,
-			float currentSpeed, 
-			float dt);
+	public double acceleration(
+			double previousSpeed,
+			double currentSpeed, 
+			double dt);
 
 }

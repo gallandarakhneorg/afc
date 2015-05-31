@@ -30,7 +30,9 @@ import java.io.OutputStream;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see <code>org.arakhne.afc.core:inputoutput</code> maven artifact.
  */
+@Deprecated
 public class UnclosableOutputStream extends FilterOutputStream {
 
 	/**

@@ -58,7 +58,7 @@ public abstract class AbstractPhantomValueMap<K,V> extends AbstractReferencedVal
 	 */
 	@Override
 	protected final ReferencableValue<K,V> makeValue(K k, V v, ReferenceQueue<V> queue) {
-		return new PhantomReferencedValue<K,V>(k, v, queue);
+		return new PhantomReferencedValue<>(k, v, queue);
 	}
 
 }

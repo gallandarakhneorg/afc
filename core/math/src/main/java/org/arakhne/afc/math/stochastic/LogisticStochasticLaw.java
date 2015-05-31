@@ -23,8 +23,8 @@ package org.arakhne.afc.math.stochastic;
 import java.util.Map;
 import java.util.Random;
 
-import org.arakhne.afc.math.MathFunctionRange;
 import org.arakhne.afc.math.MathException;
+import org.arakhne.afc.math.MathFunctionRange;
 
 /**
  * Law that representes a logistic density.
@@ -49,12 +49,12 @@ public class LogisticStochasticLaw extends StochasticLaw {
 	 * @return a value depending of the stochastic law parameters
 	 * @throws MathException 
 	 */
-	public static float random(float mu, float scale) throws MathException {
+	public static double random(double mu, double scale) throws MathException {
 		return StochasticGenerator.generateRandomValue(new LogisticStochasticLaw(mu, scale));
 	}
 
-	private final float mu;
-	private final float scale;
+	private final double mu;
+	private final double scale;
 
 	/**
 	 * Construct a law with the following parameters.
@@ -78,7 +78,7 @@ public class LogisticStochasticLaw extends StochasticLaw {
 	 * @param scale is the scale of the distristibution ({@code &gt;0})
 	 * @throws OutsideDomainException when scale is negative. 
 	 */
-	public LogisticStochasticLaw(float mu, float scale) throws OutsideDomainException {
+	public LogisticStochasticLaw(double mu, double scale) throws OutsideDomainException {
 		if (scale<=0) throw new OutsideDomainException(scale);
 		this.mu = mu;
 		this.scale = scale;
@@ -103,9 +103,9 @@ public class LogisticStochasticLaw extends StochasticLaw {
 	/** {@inheritDoc}
 	 */
 	@Override
-	public float f(float x)  throws MathException {
-		float ex = (float) Math.exp((this.mu-x)/this.scale);
-		float denom = (1.f+ex)*(1.f+ex);
+	public double f(double x)  throws MathException {
+		double ex = Math.exp((this.mu-x)/this.scale);
+		double denom = (1.f+ex)*(1.f+ex);
 		return ex / (this.scale*denom);
 	}
 
@@ -123,8 +123,8 @@ public class LogisticStochasticLaw extends StochasticLaw {
 	 * @throws MathException in case {@code F<sup>-1</sup>(u)} could not be computed
 	 */
 	@Override
-	public float inverseF(float u) throws MathException {
-		return (float) (this.mu + this.scale*Math.log(u/(1.f-u))); 
+	public double inverseF(double u) throws MathException {
+		return this.mu + this.scale*Math.log(u/(1.f-u)); 
 	}
 
 }

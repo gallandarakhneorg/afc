@@ -37,7 +37,7 @@ import java.util.LinkedList;
  */
 public class ShortestSegmentFirstGraphCourseModel<ST extends GraphSegment<ST,PT>,PT extends GraphPoint<PT,ST>> implements GraphCourseModel<ST,PT>{
 
-	private final LinkedList<GraphIterationElement<ST,PT>> list = new LinkedList<GraphIterationElement<ST,PT>>();
+	private final LinkedList<GraphIterationElement<ST,PT>> list = new LinkedList<>();
 	
 	/** Replies if this model restitutes the elements in a reverse order.
 	 * <p>
@@ -59,13 +59,13 @@ public class ShortestSegmentFirstGraphCourseModel<ST extends GraphSegment<ST,PT>
 	public void addIterationElement(GraphIterationElement<ST,PT> element) {
 		// Search for the insertion index
 		Iterator<GraphIterationElement<ST,PT>> iterator = this.list.iterator();
-		float d1 = element.getDistanceToReachSegment() + element.getSegment().getLength();
+		double d1 = element.getDistanceToReachSegment() + element.getSegment().getLength();
 		int index = 0;
 		
 		while (iterator.hasNext()) {
 			GraphIterationElement<ST,PT> e = iterator.next();
 			if (e!=null) {
-				float d2 = e.getDistanceToReachSegment() + e.getSegment().getLength();
+				double d2 = e.getDistanceToReachSegment() + e.getSegment().getLength();
 				if (d1<=d2) break; // Stop looping
 			}
 			++index;

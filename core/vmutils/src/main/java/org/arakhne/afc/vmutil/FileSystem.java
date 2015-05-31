@@ -1197,7 +1197,7 @@ public class FileSystem {
 	 */
 	public static void delete(File file) throws IOException {
 		if (file!=null) {
-			LinkedList<File> candidates = new LinkedList<File>();
+			LinkedList<File> candidates = new LinkedList<>();
 			candidates.add(file);
 			File f;
 			File[] children;
@@ -1303,14 +1303,10 @@ public class FileSystem {
 			outFile = new File(out, largeBasename(in));
 		}
 		
-		FileInputStream fis = new FileInputStream(in);
-		FileOutputStream fos = new FileOutputStream(outFile);
-		try {
-			copy(fis, (int)in.length(), fos);
-		}
-		finally {
-			fis.close();
-			fos.close();
+		try (FileInputStream fis = new FileInputStream(in)) {
+			try (FileOutputStream fos = new FileOutputStream(outFile)) {
+				copy(fis, (int)in.length(), fos);
+			}
 		}
 	}
 
@@ -1353,15 +1349,11 @@ public class FileSystem {
 		}
 		
 		URLConnection connection = in.openConnection();
-		FileOutputStream fos = new FileOutputStream(outFile);
-		try {
+		try (FileOutputStream fos = new FileOutputStream(outFile)) {
 			copy(
 				connection.getInputStream(),
 				connection.getContentLength(),
 				fos);
-		}
-		finally {
-			fos.close();
 		}
 	}
 
@@ -1380,28 +1372,24 @@ public class FileSystem {
 	public static void copy(InputStream in, int inSize, FileOutputStream out) throws IOException {
 		assert(in!=null);
 		assert(out!=null);
-		ReadableByteChannel inChannel = Channels.newChannel(in);
-		FileChannel outChannel = out.getChannel();
-		try {
-			int size = inSize;
-			// apparently has trouble copying large files on Windows
-			if (size<0 || OperatingSystem.WIN.isCurrentOS()) {
-				// magic number for Windows, 64Mb - 32Kb
-				int maxCount = (64 * 1024 * 1024) - (32 * 1024);
-				long position = 0;
-				long copied = 1;
-				while ( (size>=0 && position<size) || (size<0 && copied>0)) {
-					copied = outChannel.transferFrom(inChannel, position, maxCount);
-					position += copied;
+		try (ReadableByteChannel inChannel = Channels.newChannel(in)) {
+			try (FileChannel outChannel = out.getChannel()) {
+				int size = inSize;
+				// apparently has trouble copying large files on Windows
+				if (size<0 || OperatingSystem.WIN.isCurrentOS()) {
+					// magic number for Windows, 64Mb - 32Kb
+					int maxCount = (64 * 1024 * 1024) - (32 * 1024);
+					long position = 0;
+					long copied = 1;
+					while ( (size>=0 && position<size) || (size<0 && copied>0)) {
+						copied = outChannel.transferFrom(inChannel, position, maxCount);
+						position += copied;
+					}
+				}
+				else {
+					outChannel.transferFrom(inChannel, 0, size);
 				}
 			}
-			else {
-				outChannel.transferFrom(inChannel, 0, size);
-			}
-		}
-		finally {
-			inChannel.close();
-			outChannel.close();
 		}
 	}
 	
@@ -2614,7 +2602,7 @@ public class FileSystem {
 		if (url!=null) {
 			String[] pathComponents = url.getPath().split(Pattern.quote(URL_PATH_SEPARATOR));
 
-			List<String> canonicalPath = new LinkedList<String>();
+			List<String> canonicalPath = new LinkedList<>();
 			for(String component : pathComponents) {
 				if (!CURRENT_DIRECTORY.equals(component)) {
 					if (PARENT_DIRECTORY.equals(component)) {
@@ -2695,7 +2683,7 @@ public class FileSystem {
 
 			if (input==null) return;
 
-			LinkedList<File> candidates = new LinkedList<File>();
+			LinkedList<File> candidates = new LinkedList<>();
 			candidates.add(input);
 
 			byte[] buffer = new byte[2048];
@@ -2724,8 +2712,7 @@ public class FileSystem {
 					candidates.addAll(Arrays.asList(file.listFiles()));
 				}
 				else if (relativeFile!=null) {
-					FileInputStream fis = new FileInputStream(file);
-					try {
+					try (FileInputStream fis = new FileInputStream(file)) {
 						zipFilename = fileToURL(relativeFile);
 						ZipEntry zipEntry = new ZipEntry(zipFilename);
 						zos.putNextEntry(zipEntry);
@@ -2733,9 +2720,6 @@ public class FileSystem {
 							zos.write(buffer, 0, len);
 						}
 						zos.closeEntry();
-					}
-					finally {
-						fis.close();
 					}
 				}
 			}
@@ -2774,14 +2758,10 @@ public class FileSystem {
 				}
 				else {
 					outFile.getParentFile().mkdirs();
-					FileOutputStream fos = new FileOutputStream(outFile);
-					try {
+					try (FileOutputStream fos = new FileOutputStream(outFile)) {
 						while ((len=zis.read(buffer))>0) {
 							fos.write(buffer, 0, len);
 						}
-					}
-					finally {
-						fos.close();
 					}
 				}
 				zipEntry = zis.getNextEntry();
@@ -2801,12 +2781,8 @@ public class FileSystem {
 	 * @since 6.2
 	 */
 	public static void zipFile(File input, File output) throws IOException {
-		FileOutputStream fos = new FileOutputStream(output);
-		try {
+		try (FileOutputStream fos = new FileOutputStream(output)) {
 			zipFile(input, fos);
-		}
-		finally {
-			fos.close();
 		}
 	}
 
@@ -2819,12 +2795,8 @@ public class FileSystem {
 	 * @since 6.2
 	 */
 	public static void unzipFile(File input, File output) throws IOException {
-		FileInputStream fis = new FileInputStream(input);
-		try {
+		try (FileInputStream fis = new FileInputStream(input)) {
 			unzipFile(fis, output);
-		}
-		finally {
-			fis.close();
 		}
 	}
 
@@ -2992,7 +2964,7 @@ public class FileSystem {
 			assert(file!=null);
 			synchronized(this) {
 				if (this.filesToDelete==null) {
-					this.filesToDelete = new LinkedList<File>();
+					this.filesToDelete = new LinkedList<>();
 					Runtime.getRuntime().addShutdownHook(this);
 				}
 				this.filesToDelete.add(file);

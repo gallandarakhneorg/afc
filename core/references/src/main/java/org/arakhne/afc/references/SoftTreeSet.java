@@ -121,14 +121,14 @@ public class SoftTreeSet<E> extends AbstractReferencedSet<E,ComparableSoftRefere
      *        ordering} of the elements will be used.
      */
     public SoftTreeSet(Comparator<? super E> comparator) {
-    	super(new TreeSet<ComparableSoftReference<E>>(
+    	super(new TreeSet<>(
     				new ReferenceComparator<E,ComparableSoftReference<E>>(comparator)),
     			ComparableSoftReference.class);
     }
 
     @Override
     protected final ComparableSoftReference<E> createReference(E element) {
-    	return new ComparableSoftReference<E>(element);
+    	return new ComparableSoftReference<>(element);
     }
 
 }

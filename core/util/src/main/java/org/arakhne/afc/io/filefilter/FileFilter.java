@@ -28,7 +28,9 @@ import java.io.FilenameFilter;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see <code>org.arakhne.afc.core:inputoutput</code> maven artifact.
  */
+@Deprecated
 public interface FileFilter extends java.io.FileFilter, FilenameFilter {
 
 	/** Replies the description associated to this file filter.

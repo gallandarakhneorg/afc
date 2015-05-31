@@ -40,7 +40,7 @@ import org.arakhne.afc.math.tree.IterableNode;
 public abstract class AbstractPrefixDepthFirstTreeIterator<P extends IterableNode<? extends C>, C extends IterableNode<?>>
 implements Iterator<P> {
 
-	private final Stack<P> availableNodes = new Stack<P>();	
+	private final Stack<P> availableNodes = new Stack<>();	
 	private boolean isStarted = false;
 	private P lastReplied = null;
 	

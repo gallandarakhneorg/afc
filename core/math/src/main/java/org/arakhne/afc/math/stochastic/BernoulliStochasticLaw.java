@@ -24,8 +24,8 @@ package org.arakhne.afc.math.stochastic;
 import java.util.Map;
 import java.util.Random;
 
-import org.arakhne.afc.math.MathFunctionRange;
 import org.arakhne.afc.math.MathException;
+import org.arakhne.afc.math.MathFunctionRange;
 
 /**
  * Law that representes a Bernoulli density.
@@ -52,11 +52,11 @@ public class BernoulliStochasticLaw extends StochasticLaw {
 	 * @return a value depending of the stochastic law parameters
 	 * @throws MathException 
 	 */
-	public static float random(float p) throws MathException {
+	public static double random(double p) throws MathException {
 		return StochasticGenerator.generateRandomValue(new BernoulliStochasticLaw(p));
 	}
 
-	private final float p;
+	private final double p;
 
 	/**
 	 * Construct a law with the following parameters.
@@ -74,7 +74,7 @@ public class BernoulliStochasticLaw extends StochasticLaw {
 	/**
 	 * @param p is the probability where the value is {@code 1}
 	 */
-	public BernoulliStochasticLaw(float p) {
+	public BernoulliStochasticLaw(double p) {
 		this.p = p;
 	}
 
@@ -97,7 +97,7 @@ public class BernoulliStochasticLaw extends StochasticLaw {
 	/** {@inheritDoc}
 	 */
 	@Override
-	public float f(float x)  throws MathException {
+	public double f(double x)  throws MathException {
 		if ((x!=0.)&&(x!=1.))
 			throw new OutsideDomainException(x);
 		return (x==1.) ? this.p : (1.f-this.p); 
@@ -117,7 +117,7 @@ public class BernoulliStochasticLaw extends StochasticLaw {
 	 * @throws MathException in case {@code F<sup>-1</sup>(u)} could not be computed
 	 */
 	@Override
-	public float inverseF(float u) throws MathException {
+	public double inverseF(double u) throws MathException {
 		return (u<=this.p) ? 1.f : 0.f;
 	}
 

@@ -48,99 +48,99 @@ import java.util.regex.Pattern;
  */
 public class ReflectionUtil {
 
-    /**
-     * Determines if the specified <code>Object</code> is assignment-compatible
-     * with the object represented by the <code>Class</code>.  This method extends
-     * {@link Class#isInstance(Object)} with autoboxing support.
-     *
-     * @param type is the class against which the object must be test
-     * @param obj is the object to check
-     * @return <code>true</code> if <code>obj</code> is an instance of the type
-     * @see Class#isInstance(Object)
-     */
-    public static boolean isInstance(Class<?> type, Object obj) {
-    	assert(type!=null);
-    	if (obj==null) return false;
+	/**
+	 * Determines if the specified <code>Object</code> is assignment-compatible
+	 * with the object represented by the <code>Class</code>.  This method extends
+	 * {@link Class#isInstance(Object)} with autoboxing support.
+	 *
+	 * @param type is the class against which the object must be test
+	 * @param obj is the object to check
+	 * @return <code>true</code> if <code>obj</code> is an instance of the type
+	 * @see Class#isInstance(Object)
+	 */
+	public static boolean isInstance(Class<?> type, Object obj) {
+		assert(type!=null);
+		if (obj==null) return false;
 
-    	// Test according to the Class's behaviour
-    	if (type.isInstance(obj)) return true;
-    	
-    	// Test according to autoboxing
-    	if (type.isPrimitive()
-    			&&
-    			type!=Void.class && type!=void.class) {
-    		
-    		if (type==Boolean.class) return boolean.class.isInstance(obj);
-    		if (type==boolean.class) return Boolean.class.isInstance(obj);
-    		
-    		if (type==Character.class) return char.class.isInstance(obj);
-    		if (type==char.class) return Character.class.isInstance(obj);
+		// Test according to the Class's behaviour
+		if (type.isInstance(obj)) return true;
 
-    		if (type==Byte.class) return byte.class.isInstance(obj);
-    		if (type==byte.class) return Byte.class.isInstance(obj);
+		// Test according to autoboxing
+		if (type.isPrimitive()
+				&&
+				type!=Void.class && type!=void.class) {
 
-    		if (type==Short.class) return short.class.isInstance(obj);
-    		if (type==short.class) return Short.class.isInstance(obj);
+			if (type==Boolean.class) return boolean.class.isInstance(obj);
+			if (type==boolean.class) return Boolean.class.isInstance(obj);
 
-    		if (type==Integer.class) return int.class.isInstance(obj);
-    		if (type==int.class) return Integer.class.isInstance(obj);
+			if (type==Character.class) return char.class.isInstance(obj);
+			if (type==char.class) return Character.class.isInstance(obj);
 
-    		if (type==Long.class) return long.class.isInstance(obj);
-    		if (type==long.class) return Long.class.isInstance(obj);
+			if (type==Byte.class) return byte.class.isInstance(obj);
+			if (type==byte.class) return Byte.class.isInstance(obj);
 
-    		if (type==Float.class) return float.class.isInstance(obj);
-    		if (type==float.class) return Float.class.isInstance(obj);
-    		
-    		if (type==Double.class) return double.class.isInstance(obj);
-    		if (type==double.class) return Double.class.isInstance(obj);
+			if (type==Short.class) return short.class.isInstance(obj);
+			if (type==short.class) return Short.class.isInstance(obj);
 
-    		if (type==Void.class) return void.class.isInstance(obj);
-    		if (type==void.class) return Void.class.isInstance(obj);
-    		
-    		assert false: "Unsupported primitive type"; //$NON-NLS-1$
-    	}
-    	
-    	return false;
-    }
+			if (type==Integer.class) return int.class.isInstance(obj);
+			if (type==int.class) return Integer.class.isInstance(obj);
+
+			if (type==Long.class) return long.class.isInstance(obj);
+			if (type==long.class) return Long.class.isInstance(obj);
+
+			if (type==Float.class) return float.class.isInstance(obj);
+			if (type==float.class) return Float.class.isInstance(obj);
+
+			if (type==Double.class) return double.class.isInstance(obj);
+			if (type==double.class) return Double.class.isInstance(obj);
+
+			if (type==Void.class) return void.class.isInstance(obj);
+			if (type==void.class) return Void.class.isInstance(obj);
+
+			assert false: "Unsupported primitive type"; //$NON-NLS-1$
+		}
+
+		return false;
+	}
 
 
-    /**
-     * Determines if the <code>assignmentTarget</code> object is either the same as,
-     * or is a superclass or superinterface of, the class or interface 
-     * represented by the specified
-     * <code>assignementSource</code> parameter. This method extends
-     * {@link Class#isAssignableFrom(Class)} with autoboxing support.
-     * 
-     * @param assignementTarget is the class that is tested to be a super class.
-     * @param assignementSource is the class that is tested to be a sub class.
-     * @return <code>true</code> if an object of the <var>assignementSource</var> type
-     * could be assigned to a variable of <var>assignementTarget</var> type,
-     * otherwise <code>false</code>.
-     */
-    public static boolean isAssignableFrom(Class<?> assignementTarget, Class<?> assignementSource) {
-    	assert(assignementSource!=null);
-    	assert(assignementTarget!=null);
-    	
-    	// Test according to the Class's behaviour
-    	if (assignementTarget.isAssignableFrom(assignementSource)) return true;
-    	
-    	// Test according to autoboxing
-    	if (assignementTarget.isPrimitive() && assignementSource.isPrimitive()
-    			&&
-    			assignementTarget!=Void.class && assignementTarget!=void.class
-    			&&
-    			assignementSource!=Void.class && assignementSource!=void.class) {
-    		return true;
-    	}
-    	
-    	return false;
-    }
+	/**
+	 * Determines if the <code>assignmentTarget</code> object is either the same as,
+	 * or is a superclass or superinterface of, the class or interface 
+	 * represented by the specified
+	 * <code>assignementSource</code> parameter. This method extends
+	 * {@link Class#isAssignableFrom(Class)} with autoboxing support.
+	 * 
+	 * @param assignementTarget is the class that is tested to be a super class.
+	 * @param assignementSource is the class that is tested to be a sub class.
+	 * @return <code>true</code> if an object of the <var>assignementSource</var> type
+	 * could be assigned to a variable of <var>assignementTarget</var> type,
+	 * otherwise <code>false</code>.
+	 */
+	public static boolean isAssignableFrom(Class<?> assignementTarget, Class<?> assignementSource) {
+		assert(assignementSource!=null);
+		assert(assignementTarget!=null);
+
+		// Test according to the Class's behaviour
+		if (assignementTarget.isAssignableFrom(assignementSource)) return true;
+
+		// Test according to autoboxing
+		if (assignementTarget.isPrimitive() && assignementSource.isPrimitive()
+				&&
+				assignementTarget!=Void.class && assignementTarget!=void.class
+				&&
+				assignementSource!=Void.class && assignementSource!=void.class) {
+			return true;
+		}
+
+		return false;
+	}
 
 	/** Replies the type that corresponds to the specified class.
 	 * If the name corresponds to a primitive type, the low-level type
 	 * will be replied.
 	 * This method extends
-     * {@link Class#forName(String)} with autoboxing support.
+	 * {@link Class#forName(String)} with autoboxing support.
 	 * 
 	 * @param name is the name of the class to load.
 	 * @return the loaded class
@@ -182,7 +182,7 @@ public class ReflectionUtil {
 	 * If the name corresponds to a primitive type, the low-level type
 	 * will be replied.
 	 * This method extends
-     * {@link Class#forName(String)} with autoboxing support.
+	 * {@link Class#forName(String)} with autoboxing support.
 	 * 
 	 * @param name is the name of the class to load.
 	 * @param loader is the class loader to use.
@@ -198,7 +198,7 @@ public class ReflectionUtil {
 	 * If the name corresponds to a primitive type, the low-level type
 	 * will be replied.
 	 * This method extends
-     * {@link Class#forName(String)} with autoboxing support.
+	 * {@link Class#forName(String)} with autoboxing support.
 	 * 
 	 * @param name is the name of the class to load.
 	 * @param typeInitialization must be <code>true</code> to initialize the type, <code>false</code> otherwise.
@@ -253,12 +253,12 @@ public class ReflectionUtil {
 	 * @return the list of classes in the package.
 	 */
 	public static Collection<Class<?>> getPackageClasses(String packageName) {
-		Collection<Class<?>> classes = new ArrayList<Class<?>>();
-	 
+		Collection<Class<?>> classes = new ArrayList<>();
+
 		String[] entries = System.getProperty("java.class.path").split( //$NON-NLS-1$
 				Pattern.quote(System.getProperty("path.separator"))); //$NON-NLS-1$
 		String lentry;			
-		
+
 		for(String path : entries) {
 			lentry = path.toLowerCase();
 			if(lentry.endsWith(".jar") || lentry.endsWith(".war")) { //$NON-NLS-1$//$NON-NLS-2$
@@ -266,12 +266,12 @@ public class ReflectionUtil {
 			}else{
 				getPackageClassesFromFileSystem(classes, path, packageName);
 			}
-	 
+
 		}
-	 
+
 		return classes;
 	}
-	
+
 	private static String basename(String name) {
 		int idx = name.lastIndexOf('/');
 		if (idx>=0 && idx<name.length()) {
@@ -290,35 +290,29 @@ public class ReflectionUtil {
 	}
 
 	private static void getPackageClassesFromJar(Collection<Class<?>> classes, String jarFilename, String packageName) {
-		try {
-			JarFile jarFile = new JarFile(jarFilename);
-			try {
-				String packagePath = packageName.replace(".", "/"); //$NON-NLS-1$//$NON-NLS-2$
-		
-				Enumeration<JarEntry> entries = jarFile.entries();
-				JarEntry entry;
-				String entryPath, entryClassname;
-				
-				while (entries.hasMoreElements()) {
-					entry = entries.nextElement();
-					entryPath = entry.getName();
-		
-					// In package and not inner class
-					if (entryPath.startsWith(packagePath)
+		try (JarFile jarFile = new JarFile(jarFilename)) {
+			String packagePath = packageName.replace(".", "/"); //$NON-NLS-1$//$NON-NLS-2$
+
+			Enumeration<JarEntry> entries = jarFile.entries();
+			JarEntry entry;
+			String entryPath, entryClassname;
+
+			while (entries.hasMoreElements()) {
+				entry = entries.nextElement();
+				entryPath = entry.getName();
+
+				// In package and not inner class
+				if (entryPath.startsWith(packagePath)
 						&& !entryPath.endsWith("/") //$NON-NLS-1$
 						&& !entryPath.contains("$")) { //$NON-NLS-1$
-						entryClassname = packageName + "." + filename(entryPath); //$NON-NLS-1$
-						try {
-							classes.add(Class.forName(entryClassname));
-						}
-						catch(ClassNotFoundException _) {
-							//
-						}
-					}	
-				}
-			}
-			finally {
-				jarFile.close();
+					entryClassname = packageName + "." + filename(entryPath); //$NON-NLS-1$
+					try {
+						classes.add(Class.forName(entryClassname));
+					}
+					catch(ClassNotFoundException _) {
+						//
+					}
+				}	
 			}
 		}
 		catch(IOException _) {
@@ -330,10 +324,10 @@ public class ReflectionUtil {
 		String packagePath = packageName.replace(".", File.separator); //$NON-NLS-1$
 		File packageDirectory = new File(directory, packagePath);
 		String entryClassname;
-		
+
 		if (packageDirectory.isDirectory()) {
 			for(String entryPath : packageDirectory.list()) {
-	
+
 				// In package and not inner class
 				if (!entryPath.contains("$")) { //$NON-NLS-1$
 					entryClassname = packageName + "." + FileSystem.shortBasename(entryPath); //$NON-NLS-1$
@@ -350,7 +344,7 @@ public class ReflectionUtil {
 			}
 		}
 	}
-	
+
 	/**
 	 * Replies the list of all the subclasses of the given class
 	 * in the current classpath.
@@ -360,7 +354,7 @@ public class ReflectionUtil {
 	 * @return the list of subclasses.
 	 */
 	public static <T> Collection<Class<? extends T>> getSubClasses(Class<T> className) {
-		Collection<Class<? extends T>> list = new ArrayList<Class<? extends T>>();
+		Collection<Class<? extends T>> list = new ArrayList<>();
 		getSubClasses(className, true, true, true, list);
 		return list;
 	}
@@ -380,7 +374,7 @@ public class ReflectionUtil {
 		String[] entries = System.getProperty("java.class.path").split( //$NON-NLS-1$
 				Pattern.quote(System.getProperty("path.separator"))); //$NON-NLS-1$
 		String lentry;			
-		
+
 		for(String path : entries) {
 			lentry = path.toLowerCase();
 			if(lentry.endsWith(".jar") || lentry.endsWith(".war")) { //$NON-NLS-1$//$NON-NLS-2$
@@ -388,50 +382,44 @@ public class ReflectionUtil {
 			}else{
 				getSubClassesFromFileSystem(result, path, className, allowAbstract, allowInterface, allowEnum);
 			}
-	 
+
 		}
 	}
 
 	@SuppressWarnings("unchecked")
 	private static <T> void getSubClassesFromJar(Collection<Class<? extends T>> classes, String jarFilename, Class<T> className, boolean allowAbstract, boolean allowInterface, boolean allowEnum) {
-		try {
-			JarFile jarFile = new JarFile(jarFilename);
-			try {
-				String classN = className.getCanonicalName();
-				if (classN!=null) {
-					Enumeration<JarEntry> entries = jarFile.entries();
-					JarEntry entry;
-					String entryPath, entryClassname;
-					
-					while (entries.hasMoreElements()) {
-						entry = entries.nextElement();
-						entryPath = entry.getName();
-			
-						// In package and not inner class
-						if (entryPath.endsWith(".class") //$NON-NLS-1$
+		try (JarFile jarFile = new JarFile(jarFilename)) {
+			String classN = className.getCanonicalName();
+			if (classN!=null) {
+				Enumeration<JarEntry> entries = jarFile.entries();
+				JarEntry entry;
+				String entryPath, entryClassname;
+
+				while (entries.hasMoreElements()) {
+					entry = entries.nextElement();
+					entryPath = entry.getName();
+
+					// In package and not inner class
+					if (entryPath.endsWith(".class") //$NON-NLS-1$
 							&& !entryPath.contains("$")) { //$NON-NLS-1$
-							entryClassname = entryPath.substring(0, entryPath.length()-6).replaceAll(
-									Pattern.quote(File.separator), "."); //$NON-NLS-1$
-							try {
-								Class<?> clazz = Class.forName(entryClassname);
-								if ((className.isAssignableFrom(clazz))
+						entryClassname = entryPath.substring(0, entryPath.length()-6).replaceAll(
+								Pattern.quote(File.separator), "."); //$NON-NLS-1$
+						try {
+							Class<?> clazz = Class.forName(entryClassname);
+							if ((className.isAssignableFrom(clazz))
 									&&(allowAbstract || !Modifier.isAbstract(clazz.getModifiers()))
 									&&(allowInterface || !clazz.isInterface())
 									&&(allowEnum || !clazz.isEnum()))
-									classes.add((Class<? extends T>)clazz);
-							}
-							catch(AssertionError e) {
-								throw e;
-							}
-							catch(Throwable _) {
-								//
-							}
-						}	
-					}
+								classes.add((Class<? extends T>)clazz);
+						}
+						catch(AssertionError e) {
+							throw e;
+						}
+						catch(Throwable _) {
+							//
+						}
+					}	
 				}
-			}
-			finally {
-				jarFile.close();
 			}
 		}
 		catch(IOException _) {
@@ -443,20 +431,20 @@ public class ReflectionUtil {
 	private static <T> void getSubClassesFromFileSystem(Collection<Class<? extends T>> classes, String directory, Class<T> className, boolean allowAbstract, boolean allowInterface, boolean allowEnum) {
 		String classN = className.getCanonicalName();
 		if (classN!=null) {
-			List<String> directories = new ArrayList<String>();
+			List<String> directories = new ArrayList<>();
 			directories.add(""); //$NON-NLS-1$
-			
+
 			String ldir, entryClassname;
 			File dir, fullFile;
-			
+
 			while (!directories.isEmpty()) {
 				ldir = directories.remove(0);
 				dir = new File(directory, ldir);
 				if (dir.isDirectory()) {
 					for(String entryPath : dir.list()) {
-			
+
 						fullFile = new File(dir,entryPath);
-						
+
 						if (fullFile.isDirectory()) {
 							if (ldir==null || "".equals(ldir)) { //$NON-NLS-1$
 								directories.add(entryPath);
@@ -467,7 +455,7 @@ public class ReflectionUtil {
 						}
 						// In package and not inner class
 						else if (entryPath.endsWith(".class") //$NON-NLS-1$
-							&& !entryPath.contains("$")) { //$NON-NLS-1$
+								&& !entryPath.contains("$")) { //$NON-NLS-1$
 							assert(ldir!=null);
 							entryClassname = ldir.replaceAll(
 									Pattern.quote(File.separator), ".") //$NON-NLS-1$
@@ -475,9 +463,9 @@ public class ReflectionUtil {
 							try {
 								Class<?> clazz = Class.forName(entryClassname);
 								if ((className.isAssignableFrom(clazz))
-									&&(allowAbstract || !Modifier.isAbstract(clazz.getModifiers()))
-									&&(allowInterface || !clazz.isInterface())
-									&&(allowEnum || !clazz.isEnum()))
+										&&(allowAbstract || !Modifier.isAbstract(clazz.getModifiers()))
+										&&(allowInterface || !clazz.isInterface())
+										&&(allowEnum || !clazz.isEnum()))
 									classes.add((Class<? extends T>)clazz);
 							}
 							catch(AssertionError e) {
@@ -492,34 +480,34 @@ public class ReflectionUtil {
 			}
 		}
 	}
-	
+
 	/**
-     * Determines the interfaces implemented by the classes from the lowest type
-     * to the highestType which are extended the given interfaceType.
-     * <p>
-     * Insteed of {@link Class#getInterfaces()}, this function is exploring
-     * the super classes. This function does not explore super-interfaces
-     * of implemented interfaces.
-     * <p>
-     * <pre><code>
-     * interface IA {}
-     * interface IB extends IA {}
-     * interface IC {}
-     * interface ID extends IB, IC {}
-     * class CA implements IC {}
-     * class CB extends CA {}
-     * class CC extends CB implements IB {}
-     * </code></pre>
-     * This function replies for:
-     * <ul>
-     * <li><code>getAllDirectInterfaces(IA,null,null)</code>=<code>{}</code></li>
-     * <li><code>getAllDirectInterfaces(IB,null,null)</code>=<code>{IA}</code></li>
-     * <li><code>getAllDirectInterfaces(IC,null,null)</code>=<code>{}</code></li>
-     * <li><code>getAllDirectInterfaces(ID,null,null)</code>=<code>{IB,IC}</code></li>
-     * <li><code>getAllDirectInterfaces(CA,null,null)</code>=<code>{IC}</code></li>
-     * <li><code>getAllDirectInterfaces(CB,null,null)</code>=<code>{IC}</code></li>
-     * <li><code>getAllDirectInterfaces(CC,null,null)</code>=<code>{IB,IC}</code></li>
-     * </ul>
+	 * Determines the interfaces implemented by the classes from the lowest type
+	 * to the highestType which are extended the given interfaceType.
+	 * <p>
+	 * Insteed of {@link Class#getInterfaces()}, this function is exploring
+	 * the super classes. This function does not explore super-interfaces
+	 * of implemented interfaces.
+	 * <p>
+	 * <pre><code>
+	 * interface IA {}
+	 * interface IB extends IA {}
+	 * interface IC {}
+	 * interface ID extends IB, IC {}
+	 * class CA implements IC {}
+	 * class CB extends CA {}
+	 * class CC extends CB implements IB {}
+	 * </code></pre>
+	 * This function replies for:
+	 * <ul>
+	 * <li><code>getAllDirectInterfaces(IA,null,null)</code>=<code>{}</code></li>
+	 * <li><code>getAllDirectInterfaces(IB,null,null)</code>=<code>{IA}</code></li>
+	 * <li><code>getAllDirectInterfaces(IC,null,null)</code>=<code>{}</code></li>
+	 * <li><code>getAllDirectInterfaces(ID,null,null)</code>=<code>{IB,IC}</code></li>
+	 * <li><code>getAllDirectInterfaces(CA,null,null)</code>=<code>{IC}</code></li>
+	 * <li><code>getAllDirectInterfaces(CB,null,null)</code>=<code>{IC}</code></li>
+	 * <li><code>getAllDirectInterfaces(CC,null,null)</code>=<code>{IB,IC}</code></li>
+	 * </ul>
 	 * 
 	 * @param <T> is the highest type to explore in type hierarchy.
 	 * @param <I> indicates the type of the replied interfaces.
@@ -532,13 +520,13 @@ public class ReflectionUtil {
 	@SuppressWarnings("unchecked")
 	public static <T,I> Set<Class<? extends I>> getAllDirectInterfaces(Class<? extends T> lowestType, Class<T> highestType, Class<I> interfaceType) {
 		assert(lowestType!=null);
-		Set<Class<? extends I>> collection = new TreeSet<Class<? extends I>>(ClassComparator.SINGLETON);
+		Set<Class<? extends I>> collection = new TreeSet<>(ClassComparator.SINGLETON);
 		Class<?> type = lowestType;
 		boolean cont;
 		do {
 			for(Class<?> directInterface : type.getInterfaces()) {
 				if (interfaceType==null || interfaceType.isAssignableFrom(directInterface))
-						collection.add((Class<? extends I>)directInterface);
+					collection.add((Class<? extends I>)directInterface);
 			}
 			cont = (highestType==null || !type.equals(highestType));
 			type = type.getSuperclass();
@@ -546,34 +534,34 @@ public class ReflectionUtil {
 		while (type!=null && cont);
 		return collection;
 	}
-	
+
 	/**
-     * Determines the interfaces implemented by the classes from the lowest type
-     * to the highestType which are extended the given interfaceType.
-     * <p>
-     * Insteed of {@link Class#getInterfaces()}, this function is exploring
-     * the super classes. This function does not explore super-interfaces
-     * of implemented interfaces.
-     * <p>
-     * <pre><code>
-     * interface IA {}
-     * interface IB extends IA {}
-     * interface IC {}
-     * interface ID extends IB, IC {}
-     * class CA implements IC {}
-     * class CB extends CA {}
-     * class CC extends CB implements IB {}
-     * </code></pre>
-     * This function replies for:
-     * <ul>
-     * <li><code>getAllDirectInterfaces(IA,null,null)</code>=<code>{}</code></li>
-     * <li><code>getAllDirectInterfaces(IB,null,null)</code>=<code>{IA}</code></li>
-     * <li><code>getAllDirectInterfaces(IC,null,null)</code>=<code>{}</code></li>
-     * <li><code>getAllDirectInterfaces(ID,null,null)</code>=<code>{IB,IC}</code></li>
-     * <li><code>getAllDirectInterfaces(CA,null,null)</code>=<code>{IC}</code></li>
-     * <li><code>getAllDirectInterfaces(CB,null,null)</code>=<code>{IC}</code></li>
-     * <li><code>getAllDirectInterfaces(CC,null,null)</code>=<code>{IB,IC}</code></li>
-     * </ul>
+	 * Determines the interfaces implemented by the classes from the lowest type
+	 * to the highestType which are extended the given interfaceType.
+	 * <p>
+	 * Insteed of {@link Class#getInterfaces()}, this function is exploring
+	 * the super classes. This function does not explore super-interfaces
+	 * of implemented interfaces.
+	 * <p>
+	 * <pre><code>
+	 * interface IA {}
+	 * interface IB extends IA {}
+	 * interface IC {}
+	 * interface ID extends IB, IC {}
+	 * class CA implements IC {}
+	 * class CB extends CA {}
+	 * class CC extends CB implements IB {}
+	 * </code></pre>
+	 * This function replies for:
+	 * <ul>
+	 * <li><code>getAllDirectInterfaces(IA,null,null)</code>=<code>{}</code></li>
+	 * <li><code>getAllDirectInterfaces(IB,null,null)</code>=<code>{IA}</code></li>
+	 * <li><code>getAllDirectInterfaces(IC,null,null)</code>=<code>{}</code></li>
+	 * <li><code>getAllDirectInterfaces(ID,null,null)</code>=<code>{IB,IC}</code></li>
+	 * <li><code>getAllDirectInterfaces(CA,null,null)</code>=<code>{IC}</code></li>
+	 * <li><code>getAllDirectInterfaces(CB,null,null)</code>=<code>{IC}</code></li>
+	 * <li><code>getAllDirectInterfaces(CC,null,null)</code>=<code>{IB,IC}</code></li>
+	 * </ul>
 	 * 
 	 * @param <T> is the highest type to explore in type hierarchy.
 	 * @param lowestType is the lowest type to explore in type hierarchy.
@@ -583,7 +571,7 @@ public class ReflectionUtil {
 	 */
 	public static <T> Set<Class<?>> getAllDirectInterfaces(Class<? extends T> lowestType, Class<T> highestType) {
 		assert(lowestType!=null);
-		Set<Class<?>> collection = new TreeSet<Class<?>>(ClassComparator.SINGLETON);
+		Set<Class<?>> collection = new TreeSet<>(ClassComparator.SINGLETON);
 		Class<?> type = lowestType;
 		boolean cont;
 		do {
@@ -609,7 +597,7 @@ public class ReflectionUtil {
 	 */
 	public static <T> Collection<Class<? super T>> getSuperClasses(Class<T> className) {
 		assert(className!=null);
-		Collection<Class<? super T>> list = new ArrayList<Class<? super T>>();
+		Collection<Class<? super T>> list = new ArrayList<>();
 		Class<? super T> type = className.getSuperclass();
 		while (type!=null && !Object.class.equals(type)) {
 			list.add(type);
@@ -617,7 +605,7 @@ public class ReflectionUtil {
 		}
 		return list;
 	}
-	
+
 	/** Replies the top-most type which is common to both given types.
 	 * 
 	 * @param type1
@@ -655,7 +643,7 @@ public class ReflectionUtil {
 		}
 		return top;
 	}
-	
+
 	/** Replies the outboxing type for the given type.
 	 * 
 	 * @param type

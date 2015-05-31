@@ -88,7 +88,7 @@ public abstract class AbstractParentlessTreeNode<D,N extends AbstractParentlessT
 	
 	/** Associated user data.
 	 */
-	private List<D> datas;
+	private List<D> data;
 	
 	/** Indicates if a linked list must be used to store the data.
 	 * If <code>false</code>, an ArrayList will be used.
@@ -108,9 +108,9 @@ public abstract class AbstractParentlessTreeNode<D,N extends AbstractParentlessT
 	public AbstractParentlessTreeNode(boolean useLinkedList) {
 		this.linkedList = useLinkedList;
 		if (this.linkedList)
-			this.datas = new LinkedList<D>();
+			this.data = new LinkedList<>();
 		else
-			this.datas = new ArrayList<D>();
+			this.data = new ArrayList<>();
 	}
 
 	/**
@@ -125,20 +125,20 @@ public abstract class AbstractParentlessTreeNode<D,N extends AbstractParentlessT
 		this.linkedList = useLinkedList;
 		if (idata != null){
 			if (!copyDataCollection) {
-				this.datas = idata;
+				this.data = idata;
 			}
 			else {
 				if (this.linkedList)
-					this.datas = new LinkedList<D>(idata);
+					this.data = new LinkedList<>(idata);
 				else
-					this.datas = new ArrayList<D>(idata);
+					this.data = new ArrayList<>(idata);
 			}
 		}
 		else {
 			if (this.linkedList)
-				this.datas = new LinkedList<D>();
+				this.data = new LinkedList<>();
 			else
-				this.datas = new ArrayList<D>();
+				this.data = new ArrayList<>();
 		}
 	}
 	
@@ -151,15 +151,15 @@ public abstract class AbstractParentlessTreeNode<D,N extends AbstractParentlessT
 		this.linkedList = useLinkedList;
 		if (idata != null){
 			if (this.linkedList)
-				this.datas = new LinkedList<D>(idata);
+				this.data = new LinkedList<>(idata);
 			else
-				this.datas = new ArrayList<D>(idata);
+				this.data = new ArrayList<>(idata);
 		}
 		else {
 			if (this.linkedList)
-				this.datas = new LinkedList<D>();
+				this.data = new LinkedList<>();
 			else
-				this.datas = new ArrayList<D>();
+				this.data = new ArrayList<>();
 		}
 	}
 
@@ -172,16 +172,16 @@ public abstract class AbstractParentlessTreeNode<D,N extends AbstractParentlessT
 		this.linkedList = useLinkedList;
 		if (idata != null){
 			if (this.linkedList)
-				this.datas = new LinkedList<D>();
+				this.data = new LinkedList<>();
 			else
-				this.datas = new ArrayList<D>();
-			this.datas.add(idata);
+				this.data = new ArrayList<>();
+			this.data.add(idata);
 		}
 		else {
 			if (this.linkedList)
-				this.datas = new LinkedList<D>();
+				this.data = new LinkedList<>();
 			else
-				this.datas = new ArrayList<D>();
+				this.data = new ArrayList<>();
 		}
 	}
 	
@@ -215,8 +215,8 @@ public abstract class AbstractParentlessTreeNode<D,N extends AbstractParentlessT
 	public String toString() {
 		StringBuilder buffer = new StringBuilder();
 		buffer.append('[');
-		if (this.datas!=null) {
-			for (D data : this.datas) {
+		if (this.data!=null) {
+			for (D data : this.data) {
 				if (data==null)
 					buffer.append("null"); //$NON-NLS-1$
 				else
@@ -231,8 +231,8 @@ public abstract class AbstractParentlessTreeNode<D,N extends AbstractParentlessT
 	 */
 	@Override
 	public D[] getAllUserData(D[] a) {
-		if (this.datas==null) return null;
-		return this.datas.toArray(a);
+		if (this.data==null) return null;
+		return this.data.toArray(a);
 	}
 	
 	/** Replies the internal data structure which is storing user datas.
@@ -244,7 +244,7 @@ public abstract class AbstractParentlessTreeNode<D,N extends AbstractParentlessT
 	 * @return the internal data structure
 	 */
 	protected final List<D> getInternalDataStructureForUserData() {
-		return this.datas;
+		return this.data;
 	}
 	
 	/** {@inheritDoc}
@@ -258,25 +258,25 @@ public abstract class AbstractParentlessTreeNode<D,N extends AbstractParentlessT
 	 */
 	@Override
 	public D getUserData() {
-		if ((this.datas==null)||(this.datas.size()==0)) return null;
-		return this.datas.get(0);
+		if ((this.data==null)||(this.data.size()==0)) return null;
+		return this.data.get(0);
 	}
 
 	/** {@inheritDoc}
 	 */
 	@Override
 	public int getUserDataCount() {
-		return (this.datas==null) ? 0 : this.datas.size();
+		return (this.data==null) ? 0 : this.data.size();
 	}
 
 	/** {@inheritDoc}
 	 */
 	@Override
 	public D getUserDataAt(int index) throws IndexOutOfBoundsException {
-		if ((this.datas==null)|| (index<0)|| (index>=this.datas.size())) {
+		if ((this.data==null)|| (index<0)|| (index>=this.data.size())) {
 			throw new IndexOutOfBoundsException();
 		}
-		return this.datas.get(index);
+		return this.data.get(index);
 	}
 
 	/** {@inheritDoc}
@@ -285,13 +285,13 @@ public abstract class AbstractParentlessTreeNode<D,N extends AbstractParentlessT
 	public boolean addUserData(Collection<? extends D> data) {
 		if ((data==null)||(data.size()==0)) return false;
 		
-		if (this.datas==null) {
+		if (this.data==null) {
 			if (this.linkedList)
-				this.datas = new LinkedList<D>(data);
+				this.data = new LinkedList<>(data);
 			else
-				this.datas = new ArrayList<D>(data);
+				this.data = new ArrayList<>(data);
 		}
-		else if (!this.datas.addAll(data))
+		else if (!this.data.addAll(data))
 			return false;
 		
 		firePropertyDataChanged(null,data);
@@ -305,14 +305,14 @@ public abstract class AbstractParentlessTreeNode<D,N extends AbstractParentlessT
 	public final boolean addUserData(int index, Collection<? extends D> data) {
 		if ((data==null)||(data.size()==0)) return false;
 
-		if (this.datas==null) {
+		if (this.data==null) {
 			if (this.linkedList)
-				this.datas = new LinkedList<D>();
+				this.data = new LinkedList<>();
 			else
-				this.datas = new ArrayList<D>();
+				this.data = new ArrayList<>();
 		}
 
-		if (this.datas.addAll(index, data)) {
+		if (this.data.addAll(index, data)) {
 			firePropertyDataChanged(null,data);
 			return true;
 		}
@@ -337,10 +337,10 @@ public abstract class AbstractParentlessTreeNode<D,N extends AbstractParentlessT
 	 */
 	@Override
 	public boolean removeUserData(Collection<D> data) {
-		if ((data==null)||(data.size()==0)||(this.datas==null)) return false;
-		if (this.datas.removeAll(data)) {
-			if (this.datas.size()==0)
-				this.datas = null;
+		if ((data==null)||(data.size()==0)||(this.data==null)) return false;
+		if (this.data.removeAll(data)) {
+			if (this.data.size()==0)
+				this.data = null;
 			firePropertyDataChanged(data, null);			
 			return true;
 		}
@@ -351,11 +351,11 @@ public abstract class AbstractParentlessTreeNode<D,N extends AbstractParentlessT
 	 */
 	@Override
 	public final D removeUserData(int index) {
-		if (this.datas==null) throw new IndexOutOfBoundsException();
-		D removedElement = this.datas.remove(index);
+		if (this.data==null) throw new IndexOutOfBoundsException();
+		D removedElement = this.data.remove(index);
 		if (removedElement!=null) {
-			if (this.datas.size()==0)
-				this.datas = null;
+			if (this.data.size()==0)
+				this.data = null;
 			firePropertyDataChanged(Collections.singleton(removedElement), null);
 		}
 		return removedElement;
@@ -373,9 +373,9 @@ public abstract class AbstractParentlessTreeNode<D,N extends AbstractParentlessT
 	 */
 	@Override
 	public void removeAllUserData() {
-		if (this.datas!=null) {
-			List<D> oldData = this.datas;
-			this.datas = null;
+		if (this.data!=null) {
+			List<D> oldData = this.data;
+			this.data = null;
 			firePropertyDataChanged(oldData, null);
 		}
 	}
@@ -384,15 +384,15 @@ public abstract class AbstractParentlessTreeNode<D,N extends AbstractParentlessT
 	 */
 	@Override
 	public boolean setUserData(Collection<D> data) {
-		if ((data==null)&&(this.datas==null)) return false;
+		if ((data==null)&&(this.data==null)) return false;
 		
-		List<D> oldData = this.datas;
+		List<D> oldData = this.data;
 		
 		if ((data==null)||(data.size()==0)) {
-			this.datas = null;
+			this.data = null;
 		}
 		else {
-			this.datas = new ArrayList<D>(data);
+			this.data = new ArrayList<>(data);
 		}
 		
 		firePropertyDataChanged(oldData,data);
@@ -411,7 +411,7 @@ public abstract class AbstractParentlessTreeNode<D,N extends AbstractParentlessT
 	 */
 	@Override
 	public boolean setUserDataAt(int index, D data) throws IndexOutOfBoundsException {
-		int count= (this.datas==null) ? 0 : this.datas.size();
+		int count= (this.data==null) ? 0 : this.data.size();
 		
 		if ((index<0)|| (index>count)) {
 			throw new IndexOutOfBoundsException();
@@ -420,23 +420,23 @@ public abstract class AbstractParentlessTreeNode<D,N extends AbstractParentlessT
 		if (data!=null) {
 			D oldData = null;
 			if (index<count) {
-				oldData = this.datas.get(index);
-				this.datas.set(index,data);
+				oldData = this.data.get(index);
+				this.data.set(index,data);
 			}
 			else {
-				if (this.datas==null) {
+				if (this.data==null) {
 					if (this.linkedList)
-						this.datas = new LinkedList<D>();
+						this.data = new LinkedList<>();
 					else
-						this.datas = new ArrayList<D>();
+						this.data = new ArrayList<>();
 				}
-				this.datas.add(data);
+				this.data.add(data);
 			}
 			firePropertyDataChanged(oldData==null ? null : Collections.singleton(oldData), Collections.singleton(data));
 			return true;
 		} else if (index<count) {
-			D oldData = this.datas.get(index);
-			this.datas.remove(index);
+			D oldData = this.data.get(index);
+			this.data.remove(index);
 			firePropertyDataChanged(oldData==null ? null : Collections.singleton(oldData), null);
 			return true;
 		}
@@ -450,7 +450,7 @@ public abstract class AbstractParentlessTreeNode<D,N extends AbstractParentlessT
 	 * @param newData is the list of new values
 	 */
 	protected final void firePropertyDataChanged(Collection<? extends D> oldData, Collection<? extends D> newData) {
-		firePropertyDataChanged(new TreeDataEvent(this,oldData,newData,this.datas));
+		firePropertyDataChanged(new TreeDataEvent(this,oldData,newData,this.data));
 	}
 
 	/** Fire the event for the changes of the user data associated to a node.
@@ -459,7 +459,7 @@ public abstract class AbstractParentlessTreeNode<D,N extends AbstractParentlessT
 	 * and size after change.
 	 */
 	protected final void firePropertyDataChanged(int delta) {
-		firePropertyDataChanged(new TreeDataEvent(this,delta,this.datas));
+		firePropertyDataChanged(new TreeDataEvent(this,delta,this.data));
 	}
 
 	/** Fire the event for the changes of the user data associated to a node.
@@ -483,7 +483,7 @@ public abstract class AbstractParentlessTreeNode<D,N extends AbstractParentlessT
 	@Override
 	public final void addTreeNodeListener(TreeNodeListener listener) {
 		if (this.nodeListeners==null)
-			this.nodeListeners = new ArrayList<TreeNodeListener>();
+			this.nodeListeners = new ArrayList<>();
 		this.nodeListeners.add(listener);
 	}
 
@@ -570,7 +570,7 @@ public abstract class AbstractParentlessTreeNode<D,N extends AbstractParentlessT
 	 */
 	@Override
 	public final int[] getHeights() {
-		List<Integer> list = new ArrayList<Integer>();
+		List<Integer> list = new ArrayList<>();
 		getHeights(1, list);
 		int[] heights = new int[list.size()];
 		int idx = 0;
@@ -678,7 +678,7 @@ public abstract class AbstractParentlessTreeNode<D,N extends AbstractParentlessT
 				removeAllUserData();
 			}
 			else if (!this.backgroundList.isEmpty()) {
-				List<D> removed = new ArrayList<D>(this.backgroundList);
+				List<D> removed = new ArrayList<>(this.backgroundList);
 				this.backgroundList.clear();
 				firePropertyDataChanged(removed, null);
 			}
@@ -855,7 +855,7 @@ public abstract class AbstractParentlessTreeNode<D,N extends AbstractParentlessT
 		 */
 		@Override
 		public boolean retainAll(Collection<?> c) {
-			List<D> removed = new ArrayList<D>();
+			List<D> removed = new ArrayList<>();
 			Iterator<D> iterator;
 			if (this.backgroundList==null) {
 				List<D> backList = getInternalDataStructureForUserData();

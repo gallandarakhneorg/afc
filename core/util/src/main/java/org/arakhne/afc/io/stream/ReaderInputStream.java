@@ -33,7 +33,9 @@ import java.io.Reader;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see <code>org.arakhne.afc.core:inputoutput</code> maven artifact.
  */
+@Deprecated
 public class ReaderInputStream extends InputStream {
 
 	private final Reader reader;

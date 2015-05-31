@@ -26,6 +26,11 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Random;
 
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
 /**
  * @param <COL>
  * @author $Author: galland$
@@ -47,16 +52,18 @@ public abstract class AbstractCollectionTestCase<COL extends Collection<String>>
 	 */
 	protected COL collection;
 	
-	@Override
+	/**
+	 * @throws Exception
+	 */
+	@Before
 	public void setUp() throws Exception {
-		super.setUp();
 		int refCount = 10;
-		this.reference = new ArrayList<String>(refCount);
+		this.reference = new ArrayList<>(refCount);
 		for(int idx=0; idx<refCount; idx++) {
 			this.reference.add("REF_"+idx); //$NON-NLS-1$
 		}
 		
-		this.unreference = new ArrayList<String>(5);
+		this.unreference = new ArrayList<>(5);
 		for(int idx=0; idx<5; idx++) {
 			this.unreference.add("UNREF_"+idx); //$NON-NLS-1$
 		}
@@ -84,39 +91,45 @@ public abstract class AbstractCollectionTestCase<COL extends Collection<String>>
 		this.collection.addAll(toAdd);
 	}
 	
-	@Override
+	/**
+	 * @throws Exception
+	 */
+	@After
 	public void tearDown() throws Exception {
 		this.collection = null;
 		this.unreference = null;
 		this.reference = null;
-		super.tearDown();
 	}
 	
 	/**
 	 */
+	@Test
 	public void testAddAll() {
-        assertTrue(this.collection.addAll(this.reference));
+        Assert.assertTrue(this.collection.addAll(this.reference));
         assertEpsilonEquals(this.reference, this.collection);
 	}
 
 	/**
 	 */
+	@Test
 	public void testSize() {
-        assertEquals(0, this.collection.size());
+        Assert.assertEquals(0, this.collection.size());
         initCollectionWith(this.reference);        
-        assertEquals(this.reference.size(), this.collection.size());
+        Assert.assertEquals(this.reference.size(), this.collection.size());
     }
 
 	/**
 	 */
+	@Test
     public void testIsEmpty() {
-        assertTrue(this.collection.isEmpty());
+		Assert.assertTrue(this.collection.isEmpty());
         initCollectionWith(this.reference);        
-        assertFalse(this.collection.isEmpty());
+        Assert.assertFalse(this.collection.isEmpty());
     }
 
 	/**
 	 */
+	@Test
     public void testContains() {
         initCollectionWith(this.reference);        
     	
@@ -124,7 +137,7 @@ public abstract class AbstractCollectionTestCase<COL extends Collection<String>>
         for(int idx=0; idx<count; idx++) {
         	int index = this.RANDOM.nextInt(this.reference.size());
         	
-        	assertTrue(this.collection.contains(this.reference.get(index)));
+        	Assert.assertTrue(this.collection.contains(this.reference.get(index)));
         }
         
         count = this.RANDOM.nextInt(5)+5;
@@ -134,12 +147,13 @@ public abstract class AbstractCollectionTestCase<COL extends Collection<String>>
         	index = this.RANDOM.nextInt(this.unreference.size());
         
         	elt = this.unreference.get(index);
-        	assertFalse(this.collection.contains(elt));
+        	Assert.assertFalse(this.collection.contains(elt));
         }
     }
 
 	/**
 	 */
+	@Test
     public void testIterator() {
         initCollectionWith(this.reference);        
 	
@@ -150,25 +164,27 @@ public abstract class AbstractCollectionTestCase<COL extends Collection<String>>
     	while (iter.hasNext()) {
     		s = iter.next();
     		asOne = true;
-    		assertTrue(this.reference.remove(s));
+    		Assert.assertTrue(this.reference.remove(s));
     	}
 
-    	assertTrue(asOne);
-    	assertTrue(this.reference.isEmpty());
+    	Assert.assertTrue(asOne);
+    	Assert.assertTrue(this.reference.isEmpty());
     }
 
 	/**
 	 */
+	@Test
 	public void testContainsAll() {
         initCollectionWith(this.reference);        
 	
         // Test the content
-    	assertTrue(this.reference.containsAll(this.collection));
-    	assertTrue(this.collection.containsAll(this.reference));
+        Assert.assertTrue(this.reference.containsAll(this.collection));
+        Assert.assertTrue(this.collection.containsAll(this.reference));
 	}
     
 	/**
 	 */
+	@Test
 	public void testToArray() {
         initCollectionWith(this.reference);        
 	
@@ -178,6 +194,7 @@ public abstract class AbstractCollectionTestCase<COL extends Collection<String>>
 	
 	/**
 	 */
+	@Test
 	public void testToArrayArray() {
         initCollectionWith(this.reference);        
 	
@@ -195,6 +212,7 @@ public abstract class AbstractCollectionTestCase<COL extends Collection<String>>
 
 	/**
 	 */
+	@Test
 	public void testClear() {
         initCollectionWith(this.reference);        
     	
@@ -202,11 +220,12 @@ public abstract class AbstractCollectionTestCase<COL extends Collection<String>>
     	this.collection.clear();
 
 		// Collects the objects
-    	assertTrue(this.collection.isEmpty());
+    	Assert.assertTrue(this.collection.isEmpty());
 	}
 	
 	/**
 	 */
+	@Test
 	public void testAddE() {
         initCollectionWith(this.reference);        
 
@@ -219,15 +238,16 @@ public abstract class AbstractCollectionTestCase<COL extends Collection<String>>
 	        // Add an element
 	        String newElement = "NEWELT"+i; //$NON-NLS-1$
 	        this.reference.add(newElement);
-	        assertTrue(msg,this.collection.add(newElement));
-	        assertEquals(msg,this.reference.size(), this.collection.size());
-	        assertTrue(msg,this.collection.contains(newElement));
+	        Assert.assertTrue(msg,this.collection.add(newElement));
+	        Assert.assertEquals(msg,this.reference.size(), this.collection.size());
+	        Assert.assertTrue(msg,this.collection.contains(newElement));
 	    	assertEpsilonEquals(msg,this.reference.toArray(),this.collection.toArray());
         }
 	}
 
 	/**
 	 */
+	@Test
 	public void testRemoveObject() {
         String msg;
 	    int testCount = this.RANDOM.nextInt(5)+5;
@@ -243,9 +263,9 @@ public abstract class AbstractCollectionTestCase<COL extends Collection<String>>
             String toRemove = this.reference.get(removalIndex);
             
 	        // Remove elements
-	        assertTrue(msg,this.collection.remove(toRemove));
+            Assert.assertTrue(msg,this.collection.remove(toRemove));
 	
-	        assertFalse(msg,this.collection.contains(toRemove));
+            Assert.assertFalse(msg,this.collection.contains(toRemove));
 	        this.reference.remove(toRemove);
 	    	assertEpsilonEquals(msg,this.reference.toArray(),this.collection.toArray());
         }
@@ -253,27 +273,29 @@ public abstract class AbstractCollectionTestCase<COL extends Collection<String>>
 	
 	/**
 	 */
+	@Test
 	public void testRemoveAll() {
         initCollectionWith(this.reference);        
         
         fillCollectionWith(this.unreference);
-        assertEquals(this.reference.size()+this.unreference.size(), this.collection.size());
+        Assert.assertEquals(this.reference.size()+this.unreference.size(), this.collection.size());
         
-        assertTrue(this.collection.removeAll(this.reference));
-        assertEquals(this.unreference.size(), this.collection.size());
+        Assert.assertTrue(this.collection.removeAll(this.reference));
+        Assert.assertEquals(this.unreference.size(), this.collection.size());
     	assertEpsilonEquals(this.unreference,this.collection);
 	}
 
 	/**
 	 */
+	@Test
 	public void testRetainAll() {
         initCollectionWith(this.reference);        
         
         fillCollectionWith(this.unreference);
-        assertEquals(this.reference.size()+this.unreference.size(), this.collection.size());
+        Assert.assertEquals(this.reference.size()+this.unreference.size(), this.collection.size());
         
-        assertTrue(this.collection.retainAll(this.reference));
-        assertEquals(this.reference.size(), this.collection.size());
+        Assert.assertTrue(this.collection.retainAll(this.reference));
+        Assert.assertEquals(this.reference.size(), this.collection.size());
     	assertEpsilonEquals(this.reference,this.collection);
 	}
 

@@ -36,7 +36,7 @@ import java.util.LinkedList;
  */
 public class BreadthFirstGraphCourseModel<ST extends GraphSegment<ST,PT>,PT extends GraphPoint<PT,ST>> implements GraphCourseModel<ST,PT>{
 
-	private final LinkedList<GraphIterationElement<ST,PT>> list = new LinkedList<GraphIterationElement<ST,PT>>();
+	private final LinkedList<GraphIterationElement<ST,PT>> list = new LinkedList<>();
 	
 	/** Replies if this model restitutes the elements in a reverse order.
 	 * <p>

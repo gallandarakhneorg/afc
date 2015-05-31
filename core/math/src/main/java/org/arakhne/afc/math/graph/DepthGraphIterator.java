@@ -57,8 +57,8 @@ extends GraphIterator<ST,PT> {
 	 */
 	public DepthGraphIterator(
 			Graph<ST,PT> graph,
-			float depth,
-			float position_from_starting_point,
+			double depth,
+			double position_from_starting_point,
 			ST segment, 
 			PT starting_point,
 			boolean allowManyReplies,
@@ -85,12 +85,12 @@ extends GraphIterator<ST,PT> {
 	 */
 	private DepthGraphIterator(
 			Graph<ST,PT> graph,
-			float depth,
+			double depth,
 			ST segment, 
 			PT starting_point,
 			boolean allowManyReplies,
 			boolean assumeOrientedSegments,
-			float distanceToReachStartingPoint) {
+			double distanceToReachStartingPoint) {
 		super(graph,
 				new BreadthFirstGraphCourseModel<ST,PT>(),
 				segment,starting_point,
@@ -113,7 +113,7 @@ extends GraphIterator<ST,PT> {
 	 */
 	public DepthGraphIterator(
 			Graph<ST,PT> graph,
-			float depth,
+			double depth,
 			ST segment, 
 			PT starting_point,
 			boolean allowManyReplies,
@@ -123,8 +123,8 @@ extends GraphIterator<ST,PT> {
 				assumeOrientedSegments);
 	}
 
-	private static float getStartingDistance(float position_from_starting_point, GraphSegment<?,?> segment) {
-		float total_length = segment.getLength();
+	private static double getStartingDistance(double position_from_starting_point, GraphSegment<?,?> segment) {
+		double total_length = segment.getLength();
 		if (position_from_starting_point>total_length) return total_length;
 		if (position_from_starting_point<0.) return 0;
 		return position_from_starting_point;

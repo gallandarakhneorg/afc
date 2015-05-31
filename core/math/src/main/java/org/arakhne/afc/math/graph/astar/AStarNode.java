@@ -67,27 +67,27 @@ public interface AStarNode<ST extends GraphSegment<ST,PT>, PT extends GraphPoint
 	 * 
 	 * @return the cost to reach the node.
 	 */
-	public float cost();
+	public double cost();
 	
 	/** Set the cost to reach the node.
 	 * 
 	 * @param cost is the new cost.
 	 * @return the cost to reach the node.
 	 */
-	public float setCost(float cost);
+	public double setCost(double cost);
 
 	/** Replies the cost from the node to the target point.
 	 * 
 	 * @return the cost from the node to the target point.
 	 */
-	public float estimatedCost();
+	public double estimatedCost();
 	
 	/** Set the cost from the node to the target point.
 	 * 
 	 * @param cost is the new estimated cost.
 	 * @return the cost from the node to the target point.
 	 */
-	public float setEstimatedCost(float cost);
+	public double setEstimatedCost(double cost);
 
 	/** Replies the cost of the overall path.
 	 * It is the sum of {@link #cost()} and
@@ -95,6 +95,6 @@ public interface AStarNode<ST extends GraphSegment<ST,PT>, PT extends GraphPoint
 	 * 
 	 * @return the cost of the path.
 	 */
-	public float pathCost();
+	public double pathCost();
 
 }

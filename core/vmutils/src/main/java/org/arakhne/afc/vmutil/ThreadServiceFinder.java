@@ -37,7 +37,7 @@ import java.util.concurrent.ScheduledExecutorService;
  */
 public class ThreadServiceFinder {
 
-	private static final Stack<ThreadServiceProvider> services = new Stack<ThreadServiceProvider>();
+	private static final Stack<ThreadServiceProvider> services = new Stack<>();
 	
 	static {
 		// Add the default provider

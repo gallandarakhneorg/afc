@@ -22,6 +22,8 @@ import java.io.ObjectInputStream;
 import java.util.Collection;
 import java.util.List;
 
+import org.arakhne.afc.math.tree.TreeNode;
+
 
 /**
  * This is the generic implementation of a
@@ -214,6 +216,7 @@ public abstract class QuadTreeNode<D,N extends QuadTreeNode<D,N>> extends Abstra
 			return this.nSouthWest;
 		case SOUTH_EAST:
 			return this.nSouthEast;
+		default:
 		}
 		return null;
 	}
@@ -490,6 +493,7 @@ public abstract class QuadTreeNode<D,N extends QuadTreeNode<D,N>> extends Abstra
 			return setThirdChild(newChild);
 		case SOUTH_EAST:
 			return setFourthChild(newChild);
+		default:
 		}
 		return false;
 	}

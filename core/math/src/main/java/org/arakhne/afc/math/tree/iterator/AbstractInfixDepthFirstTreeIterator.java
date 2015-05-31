@@ -64,11 +64,11 @@ implements Iterator<P> {
 
 	/** List of the node to treat.
 	 */
-	private final Stack<P> availableNodes = new Stack<P>();
+	private final Stack<P> availableNodes = new Stack<>();
 	
 	/** List of expanded nodes.
 	 */
-	private final List<P> expandedNodes = new ArrayList<P>();
+	private final List<P> expandedNodes = new ArrayList<>();
 	
 	/** Is the position at which the parent node must be treated.
 	 */

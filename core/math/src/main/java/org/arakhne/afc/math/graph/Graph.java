@@ -105,6 +105,6 @@ extends Iterable<ST> {
 	 * the end points of a segment are not distinguished.
      * @return the iterator.
 	 */
-	public GraphIterator<ST,PT> depthIterator(ST startingSegment, float depth, float position_from_starting_point, PT startingPoint, boolean allowManyReplies, boolean assumeOrientedSegments);
+	public GraphIterator<ST,PT> depthIterator(ST startingSegment, double depth, double position_from_starting_point, PT startingPoint, boolean allowManyReplies, boolean assumeOrientedSegments);
 
 }

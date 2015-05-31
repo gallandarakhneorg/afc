@@ -39,7 +39,7 @@ public class SoftHashSetTest extends AbstractCollectionTestCase<Set<String>> {
 
 	@Override
 	protected Set<String> createCollection() {
-		return new SoftHashSet<String>();
+		return new SoftHashSet<>();
 	}
 
 }

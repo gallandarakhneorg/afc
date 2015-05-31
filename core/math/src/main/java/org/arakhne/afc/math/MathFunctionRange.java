@@ -27,7 +27,7 @@ package org.arakhne.afc.math;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @see http://en.wikipedia.org/wiki/Range_(mathematics)
+ * @see "http://en.wikipedia.org/wiki/Range_(mathematics)"
  */
 public class MathFunctionRange {
 	
@@ -36,7 +36,7 @@ public class MathFunctionRange {
 	 * @param values are put in there own bounds object
 	 * @return the set of bounds
 	 */
-	public static MathFunctionRange[] createDiscreteSet(float... values) {
+	public static MathFunctionRange[] createDiscreteSet(double... values) {
 		MathFunctionRange[] bounds = new MathFunctionRange[values.length];
 		for( int i=0; i<values.length; ++i) {
 			bounds[i] = new MathFunctionRange(values[i]);
@@ -54,7 +54,7 @@ public class MathFunctionRange {
 	 * @param values are put in there own bounds object
 	 * @return the set of bounds
 	 */
-	public static MathFunctionRange[] createSet(float... values) {
+	public static MathFunctionRange[] createSet(double... values) {
 		MathFunctionRange[] bounds = new MathFunctionRange[values.length/2];
 		for( int i=0, j=0; i<values.length; i+=2, ++j) {
 			bounds[j] = new MathFunctionRange(values[i], values[i+1]);
@@ -72,8 +72,8 @@ public class MathFunctionRange {
 		};
 	}
 
-	private final float min;
-	private final float max;
+	private final double min;
+	private final double max;
 	private final boolean includeMin;
 	private final boolean includeMax;
 
@@ -81,7 +81,7 @@ public class MathFunctionRange {
 	 * 
 	 * @param value is the value of the minimal and maximale values in the set.
 	 */
-	public MathFunctionRange(float value) {
+	public MathFunctionRange(double value) {
 		this(value, true, value, true);
 	}
 
@@ -90,7 +90,7 @@ public class MathFunctionRange {
 	 * @param min is the minimal value
 	 * @param max is the maximal value
 	 */
-	public MathFunctionRange(float min, float max) {
+	public MathFunctionRange(double min, double max) {
 		this(min, true, max, true);
 	}
 
@@ -101,7 +101,7 @@ public class MathFunctionRange {
 	 * @param max is the maximal value
 	 * @param includeMax indicates if the maximal value is inside the bounds or outside.
 	 */
-	public MathFunctionRange(float min, boolean includeMin, float max, boolean includeMax) {
+	public MathFunctionRange(double min, boolean includeMin, double max, boolean includeMax) {
 		if (min<max) {
 			this.min = min;
 			this.max = max;
@@ -123,9 +123,9 @@ public class MathFunctionRange {
 	public String toString() {
 		StringBuilder buffer = new StringBuilder();
 		buffer.append(this.includeMin ? '[' : '(');
-		buffer.append(Float.toString(this.min));
+		buffer.append(Double.toString(this.min));
 		buffer.append(';');
-		buffer.append(Float.toString(this.max));
+		buffer.append(Double.toString(this.max));
 		buffer.append(this.includeMax ? ']' : ')');
 		return buffer.toString();
 	}
@@ -134,7 +134,7 @@ public class MathFunctionRange {
 	 * 
 	 * @return the minimal value of the value set.
 	 */
-	public float getMin() {
+	public double getMin() {
 		return this.min;
 	}
 
@@ -142,7 +142,7 @@ public class MathFunctionRange {
 	 * 
 	 * @return the maximal value of the value set.
 	 */
-	public float getMax() {
+	public double getMax() {
 		return this.max;
 	}
 

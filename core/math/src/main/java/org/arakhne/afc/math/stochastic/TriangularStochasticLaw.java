@@ -23,8 +23,8 @@ package org.arakhne.afc.math.stochastic;
 import java.util.Map;
 import java.util.Random;
 
-import org.arakhne.afc.math.MathFunctionRange;
 import org.arakhne.afc.math.MathException;
+import org.arakhne.afc.math.MathFunctionRange;
 
 /**
  * Law that representes a triangular density.
@@ -50,17 +50,17 @@ public class TriangularStochasticLaw extends StochasticLaw {
 	 * @return a value depending of the stochastic law parameters
 	 * @throws MathException 
 	 */
-	public static float random(float minX, float mode, float maxX) throws MathException {
+	public static double random(double minX, double mode, double maxX) throws MathException {
 		return StochasticGenerator.generateRandomValue(new TriangularStochasticLaw(minX, mode, maxX));
 	}
 
-	private final float minX;
-	private final float mode;
-	private final float maxX;
+	private final double minX;
+	private final double mode;
+	private final double maxX;
 	
-	private final float Dxmode;
-	private final float delta1;
-	private final float delta2;
+	private final double Dxmode;
+	private final double delta1;
+	private final double delta2;
 	
 	/**
 	 * Construct a law with the following parameters.
@@ -84,11 +84,11 @@ public class TriangularStochasticLaw extends StochasticLaw {
 	 * @param mode is the maxima point of the distribution {@code f(mode) = max(f(x))} 
 	 * @param maxX is the upper bound where {@code f(maxX) = 0}
 	 */
-	public TriangularStochasticLaw(float minX, float mode, float maxX) {
-		float t;
-		float i = minX;
-		float a = maxX;
-		float m = mode;
+	public TriangularStochasticLaw(double minX, double mode, double maxX) {
+		double t;
+		double i = minX;
+		double a = maxX;
+		double m = mode;
 		if (i>a) {
 			t = a;
 			a = i;
@@ -136,18 +136,18 @@ public class TriangularStochasticLaw extends StochasticLaw {
 	/** {@inheritDoc}
 	 */
 	@Override
-	public float f(float x)  throws MathException {
+	public double f(double x)  throws MathException {
 		if ((x<this.minX)||(x>this.maxX))
 			throw new OutsideDomainException(x);
 		
-		float denom = (this.maxX-this.minX);
+		double denom = (this.maxX-this.minX);
 		
 		if (x <= this.mode) {
-			float xm = 2.f * (x - this.minX);
+			double xm = 2.f * (x - this.minX);
 			return xm / (denom * (this.mode - this.minX));
 		}
 		
-		float xm = 2.f * (this.maxX - x);
+		double xm = 2.f * (this.maxX - x);
 		return 1.f - (xm / (denom * (this.maxX - this.mode)));
 			
 	}
@@ -166,13 +166,13 @@ public class TriangularStochasticLaw extends StochasticLaw {
 	 * @throws MathException in case {@code F<sup>-1</sup>(u)} could not be computed
 	 */
 	@Override
-	public float inverseF(float u) throws MathException {
+	public double inverseF(double u) throws MathException {
 		if ((u<0)||(u>1)) throw new OutsideDomainException(u);
 		
 		if (u<this.Dxmode)
-			return (float) (Math.sqrt(u * this.delta1) + this.minX);
+			return Math.sqrt(u * this.delta1) + this.minX;
 		
-		return (float) (this.maxX - Math.sqrt((1.f-u)*this.delta2));
+		return this.maxX - Math.sqrt((1.f-u)*this.delta2);
 	}
 
 }

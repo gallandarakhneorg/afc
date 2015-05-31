@@ -23,8 +23,8 @@ package org.arakhne.afc.math.stochastic;
 import java.util.Map;
 import java.util.Random;
 
-import org.arakhne.afc.math.MathFunctionRange;
 import org.arakhne.afc.math.MathException;
+import org.arakhne.afc.math.MathFunctionRange;
 
 /**
  * Law that representes a gaussian density.
@@ -41,7 +41,7 @@ import org.arakhne.afc.math.MathException;
  */
 public class LogNormalStochasticLaw extends StochasticLaw {
 	
-	private static final float SQRT2PI = (float) Math.sqrt(2.f*Math.PI);
+	private static final double SQRT2PI = Math.sqrt(2.f*Math.PI);
 	
 	/** Replies a random value that respect
 	 * the current stochastic law.
@@ -51,12 +51,12 @@ public class LogNormalStochasticLaw extends StochasticLaw {
 	 * @return a value depending of the stochastic law parameters
 	 * @throws MathException 
 	 */
-	public static float random(float mean, float standardDeviation) throws MathException {
+	public static double random(double mean, double standardDeviation) throws MathException {
 		return StochasticGenerator.generateRandomValue(new LogNormalStochasticLaw(mean, standardDeviation));
 	}
 
-	private float mean;
-	private float standardDeviation;
+	private double mean;
+	private double standardDeviation;
 
 	/**
 	 * Construct a law with the following parameters.
@@ -80,7 +80,7 @@ public class LogNormalStochasticLaw extends StochasticLaw {
 	 * @param standardDeviation is the standard deviation associated to the nromal distribution.
 	 * @throws OutsideDomainException when standardDevisition is negative or nul.
 	 */
-	public LogNormalStochasticLaw(float mean, float standardDeviation) throws OutsideDomainException {
+	public LogNormalStochasticLaw(double mean, double standardDeviation) throws OutsideDomainException {
 		if (standardDeviation<=0) throw new OutsideDomainException(standardDeviation);
 		this.mean = mean;
 		this.standardDeviation = standardDeviation;
@@ -105,12 +105,12 @@ public class LogNormalStochasticLaw extends StochasticLaw {
 	/** {@inheritDoc}
 	 */
 	@Override
-	public float f(float x)  throws MathException {
+	public double f(double x)  throws MathException {
 		if (x<=0)
 			throw new OutsideDomainException(x);
-		float ex = (float) (Math.log(x) - this.mean);
+		double ex = Math.log(x) - this.mean;
 		ex = ex * ex;
-		return (float) (Math.exp((-ex)/(2.f*this.standardDeviation*this.standardDeviation)) / (x * this.standardDeviation * SQRT2PI));
+		return Math.exp((-ex)/(2.f*this.standardDeviation*this.standardDeviation)) / (x * this.standardDeviation * SQRT2PI);
 	}
 
 	/** {@inheritDoc}
@@ -127,8 +127,8 @@ public class LogNormalStochasticLaw extends StochasticLaw {
 	 * @throws MathException in case {@code F<sup>-1</sup>(u)} could not be computed
 	 */
 	@Override
-	public float inverseF(float u) throws MathException {
-		return (float) Math.exp(this.standardDeviation*u + this.mean);
+	public double inverseF(double u) throws MathException {
+		return Math.exp(this.standardDeviation*u + this.mean);
 	}
 
 	/** Replies the x according to the value of the inverted 
@@ -140,8 +140,8 @@ public class LogNormalStochasticLaw extends StochasticLaw {
 	 * @throws MathException in case {@code F<sup>-1</sup>(u)} could not be computed
 	 */
 	@Override
-	protected final float inverseF(Random U) throws MathException {
-		float u = (float) ((U.nextGaussian()+1)/2.f);
+	protected final double inverseF(Random U) throws MathException {
+		double u = (U.nextGaussian()+1)/2.f;
 		return inverseF(u);
 	}
 

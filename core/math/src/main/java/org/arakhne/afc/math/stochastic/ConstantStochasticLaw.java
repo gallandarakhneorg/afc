@@ -22,8 +22,8 @@ package org.arakhne.afc.math.stochastic;
 
 import java.util.Random;
 
-import org.arakhne.afc.math.MathFunctionRange;
 import org.arakhne.afc.math.MathException;
+import org.arakhne.afc.math.MathFunctionRange;
 
 /**
  * Law that representes an uniform density with as its upper and lower bounds
@@ -39,23 +39,23 @@ import org.arakhne.afc.math.MathException;
  */
 public class ConstantStochasticLaw extends StochasticLaw {
 
-	private final float value;
+	private final double value;
 
 	/** Create a constant stochastic law.
 	 * 
 	 * @param value is the value replied by this law.
 	 */
-	public ConstantStochasticLaw(float value) {
+	public ConstantStochasticLaw(double value) {
 		this.value = value;
 	}
 
 	@Override
-	public float inverseF(float u) throws MathException {
+	public double inverseF(double u) throws MathException {
 		return this.value;
 	}
 
 	@Override
-	public float f(float x) throws MathException {
+	public double f(double x) throws MathException {
 		return (x!=this.value) ? 0 : 1.f; 
 	}
 

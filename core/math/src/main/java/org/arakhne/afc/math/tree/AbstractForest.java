@@ -125,7 +125,7 @@ implements Forest<D> {
 	 */
 	@Override
 	public final Iterator<TreeNode<D,?>> depthFirstIterator(DepthFirstNodeOrder nodeOrder) {
-		return new DepthFirstForestIterator<D>(
+		return new DepthFirstForestIterator<>(
 				nodeOrder,
 				this.trees.iterator());
 	}
@@ -134,7 +134,7 @@ implements Forest<D> {
 	 */
 	@Override
 	public final Iterator<TreeNode<D,?>> depthFirstIterator() {
-		return new DepthFirstForestIterator<D>(
+		return new DepthFirstForestIterator<>(
 				DepthFirstNodeOrder.PREFIX,
 				this.trees.iterator());
 	}
@@ -143,14 +143,14 @@ implements Forest<D> {
 	 */
 	@Override
 	public final Iterator<TreeNode<D,?>> broadFirstIterator() {
-		return new BroadFirstForestIterator<D>(this.trees.iterator());
+		return new BroadFirstForestIterator<>(this.trees.iterator());
 	}
 
 	/** {@inheritDoc}
 	 */
 	@Override
 	public final Iterator<D> dataDepthFirstIterator() {
-		return new DataDepthFirstForestIterator<D>(
+		return new DataDepthFirstForestIterator<>(
 				DepthFirstNodeOrder.PREFIX,
 				this.trees.iterator());
 	}
@@ -159,7 +159,7 @@ implements Forest<D> {
 	 */
 	@Override
 	public final Iterator<D> dataDepthFirstIterator(DepthFirstNodeOrder nodeOrder) {
-		return new DataDepthFirstForestIterator<D>(
+		return new DataDepthFirstForestIterator<>(
 				nodeOrder,
 				this.trees.iterator());
 	}
@@ -169,10 +169,10 @@ implements Forest<D> {
 	@Override
 	public final Iterator<D> dataDepthFirstIterator(int infixPosition) {
 		if (infixPosition<=0)
-			return new DataDepthFirstForestIterator<D>(
+			return new DataDepthFirstForestIterator<>(
 					DepthFirstNodeOrder.PREFIX,
 					this.trees.iterator());
-		return new DataDepthFirstForestIterator<D>(
+		return new DataDepthFirstForestIterator<>(
 				infixPosition,
 				this.trees.iterator());
 	}
@@ -181,7 +181,7 @@ implements Forest<D> {
 	 */
 	@Override
 	public final Iterator<D> dataBroadFirstIterator() {
-		return new DataBroadFirstForestIterator<D>(this.trees.iterator());
+		return new DataBroadFirstForestIterator<>(this.trees.iterator());
 	}
 
 	/**
@@ -299,7 +299,7 @@ implements Forest<D> {
 	@SuppressWarnings("unchecked")
 	@Override
 	public boolean retainAll(Collection<?> tree) {
-		List<Tree<D,?>> retained = new LinkedList<Tree<D,?>>();
+		List<Tree<D,?>> retained = new LinkedList<>();
 		boolean changed = false;
 		for(Object o : tree) {
 			if (this.trees.remove(o)) {
@@ -346,7 +346,7 @@ implements Forest<D> {
 	 */
 	public synchronized void addForestListener(ForestListener listener) {
 		if (this.listeners==null)
-			this.listeners = new ArrayList<ForestListener>();
+			this.listeners = new ArrayList<>();
 		this.listeners.add(listener);
 	}
 	

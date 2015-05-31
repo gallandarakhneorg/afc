@@ -76,7 +76,7 @@ implements Iterator<ST> {
 	 * @param distanceToReachStartingPoint is the distance to reach the starting point.
 	 * It must be negative or nul.
 	 */
-	public GraphIterator(Graph<ST,PT> graph, ST segment, PT point, boolean allowManyReplies, boolean assumeOrientedSegments, float distanceToReachStartingPoint) {
+	public GraphIterator(Graph<ST,PT> graph, ST segment, PT point, boolean allowManyReplies, boolean assumeOrientedSegments, double distanceToReachStartingPoint) {
 		this(graph,null,segment,point,allowManyReplies, assumeOrientedSegments,distanceToReachStartingPoint);
 	}
 
@@ -93,7 +93,7 @@ implements Iterator<ST> {
 	 * @param distanceToReachStartingPoint is the distance to reach the starting point.
 	 * It must be negative or nul.
 	 */
-	public GraphIterator(Graph<ST,PT> graph, GraphCourseModel<ST,PT> courseModel, ST segment, PT point, boolean allowManyReplies, boolean assumeOrientedSegments, float distanceToReachStartingPoint) {
+	public GraphIterator(Graph<ST,PT> graph, GraphCourseModel<ST,PT> courseModel, ST segment, PT point, boolean allowManyReplies, boolean assumeOrientedSegments, double distanceToReachStartingPoint) {
 		this(graph, courseModel, segment, point, allowManyReplies, assumeOrientedSegments, distanceToReachStartingPoint, Float.POSITIVE_INFINITY);
 	}
 	
@@ -115,12 +115,12 @@ implements Iterator<ST> {
 			Graph<ST,PT> graph, GraphCourseModel<ST,PT> courseModel, 
 			ST segment, PT point, 
 			boolean allowManyReplies, boolean assumeOrientedSegments, 
-			float distanceToReachStartingPoint,
-			float distanceToConsumeAfter) {
-		this.graph = new WeakReference<Graph<ST,PT>>(graph);
+			double distanceToReachStartingPoint,
+			double distanceToConsumeAfter) {
+		this.graph = new WeakReference<>(graph);
 		GraphCourseModel<ST,PT> courseM = courseModel;
 		if (courseM==null) {
-			courseM = new BreadthFirstGraphCourseModel<ST,PT>();
+			courseM = new BreadthFirstGraphCourseModel<>();
 		}
 
 		this.courseModel = courseM;
@@ -136,7 +136,7 @@ implements Iterator<ST> {
 		if (!this.allowManyReplies) {
 			GraphIterationElementComparator<ST,PT> comparator = createVisitedSegmentComparator(this.assumeOrientedSegments);
 			assert(comparator!=null);
-			this.visited = new TreeSet<GraphIterationElement<ST,PT>>(comparator);
+			this.visited = new TreeSet<>(comparator);
 			this.visited.add(firstElement);
 		}
 		else {
@@ -154,7 +154,7 @@ implements Iterator<ST> {
 	 * default comparation behaviour of the <code>GraphIterationElement</code>. 
 	 */
 	protected GraphIterationElementComparator<ST,PT> createVisitedSegmentComparator(boolean assumeOrientedSegments) {
-		return new GraphIterationElementComparator<ST, PT>(assumeOrientedSegments);
+		return new GraphIterationElementComparator<>(assumeOrientedSegments);
 	}
 	
 	/** Replies the graph on which this iterator is iterating.
@@ -188,10 +188,10 @@ implements Iterator<ST> {
 			if ((segment!=null)&&(point!=null)) {
 				PT pts = segment.getOtherSidePoint(point);
 				if (pts!=null) {
-					float distanceToReach = element.getDistanceToReachSegment()+segment.getLength();
+					double distanceToReach = element.getDistanceToReachSegment()+segment.getLength();
 					GraphIterationElement<ST,PT> candidate;
-					float restToConsume = element.distanceToConsume - segment.getLength();
-					ArrayList<GraphIterationElement<ST,PT>> list = new ArrayList<GraphIterationElement<ST,PT>>();
+					double restToConsume = element.distanceToConsume - segment.getLength();
+					ArrayList<GraphIterationElement<ST,PT>> list = new ArrayList<>();
 					for (ST theSegment : pts.getConnectedSegmentsStartingFrom(segment)) {
 						if (!theSegment.equals(segment)) {
 							candidate = newIterationElement(
@@ -259,7 +259,7 @@ implements Iterator<ST> {
 				GraphIterationElement<ST,PT> elt;
 
 				if (this.courseModel.isReversedRestitution()) {
-					iterator = new ReverseIterator<GraphIterationElement<ST,PT>>(list);
+					iterator = new ReverseIterator<>(list);
 				}
 				else {
 					iterator = list.iterator();
@@ -298,9 +298,9 @@ implements Iterator<ST> {
 	protected GraphIterationElement<ST,PT> newIterationElement(
 			ST previous_segment, ST segment, 
 			PT point, 
-			float distanceToReach,
-			float distanceToConsume) {
-		return new GraphIterationElement<ST,PT>(
+			double distanceToReach,
+			double distanceToConsume) {
+		return new GraphIterationElement<>(
 				previous_segment, segment, 
 				point, 
 				distanceToReach,

@@ -22,6 +22,8 @@ import java.io.ObjectInputStream;
 import java.util.Collection;
 import java.util.List;
 
+import org.arakhne.afc.math.tree.TreeNode;
+
 
 /**
  * This is the generic implementation of a
@@ -215,6 +217,7 @@ public abstract class PentaTreeNode<D,N extends PentaTreeNode<D,N>> extends Abst
 			return this.child4;
 		case 4:
 			return this.child5;
+		default:
 		}
 		throw new IndexOutOfBoundsException(index+" >= 5"); //$NON-NLS-1$
 	}
@@ -413,6 +416,7 @@ public abstract class PentaTreeNode<D,N extends PentaTreeNode<D,N>> extends Abst
 			return setChild4(newChild);
 		case 4:
 			return setChild5(newChild);
+		default:
 		}
 		throw new IndexOutOfBoundsException(index+">= 5"); //$NON-NLS-1$
 	}

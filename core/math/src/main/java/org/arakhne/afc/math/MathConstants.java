@@ -48,35 +48,41 @@ public interface MathConstants {
 	
 	/** PI
 	 */
-	public static final float PI = (float)Math.PI;
+	public static final double PI = Math.PI;
 
 	/** E
 	 */
-	public static final float E = (float)Math.E;
+	public static final double E = Math.E;
+
+	/** Epsilon value, smallest such that 1.0+EPSILON != 1.0
+	 * <p>
+	 * Given by the Java3D's implementation of the Matrix3d class.
+	 */
+	public static final double EPSILON = 1.110223024E-16;
 
 	/** 2 * PI
 	 */
-	public static final float TWO_PI = 2f * PI;
+	public static final double TWO_PI = 2. * PI;
 
 	/** PI + PI/2
 	 */
-	public static final float ONE_HALF_PI = 1.5f * PI;
+	public static final double ONE_HALF_PI = 1.5 * PI;
 
 	/** PI/2
 	 */
-	public static final float DEMI_PI = .5f * PI;
+	public static final double DEMI_PI = .5 * PI;
 
 	/** PI/4
 	 */
-	public static final float QUARTER_PI = .25f * PI;
+	public static final double QUARTER_PI = .25 * PI;
 
 	/** 3*PI/4
 	 */
-	public static final float THREE_QUARTER_PI = .75f * PI;
+	public static final double THREE_QUARTER_PI = .75 * PI;
 
 	/** Square root of 2
 	 */
-	public static final float SQRT_2 = (float)Math.sqrt(2.);
+	public static final double SQRT_2 = (float)Math.sqrt(2.);
 
 	/**
 	 * Max sweeps in the Jacoby's algorithms.
@@ -88,6 +94,11 @@ public interface MathConstants {
 	 */
 	public static final int ELLIPSE_MAX_SWEEPS = 32;
 
+	/** This is the maximale distance that
+	 *  permits to detect hits.
+	 */
+	public static final double HIT_DISTANCE = 5 ;
+
 	/** The maximum distance that the line 
 	 *  segments used to approximate the 
 	 *  curved segments are allowed to 
@@ -97,7 +108,7 @@ public interface MathConstants {
 	 *  This attributes is used to parameter the approximation
 	 *  of the curve rendering.
 	 */
-	public static final float SPLINE_APPROXIMATION_RATIO = .1f;
+	public static final double SPLINE_APPROXIMATION_RATIO = .1;
 	
 	/**
      * The rectangle intersection test counts the number of times
@@ -130,22 +141,5 @@ public interface MathConstants {
      * further processing is ever needed if an intersection occurs.
      */
     public static final int SHAPE_INTERSECTS = 0x80000000;
-    
-	/** Epsilon value, smallest such that 1.0+EPSILON != 1.0 on JVM.
-	 * <p>
-	 * Given by the Java3D's implementation of the Matrix3d class.
-	 * This constant is used to fix the problem of variable == 0 on floating point value.
-	 * 
-	 * @see #JVM_MIN_FLOAT_EPSILON
-	 */
-	public static final double JVM_MIN_DOUBLE_EPSILON = 1.110223024E-16;
-	
-	
-	/** Epsilon value, smallest such that 1.0+EPSILON != 1.0 on JVM.
-	 * <p>
-	 * Given by the Java3D's implementation of the Matrix3d class.
-	 * This constant is used to fix the problem of variable == 0 on floating point value.
-	 * @see #JVM_MIN_DOUBLE_EPSILON
-	 */
-	public static final float JVM_MIN_FLOAT_EPSILON = (float)JVM_MIN_DOUBLE_EPSILON;
+
 }

@@ -23,8 +23,8 @@ package org.arakhne.afc.math.stochastic;
 import java.util.Map;
 import java.util.Random;
 
-import org.arakhne.afc.math.MathFunctionRange;
 import org.arakhne.afc.math.MathException;
+import org.arakhne.afc.math.MathFunctionRange;
 
 
 /**
@@ -50,12 +50,12 @@ public class CauchyStochasticLaw extends StochasticLaw {
 	 * @return a value depending of the stochastic law parameters
 	 * @throws MathException 
 	 */
-	public static float random(float k, float xmin) throws MathException {
+	public static double random(double k, double xmin) throws MathException {
 		return StochasticGenerator.generateRandomValue(new CauchyStochasticLaw(k, xmin));
 	}
 
-	private final float x0;
-	private final float gamma;
+	private final double x0;
+	private final double gamma;
 
 	/**
 	 * Construct a law with the following parameters.
@@ -80,7 +80,7 @@ public class CauchyStochasticLaw extends StochasticLaw {
 	 * @param gamma is the scale parameter which specifies the half-width at half-maximum (HWHM).
 	 * @throws OutsideDomainException when gamma is outside its domain
 	 */
-	public CauchyStochasticLaw(float x0, float gamma) throws OutsideDomainException {
+	public CauchyStochasticLaw(double x0, double gamma) throws OutsideDomainException {
 		if (gamma<=0) throw new OutsideDomainException(gamma);
 		this.x0 = x0;
 		this.gamma = gamma;
@@ -105,9 +105,9 @@ public class CauchyStochasticLaw extends StochasticLaw {
 	/** {@inheritDoc}
 	 */
 	@Override
-	public float f(float x)  throws MathException {
-		float xm = x - this.x0;
-		return (float) (1.f/Math.PI) * (this.gamma/((xm * xm)+(this.gamma * this.gamma))); 
+	public double f(double x)  throws MathException {
+		double xm = x - this.x0;
+		return 1.f/Math.PI * (this.gamma/((xm * xm)+(this.gamma * this.gamma))); 
 	}
 
 	/** {@inheritDoc}
@@ -124,8 +124,8 @@ public class CauchyStochasticLaw extends StochasticLaw {
 	 * @throws MathException in case {@code F<sup>-1</sup>(u)} could not be computed
 	 */
 	@Override
-	public float inverseF(float u) throws MathException {
-		return (float) (this.x0 + this.gamma * Math.tan(Math.PI * (u-.5f))); 
+	public double inverseF(double u) throws MathException {
+		return this.x0 + this.gamma * Math.tan(Math.PI * (u-.5f)); 
 	}
 
 }

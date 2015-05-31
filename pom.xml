@@ -106,27 +106,27 @@
 			<dependency>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>org.apache.felix.main</artifactId>
-				<version>4.6.1</version>
+				<version>5.0.0</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.maven</groupId>
 				<artifactId>maven-plugin-api</artifactId>
-				<version>3.3.1</version>
+				<version>3.3.3</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.maven</groupId>
 				<artifactId>maven-artifact</artifactId>
-				<version>3.2.2</version>
+				<version>3.3.3</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.maven</groupId>
 				<artifactId>maven-core</artifactId>
-				<version>3.3.1</version>
+				<version>3.3.3</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.maven</groupId>
 				<artifactId>maven-compat</artifactId>
-				<version>3.3.1</version>
+				<version>3.3.3</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.maven</groupId>
@@ -153,12 +153,12 @@
 			<dependency>
 				<groupId>org.tmatesoft.svnkit</groupId>
 				<artifactId>svnkit</artifactId>
-				<version>1.8.7</version>
+				<version>1.8.10</version>
 			</dependency>
 			<dependency>
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
-				<version>3.8.2</version>
+				<version>4.12</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -179,13 +179,13 @@
 			<name>GNU Lesser General Public License v3.0</name>
 			<url>http://www.gnu.org/licenses/lgpl.html</url>
 			<distribution>repo</distribution>
-			<comments>Since 2005</comments>
+			<comments>2005-2014</comments>
 		</license>
 		<license>
 			<name>Apache 2.0</name>
 			<url>http://www.apache.org/licenses/LICENSE-2.0</url>
 			<distribution>repo</distribution>
-			<comments>For the Android Color Picker only</comments>
+			<comments>Since 2015</comments>
 		</license>
 	</licenses>
 
@@ -209,7 +209,7 @@
 
 	<developers>
 		<developer>
-			<id>galland</id>
+			<id>sgalland</id>
 			<name>St&amp;eacute;phane GALLAND</name>
 			<email>galland@arakhne.org</email>
 			<url>http://www.arakhne.org/homes/galland.html</url>
@@ -220,7 +220,7 @@
 			</roles>
 		</developer>
 		<developer>
-			<id>gaud</id>
+			<id>ngaud</id>
 			<name>Nicolas GAUD</name>
 			<email>gaud@arakhne.org</email>
 			<url>http://www.arakhne.org/homes/gaud.html</url>
@@ -229,7 +229,7 @@
 			</roles>
 		</developer>
 		<developer>
-			<id>willaume</id>
+			<id>awillaume</id>
 			<name>Alexandre WILLAUME</name>
 			<email>willaume@arakhne.org</email>
 			<url>http://www.arakhne.org/homes/willaume.html</url>
@@ -238,7 +238,7 @@
 			</roles>
 		</developer>
 		<developer>
-			<id>lamotte</id>
+			<id>olamotte</id>
 			<name>Olivier LAMOTTE</name>
 			<email>lamotte@arakhne.org</email>
 			<url>http://www.arakhne.org/homes/lamotte.html</url>
@@ -247,15 +247,16 @@
 			</roles>
 		</developer>
 		<developer>
-			<id>hannoun</id>
+			<id>mhannoun</id>
 			<name>Mahdi HANNOUN</name>
 			<email>mahdi.hannoun@emse.fr</email>
 			<roles>
+				<role>Founder</role>
 				<role>Developer</role>
 			</roles>
 		</developer>
 		<developer>
-			<id>baumgartner</id>
+			<id>mbaumgartner</id>
 			<name>Marc BAUMGARTNER</name>
 			<email>mabaumga@stud.uni-frankfurt.de</email>
 			<roles>
@@ -263,7 +264,7 @@
 			</roles>
 		</developer>
 		<developer>
-			<id>yukuku</id>
+			<id>ysugianto</id>
 			<name>Yuku Sugianto</name>
 			<email>yukuku@gmail.com</email>
 			<roles>
@@ -274,6 +275,14 @@
 			<id>mgrolleau</id>
 			<name>Maxime Grolleau</name>
 			<email>maxime.grolleau@utbm.fr</email>
+			<roles>
+				<role>Developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>cbohrhauer</id>
+			<name>Christophe BOHRHAUER</name>
+			<email>christophe.bohrhauer@utbm.fr</email>
 			<roles>
 				<role>Developer</role>
 			</roles>
@@ -319,7 +328,6 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-jar-plugin</artifactId>
-					<!-- no the version 2.4 because it is incompatible with m2e -->
 					<version>2.6</version>
 				</plugin>
 				<plugin>
@@ -335,7 +343,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-assembly-plugin</artifactId>
-					<version>2.5.3</version>
+					<version>2.5.4</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -360,12 +368,12 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>2.10.2</version>
+					<version>2.10.3</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.felix</groupId>
 					<artifactId>maven-bundle-plugin</artifactId>
-					<version>2.5.3</version>
+					<version>2.5.4</version>
 				</plugin>
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
@@ -480,8 +488,8 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
-					<target>1.6</target>
-					<source>1.6</source>
+					<target>1.7</target>
+					<source>1.7</source>
 					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>

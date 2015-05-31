@@ -130,6 +130,7 @@ public class ProgressionConsoleMonitor implements ProgressionListener {
 	 * @param numberFormat - instance of the number formatter.
 	 * @return the message.
 	 */
+	@SuppressWarnings("static-method")
 	protected String buildMessage(float progress, String comment, boolean isRoot, boolean isFinished, NumberFormat numberFormat) {
 		StringBuilder txt = new StringBuilder();
 		txt.append('[');
@@ -157,8 +158,8 @@ public class ProgressionConsoleMonitor implements ProgressionListener {
 		 * @param model
 		 */
 		public WeakListener(ProgressionListener listener, Progression model) {
-			this.listener = new WeakReference<ProgressionListener>(listener);
-			this.model = new WeakReference<Progression>(model);
+			this.listener = new WeakReference<>(listener);
+			this.model = new WeakReference<>(model);
 		}
 
 		@Override

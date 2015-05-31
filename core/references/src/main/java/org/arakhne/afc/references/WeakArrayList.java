@@ -90,7 +90,7 @@ public class WeakArrayList<T> extends AbstractList<T> {
 		return (value==NULL_VALUE) ? null : value;
 	}
 
-	private final transient ReferenceQueue<T> queue = new ReferenceQueue<T>();
+	private final transient ReferenceQueue<T> queue = new ReferenceQueue<>();
 	
 	private Object[] data;
 	
@@ -167,7 +167,7 @@ public class WeakArrayList<T> extends AbstractList<T> {
      * @return the weak reference. 
      */
     private Reference<T> createRef(T obj) {
-    	return new WeakReference<T>(maskNull(obj), this.queue);
+    	return new WeakReference<>(maskNull(obj), this.queue);
     }
     
     /**
@@ -356,7 +356,7 @@ public class WeakArrayList<T> extends AbstractList<T> {
      */
     public void addReferenceListener(ReferenceListener listener) {
     	if (this.listeners==null) {
-    		this.listeners = new LinkedList<ReferenceListener>();
+    		this.listeners = new LinkedList<>();
     	}
 		List<ReferenceListener> list = this.listeners;
     	synchronized(list) {

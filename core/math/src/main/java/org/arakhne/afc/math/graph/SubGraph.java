@@ -48,7 +48,7 @@ PT extends GraphPoint<PT,ST>,
 GP extends GraphPath<GP,ST,PT>>
 implements Graph<ST,PT> {
 
-	private final Set<ComparableWeakReference<PT>> terminalPoints = new TreeSet<ComparableWeakReference<PT>>();
+	private final Set<ComparableWeakReference<PT>> terminalPoints = new TreeSet<>();
 	private final Collection<ST> segments;
 	private int pointNumber;
 	private WeakReference<Graph<ST,PT>> parentGraph = null;
@@ -138,12 +138,12 @@ implements Graph<ST,PT> {
 	 */
 	public final void build(GraphIterator<ST,PT> iterator, SubGraphBuildListener<ST,PT> listener) {
 		assert(iterator!=null);
-		Set<ComparableWeakReference<PT>> reachedPoints = new TreeSet<ComparableWeakReference<PT>>();		
+		Set<ComparableWeakReference<PT>> reachedPoints = new TreeSet<>();		
 		GraphIterationElement<ST,PT> element;
 		ST segment;
 		PT point, firstPoint=null;
 
-		this.parentGraph = new WeakReference<Graph<ST,PT>>(iterator.getGraph());
+		this.parentGraph = new WeakReference<>(iterator.getGraph());
 		this.segments.clear();
 		this.pointNumber = 0;
 		this.terminalPoints.clear();
@@ -165,7 +165,7 @@ implements Graph<ST,PT> {
 
 			// Register terminal points
 			point = segment.getOtherSidePoint(point);
-			ComparableWeakReference<PT> ref = new ComparableWeakReference<PT>(point);
+			ComparableWeakReference<PT> ref = new ComparableWeakReference<>(point);
 			if (element.isTerminalSegment()) {
 				if (!reachedPoints.contains(ref)) {
 					this.terminalPoints.add(ref);
@@ -184,7 +184,7 @@ implements Graph<ST,PT> {
 		}
 
 		if (firstPoint!=null) {
-			ComparableWeakReference<PT> ref = new ComparableWeakReference<PT>(firstPoint);
+			ComparableWeakReference<PT> ref = new ComparableWeakReference<>(firstPoint);
 			if (!reachedPoints.contains(ref)) this.terminalPoints.add(ref);
 		}
 		
@@ -199,7 +199,7 @@ implements Graph<ST,PT> {
 	 * @return <code>true</code> if the point is terminal otherwise <code>false</code>
 	 */
 	protected final boolean isTerminalPoint(PT point) {
-		return this.terminalPoints.contains(new ComparableWeakReference<PT>(point));
+		return this.terminalPoints.contains(new ComparableWeakReference<>(point));
 	}
 
 	/** Create a wrapping segment for the given graph segment.
@@ -281,7 +281,7 @@ implements Graph<ST,PT> {
 	@Override
 	public GraphIterator<ST, PT> depthIterator(
 			ST startingSegment,
-			float depth, float position_from_starting_point,
+			double depth, double position_from_starting_point,
 			PT startingPoint, boolean allowManyReplies,
 			boolean assumeOrientedSegments) {
 		return new DepthSubGraphIterator(
@@ -330,7 +330,7 @@ implements Graph<ST,PT> {
 		 * @param assumedOrientedSegments
 		 */
 		public DepthSubGraphIterator(ST startingSegment,
-				float depth, float position_from_starting_point, PT startingPoint,
+				double depth, double position_from_starting_point, PT startingPoint,
 				boolean allowManyReplies,
 				boolean assumedOrientedSegments) {
 			super(SubGraph.this, depth, position_from_starting_point,
@@ -342,8 +342,8 @@ implements Graph<ST,PT> {
 		protected GraphIterationElement<ST,PT> newIterationElement(
 				ST previous_segment, ST segment, 
 				PT point, 
-				float distanceToReach,
-				float distanceToConsume) {
+				double distanceToReach,
+				double distanceToConsume) {
 			return new SubGraphIterationElement(
 					previous_segment, segment, 
 					point, 
@@ -397,8 +397,8 @@ implements Graph<ST,PT> {
 		protected GraphIterationElement<ST,PT> newIterationElement(
 				ST previous_segment, ST segment, 
 				PT point, 
-				float distanceToReach,
-				float distanceToConsume) {
+				double distanceToReach,
+				double distanceToConsume) {
 			return new SubGraphIterationElement(
 					previous_segment, segment, 
 					point, 
@@ -427,7 +427,7 @@ implements Graph<ST,PT> {
 		 * @param distanceToReach is the distance that is already consumed.
 		 * @param distanceToConsume is the distance to consume including the segment.
 		 */
-		public SubGraphIterationElement(ST previous_segment, ST segment, PT point, float distanceToReach, float distanceToConsume) {
+		public SubGraphIterationElement(ST previous_segment, ST segment, PT point, double distanceToReach, double distanceToConsume) {
 			super(previous_segment, segment, point, distanceToReach, distanceToConsume);
 		}
 

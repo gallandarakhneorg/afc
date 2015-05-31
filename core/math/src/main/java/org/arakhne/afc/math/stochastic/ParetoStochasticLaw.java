@@ -23,8 +23,8 @@ package org.arakhne.afc.math.stochastic;
 import java.util.Map;
 import java.util.Random;
 
-import org.arakhne.afc.math.MathFunctionRange;
 import org.arakhne.afc.math.MathException;
+import org.arakhne.afc.math.MathFunctionRange;
 
 /**
  * Law that representes a Pareto density.
@@ -49,12 +49,12 @@ public class ParetoStochasticLaw extends StochasticLaw {
 	 * @return a value depending of the stochastic law parameters
 	 * @throws MathException 
 	 */
-	public static float random(float k, float xmin) throws MathException {
+	public static double random(double k, double xmin) throws MathException {
 		return StochasticGenerator.generateRandomValue(new ParetoStochasticLaw(k, xmin));
 	}
 
-	private final float xmin;
-	private final float k;
+	private final double xmin;
+	private final double k;
 
 	/**
 	 * Construct a law with the following parameters.
@@ -79,7 +79,7 @@ public class ParetoStochasticLaw extends StochasticLaw {
 	 * @param xmin is the minimum value of the distribution
 	 * @throws OutsideDomainException when xmin or k is negative or nul.
 	 */
-	public ParetoStochasticLaw(float k, float xmin) throws OutsideDomainException {
+	public ParetoStochasticLaw(double k, double xmin) throws OutsideDomainException {
 		if (xmin<=0) throw new OutsideDomainException(xmin);
 		if (k<=0) throw new OutsideDomainException(k);
 		this.xmin = xmin;
@@ -105,10 +105,10 @@ public class ParetoStochasticLaw extends StochasticLaw {
 	/** {@inheritDoc}
 	 */
 	@Override
-	public float f(float x)  throws MathException {
+	public double f(double x)  throws MathException {
 		if (x<this.xmin)
 			throw new OutsideDomainException(x);
-		return (float) (this.k * ((Math.pow(this.xmin, this.k))/(Math.pow(x, this.k+1))));
+		return this.k * ((Math.pow(this.xmin, this.k))/(Math.pow(x, this.k+1)));
 	}
 
 	/** {@inheritDoc}
@@ -125,8 +125,8 @@ public class ParetoStochasticLaw extends StochasticLaw {
 	 * @throws MathException in case {@code F<sup>-1</sup>(u)} could not be computed
 	 */
 	@Override
-	public float inverseF(float u) throws MathException {
-		return (float) (this.xmin / Math.pow(u, 1/this.k)); 
+	public double inverseF(double u) throws MathException {
+		return this.xmin / Math.pow(u, 1/this.k); 
 	}
 
 }

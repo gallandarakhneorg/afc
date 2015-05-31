@@ -22,6 +22,8 @@ import java.io.ObjectInputStream;
 import java.util.Collection;
 import java.util.List;
 
+import org.arakhne.afc.math.tree.TreeNode;
+
 
 /**
  * This is the generic implementation of a
@@ -283,6 +285,7 @@ public abstract class OctTreeNode<D,N extends OctTreeNode<D,N>> extends Abstract
 			return this.child7;
 		case 7:
 			return this.child8;
+		default:
 		}
 		throw new IndexOutOfBoundsException(index+">= 8"); //$NON-NLS-1$
 	}
@@ -326,6 +329,7 @@ public abstract class OctTreeNode<D,N extends OctTreeNode<D,N>> extends Abstract
 			return setChild7(newChild);
 		case 7:
 			return setChild8(newChild);
+		default:
 		}
 		throw new IndexOutOfBoundsException(index+">= 8"); //$NON-NLS-1$
 	}

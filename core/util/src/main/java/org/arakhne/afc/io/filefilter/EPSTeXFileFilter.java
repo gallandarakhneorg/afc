@@ -29,7 +29,9 @@ import org.arakhne.afc.vmutil.locale.Locale;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see <code>org.arakhne.afc.core:inputoutput</code> maven artifact.
  */
+@Deprecated
 public class EPSTeXFileFilter extends AbstractFileFilter {
 
 	/** Historical extension for TeX part of the EPS documents combined with TeX macros.

@@ -44,7 +44,7 @@ public class DefaultProgression implements Progression {
 	
 	/** Collection of listeners.
 	 */
-	protected final ListenerCollection<ProgressionListener> listeners = new ListenerCollection<ProgressionListener>();
+	protected final ListenerCollection<ProgressionListener> listeners = new ListenerCollection<>();
 	
 	/** Create a progress model with the specified <i>determinate</i> state.
 	 * 

@@ -94,6 +94,16 @@ public class Pair<A,B> implements Serializable {
 		this.b = b;
 	}
 	
+	/** Set the values of the pair.
+	 * 
+	 * @param a is the first value of the pair.
+	 * @param b is the second value of the pair.
+	 */
+	public void set(A a, B b) {
+		this.a = a;
+		this.b = b;
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */

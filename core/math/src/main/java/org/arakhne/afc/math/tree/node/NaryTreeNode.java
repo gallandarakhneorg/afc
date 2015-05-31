@@ -23,6 +23,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.arakhne.afc.math.tree.TreeNode;
+
 
 /**
  * This is the generic implementation of a n-ary
@@ -117,7 +119,7 @@ public abstract class NaryTreeNode<D,N extends NaryTreeNode<D,N>> extends Abstra
 	}
 
 	private List<N> newInternalList(int size) {
-		return new ArrayList<N>(size);
+		return new ArrayList<>(size);
 	}
 
 	/** Invoked when this object must be deserialized.
@@ -149,7 +151,7 @@ public abstract class NaryTreeNode<D,N extends NaryTreeNode<D,N>> extends Abstra
 	public void clear() {
 		removeAllUserData();
 		if (this.children!=null) {
-			List<N> nodes = new ArrayList<N>(this.children);
+			List<N> nodes = new ArrayList<>(this.children);
 			while (!this.children.isEmpty()) {
 				setChildAt(0, null);
 			}

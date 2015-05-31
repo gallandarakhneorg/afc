@@ -42,7 +42,7 @@ implements Iterator<TreeNode<D,?>> {
 
 	/** List of the node to treat.
 	 */
-	private final Queue<TreeNode<D,?>> availableNodes = new LinkedList<TreeNode<D,?>>();
+	private final Queue<TreeNode<D,?>> availableNodes = new LinkedList<>();
 	
 	private boolean isStarted = false;
 

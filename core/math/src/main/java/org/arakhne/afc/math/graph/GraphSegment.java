@@ -55,6 +55,6 @@ public interface GraphSegment<ST extends GraphSegment<ST,PT>,
      * 
      * @return the length of the segment.
      */
-	public float getLength();
+	public double getLength();
 
 }

@@ -42,13 +42,13 @@ public class GraphPath<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<S
 	
 	/** Package access to avoid comiplation error.
 	 */
-	List<ST> segmentList = new LinkedList<ST>();
+	List<ST> segmentList = new LinkedList<>();
 	
 	private PT startingPoint;
 	private PT endingPoint;
 	private boolean isReversable;
 	
-	private float length = 0;
+	private double length = 0;
 	
 	/**
 	 */
@@ -173,7 +173,7 @@ public class GraphPath<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<S
 	 */
 	@Override
 	public Iterator<PT> pointIterator() {
-		return new PointIterator<ST,PT>(this.startingPoint,this.segmentList.iterator());
+		return new PointIterator<>(this.startingPoint,this.segmentList.iterator());
 	}
 
 	/** {@inheritDoc}
@@ -1140,7 +1140,7 @@ public class GraphPath<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<S
 	public GP clone() {
 		try {
 			GP clone = (GP)super.clone();
-			clone.segmentList = new LinkedList<ST>();
+			clone.segmentList = new LinkedList<>();
 			clone.segmentList.addAll(this.segmentList);
 			return clone;
 		}
@@ -1310,7 +1310,7 @@ public class GraphPath<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<S
 	 * @return the length of the path.
 	 * @since 4.0
 	 */
-	public float getLength() {
+	public double getLength() {
 		return this.length;
 	}
 
@@ -1333,7 +1333,7 @@ public class GraphPath<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<S
 		@SuppressWarnings("synthetic-access")
 		@Override
 		public Iterator<PT> iterator() {
-			return new PointIterator<ST,PT>(GraphPath.this.startingPoint,GraphPath.this.segmentList.iterator());
+			return new PointIterator<>(GraphPath.this.startingPoint,GraphPath.this.segmentList.iterator());
 		}
 	} // class PointIterable
 

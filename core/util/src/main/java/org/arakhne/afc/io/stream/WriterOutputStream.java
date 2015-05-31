@@ -32,7 +32,9 @@ import java.io.Writer;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see <code>org.arakhne.afc.core:inputoutput</code> maven artifact.
  */
+@Deprecated
 public class WriterOutputStream extends OutputStream {
 
 	private final Writer writer;

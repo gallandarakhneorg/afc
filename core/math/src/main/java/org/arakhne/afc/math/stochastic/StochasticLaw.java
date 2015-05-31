@@ -42,9 +42,9 @@ public abstract class StochasticLaw implements MathInversableFunction {
 	 * @param paramName is the nameof the parameter to extract.
 	 * @param parameters is the map of available parameters
 	 * @return the extract value
-	 * @throws LawParameterNotFoundException if the parameter was not found or the value is not a float.
+	 * @throws LawParameterNotFoundException if the parameter was not found or the value is not a double.
 	 */
-	protected static float paramFloat(String paramName, Map<String,String> parameters)
+	protected static double paramFloat(String paramName, Map<String,String> parameters)
 	throws LawParameterNotFoundException {
 		String sValue = parameters.get(paramName);
 		if (sValue!=null && !"".equals(sValue)) { //$NON-NLS-1$
@@ -66,7 +66,7 @@ public abstract class StochasticLaw implements MathInversableFunction {
 	 * @param paramName is the nameof the parameter to extract.
 	 * @param parameters is the map of available parameters
 	 * @return the extract value
-	 * @throws LawParameterNotFoundException if the parameter was not found or the value is not a float.
+	 * @throws LawParameterNotFoundException if the parameter was not found or the value is not a double.
 	 */
 	protected static boolean paramBoolean(String paramName, Map<String,String> parameters)
 	throws LawParameterNotFoundException {
@@ -98,7 +98,7 @@ public abstract class StochasticLaw implements MathInversableFunction {
 	 * @return a value depending of the stochastic law parameters
 	 * @throws MathException 
 	 */
-	public float generateRandomValue() throws MathException {
+	public double generateRandomValue() throws MathException {
 		return StochasticGenerator.generateRandomValue(this);
 	}
 	
@@ -110,7 +110,7 @@ public abstract class StochasticLaw implements MathInversableFunction {
 	 * @return {@code F<sup>-1</sup>(u)}
 	 * @throws MathException in case {@code F<sup>-1</sup>(u)} could not be computed
 	 */
-	protected float inverseF(Random U) throws MathException {
+	protected double inverseF(Random U) throws MathException {
 		return inverseF(1.f-U.nextFloat());
 	}
 
@@ -123,6 +123,6 @@ public abstract class StochasticLaw implements MathInversableFunction {
 	 * @throws MathException in case {@code F<sup>-1</sup>(u)} could not be computed
 	 */
 	@Override
-	public abstract float inverseF(float u) throws MathException;
+	public abstract double inverseF(double u) throws MathException;
 
 }

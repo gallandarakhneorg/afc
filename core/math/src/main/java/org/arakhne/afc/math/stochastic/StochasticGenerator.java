@@ -55,7 +55,7 @@ public class StochasticGenerator {
 	 * @return a value which was randomly selected according to a stochastic law.
 	 * @throws MathException in case the value could not be computed.
 	 */
-	public static float generateRandomValue(StochasticLaw law) throws MathException {
+	public static double generateRandomValue(StochasticLaw law) throws MathException {
 		initRandomNumberList();
 		return law.inverseF(uniformRandomVariableList);
 	}
@@ -75,9 +75,9 @@ public class StochasticGenerator {
 	 * @return the value 
 	 * @throws MathException is case the value is not valid
 	 */
-	public static float noiseValue(float value, MathFunction noiseLaw) throws MathException {
+	public static double noiseValue(double value, MathFunction noiseLaw) throws MathException {
 		try {
-			float noise = Math.abs(noiseLaw.f(value));
+			double noise = Math.abs(noiseLaw.f(value));
 			initRandomNumberList();
 			noise *= uniformRandomVariableList.nextFloat();
 			if (uniformRandomVariableList.nextBoolean())

@@ -45,7 +45,7 @@ public class GraphIterationElement<ST extends GraphSegment<ST,PT>,PT extends Gra
 	
 	/**
 	 */
-	float distanceToReach;
+	double distanceToReach;
 	
 	/**
 	 */
@@ -58,7 +58,7 @@ public class GraphIterationElement<ST extends GraphSegment<ST,PT>,PT extends Gra
 	/**
 	 * Distance amount which was not consumed.
 	 */
-	final float distanceToConsume;
+	final double distanceToConsume;
 	
 	/** Indicates if this element was replied by the iterator.
 	 */
@@ -71,7 +71,7 @@ public class GraphIterationElement<ST extends GraphSegment<ST,PT>,PT extends Gra
 	 * @param distanceToReach is the distance that is already consumed to reach the segment.
 	 * @param distanceToConsume is the distance to consume including this segment length.
 	 */
-	GraphIterationElement(ST previousSegment, ST segment, PT point, float distanceToReach, float distanceToConsume) {
+	GraphIterationElement(ST previousSegment, ST segment, PT point, double distanceToReach, double distanceToConsume) {
 		assert(segment!=null);
 		assert(point!=null);
 		this.previousSegment = previousSegment;
@@ -117,7 +117,7 @@ public class GraphIterationElement<ST extends GraphSegment<ST,PT>,PT extends Gra
 	 * The value could be negative in case the iterations start from
 	 * inside the segment.
 	 */
-	public final float getDistanceToReachSegment() {
+	public final double getDistanceToReachSegment() {
 		return this.distanceToReach;
 	}
 	
@@ -184,7 +184,7 @@ public class GraphIterationElement<ST extends GraphSegment<ST,PT>,PT extends Gra
 	 * <code>1</code> if <var>firstSegment</var> is greater than <var>secondSegment</var>,
 	 * or <code>0</code> if <var>firstSegment</var> is equal to <var>secondSegment</var>.
 	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({ "unchecked", "rawtypes", "static-method" })
 	protected int compareSegments(GraphSegment<?,?> firstSegment, GraphSegment<?,?> secondSegment) {
 		if (firstSegment instanceof Comparable) {
 			try {

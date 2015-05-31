@@ -58,9 +58,9 @@ public class MeasureUnitUtil {
 	 * @param ms
 	 * @return <var>ms</var> * 3.6
 	 */
-	public static float ms2kmh(float ms) {
+	public static double ms2kmh(double ms) {
 		//return ((ms/1000.0)*3600.0);
-		return ms*3.6f;
+		return ms*3.6;
 	}
 
 	/** Translate km/h to m/s.
@@ -68,9 +68,9 @@ public class MeasureUnitUtil {
 	 * @param kmh
 	 * @return <var>kmh</var> / 3.6
 	 */
-	public static float kmh2ms(float kmh) {
+	public static double kmh2ms(double kmh) {
 		//return ((kmh/3600.0)*1000.0);
-		return kmh / 3.6f;
+		return kmh / 3.6;
 	}
 
 	/** Translate meters to kilometers.
@@ -78,8 +78,8 @@ public class MeasureUnitUtil {
 	 * @param m
 	 * @return <var>m</var> / 1000
 	 */
-	public static float m2km(float m) {
-		return m / 1000.f;
+	public static double m2km(double m) {
+		return m / 1000.;
 	}
 	
 	/** Translate kilometers to meters.
@@ -87,8 +87,8 @@ public class MeasureUnitUtil {
 	 * @param km
 	 * @return <var>km</var> * 1000
 	 */
-	public static float km2m(float km) {
-		return km * 1000.f;
+	public static double km2m(double km) {
+		return km * 1000.;
 	}
 
 	/** Translate from "long" pixel coordinate to "system" pixel coordinate.
@@ -123,8 +123,8 @@ public class MeasureUnitUtil {
 	 * @param unit
 	 * @return <var>unit</var> / 1e-9
 	 */
-	public static float unit2nano(float unit) {
-		return unit / 1e-9f;
+	public static double unit2nano(double unit) {
+		return unit / 1e-9;
 	}
 	
 	/** Translate from nano (10^-9) to unit (10^0).
@@ -132,8 +132,8 @@ public class MeasureUnitUtil {
 	 * @param nano
 	 * @return <var>nano</var> * 1e-9
 	 */
-	public static float nano2unit(float nano) {
-		return nano * 1e-9f;
+	public static double nano2unit(double nano) {
+		return nano * 1e-9;
 	}
 
 	/** Translate from unit (10^0) to micro (10^-6).
@@ -141,8 +141,8 @@ public class MeasureUnitUtil {
 	 * @param unit
 	 * @return <var>unit</var> / 1e-6
 	 */
-	public static float unit2micro(float unit) {
-		return unit / 1e-6f;
+	public static double unit2micro(double unit) {
+		return unit / 1e-6;
 	}
 	
 	/** Translate from micro (10^-6) to unit (10^0).
@@ -150,8 +150,8 @@ public class MeasureUnitUtil {
 	 * @param micro
 	 * @return <var>micro</var> * 1e-6
 	 */
-	public static float micro2unit(float micro) {
-		return micro * 1e-6f;
+	public static double micro2unit(double micro) {
+		return micro * 1e-6;
 	}
 
 	/** Translate from unit (10^0) to milli (10^-3).
@@ -159,8 +159,8 @@ public class MeasureUnitUtil {
 	 * @param unit
 	 * @return <var>unit</var> / 1e-3
 	 */
-	public static float unit2milli(float unit) {
-		return unit / 1e-3f;
+	public static double unit2milli(double unit) {
+		return unit / 1e-3;
 	}
 	
 	/** Translate from milli (10^-3) to unit (10^0).
@@ -168,8 +168,8 @@ public class MeasureUnitUtil {
 	 * @param milli
 	 * @return <var>milli</var> * 1e-3
 	 */
-	public static float milli2unit(float milli) {
-		return milli * 1e-3f;
+	public static double milli2unit(double milli) {
+		return milli * 1e-3;
 	}
 	
 	/** Translate from milli (10^-3) to micro (10^-6).
@@ -177,8 +177,8 @@ public class MeasureUnitUtil {
 	 * @param milli
 	 * @return <var>milli</var> / 1e-3
 	 */
-	public static float milli2micro(float milli) {
-		return milli / 1e-3f;
+	public static double milli2micro(double milli) {
+		return milli / 1e-3;
 	}
 
 	/** Translate from milli (10^-3) to nano (10^-9).
@@ -186,8 +186,8 @@ public class MeasureUnitUtil {
 	 * @param milli
 	 * @return <var>milli</var> / 1e-6
 	 */
-	public static float milli2nano(float milli) {
-		return milli / 1e-6f;
+	public static double milli2nano(double milli) {
+		return milli / 1e-6;
 	}
 
 	/** Translate from micro (10^-6) to nano (10^-9).
@@ -195,8 +195,8 @@ public class MeasureUnitUtil {
 	 * @param milli
 	 * @return <var>milli</var> / 1e-3
 	 */
-	public static float micro2nano(float milli) {
-		return milli / 1e-3f;
+	public static double micro2nano(double milli) {
+		return milli / 1e-3;
 	}
 
 	/** Translate from micro (10^-6) to milli (10^-3).
@@ -204,8 +204,8 @@ public class MeasureUnitUtil {
 	 * @param micro
 	 * @return <var>micro</var> * 1e-3
 	 */
-	public static float micro2milli(float micro) {
-		return micro * 1e-3f;
+	public static double micro2milli(double micro) {
+		return micro * 1e-3;
 	}
 
 	/** Translate from nano (10^-9) to micro (10^-6).
@@ -213,8 +213,8 @@ public class MeasureUnitUtil {
 	 * @param nano
 	 * @return <var>nano</var> * 1e-3
 	 */
-	public static float nano2micro(float nano) {
-		return nano * 1e-3f;
+	public static double nano2micro(double nano) {
+		return nano * 1e-3;
 	}
 
 	/** Translate from nano (10^-9) to milli (10^-3).
@@ -222,8 +222,8 @@ public class MeasureUnitUtil {
 	 * @param nano
 	 * @return <var>nano</var> * 1e-6
 	 */
-	public static float nano2milli(float nano) {
-		return nano * 1e-6f;
+	public static double nano2milli(double nano) {
+		return nano * 1e-6;
 	}
 	
 	/** Translate meters to fathoms.
@@ -231,8 +231,8 @@ public class MeasureUnitUtil {
 	 * @param m
 	 * @return <var>m</var> * 0.5468
 	 */
-	public static float m2fh(float m) {
-		return m * 0.5468f;
+	public static double m2fh(double m) {
+		return m * 0.5468;
 	}
 
 	/** Translate feets to fathoms.
@@ -240,8 +240,8 @@ public class MeasureUnitUtil {
 	 * @param ft
 	 * @return <var>ft</var> * 0.1667
 	 */
-	public static float ft2fh(float ft) {
-		return ft * 0.1667f;
+	public static double ft2fh(double ft) {
+		return ft * 0.1667;
 	}
 
 	/** Translate inches to fathoms.
@@ -249,8 +249,8 @@ public class MeasureUnitUtil {
 	 * @param in
 	 * @return <var>in</var> / 72
 	 */
-	public static float in2fh(float in) {
-		return in / 72f;
+	public static double in2fh(double in) {
+		return in / 72;
 	}
 
 	/** Translate meters to feets.
@@ -258,8 +258,8 @@ public class MeasureUnitUtil {
 	 * @param m
 	 * @return <var>m</var> * 0.3048
 	 */
-	public static float m2ft(float m) {
-		return m * 0.3048f;
+	public static double m2ft(double m) {
+		return m * 0.3048;
 	}
 
 	/** Translate inches to feets.
@@ -267,8 +267,8 @@ public class MeasureUnitUtil {
 	 * @param in
 	 * @return <var>in</var> / 12
 	 */
-	public static float in2ft(float in) {
-		return in / 12f;
+	public static double in2ft(double in) {
+		return in / 12;
 	}
 
 	/** Translate fathoms to feets.
@@ -276,8 +276,8 @@ public class MeasureUnitUtil {
 	 * @param fh
 	 * @return <var>fh</var> / 0.1667
 	 */
-	public static float fh2ft(float fh) {
-		return fh / 0.1667f;
+	public static double fh2ft(double fh) {
+		return fh / 0.1667;
 	}
 	
 	/** Translate meters to inches.
@@ -285,8 +285,8 @@ public class MeasureUnitUtil {
 	 * @param m
 	 * @return <var>m</var> * 0.025
 	 */
-	public static float m2in(float m) {
-		return m * 0.025f;
+	public static double m2in(double m) {
+		return m * 0.025;
 	}
 	
 	/** Translate feets to inches.
@@ -294,8 +294,8 @@ public class MeasureUnitUtil {
 	 * @param ft
 	 * @return <var>ft</var> * 12
 	 */
-	public static float ft2in(float ft) {
-		return ft * 12f;
+	public static double ft2in(double ft) {
+		return ft * 12;
 	}
 	
 	/** Replies the metrics from inches.
@@ -303,8 +303,8 @@ public class MeasureUnitUtil {
 	 * @param i the inch value
 	 * @return a value in centimeters
 	 */
-	public static float inchToMetric( float i ) {
-		return i / 0.3937f ;
+	public static double inchToMetric( double i ) {
+		return i / 0.3937;
 	}
 
 	/** Replies the inches from metrics.
@@ -312,8 +312,8 @@ public class MeasureUnitUtil {
 	 * @param m the metric value
 	 * @return a value in inches
 	 */
-	public static float metricToInch( float m ) {
-		return m * 0.3937f ;
+	public static double metricToInch( double m ) {
+		return m * 0.3937;
 	}
 
 	/** Convert the given value expressed in the given unit to seconds.
@@ -322,14 +322,14 @@ public class MeasureUnitUtil {
 	 * @param inputUnit is the unit of the <var>value</var>
 	 * @return the result of the convertion.
 	 */
-	public static float toSeconds(float value, TimeUnit inputUnit) {
+	public static double toSeconds(double value, TimeUnit inputUnit) {
 		switch(inputUnit) {
 		case DAYS:
-			return value * 86400.f;
+			return value * 86400.;
 		case HOURS:
-			return value * 3600.f;
+			return value * 3600.;
 		case MINUTES:
-			return value * 60.f;
+			return value * 60.;
 		case SECONDS:
 			break;
 		case MILLISECONDS:
@@ -350,36 +350,36 @@ public class MeasureUnitUtil {
 	 * @param inputUnit is the unit of the <var>value</var>
 	 * @return the result of the convertion.
 	 */
-	public static float toMeters(float value, SpaceUnit inputUnit) {
+	public static double toMeters(double value, SpaceUnit inputUnit) {
 		switch(inputUnit) {
 		case TERAMETER:
-			return value * 1e12f;
+			return value * 1e12;
 		case GIGAMETER:
-			return value * 1e9f;
+			return value * 1e9;
 		case MEGAMETER:
-			return value * 1e6f;
+			return value * 1e6;
 		case KILOMETER:
-			return value * 1e3f;
+			return value * 1e3;
 		case HECTOMETER:
-			return value * 1e2f;
+			return value * 1e2;
 		case DECAMETER:
-			return value * 1e1f;
+			return value * 1e1;
 		case METER:
 			break;
 		case DECIMETER:
-			return value * 1e-1f;
+			return value * 1e-1;
 		case CENTIMETER:
-			return value * 1e-2f;
+			return value * 1e-2;
 		case MILLIMETER:
-			return value * 1e-3f;
+			return value * 1e-3;
 		case MICROMETER:
-			return value * 1e-6f;
+			return value * 1e-6;
 		case NANOMETER:
-			return value * 1e-9f;
+			return value * 1e-9;
 		case PICOMETER:
-			return value * 1e-12f;
+			return value * 1e-12;
 		case FEMTOMETER:
-			return value * 1e-15f;
+			return value * 1e-15;
 		default:
 			throw new IllegalArgumentException();
 		}
@@ -392,36 +392,36 @@ public class MeasureUnitUtil {
 	 * @param outputUnit is the unit of the replied value.
 	 * @return the result of the convertion.
 	 */
-	public static float fromMeters(float value, SpaceUnit outputUnit) {
+	public static double fromMeters(double value, SpaceUnit outputUnit) {
 		switch(outputUnit) {
 		case TERAMETER:
-			return value * 1e-12f;
+			return value * 1e-12;
 		case GIGAMETER:
-			return value * 1e-9f;
+			return value * 1e-9;
 		case MEGAMETER:
-			return value * 1e-6f;
+			return value * 1e-6;
 		case KILOMETER:
-			return value * 1e-3f;
+			return value * 1e-3;
 		case HECTOMETER:
-			return value * 1e-2f;
+			return value * 1e-2;
 		case DECAMETER:
-			return value * 1e-1f;
+			return value * 1e-1;
 		case METER:
 			break;
 		case DECIMETER:
-			return value * 1e1f;
+			return value * 1e1;
 		case CENTIMETER:
-			return value * 1e2f;
+			return value * 1e2;
 		case MILLIMETER:
-			return value * 1e3f;
+			return value * 1e3;
 		case MICROMETER:
-			return value * 1e6f;
+			return value * 1e6;
 		case NANOMETER:
-			return value * 1e9f;
+			return value * 1e9;
 		case PICOMETER:
-			return value * 1e12f;
+			return value * 1e12;
 		case FEMTOMETER:
-			return value * 1e15f;
+			return value * 1e15;
 		default:
 			throw new IllegalArgumentException();	
 		}
@@ -434,14 +434,14 @@ public class MeasureUnitUtil {
 	 * @param outputUnit is the unit of result.
 	 * @return the result of the convertion.
 	 */
-	public static float fromSeconds(float value, TimeUnit outputUnit) {
+	public static double fromSeconds(double value, TimeUnit outputUnit) {
 		switch(outputUnit) {
 		case DAYS:
-			return value / 86400.f;
+			return value / 86400.;
 		case HOURS:
-			return value / 3600.f;
+			return value / 3600.;
 		case MINUTES:
-			return value / 60.f;
+			return value / 60.;
 		case SECONDS:
 			break;
 		case MILLISECONDS:
@@ -464,8 +464,8 @@ public class MeasureUnitUtil {
 	 * @param outputUnit is the unit for the replied value.
 	 * @return the result of the convertion.
 	 */
-	public static float convert(long value, TimeUnit inputUnit, TimeUnit outputUnit) {
-		float v = toSeconds(value, inputUnit);
+	public static double convert(long value, TimeUnit inputUnit, TimeUnit outputUnit) {
+		double v = toSeconds(value, inputUnit);
 		return fromSeconds(v, outputUnit);
 	}
 
@@ -477,8 +477,8 @@ public class MeasureUnitUtil {
 	 * @param outputUnit is the unit for the replied value.
 	 * @return the result of the convertion.
 	 */
-	public static float convert(float value, TimeUnit inputUnit, TimeUnit outputUnit) {
-		float v = toSeconds(value, inputUnit);
+	public static double convert(double value, TimeUnit inputUnit, TimeUnit outputUnit) {
+		double v = toSeconds(value, inputUnit);
 		return fromSeconds(v, outputUnit);
 	}
 
@@ -490,8 +490,8 @@ public class MeasureUnitUtil {
 	 * @param outputUnit is the unit for the replied value.
 	 * @return the result of the convertion.
 	 */
-	public static float convert(float value, SpeedUnit inputUnit, SpeedUnit outputUnit) {
-		float v = toMetersPerSecond(value, inputUnit);
+	public static double convert(double value, SpeedUnit inputUnit, SpeedUnit outputUnit) {
+		double v = toMetersPerSecond(value, inputUnit);
 		return fromMetersPerSecond(v, outputUnit);
 	}
 
@@ -503,8 +503,8 @@ public class MeasureUnitUtil {
 	 * @param outputUnit is the unit for the replied value.
 	 * @return the result of the convertion.
 	 */
-	public static float convert(float value, AngularUnit inputUnit, AngularUnit outputUnit) {
-		float v = toRadiansPerSecond(value, inputUnit);
+	public static double convert(double value, AngularUnit inputUnit, AngularUnit outputUnit) {
+		double v = toRadiansPerSecond(value, inputUnit);
 		return fromRadiansPerSecond(v, outputUnit);
 	}
 
@@ -517,8 +517,8 @@ public class MeasureUnitUtil {
 	 * @param outputUnit is the unit for the replied value.
 	 * @return the result of the convertion.
 	 */
-	public static float convert(float value, SpaceUnit inputUnit, SpaceUnit outputUnit) {
-		float v = toMeters(value, inputUnit);
+	public static double convert(double value, SpaceUnit inputUnit, SpaceUnit outputUnit) {
+		double v = toMeters(value, inputUnit);
 		return fromMeters(v, outputUnit);
 	}
 
@@ -528,12 +528,12 @@ public class MeasureUnitUtil {
 	 * @param inputUnit is the unit of the <var>value</var>
 	 * @return the result of the convertion.
 	 */
-	public static float toMetersPerSecond(float value, SpeedUnit inputUnit) {
+	public static double toMetersPerSecond(double value, SpeedUnit inputUnit) {
 		switch(inputUnit) {
 		case KILOMETERS_PER_HOUR:
-			return 3.6f * value;
+			return 3.6 * value;
 		case MILLIMETERS_PER_SECOND:
-			return value / 1000.f;
+			return value / 1000.;
 		default:
 		}
 		return value;
@@ -545,12 +545,12 @@ public class MeasureUnitUtil {
 	 * @param inputUnit is the unit of the <var>value</var>
 	 * @return the result of the convertion.
 	 */
-	public static float toRadiansPerSecond(float value, AngularUnit inputUnit) {
+	public static double toRadiansPerSecond(double value, AngularUnit inputUnit) {
 		switch(inputUnit) {
 		case TURNS_PER_SECOND:
-			return value * (2*MathConstants.PI);
+			return value * (2.*MathConstants.PI);
 		case DEGREES_PER_SECOND:
-			return (float) Math.toRadians(value);
+			return Math.toRadians(value);
 		default:
 		}
 		return value;
@@ -562,12 +562,12 @@ public class MeasureUnitUtil {
 	 * @param outputUnit is the unit of result.
 	 * @return the result of the convertion.
 	 */
-	public static float fromMetersPerSecond(float value, SpeedUnit outputUnit) {
+	public static double fromMetersPerSecond(double value, SpeedUnit outputUnit) {
 		switch(outputUnit) {
 		case KILOMETERS_PER_HOUR:
-			return value / 3.6f;
+			return value / 3.6;
 		case MILLIMETERS_PER_SECOND:
-			return value * 1000.f;
+			return value * 1000.;
 		default:
 		}
 		return value;
@@ -579,12 +579,12 @@ public class MeasureUnitUtil {
 	 * @param outputUnit is the unit of result.
 	 * @return the result of the convertion.
 	 */
-	public static float fromRadiansPerSecond(float value, AngularUnit outputUnit) {
+	public static double fromRadiansPerSecond(double value, AngularUnit outputUnit) {
 		switch(outputUnit) {
 		case TURNS_PER_SECOND:
-			return value / (2.f*MathConstants.PI);
+			return value / (2.*MathConstants.PI);
 		case DEGREES_PER_SECOND:
-			return (float) Math.toDegrees(value);
+			return Math.toDegrees(value);
 		default:
 		}
 		return value;
@@ -600,14 +600,14 @@ public class MeasureUnitUtil {
 	 * part of the given amount after its convertion to the selected
 	 * unit.
 	 */
-	public static SpaceUnit getSmallestUnit(float amount, SpaceUnit unit) {
-		float meters = toMeters(amount, unit);
-		float v;
+	public static SpaceUnit getSmallestUnit(double amount, SpaceUnit unit) {
+		double meters = toMeters(amount, unit);
+		double v;
 		SpaceUnit[] units = SpaceUnit.values();
 		SpaceUnit u;
 		for(int i=units.length-1; i>=0; --i) {
 			u = units[i];
-			v = (float) Math.floor(fromMeters(meters, u));
+			v = Math.floor(fromMeters(meters, u));
 			if (v>0.) return u;
 		}
 		return unit;

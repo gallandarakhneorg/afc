@@ -171,7 +171,7 @@ public class Android {
 				throw new AndroidException("not an Android Context class"); //$NON-NLS-1$
 			synchronized(Android.class) {
 				contextResolver = null;
-				context = new SoftReference<Object>(androidContext);
+				context = new SoftReference<>(androidContext);
 			}
 		}
 		catch(AssertionError e) {
@@ -218,7 +218,7 @@ public class Android {
 				if (classLoader instanceof ClassLoader) {
 					cl = (ClassLoader)classLoader;
 					synchronized(Android.class) {
-						contextClassLoader = new WeakReference<ClassLoader>(cl);
+						contextClassLoader = new WeakReference<>(cl);
 					}
 				}
 				else {
@@ -252,7 +252,7 @@ public class Android {
 				resolver = getContextResolverMethod.invoke(context);
 				resolver = resolverType.cast(resolver);
 				synchronized(Android.class) {
-					contextResolver = new WeakReference<Object>(resolver);
+					contextResolver = new WeakReference<>(resolver);
 				}
 			}
 			catch(AssertionError e) {

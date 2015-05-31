@@ -36,7 +36,9 @@ import org.arakhne.afc.math.matrix.Transform2D;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see {@link org.arakhne.afc.math.geometry.d2.continuous.Segment2f}
  */
+@Deprecated
 public class Segment2f extends AbstractShape2f<Segment2f> {
 
 	private static final long serialVersionUID = -82425036308183925L;
@@ -290,7 +292,7 @@ public class Segment2f extends AbstractShape2f<Segment2f> {
 	/**
 	 * Accumulate the number of times the line crosses the shadow
 	 * extending to the right of the rectangle.  See the comment
-	 * for the {@link MathUtil#SHAPE_INTERSECTS} constant for more complete details.
+	 * for the {@link MathConstants#SHAPE_INTERSECTS} constant for more complete details.
 	 * 
 	 * @param crossings is the initial value for the number of crossings.
 	 * @param rxmin is the first corner of the rectangle.
@@ -774,7 +776,7 @@ public class Segment2f extends AbstractShape2f<Segment2f> {
 	 */
 	@Override
 	public float distanceSquared(Point2D p) {
-		return MathUtil.distanceSquaredPointToSegment(p.getX(), p.getY(),
+		return (float) MathUtil.distanceSquaredPointToSegment(p.getX(), p.getY(),
 				this.ax, this.ay,
 				this.bx, this.by);
 	}
@@ -783,8 +785,8 @@ public class Segment2f extends AbstractShape2f<Segment2f> {
 	 */
 	@Override
 	public float distanceL1(Point2D p) {
-		float ratio = MathUtil.projectsPointOnLine(p.getX(), p.getY(), this.ax, this.ay, this.bx, this.by);
-		ratio = MathUtil.clamp(ratio, 0f, 1f);
+		float ratio = (float) MathUtil.projectsPointOnLine(p.getX(), p.getY(), this.ax, this.ay, this.bx, this.by);
+		ratio = (float) MathUtil.clamp(ratio, 0f, 1f);
 		Vector2f v = new Vector2f(this.bx, this.by);
 		v.sub(this.ax, this.ay);
 		v.scale(ratio);
@@ -796,8 +798,8 @@ public class Segment2f extends AbstractShape2f<Segment2f> {
 	 */
 	@Override
 	public float distanceLinf(Point2D p) {
-		float ratio = MathUtil.projectsPointOnLine(p.getX(), p.getY(), this.ax, this.ay, this.bx, this.by);
-		ratio = MathUtil.clamp(ratio, 0f, 1f);
+		float ratio = (float) MathUtil.projectsPointOnLine(p.getX(), p.getY(), this.ax, this.ay, this.bx, this.by);
+		ratio = (float) MathUtil.clamp(ratio, 0f, 1f);
 		Vector2f v = new Vector2f(this.bx, this.by);
 		v.sub(this.ax, this.ay);
 		v.scale(ratio);
@@ -810,7 +812,7 @@ public class Segment2f extends AbstractShape2f<Segment2f> {
 	 * <p>
 	 * This function uses the equal-to-zero test with the error {@link MathConstants#EPSILON}.
 	 * 
-	 * @see MathUtil#isEpsilonZero(float)
+	 * @see MathUtil#isEpsilonZero(double)
 	 */
 	@Override
 	public boolean contains(float x, float y) {
@@ -831,7 +833,7 @@ public class Segment2f extends AbstractShape2f<Segment2f> {
 	 */
 	@Override
 	public Point2f getClosestPointTo(Point2D p) {
-		float ratio = MathUtil.projectsPointOnLine(p.getX(), p.getY(),
+		float ratio = (float) MathUtil.projectsPointOnLine(p.getX(), p.getY(),
 				this.ax, this.ay,
 				this.bx, this.by);
 		if (ratio<=0f) return new Point2f(this.ax, this.ay);
@@ -943,7 +945,7 @@ public class Segment2f extends AbstractShape2f<Segment2f> {
 
 	@Override
 	public boolean intersects(Path2f s) {
-		return intersects(s.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO));
+		return intersects(s.getPathIterator((float) MathConstants.SPLINE_APPROXIMATION_RATIO));
 	}
 
 	@Override

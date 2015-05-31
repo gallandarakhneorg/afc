@@ -21,6 +21,7 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import org.arakhne.afc.math.tree.iterator.DepthFirstNodeOrder;
+import org.arakhne.afc.math.tree.iterator.InfixDepthFirstTreeIterator;
 
 /**
  * This is the generic definition of a

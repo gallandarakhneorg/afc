@@ -43,13 +43,13 @@ public interface AStarCostComputer<ST extends GraphSegment<ST,PT>, PT extends Gr
 	 * @param p
 	 * @return the cost to traverse the point.
 	 */
-	public float computeCostFor(PT p);
+	public double computeCostFor(PT p);
 
 	/** Compute and replies the cost to traverse the given graph segment.
 	 * 
 	 * @param s
 	 * @return the cost to traverse the segment.
 	 */
-	public float computeCostFor(ST s);
+	public double computeCostFor(ST s);
 
 }

@@ -22,8 +22,9 @@ package org.arakhne.afc.vmutil;
 import java.lang.reflect.Array;
 
 import org.arakhne.afc.vmutil.ReflectionUtil;
+import org.junit.Test;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 /**
  * @author $Author: galland$
@@ -31,11 +32,13 @@ import junit.framework.TestCase;
  * @mavengroupid org.arakhne.afc
  * @mavenartifactid arakhneVmutils
  */
-public class ReflectionUtilTest extends TestCase {
+@SuppressWarnings("static-method")
+public class ReflectionUtilTest {
 
 	/**
 	 */
-	public static void testMatchesParametersClassObjectArray() {
+	@Test
+	public void testMatchesParametersClassObjectArray() {
 		assertTrue(ReflectionUtil.matchesParameters(
 				new Class<?>[0],
 				new Object[0]));

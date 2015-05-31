@@ -22,6 +22,8 @@ import java.io.ObjectInputStream;
 import java.util.Collection;
 import java.util.List;
 
+import org.arakhne.afc.math.tree.TreeNode;
+
 
 /**
  * This is the generic implementation of a n-ary
@@ -115,7 +117,7 @@ public abstract class ConstantNaryTreeNode<D,N extends ConstantNaryTreeNode<D,N>
 	}
 
 	@SuppressWarnings("unchecked")
-	private N[] newArray(int size) {
+	private static <N> N[] newArray(int size) {
 		return (N[])new ConstantNaryTreeNode[size];
 	}
 	

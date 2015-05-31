@@ -30,7 +30,9 @@ import java.io.InputStream;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see <code>org.arakhne.afc.core:inputoutput</code> maven artifact.
  */
+@Deprecated
 public class UnclosableInputStream extends FilterInputStream {
 
 	/**
@@ -56,7 +58,7 @@ public class UnclosableInputStream extends FilterInputStream {
 	public int read(byte[] b, int off, int len) throws IOException {
 		return this.in.read(b, off, len);
 	}
-	
+
 	/** Call directly the function {@link InputStream#read(byte[])} on
 	 * the filtered stream.
 	 */
@@ -64,5 +66,5 @@ public class UnclosableInputStream extends FilterInputStream {
 	public int read(byte[] b) throws IOException {
 		return this.in.read(b);
 	}
-	
+
 }

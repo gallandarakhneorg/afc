@@ -24,6 +24,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import org.arakhne.afc.math.tree.TreeNode;
 import org.arakhne.afc.math.tree.TreeNodeAddedEvent;
 import org.arakhne.afc.math.tree.TreeNodeListener;
 import org.arakhne.afc.math.tree.TreeNodeParentChangedEvent;
@@ -123,7 +124,7 @@ public abstract class AbstractTreeNode<D,N extends AbstractTreeNode<D,N>> extend
 	boolean setParentNodeReference(N newParent, boolean fireEvent) {
 		N oldParent = getParentNode();
 		if (newParent==oldParent) return false;
-		this.parent = (newParent==null) ? null : new WeakReference<N>(newParent);
+		this.parent = (newParent==null) ? null : new WeakReference<>(newParent);
 		if (!fireEvent) return true;
 		firePropertyParentChanged(oldParent, newParent);
 		if (oldParent!=null)

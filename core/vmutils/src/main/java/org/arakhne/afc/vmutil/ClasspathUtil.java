@@ -49,7 +49,7 @@ public class ClasspathUtil {
 	@Deprecated
 	public static URL[] getStartupClasspath() {
 		Iterator<URL> iterator = getStartClasspath();
-		List<URL> list = new ArrayList<URL>();
+		List<URL> list = new ArrayList<>();
 		while (iterator.hasNext())
 			list.add(iterator.next());
 		URL[] tab = new URL[list.size()];
@@ -75,7 +75,7 @@ public class ClasspathUtil {
 	@Deprecated
 	public static URL[] getCurrentClasspath() {
 		Iterator<URL> iterator = getClasspath();
-		List<URL> list = new ArrayList<URL>();
+		List<URL> list = new ArrayList<>();
 		while (iterator.hasNext())
 			list.add(iterator.next());
 		URL[] tab = new URL[list.size()];
@@ -89,6 +89,7 @@ public class ClasspathUtil {
 	 * @return the current classpath, never <code>null</code>.
 	 * @since 6.0
 	 */
+	@SuppressWarnings("resource")
 	public static Iterator<URL> getClasspath() {
 		Iterator<URL> iterator = getStartClasspath();
 		

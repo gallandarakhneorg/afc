@@ -114,7 +114,7 @@ public class SoftHashSet<E> extends AbstractReferencedSet<E,SoftReference<E>> {
     
     @Override
     protected final SoftReference<E> createReference(E element) {
-    	return new SoftReference<E>(element);
+    	return new SoftReference<>(element);
     }
 
 }

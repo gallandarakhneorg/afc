@@ -39,7 +39,7 @@ public class SoftTreeSetTest extends AbstractCollectionTestCase<Set<String>> {
 
 	@Override
 	protected Set<String> createCollection() {
-		return new SoftTreeSet<String>();
+		return new SoftTreeSet<>();
 	}
 
 }

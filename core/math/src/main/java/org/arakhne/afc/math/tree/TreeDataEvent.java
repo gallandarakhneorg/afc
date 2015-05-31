@@ -55,7 +55,7 @@ public class TreeDataEvent {
 			rCount = this.oldValues.size();
 		}
 		else {
-			this.oldValues = new ArrayList<Object>(oldValues);
+			this.oldValues = new ArrayList<>(oldValues);
 			rCount = this.oldValues.size();
 		}
 		if (newValues==null)
@@ -65,7 +65,7 @@ public class TreeDataEvent {
 			aCount = this.newValues.size();
 		}
 		else {
-			this.newValues = new ArrayList<Object>(newValues);
+			this.newValues = new ArrayList<>(newValues);
 			aCount = this.newValues.size();
 		}
 		if (allValues==null)
@@ -73,7 +73,7 @@ public class TreeDataEvent {
 		else if (allValues instanceof List<?>)
 			this.allValues = (List<?>)allValues;
 		else
-			this.allValues = new ArrayList<Object>(allValues);
+			this.allValues = new ArrayList<>(allValues);
 		this.delta = aCount - rCount;
 	}
 	
@@ -93,7 +93,7 @@ public class TreeDataEvent {
 		else if (allValues instanceof List<?>)
 			this.allValues = (List<?>)allValues;
 		else
-			this.allValues = new ArrayList<Object>(allValues);
+			this.allValues = new ArrayList<>(allValues);
 		this.delta = aCount - rCount;
 	}
 

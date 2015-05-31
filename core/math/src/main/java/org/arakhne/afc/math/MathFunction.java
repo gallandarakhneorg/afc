@@ -17,6 +17,7 @@
  */
 package org.arakhne.afc.math;
 
+
 /**
  * Define a mathematic function.
  * 
@@ -33,7 +34,7 @@ public interface MathFunction {
 	 * @return the value of {@code f(x)}.
 	 * @throws MathException in case {@code f(x)} could not be computed
 	 */
-	public float f(float x)  throws MathException;
+	public double f(double x)  throws MathException;
 	
 	/** Replies the range of the function.
 	 * 

@@ -139,7 +139,7 @@ public class DynamicURLClassLoader extends SecureClassLoader {
 	 * @param urls the URL to be added to the search path of URLs
 	 */
 	public void removeURLs(URL... urls) {
-		HashSet<URL> set = new HashSet<URL>();
+		HashSet<URL> set = new HashSet<>();
 		set.addAll(Arrays.asList(this._ucp.getURLs()));
 		set.removeAll(Arrays.asList(urls));
 		URL[] tab = new URL[set.size()];

@@ -121,7 +121,7 @@ public abstract class AbstractReferencedValueMap<K,V> extends AbstractMap<K,V> {
 	}
 
 	private boolean autoExpurge = false;
-	private final ReferenceQueue<V> queue = new ReferenceQueue<V>();
+	private final ReferenceQueue<V> queue = new ReferenceQueue<>();
 
 	/** Internal map.
 	 */

@@ -40,7 +40,7 @@ import org.arakhne.afc.math.graph.GraphSegment;
 public class SGraphSegment implements GraphSegment<SGraphSegment,SGraphPoint> {
 
 	private final WeakReference<SGraph> graph;
-	private float length;
+	private double length;
 	private SGraphPoint startPoint;
 	private SGraphPoint endPoint;
 	private List<Object> userData = null;
@@ -56,11 +56,11 @@ public class SGraphSegment implements GraphSegment<SGraphSegment,SGraphPoint> {
 	 * @param graph is the graph in which the segment is.
 	 * @param length is the length of the segment.
 	 */
-	public SGraphSegment(SGraph graph, float length) {
+	public SGraphSegment(SGraph graph, double length) {
 		assert(graph!=null);
 		this.length = length;
 		graph.add(this);
-		this.graph = new WeakReference<SGraph>(graph);
+		this.graph = new WeakReference<>(graph);
 		this.startPoint = new SGraphPoint(graph);
 		this.endPoint = new SGraphPoint(graph);
 	}
@@ -221,7 +221,7 @@ public class SGraphSegment implements GraphSegment<SGraphSegment,SGraphPoint> {
     /** {@inheritDoc}
      */
 	@Override
-	public float getLength() {
+	public double getLength() {
 		return this.length;
 	}
 
@@ -229,7 +229,7 @@ public class SGraphSegment implements GraphSegment<SGraphSegment,SGraphPoint> {
      * 
      * @param length is the length of the segment.
      */
-	public void setLength(float length) {
+	public void setLength(double length) {
 		this.length = length;
 	}
 
@@ -240,7 +240,7 @@ public class SGraphSegment implements GraphSegment<SGraphSegment,SGraphPoint> {
 	 */
 	public boolean addUserData(Object userData) {
 		if (this.userData==null) {
-			this.userData = new ArrayList<Object>();
+			this.userData = new ArrayList<>();
 		}
 		return this.userData.add(userData);
 	}

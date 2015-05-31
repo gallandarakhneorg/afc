@@ -71,7 +71,7 @@ class SubProgressionModel extends DefaultProgression {
     	this.maxValueInParent = uptMaxPValue;
     	this.extentInParent = uptMaxPValue - minPValue;
     	this.overwriteCommentWhenDisconnect = overwriteComment;
-    	this.parent = new WeakReference<DefaultProgression>(parent);
+    	this.parent = new WeakReference<>(parent);
 		setIndeterminate(isIndeterminate);
 	}
 	
@@ -98,7 +98,7 @@ class SubProgressionModel extends DefaultProgression {
     	this.maxValueInParent = uptMaxPValue;
     	this.extentInParent = uptMaxPValue - minPValue;
     	this.overwriteCommentWhenDisconnect = overwriteComment;
-    	this.parent = new WeakReference<DefaultProgression>(parent);
+    	this.parent = new WeakReference<>(parent);
     	setAdjusting(adjusting);
 		setIndeterminate(isIndeterminate);
 	}

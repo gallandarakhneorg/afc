@@ -21,11 +21,19 @@
  */
 package org.arakhne.afc.sizediterator;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.NoSuchElementException;
 
-import junit.framework.TestCase;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * @author $Author: galland$
@@ -33,34 +41,39 @@ import junit.framework.TestCase;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class CollectionSizedIteratorTest extends TestCase {
+public class CollectionSizedIteratorTest {
 
 	private String s1, s2, s3, s4, s5;
 	private Collection<String> collection;
 	private CollectionSizedIterator<String> iterator;
 	
-	@Override
+	/**
+	 * @throws Exception
+	 */
+	@Before
 	public void setUp() throws Exception {
-		super.setUp();
-		this.collection = new ArrayList<String>();
+		this.collection = new ArrayList<>();
 		this.collection.add(this.s1 = "s1"); //$NON-NLS-1$
 		this.collection.add(this.s2 = "s2"); //$NON-NLS-1$
 		this.collection.add(this.s3 = "s3"); //$NON-NLS-1$
 		this.collection.add(this.s4 = "s4"); //$NON-NLS-1$
 		this.collection.add(this.s5 = "s5"); //$NON-NLS-1$
-		this.iterator = new CollectionSizedIterator<String>(this.collection);
+		this.iterator = new CollectionSizedIterator<>(this.collection);
 	}
 	
-	@Override
+	/**
+	 * @throws Exception
+	 */
+	@After
 	public void tearDown() throws Exception {
 		this.iterator = null;
 		this.collection = null;
 		this.s1 = this.s2 = this.s3 = this.s4 = this.s5 = null;
-		super.tearDown();
 	}
 
 	/**
 	 */
+	@Test
 	public void testHasNext() {
 		assertTrue(this.iterator.hasNext());
 		this.iterator.next();
@@ -77,6 +90,7 @@ public class CollectionSizedIteratorTest extends TestCase {
 
 	/**
 	 */
+	@Test
 	public void testNext() {
 		assertSame(this.s1, this.iterator.next());
 		assertSame(this.s2, this.iterator.next());
@@ -94,6 +108,7 @@ public class CollectionSizedIteratorTest extends TestCase {
 
 	/**
 	 */
+	@Test
 	public void remove() {
 		assertSame(this.s1, this.iterator.next());
 		assertSame(this.s2, this.iterator.next());
@@ -113,6 +128,7 @@ public class CollectionSizedIteratorTest extends TestCase {
 
 	/**
 	 */
+	@Test
 	public void testIndex() {
 		assertEquals(-1, this.iterator.index());
 		assertSame(this.s1, this.iterator.next());
@@ -129,6 +145,7 @@ public class CollectionSizedIteratorTest extends TestCase {
 
 	/**
 	 */
+	@Test
 	public void testRest() {
 		assertEquals(5, this.iterator.rest());
 		assertSame(this.s1, this.iterator.next());
@@ -145,6 +162,7 @@ public class CollectionSizedIteratorTest extends TestCase {
 
 	/**
 	 */
+	@Test
 	public void testTotalSize() {
 		assertEquals(5, this.iterator.totalSize());
 		assertSame(this.s1, this.iterator.next());

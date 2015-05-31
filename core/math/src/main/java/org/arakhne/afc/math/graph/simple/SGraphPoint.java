@@ -40,7 +40,7 @@ import org.arakhne.afc.references.WeakArrayList;
  */
 public class SGraphPoint implements GraphPoint<SGraphPoint,SGraphSegment> {
 
-	private final List<SGraphSegment> segments = new WeakArrayList<SGraphSegment>();
+	private final List<SGraphSegment> segments = new WeakArrayList<>();
 	private final WeakReference<SGraph> graph;
 	private List<Object> userData = null;
 	
@@ -48,7 +48,7 @@ public class SGraphPoint implements GraphPoint<SGraphPoint,SGraphSegment> {
 	 * @param graph is the graph in which the connection is.
 	 */
 	SGraphPoint(SGraph graph) {
-		this.graph = new WeakReference<SGraph>(graph);
+		this.graph = new WeakReference<>(graph);
 	}
 	
 	/** Clear the connection.
@@ -133,7 +133,7 @@ public class SGraphPoint implements GraphPoint<SGraphPoint,SGraphSegment> {
 	 */
 	@Override
 	public Iterable<SGraphSegment> getConnectedSegmentsStartingFrom(SGraphSegment startingPoint) {
-		List<SGraphSegment> l = new ArrayList<SGraphSegment>(this.segments.size());
+		List<SGraphSegment> l = new ArrayList<>(this.segments.size());
 		int idx = 0;
 		for(SGraphSegment segment : this.segments) {
 			if (segment!=null) {
@@ -155,7 +155,7 @@ public class SGraphPoint implements GraphPoint<SGraphPoint,SGraphSegment> {
 	@Override
 	public Iterable<? extends GraphPointConnection<SGraphPoint, SGraphSegment>> getConnectionsStartingFrom(
 			SGraphSegment startingPoint) {
-		List<PointConnection> l = new ArrayList<PointConnection>(this.segments.size());
+		List<PointConnection> l = new ArrayList<>(this.segments.size());
 		int idx = 0;
 		PointConnection connection;
 		for(SGraphSegment segment : this.segments) {
@@ -190,7 +190,7 @@ public class SGraphPoint implements GraphPoint<SGraphPoint,SGraphSegment> {
 	 */
 	@Override
 	public Iterable<? extends GraphPointConnection<SGraphPoint, SGraphSegment>> getConnections() {
-		Collection<PointConnection> l = new ArrayList<PointConnection>(this.segments.size());
+		Collection<PointConnection> l = new ArrayList<>(this.segments.size());
 		for(SGraphSegment segment : this.segments) {
 			if (segment!=null) {
 				if (equals(segment.getBeginPoint())) {
@@ -211,7 +211,7 @@ public class SGraphPoint implements GraphPoint<SGraphPoint,SGraphSegment> {
 	 */
 	public boolean addUserData(Object userData) {
 		if (this.userData==null) {
-			this.userData = new ArrayList<Object>();
+			this.userData = new ArrayList<>();
 		}
 		return this.userData.add(userData);
 	}
@@ -281,7 +281,7 @@ public class SGraphPoint implements GraphPoint<SGraphPoint,SGraphSegment> {
 		 * by its begin point, <code>false</code> if connected by its end point.
 		 */
 		public PointConnection(SGraphSegment segment, boolean connectedWithBeginPoint) {
-			this.segment = new WeakReference<SGraphSegment>(segment);
+			this.segment = new WeakReference<>(segment);
 			this.connectedWithBeginPoint = connectedWithBeginPoint;
 		}
 

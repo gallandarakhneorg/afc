@@ -23,8 +23,8 @@ package org.arakhne.afc.math.stochastic;
 import java.util.Map;
 import java.util.Random;
 
-import org.arakhne.afc.math.MathFunctionRange;
 import org.arakhne.afc.math.MathException;
+import org.arakhne.afc.math.MathFunctionRange;
 
 /**
  * Law that representes a linear density.
@@ -52,7 +52,7 @@ public class LinearStochasticLaw extends StochasticLaw {
 	 * @return a value depending of the stochastic law parameters
 	 * @throws MathException 
 	 */
-	public static float random(float minX, float maxX, boolean ascendent) throws MathException {
+	public static double random(double minX, double maxX, boolean ascendent) throws MathException {
 		return StochasticGenerator.generateRandomValue(new LinearStochasticLaw(minX, maxX, ascendent));
 	}
 
@@ -66,14 +66,14 @@ public class LinearStochasticLaw extends StochasticLaw {
 	 * @return a value depending of the stochastic law parameters
 	 * @throws MathException 
 	 */
-	public static float random(float minX, float maxX) throws MathException {
+	public static double random(double minX, double maxX) throws MathException {
 		return StochasticGenerator.generateRandomValue(new LinearStochasticLaw(minX, maxX));
 	}
 
 	private final boolean ascendent;
-	private final float minX;
-	private final float maxX;
-	private final float delta;
+	private final double minX;
+	private final double maxX;
+	private final double delta;
 
 	/**
 	 * Construct a law with the following parameters.
@@ -99,7 +99,7 @@ public class LinearStochasticLaw extends StochasticLaw {
 	 * @param minX is the lower bound of the distribution
 	 * @param maxX is the upper bound of the distribution
 	 */
-	public LinearStochasticLaw(float minX, float maxX) {
+	public LinearStochasticLaw(double minX, double maxX) {
 		this(minX, maxX, true);
 	}
 
@@ -108,11 +108,11 @@ public class LinearStochasticLaw extends StochasticLaw {
 	 * @param maxX is the upper bound of the distribution
 	 * @param ascendent indicates of the distribution function is ascendent or not
 	 */
-	public LinearStochasticLaw(float minX, float maxX, boolean ascendent) {
-		float i = minX;
-		float a = maxX;
+	public LinearStochasticLaw(double minX, double maxX, boolean ascendent) {
+		double i = minX;
+		double a = maxX;
 		if (i>a) {
-			float t = i;
+			double t = i;
 			i = a;
 			a = t;
 		}
@@ -148,11 +148,11 @@ public class LinearStochasticLaw extends StochasticLaw {
 	/** {@inheritDoc}
 	 */
 	@Override
-	public float f(float x)  throws MathException {
+	public double f(double x)  throws MathException {
 		if ((x<this.minX)||(x>this.maxX))
 			throw new OutsideDomainException(x);
-		float a = 2.f / (this.delta * this.delta);
-		float b;
+		double a = 2.f / (this.delta * this.delta);
+		double b;
 		if (this.ascendent)
 			b = -a * this.minX;
 		else
@@ -174,12 +174,12 @@ public class LinearStochasticLaw extends StochasticLaw {
 	 * @throws MathException in case {@code F<sup>-1</sup>(u)} could not be computed
 	 */
 	@Override
-	public float inverseF(float u) throws MathException {
+	public double inverseF(double u) throws MathException {
 		if (this.ascendent) {
-			return (float) (this.delta * Math.sqrt( u ) + this.minX);
+			return this.delta * Math.sqrt( u ) + this.minX;
 		}
 
-		return (float) (this.delta * Math.sqrt( u ) + this.maxX);
+		return this.delta * Math.sqrt( u ) + this.maxX;
 	}
 
 }

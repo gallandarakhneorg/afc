@@ -29,7 +29,9 @@ import org.arakhne.afc.vmutil.locale.Locale;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 16.0
+ * @deprecated see <code>org.arakhne.afc.core:inputoutput</code> maven artifact.
  */
+@Deprecated
 public class NGRFileFilter extends AbstractFileFilter {
 
 	/** NGR extension.

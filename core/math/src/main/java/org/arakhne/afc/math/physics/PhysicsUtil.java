@@ -20,8 +20,8 @@
  */
 package org.arakhne.afc.math.physics;
 
-import org.arakhne.afc.math.geometry2d.continuous.Vector2f;
-import org.arakhne.afc.math.geometry3d.continuous.Vector3f;
+import org.arakhne.afc.math.geometry.d2.continuous.Vector2f;
+import org.arakhne.afc.math.geometry.d3.continuous.Vector3f;
 
 /**
  * Some physic utility functions.
@@ -85,10 +85,10 @@ public class PhysicsUtil {
 	 * @param dt is the time
 	 * @return a motion
 	 */
-	public static float motionNewtonLaw(
-			float speed,
-			float acceleration, 
-			float dt) {
+	public static double motionNewtonLaw(
+			double speed,
+			double acceleration, 
+			double dt) {
 		return engine.motionNewtonLaw(speed, acceleration, dt);
 	}
 
@@ -114,14 +114,14 @@ public class PhysicsUtil {
 	 * @return the motion
 	 * @see "http://en.wikibooks.org/wiki/High_School_Physics/Velocity"
 	 */
-	public static float motionNewtonLaw1D(
-			float velocity,
-			float minSpeed,
-			float maxSpeed,
-			float acceleration, 
-			float minAcceleration,
-			float maxAcceleration,
-			float dt) {
+	public static double motionNewtonLaw1D(
+			double velocity,
+			double minSpeed,
+			double maxSpeed,
+			double acceleration, 
+			double minAcceleration,
+			double maxAcceleration,
+			double dt) {
 		return engine.motionNewtonLaw1D(velocity, minSpeed, maxSpeed, acceleration, minAcceleration, maxAcceleration, dt);
 	}
 
@@ -149,12 +149,12 @@ public class PhysicsUtil {
 	 */
 	public static Vector2f motionNewtonLaw1D5(
 			Vector2f velocity,
-			float minSpeed,
-			float maxSpeed,
+			double minSpeed,
+			double maxSpeed,
 			Vector2f acceleration, 
-			float minAcceleration,
-			float maxAcceleration,
-			float dt) {
+			double minAcceleration,
+			double maxAcceleration,
+			double dt) {
 		return engine.motionNewtonLaw1D5(velocity, minSpeed, maxSpeed, acceleration, minAcceleration, maxAcceleration, dt);
 	}
 
@@ -182,12 +182,12 @@ public class PhysicsUtil {
 	 */
 	public static Vector2f motionNewtonLaw2D(
 			Vector2f velocity,
-			float minSpeed,
-			float maxSpeed,
+			double minSpeed,
+			double maxSpeed,
 			Vector2f acceleration, 
-			float minAcceleration,
-			float maxAcceleration,
-			float dt) {
+			double minAcceleration,
+			double maxAcceleration,
+			double dt) {
 		return engine.motionNewtonLaw2D(velocity, minSpeed, maxSpeed, acceleration, minAcceleration, maxAcceleration, dt);
 	}
 
@@ -215,12 +215,12 @@ public class PhysicsUtil {
 	 */
 	public static Vector3f motionNewtonLaw2D5(
 			Vector3f velocity,
-			float minSpeed,
-			float maxSpeed,
+			double minSpeed,
+			double maxSpeed,
 			Vector3f acceleration, 
-			float minAcceleration,
-			float maxAcceleration,
-			float dt) {
+			double minAcceleration,
+			double maxAcceleration,
+			double dt) {
 		return engine.motionNewtonLaw2D5(velocity, minSpeed, maxSpeed, acceleration, minAcceleration, maxAcceleration, dt);
 	}
 	
@@ -248,12 +248,12 @@ public class PhysicsUtil {
 	 */
 	public static Vector3f motionNewtonLaw3D(
 			Vector3f velocity,
-			float minSpeed,
-			float maxSpeed,
+			double minSpeed,
+			double maxSpeed,
 			Vector3f acceleration, 
-			float minAcceleration,
-			float maxAcceleration,
-			float dt) {
+			double minAcceleration,
+			double maxAcceleration,
+			double dt) {
 		return engine.motionNewtonLaw3D(velocity, minSpeed, maxSpeed, acceleration, minAcceleration, maxAcceleration, dt);
 	}
 
@@ -266,9 +266,9 @@ public class PhysicsUtil {
 	 * @param dt is the time
 	 * @return a motion
 	 */
-	public static float motionNewtonEuler1Law(
-			float speed,
-			float dt) {
+	public static double motionNewtonEuler1Law(
+			double speed,
+			double dt) {
 		return engine.motionNewtonEuler1Law(speed, dt);
 	}
 	
@@ -283,11 +283,11 @@ public class PhysicsUtil {
 	 * @param dt is the time
 	 * @return a motion
 	 */
-	public static float motionNewtonEuler1Law1D(
-			float velocity,
-			float minSpeed,
-			float maxSpeed,
-			float dt) {
+	public static double motionNewtonEuler1Law1D(
+			double velocity,
+			double minSpeed,
+			double maxSpeed,
+			double dt) {
 		return engine.motionNewtonEuler1Law1D(velocity, minSpeed, maxSpeed, dt);
 	}
 
@@ -304,9 +304,9 @@ public class PhysicsUtil {
 	 */
 	public static Vector2f motionNewtonEuler1Law1D5(
 			Vector2f velocity,
-			float minSpeed,
-			float maxSpeed,
-			float dt) {
+			double minSpeed,
+			double maxSpeed,
+			double dt) {
 		return engine.motionNewtonEuler1Law1D5(velocity, minSpeed, maxSpeed, dt);
 	}
 
@@ -323,9 +323,9 @@ public class PhysicsUtil {
 	 */
 	public static Vector2f motionNewtonEuler1Law2D(
 			Vector2f velocity,
-			float minSpeed,
-			float maxSpeed,
-			float dt) {
+			double minSpeed,
+			double maxSpeed,
+			double dt) {
 		return engine.motionNewtonEuler1Law2D(velocity, minSpeed, maxSpeed, dt);
 	}
 
@@ -342,9 +342,9 @@ public class PhysicsUtil {
 	 */
 	public static Vector3f motionNewtonEuler1Law2D5(
 			Vector3f velocity,
-			float minSpeed,
-			float maxSpeed,
-			float dt) {
+			double minSpeed,
+			double maxSpeed,
+			double dt) {
 		return engine.motionNewtonEuler1Law2D5(velocity, minSpeed, maxSpeed, dt);
 	}
 
@@ -361,9 +361,9 @@ public class PhysicsUtil {
 	 */
 	public static Vector3f motionNewtonEuler1Law3D(
 			Vector3f velocity,
-			float minSpeed,
-			float maxSpeed,
-			float dt) {
+			double minSpeed,
+			double maxSpeed,
+			double dt) {
 		return engine.motionNewtonEuler1Law3D(velocity, minSpeed, maxSpeed, dt);
 	}
 
@@ -375,10 +375,10 @@ public class PhysicsUtil {
 	 * @param movement is the movement distance.
 	 * @param dt is the time
 	 * @return a new speed
-	 * @deprecated see {@link #speed(float, float)}
+	 * @deprecated see {@link #speed(double, double)}
 	 */
 	@Deprecated
-	public static float velocity(float movement, float dt) {
+	public static double velocity(double movement, double dt) {
 		return engine.velocity(movement, dt);
 	}
 
@@ -392,7 +392,7 @@ public class PhysicsUtil {
 	 * @return a new speed
 	 * @since 4.1
 	 */
-	public static float speed(float movement, float dt) {
+	public static double speed(double movement, double dt) {
 		return engine.speed(movement, dt);
 	}
 
@@ -406,10 +406,10 @@ public class PhysicsUtil {
 	 * @param dt is the time
 	 * @return a new acceleration
 	 */
-	public static float acceleration(
-			float previousSpeed,
-			float currentSpeed, 
-			float dt) {
+	public static double acceleration(
+			double previousSpeed,
+			double currentSpeed, 
+			double dt) {
 		return engine.acceleration(previousSpeed, currentSpeed, dt);
 	}
 

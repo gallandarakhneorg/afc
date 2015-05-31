@@ -57,7 +57,7 @@ public final class MACNumber {
 	public static MACNumber[] parse(String addresses) {
 		if ((addresses==null)||("".equals(addresses))) return new MACNumber[0]; //$NON-NLS-1$
 		String[] adrs = addresses.split(Pattern.quote(Character.toString(MACNUMBER_SEPARATOR)));
-		ArrayList<MACNumber> list = new ArrayList<MACNumber>();
+		ArrayList<MACNumber> list = new ArrayList<>();
 		for (String adr : adrs) {
 			list.add(new MACNumber(adr));
 		}
@@ -76,7 +76,7 @@ public final class MACNumber {
 	public static String[] parseAsString(String addresses) {
 		if ((addresses==null)||("".equals(addresses))) return new String[0]; //$NON-NLS-1$
 		String[] adrs = addresses.split(Pattern.quote(Character.toString(MACNUMBER_SEPARATOR)));
-		ArrayList<String> list = new ArrayList<String>();
+		ArrayList<String> list = new ArrayList<>();
 		for (String adr : adrs) {
 			list.add(new MACNumber(adr).toString());
 		}
@@ -113,7 +113,7 @@ public final class MACNumber {
 	 * @see #getPrimaryAdapter
 	 */
 	public static Collection<MACNumber> getAllAdapters() {
-		List<MACNumber> av = new ArrayList<MACNumber>();
+		List<MACNumber> av = new ArrayList<>();
 		try {
 			Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
 			if (interfaces!=null) {
@@ -149,7 +149,7 @@ public final class MACNumber {
 	 * @see #getPrimaryAdapterAddresses
 	 */
 	public static Map<InetAddress, MACNumber> getAllMappings() {
-		Map<InetAddress,MACNumber> av = new HashMap<InetAddress,MACNumber>();
+		Map<InetAddress,MACNumber> av = new HashMap<>();
 		try {
 			Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
 			if (interfaces!=null) {
@@ -223,7 +223,7 @@ public final class MACNumber {
 					try {
 						byte[] addr = inter.getHardwareAddress();
 						if (addr!=null) {
-							Collection<InetAddress> inetList = new ArrayList<InetAddress>();
+							Collection<InetAddress> inetList = new ArrayList<>();
 							Enumeration<InetAddress> inets = inter.getInetAddresses();
 							while (inets.hasMoreElements()) {
 								inetList.add(inets.nextElement());

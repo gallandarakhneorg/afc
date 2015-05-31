@@ -36,7 +36,7 @@ import java.util.Stack;
  */
 public class DepthFirstGraphCourseModel<ST extends GraphSegment<ST,PT>,PT extends GraphPoint<PT,ST>> implements GraphCourseModel<ST,PT>{
 
-	private final Stack<GraphIterationElement<ST,PT>> stack = new Stack<GraphIterationElement<ST,PT>>();
+	private final Stack<GraphIterationElement<ST,PT>> stack = new Stack<>();
 	
 	/** Replies if this model restitutes the elements in a reverse order.
 	 * <p>

@@ -42,7 +42,7 @@ public class SoftValueHashMapTest extends AbstractReferencableValueMapTestCase {
 	 */
 	@Override
 	protected Map<String,String> createMap() {
-		return new SoftValueHashMap<String,String>();
+		return new SoftValueHashMap<>();
 	}
 
 }

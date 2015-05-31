@@ -114,7 +114,7 @@ public class WeakHashSet<E> extends AbstractReferencedSet<E,WeakReference<E>> {
 
     @Override
     protected final WeakReference<E> createReference(E element) {
-    	return new WeakReference<E>(element);
+    	return new WeakReference<>(element);
     }
 
 }

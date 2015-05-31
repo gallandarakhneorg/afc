@@ -23,8 +23,8 @@ package org.arakhne.afc.math.stochastic;
 import java.util.Map;
 import java.util.Random;
 
-import org.arakhne.afc.math.MathFunctionRange;
 import org.arakhne.afc.math.MathException;
+import org.arakhne.afc.math.MathFunctionRange;
 
 /**
  * Law that representes a gaussian density.
@@ -41,7 +41,7 @@ import org.arakhne.afc.math.MathException;
  */
 public class GaussianStochasticLaw extends StochasticLaw {
 	
-	private static final float SQRT2PI = (float) Math.sqrt(2.f*Math.PI);
+	private static final double SQRT2PI = Math.sqrt(2.f*Math.PI);
 	
 	/** Replies a random value that respect
 	 * the current stochastic law.
@@ -51,12 +51,12 @@ public class GaussianStochasticLaw extends StochasticLaw {
 	 * @return a value depending of the stochastic law parameters
 	 * @throws MathException 
 	 */
-	public static float random(float mean, float standardDeviation) throws MathException {
+	public static double random(double mean, double standardDeviation) throws MathException {
 		return StochasticGenerator.generateRandomValue(new GaussianStochasticLaw(mean, standardDeviation));
 	}
 
-	private float mean;
-	private float standardDeviation;
+	private double mean;
+	private double standardDeviation;
 
 	/**
 	 * Construct a law with the following parameters.
@@ -80,7 +80,7 @@ public class GaussianStochasticLaw extends StochasticLaw {
 	 * @param standardDeviation is the standard deviation associated to the nromal distribution.
 	 * @throws OutsideDomainException when standardDeviation is not positive or nul.
 	 */
-	public GaussianStochasticLaw(float mean, float standardDeviation) throws OutsideDomainException {
+	public GaussianStochasticLaw(double mean, double standardDeviation) throws OutsideDomainException {
 		if (standardDeviation<=0) throw new OutsideDomainException(standardDeviation);
 		this.mean = mean;
 		this.standardDeviation = standardDeviation;
@@ -105,10 +105,10 @@ public class GaussianStochasticLaw extends StochasticLaw {
 	/** {@inheritDoc}
 	 */
 	@Override
-	public float f(float x)  throws MathException {
-		float xm = x - this.mean;
+	public double f(double x)  throws MathException {
+		double xm = x - this.mean;
 		xm = xm * xm;
-		return (float) ((1.f/(this.standardDeviation*SQRT2PI)) * Math.exp((-xm)/(2.f*this.standardDeviation*this.standardDeviation))); 
+		return (1.f/(this.standardDeviation*SQRT2PI)) * Math.exp((-xm)/(2.f*this.standardDeviation*this.standardDeviation)); 
 	}
 
 	/** {@inheritDoc}
@@ -125,7 +125,7 @@ public class GaussianStochasticLaw extends StochasticLaw {
 	 * @throws MathException in case {@code F<sup>-1</sup>(u)} could not be computed
 	 */
 	@Override
-	public float inverseF(float u) throws MathException {
+	public double inverseF(double u) throws MathException {
 		return this.standardDeviation*u + this.mean;
 	}
 
@@ -138,8 +138,8 @@ public class GaussianStochasticLaw extends StochasticLaw {
 	 * @throws MathException in case {@code F<sup>-1</sup>(u)} could not be computed
 	 */
 	@Override
-	protected final float inverseF(Random U) throws MathException {
-		float u = (float) ((U.nextGaussian()+1)/2.f);
+	protected final double inverseF(Random U) throws MathException {
+		double u = (U.nextGaussian()+1)/2.f;
 		return inverseF(u);
 	}
 

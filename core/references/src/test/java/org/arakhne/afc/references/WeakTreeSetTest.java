@@ -39,7 +39,7 @@ public class WeakTreeSetTest extends AbstractCollectionTestCase<Set<String>> {
 
 	@Override
 	protected Set<String> createCollection() {
-		return new WeakTreeSet<String>();
+		return new WeakTreeSet<>();
 	}
 
 }

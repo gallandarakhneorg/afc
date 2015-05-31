@@ -21,8 +21,8 @@
 package org.arakhne.afc.math.graph.astar;
 
 import org.arakhne.afc.math.graph.GraphPoint;
-import org.arakhne.afc.math.graph.GraphPoint.GraphPointConnection;
 import org.arakhne.afc.math.graph.GraphSegment;
+import org.arakhne.afc.math.graph.GraphPoint.GraphPointConnection;
 
 /** This class provides a default heuristic to the
  * orientation of the segments for a {@link AStar A* algorithm}.

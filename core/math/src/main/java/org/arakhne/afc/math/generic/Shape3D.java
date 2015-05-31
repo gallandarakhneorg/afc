@@ -29,7 +29,9 @@ import java.io.Serializable;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see {@link org.arakhne.afc.math.geometry.d3.Shape3D}
  */
+@Deprecated
 public interface Shape3D<ST extends Shape3D<? super ST>>
 extends Cloneable, Serializable {
 

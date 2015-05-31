@@ -20,7 +20,7 @@
  */
 package org.arakhne.afc.math.physics.kinematic.angular;
 
-import org.arakhne.afc.math.geometry3d.continuous.Quaternion;
+import org.arakhne.afc.math.geometry.d3.continuous.Quaternion;
 import org.arakhne.afc.math.physics.AngularUnit;
 
 /**

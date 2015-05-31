@@ -149,7 +149,7 @@ class URLConnection extends java.net.URLConnection {
 		catch(IOException e) {
 			throw new IllegalStateException(e);
 		}
-		Map<String, List<String>> flds = new HashMap<String,List<String>>();
+		Map<String, List<String>> flds = new HashMap<>();
     	flds.put("content-type", singletonList(this.contentType)); //$NON-NLS-1$
     	flds.put("content-length", singletonList(Long.toString(this.file.length()))); //$NON-NLS-1$
     	flds.put("last-modified", singletonList(Long.toString(this.file.lastModified()))); //$NON-NLS-1$

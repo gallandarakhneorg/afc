@@ -42,7 +42,7 @@ public class WeakValueTreeMapTest extends AbstractReferencableValueMapTestCase {
 	 */
 	@Override
 	protected Map<String,String> createMap() {
-		return new WeakValueTreeMap<String,String>();
+		return new WeakValueTreeMap<>();
 	}
 
 }

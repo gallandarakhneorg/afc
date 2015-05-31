@@ -21,8 +21,8 @@
 package org.arakhne.afc.math.graph.astar;
 
 import org.arakhne.afc.math.graph.GraphPoint;
-import org.arakhne.afc.math.graph.GraphPoint.GraphPointConnection;
 import org.arakhne.afc.math.graph.GraphSegment;
+import org.arakhne.afc.math.graph.GraphPoint.GraphPointConnection;
 
 /** This interface provides a way to the {@link AStar A* algorithm}
  * to retreive the orientation of a segment.

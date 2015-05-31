@@ -20,8 +20,8 @@
  */
 package org.arakhne.afc.math.physics.kinematic.linear;
 
-import org.arakhne.afc.math.geometry2d.continuous.Vector2f;
-import org.arakhne.afc.math.geometry3d.continuous.Vector3f;
+import org.arakhne.afc.math.geometry.d2.continuous.Vector2f;
+import org.arakhne.afc.math.geometry.d3.continuous.Vector3f;
 import org.arakhne.afc.math.physics.SpeedUnit;
 
 /**
