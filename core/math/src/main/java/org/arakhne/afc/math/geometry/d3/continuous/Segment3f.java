@@ -1209,14 +1209,28 @@ public class Segment3f extends AbstractShape3f<Segment3f> {
 	}
 
 	/**
-	 * Replies the direction for the line.
+	 * Replies the vector that corresponds to the segment.
 	 * The vector is from P1 to P2, where P1 is the first point
 	 * of the segment. And, P2 is the second point of the segment.
 	 * 
-	 * @return the vector from P1 to P2.
+	 * @return the vector from P1 to P2. It is not a unit vector.
+	 */
+	public Vector3f getSegmentVector() {
+		return this.d.clone();
+	}
+
+	/**
+	 * Replies the direction of the segment.
+	 * The vector is the unit vector that is colinear to the
+	 * line from P1 to P2, where P1 is the first point
+	 * of the segment, P2 the second point of the segment.
+	 * 
+	 * @return the unit vector of the direction of the segment..
 	 */
 	public Vector3f getDirection() {
-		return this.d.clone();
+		Vector3f v = this.d.clone();
+		v.normalize();
+		return v;
 	}
 
 	/** Set the points of the line.

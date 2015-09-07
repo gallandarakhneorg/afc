@@ -21,6 +21,8 @@
  */
 package org.arakhne.afc.math.matrix;
 
+import static org.arakhne.afc.math.MathConstants.JACOBI_MAX_SWEEPS;
+
 import java.io.Serializable;
 import java.util.Arrays;
 
@@ -40,7 +42,7 @@ import org.arakhne.afc.math.geometry.d2.continuous.Vector2f;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class Matrix2f implements Serializable, Cloneable, MathConstants {
+public class Matrix2f implements Serializable, Cloneable {
 
 	private static final long serialVersionUID = -181335987517755500L;
 

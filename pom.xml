@@ -252,7 +252,7 @@
 			<email>mahdi.hannoun@emse.fr</email>
 			<roles>
 				<role>Founder</role>
-				<role>Developer</role>
+				<role>Contributor</role>
 			</roles>
 		</developer>
 		<developer>
@@ -260,7 +260,7 @@
 			<name>Marc BAUMGARTNER</name>
 			<email>mabaumga@stud.uni-frankfurt.de</email>
 			<roles>
-				<role>Developer</role>
+				<role>Contributor</role>
 			</roles>
 		</developer>
 		<developer>
@@ -268,7 +268,7 @@
 			<name>Yuku Sugianto</name>
 			<email>yukuku@gmail.com</email>
 			<roles>
-				<role>Developer</role>
+				<role>Contributor</role>
 			</roles>
 		</developer>
 		<developer>
@@ -276,7 +276,7 @@
 			<name>Maxime Grolleau</name>
 			<email>maxime.grolleau@utbm.fr</email>
 			<roles>
-				<role>Developer</role>
+				<role>Student Developer</role>
 			</roles>
 		</developer>
 		<developer>
@@ -284,7 +284,7 @@
 			<name>Christophe BOHRHAUER</name>
 			<email>christophe.bohrhauer@utbm.fr</email>
 			<roles>
-				<role>Developer</role>
+				<role>Student Developer</role>
 			</roles>
 		</developer>
 	</developers>

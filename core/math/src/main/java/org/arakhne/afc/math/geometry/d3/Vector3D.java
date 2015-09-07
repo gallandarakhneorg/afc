@@ -130,6 +130,9 @@ public interface Vector3D extends Tuple3D<Vector3D> {
 	 * One of {@link #crossLeftHand(Vector3D)} or {@link #crossRightHand(Vector3D)}
 	 * will be invoked by this function.
 	 * 
+	 * <img src="doc-files/left_handed_cross_product.png" alt="[Left-Handed Cross Product]">
+	 * <img src="doc-files/right_handed_cross_product.png" alt="[Right-Handed Cross Product]">
+	 * 
 	 * @param v1 the other vector
 	 * @return the dot product.
 	 * @see #crossLeftHand(Vector3D)
@@ -146,6 +149,9 @@ public interface Vector3D extends Tuple3D<Vector3D> {
 	 * {@link #crossRightHand(Vector3D, Vector3D)}
 	 * will be invoked by this function.
 	 * 
+	 * <img src="doc-files/left_handed_cross_product.png" alt="[Left-Handed Cross Product]">
+	 * <img src="doc-files/right_handed_cross_product.png" alt="[Right-Handed Cross Product]">
+	 * 
 	 * @param v1
 	 * @param v2
 	 * @see #crossLeftHand(Vector3D, Vector3D)
@@ -156,6 +162,9 @@ public interface Vector3D extends Tuple3D<Vector3D> {
 	/**
 	 * Computes the cross product of the this vector and vector v1
 	 * as if the vectors are inside a left-hand coordinate system.
+	 * 
+	 * <img src="doc-files/left_handed_cross_product.png">
+	 *
 	 * @param v1 the other vector
 	 * @return the dot product.
 	 */
@@ -165,6 +174,9 @@ public interface Vector3D extends Tuple3D<Vector3D> {
 	 * Computes the cross product of the vectors v1 and v2
 	 * as if the vectors are inside a left-hand coordinate system;
 	 * and put the result in this vector.
+	 * 
+	 * <img src="doc-files/left_handed_cross_product.png">
+	 *
 	 * @param v1
 	 * @param v2
 	 */
@@ -173,6 +185,9 @@ public interface Vector3D extends Tuple3D<Vector3D> {
 	/**
 	 * Computes the cross product of the this vector and vector v1
 	 * as if the vectors are inside a left-hand coordinate system.
+	 * 
+	 * <img src="doc-files/right_handed_cross_product.png">
+	 *
 	 * @param v1 the other vector
 	 * @return the dot product.
 	 */
@@ -182,6 +197,9 @@ public interface Vector3D extends Tuple3D<Vector3D> {
 	 * Computes the cross product of the vectors v1 and v2
 	 * as if the vectors are inside a left-hand coordinate system;
 	 * and put the result in this vector.
+	 * 
+	 * <img src="doc-files/right_handed_cross_product.png">
+	 *
 	 * @param v1
 	 * @param v2
 	 */
@@ -236,6 +254,13 @@ public interface Vector3D extends Tuple3D<Vector3D> {
 	 * <code>false</code> otherwise.
 	 */
 	public boolean isUnitVector();
+
+	/** Replies if this vector is colinear to the given vector.
+	 *
+	 * @param v
+	 * @return <code>true</code> if the vectors are colinear..
+	 */
+	public boolean isColinear(Vector3D v);
 
 	/** Change the length of the vector.
 	 * The direction of the vector is unchanged.

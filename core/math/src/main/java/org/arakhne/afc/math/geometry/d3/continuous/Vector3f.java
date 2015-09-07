@@ -157,6 +157,9 @@ public class Vector3f extends Tuple3f<Vector3D> implements Vector3D {
 	 * The default coordinate system is given by
 	 * {@link CoordinateSystem3D#getDefaultCoordinateSystem()}.
 	 * 
+	 * <img src="doc-files/left_handed_cross_product.png" alt="[Left-Handed Cross Product]">
+	 * <img src="doc-files/left_handed_cross_product.png" alt="[Right-Handed Cross Product]">
+	 * 
 	 * @param x1 x coordinate of the vector v1.
 	 * @param y1 y coordinate of the vector v1.
 	 * @param z1 z coordinate of the vector v1.
@@ -178,6 +181,9 @@ public class Vector3f extends Tuple3f<Vector3D> implements Vector3D {
 	 * {@link #crossProductLeftHand(double, double, double, double, double, double, Vector3D) left-handed cross product}
 	 * if the given coordinate system is left-handed. Otherwise, it uses the
 	 * {@link #crossProductRightHand(double, double, double, double, double, double, Vector3D) right-handed cross product}.
+	 * 
+	 * <img src="doc-files/left_handed_cross_product.png" alt="[Left-Handed Cross Product]">
+	 * <img src="doc-files/left_handed_cross_product.png" alt="[Right-Handed Cross Product]">
 	 * 
 	 * @param x1 x coordinate of the vector v1.
 	 * @param y1 y coordinate of the vector v1.
@@ -209,6 +215,9 @@ public class Vector3f extends Tuple3f<Vector3D> implements Vector3D {
 	/**
 	 * Computes the cross product of the vectors v1 and v2
 	 * as if the vectors are inside a left-hand coordinate system;
+	 * 
+	 * <img src="doc-files/left_handed_cross_product.png">
+	 *
 	 * @param x1 x coordinate of the vector v1.
 	 * @param y1 y coordinate of the vector v1.
 	 * @param z1 z coordinate of the vector v1.
@@ -229,6 +238,9 @@ public class Vector3f extends Tuple3f<Vector3D> implements Vector3D {
 	/**
 	 * Computes the cross product of the vectors v1 and v2
 	 * as if the vectors are inside a right-hand coordinate system;
+	 * 
+	 * <img src="doc-files/right_handed_cross_product.png">
+	 *
 	 * @param x1 x coordinate of the vector v1.
 	 * @param y1 y coordinate of the vector v1.
 	 * @param z1 z coordinate of the vector v1.
@@ -591,6 +603,12 @@ public class Vector3f extends Tuple3f<Vector3D> implements Vector3D {
 	}
 	
 	@Override
+	public boolean isColinear(Vector3D v) {
+		return isCollinearVectors(getX(), getY(), getZ(), v.getX(), v.getY(), v.getZ());
+	}
+
+	
+	@Override
 	public void setLength(double newLength) {
 		double nl = Math.max(0, newLength);
 		double l = length();
@@ -611,6 +629,8 @@ public class Vector3f extends Tuple3f<Vector3D> implements Vector3D {
 		return new UnmodifiableVector3f();
 	}
 
+	
+	
 	/**
 	 * @author $Author: galland$
 	 * @version $Name$ $Revision$ $Date$
@@ -1052,6 +1072,11 @@ public class Vector3f extends Tuple3f<Vector3D> implements Vector3D {
 		@Override
 		public boolean isUnitVector() {
 			return Vector3f.this.isUnitVector();
+		}
+
+		@Override
+		public boolean isColinear(Vector3D v) {
+			return Vector3f.this.isColinear(v);
 		}
 
 		@Override

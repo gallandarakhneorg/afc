@@ -2011,4 +2011,99 @@ public final class MathUtil {
 		minmax.set(min, max);
 	}
 
+	/** Replies the cosecant of the specified angle.
+	 * <p>
+	 * <code>csc(a) = 1/sin(a)</code>
+	 * <p>
+	 * <img src="./doc-files/trigo1.png" alt="[Cosecant function]">
+	 * <img src="./doc-files/trigo3.png" alt="[Cosecant function]">
+	 * 
+	 * @param angle
+	 * @return the cosecant.
+	 */
+	public static double csc(double angle) {
+		return 1./Math.sin(angle);
+	}
+
+	/** Replies the secant of the specified angle.
+	 * <p>
+	 * <code>csc(a) = 1/cos(a)</code>
+	 * <p>
+	 * <img src="./doc-files/trigo1.png" alt="[Secant function]">
+	 * <img src="./doc-files/trigo2.png" alt="[Secant function]">
+	 * 
+	 * @param angle
+	 * @return the secant.
+	 */
+	public static double sec(double angle) {
+		return 1./Math.cos(angle);
+	}
+
+	/** Replies the cotangent of the specified angle.
+	 * <p>
+	 * <code>csc(a) = 1/tan(a)</code>
+	 * <p>
+	 * <img src="./doc-files/trigo1.png" alt="[Cotangent function]">
+	 * <img src="./doc-files/trigo3.png" alt="[Cotangent function]">
+	 * 
+	 * @param angle
+	 * @return the cotangent.
+	 */
+	public static double cot(double angle) {
+		return 1./Math.tan(angle);
+	}
+
+	/** Replies the versine of the specified angle.
+	 * <p>
+	 * <code>versin(a) = 1 - cos(a)</code>
+	 * <p>
+	 * <img src="./doc-files/trigo1.png" alt="[Versine function]">
+	 * 
+	 * @param angle
+	 * @return the cotangent.
+	 */
+	public static double versin(double angle) {
+		return 1. - Math.cos(angle);
+	}
+
+	/** Replies the exsecant of the specified angle.
+	 * <p>
+	 * <code>exsec(a) = sec(a) - 1</code>
+	 * <p>
+	 * <img src="./doc-files/trigo1.png" alt="[Exsecant function]">
+	 * 
+	 * @param angle
+	 * @return the cotangent.
+	 */
+	public static double exsec(double angle) {
+		return sec(angle) - 1.;
+	}
+
+	/** Replies the chord of the specified angle.
+	 * <p>
+	 * <code>crd(a) = 2 sin(a/2)</code>
+	 * <p>
+	 * <img src="./doc-files/chord.png" alt="[Chord function]">
+	 * 
+	 * @param angle
+	 * @return the chord.
+	 */
+	public static double crd(double angle) {
+		return 2. * Math.sin(angle/2.);
+	}
+
+	/** Replies the half of the versine (aka, haversine) of the specified angle.
+	 * <p>
+	 * <code>haversine(a) = sin<sup>2</sup>(a/2) = (1-cos(a)) / 2</code>
+	 * <p>
+	 * <img src="./doc-files/trigo1.png" alt="[Excosecant function]">
+	 * 
+	 * @param angle
+	 * @return the chord.
+	 */
+	public static double haversine(double angle) {
+		double sin2 = Math.sin(angle/2.);
+		return sin2*sin2;
+	}
+
 }

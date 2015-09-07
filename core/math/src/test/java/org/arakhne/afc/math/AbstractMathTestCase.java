@@ -21,9 +21,11 @@
  */
 package org.arakhne.afc.math;
 
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 import java.math.BigDecimal;
+import java.util.Iterator;
+import java.util.Objects;
 import java.util.Random;
 
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
@@ -33,6 +35,7 @@ import org.arakhne.afc.math.geometry.d3.Tuple3D;
 import org.arakhne.afc.math.geometry.d3.continuous.Point3f;
 import org.arakhne.afc.math.geometry.d3.continuous.Quaternion;
 import org.arakhne.afc.math.geometry.d3.continuous.Vector3f;
+import org.junit.ComparisonFailure;
 
 /**
  * @author $Author: galland$
@@ -207,18 +210,18 @@ public abstract class AbstractMathTestCase {
 	 */
 	protected void assertEpsilonEquals(String message, Tuple2D<?> expected, Tuple2D<?> actual) {
 		if (!isEpsilonEquals(expected.getX(), actual.getX())) {
-			fail((message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
-					+"not same x value, expected:"+ //$NON-NLS-1$
-					expected.getX()
-					+", actual:"+actual.getX()); //$NON-NLS-1$
-			return;
+			throw new ComparisonFailure(
+					(message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
+					+"not same x value", //$NON-NLS-1$
+					expected.toString(),
+					actual.toString());
 		}
 		if (!isEpsilonEquals(expected.getY(), actual.getY())) {
-			fail((message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
-					+"not same y value, expected:"+ //$NON-NLS-1$
-					expected.getY()
-					+", actual:"+actual.getY()); //$NON-NLS-1$
-			return;
+			throw new ComparisonFailure(
+					(message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
+					+"not same y value", //$NON-NLS-1$
+					expected.toString(),
+					actual.toString());
 		}
 	}
 
@@ -231,18 +234,18 @@ public abstract class AbstractMathTestCase {
 	 */
 	protected void assertNotEpsilonEquals(String message, Tuple2D<?> expected, Tuple2D<?> actual) {
 		if (isEpsilonEquals(expected.getX(), actual.getX(), false)) {
-			fail((message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
-					+"same x value, unexpected:"+ //$NON-NLS-1$
-					expected.getX()
-					+", actual:"+actual.getX()); //$NON-NLS-1$
-			return;
+			throw new ComparisonFailure(
+					(message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
+					+"not same x value", //$NON-NLS-1$
+					expected.toString(),
+					actual.toString());
 		}
 		if (isEpsilonEquals(expected.getY(), actual.getY(), false)) {
-			fail((message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
-					+"not same y value, expected:"+ //$NON-NLS-1$
-					expected.getY()
-					+", actual:"+actual.getY()); //$NON-NLS-1$
-			return;
+			throw new ComparisonFailure(
+					(message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
+					+"not same y value", //$NON-NLS-1$
+					expected.toString(),
+					actual.toString());
 		}
 	}
 
@@ -275,26 +278,39 @@ public abstract class AbstractMathTestCase {
 	 */
 	protected void assertEpsilonEquals(String message, Tuple3D<?> expected, Tuple3D<?> actual) {
 		if (!isEpsilonEquals(expected.getX(), actual.getX())) {
-			fail((message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
-					+"not same x value, expected:"+ //$NON-NLS-1$
-					expected.getX()
-					+", actual:"+actual.getX()); //$NON-NLS-1$
-			return;
+			throw new ComparisonFailure(
+					(message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
+					+"not same x value", //$NON-NLS-1$
+					expected.toString(),
+					actual.toString());
 		}
 		if (!isEpsilonEquals(expected.getY(), actual.getY())) {
-			fail((message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
-					+"not same y value, expected:"+ //$NON-NLS-1$
-					expected.getY()
-					+", actual:"+actual.getY()); //$NON-NLS-1$
-			return;
+			throw new ComparisonFailure(
+					(message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
+					+"not same y value", //$NON-NLS-1$
+					expected.toString(),
+					actual.toString());
 		}
 		if (!isEpsilonEquals(expected.getZ(), actual.getZ())) {
-			fail((message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
-					+"not same z value, expected:"+ //$NON-NLS-1$
-					expected.getZ()
-					+", actual:"+actual.getZ()); //$NON-NLS-1$
-			return;
+			throw new ComparisonFailure(
+					(message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
+					+"not same z value", //$NON-NLS-1$
+					expected.toString(),
+					actual.toString());
 		}
+	}
+
+	/** Replies if the actual value is equal to the expected value with
+	 * a distance of epsilon.
+	 * 
+	 * @param expected
+	 * @param actual
+	 * @return the test result.
+	 */
+	protected boolean isEpsilonEquals(Tuple3D<?> expected, Tuple3D<?> actual) {
+		return isEpsilonEquals(expected.getX(), actual.getX())
+				&& isEpsilonEquals(expected.getY(), actual.getY())
+				&& isEpsilonEquals(expected.getZ(), actual.getZ());
 	}
 
 	/** Test if the actual value is not equal to the expected value with
@@ -306,25 +322,25 @@ public abstract class AbstractMathTestCase {
 	 */
 	protected void assertNotEpsilonEquals(String message, Tuple3D<?> expected, Tuple3D<?> actual) {
 		if (isEpsilonEquals(expected.getX(), actual.getX(), false)) {
-			fail((message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
-					+"same x value, unexpected:"+ //$NON-NLS-1$
-					expected.getX()
-					+", actual:"+actual.getX()); //$NON-NLS-1$
-			return;
+			throw new ComparisonFailure(
+					(message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
+					+"not same x value", //$NON-NLS-1$
+					expected.toString(),
+					actual.toString());
 		}
 		if (isEpsilonEquals(expected.getY(), actual.getY(), false)) {
-			fail((message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
-					+"not same y value, expected:"+ //$NON-NLS-1$
-					expected.getY()
-					+", actual:"+actual.getY()); //$NON-NLS-1$
-			return;
+			throw new ComparisonFailure(
+					(message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
+					+"not same y value", //$NON-NLS-1$
+					expected.toString(),
+					actual.toString());
 		}
 		if (isEpsilonEquals(expected.getZ(), actual.getZ(), false)) {
-			fail((message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
-					+"not same z value, expected:"+ //$NON-NLS-1$
-					expected.getZ()
-					+", actual:"+actual.getZ()); //$NON-NLS-1$
-			return;
+			throw new ComparisonFailure(
+					(message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
+					+"not same z value", //$NON-NLS-1$
+					expected.toString(),
+					actual.toString());
 		}
 	}
 
@@ -357,32 +373,32 @@ public abstract class AbstractMathTestCase {
 	 */
 	protected void assertEpsilonEquals(String message, Quaternion expected, Quaternion actual) {
 		if (!isEpsilonEquals(expected.getX(), actual.getX())) {
-			fail((message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
-					+"not same x value, expected:"+ //$NON-NLS-1$
-					expected.getX()
-					+", actual:"+actual.getX()); //$NON-NLS-1$
-			return;
+			throw new ComparisonFailure(
+					(message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
+					+"not same x value", //$NON-NLS-1$
+					expected.toString(),
+					actual.toString());
 		}
 		if (!isEpsilonEquals(expected.getY(), actual.getY())) {
-			fail((message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
-					+"not same y value, expected:"+ //$NON-NLS-1$
-					expected.getY()
-					+", actual:"+actual.getY()); //$NON-NLS-1$
-			return;
+			throw new ComparisonFailure(
+					(message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
+					+"not same y value", //$NON-NLS-1$
+					expected.toString(),
+					actual.toString());
 		}
 		if (!isEpsilonEquals(expected.getZ(), actual.getZ())) {
-			fail((message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
-					+"not same z value, expected:"+ //$NON-NLS-1$
-					expected.getZ()
-					+", actual:"+actual.getZ()); //$NON-NLS-1$
-			return;
+			throw new ComparisonFailure(
+					(message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
+					+"not same z value", //$NON-NLS-1$
+					expected.toString(),
+					actual.toString());
 		}
 		if (!isEpsilonEquals(expected.getW(), actual.getW())) {
-			fail((message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
-					+"not same w value, expected:"+ //$NON-NLS-1$
-					expected.getW()
-					+", actual:"+actual.getW()); //$NON-NLS-1$
-			return;
+			throw new ComparisonFailure(
+					(message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
+					+"not same w value", //$NON-NLS-1$
+					expected.toString(),
+					actual.toString());
 		}
 	}
 
@@ -395,32 +411,32 @@ public abstract class AbstractMathTestCase {
 	 */
 	protected void assertNotEpsilonEquals(String message, Quaternion expected, Quaternion actual) {
 		if (isEpsilonEquals(expected.getX(), actual.getX(), false)) {
-			fail((message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
-					+"same x value, unexpected:"+ //$NON-NLS-1$
-					expected.getX()
-					+", actual:"+actual.getX()); //$NON-NLS-1$
-			return;
+			throw new ComparisonFailure(
+					(message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
+					+"not same x value", //$NON-NLS-1$
+					expected.toString(),
+					actual.toString());
 		}
 		if (isEpsilonEquals(expected.getY(), actual.getY(), false)) {
-			fail((message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
-					+"not same y value, expected:"+ //$NON-NLS-1$
-					expected.getY()
-					+", actual:"+actual.getY()); //$NON-NLS-1$
-			return;
+			throw new ComparisonFailure(
+					(message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
+					+"not same y value", //$NON-NLS-1$
+					expected.toString(),
+					actual.toString());
 		}
 		if (isEpsilonEquals(expected.getZ(), actual.getZ(), false)) {
-			fail((message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
-					+"not same z value, expected:"+ //$NON-NLS-1$
-					expected.getZ()
-					+", actual:"+actual.getZ()); //$NON-NLS-1$
-			return;
+			throw new ComparisonFailure(
+					(message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
+					+"not same z value", //$NON-NLS-1$
+					expected.toString(),
+					actual.toString());
 		}
 		if (isEpsilonEquals(expected.getW(), actual.getW(), false)) {
-			fail((message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
-					+"not same w value, expected:"+ //$NON-NLS-1$
-					expected.getW()
-					+", actual:"+actual.getW()); //$NON-NLS-1$
-			return;
+			throw new ComparisonFailure(
+					(message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
+					+"not same w value", //$NON-NLS-1$
+					expected.toString(),
+					actual.toString());
 		}
 	}
 
@@ -529,6 +545,38 @@ public abstract class AbstractMathTestCase {
 		if (!Float.isNaN(value)) {
 			fail("Expected NaN, but has: " + value); //$NON-NLS-1$
 		}
+	}
+	
+	/** Assert two iterable objects have the same elements.
+	 * 
+	 * @param expected
+	 * @param actual
+	 */
+	protected <T> void assertCollectionEquals(Iterable<? extends T> expected, Iterable<? extends T> actual) {
+		Iterator<? extends T> it1 = expected.iterator();
+		Iterator<? extends T> it2 = actual.iterator();
+		while (it1.hasNext()) {
+			if (!it2.hasNext()) {
+				throw new ComparisonFailure("Element is missed", toString(expected), toString(actual)); //$NON-NLS-1$
+			}
+			T expect = it1.next();
+			T act = it2.next();
+			if (!Objects.equals(expect, act)) {
+				throw new ComparisonFailure("Not same element", toString(expected), toString(actual)); //$NON-NLS-1$
+			}
+		}
+		if (it2.hasNext()) {
+			throw new ComparisonFailure("Too many elements", toString(expected), toString(actual)); //$NON-NLS-1$
+		}
+	}
+
+	private String toString(Iterable<?> it) {
+		StringBuilder b = new StringBuilder();
+		for (Object o : it) {
+			b.append(o);
+			b.append(",\n"); //$NON-NLS-1$
+		}
+		return b.toString();
 	}
 
 }

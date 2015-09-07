@@ -35,7 +35,7 @@ import org.arakhne.afc.math.MathUtil;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class Matrix4f implements Serializable, Cloneable, MathConstants {
+public class Matrix4f implements Serializable, Cloneable {
 
 	private static final long serialVersionUID = 7216873052550769543L;
 

@@ -308,6 +308,15 @@ public class Vector3i extends Tuple3i<Vector3D> implements Vector3D {
 	}
 
 	@Override
+	public boolean isColinear(Vector3D v) {
+		int cx = y() * v.z() - z() * v.y();
+		int cy = z() * v.x() - x() * v.z();
+		int cz = x() * v.y() - y() * v.x();
+		int sum = cx * cx + cy * cy + cz * cz;
+		return sum == 0;
+	}
+
+	@Override
 	public void setLength(double newLength) {
 		double nl = Math.max(0, newLength);
 		double l = length();
@@ -784,6 +793,11 @@ public class Vector3i extends Tuple3i<Vector3D> implements Vector3D {
 		@Override
 		public double perp(Vector3D v) {
 			return Vector3i.this.perp(v);
+		}
+
+		@Override
+		public boolean isColinear(Vector3D v) {
+			return Vector3i.this.isColinear(v);
 		}
 		
 	}

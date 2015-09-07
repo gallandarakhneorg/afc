@@ -21,6 +21,9 @@
  */
 package org.arakhne.afc.math.matrix;
 
+import static org.arakhne.afc.math.MathConstants.EPSILON;
+import static org.arakhne.afc.math.MathConstants.JACOBI_MAX_SWEEPS;
+
 import java.io.Serializable;
 import java.util.Arrays;
 
@@ -41,7 +44,7 @@ import org.arakhne.afc.vmutil.locale.Locale;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class Matrix3f implements Serializable, Cloneable, MathConstants {
+public class Matrix3f implements Serializable, Cloneable {
 
 	private static final long serialVersionUID = -7386754038391115819L;
 
