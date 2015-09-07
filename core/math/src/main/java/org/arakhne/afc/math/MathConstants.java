@@ -82,7 +82,7 @@ public interface MathConstants {
 
 	/** Square root of 2
 	 */
-	public static final double SQRT_2 = (float)Math.sqrt(2.);
+	public static final double SQRT_2 = (double)Math.sqrt(2.);
 
 	/**
 	 * Max sweeps in the Jacoby's algorithms.

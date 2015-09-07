@@ -59,16 +59,16 @@ public class Segment2f extends AbstractShape2f<Segment2f> {
 	 * @return the crossing.
 	 */
 	public static int computeCrossingsFromPoint(
-			float px, float py,
-			float x0, float y0,
-			float x1, float y1) {
+			double px, double py,
+			double x0, double y0,
+			double x1, double y1) {
 		// Copied from AWT API
 		if (py <  y0 && py <  y1) return 0;
 		if (py >= y0 && py >= y1) return 0;
 		// assert(y0 != y1);
 		if (px >= x0 && px >= x1) return 0;
 		if (px <  x0 && px <  x1) return (y0 < y1) ? 1 : -1;
-		float xintercept = x0 + (py - y0) * (x1 - x0) / (y1 - y0);
+		double xintercept = x0 + (py - y0) * (x1 - x0) / (y1 - y0);
 		if (px >= xintercept) return 0;
 		return (y0 < y1) ? 1 : -1;
 	}
@@ -80,7 +80,7 @@ public class Segment2f extends AbstractShape2f<Segment2f> {
 	 * +1 is returned for a crossing where the Y coordinate is increasing
 	 * -1 is returned for a crossing where the Y coordinate is decreasing
 	 * <p>
-	 * This function differs from {@link #computeCrossingsFromPoint(float, float, float, float, float, float)}.
+	 * This function differs from {@link #computeCrossingsFromPoint(double, double, double, double, double, double)}.
 	 * The equality test is not used in this function.
 	 * 
 	 * @param px is the reference point to test.
@@ -92,16 +92,16 @@ public class Segment2f extends AbstractShape2f<Segment2f> {
 	 * @return the crossing.
 	 */
 	private static int computeCrossingsFromPoint1(
-			float px, float py,
-			float x0, float y0,
-			float x1, float y1) {
+			double px, double py,
+			double x0, double y0,
+			double x1, double y1) {
 		// Copied from AWT API
 		if (py <  y0 && py <  y1) return 0;
 		if (py > y0 && py > y1) return 0;
 		// assert(y0 != y1);
 		if (px > x0 && px > x1) return 0;
 		if (px <  x0 && px <  x1) return (y0 < y1) ? 1 : -1;
-		float xintercept = x0 + (py - y0) * (x1 - x0) / (y1 - y0);
+		double xintercept = x0 + (py - y0) * (x1 - x0) / (y1 - y0);
 		if (px > xintercept) return 0;
 		return (y0 < y1) ? 1 : -1;
 	}
@@ -123,16 +123,16 @@ public class Segment2f extends AbstractShape2f<Segment2f> {
 	 */
 	public static int computeCrossingsFromSegment(
 			int crossings,
-			float sx1, float sy1,
-			float sx2, float sy2,
-			float x0, float y0,
-			float x1, float y1) {
+			double sx1, double sy1,
+			double sx2, double sy2,
+			double x0, double y0,
+			double x1, double y1) {
 		int numCrosses = crossings;
 
-		float xmin = Math.min(sx1, sx2);
-		float xmax = Math.max(sx1, sx2);
-		float ymin = Math.min(sy1, sy2);
-		float ymax = Math.max(sy1, sy2);
+		double xmin = Math.min(sx1, sx2);
+		double xmax = Math.max(sx1, sx2);
+		double ymin = Math.min(sy1, sy2);
+		double ymax = Math.max(sy1, sy2);
 
 		if (y0<=ymin && y1<=ymin) return numCrosses;
 		if (y0>=ymax && y1>=ymax) return numCrosses;
@@ -195,16 +195,16 @@ public class Segment2f extends AbstractShape2f<Segment2f> {
 	 */
 	public static int computeCrossingsFromEllipse(
 			int crossings,
-			float ex, float ey,
-			float ew, float eh,
-			float x0, float y0,
-			float x1, float y1) {
+			double ex, double ey,
+			double ew, double eh,
+			double x0, double y0,
+			double x1, double y1) {
 		int numCrosses = crossings;
 
-		float xmin = ex;
-		float ymin = ey;
-		float xmax = ex + ew;
-		float ymax = ey + eh;
+		double xmin = ex;
+		double ymin = ey;
+		double xmax = ex + ew;
+		double ymax = ey + eh;
 
 		if (y0<=ymin && y1<=ymin) return numCrosses;
 		if (y0>=ymax && y1>=ymax) return numCrosses;
@@ -227,7 +227,7 @@ public class Segment2f extends AbstractShape2f<Segment2f> {
 			return MathConstants.SHAPE_INTERSECTS;
 		}
 		else {
-			float xcenter = (xmin+xmax)/2f;
+			double xcenter = (xmin+xmax)/2f;
 			numCrosses += computeCrossingsFromPoint(xcenter, ymin, x0, y0, x1, y1);
 			numCrosses += computeCrossingsFromPoint(xcenter, ymax, x0, y0, x1, y1);
 		}
@@ -251,15 +251,15 @@ public class Segment2f extends AbstractShape2f<Segment2f> {
 	 */
 	public static int computeCrossingsFromCircle(
 			int crossings,
-			float cx, float cy,
-			float radius,
-			float x0, float y0,
-			float x1, float y1) {
+			double cx, double cy,
+			double radius,
+			double x0, double y0,
+			double x1, double y1) {
 		int numCrosses = crossings;
 
-		float xmin = cx - Math.abs(radius);
-		float ymin = cy - Math.abs(radius);
-		float ymax = cy + Math.abs(radius);
+		double xmin = cx - Math.abs(radius);
+		double ymin = cy - Math.abs(radius);
+		double ymax = cy + Math.abs(radius);
 
 		if (y0<=ymin && y1<=ymin) return numCrosses;
 		if (y0>=ymax && y1>=ymax) return numCrosses;
@@ -307,10 +307,10 @@ public class Segment2f extends AbstractShape2f<Segment2f> {
 	 */
 	public static int computeCrossingsFromRect(
 			int crossings,
-			float rxmin, float rymin,
-			float rxmax, float rymax,
-			float x0, float y0,
-			float x1, float y1) {
+			double rxmin, double rymin,
+			double rxmax, double rymax,
+			double x0, double y0,
+			double x1, double y1) {
 		int numCrosses = crossings;
 
 		if (y0 >= rymax && y1 >= rymax) return numCrosses;
@@ -346,14 +346,14 @@ public class Segment2f extends AbstractShape2f<Segment2f> {
 		}
 		// Otherwise calculate the y intercepts and see where
 		// they fall with respect to the rectangle
-		float xi0 = x0;
+		double xi0 = x0;
 		if (y0 < rymin) {
 			xi0 += ((rymin - y0) * (x1 - x0) / (y1 - y0));
 		}
 		else if (y0 > rymax) {
 			xi0 += ((rymax - y0) * (x1 - x0) / (y1 - y0));
 		}
-		float xi1 = x1;
+		double xi1 = x1;
 		if (y1 < rymin) {
 			xi1 += ((rymin - y1) * (x0 - x1) / (y0 - y1));
 		}
@@ -392,7 +392,7 @@ public class Segment2f extends AbstractShape2f<Segment2f> {
 	 * @return <code>true</code> if the two shapes are intersecting; otherwise
 	 * <code>false</code>
 	 */
-	public static boolean intersectsLineLine(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4) {
+	public static boolean intersectsLineLine(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4) {
 		if (MathUtil.isParallelLines(x1, y1, x2, y2, x3, y3, x4, y4)) {
 			return MathUtil.isCollinearPoints(x1, y1, x2, y2, x3, y3);
 		}
@@ -412,13 +412,13 @@ public class Segment2f extends AbstractShape2f<Segment2f> {
 	 * @return <code>true</code> if the two shapes are intersecting; otherwise
 	 * <code>false</code>
 	 */
-	public static boolean intersectsSegmentLine(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4) {
+	public static boolean intersectsSegmentLine(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4) {
 		return (MathUtil.sidePointLine(x3, y3, x4, y4, x1, y1, true) *
 				MathUtil.sidePointLine(x3, y3, x4, y4, x2, y2, true)) <= 0;
 	}
 
-	private static boolean intersectsSSWE(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4) {
-		float vx1, vy1, vx2a, vy2a, vx2b, vy2b, f1, f2, sign;
+	private static boolean intersectsSSWE(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4) {
+		double vx1, vy1, vx2a, vy2a, vx2b, vy2b, f1, f2, sign;
 
 		vx1 = x2 - x1;
 		vy1 = y2 - y1;
@@ -450,7 +450,7 @@ public class Segment2f extends AbstractShape2f<Segment2f> {
 		if (sign<0f) return true;
 		if (sign>0f) return false;
 
-		float squaredLength = vx1*vx1 + vy1*vy1;
+		double squaredLength = vx1*vx1 + vy1*vy1;
 
 		if (f1==0f && f2==0f) {
 			// Projection of the point on the segment line:
@@ -501,8 +501,8 @@ public class Segment2f extends AbstractShape2f<Segment2f> {
 		return false;
 	}
 
-	private static boolean intersectsSSWoE(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4) {
-		float vx1, vy1, vx2a, vy2a, vx2b, vy2b, f1, f2, sign;
+	private static boolean intersectsSSWoE(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4) {
+		double vx1, vy1, vx2a, vy2a, vx2b, vy2b, f1, f2, sign;
 
 		vx1 = x2 - x1;
 		vy1 = y2 - y1;
@@ -539,7 +539,7 @@ public class Segment2f extends AbstractShape2f<Segment2f> {
 			// >1 -> means after second point
 			// otherwhise on the segment.
 
-			float squaredLength = vx1*vx1 + vy1*vy1;
+			double squaredLength = vx1*vx1 + vy1*vy1;
 
 			f1 = (vx2a * vx1 + vy2a * vy1) / squaredLength;
 			f2 = (vx2b * vx1 + vy2b * vy1) / squaredLength;
@@ -558,7 +558,7 @@ public class Segment2f extends AbstractShape2f<Segment2f> {
 	 * This function considers that the ends of
 	 * the segments are not intersecting.
 	 * To include the ends of the segments in the intersection ranges, see
-	 * {@link #intersectsSegmentSegmentWithEnds(float, float, float, float, float, float, float, float)}.
+	 * {@link #intersectsSegmentSegmentWithEnds(double, double, double, double, double, double, double, double)}.
 	 * 
 	 * @param x1 is the first point of the first segment.
 	 * @param y1 is the first point of the first segment.
@@ -570,9 +570,9 @@ public class Segment2f extends AbstractShape2f<Segment2f> {
 	 * @param y4 is the second point of the second segment.
 	 * @return <code>true</code> if the two shapes are intersecting; otherwise
 	 * <code>false</code>
-	 * @see #intersectsSegmentSegmentWithEnds(float, float, float, float, float, float, float, float)
+	 * @see #intersectsSegmentSegmentWithEnds(double, double, double, double, double, double, double, double)
 	 */
-	public static boolean intersectsSegmentSegmentWithoutEnds(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4) {
+	public static boolean intersectsSegmentSegmentWithoutEnds(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4) {
 		boolean r;
 		r = intersectsSSWoE(x1, y1, x2, y2, x3, y3, x4, y4);
 		if (!r) return r;
@@ -583,7 +583,7 @@ public class Segment2f extends AbstractShape2f<Segment2f> {
 	 * This function considers that the ends of
 	 * the segments are intersecting.
 	 * To ignore the ends of the segments, see
-	 * {@link #intersectsSegmentSegmentWithoutEnds(float, float, float, float, float, float, float, float)}.
+	 * {@link #intersectsSegmentSegmentWithoutEnds(double, double, double, double, double, double, double, double)}.
 	 * 
 	 * @param x1 is the first point of the first segment.
 	 * @param y1 is the first point of the first segment.
@@ -595,9 +595,9 @@ public class Segment2f extends AbstractShape2f<Segment2f> {
 	 * @param y4 is the second point of the second segment.
 	 * @return <code>true</code> if the two shapes are intersecting; otherwise
 	 * <code>false</code>
-	 * @see #intersectsSegmentSegmentWithoutEnds(float, float, float, float, float, float, float, float)
+	 * @see #intersectsSegmentSegmentWithoutEnds(double, double, double, double, double, double, double, double)
 	 */
-	public static boolean intersectsSegmentSegmentWithEnds(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4) {
+	public static boolean intersectsSegmentSegmentWithEnds(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4) {
 		boolean r;
 		r = intersectsSSWE(x1, y1, x2, y2, x3, y3, x4, y4);
 		if (!r) return r;
@@ -605,13 +605,13 @@ public class Segment2f extends AbstractShape2f<Segment2f> {
 	}
 
 	/** X-coordinate of the first point. */
-	protected float ax = 0f;
+	protected double ax = 0f;
 	/** Y-coordinate of the first point. */
-	protected float ay = 0f;
+	protected double ay = 0f;
 	/** X-coordinate of the second point. */
-	protected float bx = 0f;
+	protected double bx = 0f;
 	/** Y-coordinate of the second point. */
-	protected float by = 0f;
+	protected double by = 0f;
 
 	/**
 	 */
@@ -643,7 +643,7 @@ public class Segment2f extends AbstractShape2f<Segment2f> {
 	 * @param x2
 	 * @param y2
 	 */
-	public Segment2f(float x1, float y1, float x2, float y2) {
+	public Segment2f(double x1, double y1, double x2, double y2) {
 		set(x1, y1, x2, y2);
 	}
 
@@ -672,7 +672,7 @@ public class Segment2f extends AbstractShape2f<Segment2f> {
 	 * @param x2
 	 * @param y2
 	 */
-	public void set(float x1, float y1, float x2, float y2) {
+	public void set(double x1, double y1, double x2, double y2) {
 		this.ax = x1;
 		this.ay = y1;
 		this.bx = x2;
@@ -704,7 +704,7 @@ public class Segment2f extends AbstractShape2f<Segment2f> {
 	 * 
 	 * @return the x of the first point.
 	 */
-	public float getX1() {
+	public double getX1() {
 		return this.ax;
 	}
 
@@ -712,7 +712,7 @@ public class Segment2f extends AbstractShape2f<Segment2f> {
 	 * 
 	 * @return the y of the first point.
 	 */
-	public float getY1() {
+	public double getY1() {
 		return this.ay;
 	}
 
@@ -720,7 +720,7 @@ public class Segment2f extends AbstractShape2f<Segment2f> {
 	 * 
 	 * @return the x of the second point.
 	 */
-	public float getX2() {
+	public double getX2() {
 		return this.bx;
 	}
 
@@ -728,7 +728,7 @@ public class Segment2f extends AbstractShape2f<Segment2f> {
 	 * 
 	 * @return the y of the second point.
 	 */
-	public float getY2() {
+	public double getY2() {
 		return this.by;
 	}
 
@@ -775,8 +775,8 @@ public class Segment2f extends AbstractShape2f<Segment2f> {
 	/** {@inheritDoc}
 	 */
 	@Override
-	public float distanceSquared(Point2D p) {
-		return (float) MathUtil.distanceSquaredPointToSegment(p.getX(), p.getY(),
+	public double distanceSquared(Point2D p) {
+		return (double) MathUtil.distanceSquaredPointToSegment(p.getX(), p.getY(),
 				this.ax, this.ay,
 				this.bx, this.by);
 	}
@@ -784,9 +784,9 @@ public class Segment2f extends AbstractShape2f<Segment2f> {
 	/** {@inheritDoc}
 	 */
 	@Override
-	public float distanceL1(Point2D p) {
-		float ratio = (float) MathUtil.projectsPointOnLine(p.getX(), p.getY(), this.ax, this.ay, this.bx, this.by);
-		ratio = (float) MathUtil.clamp(ratio, 0f, 1f);
+	public double distanceL1(Point2D p) {
+		double ratio = (double) MathUtil.projectsPointOnLine(p.getX(), p.getY(), this.ax, this.ay, this.bx, this.by);
+		ratio = (double) MathUtil.clamp(ratio, 0f, 1f);
 		Vector2f v = new Vector2f(this.bx, this.by);
 		v.sub(this.ax, this.ay);
 		v.scale(ratio);
@@ -797,9 +797,9 @@ public class Segment2f extends AbstractShape2f<Segment2f> {
 	/** {@inheritDoc}
 	 */
 	@Override
-	public float distanceLinf(Point2D p) {
-		float ratio = (float) MathUtil.projectsPointOnLine(p.getX(), p.getY(), this.ax, this.ay, this.bx, this.by);
-		ratio = (float) MathUtil.clamp(ratio, 0f, 1f);
+	public double distanceLinf(Point2D p) {
+		double ratio = (double) MathUtil.projectsPointOnLine(p.getX(), p.getY(), this.ax, this.ay, this.bx, this.by);
+		ratio = (double) MathUtil.clamp(ratio, 0f, 1f);
 		Vector2f v = new Vector2f(this.bx, this.by);
 		v.sub(this.ax, this.ay);
 		v.scale(ratio);
@@ -815,7 +815,7 @@ public class Segment2f extends AbstractShape2f<Segment2f> {
 	 * @see MathUtil#isEpsilonZero(double)
 	 */
 	@Override
-	public boolean contains(float x, float y) {
+	public boolean contains(double x, double y) {
 		return MathUtil.isEpsilonZero(MathUtil.distanceSquaredPointToSegment(x, y,
 				this.ax, this.ay,
 				this.bx, this.by));
@@ -833,7 +833,7 @@ public class Segment2f extends AbstractShape2f<Segment2f> {
 	 */
 	@Override
 	public Point2f getClosestPointTo(Point2D p) {
-		float ratio = (float) MathUtil.projectsPointOnLine(p.getX(), p.getY(),
+		double ratio = (double) MathUtil.projectsPointOnLine(p.getX(), p.getY(),
 				this.ax, this.ay,
 				this.bx, this.by);
 		if (ratio<=0f) return new Point2f(this.ax, this.ay);
@@ -844,7 +844,7 @@ public class Segment2f extends AbstractShape2f<Segment2f> {
 	}
 
 	@Override
-	public void translate(float dx, float dy) {
+	public void translate(double dx, double dy) {
 		this.ax += dx;
 		this.ay += dy;
 		this.bx += dx;
@@ -945,7 +945,7 @@ public class Segment2f extends AbstractShape2f<Segment2f> {
 
 	@Override
 	public boolean intersects(Path2f s) {
-		return intersects(s.getPathIterator((float) MathConstants.SPLINE_APPROXIMATION_RATIO));
+		return intersects(s.getPathIterator((double) MathConstants.SPLINE_APPROXIMATION_RATIO));
 	}
 
 	@Override
@@ -987,10 +987,10 @@ public class Segment2f extends AbstractShape2f<Segment2f> {
 		private final Point2D p1 = new Point2f();
 		private final Point2D p2 = new Point2f();
 		private final Transform2D transform;
-		private final float x1;
-		private final float y1;
-		private final float x2;
-		private final float y2;
+		private final double x1;
+		private final double y1;
+		private final double x2;
+		private final double y2;
 		private int index = 0;
 
 		/**
@@ -1000,7 +1000,7 @@ public class Segment2f extends AbstractShape2f<Segment2f> {
 		 * @param y2
 		 * @param transform
 		 */
-		public SegmentPathIterator(float x1, float y1, float x2, float y2, Transform2D transform) {
+		public SegmentPathIterator(double x1, double y1, double x2, double y2, Transform2D transform) {
 			this.transform = transform;
 			this.x1 = x1;
 			this.y1 = y1;

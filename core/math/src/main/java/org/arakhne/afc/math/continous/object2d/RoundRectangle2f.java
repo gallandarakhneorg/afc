@@ -58,15 +58,15 @@ public class RoundRectangle2f extends AbstractRectangularShape2f<RoundRectangle2
 	 * @return <code>true</code> if the given rectangle is inside the ellipse;
 	 * otherwise <code>false</code>.
 	 */
-	public static boolean containsRoundRectangleRectangle(float rx1, float ry1, float rwidth1, float rheight1, float awidth, float aheight, float rx2, float ry2, float rwidth2, float rheight2) {
-		float rcx1 = (rx1 + rwidth1/2f);
-		float rcy1 = (ry1 + rheight1/2f);
-		float rcx2 = (rx2 + rwidth2/2f);
-		float rcy2 = (ry2 + rheight2/2f);
-		float farX;
+	public static boolean containsRoundRectangleRectangle(double rx1, double ry1, double rwidth1, double rheight1, double awidth, double aheight, double rx2, double ry2, double rwidth2, double rheight2) {
+		double rcx1 = (rx1 + rwidth1/2f);
+		double rcy1 = (ry1 + rheight1/2f);
+		double rcx2 = (rx2 + rwidth2/2f);
+		double rcy2 = (ry2 + rheight2/2f);
+		double farX;
 		if (rcx1<=rcx2) farX = rx2 + rwidth2;
 		else farX = rx2;
-		float farY;
+		double farY;
 		if (rcy1<=rcy2) farY = ry2 + rheight2;
 		else farY = ry2;
 		return containsRoundRectanglePoint(rx1, ry1, rwidth1, rheight1, awidth, aheight, farX, farY);
@@ -85,20 +85,20 @@ public class RoundRectangle2f extends AbstractRectangularShape2f<RoundRectangle2
 	 * @return <code>true</code> if the given rectangle is inside the ellipse;
 	 * otherwise <code>false</code>.
 	 */
-	public static boolean containsRoundRectanglePoint(float rx, float ry, float rwidth, float rheight, float awidth, float aheight, float px, float py) {
+	public static boolean containsRoundRectanglePoint(double rx, double ry, double rwidth, double rheight, double awidth, double aheight, double px, double py) {
 		if (rwidth<=0f && rheight<=0f) {
 			return rx==px && ry==py;
 		}
-		float rx0 = rx;
-		float ry0 = ry;
-		float rrx1 = rx0 + rwidth;
-		float rry1 = ry0 + rheight;
+		double rx0 = rx;
+		double ry0 = ry;
+		double rrx1 = rx0 + rwidth;
+		double rry1 = ry0 + rheight;
 		// Check for trivial rejection - point is outside bounding rectangle
 		if (px < rx0 || py < ry0 || px >= rrx1 || py >= rry1) {
 			return false;
 		}
-		float aw = Math.min(rwidth, Math.abs(awidth)) / 2f;
-		float ah = Math.min(rheight, Math.abs(aheight)) / 2f;
+		double aw = Math.min(rwidth, Math.abs(awidth)) / 2f;
+		double ah = Math.min(rheight, Math.abs(aheight)) / 2f;
 		// Check which corner point is in and do circular containment
 		// test - otherwise simple acceptance
 		if (px >= (rx0 += aw) && px < (rx0 = rrx1 - aw)) {
@@ -107,24 +107,24 @@ public class RoundRectangle2f extends AbstractRectangularShape2f<RoundRectangle2
 		if (py >= (ry0 += ah) && py < (ry0 = rry1 - ah)) {
 			return true;
 		}
-		float xx = (px - rx0) / aw;
-		float yy = (py - ry0) / ah;
+		double xx = (px - rx0) / aw;
+		double yy = (py - ry0) / ah;
 		return (xx * xx + yy * yy <= 1f);
 	}
 
-	private static final float ANGLE = (float) MathConstants.PI / 4f;
-	private static final float A = 1f - (float)Math.cos(ANGLE);
-	private static final float B = (float)Math.tan(ANGLE);
-	private static final float C = (float)Math.sqrt(1f + B * B) - 1f + A;
-	private static final float CV = 4f / 3f * A * B / C;
-	private static final float ACV = (1f - CV) / 2f;
+	private static final double ANGLE = (double) MathConstants.PI / 4f;
+	private static final double A = 1f - (double)Math.cos(ANGLE);
+	private static final double B = (double)Math.tan(ANGLE);
+	private static final double C = (double)Math.sqrt(1f + B * B) - 1f + A;
+	private static final double CV = 4f / 3f * A * B / C;
+	private static final double ACV = (1f - CV) / 2f;
 
 	/** For each array:
 	 * 4 values for each point {v0, v1, v2, v3}:
 	 * point = (x + v0 * w + v1 * arcWidth,
 	 * y + v2 * h + v3 * arcHeight)
 	 */
-	static float CTRL_PTS[][] = {
+	static double CTRL_PTS[][] = {
 		{  0f,  0f,  0f,  .5f },
 		{  0f,  0f,  1f, -.5f },
 		{  0f,  0f,  1f, -ACV,
@@ -158,9 +158,9 @@ public class RoundRectangle2f extends AbstractRectangularShape2f<RoundRectangle2
 
 
 	/** Width of the arcs at the corner of the box. */
-	protected float arcWidth;
+	protected double arcWidth;
 	/** Height of the arcs at the corner of the box. */
-	protected float arcHeight;
+	protected double arcHeight;
 
 	/**
 	 */
@@ -174,7 +174,7 @@ public class RoundRectangle2f extends AbstractRectangularShape2f<RoundRectangle2
 	 * @param arcWidth
 	 * @param arcHeight
 	 */
-	public RoundRectangle2f(Point2f min, Point2f max, float arcWidth, float arcHeight) {
+	public RoundRectangle2f(Point2f min, Point2f max, double arcWidth, double arcHeight) {
 		super(min, max);
 		this.arcWidth = arcWidth;
 		this.arcHeight = arcHeight;
@@ -195,7 +195,7 @@ public class RoundRectangle2f extends AbstractRectangularShape2f<RoundRectangle2
 	 * @param arcWidth
 	 * @param arcHeight
 	 */
-	public RoundRectangle2f(float x, float y, float width, float height, float arcWidth, float arcHeight) {
+	public RoundRectangle2f(double x, double y, double width, double height, double arcWidth, double arcHeight) {
 		super(x, y, width, height);
 		this.arcWidth = arcWidth;
 		this.arcHeight = arcHeight;
@@ -212,7 +212,7 @@ public class RoundRectangle2f extends AbstractRectangularShape2f<RoundRectangle2
 	 * @return the width of the arc that rounds off the corners
 	 * of this <code>RoundRectangle2f</code>.
 	 */
-	public float getArcWidth() {
+	public double getArcWidth() {
 		return this.arcWidth;
 	}
 
@@ -221,7 +221,7 @@ public class RoundRectangle2f extends AbstractRectangularShape2f<RoundRectangle2
 	 * @return the height of the arc that rounds off the corners
 	 * of this <code>RoundRectangle2f</code>.
 	 */
-	public float getArcHeight() {
+	public double getArcHeight() {
 		return this.arcHeight;
 	}
 
@@ -230,7 +230,7 @@ public class RoundRectangle2f extends AbstractRectangularShape2f<RoundRectangle2
 	 * @param a is the width of the arc that rounds off the corners
 	 * of this <code>RoundRectangle2f</code>.
 	 */
-	public void setArcWidth(float a) {
+	public void setArcWidth(double a) {
 		this.arcWidth = a;
 	}
 
@@ -239,7 +239,7 @@ public class RoundRectangle2f extends AbstractRectangularShape2f<RoundRectangle2
 	 * @param a is the height of the arc that rounds off the corners
 	 * of this <code>RoundRectangle2f</code>.
 	 */
-	public void setArcHeight(float a) {
+	public void setArcHeight(double a) {
 		this.arcHeight = a;
 	}
 
@@ -254,7 +254,7 @@ public class RoundRectangle2f extends AbstractRectangularShape2f<RoundRectangle2
 	 * @param arcHeight is the height of the arc that rounds off the corners
 	 * of this <code>RoundRectangle2f</code>.
 	 */
-	public void set(float x, float y, float width, float height, float arcWidth, float arcHeight) {
+	public void set(double x, double y, double width, double height, double arcWidth, double arcHeight) {
 		setFromCorners(x, y, x+width, y+height);
 		this.arcWidth = arcWidth;
 		this.arcHeight = arcHeight;
@@ -263,7 +263,7 @@ public class RoundRectangle2f extends AbstractRectangularShape2f<RoundRectangle2
 	/** {@inheritDoc}
 	 */
 	@Override
-	public boolean contains(float x, float y) {
+	public boolean contains(double x, double y) {
 		return containsRoundRectanglePoint(
 				getMinX(), getMinY(), getWidth(), getHeight(), getArcWidth(), getArcHeight(),
 				x, y);
@@ -277,37 +277,37 @@ public class RoundRectangle2f extends AbstractRectangularShape2f<RoundRectangle2
 	}
 
 	@Override
-	public float distanceSquared(Point2D p) {
+	public double distanceSquared(Point2D p) {
 		Point2D n = getClosestPointTo(p);
 		return n.distanceSquared(p);
 	}
 
 	@Override
-	public float distanceL1(Point2D p) {
+	public double distanceL1(Point2D p) {
 		Point2D n = getClosestPointTo(p);
 		return n.distanceL1(p);
 	}
 
 	@Override
-	public float distanceLinf(Point2D p) {
+	public double distanceLinf(Point2D p) {
 		Point2D n = getClosestPointTo(p);
 		return n.distanceLinf(p);
 	}
 
 	@Override
 	public Point2D getClosestPointTo(Point2D p) {
-		float px = p.getX();
-		float py = p.getY();
-		float rx1 = getMinX();
-		float ry1 = getMinY();
-		float rx2 = getMaxX();
-		float ry2 = getMaxY();
+		double px = p.getX();
+		double py = p.getY();
+		double rx1 = getMinX();
+		double ry1 = getMinY();
+		double rx2 = getMaxX();
+		double ry2 = getMaxY();
 
-		float aw = getArcWidth();
-		float ah = getArcHeight();
+		double aw = getArcWidth();
+		double ah = getArcHeight();
 
 		int same = 0;
-		float x, y;
+		double x, y;
 
 		if (px<rx1+aw) {
 			if (py<ry1+ah) {
@@ -451,7 +451,7 @@ public class RoundRectangle2f extends AbstractRectangularShape2f<RoundRectangle2
 
 	@Override
 	public boolean intersects(Path2f s) {
-		return intersects(s.getPathIterator((float) MathConstants.SPLINE_APPROXIMATION_RATIO));
+		return intersects(s.getPathIterator((double) MathConstants.SPLINE_APPROXIMATION_RATIO));
 	}
 
 	@Override
@@ -495,15 +495,15 @@ public class RoundRectangle2f extends AbstractRectangularShape2f<RoundRectangle2
 	 */
 	private static class CopyPathIterator implements PathIterator2f {
 
-		private final float x;
-		private final float y;
-		private final float w;
-		private final float h;
-		private final float aw;
-		private final float ah;
+		private final double x;
+		private final double y;
+		private final double w;
+		private final double h;
+		private final double aw;
+		private final double ah;
 		private int index = 0;
 
-		private float moveX, moveY, lastX,  lastY;
+		private double moveX, moveY, lastX,  lastY;
 
 		/**
 		 * @param x
@@ -513,7 +513,7 @@ public class RoundRectangle2f extends AbstractRectangularShape2f<RoundRectangle2
 		 * @param aw
 		 * @param ah
 		 */
-		public CopyPathIterator(float x, float y, float w, float h, float aw, float ah) {
+		public CopyPathIterator(double x, double y, double w, double h, double aw, double ah) {
 			this.x = x;
 			this.y = y;
 			this.w = Math.max(0f, w);
@@ -537,9 +537,9 @@ public class RoundRectangle2f extends AbstractRectangularShape2f<RoundRectangle2
 
 			PathElement2f element = null;
 			PathElementType type = TYPES[idx];
-			float ctrls[] = CTRL_PTS[idx];
-			float ix, iy;
-			float ctrlx1, ctrly1, ctrlx2, ctrly2;
+			double ctrls[] = CTRL_PTS[idx];
+			double ix, iy;
+			double ctrlx1, ctrly1, ctrlx2, ctrly2;
 
 			switch(type) {
 			case MOVE_TO:
@@ -620,15 +620,15 @@ public class RoundRectangle2f extends AbstractRectangularShape2f<RoundRectangle2
 	private static class TransformPathIterator implements PathIterator2f {
 
 		private final Transform2D transform;
-		private final float x;
-		private final float y;
-		private final float w;
-		private final float h;
-		private final float aw;
-		private final float ah;
+		private final double x;
+		private final double y;
+		private final double w;
+		private final double h;
+		private final double aw;
+		private final double ah;
 		private int index = 0;
 
-		private float moveX, moveY;
+		private double moveX, moveY;
 		private final Point2D last = new Point2f();
 		private final Point2D ctrl1 = new Point2f();
 		private final Point2D ctrl2 = new Point2f();
@@ -642,7 +642,7 @@ public class RoundRectangle2f extends AbstractRectangularShape2f<RoundRectangle2
 		 * @param ah
 		 * @param transform
 		 */
-		public TransformPathIterator(float x, float y, float w, float h, float aw, float ah, Transform2D transform) {
+		public TransformPathIterator(double x, double y, double w, double h, double aw, double ah, Transform2D transform) {
 			this.transform = transform;
 			this.x = x;
 			this.y = y;
@@ -667,8 +667,8 @@ public class RoundRectangle2f extends AbstractRectangularShape2f<RoundRectangle2
 
 			PathElement2f element = null;
 			PathElementType type = TYPES[idx];
-			float ctrls[] = CTRL_PTS[idx];
-			float ix, iy;
+			double ctrls[] = CTRL_PTS[idx];
+			double ix, iy;
 
 			switch(type) {
 			case MOVE_TO:

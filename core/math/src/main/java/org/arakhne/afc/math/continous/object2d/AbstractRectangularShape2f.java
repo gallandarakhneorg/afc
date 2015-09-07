@@ -40,13 +40,13 @@ extends AbstractShape2f<T> {
 	private static final long serialVersionUID = -2330319571109966087L;
 
 	/** Lowest x-coordinate covered by this rectangular shape. */
-	protected float minx = 0f;
+	protected double minx = 0f;
 	/** Lowest y-coordinate covered by this rectangular shape. */
-	protected float miny = 0f;
+	protected double miny = 0f;
 	/** Highest x-coordinate covered by this rectangular shape. */
-	protected float maxx = 0f;
+	protected double maxx = 0f;
 	/** Highest y-coordinate covered by this rectangular shape. */
-	protected float maxy = 0f;
+	protected double maxy = 0f;
 	
 	/**
 	 */
@@ -68,7 +68,7 @@ extends AbstractShape2f<T> {
 	 * @param width
 	 * @param height
 	 */
-	public AbstractRectangularShape2f(float x, float y, float width, float height) {
+	public AbstractRectangularShape2f(double x, double y, double width, double height) {
 		setFromCorners(x, y, x+width, y+height);
 	}
 	
@@ -109,7 +109,7 @@ extends AbstractShape2f<T> {
 	 * @param width
 	 * @param height
 	 */
-	public void set(float x, float y, float width, float height) {
+	public void set(double x, double y, double width, double height) {
 		setFromCorners(x, y, x+width, y+height);
 	}
 	
@@ -132,7 +132,7 @@ extends AbstractShape2f<T> {
 	 * 
 	 * @param width
 	 */
-	public void setWidth(float width) {
+	public void setWidth(double width) {
 		this.maxx = this.minx + Math.max(0f, width);
 	}
 
@@ -140,7 +140,7 @@ extends AbstractShape2f<T> {
 	 * 
 	 * @param height
 	 */
-	public void setHeight(float height) {
+	public void setHeight(double height) {
 		this.maxy = this.miny + Math.max(0f, height);
 	}
 
@@ -160,7 +160,7 @@ extends AbstractShape2f<T> {
 	 * @param x2 is the coordinate of the second corner.
 	 * @param y2 is the coordinate of the second corner.
 	 */
-	public void setFromCorners(float x1, float y1, float x2, float y2) {
+	public void setFromCorners(double x1, double y1, double x2, double y2) {
 		if (x1<x2) {
 			this.minx = x1;
 			this.maxx = x2;
@@ -190,9 +190,9 @@ extends AbstractShape2f<T> {
      * @param cornerX the X coordinate of the specified corner point
      * @param cornerY the Y coordinate of the specified corner point
      */
-	public void setFromCenter(float centerX, float centerY, float cornerX, float cornerY) {
-		float dx = centerX - cornerX;
-		float dy = centerY - cornerY;
+	public void setFromCenter(double centerX, double centerY, double cornerX, double cornerY) {
+		double dx = centerX - cornerX;
+		double dy = centerY - cornerY;
 		setFromCorners(cornerX, cornerY, centerX + dx, centerY + dy);
 	}
 	
@@ -200,7 +200,7 @@ extends AbstractShape2f<T> {
 	 * 
 	 * @return the min x.
 	 */
-	public float getMinX() {
+	public double getMinX() {
 		return this.minx;
 	}
 
@@ -208,8 +208,8 @@ extends AbstractShape2f<T> {
 	 * 
 	 * @param x the min x.
 	 */
-	public void setMinX(float x) {
-		float o = this.maxx;
+	public void setMinX(double x) {
+		double o = this.maxx;
 		if (o<x) {
 			this.minx = o;
 			this.maxx = x;
@@ -223,7 +223,7 @@ extends AbstractShape2f<T> {
 	 * 
 	 * @return the center x.
 	 */
-	public float getCenterX() {
+	public double getCenterX() {
 		return (this.minx + this.maxx) / 2f;
 	}
 
@@ -231,7 +231,7 @@ extends AbstractShape2f<T> {
 	 * 
 	 * @return the max x.
 	 */
-	public float getMaxX() {
+	public double getMaxX() {
 		return this.maxx;
 	}
 
@@ -239,8 +239,8 @@ extends AbstractShape2f<T> {
 	 * 
 	 * @param x the max x.
 	 */
-	public void setMaxX(float x) {
-		float o = this.minx;
+	public void setMaxX(double x) {
+		double o = this.minx;
 		if (o>x) {
 			this.maxx = o;
 			this.minx = x;
@@ -254,7 +254,7 @@ extends AbstractShape2f<T> {
 	 * 
 	 * @return the min y.
 	 */
-	public float getMinY() {
+	public double getMinY() {
 		return this.miny;
 	}
 
@@ -262,8 +262,8 @@ extends AbstractShape2f<T> {
 	 * 
 	 * @param y the min y.
 	 */
-	public void setMinY(float y) {
-		float o = this.maxy;
+	public void setMinY(double y) {
+		double o = this.maxy;
 		if (o<y) {
 			this.miny = o;
 			this.maxy = y;
@@ -277,7 +277,7 @@ extends AbstractShape2f<T> {
 	 * 
 	 * @return the center y.
 	 */
-	public float getCenterY() {
+	public double getCenterY() {
 		return (this.miny + this.maxy) / 2f;
 	}
 
@@ -285,7 +285,7 @@ extends AbstractShape2f<T> {
 	 * 
 	 * @return the max y.
 	 */
-	public float getMaxY() {
+	public double getMaxY() {
 		return this.maxy;
 	}
 	
@@ -293,8 +293,8 @@ extends AbstractShape2f<T> {
 	 * 
 	 * @param y the max y.
 	 */
-	public void setMaxY(float y) {
-		float o = this.miny;
+	public void setMaxY(double y) {
+		double o = this.miny;
 		if (o>y) {
 			this.maxy = o;
 			this.miny = y;
@@ -308,7 +308,7 @@ extends AbstractShape2f<T> {
 	 * 
 	 * @return the width.
 	 */
-	public float getWidth() {
+	public double getWidth() {
 		return this.maxx - this.minx;
 	}
 
@@ -316,12 +316,12 @@ extends AbstractShape2f<T> {
 	 * 
 	 * @return the height.
 	 */
-	public float getHeight() {
+	public double getHeight() {
 		return this.maxy - this.miny;
 	}
 	
 	@Override
-	public void translate(float dx, float dy) {
+	public void translate(double dx, double dy) {
 		this.minx += dx;
 		this.miny += dy;
 		this.maxx += dx;
@@ -347,7 +347,7 @@ extends AbstractShape2f<T> {
 	 * @param right
 	 * @param bottom
 	 */
-	public void inflate(float left, float top, float right, float bottom) {
+	public void inflate(double left, double top, double right, double bottom) {
 		this.minx -= left;
 		this.miny -= top;
 		this.maxx += right;

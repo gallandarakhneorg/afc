@@ -45,7 +45,7 @@ public abstract class PathElement2f implements PathElement2D {
 	 * @param coords are the coordinates.
 	 * @return the instance of path element.
 	 */
-	public static PathElement2f newInstance(PathElementType type, float lastX, float lastY, float[] coords) {
+	public static PathElement2f newInstance(PathElementType type, double lastX, double lastY, double[] coords) {
 		switch(type) {
 		case MOVE_TO:
 			return new MovePathElement2f(coords[0], coords[1]);
@@ -68,35 +68,35 @@ public abstract class PathElement2f implements PathElement2D {
 	
 	/** Source point.
 	 */
-	public final float fromX;
+	public final double fromX;
 	
 	/** Source point.
 	 */
-	public final float fromY;
+	public final double fromY;
 
 	/** Target point.
 	 */
-	public final float toX;
+	public final double toX;
 	
 	/** Target point.
 	 */
-	public final float toY;
+	public final double toY;
 
 	/** First control point.
 	 */
-	public final float ctrlX1;
+	public final double ctrlX1;
 	
 	/** First control point.
 	 */
-	public final float ctrlY1;
+	public final double ctrlY1;
 
 	/** Second control point.
 	 */
-	public final float ctrlX2;
+	public final double ctrlX2;
 	
 	/** Second control point.
 	 */
-	public final float ctrlY2;
+	public final double ctrlY2;
 
 	/**
 	 * @param type is the type of the element.
@@ -109,7 +109,7 @@ public abstract class PathElement2f implements PathElement2D {
 	 * @param tox is the target point.
 	 * @param toy is the target point.
 	 */
-	public PathElement2f(PathElementType type, float fromx, float fromy, float ctrlx1, float ctrly1, float ctrlx2, float ctrly2, float tox, float toy) {
+	public PathElement2f(PathElementType type, double fromx, double fromy, double ctrlx1, double ctrly1, double ctrlx2, double ctrly2, double tox, double toy) {
 		assert(type!=null);
 		this.type = type;
 		this.fromX = fromx;
@@ -126,13 +126,13 @@ public abstract class PathElement2f implements PathElement2D {
 	 * 
 	 * @param array
 	 */
-	public abstract void toArray(float[] array);
+	public abstract void toArray(double[] array);
 
 	/** Copy the coords into an array, except the source point.
 	 * 
 	 * @return the array of the points, except the source point.
 	 */
-	public abstract float[] toArray();
+	public abstract double[] toArray();
 
 	/** An element of the path that represents a <code>MOVE_TO</code>.
 	 *
@@ -149,11 +149,11 @@ public abstract class PathElement2f implements PathElement2D {
 		 * @param x
 		 * @param y
 		 */
-		public MovePathElement2f(float x, float y) {
+		public MovePathElement2f(double x, double y) {
 			super(PathElementType.MOVE_TO,
-					Float.NaN, Float.NaN,
-					Float.NaN, Float.NaN,
-					Float.NaN, Float.NaN,
+					Double.NaN, Double.NaN,
+					Double.NaN, Double.NaN,
+					Double.NaN, Double.NaN,
 					x, y);
 		}
 
@@ -168,14 +168,14 @@ public abstract class PathElement2f implements PathElement2D {
 		}
 		
 		@Override
-		public void toArray(float[] array) {
+		public void toArray(double[] array) {
 			array[0] = this.toX;
 			array[1] = this.toY;
 		}
 		
 		@Override
-		public float[] toArray() {
-			return new float[] {this.toX, this.toY};
+		public double[] toArray() {
+			return new double[] {this.toX, this.toY};
 		}
 
 		@Override
@@ -209,11 +209,11 @@ public abstract class PathElement2f implements PathElement2D {
 		 * @param tox
 		 * @param toy
 		 */
-		public LinePathElement2f(float fromx, float fromy, float tox, float toy) {
+		public LinePathElement2f(double fromx, double fromy, double tox, double toy) {
 			super(PathElementType.LINE_TO,
 					fromx, fromy,
-					Float.NaN, Float.NaN,
-					Float.NaN, Float.NaN,
+					Double.NaN, Double.NaN,
+					Double.NaN, Double.NaN,
 					tox, toy);
 		}
 		
@@ -233,14 +233,14 @@ public abstract class PathElement2f implements PathElement2D {
 		}
 
 		@Override
-		public void toArray(float[] array) {
+		public void toArray(double[] array) {
 			array[0] = this.toX;
 			array[1] = this.toY;
 		}
 		
 		@Override
-		public float[] toArray() {
-			return new float[] {this.toX, this.toY};
+		public double[] toArray() {
+			return new double[] {this.toX, this.toY};
 		}
 
 		@Override
@@ -271,11 +271,11 @@ public abstract class PathElement2f implements PathElement2D {
 		 * @param tox
 		 * @param toy
 		 */
-		public QuadPathElement2f(float fromx, float fromy, float ctrlx, float ctrly, float tox, float toy) {
+		public QuadPathElement2f(double fromx, double fromy, double ctrlx, double ctrly, double tox, double toy) {
 			super(PathElementType.QUAD_TO,
 					fromx, fromy,
 					ctrlx, ctrly,
-					Float.NaN, Float.NaN,
+					Double.NaN, Double.NaN,
 					tox, toy);
 		}
 		
@@ -296,7 +296,7 @@ public abstract class PathElement2f implements PathElement2D {
 		}
 
 		@Override
-		public void toArray(float[] array) {
+		public void toArray(double[] array) {
 			array[0] = this.ctrlX1;
 			array[1] = this.ctrlY1;
 			array[2] = this.toX;
@@ -304,8 +304,8 @@ public abstract class PathElement2f implements PathElement2D {
 		}
 		
 		@Override
-		public float[] toArray() {
-			return new float[] {this.ctrlX1, this.ctrlY1, this.toX, this.toY};
+		public double[] toArray() {
+			return new double[] {this.ctrlX1, this.ctrlY1, this.toX, this.toY};
 		}
 		
 		@Override
@@ -340,7 +340,7 @@ public abstract class PathElement2f implements PathElement2D {
 		 * @param tox
 		 * @param toy
 		 */
-		public CurvePathElement2f(float fromx, float fromy, float ctrlx1, float ctrly1, float ctrlx2, float ctrly2, float tox, float toy) {
+		public CurvePathElement2f(double fromx, double fromy, double ctrlx1, double ctrly1, double ctrlx2, double ctrly2, double tox, double toy) {
 			super(PathElementType.CURVE_TO,
 					fromx, fromy,
 					ctrlx1, ctrly1,
@@ -366,7 +366,7 @@ public abstract class PathElement2f implements PathElement2D {
 		}
 
 		@Override
-		public void toArray(float[] array) {
+		public void toArray(double[] array) {
 			array[0] = this.ctrlX1;
 			array[1] = this.ctrlY1;
 			array[2] = this.ctrlX2;
@@ -376,8 +376,8 @@ public abstract class PathElement2f implements PathElement2D {
 		}
 		
 		@Override
-		public float[] toArray() {
-			return new float[] {this.ctrlX1, this.ctrlY1, this.ctrlX2, this.ctrlY2, this.toX, this.toY};
+		public double[] toArray() {
+			return new double[] {this.ctrlX1, this.ctrlY1, this.ctrlX2, this.ctrlY2, this.toX, this.toY};
 		}
 
 		@Override
@@ -410,11 +410,11 @@ public abstract class PathElement2f implements PathElement2D {
 		 * @param tox
 		 * @param toy
 		 */
-		public ClosePathElement2f(float fromx, float fromy, float tox, float toy) {
+		public ClosePathElement2f(double fromx, double fromy, double tox, double toy) {
 			super(PathElementType.CLOSE,
 					fromx, fromy,
-					Float.NaN, Float.NaN,
-					Float.NaN, Float.NaN,
+					Double.NaN, Double.NaN,
+					Double.NaN, Double.NaN,
 					tox, toy);
 		}
 		
@@ -434,13 +434,13 @@ public abstract class PathElement2f implements PathElement2D {
 		}
 
 		@Override
-		public void toArray(float[] array) {
+		public void toArray(double[] array) {
 			//
 		}
 		
 		@Override
-		public float[] toArray() {
-			return new float[0];
+		public double[] toArray() {
+			return new double[0];
 		}
 		
 		@Override

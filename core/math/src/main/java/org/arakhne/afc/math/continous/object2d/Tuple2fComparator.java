@@ -48,9 +48,9 @@ public class Tuple2fComparator implements Comparator<Tuple2f<?>> {
 		if (o1==o2) return 0;
 		if (o1==null) return Integer.MIN_VALUE;
 		if (o2==null) return Integer.MAX_VALUE;
-		int cmp = Float.compare(o1.getX(), o2.getX());
+		int cmp = Double.compare(o1.getX(), o2.getX());
 		if (cmp!=0) return cmp;
-		return Float.compare(o1.getY(), o2.getY());
+		return Double.compare(o1.getY(), o2.getY());
 	}
 		
 }

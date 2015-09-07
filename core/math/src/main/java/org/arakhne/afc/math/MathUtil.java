@@ -43,6 +43,7 @@ import org.arakhne.afc.util.Pair;
 /** Mathematic and geometric utilities.
  * 
  * @author $Author: galland$
+ * @author $Author: hjaffali$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -197,7 +198,7 @@ public final class MathUtil {
 	 * @param values are the values to scan.
 	 * @return the max value.
 	 */
-	public static float max(float... values) {
+	public static double max(float... values) {
 		if (values==null || values.length==0) return Float.NaN;
 		float m = values[0];
 		for(float v : values) {
@@ -390,18 +391,18 @@ public final class MathUtil {
 		double ratio = r_numerator / r_denomenator;
 
 		if (ratio<=0.) {
-			if (pts!=null) pts.set((float) x1, (float) y1);
+			if (pts!=null) pts.set((double) x1, (double) y1);
 			return Math.sqrt((px-x1)*(px-x1) + (py-y1)*(py-y1));
 		}
 
 		if (ratio>=1.) {
-			if (pts!=null) pts.set((float) x2, (float) y2);
+			if (pts!=null) pts.set((double) x2, (double) y2);
 			return Math.sqrt((px-x2)*(px-x2) + (py-y2)*(py-y2));
 		}
 
 		if (pts!=null) pts.set(
-				(float) (ratio * (x2-x1)),
-				(float) (ratio * (y2-y1)));
+				(double) (ratio * (x2-x1)),
+				(double) (ratio * (y2-y1)));
 
 		double s =  ((y1-py)*(x2-x1)-(x1-px)*(y2-y1) ) / r_denomenator;
 		return Math.abs(s) * Math.sqrt(r_denomenator);
@@ -604,11 +605,11 @@ public final class MathUtil {
 	 */
 	public static double clampCyclic(double value, double min, double max) {
 		if (Double.isNaN(max)) { // NaN is lower than all the number according to double.compareTo()
-			return Float.NaN;
+			return Double.NaN;
 		}
 		if (Double.isNaN(min)) {
 			// Clamp max only
-			if (value>max) return max - Float.MAX_VALUE + value;
+			if (value>max) return max - Double.MAX_VALUE + value;
 		}
 		else {
 			assert(min<=max);
@@ -875,7 +876,7 @@ public final class MathUtil {
 	 *            is the X coordinate of the second point of the second segment.
 	 * @param y4
 	 *            is the Y coordinate of the second point of the second segment.
-	 * @return <code>factor1</code> or {@link Float#NaN} if no intersection.
+	 * @return <code>factor1</code> or {@link Double#NaN} if no intersection.
 	 * @since 3.0
 	 * @deprecated see {@link Segment2f#computeSegmentSegmentIntersectionFactor(double, double, double, double, double, double, double, double)}
 	 */
@@ -1192,7 +1193,7 @@ public final class MathUtil {
 	 *            is the X coordinate of the second point of the second line.
 	 * @param y4
 	 *            is the Y coordinate of the second point of the second line.
-	 * @return <code>factor1</code> or {@link Float#NaN} if no intersection.
+	 * @return <code>factor1</code> or {@link Double#NaN} if no intersection.
 	 * @deprecated see {@link Segment2f#computeLineLineIntersectionFactor(double, double, double, double, double, double, double, double)}
 	 */
 	@Deprecated
@@ -1739,8 +1740,8 @@ public final class MathUtil {
 			}
 		}
 		if (accept) {
-			p1.set((float) x0, (float) y0);
-			p2.set((float) x1, (float) y1);
+			p1.set((double) x0, (double) y0);
+			p2.set((double) x1, (double) y1);
 		}
 		return accept;
 	}
@@ -1787,18 +1788,18 @@ public final class MathUtil {
 		double ratio = r_numerator / r_denomenator;
 
 		if (ratio<=0f) {
-			if (pts!=null) pts.set((float) x1, (float) y1);
+			if (pts!=null) pts.set((double) x1, (double) y1);
 			return Math.abs((px-x1)*(px-x1) + (py-y1)*(py-y1));
 		}
 
 		if (ratio>=1f) {
-			if (pts!=null) pts.set((float) x2, (float) y2);
+			if (pts!=null) pts.set((double) x2, (double) y2);
 			return Math.abs((px-x2)*(px-x2) + (py-y2)*(py-y2));
 		}
 
 		if (pts!=null) pts.set(
-				(float) (ratio * (x2-x1)),
-				(float) (ratio * (y2-y1)));
+				(double) (ratio * (x2-x1)),
+				(double) (ratio * (y2-y1)));
 
 		double s =  ((y1-py)*(x2-x1)-(x1-px)*(y2-y1) ) / r_denomenator;
 		return (s * s) * Math.abs(r_denomenator);

@@ -18,7 +18,7 @@
  * limitations under the License.
  */
 
-package io.sarl.jaak.util;
+package org.arakhne.afc.math.discrete.object2d;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -31,11 +31,14 @@ import org.arakhne.afc.math.discrete.object2d.Point2i;
  * or modifying Bresenham's original algorithm. See further functions below.
  *
  * @author $Author: sgalland$
+ * @author $Author: hjaffali$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * FIXME: Move this class into the Arakhne Foundation Classes.
+ * FIXME: Create a copy of this class into the Arakhne Foundation Classes.
+ * @deprecated See the clone inside the new Arakhne classes.
  */
+@Deprecated
 public final class Bresenham {
 
 	private static final int SIDES = 4;

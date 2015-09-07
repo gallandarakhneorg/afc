@@ -247,10 +247,10 @@ extends Cloneable, Serializable {
 	/**
 	 * Sets the value of this tuple to the specified x and y
 	 * coordinates.
-	 * @param x the x coordinate
-	 * @param y the y coordinate
+	 * @param x0 the x coordinate
+	 * @param y0 the y coordinate
 	 */
-	public void set(int x, int y);
+	public void set(double x0, double y0);
 
 	/**
 	 * Sets the value of this tuple to the specified x and y

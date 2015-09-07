@@ -68,7 +68,7 @@ public class MathFunctionRange {
 	 */
 	public static MathFunctionRange[] createInfinitySet() {
 		return new MathFunctionRange[] {
-				new MathFunctionRange(Float.NEGATIVE_INFINITY, Float.POSITIVE_INFINITY)
+				new MathFunctionRange(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY)
 		};
 	}
 
@@ -110,8 +110,8 @@ public class MathFunctionRange {
 			this.min = max;
 			this.max = min;
 		}
-		this.includeMin = (this.min!=Float.NEGATIVE_INFINITY)&&(includeMin);
-		this.includeMax = (this.max!=Float.POSITIVE_INFINITY)&&(includeMax);
+		this.includeMin = (this.min!=Double.NEGATIVE_INFINITY)&&(includeMin);
+		this.includeMax = (this.max!=Double.POSITIVE_INFINITY)&&(includeMax);
 	}
 
 	/**

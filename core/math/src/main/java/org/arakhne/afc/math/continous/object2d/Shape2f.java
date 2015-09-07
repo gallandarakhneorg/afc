@@ -54,14 +54,14 @@ public interface Shape2f extends Shape2D<Shape2f> {
 	 * @param p
 	 * @return the minimal distance between this shape and the point.
 	 */
-	public float distance(Point2D p);
+	public double distance(Point2D p);
 
 	/** Replies the squared value of the minimal distance from this shape to the given point.
 	 * 
 	 * @param p
 	 * @return squared value of the minimal distance between this shape and the point.
 	 */
-	public float distanceSquared(Point2D p);
+	public double distanceSquared(Point2D p);
 
 	/**
 	 * Computes the L-1 (Manhattan) distance between this shape and
@@ -69,7 +69,7 @@ public interface Shape2f extends Shape2D<Shape2f> {
 	 * @param p the point
 	 * @return the distance.
 	 */
-	public float distanceL1(Point2D p);
+	public double distanceL1(Point2D p);
 
 	/**
 	 * Computes the L-infinite distance between this shape and
@@ -78,14 +78,14 @@ public interface Shape2f extends Shape2D<Shape2f> {
 	 * @param p the point
 	 * @return the distance.
 	 */
-	public float distanceLinf(Point2D p);
+	public double distanceLinf(Point2D p);
 
 	/** Translate the shape.
 	 * 
 	 * @param dx
 	 * @param dy
 	 */
-	public void translate(float dx, float dy); 
+	public void translate(double dx, double dy); 
 	
 	/** Replies if the given point is inside this shape.
 	 * 
@@ -94,7 +94,7 @@ public interface Shape2f extends Shape2D<Shape2f> {
 	 * @return <code>true</code> if the given point is inside this
 	 * shape, otherwise <code>false</code>.
 	 */
-	public boolean contains(float x, float y);
+	public boolean contains(double x, double y);
 	
 	/** Replies if the given rectangle is inside this shape.
 	 * 

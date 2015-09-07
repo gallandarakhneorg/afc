@@ -168,10 +168,10 @@
 	<!-- ======================================= -->
 
 	<modules>
-		<module>maven</module>
+		<!--<module>maven</module>-->
 		<module>core</module>
-		<module>ui</module>
-		<module>advanced</module>
+		<!--<module>ui</module>
+		<module>advanced</module>-->
 	</modules>
 
 	<licenses>
@@ -283,6 +283,14 @@
 			<id>cbohrhauer</id>
 			<name>Christophe BOHRHAUER</name>
 			<email>christophe.bohrhauer@utbm.fr</email>
+			<roles>
+				<role>Student Developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>hjaffali</id>
+			<name>Hamza JAFFALI</name>
+			<email>hamza.jaffali@utbm.fr</email>
 			<roles>
 				<role>Student Developer</role>
 			</roles>

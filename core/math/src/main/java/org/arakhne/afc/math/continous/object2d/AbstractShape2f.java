@@ -75,8 +75,8 @@ public abstract class AbstractShape2f<T extends Shape2f> implements Shape2f {
 	/** {@inheritDoc}
 	 */
 	@Override
-	public float distance(Point2D p) {
-		return (float)Math.sqrt(distanceSquared(p));
+	public double distance(Point2D p) {
+		return (double)Math.sqrt(distanceSquared(p));
 	}
 
 	/** {@inheritDoc}
@@ -97,12 +97,12 @@ public abstract class AbstractShape2f<T extends Shape2f> implements Shape2f {
      * @param d
      * @return the bit representation.
      */
-    protected static int floatToIntBits(float d) {
+    protected static int floatToIntBits(double d) {
 		// Check for +0 or -0
 		if (d == 0f) {
 			return 0;
 		}
-		return Float.floatToIntBits(d);
+		return Double.floatToIntBits(d);
 	}
     
 	/** {@inheritDoc}

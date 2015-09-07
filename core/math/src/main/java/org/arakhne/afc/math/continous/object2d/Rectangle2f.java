@@ -57,7 +57,7 @@ public class Rectangle2f extends AbstractRectangularShape2f<Rectangle2f> {
 	 * @return <code>true</code> if the two shapes are intersecting; otherwise
 	 * <code>false</code>
 	 */
-	public static boolean intersectsRectangleRectangle(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4) {
+	public static boolean intersectsRectangleRectangle(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4) {
 		assert(x1<=x2);
 		assert(y1<=y2);
 		assert(x3<=x4);
@@ -84,7 +84,7 @@ public class Rectangle2f extends AbstractRectangularShape2f<Rectangle2f> {
 	 * @return <code>true</code> if the two shapes are intersecting; otherwise
 	 * <code>false</code>
 	 */
-	public static boolean intersectsRectangleLine(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4) {
+	public static boolean intersectsRectangleLine(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4) {
 		int a, b;
 		a = MathUtil.ccw(x3, y3, x4, y4, x1, y1, false);
 		b = MathUtil.ccw(x3, y3, x4, y4, x2, y1, false);
@@ -101,7 +101,7 @@ public class Rectangle2f extends AbstractRectangularShape2f<Rectangle2f> {
 	private static final int CS_BOTTOM = 4; // 0100
 	private static final int CS_TOP = 8; // 1000
 
-	private static int getCohenSutherlandRegion(float x1, float y1, float x2, float y2, float px, float py) {
+	private static int getCohenSutherlandRegion(double x1, double y1, double x2, double y2, double px, double py) {
 		int region = CS_INSIDE;
 		if (px<x1) {
 			region |= CS_LEFT;
@@ -131,11 +131,11 @@ public class Rectangle2f extends AbstractRectangularShape2f<Rectangle2f> {
 	 * @return <code>true</code> if the two shapes are intersecting; otherwise
 	 * <code>false</code>
 	 */
-	public static boolean intersectsRectangleSegment(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4) {
-		float px1 = x3;
-		float py1 = y3;
-		float px2 = x4;
-		float py2 = y4;
+	public static boolean intersectsRectangleSegment(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4) {
+		double px1 = x3;
+		double py1 = y3;
+		double px2 = x4;
+		double py2 = y4;
 
 		// Cohen–Sutherland algorithm
 		int r1 = getCohenSutherlandRegion(x1, y1, x2, y2, px1, py1);
@@ -155,7 +155,7 @@ public class Rectangle2f extends AbstractRectangularShape2f<Rectangle2f> {
 
 			// failed both tests, so calculate the line segment to clip
 			// from an outside point to an intersection with clip edge
-			float x, y;
+			double x, y;
 
 			// At least one endpoint is outside the clip rectangle; pick it.
 			int outcodeOut = r1!=0 ? r1 : r2;
@@ -232,7 +232,7 @@ public class Rectangle2f extends AbstractRectangularShape2f<Rectangle2f> {
 	 * @return <code>true</code> if the given rectangle is inside the ellipse;
 	 * otherwise <code>false</code>.
 	 */
-	public static boolean containsRectangleRectangle(float rx1, float ry1, float rwidth1, float rheight1, float rx2, float ry2, float rwidth2, float rheight2) {
+	public static boolean containsRectangleRectangle(double rx1, double ry1, double rwidth1, double rheight1, double rx2, double ry2, double rwidth2, double rheight2) {
 		if (rwidth1<=0f || rwidth2<=0f || rheight1<=0 || rheight2<=0f) {
 			return false;
 		}
@@ -249,10 +249,10 @@ public class Rectangle2f extends AbstractRectangularShape2f<Rectangle2f> {
 	 * @param r2
 	 */
 	public static void intersection(Rectangle2f dest, Rectangle2f r1, Rectangle2f r2) {
-		float x1 = Math.max(r1.getMinX(), r2.getMinX());
-		float y1 = Math.max(r1.getMinY(), r2.getMinY());
-		float x2 = Math.min(r1.getMaxX(), r2.getMaxX());
-		float y2 = Math.min(r1.getMaxY(), r2.getMaxY());
+		double x1 = Math.max(r1.getMinX(), r2.getMinX());
+		double y1 = Math.max(r1.getMinY(), r2.getMinY());
+		double x2 = Math.min(r1.getMaxX(), r2.getMaxX());
+		double y2 = Math.min(r1.getMaxY(), r2.getMaxY());
 		if (x1<=x2 && y1<=y2) {
 			dest.setFromCorners(x1, y1, x2, y2);
 		}
@@ -281,7 +281,7 @@ public class Rectangle2f extends AbstractRectangularShape2f<Rectangle2f> {
 	 * @param width
 	 * @param height
 	 */
-	public Rectangle2f(float x, float y, float width, float height) {
+	public Rectangle2f(double x, double y, double width, double height) {
 		super(x, y, width, height);
 	}
 	
@@ -307,8 +307,8 @@ public class Rectangle2f extends AbstractRectangularShape2f<Rectangle2f> {
 	/** {@inheritDoc}
 	 */
 	@Override
-	public float distanceSquared(Point2D p) {
-		float dx;
+	public double distanceSquared(Point2D p) {
+		double dx;
 		if (p.getX()<getMinX()) {
 			dx = getMinX() - p.getX();
 		}
@@ -318,7 +318,7 @@ public class Rectangle2f extends AbstractRectangularShape2f<Rectangle2f> {
 		else {
 			dx = 0f;
 		}
-		float dy;
+		double dy;
 		if (p.getY()<getMinY()) {
 			dy = getMinY() - p.getY();
 		}
@@ -334,8 +334,8 @@ public class Rectangle2f extends AbstractRectangularShape2f<Rectangle2f> {
 	/** {@inheritDoc}
 	 */
 	@Override
-	public float distanceL1(Point2D p) {
-		float dx;
+	public double distanceL1(Point2D p) {
+		double dx;
 		if (p.getX()<getMinX()) {
 			dx = getMinX() - p.getX();
 		}
@@ -345,7 +345,7 @@ public class Rectangle2f extends AbstractRectangularShape2f<Rectangle2f> {
 		else {
 			dx = 0f;
 		}
-		float dy;
+		double dy;
 		if (p.getY()<getMinY()) {
 			dy = getMinY() - p.getY();
 		}
@@ -361,8 +361,8 @@ public class Rectangle2f extends AbstractRectangularShape2f<Rectangle2f> {
 	/** {@inheritDoc}
 	 */
 	@Override
-	public float distanceLinf(Point2D p) {
-		float dx;
+	public double distanceLinf(Point2D p) {
+		double dx;
 		if (p.getX()<getMinX()) {
 			dx = getMinX() - p.getX();
 		}
@@ -372,7 +372,7 @@ public class Rectangle2f extends AbstractRectangularShape2f<Rectangle2f> {
 		else {
 			dx = 0f;
 		}
-		float dy;
+		double dy;
 		if (p.getY()<getMinY()) {
 			dy = getMinY() - p.getY();
 		}
@@ -388,7 +388,7 @@ public class Rectangle2f extends AbstractRectangularShape2f<Rectangle2f> {
 	/** {@inheritDoc}
 	 */
 	@Override
-	public boolean contains(float x, float y) {
+	public boolean contains(double x, double y) {
 		return (x>=getMinX() && x<=getMaxX())
 				&&
 				(y>=getMinY() && y<=getMaxY());
@@ -405,7 +405,7 @@ public class Rectangle2f extends AbstractRectangularShape2f<Rectangle2f> {
 	 */
 	@Override
 	public Point2D getClosestPointTo(Point2D p) {
-		float x;
+		double x;
 		int same = 0;
 		if (p.getX()<getMinX()) {
 			x = getMinX();
@@ -417,7 +417,7 @@ public class Rectangle2f extends AbstractRectangularShape2f<Rectangle2f> {
 			x = p.getX();
 			++same;
 		}
-		float y;
+		double y;
 		if (p.getY()<getMinY()) {
 			y = getMinY();
 		}
@@ -451,7 +451,7 @@ public class Rectangle2f extends AbstractRectangularShape2f<Rectangle2f> {
 	 * @param x
 	 * @param y
 	 */
-	public void add(float x, float y) {
+	public void add(double x, double y) {
 		if (x<getMinX()) {
 			setMinX(x);
 		}
@@ -614,7 +614,7 @@ public class Rectangle2f extends AbstractRectangularShape2f<Rectangle2f> {
 
 	@Override
 	public boolean intersects(Path2f s) {
-		return intersects(s.getPathIterator((float) MathConstants.SPLINE_APPROXIMATION_RATIO));
+		return intersects(s.getPathIterator((double) MathConstants.SPLINE_APPROXIMATION_RATIO));
 	}
 
 	@Override
@@ -652,18 +652,18 @@ public class Rectangle2f extends AbstractRectangularShape2f<Rectangle2f> {
 	 * @return the displacement vector.
 	 */
 	public Vector2D avoidCollisionWith(Rectangle2f reference) {
-		float dx1 = reference.getMaxX() - getMinX();
-		float dx2 = getMaxX() - reference.getMinX();
-		float dy1 = reference.getMaxY() - getMinY();
-		float dy2 = getMaxY() - reference.getMinY();
+		double dx1 = reference.getMaxX() - getMinX();
+		double dx2 = getMaxX() - reference.getMinX();
+		double dy1 = reference.getMaxY() - getMinY();
+		double dy2 = getMaxY() - reference.getMinY();
 
-		float absdx1 = Math.abs(dx1);
-		float absdx2 = Math.abs(dx2);
-		float absdy1 = Math.abs(dy1);
-		float absdy2 = Math.abs(dy2);
+		double absdx1 = Math.abs(dx1);
+		double absdx2 = Math.abs(dx2);
+		double absdy1 = Math.abs(dy1);
+		double absdy2 = Math.abs(dy2);
 
-		float dx = 0;
-		float dy = 0;
+		double dx = 0;
+		double dy = 0;
 
 		if (dx1>=0 && absdx1<=absdx2 && absdx1<=absdy1 && absdx1<=absdy2) {
 			// Move according to dx1
@@ -702,17 +702,17 @@ public class Rectangle2f extends AbstractRectangularShape2f<Rectangle2f> {
 		if (displacementDirection==null || displacementDirection.lengthSquared()==0f)
 			return avoidCollisionWith(reference);
 
-		float dx1 = reference.getMaxX() - getMinX();
-		float dx2 = reference.getMinX() - getMaxX();
-		float dy1 = reference.getMaxY() - getMinY();
-		float dy2 = reference.getMinY() - getMaxY();
+		double dx1 = reference.getMaxX() - getMinX();
+		double dx2 = reference.getMinX() - getMaxX();
+		double dy1 = reference.getMaxY() - getMinY();
+		double dy2 = reference.getMinY() - getMaxY();
 
-		float absdx1 = Math.abs(dx1);
-		float absdx2 = Math.abs(dx2);
-		float absdy1 = Math.abs(dy1);
-		float absdy2 = Math.abs(dy2);
+		double absdx1 = Math.abs(dx1);
+		double absdx2 = Math.abs(dx2);
+		double absdy1 = Math.abs(dy1);
+		double absdy2 = Math.abs(dy2);
 
-		float dx, dy;
+		double dx, dy;
 
 		if (displacementDirection.getX()<0) {
 			dx = -Math.min(absdx1, absdx2);
@@ -747,10 +747,10 @@ public class Rectangle2f extends AbstractRectangularShape2f<Rectangle2f> {
 	 */
 	private static class CopyPathIterator implements PathIterator2f {
 
-		private final float x1;
-		private final float y1;
-		private final float x2;
-		private final float y2;
+		private final double x1;
+		private final double y1;
+		private final double x2;
+		private final double y2;
 		private int index = 0;
 
 		/**
@@ -759,7 +759,7 @@ public class Rectangle2f extends AbstractRectangularShape2f<Rectangle2f> {
 		 * @param x2
 		 * @param y2
 		 */
-		public CopyPathIterator(float x1, float y1, float x2, float y2) {
+		public CopyPathIterator(double x1, double y1, double x2, double y2) {
 			this.x1 = Math.min(x1, x2);
 			this.y1 = Math.min(y1, y2);
 			this.x2 = Math.max(x1, x2);
@@ -834,10 +834,10 @@ public class Rectangle2f extends AbstractRectangularShape2f<Rectangle2f> {
 	private static class TransformPathIterator implements PathIterator2f {
 
 		private final Transform2D transform;
-		private final float x1;
-		private final float y1;
-		private final float x2;
-		private final float y2;
+		private final double x1;
+		private final double y1;
+		private final double x2;
+		private final double y2;
 		private int index = 0;
 
 		private final Point2D p1 = new Point2f();
@@ -850,7 +850,7 @@ public class Rectangle2f extends AbstractRectangularShape2f<Rectangle2f> {
 		 * @param y2
 		 * @param transform
 		 */
-		public TransformPathIterator(float x1, float y1, float x2, float y2, Transform2D transform) {
+		public TransformPathIterator(double x1, double y1, double x2, double y2, Transform2D transform) {
 			this.transform = transform;
 			this.x1 = Math.min(x1, x2);
 			this.y1 = Math.min(y1, y2);

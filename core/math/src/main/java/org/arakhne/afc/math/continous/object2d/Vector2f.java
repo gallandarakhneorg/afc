@@ -62,7 +62,7 @@ public class Vector2f extends Tuple2f<Vector2D> implements Vector2D {
 	/**
 	 * @param tuple is the tuple to copy.
 	 */
-	public Vector2f(float[] tuple) {
+	public Vector2f(double[] tuple) {
 		super(tuple);
 	}
 
@@ -79,7 +79,7 @@ public class Vector2f extends Tuple2f<Vector2D> implements Vector2D {
 	 * @param y
 	 */
 	public Vector2f(float x, float y) {
-		super(x,y);
+		super((double)x,(double)y);
 	}
 
 	/**
@@ -87,7 +87,7 @@ public class Vector2f extends Tuple2f<Vector2D> implements Vector2D {
 	 * @param y
 	 */
 	public Vector2f(double x, double y) {
-		super((float)x,(float)y);
+		super(x,y);
 	}
 
 	/**
@@ -109,18 +109,18 @@ public class Vector2f extends Tuple2f<Vector2D> implements Vector2D {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public float angle(Vector2D v1) {
+	public double angle(Vector2D v1) {
 		double vDot = dot(v1) / ( length()*v1.length() );
 		if( vDot < -1.) vDot = -1.;
 		if( vDot >  1.) vDot =  1.;
-		return((float) (Math.acos( vDot )));
+		return((double) (Math.acos( vDot )));
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public float dot(Vector2D v1) {
+	public double dot(Vector2D v1) {
 	      return (this.x*v1.getX() + this.y*v1.getY());
 	}
 	
@@ -132,8 +132,8 @@ public class Vector2f extends Tuple2f<Vector2D> implements Vector2D {
 	 */
 	public final Vector2f mul(Matrix2f m) {
 		Vector2f r = new Vector2f();
-		r.x = (float) (this.getX() * m.m00 + this.getY() * m.m01);
-		r.y = (float) (this.getX() * m.m10 + this.getY() * m.m11);
+		r.x = (double) (this.getX() * m.m00 + this.getY() * m.m01);
+		r.y = (double) (this.getX() * m.m10 + this.getY() * m.m11);
 		return r;
 	}
 
@@ -153,15 +153,15 @@ public class Vector2f extends Tuple2f<Vector2D> implements Vector2D {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public float length() {
-        return (float) Math.sqrt(this.x*this.x + this.y*this.y);
+	public double length() {
+        return (double) Math.sqrt(this.x*this.x + this.y*this.y);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public float lengthSquared() {
+	public double lengthSquared() {
         return (this.x*this.x + this.y*this.y);
 	}
 
@@ -170,7 +170,7 @@ public class Vector2f extends Tuple2f<Vector2D> implements Vector2D {
 	 */
 	@Override
 	public void normalize(Vector2D v1) {
-        float norm = 1f / v1.length();
+		double norm = 1f / v1.length();
         this.x = (int)(v1.getX()*norm);
         this.y = (int)(v1.getY()*norm);
 	}
@@ -180,8 +180,8 @@ public class Vector2f extends Tuple2f<Vector2D> implements Vector2D {
 	 */
 	@Override
 	public void normalize() {
-        float norm;
-        norm = (float)(1./Math.sqrt(this.x*this.x + this.y*this.y));
+		double norm;
+        norm = (double)(1./Math.sqrt(this.x*this.x + this.y*this.y));
         this.x *= norm;
         this.y *= norm;
 	}
@@ -190,19 +190,19 @@ public class Vector2f extends Tuple2f<Vector2D> implements Vector2D {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public float signedAngle(Vector2D v) {
-		return (float) MathUtil.signedAngle(getX(), getY(), v.getX(), v.getY());
+	public double signedAngle(Vector2D v) {
+		return (double) MathUtil.signedAngle(getX(), getY(), v.getX(), v.getY());
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void turnVector(float angle) {
-		float sin = (float)Math.sin(angle);
-		float cos = (float)Math.cos(angle);
-		float x =  cos * getX() + sin * getY(); 
-		float y = -sin * getX() + cos * getY();
+	public void turnVector(double angle) {
+		double sin = (double)Math.sin(angle);
+		double cos = (double)Math.cos(angle);
+		double x =  cos * getX() + sin * getY(); 
+		double y = -sin * getX() + cos * getY();
 		set(x,y);
 	}
 	
@@ -212,19 +212,19 @@ public class Vector2f extends Tuple2f<Vector2D> implements Vector2D {
 	 * @param angle is the angle in radians to translate.
 	 * @return the orientation vector which is corresponding to the given angle.
 	 */
-	public static Vector2f toOrientationVector(float angle) {
+	public static Vector2f toOrientationVector(double angle) {
 		return new Vector2f(
-				(float)Math.cos(angle),
-				(float)Math.sin(angle));
+				(double)Math.cos(angle),
+				(double)Math.sin(angle));
 	}
 	
 	/** {@inheritDoc}
 	 */
 	@Override
-	public float getOrientationAngle() {
-		float angle = (float)Math.acos(getX());
+	public double getOrientationAngle() {
+		double angle = (double)Math.acos(getX());
 		if (getY()<0f) angle = -angle;
-		return (float) MathUtil.clampRadian(angle);
+		return (double) MathUtil.clampRadian(angle);
 	}
 
 	/**
@@ -258,7 +258,7 @@ public class Vector2f extends Tuple2f<Vector2D> implements Vector2D {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void scaleAdd(float s, Vector2D t1, Vector2D t2) {
+	public void scaleAdd(double s, Vector2D t1, Vector2D t2) {
 		this.x = s * t1.getX() + t2.getX();
 		this.y = s * t1.getY() + t2.getY();
 	}
@@ -276,7 +276,7 @@ public class Vector2f extends Tuple2f<Vector2D> implements Vector2D {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void scaleAdd(float s, Vector2D t1) {
+	public void scaleAdd(double s, Vector2D t1) {
 		this.x = s * this.x + t1.getX();
 		this.y = s * this.y + t1.getY();
 	}

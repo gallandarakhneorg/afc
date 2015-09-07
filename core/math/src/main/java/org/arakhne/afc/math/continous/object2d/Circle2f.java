@@ -46,26 +46,26 @@ public class Circle2f extends AbstractShape2f<Circle2f> {
 	/**
 	 * ArcIterator.btan(Math.PI/2)
 	 */
-	static final float CTRL_VAL = 0.5522847498307933f;
+	static final double CTRL_VAL = 0.5522847498307933f;
 
 	/**
 	 * ctrlpts contains the control points for a set of 4 cubic
 	 * bezier curves that approximate a circle of radius 0.5
 	 * centered at 0.5, 0.5
 	 */
-	static final float PCV = 0.5f + CTRL_VAL * 0.5f;
+	static final double PCV = 0.5f + CTRL_VAL * 0.5f;
 	/**
 	 * ctrlpts contains the control points for a set of 4 cubic
 	 * bezier curves that approximate a circle of radius 0.5
 	 * centered at 0.5, 0.5
 	 */
-	static final float NCV = 0.5f - CTRL_VAL * 0.5f;
+	static final double NCV = 0.5f - CTRL_VAL * 0.5f;
 	/**
 	 * ctrlpts contains the control points for a set of 4 cubic
 	 * bezier curves that approximate a circle of radius 0.5
 	 * centered at 0.5, 0.5
 	 */
-	static float CTRL_PTS[][] = {
+	static double CTRL_PTS[][] = {
 		{  1.0f,  PCV,  PCV,  1.0f,  0.5f,  1.0f },
 		{  NCV,  1.0f,  0.0f,  PCV,  0.0f,  0.5f },
 		{  0.0f,  NCV,  NCV,  0.0f,  0.5f,  0.0f },
@@ -84,13 +84,13 @@ public class Circle2f extends AbstractShape2f<Circle2f> {
 	 * @return <code>true</code> if the given rectangle is inside the circle;
 	 * otherwise <code>false</code>.
 	 */
-	public static boolean containsCircleRectangle(float cx, float cy, float radius, float rx, float ry, float rwidth, float rheight) {
-		float rcx = (rx + rwidth/2f);
-		float rcy = (ry + rheight/2f);
-		float farX;
+	public static boolean containsCircleRectangle(double cx, double cy, double radius, double rx, double ry, double rwidth, double rheight) {
+		double rcx = (rx + rwidth/2f);
+		double rcy = (ry + rheight/2f);
+		double farX;
 		if (cx<=rcx) farX = rx + rwidth;
 		else farX = rx;
-		float farY;
+		double farY;
 		if (cy<=rcy) farY = ry + rheight;
 		else farY = ry;
 		return MathUtil.isPointInCircle(farX, farY, cx, cy, radius);
@@ -107,8 +107,8 @@ public class Circle2f extends AbstractShape2f<Circle2f> {
 	 * @return <code>true</code> if the two shapes are intersecting; otherwise
 	 * <code>false</code>
 	 */
-	public static boolean intersectsCircleCircle(float x1, float y1, float radius1, float x2, float y2, float radius2) {
-		float r = radius1+radius2;
+	public static boolean intersectsCircleCircle(double x1, double y1, double radius1, double x2, double y2, double radius2) {
+		double r = radius1+radius2;
 		return MathUtil.distanceSquaredPointToPoint(x1, y1, x2, y2) < (r*r);
 	}
 
@@ -124,8 +124,8 @@ public class Circle2f extends AbstractShape2f<Circle2f> {
 	 * @return <code>true</code> if the two shapes are intersecting; otherwise
 	 * <code>false</code>
 	 */
-	public static boolean intersectsCircleRectangle(float x1, float y1, float radius, float x2, float y2, float x3, float y3) {
-		float dx;
+	public static boolean intersectsCircleRectangle(double x1, double y1, double radius, double x2, double y2, double x3, double y3) {
+		double dx;
 		if (x1<x2) {
 			dx = x2 - x1;
 		}
@@ -160,8 +160,8 @@ public class Circle2f extends AbstractShape2f<Circle2f> {
 	 * @return <code>true</code> if the two shapes are intersecting; otherwise
 	 * <code>false</code>
 	 */
-	public static boolean intersectsCircleLine(float x1, float y1, float radius, float x2, float y2, float x3, float y3) {
-		float d = (float) MathUtil.distanceSquaredPointToLine(x1, y1, x2, y2, x3, y3);
+	public static boolean intersectsCircleLine(double x1, double y1, double radius, double x2, double y2, double x3, double y3) {
+		double d = (double) MathUtil.distanceSquaredPointToLine(x1, y1, x2, y2, x3, y3);
 		return d<(radius*radius);
 	}
 
@@ -177,17 +177,17 @@ public class Circle2f extends AbstractShape2f<Circle2f> {
 	 * @return <code>true</code> if the two shapes are intersecting; otherwise
 	 * <code>false</code>
 	 */
-	public static boolean intersectsCircleSegment(float x1, float y1, float radius, float x2, float y2, float x3, float y3) {
-		float d = (float) MathUtil.distanceSquaredPointToSegment(x1, y1, x2, y2, x3, y3);
+	public static boolean intersectsCircleSegment(double x1, double y1, double radius, double x2, double y2, double x3, double y3) {
+		double d = (double) MathUtil.distanceSquaredPointToSegment(x1, y1, x2, y2, x3, y3);
 		return d<(radius*radius);
 	}
 
 	/** X-coordinate of the circle center. */
-	protected float cx = 0f;
+	protected double cx = 0f;
 	/** Y-coordinate of the circle center. */
-	protected float cy = 0f;
+	protected double cy = 0f;
 	/** Radius of the circle center (must be always positive). */
-	protected float radius = 0f;
+	protected double radius = 0f;
 
 	/**
 	 */
@@ -199,7 +199,7 @@ public class Circle2f extends AbstractShape2f<Circle2f> {
 	 * @param center
 	 * @param radius
 	 */
-	public Circle2f(Point2D center, float radius) {
+	public Circle2f(Point2D center, double radius) {
 		set(center, radius);
 	}
 
@@ -208,7 +208,7 @@ public class Circle2f extends AbstractShape2f<Circle2f> {
 	 * @param y
 	 * @param radius
 	 */
-	public Circle2f(float x, float y, float radius) {
+	public Circle2f(double x, double y, double radius) {
 		set(x, y, radius);
 	}
 	
@@ -244,7 +244,7 @@ public class Circle2f extends AbstractShape2f<Circle2f> {
 	 * @param y
 	 * @param radius
 	 */
-	public void set(float x, float y, float radius) {
+	public void set(double x, double y, double radius) {
 		this.cx = x;
 		this.cy = y;
 		this.radius = Math.abs(radius);
@@ -255,7 +255,7 @@ public class Circle2f extends AbstractShape2f<Circle2f> {
 	 * @param center
 	 * @param radius
 	 */
-	public void set(Point2D center, float radius) {
+	public void set(Point2D center, double radius) {
 		this.cx = center.getX();
 		this.cy = center.getY();
 		this.radius = Math.abs(radius);
@@ -273,7 +273,7 @@ public class Circle2f extends AbstractShape2f<Circle2f> {
 	 * 
 	 * @return the center x.
 	 */
-	public float getX() {
+	public double getX() {
 		return this.cx;
 	}
 
@@ -281,7 +281,7 @@ public class Circle2f extends AbstractShape2f<Circle2f> {
 	 * 
 	 * @return the center y.
 	 */
-	public float getY() {
+	public double getY() {
 		return this.cy;
 	}
 
@@ -307,7 +307,7 @@ public class Circle2f extends AbstractShape2f<Circle2f> {
 	 * @param x
 	 * @param y
 	 */
-	public void setCenter(float x, float y) {
+	public void setCenter(double x, double y) {
 		this.cx = x;
 		this.cy = y;
 	}
@@ -316,7 +316,7 @@ public class Circle2f extends AbstractShape2f<Circle2f> {
 	 * 
 	 * @return the radius.
 	 */
-	public float getRadius() {
+	public double getRadius() {
 		return this.radius;
 	}
 
@@ -324,7 +324,7 @@ public class Circle2f extends AbstractShape2f<Circle2f> {
 	 * 
 	 * @param radius is the radius.
 	 */
-	public void setRadius(float radius) {
+	public void setRadius(double radius) {
 		this.radius = Math.abs(radius);
 	}
 
@@ -354,23 +354,23 @@ public class Circle2f extends AbstractShape2f<Circle2f> {
 	/** {@inheritDoc}
 	 */
 	@Override
-	public float distance(Point2D p) {
-		float d = (float) MathUtil.distancePointToPoint(getX(), getY(), p.getX(), p.getY()) - getRadius();
+	public double distance(Point2D p) {
+		double d = (double) MathUtil.distancePointToPoint(getX(), getY(), p.getX(), p.getY()) - getRadius();
 		return Math.max(0f, d);
 	}
 	
 	/** {@inheritDoc}
 	 */
 	@Override
-	public float distanceSquared(Point2D p) {
-		float d = distance(p);
+	public double distanceSquared(Point2D p) {
+		double d = distance(p);
 		return d * d;
 	}
 
 	/** {@inheritDoc}
 	 */
 	@Override
-	public float distanceL1(Point2D p) {
+	public double distanceL1(Point2D p) {
 		Point2D r = getClosestPointTo(p);
 		return r.distanceL1(p);
 	}
@@ -378,7 +378,7 @@ public class Circle2f extends AbstractShape2f<Circle2f> {
 	/** {@inheritDoc}
 	 */
 	@Override
-	public float distanceLinf(Point2D p) {
+	public double distanceLinf(Point2D p) {
 		Point2D r = getClosestPointTo(p);
 		return r.distanceLinf(p);
 	}
@@ -386,7 +386,7 @@ public class Circle2f extends AbstractShape2f<Circle2f> {
 	/** {@inheritDoc}
 	 */
 	@Override
-	public boolean contains(float x, float y) {
+	public boolean contains(double x, double y) {
 		return MathUtil.isPointInCircle(x, y, getX(), getY(), getRadius());
 	}
 	
@@ -402,18 +402,18 @@ public class Circle2f extends AbstractShape2f<Circle2f> {
 	public Point2f getClosestPointTo(Point2D p) {
 		Vector2f v = new Vector2f(p);
 		v.sub(this.cx, this.cy);
-		float l = v.lengthSquared();
+		double l = v.lengthSquared();
 		if (l<=(this.radius*this.radius)) {
 			if (p instanceof Point2f) return (Point2f)p;
 			return new Point2f(p);
 		}
-		float s = this.radius/(float)Math.sqrt(l);
+		double s = this.radius/(double)Math.sqrt(l);
 		v.scale(s);
 		return new Point2f(this.cx + v.getX(), this.cy + v.getY());
 	}
 
 	@Override
-	public void translate(float dx, float dy) {
+	public void translate(double dx, double dy) {
 		this.cx += dx;
 		this.cy += dy;
 	}
@@ -482,7 +482,7 @@ public class Circle2f extends AbstractShape2f<Circle2f> {
 	
 	@Override
 	public boolean intersects(Path2f s) {
-		return intersects(s.getPathIterator((float) MathConstants.SPLINE_APPROXIMATION_RATIO));
+		return intersects(s.getPathIterator((double) MathConstants.SPLINE_APPROXIMATION_RATIO));
 	}
 	
 	@Override
@@ -519,19 +519,19 @@ public class Circle2f extends AbstractShape2f<Circle2f> {
 	 */
 	private static class CopyPathIterator implements PathIterator2f {
 		
-		private final float x;
-		private final float y;
-		private final float r;
+		private final double x;
+		private final double y;
+		private final double r;
 		private int index = 0;
-		private float movex, movey;
-		private float lastx, lasty;
+		private double movex, movey;
+		private double lastx, lasty;
 		
 		/**
 		 * @param x
 		 * @param y
 		 * @param r
 		 */
-		public CopyPathIterator(float x, float y, float r) {
+		public CopyPathIterator(double x, double y, double r) {
 			this.r = Math.max(0f, r);
 			this.x = x - this.r;
 			this.y = y - this.r;
@@ -551,8 +551,8 @@ public class Circle2f extends AbstractShape2f<Circle2f> {
 			int idx = this.index;
 			++this.index;
 			if (idx==0) {
-				float dr = 2f * this.r;
-				float ctrls[] = CTRL_PTS[3];
+				double dr = 2f * this.r;
+				double ctrls[] = CTRL_PTS[3];
 				this.movex = (this.x + ctrls[4] * dr);
 				this.movey = (this.y + ctrls[5] * dr);
 				this.lastx = this.movex;
@@ -561,10 +561,10 @@ public class Circle2f extends AbstractShape2f<Circle2f> {
 						this.lastx, this.lasty);
 			}
 			else if (idx<5) {
-				float dr = 2f * this.r;
-				float ctrls[] = CTRL_PTS[idx - 1];
-				float ppx = this.lastx;
-				float ppy = this.lasty;
+				double dr = 2f * this.r;
+				double ctrls[] = CTRL_PTS[idx - 1];
+				double ppx = this.lastx;
+				double ppy = this.lasty;
 				this.lastx = (this.x + ctrls[4] * dr);
 				this.lasty = (this.y + ctrls[5] * dr);
 				return new PathElement2f.CurvePathElement2f(
@@ -575,8 +575,8 @@ public class Circle2f extends AbstractShape2f<Circle2f> {
 						(this.y + ctrls[3] * dr),
 						this.lastx, this.lasty);
 			}
-			float ppx = this.lastx;
-			float ppy = this.lasty;
+			double ppx = this.lastx;
+			double ppy = this.lasty;
 			this.lastx = this.movex;
 			this.lasty = this.movey;
 			return new PathElement2f.ClosePathElement2f(
@@ -615,11 +615,11 @@ public class Circle2f extends AbstractShape2f<Circle2f> {
 		private final Point2D ptmp1 = new Point2f();
 		private final Point2D ptmp2 = new Point2f();
 		private final Transform2D transform;
-		private final float x;
-		private final float y;
-		private final float r;
+		private final double x;
+		private final double y;
+		private final double r;
 		private int index = 0;
-		private float movex, movey;
+		private double movex, movey;
 		
 		/**
 		 * @param x
@@ -627,7 +627,7 @@ public class Circle2f extends AbstractShape2f<Circle2f> {
 		 * @param r
 		 * @param transform
 		 */
-		public TransformPathIterator(float x, float y, float r, Transform2D transform) {
+		public TransformPathIterator(double x, double y, double r, Transform2D transform) {
 			assert(transform!=null);
 			this.transform = transform;
 			this.r = Math.max(0f, r);
@@ -649,8 +649,8 @@ public class Circle2f extends AbstractShape2f<Circle2f> {
 			int idx = this.index;
 			++this.index;
 			if (idx==0) {
-				float dr = 2f * this.r;
-				float ctrls[] = CTRL_PTS[3];
+				double dr = 2f * this.r;
+				double ctrls[] = CTRL_PTS[3];
 				this.movex = (this.x + ctrls[4] * dr);
 				this.movey = (this.y + ctrls[5] * dr);
 				this.p2.set(this.movex, this.movey);
@@ -659,8 +659,8 @@ public class Circle2f extends AbstractShape2f<Circle2f> {
 						this.p2.getX(), this.p2.getY());
 			}
 			else if (idx<5) {
-				float dr = 2f * this.r;
-				float ctrls[] = CTRL_PTS[idx - 1];
+				double dr = 2f * this.r;
+				double ctrls[] = CTRL_PTS[idx - 1];
 				this.p1.set(this.p2);
 				this.p2.set(
 						(this.x + ctrls[4] * dr),

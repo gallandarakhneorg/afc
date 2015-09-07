@@ -63,8 +63,8 @@ public class PathShadow2f {
 	 */
 	public int computeCrossings(
 			int crossings,
-			float x0, float y0,
-			float x1, float y1) {
+			double x0, double y0,
+			double x1, double y1) {
 		if (this.bounds==null) return crossings;
 
 		int numCrosses = 
@@ -85,7 +85,7 @@ public class PathShadow2f {
 					this.bounds.getMaxY());
 
 			computeCrossings1(
-					this.path.getPathIterator((float) MathConstants.SPLINE_APPROXIMATION_RATIO),
+					this.path.getPathIterator((double) MathConstants.SPLINE_APPROXIMATION_RATIO),
 					x0, y0, x1, y1,
 					false,
 					data);
@@ -125,7 +125,7 @@ public class PathShadow2f {
 
 	private static void computeCrossings1(
 			Iterator<PathElement2f> pi, 
-			float x1, float y1, float x2, float y2, 
+			double x1, double y1, double x2, double y2, 
 			boolean closeable, PathShadowData data) {	
 		if (!pi.hasNext() || data.crossings==MathConstants.SHAPE_INTERSECTS) return;
 		PathElement2f element;
@@ -135,11 +135,11 @@ public class PathShadow2f {
 			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
 		}
 
-		float movx = element.toX;
-		float movy = element.toY;
-		float curx = movx;
-		float cury = movy;
-		float endx, endy;
+		double movx = element.toX;
+		double movy = element.toY;
+		double curx = movx;
+		double cury = movy;
+		double endx, endy;
 		while (data.crossings!=MathConstants.SHAPE_INTERSECTS && pi.hasNext()) {
 			element = pi.next();
 			switch (element.type) {
@@ -171,7 +171,7 @@ public class PathShadow2f {
 						element.ctrlX1, element.ctrlY1,
 						endx, endy);
 				computeCrossings1(
-						localPath.getPathIterator((float) MathConstants.SPLINE_APPROXIMATION_RATIO),
+						localPath.getPathIterator((double) MathConstants.SPLINE_APPROXIMATION_RATIO),
 						x1, y1, x2, y2,
 						false,
 						data);
@@ -192,7 +192,7 @@ public class PathShadow2f {
 						element.ctrlX2, element.ctrlY2,
 						endx, endy);
 				computeCrossings1(
-						localPath.getPathIterator((float) MathConstants.SPLINE_APPROXIMATION_RATIO),
+						localPath.getPathIterator((double) MathConstants.SPLINE_APPROXIMATION_RATIO),
 						x1, y1, x2, y2,
 						false,
 						data);
@@ -239,15 +239,15 @@ public class PathShadow2f {
 	}
 
 	private static void computeCrossings2(
-			float shadow_x0, float shadow_y0,
-			float shadow_x1, float shadow_y1,
-			float sx0, float sy0,
-			float sx1, float sy1,
+			double shadow_x0, double shadow_y0,
+			double shadow_x1, double shadow_y1,
+			double sx0, double sy0,
+			double sx1, double sy1,
 			PathShadowData data) {
-		float shadow_xmin = Math.min(shadow_x0, shadow_x1);
-		float shadow_xmax = Math.max(shadow_x0, shadow_x1);
-		float shadow_ymin = Math.min(shadow_y0, shadow_y1);
-		float shadow_ymax = Math.max(shadow_y0, shadow_y1);
+		double shadow_xmin = Math.min(shadow_x0, shadow_x1);
+		double shadow_xmax = Math.max(shadow_x0, shadow_x1);
+		double shadow_ymin = Math.min(shadow_y0, shadow_y1);
+		double shadow_ymax = Math.max(shadow_y0, shadow_y1);
 
 		data.updateShadowLimits(shadow_x0, shadow_y0, shadow_x1, shadow_y1);
 
@@ -255,9 +255,9 @@ public class PathShadow2f {
 		if (sy0>=shadow_ymax && sy1>=shadow_ymax) return;
 		if (sx0<=shadow_xmin && sx1<=shadow_xmin) return;
 		if (sx0>=shadow_xmax && sx1>=shadow_xmax) {
-			float xintercept;
+			double xintercept;
 			// The line is entirely at the right of the shadow
-			float alpha = (sx1 - sx0) / (sy1 - sy0);
+			double alpha = (sx1 - sx0) / (sy1 - sy0);
 			if (sy0<sy1) {
 				if (sy0<=shadow_ymin) {
 					xintercept = sx0 + (shadow_ymin - sy0) * alpha;
@@ -325,15 +325,15 @@ public class PathShadow2f {
 	}
 
 	private static void computeCrossings3(
-			float shadowx, float shadowy,
-			float sx0, float sy0,
-			float sx1, float sy1,
+			double shadowx, double shadowy,
+			double sx0, double sy0,
+			double sx1, double sy1,
 			PathShadowData data,
 			boolean isUp) {
 		if (shadowy <  sy0 && shadowy <  sy1) return;
 		if (shadowy > sy0 && shadowy > sy1) return;
 		if (shadowx > sx0 && shadowx > sx1) return;
-		float xintercept = sx0 + (shadowy - sy0) * (sx1 - sx0) / (sy1 - sy0);
+		double xintercept = sx0 + (shadowy - sy0) * (sx1 - sx0) / (sy1 - sy0);
 		if (shadowx > xintercept) return;
 		if (isUp) {
 			data.setCrossingForYMax(xintercept, shadowy);
@@ -355,12 +355,12 @@ public class PathShadow2f {
 		public int crossings = 0;
 		public boolean hasX4ymin = false;
 		public boolean hasX4ymax = false;
-		public float x4ymin;
-		public float x4ymax;
-		public float xmin4ymin;
-		public float xmin4ymax;
-		public float ymin;
-		public float ymax;
+		public double x4ymin;
+		public double x4ymax;
+		public double xmin4ymin;
+		public double xmin4ymax;
+		public double ymin;
+		public double ymax;
 
 		@Override
 		public String toString() {
@@ -401,14 +401,14 @@ public class PathShadow2f {
 			return b.toString();
 		}
 
-		public PathShadowData(float xmax, float miny, float maxy) {
+		public PathShadowData(double xmax, double miny, double maxy) {
 			this.x4ymin = this.x4ymax = xmax;
 			this.xmin4ymax = this.xmin4ymin = xmax;
 			this.ymin = miny;
 			this.ymax = maxy;
 		}
 
-		public void setCrossingForYMax(float x, float y) {
+		public void setCrossingForYMax(double x, double y) {
 			if (y>=this.ymax) {
 				if (x<this.x4ymax) {
 					this.x4ymax = x;
@@ -417,7 +417,7 @@ public class PathShadow2f {
 			}
 		}
 
-		public void setCrossingForYMin(float x, float y) {
+		public void setCrossingForYMin(double x, double y) {
 			if (y<=this.ymin) {
 				if (x<this.x4ymin) {
 					this.x4ymin = x;
@@ -426,9 +426,9 @@ public class PathShadow2f {
 			}
 		}
 
-		public void updateShadowLimits(float shadow_x0, float shadow_y0, float shadow_x1, float shadow_y1) {
-			float xl, yl;
-			float xh, yh;
+		public void updateShadowLimits(double shadow_x0, double shadow_y0, double shadow_x1, double shadow_y1) {
+			double xl, yl;
+			double xh, yh;
 			if (shadow_y0<shadow_y1) {
 				xl = shadow_x0;
 				yl = shadow_y0;

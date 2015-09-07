@@ -38,11 +38,11 @@ public class Tuple2f<T extends Tuple2D<? super T>> implements Tuple2D<T> {
 	
 	/** x coordinate.
 	 */
-	protected float x;
+	protected double x;
 
 	/** y coordinate.
 	 */
-	protected float y;
+	protected double y;
 
 	/**
 	 */
@@ -69,7 +69,7 @@ public class Tuple2f<T extends Tuple2D<? super T>> implements Tuple2D<T> {
 	/**
 	 * @param tuple is the tuple to copy.
 	 */
-	public Tuple2f(float[] tuple) {
+	public Tuple2f(double[] tuple) {
 		this.x = tuple[0];
 		this.y = tuple[1];
 	}
@@ -87,7 +87,7 @@ public class Tuple2f<T extends Tuple2D<? super T>> implements Tuple2D<T> {
 	 * @param x
 	 * @param y
 	 */
-	public Tuple2f(float x, float y) {
+	public Tuple2f(double x, double y) {
 		this.x = x;
 		this.y = y;
 	}
@@ -135,7 +135,7 @@ public class Tuple2f<T extends Tuple2D<? super T>> implements Tuple2D<T> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void add(float x, float y) {
+	public void add(double x, double y) {
 		this.x += x;
 		this.y += y;
 	}
@@ -152,7 +152,7 @@ public class Tuple2f<T extends Tuple2D<? super T>> implements Tuple2D<T> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void addX(float x) {
+	public void addX(double x) {
 		this.x += x;
 	}
 
@@ -168,7 +168,7 @@ public class Tuple2f<T extends Tuple2D<? super T>> implements Tuple2D<T> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void addY(float y) {
+	public void addY(double y) {
 		this.y += y;
 	}
 
@@ -187,7 +187,7 @@ public class Tuple2f<T extends Tuple2D<? super T>> implements Tuple2D<T> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void clamp(float min, float max) {
+	public void clamp(double min, double max) {
 		clamp(min, max);
 	}
 
@@ -204,7 +204,7 @@ public class Tuple2f<T extends Tuple2D<? super T>> implements Tuple2D<T> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void clampMin(float min) {
+	public void clampMin(double min) {
 		clampMin(min);
 	}
 
@@ -221,7 +221,7 @@ public class Tuple2f<T extends Tuple2D<? super T>> implements Tuple2D<T> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void clampMax(float max) {
+	public void clampMax(double max) {
 		clampMax(max);
 	}
 
@@ -240,7 +240,7 @@ public class Tuple2f<T extends Tuple2D<? super T>> implements Tuple2D<T> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void clamp(float min, float max, T t) {
+	public void clamp(double min, double max, T t) {
 		clamp(min, max, t);
 	}
 
@@ -257,7 +257,7 @@ public class Tuple2f<T extends Tuple2D<? super T>> implements Tuple2D<T> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void clampMin(float min, T t) {
+	public void clampMin(double min, T t) {
 		clampMin(min, t);
 	}
 
@@ -274,7 +274,7 @@ public class Tuple2f<T extends Tuple2D<? super T>> implements Tuple2D<T> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void clampMax(float max, T t) {
+	public void clampMax(double max, T t) {
 		clampMax(max, t);
 	}
 
@@ -299,7 +299,7 @@ public class Tuple2f<T extends Tuple2D<? super T>> implements Tuple2D<T> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void get(float[] t) {
+	public void get(double[] t) {
 		t[0] = this.x;
 		t[1] = this.y;
 	}
@@ -335,7 +335,7 @@ public class Tuple2f<T extends Tuple2D<? super T>> implements Tuple2D<T> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void scale(float s, T t1) {
+	public void scale(double s, T t1) {
 		this.x = (s * t1.getX());
 		this.y = (s * t1.getY());
 	}
@@ -353,7 +353,7 @@ public class Tuple2f<T extends Tuple2D<? super T>> implements Tuple2D<T> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void scale(float s) {
+	public void scale(double s) {
 		this.x = (s * this.x);
 		this.y = (s * this.y);
 	}
@@ -380,7 +380,7 @@ public class Tuple2f<T extends Tuple2D<? super T>> implements Tuple2D<T> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void set(float x, float y) {
+	public void set(double x, double y) {
 		this.x = x;
 		this.y = y;
 	}
@@ -398,7 +398,7 @@ public class Tuple2f<T extends Tuple2D<? super T>> implements Tuple2D<T> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void set(float[] t) {
+	public void set(double[] t) {
 		this.x = t[0];
 		this.y = t[1];
 	}
@@ -407,7 +407,7 @@ public class Tuple2f<T extends Tuple2D<? super T>> implements Tuple2D<T> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public float getX() {
+	public double getX() {
 		return this.x;
 	}
 
@@ -431,7 +431,7 @@ public class Tuple2f<T extends Tuple2D<? super T>> implements Tuple2D<T> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void setX(float x) {
+	public void setX(double x) {
 		this.x = x;
 	}
 
@@ -439,7 +439,7 @@ public class Tuple2f<T extends Tuple2D<? super T>> implements Tuple2D<T> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public float getY() {
+	public double getY() {
 		return this.y;
 	}
 
@@ -463,7 +463,7 @@ public class Tuple2f<T extends Tuple2D<? super T>> implements Tuple2D<T> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void setY(float y) {
+	public void setY(double y) {
 		this.y = y;
 	}
 
@@ -496,7 +496,7 @@ public class Tuple2f<T extends Tuple2D<? super T>> implements Tuple2D<T> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void sub(float x, float y) {
+	public void sub(double x, double y) {
 		this.x -= x;
 		this.y -= y;
 	}
@@ -505,7 +505,7 @@ public class Tuple2f<T extends Tuple2D<? super T>> implements Tuple2D<T> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void subX(float x) {
+	public void subX(double x) {
 		this.x -= x;
 	}
 
@@ -513,7 +513,7 @@ public class Tuple2f<T extends Tuple2D<? super T>> implements Tuple2D<T> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void subY(float y) {
+	public void subY(double y) {
 		this.y -= y;
 	}
 
@@ -521,7 +521,7 @@ public class Tuple2f<T extends Tuple2D<? super T>> implements Tuple2D<T> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void interpolate(T t1, T t2, float alpha) {
+	public void interpolate(T t1, T t2, double alpha) {
 		this.x = ((1f-alpha)*t1.getX() + alpha*t2.getX());
 		this.y = ((1f-alpha)*t1.getY() + alpha*t2.getY());
 	}
@@ -530,7 +530,7 @@ public class Tuple2f<T extends Tuple2D<? super T>> implements Tuple2D<T> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void interpolate(T t1, float alpha) {
+	public void interpolate(T t1, double alpha) {
 		this.x = ((1f-alpha)*this.x + alpha*t1.getX());
 		this.y = ((1f-alpha)*this.y + alpha*t1.getY());
 	}
@@ -570,15 +570,15 @@ public class Tuple2f<T extends Tuple2D<? super T>> implements Tuple2D<T> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean epsilonEquals(T t1, float epsilon) {
-		float diff;
+	public boolean epsilonEquals(T t1, double epsilon) {
+		double diff;
 
 		diff = this.x - t1.getX();
-		if(Float.isNaN(diff)) return false;
+		if(Double.isNaN(diff)) return false;
 		if((diff<0?-diff:diff) > epsilon) return false;
 
 		diff = this.y - t1.getY();
-		if(Float.isNaN(diff)) return false;
+		if(Double.isNaN(diff)) return false;
 		if((diff<0?-diff:diff) > epsilon) return false;
 
 		return true;
@@ -590,8 +590,8 @@ public class Tuple2f<T extends Tuple2D<? super T>> implements Tuple2D<T> {
 	@Override
 	public int hashCode() {
 		int bits = 1;
-		bits = 31 * bits + Float.floatToIntBits(this.x);
-		bits = 31 * bits + Float.floatToIntBits(this.y);
+		bits = 31 * bits + Double.doubleToIntBits(this.x);
+		bits = 31 * bits + Double.doubleToIntBits(this.y);
 		return bits ^ (bits >> 32);
 	}
 
