@@ -115,10 +115,10 @@ public class Point3fTest extends AbstractMathTestCase {
 		Point3f point3 = new Point3f(0,0,0);
 		Point3f point4 = new Point3f(-1,0,1);
 		
-		assertEpsilonEquals(6,point.distanceL1(point3));
-		assertEpsilonEquals(0,point.distanceL1(point2));
-		assertEpsilonEquals(0,point2.distanceL1(point));
-		assertEpsilonEquals(6,point.distanceL1(point4));
+		assertEpsilonEquals(3,point.distanceLinf(point3));
+		assertEpsilonEquals(0,point.distanceLinf(point2));
+		assertEpsilonEquals(0,point2.distanceLinf(point));
+		assertEpsilonEquals(2,point.distanceLinf(point4));
 	}
 
 	@Test
@@ -129,37 +129,123 @@ public class Point3fTest extends AbstractMathTestCase {
 
 	@Test
 	public void addPoint3DVector3D() {
-		throw new UnsupportedOperationException();
+		Point3f point = new Point3f(0,0,0);
+		Point3f point2 = new Point3f(-1,0,1);
+		Vector3f vector = new Vector3f(1.2,1.2,1.2);
+		Vector3f vector2 = new Vector3f(2.0,1.5,5.125);
+		Point3f newPoint = new Point3f(0.0,0.0,0.0);
+		
+		newPoint.add(point,vector);
+		assertTrue(newPoint.equals(new Point3f(1.2,1.2,1.2)));
+		
+		newPoint.add(point2,vector2);
+		assertTrue(newPoint.equals(new Point3f(1.0,1.5,6.125)));  	
 	}
 
 	@Test
 	public void addVector3DPoint3D() {
-		throw new UnsupportedOperationException();
+		Point3f point = new Point3f(0,0,0);
+		Point3f point2 = new Point3f(-1,0,1);
+		Vector3f vector = new Vector3f(1.2,1.2,1.2);
+		Vector3f vector2 = new Vector3f(2.0,1.5,5.125);
+		Point3f newPoint = new Point3f(0.0,0.0,0.0);
+		
+		newPoint.add(vector,point);
+		assertTrue(newPoint.equals(new Point3f(1.2,1.2,1.2)));
+		
+		newPoint.add(vector2,point2);
+		assertTrue(newPoint.equals(new Point3f(1.0,1.5,6.125))); 
 	}
 
 	@Test
 	public void addVector3D() {
-		throw new UnsupportedOperationException();
+		Point3f point = new Point3f(0,0,0);
+		Point3f point2 = new Point3f(-1,0,1);
+		Vector3f vector = new Vector3f(1.2,1.2,1.2);
+		Vector3f vector2 = new Vector3f(2.0,1.5,5.125);
+		Point3f newPoint = new Point3f(0.0,0.0,0.0);
+		
+		point.add(vector);
+		assertTrue(point.equals(new Point3f(1.2,1.2,1.2)));
+		
+		point2.add(vector2);
+		assertTrue(point2.equals(new Point3f(1.0,1.5,6.125))); 
 	}
 
 	@Test
 	public void scaleAddIntVector3DPoint3D() {
-		throw new UnsupportedOperationException();
+		Point3f point = new Point3f(-1,0,1);
+		Vector3f vector = new Vector3f(1.0,1.2,1.0);
+		Point3f newPoint = new Point3f(0.0,0.0,0.0);
+		
+		newPoint.scaleAdd(0,vector,point);
+		assertTrue(newPoint.equals(new Point3f(-1,0,1)));
+		
+		newPoint.scaleAdd(1,vector,point);
+		assertTrue(newPoint.equals(new Point3f(0.0,1.2,2.0)));
+		
+		newPoint.scaleAdd(-1,vector,point);
+		assertTrue(newPoint.equals(new Point3f(-2.0,-1.2,0.0)));
+		
+		newPoint.scaleAdd(10,vector,point);
+		assertTrue(newPoint.equals(new Point3f(9,12,11)));
 	}
 
 	@Test
 	public void scaleAddDoubleVector3DPoint3D() {
-		throw new UnsupportedOperationException();
+		Point3f point = new Point3f(1,0,1);
+		Vector3f vector = new Vector3f(-1,1,1);
+		Point3f newPoint = new Point3f(0.0,0.0,0.0);
+		
+		newPoint.scaleAdd(0.0,vector,point);
+		assertTrue(newPoint.equals(new Point3f(1,0,1)));
+		
+		newPoint.scaleAdd(1.5,vector,point);
+		assertTrue(newPoint.equals(new Point3f(-0.5,1.5,2.5)));
+		
+		newPoint.scaleAdd(-1.5,vector,point);
+		assertTrue(newPoint.equals(new Point3f(2.5,-1.5,-0.5)));
+		
+		newPoint.scaleAdd(0.1,vector,point);
+		assertTrue(newPoint.equals(new Point3f(0.9,0.1,1.1)));
 	}
 
 	@Test
 	public void scaleAddIntPoint3DVector3D() {
-		throw new UnsupportedOperationException();
+		Point3f point = new Point3f(1.0,1.2,1.0);
+		Vector3f vector = new Vector3f(-1,0,1);
+		Point3f newPoint = new Point3f(0.0,0.0,0.0);
+		
+		newPoint.scaleAdd(0,point,vector);
+		assertTrue(newPoint.equals(new Point3f(-1,0,1)));
+		
+		newPoint.scaleAdd(1,point,vector);
+		assertTrue(newPoint.equals(new Point3f(0.0,1.2,2.0)));
+		
+		newPoint.scaleAdd(-1,point,vector);
+		assertTrue(newPoint.equals(new Point3f(-2.0,-1.2,0.0)));
+		
+		newPoint.scaleAdd(10,point,vector);
+		assertTrue(newPoint.equals(new Point3f(9,12,11)));
 	}
 
 	@Test
 	public void scaleAddDoublePoint3DVector3D() {
-		throw new UnsupportedOperationException();
+		Point3f point = new Point3f(-1,1,1);
+		Vector3f vector = new Vector3f(1,0,1);
+		Point3f newPoint = new Point3f(0.0,0.0,0.0);
+		
+		newPoint.scaleAdd(0.0,point,vector);
+		assertTrue(newPoint.equals(new Point3f(1,0,1)));
+		
+		newPoint.scaleAdd(1.5,point,vector);
+		assertTrue(newPoint.equals(new Point3f(-0.5,1.5,2.5)));
+		
+		newPoint.scaleAdd(-1.5,point,vector);
+		assertTrue(newPoint.equals(new Point3f(2.5,-1.5,-0.5)));
+		
+		newPoint.scaleAdd(0.1,point,vector);
+		assertTrue(newPoint.equals(new Point3f(0.9,0.1,1.1)));
 	}
 
 	@Test

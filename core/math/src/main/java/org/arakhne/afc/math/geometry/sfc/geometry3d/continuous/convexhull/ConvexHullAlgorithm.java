@@ -22,7 +22,8 @@ package org.arakhne.afc.math.geometry.sfc.geometry3d.continuous.convexhull;
 
 import java.util.Collection;
 
-import org.arakhne.afc.math.geometry.sfc.geometry3d.continuous.Point3f;
+import org.arakhne.afc.math.geometry.d3.continuous.Point3f;
+
 
 /** This interface describes a convex hull computation algorithm.
  *

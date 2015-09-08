@@ -276,7 +276,7 @@ public class Point3f extends Tuple3f<Point3D> implements Point3D {
 
 	@Override
 	public void add(Point3D t1, Vector3D t2) {
-		this.x = t1.getX() + t2.getX();
+		this.x = (t1.getX()) + (t2.getX());
 		this.y = t1.getY() + t2.getY();
 		this.z = t1.getZ() + t2.getZ();
 	}
