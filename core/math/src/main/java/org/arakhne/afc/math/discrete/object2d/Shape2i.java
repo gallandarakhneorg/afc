@@ -54,14 +54,14 @@ public interface Shape2i extends Shape2D<Shape2i> {
 	 * @param p
 	 * @return the minimal distance between this shape and the point.
 	 */
-	public float distance(Point2D p);
+	public double distance(Point2D p);
 
 	/** Replies the squared value of the minimal distance from this shape to the given point.
 	 * 
 	 * @param p
 	 * @return squared value of the minimal distance between this shape and the point.
 	 */
-	public float distanceSquared(Point2D p);
+	public double distanceSquared(Point2D p);
 
 	/**
 	 * Computes the L-1 (Manhattan) distance between this shape and
@@ -69,7 +69,7 @@ public interface Shape2i extends Shape2D<Shape2i> {
 	 * @param p the point
 	 * @return the distance.
 	 */
-	public float distanceL1(Point2D p);
+	public double distanceL1(Point2D p);
 
 	/**
 	 * Computes the L-infinite distance between this shape and
@@ -78,7 +78,7 @@ public interface Shape2i extends Shape2D<Shape2i> {
 	 * @param p the point
 	 * @return the distance.
 	 */
-	public float distanceLinf(Point2D p);
+	public double distanceLinf(Point2D p);
 
 	/** Replies if this shape is intersecting the given rectangle.
 	 * 

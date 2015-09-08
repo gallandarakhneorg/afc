@@ -62,7 +62,7 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	 * @param t1 the tuple to be multipled
 	 * @param t2 the tuple to be added
 	 */
-	public void scaleAdd(float s, Vector2D t1, Vector2D t2);
+	public void scaleAdd(double s, Vector2D t1, Vector2D t2);
 
 	/**
 	 * Sets the value of this tuple to the scalar multiplication
@@ -78,7 +78,7 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	 * @param s the scalar value
 	 * @param t1 the tuple to be added
 	 */
-	public void scaleAdd(float s, Vector2D t1);
+	public void scaleAdd(double s, Vector2D t1);
 
 	
 	/**
@@ -109,7 +109,7 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	 * @param v1 the other vector
 	 * @return the dot product.
 	 */
-	public float dot(Vector2D v1);
+	public double dot(Vector2D v1);
 	
 	/** Change the coordinates of this vector to make it a perpendicular
 	 * vector to the original coordinates.
@@ -120,13 +120,13 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	 * Returns the length of this vector.
 	 * @return the length of this vector
 	 */  
-	public float length();
+	public double length();
 
 	/**  
 	 * Returns the squared length of this vector.
 	 * @return the squared length of this vector
 	 */  
-	public float lengthSquared();
+	public double lengthSquared();
 
 	/**
 	 * Sets the value of this vector to the normalization of vector v1.
@@ -146,7 +146,7 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	 *   @param v1    the other vector
 	 *   @return   the angle in radians in the range [0,PI]
 	 */
-	public float angle(Vector2D v1);
+	public double angle(Vector2D v1);
 
 	/** Compute a signed angle between this vector and the given vector.
 	 * <p>
@@ -166,13 +166,13 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	 * @return the rotation angle to turn this vector to reach
 	 * {@code v}.
 	 */
-	public float signedAngle(Vector2D v);
+	public double signedAngle(Vector2D v);
 
 	/** Turn this vector about the given rotation angle.
 	 * 
 	 * @param angle is the rotation angle in radians.
 	 */
-	public void turnVector(float angle);
+	public void turnVector(double angle);
 	
 	/** Replies the orientation angle on a trigonometric circle
 	 * that is corresponding to the given direction of this vector.
@@ -180,6 +180,6 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	 * @return the angle on a trigonometric circle that is corresponding
 	 * to the given orientation vector.
 	 */
-	public float getOrientationAngle();
+	public double getOrientationAngle();
 
 }

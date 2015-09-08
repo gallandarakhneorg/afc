@@ -47,26 +47,26 @@ public class Circle2i extends AbstractShape2i<Circle2i> {
 	/**
 	 * ArcIterator.btan(Math.PI/2)
 	 */
-	static final float CTRL_VAL = 0.5522847498307933f;
+	static final double CTRL_VAL = 0.5522847498307933f;
 
 	/**
 	 * ctrlpts contains the control points for a set of 4 cubic
 	 * bezier curves that approximate a circle of radius 0.5
 	 * centered at 0.5, 0.5
 	 */
-	static final float PCV = 0.5f + CTRL_VAL * 0.5f;
+	static final double PCV = 0.5f + CTRL_VAL * 0.5f;
 	/**
 	 * ctrlpts contains the control points for a set of 4 cubic
 	 * bezier curves that approximate a circle of radius 0.5
 	 * centered at 0.5, 0.5
 	 */
-	static final float NCV = 0.5f - CTRL_VAL * 0.5f;
+	static final double NCV = 0.5f - CTRL_VAL * 0.5f;
 	/**
 	 * ctrlpts contains the control points for a set of 4 cubic
 	 * bezier curves that approximate a circle of radius 0.5
 	 * centered at 0.5, 0.5
 	 */
-	static float CTRL_PTS[][] = {
+	static double CTRL_PTS[][] = {
 		{  1.0f,  PCV,  PCV,  1.0f,  0.5f,  1.0f },
 		{  NCV,  1.0f,  0.0f,  PCV,  0.0f,  0.5f },
 		{  0.0f,  NCV,  NCV,  0.0f,  0.5f,  0.0f },
@@ -118,12 +118,12 @@ public class Circle2i extends AbstractShape2i<Circle2i> {
 				p = iterator.next();
 				
 				// Trivial case
-				if (p.x()==x && p.y()==y) return true;
+				if (p.ix()==x && p.iy()==y) return true;
 				
-				px = cy - p.y();
-				py = p.x() - cx;
-				cpx = x - p.x();
-				cpy = y - p.y();
+				px = cy - p.iy();
+				py = p.ix() - cx;
+				cpx = x - p.ix();
+				cpy = y - p.iy();
 				ccw = cpx * py - cpy * px;
 
 				if (ccw>0) return false;
@@ -191,10 +191,10 @@ public class Circle2i extends AbstractShape2i<Circle2i> {
 
 			while (iterator.hasNext()) {
 				p = iterator.next();
-				px = cy - p.y();
-				py = p.x() - cx;
-				cpx = x - p.x();
-				cpy = y - p.y();
+				px = cy - p.iy();
+				py = p.ix() - cx;
+				cpx = x - p.ix();
+				cpy = y - p.iy();
 				ccw = cpx * py - cpy * px;
 
 				if (ccw>0) return false;
@@ -250,10 +250,10 @@ public class Circle2i extends AbstractShape2i<Circle2i> {
 		
 		while (iterator.hasNext()) {
 			p = iterator.next();
-			px = cy - p.y();
-			py = p.x() - cx;
-			cpx = x - p.x();
-			cpy = y - p.y();
+			px = cy - p.iy();
+			py = p.ix() - cx;
+			cpx = x - p.ix();
+			cpy = y - p.iy();
 			ccw = cpx * py - cpy * px;
 			if (ccw>=0) {
 				isInside = false;
@@ -283,7 +283,7 @@ public class Circle2i extends AbstractShape2i<Circle2i> {
 	 */
 	public static boolean intersectsCircleCircle(int x1, int y1, int radius1, int x2, int y2, int radius2) {
 		Point2i c = computeClosestPointTo(x1, y1, radius1, x2, y2);
-		return contains(x2, y2, radius2, c.x(), c.y());
+		return contains(x2, y2, radius2, c.ix(), c.iy());
 	}
 
 	/** Replies if a circle and a rectangle are intersecting.
@@ -300,7 +300,7 @@ public class Circle2i extends AbstractShape2i<Circle2i> {
 	 */
 	public static boolean intersectsCircleRectangle(int x1, int y1, int radius, int x2, int y2, int x3, int y3) {
 		Point2i c = Rectangle2i.computeClosestPoint(x2, y2, x3, y3, x1, y1);
-		return contains(x1, y1, radius, c.x(), c.y());
+		return contains(x1, y1, radius, c.ix(), c.iy());
 	}
 
 	/** Replies if a circle and a segment are intersecting.
@@ -317,7 +317,7 @@ public class Circle2i extends AbstractShape2i<Circle2i> {
 	 */
 	public static boolean intersectsCircleSegment(int x1, int y1, int radius, int x2, int y2, int x3, int y3) {
 		Point2i p = Segment2i.computeClosestPointTo(x2, y2, x3, y3, x1, y1);
-		return contains(x1, y1, radius, p.x(), p.y());
+		return contains(x1, y1, radius, p.ix(), p.iy());
 	}
 
 	/** X-coordinate of the center of the circle. */
@@ -405,8 +405,8 @@ public class Circle2i extends AbstractShape2i<Circle2i> {
 	 * @param radius
 	 */
 	public void set(Point2D center, int radius) {
-		this.cx = center.x();
-		this.cy = center.y();
+		this.cx = center.ix();
+		this.cy = center.iy();
 		this.radius = Math.abs(radius);
 	}
 
@@ -465,7 +465,7 @@ public class Circle2i extends AbstractShape2i<Circle2i> {
 	/** {@inheritDoc}
 	 */
 	@Override
-	public float distanceSquared(Point2D p) {
+	public double distanceSquared(Point2D p) {
 		Point2i c = getClosestPointTo(p);
 		return c.distanceSquared(p);
 	}
@@ -473,7 +473,7 @@ public class Circle2i extends AbstractShape2i<Circle2i> {
 	/** {@inheritDoc}
 	 */
 	@Override
-	public float distanceL1(Point2D p) {
+	public double distanceL1(Point2D p) {
 		Point2i c = getClosestPointTo(p);
 		return c.distanceL1(p);
 	}
@@ -481,7 +481,7 @@ public class Circle2i extends AbstractShape2i<Circle2i> {
 	/** {@inheritDoc}
 	 */
 	@Override
-	public float distanceLinf(Point2D p) {
+	public double distanceLinf(Point2D p) {
 		Point2i c = getClosestPointTo(p);
 		return c.distanceLinf(p);
 	}
@@ -490,7 +490,7 @@ public class Circle2i extends AbstractShape2i<Circle2i> {
 	 */
 	@Override
 	public Point2i getClosestPointTo(Point2D p) {
-		return computeClosestPointTo(this.cx, this.cy, this.radius, p.x(), p.y());
+		return computeClosestPointTo(this.cx, this.cy, this.radius, p.ix(), p.iy());
 	}
 
 	@Override
@@ -577,13 +577,13 @@ public class Circle2i extends AbstractShape2i<Circle2i> {
 
 					while (iterator.hasNext()) {
 						p = iterator.next();
-						px = this.cy - p.y();
-						py = p.x() - this.cx;
+						px = this.cy - p.iy();
+						py = p.ix() - this.cx;
 
 						for(int j=0; j<4; ++j) {
 							if ((quadrants[i] & (1<<j))!=0) {
-								cpx = x[j] - p.x();
-								cpy = y[j] - p.y();
+								cpx = x[j] - p.ix();
+								cpy = y[j] - p.iy();
 								ccw = cpx * py - cpy * px;				
 								if (ccw>0) return false;
 							}
@@ -847,7 +847,7 @@ public class Circle2i extends AbstractShape2i<Circle2i> {
 			++this.index;
 			if (idx==0) {
 				int dr = 2 * this.r;
-				float ctrls[] = CTRL_PTS[3];
+				double ctrls[] = CTRL_PTS[3];
 				this.movex = (int)(this.x + ctrls[4] * dr);
 				this.movey = (int)(this.y + ctrls[5] * dr);
 				this.lastx = this.movex;
@@ -857,7 +857,7 @@ public class Circle2i extends AbstractShape2i<Circle2i> {
 			}
 			else if (idx<5) {
 				int dr = 2 * this.r;
-				float ctrls[] = CTRL_PTS[idx - 1];
+				double ctrls[] = CTRL_PTS[idx - 1];
 				int ppx = this.lastx;
 				int ppy = this.lasty;
 				this.lastx = (int)(this.x + ctrls[4] * dr);
@@ -945,17 +945,17 @@ public class Circle2i extends AbstractShape2i<Circle2i> {
 			++this.index;
 			if (idx==0) {
 				int dr = 2 * this.r;
-				float ctrls[] = CTRL_PTS[3];
+				double ctrls[] = CTRL_PTS[3];
 				this.movex = (int)(this.x + ctrls[4] * dr);
 				this.movey = (int)(this.y + ctrls[5] * dr);
 				this.p2.set(this.movex, this.movey);
 				this.transform.transform(this.p2);
 				return new PathElement2i.MovePathElement2i(
-						this.p2.x(), this.p2.y());
+						this.p2.ix(), this.p2.iy());
 			}
 			else if (idx<5) {
 				int dr = 2 * this.r;
-				float ctrls[] = CTRL_PTS[idx - 1];
+				double ctrls[] = CTRL_PTS[idx - 1];
 				this.p1.set(this.p2);
 				this.p2.set(
 						(this.x + ctrls[4] * dr),
@@ -970,17 +970,17 @@ public class Circle2i extends AbstractShape2i<Circle2i> {
 						(this.y + ctrls[3] * dr));
 				this.transform.transform(this.ptmp2);
 				return new PathElement2i.CurvePathElement2i(
-						this.p1.x(), this.p1.y(),
-						this.ptmp1.x(), this.ptmp1.y(),
-						this.ptmp2.x(), this.ptmp2.y(),
-						this.p2.x(), this.p2.y());
+						this.p1.ix(), this.p1.iy(),
+						this.ptmp1.ix(), this.ptmp1.iy(),
+						this.ptmp2.ix(), this.ptmp2.iy(),
+						this.p2.ix(), this.p2.iy());
 			}
 			this.p1.set(this.p2);
 			this.p2.set(this.movex, this.movey);
 			this.transform.transform(this.p2);
 			return new PathElement2i.ClosePathElement2i(
-					this.p1.x(), this.p1.y(),
-					this.p2.x(), this.p2.y());
+					this.p1.ix(), this.p1.iy(),
+					this.p2.ix(), this.p2.iy());
 		}
 
 		@Override

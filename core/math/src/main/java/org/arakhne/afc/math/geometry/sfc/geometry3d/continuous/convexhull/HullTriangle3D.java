@@ -55,16 +55,16 @@ public class HullTriangle3D<T extends Point3f> implements HullObject<T>, PlaneCl
 
 	/** normal to the triangle facet.
 	 */
-	public final float nx;
+	public final double nx;
 	/** normal to the triangle facet.
 	 */
-	public final float ny;
+	public final double ny;
 	/** normal to the triangle facet.
 	 */
-	public final float nz;
+	public final double nz;
 	/** normal to the triangle facet.
 	 */
-	public final float nw;
+	public final double nw;
 	
 	/** Level inside the creation algorithm.
 	 */
@@ -87,11 +87,11 @@ public class HullTriangle3D<T extends Point3f> implements HullObject<T>, PlaneCl
 		T pb = points[this.b];
 		T pc = points[this.c];
 		
-		float lnx = pa.getY() * (pb.getZ() - pc.getZ()) + pb.getY() * (pc.getZ() - pa.getZ()) + pc.getY() * (pa.getZ() - pb.getZ());
-		float lny = pa.getZ() * (pb.getX() - pc.getX()) + pb.getZ() * (pc.getX() - pa.getX()) + pc.getZ() * (pa.getX() - pb.getX());
-		float lnz = pa.getX() * (pb.getY() - pc.getY()) + pb.getX() * (pc.getY() - pa.getY()) + pc.getX() * (pa.getY() - pb.getY());
-		float d = - (lnx * pa.getX() + lny * pa.getY() + lnz * pa.getZ());
-		float t = (float) Math.sqrt(lnx*lnx+lny*lny+lnz*lnz);
+		double lnx = pa.getY() * (pb.getZ() - pc.getZ()) + pb.getY() * (pc.getZ() - pa.getZ()) + pc.getY() * (pa.getZ() - pb.getZ());
+		double lny = pa.getZ() * (pb.getX() - pc.getX()) + pb.getZ() * (pc.getX() - pa.getX()) + pc.getZ() * (pa.getX() - pb.getX());
+		double lnz = pa.getX() * (pb.getY() - pc.getY()) + pb.getX() * (pc.getY() - pa.getY()) + pc.getX() * (pa.getY() - pb.getY());
+		double d = - (lnx * pa.getX() + lny * pa.getY() + lnz * pa.getZ());
+		double t = (double) Math.sqrt(lnx*lnx+lny*lny+lnz*lnz);
 		this.nx = lnx / t;
 		this.ny = lny / t;
 		this.nz = lnz / t;
@@ -137,7 +137,7 @@ public class HullTriangle3D<T extends Point3f> implements HullObject<T>, PlaneCl
      * @param z is the coordinate of the point
      * @return the distance from the given point to the triangle.
      */
-    public float distanceTo(float x, float y, float z) {
+    public double distanceTo(double x, double y, double z) {
     	return this.nx * x + this.ny * y + this.nz * z + this.nw;
     }
     
@@ -192,7 +192,7 @@ public class HullTriangle3D<T extends Point3f> implements HullObject<T>, PlaneCl
 	 * @return the classification of the point against the plane.
 	 */
 	@Override
-    public PlaneClassification classifies(float x, float y, float z) {
+    public PlaneClassification classifies(double x, double y, double z) {
         PlaneClassification lc;
         int cmp = MathUtil.epsilonDistanceSign(distanceTo(x,y,z));
         if (cmp < 0)
@@ -221,7 +221,7 @@ public class HullTriangle3D<T extends Point3f> implements HullObject<T>, PlaneCl
 	 * @return the classification of the point against the plane.
 	 */
 	@Override
-    public boolean intersects(float x, float y, float z) {
+    public boolean intersects(double x, double y, double z) {
         return MathUtil.epsilonDistanceSign(distanceTo(x,y,z))==0;
     }
 
@@ -245,8 +245,8 @@ public class HullTriangle3D<T extends Point3f> implements HullObject<T>, PlaneCl
 	 * @return the classification of the box against the plane.
 	 */
 	@Override
-    public PlaneClassification classifies(float lx, float ly, float lz, float ux, float uy, float uz) {
-        float[] d = new float[] {
+    public PlaneClassification classifies(double lx, double ly, double lz, double ux, double uy, double uz) {
+		double[] d = new double[] {
         				distanceTo(lx,ly,lz),
         				distanceTo(ux,ly,lz),
         				distanceTo(ux,uy,lz),
@@ -257,7 +257,7 @@ public class HullTriangle3D<T extends Point3f> implements HullObject<T>, PlaneCl
         				distanceTo(lx,uy,uz)
         };
         
-        float sign = 0;
+		double sign = 0;
         for(int i=0,j=1; i<7; ++i,++j) {
         	sign = Math.signum(d[i]);
         	if ((sign==0)||(sign!=Math.signum(d[j]))) {
@@ -273,8 +273,8 @@ public class HullTriangle3D<T extends Point3f> implements HullObject<T>, PlaneCl
 	/** {@inheritDoc}
 	 */
 	@Override
-    public boolean intersects(float lx, float ly, float lz, float ux, float uy, float uz) {
-        float[] d = new float[] {
+    public boolean intersects(double lx, double ly, double lz, double ux, double uy, double uz) {
+		double[] d = new double[] {
         				distanceTo(lx,ly,lz),
         				distanceTo(ux,ly,lz),
         				distanceTo(ux,uy,lz),
@@ -285,7 +285,7 @@ public class HullTriangle3D<T extends Point3f> implements HullObject<T>, PlaneCl
         				distanceTo(lx,uy,uz)
         };
         
-        float sign = 0;
+		double sign = 0;
         for(int i=0,j=1; i<7; ++i,++j) {
         	sign = Math.signum(d[i]);
         	if ((sign==0)||(sign!=Math.signum(d[j]))) {
@@ -316,8 +316,8 @@ public class HullTriangle3D<T extends Point3f> implements HullObject<T>, PlaneCl
 	 * @return the classification of the sphere against the plane.
 	 */
 	@Override
-    public PlaneClassification classifies(float x, float y, float z, float radius) {
-        float d = Math.abs(distanceTo(x,y,z));
+    public PlaneClassification classifies(double x, double y, double z, double radius) {
+		double d = Math.abs(distanceTo(x,y,z));
         int cmp = MathUtil.epsilonDistanceSign(d-radius); 
         if (cmp==0) return PlaneClassification.COINCIDENT; 
         if (d>radius) return PlaneClassification.IN_FRONT_OF;
@@ -327,8 +327,8 @@ public class HullTriangle3D<T extends Point3f> implements HullObject<T>, PlaneCl
 	/** {@inheritDoc}
 	 */
 	@Override
-    public boolean intersects(float x, float y, float z, float radius) {
-        float d = Math.abs(distanceTo(x,y,z));
+    public boolean intersects(double x, double y, double z, double radius) {
+		double d = Math.abs(distanceTo(x,y,z));
         return MathUtil.epsilonDistanceSign(d-radius)==0; 
     }
 
@@ -336,13 +336,13 @@ public class HullTriangle3D<T extends Point3f> implements HullObject<T>, PlaneCl
 	 */
 	@Override
     public PlaneClassification classifies(Plane otherPlane) {
-    	float distance = distanceTo(otherPlane);
+		double distance = distanceTo(otherPlane);
     	
     	// The distance could not be computed
     	// the planes intersect.
     	// Planes intersect also when the distance
     	// is null
-    	if ((distance==Float.NaN)||
+    	if ((distance==Double.NaN)||
     		(distance==0))
     		return PlaneClassification.COINCIDENT;
     	
@@ -354,12 +354,12 @@ public class HullTriangle3D<T extends Point3f> implements HullObject<T>, PlaneCl
 	 */
 	@Override
     public boolean intersects(Plane otherPlane) {
-    	float distance = distanceTo(otherPlane);
+		double distance = distanceTo(otherPlane);
     	// The distance could not be computed
     	// the planes intersect.
     	// Planes intersect also when the distance
     	// is null
-    	return ((distance==Float.NaN)||(distance==0));
+    	return ((distance==Double.NaN)||(distance==0));
     }
 
     /**
@@ -372,7 +372,7 @@ public class HullTriangle3D<T extends Point3f> implements HullObject<T>, PlaneCl
      * @param v is the point
      * @return the distance from the given point to this plane.
      */
-    public final float distanceTo(Tuple3f v) {
+    public final double distanceTo(Tuple3f v) {
     	return distanceTo(v.getX(), v.getY(), v.getZ());
     }
     
@@ -383,16 +383,16 @@ public class HullTriangle3D<T extends Point3f> implements HullObject<T>, PlaneCl
      * @return the distance from the plane to the point along the plane's normal Vec3f.
      * It will be positive if the point is on the side of the plane pointed to by the normal Vec3f, negative otherwise.
      * If the result is 0, the point is on the plane. This function could replies
-     * {@link Float#NaN} if the planes are not colinear.
+     * {@link Double#NaN} if the planes are not colinear.
      */
-    public float distanceTo(Plane p) {
+    public double distanceTo(Plane p) {
     	// Compute the normales
     	Vector3f oNormal = p.getNormal();
     	oNormal.normalize();
     	Vector3f mNormal = new Vector3f(this.nx,this.ny,this.nz);
     	mNormal.normalize();
     	
-    	float dotProduct = oNormal.dot(mNormal);
+    	double dotProduct = oNormal.dot(mNormal);
     	
     	if (Math.abs(dotProduct)==1) {
     		// Planes are colinear.
@@ -400,11 +400,11 @@ public class HullTriangle3D<T extends Point3f> implements HullObject<T>, PlaneCl
     		
     		// Compute the coordinate of this pane
     		// assuming the origin is (0,0,0)
-    		float c1 = -distanceTo(0,0,0);
+    		double c1 = -distanceTo(0,0,0);
     		
     		// Compute the coordinate of the other pane
     		// assuming the origin is (0,0,0)
-    		float c2 = -p.distanceTo(0,0,0);
+    		double c2 = -p.distanceTo(0,0,0);
     		
     		if (dotProduct==-1) {
     			// The planes have not the same orientation.
@@ -415,7 +415,7 @@ public class HullTriangle3D<T extends Point3f> implements HullObject<T>, PlaneCl
     		return c2 - c1;
 
     	}
-    	return Float.NaN;
+    	return Double.NaN;
     }
 
 	/** {@inheritDoc}
@@ -526,9 +526,9 @@ public class HullTriangle3D<T extends Point3f> implements HullObject<T>, PlaneCl
 			}
 		}
 		
-		result = PRIME * result + Float.floatToIntBits(v1);
-		result = PRIME * result + Float.floatToIntBits(v2);
-		result = PRIME * result + Float.floatToIntBits(v3);
+		result = PRIME * result + Double.floatToIntBits(v1);
+		result = PRIME * result + Double.floatToIntBits(v2);
+		result = PRIME * result + Double.floatToIntBits(v3);
 		
 		return result;
 	}

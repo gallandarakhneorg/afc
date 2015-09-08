@@ -47,11 +47,11 @@ public class Tuple3iComparator implements Comparator<Tuple3i<?>> {
 		if (o1==o2) return 0;
 		if (o1==null) return Integer.MIN_VALUE;
 		if (o2==null) return Integer.MAX_VALUE;
-		int cmp = o1.x() - o2.x();
+		int cmp = o1.ix() - o2.ix();
 		if (cmp!=0) return cmp;
-		cmp = o1.y() - o2.y();
+		cmp = o1.iy() - o2.iy();
 		if (cmp!=0) return cmp;
-		return o1.z() - o2.z();
+		return o1.iz() - o2.iz();
 	}
 		
 }

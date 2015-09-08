@@ -565,8 +565,8 @@ public class Point3f extends Tuple3f<Point3D> implements Point3D {
 		}
 
 		@Override
-		public int x() {
-			return Point3f.this.x();
+		public int ix() {
+			return Point3f.this.ix();
 		}
 
 		@Override
@@ -585,8 +585,8 @@ public class Point3f extends Tuple3f<Point3D> implements Point3D {
 		}
 
 		@Override
-		public int y() {
-			return Point3f.this.y();
+		public int iy() {
+			return Point3f.this.iy();
 		}
 
 		@Override
@@ -605,8 +605,8 @@ public class Point3f extends Tuple3f<Point3D> implements Point3D {
 		}
 
 		@Override
-		public int z() {
-			return Point3f.this.z();
+		public int iz() {
+			return Point3f.this.iz();
 		}
 
 		@Override

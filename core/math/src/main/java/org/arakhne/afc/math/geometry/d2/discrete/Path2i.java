@@ -1069,8 +1069,8 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 			for(int i=0; i<this.numCoords;) {
 				p.set(this.coords[i], this.coords[i+1]);
 				transform.transform(p);
-				this.coords[i++] = p.x();
-				this.coords[i++] = p.y();
+				this.coords[i++] = p.ix();
+				this.coords[i++] = p.iy();
 			}
 			this.graphicalBounds = null;
 			this.logicalBounds = null;
@@ -1108,19 +1108,19 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 			case MOVE_TO:
 				p.set(e.toX, e.toY);
 				transform.transform(p);
-				newPath.moveTo(p.x(), p.y());
+				newPath.moveTo(p.ix(), p.iy());
 				break;
 			case LINE_TO:
 				p.set(e.toX, e.toY);
 				transform.transform(p);
-				newPath.lineTo(p.x(), p.y());
+				newPath.lineTo(p.ix(), p.iy());
 				break;
 			case QUAD_TO:
 				t1.set(e.ctrlX1, e.ctrlY1);
 				transform.transform(t1);
 				p.set(e.toX, e.toY);
 				transform.transform(p);
-				newPath.quadTo(t1.x(), t1.y(), p.x(), p.y());
+				newPath.quadTo(t1.ix(), t1.iy(), p.ix(), p.iy());
 				break;
 			case CURVE_TO:
 				t1.set(e.ctrlX1, e.ctrlY1);
@@ -1129,7 +1129,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 				transform.transform(t2);
 				p.set(e.toX, e.toY);
 				transform.transform(p);
-				newPath.curveTo(t1.x(), t1.y(), t2.x(), t2.y(), p.x(), p.y());
+				newPath.curveTo(t1.ix(), t1.iy(), t2.ix(), t2.iy(), p.ix(), p.iy());
 				break;
 			case CLOSE:
 				newPath.closePath();
@@ -1368,7 +1368,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 	@Override
 	public Point2D getClosestPointTo(Point2D p) {
 		Point2D solution = new Point2i();
-		double bestDist = Float.POSITIVE_INFINITY;
+		double bestDist = Double.POSITIVE_INFINITY;
 		Point2D candidate;
 		PathIterator2i pi = getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO);
 		PathElement2i pe;
@@ -1402,7 +1402,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 				if (crossings!=MathConstants.SHAPE_INTERSECTS) {
 					crossings = Segment2i.computeCrossingsFromPoint(
 							crossings,
-							p.x(), p.y(),
+							p.ix(), p.iy(),
 							pe.fromX, pe.fromY, pe.toX, pe.toY);
 				}
 				break;
@@ -1415,7 +1415,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 					if (crossings!=MathConstants.SHAPE_INTERSECTS) {
 						crossings = Segment2i.computeCrossingsFromPoint(
 								crossings,
-								p.x(), p.y(),
+								p.ix(), p.iy(),
 								pe.fromX, pe.fromY, pe.toX, pe.toY);
 					}
 				}
@@ -1439,7 +1439,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 		if (!isClosed && crossings!=MathConstants.SHAPE_INTERSECTS) {
 			crossings = Segment2i.computeCrossingsFromPoint(
 					crossings,
-					p.x(), p.y(),
+					p.ix(), p.iy(),
 					currentX, currentY,
 					moveX, moveY);
 		}
@@ -1451,7 +1451,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 	@Override
 	public Point2D getFarthestPointTo(Point2D p) {
 		Point2D solution = new Point2i();
-		double bestDist = Float.NEGATIVE_INFINITY;
+		double bestDist = Double.NEGATIVE_INFINITY;
 		Point2D candidate;
 		PathIterator2i pi = getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO);
 		PathElement2i pe;
@@ -1848,7 +1848,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 				this.movey = Path2i.this.coords[this.iCoord++];
 				this.p2.set(this.movex, this.movey);
 				element = new PathElement2i.MovePathElement2i(
-						this.p2.x(), this.p2.y());
+						this.p2.ix(), this.p2.iy());
 				break;
 			case LINE_TO:
 				if (this.iCoord+2>Path2i.this.numCoords) {
@@ -1859,8 +1859,8 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 						Path2i.this.coords[this.iCoord++],
 						Path2i.this.coords[this.iCoord++]);
 				element = new PathElement2i.LinePathElement2i(
-						this.p1.x(), this.p1.y(),
-						this.p2.x(), this.p2.y());
+						this.p1.ix(), this.p1.iy(),
+						this.p2.ix(), this.p2.iy());
 				break;
 			case QUAD_TO:
 			{
@@ -1874,9 +1874,9 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 						Path2i.this.coords[this.iCoord++],
 						Path2i.this.coords[this.iCoord++]);
 				element = new PathElement2i.QuadPathElement2i(
-						this.p1.x(), this.p1.y(),
+						this.p1.ix(), this.p1.iy(),
 						ctrlx, ctrly,
-						this.p2.x(), this.p2.y());
+						this.p2.ix(), this.p2.iy());
 			}
 			break;
 			case CURVE_TO:
@@ -1893,18 +1893,18 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 						Path2i.this.coords[this.iCoord++],
 						Path2i.this.coords[this.iCoord++]);
 				element = new PathElement2i.CurvePathElement2i(
-						this.p1.x(), this.p1.y(),
+						this.p1.ix(), this.p1.iy(),
 						ctrlx1, ctrly1,
 						ctrlx2, ctrly2,
-						this.p2.x(), this.p2.y());
+						this.p2.ix(), this.p2.iy());
 			}
 			break;
 			case CLOSE:
 				this.p1.set(this.p2);
 				this.p2.set(this.movex, this.movey);
 				element = new PathElement2i.ClosePathElement2i(
-						this.p1.x(), this.p1.y(),
-						this.p2.x(), this.p2.y());
+						this.p1.ix(), this.p1.iy(),
+						this.p2.ix(), this.p2.iy());
 				break;
 			default:
 			}
@@ -1977,7 +1977,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 				this.p2.set(this.movex, this.movey);
 				this.transform.transform(this.p2);
 				element = new PathElement2i.MovePathElement2i(
-						this.p2.x(), this.p2.y());
+						this.p2.ix(), this.p2.iy());
 				break;
 			case LINE_TO:
 				this.p1.set(this.p2);
@@ -1986,8 +1986,8 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 						Path2i.this.coords[this.iCoord++]);
 				this.transform.transform(this.p2);
 				element = new PathElement2i.LinePathElement2i(
-						this.p1.x(), this.p1.y(),
-						this.p2.x(), this.p2.y());
+						this.p1.ix(), this.p1.iy(),
+						this.p2.ix(), this.p2.iy());
 				break;
 			case QUAD_TO:
 			{
@@ -2001,9 +2001,9 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 						Path2i.this.coords[this.iCoord++]);
 				this.transform.transform(this.p2);
 				element = new PathElement2i.QuadPathElement2i(
-						this.p1.x(), this.p1.y(),
-						this.ptmp1.x(), this.ptmp1.y(),
-						this.p2.x(), this.p2.y());
+						this.p1.ix(), this.p1.iy(),
+						this.ptmp1.ix(), this.ptmp1.iy(),
+						this.p2.ix(), this.p2.iy());
 			}
 			break;
 			case CURVE_TO:
@@ -2022,10 +2022,10 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 						Path2i.this.coords[this.iCoord++]);
 				this.transform.transform(this.p2);
 				element = new PathElement2i.CurvePathElement2i(
-						this.p1.x(), this.p1.y(),
-						this.ptmp1.x(), this.ptmp1.y(),
-						this.ptmp2.x(), this.ptmp2.y(),
-						this.p2.x(), this.p2.y());
+						this.p1.ix(), this.p1.iy(),
+						this.ptmp1.ix(), this.ptmp1.iy(),
+						this.ptmp2.ix(), this.ptmp2.iy(),
+						this.p2.ix(), this.p2.iy());
 			}
 			break;
 			case CLOSE:
@@ -2033,8 +2033,8 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 				this.p2.set(this.movex, this.movey);
 				this.transform.transform(this.p2);
 				element = new PathElement2i.ClosePathElement2i(
-						this.p1.x(), this.p1.y(),
-						this.p2.x(), this.p2.y());
+						this.p1.ix(), this.p1.iy(),
+						this.p2.ix(), this.p2.iy());
 				break;
 			default:
 			}
@@ -2117,10 +2117,10 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 		public boolean add(Point2D e) {
 			if (e!=null) {
 				if (Path2i.this.size()==0) {
-					Path2i.this.moveTo(e.x(), e.y());
+					Path2i.this.moveTo(e.ix(), e.iy());
 				}
 				else {
-					Path2i.this.lineTo(e.x(), e.y());
+					Path2i.this.lineTo(e.ix(), e.iy());
 				}
 				return true;
 			}
@@ -2131,7 +2131,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 		public boolean remove(Object o) {
 			if (o instanceof Point2D) {
 				Point2D p = (Point2D)o;
-				return Path2i.this.remove(p.x(), p.y());
+				return Path2i.this.remove(p.ix(), p.iy());
 			}
 			return false;
 		}
@@ -2164,7 +2164,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 			for(Object obj : c) {
 				if (obj instanceof Point2D) {
 					Point2D pts = (Point2D)obj;
-					if (Path2i.this.remove(pts.x(), pts.y())) {
+					if (Path2i.this.remove(pts.ix(), pts.iy())) {
 						changed = true;
 					}
 				}
@@ -2224,7 +2224,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 			this.lastReplied = null;
 			if (p==null)
 				throw new NoSuchElementException();
-			Path2i.this.remove(p.x(), p.y());
+			Path2i.this.remove(p.ix(), p.iy());
 		}
 
 	}

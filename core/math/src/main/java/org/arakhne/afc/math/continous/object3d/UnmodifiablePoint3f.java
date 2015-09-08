@@ -47,7 +47,7 @@ public class UnmodifiablePoint3f extends Point3f {
 	 * @param y
 	 * @param z
 	 */
-	public UnmodifiablePoint3f(float x, float y, float z) {
+	public UnmodifiablePoint3f(double x, double y, double z) {
 		super(x, y, z);
 	}
 	
@@ -60,12 +60,12 @@ public class UnmodifiablePoint3f extends Point3f {
 	}
 
 	@Override
-	public void set(float x, float y, float z) {
+	public void set(double x, double y, double z) {
 		//
 	}
 
 	@Override
-	public void set(float[] t) {
+	public void set(double[] t) {
 		//
 	}
 	
@@ -85,7 +85,7 @@ public class UnmodifiablePoint3f extends Point3f {
 	}
 	
 	@Override
-	public void setX(float x) {
+	public void setX(double x) {
 		//
 	}
 	
@@ -95,7 +95,7 @@ public class UnmodifiablePoint3f extends Point3f {
 	}
 	
 	@Override
-	public void setY(float y) {
+	public void setY(double y) {
 		//
 	}
 	
@@ -105,7 +105,7 @@ public class UnmodifiablePoint3f extends Point3f {
 	}
 	
 	@Override
-	public void setZ(float z) {
+	public void setZ(double z) {
 		//
 	}
 

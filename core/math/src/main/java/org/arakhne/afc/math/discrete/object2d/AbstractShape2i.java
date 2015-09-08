@@ -67,14 +67,14 @@ public abstract class AbstractShape2i<T extends Shape2i> implements Shape2i {
 	 */
 	@Override
 	public final boolean contains(Point2D p) {
-		return contains(p.x(), p.y());
+		return contains(p.ix(), p.iy());
 	}
 
 	/** {@inheritDoc}
 	 */
 	@Override
-	public final float distance(Point2D p) {
-		 return (float)Math.sqrt(distanceSquared(p));
+	public final double distance(Point2D p) {
+		 return (double)Math.sqrt(distanceSquared(p));
 	}
 
 	/** {@inheritDoc}

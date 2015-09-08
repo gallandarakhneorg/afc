@@ -585,7 +585,7 @@ public class AStar<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<ST,PT
 		GP path = null;
 		CloseComparator<ST,PT> cComparator = new CloseComparator<>();
 
-		node = newAStarNode(endPoint, Float.NaN, Float.NaN, null);
+		node = newAStarNode(endPoint, Double.NaN, Double.NaN, null);
 		idx = ListUtil.indexOf(closeList, cComparator, node);
 		
 		if (idx>=0) {
@@ -597,7 +597,7 @@ public class AStar<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<ST,PT
 				pathSegments.add(segment);
 				do {
 					point = segment.getOtherSidePoint(point);
-					node = newAStarNode(point, Float.NaN, Float.NaN, null);
+					node = newAStarNode(point, Double.NaN, Double.NaN, null);
 					idx = ListUtil.indexOf(closeList, cComparator, node);
 					if (idx>=0) {
 						node = closeList.remove(idx);

@@ -309,9 +309,9 @@ public class Vector3i extends Tuple3i<Vector3D> implements Vector3D {
 
 	@Override
 	public boolean isColinear(Vector3D v) {
-		int cx = y() * v.z() - z() * v.y();
-		int cy = z() * v.x() - x() * v.z();
-		int cz = x() * v.y() - y() * v.x();
+		int cx = iy() * v.iz() - iz() * v.iy();
+		int cy = iz() * v.ix() - ix() * v.iz();
+		int cz = ix() * v.iy() - iy() * v.ix();
 		int sum = cx * cx + cy * cy + cz * cz;
 		return sum == 0;
 	}
@@ -546,8 +546,8 @@ public class Vector3i extends Tuple3i<Vector3D> implements Vector3D {
 		}
 
 		@Override
-		public int x() {
-			return Vector3i.this.x();
+		public int ix() {
+			return Vector3i.this.ix();
 		}
 
 		@Override
@@ -566,8 +566,8 @@ public class Vector3i extends Tuple3i<Vector3D> implements Vector3D {
 		}
 
 		@Override
-		public int y() {
-			return Vector3i.this.y();
+		public int iy() {
+			return Vector3i.this.iy();
 		}
 
 		@Override
@@ -586,8 +586,8 @@ public class Vector3i extends Tuple3i<Vector3D> implements Vector3D {
 		}
 
 		@Override
-		public int z() {
-			return Vector3i.this.z();
+		public int iz() {
+			return Vector3i.this.iz();
 		}
 
 		@Override

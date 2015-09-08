@@ -36,14 +36,14 @@ public interface Point2D extends Tuple2D<Point2D> {
 	 * @param p1 the other point
 	 * @return the distance.
 	 */
-	public float distanceSquared(Point2D p1);
+	public double distanceSquared(Point2D p1);
 
 	/**
 	 * Computes the distance between this point and point p1.
 	 * @param p1 the other point
 	 * @return the distance. 
 	 */    
-	public float distance(Point2D p1);
+	public double distance(Point2D p1);
 
 	/**
 	 * Computes the L-1 (Manhattan) distance between this point and
@@ -51,7 +51,7 @@ public interface Point2D extends Tuple2D<Point2D> {
 	 * @param p1 the other point
 	 * @return the distance.
 	 */
-	public float distanceL1(Point2D p1);
+	public double distanceL1(Point2D p1);
 
 	/**
 	 * Computes the L-infinite distance between this point and
@@ -60,7 +60,7 @@ public interface Point2D extends Tuple2D<Point2D> {
 	 * @param p1 the other point
 	 * @return the distance.
 	 */
-	public float distanceLinf(Point2D p1);
+	public double distanceLinf(Point2D p1);
 
 	/**
 	 * Sets the value of this tuple to the sum of tuples t1 and t2.
@@ -98,7 +98,7 @@ public interface Point2D extends Tuple2D<Point2D> {
 	 * @param t1 the tuple to be multipled
 	 * @param t2 the tuple to be added
 	 */
-	public void scaleAdd(float s, Vector2D t1, Point2D t2);
+	public void scaleAdd(double s, Vector2D t1, Point2D t2);
 
 	/**
 	 * Sets the value of this tuple to the scalar multiplication
@@ -116,7 +116,7 @@ public interface Point2D extends Tuple2D<Point2D> {
 	 * @param t1 the tuple to be multipled
 	 * @param t2 the tuple to be added
 	 */
-	public void scaleAdd(float s, Point2D t1, Vector2D t2);
+	public void scaleAdd(double s, Point2D t1, Vector2D t2);
 
 	/**
 	 * Sets the value of this tuple to the scalar multiplication
@@ -132,7 +132,7 @@ public interface Point2D extends Tuple2D<Point2D> {
 	 * @param s the scalar value
 	 * @param t1 the tuple to be added
 	 */
-	public void scaleAdd(float s, Vector2D t1);
+	public void scaleAdd(double s, Vector2D t1);
 
 	
 	/**

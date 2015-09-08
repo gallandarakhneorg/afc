@@ -173,9 +173,9 @@ public class Vector2i extends Tuple2i<Vector2D> implements Vector2D {
 	public double signedAngle(Vector2D v) {
 		assert(v!=null);
 		Vector2i a = new Vector2i(this);
-		if (a.length()==0) return Float.NaN;
+		if (a.length()==0) return Double.NaN;
 		Vector2i b = new Vector2i(v);
-		if (b.length()==0) return Float.NaN;
+		if (b.length()==0) return Double.NaN;
 		a.normalize();
 		b.normalize();
 		
@@ -278,7 +278,7 @@ public class Vector2i extends Tuple2i<Vector2D> implements Vector2D {
 		// Based on the cross product in 3D of (vx,vy,0)x(0,0,1), right-handed
 		//set(y(), -x());
 		// Based on the cross product in 3D of (vx,vy,0)x(0,0,1), left-handed
-		set(-y(), x());
+		set(-iy(), ix());
 	}
 
 	@Override
@@ -502,8 +502,8 @@ public class Vector2i extends Tuple2i<Vector2D> implements Vector2D {
 		}
 
 		@Override
-		public int x() {
-			return Vector2i.this.x();
+		public int ix() {
+			return Vector2i.this.ix();
 		}
 
 		@Override
@@ -522,8 +522,8 @@ public class Vector2i extends Tuple2i<Vector2D> implements Vector2D {
 		}
 
 		@Override
-		public int y() {
-			return Vector2i.this.y();
+		public int iy() {
+			return Vector2i.this.iy();
 		}
 
 		@Override

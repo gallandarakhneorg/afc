@@ -284,7 +284,7 @@ extends Cloneable, Serializable {
 	 * 
 	 * @return the x coordinate.
 	 */
-	public int x();
+	public int ix();
 
 	/**
 	 * Set the <i>x</i> coordinate.
@@ -312,7 +312,7 @@ extends Cloneable, Serializable {
 	 * 
 	 * @return  the <i>y</i> coordinate.
 	 */
-	public int y();
+	public int iy();
 
 	/**
 	 * Set the <i>y</i> coordinate.

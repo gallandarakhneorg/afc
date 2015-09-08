@@ -66,7 +66,7 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Shape2f,Re
 	 */
 	public static Point2D getClosestPointTo(PathIterator2f pi, double x, double y) {
 		Point2D closest = null;
-		double bestDist = Float.POSITIVE_INFINITY;
+		double bestDist = Double.POSITIVE_INFINITY;
 		Point2D candidate;
 		PathElement2f pe;
 
@@ -1750,10 +1750,10 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Shape2f,Re
 
 	private static boolean buildGraphicalBoundingBox(PathIterator2f iterator, Rectangle2f box) {
 		boolean foundOneLine = false;
-		double xmin = Float.POSITIVE_INFINITY;
-		double ymin = Float.POSITIVE_INFINITY;
-		double xmax = Float.NEGATIVE_INFINITY;
-		double ymax = Float.NEGATIVE_INFINITY;
+		double xmin = Double.POSITIVE_INFINITY;
+		double ymin = Double.POSITIVE_INFINITY;
+		double xmax = Double.NEGATIVE_INFINITY;
+		double ymax = Double.NEGATIVE_INFINITY;
 		PathElement2f element;
 		Path2f subPath;
 		while (iterator.hasNext()) {
@@ -1819,10 +1819,10 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Shape2f,Re
 
 	private boolean buildLogicalBoundingBox(Rectangle2f box) {
 		if (this.numCoords>0) {
-			double xmin = Float.POSITIVE_INFINITY;
-			double ymin = Float.POSITIVE_INFINITY;
-			double xmax = Float.NEGATIVE_INFINITY;
-			double ymax = Float.NEGATIVE_INFINITY;
+			double xmin = Double.POSITIVE_INFINITY;
+			double ymin = Double.POSITIVE_INFINITY;
+			double xmax = Double.NEGATIVE_INFINITY;
+			double ymax = Double.NEGATIVE_INFINITY;
 			for(int i=0; i<this.numCoords; i+= 2) {
 				if (this.coords[i]<xmin) xmin = this.coords[i];
 				if (this.coords[i+1]<ymin) ymin = this.coords[i+1];

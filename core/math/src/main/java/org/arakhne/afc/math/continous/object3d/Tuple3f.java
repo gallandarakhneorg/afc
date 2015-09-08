@@ -38,15 +38,15 @@ public class Tuple3f<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 
 	/** x coordinate.
 	 */
-	protected float x;
+	protected double x;
 
 	/** y coordinate.
 	 */
-	protected float y;
+	protected double y;
 
 	/** z coordinate.
 	 */
-	protected float z;
+	protected double z;
 
 	/**
 	 */
@@ -75,7 +75,7 @@ public class Tuple3f<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	/**
 	 * @param tuple is the tuple to copy.
 	 */
-	public Tuple3f(float[] tuple) {
+	public Tuple3f(double[] tuple) {
 		this.x = tuple[0];
 		this.y = tuple[1];
 		this.z = tuple[2];
@@ -97,7 +97,7 @@ public class Tuple3f<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	 * @param y
 	 * @param z
 	 */
-	public Tuple3f(float x, float y, float z) {
+	public Tuple3f(double x, double y, double z) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -148,7 +148,7 @@ public class Tuple3f<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void add(float x, float y, float z) {
+	public void add(double x, double y, double z) {
 		this.x += x;
 		this.y += y;
 		this.z += z;
@@ -166,7 +166,7 @@ public class Tuple3f<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void addX(float x) {
+	public void addX(double x) {
 		this.x += x;
 	}
 
@@ -182,7 +182,7 @@ public class Tuple3f<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void addY(float y) {
+	public void addY(double y) {
 		this.y += y;
 	}
 
@@ -198,7 +198,7 @@ public class Tuple3f<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void addZ(float z) {
+	public void addZ(double z) {
 		this.z += z;
 	}
 
@@ -217,7 +217,7 @@ public class Tuple3f<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void clamp(float min, float max) {
+	public void clamp(double min, double max) {
 		clamp(min, max);
 	}
 
@@ -234,7 +234,7 @@ public class Tuple3f<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void clampMin(float min) {
+	public void clampMin(double min) {
 		clampMin(min);
 	}
 
@@ -251,7 +251,7 @@ public class Tuple3f<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void clampMax(float max) {
+	public void clampMax(double max) {
 		clampMax(max);
 	}
 
@@ -270,7 +270,7 @@ public class Tuple3f<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void clamp(float min, float max, T t) {
+	public void clamp(double min, double max, T t) {
 		clamp(min, max, t);
 	}
 
@@ -287,7 +287,7 @@ public class Tuple3f<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void clampMin(float min, T t) {
+	public void clampMin(double min, T t) {
 		clampMin(min, t);
 	}
 
@@ -304,7 +304,7 @@ public class Tuple3f<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void clampMax(float max, T t) {
+	public void clampMax(double max, T t) {
 		clampMax(max, t);
 	}
 
@@ -330,7 +330,7 @@ public class Tuple3f<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void get(float[] t) {
+	public void get(double[] t) {
 		t[0] = this.x;
 		t[1] = this.y;
 		t[2] = this.z;
@@ -370,7 +370,7 @@ public class Tuple3f<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void scale(float s, T t1) {
+	public void scale(double s, T t1) {
 		this.x = (s * t1.getX());
 		this.y = (s * t1.getY());
 		this.z = (s * t1.getZ());
@@ -390,7 +390,7 @@ public class Tuple3f<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void scale(float s) {
+	public void scale(double s) {
 		this.x = (s * this.x);
 		this.y = (s * this.y);
 		this.z = (s * this.z);
@@ -420,7 +420,7 @@ public class Tuple3f<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void set(float x, float y, float z) {
+	public void set(double x, double y, double z) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -440,7 +440,7 @@ public class Tuple3f<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void set(float[] t) {
+	public void set(double[] t) {
 		this.x = t[0];
 		this.y = t[1];
 		this.z = t[2];
@@ -450,7 +450,7 @@ public class Tuple3f<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public float getX() {
+	public double getX() {
 		return this.x;
 	}
 
@@ -458,7 +458,7 @@ public class Tuple3f<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public int x() {
+	public int ix() {
 		return (int)this.x;
 	}
 
@@ -474,7 +474,7 @@ public class Tuple3f<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void setX(float x) {
+	public void setX(double x) {
 		this.x = x;
 	}
 
@@ -482,7 +482,7 @@ public class Tuple3f<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public float getY() {
+	public double getY() {
 		return this.y;
 	}
 
@@ -490,7 +490,7 @@ public class Tuple3f<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public int y() {
+	public int iy() {
 		return (int)this.y;
 	}
 
@@ -506,7 +506,7 @@ public class Tuple3f<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void setY(float y) {
+	public void setY(double y) {
 		this.y = y;
 	}
 
@@ -514,7 +514,7 @@ public class Tuple3f<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public float getZ() {
+	public double getZ() {
 		return this.z;
 	}
 
@@ -522,7 +522,7 @@ public class Tuple3f<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public int z() {
+	public int iz() {
 		return (int)this.z;
 	}
 
@@ -538,7 +538,7 @@ public class Tuple3f<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void setZ(float z) {
+	public void setZ(double z) {
 		this.z = z;
 	}
 
@@ -580,7 +580,7 @@ public class Tuple3f<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void sub(float x, float y, float z) {
+	public void sub(double x, double y, double z) {
 		this.x -= x;
 		this.y -= y;
 		this.z -= z;
@@ -590,7 +590,7 @@ public class Tuple3f<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void subX(float x) {
+	public void subX(double x) {
 		this.x -= x;
 	}
 
@@ -598,7 +598,7 @@ public class Tuple3f<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void subY(float y) {
+	public void subY(double y) {
 		this.y -= y;
 	}
 
@@ -606,7 +606,7 @@ public class Tuple3f<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void subZ(float z) {
+	public void subZ(double z) {
 		this.z -= z;
 	}
 
@@ -614,7 +614,7 @@ public class Tuple3f<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void interpolate(T t1, T t2, float alpha) {
+	public void interpolate(T t1, T t2, double alpha) {
 		this.x = ((1f-alpha)*t1.getX() + alpha*t2.getX());
 		this.y = ((1f-alpha)*t1.getY() + alpha*t2.getY());
 		this.z = ((1f-alpha)*t1.getZ() + alpha*t2.getZ());
@@ -624,7 +624,7 @@ public class Tuple3f<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void interpolate(T t1, float alpha) {
+	public void interpolate(T t1, double alpha) {
 		this.x = ((1f-alpha)*this.x + alpha*t1.getX());
 		this.y = ((1f-alpha)*this.y + alpha*t1.getY());
 		this.z = ((1f-alpha)*this.z + alpha*t1.getZ());
@@ -665,19 +665,19 @@ public class Tuple3f<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean epsilonEquals(T t1, float epsilon) {
-		float diff;
+	public boolean epsilonEquals(T t1, double epsilon) {
+		double diff;
 
 		diff = this.x - t1.getX();
-		if(Float.isNaN(diff)) return false;
+		if(Double.isNaN(diff)) return false;
 		if((diff<0?-diff:diff) > epsilon) return false;
 
 		diff = this.y - t1.getY();
-		if(Float.isNaN(diff)) return false;
+		if(Double.isNaN(diff)) return false;
 		if((diff<0?-diff:diff) > epsilon) return false;
 
 		diff = this.z - t1.getZ();
-		if(Float.isNaN(diff)) return false;
+		if(Double.isNaN(diff)) return false;
 		if((diff<0?-diff:diff) > epsilon) return false;
 
 		return true;
@@ -689,9 +689,9 @@ public class Tuple3f<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	@Override
 	public int hashCode() {
 		int bits = 1;
-		bits = 31 * bits + Float.floatToIntBits(this.x);
-		bits = 31 * bits + Float.floatToIntBits(this.y);
-		bits = 31 * bits + Float.floatToIntBits(this.z);
+		bits = 31 * bits + Double.floatToIntBits(this.x);
+		bits = 31 * bits + Double.floatToIntBits(this.y);
+		bits = 31 * bits + Double.floatToIntBits(this.z);
 		return bits ^ (bits >> 32);
 	}
 

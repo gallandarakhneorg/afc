@@ -691,8 +691,8 @@ public class Vector2f extends Tuple2f<Vector2D> implements Vector2D {
 		}
 
 		@Override
-		public int x() {
-			return Vector2f.this.x();
+		public int ix() {
+			return Vector2f.this.ix();
 		}
 
 		@Override
@@ -711,8 +711,8 @@ public class Vector2f extends Tuple2f<Vector2D> implements Vector2D {
 		}
 
 		@Override
-		public int y() {
-			return Vector2f.this.y();
+		public int iy() {
+			return Vector2f.this.iy();
 		}
 
 		@Override

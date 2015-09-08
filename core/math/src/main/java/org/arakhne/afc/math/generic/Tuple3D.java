@@ -67,7 +67,7 @@ extends Cloneable, Serializable {
 	 * @param y
 	 * @param z
 	 */
-	public void add(float x, float y, float z);
+	public void add(double x, double y, double z);
 
 	/**
 	 * Sets the x value of this tuple to the sum of itself and x.
@@ -79,7 +79,7 @@ extends Cloneable, Serializable {
 	 * Sets the x value of this tuple to the sum of itself and x.
 	 * @param x
 	 */
-	public void addX(float x);
+	public void addX(double x);
 
 	/**
 	 * Sets the y value of this tuple to the sum of itself and y.
@@ -91,7 +91,7 @@ extends Cloneable, Serializable {
 	 * Sets the y value of this tuple to the sum of itself and y.
 	 * @param y
 	 */
-	public void addY(float y);
+	public void addY(double y);
 
 	/**
 	 * Sets the z value of this tuple to the sum of itself and z.
@@ -103,7 +103,7 @@ extends Cloneable, Serializable {
 	 * Sets the z value of this tuple to the sum of itself and z.
 	 * @param z
 	 */
-	public void addZ(float z);
+	public void addZ(double z);
 
 	/**
 	 *  Clamps this tuple to the range [low, high].
@@ -117,7 +117,7 @@ extends Cloneable, Serializable {
 	 *  @param min  the lowest value in this tuple after clamping
 	 *  @param max  the highest value in this tuple after clamping
 	 */
-	public void clamp(float min, float max);
+	public void clamp(double min, double max);
 
 	/**
 	 *  Clamps the minimum value of this tuple to the min parameter.
@@ -129,7 +129,7 @@ extends Cloneable, Serializable {
 	 *  Clamps the minimum value of this tuple to the min parameter.
 	 *  @param min   the lowest value in this tuple after clamping
 	 */
-	public void clampMin(float min);
+	public void clampMin(double min);
 
 	/**
 	 *  Clamps the maximum value of this tuple to the max parameter.
@@ -141,7 +141,7 @@ extends Cloneable, Serializable {
 	 *  Clamps the maximum value of this tuple to the max parameter.
 	 *  @param max   the highest value in the tuple after clamping
 	 */
-	public void clampMax(float max);
+	public void clampMax(double max);
 
 	/**
 	 *  Clamps the tuple parameter to the range [low, high] and
@@ -159,7 +159,7 @@ extends Cloneable, Serializable {
 	 *  @param max  the highest value in the tuple after clamping
 	 *  @param t   the source tuple, which will not be modified
 	 */
-	public void clamp(float min, float max, TT t);
+	public void clamp(double min, double max, TT t);
 
 	/**
 	 *  Clamps the minimum value of the tuple parameter to the min
@@ -175,7 +175,7 @@ extends Cloneable, Serializable {
 	 *  @param min   the lowest value in the tuple after clamping
 	 *  @param t   the source tuple, which will not be modified
 	 */
-	public void clampMin(float min, TT t);
+	public void clampMin(double min, TT t);
 
 	/**
 	 *  Clamps the maximum value of the tuple parameter to the max
@@ -191,7 +191,7 @@ extends Cloneable, Serializable {
 	 *  @param max   the highest value in the tuple after clamping
 	 *  @param t   the source tuple, which will not be modified
 	 */
-	public void clampMax(float max, TT t);
+	public void clampMax(double max, TT t);
 
 	/**
 	 * Copies the values of this tuple into the tuple t.
@@ -209,7 +209,7 @@ extends Cloneable, Serializable {
 	 *  Copies the value of the elements of this tuple into the array t.
 	 *  @param t the array that will contain the values of the vector
 	 */
-	public void get(float[] t);
+	public void get(double[] t);
 
 	/**
 	 * Sets the value of this tuple to the negation of tuple t1.
@@ -236,7 +236,7 @@ extends Cloneable, Serializable {
 	 * @param s the scalar value
 	 * @param t1 the source tuple
 	 */
-	public void scale(float s, TT t1);
+	public void scale(double s, TT t1);
 
 	/**
 	 * Sets the value of this tuple to the scalar multiplication
@@ -250,7 +250,7 @@ extends Cloneable, Serializable {
 	 * of the scale factor with this.
 	 * @param s the scalar value
 	 */
-	public void scale(float s);
+	public void scale(double s);
 
 	/**
 	 * Sets the value of this tuple to the value of tuple t1.
@@ -274,7 +274,7 @@ extends Cloneable, Serializable {
 	 * @param y the y coordinate
 	 * @param z the z coordinate
 	 */
-	public void set(float x, float y, float z);
+	public void set(double x, double y, double z);
 
 	/**
 	 * Sets the value of this tuple from the 2 values specified in 
@@ -288,21 +288,21 @@ extends Cloneable, Serializable {
 	 * the array.
 	 * @param t the array of length 2 containing xy in order
 	 */
-	public void set(float[] t);
+	public void set(double[] t);
 
 	/**
 	 * Get the <i>x</i> coordinate.
 	 * 
 	 * @return the x coordinate.
 	 */
-	public float getX();
+	public double getX();
 
 	/**
 	 * Get the <i>x</i> coordinate.
 	 * 
 	 * @return the x coordinate.
 	 */
-	public int x();
+	public int ix();
 
 	/**
 	 * Set the <i>x</i> coordinate.
@@ -316,21 +316,21 @@ extends Cloneable, Serializable {
 	 * 
 	 * @param x  value to <i>x</i> coordinate.
 	 */
-	public void setX(float x);
+	public void setX(double x);
 
 	/**
 	 * Get the <i>y</i> coordinate.
 	 * 
 	 * @return  the <i>y</i> coordinate.
 	 */
-	public float getY();
+	public double getY();
 
 	/**
 	 * Get the <i>y</i> coordinate.
 	 * 
 	 * @return  the <i>y</i> coordinate.
 	 */
-	public int y();
+	public int iy();
 
 	/**
 	 * Set the <i>y</i> coordinate.
@@ -344,21 +344,21 @@ extends Cloneable, Serializable {
 	 * 
 	 * @param y value to <i>y</i> coordinate.
 	 */
-	public void setY(float y);
+	public void setY(double y);
 
 	/**
 	 * Get the <i>z</i> coordinate.
 	 * 
 	 * @return  the <i>z</i> coordinate.
 	 */
-	public float getZ();
+	public double getZ();
 
 	/**
 	 * Get the <i>z</i> coordinate.
 	 * 
 	 * @return  the <i>z</i> coordinate.
 	 */
-	public int z();
+	public int iz();
 
 	/**
 	 * Set the <i>z</i> coordinate.
@@ -372,7 +372,7 @@ extends Cloneable, Serializable {
 	 * 
 	 * @param z value to <i>z</i> coordinate.
 	 */
-	public void setZ(float z);
+	public void setZ(double z);
 
 	/**
 	 * Sets the value of this tuple to the difference of itself and x, y and z.
@@ -388,7 +388,7 @@ extends Cloneable, Serializable {
 	 * @param y
 	 * @param z
 	 */
-	public void sub(float x, float y, float z);
+	public void sub(double x, double y, double z);
 
 	/**
 	 * Sets the x value of this tuple to the difference of itself and x.
@@ -400,7 +400,7 @@ extends Cloneable, Serializable {
 	 * Sets the x value of this tuple to the difference of itself and x.
 	 * @param x
 	 */
-	public void subX(float x);
+	public void subX(double x);
 
 	/**
 	 * Sets the y value of this tuple to the difference of itself and y.
@@ -412,7 +412,7 @@ extends Cloneable, Serializable {
 	 * Sets the y value of this tuple to the difference of itself and y.
 	 * @param y
 	 */
-	public void subY(float y);
+	public void subY(double y);
 
 	/**
 	 * Sets the z value of this tuple to the difference of itself and z.
@@ -424,7 +424,7 @@ extends Cloneable, Serializable {
 	 * Sets the z value of this tuple to the difference of itself and z.
 	 * @param z
 	 */
-	public void subZ(float z);
+	public void subZ(double z);
 
 	/** 
 	 *  Linearly interpolates between tuples t1 and t2 and places the 
@@ -433,7 +433,7 @@ extends Cloneable, Serializable {
 	 *  @param t2  the second tuple
 	 *  @param alpha  the alpha interpolation parameter
 	 */
-	public void interpolate(TT t1, TT t2, float alpha);
+	public void interpolate(TT t1, TT t2, double alpha);
 
 	/**  
 	 *  Linearly interpolates between this tuple and tuple t1 and 
@@ -441,7 +441,7 @@ extends Cloneable, Serializable {
 	 *  @param t1  the first tuple
 	 *  @param alpha  the alpha interpolation parameter  
 	 */   
-	public void interpolate(TT t1, float alpha); 
+	public void interpolate(TT t1, double alpha); 
 
 	/**   
 	 * Returns true if all of the data members of Tuple2f t1 are
@@ -470,7 +470,7 @@ extends Cloneable, Serializable {
 	 * @param epsilon  the threshold value  
 	 * @return  true or false
 	 */
-	public boolean epsilonEquals(TT t1, float epsilon);
+	public boolean epsilonEquals(TT t1, double epsilon);
 
 	/**
 	 * Returns a hash code value based on the data values in this

@@ -97,10 +97,10 @@ public class OrientedRectangle2f extends AbstractShape2f<OrientedRectangle2f> {
 		assert(center!=null);
 		assert(extents!=null);
 
-		double minR = Float.POSITIVE_INFINITY;
-		double maxR = Float.NEGATIVE_INFINITY;
-		double minS = Float.POSITIVE_INFINITY;
-		double maxS = Float.NEGATIVE_INFINITY;
+		double minR = Double.POSITIVE_INFINITY;
+		double maxR = Double.NEGATIVE_INFINITY;
+		double minS = Double.POSITIVE_INFINITY;
+		double maxS = Double.NEGATIVE_INFINITY;
 
 		double PdotR;
 		double PdotS;

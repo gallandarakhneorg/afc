@@ -64,7 +64,7 @@ public class Vector3i extends Tuple3i<Vector3D> implements Vector3D {
 	/**
 	 * @param tuple is the tuple to copy.
 	 */
-	public Vector3i(float[] tuple) {
+	public Vector3i(double[] tuple) {
 		super(tuple);
 	}
 
@@ -83,7 +83,7 @@ public class Vector3i extends Tuple3i<Vector3D> implements Vector3D {
 	 * @param z
 	 */
 	public Vector3i(float x, float y, float z) {
-		super(x,y,z);
+		super((double)x,(double)y,(double)z);
 	}
 
 	/**
@@ -92,7 +92,7 @@ public class Vector3i extends Tuple3i<Vector3D> implements Vector3D {
 	 * @param z
 	 */
 	public Vector3i(double x, double y, double z) {
-		super((float)x,(float)y,(float)z);
+		super(x,y,z);
 	}
 
 	/**
@@ -115,18 +115,18 @@ public class Vector3i extends Tuple3i<Vector3D> implements Vector3D {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public float angle(Vector3D v1) {
+	public double angle(Vector3D v1) {
 		double vDot = dot(v1) / ( length()*v1.length() );
 		if( vDot < -1.) vDot = -1.;
 		if( vDot >  1.) vDot =  1.;
-		return((float) (Math.acos( vDot )));
+		return((double) (Math.acos( vDot )));
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public float dot(Vector3D v1) {
+	public double dot(Vector3D v1) {
 	      return (this.x*v1.getX() + this.y*v1.getY() + this.z*v1.getZ());
 	}
 
@@ -134,15 +134,15 @@ public class Vector3i extends Tuple3i<Vector3D> implements Vector3D {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public float length() {
-        return (float) Math.sqrt(this.x*this.x + this.y*this.y + this.z*this.z);
+	public double length() {
+        return (double) Math.sqrt(this.x*this.x + this.y*this.y + this.z*this.z);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public float lengthSquared() {
+	public double lengthSquared() {
         return (this.x*this.x + this.y*this.y + this.z*this.z);
 	}
 
@@ -151,8 +151,8 @@ public class Vector3i extends Tuple3i<Vector3D> implements Vector3D {
 	 */
 	@Override
 	public void normalize(Vector3D v1) {
-        float norm;
-        norm = (float) (1./Math.sqrt(v1.getX()*v1.getX() + v1.getY()*v1.getY() + v1.getZ()*v1.getZ()));
+		double norm;
+        norm = (double) (1./Math.sqrt(v1.getX()*v1.getX() + v1.getY()*v1.getY() + v1.getZ()*v1.getZ()));
         this.x = (int)(v1.getX()*norm);
         this.y = (int)(v1.getY()*norm);
         this.z = (int)(v1.getZ()*norm);
@@ -163,8 +163,8 @@ public class Vector3i extends Tuple3i<Vector3D> implements Vector3D {
 	 */
 	@Override
 	public void normalize() {
-        float norm;
-        norm = (float)(1./Math.sqrt(this.x*this.x + this.y*this.y + this.z*this.z));
+		double norm;
+        norm = (double)(1./Math.sqrt(this.x*this.x + this.y*this.y + this.z*this.z));
         this.x *= norm;
         this.y *= norm;
         this.z *= norm;
@@ -192,7 +192,7 @@ public class Vector3i extends Tuple3i<Vector3D> implements Vector3D {
 	}
 
 	@Override
-	public void scaleAdd(float s, Vector3D t1, Vector3D t2) {
+	public void scaleAdd(double s, Vector3D t1, Vector3D t2) {
 		this.x = (int)(s * t1.getX() + t2.getX());
 		this.y = (int)(s * t1.getY() + t2.getY());
 		this.z = (int)(s * t1.getZ() + t2.getZ());
@@ -206,7 +206,7 @@ public class Vector3i extends Tuple3i<Vector3D> implements Vector3D {
 	}
 
 	@Override
-	public void scaleAdd(float s, Vector3D t1) {
+	public void scaleAdd(double s, Vector3D t1) {
 		this.x = (int)(s * this.x + t1.getX());
 		this.y = (int)(s * this.y + t1.getY());
 		this.z = (int)(s * this.z + t1.getZ());
@@ -245,38 +245,38 @@ public class Vector3i extends Tuple3i<Vector3D> implements Vector3D {
 
 	@Override
 	public Vector3D crossLeftHand(Vector3D v1) {
-		float x = v1.getY()*getZ() - v1.getZ()*getY();
-		float y = v1.getZ()*getX() - v1.getX()*getZ();
-		float z = v1.getX()*getY() - v1.getY()*getX();
+		double x = v1.getY()*getZ() - v1.getZ()*getY();
+		double y = v1.getZ()*getX() - v1.getX()*getZ();
+		double z = v1.getX()*getY() - v1.getY()*getX();
 		return new Vector3i(x,y,z);
 	}
 
 	@Override
 	public void crossLeftHand(Vector3D v1, Vector3D v2) {
-		float x = v2.getY()*v1.getZ() - v2.getZ()*v1.getY();
-		float y = v2.getZ()*v1.getX() - v2.getX()*v1.getZ();
-		float z = v2.getX()*v1.getY() - v2.getY()*v1.getX();
+		double x = v2.getY()*v1.getZ() - v2.getZ()*v1.getY();
+		double y = v2.getZ()*v1.getX() - v2.getX()*v1.getZ();
+		double z = v2.getX()*v1.getY() - v2.getY()*v1.getX();
 		set(x,y,z);
 	}
 	
 	@Override
 	public Vector3D crossRightHand(Vector3D v1) {
-		float x = getY()*v1.getZ() - getZ()*v1.getY();
-		float y = getZ()*v1.getX() - getX()*v1.getZ();
-		float z = getX()*v1.getY() - getY()*v1.getX();
+		double x = getY()*v1.getZ() - getZ()*v1.getY();
+		double y = getZ()*v1.getX() - getX()*v1.getZ();
+		double z = getX()*v1.getY() - getY()*v1.getX();
 		return new Vector3f(x,y,z);
 	}
 
 	@Override
 	public void crossRightHand(Vector3D v1, Vector3D v2) {
-		float x = v1.getY()*v2.getZ() - v1.getZ()*v2.getY();
-		float y = v1.getZ()*v2.getX() - v1.getX()*v2.getZ();
-		float z = v1.getX()*v2.getY() - v1.getY()*v2.getX();
+		double x = v1.getY()*v2.getZ() - v1.getZ()*v2.getY();
+		double y = v1.getZ()*v2.getX() - v1.getX()*v2.getZ();
+		double z = v1.getX()*v2.getY() - v1.getY()*v2.getX();
 		set(x,y,z);
 	}
 
 	@Override
-	public void turnVector(Vector3D axis, float angle) {
+	public void turnVector(Vector3D axis, double angle) {
 		Transform3D mat = new Transform3D();
 		mat.setRotation(new Quaternion(axis, angle));
 		mat.transform(this);

@@ -299,104 +299,104 @@ public class Path2iTest extends AbstractShape2iTestCase<Path2i> {
 		assertTrue(it.hasNext());
 		p = it.next();
 		assertNotNull(p);
-		assertEquals(p.toString(), 0, p.x());
-		assertEquals(p.toString(), 0, p.y());
+		assertEquals(p.toString(), 0, p.ix());
+		assertEquals(p.toString(), 0, p.iy());
 
 		assertTrue(it.hasNext());
 		p = it.next();
 		assertNotNull(p);
-		assertEquals(p.toString(), 1, p.x());
-		assertEquals(p.toString(), 1, p.y());
+		assertEquals(p.toString(), 1, p.ix());
+		assertEquals(p.toString(), 1, p.iy());
 
 		assertTrue(it.hasNext());
 		p = it.next();
 		assertNotNull(p);
-		assertEquals(p.toString(), 2, p.x());
-		assertEquals(p.toString(), 2, p.y());
+		assertEquals(p.toString(), 2, p.ix());
+		assertEquals(p.toString(), 2, p.iy());
 
 		assertTrue(it.hasNext());
 		p = it.next();
 		assertNotNull(p);
-		assertEquals(p.toString(), 3, p.x());
-		assertEquals(p.toString(), 1, p.y());
+		assertEquals(p.toString(), 3, p.ix());
+		assertEquals(p.toString(), 1, p.iy());
 
 		assertTrue(it.hasNext());
 		p = it.next();
 		assertNotNull(p);
-		assertEquals(p.toString(), 4, p.x());
-		assertEquals(p.toString(), 2, p.y());
+		assertEquals(p.toString(), 4, p.ix());
+		assertEquals(p.toString(), 2, p.iy());
 
 		assertTrue(it.hasNext());
 		p = it.next();
 		assertNotNull(p);
-		assertEquals(p.toString(), 4, p.x());
-		assertEquals(p.toString(), 3, p.y());
+		assertEquals(p.toString(), 4, p.ix());
+		assertEquals(p.toString(), 3, p.iy());
 
 		assertTrue(it.hasNext());
 		p = it.next();
 		assertNotNull(p);
-		assertEquals(p.toString(), 4, p.x());
-		assertEquals(p.toString(), 2, p.y());
+		assertEquals(p.toString(), 4, p.ix());
+		assertEquals(p.toString(), 2, p.iy());
 
 		assertTrue(it.hasNext());
 		p = it.next();
 		assertNotNull(p);
-		assertEquals(p.toString(), 5, p.x());
-		assertEquals(p.toString(), 2, p.y());
+		assertEquals(p.toString(), 5, p.ix());
+		assertEquals(p.toString(), 2, p.iy());
 
 		assertTrue(it.hasNext());
 		p = it.next();
 		assertNotNull(p);
-		assertEquals(p.toString(), 5, p.x());
-		assertEquals(p.toString(), 1, p.y());
+		assertEquals(p.toString(), 5, p.ix());
+		assertEquals(p.toString(), 1, p.iy());
 
 		assertTrue(it.hasNext());
 		p = it.next();
 		assertNotNull(p);
-		assertEquals(p.toString(), 6, p.x());
-		assertEquals(p.toString(), 1, p.y());
+		assertEquals(p.toString(), 6, p.ix());
+		assertEquals(p.toString(), 1, p.iy());
 
 		assertTrue(it.hasNext());
 		p = it.next();
 		assertNotNull(p);
-		assertEquals(p.toString(), 6, p.x());
-		assertEquals(p.toString(), 0, p.y());
+		assertEquals(p.toString(), 6, p.ix());
+		assertEquals(p.toString(), 0, p.iy());
 
 		assertTrue(it.hasNext());
 		p = it.next();
 		assertNotNull(p);
-		assertEquals(p.toString(), 6, p.x());
-		assertEquals(p.toString(), -1, p.y());
+		assertEquals(p.toString(), 6, p.ix());
+		assertEquals(p.toString(), -1, p.iy());
 
 		assertTrue(it.hasNext());
 		p = it.next();
 		assertNotNull(p);
-		assertEquals(p.toString(), 7, p.x());
-		assertEquals(p.toString(), -1, p.y());
+		assertEquals(p.toString(), 7, p.ix());
+		assertEquals(p.toString(), -1, p.iy());
 
 		assertTrue(it.hasNext());
 		p = it.next();
 		assertNotNull(p);
-		assertEquals(p.toString(), 7, p.x());
-		assertEquals(p.toString(), -2, p.y());
+		assertEquals(p.toString(), 7, p.ix());
+		assertEquals(p.toString(), -2, p.iy());
 
 		assertTrue(it.hasNext());
 		p = it.next();
 		assertNotNull(p);
-		assertEquals(p.toString(), 7, p.x());
-		assertEquals(p.toString(), -3, p.y());
+		assertEquals(p.toString(), 7, p.ix());
+		assertEquals(p.toString(), -3, p.iy());
 
 		assertTrue(it.hasNext());
 		p = it.next();
 		assertNotNull(p);
-		assertEquals(p.toString(), 7, p.x());
-		assertEquals(p.toString(), -4, p.y());
+		assertEquals(p.toString(), 7, p.ix());
+		assertEquals(p.toString(), -4, p.iy());
 
 		assertTrue(it.hasNext());
 		p = it.next();
 		assertNotNull(p);
-		assertEquals(p.toString(), 7, p.x());
-		assertEquals(p.toString(), -5, p.y());
+		assertEquals(p.toString(), 7, p.ix());
+		assertEquals(p.toString(), -5, p.iy());
 
 		assertFalse(it.hasNext());
 	}
@@ -541,24 +541,24 @@ public class Path2iTest extends AbstractShape2iTestCase<Path2i> {
 		Point2D p;
 		
 		p = this.r.getClosestPointTo(new Point2i(0, 0));
-		assertEquals(p.toString(), 0, p.x());
-		assertEquals(p.toString(), 0, p.y());
+		assertEquals(p.toString(), 0, p.ix());
+		assertEquals(p.toString(), 0, p.iy());
 
 		p = this.r.getClosestPointTo(new Point2i(-1, -4)); // remeber: path is closed
-		assertEquals(p.toString(), 1, p.x());
-		assertEquals(p.toString(), -1, p.y());
+		assertEquals(p.toString(), 1, p.ix());
+		assertEquals(p.toString(), -1, p.iy());
 
 		p = this.r.getClosestPointTo(new Point2i(4, 0));
-		assertEquals(p.toString(), 4, p.x());
-		assertEquals(p.toString(), 0, p.y());
+		assertEquals(p.toString(), 4, p.ix());
+		assertEquals(p.toString(), 0, p.iy());
 
 		p = this.r.getClosestPointTo(new Point2i(4, 2));
-		assertEquals(p.toString(), 4, p.x());
-		assertEquals(p.toString(), 2, p.y());
+		assertEquals(p.toString(), 4, p.ix());
+		assertEquals(p.toString(), 2, p.iy());
 
 		p = this.r.getClosestPointTo(new Point2i(4, -1));
-		assertEquals(p.toString(), 4, p.x());
-		assertEquals(p.toString(), -1, p.y());
+		assertEquals(p.toString(), 4, p.ix());
+		assertEquals(p.toString(), -1, p.iy());
 	}
 	
 	/**
@@ -568,24 +568,24 @@ public class Path2iTest extends AbstractShape2iTestCase<Path2i> {
 		Point2D p;
 		
 		p = this.r.getFarthestPointTo(new Point2i(0, 0));
-		assertEquals(p.toString(), 7, p.x());
-		assertEquals(p.toString(), -5, p.y());
+		assertEquals(p.toString(), 7, p.ix());
+		assertEquals(p.toString(), -5, p.iy());
 
 		p = this.r.getFarthestPointTo(new Point2i(-1, -4)); // remeber: path is closed
-		assertEquals(p.toString(), 7, p.x());
-		assertEquals(p.toString(), -2, p.y());
+		assertEquals(p.toString(), 7, p.ix());
+		assertEquals(p.toString(), -2, p.iy());
 
 		p = this.r.getFarthestPointTo(new Point2i(4, 0));
-		assertEquals(p.toString(), 7, p.x());
-		assertEquals(p.toString(), -5, p.y());
+		assertEquals(p.toString(), 7, p.ix());
+		assertEquals(p.toString(), -5, p.iy());
 
 		p = this.r.getFarthestPointTo(new Point2i(4, 2));
-		assertEquals(p.toString(), 7, p.x());
-		assertEquals(p.toString(), -5, p.y());
+		assertEquals(p.toString(), 7, p.ix());
+		assertEquals(p.toString(), -5, p.iy());
 
 		p = this.r.getFarthestPointTo(new Point2i(4, -1));
-		assertEquals(p.toString(), 7, p.x());
-		assertEquals(p.toString(), -5, p.y());
+		assertEquals(p.toString(), 7, p.ix());
+		assertEquals(p.toString(), -5, p.iy());
 	}
 
 	@Test

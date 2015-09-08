@@ -112,7 +112,7 @@ public class ExponentialStochasticLaw extends StochasticLaw {
 	 */
 	@Override
 	public MathFunctionRange[] getRange() {
-		return MathFunctionRange.createSet(this.xmin,Float.POSITIVE_INFINITY);
+		return MathFunctionRange.createSet(this.xmin,Double.POSITIVE_INFINITY);
 	}
 	
 	/** Replies the x according to the value of the distribution function.

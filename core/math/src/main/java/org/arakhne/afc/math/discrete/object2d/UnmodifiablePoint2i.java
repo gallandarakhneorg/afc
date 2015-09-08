@@ -46,7 +46,7 @@ public class UnmodifiablePoint2i extends Point2i {
 	 * @param x
 	 * @param y
 	 */
-	public UnmodifiablePoint2i(float x, float y) {
+	public UnmodifiablePoint2i(double x, double y) {
 		super(x, y);
 	}
 	
@@ -59,12 +59,12 @@ public class UnmodifiablePoint2i extends Point2i {
 	}
 
 	@Override
-	public void set(float x, float y) {
+	public void set(double x, double y) {
 		//
 	}
 
 	@Override
-	public void set(float[] t) {
+	public void set(double[] t) {
 		//
 	}
 	
@@ -84,7 +84,7 @@ public class UnmodifiablePoint2i extends Point2i {
 	}
 	
 	@Override
-	public void setX(float x) {
+	public void setX(double x) {
 		//
 	}
 	
@@ -94,7 +94,7 @@ public class UnmodifiablePoint2i extends Point2i {
 	}
 	
 	@Override
-	public void setY(float y) {
+	public void setY(double y) {
 		//
 	}
 	

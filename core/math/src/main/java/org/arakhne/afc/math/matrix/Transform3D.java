@@ -396,7 +396,7 @@ public class Transform3D extends Matrix4f {
 		x = this.m00 * t.getX() + this.m01 * t.getY() + this.m02 * t.getZ() + this.m03;
 		y = this.m10 * t.getX() + this.m11 * t.getY() + this.m12 * t.getZ() + this.m13;
 		z = this.m20 * t.getX() + this.m21 * t.getY() + this.m22 * t.getZ() + this.m23;
-		t.set((float) x, (float) y, (float) z);
+		t.set((double) x, (double) y, (double) z);
 	}
 	
 	/**
@@ -410,9 +410,9 @@ public class Transform3D extends Matrix4f {
 	 */
 	public void transform(Tuple3D<?> t, Tuple3D<?> result) {
 		result.set(
-				(float) (this.m00 * t.getX() + this.m01 * t.getY() + this.m02 * t.getZ() + this.m03),
-				(float) (this.m10 * t.getX() + this.m11 * t.getY() + this.m12 * t.getZ() + this.m13),
-				(float) (this.m20 * t.getX() + this.m21 * t.getY() + this.m22 * t.getZ() + this.m23));
+				(double) (this.m00 * t.getX() + this.m01 * t.getY() + this.m02 * t.getZ() + this.m03),
+				(double) (this.m10 * t.getX() + this.m11 * t.getY() + this.m12 * t.getZ() + this.m13),
+				(double) (this.m20 * t.getX() + this.m21 * t.getY() + this.m22 * t.getZ() + this.m23));
 	}
 
 	/**

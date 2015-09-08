@@ -456,7 +456,7 @@ public class Tuple3f<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public int x() {
+	public int ix() {
 		return (int)this.x;
 	}
 
@@ -488,7 +488,7 @@ public class Tuple3f<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public int y() {
+	public int iy() {
 		return (int)this.y;
 	}
 
@@ -520,7 +520,7 @@ public class Tuple3f<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public int z() {
+	public int iz() {
 		return (int)this.z;
 	}
 

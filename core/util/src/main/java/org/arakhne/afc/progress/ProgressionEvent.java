@@ -44,7 +44,7 @@ public class ProgressionEvent extends EventObject {
 
 	private final int value;
 	
-	private final float factor;
+	private final double factor;
 
 	private final String comment;
 
@@ -166,7 +166,7 @@ public class ProgressionEvent extends EventObject {
 	 * @see     #getValue()
 	 * @see     #getProgressionFactor()
 	 */
-	public float getPercent() {
+	public double getPercent() {
 		return this.factor * 100f;
 	}
 
@@ -177,7 +177,7 @@ public class ProgressionEvent extends EventObject {
 	 * @see     #getValue()
 	 * @see     #getPercent()
 	 */
-	public float getProgressionFactor() {
+	public double getProgressionFactor() {
 		return this.factor;
 	}
 

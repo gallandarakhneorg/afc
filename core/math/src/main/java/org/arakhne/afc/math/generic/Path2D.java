@@ -80,7 +80,7 @@ public interface Path2D<PT extends Shape2D<? super PT>, B extends Shape2D<?>, E 
 	 * the curved segments are allowed to deviate from any point on the original curve.
 	 * @return an iterator on the path elements.
 	 */
-	public I getPathIterator(float flatness);
+	public I getPathIterator(double flatness);
 
 	/** Replies an iterator on the path elements.
 	 * <p>

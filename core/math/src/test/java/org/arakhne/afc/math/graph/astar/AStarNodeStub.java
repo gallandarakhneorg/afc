@@ -45,8 +45,8 @@ class AStarNodeStub implements GraphPoint<AStarNodeStub,AStarEdgeStub>, AStarNod
 	 */
 	final Point2f position;
 	
-	private double cost = Float.NaN;
-	private double eCost = Float.NaN;
+	private double cost = Double.NaN;
+	private double eCost = Double.NaN;
 	private AStarEdgeStub astarEntryConnection = null;
 	
 	/**

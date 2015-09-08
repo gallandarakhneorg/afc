@@ -116,12 +116,12 @@ public class Circle2i extends AbstractShape2i<Circle2i> {
 				p = iterator.next();
 				
 				// Trivial case
-				if (p.x()==x && p.y()==y) return true;
+				if (p.ix()==x && p.iy()==y) return true;
 				
-				px = cy - p.y();
-				py = p.x() - cx;
-				cpx = x - p.x();
-				cpy = y - p.y();
+				px = cy - p.iy();
+				py = p.ix() - cx;
+				cpx = x - p.ix();
+				cpy = y - p.iy();
 				ccw = cpx * py - cpy * px;
 
 				if (ccw>0) return false;
@@ -189,10 +189,10 @@ public class Circle2i extends AbstractShape2i<Circle2i> {
 
 			while (iterator.hasNext()) {
 				p = iterator.next();
-				px = cy - p.y();
-				py = p.x() - cx;
-				cpx = x - p.x();
-				cpy = y - p.y();
+				px = cy - p.iy();
+				py = p.ix() - cx;
+				cpx = x - p.ix();
+				cpy = y - p.iy();
 				ccw = cpx * py - cpy * px;
 
 				if (ccw>0) return false;
@@ -248,10 +248,10 @@ public class Circle2i extends AbstractShape2i<Circle2i> {
 		
 		while (iterator.hasNext()) {
 			p = iterator.next();
-			px = cy - p.y();
-			py = p.x() - cx;
-			cpx = x - p.x();
-			cpy = y - p.y();
+			px = cy - p.iy();
+			py = p.ix() - cx;
+			cpx = x - p.ix();
+			cpy = y - p.iy();
 			ccw = cpx * py - cpy * px;
 			if (ccw>=0) {
 				isInside = false;
@@ -311,8 +311,8 @@ public class Circle2i extends AbstractShape2i<Circle2i> {
 		
 		while (iterator.hasNext()) {
 			p = iterator.next();
-			cpx = x - p.x();
-			cpy = y - p.y();
+			cpx = x - p.ix();
+			cpy = y - p.iy();
 			d = cpx*cpx + cpy*cpy;
 			if (d>maxDist) {
 				maxDist = d;
@@ -336,7 +336,7 @@ public class Circle2i extends AbstractShape2i<Circle2i> {
 	 */
 	public static boolean intersectsCircleCircle(int x1, int y1, int radius1, int x2, int y2, int radius2) {
 		Point2i c = computeClosestPointTo(x1, y1, radius1, x2, y2);
-		return contains(x2, y2, radius2, c.x(), c.y());
+		return contains(x2, y2, radius2, c.ix(), c.iy());
 	}
 
 	/** Replies if a circle and a rectangle are intersecting.
@@ -353,7 +353,7 @@ public class Circle2i extends AbstractShape2i<Circle2i> {
 	 */
 	public static boolean intersectsCircleRectangle(int x1, int y1, int radius, int x2, int y2, int x3, int y3) {
 		Point2i c = Rectangle2i.computeClosestPoint(x2, y2, x3, y3, x1, y1);
-		return contains(x1, y1, radius, c.x(), c.y());
+		return contains(x1, y1, radius, c.ix(), c.iy());
 	}
 
 	/** Replies if a circle and a segment are intersecting.
@@ -370,7 +370,7 @@ public class Circle2i extends AbstractShape2i<Circle2i> {
 	 */
 	public static boolean intersectsCircleSegment(int x1, int y1, int radius, int x2, int y2, int x3, int y3) {
 		Point2i p = Segment2i.computeClosestPointTo(x2, y2, x3, y3, x1, y1);
-		return contains(x1, y1, radius, p.x(), p.y());
+		return contains(x1, y1, radius, p.ix(), p.iy());
 	}
 
 	/** X-coordinate of the center of the circle. */
@@ -462,8 +462,8 @@ public class Circle2i extends AbstractShape2i<Circle2i> {
 	 * @param radius
 	 */
 	public void set(Point2D center, int radius) {
-		this.cx = center.x();
-		this.cy = center.y();
+		this.cx = center.ix();
+		this.cy = center.iy();
 		this.radius = Math.abs(radius);
 	}
 
@@ -547,14 +547,14 @@ public class Circle2i extends AbstractShape2i<Circle2i> {
 	 */
 	@Override
 	public Point2i getClosestPointTo(Point2D p) {
-		return computeClosestPointTo(this.cx, this.cy, this.radius, p.x(), p.y());
+		return computeClosestPointTo(this.cx, this.cy, this.radius, p.ix(), p.iy());
 	}
 
 	/** {@inheritDoc}
 	 */
 	@Override
 	public Point2i getFarthestPointTo(Point2D p) {
-		return computeFarthestPointTo(this.cx, this.cy, this.radius, p.x(), p.y());
+		return computeFarthestPointTo(this.cx, this.cy, this.radius, p.ix(), p.iy());
 	}
 
 	@Override
@@ -641,13 +641,13 @@ public class Circle2i extends AbstractShape2i<Circle2i> {
 
 					while (iterator.hasNext()) {
 						p = iterator.next();
-						px = this.cy - p.y();
-						py = p.x() - this.cx;
+						px = this.cy - p.iy();
+						py = p.ix() - this.cx;
 
 						for(int j=0; j<4; ++j) {
 							if ((quadrants[i] & (1<<j))!=0) {
-								cpx = x[j] - p.x();
-								cpy = y[j] - p.y();
+								cpx = x[j] - p.ix();
+								cpy = y[j] - p.iy();
 								ccw = cpx * py - cpy * px;				
 								if (ccw>0) return false;
 							}
@@ -1015,7 +1015,7 @@ public class Circle2i extends AbstractShape2i<Circle2i> {
 				this.p2.set(this.movex, this.movey);
 				this.transform.transform(this.p2);
 				return new PathElement2i.MovePathElement2i(
-						this.p2.x(), this.p2.y());
+						this.p2.ix(), this.p2.iy());
 			}
 			else if (idx<5) {
 				int dr = 2 * this.r;
@@ -1034,17 +1034,17 @@ public class Circle2i extends AbstractShape2i<Circle2i> {
 						(this.y + ctrls[3] * dr));
 				this.transform.transform(this.ptmp2);
 				return new PathElement2i.CurvePathElement2i(
-						this.p1.x(), this.p1.y(),
-						this.ptmp1.x(), this.ptmp1.y(),
-						this.ptmp2.x(), this.ptmp2.y(),
-						this.p2.x(), this.p2.y());
+						this.p1.ix(), this.p1.iy(),
+						this.ptmp1.ix(), this.ptmp1.iy(),
+						this.ptmp2.ix(), this.ptmp2.iy(),
+						this.p2.ix(), this.p2.iy());
 			}
 			this.p1.set(this.p2);
 			this.p2.set(this.movex, this.movey);
 			this.transform.transform(this.p2);
 			return new PathElement2i.ClosePathElement2i(
-					this.p1.x(), this.p1.y(),
-					this.p2.x(), this.p2.y());
+					this.p1.ix(), this.p1.iy(),
+					this.p2.ix(), this.p2.iy());
 		}
 
 		@Override

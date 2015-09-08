@@ -94,7 +94,7 @@ implements Iterator<ST> {
 	 * It must be negative or nul.
 	 */
 	public GraphIterator(Graph<ST,PT> graph, GraphCourseModel<ST,PT> courseModel, ST segment, PT point, boolean allowManyReplies, boolean assumeOrientedSegments, double distanceToReachStartingPoint) {
-		this(graph, courseModel, segment, point, allowManyReplies, assumeOrientedSegments, distanceToReachStartingPoint, Float.POSITIVE_INFINITY);
+		this(graph, courseModel, segment, point, allowManyReplies, assumeOrientedSegments, distanceToReachStartingPoint, Double.POSITIVE_INFINITY);
 	}
 	
 	/**

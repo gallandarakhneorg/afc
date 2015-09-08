@@ -376,8 +376,8 @@ public class RoundRectangle2fTest extends AbstractRectangularShape2fTestCase<Rou
 	 */
 	@Test
 	public void getPathIterator() {
-		float vt = 0.11045696f; // vertical tangent length for the arc
-		float ht = 0.055228f; // horizontal tangent length for the arc
+		double vt = 0.11045696f; // vertical tangent length for the arc
+		double ht = 0.055228f; // horizontal tangent length for the arc
 		PathIterator2f pi = this.r.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 0f, .2f);
 		assertElement(pi, PathElementType.LINE_TO, 0f, .8f);
@@ -397,8 +397,8 @@ public class RoundRectangle2fTest extends AbstractRectangularShape2fTestCase<Rou
 	public void getPathIteratorTransform2D() {
 		Transform2D tr;
 		PathIterator2f pi;
-		float vt = 0.11045696f; // vertical tangent length for the arc
-		float ht = 0.055228f; // horizontal tangent length for the arc
+		double vt = 0.11045696f; // vertical tangent length for the arc
+		double ht = 0.055228f; // horizontal tangent length for the arc
 		
 		tr = new Transform2D();
 		pi = this.r.getPathIterator(tr);

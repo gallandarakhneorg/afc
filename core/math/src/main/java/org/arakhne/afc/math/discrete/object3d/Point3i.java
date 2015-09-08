@@ -62,7 +62,7 @@ public class Point3i extends Tuple3i<Point3D> implements Point3D {
 	/**
 	 * @param tuple is the tuple to copy.
 	 */
-	public Point3i(float[] tuple) {
+	public Point3i(double[] tuple) {
 		super(tuple);
 	}
 
@@ -81,7 +81,7 @@ public class Point3i extends Tuple3i<Point3D> implements Point3D {
 	 * @param z
 	 */
 	public Point3i(float x, float y, float z) {
-		super(x,y,z);
+		super((double)x,(double)y,(double)z);
 	}
 
 	/**
@@ -90,7 +90,7 @@ public class Point3i extends Tuple3i<Point3D> implements Point3D {
 	 * @param z
 	 */
 	public Point3i(double x, double y, double z) {
-		super((float)x,(float)y,(float)z);
+		super(x,y,z);
 	}
 
 	/**
@@ -114,7 +114,7 @@ public class Point3i extends Tuple3i<Point3D> implements Point3D {
 	 */
 	@Override
 	public int distanceSquared(Point3D p1) {
-	      float dx, dy, dz;
+		double dx, dy, dz;
 	      dx = this.x-p1.getX();  
 	      dy = this.y-p1.getY();
 	      dz = this.z-p1.getZ();
@@ -122,8 +122,8 @@ public class Point3i extends Tuple3i<Point3D> implements Point3D {
 	}
 
 	@Override
-	public float getDistanceSquared(Point3D p1) {
-	      float dx, dy, dz;
+	public double getDistanceSquared(Point3D p1) {
+		double dx, dy, dz;
 	      dx = this.x-p1.getX();  
 	      dy = this.y-p1.getY();
 	      dz = this.z-p1.getZ();
@@ -135,7 +135,7 @@ public class Point3i extends Tuple3i<Point3D> implements Point3D {
 	 */
 	@Override
 	public int distance(Point3D p1) {
-	      float  dx, dy, dz;
+		double  dx, dy, dz;
 	      dx = this.x-p1.getX();  
 	      dy = this.y-p1.getY();
 	      dz = this.z-p1.getZ();
@@ -143,12 +143,12 @@ public class Point3i extends Tuple3i<Point3D> implements Point3D {
 	}
 
 	@Override
-	public float getDistance(Point3D p1) {
-	      float  dx, dy, dz;
+	public double getDistance(Point3D p1) {
+		double  dx, dy, dz;
 	      dx = this.x-p1.getX();  
 	      dy = this.y-p1.getY();
 	      dz = this.z-p1.getZ();
-	      return (float)Math.sqrt(dx*dx+dy*dy+dz*dz);
+	      return (double)Math.sqrt(dx*dx+dy*dy+dz*dz);
 	}
 
 	/**
@@ -160,7 +160,7 @@ public class Point3i extends Tuple3i<Point3D> implements Point3D {
 	}
 
 	@Override
-	public float getDistanceL1(Point3D p1) {
+	public double getDistanceL1(Point3D p1) {
 	      return Math.abs(this.x-p1.getX()) + Math.abs(this.y-p1.getY())  + Math.abs(this.z-p1.getZ());
 	}
 
@@ -173,7 +173,7 @@ public class Point3i extends Tuple3i<Point3D> implements Point3D {
 	}
 
 	@Override
-	public float getDistanceLinf(Point3D p1) {
+	public double getDistanceLinf(Point3D p1) {
 	      return (MathUtil.max( Math.abs(this.x-p1.getX()), Math.abs(this.y-p1.getY()), Math.abs(this.z-p1.getZ())));
 	}
 
@@ -206,7 +206,7 @@ public class Point3i extends Tuple3i<Point3D> implements Point3D {
 	}
 
 	@Override
-	public void scaleAdd(float s, Vector3D t1, Point3D t2) {
+	public void scaleAdd(double s, Vector3D t1, Point3D t2) {
 		this.x = (int)(s * t1.getX() + t2.getX());
 		this.y = (int)(s * t1.getY() + t2.getY());
 		this.z = (int)(s * t1.getZ() + t2.getZ());
@@ -220,7 +220,7 @@ public class Point3i extends Tuple3i<Point3D> implements Point3D {
 	}
 
 	@Override
-	public void scaleAdd(float s, Point3D t1, Vector3D t2) {
+	public void scaleAdd(double s, Point3D t1, Vector3D t2) {
 		this.x = (int)(s * t1.getX() + t2.getX());
 		this.y = (int)(s * t1.getY() + t2.getY());
 		this.z = (int)(s * t1.getZ() + t2.getZ());
@@ -234,7 +234,7 @@ public class Point3i extends Tuple3i<Point3D> implements Point3D {
 	}
 
 	@Override
-	public void scaleAdd(float s, Vector3D t1) {
+	public void scaleAdd(double s, Vector3D t1) {
 		this.x = (int)(s * this.x + t1.getX());
 		this.y = (int)(s * this.y + t1.getY());
 		this.z = (int)(s * this.z + t1.getZ());

@@ -162,8 +162,8 @@ public class Circle2iTest extends AbstractShape2iTestCase<Circle2i> {
 			assertTrue("("+x+";"+y+")", iterator.hasNext()); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
 			p = iterator.next();
 			assertNotNull(p);
-			assertEquals("(>"+x+"<;"+y+")!=("+p.x()+";"+p.y()+")", x, p.x()); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$
-			assertEquals("("+x+";>"+y+"<)!=("+p.x()+";"+p.y()+")", y, p.y()); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$
+			assertEquals("(>"+x+"<;"+y+")!=("+p.ix()+";"+p.iy()+")", x, p.ix()); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$
+			assertEquals("("+x+";>"+y+"<)!=("+p.ix()+";"+p.iy()+")", y, p.iy()); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$
 		}
 		
 		assertFalse(iterator.hasNext());
@@ -214,8 +214,8 @@ public class Circle2iTest extends AbstractShape2iTestCase<Circle2i> {
 			assertTrue("("+x+";"+y+")", iterator.hasNext()); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
 			p = iterator.next();
 			assertNotNull(p);
-			assertEquals("(>"+x+"<;"+y+")!=("+p.x()+";"+p.y()+")", x, p.x()); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$
-			assertEquals("("+x+";>"+y+"<)!=("+p.x()+";"+p.y()+")", y, p.y()); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$
+			assertEquals("(>"+x+"<;"+y+")!=("+p.ix()+";"+p.iy()+")", x, p.ix()); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$
+			assertEquals("("+x+";>"+y+"<)!=("+p.ix()+";"+p.iy()+")", y, p.iy()); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$
 		}
 		
 		assertFalse(iterator.hasNext());
@@ -229,28 +229,28 @@ public class Circle2iTest extends AbstractShape2iTestCase<Circle2i> {
 		
 		p = this.r.getClosestPointTo(new Point2i(5,8));
 		assertNotNull(p);
-		assertEquals(5, p.x());
-		assertEquals(8, p.y());
+		assertEquals(5, p.ix());
+		assertEquals(8, p.iy());
 		
 		p = this.r.getClosestPointTo(new Point2i(10,10));
 		assertNotNull(p);
-		assertEquals(10, p.x());
-		assertEquals(10, p.y());
+		assertEquals(10, p.ix());
+		assertEquals(10, p.iy());
 		
 		p = this.r.getClosestPointTo(new Point2i(4,8));
 		assertNotNull(p);
-		assertEquals(4, p.x());
-		assertEquals(8, p.y());
+		assertEquals(4, p.ix());
+		assertEquals(8, p.iy());
 		
 		p = this.r.getClosestPointTo(new Point2i(0,0));
 		assertNotNull(p);
-		assertEquals(3, p.x());
-		assertEquals(3, p.y());
+		assertEquals(3, p.ix());
+		assertEquals(3, p.iy());
 
 		p = this.r.getClosestPointTo(new Point2i(5,14));
 		assertNotNull(p);
-		assertEquals(5, p.x());
-		assertEquals(13, p.y());
+		assertEquals(5, p.ix());
+		assertEquals(13, p.iy());
 	}
 
 	/**
@@ -261,28 +261,28 @@ public class Circle2iTest extends AbstractShape2iTestCase<Circle2i> {
 		
 		p = this.r.getFarthestPointTo(new Point2i(5,8));
 		assertNotNull(p);
-		assertEquals(5, p.x());
-		assertEquals(8, p.y());
+		assertEquals(5, p.ix());
+		assertEquals(8, p.iy());
 		
 		p = this.r.getFarthestPointTo(new Point2i(10,10));
 		assertNotNull(p);
-		assertEquals(0, p.x());
-		assertEquals(6, p.y());
+		assertEquals(0, p.ix());
+		assertEquals(6, p.iy());
 		
 		p = this.r.getFarthestPointTo(new Point2i(4,8));
 		assertNotNull(p);
-		assertEquals(10, p.x());
-		assertEquals(8, p.y());
+		assertEquals(10, p.ix());
+		assertEquals(8, p.iy());
 		
 		p = this.r.getFarthestPointTo(new Point2i(0,0));
 		assertNotNull(p);
-		assertEquals(7, p.x());
-		assertEquals(13, p.y());
+		assertEquals(7, p.ix());
+		assertEquals(13, p.iy());
 
 		p = this.r.getFarthestPointTo(new Point2i(5,14));
 		assertNotNull(p);
-		assertEquals(5, p.x());
-		assertEquals(3, p.y());
+		assertEquals(5, p.ix());
+		assertEquals(3, p.iy());
 	}
 
 	@Test

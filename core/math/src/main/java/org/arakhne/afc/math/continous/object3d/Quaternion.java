@@ -45,19 +45,19 @@ public class Quaternion implements Cloneable, Serializable {
 
 	/** x coordinate.
 	 */
-	protected float x;
+	protected double x;
 
 	/** y coordinate.
 	 */
-	protected float y;
+	protected double y;
 
 	/** z coordinate.
 	 */
-	protected float z;
+	protected double z;
 
 	/** w coordinate.
 	 */
-	protected float w;
+	protected double w;
 
 	/**
 	 */
@@ -71,8 +71,8 @@ public class Quaternion implements Cloneable, Serializable {
 	 * @param z
 	 * @param w
 	 */
-	public Quaternion(float x, float y, float z, float w) {
-		float mag = (float)(1.0/Math.sqrt( x*x + y*y + z*z + w*w ));
+	public Quaternion(double x, double y, double z, double w) {
+		double mag = (double)(1.0/Math.sqrt( x*x + y*y + z*z + w*w ));
 		this.x = x*mag;
 		this.y = y*mag;
 		this.z = z*mag;
@@ -83,7 +83,7 @@ public class Quaternion implements Cloneable, Serializable {
 	 * @param axis
 	 * @param angle
 	 */
-	public Quaternion(Vector3D axis, float angle) {
+	public Quaternion(Vector3D axis, double angle) {
 		setAxisAngle(axis, angle);
 	}
 
@@ -103,7 +103,7 @@ public class Quaternion implements Cloneable, Serializable {
 	 * 
 	 * @return x
 	 */
-	public float getX() {
+	public double getX() {
 		return this.x;
 	}
 
@@ -111,7 +111,7 @@ public class Quaternion implements Cloneable, Serializable {
 	 * 
 	 * @param x
 	 */
-	public void setX(float x) {
+	public void setX(double x) {
 		this.x = x;
 	}
 
@@ -119,7 +119,7 @@ public class Quaternion implements Cloneable, Serializable {
 	 * 
 	 * @return y
 	 */
-	public float getY() {
+	public double getY() {
 		return this.y;
 	}
 
@@ -127,7 +127,7 @@ public class Quaternion implements Cloneable, Serializable {
 	 * 
 	 * @param y
 	 */
-	public void setY(float y) {
+	public void setY(double y) {
 		this.y = y;
 	}
 
@@ -135,7 +135,7 @@ public class Quaternion implements Cloneable, Serializable {
 	 * 
 	 * @return z
 	 */
-	public float getZ() {
+	public double getZ() {
 		return this.z;
 	}
 
@@ -143,7 +143,7 @@ public class Quaternion implements Cloneable, Serializable {
 	 * 
 	 * @param z
 	 */
-	public void setZ(float z) {
+	public void setZ(double z) {
 		this.z = z;
 	}
 
@@ -151,7 +151,7 @@ public class Quaternion implements Cloneable, Serializable {
 	 * 
 	 * @return w
 	 */
-	public float getW() {
+	public double getW() {
 		return this.w;
 	}
 
@@ -159,7 +159,7 @@ public class Quaternion implements Cloneable, Serializable {
 	 * 
 	 * @param w
 	 */
-	public void setW(float w) {
+	public void setW(double w) {
 		this.w = w;
 	}
 
@@ -189,23 +189,23 @@ public class Quaternion implements Cloneable, Serializable {
 	 * @param epsilon  the threshold value  
 	 * @return  true or false
 	 */
-	public boolean epsilonEquals(Quaternion t1, float epsilon) {
-		float diff;
+	public boolean epsilonEquals(Quaternion t1, double epsilon) {
+		double diff;
 
 		diff = this.x - t1.getX();
-		if(Float.isNaN(diff)) return false;
+		if(Double.isNaN(diff)) return false;
 		if((diff<0?-diff:diff) > epsilon) return false;
 
 		diff = this.y - t1.getY();
-		if(Float.isNaN(diff)) return false;
+		if(Double.isNaN(diff)) return false;
 		if((diff<0?-diff:diff) > epsilon) return false;
 
 		diff = this.z - t1.getZ();
-		if(Float.isNaN(diff)) return false;
+		if(Double.isNaN(diff)) return false;
 		if((diff<0?-diff:diff) > epsilon) return false;
 
 		diff = this.w - t1.getW();
-		if(Float.isNaN(diff)) return false;
+		if(Double.isNaN(diff)) return false;
 		if((diff<0?-diff:diff) > epsilon) return false;
 
 		return true;
@@ -217,10 +217,10 @@ public class Quaternion implements Cloneable, Serializable {
 	@Override
 	public int hashCode() {
 		int bits = 1;
-		bits = 31 * bits + Float.floatToIntBits(this.x);
-		bits = 31 * bits + Float.floatToIntBits(this.y);
-		bits = 31 * bits + Float.floatToIntBits(this.z);
-		bits = 31 * bits + Float.floatToIntBits(this.w);
+		bits = 31 * bits + Double.floatToIntBits(this.x);
+		bits = 31 * bits + Double.floatToIntBits(this.y);
+		bits = 31 * bits + Double.floatToIntBits(this.z);
+		bits = 31 * bits + Double.floatToIntBits(this.w);
 		return bits ^ (bits >> 32);
 	}
 
@@ -275,7 +275,7 @@ public class Quaternion implements Cloneable, Serializable {
 			this.z = q1.w*q2.z + q2.w*q1.z + q1.x*q2.y - q1.y*q2.x;
 		}
 		else {
-			float	x, y, w;
+			double	x, y, w;
 
 			w = q1.w*q2.w - q1.x*q2.x - q1.y*q2.y - q1.z*q2.z;
 			x = q1.w*q2.x + q2.w*q1.x + q1.y*q2.z - q1.z*q2.y;
@@ -294,7 +294,7 @@ public class Quaternion implements Cloneable, Serializable {
 	 * @param q1 the other quaternion
 	 */
 	public final void mul(Quaternion q1) {
-		float     x, y, w; 
+		double     x, y, w; 
 
 		w = this.w*q1.w - this.x*q1.x - this.y*q1.y - this.z*q1.z;
 		x = this.w*q1.x + q1.w*this.x + this.y*q1.z - this.z*q1.y;
@@ -340,7 +340,7 @@ public class Quaternion implements Cloneable, Serializable {
 	 * @param q1 the quaternion to be inverted
 	 */
 	public final void inverse(Quaternion q1) {
-		float norm;
+		double norm;
 
 		norm = 1f/(q1.w*q1.w + q1.x*q1.x + q1.y*q1.y + q1.z*q1.z);
 		this.w =  norm*q1.w;
@@ -354,7 +354,7 @@ public class Quaternion implements Cloneable, Serializable {
 	 * Sets the value of this quaternion to the quaternion inverse of itself.
 	 */
 	public final void inverse() {
-		float norm;  
+		double norm;  
 
 		norm = 1f/(this.w*this.w + this.x*this.x + this.y*this.y + this.z*this.z);
 		this.w *=  norm;
@@ -369,12 +369,12 @@ public class Quaternion implements Cloneable, Serializable {
 	 * @param q1 the quaternion to be normalized.
 	 */
 	public final void normalize(Quaternion q1) {
-		float norm;
+		double norm;
 
 		norm = (q1.x*q1.x + q1.y*q1.y + q1.z*q1.z + q1.w*q1.w);
 
 		if (norm > 0f) {
-			norm = 1f/(float)Math.sqrt(norm);
+			norm = 1f/(double)Math.sqrt(norm);
 			this.x = norm*q1.x;
 			this.y = norm*q1.y;
 			this.z = norm*q1.z;
@@ -392,12 +392,12 @@ public class Quaternion implements Cloneable, Serializable {
 	 * Normalizes the value of this quaternion in place.
 	 */
 	public final void normalize() {
-		float norm;
+		double norm;
 
 		norm = (this.x*this.x + this.y*this.y + this.z*this.z + this.w*this.w);
 
 		if (norm > 0f) {
-			norm = 1f / (float)Math.sqrt(norm);
+			norm = 1f / (double)Math.sqrt(norm);
 			this.x *= norm;
 			this.y *= norm;
 			this.z *= norm;
@@ -416,15 +416,15 @@ public class Quaternion implements Cloneable, Serializable {
 	 * @param m1 the Matrix4f
 	 */
 	public final void setFromMatrix(Matrix4f m1) {
-		float ww = (float) (0.25f*(m1.m00 + m1.m11 + m1.m22 + m1.m33));
+		double ww = (double) (0.25f*(m1.m00 + m1.m11 + m1.m22 + m1.m33));
 
 		if (ww >= 0) {
 			if (ww >= EPS2) {
-				this.w = (float) Math.sqrt(ww);
+				this.w = (double) Math.sqrt(ww);
 				ww =  0.25f/this.w;
-				this.x = (float) ((m1.m21 - m1.m12)*ww);
-				this.y = (float) ((m1.m02 - m1.m20)*ww);
-				this.z = (float) ((m1.m10 - m1.m01)*ww);
+				this.x = (double) ((m1.m21 - m1.m12)*ww);
+				this.y = (double) ((m1.m02 - m1.m20)*ww);
+				this.z = (double) ((m1.m10 - m1.m01)*ww);
 				return;
 			} 
 		}
@@ -437,14 +437,14 @@ public class Quaternion implements Cloneable, Serializable {
 		}
 
 		this.w = 0;
-		ww = (float) (-0.5f*(m1.m11 + m1.m22));
+		ww = (double) (-0.5f*(m1.m11 + m1.m22));
 
 		if (ww >= 0) {
 			if (ww >= EPS2) {
-				this.x = (float) Math.sqrt(ww);
+				this.x = (double) Math.sqrt(ww);
 				ww = 1.0f/(2.0f*this.x);
-				this.y = (float) (m1.m10*ww);
-				this.z = (float) (m1.m20*ww);
+				this.y = (double) (m1.m10*ww);
+				this.z = (double) (m1.m20*ww);
 				return;
 			}
 		} else {
@@ -455,11 +455,11 @@ public class Quaternion implements Cloneable, Serializable {
 		}
 
 		this.x = 0;
-		ww = (float) (0.5f*(1.0f - m1.m22));
+		ww = (double) (0.5f*(1.0f - m1.m22));
 
 		if (ww >= EPS2) {
-			this.y = (float) Math.sqrt(ww);
-			this.z = (float) (m1.m21/(2.0f*this.y));
+			this.y = (double) Math.sqrt(ww);
+			this.z = (double) (m1.m21/(2.0f*this.y));
 			return;
 		}
 
@@ -473,15 +473,15 @@ public class Quaternion implements Cloneable, Serializable {
 	 * @param m1 the Matrix3f
 	 */
 	public final void setFromMatrix(Matrix3f m1) {
-		float ww = (float) (0.25f*(m1.m00 + m1.m11 + m1.m22 + 1.0f));
+		double ww = (double) (0.25f*(m1.m00 + m1.m11 + m1.m22 + 1.0f));
 
 		if (ww >= 0) {
 			if (ww >= EPS2) {
-				this.w = (float) Math.sqrt(ww);
+				this.w = (double) Math.sqrt(ww);
 				ww = 0.25f/this.w;
-				this.x = (float) ((m1.m21 - m1.m12)*ww);
-				this.y = (float) ((m1.m02 - m1.m20)*ww);
-				this.z = (float) ((m1.m10 - m1.m01)*ww);
+				this.x = (double) ((m1.m21 - m1.m12)*ww);
+				this.y = (double) ((m1.m02 - m1.m20)*ww);
+				this.z = (double) ((m1.m10 - m1.m01)*ww);
 				return;
 			}
 		} else {
@@ -493,13 +493,13 @@ public class Quaternion implements Cloneable, Serializable {
 		}
 
 		this.w = 0;
-		ww = (float) (-0.5f*(m1.m11 + m1.m22));
+		ww = (double) (-0.5f*(m1.m11 + m1.m22));
 		if (ww >= 0) {
 			if (ww >= EPS2) {
-				this.x = (float) Math.sqrt(ww);
+				this.x = (double) Math.sqrt(ww);
 				ww = 0.5f/this.x;
-				this.y = (float) (m1.m10*ww);
-				this.z = (float) (m1.m20*ww);
+				this.y = (double) (m1.m10*ww);
+				this.z = (double) (m1.m20*ww);
 				return;
 			}
 		} else {
@@ -510,10 +510,10 @@ public class Quaternion implements Cloneable, Serializable {
 		}
 
 		this.x = 0;
-		ww =  (float) (0.5f*(1.0f - m1.m22));
+		ww =  (double) (0.5f*(1.0f - m1.m22));
 		if (ww >= EPS2) {
-			this.y = (float) Math.sqrt(ww);
-			this.z = (float) (m1.m21/(2.0f*this.y));
+			this.y = (double) Math.sqrt(ww);
+			this.z = (double) (m1.m21/(2.0f*this.y));
 			return;
 		}
 
@@ -528,8 +528,8 @@ public class Quaternion implements Cloneable, Serializable {
 	 * @param z
 	 * @param w
 	 */
-	public void set(float x, float y, float z, float w) {
-		float mag = (float)(1.0/Math.sqrt( x*x + y*y + z*z + w*w ));
+	public void set(double x, double y, double z, double w) {
+		double mag = (double)(1.0/Math.sqrt( x*x + y*y + z*z + w*w ));
 		this.x = x*mag;
 		this.y = y*mag;
 		this.z = z*mag;
@@ -553,7 +553,7 @@ public class Quaternion implements Cloneable, Serializable {
 	 * @param axis is the axis of rotation.
 	 * @param angle is the rotation around the axis.
 	 */
-	public final void setAxisAngle(Vector3D axis, float angle) {
+	public final void setAxisAngle(Vector3D axis, double angle) {
 		setAxisAngle(axis.getX(),  axis.getY(), axis.getZ(), angle);
 	}
 
@@ -565,10 +565,10 @@ public class Quaternion implements Cloneable, Serializable {
 	 * @param z is the z coordinate of the rotation axis
 	 * @param angle is the rotation around the axis.
 	 */
-	public final void setAxisAngle(float x, float y, float z, float angle) {
-		float mag,amag;
+	public final void setAxisAngle(double x, double y, double z, double angle) {
+		double mag,amag;
 		// Quat = cos(theta/2) + sin(theta/2)(roation_axis) 
-		amag = (float)Math.sqrt(x*x + y*y + z*z);
+		amag = (double)Math.sqrt(x*x + y*y + z*z);
 		if (amag < EPS ) {
 			this.w = 0.0f;
 			this.x = 0.0f;
@@ -577,8 +577,8 @@ public class Quaternion implements Cloneable, Serializable {
 		}
 		else {  
 			amag = 1.0f/amag; 
-			mag = (float)Math.sin(angle/2.0);
-			this.w = (float)Math.cos(angle/2.0);
+			mag = (double)Math.sin(angle/2.0);
+			this.w = (double)Math.cos(angle/2.0);
 			this.x = x*amag*mag;
 			this.y = y*amag*mag;
 			this.z = z*amag*mag;
@@ -588,16 +588,16 @@ public class Quaternion implements Cloneable, Serializable {
 	/** Replies the rotation axis represented by this quaternion.
 	 * 
 	 * @return the rotation axis
-	 * @see #setAxisAngle(Vector3D, float)
-	 * @see #setAxisAngle(float, float, float, float)
+	 * @see #setAxisAngle(Vector3D, double)
+	 * @see #setAxisAngle(double, double, double, double)
 	 * @see #getAngle()
 	 */
 	public final Vector3f getAxis() {
-		float mag = this.x*this.x + this.y*this.y + this.z*this.z;  
+		double mag = this.x*this.x + this.y*this.y + this.z*this.z;  
 
 		if ( mag > EPS ) {
-			mag = (float)Math.sqrt(mag);
-			float invMag = 1f/mag;
+			mag = (double)Math.sqrt(mag);
+			double invMag = 1f/mag;
 
 			return new Vector3f(
 					this.x*invMag,
@@ -610,16 +610,16 @@ public class Quaternion implements Cloneable, Serializable {
 	/** Replies the rotation angle represented by this quaternion.
 	 * 
 	 * @return the rotation axis
-	 * @see #setAxisAngle(Vector3D, float)
-	 * @see #setAxisAngle(float, float, float, float)
+	 * @see #setAxisAngle(Vector3D, double)
+	 * @see #setAxisAngle(double, double, double, double)
 	 * @see #getAxis()
 	 */
-	public final float getAngle() {
-		float mag = this.x*this.x + this.y*this.y + this.z*this.z;  
+	public final double getAngle() {
+		double mag = this.x*this.x + this.y*this.y + this.z*this.z;  
 
 		if ( mag > EPS ) {
-			mag = (float)Math.sqrt(mag);
-			return (2.f*(float)Math.atan2(mag, this.w)); 
+			mag = (double)Math.sqrt(mag);
+			return (2.f*(double)Math.atan2(mag, this.w)); 
 		}
 		return 0f;
 	}
@@ -631,7 +631,7 @@ public class Quaternion implements Cloneable, Serializable {
 	 *  @param q1  the other quaternion
 	 *  @param alpha  the alpha interpolation parameter
 	 */
-	public final void interpolate(Quaternion q1, float alpha) {
+	public final void interpolate(Quaternion q1, double alpha) {
 		// From "Advanced Animation and Rendering Techniques"
 		// by Watt and Watt pg. 364, function as implemented appeared to be 
 		// incorrect.  Fails to choose the same quaternion for the double
@@ -659,10 +659,10 @@ public class Quaternion implements Cloneable, Serializable {
 			s2 = alpha;
 		}
 
-		this.w = (float)(s1*this.w + s2*q1.w);
-		this.x = (float)(s1*this.x + s2*q1.x);
-		this.y = (float)(s1*this.y + s2*q1.y);
-		this.z = (float)(s1*this.z + s2*q1.z);
+		this.w = (double)(s1*this.w + s2*q1.w);
+		this.x = (double)(s1*this.x + s2*q1.x);
+		this.y = (double)(s1*this.y + s2*q1.y);
+		this.z = (double)(s1*this.z + s2*q1.z);
 	}
 
 
@@ -674,7 +674,7 @@ public class Quaternion implements Cloneable, Serializable {
 	 *  @param q2  the second quaternion
 	 *  @param alpha  the alpha interpolation parameter 
 	 */   
-	public final void interpolate(Quaternion q1, Quaternion q2, float alpha) { 
+	public final void interpolate(Quaternion q1, Quaternion q2, double alpha) { 
 		// From "Advanced Animation and Rendering Techniques"
 		// by Watt and Watt pg. 364, function as implemented appeared to be 
 		// incorrect.  Fails to choose the same quaternion for the double
@@ -701,9 +701,9 @@ public class Quaternion implements Cloneable, Serializable {
 			s1 = 1.0 - alpha;
 			s2 = alpha;
 		}
-		this.w = (float)(s1*q1.w + s2*q2.w);
-		this.x = (float)(s1*q1.x + s2*q2.x);
-		this.y = (float)(s1*q1.y + s2*q2.y);
-		this.z = (float)(s1*q1.z + s2*q2.z);
+		this.w = (double)(s1*q1.w + s2*q2.w);
+		this.x = (double)(s1*q1.x + s2*q2.x);
+		this.y = (double)(s1*q1.y + s2*q2.y);
+		this.z = (double)(s1*q1.z + s2*q2.z);
 	}
 }

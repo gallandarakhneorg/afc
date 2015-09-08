@@ -306,13 +306,13 @@ public class Segment2i extends AbstractShape2i<Segment2i> {
 			boolean cont = true;
 			while (iterator.hasNext() && cont) {
 				iterator.next(p);
-				if (p.y()==rymin && (xintercept1==null || xintercept1>p.x())) {
-					xintercept1 = p.x();
+				if (p.iy()==rymin && (xintercept1==null || xintercept1>p.ix())) {
+					xintercept1 = p.ix();
 				}
-				if (p.y()==rymax && (xintercept2==null || xintercept2>p.x())) {
-					xintercept2 = p.x();
+				if (p.iy()==rymax && (xintercept2==null || xintercept2>p.ix())) {
+					xintercept2 = p.ix();
 				}
-				cont = (p.y()<=ymaxline);
+				cont = (p.iy()<=ymaxline);
 			}
 			
 			if (xintercept1!=null && xintercept2!=null) {
@@ -467,10 +467,10 @@ public class Segment2i extends AbstractShape2i<Segment2i> {
 		Point2i p = new Point2i();
 		while (iterator.hasNext()) {
 			iterator.next(p);
-			if (p.y()==py) {
-				if (p.x()==px)
+			if (p.iy()==py) {
+				if (p.ix()==px)
 					return MathConstants.SHAPE_INTERSECTS;
-				if (p.x()>px) {
+				if (p.ix()>px) {
 					// Found an intersection
 					int numCrosses = crossing;
 					if (y0<=y1) {
@@ -588,29 +588,29 @@ public class Segment2i extends AbstractShape2i<Segment2i> {
 
 			do {
 
-				if (p1.x()<p2.x()) {
-					while (it1.hasNext() && p1.x()<p2.x()) {
+				if (p1.ix()<p2.ix()) {
+					while (it1.hasNext() && p1.ix()<p2.ix()) {
 						it1.next(p1);
 					}
 				}
-				else if (p2.x()<p1.x()) {
-					while (it2.hasNext() && p2.x()<p1.x()) {
+				else if (p2.ix()<p1.ix()) {
+					while (it2.hasNext() && p2.ix()<p1.ix()) {
 						it2.next(p2);
 						isFirstPointOfSecondSegment = false;
 					}
 				}
 
-				int x = p1.x();
-				int min1 = p1.y();
-				int max1 = p1.y();
-				int min2 = isFirstPointOfSecondSegment && !enableThirdPoint ? Integer.MAX_VALUE : p2.y();
-				int max2 = isFirstPointOfSecondSegment && !enableThirdPoint ? Integer.MIN_VALUE : p2.y();
+				int x = p1.ix();
+				int min1 = p1.iy();
+				int max1 = p1.iy();
+				int min2 = isFirstPointOfSecondSegment && !enableThirdPoint ? Integer.MAX_VALUE : p2.iy();
+				int max2 = isFirstPointOfSecondSegment && !enableThirdPoint ? Integer.MIN_VALUE : p2.iy();
 
 				while (it1.hasNext()) {
 					it1.next(p1);
-					if (p1.x()==x) {
-						if (p1.y()<min1) min1 = p1.y();
-						if (p1.y()>max1) max1 = p1.y();
+					if (p1.ix()==x) {
+						if (p1.iy()<min1) min1 = p1.iy();
+						if (p1.iy()>max1) max1 = p1.iy();
 					}
 					else {
 						break;
@@ -620,9 +620,9 @@ public class Segment2i extends AbstractShape2i<Segment2i> {
 				while (it2.hasNext()) {
 					it2.next(p2);
 					isFirstPointOfSecondSegment = false;
-					if (p2.x()==x) {
-						if (p2.y()<min2) min2 = p2.y();
-						if (p2.y()>max2) max2 = p2.y();
+					if (p2.ix()==x) {
+						if (p2.iy()<min2) min2 = p2.iy();
+						if (p2.iy()>max2) max2 = p2.iy();
 					}
 					else {
 						break;
@@ -732,10 +732,10 @@ public class Segment2i extends AbstractShape2i<Segment2i> {
 	 * @param b
 	 */
 	public void set(Point2D a, Point2D b) {
-		this.ax = a.x();
-		this.ay = a.y();
-		this.bx = b.x();
-		this.by = b.y();
+		this.ax = a.ix();
+		this.ay = a.iy();
+		this.bx = b.ix();
+		this.by = b.iy();
 	}
 	
 	@Override
@@ -857,8 +857,8 @@ public class Segment2i extends AbstractShape2i<Segment2i> {
 			LineIterator iterator = new LineIterator(this.ax, this.ay, this.bx, this.by);
 			while (iterator.hasNext()) {
 				iterator.next(p);
-				a = Math.abs(x-p.x());
-				b = Math.abs(y-p.y());
+				a = Math.abs(x-p.ix());
+				b = Math.abs(y-p.iy());
 				d = a*a + b*b ;
 				if (d==0) return true;
 				if (d>minDist) {
@@ -881,14 +881,14 @@ public class Segment2i extends AbstractShape2i<Segment2i> {
 	 */
 	@Override
 	public Point2i getClosestPointTo(Point2D p) {
-		return computeClosestPointTo(this.ax, this.ay, this.bx, this.by, p.x(), p.y());
+		return computeClosestPointTo(this.ax, this.ay, this.bx, this.by, p.ix(), p.iy());
 	}
 
 	/** {@inheritDoc}
 	 */
 	@Override
 	public Point2i getFarthestPointTo(Point2D p) {
-		return computeFarthestPointTo(this.ax, this.ay, this.bx, this.by, p.x(), p.y());
+		return computeFarthestPointTo(this.ax, this.ay, this.bx, this.by, p.ix(), p.iy());
 	}
 
 	/** Replies the closest point in a circle to a point.
@@ -925,8 +925,8 @@ public class Segment2i extends AbstractShape2i<Segment2i> {
 		LineIterator iterator = new LineIterator(ax, ay, bx, by);
 		while (iterator.hasNext()) {
 			iterator.next(cp);
-			a = Math.abs(px-cp.x());
-			b = Math.abs(py-cp.y());
+			a = Math.abs(px-cp.ix());
+			b = Math.abs(py-cp.iy());
 			d = a*a + b*b ;
 			if (d==0) {
 				// We are sure that the closest point was found
@@ -1051,12 +1051,12 @@ public class Segment2i extends AbstractShape2i<Segment2i> {
 	public void transform(Transform2D transform) {
 		Point2i p = new Point2i(this.ax,  this.ay);
 		transform.transform(p);
-		this.ax = p.x();
-		this.ay = p.y();
+		this.ax = p.ix();
+		this.ay = p.iy();
 		p.set(this.bx, this.by);
 		transform.transform(p);
-		this.bx = p.x();
-		this.by = p.y();
+		this.bx = p.ix();
+		this.by = p.iy();
 	}
 
 	@Override
@@ -1248,7 +1248,7 @@ public class Segment2i extends AbstractShape2i<Segment2i> {
 					this.transform.transform(this.p2);
 				}
 				return new PathElement2i.MovePathElement2i(
-						this.p2.x(), this.p2.y());
+						this.p2.ix(), this.p2.iy());
 			case 1:
 				this.p1.set(this.p2);
 				this.p2.set(this.x2, this.y2);
@@ -1256,8 +1256,8 @@ public class Segment2i extends AbstractShape2i<Segment2i> {
 					this.transform.transform(this.p2);
 				}
 				return new PathElement2i.LinePathElement2i(
-						this.p1.x(), this.p1.y(),
-						this.p2.x(), this.p2.y());
+						this.p1.ix(), this.p1.iy(),
+						this.p2.ix(), this.p2.iy());
 			default:
 				throw new NoSuchElementException();
 			}

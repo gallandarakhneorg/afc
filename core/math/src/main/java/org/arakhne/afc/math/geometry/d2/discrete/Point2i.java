@@ -440,8 +440,8 @@ public class Point2i extends Tuple2i<Point2D> implements Point2D {
 		}
 
 		@Override
-		public int x() {
-			return Point2i.this.x();
+		public int ix() {
+			return Point2i.this.ix();
 		}
 
 		@Override
@@ -460,8 +460,8 @@ public class Point2i extends Tuple2i<Point2D> implements Point2D {
 		}
 
 		@Override
-		public int y() {
-			return Point2i.this.y();
+		public int iy() {
+			return Point2i.this.iy();
 		}
 
 		@Override

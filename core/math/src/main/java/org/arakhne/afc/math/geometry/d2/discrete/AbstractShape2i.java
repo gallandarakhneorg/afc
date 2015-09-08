@@ -65,7 +65,7 @@ public abstract class AbstractShape2i<T extends Shape2i> implements Shape2i {
 	 */
 	@Override
 	public final boolean contains(Point2D p) {
-		return contains(p.x(), p.y());
+		return contains(p.ix(), p.iy());
 	}
 
 	/** {@inheritDoc}

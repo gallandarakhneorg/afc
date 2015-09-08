@@ -840,8 +840,8 @@ public class Vector3f extends Tuple3f<Vector3D> implements Vector3D {
 		}
 
 		@Override
-		public int x() {
-			return Vector3f.this.x();
+		public int ix() {
+			return Vector3f.this.ix();
 		}
 
 		@Override
@@ -860,8 +860,8 @@ public class Vector3f extends Tuple3f<Vector3D> implements Vector3D {
 		}
 
 		@Override
-		public int y() {
-			return Vector3f.this.y();
+		public int iy() {
+			return Vector3f.this.iy();
 		}
 
 		@Override
@@ -880,8 +880,8 @@ public class Vector3f extends Tuple3f<Vector3D> implements Vector3D {
 		}
 
 		@Override
-		public int z() {
-			return Vector3f.this.z();
+		public int iz() {
+			return Vector3f.this.iz();
 		}
 
 		@Override

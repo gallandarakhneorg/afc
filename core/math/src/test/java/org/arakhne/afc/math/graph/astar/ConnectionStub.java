@@ -49,7 +49,7 @@ class ConnectionStub implements GraphPoint<ConnectionStub,SegmentStub> {
 	 * @param x
 	 * @param y
 	 */
-	public ConnectionStub(String id, float x, float y) {
+	public ConnectionStub(String id, double x, double y) {
 		this.id = id;
 		this.position.set(x,y);
 	}

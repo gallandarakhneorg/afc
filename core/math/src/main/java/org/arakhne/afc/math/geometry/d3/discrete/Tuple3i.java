@@ -357,9 +357,9 @@ public class Tuple3i<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	 */
 	@Override
 	public void negate(T t1) {
-		this.x = -t1.x();
-		this.y = -t1.y();
-		this.z = -t1.z();
+		this.x = -t1.ix();
+		this.y = -t1.iy();
+		this.z = -t1.iz();
 	}
 
 	/**
@@ -417,9 +417,9 @@ public class Tuple3i<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	 */
 	@Override
 	public void set(Tuple3D<?> t1) {
-		this.x = t1.x();
-		this.y = t1.y();
-		this.z = t1.z();
+		this.x = t1.ix();
+		this.y = t1.iy();
+		this.z = t1.iz();
 	}
 
 	/**
@@ -474,7 +474,7 @@ public class Tuple3i<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public int x() {
+	public int ix() {
 		return this.x;
 	}
 
@@ -506,7 +506,7 @@ public class Tuple3i<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public int y() {
+	public int iy() {
 		return this.y;
 	}
 
@@ -538,7 +538,7 @@ public class Tuple3i<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public int z() {
+	public int iz() {
 		return this.z;
 	}
 
@@ -652,7 +652,7 @@ public class Tuple3i<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	@Override
 	public boolean equals(Tuple3D<?> t1) {
 		try {
-			return(this.x == t1.x() && this.y == t1.y() && this.z == t1.z());
+			return(this.x == t1.ix() && this.y == t1.iy() && this.z == t1.iz());
 		}
 		catch (NullPointerException e2) {
 			return false;
@@ -667,7 +667,7 @@ public class Tuple3i<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	public boolean equals(Object t1) {
 		try {
 			T t2 = (T) t1;
-			return(this.x == t2.x() && this.y == t2.y() && this.z == t2.z());
+			return(this.x == t2.ix() && this.y == t2.iy() && this.z == t2.iz());
 		}
 		catch(AssertionError e) {
 			throw e;

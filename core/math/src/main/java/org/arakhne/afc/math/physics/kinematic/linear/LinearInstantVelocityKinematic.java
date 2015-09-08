@@ -44,7 +44,7 @@ public interface LinearInstantVelocityKinematic {
 	 * 
 	 * @return the linear speed of this object in m/s.
 	 */
-	public float getLinearSpeed();
+	public double getLinearSpeed();
 	
 	/**
 	 * Returns the Linear speed of this object.
@@ -55,7 +55,7 @@ public interface LinearInstantVelocityKinematic {
 	 * @param unit the unit in which the speed will be given.
 	 * @return the linear speed of this object in the given unit.
 	 */
-	public float getLinearSpeed(SpeedUnit unit);
+	public double getLinearSpeed(SpeedUnit unit);
 
 	
 	/** Replies the instant velocity of the object.
@@ -96,6 +96,6 @@ public interface LinearInstantVelocityKinematic {
 	 * 
 	 * @return the velocity of the object. 
 	 */
-	public float getLinearVelocity1D();
+	public double getLinearVelocity1D();
 
 }

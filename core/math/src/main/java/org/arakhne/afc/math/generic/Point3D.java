@@ -43,7 +43,7 @@ public interface Point3D extends Tuple3D<Point3D> {
 	 * @param p1 the other point
 	 * @return the distance.
 	 */
-	public float getDistanceSquared(Point3D p1);
+	public double getDistanceSquared(Point3D p1);
 
 	/**
 	 * Computes the distance between this point and point p1.
@@ -57,7 +57,7 @@ public interface Point3D extends Tuple3D<Point3D> {
 	 * @param p1 the other point
 	 * @return the distance. 
 	 */    
-	public float getDistance(Point3D p1);
+	public double getDistance(Point3D p1);
 
 	/**
 	 * Computes the L-1 (Manhattan) distance between this point and
@@ -73,7 +73,7 @@ public interface Point3D extends Tuple3D<Point3D> {
 	 * @param p1 the other point
 	 * @return the distance.
 	 */
-	public float getDistanceL1(Point3D p1);
+	public double getDistanceL1(Point3D p1);
 
 	/**
 	 * Computes the L-infinite distance between this point and
@@ -91,7 +91,7 @@ public interface Point3D extends Tuple3D<Point3D> {
 	 * @param p1 the other point
 	 * @return the distance.
 	 */
-	public float getDistanceLinf(Point3D p1);
+	public double getDistanceLinf(Point3D p1);
 
 	/**
 	 * Sets the value of this tuple to the sum of tuples t1 and t2.
@@ -129,7 +129,7 @@ public interface Point3D extends Tuple3D<Point3D> {
 	 * @param t1 the tuple to be multipled
 	 * @param t2 the tuple to be added
 	 */
-	public void scaleAdd(float s, Vector3D t1, Point3D t2);
+	public void scaleAdd(double s, Vector3D t1, Point3D t2);
 
 	/**
 	 * Sets the value of this tuple to the scalar multiplication
@@ -147,7 +147,7 @@ public interface Point3D extends Tuple3D<Point3D> {
 	 * @param t1 the tuple to be multipled
 	 * @param t2 the tuple to be added
 	 */
-	public void scaleAdd(float s, Point3D t1, Vector3D t2);
+	public void scaleAdd(double s, Point3D t1, Vector3D t2);
 
 	/**
 	 * Sets the value of this tuple to the scalar multiplication
@@ -163,7 +163,7 @@ public interface Point3D extends Tuple3D<Point3D> {
 	 * @param s the scalar value
 	 * @param t1 the tuple to be added
 	 */
-	public void scaleAdd(float s, Vector3D t1);
+	public void scaleAdd(double s, Vector3D t1);
 
 	
 	/**

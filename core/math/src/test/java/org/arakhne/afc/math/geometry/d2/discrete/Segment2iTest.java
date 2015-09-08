@@ -285,32 +285,32 @@ public class Segment2iTest extends AbstractShape2iTestCase<Segment2i> implements
 		Point2D p;
 		
 		p = this.r.getClosestPointTo(new Point2i(0,0));
-		assertEquals(0, p.x());
-		assertEquals(0, p.y());
+		assertEquals(0, p.ix());
+		assertEquals(0, p.iy());
 
 		p = this.r.getClosestPointTo(new Point2i(1,1));
-		assertEquals(2, p.x());
-		assertEquals(1, p.y());
+		assertEquals(2, p.ix());
+		assertEquals(1, p.iy());
 
 		p = this.r.getClosestPointTo(new Point2i(2,2));
-		assertEquals(2, p.x());
-		assertEquals(1, p.y());
+		assertEquals(2, p.ix());
+		assertEquals(1, p.iy());
 
 		p = this.r.getClosestPointTo(new Point2i(-2,2));
-		assertEquals(0, p.x());
-		assertEquals(0, p.y());
+		assertEquals(0, p.ix());
+		assertEquals(0, p.iy());
 
 		p = this.r.getClosestPointTo(new Point2i(0f,1f));
-		assertEquals(0, p.x());
-		assertEquals(0, p.y());
+		assertEquals(0, p.ix());
+		assertEquals(0, p.iy());
 
 		p = this.r.getClosestPointTo(new Point2i(10f,-1f));
-		assertEquals(7, p.x());
-		assertEquals(3, p.y());
+		assertEquals(7, p.ix());
+		assertEquals(3, p.iy());
 
 		p = this.r.getClosestPointTo(new Point2i(2,4));
-		assertEquals(4, p.x());
-		assertEquals(2, p.y());
+		assertEquals(4, p.ix());
+		assertEquals(2, p.iy());
 	}
 
 	/**
@@ -320,32 +320,32 @@ public class Segment2iTest extends AbstractShape2iTestCase<Segment2i> implements
 		Point2D p;
 		
 		p = this.r.getFarthestPointTo(new Point2i(0,0));
-		assertEquals(10, p.x());
-		assertEquals(5, p.y());
+		assertEquals(10, p.ix());
+		assertEquals(5, p.iy());
 
 		p = this.r.getFarthestPointTo(new Point2i(1,1));
-		assertEquals(10, p.x());
-		assertEquals(5, p.y());
+		assertEquals(10, p.ix());
+		assertEquals(5, p.iy());
 
 		p = this.r.getFarthestPointTo(new Point2i(2,2));
-		assertEquals(10, p.x());
-		assertEquals(5, p.y());
+		assertEquals(10, p.ix());
+		assertEquals(5, p.iy());
 
 		p = this.r.getFarthestPointTo(new Point2i(-2,2));
-		assertEquals(10, p.x());
-		assertEquals(5, p.y());
+		assertEquals(10, p.ix());
+		assertEquals(5, p.iy());
 
 		p = this.r.getFarthestPointTo(new Point2i(0f,1f));
-		assertEquals(10, p.x());
-		assertEquals(5, p.y());
+		assertEquals(10, p.ix());
+		assertEquals(5, p.iy());
 
 		p = this.r.getFarthestPointTo(new Point2i(10f,-1f));
-		assertEquals(0, p.x());
-		assertEquals(0, p.y());
+		assertEquals(0, p.ix());
+		assertEquals(0, p.iy());
 
 		p = this.r.getFarthestPointTo(new Point2i(2,4));
-		assertEquals(10, p.x());
-		assertEquals(5, p.y());
+		assertEquals(10, p.ix());
+		assertEquals(5, p.iy());
 	}
 
 	/**
@@ -478,68 +478,68 @@ public class Segment2iTest extends AbstractShape2iTestCase<Segment2i> implements
     	assertTrue(iterator.hasNext());
     	p = iterator.next();
     	assertNotNull(p);
-    	assertEquals(0, p.x());
-    	assertEquals(0, p.y());
+    	assertEquals(0, p.ix());
+    	assertEquals(0, p.iy());
 
     	assertTrue(iterator.hasNext());
     	p = iterator.next();
     	assertNotNull(p);
-    	assertEquals(1, p.x());
-    	assertEquals(0, p.y());
+    	assertEquals(1, p.ix());
+    	assertEquals(0, p.iy());
 
     	assertTrue(iterator.hasNext());
     	p = iterator.next();
     	assertNotNull(p);
-    	assertEquals(2, p.x());
-    	assertEquals(1, p.y());
+    	assertEquals(2, p.ix());
+    	assertEquals(1, p.iy());
 
     	assertTrue(iterator.hasNext());
     	p = iterator.next();
     	assertNotNull(p);
-    	assertEquals(3, p.x());
-    	assertEquals(1, p.y());
+    	assertEquals(3, p.ix());
+    	assertEquals(1, p.iy());
 
     	assertTrue(iterator.hasNext());
     	p = iterator.next();
     	assertNotNull(p);
-    	assertEquals(4, p.x());
-    	assertEquals(2, p.y());
+    	assertEquals(4, p.ix());
+    	assertEquals(2, p.iy());
 
     	assertTrue(iterator.hasNext());
     	p = iterator.next();
     	assertNotNull(p);
-    	assertEquals(5, p.x());
-    	assertEquals(2, p.y());
+    	assertEquals(5, p.ix());
+    	assertEquals(2, p.iy());
 
     	assertTrue(iterator.hasNext());
     	p = iterator.next();
     	assertNotNull(p);
-    	assertEquals(6, p.x());
-    	assertEquals(3, p.y());
+    	assertEquals(6, p.ix());
+    	assertEquals(3, p.iy());
 
     	assertTrue(iterator.hasNext());
     	p = iterator.next();
     	assertNotNull(p);
-    	assertEquals(7, p.x());
-    	assertEquals(3, p.y());
+    	assertEquals(7, p.ix());
+    	assertEquals(3, p.iy());
 
     	assertTrue(iterator.hasNext());
     	p = iterator.next();
     	assertNotNull(p);
-    	assertEquals(8, p.x());
-    	assertEquals(4, p.y());
+    	assertEquals(8, p.ix());
+    	assertEquals(4, p.iy());
 
     	assertTrue(iterator.hasNext());
     	p = iterator.next();
     	assertNotNull(p);
-    	assertEquals(9, p.x());
-    	assertEquals(4, p.y());
+    	assertEquals(9, p.ix());
+    	assertEquals(4, p.iy());
 
     	assertTrue(iterator.hasNext());
     	p = iterator.next();
     	assertNotNull(p);
-    	assertEquals(10, p.x());
-    	assertEquals(5, p.y());
+    	assertEquals(10, p.ix());
+    	assertEquals(5, p.iy());
 
     	assertFalse(iterator.hasNext());
     }

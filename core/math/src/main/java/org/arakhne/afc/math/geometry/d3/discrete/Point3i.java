@@ -437,8 +437,8 @@ public class Point3i extends Tuple3i<Point3D> implements Point3D {
 		}
 
 		@Override
-		public int x() {
-			return Point3i.this.x();
+		public int ix() {
+			return Point3i.this.ix();
 		}
 
 		@Override
@@ -457,8 +457,8 @@ public class Point3i extends Tuple3i<Point3D> implements Point3D {
 		}
 
 		@Override
-		public int y() {
-			return Point3i.this.y();
+		public int iy() {
+			return Point3i.this.iy();
 		}
 
 		@Override
@@ -477,8 +477,8 @@ public class Point3i extends Tuple3i<Point3D> implements Point3D {
 		}
 
 		@Override
-		public int z() {
-			return Point3i.this.z();
+		public int iz() {
+			return Point3i.this.iz();
 		}
 
 		@Override

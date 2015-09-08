@@ -1869,10 +1869,10 @@ public final class MathUtil {
 	@Deprecated
 	public static boolean clipSegmentToRectangle(org.arakhne.afc.math.generic.Point2D p1,
 			org.arakhne.afc.math.generic.Point2D p2, int rxmin, int rymin, int rxmax, int rymax) {
-		int x0 = p1.x();
-		int y0 = p1.y();
-		int x1 = p2.x();
-		int y1 = p2.y();
+		int x0 = p1.ix();
+		int y0 = p1.iy();
+		int x1 = p2.ix();
+		int y1 = p2.iy();
 		int code1 = getCohenSutherlandCode(x0, y0, rxmin, rymin, rxmax, rymax);
 		int code2 = getCohenSutherlandCode(x1, y1, rxmin, rymin, rxmax, rymax);
 		boolean accept = false;

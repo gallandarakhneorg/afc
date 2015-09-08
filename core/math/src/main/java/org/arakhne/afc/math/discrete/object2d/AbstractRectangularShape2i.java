@@ -125,7 +125,7 @@ public abstract class AbstractRectangularShape2i<T extends Shape2i> extends Abst
 	 * @param max is the max corner of the rectangle.
 	 */
 	public void set(Point2D min, Point2D max) {
-		setFromCorners(min.x(), min.y(), max.x(), max.y());
+		setFromCorners(min.ix(), min.iy(), max.ix(), max.iy());
 	}
 
 	/** Change the frame of the rectangle.
@@ -160,7 +160,7 @@ public abstract class AbstractRectangularShape2i<T extends Shape2i> extends Abst
 	 * @param c2 is the first corner.
 	 */
 	public void setFromCorners(Point2D c2, Point2D c1) {
-		setFromCorners(c1.x(),  c1.y(),  c2.x(), c2.y());
+		setFromCorners(c1.ix(),  c1.iy(),  c2.ix(), c2.iy());
 	}
 	
 	/**

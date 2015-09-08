@@ -49,7 +49,7 @@ public class SGraphSegment implements GraphSegment<SGraphSegment,SGraphPoint> {
 	 * @param graph is the graph in which the segment is.
 	 */
 	public SGraphSegment(SGraph graph) {
-		this(graph, Float.NaN);
+		this(graph, Double.NaN);
 	}
 	
 	/**

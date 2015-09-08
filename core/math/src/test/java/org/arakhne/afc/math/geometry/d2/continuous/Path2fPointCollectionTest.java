@@ -78,7 +78,7 @@ public class Path2fPointCollectionTest extends AbstractMathTestCase {
 		this.c = null;
 	}
 	
-	private void assertCoords(float... coords) {
+	private void assertCoords(double... coords) {
 		assertEquals(coords.length/2, this.r.size());
 		for(int i=0, j=0; i<this.r.size(); ++i) {
 			Point2D p = this.r.getPointAt(i);

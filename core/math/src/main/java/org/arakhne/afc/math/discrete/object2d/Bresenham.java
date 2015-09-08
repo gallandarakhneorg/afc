@@ -294,28 +294,28 @@ public final class Bresenham {
 			switch(this.currentSide) {
 			// top
 			case 0:
-				if (p.x() >= this.x1) {
+				if (p.ix() >= this.x1) {
 					newSide = 1;
 					this.i = 0;
 				}
 				break;
 			// right
 			case 1:
-				if (p.y() >= this.y1) {
+				if (p.iy() >= this.y1) {
 					newSide = 2;
 					this.i = 0;
 				}
 				break;
 			// bottom
 			case 2:
-				if (p.x() <= this.x0) {
+				if (p.ix() <= this.x0) {
 					newSide = 3;
 					this.i = 0;
 				}
 				break;
 			// left
 			case 3:
-				if (p.y() <= this.y0) {
+				if (p.iy() <= this.y0) {
 					newSide = 0;
 					this.i = 0;
 				}

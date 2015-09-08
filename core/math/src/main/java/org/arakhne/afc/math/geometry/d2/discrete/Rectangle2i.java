@@ -115,38 +115,38 @@ public class Rectangle2i extends AbstractRectangularShape2i<Rectangle2i> {
 			if ((c1&0x1)!=0) {
 				do {
 					iterator.next(pts);
-					sy1 = pts.y();
+					sy1 = pts.iy();
 				}
 				while (iterator.hasNext() && sy1!=y2);
 				if (sy1!=y2) return false;
-				sx1 = pts.x();
+				sx1 = pts.ix();
 			}
 			else if ((c1&0x2)!=0) {
 				do {
 					iterator.next(pts);
-					sy1 = pts.y();
+					sy1 = pts.iy();
 				}
 				while (iterator.hasNext() && sy1!=y1);
 				if (sy1!=y1) return false;
-				sx1 = pts.x();
+				sx1 = pts.ix();
 			}
 			else if ((c1&0x4)!=0) {
 				do {
 					iterator.next(pts);
-					sx1 = pts.x();
+					sx1 = pts.ix();
 				}
 				while (iterator.hasNext() && sx1!=x2);
 				if (sx1!=x2) return false;
-				sy1 = pts.y();
+				sy1 = pts.iy();
 			}
 			else {
 				do {
 					iterator.next(pts);
-					sx1 = pts.x();
+					sx1 = pts.ix();
 				}
 				while (iterator.hasNext() && sx1!=x1);
 				if (sx1!=x1) return false;
-				sy1 = pts.y();
+				sy1 = pts.iy();
 			}
 			c1 = code(sx1, sy1, x1, y1, x2, y2);
 		}
@@ -233,7 +233,7 @@ public class Rectangle2i extends AbstractRectangularShape2i<Rectangle2i> {
 	 * @param max is the max corner of the rectangle.
 	 */
 	public Rectangle2i(Point2i min, Point2i max) {
-		setFromCorners(min.x(), min.y(), max.x(), max.y());
+		setFromCorners(min.ix(), min.iy(), max.ix(), max.iy());
 	}
 	
 	/**
@@ -270,21 +270,21 @@ public class Rectangle2i extends AbstractRectangularShape2i<Rectangle2i> {
 	@Override
 	public double distanceSquared(Point2D p) {
 		int dx;
-		if (p.x()<this.minx) {
-			dx = this.minx - p.x();
+		if (p.ix()<this.minx) {
+			dx = this.minx - p.ix();
 		}
-		else if (p.x()>this.maxx) {
-			dx = p.x() - this.maxx;
+		else if (p.ix()>this.maxx) {
+			dx = p.ix() - this.maxx;
 		}
 		else {
 			dx = 0;
 		}
 		int dy;
-		if (p.y()<this.miny) {
-			dy = this.miny - p.y();
+		if (p.iy()<this.miny) {
+			dy = this.miny - p.iy();
 		}
-		else if (p.y()>this.maxy) {
-			dy = p.y() - this.maxy;
+		else if (p.iy()>this.maxy) {
+			dy = p.iy() - this.maxy;
 		}
 		else {
 			dy = 0;
@@ -297,21 +297,21 @@ public class Rectangle2i extends AbstractRectangularShape2i<Rectangle2i> {
 	@Override
 	public double distanceL1(Point2D p) {
 		int dx;
-		if (p.x()<this.minx) {
-			dx = this.minx - p.x();
+		if (p.ix()<this.minx) {
+			dx = this.minx - p.ix();
 		}
-		else if (p.x()>this.maxx) {
-			dx = p.x() - this.maxx;
+		else if (p.ix()>this.maxx) {
+			dx = p.ix() - this.maxx;
 		}
 		else {
 			dx = 0;
 		}
 		int dy;
-		if (p.y()<this.miny) {
-			dy = this.miny - p.y();
+		if (p.iy()<this.miny) {
+			dy = this.miny - p.iy();
 		}
-		else if (p.y()>this.maxy) {
-			dy = p.y() - this.maxy;
+		else if (p.iy()>this.maxy) {
+			dy = p.iy() - this.maxy;
 		}
 		else {
 			dy = 0;
@@ -324,21 +324,21 @@ public class Rectangle2i extends AbstractRectangularShape2i<Rectangle2i> {
 	@Override
 	public double distanceLinf(Point2D p) {
 		int dx;
-		if (p.x()<this.minx) {
-			dx = this.minx - p.x();
+		if (p.ix()<this.minx) {
+			dx = this.minx - p.ix();
 		}
-		else if (p.x()>this.maxx) {
-			dx = p.x() - this.maxx;
+		else if (p.ix()>this.maxx) {
+			dx = p.ix() - this.maxx;
 		}
 		else {
 			dx = 0;
 		}
 		int dy;
-		if (p.y()<this.miny) {
-			dy = this.miny - p.y();
+		if (p.iy()<this.miny) {
+			dy = this.miny - p.iy();
 		}
-		else if (p.y()>this.maxy) {
-			dy = p.y() - this.maxy;
+		else if (p.iy()>this.maxy) {
+			dy = p.iy() - this.maxy;
 		}
 		else {
 			dy = 0;
@@ -350,14 +350,14 @@ public class Rectangle2i extends AbstractRectangularShape2i<Rectangle2i> {
 	 */
 	@Override
 	public Point2i getClosestPointTo(Point2D p) {
-		return computeClosestPoint(this.minx, this.miny, this.maxx, this.maxy, p.x(), p.y());
+		return computeClosestPoint(this.minx, this.miny, this.maxx, this.maxy, p.ix(), p.iy());
 	}
 	
 	/** {@inheritDoc}
 	 */
 	@Override
 	public Point2i getFarthestPointTo(Point2D p) {
-		return computeFarthestPoint(this.minx, this.miny, this.maxx, this.maxy, p.x(), p.y());
+		return computeFarthestPoint(this.minx, this.miny, this.maxx, this.maxy, p.ix(), p.iy());
 	}
 
 	@Override
@@ -567,7 +567,7 @@ public class Rectangle2i extends AbstractRectangularShape2i<Rectangle2i> {
 					this.transform.transform(this.p2);
 				}
 				return new PathElement2i.MovePathElement2i(
-						this.p2.x(), this.p2.y());
+						this.p2.ix(), this.p2.iy());
 			case 1:
 				this.p1.set(this.p2);
 				this.p2.set(this.x2, this.y1);
@@ -575,8 +575,8 @@ public class Rectangle2i extends AbstractRectangularShape2i<Rectangle2i> {
 					this.transform.transform(this.p2);
 				}
 				return new PathElement2i.LinePathElement2i(
-						this.p1.x(), this.p1.y(),
-						this.p2.x(), this.p2.y());
+						this.p1.ix(), this.p1.iy(),
+						this.p2.ix(), this.p2.iy());
 			case 2:
 				this.p1.set(this.p2);
 				this.p2.set(this.x2, this.y2);
@@ -584,8 +584,8 @@ public class Rectangle2i extends AbstractRectangularShape2i<Rectangle2i> {
 					this.transform.transform(this.p2);
 				}
 				return new PathElement2i.LinePathElement2i(
-						this.p1.x(), this.p1.y(),
-						this.p2.x(), this.p2.y());
+						this.p1.ix(), this.p1.iy(),
+						this.p2.ix(), this.p2.iy());
 			case 3:
 				this.p1.set(this.p2);
 				this.p2.set(this.x1, this.y2);
@@ -593,8 +593,8 @@ public class Rectangle2i extends AbstractRectangularShape2i<Rectangle2i> {
 					this.transform.transform(this.p2);
 				}
 				return new PathElement2i.LinePathElement2i(
-						this.p1.x(), this.p1.y(),
-						this.p2.x(), this.p2.y());
+						this.p1.ix(), this.p1.iy(),
+						this.p2.ix(), this.p2.iy());
 			case 4:
 				this.p1.set(this.p2);
 				this.p2.set(this.x1, this.y1);
@@ -602,12 +602,12 @@ public class Rectangle2i extends AbstractRectangularShape2i<Rectangle2i> {
 					this.transform.transform(this.p2);
 				}
 				return new PathElement2i.LinePathElement2i(
-						this.p1.x(), this.p1.y(),
-						this.p2.x(), this.p2.y());
+						this.p1.ix(), this.p1.iy(),
+						this.p2.ix(), this.p2.iy());
 			case 5:
 				return new PathElement2i.ClosePathElement2i(
-						this.p2.x(), this.p2.y(),
-						this.p2.x(), this.p2.y());
+						this.p2.ix(), this.p2.iy(),
+						this.p2.ix(), this.p2.iy());
 			default:
 				throw new NoSuchElementException();
 			}

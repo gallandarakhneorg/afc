@@ -316,8 +316,8 @@ public class Tuple2i<T extends Tuple2D<? super T>> implements Tuple2D<T> {
 	 */
 	@Override
 	public void negate(T t1) {
-		this.x = -t1.x();
-		this.y = -t1.y();
+		this.x = -t1.ix();
+		this.y = -t1.iy();
 	}
 
 	/**
@@ -370,8 +370,8 @@ public class Tuple2i<T extends Tuple2D<? super T>> implements Tuple2D<T> {
 	 */
 	@Override
 	public void set(Tuple2D<?> t1) {
-		this.x = t1.x();
-		this.y = t1.y();
+		this.x = t1.ix();
+		this.y = t1.iy();
 	}
 
 	/**
@@ -422,7 +422,7 @@ public class Tuple2i<T extends Tuple2D<? super T>> implements Tuple2D<T> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public int x() {
+	public int ix() {
 		return this.x;
 	}
 
@@ -454,7 +454,7 @@ public class Tuple2i<T extends Tuple2D<? super T>> implements Tuple2D<T> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public int y() {
+	public int iy() {
 		return this.y;
 	}
 
@@ -548,7 +548,7 @@ public class Tuple2i<T extends Tuple2D<? super T>> implements Tuple2D<T> {
 	@Override
 	public boolean equals(Tuple2D<?> t1) {
 		try {
-			return(this.x == t1.x() && this.y == t1.y());
+			return(this.x == t1.ix() && this.y == t1.iy());
 		}
 		catch (NullPointerException e2) {
 			return false;
@@ -563,7 +563,7 @@ public class Tuple2i<T extends Tuple2D<? super T>> implements Tuple2D<T> {
 	public boolean equals(Object t1) {
 		try {
 			T t2 = (T) t1;
-			return(this.x == t2.x() && this.y == t2.y());
+			return(this.x == t2.ix() && this.y == t2.iy());
 		}
 		catch(AssertionError e) {
 			throw e;

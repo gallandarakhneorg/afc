@@ -149,9 +149,9 @@ public abstract class PathElement2f implements PathElement2D {
 		 */
 		public MovePathElement2f(double x, double y) {
 			super(PathElementType.MOVE_TO,
-					Float.NaN, Float.NaN,
-					Float.NaN, Float.NaN,
-					Float.NaN, Float.NaN,
+					Double.NaN, Double.NaN,
+					Double.NaN, Double.NaN,
+					Double.NaN, Double.NaN,
 					x, y);
 		}
 
@@ -210,8 +210,8 @@ public abstract class PathElement2f implements PathElement2D {
 		public LinePathElement2f(double fromx, double fromy, double tox, double toy) {
 			super(PathElementType.LINE_TO,
 					fromx, fromy,
-					Float.NaN, Float.NaN,
-					Float.NaN, Float.NaN,
+					Double.NaN, Double.NaN,
+					Double.NaN, Double.NaN,
 					tox, toy);
 		}
 		
@@ -273,7 +273,7 @@ public abstract class PathElement2f implements PathElement2D {
 			super(PathElementType.QUAD_TO,
 					fromx, fromy,
 					ctrlx, ctrly,
-					Float.NaN, Float.NaN,
+					Double.NaN, Double.NaN,
 					tox, toy);
 		}
 		
@@ -411,8 +411,8 @@ public abstract class PathElement2f implements PathElement2D {
 		public ClosePathElement2f(double fromx, double fromy, double tox, double toy) {
 			super(PathElementType.CLOSE,
 					fromx, fromy,
-					Float.NaN, Float.NaN,
-					Float.NaN, Float.NaN,
+					Double.NaN, Double.NaN,
+					Double.NaN, Double.NaN,
 					tox, toy);
 		}
 		

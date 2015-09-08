@@ -710,7 +710,7 @@ public class Transform2D extends Matrix3f {
 		double x, y;
 		x = this.m00 * t.getX() + this.m01 * t.getY() + this.m02;
 		y = this.m10 * t.getX() + this.m11 * t.getY() + this.m12;
-		t.set((float) x, (float)y);
+		t.set((double) x, (double)y);
 	}
 
 	/** Multiply this matrix by the tuple <x,y> and return the result.
@@ -751,8 +751,8 @@ public class Transform2D extends Matrix3f {
 	 */
 	public void transform(Tuple2D<?> t, Tuple2D<?> result) {
 		result.set(
-				(float) (this.m00 * t.getX() + this.m01 * t.getY() + this.m02),
-				(float) (this.m10 * t.getX() + this.m11 * t.getY() + this.m12));
+				(double) (this.m00 * t.getX() + this.m01 * t.getY() + this.m02),
+				(double) (this.m10 * t.getX() + this.m11 * t.getY() + this.m12));
 	}
 
 	/**

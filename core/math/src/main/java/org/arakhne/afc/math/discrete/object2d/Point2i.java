@@ -61,7 +61,7 @@ public class Point2i extends Tuple2i<Point2D> implements Point2D {
 	/**
 	 * @param tuple is the tuple to copy.
 	 */
-	public Point2i(float[] tuple) {
+	public Point2i(double[] tuple) {
 		super(tuple);
 	}
 
@@ -78,7 +78,7 @@ public class Point2i extends Tuple2i<Point2D> implements Point2D {
 	 * @param y
 	 */
 	public Point2i(float x, float y) {
-		super(x,y);
+		super((double)x,(double)y);
 	}
 
 	/**
@@ -86,7 +86,7 @@ public class Point2i extends Tuple2i<Point2D> implements Point2D {
 	 * @param y
 	 */
 	public Point2i(double x, double y) {
-		super((float)x,(float)y);
+		super(x,y);
 	}
 
 	/**
@@ -108,8 +108,8 @@ public class Point2i extends Tuple2i<Point2D> implements Point2D {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public float distanceSquared(Point2D p1) {
-	      float dx, dy;
+	public double distanceSquared(Point2D p1) {
+		double dx, dy;
 	      dx = this.x-p1.getX();  
 	      dy = this.y-p1.getY();
 	      return (dx*dx+dy*dy);
@@ -119,18 +119,18 @@ public class Point2i extends Tuple2i<Point2D> implements Point2D {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public float distance(Point2D p1) {
-	      float  dx, dy;
+	public double distance(Point2D p1) {
+		double  dx, dy;
 	      dx = this.x-p1.getX();  
 	      dy = this.y-p1.getY();
-	      return (float)Math.sqrt(dx*dx+dy*dy);
+	      return (double)Math.sqrt(dx*dx+dy*dy);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public float distanceL1(Point2D p1) {
+	public double distanceL1(Point2D p1) {
 	      return (Math.abs(this.x-p1.getX()) + Math.abs(this.y-p1.getY()));
 	}
 
@@ -138,7 +138,7 @@ public class Point2i extends Tuple2i<Point2D> implements Point2D {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public float distanceLinf(Point2D p1) {
+	public double distanceLinf(Point2D p1) {
 	      return (Math.max( Math.abs(this.x-p1.getX()), Math.abs(this.y-p1.getY())));
 	}
 
@@ -167,7 +167,7 @@ public class Point2i extends Tuple2i<Point2D> implements Point2D {
 	}
 
 	@Override
-	public void scaleAdd(float s, Vector2D t1, Point2D t2) {
+	public void scaleAdd(double s, Vector2D t1, Point2D t2) {
 		this.x = (int)(s * t1.getX() + t2.getX());
 		this.y = (int)(s * t1.getY() + t2.getY());
 	}
@@ -179,7 +179,7 @@ public class Point2i extends Tuple2i<Point2D> implements Point2D {
 	}
 
 	@Override
-	public void scaleAdd(float s, Point2D t1, Vector2D t2) {
+	public void scaleAdd(double s, Point2D t1, Vector2D t2) {
 		this.x = (int)(s * t1.getX() + t2.getX());
 		this.y = (int)(s * t1.getY() + t2.getY());
 	}
@@ -191,7 +191,7 @@ public class Point2i extends Tuple2i<Point2D> implements Point2D {
 	}
 
 	@Override
-	public void scaleAdd(float s, Vector2D t1) {
+	public void scaleAdd(double s, Vector2D t1) {
 		this.x = (int)(s * this.x + t1.getX());
 		this.y = (int)(s * this.y + t1.getY());
 	}

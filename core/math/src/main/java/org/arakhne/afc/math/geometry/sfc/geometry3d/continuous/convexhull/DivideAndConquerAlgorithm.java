@@ -207,11 +207,11 @@ public class DivideAndConquerAlgorithm implements ConvexHullAlgorithm {
 		Arrays.sort(listOfPoints, new Comparator<Point3f>() {
 			@Override
 			public int compare(Point3f o1, Point3f o2) {
-				int c = Float.compare(o1.getX(),o2.getX());
+				int c = Double.compare(o1.getX(),o2.getX());
 				if (c!=0) return c;
-				c = Float.compare(o1.getY(),o2.getY());
+				c = Double.compare(o1.getY(),o2.getY());
 				if (c!=0) return c;
-				return Float.compare(o1.getZ(),o2.getZ());
+				return Double.compare(o1.getZ(),o2.getZ());
 			}
 		});
 		
@@ -308,7 +308,7 @@ public class DivideAndConquerAlgorithm implements ConvexHullAlgorithm {
 	/** Compute a plane that permits to detect candidate points.
 	 */
 	private void computeCandidatePlanes(Plane4f tangentPlane, Point3f leftCandidatePoint, Point3f rightCandidatePoint, boolean yOrder) {
-		float dx, dy, dz;
+		double dx, dy, dz;
 		
 		if (yOrder) {
 			dy = 0;
@@ -353,7 +353,7 @@ public class DivideAndConquerAlgorithm implements ConvexHullAlgorithm {
 				dz = 1;
 			}
 			
-	    	float dot = MathUtil.dotProduct(dx, dy, dz, tangentCandidate.getEquationComponentA(), tangentCandidate.getEquationComponentB(), tangentCandidate.getEquationComponentC());
+			double dot = MathUtil.dotProduct(dx, dy, dz, tangentCandidate.getEquationComponentA(), tangentCandidate.getEquationComponentB(), tangentCandidate.getEquationComponentC());
 	    	
 	    	if (dot==0) {
 	    		// Because the two vectors are perpendicular,

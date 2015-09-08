@@ -131,7 +131,7 @@ public class ProgressionConsoleMonitor implements ProgressionListener {
 	 * @return the message.
 	 */
 	@SuppressWarnings("static-method")
-	protected String buildMessage(float progress, String comment, boolean isRoot, boolean isFinished, NumberFormat numberFormat) {
+	protected String buildMessage(double progress, String comment, boolean isRoot, boolean isFinished, NumberFormat numberFormat) {
 		StringBuilder txt = new StringBuilder();
 		txt.append('[');
 		txt.append(numberFormat.format(progress));

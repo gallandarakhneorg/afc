@@ -62,7 +62,7 @@ public interface Vector3D extends Tuple3D<Vector3D> {
 	 * @param t1 the tuple to be multipled
 	 * @param t2 the tuple to be added
 	 */
-	public void scaleAdd(float s, Vector3D t1, Vector3D t2);
+	public void scaleAdd(double s, Vector3D t1, Vector3D t2);
 
 	/**
 	 * Sets the value of this tuple to the scalar multiplication
@@ -78,7 +78,7 @@ public interface Vector3D extends Tuple3D<Vector3D> {
 	 * @param s the scalar value
 	 * @param t1 the tuple to be added
 	 */
-	public void scaleAdd(float s, Vector3D t1);
+	public void scaleAdd(double s, Vector3D t1);
 
 	
 	/**
@@ -109,7 +109,7 @@ public interface Vector3D extends Tuple3D<Vector3D> {
 	 * @param v1 the other vector
 	 * @return the dot product.
 	 */
-	public float dot(Vector3D v1);
+	public double dot(Vector3D v1);
 
 	/**
 	 * Computes the cross product of the this vector and vector v1.
@@ -179,13 +179,13 @@ public interface Vector3D extends Tuple3D<Vector3D> {
 	 * Returns the length of this vector.
 	 * @return the length of this vector
 	 */  
-	public float length();
+	public double length();
 
 	/**  
 	 * Returns the squared length of this vector.
 	 * @return the squared length of this vector
 	 */  
-	public float lengthSquared();
+	public double lengthSquared();
 
 	/**
 	 * Sets the value of this vector to the normalization of vector v1.
@@ -205,13 +205,13 @@ public interface Vector3D extends Tuple3D<Vector3D> {
 	 *   @param v1    the other vector
 	 *   @return   the angle in radians in the range [0,PI]
 	 */
-	public float angle(Vector3D v1);
+	public double angle(Vector3D v1);
 
 	/** Turn this vector about the given rotation angle.
 	 * 
 	 * @param axis is the axis of rotation.
 	 * @param angle is the rotation angle in radians.
 	 */
-	public void turnVector(Vector3D axis, float angle);
+	public void turnVector(Vector3D axis, double angle);
 	
 }

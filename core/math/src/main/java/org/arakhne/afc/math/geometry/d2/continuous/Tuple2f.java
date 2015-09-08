@@ -413,7 +413,7 @@ public class Tuple2f<T extends Tuple2D<? super T>> implements Tuple2D<T> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public int x() {
+	public int ix() {
 		return (int)this.x;
 	}
 
@@ -445,7 +445,7 @@ public class Tuple2f<T extends Tuple2D<? super T>> implements Tuple2D<T> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public int y() {
+	public int iy() {
 		return (int)this.y;
 	}
 
