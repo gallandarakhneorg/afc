@@ -689,9 +689,9 @@ public class Tuple3f<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	@Override
 	public int hashCode() {
 		int bits = 1;
-		bits = 31 * bits + Double.floatToIntBits(this.x);
-		bits = 31 * bits + Double.floatToIntBits(this.y);
-		bits = 31 * bits + Double.floatToIntBits(this.z);
+		bits = 31 * bits + Float.floatToIntBits(this.x);
+		bits = 31 * bits + Float.floatToIntBits(this.y);
+		bits = 31 * bits + Float.floatToIntBits(this.z);
 		return bits ^ (bits >> 32);
 	}
 
