@@ -20,6 +20,8 @@
  */
 package org.arakhne.afc.math.geometry.d3.continuous;
 
+import static org.junit.Assert.*;
+
 import org.arakhne.afc.math.AbstractMathTestCase;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Tuple3D;
@@ -35,47 +37,92 @@ import org.junit.Test;
 @SuppressWarnings("all")
 public class Point3fTest extends AbstractMathTestCase {
 
+	
 	@Test
+	// First try to program a test, from hjaffali 
 	public void testClone() {
-		throw new UnsupportedOperationException();
+		Point3f point = new Point3f(1,2,3);
+		Point3f pointClone = point.clone();
+		
+		assertTrue(point.equals(pointClone));
 	}
 
 	@Test
 	public void distanceSquaredPoint3D() {
-		throw new UnsupportedOperationException();
+		int tab[] = {1,2,3};
+		Point3f point = new Point3f(1.0,2.0,3.0);
+		Point3f point2 = new Point3f(tab);
+		Point3f point3 = new Point3f(0,0,0);
+		Point3f point4 = new Point3f(-1,0,1);
+		
+		assertEpsilonEquals(14,point.distanceSquared(point3));
+		assertEpsilonEquals(0,point.distanceSquared(point2));
+		assertEpsilonEquals(0,point2.distanceSquared(point));
+		assertEpsilonEquals(12,point.distanceSquared(point4));		
 	}
 
 	@Test
+	// FIXME: From where we get the distance ? With an UnmodifiablePoint3f ?
 	public void getDistanceSquaredPoint3D() {
 		throw new UnsupportedOperationException();
 	}
 
 	@Test
 	public void distancePoint3D() {
-		throw new UnsupportedOperationException();
+		int tab[] = {1,2,3};
+		Point3f point = new Point3f(1.0,2.0,3.0);
+		Point3f point2 = new Point3f(tab);
+		Point3f point3 = new Point3f(0,0,0);
+		Point3f point4 = new Point3f(-1,0,1);
+		
+		assertEpsilonEquals(3,point.distance(point3));
+		assertEpsilonEquals(0,point.distance(point2));
+		assertEpsilonEquals(0,point2.distance(point));
+		assertEpsilonEquals(3,point.distance(point4));
 	}
 
 	@Test
+	// SAME
 	public void getDistancePoint3D() {
 		throw new UnsupportedOperationException();
 	}
 
 	@Test
 	public void distanceL1Point3D() {
-		throw new UnsupportedOperationException();
+		int tab[] = {1,2,3};
+		Point3f point = new Point3f(1.0,2.0,3.0);
+		Point3f point2 = new Point3f(tab);
+		Point3f point3 = new Point3f(0,0,0);
+		Point3f point4 = new Point3f(-1,0,1);
+		
+		assertEpsilonEquals(6,point.distanceL1(point3));
+		assertEpsilonEquals(0,point.distanceL1(point2));
+		assertEpsilonEquals(0,point2.distanceL1(point));
+		assertEpsilonEquals(6,point.distanceL1(point4));
 	}
 
 	@Test
+	// SAME
 	public void getDistanceL1Point3D() {
 		throw new UnsupportedOperationException();
 	}
 
 	@Test
 	public void distanceLinfPoint3D() {
-		throw new UnsupportedOperationException();
+		int tab[] = {1,2,3};
+		Point3f point = new Point3f(1.0,2.0,3.0);
+		Point3f point2 = new Point3f(tab);
+		Point3f point3 = new Point3f(0,0,0);
+		Point3f point4 = new Point3f(-1,0,1);
+		
+		assertEpsilonEquals(6,point.distanceL1(point3));
+		assertEpsilonEquals(0,point.distanceL1(point2));
+		assertEpsilonEquals(0,point2.distanceL1(point));
+		assertEpsilonEquals(6,point.distanceL1(point4));
 	}
 
 	@Test
+	// SAME
 	public void getDistanceLinfPoint3D() {
 		throw new UnsupportedOperationException();
 	}

@@ -1038,37 +1038,37 @@ public class OrientedRectangle2fTest extends AbstractShape2fTestCase<OrientedRec
 	}
 
 	@Test
-	public boolean intersectsOrientedRectangleSegment() {
+	public void intersectsOrientedRectangleSegment() {
 		throw new UnsupportedOperationException();
 	}
 
 	@Test
-	public boolean intersectsOrientedRectangleEllipse(){
+	public void intersectsOrientedRectangleEllipse(){
 		throw new UnsupportedOperationException();
 	}
 
 	@Test
-	public boolean intersectsOrientedRectangleSolidCircle() {
+	public void intersectsOrientedRectangleSolidCircle() {
 		throw new UnsupportedOperationException();
 	}
 
 	@Test
-	public boolean intersectsOrientedRectangleOrientedRectangle(){
+	public void intersectsOrientedRectangleOrientedRectangle(){
 		throw new UnsupportedOperationException();
 	}
 
 	@Test
-	public boolean intersectsOrientedRectangleRectangle() {
+	public void intersectsOrientedRectangleRectangle() {
 		throw new UnsupportedOperationException();
 	}
 
 	@Test
-	public boolean containsOrientedRectangleRectangle() {
+	public void containsOrientedRectangleRectangle() {
 		throw new UnsupportedOperationException();
 	}
 
 	@Test
-	public boolean containsOrientedRectanglePoint() {
+	public void containsOrientedRectanglePoint() {
 		throw new UnsupportedOperationException();
 	}
 
