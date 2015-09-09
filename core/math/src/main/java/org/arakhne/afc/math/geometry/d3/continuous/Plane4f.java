@@ -792,4 +792,9 @@ public final class Plane4f extends AbstractPlane3D<Plane4f> {
 		rotate(q, pivot);
    	}
 
+	public boolean isValid() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

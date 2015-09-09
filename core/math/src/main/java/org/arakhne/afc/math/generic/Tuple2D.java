@@ -259,6 +259,14 @@ extends Cloneable, Serializable {
 	 * @param y the y coordinate
 	 */
 	public void set(float x, float y);
+	
+	/**
+	 * Sets the value of this tuple to the specified x and y
+	 * coordinates.
+	 * @param x the x coordinate
+	 * @param y the y coordinate
+	 */
+	public void set(int x, int y);
 
 	/**
 	 * Sets the value of this tuple from the 2 values specified in 
@@ -424,5 +432,6 @@ extends Cloneable, Serializable {
 	 */  
 	@Override
 	public int hashCode();
+
 
 }

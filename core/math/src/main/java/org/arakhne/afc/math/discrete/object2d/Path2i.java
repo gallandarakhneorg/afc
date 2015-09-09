@@ -2581,14 +2581,14 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 		
 		private boolean isSame() {
 			PathElementType type = this.holdType;
-			int x, y;
+			long x,y;
 			if (type==PathElementType.CLOSE) {
-				x = Math.round(this.moveX);
-				y = Math.round(this.moveY);
+				x =  Math.round(this.moveX);
+				y =  Math.round(this.moveY);
 			}
 			else {
-				x = Math.round(this.hold[this.holdIndex + 0]);
-				y = Math.round(this.hold[this.holdIndex + 1]);
+				x = (int) Math.round(this.hold[this.holdIndex + 0]);
+				y = (int) Math.round(this.hold[this.holdIndex + 1]);
 			}
 			return x==this.lastNextX && y==this.lastNextY;
 		}
@@ -2738,8 +2738,8 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 			PathElement2i element;
 			PathElementType type = this.holdType;
 			if (type!=PathElementType.CLOSE) {
-				int x = Math.round(this.hold[this.holdIndex + 0]);
-				int y = Math.round(this.hold[this.holdIndex + 1]);
+				long x = Math.round(this.hold[this.holdIndex + 0]);
+				long y = Math.round(this.hold[this.holdIndex + 1]);
 				if (type == PathElementType.MOVE_TO) {
 					element = new PathElement2i.MovePathElement2i(x, y);
 				}
@@ -2748,17 +2748,17 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 							this.lastNextX, this.lastNextY,
 							x, y);
 				}
-				this.lastNextX = x;
-				this.lastNextY = y;
+				this.lastNextX = (int) x;
+				this.lastNextY = (int) y;
 			}
 			else {
-				int x = Math.round(this.moveX);
-				int y = Math.round(this.moveY);
+				long x = Math.round(this.moveX);
+				long y = Math.round(this.moveY);
 				element = new PathElement2i.ClosePathElement2i(
 						this.lastNextX, this.lastNextY,
 						x, y);
-				this.lastNextX = x;
-				this.lastNextY = y;
+				this.lastNextX = (int) x;
+				this.lastNextY = (int) y;
 			}
 
 			searchNext(false);

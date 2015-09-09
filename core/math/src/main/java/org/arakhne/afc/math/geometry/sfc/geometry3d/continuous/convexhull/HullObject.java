@@ -20,7 +20,7 @@
  */
 package org.arakhne.afc.math.geometry.sfc.geometry3d.continuous.convexhull;
 
-import org.arakhne.afc.math.geometry.sfc.geometry3d.continuous.Point3f;
+import org.arakhne.afc.math.geometry.d3.continuous.Point3f;
 
 /** This class represents a 3D object used inside
  * Convex Hull Computation Algorithms.

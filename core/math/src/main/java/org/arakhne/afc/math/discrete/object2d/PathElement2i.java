@@ -62,6 +62,7 @@ public abstract class PathElement2i implements PathElement2D {
 		throw new IllegalArgumentException();
 	}
 	
+
 	/** Type of the path element.
 	 */
 	public final PathElementType type;
@@ -122,6 +123,20 @@ public abstract class PathElement2i implements PathElement2D {
 		this.toY = toy;
 	}
 
+	public PathElement2i(PathElementType moveTo, int fromx2, int fromy2, int ctrlx12, int ctrly12, int ctrlx22,
+			int ctrly22, long x, long y) {
+		assert(moveTo!=null);
+		this.type = moveTo;
+		this.fromX = fromx2;
+		this.fromY = fromy2;
+		this.ctrlX1 = ctrlx12;
+		this.ctrlY1 = ctrly12;
+		this.ctrlX2 = ctrlx22;
+		this.ctrlY2 = ctrly22;
+		this.toX = (int) x;
+		this.toY = (int) y;
+	}
+
 	/** Copy the coords into the given array, except the source point.
 	 * 
 	 * @param array
@@ -132,7 +147,7 @@ public abstract class PathElement2i implements PathElement2D {
 	 * 
 	 * @param array
 	 */
-	public abstract void toArray(float[] array);
+	public abstract void toArray(double[] array);
 
 	/** Copy the coords into an array, except the source point.
 	 * 
@@ -161,6 +176,12 @@ public abstract class PathElement2i implements PathElement2D {
 					x, y);
 		}
 		
+		public MovePathElement2i(long x, long y) {
+			super(PathElementType.MOVE_TO,
+					0, 0, 0, 0, 0, 0,
+					x, y);
+		}
+
 		@Override
 		public final PathElementType getType() {
 			return PathElementType.MOVE_TO;
@@ -183,7 +204,7 @@ public abstract class PathElement2i implements PathElement2D {
 		}
 		
 		@Override
-		public void toArray(float[] array) {
+		public void toArray(double[] array) {
 			array[0] = this.toX;
 			array[1] = this.toY;
 		}
@@ -226,6 +247,13 @@ public abstract class PathElement2i implements PathElement2D {
 					tox, toy);
 		}
 		
+		public LinePathElement2i(int lastNextX, int lastNextY, long x, long y) {
+			super(PathElementType.LINE_TO,
+					lastNextX, lastNextY,
+					0, 0, 0, 0,
+					x, y);
+		}
+
 		@Override
 		public final PathElementType getType() {
 			return PathElementType.LINE_TO;
@@ -248,7 +276,7 @@ public abstract class PathElement2i implements PathElement2D {
 		}
 		
 		@Override
-		public void toArray(float[] array) {
+		public void toArray(double[] array) {
 			array[0] = this.toX;
 			array[1] = this.toY;
 		}
@@ -319,7 +347,7 @@ public abstract class PathElement2i implements PathElement2D {
 		}
 		
 		@Override
-		public void toArray(float[] array) {
+		public void toArray(double[] array) {
 			array[0] = this.ctrlX1;
 			array[1] = this.ctrlY1;
 			array[2] = this.toX;
@@ -399,7 +427,7 @@ public abstract class PathElement2i implements PathElement2D {
 		}
 		
 		@Override
-		public void toArray(float[] array) {
+		public void toArray(double[] array) {
 			array[0] = this.ctrlX1;
 			array[1] = this.ctrlY1;
 			array[2] = this.ctrlX2;
@@ -450,6 +478,13 @@ public abstract class PathElement2i implements PathElement2D {
 					tox, toy);
 		}
 		
+		public ClosePathElement2i(int lastNextX, int lastNextY, long x, long y) {
+			super(PathElementType.CLOSE,
+					lastNextX, lastNextY,
+					0, 0, 0, 0,
+					x, y);
+		}
+
 		@Override
 		public final PathElementType getType() {
 			return PathElementType.CLOSE;
@@ -471,7 +506,7 @@ public abstract class PathElement2i implements PathElement2D {
 		}
 		
 		@Override
-		public void toArray(float[] array) {
+		public void toArray(double[] array) {
 			//
 		}
 
@@ -486,5 +521,7 @@ public abstract class PathElement2i implements PathElement2D {
 		}
 
 	}
+
+
 
 }

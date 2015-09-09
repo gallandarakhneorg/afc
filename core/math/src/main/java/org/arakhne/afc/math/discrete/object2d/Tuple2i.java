@@ -385,9 +385,16 @@ public class Tuple2i<T extends Tuple2D<? super T>> implements Tuple2D<T> {
 		this.y = y;
 	}
 
+	
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
+	public void set(float x, float y) {
+		this.x = (int)x;
+		this.y = (int)y;
+	}
+	
 	@Override
 	public void set(double x, double y) {
 		this.x = (int)x;
@@ -615,5 +622,7 @@ public class Tuple2i<T extends Tuple2D<? super T>> implements Tuple2D<T> {
 				+this.y
 				+")"; //$NON-NLS-1$
 	}
+
+	
 
 }

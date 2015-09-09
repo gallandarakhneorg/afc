@@ -135,7 +135,7 @@ public class Circle2f extends AbstractShape2f<Circle2f> {
 		else {
 			dx = 0f;
 		}
-		float dy;
+		double dy;
 		if (y1<y2) {
 			dy = y2 - y1;
 		}

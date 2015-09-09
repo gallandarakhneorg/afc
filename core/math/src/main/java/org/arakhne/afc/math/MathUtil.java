@@ -2107,4 +2107,19 @@ public final class MathUtil {
 		return sin2*sin2;
 	}
 
+	public static int epsilonDistanceSign(double distanceTo) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public static boolean epsilonColinear(Vector3f n1, Vector3f n2) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public static boolean epsilonEqualsDistance(double nw, double nw2) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

@@ -34,12 +34,12 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 
-import org.arakhne.afc.math.geometry.sfc.geometry3d.continuous.PlanarClassificationType;
-import org.arakhne.afc.math.geometry.sfc.geometry3d.continuous.Plane4f;
-import org.arakhne.afc.math.geometry.sfc.geometry3d.continuous.Point3f;
-import org.arakhne.afc.math.geometry.sfc.geometry3d.continuous.Triangle3f;
-import org.arakhne.afc.math.geometry.sfc.geometry3d.continuous.Tuple3f;
-import org.arakhne.afc.math.sfc.MathUtil;
+import org.arakhne.afc.math.MathUtil;
+import org.arakhne.afc.math.geometry.d3.continuous.Plane4f;
+import org.arakhne.afc.math.geometry.d3.continuous.PlaneClassification;
+import org.arakhne.afc.math.geometry.d3.continuous.Point3f;
+import org.arakhne.afc.math.geometry.d3.continuous.Triangle3f;
+import org.arakhne.afc.math.geometry.d3.continuous.Tuple3f;
 
 
 /** This class permits to create convex hull from a
@@ -763,6 +763,20 @@ public class DivideAndConquerAlgorithm implements ConvexHullAlgorithm {
 		public double doubleValue() {
 			return this.value;
 		}
+	}
+
+	@Override
+	public Point3f[] computeConvexHull(
+			Point3f... pointList) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Collection<HullObject<Point3f>> computeConvexHullTriangles(
+			Point3f... pointList) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

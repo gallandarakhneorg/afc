@@ -58,13 +58,7 @@ public class Point3fTest extends AbstractMathTestCase {
 		assertEpsilonEquals(14,point.distanceSquared(point3));
 		assertEpsilonEquals(0,point.distanceSquared(point2));
 		assertEpsilonEquals(0,point2.distanceSquared(point));
-		assertEpsilonEquals(12,point.distanceSquared(point4));		
-	}
-
-	@Test
-	// FIXME: From where we get the distance ? With an UnmodifiablePoint3f ?
-	public void getDistanceSquaredPoint3D() {
-		throw new UnsupportedOperationException();
+		assertEpsilonEquals(12,point.distanceSquared(point4));
 	}
 
 	@Test
@@ -82,12 +76,6 @@ public class Point3fTest extends AbstractMathTestCase {
 	}
 
 	@Test
-	// SAME
-	public void getDistancePoint3D() {
-		throw new UnsupportedOperationException();
-	}
-
-	@Test
 	public void distanceL1Point3D() {
 		int tab[] = {1,2,3};
 		Point3f point = new Point3f(1.0,2.0,3.0);
@@ -102,12 +90,6 @@ public class Point3fTest extends AbstractMathTestCase {
 	}
 
 	@Test
-	// SAME
-	public void getDistanceL1Point3D() {
-		throw new UnsupportedOperationException();
-	}
-
-	@Test
 	public void distanceLinfPoint3D() {
 		int tab[] = {1,2,3};
 		Point3f point = new Point3f(1.0,2.0,3.0);
@@ -119,12 +101,6 @@ public class Point3fTest extends AbstractMathTestCase {
 		assertEpsilonEquals(0,point.distanceLinf(point2));
 		assertEpsilonEquals(0,point2.distanceLinf(point));
 		assertEpsilonEquals(2,point.distanceLinf(point4));
-	}
-
-	@Test
-	// SAME
-	public void getDistanceLinfPoint3D() {
-		throw new UnsupportedOperationException();
 	}
 
 	@Test
@@ -250,47 +226,112 @@ public class Point3fTest extends AbstractMathTestCase {
 
 	@Test
 	public void scaleAddIntVector3D() {
-		throw new UnsupportedOperationException();
+		Vector3f vector = new Vector3f(1,0,1);
+		Point3f newPoint = new Point3f(0,0,0);
+		
+		newPoint.scaleAdd(0,vector);
+		assertTrue(newPoint.equals(new Point3f(1,0,1)));
+		
+		newPoint.scaleAdd(1,vector);
+		assertTrue(newPoint.equals(new Point3f(2,0,2)));
+		
+		newPoint.scaleAdd(-10,vector);
+		assertTrue(newPoint.equals(new Point3f(-19,0,-19)));
+		
+		
 	}
 
 	@Test
 	public void scaleAddDoubleVector3D() {
-		throw new UnsupportedOperationException();
+		Vector3f vector = new Vector3f(1,0,1);
+		Point3f newPoint = new Point3f(0.0,0.0,0.0);
+		
+		newPoint.scaleAdd(0.5,vector);
+		assertTrue(newPoint.equals(new Point3f(1,0,1)));
+		
+		newPoint.scaleAdd(1.2,vector);
+		assertTrue(newPoint.equals(new Point3f(2.2,0.0,2.2)));
+		
+		newPoint.scaleAdd(-10,vector);
+		assertTrue(newPoint.equals(new Point3f(-21,0,-21)));
 	}
 
 	@Test
 	public void subPoint3DVector3D() {
-		throw new UnsupportedOperationException();
+		Point3f point = new Point3f(0,0,0);
+		Point3f point2 = new Point3f(1,0,-1);
+		Vector3f vector = new Vector3f(-1.2,-1.2,-1.2);
+		Vector3f vector2 = new Vector3f(2.0,1.5,5.125);
+		Point3f newPoint = new Point3f(0.0,0.0,0.0);
+		
+		newPoint.sub(point,vector);
+		assertTrue(newPoint.equals(new Point3f(1.2,1.2,1.2)));
+		
+		newPoint.sub(point2,vector2);
+		assertTrue(newPoint.equals(new Point3f(-1.0,-1.5,-6.125))); 
 	}
 
 	@Test
 	public void subVector3D() {
-		throw new UnsupportedOperationException();
+		Point3f point = new Point3f(0,0,0);
+		Point3f point2 = new Point3f(-1,0,1);
+		Vector3f vector = new Vector3f(-1.2,-1.2,-1.2);
+		Vector3f vector2 = new Vector3f(-2.0,-1.5,-5.125);
+		Point3f newPoint = new Point3f(0.0,0.0,0.0);
+		
+		point.sub(vector);
+		assertTrue(point.equals(new Point3f(1.2,1.2,1.2)));
+		
+		point2.sub(vector2);
+		assertTrue(point2.equals(new Point3f(1.0,1.5,6.125)));
 	}
 
 	@Test
 	public void isCollinearPointsDoubleDoubleDoubleDoubleDoubleDoubleDoubleDoubleDouble() {
-		throw new UnsupportedOperationException();
+		Point3f point = new Point3f();
+		
+		assertTrue(point.isCollinearPoints(0, 0, 0, 0, 0, 0, 0, 0, 0, 0));
+		assertTrue(point.isCollinearPoints(-6, -4, 2, -1, 3, -1, 4, 10, -4, 0));
+		assertTrue(point.isCollinearPoints(-6, -4, 2, -1, 3, -1, 4, 10, -4.001, 0.01));
+		assertFalse(point.isCollinearPoints(0, 0, 0, 1, 1, 1, 1, 1, -5, 0));
 	}
 
 	@Test
 	public void distancePointPoint() {
-		throw new UnsupportedOperationException();
+		Point3f point = new Point3f();
+		
+		assertEpsilonEquals(0,point.distancePointPoint(0, 0, 0, 0, 0, 0));
+		assertEpsilonEquals(Math.sqrt(14),point.distancePointPoint(0, 0, 0, 1, 2, 3));
+		assertEpsilonEquals(Math.sqrt(3),point.distancePointPoint(0, 0, 0, 1, 1, 1));
 	}
 
 	@Test
 	public void distanceSquaredPointPoint() {
-		throw new UnsupportedOperationException();
+		Point3f point = new Point3f();
+		
+		assertEpsilonEquals(0,point.distanceSquaredPointPoint(0, 0, 0, 0, 0, 0));
+		assertEpsilonEquals(14,point.distanceSquaredPointPoint(0, 0, 0, 1, 2, 3));
+		assertEpsilonEquals(3,point.distanceSquaredPointPoint(0, 0, 0, 1, 1, 1));
 	}
 
 	@Test
 	public void distanceL1PointPoint() {
-		throw new UnsupportedOperationException();
+		Point3f point = new Point3f();
+		
+		assertEpsilonEquals(6,point.distanceL1PointPoint(1.0,2.0,3.0,0,0,0));
+		assertEpsilonEquals(0,point.distanceL1PointPoint(1.0,2.0,3.0,1,2,3));
+		assertEpsilonEquals(0,point.distanceL1PointPoint(1,2,3,1.0,2.0,3.0));
+		assertEpsilonEquals(6,point.distanceL1PointPoint(1.0,2.0,3.0,-1,0,1));
 	}
 
 	@Test
 	public void distanceLinfPointPoint() {
-		throw new UnsupportedOperationException();
+		Point3f point = new Point3f();
+				
+		assertEpsilonEquals(3,point.distanceLinfPointPoint(1.0,2.0,3.0,0,0,0));
+		assertEpsilonEquals(0,point.distanceLinfPointPoint(1.0,2.0,3.0,1,2,3));
+		assertEpsilonEquals(0,point.distanceLinfPointPoint(1,2,3,1.0,2.0,3.0));
+		assertEpsilonEquals(2,point.distanceLinfPointPoint(1.0,2.0,3.0,-1,0,1));
 	}
 
 }

@@ -1891,7 +1891,7 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Shape2f,Re
 	 * 
 	 * @return the coordinates.
 	 */
-	public final float[] toFloatArray {
+	public final float[] toFloatArray() {
 		return toFloatArray(null);
 	}
 
@@ -1901,9 +1901,15 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Shape2f,Re
 	 * @param transform is the transformation to apply to all the coordinates.
 	 * @return the coordinates.
 	 */
-	public double[] toFloatArray(Transform2D transform) {
+	public float[] toFloatArray(Transform2D transform) {
 		if (transform==null) {
-			return Arrays.copyOf(this.coords, this.numCoords);
+			
+			float[] coords1 = new float[this.coords.length];
+			for (int i = 0 ; i < this.coords.length; i++)
+			{
+				coords1[i] = (float) this.coords[i];
+			}
+			return Arrays.copyOf(coords1, this.numCoords);
 		}
 		Point2f p = new Point2f();
 		float[] clone = new float[this.numCoords];
@@ -1911,8 +1917,8 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Shape2f,Re
 			p.x = this.coords[i];
 			p.y = this.coords[i+1];
 			transform.transform(p);
-			clone[i++] = p.x;
-			clone[i++] = p.y;
+			clone[i++] = (float) p.x;
+			clone[i++] = (float) p.y;
 		}
 		return clone;
 	}

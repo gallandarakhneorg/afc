@@ -27,6 +27,8 @@ import org.arakhne.afc.math.geometry.d3.continuous.Point3f;
 
 
 
+
+
 /** This class permits to create convex hull from a
  * set of points.
  *

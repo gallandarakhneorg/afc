@@ -2454,4 +2454,10 @@ public class Triangle3f extends AbstractShape3f<Triangle3f> {
 		return new Segment3f(getP3(), getP1());
 	}
 
+	public static boolean overlapsCoplanarTriangle(Point3f point3f, Point3f point3f2, Point3f point3f3,
+			Point3f point3f4, Point3f point3f5, Point3f point3f6) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

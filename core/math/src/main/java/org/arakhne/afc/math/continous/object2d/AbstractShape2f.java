@@ -97,12 +97,12 @@ public abstract class AbstractShape2f<T extends Shape2f> implements Shape2f {
      * @param d
      * @return the bit representation.
      */
-    protected static int floatToIntBits(double d) {
+    protected static long floatToIntBits(double d) {
 		// Check for +0 or -0
 		if (d == 0f) {
 			return 0;
 		}
-		return Double.floatToIntBits(d);
+		return Double.doubleToLongBits(d);
 	}
     
 	/** {@inheritDoc}

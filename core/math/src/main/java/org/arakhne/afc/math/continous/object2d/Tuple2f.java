@@ -590,8 +590,8 @@ public class Tuple2f<T extends Tuple2D<? super T>> implements Tuple2D<T> {
 	@Override
 	public int hashCode() {
 		int bits = 1;
-		bits = 31 * bits + Double.doubleToIntBits(this.x);
-		bits = 31 * bits + Double.doubleToIntBits(this.y);
+		bits = (int) (31 * bits + Double.doubleToLongBits(this.x));
+		bits = (int) (31 * bits + Double.doubleToLongBits(this.y));
 		return bits ^ (bits >> 32);
 	}
 
@@ -605,6 +605,12 @@ public class Tuple2f<T extends Tuple2D<? super T>> implements Tuple2D<T> {
 				+";" //$NON-NLS-1$
 				+this.y
 				+")"; //$NON-NLS-1$
+	}
+
+	@Override
+	public void set(float x, float y) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

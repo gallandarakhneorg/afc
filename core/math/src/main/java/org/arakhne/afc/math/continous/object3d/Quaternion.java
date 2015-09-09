@@ -217,10 +217,10 @@ public class Quaternion implements Cloneable, Serializable {
 	@Override
 	public int hashCode() {
 		int bits = 1;
-		bits = 31 * bits + Double.floatToIntBits(this.x);
-		bits = 31 * bits + Double.floatToIntBits(this.y);
-		bits = 31 * bits + Double.floatToIntBits(this.z);
-		bits = 31 * bits + Double.floatToIntBits(this.w);
+		bits =  31 * bits + (int)Double.doubleToLongBits(this.x);
+		bits =  31 * bits + (int)Double.doubleToLongBits(this.y);
+		bits =  31 * bits + (int)Double.doubleToLongBits(this.z);
+		bits =  31 * bits + (int)Double.doubleToLongBits(this.w);
 		return bits ^ (bits >> 32);
 	}
 

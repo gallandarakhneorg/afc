@@ -102,7 +102,7 @@ public class Point3f extends Tuple3f<Point3D> implements Point3D {
 	 */
 	public static double distancePointPoint(double x1, double y1, double z1, double x2, double y2, double z2) {
 		double dx, dy, dz;
-		dx = x1 - x2;
+		dx = x1 - x2; 
 		dy = y1 - y2;
 		dz = z1 - z2;
 		return Math.sqrt(dx*dx+dy*dy+dz*dz);
