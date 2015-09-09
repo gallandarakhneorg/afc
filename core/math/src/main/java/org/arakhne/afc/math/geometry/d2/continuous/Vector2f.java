@@ -326,6 +326,7 @@ public class Vector2f extends Tuple2f<Vector2D> implements Vector2D {
 	 * {@inheritDoc}
 	 */
 	@Override
+	// Problematic when used in isUnitVector. Unintelligible problem
 	public double lengthSquared() {
 		return (this.x*this.x + this.y*this.y);
 	}
@@ -335,9 +336,14 @@ public class Vector2f extends Tuple2f<Vector2D> implements Vector2D {
 	 */
 	@Override
 	public void normalize(Vector2D v1) {
-		double norm = 1f / v1.length();
-		this.x = (int)(v1.getX()*norm);
-		this.y = (int)(v1.getY()*norm);
+		if(v1.length()==0){
+			throw new ArithmeticException();
+		}
+		else {
+			double norm = 1f / v1.length();
+			this.x = (int)(v1.getX()*norm);
+			this.y = (int)(v1.getY()*norm);
+		}
 	}
 
 	/**
@@ -346,9 +352,17 @@ public class Vector2f extends Tuple2f<Vector2D> implements Vector2D {
 	@Override
 	public void normalize() {
 		double norm;
-		norm = 1./Math.sqrt(this.x*this.x + this.y*this.y);
+		double length = this.length();
+		
+		if(length==0){
+			throw new ArithmeticException();
+		}
+		else {
+		norm = 1./length;
 		this.x *= norm;
 		this.y *= norm;
+		}
+		
 	}
 
 	/**
@@ -486,7 +500,7 @@ public class Vector2f extends Tuple2f<Vector2D> implements Vector2D {
 
 	@Override
 	public boolean isUnitVector() {
-		return MathUtil.isEpsilonEqual(lengthSquared(), 1.);
+		return ((this.length())==1);
 	}
 
 	@Override
