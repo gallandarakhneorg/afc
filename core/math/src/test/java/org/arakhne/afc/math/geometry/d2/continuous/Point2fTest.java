@@ -20,6 +20,7 @@
  */
 package org.arakhne.afc.math.geometry.d2.continuous;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.arakhne.afc.math.AbstractMathTestCase;
@@ -29,6 +30,7 @@ import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d3.continuous.Point3f;
+import org.arakhne.afc.math.geometry.d3.continuous.Vector3f;
 import org.junit.Test;
 
 /**
@@ -105,104 +107,268 @@ public class Point2fTest extends AbstractMathTestCase {
 		Point2f point2 = new Point2f(tab);
 		Point2f point3 = new Point2f(1, 1);
 				
-		assertEpsilonEquals(0,point.distanceSquared(point));
-		assertEpsilonEquals(5,point.distanceSquared(point2));
-		assertEpsilonEquals(2,point3.distanceSquared(point));
+		assertEpsilonEquals(0,point.distance(point));
+		assertEpsilonEquals(2,point.distance(point2));
+		assertEpsilonEquals(1,point3.distance(point));
 	}
 
 	@Test
 	public void distanceL1() {
-		throw new UnsupportedOperationException();
+		Point2f point = new Point2f(1.0, 2.0);
+		Point2f point2 = new Point2f(3.0, 0);
+		Point2f point3 = new Point2f(-1, 0);
+		
+		assertEpsilonEquals(4,point.distanceL1(point2));
+		assertEpsilonEquals(0,point.distanceL1(point));
+		assertEpsilonEquals(4,point.distanceL1(point3));
 	}
 
 	@Test
 	public void distanceLinf() {
-		throw new UnsupportedOperationException();
+		Point2f point = new Point2f(1.0, 2.0);
+		Point2f point2 = new Point2f(3.0, 0);
+		Point2f point3 = new Point2f(-1, 0);
+		
+		assertEpsilonEquals(2,point.distanceLinf(point2));
+		assertEpsilonEquals(0,point.distanceLinf(point));
+		assertEpsilonEquals(2,point.distanceLinf(point3));
 	}
 
 	@Test
 	public void getDistanceSquared() {
-		throw new UnsupportedOperationException();
+		int tab[] = {1, 2};
+		Point2f point = new Point2f(0, 0);
+		Point2f point2 = new Point2f(tab);
+		Point2f point3 = new Point2f(1, 1);
+				
+		assertEpsilonEquals(0,point.getDistanceSquared(point));
+		assertEpsilonEquals(5,point.getDistanceSquared(point2));
+		assertEpsilonEquals(2,point3.getDistanceSquared(point));
 	}
 
 	@Test
 	public void getDistance() {
-		throw new UnsupportedOperationException();
+		int tab[] = {1, 2};
+		Point2f point = new Point2f(0, 0);
+		Point2f point2 = new Point2f(tab);
+		Point2f point3 = new Point2f(1, 1);
+				
+		assertEpsilonEquals(0,point.getDistanceSquared(point));
+		assertEpsilonEquals(Math.sqrt(5),point.getDistance(point2));
+		assertEpsilonEquals(Math.sqrt(2),point3.getDistance(point));
 	}
 
 	@Test
 	public void getDistanceL1() {
-		throw new UnsupportedOperationException();
+		Point2f point = new Point2f(1.0, 2.0);
+		Point2f point2 = new Point2f(3.0, 0);
+		Point2f point3 = new Point2f(-1, 0);
+		
+		assertEpsilonEquals(4,point.getDistanceL1(point2));
+		assertEpsilonEquals(0,point.getDistanceL1(point));
+		assertEpsilonEquals(4,point.getDistanceL1(point3));
 	}
 
 	@Test
 	public void getDistanceLinf() {
-		throw new UnsupportedOperationException();
+		Point2f point = new Point2f(1.0, 2.0);
+		Point2f point2 = new Point2f(3.0, 0);
+		Point2f point3 = new Point2f(-1, 0);
+		
+		assertEpsilonEquals(2,point.getDistanceLinf(point2));
+		assertEpsilonEquals(0,point.getDistanceLinf(point));
+		assertEpsilonEquals(2,point.getDistanceLinf(point3));
 	}
 
 	@Test
 	public void addPoint2DVector2D() {
-		throw new UnsupportedOperationException();
+		Point2f point = new Point2f(0,0);
+		Point2f point2 = new Point2f(-1,0);
+		Vector2f vector = new Vector2f(1.2,1.2);
+		Vector2f vector2 = new Vector2f(2.0,1.5);
+		Point2f newPoint = new Point2f(0.0,0.0);
+		
+		newPoint.add(point,vector);
+		assertTrue(newPoint.equals(new Point2f(1.2,1.2)));
+		
+		newPoint.add(point2,vector2);
+		assertTrue(newPoint.equals(new Point2f(1.0,1.5)));
 	}
 
 	@Test
 	public void addVector2DPoint2D() {
-		throw new UnsupportedOperationException();
+		Point2f point = new Point2f(0,0);
+		Point2f point2 = new Point2f(-1,0);
+		Vector2f vector = new Vector2f(1.2,1.2);
+		Vector2f vector2 = new Vector2f(2.0,1.5);
+		Point2f newPoint = new Point2f(0.0,0.0);
+		
+		newPoint.add(vector,point);
+		assertTrue(newPoint.equals(new Point2f(1.2,1.2)));
+		
+		newPoint.add(vector2,point2);
+		assertTrue(newPoint.equals(new Point2f(1.0,1.5))); 
 	}
 
 	@Test
 	public void addVector2D() {
-		throw new UnsupportedOperationException();
+		Point2f point = new Point2f(0,0);
+		Point2f point2 = new Point2f(-1,0);
+		Vector2f vector = new Vector2f(1.2,1.2);
+		Vector2f vector2 = new Vector2f(2.0,1.5);
+		Point2f newPoint = new Point2f(0.0,0.0);
+		
+		point.add(vector);
+		assertTrue(point.equals(new Point2f(1.2,1.2)));
+		
+		point2.add(vector2);
+		assertTrue(point2.equals(new Point2f(1.0,1.5)));
 	}
 
 	@Test
 	public void scaleAddIntVector2DPoint2D() {
-		throw new UnsupportedOperationException();
+		Point2f point = new Point2f(-1,0);
+		Vector2f vector = new Vector2f(1.0,1.2);
+		Point2f newPoint = new Point2f(0.0,0.0);
+		
+		newPoint.scaleAdd(0,vector,point);
+		assertTrue(newPoint.equals(new Point2f(-1,0)));
+		
+		newPoint.scaleAdd(1,vector,point);
+		assertTrue(newPoint.equals(new Point2f(0.0,1.2)));
+		
+		newPoint.scaleAdd(-1,vector,point);
+		assertTrue(newPoint.equals(new Point2f(-2.0,-1.2)));
+		
+		newPoint.scaleAdd(10,vector,point);
+		assertTrue(newPoint.equals(new Point2f(9,12)));
 	}
 
 	@Test
 	public void scaleAddDoubleVector2DPoint2D() {
-		throw new UnsupportedOperationException();
+		Point2f point = new Point2f(1,0);
+		Vector2f vector = new Vector2f(-1,1);
+		Point2f newPoint = new Point2f(0.0,0.0);
+		
+		newPoint.scaleAdd(0.0,vector,point);
+		assertTrue(newPoint.equals(new Point2f(1,0)));
+		
+		newPoint.scaleAdd(1.5,vector,point);
+		assertTrue(newPoint.equals(new Point2f(-0.5,1.5)));
+		
+		newPoint.scaleAdd(-1.5,vector,point);
+		assertTrue(newPoint.equals(new Point2f(2.5,-1.5)));
+		
+		newPoint.scaleAdd(0.1,vector,point);
+		assertTrue(newPoint.equals(new Point2f(0.9,0.1)));
+		
 	}
 
 	@Test
 	public void scaleAddIntPoint2DVector2D() {
-		throw new UnsupportedOperationException();
+		Point2f point = new Point2f(1.0,1.2);
+		Vector2f vector = new Vector2f(-1,0);
+		Point2f newPoint = new Point2f(0.0,0.0);
+		
+		newPoint.scaleAdd(0,point,vector);
+		assertTrue(newPoint.equals(new Point2f(-1,0)));
+		
+		newPoint.scaleAdd(1,point,vector);
+		assertTrue(newPoint.equals(new Point2f(0.0,1.2)));
+		
+		newPoint.scaleAdd(-1,point,vector);
+		assertTrue(newPoint.equals(new Point2f(-2.0,-1.2)));
+		
+		newPoint.scaleAdd(10,point,vector);
+		assertTrue(newPoint.equals(new Point2f(9,12)));
 	}
 
 	@Test
 	public void scaleAddDoublePoint2DVector2D() {
-		throw new UnsupportedOperationException();
+		Point2f point = new Point2f(-1,1);
+		Vector2f vector = new Vector2f(1,0);
+		Point2f newPoint = new Point2f(0.0,0.0);
+		
+		newPoint.scaleAdd(0.0,point,vector);
+		assertTrue(newPoint.equals(new Point2f(1,0)));
+		
+		newPoint.scaleAdd(1.5,point,vector);
+		assertTrue(newPoint.equals(new Point2f(-0.5,1.5)));
+		
+		newPoint.scaleAdd(-1.5,point,vector);
+		assertTrue(newPoint.equals(new Point2f(2.5,-1.5)));
+		
+		newPoint.scaleAdd(0.1,point,vector);
+		assertTrue(newPoint.equals(new Point2f(0.9,0.1)));
 	}
 
 	@Test
 	public void scaleAddIntVector2D() {
-		throw new UnsupportedOperationException();
+		Vector2f vector = new Vector2f(1,0);
+		Point2f newPoint = new Point2f(0,0);
+		
+		newPoint.scaleAdd(0,vector);
+		assertTrue(newPoint.equals(new Point2f(1,0)));
+		
+		newPoint.scaleAdd(1,vector);
+		assertTrue(newPoint.equals(new Point2f(2,0)));
+		
+		newPoint.scaleAdd(-10,vector);
+		assertTrue(newPoint.equals(new Point2f(-19,0)));
 	}
 
 	@Test
 	public void scaleAddDoubleVector2D() {
-		throw new UnsupportedOperationException();
+		Vector2f vector = new Vector2f(1,0);
+		Point2f newPoint = new Point2f(0.0,0.0);
+		
+		newPoint.scaleAdd(0.5,vector);
+		assertTrue(newPoint.equals(new Point2f(1,0)));
+		
+		newPoint.scaleAdd(1.2,vector);
+		assertTrue(newPoint.equals(new Point2f(2.2,0.0)));
+		
+		newPoint.scaleAdd(-10,vector);
+		assertTrue(newPoint.equals(new Point2f(-21,0)));
 	}
 
 	@Test
 	public void subPoint2DVector2D() {
-		throw new UnsupportedOperationException();
+		Point2f point = new Point2f(0,0);
+		Point2f point2 = new Point2f(1,0);
+		Vector2f vector = new Vector2f(-1.2,-1.2);
+		Vector2f vector2 = new Vector2f(2.0,1.5);
+		Point2f newPoint = new Point2f(0.0,0.0);
+		
+		newPoint.sub(point,vector);
+		assertTrue(newPoint.equals(new Point2f(1.2,1.2)));
+		
+		newPoint.sub(point2,vector2);
+		assertTrue(newPoint.equals(new Point2f(-1.0,-1.5))); 
 	}
 
 	@Test
 	public void subVector2D() {
-		throw new UnsupportedOperationException();
+		Point2f point = new Point2f(0,0);
+		Point2f point2 = new Point2f(-1,0);
+		Vector2f vector = new Vector2f(-1.2,-1.2);
+		Vector2f vector2 = new Vector2f(-2.0,-1.5);
+		Point2f newPoint = new Point2f(0.0,0.0);
+		
+		point.sub(vector);
+		assertTrue(point.equals(new Point2f(1.2,1.2)));
+		
+		point2.sub(vector2);
+		assertTrue(point2.equals(new Point2f(1.0,1.5)));
 	}
 
 	@Test
 	public void isCollinearPointsDoubleDoubleDoubleDoubleDoubleDouble() {
-		throw new UnsupportedOperationException();
-	}
-
-	@Test
-	public void isCollinearVectorsDoubleDoubleDoubleDouble() {
-		throw new UnsupportedOperationException();
+		Point2f point = new Point2f();
+		
+		assertTrue(point.isCollinearPoints(0, 0, 0, 0, 0, 0));
+		assertTrue(point.isCollinearPoints(-6, -4, -1, 3, 4, 10));
+		assertFalse(point.isCollinearPoints(0, 0, 1, 1, 1, -5));
 	}
 
 }
