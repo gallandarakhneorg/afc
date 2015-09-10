@@ -21,12 +21,14 @@
 package org.arakhne.afc.math.geometry.d2.continuous;
 
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
 
 import org.arakhne.afc.math.AbstractMathTestCase;
 import static org.arakhne.afc.math.MathConstants.PI;
 import org.arakhne.afc.math.geometry.d2.continuous.Point2f;
 import org.arakhne.afc.math.geometry.d2.continuous.Vector2f;
+import org.arakhne.afc.math.geometry.d3.continuous.Vector3f;
 import org.arakhne.afc.math.matrix.Matrix2f;
 import org.junit.Test;
 
@@ -41,10 +43,18 @@ public class Vector2fTest extends AbstractMathTestCase {
 
 	@Test
 	public void testClone() {
-		Vector2f vector = new Vector2f(this.random.nextDouble(),this.random.nextDouble());
-		Vector2f vectorClone = vector.clone();
+		Vector2f r = new Vector2f(this.random.nextDouble(),this.random.nextDouble());
+		Vector2f b = r.clone();
 		
-		assertTrue(vector.equals(vectorClone));
+		assertNotSame(b, r);
+		assertEpsilonEquals(r.getX(), b.getX());
+		assertEpsilonEquals(r.getY(), b.getY());
+		
+		
+		b.set(r.getX()+1f, r.getY()+1f);
+
+		assertNotEpsilonEquals(r.getX(), b.getX());
+		assertNotEpsilonEquals(r.getY(), b.getY());
 	}
 
 	@Test

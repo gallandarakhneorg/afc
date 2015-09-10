@@ -381,7 +381,7 @@ public class Vector3f extends Tuple3f<Vector3D> implements Vector3D {
 	 */
 	@Override
 	public double dot(Vector3D v1) {
-		return (this.x*v1.getX() + this.y*v1.getY() + this.z*v1.getZ());
+		return dotProduct(this.x,this.y,this.z,v1.getX(),v1.getY(),v1.getZ());
 	}
 
 	/**

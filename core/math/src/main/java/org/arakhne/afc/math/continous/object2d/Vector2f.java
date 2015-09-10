@@ -79,7 +79,7 @@ public class Vector2f extends Tuple2f<Vector2D> implements Vector2D {
 	 * @param y
 	 */
 	public Vector2f(float x, float y) {
-		super((double)x,(double)y);
+		super(x,y);
 	}
 
 	/**
