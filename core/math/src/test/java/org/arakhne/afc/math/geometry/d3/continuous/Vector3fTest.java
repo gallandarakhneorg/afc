@@ -50,7 +50,7 @@ public class Vector3fTest extends AbstractMathTestCase {
 		assertEpsilonEquals(r.getX(), b.getX());
 		assertEpsilonEquals(r.getY(), b.getY());
 		assertEpsilonEquals(r.getZ(), b.getZ());
-		
+		 
 		b.set(r.getX()+1f, r.getY()+1f, r.getZ()+1f);
 
 		assertNotEpsilonEquals(r.getX(), b.getX());
@@ -122,14 +122,14 @@ public class Vector3fTest extends AbstractMathTestCase {
 		assertEpsilonEquals(v1.angle(v2), Math.abs(sAngle1));
 		assertEpsilonEquals(v2.angle(v1), Math.abs(sAngle2));
 
-		// redéfinir SIN !!! 
+		// FIXME redefine SIN !!! 
 		double sin = v1.getX() * v2.getY() - v1.getY() * v2.getX();
 
 		if (sin < 0) {
 			assertTrue(sAngle1 <= 0);
 			assertTrue(sAngle2 >= 0);
 		} else {
-			assertTrue(sAngle1 >= 0);
+			assertTrue(sAngle1 >= 0); 
 			assertTrue(sAngle2 <= 0);
 		}
 	}
@@ -148,27 +148,71 @@ public class Vector3fTest extends AbstractMathTestCase {
 
 	@Test
 	public void crossVector3DVector3D() {
-		throw new UnsupportedOperationException();
+		Vector3f v1 = new Vector3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		Vector3f v2 = new Vector3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		
+		Vector3f cross1 = new Vector3f(-v1.getZ()*v2.getY()+v1.getY()*v2.getZ(),v1.getZ()*v2.getX()-v1.getX()*v2.getZ(),-v1.getY()*v2.getX()+v1.getX()*v2.getY());
+		Vector3f cross2 = new Vector3f();
+		cross2.cross(v1, v2);
+		
+		assertTrue(cross1.equals(cross2));
+		cross1.negate();
+		cross2.cross(v2, v1);
+		assertTrue(cross1.equals(cross2)); 
 	}
 
 	@Test
 	public void crossLeftHandVector3D() {
-		throw new UnsupportedOperationException();
+		Vector3f v1 = new Vector3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		Vector3f v2 = new Vector3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		
+		Vector3f cross1 = new Vector3f(v1.getZ()*v2.getY()-v1.getY()*v2.getZ(),-v1.getZ()*v2.getX()+v1.getX()*v2.getZ(),v1.getY()*v2.getX()-v1.getX()*v2.getY());
+		
+		assertTrue(cross1.equals(v1.crossLeftHand(v2)));
+		cross1.negate();
+		assertTrue(cross1.equals(v2.crossLeftHand(v1)));
 	}
 
 	@Test
 	public void crossLeftHandVector3DVector3D() {
-		throw new UnsupportedOperationException();
+		Vector3f v1 = new Vector3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		Vector3f v2 = new Vector3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		
+		Vector3f cross1 = new Vector3f(v1.getZ()*v2.getY()-v1.getY()*v2.getZ(),-v1.getZ()*v2.getX()+v1.getX()*v2.getZ(),v1.getY()*v2.getX()-v1.getX()*v2.getY());
+		Vector3f cross2 = new Vector3f();
+		cross2.crossLeftHand(v1, v2);
+		
+		assertTrue(cross1.equals(cross2));
+		cross1.negate();
+		cross2.crossLeftHand(v2, v1);
+		assertTrue(cross1.equals(cross2)); 
 	}
 
 	@Test
 	public void crossRightHandVector3D() {
-		throw new UnsupportedOperationException();
+		Vector3f v1 = new Vector3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		Vector3f v2 = new Vector3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		
+		Vector3f cross1 = new Vector3f(-v1.getZ()*v2.getY()+v1.getY()*v2.getZ(),v1.getZ()*v2.getX()-v1.getX()*v2.getZ(),-v1.getY()*v2.getX()+v1.getX()*v2.getY());
+		
+		assertTrue(cross1.equals(v1.crossRightHand(v2)));
+		cross1.negate();
+		assertTrue(cross1.equals(v2.crossRightHand(v1)));
 	}
 
 	@Test
 	public void crossRightHandVector3DVector3D() {
-		throw new UnsupportedOperationException();
+		Vector3f v1 = new Vector3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		Vector3f v2 = new Vector3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		
+		Vector3f cross1 = new Vector3f(-v1.getZ()*v2.getY()+v1.getY()*v2.getZ(),v1.getZ()*v2.getX()-v1.getX()*v2.getZ(),-v1.getY()*v2.getX()+v1.getX()*v2.getY());
+		Vector3f cross2 = new Vector3f();
+		cross2.crossRightHand(v1, v2);
+		
+		assertTrue(cross1.equals(cross2));
+		cross1.negate();
+		cross2.crossRightHand(v2, v1);
+		assertTrue(cross1.equals(cross2)); 
 	}
 
 	@Test
