@@ -48,7 +48,7 @@ import org.junit.Test;
 public class Segment2fTest extends AbstractShape2fTestCase<Segment2f> {
 	
 	@Override
-	protected Segment2f createShape() {
+	protected Segment2f createShape() { 
 		return new Segment2f(0f, 0f, 1f, 1f);
 	}
 	
