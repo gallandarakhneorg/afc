@@ -500,7 +500,7 @@ public class Vector2f extends Tuple2f<Vector2D> implements Vector2D {
 
 	@Override
 	public boolean isUnitVector() {
-		return ((this.length())==1);
+		return MathUtil.isEpsilonEqual(length(), 1.);
 	}
 
 	@Override

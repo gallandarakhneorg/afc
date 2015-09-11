@@ -212,6 +212,7 @@ public class Vector2fTest extends AbstractMathTestCase {
 	}
 
 	@Test
+	
 	public void turnVectorDouble() {
 		Vector2f vector = new Vector2f(this.random.nextDouble(), this.random.nextDouble());
 		Vector2f vector2 = vector.clone();;
@@ -219,7 +220,7 @@ public class Vector2fTest extends AbstractMathTestCase {
 		double angle = this.random.nextDouble();
 		vector.turnVector(angle);
 		
-		assertEpsilonEquals(angle,vector2.angle(vector));
+		assertEpsilonEquals(angle,vector2.angle(vector)); 
 	}
 
 	@Test
@@ -411,13 +412,14 @@ public class Vector2fTest extends AbstractMathTestCase {
 
 	@Test
 	public void isUnitVector() {
+		// TODO still remain problem here
 		Vector2f vector = new Vector2f(7.15161,6.7545);
 		Vector2f vector2 = new Vector2f(1,1);
 		
-		vector.normalize(vector);
+		vector.normalize();
 		vector2.setLength(1.);
 		
-		//assertTrue(vector.isUnitVector());
+		assertTrue(vector.isUnitVector());
 		assertTrue(vector2.isUnitVector());
 		assertTrue((new Vector2f(Math.sqrt(2)/2,Math.sqrt(2)/2)).isUnitVector());
 		assertTrue((new Vector2f(1,0)).isUnitVector());

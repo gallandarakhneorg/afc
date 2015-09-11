@@ -379,6 +379,13 @@ public class Vector3f extends Tuple3f<Vector3D> implements Vector3D {
 	/**
 	 * {@inheritDoc}
 	 */
+	public double signedAngle(Vector3D v1) {
+		return signedAngle(this.getX(), this.getY(), this.getZ(), v1.getX(), v1.getY(), v1.getZ());
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public double dot(Vector3D v1) {
 		return dotProduct(this.x,this.y,this.z,v1.getX(),v1.getY(),v1.getZ());
@@ -482,10 +489,15 @@ public class Vector3f extends Tuple3f<Vector3D> implements Vector3D {
 	 */
 	@Override
 	public void normalize(Vector3D v1) {
-        double norm = 1f / v1.length();
-        this.x = (int)(v1.getX()*norm);
-        this.y = (int)(v1.getY()*norm);
-        this.z = (int)(v1.getZ()*norm);
+		if(v1.length()==0){
+			throw new ArithmeticException();
+		}
+		else {
+			double norm = 1f / v1.length();
+			this.x = (int)(v1.getX()*norm);
+			this.y = (int)(v1.getY()*norm);
+			this.z = (int)(v1.getZ()*norm);
+		}
 	}
 
 	/**
@@ -494,14 +506,21 @@ public class Vector3f extends Tuple3f<Vector3D> implements Vector3D {
 	@Override
 	public void normalize() {
         double norm;
-        norm = 1./Math.sqrt(this.x*this.x + this.y*this.y + this.z*this.z);
-        this.x *= norm;
-        this.y *= norm;
-        this.z *= norm;
+        double length = this.length();
+		
+		if(length==0){
+			throw new ArithmeticException();
+		}
+		else {
+			norm = 1./Math.sqrt(this.x*this.x + this.y*this.y + this.z*this.z);
+        	this.x *= norm;
+        	this.y *= norm;
+        	this.z *= norm;
+		}	
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Unstable function, sometimes works, and sometimes not
 	 */
 	@Override
 	public void turnVector(Vector3D axis, double angle) {
@@ -599,7 +618,7 @@ public class Vector3f extends Tuple3f<Vector3D> implements Vector3D {
 
 	@Override
 	public boolean isUnitVector() {
-		return MathUtil.isEpsilonEqual(lengthSquared(), 1.);
+		return MathUtil.isEpsilonEqual(length(), 1.);
 	}
 	
 	@Override
