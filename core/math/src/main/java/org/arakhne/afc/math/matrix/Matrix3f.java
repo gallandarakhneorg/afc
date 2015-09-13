@@ -1122,7 +1122,7 @@ public class Matrix3f implements Serializable, Cloneable {
 			}
 		}
 
-		return true;
+		return true; 
 	}
 
 	/**
