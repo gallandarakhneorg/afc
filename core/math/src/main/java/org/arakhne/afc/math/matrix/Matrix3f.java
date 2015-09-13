@@ -3497,5 +3497,13 @@ public class Matrix3f implements Serializable, Cloneable {
 				&& MathUtil.isEpsilonZero(this.m21)
 				&& MathUtil.isEpsilonEqual(this.m22, 1f);
 	}
+	
+	
+	//Function main for testing results to debug some unitary test
+	//FIXME : should be removed when it will be useless
+	public static void main(String[] args)
+	{
+		System.out.println((new Matrix3f(0,1,2,3,4,5,6,7,8)).toString());
+	}
 
 }
