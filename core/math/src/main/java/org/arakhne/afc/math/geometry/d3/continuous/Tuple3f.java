@@ -216,7 +216,10 @@ public class Tuple3f<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	 */
 	@Override
 	public void clamp(double min, double max) {
-		clamp(min, max);
+		if (this.x < min) this.x = min;
+		else if (this.x > max) this.x = max;
+		if (this.y < min) this.y = min;
+		else if (this.y > max) this.y = max;
 	}
 
 	/**
@@ -233,7 +236,8 @@ public class Tuple3f<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	 */
 	@Override
 	public void clampMin(double min) {
-		clampMin(min);
+		if (this.x < min) this.x = min;
+		if (this.y < min) this.y = min;
 	}
 
 	/**
@@ -250,7 +254,8 @@ public class Tuple3f<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	 */
 	@Override
 	public void clampMax(double max) {
-		clampMax(max);
+		if (this.x > max) this.x = max;
+		if (this.y > max) this.y = max;
 	}
 
 	/**
@@ -269,7 +274,10 @@ public class Tuple3f<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	 */
 	@Override
 	public void clamp(double min, double max, T t) {
-		clamp(min, max, t);
+		if (this.x < min) t.setX(min);
+		else if (this.x > max) t.setX(max);
+		if (this.y < min) t.setY(min);
+		else if (this.y > max) t.setY(max);
 	}
 
 	/**
@@ -286,7 +294,8 @@ public class Tuple3f<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	 */
 	@Override
 	public void clampMin(double min, T t) {
-		clampMin(min, t);
+		if (this.x < min) t.setX(min);
+		if (this.y < min) t.setY(min);
 	}
 
 	/**
@@ -303,7 +312,8 @@ public class Tuple3f<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	 */
 	@Override
 	public void clampMax(double max, T t) {
-		clampMax(max, t);
+		if (this.x > max) t.setX(max);
+		if (this.y > max) t.setY(max);
 	}
 
 	/**
