@@ -164,14 +164,26 @@ public class Matrix3fTest extends AbstractMathTestCase{
 	@Test
 	public void invert() {
 		Matrix3f m1 = new Matrix3f(1,0,0,0,2,0,0,0,3);
-		Matrix3f i1 = new Matrix3f(1,0,0,0,1/2.,0,0,0,1/3.);
+		Matrix3f i1 = new Matrix3f(6,0,0,0,3,0,0,0,2);
+		i1.mul(1/6.);
 		
-		Matrix3f m1 = new Matrix3f(1,0,0,0,2,0,0,0,3);
-		Matrix3f i1 = new Matrix3f(1,0,0,0,1/2.,0,0,0,1/3.);
+		Matrix3f m2 = new Matrix3f(1,-1,1,1,1,-1,-1,-1,-1);
+		Matrix3f i2 = new Matrix3f(1,1,0,-1,0,-1,0,-1,-1);
+		i2.mul(1/2.);
+			
+		
+		Matrix3f m3 = new Matrix3f(1.5, 2.5, 1.5, -2.5, 1.5, -1.5, -1.5, -1, -1);
+		Matrix3f i3 = new Matrix3f(-1.5,0.5,-3,-0.125,0.375,-0.75,2.375,-1.125,4.25);
+		
 		
 		m1.invert();
-		
 		assertTrue(i1.equals(m1));
+		
+		m2.invert();
+		assertTrue(i2.equals(m2));
+		
+		m3.invert();
+		assertTrue(i3.equals(m3));
 		
 	}
 	
