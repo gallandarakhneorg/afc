@@ -190,7 +190,27 @@ public class Matrix3fTest extends AbstractMathTestCase{
 	
 	@Test
 	public void invertMatrix3D() {
-		throw new UnsupportedOperationException();
+		Matrix3f m1 = new Matrix3f(1,0,0,0,2,0,0,0,3);
+		Matrix3f i1 = new Matrix3f(6,0,0,0,3,0,0,0,2);
+		i1.mul(1/6.);
+		
+		Matrix3f m2 = new Matrix3f(1,-1,1,1,1,-1,-1,-1,-1);
+		Matrix3f i2 = new Matrix3f(1,1,0,-1,0,-1,0,-1,-1);
+		i2.mul(1/2.);
+			
+		
+		Matrix3f m3 = new Matrix3f(1.5, 2.5, 1.5, -2.5, 1.5, -1.5, -1.5, -1, -1);
+		Matrix3f i3 = new Matrix3f(-1.5,0.5,-3,-0.125,0.375,-0.75,2.375,-1.125,4.25);
+		
+		
+		m1.invert(m1);
+		assertTrue(i1.equals(m1));
+		
+		m2.invert(m2);
+		assertTrue(i2.equals(m2));
+		
+		m3.invert(m3);
+		assertTrue(i3.equals(m3));
 	}
 	
 	@Test
@@ -375,17 +395,42 @@ public class Matrix3fTest extends AbstractMathTestCase{
 	
 	@Test
 	public void mulTransposeBothMatrix3DMatrix3D() {
-		throw new UnsupportedOperationException();
+		Matrix3f m1 = new Matrix3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		Matrix3f m2 = new Matrix3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		Matrix3f mulTrans = new Matrix3f();
+		
+		mulTrans.mulTransposeBoth(m1, m2);
+		m1.transpose();
+		m2.transpose();
+		m1.mul(m1, m2);
+		
+		assertTrue(m1.equals(mulTrans));
 	}
 	
 	@Test
 	public void mulTransposeRightMatrix3DMatrix3D() {
-		throw new UnsupportedOperationException();
+		Matrix3f m1 = new Matrix3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		Matrix3f m2 = new Matrix3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		Matrix3f mulTrans = new Matrix3f();
+		
+		mulTrans.mulTransposeRight(m1, m2);
+		m2.transpose();
+		m1.mul(m1, m2);
+		
+		assertTrue(m1.equals(mulTrans));
 	}
 	
 	@Test
 	public void mulTransposeLeftMatrix3DMatrix3D() {
-		throw new UnsupportedOperationException();
+		Matrix3f m1 = new Matrix3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		Matrix3f m2 = new Matrix3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		Matrix3f mulTrans = new Matrix3f();
+		
+		mulTrans.mulTransposeLeft(m1, m2);
+		m1.transpose();
+		m1.mul(m1, m2);
+		
+		assertTrue(m1.equals(mulTrans));
 	}
 	
 	@Test
@@ -435,17 +480,41 @@ public class Matrix3fTest extends AbstractMathTestCase{
 	@Test
 	public void negate() {
 		Matrix3f m1 = new Matrix3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		Matrix3f m2 = m1.clone();
+		Matrix3f temp = new Matrix3f();
+		Matrix3f temp2 = new Matrix3f();
 		
 		m1.negate();
-		assertTrue(m1.equals(new Matrix3f(-m1.m00,-m1.m01,-m1.m02,-m1.m10,-m1.m11,-m1.m12,-m1.m20,-m1.m21,-m1.m22)));
+		temp.add(m1, m2);
+		assertTrue(temp.equals(new Matrix3f(0,0,0,0,0,0,0,0,0)));
+		temp.mul(m1, m2);
+		
+		m2.negate();
+		assertTrue(m1.equals(m2));
+		
+		m1.negate();
+		temp2.mul(m1, m2);
+		assertTrue(temp.equals(temp2));
 	}
 	
 	@Test
 	public void negateMatrix3D() {
 		Matrix3f m1 = new Matrix3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		Matrix3f m2 = m1.clone();
+		Matrix3f temp = new Matrix3f();
+		Matrix3f temp2 = new Matrix3f();
 		
 		m1.negate(m1);
-		assertTrue(m1.equals(new Matrix3f(-m1.m00,-m1.m01,-m1.m02,-m1.m10,-m1.m11,-m1.m12,-m1.m20,-m1.m21,-m1.m22)));
+		temp.add(m1, m2);
+		assertTrue(temp.equals(new Matrix3f(0,0,0,0,0,0,0,0,0)));
+		temp.mul(m1, m2);
+		
+		m2.negate(m2);
+		assertTrue(m1.equals(m2));
+		
+		m1.negate(m1);
+		temp2.mul(m1, m2);
+		assertTrue(temp.equals(temp2));
 	}
 	
 	@Test
@@ -469,7 +538,34 @@ public class Matrix3fTest extends AbstractMathTestCase{
 	
 	@Test
 	public void cov() {
-		throw new UnsupportedOperationException();
+		//Verification of the function, by verifying all  the properties of the covariant matrix
+		Matrix3f covMatrix = new Matrix3f();
+		
+		Vector3f v1 = this.randomVector3f();
+		Vector3f v2 = this.randomVector3f();
+		Vector3f v3 = this.randomVector3f();
+		Vector3f v4 = this.randomVector3f();
+		
+		Vector3f meanTest = new Vector3f((v1.getX()+v2.getX()+v3.getX()+v4.getX())/4.,(v1.getY()+v2.getY()+v3.getY()+v4.getY())/4.,(v1.getZ()+v2.getZ()+v3.getZ()+v4.getZ())/4.);
+		Vector3f mean = covMatrix.cov(v1,v2,v3,v4);
+		
+		//equality of the means
+		assertTrue(mean.equals(meanTest));
+		
+		//verification of symmetry property
+		assertTrue(covMatrix.isSymmetric());
+		
+		//verification of positive-definite property
+		Vector3f vector = this.randomVector3f();
+		Vector3f temp = vector.clone();
+		vector.mul(covMatrix);
+		double s = vector.dot(temp);
+		assertTrue(s>0);
+		
+		//verification of derivability property
+		assertTrue(covMatrix.determinant()!=0);
+		
+		
 	}
 	
 	@Test

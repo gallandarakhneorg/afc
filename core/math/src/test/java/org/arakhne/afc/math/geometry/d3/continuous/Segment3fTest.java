@@ -27,7 +27,7 @@
  */
 package org.arakhne.afc.math.geometry.d3.continuous;
 
-import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.*;
 
 import org.junit.Test;
 
@@ -51,29 +51,28 @@ public class Segment3fTest extends AbstractShape3fTestCase<Segment3f> {
 		assertEpsilonEquals(this.r.getX2(), b.getX2());
 		assertEpsilonEquals(this.r.getY2(), b.getY2());
 		assertEpsilonEquals(this.r.getZ2(), b.getZ2());
-		
-		
-		b.set(this.r.getX1()+1f, this.r.getY1()+1f, this.r.getZ1()+1f,
-				this.r.getX2()+1f, this.r.getY2()+1f, this.r.getZ2()+1f);
-
-		assertNotEpsilonEquals(this.r.getX1(), b.getX1());
-		assertNotEpsilonEquals(this.r.getY1(), b.getY1());
-		assertNotEpsilonEquals(this.r.getZ1(), b.getZ1());
-		assertNotEpsilonEquals(this.r.getX2(), b.getX2());
-		assertNotEpsilonEquals(this.r.getY2(), b.getY2());
-		assertNotEpsilonEquals(this.r.getZ2(), b.getZ2());
+		assertTrue(this.r.getP1().equals(b.getP1()));
+		assertTrue(this.r.getP2().equals(b.getP2()));
+		assertTrue(this.r.getDirection().equals(b.getDirection()));
 	}
 
 	@Test
 	@Override
 	public void distancePoint3D() {
-		throw new UnsupportedOperationException();
+		Segment3f seg = new Segment3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		Point3f pnt = new Point3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		
+		Vector3f vect = new Vector3f(seg.getP1().getX()-pnt.getX(),seg.getP1().getY()-pnt.getY(),seg.getP1().getZ()-pnt.getZ());
+		double angle = vect.angle(seg.getDirection());
+		double distance = vect.length()*Math.sin(angle);
+		
+		assertEpsilonEquals(distance,seg.distanceLine(pnt));
 	}
 
 	@Test
 	@Override
 	public void containsPoint3D() {
-		throw new UnsupportedOperationException();
+		Segment3f seg = new Segment3f(0,0,0,1,0,0);
 	}
 
 	@Test
