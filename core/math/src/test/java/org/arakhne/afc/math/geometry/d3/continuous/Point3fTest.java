@@ -36,12 +36,10 @@ import org.junit.Test;
  */
 @SuppressWarnings("all")
 public class Point3fTest extends AbstractMathTestCase {
-
 	
-	@Test
-	// First try to program a test, from hjaffali 
+	@Test 
 	public void testClone() {
-		Point3f point = new Point3f(1,2,3);
+		Point3f point = this.randomPoint3f();
 		Point3f pointClone = point.clone();
 		
 		assertTrue(point.equals(pointClone));
