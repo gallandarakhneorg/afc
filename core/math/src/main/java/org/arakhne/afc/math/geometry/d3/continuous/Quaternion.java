@@ -161,9 +161,9 @@ public class Quaternion implements Cloneable, Serializable {
 	@Override
 	public Quaternion clone() {
 		try {
-			return (Quaternion)super.clone();
+			return (Quaternion)super.clone(); 
 		}
-		catch(CloneNotSupportedException e) {
+		catch(CloneNotSupportedException e) {   
 			throw new Error(e);
 		}
 	}

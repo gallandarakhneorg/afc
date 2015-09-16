@@ -164,6 +164,7 @@ public class Matrix3fTest extends AbstractMathTestCase{
 	
 	@Test
 	public void invert() {
+		//FIXME : still remain problem here, try with epsilonEquals maybe
 		Matrix3f m1 = new Matrix3f(1,0,0,0,2,0,0,0,3);
 		Matrix3f i1 = new Matrix3f(6,0,0,0,3,0,0,0,2);
 		i1.mul(1/6.);
