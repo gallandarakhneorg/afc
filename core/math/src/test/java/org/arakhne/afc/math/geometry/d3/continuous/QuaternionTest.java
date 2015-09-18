@@ -259,32 +259,133 @@ public class QuaternionTest extends AbstractMathTestCase {
 
 	@Test
 	public void mulInverseQuaternionQuaternion() {   
-		throw new UnsupportedOperationException();
+		double a = this.random.nextDouble();
+		double b = this.random.nextDouble();
+		double c = this.random.nextDouble();
+		double d = this.random.nextDouble();
+		double aP = this.random.nextDouble();
+		double bP = this.random.nextDouble();
+		double cP = this.random.nextDouble();
+		double dP = this.random.nextDouble();
+		Quaternion q1 = new Quaternion(a,b,c,d);
+		Quaternion q2 = new Quaternion(aP,bP,cP,dP);
+		Quaternion mulInv = new Quaternion();
+		
+		mulInv.mulInverse(q1, q2);
+		
+		q2.inverse();
+		q1.mul(q2);
+		
+		assertTrue(q1.equals(mulInv));
+		
+		
 	}
 
 	@Test
 	public void mulInverseQuaternion() {  
-		throw new UnsupportedOperationException();
+		double a = this.random.nextDouble();
+		double b = this.random.nextDouble();
+		double c = this.random.nextDouble();
+		double d = this.random.nextDouble();
+		double aP = this.random.nextDouble();
+		double bP = this.random.nextDouble();
+		double cP = this.random.nextDouble();
+		double dP = this.random.nextDouble();
+		Quaternion q1 = new Quaternion(a,b,c,d);
+		Quaternion q2 = new Quaternion(aP,bP,cP,dP);
+		Quaternion cloneQ1 = q1.clone();
+		
+		q1.mulInverse(q2);
+		
+		q2.inverse();
+		cloneQ1.mul(q2);
+		
+		assertTrue(q1.equals(cloneQ1));
 	}
 
 	@Test
 	public void inverseQuaternion() {
-		throw new UnsupportedOperationException();
+		double a = this.random.nextDouble();
+		double b = this.random.nextDouble();
+		double c = this.random.nextDouble();
+		double d = this.random.nextDouble();
+		Quaternion q1 = new Quaternion(a,b,c,d);
+		
+		Quaternion inv = q1.clone();
+		inv.conjugate();
+		double normSquared = inv.getW()*inv.getW() + inv.getX()*inv.getX() + inv.getY()*inv.getY() + inv.getZ()*inv.getZ();
+		
+		inv.setW(inv.getW()/normSquared);
+		inv.setX(inv.getX()/normSquared);
+		inv.setY(inv.getY()/normSquared);
+		inv.setZ(inv.getZ()/normSquared);
+		
+		q1.inverse(q1);
+		
+		assertTrue(q1.equals(inv));
 	}
 
 	@Test
 	public void inverse() {
-		throw new UnsupportedOperationException();
+		double a = this.random.nextDouble();
+		double b = this.random.nextDouble();
+		double c = this.random.nextDouble();
+		double d = this.random.nextDouble();
+		Quaternion q1 = new Quaternion(a,b,c,d);
+		
+		Quaternion inv = q1.clone();
+		inv.conjugate();
+		double normSquared = inv.getW()*inv.getW() + inv.getX()*inv.getX() + inv.getY()*inv.getY() + inv.getZ()*inv.getZ();
+		
+		inv.setW(inv.getW()/normSquared);
+		inv.setX(inv.getX()/normSquared);
+		inv.setY(inv.getY()/normSquared);
+		inv.setZ(inv.getZ()/normSquared);
+		
+		q1.inverse();
+		
+		assertTrue(q1.equals(inv));
+		
 	}
 
 	@Test
 	public void normalizeQuaternion() {
-		throw new UnsupportedOperationException();
+		double a = this.random.nextDouble();
+		double b = this.random.nextDouble();
+		double c = this.random.nextDouble();
+		double d = this.random.nextDouble();
+		Quaternion q1 = new Quaternion();
+		
+		q1.setW(a);
+		q1.setX(b);
+		q1.setY(c);
+		q1.setZ(d);
+		
+		Quaternion q2 = new Quaternion(b,c,d,a);
+		
+		q1.normalize(q1);
+		
+		assertTrue(q1.equals(q2));
 	}
 
 	@Test
 	public void normalize() {
-		throw new UnsupportedOperationException();
+		double a = this.random.nextDouble();
+		double b = this.random.nextDouble();
+		double c = this.random.nextDouble();
+		double d = this.random.nextDouble();
+		Quaternion q1 = new Quaternion();
+		
+		q1.setW(a);
+		q1.setX(b);
+		q1.setY(c);
+		q1.setZ(d);
+		
+		Quaternion q2 = new Quaternion(b,c,d,a);
+		
+		q1.normalize();
+		
+		assertTrue(q1.equals(q2));
 	}
 
 	@Test
