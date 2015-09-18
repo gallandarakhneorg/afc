@@ -35,6 +35,7 @@ import org.arakhne.afc.math.geometry.d3.Tuple3D;
 import org.arakhne.afc.math.geometry.d3.continuous.Point3f;
 import org.arakhne.afc.math.geometry.d3.continuous.Quaternion;
 import org.arakhne.afc.math.geometry.d3.continuous.Vector3f;
+import org.arakhne.afc.math.matrix.Matrix4f;
 import org.junit.ComparisonFailure;
 
 /**
@@ -507,6 +508,33 @@ public abstract class AbstractMathTestCase {
 				this.random.nextDouble() * 1000 - 500);
 	}
 
+	
+	/** Create a random vector.
+	 *
+	 * @return the random vector.
+	 */
+	protected Matrix4f randomMatrix4f() {
+		return new Matrix4f(
+				this.random.nextDouble() * 1000 - 500,
+				this.random.nextDouble() * 1000 - 500,
+				this.random.nextDouble() * 1000 - 500,
+				this.random.nextDouble() * 1000 - 500,
+				this.random.nextDouble() * 1000 - 500,
+				this.random.nextDouble() * 1000 - 500,
+				this.random.nextDouble() * 1000 - 500,
+				this.random.nextDouble() * 1000 - 500,
+				this.random.nextDouble() * 1000 - 500,
+				this.random.nextDouble() * 1000 - 500,
+				this.random.nextDouble() * 1000 - 500,
+				this.random.nextDouble() * 1000 - 500,
+				this.random.nextDouble() * 1000 - 500,
+				this.random.nextDouble() * 1000 - 500,
+				this.random.nextDouble() * 1000 - 500,
+				this.random.nextDouble() * 1000 - 500);
+	}
+
+	
+	
 	/**
 	 * Replies if two arrays have the same values at epsilon.
 	 * 

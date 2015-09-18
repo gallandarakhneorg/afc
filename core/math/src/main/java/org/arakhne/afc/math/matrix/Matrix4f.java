@@ -781,7 +781,7 @@ public class Matrix4f implements Serializable, Cloneable {
 		this.m10 = m1.m10 + scalar;
 		this.m11 = m1.m11 + scalar;
 		this.m12 = m1.m12 + scalar;
-		this.m13 = m1.m12 + scalar;
+		this.m13 = m1.m13 + scalar;
 
 		this.m20 = m1.m20 + scalar;
 		this.m21 = m1.m21 + scalar;
