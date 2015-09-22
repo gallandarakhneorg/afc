@@ -1,3 +1,24 @@
+/* 
+ * $Id$
+ * 
+ * Copyright (C) 2010-2013 Stephane GALLAND.
+ * 
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 3 of the License, or (at your option) any later version.
+ * 
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * This program is free software; you can redistribute it and/or modify
+ */
+
 package org.arakhne.afc.math.geometry.d2.continuous;
 
 import java.util.NoSuchElementException;
@@ -9,6 +30,11 @@ import org.arakhne.afc.math.geometry.d2.FunctionalPoint2D;
 import org.arakhne.afc.math.geometry.d2.FunctionalVector2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 
+
+/**
+ * @author Hamza JAFFALI (hjaffali)
+ *
+ */
 public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape2F<T> {
 
 	/**
@@ -1596,7 +1622,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 
 	@Override
 	public boolean intersects(OrientedRectangle2f s) {
-		return OrientedRectangle2f.intersectsOrientedRectangleSegment(
+		return AbstractOrientedRectangle2F.intersectsOrientedRectangleSegment(
 				s.getCenterX(), s.getCenterY(), 
 				s.getFirstAxisX(), s.getFirstAxisY(), s.getFirstAxisExtent(),
 				s.getSecondAxisX(), s.getSecondAxisY(), s.getSecondAxisExtent(),
@@ -1637,18 +1663,18 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 		private int index = 0;
 
 		/**
-		 * @param x1
-		 * @param y1
-		 * @param x2
-		 * @param y2
-		 * @param transform
+		 * @param x11
+		 * @param y11
+		 * @param x21
+		 * @param y21
+		 * @param transform1
 		 */
-		public SegmentPathIterator(double x1, double y1, double x2, double y2, Transform2D transform) {
-			this.transform = transform;
-			this.x1 = x1;
-			this.y1 = y1;
-			this.x2 = x2;
-			this.y2 = y2;
+		public SegmentPathIterator(double x11, double y11, double x21, double y21, Transform2D transform1) {
+			this.transform = transform1;
+			this.x1 = x11;
+			this.y1 = y11;
+			this.x2 = x21;
+			this.y2 = y21;
 			if (this.x1==this.x2 && this.y1==this.y2) {
 				this.index = 2;
 			}
