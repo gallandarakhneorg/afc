@@ -32,23 +32,15 @@ import org.arakhne.afc.math.geometry.d2.Point2D;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public abstract class AbstractRectangularShape2f<T extends AbstractRectangularShape2f<T>>
+public abstract class AbstractRectangularShape2F<T extends AbstractRectangularShape2F<T>>
 extends AbstractShape2F<T> {
 
 	private static final long serialVersionUID = -2330319571109966087L;
-
-	/** Lowest x-coordinate covered by this rectangular shape. */
-	protected double minx = 0f;
-	/** Lowest y-coordinate covered by this rectangular shape. */
-	protected double miny = 0f;
-	/** Highest x-coordinate covered by this rectangular shape. */
-	protected double maxx = 0f;
-	/** Highest y-coordinate covered by this rectangular shape. */
-	protected double maxy = 0f;
+	
 	
 	/**
 	 */
-	public AbstractRectangularShape2f() {
+	public AbstractRectangularShape2F() {
 		//
 	}
 	
@@ -56,7 +48,7 @@ extends AbstractShape2F<T> {
 	 * @param min is the min corner of the rectangle.
 	 * @param max is the max corner of the rectangle.
 	 */
-	public AbstractRectangularShape2f(Point2f min, Point2f max) {
+	public AbstractRectangularShape2F(Point2f min, Point2f max) {
 		setFromCorners(min.getX(), min.getY(), max.getX(), max.getY());
 	}
 	
@@ -66,14 +58,14 @@ extends AbstractShape2F<T> {
 	 * @param width
 	 * @param height
 	 */
-	public AbstractRectangularShape2f(double x, double y, double width, double height) {
+	public AbstractRectangularShape2F(double x, double y, double width, double height) {
 		setFromCorners(x, y, x+width, y+height);
 	}
 	
 	/**
 	 * @param s
 	 */
-	public AbstractRectangularShape2f(AbstractRectangularShape2f<?> s) {
+	public AbstractRectangularShape2F(AbstractRectangularShape2F<?> s) {
 		this.minx = s.minx;
 		this.miny = s.miny;
 		this.maxx = s.maxx;
@@ -96,9 +88,7 @@ extends AbstractShape2F<T> {
 
 
 	@Override
-	public void clear() {
-		this.minx = this.miny = this.maxx = this.maxy = 0f;
-	}
+	abstract public void clear();
 	
 	/** Change the frame of the rectangle.
 	 * 
@@ -107,43 +97,33 @@ extends AbstractShape2F<T> {
 	 * @param width
 	 * @param height
 	 */
-	public void set(double x, double y, double width, double height) {
-		setFromCorners(x, y, x+width, y+height);
-	}
+	abstract public void set(double x, double y, double width, double height);
 	
 	/** Change the frame of te rectangle.
 	 * 
 	 * @param min is the min corner of the rectangle.
 	 * @param max is the max corner of the rectangle.
 	 */
-	public void set(Point2f min, Point2f max) {
-		setFromCorners(min.getX(), min.getY(), max.getX(), max.getY());
-	}
+	abstract public void set(Point2f min, Point2f max);
 	
 	/** Change the width of the rectangle, not the min corner.
 	 * 
 	 * @param width
 	 */
-	public void setWidth(double width) {
-		this.maxx = this.minx + Math.max(0f, width);
-	}
+	abstract public void setWidth(double width);
 
 	/** Change the height of the rectangle, not the min corner.
 	 * 
 	 * @param height
 	 */
-	public void setHeight(double height) {
-		this.maxy = this.miny + Math.max(0f, height);
-	}
+	abstract public void setHeight(double height);
 
 	/** Change the frame of the rectangle.
 	 * 
 	 * @param p1 is the coordinate of the first corner.
 	 * @param p2 is the coordinate of the second corner.
 	 */
-	public void setFromCorners(Point2D p1, Point2D p2) {
-		setFromCorners(p1.getX(), p1.getY(), p2.getX(), p2.getY());
-	}
+	abstract public void setFromCorners(Point2D p1, Point2D p2);
 
 	/** Change the frame of the rectangle.
 	 * 
@@ -152,24 +132,7 @@ extends AbstractShape2F<T> {
 	 * @param x2 is the coordinate of the second corner.
 	 * @param y2 is the coordinate of the second corner.
 	 */
-	public void setFromCorners(double x1, double y1, double x2, double y2) {
-		if (x1<x2) {
-			this.minx = x1;
-			this.maxx = x2;
-		}
-		else {
-			this.minx = x2;
-			this.maxx = x1;
-		}
-		if (y1<y2) {
-			this.miny = y1;
-			this.maxy = y2;
-		}
-		else {
-			this.miny = y2;
-			this.maxy = y1;
-		}
-	}
+	abstract public void setFromCorners(double x1, double y1, double x2, double y2);
 	
 	/**
      * Sets the framing rectangle of this <code>Shape</code>
@@ -182,135 +145,79 @@ extends AbstractShape2F<T> {
      * @param cornerX the X coordinate of the specified corner point
      * @param cornerY the Y coordinate of the specified corner point
      */
-	public void setFromCenter(double centerX, double centerY, double cornerX, double cornerY) {
-		double dx = centerX - cornerX;
-		double dy = centerY - cornerY;
-		setFromCorners(cornerX, cornerY, centerX + dx, centerY + dy);
-	}
+	abstract public void setFromCenter(double centerX, double centerY, double cornerX, double cornerY);
 	
 	/** Replies the min X.
 	 * 
 	 * @return the min x.
 	 */
-	public double getMinX() {
-		return this.minx;
-	}
+	abstract public double getMinX();
 
 	/** Set the min X.
 	 * 
 	 * @param x the min x.
 	 */
-	public void setMinX(double x) {
-		double o = this.maxx;
-		if (o<x) {
-			this.minx = o;
-			this.maxx = x;
-		}
-		else {
-			this.minx = x;
-		}
-	}
+	abstract public void setMinX(double x);
 
 	/** Replies the center x.
 	 * 
 	 * @return the center x.
 	 */
-	public double getCenterX() {
-		return (this.minx + this.maxx) / 2f;
-	}
+	abstract public double getCenterX();
 
 	/** Replies the max x.
 	 * 
 	 * @return the max x.
 	 */
-	public double getMaxX() {
-		return this.maxx;
-	}
+	abstract public double getMaxX();
 
 	/** Set the max X.
 	 * 
 	 * @param x the max x.
 	 */
-	public void setMaxX(double x) {
-		double o = this.minx;
-		if (o>x) {
-			this.maxx = o;
-			this.minx = x;
-		}
-		else {
-			this.maxx = x;
-		}
-	}
+	abstract public void setMaxX(double x);
 
 	/** Replies the min y.
 	 * 
 	 * @return the min y.
 	 */
-	public double getMinY() {
-		return this.miny;
-	}
+	abstract public double getMinY();
 
 	/** Set the min Y.
 	 * 
 	 * @param y the min y.
 	 */
-	public void setMinY(double y) {
-		double o = this.maxy;
-		if (o<y) {
-			this.miny = o;
-			this.maxy = y;
-		}
-		else {
-			this.miny = y;
-		}
-	}
+	abstract public void setMinY(double y);
 
 	/** Replies the center y.
 	 * 
 	 * @return the center y.
 	 */
-	public double getCenterY() {
-		return (this.miny + this.maxy) / 2f;
-	}
+	abstract public double getCenterY();
 
 	/** Replies the max y.
 	 * 
 	 * @return the max y.
 	 */
-	public double getMaxY() {
-		return this.maxy;
-	}
+	abstract public double getMaxY();
 	
 	/** Set the max Y.
 	 * 
 	 * @param y the max y.
 	 */
-	public void setMaxY(double y) {
-		double o = this.miny;
-		if (o>y) {
-			this.maxy = o;
-			this.miny = y;
-		}
-		else {
-			this.maxy = y;
-		}
-	}
+	abstract public void setMaxY(double y);
 
 	/** Replies the width.
 	 * 
 	 * @return the width.
 	 */
-	public double getWidth() {
-		return this.maxx - this.minx;
-	}
+	abstract public double getWidth();
 
 	/** Replies the height.
 	 * 
 	 * @return the height.
 	 */
-	public double getHeight() {
-		return this.maxy - this.miny;
-	}
+	abstract public double getHeight();
 	
 	@Override
 	public void translate(double dx, double dy) {

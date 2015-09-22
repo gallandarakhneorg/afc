@@ -21,7 +21,7 @@
  */
 package org.arakhne.afc.math.geometry.d2.continuous;
 
-import org.arakhne.afc.math.geometry.d2.continuous.AbstractRectangularShape2f;
+import org.arakhne.afc.math.geometry.d2.continuous.AbstractRectangularShape2F;
 import org.arakhne.afc.math.geometry.d2.continuous.Point2f;
 import org.junit.Test;
 
@@ -34,7 +34,7 @@ import org.junit.Test;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public abstract class AbstractRectangularShape2fTestCase<T extends AbstractRectangularShape2f<?>> extends AbstractShape2fTestCase<T> {
+public abstract class AbstractRectangularShape2fTestCase<T extends AbstractRectangularShape2F<?>> extends AbstractShape2fTestCase<T> {
 	
 	/**
 	 */

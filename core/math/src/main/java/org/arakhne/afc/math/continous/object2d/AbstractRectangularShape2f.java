@@ -31,7 +31,7 @@ import org.arakhne.afc.math.generic.Point2D;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @deprecated see {@link org.arakhne.afc.math.geometry.d2.continuous.AbstractRectangularShape2f}
+ * @deprecated see {@link org.arakhne.afc.math.geometry.d2.continuous.AbstractRectangularShape2F}
  */
 @Deprecated
 public abstract class AbstractRectangularShape2f<T extends AbstractRectangularShape2f<T>>
