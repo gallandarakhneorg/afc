@@ -859,7 +859,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 				if (y0>=ymax) --numCrosses;
 			}
 		}
-		else if (Circle2f.intersectsCircleSegment(
+		else if (AbstractCircle2F.intersectsCircleSegment(
 				cx, cy, radius,
 				x0, y0, x1, y1)) {
 			return MathConstants.SHAPE_INTERSECTS;
@@ -1561,7 +1561,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 
 	@Override
 	public boolean intersects(Circle2f s) {
-		return Circle2f.intersectsCircleSegment(
+		return AbstractCircle2F.intersectsCircleSegment(
 				s.getX(), s.getY(),
 				s.getRadius(),
 				this.getX1(), this.getY1(),

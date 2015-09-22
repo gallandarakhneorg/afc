@@ -3,6 +3,7 @@ package org.arakhne.afc.math.geometry.d2.continuous;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 
 @SuppressWarnings("restriction")
 public class Segment2d extends AbstractSegment2F<Segment2d>{
@@ -13,13 +14,13 @@ public class Segment2d extends AbstractSegment2F<Segment2d>{
 	private static final long serialVersionUID = -1326197951243020619L;
 
 	/** X-coordinate of the first point. */
-	protected DoubleProperty axProperty;
+	protected DoubleProperty axProperty = new SimpleDoubleProperty(0f);
 	/** Y-coordinate of the first point. */
-	protected DoubleProperty ayProperty;
+	protected DoubleProperty ayProperty = new SimpleDoubleProperty(0f);
 	/** X-coordinate of the second point. */
-	protected DoubleProperty bxProperty;
+	protected DoubleProperty bxProperty = new SimpleDoubleProperty(0f);
 	/** Y-coordinate of the second point. */
-	protected DoubleProperty byProperty;
+	protected DoubleProperty byProperty = new SimpleDoubleProperty(0f);
 
 	/**
 	 */

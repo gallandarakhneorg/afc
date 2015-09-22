@@ -28,6 +28,7 @@ import javafx.beans.property.SimpleDoubleProperty;
  * @author Olivier LAMOTTE (olivier.lamotte@utbm.fr)
  *
  */
+@SuppressWarnings("restriction")
 public class Tuple2d<TT extends Tuple2D<? super TT>> implements FunctionalTuple2D<TT> {
 
 	private static final long serialVersionUID = 2754372505837958112L;
