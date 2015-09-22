@@ -28,6 +28,7 @@ import static org.junit.Assert.assertTrue;
 import org.arakhne.afc.math.AbstractMathTestCase;
 import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem3D;
 import org.arakhne.afc.math.geometry.d2.continuous.Vector2f;
+import org.arakhne.afc.math.geometry.d3.FunctionalVector3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
 import org.arakhne.afc.math.matrix.Matrix3f;
 import org.junit.Test;
@@ -88,7 +89,7 @@ public class Vector3fTest extends AbstractMathTestCase {
 		Vector3f vector = new Vector3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
 		Matrix3f matrix = new Matrix3f(1,2,4,5,1,3,9,-2,1);
 		
-		Vector3f product = new Vector3f(vector.getX()+2*vector.getY()+4*vector.getZ(),5*vector.getX()+vector.getY()+3*vector.getZ(),9*vector.getX()-2*vector.getY()+vector.getZ());
+		Vector3D product = new Vector3f(vector.getX()+2*vector.getY()+4*vector.getZ(),5*vector.getX()+vector.getY()+3*vector.getZ(),9*vector.getX()-2*vector.getY()+vector.getZ());
 		
 		assertTrue(product.equals(vector.mul(matrix)));
 	}
@@ -110,7 +111,7 @@ public class Vector3fTest extends AbstractMathTestCase {
 		Vector3f temp = new Vector3f();
 		double determinant = a*e*i -a*f*h -b*d*i + b*f*g + c*d*h - c*e*g; 
 		
-		assertEpsilonEquals(determinant,temp.determinant(a, b, c, d, e, f, g, h, i));
+		assertEpsilonEquals(determinant,FunctionalVector3D.determinant(a, b, c, d, e, f, g, h, i));
 		
 	}
 
@@ -135,13 +136,13 @@ public class Vector3fTest extends AbstractMathTestCase {
 
 		assertEpsilonEquals(
 				0.f,
-				v1.signedAngle(v1.getX(),v1.getY(),v1.getZ(),v1.getX(),v1.getY(),v1.getZ()));
+				FunctionalVector3D.signedAngle(v1.getX(),v1.getY(),v1.getZ(),v1.getX(),v1.getY(),v1.getZ()));
 		assertEpsilonEquals(
 				0.f,
-				v2.signedAngle(v2.getX(),v2.getY(),v2.getZ(),v2.getX(),v2.getY(),v2.getZ()));
+				FunctionalVector3D.signedAngle(v2.getX(),v2.getY(),v2.getZ(),v2.getX(),v2.getY(),v2.getZ()));
 
-		double sAngle1 = v1.signedAngle(v1.getX(),v1.getY(),v1.getZ(),v2.getX(),v2.getY(),v2.getZ());
-		double sAngle2 = v2.signedAngle(v2.getX(),v2.getY(),v2.getZ(),v1.getX(),v1.getY(),v1.getZ());
+		double sAngle1 = FunctionalVector3D.signedAngle(v1.getX(),v1.getY(),v1.getZ(),v2.getX(),v2.getY(),v2.getZ());
+		double sAngle2 = FunctionalVector3D.signedAngle(v2.getX(),v2.getY(),v2.getZ(),v1.getX(),v1.getY(),v1.getZ());
 
 		assertEpsilonEquals(-sAngle1, sAngle2);
 		assertEpsilonEquals(v1.angle(v2), Math.abs(sAngle1));

@@ -21,6 +21,8 @@
 package org.arakhne.afc.math.geometry.d3;
 
 import org.arakhne.afc.math.MathUtil;
+import org.arakhne.afc.math.geometry.d3.continuous.Vector3f;
+import org.arakhne.afc.math.matrix.Matrix3f;
 
 
 /** 3D Vector.

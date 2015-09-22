@@ -27,6 +27,8 @@ import static org.arakhne.afc.math.MathConstants.COHEN_SUTHERLAND_TOP;
 import static org.arakhne.afc.math.MathConstants.EPSILON;
 import static org.arakhne.afc.math.MathConstants.PI;
 
+import org.arakhne.afc.math.geometry.d2.FunctionalPoint2D;
+import org.arakhne.afc.math.geometry.d2.FunctionalVector2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.continuous.Circle2f;
@@ -35,6 +37,8 @@ import org.arakhne.afc.math.geometry.d2.continuous.Point2f;
 import org.arakhne.afc.math.geometry.d2.continuous.Segment2f;
 import org.arakhne.afc.math.geometry.d2.continuous.Vector2f;
 import org.arakhne.afc.math.geometry.d2.discrete.Segment2i;
+import org.arakhne.afc.math.geometry.d3.FunctionalPoint3D;
+import org.arakhne.afc.math.geometry.d3.FunctionalVector3D;
 import org.arakhne.afc.math.geometry.d3.continuous.Point3f;
 import org.arakhne.afc.math.geometry.d3.continuous.Vector3f;
 import org.arakhne.afc.math.physics.MeasureUnitUtil;
@@ -474,7 +478,7 @@ public final class MathUtil {
 	 */
 	@Deprecated
 	public static double distancePointToPoint(double x1, double y1, double x2, double y2) {
-		return Point2f.distancePointPoint(x1, y1, x2, y2);
+		return FunctionalPoint2D.distancePointPoint(x1, y1, x2, y2);
 	}
 
 	/** Compute the squared distance between 2 points.
@@ -490,7 +494,7 @@ public final class MathUtil {
 	 */
 	@Deprecated
 	public static double distanceSquaredPointToPoint(double x1, double y1, double x2, double y2) {
-		return Point2f.distanceSquaredPointPoint(x1, y1, x2, y2);
+		return FunctionalPoint2D.distanceSquaredPointPoint(x1, y1, x2, y2);
 	}
 
 	/** Compute the L-1 (Manhattan) distance between 2 points.
@@ -507,7 +511,7 @@ public final class MathUtil {
 	 */
 	@Deprecated
 	public static double distanceL1PointToPoint(double x1, double y1, double x2, double y2) {
-		return Point2f.distanceL1PointPoint(x1, y1, x2, y2);
+		return FunctionalPoint2D.distanceL1PointPoint(x1, y1, x2, y2);
 	}
 
 	/** Compute the L-infinite distance between 2 points.
@@ -525,7 +529,7 @@ public final class MathUtil {
 	 */
 	@Deprecated
 	public static double distanceLinfPointToPoint(double x1, double y1, double x2, double y2) {
-		return Point2f.distanceLinfPointPoint(x1, y1, x2, y2);
+		return FunctionalPoint2D.distanceLinfPointPoint(x1, y1, x2, y2);
 	}
 
 	/**
@@ -653,7 +657,7 @@ public final class MathUtil {
 	 */
 	@Deprecated
 	public static double signedAngle(double x1, double y1, double x2, double y2) {
-		return Vector2f.signedAngle(x1, y1, x2, y2);
+		return FunctionalVector2D.signedAngle(x1, y1, x2, y2);
 	}
 
 	/** Return the trigonometric angle of a vector.
@@ -712,7 +716,7 @@ public final class MathUtil {
 	 */
 	@Deprecated
 	public static double angleOfVector(double x1, double y1, double x2, double y2) {
-		return Vector2f.angleOfVector(x1, y1, x2, y2);
+		return FunctionalVector2D.angleOfVector(x1, y1, x2, y2);
 	}
 
 	/** Return the trigonometric angle of a vector.
@@ -729,7 +733,7 @@ public final class MathUtil {
 	 */
 	@Deprecated
 	public static double angleOfVector(double x, double y) {
-		return Vector2f.angleOfVector(x, y);
+		return FunctionalVector2D.angleOfVector(x, y);
 	}
 
 	/** Replies if a point is closed to a segment.
@@ -901,7 +905,7 @@ public final class MathUtil {
 	 */
 	@Deprecated
 	public static double determinant(double x1, double y1, double x2, double y2) {
-		return Vector2f.determinant(x1, y1, x2, y2);
+		return FunctionalVector2D.determinant(x1, y1, x2, y2);
 	}
 
 	/**
@@ -976,7 +980,7 @@ public final class MathUtil {
 	 */
 	@Deprecated
 	public static double dotProduct(double x1, double y1, double x2, double y2) {
-		return Vector2f.dotProduct(x1, y1, x2, y2);
+		return FunctionalVector2D.dotProduct(x1, y1, x2, y2);
 	}
 
 	/**
@@ -994,7 +998,7 @@ public final class MathUtil {
 	@Deprecated
 	public static double dotProduct(double x1, double y1, double z1, double x2,
 			double y2, double z2) {
-		return Vector3f.dotProduct(x1, y1, z1, x2, y2, z2);
+		return FunctionalVector3D.dotProduct(x1, y1, z1, x2, y2, z2);
 	}
 
 	/**
@@ -1435,7 +1439,7 @@ public final class MathUtil {
 	 */
 	@Deprecated
 	public static boolean isCollinearPoints(double x1, double y1, double z1, double x2, double y2, double z2, double x3, double y3, double z3) {
-		return Point3f.isCollinearPoints(x1, y1, z1, x2, y2, z2, x3, y3, z3, EPSILON);
+		return FunctionalPoint3D.isCollinearPoints(x1, y1, z1, x2, y2, z2, x3, y3, z3, EPSILON);
 	}
 
 	/**
@@ -1458,7 +1462,7 @@ public final class MathUtil {
 	 */
 	@Deprecated
 	public static boolean isCollinearVectors(double x1, double y1, double x2, double y2) {
-		return Vector2f.isCollinearVectors(x1, y1, x2, y2);
+		return FunctionalVector2D.isCollinearVectors(x1, y1, x2, y2);
 	}
 
 	/**
@@ -1485,7 +1489,7 @@ public final class MathUtil {
 	 */
 	@Deprecated
 	public static boolean isCollinearVectors(double x1, double y1, double z1, double x2, double y2, double z2) {
-		return Vector3f.isCollinearVectors(x1, y1, z1, x2, y2, z2);
+		return FunctionalVector3D.isCollinearVectors(x1, y1, z1, x2, y2, z2);
 	}
 
 	/**

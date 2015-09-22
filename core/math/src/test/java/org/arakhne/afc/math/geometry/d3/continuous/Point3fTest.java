@@ -23,6 +23,7 @@ package org.arakhne.afc.math.geometry.d3.continuous;
 import static org.junit.Assert.*;
 
 import org.arakhne.afc.math.AbstractMathTestCase;
+import org.arakhne.afc.math.geometry.d3.FunctionalPoint3D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Tuple3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
@@ -288,48 +289,48 @@ public class Point3fTest extends AbstractMathTestCase {
 	public void isCollinearPointsDoubleDoubleDoubleDoubleDoubleDoubleDoubleDoubleDouble() {
 		Point3f point = new Point3f();
 		
-		assertTrue(point.isCollinearPoints(0, 0, 0, 0, 0, 0, 0, 0, 0, 0));
-		assertTrue(point.isCollinearPoints(-6, -4, 2, -1, 3, -1, 4, 10, -4, 0));
-		assertTrue(point.isCollinearPoints(-6, -4, 2, -1, 3, -1, 4, 10, -4.001, 0.01));
-		assertFalse(point.isCollinearPoints(0, 0, 0, 1, 1, 1, 1, 1, -5, 0));
+		assertTrue(FunctionalPoint3D.isCollinearPoints(0, 0, 0, 0, 0, 0, 0, 0, 0, 0));
+		assertTrue(FunctionalPoint3D.isCollinearPoints(-6, -4, 2, -1, 3, -1, 4, 10, -4, 0));
+		assertTrue(FunctionalPoint3D.isCollinearPoints(-6, -4, 2, -1, 3, -1, 4, 10, -4.001, 0.01));
+		assertFalse(FunctionalPoint3D.isCollinearPoints(0, 0, 0, 1, 1, 1, 1, 1, -5, 0));
 	}
 
 	@Test
 	public void distancePointPoint() {
 		Point3f point = new Point3f();
 		
-		assertEpsilonEquals(0,point.distancePointPoint(0, 0, 0, 0, 0, 0));
-		assertEpsilonEquals(Math.sqrt(14),point.distancePointPoint(0, 0, 0, 1, 2, 3));
-		assertEpsilonEquals(Math.sqrt(3),point.distancePointPoint(0, 0, 0, 1, 1, 1));
+		assertEpsilonEquals(0,FunctionalPoint3D.distancePointPoint(0, 0, 0, 0, 0, 0));
+		assertEpsilonEquals(Math.sqrt(14),FunctionalPoint3D.distancePointPoint(0, 0, 0, 1, 2, 3));
+		assertEpsilonEquals(Math.sqrt(3),FunctionalPoint3D.distancePointPoint(0, 0, 0, 1, 1, 1));
 	}
 
 	@Test
 	public void distanceSquaredPointPoint() {
 		Point3f point = new Point3f();
 		
-		assertEpsilonEquals(0,point.distanceSquaredPointPoint(0, 0, 0, 0, 0, 0));
-		assertEpsilonEquals(14,point.distanceSquaredPointPoint(0, 0, 0, 1, 2, 3));
-		assertEpsilonEquals(3,point.distanceSquaredPointPoint(0, 0, 0, 1, 1, 1));
+		assertEpsilonEquals(0,FunctionalPoint3D.distanceSquaredPointPoint(0, 0, 0, 0, 0, 0));
+		assertEpsilonEquals(14,FunctionalPoint3D.distanceSquaredPointPoint(0, 0, 0, 1, 2, 3));
+		assertEpsilonEquals(3,FunctionalPoint3D.distanceSquaredPointPoint(0, 0, 0, 1, 1, 1));
 	}
 
 	@Test
 	public void distanceL1PointPoint() {
 		Point3f point = new Point3f();
 		
-		assertEpsilonEquals(6,point.distanceL1PointPoint(1.0,2.0,3.0,0,0,0));
-		assertEpsilonEquals(0,point.distanceL1PointPoint(1.0,2.0,3.0,1,2,3));
-		assertEpsilonEquals(0,point.distanceL1PointPoint(1,2,3,1.0,2.0,3.0));
-		assertEpsilonEquals(6,point.distanceL1PointPoint(1.0,2.0,3.0,-1,0,1));
+		assertEpsilonEquals(6,FunctionalPoint3D.distanceL1PointPoint(1.0,2.0,3.0,0,0,0));
+		assertEpsilonEquals(0,FunctionalPoint3D.distanceL1PointPoint(1.0,2.0,3.0,1,2,3));
+		assertEpsilonEquals(0,FunctionalPoint3D.distanceL1PointPoint(1,2,3,1.0,2.0,3.0));
+		assertEpsilonEquals(6,FunctionalPoint3D.distanceL1PointPoint(1.0,2.0,3.0,-1,0,1));
 	}
 
 	@Test
 	public void distanceLinfPointPoint() {
 		Point3f point = new Point3f();
 				
-		assertEpsilonEquals(3,point.distanceLinfPointPoint(1.0,2.0,3.0,0,0,0));
-		assertEpsilonEquals(0,point.distanceLinfPointPoint(1.0,2.0,3.0,1,2,3));
-		assertEpsilonEquals(0,point.distanceLinfPointPoint(1,2,3,1.0,2.0,3.0));
-		assertEpsilonEquals(2,point.distanceLinfPointPoint(1.0,2.0,3.0,-1,0,1));
+		assertEpsilonEquals(3,FunctionalPoint3D.distanceLinfPointPoint(1.0,2.0,3.0,0,0,0));
+		assertEpsilonEquals(0,FunctionalPoint3D.distanceLinfPointPoint(1.0,2.0,3.0,1,2,3));
+		assertEpsilonEquals(0,FunctionalPoint3D.distanceLinfPointPoint(1,2,3,1.0,2.0,3.0));
+		assertEpsilonEquals(2,FunctionalPoint3D.distanceLinfPointPoint(1.0,2.0,3.0,-1,0,1));
 	}
 
 }

@@ -24,6 +24,7 @@ import java.util.NoSuchElementException;
 
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.geometry.PathWindingRule;
+import org.arakhne.afc.math.geometry.d2.FunctionalPoint2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 
 
@@ -80,7 +81,7 @@ public class Circle2f extends AbstractShape2f<Circle2f> {
 	 * <code>false</code> if not.
 	 */
 	public static boolean containsCirclePoint(double cx, double cy, double radius, double px, double py) {
-		return Point2f.distanceSquaredPointPoint(
+		return FunctionalPoint2D.distanceSquaredPointPoint(
 				px, py,
 				cx, cy) <= (radius * radius);
 	}
@@ -122,7 +123,7 @@ public class Circle2f extends AbstractShape2f<Circle2f> {
 	 */
 	public static boolean intersectsCircleCircle(double x1, double y1, double radius1, double x2, double y2, double radius2) {
 		double r = radius1+radius2;
-		return Point2f.distanceSquaredPointPoint(x1, y1, x2, y2) < (r*r);
+		return FunctionalPoint2D.distanceSquaredPointPoint(x1, y1, x2, y2) < (r*r);
 	}
 
 	/** Replies if a circle and a rectangle are intersecting.
@@ -372,7 +373,7 @@ public class Circle2f extends AbstractShape2f<Circle2f> {
 	 */
 	@Override
 	public double distance(Point2D p) {
-		double d = Point2f.distancePointPoint(getX(), getY(), p.getX(), p.getY()) - getRadius();
+		double d = FunctionalPoint2D.distancePointPoint(getX(), getY(), p.getX(), p.getY()) - getRadius();
 		return Math.max(0., d);
 	}
 	
@@ -380,7 +381,7 @@ public class Circle2f extends AbstractShape2f<Circle2f> {
 	 */
 	@Override
 	public double distanceSquared(Point2D p) {
-		double d = Point2f.distanceSquaredPointPoint(getX(), getY(), p.getX(), p.getY()) - getRadius();
+		double d = FunctionalPoint2D.distanceSquaredPointPoint(getX(), getY(), p.getX(), p.getY()) - getRadius();
 		return Math.max(0., d);
 	}
 

@@ -24,6 +24,7 @@ package org.arakhne.afc.math.geometry.d3.continuous;
 import java.util.Arrays;
 
 import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem3D;
+import org.arakhne.afc.math.geometry.d3.FunctionalVector3D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
 import org.arakhne.afc.math.matrix.Matrix3f;
@@ -255,9 +256,9 @@ public class OrientedBox3f extends AbstractShape3f<OrientedBox3f> {
 
 		//translation, in A's frame
 		double tx,ty,tz;
-		tx = Vector3f.dotProduct(vx, vy, vz, box1Axis1x, box1Axis1y, box1Axis1z);
-		ty = Vector3f.dotProduct(vx, vy, vz, box1Axis2x, box1Axis2y, box1Axis2z);
-		tz = Vector3f.dotProduct(vx, vy, vz, box1Axis3x, box1Axis3y, box1Axis3z);
+		tx = FunctionalVector3D.dotProduct(vx, vy, vz, box1Axis1x, box1Axis1y, box1Axis1z);
+		ty = FunctionalVector3D.dotProduct(vx, vy, vz, box1Axis2x, box1Axis2y, box1Axis2z);
+		tz = FunctionalVector3D.dotProduct(vx, vy, vz, box1Axis3x, box1Axis3y, box1Axis3z);
 
 		//B's basis with respect to A's local frame
 		double R_1_1, R_1_2, R_1_3,
@@ -268,15 +269,15 @@ public class OrientedBox3f extends AbstractShape3f<OrientedBox3f> {
 		absR_2_1, absR_2_2, absR_2_3,
 		absR_3_1, absR_3_2, absR_3_3;
 
-		R_1_1 = Vector3f.dotProduct(box1Axis1x, box1Axis1y,box1Axis1z,box2Axis1x, box2Axis1y,box2Axis1z); absR_1_1 = (R_1_1 < 0) ? -R_1_1 : R_1_1;
-		R_1_2 = Vector3f.dotProduct(box1Axis1x, box1Axis1y,box1Axis1z,box2Axis2x, box2Axis2y,box2Axis2z); absR_1_2 = (R_1_2 < 0) ? -R_1_2 : R_1_2;
-		R_1_3 = Vector3f.dotProduct(box1Axis1x, box1Axis1y,box1Axis1z,box2Axis3x, box2Axis3y,box2Axis3z); absR_1_3 = (R_1_3 < 0) ? -R_1_3 : R_1_3;
-		R_2_1 = Vector3f.dotProduct(box1Axis2x, box1Axis2y,box1Axis2z,box2Axis1x, box2Axis1y,box2Axis1z); absR_2_1 = (R_2_1 < 0) ? -R_2_1 : R_2_1;
-		R_2_2 = Vector3f.dotProduct(box1Axis2x, box1Axis2y,box1Axis2z,box2Axis2x, box2Axis2y,box2Axis2z); absR_2_2 = (R_2_2 < 0) ? -R_2_2 : R_2_2;
-		R_2_3 = Vector3f.dotProduct(box1Axis2x, box1Axis2y,box1Axis2z,box2Axis3x, box2Axis3y,box2Axis3z); absR_2_3 = (R_2_3 < 0) ? -R_2_3 : R_2_3;
-		R_3_1 = Vector3f.dotProduct(box1Axis3x, box1Axis3y,box1Axis3z,box2Axis1x, box2Axis1y,box2Axis1z); absR_3_1 = (R_3_1 < 0) ? -R_3_1 : R_3_1;
-		R_3_2 = Vector3f.dotProduct(box1Axis3x, box1Axis3y,box1Axis3z,box2Axis2x, box2Axis2y,box2Axis2z); absR_3_2 = (R_3_2 < 0) ? -R_3_2 : R_3_2;
-		R_3_3 = Vector3f.dotProduct(box1Axis3x, box1Axis3y,box1Axis3z,box2Axis3x, box2Axis3y,box2Axis3z); absR_3_3 = (R_3_3 < 0) ? -R_3_3 : R_3_3;
+		R_1_1 = FunctionalVector3D.dotProduct(box1Axis1x, box1Axis1y,box1Axis1z,box2Axis1x, box2Axis1y,box2Axis1z); absR_1_1 = (R_1_1 < 0) ? -R_1_1 : R_1_1;
+		R_1_2 = FunctionalVector3D.dotProduct(box1Axis1x, box1Axis1y,box1Axis1z,box2Axis2x, box2Axis2y,box2Axis2z); absR_1_2 = (R_1_2 < 0) ? -R_1_2 : R_1_2;
+		R_1_3 = FunctionalVector3D.dotProduct(box1Axis1x, box1Axis1y,box1Axis1z,box2Axis3x, box2Axis3y,box2Axis3z); absR_1_3 = (R_1_3 < 0) ? -R_1_3 : R_1_3;
+		R_2_1 = FunctionalVector3D.dotProduct(box1Axis2x, box1Axis2y,box1Axis2z,box2Axis1x, box2Axis1y,box2Axis1z); absR_2_1 = (R_2_1 < 0) ? -R_2_1 : R_2_1;
+		R_2_2 = FunctionalVector3D.dotProduct(box1Axis2x, box1Axis2y,box1Axis2z,box2Axis2x, box2Axis2y,box2Axis2z); absR_2_2 = (R_2_2 < 0) ? -R_2_2 : R_2_2;
+		R_2_3 = FunctionalVector3D.dotProduct(box1Axis2x, box1Axis2y,box1Axis2z,box2Axis3x, box2Axis3y,box2Axis3z); absR_2_3 = (R_2_3 < 0) ? -R_2_3 : R_2_3;
+		R_3_1 = FunctionalVector3D.dotProduct(box1Axis3x, box1Axis3y,box1Axis3z,box2Axis1x, box2Axis1y,box2Axis1z); absR_3_1 = (R_3_1 < 0) ? -R_3_1 : R_3_1;
+		R_3_2 = FunctionalVector3D.dotProduct(box1Axis3x, box1Axis3y,box1Axis3z,box2Axis2x, box2Axis2y,box2Axis2z); absR_3_2 = (R_3_2 < 0) ? -R_3_2 : R_3_2;
+		R_3_3 = FunctionalVector3D.dotProduct(box1Axis3x, box1Axis3y,box1Axis3z,box2Axis3x, box2Axis3y,box2Axis3z); absR_3_3 = (R_3_3 < 0) ? -R_3_3 : R_3_3;
 
 		// ALGORITHM: Use the separating axis test for all 15 potential
 		// separating axes. If a separating axis could not be found, the two
@@ -419,21 +420,21 @@ public class OrientedBox3f extends AbstractShape3f<OrientedBox3f> {
 		double dist;
 
 		// ...project d onto that axis to get the distance along the axis of d from the box center
-		dist = Vector3f.dotProduct(dx, dy, dz, axis1x, axis1y, axis1z);
+		dist = FunctionalVector3D.dotProduct(dx, dy, dz, axis1x, axis1y, axis1z);
 		// If distance farther than the box extents, return OUTSIDE
 		if (Math.abs(dist) > axis1Extent) {
 			return false;
 		}
 
 		// ...project d onto that axis to get the distance along the axis of d from the box center
-		dist = Vector3f.dotProduct(dx, dy, dz, axis2x, axis2y, axis2z);
+		dist = FunctionalVector3D.dotProduct(dx, dy, dz, axis2x, axis2y, axis2z);
 		// If distance farther than the box extents, return OUTSIDE
 		if (Math.abs(dist) > axis2Extent) {
 			return false;
 		}
 
 		// ...project d onto that axis to get the distance along the axis of d from the box center
-		dist = Vector3f.dotProduct(dx, dy, dz, axis3x, axis3y, axis3z);
+		dist = FunctionalVector3D.dotProduct(dx, dy, dz, axis3x, axis3y, axis3z);
 		// If distance farther than the box extents, return OUTSIDE
 		if (Math.abs(dist) > axis3Extent) {
 			return false;
@@ -504,7 +505,7 @@ public class OrientedBox3f extends AbstractShape3f<OrientedBox3f> {
 		double d1, d2;
 		
 		// ...project d onto that axis to get the distance along the axis of d from the box center
-		d1 = d2 = Vector3f.dotProduct(dx, dy, dz, ax, ay, az);
+		d1 = d2 = FunctionalVector3D.dotProduct(dx, dy, dz, ax, ay, az);
 
 		if (closest != null) {
 			// If distance farther than the box extents, clamp to the box

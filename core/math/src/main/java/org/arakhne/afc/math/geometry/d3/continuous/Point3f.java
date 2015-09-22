@@ -20,8 +20,7 @@
  */
 package org.arakhne.afc.math.geometry.d3.continuous;
 
-import org.arakhne.afc.math.MathConstants;
-import org.arakhne.afc.math.MathUtil;
+import org.arakhne.afc.math.geometry.d3.FunctionalPoint3D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Tuple3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
@@ -37,131 +36,131 @@ public class Point3f extends Tuple3f<Point3D> implements Point3D {
 
 	private static final long serialVersionUID = -4821663886493835147L;
 	
-	/**
-	 * Replies if three points are colinear, ie. one the same line.
-	 * <p>
-	 * Trival approach is: points are collinear iff |AB| + |AC| = |BC|, where A B C are the three points.
-	 * <p>
-	 * This function uses the equal-to-zero test with the error {@link MathConstants#EPSILON}.
-	 * 
-	 * @param x1
-	 *            is the X coordinate of the first point
-	 * @param y1
-	 *            is the Y coordinate of the first point
-	 * @param z1
-	 *            is the Z coordinate of the first point
-	 * @param x2
-	 *            is the X coordinate of the second point
-	 * @param y2
-	 *            is the Y coordinate of the second point
-	 * @param z2
-	 *            is the Z coordinate of the second point
-	 * @param x3
-	 *            is the X coordinate of the third point
-	 * @param y3
-	 *            is the Y coordinate of the third point
-	 * @param z3
-	 *            is the Z coordinate of the third point
-	 * @param epsilon is the threshold for accepting colinear points.
-	 * @return <code>true</code> if the three given points are colinear.
-	 * @since 3.0
-	 * @see MathUtil#isEpsilonZero(double)
-	 */
-	public static boolean isCollinearPoints(
-			double x1, double y1, double z1,
-			double x2, double y2, double z2,
-			double x3, double y3, double z3,
-			double epsilon) {
-		double dx1 = x2 - x1;
-		double dy1 = y2 - y1;
-		double dz1 = z2 - z1;
-		double dx2 = x3 - x1;
-		double dy2 = y3 - y1;
-		double dz2 = z3 - z1;
-
-		double cx = dy1 * dz2 - dy2 * dz1;
-		double cy = dx2 * dz1 - dx1 * dz2;
-		double cz = dx1 * dy2 - dx2 * dy1;
-
-		double sum = cx * cx + cy * cy + cz * cz;
-
-		return MathUtil.isEpsilonZero(sum, epsilon);
-	}
-
-	/** Compute the distance between 2 points.
-	 *
-	 * @param x1 x position of the first point.
-	 * @param y1 y position of the first point.
-	 * @param z1 z position of the first point.
-	 * @param x2 x position of the second point.
-	 * @param y2 y position of the second point.
-	 * @param z2 z position of the second point.
-	 * @return the distance between given points.
-	 * @see #distanceSquaredPointPoint(double, double, double, double, double, double)
-	 * @see #distanceL1PointPoint(double, double, double, double, double, double)
-	 */
-	public static double distancePointPoint(double x1, double y1, double z1, double x2, double y2, double z2) {
-		double dx, dy, dz;
-		dx = x1 - x2; 
-		dy = y1 - y2;
-		dz = z1 - z2;
-		return Math.sqrt(dx*dx+dy*dy+dz*dz);
-	}
-
-	/** Compute the squared distance between 2 points.
-	 *
-	 * @param x1 x position of the first point.
-	 * @param y1 y position of the first point.
-	 * @param z1 z position of the first point.
-	 * @param x2 x position of the second point.
-	 * @param y2 y position of the second point.
-	 * @param z2 z position of the second point.
-	 * @return the squared distance between given points.
-	 * @see #distancePointPoint(double, double, double, double, double, double)
-	 * @see #distanceL1PointPoint(double, double, double, double, double, double)
-	 */
-	public static double distanceSquaredPointPoint(double x1, double y1, double z1, double x2, double y2, double z2) {
-		double dx, dy, dz;
-		dx = x1 - x2;
-		dy = y1 - y2;
-		dz = z1 - z2;
-		return dx*dx+dy*dy+dz*dz;
-	}
-
-	/** Compute the L-1 (Manhattan) distance between 2 points.
-	 * The L-1 distance is equal to abs(x1-x2) + abs(y1-y2) + abs(z1-z2).
-	 *
-	 * @param x1 x position of the first point.
-	 * @param y1 y position of the first point.
-	 * @param z1 z position of the first point.
-	 * @param x2 x position of the second point.
-	 * @param y2 y position of the second point.
-	 * @param z2 z position of the second point.
-	 * @return the distance between given points.
-	 * @see #distancePointPoint(double, double, double, double, double, double)
-	 * @see #distanceSquaredPointPoint(double, double, double, double, double, double)
-	 */
-	public static double distanceL1PointPoint(double x1, double y1, double z1, double x2, double y2, double z2) {
-		return Math.abs(x1 - x2) + Math.abs(y1 - y2) + Math.abs(z1 - z2);
-	}
-
-	/** Compute the L-infinite distance between 2 points.
-	 * The L-infinite distance is equal to 
-	 * MAX[abs(x1-x2), abs(y1-y2), abs(z1-z2)]. 
-	 *
-	 * @param x1 x position of the first point.
-	 * @param y1 y position of the first point.
-	 * @param z1 z position of the first point.
-	 * @param x2 x position of the second point.
-	 * @param y2 y position of the second point.
-	 * @param z2 z position of the second point.
-	 * @return the distance between given points.
-	 * @see #distancePointPoint(double, double, double, double, double, double)
-	 * @see #distanceSquaredPointPoint(double, double, double, double, double, double)
-	 */
-	public static double distanceLinfPointPoint(double x1, double y1, double z1, double x2, double y2, double z2) {
-		return MathUtil.max(Math.abs(x1 - x2), Math.abs(y1 - y2), Math.abs(z1 - z2));
-	}
+//	/**
+//	 * Replies if three points are colinear, ie. one the same line.
+//	 * <p>
+//	 * Trival approach is: points are collinear iff |AB| + |AC| = |BC|, where A B C are the three points.
+//	 * <p>
+//	 * This function uses the equal-to-zero test with the error {@link MathConstants#EPSILON}.
+//	 * 
+//	 * @param x1
+//	 *            is the X coordinate of the first point
+//	 * @param y1
+//	 *            is the Y coordinate of the first point
+//	 * @param z1
+//	 *            is the Z coordinate of the first point
+//	 * @param x2
+//	 *            is the X coordinate of the second point
+//	 * @param y2
+//	 *            is the Y coordinate of the second point
+//	 * @param z2
+//	 *            is the Z coordinate of the second point
+//	 * @param x3
+//	 *            is the X coordinate of the third point
+//	 * @param y3
+//	 *            is the Y coordinate of the third point
+//	 * @param z3
+//	 *            is the Z coordinate of the third point
+//	 * @param epsilon is the threshold for accepting colinear points.
+//	 * @return <code>true</code> if the three given points are colinear.
+//	 * @since 3.0
+//	 * @see MathUtil#isEpsilonZero(double)
+//	 */
+//	public static boolean isCollinearPoints(
+//			double x1, double y1, double z1,
+//			double x2, double y2, double z2,
+//			double x3, double y3, double z3,
+//			double epsilon) {
+//		double dx1 = x2 - x1;
+//		double dy1 = y2 - y1;
+//		double dz1 = z2 - z1;
+//		double dx2 = x3 - x1;
+//		double dy2 = y3 - y1;
+//		double dz2 = z3 - z1;
+//
+//		double cx = dy1 * dz2 - dy2 * dz1;
+//		double cy = dx2 * dz1 - dx1 * dz2;
+//		double cz = dx1 * dy2 - dx2 * dy1;
+//
+//		double sum = cx * cx + cy * cy + cz * cz;
+//
+//		return MathUtil.isEpsilonZero(sum, epsilon);
+//	}
+//
+//	/** Compute the distance between 2 points.
+//	 *
+//	 * @param x1 x position of the first point.
+//	 * @param y1 y position of the first point.
+//	 * @param z1 z position of the first point.
+//	 * @param x2 x position of the second point.
+//	 * @param y2 y position of the second point.
+//	 * @param z2 z position of the second point.
+//	 * @return the distance between given points.
+//	 * @see #distanceSquaredPointPoint(double, double, double, double, double, double)
+//	 * @see #distanceL1PointPoint(double, double, double, double, double, double)
+//	 */
+//	public static double distancePointPoint(double x1, double y1, double z1, double x2, double y2, double z2) {
+//		double dx, dy, dz;
+//		dx = x1 - x2; 
+//		dy = y1 - y2;
+//		dz = z1 - z2;
+//		return Math.sqrt(dx*dx+dy*dy+dz*dz);
+//	}
+//
+//	/** Compute the squared distance between 2 points.
+//	 *
+//	 * @param x1 x position of the first point.
+//	 * @param y1 y position of the first point.
+//	 * @param z1 z position of the first point.
+//	 * @param x2 x position of the second point.
+//	 * @param y2 y position of the second point.
+//	 * @param z2 z position of the second point.
+//	 * @return the squared distance between given points.
+//	 * @see #distancePointPoint(double, double, double, double, double, double)
+//	 * @see #distanceL1PointPoint(double, double, double, double, double, double)
+//	 */
+//	public static double distanceSquaredPointPoint(double x1, double y1, double z1, double x2, double y2, double z2) {
+//		double dx, dy, dz;
+//		dx = x1 - x2;
+//		dy = y1 - y2;
+//		dz = z1 - z2;
+//		return dx*dx+dy*dy+dz*dz;
+//	}
+//
+//	/** Compute the L-1 (Manhattan) distance between 2 points.
+//	 * The L-1 distance is equal to abs(x1-x2) + abs(y1-y2) + abs(z1-z2).
+//	 *
+//	 * @param x1 x position of the first point.
+//	 * @param y1 y position of the first point.
+//	 * @param z1 z position of the first point.
+//	 * @param x2 x position of the second point.
+//	 * @param y2 y position of the second point.
+//	 * @param z2 z position of the second point.
+//	 * @return the distance between given points.
+//	 * @see #distancePointPoint(double, double, double, double, double, double)
+//	 * @see #distanceSquaredPointPoint(double, double, double, double, double, double)
+//	 */
+//	public static double distanceL1PointPoint(double x1, double y1, double z1, double x2, double y2, double z2) {
+//		return Math.abs(x1 - x2) + Math.abs(y1 - y2) + Math.abs(z1 - z2);
+//	}
+//
+//	/** Compute the L-infinite distance between 2 points.
+//	 * The L-infinite distance is equal to 
+//	 * MAX[abs(x1-x2), abs(y1-y2), abs(z1-z2)]. 
+//	 *
+//	 * @param x1 x position of the first point.
+//	 * @param y1 y position of the first point.
+//	 * @param z1 z position of the first point.
+//	 * @param x2 x position of the second point.
+//	 * @param y2 y position of the second point.
+//	 * @param z2 z position of the second point.
+//	 * @return the distance between given points.
+//	 * @see #distancePointPoint(double, double, double, double, double, double)
+//	 * @see #distanceSquaredPointPoint(double, double, double, double, double, double)
+//	 */
+//	public static double distanceLinfPointPoint(double x1, double y1, double z1, double x2, double y2, double z2) {
+//		return MathUtil.max(Math.abs(x1 - x2), Math.abs(y1 - y2), Math.abs(z1 - z2));
+//	}
 
 	/**
 	 */
@@ -362,7 +361,7 @@ public class Point3f extends Tuple3f<Point3D> implements Point3D {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	private class UnmodifiablePoint3f implements Point3D {
+	private class UnmodifiablePoint3f implements FunctionalPoint3D.UnmodifiablePoint3f {
 		
 		private static final long serialVersionUID = -3357133685019699117L;
 
@@ -379,115 +378,115 @@ public class Point3f extends Tuple3f<Point3D> implements Point3D {
 			}
 		}
 
-		@Override
-		public void absolute() {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void absolute(Point3D t) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void add(int x, int y, int z) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void add(double x, double y, double z) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void addX(int x) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void addX(double x) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void addY(int y) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void addY(double y) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void addZ(int z) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void addZ(double z) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void clamp(int min, int max) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void clamp(double min, double max) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void clampMin(int min) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void clampMin(double min) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void clampMax(int max) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void clampMax(double max) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void clamp(int min, int max, Point3D t) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void clamp(double min, double max, Point3D t) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void clampMin(int min, Point3D t) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void clampMin(double min, Point3D t) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void clampMax(int max, Point3D t) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void clampMax(double max, Point3D t) {
-			throw new UnsupportedOperationException();
-		}
+//		@Override
+//		public void absolute() {
+//			throw new UnsupportedOperationException();
+//		}
+//
+//		@Override
+//		public void absolute(Point3D t) {
+//			throw new UnsupportedOperationException();
+//		}
+//
+//		@Override
+//		public void add(int x, int y, int z) {
+//			throw new UnsupportedOperationException();
+//		}
+//
+//		@Override
+//		public void add(double x, double y, double z) {
+//			throw new UnsupportedOperationException();
+//		}
+//
+//		@Override
+//		public void addX(int x) {
+//			throw new UnsupportedOperationException();
+//		}
+//
+//		@Override
+//		public void addX(double x) {
+//			throw new UnsupportedOperationException();
+//		}
+//
+//		@Override
+//		public void addY(int y) {
+//			throw new UnsupportedOperationException();
+//		}
+//
+//		@Override
+//		public void addY(double y) {
+//			throw new UnsupportedOperationException();
+//		}
+//
+//		@Override
+//		public void addZ(int z) {
+//			throw new UnsupportedOperationException();
+//		}
+//
+//		@Override
+//		public void addZ(double z) {
+//			throw new UnsupportedOperationException();
+//		}
+//
+//		@Override
+//		public void clamp(int min, int max) {
+//			throw new UnsupportedOperationException();
+//		}
+//
+//		@Override
+//		public void clamp(double min, double max) {
+//			throw new UnsupportedOperationException();
+//		}
+//
+//		@Override
+//		public void clampMin(int min) {
+//			throw new UnsupportedOperationException();
+//		}
+//
+//		@Override
+//		public void clampMin(double min) {
+//			throw new UnsupportedOperationException();
+//		}
+//
+//		@Override
+//		public void clampMax(int max) {
+//			throw new UnsupportedOperationException();
+//		}
+//
+//		@Override
+//		public void clampMax(double max) {
+//			throw new UnsupportedOperationException();
+//		}
+//
+//		@Override
+//		public void clamp(int min, int max, Point3D t) {
+//			throw new UnsupportedOperationException();
+//		}
+//
+//		@Override
+//		public void clamp(double min, double max, Point3D t) {
+//			throw new UnsupportedOperationException();
+//		}
+//
+//		@Override
+//		public void clampMin(int min, Point3D t) {
+//			throw new UnsupportedOperationException();
+//		}
+//
+//		@Override
+//		public void clampMin(double min, Point3D t) {
+//			throw new UnsupportedOperationException();
+//		}
+//
+//		@Override
+//		public void clampMax(int max, Point3D t) {
+//			throw new UnsupportedOperationException();
+//		}
+//
+//		@Override
+//		public void clampMax(double max, Point3D t) {
+//			throw new UnsupportedOperationException();
+//		}
 
 		@Override
 		public void get(Point3D t) {
@@ -504,60 +503,60 @@ public class Point3f extends Tuple3f<Point3D> implements Point3D {
 			Point3f.this.get(t);
 		}
 
-		@Override
-		public void negate(Point3D t1) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void negate() {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void scale(int s, Point3D t1) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void scale(double s, Point3D t1) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void scale(int s) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void scale(double s) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void set(Tuple3D<?> t1) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void set(int x, int y, int z) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void set(double x, double y, double z) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void set(int[] t) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void set(double[] t) {
-			throw new UnsupportedOperationException();
-		}
+//		@Override
+//		public void negate(Point3D t1) {
+//			throw new UnsupportedOperationException();
+//		}
+//
+//		@Override
+//		public void negate() {
+//			throw new UnsupportedOperationException();
+//		}
+//
+//		@Override
+//		public void scale(int s, Point3D t1) {
+//			throw new UnsupportedOperationException();
+//		}
+//
+//		@Override
+//		public void scale(double s, Point3D t1) {
+//			throw new UnsupportedOperationException();
+//		}
+//
+//		@Override
+//		public void scale(int s) {
+//			throw new UnsupportedOperationException();
+//		}
+//
+//		@Override
+//		public void scale(double s) {
+//			throw new UnsupportedOperationException();
+//		}
+//
+//		@Override
+//		public void set(Tuple3D<?> t1) {
+//			throw new UnsupportedOperationException();
+//		}
+//
+//		@Override
+//		public void set(int x, int y, int z) {
+//			throw new UnsupportedOperationException();
+//		}
+//
+//		@Override
+//		public void set(double x, double y, double z) {
+//			throw new UnsupportedOperationException();
+//		}
+//
+//		@Override
+//		public void set(int[] t) {
+//			throw new UnsupportedOperationException();
+//		}
+//
+//		@Override
+//		public void set(double[] t) {
+//			throw new UnsupportedOperationException();
+//		}
 
 		@Override
 		public double getX() {
@@ -569,15 +568,15 @@ public class Point3f extends Tuple3f<Point3D> implements Point3D {
 			return Point3f.this.ix();
 		}
 
-		@Override
-		public void setX(int x) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void setX(double x) {
-			throw new UnsupportedOperationException();
-		}
+//		@Override
+//		public void setX(int x) {
+//			throw new UnsupportedOperationException();
+//		}
+//
+//		@Override
+//		public void setX(double x) {
+//			throw new UnsupportedOperationException();
+//		}
 
 		@Override
 		public double getY() {
@@ -589,15 +588,15 @@ public class Point3f extends Tuple3f<Point3D> implements Point3D {
 			return Point3f.this.iy();
 		}
 
-		@Override
-		public void setY(int y) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void setY(double y) {
-			throw new UnsupportedOperationException();
-		}
+//		@Override
+//		public void setY(int y) {
+//			throw new UnsupportedOperationException();
+//		}
+//
+//		@Override
+//		public void setY(double y) {
+//			throw new UnsupportedOperationException();
+//		}
 
 		@Override
 		public double getZ() {
@@ -609,65 +608,65 @@ public class Point3f extends Tuple3f<Point3D> implements Point3D {
 			return Point3f.this.iz();
 		}
 
-		@Override
-		public void setZ(int z) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void setZ(double z) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void sub(int x, int y, int z) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void sub(double x, double y, double z) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void subX(int x) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void subX(double x) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void subY(int y) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void subY(double y) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void subZ(int z) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void subZ(double z) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void interpolate(Point3D t1, Point3D t2, double alpha) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void interpolate(Point3D t1, double alpha) {
-			throw new UnsupportedOperationException();
-		}
+//		@Override
+//		public void setZ(int z) {
+//			throw new UnsupportedOperationException();
+//		}
+//
+//		@Override
+//		public void setZ(double z) {
+//			throw new UnsupportedOperationException();
+//		}
+//
+//		@Override
+//		public void sub(int x, int y, int z) {
+//			throw new UnsupportedOperationException();
+//		}
+//
+//		@Override
+//		public void sub(double x, double y, double z) {
+//			throw new UnsupportedOperationException();
+//		}
+//
+//		@Override
+//		public void subX(int x) {
+//			throw new UnsupportedOperationException();
+//		}
+//
+//		@Override
+//		public void subX(double x) {
+//			throw new UnsupportedOperationException();
+//		}
+//
+//		@Override
+//		public void subY(int y) {
+//			throw new UnsupportedOperationException();
+//		}
+//
+//		@Override
+//		public void subY(double y) {
+//			throw new UnsupportedOperationException();
+//		}
+//
+//		@Override
+//		public void subZ(int z) {
+//			throw new UnsupportedOperationException();
+//		}
+//
+//		@Override
+//		public void subZ(double z) {
+//			throw new UnsupportedOperationException();
+//		}
+//
+//		@Override
+//		public void interpolate(Point3D t1, Point3D t2, double alpha) {
+//			throw new UnsupportedOperationException();
+//		}
+//
+//		@Override
+//		public void interpolate(Point3D t1, double alpha) {
+//			throw new UnsupportedOperationException();
+//		}
 
 		@Override
 		public boolean equals(Tuple3D<?> t1) {
@@ -704,60 +703,60 @@ public class Point3f extends Tuple3f<Point3D> implements Point3D {
 			return Point3f.this.distanceLinf(p1);
 		}
 
-		@Override
-		public void add(Point3D t1, Vector3D t2) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void add(Vector3D t1, Point3D t2) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void add(Vector3D t1) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void scaleAdd(int s, Vector3D t1, Point3D t2) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void scaleAdd(double s, Vector3D t1, Point3D t2) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void scaleAdd(int s, Point3D t1, Vector3D t2) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void scaleAdd(double s, Point3D t1, Vector3D t2) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void scaleAdd(int s, Vector3D t1) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void scaleAdd(double s, Vector3D t1) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void sub(Point3D t1, Vector3D t2) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void sub(Vector3D t1) {
-			throw new UnsupportedOperationException();
-		}
+//		@Override
+//		public void add(Point3D t1, Vector3D t2) {
+//			throw new UnsupportedOperationException();
+//		}
+//
+//		@Override
+//		public void add(Vector3D t1, Point3D t2) {
+//			throw new UnsupportedOperationException();
+//		}
+//
+//		@Override
+//		public void add(Vector3D t1) {
+//			throw new UnsupportedOperationException();
+//		}
+//
+//		@Override
+//		public void scaleAdd(int s, Vector3D t1, Point3D t2) {
+//			throw new UnsupportedOperationException();
+//		}
+//
+//		@Override
+//		public void scaleAdd(double s, Vector3D t1, Point3D t2) {
+//			throw new UnsupportedOperationException();
+//		}
+//
+//		@Override
+//		public void scaleAdd(int s, Point3D t1, Vector3D t2) {
+//			throw new UnsupportedOperationException();
+//		}
+//
+//		@Override
+//		public void scaleAdd(double s, Point3D t1, Vector3D t2) {
+//			throw new UnsupportedOperationException();
+//		}
+//
+//		@Override
+//		public void scaleAdd(int s, Vector3D t1) {
+//			throw new UnsupportedOperationException();
+//		}
+//
+//		@Override
+//		public void scaleAdd(double s, Vector3D t1) {
+//			throw new UnsupportedOperationException();
+//		}
+//
+//		@Override
+//		public void sub(Point3D t1, Vector3D t2) {
+//			throw new UnsupportedOperationException();
+//		}
+//
+//		@Override
+//		public void sub(Vector3D t1) {
+//			throw new UnsupportedOperationException();
+//		}
 
 		@Override
 		public Point3D toUnmodifiable() {

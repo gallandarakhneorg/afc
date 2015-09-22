@@ -27,6 +27,8 @@ import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.Unefficient;
 import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem3D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
+import org.arakhne.afc.math.geometry.d3.FunctionalPoint3D;
+import org.arakhne.afc.math.geometry.d3.FunctionalVector3D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.util.Pair;
 
@@ -174,11 +176,11 @@ public class Triangle3f extends AbstractShape3f<Triangle3f> {
 			vmaxz = -maxboxz - vertz;
 		}
 
-		if (Vector3f.dotProduct(normalx, normaly, normalz, vminx, vminy, vminz) > 0.) {
+		if (FunctionalVector3D.dotProduct(normalx, normaly, normalz, vminx, vminy, vminz) > 0.) {
 			return false;
 		}
 
-		if (Vector3f.dotProduct(normalx, normaly, normalz, vmaxx, vmaxy, vmaxz) > 0.) {
+		if (FunctionalVector3D.dotProduct(normalx, normaly, normalz, vmaxx, vmaxy, vmaxz) > 0.) {
 			return true;
 		}
 
@@ -393,7 +395,7 @@ public class Triangle3f extends AbstractShape3f<Triangle3f> {
 			double tx2, double ty2, double tz2,
 			double tx3, double ty3, double tz3) {
 		Vector3f norm = new Vector3f();
-		Vector3f.crossProduct(
+		FunctionalVector3D.crossProduct(
 				tx2 - tx1,
 				ty2 - ty1,
 				tz2 - tz1,
@@ -474,9 +476,9 @@ public class Triangle3f extends AbstractShape3f<Triangle3f> {
 		double p3y = ty3 + f * (ty1 - ty3);
 		double p3z = tz3 + f * (tz1 - tz3); 
 
-		double d1 = Point3f.distanceSquaredPointPoint(px, py, pz, p1x, p1y, p1z);
-		double d2 = Point3f.distanceSquaredPointPoint(px, py, pz, p2x, p2y, p3z);
-		double d3 = Point3f.distanceSquaredPointPoint(px, py, pz, p3x, p3y, p3z);
+		double d1 = FunctionalPoint3D.distanceSquaredPointPoint(px, py, pz, p1x, p1y, p1z);
+		double d2 = FunctionalPoint3D.distanceSquaredPointPoint(px, py, pz, p2x, p2y, p3z);
+		double d3 = FunctionalPoint3D.distanceSquaredPointPoint(px, py, pz, p3x, p3y, p3z);
 
 		if (d1 <= d2) {
 			if (d1 <= d3) {
@@ -711,9 +713,9 @@ public class Triangle3f extends AbstractShape3f<Triangle3f> {
 		double rr = radius * radius;
 		// V = cross(B - A, C - A)
 		Vector3f V = new Vector3f();
-		Vector3f.crossProduct(bx - ax, by - ay, bz - az, cx - ax, cy - ay, cz - az, V);
+		FunctionalVector3D.crossProduct(bx - ax, by - ay, bz - az, cx - ax, cy - ay, cz - az, V);
 		// d = dot(A, V)
-		double d = Vector3f.dotProduct(ax, ay, az, V.getX(), V.getY(), V.getZ());
+		double d = FunctionalVector3D.dotProduct(ax, ay, az, V.getX(), V.getY(), V.getZ());
 		// e = dot(V, V)
 		double e = V.dot(V);
 		// sep1 = d * d > rr * e
@@ -721,17 +723,17 @@ public class Triangle3f extends AbstractShape3f<Triangle3f> {
 			return false;
 		}
 		// aa = dot(A, A)
-		double aa = Vector3f.dotProduct(ax, ay, az, ax, ay, az);
+		double aa = FunctionalVector3D.dotProduct(ax, ay, az, ax, ay, az);
 		// ab = dot(A, B)
-		double ab = Vector3f.dotProduct(ax, ay, az, bx, by, bz);
+		double ab = FunctionalVector3D.dotProduct(ax, ay, az, bx, by, bz);
 		// ac = dot(A, C)
-		double ac = Vector3f.dotProduct(ax, ay, az, cx, cy, cz);
+		double ac = FunctionalVector3D.dotProduct(ax, ay, az, cx, cy, cz);
 		// bb = dot(B, B)
-		double bb = Vector3f.dotProduct(bx, by, bz, bx, by, bz);
+		double bb = FunctionalVector3D.dotProduct(bx, by, bz, bx, by, bz);
 		// bc = dot(B, C)
-		double bc = Vector3f.dotProduct(bx, by, bz, cx, cy, cz);
+		double bc = FunctionalVector3D.dotProduct(bx, by, bz, cx, cy, cz);
 		// cc = dot(C, C)
-		double cc = Vector3f.dotProduct(cx, cy, cz, cx, cy, cz);
+		double cc = FunctionalVector3D.dotProduct(cx, cy, cz, cx, cy, cz);
 		// sep2 = (aa > rr) & (ab > aa) & (ac > aa)
 		if ((aa > rr) && (ab > aa) && (ac > aa)) {
 			return false;
@@ -752,7 +754,7 @@ public class Triangle3f extends AbstractShape3f<Triangle3f> {
 		// d1 = ab - aa
 		double d1 = ab - aa;
 		// e1 = dot(AB, AB)
-		double e1 = Vector3f.dotProduct(abx, aby, abz, abx, aby, abz);
+		double e1 = FunctionalVector3D.dotProduct(abx, aby, abz, abx, aby, abz);
 		// Q1 = A * e1 - d1 * AB
 		double q1x = ax * e1 - d1 * abx;
 		double q1y = ay * e1 - d1 * aby;
@@ -762,8 +764,8 @@ public class Triangle3f extends AbstractShape3f<Triangle3f> {
 		double qcy = cy * e1 - q1y;
 		double qcz = cz * e1 - q1z;
 		// sep5 = [dot(Q1, Q1) > rr * e1 * e1] & [dot(Q1, QC) > 0]
-		if ((Vector3f.dotProduct(q1x, q1y, q1z, q1x, q1y, q1z) > (rr * e1 * e1))
-				&& (Vector3f.dotProduct(q1x, q1y, q1z, qcx, qcy, qcz) > 0.)) {
+		if ((FunctionalVector3D.dotProduct(q1x, q1y, q1z, q1x, q1y, q1z) > (rr * e1 * e1))
+				&& (FunctionalVector3D.dotProduct(q1x, q1y, q1z, qcx, qcy, qcz) > 0.)) {
 			return false;
 		}
 
@@ -774,7 +776,7 @@ public class Triangle3f extends AbstractShape3f<Triangle3f> {
 		// d2 = bc - bb
 		double d2 = bc - bb;
 		// e2 = dot(BC, BC)
-		double e2 = Vector3f.dotProduct(bcx, bcy, bcz, bcx, bcy, bcz);
+		double e2 = FunctionalVector3D.dotProduct(bcx, bcy, bcz, bcx, bcy, bcz);
 		// Q2 = B * e2 - d2 * BC
 		double q2x = bx * e2 - d2 * bcx;
 		double q2y = by * e2 - d2 * bcy;
@@ -784,8 +786,8 @@ public class Triangle3f extends AbstractShape3f<Triangle3f> {
 		double qay = ay * e2 - q2y;
 		double qaz = az * e2 - q2z;
 		// sep6 = [dot(Q2, Q2) > rr * e2 * e2] & [dot(Q2, QA) > 0]
-		if ((Vector3f.dotProduct(q2x, q2y, q2z, q2x, q2y, q2z) > (rr * e2 * e2))
-				&& (Vector3f.dotProduct(q1x, q2y, q2z, qax, qay, qaz) > 0.)) {
+		if ((FunctionalVector3D.dotProduct(q2x, q2y, q2z, q2x, q2y, q2z) > (rr * e2 * e2))
+				&& (FunctionalVector3D.dotProduct(q1x, q2y, q2z, qax, qay, qaz) > 0.)) {
 			return false;
 		}
 
@@ -796,7 +798,7 @@ public class Triangle3f extends AbstractShape3f<Triangle3f> {
 		// d3 = ac - cc
 		double d3 = ac - cc;
 		// e3 = dot(CA, CA)
-		double e3 = Vector3f.dotProduct(cax, cay, caz, cax, cay, caz);
+		double e3 = FunctionalVector3D.dotProduct(cax, cay, caz, cax, cay, caz);
 		// Q3 = C * e3 - d3 * CA
 		double q3x = cx * e3 - d3 * cax;
 		double q3y = cy * e3 - d3 * cay;
@@ -806,8 +808,8 @@ public class Triangle3f extends AbstractShape3f<Triangle3f> {
 		double qby = by * e3 - q3y;
 		double qbz = bz * e3 - q3z;
 		// sep7 = [dot(Q3, Q3) > rr * e3 * e3] & [dot(Q3, QB) > 0]
-		if ((Vector3f.dotProduct(q3x, q3y, q3z, q3x, q3y, q3z) > (rr * e3 * e3))
-				&& (Vector3f.dotProduct(q3x, q3y, q3z, qbx, qby, qbz) > 0.)) {
+		if ((FunctionalVector3D.dotProduct(q3x, q3y, q3z, q3x, q3y, q3z) > (rr * e3 * e3))
+				&& (FunctionalVector3D.dotProduct(q3x, q3y, q3z, qbx, qby, qbz) > 0.)) {
 			return false;
 		}
 
@@ -856,23 +858,23 @@ public class Triangle3f extends AbstractShape3f<Triangle3f> {
 		nx = tx1 - cx;
 		ny = ty1 - cy;
 		nz = tz1 - cz;
-		double ntx1 = Vector3f.dotProduct(nx, ny, nz, ax1, ay1, az1);
-		double nty1 = Vector3f.dotProduct(nx, ny, nz, ax2, ay2, az2);
-		double ntz1 = Vector3f.dotProduct(nx, ny, nz, ax3, ay3, az3);
+		double ntx1 = FunctionalVector3D.dotProduct(nx, ny, nz, ax1, ay1, az1);
+		double nty1 = FunctionalVector3D.dotProduct(nx, ny, nz, ax2, ay2, az2);
+		double ntz1 = FunctionalVector3D.dotProduct(nx, ny, nz, ax3, ay3, az3);
 
 		nx = tx2 - cx;
 		ny = ty2 - cy;
 		nz = tz2 - cz;
-		double ntx2 = Vector3f.dotProduct(nx, ny, nz, ax1, ay1, az1);
-		double nty2 = Vector3f.dotProduct(nx, ny, nz, ax2, ay2, az2);
-		double ntz2 = Vector3f.dotProduct(nx, ny, nz, ax3, ay3, az3);
+		double ntx2 = FunctionalVector3D.dotProduct(nx, ny, nz, ax1, ay1, az1);
+		double nty2 = FunctionalVector3D.dotProduct(nx, ny, nz, ax2, ay2, az2);
+		double ntz2 = FunctionalVector3D.dotProduct(nx, ny, nz, ax3, ay3, az3);
 
 		nx = tx3 - cx;
 		ny = ty3 - cy;
 		nz = tz3 - cz;
-		double ntx3 = Vector3f.dotProduct(nx, ny, nz, ax1, ay1, az1);
-		double nty3 = Vector3f.dotProduct(nx, ny, nz, ax2, ay2, az2);
-		double ntz3 = Vector3f.dotProduct(nx, ny, nz, ax3, ay3, az3);
+		double ntx3 = FunctionalVector3D.dotProduct(nx, ny, nz, ax1, ay1, az1);
+		double nty3 = FunctionalVector3D.dotProduct(nx, ny, nz, ax2, ay2, az2);
+		double ntz3 = FunctionalVector3D.dotProduct(nx, ny, nz, ax3, ay3, az3);
 
 		// Test intersection
 		return intersectsTriangleAlignedBox(
@@ -979,16 +981,16 @@ public class Triangle3f extends AbstractShape3f<Triangle3f> {
 		double Cz = tz2 - tz3;
 		// W1 = B x C
 		Vector3f W1 = new Vector3f();
-		Vector3f.crossProduct(Bx, By, Bz, Cx, Cy, Cz, W1);
+		FunctionalVector3D.crossProduct(Bx, By, Bz, Cx, Cy, Cz, W1);
 		// w = A . W1
-		double w = Vector3f.dotProduct(Ax, Ay, Az, W1.getX(), W1.getY(), W1.getZ());
+		double w = FunctionalVector3D.dotProduct(Ax, Ay, Az, W1.getX(), W1.getY(), W1.getZ());
 		// D = Q2 - Q1
 		double Dx = sx2 - sx1;
 		double Dy = sy2 - sy1;
 		double Dz = sz2 - sz1;
 		// s = D . W1
 		double t, u;
-		double s = Vector3f.dotProduct(Dx, Dy, Dz, W1.getX(), W1.getY(), W1.getZ());
+		double s = FunctionalVector3D.dotProduct(Dx, Dy, Dz, W1.getX(), W1.getY(), W1.getZ());
 
 		int cmp = MathUtil.compareEpsilon(w, 0.);
 		if (cmp > 0) {
@@ -1000,15 +1002,15 @@ public class Triangle3f extends AbstractShape3f<Triangle3f> {
 			}
 			// W2 = A x D
 			Vector3f W2 = new Vector3f();
-			Vector3f.crossProduct(Ax, Ay, Az, Dx, Dy, Dz, W2);
+			FunctionalVector3D.crossProduct(Ax, Ay, Az, Dx, Dy, Dz, W2);
 			// t = W2 . C
-			t = Vector3f.dotProduct(W2.getX(), W2.getY(), W2.getZ(), Cx, Cy, Cz);
+			t = FunctionalVector3D.dotProduct(W2.getX(), W2.getY(), W2.getZ(), Cx, Cy, Cz);
 			// if (t < -epsilon) rejection 3
 			if ( t < -MathConstants.EPSILON) {
 				return Double.NaN;
 			}
 			// u = - W2 . B
-			u = - Vector3f.dotProduct(W2.getX(), W2.getY(), W2.getZ(), Bx, By, Bz);
+			u = - FunctionalVector3D.dotProduct(W2.getX(), W2.getY(), W2.getZ(), Bx, By, Bz);
 			// if ( u < -epsilon) rejection 4
 			if (u < -MathConstants.EPSILON) {
 				return Double.NaN;
@@ -1026,15 +1028,15 @@ public class Triangle3f extends AbstractShape3f<Triangle3f> {
 			}
 			// W2 = A x D
 			Vector3f W2 = new Vector3f();
-			Vector3f.crossProduct(Ax, Ay, Az, Dx, Dy, Dz, W2);
+			FunctionalVector3D.crossProduct(Ax, Ay, Az, Dx, Dy, Dz, W2);
 			// t = W2 . C
-			t = Vector3f.dotProduct(W2.getX(), W2.getY(), W2.getZ(), Cx, Cy, Cz);
+			t = FunctionalVector3D.dotProduct(W2.getX(), W2.getY(), W2.getZ(), Cx, Cy, Cz);
 			// if (t > epsilon) rejection 3
 			if ( t > MathConstants.EPSILON) {
 				return Double.NaN;
 			}
 			// u = - W2 . B
-			u = - Vector3f.dotProduct(W2.getX(), W2.getY(), W2.getZ(), Bx, By, Bz);
+			u = - FunctionalVector3D.dotProduct(W2.getX(), W2.getY(), W2.getZ(), Bx, By, Bz);
 			// if ( u > epsilon) rejection 4
 			if (u > MathConstants.EPSILON) {
 				return Double.NaN;
@@ -1051,15 +1053,15 @@ public class Triangle3f extends AbstractShape3f<Triangle3f> {
 				//
 				// W2 = D x A
 				Vector3f W2 = new Vector3f();
-				Vector3f.crossProduct(Dx, Dy, Dz, Ax, Ay, Az, W2);
+				FunctionalVector3D.crossProduct(Dx, Dy, Dz, Ax, Ay, Az, W2);
 				// t = W2 . C
-				t = Vector3f.dotProduct(W2.getX(), W2.getY(), W2.getZ(), Cx, Cy, Cz);
+				t = FunctionalVector3D.dotProduct(W2.getX(), W2.getY(), W2.getZ(), Cx, Cy, Cz);
 				// if (t < -epsilon) rejection 3
 				if (t < -MathConstants.EPSILON) {
 					return Double.NaN;
 				}
 				// u = - W2 . B
-				u = - Vector3f.dotProduct(W2.getX(), W2.getY(), W2.getZ(), Bx, By, Bz);
+				u = - FunctionalVector3D.dotProduct(W2.getX(), W2.getY(), W2.getZ(), Bx, By, Bz);
 				// if ( u < -epsilon) rejection 4
 				if (u < -MathConstants.EPSILON) {
 					return Double.NaN;
@@ -1073,15 +1075,15 @@ public class Triangle3f extends AbstractShape3f<Triangle3f> {
 				//
 				// W2 = D x A
 				Vector3f W2 = new Vector3f();
-				Vector3f.crossProduct(Dx, Dy, Dz, Ax, Ay, Az, W2);
+				FunctionalVector3D.crossProduct(Dx, Dy, Dz, Ax, Ay, Az, W2);
 				// t = W2 . C
-				t = Vector3f.dotProduct(W2.getX(), W2.getY(), W2.getZ(), Cx, Cy, Cz);
+				t = FunctionalVector3D.dotProduct(W2.getX(), W2.getY(), W2.getZ(), Cx, Cy, Cz);
 				// if (t > epsilon) rejection 3
 				if (t > MathConstants.EPSILON) {
 					return Double.NaN;
 				}
 				// u = - W2 . B
-				u = - Vector3f.dotProduct(W2.getX(), W2.getY(), W2.getZ(), Bx, By, Bz);
+				u = - FunctionalVector3D.dotProduct(W2.getX(), W2.getY(), W2.getZ(), Bx, By, Bz);
 				// if ( u > epsilon) rejection 4
 				if (u > MathConstants.EPSILON) {
 					return Double.NaN;
@@ -1171,11 +1173,11 @@ public class Triangle3f extends AbstractShape3f<Triangle3f> {
 			double wz = (sz1 + factor * (sz2 - sz1)) - tz1;
 
 			// Compute dot products
-			double uv = Vector3f.dotProduct(ux, uy, uz, vx, vy, vz);
-			double uu = Vector3f.dotProduct(ux, uy, uz, ux, uy, uz);
-			double vv = Vector3f.dotProduct(vx, vy, vz, vx, vy, vz);
-			double wv = Vector3f.dotProduct(wx, wy, wz, vx, vy, vz);
-			double wu = Vector3f.dotProduct(wx, wy, wz, ux, uy, uz);
+			double uv = FunctionalVector3D.dotProduct(ux, uy, uz, vx, vy, vz);
+			double uu = FunctionalVector3D.dotProduct(ux, uy, uz, ux, uy, uz);
+			double vv = FunctionalVector3D.dotProduct(vx, vy, vz, vx, vy, vz);
+			double wv = FunctionalVector3D.dotProduct(wx, wy, wz, vx, vy, vz);
+			double wu = FunctionalVector3D.dotProduct(wx, wy, wz, ux, uy, uz);
 
 			// Compute the barycentric coordinates (s, t),
 			// using the generalized perp operator on the point I.
@@ -1498,15 +1500,15 @@ public class Triangle3f extends AbstractShape3f<Triangle3f> {
 		// Compute dot products
 		//
 		// dot01 = dot(v0, v0)
-		double dot00 = Vector3f.dotProduct(v0x, v0y, v0z, v0x, v0y, v0z);
+		double dot00 = FunctionalVector3D.dotProduct(v0x, v0y, v0z, v0x, v0y, v0z);
 		// dot01 = dot(v0, v1)
-		double dot01 = Vector3f.dotProduct(v0x, v0y, v0z, v1x, v1y, v1z);
+		double dot01 = FunctionalVector3D.dotProduct(v0x, v0y, v0z, v1x, v1y, v1z);
 		// dot02 = dot(v0, v2)
-		double dot02 = Vector3f.dotProduct(v0x, v0y, v0z, v2x, v2y, v2z);
+		double dot02 = FunctionalVector3D.dotProduct(v0x, v0y, v0z, v2x, v2y, v2z);
 		// dot11 = dot(v1, v1)
-		double dot11 = Vector3f.dotProduct(v1x, v1y, v1z, v1x, v1y, v1z);
+		double dot11 = FunctionalVector3D.dotProduct(v1x, v1y, v1z, v1x, v1y, v1z);
 		// dot12 = dot(v1, v2)
-		double dot12 = Vector3f.dotProduct(v1x, v1y, v1z, v2x, v2y, v2z);
+		double dot12 = FunctionalVector3D.dotProduct(v1x, v1y, v1z, v2x, v2y, v2z);
 
 		//
 		// Compute barycentric coordinates
@@ -1646,7 +1648,7 @@ public class Triangle3f extends AbstractShape3f<Triangle3f> {
 		}
 		if (v==null) {
 			v = new Vector3f();
-			Vector3f.crossProduct(
+			FunctionalVector3D.crossProduct(
 					this.p2.getX() - this.p1.getX(),
 					this.p2.getY() - this.p1.getY(),
 					this.p2.getZ() - this.p1.getZ(),
@@ -1966,7 +1968,7 @@ public class Triangle3f extends AbstractShape3f<Triangle3f> {
 			Vector3f up = cs.getUpVector();
 			assert(up!=null);
 			Vector3f axis = new Vector3f();
-			Vector3f.crossProduct(
+			FunctionalVector3D.crossProduct(
 					up.getX(), up.getY(), up.getZ(),
 					norm.getX(), norm.getY(), norm.getZ(),
 					cs, axis);
@@ -1974,7 +1976,7 @@ public class Triangle3f extends AbstractShape3f<Triangle3f> {
 			orient = new Quaternion();
 			orient.setAxisAngle(
 					axis, 
-					Vector3f.signedAngle(
+					FunctionalVector3D.signedAngle(
 							up.getX(), up.getY(), up.getZ(),
 							norm.getX(), norm.getY(), norm.getZ()));
 			this.orientation = new SoftReference<>(orient);

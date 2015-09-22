@@ -26,6 +26,8 @@ import static org.junit.Assert.assertTrue;
 
 import org.arakhne.afc.math.AbstractMathTestCase;
 import static org.arakhne.afc.math.MathConstants.PI;
+
+import org.arakhne.afc.math.geometry.d2.FunctionalVector2D;
 import org.arakhne.afc.math.geometry.d2.continuous.Point2f;
 import org.arakhne.afc.math.geometry.d2.continuous.Vector2f;
 import org.arakhne.afc.math.geometry.d3.continuous.Vector3f;
@@ -230,7 +232,7 @@ public class Vector2fTest extends AbstractMathTestCase {
 		double angle = this.random.nextDouble();
 		double length = vector.length();
 		
-		vector = vector.toOrientationVector(angle);
+		vector = FunctionalVector2D.toOrientationVector(angle);
 		
 		assertEpsilonEquals(1,vector.length());
 		assertEpsilonEquals(Math.cos(angle),Math.cos(base1.signedAngle(vector)));
@@ -244,7 +246,7 @@ public class Vector2fTest extends AbstractMathTestCase {
 		double angle = this.random.nextDouble();
 		double angle2;
 		
-		vector = vector.toOrientationVector(angle);
+		vector = FunctionalVector2D.toOrientationVector(angle);
 		
 		angle2 = vector.getOrientationAngle();
 		
@@ -437,7 +439,7 @@ public class Vector2fTest extends AbstractMathTestCase {
 		
 		Vector2f vector = new Vector2f(x2-x1,y2-y1);
 		
-		assertEpsilonEquals((new Vector2f(1,0)).signedAngle(vector),vector.angleOfVector(x1, y1, x2, y2));
+		assertEpsilonEquals((new Vector2f(1,0)).signedAngle(vector),FunctionalVector2D.angleOfVector(x1, y1, x2, y2));
 		
 	}
 
@@ -445,9 +447,9 @@ public class Vector2fTest extends AbstractMathTestCase {
 	public void angleOfVectorDoubleDouble() {
 		Vector2f temp = new Vector2f();
 		
-		assertEpsilonEquals(Math.acos(1/Math.sqrt(5)),temp.angleOfVector(1,2));
-		assertEpsilonEquals(PI/2f+Math.acos(1/Math.sqrt(5)),temp.angleOfVector(-2,1));
-		assertEpsilonEquals(PI/4f,temp.angleOfVector(1,1));
+		assertEpsilonEquals(Math.acos(1/Math.sqrt(5)),FunctionalVector2D.angleOfVector(1,2));
+		assertEpsilonEquals(PI/2f+Math.acos(1/Math.sqrt(5)),FunctionalVector2D.angleOfVector(-2,1));
+		assertEpsilonEquals(PI/4f,FunctionalVector2D.angleOfVector(1,1));
 		
 	}
 
@@ -458,16 +460,16 @@ public class Vector2fTest extends AbstractMathTestCase {
 
 		assertEpsilonEquals(
 				0.f,
-				Vector2f.signedAngle(v1.getX(), v1.getY(), v1.getX(),
+				FunctionalVector2D.signedAngle(v1.getX(), v1.getY(), v1.getX(),
 						v1.getY()));
 		assertEpsilonEquals(
 				0.f,
-				Vector2f.signedAngle(v2.getX(), v2.getY(), v2.getX(),
+				FunctionalVector2D.signedAngle(v2.getX(), v2.getY(), v2.getX(),
 						v2.getY()));
 
-		double sAngle1 = Vector2f.signedAngle(v1.getX(), v1.getY(),
+		double sAngle1 = FunctionalVector2D.signedAngle(v1.getX(), v1.getY(),
 				v2.getX(), v2.getY());
-		double sAngle2 = Vector2f.signedAngle(v2.getX(), v2.getY(),
+		double sAngle2 = FunctionalVector2D.signedAngle(v2.getX(), v2.getY(),
 				v1.getX(), v1.getY());
 
 		assertEpsilonEquals(-sAngle1, sAngle2);
@@ -489,18 +491,18 @@ public class Vector2fTest extends AbstractMathTestCase {
 	public void perpProductDoubleDoubleDoubleDouble() {
 		Vector2f vector = new Vector2f();
 		
-		assertEpsilonEquals(0,vector.perpProduct(1, 2, 1, 2));
-		assertEpsilonEquals(-2,vector.perpProduct(1, 2, 3, 4));
-		assertEpsilonEquals(-4,vector.perpProduct(1, 2, 1, -2));	
+		assertEpsilonEquals(0,FunctionalVector2D.perpProduct(1, 2, 1, 2));
+		assertEpsilonEquals(-2,FunctionalVector2D.perpProduct(1, 2, 3, 4));
+		assertEpsilonEquals(-4,FunctionalVector2D.perpProduct(1, 2, 1, -2));	
 	}
 
 	@Test
 	public void dotProductDoubleDoubleDoubleDouble() {
 Vector2f vector = new Vector2f();
 		
-		assertEpsilonEquals(5,vector.dotProduct(1, 2, 1, 2));
-		assertEpsilonEquals(11,vector.dotProduct(1, 2, 3, 4));
-		assertEpsilonEquals(-3,vector.dotProduct(1, 2, 1, -2));
+		assertEpsilonEquals(5,FunctionalVector2D.dotProduct(1, 2, 1, 2));
+		assertEpsilonEquals(11,FunctionalVector2D.dotProduct(1, 2, 3, 4));
+		assertEpsilonEquals(-3,FunctionalVector2D.dotProduct(1, 2, 1, -2));
 	}
 
 }

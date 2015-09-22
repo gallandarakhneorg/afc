@@ -31,6 +31,8 @@ import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.Unefficient;
 import org.arakhne.afc.math.geometry.PathWindingRule;
+import org.arakhne.afc.math.geometry.d2.FunctionalPoint2D;
+import org.arakhne.afc.math.geometry.d2.FunctionalVector2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
@@ -270,7 +272,7 @@ public class OrientedRectangle2f extends AbstractShape2f<OrientedRectangle2f> {
 		double squaredRadius = circleRadius * circleRadius;
 
 		return ! (MathUtil.isEpsilonEqual(
-				Point2f.distanceSquaredPointPoint(
+				FunctionalPoint2D.distanceSquaredPointPoint(
 						obrCenterX, obrCenterY,
 						closest.getX(), closest.getY()),
 						squaredRadius));
@@ -356,34 +358,34 @@ public class OrientedRectangle2f extends AbstractShape2f<OrientedRectangle2f> {
 
 		//Let A the first box and B the second one
 		//L = Ax
-		if (Math.abs(Vector2f.dotProduct(tx, ty, obr1Axis1X, obr1Axis1Y)) 
+		if (Math.abs(FunctionalVector2D.dotProduct(tx, ty, obr1Axis1X, obr1Axis1Y)) 
 				> obr1Axis1Extent
-				+ Math.abs(Vector2f.dotProduct(scaledObr2Axis1X, scaledObr2Axis1Y, obr1Axis1X, obr1Axis1Y)) 
-				+ Math.abs(Vector2f.dotProduct(scaledObr2Axis2X, scaledObr2Axis2Y, obr1Axis1X, obr1Axis1Y))) {
+				+ Math.abs(FunctionalVector2D.dotProduct(scaledObr2Axis1X, scaledObr2Axis1Y, obr1Axis1X, obr1Axis1Y)) 
+				+ Math.abs(FunctionalVector2D.dotProduct(scaledObr2Axis2X, scaledObr2Axis2Y, obr1Axis1X, obr1Axis1Y))) {
 			return false;
 		}
 
 		//L = Ay
-		if (Math.abs(Vector2f.dotProduct(tx, ty, obr1Axis2X, obr1Axis2Y))
+		if (Math.abs(FunctionalVector2D.dotProduct(tx, ty, obr1Axis2X, obr1Axis2Y))
 				> obr1Axis2Extent
-				+ Math.abs(Vector2f.dotProduct(scaledObr2Axis1X, scaledObr2Axis1Y, obr1Axis2X, obr1Axis2Y))
-				+ Math.abs(Vector2f.dotProduct(scaledObr2Axis2X, scaledObr2Axis2Y, obr1Axis2X, obr1Axis2Y))) {
+				+ Math.abs(FunctionalVector2D.dotProduct(scaledObr2Axis1X, scaledObr2Axis1Y, obr1Axis2X, obr1Axis2Y))
+				+ Math.abs(FunctionalVector2D.dotProduct(scaledObr2Axis2X, scaledObr2Axis2Y, obr1Axis2X, obr1Axis2Y))) {
 			return false;
 		}
 
 		//L=Bx
-		if (Math.abs(Vector2f.dotProduct(tx, ty, obr2Axis1X, obr2Axis1Y))
+		if (Math.abs(FunctionalVector2D.dotProduct(tx, ty, obr2Axis1X, obr2Axis1Y))
 				> obr2Axis1Extent
-				+ Math.abs(Vector2f.dotProduct(scaledObr1Axis1X, scaledObr1Axis1Y, obr2Axis1X, obr2Axis1Y))
-				+ Math.abs(Vector2f.dotProduct(scaledObr1Axis2X, scaledObr1Axis2Y, obr2Axis1X, obr2Axis1Y))) {
+				+ Math.abs(FunctionalVector2D.dotProduct(scaledObr1Axis1X, scaledObr1Axis1Y, obr2Axis1X, obr2Axis1Y))
+				+ Math.abs(FunctionalVector2D.dotProduct(scaledObr1Axis2X, scaledObr1Axis2Y, obr2Axis1X, obr2Axis1Y))) {
 			return false;
 		}
 
 		//L=By
-		if (Math.abs(Vector2f.dotProduct(tx, ty, obr2Axis2X, obr2Axis2Y))
+		if (Math.abs(FunctionalVector2D.dotProduct(tx, ty, obr2Axis2X, obr2Axis2Y))
 				> obr2Axis2Extent
-				+ Math.abs(Vector2f.dotProduct(scaledObr1Axis1X, scaledObr1Axis1Y, obr2Axis2X, obr2Axis2Y))
-				+ Math.abs(Vector2f.dotProduct(scaledObr1Axis2X, scaledObr1Axis2Y, obr2Axis2X, obr2Axis2Y))) {
+				+ Math.abs(FunctionalVector2D.dotProduct(scaledObr1Axis1X, scaledObr1Axis1Y, obr2Axis2X, obr2Axis2Y))
+				+ Math.abs(FunctionalVector2D.dotProduct(scaledObr1Axis2X, scaledObr1Axis2Y, obr2Axis2X, obr2Axis2Y))) {
 			return false;
 		}
 
@@ -706,8 +708,8 @@ public class OrientedRectangle2f extends AbstractShape2f<OrientedRectangle2f> {
 
 		// For each OBB axis project d onto that axis to get the distance along
 		// the axis of d from the box center
-		double d1 = Vector2f.dotProduct(dx, dy, obrAxis1X, obrAxis1Y);
-		double d2 = Vector2f.dotProduct(dx, dy, obrAxis2X, obrAxis2Y);
+		double d1 = FunctionalVector2D.dotProduct(dx, dy, obrAxis1X, obrAxis1Y);
+		double d2 = FunctionalVector2D.dotProduct(dx, dy, obrAxis2X, obrAxis2Y);
 
 		if (closest != null) {
 			double clampedD1 = MathUtil.clamp(d1, -obrAxis1Extent, obrAxis1Extent);
@@ -1077,8 +1079,8 @@ public class OrientedRectangle2f extends AbstractShape2f<OrientedRectangle2f> {
 
 		// For each OBB axis project d onto that axis to get the distance along
 		// the axis of d from the box center
-		double d1 = Vector2f.dotProduct(dx, dy, this.rx, this.ry);
-		double d2 = Vector2f.dotProduct(dx, dy, this.sx, this.sy);
+		double d1 = FunctionalVector2D.dotProduct(dx, dy, this.rx, this.ry);
+		double d2 = FunctionalVector2D.dotProduct(dx, dy, this.sx, this.sy);
 
 		double clampedD1 = MathUtil.clamp(d1, -this.extentR, this.extentR);
 		double clampedD2 = MathUtil.clamp(d2, -this.extentS, this.extentS);
@@ -1098,8 +1100,8 @@ public class OrientedRectangle2f extends AbstractShape2f<OrientedRectangle2f> {
 
 		// For each OBB axis project d onto that axis to get the distance along
 		// the axis of d from the box center
-		double d1 = Vector2f.dotProduct(dx, dy, this.rx, this.ry);
-		double d2 = Vector2f.dotProduct(dx, dy, this.sx, this.sy);
+		double d1 = FunctionalVector2D.dotProduct(dx, dy, this.rx, this.ry);
+		double d2 = FunctionalVector2D.dotProduct(dx, dy, this.sx, this.sy);
 
 		// Clamp to the other side of the box
 		if (d1 >= 0.)
@@ -1165,7 +1167,7 @@ public class OrientedRectangle2f extends AbstractShape2f<OrientedRectangle2f> {
 				this.cx, this.cy,
 				this.rx, this.ry, this.extentR,
 				this.sx, this.sy, this.extentS);
-		return Point2f.distanceSquaredPointPoint(
+		return FunctionalPoint2D.distanceSquaredPointPoint(
 				p.getX(), p.getY(),
 				closest.getX(), closest.getY());
 	}
@@ -1177,7 +1179,7 @@ public class OrientedRectangle2f extends AbstractShape2f<OrientedRectangle2f> {
 				this.cx, this.cy,
 				this.rx, this.ry, this.extentR,
 				this.sx, this.sy, this.extentS);
-		return Point2f.distanceL1PointPoint(
+		return FunctionalPoint2D.distanceL1PointPoint(
 				p.getX(), p.getY(),
 				closest.getX(), closest.getY());
 	}
@@ -1189,7 +1191,7 @@ public class OrientedRectangle2f extends AbstractShape2f<OrientedRectangle2f> {
 				this.cx, this.cy,
 				this.rx, this.ry, this.extentR,
 				this.sx, this.sy, this.extentS);
-		return Point2f.distanceLinfPointPoint(
+		return FunctionalPoint2D.distanceLinfPointPoint(
 				p.getX(), p.getY(),
 				closest.getX(), closest.getY());
 	}

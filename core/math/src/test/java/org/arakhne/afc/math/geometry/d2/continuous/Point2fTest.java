@@ -26,6 +26,7 @@ import static org.junit.Assert.assertTrue;
 import org.arakhne.afc.math.AbstractMathTestCase;
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
+import org.arakhne.afc.math.geometry.d2.FunctionalPoint2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
@@ -44,46 +45,46 @@ public class Point2fTest extends AbstractMathTestCase {
 
 	@Test
 	public void distancePointPoint() {
-		Point2f point = new Point2f();
+		Point2D point = new Point2f();
 		
-		assertEpsilonEquals(0,point.distancePointPoint(0, 0, 0, 0));
-		assertEpsilonEquals(Math.sqrt(5),point.distancePointPoint(0, 0, 1, 2));
-		assertEpsilonEquals(Math.sqrt(2),point.distancePointPoint(0, 0, 1, 1));
+		assertEpsilonEquals(0,FunctionalPoint2D.distancePointPoint(0, 0, 0, 0));
+		assertEpsilonEquals(Math.sqrt(5),FunctionalPoint2D.distancePointPoint(0, 0, 1, 2));
+		assertEpsilonEquals(Math.sqrt(2),FunctionalPoint2D.distancePointPoint(0, 0, 1, 1));
 	}
 
 	@Test
 	public void distanceSquaredPointPoint() {
-		Point2f point = new Point2f();
+		Point2D point = new Point2f();
 		
-		assertEpsilonEquals(0,point.distanceSquaredPointPoint(0, 0, 0, 0));
-		assertEpsilonEquals(5,point.distanceSquaredPointPoint(0, 0, 1, 2));
-		assertEpsilonEquals(2,point.distanceSquaredPointPoint(0, 0, 1, 1));
+		assertEpsilonEquals(0,FunctionalPoint2D.distanceSquaredPointPoint(0, 0, 0, 0));
+		assertEpsilonEquals(5,FunctionalPoint2D.distanceSquaredPointPoint(0, 0, 1, 2));
+		assertEpsilonEquals(2,FunctionalPoint2D.distanceSquaredPointPoint(0, 0, 1, 1));
 	}
 
 	@Test
 	public void distanceL1PointPoint() {
 		Point2f point = new Point2f();
 		
-		assertEpsilonEquals(4,point.distanceL1PointPoint(1.0, 2.0, 3.0, 0));
-		assertEpsilonEquals(0,point.distanceL1PointPoint(1.0, 2.0, 1 ,2));
-		assertEpsilonEquals(0,point.distanceL1PointPoint(1, 2, 1.0, 2.0));
-		assertEpsilonEquals(4,point.distanceL1PointPoint(1.0, 2.0, -1, 0));
+		assertEpsilonEquals(4,FunctionalPoint2D.distanceL1PointPoint(1.0, 2.0, 3.0, 0));
+		assertEpsilonEquals(0,FunctionalPoint2D.distanceL1PointPoint(1.0, 2.0, 1 ,2));
+		assertEpsilonEquals(0,FunctionalPoint2D.distanceL1PointPoint(1, 2, 1.0, 2.0));
+		assertEpsilonEquals(4,FunctionalPoint2D.distanceL1PointPoint(1.0, 2.0, -1, 0));
 	}
 
 	@Test
 	public void distanceLinfPointPoint() {
 		Point2f point = new Point2f();
 		
-		assertEpsilonEquals(2,point.distanceLinfPointPoint(1.0,2.0,3.0,0));
-		assertEpsilonEquals(0,point.distanceLinfPointPoint(1.0,2.0,1,2));
-		assertEpsilonEquals(0,point.distanceLinfPointPoint(1,2,1.0,2.0));
-		assertEpsilonEquals(2,point.distanceLinfPointPoint(1.0,2.0,-1,0));
+		assertEpsilonEquals(2,FunctionalPoint2D.distanceLinfPointPoint(1.0,2.0,3.0,0));
+		assertEpsilonEquals(0,FunctionalPoint2D.distanceLinfPointPoint(1.0,2.0,1,2));
+		assertEpsilonEquals(0,FunctionalPoint2D.distanceLinfPointPoint(1,2,1.0,2.0));
+		assertEpsilonEquals(2,FunctionalPoint2D.distanceLinfPointPoint(1.0,2.0,-1,0));
 	}
 
 	@Test
 	public void testClone() {
-		Point2f point = new Point2f(1,2);
-		Point2f pointClone = point.clone();
+		Point2D point = new Point2f(1,2);
+		Point2D pointClone = point.clone();
 		
 		assertTrue(point.equals(pointClone));
 	}
@@ -366,9 +367,9 @@ public class Point2fTest extends AbstractMathTestCase {
 	public void isCollinearPointsDoubleDoubleDoubleDoubleDoubleDouble() {
 		Point2f point = new Point2f();
 		
-		assertTrue(point.isCollinearPoints(0, 0, 0, 0, 0, 0));
-		assertTrue(point.isCollinearPoints(-6, -4, -1, 3, 4, 10));
-		assertFalse(point.isCollinearPoints(0, 0, 1, 1, 1, -5));
+		assertTrue(FunctionalPoint2D.isCollinearPoints(0, 0, 0, 0, 0, 0));
+		assertTrue(FunctionalPoint2D.isCollinearPoints(-6, -4, -1, 3, 4, 10));
+		assertFalse(FunctionalPoint2D.isCollinearPoints(0, 0, 1, 1, 1, -5));
 	}
 
 }

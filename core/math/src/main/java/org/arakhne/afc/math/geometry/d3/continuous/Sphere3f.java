@@ -21,6 +21,7 @@
 package org.arakhne.afc.math.geometry.d3.continuous;
 
 import org.arakhne.afc.math.MathUtil;
+import org.arakhne.afc.math.geometry.d3.FunctionalPoint3D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 
 
@@ -84,7 +85,7 @@ public class Sphere3f extends AbstractShape3f<Sphere3f> {
 		// center to point p is less than the (squared) sphere radius
 		double squaredRadius = sphereRadius * sphereRadius;
 
-		return (Point3f.distanceSquaredPointPoint(
+		return (FunctionalPoint3D.distanceSquaredPointPoint(
 				sphereCenterx, sphereCentery, sphereCenterz,
 				closest.getX(), closest.getY(), closest.getZ()) < squaredRadius);
 	}
@@ -382,7 +383,7 @@ public class Sphere3f extends AbstractShape3f<Sphere3f> {
 	 */
 	public static boolean containsSpherePoint(double cx, double cy, double cz, double radius,
 			double px, double py, double pz) {
-		return Point3f.distanceSquaredPointPoint(
+		return FunctionalPoint3D.distanceSquaredPointPoint(
 				px, py, pz,
 				cx, cy, cz) <= (radius * radius);
 	}
@@ -437,7 +438,7 @@ public class Sphere3f extends AbstractShape3f<Sphere3f> {
 			double x1, double y1, double z1, double radius1,
 			double x2, double y2, double z2, double radius2) {
 		double r = radius1+radius2;
-		return Point3f.distanceSquaredPointPoint(x1, y1, z1, x2, y2, z2) < (r*r);
+		return FunctionalPoint3D.distanceSquaredPointPoint(x1, y1, z1, x2, y2, z2) < (r*r);
 	}
 
 	/** Replies if a sphere and a aligned box are intersecting.
@@ -748,7 +749,7 @@ public class Sphere3f extends AbstractShape3f<Sphere3f> {
 	 */
 	@Override
 	public double distance(Point3D p) {
-		double d = Point3f.distancePointPoint(getX(), getY(), getZ(), p.getX(), p.getY(), p.getZ()) - getRadius();
+		double d = FunctionalPoint3D.distancePointPoint(getX(), getY(), getZ(), p.getX(), p.getY(), p.getZ()) - getRadius();
 		return MathUtil.max(0., d);
 	}
 	
@@ -756,7 +757,7 @@ public class Sphere3f extends AbstractShape3f<Sphere3f> {
 	 */
 	@Override
 	public double distanceSquared(Point3D p) {
-		double d = Point3f.distanceSquaredPointPoint(getX(), getY(), getZ(), p.getX(), p.getY(), p.getZ()) - getRadius();
+		double d = FunctionalPoint3D.distanceSquaredPointPoint(getX(), getY(), getZ(), p.getX(), p.getY(), p.getZ()) - getRadius();
 		return MathUtil.max(0., d);
 	}
 

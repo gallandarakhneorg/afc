@@ -25,6 +25,8 @@ import java.util.NoSuchElementException;
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.PathWindingRule;
+import org.arakhne.afc.math.geometry.d2.FunctionalPoint2D;
+import org.arakhne.afc.math.geometry.d2.FunctionalVector2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 
 
@@ -68,7 +70,7 @@ public class Segment2f extends AbstractShape2f<Segment2f> {
 	 * @see Point2f#isCollinearPoints(double, double, double, double, double, double)
 	 */
 	public static boolean isCollinearLines(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4) {
-		return (isParallelLines(x1, y1, x2, y2, x3, y3, x4, y4) && Point2f.isCollinearPoints(x1, y1, x2, y2, x3, y3));
+		return (isParallelLines(x1, y1, x2, y2, x3, y3, x4, y4) && FunctionalPoint2D.isCollinearPoints(x1, y1, x2, y2, x3, y3));
 	}
 
 	/**
@@ -98,7 +100,7 @@ public class Segment2f extends AbstractShape2f<Segment2f> {
 	 * @see #isCollinearLines(double, double, double, double, double, double, double, double)
 	 */
 	public static boolean isParallelLines(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4) {
-		return Vector2f.isCollinearVectors(x2 - x1, y2 - y1, x4 - x3, y4 - y3);
+		return FunctionalVector2D.isCollinearVectors(x2 - x1, y2 - y1, x4 - x3, y4 - y3);
 	}
 
 	/**
@@ -165,7 +167,7 @@ public class Segment2f extends AbstractShape2f<Segment2f> {
 		double Y2 = y4 - y3;
 
 		// determinant is zero when parallel = det(L1,L2)
-		double det = Vector2f.perpProduct(X1, Y1, X2, Y2);
+		double det = FunctionalVector2D.perpProduct(X1, Y1, X2, Y2);
 		if (det == 0.)
 			return Double.NaN;
 
@@ -177,10 +179,10 @@ public class Segment2f extends AbstractShape2f<Segment2f> {
 		// then
 		// ua = det(L2,V) / det(L1,L2)
 		// ub = det(L1,V) / det(L1,L2)
-		double u = Vector2f.perpProduct(X1, Y1, x1 - x3, y1 - y3) / det;
+		double u = FunctionalVector2D.perpProduct(X1, Y1, x1 - x3, y1 - y3) / det;
 		if (u < 0. || u > 1.)
 			return Double.NaN;
-		u = Vector2f.perpProduct(X2, Y2, x1 - x3, y1 - y3) / det;
+		u = FunctionalVector2D.perpProduct(X2, Y2, x1 - x3, y1 - y3) / det;
 		return (u < 0. || u > 1.) ? Double.NaN : u;
 	}
 
@@ -220,7 +222,7 @@ public class Segment2f extends AbstractShape2f<Segment2f> {
 		double Y2 = y4 - y3;
 
 		// determinant is zero when parallel = det(L1,L2)
-		double det = Vector2f.perpProduct(X1, Y1, X2, Y2);
+		double det = FunctionalVector2D.perpProduct(X1, Y1, X2, Y2);
 		if (det == 0.)
 			return Double.NaN;
 
@@ -232,7 +234,7 @@ public class Segment2f extends AbstractShape2f<Segment2f> {
 		// then
 		// ua = det(L2,V) / det(L1,L2)
 		// ub = det(L1,V) / det(L1,L2)
-		return Vector2f.perpProduct(X2, Y2, x1 - x3, y1 - y3) / det;
+		return FunctionalVector2D.perpProduct(X2, Y2, x1 - x3, y1 - y3) / det;
 	}
 
 	/** Compute the intersection of two lines specified
@@ -274,7 +276,7 @@ public class Segment2f extends AbstractShape2f<Segment2f> {
 	 */
 	public static double distanceSquaredLinePoint(double x1, double y1, double x2, double y2, double px, double py) {
 		double r_denomenator = (x2-x1)*(x2-x1) + (y2-y1)*(y2-y1);
-		if (r_denomenator==0.) return Point2f.distanceSquaredPointPoint(px, py, x1, y1);
+		if (r_denomenator==0.) return FunctionalPoint2D.distanceSquaredPointPoint(px, py, x1, y1);
 		double s = ((y1-py)*(x2-x1)-(x1-px)*(y2-y1) ) / r_denomenator;
 		return (s * s) * Math.abs(r_denomenator);
 	}
@@ -293,7 +295,7 @@ public class Segment2f extends AbstractShape2f<Segment2f> {
 	 */
 	public static double distanceSquaredSegmentPoint(double x1, double y1, double x2, double y2, double px, double py, Point2D pts) {
 		double r_denomenator = (x2-x1)*(x2-x1) + (y2-y1)*(y2-y1);
-		if (r_denomenator==0f) return Point2f.distanceSquaredPointPoint(px, py, x1, y1);
+		if (r_denomenator==0f) return FunctionalPoint2D.distanceSquaredPointPoint(px, py, x1, y1);
 		double r_numerator = (px-x1)*(x2-x1) + (py-y1)*(y2-y1);
 		double ratio = r_numerator / r_denomenator;
 
@@ -329,7 +331,7 @@ public class Segment2f extends AbstractShape2f<Segment2f> {
 	 */
 	public static double distanceSegmentPoint(double x1, double y1, double x2, double y2, double px, double py, Point2D pts) {
 		double r_denomenator = (x2-x1)*(x2-x1) + (y2-y1)*(y2-y1);
-		if (r_denomenator==0.) return Point2f.distancePointPoint(px, py, x1, y1);
+		if (r_denomenator==0.) return FunctionalPoint2D.distancePointPoint(px, py, x1, y1);
 		double r_numerator = (px-x1)*(x2-x1) + (py-y1)*(y2-y1);
 		double ratio = r_numerator / r_denomenator;
 
@@ -365,7 +367,7 @@ public class Segment2f extends AbstractShape2f<Segment2f> {
 	 */
 	public static double distanceLinePoint(double x1, double y1, double x2, double y2, double px, double py) {
 		double r_denomenator = (x2-x1)*(x2-x1) + (y2-y1)*(y2-y1);
-		if (r_denomenator==0.) return Point2f.distancePointPoint(px, py, x1, y1);
+		if (r_denomenator==0.) return FunctionalPoint2D.distancePointPoint(px, py, x1, y1);
 		double s = ((y1-py)*(x2-x1)-(x1-px)*(y2-y1) ) / r_denomenator;
 		return Math.abs(s) * Math.sqrt(r_denomenator);
 	}
@@ -458,7 +460,7 @@ public class Segment2f extends AbstractShape2f<Segment2f> {
 	 */
 	public static double computeRelativeDistanceLinePoint(double x1, double y1, double x2, double y2, double px, double py) {
 		double r_denomenator = (x2-x1)*(x2-x1) + (y2-y1)*(y2-y1);
-		if (r_denomenator==0.) return Point2f.distancePointPoint(px, py, x1, y1);
+		if (r_denomenator==0.) return FunctionalPoint2D.distancePointPoint(px, py, x1, y1);
 		double s = ((y1-py)*(x2-x1)-(x1-px)*(y2-y1) ) / r_denomenator;
 		return s * Math.sqrt(r_denomenator);
 	}
@@ -1001,7 +1003,7 @@ public class Segment2f extends AbstractShape2f<Segment2f> {
 	 */
 	public static boolean intersectsLineLine(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4) {
 		if (isParallelLines(x1, y1, x2, y2, x3, y3, x4, y4)) {
-			return Point2f.isCollinearPoints(x1, y1, x2, y2, x3, y3);
+			return FunctionalPoint2D.isCollinearPoints(x1, y1, x2, y2, x3, y3);
 		}
 		return true;
 	}

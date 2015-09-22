@@ -35,7 +35,7 @@ public interface Point2D extends Tuple2D<Point2D> {
 	 * @return the distance.
 	 */
 	public double getDistanceSquared(Point2D p1);
-
+	
 	/**
 	 * Computes the distance between this point and point p1.
 	 * @param p1 the other point

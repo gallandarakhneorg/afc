@@ -22,6 +22,8 @@ package org.arakhne.afc.math.geometry.d3.continuous;
 
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
+import org.arakhne.afc.math.geometry.d3.FunctionalPoint3D;
+import org.arakhne.afc.math.geometry.d3.FunctionalVector3D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
 import org.arakhne.afc.util.Pair;
@@ -161,13 +163,13 @@ public class Segment3f extends AbstractShape3f<Segment3f> {
 		double py2 = sy2 - centery;
 		double pz2 = sz2 - centerz;
 		
-		double x1 = Vector3f.dotProduct(px1, py1, pz1, axis1x, axis1y, axis1z);
-		double y1 = Vector3f.dotProduct(px1, py1, pz1, axis2x, axis2y, axis2z);
-		double z1 = Vector3f.dotProduct(px1, py1, pz1, axis3x, axis3y, axis3z);
+		double x1 = FunctionalVector3D.dotProduct(px1, py1, pz1, axis1x, axis1y, axis1z);
+		double y1 = FunctionalVector3D.dotProduct(px1, py1, pz1, axis2x, axis2y, axis2z);
+		double z1 = FunctionalVector3D.dotProduct(px1, py1, pz1, axis3x, axis3y, axis3z);
 
-		double x2 = Vector3f.dotProduct(px2, py2, pz2, axis1x, axis1y, axis1z);
-		double y2 = Vector3f.dotProduct(px2, py2, pz2, axis2x, axis2y, axis2z);
-		double z2 = Vector3f.dotProduct(px2, py2, pz2, axis3x, axis3y, axis3z);
+		double x2 = FunctionalVector3D.dotProduct(px2, py2, pz2, axis1x, axis1y, axis1z);
+		double y2 = FunctionalVector3D.dotProduct(px2, py2, pz2, axis2x, axis2y, axis2z);
+		double z2 = FunctionalVector3D.dotProduct(px2, py2, pz2, axis3x, axis3y, axis3z);
 
 		return intersectsSegmentAlignedBox(
 				x1, y1, z1, x2, y2, z2,
@@ -243,7 +245,7 @@ public class Segment3f extends AbstractShape3f<Segment3f> {
 	public static boolean isParallelLines(
 			double x1, double y1, double z1, double x2, double y2, double z2,
 			double x3, double y3, double z3, double x4, double y4, double z4) {
-		return Vector3f.isCollinearVectors(x2 - x1, y2 - y1, z2 - z1, x4 - x3, y4 - y3, z4 - z3);
+		return FunctionalVector3D.isCollinearVectors(x2 - x1, y2 - y1, z2 - z1, x4 - x3, y4 - y3, z4 - z3);
 	}
 
 	/**
@@ -287,7 +289,7 @@ public class Segment3f extends AbstractShape3f<Segment3f> {
 			double x1, double y1, double z1, double x2, double y2, double z2,
 			double x3, double y3, double z3, double x4, double y4, double z4) {
 		return (isParallelLines(x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4)
-				&& Point3f.isCollinearPoints(x1, y1, z1, x2, y2, z2, x3, y3, z3, MathConstants.EPSILON));
+				&& FunctionalPoint3D.isCollinearPoints(x1, y1, z1, x2, y2, z2, x3, y3, z3, MathConstants.EPSILON));
 	}
 
 	/**
@@ -331,7 +333,7 @@ public class Segment3f extends AbstractShape3f<Segment3f> {
 			return Double.NaN;
 		}
 
-		return Vector3f.determinant(
+		return FunctionalVector3D.determinant(
 				c.getX(), c.getY(), c.getZ(),
 				b.getX(), b.getY(), b.getZ(),
 				v.getX(), v.getY(), v.getZ()) / c.lengthSquared();
@@ -378,12 +380,12 @@ public class Segment3f extends AbstractShape3f<Segment3f> {
 			return null;
 		}
 
-		double factor1 = Vector3f.determinant(
+		double factor1 = FunctionalVector3D.determinant(
 				c.getX(), c.getY(), c.getZ(),
 				b.getX(), b.getY(), b.getZ(),
 				v.getX(), v.getY(), v.getZ()) / c.lengthSquared();
 
-		double factor2 = Vector3f.determinant(
+		double factor2 = FunctionalVector3D.determinant(
 				c.getX(), c.getY(), c.getZ(),
 				a.getX(), a.getY(), a.getZ(),
 				v.getX(), v.getY(), v.getZ()) / c.lengthSquared();
@@ -621,7 +623,7 @@ public class Segment3f extends AbstractShape3f<Segment3f> {
 
 		// Let's take the cross product S1S2 X S1P.
 		Vector3f cross = new Vector3f();
-		Vector3f.crossProduct(vx1, vy1, vz1, vx2, vy2, vz2, cross);
+		FunctionalVector3D.crossProduct(vx1, vy1, vz1, vx2, vy2, vz2, cross);
 
 		// Let's let (a) be the length of S1S2 X S1P.
 		double a = cross.length();
@@ -730,7 +732,7 @@ public class Segment3f extends AbstractShape3f<Segment3f> {
 
 		if (ratio>=0. && ratio<=1.) {
 			if (forceCollinear) {
-				return Point3f.isCollinearPoints(
+				return FunctionalPoint3D.isCollinearPoints(
 						ax, ay, az,
 						bx, by, bz,
 						px, py, pz, epsilon);
@@ -770,12 +772,12 @@ public class Segment3f extends AbstractShape3f<Segment3f> {
 		double ratio = getPointProjectionFactorOnSegmentLine(px, py, pz, sx1, sy1, sz1, sx2, sy2, sz2);
 
 		if (ratio <= 0.)
-			return Point3f.distanceSquaredPointPoint(px, py, pz, sx1, sy1, sz1);
+			return FunctionalPoint3D.distanceSquaredPointPoint(px, py, pz, sx1, sy1, sz1);
 
 		if (ratio >= 1.)
-			return Point3f.distanceSquaredPointPoint(px, py, pz, sx2, sy2, sz2);
+			return FunctionalPoint3D.distanceSquaredPointPoint(px, py, pz, sx2, sy2, sz2);
 
-		return Point3f.distanceSquaredPointPoint(
+		return FunctionalPoint3D.distanceSquaredPointPoint(
 				px, py, pz,
 				(1. - ratio) * sx1 + ratio * sx2,
 				(1. - ratio) * sy1 + ratio * sy2,
@@ -812,12 +814,12 @@ public class Segment3f extends AbstractShape3f<Segment3f> {
 		double ratio = getPointProjectionFactorOnSegmentLine(px, py, pz, sx1, sy1, sz1, sx2, sy2, sz2);
 
 		if (ratio <= 0.)
-			return Point3f.distanceL1PointPoint(px, py, pz, sx1, sy1, sz1);
+			return FunctionalPoint3D.distanceL1PointPoint(px, py, pz, sx1, sy1, sz1);
 
 		if (ratio >= 1.)
-			return Point3f.distanceL1PointPoint(px, py, pz, sx2, sy2, sz2);
+			return FunctionalPoint3D.distanceL1PointPoint(px, py, pz, sx2, sy2, sz2);
 
-		return Point3f.distanceL1PointPoint(
+		return FunctionalPoint3D.distanceL1PointPoint(
 				px, py, pz,
 				(1. - ratio) * sx1 + ratio * sx2,
 				(1. - ratio) * sy1 + ratio * sy2,
@@ -855,12 +857,12 @@ public class Segment3f extends AbstractShape3f<Segment3f> {
 		double ratio = getPointProjectionFactorOnSegmentLine(px, py, pz, sx1, sy1, sz1, sx2, sy2, sz2);
 
 		if (ratio <= 0.)
-			return Point3f.distanceLinfPointPoint(px, py, pz, sx1, sy1, sz1);
+			return FunctionalPoint3D.distanceLinfPointPoint(px, py, pz, sx1, sy1, sz1);
 
 		if (ratio >= 1.)
-			return Point3f.distanceLinfPointPoint(px, py, pz, sx2, sy2, sz2);
+			return FunctionalPoint3D.distanceLinfPointPoint(px, py, pz, sx2, sy2, sz2);
 
-		return Point3f.distanceLinfPointPoint(
+		return FunctionalPoint3D.distanceLinfPointPoint(
 				px, py, pz,
 				(1. - ratio) * sx1 + ratio * sx2,
 				(1. - ratio) * sy1 + ratio * sy2,
@@ -896,12 +898,12 @@ public class Segment3f extends AbstractShape3f<Segment3f> {
 		double ratio = getPointProjectionFactorOnSegmentLine(px, py, pz, sx1, sy1, sz1, sx2, sy2, sz2);
 
 		if (ratio <= 0.)
-			return Point3f.distancePointPoint(px, py, pz, sx1, sy1, sz1);
+			return FunctionalPoint3D.distancePointPoint(px, py, pz, sx1, sy1, sz1);
 
 		if (ratio >= 1.)
-			return Point3f.distancePointPoint(px, py, pz, sx2, sy2, sz2);
+			return FunctionalPoint3D.distancePointPoint(px, py, pz, sx2, sy2, sz2);
 
-		return Point3f.distancePointPoint(
+		return FunctionalPoint3D.distancePointPoint(
 				px, py, pz,
 				(1. - ratio) * sx1 + ratio * sx2,
 				(1. - ratio) * sy1 + ratio * sy2,

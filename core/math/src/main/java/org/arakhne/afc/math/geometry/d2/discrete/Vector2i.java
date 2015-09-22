@@ -26,6 +26,7 @@ import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
+import org.arakhne.afc.math.matrix.Matrix2f;
 
 /** 2D Vector with 2 integers.
  * 

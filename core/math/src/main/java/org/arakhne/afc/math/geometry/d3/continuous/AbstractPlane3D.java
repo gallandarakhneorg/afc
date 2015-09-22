@@ -22,6 +22,7 @@ package org.arakhne.afc.math.geometry.d3.continuous;
 
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.Unefficient;
+import org.arakhne.afc.math.geometry.d3.FunctionalVector3D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
 
@@ -296,10 +297,10 @@ public abstract class AbstractPlane3D<PT extends AbstractPlane3D<? super PT>> im
     	
     	double d = getEquationComponentD();
 
-    	if ((Vector3f.dotProduct(normal.getX(), normal.getY(), normal.getZ(), minx, miny, minz)+d)>0.)
+    	if ((FunctionalVector3D.dotProduct(normal.getX(), normal.getY(), normal.getZ(), minx, miny, minz)+d)>0.)
     		return PlaneClassification.IN_FRONT_OF; 
     	
-    	if ((Vector3f.dotProduct(normal.getX(), normal.getY(), normal.getZ(), maxx, maxy, maxz)+d)>=0.)
+    	if ((FunctionalVector3D.dotProduct(normal.getX(), normal.getY(), normal.getZ(), maxx, maxy, maxz)+d)>=0.)
     		return PlaneClassification.COINCIDENT;
     	
     	return PlaneClassification.BEHIND;
@@ -330,21 +331,21 @@ public abstract class AbstractPlane3D<PT extends AbstractPlane3D<? super PT>> im
 		double effectiveRadius;
 
 		effectiveRadius = Math.abs(
-				Vector3f.dotProduct(
+				FunctionalVector3D.dotProduct(
 						box.getFirstAxisX() * box.getFirstAxisExtent(), 
 						box.getFirstAxisY() * box.getFirstAxisExtent(),
 						box.getFirstAxisZ() * box.getFirstAxisExtent(),
 						n.getX(), n.getY(), n.getZ()));
 
 		effectiveRadius += Math.abs(
-				Vector3f.dotProduct(
+				FunctionalVector3D.dotProduct(
 						box.getSecondAxisX() * box.getSecondAxisExtent(), 
 						box.getSecondAxisY() * box.getSecondAxisExtent(),
 						box.getSecondAxisZ() * box.getSecondAxisExtent(),
 						n.getX(), n.getY(), n.getZ()));
 
 		effectiveRadius += Math.abs(
-				Vector3f.dotProduct(
+				FunctionalVector3D.dotProduct(
 						box.getThirdAxisX() * box.getThirdAxisExtent(), 
 						box.getThirdAxisY() * box.getThirdAxisExtent(),
 						box.getThirdAxisZ() * box.getThirdAxisExtent(),

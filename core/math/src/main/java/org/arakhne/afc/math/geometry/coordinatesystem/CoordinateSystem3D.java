@@ -21,6 +21,7 @@
 package org.arakhne.afc.math.geometry.coordinatesystem;
 
 import org.arakhne.afc.math.MathUtil;
+import org.arakhne.afc.math.geometry.d2.FunctionalVector2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.continuous.Point2f;
 import org.arakhne.afc.math.geometry.d2.continuous.Transform2D;
@@ -869,10 +870,10 @@ public enum CoordinateSystem3D implements CoordinateSystem {
 		switch(this) {
 		case XYZ_LEFT_HAND:
 		case XYZ_RIGHT_HAND:
-			return Vector2f.signedAngle(1, 0,ptR.getX(), ptR.getY());
+			return FunctionalVector2D.signedAngle(1, 0,ptR.getX(), ptR.getY());
 		case XZY_LEFT_HAND:
 		case XZY_RIGHT_HAND:
-			return Vector2f.signedAngle(ptR.getX(), ptR.getZ(), 1, 0);
+			return FunctionalVector2D.signedAngle(ptR.getX(), ptR.getZ(), 1, 0);
 		default:
 		}
 		throw new CoordinateSystemNotFoundException();

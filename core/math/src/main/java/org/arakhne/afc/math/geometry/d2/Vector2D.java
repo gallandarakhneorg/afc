@@ -20,6 +20,7 @@
  */
 package org.arakhne.afc.math.geometry.d2;
 
+import org.arakhne.afc.math.matrix.Matrix2f;
 
 /** 2D Vector.
  * 
@@ -207,7 +208,7 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	 * @param newLength - the new length.
 	 */
 	public void setLength(double newLength);
-
+	
 	/** Replies an unmodifiable copy of this vector.
 	 *
 	 * @return an unmodifiable copy.

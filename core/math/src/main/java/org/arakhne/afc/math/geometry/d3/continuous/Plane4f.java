@@ -23,6 +23,7 @@ package org.arakhne.afc.math.geometry.d3.continuous;
 import java.lang.ref.WeakReference;
 
 import org.arakhne.afc.math.MathUtil;
+import org.arakhne.afc.math.geometry.d3.FunctionalVector3D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Tuple3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
@@ -531,7 +532,7 @@ public final class Plane4f extends AbstractPlane3D<Plane4f> {
 	 */
 	public void set(double p1x, double p1y, double p1z, double p2x, double p2y, double p2z, double p3x, double p3y, double p3z) {
 		Vector3f v = new Vector3f();
-		Vector3f.crossProduct(
+		FunctionalVector3D.crossProduct(
 					p2x-p1x, p2y-p1y, p2z-p1z,
 					p3x-p1x, p3y-p1y, p3z-p1z,
 					v);
