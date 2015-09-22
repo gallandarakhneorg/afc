@@ -32,13 +32,13 @@ import org.arakhne.afc.math.geometry.d2.Point2D;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public abstract class AbstractShape2f<T extends Shape2f> implements Shape2f {
+public abstract class AbstractShape2F<T extends Shape2F> implements Shape2F {
 
 	private static final long serialVersionUID = -2724377801599470453L;
 
 	/**
 	 */
-	public AbstractShape2f() {
+	public AbstractShape2F() {
 		//
 	}
 	
@@ -58,7 +58,7 @@ public abstract class AbstractShape2f<T extends Shape2f> implements Shape2f {
 	/** {@inheritDoc}
 	 */
 	@Override
-	public Shape2f createTransformedShape(Transform2D transform) {
+	public Shape2F createTransformedShape(Transform2D transform) {
 		return new Path2f(getPathIterator(transform));
 	}
 	

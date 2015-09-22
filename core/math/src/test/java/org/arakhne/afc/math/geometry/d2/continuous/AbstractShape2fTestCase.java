@@ -31,7 +31,7 @@ import org.arakhne.afc.math.AbstractMathTestCase;
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.d2.continuous.PathElement2f;
 import org.arakhne.afc.math.geometry.d2.continuous.PathIterator2f;
-import org.arakhne.afc.math.geometry.d2.continuous.Shape2f;
+import org.arakhne.afc.math.geometry.d2.continuous.Shape2F;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -43,7 +43,7 @@ import org.junit.Test;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public abstract class AbstractShape2fTestCase<T extends Shape2f> extends AbstractMathTestCase {
+public abstract class AbstractShape2fTestCase<T extends Shape2F> extends AbstractMathTestCase {
 	
 	/** Is the rectangular shape to test.
 	 */

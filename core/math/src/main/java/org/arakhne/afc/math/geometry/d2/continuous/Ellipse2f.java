@@ -687,7 +687,7 @@ public class Ellipse2f extends AbstractRectangularShape2f<Ellipse2f> {
 	}
 
 	@Override
-	public void set(Shape2f s) {
+	public void set(Shape2F s) {
 		Rectangle2f r = s.toBoundingBox();
 		setFromCorners(r.getMinX(), r.getMinY(), r.getMaxX(), r.getMaxY());
 	}

@@ -36,7 +36,7 @@ import org.arakhne.afc.math.geometry.d2.Point2D;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class Circle2f extends AbstractShape2f<Circle2f> {
+public class Circle2f extends AbstractShape2F<Circle2f> {
 
 	private static final long serialVersionUID = -5535463117356287850L;
 
@@ -276,7 +276,7 @@ public class Circle2f extends AbstractShape2f<Circle2f> {
 	}
 
 	@Override
-	public void set(Shape2f s) {
+	public void set(Shape2F s) {
 		if (s instanceof Circle2f) {
 			Circle2f c = (Circle2f) s;
 			set(c.getX(), c.getY(), c.getRadius());

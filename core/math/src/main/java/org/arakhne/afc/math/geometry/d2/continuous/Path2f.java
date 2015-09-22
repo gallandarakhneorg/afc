@@ -42,7 +42,7 @@ import org.arakhne.afc.math.geometry.d2.Point2D;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Shape2f,Rectangle2f,PathElement2f,PathIterator2f> {
+public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Rectangle2f,PathElement2f,PathIterator2f> {
 
 	private static final long serialVersionUID = -873231223923726975L;
 
@@ -196,8 +196,8 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Shape2f,Re
 	 * boundary of the specified {@link PathIterator2f}.
 	 * <p>
 	 * This method provides a basic facility for implementors of
-	 * the {@link Shape2f} interface to implement support for the
-	 * {@link Shape2f#contains(double, double)} method.
+	 * the {@link Shape2F} interface to implement support for the
+	 * {@link Shape2F#contains(double, double)} method.
 	 *
 	 * @param pi the specified {@code PathIterator2f}
 	 * @param x the specified X coordinate
@@ -217,8 +217,8 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Shape2f,Re
 	 * boundary of the specified {@link PathIterator2f}.
 	 * <p>
 	 * This method provides a basic facility for implementors of
-	 * the {@link Shape2f} interface to implement support for the
-	 * {@link Shape2f#contains(Rectangle2f)} method.
+	 * the {@link Shape2F} interface to implement support for the
+	 * {@link Shape2F#contains(Rectangle2f)} method.
 	 *
 	 * @param pi the specified {@code PathIterator2f}
 	 * @param rx the lowest corner of the rectangle.
@@ -249,7 +249,7 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Shape2f,Re
 	 * coordinates.
 	 * <p>
 	 * This method provides a basic facility for implementors of
-	 * the {@link Shape2f} interface to implement support for the
+	 * the {@link Shape2F} interface to implement support for the
 	 * {@code intersects()} method.
 	 * <p>
 	 * This method object may conservatively return true in
@@ -1458,7 +1458,7 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Shape2f,Re
 	/** {@inheritDoc}
 	 */
 	@Override
-	public Shape2f createTransformedShape(Transform2D transform) {
+	public Shape2F createTransformedShape(Transform2D transform) {
 		Path2f newPath = new Path2f(getWindingRule());
 		PathIterator2f pi = getPathIterator();
 		Point2f p = new Point2f();
@@ -2262,7 +2262,7 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Shape2f,Re
 	}
 
 	@Override
-	public void set(Shape2f s) {
+	public void set(Shape2F s) {
 		clear();
 		add(s.getPathIterator());
 	}

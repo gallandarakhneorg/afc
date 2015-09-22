@@ -29,6 +29,7 @@ import javafx.beans.property.SimpleDoubleProperty;
  * @author Olivier LAMOTTE (olivier.lamotte@utbm.fr)
  *
  */
+@SuppressWarnings("restriction")
 public class Tuple3d<T extends Tuple3D<? super T>> implements FunctionalTuple3D<T> {
 
 	

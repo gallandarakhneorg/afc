@@ -30,7 +30,7 @@ import org.arakhne.afc.math.geometry.d2.Shape2D;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public interface Shape2f extends Shape2D<Shape2f> {
+public interface Shape2F extends Shape2D<Shape2F> {
 
 	/** Replies the bounds of the shape.
 	 * If the current shape is a Rectangle2f, this function
@@ -120,7 +120,7 @@ public interface Shape2f extends Shape2D<Shape2f> {
 	 * @param transform is the transformation to apply to the shape.
 	 * @return the result of the transformation.
 	 */
-	public Shape2f createTransformedShape(Transform2D transform);
+	public Shape2F createTransformedShape(Transform2D transform);
 	
 	/** Replies if this shape is intersecting the given rectangle.
 	 * 

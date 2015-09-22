@@ -257,7 +257,7 @@ public class RoundRectangle2f extends AbstractRectangularShape2f<RoundRectangle2
 	}
 
 	@Override
-	public void set(Shape2f s) {
+	public void set(Shape2F s) {
 		if (s instanceof RoundRectangle2f) {
 			RoundRectangle2f r = (RoundRectangle2f) s;
 			set(r.getMinX(), r.getMinY(),

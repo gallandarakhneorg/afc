@@ -284,7 +284,7 @@ public class Rectangle2f extends AbstractRectangularShape2f<Rectangle2f> {
 	}
 
 	@Override
-	public void set(Shape2f s) {
+	public void set(Shape2F s) {
 		s.toBoundingBox(this);
 	}
 

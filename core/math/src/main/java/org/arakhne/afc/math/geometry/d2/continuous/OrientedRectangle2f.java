@@ -55,7 +55,7 @@ import org.arakhne.afc.math.matrix.Matrix2f;
  * @mavenartifactid $ArtifactId$
  * @see <a href="http://www.terathon.com/books/mathgames2.html">Mathematics for 3D Game Programming &amp; Computer Graphics</a>
  */
-public class OrientedRectangle2f extends AbstractShape2f<OrientedRectangle2f> {	
+public class OrientedRectangle2f extends AbstractShape2F<OrientedRectangle2f> {	
 
 	private static final long serialVersionUID = -7541381548010183873L;
 
@@ -1314,7 +1314,7 @@ public class OrientedRectangle2f extends AbstractShape2f<OrientedRectangle2f> {
 	}
 
 	@Override
-	public void set(final Shape2f s) {
+	public void set(final Shape2F s) {
 		if (s instanceof OrientedRectangle2f) {
 			OrientedRectangle2f obr = (OrientedRectangle2f) s;
 			set(obr.getCenterX(), obr.getCenterY(),

@@ -33,7 +33,7 @@ import org.arakhne.afc.math.geometry.d2.Point2D;
  * @mavenartifactid $ArtifactId$
  */
 public abstract class AbstractRectangularShape2f<T extends AbstractRectangularShape2f<T>>
-extends AbstractShape2f<T> {
+extends AbstractShape2F<T> {
 
 	private static final long serialVersionUID = -2330319571109966087L;
 

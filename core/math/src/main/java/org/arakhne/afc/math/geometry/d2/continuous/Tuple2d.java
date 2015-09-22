@@ -32,6 +32,7 @@ public class Tuple2d<TT extends Tuple2D<? super TT>> implements FunctionalTuple2
 
 	private static final long serialVersionUID = 2754372505837958112L;
 
+	@SuppressWarnings("restriction")
 	protected DoubleProperty xProperty;
 	protected DoubleProperty yProperty;
 	

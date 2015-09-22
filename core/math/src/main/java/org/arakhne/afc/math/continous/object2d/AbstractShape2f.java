@@ -32,7 +32,7 @@ import org.arakhne.afc.math.matrix.Transform2D;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @deprecated see {@link org.arakhne.afc.math.geometry.d2.continuous.AbstractShape2f}
+ * @deprecated see {@link org.arakhne.afc.math.geometry.d2.continuous.AbstractShape2F}
  */
 @Deprecated
 public abstract class AbstractShape2f<T extends Shape2f> implements Shape2f {

@@ -30,7 +30,7 @@ import org.arakhne.afc.math.matrix.Transform2D;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @deprecated see {@link org.arakhne.afc.math.geometry.d2.continuous.Shape2f}
+ * @deprecated see {@link org.arakhne.afc.math.geometry.d2.continuous.Shape2F}
  */
 @Deprecated
 public interface Shape2f extends Shape2D<Shape2f> {
