@@ -28,7 +28,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.continuous.Path2f;
-import org.arakhne.afc.math.geometry.d2.continuous.PathElement2f;
+import org.arakhne.afc.math.geometry.d2.continuous.AbstractPathElement2F;
 import org.arakhne.afc.math.geometry.d2.continuous.PathIterator2f;
 import org.junit.Test;
 
@@ -139,7 +139,7 @@ public abstract class AbstractPath2fTestCase extends AbstractShape2fTestCase<Pat
 		Path2f b = this.r.clone();
 
 		assertNotSame(b, this.r);
-		PathElement2f pe1, pe2;
+		AbstractPathElement2F pe1, pe2;
 		PathIterator2f i1 = this.r.getPathIterator();
 		PathIterator2f i2 = b.getPathIterator();
 		assertNotSame(i1, i2);

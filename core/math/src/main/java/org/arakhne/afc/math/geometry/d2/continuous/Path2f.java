@@ -38,11 +38,12 @@ import org.arakhne.afc.math.geometry.d2.Point2D;
 /** A generic path.
  *
  * @author $Author: galland$
+ * @author $Author: hjaffali$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Rectangle2f,PathElement2f,PathIterator2f> {
+public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Rectangle2f,AbstractPathElement2F,PathIterator2f> {
 
 	private static final long serialVersionUID = -873231223923726975L;
 
@@ -68,7 +69,7 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 		Point2D closest = null;
 		double bestDist = Double.POSITIVE_INFINITY;
 		Point2D candidate;
-		PathElement2f pe;
+		AbstractPathElement2F pe;
 
 		int mask = (pi.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 1);
 		int crossings = 0;
@@ -80,42 +81,42 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 
 			switch(pe.type) {
 			case MOVE_TO:
-				candidate = new Point2f(pe.toX, pe.toY);
+				candidate = new Point2f(pe.getToX(), pe.getToY());
 				break;
 			case LINE_TO:
 			{
 				double factor =  AbstractSegment2F.computeProjectedPointOnLine(
 						x, y,
-						pe.fromX, pe.fromY, pe.toX, pe.toY);
+						pe.getFromX(), pe.getFromY(), pe.getToX(), pe.getToY());
 				factor = MathUtil.clamp(factor, 0f, 1f);
-				Vector2f v = new Vector2f(pe.toX, pe.toY);
-				v.sub(pe.fromX, pe.fromY);
+				Vector2f v = new Vector2f(pe.getToX(), pe.getToY());
+				v.sub(pe.getFromX(), pe.getFromY());
 				v.scale(factor);
 				candidate = new Point2f(
-						pe.fromX + v.getX(),
-						pe.fromY + v.getY());
+						pe.getFromX() + v.getX(),
+						pe.getFromY() + v.getY());
 				crossings += AbstractSegment2F.computeCrossingsFromPoint(
 						x, y,
-						pe.fromX, pe.fromY, pe.toX, pe.toY);
+						pe.getFromX(), pe.getFromY(), pe.getToX(), pe.getToY());
 				break;
 			}
 			case CLOSE:
 				crossings += AbstractSegment2F.computeCrossingsFromPoint(
 						x, y,
-						pe.fromX, pe.fromY, pe.toX, pe.toY);
+						pe.getFromX(), pe.getFromY(), pe.getToX(), pe.getToY());
 				if ((crossings & mask) != 0) return new Point2f(x, y);
 
 				if (!pe.isEmpty()) {
 					double factor =  AbstractSegment2F.computeProjectedPointOnLine(
 							x, y,
-							pe.fromX, pe.fromY, pe.toX, pe.toY);
+							pe.getFromX(), pe.getFromY(), pe.getToX(), pe.getToY());
 					factor = MathUtil.clamp(factor, 0f, 1f);
-					Vector2f v = new Vector2f(pe.toX, pe.toY);
-					v.sub(pe.fromX, pe.fromY);
+					Vector2f v = new Vector2f(pe.getToX(), pe.getToY());
+					v.sub(pe.getFromX(), pe.getFromY());
 					v.scale(factor);
 					candidate = new Point2f(
-							pe.fromX + v.getX(),
-							pe.fromY + v.getY());
+							pe.getFromX() + v.getX(),
+							pe.getFromY() + v.getY());
 				}
 				crossings = 0;
 				break;
@@ -155,7 +156,7 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 		Point2D closest = null;
 		double bestDist = Double.NEGATIVE_INFINITY;
 		Point2D candidate;
-		PathElement2f pe;
+		AbstractPathElement2F pe;
 		
 		while (pi.hasNext()) {
 			pe = pi.next();
@@ -164,12 +165,12 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 
 			switch(pe.type) {
 			case MOVE_TO:
-				candidate = new Point2f(pe.toX, pe.toY);
+				candidate = new Point2f(pe.getToX(), pe.getToY());
 				break;
 			case LINE_TO:
 			case CLOSE:
 				candidate = AbstractSegment2F.computeFarthestPointTo(
-						pe.fromX, pe.fromY, pe.toX, pe.toY,
+						pe.getFromX(), pe.getFromY(), pe.getToX(), pe.getToY(),
 						x, y);
 				break;
 			case QUAD_TO:
@@ -332,7 +333,7 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 			boolean onlyIntersectWhenOpen) {	
 		// Copied from the AWT API
 		if (!pi.hasNext()) return 0;
-		PathElement2f element;
+		AbstractPathElement2F element;
 
 		element = pi.next();
 		if (element.type != PathElementType.MOVE_TO) {
@@ -340,8 +341,8 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 		}
 
 		Path2f subPath;
-		double movx = element.toX;
-		double movy = element.toY;
+		double movx = element.getToX();
+		double movy = element.getToY();
 		double curx = movx;
 		double cury = movy;
 		double endx, endy;
@@ -350,12 +351,12 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 			element = pi.next();
 			switch (element.type) {
 			case MOVE_TO:
-				movx = curx = element.toX;
-				movy = cury = element.toY;
+				movx = curx = element.getToX();
+				movy = cury = element.getToY();
 				break;
 			case LINE_TO:
-				endx = element.toX;
-				endy = element.toY;
+				endx = element.getToX();
+				endy = element.getToY();
 				if (endx==px && endy==py)
 					return MathConstants.SHAPE_INTERSECTS;
 				crossings += AbstractSegment2F.computeCrossingsFromPoint(
@@ -366,14 +367,14 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 				cury = endy;
 				break;
 			case QUAD_TO:
-				endx = element.toX;
-				endy = element.toY;
+				endx = element.getToX();
+				endy = element.getToY();
 				if (endx==px && endy==py)
 					return MathConstants.SHAPE_INTERSECTS;
 				subPath = new Path2f();
 				subPath.moveTo(curx, cury);
 				subPath.quadTo(
-						element.ctrlX1, element.ctrlY1,
+						element.getCtrlX1(), element.getCtrlY1(),
 						endx, endy);
 				r = computeCrossingsFromPoint(
 						subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
@@ -387,15 +388,15 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 				cury = endy;
 				break;
 			case CURVE_TO:
-				endx = element.toX;
-				endy = element.toY;
+				endx = element.getToX();
+				endy = element.getToY();
 				if (endx==px || endy==py)
 					return MathConstants.SHAPE_INTERSECTS;
 				subPath = new Path2f();
 				subPath.moveTo(curx, cury);
 				subPath.curveTo(
-						element.ctrlX1, element.ctrlY1,
-						element.ctrlX2, element.ctrlY2,
+						element.getCtrlX1(), element.getCtrlY1(),
+						element.getCtrlX2(), element.getCtrlY2(),
 						endx, endy);
 				r = computeCrossingsFromPoint(
 						subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
@@ -487,15 +488,15 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 			boolean onlyIntersectWhenOpen) {	
 		// Copied from the AWT API
 		if (!pi.hasNext()) return 0;
-		PathElement2f element;
+		AbstractPathElement2F element;
 
 		element = pi.next();
 		if (element.type != PathElementType.MOVE_TO) {
 			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
 		}
 
-		double movx = element.toX;
-		double movy = element.toY;
+		double movx = element.getToX();
+		double movy = element.getToY();
 		double curx = movx;
 		double cury = movy;
 		double endx, endy;
@@ -504,12 +505,12 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 			element = pi.next();
 			switch (element.type) {
 			case MOVE_TO:
-				movx = curx = element.toX;
-				movy = cury = element.toY;
+				movx = curx = element.getToX();
+				movy = cury = element.getToY();
 				break;
 			case LINE_TO:
-				endx = element.toX;
-				endy = element.toY;
+				endx = element.getToX();
+				endy = element.getToY();
 				numCrosses = AbstractSegment2F.computeCrossingsFromEllipse(
 						numCrosses,
 						ex, ey, ew, eh,
@@ -523,12 +524,12 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 				break;
 			case QUAD_TO:
 			{
-				endx = element.toX;
-				endy = element.toY;
+				endx = element.getToX();
+				endy = element.getToY();
 				Path2f localPath = new Path2f();
 				localPath.moveTo(curx, cury);
 				localPath.quadTo(
-						element.ctrlX1, element.ctrlY1,
+						element.getCtrlX1(), element.getCtrlY1(),
 						endx, endy);
 				numCrosses = computeCrossingsFromEllipse(
 						numCrosses,
@@ -544,13 +545,13 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 				break;
 			}
 			case CURVE_TO:
-				endx = element.toX;
-				endy = element.toY;
+				endx = element.getToX();
+				endy = element.getToY();
 				Path2f localPath = new Path2f();
 				localPath.moveTo(curx, cury);
 				localPath.curveTo(
-						element.ctrlX1, element.ctrlY1,
-						element.ctrlX2, element.ctrlY2,
+						element.getCtrlX1(), element.getCtrlY1(),
+						element.getCtrlX2(), element.getCtrlY2(),
 						endx, endy);
 				numCrosses = computeCrossingsFromEllipse(
 						numCrosses,
@@ -641,15 +642,15 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 			boolean onlyIntersectWhenOpen) {	
 		// Copied from the AWT API
 		if (!pi.hasNext()) return 0;
-		PathElement2f element;
+		AbstractPathElement2F element;
 
 		element = pi.next();
 		if (element.type != PathElementType.MOVE_TO) {
 			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
 		}
 
-		double movx = element.toX;
-		double movy = element.toY;
+		double movx = element.getToX();
+		double movy = element.getToY();
 		double curx = movx;
 		double cury = movy;
 		double endx, endy;
@@ -658,12 +659,12 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 			element = pi.next();
 			switch (element.type) {
 			case MOVE_TO:
-				movx = curx = element.toX;
-				movy = cury = element.toY;
+				movx = curx = element.getToX();
+				movy = cury = element.getToY();
 				break;
 			case LINE_TO:
-				endx = element.toX;
-				endy = element.toY;
+				endx = element.getToX();
+				endy = element.getToY();
 				numCrosses = AbstractSegment2F.computeCrossingsFromCircle(
 						numCrosses,
 						cx, cy, radius,
@@ -677,12 +678,12 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 				break;
 			case QUAD_TO:
 			{
-				endx = element.toX;
-				endy = element.toY;
+				endx = element.getToX();
+				endy = element.getToY();
 				Path2f localPath = new Path2f();
-				localPath.moveTo(element.fromX, element.fromY);
+				localPath.moveTo(element.getFromX(), element.getFromY());
 				localPath.quadTo(
-						element.ctrlX1, element.ctrlY1,
+						element.getCtrlX1(), element.getCtrlY1(),
 						endx, endy);
 				numCrosses = computeCrossingsFromCircle(
 						numCrosses,
@@ -698,13 +699,13 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 				break;
 			}
 			case CURVE_TO:
-				endx = element.toX;
-				endy = element.toY;
+				endx = element.getToX();
+				endy = element.getToY();
 				Path2f localPath = new Path2f();
-				localPath.moveTo(element.fromX, element.fromY);
+				localPath.moveTo(element.getFromX(), element.getFromY());
 				localPath.curveTo(
-						element.ctrlX1, element.ctrlY1,
-						element.ctrlX2, element.ctrlY2,
+						element.getCtrlX1(), element.getCtrlY1(),
+						element.getCtrlX2(), element.getCtrlY2(),
 						endx, endy);
 				numCrosses = computeCrossingsFromCircle(
 						numCrosses,
@@ -790,15 +791,15 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 	public static int computeCrossingsFromSegment(int crossings, PathIterator2f pi, double x1, double y1, double x2, double y2, boolean closeable) {	
 		// Copied from the AWT API
 		if (!pi.hasNext() || crossings==MathConstants.SHAPE_INTERSECTS) return crossings;
-		PathElement2f element;
+		AbstractPathElement2F element;
 
 		element = pi.next();
 		if (element.type != PathElementType.MOVE_TO) {
 			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
 		}
 
-		double movx = element.toX;
-		double movy = element.toY;
+		double movx = element.getToX();
+		double movy = element.getToY();
 		double curx = movx;
 		double cury = movy;
 		double endx, endy;
@@ -807,12 +808,12 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 			element = pi.next();
 			switch (element.type) {
 			case MOVE_TO:
-				movx = curx = element.toX;
-				movy = cury = element.toY;
+				movx = curx = element.getToX();
+				movy = cury = element.getToY();
 				break;
 			case LINE_TO:
-				endx = element.toX;
-				endy = element.toY;
+				endx = element.getToX();
+				endy = element.getToY();
 				numCrosses = AbstractSegment2F.computeCrossingsFromSegment(
 						numCrosses,
 						x1, y1, x2, y2,
@@ -825,12 +826,12 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 				break;
 			case QUAD_TO:
 			{
-				endx = element.toX;
-				endy = element.toY;
+				endx = element.getToX();
+				endy = element.getToY();
 				Path2f localPath = new Path2f();
 				localPath.moveTo(curx, cury);
 				localPath.quadTo(
-						element.ctrlX1, element.ctrlY1,
+						element.getCtrlX1(), element.getCtrlY1(),
 						endx, endy);
 				numCrosses = computeCrossingsFromSegment(
 						numCrosses,
@@ -844,13 +845,13 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 				break;
 			}
 			case CURVE_TO:
-				endx = element.toX;
-				endy = element.toY;
+				endx = element.getToX();
+				endy = element.getToY();
 				Path2f localPath = new Path2f();
 				localPath.moveTo(curx, cury);
 				localPath.curveTo(
-						element.ctrlX1, element.ctrlY1,
-						element.ctrlX2, element.ctrlY2,
+						element.getCtrlX1(), element.getCtrlY1(),
+						element.getCtrlX2(), element.getCtrlY2(),
 						endx, endy);
 				numCrosses = computeCrossingsFromSegment(
 						numCrosses,
@@ -956,7 +957,7 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 		if (rxmax <= rxmin || rymax <= rymin) return 0;
 		if (!pi.hasNext()) return 0;
 
-		PathElement2f pathElement = pi.next();
+		AbstractPathElement2F pathElement = pi.next();
 
 		if (pathElement.type != PathElementType.MOVE_TO) {
 			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
@@ -964,8 +965,8 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 
 		Path2f subPath;
 		double curx, cury, movx, movy, endx, endy;
-		curx = movx = pathElement.toX;
-		cury = movy = pathElement.toY;
+		curx = movx = pathElement.getToX();
+		cury = movy = pathElement.getToY();
 		int crossings = 0;
 		int n;
 
@@ -976,12 +977,12 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 			case MOVE_TO:
 				// Count should always be a multiple of 2 here.
 				// assert((crossings & 1) != 0);
-				movx = curx = pathElement.toX;
-				movy = cury = pathElement.toY;
+				movx = curx = pathElement.getToX();
+				movy = cury = pathElement.getToY();
 				break;
 			case LINE_TO:
-				endx = pathElement.toX;
-				endy = pathElement.toY;
+				endx = pathElement.getToX();
+				endy = pathElement.getToY();
 				crossings = AbstractSegment2F.computeCrossingsFromRect(crossings,
 						rxmin, rymin,
 						rxmax, rymax,
@@ -993,12 +994,12 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 				cury = endy;
 				break;
 			case QUAD_TO:
-				endx = pathElement.toX;
-				endy = pathElement.toY;
+				endx = pathElement.getToX();
+				endy = pathElement.getToY();
 				subPath = new Path2f();
 				subPath.moveTo(curx, cury);
 				subPath.quadTo(
-						pathElement.ctrlX1, pathElement.ctrlY1,
+						pathElement.getCtrlX1(), pathElement.getCtrlY1(),
 						endx, endy);
 				n = computeCrossingsFromRect(
 						subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
@@ -1013,13 +1014,13 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 				cury = endy;
 				break;
 			case CURVE_TO:
-				endx = pathElement.toX;
-				endy = pathElement.toY;
+				endx = pathElement.getToX();
+				endy = pathElement.getToY();
 				subPath = new Path2f();
 				subPath.moveTo(curx, cury);
 				subPath.curveTo(
-						pathElement.ctrlX1, pathElement.ctrlY1,
-						pathElement.ctrlX2, pathElement.ctrlY2,
+						pathElement.getCtrlX1(), pathElement.getCtrlY1(),
+						pathElement.getCtrlX2(), pathElement.getCtrlY2(),
 						endx, endy);
 				n = computeCrossingsFromRect(
 						subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
@@ -1127,7 +1128,7 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 	/**
 	 * @param iterator
 	 */
-	public Path2f(Iterator<PathElement2f> iterator) {
+	public Path2f(Iterator<AbstractPathElement2F> iterator) {
 		this(PathWindingRule.NON_ZERO, iterator);
 	}
 
@@ -1145,7 +1146,7 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 	 * @param windingRule1
 	 * @param iterator
 	 */
-	public Path2f(PathWindingRule windingRule1, Iterator<PathElement2f> iterator) {
+	public Path2f(PathWindingRule windingRule1, Iterator<AbstractPathElement2F> iterator) {
 		assert(windingRule1!=null);
 		this.types = new PathElementType[GROW_SIZE];
 		this.coords = new double[GROW_SIZE];
@@ -1228,22 +1229,22 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 	 * 
 	 * @param iterator
 	 */
-	public void add(Iterator<PathElement2f> iterator) {
-		PathElement2f element;
+	public void add(Iterator<AbstractPathElement2F> iterator) {
+		AbstractPathElement2F element;
 		while (iterator.hasNext()) {
 			element = iterator.next();
 			switch(element.type) {
 			case MOVE_TO:
-				moveTo(element.toX, element.toY);
+				moveTo(element.getToX(), element.getToY());
 				break;
 			case LINE_TO:
-				lineTo(element.toX, element.toY);
+				lineTo(element.getToX(), element.getToY());
 				break;
 			case QUAD_TO:
-				quadTo(element.ctrlX1, element.ctrlY1, element.toX, element.toY);
+				quadTo(element.getCtrlX1(), element.getCtrlY1(), element.getToX(), element.getToY());
 				break;
 			case CURVE_TO:
-				curveTo(element.ctrlX1, element.ctrlY1, element.ctrlX2, element.ctrlY2, element.toX, element.toY);
+				curveTo(element.getCtrlX1(), element.getCtrlY1(), element.getCtrlX2(), element.getCtrlY2(), element.getToX(), element.getToY());
 				break;
 			case CLOSE:
 				closePath();
@@ -1464,33 +1465,33 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 		Point2f p = new Point2f();
 		Point2f t1 = new Point2f();
 		Point2f t2 = new Point2f();
-		PathElement2f e;
+		AbstractPathElement2F e;
 		while (pi.hasNext()) {
 			e = pi.next();
 			switch(e.type) {
 			case MOVE_TO:
-				p.set(e.toX, e.toY);
+				p.set(e.getToX(), e.getToY());
 				transform.transform(p);
 				newPath.moveTo(p.getX(), p.getY());
 				break;
 			case LINE_TO:
-				p.set(e.toX, e.toY);
+				p.set(e.getToX(), e.getToY());
 				transform.transform(p);
 				newPath.lineTo(p.getX(), p.getY());
 				break;
 			case QUAD_TO:
-				t1.set(e.ctrlX1, e.ctrlY1);
+				t1.set(e.getCtrlX1(), e.getCtrlY1());
 				transform.transform(t1);
-				p.set(e.toX, e.toY);
+				p.set(e.getToX(), e.getToY());
 				transform.transform(p);
 				newPath.quadTo(t1.getX(), t1.getY(), p.getX(), p.getY());
 				break;
 			case CURVE_TO:
-				t1.set(e.ctrlX1, e.ctrlY1);
+				t1.set(e.getCtrlX1(), e.getCtrlY1());
 				transform.transform(t1);
-				t2.set(e.ctrlX2, e.ctrlY2);
+				t2.set(e.getCtrlX2(), e.getCtrlY2());
 				transform.transform(t2);
-				p.set(e.toX, e.toY);
+				p.set(e.getToX(), e.getToY());
 				transform.transform(p);
 				newPath.curveTo(t1.getX(), t1.getY(), t2.getX(), t2.getY(), p.getX(), p.getY());
 				break;
@@ -1639,7 +1640,7 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 			boolean onlyIntersectWhenOpen) {
 		if (!iterator1.hasNext()) return 0;
 
-		PathElement2f pathElement1 = iterator1.next();
+		AbstractPathElement2F pathElement1 = iterator1.next();
 
 		if (pathElement1.type != PathElementType.MOVE_TO) {
 			throw new IllegalArgumentException("missing initial moveto in the first path definition"); //$NON-NLS-1$
@@ -1647,8 +1648,8 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 
 		Path2f subPath;
 		double curx, cury, movx, movy, endx, endy;
-		curx = movx = pathElement1.toX;
-		cury = movy = pathElement1.toY;
+		curx = movx = pathElement1.getToX();
+		cury = movy = pathElement1.getToY();
 		int crossings = 0;
 		int n;
 
@@ -1659,12 +1660,12 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 			case MOVE_TO:
 				// Count should always be a multiple of 2 here.
 				// assert((crossings & 1) != 0);
-				movx = curx = pathElement1.toX;
-				movy = cury = pathElement1.toY;
+				movx = curx = pathElement1.getToX();
+				movy = cury = pathElement1.getToY();
 				break;
 			case LINE_TO:
-				endx = pathElement1.toX;
-				endy = pathElement1.toY;
+				endx = pathElement1.getToX();
+				endy = pathElement1.getToY();
 				crossings = shadow.computeCrossings(crossings,
 						curx, cury,
 						endx, endy);
@@ -1674,12 +1675,12 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 				cury = endy;
 				break;
 			case QUAD_TO:
-				endx = pathElement1.toX;
-				endy = pathElement1.toY;
+				endx = pathElement1.getToX();
+				endy = pathElement1.getToY();
 				subPath = new Path2f();
 				subPath.moveTo(curx, cury);
 				subPath.quadTo(
-						pathElement1.ctrlX1, pathElement1.ctrlY1,
+						pathElement1.getCtrlX1(), pathElement1.getCtrlY1(),
 						endx, endy);
 				n = computeCrossingsFromPath(
 						subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
@@ -1693,13 +1694,13 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 				cury = endy;
 				break;
 			case CURVE_TO:
-				endx = pathElement1.toX;
-				endy = pathElement1.toY;
+				endx = pathElement1.getToX();
+				endy = pathElement1.getToY();
 				subPath = new Path2f();
 				subPath.moveTo(curx, cury);
 				subPath.curveTo(
-						pathElement1.ctrlX1, pathElement1.ctrlY1,
-						pathElement1.ctrlX2, pathElement1.ctrlY2,
+						pathElement1.getCtrlX1(), pathElement1.getCtrlY1(),
+						pathElement1.getCtrlX2(), pathElement1.getCtrlY2(),
 						endx, endy);
 				n = computeCrossingsFromPath(
 						subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
@@ -1754,29 +1755,29 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 		double ymin = Double.POSITIVE_INFINITY;
 		double xmax = Double.NEGATIVE_INFINITY;
 		double ymax = Double.NEGATIVE_INFINITY;
-		PathElement2f element;
+		AbstractPathElement2F element;
 		Path2f subPath;
 		while (iterator.hasNext()) {
 			element = iterator.next();
 			switch(element.type) {
 			case LINE_TO:
-				if (element.fromX<xmin) xmin = element.fromX;
-				if (element.fromY<ymin) ymin = element.fromY;
-				if (element.fromX>xmax) xmax = element.fromX;
-				if (element.fromY>ymax) ymax = element.fromY;
-				if (element.toX<xmin) xmin = element.toX;
-				if (element.toY<ymin) ymin = element.toY;
-				if (element.toX>xmax) xmax = element.toX;
-				if (element.toY>ymax) ymax = element.toY;
+				if (element.getFromX()<xmin) xmin = element.getFromX();
+				if (element.getFromY()<ymin) ymin = element.getFromY();
+				if (element.getFromX()>xmax) xmax = element.getFromX();
+				if (element.getFromY()>ymax) ymax = element.getFromY();
+				if (element.getToX()<xmin) xmin = element.getToX();
+				if (element.getToY()<ymin) ymin = element.getToY();
+				if (element.getToX()>xmax) xmax = element.getToX();
+				if (element.getToY()>ymax) ymax = element.getToY();
 				foundOneLine = true;
 				break;
 			case CURVE_TO:
 				subPath = new Path2f();
-				subPath.moveTo(element.fromX, element.fromY);
+				subPath.moveTo(element.getFromX(), element.getFromY());
 				subPath.curveTo(
-						element.ctrlX1, element.ctrlY1,
-						element.ctrlX2, element.ctrlY2,
-						element.toX, element.toY);
+						element.getCtrlX1(), element.getCtrlY1(),
+						element.getCtrlX2(), element.getCtrlY2(),
+						element.getToX(), element.getToY());
 				if (buildGraphicalBoundingBox(
 						subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
 						box)) {
@@ -1789,10 +1790,10 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 				break;
 			case QUAD_TO:
 				subPath = new Path2f();
-				subPath.moveTo(element.fromX, element.fromY);
+				subPath.moveTo(element.getFromX(), element.getFromY());
 				subPath.quadTo(
-						element.ctrlX1, element.ctrlY1,
-						element.toX, element.toY);
+						element.getCtrlX1(), element.getCtrlY1(),
+						element.getToX(), element.getToY());
 				if (buildGraphicalBoundingBox(
 						subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
 						box)) {
@@ -2110,7 +2111,7 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 		if (this.isEmpty==null) {
 			this.isEmpty = Boolean.TRUE;
 			PathIterator2f pi = getPathIterator();
-			PathElement2f pe;
+			AbstractPathElement2F pe;
 			while (this.isEmpty==Boolean.TRUE && pi.hasNext()) {
 				pe = pi.next();
 				if (pe.isDrawable()) { 
@@ -2126,7 +2127,7 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 		if (this.isPolyline==null) {
 			this.isPolyline = Boolean.TRUE;
 			PathIterator2f pi = getPathIterator();
-			PathElement2f pe;
+			AbstractPathElement2F pe;
 			PathElementType t;
 			while (this.isPolyline==Boolean.TRUE && pi.hasNext()) {
 				pe = pi.next();
@@ -2294,12 +2295,12 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 		}
 
 		@Override
-		public PathElement2f next() {
+		public AbstractPathElement2F next() {
 			int type = this.iType;
 			if (this.iType>=Path2f.this.numTypes) {
 				throw new NoSuchElementException();
 			}
-			PathElement2f element = null;
+			AbstractPathElement2F element = null;
 			switch(Path2f.this.types[type]) {
 			case MOVE_TO:
 				if (this.iCoord+2>Path2f.this.numCoords) {
@@ -2308,7 +2309,7 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 				this.movex = Path2f.this.coords[this.iCoord++];
 				this.movey = Path2f.this.coords[this.iCoord++];
 				this.p2.set(this.movex, this.movey);
-				element = new PathElement2f.MovePathElement2f(
+				element = new AbstractPathElement2F.MovePathElement2f(
 						this.p2.getX(), this.p2.getY());
 				break;
 			case LINE_TO:
@@ -2319,7 +2320,7 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 				this.p2.set(
 						Path2f.this.coords[this.iCoord++],
 						Path2f.this.coords[this.iCoord++]);
-				element = new PathElement2f.LinePathElement2f(
+				element = new AbstractPathElement2F.LinePathElement2f(
 						this.p1.getX(), this.p1.getY(),
 						this.p2.getX(), this.p2.getY());
 				break;
@@ -2334,7 +2335,7 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 				this.p2.set(
 						Path2f.this.coords[this.iCoord++],
 						Path2f.this.coords[this.iCoord++]);
-				element = new PathElement2f.QuadPathElement2f(
+				element = new AbstractPathElement2F.QuadPathElement2f(
 						this.p1.getX(), this.p1.getY(),
 						ctrlx, ctrly,
 						this.p2.getX(), this.p2.getY());
@@ -2353,7 +2354,7 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 				this.p2.set(
 						Path2f.this.coords[this.iCoord++],
 						Path2f.this.coords[this.iCoord++]);
-				element = new PathElement2f.CurvePathElement2f(
+				element = new AbstractPathElement2F.CurvePathElement2f(
 						this.p1.getX(), this.p1.getY(),
 						ctrlx1, ctrly1,
 						ctrlx2, ctrly2,
@@ -2363,7 +2364,7 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 			case CLOSE:
 				this.p1.set(this.p2);
 				this.p2.set(this.movex, this.movey);
-				element = new PathElement2f.ClosePathElement2f(
+				element = new AbstractPathElement2F.ClosePathElement2f(
 						this.p1.getX(), this.p1.getY(),
 						this.p2.getX(), this.p2.getY());
 				break;
@@ -2426,18 +2427,18 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 		}
 
 		@Override
-		public PathElement2f next() {
+		public AbstractPathElement2F next() {
 			if (this.iType>=Path2f.this.numTypes) {
 				throw new NoSuchElementException();
 			}
-			PathElement2f element = null;
+			AbstractPathElement2F element = null;
 			switch(Path2f.this.types[this.iType++]) {
 			case MOVE_TO:
 				this.movex = Path2f.this.coords[this.iCoord++];
 				this.movey = Path2f.this.coords[this.iCoord++];
 				this.p2.set(this.movex, this.movey);
 				this.transform.transform(this.p2);
-				element = new PathElement2f.MovePathElement2f(
+				element = new AbstractPathElement2F.MovePathElement2f(
 						this.p2.getX(), this.p2.getY());
 				break;
 			case LINE_TO:
@@ -2446,7 +2447,7 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 						Path2f.this.coords[this.iCoord++],
 						Path2f.this.coords[this.iCoord++]);
 				this.transform.transform(this.p2);
-				element = new PathElement2f.LinePathElement2f(
+				element = new AbstractPathElement2F.LinePathElement2f(
 						this.p1.getX(), this.p1.getY(),
 						this.p2.getX(), this.p2.getY());
 				break;
@@ -2461,7 +2462,7 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 						Path2f.this.coords[this.iCoord++],
 						Path2f.this.coords[this.iCoord++]);
 				this.transform.transform(this.p2);
-				element = new PathElement2f.QuadPathElement2f(
+				element = new AbstractPathElement2F.QuadPathElement2f(
 						this.p1.getX(), this.p1.getY(),
 						this.ptmp1.getX(), this.ptmp1.getY(),
 						this.p2.getX(), this.p2.getY());
@@ -2482,7 +2483,7 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 						Path2f.this.coords[this.iCoord++],
 						Path2f.this.coords[this.iCoord++]);
 				this.transform.transform(this.p2);
-				element = new PathElement2f.CurvePathElement2f(
+				element = new AbstractPathElement2F.CurvePathElement2f(
 						this.p1.getX(), this.p1.getY(),
 						this.ptmp1.getX(), this.ptmp1.getY(),
 						this.ptmp2.getX(), this.ptmp2.getY(),
@@ -2493,7 +2494,7 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 				this.p1.set(this.p2);
 				this.p2.set(this.movex, this.movey);
 				this.transform.transform(this.p2);
-				element = new PathElement2f.ClosePathElement2f(
+				element = new AbstractPathElement2F.ClosePathElement2f(
 						this.p1.getX(), this.p1.getY(),
 						this.p2.getX(), this.p2.getY());
 				break;
@@ -2851,7 +2852,7 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 					this.done = true;
 					return;
 				}
-				PathElement2f pathElement = this.pathIterator.next();
+				AbstractPathElement2F pathElement = this.pathIterator.next();
 				this.holdType = pathElement.type;
 				pathElement.toArray(this.hold);
 				this.levelIndex = 0;
@@ -2980,21 +2981,21 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 		}
 
 		@Override
-		public PathElement2f next() {
+		public AbstractPathElement2F next() {
 			if (this.done) {
 				throw new NoSuchElementException("flattening iterator out of bounds"); //$NON-NLS-1$
 			}
 
-			PathElement2f element;
+			AbstractPathElement2F element;
 			PathElementType type = this.holdType;
 			if (type!=PathElementType.CLOSE) {
 				double x = this.hold[this.holdIndex + 0];
 				double y = this.hold[this.holdIndex + 1];
 				if (type == PathElementType.MOVE_TO) {
-					element = new PathElement2f.MovePathElement2f(x, y);
+					element = new AbstractPathElement2F.MovePathElement2f(x, y);
 				}
 				else {
-					element = new PathElement2f.LinePathElement2f(
+					element = new AbstractPathElement2F.LinePathElement2f(
 							this.lastNextX, this.lastNextY,
 							x, y);
 				}
@@ -3002,7 +3003,7 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 				this.lastNextY = y;
 			}
 			else {
-				element = new PathElement2f.ClosePathElement2f(
+				element = new AbstractPathElement2F.ClosePathElement2f(
 						this.lastNextX, this.lastNextY,
 						this.moveX, this.moveY);
 				this.lastNextX = this.moveX;

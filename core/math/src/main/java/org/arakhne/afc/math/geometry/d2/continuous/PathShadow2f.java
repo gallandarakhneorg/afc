@@ -37,13 +37,13 @@ import org.arakhne.afc.math.geometry.d2.Path2D;
  */
 public class PathShadow2f {
 
-	private final Path2D<?,Rectangle2f,PathElement2f,PathIterator2f> path;
+	private final Path2D<?,Rectangle2f,AbstractPathElement2F,PathIterator2f> path;
 	private final Rectangle2f bounds;
 
 	/**
 	 * @param path
 	 */
-	public PathShadow2f(Path2D<?,Rectangle2f,PathElement2f,PathIterator2f> path) {
+	public PathShadow2f(Path2D<?,Rectangle2f,AbstractPathElement2F,PathIterator2f> path) {
 		this.path = path;
 		this.bounds = this.path.toBoundingBox();
 	}
@@ -121,11 +121,11 @@ public class PathShadow2f {
 	}
 
 	private static void computeCrossings1(
-			Iterator<PathElement2f> pi, 
+			Iterator<AbstractPathElement2F> pi, 
 			double x1, double y1, double x2, double y2, 
 			boolean closeable, PathShadowData data) {	
 		if (!pi.hasNext() || data.crossings==MathConstants.SHAPE_INTERSECTS) return;
-		PathElement2f element;
+		AbstractPathElement2F element;
 
 		element = pi.next();
 		if (element.type != PathElementType.MOVE_TO) {

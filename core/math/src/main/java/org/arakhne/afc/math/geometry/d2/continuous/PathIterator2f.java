@@ -33,7 +33,7 @@ import org.arakhne.afc.math.geometry.PathWindingRule;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public interface PathIterator2f extends Iterator<PathElement2f> {
+public interface PathIterator2f extends Iterator<AbstractPathElement2F> {
 
 	/** Replies the winding rule for the path.
 	 * 

@@ -29,7 +29,7 @@ import junit.framework.AssertionFailedError;
 
 import org.arakhne.afc.math.AbstractMathTestCase;
 import org.arakhne.afc.math.geometry.PathElementType;
-import org.arakhne.afc.math.geometry.d2.continuous.PathElement2f;
+import org.arakhne.afc.math.geometry.d2.continuous.AbstractPathElement2F;
 import org.arakhne.afc.math.geometry.d2.continuous.PathIterator2f;
 import org.arakhne.afc.math.geometry.d2.continuous.Shape2F;
 import org.junit.After;
@@ -82,7 +82,7 @@ public abstract class AbstractShape2fTestCase<T extends Shape2F> extends Abstrac
 		if (!pi.hasNext()) {
 			fail("expected path element but the iterator is empty"); //$NON-NLS-1$
 		}
-		PathElement2f pe = pi.next();
+		AbstractPathElement2F pe = pi.next();
 		if (!type.equals(pe.type)) {
 			fail("expected: "+type+"; actual: "+pe.type);  //$NON-NLS-1$//$NON-NLS-2$
 		}

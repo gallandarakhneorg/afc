@@ -30,7 +30,7 @@ import org.arakhne.afc.math.generic.PathElementType;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @deprecated see {@link org.arakhne.afc.math.geometry.d2.continuous.PathElement2f}
+ * @deprecated see {@link org.arakhne.afc.math.geometry.d2.continuous.AbstractPathElement2F}
  */
 @Deprecated
 public abstract class PathElement2f implements PathElement2D {

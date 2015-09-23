@@ -1686,7 +1686,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 		}
 
 		@Override
-		public PathElement2f next() {
+		public AbstractPathElement2F next() {
 			if (this.index>1) throw new NoSuchElementException();
 			int idx = this.index;
 			++this.index;
@@ -1696,7 +1696,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 				if (this.transform!=null) {
 					this.transform.transform(this.p2);
 				}
-				return new PathElement2f.MovePathElement2f(
+				return new AbstractPathElement2F.MovePathElement2f(
 						this.p2.getX(), this.p2.getY());
 			case 1:
 				this.p1.set(this.p2);
@@ -1704,7 +1704,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 				if (this.transform!=null) {
 					this.transform.transform(this.p2);
 				}
-				return new PathElement2f.LinePathElement2f(
+				return new AbstractPathElement2F.LinePathElement2f(
 						this.p1.getX(), this.p1.getY(),
 						this.p2.getX(), this.p2.getY());
 			default:

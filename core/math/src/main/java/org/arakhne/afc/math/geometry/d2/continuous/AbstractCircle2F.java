@@ -28,11 +28,12 @@ import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.FunctionalPoint2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 
-/**
- * @author Hamza JAFFALI (hjaffali)
- *
- */
-
+/** 
+* @author $Author: hjaffali$
+* @version $FullVersion$
+* @mavengroupid $GroupId$
+* @mavenartifactid $ArtifactId$
+*/
 public abstract class AbstractCircle2F<T extends Shape2F> extends AbstractShape2F<T>{
 
 	/**
@@ -507,7 +508,7 @@ public abstract class AbstractCircle2F<T extends Shape2F> extends AbstractShape2
 	
 		@SuppressWarnings("synthetic-access")
 		@Override
-		public PathElement2f next() {
+		public AbstractPathElement2F next() {
 			if (this.index>5) throw new NoSuchElementException();
 			int idx = this.index;
 			++this.index;
@@ -518,7 +519,7 @@ public abstract class AbstractCircle2F<T extends Shape2F> extends AbstractShape2
 				this.movey = (this.y + ctrls[5] * dr);
 				this.lastx = this.movex;
 				this.lasty = this.movey;
-				return new PathElement2f.MovePathElement2f(
+				return new AbstractPathElement2F.MovePathElement2f(
 						this.lastx, this.lasty);
 			}
 			else if (idx<5) {
@@ -528,7 +529,7 @@ public abstract class AbstractCircle2F<T extends Shape2F> extends AbstractShape2
 				double ppy = this.lasty;
 				this.lastx = (this.x + ctrls[4] * dr);
 				this.lasty = (this.y + ctrls[5] * dr);
-				return new PathElement2f.CurvePathElement2f(
+				return new AbstractPathElement2F.CurvePathElement2f(
 						ppx, ppy,
 						(this.x + ctrls[0] * dr),
 						(this.y + ctrls[1] * dr),
@@ -540,7 +541,7 @@ public abstract class AbstractCircle2F<T extends Shape2F> extends AbstractShape2
 			double ppy = this.lasty;
 			this.lastx = this.movex;
 			this.lasty = this.movey;
-			return new PathElement2f.ClosePathElement2f(
+			return new AbstractPathElement2F.ClosePathElement2f(
 					ppx, ppy,
 					this.lastx, this.lasty);
 		}
@@ -606,7 +607,7 @@ public abstract class AbstractCircle2F<T extends Shape2F> extends AbstractShape2
 	
 		@SuppressWarnings("synthetic-access")
 		@Override
-		public PathElement2f next() {
+		public AbstractPathElement2F next() {
 			if (this.index>5) throw new NoSuchElementException();
 			int idx = this.index;
 			++this.index;
@@ -617,7 +618,7 @@ public abstract class AbstractCircle2F<T extends Shape2F> extends AbstractShape2
 				this.movey = (this.y + ctrls[5] * dr);
 				this.p2.set(this.movex, this.movey);
 				this.transform.transform(this.p2);
-				return new PathElement2f.MovePathElement2f(
+				return new AbstractPathElement2F.MovePathElement2f(
 						this.p2.getX(), this.p2.getY());
 			}
 			else if (idx<5) {
@@ -636,7 +637,7 @@ public abstract class AbstractCircle2F<T extends Shape2F> extends AbstractShape2
 						(this.x + ctrls[2] * dr),
 						(this.y + ctrls[3] * dr));
 				this.transform.transform(this.ptmp2);
-				return new PathElement2f.CurvePathElement2f(
+				return new AbstractPathElement2F.CurvePathElement2f(
 						this.p1.getX(), this.p1.getY(),
 						this.ptmp1.getX(), this.ptmp1.getY(),
 						this.ptmp2.getX(), this.ptmp2.getY(),
@@ -645,7 +646,7 @@ public abstract class AbstractCircle2F<T extends Shape2F> extends AbstractShape2
 			this.p1.set(this.p2);
 			this.p2.set(this.movex, this.movey);
 			this.transform.transform(this.p2);
-			return new PathElement2f.ClosePathElement2f(
+			return new AbstractPathElement2F.ClosePathElement2f(
 					this.p1.getX(), this.p1.getY(),
 					this.p2.getX(), this.p2.getY());
 		}

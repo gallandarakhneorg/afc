@@ -1259,31 +1259,31 @@ public abstract class AbstractOrientedRectangle2F<T extends Shape2F> extends Abs
 		}
 
 		@Override
-		public PathElement2f next() {
+		public AbstractPathElement2F next() {
 			int idx = this.index;
 			++this.index;
 			switch(idx) {
 			case 0:
-				return new PathElement2f.MovePathElement2f(
+				return new AbstractPathElement2F.MovePathElement2f(
 						this.x1, this.y1);
 			case 1:
-				return new PathElement2f.LinePathElement2f(
+				return new AbstractPathElement2F.LinePathElement2f(
 						this.x1, this.y1,
 						this.x1 + this.r.getX(), this.y1 + this.r.getY());
 			case 2:
-				return new PathElement2f.LinePathElement2f(
+				return new AbstractPathElement2F.LinePathElement2f(
 						this.x1 + this.r.getX(), this.y1 + this.r.getY(),
 						this.x1 + this.r.getX() + this.s.getX(), this.y1 + this.r.getY() + this.s.getY());
 			case 3:
-				return new PathElement2f.LinePathElement2f(
+				return new AbstractPathElement2F.LinePathElement2f(
 						this.x1 + this.r.getX() + this.s.getX(), this.y1 + this.r.getY() + this.s.getY(),
 						this.x1 + this.s.getX(), this.y1 + this.s.getY());
 			case 4:
-				return new PathElement2f.LinePathElement2f(
+				return new AbstractPathElement2F.LinePathElement2f(
 						this.x1 + this.s.getX(), this.y1 + this.s.getY(),
 						this.x1, this.y1);
 			case 5:
-				return new PathElement2f.ClosePathElement2f(
+				return new AbstractPathElement2F.ClosePathElement2f(
 						this.x1, this.y1,
 						this.x1, this.y1);
 			default:
@@ -1365,7 +1365,7 @@ public abstract class AbstractOrientedRectangle2F<T extends Shape2F> extends Abs
 		}
 
 		@Override
-		public PathElement2f next() {
+		public AbstractPathElement2F next() {
 			int idx = this.index;
 			++this.index;
 			switch(idx) {
@@ -1374,7 +1374,7 @@ public abstract class AbstractOrientedRectangle2F<T extends Shape2F> extends Abs
 				if (this.transform!=null) {
 					this.transform.transform(this.p2);
 				}
-				return new PathElement2f.MovePathElement2f(
+				return new AbstractPathElement2F.MovePathElement2f(
 						this.p2.getX(), this.p2.getY());
 			case 1:
 				this.p1.set(this.p2);
@@ -1382,7 +1382,7 @@ public abstract class AbstractOrientedRectangle2F<T extends Shape2F> extends Abs
 				if (this.transform!=null) {
 					this.transform.transform(this.p2);
 				}
-				return new PathElement2f.LinePathElement2f(
+				return new AbstractPathElement2F.LinePathElement2f(
 						this.p1.getX(), this.p1.getY(),
 						this.p2.getX(), this.p2.getY());
 			case 2:
@@ -1391,7 +1391,7 @@ public abstract class AbstractOrientedRectangle2F<T extends Shape2F> extends Abs
 				if (this.transform!=null) {
 					this.transform.transform(this.p2);
 				}
-				return new PathElement2f.LinePathElement2f(
+				return new AbstractPathElement2F.LinePathElement2f(
 						this.p1.getX(), this.p1.getY(),
 						this.p2.getX(), this.p2.getY());
 			case 3:
@@ -1400,7 +1400,7 @@ public abstract class AbstractOrientedRectangle2F<T extends Shape2F> extends Abs
 				if (this.transform!=null) {
 					this.transform.transform(this.p2);
 				}
-				return new PathElement2f.LinePathElement2f(
+				return new AbstractPathElement2F.LinePathElement2f(
 						this.p1.getX(), this.p1.getY(),
 						this.p2.getX(), this.p2.getY());
 			case 4:
@@ -1409,11 +1409,11 @@ public abstract class AbstractOrientedRectangle2F<T extends Shape2F> extends Abs
 				if (this.transform!=null) {
 					this.transform.transform(this.p2);
 				}
-				return new PathElement2f.LinePathElement2f(
+				return new AbstractPathElement2F.LinePathElement2f(
 						this.p1.getX(), this.p1.getY(),
 						this.p2.getX(), this.p2.getY());
 			case 5:
-				return new PathElement2f.ClosePathElement2f(
+				return new AbstractPathElement2F.ClosePathElement2f(
 						this.p2.getX(), this.p2.getY(),
 						this.p2.getX(), this.p2.getY());
 			default:
@@ -1459,23 +1459,23 @@ public abstract class AbstractOrientedRectangle2F<T extends Shape2F> extends Abs
 		}
 
 		@Override
-		public PathElement2f next() {
-			PathElement2f elem = this.p.next();
+		public AbstractPathElement2F next() {
+			AbstractPathElement2F elem = this.p.next();
 			switch(elem.type){
 			case CURVE_TO:
-				return new PathElement2f.CurvePathElement2f(
+				return new AbstractPathElement2F.CurvePathElement2f(
 						(elem.fromX-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getSecondAxisY() - (elem.fromY-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getSecondAxisX(), (elem.fromY-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getFirstAxisX() - (elem.fromX-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getFirstAxisY(),
 						(elem.ctrlX1-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getSecondAxisY() - (elem.ctrlY1-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getSecondAxisX(), (elem.ctrlY1-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getFirstAxisX() - (elem.ctrlX1-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getFirstAxisY(),
 						(elem.ctrlX2-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getSecondAxisY() - (elem.ctrlY2-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getSecondAxisX(), (elem.ctrlY2-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getFirstAxisX() - (elem.ctrlX2-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getFirstAxisY(),
 						(elem.toX-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getSecondAxisY() - (elem.toY-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getSecondAxisX(), (elem.toY-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getFirstAxisX() - (elem.toX-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getFirstAxisY());
 			case LINE_TO:
-				return new PathElement2f.LinePathElement2f(
+				return new AbstractPathElement2F.LinePathElement2f(
 						(elem.fromX-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getSecondAxisY() - (elem.fromY-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getSecondAxisX(), (elem.fromY-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getFirstAxisX() - (elem.fromX-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getFirstAxisY(),
 						(elem.toX-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getSecondAxisY() - (elem.toY-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getSecondAxisX(), (elem.toY-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getFirstAxisX() - (elem.toX-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getFirstAxisY());
 			case MOVE_TO:
-				return new PathElement2f.MovePathElement2f((elem.toX-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getSecondAxisY() - (elem.toY-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getSecondAxisX(), (elem.toY-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getFirstAxisX() - (elem.toX-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getFirstAxisY());
+				return new AbstractPathElement2F.MovePathElement2f((elem.toX-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getSecondAxisY() - (elem.toY-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getSecondAxisX(), (elem.toY-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getFirstAxisX() - (elem.toX-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getFirstAxisY());
 			case QUAD_TO:
-				return new PathElement2f.QuadPathElement2f(
+				return new AbstractPathElement2F.QuadPathElement2f(
 						(elem.fromX-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getSecondAxisY() - (elem.fromY-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getSecondAxisX(), (elem.fromY-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getFirstAxisX() - (elem.fromX-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getFirstAxisY(),
 						(elem.ctrlX1-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getSecondAxisY() - (elem.ctrlY1-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getSecondAxisX(), (elem.ctrlY1-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getFirstAxisX() - (elem.ctrlX1-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getFirstAxisY(),
 						(elem.toX-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getSecondAxisY() - (elem.toY-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getSecondAxisX(), (elem.toY-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getFirstAxisX() - (elem.toX-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getFirstAxisY());
@@ -1525,7 +1525,7 @@ public abstract class AbstractOrientedRectangle2F<T extends Shape2F> extends Abs
 
 		private void searchCandidates() {
 			while (this.points.isEmpty() && this.iterator.hasNext()) {
-				PathElement2f element = this.iterator.next();
+				AbstractPathElement2F element = this.iterator.next();
 				switch (element.getType()) {
 				case MOVE_TO:
 				case LINE_TO:
@@ -1541,7 +1541,7 @@ public abstract class AbstractOrientedRectangle2F<T extends Shape2F> extends Abs
 							element.toX, element.toY);
 					PathIterator2f ii1 = p1.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO);
 					while (ii1.hasNext()) {
-						PathElement2f elt = ii1.next();
+						AbstractPathElement2F elt = ii1.next();
 						switch (elt.getType()) {
 						case MOVE_TO:
 						case LINE_TO:
@@ -1564,7 +1564,7 @@ public abstract class AbstractOrientedRectangle2F<T extends Shape2F> extends Abs
 							element.toX, element.toY);
 					PathIterator2f ii1 = p1.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO);
 					while (ii1.hasNext()) {
-						PathElement2f elt = ii1.next();
+						AbstractPathElement2F elt = ii1.next();
 						switch (elt.getType()) {
 						case MOVE_TO:
 						case LINE_TO:

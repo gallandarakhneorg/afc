@@ -708,11 +708,11 @@ public abstract class AbstractRoundRectangle2F<T extends AbstractRectangularShap
 		}
 
 		@Override
-		public PathElement2f next() {
+		public AbstractPathElement2F next() {
 			if (this.index>=TYPES.length) throw new NoSuchElementException();
 			int idx = this.index;
 
-			PathElement2f element = null;
+			AbstractPathElement2F element = null;
 			PathElementType type = TYPES[idx];
 			double ctrls[] = CTRL_PTS[idx];
 			double ix, iy;
@@ -722,7 +722,7 @@ public abstract class AbstractRoundRectangle2F<T extends AbstractRectangularShap
 			case MOVE_TO:
 				this.moveX = this.lastX = this.x + ctrls[0] * this.w + ctrls[1] * this.aw;
 				this.moveY = this.lastY = this.y + ctrls[2] * this.h + ctrls[3] * this.ah;
-				element = new PathElement2f.MovePathElement2f(
+				element = new AbstractPathElement2F.MovePathElement2f(
 						this.lastX, this.lastY);
 				break;
 			case LINE_TO:
@@ -730,7 +730,7 @@ public abstract class AbstractRoundRectangle2F<T extends AbstractRectangularShap
 				iy = this.lastY;
 				this.lastX = this.x + ctrls[0] * this.w + ctrls[1] * this.aw;
 				this.lastY = this.y + ctrls[2] * this.h + ctrls[3] * this.ah;
-				element = new PathElement2f.LinePathElement2f(
+				element = new AbstractPathElement2F.LinePathElement2f(
 						ix, iy,
 						this.lastX, this.lastY);
 				break;
@@ -743,7 +743,7 @@ public abstract class AbstractRoundRectangle2F<T extends AbstractRectangularShap
 				ctrly2 = this.y + ctrls[6] * this.h + ctrls[7] * this.ah;
 				this.lastX = this.x + ctrls[8] * this.w + ctrls[9] * this.aw;
 				this.lastY = this.y + ctrls[10] * this.h + ctrls[11] * this.ah;
-				element = new PathElement2f.CurvePathElement2f(
+				element = new AbstractPathElement2F.CurvePathElement2f(
 						ix, iy,
 						ctrlx1, ctrly1,
 						ctrlx2, ctrly2,
@@ -754,7 +754,7 @@ public abstract class AbstractRoundRectangle2F<T extends AbstractRectangularShap
 				iy = this.lastY;
 				this.lastX = this.moveX;
 				this.lastY = this.moveY;
-				element = new PathElement2f.ClosePathElement2f(
+				element = new AbstractPathElement2F.ClosePathElement2f(
 						ix, iy,
 						this.lastX, this.lastY);
 				break;
@@ -838,11 +838,11 @@ public abstract class AbstractRoundRectangle2F<T extends AbstractRectangularShap
 		}
 
 		@Override
-		public PathElement2f next() {
+		public AbstractPathElement2F next() {
 			if (this.index>=TYPES.length) throw new NoSuchElementException();
 			int idx = this.index;
 
-			PathElement2f element = null;
+			AbstractPathElement2F element = null;
 			PathElementType type = TYPES[idx];
 			double ctrls[] = CTRL_PTS[idx];
 			double ix, iy;
@@ -853,7 +853,7 @@ public abstract class AbstractRoundRectangle2F<T extends AbstractRectangularShap
 				this.moveY = this.y + ctrls[2] * this.h + ctrls[3] * this.ah;
 				this.last.set(this.moveX, this.moveY);
 				this.transform.transform(this.last);
-				element = new PathElement2f.MovePathElement2f(
+				element = new AbstractPathElement2F.MovePathElement2f(
 						this.last.getX(), this.last.getY());
 				break;
 			case LINE_TO:
@@ -863,7 +863,7 @@ public abstract class AbstractRoundRectangle2F<T extends AbstractRectangularShap
 						this.x + ctrls[0] * this.w + ctrls[1] * this.aw,
 						this.y + ctrls[2] * this.h + ctrls[3] * this.ah);
 				this.transform.transform(this.last);
-				element = new PathElement2f.LinePathElement2f(
+				element = new AbstractPathElement2F.LinePathElement2f(
 						ix, iy,
 						this.last.getX(), this.last.getY());
 				break;
@@ -882,7 +882,7 @@ public abstract class AbstractRoundRectangle2F<T extends AbstractRectangularShap
 						this.x + ctrls[8] * this.w + ctrls[9] * this.aw,
 						this.y + ctrls[10] * this.h + ctrls[11] * this.ah);
 				this.transform.transform(this.last);
-				element = new PathElement2f.CurvePathElement2f(
+				element = new AbstractPathElement2F.CurvePathElement2f(
 						ix, iy,
 						this.ctrl1.getX(), this.ctrl1.getY(),
 						this.ctrl2.getX(), this.ctrl2.getY(),
@@ -893,7 +893,7 @@ public abstract class AbstractRoundRectangle2F<T extends AbstractRectangularShap
 				iy = this.last.getY();
 				this.last.set(this.moveX, this.moveY);
 				this.transform.transform(this.last);
-				element = new PathElement2f.ClosePathElement2f(
+				element = new AbstractPathElement2F.ClosePathElement2f(
 						ix, iy,
 						this.last.getX(), this.last.getY());
 				break;

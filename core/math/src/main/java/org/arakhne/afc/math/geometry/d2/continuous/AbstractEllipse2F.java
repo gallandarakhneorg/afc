@@ -757,7 +757,7 @@ public abstract class AbstractEllipse2F<T extends AbstractRectangularShape2F<T>>
 		}
 
 		@Override
-		public PathElement2f next() {
+		public AbstractPathElement2F next() {
 			if (this.index>5) throw new NoSuchElementException();
 			int idx = this.index;
 			++this.index;
@@ -766,7 +766,7 @@ public abstract class AbstractEllipse2F<T extends AbstractRectangularShape2F<T>>
 				double ctrls[] = CTRL_PTS[3];
 				this.lastX = this.x1 + ctrls[4] * this.w;
 				this.lastY = this.y1 + ctrls[5] * this.h;
-				return new PathElement2f.MovePathElement2f(
+				return new AbstractPathElement2F.MovePathElement2f(
 						this.lastX,  this.lastY);
 			}
 			else if (idx<5) {
@@ -775,7 +775,7 @@ public abstract class AbstractEllipse2F<T extends AbstractRectangularShape2F<T>>
 				double iy = this.lastY;
 				this.lastX = (this.x1 + ctrls[4] * this.w);
 				this.lastY = (this.y1 + ctrls[5] * this.h);
-				return new PathElement2f.CurvePathElement2f(
+				return new AbstractPathElement2F.CurvePathElement2f(
 						ix,  iy,
 						(this.x1 + ctrls[0] * this.w),
 						(this.y1 + ctrls[1] * this.h),
@@ -785,7 +785,7 @@ public abstract class AbstractEllipse2F<T extends AbstractRectangularShape2F<T>>
 						this.lastY);
 			}
 
-			return new PathElement2f.ClosePathElement2f(
+			return new AbstractPathElement2F.ClosePathElement2f(
 					this.lastX, this.lastY,
 					this.lastX, this.lastY);
 		}
@@ -849,7 +849,7 @@ public abstract class AbstractEllipse2F<T extends AbstractRectangularShape2F<T>>
 		}
 
 		@Override
-		public PathElement2f next() {
+		public AbstractPathElement2F next() {
 			if (this.index>5) throw new NoSuchElementException();
 			int idx = this.index;
 			++this.index;
@@ -860,7 +860,7 @@ public abstract class AbstractEllipse2F<T extends AbstractRectangularShape2F<T>>
 						this.x1 + ctrls[4] * this.w,
 						this.y1 + ctrls[5] * this.h);
 				this.transform.transform(this.lastPoint);
-				return new PathElement2f.MovePathElement2f(
+				return new AbstractPathElement2F.MovePathElement2f(
 						this.lastPoint.getX(), this.lastPoint.getY());
 			}
 			else if (idx<5) {
@@ -879,7 +879,7 @@ public abstract class AbstractEllipse2F<T extends AbstractRectangularShape2F<T>>
 						(this.x1 + ctrls[2] * this.w),
 						(this.y1 + ctrls[3] * this.h));
 				this.transform.transform(this.ptmp2);
-				return new PathElement2f.CurvePathElement2f(
+				return new AbstractPathElement2F.CurvePathElement2f(
 						ix,  iy,
 						this.ptmp1.getX(), this.ptmp1.getY(),
 						this.ptmp2.getX(), this.ptmp2.getY(),
@@ -888,7 +888,7 @@ public abstract class AbstractEllipse2F<T extends AbstractRectangularShape2F<T>>
 
 			double ix = this.lastPoint.getX();
 			double iy = this.lastPoint.getY();
-			return new PathElement2f.ClosePathElement2f(
+			return new AbstractPathElement2F.ClosePathElement2f(
 					ix, iy,
 					ix, iy);
 		}

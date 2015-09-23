@@ -923,31 +923,31 @@ public abstract class AbstractRectangle2F<T extends AbstractRectangularShape2F<T
 		}
 
 		@Override
-		public PathElement2f next() {
+		public AbstractPathElement2F next() {
 			int idx = this.index;
 			++this.index;
 			switch(idx) {
 			case 0:
-				return new PathElement2f.MovePathElement2f(
+				return new AbstractPathElement2F.MovePathElement2f(
 						this.x1, this.y1);
 			case 1:
-				return new PathElement2f.LinePathElement2f(
+				return new AbstractPathElement2F.LinePathElement2f(
 						this.x1, this.y1,
 						this.x2, this.y1);
 			case 2:
-				return new PathElement2f.LinePathElement2f(
+				return new AbstractPathElement2F.LinePathElement2f(
 						this.x2, this.y1,
 						this.x2, this.y2);
 			case 3:
-				return new PathElement2f.LinePathElement2f(
+				return new AbstractPathElement2F.LinePathElement2f(
 						this.x2, this.y2,
 						this.x1, this.y2);
 			case 4:
-				return new PathElement2f.LinePathElement2f(
+				return new AbstractPathElement2F.LinePathElement2f(
 						this.x1, this.y2,
 						this.x1, this.y1);
 			case 5:
-				return new PathElement2f.ClosePathElement2f(
+				return new AbstractPathElement2F.ClosePathElement2f(
 						this.x1, this.y1,
 						this.x1, this.y1);
 			default:
@@ -1015,7 +1015,7 @@ public abstract class AbstractRectangle2F<T extends AbstractRectangularShape2F<T
 		}
 
 		@Override
-		public PathElement2f next() {
+		public AbstractPathElement2F next() {
 			int idx = this.index;
 			++this.index;
 			switch(idx) {
@@ -1024,7 +1024,7 @@ public abstract class AbstractRectangle2F<T extends AbstractRectangularShape2F<T
 				if (this.transform!=null) {
 					this.transform.transform(this.p2);
 				}
-				return new PathElement2f.MovePathElement2f(
+				return new AbstractPathElement2F.MovePathElement2f(
 						this.p2.getX(), this.p2.getY());
 			case 1:
 				this.p1.set(this.p2);
@@ -1032,7 +1032,7 @@ public abstract class AbstractRectangle2F<T extends AbstractRectangularShape2F<T
 				if (this.transform!=null) {
 					this.transform.transform(this.p2);
 				}
-				return new PathElement2f.LinePathElement2f(
+				return new AbstractPathElement2F.LinePathElement2f(
 						this.p1.getX(), this.p1.getY(),
 						this.p2.getX(), this.p2.getY());
 			case 2:
@@ -1041,7 +1041,7 @@ public abstract class AbstractRectangle2F<T extends AbstractRectangularShape2F<T
 				if (this.transform!=null) {
 					this.transform.transform(this.p2);
 				}
-				return new PathElement2f.LinePathElement2f(
+				return new AbstractPathElement2F.LinePathElement2f(
 						this.p1.getX(), this.p1.getY(),
 						this.p2.getX(), this.p2.getY());
 			case 3:
@@ -1050,7 +1050,7 @@ public abstract class AbstractRectangle2F<T extends AbstractRectangularShape2F<T
 				if (this.transform!=null) {
 					this.transform.transform(this.p2);
 				}
-				return new PathElement2f.LinePathElement2f(
+				return new AbstractPathElement2F.LinePathElement2f(
 						this.p1.getX(), this.p1.getY(),
 						this.p2.getX(), this.p2.getY());
 			case 4:
@@ -1059,11 +1059,11 @@ public abstract class AbstractRectangle2F<T extends AbstractRectangularShape2F<T
 				if (this.transform!=null) {
 					this.transform.transform(this.p2);
 				}
-				return new PathElement2f.LinePathElement2f(
+				return new AbstractPathElement2F.LinePathElement2f(
 						this.p1.getX(), this.p1.getY(),
 						this.p2.getX(), this.p2.getY());
 			case 5:
-				return new PathElement2f.ClosePathElement2f(
+				return new AbstractPathElement2F.ClosePathElement2f(
 						this.p2.getX(), this.p2.getY(),
 						this.p2.getX(), this.p2.getY());
 			default:

@@ -28,6 +28,7 @@ import org.arakhne.afc.math.geometry.PathElementType;
 /** An element of the path.
  *
  * @author $Author: galland$
+ * @author $Author: hjaffali$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

@@ -28,6 +28,7 @@ import org.arakhne.afc.math.geometry.d2.Point2D;
  * 
  * @param <T> is the type of the shape implemented by the instance of this class.
  * @author $Author: galland$
+ * @author $Author: hjaffali$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
