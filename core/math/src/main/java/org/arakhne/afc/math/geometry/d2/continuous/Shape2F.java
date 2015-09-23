@@ -40,11 +40,13 @@ public interface Shape2F extends Shape2D<Shape2F> {
 	 */
 	public Rectangle2f toBoundingBox();
 	
+	
 	/** Replies the bounds of the shape.
 	 * 
-	 * @param box is set with the bounds of the shape.
+	 * @param rectangle2f is set with the bounds of the shape.
 	 */
-	public void toBoundingBox(Rectangle2f box);
+	public void toBoundingBox(Rectangle2f rectangle2f);
+	
 
 	/** Replies the minimal distance from this shape to the given point.
 	 * 
@@ -177,5 +179,6 @@ public interface Shape2F extends Shape2D<Shape2F> {
 	 * <code>false</code> if there is no intersection.
 	 */
 	public boolean intersects(OrientedRectangle2f s);
+
 
 }

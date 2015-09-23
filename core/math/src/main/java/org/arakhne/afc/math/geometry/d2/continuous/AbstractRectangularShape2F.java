@@ -66,24 +66,25 @@ extends AbstractShape2F<T> {
 	 * @param s
 	 */
 	public AbstractRectangularShape2F(AbstractRectangularShape2F<?> s) {
-		this.minx = s.minx;
-		this.miny = s.miny;
-		this.maxx = s.maxx;
-		this.maxy = s.maxy;
+		this.setMinX( s.getMinX());
+		this.setMinY(s.getMinY());
+		this.setMaxX(s.getMaxX());
+		this.setMaxY(s.getMaxY());
 	}
 
 	/** {@inheritDoc}
+	 * @return 
 	 */
 	@Override
 	public Rectangle2f toBoundingBox() {
-		return new Rectangle2f(this.minx, this.miny, this.maxx-this.minx, this.maxy-this.miny);
+		return new Rectangle2f(this.getMinX(), this.getMinY(), this.getMaxX()-this.getMinX(), this.getMaxY()-this.getMinY());
 	}
 	
 	/** {@inheritDoc}
 	 */
 	@Override
 	public void toBoundingBox(Rectangle2f box) {
-		box.setFromCorners(this.minx, this.miny, this.maxx, this.maxy);
+		box.setFromCorners(this.getMinX(), this.getMinY(), this.getMaxX(), this.getMaxY());
 	}
 
 
@@ -221,10 +222,10 @@ extends AbstractShape2F<T> {
 	
 	@Override
 	public void translate(double dx, double dy) {
-		this.minx += dx;
-		this.miny += dy;
-		this.maxx += dx;
-		this.maxy += dy;
+		this.setMinX(this.getMinX()+dx);
+		this.setMinY(this.getMinY()+dy);
+		this.setMaxX(this.getMaxX()+dx);
+		this.setMaxY(this.getMaxY()+dy);
 	}
 
 	/** Replies if this rectangular shape is empty.
@@ -236,7 +237,7 @@ extends AbstractShape2F<T> {
 	 */
 	@Override
 	public boolean isEmpty() {
-		return this.minx==this.maxx && this.miny==this.maxy; 
+		return this.getMinX()==this.getMaxX() && this.getMinY()==this.getMaxY(); 
 	}
 	
 	/** Inflate this rectangle with the given amounts.
@@ -247,10 +248,10 @@ extends AbstractShape2F<T> {
 	 * @param bottom
 	 */
 	public void inflate(double left, double top, double right, double bottom) {
-		this.minx -= left;
-		this.miny -= top;
-		this.maxx += right;
-		this.maxy += bottom;
+		this.setMinX(this.getMinX()+left);
+		this.setMinY(this.getMinY()+top);
+		this.setMaxX(this.getMaxX()+right);
+		this.setMaxY(this.getMaxY()+bottom);
 	}
 
 }

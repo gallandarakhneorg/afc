@@ -21,25 +21,26 @@
 package org.arakhne.afc.math.geometry.d2.continuous;
 
 import org.arakhne.afc.math.geometry.d2.Point2D;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.DoubleProperty;
 
-/**
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+
+
+/** 2D rectangle with DoubleProperty points.
+ * 
  * @author $Author: hjaffali$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("restriction")
-public class Ellipse2d extends AbstractEllipse2F<Ellipse2d> {
-
-	/**
+public class Rectangle2d extends AbstractRectangle2F<Rectangle2d>{
+	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -6142651522705170434L;
+	private static final long serialVersionUID = -7259689465118883953L;
 
-	/** Lowest x-coordinate covered by this rectangular shape. */
-	
+
 	protected DoubleProperty minxProperty = new SimpleDoubleProperty(0f);
 	/** Lowest y-coordinate covered by this rectangular shape. */
 	protected DoubleProperty minyProperty = new SimpleDoubleProperty(0f);
@@ -49,17 +50,17 @@ public class Ellipse2d extends AbstractEllipse2F<Ellipse2d> {
 	protected DoubleProperty maxyProperty = new SimpleDoubleProperty(0f);
 	
 	
-	
 	/**
 	 */
-	public Ellipse2d() {
+	public Rectangle2d() {
 		//
 	}
+
 	/**
-	 * @param min is the min corner of the ellipse.
-	 * @param max is the max corner of the ellipse.
+	 * @param min is the min corner of the rectangle.
+	 * @param max is the max corner of the rectangle.
 	 */
-	public Ellipse2d(Point2f min, Point2f max) {
+	public Rectangle2d(Point2f min, Point2f max) {
 		super(min, max);
 	}
 
@@ -69,15 +70,15 @@ public class Ellipse2d extends AbstractEllipse2F<Ellipse2d> {
 	 * @param width
 	 * @param height
 	 */
-	public Ellipse2d(double x, double y, double width, double height) {
+	public Rectangle2d(double x, double y, double width, double height) {
 		super(x, y, width, height);
 	}
-
+	
 	/**
-	 * @param e
+	 * @param r
 	 */
-	public Ellipse2d(Ellipse2f e) {
-		super(e);
+	public Rectangle2d(Rectangle2d r) {
+		super(r);
 	}
 
 	
@@ -88,7 +89,7 @@ public class Ellipse2d extends AbstractEllipse2F<Ellipse2d> {
 	 * @param width
 	 * @param height
 	 */
-	 @Override
+	@Override
 	public void set(double x, double y, double width, double height) {
 		setFromCorners(x, y, x+width, y+height);
 	}
@@ -109,7 +110,7 @@ public class Ellipse2d extends AbstractEllipse2F<Ellipse2d> {
 	 */
 	@Override
 	public void setWidth(double width) {
-		this.maxxProperty.set(this.getMinX() + Math.max(0f, width));
+		this.setMaxX(this.getMinX() + Math.max(0f, width));
 	}
 
 	/** Change the height of the rectangle, not the min corner.
@@ -118,7 +119,7 @@ public class Ellipse2d extends AbstractEllipse2F<Ellipse2d> {
 	 */
 	@Override
 	public void setHeight(double height) {
-		this.maxyProperty.set(this.getMinY() + Math.max(0f, height));
+		this.setMaxY(this.getMinY() + Math.max(0f, height));
 	}
 
 	/** Change the frame of the rectangle.
@@ -245,7 +246,7 @@ public class Ellipse2d extends AbstractEllipse2F<Ellipse2d> {
 	}
 
 	/** Set the min Y.
-	* 
+	 * 
 	 * @param y the min y.
 	 */
 	@Override
@@ -266,7 +267,7 @@ public class Ellipse2d extends AbstractEllipse2F<Ellipse2d> {
 	 */
 	@Override
 	public double getCenterY() {
-		return (this.getMinY() + this.getMaxY()) / 2f;
+		return (this.getMinY()+ this.getMaxY()) / 2f;
 	}
 
 	/** Replies the max y.
@@ -313,4 +314,28 @@ public class Ellipse2d extends AbstractEllipse2F<Ellipse2d> {
 	}
 	
 	
+	@Override
+	public void set(Shape2F s) {
+		Rectangle2f r = new Rectangle2f();
+		s.toBoundingBox(r);
+		this.setMaxX(r.getMaxX());
+		this.setMaxY(r.getMaxY());
+		this.setMinX(r.getMinX());
+		this.setMinY(r.getMinY());
+	}
+
+	
+	/** {@inheritDoc}
+	 */
+	@Override
+	public Rectangle2f toBoundingBox() {
+		Rectangle2f r = new Rectangle2f();
+		r.setMaxX(this.getMaxX());
+		r.setMaxY(this.getMaxY());
+		r.setMinX(this.getMinX());
+		r.setMinY(this.getMinY());
+		
+		return r;
+	}
+
 }
