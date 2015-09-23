@@ -84,7 +84,7 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 				break;
 			case LINE_TO:
 			{
-				double factor =  Segment2f.computeProjectedPointOnLine(
+				double factor =  AbstractSegment2F.computeProjectedPointOnLine(
 						x, y,
 						pe.fromX, pe.fromY, pe.toX, pe.toY);
 				factor = MathUtil.clamp(factor, 0f, 1f);
@@ -94,19 +94,19 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 				candidate = new Point2f(
 						pe.fromX + v.getX(),
 						pe.fromY + v.getY());
-				crossings += Segment2f.computeCrossingsFromPoint(
+				crossings += AbstractSegment2F.computeCrossingsFromPoint(
 						x, y,
 						pe.fromX, pe.fromY, pe.toX, pe.toY);
 				break;
 			}
 			case CLOSE:
-				crossings += Segment2f.computeCrossingsFromPoint(
+				crossings += AbstractSegment2F.computeCrossingsFromPoint(
 						x, y,
 						pe.fromX, pe.fromY, pe.toX, pe.toY);
 				if ((crossings & mask) != 0) return new Point2f(x, y);
 
 				if (!pe.isEmpty()) {
-					double factor =  Segment2f.computeProjectedPointOnLine(
+					double factor =  AbstractSegment2F.computeProjectedPointOnLine(
 							x, y,
 							pe.fromX, pe.fromY, pe.toX, pe.toY);
 					factor = MathUtil.clamp(factor, 0f, 1f);
@@ -168,7 +168,7 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 				break;
 			case LINE_TO:
 			case CLOSE:
-				candidate = Segment2f.computeFarthestPointTo(
+				candidate = AbstractSegment2F.computeFarthestPointTo(
 						pe.fromX, pe.fromY, pe.toX, pe.toY,
 						x, y);
 				break;
@@ -358,7 +358,7 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 				endy = element.toY;
 				if (endx==px && endy==py)
 					return MathConstants.SHAPE_INTERSECTS;
-				crossings += Segment2f.computeCrossingsFromPoint(
+				crossings += AbstractSegment2F.computeCrossingsFromPoint(
 						px, py,
 						curx, cury,
 						endx, endy);
@@ -413,7 +413,7 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 				if (cury != movy || curx != movx) {
 					if (movx==px && movy==py)
 						return MathConstants.SHAPE_INTERSECTS;
-					crossings += Segment2f.computeCrossingsFromPoint(
+					crossings += AbstractSegment2F.computeCrossingsFromPoint(
 							px, py,
 							curx, cury,
 							movx, movy);
@@ -434,7 +434,7 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 				// Not closed
 				if (movx==px && movy==py)
 					return MathConstants.SHAPE_INTERSECTS;
-				crossings += Segment2f.computeCrossingsFromPoint(
+				crossings += AbstractSegment2F.computeCrossingsFromPoint(
 						px, py,
 						curx, cury,
 						movx, movy);
@@ -510,7 +510,7 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 			case LINE_TO:
 				endx = element.toX;
 				endy = element.toY;
-				numCrosses = Segment2f.computeCrossingsFromEllipse(
+				numCrosses = AbstractSegment2F.computeCrossingsFromEllipse(
 						numCrosses,
 						ex, ey, ew, eh,
 						curx, cury,
@@ -566,7 +566,7 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 				break;
 			case CLOSE:
 				if (cury != movy || curx != movx) {
-					numCrosses = Segment2f.computeCrossingsFromEllipse(
+					numCrosses = AbstractSegment2F.computeCrossingsFromEllipse(
 							numCrosses,
 							ex, ey, ew, eh,
 							curx, cury,
@@ -589,7 +589,7 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 		if (isOpen) {
 			if (closeable) {
 				// Not closed
-				numCrosses = Segment2f.computeCrossingsFromEllipse(
+				numCrosses = AbstractSegment2F.computeCrossingsFromEllipse(
 						numCrosses,
 						ex, ey, ew, eh,
 						curx, cury,
@@ -664,7 +664,7 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 			case LINE_TO:
 				endx = element.toX;
 				endy = element.toY;
-				numCrosses = Segment2f.computeCrossingsFromCircle(
+				numCrosses = AbstractSegment2F.computeCrossingsFromCircle(
 						numCrosses,
 						cx, cy, radius,
 						curx, cury,
@@ -720,7 +720,7 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 				break;
 			case CLOSE:
 				if (cury != movy || curx != movx) {
-					numCrosses = Segment2f.computeCrossingsFromCircle(
+					numCrosses = AbstractSegment2F.computeCrossingsFromCircle(
 							numCrosses,
 							cx, cy, radius,
 							curx, cury,
@@ -743,7 +743,7 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 		if (isOpen) {
 			if (closeable) {
 				// Not closed
-				numCrosses = Segment2f.computeCrossingsFromCircle(
+				numCrosses = AbstractSegment2F.computeCrossingsFromCircle(
 						numCrosses,
 						cx, cy, radius,
 						curx, cury,
@@ -813,7 +813,7 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 			case LINE_TO:
 				endx = element.toX;
 				endy = element.toY;
-				numCrosses = Segment2f.computeCrossingsFromSegment(
+				numCrosses = AbstractSegment2F.computeCrossingsFromSegment(
 						numCrosses,
 						x1, y1, x2, y2,
 						curx, cury,
@@ -864,7 +864,7 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 				break;
 			case CLOSE:
 				if (cury != movy || curx != movx) {
-					numCrosses = Segment2f.computeCrossingsFromSegment(
+					numCrosses = AbstractSegment2F.computeCrossingsFromSegment(
 							numCrosses,
 							x1, y1, x2, y2,
 							curx, cury,
@@ -884,7 +884,7 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 
 		if (isOpen) {
 			if (closeable) {
-				numCrosses = Segment2f.computeCrossingsFromSegment(
+				numCrosses = AbstractSegment2F.computeCrossingsFromSegment(
 						numCrosses,
 						x1, y1, x2, y2,
 						curx, cury,
@@ -982,7 +982,7 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 			case LINE_TO:
 				endx = pathElement.toX;
 				endy = pathElement.toY;
-				crossings = Segment2f.computeCrossingsFromRect(crossings,
+				crossings = AbstractSegment2F.computeCrossingsFromRect(crossings,
 						rxmin, rymin,
 						rxmax, rymax,
 						curx, cury,
@@ -1035,7 +1035,7 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 				break;
 			case CLOSE:
 				if (curx != movx || cury != movy) {
-					crossings = Segment2f.computeCrossingsFromRect(crossings,
+					crossings = AbstractSegment2F.computeCrossingsFromRect(crossings,
 							rxmin, rymin,
 							rxmax, rymax,
 							curx, cury,
@@ -1057,7 +1057,7 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 		if (isOpen) {
 			if (closeable) {
 				// Not closed
-				crossings = Segment2f.computeCrossingsFromRect(crossings,
+				crossings = AbstractSegment2F.computeCrossingsFromRect(crossings,
 						rxmin, rymin,
 						rxmax, rymax,
 						curx, cury,
@@ -1132,24 +1132,24 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 	}
 
 	/**
-	 * @param windingRule
+	 * @param windingRule1
 	 */
-	public Path2f(PathWindingRule windingRule) {
-		assert(windingRule!=null);
+	public Path2f(PathWindingRule windingRule1) {
+		assert(windingRule1!=null);
 		this.types = new PathElementType[GROW_SIZE];
 		this.coords = new double[GROW_SIZE];
-		this.windingRule = windingRule;
+		this.windingRule = windingRule1;
 	}
 
 	/**
-	 * @param windingRule
+	 * @param windingRule1
 	 * @param iterator
 	 */
-	public Path2f(PathWindingRule windingRule, Iterator<PathElement2f> iterator) {
-		assert(windingRule!=null);
+	public Path2f(PathWindingRule windingRule1, Iterator<PathElement2f> iterator) {
+		assert(windingRule1!=null);
 		this.types = new PathElementType[GROW_SIZE];
 		this.coords = new double[GROW_SIZE];
-		this.windingRule = windingRule;
+		this.windingRule = windingRule1;
 		add(iterator);
 	}
 
@@ -2413,11 +2413,11 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 		private double movex, movey;
 
 		/**
-		 * @param transform
+		 * @param transform1
 		 */
-		public TransformPathIterator(Transform2D transform) {
-			assert(transform!=null);
-			this.transform = transform;
+		public TransformPathIterator(Transform2D transform1) {
+			assert(transform1!=null);
+			this.transform = transform1;
 		}
 
 		@Override
@@ -2615,22 +2615,22 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 		private double lastNextY;
 
 		/**
-		 * @param windingRule is the winding rule of the path.
-		 * @param pathIterator is the path iterator that may be used to initialize the path.
+		 * @param windingRule1 is the winding rule of the path.
+		 * @param pathIterator1 is the path iterator that may be used to initialize the path.
 		 * @param flatness the maximum allowable distance between the
 		 * control points and the flattened curve
-		 * @param limit the maximum number of recursive subdivisions
+		 * @param limit1 the maximum number of recursive subdivisions
 		 * allowed for any curved segment
 		 */
-		public FlatteningPathIterator(PathWindingRule windingRule, PathIterator2f pathIterator, double flatness, int limit) {
-			assert(windingRule!=null);
+		public FlatteningPathIterator(PathWindingRule windingRule1, PathIterator2f pathIterator1, double flatness, int limit1) {
+			assert(windingRule1!=null);
 			assert(flatness>=0f);
-			assert(limit>=0);
-			this.windingRule = windingRule;
-			this.pathIterator = pathIterator;
+			assert(limit1>=0);
+			this.windingRule = windingRule1;
+			this.pathIterator = pathIterator1;
 			this.squaredFlatness = flatness * flatness;
-			this.limit = limit;
-			this.levels = new int[limit + 1];
+			this.limit = limit1;
+			this.levels = new int[limit1 + 1];
 			searchNext();
 		}
 
@@ -2664,7 +2664,7 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 		 *          values in the specified array at the specified index.
 		 */
 		private static double getQuadSquaredFlatness(double coords[], int offset) {
-			return Segment2f.distanceSquaredLinePoint(
+			return AbstractSegment2F.distanceSquaredLinePoint(
 					coords[offset + 0], coords[offset + 1],
 					coords[offset + 4], coords[offset + 5],
 					coords[offset + 2], coords[offset + 3]);
@@ -2748,7 +2748,7 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 		 */
 		private static double getCurveSquaredFlatness(double coords[], int offset) {
 			return Math.max(
-					Segment2f.distanceSquaredSegmentPoint(
+					AbstractSegment2F.distanceSquaredSegmentPoint(
 							coords[offset + 6],
 							coords[offset + 7],
 							coords[offset + 2],
@@ -2756,7 +2756,7 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 							coords[offset + 0],
 							coords[offset + 1],
 							null),
-					Segment2f.distanceSquaredSegmentPoint(
+					AbstractSegment2F.distanceSquaredSegmentPoint(
 							coords[offset + 6],
 							coords[offset + 7],
 							coords[offset + 4],
@@ -3184,7 +3184,7 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 				this.lastReplied = Path2f.this.getPointAt(this.index++);
 				return this.lastReplied;
 			}
-			catch(Throwable _) {
+			catch( Throwable _) {
 				throw new NoSuchElementException();
 			}
 		}

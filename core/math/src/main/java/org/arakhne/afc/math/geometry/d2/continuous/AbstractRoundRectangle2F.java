@@ -61,7 +61,7 @@ public abstract class AbstractRoundRectangle2F<T extends AbstractRectangularShap
 		double rcy1 = (ry1 + rheight1/2f);
 		double rcx2 = (rx2 + rwidth2/2f);
 		double rcy2 = (ry2 + rheight2/2f);
-		double farX;
+		double farX; 
 		if (rcx1<=rcx2) farX = rx2 + rwidth2;
 		else farX = rx2;
 		double farY;

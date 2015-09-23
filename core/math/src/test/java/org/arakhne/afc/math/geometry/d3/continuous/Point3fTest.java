@@ -76,12 +76,13 @@ public class Point3fTest extends AbstractMathTestCase {
 
 	@Test
 	public void distanceL1Point3D() {
-		int tab[] = {1,2,3};
-		Point3f point = new Point3f(1.0,2.0,3.0);
-		Point3f point2 = new Point3f(tab);
-		Point3f point3 = new Point3f(0,0,0);
-		Point3f point4 = new Point3f(-1,0,1);
 		
+		Point3f point = new Point3f(1.0,2.0,3.0);
+		Point3f point2 = new Point3f(point);
+		Point3D point3 = new Point3f(0,0,0);
+		Point3D point4 = new Point3f(-1,0,1);
+		
+		assertTrue(point.equals(point2));
 		assertEpsilonEquals(6,point.distanceL1(point3));
 		assertEpsilonEquals(0,point.distanceL1(point2));
 		assertEpsilonEquals(0,point2.distanceL1(point));

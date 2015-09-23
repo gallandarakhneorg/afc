@@ -225,7 +225,7 @@ extends AbstractShape2F<T> {
 		this.setMinX(this.getMinX()+dx);
 		this.setMinY(this.getMinY()+dy);
 		this.setMaxX(this.getMaxX()+dx);
-		this.setMaxY(this.getMaxY()+dy);
+		this.setMaxY(this.getMaxY()+dy); 
 	}
 
 	/** Replies if this rectangular shape is empty.

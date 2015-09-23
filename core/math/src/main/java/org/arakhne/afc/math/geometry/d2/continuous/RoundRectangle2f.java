@@ -365,7 +365,7 @@ public class RoundRectangle2f extends AbstractRoundRectangle2F<RoundRectangle2f>
 	 * of this <code>RoundRectangle2f</code>.
 	 */
 	public void set(double x, double y, double width, double height, double arcWidth1, double arcHeight1) {
-		setFromCorners(x, y, x+width, y+height);
+		setFromCorners(x, y, x+width, y+height); 
 		this.arcWidth = arcWidth1;
 		this.arcHeight = arcHeight1;
 	}
