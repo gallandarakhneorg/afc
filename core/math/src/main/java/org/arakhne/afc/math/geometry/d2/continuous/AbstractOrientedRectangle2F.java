@@ -164,7 +164,7 @@ public abstract class AbstractOrientedRectangle2F<T extends Shape2F> extends Abs
 		double bx = (s2x-obrCenterX) * obrAxis2Y - (s2y-obrCenterY) * obrAxis2X;
 		double by = (s2y-obrCenterY) * obrAxis1X - (s2x-obrCenterX) * obrAxis1Y;
 
-		return Rectangle2f.intersectsRectangleSegment(
+		return AbstractRectangle2F.intersectsRectangleSegment(
 				-obrAxis1Extent, -obrAxis2Extent, obrAxis1Extent, obrAxis2Extent,
 				ax, ay,  bx,  by);
 	}
@@ -549,7 +549,7 @@ public abstract class AbstractOrientedRectangle2F<T extends Shape2F> extends Abs
 
 		double rx = obrAxis1Extent / -2.;
 		double ry = obrAxis2Extent / -2.;
-		return Rectangle2f.containsRectanglePoint(
+		return AbstractRectangle2F.containsRectanglePoint(
 				nx, ny,
 				rx, ry,
 				(obrAxis1Extent / 2.) - rx,
@@ -1464,21 +1464,21 @@ public abstract class AbstractOrientedRectangle2F<T extends Shape2F> extends Abs
 			switch(elem.type){
 			case CURVE_TO:
 				return new AbstractPathElement2F.CurvePathElement2f(
-						(elem.fromX-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getSecondAxisY() - (elem.fromY-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getSecondAxisX(), (elem.fromY-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getFirstAxisX() - (elem.fromX-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getFirstAxisY(),
-						(elem.ctrlX1-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getSecondAxisY() - (elem.ctrlY1-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getSecondAxisX(), (elem.ctrlY1-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getFirstAxisX() - (elem.ctrlX1-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getFirstAxisY(),
-						(elem.ctrlX2-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getSecondAxisY() - (elem.ctrlY2-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getSecondAxisX(), (elem.ctrlY2-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getFirstAxisX() - (elem.ctrlX2-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getFirstAxisY(),
-						(elem.toX-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getSecondAxisY() - (elem.toY-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getSecondAxisX(), (elem.toY-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getFirstAxisX() - (elem.toX-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getFirstAxisY());
+						(elem.getFromX()-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getSecondAxisY() - (elem.getFromY()-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getSecondAxisX(), (elem.getFromY()-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getFirstAxisX() - (elem.getFromX()-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getFirstAxisY(),
+						(elem.getCtrlX1()-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getSecondAxisY() - (elem.getCtrlY1()-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getSecondAxisX(), (elem.getCtrlY1()-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getFirstAxisX() - (elem.getCtrlX1()-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getFirstAxisY(),
+						(elem.getCtrlX2()-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getSecondAxisY() - (elem.getCtrlY2()-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getSecondAxisX(), (elem.getCtrlY2()-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getFirstAxisX() - (elem.getCtrlX2()-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getFirstAxisY(),
+						(elem.getToX()-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getSecondAxisY() - (elem.getToY()-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getSecondAxisX(), (elem.getToY()-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getFirstAxisX() - (elem.getToX()-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getFirstAxisY());
 			case LINE_TO:
 				return new AbstractPathElement2F.LinePathElement2f(
-						(elem.fromX-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getSecondAxisY() - (elem.fromY-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getSecondAxisX(), (elem.fromY-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getFirstAxisX() - (elem.fromX-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getFirstAxisY(),
-						(elem.toX-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getSecondAxisY() - (elem.toY-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getSecondAxisX(), (elem.toY-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getFirstAxisX() - (elem.toX-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getFirstAxisY());
+						(elem.getFromX()-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getSecondAxisY() - (elem.getFromY()-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getSecondAxisX(), (elem.getFromY()-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getFirstAxisX() - (elem.getFromX()-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getFirstAxisY(),
+						(elem.getToX()-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getSecondAxisY() - (elem.getToY()-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getSecondAxisX(), (elem.getToY()-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getFirstAxisX() - (elem.getToX()-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getFirstAxisY());
 			case MOVE_TO:
-				return new AbstractPathElement2F.MovePathElement2f((elem.toX-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getSecondAxisY() - (elem.toY-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getSecondAxisX(), (elem.toY-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getFirstAxisX() - (elem.toX-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getFirstAxisY());
+				return new AbstractPathElement2F.MovePathElement2f((elem.getToX()-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getSecondAxisY() - (elem.getToY()-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getSecondAxisX(), (elem.getToY()-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getFirstAxisX() - (elem.getFromX()-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getFirstAxisY());
 			case QUAD_TO:
 				return new AbstractPathElement2F.QuadPathElement2f(
-						(elem.fromX-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getSecondAxisY() - (elem.fromY-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getSecondAxisX(), (elem.fromY-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getFirstAxisX() - (elem.fromX-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getFirstAxisY(),
-						(elem.ctrlX1-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getSecondAxisY() - (elem.ctrlY1-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getSecondAxisX(), (elem.ctrlY1-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getFirstAxisX() - (elem.ctrlX1-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getFirstAxisY(),
-						(elem.toX-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getSecondAxisY() - (elem.toY-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getSecondAxisX(), (elem.toY-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getFirstAxisX() - (elem.toX-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getFirstAxisY());
+						(elem.getFromX()-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getSecondAxisY() - (elem.getFromY()-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getSecondAxisX(), (elem.getFromY()-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getFirstAxisX() - (elem.getFromX()-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getFirstAxisY(),
+						(elem.getCtrlX1()-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getSecondAxisY() - (elem.getCtrlY1()-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getSecondAxisX(), (elem.getCtrlY1()-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getFirstAxisX() - (elem.getCtrlX1()-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getFirstAxisY(),
+						(elem.getToX()-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getSecondAxisY() - (elem.getToY()-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getSecondAxisX(), (elem.getToY()-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getFirstAxisX() - (elem.getToX()-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getFirstAxisY());
 			case CLOSE:
 			default:
 				break;
@@ -1529,23 +1529,23 @@ public abstract class AbstractOrientedRectangle2F<T extends Shape2F> extends Abs
 				switch (element.getType()) {
 				case MOVE_TO:
 				case LINE_TO:
-					this.points.push(new Point2f(element.toX, element.toY));
+					this.points.push(new Point2f(element.getToX(), element.getToY()));
 					break;
 				case CURVE_TO:
 				{
 					Path2f p1 = new Path2f();
-					p1.moveTo(element.fromX, element.fromY);
+					p1.moveTo(element.getFromX(), element.getFromY());
 					p1.curveTo(
-							element.ctrlX1, element.ctrlY1,
-							element.ctrlX2, element.ctrlY2,
-							element.toX, element.toY);
+							element.getCtrlX1(), element.getCtrlY1(),
+							element.getCtrlX2(), element.getCtrlY2(),
+							element.getToX(), element.getToY());
 					PathIterator2f ii1 = p1.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO);
 					while (ii1.hasNext()) {
 						AbstractPathElement2F elt = ii1.next();
 						switch (elt.getType()) {
 						case MOVE_TO:
 						case LINE_TO:
-							this.points.push(new Point2f(element.toX, element.toY));
+							this.points.push(new Point2f(element.getToX(), element.getToY()));
 							break;
 						case CURVE_TO:
 						case QUAD_TO:
@@ -1558,17 +1558,17 @@ public abstract class AbstractOrientedRectangle2F<T extends Shape2F> extends Abs
 				case QUAD_TO:
 				{
 					Path2f p1 = new Path2f();
-					p1.moveTo(element.fromX, element.fromY);
+					p1.moveTo(element.getFromX(), element.getFromY());
 					p1.quadTo(
-							element.ctrlX1, element.ctrlY1,
-							element.toX, element.toY);
+							element.getCtrlX1(), element.getCtrlY1(),
+							element.getToX(), element.getToY());
 					PathIterator2f ii1 = p1.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO);
 					while (ii1.hasNext()) {
 						AbstractPathElement2F elt = ii1.next();
 						switch (elt.getType()) {
 						case MOVE_TO:
 						case LINE_TO:
-							this.points.push(new Point2f(element.toX, element.toY));
+							this.points.push(new Point2f(element.getToX(), element.getToY()));
 							break;
 						case CURVE_TO:
 						case QUAD_TO:

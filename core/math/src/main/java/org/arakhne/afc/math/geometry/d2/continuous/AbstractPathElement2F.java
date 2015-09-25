@@ -36,38 +36,6 @@ public abstract class AbstractPathElement2F implements PathElement2D {
 	
 	private static final long serialVersionUID = 8963281073370254033L;
 	
-	/** Source point.
-	 */
-	private double fromX;
-	
-	/** Source point.
-	 */
-	private double fromY;
-
-	/** Target point.
-	 */
-	private double toX;
-	
-	/** Target point.
-	 */
-	private double toY;
-
-	/** First control point.
-	 */
-	private double ctrlX1;
-	
-	/** First control point.
-	 */
-	private double ctrlY1;
-
-	/** Second control point.
-	 */
-	private double ctrlX2;
-	
-	/** Second control point.
-	 */
-	private double ctrlY2;
-	
 	/** Create an instance of path element.
 	 * 
 	 * @param type is the type of the new element.
@@ -134,85 +102,52 @@ public abstract class AbstractPathElement2F implements PathElement2D {
 	 */
 	public abstract double[] toArray();
 	
-	public double getFromX() {
-		return this.fromX;
-	}
+	abstract public double getFromX();
 
-	public double getFromY() {
-		return this.fromY;
-	}
+	abstract public double getFromY();
 
 	
-	public double getToX() {
-		return this.toX;
-	}
+	abstract public double getToX();
 
 	
-	public double getToY() {
-		return this.toY;
-	}
+	abstract public double getToY();
 
 	
-	public double getCtrlX1() {
-		return this.ctrlX1;
-	}
+	abstract public double getCtrlX1();
 
 	
-	public double getCtrlY1() {
-		return this.ctrlY1;
-	}
+	abstract public double getCtrlY1();
 
 	
-	public double getCtrlX2() {
-		return this.ctrlX2;
-	}
+	abstract public double getCtrlX2();
 
 	
-	public double getCtrlY2() {
-		return this.ctrlY2;
-	}
+	abstract public double getCtrlY2();
 
 
 	
-	public void setFromX(double fromX1) {
-		this.fromX = fromX1;
-	}
+	abstract public void setFromX(double fromX1);
 
 	
-	public void setFromY(double fromY1) {
-		this.fromY = fromY1;
-	}
+	abstract public void setFromY(double fromY1);
 
 	
-	public void setToX(double toX1) {
-		this.toX = toX1;
-	}
+	abstract public void setToX(double toX1);
 
 	
-	public void setToY(double toY1) {
-		this.toY = toY1;
-	}
+	abstract public void setToY(double toY1);
 
 	
-	public void setCtrlX1(double ctrlX11) {
-		this.ctrlX1 = ctrlX11;
-	}
+	abstract public void setCtrlX1(double ctrlX11);
 
 	
-	public void setCtrlY1(double ctrlY11) {
-		this.ctrlY1 = ctrlY11;
-	}
+	abstract public void setCtrlY1(double ctrlY11);
 
 	
-	public void setCtrlX2(double ctrlX21) {
-		this.ctrlX2 = ctrlX21;
-	}
+	abstract public void setCtrlX2(double ctrlX21);
 
 	
-	public void setCtrlY2(double ctrlY21) {
-		this.ctrlY2 = ctrlY21;
-	
-	}
+	abstract public void setCtrlY2(double ctrlY21);
 	
 	
 
@@ -223,7 +158,7 @@ public abstract class AbstractPathElement2F implements PathElement2D {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	public static class MovePathElement2f extends AbstractPathElement2F {
+	public static class MovePathElement2f extends PathElement2f {
 		
 		private static final long serialVersionUID = -5596181248741970433L;
 		
@@ -282,7 +217,7 @@ public abstract class AbstractPathElement2F implements PathElement2D {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	public static class LinePathElement2f extends AbstractPathElement2F {
+	public static class LinePathElement2f extends PathElement2f {
 		
 		private static final long serialVersionUID = -5878571187312098882L;
 		
@@ -343,7 +278,7 @@ public abstract class AbstractPathElement2F implements PathElement2D {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	public static class QuadPathElement2f extends AbstractPathElement2F {
+	public static class QuadPathElement2f extends PathElement2f {
 		
 		private static final long serialVersionUID = 5641358330446739160L;
 		
@@ -412,7 +347,7 @@ public abstract class AbstractPathElement2F implements PathElement2D {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	public static class CurvePathElement2f extends AbstractPathElement2F {
+	public static class CurvePathElement2f extends PathElement2f {
 		
 		private static final long serialVersionUID = -1449309552719221756L;
 
@@ -490,7 +425,7 @@ public abstract class AbstractPathElement2F implements PathElement2D {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	public static class ClosePathElement2f extends AbstractPathElement2F {
+	public static class ClosePathElement2f extends PathElement2f {
 		
 		private static final long serialVersionUID = 4643537091880303796L;
 
