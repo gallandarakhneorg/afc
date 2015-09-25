@@ -38,25 +38,25 @@ public class MultiFileFilter implements FileFilter {
 	private final String description;
 	
 	/**
-	 * @param description
-	 * @param filters
+	 * @param description1
+	 * @param filters1
 	 */
-	public MultiFileFilter(String description, FileFilter... filters) {
-		this(true, description, filters);
+	public MultiFileFilter(String description1, FileFilter... filters1) {
+		this(true, description1, filters1);
 	}
 
 	/**
-	 * @param acceptDirectories is <code>true</code> to
+	 * @param acceptDirectories1 is <code>true</code> to
 	 * permit to this file filter to accept directories;
 	 * <code>false</code> if the directories should not
 	 * match.
-	 * @param description
-	 * @param filters
+	 * @param description1
+	 * @param filters1
 	 */
-	public MultiFileFilter(boolean acceptDirectories, String description, FileFilter... filters) {
-		this.acceptDirectories = acceptDirectories;
-		this.filters = filters;
-		this.description = description;
+	public MultiFileFilter(boolean acceptDirectories1, String description1, FileFilter... filters1) {
+		this.acceptDirectories = acceptDirectories1;
+		this.filters = filters1;
+		this.description = description1;
 	}
 
 	/**

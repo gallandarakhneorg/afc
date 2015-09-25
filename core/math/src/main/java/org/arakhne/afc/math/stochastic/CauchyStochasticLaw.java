@@ -75,15 +75,15 @@ public class CauchyStochasticLaw extends StochasticLaw {
 	}
 
 	/**
-	 * @param x0 is the location parameter that specifying the location of the peak
+	 * @param x01 is the location parameter that specifying the location of the peak
 	 * of the distribution
-	 * @param gamma is the scale parameter which specifies the half-width at half-maximum (HWHM).
+	 * @param gamma1 is the scale parameter which specifies the half-width at half-maximum (HWHM).
 	 * @throws OutsideDomainException when gamma is outside its domain
 	 */
-	public CauchyStochasticLaw(double x0, double gamma) throws OutsideDomainException {
-		if (gamma<=0) throw new OutsideDomainException(gamma);
-		this.x0 = x0;
-		this.gamma = gamma;
+	public CauchyStochasticLaw(double x01, double gamma1) throws OutsideDomainException {
+		if (gamma1<=0) throw new OutsideDomainException(gamma1);
+		this.x0 = x01;
+		this.gamma = gamma1;
 	}
 	
 	/**

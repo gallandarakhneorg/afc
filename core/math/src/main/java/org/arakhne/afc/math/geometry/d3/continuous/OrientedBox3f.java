@@ -794,6 +794,7 @@ public class OrientedBox3f extends AbstractShape3f<OrientedBox3f> {
 	 * @param axis2Extent extent of the second axis.
 	 * @param axis3Extent extent of the third axis.
 	 */
+	@SuppressWarnings("hiding")
 	public OrientedBox3f(
 			Point3D center,
 			Vector3D axis1,
@@ -878,10 +879,10 @@ public class OrientedBox3f extends AbstractShape3f<OrientedBox3f> {
 
 	/** Set the center.
 	 * 
-	 * @param center
+	 * @param center1
 	 */
-	public void setCenter(Point3D center) {
-		setCenter(center.getX(), center.getY(), center.getZ());
+	public void setCenter(Point3D center1) {
+		setCenter(center1.getX(), center1.getY(), center1.getZ());
 	}
 
 	/** Replies the first axis of the oriented box.

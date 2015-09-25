@@ -45,10 +45,10 @@ public class SGraphPoint implements GraphPoint<SGraphPoint,SGraphSegment> {
 	private List<Object> userData = null;
 	
 	/**
-	 * @param graph is the graph in which the connection is.
+	 * @param graph1 is the graph in which the connection is.
 	 */
-	SGraphPoint(SGraph graph) {
-		this.graph = new WeakReference<>(graph);
+	SGraphPoint(SGraph graph1) {
+		this.graph = new WeakReference<>(graph1);
 	}
 	
 	/** Clear the connection.
@@ -59,10 +59,10 @@ public class SGraphPoint implements GraphPoint<SGraphPoint,SGraphSegment> {
 	
 	/** Add the given segments in the connection.
 	 * 
-	 * @param segments
+	 * @param segments1
 	 */
-	void add(Iterable<SGraphSegment> segments) {
-		for(SGraphSegment segment : segments) {
+	void add(Iterable<SGraphSegment> segments1) {
+		for(SGraphSegment segment : segments1) {
 			this.segments.add(segment);
 		}
 	}
@@ -206,23 +206,23 @@ public class SGraphPoint implements GraphPoint<SGraphPoint,SGraphSegment> {
 	
 	/** Add a user data in the data associated to this point.
 	 * 
-	 * @param userData
+	 * @param userData1
 	 * @return <code>true</code> if the data was added; otherwise <code>false</code>.
 	 */
-	public boolean addUserData(Object userData) {
+	public boolean addUserData(Object userData1) {
 		if (this.userData==null) {
 			this.userData = new ArrayList<>();
 		}
-		return this.userData.add(userData);
+		return this.userData.add(userData1);
 	}
 
 	/** Remove a user data from the data associated to this point.
 	 * 
-	 * @param userData
+	 * @param userData1
 	 * @return <code>true</code> if the data was removed; otherwise <code>false</code>.
 	 */
-	public boolean removeUserData(Object userData) {
-		return (this.userData!=null && this.userData.remove(userData));
+	public boolean removeUserData(Object userData1) {
+		return (this.userData!=null && this.userData.remove(userData1));
 	}
 	
 	/** Replies the number of user data.
@@ -276,13 +276,13 @@ public class SGraphPoint implements GraphPoint<SGraphPoint,SGraphSegment> {
 		private boolean connectedWithBeginPoint;
 		
 		/**
-		 * @param segment is the connected segment.
-		 * @param connectedWithBeginPoint is <code>true</code> if the segment is connected
+		 * @param segment1 is the connected segment.
+		 * @param connectedWithBeginPoint1 is <code>true</code> if the segment is connected
 		 * by its begin point, <code>false</code> if connected by its end point.
 		 */
-		public PointConnection(SGraphSegment segment, boolean connectedWithBeginPoint) {
-			this.segment = new WeakReference<>(segment);
-			this.connectedWithBeginPoint = connectedWithBeginPoint;
+		public PointConnection(SGraphSegment segment1, boolean connectedWithBeginPoint1) {
+			this.segment = new WeakReference<>(segment1);
+			this.connectedWithBeginPoint = connectedWithBeginPoint1;
 		}
 
 		/**

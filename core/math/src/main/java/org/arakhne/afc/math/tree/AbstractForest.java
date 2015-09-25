@@ -68,13 +68,13 @@ implements Forest<D> {
 	
 	/**
 	 * @param internalList is the internal list to use.
-	 * @param trees is the trees to put inside the forest.
+	 * @param trees1 is the trees to put inside the forest.
 	 */
-	protected AbstractForest(List<Tree<D,?>> internalList, Collection<? extends Tree<D,?>> trees) {
+	protected AbstractForest(List<Tree<D,?>> internalList, Collection<? extends Tree<D,?>> trees1) {
 		assert(internalList!=null);
-		assert(trees!=null);
+		assert(trees1!=null);
 		this.trees = internalList;
-		this.trees.addAll(trees);
+		this.trees.addAll(trees1);
 	}
 
 	/** {@inheritDoc}
@@ -270,8 +270,8 @@ implements Forest<D> {
 		catch(AssertionError e) {
 			throw e;
 		}
-		catch(Throwable _) {
-			return false;
+		catch(Throwable e) {
+			e.printStackTrace();return false;
 		}
 		if (this.trees.remove(tree)) {
 			fireTreeRemoval(t);
@@ -406,10 +406,10 @@ implements Forest<D> {
 		private Tree<D,?> lastReplied = null;
 		
 		/**
-		 * @param iterator
+		 * @param iterator1
 		 */
-		public ForestIterator(Iterator<Tree<D,?>> iterator) {
-			this.iterator = iterator;
+		public ForestIterator(Iterator<Tree<D,?>> iterator1) {
+			this.iterator = iterator1;
 		}
 
 		/**

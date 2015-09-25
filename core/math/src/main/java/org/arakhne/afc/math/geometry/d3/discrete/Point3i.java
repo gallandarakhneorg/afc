@@ -69,6 +69,7 @@ public class Point3i extends Tuple3i<Point3D> implements Point3D {
 	 * @param y
 	 * @param z
 	 */
+	@SuppressWarnings("hiding")
 	public Point3i(int x, int y, int z) {
 		super(x,y,z);
 	}
@@ -78,6 +79,7 @@ public class Point3i extends Tuple3i<Point3D> implements Point3D {
 	 * @param y
 	 * @param z
 	 */
+	@SuppressWarnings("hiding")
 	public Point3i(float x, float y, float z) {
 		super(x,y,z);
 	}
@@ -87,6 +89,7 @@ public class Point3i extends Tuple3i<Point3D> implements Point3D {
 	 * @param y
 	 * @param z
 	 */
+	@SuppressWarnings("hiding")
 	public Point3i(double x, double y, double z) {
 		super(x,y,z);
 	}
@@ -96,6 +99,7 @@ public class Point3i extends Tuple3i<Point3D> implements Point3D {
 	 * @param y
 	 * @param z
 	 */
+	@SuppressWarnings("hiding")
 	public Point3i(long x, long y, long z) {
 		super(x,y,z);
 	}
@@ -261,42 +265,42 @@ public class Point3i extends Tuple3i<Point3D> implements Point3D {
 			throw new UnsupportedOperationException();
 		}
 
-		@Override
+		@Override@SuppressWarnings("hiding")
 		public void add(int x, int y, int z) {
 			throw new UnsupportedOperationException();
 		}
 
-		@Override
+		@Override@SuppressWarnings("hiding")
 		public void add(double x, double y, double z) {
 			throw new UnsupportedOperationException();
 		}
 
-		@Override
+		@Override@SuppressWarnings("hiding")
 		public void addX(int x) {
 			throw new UnsupportedOperationException();
 		}
 
-		@Override
+		@Override@SuppressWarnings("hiding")
 		public void addX(double x) {
 			throw new UnsupportedOperationException();
 		}
 
-		@Override
+		@Override@SuppressWarnings("hiding")
 		public void addY(int y) {
 			throw new UnsupportedOperationException();
 		}
 
-		@Override
+		@Override@SuppressWarnings("hiding")
 		public void addY(double y) {
 			throw new UnsupportedOperationException();
 		}
 
-		@Override
+		@Override@SuppressWarnings("hiding")
 		public void addZ(int z) {
 			throw new UnsupportedOperationException();
 		}
 
-		@Override
+		@Override@SuppressWarnings("hiding")
 		public void addZ(double z) {
 			throw new UnsupportedOperationException();
 		}
@@ -411,12 +415,12 @@ public class Point3i extends Tuple3i<Point3D> implements Point3D {
 			throw new UnsupportedOperationException();
 		}
 
-		@Override
+		@Override@SuppressWarnings("hiding")
 		public void set(int x, int y, int z) {
 			throw new UnsupportedOperationException();
 		}
 
-		@Override
+		@Override@SuppressWarnings("hiding")
 		public void set(double x, double y, double z) {
 			throw new UnsupportedOperationException();
 		}
@@ -441,12 +445,12 @@ public class Point3i extends Tuple3i<Point3D> implements Point3D {
 			return Point3i.this.ix();
 		}
 
-		@Override
+		@Override@SuppressWarnings("hiding")
 		public void setX(int x) {
 			throw new UnsupportedOperationException();
 		}
 
-		@Override
+		@Override@SuppressWarnings("hiding")
 		public void setX(double x) {
 			throw new UnsupportedOperationException();
 		}
@@ -461,12 +465,12 @@ public class Point3i extends Tuple3i<Point3D> implements Point3D {
 			return Point3i.this.iy();
 		}
 
-		@Override
+		@Override@SuppressWarnings("hiding")
 		public void setY(int y) {
 			throw new UnsupportedOperationException();
 		}
 
-		@Override
+		@Override@SuppressWarnings("hiding")
 		public void setY(double y) {
 			throw new UnsupportedOperationException();
 		}
@@ -481,52 +485,52 @@ public class Point3i extends Tuple3i<Point3D> implements Point3D {
 			return Point3i.this.iz();
 		}
 
-		@Override
+		@Override@SuppressWarnings("hiding")
 		public void setZ(int z) {
 			throw new UnsupportedOperationException();
 		}
 
-		@Override
+		@Override@SuppressWarnings("hiding")
 		public void setZ(double z) {
 			throw new UnsupportedOperationException();
 		}
 
-		@Override
+		@Override@SuppressWarnings("hiding")
 		public void sub(int x, int y, int z) {
 			throw new UnsupportedOperationException();
 		}
 
-		@Override
+		@Override@SuppressWarnings("hiding")
 		public void sub(double x, double y, double z) {
 			throw new UnsupportedOperationException();
 		}
 
-		@Override
+		@Override@SuppressWarnings("hiding")
 		public void subX(int x) {
 			throw new UnsupportedOperationException();
 		}
 
-		@Override
+		@Override@SuppressWarnings("hiding")
 		public void subX(double x) {
 			throw new UnsupportedOperationException();
 		}
 
-		@Override
+		@Override@SuppressWarnings("hiding")
 		public void subY(int y) {
 			throw new UnsupportedOperationException();
 		}
 
-		@Override
+		@Override@SuppressWarnings("hiding")
 		public void subY(double y) {
 			throw new UnsupportedOperationException();
 		}
 
-		@Override
+		@Override@SuppressWarnings("hiding")
 		public void subZ(int z) {
 			throw new UnsupportedOperationException();
 		}
 
-		@Override
+		@Override@SuppressWarnings("hiding")
 		public void subZ(double z) {
 			throw new UnsupportedOperationException();
 		}

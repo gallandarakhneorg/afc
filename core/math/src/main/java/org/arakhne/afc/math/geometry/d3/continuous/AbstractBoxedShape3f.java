@@ -480,6 +480,7 @@ extends AbstractShape3f<T> {
 	 * @param maxy
 	 * @param maxz
 	 */
+	@SuppressWarnings("hiding")
 	public void inflate(double minx, double miny, double minz, double maxx, double maxy, double maxz) {
 		this.minx -= minx;
 		this.miny -= miny;

@@ -65,45 +65,45 @@ implements Iterator<ST> {
 	private final WeakReference<Graph<ST,PT>> graph;
 	
 	/**
-	 * @param graph is the graph associated to this iterator.
+	 * @param graph1 is the graph associated to this iterator.
 	 * @param segment is the segment from which to start.
 	 * @param point is the segment's point indicating the direction.
-	 * @param allowManyReplies may be <code>true</code> to allow to reply many times the same segment, otherwhise <code>false</code>.
-	 * @param assumeOrientedSegments may be <code>true</code> to assume that the same segment has two different
+	 * @param allowManyReplies1 may be <code>true</code> to allow to reply many times the same segment, otherwhise <code>false</code>.
+	 * @param assumeOrientedSegments1 may be <code>true</code> to assume that the same segment has two different
 	 * instances for graph iteration: the first instance is associated the first point of the segment and the second
 	 * instance is associated to the last point of the segment. If this parameter is <code>false</code> to assume that
 	 * the end points of a segment are not distinguished.
 	 * @param distanceToReachStartingPoint is the distance to reach the starting point.
 	 * It must be negative or nul.
 	 */
-	public GraphIterator(Graph<ST,PT> graph, ST segment, PT point, boolean allowManyReplies, boolean assumeOrientedSegments, double distanceToReachStartingPoint) {
-		this(graph,null,segment,point,allowManyReplies, assumeOrientedSegments,distanceToReachStartingPoint);
+	public GraphIterator(Graph<ST,PT> graph1, ST segment, PT point, boolean allowManyReplies1, boolean assumeOrientedSegments1, double distanceToReachStartingPoint) {
+		this(graph1,null,segment,point,allowManyReplies1, assumeOrientedSegments1,distanceToReachStartingPoint);
 	}
 
 	/**
-	 * @param graph is the graph associated to this iterator.
-	 * @param courseModel is the course model to use.
+	 * @param graph1 is the graph associated to this iterator.
+	 * @param courseModel1 is the course model to use.
 	 * @param segment is the segment from which to start.
 	 * @param point is the segment's point indicating the direction.
-	 * @param allowManyReplies may be <code>true</code> to allow to reply many times the same segment, otherwhise <code>false</code>.
-	 * @param assumeOrientedSegments may be <code>true</code> to assume that the same segment has two different
+	 * @param allowManyReplies1 may be <code>true</code> to allow to reply many times the same segment, otherwhise <code>false</code>.
+	 * @param assumeOrientedSegments1 may be <code>true</code> to assume that the same segment has two different
 	 * instances for graph iteration: the first instance is associated the first point of the segment and the second
 	 * instance is associated to the last point of the segment. If this parameter is <code>false</code> to assume that
 	 * the end points of a segment are not distinguished.
 	 * @param distanceToReachStartingPoint is the distance to reach the starting point.
 	 * It must be negative or nul.
 	 */
-	public GraphIterator(Graph<ST,PT> graph, GraphCourseModel<ST,PT> courseModel, ST segment, PT point, boolean allowManyReplies, boolean assumeOrientedSegments, double distanceToReachStartingPoint) {
-		this(graph, courseModel, segment, point, allowManyReplies, assumeOrientedSegments, distanceToReachStartingPoint, Double.POSITIVE_INFINITY);
+	public GraphIterator(Graph<ST,PT> graph1, GraphCourseModel<ST,PT> courseModel1, ST segment, PT point, boolean allowManyReplies1, boolean assumeOrientedSegments1, double distanceToReachStartingPoint) {
+		this(graph1, courseModel1, segment, point, allowManyReplies1, assumeOrientedSegments1, distanceToReachStartingPoint, Double.POSITIVE_INFINITY);
 	}
 	
 	/**
-	 * @param graph is the graph associated to this iterator.
-	 * @param courseModel is the course model to use.
+	 * @param graph1 is the graph associated to this iterator.
+	 * @param courseModel1 is the course model to use.
 	 * @param segment is the segment from which to start.
 	 * @param point is the segment's point indicating the direction.
-	 * @param allowManyReplies may be <code>true</code> to allow to reply many times the same segment, otherwhise <code>false</code>.
-	 * @param assumeOrientedSegments may be <code>true</code> to assume that the same segment has two different
+	 * @param allowManyReplies1 may be <code>true</code> to allow to reply many times the same segment, otherwhise <code>false</code>.
+	 * @param assumeOrientedSegments1 may be <code>true</code> to assume that the same segment has two different
 	 * instances for graph iteration: the first instance is associated the first point of the segment and the second
 	 * instance is associated to the last point of the segment. If this parameter is <code>false</code> to assume that
 	 * the end points of a segment are not distinguished.
@@ -112,20 +112,20 @@ implements Iterator<ST> {
 	 * It must be negative or nul.
 	 */
 	protected GraphIterator(
-			Graph<ST,PT> graph, GraphCourseModel<ST,PT> courseModel, 
+			Graph<ST,PT> graph1, GraphCourseModel<ST,PT> courseModel1, 
 			ST segment, PT point, 
-			boolean allowManyReplies, boolean assumeOrientedSegments, 
+			boolean allowManyReplies1, boolean assumeOrientedSegments1, 
 			double distanceToReachStartingPoint,
 			double distanceToConsumeAfter) {
-		this.graph = new WeakReference<>(graph);
-		GraphCourseModel<ST,PT> courseM = courseModel;
+		this.graph = new WeakReference<>(graph1);
+		GraphCourseModel<ST,PT> courseM = courseModel1;
 		if (courseM==null) {
 			courseM = new BreadthFirstGraphCourseModel<>();
 		}
 
 		this.courseModel = courseM;
-		this.allowManyReplies = allowManyReplies;
-		this.assumeOrientedSegments = assumeOrientedSegments;
+		this.allowManyReplies = allowManyReplies1;
+		this.assumeOrientedSegments = assumeOrientedSegments1;
 		
 		GraphIterationElement<ST,PT> firstElement = newIterationElement(
 				null,segment,point,
@@ -146,15 +146,15 @@ implements Iterator<ST> {
 
 	/** Invoked when a comparator on visited segments is required.
 	 * 
-	 * @param assumeOrientedSegments may be <code>true</code> to assume that the same segment has two different
+	 * @param assumeOrientedSegments1 may be <code>true</code> to assume that the same segment has two different
 	 * instances for graph iteration: the first instance is associated the first point of the segment and the second
 	 * instance is associated to the last point of the segment. If this parameter is <code>false</code> to assume that
 	 * the end points of a segment are not distinguished.
 	 * @return the graph element iterator, or <code>null</code> to use the
 	 * default comparation behaviour of the <code>GraphIterationElement</code>. 
 	 */
-	protected GraphIterationElementComparator<ST,PT> createVisitedSegmentComparator(boolean assumeOrientedSegments) {
-		return new GraphIterationElementComparator<>(assumeOrientedSegments);
+	protected GraphIterationElementComparator<ST,PT> createVisitedSegmentComparator(boolean assumeOrientedSegments1) {
+		return new GraphIterationElementComparator<>(assumeOrientedSegments1);
 	}
 	
 	/** Replies the graph on which this iterator is iterating.
@@ -379,10 +379,10 @@ implements Iterator<ST> {
     	private int index;
     	private final List<E> list;
     	
-    	public ReverseIterator(List<E> list) {
-    		this.savedSize = (list==null) ? 0 : list.size();
+    	public ReverseIterator(List<E> list1) {
+    		this.savedSize = (list1==null) ? 0 : list1.size();
     		this.index = this.savedSize - 1;
-    		this.list = list;
+    		this.list = list1;
     	}
 
 		@Override

@@ -58,12 +58,12 @@ public class GraphPath<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<S
 
 	/**
 	 * @param segment is the segment from which to start.
-	 * @param startingPoint is the segment's point indicating the direction.
+	 * @param startingPoint1 is the segment's point indicating the direction.
 	 */
-	public GraphPath(ST segment, PT startingPoint) {
+	public GraphPath(ST segment, PT startingPoint1) {
 		this.segmentList.add(segment);
-		this.startingPoint = startingPoint;
-		this.endingPoint = segment.getOtherSidePoint(startingPoint);
+		this.startingPoint = startingPoint1;
+		this.endingPoint = segment.getOtherSidePoint(startingPoint1);
 		this.isReversable = false;
 	}
 	
@@ -129,12 +129,12 @@ public class GraphPath<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<S
 	 * as parameter. The path is becoming
 	 * {@code s1, s2}, and nothing else.
 	 * 
-	 * @param isReversable is <code>true</code> if the first
+	 * @param isReversable1 is <code>true</code> if the first
 	 * segment could be reversed; otherwise <code>false</code>.
 	 * @since 4.1
 	 */
-	public void setFirstSegmentReversable(boolean isReversable) {
-		this.isReversable = isReversable;
+	public void setFirstSegmentReversable(boolean isReversable1) {
+		this.isReversable = isReversable1;
 	}
 
 	/**
@@ -353,7 +353,7 @@ public class GraphPath<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<S
 				this.length += segment.getLength();
 				return true;
 			}
-			catch(IndexOutOfBoundsException _) {
+			catch(@SuppressWarnings("unused") IndexOutOfBoundsException e) {
 				//
 			}
 		}
@@ -967,10 +967,10 @@ public class GraphPath<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<S
 				changed = true;
 				++idx;
 			}
-			catch(IndexOutOfBoundsException _) {
+			catch(@SuppressWarnings("unused") IndexOutOfBoundsException e) {
 				//
 			}
-			catch(IllegalArgumentException _) {
+			catch(@SuppressWarnings("unused") IllegalArgumentException e2) {
 				//
 			}
 		}

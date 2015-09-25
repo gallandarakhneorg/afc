@@ -33,12 +33,14 @@ import org.junit.Test;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("static-method")
 public class Matrix3fTest extends AbstractMathTestCase{
 
+	
 	@Test
 	public void toStringTest() {
 		Matrix3f matrix = new Matrix3f(0,1,2,3,4,5,6,7,8);
-		String s = "0.0, 1.0, 2.0\n3.0, 4.0, 5.0\n6.0, 7.0, 8.0\n";
+		String s = "0.0, 1.0, 2.0\n3.0, 4.0, 5.0\n6.0, 7.0, 8.0\n"; //$NON-NLS-1$
 				
 		assertTrue(s.equals(matrix.toString()));
 	}

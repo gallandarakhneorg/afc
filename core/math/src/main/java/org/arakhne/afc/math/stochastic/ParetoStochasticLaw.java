@@ -75,15 +75,15 @@ public class ParetoStochasticLaw extends StochasticLaw {
 	}
 
 	/**
-	 * @param k represents the shape of the distribution
-	 * @param xmin is the minimum value of the distribution
+	 * @param k1 represents the shape of the distribution
+	 * @param xmin1 is the minimum value of the distribution
 	 * @throws OutsideDomainException when xmin or k is negative or nul.
 	 */
-	public ParetoStochasticLaw(double k, double xmin) throws OutsideDomainException {
-		if (xmin<=0) throw new OutsideDomainException(xmin);
-		if (k<=0) throw new OutsideDomainException(k);
-		this.xmin = xmin;
-		this.k = k;
+	public ParetoStochasticLaw(double k1, double xmin1) throws OutsideDomainException {
+		if (xmin1<=0) throw new OutsideDomainException(xmin1);
+		if (k1<=0) throw new OutsideDomainException(k1);
+		this.xmin = xmin1;
+		this.k = k1;
 	}
 	
 	/**

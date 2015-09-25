@@ -34,11 +34,11 @@ import java.io.InputStream;
 public class UnclosableInputStream extends FilterInputStream {
 
 	/**
-	 * @param in
+	 * @param in1
 	 * @throws IOException
 	 */
-	public UnclosableInputStream(InputStream in) throws IOException {
-		super(in);
+	public UnclosableInputStream(InputStream in1) throws IOException {
+		super(in1);
 	}
 
 	/**

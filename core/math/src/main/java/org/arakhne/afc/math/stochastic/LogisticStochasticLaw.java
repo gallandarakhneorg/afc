@@ -74,14 +74,14 @@ public class LogisticStochasticLaw extends StochasticLaw {
 	}
 
 	/**
-	 * @param mu is the location of the distribution
-	 * @param scale is the scale of the distristibution ({@code &gt;0})
+	 * @param mu1 is the location of the distribution
+	 * @param scale1 is the scale of the distristibution ({@code &gt;0})
 	 * @throws OutsideDomainException when scale is negative. 
 	 */
-	public LogisticStochasticLaw(double mu, double scale) throws OutsideDomainException {
-		if (scale<=0) throw new OutsideDomainException(scale);
-		this.mu = mu;
-		this.scale = scale;
+	public LogisticStochasticLaw(double mu1, double scale1) throws OutsideDomainException {
+		if (scale1<=0) throw new OutsideDomainException(scale1);
+		this.mu = mu1;
+		this.scale = scale1;
 	}
 	
 	/**

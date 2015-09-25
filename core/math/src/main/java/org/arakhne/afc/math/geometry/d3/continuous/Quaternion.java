@@ -100,6 +100,7 @@ public class Quaternion implements Cloneable, Serializable {
 	 * @param z
 	 * @param w
 	 */
+	@SuppressWarnings("hiding")
 	public Quaternion(double x, double y, double z, double w) {
 		double mag = (1.0/Math.sqrt( x*x + y*y + z*z + w*w ));
 		this.x = x*mag;
@@ -180,6 +181,7 @@ public class Quaternion implements Cloneable, Serializable {
 	 * 
 	 * @param x
 	 */
+	@SuppressWarnings("hiding")
 	public void setX(double x) {
 		this.x = x;
 	}
@@ -196,6 +198,7 @@ public class Quaternion implements Cloneable, Serializable {
 	 * 
 	 * @param y
 	 */
+	@SuppressWarnings("hiding")
 	public void setY(double y) {
 		this.y = y;
 	}
@@ -212,6 +215,7 @@ public class Quaternion implements Cloneable, Serializable {
 	 * 
 	 * @param z
 	 */
+	@SuppressWarnings("hiding")
 	public void setZ(double z) {
 		this.z = z;
 	}
@@ -228,6 +232,7 @@ public class Quaternion implements Cloneable, Serializable {
 	 * 
 	 * @param w
 	 */
+	@SuppressWarnings("hiding")
 	public void setW(double w) {
 		this.w = w;
 	}
@@ -245,7 +250,7 @@ public class Quaternion implements Cloneable, Serializable {
 			throw e;
 		}
 		catch (Throwable e2) {
-			return false;
+			e2.printStackTrace();return false;
 		}
 	}
 
@@ -337,6 +342,7 @@ public class Quaternion implements Cloneable, Serializable {
 	 * @param q1 the first quaternion
 	 * @param q2 the second quaternion
 	 */
+	@SuppressWarnings("hiding")
 	public final void mul(Quaternion q1, Quaternion q2) {
 		if (this != q1 && this != q2) {
 			this.w = q1.w*q2.w - q1.x*q2.x - q1.y*q2.y - q1.z*q2.z;
@@ -363,8 +369,9 @@ public class Quaternion implements Cloneable, Serializable {
 	 * itself and q1 (this = this * q1).  
 	 * @param q1 the other quaternion
 	 */
+	@SuppressWarnings("hiding")
 	public final void mul(Quaternion q1) {
-		double     x, y, w; 
+		double x, y, w; 
 
 		w = this.w*q1.w - this.x*q1.x - this.y*q1.y - this.z*q1.z;
 		x = this.w*q1.x + q1.w*this.x + this.y*q1.z - this.z*q1.y;
@@ -598,6 +605,7 @@ public class Quaternion implements Cloneable, Serializable {
 	 * @param z
 	 * @param w
 	 */
+	@SuppressWarnings("hiding")
 	public void set(double x, double y, double z, double w) {
 		double mag = (1.0/Math.sqrt( x*x + y*y + z*z + w*w ));
 		this.x = x*mag;
@@ -635,6 +643,7 @@ public class Quaternion implements Cloneable, Serializable {
 	 * @param z is the z coordinate of the rotation axis
 	 * @param angle is the rotation around the axis.
 	 */
+	@SuppressWarnings("hiding")
 	public final void setAxisAngle(double x, double y, double z, double angle) {
 		double mag,amag;
 		// Quat = cos(theta/2) + sin(theta/2)(roation_axis) 
@@ -837,6 +846,7 @@ public class Quaternion implements Cloneable, Serializable {
 	 * @see <a href="http://en.wikipedia.org/wiki/Euler_angles">Euler Angles</a>
 	 * @see <a href="http://www.euclideanspace.com/maths/geometry/rotations/conversions/eulerToQuaternion/index.htm">Euler to Quaternion</a>
 	 */
+	@SuppressWarnings("hiding")
 	public void setEulerAngles(double attitude, double bank, double heading, CoordinateSystem3D system) {
 		CoordinateSystem3D cs = (system == null) ? CoordinateSystem3D.getDefaultCoordinateSystem() : system;
 
@@ -951,6 +961,7 @@ public class Quaternion implements Cloneable, Serializable {
 		private final double heading;
 		private final CoordinateSystem3D system;
 
+		@SuppressWarnings("hiding")
 		private EulerAngles(double attitude, double bank, double heading, CoordinateSystem3D system) {
 			this.attitude = attitude;
 			this.bank = bank;
@@ -1016,6 +1027,7 @@ public class Quaternion implements Cloneable, Serializable {
 		private final double z;
 		private final double angle;
 
+		@SuppressWarnings("hiding")
 		private AxisAngle(double x, double y, double z, double angle) {
 			this.x = x;
 			this.y = y;

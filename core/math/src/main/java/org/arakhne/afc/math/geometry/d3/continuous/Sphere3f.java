@@ -566,20 +566,20 @@ public class Sphere3f extends AbstractShape3f<Sphere3f> {
 
 	/**
 	 * @param center
-	 * @param radius
+	 * @param radius1
 	 */
-	public Sphere3f(Point3D center, double radius) {
-		set(center, radius);
+	public Sphere3f(Point3D center, double radius1) {
+		set(center, radius1);
 	}
 
 	/**
 	 * @param x
 	 * @param y
 	 * @param z
-	 * @param radius
+	 * @param radius1
 	 */
-	public Sphere3f(double x, double y, double z, double radius) {
-		set(x, y, z, radius);
+	public Sphere3f(double x, double y, double z, double radius1) {
+		set(x, y, z, radius1);
 	}
 	
 	/** Construct a sphere from a sphere.
@@ -614,25 +614,25 @@ public class Sphere3f extends AbstractShape3f<Sphere3f> {
 	 * @param x
 	 * @param y
 	 * @param z
-	 * @param radius
+	 * @param radius1
 	 */
-	public void set(double x, double y, double z, double radius) {
+	public void set(double x, double y, double z, double radius1) {
 		this.cx = x;
 		this.cy = y;
 		this.cz = z;
-		this.radius = Math.abs(radius);
+		this.radius = Math.abs(radius1);
 	}
 
 	/** Change the frame of te sphere.
 	 * 
 	 * @param center
-	 * @param radius
+	 * @param radius1
 	 */
-	public void set(Point3D center, double radius) {
+	public void set(Point3D center, double radius1) {
 		this.cx = center.getX();
 		this.cy = center.getY();
 		this.cz = center.getZ();
-		this.radius = Math.abs(radius);
+		this.radius = Math.abs(radius1);
 	}
 
 	@Override
@@ -711,10 +711,10 @@ public class Sphere3f extends AbstractShape3f<Sphere3f> {
 
 	/** Set the radius.
 	 * 
-	 * @param radius is the radius.
+	 * @param radius1 is the radius.
 	 */
-	public void setRadius(double radius) {
-		this.radius = Math.abs(radius);
+	public void setRadius(double radius1) {
+		this.radius = Math.abs(radius1);
 	}
 
 	/** {@inheritDoc}

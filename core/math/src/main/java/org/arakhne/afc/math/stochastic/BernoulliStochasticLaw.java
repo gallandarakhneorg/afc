@@ -72,10 +72,10 @@ public class BernoulliStochasticLaw extends StochasticLaw {
 	}
 
 	/**
-	 * @param p is the probability where the value is {@code 1}
+	 * @param p1 is the probability where the value is {@code 1}
 	 */
-	public BernoulliStochasticLaw(double p) {
-		this.p = p;
+	public BernoulliStochasticLaw(double p1) {
+		this.p = p1;
 	}
 
 	/**

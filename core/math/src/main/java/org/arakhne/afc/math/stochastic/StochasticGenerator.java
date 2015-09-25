@@ -84,8 +84,8 @@ public class StochasticGenerator {
 				noise = -noise;
 			return value+noise;
 		}
-		catch(MathException _) {
-			return value;
+		catch(MathException e) {
+			e.printStackTrace();return value;
 		}
 	}
 	

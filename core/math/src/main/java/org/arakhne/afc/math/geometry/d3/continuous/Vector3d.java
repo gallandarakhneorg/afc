@@ -32,12 +32,13 @@ import javafx.beans.property.ReadOnlyDoubleWrapper;
  * @author Olivier LAMOTTE (olivier.lamotte@utbm.fr)
  *
  */
+@SuppressWarnings("restriction")
 public class Vector3d extends Tuple3d<Vector3D> implements FunctionalVector3D {
 	
 	private static final long serialVersionUID = -2885355291282425412L;
 
 	
-	private ReadOnlyDoubleWrapper lengthSquareProperty = new ReadOnlyDoubleWrapper();
+	protected ReadOnlyDoubleWrapper lengthSquareProperty = new ReadOnlyDoubleWrapper();
 	private ReadOnlyDoubleWrapper lengthProperty = new ReadOnlyDoubleWrapper();
 	
 	
@@ -55,14 +56,14 @@ public class Vector3d extends Tuple3d<Vector3D> implements FunctionalVector3D {
 		this.lengthSquareProperty.bind(Bindings.createDoubleBinding(new Callable<Double>() {
 			@Override
 			public Double call() throws Exception {
-				return xProperty.doubleValue() * xProperty.doubleValue() + yProperty.doubleValue() * yProperty.doubleValue() + zProperty.doubleValue() * zProperty.doubleValue();
+				return new Double(Vector3d.this.xProperty.doubleValue() * Vector3d.this.xProperty.doubleValue() + Vector3d.this.yProperty.doubleValue() * Vector3d.this.yProperty.doubleValue() + Vector3d.this.zProperty.doubleValue() * Vector3d.this.zProperty.doubleValue());
 			}
 		}, this.xProperty, this.yProperty, this.zProperty));
 		
 		this.lengthProperty.bind(Bindings.createDoubleBinding(new Callable<Double>() {
 			@Override
 			public Double call() throws Exception {
-				return Math.sqrt(lengthSquareProperty.doubleValue());
+				return new Double(Math.sqrt(Vector3d.this.lengthSquareProperty.doubleValue()));
 			}
 		}, this.lengthSquareProperty));
 	}

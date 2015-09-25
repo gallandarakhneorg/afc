@@ -38,10 +38,10 @@ public class WriterOutputStream extends OutputStream {
 	private final Writer writer;
 
 	/**
-	 * @param writer
+	 * @param writer1
 	 */
-	public WriterOutputStream(Writer writer) {
-		this.writer = writer;
+	public WriterOutputStream(Writer writer1) {
+		this.writer = writer1;
 	}
 
 	/**

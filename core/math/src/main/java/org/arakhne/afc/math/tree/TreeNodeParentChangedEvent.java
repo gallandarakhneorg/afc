@@ -36,13 +36,13 @@ public class TreeNodeParentChangedEvent extends EventObject {
 
 	/**
 	 * @param child is the node that changed of parent node
-	 * @param oldParent is the old parent node.
-	 * @param newParent is the new parent node.
+	 * @param oldParent1 is the old parent node.
+	 * @param newParent1 is the new parent node.
 	 */
-	public TreeNodeParentChangedEvent(TreeNode<?,?> child, TreeNode<?,?> oldParent, TreeNode<?,?> newParent) {
+	public TreeNodeParentChangedEvent(TreeNode<?,?> child, TreeNode<?,?> oldParent1, TreeNode<?,?> newParent1) {
 		super(child);
-		this.oldParent = oldParent;
-		this.newParent = newParent;
+		this.oldParent = oldParent1;
+		this.newParent = newParent1;
 	}
 	
 	/** Replies the node that fire the event.

@@ -390,7 +390,7 @@ public class Segment3f extends AbstractShape3f<Segment3f> {
 				a.getX(), a.getY(), a.getZ(),
 				v.getX(), v.getY(), v.getZ()) / c.lengthSquared();
 
-		return new Pair<>(factor1, factor2);
+		return new Pair<>(new Double(factor1), new Double(factor2));
 	}
 
 	/**
@@ -459,8 +459,8 @@ public class Segment3f extends AbstractShape3f<Segment3f> {
 		if (factors == null) {
 			return null;
 		}
-		double s1 = factors.getA();
-		double s2 = factors.getB();
+		double s1 = factors.getA().doubleValue();
+		double s2 = factors.getB().doubleValue();
 		if (s1 < 0. || s1 > 1. || s2 < 0. || s2 > 1.) {
 			return null;
 		}
@@ -528,8 +528,8 @@ public class Segment3f extends AbstractShape3f<Segment3f> {
 		if (factors == null) {
 			return false;
 		}
-		double s1 = factors.getA();
-		double s2 = factors.getB();
+		double s1 = factors.getA().doubleValue();
+		double s2 = factors.getB().doubleValue();
 		return (s1 > 0. && s1 < 1. && s2 > 0. && s2 < 1.);
 	}
 
@@ -564,8 +564,8 @@ public class Segment3f extends AbstractShape3f<Segment3f> {
 		if (factors == null) {
 			return false;
 		}
-		double s1 = factors.getA();
-		double s2 = factors.getB();
+		double s1 = factors.getA().doubleValue();
+		double s2 = factors.getB().doubleValue();
 		return (s1 >= 0. && s1 <= 1. && s2 >= 0. && s2 <= 1.);
 	}
 
@@ -1167,11 +1167,11 @@ public class Segment3f extends AbstractShape3f<Segment3f> {
 	}
 
 	/**
-	 * @param pivot is a point on the line
+	 * @param pivot1 is a point on the line
 	 * @param direction is the direction of the line
 	 */
-	public Segment3f(Point3D pivot, Vector3D direction) {
-		this.pivot.set(pivot);
+	public Segment3f(Point3D pivot1, Vector3D direction) {
+		this.pivot.set(pivot1);
 		this.d.set(direction);
 	}
 
@@ -1485,25 +1485,25 @@ public class Segment3f extends AbstractShape3f<Segment3f> {
 	 * The default pivot point of the segment is its first point.
 	 *
 	 * @param rotation the rotation.
-	 * @param pivot the pivot point. If <code>null</code> the default pivot point is used.
+	 * @param pivot1 the pivot point. If <code>null</code> the default pivot point is used.
 	 */
-	public void rotate(Quaternion rotation, Point3D pivot) {
-		if (pivot==null) {
+	public void rotate(Quaternion rotation, Point3D pivot1) {
+		if (pivot1==null) {
 			rotate(rotation);
 		} else {
 			Transform3D m = new Transform3D();
 			m.setRotation(rotation);
 
 			// Translate to the pivot
-			this.pivot.setX(this.pivot.getX() - pivot.getX());
-			this.pivot.setY(this.pivot.getY() - pivot.getY());
-			this.pivot.setZ(this.pivot.getZ() - pivot.getZ());
+			this.pivot.setX(this.pivot.getX() - pivot1.getX());
+			this.pivot.setY(this.pivot.getY() - pivot1.getY());
+			this.pivot.setZ(this.pivot.getZ() - pivot1.getZ());
 
 			m.transform(this.pivot);
 
-			this.pivot.setX(this.pivot.getX() + pivot.getX());
-			this.pivot.setY(this.pivot.getY() + pivot.getY());
-			this.pivot.setZ(this.pivot.getZ() + pivot.getZ());
+			this.pivot.setX(this.pivot.getX() + pivot1.getX());
+			this.pivot.setY(this.pivot.getY() + pivot1.getY());
+			this.pivot.setZ(this.pivot.getZ() + pivot1.getZ());
 
 			// Rotate the direction
 			m.transform(this.d);

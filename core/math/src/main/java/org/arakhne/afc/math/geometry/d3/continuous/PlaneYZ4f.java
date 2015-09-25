@@ -38,10 +38,10 @@ public class PlaneYZ4f extends AbstractOrthoPlane3D<PlaneYZ4f> {
 	protected double x;
 
 	/**
-	 * @param x is the coordinate of the plane.
+	 * @param x1 is the coordinate of the plane.
 	 */
-	public PlaneYZ4f(double x) {
-		this.x = x;
+	public PlaneYZ4f(double x1) {
+		this.x = x1;
 	}
 	
 	/**
@@ -110,21 +110,21 @@ public class PlaneYZ4f extends AbstractOrthoPlane3D<PlaneYZ4f> {
     }
 
 	@Override
-	public Point3f getProjection(double x, double y, double z) {
+	public Point3f getProjection(double x1, double y, double z) {
 		return new Point3f(this.x, y, z);
 	}
 
 	@Override
-	public void setPivot(double x, double y, double z) {
-		this.x = x;
+	public void setPivot(double x1, double y, double z) {
+		this.x = x1;
 	}
 	
 	/** Set the x coordinate of the plane.
 	 *
-	 * @param x
+	 * @param x1
 	 */
-	public void setX(double x) {
-		this.x = x;
+	public void setX(double x1) {
+		this.x = x1;
 	}
 
 	/** Translate the pivot point of the plane.

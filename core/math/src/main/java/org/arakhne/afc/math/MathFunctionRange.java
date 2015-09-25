@@ -87,31 +87,31 @@ public class MathFunctionRange {
 
 	/** A bounding set with with two bounds.
 	 * 
-	 * @param min is the minimal value
-	 * @param max is the maximal value
+	 * @param min1 is the minimal value
+	 * @param max1 is the maximal value
 	 */
-	public MathFunctionRange(double min, double max) {
-		this(min, true, max, true);
+	public MathFunctionRange(double min1, double max1) {
+		this(min1, true, max1, true);
 	}
 
 	/** A bounding set with with two bounds.
 	 * 
-	 * @param min is the minimal value
-	 * @param includeMin indicates if the minimal value is inside the bounds or outside.
-	 * @param max is the maximal value
-	 * @param includeMax indicates if the maximal value is inside the bounds or outside.
+	 * @param min1 is the minimal value
+	 * @param includeMin1 indicates if the minimal value is inside the bounds or outside.
+	 * @param max1 is the maximal value
+	 * @param includeMax1 indicates if the maximal value is inside the bounds or outside.
 	 */
-	public MathFunctionRange(double min, boolean includeMin, double max, boolean includeMax) {
-		if (min<max) {
-			this.min = min;
-			this.max = max;
+	public MathFunctionRange(double min1, boolean includeMin1, double max1, boolean includeMax1) {
+		if (min1<max1) {
+			this.min = min1;
+			this.max = max1;
 		}
 		else {
-			this.min = max;
-			this.max = min;
+			this.min = max1;
+			this.max = min1;
 		}
-		this.includeMin = (this.min!=Double.NEGATIVE_INFINITY)&&(includeMin);
-		this.includeMax = (this.max!=Double.POSITIVE_INFINITY)&&(includeMax);
+		this.includeMin = (this.min!=Double.NEGATIVE_INFINITY)&&(includeMin1);
+		this.includeMax = (this.max!=Double.POSITIVE_INFINITY)&&(includeMax1);
 	}
 
 	/**

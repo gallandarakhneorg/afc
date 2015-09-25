@@ -94,6 +94,7 @@ public class Tuple3i<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	 * @param y
 	 * @param z
 	 */
+	@SuppressWarnings("hiding")
 	public Tuple3i(int x, int y, int z) {
 		this.x = x;
 		this.y = y;
@@ -105,6 +106,7 @@ public class Tuple3i<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	 * @param y
 	 * @param z
 	 */
+	@SuppressWarnings("hiding")
 	public Tuple3i(double x, double y, double z) {
 		this.x = (int)x;
 		this.y = (int)y;
@@ -145,7 +147,7 @@ public class Tuple3i<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
+	@Override@SuppressWarnings("hiding")
 	public void add(int x, int y, int z) {
 		this.x += x;
 		this.y += y;
@@ -155,7 +157,7 @@ public class Tuple3i<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
+	@Override@SuppressWarnings("hiding")
 	public void add(double x, double y, double z) {
 		this.x += x;
 		this.y += y;
@@ -165,7 +167,7 @@ public class Tuple3i<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
+	@Override@SuppressWarnings("hiding")
 	public void addX(int x) {
 		this.x += x;
 	}
@@ -173,7 +175,7 @@ public class Tuple3i<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
+	@Override@SuppressWarnings("hiding")
 	public void addX(double x) {
 		this.x += x;
 	}
@@ -181,7 +183,7 @@ public class Tuple3i<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
+	@Override@SuppressWarnings("hiding")
 	public void addY(int y) {
 		this.y += y;
 	}
@@ -189,7 +191,7 @@ public class Tuple3i<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
+	@Override@SuppressWarnings("hiding")
 	public void addY(double y) {
 		this.y += y;
 	}
@@ -197,7 +199,7 @@ public class Tuple3i<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
+	@Override@SuppressWarnings("hiding")
 	public void addZ(int z) {
 		this.z += z;
 	}
@@ -205,7 +207,7 @@ public class Tuple3i<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
+	@Override@SuppressWarnings("hiding")
 	public void addZ(double z) {
 		this.z += z;
 	}
@@ -425,7 +427,7 @@ public class Tuple3i<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
+	@Override@SuppressWarnings("hiding")
 	public void set(int x, int y, int z) {
 		this.x = x;
 		this.y = y;
@@ -435,7 +437,7 @@ public class Tuple3i<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
+	@Override@SuppressWarnings("hiding")
 	public void set(double x, double y, double z) {
 		this.x = (int)x;
 		this.y = (int)y;
@@ -481,7 +483,7 @@ public class Tuple3i<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
+	@Override@SuppressWarnings("hiding")
 	public void setX(int x) {
 		this.x = x;
 	}
@@ -489,7 +491,7 @@ public class Tuple3i<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
+	@Override@SuppressWarnings("hiding")
 	public void setX(double x) {
 		this.x = (int)x;
 	}
@@ -513,7 +515,7 @@ public class Tuple3i<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
+	@Override@SuppressWarnings("hiding")
 	public void setY(int y) {
 		this.y = y;
 	}
@@ -521,7 +523,7 @@ public class Tuple3i<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
+	@Override@SuppressWarnings("hiding")
 	public void setY(double y) {
 		this.y = (int)y;
 	}
@@ -545,7 +547,7 @@ public class Tuple3i<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
+	@Override@SuppressWarnings("hiding")
 	public void setZ(int z) {
 		this.z = z;
 	}
@@ -553,7 +555,7 @@ public class Tuple3i<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
+	@Override@SuppressWarnings("hiding")
 	public void setZ(double z) {
 		this.z = (int)z;
 	}
@@ -561,7 +563,7 @@ public class Tuple3i<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
+	@Override@SuppressWarnings("hiding")
 	public void sub(int x, int y, int z) {
 		this.x -= x;
 		this.y -= y;
@@ -571,7 +573,7 @@ public class Tuple3i<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
+	@Override@SuppressWarnings("hiding")
 	public void subX(int x) {
 		this.x -= x;
 	}
@@ -579,7 +581,7 @@ public class Tuple3i<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
+	@Override@SuppressWarnings("hiding")
 	public void subY(int y) {
 		this.y -= y;
 	}
@@ -587,7 +589,7 @@ public class Tuple3i<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
+	@Override@SuppressWarnings("hiding")
 	public void subZ(int z) {
 		this.z -= z;
 	}
@@ -595,7 +597,7 @@ public class Tuple3i<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
+	@Override@SuppressWarnings("hiding")
 	public void sub(double x, double y, double z) {
 		this.x -= x;
 		this.y -= y;
@@ -604,7 +606,7 @@ public class Tuple3i<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 
 	/**
 	 * {@inheritDoc}
-	 */
+	 */@SuppressWarnings("hiding")
 	@Override
 	public void subX(double x) {
 		this.x -= x;
@@ -613,7 +615,7 @@ public class Tuple3i<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
+	@Override@SuppressWarnings("hiding")
 	public void subY(double y) {
 		this.y -= y;
 	}
@@ -621,7 +623,7 @@ public class Tuple3i<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	/**
 	 * {@inheritDoc}
 	 */
-	@Override
+	@Override@SuppressWarnings("hiding")
 	public void subZ(double z) {
 		this.z -= z;
 	}
@@ -655,7 +657,7 @@ public class Tuple3i<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 			return(this.x == t1.ix() && this.y == t1.iy() && this.z == t1.iz());
 		}
 		catch (NullPointerException e2) {
-			return false;
+			e2.printStackTrace();return false;
 		}
 	}
 
@@ -673,7 +675,7 @@ public class Tuple3i<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 			throw e;
 		}
 		catch (Throwable e2) {
-			return false;
+			e2.printStackTrace();return false;
 		}
 	}
 

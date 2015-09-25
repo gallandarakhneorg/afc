@@ -1570,6 +1570,7 @@ public class Triangle3f extends AbstractShape3f<Triangle3f> {
 	 * @param p2
 	 * @param p3
 	 */
+	@SuppressWarnings("hiding")
 	public Triangle3f(Point3f p1, Point3f p2, Point3f p3) {
 		this(p1, p2, p3, false);
 	}
@@ -1587,6 +1588,7 @@ public class Triangle3f extends AbstractShape3f<Triangle3f> {
 	 * or referenced by this triangle. If <code>true</code> points
 	 * will be copied, <code>false</code> points will be referenced.
 	 */
+	@SuppressWarnings("hiding")
 	public Triangle3f(Point3f p1, Point3f p2, Point3f p3, boolean copyPoints) {
 		if (copyPoints) {
 			this.p1 = new Point3f(p1);
@@ -1859,6 +1861,7 @@ public class Triangle3f extends AbstractShape3f<Triangle3f> {
 	 * @param p2 the second point.
 	 * @param p3 the third point.
 	 */
+	@SuppressWarnings("hiding")
 	public void set(Point3D p1, Point3D p2, Point3D p3) {
 		this.p1.set(p1);
 		this.p2.set(p2);
@@ -2058,29 +2061,29 @@ public class Triangle3f extends AbstractShape3f<Triangle3f> {
 	 * The default pivot point of the segment is its first point.
 	 *
 	 * @param rotation the rotation.
-	 * @param pivot the pivot point. If <code>null</code> the default pivot point is used.
+	 * @param pivot1 the pivot point. If <code>null</code> the default pivot point is used.
 	 */
-	public void rotate(Quaternion rotation, Point3D pivot) {
-		if (pivot==null) {
+	public void rotate(Quaternion rotation, Point3D pivot1) {
+		if (pivot1==null) {
 			rotate(rotation);
 		} else {
-			assert(pivot!=null);
+			assert(pivot1!=null);
 
 			Transform3D tr = new Transform3D();
 			tr.setRotation(rotation);
 			Vector3f v = new Vector3f();
 
-			v.sub(this.p1, pivot);
+			v.sub(this.p1, pivot1);
 			tr.transform(v);
-			this.p1.add(pivot, v);
+			this.p1.add(pivot1, v);
 
-			v.sub(this.p2, pivot);
+			v.sub(this.p2, pivot1);
 			tr.transform(v);
-			this.p2.add(pivot, v);
+			this.p2.add(pivot1, v);
 
-			v.sub(this.p3, pivot);
+			v.sub(this.p3, pivot1);
 			tr.transform(v);
-			this.p3.add(pivot, v);
+			this.p3.add(pivot1, v);
 
 			clearBufferedData();
 		}
@@ -2097,11 +2100,11 @@ public class Triangle3f extends AbstractShape3f<Triangle3f> {
 	public void toBoundingBox(AlignedBox3f box) {
 		Pair<Double, Double> p = new Pair<>();
 		MathUtil.getMinMax(this.p1.getX(), this.p2.getX(), this.p3.getX(), p);
-		box.setX(p.getA(), p.getB());
+		box.setX(p.getA().doubleValue(), p.getB().doubleValue());
 		MathUtil.getMinMax(this.p1.getY(), this.p2.getY(), this.p3.getY(), p);
-		box.setY(p.getA(), p.getB());
+		box.setY(p.getA().doubleValue(), p.getB().doubleValue());
 		MathUtil.getMinMax(this.p1.getZ(), this.p2.getZ(), this.p3.getZ(), p);
-		box.setZ(p.getA(), p.getB());
+		box.setZ(p.getA().doubleValue(), p.getB().doubleValue());
 	}
 
 	@Override
@@ -2231,6 +2234,7 @@ public class Triangle3f extends AbstractShape3f<Triangle3f> {
 	 * @param system is the coordinate system to use for determining the up coordinate.
 	 * @return the height of the face at the given coordinate.
 	 */
+	@SuppressWarnings("hiding")
 	public double getGroundHeight(double x, double y, CoordinateSystem3D system) {
 		assert(system!=null);
 		int idx = system.getHeightCoordinateIndex();
@@ -2309,6 +2313,7 @@ public class Triangle3f extends AbstractShape3f<Triangle3f> {
 	 * @param system is the coordinate system to use for determining the up coordinate.
 	 * @return the position on the ground.
 	 */
+	@SuppressWarnings("hiding")
 	public Point3f getPointOnGround(double x, double y, CoordinateSystem3D system) {
 		assert(system!=null);
 		int idx = system.getHeightCoordinateIndex();
@@ -2456,6 +2461,7 @@ public class Triangle3f extends AbstractShape3f<Triangle3f> {
 		return new Segment3f(getP3(), getP1());
 	}
 
+	@SuppressWarnings("unused")
 	public static boolean overlapsCoplanarTriangle(Point3f point3f, Point3f point3f2, Point3f point3f3,
 			Point3f point3f4, Point3f point3f5, Point3f point3f6) {
 		// TODO Auto-generated method stub

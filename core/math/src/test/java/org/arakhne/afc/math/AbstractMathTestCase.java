@@ -557,6 +557,7 @@ public abstract class AbstractMathTestCase {
 	 * @return <code>true</code> if the two arrays are equal, otherwise
 	 * <code>false</code>.
 	 */
+	@SuppressWarnings("null")
 	protected boolean isEpsilonEquals(double[] a, double[] b) {
 		if (a==b) return true;
 		if (a==null && b!=null) return false;

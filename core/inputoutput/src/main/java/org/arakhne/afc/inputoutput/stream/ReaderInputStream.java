@@ -39,10 +39,10 @@ public class ReaderInputStream extends InputStream {
 	private final Reader reader;
 
 	/**
-	 * @param reader
+	 * @param reader1
 	 */
-	public ReaderInputStream(Reader reader) {
-		this.reader = reader;
+	public ReaderInputStream(Reader reader1) {
+		this.reader = reader1;
 	}
 
 	/**

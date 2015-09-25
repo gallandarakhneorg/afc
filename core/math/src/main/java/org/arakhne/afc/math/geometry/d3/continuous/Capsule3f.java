@@ -165,13 +165,13 @@ public class Capsule3f extends AbstractShape3f<Capsule3f> {
 	 *            is the first point on the capsule's segment.
 	 * @param b
 	 *            is the second point on the capsule's segment.
-	 * @param radius
+	 * @param radius1
 	 *            is the radius of the capsule.
 	 */
-	public Capsule3f(Point3D a, Point3D b, double radius) {
+	public Capsule3f(Point3D a, Point3D b, double radius1) {
 		this(a.getX(), a.getY(), a.getZ(),
 				b.getX(), b.getY(), b.getZ(),
-				radius);
+				radius1);
 	}
 
 	/**
@@ -190,12 +190,12 @@ public class Capsule3f extends AbstractShape3f<Capsule3f> {
 	 * @param x2 x coordinate of the second point of the medial line.
 	 * @param y2 y coordinate of the second point of the medial line.
 	 * @param z2 z coordinate of the second point of the medial line.
-	 * @param radius the radius of the capsule.
+	 * @param radius1 the radius of the capsule.
 	 */
-	public Capsule3f(double x1, double y1, double z1, double x2, double y2, double z2, double radius) {
+	public Capsule3f(double x1, double y1, double z1, double x2, double y2, double z2, double radius1) {
 		this.medial1.set(x1, y2, z1);
 		this.medial2.set(x2, y2, z2);
-		this.radius = radius;
+		this.radius = radius1;
 		ensureAIsLowerPoint();
 	}
 
@@ -403,22 +403,22 @@ public class Capsule3f extends AbstractShape3f<Capsule3f> {
 	/**
 	 * Change the radius of the capsule.
 	 * 
-	 * @param radius the radius of the capsule.
+	 * @param radius1 the radius of the capsule.
 	 */
-	public void setRadius(double radius) {
-		this.radius = radius;
+	public void setRadius(double radius1) {
+		this.radius = radius1;
 	}
 
 	/** Set the capsule.
 	 * 
 	 * @param a the first point of the capsule's segment.
 	 * @param b the second point of the capsule's segment.
-	 * @param radius the radius of the capsule.
+	 * @param radius1 the radius of the capsule.
 	 */
-	public void set(Point3D a, Point3D b, double radius) {
+	public void set(Point3D a, Point3D b, double radius1) {
 		set(a.getX(), a.getY(), a.getZ(),
 				b.getX(),b.getY(), b.getZ(),
-				radius);
+				radius1);
 	}
 
 	/** Set the capsule.
@@ -429,12 +429,12 @@ public class Capsule3f extends AbstractShape3f<Capsule3f> {
 	 * @param x2 x coordinate of the second point of the capsule's segment.
 	 * @param y2 y coordinate of the second point of the capsule's segment.
 	 * @param z2 z coordinate of the second point of the capsule's segment.
-	 * @param radius the radius of the capsule.
+	 * @param radius1 the radius of the capsule.
 	 */
-	public void set(double x1, double y1, double z1, double x2, double y2, double z2, double radius) {
+	public void set(double x1, double y1, double z1, double x2, double y2, double z2, double radius1) {
 		this.medial1.set(x1, y1, z1);
 		this.medial2.set(x2, y2, z2);
-		this.radius = radius;
+		this.radius = radius1;
 		ensureAIsLowerPoint();
 	}
 	
