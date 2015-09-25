@@ -50,6 +50,7 @@ public class HullEdge3D<T extends Point3f> implements HullObject<T> {
 	 * @param b is the index of the last point.
 	 * @param creationLevel is the level inside the creation algorithm.
 	 */
+	@SuppressWarnings("hiding")
 	public HullEdge3D(T[] points, int a, int b, int creationLevel) {
 		this.a = a;
 		this.b = b;

@@ -45,6 +45,7 @@ public class HullVertex3D<T extends Point3f> implements HullObject<T> {
 	 * @param index is the index of this vertex.
 	 * @param creationLevel is the level in the creation level.
 	 */
+	@SuppressWarnings("hiding")
 	public HullVertex3D(T[] points, int index, int creationLevel) {
 		this.index = index;
 		this.creationLevel = creationLevel;

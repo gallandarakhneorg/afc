@@ -18,20 +18,17 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  * This program is free software; you can redistribute it and/or modify
  */
-
 package org.arakhne.afc.math.geometry.sfc.geometry3d.continuous.convexhull;
 
 
-
-
 import org.arakhne.afc.math.MathUtil;
+import org.arakhne.afc.math.geometry.d3.Tuple3D;
 import org.arakhne.afc.math.geometry.d3.continuous.Plane3D;
 import org.arakhne.afc.math.geometry.d3.continuous.Plane4f;
 import org.arakhne.afc.math.geometry.d3.continuous.PlaneClassification;
+import org.arakhne.afc.math.geometry.d3.continuous.PlaneClassifier;
 import org.arakhne.afc.math.geometry.d3.continuous.Point3f;
-import org.arakhne.afc.math.geometry.d3.continuous.Tuple3f;
 import org.arakhne.afc.math.geometry.d3.continuous.Vector3f;
-import org.arakhne.afc.math.geometry.sfc.geometry3d.continuous.PlaneClassifier;
 
 
 /** This class represents a 3D triangle used inside
@@ -82,6 +79,7 @@ public class HullTriangle3D<T extends Point3f> implements HullObject<T>, PlaneCl
 	 * @param c is the index of the third point in the list of points.
 	 * @param creationLevel is the level in the creation algorithm.
 	 */
+	@SuppressWarnings("hiding")
 	public HullTriangle3D(T[] points, int a, int b, int c, int creationLevel) {
 		this.a = a;
 		this.b = b;
@@ -96,7 +94,7 @@ public class HullTriangle3D<T extends Point3f> implements HullObject<T>, PlaneCl
 		double lny = pa.getZ() * (pb.getX() - pc.getX()) + pb.getZ() * (pc.getX() - pa.getX()) + pc.getZ() * (pa.getX() - pb.getX());
 		double lnz = pa.getX() * (pb.getY() - pc.getY()) + pb.getX() * (pc.getY() - pa.getY()) + pc.getX() * (pa.getY() - pb.getY());
 		double d = - (lnx * pa.getX() + lny * pa.getY() + lnz * pa.getZ());
-		double t = (double) Math.sqrt(lnx*lnx+lny*lny+lnz*lnz);
+		double t = Math.sqrt(lnx*lnx+lny*lny+lnz*lnz);
 		this.nx = lnx / t;
 		this.ny = lny / t;
 		this.nz = lnz / t;
@@ -161,7 +159,7 @@ public class HullTriangle3D<T extends Point3f> implements HullObject<T>, PlaneCl
 	 * @return the classification of the point against the plane.
 	 */
     @Override
-    public PlaneClassification classifies(Tuple3f vec) {
+    public PlaneClassification classifies(Tuple3D<?> vec) {
         PlaneClassification lc;
         int cmp = MathUtil.epsilonDistanceSign(distanceTo(vec));
         if (cmp < 0)
@@ -176,7 +174,7 @@ public class HullTriangle3D<T extends Point3f> implements HullObject<T>, PlaneCl
 	/** {@inheritDoc}
 	 */
 	@Override
-    public boolean intersects(Tuple3f vec) {
+    public boolean intersects(Tuple3D<?> vec) {
         return MathUtil.epsilonDistanceSign(distanceTo(vec))==0;
     }
 
@@ -340,7 +338,7 @@ public class HullTriangle3D<T extends Point3f> implements HullObject<T>, PlaneCl
 	/** {@inheritDoc}
 	 */
 	@Override
-    public PlaneClassification classifies(Plane otherPlane) {
+    public PlaneClassification classifies(Plane3D<?> otherPlane) {
 		double distance = distanceTo(otherPlane);
     	
     	// The distance could not be computed
@@ -358,7 +356,7 @@ public class HullTriangle3D<T extends Point3f> implements HullObject<T>, PlaneCl
 	/** {@inheritDoc}
 	 */
 	@Override
-    public boolean intersects(Plane3D otherPlane) {
+    public boolean intersects(Plane3D<?> otherPlane) {
 		double distance = distanceTo(otherPlane);
     	// The distance could not be computed
     	// the planes intersect.
@@ -377,7 +375,7 @@ public class HullTriangle3D<T extends Point3f> implements HullObject<T>, PlaneCl
      * @param v is the point
      * @return the distance from the given point to this plane.
      */
-    public final double distanceTo(Tuple3f v) {
+    public final double distanceTo(Tuple3D<?> v) {
     	return distanceTo(v.getX(), v.getY(), v.getZ());
     }
     
@@ -390,7 +388,7 @@ public class HullTriangle3D<T extends Point3f> implements HullObject<T>, PlaneCl
      * If the result is 0, the point is on the plane. This function could replies
      * {@link Double#NaN} if the planes are not colinear.
      */
-    public double distanceTo(Plane3D p) {
+    public double distanceTo(Plane3D<?> p) {
     	// Compute the normales
     	Vector3f oNormal = p.getNormal();
     	oNormal.normalize();
@@ -604,7 +602,7 @@ public class HullTriangle3D<T extends Point3f> implements HullObject<T>, PlaneCl
 	 * 
 	 * @return the plane of this triangle.
 	 */
-	public Plane3D getPlane() {
+	public Plane3D<?> getPlane() {
 		return new Plane4f(this.nx,this.ny,this.nz,this.nw);
 	}
 
@@ -625,5 +623,6 @@ public class HullTriangle3D<T extends Point3f> implements HullObject<T>, PlaneCl
 		if ((this.c>=mi)&&(this.c<=ma)) ++lc;
 		return lc;
 	}
+
 
 }

@@ -34,12 +34,12 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 
-import org.arakhne.afc.math.MathUtil;
+import org.arakhne.afc.math.geometry.d3.FunctionalVector3D;
+import org.arakhne.afc.math.geometry.d3.Tuple3D;
 import org.arakhne.afc.math.geometry.d3.continuous.Plane4f;
 import org.arakhne.afc.math.geometry.d3.continuous.PlaneClassification;
 import org.arakhne.afc.math.geometry.d3.continuous.Point3f;
 import org.arakhne.afc.math.geometry.d3.continuous.Triangle3f;
-import org.arakhne.afc.math.geometry.d3.continuous.Tuple3f;
 
 
 /** This class permits to create convex hull from a
@@ -53,8 +53,8 @@ import org.arakhne.afc.math.geometry.d3.continuous.Tuple3f;
 public class DivideAndConquerAlgorithm implements ConvexHullAlgorithm {
 
 	private Point3f[] pointList = null;
-	private final Collection<HullObject<Point3f>> convexHull = new ArrayList<HullObject<Point3f>>();
-	private Map<Integer,DInteger> indexes = new TreeMap<Integer,DInteger>();
+	private final Collection<HullObject<Point3f>> convexHull = new ArrayList<>();
+	private Map<Integer,DInteger> indexes = new TreeMap<>();
 	
 	/**
 	 * Select the points that corresponds to the convex envelop
@@ -118,10 +118,10 @@ public class DivideAndConquerAlgorithm implements ConvexHullAlgorithm {
 		Collection<HullObject<Point3f>> hull = computeConvexHullTriangles(listOfPoint);
 
 		// Rebuild the list of points
-		Set<Tuple3f> lConvexHull = new HashSet<Tuple3f>();
+		Set<Tuple3D<?>> lConvexHull = new HashSet<>();
 		for (HullObject<Point3f> hullObject : hull) {
-			Tuple3f[] pts = hullObject.getObjectPoints(listOfPoint);
-			for (Tuple3f tuple3d : pts) {
+			Tuple3D<?>[] pts = hullObject.getObjectPoints(listOfPoint);
+			for (Tuple3D<?> tuple3d : pts) {
 				lConvexHull.add(tuple3d);
 			}
 		}
@@ -253,17 +253,17 @@ public class DivideAndConquerAlgorithm implements ConvexHullAlgorithm {
 			}
 			
 			// Fill the index reference count
-			leftIndexes = new ArrayList<Integer>();
-			rightIndexes = new ArrayList<Integer>();
+			leftIndexes = new ArrayList<>();
+			rightIndexes = new ArrayList<>();
 			
 			for (Entry<Integer,DInteger> p : leftMap.entrySet()) {
-				incrementIndexReference(p.getKey(),p.getValue().intValue());
+				incrementIndexReference(p.getKey().intValue(),p.getValue().intValue());
 				leftIndexes.add(p.getKey());
 			}
 			Collections.sort(leftIndexes);
 			
 			for (Entry<Integer,DInteger> p : rightMap.entrySet()) {
-				incrementIndexReference(p.getKey(),p.getValue().intValue());
+				incrementIndexReference(p.getKey().intValue(),p.getValue().intValue());
 				rightIndexes.add(p.getKey());
 			}			
 			Collections.sort(rightIndexes);
@@ -287,13 +287,13 @@ public class DivideAndConquerAlgorithm implements ConvexHullAlgorithm {
         	rightCandidate = t[1];
     	}
     	else {
-    		leftCandidate = leftIndexes.get(leftIndexes.size()-1);
-    		rightCandidate = rightIndexes.get(0);
+    		leftCandidate = leftIndexes.get(leftIndexes.size()-1).intValue();
+    		rightCandidate = rightIndexes.get(0).intValue();
     	}
 
 	    // Save the tangent as an edge, because no face could be computed
 	    if (solutionIsEdge) {
-	    	addIntoResult(new HullEdge3D<Point3f>(this.pointList,leftCandidate,rightCandidate,creationLevel));
+	    	addIntoResult(new HullEdge3D<>(this.pointList,leftCandidate,rightCandidate,creationLevel));
 	    }
 	    else {
 	    	createHullCylinder(
@@ -307,6 +307,7 @@ public class DivideAndConquerAlgorithm implements ConvexHullAlgorithm {
 	
 	/** Compute a plane that permits to detect candidate points.
 	 */
+	@SuppressWarnings("static-method")
 	private void computeCandidatePlanes(Plane4f tangentPlane, Point3f leftCandidatePoint, Point3f rightCandidatePoint, boolean yOrder) {
 		double dx, dy, dz;
 		
@@ -353,7 +354,7 @@ public class DivideAndConquerAlgorithm implements ConvexHullAlgorithm {
 				dz = 1;
 			}
 			
-			double dot = MathUtil.dotProduct(dx, dy, dz, tangentCandidate.getEquationComponentA(), tangentCandidate.getEquationComponentB(), tangentCandidate.getEquationComponentC());
+			double dot = FunctionalVector3D.dotProduct(dx, dy, dz, tangentCandidate.getEquationComponentA(), tangentCandidate.getEquationComponentB(), tangentCandidate.getEquationComponentC());
 	    	
 	    	if (dot==0) {
 	    		// Because the two vectors are perpendicular,
@@ -362,7 +363,7 @@ public class DivideAndConquerAlgorithm implements ConvexHullAlgorithm {
 	    		//
 	    		// The determinant is equals to 1 or -1 because
 	    		// the vector are normalized
-	        	dot = MathUtil.determinant(tangentCandidate.getEquationComponentA(), tangentCandidate.getEquationComponentB(), tangentCandidate.getEquationComponentC(), dx, dy, dz);
+	        	dot = FunctionalVector3D.perpProduct(tangentCandidate.getEquationComponentA(), tangentCandidate.getEquationComponentB(), tangentCandidate.getEquationComponentC(), dx, dy, dz);
 	    	}
 	    	
 	    	if (dot<0) {
@@ -380,8 +381,8 @@ public class DivideAndConquerAlgorithm implements ConvexHullAlgorithm {
 	 * @return an array contains the left candidate and the right candidate
 	 */
 	private int[] computeCandidates(List<Integer> leftIndexes, List<Integer> rightIndexes) {
-		int leftCandidate = leftIndexes.get(leftIndexes.size()-1);
-		int rightCandidate = rightIndexes.get(0);
+		int leftCandidate = leftIndexes.get(leftIndexes.size()-1).intValue();
+		int rightCandidate = rightIndexes.get(0).intValue();
 
 		Point3f leftCandidatePoint = this.pointList[leftCandidate];
 		Point3f rightCandidatePoint = this.pointList[rightCandidate];
@@ -399,7 +400,7 @@ public class DivideAndConquerAlgorithm implements ConvexHullAlgorithm {
 	    	// of the tangent plane
 	    	int lastCandidate = leftCandidate;
 	    	for(int idxIdx=leftIndexes.size()-1; idxIdx>=0; --idxIdx) {
-	    		int candidate = leftIndexes.get(idxIdx); 
+	    		int candidate = leftIndexes.get(idxIdx).intValue(); 
 	    		if (candidate!=leftCandidate) {
 	    			PlaneClassification classification = tangentCandidate.classifies(this.pointList[candidate]);
 	    			switch(classification) {
@@ -423,7 +424,7 @@ public class DivideAndConquerAlgorithm implements ConvexHullAlgorithm {
 	    	// of the tangent plane
 	    	lastCandidate = rightCandidate;
 	    	for(int idxIdx=0; idxIdx<rightIndexes.size(); ++idxIdx) {
-	    		int candidate = rightIndexes.get(idxIdx); 
+	    		int candidate = rightIndexes.get(idxIdx).intValue(); 
 	    		if (candidate!=rightCandidate) {
 	    			PlaneClassification classification = tangentCandidate.classifies(this.pointList[candidate]);
 	    			switch(classification) {
@@ -465,8 +466,8 @@ public class DivideAndConquerAlgorithm implements ConvexHullAlgorithm {
 	 * @param creationLevel is the current creation level
 	 */
 	private void createHullCylinder(List<Integer> leftIndexes, List<Integer> rightIndexes, int leftCandidate, int rightCandidate, int creationLevel) {
-		final int minIndex = leftIndexes.get(0);
-		final int maxIndex = rightIndexes.get(rightIndexes.size()-1);
+		final int minIndex = leftIndexes.get(0).intValue();
+		final int maxIndex = rightIndexes.get(rightIndexes.size()-1).intValue();
 		//
 		// STEP 4: find faces that connect
 	    //         the two small hulls
@@ -475,8 +476,8 @@ public class DivideAndConquerAlgorithm implements ConvexHullAlgorithm {
 		int r = rightCandidate;
 		
 	    do {
-	    	int cand = (l==leftIndexes.get(0)) ? 1 : 0;
-	    	int idx = (cand<leftIndexes.size()) ? leftIndexes.get(cand) : rightIndexes.get(cand-leftIndexes.size());
+	    	int cand = (l==leftIndexes.get(0).intValue()) ? 1 : 0;
+	    	int idx = (cand<leftIndexes.size()) ? leftIndexes.get(cand).intValue() : rightIndexes.get(cand-leftIndexes.size()).intValue();
 	    	
 	    	Point3f p1 = this.pointList[l];
 	    	Point3f p2 = this.pointList[r];
@@ -495,7 +496,7 @@ public class DivideAndConquerAlgorithm implements ConvexHullAlgorithm {
 			}
 
 			for(int i=cand+1; i<(leftIndexes.size()+rightIndexes.size()); ++i) {
-	    		int iidx = (i<leftIndexes.size()) ? leftIndexes.get(i) : rightIndexes.get(i-leftIndexes.size());
+	    		int iidx = (i<leftIndexes.size()) ? leftIndexes.get(i).intValue() : rightIndexes.get(i-leftIndexes.size()).intValue();
 	    		if ((iidx!=l)&&(iidx!=r)) {
 	    			boolean newPlane = true;
 		    		boolean isValid = candh.isValid();
@@ -507,6 +508,8 @@ public class DivideAndConquerAlgorithm implements ConvexHullAlgorithm {
 		    				break;
 		    			case BEHIND:
 		    				break;
+						default:
+							break;
 		    			}
 		    		}
 		    		else if ((!isValid)&&
@@ -532,8 +535,8 @@ public class DivideAndConquerAlgorithm implements ConvexHullAlgorithm {
 	    	if (candh.isValid()) {
 	    		// The normal of the triangle is oriented to the ouside
 	    		// of the under-construction hull.
-		    	addIntoResult(new HullTriangle3D<Point3f>(this.pointList,l,idx,r,creationLevel));
-		    	addIntoResult(new HullTriangle3D<Point3f>(this.pointList,l,r,idx,creationLevel));
+		    	addIntoResult(new HullTriangle3D<>(this.pointList,l,idx,r,creationLevel));
+		    	addIntoResult(new HullTriangle3D<>(this.pointList,l,r,idx,creationLevel));
 		    	
 		    	if (cand<leftIndexes.size()) {
 	    			l = idx;
@@ -554,8 +557,8 @@ public class DivideAndConquerAlgorithm implements ConvexHullAlgorithm {
 
 	    // Remove the redundant triangles which are directed
 	    // to at least one of the other vertices of the hull.
-	    deleteFaces(creationLevel, rightIndexes.get(0), maxIndex);
-	    deleteFaces(creationLevel, minIndex, leftIndexes.get(leftIndexes.size()-1));
+	    deleteFaces(creationLevel, rightIndexes.get(0).intValue(), maxIndex);
+	    deleteFaces(creationLevel, minIndex, leftIndexes.get(leftIndexes.size()-1).intValue());
 	}
 
 	/** Create the faces in the basic cases: 0 to 4 vertices.
@@ -571,21 +574,23 @@ public class DivideAndConquerAlgorithm implements ConvexHullAlgorithm {
 			final int i3 = startIndex+3;
 			switch(pointCount) {
 			case 4:
-				addIntoResult(new HullTriangle3D<Point3f>(this.pointList,i1,i0,i2,creationLevel));
-				addIntoResult(new HullTriangle3D<Point3f>(this.pointList,i1,i2,i3,creationLevel));
-				addIntoResult(new HullTriangle3D<Point3f>(this.pointList,i0,i3,i2,creationLevel));
-				addIntoResult(new HullTriangle3D<Point3f>(this.pointList,i0,i1,i3,creationLevel));
+				addIntoResult(new HullTriangle3D<>(this.pointList,i1,i0,i2,creationLevel));
+				addIntoResult(new HullTriangle3D<>(this.pointList,i1,i2,i3,creationLevel));
+				addIntoResult(new HullTriangle3D<>(this.pointList,i0,i3,i2,creationLevel));
+				addIntoResult(new HullTriangle3D<>(this.pointList,i0,i1,i3,creationLevel));
 				return true;
 			case 3:
-				addIntoResult(new HullTriangle3D<Point3f>(this.pointList,i0,i1,i2,creationLevel));
-				addIntoResult(new HullTriangle3D<Point3f>(this.pointList,i0,i2,i1,creationLevel));
+				addIntoResult(new HullTriangle3D<>(this.pointList,i0,i1,i2,creationLevel));
+				addIntoResult(new HullTriangle3D<>(this.pointList,i0,i2,i1,creationLevel));
 				return true;
 			case 2:
-				addIntoResult(new HullEdge3D<Point3f>(this.pointList,i0,i1,creationLevel));
+				addIntoResult(new HullEdge3D<>(this.pointList,i0,i1,creationLevel));
 				return true;
 			case 1:
-				addIntoResult(new HullVertex3D<Point3f>(this.pointList,i0,creationLevel));
+				addIntoResult(new HullVertex3D<>(this.pointList,i0,creationLevel));
 				return true;
+			default:
+				break;
 			}
 		}
 		return false;
@@ -594,6 +599,7 @@ public class DivideAndConquerAlgorithm implements ConvexHullAlgorithm {
 	/** Mark as deleted faces that can see a point from the other hull.
 	 * This function also remove all the 3D edges.
 	 */
+	@SuppressWarnings("unused")
 	private void deleteFaces(final int creationLevel, final int startIndex, final int endIndex) {
 		//int deletionLevel = creationLevel+1;
 		boolean remove;
@@ -646,10 +652,11 @@ public class DivideAndConquerAlgorithm implements ConvexHullAlgorithm {
 	/** Increment the reference on an point's index.
 	 */
 	private void incrementIndexReference(int pointIndex, int inc) {
-		DInteger nb = this.indexes.get(pointIndex);
+		Integer integer = new Integer(pointIndex);
+		DInteger nb = this.indexes.get(integer);
 		if (nb==null) {
 			nb = new DInteger();
-			this.indexes.put(pointIndex, nb);
+			this.indexes.put(integer, nb);
 		}
 		nb.value += inc;
 	}
@@ -657,18 +664,19 @@ public class DivideAndConquerAlgorithm implements ConvexHullAlgorithm {
 	/** Decrement the reference on an point's index.
 	 */
 	private void decrementIndexReference(int pointIndex) {
-		DInteger nb = this.indexes.get(pointIndex);
+		Integer integer = new Integer(pointIndex);
+		DInteger nb = this.indexes.get(integer);
 		if (nb==null) return;
 		nb.value --;
 		if (nb.value<=0)
-			this.indexes.remove(pointIndex);
+			this.indexes.remove(integer);
 	}
 
 	/** Extract the last inserted point indexes.
 	 */
 	private Map<Integer,DInteger> consumeLastInsertedIndexes() {
 		Map<Integer,DInteger> old = this.indexes;
-		this.indexes = new TreeMap<Integer,DInteger>();
+		this.indexes = new TreeMap<>();
 		return old;
 	}
 	
@@ -678,7 +686,7 @@ public class DivideAndConquerAlgorithm implements ConvexHullAlgorithm {
 	 * existing between their edges.
 	 */
 	private boolean triangleOverlaps(int minIndex, int maxIndex, int p1, int p2, int p3) {
-		final HullTriangle3D<Point3f> triangle = new HullTriangle3D<Point3f>(this.pointList,p1,p2,p3, -1);
+		final HullTriangle3D<Point3f> triangle = new HullTriangle3D<>(this.pointList,p1,p2,p3, -1);
 		
 		for (HullObject<Point3f> object : this.convexHull) {
 			if (object instanceof HullTriangle3D<?>) {
@@ -728,7 +736,7 @@ public class DivideAndConquerAlgorithm implements ConvexHullAlgorithm {
 		 */
 		@Override
 		public int compareTo(Integer o) {
-			return o.compareTo(this.value);
+			return o.compareTo(new Integer(this.value));
 		}
 		
 		/** {@inheritDoc}
@@ -765,18 +773,5 @@ public class DivideAndConquerAlgorithm implements ConvexHullAlgorithm {
 		}
 	}
 
-	@Override
-	public Point3f[] computeConvexHull(
-			Point3f... pointList) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Collection<HullObject<Point3f>> computeConvexHullTriangles(
-			Point3f... pointList) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
 }
