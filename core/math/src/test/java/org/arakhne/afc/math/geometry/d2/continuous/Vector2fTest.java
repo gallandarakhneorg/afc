@@ -35,7 +35,7 @@ import org.arakhne.afc.math.matrix.Matrix2f;
 import org.junit.Test;
 
 /**
- * @author $Author: galland$
+ * @author $Author: hjaffali$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

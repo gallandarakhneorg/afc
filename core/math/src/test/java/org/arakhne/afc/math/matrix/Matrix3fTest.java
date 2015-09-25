@@ -19,7 +19,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  * This program is free software; you can redistribute it and/or modify
  */
-
 package org.arakhne.afc.math.matrix;
 
 import static org.junit.Assert.*;
@@ -28,6 +27,12 @@ import org.arakhne.afc.math.AbstractMathTestCase;
 import org.arakhne.afc.math.geometry.d3.continuous.Vector3f;
 import org.junit.Test;
 
+/**
+ * @author $Author: hjaffali$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
 public class Matrix3fTest extends AbstractMathTestCase{
 
 	@Test

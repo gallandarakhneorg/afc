@@ -35,7 +35,7 @@ import org.arakhne.afc.math.geometry.d3.continuous.Vector3f;
 import org.junit.Test;
 
 /**
- * @author $Author: sgalland$
+ * @author $Author: hjaffali$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

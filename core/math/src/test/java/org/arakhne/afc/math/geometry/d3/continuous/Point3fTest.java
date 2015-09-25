@@ -30,7 +30,7 @@ import org.arakhne.afc.math.geometry.d3.Vector3D;
 import org.junit.Test;
 
 /**
- * @author $Author: galland$
+ * @author $Author: hjaffali$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

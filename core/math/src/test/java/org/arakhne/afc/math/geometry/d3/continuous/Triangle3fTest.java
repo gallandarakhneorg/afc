@@ -41,6 +41,12 @@ import org.arakhne.afc.math.geometry.d3.Vector3D;
 import org.arakhne.afc.math.matrix.Matrix3f;
 import org.junit.Test;
 
+/**
+ * @author $Author: hjaffali$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
 @SuppressWarnings("all")
 public class Triangle3fTest extends AbstractShape3fTestCase<Triangle3f> {
 	

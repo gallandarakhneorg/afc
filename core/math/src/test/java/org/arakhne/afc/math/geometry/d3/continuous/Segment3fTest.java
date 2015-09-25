@@ -31,6 +31,12 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+/**
+ * @author $Author: hjaffali$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
 public class Segment3fTest extends AbstractShape3fTestCase<Segment3f> {
 
 	
