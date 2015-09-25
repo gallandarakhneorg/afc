@@ -455,21 +455,21 @@ public class GeneratePictureForTest {
 				AbstractPathElement2F pe = pi.next();
 				switch(pe.type) {
 				case MOVE_TO:
-					cx = mx = toX(pe.toX, docBounds);
-					cy = my = toY(pe.toY, docBounds);
+					cx = mx = toX(pe.getToX(), docBounds);
+					cy = my = toY(pe.getToY(), docBounds);
 					break;
 				case LINE_TO:
-					cx = toX(pe.toX, docBounds);
-					cy = toY(pe.toY, docBounds);
+					cx = toX(pe.getToX(), docBounds);
+					cy = toY(pe.getToY(), docBounds);
 					g.drawLine(
-							toX(pe.fromX, docBounds), toY(pe.fromY, docBounds),
+							toX(pe.getFromX(), docBounds), toY(pe.getFromY(), docBounds),
 							cx, cy);
 					break;
 				case CLOSE:
-					cx = toX(pe.toX, docBounds);
-					cy = toY(pe.toY, docBounds);
+					cx = toX(pe.getToX(), docBounds);
+					cy = toY(pe.getToY(), docBounds);
 					g.drawLine(
-							toX(pe.fromX, docBounds), toY(pe.fromY, docBounds),
+							toX(pe.getFromX(), docBounds), toY(pe.getFromY(), docBounds),
 							cx, cy);
 					closed = true;
 					break;
