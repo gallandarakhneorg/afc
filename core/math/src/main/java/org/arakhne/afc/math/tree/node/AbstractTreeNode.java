@@ -309,6 +309,7 @@ public abstract class AbstractTreeNode<D,N extends AbstractTreeNode<D,N>> extend
 	 * @return <code>true</code> on success, otherwise <code>false</code>.
 	 * @since 4.0
 	 */
+	@SuppressWarnings("null")
 	protected boolean moveTo(N newParent, int index, boolean isDynamicChildList) {
 		if (newParent==null) return false;
 		

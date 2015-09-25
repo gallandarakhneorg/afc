@@ -55,10 +55,10 @@ implements NodeSelectionTreeIterator<N> {
 	/** Create an iterator on the given tree
 	 * 
 	 * @param tree is the tree to iterate.
-	 * @param selector permits to filter the node repliable by this iterator.
+	 * @param selector1 permits to filter the node repliable by this iterator.
 	 */
-	public BroadFirstTreeIterator(Tree<?,N> tree, NodeSelector<N> selector) {
-		this(tree.getRoot(), selector);
+	public BroadFirstTreeIterator(Tree<?,N> tree, NodeSelector<N> selector1) {
+		this(tree.getRoot(), selector1);
 	}
 	
 	/** Create an iterator on the given node
@@ -72,18 +72,18 @@ implements NodeSelectionTreeIterator<N> {
 	/** Create an iterator on the given node
 	 * 
 	 * @param node is the node to iterate.
-	 * @param selector permits to filter the node repliable by this iterator.
+	 * @param selector1 permits to filter the node repliable by this iterator.
 	 */
-	public BroadFirstTreeIterator(N node, NodeSelector<N> selector) {
-		super(select(selector, node));
-		this.selector = selector;
+	public BroadFirstTreeIterator(N node, NodeSelector<N> selector1) {
+		super(select(selector1, node));
+		this.selector = selector1;
 	}
 
 	/** {@inheritDoc}
 	 */
 	@Override
-	public void setNodeSelector(NodeSelector<N> selector) {
-		this.selector = selector;
+	public void setNodeSelector(NodeSelector<N> selector1) {
+		this.selector = selector1;
 	}
 
 	/**

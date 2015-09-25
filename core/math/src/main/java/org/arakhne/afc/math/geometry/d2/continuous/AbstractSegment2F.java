@@ -830,7 +830,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 				if (y0>=ymax) --numCrosses;
 			}
 		}
-		else if (Ellipse2f.intersectsEllipseSegment(
+		else if (AbstractEllipse2F.intersectsEllipseSegment(
 				xmin, ymin, xmax-xmin, ymax-ymin,
 				x0, y0, x1, y1)) {
 			return MathConstants.SHAPE_INTERSECTS;
@@ -1569,7 +1569,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 
 	@Override
 	public boolean intersects(Rectangle2f s) {
-		return Rectangle2f.intersectsRectangleSegment(
+		return AbstractRectangle2F.intersectsRectangleSegment(
 				s.getMinX(), s.getMinY(),
 				s.getMaxX(), s.getMaxY(),
 				this.getX1(), this.getY1(),
@@ -1578,7 +1578,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 
 	@Override
 	public boolean intersects(Ellipse2f s) {
-		return Ellipse2f.intersectsEllipseSegment(
+		return AbstractEllipse2F.intersectsEllipseSegment(
 				s.getMinX(), s.getMinY(),
 				s.getWidth(), s.getHeight(),
 				this.getX1(), this.getY1(),

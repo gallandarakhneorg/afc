@@ -163,6 +163,7 @@ public class Point2f extends Tuple2f<Point2D> implements FunctionalPoint2D {
 	 * @param x
 	 * @param y
 	 */
+	@SuppressWarnings("hiding")
 	public Point2f(int x, int y) {
 		super(x,y);
 	}
@@ -171,6 +172,7 @@ public class Point2f extends Tuple2f<Point2D> implements FunctionalPoint2D {
 	 * @param x
 	 * @param y
 	 */
+	@SuppressWarnings("hiding")
 	public Point2f(float x, float y) {
 		super(x,y);
 	}
@@ -179,6 +181,7 @@ public class Point2f extends Tuple2f<Point2D> implements FunctionalPoint2D {
 	 * @param x
 	 * @param y
 	 */
+	@SuppressWarnings("hiding")
 	public Point2f(double x, double y) {
 		super(x,y);
 	}
@@ -187,6 +190,7 @@ public class Point2f extends Tuple2f<Point2D> implements FunctionalPoint2D {
 	 * @param x
 	 * @param y
 	 */
+	@SuppressWarnings("hiding")
 	public Point2f(long x, long y) {
 		super(x,y);
 	}

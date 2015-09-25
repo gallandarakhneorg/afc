@@ -77,6 +77,7 @@ public class Tuple2f<T extends Tuple2D<? super T>> implements FunctionalTuple2D<
 	 * @param x
 	 * @param y
 	 */
+	@SuppressWarnings("hiding")
 	public Tuple2f(int x, int y) {
 		this.x = x;
 		this.y = y;
@@ -86,6 +87,7 @@ public class Tuple2f<T extends Tuple2D<? super T>> implements FunctionalTuple2D<
 	 * @param x
 	 * @param y
 	 */
+	@SuppressWarnings("hiding")
 	public Tuple2f(double x, double y) {
 		this.x = x;
 		this.y = y;
@@ -116,8 +118,8 @@ public class Tuple2f<T extends Tuple2D<? super T>> implements FunctionalTuple2D<
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void setX(double x) {
-		this.x = x;
+	public void setX(double x1) {
+		this.x = x1;
 	}
 
 	/**
@@ -132,8 +134,8 @@ public class Tuple2f<T extends Tuple2D<? super T>> implements FunctionalTuple2D<
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void setY(double y) {
-		this.y = y;
+	public void setY(double y1) {
+		this.y = y1;
 	}
 
 	/**

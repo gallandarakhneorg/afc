@@ -89,6 +89,7 @@ implements Iterator<P> {
 	 * @param node is the node to iterate.
 	 * @param infixPosition is the index of the child which is assumed to be at the infixed position.
 	 */
+	@SuppressWarnings("hiding")
 	public AbstractInfixDepthFirstTreeIterator(P node, int infixPosition) {
 		this.infixPosition = infixPosition;
 		this.availableNodes.push(node);

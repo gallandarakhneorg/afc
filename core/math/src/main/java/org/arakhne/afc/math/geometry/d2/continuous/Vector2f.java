@@ -66,6 +66,7 @@ public class Vector2f extends Tuple2f<Vector2D> implements FunctionalVector2D {
 	 * @param x
 	 * @param y
 	 */
+	@SuppressWarnings("hiding")
 	public Vector2f(int x, int y) {
 		super(x,y);
 	}
@@ -74,6 +75,7 @@ public class Vector2f extends Tuple2f<Vector2D> implements FunctionalVector2D {
 	 * @param x
 	 * @param y
 	 */
+	@SuppressWarnings("hiding")
 	public Vector2f(float x, float y) {
 		super(x,y);
 	}
@@ -82,6 +84,7 @@ public class Vector2f extends Tuple2f<Vector2D> implements FunctionalVector2D {
 	 * @param x
 	 * @param y
 	 */
+	@SuppressWarnings("hiding")
 	public Vector2f(double x, double y) {
 		super(x,y);
 	}
@@ -90,6 +93,7 @@ public class Vector2f extends Tuple2f<Vector2D> implements FunctionalVector2D {
 	 * @param x
 	 * @param y
 	 */
+	@SuppressWarnings("hiding")
 	public Vector2f(long x, long y) {
 		super(x,y);
 	}

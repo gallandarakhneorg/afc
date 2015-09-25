@@ -564,7 +564,7 @@ public abstract class QuadTreeNode<D,N extends QuadTreeNode<D,N>> extends Abstra
 	@Override
 	protected void getHeights(int currentHeight, List<Integer> heights) {
 		if (isLeaf()) {
-			heights.add(currentHeight);
+			heights.add(new Integer(currentHeight));
 		}
 		else {
 			if (this.nNorthWest!=null) this.nNorthWest.getHeights(currentHeight+1, heights);

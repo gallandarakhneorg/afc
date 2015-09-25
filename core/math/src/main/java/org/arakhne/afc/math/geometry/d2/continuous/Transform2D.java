@@ -91,6 +91,7 @@ public class Transform2D extends Matrix3f {
 	 * @param m12
 	 *            the [1][2] element
 	 */
+	@SuppressWarnings("hiding")
 	public Transform2D(double m00, double m01, double m02, double m10, double m11, double m12) {
 		super(m00, m01, m02, m10, m11, m12, 0f, 0f, 1f);
 	}
@@ -803,6 +804,7 @@ public class Transform2D extends Matrix3f {
 	 * @param m12
 	 *            the [1][2] element
 	 */
+	@SuppressWarnings("hiding")
 	public void set(double m00, double m01, double m02, double m10, double m11, double m12) {
 		set(m00, m01, m02, m10, m11, m12, 0f, 0f, 1f);
 	}

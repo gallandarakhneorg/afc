@@ -101,11 +101,11 @@ extends AbstractDataTreeIterator<D,N> {
 	}
 
 	/**
-	 * @param nodeIterator is the node iterator.
+	 * @param nodeIterator1 is the node iterator.
 	 * @param dataSelector permits to filter the user data repliable by this iterator.
 	 */
-	private DataBroadFirstTreeIterator(BroadFirstTreeIterator<N> nodeIterator, DataSelector<D> dataSelector) {
-		super(nodeIterator, dataSelector);
+	private DataBroadFirstTreeIterator(BroadFirstTreeIterator<N> nodeIterator1, DataSelector<D> dataSelector) {
+		super(nodeIterator1, dataSelector);
 	}
 	
 }

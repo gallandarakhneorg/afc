@@ -410,7 +410,7 @@ public abstract class AbstractCircle2F<T extends Shape2F> extends AbstractShape2
 
 	@Override
 	public boolean intersects(Ellipse2f s) {
-		return Ellipse2f.intersectsEllipseEllipse(
+		return AbstractEllipse2F.intersectsEllipseEllipse(
 				this.getX()-this.getRadius(),this.getY()-this.getRadius(),
 				this.getX()+this.getRadius(), this.getY()+this.getRadius(),
 				s.getMinX(), s.getMinY(),
@@ -451,7 +451,7 @@ public abstract class AbstractCircle2F<T extends Shape2F> extends AbstractShape2
 
 	@Override
 	public boolean intersects(OrientedRectangle2f s) {
-		return OrientedRectangle2f.intersectsOrientedRectangleSolidCircle(
+		return AbstractOrientedRectangle2F.intersectsOrientedRectangleSolidCircle(
 				s.getCenterX(), s.getCenterY(), 
 				s.getFirstAxisX(), s.getFirstAxisY(), s.getFirstAxisExtent(),
 				s.getSecondAxisX(), s.getSecondAxisY(), s.getSecondAxisExtent(),

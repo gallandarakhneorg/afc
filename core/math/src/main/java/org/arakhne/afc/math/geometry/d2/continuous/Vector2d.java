@@ -31,12 +31,13 @@ import javafx.beans.property.ReadOnlyDoubleWrapper;
  * @author Olivier LAMOTTE (olivier.lamotte@utbm.fr)
  *
  */
+@SuppressWarnings("restriction")
 public class Vector2d extends Tuple2d<Vector2D>implements FunctionalVector2D {
 
 	private static final long serialVersionUID = 2049284731039698587L;
 
 	
-	private ReadOnlyDoubleWrapper lengthSquareProperty = new ReadOnlyDoubleWrapper();
+	protected ReadOnlyDoubleWrapper lengthSquareProperty = new ReadOnlyDoubleWrapper();
 	private ReadOnlyDoubleWrapper lengthProperty = new ReadOnlyDoubleWrapper();
 	
 	
@@ -54,14 +55,14 @@ public class Vector2d extends Tuple2d<Vector2D>implements FunctionalVector2D {
 		this.lengthSquareProperty.bind(Bindings.createDoubleBinding(new Callable<Double>() {
 			@Override
 			public Double call() throws Exception {
-				return xProperty.doubleValue() * xProperty.doubleValue() + yProperty.doubleValue() * yProperty.doubleValue();
+				return new Double(Vector2d.this.xProperty.doubleValue() * Vector2d.this.xProperty.doubleValue() + Vector2d.this.yProperty.doubleValue() * Vector2d.this.yProperty.doubleValue());
 			}
 		}, this.xProperty, this.yProperty));
 		
 		this.lengthProperty.bind(Bindings.createDoubleBinding(new Callable<Double>() {
 			@Override
 			public Double call() throws Exception {
-				return Math.sqrt(lengthSquareProperty.doubleValue());
+				return new Double(Math.sqrt(Vector2d.this.lengthSquareProperty.doubleValue()));
 			}
 		}, this.lengthSquareProperty));
 	}

@@ -88,7 +88,7 @@ public class DotGxlWriter {
 		
 		if (tree!=null) {
 			this.writer.append("\t<graph id=\""); //$NON-NLS-1$
-			this.writer.append(Integer.toHexString(System.identityHashCode(tree.hashCode())));
+			this.writer.append(Integer.toHexString(System.identityHashCode(new Integer(tree.hashCode()))));
 			this.writer.append("-"); //$NON-NLS-1$
 			this.writer.append(Integer.toString(this.graphIndex++));
 			this.writer.append("\" edgeids=\"true\" edgemode=\"directed\">\n"); //$NON-NLS-1$

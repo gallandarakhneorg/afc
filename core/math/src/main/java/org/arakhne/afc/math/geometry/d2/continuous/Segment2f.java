@@ -20,13 +20,6 @@
  */
 package org.arakhne.afc.math.geometry.d2.continuous;
 
-import java.util.NoSuchElementException;
-
-import org.arakhne.afc.math.MathConstants;
-import org.arakhne.afc.math.MathUtil;
-import org.arakhne.afc.math.geometry.PathWindingRule;
-import org.arakhne.afc.math.geometry.d2.FunctionalPoint2D;
-import org.arakhne.afc.math.geometry.d2.FunctionalVector2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 
 

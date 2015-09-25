@@ -3185,8 +3185,8 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 				this.lastReplied = Path2f.this.getPointAt(this.index++);
 				return this.lastReplied;
 			}
-			catch( Throwable _) {
-				throw new NoSuchElementException();
+			catch( Throwable e) {
+				e.printStackTrace();throw new NoSuchElementException();
 			}
 		}
 
