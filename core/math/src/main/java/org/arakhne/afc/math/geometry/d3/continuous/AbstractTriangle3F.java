@@ -400,7 +400,7 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 			return new PlaneXZ4f(ty1);
 		if (norm.getX()==0. && norm.getY()==0.)
 			return new PlaneXY4f(tz1);
-		return new Plane4f(tx1, ty1, tz1, tx2, ty2, tz2, tx3, ty3, tz3);
+		return new AbstractPlane4F(tx1, ty1, tz1, tx2, ty2, tz2, tx3, ty3, tz3);
 	}
 
 	/** Replies the closest point from the triangle to the point.
@@ -1149,7 +1149,7 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 		double c = ux * vy - uy * vx;
 		double d = - a * tx1 - b * ty1 - c * tz1;
 
-		double factor = Plane4f.getIntersectionFactorPlaneSegment(
+		double factor = AbstractPlane4F.getIntersectionFactorPlaneSegment(
 				a, b, c, d,
 				sx1, sy1, sz1, sx2, sy2, sz2);
 

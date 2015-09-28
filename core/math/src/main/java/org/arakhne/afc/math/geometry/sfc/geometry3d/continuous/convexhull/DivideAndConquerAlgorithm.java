@@ -36,7 +36,7 @@ import java.util.TreeMap;
 
 import org.arakhne.afc.math.geometry.d3.FunctionalVector3D;
 import org.arakhne.afc.math.geometry.d3.Tuple3D;
-import org.arakhne.afc.math.geometry.d3.continuous.Plane4f;
+import org.arakhne.afc.math.geometry.d3.continuous.AbstractPlane4F;
 import org.arakhne.afc.math.geometry.d3.continuous.PlaneClassification;
 import org.arakhne.afc.math.geometry.d3.continuous.Point3f;
 import org.arakhne.afc.math.geometry.d3.continuous.Triangle3f;
@@ -308,7 +308,7 @@ public class DivideAndConquerAlgorithm implements ConvexHullAlgorithm {
 	/** Compute a plane that permits to detect candidate points.
 	 */
 	@SuppressWarnings("static-method")
-	private void computeCandidatePlanes(Plane4f tangentPlane, Point3f leftCandidatePoint, Point3f rightCandidatePoint, boolean yOrder) {
+	private void computeCandidatePlanes(AbstractPlane4F tangentPlane, Point3f leftCandidatePoint, Point3f rightCandidatePoint, boolean yOrder) {
 		double dx, dy, dz;
 		
 		if (yOrder) {
@@ -320,7 +320,7 @@ public class DivideAndConquerAlgorithm implements ConvexHullAlgorithm {
 			dz = 0;
 		}
 		
-    	Plane4f tangentCandidate = new Plane4f(
+    	AbstractPlane4F tangentCandidate = new AbstractPlane4F(
 	    		leftCandidatePoint.getX(),leftCandidatePoint.getY(),leftCandidatePoint.getZ(),
 	    		rightCandidatePoint.getX(),rightCandidatePoint.getY(),rightCandidatePoint.getZ(),
 	    		leftCandidatePoint.getX(),leftCandidatePoint.getY()+dy,leftCandidatePoint.getZ()+dz);
@@ -335,7 +335,7 @@ public class DivideAndConquerAlgorithm implements ConvexHullAlgorithm {
 				dx = 0;
 				dz = 1;
 			}
-	    	tangentCandidate = new Plane4f(
+	    	tangentCandidate = new AbstractPlane4F(
 		    		leftCandidatePoint.getX(),leftCandidatePoint.getY(),leftCandidatePoint.getZ(),
 		    		rightCandidatePoint.getX(),rightCandidatePoint.getY(),rightCandidatePoint.getZ(),
 		    		leftCandidatePoint.getX()+dx,leftCandidatePoint.getY(),leftCandidatePoint.getZ()+dz);
@@ -390,7 +390,7 @@ public class DivideAndConquerAlgorithm implements ConvexHullAlgorithm {
     	boolean allCoincident;
     	boolean yOrder = true;
 	    boolean changed; // has the tangent changed?
-	    Plane4f tangentCandidate = new Plane4f();
+	    AbstractPlane4F tangentCandidate = new AbstractPlane4F();
 	    computeCandidatePlanes(tangentCandidate, leftCandidatePoint, rightCandidatePoint, yOrder);
 	    
 	    do {
@@ -483,13 +483,13 @@ public class DivideAndConquerAlgorithm implements ConvexHullAlgorithm {
 	    	Point3f p2 = this.pointList[r];
 	    	Point3f p3 = this.pointList[idx];
 
-	    	Plane4f candh;
+	    	AbstractPlane4F candh;
 	    	
 			if (triangleOverlaps(minIndex, maxIndex,l, idx, r)) {
-				candh = new Plane4f(0,0,0,0);
+				candh = new AbstractPlane4F(0,0,0,0);
 			}
 			else {
-				candh = new Plane4f(
+				candh = new AbstractPlane4F(
 			    		p1.getX(),p1.getY(),p1.getZ(),
 			    		p2.getX(),p2.getY(),p2.getZ(),
 			    		p3.getX(),p3.getY(),p3.getZ());
@@ -524,7 +524,7 @@ public class DivideAndConquerAlgorithm implements ConvexHullAlgorithm {
 						cand = i;
 						idx = iidx;
 						p3 = this.pointList[idx];
-						candh = new Plane4f(
+						candh = new AbstractPlane4F(
 								p1.getX(),p1.getY(),p1.getZ(),
 								p2.getX(),p2.getY(),p2.getZ(),
 								p3.getX(),p3.getY(),p3.getZ());
