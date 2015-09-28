@@ -31,7 +31,7 @@ import org.arakhne.afc.math.geometry.d3.Vector3D;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public interface Shape3f extends Shape3D<Shape3f> {
+public interface Shape3F extends Shape3D<Shape3F> {
 
 	/** Replies the bounds of the shape.
 	 * If the current shape is a AlignedBox2f, this function

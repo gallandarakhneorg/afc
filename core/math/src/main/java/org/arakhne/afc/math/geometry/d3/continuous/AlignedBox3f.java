@@ -415,7 +415,7 @@ public class AlignedBox3f extends AbstractBoxedShape3f<AlignedBox3f> {
 	}
 
 	@Override
-	public void set(Shape3f s) {
+	public void set(Shape3F s) {
 		s.toBoundingBox(this);
 	}
 

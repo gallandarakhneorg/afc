@@ -32,7 +32,7 @@ import org.arakhne.afc.math.geometry.d3.Vector3D;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class Point3f extends Tuple3f<Point3D> implements Point3D {
+public class Point3f extends Tuple3f<Point3D> implements FunctionalPoint3D {
 
 	private static final long serialVersionUID = -4821663886493835147L;
 	

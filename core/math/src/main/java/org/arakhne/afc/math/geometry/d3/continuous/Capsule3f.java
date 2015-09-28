@@ -42,7 +42,7 @@ import org.arakhne.afc.math.geometry.d3.Point3D;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class Capsule3f extends AbstractShape3f<Capsule3f> {
+public class Capsule3f extends AbstractShape3F<Capsule3f> {
 
 	private static final long serialVersionUID = -5215944836678687801L;
 
@@ -439,7 +439,7 @@ public class Capsule3f extends AbstractShape3f<Capsule3f> {
 	}
 	
 	@Override
-	public void set(Shape3f s) {
+	public void set(Shape3F s) {
 		if (s instanceof Capsule3f) {
 			Capsule3f c = (Capsule3f) s;
 			set(c.getMedialX1(), c.getMedialY1(), c.getMedialZ1(),

@@ -39,7 +39,7 @@ import org.junit.Test;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
-public abstract class AbstractShape3fTestCase<T extends Shape3f> {
+public abstract class AbstractShape3fTestCase<T extends Shape3F> {
 
 	/** Is the rectangular shape to test.
 	 */

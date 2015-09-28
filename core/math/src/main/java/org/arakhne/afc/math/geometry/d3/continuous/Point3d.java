@@ -40,8 +40,16 @@ public class Point3d extends Tuple3d<Point3D> implements FunctionalPoint3D {
 		super(x, y, z);
 	}
 	
-	public Point3d(Tuple3d<?> point) {
+	public Point3d(Tuple3D<?> point) {
 		super(point.getX(), point.getY(), point.getZ());
+	}
+	
+	
+	/** {@inheritDoc}
+	 */
+	@Override
+	public Point3d clone() {
+		return (Point3d)super.clone();
 	}
 	
 	

@@ -33,7 +33,7 @@ import org.arakhne.afc.math.geometry.d3.Point3D;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class Sphere3f extends AbstractShape3f<Sphere3f> {
+public class Sphere3f extends AbstractShape3F<Sphere3f> {
 
 	private static final long serialVersionUID = -3227474955850738842L;
 
@@ -636,7 +636,7 @@ public class Sphere3f extends AbstractShape3f<Sphere3f> {
 	}
 
 	@Override
-	public void set(Shape3f s) {
+	public void set(Shape3F s) {
 		if (s instanceof Sphere3f) {
 			Sphere3f c = (Sphere3f) s;
 			set(c.getX(), c.getY(), c.getZ(), c.getRadius());

@@ -46,7 +46,7 @@ public class Vector3d extends Tuple3d<Vector3D> implements FunctionalVector3D {
 		this(0d, 0d, 0d);
 	}
 	
-	public Vector3d(Tuple3d<?> v) {
+	public Vector3d(Tuple3D<?> v) {
 		this(v.getX(), v.getY(), v.getZ());
 	}
 	

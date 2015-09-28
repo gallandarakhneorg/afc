@@ -53,7 +53,7 @@ import org.arakhne.afc.util.Pair;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class Segment3f extends AbstractShape3f<Segment3f> {
+public class Segment3f extends AbstractShape3F<Segment3f> {
 
 	private static final long serialVersionUID = -6299657640361588067L;
 
@@ -1634,7 +1634,7 @@ public class Segment3f extends AbstractShape3f<Segment3f> {
 	}
 
 	@Override
-	public void set(Shape3f s) {
+	public void set(Shape3F s) {
 		if (s instanceof Segment3f) {
 			Segment3f g = (Segment3f) s;
 			set(g.getX1(), g.getY1(), g.getZ1(), g.getX2(), g.getY2(), g.getZ2());

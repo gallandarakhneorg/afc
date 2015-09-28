@@ -33,7 +33,7 @@ import org.arakhne.afc.math.geometry.d3.Point3D;
  * @mavenartifactid $ArtifactId$
  */
 public abstract class AbstractBoxedShape3f<T extends AbstractBoxedShape3f<T>>
-extends AbstractShape3f<T> {
+extends AbstractShape3F<T> {
 
 	private static final long serialVersionUID = -1771954485508877728L;
 

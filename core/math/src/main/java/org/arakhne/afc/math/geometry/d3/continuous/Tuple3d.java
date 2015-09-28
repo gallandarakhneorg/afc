@@ -44,7 +44,7 @@ public class Tuple3d<T extends Tuple3D<? super T>> implements FunctionalTuple3D<
 		this(0, 0, 0);
 	}
 	
-	public Tuple3d(Tuple3d<?> t) {
+	public Tuple3d(Tuple3D<?> t) {
 		this(t.getX(), t.getY(), t.getZ());
 	}
 	
@@ -70,7 +70,7 @@ public class Tuple3d<T extends Tuple3D<? super T>> implements FunctionalTuple3D<
 		this.setZ(z);
 	}
 	
-	public void set(Tuple3d<?> v) {
+	public void set(Tuple3D<?> v) {
 		this.set(v.getX(), v.getY(), v.getZ());
 	}
 	

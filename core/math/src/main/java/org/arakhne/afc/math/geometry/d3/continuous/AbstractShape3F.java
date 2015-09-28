@@ -33,13 +33,13 @@ import org.arakhne.afc.math.geometry.d3.Vector3D;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public abstract class AbstractShape3f<T extends Shape3f> implements Shape3f {
+public abstract class AbstractShape3F<T extends Shape3F> implements Shape3F {
 
 	private static final long serialVersionUID = -3183131207922820187L;
 
 	/**
 	 */
-	public AbstractShape3f() {
+	public AbstractShape3F() {
 		//
 	}
 	

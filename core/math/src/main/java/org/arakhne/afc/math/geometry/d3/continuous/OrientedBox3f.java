@@ -45,7 +45,7 @@ import org.arakhne.afc.math.matrix.Matrix3f;
  * @mavenartifactid $ArtifactId$
  * @see <a href="http://www.terathon.com/books/mathgames2.html">Mathematics for 3D Game Programming &amp; Computer Graphics</a>
  */
-public class OrientedBox3f extends AbstractShape3f<OrientedBox3f> {
+public class OrientedBox3f extends AbstractShape3F<OrientedBox3f> {
 
 	private static final long serialVersionUID = -3095583019793802300L;
 
@@ -1229,7 +1229,7 @@ public class OrientedBox3f extends AbstractShape3f<OrientedBox3f> {
 	}
 
 	@Override
-	public void set(Shape3f s) {
+	public void set(Shape3F s) {
 		if (s instanceof OrientedBox3f) {
 			OrientedBox3f c = (OrientedBox3f) s;
 			set(c.getCenterX(), c.getCenterY(), c.getCenterZ(),
