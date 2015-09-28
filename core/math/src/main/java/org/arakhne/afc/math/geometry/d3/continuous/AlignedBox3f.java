@@ -299,8 +299,8 @@ public class AlignedBox3f extends AbstractBoxedShape3f<AlignedBox3f> {
 	}
 
 	@Override
-	public boolean intersects(Sphere3f s) {
-		return Sphere3f.intersectsSolidSphereSolidAlignedBox(
+	public boolean intersects(AbstractSphere3F s) {
+		return AbstractSphere3F.intersectsSolidSphereSolidAlignedBox(
 				s.getX(), s.getY(), s.getZ(), s.getRadius(),
 				getMinX(), getMinY(), getMinZ(),
 				getMaxX(), getMaxY(), getMaxZ());

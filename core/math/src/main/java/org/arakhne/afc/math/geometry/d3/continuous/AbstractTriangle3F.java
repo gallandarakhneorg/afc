@@ -2203,7 +2203,7 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 	}
 
 	@Override
-	public boolean intersects(Sphere3f s) {
+	public boolean intersects(AbstractSphere3F s) {
 		return intersectsTriangleSphere(
 				getX1(), getY1(), getY1(),
 				getX2(), getY2(), getY3(),
@@ -2269,7 +2269,7 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 	 * @return the segment between P1 and P2.
 	 */
 	public AbstractSegment3F getSegment1() {
-		return new AbstractSegment3F(getP1(), getP2());
+		return new Segment3f(getP1(), getP2());
 	}
 
 	/** Replies the segment between P2 and P3.
@@ -2277,7 +2277,7 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 	 * @return the segment between P2 and P3.
 	 */
 	public AbstractSegment3F getSegment2() {
-		return new AbstractSegment3F(getP2(), getP3());
+		return new Segment3f(getP2(), getP3());
 	}
 
 	/** Replies the segment between P3 and P1.
@@ -2285,7 +2285,7 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 	 * @return the segment between P3 and P1.
 	 */
 	public AbstractSegment3F getSegment3() {
-		return new AbstractSegment3F(getP3(), getP1());
+		return new Segment3f(getP3(), getP1());
 	}
 
 	@SuppressWarnings("unused")

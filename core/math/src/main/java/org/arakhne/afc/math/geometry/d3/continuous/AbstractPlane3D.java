@@ -151,7 +151,7 @@ public abstract class AbstractPlane3D<PT extends AbstractPlane3D<? super PT>> im
 
 		u.normalize();
 
-		return new AbstractSegment3F(new Point3f(n2), u);
+		return new Segment3f(new Point3f(n2), u);
 	}
 
 	@Override
@@ -170,7 +170,7 @@ public abstract class AbstractPlane3D<PT extends AbstractPlane3D<? super PT>> im
 		//      -(a x0 + b y0 + c z0 + d)
 		// si = -------------------------
 		//               n.u
-		Point3f p0 = line.getP1();
+		Point3f p0 = (Point3f) line.getP1();
 
 		double si = -(
 				getEquationComponentA()*p0.getX()
@@ -251,7 +251,7 @@ public abstract class AbstractPlane3D<PT extends AbstractPlane3D<? super PT>> im
 	}
 
 	@Override
-	public PlaneClassification classifies(Sphere3f sphere) {
+	public PlaneClassification classifies(AbstractSphere3F sphere) {
 		double distance = distanceTo(sphere.getX(), sphere.getY(), sphere.getZ());
 	    if (Math.abs(distance) >= sphere.getRadius()) {
 	        if (distance<0) return PlaneClassification.BEHIND;
@@ -307,7 +307,7 @@ public abstract class AbstractPlane3D<PT extends AbstractPlane3D<? super PT>> im
     }
 
 	@Override
-    public boolean intersects(Sphere3f sphere) {
+    public boolean intersects(AbstractSphere3F sphere) {
     	double distance = distanceTo(sphere.getX(), sphere.getY(), sphere.getZ());
         return MathUtil.isEpsilonZero(distance);
     }

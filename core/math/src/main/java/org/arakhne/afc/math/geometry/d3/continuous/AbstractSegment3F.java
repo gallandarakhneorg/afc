@@ -1502,8 +1502,8 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 	}
 
 	@Override
-	public boolean intersects(Sphere3f s) {
-		return Sphere3f.intersectsSphereSegment(
+	public boolean intersects(AbstractSphere3F s) {
+		return AbstractSphere3F.intersectsSphereSegment(
 				s.getX(), s.getY(), s.getZ(), s.getRadius(),
 				getX1(), getY1(), getZ1(),
 				getX2(), getY2(), getZ2());

@@ -227,7 +227,7 @@ public interface Plane3D<PT extends Plane3D<? super PT>> extends Serializable, C
 	 * @param sphere
 	 * @return the classification
 	 */
-	PlaneClassification classifies(Sphere3f sphere);
+	PlaneClassification classifies(AbstractSphere3F sphere);
 	
 	/**
 	 * Classifies an aligned box with respect to the plane.
@@ -243,7 +243,7 @@ public interface Plane3D<PT extends Plane3D<? super PT>> extends Serializable, C
 	 * @param sphere
 	 * @return <code>true</code> if intersection, otherwise <code>false</code>
 	 */
-    boolean intersects(Sphere3f sphere);
+    boolean intersects(AbstractSphere3F sphere);
     
     /**
 	 * Replies if the given axis-aligned box is intersecting the plane.

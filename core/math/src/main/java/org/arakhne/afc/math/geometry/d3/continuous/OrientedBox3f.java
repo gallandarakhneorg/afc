@@ -1661,8 +1661,8 @@ public class OrientedBox3f extends AbstractShape3F<OrientedBox3f> {
 	}
 
 	@Override
-	public boolean intersects(Sphere3f s) {
-		return Sphere3f.intersectsSolidSphereOrientedBox(
+	public boolean intersects(AbstractSphere3F s) {
+		return AbstractSphere3F.intersectsSolidSphereOrientedBox(
 				s.getX(), s.getY(), s.getZ(),
 				s.getRadius(),
 				
