@@ -1401,7 +1401,7 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 	}
 
 	@Override
-	public void toBoundingBox(AlignedBox3f box) {
+	public void toBoundingBox(AbstractBoxedShape3F<?> box) {
 		box.setFromCorners(getX1(), getY1(), getZ1(), getX2(), getY2(), getZ2());
 	}
 
@@ -1610,7 +1610,7 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 			AbstractSegment3F g = (AbstractSegment3F) s;
 			set(g.getX1(), g.getY1(), g.getZ1(), g.getX2(), g.getY2(), g.getZ2());
 		} else {
-			AlignedBox3f r = s.toBoundingBox();
+			AbstractBoxedShape3F<?> r = s.toBoundingBox();
 			this.getP1().set(r.getMinX(), r.getMinY(), r.getMinZ());
 			this.getSegmentVector().set(r.getSizeX(), r.getSizeY(), r.getSizeZ());
 		}

@@ -196,7 +196,7 @@ public abstract class AbstractCapsule3F extends AbstractShape3F<AbstractCapsule3
 	}
 
 	@Override
-	public void toBoundingBox(AlignedBox3f box) {
+	public void toBoundingBox(AbstractBoxedShape3F<?> box) {
 		double r = getRadius();
 		double minx = Math.min(getMedialX1(), getMedialX2()) - r;
 		double maxx = Math.max(getMedialX1(), getMedialX2()) + r;
@@ -350,7 +350,7 @@ public abstract class AbstractCapsule3F extends AbstractShape3F<AbstractCapsule3
 					c.getMedialX2(), c.getMedialY2(), c.getMedialZ2(),
 					c.getRadius());
 		} else {
-			AlignedBox3f r = s.toBoundingBox();
+			AbstractBoxedShape3F<?> r = s.toBoundingBox();
 			if (r.getSizeX() >= r.getSizeY()) {
 				if (r.getSizeX() >= r.getSizeZ()) {
 					set(

@@ -585,7 +585,7 @@ public abstract class AbstractSphere3F extends AbstractShape3F<AbstractSphere3F>
 			AbstractSphere3F c = (AbstractSphere3F) s;
 			set(c.getX(), c.getY(), c.getZ(), c.getRadius());
 		} else {
-			AlignedBox3f r = s.toBoundingBox();
+			AbstractBoxedShape3F<?> r = s.toBoundingBox();
 			set(r.getCenterX(), r.getCenterY(), r.getCenterZ(),
 				MathUtil.min(r.getSizeX(), r.getSizeY(), r.getSizeZ()) / 2.);
 		}
@@ -659,7 +659,7 @@ public abstract class AbstractSphere3F extends AbstractShape3F<AbstractSphere3F>
 	/** {@inheritDoc}
 	 */
 	@Override
-	public void toBoundingBox(AlignedBox3f box) {
+	public void toBoundingBox(AbstractBoxedShape3F<?> box) {
 		box.setFromCorners(
 				this.getX()-this.getRadius(),
 				this.getY()-this.getRadius(),

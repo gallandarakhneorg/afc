@@ -165,6 +165,7 @@ public class Sphere3d extends AbstractSphere3F {
 	public void setRadius(double radius1) {
 		this.radiusProperty.set(Math.abs(radius1));
 	}
+
 	
 
 }

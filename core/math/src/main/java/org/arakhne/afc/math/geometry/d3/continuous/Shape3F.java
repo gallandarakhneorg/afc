@@ -39,13 +39,13 @@ public interface Shape3F extends Shape3D<Shape3F> {
 	 * 
 	 * @return the bounds of the shape.
 	 */
-	public AlignedBox3f toBoundingBox();
+	public AbstractBoxedShape3F<?> toBoundingBox();
 	
 	/** Replies the bounds of the shape.
 	 * 
 	 * @param box is set with the bounds of the shape.
 	 */
-	public void toBoundingBox(AlignedBox3f box);
+	public void toBoundingBox(AbstractBoxedShape3F<?> box);
 
 	/** Replies the minimal distance from this shape to the given point.
 	 * 

@@ -314,8 +314,8 @@ public abstract class AbstractPlane3D<PT extends AbstractPlane3D<? super PT>> im
     
 	@Override
     @Unefficient
-    public boolean intersects(AlignedBox3f box) {
-    	return classifies(box) == PlaneClassification.COINCIDENT;
+    public boolean intersects(AbstractBoxedShape3F<?> box) {
+    	return classifies((AlignedBox3f)box) == PlaneClassification.COINCIDENT;
     }
 	
 

@@ -996,7 +996,7 @@ public abstract class AbstractOrientedBox3F extends AbstractShape3F<AbstractOrie
 					c.getSecondAxisX(), c.getSecondAxisY(), c.getSecondAxisZ(),
 					c.getFirstAxisExtent(), c.getSecondAxisExtent(), c.getThirdAxisExtent());
 		} else {
-			AlignedBox3f r = s.toBoundingBox();
+			AbstractBoxedShape3F<?> r = s.toBoundingBox();
 			setFromPointCloud(
 					new Point3f(r.getMinX(), r.getMinY(), r.getMinZ()),
 					new Point3f(r.getMinX(), r.getMinY(), r.getMaxZ()),
@@ -1096,7 +1096,7 @@ public abstract class AbstractOrientedBox3F extends AbstractShape3F<AbstractOrie
 	}
 
 	@Override
-	public void toBoundingBox(AlignedBox3f box) {
+	public void toBoundingBox(AbstractBoxedShape3F<?> box) {
 		double a1x = this.getFirstAxis().getX() * this.getFirstAxisExtent();
 		double a1y = this.getFirstAxis().getY() * this.getFirstAxisExtent();
 		double a1z = this.getFirstAxis().getZ() * this.getFirstAxisExtent();

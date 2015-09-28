@@ -33,7 +33,7 @@ import org.junit.Test;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
-public abstract class AbstractBoxedShape3fTestCase<T extends AbstractBoxedShape3f> extends AbstractShape3fTestCase<T> {
+public abstract class AbstractBoxedShape3fTestCase<T extends AbstractBoxedShape3F> extends AbstractShape3fTestCase<T> {
 
 	@Test
 	public abstract void toBoundingBox();

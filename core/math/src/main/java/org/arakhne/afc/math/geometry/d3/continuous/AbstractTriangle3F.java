@@ -1726,7 +1726,7 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 			AbstractTriangle3F t = (AbstractTriangle3F) s;
 			set(t.getP1(), t.getP2(), t.getP3());
 		} else {
-			AlignedBox3f r = s.toBoundingBox();
+			AbstractBoxedShape3F<?> r = s.toBoundingBox();
 			this.getP1().set(r.getMinX(), r.getMinY(), r.getMinZ());
 			this.getP2().set(r.getMaxX(), r.getMaxY(), r.getMinZ());
 			this.getP3().set(r.getMaxX(), r.getMaxY(), r.getMaxZ());
@@ -1926,7 +1926,7 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 	}
 
 	@Override
-	public void toBoundingBox(AlignedBox3f box) {
+	public void toBoundingBox(AbstractBoxedShape3F<?> box) {
 		Pair<Double, Double> p = new Pair<>();
 		MathUtil.getMinMax(this.getP1().getX(), this.getP2().getX(), this.getP3().getX(), p);
 		box.setX(p.getA().doubleValue(), p.getB().doubleValue());

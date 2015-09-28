@@ -251,7 +251,7 @@ public interface Plane3D<PT extends Plane3D<? super PT>> extends Serializable, C
 	 * @param box
 	 * @return <code>true</code> if intersection, otherwise <code>false</code>
 	 */
-    boolean intersects(AlignedBox3f box);
+    boolean intersects(AbstractBoxedShape3F<?> box);
 
     /**
 	 * Replies if the given oriented box is intersecting the plane.
