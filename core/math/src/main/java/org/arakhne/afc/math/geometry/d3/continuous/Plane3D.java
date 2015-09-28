@@ -259,7 +259,7 @@ public interface Plane3D<PT extends Plane3D<? super PT>> extends Serializable, C
 	 * @param box
 	 * @return <code>true</code> if intersection, otherwise <code>false</code>
 	 */
-    boolean intersects(OrientedBox3f box);
+    boolean intersects(AbstractOrientedBox3F box);
 
     /**
 	 * Replies if the given sphere is intersecting the segment.

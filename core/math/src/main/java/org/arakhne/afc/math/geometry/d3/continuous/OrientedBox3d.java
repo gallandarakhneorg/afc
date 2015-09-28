@@ -3,53 +3,55 @@ package org.arakhne.afc.math.geometry.d3.continuous;
 import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem3D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 
-public class OrientedBox3f extends AbstractOrientedBox3F{
-	
+@SuppressWarnings("restriction")
+public class OrientedBox3d extends AbstractOrientedBox3F{
+
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -3792854643360625652L;
+	private static final long serialVersionUID = 266618813770790520L;
 
-	
 	/** Center of the box.
 	 */
-	protected final Point3f center = new Point3f();
+	protected final Point3d center = new Point3d();
 
 	/**
 	 * First axis.
 	 */
-	protected final Vector3f axis1 = new Vector3f();
+	protected final Vector3d axis1 = new Vector3d();
 
 	/**
 	 * Second axis.
 	 */
-	protected final Vector3f axis2 = new Vector3f();
+	protected final Vector3d axis2 = new Vector3d();
 
 	/**
 	 * Third axis.
 	 */
-	protected final Vector3f axis3 = new Vector3f();
+	protected final Vector3d axis3 = new Vector3d();
 
 	/**
 	 * First axis extent of the OBB, cannot be negative.
 	 */
-	protected double extent1;
+	protected DoubleProperty extent1Property = new SimpleDoubleProperty(0f);
 
 	/**
 	 * Second axis extent of the OBB, cannot be negative.
 	 */
-	protected double extent2;
+	protected DoubleProperty extent2Property = new SimpleDoubleProperty(0f);
 
 	/**
 	 * Third axis extent of the OBB, cannot be negative.
 	 */
-	protected double extent3;
+	protected DoubleProperty extent3Property = new SimpleDoubleProperty(0f);
 
 	/**
 	 * Build an empty OBB.
 	 */
-	public OrientedBox3f() {
+	public OrientedBox3d() {
 		//
 	}
 
@@ -74,7 +76,7 @@ public class OrientedBox3f extends AbstractOrientedBox3F{
 	 * @param axis2Extent extent of the second axis.
 	 * @param axis3Extent extent of the third axis.
 	 */
-	public OrientedBox3f(
+	public OrientedBox3d(
 			double cx, double cy, double cz,
 			double axis1x, double axis1y, double axis1z,
 			double axis2x, double axis2y, double axis2z,
@@ -107,7 +109,7 @@ public class OrientedBox3f extends AbstractOrientedBox3F{
 	 * @param axis3Extent extent of the third axis.
 	 * @param system the coordinate system to use for computing the third axis.
 	 */
-	public OrientedBox3f(
+	public OrientedBox3d(
 			double cx, double cy, double cz,
 			double axis1x, double axis1y, double axis1z,
 			double axis2x, double axis2y, double axis2z,
@@ -136,7 +138,7 @@ public class OrientedBox3f extends AbstractOrientedBox3F{
 	 * @param axis3Extent extent of the third axis.
 	 */
 	@SuppressWarnings("hiding")
-	public OrientedBox3f(
+	public OrientedBox3d(
 			Point3D center,
 			Vector3D axis1,
 			Vector3D axis2,
@@ -152,7 +154,7 @@ public class OrientedBox3f extends AbstractOrientedBox3F{
 	 * 
 	 * @param vertices
 	 */
-	public OrientedBox3f(Iterable<? extends Point3D> vertices) {
+	public OrientedBox3d(Iterable<? extends Point3D> vertices) {
 		setFromPointCloud(vertices);
 	}
 	
@@ -163,7 +165,7 @@ public class OrientedBox3f extends AbstractOrientedBox3F{
 	 * @return the center.
 	 */
 	@Override
-	public Point3f getCenter() {
+	public Point3d getCenter() {
 		return this.center.clone();
 	}
 
@@ -219,7 +221,7 @@ public class OrientedBox3f extends AbstractOrientedBox3F{
 	 * @return the unit vector of the first axis. 
 	 */
 	@Override
-	public Vector3f getFirstAxis() {
+	public Vector3d getFirstAxis() {
 		return this.axis1.clone();
 	}
 
@@ -255,7 +257,7 @@ public class OrientedBox3f extends AbstractOrientedBox3F{
 	 * @return the unit vector of the second axis. 
 	 */
 	@Override
-	public Vector3f getSecondAxis() {
+	public Vector3d getSecondAxis() {
 		return this.axis2.clone();
 	}
 
@@ -291,7 +293,7 @@ public class OrientedBox3f extends AbstractOrientedBox3F{
 	 * @return the unit vector of the third axis. 
 	 */
 	@Override
-	public Vector3f getThirdAxis() {
+	public Vector3d getThirdAxis() {
 		return this.axis3.clone();
 	}
 
@@ -328,7 +330,7 @@ public class OrientedBox3f extends AbstractOrientedBox3F{
 	 */
 	@Override
 	public double getFirstAxisExtent() {
-		return this.extent1;
+		return this.extent1Property.doubleValue();
 	}
 
 	/** Change the demi-size of the box along its first axis.
@@ -337,7 +339,7 @@ public class OrientedBox3f extends AbstractOrientedBox3F{
 	 */
 	@Override
 	public void setFirstAxisExtent(double extent) {
-		this.extent1 = Math.max(extent, 0);
+		this.extent1Property.set(Math.max(extent, 0));
 	}
 
 	/** Replies the demi-size of the box along its second axis.
@@ -346,7 +348,7 @@ public class OrientedBox3f extends AbstractOrientedBox3F{
 	 */
 	@Override
 	public double getSecondAxisExtent() {
-		return this.extent2;
+		return this.extent2Property.doubleValue();
 	}
 
 	/** Change the demi-size of the box along its second axis.
@@ -355,7 +357,7 @@ public class OrientedBox3f extends AbstractOrientedBox3F{
 	 */
 	@Override
 	public void setSecondAxisExtent(double extent) {
-		this.extent2 = Math.max(extent, 0);
+		this.extent2Property.set(Math.max(extent, 0));
 	}
 
 	/** Replies the demi-size of the box along its third axis.
@@ -364,7 +366,7 @@ public class OrientedBox3f extends AbstractOrientedBox3F{
 	 */
 	@Override
 	public double getThirdAxisExtent() {
-		return this.extent3;
+		return this.extent3Property.doubleValue();
 	}
 
 	/** Change the demi-size of the box along its third axis.
@@ -373,7 +375,7 @@ public class OrientedBox3f extends AbstractOrientedBox3F{
 	 */
 	@Override
 	public void setThirdAxisExtent(double extent) {
-		this.extent3 = Math.max(extent, 0);
+		this.extent3Property.set(Math.max(extent, 0));
 	}
 
 	/** Set the first axis of the box.
@@ -440,7 +442,7 @@ public class OrientedBox3f extends AbstractOrientedBox3F{
 		} else {
 			this.axis3.set(this.axis3.crossRightHand(this.axis2));
 		}
-		this.extent1 = extent;
+		this.extent1Property.set( extent);
 	}
 
 	/** Set the second axis of the box.
@@ -507,7 +509,7 @@ public class OrientedBox3f extends AbstractOrientedBox3F{
 		} else {
 			this.axis3.set(this.axis3.crossRightHand(this.axis2));
 		}
-		this.extent2 = extent;
+		this.extent2Property.set(extent);
 	}
 
 	/**
@@ -582,12 +584,11 @@ public class OrientedBox3f extends AbstractOrientedBox3F{
 		} else {
 			this.axis3.set(this.axis1.crossRightHand(this.axis2));
 		}
-		this.extent1 = axis1Extent;
-		this.extent2 = axis2Extent;
-		this.extent3 = axis3Extent;
+		this.extent1Property.set(axis1Extent);
+		this.extent2Property.set(axis2Extent);
+		this.extent3Property.set(axis3Extent);
 	}
 	
 	
-	
-	
+
 }

@@ -1539,7 +1539,7 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 	}
 
 	@Override
-	public boolean intersects(OrientedBox3f s) {
+	public boolean intersects(AbstractOrientedBox3F s) {
 		return intersectsSegmentOrientedBox(
 				getX1(), getY1(), getZ1(),
 				getX2(), getY2(), getZ2(),

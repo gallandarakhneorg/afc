@@ -72,7 +72,7 @@ public abstract class AbstractSphere3F extends AbstractShape3F<AbstractSphere3F>
 		Point3f closest = new Point3f();
 		Point3f farest = new Point3f();
 
-		OrientedBox3f.computeClosestFarestOBBPoints(
+		AbstractOrientedBox3F.computeClosestFarestOBBPoints(
 				sphereCenterx,  sphereCentery,  sphereCenterz,
 				boxCenterx, boxCentery, boxCenterz,
 				boxAxis1x, boxAxis1y, boxAxis1z,
@@ -823,7 +823,7 @@ public abstract class AbstractSphere3F extends AbstractShape3F<AbstractSphere3F>
 	}
 
 	@Override
-	public boolean intersects(OrientedBox3f s) {
+	public boolean intersects(AbstractOrientedBox3F s) {
 		return intersectsSolidSphereOrientedBox(
 				getX(), getY(), getZ(), getRadius(),
 				s.getCenterX(), s.getCenterY(), s.getCenterZ(),

@@ -336,8 +336,8 @@ public class AlignedBox3f extends AbstractBoxedShape3f<AlignedBox3f> {
 	}
 
 	@Override
-	public boolean intersects(OrientedBox3f s) {
-		return OrientedBox3f.intersectsOrientedBoxAlignedBox(
+	public boolean intersects(AbstractOrientedBox3F s) {
+		return AbstractOrientedBox3F.intersectsOrientedBoxAlignedBox(
 				s.getCenterX(), s.getCenterY(), s.getCenterZ(),
 				s.getFirstAxisX(), s.getFirstAxisY(), s.getFirstAxisZ(),
 				s.getSecondAxisX(), s.getSecondAxisY(), s.getSecondAxisZ(),

@@ -320,7 +320,7 @@ public abstract class AbstractPlane3D<PT extends AbstractPlane3D<? super PT>> im
 	
 
 	@Override
-	public boolean intersects(OrientedBox3f box) {
+	public boolean intersects(AbstractOrientedBox3F box) {
 		// Compute the effective radius of the obb and
 		// compare it with the distance between the obb center
 		// and the plane; source MGPCG pp.235

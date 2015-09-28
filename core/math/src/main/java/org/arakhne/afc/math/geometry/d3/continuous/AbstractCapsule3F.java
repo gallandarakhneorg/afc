@@ -566,8 +566,8 @@ public abstract class AbstractCapsule3F extends AbstractShape3F<AbstractCapsule3
 	}
 
 	@Override
-	public boolean intersects(OrientedBox3f s) {
-		return OrientedBox3f.intersectsOrientedBoxCapsule(
+	public boolean intersects(AbstractOrientedBox3F s) {
+		return AbstractOrientedBox3F.intersectsOrientedBoxCapsule(
 				s.getCenterX(), s.getCenterY(), s.getCenterZ(),
 				s.getFirstAxisX(), s.getFirstAxisY(), s.getFirstAxisZ(),
 				s.getSecondAxisX(), s.getSecondAxisY(), s.getSecondAxisZ(),
