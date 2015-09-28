@@ -326,8 +326,8 @@ public class AlignedBox3f extends AbstractBoxedShape3f<AlignedBox3f> {
 	}
 
 	@Override
-	public boolean intersects(Capsule3f s) {
-		return Capsule3f.intersectsCapsuleAlignedBox(
+	public boolean intersects(AbstractCapsule3F s) {
+		return AbstractCapsule3F.intersectsCapsuleAlignedBox(
 				s.getMedialX1(), s.getMedialY1(), s.getMedialY1(),
 				s.getMedialX2(), s.getMedialY2(), s.getMedialY2(),
 				s.getRadius(),

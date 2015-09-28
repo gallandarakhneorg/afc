@@ -1701,7 +1701,7 @@ public class OrientedBox3f extends AbstractShape3F<OrientedBox3f> {
 	}
 
 	@Override
-	public boolean intersects(Capsule3f s) {
+	public boolean intersects(AbstractCapsule3F s) {
 		return intersectsOrientedBoxCapsule(
 				getCenterX(), getCenterY(), getCenterZ(), 
 				getFirstAxisX(), getFirstAxisY(), getFirstAxisZ(),

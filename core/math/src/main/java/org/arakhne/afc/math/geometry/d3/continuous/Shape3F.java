@@ -148,7 +148,7 @@ public interface Shape3F extends Shape3D<Shape3F> {
 	 * @return <code>true</code> if this shape is intersecting the given shape;
 	 * <code>false</code> if there is no intersection.
 	 */
-	public boolean intersects(Capsule3f s);
+	public boolean intersects(AbstractCapsule3F s);
 
 	/** Replies if this shape is intersecting the given rectangle.
 	 * 

@@ -2234,7 +2234,7 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 	}
 
 	@Override
-	public boolean intersects(Capsule3f s) {
+	public boolean intersects(AbstractCapsule3F s) {
 		return intersectsTriangleCapsule(
 				getX1(), getY1(), getY1(),
 				getX2(), getY2(), getY3(),

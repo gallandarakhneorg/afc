@@ -21,6 +21,8 @@
 package org.arakhne.afc.math.geometry.d3.continuous;
 
 import org.arakhne.afc.math.geometry.d3.Point3D;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 
 /**
  * A bounding capsule is a swept sphere (i.e. the volume that a sphere takes as it moves
@@ -38,31 +40,32 @@ import org.arakhne.afc.math.geometry.d3.Point3D;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class Capsule3f extends AbstractCapsule3F {
-
+@SuppressWarnings("restriction")
+public class Capsule3d extends AbstractCapsule3F {
+	
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -800785040789031084L;
-	
+	private static final long serialVersionUID = 549639614513766568L;
+
 	/**
 	 * Medial line segment start point, it is also the lower point of the capsule
 	 */
-	protected final Point3f medial1 = new Point3f();
+	protected final Point3d medial1 = new Point3d();
 
 	/**
 	 * Medial line segment endpoint
 	 */
-	protected final Point3f medial2 = new Point3f();
+	protected final Point3d medial2 = new Point3d();
 
 	/**
 	 * Radius.
 	 */
-	protected double radius;
+	protected DoubleProperty radiusProperty = new SimpleDoubleProperty(0f);
 
 	/**
 	 */
-	public Capsule3f() {
+	public Capsule3d() {
 		//
 	}
 
@@ -74,7 +77,7 @@ public class Capsule3f extends AbstractCapsule3F {
 	 * @param radius1
 	 *            is the radius of the capsule.
 	 */
-	public Capsule3f(Point3D a, Point3D b, double radius1) {
+	public Capsule3d(Point3D a, Point3D b, double radius1) {
 		this(a.getX(), a.getY(), a.getZ(),
 				b.getX(), b.getY(), b.getZ(),
 				radius1);
@@ -83,7 +86,7 @@ public class Capsule3f extends AbstractCapsule3F {
 	/**
 	 * @param capsule the capsule to copy.
 	 */
-	public Capsule3f(AbstractCapsule3F capsule) {
+	public Capsule3d(AbstractCapsule3F capsule) {
 		this(capsule.getMedialX1(), capsule.getMedialY1(), capsule.getMedialZ1(),
 				capsule.getMedialX2(), capsule.getMedialY2(), capsule.getMedialZ2(),
 				capsule.getRadius());
@@ -98,10 +101,10 @@ public class Capsule3f extends AbstractCapsule3F {
 	 * @param z2 z coordinate of the second point of the medial line.
 	 * @param radius1 the radius of the capsule.
 	 */
-	public Capsule3f(double x1, double y1, double z1, double x2, double y2, double z2, double radius1) {
+	public Capsule3d(double x1, double y1, double z1, double x2, double y2, double z2, double radius1) {
 		this.medial1.set(x1, y2, z1);
 		this.medial2.set(x2, y2, z2);
-		this.radius = radius1;
+		this.radiusProperty.set(radius1);
 		ensureAIsLowerPoint();
 	}
 	
@@ -113,7 +116,7 @@ public class Capsule3f extends AbstractCapsule3F {
 	 * @return the first point of the capsule's segment.
 	 */
 	@Override
-	public Point3f getMedial1() {
+	public Point3d getMedial1() {
 		return this.medial1;
 	}
 
@@ -176,7 +179,7 @@ public class Capsule3f extends AbstractCapsule3F {
 	 * @return the second point of the capsule's segment.
 	 */
 	@Override
-	public Point3f getMedial2() {
+	public Point3d getMedial2() {
 		return this.medial2;
 	}
 
@@ -238,7 +241,7 @@ public class Capsule3f extends AbstractCapsule3F {
 	 * @return the radius of the capsule.
 	 */
 	public double getRadius() {
-		return this.radius;
+		return this.radiusProperty.doubleValue();
 	}
 
 	/**
@@ -247,7 +250,7 @@ public class Capsule3f extends AbstractCapsule3F {
 	 * @param radius1 the radius of the capsule.
 	 */
 	public void setRadius(double radius1) {
-		this.radius = radius1;
+		this.radiusProperty.set(radius1);
 	}
 
 	/** Set the capsule.
@@ -276,7 +279,7 @@ public class Capsule3f extends AbstractCapsule3F {
 	public void set(double x1, double y1, double z1, double x2, double y2, double z2, double radius1) {
 		this.medial1.set(x1, y1, z1);
 		this.medial2.set(x2, y2, z2);
-		this.radius = radius1;
+		this.radiusProperty.set(radius1);
 		ensureAIsLowerPoint();
 	}
 	
@@ -285,8 +288,8 @@ public class Capsule3f extends AbstractCapsule3F {
 	 * @return the center point.
 	 */
 	@Override
-	public Point3f getCenter() {
-		return new Point3f(
+	public Point3d getCenter() {
+		return new Point3d(
 				(this.medial1.getX() + this.medial2.getX()) / 2.,
 				(this.medial1.getY() + this.medial2.getY()) / 2.,
 				(this.medial1.getZ() + this.medial2.getZ()) / 2.);

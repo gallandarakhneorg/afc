@@ -63,6 +63,7 @@ public class Sphere3f extends AbstractSphere3F {
 	 * @param z
 	 * @param radius1
 	 */
+	@Override
 	public void set(double x, double y, double z, double radius1) {
 		this.cx = x;
 		this.cy = y;
@@ -75,6 +76,7 @@ public class Sphere3f extends AbstractSphere3F {
 	 * @param center
 	 * @param radius1
 	 */
+	@Override
 	public void set(Point3D center, double radius1) {
 		this.cx = center.getX();
 		this.cy = center.getY();
@@ -86,6 +88,7 @@ public class Sphere3f extends AbstractSphere3F {
 	 * 
 	 * @return the center x.
 	 */
+	@Override
 	public double getX() {
 		return this.cx;
 	}
@@ -94,6 +97,7 @@ public class Sphere3f extends AbstractSphere3F {
 	 * 
 	 * @return the center y.
 	 */
+	@Override
 	public double getY() {
 		return this.cy;
 	}
@@ -102,6 +106,7 @@ public class Sphere3f extends AbstractSphere3F {
 	 * 
 	 * @return the center z.
 	 */
+	@Override
 	public double getZ() {
 		return this.cz;
 	}
@@ -110,6 +115,7 @@ public class Sphere3f extends AbstractSphere3F {
 	 * 
 	 * @return a copy of the center.
 	 */
+	@Override
 	public Point3f getCenter() {
 		return new Point3f(this.cx, this.cy, this.cz);
 	}
@@ -118,6 +124,7 @@ public class Sphere3f extends AbstractSphere3F {
 	 * 
 	 * @param center
 	 */
+	@Override
 	public void setCenter(Point3D center) {
 		this.cx = center.getX();
 		this.cy = center.getY();
@@ -130,6 +137,7 @@ public class Sphere3f extends AbstractSphere3F {
 	 * @param y
 	 * @param z
 	 */
+	@Override
 	public void setCenter(double x, double y, double z) {
 		this.cx = x;
 		this.cy = y;
@@ -140,6 +148,7 @@ public class Sphere3f extends AbstractSphere3F {
 	 * 
 	 * @return the radius.
 	 */
+	@Override
 	public double getRadius() {
 		return this.radius;
 	}
@@ -148,6 +157,7 @@ public class Sphere3f extends AbstractSphere3F {
 	 * 
 	 * @param radius1 is the radius.
 	 */
+	@Override
 	public void setRadius(double radius1) {
 		this.radius = Math.abs(radius1);
 	}

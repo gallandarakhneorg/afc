@@ -1529,7 +1529,7 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 	}
 
 	@Override
-	public boolean intersects(Capsule3f s) {
+	public boolean intersects(AbstractCapsule3F s) {
 		return intersectsSegmentCapsule(
 				getX1(), getY1(), getZ1(),
 				getX2(), getY2(), getZ2(),
