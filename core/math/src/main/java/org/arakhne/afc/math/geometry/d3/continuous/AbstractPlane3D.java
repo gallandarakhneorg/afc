@@ -119,7 +119,7 @@ public abstract class AbstractPlane3D<PT extends AbstractPlane3D<? super PT>> im
 	}
 
 	@Override
-	public Segment3f getIntersection(Plane3D<?> plane) {
+	public AbstractSegment3F getIntersection(Plane3D<?> plane) {
 		Vector3D n1 = getNormal();
 		Vector3D n2 = plane.getNormal();
 		Vector3f u = new Vector3f();
@@ -151,11 +151,11 @@ public abstract class AbstractPlane3D<PT extends AbstractPlane3D<? super PT>> im
 
 		u.normalize();
 
-		return new Segment3f(new Point3f(n2), u);
+		return new AbstractSegment3F(new Point3f(n2), u);
 	}
 
 	@Override
-	public Point3f getIntersection(Segment3f line) {
+	public Point3f getIntersection(AbstractSegment3F line) {
 		Vector3D n = getNormal();
 		Vector3D u = line.getDirection();
 
@@ -355,7 +355,7 @@ public abstract class AbstractPlane3D<PT extends AbstractPlane3D<? super PT>> im
 	}
 
 	@Override
-	public boolean intersects(Segment3f segment) {
+	public boolean intersects(AbstractSegment3F segment) {
 		Vector3D n = getNormal();
 		Vector3D u = segment.getDirection();
 

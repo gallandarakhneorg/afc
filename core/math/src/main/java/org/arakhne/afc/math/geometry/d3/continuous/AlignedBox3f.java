@@ -307,8 +307,8 @@ public class AlignedBox3f extends AbstractBoxedShape3f<AlignedBox3f> {
 	}
 
 	@Override
-	public boolean intersects(Segment3f s) {
-		return Segment3f.intersectsSegmentAlignedBox(
+	public boolean intersects(AbstractSegment3F s) {
+		return AbstractSegment3F.intersectsSegmentAlignedBox(
 				s.getX1(), s.getY1(), s.getZ1(),
 				s.getX2(), s.getY2(), s.getZ2(),
 				getMinX(), getMinY(), getMinZ(),

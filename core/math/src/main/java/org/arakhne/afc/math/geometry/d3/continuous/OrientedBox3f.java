@@ -104,7 +104,7 @@ public class OrientedBox3f extends AbstractShape3F<OrientedBox3f> {
 				extentAxis1, extentAxis2, extentAxis3,
 				closestFromB,null);
 
-		double distance = Segment3f.distanceSquaredSegmentSegment(
+		double distance = AbstractSegment3F.distanceSquaredSegmentSegment(
 				capsule1Ax, capsule1Ay, capsule1Az, 
 				capsule1Bx, capsule1By, capsule1Bz, 
 				closestFromA.getX(), closestFromA.getY(), closestFromA.getZ(),
@@ -1674,8 +1674,8 @@ public class OrientedBox3f extends AbstractShape3F<OrientedBox3f> {
 	}
 
 	@Override
-	public boolean intersects(Segment3f s) {
-		return Segment3f.intersectsSegmentOrientedBox(
+	public boolean intersects(AbstractSegment3F s) {
+		return AbstractSegment3F.intersectsSegmentOrientedBox(
 				s.getX1(), s.getY1(), s.getZ1(),
 				s.getX2(), s.getY2(), s.getZ2(),
 				

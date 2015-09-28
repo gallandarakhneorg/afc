@@ -111,7 +111,7 @@ public class Sphere3f extends AbstractShape3F<Sphere3f> {
 			double capsuleBx, double capsuleBy, double capsuleBz,
 			double capsuleRadius) {
 		// Compute (squared) distance between sphere center and capsule line segment
-		double dist2 = Segment3f.distanceSquaredSegmentPoint(
+		double dist2 = AbstractSegment3F.distanceSquaredSegmentPoint(
 				capsuleAx, capsuleAy, capsuleAz, capsuleBx, capsuleBy, capsuleBz,
 				sphereCenterx, sphereCentery, sphereCenterz);
 		// If (squared) distance smaller than (squared) sum of radii, they collide
@@ -519,7 +519,7 @@ public class Sphere3f extends AbstractShape3F<Sphere3f> {
 			double x1, double y1, double z1, double radius,
 			double x2, double y2, double z2,
 			double x3, double y3, double z3) {
-		double d = Segment3f.distanceSquaredLinePoint(x2, y2, z2, x3, y3, z3, x1, y1, z1);
+		double d = AbstractSegment3F.distanceSquaredLinePoint(x2, y2, z2, x3, y3, z3, x1, y1, z1);
 		return d<(radius*radius);
 	}
 
@@ -542,7 +542,7 @@ public class Sphere3f extends AbstractShape3F<Sphere3f> {
 			double x1, double y1, double z1, double radius,
 			double x2, double y2, double z2,
 			double x3, double y3, double z3) {
-		double d = Segment3f.distanceSquaredSegmentPoint(x2, y2, z2, x3, y3, z3, x1, y1, z1);
+		double d = AbstractSegment3F.distanceSquaredSegmentPoint(x2, y2, z2, x3, y3, z3, x1, y1, z1);
 		return d<(radius*radius);
 	}
 
@@ -875,7 +875,7 @@ public class Sphere3f extends AbstractShape3F<Sphere3f> {
 	}
 
 	@Override
-	public boolean intersects(Segment3f s) {
+	public boolean intersects(AbstractSegment3F s) {
 		return intersectsSphereSegment(
 				getX(), getY(), getZ(), getRadius(),
 				s.getX1(), s.getY1(), s.getZ1(),

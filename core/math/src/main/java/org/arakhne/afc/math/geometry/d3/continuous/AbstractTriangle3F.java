@@ -442,7 +442,7 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 
 		double f;
 
-		f = Segment3f.getPointProjectionFactorOnSegmentLine(
+		f = AbstractSegment3F.getPointProjectionFactorOnSegmentLine(
 				px, py, pz,
 				tx1, ty1, tz1,
 				tx2, ty2, tz2);
@@ -450,7 +450,7 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 		double p1y = ty1 + f * (ty2 - ty1);
 		double p1z = tz1 + f * (tz2 - tz1); 
 
-		f = Segment3f.getPointProjectionFactorOnSegmentLine(
+		f = AbstractSegment3F.getPointProjectionFactorOnSegmentLine(
 				px, py, pz,
 				tx2, ty2, tz2,
 				tx3, ty3, tz3);
@@ -458,7 +458,7 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 		double p2y = ty2 + f * (ty3 - ty2);
 		double p2z = tz2 + f * (tz3 - tz2); 
 
-		f = Segment3f.getPointProjectionFactorOnSegmentLine(
+		f = AbstractSegment3F.getPointProjectionFactorOnSegmentLine(
 				px, py, pz,
 				tx3, ty3, tz3,
 				tx1, ty1, tz1);
@@ -516,13 +516,13 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 			return 0.;
 		}
 
-		double d1 = Segment3f.distanceSquaredSegmentSegment(
+		double d1 = AbstractSegment3F.distanceSquaredSegmentSegment(
 				tx1, ty1, tz1, tx2, ty2, tz2,
 				sx1, sy1, sz1, sx2, sy2, sz2);
-		double d2 = Segment3f.distanceSquaredSegmentSegment(
+		double d2 = AbstractSegment3F.distanceSquaredSegmentSegment(
 				tx1, ty1, tz1, tx3, ty3, tz3,
 				sx1, sy1, sz1, sx2, sy2, sz2);
-		double d3 = Segment3f.distanceSquaredSegmentSegment(
+		double d3 = AbstractSegment3F.distanceSquaredSegmentSegment(
 				tx2, ty2, tz2, tx3, ty3, tz3,
 				sx1, sy1, sz1, sx2, sy2, sz2);
 
@@ -1777,15 +1777,15 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 			d = n.getX() * p.getX() + n.getY() * p.getY() + n.getZ() * p.getZ() + d;
 			return d * d;
 		}
-		double d1 = Segment3f.distanceSquaredSegmentPoint(
+		double d1 = AbstractSegment3F.distanceSquaredSegmentPoint(
 				this.getP1().getX(), this.getP1().getY(), this.getP1().getZ(),
 				this.getP2().getX(), this.getP2().getY(), this.getP2().getZ(),
 				p.getX(), p.getY(), p.getZ());
-		double d2 = Segment3f.distanceSquaredSegmentPoint(
+		double d2 = AbstractSegment3F.distanceSquaredSegmentPoint(
 				this.getP1().getX(), this.getP1().getY(), this.getP1().getZ(),
 				this.getP3().getX(), this.getP3().getY(), this.getP3().getZ(),
 				p.getX(), p.getY(), p.getZ());
-		double d3 = Segment3f.distanceSquaredSegmentPoint(
+		double d3 = AbstractSegment3F.distanceSquaredSegmentPoint(
 				this.getP2().getX(), this.getP2().getY(), this.getP2().getZ(),
 				this.getP3().getX(), this.getP3().getY(), this.getP3().getZ(),
 				p.getX(), p.getY(), p.getZ());
@@ -2213,7 +2213,7 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 	}
 
 	@Override
-	public boolean intersects(Segment3f s) {
+	public boolean intersects(AbstractSegment3F s) {
 		return intersectsTriangleSegment(
 				getX1(), getY1(), getY1(),
 				getX2(), getY2(), getY3(),
@@ -2268,24 +2268,24 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 	 *
 	 * @return the segment between P1 and P2.
 	 */
-	public Segment3f getSegment1() {
-		return new Segment3f(getP1(), getP2());
+	public AbstractSegment3F getSegment1() {
+		return new AbstractSegment3F(getP1(), getP2());
 	}
 
 	/** Replies the segment between P2 and P3.
 	 *
 	 * @return the segment between P2 and P3.
 	 */
-	public Segment3f getSegment2() {
-		return new Segment3f(getP2(), getP3());
+	public AbstractSegment3F getSegment2() {
+		return new AbstractSegment3F(getP2(), getP3());
 	}
 
 	/** Replies the segment between P3 and P1.
 	 *
 	 * @return the segment between P3 and P1.
 	 */
-	public Segment3f getSegment3() {
-		return new Segment3f(getP3(), getP1());
+	public AbstractSegment3F getSegment3() {
+		return new AbstractSegment3F(getP3(), getP1());
 	}
 
 	@SuppressWarnings("unused")

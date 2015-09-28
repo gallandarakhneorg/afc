@@ -64,7 +64,7 @@ public class Capsule3f extends AbstractShape3F<Capsule3f> {
 	public static boolean containsCapsulePoint(
 			double capsule1Ax, double capsule1Ay, double capsule1Az, double capsule1Bx, double capsule1By, double capsule1Bz, double capsule1Radius,
 			double px, double py, double pz) {
-		double distPointToCapsuleSegment = Segment3f.distanceSquaredSegmentPoint(
+		double distPointToCapsuleSegment = AbstractSegment3F.distanceSquaredSegmentPoint(
 				capsule1Ax, capsule1Ay, capsule1Az, capsule1Bx, capsule1By, capsule1Bz,
 				px,py,pz);
 		return (distPointToCapsuleSegment <= (capsule1Radius * capsule1Radius));
@@ -99,7 +99,7 @@ public class Capsule3f extends AbstractShape3F<Capsule3f> {
 		Point3f closest2 = AlignedBox3f.computeClosestPoint(
 				minx, miny, minz, maxx, maxy, maxz,
 				mx2, my2, mz2);
-		double sq = Segment3f.distanceSquaredSegmentSegment(
+		double sq = AbstractSegment3F.distanceSquaredSegmentSegment(
 				mx1, my1, mz1,
 				mx2, my2, mz2,
 				closest1.getX(), closest1.getY(), closest1.getZ(),
@@ -130,7 +130,7 @@ public class Capsule3f extends AbstractShape3F<Capsule3f> {
 			double capsule1Ax, double capsule1Ay, double capsule1Az, double capsule1Bx, double capsule1By, double capsule1Bz, double capsule1Radius,
 			double capsule2Ax, double capsule2Ay, double capsule2Az, double capsule2Bx, double capsule2By, double capsule2Bz, double capsule2Radius) {
 
-		double dist2 = Segment3f.distanceSquaredSegmentSegment(
+		double dist2 = AbstractSegment3F.distanceSquaredSegmentSegment(
 				capsule1Ax, capsule1Ay, capsule1Az, capsule1Bx, capsule1By, capsule1Bz,
 				capsule2Ax, capsule2Ay, capsule2Az, capsule2Bx, capsule2By, capsule2Bz);
 
@@ -523,7 +523,7 @@ public class Capsule3f extends AbstractShape3F<Capsule3f> {
 	@Override
 	public double distanceSquared(Point3D p) {
 		double r = getRadius();
-		double d = Segment3f.distanceSquaredSegmentPoint(
+		double d = AbstractSegment3F.distanceSquaredSegmentPoint(
 				getMedialX1(), getMedialY1(), getMedialZ1(),
 				getMedialX2(), getMedialY2(), getMedialZ2(),
 				p.getX(), p.getY(), p.getZ());
@@ -545,7 +545,7 @@ public class Capsule3f extends AbstractShape3F<Capsule3f> {
 
 	@Override
 	public Point3D getClosestPointTo(Point3D p) {
-		double factor = Segment3f.getPointProjectionFactorOnSegmentLine(
+		double factor = AbstractSegment3F.getPointProjectionFactorOnSegmentLine(
 				p.getX(), p.getY(), p.getZ(),
 				getMedialX1(), getMedialY1(), getMedialZ1(),
 				getMedialX2(), getMedialY2(), getMedialZ2());
@@ -641,8 +641,8 @@ public class Capsule3f extends AbstractShape3F<Capsule3f> {
 	}
 
 	@Override
-	public boolean intersects(Segment3f s) {
-		return Segment3f.intersectsSegmentCapsule(
+	public boolean intersects(AbstractSegment3F s) {
+		return AbstractSegment3F.intersectsSegmentCapsule(
 				s.getX1(), s.getY1(), s.getZ1(),
 				s.getX2(), s.getY2(), s.getZ2(),
 				getMedialX1(), getMedialY1(), getMedialZ1(),

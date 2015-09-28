@@ -37,18 +37,18 @@ import org.junit.Test;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class Segment3fTest extends AbstractShape3fTestCase<Segment3f> {
+public class Segment3fTest extends AbstractShape3fTestCase<AbstractSegment3F> {
 
 	
 	@Override
-	protected Segment3f createShape() {
-		return new Segment3f(Math.random(), Math.random(), Math.random(), Math.random(), Math.random(), Math.random());
+	protected AbstractSegment3F createShape() {
+		return new AbstractSegment3F(Math.random(), Math.random(), Math.random(), Math.random(), Math.random(), Math.random());
 	}
 
 	@Test
 	@Override
 	public void testClone() {
-		Segment3f b = this.r.clone();
+		AbstractSegment3F b = this.r.clone();
 
 		assertNotSame(b, this.r);
 		assertEpsilonEquals(this.r.getX1(), b.getX1());
@@ -65,7 +65,7 @@ public class Segment3fTest extends AbstractShape3fTestCase<Segment3f> {
 	@Test
 	@Override
 	public void distancePoint3D() {
-		Segment3f seg = new Segment3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		AbstractSegment3F seg = new AbstractSegment3F(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
 		Point3f pnt = new Point3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
 		
 		Vector3f vect = new Vector3f(seg.getP1().getX()-pnt.getX(),seg.getP1().getY()-pnt.getY(),seg.getP1().getZ()-pnt.getZ());
@@ -78,7 +78,7 @@ public class Segment3fTest extends AbstractShape3fTestCase<Segment3f> {
 	@Test
 	@Override
 	public void containsPoint3D() {
-		Segment3f seg = new Segment3f(0,0,0,1,0,0);
+		AbstractSegment3F seg = new AbstractSegment3F(0,0,0,1,0,0);
 	}
 
 	@Test

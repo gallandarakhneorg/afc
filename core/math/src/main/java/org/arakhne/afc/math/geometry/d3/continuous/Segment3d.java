@@ -1,70 +1,26 @@
-/* 
- * $Id$
- * 
- * Copyright (C) 2010-2013 Christophe BOHRHAUER.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
- */
 package org.arakhne.afc.math.geometry.d3.continuous;
 
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
 
-/** This class represents a 3D line.
- * <p>
- * The equation of the line is:
- * <math xmlns="http://www.w3.org/1998/Math/MathML">
- *   <mrow>
- *     <mi>L</mi><mo>&#x2061;</mo><mfenced><mi>t</mi></mfenced>
- *     <mo>=</mo>
- *     <mi>P</mi><mo>+</mo>
- *     <mi>t</mi><mo>.</mo>
- *     <mover>
- *       <mi>D</mi>
- *       <mo>&#x20D7;</mo>
- *     </mover>
- *   </mrow>
- * </math>
- * for any real-valued <math><mi>t</mi></math>.
- * <math><mover><mi>D</mi><mo>&#x20D7;</mo></mover></math> is not
- * necessarily unit length. 
- *
- * @author $Author: hjaffali$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
- */
-public class Segment3f extends AbstractSegment3F {
+public class Segment3d extends AbstractSegment3F {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 7672097812255939548L;
+	private static final long serialVersionUID = -451687409923159781L;
 
 	/** First point on the line.
 	 */
-	protected final Point3f pivot = new Point3f();
+	protected final Point3d pivot = new Point3d();
 
 	/** Direction vector.
 	 */
-	protected final Vector3f d = new Vector3f();
+	protected final Vector3d d = new Vector3d();
 
 	/**
 	 */
-	public Segment3f() {
+	public Segment3d() {
 		super();
 	}
 
@@ -72,7 +28,7 @@ public class Segment3f extends AbstractSegment3F {
 	 * @param p1 is first point on the line
 	 * @param p2 is second point on the line
 	 */
-	public Segment3f(Point3D p1, Point3D p2) {
+	public Segment3d(Point3D p1, Point3D p2) {
 		this.pivot.set(p1);
 		this.d.sub(p2, p1);
 	}
@@ -81,7 +37,7 @@ public class Segment3f extends AbstractSegment3F {
 	 * @param pivot1 is a point on the line
 	 * @param direction is the direction of the line
 	 */
-	public Segment3f(Point3D pivot1, Vector3D direction) {
+	public Segment3d(Point3D pivot1, Vector3D direction) {
 		this.pivot.set(pivot1);
 		this.d.set(direction);
 	}
@@ -94,7 +50,7 @@ public class Segment3f extends AbstractSegment3F {
 	 * @param y2 y coordinate of the second point of the segment.
 	 * @param z2 z coordinate of the second point of the segment.
 	 */
-	public Segment3f(double x1, double y1, double z1, double x2, double y2, double z2) {
+	public Segment3d(double x1, double y1, double z1, double x2, double y2, double z2) {
 		this.pivot.set(x1, y1, z1);
 		this.d.set(x2 - x1, y2 - y1, z2 - z1);
 	}
@@ -105,7 +61,7 @@ public class Segment3f extends AbstractSegment3F {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Vector3f getSegmentVector() {
+	public Vector3d getSegmentVector() {
 		return this.d;
 	}
 	
@@ -114,7 +70,7 @@ public class Segment3f extends AbstractSegment3F {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Vector3f getCloneSegmentVector() {
+	public Vector3d getCloneSegmentVector() {
 		return this.d.clone();
 	}
 
@@ -123,8 +79,8 @@ public class Segment3f extends AbstractSegment3F {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Vector3f getDirection() {
-		Vector3f v = this.d.clone();
+	public Vector3d getDirection() {
+		Vector3d v = this.d.clone();
 		v.normalize();
 		return v;
 	}
@@ -153,7 +109,8 @@ public class Segment3f extends AbstractSegment3F {
 	 * 
 	 * {@inheritDoc}
 	 */
-	public Point3f getP1() {
+	@Override
+	public Point3d getP1() {
 		return this.pivot;
 	}
 
@@ -161,6 +118,7 @@ public class Segment3f extends AbstractSegment3F {
 	 * 
 	 * {@inheritDoc}
 	 */
+	@Override
 	public double getX1() {
 		return this.pivot.getX();
 	}
@@ -169,6 +127,7 @@ public class Segment3f extends AbstractSegment3F {
 	 * 
 	 * {@inheritDoc}
 	 */
+	@Override
 	public double getY1() {
 		return this.pivot.getY();
 	}
@@ -177,6 +136,7 @@ public class Segment3f extends AbstractSegment3F {
 	 * 
 	 * {@inheritDoc}
 	 */
+	@Override
 	public double getZ1() {
 		return this.pivot.getZ();
 	}
@@ -213,8 +173,8 @@ public class Segment3f extends AbstractSegment3F {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Point3f getP2() {
-		return new Point3f(
+	public Point3d getP2() {
+		return new Point3d(
 				this.pivot.getX() + this.d.getX(),
 				this.pivot.getY() + this.d.getY(),
 				this.pivot.getZ() + this.d.getZ());
@@ -259,3 +219,4 @@ public class Segment3f extends AbstractSegment3F {
 	
 	
 }
+

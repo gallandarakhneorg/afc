@@ -456,7 +456,7 @@ public class Triangle3fTest extends AbstractShape3fTestCase<Triangle3f> {
 		Point3f p3 = new Point3f(Math.random(),Math.random(),Math.random());
 		Triangle3f t1 = new Triangle3f(p1,p2,p3);
 		
-		Segment3f segment = new Segment3f(p1,p2);
+		AbstractSegment3F segment = new AbstractSegment3F(p1,p2);
 		
 		assertTrue(t1.getSegment1().equals(segment));
 	}
@@ -469,7 +469,7 @@ public class Triangle3fTest extends AbstractShape3fTestCase<Triangle3f> {
 		Point3f p3 = new Point3f(Math.random(),Math.random(),Math.random());
 		Triangle3f t1 = new Triangle3f(p1,p2,p3);
 		
-		Segment3f segment = new Segment3f(p2,p3);
+		AbstractSegment3F segment = new AbstractSegment3F(p2,p3);
 		
 		assertTrue(t1.getSegment2().equals(segment));
 	}
@@ -482,7 +482,7 @@ public class Triangle3fTest extends AbstractShape3fTestCase<Triangle3f> {
 		Point3f p3 = new Point3f(Math.random(),Math.random(),Math.random());
 		Triangle3f t1 = new Triangle3f(p1,p2,p3);
 		
-		Segment3f segment = new Segment3f(p3,p1);
+		AbstractSegment3F segment = new AbstractSegment3F(p3,p1);
 		
 		assertTrue(t1.getSegment3().equals(segment));
 	}

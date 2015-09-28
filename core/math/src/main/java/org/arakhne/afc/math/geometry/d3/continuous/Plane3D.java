@@ -132,14 +132,14 @@ public interface Plane3D<PT extends Plane3D<? super PT>> extends Serializable, C
 	 * @param plane is used to compute the intersection.
 	 * @return the intersection segment or <code>null</code>
 	 */
-	Segment3f getIntersection(Plane3D<?> plane);
+	AbstractSegment3F getIntersection(Plane3D<?> plane);
 
 	/** Replies the intersection between this plane and the specified line.
 	 * 
 	 * @param line is used to compute the intersection.
 	 * @return the intersection point or <code>null</code>
 	 */
-	Point3f getIntersection(Segment3f line);
+	Point3f getIntersection(AbstractSegment3F line);
 
 	/** Replies the projection of the given point on the plane.
 	 * 
@@ -270,7 +270,7 @@ public interface Plane3D<PT extends Plane3D<? super PT>> extends Serializable, C
 	 * @param segment
 	 * @return <code>true</code> if intersection, otherwise <code>false</code>
 	 */
-    boolean intersects(Segment3f segment);
+    boolean intersects(AbstractSegment3F segment);
 
     /** Set point that lies on the plane and is used a pivot point.
 	 * 

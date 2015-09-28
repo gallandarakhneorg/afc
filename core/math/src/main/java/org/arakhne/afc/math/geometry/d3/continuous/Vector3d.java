@@ -68,6 +68,12 @@ public class Vector3d extends Tuple3d<Vector3D> implements FunctionalVector3D {
 		}, this.lengthSquareProperty));
 	}
 
+	/** {@inheritDoc}
+	 */
+	@Override
+	public Vector3d clone() {
+		return (Vector3d)super.clone();
+	}
 	
 	public ReadOnlyDoubleProperty lengthSquareProperty() {
 		return this.lengthSquareProperty.getReadOnlyProperty();
