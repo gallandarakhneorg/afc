@@ -1,7 +1,7 @@
 /* 
  * $Id$
  * 
- * Copyright (C) 2010-2013 Christophe BOHRHAUER.
+ * Copyright (C) 2010-2013 Hamza JAFFALI.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -27,6 +27,9 @@ import org.arakhne.afc.math.geometry.d3.FunctionalVector3D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Tuple3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+
 
 /**This class represents a 3D plane.
  * 
@@ -35,41 +38,40 @@ import org.arakhne.afc.math.geometry.d3.Vector3D;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public final class Plane4f extends AbstractPlane4F {
+@SuppressWarnings("restriction")
+public class Plane4d extends AbstractPlane4F {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -2242023029226534976L;
 	
+	private static final long serialVersionUID = -934785950628401429L;
+
 	/** equation coefficient A.
 	 */
-	protected double a;
+	protected DoubleProperty aProperty = new SimpleDoubleProperty(0f);
 
 	/** equation coefficient B.
 	 */
-	protected double b;
+	protected DoubleProperty bProperty = new SimpleDoubleProperty(0f);
 
 	/** equation coefficient C.
 	 */
-	protected double c;
+	protected DoubleProperty cProperty = new SimpleDoubleProperty(0f);
 
 	/** equation coefficient D.
 	 */
-	protected double d;
+	protected DoubleProperty dProperty = new SimpleDoubleProperty(0f);
 
 	/** Cached pivot point.
 	 */
-	private transient WeakReference<Point3f> cachedPivot = null;
+	private transient WeakReference<Point3d> cachedPivot = null;
 
 	/**
 	 *
 	 */
-	public Plane4f() {
-		this.a = 1;
-		this.b = 0;
-		this.c = 0;
-		this.d = 0;
+	public Plane4d() {
+		this.aProperty.set(1);
+		this.bProperty.set(0);
+		this.cProperty.set(0);
+		this.dProperty.set(0);
 	}
 
 	/**
@@ -78,12 +80,11 @@ public final class Plane4f extends AbstractPlane4F {
 	 * @param c is the plane equation coefficient
 	 * @param d is the plane equation coefficient
 	 */
-	@SuppressWarnings("hiding")
-	public Plane4f(double a, double b, double c, double d) {
-		this.a = a;
-		this.b = b;
-		this.c = c;
-		this.d = d;
+	public Plane4d(double a, double b, double c, double d) {
+		this.aProperty.set(a);
+		this.bProperty.set(b);
+		this.cProperty.set(c);
+		this.dProperty.set(d);
 		normalize();
 	}
 
@@ -91,7 +92,7 @@ public final class Plane4f extends AbstractPlane4F {
 	 * @param normal is the normal of the plane.
 	 * @param p is a point which lies on the plane.
 	 */
-	public Plane4f(Vector3D normal, Point3D p) {
+	public Plane4d(Vector3D normal, Point3D p) {
 		this(normal.getX(), normal.getY(), normal.getZ(), p.getX(), p.getY(), p.getZ());
 	}
 
@@ -103,25 +104,24 @@ public final class Plane4f extends AbstractPlane4F {
 	 * @param py is the x coordinate of a point which lies on the plane.
 	 * @param pz is the x coordinate of a point which lies on the plane.
 	 */
-	@SuppressWarnings("hiding")
-	public Plane4f(double a, double b, double c, double px, double py, double pz) {
-		this.a = a;
-		this.b = b;
-		this.c = c;
+	public Plane4d(double a, double b, double c, double px, double py, double pz) {
+		this.aProperty.set(a);
+		this.bProperty.set(b);
+		this.cProperty.set(c);
 		normalize();
 		// a.x + b.y + c.z + d = 0
 		// where (x,y,z) is the translation point
-		this.d = - (this.a*px + this.b*py + this.c*pz);
+		this.dProperty.set(- (this.getEquationComponentA()*px + this.getEquationComponentB()*py + this.getEquationComponentC()*pz));
 	}
 
 	/**
 	 * @param plane is the plane to copy
 	 */
-	public Plane4f(Plane3D<?> plane) {
-		this.a = plane.getEquationComponentA();
-		this.b = plane.getEquationComponentB();
-		this.c = plane.getEquationComponentC();
-		this.d = plane.getEquationComponentD();
+	public Plane4d(Plane3D<?> plane) {
+		this.aProperty.set(plane.getEquationComponentA());
+		this.bProperty.set(plane.getEquationComponentB());
+		this.cProperty.set(plane.getEquationComponentC());
+		this.dProperty.set(plane.getEquationComponentD());
 		normalize();
 	}
 
@@ -130,7 +130,7 @@ public final class Plane4f extends AbstractPlane4F {
 	 * @param p2 is a point on the plane
 	 * @param p3 is a point on the plane
 	 */
-	public Plane4f(Tuple3D<?> p1, Tuple3D<?> p2, Tuple3D<?> p3) {
+	public Plane4d(Tuple3D<?> p1, Tuple3D<?> p2, Tuple3D<?> p3) {
 		set(p1.getX(), p1.getY(), p1.getZ(), p2.getX(), p2.getY(), p2.getZ(), p3.getX(), p3.getY(), p3.getZ());
 	}
 
@@ -145,7 +145,7 @@ public final class Plane4f extends AbstractPlane4F {
 	 * @param p3y is a point on the plane
 	 * @param p3z is a point on the plane
 	 */
-	public Plane4f(double p1x, double p1y, double p1z, double p2x, double p2y, double p2z, double p3x, double p3y, double p3z) {
+	public Plane4d(double p1x, double p1y, double p1z, double p2x, double p2y, double p2z, double p3x, double p3y, double p3z) {
 		set(p1x, p1y, p1z, p2x, p2y, p2z, p3x, p3y, p3z);
 	}
 	
@@ -155,10 +155,10 @@ public final class Plane4f extends AbstractPlane4F {
 	 */
 	@Override
 	public void set(Plane3D<?> plane) {
-		this.a = plane.getEquationComponentA();
-		this.b = plane.getEquationComponentB();
-		this.c = plane.getEquationComponentC();
-		this.d = plane.getEquationComponentD();
+		this.aProperty.set(plane.getEquationComponentA());
+		this.bProperty.set(plane.getEquationComponentB());
+		this.cProperty.set(plane.getEquationComponentC());
+		this.dProperty.set(plane.getEquationComponentD());
 		normalize();
 	}
 
@@ -181,10 +181,10 @@ public final class Plane4f extends AbstractPlane4F {
 					p2x-p1x, p2y-p1y, p2z-p1z,
 					p3x-p1x, p3y-p1y, p3z-p1z,
 					v);
-		this.a = v.getX();
-		this.b = v.getY();
-		this.c = v.getZ();
-		this.d = - (this.a * p1x + this.b * p1y + this.c * p1z);
+		this.aProperty.set(v.getX());
+		this.bProperty.set(v.getY());
+		this.cProperty.set(v.getZ());
+		this.dProperty.set(- (this.getEquationComponentA() * p1x + this.getEquationComponentB() * p1y + this.getEquationComponentC() * p1z));
 		normalize();
 
 	}
@@ -207,12 +207,11 @@ public final class Plane4f extends AbstractPlane4F {
 	 * @param c is the first factor of the plane equation.
 	 * @param d is the first factor of the plane equation.
 	 */
-	@SuppressWarnings("hiding")
 	public void set(double a, double b, double c, double d) {
-		this.a = a;
-		this.b = b;
-		this.c = c;
-		this.d = d;
+		this.aProperty.set(a);
+		this.bProperty.set(b);
+		this.cProperty.set(c);
+		this.dProperty.set(d);
 		clearBufferedValues();
 	}
 	
@@ -222,35 +221,35 @@ public final class Plane4f extends AbstractPlane4F {
 	 */
 	@Override
 	public Vector3f getNormal() {
-		return new Vector3f(this.a,this.b,this.c);
+		return new Vector3f(this.getEquationComponentA(),this.getEquationComponentB(),this.getEquationComponentC());
 	}
 
 	/** {@inheritDoc}
 	 */
 	@Override
 	public double getEquationComponentA() {
-		return this.a;
+		return this.aProperty.doubleValue();
 	}
 
 	/** {@inheritDoc}
 	 */
 	@Override
 	public double getEquationComponentB() {
-		return this.b;
+		return this.bProperty.doubleValue();
 	}
 
 	/** {@inheritDoc}
 	 */
 	@Override
 	public double getEquationComponentC() {
-		return this.c;
+		return this.cProperty.doubleValue();
 	}
 
 	/** {@inheritDoc}
 	 */
 	@Override
 	public double getEquationComponentD() {
-		return this.d;
+		return this.dProperty.doubleValue();
 	}
 	
 	@Override
@@ -258,8 +257,8 @@ public final class Plane4f extends AbstractPlane4F {
 		clearBufferedValues();
 		// a.x + b.y + c.z + d = 0
 		// where (x,y,z) is the translation point
-		this.d = - (this.a*x + this.b*y + this.c*z);
-		this.cachedPivot = new WeakReference<>(new Point3f(x, y, z));
+		this.dProperty.set(- (this.getEquationComponentA()*x + this.getEquationComponentB()*y + this.getEquationComponentC()*z));
+		this.cachedPivot = new WeakReference<>(new Point3d(x, y, z));
 	}
 
 	/** Replies the pivot point around which the rotation must be done.
@@ -267,10 +266,10 @@ public final class Plane4f extends AbstractPlane4F {
 	 * @return a reference on the buffered pivot point.
 	 */
 	@Override
-	public Point3f getPivot() {
-		Point3f pivot = this.cachedPivot == null ? null : this.cachedPivot.get();
+	public Point3d getPivot() {
+		Point3d pivot = this.cachedPivot == null ? null : this.cachedPivot.get();
 		if (pivot==null) {
-			pivot = (Point3f) getProjection(0., 0., 0.);
+			pivot = (Point3d) getProjection(0., 0., 0.);
 			this.cachedPivot = new WeakReference<>(pivot);
 		}
 		return pivot;
@@ -295,27 +294,27 @@ public final class Plane4f extends AbstractPlane4F {
 
 	@Override
 	protected void setEquationComponentC(double z) {
-		this.c = z;
+		this.cProperty.set(z);
 		
 	}
 
 	@Override
 	protected void setEquationComponentB(double y) {
-		this.b = y;
+		this.bProperty.set(y);
 		
 	}
 
 	@Override
 	protected void setEquationComponentA(double x) {
-		this.a = x;
+		this.aProperty.set(x);
 		
 	}
 
 	@Override
 	protected void setEquationComponentD(double w) {
-		this.d = w;
+		this.dProperty.set(w);
 		
 	}
-
+	
 
 }

@@ -443,7 +443,7 @@ public interface FunctionalTuple2D<TT extends Tuple2D<? super TT>> extends Tuple
 			return(this.getX() == t1.getX() && this.getY() == t1.getY());
 		}
 		catch (NullPointerException e2) {
-			return false;
+			e2.printStackTrace();return false;
 		}
 	}
 

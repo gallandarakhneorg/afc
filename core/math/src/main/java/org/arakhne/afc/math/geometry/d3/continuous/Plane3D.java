@@ -22,6 +22,8 @@ package org.arakhne.afc.math.geometry.d3.continuous;
 
 import java.io.Serializable;
 
+import org.arakhne.afc.math.geometry.d3.FunctionalPoint3D;
+import org.arakhne.afc.math.geometry.d3.FunctionalVector3D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 
 /** This class represents a 3D plane.
@@ -44,7 +46,7 @@ public interface Plane3D<PT extends Plane3D<? super PT>> extends Serializable, C
 	 * 
 	 * @return the normal of the plane.
 	 */
-	Vector3f getNormal();
+	FunctionalVector3D getNormal();
 
 	/**
 	 * Replies the component a of the plane equation.
@@ -139,14 +141,14 @@ public interface Plane3D<PT extends Plane3D<? super PT>> extends Serializable, C
 	 * @param line is used to compute the intersection.
 	 * @return the intersection point or <code>null</code>
 	 */
-	Point3f getIntersection(AbstractSegment3F line);
+	FunctionalPoint3D getIntersection(AbstractSegment3F line);
 
 	/** Replies the projection of the given point on the plane.
 	 * 
 	 * @param point the point to project on the plane.
 	 * @return the projection point never <code>null</code>
 	 */
-	Point3f getProjection(Point3D point);
+	FunctionalPoint3D getProjection(Point3D point);
 
 	/** Replies the projection of the given point on the plane.
 	 * 
@@ -155,7 +157,7 @@ public interface Plane3D<PT extends Plane3D<? super PT>> extends Serializable, C
 	 * @param z z coordinate is the point to project on the plane.
 	 * @return the projection point never <code>null</code>
 	 */
-	Point3f getProjection(double x, double y, double z);
+	FunctionalPoint3D getProjection(double x, double y, double z);
 
 	/**
 	 * Replies the distance from the given point to the plane.
@@ -235,7 +237,7 @@ public interface Plane3D<PT extends Plane3D<? super PT>> extends Serializable, C
 	 * @param box
 	 * @return the classification
 	 */
-    PlaneClassification classifies(AlignedBox3f box);
+    PlaneClassification classifies(AbstractBoxedShape3F<?> box);
 
     /**
 	 * Replies if the given sphere is intersecting the plane.

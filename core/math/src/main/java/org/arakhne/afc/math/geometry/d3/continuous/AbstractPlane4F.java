@@ -20,12 +20,10 @@
  */
 package org.arakhne.afc.math.geometry.d3.continuous;
 
-import java.lang.ref.WeakReference;
-
 import org.arakhne.afc.math.MathUtil;
+import org.arakhne.afc.math.geometry.d3.FunctionalPoint3D;
 import org.arakhne.afc.math.geometry.d3.FunctionalVector3D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
-import org.arakhne.afc.math.geometry.d3.Tuple3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
 
 /** This class represents a 3D plane.
@@ -331,7 +329,7 @@ public abstract class AbstractPlane4F extends AbstractPlane3D<AbstractPlane4F> {
 	 * @param z the z coordinate of the project to project on the plane.
 	 * @return the projection of the specified point on the plane.
 	 */
-	public static Point3f computePointProjection(
+	public static FunctionalPoint3D computePointProjection(
 			double a, double b, double c, double d,
 			double x, double y, double z) {
 		// Arithmetic resolution
@@ -426,13 +424,12 @@ public abstract class AbstractPlane4F extends AbstractPlane3D<AbstractPlane4F> {
 	 * @param c is the first factor of the plane equation.
 	 * @param d is the first factor of the plane equation.
 	 */
-	@SuppressWarnings("hiding")
 	abstract public void set(double a, double b, double c, double d);
 
 	/** {@inheritDoc}
 	 */
 	@Override
-	abstract public Vector3f getNormal();
+	abstract public FunctionalVector3D getNormal();
 
 	/** {@inheritDoc}
 	 */
@@ -485,10 +482,10 @@ public abstract class AbstractPlane4F extends AbstractPlane3D<AbstractPlane4F> {
 	 * 
 	 * @return a reference on the buffered pivot point.
 	 */
-	abstract public Point3f getPivot();
+	abstract public FunctionalPoint3D getPivot();
 
 	@Override
-	abstract public Point3f getProjection(double x, double y, double z);
+	abstract public FunctionalPoint3D getProjection(double x, double y, double z);
 
 	/** Apply the given transformation matrix on the plane.
 	 * The pivot point used for transforming this plane with
@@ -542,7 +539,7 @@ public abstract class AbstractPlane4F extends AbstractPlane3D<AbstractPlane4F> {
 	public void translate(double dx, double dy, double dz) {
 		// Compute the reference point for the plane
     	// (usefull for translation)
-    	Point3f refPoint = getPivot();
+    	Point3f refPoint = (Point3f) getPivot();
     	
     	// a.x + b.y + c.z + d = 0
     	// where (x,y,z) is the translation point

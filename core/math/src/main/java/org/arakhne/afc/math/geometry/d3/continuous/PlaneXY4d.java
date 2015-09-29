@@ -1,48 +1,50 @@
 package org.arakhne.afc.math.geometry.d3.continuous;
 
 import org.arakhne.afc.math.geometry.d3.Tuple3D;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 
-public class PlaneXY4f extends AbstractPlaneXY4F{
+@SuppressWarnings("restriction")
+public class PlaneXY4d extends AbstractPlaneXY4F{
 	
 
-	private static final long serialVersionUID = -2561113485612246988L;
-	
+	private static final long serialVersionUID = 4944742708014964987L;
 	
 	/**
 	 * Coordinate of the plane.
 	 */
-	protected double z;
+	protected DoubleProperty zProperty = new SimpleDoubleProperty(0f);
 
 	/**
 	 * @param z1 is the coordinate of the plane.
 	 */
-	public PlaneXY4f(double z1) {
-		this.z = z1;
+	public PlaneXY4d(double z1) {
+		this.setZ(z1);
 	}
 
 	/**
 	 * @param p is a point on the plane.
 	 */
-	public PlaneXY4f(Tuple3D<?> p) {
-		this.z = p.getZ();
+	public PlaneXY4d(Tuple3D<?> p) {
+		this.setZ(p.getZ());
 	}
 
 	/** {@inheritDoc}
 	 */
 	@Override
 	public void set(Plane3D<?> plane) {
-		this.z = plane.getEquationComponentC();
+		this.setZ(plane.getEquationComponentC());
 		normalize();
 	}
 	
 	@Override
 	public Point3f getProjection(double x, double y, double z1) {
-		return new Point3f(x, y, this.z);
+		return new Point3f(x, y, this.getZ());
 	}
 
 	@Override
 	public void setPivot(double x, double y, double z1) {
-		this.z = z1;
+		this.setZ(z1);
 	}
 
 	/** Set the z coordinate of the plane.
@@ -50,16 +52,17 @@ public class PlaneXY4f extends AbstractPlaneXY4F{
 	 * @param z1
 	 */
 	public void setZ(double z1) {
-		this.z = z1;
+		this.zProperty.set(z1);
 	}
 
 	/** Replies the z coordinate of the plane.
 	 *
 	 */
 	public double getZ() {
-		return this.z;
+		return this.zProperty.doubleValue();
 	}
 	
 	
 
 }
+

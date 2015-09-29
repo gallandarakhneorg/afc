@@ -400,7 +400,7 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 			return new PlaneXZ4f(ty1);
 		if (norm.getX()==0. && norm.getY()==0.)
 			return new PlaneXY4f(tz1);
-		return new AbstractPlane4F(tx1, ty1, tz1, tx2, ty2, tz2, tx3, ty3, tz3);
+		return new Plane4f(tx1, ty1, tz1, tx2, ty2, tz2, tx3, ty3, tz3);
 	}
 
 	/** Replies the closest point from the triangle to the point.
@@ -1994,7 +1994,7 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 	 * @return <code>true</code> if the projection of the point is in the triangle, otherwise <code>false</code>.
 	 */
 	public boolean containsProjectionOf(double x, double y, double z) {
-		Point3f proj = getPlane().getProjection(x, y, z);
+		Point3f proj = (Point3f) getPlane().getProjection(x, y, z);
 		if (proj == null) {
 			return false;
 		}

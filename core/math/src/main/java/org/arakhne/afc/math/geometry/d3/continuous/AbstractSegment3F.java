@@ -1552,7 +1552,7 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 
 	@Override
 	public boolean intersects(Plane3D<?> p) {
-		Vector3f n = p.getNormal();
+		Vector3f n = (Vector3f) p.getNormal();
 		double s = n.dot(this.getSegmentVector());
 		return !MathUtil.isEpsilonZero(s);
 	}

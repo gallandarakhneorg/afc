@@ -37,10 +37,10 @@ import java.util.TreeMap;
 import org.arakhne.afc.math.geometry.d3.FunctionalVector3D;
 import org.arakhne.afc.math.geometry.d3.Tuple3D;
 import org.arakhne.afc.math.geometry.d3.continuous.AbstractPlane4F;
+import org.arakhne.afc.math.geometry.d3.continuous.AbstractTriangle3F;
 import org.arakhne.afc.math.geometry.d3.continuous.Plane4f;
 import org.arakhne.afc.math.geometry.d3.continuous.PlaneClassification;
 import org.arakhne.afc.math.geometry.d3.continuous.Point3f;
-import org.arakhne.afc.math.geometry.d3.continuous.Triangle3f;
 
 
 /** This class permits to create convex hull from a
@@ -698,7 +698,7 @@ public class DivideAndConquerAlgorithm implements ConvexHullAlgorithm {
 					(t.b>=minIndex)&&(t.b<=maxIndex)&&
 					(t.c>=minIndex)&&(t.c<=maxIndex)) {
 					if ((t.isCoplanar(triangle))&&
-						(Triangle3f.overlapsCoplanarTriangle(
+						(AbstractTriangle3F.overlapsCoplanarTriangle(
 								this.pointList[triangle.a],
 								this.pointList[triangle.b],
 								this.pointList[triangle.c], 

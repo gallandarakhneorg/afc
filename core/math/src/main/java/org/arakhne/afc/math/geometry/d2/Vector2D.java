@@ -20,8 +20,6 @@
  */
 package org.arakhne.afc.math.geometry.d2;
 
-import org.arakhne.afc.math.matrix.Matrix2f;
-
 /** 2D Vector.
  * 
  * @author $Author: galland$

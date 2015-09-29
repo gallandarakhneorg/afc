@@ -335,11 +335,9 @@ public interface FunctionalVector2D extends Vector2D {
 		if(v1.length()==0){
 			throw new ArithmeticException();
 		}
-		else {
-			double norm = 1f / v1.length();
-			this.setX((int)(v1.getX()*norm));
-			this.setY((int)(v1.getY()*norm));
-		}
+		double norm = 1f / v1.length();
+		this.setX((int)(v1.getX()*norm));
+		this.setY((int)(v1.getY()*norm));
 	}
 
 	/* (non-Javadoc)
@@ -352,10 +350,8 @@ public interface FunctionalVector2D extends Vector2D {
 		if(length==0){
 			throw new ArithmeticException();
 		}
-		else {
-			this.setX(this.getX() / length);
-			this.setY(this.getY() / length);
-		}
+		this.setX(this.getX() / length);
+		this.setY(this.getY() / length);
 	}
 
 	/* (non-Javadoc)

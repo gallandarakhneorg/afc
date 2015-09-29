@@ -190,7 +190,7 @@ public abstract class AbstractPlane3D<PT extends AbstractPlane3D<? super PT>> im
 
 	@Override
 	public Point3f getProjection(Point3D point) {
-		return getProjection(point.getX(), point.getY(), point.getZ());
+		return (Point3f) getProjection(point.getX(), point.getY(), point.getZ());
 	}
 
 	@Override
@@ -261,7 +261,7 @@ public abstract class AbstractPlane3D<PT extends AbstractPlane3D<? super PT>> im
 	}
 	
 	@Override
-    public PlaneClassification classifies(AlignedBox3f box) {
+    public PlaneClassification classifies(AbstractBoxedShape3F<?> box) {
     	Vector3D normal = getNormal();
     	double minx, miny, minz, maxx, maxy, maxz;
 
@@ -315,7 +315,7 @@ public abstract class AbstractPlane3D<PT extends AbstractPlane3D<? super PT>> im
 	@Override
     @Unefficient
     public boolean intersects(AbstractBoxedShape3F<?> box) {
-    	return classifies((AlignedBox3f)box) == PlaneClassification.COINCIDENT;
+    	return classifies(box) == PlaneClassification.COINCIDENT;
     }
 	
 
@@ -324,7 +324,7 @@ public abstract class AbstractPlane3D<PT extends AbstractPlane3D<? super PT>> im
 		// Compute the effective radius of the obb and
 		// compare it with the distance between the obb center
 		// and the plane; source MGPCG pp.235
-		Vector3f n = getNormal();
+		Vector3f n = (Vector3f) getNormal();
 
 		double dist = Math.abs(distanceTo(box.getCenter()));
 

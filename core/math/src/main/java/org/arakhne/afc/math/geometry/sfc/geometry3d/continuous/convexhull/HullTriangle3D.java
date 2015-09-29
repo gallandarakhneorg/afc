@@ -25,7 +25,6 @@ import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.d3.Tuple3D;
 import org.arakhne.afc.math.geometry.d3.continuous.Plane3D;
 import org.arakhne.afc.math.geometry.d3.continuous.Plane4f;
-import org.arakhne.afc.math.geometry.d3.continuous.AbstractPlane4F;
 import org.arakhne.afc.math.geometry.d3.continuous.PlaneClassification;
 import org.arakhne.afc.math.geometry.d3.continuous.PlaneClassifier;
 import org.arakhne.afc.math.geometry.d3.continuous.Point3f;
@@ -391,7 +390,7 @@ public class HullTriangle3D<T extends Point3f> implements HullObject<T>, PlaneCl
      */
     public double distanceTo(Plane3D<?> p) {
     	// Compute the normales
-    	Vector3f oNormal = p.getNormal();
+    	Vector3f oNormal = (Vector3f) p.getNormal();
     	oNormal.normalize();
     	Vector3f mNormal = new Vector3f(this.nx,this.ny,this.nz);
     	mNormal.normalize();
