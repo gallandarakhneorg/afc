@@ -37,6 +37,7 @@ import java.util.TreeMap;
 import org.arakhne.afc.math.geometry.d3.FunctionalVector3D;
 import org.arakhne.afc.math.geometry.d3.Tuple3D;
 import org.arakhne.afc.math.geometry.d3.continuous.AbstractPlane4F;
+import org.arakhne.afc.math.geometry.d3.continuous.Plane4f;
 import org.arakhne.afc.math.geometry.d3.continuous.PlaneClassification;
 import org.arakhne.afc.math.geometry.d3.continuous.Point3f;
 import org.arakhne.afc.math.geometry.d3.continuous.Triangle3f;
@@ -320,7 +321,7 @@ public class DivideAndConquerAlgorithm implements ConvexHullAlgorithm {
 			dz = 0;
 		}
 		
-    	AbstractPlane4F tangentCandidate = new AbstractPlane4F(
+    	AbstractPlane4F tangentCandidate = new Plane4f(
 	    		leftCandidatePoint.getX(),leftCandidatePoint.getY(),leftCandidatePoint.getZ(),
 	    		rightCandidatePoint.getX(),rightCandidatePoint.getY(),rightCandidatePoint.getZ(),
 	    		leftCandidatePoint.getX(),leftCandidatePoint.getY()+dy,leftCandidatePoint.getZ()+dz);
@@ -335,7 +336,7 @@ public class DivideAndConquerAlgorithm implements ConvexHullAlgorithm {
 				dx = 0;
 				dz = 1;
 			}
-	    	tangentCandidate = new AbstractPlane4F(
+	    	tangentCandidate = new Plane4f(
 		    		leftCandidatePoint.getX(),leftCandidatePoint.getY(),leftCandidatePoint.getZ(),
 		    		rightCandidatePoint.getX(),rightCandidatePoint.getY(),rightCandidatePoint.getZ(),
 		    		leftCandidatePoint.getX()+dx,leftCandidatePoint.getY(),leftCandidatePoint.getZ()+dz);
@@ -390,7 +391,7 @@ public class DivideAndConquerAlgorithm implements ConvexHullAlgorithm {
     	boolean allCoincident;
     	boolean yOrder = true;
 	    boolean changed; // has the tangent changed?
-	    AbstractPlane4F tangentCandidate = new AbstractPlane4F();
+	    AbstractPlane4F tangentCandidate = new Plane4f();
 	    computeCandidatePlanes(tangentCandidate, leftCandidatePoint, rightCandidatePoint, yOrder);
 	    
 	    do {
@@ -486,10 +487,10 @@ public class DivideAndConquerAlgorithm implements ConvexHullAlgorithm {
 	    	AbstractPlane4F candh;
 	    	
 			if (triangleOverlaps(minIndex, maxIndex,l, idx, r)) {
-				candh = new AbstractPlane4F(0,0,0,0);
+				candh = new Plane4f(0,0,0,0);
 			}
 			else {
-				candh = new AbstractPlane4F(
+				candh = new Plane4f(
 			    		p1.getX(),p1.getY(),p1.getZ(),
 			    		p2.getX(),p2.getY(),p2.getZ(),
 			    		p3.getX(),p3.getY(),p3.getZ());
@@ -524,7 +525,7 @@ public class DivideAndConquerAlgorithm implements ConvexHullAlgorithm {
 						cand = i;
 						idx = iidx;
 						p3 = this.pointList[idx];
-						candh = new AbstractPlane4F(
+						candh = new Plane4f(
 								p1.getX(),p1.getY(),p1.getZ(),
 								p2.getX(),p2.getY(),p2.getZ(),
 								p3.getX(),p3.getY(),p3.getZ());

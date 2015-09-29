@@ -23,6 +23,8 @@
 package org.arakhne.afc.math.geometry.d2.continuous;
 
 import org.arakhne.afc.math.geometry.PathElementType;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 
 /** An element of the path.
 *
@@ -31,131 +33,130 @@ import org.arakhne.afc.math.geometry.PathElementType;
 * @mavengroupid $GroupId$
 * @mavenartifactid $ArtifactId$
 */
-public abstract class PathElement2f extends AbstractPathElement2F {
-
-	private static final long serialVersionUID = -5701887424817265729L;
+@SuppressWarnings("restriction")
+public abstract class PathElement2d extends AbstractPathElement2D {
+	
+	private static final long serialVersionUID = 5550697627846953346L;
 
 	/** Source point.
 	 */
-	private double fromX;
+	private DoubleProperty fromXProperty = new SimpleDoubleProperty(0f);
 	
 	/** Source point.
 	 */
-	private double fromY;
+	private DoubleProperty fromYProperty = new SimpleDoubleProperty(0f);
 
 	/** Target point.
 	 */
-	private double toX;
+	private DoubleProperty toXProperty = new SimpleDoubleProperty(0f);
 	
 	/** Target point.
 	 */
-	private double toY;
+	private DoubleProperty toYProperty = new SimpleDoubleProperty(0f);
 
 	/** First control point.
 	 */
-	private double ctrlX1;
+	private DoubleProperty ctrlX1Property = new SimpleDoubleProperty(0f);
 	
 	/** First control point.
 	 */
-	private double ctrlY1;
+	private DoubleProperty ctrlY1Property = new SimpleDoubleProperty(0f);
 
 	/** Second control point.
 	 */
-	private double ctrlX2;
+	private DoubleProperty ctrlX2Property = new SimpleDoubleProperty(0f);
 	
 	/** Second control point.
 	 */
-	private double ctrlY2;
+	private DoubleProperty ctrlY2Property = new SimpleDoubleProperty(0f);
 	
 	
-	public PathElement2f(PathElementType type1, double fromx, double fromy, double ctrlx1, double ctrly1, double ctrlx2,
+	public PathElement2d(PathElementType type1, double fromx, double fromy, double ctrlx1, double ctrly1, double ctrlx2,
 			double ctrly2, double tox, double toy) {
 		super(type1, fromx, fromy, ctrlx1, ctrly1, ctrlx2, ctrly2, tox, toy);
 	}
 
 	
 	public double getFromX() {
-		return this.fromX;
+		return this.fromXProperty.doubleValue();
 	}
 
 	public double getFromY() {
-		return this.fromY;
+		return this.fromYProperty.doubleValue();
 	}
 
 	
 	public double getToX() {
-		return this.toX;
+		return this.toXProperty.doubleValue();
 	}
 
 	
 	public double getToY() {
-		return this.toY;
+		return this.toYProperty.doubleValue();
 	}
 
 	
 	public double getCtrlX1() {
-		return this.ctrlX1;
+		return this.ctrlX1Property.doubleValue();
 	}
 
 	
 	public double getCtrlY1() {
-		return this.ctrlY1;
+		return this.ctrlY1Property.doubleValue();
 	}
 
 	
 	public double getCtrlX2() {
-		return this.ctrlX2;
+		return this.ctrlX2Property.doubleValue();
 	}
 
 	
 	public double getCtrlY2() {
-		return this.ctrlY2;
+		return this.ctrlY2Property.doubleValue();
 	}
 
 
 	
 	public void setFromX(double fromX1) {
-		this.fromX = fromX1;
+		this.fromXProperty.set(fromX1);
 	}
 
 	
 	public void setFromY(double fromY1) {
-		this.fromY = fromY1;
+		this.fromYProperty.set(fromY1);
 	}
 
 	
 	public void setToX(double toX1) {
-		this.toX = toX1;
+		this.toXProperty.set(toX1);
 	}
 
 	
 	public void setToY(double toY1) {
-		this.toY = toY1;
+		this.toYProperty.set(toY1);
 	}
 
 	
 	public void setCtrlX1(double ctrlX11) {
-		this.ctrlX1 = ctrlX11;
+		this.ctrlX1Property.set(ctrlX11);
 	}
 
 	
 	public void setCtrlY1(double ctrlY11) {
-		this.ctrlY1 = ctrlY11;
+		this.ctrlY1Property.set(ctrlY11);
 	}
 
 	
 	public void setCtrlX2(double ctrlX21) {
-		this.ctrlX2 = ctrlX21;
+		this.ctrlX2Property.set(ctrlX21);
 	}
 
 	
 	public void setCtrlY2(double ctrlY21) {
-		this.ctrlY2 = ctrlY21;
+		this.ctrlY2Property.set(ctrlY21);
 	
 	}
+
 	
-	
-	
-	
-	
+
 }

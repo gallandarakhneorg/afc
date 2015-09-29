@@ -264,6 +264,30 @@ public final class Plane4f extends AbstractPlane4F {
 				getEquationComponentD(),
 				x, y, z);
 	}
+
+	@Override
+	protected void setEquationComponentC(double z) {
+		this.c = z;
+		
+	}
+
+	@Override
+	protected void setEquationComponentB(double y) {
+		this.b = y;
+		
+	}
+
+	@Override
+	protected void setEquationComponentA(double x) {
+		this.a = x;
+		
+	}
+
+	@Override
+	protected void setEquationComponentD(double w) {
+		this.d = w;
+		
+	}
 	
 	
 

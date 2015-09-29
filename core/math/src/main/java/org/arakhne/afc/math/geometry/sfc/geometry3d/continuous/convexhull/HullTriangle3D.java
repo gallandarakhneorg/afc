@@ -24,6 +24,7 @@ package org.arakhne.afc.math.geometry.sfc.geometry3d.continuous.convexhull;
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.d3.Tuple3D;
 import org.arakhne.afc.math.geometry.d3.continuous.Plane3D;
+import org.arakhne.afc.math.geometry.d3.continuous.Plane4f;
 import org.arakhne.afc.math.geometry.d3.continuous.AbstractPlane4F;
 import org.arakhne.afc.math.geometry.d3.continuous.PlaneClassification;
 import org.arakhne.afc.math.geometry.d3.continuous.PlaneClassifier;
@@ -603,7 +604,7 @@ public class HullTriangle3D<T extends Point3f> implements HullObject<T>, PlaneCl
 	 * @return the plane of this triangle.
 	 */
 	public Plane3D<?> getPlane() {
-		return new AbstractPlane4F(this.nx,this.ny,this.nz,this.nw);
+		return new Plane4f(this.nx,this.ny,this.nz,this.nw);
 	}
 
 	/** {@inheritDoc}

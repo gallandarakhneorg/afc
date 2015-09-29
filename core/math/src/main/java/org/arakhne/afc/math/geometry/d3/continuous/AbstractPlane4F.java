@@ -453,6 +453,16 @@ public abstract class AbstractPlane4F extends AbstractPlane3D<AbstractPlane4F> {
 	 */
 	@Override
 	abstract public double getEquationComponentD();
+	
+	
+	abstract protected void setEquationComponentC(double z);
+
+	abstract protected void setEquationComponentB(double y);
+
+	abstract protected void setEquationComponentA(double x);
+	
+	abstract protected void setEquationComponentD(double w);
+
 
 	/** {@inheritDoc}
 	 */
@@ -559,18 +569,18 @@ public abstract class AbstractPlane4F extends AbstractPlane3D<AbstractPlane4F> {
     	// the identity vector and the rotations).
     	Transform3D m = new Transform3D();
     	m.setRotation(rotation);
-    	Vector3f v = new Vector3f(this.a,this.b,this.c);
+    	Vector3f v = new Vector3f(this.getEquationComponentA(),this.getEquationComponentB(),this.getEquationComponentC());
     	m.transform(v);
-    	this.a = v.getX();
-    	this.b = v.getY();
-    	this.c = v.getZ();
+    	this.setEquationComponentA(v.getX());
+    	this.setEquationComponentB(v.getY());
+    	this.setEquationComponentC(v.getZ());
     	
     	if (pivot==null) {
 	    	// a.x + b.y + c.z + d = 0
 	    	// where (x,y,z) is the translation point
-	    	this.d = - (this.a*currentPivot.getX() +
-	    				this.b*currentPivot.getY() +
-	    				this.c*currentPivot.getZ());
+	    	this.setEquationComponentD( - (this.getEquationComponentA()*currentPivot.getX() +
+	    				this.getEquationComponentB()*currentPivot.getY() +
+	    				this.getEquationComponentC()*currentPivot.getZ()));
     	}
     	else {
     		// Compute the new point
@@ -585,9 +595,9 @@ public abstract class AbstractPlane4F extends AbstractPlane3D<AbstractPlane4F> {
     		
 	    	// a.x + b.y + c.z + d = 0
 	    	// where (x,y,z) is the translation point
-	    	this.d = - (this.a*nP.getX() +
-	    				this.b*nP.getY() +
-	    				this.c*nP.getZ());
+	    	this.setEquationComponentD( - (this.getEquationComponentA()*nP.getX() +
+	    				this.getEquationComponentB()*nP.getY() +
+	    				this.getEquationComponentC()*nP.getZ()));
     	}
     	
 		clearBufferedValues();
