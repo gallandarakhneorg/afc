@@ -6,6 +6,7 @@ import java.util.Iterator;
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Path2D;
+import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.continuous.AbstractPathElement2F;
 import org.arakhne.afc.math.geometry.d2.continuous.AbstractShape2F;
 import org.arakhne.afc.math.geometry.d2.continuous.Path2f;
@@ -195,20 +196,20 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Ab
 
 	@Override
 	public double distanceSquared(Point3D p) {
-		// TODO Auto-generated method stub
-		return 0;
+		Point3D c = getClosestPointTo(p);
+		return c.distanceSquared(p);
 	}
 
 	@Override
 	public double distanceL1(Point3D p) {
-		// TODO Auto-generated method stub
-		return 0;
+		Point3D c = getClosestPointTo(p);
+		return c.distanceL1(p);
 	}
 
 	@Override
 	public double distanceLinf(Point3D p) {
-		// TODO Auto-generated method stub
-		return 0;
+		Point3D c = getClosestPointTo(p);
+		return c.distanceLinf(p);
 	}
 
 	@Override
@@ -279,8 +280,20 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Ab
 
 	@Override
 	public boolean isPolyline() {
-		// TODO Auto-generated method stub
-		return false;
+		if (this.isPolyline==null) {
+			this.isPolyline = Boolean.TRUE;
+			PathIterator3f pi = getPathIterator();
+			AbstractPathElement3F pe;
+			PathElementType t;
+			while (this.isPolyline==Boolean.TRUE && pi.hasNext()) {
+				pe = pi.next();
+				t = pe.getType();
+				if (t==PathElementType.CURVE_TO || t==PathElementType.QUAD_TO) { 
+					this.isPolyline = Boolean.FALSE;
+				}
+			}
+		}
+		return this.isPolyline.booleanValue();
 	}
 
 	@Override
