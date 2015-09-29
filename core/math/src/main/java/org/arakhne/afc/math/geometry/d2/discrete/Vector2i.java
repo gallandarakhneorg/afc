@@ -34,6 +34,7 @@ import org.arakhne.afc.math.geometry.d2.Vector2D;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("hiding")
 public class Vector2i extends Tuple2i<Vector2D> implements Vector2D {
 
 	private static final long serialVersionUID = -4528846627184370639L;
@@ -562,7 +563,7 @@ public class Vector2i extends Tuple2i<Vector2D> implements Vector2D {
 		}
 
 		@Override
-		public void subY(double y) {
+		public void subY(double y1) {
 			throw new UnsupportedOperationException();
 		}
 

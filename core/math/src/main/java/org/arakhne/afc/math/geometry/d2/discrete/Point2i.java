@@ -32,6 +32,7 @@ import org.arakhne.afc.math.geometry.d2.Vector2D;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("hiding")
 public class Point2i extends Tuple2i<Point2D> implements Point2D {
 
 	private static final long serialVersionUID = 6087683508168847436L;

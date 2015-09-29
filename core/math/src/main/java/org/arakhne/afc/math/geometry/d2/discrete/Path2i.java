@@ -32,7 +32,7 @@ import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Path2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
-import org.arakhne.afc.math.geometry.d2.continuous.Segment2f;
+import org.arakhne.afc.math.geometry.d2.continuous.AbstractSegment2F;
 import org.arakhne.afc.math.geometry.d2.continuous.Transform2D;
 
 
@@ -43,6 +43,7 @@ import org.arakhne.afc.math.geometry.d2.continuous.Transform2D;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("hiding")
 public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Rectangle2i,PathElement2i,PathIterator2i> {
 
 	private static final long serialVersionUID = -4229773257722403127L;
@@ -1635,14 +1636,14 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 			this.isEmpty = Boolean.TRUE;
 			PathIterator2i pi = getPathIterator();
 			PathElement2i pe;
-			while (this.isEmpty()==Boolean.TRUE && pi.hasNext()) {
+			while (this.isEmpty()==Boolean.TRUE.booleanValue() && pi.hasNext()) {
 				pe = pi.next();
 				if (pe.isDrawable()) { 
 					this.isEmpty = Boolean.FALSE;
 				}
 			}
 		}
-		return this.isEmpty;
+		return this.isEmpty.booleanValue();
 	}
 
 	/** Replies if the given points exists in the coordinates of this path.
@@ -2213,8 +2214,8 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 				this.lastReplied = Path2i.this.getPointAt(this.index++);
 				return this.lastReplied;
 			}
-			catch(Throwable _) {
-				throw new NoSuchElementException();
+			catch(Throwable e) {
+				e.printStackTrace();throw new NoSuchElementException();
 			}
 		}
 
@@ -2440,7 +2441,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 		 *          values in the specified array at the specified index.
 		 */
 		private static double getQuadSquaredFlatness(double coords[], int offset) {
-			return Segment2f.distanceSquaredLinePoint(
+			return AbstractSegment2F.distanceSquaredLinePoint(
 					coords[offset + 0], coords[offset + 1],
 					coords[offset + 4], coords[offset + 5],
 					coords[offset + 2], coords[offset + 3]);
@@ -2524,7 +2525,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 		 */
 		private static double getCurveSquaredFlatness(double coords[], int offset) {
 			return Math.max(
-					Segment2f.distanceSquaredSegmentPoint(
+					AbstractSegment2F.distanceSquaredSegmentPoint(
 							coords[offset + 6],
 							coords[offset + 7],
 							coords[offset + 2],
@@ -2532,7 +2533,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 							coords[offset + 0],
 							coords[offset + 1],
 							null),
-					Segment2f.distanceSquaredSegmentPoint(
+					AbstractSegment2F.distanceSquaredSegmentPoint(
 							coords[offset + 6],
 							coords[offset + 7],
 							coords[offset + 4],

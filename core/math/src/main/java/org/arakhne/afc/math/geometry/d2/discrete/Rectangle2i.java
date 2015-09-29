@@ -37,6 +37,7 @@ import org.arakhne.afc.math.geometry.d2.continuous.Transform2D;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("hiding")
 public class Rectangle2i extends AbstractRectangularShape2i<Rectangle2i> {
 
 	private static final long serialVersionUID = 9061018868216880896L;

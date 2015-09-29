@@ -27,7 +27,7 @@ import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Point2D;
-import org.arakhne.afc.math.geometry.d2.continuous.Segment2f;
+import org.arakhne.afc.math.geometry.d2.continuous.AbstractSegment2F;
 import org.arakhne.afc.math.geometry.d2.continuous.Transform2D;
 
 
@@ -39,6 +39,7 @@ import org.arakhne.afc.math.geometry.d2.continuous.Transform2D;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("hiding")
 public class Segment2i extends AbstractShape2i<Segment2i> {
 
 	/**
@@ -185,12 +186,12 @@ public class Segment2i extends AbstractShape2i<Segment2i> {
 			int side1, side2;
 			boolean firstIsTop = (sy1<=sy2);
 			if (firstIsTop) {
-				side1 = Segment2f.computeSideLinePoint(sx1, sy1, sx2, sy2, x0, y0, 0.);
-				side2 = Segment2f.computeSideLinePoint(sx1, sy1, sx2, sy2, x1, y1, 0.);
+				side1 = AbstractSegment2F.computeSideLinePoint(sx1, sy1, sx2, sy2, x0, y0, 0.);
+				side2 = AbstractSegment2F.computeSideLinePoint(sx1, sy1, sx2, sy2, x1, y1, 0.);
 			}
 			else {
-				side1 = Segment2f.computeSideLinePoint(sx2, sy2, sx1, sy1, x0, y0, 0.);
-				side2 = Segment2f.computeSideLinePoint(sx2, sy2, sx1, sy1, x1, y1, 0.);
+				side1 = AbstractSegment2F.computeSideLinePoint(sx2, sy2, sx1, sy1, x0, y0, 0.);
+				side2 = AbstractSegment2F.computeSideLinePoint(sx2, sy2, sx1, sy1, x1, y1, 0.);
 			}
 			if (side1>=0 || side2>=0) {
 				// At least one point is on the side of the shadow.
@@ -306,20 +307,20 @@ public class Segment2i extends AbstractShape2i<Segment2i> {
 			boolean cont = true;
 			while (iterator.hasNext() && cont) {
 				iterator.next(p);
-				if (p.iy()==rymin && (xintercept1==null || xintercept1>p.ix())) {
-					xintercept1 = p.ix();
+				if (p.iy()==rymin && (xintercept1==null || xintercept1.intValue()>p.ix())) {
+					xintercept1 =Integer.valueOf(p.ix());
 				}
-				if (p.iy()==rymax && (xintercept2==null || xintercept2>p.ix())) {
-					xintercept2 = p.ix();
+				if (p.iy()==rymax && (xintercept2==null || xintercept2.intValue()>p.ix())) {
+					xintercept2 = Integer.valueOf(p.ix());
 				}
 				cont = (p.iy()<=ymaxline);
 			}
 			
 			if (xintercept1!=null && xintercept2!=null) {
-				if (xintercept1<rxmin && xintercept2<rxmin) {
+				if (xintercept1.intValue()<rxmin && xintercept2.intValue()<rxmin) {
 					// the intersection points are entirely on the left
 				}
-				else if (xintercept1>rxmax && xintercept2>rxmax) {
+				else if (xintercept1.intValue()>rxmax && xintercept2.intValue()>rxmax) {
 					// the intersection points are entirely on the right
 					if (y0 < y1) {
 						// y-increasing line segment...
@@ -340,10 +341,10 @@ public class Segment2i extends AbstractShape2i<Segment2i> {
 			}
 			else if (xintercept1!=null) {
 				// Only the top line of the rectangle is intersecting the segment
-				if (xintercept1<rxmin) {
+				if (xintercept1.intValue()<rxmin) {
 					// the intersection point is at entirely on the left
 				}
-				else if (xintercept1>rxmax) {
+				else if (xintercept1.intValue()>rxmax) {
 					if (y0 < y1) {
 						// y-increasing line segment...
 						// We know that y0 < rymax and y1 > rymin
@@ -361,10 +362,10 @@ public class Segment2i extends AbstractShape2i<Segment2i> {
 			}
 			else if (xintercept2!=null) {
 				// Only the bottom line of the rectangle is intersecting the segment
-				if (xintercept2<rxmin) {
+				if (xintercept2.intValue()<rxmin) {
 					// the intersection point is at entirely on the left
 				}
-				else if (xintercept2>rxmax) {
+				else if (xintercept2.intValue()>rxmax) {
 					if (y0 < y1) {
 						// y-increasing line segment...
 						// We know that y0 < rymax and y1 > rymin
@@ -507,8 +508,8 @@ public class Segment2i extends AbstractShape2i<Segment2i> {
 	 * <code>false</code>
 	 */
 	public static boolean intersectsSegmentSegment(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4) {
-		int side1 = Segment2f.computeSideLinePoint(x1, y1, x2, y2, x3, y3, 0.);
-		int side2 = Segment2f.computeSideLinePoint(x1, y1, x2, y2, x4, y4, 0.);
+		int side1 = AbstractSegment2F.computeSideLinePoint(x1, y1, x2, y2, x3, y3, 0.);
+		int side2 = AbstractSegment2F.computeSideLinePoint(x1, y1, x2, y2, x4, y4, 0.);
 		if ((side1*side2)<=0) {
 			return intersectsSegmentSegment1(x1, y1, x2, y2, x3, y3, x4, y4, true, true, null)!=0;
 		}

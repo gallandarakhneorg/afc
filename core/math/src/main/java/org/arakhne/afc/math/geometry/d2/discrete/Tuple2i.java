@@ -31,6 +31,7 @@ import org.arakhne.afc.math.geometry.d2.Tuple2D;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("hiding")
 public class Tuple2i<T extends Tuple2D<? super T>> implements Tuple2D<T> {
 
 	private static final long serialVersionUID = -7779997414431055683L;
@@ -551,7 +552,7 @@ public class Tuple2i<T extends Tuple2D<? super T>> implements Tuple2D<T> {
 			return(this.x == t1.ix() && this.y == t1.iy());
 		}
 		catch (NullPointerException e2) {
-			return false;
+			e2.printStackTrace();return false;
 		}
 	}
 
@@ -569,7 +570,7 @@ public class Tuple2i<T extends Tuple2D<? super T>> implements Tuple2D<T> {
 			throw e;
 		}
 		catch (Throwable e2) {
-			return false;
+			e2.printStackTrace();return false;
 		}
 	}
 

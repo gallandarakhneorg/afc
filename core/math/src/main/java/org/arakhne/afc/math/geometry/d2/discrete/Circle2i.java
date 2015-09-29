@@ -38,6 +38,7 @@ import org.arakhne.afc.math.geometry.d2.continuous.Transform2D;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("hiding")
 public class Circle2i extends AbstractShape2i<Circle2i> {
 
 	private static final long serialVersionUID = -2396327310912728347L;

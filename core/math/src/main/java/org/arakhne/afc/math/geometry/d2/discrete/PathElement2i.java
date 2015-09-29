@@ -97,7 +97,7 @@ public abstract class PathElement2i implements PathElement2D {
 	public final int ctrlY2;
 
 	/**
-	 * @param type is the type of the element.
+	 * @param type1 is the type of the element.
 	 * @param fromx is the source point.
 	 * @param fromy is the source point.
 	 * @param ctrlx1 is the first control point.
@@ -107,9 +107,9 @@ public abstract class PathElement2i implements PathElement2D {
 	 * @param tox is the target point.
 	 * @param toy is the target point.
 	 */
-	public PathElement2i(PathElementType type, int fromx, int fromy, int ctrlx1, int ctrly1, int ctrlx2, int ctrly2, int tox, int toy) {
-		assert(type!=null);
-		this.type = type;
+	public PathElement2i(PathElementType type1, int fromx, int fromy, int ctrlx1, int ctrly1, int ctrlx2, int ctrly2, int tox, int toy) {
+		assert(type1!=null);
+		this.type = type1;
 		this.fromX = fromx;
 		this.fromY = fromy;
 		this.ctrlX1 = ctrlx1;
