@@ -110,6 +110,20 @@ public interface Shape3F extends Shape3D<Shape3F> {
 	 */
 	public boolean contains(double x, double y, double z);
 	
+	/** Replies the elements of the paths.
+	 * 
+	 * @param transform is the transformation to apply to the path.
+	 * @return the elements of the path.
+	 */
+	public PathIterator3f getPathIterator(Transform3D transform);
+
+	/** Replies the elements of the paths.
+	 * 
+	 * @return the elements of the path.
+	 */
+	public PathIterator3f getPathIterator();
+	
+	
 	/** Replies if this shape is intersecting the given rectangle.
 	 * 
 	 * @param s
