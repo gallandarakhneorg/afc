@@ -158,7 +158,7 @@ public abstract class AbstractPathElement2F implements PathElement2D {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	public static class MovePathElement2f extends AbstractPathElement2F {
+	public static class MovePathElement2f extends PathElement2f {
 		
 		private static final long serialVersionUID = -5596181248741970433L;
 		
@@ -217,7 +217,7 @@ public abstract class AbstractPathElement2F implements PathElement2D {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	public static class LinePathElement2f extends AbstractPathElement2F {
+	public static class LinePathElement2f extends PathElement2f {
 		
 		private static final long serialVersionUID = -5878571187312098882L;
 		
@@ -278,7 +278,7 @@ public abstract class AbstractPathElement2F implements PathElement2D {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	public static class QuadPathElement2f extends AbstractPathElement2F {
+	public static class QuadPathElement2f extends PathElement2f {
 		
 		private static final long serialVersionUID = 5641358330446739160L;
 		
@@ -347,7 +347,7 @@ public abstract class AbstractPathElement2F implements PathElement2D {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	public static class CurvePathElement2f extends AbstractPathElement2F {
+	public static class CurvePathElement2f extends PathElement2f {
 		
 		private static final long serialVersionUID = -1449309552719221756L;
 
@@ -425,7 +425,7 @@ public abstract class AbstractPathElement2F implements PathElement2D {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	public static class ClosePathElement2f extends AbstractPathElement2F {
+	public static class ClosePathElement2f extends PathElement2f {
 		
 		private static final long serialVersionUID = 4643537091880303796L;
 
