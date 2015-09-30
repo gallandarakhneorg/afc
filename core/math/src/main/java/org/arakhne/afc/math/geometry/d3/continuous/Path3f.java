@@ -12,6 +12,13 @@ import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.continuous.PathIterator2f;
+import org.arakhne.afc.math.geometry.d2.continuous.Point2f;
+import org.arakhne.afc.math.geometry.d2.continuous.Rectangle2f;
+import org.arakhne.afc.math.geometry.d2.continuous.Shape2F;
+import org.arakhne.afc.math.geometry.d2.continuous.Transform2D;
+import org.arakhne.afc.math.geometry.d2.continuous.Path2f.CopyPathIterator;
+import org.arakhne.afc.math.geometry.d2.continuous.Path2f.FlatteningPathIterator;
+import org.arakhne.afc.math.geometry.d2.continuous.Path2f.TransformPathIterator;
 import org.arakhne.afc.math.geometry.d3.Path3D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 
@@ -129,13 +136,14 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 	 * <p>
 	 * <strong>CAUTION:</strong> This function works only on path iterators
 	 * that are replying polyline primitives, ie. if the
-	 * {@link PathIterator2f#isPolyline()} of <var>pi</var> is replying
+	 * {@link PathIterator3f#isPolyline()} of <var>pi</var> is replying
 	 * <code>true</code>.
-	 * {@link #getFarthestPointTo(Point2D)} avoids this restriction.
+	 * {@link #getFarthestPointTo(Point3D)} avoids this restriction.
 	 * 
 	 * @param pi is the iterator on the elements of the path.
 	 * @param x
 	 * @param y
+	 * @param z
 	 * @return the farthest point on the shape.
 	 */
 	public static Point3D getFarthestPointTo(PathIterator3f pi, double x, double y, double z) {
@@ -258,6 +266,24 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 		
 	}
 	
+	/**
+	 * Tests if the specified coordinates are inside the closed
+	 * boundary of the specified {@link PathIterator3f}.
+	 * <p>
+	 * This method provides a basic facility for implementors of
+	 * the {@link Shape3F} interface to implement support for the
+	 * {@link Shape3F#contains(double, double, double)} method.
+	 *
+	 * @param pi the specified {@code PathIterator3f}
+	 * @param x the specified X coordinate
+	 * @param y the specified Y coordinate
+	 * @param z the specified Z coordinate
+	 * @return {@code true} if the specified coordinates are inside the
+	 *         specified {@code PathIterator3f}; {@code false} otherwise
+	 */
+	public static boolean contains(PathIterator3f pi, double x, double y, double z) {
+		//FIXME : MUST BE DONE;
+	}
 	
 	//---------------------------------------------------------------
 
@@ -424,6 +450,25 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 		return false;
 	}
 	
+	/** Replies if the given points exists in the coordinates of this path.
+	 * 
+	 * @param p
+	 * @return <code>true</code> if the point is a control point of the path.
+	 */
+	boolean containsPoint(Point3D p) {
+		double x, y, z;
+		for(int i=0; i<this.numCoords;) {
+			x = this.coords[i++];
+			y = this.coords[i++];
+			z = this.coords[i++];
+			if (x==p.getX() && y==p.getY() && z==p.getZ()) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	
 	
 	@Override
 	public boolean isEmpty() {
@@ -475,7 +520,8 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 		clear();
 		add(s.getPathIterator());
 	}
-
+	
+	
 	@Override
 	public AlignedBox3f toBoundingBox() {
 		AlignedBox3f bb = this.graphicalBounds==null ? null : this.graphicalBounds.get();
@@ -492,7 +538,15 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 
 	@Override
 	public void toBoundingBox(AbstractBoxedShape3F<?> box) {
-		// TODO Auto-generated method stub
+		AlignedBox3f bb = this.graphicalBounds==null ? null : this.graphicalBounds.get();
+		if (bb==null) {
+			bb = new AlignedBox3f();
+			buildGraphicalBoundingBox(
+					getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+					bb);
+			this.graphicalBounds = new SoftReference<>(bb);
+		}
+		box.set(bb);
 		
 	}
 
@@ -514,22 +568,45 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 		return c.distanceLinf(p);
 	}
 
+	/** Transform the current path.
+	 * This function changes the current path.
+	 * 
+	 * @param transform is the spatial transformation to apply.
+	 * @see #createTransformedShape(Transform3D)
+	 */
 	@Override
-	public void transform(Transform3D transformationMatrix) {
-		// TODO Auto-generated method stub
-		
+	public void transform(Transform3D transform) {
+		if (transform!=null) {
+			Point3D p = new Point3f();
+			for(int i=0; i<this.numCoords;) {
+				p.set(this.coords[i], this.coords[i+1], this.coords[i+2]);
+				transform.transform(p);
+				this.coords[i++] = p.getX();
+				this.coords[i++] = p.getY();
+				this.coords[i++] = p.getZ();
+			}
+			this.graphicalBounds = null;
+			this.logicalBounds = null;
+		}
 	}
 
 	@Override
 	public void translate(double dx, double dy, double dz) {
-		// TODO Auto-generated method stub
-		
+		for(int i=0; i<this.numCoords;) {
+			this.coords[i++] += dx;
+			this.coords[i++] += dy;
+			this.coords[i++] += dz;
+		}
+		AlignedBox3f bb;
+		bb = this.logicalBounds==null ? null : this.logicalBounds.get();
+		if (bb!=null) bb.translate(dx, dy, dz);
+		bb = this.graphicalBounds==null ? null : this.graphicalBounds.get();
+		if (bb!=null) bb.translate(dx, dy, dz);
 	}
 
 	@Override
 	public boolean contains(double x, double y, double z) {
-		// TODO Auto-generated method stub
-		return false;
+		return contains(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), x, y,z);
 	}
 
 	@Override
@@ -593,11 +670,6 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 	}
 
 	@Override
-	public PathIterator3f getPathIterator(double flatness) {
-		return new FlatteningPathIterator(getWindingRule(), getPathIterator(null), flatness, 10);
-	}
-
-	@Override
 	public PathIterator3f getPathIterator() {
 		// TODO Auto-generated method stub
 		return null;
@@ -628,9 +700,45 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 	}
 
 	@Override
+	public PathIterator3f getPathIterator(double flatness) {
+		return new FlatteningPathIterator(getWindingRule(), getPathIterator(null), flatness, 10);
+	}
+	
+	/** Replies an iterator on the path elements.
+	 * <p>
+	 * Only {@link PathElementType#MOVE_TO},
+	 * {@link PathElementType#LINE_TO}, and 
+	 * {@link PathElementType#CLOSE} types are returned by the iterator.
+	 * <p>
+	 * The amount of subdivision of the curved segments is controlled by the 
+	 * flatness parameter, which specifies the maximum distance that any point 
+	 * on the unflattened transformed curve can deviate from the returned
+	 * flattened path segments. Note that a limit on the accuracy of the
+	 * flattened path might be silently imposed, causing very small flattening
+	 * parameters to be treated as larger values. This limit, if there is one,
+	 * is defined by the particular implementation that is used.
+	 * <p>
+	 * The iterator for this class is not multi-threaded safe.
+	 *
+	 * @param transform is an optional affine Transform3D to be applied to the
+	 * coordinates as they are returned in the iteration, or <code>null</code> if 
+	 * untransformed coordinates are desired.
+	 * @param flatness is the maximum distance that the line segments used to approximate
+	 * the curved segments are allowed to deviate from any point on the original curve.
+	 * @return an iterator on the path elements.
+	 */
+	public PathIterator3f getPathIterator(Transform3D transform, double flatness) {
+		return new FlatteningPathIterator(getWindingRule(), getPathIterator(transform), flatness, 10);
+	}
+	
+	/** {@inheritDoc}
+	 */
+	@Override
 	public PathIterator3f getPathIterator(Transform3D transform) {
-		// TODO Auto-generated method stub
-		return null;
+		if (transform == null) {
+			return new CopyPathIterator();
+		}
+		return new TransformPathIterator(transform);
 	}
   
 	@Override
@@ -823,6 +931,55 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 	public int size() {
 		return this.numCoords/3;
 	}
+
+	/** Replies the points of this path in an array.
+	 * 
+	 * @return the points.
+	 */
+	public final Point3D[] toPointArray() {
+		return toPointArray(null);
+	}
+
+	/** Replies the points of this path in an array.
+	 * 
+	 * @param transform is the transformation to apply to all the points.
+	 * @return the points.
+	 */
+	public Point3D[] toPointArray(Transform3D transform) {
+		Point3D[] clone = new Point3D[this.numCoords/3];
+		if (transform==null) {
+			for(int i=0, j=0; j<this.numCoords; ++i) {
+				clone[i] = new Point3f(
+						this.coords[j++],
+						this.coords[j++],
+						this.coords[j++]);
+			}
+		}
+		else {
+			for(int i=0, j=0; j<clone.length; ++i) {
+				clone[i] = new Point3f(
+						this.coords[j++],
+						this.coords[j++],
+						this.coords[j++]);
+				transform.transform(clone[i]);
+			}
+		}
+		return clone;
+	}
+	
+	/** Replies the point at the given index.
+	 * The index is in [0;{@link #size()}).
+	 *
+	 * @param index
+	 * @return the point at the given index.
+	 */
+	public Point3f getPointAt(int index) {
+		return new Point3f(
+				this.coords[index*3],
+				this.coords[index*3+1],
+				this.coords[index*3+2]);
+	}
+	
 	
 	//-----------------------------------------------------------------------------
 	
