@@ -319,4 +319,16 @@ public class Capsule3f extends AbstractCapsule3F {
 		return (this.medial1.getZ() + this.medial2.getZ()) / 2.;
 	}
 
+	@Override
+	public PathIterator3f getPathIterator(Transform3D transform) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public PathIterator3f getPathIterator() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

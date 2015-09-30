@@ -586,6 +586,18 @@ public class OrientedBox3f extends AbstractOrientedBox3F{
 		this.extent2 = axis2Extent;
 		this.extent3 = axis3Extent;
 	}
+
+	@Override
+	public PathIterator3f getPathIterator(Transform3D transform) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public PathIterator3f getPathIterator() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	
 	

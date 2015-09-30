@@ -879,4 +879,16 @@ public class AlignedBox3f extends AbstractBoxedShape3F<AlignedBox3f> {
 		return (int) (bits ^ (bits >> 32));
 	}
 
+	@Override
+	public PathIterator3f getPathIterator(Transform3D transform) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public PathIterator3f getPathIterator() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

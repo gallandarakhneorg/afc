@@ -255,6 +255,18 @@ public class Segment3f extends AbstractSegment3F {
 	public void setP2(Point3D p) {
 		this.d.sub(p, this.pivot);
 	}
+
+	@Override
+	public PathIterator3f getPathIterator(Transform3D transform) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public PathIterator3f getPathIterator() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	
 	

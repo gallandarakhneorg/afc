@@ -1784,7 +1784,7 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 					if (box.getMinX()<xmin) xmin = box.getMinX();
 					if (box.getMinY()<ymin) ymin = box.getMinY();
 					if (box.getMaxX()>xmax) xmax = box.getMaxX();
-					if (box.getMinX()>ymax) ymax = box.getMinX();
+					if (box.getMinY()>ymax) ymax = box.getMinY();
 					foundOneLine = true;
 				}
 				break;
@@ -1800,7 +1800,7 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 					if (box.getMinX()<xmin) xmin = box.getMinX();
 					if (box.getMinY()<ymin) ymin = box.getMinY();
 					if (box.getMaxX()>xmax) xmax = box.getMaxX();
-					if (box.getMinX()>ymax) ymax = box.getMinX();
+					if (box.getMinY()>ymax) ymax = box.getMinY();
 					foundOneLine = true;
 				}
 				break;

@@ -166,6 +166,18 @@ public class Sphere3d extends AbstractSphere3F {
 		this.radiusProperty.set(Math.abs(radius1));
 	}
 
+	@Override
+	public PathIterator3f getPathIterator(Transform3D transform) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public PathIterator3f getPathIterator() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	
 
 }
