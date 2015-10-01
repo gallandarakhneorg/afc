@@ -10,17 +10,13 @@ import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
-import org.arakhne.afc.math.geometry.d2.Point2D;
+import org.arakhne.afc.math.geometry.d2.continuous.AbstractPathElement2F;
+import org.arakhne.afc.math.geometry.d2.continuous.AbstractSegment2F;
+import org.arakhne.afc.math.geometry.d2.continuous.Path2f;
 import org.arakhne.afc.math.geometry.d2.continuous.PathIterator2f;
-import org.arakhne.afc.math.geometry.d2.continuous.Point2f;
-import org.arakhne.afc.math.geometry.d2.continuous.Rectangle2f;
-import org.arakhne.afc.math.geometry.d2.continuous.Shape2F;
-import org.arakhne.afc.math.geometry.d2.continuous.Transform2D;
-import org.arakhne.afc.math.geometry.d2.continuous.Path2f.CopyPathIterator;
-import org.arakhne.afc.math.geometry.d2.continuous.Path2f.FlatteningPathIterator;
-import org.arakhne.afc.math.geometry.d2.continuous.Path2f.TransformPathIterator;
 import org.arakhne.afc.math.geometry.d3.Path3D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
+
 
 
 /** A generic 3D-path.
@@ -55,6 +51,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 	 * @return the closest point on the shape; or the point itself
 	 * if it is inside the shape.
 	 */
+	// FIXME : TO BE REIMPLEMENTED AFTER IMPLEMENTATION OF CONTAINS AND INTERSECTS
 	public static Point3D getClosestPointTo(PathIterator3f pathIterator, double x, double y, double z) {
 		Point3D closest = null;
 		double bestDist = Double.POSITIVE_INFINITY;
@@ -146,6 +143,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 	 * @param z
 	 * @return the farthest point on the shape.
 	 */
+	// FIXME : TO BE REIMPLEMENTED AFTER IMPLEMENTATION OF CONTAINS AND INTERSECTS
 	public static Point3D getFarthestPointTo(PathIterator3f pi, double x, double y, double z) {
 		Point3D closest = null;
 		double bestDist = Double.NEGATIVE_INFINITY;
@@ -185,7 +183,8 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 		return closest;
 	}
 	
-	
+
+	// FIXME : TO BE REIMPLEMENTED AFTER IMPLEMENTATION OF CONTAINS AND INTERSECTS
 	private static boolean buildGraphicalBoundingBox(PathIterator3f iterator, AlignedBox3f box) {
 		boolean foundOneLine = false;
 		double xmin = Double.POSITIVE_INFINITY;
@@ -281,9 +280,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 	 * @return {@code true} if the specified coordinates are inside the
 	 *         specified {@code PathIterator3f}; {@code false} otherwise
 	 */
-	public static boolean contains(PathIterator3f pi, double x, double y, double z) {
-		//FIXME : MUST BE DONE;
-	}
+	// FIXME : TO BE REIMPLEMENTED AFTER IMPLEMENTATION OF CONTAINS AND INTERSECTS
 	
 	//---------------------------------------------------------------
 
@@ -604,51 +601,143 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 		if (bb!=null) bb.translate(dx, dy, dz);
 	}
 
-	@Override
+
+	// FIXME : TO BE REIMPLEMENTED AFTER IMPLEMENTATION OF CONTAINS AND INTERSECTS@Override
 	public boolean contains(double x, double y, double z) {
 		return contains(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), x, y,z);
 	}
 
-	@Override
+
+	// TODO : FIRST INTERSECTS IMPLEMENTED ---> TO BE TESTED BEFORE IMPLEMENTING OTHER METHODS
 	public boolean intersects(AlignedBox3f s) {
-		// TODO Auto-generated method stub
-		return false;
+		if (s.isEmpty()) return false;
+		int mask = (this.windingRule == PathWindingRule.NON_ZERO ? -1 : 2);
+		boolean intersects = false;
+		PathIterator3f pi = getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO);
+		
+		AbstractPathElement3F pathElement = pi.next();
+		
+		if (pathElement.type != PathElementType.MOVE_TO) {
+			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
+		}
+		
+		Path3f subPath;
+		double curx, cury, curz, movx, movy, movz, endx, endy, endz;
+		curx = movx = pathElement.getToX();
+		cury = movy = pathElement.getToY();
+		curz = movz = pathElement.getToZ();
+		
+		while (pi.hasNext() && intersects==false) {
+			pathElement = pi.next();
+			
+			switch (pathElement.type) {
+			case MOVE_TO: 
+				movx = curx = pathElement.getToX();
+				movy = cury = pathElement.getToY();
+				movz = cury = pathElement.getToZ();
+				break;
+			case LINE_TO:
+				endx = pathElement.getToX();
+				endy = pathElement.getToY();
+				endz = pathElement.getToZ();
+
+				intersects = AbstractSegment3F.intersectsSegmentAlignedBox(
+						curx, cury, curz, 
+						endx, endy, endz, 
+						s.minx, s.miny, s.minz, 
+						s.maxx, s.maxy, s.maxz);
+				
+				curx = endx;
+				cury = endy;
+				curz = endz;
+				break;
+			case QUAD_TO:
+				endx = pathElement.getToX();
+				endy = pathElement.getToY();
+				endz = pathElement.getToZ();
+				subPath = new Path3f();
+				subPath.moveTo(curx, cury,curz);
+				subPath.quadTo(
+						pathElement.getCtrlX1(), pathElement.getCtrlY1(), pathElement.getCtrlZ1(),
+						endx, endy, endz);
+
+				intersects = subPath.intersects(s);
+				
+				curx = endx;
+				cury = endy;
+				curz = endz;
+				break;
+			case CURVE_TO:
+				endx = pathElement.getToX();
+				endy = pathElement.getToY();
+				endz = pathElement.getToZ();
+				subPath = new Path3f();
+				subPath.moveTo(curx, cury,curz);
+				subPath.curveTo(
+						pathElement.getCtrlX1(), pathElement.getCtrlY1(), pathElement.getCtrlZ1(),
+						pathElement.getCtrlX2(), pathElement.getCtrlY2(), pathElement.getCtrlZ2(),
+						endx, endy, endz);
+
+				intersects = subPath.intersects(s);
+				
+				curx = endx;
+				cury = endy;
+				curz = endz;
+				break;
+			case CLOSE:
+				if (curx != movx || cury != movy || curz != movz) {
+					intersects = AbstractSegment3F.intersectsSegmentAlignedBox(
+							curx, cury, curz, 
+							movx, movy, movz, 
+							s.minx, s.miny, s.minz, 
+							s.maxx, s.maxy, s.maxz);
+				}
+				
+				curx = movx;
+				cury = movy;
+				curz = movz;
+				break;
+			default:
+			}
+		
+		}
+				
+		return intersects && (mask!=0);
 	}
 
-	@Override
+
+	// FIXME : TO BE REIMPLEMENTED AFTER IMPLEMENTATION OF CONTAINS AND INTERSECTS@Override
 	public boolean intersects(AbstractSphere3F s) {
-		// TODO Auto-generated method stub
-		return false;
+		
 	}
 
-	@Override
+
+	// FIXME : TO BE REIMPLEMENTED AFTER IMPLEMENTATION OF CONTAINS AND INTERSECTS@Override
 	public boolean intersects(AbstractSegment3F s) {
-		// TODO Auto-generated method stub
-		return false;
+		
 	}
 
-	@Override
+
+	// FIXME : TO BE REIMPLEMENTED AFTER IMPLEMENTATION OF CONTAINS AND INTERSECTS@Override
 	public boolean intersects(Triangle3f s) {
-		// TODO Auto-generated method stub
-		return false;
+		
 	}
 
-	@Override
+
+	// FIXME : TO BE REIMPLEMENTED AFTER IMPLEMENTATION OF CONTAINS AND INTERSECTS@Override
 	public boolean intersects(AbstractCapsule3F s) {
-		// TODO Auto-generated method stub
-		return false;
+		
 	}
 
 	@Override
 	public boolean intersects(AbstractOrientedBox3F s) {
-		// TODO Auto-generated method stub
-		return false;
+		
 	}
 
-	@Override
+
+	// FIXME : TO BE REIMPLEMENTED AFTER IMPLEMENTATION OF CONTAINS AND INTERSECTS@Override
 	public boolean intersects(Plane3D<?> p) {
-		// TODO Auto-generated method stub
-		return false;
+		
 	}
 
 	@Override

@@ -42,7 +42,7 @@ public class Segment3fTest extends AbstractShape3fTestCase<AbstractSegment3F> {
 	
 	@Override
 	protected AbstractSegment3F createShape() {
-		return new AbstractSegment3F(Math.random(), Math.random(), Math.random(), Math.random(), Math.random(), Math.random());
+		return new Segment3f(Math.random(), Math.random(), Math.random(), Math.random(), Math.random(), Math.random());
 	}
 
 	@Test
@@ -65,7 +65,7 @@ public class Segment3fTest extends AbstractShape3fTestCase<AbstractSegment3F> {
 	@Test
 	@Override
 	public void distancePoint3D() {
-		AbstractSegment3F seg = new AbstractSegment3F(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		AbstractSegment3F seg = new Segment3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
 		Point3f pnt = new Point3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
 		
 		Vector3f vect = new Vector3f(seg.getP1().getX()-pnt.getX(),seg.getP1().getY()-pnt.getY(),seg.getP1().getZ()-pnt.getZ());
@@ -75,16 +75,30 @@ public class Segment3fTest extends AbstractShape3fTestCase<AbstractSegment3F> {
 		assertEpsilonEquals(distance,seg.distanceLine(pnt));
 	}
 
+	@SuppressWarnings("unused")
 	@Test
 	@Override
 	public void containsPoint3D() {
-		AbstractSegment3F seg = new AbstractSegment3F(0,0,0,1,0,0);
+		AbstractSegment3F seg = new Segment3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		Point3f p = new Point3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		Vector3f v1 = new Vector3f(p.x-seg.getX1(),p.y-seg.getY1(),p.y-seg.getY1());
+		Vector3f v2 = new Vector3f(p.x-seg.getX1(),p.y-seg.getY1(),p.y-seg.getY1());
+		
+		Vector3f v3 = (Vector3f) seg.getDirection();
+		
+		assertTrue(v1.isColinear(v3)==seg.contains(p));
+		assertTrue(v2.isColinear(v3)==seg.contains(p));
+		
+		
 	}
 
 	@Test
 	@Override
 	public void testEquals() {
-		throw new UnsupportedOperationException();
+		AbstractSegment3F seg = new Segment3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		AbstractSegment3F seg2 = seg.clone();
+		
+		assertTrue(seg2.equals(seg));
 	}
 
 	@Test
