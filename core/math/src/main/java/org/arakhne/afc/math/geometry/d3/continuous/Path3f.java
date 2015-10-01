@@ -10,6 +10,7 @@ import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
+import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.continuous.AbstractPathElement2F;
 import org.arakhne.afc.math.geometry.d2.continuous.AbstractSegment2F;
 import org.arakhne.afc.math.geometry.d2.continuous.Path2f;
@@ -35,6 +36,8 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 	 */
 	//36 = (3+3+3)*4
 	static final int GROW_SIZE = 36;
+	
+	
 	
 	/** Replies the point on the path that is closest to the given point.
 	 * <p>
@@ -465,8 +468,6 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 		return false;
 	}
 	
-	
-	
 	@Override
 	public boolean isEmpty() {
 		if (this.isEmpty==null) {
@@ -602,13 +603,8 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 	}
 
 
-	// FIXME : TO BE REIMPLEMENTED AFTER IMPLEMENTATION OF CONTAINS AND INTERSECTS@Override
-	public boolean contains(double x, double y, double z) {
-		return contains(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), x, y,z);
-	}
 
-
-	// TODO : FIRST INTERSECTS IMPLEMENTED ---> TO BE TESTED BEFORE IMPLEMENTING OTHER METHODS
+	@Override
 	public boolean intersects(AlignedBox3f s) {
 		if (s.isEmpty()) return false;
 		int mask = (this.windingRule == PathWindingRule.NON_ZERO ? -1 : 2);
@@ -706,38 +702,563 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 	}
 
 
-	// FIXME : TO BE REIMPLEMENTED AFTER IMPLEMENTATION OF CONTAINS AND INTERSECTS@Override
+	@Override
 	public boolean intersects(AbstractSphere3F s) {
+		if (s.isEmpty()) return false;
+		int mask = (this.windingRule == PathWindingRule.NON_ZERO ? -1 : 2);
+		boolean intersects = false;
+		PathIterator3f pi = getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO);
 		
+		AbstractPathElement3F pathElement = pi.next();
+		
+		if (pathElement.type != PathElementType.MOVE_TO) {
+			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
+		}
+		
+		Path3f subPath;
+		double curx, cury, curz, movx, movy, movz, endx, endy, endz;
+		curx = movx = pathElement.getToX();
+		cury = movy = pathElement.getToY();
+		curz = movz = pathElement.getToZ();
+		
+		while (pi.hasNext() && intersects==false) {
+			pathElement = pi.next();
+			
+			switch (pathElement.type) {
+			case MOVE_TO: 
+				movx = curx = pathElement.getToX();
+				movy = cury = pathElement.getToY();
+				movz = cury = pathElement.getToZ();
+				break;
+			case LINE_TO:
+				endx = pathElement.getToX();
+				endy = pathElement.getToY();
+				endz = pathElement.getToZ();
+
+				intersects = s.intersects(new Segment3f(
+						curx, cury, curz, 
+						endx, endy, endz));
+				
+				curx = endx;
+				cury = endy;
+				curz = endz;
+				break;
+			case QUAD_TO:
+				endx = pathElement.getToX();
+				endy = pathElement.getToY();
+				endz = pathElement.getToZ();
+				subPath = new Path3f();
+				subPath.moveTo(curx, cury,curz);
+				subPath.quadTo(
+						pathElement.getCtrlX1(), pathElement.getCtrlY1(), pathElement.getCtrlZ1(),
+						endx, endy, endz);
+
+				intersects = subPath.intersects(s);
+				
+				curx = endx;
+				cury = endy;
+				curz = endz;
+				break;
+			case CURVE_TO:
+				endx = pathElement.getToX();
+				endy = pathElement.getToY();
+				endz = pathElement.getToZ();
+				subPath = new Path3f();
+				subPath.moveTo(curx, cury,curz);
+				subPath.curveTo(
+						pathElement.getCtrlX1(), pathElement.getCtrlY1(), pathElement.getCtrlZ1(),
+						pathElement.getCtrlX2(), pathElement.getCtrlY2(), pathElement.getCtrlZ2(),
+						endx, endy, endz);
+
+				intersects = subPath.intersects(s);
+				
+				curx = endx;
+				cury = endy;
+				curz = endz;
+				break;
+			case CLOSE:
+				if (curx != movx || cury != movy || curz != movz) {
+					intersects = s.intersects(new Segment3f(
+							curx, cury, curz, 
+							movx, movy, movz));
+				}
+				
+				curx = movx;
+				cury = movy;
+				curz = movz;
+				break;
+			default:
+			}
+		
+		}
+				
+		return intersects && (mask!=0);
 	}
 
-
-	// FIXME : TO BE REIMPLEMENTED AFTER IMPLEMENTATION OF CONTAINS AND INTERSECTS@Override
+	@Override
 	public boolean intersects(AbstractSegment3F s) {
+		if (s.isEmpty()) return false;
+		int mask = (this.windingRule == PathWindingRule.NON_ZERO ? -1 : 2);
+		boolean intersects = false;
+		PathIterator3f pi = getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO);
 		
+		AbstractPathElement3F pathElement = pi.next();
+		
+		if (pathElement.type != PathElementType.MOVE_TO) {
+			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
+		}
+		
+		Path3f subPath;
+		double curx, cury, curz, movx, movy, movz, endx, endy, endz;
+		curx = movx = pathElement.getToX();
+		cury = movy = pathElement.getToY();
+		curz = movz = pathElement.getToZ();
+		
+		while (pi.hasNext() && intersects==false) {
+			pathElement = pi.next();
+			
+			switch (pathElement.type) {
+			case MOVE_TO: 
+				movx = curx = pathElement.getToX();
+				movy = cury = pathElement.getToY();
+				movz = cury = pathElement.getToZ();
+				break;
+			case LINE_TO:
+				endx = pathElement.getToX();
+				endy = pathElement.getToY();
+				endz = pathElement.getToZ();
+ 
+				intersects = s.intersects(new Segment3f(
+						curx, cury, curz, 
+						endx, endy, endz));
+				
+				curx = endx;
+				cury = endy;
+				curz = endz;
+				break;
+			case QUAD_TO:
+				endx = pathElement.getToX();
+				endy = pathElement.getToY();
+				endz = pathElement.getToZ();
+				subPath = new Path3f();
+				subPath.moveTo(curx, cury,curz);
+				subPath.quadTo(
+						pathElement.getCtrlX1(), pathElement.getCtrlY1(), pathElement.getCtrlZ1(),
+						endx, endy, endz);
+
+				intersects = subPath.intersects(s);
+				
+				curx = endx;
+				cury = endy;
+				curz = endz;
+				break;
+			case CURVE_TO:
+				endx = pathElement.getToX();
+				endy = pathElement.getToY();
+				endz = pathElement.getToZ();
+				subPath = new Path3f();
+				subPath.moveTo(curx, cury,curz);
+				subPath.curveTo(
+						pathElement.getCtrlX1(), pathElement.getCtrlY1(), pathElement.getCtrlZ1(),
+						pathElement.getCtrlX2(), pathElement.getCtrlY2(), pathElement.getCtrlZ2(),
+						endx, endy, endz);
+
+				intersects = subPath.intersects(s);
+				
+				curx = endx;
+				cury = endy;
+				curz = endz;
+				break;
+			case CLOSE:
+				if (curx != movx || cury != movy || curz != movz) {
+					intersects = s.intersects(new Segment3f(
+							curx, cury, curz, 
+							movx, movy, movz));
+				}
+				
+				curx = movx;
+				cury = movy;
+				curz = movz;
+				break;
+			default:
+			}
+		
+		}
+				
+		return intersects && (mask!=0);
 	}
 
 
-	// FIXME : TO BE REIMPLEMENTED AFTER IMPLEMENTATION OF CONTAINS AND INTERSECTS@Override
+	@Override
 	public boolean intersects(Triangle3f s) {
+		if (s.isEmpty()) return false;
+		int mask = (this.windingRule == PathWindingRule.NON_ZERO ? -1 : 2);
+		boolean intersects = false;
+		PathIterator3f pi = getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO);
 		
+		AbstractPathElement3F pathElement = pi.next();
+		
+		if (pathElement.type != PathElementType.MOVE_TO) {
+			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
+		}
+		
+		Path3f subPath;
+		double curx, cury, curz, movx, movy, movz, endx, endy, endz;
+		curx = movx = pathElement.getToX();
+		cury = movy = pathElement.getToY();
+		curz = movz = pathElement.getToZ();
+		
+		while (pi.hasNext() && intersects==false) {
+			pathElement = pi.next();
+			
+			switch (pathElement.type) {
+			case MOVE_TO: 
+				movx = curx = pathElement.getToX();
+				movy = cury = pathElement.getToY();
+				movz = cury = pathElement.getToZ();
+				break;
+			case LINE_TO:
+				endx = pathElement.getToX();
+				endy = pathElement.getToY();
+				endz = pathElement.getToZ();
+ 
+				intersects = s.intersects(new Segment3f(
+						curx, cury, curz, 
+						endx, endy, endz));
+				
+				curx = endx;
+				cury = endy;
+				curz = endz;
+				break;
+			case QUAD_TO:
+				endx = pathElement.getToX();
+				endy = pathElement.getToY();
+				endz = pathElement.getToZ();
+				subPath = new Path3f();
+				subPath.moveTo(curx, cury,curz);
+				subPath.quadTo(
+						pathElement.getCtrlX1(), pathElement.getCtrlY1(), pathElement.getCtrlZ1(),
+						endx, endy, endz);
+
+				intersects = subPath.intersects(s);
+				
+				curx = endx;
+				cury = endy;
+				curz = endz;
+				break;
+			case CURVE_TO:
+				endx = pathElement.getToX();
+				endy = pathElement.getToY();
+				endz = pathElement.getToZ();
+				subPath = new Path3f();
+				subPath.moveTo(curx, cury,curz);
+				subPath.curveTo(
+						pathElement.getCtrlX1(), pathElement.getCtrlY1(), pathElement.getCtrlZ1(),
+						pathElement.getCtrlX2(), pathElement.getCtrlY2(), pathElement.getCtrlZ2(),
+						endx, endy, endz);
+
+				intersects = subPath.intersects(s);
+				
+				curx = endx;
+				cury = endy;
+				curz = endz;
+				break;
+			case CLOSE:
+				if (curx != movx || cury != movy || curz != movz) {
+					intersects = s.intersects(new Segment3f(
+							curx, cury, curz, 
+							movx, movy, movz));
+				}
+				
+				curx = movx;
+				cury = movy;
+				curz = movz;
+				break;
+			default:
+			}
+		
+		}
+				
+		return intersects && (mask!=0);
 	}
 
 
-	// FIXME : TO BE REIMPLEMENTED AFTER IMPLEMENTATION OF CONTAINS AND INTERSECTS@Override
+	@Override
 	public boolean intersects(AbstractCapsule3F s) {
+		if (s.isEmpty()) return false;
+		int mask = (this.windingRule == PathWindingRule.NON_ZERO ? -1 : 2);
+		boolean intersects = false;
+		PathIterator3f pi = getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO);
 		
+		AbstractPathElement3F pathElement = pi.next();
+		
+		if (pathElement.type != PathElementType.MOVE_TO) {
+			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
+		}
+		
+		Path3f subPath;
+		double curx, cury, curz, movx, movy, movz, endx, endy, endz;
+		curx = movx = pathElement.getToX();
+		cury = movy = pathElement.getToY();
+		curz = movz = pathElement.getToZ();
+		
+		while (pi.hasNext() && intersects==false) {
+			pathElement = pi.next();
+			
+			switch (pathElement.type) {
+			case MOVE_TO: 
+				movx = curx = pathElement.getToX();
+				movy = cury = pathElement.getToY();
+				movz = cury = pathElement.getToZ();
+				break;
+			case LINE_TO:
+				endx = pathElement.getToX();
+				endy = pathElement.getToY();
+				endz = pathElement.getToZ();
+ 
+				intersects = s.intersects(new Segment3f(
+						curx, cury, curz, 
+						endx, endy, endz));
+				
+				curx = endx;
+				cury = endy;
+				curz = endz;
+				break;
+			case QUAD_TO:
+				endx = pathElement.getToX();
+				endy = pathElement.getToY();
+				endz = pathElement.getToZ();
+				subPath = new Path3f();
+				subPath.moveTo(curx, cury,curz);
+				subPath.quadTo(
+						pathElement.getCtrlX1(), pathElement.getCtrlY1(), pathElement.getCtrlZ1(),
+						endx, endy, endz);
+
+				intersects = subPath.intersects(s);
+				
+				curx = endx;
+				cury = endy;
+				curz = endz;
+				break;
+			case CURVE_TO:
+				endx = pathElement.getToX();
+				endy = pathElement.getToY();
+				endz = pathElement.getToZ();
+				subPath = new Path3f();
+				subPath.moveTo(curx, cury,curz);
+				subPath.curveTo(
+						pathElement.getCtrlX1(), pathElement.getCtrlY1(), pathElement.getCtrlZ1(),
+						pathElement.getCtrlX2(), pathElement.getCtrlY2(), pathElement.getCtrlZ2(),
+						endx, endy, endz);
+
+				intersects = subPath.intersects(s);
+				
+				curx = endx;
+				cury = endy;
+				curz = endz;
+				break;
+			case CLOSE:
+				if (curx != movx || cury != movy || curz != movz) {
+					intersects = s.intersects(new Segment3f(
+							curx, cury, curz, 
+							movx, movy, movz));
+				}
+				
+				curx = movx;
+				cury = movy;
+				curz = movz;
+				break;
+			default:
+			}
+		
+		}
+				
+		return intersects && (mask!=0);
 	}
 
 	@Override
 	public boolean intersects(AbstractOrientedBox3F s) {
+		if (s.isEmpty()) return false;
+		int mask = (this.windingRule == PathWindingRule.NON_ZERO ? -1 : 2);
+		boolean intersects = false;
+		PathIterator3f pi = getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO);
 		
+		AbstractPathElement3F pathElement = pi.next();
+		
+		if (pathElement.type != PathElementType.MOVE_TO) {
+			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
+		}
+		
+		Path3f subPath;
+		double curx, cury, curz, movx, movy, movz, endx, endy, endz;
+		curx = movx = pathElement.getToX();
+		cury = movy = pathElement.getToY();
+		curz = movz = pathElement.getToZ();
+		
+		while (pi.hasNext() && intersects==false) {
+			pathElement = pi.next();
+			
+			switch (pathElement.type) {
+			case MOVE_TO: 
+				movx = curx = pathElement.getToX();
+				movy = cury = pathElement.getToY();
+				movz = cury = pathElement.getToZ();
+				break;
+			case LINE_TO:
+				endx = pathElement.getToX();
+				endy = pathElement.getToY();
+				endz = pathElement.getToZ();
+ 
+				intersects = s.intersects(new Segment3f(
+						curx, cury, curz, 
+						endx, endy, endz));
+				
+				curx = endx;
+				cury = endy;
+				curz = endz;
+				break;
+			case QUAD_TO:
+				endx = pathElement.getToX();
+				endy = pathElement.getToY();
+				endz = pathElement.getToZ();
+				subPath = new Path3f();
+				subPath.moveTo(curx, cury,curz);
+				subPath.quadTo(
+						pathElement.getCtrlX1(), pathElement.getCtrlY1(), pathElement.getCtrlZ1(),
+						endx, endy, endz);
+
+				intersects = subPath.intersects(s);
+				
+				curx = endx;
+				cury = endy;
+				curz = endz;
+				break;
+			case CURVE_TO:
+				endx = pathElement.getToX();
+				endy = pathElement.getToY();
+				endz = pathElement.getToZ();
+				subPath = new Path3f();
+				subPath.moveTo(curx, cury,curz);
+				subPath.curveTo(
+						pathElement.getCtrlX1(), pathElement.getCtrlY1(), pathElement.getCtrlZ1(),
+						pathElement.getCtrlX2(), pathElement.getCtrlY2(), pathElement.getCtrlZ2(),
+						endx, endy, endz);
+
+				intersects = subPath.intersects(s);
+				
+				curx = endx;
+				cury = endy;
+				curz = endz;
+				break;
+			case CLOSE:
+				if (curx != movx || cury != movy || curz != movz) {
+					intersects = s.intersects(new Segment3f(
+							curx, cury, curz, 
+							movx, movy, movz));
+				}
+				
+				curx = movx;
+				cury = movy;
+				curz = movz;
+				break;
+			default:
+			}
+		
+		}
+				
+		return intersects && (mask!=0);
 	}
 
 
-	// FIXME : TO BE REIMPLEMENTED AFTER IMPLEMENTATION OF CONTAINS AND INTERSECTS@Override
 	public boolean intersects(Plane3D<?> p) {
+		int mask = (this.windingRule == PathWindingRule.NON_ZERO ? -1 : 2);
+		boolean intersects = false;
+		PathIterator3f pi = getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO);
 		
+		AbstractPathElement3F pathElement = pi.next();
+		
+		if (pathElement.type != PathElementType.MOVE_TO) {
+			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
+		}
+		
+		Path3f subPath;
+		double curx, cury, curz, movx, movy, movz, endx, endy, endz;
+		curx = movx = pathElement.getToX();
+		cury = movy = pathElement.getToY();
+		curz = movz = pathElement.getToZ();
+		
+		while (pi.hasNext() && intersects==false) {
+			pathElement = pi.next();
+			
+			switch (pathElement.type) {
+			case MOVE_TO: 
+				movx = curx = pathElement.getToX();
+				movy = cury = pathElement.getToY();
+				movz = cury = pathElement.getToZ();
+				break;
+			case LINE_TO:
+				endx = pathElement.getToX();
+				endy = pathElement.getToY();
+				endz = pathElement.getToZ();
+ 
+				intersects = p.intersects(new Segment3f(
+						curx, cury, curz, 
+						endx, endy, endz));
+				
+				curx = endx;
+				cury = endy;
+				curz = endz;
+				break;
+			case QUAD_TO:
+				endx = pathElement.getToX();
+				endy = pathElement.getToY();
+				endz = pathElement.getToZ();
+				subPath = new Path3f();
+				subPath.moveTo(curx, cury,curz);
+				subPath.quadTo(
+						pathElement.getCtrlX1(), pathElement.getCtrlY1(), pathElement.getCtrlZ1(),
+						endx, endy, endz);
+
+				intersects = subPath.intersects(p);
+				
+				curx = endx;
+				cury = endy;
+				curz = endz;
+				break;
+			case CURVE_TO:
+				endx = pathElement.getToX();
+				endy = pathElement.getToY();
+				endz = pathElement.getToZ();
+				subPath = new Path3f();
+				subPath.moveTo(curx, cury,curz);
+				subPath.curveTo(
+						pathElement.getCtrlX1(), pathElement.getCtrlY1(), pathElement.getCtrlZ1(),
+						pathElement.getCtrlX2(), pathElement.getCtrlY2(), pathElement.getCtrlZ2(),
+						endx, endy, endz);
+
+				intersects = subPath.intersects(p);
+				
+				curx = endx;
+				cury = endy;
+				curz = endz;
+				break;
+			case CLOSE:
+				if (curx != movx || cury != movy || curz != movz) {
+					intersects = p.intersects(new Segment3f(
+							curx, cury, curz, 
+							movx, movy, movz));
+				}
+				
+				curx = movx;
+				cury = movy;
+				curz = movz;
+				break;
+			default:
+			}
+		
+		}
+				
+		return intersects && (mask!=0);
 	}
 
 	@Override
@@ -758,6 +1279,15 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 		return this.isPolyline.booleanValue();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean contains(double x, double y, double z) {
+		AlignedBox3f ab = this.toBoundingBox();
+		return ab.contains(new Point3f(x,y,z));
+	}
+	
 	@Override
 	public PathIterator3f getPathIterator() {
 		// TODO Auto-generated method stub
