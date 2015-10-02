@@ -27,6 +27,7 @@ import org.arakhne.afc.math.geometry.d3.Vector3D;
 /** 2D shape with floating-point points.
  * 
  * @author $Author: galland$
+ * @author $Author: hjaffali$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -123,6 +124,13 @@ public interface Shape3F extends Shape3D<Shape3F> {
 	 */
 	public PathIterator3f getPathIterator();
 	
+	/** Apply the transformation to the shape and reply the result.
+	 * This function does not change the current shape.
+	 * 
+	 * @param transform is the transformation to apply to the shape.
+	 * @return the result of the transformation.
+	 */
+	public Shape3F createTransformedShape(Transform3D transform);
 	
 	/** Replies if this shape is intersecting the given rectangle.
 	 * 

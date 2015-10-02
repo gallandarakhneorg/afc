@@ -18,7 +18,6 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  * This program is free software; you can redistribute it and/or modify
  */
-
 package org.arakhne.afc.math.geometry.d3.continuous;
 
 import java.util.Arrays;
@@ -1312,6 +1311,14 @@ public abstract class AbstractOrientedBox3F extends AbstractShape3F<AbstractOrie
 		this.getThirdAxis().normalize();
 	}
 
+	@Override
+	public Shape3F createTransformedShape(Transform3D transformationMatrix) {
+		AbstractOrientedBox3F newB = this.clone();
+		newB.transform(transformationMatrix);
+		return newB;
+		
+	}
+	
 	@Override
 	public void translate(double dx, double dy, double dz) {
 		double x = getCenterX() + dx;

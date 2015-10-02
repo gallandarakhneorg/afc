@@ -49,6 +49,7 @@ import org.arakhne.afc.util.Pair;
  *
  * @author $Author: cbohrhauer$
  * @author $Author: sgalland$
+ * @author $Author: hjaffali$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -1435,6 +1436,14 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 		transformationMatrix.transform(this.getSegmentVector());
 	}
 
+	@Override
+	public Shape3F createTransformedShape(Transform3D transformationMatrix) {
+		AbstractSegment3F newB = this.clone();
+		newB.transform(transformationMatrix);
+		return newB;
+		
+	}
+	
 	@Override
 	public void translate(double dx, double dy, double dz) {
 		this.getP1().add(dx, dy, dz);

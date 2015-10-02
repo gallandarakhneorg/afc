@@ -26,6 +26,7 @@ import java.io.Serializable;
  * 
  * @param <ST> is the type of the shape implementation.
  * @author $Author: galland$
+ * @author $Author: hjaffali$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

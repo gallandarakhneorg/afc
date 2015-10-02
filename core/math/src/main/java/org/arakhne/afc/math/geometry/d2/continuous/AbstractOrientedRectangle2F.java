@@ -37,10 +37,16 @@ import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.matrix.Matrix2f;
 
-
 /**
- * @author Hamza JAFFALI (hjaffali)
- *
+ * Definition of a fixed Oriented Rectangle.
+ *  * 
+ * @author $Author: sgalland$
+ * @author $Author: ngaud$
+ * @author $Author: cbohrhauer$
+ * @author $Author: hjaffali$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
  */
 public abstract class AbstractOrientedRectangle2F<T extends Shape2F> extends AbstractShape2F<T>{
 

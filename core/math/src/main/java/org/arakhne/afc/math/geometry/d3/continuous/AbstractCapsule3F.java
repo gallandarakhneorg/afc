@@ -498,6 +498,15 @@ public abstract class AbstractCapsule3F extends AbstractShape3F<AbstractCapsule3
 		setRadius(MathUtil.max(v.getX(), v.getY(), v.getZ()));
 	}
 
+	
+	@Override
+	public Shape3F createTransformedShape(Transform3D transformationMatrix) {
+		AbstractCapsule3F newB = this.clone();
+		newB.transform(transformationMatrix);
+		return newB;
+		
+	}
+	
 	@Override
 	public void translate(double dx, double dy, double dz) {
 		this.getMedial1().add(dx, dy, dz);

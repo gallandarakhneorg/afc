@@ -95,6 +95,7 @@ public abstract class AbstractPathElement2F implements AbstractPathElement2X {
 	/** An element of the path that represents a <code>MOVE_TO</code>.
 	 *
 	 * @author $Author: galland$
+	 * @author $Author: hjaffali$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -154,6 +155,7 @@ public abstract class AbstractPathElement2F implements AbstractPathElement2X {
 	/** An element of the path that represents a <code>LINE_TO</code>.
 	 *
 	 * @author $Author: galland$
+	 * @author $Author: hjaffali$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -215,6 +217,7 @@ public abstract class AbstractPathElement2F implements AbstractPathElement2X {
 	/** An element of the path that represents a <code>QUAD_TO</code>.
 	 *
 	 * @author $Author: galland$
+	 * @author $Author: hjaffali$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -284,6 +287,7 @@ public abstract class AbstractPathElement2F implements AbstractPathElement2X {
 	/** An element of the path that represents a <code>CURVE_TO</code>.
 	 *
 	 * @author $Author: galland$
+	 * @author $Author: hjaffali$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -362,6 +366,7 @@ public abstract class AbstractPathElement2F implements AbstractPathElement2X {
 	/** An element of the path that represents a <code>CLOSE</code>.
 	 *
 	 * @author $Author: galland$
+	 * @author $Author: hjaffali$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

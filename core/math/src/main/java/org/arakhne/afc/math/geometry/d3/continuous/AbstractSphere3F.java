@@ -847,4 +847,11 @@ public abstract class AbstractSphere3F extends AbstractShape3F<AbstractSphere3F>
 		set(c, MathUtil.max(v.getX(), v.getY(), v.getZ()));
 	}
 
+	@Override
+	public Shape3F createTransformedShape(Transform3D transformationMatrix) {
+		AbstractSphere3F newB = this.clone();
+		newB.transform(transformationMatrix);
+		return newB;
+		
+	}
 }

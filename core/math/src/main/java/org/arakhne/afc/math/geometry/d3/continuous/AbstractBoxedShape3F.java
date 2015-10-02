@@ -278,6 +278,14 @@ public abstract class AbstractBoxedShape3F<T extends AbstractBoxedShape3F<T>>   
 		
 	}
 
+	@Override
+	public Shape3F createTransformedShape(Transform3D transformationMatrix) {
+		AbstractBoxedShape3F<T> newB = this.clone();
+		newB.transform(transformationMatrix);
+		return newB;
+		
+	}
+	
 	/** Replies if this rectangular shape is empty.
 	 * The rectangular shape is empty when the
 	 * two corners are at the same location.

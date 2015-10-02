@@ -26,6 +26,7 @@ import org.arakhne.afc.math.geometry.d2.Shape2D;
 /** 2D shape with floating-point points.
  * 
  * @author $Author: galland$
+ * @author $Author: hjaffali$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

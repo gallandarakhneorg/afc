@@ -33,6 +33,14 @@ import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
 import org.arakhne.afc.util.Pair;
 
+/** Triangle in the space.
+*
+* @author $Author: galland$
+* @author $Author: hjaffali$
+* @version $FullVersion$
+* @mavengroupid $GroupId$
+* @mavenartifactid $ArtifactId$
+*/
 public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangle3F>{
 
 	/**
@@ -1861,6 +1869,14 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 		clearBufferedData();
 	}
 
+	@Override
+	public Shape3F createTransformedShape(Transform3D transformationMatrix) {
+		AbstractTriangle3F newB = this.clone();
+		newB.transform(transformationMatrix);
+		return newB;
+		
+	}
+	
 	@Override
 	public void translate(double dx, double dy, double dz) {
 		this.getP1().setX(this.getP1().getX() + dx);
