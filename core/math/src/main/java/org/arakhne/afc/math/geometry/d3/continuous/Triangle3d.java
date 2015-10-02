@@ -397,11 +397,6 @@ public class Triangle3d extends AbstractTriangle3F {
 		return null;
 	}
 
-	@Override
-	public PathIterator3f getPathIterator() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+	
 
 }

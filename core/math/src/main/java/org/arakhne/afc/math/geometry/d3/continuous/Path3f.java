@@ -217,8 +217,6 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 		return farthest;
 	}
 	
-
-	// FIXME : TO BE REIMPLEMENTED AFTER IMPLEMENTATION OF CONTAINS AND INTERSECTS
 	private static boolean buildGraphicalBoundingBox(PathIterator3f iterator, AlignedBox3f box) {
 		boolean foundOneLine = false;
 		double xmin = Double.POSITIVE_INFINITY;
@@ -680,6 +678,14 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 			this.logicalBounds = null;
 		}
 	}
+	
+	@Override
+	public Shape3F createTransformedShape(Transform3D transform) {
+		Path3f newP = new Path3f(this);
+		newP.transform(transform);
+		
+		return newP;
+	}
 
 	@Override
 	public void translate(double dx, double dy, double dz) {
@@ -695,54 +701,6 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 		if (bb!=null) bb.translate(dx, dy, dz);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public Shape3F createTransformedShape(Transform3D transform) {
-		Path3f newPath = new Path3f(getWindingRule());
-		PathIterator3f pi = getPathIterator();
-		Point3f p = new Point3f();
-		Point3f t1 = new Point3f();
-		Point3f t2 = new Point3f();
-		AbstractPathElement3F e;
-		while (pi.hasNext()) {
-			e = pi.next();
-			switch(e.type) {
-			case MOVE_TO:
-				p.set(e.getToX(), e.getToY(), e.getToZ());
-				transform.transform(p);
-				newPath.moveTo(p.getX(), p.getY(), p.getZ());
-				break;
-			case LINE_TO:
-				p.set(e.getToX(), e.getToY(), e.getToZ());
-				transform.transform(p);
-				newPath.lineTo(p.getX(), p.getY(), p.getZ());
-				break;
-			case QUAD_TO:
-				t1.set(e.getCtrlX1(), e.getCtrlY1(), e.getCtrlZ1());
-				transform.transform(t1);
-				p.set(e.getToX(), e.getToY(), e.getToZ());
-				transform.transform(p);
-				newPath.quadTo(t1.getX(), t1.getY(), t1.getZ(), p.getX(), p.getY(), p.getZ());
-				break;
-			case CURVE_TO:
-				t1.set(e.getCtrlX1(), e.getCtrlY1(), e.getCtrlZ1());
-				transform.transform(t1);
-				t2.set(e.getCtrlX2(), e.getCtrlY2(), e.getCtrlZ2());
-				transform.transform(t2);
-				p.set(e.getToX(), e.getToY(), e.getToZ());
-				transform.transform(p);
-				newPath.curveTo(t1.getX(), t1.getY(), t1.getZ(), t2.getX(), t2.getY(), t2.getZ(), p.getX(), p.getY(), p.getZ());
-				break;
-			case CLOSE:
-				newPath.closePath();
-				break;
-			default:
-			}
-		}
-		return newPath;
-	}
 
 	@Override
 	public boolean intersects(AlignedBox3f s) {
@@ -841,7 +799,9 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 		return intersects && (mask!=0);
 	}
 
+	
 	public boolean intersects(Path3f p) {
+		//FIXME : STILL REMAIN A PROBLEM HERE
 		if (p.isEmpty()) return false;
 		int mask = (this.windingRule == PathWindingRule.NON_ZERO ? -1 : 2);
 		boolean intersects = false;
@@ -891,7 +851,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 						pathElement.getCtrlX1(), pathElement.getCtrlY1(), pathElement.getCtrlZ1(),
 						endx, endy, endz);
 
-				intersects = subPath.intersects(p);
+				intersects = subPath.intersects(p.clone());
 				
 				curx = endx;
 				cury = endy;
@@ -908,7 +868,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 						pathElement.getCtrlX2(), pathElement.getCtrlY2(), pathElement.getCtrlZ2(),
 						endx, endy, endz);
 
-				intersects = subPath.intersects(p);
+				intersects = subPath.intersects(p.clone());
 				
 				curx = endx;
 				cury = endy;
@@ -1517,12 +1477,6 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 	public boolean contains(double x, double y, double z) {
 		AlignedBox3f ab = this.toBoundingBox();
 		return ab.contains(new Point3f(x,y,z));
-	}
-	
-	@Override
-	public PathIterator3f getPathIterator() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
@@ -2933,4 +2887,5 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 		}
 
 	}
+	
 }

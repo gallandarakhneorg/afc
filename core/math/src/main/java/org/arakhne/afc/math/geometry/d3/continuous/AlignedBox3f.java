@@ -885,10 +885,5 @@ public class AlignedBox3f extends AbstractBoxedShape3F<AlignedBox3f> {
 		return null;
 	}
 
-	@Override
-	public PathIterator3f getPathIterator() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 }

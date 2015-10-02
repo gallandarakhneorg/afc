@@ -325,10 +325,4 @@ public class Capsule3f extends AbstractCapsule3F {
 		return null;
 	}
 
-	@Override
-	public PathIterator3f getPathIterator() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }

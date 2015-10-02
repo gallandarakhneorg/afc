@@ -262,11 +262,6 @@ public class Segment3f extends AbstractSegment3F {
 		return null;
 	}
 
-	@Override
-	public PathIterator3f getPathIterator() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
 	
 	

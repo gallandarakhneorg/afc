@@ -98,5 +98,13 @@ public abstract class AbstractShape3F<T extends Shape3F> implements Shape3F {
 	public final void translate(Vector3D translation) {
 		translate(translation.getX(), translation.getY(), translation.getZ());
 	}
+	
+	/** {@inheritDoc}
+	 */
+	@Override
+	public final PathIterator3f getPathIterator() {
+		return getPathIterator(null);
+	}
+	
 
 }

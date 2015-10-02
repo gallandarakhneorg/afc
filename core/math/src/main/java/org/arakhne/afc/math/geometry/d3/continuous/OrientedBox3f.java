@@ -593,11 +593,7 @@ public class OrientedBox3f extends AbstractOrientedBox3F{
 		return null;
 	}
 
-	@Override
-	public PathIterator3f getPathIterator() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 	
 	
 	
