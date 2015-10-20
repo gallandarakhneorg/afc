@@ -131,8 +131,8 @@ public class Vector3fTest extends AbstractMathTestCase {
 
 	@Test
 	public void signedAngleDoubleDoubleDoubleDoubleDoubleDouble() {
-		Vector3f v1 = new Vector3f(this.random.nextDouble(), this.random.nextDouble(), this.random.nextDouble());
-		Vector3f v2 = new Vector3f(this.random.nextDouble(), this.random.nextDouble(), this.random.nextDouble());
+		Vector3f v1 = new Vector3f(this.random.nextDouble()*50, this.random.nextDouble()*50, this.random.nextDouble()*50);
+		Vector3f v2 = new Vector3f(this.random.nextDouble()*50, this.random.nextDouble()*50, this.random.nextDouble()*50);
 
 		assertEpsilonEquals(
 				0.f,
@@ -417,7 +417,7 @@ public class Vector3fTest extends AbstractMathTestCase {
 		Vector3f vector2 = new Vector3f(1,1,1);
 		
 		vector.normalize();
-		vector2.setLength(1.);
+		vector2.setLength(1);
 		
 		assertTrue(vector.isUnitVector());
 		assertTrue(vector2.isUnitVector());

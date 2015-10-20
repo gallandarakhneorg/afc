@@ -1521,8 +1521,8 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 	@Override
 	public boolean intersects(AbstractSegment3F s) {
 		return intersectsSegmentSegmentWithoutEnds(
-				getX1(), getY1(), getZ1(),
-				getX2(), getY2(), getZ2(),
+				this.getX1(), this.getY1(), this.getZ1(),
+				this.getX2(), this.getY2(), this.getZ2(),
 				s.getX1(), s.getY1(), s.getZ1(),
 				s.getX2(), s.getY2(), s.getZ2());
 	}

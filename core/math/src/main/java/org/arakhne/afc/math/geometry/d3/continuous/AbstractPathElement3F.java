@@ -29,7 +29,7 @@ import org.arakhne.afc.math.geometry.PathElementType;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public abstract class AbstractPathElement3F implements AbstractPathElement3X{
+public abstract class AbstractPathElement3F implements AbstractPathElement3X {
 
 	private static final long serialVersionUID = 5926100640197911368L;
 	
@@ -38,6 +38,7 @@ public abstract class AbstractPathElement3F implements AbstractPathElement3X{
 	 * @param type is the type of the new element.
 	 * @param lastX is the coordinate of the last point.
 	 * @param lastY is the coordinate of the last point.
+	 * @param lastZ is the coordinate of the last point.
 	 * @param coords are the coordinates.
 	 * @return the instance of path element.
 	 */
@@ -66,12 +67,16 @@ public abstract class AbstractPathElement3F implements AbstractPathElement3X{
 	 * @param type1 is the type of the element.
 	 * @param fromx is the source point.
 	 * @param fromy is the source point.
+	 * @param fromz is the source point.
 	 * @param ctrlx1 is the first control point.
 	 * @param ctrly1 is the first control point.
+	 * @param ctrlz1 is the first control point.
 	 * @param ctrlx2 is the first control point.
 	 * @param ctrly2 is the first control point.
+	 * @param ctrlz2 is the first control point.
 	 * @param tox is the target point.
 	 * @param toy is the target point.
+	 * @param toz is the target point.
 	 */
 	public AbstractPathElement3F(PathElementType type1, double fromx, double fromy, double fromz, double ctrlx1, double ctrly1, double ctrlz1, double ctrlx2, double ctrly2, double ctrlz2, double tox, double toy, double toz) {
 		assert(type1!=null);
@@ -106,8 +111,10 @@ public abstract class AbstractPathElement3F implements AbstractPathElement3X{
 		private static final long serialVersionUID = -5596181248741970433L;
 		
 		/**
+		 * 
 		 * @param x
 		 * @param y
+		 * @param z
 		 */
 		public MovePathElement3f(double x, double y,  double z) {
 			super(PathElementType.MOVE_TO,
@@ -167,10 +174,13 @@ public abstract class AbstractPathElement3F implements AbstractPathElement3X{
 		private static final long serialVersionUID = -5878571187312098882L;
 		
 		/**
+		 * 
 		 * @param fromx
 		 * @param fromy
+		 * @param fromz
 		 * @param tox
 		 * @param toy
+		 * @param toz
 		 */
 		public LinePathElement3f(double fromx, double fromy, double fromz, double tox, double toy, double toz) {
 			super(PathElementType.LINE_TO,
@@ -230,12 +240,16 @@ public abstract class AbstractPathElement3F implements AbstractPathElement3X{
 		private static final long serialVersionUID = 5641358330446739160L;
 		
 		/**
+		 * 
 		 * @param fromx
 		 * @param fromy
+		 * @param fromz
 		 * @param ctrlx
 		 * @param ctrly
+		 * @param ctrlz
 		 * @param tox
 		 * @param toy
+		 * @param toz
 		 */
 		public QuadPathElement3f(double fromx, double fromy, double fromz, double ctrlx, double ctrly, double ctrlz, double tox, double toy, double toz) {
 			super(PathElementType.QUAD_TO,
@@ -301,15 +315,21 @@ public abstract class AbstractPathElement3F implements AbstractPathElement3X{
 	public static class CurvePathElement3f extends PathElement3f {
 		
 		private static final long serialVersionUID = -1449309552719221756L;
+		
 		/**
+		 * 
 		 * @param fromx
 		 * @param fromy
+		 * @param fromz
 		 * @param ctrlx1
 		 * @param ctrly1
+		 * @param ctrlz1
 		 * @param ctrlx2
 		 * @param ctrly2
+		 * @param ctrlz2
 		 * @param tox
 		 * @param toy
+		 * @param toz
 		 */
 		public CurvePathElement3f(double fromx, double fromy, double fromz, double ctrlx1, double ctrly1, double ctrlz1, double ctrlx2, double ctrly2, double ctrlz2, double tox, double toy, double toz) {
 			super(PathElementType.CURVE_TO,
@@ -384,10 +404,13 @@ public abstract class AbstractPathElement3F implements AbstractPathElement3X{
 		private static final long serialVersionUID = 4643537091880303796L;
 
 		/**
+		 * 
 		 * @param fromx
 		 * @param fromy
+		 * @param fromz
 		 * @param tox
 		 * @param toy
+		 * @param toz
 		 */
 		public ClosePathElement3f(double fromx, double fromy, double fromz, double tox, double toy, double toz) {
 			super(PathElementType.CLOSE,

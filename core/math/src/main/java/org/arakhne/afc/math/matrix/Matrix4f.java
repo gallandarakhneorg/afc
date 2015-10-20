@@ -1109,22 +1109,22 @@ public class Matrix4f implements Serializable, Cloneable {
 		double det6 = this.m02 * this.m13 - this.m03 * this.m12;
 		return
 				  this.m00 * (
-						  this.m11 * det1 +
+						  this.m11 * det1 -
 						  this.m21 * det2 +
 						  this.m31 * det3
-				  ) +
+				  ) -
 				  this.m10 * (
-						  this.m01 * det1 +
+						  this.m01 * det1 -
 						  this.m21 * det4 +
 						  this.m31 * det5
 				  ) +
 				  this.m20 * (
-						  this.m01 * det2 +
+						  this.m01 * det2 -
 						  this.m11 * det4 +
 						  this.m31 * det6
-				  ) +
+				  ) -
 				  this.m30 * (
-						  this.m01 * det3 +
+						  this.m01 * det3 -
 						  this.m11 * det5 +
 						  this.m21 * det6
 				  );

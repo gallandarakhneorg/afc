@@ -405,6 +405,7 @@ public class Triangle3fTest extends AbstractShape3fTestCase<Triangle3f> {
 	
 	@Test
 	public void getClosestPointToPoint3D() {
+		//COMPREHENSION OF THE METHOD IS FALSE, SO THE TEST IS FALSE TOO
 		Point3f p1 = new Point3f(Math.random(),Math.random(),Math.random());
 		Point3f p2 = new Point3f(Math.random(),Math.random(),Math.random());
 		Point3f p3 = new Point3f(Math.random(),Math.random(),Math.random());

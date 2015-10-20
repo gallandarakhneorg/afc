@@ -462,7 +462,7 @@ public class Matrix3fTest extends AbstractMathTestCase{
 		Matrix3f m2 = new Matrix3f(m1);
 		
 		assertTrue(m1.equals(m2));
-		}
+	}
 	
 	@Test
 	public void setZero() {

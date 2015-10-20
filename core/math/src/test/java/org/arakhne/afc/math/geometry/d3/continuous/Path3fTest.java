@@ -102,7 +102,21 @@ public class Path3fTest extends AbstractMathTestCase {
 	
 	@Test
     public void intersectsSegment() {
-		throw new UnsupportedOperationException();
+		Path3f r = new Path3f();
+		r.moveTo(0f, 0f, 0f);
+		r.lineTo(1f, 1f, 1f);
+		r.quadTo(3f, 0f, 0f, 4f, 3f, 0.5);
+		r.curveTo(5f, -1f, 0f, 6f, 5f, 0f, 7f, -5f, 0f);
+		r.closePath();
+		
+		AbstractSegment3F segm = new Segment3f(new Point3f(1f,0f,1f),new Point3f(0f,1f,0f));
+		AbstractSegment3F s = new Segment3f(new Point3f(1f,1f,1f),new Point3f(0f,0f,0f));
+		
+		assertTrue(s.intersects(segm));
+		
+		AbstractSegment3F segm2 = new Segment3f(new Point3f(20f,20f,20f),new Point3f(30f,30f,30f));
+
+		assertFalse(r.intersects(segm2));
 	}
 	
 	@Test
@@ -162,10 +176,12 @@ public class Path3fTest extends AbstractMathTestCase {
 		p.closePath();
 		
 		Path3f p2 = new Path3f(p);
-		
+		Path3f p3 = p.clone();
 		
 		assertTrue(p2.toString().equals(p.toString()));
+		assertTrue(p3.toString().equals(p.toString()));
 		
+		assertTrue(p3.equals(p));
 		assertTrue(p2.equals(p));
 	}
 	

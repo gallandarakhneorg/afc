@@ -1498,7 +1498,7 @@ public class Segment2fTest extends AbstractShape2fTestCase<Segment2f> {
 	 */
 	@Test
 	public void setShape2f() {
-		this.r.set(new Rectangle2f(10, 12, 14, 16));
+		this.r.set(new Rectangle2f(10f, 12f, 14f, 16f));
 		assertEpsilonEquals(10f, this.r.getX1());
 		assertEpsilonEquals(12f, this.r.getY1());
 		assertEpsilonEquals(24f, this.r.getX2());

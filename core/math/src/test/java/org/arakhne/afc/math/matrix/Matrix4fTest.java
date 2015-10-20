@@ -21,6 +21,7 @@
  */
 package org.arakhne.afc.math.matrix;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.arakhne.afc.math.AbstractMathTestCase;
@@ -32,7 +33,10 @@ import org.junit.Test;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings({"nls","static-method"})
 public class Matrix4fTest extends AbstractMathTestCase{
+	
+	
 	
 	@Test
 	public void toStringTest() {
@@ -176,6 +180,283 @@ public class Matrix4fTest extends AbstractMathTestCase{
 	
 	@Test
 	public void determinant() {
+		double a = this.random.nextDouble()*50;
+		double b = this.random.nextDouble()*50;
+		double c = this.random.nextDouble()*50;
+		double d = this.random.nextDouble()*50;
+		double e = this.random.nextDouble()*50;
+		double f = this.random.nextDouble()*50;
+		double g = this.random.nextDouble()*50;
+		double h = this.random.nextDouble()*50;
+		double i = this.random.nextDouble()*50;
+		double j = this.random.nextDouble()*50;
+		double k = this.random.nextDouble()*50;
+		double l = this.random.nextDouble()*50;
+		double m = this.random.nextDouble()*50;
+		double n = this.random.nextDouble()*50;
+		double o = this.random.nextDouble()*50;
+		double p = this.random.nextDouble()*50;
+		Matrix4f m1 = new Matrix4f(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p);
+		
+		
+		double determinant = a *(l* (g* n-f* o)+k *(f* p-h* n)+j *(h* o-g* p))+i *(b *(g *p-h *o)+c *(h* n-f* p)+d *(f* o-g *n))+b *(l *(e *o-g* m)+k* (h* m-e* p))+j *(c* e *p-c *h *m+d *(g* m-e *o))+l *(c *f* m-c* e* n)+d* k* (e *n-f* m);
+	
+		assertEpsilonEquals(determinant,m1.determinant());
+	}
+	
+	@Test
+	public void mulDouble() {
+		double a = this.random.nextDouble()*50;
+		double b = this.random.nextDouble()*50;
+		double c = this.random.nextDouble()*50;
+		double d = this.random.nextDouble()*50;
+		double e = this.random.nextDouble()*50;
+		double f = this.random.nextDouble()*50;
+		double g = this.random.nextDouble()*50;
+		double h = this.random.nextDouble()*50;
+		double i = this.random.nextDouble()*50;
+		double j = this.random.nextDouble()*50;
+		double k = this.random.nextDouble()*50;
+		double l = this.random.nextDouble()*50;
+		double m = this.random.nextDouble()*50;
+		double n = this.random.nextDouble()*50;
+		double o = this.random.nextDouble()*50;
+		double p = this.random.nextDouble()*50;
+		Matrix4f m1 = new Matrix4f(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p);
+		
+		double s = this.random.nextDouble();
+		Matrix4f m2 = new Matrix4f(a*s,b*s,c*s,d*s,e*s,f*s,g*s,h*s,i*s,j*s,k*s,l*s,m*s,n*s,o*s,p*s);
+		
+		m1.mul(s);
+		assertTrue(m1.equals(m2));
+	}
+	
+	@Test
+	public void mulDoubleMatrix4D() {
+		double a = this.random.nextDouble()*50;
+		double b = this.random.nextDouble()*50;
+		double c = this.random.nextDouble()*50;
+		double d = this.random.nextDouble()*50;
+		double e = this.random.nextDouble()*50;
+		double f = this.random.nextDouble()*50;
+		double g = this.random.nextDouble()*50;
+		double h = this.random.nextDouble()*50;
+		double i = this.random.nextDouble()*50;
+		double j = this.random.nextDouble()*50;
+		double k = this.random.nextDouble()*50;
+		double l = this.random.nextDouble()*50;
+		double m = this.random.nextDouble()*50;
+		double n = this.random.nextDouble()*50;
+		double o = this.random.nextDouble()*50;
+		double p = this.random.nextDouble()*50;
+		Matrix4f m1 = new Matrix4f(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p);
+		
+		double s = this.random.nextDouble();
+		Matrix4f m2 = new Matrix4f(a*s,b*s,c*s,d*s,e*s,f*s,g*s,h*s,i*s,j*s,k*s,l*s,m*s,n*s,o*s,p*s);
+		
+		m1.mul(s,m1);
+		assertTrue(m1.equals(m2));
+	}
+	
+	@Test
+	public void mulMatrix4D() {
+		double a = this.random.nextDouble()*50;
+		double b = this.random.nextDouble()*50;
+		double c = this.random.nextDouble()*50;
+		double d = this.random.nextDouble()*50;
+		double e = this.random.nextDouble()*50;
+		double f = this.random.nextDouble()*50;
+		double g = this.random.nextDouble()*50;
+		double h = this.random.nextDouble()*50;
+		double i = this.random.nextDouble()*50;
+		double j = this.random.nextDouble()*50;
+		double k = this.random.nextDouble()*50;
+		double l = this.random.nextDouble()*50;
+		double m = this.random.nextDouble()*50;
+		double n = this.random.nextDouble()*50;
+		double o = this.random.nextDouble()*50;
+		double p = this.random.nextDouble()*50;
+		Matrix4f matrix1 = new Matrix4f(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p);
+		
+		double a1 = this.random.nextDouble()*50;
+		double b1 = this.random.nextDouble()*50;
+		double c1 = this.random.nextDouble()*50;
+		double d1 = this.random.nextDouble()*50;
+		double e1 = this.random.nextDouble()*50;
+		double f1 = this.random.nextDouble()*50;
+		double g1 = this.random.nextDouble()*50;
+		double h1 = this.random.nextDouble()*50;
+		double i1 = this.random.nextDouble()*50;
+		double j1 = this.random.nextDouble()*50;
+		double k1 = this.random.nextDouble()*50;
+		double l1 = this.random.nextDouble()*50;
+		double m1 = this.random.nextDouble()*50;
+		double n1 = this.random.nextDouble()*50;
+		double o1 = this.random.nextDouble()*50;
+		double p1 = this.random.nextDouble()*50;
+		Matrix4f matrix2 = new Matrix4f(a1,b1,c1,d1,e1,f1,g1,h1,i1,j1,k1,l1,m1,n1,o1,p1);
+		
+		
+		Matrix4f prod = new Matrix4f(
+				a*a1+b*e1+c*i1+d*m1,
+				a*b1+b*f1+c*j1+d*n1,
+				a*c1+b*g1+c*k1+d*o1,
+				a*d1+b*h1+c*l1+d*p1,
+				
+				e*a1+f*e1+g*i1+h*m1,
+				e*b1+f*f1+g*j1+h*n1,
+				e*c1+f*g1+g*k1+h*o1,
+				e*d1+f*h1+g*l1+h*p1,
+				
+				i*a1+j*e1+k*i1+l*m1,
+				i*b1+j*f1+k*j1+l*n1,
+				i*c1+j*g1+k*k1+l*o1,
+				i*d1+j*h1+k*l1+l*p1,
+				
+				m*a1+n*e1+o*i1+p*m1,
+				m*b1+n*f1+o*j1+p*n1,
+				m*c1+n*g1+o*k1+p*o1,
+				m*d1+n*h1+o*l1+p*p1);
+		
+		matrix1.mul(matrix2);
+		
+		assertTrue(matrix1.equals(prod));
+	}
+	
+	@Test
+	public void mulMatrix4DMatrix4D() {
+		double a = this.random.nextDouble()*50;
+		double b = this.random.nextDouble()*50;
+		double c = this.random.nextDouble()*50;
+		double d = this.random.nextDouble()*50;
+		double e = this.random.nextDouble()*50;
+		double f = this.random.nextDouble()*50;
+		double g = this.random.nextDouble()*50;
+		double h = this.random.nextDouble()*50;
+		double i = this.random.nextDouble()*50;
+		double j = this.random.nextDouble()*50;
+		double k = this.random.nextDouble()*50;
+		double l = this.random.nextDouble()*50;
+		double m = this.random.nextDouble()*50;
+		double n = this.random.nextDouble()*50;
+		double o = this.random.nextDouble()*50;
+		double p = this.random.nextDouble()*50;
+		Matrix4f matrix1 = new Matrix4f(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p);
+		
+		double a1 = this.random.nextDouble()*50;
+		double b1 = this.random.nextDouble()*50;
+		double c1 = this.random.nextDouble()*50;
+		double d1 = this.random.nextDouble()*50;
+		double e1 = this.random.nextDouble()*50;
+		double f1 = this.random.nextDouble()*50;
+		double g1 = this.random.nextDouble()*50;
+		double h1 = this.random.nextDouble()*50;
+		double i1 = this.random.nextDouble()*50;
+		double j1 = this.random.nextDouble()*50;
+		double k1 = this.random.nextDouble()*50;
+		double l1 = this.random.nextDouble()*50;
+		double m1 = this.random.nextDouble()*50;
+		double n1 = this.random.nextDouble()*50;
+		double o1 = this.random.nextDouble()*50;
+		double p1 = this.random.nextDouble()*50;
+		Matrix4f matrix2 = new Matrix4f(a1,b1,c1,d1,e1,f1,g1,h1,i1,j1,k1,l1,m1,n1,o1,p1);
+		
+		
+		Matrix4f prod = new Matrix4f(
+				a*a1+b*e1+c*i1+d*m1,
+				a*b1+b*f1+c*j1+d*n1,
+				a*c1+b*g1+c*k1+d*o1,
+				a*d1+b*h1+c*l1+d*p1,
+				
+				e*a1+f*e1+g*i1+h*m1,
+				e*b1+f*f1+g*j1+h*n1,
+				e*c1+f*g1+g*k1+h*o1,
+				e*d1+f*h1+g*l1+h*p1,
+				
+				i*a1+j*e1+k*i1+l*m1,
+				i*b1+j*f1+k*j1+l*n1,
+				i*c1+j*g1+k*k1+l*o1,
+				i*d1+j*h1+k*l1+l*p1,
+				
+				m*a1+n*e1+o*i1+p*m1,
+				m*b1+n*f1+o*j1+p*n1,
+				m*c1+n*g1+o*k1+p*o1,
+				m*d1+n*h1+o*l1+p*p1);
+		
+		matrix1.mul(matrix1,matrix2);
+		
+		assertTrue(matrix1.equals(prod));
+	}
+	
+	@Test
+	public void equals() {
+		Matrix4f m1 = this.randomMatrix4f();
+		Matrix4f m2 = new Matrix4f(m1);
+		
+		assertTrue(m1.equals(m2));
+	}
+	
+	@Test
+	public void setZero() {
+		Matrix4f m1 = this.randomMatrix4f();
+		m1.setZero();
+		
+		assertTrue(m1.equals(new Matrix4f(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)));
+	}
+	
+	@Test
+	public void setDiagonalDoubleDoubleDoubleDouble() {
+		Matrix4f m1 = this.randomMatrix4f();
+		double a = this.random.nextDouble();
+		double b = this.random.nextDouble();
+		double c = this.random.nextDouble();
+		double d = this.random.nextDouble();
+				
+		m1.setDiagonal(a,b,c,d);
+		
+		assertTrue(m1.equals(new Matrix4f(a,0,0,0,0,b,0,0,0,0,c,0,0,0,0,d)));
+	}
+	
+	@Test
+	public void negate() {
+		Matrix4f m1 = this.randomMatrix4f();
+		Matrix4f m2 = m1.clone();
+		
+		m2.negate();
+		m2.add(m1, m2);
+		m1.setZero();
+		
+		assertTrue(m2.equals(m1));
+		
+	}
+	
+	@Test
+	public void negateMatrix4D() {
+		Matrix4f m1 = this.randomMatrix4f();
+		Matrix4f m2 = m1.clone();
+		
+		m2.negate(m2);
+		m2.add(m1, m2);
+		m1.setZero();
+		
+		assertTrue(m2.equals(m1));
+	}
+	
+	@Test
+	public void testClone() {
+		Matrix4f m1 = this.randomMatrix4f();
+		Matrix4f m2 = m1.clone();
+		Matrix4f m3 = new Matrix4f(m1);
+		
+		assertTrue(m2.equals(m1));
+		assertTrue(m3.equals(m1));
+		assertTrue(m2.equals(m3));
+		
+		
+	}
+	
+	@Test
+	public void isSymmetric() {
 		double a = this.random.nextDouble();
 		double b = this.random.nextDouble();
 		double c = this.random.nextDouble();
@@ -186,78 +467,25 @@ public class Matrix4fTest extends AbstractMathTestCase{
 		double h = this.random.nextDouble();
 		double i = this.random.nextDouble();
 		double j = this.random.nextDouble();
-		double k = this.random.nextDouble();
-		double l = this.random.nextDouble();
-		double m = this.random.nextDouble();
-		double n = this.random.nextDouble();
-		double o = this.random.nextDouble();
-		double p = this.random.nextDouble();
-		Matrix4f m1 = new Matrix4f(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p);
 		
+		Matrix4f m1 = new Matrix4f(a,b,c,d,b,e,f,g,c,f,h,i,d,g,i,j);
 		
-		double determinant = d*g*j*m - c*h*j*m - d*f*k*m + b*h*k*m + c*f*l*m - b*g*l*m - d*g*i*n + c*h*i*n + d*e*k*n - a*h*k*n - c*e*l*n + a*g*l*n + d*f*i*o - b*h*i*o - d*e*j*o + a*h*j*o + b*e*l*o - a*f*l*o - c*f*i*p + b*g*i*p + c*e*j*p - a*g*j*p - b*e*k*p + a*f*k*p;
-	
-		assertEpsilonEquals(determinant,m1.determinant());
-	}
-	
-	@Test
-	public void mulDouble() {
-		throw new UnsupportedOperationException();
-	}
-	
-	@Test
-	public void mulDoubleMatrix4D() {
-		throw new UnsupportedOperationException();
-	}
-	
-	@Test
-	public void mulMatrix4D() {
-		throw new UnsupportedOperationException();
-	}
-	
-	@Test
-	public void mulMatrix4DMatrix4D() {
-		throw new UnsupportedOperationException();
-	}
-	
-	@Test
-	public void equals() {
-		throw new UnsupportedOperationException();
-	}
-	
-	@Test
-	public void setZero() {
-		throw new UnsupportedOperationException();
-	}
-	
-	@Test
-	public void setDiagonalDoubleDoubleDoubleDouble() {
-		throw new UnsupportedOperationException();
-	}
-	
-	@Test
-	public void negate() {
-		throw new UnsupportedOperationException();
-	}
-	
-	@Test
-	public void negateMatrix4D() {
-		throw new UnsupportedOperationException();
-	}
-	
-	@Test
-	public void testClone() {
-		throw new UnsupportedOperationException();
-	}
-	
-	@Test
-	public void isSymmetric() {
-		throw new UnsupportedOperationException();
+		assertTrue(m1.isSymmetric());
+		
+		m1.setM01(j);
+		
+		assertFalse(m1.isSymmetric());
 	}
 	
 	@Test
 	public void isIdentity() {
-		throw new UnsupportedOperationException();
+		Matrix4f m1 = this.randomMatrix4f();
+		
+		m1.setIdentity();
+		assertTrue(m1.isIdentity());
+		
+		m1.setZero();
+		assertFalse(m1.isIdentity());
 	}
 	
 }

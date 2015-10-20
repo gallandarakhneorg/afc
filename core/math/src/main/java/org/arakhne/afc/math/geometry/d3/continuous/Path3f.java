@@ -39,7 +39,7 @@ import org.arakhne.afc.math.geometry.d3.Point3D;
 * @mavengroupid $GroupId$
 * @mavenartifactid $ArtifactId$
 */
-//TODO : verify if we need to use OrientedBox3f or AlignedBox3f for the BoudingBox of the Path
+
 public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,AlignedBox3f,AbstractPathElement3F,PathIterator3f> {
 
 	private static final long serialVersionUID = -8167977956565440101L;
@@ -1622,6 +1622,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 	 * 
 	 * @param x
 	 * @param y
+	 * @param z
 	 */
 	public void setLastPoint(double x, double y, double z) {
 		if (this.numCoords>=3) {
@@ -1651,7 +1652,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 	 *
 	 * @param x the specified X coordinate
 	 * @param y the specified Y coordinate
-	 * @param z the specified Y coordinate
+	 * @param z the specified Z coordinate
 	 */
 	public void moveTo(double x, double y, double z) {
 		if (this.numTypes>0 && this.types[this.numTypes-1]==PathElementType.MOVE_TO) {
@@ -1724,7 +1725,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 	 * Adds a curved segment, defined by three new points, to the path by
 	 * drawing a B&eacute;zier curve that intersects both the current
 	 * coordinates and the specified coordinates {@code (x3,y3,z3)},
-	 * using the specified points {@code (x1,y1,z3)} and {@code (x2,y2,z3)} as
+	 * using the specified points {@code (x1,y1,z1)} and {@code (x2,y2,z2)} as
 	 * B&eacute;zier control points.
 	 * All coordinates are specified in double precision.
 	 *
@@ -2187,11 +2188,9 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 		 * a relative cubic segment to avoid
 		 * aliasing when copying the coords
 		 * of a curve to the end of the array.
-		 * This is also serendipitously equal
-		 * to the size of a full quad segment
-		 * and 2 relative quad segments.
+		 *
 		 */
-		private double hold[] = new double[22];
+		private double hold[] = new double[36];
 
 		/** The index of the last curve segment being held for interpolation.
 		 */
@@ -2212,7 +2211,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 		 */
 		private double currentY;
 		
-		/** The ending y of the last segment.
+		/** The ending z of the last segment.
 		 */
 		private double currentZ;
 
@@ -2224,7 +2223,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 		 */
 		private double moveY;
 		
-		/** The y of the last move segment.
+		/** The z of the last move segment.
 		 */
 		private double moveZ;
 
@@ -2394,7 +2393,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 		 * @param coords an array containing coordinates
 		 * @param offset the index of <code>coords</code> from which to begin
 		 *          getting the end points and control points of the curve
-		 * @return the square of the flatness of the <code>CubicCurve2D</code>
+		 * @return the square of the flatness of the <code>CubicCurve3D</code>
 		 *          specified by the coordinates in <code>coords</code> at
 		 *          the specified offset.
 		 */

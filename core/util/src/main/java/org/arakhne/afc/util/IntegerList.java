@@ -32,12 +32,13 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 import java.util.SortedSet;
+import java.util.Spliterator;
 import java.util.TreeSet;
 
 /** This class represents a list of numbers.
  * The list is always sorted by number values.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -142,7 +143,7 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 	@Override
 	public Integer first() {
 		if (this.values==null) throw new NoSuchElementException();
-		return this.values[0];
+		return Integer.valueOf(this.values[0]);
 	}
 
 	/**
@@ -950,9 +951,15 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 		return theList;
 	}
 
+	@Override
+	public Spliterator<Integer> spliterator() {
+		// TODO Auto-generated method stub
+		return SortedSet.super.spliterator();
+	}
+
 	/** This class represents an iterator on lists of integers.
 	 *
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -1155,7 +1162,7 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 	
 	/** Iterator on segments.
 	 *
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
