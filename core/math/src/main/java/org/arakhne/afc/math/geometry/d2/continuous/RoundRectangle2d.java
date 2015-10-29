@@ -22,8 +22,8 @@ package org.arakhne.afc.math.geometry.d2.continuous;
 
 import org.arakhne.afc.math.geometry.d2.Point2D;
 
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 
 /** 2D round rectangle with DoubleProperty points.
  * 
@@ -32,8 +32,8 @@ import javafx.beans.property.DoubleProperty;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@SuppressWarnings("restriction")
 public class RoundRectangle2d extends AbstractRoundRectangle2F<RoundRectangle2d> {
+	
 	
 	
 	/**
