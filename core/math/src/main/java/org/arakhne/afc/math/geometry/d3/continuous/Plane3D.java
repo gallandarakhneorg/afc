@@ -119,13 +119,14 @@ public interface Plane3D<PT extends Plane3D<? super PT>> extends Serializable, C
 	double distanceTo(Point3D v);
 
 	/**
-	 * Replies the distance between this plance and the given plane.
+	 * Replies the distance between this plane and the given parallel plane.
 	 *
 	 * @param p the plane?
-	 * @return the distance from the plane to the point.
-	 * It will be positive if the point is on the side of the
+	 * @return the distance from the plane to the parallel plane.
+	 * It will be positive if the plane is on the side of the
 	 * plane pointed to by the normal Vec3f, negative otherwise.
-	 * If the result is 0, the point is on the plane.
+	 * If the result is 0, the planes are the same. 
+	 * If the result is NaN, the planes aren't colinear.
 	 */
 	double distanceTo(Plane3D<?> p);
 

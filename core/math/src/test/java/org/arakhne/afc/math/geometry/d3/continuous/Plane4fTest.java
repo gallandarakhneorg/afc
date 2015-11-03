@@ -20,12 +20,17 @@
  */
 package org.arakhne.afc.math.geometry.d3.continuous;
 
+import static org.junit.Assert.assertTrue;
+
+import java.util.Random;
+
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
 import org.junit.Test;
 
 /**
  * @author $Author: sgalland$
+ * @author $Author: hjaffali$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -35,30 +40,51 @@ public class Plane4fTest extends AbstractPlane3DTestCase<AbstractPlane4F> {
 
 	@Override
 	protected AbstractPlane4F createPlane() {
-		throw new UnsupportedOperationException();
+		return new Plane4f(Math.random()*20,Math.random()*20,Math.random()*20,Math.random()*20);
 	}
 
 	@Test
 	@Override
 	public void testClone() {
-		throw new UnsupportedOperationException();
+		Plane4f plane2 = (Plane4f) this.r.clone();
+		
+		assertTrue(plane2.equals(this.r));
 	}
 
 	@Test
 	@Override
 	public void distanceToPoint3D() {
-		throw new UnsupportedOperationException();
+		Point3D a = new Point3f(Math.random()*20,Math.random()*20,Math.random()*20);
+		
+		double distance = Math.abs(r.getEquationComponentA()*a.getX()+r.getEquationComponentB()*a.getY() +r.getEquationComponentC()*a.getZ() +r.getEquationComponentD())
+				/Math.sqrt(r.getEquationComponentA()*r.getEquationComponentA()+r.getEquationComponentB()*r.getEquationComponentB()+r.getEquationComponentC()*r.getEquationComponentC());
+	
+		assertEpsilonEquals(Math.abs(this.r.distanceTo(a)),distance);
 	}
 
 	@Test
 	public void distanceToDoubleDoubleDouble() {
-		throw new UnsupportedOperationException();
+		Point3D a = new Point3f(Math.random()*20,Math.random()*20,Math.random()*20);
+		
+		double distance = Math.abs(r.getEquationComponentA()*a.getX()+r.getEquationComponentB()*a.getY() +r.getEquationComponentC()*a.getZ() +r.getEquationComponentD())
+				/Math.sqrt(r.getEquationComponentA()*r.getEquationComponentA()+r.getEquationComponentB()*r.getEquationComponentB()+r.getEquationComponentC()*r.getEquationComponentC());
+	
+		assertEpsilonEquals(Math.abs(this.r.distanceTo(a.getX(), a.getY(), a.getZ())),distance);
 	}
 
 	@Test
 	@Override
 	public void distanceToPlane3D() {
-		throw new UnsupportedOperationException();
+		Plane4f plane1 = new Plane4f(1,1,1,5);
+		Plane4f plane2 = new Plane4f(1,1,1,10);
+		
+			
+		double distance1 = Math.abs(plane1.distanceTo(new Point3f(1,-8,-3)));
+		double distance2 = Math.abs(plane2.distanceTo(new Point3f(1,-4,-2)));
+		
+		assertEpsilonEquals(Math.abs(plane2.distanceTo(plane1)),Math.abs(plane1.distanceTo(plane2)));
+		//assertEpsilonEquals(Math.abs(plane2.distanceTo(plane1)),distance1);
+		assertEpsilonEquals(Math.abs(plane2.distanceTo(plane1)),distance2);
 	}
 
 	@Test

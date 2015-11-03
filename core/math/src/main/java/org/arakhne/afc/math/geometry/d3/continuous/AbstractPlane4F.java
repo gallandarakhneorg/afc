@@ -631,5 +631,27 @@ public abstract class AbstractPlane4F extends AbstractPlane3D<AbstractPlane4F> {
 		return false;
 	}
 
+	public boolean equals(Plane4f plane) {
+		return (plane.a == this.getEquationComponentA() && plane.b == this.getEquationComponentB() && plane.c == this.getEquationComponentC() && plane.d == this.getEquationComponentD());		
+	}
+	
+	@Override
+	public boolean equals(Object t1) {
+		try {
+			AbstractPlane4F m2 = (AbstractPlane4F) t1;
+			return (m2.getEquationComponentA() == this.getEquationComponentA() && m2.getEquationComponentB() == this.getEquationComponentB() && m2.getEquationComponentC() == this.getEquationComponentC() && m2.getEquationComponentD() == this.getEquationComponentD());		
+		} catch (ClassCastException e1) {
+			e1.printStackTrace();return false;
+		} catch (NullPointerException e2) {
+			e2.printStackTrace();return false;
+		}
+	
+	}
 
+	@Override
+	public int hashCode() {
+		// TODO Auto-generated method stub
+		return super.hashCode();
+	}
+	
 }
