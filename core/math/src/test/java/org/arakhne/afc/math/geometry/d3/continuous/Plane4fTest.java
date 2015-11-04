@@ -92,7 +92,28 @@ public class Plane4fTest extends AbstractPlane3DTestCase<AbstractPlane4F> {
 	@Test
 	@Override
 	public void getIntersectionPlane3D() {
-		throw new UnsupportedOperationException();
+		Plane4f plane1 = new Plane4f(1,1,1,5);
+		Plane4f plane2 = new Plane4f(1,1,1,10);
+		
+		Plane4f plane3 = new Plane4f(2,3,-1,2);
+		Plane4f plane4 = new Plane4f(1,1,-2,5);
+		
+		assertTrue(plane1.getIntersection(plane1)==null);
+		assertTrue(plane1.getIntersection(plane2)==null);
+		
+		
+		Segment3f intersection1 = (Segment3f) plane3.getIntersection(plane4);
+		Segment3f intersection2 = new Segment3f(new Point3f(-13,8,0),new Vector3f(5,-3,1));
+		
+		//assertEpsilonEquals(intersection1.pivot.x,intersection2.pivot.x);
+		//assertEpsilonEquals(intersection1.pivot.y,intersection2.pivot.y);
+		//assertEpsilonEquals(intersection1.pivot.z,intersection2.pivot.z);
+		
+		assertTrue(intersection1.isParallelLines(
+				intersection1.getX1(),intersection1.getY1(),intersection1.getZ1(),
+				intersection1.getX2(),intersection1.getY2(),intersection1.getZ2(),
+				intersection2.getX1(),intersection2.getY1(),intersection2.getZ1(),
+				intersection2.getX2(),intersection2.getY2(),intersection2.getZ2()));
 	}
 
 	@Test
