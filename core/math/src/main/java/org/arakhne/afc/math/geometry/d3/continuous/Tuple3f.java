@@ -27,6 +27,7 @@ import org.arakhne.afc.math.geometry.d3.Tuple3D;
  * 
  * @param <T> is the implementation type of the tuple.
  * @author $Author: galland$
+ * @author $Author: hjaffali$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -179,7 +180,7 @@ public class Tuple3f<T extends Tuple3D<? super T>> implements FunctionalTuple3D<
 	 */
 	@Override
 	public double getZ() {
-		return this.y;
+		return this.z;
 	}
 
 //	/** {@inheritDoc}

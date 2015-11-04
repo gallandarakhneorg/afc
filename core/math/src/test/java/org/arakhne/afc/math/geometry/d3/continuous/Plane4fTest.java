@@ -40,7 +40,9 @@ public class Plane4fTest extends AbstractPlane3DTestCase<AbstractPlane4F> {
 
 	@Override
 	protected AbstractPlane4F createPlane() {
-		return new Plane4f(Math.random()*20,Math.random()*20,Math.random()*20,Math.random()*20);
+		Plane4f p = new Plane4f(Math.random()*20,Math.random()*20,Math.random()*20,Math.random()*20);
+		p.normalize();
+		return p;
 	}
 
 	@Test
@@ -102,17 +104,46 @@ public class Plane4fTest extends AbstractPlane3DTestCase<AbstractPlane4F> {
 	@Test
 	@Override
 	public void getProjectionPoint3D() {
-		throw new UnsupportedOperationException();
+		Point3f point = new Point3f(this.random.nextInt()%20,this.random.nextInt()%20,this.random.nextInt()%20);
+		
+		double k = (r.getEquationComponentA()*point.x+r.getEquationComponentB()*point.y+r.getEquationComponentC()*point.z+r.getEquationComponentD());
+	
+		double xProj = point.x -k*r.getEquationComponentA();
+		double yProj = point.y -k*r.getEquationComponentB();
+		double zProj = point.z -k*r.getEquationComponentC();
+		
+		Point3f projection = new Point3f(xProj,yProj,zProj);
+		
+		Point3f expected = this.r.getProjection(point);
+		
+		assertEpsilonEquals(projection.x,(expected.x));
+		assertEpsilonEquals(projection.y,(expected.y));
+		assertEpsilonEquals(projection.z,(expected.z));	
 	}
 
 	@Test
 	public void getProjectionDoubleDoubleDouble() {
-		throw new UnsupportedOperationException();
+Point3f point = new Point3f(this.random.nextInt()%20,this.random.nextInt()%20,this.random.nextInt()%20);
+		
+		double k = (r.getEquationComponentA()*point.x+r.getEquationComponentB()*point.y+r.getEquationComponentC()*point.z+r.getEquationComponentD());
+	
+		double xProj = point.x -k*r.getEquationComponentA();
+		double yProj = point.y -k*r.getEquationComponentB();
+		double zProj = point.z -k*r.getEquationComponentC();
+		
+		Point3f projection = new Point3f(xProj,yProj,zProj);
+		
+		Point3f expected = (Point3f) this.r.getProjection(point.x,point.y,point.z);
+		
+		assertEpsilonEquals(projection.x,(expected.x));
+		assertEpsilonEquals(projection.y,(expected.y));
+		assertEpsilonEquals(projection.z,(expected.z));	
 	}
 
 	@Test
 	@Override
 	public void isValid() {
+		//Function isValid() of AbstractPlane4F not implemented
 		throw new UnsupportedOperationException();
 	}
 
