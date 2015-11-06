@@ -291,7 +291,15 @@ public class Triangle3fTest extends AbstractShape3fTestCase<Triangle3f> {
 	
 	@Test
 	public void getNormal() {
-		throw new UnsupportedOperationException();
+		Point3f p1 = new Point3f(Math.random()*20,Math.random()*20,Math.random()*20);
+		Point3f p2 = new Point3f(Math.random()*20,Math.random()*20,Math.random()*20);
+		Point3f p3 = new Point3f(Math.random()*20,Math.random()*20,Math.random()*20);
+		Triangle3f t1 = new Triangle3f(p1,p2,p3);
+		
+		Vector3f expected = t1.getNormal();
+		Vector3f normal = (new Plane4f(p1,p2,p3)).getNormal();
+		
+		assertTrue(normal.isColinear(expected));
 	}
 	
 	
