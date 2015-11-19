@@ -67,15 +67,18 @@ public class Path3fTest extends AbstractMathTestCase {
 		
 		Transform3D t = new Transform3D();
 		
-		Path3f rTrans = new Path3f(r);
-		/*rTrans.moveTo(1f, 0f, 1f);
-		rTrans.lineTo(0f, 1f, 0f);
-		rTrans.closePath();*/
+		Path3f rTrans = new Path3f();
+		rTrans.moveTo(0f, 0f, 0f);
+		rTrans.lineTo(-12f, 19f, 0f);
+		rTrans.closePath();
 		
-		assertTrue(r.intersects(rTrans));
+		assertTrue(r.intersects(r));
 		
-		t.makeTranslationMatrix(50, 50, 50);
+		assertTrue(rTrans.intersects(r));
+		
+		t.makeTranslationMatrix(10, 10, 10);
 		rTrans.transform(t);
+		//System.out.println(rTrans.toString());
 		
 		assertFalse(rTrans.intersects(r));
 		
@@ -175,14 +178,18 @@ public class Path3fTest extends AbstractMathTestCase {
 		p.curveTo(5f, -1f, 0f, 6f, 5f, 0f, 7f, -5f, 0f);
 		p.closePath();
 		
-		Path3f p2 = new Path3f(p);
 		Path3f p3 = p.clone();
+		Path3f p2 = new Path3f(p);
+		
 		
 		assertTrue(p2.toString().equals(p.toString()));
 		assertTrue(p3.toString().equals(p.toString()));
+		assertTrue(p3.toString().equals(p2.toString()));
 		
 		assertTrue(p3.equals(p));
-		assertTrue(p2.equals(p));
+		
+		assertTrue(p2.equals(p3));
+		assertTrue(p.equals(p2));
 	}
 	
 	
@@ -232,6 +239,7 @@ public class Path3fTest extends AbstractMathTestCase {
 		Path3f p2 = p.clone();
 		
 		assertTrue(p.equals(p2));
+		assertTrue(p2.equals(p));
 	}
 	
 	@Test

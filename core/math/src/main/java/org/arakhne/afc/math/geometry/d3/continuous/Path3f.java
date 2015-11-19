@@ -33,24 +33,24 @@ import org.arakhne.afc.math.geometry.d3.Path3D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 
 /** A generic 3D-path.
-*
-* @author $Author: hjaffali$
-* @version $FullVersion$
-* @mavengroupid $GroupId$
-* @mavenartifactid $ArtifactId$
-*/
+ *
+ * @author $Author: hjaffali$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
 
 public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,AlignedBox3f,AbstractPathElement3F,PathIterator3f> {
 
 	private static final long serialVersionUID = -8167977956565440101L;
-	
+
 	/** Multiple of cubic & quad curve size.
 	 */
 	//36 = (3+3+3)*4
 	static final int GROW_SIZE = 36;
-	
-	
-	
+
+
+
 	/** Replies the point on the path that is closest to the given point.
 	 * <p>
 	 * <strong>CAUTION:</strong> This function works only on path iterators
@@ -76,9 +76,9 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 		if (pe.type != PathElementType.MOVE_TO) {
 			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
 		}
-		
+
 		candidate = new Point3f(pe.getToX(), pe.getToY(), pe.getToZ());
-	
+
 		while (pathIterator.hasNext()) {
 			pe = pathIterator.next();
 
@@ -89,9 +89,9 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 				candidate = new Point3f(pe.getToX(), pe.getToY(), pe.getToZ());
 				break;
 			case LINE_TO:
-			
+
 				candidate = (new Segment3f(pe.getFromX(), pe.getFromY(), pe.getFromZ(), pe.getToX(), pe.getToY(), pe.getToZ())).getClosestPointTo(new Point3f(x,y,z));
-			
+
 				break;
 			case CLOSE:
 				if (!pe.isEmpty()) {
@@ -133,8 +133,8 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 
 		return closest;
 	}
-	
-	
+
+
 	/** Replies the point on the path that is farthest to the given point.
 	 * <p>
 	 * <strong>CAUTION:</strong> This function works only on path iterators
@@ -159,9 +159,9 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 		if (pe.type != PathElementType.MOVE_TO) {
 			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
 		}
-		
+
 		candidate = new Point3f(pe.getToX(), pe.getToY(), pe.getToZ());
-	
+
 		while (pathIterator.hasNext()) {
 			pe = pathIterator.next();
 
@@ -172,9 +172,9 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 				candidate = new Point3f(pe.getToX(), pe.getToY(), pe.getToZ());
 				break;
 			case LINE_TO:
-			
+
 				candidate = (new Segment3f(pe.getFromX(), pe.getFromY(), pe.getFromZ(), pe.getToX(), pe.getToY(), pe.getToZ())).getFarthestPointTo(new Point3f(x,y,z));
-			
+
 				break;
 			case CLOSE:
 				if (!pe.isEmpty()) {
@@ -216,7 +216,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 
 		return farthest;
 	}
-	
+
 	private static boolean buildGraphicalBoundingBox(PathIterator3f iterator, AlignedBox3f box) {
 		boolean foundOneLine = false;
 		double xmin = Double.POSITIVE_INFINITY;
@@ -294,9 +294,9 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 			box.clear();
 		}
 		return foundOneLine;
-		
+
 	}
-	
+
 	private boolean buildLogicalBoundingBox(AlignedBox3f box) {
 		if (this.numCoords>0) {
 			double xmin = Double.POSITIVE_INFINITY;
@@ -408,6 +408,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 		this.isEmpty = p.isEmpty;
 		this.isPolyline = p.isPolyline;
 		this.numCoords = p.numCoords;
+		this.numTypes = p.numTypes;
 		this.types = p.types.clone();
 		this.windingRule = p.windingRule;
 		AlignedBox3f box;
@@ -420,7 +421,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 			this.logicalBounds = new SoftReference<>(box.clone());
 		}
 	}
-	
+
 	/** Remove the point with the given coordinates.
 	 * 
 	 * @param x
@@ -482,7 +483,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 		}
 		return false;
 	}
-	
+
 	/** Replies if the given points exists in the coordinates of this path.
 	 * 
 	 * @param p
@@ -500,8 +501,8 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 		}
 		return false;
 	}
-	
-	
+
+
 	@Override
 	public String toString() {
 		StringBuilder b = new StringBuilder();
@@ -517,7 +518,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 		return b.toString();
 	}
 
-	
+
 	@Override
 	public boolean isEmpty() {
 		if (this.isEmpty==null) {
@@ -552,6 +553,8 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 		Path3f clone = super.clone();
 		clone.coords = this.coords.clone();
 		clone.types = this.types.clone();
+		clone.windingRule = this.windingRule;
+
 		return clone;
 	}
 
@@ -575,8 +578,8 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 		clear();
 		add(s.getPathIterator());
 	}
-	
-	
+
+
 	@Override
 	public AlignedBox3f toBoundingBox() {
 		AlignedBox3f bb = this.graphicalBounds==null ? null : this.graphicalBounds.get();
@@ -589,7 +592,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 		}
 		return bb;
 	}
-	
+
 	/** Replies the bounding box of all the points added in this path.
 	 * <p>
 	 * The replied bounding box includes the (invisible) control points.
@@ -619,7 +622,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 			this.graphicalBounds = new SoftReference<>(bb);
 		}
 		box.set(bb);
-		
+
 	}
 
 	/** Compute the bounding box of all the points added in this path.
@@ -638,7 +641,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 		}
 		box.set(bb);
 	}
-	
+
 	@Override
 	public double distanceSquared(Point3D p) {
 		Point3D c = getClosestPointTo(p);
@@ -678,12 +681,12 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 			this.logicalBounds = null;
 		}
 	}
-	
+
 	@Override
 	public Shape3F createTransformedShape(Transform3D transform) {
 		Path3f newP = new Path3f(this);
 		newP.transform(transform);
-		
+
 		return newP;
 	}
 
@@ -708,22 +711,22 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 		int mask = (this.windingRule == PathWindingRule.NON_ZERO ? -1 : 2);
 		boolean intersects = false;
 		PathIterator3f pi = getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO);
-		
+
 		AbstractPathElement3F pathElement = pi.next();
-		
+
 		if (pathElement.type != PathElementType.MOVE_TO) {
 			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
 		}
-		
+
 		Path3f subPath;
 		double curx, cury, curz, movx, movy, movz, endx, endy, endz;
 		curx = movx = pathElement.getToX();
 		cury = movy = pathElement.getToY();
 		curz = movz = pathElement.getToZ();
-		
+
 		while (pi.hasNext() && intersects==false) {
 			pathElement = pi.next();
-			
+
 			switch (pathElement.type) {
 			case MOVE_TO: 
 				movx = curx = pathElement.getToX();
@@ -740,7 +743,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 						endx, endy, endz, 
 						s.minx, s.miny, s.minz, 
 						s.maxx, s.maxy, s.maxz);
-				
+
 				curx = endx;
 				cury = endy;
 				curz = endz;
@@ -756,7 +759,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 						endx, endy, endz);
 
 				intersects = subPath.intersects(s);
-				
+
 				curx = endx;
 				cury = endy;
 				curz = endz;
@@ -773,7 +776,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 						endx, endy, endz);
 
 				intersects = subPath.intersects(s);
-				
+
 				curx = endx;
 				cury = endy;
 				curz = endz;
@@ -786,42 +789,42 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 							s.minx, s.miny, s.minz, 
 							s.maxx, s.maxy, s.maxz);
 				}
-				
+
 				curx = movx;
 				cury = movy;
 				curz = movz;
 				break;
 			default:
 			}
-		
+
 		}
-				
+
 		return intersects && (mask!=0);
 	}
 
-	
+
 	public boolean intersects(Path3f p) {
 		//FIXME : STILL REMAIN A PROBLEM HERE
 		if (p.isEmpty()) return false;
 		int mask = (this.windingRule == PathWindingRule.NON_ZERO ? -1 : 2);
 		boolean intersects = false;
 		PathIterator3f pi = getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO);
-		
+
 		AbstractPathElement3F pathElement = pi.next();
-		
+
 		if (pathElement.type != PathElementType.MOVE_TO) {
 			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
 		}
-		
+
 		Path3f subPath;
 		double curx, cury, curz, movx, movy, movz, endx, endy, endz;
 		curx = movx = pathElement.getToX();
 		cury = movy = pathElement.getToY();
 		curz = movz = pathElement.getToZ();
-		
+
 		while (pi.hasNext() && intersects==false) {
 			pathElement = pi.next();
-			
+
 			switch (pathElement.type) {
 			case MOVE_TO: 
 				movx = curx = pathElement.getToX();
@@ -836,7 +839,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 				intersects = p.intersects(new Segment3f(
 						curx, cury, curz, 
 						endx, endy, endz));
-				
+
 				curx = endx;
 				cury = endy;
 				curz = endz;
@@ -852,7 +855,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 						endx, endy, endz);
 
 				intersects = subPath.intersects(p.clone());
-				
+
 				curx = endx;
 				cury = endy;
 				curz = endz;
@@ -869,7 +872,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 						endx, endy, endz);
 
 				intersects = subPath.intersects(p.clone());
-				
+
 				curx = endx;
 				cury = endy;
 				curz = endz;
@@ -880,16 +883,16 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 							curx, cury, curz, 
 							movx, movy, movz));
 				}
-				
+
 				curx = movx;
 				cury = movy;
 				curz = movz;
 				break;
 			default:
 			}
-		
+
 		}
-				
+
 		return intersects && (mask!=0);
 	}
 
@@ -899,22 +902,22 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 		int mask = (this.windingRule == PathWindingRule.NON_ZERO ? -1 : 2);
 		boolean intersects = false;
 		PathIterator3f pi = getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO);
-		
+
 		AbstractPathElement3F pathElement = pi.next();
-		
+
 		if (pathElement.type != PathElementType.MOVE_TO) {
 			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
 		}
-		
+
 		Path3f subPath;
 		double curx, cury, curz, movx, movy, movz, endx, endy, endz;
 		curx = movx = pathElement.getToX();
 		cury = movy = pathElement.getToY();
 		curz = movz = pathElement.getToZ();
-		
+
 		while (pi.hasNext() && intersects==false) {
 			pathElement = pi.next();
-			
+
 			switch (pathElement.type) {
 			case MOVE_TO: 
 				movx = curx = pathElement.getToX();
@@ -929,7 +932,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 				intersects = s.intersects(new Segment3f(
 						curx, cury, curz, 
 						endx, endy, endz));
-				
+
 				curx = endx;
 				cury = endy;
 				curz = endz;
@@ -945,7 +948,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 						endx, endy, endz);
 
 				intersects = subPath.intersects(s);
-				
+
 				curx = endx;
 				cury = endy;
 				curz = endz;
@@ -962,7 +965,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 						endx, endy, endz);
 
 				intersects = subPath.intersects(s);
-				
+
 				curx = endx;
 				cury = endy;
 				curz = endz;
@@ -973,16 +976,16 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 							curx, cury, curz, 
 							movx, movy, movz));
 				}
-				
+
 				curx = movx;
 				cury = movy;
 				curz = movz;
 				break;
 			default:
 			}
-		
+
 		}
-				
+
 		return intersects && (mask!=0);
 	}
 
@@ -992,22 +995,22 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 		int mask = (this.windingRule == PathWindingRule.NON_ZERO ? -1 : 2);
 		boolean intersects = false;
 		PathIterator3f pi = getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO);
-		
+
 		AbstractPathElement3F pathElement = pi.next();
-		
+
 		if (pathElement.type != PathElementType.MOVE_TO) {
 			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
 		}
-		
+
 		Path3f subPath;
 		double curx, cury, curz, movx, movy, movz, endx, endy, endz;
 		curx = movx = pathElement.getToX();
 		cury = movy = pathElement.getToY();
 		curz = movz = pathElement.getToZ();
-		
+
 		while (pi.hasNext() && intersects==false) {
 			pathElement = pi.next();
-			
+
 			switch (pathElement.type) {
 			case MOVE_TO: 
 				movx = curx = pathElement.getToX();
@@ -1018,11 +1021,11 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 				endx = pathElement.getToX();
 				endy = pathElement.getToY();
 				endz = pathElement.getToZ();
- 
+
 				intersects = s.intersects(new Segment3f(
 						curx, cury, curz, 
 						endx, endy, endz));
-				
+
 				curx = endx;
 				cury = endy;
 				curz = endz;
@@ -1038,7 +1041,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 						endx, endy, endz);
 
 				intersects = subPath.intersects(s);
-				
+
 				curx = endx;
 				cury = endy;
 				curz = endz;
@@ -1055,7 +1058,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 						endx, endy, endz);
 
 				intersects = subPath.intersects(s);
-				
+
 				curx = endx;
 				cury = endy;
 				curz = endz;
@@ -1066,16 +1069,16 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 							curx, cury, curz, 
 							movx, movy, movz));
 				}
-				
+
 				curx = movx;
 				cury = movy;
 				curz = movz;
 				break;
 			default:
 			}
-		
+
 		}
-				
+
 		return intersects && (mask!=0);
 	}
 
@@ -1086,22 +1089,22 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 		int mask = (this.windingRule == PathWindingRule.NON_ZERO ? -1 : 2);
 		boolean intersects = false;
 		PathIterator3f pi = getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO);
-		
+
 		AbstractPathElement3F pathElement = pi.next();
-		
+
 		if (pathElement.type != PathElementType.MOVE_TO) {
 			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
 		}
-		
+
 		Path3f subPath;
 		double curx, cury, curz, movx, movy, movz, endx, endy, endz;
 		curx = movx = pathElement.getToX();
 		cury = movy = pathElement.getToY();
 		curz = movz = pathElement.getToZ();
-		
+
 		while (pi.hasNext() && intersects==false) {
 			pathElement = pi.next();
-			
+
 			switch (pathElement.type) {
 			case MOVE_TO: 
 				movx = curx = pathElement.getToX();
@@ -1112,11 +1115,11 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 				endx = pathElement.getToX();
 				endy = pathElement.getToY();
 				endz = pathElement.getToZ();
- 
+
 				intersects = s.intersects(new Segment3f(
 						curx, cury, curz, 
 						endx, endy, endz));
-				
+
 				curx = endx;
 				cury = endy;
 				curz = endz;
@@ -1132,7 +1135,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 						endx, endy, endz);
 
 				intersects = subPath.intersects(s);
-				
+
 				curx = endx;
 				cury = endy;
 				curz = endz;
@@ -1149,7 +1152,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 						endx, endy, endz);
 
 				intersects = subPath.intersects(s);
-				
+
 				curx = endx;
 				cury = endy;
 				curz = endz;
@@ -1160,16 +1163,16 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 							curx, cury, curz, 
 							movx, movy, movz));
 				}
-				
+
 				curx = movx;
 				cury = movy;
 				curz = movz;
 				break;
 			default:
 			}
-		
+
 		}
-				
+
 		return intersects && (mask!=0);
 	}
 
@@ -1180,22 +1183,22 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 		int mask = (this.windingRule == PathWindingRule.NON_ZERO ? -1 : 2);
 		boolean intersects = false;
 		PathIterator3f pi = getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO);
-		
+
 		AbstractPathElement3F pathElement = pi.next();
-		
+
 		if (pathElement.type != PathElementType.MOVE_TO) {
 			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
 		}
-		
+
 		Path3f subPath;
 		double curx, cury, curz, movx, movy, movz, endx, endy, endz;
 		curx = movx = pathElement.getToX();
 		cury = movy = pathElement.getToY();
 		curz = movz = pathElement.getToZ();
-		
+
 		while (pi.hasNext() && intersects==false) {
 			pathElement = pi.next();
-			
+
 			switch (pathElement.type) {
 			case MOVE_TO: 
 				movx = curx = pathElement.getToX();
@@ -1206,11 +1209,11 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 				endx = pathElement.getToX();
 				endy = pathElement.getToY();
 				endz = pathElement.getToZ();
- 
+
 				intersects = s.intersects(new Segment3f(
 						curx, cury, curz, 
 						endx, endy, endz));
-				
+
 				curx = endx;
 				cury = endy;
 				curz = endz;
@@ -1226,7 +1229,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 						endx, endy, endz);
 
 				intersects = subPath.intersects(s);
-				
+
 				curx = endx;
 				cury = endy;
 				curz = endz;
@@ -1243,7 +1246,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 						endx, endy, endz);
 
 				intersects = subPath.intersects(s);
-				
+
 				curx = endx;
 				cury = endy;
 				curz = endz;
@@ -1254,16 +1257,16 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 							curx, cury, curz, 
 							movx, movy, movz));
 				}
-				
+
 				curx = movx;
 				cury = movy;
 				curz = movz;
 				break;
 			default:
 			}
-		
+
 		}
-				
+
 		return intersects && (mask!=0);
 	}
 
@@ -1273,22 +1276,22 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 		int mask = (this.windingRule == PathWindingRule.NON_ZERO ? -1 : 2);
 		boolean intersects = false;
 		PathIterator3f pi = getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO);
-		
+
 		AbstractPathElement3F pathElement = pi.next();
-		
+
 		if (pathElement.type != PathElementType.MOVE_TO) {
 			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
 		}
-		
+
 		Path3f subPath;
 		double curx, cury, curz, movx, movy, movz, endx, endy, endz;
 		curx = movx = pathElement.getToX();
 		cury = movy = pathElement.getToY();
 		curz = movz = pathElement.getToZ();
-		
+
 		while (pi.hasNext() && intersects==false) {
 			pathElement = pi.next();
-			
+
 			switch (pathElement.type) {
 			case MOVE_TO: 
 				movx = curx = pathElement.getToX();
@@ -1299,11 +1302,11 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 				endx = pathElement.getToX();
 				endy = pathElement.getToY();
 				endz = pathElement.getToZ();
- 
+
 				intersects = s.intersects(new Segment3f(
 						curx, cury, curz, 
 						endx, endy, endz));
-				
+
 				curx = endx;
 				cury = endy;
 				curz = endz;
@@ -1319,7 +1322,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 						endx, endy, endz);
 
 				intersects = subPath.intersects(s);
-				
+
 				curx = endx;
 				cury = endy;
 				curz = endz;
@@ -1336,7 +1339,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 						endx, endy, endz);
 
 				intersects = subPath.intersects(s);
-				
+
 				curx = endx;
 				cury = endy;
 				curz = endz;
@@ -1347,16 +1350,16 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 							curx, cury, curz, 
 							movx, movy, movz));
 				}
-				
+
 				curx = movx;
 				cury = movy;
 				curz = movz;
 				break;
 			default:
 			}
-		
+
 		}
-				
+
 		return intersects && (mask!=0);
 	}
 
@@ -1365,22 +1368,22 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 		int mask = (this.windingRule == PathWindingRule.NON_ZERO ? -1 : 2);
 		boolean intersects = false;
 		PathIterator3f pi = getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO);
-		
+
 		AbstractPathElement3F pathElement = pi.next();
-		
+
 		if (pathElement.type != PathElementType.MOVE_TO) {
 			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
 		}
-		
+
 		Path3f subPath;
 		double curx, cury, curz, movx, movy, movz, endx, endy, endz;
 		curx = movx = pathElement.getToX();
 		cury = movy = pathElement.getToY();
 		curz = movz = pathElement.getToZ();
-		
+
 		while (pi.hasNext() && intersects==false) {
 			pathElement = pi.next();
-			
+
 			switch (pathElement.type) {
 			case MOVE_TO: 
 				movx = curx = pathElement.getToX();
@@ -1391,11 +1394,11 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 				endx = pathElement.getToX();
 				endy = pathElement.getToY();
 				endz = pathElement.getToZ();
- 
+
 				intersects = p.intersects(new Segment3f(
 						curx, cury, curz, 
 						endx, endy, endz));
-				
+
 				curx = endx;
 				cury = endy;
 				curz = endz;
@@ -1411,7 +1414,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 						endx, endy, endz);
 
 				intersects = subPath.intersects(p);
-				
+
 				curx = endx;
 				cury = endy;
 				curz = endz;
@@ -1428,7 +1431,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 						endx, endy, endz);
 
 				intersects = subPath.intersects(p);
-				
+
 				curx = endx;
 				cury = endy;
 				curz = endz;
@@ -1439,16 +1442,16 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 							curx, cury, curz, 
 							movx, movy, movz));
 				}
-				
+
 				curx = movx;
 				cury = movy;
 				curz = movz;
 				break;
 			default:
 			}
-		
+
 		}
-				
+
 		return intersects && (mask!=0);
 	}
 
@@ -1479,6 +1482,15 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 		return ab.contains(new Point3f(x,y,z));
 	}
 
+
+	public boolean equals(Path3f path) {
+		return (this.numCoords==path.numCoords
+				&& this.numTypes==path.numTypes
+				&& Arrays.equals(this.coords, path.coords)
+				&& Arrays.equals(this.types, path.types)
+				&& this.windingRule==path.windingRule);
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof Path3f) {
@@ -1507,7 +1519,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 	public PathIterator3f getPathIterator(double flatness) {
 		return new FlatteningPathIterator(getWindingRule(), getPathIterator(null), flatness, 10);
 	}
-	
+
 	/** Replies an iterator on the path elements.
 	 * <p>
 	 * Only {@link PathElementType#MOVE_TO},
@@ -1534,7 +1546,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 	public PathIterator3f getPathIterator(Transform3D transform, double flatness) {
 		return new FlatteningPathIterator(getWindingRule(), getPathIterator(transform), flatness, 10);
 	}
-	
+
 	/** {@inheritDoc}
 	 */
 	@Override
@@ -1544,7 +1556,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 		}
 		return new TransformPathIterator(transform);
 	}
-  
+
 	@Override
 	public PathWindingRule getWindingRule() {
 		return this.windingRule;
@@ -1617,7 +1629,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 			this.logicalBounds = null;
 		}
 	}
-	
+
 	/** Change the coordinates of the last inserted point.
 	 * 
 	 * @param x
@@ -1633,7 +1645,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 			this.logicalBounds = null;
 		}
 	}
-	
+
 	private void ensureSlots(boolean needMove, int n) {
 		if (needMove && this.numTypes==0) {
 			throw new IllegalStateException("missing initial moveto in path definition"); //$NON-NLS-1$
@@ -1758,7 +1770,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 		this.graphicalBounds = null;
 		this.logicalBounds = null;
 	}
-	
+
 	/**
 	 * Closes the current subpath by drawing a straight line back to
 	 * the coordinates of the last {@code moveTo}.  If the path is already
@@ -1773,7 +1785,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 			this.types[this.numTypes++] = PathElementType.CLOSE;
 		}
 	}
-	
+
 	/** Replies the number of points in the path.
 	 *
 	 * @return the number of points in the path.
@@ -1818,7 +1830,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 		}
 		return clone;
 	}
-	
+
 	/** Replies the points of this path in an array.
 	 * 
 	 * @return the points.
@@ -1853,7 +1865,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 		}
 		return clone;
 	}
-	
+
 	/** Replies the point at the given index.
 	 * The index is in [0;{@link #size()}).
 	 *
@@ -1866,7 +1878,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 				this.coords[index*3+1],
 				this.coords[index*3+2]);
 	}
-	
+
 	/** Replies the last point in the path.
 	 *
 	 * @return the last point.
@@ -1879,9 +1891,9 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 				this.coords[this.coords.length-1]);
 	}
 	//-----------------------------------------------------------------------------
-	
-	
-	
+
+
+
 	/** A path iterator that does not transform the coordinates.
 	 *
 	 * @author $Author: hjaffali$
@@ -2210,7 +2222,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 		/** The ending y of the last segment.
 		 */
 		private double currentY;
-		
+
 		/** The ending z of the last segment.
 		 */
 		private double currentZ;
@@ -2222,7 +2234,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 		/** The y of the last move segment.
 		 */
 		private double moveY;
-		
+
 		/** The z of the last move segment.
 		 */
 		private double moveZ;
@@ -2248,7 +2260,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 		/** The y of the last move segment replied by next.
 		 */
 		private double lastNextY;
-		
+
 		/** The y of the last move segment replied by next.
 		 */
 		private double lastNextZ;
@@ -2709,12 +2721,12 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 		public PathWindingRule getWindingRule() {
 			return this.windingRule;
 		}
-		
+
 		@Override
 		public boolean isPolyline() {
 			return false; // Because the iterator flats the path, this is no curve inside.
 		}
-		
+
 	} // class FlatteningPathIterator
 
 	/** An collection of the points of the path.
@@ -2886,5 +2898,5 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 		}
 
 	}
-	
+
 }

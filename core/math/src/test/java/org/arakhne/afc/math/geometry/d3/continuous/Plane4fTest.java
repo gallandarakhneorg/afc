@@ -49,7 +49,7 @@ public class Plane4fTest extends AbstractPlane3DTestCase<AbstractPlane4F> {
 	@Override
 	public void testClone() {
 		Plane4f plane2 = (Plane4f) this.r.clone();
-		
+		 
 		assertTrue(plane2.equals(this.r));
 	}
 
