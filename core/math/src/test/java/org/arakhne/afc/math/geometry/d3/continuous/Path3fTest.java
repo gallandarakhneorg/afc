@@ -24,6 +24,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.arakhne.afc.math.AbstractMathTestCase;
+import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.junit.Test;
 
 /**
@@ -206,7 +207,18 @@ public class Path3fTest extends AbstractMathTestCase {
 	
 	@Test
     public void toStringTest() {
-		throw new UnsupportedOperationException();
+		Path3f p = new Path3f();
+		p.moveTo(0, 0, 0);
+		p.lineTo(1, 1, 1);
+		p.quadTo(3, 0, 0, 4, 3, 0.5);
+		p.curveTo(5, -1, 0, 6, 5, 0, 7, -5, 0);
+		p.closePath();
+		
+		assertTrue(p.toString().equals(
+				"[0.0, 0.0, 0.0, " //$NON-NLS-1$
+				+ "1.0, 1.0, 1.0, " //$NON-NLS-1$
+				+ "3.0, 0.0, 0.0, 4.0, 3.0, 0.5, " //$NON-NLS-1$
+				+ "5.0, -1.0, 0.0, 6.0, 5.0, 0.0, 7.0, -5.0, 0.0]")); //$NON-NLS-1$
 	}
 	
 	@Test
@@ -304,31 +316,6 @@ public class Path3fTest extends AbstractMathTestCase {
 	}
 	
 	@Test
-    public void moveTo() {
-		throw new UnsupportedOperationException();
-	}
-	
-	@Test
-    public void lineTo() {
-		throw new UnsupportedOperationException();
-	}
-	
-	@Test
-    public void quadTo() {
-		throw new UnsupportedOperationException();
-	}
-	
-	@Test
-    public void curveTo() {
-		throw new UnsupportedOperationException();
-	}
-	
-	@Test
-    public void closePath() {
-		throw new UnsupportedOperationException();
-	}
-	
-	@Test
     public void sizeTest() {
 		throw new UnsupportedOperationException();
 	}
@@ -340,12 +327,40 @@ public class Path3fTest extends AbstractMathTestCase {
 	
 	@Test
     public void toPointArrayTest() {
-		throw new UnsupportedOperationException();
+		Path3f p = new Path3f();
+		p.moveTo(0f, 0f, 0f);
+		p.lineTo(1f, 1f, 1f);
+		p.quadTo(3f, 0f, 0f, 4f, 3f, 0.5);
+		p.curveTo(5f, -1f, 0f, 6f, 5f, 0f, 7f, -5f, 0f);
+		p.closePath();
+		
+		Point3D [] array = p.toPointArray();
+		
+		assertTrue(array[0].equals(new Point3f(0,0,0)));
+		assertTrue(array[1].equals(new Point3f(1,1,1)));
+		assertTrue(array[2].equals(new Point3f(3,0,0)));
+		assertTrue(array[3].equals(new Point3f(4,3,0.5)));
+		assertTrue(array[4].equals(new Point3f(5,-1,0)));
+		assertTrue(array[5].equals(new Point3f(6,5,0)));
+		assertTrue(array[6].equals(new Point3f(7,-5,0)));
 	}
 	
 	@Test
     public void getPointAt() {
-		throw new UnsupportedOperationException();
+		Path3f p = new Path3f();
+		p.moveTo(0f, 0f, 0f);
+		p.lineTo(1f, 1f, 1f);
+		p.quadTo(3f, 0f, 0f, 4f, 3f, 0.5);
+		p.curveTo(5f, -1f, 0f, 6f, 5f, 0f, 7f, -5f, 0f);
+		p.closePath();
+		
+		assertTrue(p.getPointAt(0).equals(new Point3f(0,0,0)));
+		assertTrue(p.getPointAt(1).equals(new Point3f(1,1,1)));
+		assertTrue(p.getPointAt(2).equals(new Point3f(3,0,0)));
+		assertTrue(p.getPointAt(3).equals(new Point3f(4,3,0.5)));
+		assertTrue(p.getPointAt(4).equals(new Point3f(5,-1,0)));
+		assertTrue(p.getPointAt(5).equals(new Point3f(6,5,0)));
+		assertTrue(p.getPointAt(6).equals(new Point3f(7,-5,0)));
 	}
 	
 	@Test
