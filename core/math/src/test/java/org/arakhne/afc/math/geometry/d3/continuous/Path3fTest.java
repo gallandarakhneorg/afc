@@ -112,14 +112,15 @@ public class Path3fTest extends AbstractMathTestCase {
 		r.curveTo(5f, -1f, 0f, 6f, 5f, 0f, 7f, -5f, 0f);
 		r.closePath();
 		
-		AbstractSegment3F segm = new Segment3f(new Point3f(1f,0f,1f),new Point3f(0f,1f,0f));
-		AbstractSegment3F s = new Segment3f(new Point3f(1f,1f,1f),new Point3f(0f,0f,0f));
-		
-		assertTrue(s.intersects(segm));
-		
+		AbstractSegment3F segm = new Segment3f(1,0,1,0,0,0);
+		AbstractSegment3F s = new Segment3f(1,0,0,0,0,1);
 		AbstractSegment3F segm2 = new Segment3f(new Point3f(20f,20f,20f),new Point3f(30f,30f,30f));
-
+		AbstractSegment3F s2 = new Segment3f(-1,-1,-1,8,-4,1);
+		
+		assertTrue(r.intersects(segm));
+		assertFalse(r.intersects(s));
 		assertFalse(r.intersects(segm2));
+		assertTrue(r.intersects(s2));
 	}
 	
 	@Test

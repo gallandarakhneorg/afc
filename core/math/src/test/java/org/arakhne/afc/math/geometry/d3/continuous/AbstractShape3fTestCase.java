@@ -470,12 +470,7 @@ public abstract class AbstractShape3fTestCase<T extends Shape3F> {
 		}
 		return true;
 	}
-	
-	
-	
-	
-	
-	
+		
 	
 	
 	/**

@@ -235,7 +235,7 @@ public class Segment3f extends AbstractSegment3F {
 	 */
 	@Override
 	public double getY2() {
-		return this.pivot.getX() + this.d.getX();
+		return this.pivot.getY() + this.d.getY();
 	}
 
 	/**

@@ -163,7 +163,7 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 		double px2 = sx2 - centerx;
 		double py2 = sy2 - centery;
 		double pz2 = sz2 - centerz;
-		
+
 		double x1 = FunctionalVector3D.dotProduct(px1, py1, pz1, axis1x, axis1y, axis1z);
 		double y1 = FunctionalVector3D.dotProduct(px1, py1, pz1, axis2x, axis2y, axis2z);
 		double z1 = FunctionalVector3D.dotProduct(px1, py1, pz1, axis3x, axis3y, axis3z);
@@ -321,27 +321,32 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 	public static double computeLineLineIntersectionFactor(
 			double x1, double y1, double z1, double x2, double y2, double z2,
 			double x3, double y3, double z3, double x4, double y4, double z4) {
+
+		//We compute the 4 vectors P1P2, P3P4, P1P3 and P2P4
 		Vector3f a = new Vector3f(x2 - x1, y2 - y1, z2 - z1); 
 		Vector3f b = new Vector3f(x4 - x3, y4 - y3, z4 - z3); 
 		Vector3f c = new Vector3f(x3 - x1, y3 - y1, z3 - z1); 
 
-		if (MathUtil.isEpsilonZero(c.lengthSquared())) {
+		Vector3D v = a.cross(b);
+		
+		//If the cross product is zero then the two segments are parallels
+		if (MathUtil.isEpsilonZero(v.lengthSquared())) {
 			return Double.NaN;
 		}
 
-		Vector3D v = a.cross(b);
-		if (MathUtil.isEpsilonZero(c.dot(v))) {
+		//If the determinant det(c,a,b)=c.(a x b)!=0 then the two segment are not colinears
+		if (!MathUtil.isEpsilonZero(c.dot(v))) {
 			return Double.NaN;
 		}
 
 		return FunctionalVector3D.determinant(
 				c.getX(), c.getY(), c.getZ(),
 				b.getX(), b.getY(), b.getZ(),
-				v.getX(), v.getY(), v.getZ()) / c.lengthSquared();
+				v.getX(), v.getY(), v.getZ()) / v.lengthSquared();
 	}
 
 	/**
-	 * Replies one position factor for the intersection point between two lines.
+	 * Replies two position factors for the intersection point between two lines.
 	 * <p>
 	 * Let line equations for L1 and L2:<br>
 	 * <code>L1: P1 + factor1 * (P2-P1)</code><br>
@@ -363,33 +368,43 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 	 * @param x4 is the second point of the second line.
 	 * @param y4 is the second point of the second line.
 	 * @param z4 is the second point of the second line.
-	 * @return the tuple (<code>factor1</code>, <code>factor1</code>) or <code>null</code> if no intersection.
+	 * @return the tuple (<code>factor1</code>, <code>factor2</code>) or <code>null</code> if no intersection.
 	 */
 	public static Pair<Double,Double> computeLineLineIntersectionFactors(
 			double x1, double y1, double z1, double x2, double y2, double z2,
 			double x3, double y3, double z3, double x4, double y4, double z4) {
+
+		//We compute the 4 vectors P1P2, P3P4, P1P3 and P2P4
 		Vector3f a = new Vector3f(x2 - x1, y2 - y1, z2 - z1); 
 		Vector3f b = new Vector3f(x4 - x3, y4 - y3, z4 - z3); 
 		Vector3f c = new Vector3f(x3 - x1, y3 - y1, z3 - z1); 
-
-		if (MathUtil.isEpsilonZero(c.lengthSquared())) {
+		
+		Vector3D v = a.cross(b);
+		
+		/*System.out.println("a :"+a.toString());
+		System.out.println("b :"+b.toString());
+		System.out.println("c :"+c.toString());
+		System.out.println("v :"+v.toString());*/
+		
+		//If the cross product is zero then the two segments are parallels
+		if (MathUtil.isEpsilonZero(v.lengthSquared())) {
 			return null;
 		}
 
-		Vector3D v = a.cross(b);
-		if (MathUtil.isEpsilonZero(c.dot(v))) {
+		//If the determinant det(c,a,b)=c.(a x b)!=0 then the two segment are not colinears
+		if (!MathUtil.isEpsilonZero(c.dot(v))) {
 			return null;
 		}
 
 		double factor1 = FunctionalVector3D.determinant(
 				c.getX(), c.getY(), c.getZ(),
 				b.getX(), b.getY(), b.getZ(),
-				v.getX(), v.getY(), v.getZ()) / c.lengthSquared();
+				v.getX(), v.getY(), v.getZ()) / v.lengthSquared();
 
 		double factor2 = FunctionalVector3D.determinant(
 				c.getX(), c.getY(), c.getZ(),
 				a.getX(), a.getY(), a.getZ(),
-				v.getX(), v.getY(), v.getZ()) / c.lengthSquared();
+				v.getX(), v.getY(), v.getZ()) / v.lengthSquared();
 
 		return new Pair<>(new Double(factor1), new Double(factor2));
 	}
@@ -1070,7 +1085,7 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 		double d = u.dot(w);
 		double e = v.dot(w);
 		double D = a * c - b * b;
-		
+
 		double sc, sN, tc, tN;
 		double sD = D;
 		double tD = D;
@@ -1134,7 +1149,7 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 
 		// get the difference of the two closest points
 		// =  S1(sc) - S2(tc)
-		
+
 		// reuse u, v, w
 		u.scale(sc);
 		w.add(u);
@@ -1144,50 +1159,50 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 		return w.lengthSquared();
 	}
 
-//	/** First point on the line.
-//	 */
-//	protected final Point3f pivot = new Point3f();
-//
-//	/** Direction vector.
-//	 */
-//	protected final Vector3f d = new Vector3f();
-//
-//	/**
-//	 */
-//	public AbstractSegment3F() {
-//		super();
-//	}
-//
-//	/**
-//	 * @param p1 is first point on the line
-//	 * @param p2 is second point on the line
-//	 */
-//	public AbstractSegment3F(Point3D p1, Point3D p2) {
-//		this.pivot.set(p1);
-//		this.d.sub(p2, p1);
-//	}
-//
-//	/**
-//	 * @param pivot1 is a point on the line
-//	 * @param direction is the direction of the line
-//	 */
-//	public AbstractSegment3F(Point3D pivot1, Vector3D direction) {
-//		this.pivot.set(pivot1);
-//		this.d.set(direction);
-//	}
-//
-//	/**
-//	 * @param x1 x coordinate of the first point of the segment.
-//	 * @param y1 y coordinate of the first point of the segment.
-//	 * @param z1 z coordinate of the first point of the segment.
-//	 * @param x2 x coordinate of the second point of the segment.
-//	 * @param y2 y coordinate of the second point of the segment.
-//	 * @param z2 z coordinate of the second point of the segment.
-//	 */
-//	public AbstractSegment3F(double x1, double y1, double z1, double x2, double y2, double z2) {
-//		this.pivot.set(x1, y1, z1);
-//		this.d.set(x2 - x1, y2 - y1, z2 - z1);
-//	}
+	//	/** First point on the line.
+	//	 */
+	//	protected final Point3f pivot = new Point3f();
+	//
+	//	/** Direction vector.
+	//	 */
+	//	protected final Vector3f d = new Vector3f();
+	//
+	//	/**
+	//	 */
+	//	public AbstractSegment3F() {
+	//		super();
+	//	}
+	//
+	//	/**
+	//	 * @param p1 is first point on the line
+	//	 * @param p2 is second point on the line
+	//	 */
+	//	public AbstractSegment3F(Point3D p1, Point3D p2) {
+	//		this.pivot.set(p1);
+	//		this.d.sub(p2, p1);
+	//	}
+	//
+	//	/**
+	//	 * @param pivot1 is a point on the line
+	//	 * @param direction is the direction of the line
+	//	 */
+	//	public AbstractSegment3F(Point3D pivot1, Vector3D direction) {
+	//		this.pivot.set(pivot1);
+	//		this.d.set(direction);
+	//	}
+	//
+	//	/**
+	//	 * @param x1 x coordinate of the first point of the segment.
+	//	 * @param y1 y coordinate of the first point of the segment.
+	//	 * @param z1 z coordinate of the first point of the segment.
+	//	 * @param x2 x coordinate of the second point of the segment.
+	//	 * @param y2 y coordinate of the second point of the segment.
+	//	 * @param z2 z coordinate of the second point of the segment.
+	//	 */
+	//	public AbstractSegment3F(double x1, double y1, double z1, double x2, double y2, double z2) {
+	//		this.pivot.set(x1, y1, z1);
+	//		this.d.set(x2 - x1, y2 - y1, z2 - z1);
+	//	}
 
 	/**
 	 * {@inheritDoc}
@@ -1220,7 +1235,7 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 	 */
 	abstract public FunctionalVector3D getSegmentVector();
 
-	
+
 	/**
 	 * Replies a copy of the vector that corresponds to the segment.
 	 * The vector is from P1 to P2, where P1 is the first point
@@ -1229,7 +1244,7 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 	 * @return the copy of the vector from P1 to P2. It is not a unit vector.
 	 */
 	abstract public FunctionalVector3D getCloneSegmentVector();
-	
+
 	/**
 	 * Replies the direction of the segment.
 	 * The vector is the unit vector that is colinear to the
@@ -1441,9 +1456,9 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 		AbstractSegment3F newB = this.clone();
 		newB.transform(transformationMatrix);
 		return newB;
-		
+
 	}
-	
+
 	@Override
 	public void translate(double dx, double dy, double dz) {
 		this.getP1().add(dx, dy, dz);
@@ -1501,6 +1516,27 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 				MathConstants.EPSILON);
 	}
 
+	public Point3f computeIntersection (Segment3f s3) {
+		/*System.out.println("P1 = "+this.getP1().toString());
+		System.out.println("P2 = "+this.getP2().toString());
+		System.out.println("P3 = "+s3.getP1().toString());
+		System.out.println("P4 = "+s3.getP2().toString());*/
+		
+		if(this.getP1().equals(s3.getP1()) || this.getP1().equals(s3.getP2())) {
+			//System.out.println("P1=P3 ou P1=P4");
+			return (Point3f) this.getP1();
+		}
+		else if (this.getP2().equals(s3.getP1()) || this.getP2().equals(s3.getP2())) {
+			//System.out.println("P2=P3 ou P2=P4");
+			return (Point3f) this.getP2();
+		}
+		return computeSegmentSegmentIntersection(
+				this.getX1(), this.getY1(), this.getZ1(), 
+				this.getX2(), this.getY2(), this.getZ2(), 
+				s3.getX1(), s3.getY1(), s3.getZ1(), 
+				s3.getX2(), s3.getY2(), s3.getZ2());
+	}
+	
 	@Override
 	public boolean intersects(AlignedBox3f s) {
 		return intersectsSegmentAlignedBox(
@@ -1520,12 +1556,15 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 
 	@Override
 	public boolean intersects(AbstractSegment3F s) {
-		return intersectsSegmentSegmentWithoutEnds(
+		if(this.getP1().equals(s.getP1()) || this.getP1().equals(s.getP2()) || this.getP2().equals(s.getP1()) || this.getP2().equals(s.getP2())) {
+			return true;
+		}
+		return intersectsSegmentSegmentWithEnds(
 				this.getX1(), this.getY1(), this.getZ1(),
 				this.getX2(), this.getY2(), this.getZ2(),
 				s.getX1(), s.getY1(), s.getZ1(),
 				s.getX2(), s.getY2(), s.getZ2());
-	}
+	}	
 
 	@Override
 	public boolean intersects(Triangle3f s) {

@@ -27,7 +27,9 @@
  */
 package org.arakhne.afc.math.geometry.d3.continuous;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
@@ -65,8 +67,8 @@ public class Segment3fTest extends AbstractShape3fTestCase<AbstractSegment3F> {
 	@Test
 	@Override
 	public void distancePoint3D() {
-		AbstractSegment3F seg = new Segment3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
-		Point3f pnt = new Point3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		AbstractSegment3F seg = new Segment3f(this.random.nextDouble()*20,this.random.nextDouble()*20,this.random.nextDouble()*20,this.random.nextDouble()*20,this.random.nextDouble()*20,this.random.nextDouble()*20);
+		Point3f pnt = new Point3f(this.random.nextDouble()*20,this.random.nextDouble()*20,this.random.nextDouble()*20);
 		
 		Vector3f vect = new Vector3f(seg.getP1().getX()-pnt.getX(),seg.getP1().getY()-pnt.getY(),seg.getP1().getZ()-pnt.getZ());
 		double angle = vect.angle(seg.getDirection());
@@ -75,7 +77,6 @@ public class Segment3fTest extends AbstractShape3fTestCase<AbstractSegment3F> {
 		assertEpsilonEquals(distance,seg.distanceLine(pnt));
 	}
 
-	@SuppressWarnings("unused")
 	@Test
 	@Override
 	public void containsPoint3D() {
@@ -87,9 +88,7 @@ public class Segment3fTest extends AbstractShape3fTestCase<AbstractSegment3F> {
 		Vector3f v3 = (Vector3f) seg.getDirection();
 		
 		assertTrue(v1.isColinear(v3)==seg.contains(p));
-		assertTrue(v2.isColinear(v3)==seg.contains(p));
-		
-		
+		assertTrue(v2.isColinear(v3)==seg.contains(p));		
 	}
 
 	@Test
@@ -170,7 +169,49 @@ public class Segment3fTest extends AbstractShape3fTestCase<AbstractSegment3F> {
 	@Test
 	@Override
 	public void intersectsSegment3f() {
-		throw new UnsupportedOperationException();
+		Segment3f s1 = new Segment3f(0,0,0,10,10,0);
+		Segment3f s2 = new Segment3f(0,10,0,10,0,0);
+		Segment3f s3 = new Segment3f(0,0,0,12,0,0);
+		Segment3f s4 = new Segment3f(-3,7,14,12,-13,-13);
+		Segment3f s5 = new Segment3f(0,1/2f,1/3f,1,1/2f,2/3f);
+		Segment3f s6 = new Segment3f(-1/2f,2/3f,-1/3f,1/2f,-2/3f,1/3f);
+		Segment3f s7 = new Segment3f(10,10,0,0,0,10);
+		Segment3f s8 = new Segment3f(1,1,1,11,11,1);
+		
+		assertTrue(s1.intersects(s2));
+		assertTrue(s1.intersects(s3));
+		assertFalse(s1.intersects(s4));
+		assertFalse(s1.intersects(s5));
+		assertTrue(s1.intersects(s6));
+		assertTrue(s1.intersects(s7));
+		assertFalse(s1.intersects(s8));
+		
+		assertTrue(s2.intersects(s3));
+		assertFalse(s2.intersects(s4));
+		assertFalse(s2.intersects(s5));
+		assertFalse(s2.intersects(s6));
+		assertFalse(s2.intersects(s7));
+		assertFalse(s2.intersects(s8));
+		
+		assertFalse(s3.intersects(s4));
+		assertFalse(s3.intersects(s5));
+		assertTrue(s3.intersects(s6));
+		assertFalse(s3.intersects(s7));
+		assertFalse(s3.intersects(s8));
+		
+		assertFalse(s4.intersects(s5));
+		assertFalse(s4.intersects(s6));
+		assertFalse(s4.intersects(s7));
+		assertFalse(s4.intersects(s8));
+		
+		assertFalse(s5.intersects(s6));
+		assertFalse(s5.intersects(s7));
+		assertFalse(s5.intersects(s8));
+		
+		assertFalse(s6.intersects(s7));
+		assertFalse(s6.intersects(s8));
+		
+		assertTrue(s7.intersects(s8));
 	}
 
 	@Test

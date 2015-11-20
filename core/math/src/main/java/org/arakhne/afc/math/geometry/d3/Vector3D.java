@@ -134,7 +134,7 @@ public interface Vector3D extends Tuple3D<Vector3D> {
 	 * <img src="doc-files/right_handed_cross_product.png" alt="[Right-Handed Cross Product]">
 	 * 
 	 * @param v1 the other vector
-	 * @return the dot product.
+	 * @return the cross product.
 	 * @see #crossLeftHand(Vector3D)
 	 * @see #crossRightHand(Vector3D)
 	 */

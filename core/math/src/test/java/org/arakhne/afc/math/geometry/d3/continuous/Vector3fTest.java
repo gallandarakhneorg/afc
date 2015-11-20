@@ -96,15 +96,15 @@ public class Vector3fTest extends AbstractMathTestCase {
 
 	@Test
 	public void determinantDoubleDoubleDoubleDoubleDoubleDoubleDoubleDoubleDouble() {
-		double a = this.random.nextDouble();
-		double b = this.random.nextDouble();
-		double c = this.random.nextDouble(); 
-		double d = this.random.nextDouble();
-		double e = this.random.nextDouble();
-		double f = this.random.nextDouble(); 
-		double g = this.random.nextDouble();
-		double h = this.random.nextDouble();
-		double i = this.random.nextDouble(); 
+		double a = this.random.nextDouble()*20;
+		double b = this.random.nextDouble()*20;
+		double c = this.random.nextDouble()*20; 
+		double d = this.random.nextDouble()*20;
+		double e = this.random.nextDouble()*20;
+		double f = this.random.nextDouble()*20; 
+		double g = this.random.nextDouble()*20;
+		double h = this.random.nextDouble()*20;
+		double i = this.random.nextDouble()*20; 
 		Matrix3f matrix = new Matrix3f(a,b,c,
 								       d,e,f,
 								       g,h,i);
