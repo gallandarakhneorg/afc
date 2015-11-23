@@ -491,7 +491,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 	 * @param p
 	 * @return <code>true</code> if the point is a control point of the path.
 	 */
-	boolean containsPoint(Point3D p) {
+	boolean containsControlPoint(Point3D p) {
 		double x, y, z;
 		for(int i=0; i<this.numCoords;) {
 			x = this.coords[i++];
@@ -1483,7 +1483,6 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 		AlignedBox3f ab = this.toBoundingBox();
 		return ab.contains(new Point3f(x,y,z));
 	}
-
 
 	public boolean equals(Path3f path) {
 		return (this.numCoords==path.numCoords
@@ -2760,7 +2759,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 		@Override
 		public boolean contains(Object o) {
 			if (o instanceof Point3D) {
-				return Path3f.this.containsPoint((Point3D)o);
+				return Path3f.this.containsControlPoint((Point3D)o);
 			}
 			return false;
 		}
@@ -2812,7 +2811,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 		public boolean containsAll(Collection<?> c) {
 			for(Object obj : c) {
 				if ((!(obj instanceof Point3D))
-						||(!Path3f.this.containsPoint((Point3D)obj))) {
+						||(!Path3f.this.containsControlPoint((Point3D)obj))) {
 					return false;
 				}
 			}

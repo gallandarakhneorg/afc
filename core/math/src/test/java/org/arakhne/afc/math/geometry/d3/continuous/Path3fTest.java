@@ -20,6 +20,7 @@
  */
 package org.arakhne.afc.math.geometry.d3.continuous;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -27,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.arakhne.afc.math.AbstractMathTestCase;
+import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.junit.Test;
 
@@ -201,9 +203,53 @@ public class Path3fTest extends AbstractMathTestCase {
 		assertFalse(p4.isPolyline());
 	}
 	
+	@SuppressWarnings("boxing")
 	@Test
     public void containsDoubleDoubleDouble() {
-		throw new UnsupportedOperationException();
+		Path3f p = new Path3f();
+		p.moveTo(0, 0, 0);
+		p.lineTo(1, 1, 1);
+		p.quadTo(3, 0, 0, 4, 3, 0.5);
+		p.curveTo(5, -1, 0, 6, 5, 0, 7, -5, 0);
+		p.closePath();
+		
+		AlignedBox3f box = p.toBoundingBox();
+		
+		Point3f randomP1 = new Point3f(this.random.nextDouble()*20-10,this.random.nextDouble()*20-10,this.random.nextDouble()*20-10);
+		Point3f randomP2 = new Point3f(this.random.nextDouble()*20-10,this.random.nextDouble()*20-10,this.random.nextDouble()*20-10);
+		Point3f randomP3 = new Point3f(this.random.nextDouble()*20-10,this.random.nextDouble()*20-10,this.random.nextDouble()*20-10);
+		Point3f randomP4 = new Point3f(this.random.nextDouble()*20-10,this.random.nextDouble()*20-10,this.random.nextDouble()*20-10);
+		Point3f randomP5 = new Point3f(this.random.nextDouble()*20-10,this.random.nextDouble()*20-10,this.random.nextDouble()*20-10);
+		Point3f randomP6 = new Point3f(this.random.nextDouble()*20-10,this.random.nextDouble()*20-10,this.random.nextDouble()*20-10);
+		Point3f randomP7 = new Point3f(this.random.nextDouble()*20-10,this.random.nextDouble()*20-10,this.random.nextDouble()*20-10);
+		Point3f randomP8 = new Point3f(this.random.nextDouble()*20-10,this.random.nextDouble()*20-10,this.random.nextDouble()*20-10);
+		Point3f randomP9 = new Point3f(this.random.nextDouble()*20-10,this.random.nextDouble()*20-10,this.random.nextDouble()*20-10);
+		Point3f randomP10 = new Point3f(this.random.nextDouble()*20-10,this.random.nextDouble()*20-10,this.random.nextDouble()*20-10);
+		Point3f randomP11 = new Point3f(this.random.nextDouble()*20-10,this.random.nextDouble()*20-10,this.random.nextDouble()*20-10);
+		Point3f randomP12 = new Point3f(this.random.nextDouble()*20-10,this.random.nextDouble()*20-10,this.random.nextDouble()*20-10);
+		Point3f randomP13 = new Point3f(this.random.nextDouble()*20-10,this.random.nextDouble()*20-10,this.random.nextDouble()*20-10);
+		Point3f randomP14 = new Point3f(this.random.nextDouble()*20-10,this.random.nextDouble()*20-10,this.random.nextDouble()*20-10);
+		Point3f randomP15 = new Point3f(this.random.nextDouble()*20-10,this.random.nextDouble()*20-10,this.random.nextDouble()*20-10);
+		Point3f randomP16 = new Point3f(this.random.nextDouble()*20-10,this.random.nextDouble()*20-10,this.random.nextDouble()*20-10);
+		Point3f randomP17 = new Point3f(this.random.nextDouble()*20-10,this.random.nextDouble()*20-10,this.random.nextDouble()*20-10);
+		
+		assertEquals(box.contains(randomP1),p.contains(randomP1.getX(),randomP1.getY(),randomP1.getZ()));
+		assertEquals(box.contains(randomP2),p.contains(randomP2.getX(),randomP2.getY(),randomP2.getZ()));
+		assertEquals(box.contains(randomP3),p.contains(randomP3.getX(),randomP3.getY(),randomP3.getZ()));
+		assertEquals(box.contains(randomP4),p.contains(randomP4.getX(),randomP4.getY(),randomP4.getZ()));
+		assertEquals(box.contains(randomP5),p.contains(randomP5.getX(),randomP5.getY(),randomP5.getZ()));
+		assertEquals(box.contains(randomP6),p.contains(randomP6.getX(),randomP6.getY(),randomP6.getZ()));
+		assertEquals(box.contains(randomP7),p.contains(randomP7.getX(),randomP7.getY(),randomP7.getZ()));
+		assertEquals(box.contains(randomP8),p.contains(randomP8.getX(),randomP8.getY(),randomP8.getZ()));
+		assertEquals(box.contains(randomP9),p.contains(randomP9.getX(),randomP9.getY(),randomP9.getZ()));
+		assertEquals(box.contains(randomP10),p.contains(randomP10.getX(),randomP10.getY(),randomP10.getZ()));
+		assertEquals(box.contains(randomP11),p.contains(randomP11.getX(),randomP11.getY(),randomP11.getZ()));
+		assertEquals(box.contains(randomP12),p.contains(randomP12.getX(),randomP12.getY(),randomP12.getZ()));
+		assertEquals(box.contains(randomP13),p.contains(randomP13.getX(),randomP13.getY(),randomP13.getZ()));
+		assertEquals(box.contains(randomP14),p.contains(randomP14.getX(),randomP14.getY(),randomP14.getZ()));
+		assertEquals(box.contains(randomP15),p.contains(randomP15.getX(),randomP15.getY(),randomP15.getZ()));
+		assertEquals(box.contains(randomP16),p.contains(randomP16.getX(),randomP16.getY(),randomP16.getZ()));
+		assertEquals(box.contains(randomP17),p.contains(randomP17.getX(),randomP17.getY(),randomP17.getZ()));
 	}
 	
 	@Test
@@ -236,8 +282,33 @@ public class Path3fTest extends AbstractMathTestCase {
 	}
 	
 	@Test
-    public void containsPoint3D() {
-		throw new UnsupportedOperationException();
+    public void containsControlPoint3D() {
+		Point3f p1 = this.randomPoint3f();
+		Point3f p2 = this.randomPoint3f();
+		Point3f p3 = this.randomPoint3f();
+		Point3f p4 = this.randomPoint3f();
+		Point3f p5 = this.randomPoint3f();
+		Point3f p6 = this.randomPoint3f();
+		Point3f p7 = this.randomPoint3f();
+		
+		Path3f path = new Path3f();
+		path.moveTo(p1.getX(),p1.getY(),p1.getZ());
+		path.lineTo(p2.getX(),p2.getY(),p2.getZ());
+		path.quadTo(p3.getX(),p3.getY(),p3.getZ(),p4.getX(),p4.getY(),p4.getZ());
+		path.curveTo(p5.getX(),p5.getY(),p5.getZ(), p6.getX(),p6.getY(),p6.getZ(), p7.getX(),p7.getY(),p7.getZ());
+		path.closePath();
+		
+		assertTrue(path.containsControlPoint(p1));
+		assertTrue(path.containsControlPoint(p2));
+		assertTrue(path.containsControlPoint(p3));
+		assertTrue(path.containsControlPoint(p4));
+		assertTrue(path.containsControlPoint(p5));
+		assertTrue(path.containsControlPoint(p6));
+		assertTrue(path.containsControlPoint(p7));
+		
+		p1.add(1000,100,100);
+		
+		assertFalse(path.containsControlPoint(p1));
 	}
 	
 	@Test
@@ -303,7 +374,7 @@ public class Path3fTest extends AbstractMathTestCase {
 		
 		List<Point3f> list = new ArrayList<>();
 		
-		Point3f randomPoint = randomPoint3f();
+		Point3f randomPoint = new Point3f(this.random.nextDouble()*50-25,this.random.nextDouble()*50-25,this.random.nextDouble()*50-25);
 		
 		list.add((Point3f) (new Segment3f(0f, 0f, 0f,1f, 1f, 1f)).getClosestPointTo(randomPoint));
 		list.add((Point3f) (new Segment3f(1f, 1f, 1f,-1f, 1f, 1f)).getClosestPointTo(randomPoint));
@@ -319,7 +390,11 @@ public class Path3fTest extends AbstractMathTestCase {
 			}
 		}
 		
-		assertTrue(closestPoint.equals(p.getClosestPointTo(randomPoint)));
+		System.out.println("CLOSEST :\n"+closestPoint.toString() + " " + closestPoint.distance(randomPoint));
+		System.out.println(p.getClosestPointTo(randomPoint).toString() + " " + p.getClosestPointTo(randomPoint).distance(randomPoint));
+		
+		
+		assertTrue(closestPoint.equals(p.getClosestPointTo(randomPoint)) || p.getClosestPointTo(randomPoint).distance(randomPoint)==closestPoint.distance(randomPoint));
 	}
 	
 	@Test
@@ -335,8 +410,8 @@ public class Path3fTest extends AbstractMathTestCase {
 		
 		List<Point3f> list = new ArrayList<>();
 		
-		Point3f randomPoint = randomPoint3f();
-		
+		Point3f randomPoint = new Point3f(this.random.nextDouble()*50-25,this.random.nextDouble()*50-25,this.random.nextDouble()*50-25);
+
 		list.add((Point3f) (new Segment3f(0f, 0f, 0f,1f, 1f, 1f)).getFarthestPointTo(randomPoint));
 		list.add((Point3f) (new Segment3f(1f, 1f, 1f,-1f, 1f, 1f)).getFarthestPointTo(randomPoint));
 		list.add((Point3f) (new Segment3f(-1f, 1f, 1f,0.5f, -3f, 7f)).getFarthestPointTo(randomPoint));
@@ -351,7 +426,10 @@ public class Path3fTest extends AbstractMathTestCase {
 			}
 		}
 		
-		assertTrue(farthestPoint.equals(p.getFarthestPointTo(randomPoint)));
+		System.out.println("FARTHEST :\n"+farthestPoint.toString() + " " + farthestPoint.distance(randomPoint));
+		System.out.println(p.getFarthestPointTo(randomPoint).toString() + " " + p.getFarthestPointTo(randomPoint).distance(randomPoint));
+		
+		assertTrue(farthestPoint.equals(p.getFarthestPointTo(randomPoint))|| p.getFarthestPointTo(randomPoint).distance(randomPoint)==farthestPoint.distance(randomPoint));
 	}
 	
 	@Test
@@ -575,7 +653,35 @@ public class Path3fTest extends AbstractMathTestCase {
 	
 	@Test
     public void add() {
-		throw new UnsupportedOperationException();
+		Path3f p = new Path3f();
+		p.moveTo(0f, 0f, 0f);
+		p.lineTo(1f, 1f, 1f);
+		p.quadTo(3f, 0f, 0f, 4f, 3f, 0.5);
+		p.curveTo(5f, -1f, 0f, 6f, 5f, 0f, 7f, -5f, 0f);
+		
+		Path3f p2 = new Path3f();
+		p2.moveTo(7f, -5f, 0f);
+		p2.lineTo(4f, 6f, 7f);
+		p2.lineTo(0f, 8f, 3.5);
+		p2.lineTo(5f, -3f, 2f);
+		p2.closePath();
+		
+		Path3f p3 = new Path3f();
+		p3.moveTo(0f, 0f, 0f);
+		p3.lineTo(1f, 1f, 1f);
+		p3.quadTo(3f, 0f, 0f, 4f, 3f, 0.5);
+		p3.curveTo(5f, -1f, 0f, 6f, 5f, 0f, 7f, -5f, 0f);
+		p3.lineTo(4f, 6f, 7f);
+		p3.lineTo(0f, 8f, 3.5);
+		p3.lineTo(5f, -3f, 2f);
+		p3.closePath();
+		
+		PathIterator3f iterator = p2.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO);
+		iterator.next();
+		p.add(iterator);
+		
+		assertTrue(p.equals(p3));
+		
 	}
 	
 	@Test
