@@ -242,7 +242,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 				if (element.getToZ()<zmin) zmin = element.getToZ();
 				if (element.getToX()>xmax) xmax = element.getToX();
 				if (element.getToY()>ymax) ymax = element.getToY();
-				if (element.getToZ()<zmax) zmax = element.getToZ();
+				if (element.getToZ()>zmax) zmax = element.getToZ();
 				foundOneLine = true;
 				break;
 			case CURVE_TO:
@@ -318,6 +318,8 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 		}
 		return false;
 	}
+	
+	
 	//---------------------------------------------------------------
 
 	/** Array of types.

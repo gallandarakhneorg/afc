@@ -23,6 +23,9 @@ package org.arakhne.afc.math.geometry.d3.continuous;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.arakhne.afc.math.AbstractMathTestCase;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.junit.Test;
@@ -73,16 +76,22 @@ public class Path3fTest extends AbstractMathTestCase {
 		rTrans.lineTo(-12f, 19f, 0f);
 		rTrans.closePath();
 		
+		Path3f rCurv = new Path3f();
+		rCurv.moveTo(0f, 0f, 0f);
+		rCurv.curveTo(5,-1f,0f,-5f,1,0f,-12f, 19f, 0f);
+		rCurv.closePath();
+		
 		assertTrue(r.intersects(r));
 		
 		assertTrue(rTrans.intersects(r));
+		assertTrue(rCurv.intersects(r));
 		
-		t.makeTranslationMatrix(10, 10, 10);
+		t.makeTranslationMatrix(20, 20, 20);
 		rTrans.transform(t);
-		//System.out.println(rTrans.toString());
+		rCurv.transform(t);
 		
 		assertFalse(rTrans.intersects(r));
-		
+		assertFalse(rCurv.intersects(r));
 	}
 	
 	@Test
@@ -163,7 +172,33 @@ public class Path3fTest extends AbstractMathTestCase {
 	
 	@Test
     public void isPolyline() {
-		throw new UnsupportedOperationException();
+		Path3f p = new Path3f();
+		p.moveTo(0f, 0f, 0f);
+		p.lineTo(1f, 1f, 1f);
+		p.quadTo(3f, 0f, 0f, 4f, 3f, 0.5);
+		p.curveTo(5f, -1f, 0f, 6f, 5f, 0f, 7f, -5f, 0f);
+		p.closePath();
+		
+		Path3f p2 = new Path3f();
+		p2.moveTo(0f, 0f, 0f);
+		p2.lineTo(1f, 1f, 1f);
+		p2.closePath();
+		
+		Path3f p3 = new Path3f();
+		p3.moveTo(0f, 0f, 0f);
+		p3.quadTo(3f, 0f, 0f, 4f, 3f, 0.5);
+		p3.closePath();
+		
+		Path3f p4 = new Path3f();
+		p4.moveTo(0f, 0f, 0f);
+		p4.curveTo(5f, -1f, 0f, 6f, 5f, 0f, 7f, -5f, 0f);
+		p4.closePath();
+		
+		
+		assertFalse(p.isPolyline());
+		assertTrue(p2.isPolyline());
+		assertFalse(p3.isPolyline());
+		assertFalse(p4.isPolyline());
 	}
 	
 	@Test
@@ -257,7 +292,34 @@ public class Path3fTest extends AbstractMathTestCase {
 	
 	@Test
     public void getClosestPointTo() {
-		throw new UnsupportedOperationException();
+		Path3f p = new Path3f();
+		p.moveTo(0f, 0f, 0f);
+		p.lineTo(1f, 1f, 1f);
+		p.lineTo(-1f, 1f, 1f);
+		p.lineTo(0.5f, -3f, 7f);
+		p.lineTo(6f, 2f, 0f);
+		p.lineTo(0f, 5f, 0f);
+		p.closePath();
+		
+		List<Point3f> list = new ArrayList<>();
+		
+		Point3f randomPoint = randomPoint3f();
+		
+		list.add((Point3f) (new Segment3f(0f, 0f, 0f,1f, 1f, 1f)).getClosestPointTo(randomPoint));
+		list.add((Point3f) (new Segment3f(1f, 1f, 1f,-1f, 1f, 1f)).getClosestPointTo(randomPoint));
+		list.add((Point3f) (new Segment3f(-1f, 1f, 1f,0.5f, -3f, 7f)).getClosestPointTo(randomPoint));
+		list.add((Point3f) (new Segment3f(0.5f, -3f, 7f,6f, 2f, 0f)).getClosestPointTo(randomPoint));
+		list.add((Point3f) (new Segment3f(6f, 2f, 0f,0f, 5f, 0f)).getClosestPointTo(randomPoint));
+		
+		Point3f closestPoint = new Point3f(0,0,0);
+		
+		for(Point3f point : list) {
+			if (point.distance(randomPoint)<closestPoint.distance(randomPoint)) {
+				closestPoint = point;
+			}
+		}
+		
+		assertTrue(closestPoint.equals(p.getClosestPointTo(randomPoint)));
 	}
 	
 	@Test
@@ -267,7 +329,38 @@ public class Path3fTest extends AbstractMathTestCase {
 	
 	@Test
     public void toBoundingBox() {
-		throw new UnsupportedOperationException();
+		Path3f p = new Path3f();
+		p.moveTo(0f, 0f, 0f);
+		p.lineTo(1f, 1f, 1f);
+		p.quadTo(3f, 0f, 0f, 4f, 3f, 0.5);
+		p.curveTo(5f, -1f, 0f, 6f, 5f, 0f, 7f, -5f, 0f);
+		p.closePath();
+		
+		Path3f p1 = new Path3f();
+		p1.moveTo(0f, 0f, 0f);
+		p1.lineTo(1f, 1f, 1f);
+		p1.lineTo(-1f, 1f, 1f);
+		p1.lineTo(0.5f, -3f, 7f);
+		p1.lineTo(6f, 2f, 0f);
+		p1.lineTo(0f, 5f, 0f);
+		p1.closePath();
+		
+		Path3f p2 = new Path3f();
+		p2.moveTo(-10f, -10f, -10f);
+		p2.lineTo(4f, 7f, 3f);
+		p2.lineTo(-3f, -7f, 5f);
+		p2.lineTo(0.5f, -4f, 7f);
+		p2.lineTo(6f, -9f, 0f);
+		p2.lineTo(0f, 3f, 3f);
+		p2.closePath();
+		
+		AlignedBox3f pBox = new AlignedBox3f(new Point3f(0,-5,0),new Point3f(7,5,1));
+		AlignedBox3f p1Box = new AlignedBox3f(new Point3f(-1,-3,0),new Point3f(6,5,7));
+		AlignedBox3f p2Box = new AlignedBox3f(new Point3f(-10,-10,-10),new Point3f(6,7,7));
+		
+		assertTrue(pBox.equals(p.toBoundingBoxWithCtrlPoints()));
+		assertTrue(p1Box.equals(p1.toBoundingBox()));
+		assertTrue(p2Box.equals(p2.toBoundingBox()));
 	}
 	
 	@Test
@@ -292,7 +385,27 @@ public class Path3fTest extends AbstractMathTestCase {
 	
 	@Test
     public void translate() {
-		throw new UnsupportedOperationException();
+		Path3f p = new Path3f();
+		p.moveTo(0f, 0f, 0f);
+		p.lineTo(1f, 1f, 1f);
+		p.quadTo(3f, 0f, 0f, 4f, 3f, 0.5);
+		p.curveTo(5f, -1f, 0f, 6f, 5f, 0f, 7f, -5f, 0f);
+		p.closePath();
+		
+		double dx = this.random.nextDouble()*20;
+		double dy = this.random.nextDouble()*20;
+		double dz = this.random.nextDouble()*20;
+		
+		Path3f p2 = new Path3f();
+		p2.moveTo(0f+dx, 0f+dy, 0f+dz);
+		p2.lineTo(1f+dx, 1f+dy, 1f+dz);
+		p2.quadTo(3f+dx, 0f+dy, 0f+dz, 4f+dx, 3f+dy, 0.5+dz);
+		p2.curveTo(5f+dx, -1f+dy, 0f+dz, 6f+dx, 5f+dy, 0f+dz, 7f+dx, -5f+dy, 0f+dz);
+		p2.closePath();
+		
+		p.translate(dx, dy, dz);
+		
+		assertTrue(p.equals(p2));		
 	}
 	
 	@Test
@@ -307,7 +420,26 @@ public class Path3fTest extends AbstractMathTestCase {
 	
 	@Test
     public void removeLast() {
-		throw new UnsupportedOperationException();
+		Path3f p = new Path3f();
+		p.moveTo(0f, 0f, 0f);
+		p.lineTo(1f, 1f, 1f);
+		p.quadTo(3f, 0f, 0f, 4f, 3f, 0.5);
+		p.curveTo(5f, -1f, 0f, 6f, 5f, 0f, 7f, -5f, 0f);
+		p.closePath();
+		
+		double size = p.size();
+		p.removeLast();
+		p.removeLast();
+		assertEpsilonEquals(p.size(),size-3);
+		size = p.size();
+		p.removeLast();
+		assertEpsilonEquals(p.size(),size-2);
+		size = p.size();
+		p.removeLast();
+		assertEpsilonEquals(p.size(),size-1);
+		size = p.size();
+		p.removeLast();
+		assertEpsilonEquals(p.size(),size-1);
 	}
 	
 	@Test
@@ -317,12 +449,64 @@ public class Path3fTest extends AbstractMathTestCase {
 	
 	@Test
     public void sizeTest() {
-		throw new UnsupportedOperationException();
+		Path3f p = new Path3f();
+		p.moveTo(0f, 0f, 0f);
+		p.lineTo(1f, 1f, 1f);
+		p.quadTo(3f, 0f, 0f, 4f, 3f, 0.5);
+		p.curveTo(5f, -1f, 0f, 6f, 5f, 0f, 7f, -5f, 0f);
+		p.closePath();
+		
+		Path3f p2 = new Path3f();
+		p2.moveTo(0f, 0f, 0f);
+		p2.lineTo(1f, 1f, 1f);
+		p2.lineTo(2f, 1f, 1f);
+		p2.lineTo(3f, 1f, 1f);
+		p2.lineTo(4f, 1f, 1f);
+		p2.lineTo(5f, 1f, 1f);
+		p2.closePath();
+		
+		Path3f p3 = new Path3f();
+		p3.moveTo(0f, 0f, 0f);
+		p3.quadTo(4f, 3f, 0.5, 1f, 1f, 1f);
+		p3.quadTo(3f, 3f, 0.5, 2f, 1f, 1f);
+		p3.quadTo(5f, 3f, 0.5, 3f, 1f, 1f);
+		p3.closePath();
+		
+		Path3f p4 = new Path3f();
+		p4.moveTo(0f, 0f, 0f);
+		p4.curveTo(5f, -1f, 0f, 6f, 5f, 0f, 7f, -5f, 0f);
+		p4.curveTo(5f, -1f, 0f, 6f, 5f, 0f, 10f, -5f, 20f);
+		p4.curveTo(5f, -1f, 0f, 6f, 5f, 0f, 5f, -5f, 30f);
+		p4.curveTo(5f, -1f, 0f, 6f, 5f, 0f, 3f, -7f, 11f);
+		p4.curveTo(5f, -1f, 0f, 6f, 5f, 0f, 9f, -10f, 16f);
+		p4.curveTo(5f, -1f, 0f, 6f, 5f, 0f, 0f, -10f, 1f);
+		p4.curveTo(5f, -1f, 0f, 6f, 5f, 0f, 3f, 3f, 3f);
+		p.closePath();
+		
+		assertEpsilonEquals(p.size(),7);
+		assertEpsilonEquals(p2.size(),6);
+		assertEpsilonEquals(p3.size(),7);
+		assertEpsilonEquals(p4.size(),22);		
 	}
 	
 	@Test
     public void toDoubleArrayTest() {
-		throw new UnsupportedOperationException();
+		Path3f p = new Path3f();
+		p.moveTo(0f, 0f, 0f);
+		p.lineTo(1f, 1f, 1f);
+		p.quadTo(3f, 0f, 0f, 4f, 3f, 0.5);
+		p.curveTo(5f, -1f, 0f, 6f, 5f, 0f, 7f, -5f, 0f);
+		p.closePath();
+		
+		double [] array = p.toDoubleArray();
+		
+		assertTrue(new Point3f(array[0],array[1],array[2]).equals(new Point3f(0,0,0)));
+		assertTrue(new Point3f(array[3],array[4],array[5]).equals(new Point3f(1,1,1)));
+		assertTrue(new Point3f(array[6],array[7],array[8]).equals(new Point3f(3,0,0)));
+		assertTrue(new Point3f(array[9],array[10],array[11]).equals(new Point3f(4,3,0.5)));
+		assertTrue(new Point3f(array[12],array[13],array[14]).equals(new Point3f(5,-1,0)));
+		assertTrue(new Point3f(array[15],array[16],array[17]).equals(new Point3f(6,5,0)));
+		assertTrue(new Point3f(array[18],array[19],array[20]).equals(new Point3f(7,-5,0)));
 	}
 	
 	@Test
