@@ -151,7 +151,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 	 */
 	public static Point3D getFarthestPointTo(PathIterator3f pathIterator, double x, double y, double z) {
 		Point3D farthest = null;
-		double bestDist = Double.POSITIVE_INFINITY;
+		double bestDist = Double.NEGATIVE_INFINITY;
 		Point3D candidate;
 		AbstractPathElement3F pe = pathIterator.next();
 		Path3f subPath;
@@ -207,7 +207,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 
 			if (candidate!=null) {
 				double d = candidate.distanceSquared(new Point3f(x,y,z));
-				if (d<bestDist) {
+				if (d>bestDist) {
 					bestDist = d;
 					farthest = candidate;
 				}

@@ -324,7 +324,34 @@ public class Path3fTest extends AbstractMathTestCase {
 	
 	@Test
     public void getFarthestPointTo() {
-		throw new UnsupportedOperationException();
+		Path3f p = new Path3f();
+		p.moveTo(0f, 0f, 0f);
+		p.lineTo(1f, 1f, 1f);
+		p.lineTo(-1f, 1f, 1f);
+		p.lineTo(0.5f, -3f, 7f);
+		p.lineTo(6f, 2f, 0f);
+		p.lineTo(0f, 5f, 0f);
+		p.closePath();
+		
+		List<Point3f> list = new ArrayList<>();
+		
+		Point3f randomPoint = randomPoint3f();
+		
+		list.add((Point3f) (new Segment3f(0f, 0f, 0f,1f, 1f, 1f)).getFarthestPointTo(randomPoint));
+		list.add((Point3f) (new Segment3f(1f, 1f, 1f,-1f, 1f, 1f)).getFarthestPointTo(randomPoint));
+		list.add((Point3f) (new Segment3f(-1f, 1f, 1f,0.5f, -3f, 7f)).getFarthestPointTo(randomPoint));
+		list.add((Point3f) (new Segment3f(0.5f, -3f, 7f,6f, 2f, 0f)).getFarthestPointTo(randomPoint));
+		list.add((Point3f) (new Segment3f(6f, 2f, 0f,0f, 5f, 0f)).getFarthestPointTo(randomPoint));
+		
+		Point3f farthestPoint = new Point3f(0,0,0);
+		
+		for(Point3f point : list) {
+			if (point.distance(randomPoint)>farthestPoint.distance(randomPoint)) {
+				farthestPoint = point;
+			}
+		}
+		
+		assertTrue(farthestPoint.equals(p.getFarthestPointTo(randomPoint)));
 	}
 	
 	@Test
@@ -365,22 +392,155 @@ public class Path3fTest extends AbstractMathTestCase {
 	
 	@Test
     public void distanceSquared() {
-		throw new UnsupportedOperationException();
+		Path3f p = new Path3f();
+		p.moveTo(0f, 0f, 0f);
+		p.lineTo(1f, 1f, 1f);
+		p.quadTo(3f, 0f, 0f, 4f, 3f, 0.5);
+		p.curveTo(5f, -1f, 0f, 6f, 5f, 0f, 7f, -5f, 0f);
+		p.closePath();
+		
+		Path3f p1 = new Path3f();
+		p1.moveTo(0f, 0f, 0f);
+		p1.lineTo(1f, 1f, 1f);
+		p1.lineTo(-1f, 1f, 1f);
+		p1.lineTo(0.5f, -3f, 7f);
+		p1.lineTo(6f, 2f, 0f);
+		p1.lineTo(0f, 5f, 0f);
+		p1.closePath();
+		
+		Path3f p2 = new Path3f();
+		p2.moveTo(-10f, -10f, -10f);
+		p2.lineTo(4f, 7f, 3f);
+		p2.lineTo(-3f, -7f, 5f);
+		p2.lineTo(0.5f, -4f, 7f);
+		p2.lineTo(6f, -9f, 0f);
+		p2.lineTo(0f, 3f, 3f);
+		p2.closePath();
+		
+		Point3f randomPoint = randomPoint3f();
+		
+		Point3f closest = (Point3f) p.getClosestPointTo(randomPoint);
+		Point3f closest1 = (Point3f) p1.getClosestPointTo(randomPoint);
+		Point3f closest2 = (Point3f) p2.getClosestPointTo(randomPoint);
+		
+		assertEpsilonEquals(closest.distanceSquared(randomPoint),p.distanceSquared(randomPoint));
+		assertEpsilonEquals(closest1.distanceSquared(randomPoint),p1.distanceSquared(randomPoint));
+		assertEpsilonEquals(closest2.distanceSquared(randomPoint),p2.distanceSquared(randomPoint));
 	}
 	
 	@Test
     public void distanceL1() {
-		throw new UnsupportedOperationException();
+		Path3f p = new Path3f();
+		p.moveTo(0f, 0f, 0f);
+		p.lineTo(1f, 1f, 1f);
+		p.quadTo(3f, 0f, 0f, 4f, 3f, 0.5);
+		p.curveTo(5f, -1f, 0f, 6f, 5f, 0f, 7f, -5f, 0f);
+		p.closePath();
+		
+		Path3f p1 = new Path3f();
+		p1.moveTo(0f, 0f, 0f);
+		p1.lineTo(1f, 1f, 1f);
+		p1.lineTo(-1f, 1f, 1f);
+		p1.lineTo(0.5f, -3f, 7f);
+		p1.lineTo(6f, 2f, 0f);
+		p1.lineTo(0f, 5f, 0f);
+		p1.closePath();
+		
+		Path3f p2 = new Path3f();
+		p2.moveTo(-10f, -10f, -10f);
+		p2.lineTo(4f, 7f, 3f);
+		p2.lineTo(-3f, -7f, 5f);
+		p2.lineTo(0.5f, -4f, 7f);
+		p2.lineTo(6f, -9f, 0f);
+		p2.lineTo(0f, 3f, 3f);
+		p2.closePath();
+		
+		Point3f randomPoint = randomPoint3f();
+		
+		Point3f closest = (Point3f) p.getClosestPointTo(randomPoint);
+		Point3f closest1 = (Point3f) p1.getClosestPointTo(randomPoint);
+		Point3f closest2 = (Point3f) p2.getClosestPointTo(randomPoint);
+		
+		assertEpsilonEquals(closest.distanceL1(randomPoint),p.distanceL1(randomPoint));
+		assertEpsilonEquals(closest1.distanceL1(randomPoint),p1.distanceL1(randomPoint));
+		assertEpsilonEquals(closest2.distanceL1(randomPoint),p2.distanceL1(randomPoint));
 	}
 	
 	@Test
     public void distanceLinf() {
-		throw new UnsupportedOperationException();
+		Path3f p = new Path3f();
+		p.moveTo(0f, 0f, 0f);
+		p.lineTo(1f, 1f, 1f);
+		p.quadTo(3f, 0f, 0f, 4f, 3f, 0.5);
+		p.curveTo(5f, -1f, 0f, 6f, 5f, 0f, 7f, -5f, 0f);
+		p.closePath();
+		
+		Path3f p1 = new Path3f();
+		p1.moveTo(0f, 0f, 0f);
+		p1.lineTo(1f, 1f, 1f);
+		p1.lineTo(-1f, 1f, 1f);
+		p1.lineTo(0.5f, -3f, 7f);
+		p1.lineTo(6f, 2f, 0f);
+		p1.lineTo(0f, 5f, 0f);
+		p1.closePath();
+		
+		Path3f p2 = new Path3f();
+		p2.moveTo(-10f, -10f, -10f);
+		p2.lineTo(4f, 7f, 3f);
+		p2.lineTo(-3f, -7f, 5f);
+		p2.lineTo(0.5f, -4f, 7f);
+		p2.lineTo(6f, -9f, 0f);
+		p2.lineTo(0f, 3f, 3f);
+		p2.closePath();
+		
+		Point3f randomPoint = randomPoint3f();
+		
+		Point3f closest = (Point3f) p.getClosestPointTo(randomPoint);
+		Point3f closest1 = (Point3f) p1.getClosestPointTo(randomPoint);
+		Point3f closest2 = (Point3f) p2.getClosestPointTo(randomPoint);
+		
+		assertEpsilonEquals(closest.distanceLinf(randomPoint),p.distanceLinf(randomPoint));
+		assertEpsilonEquals(closest1.distanceLinf(randomPoint),p1.distanceLinf(randomPoint));
+		assertEpsilonEquals(closest2.distanceLinf(randomPoint),p2.distanceLinf(randomPoint));
 	}
 	
 	@Test
     public void transform() {
-		throw new UnsupportedOperationException();
+		Point3f p1 = this.randomPoint3f();
+		Point3f p2 = this.randomPoint3f();
+		Point3f p3 = this.randomPoint3f();
+		Point3f p4 = this.randomPoint3f();
+		Point3f p5 = this.randomPoint3f();
+		Point3f p6 = this.randomPoint3f();
+		Point3f p7 = this.randomPoint3f();
+		
+		Path3f path = new Path3f();
+		path.moveTo(p1.getX(),p1.getY(),p1.getZ());
+		path.lineTo(p2.getX(),p2.getY(),p2.getZ());
+		path.quadTo(p3.getX(),p3.getY(),p3.getZ(),p4.getX(),p4.getY(),p4.getZ());
+		path.curveTo(p5.getX(),p5.getY(),p5.getZ(), p6.getX(),p6.getY(),p6.getZ(), p7.getX(),p7.getY(),p7.getZ());
+		path.closePath();
+		
+		Transform3D trans = new Transform3D(this.randomMatrix4f());
+		
+		trans.transform(p1);
+		trans.transform(p2);
+		trans.transform(p3);
+		trans.transform(p4);
+		trans.transform(p5);
+		trans.transform(p6);
+		trans.transform(p7);
+		
+		Path3f pathTrans = new Path3f();
+		pathTrans.moveTo(p1.getX(),p1.getY(),p1.getZ());
+		pathTrans.lineTo(p2.getX(),p2.getY(),p2.getZ());
+		pathTrans.quadTo(p3.getX(),p3.getY(),p3.getZ(),p4.getX(),p4.getY(),p4.getZ());
+		pathTrans.curveTo(p5.getX(),p5.getY(),p5.getZ(), p6.getX(),p6.getY(),p6.getZ(), p7.getX(),p7.getY(),p7.getZ());
+		pathTrans.closePath();
+		
+		path.transform(trans);
+		
+		assertTrue(path.equals(pathTrans));
 	}
 	
 	@Test
