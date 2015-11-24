@@ -137,18 +137,34 @@ public class Path3fTest extends AbstractMathTestCase {
 	
 	@Test
     public void intersectsTriangle() {
-		Path3f r = new Path3f();
-		r.moveTo(0f, 0f, 0f);
-		r.lineTo(1f, 1f, 1f);
-		r.quadTo(2, 1, 0.5, 4f, 4f, 0f);
-		r.curveTo(4f, 5f, 0f, 4f, 7f, 0f, 0f, 7f, 0f);
-		r.closePath();
+		Path3f path1 = new Path3f();
+		path1.moveTo(0f, 0f, 0f);
+		path1.lineTo(1f, 1f, 1f);
+		path1.closePath();
+		
+		Path3f path2 = new Path3f();
+		path2.moveTo(0f, 0f, 0f);
+		path2.quadTo(0f, 1f, 0f, 1f, 1f, 0f);
+		path2.closePath();
+		
+		Path3f path3 = new Path3f();
+		path3.moveTo(1f, 1f, 1f);
+		path1.lineTo(0f, 0f, 1f);
+		path3.closePath();
+		
 		
 		AbstractTriangle3F triangle1 = new Triangle3f(-1,-1,-1, 5,5,0, 2,2,2);
-		AbstractTriangle3F triangle2 = new Triangle3f(2,4.5,3, 4,7,-3, 3,4,-5);
+		AbstractTriangle3F triangle2 = new Triangle3f(0,0,0, 1,1,1, 1,1,0);
+		//AbstractTriangle3F triangle3 = new Triangle3f();
 		
-		assertTrue(r.intersects(triangle1));
-		assertTrue(r.intersects(triangle2));
+		//FIXME Must Be continued 
+		assertFalse(path1.intersects(triangle1));
+		assertTrue(path3.intersects(triangle2));
+		
+		
+		//assertTrue(path2.intersects(triangle2));
+		
+		//assertTrue(path3.intersects(triangle3));
 	}
 	
 	@Test

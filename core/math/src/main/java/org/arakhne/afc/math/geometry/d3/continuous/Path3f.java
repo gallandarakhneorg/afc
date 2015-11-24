@@ -1086,8 +1086,8 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 
 
 	@Override
-	public boolean intersects(AbstractTriangle3F s) {
-		if (s.isEmpty()) return false;
+	public boolean intersects(AbstractTriangle3F triangle) {
+		if (triangle.isEmpty()) return false;
 		int mask = (this.windingRule == PathWindingRule.NON_ZERO ? -1 : 2);
 		boolean intersects = false;
 		PathIterator3f pi = getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO);
@@ -1118,7 +1118,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 				endy = pathElement.getToY();
 				endz = pathElement.getToZ();
 
-				intersects = s.intersects(new Segment3f(
+				intersects = triangle.intersects(new Segment3f(
 						curx, cury, curz, 
 						endx, endy, endz));
 
@@ -1136,7 +1136,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 						pathElement.getCtrlX1(), pathElement.getCtrlY1(), pathElement.getCtrlZ1(),
 						endx, endy, endz);
 
-				intersects = subPath.intersects(s);
+				intersects = subPath.intersects(triangle);
 
 				curx = endx;
 				cury = endy;
@@ -1153,7 +1153,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 						pathElement.getCtrlX2(), pathElement.getCtrlY2(), pathElement.getCtrlZ2(),
 						endx, endy, endz);
 
-				intersects = subPath.intersects(s);
+				intersects = subPath.intersects(triangle);
 
 				curx = endx;
 				cury = endy;
@@ -1161,7 +1161,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 				break;
 			case CLOSE:
 				if (curx != movx || cury != movy || curz != movz) {
-					intersects = s.intersects(new Segment3f(
+					intersects = triangle.intersects(new Segment3f(
 							curx, cury, curz, 
 							movx, movy, movz));
 				}

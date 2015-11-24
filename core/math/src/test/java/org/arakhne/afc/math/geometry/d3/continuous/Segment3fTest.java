@@ -217,7 +217,11 @@ public class Segment3fTest extends AbstractShape3fTestCase<AbstractSegment3F> {
 	@Test
 	@Override
 	public void intersectsTriangle3f() {
-		throw new UnsupportedOperationException();
+		Segment3f s1 = new Segment3f(0,0,0,10,10,0);
+		
+		AbstractTriangle3F t1 = new Triangle3f(10,10,0, 0,0,10, 10,10,10);
+		
+		assertTrue(s1.intersects(t1));
 	}
 
 	@Test
