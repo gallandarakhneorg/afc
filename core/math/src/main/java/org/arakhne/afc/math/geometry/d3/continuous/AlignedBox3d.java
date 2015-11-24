@@ -752,7 +752,7 @@ public class AlignedBox3d extends AbstractBoxedShape3F<AlignedBox3f> {
 	}
 
 	@Override
-	public boolean intersects(Triangle3f s) {
+	public boolean intersects(AbstractTriangle3F s) {
 		return AbstractTriangle3F.intersectsTriangleAlignedBox(
 				s.getX1(), s.getY1(), s.getZ1(),
 				s.getX2(), s.getY2(), s.getZ2(),

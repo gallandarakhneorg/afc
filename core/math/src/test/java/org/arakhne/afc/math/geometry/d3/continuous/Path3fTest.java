@@ -38,7 +38,7 @@ import org.junit.Test;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@SuppressWarnings("static-method")
+@SuppressWarnings({"static-method"})
 public class Path3fTest extends AbstractMathTestCase {
 	
 	
@@ -137,7 +137,18 @@ public class Path3fTest extends AbstractMathTestCase {
 	
 	@Test
     public void intersectsTriangle() {
-		throw new UnsupportedOperationException();
+		Path3f r = new Path3f();
+		r.moveTo(0f, 0f, 0f);
+		r.lineTo(1f, 1f, 1f);
+		r.quadTo(2, 1, 0.5, 4f, 4f, 0f);
+		r.curveTo(4f, 5f, 0f, 4f, 7f, 0f, 0f, 7f, 0f);
+		r.closePath();
+		
+		AbstractTriangle3F triangle1 = new Triangle3f(-1,-1,-1, 5,5,0, 2,2,2);
+		AbstractTriangle3F triangle2 = new Triangle3f(2,4.5,3, 4,7,-3, 3,4,-5);
+		
+		assertTrue(r.intersects(triangle1));
+		assertTrue(r.intersects(triangle2));
 	}
 	
 	@Test
@@ -278,7 +289,18 @@ public class Path3fTest extends AbstractMathTestCase {
 	
 	@Test
     public void removeDoubleDoubleDouble() {
-		throw new UnsupportedOperationException();
+		Path3f p = new Path3f();
+		p.moveTo(0f, 0f, 0f);
+		p.lineTo(1f, 1f, 1f);
+		p.quadTo(3f, 0f, 0f, 4f, 3f, 0.5);
+		p.curveTo(5f, -1f, 0f, 6f, 5f, 0f, 7f, -5f, 0f);
+		p.closePath();
+		
+		assertTrue(p.remove(5, -1, 0));
+		assertTrue(p.getCurrentPoint().equals(new Point3f(4,3,0.5)));
+		assertTrue(p.remove(1, 1, 1));
+		assertTrue(p.size()==3);
+		assertFalse(p.remove(35, 35, 35));
 	}
 	
 	@Test
@@ -390,10 +412,6 @@ public class Path3fTest extends AbstractMathTestCase {
 			}
 		}
 		
-		System.out.println("CLOSEST :\n"+closestPoint.toString() + " " + closestPoint.distance(randomPoint));
-		System.out.println(p.getClosestPointTo(randomPoint).toString() + " " + p.getClosestPointTo(randomPoint).distance(randomPoint));
-		
-		
 		assertTrue(closestPoint.equals(p.getClosestPointTo(randomPoint)) || p.getClosestPointTo(randomPoint).distance(randomPoint)==closestPoint.distance(randomPoint));
 	}
 	
@@ -425,9 +443,6 @@ public class Path3fTest extends AbstractMathTestCase {
 				farthestPoint = point;
 			}
 		}
-		
-		System.out.println("FARTHEST :\n"+farthestPoint.toString() + " " + farthestPoint.distance(randomPoint));
-		System.out.println(p.getFarthestPointTo(randomPoint).toString() + " " + p.getFarthestPointTo(randomPoint).distance(randomPoint));
 		
 		assertTrue(farthestPoint.equals(p.getFarthestPointTo(randomPoint))|| p.getFarthestPointTo(randomPoint).distance(randomPoint)==farthestPoint.distance(randomPoint));
 	}
@@ -648,7 +663,28 @@ public class Path3fTest extends AbstractMathTestCase {
 	
 	@Test
     public void createTransformedShape() {
-		throw new UnsupportedOperationException();
+		Point3f p1 = this.randomPoint3f();
+		Point3f p2 = this.randomPoint3f();
+		Point3f p3 = this.randomPoint3f();
+		Point3f p4 = this.randomPoint3f();
+		Point3f p5 = this.randomPoint3f();
+		Point3f p6 = this.randomPoint3f();
+		Point3f p7 = this.randomPoint3f();
+		
+		Path3f path = new Path3f();
+		path.moveTo(p1.getX(),p1.getY(),p1.getZ());
+		path.lineTo(p2.getX(),p2.getY(),p2.getZ());
+		path.quadTo(p3.getX(),p3.getY(),p3.getZ(),p4.getX(),p4.getY(),p4.getZ());
+		path.curveTo(p5.getX(),p5.getY(),p5.getZ(), p6.getX(),p6.getY(),p6.getZ(), p7.getX(),p7.getY(),p7.getZ());
+		path.closePath();
+		
+		Transform3D trans = new Transform3D(this.randomMatrix4f());
+		
+		Path3f transformedShape = (Path3f) path.createTransformedShape(trans);
+		
+		path.transform(trans);
+		
+		assertTrue(path.equals(transformedShape));
 	}
 	
 	@Test
@@ -710,7 +746,18 @@ public class Path3fTest extends AbstractMathTestCase {
 	
 	@Test
     public void setLastPoint() {
-		throw new UnsupportedOperationException();
+		Path3f p = new Path3f();
+		p.moveTo(0f, 0f, 0f);
+		p.lineTo(1f, 1f, 1f);
+		p.quadTo(3f, 0f, 0f, 4f, 3f, 0.5);
+		p.curveTo(5f, -1f, 0f, 6f, 5f, 0f, 7f, -5f, 0f);
+		p.closePath();
+		
+		assertTrue(p.getCurrentPoint().equals(new Point3f(7,-5,0)));
+		
+		p.setLastPoint(2, 2, 2);
+		
+		assertTrue(p.getCurrentPoint().equals(new Point3f(2,2,2)));
 	}
 	
 	@Test
@@ -815,7 +862,18 @@ public class Path3fTest extends AbstractMathTestCase {
 	
 	@Test
     public void getCurrentPoint() {
-		throw new UnsupportedOperationException();
+		Path3f p = new Path3f();
+		p.moveTo(0f, 0f, 0f);
+		assertTrue(p.getCurrentPoint().equals(new Point3f(0,0,0)));
+		p.lineTo(1f, 1f, 1f);
+		assertTrue(p.getCurrentPoint().equals(new Point3f(1,1,1)));
+		p.quadTo(3f, 0f, 0f, 4f, 3f, 0.5);
+		assertTrue(p.getCurrentPoint().equals(new Point3f(4,3,0.5)));
+		p.curveTo(5f, -1f, 0f, 6f, 5f, 0f, 7f, -5f, 0f);
+		assertTrue(p.getCurrentPoint().equals(new Point3f(7,-5,0)));
+		p.closePath();
+		
+		assertTrue(p.getCurrentPoint().equals(new Point3f(7,-5,0)));
 	}
 	
 	

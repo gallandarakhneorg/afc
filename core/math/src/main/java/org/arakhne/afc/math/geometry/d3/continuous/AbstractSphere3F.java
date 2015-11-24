@@ -805,7 +805,7 @@ public abstract class AbstractSphere3F extends AbstractShape3F<AbstractSphere3F>
 	}
 
 	@Override
-	public boolean intersects(Triangle3f s) {
+	public boolean intersects(AbstractTriangle3F s) {
 		return AbstractTriangle3F.intersectsTriangleSphere(
 				s.getX1(), s.getY1(), s.getZ1(),
 				s.getX2(), s.getY2(), s.getZ2(),

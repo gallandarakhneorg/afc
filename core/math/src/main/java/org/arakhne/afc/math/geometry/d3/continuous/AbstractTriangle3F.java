@@ -2239,7 +2239,7 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 	}
 
 	@Override
-	public boolean intersects(Triangle3f s) {
+	public boolean intersects(AbstractTriangle3F s) {
 		return intersectsCoplanarTriangleTriangle(
 				getX1(), getY1(), getY1(),
 				getX2(), getY2(), getY3(),

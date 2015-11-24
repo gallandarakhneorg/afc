@@ -1453,7 +1453,7 @@ public abstract class AbstractOrientedBox3F extends AbstractShape3F<AbstractOrie
 	}
 
 	@Override
-	public boolean intersects(Triangle3f s) {
+	public boolean intersects(AbstractTriangle3F s) {
 		return AbstractTriangle3F.intersectsTriangleOrientedBox(
 				s.getX1(), s.getY1(), s.getZ1(),
 				s.getX2(), s.getY2(), s.getZ2(),

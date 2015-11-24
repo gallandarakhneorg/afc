@@ -1086,7 +1086,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 
 
 	@Override
-	public boolean intersects(Triangle3f s) {
+	public boolean intersects(AbstractTriangle3F s) {
 		if (s.isEmpty()) return false;
 		int mask = (this.windingRule == PathWindingRule.NON_ZERO ? -1 : 2);
 		boolean intersects = false;
@@ -1887,9 +1887,9 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 	//FIXME : TO BE VERIFYIED 
 	public Point3f getCurrentPoint() {
 		return new Point3f(
-				this.coords[this.coords.length-3],
-				this.coords[this.coords.length-2],
-				this.coords[this.coords.length-1]);
+				this.coords[this.numCoords-3],
+				this.coords[this.numCoords-2],
+				this.coords[this.numCoords-1]);
 	}
 	//-----------------------------------------------------------------------------
 
