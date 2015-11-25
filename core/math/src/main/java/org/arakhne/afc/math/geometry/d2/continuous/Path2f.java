@@ -33,6 +33,7 @@ import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Path2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
+import org.arakhne.afc.math.geometry.d3.continuous.Path3f;
 
 
 /** A generic path.
@@ -1162,6 +1163,7 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 		this.isEmpty = p.isEmpty;
 		this.isPolyline = p.isPolyline;
 		this.numCoords = p.numCoords;
+		this.numTypes = p.numTypes;
 		this.types = p.types.clone();
 		this.windingRule = p.windingRule;
 		Rectangle2f box;
@@ -1208,8 +1210,10 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 		Path2f clone = super.clone();
 		clone.coords = this.coords.clone();
 		clone.types = this.types.clone();
+		clone.windingRule = this.windingRule;
 		return clone;
 	}
+	
 
 	@Override
 	public PathWindingRule getWindingRule() {
@@ -1926,6 +1930,15 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 				p.getX(), p.getY());
 	}
 
+	
+	public boolean equals(Path2f path) {
+		return (this.numCoords==path.numCoords
+				&& this.numTypes==path.numTypes
+				&& Arrays.equals(this.coords, path.coords)
+				&& Arrays.equals(this.types, path.types)
+				&& this.windingRule==path.windingRule);
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof Path2f) {
@@ -2054,7 +2067,12 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 	 * @return the point collection.
 	 */
 	public final Collection<Point2D> toCollection() {
-		return new PointCollection();
+		PointCollection pC = new PointCollection();
+		Point2D[] array = this.toPointArray();
+		for(Point2D p : array) {
+			pC.add(p);
+		}
+		return pC;
 	}
 
 	/** Replies the coordinate at the given index.
@@ -2085,8 +2103,8 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 	 */
 	public Point2f getCurrentPoint() {
 		return new Point2f(
-				this.coords[this.coords.length-1],
-				this.coords[this.coords.length-2]);
+				this.coords[this.numCoords-2],
+				this.coords[this.numCoords-1]);
 	}
 
 	/** Replies the number of points in the path.
@@ -2144,7 +2162,7 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 	 * @param p
 	 * @return <code>true</code> if the point is a control point of the path.
 	 */
-	boolean containsPoint(Point2D p) {
+	boolean containsControlPoint(Point2D p) {
 		double x, y;
 		for(int i=0; i<this.numCoords;) {
 			x = this.coords[i++];
@@ -3060,7 +3078,7 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 		@Override
 		public boolean contains(Object o) {
 			if (o instanceof Point2D) {
-				return Path2f.this.containsPoint((Point2D)o);
+				return Path2f.this.containsControlPoint((Point2D)o);
 			}
 			return false;
 		}
@@ -3112,7 +3130,7 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 		public boolean containsAll(Collection<?> c) {
 			for(Object obj : c) {
 				if ((!(obj instanceof Point2D))
-						||(!Path2f.this.containsPoint((Point2D)obj))) {
+						||(!Path2f.this.containsControlPoint((Point2D)obj))) {
 					return false;
 				}
 			}

@@ -423,12 +423,12 @@ public class Path3fTest extends AbstractMathTestCase {
 		Point3f closestPoint = new Point3f(0,0,0);
 		
 		for(Point3f point : list) {
-			if (point.distance(randomPoint)<closestPoint.distance(randomPoint)) {
+			if (point.getDistance(randomPoint)<closestPoint.getDistance(randomPoint)) {
 				closestPoint = point;
 			}
 		}
 		
-		assertTrue(closestPoint.equals(p.getClosestPointTo(randomPoint)) || p.getClosestPointTo(randomPoint).distance(randomPoint)==closestPoint.distance(randomPoint));
+		assertTrue(closestPoint.equals(p.getClosestPointTo(randomPoint)) || p.getClosestPointTo(randomPoint).getDistance(randomPoint)==closestPoint.distance(randomPoint));
 	}
 	
 	@Test
@@ -455,12 +455,12 @@ public class Path3fTest extends AbstractMathTestCase {
 		Point3f farthestPoint = new Point3f(0,0,0);
 		
 		for(Point3f point : list) {
-			if (point.distance(randomPoint)>farthestPoint.distance(randomPoint)) {
+			if (point.getDistance(randomPoint)>farthestPoint.getDistance(randomPoint)) {
 				farthestPoint = point;
 			}
 		}
 		
-		assertTrue(farthestPoint.equals(p.getFarthestPointTo(randomPoint))|| p.getFarthestPointTo(randomPoint).distance(randomPoint)==farthestPoint.distance(randomPoint));
+		assertTrue(farthestPoint.equals(p.getFarthestPointTo(randomPoint))|| p.getFarthestPointTo(randomPoint).getDistance(randomPoint)==farthestPoint.distance(randomPoint));
 	}
 	
 	@Test
@@ -532,9 +532,9 @@ public class Path3fTest extends AbstractMathTestCase {
 		Point3f closest1 = (Point3f) p1.getClosestPointTo(randomPoint);
 		Point3f closest2 = (Point3f) p2.getClosestPointTo(randomPoint);
 		
-		assertEpsilonEquals(closest.distanceSquared(randomPoint),p.distanceSquared(randomPoint));
-		assertEpsilonEquals(closest1.distanceSquared(randomPoint),p1.distanceSquared(randomPoint));
-		assertEpsilonEquals(closest2.distanceSquared(randomPoint),p2.distanceSquared(randomPoint));
+		assertEpsilonEquals(closest.getDistanceSquared(randomPoint),p.distanceSquared(randomPoint));
+		assertEpsilonEquals(closest1.getDistanceSquared(randomPoint),p1.distanceSquared(randomPoint));
+		assertEpsilonEquals(closest2.getDistanceSquared(randomPoint),p2.distanceSquared(randomPoint));
 	}
 	
 	@Test
@@ -570,9 +570,9 @@ public class Path3fTest extends AbstractMathTestCase {
 		Point3f closest1 = (Point3f) p1.getClosestPointTo(randomPoint);
 		Point3f closest2 = (Point3f) p2.getClosestPointTo(randomPoint);
 		
-		assertEpsilonEquals(closest.distanceL1(randomPoint),p.distanceL1(randomPoint));
-		assertEpsilonEquals(closest1.distanceL1(randomPoint),p1.distanceL1(randomPoint));
-		assertEpsilonEquals(closest2.distanceL1(randomPoint),p2.distanceL1(randomPoint));
+		assertEpsilonEquals(closest.getDistanceL1(randomPoint),p.distanceL1(randomPoint));
+		assertEpsilonEquals(closest1.getDistanceL1(randomPoint),p1.distanceL1(randomPoint));
+		assertEpsilonEquals(closest2.getDistanceL1(randomPoint),p2.distanceL1(randomPoint));
 	}
 	
 	@Test
@@ -608,9 +608,9 @@ public class Path3fTest extends AbstractMathTestCase {
 		Point3f closest1 = (Point3f) p1.getClosestPointTo(randomPoint);
 		Point3f closest2 = (Point3f) p2.getClosestPointTo(randomPoint);
 		
-		assertEpsilonEquals(closest.distanceLinf(randomPoint),p.distanceLinf(randomPoint));
-		assertEpsilonEquals(closest1.distanceLinf(randomPoint),p1.distanceLinf(randomPoint));
-		assertEpsilonEquals(closest2.distanceLinf(randomPoint),p2.distanceLinf(randomPoint));
+		assertEpsilonEquals(closest.getDistanceLinf(randomPoint),p.distanceLinf(randomPoint));
+		assertEpsilonEquals(closest1.getDistanceLinf(randomPoint),p1.distanceLinf(randomPoint));
+		assertEpsilonEquals(closest2.getDistanceLinf(randomPoint),p2.distanceLinf(randomPoint));
 	}
 	
 	@Test

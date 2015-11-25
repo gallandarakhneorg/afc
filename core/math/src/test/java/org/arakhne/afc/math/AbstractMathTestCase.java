@@ -36,6 +36,7 @@ import org.arakhne.afc.math.geometry.d3.continuous.Point3f;
 import org.arakhne.afc.math.geometry.d3.continuous.Quaternion;
 import org.arakhne.afc.math.geometry.d3.continuous.Vector3f;
 import org.arakhne.afc.math.matrix.Matrix2f;
+import org.arakhne.afc.math.matrix.Matrix3f;
 import org.arakhne.afc.math.matrix.Matrix4f;
 import org.junit.ComparisonFailure;
 
@@ -521,6 +522,23 @@ public abstract class AbstractMathTestCase {
 				this.random.nextDouble() * 1000 - 500);
 	}
 	
+	
+	/** Create a random matrix.
+	 *
+	 * @return the random matrix.
+	 */
+	protected Matrix3f randomMatrix3f() {
+		return new Matrix3f(
+				this.random.nextDouble() * 1000 - 500,
+				this.random.nextDouble() * 1000 - 500,
+				this.random.nextDouble() * 1000 - 500,
+				this.random.nextDouble() * 1000 - 500,
+				this.random.nextDouble() * 1000 - 500,
+				this.random.nextDouble() * 1000 - 500,
+				this.random.nextDouble() * 1000 - 500,
+				this.random.nextDouble() * 1000 - 500,
+				this.random.nextDouble() * 1000 - 500);
+	}
 	
 	
 	/** Create a random matrix.

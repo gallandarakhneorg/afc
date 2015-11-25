@@ -382,116 +382,6 @@ public class Point3f extends Tuple3f<Point3D> implements FunctionalPoint3D {
 			}
 		}
 
-//		@Override
-//		public void absolute() {
-//			throw new UnsupportedOperationException();
-//		}
-//
-//		@Override
-//		public void absolute(Point3D t) {
-//			throw new UnsupportedOperationException();
-//		}
-//
-//		@Override
-//		public void add(int x, int y, int z) {
-//			throw new UnsupportedOperationException();
-//		}
-//
-//		@Override
-//		public void add(double x, double y, double z) {
-//			throw new UnsupportedOperationException();
-//		}
-//
-//		@Override
-//		public void addX(int x) {
-//			throw new UnsupportedOperationException();
-//		}
-//
-//		@Override
-//		public void addX(double x) {
-//			throw new UnsupportedOperationException();
-//		}
-//
-//		@Override
-//		public void addY(int y) {
-//			throw new UnsupportedOperationException();
-//		}
-//
-//		@Override
-//		public void addY(double y) {
-//			throw new UnsupportedOperationException();
-//		}
-//
-//		@Override
-//		public void addZ(int z) {
-//			throw new UnsupportedOperationException();
-//		}
-//
-//		@Override
-//		public void addZ(double z) {
-//			throw new UnsupportedOperationException();
-//		}
-//
-//		@Override
-//		public void clamp(int min, int max) {
-//			throw new UnsupportedOperationException();
-//		}
-//
-//		@Override
-//		public void clamp(double min, double max) {
-//			throw new UnsupportedOperationException();
-//		}
-//
-//		@Override
-//		public void clampMin(int min) {
-//			throw new UnsupportedOperationException();
-//		}
-//
-//		@Override
-//		public void clampMin(double min) {
-//			throw new UnsupportedOperationException();
-//		}
-//
-//		@Override
-//		public void clampMax(int max) {
-//			throw new UnsupportedOperationException();
-//		}
-//
-//		@Override
-//		public void clampMax(double max) {
-//			throw new UnsupportedOperationException();
-//		}
-//
-//		@Override
-//		public void clamp(int min, int max, Point3D t) {
-//			throw new UnsupportedOperationException();
-//		}
-//
-//		@Override
-//		public void clamp(double min, double max, Point3D t) {
-//			throw new UnsupportedOperationException();
-//		}
-//
-//		@Override
-//		public void clampMin(int min, Point3D t) {
-//			throw new UnsupportedOperationException();
-//		}
-//
-//		@Override
-//		public void clampMin(double min, Point3D t) {
-//			throw new UnsupportedOperationException();
-//		}
-//
-//		@Override
-//		public void clampMax(int max, Point3D t) {
-//			throw new UnsupportedOperationException();
-//		}
-//
-//		@Override
-//		public void clampMax(double max, Point3D t) {
-//			throw new UnsupportedOperationException();
-//		}
-
 		@Override
 		public void get(Point3D t) {
 			Point3f.this.get(t);
@@ -507,60 +397,7 @@ public class Point3f extends Tuple3f<Point3D> implements FunctionalPoint3D {
 			Point3f.this.get(t);
 		}
 
-//		@Override
-//		public void negate(Point3D t1) {
-//			throw new UnsupportedOperationException();
-//		}
-//
-//		@Override
-//		public void negate() {
-//			throw new UnsupportedOperationException();
-//		}
-//
-//		@Override
-//		public void scale(int s, Point3D t1) {
-//			throw new UnsupportedOperationException();
-//		}
-//
-//		@Override
-//		public void scale(double s, Point3D t1) {
-//			throw new UnsupportedOperationException();
-//		}
-//
-//		@Override
-//		public void scale(int s) {
-//			throw new UnsupportedOperationException();
-//		}
-//
-//		@Override
-//		public void scale(double s) {
-//			throw new UnsupportedOperationException();
-//		}
-//
-//		@Override
-//		public void set(Tuple3D<?> t1) {
-//			throw new UnsupportedOperationException();
-//		}
-//
-//		@Override
-//		public void set(int x, int y, int z) {
-//			throw new UnsupportedOperationException();
-//		}
-//
-//		@Override
-//		public void set(double x, double y, double z) {
-//			throw new UnsupportedOperationException();
-//		}
-//
-//		@Override
-//		public void set(int[] t) {
-//			throw new UnsupportedOperationException();
-//		}
-//
-//		@Override
-//		public void set(double[] t) {
-//			throw new UnsupportedOperationException();
-//		}
+
 
 		@Override
 		public double getX() {
@@ -572,15 +409,7 @@ public class Point3f extends Tuple3f<Point3D> implements FunctionalPoint3D {
 			return Point3f.this.ix();
 		}
 
-//		@Override
-//		public void setX(int x) {
-//			throw new UnsupportedOperationException();
-//		}
-//
-//		@Override
-//		public void setX(double x) {
-//			throw new UnsupportedOperationException();
-//		}
+
 
 		@Override
 		public double getY() {
@@ -592,15 +421,6 @@ public class Point3f extends Tuple3f<Point3D> implements FunctionalPoint3D {
 			return Point3f.this.iy();
 		}
 
-//		@Override
-//		public void setY(int y) {
-//			throw new UnsupportedOperationException();
-//		}
-//
-//		@Override
-//		public void setY(double y) {
-//			throw new UnsupportedOperationException();
-//		}
 
 		@Override
 		public double getZ() {
@@ -612,65 +432,6 @@ public class Point3f extends Tuple3f<Point3D> implements FunctionalPoint3D {
 			return Point3f.this.iz();
 		}
 
-//		@Override
-//		public void setZ(int z) {
-//			throw new UnsupportedOperationException();
-//		}
-//
-//		@Override
-//		public void setZ(double z) {
-//			throw new UnsupportedOperationException();
-//		}
-//
-//		@Override
-//		public void sub(int x, int y, int z) {
-//			throw new UnsupportedOperationException();
-//		}
-//
-//		@Override
-//		public void sub(double x, double y, double z) {
-//			throw new UnsupportedOperationException();
-//		}
-//
-//		@Override
-//		public void subX(int x) {
-//			throw new UnsupportedOperationException();
-//		}
-//
-//		@Override
-//		public void subX(double x) {
-//			throw new UnsupportedOperationException();
-//		}
-//
-//		@Override
-//		public void subY(int y) {
-//			throw new UnsupportedOperationException();
-//		}
-//
-//		@Override
-//		public void subY(double y) {
-//			throw new UnsupportedOperationException();
-//		}
-//
-//		@Override
-//		public void subZ(int z) {
-//			throw new UnsupportedOperationException();
-//		}
-//
-//		@Override
-//		public void subZ(double z) {
-//			throw new UnsupportedOperationException();
-//		}
-//
-//		@Override
-//		public void interpolate(Point3D t1, Point3D t2, double alpha) {
-//			throw new UnsupportedOperationException();
-//		}
-//
-//		@Override
-//		public void interpolate(Point3D t1, double alpha) {
-//			throw new UnsupportedOperationException();
-//		}
 
 		@Override
 		public boolean equals(Tuple3D<?> t1) {
@@ -707,65 +468,33 @@ public class Point3f extends Tuple3f<Point3D> implements FunctionalPoint3D {
 			return Point3f.this.distanceLinf(p1);
 		}
 
-//		@Override
-//		public void add(Point3D t1, Vector3D t2) {
-//			throw new UnsupportedOperationException();
-//		}
-//
-//		@Override
-//		public void add(Vector3D t1, Point3D t2) {
-//			throw new UnsupportedOperationException();
-//		}
-//
-//		@Override
-//		public void add(Vector3D t1) {
-//			throw new UnsupportedOperationException();
-//		}
-//
-//		@Override
-//		public void scaleAdd(int s, Vector3D t1, Point3D t2) {
-//			throw new UnsupportedOperationException();
-//		}
-//
-//		@Override
-//		public void scaleAdd(double s, Vector3D t1, Point3D t2) {
-//			throw new UnsupportedOperationException();
-//		}
-//
-//		@Override
-//		public void scaleAdd(int s, Point3D t1, Vector3D t2) {
-//			throw new UnsupportedOperationException();
-//		}
-//
-//		@Override
-//		public void scaleAdd(double s, Point3D t1, Vector3D t2) {
-//			throw new UnsupportedOperationException();
-//		}
-//
-//		@Override
-//		public void scaleAdd(int s, Vector3D t1) {
-//			throw new UnsupportedOperationException();
-//		}
-//
-//		@Override
-//		public void scaleAdd(double s, Vector3D t1) {
-//			throw new UnsupportedOperationException();
-//		}
-//
-//		@Override
-//		public void sub(Point3D t1, Vector3D t2) {
-//			throw new UnsupportedOperationException();
-//		}
-//
-//		@Override
-//		public void sub(Vector3D t1) {
-//			throw new UnsupportedOperationException();
-//		}
+
+		@Override
+		public double getDistanceSquared(Point3D p1) {
+			return Point3f.this.getDistanceSquared(p1);
+		}
+
+		@Override
+		public double getDistance(Point3D p1) {
+			return Point3f.this.getDistance(p1);
+		}
+
+		@Override
+		public double getDistanceL1(Point3D p1) {
+			return Point3f.this.getDistanceL1(p1);
+		}
+
+		@Override
+		public double getDistanceLinf(Point3D p1) {
+			return Point3f.this.getDistanceLinf(p1);
+		}
 
 		@Override
 		public Point3D toUnmodifiable() {
 			return this;
 		}
+	
+
 		
 	}
 	

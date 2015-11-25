@@ -165,6 +165,27 @@ public class Point3d extends Tuple3d<Point3D> implements FunctionalPoint3D {
 			return this;
 		}
 		
+		@Override
+		public double getDistanceSquared(Point3D p1) {
+			return Point3d.this.getDistanceSquared(p1);
+		}
+
+		@Override
+		public double getDistance(Point3D p1) {
+			return Point3d.this.getDistance(p1);
+		}
+
+		@Override
+		public double getDistanceL1(Point3D p1) {
+			return Point3d.this.getDistanceL1(p1);
+		}
+
+		@Override
+		public double getDistanceLinf(Point3D p1) {
+			return Point3d.this.getDistanceLinf(p1);
+		}
+	
+		
 	}
 	
 }

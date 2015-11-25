@@ -150,6 +150,28 @@ public class Point3i extends Tuple3i<Point3D> implements Point3D {
 	      return (int)(MathUtil.max( Math.abs(this.x-p1.getX()), Math.abs(this.y-p1.getY()), Math.abs(this.z-p1.getZ())));
 	}
 
+	
+	@Override
+	public double getDistanceSquared(Point3D p1) {
+		return this.distanceSquared(p1);
+	}
+
+	@Override
+	public double getDistance(Point3D p1) {
+		return this.distance(p1);
+	}
+
+	@Override
+	public double getDistanceL1(Point3D p1) {
+		return this.distanceL1(p1);
+	}
+
+	@Override
+	public double getDistanceLinf(Point3D p1) {
+		return this.distanceLinf(p1);
+	}
+	
+	
 	@Override
 	public void add(Point3D t1, Vector3D t2) {
 		this.x = (int)(t1.getX() + t2.getX());
@@ -640,6 +662,28 @@ public class Point3i extends Tuple3i<Point3D> implements Point3D {
 			return this;
 		}
 		
+		@Override
+		public double getDistanceSquared(Point3D p1) {
+			return Point3i.this.distanceSquared(p1);
+		}
+
+		@Override
+		public double getDistance(Point3D p1) {
+			return Point3i.this.distance(p1);
+		}
+
+		@Override
+		public double getDistanceL1(Point3D p1) {
+			return Point3i.this.distanceL1(p1);
+		}
+
+		@Override
+		public double getDistanceLinf(Point3D p1) {
+			return Point3i.this.distanceLinf(p1);
+		}
+		
 	}
+
+
 
 }

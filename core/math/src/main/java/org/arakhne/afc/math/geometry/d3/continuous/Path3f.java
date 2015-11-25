@@ -123,7 +123,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 			}
 
 			if (candidate!=null) {
-				double d = candidate.distanceSquared(new Point3f(x,y,z));
+				double d = candidate.getDistanceSquared(new Point3f(x,y,z));
 				if (d<bestDist) {
 					bestDist = d;
 					closest = candidate;
@@ -206,7 +206,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 			}
 
 			if (candidate!=null) {
-				double d = candidate.distanceSquared(new Point3f(x,y,z));
+				double d = candidate.getDistanceSquared(new Point3f(x,y,z));
 				if (d>bestDist) {
 					bestDist = d;
 					farthest = candidate;
@@ -647,19 +647,19 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 	@Override
 	public double distanceSquared(Point3D p) {
 		Point3D c = getClosestPointTo(p);
-		return c.distanceSquared(p);
+		return c.getDistanceSquared(p);
 	}
 
 	@Override
 	public double distanceL1(Point3D p) {
 		Point3D c = getClosestPointTo(p);
-		return c.distanceL1(p);
+		return c.getDistanceL1(p);
 	}
 
 	@Override
 	public double distanceLinf(Point3D p) {
 		Point3D c = getClosestPointTo(p);
-		return c.distanceLinf(p);
+		return c.getDistanceLinf(p);
 	}
 
 	/** Transform the current path.

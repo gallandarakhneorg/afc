@@ -155,16 +155,42 @@ public interface FunctionalPoint3D extends Point3D {
 		return MathUtil.max(Math.abs(x1 - x2), Math.abs(y1 - y2), Math.abs(z1 - z2));
 	}
 
+	@Override
+	default double getDistanceSquared(Point3D p1) {
+		double dx, dy, dz;
+	    dx = this.getX() - p1.getX();  
+	    dy = this.getY() - p1.getY();
+	    dz = this.getZ() - p1.getZ();
+	    return (dx*dx+dy*dy+dz*dz);
+	}
+	
+	@Override    
+	default double getDistance(Point3D p1) {
+		double  dx, dy, dz;
+	    dx = this.getX() - p1.getX();  
+	    dy = this.getY() - p1.getY();
+	    dz = this.getZ() - p1.getZ();
+	    return Math.sqrt(dx*dx+dy*dy+dz*dz);
+	}
+
+	@Override
+	default double getDistanceL1(Point3D p1) {
+		return (Math.abs(this.getX() - p1.getX()) + Math.abs(this.getY() - p1.getY()) + Math.abs(this.getZ() - p1.getZ()));
+	}
+
+	@Override
+	default double getDistanceLinf(Point3D p1) {
+		return Math.max(Math.max( Math.abs(this.getX() - p1.getX()), Math.abs(this.getY() - p1.getY())), Math.abs(this.getZ() - p1.getZ()));
+	}
+	
+	
+	
 	/* (non-Javadoc)
 	 * @see org.arakhne.afc.math.geometry.d3.Point3D#distanceSquared(org.arakhne.afc.math.geometry.d3.Point3D)
 	 */
 	@Override
 	default int distanceSquared(Point3D p1) {
-		double dx, dy, dz;
-	    dx = this.getX() - p1.getX();  
-	    dy = this.getY() - p1.getY();
-	    dz = this.getZ() - p1.getZ();
-	    return (int)(dx*dx+dy*dy+dz*dz);
+	    return (int)getDistanceSquared(p1);
 	}
 
 	/* (non-Javadoc)
@@ -172,11 +198,7 @@ public interface FunctionalPoint3D extends Point3D {
 	 */
 	@Override
 	default int distance(Point3D p1) {
-		double  dx, dy, dz;
-	    dx = this.getX() - p1.getX();  
-	    dy = this.getY() - p1.getY();
-	    dz = this.getZ() - p1.getZ();
-	    return (int)Math.sqrt(dx*dx+dy*dy+dz*dz);
+		 return (int)getDistance(p1);
 	}
 
 	/* (non-Javadoc)
@@ -184,7 +206,7 @@ public interface FunctionalPoint3D extends Point3D {
 	 */
 	@Override
 	default int distanceL1(Point3D p1) {
-		return (int)(Math.abs(this.getX() - p1.getX()) + Math.abs(this.getY() - p1.getY()) + Math.abs(this.getZ() - p1.getZ()));
+		return (int)getDistanceL1(p1);
 	}
 
 	/* (non-Javadoc)
@@ -192,7 +214,7 @@ public interface FunctionalPoint3D extends Point3D {
 	 */
 	@Override
 	default int distanceLinf(Point3D p1) {
-		return (int)Math.max(Math.max( Math.abs(this.getX() - p1.getX()), Math.abs(this.getY() - p1.getY())), Math.abs(this.getZ() - p1.getZ()));
+		return (int)getDistanceLinf(p1);
 	}
 
 	/* (non-Javadoc)

@@ -1803,13 +1803,13 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 	@Override
 	public double distanceL1(Point3D p) {
 		Point3D c = getClosestPointTo(p);
-		return c.distanceL1(p);
+		return c.getDistanceL1(p);
 	}
 
 	@Override
 	public double distanceLinf(Point3D p) {
 		Point3D c = getClosestPointTo(p);
-		return c.distanceLinf(p);
+		return c.getDistanceLinf(p);
 	}
 
 	/**
@@ -2037,9 +2037,9 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 
 	@Override
 	public Point3D getFarthestPointTo(Point3D p) {
-		double d1 = this.getP1().distanceSquared(p);
-		double d2 = this.getP2().distanceSquared(p);
-		double d3 = this.getP3().distanceSquared(p);
+		double d1 = this.getP1().getDistanceSquared(p);
+		double d2 = this.getP2().getDistanceSquared(p);
+		double d3 = this.getP3().getDistanceSquared(p);
 		if (d1 >= d2) {
 			if (d3 >= d1) {
 				return this.getP3().clone();

@@ -690,7 +690,7 @@ public abstract class AbstractSphere3F extends AbstractShape3F<AbstractSphere3F>
 	@Override
 	public double distanceL1(Point3D p) {
 		Point3D r = getClosestPointTo(p);
-		return r.distanceL1(p);
+		return r.getDistanceL1(p);
 	}
 
 	/** {@inheritDoc}
@@ -698,7 +698,7 @@ public abstract class AbstractSphere3F extends AbstractShape3F<AbstractSphere3F>
 	@Override
 	public double distanceLinf(Point3D p) {
 		Point3D r = getClosestPointTo(p);
-		return r.distanceLinf(p);
+		return r.getDistanceLinf(p);
 	}
 
 	/** {@inheritDoc}
