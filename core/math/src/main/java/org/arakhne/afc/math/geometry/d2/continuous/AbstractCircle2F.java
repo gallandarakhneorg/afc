@@ -43,7 +43,7 @@ public abstract class AbstractCircle2F<T extends Shape2F> extends AbstractShape2
 
 	/**
 	 * ArcIterator.btan(Math.PI/2)
-	 */
+	 */ 
 	private static final double CTRL_VAL = 0.5522847498307933f;
 
 	/**
@@ -122,6 +122,7 @@ public abstract class AbstractCircle2F<T extends Shape2F> extends AbstractShape2
 	 * @return <code>true</code> if the two shapes are intersecting; otherwise
 	 * <code>false</code>
 	 */
+	@Pure
 	public static boolean intersectsCircleCircle(double x1, double y1, double radius1, double x2, double y2, double radius2) {
 		double r = radius1+radius2;
 		return FunctionalPoint2D.distanceSquaredPointPoint(x1, y1, x2, y2) < (r*r);
