@@ -236,7 +236,7 @@ public class Path2fTest extends AbstractMathTestCase{
 		p.curveTo(5, -1, 6, 5, 7, -5);
 		p.closePath();
 		
-		Rectangle2f box = p.toBoundingBoxWithCtrlPoints();
+		Rectangle2f box = p.toBoundingBox();
 		
 		Point2f randomP1 = new Point2f(this.random.nextDouble()*20-10,this.random.nextDouble()*20-10);
 		Point2f randomP2 = new Point2f(this.random.nextDouble()*20-10,this.random.nextDouble()*20-10);
@@ -273,6 +273,8 @@ public class Path2fTest extends AbstractMathTestCase{
 		assertEquals(box.contains(randomP15),p.contains(randomP15.getX(),randomP15.getY()));
 		assertEquals(box.contains(randomP16),p.contains(randomP16.getX(),randomP16.getY()));
 		assertEquals(box.contains(randomP17),p.contains(randomP17.getX(),randomP17.getY()));
+		
+		
 	}
 	
 	@Test
