@@ -82,6 +82,7 @@ public abstract class AbstractCircle2F<T extends Shape2F> extends AbstractShape2
 	 * @return <code>true</code> if the point is inside the circle;
 	 * <code>false</code> if not.
 	 */
+	@Pure
 	public static boolean containsCirclePoint(double cx, double cy, double radius, double px, double py) {
 		return FunctionalPoint2D.distanceSquaredPointPoint(
 				px, py,
@@ -100,6 +101,7 @@ public abstract class AbstractCircle2F<T extends Shape2F> extends AbstractShape2
 	 * @return <code>true</code> if the given rectangle is inside the circle;
 	 * otherwise <code>false</code>.
 	 */
+	@Pure
 	public static boolean containsCircleRectangle(double cx, double cy, double radius, double rx, double ry, double rwidth, double rheight) {
 		double rcx = (rx + rwidth/2f);
 		double rcy = (ry + rheight/2f);
@@ -141,6 +143,7 @@ public abstract class AbstractCircle2F<T extends Shape2F> extends AbstractShape2
 	 * @return <code>true</code> if the two shapes are intersecting; otherwise
 	 * <code>false</code>
 	 */
+	@Pure
 	public static boolean intersectsCircleRectangle(double x1, double y1, double radius, double x2, double y2, double x3, double y3) {
 		double dx;
 		if (x1<x2) {

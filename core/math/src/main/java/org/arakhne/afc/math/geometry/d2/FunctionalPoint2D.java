@@ -20,10 +20,14 @@ package org.arakhne.afc.math.geometry.d2;
 
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
+import org.arakhne.afc.math.Pure;
 
 /**
- * @author Olivier LAMOTTE (olivier.lamotte@utbm.fr)
- *
+ * @author $Author: olamotte$
+ * @author $Author: hjaffali$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
  */
 public interface FunctionalPoint2D extends Point2D {
 
@@ -51,6 +55,7 @@ public interface FunctionalPoint2D extends Point2D {
 	 * @since 3.0
 	 * @see MathUtil#isEpsilonZero(double)
 	 */
+	@Pure
 	public static boolean isCollinearPoints(double x1, double y1, double x2, double y2, double x3, double y3) {
 		// Test if three points are colinears
 		// iff det( [ x1 x2 x3 ]
@@ -70,6 +75,7 @@ public interface FunctionalPoint2D extends Point2D {
 	 * @see #distanceSquaredPointPoint(double, double, double, double)
 	 * @see #distanceL1PointPoint(double, double, double, double)
 	 */
+	@Pure
 	public static double distancePointPoint(double x1, double y1, double x2, double y2) {
 		double dx, dy;
 		dx = x1 - x2;
@@ -87,6 +93,7 @@ public interface FunctionalPoint2D extends Point2D {
 	 * @see #distancePointPoint(double, double, double, double)
 	 * @see #distanceL1PointPoint(double, double, double, double)
 	 */
+	@Pure
 	public static double distanceSquaredPointPoint(double x1, double y1, double x2, double y2) {
 		double dx, dy;
 		dx = x1 - x2;
@@ -105,6 +112,7 @@ public interface FunctionalPoint2D extends Point2D {
 	 * @see #distancePointPoint(double, double, double, double)
 	 * @see #distanceSquaredPointPoint(double, double, double, double)
 	 */
+	@Pure
 	public static double distanceL1PointPoint(double x1, double y1, double x2, double y2) {
 		return Math.abs(x1 - x2) + Math.abs(y1 - y2);
 	}
@@ -121,6 +129,7 @@ public interface FunctionalPoint2D extends Point2D {
 	 * @see #distancePointPoint(double, double, double, double)
 	 * @see #distanceSquaredPointPoint(double, double, double, double)
 	 */
+	@Pure
 	public static double distanceLinfPointPoint(double x1, double y1, double x2, double y2) {
 		return Math.max(Math.abs(x1 - x2), Math.abs(y1 - y2));
 	}
@@ -128,6 +137,7 @@ public interface FunctionalPoint2D extends Point2D {
 	/* (non-Javadoc)
 	 * @see org.arakhne.afc.math.geometry.d2.Point2D#getDistanceSquared(org.arakhne.afc.math.geometry.d2.Point2D)
 	 */
+	@Pure
 	@Override
 	default double getDistanceSquared(Point2D p1) {
 		double dx, dy;
@@ -139,6 +149,7 @@ public interface FunctionalPoint2D extends Point2D {
 	/* (non-Javadoc)
 	 * @see org.arakhne.afc.math.geometry.d2.Point2D#getDistance(org.arakhne.afc.math.geometry.d2.Point2D)
 	 */
+	@Pure
 	@Override
 	default double getDistance(Point2D p1) {
 		double  dx, dy;
@@ -150,6 +161,7 @@ public interface FunctionalPoint2D extends Point2D {
 	/* (non-Javadoc)
 	 * @see org.arakhne.afc.math.geometry.d2.Point2D#getDistanceL1(org.arakhne.afc.math.geometry.d2.Point2D)
 	 */
+	@Pure
 	@Override
 	default double getDistanceL1(Point2D p1) {
 		return (Math.abs(this.getX() - p1.getX()) + Math.abs(this.getY() - p1.getY()));
@@ -158,6 +170,7 @@ public interface FunctionalPoint2D extends Point2D {
 	/* (non-Javadoc)
 	 * @see org.arakhne.afc.math.geometry.d2.Point2D#getDistanceLinf(org.arakhne.afc.math.geometry.d2.Point2D)
 	 */
+	@Pure
 	@Override
 	default double getDistanceLinf(Point2D p1) {
 		return Math.max(Math.abs(this.getX() - p1.getX()), Math.abs(this.getY() - p1.getY()));
@@ -166,6 +179,7 @@ public interface FunctionalPoint2D extends Point2D {
 	/* (non-Javadoc)
 	 * @see org.arakhne.afc.math.geometry.d2.Point2D#distanceSquared(org.arakhne.afc.math.geometry.d2.Point2D)
 	 */
+	@Pure
 	@Override
 	default int distanceSquared(Point2D p1) {
 		return (int) getDistanceSquared(p1);
@@ -174,6 +188,7 @@ public interface FunctionalPoint2D extends Point2D {
 	/* (non-Javadoc)
 	 * @see org.arakhne.afc.math.geometry.d2.Point2D#distance(org.arakhne.afc.math.geometry.d2.Point2D)
 	 */
+	@Pure
 	@Override
 	default int distance(Point2D p1) {
 		return (int) getDistance(p1);
@@ -182,6 +197,7 @@ public interface FunctionalPoint2D extends Point2D {
 	/* (non-Javadoc)
 	 * @see org.arakhne.afc.math.geometry.d2.Point2D#distanceL1(org.arakhne.afc.math.geometry.d2.Point2D)
 	 */
+	@Pure
 	@Override
 	default int distanceL1(Point2D p1) {
 		return (int) getDistanceL1(p1);
@@ -190,6 +206,7 @@ public interface FunctionalPoint2D extends Point2D {
 	/* (non-Javadoc)
 	 * @see org.arakhne.afc.math.geometry.d2.Point2D#distanceLinf(org.arakhne.afc.math.geometry.d2.Point2D)
 	 */
+	@Pure
 	@Override
 	default int distanceLinf(Point2D p1) {
 		return (int) getDistanceLinf(p1);

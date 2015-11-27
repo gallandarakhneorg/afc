@@ -25,6 +25,7 @@ import java.util.NoSuchElementException;
 
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
+import org.arakhne.afc.math.Pure;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.FunctionalPoint2D;
 import org.arakhne.afc.math.geometry.d2.FunctionalVector2D;
@@ -274,6 +275,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 	 * @return the distance beetween the point and the line.
 	 * @see #distanceLinePoint(double, double, double, double, double, double)
 	 */
+	@Pure
 	public static double distanceSquaredLinePoint(double x1, double y1, double x2, double y2, double px, double py) {
 		double r_denomenator = (x2-x1)*(x2-x1) + (y2-y1)*(y2-y1);
 		if (r_denomenator==0.) return FunctionalPoint2D.distanceSquaredPointPoint(px, py, x1, y1);
