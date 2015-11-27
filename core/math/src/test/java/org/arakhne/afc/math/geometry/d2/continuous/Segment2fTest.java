@@ -39,7 +39,8 @@ import org.arakhne.afc.math.geometry.d2.continuous.Transform2D;
 import org.junit.Test;
 
 /**
- * @author $Author: galland$
+ * @author $Author: sgalland$
+ * @author $Author: hjaffali$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -1237,32 +1238,32 @@ public class Segment2fTest extends AbstractShape2fTestCase<Segment2f> {
 		Point2D p;
 		
 		p = this.r.getFarthestPointTo(new Point2f(0f,0f));
-		assertEpsilonEquals(0f, p.getX());
-		assertEpsilonEquals(0f, p.getY());
+		assertEpsilonEquals(1f, p.getX());
+		assertEpsilonEquals(1f, p.getY());
 
 		p = this.r.getFarthestPointTo(new Point2f(.5f,.5f));
-		assertEpsilonEquals(.5f, p.getX());
-		assertEpsilonEquals(.5f, p.getY());
-
-		p = this.r.getFarthestPointTo(new Point2f(1f,1f));
-		assertEpsilonEquals(1f, p.getX());
-		assertEpsilonEquals(1f, p.getY());
-
-		p = this.r.getFarthestPointTo(new Point2f(2f,2f));
-		assertEpsilonEquals(1f, p.getX());
-		assertEpsilonEquals(1f, p.getY());
-
-		p = this.r.getFarthestPointTo(new Point2f(-2f,2f));
 		assertEpsilonEquals(0f, p.getX());
 		assertEpsilonEquals(0f, p.getY());
 
-		p = this.r.getFarthestPointTo(new Point2f(0.1f,1.2f));
-		assertEpsilonEquals(0.65f, p.getX());
-		assertEpsilonEquals(0.65f, p.getY());
+		p = this.r.getFarthestPointTo(new Point2f(1f,1f));
+		assertEpsilonEquals(0f, p.getX());
+		assertEpsilonEquals(0f, p.getY());
 
-		p = this.r.getFarthestPointTo(new Point2f(10.1f,-.2f));
+		p = this.r.getFarthestPointTo(new Point2f(2f,2f));
+		assertEpsilonEquals(0f, p.getX());
+		assertEpsilonEquals(0f, p.getY());
+
+		p = this.r.getFarthestPointTo(new Point2f(-2f,2f));
 		assertEpsilonEquals(1f, p.getX());
 		assertEpsilonEquals(1f, p.getY());
+
+		p = this.r.getFarthestPointTo(new Point2f(0.1f,1.2f));
+		assertEpsilonEquals(0f, p.getX());
+		assertEpsilonEquals(0f, p.getY());
+
+		p = this.r.getFarthestPointTo(new Point2f(10.1f,-.2f));
+		assertEpsilonEquals(0f, p.getX());
+		assertEpsilonEquals(0f, p.getY());
 	}
 
 	/**

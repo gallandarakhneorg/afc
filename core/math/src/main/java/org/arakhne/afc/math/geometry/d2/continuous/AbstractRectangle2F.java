@@ -5,6 +5,7 @@ import java.util.NoSuchElementException;
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.PathWindingRule;
+import org.arakhne.afc.math.geometry.d2.FunctionalPoint2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 
@@ -237,7 +238,7 @@ public abstract class AbstractRectangle2F<T extends AbstractRectangularShape2F<T
 	 * @param min is the min corner of the rectangle.
 	 * @param max is the max corner of the rectangle.
 	 */
-	public AbstractRectangle2F(Point2f min, Point2f max) {
+	public AbstractRectangle2F(FunctionalPoint2D min, FunctionalPoint2D max) {
 		super(min, max);
 	}
 
@@ -716,7 +717,7 @@ public abstract class AbstractRectangle2F<T extends AbstractRectangularShape2F<T
 	}
 
 	@Override
-	public boolean intersects(Rectangle2f s) {
+	public boolean intersects(AbstractRectangle2F<?> s) {
 		return intersectsRectangleRectangle(
 				getMinX(), getMinY(),
 				getMaxX(), getMaxY(),

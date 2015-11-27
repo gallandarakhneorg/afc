@@ -757,7 +757,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 				if (y0>=ymax) --numCrosses;
 			}
 		}
-		else if (intersectsSegmentSegmentWithoutEnds(x0, y0, x1, y1, sx1, sy1, sx2, sy2)) {
+		else if (intersectsSegmentSegmentWithEnds(x0, y0, x1, y1, sx1, sy1, sx2, sy2)) {
 			return MathConstants.SHAPE_INTERSECTS;
 		}
 		else {
@@ -1568,7 +1568,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 	}
 
 	@Override
-	public boolean intersects(Rectangle2f s) {
+	public boolean intersects(AbstractRectangle2F<?> s) {
 		return AbstractRectangle2F.intersectsRectangleSegment(
 				s.getMinX(), s.getMinY(),
 				s.getMaxX(), s.getMaxY(),
@@ -1596,7 +1596,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 
 	@Override
 	public boolean intersects(Segment2f s) {
-		return intersectsSegmentSegmentWithoutEnds(
+		return intersectsSegmentSegmentWithEnds(
 				this.getX1(), this.getY1(),
 				this.getX2(), this.getY2(),
 				s.getX1(), s.getY1(),

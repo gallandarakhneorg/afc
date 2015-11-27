@@ -744,11 +744,11 @@ public class OpenPath2fTest extends AbstractPath2fTestCase {
 		assertElement(pi, PathElementType.CURVE_TO, 5f, -1f, 6f, 5f, 7f, -5f);
 		assertNoElement(pi);
 
-		assertTrue(this.r.containsPoint(new Point2f(2f, 2f)));
-		assertFalse(this.r.containsPoint(new Point2f(4f, 4f)));
-		assertTrue(this.r.containsPoint(new Point2f(6f, 5f)));
-		assertFalse(this.r.containsPoint(new Point2f(-1f, 6f)));
-		assertFalse(this.r.containsPoint(new Point2f(1234f, 5678f)));
+		assertTrue(this.r.containsControlPoint(new Point2f(2f, 2f)));
+		assertFalse(this.r.containsControlPoint(new Point2f(4f, 4f)));
+		assertTrue(this.r.containsControlPoint(new Point2f(6f, 5f)));
+		assertFalse(this.r.containsControlPoint(new Point2f(-1f, 6f)));
+		assertFalse(this.r.containsControlPoint(new Point2f(1234f, 5678f)));
 	}
 
 	/**

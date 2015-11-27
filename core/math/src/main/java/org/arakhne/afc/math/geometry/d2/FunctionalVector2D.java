@@ -24,8 +24,11 @@ import org.arakhne.afc.math.geometry.d2.continuous.Vector2f;
 import org.arakhne.afc.math.matrix.Matrix2f;
 
 /**
- * @author Olivier LAMOTTE (olivier.lamotte@utbm.fr)
- *
+ * @author $Author: olamotte$
+ * @author $Author: hjaffali$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
  */
 public interface FunctionalVector2D extends Vector2D {
 
@@ -444,7 +447,6 @@ public interface FunctionalVector2D extends Vector2D {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
 	
 	
 	

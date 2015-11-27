@@ -424,7 +424,7 @@ public class Vector2fTest extends AbstractMathTestCase {
 		assertTrue(vector.isUnitVector());
 		assertTrue(vector2.isUnitVector());
 		assertTrue((new Vector2f(Math.sqrt(2)/2,Math.sqrt(2)/2)).isUnitVector());
-		assertTrue((new Vector2f(1,0)).isUnitVector());
+		assertTrue((new Vector2f(1,0)).isUnitVector()); 
 		
 	}
 

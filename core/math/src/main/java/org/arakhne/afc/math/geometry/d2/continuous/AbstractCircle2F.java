@@ -401,7 +401,7 @@ public abstract class AbstractCircle2F<T extends Shape2F> extends AbstractShape2
 	}
 
 	@Override
-	public boolean intersects(Rectangle2f s) {
+	public boolean intersects(AbstractRectangle2F<?> s) {
 		return intersectsCircleRectangle(
 				this.getX(), this.getY(), this.getRadius(),
 				s.getMinX(), s.getMinY(),

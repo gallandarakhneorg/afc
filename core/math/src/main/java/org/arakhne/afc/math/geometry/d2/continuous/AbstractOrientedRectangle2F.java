@@ -1056,7 +1056,7 @@ public abstract class AbstractOrientedRectangle2F<T extends Shape2F> extends Abs
 	}
 
 	@Override
-	public boolean intersects(Rectangle2f s) {
+	public boolean intersects(AbstractRectangle2F<?> s) {
 		return intersectsOrientedRectangleRectangle(
 				this.getCenterX(), this.getCenterY(), this.getFirstAxisX(), this.getFirstAxisY(), this.getFirstAxisExtent(), this.getSecondAxisX(), this.getSecondAxisY(), this.getSecondAxisExtent(),
 				s.getMinX(), s.getMinY(),

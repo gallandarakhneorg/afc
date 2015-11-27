@@ -92,7 +92,14 @@ public class OrientedRectangle2f extends AbstractOrientedRectangle2F<OrientedRec
 	/** Create an empty oriented rectangle.
 	 */
 	public OrientedRectangle2f() {
-		//
+		this.cx = 0f;
+		this.cy = 0f;
+		this.rx = 0f;
+		this.ry = 0f;
+		this.sx = 0f;
+		this.sy = 0f;
+		this.extentR = 0f;
+		this.extentS = 0f;
 	}
 
 	/** Create an oriented rectangle from the given OBR.

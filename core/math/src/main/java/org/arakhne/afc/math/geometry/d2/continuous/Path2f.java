@@ -33,7 +33,6 @@ import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Path2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
-import org.arakhne.afc.math.geometry.d3.continuous.Path3f;
 
 
 /** A generic path.
@@ -1538,7 +1537,7 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 	}
 
 	@Override
-	public boolean intersects(Rectangle2f s) {
+	public boolean intersects(AbstractRectangle2F<?> s) {
 		// Copied from AWT API
 		if (s.isEmpty()) return false;
 		int mask = (this.windingRule == PathWindingRule.NON_ZERO ? -1 : 2);

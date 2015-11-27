@@ -38,7 +38,7 @@ import org.junit.Test;
 
 /**
  * @param <T> is the type of the shape to test
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

@@ -20,6 +20,7 @@
  */
 package org.arakhne.afc.math.geometry.d2.continuous;
 
+import org.arakhne.afc.math.geometry.d2.FunctionalPoint2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 
 
@@ -35,29 +36,30 @@ public class Rectangle2f extends AbstractRectangle2F<Rectangle2f> {
 
 	private static final long serialVersionUID = 8716296371653330467L;
 
-
-
 	/** Lowest x-coordinate covered by this rectangular shape. */
-	protected double minx = 0f;
+	protected double minx;
 	/** Lowest y-coordinate covered by this rectangular shape. */
-	protected double miny = 0f;
+	protected double miny;
 	/** Highest x-coordinate covered by this rectangular shape. */
-	protected double maxx = 0f;
+	protected double maxx;
 	/** Highest y-coordinate covered by this rectangular shape. */
-	protected double maxy = 0f;
+	protected double maxy ;
 	
 	
 	/**
 	 */
 	public Rectangle2f() {
-		//
+		this.minx = 0f;
+		this.miny = 0f;
+		this.maxx = 0f;
+		this.maxy = 0f;
 	}
 
 	/**
 	 * @param min is the min corner of the rectangle.
 	 * @param max is the max corner of the rectangle.
 	 */
-	public Rectangle2f(Point2f min, Point2f max) {
+	public Rectangle2f(FunctionalPoint2D min, FunctionalPoint2D max) {
 		super(min, max);
 	}
 
@@ -126,7 +128,7 @@ public class Rectangle2f extends AbstractRectangle2F<Rectangle2f> {
 	 */
 	@Override
 	public void setFromCorners(Point2D p1, Point2D p2) {
-		setFromCorners(p1.getX(), p1.getY(), p2.getX(), p2.getY());
+		this.setFromCorners(p1.getX(), p1.getY(), p2.getX(), p2.getY());
 	}
 
 	/** Change the frame of the rectangle.
@@ -139,20 +141,20 @@ public class Rectangle2f extends AbstractRectangle2F<Rectangle2f> {
 	@Override
 	public void setFromCorners(double x1, double y1, double x2, double y2) {
 		if (x1<x2) {
-			this.minx = x1;
-			this.maxx = x2;
+			this.setMinX(x1);
+			this.setMaxX(x2);
 		}
 		else {
-			this.minx = x2;
-			this.maxx = x1;
+			this.setMinX(x2);
+			this.setMaxX(x1);
 		}
 		if (y1<y2) {
-			this.miny = y1;
-			this.maxy = y2;
+			this.setMinY(x1);
+			this.setMaxY(x2);
 		}
 		else {
-			this.miny = y2;
-			this.maxy = y1;
+			this.setMinY(x2);
+			this.setMaxY(x1);
 		}
 	}
 	

@@ -30,23 +30,6 @@ import java.util.List;
 import org.arakhne.afc.math.AbstractMathTestCase;
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.geometry.d2.Point2D;
-import org.arakhne.afc.math.geometry.d3.Point3D;
-import org.arakhne.afc.math.geometry.d3.continuous.AbstractPlane4F;
-import org.arakhne.afc.math.geometry.d3.continuous.AbstractSegment3F;
-import org.arakhne.afc.math.geometry.d3.continuous.AbstractSphere3F;
-import org.arakhne.afc.math.geometry.d3.continuous.AbstractTriangle3F;
-import org.arakhne.afc.math.geometry.d3.continuous.AlignedBox3f;
-import org.arakhne.afc.math.geometry.d3.continuous.OrientedBox3f;
-import org.arakhne.afc.math.geometry.d3.continuous.Path3f;
-import org.arakhne.afc.math.geometry.d3.continuous.PathIterator3f;
-import org.arakhne.afc.math.geometry.d3.continuous.Plane3D;
-import org.arakhne.afc.math.geometry.d3.continuous.Plane4f;
-import org.arakhne.afc.math.geometry.d3.continuous.Point3f;
-import org.arakhne.afc.math.geometry.d3.continuous.Segment3f;
-import org.arakhne.afc.math.geometry.d3.continuous.Sphere3f;
-import org.arakhne.afc.math.geometry.d3.continuous.Transform3D;
-import org.arakhne.afc.math.geometry.d3.continuous.Triangle3f;
-import org.arakhne.afc.math.geometry.d3.continuous.Vector3f;
 import org.junit.Test;
 
 /**
@@ -59,96 +42,107 @@ import org.junit.Test;
 public class Path2fTest extends AbstractMathTestCase{
 	
 	
-//	@Test
-//    public void intersectsRectangle() {
-//		Path3f r = new Path3f();
-//		r.moveTo(0f, 0f, 0f);
-//		r.lineTo(1f, 1f, 1f);
-//		r.quadTo(3f, 0f, 0f, 4f, 3f, 0.5);
-//		r.curveTo(5f, -1f, 0f, 6f, 5f, 0f, 7f, -5f, 0f);
-//		r.closePath();
-//		
-//		AlignedBox3f aB = new AlignedBox3f(new Point3f(0f,0f,0f),new Point3f(2f,2f,2f));
-//		AlignedBox3f aB2 = new AlignedBox3f(new Point3f(-1f,-1f,-1f),new Point3f(-2f,-2f,-2f));
-//		
-//		assertTrue(r.intersects(aB));
-//		assertFalse(r.intersects(aB2));
-//    }
-//
-//	
-//	@Test
-//    public void intersectsPath() {
-//		Path3f r = new Path3f();
-//		r.moveTo(0f, 0f, 0f);
-//		r.lineTo(1f, 1f, 1f);
-//		r.quadTo(3f, 0f, 0f, 4f, 3f, 0.5);
-//		r.curveTo(5f, -1f, 0f, 6f, 5f, 0f, 7f, -5f, 0f);
-//		r.closePath();
-//		
-//		Transform3D t = new Transform3D();
-//		
-//		Path3f rTrans = new Path3f();
-//		rTrans.moveTo(0f, 0f, 0f);
-//		rTrans.lineTo(-12f, 19f, 0f);
-//		rTrans.closePath();
-//		
-//		Path3f rCurv = new Path3f();
-//		rCurv.moveTo(0f, 0f, 0f);
-//		rCurv.curveTo(5,-1f,0f,-5f,1,0f,-12f, 19f, 0f);
-//		rCurv.closePath();
-//		
-//		assertTrue(r.intersects(r));
-//		
-//		assertTrue(rTrans.intersects(r));
-//		assertTrue(rCurv.intersects(r));
-//		
-//		t.makeTranslationMatrix(20, 20, 20);
-//		rTrans.transform(t);
-//		rCurv.transform(t);
-//		
-//		assertFalse(rTrans.intersects(r));
-//		assertFalse(rCurv.intersects(r));
-//	}
-//	
-//	@Test
-//    public void intersectsCircle() {
-//		Path3f r = new Path3f();
-//		r.moveTo(0f, 0f, 0f);
-//		r.lineTo(1f, 1f, 1f);
-//		r.quadTo(3f, 0f, 0f, 4f, 3f, 0.5);
-//		r.curveTo(5f, -1f, 0f, 6f, 5f, 0f, 7f, -5f, 0f);
-//		r.closePath();
-//		
-//		AbstractSphere3F sfere = new Sphere3f(new Point3f(0.5f,0.5f,0.5f),5f);
-//		
-//		assertTrue(r.intersects(sfere));
-//		
-//		AbstractSphere3F sfere2 = new Sphere3f(new Point3f(20f,20f,20f),0.001);
-//
-//		assertFalse(r.intersects(sfere2));
-//		
-//	}
-//	
-//	@Test
-//    public void intersectsSegment() {
-//		Path3f r = new Path3f();
-//		r.moveTo(0f, 0f, 0f);
-//		r.lineTo(1f, 1f, 1f);
-//		r.quadTo(3f, 0f, 0f, 4f, 3f, 0.5);
-//		r.curveTo(5f, -1f, 0f, 6f, 5f, 0f, 7f, -5f, 0f);
-//		r.closePath();
-//		
-//		AbstractSegment3F segm = new Segment3f(1,0,1,0,0,0);
-//		AbstractSegment3F s = new Segment3f(1,0,0,0,0,1);
-//		AbstractSegment3F segm2 = new Segment3f(new Point3f(20f,20f,20f),new Point3f(30f,30f,30f));
-//		AbstractSegment3F s2 = new Segment3f(-1,-1,-1,8,-4,1);
-//		
-//		assertTrue(r.intersects(segm));
-//		assertFalse(r.intersects(s));
-//		assertFalse(r.intersects(segm2));
-//		assertTrue(r.intersects(s2));
-//	}
-//	
+	@Test
+    public void intersectsRectangle() {
+		Path2f p = new Path2f();
+		p.moveTo(0f, 0f);
+		p.lineTo(1f, 1f);
+		p.quadTo(3f, 0f, 4f, 3f);
+		p.curveTo(5f, -1f, 6f, 5f,7f, -5f);
+		p.closePath();
+		
+		
+		Rectangle2f aB = new Rectangle2f(0,0,2,2);
+		Rectangle2d aB2 = new Rectangle2d(new Point2f(-1f,-1f),new Point2d(-2f,-2f));
+		
+		assertTrue(p.intersects(aB));
+		assertFalse(p.intersects(aB2));
+   }
+
+	
+	@Test
+    public void intersectsPath() {
+		Path2f p = new Path2f();
+		p.moveTo(0f, 0f);
+		p.lineTo(1f, 1f);
+		p.quadTo(3f, 0f, 4f, 3f);
+		p.curveTo(5f, -1f, 6f, 5f,7f, -5f);
+		p.closePath();
+		
+		
+		Transform2D t = new Transform2D();
+		
+		Path2f rTrans = new Path2f();
+		rTrans.moveTo(-1f, -1f);
+		rTrans.lineTo(8f, -4f);
+		rTrans.closePath();
+		
+		Path2f rCurv = new Path2f();
+		rCurv.moveTo(0f, 0f);
+		rCurv.curveTo(5,-1f,-5f,1,-12f, 19f);
+		rCurv.closePath();
+		
+		assertTrue(p.intersects(p));
+		
+		assertTrue(rTrans.intersects(p));
+		assertTrue(rCurv.intersects(p));
+	
+		t.makeTranslationMatrix(20, 20);
+		rTrans.transform(t);
+		rCurv.transform(t);
+		
+		assertFalse(rTrans.intersects(p));
+		assertFalse(rCurv.intersects(p));
+	}
+	
+	@Test
+    public void intersectsCircle() {
+		Path2f r = new Path2f();
+		r.moveTo(0f, 0f);
+		r.lineTo(1f, 1f);
+		r.quadTo(3f, 0f, 4f, 3f);
+		r.curveTo(5f, -1f, 6f, 5f,7f, -5f);
+		r.closePath();
+		
+		Circle2f sfere = new Circle2f(new Point2f(0.5f,0.5f),5f);
+		
+		assertTrue(r.intersects(sfere));
+		
+		Circle2f sfere2 = new Circle2f(new Point2f(20f,20f),0.001);
+
+		assertFalse(r.intersects(sfere2));
+		
+	}
+	
+	@Test
+    public void intersectsSegment() {
+		Path2f r = new Path2f();
+		r.moveTo(0f, 0f);
+		r.lineTo(1f, 1f);
+		r.quadTo(3f, 0f, 4f, 3f);
+		r.curveTo(5f, -1f, 6f, 5f,7f, -5f);
+		r.closePath();
+		
+		Segment2f segm = new Segment2f(1,0,0,1);
+		Segment2f s = new Segment2f(1,0,-1,-1);
+		Segment2f segm2 = new Segment2f(new Point2f(20f,20f),new Point2f(30f,30f));
+		Segment2f s2 = new Segment2f(2,2,8,-4);
+		Segment2f s3 = new Segment2f(1,0,7,0);
+		Segment2f s4 = new Segment2f(3,3,3,0);
+		Segment2f s5 = new Segment2f(4,0,0,-1);
+		
+		
+		//FIXME Problem with Path segment intersection ----> segment extended by the right side
+		assertTrue(r.intersects(segm));
+		assertFalse(r.intersects(s));
+		assertFalse(r.intersects(segm2));
+		assertTrue(r.intersects(s2));
+		assertTrue(r.intersects(s3));
+		assertTrue(r.intersects(s4));
+		assertFalse(r.intersects(s5));
+		
+	}
+	
 //	@Test
 //    public void intersectsPathIterator() {
 //		Path3f path1 = new Path3f();
@@ -181,33 +175,25 @@ public class Path2fTest extends AbstractMathTestCase{
 //		//assertTrue(path3.intersects(triangle3));
 //	}
 //	
-//	@Test
-//    public void intersectsEllipse() {
-//		Path3f r = new Path3f();
-//		r.moveTo(0f, 0f, 0f);
-//		r.lineTo(1f, 1f, 1f);
-//		r.quadTo(3f, 0f, 0f, 4f, 3f, 0.5);
-//		r.curveTo(5f, -1f, 0f, 6f, 5f, 0f, 7f, -5f, 0f);
-//		r.closePath();
-//		
-//	
-//	}
-//	
-//	@Test
-//    public void intersectsOrientedRectangle() {
-//		Path3f r = new Path3f();
-//		r.moveTo(0f, 0f, 0f);
-//		r.lineTo(1f, 1f, 1f);
-//		r.quadTo(3f, 0f, 0f, 4f, 3f, 0.5);
-//		r.curveTo(5f, -1f, 0f, 6f, 5f, 0f, 7f, -5f, 0f);
-//		r.closePath();
-//		
-//		Plane3D<AbstractPlane4F> plane = new Plane4f(new Vector3f(1f,1f,1f),new Point3f(0.5f,0.5,0.5));
-//		Plane3D<AbstractPlane4F> plane2 = new Plane4f(new Vector3f(1f,1f,1f),new Point3f(20f,20f,20f));
-//		
-//		assertTrue(r.intersects(plane));
-//		assertFalse(r.intersects(plane2));
-//	}
+	@Test
+    public void intersectsEllipse() {
+		Path2f r = new Path2f();
+		r.moveTo(0f, 0f);
+		r.lineTo(1f, 1f);
+		r.quadTo(3f, 0f, 4f, 3f);
+		r.curveTo(5f, -1f, 6f, 5f,7f, -5f);
+		r.closePath();
+		
+		Ellipse2f ellipse = new Ellipse2f(new Point2f(1,0), new Point2f(3,2));
+		Ellipse2f ellipse2 = new Ellipse2f();
+		ellipse2.setFromCenter(4, 3, 3, 2.5);
+		Ellipse2f ellipse3 = new Ellipse2f();
+		ellipse3.setFromCenter(0, -3, -2, -4);
+		
+		assertTrue(r.intersects(ellipse));
+		assertTrue(r.intersects(ellipse2));	
+		assertFalse(r.intersects(ellipse3));
+	}
 	
 	@Test
 	public void isPolyline() {
@@ -250,7 +236,7 @@ public class Path2fTest extends AbstractMathTestCase{
 		p.curveTo(5, -1, 6, 5, 7, -5);
 		p.closePath();
 		
-		Rectangle2f box = p.toBoundingBox();
+		Rectangle2f box = p.toBoundingBoxWithCtrlPoints();
 		
 		Point2f randomP1 = new Point2f(this.random.nextDouble()*20-10,this.random.nextDouble()*20-10);
 		Point2f randomP2 = new Point2f(this.random.nextDouble()*20-10,this.random.nextDouble()*20-10);
@@ -505,7 +491,7 @@ public class Path2fTest extends AbstractMathTestCase{
 		Rectangle2f p1Box = new Rectangle2f(new Point2f(-1,-3),new Point2f(6,5));
 		Rectangle2f p2Box = new Rectangle2f(new Point2f(-10,-10),new Point2f(6,7));
 		
-		System.out.println(pBox.toString());
+	/*	System.out.println(pBox.toString());
 		System.out.println(p.toBoundingBoxWithCtrlPoints());
 		System.out.println();
 		System.out.println(p1Box);
@@ -513,7 +499,7 @@ public class Path2fTest extends AbstractMathTestCase{
 		System.out.println();
 		System.out.println(p2Box);
 		System.out.println(p2.toBoundingBoxWithCtrlPoints());
-		
+		*/
 		assertTrue(pBox.equals(p.toBoundingBoxWithCtrlPoints()));
 		assertTrue(p1Box.equals(p1.toBoundingBox()));
 		assertTrue(p2Box.equals(p2.toBoundingBox()));
@@ -937,7 +923,29 @@ public class Path2fTest extends AbstractMathTestCase{
 	
 	@Test
     public void getCoordAt() {
-		throw new UnsupportedOperationException();
+		Path2f p = new Path2f();
+		p.moveTo(0f, 0f);
+		p.lineTo(1f, 1f);
+		p.quadTo(3f, 0f, 4f, 3f);
+		p.curveTo(5f, -1f, 6f, 5f, 7f, -5f);
+		p.closePath();
+		
+		assertTrue(p.getCoordAt(0)==0);
+		assertTrue(p.getCoordAt(1)==0);
+		assertTrue(p.getCoordAt(2)==1);
+		assertTrue(p.getCoordAt(3)==1);
+		assertTrue(p.getCoordAt(4)==3);
+		assertTrue(p.getCoordAt(5)==0);
+		assertTrue(p.getCoordAt(6)==4);
+		assertTrue(p.getCoordAt(7)==3);
+		assertTrue(p.getCoordAt(8)==5);
+		assertTrue(p.getCoordAt(9)==-1);
+		assertTrue(p.getCoordAt(10)==6);
+		assertTrue(p.getCoordAt(11)==5);
+		assertTrue(p.getCoordAt(12)==7);
+		assertTrue(p.getCoordAt(13)==-5);
 	}
 	
 }
+
+

@@ -36,16 +36,18 @@ public class Circle2f extends AbstractCircle2F<Circle2f> {
 
 
 	/** X-coordinate of the circle center. */
-	protected double cx = 0f;
+	protected double cx;
 	/** Y-coordinate of the circle center. */
-	protected double cy = 0f;
+	protected double cy;
 	/** Radius of the circle center (must be always positive). */
-	protected double radius = 0f;
+	protected double radius;
 
 	/**
 	 */
 	public Circle2f() {
-		//
+		this.cx = 0f;
+		this.cy = 0f;
+		this.radius = 0f;
 	}
 
 	/**

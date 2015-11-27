@@ -582,7 +582,7 @@ public abstract class AbstractRoundRectangle2F<T extends AbstractRectangularShap
 	}
 
 	@Override
-	public boolean intersects(Rectangle2f s) {
+	public boolean intersects(AbstractRectangle2F<?> s) {
 		return AbstractRectangle2F.intersectsRectangleRectangle(
 				getMinX(), getMinY(),
 				getMaxX(), getMaxY(),

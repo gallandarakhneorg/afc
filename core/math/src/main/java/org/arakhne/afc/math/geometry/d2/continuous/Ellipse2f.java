@@ -35,20 +35,23 @@ public class Ellipse2f extends AbstractEllipse2F<Ellipse2f> {
 	private static final long serialVersionUID = -2745313055404516167L;
 
 	/** Lowest x-coordinate covered by this rectangular shape. */
-	protected double minx = 0f;
+	protected double minx;
 	/** Lowest y-coordinate covered by this rectangular shape. */
-	protected double miny = 0f;
+	protected double miny;
 	/** Highest x-coordinate covered by this rectangular shape. */
-	protected double maxx = 0f;
+	protected double maxx;
 	/** Highest y-coordinate covered by this rectangular shape. */
-	protected double maxy = 0f;
+	protected double maxy;
 	
 	
 	
 	/**
 	 */
 	public Ellipse2f() {
-		//
+		this.minx = 0f;
+		this.miny = 0f;
+		this.maxx = 0f;
+		this.maxy = 0f;		
 	}
 	/**
 	 * @param min is the min corner of the ellipse.

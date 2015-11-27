@@ -20,6 +20,7 @@
  */
 package org.arakhne.afc.math.geometry.d2.continuous;
 
+import org.arakhne.afc.math.geometry.d2.FunctionalPoint2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 
 import javafx.beans.property.DoubleProperty;
@@ -33,35 +34,38 @@ import javafx.beans.property.SimpleDoubleProperty;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@SuppressWarnings("restriction")
 public class Rectangle2d extends AbstractRectangle2F<Rectangle2d>{
-	/**
+	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -7259689465118883953L;
 
 
-	protected DoubleProperty minxProperty = new SimpleDoubleProperty(0f);
+	protected DoubleProperty minxProperty;
 	/** Lowest y-coordinate covered by this rectangular shape. */
-	protected DoubleProperty minyProperty = new SimpleDoubleProperty(0f);
+	protected DoubleProperty minyProperty;
 	/** Highest x-coordinate covered by this rectangular shape. */
-	protected DoubleProperty maxxProperty = new SimpleDoubleProperty(0f);
+	protected DoubleProperty maxxProperty;
 	/** Highest y-coordinate covered by this rectangular shape. */
-	protected DoubleProperty maxyProperty = new SimpleDoubleProperty(0f);
-	
-	
+	protected DoubleProperty maxyProperty;
+
+
 	/**
 	 */
 	public Rectangle2d() {
-		//
+		this.minxProperty= new SimpleDoubleProperty(0f);
+		this.minyProperty = new SimpleDoubleProperty(0f);
+		this.maxxProperty = new SimpleDoubleProperty(0f);
+		this.maxyProperty = new SimpleDoubleProperty(0f);
 	}
 
 	/**
 	 * @param min is the min corner of the rectangle.
 	 * @param max is the max corner of the rectangle.
 	 */
-	public Rectangle2d(Point2f min, Point2f max) {
-		super(min, max);
+	public Rectangle2d(FunctionalPoint2D min, FunctionalPoint2D max) {
+		this();
+		this.setFromCorners(min, max);
 	}
 
 	/**
@@ -71,17 +75,22 @@ public class Rectangle2d extends AbstractRectangle2F<Rectangle2d>{
 	 * @param height
 	 */
 	public Rectangle2d(double x, double y, double width, double height) {
-		super(x, y, width, height);
+		this();
+		this.setFromCorners(x, y, x+width, y+height);
 	}
-	
+
 	/**
 	 * @param r
 	 */
 	public Rectangle2d(Rectangle2d r) {
-		super(r);
+		this();
+		this.setMinX( r.getMinX());
+		this.setMinY(r.getMinY());
+		this.setMaxX(r.getMaxX());
+		this.setMaxY(r.getMaxY());
 	}
 
-	
+
 	/** Change the frame of the rectangle.
 	 * 
 	 * @param x
@@ -93,7 +102,7 @@ public class Rectangle2d extends AbstractRectangle2F<Rectangle2d>{
 	public void set(double x, double y, double width, double height) {
 		setFromCorners(x, y, x+width, y+height);
 	}
-	
+
 	/** Change the frame of te rectangle.
 	 * 
 	 * @param min is the min corner of the rectangle.
@@ -103,7 +112,7 @@ public class Rectangle2d extends AbstractRectangle2F<Rectangle2d>{
 	public void set(Point2f min, Point2f max) {
 		setFromCorners(min.getX(), min.getY(), max.getX(), max.getY());
 	}
-	
+
 	/** Change the width of the rectangle, not the min corner.
 	 * 
 	 * @param width
@@ -158,25 +167,25 @@ public class Rectangle2d extends AbstractRectangle2F<Rectangle2d>{
 			this.maxyProperty.set(y1);
 		}
 	}
-	
+
 	/**
-     * Sets the framing rectangle of this <code>Shape</code>
-     * based on the specified center point coordinates and corner point
-     * coordinates.  The framing rectangle is used by the subclasses of
-     * <code>RectangularShape</code> to define their geometry.
-     *
-     * @param centerX the X coordinate of the specified center point
-     * @param centerY the Y coordinate of the specified center point
-     * @param cornerX the X coordinate of the specified corner point
-     * @param cornerY the Y coordinate of the specified corner point
-     */
+	 * Sets the framing rectangle of this <code>Shape</code>
+	 * based on the specified center point coordinates and corner point
+	 * coordinates.  The framing rectangle is used by the subclasses of
+	 * <code>RectangularShape</code> to define their geometry.
+	 *
+	 * @param centerX the X coordinate of the specified center point
+	 * @param centerY the Y coordinate of the specified center point
+	 * @param cornerX the X coordinate of the specified corner point
+	 * @param cornerY the Y coordinate of the specified corner point
+	 */
 	@Override
 	public void setFromCenter(double centerX, double centerY, double cornerX, double cornerY) {
 		double dx = centerX - cornerX;
 		double dy = centerY - cornerY;
 		setFromCorners(cornerX, cornerY, centerX + dx, centerY + dy);
 	}
-	
+
 	/** Replies the min X.
 	 * 
 	 * @return the min x.
@@ -278,7 +287,7 @@ public class Rectangle2d extends AbstractRectangle2F<Rectangle2d>{
 	public double getMaxY() {
 		return this.maxyProperty.doubleValue();
 	}
-	
+
 	/** Set the max Y.
 	 * 
 	 * @param y the max y.
@@ -312,8 +321,8 @@ public class Rectangle2d extends AbstractRectangle2F<Rectangle2d>{
 	public double getHeight() {
 		return this.getMaxY() - this.getMinY();
 	}
-	
-	
+
+
 	@Override
 	public void set(Shape2F s) {
 		Rectangle2f r = new Rectangle2f();
@@ -324,7 +333,7 @@ public class Rectangle2d extends AbstractRectangle2F<Rectangle2d>{
 		this.setMinY(r.getMinY());
 	}
 
-	
+
 	/** {@inheritDoc}
 	 */
 	@Override
@@ -334,7 +343,7 @@ public class Rectangle2d extends AbstractRectangle2F<Rectangle2d>{
 		r.setMaxY(this.getMaxY());
 		r.setMinX(this.getMinX());
 		r.setMinY(this.getMinY());
-		
+
 		return r;
 	}
 

@@ -632,7 +632,7 @@ public abstract class AbstractEllipse2F<T extends AbstractRectangularShape2F<T>>
 	}
 
 	@Override
-	public boolean intersects(Rectangle2f s) {
+	public boolean intersects(AbstractRectangle2F<?> s) {
 		return intersectsEllipseRectangle(
 				getMinX(), getMinY(),
 				getMaxX(), getMaxY(),

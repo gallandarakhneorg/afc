@@ -20,6 +20,7 @@
  */
 package org.arakhne.afc.math.geometry.d2.continuous;
 
+import org.arakhne.afc.math.geometry.d2.FunctionalPoint2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 
 
@@ -32,8 +33,7 @@ import org.arakhne.afc.math.geometry.d2.Point2D;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public abstract class AbstractRectangularShape2F<T extends AbstractRectangularShape2F<T>>
-extends AbstractShape2F<T> {
+public abstract class AbstractRectangularShape2F<T extends AbstractRectangularShape2F<T>> extends AbstractShape2F<T> {
 
 	private static final long serialVersionUID = -2330319571109966087L;
 	
@@ -48,7 +48,7 @@ extends AbstractShape2F<T> {
 	 * @param min is the min corner of the rectangle.
 	 * @param max is the max corner of the rectangle.
 	 */
-	public AbstractRectangularShape2F(Point2f min, Point2f max) {
+	public AbstractRectangularShape2F(FunctionalPoint2D min, FunctionalPoint2D max) {
 		setFromCorners(min.getX(), min.getY(), max.getX(), max.getY());
 	}
 	

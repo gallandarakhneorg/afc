@@ -131,7 +131,7 @@ public interface Shape2F extends Shape2D<Shape2F> {
 	 * @return <code>true</code> if this shape is intersecting the given shape;
 	 * <code>false</code> if there is no intersection.
 	 */
-	public boolean intersects(Rectangle2f s);
+	public boolean intersects(AbstractRectangle2F<?> s);
 
 	/** Replies if this shape is intersecting the given ellipse.
 	 * 
