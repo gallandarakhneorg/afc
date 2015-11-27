@@ -21,6 +21,7 @@ package org.arakhne.afc.math.geometry.d3;
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem3D;
+import org.arakhne.afc.math.Pure;
 import org.arakhne.afc.math.geometry.d3.continuous.Quaternion;
 import org.arakhne.afc.math.geometry.d3.continuous.Transform3D;
 import org.arakhne.afc.math.geometry.d3.continuous.Vector3f;
@@ -46,6 +47,7 @@ public interface FunctionalVector3D extends Vector3D {
 	 * @return the determinant
 	 * @see #perpProduct(double, double, double, double, double, double)
 	 */
+	@Pure
 	public static double determinant(
 			double x1, double y1, double z1,
 			double x2, double y2, double z2,
@@ -72,6 +74,7 @@ public interface FunctionalVector3D extends Vector3D {
 	 * @return the determinant
 	 * @see #determinant(double, double, double, double, double, double, double, double, double)
 	 */
+	@Pure
 	public static double perpProduct(double x1, double y1, double z1, double x2, double y2, double z2) {
 		/* First method:
 		 * 
@@ -114,6 +117,7 @@ public interface FunctionalVector3D extends Vector3D {
 	 * @since 3.0
 	 * @see MathUtil#isEpsilonZero(double)
 	 */
+	@Pure
 	public static boolean isCollinearVectors(double x1, double y1, double z1, double x2, double y2, double z2) {
 		// Cross product
 		double cx = y1 * z2 - z1 * y2;
@@ -136,6 +140,7 @@ public interface FunctionalVector3D extends Vector3D {
 	 * @param z2
 	 * @return the dot product.
 	 */
+	@Pure
 	public static double dotProduct(double x1, double y1, double z1, double x2,
 			double y2, double z2) {
 		return x1 * x2 + y1 * y2 + z1 * z2;
@@ -262,6 +267,7 @@ public interface FunctionalVector3D extends Vector3D {
 	 * @param z2
 	 * @return the angle between <code>-PI</code> and <code>PI</code>.
 	 */
+	@Pure
 	public static double signedAngle(double x1, double y1, double z1, double x2, double y2, double z2) {
 		double lengths = Math.sqrt(x1 * x1 + y1 * y1 + z1 * z1) * Math.sqrt(x2 * x2 + y2 * y2 + z2 * z2);
 		if (lengths == 0.)
@@ -382,6 +388,7 @@ public interface FunctionalVector3D extends Vector3D {
 	/* (non-Javadoc)
 	 * @see org.arakhne.afc.math.geometry.d3.Vector3D#dot(org.arakhne.afc.math.geometry.d3.Vector3D)
 	 */
+	@Pure
 	@Override
 	default double dot(Vector3D v1) {
 		return (this.getX()*v1.getX() + this.getY()*v1.getY() + this.getZ()*v1.getZ());
@@ -390,6 +397,7 @@ public interface FunctionalVector3D extends Vector3D {
 	/* (non-Javadoc)
 	 * @see org.arakhne.afc.math.geometry.d3.Vector3D#perp(org.arakhne.afc.math.geometry.d3.Vector3D)
 	 */
+	@Pure
 	@Override
 	default double perp(Vector3D v) {
 		return perpProduct(this.getX(), this.getY(), this.getZ(), v.getX(), v.getY(), v.getZ());
@@ -398,6 +406,7 @@ public interface FunctionalVector3D extends Vector3D {
 	/* (non-Javadoc)
 	 * @see org.arakhne.afc.math.geometry.d3.Vector3D#cross(org.arakhne.afc.math.geometry.d3.Vector3D)
 	 */
+	@Pure
 	@Override
 	default Vector3D cross(Vector3D v1) {
 		Vector3f v = new Vector3f();
@@ -421,6 +430,7 @@ public interface FunctionalVector3D extends Vector3D {
 	/* (non-Javadoc)
 	 * @see org.arakhne.afc.math.geometry.d3.Vector3D#crossLeftHand(org.arakhne.afc.math.geometry.d3.Vector3D)
 	 */
+	@Pure
 	@Override
 	default Vector3D crossLeftHand(Vector3D v1) {
 		Vector3f v = new Vector3f();
@@ -444,6 +454,7 @@ public interface FunctionalVector3D extends Vector3D {
 	/* (non-Javadoc)
 	 * @see org.arakhne.afc.math.geometry.d3.Vector3D#crossRightHand(org.arakhne.afc.math.geometry.d3.Vector3D)
 	 */
+	@Pure
 	@Override
 	default Vector3D crossRightHand(Vector3D v1) {
 		Vector3f v = new Vector3f();
@@ -467,6 +478,7 @@ public interface FunctionalVector3D extends Vector3D {
 	/* (non-Javadoc)
 	 * @see org.arakhne.afc.math.geometry.d3.Vector3D#length()
 	 */
+	@Pure
 	@Override
 	default double length() {
 		return Math.sqrt(this.getX()*this.getX() + this.getY()*this.getY() + this.getZ()*this.getZ());
@@ -475,6 +487,7 @@ public interface FunctionalVector3D extends Vector3D {
 	/* (non-Javadoc)
 	 * @see org.arakhne.afc.math.geometry.d3.Vector3D#lengthSquared()
 	 */
+	@Pure
 	@Override
 	default double lengthSquared() {
 		return (this.getX()*this.getX() + this.getY()*this.getY() + this.getZ()*this.getZ());
@@ -512,6 +525,7 @@ public interface FunctionalVector3D extends Vector3D {
 	/* (non-Javadoc)
 	 * @see org.arakhne.afc.math.geometry.d3.Vector3D#angle(org.arakhne.afc.math.geometry.d3.Vector3D)
 	 */
+	@Pure
 	@Override
 	default double angle(Vector3D v1) {
 		double vDot = this.dot(v1) / ( this.length()*v1.length() );
@@ -533,6 +547,7 @@ public interface FunctionalVector3D extends Vector3D {
 	/* (non-Javadoc)
 	 * @see org.arakhne.afc.math.geometry.d3.Vector3D#isUnitVector()
 	 */
+	@Pure
 	@Override
 	default boolean isUnitVector() {
 		return MathUtil.isEpsilonEqual(this.lengthSquared(), 1.);
@@ -541,6 +556,7 @@ public interface FunctionalVector3D extends Vector3D {
 	/* (non-Javadoc)
 	 * @see org.arakhne.afc.math.geometry.d3.Vector3D#isColinear(org.arakhne.afc.math.geometry.d3.Vector3D)
 	 */
+	@Pure
 	@Override
 	default boolean isColinear(Vector3D v) {
 		return isCollinearVectors(this.getX(), this.getY(), this.getZ(), v.getX(), v.getY(), v.getZ());
@@ -572,6 +588,7 @@ public interface FunctionalVector3D extends Vector3D {
 	 * @param m
 	 * @return transpose(this * m)
 	 */
+	@Pure
 	default Vector3f mul(Matrix3f m) {
 		Vector3f r = new Vector3f();
 		r.setX(this.getX() * m.m00 + this.getY() * m.m01 + this.getZ() * m.m02);
@@ -583,6 +600,7 @@ public interface FunctionalVector3D extends Vector3D {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	default double signedAngle(Vector3D v1) {
 		return signedAngle(this.getX(), this.getY(), this.getZ(), v1.getX(), v1.getY(), v1.getZ());
 	}

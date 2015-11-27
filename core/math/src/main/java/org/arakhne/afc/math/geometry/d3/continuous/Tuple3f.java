@@ -20,6 +20,7 @@
  */
 package org.arakhne.afc.math.geometry.d3.continuous;
 
+import org.arakhne.afc.math.Pure;
 import org.arakhne.afc.math.geometry.d3.FunctionalTuple3D;
 import org.arakhne.afc.math.geometry.d3.Tuple3D;
 
@@ -109,6 +110,7 @@ public class Tuple3f<T extends Tuple3D<? super T>> implements FunctionalTuple3D<
 	/* (non-Javadoc)
 	 * @see org.arakhne.afc.math.geometry.d3.Tuple3D#clone()
 	 */
+	@Pure
 	@SuppressWarnings("unchecked")
 	@Override
 	public T clone() {
@@ -162,6 +164,7 @@ public class Tuple3f<T extends Tuple3D<? super T>> implements FunctionalTuple3D<
 	/* (non-Javadoc)
 	 * @see org.arakhne.afc.math.geometry.d3.continuous.AbstractTuple3D#getX()
 	 */
+	@Pure
 	@Override
 	public double getX() {
 		return this.x;
@@ -170,6 +173,7 @@ public class Tuple3f<T extends Tuple3D<? super T>> implements FunctionalTuple3D<
 	/* (non-Javadoc)
 	 * @see org.arakhne.afc.math.geometry.d3.continuous.AbstractTuple3D#getY()
 	 */
+	@Pure
 	@Override
 	public double getY() {
 		return this.y;
@@ -178,6 +182,7 @@ public class Tuple3f<T extends Tuple3D<? super T>> implements FunctionalTuple3D<
 	/* (non-Javadoc)
 	 * @see org.arakhne.afc.math.geometry.d3.continuous.AbstractTuple3D#getZ()
 	 */
+	@Pure
 	@Override
 	public double getZ() {
 		return this.z;
@@ -777,6 +782,7 @@ public class Tuple3f<T extends Tuple3D<? super T>> implements FunctionalTuple3D<
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public int hashCode() {
 		long bits = 1;
@@ -790,6 +796,7 @@ public class Tuple3f<T extends Tuple3D<? super T>> implements FunctionalTuple3D<
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public String toString() {
 		return "(" //$NON-NLS-1$

@@ -20,6 +20,7 @@
  */
 package org.arakhne.afc.math.geometry.d3.continuous;
 
+import org.arakhne.afc.math.Pure;
 import org.arakhne.afc.math.geometry.d3.FunctionalPoint3D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Tuple3D;
@@ -231,6 +232,7 @@ public class Point3f extends Tuple3f<Point3D> implements FunctionalPoint3D {
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public Point3f clone() {
 		return (Point3f)super.clone();
@@ -239,6 +241,7 @@ public class Point3f extends Tuple3f<Point3D> implements FunctionalPoint3D {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public int distanceSquared(Point3D p1) {
 	      double dx, dy, dz;
@@ -251,6 +254,7 @@ public class Point3f extends Tuple3f<Point3D> implements FunctionalPoint3D {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public int distance(Point3D p1) {
 	      double  dx, dy, dz;
@@ -263,6 +267,7 @@ public class Point3f extends Tuple3f<Point3D> implements FunctionalPoint3D {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public int distanceL1(Point3D p1) {
 	      return (int)(Math.abs(this.x-p1.getX()) + Math.abs(this.y-p1.getY()) + Math.abs(this.z-p1.getZ()));
@@ -271,6 +276,7 @@ public class Point3f extends Tuple3f<Point3D> implements FunctionalPoint3D {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public int distanceLinf(Point3D p1) {
 	      return (int)Math.max(Math.max( Math.abs(this.x-p1.getX()), Math.abs(this.y-p1.getY())),

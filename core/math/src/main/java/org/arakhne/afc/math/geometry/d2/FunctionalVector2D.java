@@ -20,6 +20,7 @@ package org.arakhne.afc.math.geometry.d2;
 
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
+import org.arakhne.afc.math.Pure;
 import org.arakhne.afc.math.geometry.d2.continuous.Vector2f;
 import org.arakhne.afc.math.matrix.Matrix2f;
 
@@ -50,33 +51,13 @@ public interface FunctionalVector2D extends Vector2D {
 	 * @since 3.0
 	 * @see MathUtil#isEpsilonZero(double)
 	 */
+	@Pure
 	public static boolean isCollinearVectors(double x1, double y1, double x2, double y2) {
 		// Test if three points are colinears
-		// iff det( [ x1 x2 x3 ]
-		// [ y1 y2 y3 ]
-		// [ 1 1 1 ] ) = 0
+		// iff det( [ x1 x2 ]
+		// [ y1 y2 ] ) = 0
 		// Do not invoked MathUtil.determinant() to limit computation consumption.
 		return MathUtil.isEpsilonZero(x1 * y2 - x2 * y1);
-	}
-
-	/** Compute the the perpendicular product of
-	 * the two vectors (aka. the determinant of two vectors).
-	 * <p>
-	 * <pre><code>det(X1,X2) = |X1|.|X2|.sin(a)</code></pre>
-	 * where <code>X1</code> and <code>X2</code> are two vectors
-	 * and <code>a</code> is the angle between <code>X1</code>
-	 * and <code>X2</code>. 
-	 * 
-	 * @param x1
-	 * @param y1
-	 * @param x2
-	 * @param y2
-	 * @return the determinant
-	 * @deprecated see {@link #perpProduct(double, double, double, double)}
-	 */
-	@Deprecated
-	public static double determinant(double x1, double y1, double x2, double y2) {
-		return perpProduct(x1, y1, x2, y2);
 	}
 	
 	/** Compute the the perpendicular product of
@@ -93,6 +74,7 @@ public interface FunctionalVector2D extends Vector2D {
 	 * @param y2
 	 * @return the determinant
 	 */
+	@Pure
 	public static double perpProduct(double x1, double y1, double x2, double y2) {
 		return x1*y2 - x2*y1;
 	}
@@ -105,6 +87,7 @@ public interface FunctionalVector2D extends Vector2D {
 	 * @param y2
 	 * @return the dot product.
 	 */
+	@Pure
 	public static double dotProduct(double x1, double y1, double x2, double y2) {
 		return x1*x2 + y1*y2;
 	}
@@ -118,6 +101,7 @@ public interface FunctionalVector2D extends Vector2D {
 	 * @param y2
 	 * @return the angle between <code>-PI</code> and <code>PI</code>.
 	 */
+	@Pure
 	public static double signedAngle(double x1, double y1, double x2, double y2) {
 		double length1 = Math.sqrt(x1 * x1 + y1 * y1);
 		double length2 = Math.sqrt(x2 * x2 + y2 * y2);
@@ -171,6 +155,7 @@ public interface FunctionalVector2D extends Vector2D {
 	 * @param y2 is the coordinate of the vector target point.
 	 * @return the trigonometric angle in radians in [-PI;PI].
 	 */
+	@Pure
 	public static double angleOfVector(double x1, double y1, double x2, double y2) {
 		return signedAngle(
 				1, 0, 
@@ -188,6 +173,7 @@ public interface FunctionalVector2D extends Vector2D {
 	 * @param y is the coordinate of the vector.
 	 * @return the trigonometric angle in radians in [-PI;PI].
 	 */
+	@Pure
 	public static double angleOfVector(double x, double y) {
 		return signedAngle(
 				1, 0, 
@@ -200,6 +186,7 @@ public interface FunctionalVector2D extends Vector2D {
 	 * @param angle is the angle in radians to translate.
 	 * @return the orientation vector which is corresponding to the given angle.
 	 */
+	@Pure
 	public static Vector2f toOrientationVector(double angle) {
 		return new Vector2f(Math.cos(angle), Math.sin(angle));
 	}
@@ -290,6 +277,7 @@ public interface FunctionalVector2D extends Vector2D {
 	/* (non-Javadoc)
 	 * @see org.arakhne.afc.math.geometry.d2.Vector2D#dot(org.arakhne.afc.math.geometry.d2.Vector2D)
 	 */
+	@Pure
 	@Override
 	default double dot(Vector2D v1) {
 		return dotProduct(this.getX(), this.getY(), v1.getX(), v1.getY());
@@ -298,6 +286,7 @@ public interface FunctionalVector2D extends Vector2D {
 	/* (non-Javadoc)
 	 * @see org.arakhne.afc.math.geometry.d2.Vector2D#perp(org.arakhne.afc.math.geometry.d2.Vector2D)
 	 */
+	@Pure
 	@Override
 	default double perp(Vector2D x2) {
 		return perpProduct(this.getX(), this.getY(), x2.getX(), x2.getY());
@@ -317,6 +306,7 @@ public interface FunctionalVector2D extends Vector2D {
 	/* (non-Javadoc)
 	 * @see org.arakhne.afc.math.geometry.d2.Vector2D#length()
 	 */
+	@Pure
 	@Override
 	default double length() {
 		return Math.sqrt(this.getX()*this.getX() + this.getY()*this.getY());
@@ -325,6 +315,7 @@ public interface FunctionalVector2D extends Vector2D {
 	/* (non-Javadoc)
 	 * @see org.arakhne.afc.math.geometry.d2.Vector2D#lengthSquared()
 	 */
+	@Pure
 	@Override
 	default double lengthSquared() {
 		return (this.getX()*this.getX() + this.getY()*this.getY());
@@ -360,6 +351,7 @@ public interface FunctionalVector2D extends Vector2D {
 	/* (non-Javadoc)
 	 * @see org.arakhne.afc.math.geometry.d2.Vector2D#angle(org.arakhne.afc.math.geometry.d2.Vector2D)
 	 */
+	@Pure
 	@Override
 	default double angle(Vector2D v1) {
 		double vDot = dot(v1) / ( length()*v1.length() );
@@ -371,6 +363,7 @@ public interface FunctionalVector2D extends Vector2D {
 	/* (non-Javadoc)
 	 * @see org.arakhne.afc.math.geometry.d2.Vector2D#signedAngle(org.arakhne.afc.math.geometry.d2.Vector2D)
 	 */
+	@Pure
 	@Override
 	default double signedAngle(Vector2D v) {
 		return signedAngle(this.getX(), this.getY(), v.getX(), v.getY());
@@ -391,6 +384,7 @@ public interface FunctionalVector2D extends Vector2D {
 	/* (non-Javadoc)
 	 * @see org.arakhne.afc.math.geometry.d2.Vector2D#getOrientationAngle()
 	 */
+	@Pure
 	@Override
 	default double getOrientationAngle() {
 		double angle = Math.acos(this.getX());
@@ -401,6 +395,7 @@ public interface FunctionalVector2D extends Vector2D {
 	/* (non-Javadoc)
 	 * @see org.arakhne.afc.math.geometry.d2.Vector2D#isUnitVector()
 	 */
+	@Pure
 	@Override
 	default boolean isUnitVector() {
 		return MathUtil.isEpsilonEqual(this.length(), 1.);
@@ -430,6 +425,7 @@ public interface FunctionalVector2D extends Vector2D {
 	 * @param m
 	 * @return transpose(this * m)
 	 */
+	@Pure
 	default Vector2D mul(Matrix2f m) {
 		Vector2D r = new Vector2f();
 		r.setX(this.getX() * m.m00 + this.getY() * m.m01);

@@ -19,6 +19,7 @@
 package org.arakhne.afc.math.geometry.d2.continuous;
 
 import org.arakhne.afc.math.geometry.d2.FunctionalTuple2D;
+import org.arakhne.afc.math.Pure;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
 
 import javafx.beans.property.DoubleProperty;
@@ -28,7 +29,6 @@ import javafx.beans.property.SimpleDoubleProperty;
  * @author Olivier LAMOTTE (olivier.lamotte@utbm.fr)
  *
  */
-@SuppressWarnings("restriction")
 public class Tuple2d<TT extends Tuple2D<? super TT>> implements FunctionalTuple2D<TT> {
 
 	private static final long serialVersionUID = 2754372505837958112L;
@@ -48,10 +48,13 @@ public class Tuple2d<TT extends Tuple2D<? super TT>> implements FunctionalTuple2
 		this.xProperty = new SimpleDoubleProperty(x);
 		this.yProperty = new SimpleDoubleProperty(y);
 	}
-	
+
+	@Pure
 	public DoubleProperty xProperty() {
 		return this.xProperty;
 	}
+	
+	@Pure
 	public DoubleProperty yProperty() {
 		return this.yProperty;
 	}
@@ -75,6 +78,7 @@ public class Tuple2d<TT extends Tuple2D<? super TT>> implements FunctionalTuple2
 	/* (non-Javadoc)
 	 * @see org.arakhne.afc.math.geometry.d2.continuous.AbstractTuple2D#getX()
 	 */
+	@Pure
 	@Override
 	public double getX() {
 		return this.xProperty.doubleValue();
@@ -83,6 +87,7 @@ public class Tuple2d<TT extends Tuple2D<? super TT>> implements FunctionalTuple2
 	/* (non-Javadoc)
 	 * @see org.arakhne.afc.math.geometry.d2.continuous.AbstractTuple2D#getY()
 	 */
+	@Pure
 	@Override
 	public double getY() {
 		return this.yProperty.doubleValue();
@@ -91,6 +96,7 @@ public class Tuple2d<TT extends Tuple2D<? super TT>> implements FunctionalTuple2
 	/* (non-Javadoc)
 	 * @see org.arakhne.afc.math.geometry.d2.Tuple2D#clone()
 	 */
+	@Pure
 	@SuppressWarnings("unchecked")
 	@Override
 	public TT clone() {
@@ -105,6 +111,7 @@ public class Tuple2d<TT extends Tuple2D<? super TT>> implements FunctionalTuple2
 	/* (non-Javadoc)
 	 * @see org.arakhne.afc.math.geometry.d2.Tuple2D#hashCode()
 	 */
+	@Pure
 	@Override
 	public int hashCode() {
 		long bits = 1;
@@ -117,6 +124,7 @@ public class Tuple2d<TT extends Tuple2D<? super TT>> implements FunctionalTuple2
 	/* (non-Javadoc)
 	 * @see org.arakhne.afc.math.geometry.d2.Tuple2D#toString()
 	 */
+	@Pure
 	@Override
 	public String toString() {
 		return "(" //$NON-NLS-1$

@@ -308,6 +308,7 @@ public final class MathUtil {
 	 * @param max
 	 * @return the clamped value
 	 */
+	@Pure
 	public static double clampCyclic(double value, double min, double max) {
 		if (Double.isNaN(max)) { // NaN is lower than all the number according to double.compareTo()
 			return Double.NaN;

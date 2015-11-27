@@ -20,6 +20,7 @@ package org.arakhne.afc.math.geometry.d3;
 
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
+import org.arakhne.afc.math.Pure;
 
 /**
  * @author Olivier LAMOTTE (olivier.lamotte@utbm.fr)
@@ -59,6 +60,7 @@ public interface FunctionalPoint3D extends Point3D {
 	 * @since 3.0
 	 * @see MathUtil#isEpsilonZero(double)
 	 */
+	@Pure
 	public static boolean isCollinearPoints(
 			double x1, double y1, double z1,
 			double x2, double y2, double z2,
@@ -92,6 +94,7 @@ public interface FunctionalPoint3D extends Point3D {
 	 * @see #distanceSquaredPointPoint(double, double, double, double, double, double)
 	 * @see #distanceL1PointPoint(double, double, double, double, double, double)
 	 */
+	@Pure
 	public static double distancePointPoint(double x1, double y1, double z1, double x2, double y2, double z2) {
 		double dx, dy, dz;
 		dx = x1 - x2; 
@@ -112,6 +115,7 @@ public interface FunctionalPoint3D extends Point3D {
 	 * @see #distancePointPoint(double, double, double, double, double, double)
 	 * @see #distanceL1PointPoint(double, double, double, double, double, double)
 	 */
+	@Pure
 	public static double distanceSquaredPointPoint(double x1, double y1, double z1, double x2, double y2, double z2) {
 		double dx, dy, dz;
 		dx = x1 - x2;
@@ -133,6 +137,7 @@ public interface FunctionalPoint3D extends Point3D {
 	 * @see #distancePointPoint(double, double, double, double, double, double)
 	 * @see #distanceSquaredPointPoint(double, double, double, double, double, double)
 	 */
+	@Pure
 	public static double distanceL1PointPoint(double x1, double y1, double z1, double x2, double y2, double z2) {
 		return Math.abs(x1 - x2) + Math.abs(y1 - y2) + Math.abs(z1 - z2);
 	}
@@ -151,10 +156,12 @@ public interface FunctionalPoint3D extends Point3D {
 	 * @see #distancePointPoint(double, double, double, double, double, double)
 	 * @see #distanceSquaredPointPoint(double, double, double, double, double, double)
 	 */
+	@Pure
 	public static double distanceLinfPointPoint(double x1, double y1, double z1, double x2, double y2, double z2) {
 		return MathUtil.max(Math.abs(x1 - x2), Math.abs(y1 - y2), Math.abs(z1 - z2));
 	}
 
+	@Pure
 	@Override
 	default double getDistanceSquared(Point3D p1) {
 		double dx, dy, dz;
@@ -163,7 +170,8 @@ public interface FunctionalPoint3D extends Point3D {
 	    dz = this.getZ() - p1.getZ();
 	    return (dx*dx+dy*dy+dz*dz);
 	}
-	
+
+	@Pure
 	@Override    
 	default double getDistance(Point3D p1) {
 		double  dx, dy, dz;
@@ -173,11 +181,13 @@ public interface FunctionalPoint3D extends Point3D {
 	    return Math.sqrt(dx*dx+dy*dy+dz*dz);
 	}
 
+	@Pure
 	@Override
 	default double getDistanceL1(Point3D p1) {
 		return (Math.abs(this.getX() - p1.getX()) + Math.abs(this.getY() - p1.getY()) + Math.abs(this.getZ() - p1.getZ()));
 	}
 
+	@Pure
 	@Override
 	default double getDistanceLinf(Point3D p1) {
 		return Math.max(Math.max( Math.abs(this.getX() - p1.getX()), Math.abs(this.getY() - p1.getY())), Math.abs(this.getZ() - p1.getZ()));
@@ -188,6 +198,7 @@ public interface FunctionalPoint3D extends Point3D {
 	/* (non-Javadoc)
 	 * @see org.arakhne.afc.math.geometry.d3.Point3D#distanceSquared(org.arakhne.afc.math.geometry.d3.Point3D)
 	 */
+	@Pure
 	@Override
 	default int distanceSquared(Point3D p1) {
 	    return (int)getDistanceSquared(p1);
@@ -196,6 +207,7 @@ public interface FunctionalPoint3D extends Point3D {
 	/* (non-Javadoc)
 	 * @see org.arakhne.afc.math.geometry.d3.Point3D#distance(org.arakhne.afc.math.geometry.d3.Point3D)
 	 */
+	@Pure
 	@Override
 	default int distance(Point3D p1) {
 		 return (int)getDistance(p1);
@@ -204,6 +216,7 @@ public interface FunctionalPoint3D extends Point3D {
 	/* (non-Javadoc)
 	 * @see org.arakhne.afc.math.geometry.d3.Point3D#distanceL1(org.arakhne.afc.math.geometry.d3.Point3D)
 	 */
+	@Pure
 	@Override
 	default int distanceL1(Point3D p1) {
 		return (int)getDistanceL1(p1);
@@ -212,6 +225,7 @@ public interface FunctionalPoint3D extends Point3D {
 	/* (non-Javadoc)
 	 * @see org.arakhne.afc.math.geometry.d3.Point3D#distanceLinf(org.arakhne.afc.math.geometry.d3.Point3D)
 	 */
+	@Pure
 	@Override
 	default int distanceLinf(Point3D p1) {
 		return (int)getDistanceLinf(p1);

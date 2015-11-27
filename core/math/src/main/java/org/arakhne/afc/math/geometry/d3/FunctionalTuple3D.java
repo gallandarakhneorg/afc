@@ -18,6 +18,8 @@
  */
 package org.arakhne.afc.math.geometry.d3;
 
+import org.arakhne.afc.math.Pure;
+
 /**
  * @author Olivier LAMOTTE (olivier.lamotte@utbm.fr)
  *
@@ -357,6 +359,7 @@ public interface FunctionalTuple3D<TT extends Tuple3D<? super TT>> extends Tuple
 	/* (non-Javadoc)
 	 * @see org.arakhne.afc.math.geometry.d3.Tuple3D#x()
 	 */
+	@Pure
 	@Override
 	default int ix() {
 		return (int)this.getX();
@@ -373,6 +376,7 @@ public interface FunctionalTuple3D<TT extends Tuple3D<? super TT>> extends Tuple
 	/* (non-Javadoc)
 	 * @see org.arakhne.afc.math.geometry.d3.Tuple3D#y()
 	 */
+	@Pure
 	@Override
 	default int iy() {
 		return (int)this.getY();
@@ -389,6 +393,7 @@ public interface FunctionalTuple3D<TT extends Tuple3D<? super TT>> extends Tuple
 	/* (non-Javadoc)
 	 * @see org.arakhne.afc.math.geometry.d3.Tuple3D#z()
 	 */
+	@Pure
 	@Override
 	default int iz() {
 		return (int)this.getZ();
@@ -493,6 +498,7 @@ public interface FunctionalTuple3D<TT extends Tuple3D<? super TT>> extends Tuple
 	/* (non-Javadoc)
 	 * @see org.arakhne.afc.math.geometry.d3.Tuple3D#equals(org.arakhne.afc.math.geometry.d3.Tuple3D)
 	 */
+	@Pure
 	@Override
 	default boolean equals(Tuple3D<?> t1) {
 		try {
@@ -506,6 +512,7 @@ public interface FunctionalTuple3D<TT extends Tuple3D<? super TT>> extends Tuple
 	/* (non-Javadoc)
 	 * @see org.arakhne.afc.math.geometry.d3.Tuple3D#epsilonEquals(org.arakhne.afc.math.geometry.d3.Tuple3D, double)
 	 */
+	@Pure
 	@Override
 	default boolean epsilonEquals(TT t1, double epsilon) {
 		double diff;
