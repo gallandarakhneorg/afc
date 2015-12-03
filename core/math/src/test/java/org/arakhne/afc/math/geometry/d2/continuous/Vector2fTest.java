@@ -20,17 +20,17 @@
  */
 package org.arakhne.afc.math.geometry.d2.continuous;
 
+import static org.arakhne.afc.math.MathConstants.PI;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
 
-import org.arakhne.afc.math.AbstractMathTestCase;
-import static org.arakhne.afc.math.MathConstants.PI;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
 
+import org.arakhne.afc.math.AbstractMathTestCase;
 import org.arakhne.afc.math.geometry.d2.FunctionalVector2D;
-import org.arakhne.afc.math.geometry.d2.continuous.Point2f;
-import org.arakhne.afc.math.geometry.d2.continuous.Vector2f;
-import org.arakhne.afc.math.geometry.d3.continuous.Vector3f;
 import org.arakhne.afc.math.matrix.Matrix2f;
 import org.junit.Test;
 

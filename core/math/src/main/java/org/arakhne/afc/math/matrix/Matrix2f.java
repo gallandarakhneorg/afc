@@ -32,6 +32,7 @@ import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.continuous.Vector2f;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * Is represented internally as a 2x2 floating point matrix. The mathematical
@@ -132,6 +133,7 @@ public class Matrix2f implements Serializable, Cloneable {
 	 * 
 	 * @return the String representation
 	 */
+	@Pure
 	@Override
 	public String toString() {
 		return this.m00 + ", " //$NON-NLS-1$
@@ -204,6 +206,7 @@ public class Matrix2f implements Serializable, Cloneable {
 	 *            the column number to be retrieved (zero indexed)
 	 * @return the value at the indexed element.
 	 */
+	@Pure
 	public final double getElement(int row, int column) {
 		switch (row) {
 		case 0:
@@ -654,6 +657,7 @@ public class Matrix2f implements Serializable, Cloneable {
 	 * 
 	 * @return the determinant of the matrix
 	 */
+	@Pure
 	public final double determinant() {
 		return this.m00*this.m11 - this.m01*this.m10;
 	}
@@ -717,6 +721,7 @@ public class Matrix2f implements Serializable, Cloneable {
 	 * @param v
 	 * @return this * v
 	 */
+	@Pure
 	public final Vector2f mul(Vector2D v) {
 		Vector2f r = new Vector2f();
 		r.set(
@@ -896,6 +901,7 @@ public class Matrix2f implements Serializable, Cloneable {
 	 *            the matrix with which the comparison is made
 	 * @return true or false
 	 */
+	@Pure
 	public boolean equals(Matrix2f m1) {
 		try {
 			return (this.m00 == m1.m00 && this.m01 == m1.m01
@@ -917,6 +923,7 @@ public class Matrix2f implements Serializable, Cloneable {
 	 *            the matrix with which the comparison is made
 	 * @return true or false
 	 */
+	@Pure
 	@Override
 	public boolean equals(Object t1) {
 		try {
@@ -944,6 +951,7 @@ public class Matrix2f implements Serializable, Cloneable {
 	 * 
 	 * @return the integer hash code value
 	 */
+	@Pure
 	@Override
 	public int hashCode() {
 		long bits = 1L;
@@ -954,6 +962,7 @@ public class Matrix2f implements Serializable, Cloneable {
 		return (int) (bits ^ (bits >> 32));
 	}
 
+	@Pure
 	private static long doubleToLongBits(double d) {
 		// Check for +0 or -0
 		if (d == 0.) {
@@ -1023,6 +1032,7 @@ public class Matrix2f implements Serializable, Cloneable {
 	 *                if there is not enough memory.
 	 * @see java.lang.Cloneable
 	 */
+	@Pure
 	@Override
 	public Matrix2f clone() {
 		Matrix2f m1 = null;
@@ -1044,6 +1054,7 @@ public class Matrix2f implements Serializable, Cloneable {
 	 * 
 	 * @return Returns the m00.
 	 */
+	@Pure
 	public final double getM00() {
 		return this.m00;
 	}
@@ -1063,6 +1074,7 @@ public class Matrix2f implements Serializable, Cloneable {
 	 * 
 	 * @return Returns the m01.
 	 */
+	@Pure
 	public final double getM01() {
 		return this.m01;
 	}
@@ -1082,6 +1094,7 @@ public class Matrix2f implements Serializable, Cloneable {
 	 * 
 	 * @return Returns the m10.
 	 */
+	@Pure
 	public final double getM10() {
 		return this.m10;
 	}
@@ -1101,6 +1114,7 @@ public class Matrix2f implements Serializable, Cloneable {
 	 * 
 	 * @return Returns the m11.
 	 */
+	@Pure
 	public final double getM11() {
 		return this.m11;
 	}
@@ -1179,6 +1193,7 @@ public class Matrix2f implements Serializable, Cloneable {
 	 * @return <code>true</code> if the matrix is symmetric, otherwise
 	 * <code>false</code>
 	 */
+	@Pure
 	public boolean isSymmetric() {
 		return	this.m01 == this.m10;
 	}
@@ -1255,6 +1270,7 @@ public class Matrix2f implements Serializable, Cloneable {
 	 * @see MathUtil#isEpsilonZero(double)
 	 * @see MathUtil#isEpsilonEqual(double, double)
 	 */
+	@Pure
 	public boolean isIdentity() {
 		return MathUtil.isEpsilonEqual(this.m00, 1f)
 				&& MathUtil.isEpsilonZero(this.m01)

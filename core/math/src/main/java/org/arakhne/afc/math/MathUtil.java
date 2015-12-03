@@ -28,6 +28,7 @@ import static org.arakhne.afc.math.MathConstants.EPSILON;
 
 import org.arakhne.afc.math.geometry.d3.continuous.Vector3f;
 import org.arakhne.afc.util.Pair;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Mathematic and geometric utilities.
  * 
@@ -54,6 +55,7 @@ public final class MathUtil {
 	 * @param max is the max value of the range.
 	 * @return the value in {@code [min;max]} range.
 	 */
+	@Pure
 	public static double clamp(double v, double min, double max) {
 		if (min<max) {
 			if (v<min) return min;
@@ -73,6 +75,7 @@ public final class MathUtil {
 	 * is near zero, otherwise <code>false</code>.
 	 * @see MathConstants#EPSILON
 	 */
+	@Pure
 	public static boolean isEpsilonZero(double value) {
 		return Math.abs(value) <= EPSILON;
 	}
@@ -84,6 +87,7 @@ public final class MathUtil {
 	 * @return <code>true</code> if the given <var>value</var>
 	 * is near zero, otherwise <code>false</code>.
 	 */
+	@Pure
 	public static boolean isEpsilonZero(double value, double epsilon) {
 		return Math.abs(value) <= epsilon;
 	}
@@ -96,6 +100,7 @@ public final class MathUtil {
 	 * is near <var>v2</var>, otherwise <code>false</code>.
 	 * @see MathConstants#EPSILON
 	 */
+	@Pure
 	public static boolean isEpsilonEqual(double v1, double v2) {
 		return Math.abs(v1 - v2) <= EPSILON;
 	}
@@ -108,6 +113,7 @@ public final class MathUtil {
 	 * @return <code>true</code> if the given <var>v1</var>
 	 * is near <var>v2</var>, otherwise <code>false</code>.
 	 */
+	@Pure
 	public static boolean isEpsilonEqual(double v1, double v2, double epsilon) {
 		return Math.abs(v1 - v2) <= epsilon;
 	}
@@ -123,6 +129,7 @@ public final class MathUtil {
      *         first argument is less than, equal to, or greater than the
      *         second.
 	 */
+	@Pure
 	public static int compareEpsilon(double v1, double v2) {
 		double v = v1 - v2;
 		if (Math.abs(v) <= EPSILON) {
@@ -146,6 +153,7 @@ public final class MathUtil {
      *         first argument is less than, equal to, or greater than the
      *         second.
 	 */
+	@Pure
 	public static int compareEpsilon(double v1, double v2, double epsilon) {
 		double v = v1 - v2;
 		if (Math.abs(v) <= epsilon) {
@@ -162,6 +170,7 @@ public final class MathUtil {
 	 * @param values are the values to scan.
 	 * @return the max value.
 	 */
+	@Pure
 	public static double max(double... values) {
 		if (values==null || values.length==0) return Double.NaN;
 		double m = values[0];
@@ -176,6 +185,7 @@ public final class MathUtil {
 	 * @param values are the values to scan.
 	 * @return the max value.
 	 */
+	@Pure
 	public static double max(float... values) {
 		if (values==null || values.length==0) return Float.NaN;
 		float m = values[0];
@@ -190,6 +200,7 @@ public final class MathUtil {
 	 * @param values are the values to scan.
 	 * @return the max value.
 	 */
+	@Pure
 	public static int max(int... values) {
 		if (values==null || values.length==0) return 0;
 		int m = values[0];
@@ -204,6 +215,7 @@ public final class MathUtil {
 	 * @param values are the values to scan.
 	 * @return the max value.
 	 */
+	@Pure
 	public static long max(long... values) {
 		if (values==null || values.length==0) return 0;
 		long m = values[0];
@@ -218,6 +230,7 @@ public final class MathUtil {
 	 * @param values are the values to scan.
 	 * @return the max value.
 	 */
+	@Pure
 	public static short max(short... values) {
 		if (values==null || values.length==0) return 0;
 		short m = values[0];
@@ -232,6 +245,7 @@ public final class MathUtil {
 	 * @param values are the values to scan.
 	 * @return the min value.
 	 */
+	@Pure
 	public static double min(double... values) {
 		if (values==null || values.length==0) return Double.NaN;
 		double m = values[0];
@@ -246,6 +260,7 @@ public final class MathUtil {
 	 * @param values are the values to scan.
 	 * @return the min value.
 	 */
+	@Pure
 	public static float min(float... values) {
 		if (values==null || values.length==0) return Float.NaN;
 		float m = values[0];
@@ -260,6 +275,7 @@ public final class MathUtil {
 	 * @param values are the values to scan.
 	 * @return the min value.
 	 */
+	@Pure
 	public static int min(int... values) {
 		if (values==null || values.length==0) return 0;
 		int m = values[0];
@@ -274,6 +290,7 @@ public final class MathUtil {
 	 * @param values are the values to scan.
 	 * @return the min value.
 	 */
+	@Pure
 	public static long min(long... values) {
 		if (values==null || values.length==0) return 0;
 		long m = values[0];
@@ -288,6 +305,7 @@ public final class MathUtil {
 	 * @param values are the values to scan.
 	 * @return the min value.
 	 */
+	@Pure
 	public static short min(short... values) {
 		if (values==null || values.length==0) return 0;
 		short m = values[0];
@@ -342,6 +360,7 @@ public final class MathUtil {
 	 * @param maxBounds is the maximal allowed value.
 	 * @return <var>minBounds</var> or <var>maxBounds</var>.
 	 */
+	@Pure
 	public static double clampToNearestBounds( double value, double minBounds, double maxBounds ) {
 		assert(minBounds<=maxBounds);
 		double center = (minBounds+maxBounds) / 2f;
@@ -360,6 +379,7 @@ public final class MathUtil {
 	 * @param rymax is the max of the coordinates of the rectangle.
 	 * @return the zone
 	 */
+	@Pure
 	public static int getCohenSutherlandCode(int px, int py, int rxmin, int rymin, int rxmax, int rymax) {
 		assert(rxmin<=rxmax);
 		assert(rymin<=rymax);
@@ -395,6 +415,7 @@ public final class MathUtil {
 	 * @param rymax is the max of the coordinates of the rectangle.
 	 * @return the zone
 	 */
+	@Pure
 	public static int getCohenSutherlandCode(double px, double py, double rxmin, double rymin, double rxmax, double rymax) {
 		assert(rxmin<=rxmax);
 		assert(rymin<=rymax);
@@ -495,6 +516,7 @@ public final class MathUtil {
 	 * @param angle
 	 * @return the cosecant.
 	 */
+	@Pure
 	public static double csc(double angle) {
 		return 1./Math.sin(angle);
 	}
@@ -509,6 +531,7 @@ public final class MathUtil {
 	 * @param angle
 	 * @return the secant.
 	 */
+	@Pure
 	public static double sec(double angle) {
 		return 1./Math.cos(angle);
 	}
@@ -523,6 +546,7 @@ public final class MathUtil {
 	 * @param angle
 	 * @return the cotangent.
 	 */
+	@Pure
 	public static double cot(double angle) {
 		return 1./Math.tan(angle);
 	}
@@ -536,6 +560,7 @@ public final class MathUtil {
 	 * @param angle
 	 * @return the cotangent.
 	 */
+	@Pure
 	public static double versin(double angle) {
 		return 1. - Math.cos(angle);
 	}
@@ -549,6 +574,7 @@ public final class MathUtil {
 	 * @param angle
 	 * @return the cotangent.
 	 */
+	@Pure
 	public static double exsec(double angle) {
 		return sec(angle) - 1.;
 	}
@@ -562,6 +588,7 @@ public final class MathUtil {
 	 * @param angle
 	 * @return the chord.
 	 */
+	@Pure
 	public static double crd(double angle) {
 		return 2. * Math.sin(angle/2.);
 	}
@@ -575,6 +602,7 @@ public final class MathUtil {
 	 * @param angle
 	 * @return the chord.
 	 */
+	@Pure
 	public static double haversine(double angle) {
 		double sin2 = Math.sin(angle/2.);
 		return sin2*sin2;

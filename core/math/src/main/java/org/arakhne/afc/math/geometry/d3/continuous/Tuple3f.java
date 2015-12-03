@@ -20,9 +20,9 @@
  */
 package org.arakhne.afc.math.geometry.d3.continuous;
 
-import org.arakhne.afc.math.Pure;
 import org.arakhne.afc.math.geometry.d3.FunctionalTuple3D;
 import org.arakhne.afc.math.geometry.d3.Tuple3D;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** 3D tuple with 3 floating-point numbers.
  * 

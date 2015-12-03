@@ -25,6 +25,7 @@ import java.util.NoSuchElementException;
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Point2D;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * @author $Author: hjaffali$
@@ -79,6 +80,7 @@ public abstract class AbstractEllipse2F<T extends AbstractRectangularShape2F<T>>
 	 * @return <code>true</code> if the point is inside the ellipse;
 	 * <code>false</code> if not.
 	 */
+	@Pure
 	public static boolean containsEllipsePoint(double ellx, double elly, double ellw, double ellh, double px, double py) {
 		// Copied from AWT Ellipse2D
 
@@ -107,6 +109,7 @@ public abstract class AbstractEllipse2F<T extends AbstractRectangularShape2F<T>>
 	 * @return the closest point in the ellipse
 	 * @see #computeClosestPointToShallowEllipse(double, double, double, double, double, double)
 	 */
+	@Pure
 	public static Point2D computeClosestPointToSolidEllipse(double px, double py, double ex, double ey, double ew, double eh, boolean returnNullWhenInside) {
 		double x, y;
 		if (ew<=0f || eh<=0f) {
@@ -161,6 +164,7 @@ public abstract class AbstractEllipse2F<T extends AbstractRectangularShape2F<T>>
 	 * the given point is exactly at the center of the ellipse.
 	 * @see #computeClosestPointToSolidEllipse(double, double, double, double, double, double, boolean)
 	 */
+	@Pure
 	public static Point2D computeClosestPointToShallowEllipse(double px, double py, double ex, double ey, double ew, double eh) {
 		double x, y;
 		if (ew<=0f || eh<=0f) {
@@ -205,6 +209,7 @@ public abstract class AbstractEllipse2F<T extends AbstractRectangularShape2F<T>>
 	 * @param eh is the height of the ellipse
 	 * @return the farthest point in the ellipse.
 	 */
+	@Pure
 	public static Point2D computeFarthestPointToShallowEllipse(double px, double py, double ex, double ey, double ew, double eh) {
 		double x, y;
 		if (ew<=0f || eh<=0f) {
@@ -255,6 +260,7 @@ public abstract class AbstractEllipse2F<T extends AbstractRectangularShape2F<T>>
 	 * @return <code>true</code> if the given rectangle is inside the ellipse;
 	 * otherwise <code>false</code>.
 	 */
+	@Pure
 	public static boolean containsEllipseRectangle(double ex, double ey, double ewidth, double eheight, double rx, double ry, double rwidth, double rheight) {
 		double ecx = (ex + ewidth/2f);
 		double ecy = (ey + eheight/2f);
@@ -282,6 +288,7 @@ public abstract class AbstractEllipse2F<T extends AbstractRectangularShape2F<T>>
 	 * @return <code>true</code> if the two shapes are intersecting; otherwise
 	 * <code>false</code>
 	 */
+	@Pure
 	public static boolean intersectsEllipseEllipse(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4) {
 		double ell2w = Math.abs(x4 - x3);
 		double ell2h = Math.abs(y4 - y3);
@@ -337,6 +344,7 @@ public abstract class AbstractEllipse2F<T extends AbstractRectangularShape2F<T>>
 	 * <code>false</code>
 	 * @see "http://blog.csharphelper.com/2012/09/24/calculate-where-a-line-segment-and-an-ellipse-intersect-in-c.aspx"
 	 */
+	@Pure
 	public static boolean intersectsEllipseLine(double ex, double ey, double ew, double eh, double x1, double y1, double x2, double y2) {
 		// If the ellipse or line segment are empty, return no intersections.
 		if (eh<=0f || ew<=0f) {
@@ -388,6 +396,7 @@ public abstract class AbstractEllipse2F<T extends AbstractRectangularShape2F<T>>
 	 * <code>false</code>
 	 * @see "http://blog.csharphelper.com/2012/09/24/calculate-where-a-line-segment-and-an-ellipse-intersect-in-c.aspx"
 	 */
+	@Pure
 	public static boolean intersectsEllipseSegment(double ex, double ey, double ew, double eh, double x1, double y1, double x2, double y2) {
 		// If the ellipse or line segment are empty, return no intersections.
 		if (eh<=0f || ew<=0f) {
@@ -453,6 +462,7 @@ public abstract class AbstractEllipse2F<T extends AbstractRectangularShape2F<T>>
 	 * @return <code>true</code> if the two shapes are intersecting; otherwise
 	 * <code>false</code>
 	 */
+	@Pure
 	public static boolean intersectsEllipseRectangle(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4) {
 		// From AWT Ellipse2D
 
@@ -529,9 +539,9 @@ public abstract class AbstractEllipse2F<T extends AbstractRectangularShape2F<T>>
 	}
 
 
-
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public double distanceSquared(Point2D p) {
 		Point2D r = getClosestPointTo(p);
@@ -540,6 +550,7 @@ public abstract class AbstractEllipse2F<T extends AbstractRectangularShape2F<T>>
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public double distanceL1(Point2D p) {
 		Point2D r = getClosestPointTo(p);
@@ -548,6 +559,7 @@ public abstract class AbstractEllipse2F<T extends AbstractRectangularShape2F<T>>
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public double distanceLinf(Point2D p) {
 		Point2D r = getClosestPointTo(p);
@@ -557,6 +569,7 @@ public abstract class AbstractEllipse2F<T extends AbstractRectangularShape2F<T>>
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public boolean contains(double x, double y) {
 		return containsEllipsePoint(
@@ -564,6 +577,7 @@ public abstract class AbstractEllipse2F<T extends AbstractRectangularShape2F<T>>
 				x, y);
 	}
 
+	@Pure
 	@Override
 	public boolean contains(Rectangle2f r) {
 		return containsEllipseRectangle(
@@ -573,6 +587,7 @@ public abstract class AbstractEllipse2F<T extends AbstractRectangularShape2F<T>>
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public Point2D getClosestPointTo(Point2D p) {
 		return computeClosestPointToSolidEllipse(
@@ -584,6 +599,7 @@ public abstract class AbstractEllipse2F<T extends AbstractRectangularShape2F<T>>
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public Point2D getFarthestPointTo(Point2D p) {
 		return computeFarthestPointToShallowEllipse(
@@ -592,6 +608,7 @@ public abstract class AbstractEllipse2F<T extends AbstractRectangularShape2F<T>>
 				getWidth(), getHeight());
 	}
 
+	@Pure
 	@Override
 	public PathIterator2f getPathIterator(Transform2D transform) {
 		if (transform==null) {
@@ -606,6 +623,7 @@ public abstract class AbstractEllipse2F<T extends AbstractRectangularShape2F<T>>
 	}
 
 	@SuppressWarnings("unchecked")
+	@Pure
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == this) {
@@ -621,6 +639,7 @@ public abstract class AbstractEllipse2F<T extends AbstractRectangularShape2F<T>>
 		return false;
 	}
 
+	@Pure
 	@Override
 	public int hashCode() {
 		long bits = 1L;
@@ -631,6 +650,7 @@ public abstract class AbstractEllipse2F<T extends AbstractRectangularShape2F<T>>
 		return (int) (bits ^ (bits >> 32));
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(AbstractRectangle2F<?> s) {
 		return intersectsEllipseRectangle(
@@ -640,6 +660,7 @@ public abstract class AbstractEllipse2F<T extends AbstractRectangularShape2F<T>>
 				s.getMaxX(), s.getMaxY());
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(Ellipse2f s) {
 		return intersectsEllipseRectangle(
@@ -649,6 +670,7 @@ public abstract class AbstractEllipse2F<T extends AbstractRectangularShape2F<T>>
 				s.getMaxX(), s.getMaxY());
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(Circle2f s) {
 		return intersectsEllipseEllipse(
@@ -658,6 +680,7 @@ public abstract class AbstractEllipse2F<T extends AbstractRectangularShape2F<T>>
 				s.getX()+s.getRadius(), s.getY()+s.getRadius());
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(Segment2f s) {
 		return intersectsEllipseSegment(
@@ -667,6 +690,7 @@ public abstract class AbstractEllipse2F<T extends AbstractRectangularShape2F<T>>
 				s.getX2(), s.getY2());
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(Path2f s) {
 		return intersects(s.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO));
@@ -684,6 +708,7 @@ public abstract class AbstractEllipse2F<T extends AbstractRectangularShape2F<T>>
 				(crossings & mask) != 0);
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(OrientedRectangle2f s) {
 		return AbstractOrientedRectangle2F.intersectsOrientedRectangleEllipse(
@@ -705,6 +730,7 @@ public abstract class AbstractEllipse2F<T extends AbstractRectangularShape2F<T>>
 		this.set(0f, 0f, 0f, 0f);
 	}
 
+	@Pure
 	@Override
 	public String toString() {
 		StringBuilder b = new StringBuilder();
@@ -751,6 +777,7 @@ public abstract class AbstractEllipse2F<T extends AbstractRectangularShape2F<T>>
 			}
 		}
 
+		@Pure
 		@Override
 		public boolean hasNext() {
 			return this.index<=5;
@@ -795,11 +822,13 @@ public abstract class AbstractEllipse2F<T extends AbstractRectangularShape2F<T>>
 			throw new UnsupportedOperationException();
 		}
 
+		@Pure
 		@Override
 		public PathWindingRule getWindingRule() {
 			return PathWindingRule.NON_ZERO;
 		}
 
+		@Pure
 		@Override
 		public boolean isPolyline() {
 			return false;
@@ -843,6 +872,7 @@ public abstract class AbstractEllipse2F<T extends AbstractRectangularShape2F<T>>
 			}
 		}
 
+		@Pure
 		@Override
 		public boolean hasNext() {
 			return this.index<=5;
@@ -898,11 +928,13 @@ public abstract class AbstractEllipse2F<T extends AbstractRectangularShape2F<T>>
 			throw new UnsupportedOperationException();
 		}
 
+		@Pure
 		@Override
 		public PathWindingRule getWindingRule() {
 			return PathWindingRule.NON_ZERO;
 		}
 
+		@Pure
 		@Override
 		public boolean isPolyline() {
 			return false;

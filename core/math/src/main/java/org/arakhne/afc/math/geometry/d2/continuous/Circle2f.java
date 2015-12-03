@@ -21,6 +21,7 @@
 package org.arakhne.afc.math.geometry.d2.continuous;
 
 import org.arakhne.afc.math.geometry.d2.Point2D;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** 2D circle with floating-point points.
  * 
@@ -121,6 +122,7 @@ public class Circle2f extends AbstractCircle2F<Circle2f> {
 	 * 
 	 * @return the center x.
 	 */
+	@Pure
 	public double getX() {
 		return this.cx;
 	}
@@ -128,7 +130,8 @@ public class Circle2f extends AbstractCircle2F<Circle2f> {
 	/** Replies the center y.
 	 * 
 	 * @return the center y.
- */
+	 */
+	@Pure
 	public double getY() {
 		return this.cy;
 	}
@@ -137,6 +140,7 @@ public class Circle2f extends AbstractCircle2F<Circle2f> {
 	 * 
 	 * @return a copy of the center.
 	 */
+	@Pure
 	public Point2f getCenter() {
 		return new Point2f(this.cx, this.cy);
 	}
@@ -164,6 +168,7 @@ public class Circle2f extends AbstractCircle2F<Circle2f> {
 	 * 
 	 * @return the radius.
 	 */
+	@Pure
 	public double getRadius() {
 		return this.radius;
 	}

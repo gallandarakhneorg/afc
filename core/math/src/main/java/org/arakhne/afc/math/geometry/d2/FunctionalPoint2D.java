@@ -20,7 +20,7 @@ package org.arakhne.afc.math.geometry.d2;
 
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
-import org.arakhne.afc.math.Pure;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * @author $Author: olamotte$

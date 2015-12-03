@@ -19,8 +19,8 @@
 package org.arakhne.afc.math.geometry.d2.continuous;
 
 import org.arakhne.afc.math.geometry.d2.FunctionalTuple2D;
-import org.arakhne.afc.math.Pure;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;

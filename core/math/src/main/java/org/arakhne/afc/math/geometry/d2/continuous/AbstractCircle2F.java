@@ -24,10 +24,10 @@ package org.arakhne.afc.math.geometry.d2.continuous;
 import java.util.NoSuchElementException;
 
 import org.arakhne.afc.math.MathConstants;
-import org.arakhne.afc.math.Pure;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.FunctionalPoint2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** 
 * @author $Author: hjaffali$
@@ -180,6 +180,7 @@ public abstract class AbstractCircle2F<T extends Shape2F> extends AbstractShape2
 	 * @return <code>true</code> if the two shapes are intersecting; otherwise
 	 * <code>false</code>
 	 */
+	@Pure
 	public static boolean intersectsCircleLine(double x1, double y1, double radius, double x2, double y2, double x3, double y3) {
 		double d = AbstractSegment2F.distanceSquaredLinePoint(x2, y2, x3, y3, x1, y1);
 		return d<(radius*radius);
@@ -197,6 +198,7 @@ public abstract class AbstractCircle2F<T extends Shape2F> extends AbstractShape2
 	 * @return <code>true</code> if the two shapes are intersecting; otherwise
 	 * <code>false</code>
 	 */
+	@Pure
 	public static boolean intersectsCircleSegment(double x1, double y1, double radius, double x2, double y2, double x3, double y3) {
 		double d = AbstractSegment2F.distanceSquaredSegmentPoint(x2, y2, x3, y3, x1, y1, null);
 		return d<(radius*radius);
@@ -208,6 +210,7 @@ public abstract class AbstractCircle2F<T extends Shape2F> extends AbstractShape2
 	 * @return <code>true</code> if the radius is nul;
 	 * otherwise <code>false</code>.
 	 */
+	@Pure
 	@Override
 	public boolean isEmpty() {
 		return this.getRadius()<=+0f;
@@ -235,18 +238,21 @@ public abstract class AbstractCircle2F<T extends Shape2F> extends AbstractShape2
 	 * 
 	 * @return the center x.
 	 */
+	@Pure
 	abstract public double getX();
 
 	/** Replies the center y.
 	 * 
 	 * @return the center y.
 	 */
+	@Pure
 	abstract public double getY();
 
 	/** Replies the center.
 	 * 
 	 * @return a copy of the center.
 	 */
+	@Pure
 	abstract public Point2f getCenter();
 
 	/** Change the center.
@@ -266,6 +272,7 @@ public abstract class AbstractCircle2F<T extends Shape2F> extends AbstractShape2
 	 * 
 	 * @return the radius.
 	 */
+	@Pure
 	abstract public double getRadius();
 
 	/** Set the radius.
@@ -276,6 +283,7 @@ public abstract class AbstractCircle2F<T extends Shape2F> extends AbstractShape2
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public Rectangle2f toBoundingBox() {
 		Rectangle2f r = new Rectangle2f();
@@ -289,6 +297,7 @@ public abstract class AbstractCircle2F<T extends Shape2F> extends AbstractShape2
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public void toBoundingBox(Rectangle2f box) {
 		box.setFromCorners(this.getX()-this.getRadius(),
@@ -299,6 +308,7 @@ public abstract class AbstractCircle2F<T extends Shape2F> extends AbstractShape2
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public double distance(Point2D p) {
 		double d = FunctionalPoint2D.distancePointPoint(this.getX(), this.getY(), p.getX(), p.getY()) - this.getRadius();
@@ -307,6 +317,7 @@ public abstract class AbstractCircle2F<T extends Shape2F> extends AbstractShape2
 	
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public double distanceSquared(Point2D p) {
 		double d = FunctionalPoint2D.distanceSquaredPointPoint(this.getX(), this.getY(), p.getX(), p.getY()) - this.getRadius();
@@ -315,6 +326,7 @@ public abstract class AbstractCircle2F<T extends Shape2F> extends AbstractShape2
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public double distanceL1(Point2D p) {
 		Point2D r = getClosestPointTo(p);
@@ -323,6 +335,7 @@ public abstract class AbstractCircle2F<T extends Shape2F> extends AbstractShape2
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public double distanceLinf(Point2D p) {
 		Point2D r = getClosestPointTo(p);
@@ -331,11 +344,15 @@ public abstract class AbstractCircle2F<T extends Shape2F> extends AbstractShape2
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public boolean contains(double x, double y) {
 		return containsCirclePoint(this.getX(), this.getY(), this.getRadius(), x, y);
 	}
 	
+	/** {@inheritDoc}
+	 */
+	@Pure
 	@Override
 	public boolean contains(Rectangle2f r) {
 		return containsCircleRectangle(this.getX(), this.getY(), this.getRadius(),
@@ -344,6 +361,7 @@ public abstract class AbstractCircle2F<T extends Shape2F> extends AbstractShape2
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public Point2f getClosestPointTo(Point2D p) {
 		Vector2f v = new Vector2f(p);
@@ -360,6 +378,7 @@ public abstract class AbstractCircle2F<T extends Shape2F> extends AbstractShape2
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public Point2f getFarthestPointTo(Point2D p) {
 		Vector2f v = new Vector2f(
@@ -373,7 +392,8 @@ public abstract class AbstractCircle2F<T extends Shape2F> extends AbstractShape2
 	public void translate(double dx, double dy) {
 		this.set(this.getX() + dx,this.getY() + dy,this.getRadius());
 	}
-	
+
+	@Pure
 	@Override
 	public PathIterator2f getPathIterator(Transform2D transform) {
 		if (transform==null)
@@ -381,14 +401,14 @@ public abstract class AbstractCircle2F<T extends Shape2F> extends AbstractShape2
 		return new TransformPathIterator(this.getX(), this.getY(), this.getRadius(), transform);
 	}
 
-	@SuppressWarnings("unchecked")
+	@Pure
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == this) {
 			return true;
 		}
 		if (obj instanceof AbstractCircle2F) {
-			AbstractCircle2F<T> rr2d = (AbstractCircle2F<T>) obj;
+			AbstractCircle2F<?> rr2d = (AbstractCircle2F<?>) obj;
 			return ((this.getX() == rr2d.getX()) &&
 					(this.getY() == rr2d.getY()) &&
 					(this.getRadius() == rr2d.getRadius()));
@@ -396,6 +416,7 @@ public abstract class AbstractCircle2F<T extends Shape2F> extends AbstractShape2
 		return false;
 	}
 
+	@Pure
 	@Override
 	public int hashCode() {
 		long bits = 1L;
@@ -405,6 +426,7 @@ public abstract class AbstractCircle2F<T extends Shape2F> extends AbstractShape2
 		return (int) (bits ^ (bits >> 32));
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(AbstractRectangle2F<?> s) {
 		return intersectsCircleRectangle(
@@ -413,6 +435,7 @@ public abstract class AbstractCircle2F<T extends Shape2F> extends AbstractShape2
 				s.getMaxX(), s.getMaxY());
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(Ellipse2f s) {
 		return AbstractEllipse2F.intersectsEllipseEllipse(
@@ -422,6 +445,7 @@ public abstract class AbstractCircle2F<T extends Shape2F> extends AbstractShape2
 				s.getMaxX(), s.getMaxY());
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(Circle2f s) {
 		return intersectsCircleCircle(
@@ -429,6 +453,7 @@ public abstract class AbstractCircle2F<T extends Shape2F> extends AbstractShape2
 				s.getX(), s.getY(), s.getRadius());
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(Segment2f s) {
 		return intersectsCircleSegment(
@@ -436,7 +461,8 @@ public abstract class AbstractCircle2F<T extends Shape2F> extends AbstractShape2
 				s.getX1(), s.getY1(),
 				s.getX2(), s.getY2());
 	}
-	
+
+	@Pure
 	@Override
 	public boolean intersects(Path2f s) {
 		return intersects(s.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO));
@@ -454,6 +480,7 @@ public abstract class AbstractCircle2F<T extends Shape2F> extends AbstractShape2
 				(crossings & mask) != 0);
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(OrientedRectangle2f s) {
 		return AbstractOrientedRectangle2F.intersectsOrientedRectangleSolidCircle(
@@ -463,6 +490,7 @@ public abstract class AbstractCircle2F<T extends Shape2F> extends AbstractShape2
 				this.getX(), this.getY(), this.getRadius());
 	}
 
+	@Pure
 	@Override
 	public String toString() {
 		StringBuilder b = new StringBuilder();
@@ -505,7 +533,8 @@ public abstract class AbstractCircle2F<T extends Shape2F> extends AbstractShape2
 				this.index = 6;
 			}
 		}
-	
+
+		@Pure
 		@Override
 		public boolean hasNext() {
 			return this.index<=5;
@@ -555,12 +584,14 @@ public abstract class AbstractCircle2F<T extends Shape2F> extends AbstractShape2
 		public void remove() {
 			throw new UnsupportedOperationException();
 		}
-	
+
+		@Pure
 		@Override
 		public PathWindingRule getWindingRule() {
 			return PathWindingRule.NON_ZERO;
 		}
-		
+
+		@Pure
 		@Override
 		public boolean isPolyline() {
 			return false;
@@ -604,7 +635,8 @@ public abstract class AbstractCircle2F<T extends Shape2F> extends AbstractShape2
 				this.index = 6;
 			}
 		}
-	
+
+		@Pure
 		@Override
 		public boolean hasNext() {
 			return this.index<=5;
@@ -660,12 +692,14 @@ public abstract class AbstractCircle2F<T extends Shape2F> extends AbstractShape2
 		public void remove() {
 			throw new UnsupportedOperationException();
 		}
-	
+
+		@Pure
 		@Override
 		public PathWindingRule getWindingRule() {
 			return PathWindingRule.NON_ZERO;
 		}
 
+		@Pure
 		@Override
 		public boolean isPolyline() {
 			return false;

@@ -18,7 +18,7 @@
  */
 package org.arakhne.afc.math.geometry.d3;
 
-import org.arakhne.afc.math.Pure;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * @author Olivier LAMOTTE (olivier.lamotte@utbm.fr)

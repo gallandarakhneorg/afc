@@ -21,11 +21,11 @@ package org.arakhne.afc.math.geometry.d3;
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem3D;
-import org.arakhne.afc.math.Pure;
 import org.arakhne.afc.math.geometry.d3.continuous.Quaternion;
 import org.arakhne.afc.math.geometry.d3.continuous.Transform3D;
 import org.arakhne.afc.math.geometry.d3.continuous.Vector3f;
 import org.arakhne.afc.math.matrix.Matrix3f;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * @author Olivier LAMOTTE (olivier.lamotte@utbm.fr)

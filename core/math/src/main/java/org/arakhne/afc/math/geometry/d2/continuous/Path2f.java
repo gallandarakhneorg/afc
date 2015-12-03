@@ -33,6 +33,7 @@ import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Path2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 
 /** A generic path.
@@ -1382,6 +1383,7 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 		}
 	}
 
+	@Pure
 	@Override
 	public PathIterator2f getPathIterator(double flatness) {
 		return new FlatteningPathIterator(getWindingRule(), getPathIterator(null), flatness, 10);

@@ -22,23 +22,24 @@
 package org.arakhne.afc.math.geometry.d2.continuous;
 
 import org.arakhne.afc.math.geometry.d2.Point2D;
+import org.eclipse.xtext.xbase.lib.Pure;
 
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 
 /**
  * @author Hamza JAFFALI (hjaffali)
  *
  */
-@SuppressWarnings("restriction")
+
 public class Circle2d extends AbstractCircle2F<Circle2d>{
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 4084538191693161101L;
-	
-	
+
+
 	/** X-coordinate of the circle center. */
 	protected DoubleProperty cxProperty = new SimpleDoubleProperty(0f);
 	/** Y-coordinate of the circle center. */
@@ -68,7 +69,7 @@ public class Circle2d extends AbstractCircle2F<Circle2d>{
 	public Circle2d(double x, double y, double radius1) {
 		this.set(x, y, radius1);
 	}
-	
+
 	/** Construct a circle from a circle.
 	 * @param c
 	 */
@@ -82,7 +83,7 @@ public class Circle2d extends AbstractCircle2F<Circle2d>{
 		this.cyProperty.set(0f); 
 		this.radiusProperty.set(0f); 
 	}
-	
+
 
 	/** Change the frame of the circle.
 	 * 
@@ -123,6 +124,7 @@ public class Circle2d extends AbstractCircle2F<Circle2d>{
 	 * 
 	 * @return the center x.
 	 */
+	@Pure
 	public double getX() {
 		return this.cxProperty.doubleValue();
 	}
@@ -130,7 +132,8 @@ public class Circle2d extends AbstractCircle2F<Circle2d>{
 	/** Replies the center y.
 	 * 
 	 * @return the center y.
- */
+	 */
+	@Pure
 	public double getY() {
 		return this.cyProperty.doubleValue();
 	}
@@ -139,6 +142,7 @@ public class Circle2d extends AbstractCircle2F<Circle2d>{
 	 * 
 	 * @return a copy of the center.
 	 */
+	@Pure
 	public Point2f getCenter() {
 		return new Point2f(this.getX(), this.getY());
 	}
@@ -166,6 +170,7 @@ public class Circle2d extends AbstractCircle2F<Circle2d>{
 	 * 
 	 * @return the radius.
 	 */
+	@Pure
 	public double getRadius() {
 		return this.radiusProperty.doubleValue();
 	}

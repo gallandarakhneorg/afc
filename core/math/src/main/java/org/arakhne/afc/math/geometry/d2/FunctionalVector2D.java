@@ -20,12 +20,13 @@ package org.arakhne.afc.math.geometry.d2;
 
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
-import org.arakhne.afc.math.Pure;
 import org.arakhne.afc.math.geometry.d2.continuous.Vector2f;
 import org.arakhne.afc.math.matrix.Matrix2f;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * @author $Author: olamotte$
+ * @author $Author: sgalland$
  * @author $Author: hjaffali$
  * @version $FullVersion$
  * @mavengroupid $GroupId$

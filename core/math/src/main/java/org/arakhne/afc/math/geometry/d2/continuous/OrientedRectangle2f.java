@@ -26,6 +26,7 @@ import java.util.Iterator;
 
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * Definition of a fixed Oriented Bounding Rectangle (OBR),
@@ -163,6 +164,7 @@ public class OrientedRectangle2f extends AbstractOrientedRectangle2F<OrientedRec
 	 *
 	 * @return the center.
 	 */
+	@Pure
 	public Point2f getCenter() {
 		return new Point2f(this.cx, this.cy);
 	}
@@ -171,6 +173,7 @@ public class OrientedRectangle2f extends AbstractOrientedRectangle2F<OrientedRec
 	 *
 	 * @return the center x.
 	 */
+	@Pure
 	public double getCenterX() {
 		return this.cx;
 	}
@@ -179,6 +182,7 @@ public class OrientedRectangle2f extends AbstractOrientedRectangle2F<OrientedRec
 	 *
 	 * @return the center y.
 	 */
+	@Pure
 	public double getCenterY() {
 		return this.cy;
 	}
@@ -205,6 +209,7 @@ public class OrientedRectangle2f extends AbstractOrientedRectangle2F<OrientedRec
 	 *
 	 * @return the unit vector of the first axis. 
 	 */
+	@Pure
 	public Vector2f getFirstAxis() {
 		return new Vector2f(this.rx, this.ry);
 	}
@@ -213,6 +218,7 @@ public class OrientedRectangle2f extends AbstractOrientedRectangle2F<OrientedRec
 	 *
 	 * @return the coordinate x of the unit vector of the first axis. 
 	 */
+	@Pure
 	public double getFirstAxisX() {
 		return this.rx;
 	}
@@ -221,6 +227,7 @@ public class OrientedRectangle2f extends AbstractOrientedRectangle2F<OrientedRec
 	 *
 	 * @return the coordinate y of the unit vector of the first axis. 
 	 */
+	@Pure
 	public double getFirstAxisY() {
 		return this.ry;
 	}
@@ -229,6 +236,7 @@ public class OrientedRectangle2f extends AbstractOrientedRectangle2F<OrientedRec
 	 *
 	 * @return the unit vector of the second axis. 
 	 */
+	@Pure
 	public Vector2f getSecondAxis() {
 		return new Vector2f(this.sx, this.sy);
 	}
@@ -237,6 +245,7 @@ public class OrientedRectangle2f extends AbstractOrientedRectangle2F<OrientedRec
 	 *
 	 * @return the coordinate x of the unit vector of the second axis. 
 	 */
+	@Pure
 	public double getSecondAxisX() {
 		return this.sx;
 	}
@@ -245,6 +254,7 @@ public class OrientedRectangle2f extends AbstractOrientedRectangle2F<OrientedRec
 	 *
 	 * @return the coordinate y of the unit vector of the second axis. 
 	 */
+	@Pure
 	public double getSecondAxisY() {
 		return this.sy;
 	}
@@ -253,6 +263,7 @@ public class OrientedRectangle2f extends AbstractOrientedRectangle2F<OrientedRec
 	 * 
 	 * @return the extent along the first axis.
 	 */
+	@Pure
 	public double getFirstAxisExtent() {
 		return this.extentR;
 	}
@@ -269,6 +280,7 @@ public class OrientedRectangle2f extends AbstractOrientedRectangle2F<OrientedRec
 	 * 
 	 * @return the extent along the second axis.
 	 */
+	@Pure
 	public double getSecondAxisExtent() {
 		return this.extentS;
 	}

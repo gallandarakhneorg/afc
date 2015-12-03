@@ -36,6 +36,7 @@ import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.matrix.Matrix2f;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * Definition of a fixed Oriented Rectangle.
@@ -157,6 +158,7 @@ public abstract class AbstractOrientedRectangle2F<T extends Shape2F> extends Abs
 	 * @param s2y is the Y coordinate of the second point of the segment.
 	 * @return <code>true</code> if intersecting, otherwise <code>false</code>
 	 */
+	@Pure
 	public static boolean intersectsOrientedRectangleSegment(
 			double obrCenterX, double obrCenterY,
 			double obrAxis1X, double obrAxis1Y,
@@ -199,6 +201,7 @@ public abstract class AbstractOrientedRectangle2F<T extends Shape2F> extends Abs
 	 * @param eheight is the height of the ellipse.
 	 * @return <code>true</code> if intersecting, otherwise <code>false</code>
 	 */
+	@Pure
 	public static boolean intersectsOrientedRectangleEllipse(
 			double obrCenterX, double obrCenterY,
 			double obrAxis1X, double obrAxis1Y,
@@ -245,6 +248,7 @@ public abstract class AbstractOrientedRectangle2F<T extends Shape2F> extends Abs
 	 * @param circleRadius is the radius of the circle.
 	 * @return <code>true</code> if intersecting, otherwise <code>false</code>
 	 */
+	@Pure
 	public static boolean intersectsOrientedRectangleSolidCircle(
 			double obrCenterX, double obrCenterY,
 			double obrAxis1X, double obrAxis1Y,
@@ -324,6 +328,7 @@ public abstract class AbstractOrientedRectangle2F<T extends Shape2F> extends Abs
 	 * @see "RTCD pages 102-105"
 	 * @see <a href="http://www.jkh.me/files/tutorials/Separating%20Axis%20Theorem%20for%20Oriented%20Bounding%20Boxes.pdf">Intersection between two oriented boudning rectangles</a>
 	 */
+	@Pure
 	public static boolean intersectsOrientedRectangleOrientedRectangle(
 			double obr1CenterX, double obr1CenterY,
 			double obr1Axis1X, double obr1Axis1Y,
@@ -433,6 +438,7 @@ public abstract class AbstractOrientedRectangle2F<T extends Shape2F> extends Abs
 	 * @see "RTCD pages 102-105"
 	 * @see <a href="http://www.gamasutra.com/features/19991018/Gomez_5.htm">OBB collision detection on Gamasutra.com</a>
 	 */
+	@Pure
 	public static boolean intersectsOrientedRectangleRectangle(
 			double obrCenterX, double obrCenterY,
 			double obrAxis1X, double obrAxis1Y,
@@ -487,6 +493,7 @@ public abstract class AbstractOrientedRectangle2F<T extends Shape2F> extends Abs
 	 * @return <code>true</code> if the given rectangle is inside the OBR;
 	 * otherwise <code>false</code>.
 	 */
+	@Pure
 	@Unefficient
 	public static boolean containsOrientedRectangleRectangle(
 			double obrCenterX, double obrCenterY,
@@ -536,6 +543,7 @@ public abstract class AbstractOrientedRectangle2F<T extends Shape2F> extends Abs
 	 * @return <code>true</code> if the given point is inside the OBR;
 	 * otherwise <code>false</code>.
 	 */
+	@Pure
 	public static boolean containsOrientedRectanglePoint(
 			double obrCenterX, double obrCenterY,
 			double obrAxis1X, double obrAxis1Y,
@@ -590,6 +598,7 @@ public abstract class AbstractOrientedRectangle2F<T extends Shape2F> extends Abs
 	 *            is the extent of the axis 2 of the OBB.
 	 * @return the closest point.
 	 */
+	@Pure
 	public static Point2f computeClosestPoint(
 			double px, double py,
 			double obrCenterX, double obrCenterY,
@@ -637,6 +646,7 @@ public abstract class AbstractOrientedRectangle2F<T extends Shape2F> extends Abs
 	 *            is the extent of the axis 2 of the OBB.
 	 * @return the farthest point.
 	 */
+	@Pure
 	public static Point2f computeFarthestPoint(
 			double px, double py,
 			double obrCenterX, double obrCenterY,
@@ -745,18 +755,21 @@ public abstract class AbstractOrientedRectangle2F<T extends Shape2F> extends Abs
 	 *
 	 * @return the center.
 	 */
+	@Pure
 	abstract public Point2f getCenter();
 
 	/** Replies the center x.
 	 *
 	 * @return the center x.
 	 */
+	@Pure
 	abstract public double getCenterX();
 
 	/** Replies the center y.
 	 *
 	 * @return the center y.
 	 */
+	@Pure
 	abstract public double getCenterY();
 
 	/** Set the center.
@@ -776,42 +789,49 @@ public abstract class AbstractOrientedRectangle2F<T extends Shape2F> extends Abs
 	 *
 	 * @return the unit vector of the first axis. 
 	 */
+	@Pure
 	abstract public Vector2f getFirstAxis();
 
 	/** Replies coordinate x of the first axis of the oriented rectangle.
 	 *
 	 * @return the coordinate x of the unit vector of the first axis. 
 	 */
+	@Pure
 	abstract public double getFirstAxisX();
 
 	/** Replies coordinate y of the first axis of the oriented rectangle.
 	 *
 	 * @return the coordinate y of the unit vector of the first axis. 
 	 */
+	@Pure
 	abstract public double getFirstAxisY();
 
 	/** Replies the second axis of the oriented rectangle.
 	 *
 	 * @return the unit vector of the second axis. 
 	 */
+	@Pure
 	abstract public Vector2f getSecondAxis();
 
 	/** Replies coordinate x of the second axis of the oriented rectangle.
 	 *
 	 * @return the coordinate x of the unit vector of the second axis. 
 	 */
+	@Pure
 	abstract public double getSecondAxisX();
 
 	/** Replies coordinate y of the second axis of the oriented rectangle.
 	 *
 	 * @return the coordinate y of the unit vector of the second axis. 
 	 */
+	@Pure
 	abstract public double getSecondAxisY();
 
 	/** Replies the demi-size of the rectangle along its first axis.
 	 * 
 	 * @return the extent along the first axis.
 	 */
+	@Pure
 	abstract public double getFirstAxisExtent();
 
 	/** Change the demi-size of the rectangle along its first axis.
@@ -824,6 +844,7 @@ public abstract class AbstractOrientedRectangle2F<T extends Shape2F> extends Abs
 	 * 
 	 * @return the extent along the second axis.
 	 */
+	@Pure
 	abstract public double getSecondAxisExtent();
 
 	/** Change the demi-size of the rectangle along its second axis.
@@ -896,6 +917,7 @@ public abstract class AbstractOrientedRectangle2F<T extends Shape2F> extends Abs
 	 */
 	abstract public void setSecondAxis(double x, double y, double extent);
 
+	@Pure
 	@Override
 	public Point2D getClosestPointTo(Point2D p) {
 		double dx = p.getX() - this.getCenterX();
@@ -917,6 +939,7 @@ public abstract class AbstractOrientedRectangle2F<T extends Shape2F> extends Abs
 				this.getCenterY() + clampedD1 * this.getFirstAxisY() + clampedD2 * this.getSecondAxisY());
 	}
 
+	@Pure
 	@Override
 	public Point2D getFarthestPointTo(Point2D p) {
 		double dx = p.getX() - this.getCenterX();
@@ -945,6 +968,7 @@ public abstract class AbstractOrientedRectangle2F<T extends Shape2F> extends Abs
 				this.getCenterY()	+ d1 * this.getFirstAxisY() + d2 * this.getSecondAxisY());
 	}
 
+	@Pure
 	@Override
 	public Rectangle2f toBoundingBox() {
 		Rectangle2f rect = new Rectangle2f();
@@ -984,6 +1008,7 @@ public abstract class AbstractOrientedRectangle2F<T extends Shape2F> extends Abs
 		box.setFromCorners(minCorner, maxCorner);
 	}
 
+	@Pure
 	@Override
 	public double distanceSquared(Point2D p) {
 		Point2f closest = computeClosestPoint(
@@ -996,6 +1021,7 @@ public abstract class AbstractOrientedRectangle2F<T extends Shape2F> extends Abs
 				closest.getX(), closest.getY());
 	}
 
+	@Pure
 	@Override
 	public double distanceL1(Point2D p) {
 		Point2f closest = computeClosestPoint(
@@ -1008,6 +1034,7 @@ public abstract class AbstractOrientedRectangle2F<T extends Shape2F> extends Abs
 				closest.getX(), closest.getY());
 	}
 
+	@Pure
 	@Override
 	public double distanceLinf(Point2D p) {
 		Point2f closest = computeClosestPoint(
@@ -1025,6 +1052,7 @@ public abstract class AbstractOrientedRectangle2F<T extends Shape2F> extends Abs
 		this.setCenter(this.getCenterX() + dx,this.getCenterY() + dy);
 	}
 
+	@Pure
 	@Override
 	public boolean contains(double x, double y) {
 		return containsOrientedRectanglePoint(
@@ -1034,6 +1062,7 @@ public abstract class AbstractOrientedRectangle2F<T extends Shape2F> extends Abs
 				x, y);
 	}
 
+	@Pure
 	@Override
 	public boolean contains(Rectangle2f r) {
 		return containsOrientedRectangleRectangle(
@@ -1044,6 +1073,7 @@ public abstract class AbstractOrientedRectangle2F<T extends Shape2F> extends Abs
 				r.getWidth(), r.getHeight());
 	}
 
+	@Pure
 	@Override
 	public PathIterator2f getPathIterator(Transform2D transform) {
 		if (transform == null) {
@@ -1055,6 +1085,7 @@ public abstract class AbstractOrientedRectangle2F<T extends Shape2F> extends Abs
 				transform);
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(AbstractRectangle2F<?> s) {
 		return intersectsOrientedRectangleRectangle(
@@ -1063,6 +1094,7 @@ public abstract class AbstractOrientedRectangle2F<T extends Shape2F> extends Abs
 				s.getWidth(), s.getHeight());
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(Ellipse2f s) {
 		return intersectsOrientedRectangleEllipse(
@@ -1070,6 +1102,7 @@ public abstract class AbstractOrientedRectangle2F<T extends Shape2F> extends Abs
 				s.minx, s.miny, s.maxy - s.minx, s.maxy - s.maxy);
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(Circle2f s) {
 		return intersectsOrientedRectangleSolidCircle(
@@ -1077,6 +1110,7 @@ public abstract class AbstractOrientedRectangle2F<T extends Shape2F> extends Abs
 				s.getX(),s.getY(), s.radius);
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(Segment2f s) {
 		return intersectsOrientedRectangleSegment(
@@ -1084,6 +1118,7 @@ public abstract class AbstractOrientedRectangle2F<T extends Shape2F> extends Abs
 				s.ax, s.ay, s.bx, s.by);
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(OrientedRectangle2f s) {
 		return intersectsOrientedRectangleOrientedRectangle(
@@ -1094,6 +1129,7 @@ public abstract class AbstractOrientedRectangle2F<T extends Shape2F> extends Abs
 				s.getSecondAxisX(), s.getSecondAxisY(), s.getSecondAxisExtent());
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(Path2f s) {
 		return intersects(s.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO));
@@ -1116,6 +1152,7 @@ public abstract class AbstractOrientedRectangle2F<T extends Shape2F> extends Abs
 				(crossings & mask) != 0);
 	}
 
+	@Pure
 	@Override
 	public boolean isEmpty() {
 		return(this.getFirstAxisExtent() == 0.
@@ -1181,6 +1218,7 @@ public abstract class AbstractOrientedRectangle2F<T extends Shape2F> extends Abs
 	 */
 	abstract public void setFromPointCloud(Point2D... pointCloud);
 
+	@Pure
 	@Override
 	public boolean equals(Object obj) {
 		if (this==obj) return true;
@@ -1200,6 +1238,7 @@ public abstract class AbstractOrientedRectangle2F<T extends Shape2F> extends Abs
 
 	}
 
+	@Pure
 	@Override
 	public int hashCode() {
 		long bits = 1L;
@@ -1259,6 +1298,7 @@ public abstract class AbstractOrientedRectangle2F<T extends Shape2F> extends Abs
 			this.s.scale(2);
 		}
 
+		@Pure
 		@Override
 		public boolean hasNext() {
 			return this.index<=5;
@@ -1302,11 +1342,13 @@ public abstract class AbstractOrientedRectangle2F<T extends Shape2F> extends Abs
 			throw new UnsupportedOperationException();
 		}
 
+		@Pure
 		@Override
 		public PathWindingRule getWindingRule() {
 			return PathWindingRule.NON_ZERO;
 		}
 
+		@Pure
 		@Override
 		public boolean isPolyline() {
 			return true;
@@ -1365,6 +1407,7 @@ public abstract class AbstractOrientedRectangle2F<T extends Shape2F> extends Abs
 
 		}
 
+		@Pure
 		@Override
 		public boolean hasNext() {
 			return this.index<=5;
@@ -1432,11 +1475,13 @@ public abstract class AbstractOrientedRectangle2F<T extends Shape2F> extends Abs
 			throw new UnsupportedOperationException();
 		}
 
+		@Pure
 		@Override
 		public PathWindingRule getWindingRule() {
 			return PathWindingRule.NON_ZERO;
 		}
 
+		@Pure
 		@Override
 		public boolean isPolyline() {
 			return true;
@@ -1459,6 +1504,7 @@ public abstract class AbstractOrientedRectangle2F<T extends Shape2F> extends Abs
 			this.p = p1;
 		}
 
+		@Pure
 		@Override
 		public boolean hasNext() {
 			return this.p.hasNext();
@@ -1498,11 +1544,13 @@ public abstract class AbstractOrientedRectangle2F<T extends Shape2F> extends Abs
 			this.p.remove();			
 		}
 
+		@Pure
 		@Override
 		public PathWindingRule getWindingRule() {
 			return this.p.getWindingRule();
 		}
 
+		@Pure
 		@Override
 		public boolean isPolyline() {
 			return this.p.isPolyline();
@@ -1590,6 +1638,7 @@ public abstract class AbstractOrientedRectangle2F<T extends Shape2F> extends Abs
 			}
 		}
 
+		@Pure
 		@Override
 		public boolean hasNext() {
 			return !this.points.isEmpty();
