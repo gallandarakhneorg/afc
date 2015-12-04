@@ -30,11 +30,12 @@ import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** 
-* @author $Author: hjaffali$
-* @version $FullVersion$
-* @mavengroupid $GroupId$
-* @mavenartifactid $ArtifactId$
-*/
+ * @author $Author: hjaffali$
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
 public abstract class AbstractCircle2F<T extends Shape2F> extends AbstractShape2F<T>{
 
 	/**

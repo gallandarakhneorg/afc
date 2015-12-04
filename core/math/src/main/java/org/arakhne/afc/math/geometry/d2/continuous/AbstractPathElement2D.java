@@ -23,6 +23,7 @@
 package org.arakhne.afc.math.geometry.d2.continuous;
 
 import org.arakhne.afc.math.geometry.PathElementType;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** An element of the path.
 *
@@ -44,6 +45,7 @@ public abstract class AbstractPathElement2D implements AbstractPathElement2X {
 	 * @param coords are the coordinates.
 	 * @return the instance of path element.
 	 */
+	@Pure
 	public static AbstractPathElement2D newInstance(PathElementType type, double lastX, double lastY, double[] coords) {
 		switch(type) {
 		case MOVE_TO:
@@ -87,67 +89,7 @@ public abstract class AbstractPathElement2D implements AbstractPathElement2X {
 		this.setCtrlY2(ctrly2);
 		this.setToX(tox);
 		this.setToY(toy);
-	}
-
-	/** Copy the coords into the given array, except the source point.
-	 * 
-	 * @param array
-	 */
-	public abstract void toArray(double[] array);
-
-	/** Copy the coords into an array, except the source point.
-	 * 
-	 * @return the array of the points, except the source point.
-	 */
-	public abstract double[] toArray();
-	
-	abstract public double getFromX();
-
-	abstract public double getFromY();
-
-	
-	abstract public double getToX();
-
-	
-	abstract public double getToY();
-
-	
-	abstract public double getCtrlX1();
-
-	
-	abstract public double getCtrlY1();
-
-	
-	abstract public double getCtrlX2();
-
-	
-	abstract public double getCtrlY2();
-
-
-	
-	abstract public void setFromX(double fromX1);
-
-	
-	abstract public void setFromY(double fromY1);
-
-	
-	abstract public void setToX(double toX1);
-
-	
-	abstract public void setToY(double toY1);
-
-	
-	abstract public void setCtrlX1(double ctrlX11);
-
-	
-	abstract public void setCtrlY1(double ctrlY11);
-
-	
-	abstract public void setCtrlX2(double ctrlX21);
-
-	
-	abstract public void setCtrlY2(double ctrlY21);
-	
+	}	
 	
 
 	/** An element of the path that represents a <code>MOVE_TO</code>.
@@ -173,11 +115,13 @@ public abstract class AbstractPathElement2D implements AbstractPathElement2X {
 					x, y);
 		}
 
+		@Pure
 		@Override
 		public boolean isEmpty() {
 			return (this.getFromX()==this.getToX()) && (this.getFromY()==this.getToY());
 		}
 
+		@Pure
 		@Override
 		public boolean isDrawable() {
 			return false;
@@ -188,12 +132,14 @@ public abstract class AbstractPathElement2D implements AbstractPathElement2X {
 			array[0] = this.getToX();
 			array[1] = this.getToY();
 		}
-		
+
+		@Pure
 		@Override
 		public double[] toArray() {
 			return new double[] {this.getToX(), this.getToY()};
 		}
 
+		@Pure
 		@Override
 		public String toString() {
 			return "MOVE("+ //$NON-NLS-1$
@@ -201,6 +147,7 @@ public abstract class AbstractPathElement2D implements AbstractPathElement2X {
 					this.getToY()+")"; //$NON-NLS-1$
 		}
 
+		@Pure
 		@Override
 		public final PathElementType getType() {
 			return PathElementType.MOVE_TO;
@@ -233,17 +180,20 @@ public abstract class AbstractPathElement2D implements AbstractPathElement2X {
 					Double.NaN, Double.NaN,
 					tox, toy);
 		}
-		
+
+		@Pure
 		@Override
 		public final PathElementType getType() {
 			return PathElementType.LINE_TO;
 		}
 
+		@Pure
 		@Override
 		public boolean isEmpty() {
 			return (this.getFromX()==this.getToX()) && (this.getFromY()==this.getToY());
 		}
 
+		@Pure
 		@Override
 		public boolean isDrawable() {
 			return !isEmpty();
@@ -254,12 +204,14 @@ public abstract class AbstractPathElement2D implements AbstractPathElement2X {
 			array[0] = this.getToX();
 			array[1] = this.getToY();
 		}
-		
+
+		@Pure
 		@Override
 		public double[] toArray() {
 			return new double[] {this.getToX(), this.getToY()};
 		}
 
+		@Pure
 		@Override
 		public String toString() {
 			return "LINE("+ //$NON-NLS-1$
@@ -296,18 +248,21 @@ public abstract class AbstractPathElement2D implements AbstractPathElement2X {
 					Double.NaN, Double.NaN,
 					tox, toy);
 		}
-		
+
+		@Pure
 		@Override
 		public final PathElementType getType() {
 			return PathElementType.QUAD_TO;
 		}
 
+		@Pure
 		@Override
 		public boolean isEmpty() {
 			return (this.getFromX()==this.getToX()) && (this.getFromY()==this.getToY()) &&
 					(this.getCtrlX1()==this.getToX()) && (this.getCtrlY1()==this.getToY());
 		}
 
+		@Pure
 		@Override
 		public boolean isDrawable() {
 			return !isEmpty();
@@ -320,12 +275,14 @@ public abstract class AbstractPathElement2D implements AbstractPathElement2X {
 			array[2] = this.getToX();
 			array[3] = this.getToY();
 		}
-		
+
+		@Pure
 		@Override
 		public double[] toArray() {
 			return new double[] {this.getCtrlX1(), this.getCtrlY1(), this.getToX(), this.getToY()};
 		}
-		
+
+		@Pure
 		@Override
 		public String toString() {
 			return "QUAD("+ //$NON-NLS-1$
@@ -369,12 +326,14 @@ public abstract class AbstractPathElement2D implements AbstractPathElement2X {
 					ctrlx2, ctrly2,
 					tox, toy);
 		}
-		
+
+		@Pure
 		@Override
 		public final PathElementType getType() {
 			return PathElementType.CURVE_TO;
 		}
 
+		@Pure
 		@Override
 		public boolean isEmpty() {
 			return (this.getFromX()==this.getToX()) && (this.getFromY()==this.getToY()) &&
@@ -382,6 +341,7 @@ public abstract class AbstractPathElement2D implements AbstractPathElement2X {
 					(this.getCtrlX2()==this.getToX()) && (this.getCtrlY2()==this.getToY());
 		}
 
+		@Pure
 		@Override
 		public boolean isDrawable() {
 			return !isEmpty();
@@ -396,12 +356,14 @@ public abstract class AbstractPathElement2D implements AbstractPathElement2X {
 			array[4] = this.getToX();
 			array[5] = this.getToY();
 		}
-		
+
+		@Pure
 		@Override
 		public double[] toArray() {
 			return new double[] {this.getCtrlX1(), this.getCtrlY1(), this.getCtrlX2(), this.getCtrlY2(), this.getToX(), this.getToY()};
 		}
 
+		@Pure
 		@Override
 		public String toString() {
 			return "CURVE("+ //$NON-NLS-1$
@@ -441,17 +403,20 @@ public abstract class AbstractPathElement2D implements AbstractPathElement2X {
 					Double.NaN, Double.NaN,
 					tox, toy);
 		}
-		
+
+		@Pure
 		@Override
 		public final PathElementType getType() {
 			return PathElementType.CLOSE;
 		}
 
+		@Pure
 		@Override
 		public boolean isEmpty() {
 			return (this.getFromX()==this.getToX()) && (this.getFromY()==this.getToY());
 		}
-		
+
+		@Pure
 		@Override
 		public boolean isDrawable() {
 			return false;
@@ -461,12 +426,14 @@ public abstract class AbstractPathElement2D implements AbstractPathElement2X {
 		public void toArray(double[] array) {
 			//
 		}
-		
+
+		@Pure
 		@Override
 		public double[] toArray() {
 			return new double[0];
 		}
-		
+
+		@Pure
 		@Override
 		public String toString() {
 			return "CLOSE"; //$NON-NLS-1$

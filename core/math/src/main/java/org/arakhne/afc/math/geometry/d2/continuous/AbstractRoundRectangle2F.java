@@ -26,9 +26,11 @@ import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Point2D;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** 
  * @author $Author: hjaffali$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -56,6 +58,7 @@ public abstract class AbstractRoundRectangle2F<T extends AbstractRectangularShap
 	 * @return <code>true</code> if the given rectangle is inside the ellipse;
 	 * otherwise <code>false</code>.
 	 */
+	@Pure
 	public static boolean containsRoundRectangleRectangle(double rx1, double ry1, double rwidth1, double rheight1, double awidth, double aheight, double rx2, double ry2, double rwidth2, double rheight2) {
 		double rcx1 = (rx1 + rwidth1/2f);
 		double rcy1 = (ry1 + rheight1/2f);
@@ -83,6 +86,7 @@ public abstract class AbstractRoundRectangle2F<T extends AbstractRectangularShap
 	 * @return <code>true</code> if the given rectangle is inside the ellipse;
 	 * otherwise <code>false</code>.
 	 */
+	@Pure
 	public static boolean containsRoundRectanglePoint(double rx, double ry, double rwidth, double rheight, double awidth, double aheight, double px, double py) {
 		if (rwidth<=0f && rheight<=0f) {
 			return rx==px && ry==py;
@@ -267,6 +271,7 @@ public abstract class AbstractRoundRectangle2F<T extends AbstractRectangularShap
 	 * 
 	 * @return the min x.
 	 */
+	@Pure
 	@Override
 	abstract public double getMinX();
 
@@ -281,6 +286,7 @@ public abstract class AbstractRoundRectangle2F<T extends AbstractRectangularShap
 	 * 
 	 * @return the center x.
 	 */
+	@Pure
 	@Override
 	abstract public double getCenterX();
 
@@ -288,6 +294,7 @@ public abstract class AbstractRoundRectangle2F<T extends AbstractRectangularShap
 	 * 
 	 * @return the max x.
 	 */
+	@Pure
 	@Override
 	abstract public double getMaxX();
 
@@ -302,6 +309,7 @@ public abstract class AbstractRoundRectangle2F<T extends AbstractRectangularShap
 	 * 
 	 * @return the min y.
 	 */
+	@Pure
 	@Override
 	abstract public double getMinY();
 
@@ -323,6 +331,7 @@ public abstract class AbstractRoundRectangle2F<T extends AbstractRectangularShap
 	 * 
 	 * @return the max y.
 	 */
+	@Pure
 	@Override
 	abstract public double getMaxY();
 	
@@ -337,6 +346,7 @@ public abstract class AbstractRoundRectangle2F<T extends AbstractRectangularShap
 	 * 
 	 * @return the width.
 	 */
+	@Pure
 	@Override
 	abstract public double getWidth();
 
@@ -344,6 +354,7 @@ public abstract class AbstractRoundRectangle2F<T extends AbstractRectangularShap
 	 * 
 	 * @return the height.
 	 */
+	@Pure
 	@Override
 	abstract public double getHeight();
 	
@@ -352,6 +363,7 @@ public abstract class AbstractRoundRectangle2F<T extends AbstractRectangularShap
 	 * @return the width of the arc that rounds off the corners
 	 * of this <code>RoundRectangle2f</code>.
 	 */
+	@Pure
 	abstract public double getArcWidth();
 
 	/**
@@ -359,6 +371,7 @@ public abstract class AbstractRoundRectangle2F<T extends AbstractRectangularShap
 	 * @return the height of the arc that rounds off the corners
 	 * of this <code>RoundRectangle2f</code>.
 	 */
+	@Pure
 	abstract public double getArcHeight();
 
 	/**
@@ -393,6 +406,7 @@ public abstract class AbstractRoundRectangle2F<T extends AbstractRectangularShap
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public boolean contains(double x, double y) {
 		return containsRoundRectanglePoint(
@@ -400,6 +414,7 @@ public abstract class AbstractRoundRectangle2F<T extends AbstractRectangularShap
 				x, y);
 	}
 
+	@Pure
 	@Override
 	public boolean contains(Rectangle2f r) {
 		return containsRoundRectangleRectangle(
@@ -407,24 +422,28 @@ public abstract class AbstractRoundRectangle2F<T extends AbstractRectangularShap
 				r.getMinX(), r.getMinY(), r.getWidth(), r.getHeight());
 	}
 
+	@Pure
 	@Override
 	public double distanceSquared(Point2D p) {
 		Point2D n = getClosestPointTo(p);
 		return n.getDistanceSquared(p);
 	}
 
+	@Pure
 	@Override
 	public double distanceL1(Point2D p) {
 		Point2D n = getClosestPointTo(p);
 		return n.getDistanceL1(p);
 	}
 
+	@Pure
 	@Override
 	public double distanceLinf(Point2D p) {
 		Point2D n = getClosestPointTo(p);
 		return n.getDistanceLinf(p);
 	}
 
+	@Pure
 	@Override
 	public Point2D getClosestPointTo(Point2D p) {
 		double px = p.getX();
@@ -500,6 +519,7 @@ public abstract class AbstractRoundRectangle2F<T extends AbstractRectangularShap
 		return new Point2f(x,y);
 	}
 
+	@Pure
 	@Override
 	public Point2D getFarthestPointTo(Point2D p) {
 		double px = p.getX();
@@ -536,6 +556,7 @@ public abstract class AbstractRoundRectangle2F<T extends AbstractRectangularShap
 				aw, ah);
 	}
 
+	@Pure
 	@Override
 	public PathIterator2f getPathIterator(Transform2D transform) {
 		if (transform==null) {
@@ -552,6 +573,7 @@ public abstract class AbstractRoundRectangle2F<T extends AbstractRectangularShap
 	}
 
 	@SuppressWarnings("unchecked")
+	@Pure
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == this) {
@@ -569,6 +591,7 @@ public abstract class AbstractRoundRectangle2F<T extends AbstractRectangularShap
 		return false;
 	}
 
+	@Pure
 	@Override
 	public int hashCode() {
 		long bits = 1L;
@@ -581,6 +604,7 @@ public abstract class AbstractRoundRectangle2F<T extends AbstractRectangularShap
 		return (int) (bits ^ (bits >> 32));
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(AbstractRectangle2F<?> s) {
 		return AbstractRectangle2F.intersectsRectangleRectangle(
@@ -599,6 +623,7 @@ public abstract class AbstractRoundRectangle2F<T extends AbstractRectangularShap
 				getMaxX(), getMaxY());
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(Circle2f s) {
 		return AbstractCircle2F.intersectsCircleRectangle(
@@ -608,6 +633,7 @@ public abstract class AbstractRoundRectangle2F<T extends AbstractRectangularShap
 				getMaxX(), getMaxY());
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(Segment2f s) {
 		return AbstractRectangle2F.intersectsRectangleSegment(
@@ -617,6 +643,7 @@ public abstract class AbstractRoundRectangle2F<T extends AbstractRectangularShap
 				s.getX2(), s.getY2());
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(Path2f s) {
 		return intersects(s.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO));
@@ -635,6 +662,7 @@ public abstract class AbstractRoundRectangle2F<T extends AbstractRectangularShap
 				(crossings & mask) != 0);
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(OrientedRectangle2f s) {
 		return AbstractOrientedRectangle2F.intersectsOrientedRectangleRectangle(
@@ -644,6 +672,7 @@ public abstract class AbstractRoundRectangle2F<T extends AbstractRectangularShap
 				this.getMinX(), this.getMinY(), getWidth(), getHeight());
 	}
 
+	@Pure
 	@Override
 	public String toString() {
 		StringBuilder b = new StringBuilder();
@@ -702,6 +731,7 @@ public abstract class AbstractRoundRectangle2F<T extends AbstractRectangularShap
 			}
 		}
 
+		@Pure
 		@Override
 		public boolean hasNext() {
 			return this.index<TYPES.length;
@@ -775,11 +805,13 @@ public abstract class AbstractRoundRectangle2F<T extends AbstractRectangularShap
 			throw new UnsupportedOperationException();
 		}
 
+		@Pure
 		@Override
 		public PathWindingRule getWindingRule() {
 			return PathWindingRule.NON_ZERO;
 		}
 
+		@Pure
 		@Override
 		public boolean isPolyline() {
 			return false;
@@ -832,6 +864,7 @@ public abstract class AbstractRoundRectangle2F<T extends AbstractRectangularShap
 			}
 		}
 
+		@Pure
 		@Override
 		public boolean hasNext() {
 			return this.index<TYPES.length;
@@ -914,11 +947,13 @@ public abstract class AbstractRoundRectangle2F<T extends AbstractRectangularShap
 			throw new UnsupportedOperationException();
 		}
 
+		@Pure
 		@Override
 		public PathWindingRule getWindingRule() {
 			return PathWindingRule.NON_ZERO;
 		}
 
+		@Pure
 		@Override
 		public boolean isPolyline() {
 			return false;

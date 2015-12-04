@@ -22,6 +22,7 @@
 package org.arakhne.afc.math.geometry.d2.continuous;
 
 import org.arakhne.afc.math.geometry.PathElementType;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** An element of the path.
  *
@@ -116,11 +117,13 @@ public abstract class AbstractPathElement2F implements AbstractPathElement2X {
 					x, y);
 		}
 
+		@Pure
 		@Override
 		public boolean isEmpty() {
 			return (this.getFromX()==this.getToX()) && (this.getFromY()==this.getToY());
 		}
 
+		@Pure
 		@Override
 		public boolean isDrawable() {
 			return false;
@@ -131,12 +134,14 @@ public abstract class AbstractPathElement2F implements AbstractPathElement2X {
 			array[0] = this.getToX();
 			array[1] = this.getToY();
 		}
-		
+
+		@Pure
 		@Override
 		public double[] toArray() {
 			return new double[] {this.getToX(), this.getToY()};
 		}
 
+		@Pure
 		@Override
 		public String toString() {
 			return "MOVE("+ //$NON-NLS-1$
@@ -144,6 +149,7 @@ public abstract class AbstractPathElement2F implements AbstractPathElement2X {
 					this.getToY()+")"; //$NON-NLS-1$
 		}
 
+		@Pure
 		@Override
 		public final PathElementType getType() {
 			return PathElementType.MOVE_TO;
@@ -177,17 +183,20 @@ public abstract class AbstractPathElement2F implements AbstractPathElement2X {
 					Double.NaN, Double.NaN,
 					tox, toy);
 		}
-		
+
+		@Pure
 		@Override
 		public final PathElementType getType() {
 			return PathElementType.LINE_TO;
 		}
 
+		@Pure
 		@Override
 		public boolean isEmpty() {
 			return (this.getFromX()==this.getToX()) && (this.getFromY()==this.getToY());
 		}
 
+		@Pure
 		@Override
 		public boolean isDrawable() {
 			return !isEmpty();
@@ -198,12 +207,14 @@ public abstract class AbstractPathElement2F implements AbstractPathElement2X {
 			array[0] = this.getToX();
 			array[1] = this.getToY();
 		}
-		
+
+		@Pure
 		@Override
 		public double[] toArray() {
 			return new double[] {this.getToX(), this.getToY()};
 		}
 
+		@Pure
 		@Override
 		public String toString() {
 			return "LINE("+ //$NON-NLS-1$
@@ -241,18 +252,21 @@ public abstract class AbstractPathElement2F implements AbstractPathElement2X {
 					Double.NaN, Double.NaN,
 					tox, toy);
 		}
-		
+
+		@Pure
 		@Override
 		public final PathElementType getType() {
 			return PathElementType.QUAD_TO;
 		}
 
+		@Pure
 		@Override
 		public boolean isEmpty() {
 			return (this.getFromX()==this.getToX()) && (this.getFromY()==this.getToY()) &&
 					(this.getCtrlX1()==this.getToX()) && (this.getCtrlY1()==this.getToY());
 		}
 
+		@Pure
 		@Override
 		public boolean isDrawable() {
 			return !isEmpty();
@@ -265,12 +279,14 @@ public abstract class AbstractPathElement2F implements AbstractPathElement2X {
 			array[2] = this.getToX();
 			array[3] = this.getToY();
 		}
-		
+
+		@Pure
 		@Override
 		public double[] toArray() {
 			return new double[] {this.getCtrlX1(), this.getCtrlY1(), this.getToX(), this.getToY()};
 		}
-		
+
+		@Pure
 		@Override
 		public String toString() {
 			return "QUAD("+ //$NON-NLS-1$

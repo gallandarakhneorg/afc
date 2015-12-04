@@ -32,9 +32,13 @@ import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 
-/**
- * @author Hamza JAFFALI (hjaffali)
- *
+/** 2D line segment with floating-point coordinates.
+ * 
+ * @author $Author: hjaffali$
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
  */
 public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape2F<T> {
 
@@ -70,6 +74,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 	 * @see #isParallelLines(double, double, double, double, double, double, double, double)
 	 * @see Point2f#isCollinearPoints(double, double, double, double, double, double)
 	 */
+	@Pure
 	public static boolean isCollinearLines(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4) {
 		return (isParallelLines(x1, y1, x2, y2, x3, y3, x4, y4) && FunctionalPoint2D.isCollinearPoints(x1, y1, x2, y2, x3, y3));
 	}
@@ -100,6 +105,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 	 * @return <code>true</code> if the two given lines are parallel.
 	 * @see #isCollinearLines(double, double, double, double, double, double, double, double)
 	 */
+	@Pure
 	public static boolean isParallelLines(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4) {
 		return FunctionalVector2D.isCollinearVectors(x2 - x1, y2 - y1, x4 - x3, y4 - y3);
 	}
@@ -125,6 +131,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 	 *            is the Y coordinate of the second point of the second segment.
 	 * @return the intersection point or <code>null</code> if none.
 	 */
+	@Pure
 	public static Point2f computeSegmentSegmentIntersection(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4) {
 		double m = computeSegmentSegmentIntersectionFactor(x1, y1, x2, y2, x3, y3, x4, y4);
 		if (Double.isNaN(m))
@@ -161,6 +168,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 	 *            is the Y coordinate of the second point of the second segment.
 	 * @return <code>factor1</code> or {@link Double#NaN} if no intersection.
 	 */
+	@Pure
 	public static double computeSegmentSegmentIntersectionFactor(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4) {
 		double X1 = x2 - x1;
 		double Y1 = y2 - y1;
@@ -216,6 +224,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 	 *            is the Y coordinate of the second point of the second line.
 	 * @return <code>factor1</code> or {@link Double#NaN} if no intersection.
 	 */
+	@Pure
 	public static double computeLineLineIntersectionFactor(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4) {
 		double X1 = x2 - x1;
 		double Y1 = y2 - y1;
@@ -251,6 +260,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 	 * @param y4 vertical position of the second point of the line.
 	 * @return the intersection point or <code>null</code> if there is no intersection.
 	 */
+	@Pure
 	public static Point2f computeLineLineIntersection(double x1, double y1, double x2, double y2,
 			double x3, double y3, double x4, double y4) {
 		double denom = (y4-y3)*(x2-x1) - (x4-x3)*(y2-y1);
@@ -367,6 +377,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 	 * @see #distanceSquaredLinePoint(double, double, double, double, double, double)
 	 * @see #computeRelativeDistanceLinePoint(double, double, double, double, double, double)
 	 */
+	@Pure
 	public static double distanceLinePoint(double x1, double y1, double x2, double y2, double px, double py) {
 		double r_denomenator = (x2-x1)*(x2-x1) + (y2-y1)*(y2-y1);
 		if (r_denomenator==0.) return FunctionalPoint2D.distancePointPoint(px, py, x1, y1);
@@ -386,6 +397,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 	 * @return <code>true</code> if the point and the
 	 *         line have closed locations.
 	 */
+	@Pure
 	public static boolean isPointClosedToSegment( double x1, double y1, 
 			double x2, double y2, 
 			double x, double y, double hitDistance ) {
@@ -404,6 +416,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 	 * @return <code>true</code> if the point and the
 	 *         line have closed locations.
 	 */
+	@Pure
 	public static boolean isPointClosedToLine( double x1, double y1, 
 			double x2, double y2, 
 			double x, double y, double hitDistance ) {
@@ -433,6 +446,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 	 * first segment point. If inside {@code ]1;+inf[}, the projection is 
 	 * outside on the side of the second segment point.
 	 */
+	@Pure
 	public static double computeProjectedPointOnLine(double px, double py, double s1x, double s1y, double s2x, double s2y) {
 		double r_numerator = (px-s1x)*(s2x-s1x) + (py-s1y)*(s2y-s1y);
 		double r_denomenator = (s2x-s1x)*(s2x-s1x) + (s2y-s1y)*(s2y-s1y);
@@ -460,6 +474,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 	 * @see #ccw(double, double, double, double, double, double, double)
 	 * @see #computeSideLinePoint(double, double, double, double, double, double, double)
 	 */
+	@Pure
 	public static double computeRelativeDistanceLinePoint(double x1, double y1, double x2, double y2, double px, double py) {
 		double r_denomenator = (x2-x1)*(x2-x1) + (y2-y1)*(y2-y1);
 		if (r_denomenator==0.) return FunctionalPoint2D.distancePointPoint(px, py, x1, y1);
@@ -502,6 +517,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 	 * @see MathUtil#isEpsilonZero(double)
 	 * @see #ccw(double, double, double, double, double, double, double)
 	 */
+	@Pure
 	public static int computeSideLinePoint(double x1, double y1, double x2, double y2, double px, double py, double epsilon) {
 		double cx2 = x2 - x1;
 		double cy2 = y2 - y1;
@@ -558,6 +574,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 	 * @see #computeRelativeDistanceLinePoint(double, double, double, double, double, double)
 	 * @see #computeSideLinePoint(double, double, double, double, double, double, double)
 	 */
+	@Pure
 	public static int ccw(double x1, double y1, double x2, double y2, double px, double py, double epsilon) {
 		double cx2 = x2 - x1;
 		double cy2 = y2 - y1;
@@ -600,6 +617,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 	 * @param factor is between 0 and 1; 0 for p1, and 1 for p2.
 	 * @return the interpolate point.
 	 */
+	@Pure
 	public static Point2f interpolate(double p1x, double p1y, double p2x, double p2y, double factor) {
 		double f = (factor<0f) ? 0f : factor;
 		if (f>1f) f = 1f;
@@ -620,6 +638,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 	 * @param py is the y coordinate of the point.
 	 * @return the farthest point on the shape.
 	 */
+	@Pure
 	public static Point2f computeFarthestPointTo(
 			double ax, double ay, double bx, double by, double px, double py) {
 		double v1x = px - ax;
@@ -642,6 +661,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 	 * @param py is the y coordinate of the point.
 	 * @return the is point on the shape.
 	 */
+	@Pure
 	public static Point2f computeClosestPointTo(
 			double ax, double ay, double bx, double by, double px, double py) {
 		double ratio = AbstractSegment2F.computeProjectedPointOnLine(px, py,
@@ -669,6 +689,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 	 * @param y1 is the secondpoint of the line.
 	 * @return the crossing.
 	 */
+	@Pure
 	public static int computeCrossingsFromPoint(
 			double px, double py,
 			double x0, double y0,
@@ -702,6 +723,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 	 * @param y1 is the secondpoint of the line.
 	 * @return the crossing.
 	 */
+	@Pure
 	private static int computeCrossingsFromPoint1(
 			double px, double py,
 			double x0, double y0,
@@ -732,6 +754,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 	 * @param y1 is the secondpoint of the line.
 	 * @return the crossing, or {@link MathConstants#SHAPE_INTERSECTS}
 	 */
+	@Pure
 	public static int computeCrossingsFromSegment(
 			int crossings,
 			double sx1, double sy1,
@@ -804,6 +827,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 	 * @param y1 is the secondpoint of the line.
 	 * @return the crossing, or {@link MathConstants#SHAPE_INTERSECTS}.
 	 */
+	@Pure
 	public static int computeCrossingsFromEllipse(
 			int crossings,
 			double ex, double ey,
@@ -860,6 +884,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 	 * @param y1 is the secondpoint of the line.
 	 * @return the crossing, or {@link MathConstants#SHAPE_INTERSECTS}.
 	 */
+	@Pure
 	public static int computeCrossingsFromCircle(
 			int crossings,
 			double cx, double cy,
@@ -916,6 +941,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 	 * @param y1 is the secondpoint of the line.
 	 * @return the crossing, or {@link MathConstants#SHAPE_INTERSECTS}.
 	 */
+	@Pure
 	public static int computeCrossingsFromRect(
 			int crossings,
 			double rxmin, double rymin,
@@ -1003,6 +1029,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 	 * @return <code>true</code> if the two shapes are intersecting; otherwise
 	 * <code>false</code>
 	 */
+	@Pure
 	public static boolean intersectsLineLine(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4) {
 		if (isParallelLines(x1, y1, x2, y2, x3, y3, x4, y4)) {
 			return FunctionalPoint2D.isCollinearPoints(x1, y1, x2, y2, x3, y3);
@@ -1023,11 +1050,13 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 	 * @return <code>true</code> if the two shapes are intersecting; otherwise
 	 * <code>false</code>
 	 */
+	@Pure
 	public static boolean intersectsSegmentLine(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4) {
 		return (computeSideLinePoint(x3, y3, x4, y4, x1, y1, MathConstants.EPSILON) *
 				computeSideLinePoint(x3, y3, x4, y4, x2, y2, MathConstants.EPSILON)) <= 0;
 	}
 
+	@Pure
 	private static boolean intersectsSSWE(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4) {
 		double vx1, vy1, vx2a, vy2a, vx2b, vy2b, f1, f2, sign;
 
@@ -1112,6 +1141,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 		return false;
 	}
 
+	@Pure
 	private static boolean intersectsSSWoE(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4) {
 		double vx1, vy1, vx2a, vy2a, vx2b, vy2b, f1, f2, sign;
 
@@ -1183,6 +1213,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 	 * <code>false</code>
 	 * @see #intersectsSegmentSegmentWithEnds(double, double, double, double, double, double, double, double)
 	 */
+	@Pure
 	public static boolean intersectsSegmentSegmentWithoutEnds(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4) {
 		boolean r;
 		r = intersectsSSWoE(x1, y1, x2, y2, x3, y3, x4, y4);
@@ -1208,6 +1239,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 	 * <code>false</code>
 	 * @see #intersectsSegmentSegmentWithoutEnds(double, double, double, double, double, double, double, double)
 	 */
+	@Pure
 	public static boolean intersectsSegmentSegmentWithEnds(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4) {
 		boolean r;
 		r = intersectsSSWE(x1, y1, x2, y2, x3, y3, x4, y4);
@@ -1278,36 +1310,42 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 	 * 
 	 * @return the x of the first point.
 	 */
+	@Pure
 	abstract public double getX1();
 
 	/** Replies the Y of the first point.
 	 * 
 	 * @return the y of the first point.
 	 */
+	@Pure
 	abstract public double getY1();
 
 	/** Replies the X of the second point.
 	 * 
 	 * @return the x of the second point.
 	 */
+	@Pure
 	abstract public double getX2();
 
 	/** Replies the Y of the second point.
 	 * 
 	 * @return the y of the second point.
 	 */
+	@Pure
 	abstract public double getY2();
 
 	/** Replies the first point.
 	 * 
 	 * @return the first point.
 	 */
+	@Pure
 	abstract public Point2D getP1();
 
 	/** Replies the second point.
 	 * 
 	 * @return the second point.
 	 */
+	@Pure
 	abstract public Point2D getP2();
 
 	
@@ -1315,6 +1353,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 	
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public Rectangle2f toBoundingBox() {
 		Rectangle2f r = new Rectangle2f();
@@ -1339,6 +1378,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public double distanceSquared(Point2D p) {
 		return distanceSquaredSegmentPoint(
@@ -1350,6 +1390,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public double distanceL1(Point2D p) {
 		double ratio = AbstractSegment2F.computeProjectedPointOnLine(p.getX(), p.getY(), this.getX1(),this.getY1(),this.getX2(),this.getY2());
@@ -1363,6 +1404,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public double distanceLinf(Point2D p) {
 		double ratio = AbstractSegment2F.computeProjectedPointOnLine(p.getX(), p.getY(), this.getX1(),this.getY1(),this.getX2(),this.getY2());
@@ -1381,6 +1423,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 	 * 
 	 * @see MathUtil#isEpsilonZero(double)
 	 */
+	@Pure
 	@Override
 	public boolean contains(double x, double y) {
 		return MathUtil.isEpsilonZero(
@@ -1393,6 +1436,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public boolean contains(Rectangle2f r) {
 		return contains(r.getMinX(), r.getMinY())
@@ -1401,6 +1445,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public Point2f getClosestPointTo(Point2D p) {
 		return computeClosestPointTo(
@@ -1411,6 +1456,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public Point2f getFarthestPointTo(Point2D p) {
 		return computeFarthestPointTo(
@@ -1424,6 +1470,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 		this.set(this.getX1()+dx,this.getY1()+dy,this.getX2()+dx,this.getY2()+dy);
 	}
 
+	@Pure
 	@Override
 	public PathIterator2f getPathIterator(Transform2D transform) {
 		return new SegmentPathIterator(
@@ -1432,6 +1479,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 	}
 
 	@SuppressWarnings("unchecked")
+	@Pure
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == this) {
@@ -1447,6 +1495,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 		return false;
 	}
 
+	@Pure
 	@Override
 	public int hashCode() {
 		long bits = 1L;
@@ -1474,6 +1523,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 		this.setY2(p.getY());
 	}	
 
+	@Pure
 	@Override
 	public Shape2F createTransformedShape(Transform2D transform) {
 		Point2D p1 = transform.transform(this.getX1(), this.getY1());
@@ -1492,6 +1542,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 	 * rectangle and the segment was clipped; <code>false</code> if the segment
 	 * does not intersect the rectangle.
 	 */
+	@Pure
 	public boolean clipToRectangle(double rxmin, double rymin, double rxmax, double rymax) {
 		double x0 = this.getX1();
 		double y0 = this.getY1();
@@ -1569,6 +1620,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 		return accept;
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(AbstractRectangle2F<?> s) {
 		return AbstractRectangle2F.intersectsRectangleSegment(
@@ -1578,6 +1630,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 				this.getX2(), this.getY2());
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(Ellipse2f s) {
 		return AbstractEllipse2F.intersectsEllipseSegment(
@@ -1587,6 +1640,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 				this.getX2(), this.getY2());
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(Circle2f s) {
 		return AbstractCircle2F.intersectsCircleSegment(
@@ -1596,6 +1650,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 				this.getX2(), this.getY2());
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(Segment2f s) {
 		return intersectsSegmentSegmentWithEnds(
@@ -1605,6 +1660,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 				s.getX2(), s.getY2());
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(Path2f s) {
 		return intersects(s.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO));
@@ -1622,6 +1678,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 				(crossings & mask) != 0);
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(OrientedRectangle2f s) {
 		return AbstractOrientedRectangle2F.intersectsOrientedRectangleSegment(
@@ -1631,6 +1688,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 				this.getX1(), this.getY1(), this.getX2(), this.getY2());
 	}
 
+	@Pure
 	@Override
 	public String toString() {
 		StringBuilder b = new StringBuilder();
@@ -1682,6 +1740,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 			}
 		}
 
+		@Pure
 		@Override
 		public boolean hasNext() {
 			return this.index<=1;
@@ -1719,11 +1778,13 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 			throw new UnsupportedOperationException();
 		}
 
+		@Pure
 		@Override
 		public PathWindingRule getWindingRule() {
 			return PathWindingRule.NON_ZERO;
 		}
 
+		@Pure
 		@Override
 		public boolean isPolyline() {
 			return true;

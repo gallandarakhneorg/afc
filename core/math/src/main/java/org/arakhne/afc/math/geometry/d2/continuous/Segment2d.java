@@ -21,17 +21,19 @@
 package org.arakhne.afc.math.geometry.d2.continuous;
 
 import org.arakhne.afc.math.geometry.d2.Point2D;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 
 
-/**
- * @author Hamza JAFFALI (hjaffali)
- *
+/** 2D line segment with DoubleProperty points coordinates.
+ * 
+ * @author $Author: hjaffali$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
  */
-
-@SuppressWarnings("restriction")
 public class Segment2d extends AbstractSegment2F<Segment2d>{
 
 	/**
@@ -132,6 +134,7 @@ public class Segment2d extends AbstractSegment2F<Segment2d>{
 	 * 
 	 * @return the x of the first point.
 	 */
+	@Pure
 	public double getX1() {
 		return this.axProperty.doubleValue();
 	}
@@ -140,6 +143,7 @@ public class Segment2d extends AbstractSegment2F<Segment2d>{
 	 * 
 	 * @return the y of the first point.
 	 */
+	@Pure
 	public double getY1() {
 		return this.ayProperty.doubleValue();
 	}
@@ -148,6 +152,7 @@ public class Segment2d extends AbstractSegment2F<Segment2d>{
 	 * 
 	 * @return the x of the second point.
 	 */
+	@Pure
 	public double getX2() {
 		return this.bxProperty.doubleValue();
 	}
@@ -156,6 +161,7 @@ public class Segment2d extends AbstractSegment2F<Segment2d>{
 	 * 
 	 * @return the y of the second point.
 	 */
+	@Pure
 	public double getY2() {
 		return this.byProperty.doubleValue();
 	}
@@ -164,6 +170,7 @@ public class Segment2d extends AbstractSegment2F<Segment2d>{
 	 * 
 	 * @return the first point.
 	 */
+	@Pure
 	public Point2D getP1() {
 		return new Point2f(this.getX1(), this.getY1());
 	}
@@ -172,6 +179,7 @@ public class Segment2d extends AbstractSegment2F<Segment2d>{
 	 * 
 	 * @return the second point.
 	 */
+	@Pure
 	public Point2D getP2() {
 		return new Point2f(this.getX2(), this.getY2());
 	}

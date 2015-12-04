@@ -21,6 +21,7 @@
 package org.arakhne.afc.math.geometry.d2.continuous;
 
 import org.arakhne.afc.math.geometry.d2.Point2D;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -192,6 +193,7 @@ public class RoundRectangle2d extends AbstractRoundRectangle2F<RoundRectangle2d>
 	 * 
 	 * @return the min x.
 	 */
+	@Pure
 	@Override
 	public double getMinX() {
 		return this.minxProperty.doubleValue();
@@ -217,6 +219,7 @@ public class RoundRectangle2d extends AbstractRoundRectangle2F<RoundRectangle2d>
 	 * 
 	 * @return the center x.
 	 */
+	@Pure
 	@Override
 	public double getCenterX() {
 		return (this.minxProperty.doubleValue() + this.maxxProperty.doubleValue()) / 2f;
@@ -226,6 +229,7 @@ public class RoundRectangle2d extends AbstractRoundRectangle2F<RoundRectangle2d>
 	 * 
 	 * @return the max x.
 	 */
+	@Pure
 	@Override
 	public double getMaxX() {
 		return this.maxxProperty.doubleValue();
@@ -251,6 +255,7 @@ public class RoundRectangle2d extends AbstractRoundRectangle2F<RoundRectangle2d>
 	 * 
 	 * @return the min y.
 	 */
+	@Pure
 	@Override
 	public double getMinY() {
 		return this.minyProperty.doubleValue();
@@ -276,6 +281,7 @@ public class RoundRectangle2d extends AbstractRoundRectangle2F<RoundRectangle2d>
 	 * 
 	 * @return the center y.
 	 */
+	@Pure
 	@Override
 	public double getCenterY() {
 		return (this.minyProperty.doubleValue() + this.maxyProperty.doubleValue()) / 2f;
@@ -285,6 +291,7 @@ public class RoundRectangle2d extends AbstractRoundRectangle2F<RoundRectangle2d>
 	 * 
 	 * @return the max y.
 	 */
+	@Pure
 	@Override
 	public double getMaxY() {
 		return this.maxyProperty.doubleValue();
@@ -310,6 +317,7 @@ public class RoundRectangle2d extends AbstractRoundRectangle2F<RoundRectangle2d>
 	 * 
 	 * @return the width.
 	 */
+	@Pure
 	@Override
 	public double getWidth() {
 		return this.maxxProperty.doubleValue() - this.minxProperty.doubleValue();
@@ -319,6 +327,7 @@ public class RoundRectangle2d extends AbstractRoundRectangle2F<RoundRectangle2d>
 	 * 
 	 * @return the height.
 	 */
+	@Pure
 	@Override
 	public double getHeight() {
 		return this.maxyProperty.doubleValue() - this.minyProperty.doubleValue();
@@ -329,6 +338,7 @@ public class RoundRectangle2d extends AbstractRoundRectangle2F<RoundRectangle2d>
 	 * @return the width of the arc that rounds off the corners
 	 * of this <code>RoundRectangle2f</code>.
 	 */
+	@Pure
 	public double getArcWidth() {
 		return this.arcWidthProperty.doubleValue();
 	}
@@ -338,6 +348,7 @@ public class RoundRectangle2d extends AbstractRoundRectangle2F<RoundRectangle2d>
 	 * @return the height of the arc that rounds off the corners
 	 * of this <code>RoundRectangle2f</code>.
 	 */
+	@Pure
 	public double getArcHeight() {
 		return this.arcHeightProperty.doubleValue();
 	}

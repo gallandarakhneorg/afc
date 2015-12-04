@@ -21,6 +21,7 @@
 package org.arakhne.afc.math.geometry.d2.continuous;
 
 import org.arakhne.afc.math.geometry.d2.Point2D;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 
 /** 2D round rectangle with floating-point points.
@@ -185,6 +186,7 @@ public class RoundRectangle2f extends AbstractRoundRectangle2F<RoundRectangle2f>
 	 * 
 	 * @return the min x.
 	 */
+	@Pure
 	@Override
 	public double getMinX() {
 		return this.minx;
@@ -210,6 +212,7 @@ public class RoundRectangle2f extends AbstractRoundRectangle2F<RoundRectangle2f>
 	 * 
 	 * @return the center x.
 	 */
+	@Pure
 	@Override
 	public double getCenterX() {
 		return (this.minx + this.maxx) / 2f;
@@ -219,6 +222,7 @@ public class RoundRectangle2f extends AbstractRoundRectangle2F<RoundRectangle2f>
 	 * 
 	 * @return the max x.
 	 */
+	@Pure
 	@Override
 	public double getMaxX() {
 		return this.maxx;
@@ -244,6 +248,7 @@ public class RoundRectangle2f extends AbstractRoundRectangle2F<RoundRectangle2f>
 	 * 
 	 * @return the min y.
 	 */
+	@Pure
 	@Override
 	public double getMinY() {
 		return this.miny;
@@ -269,6 +274,7 @@ public class RoundRectangle2f extends AbstractRoundRectangle2F<RoundRectangle2f>
 	 * 
 	 * @return the center y.
 	 */
+	@Pure
 	@Override
 	public double getCenterY() {
 		return (this.miny + this.maxy) / 2f;
@@ -278,6 +284,7 @@ public class RoundRectangle2f extends AbstractRoundRectangle2F<RoundRectangle2f>
 	 * 
 	 * @return the max y.
 	 */
+	@Pure
 	@Override
 	public double getMaxY() {
 		return this.maxy;
@@ -303,6 +310,7 @@ public class RoundRectangle2f extends AbstractRoundRectangle2F<RoundRectangle2f>
 	 * 
 	 * @return the width.
 	 */
+	@Pure
 	@Override
 	public double getWidth() {
 		return this.maxx - this.minx;
@@ -312,6 +320,7 @@ public class RoundRectangle2f extends AbstractRoundRectangle2F<RoundRectangle2f>
 	 * 
 	 * @return the height.
 	 */
+	@Pure
 	@Override
 	public double getHeight() {
 		return this.maxy - this.miny;
@@ -322,6 +331,7 @@ public class RoundRectangle2f extends AbstractRoundRectangle2F<RoundRectangle2f>
 	 * @return the width of the arc that rounds off the corners
 	 * of this <code>RoundRectangle2f</code>.
 	 */
+	@Pure
 	public double getArcWidth() {
 		return this.arcWidth;
 	}
@@ -331,6 +341,7 @@ public class RoundRectangle2f extends AbstractRoundRectangle2F<RoundRectangle2f>
 	 * @return the height of the arc that rounds off the corners
 	 * of this <code>RoundRectangle2f</code>.
 	 */
+	@Pure
 	public double getArcHeight() {
 		return this.arcHeight;
 	}

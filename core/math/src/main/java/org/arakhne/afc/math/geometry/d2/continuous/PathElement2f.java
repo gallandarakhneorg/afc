@@ -23,6 +23,7 @@
 package org.arakhne.afc.math.geometry.d2.continuous;
 
 import org.arakhne.afc.math.geometry.PathElementType;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** An element of the path.
 *
@@ -73,7 +74,7 @@ public abstract class PathElement2f extends AbstractPathElement2F {
 		super(type1, fromx, fromy, ctrlx1, ctrly1, ctrlx2, ctrly2, tox, toy);
 	}
 
-	
+	@Pure
 	public double getFromX() {
 		return this.fromX;
 	}
@@ -82,38 +83,37 @@ public abstract class PathElement2f extends AbstractPathElement2F {
 		return this.fromY;
 	}
 
-	
+	@Pure
 	public double getToX() {
 		return this.toX;
 	}
 
-	
+	@Pure
 	public double getToY() {
 		return this.toY;
 	}
 
-	
+	@Pure
 	public double getCtrlX1() {
 		return this.ctrlX1;
 	}
 
-	
+	@Pure
 	public double getCtrlY1() {
 		return this.ctrlY1;
 	}
 
-	
+	@Pure
 	public double getCtrlX2() {
 		return this.ctrlX2;
 	}
 
-	
+	@Pure
 	public double getCtrlY2() {
 		return this.ctrlY2;
 	}
 
 
-	
 	public void setFromX(double fromX1) {
 		this.fromX = fromX1;
 	}
@@ -151,11 +151,6 @@ public abstract class PathElement2f extends AbstractPathElement2F {
 	
 	public void setCtrlY2(double ctrlY21) {
 		this.ctrlY2 = ctrlY21;
-	
 	}
-	
-	
-	
-	
 	
 }

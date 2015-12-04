@@ -1,7 +1,14 @@
 package org.arakhne.afc.math.geometry.d2.continuous;
 
 import org.arakhne.afc.math.geometry.d2.PathElement2D;
+import org.eclipse.xtext.xbase.lib.Pure;
 
+/** 
+ * @author $Author: hjaffali$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
 public interface AbstractPathElement2X extends PathElement2D{
 	
 	
@@ -16,28 +23,31 @@ public interface AbstractPathElement2X extends PathElement2D{
 	 * 
 	 * @return the array of the points, except the source point.
 	 */
+	@Pure
 	public abstract double[] toArray();
-	
+
+	@Pure
 	abstract public double getFromX();
 
+	@Pure
 	abstract public double getFromY();
 
-	
+	@Pure
 	abstract public double getToX();
 
-	
+	@Pure
 	abstract public double getToY();
 
-	
+	@Pure
 	abstract public double getCtrlX1();
 
-	
+	@Pure
 	abstract public double getCtrlY1();
 
-	
+	@Pure
 	abstract public double getCtrlX2();
 
-	
+	@Pure
 	abstract public double getCtrlY2();
 
 

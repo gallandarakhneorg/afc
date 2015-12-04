@@ -24,6 +24,7 @@ import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.arakhne.afc.math.matrix.Matrix3f;
 import org.arakhne.afc.math.matrix.SingularMatrixException;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 
 /** A 2D transformation.
@@ -725,6 +726,7 @@ public class Transform2D extends Matrix3f {
 	 * @param y
 	 * @return the transformation result
 	 */
+	@Pure
 	public Point2D transform(double x, double y) {
 		double rx, ry;
 		rx = this.m00 * x + this.m01 * y + this.m02;

@@ -23,6 +23,7 @@ package org.arakhne.afc.math.geometry.coordinatesystem;
 import org.arakhne.afc.math.geometry.d2.continuous.Point2f;
 import org.arakhne.afc.math.geometry.d2.continuous.Transform2D;
 import org.arakhne.afc.math.geometry.d2.continuous.Vector2f;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * Represents the different kind of 2D referencials
@@ -63,6 +64,7 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 	
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public final int getDimensions() {
 		return 2;
@@ -99,6 +101,7 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 	 * @param targetCoordinateSystem is the target coordinate system.
 	 * @return the converted rotation
 	 */
+	@Pure
 	public double toSystem(double rotation, CoordinateSystem2D targetCoordinateSystem) {
 		if (this!=targetCoordinateSystem) {
 			return -rotation;
@@ -190,6 +193,7 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 	 * @param rotation is the rotation to convert
 	 * @return the converted rotation
 	 */
+	@Pure
 	public double toDefault(double rotation) {
 		if (this!=getDefaultCoordinateSystem()) {
 			return -rotation;
@@ -202,6 +206,7 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 	 * @param rotation is the rotation to convert
 	 * @return the converted rotation
 	 */
+	@Pure
 	public double fromDefault(double rotation) {
 		if (this!=getDefaultCoordinateSystem()) {
 			return -rotation;
@@ -214,6 +219,7 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 	 * @return the default coordinate system.
 	 * @see #setDefaultCoordinateSystem(CoordinateSystem2D)
 	 */
+	@Pure
 	public static CoordinateSystem2D getDefaultCoordinateSystem() {
 		if (defaultCoordinateSystem==null) return CoordinateSystemConstants.SIMULATION_2D;
 		return defaultCoordinateSystem;
@@ -237,6 +243,7 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 	 * @param ly
 	 * @return the coordinate system which is corresponding to the specified vector.
 	 */
+	@Pure
 	public static CoordinateSystem2D fromVectors(int ly) {
 		assert(ly!=0);
 		return (ly<0) ? XY_LEFT_HAND : XY_RIGHT_HAND;
@@ -251,12 +258,14 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 	 * @param ly
 	 * @return the coordinate system which is corresponding to the specified vector.
 	 */
+	@Pure
 	public static CoordinateSystem2D fromVectors(double ly) {
 		return fromVectors((int)ly);
 	}
 	
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public boolean isRightHanded() {
 		return this==XY_RIGHT_HAND;
@@ -264,6 +273,7 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public boolean isLeftHanded() {
 		return this==XY_LEFT_HAND;
@@ -273,6 +283,7 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 	 *
 	 * @return the front vector.
 	 */
+	@Pure
 	public static Vector2f getViewVector() {
 		return new Vector2f(1,0);
 	}
@@ -293,6 +304,7 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 	 *
 	 * @return the back vector.
 	 */
+	@Pure
 	public static Vector2f getBackVector() {
 		return new Vector2f(-1,0);
 	}
@@ -313,6 +325,7 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 	 *
 	 * @return the left vector.
 	 */
+	@Pure
 	public Vector2f getLeftVector() {
 		switch(this) {
 		case XY_LEFT_HAND:
@@ -349,6 +362,7 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 	 *
 	 * @return the right vector.
 	 */
+	@Pure
 	public Vector2f getRightVector() {
 		switch(this) {
 		case XY_LEFT_HAND:
@@ -386,6 +400,7 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 	 * @return the 3D coordinate system
 	 * @since 4.0
 	 */
+	@Pure
 	public CoordinateSystem3D toCoordinateSystem3D() {
 		switch(this) {
 		case XY_LEFT_HAND:

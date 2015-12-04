@@ -22,6 +22,7 @@ package org.arakhne.afc.math.geometry.d2.continuous;
 
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Shape2D;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** 2D shape with floating-point points.
  * 
@@ -39,6 +40,7 @@ public interface Shape2F extends Shape2D<Shape2F> {
 	 * 
 	 * @return the bounds of the shape.
 	 */
+	@Pure
 	public Rectangle2f toBoundingBox();
 	
 	
@@ -54,6 +56,7 @@ public interface Shape2F extends Shape2D<Shape2F> {
 	 * @param p
 	 * @return the minimal distance between this shape and the point.
 	 */
+	@Pure
 	public double distance(Point2D p);
 
 	/** Replies the squared value of the minimal distance from this shape to the given point.
@@ -61,6 +64,7 @@ public interface Shape2F extends Shape2D<Shape2F> {
 	 * @param p
 	 * @return squared value of the minimal distance between this shape and the point.
 	 */
+	@Pure
 	public double distanceSquared(Point2D p);
 
 	/**
@@ -69,6 +73,7 @@ public interface Shape2F extends Shape2D<Shape2F> {
 	 * @param p the point
 	 * @return the distance.
 	 */
+	@Pure
 	public double distanceL1(Point2D p);
 
 	/**
@@ -78,6 +83,7 @@ public interface Shape2F extends Shape2D<Shape2F> {
 	 * @param p the point
 	 * @return the distance.
 	 */
+	@Pure
 	public double distanceLinf(Point2D p);
 
 	/** Translate the shape.
@@ -94,6 +100,7 @@ public interface Shape2F extends Shape2D<Shape2F> {
 	 * @return <code>true</code> if the given point is inside this
 	 * shape, otherwise <code>false</code>.
 	 */
+	@Pure
 	public boolean contains(double x, double y);
 	
 	/** Replies if the given rectangle is inside this shape.
@@ -102,6 +109,7 @@ public interface Shape2F extends Shape2D<Shape2F> {
 	 * @return <code>true</code> if the given rectangle is inside this
 	 * shape, otherwise <code>false</code>.
 	 */
+	@Pure
 	public boolean contains(Rectangle2f r);
 
 	/** Replies the elements of the paths.
@@ -109,12 +117,14 @@ public interface Shape2F extends Shape2D<Shape2F> {
 	 * @param transform is the transformation to apply to the path.
 	 * @return the elements of the path.
 	 */
+	@Pure
 	public PathIterator2f getPathIterator(Transform2D transform);
 
 	/** Replies the elements of the paths.
 	 * 
 	 * @return the elements of the path.
 	 */
+	@Pure
 	public PathIterator2f getPathIterator();
 
 	/** Apply the transformation to the shape and reply the result.
@@ -123,6 +133,7 @@ public interface Shape2F extends Shape2D<Shape2F> {
 	 * @param transform is the transformation to apply to the shape.
 	 * @return the result of the transformation.
 	 */
+	@Pure
 	public Shape2F createTransformedShape(Transform2D transform);
 	
 	/** Replies if this shape is intersecting the given rectangle.
@@ -131,6 +142,7 @@ public interface Shape2F extends Shape2D<Shape2F> {
 	 * @return <code>true</code> if this shape is intersecting the given shape;
 	 * <code>false</code> if there is no intersection.
 	 */
+	@Pure
 	public boolean intersects(AbstractRectangle2F<?> s);
 
 	/** Replies if this shape is intersecting the given ellipse.
@@ -139,6 +151,7 @@ public interface Shape2F extends Shape2D<Shape2F> {
 	 * @return <code>true</code> if this shape is intersecting the given shape;
 	 * <code>false</code> if there is no intersection.
 	 */
+	@Pure
 	public boolean intersects(Ellipse2f s);
 
 	/** Replies if this shape is intersecting the given circle.
@@ -147,6 +160,7 @@ public interface Shape2F extends Shape2D<Shape2F> {
 	 * @return <code>true</code> if this shape is intersecting the given shape;
 	 * <code>false</code> if there is no intersection.
 	 */
+	@Pure
 	public boolean intersects(Circle2f s);
 
 	/** Replies if this shape is intersecting the given line.
@@ -155,6 +169,7 @@ public interface Shape2F extends Shape2D<Shape2F> {
 	 * @return <code>true</code> if this shape is intersecting the given shape;
 	 * <code>false</code> if there is no intersection.
 	 */
+	@Pure
 	public boolean intersects(Segment2f s);
 
 	/** Replies if this shape is intersecting the given path.
@@ -163,6 +178,7 @@ public interface Shape2F extends Shape2D<Shape2F> {
 	 * @return <code>true</code> if this shape is intersecting the given path;
 	 * <code>false</code> if there is no intersection.
 	 */
+	@Pure
 	public boolean intersects(Path2f s);
 
 	/** Replies if this shape is intersecting the given path.
@@ -179,6 +195,7 @@ public interface Shape2F extends Shape2D<Shape2F> {
 	 * @return <code>true</code> if this shape is intersecting the given shape;
 	 * <code>false</code> if there is no intersection.
 	 */
+	@Pure
 	public boolean intersects(OrientedRectangle2f s);
 
 

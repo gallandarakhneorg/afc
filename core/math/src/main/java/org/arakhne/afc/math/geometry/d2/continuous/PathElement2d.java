@@ -23,6 +23,8 @@
 package org.arakhne.afc.math.geometry.d2.continuous;
 
 import org.arakhne.afc.math.geometry.PathElementType;
+import org.eclipse.xtext.xbase.lib.Pure;
+
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 
@@ -76,45 +78,45 @@ public abstract class PathElement2d extends AbstractPathElement2D {
 		super(type1, fromx, fromy, ctrlx1, ctrly1, ctrlx2, ctrly2, tox, toy);
 	}
 
-	
+	@Pure
 	public double getFromX() {
 		return this.fromXProperty.doubleValue();
 	}
 
+	@Pure
 	public double getFromY() {
 		return this.fromYProperty.doubleValue();
 	}
 
-	
+	@Pure
 	public double getToX() {
 		return this.toXProperty.doubleValue();
 	}
 
-	
+	@Pure
 	public double getToY() {
 		return this.toYProperty.doubleValue();
 	}
 
-	
+	@Pure
 	public double getCtrlX1() {
 		return this.ctrlX1Property.doubleValue();
 	}
 
-	
+	@Pure
 	public double getCtrlY1() {
 		return this.ctrlY1Property.doubleValue();
 	}
 
-	
+	@Pure
 	public double getCtrlX2() {
 		return this.ctrlX2Property.doubleValue();
 	}
 
-	
+	@Pure
 	public double getCtrlY2() {
 		return this.ctrlY2Property.doubleValue();
 	}
-
 
 	
 	public void setFromX(double fromX1) {

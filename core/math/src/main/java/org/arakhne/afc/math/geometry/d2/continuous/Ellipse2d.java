@@ -21,6 +21,8 @@
 package org.arakhne.afc.math.geometry.d2.continuous;
 
 import org.arakhne.afc.math.geometry.d2.Point2D;
+import org.eclipse.xtext.xbase.lib.Pure;
+
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.DoubleProperty;
 
@@ -30,7 +32,6 @@ import javafx.beans.property.DoubleProperty;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@SuppressWarnings("restriction")
 public class Ellipse2d extends AbstractEllipse2F<Ellipse2d> {
 
 	/**
@@ -180,6 +181,7 @@ public class Ellipse2d extends AbstractEllipse2F<Ellipse2d> {
 	 * 
 	 * @return the min x.
 	 */
+	@Pure
 	@Override
 	public double getMinX() {
 		return this.minxProperty.doubleValue();
@@ -205,6 +207,7 @@ public class Ellipse2d extends AbstractEllipse2F<Ellipse2d> {
 	 * 
 	 * @return the center x.
 	 */
+	@Pure
 	@Override
 	public double getCenterX() {
 		return (this.getMinX() + this.getMaxX()) / 2f;
@@ -214,6 +217,7 @@ public class Ellipse2d extends AbstractEllipse2F<Ellipse2d> {
 	 * 
 	 * @return the max x.
 	 */
+	@Pure
 	@Override
 	public double getMaxX() {
 		return this.maxxProperty.doubleValue();
@@ -239,6 +243,7 @@ public class Ellipse2d extends AbstractEllipse2F<Ellipse2d> {
 	 * 
 	 * @return the min y.
 	 */
+	@Pure
 	@Override
 	public double getMinY() {
 		return this.minyProperty.doubleValue();
@@ -264,6 +269,7 @@ public class Ellipse2d extends AbstractEllipse2F<Ellipse2d> {
 	 * 
 	 * @return the center y.
 	 */
+	@Pure
 	@Override
 	public double getCenterY() {
 		return (this.getMinY() + this.getMaxY()) / 2f;
@@ -273,6 +279,7 @@ public class Ellipse2d extends AbstractEllipse2F<Ellipse2d> {
 	 * 
 	 * @return the max y.
 	 */
+	@Pure
 	@Override
 	public double getMaxY() {
 		return this.maxyProperty.doubleValue();
@@ -298,6 +305,7 @@ public class Ellipse2d extends AbstractEllipse2F<Ellipse2d> {
 	 * 
 	 * @return the width.
 	 */
+	@Pure
 	@Override
 	public double getWidth() {
 		return this.getMaxX() - this.getMinX();
@@ -307,6 +315,7 @@ public class Ellipse2d extends AbstractEllipse2F<Ellipse2d> {
 	 * 
 	 * @return the height.
 	 */
+	@Pure
 	@Override
 	public double getHeight() {
 		return this.getMaxY() - this.getMinY();

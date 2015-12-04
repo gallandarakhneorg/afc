@@ -21,6 +21,7 @@
 package org.arakhne.afc.math.geometry.d2.continuous;
 
 import org.arakhne.afc.math.geometry.d2.Point2D;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 
 
@@ -128,6 +129,7 @@ public class Segment2f extends AbstractSegment2F<Segment2f> {
 	 * 
 	 * @return the x of the first point.
 	 */
+	@Pure
 	public double getX1() {
 		return this.ax;
 	}
@@ -136,6 +138,7 @@ public class Segment2f extends AbstractSegment2F<Segment2f> {
 	 * 
 	 * @return the y of the first point.
 	 */
+	@Pure
 	public double getY1() {
 		return this.ay;
 	}
@@ -144,6 +147,7 @@ public class Segment2f extends AbstractSegment2F<Segment2f> {
 	 * 
 	 * @return the x of the second point.
 	 */
+	@Pure
 	public double getX2() {
 		return this.bx;
 	}
@@ -152,6 +156,7 @@ public class Segment2f extends AbstractSegment2F<Segment2f> {
 	 * 
 	 * @return the y of the second point.
 	 */
+	@Pure
 	public double getY2() {
 		return this.by;
 	}
@@ -160,6 +165,7 @@ public class Segment2f extends AbstractSegment2F<Segment2f> {
 	 * 
 	 * @return the first point.
 	 */
+	@Pure
 	public Point2D getP1() {
 		return new Point2f(this.ax, this.ay);
 	}
@@ -168,6 +174,7 @@ public class Segment2f extends AbstractSegment2F<Segment2f> {
 	 * 
 	 * @return the second point.
 	 */
+	@Pure
 	public Point2D getP2() {
 		return new Point2f(this.bx, this.by);
 	}

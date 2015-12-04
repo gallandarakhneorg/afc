@@ -22,6 +22,7 @@ package org.arakhne.afc.math.geometry.d2.continuous;
 
 import org.arakhne.afc.math.geometry.d2.FunctionalPoint2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 
 
@@ -75,6 +76,7 @@ public abstract class AbstractRectangularShape2F<T extends AbstractRectangularSh
 	/** {@inheritDoc}
 	 * @return 
 	 */
+	@Pure
 	@Override
 	public Rectangle2f toBoundingBox() {
 		return new Rectangle2f(this.getMinX(), this.getMinY(), this.getMaxX()-this.getMinX(), this.getMaxY()-this.getMinY());
@@ -152,6 +154,7 @@ public abstract class AbstractRectangularShape2F<T extends AbstractRectangularSh
 	 * 
 	 * @return the min x.
 	 */
+	@Pure
 	abstract public double getMinX();
 
 	/** Set the min X.
@@ -164,12 +167,14 @@ public abstract class AbstractRectangularShape2F<T extends AbstractRectangularSh
 	 * 
 	 * @return the center x.
 	 */
+	@Pure
 	abstract public double getCenterX();
 
 	/** Replies the max x.
 	 * 
 	 * @return the max x.
 	 */
+	@Pure
 	abstract public double getMaxX();
 
 	/** Set the max X.
@@ -182,6 +187,7 @@ public abstract class AbstractRectangularShape2F<T extends AbstractRectangularSh
 	 * 
 	 * @return the min y.
 	 */
+	@Pure
 	abstract public double getMinY();
 
 	/** Set the min Y.
@@ -194,12 +200,14 @@ public abstract class AbstractRectangularShape2F<T extends AbstractRectangularSh
 	 * 
 	 * @return the center y.
 	 */
+	@Pure
 	abstract public double getCenterY();
 
 	/** Replies the max y.
 	 * 
 	 * @return the max y.
 	 */
+	@Pure
 	abstract public double getMaxY();
 	
 	/** Set the max Y.
@@ -212,12 +220,14 @@ public abstract class AbstractRectangularShape2F<T extends AbstractRectangularSh
 	 * 
 	 * @return the width.
 	 */
+	@Pure
 	abstract public double getWidth();
 
 	/** Replies the height.
 	 * 
 	 * @return the height.
 	 */
+	@Pure
 	abstract public double getHeight();
 	
 	@Override
@@ -235,6 +245,7 @@ public abstract class AbstractRectangularShape2F<T extends AbstractRectangularSh
 	 * @return <code>true</code> if the rectangular shape is empty;
 	 * otherwise <code>false</code>.
 	 */
+	@Pure
 	@Override
 	public boolean isEmpty() {
 		return this.getMinX()==this.getMaxX() && this.getMinY()==this.getMaxY(); 

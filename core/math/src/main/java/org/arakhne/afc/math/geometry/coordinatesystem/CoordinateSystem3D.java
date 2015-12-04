@@ -32,6 +32,7 @@ import org.arakhne.afc.math.geometry.d3.continuous.Quaternion;
 import org.arakhne.afc.math.geometry.d3.continuous.Transform3D;
 import org.arakhne.afc.math.geometry.d3.continuous.Tuple3f;
 import org.arakhne.afc.math.geometry.d3.continuous.Vector3f;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * Represents the different kind of 3D referencials
@@ -117,11 +118,13 @@ public enum CoordinateSystem3D implements CoordinateSystem {
 	
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public final int getDimensions() {
 		return 3;
 	}
 
+	@Pure
 	private static byte toSystemIndex(int lefty, int leftz, int topy, int topz) {
 		if (lefty<0) {
 			if (leftz == 0 && topy == 0 && topz!=0) {
@@ -153,7 +156,8 @@ public enum CoordinateSystem3D implements CoordinateSystem {
 		}
 		throw new CoordinateSystemNotFoundException();
 	}
-	
+
+	@Pure
 	private static double[] fromSystemIndex(int index) {
 		// Compute the lower right sub-matrix
 		double c1, c2, c3, c4;

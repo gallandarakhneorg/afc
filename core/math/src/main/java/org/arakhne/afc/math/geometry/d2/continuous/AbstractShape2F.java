@@ -1,5 +1,5 @@
 /* 
- * $Id$
+
  * 
  * Copyright (C) 2010-2013 Stephane GALLAND.
  * 
@@ -21,6 +21,7 @@
 package org.arakhne.afc.math.geometry.d2.continuous;
 
 import org.arakhne.afc.math.geometry.d2.Point2D;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 
 
@@ -46,6 +47,7 @@ public abstract class AbstractShape2F<T extends Shape2F> implements Shape2F {
 	/** {@inheritDoc}
 	 */
 	@SuppressWarnings("unchecked")
+	@Pure
 	@Override
 	public T clone()  {
 		try {
@@ -58,6 +60,7 @@ public abstract class AbstractShape2F<T extends Shape2F> implements Shape2F {
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public Shape2F createTransformedShape(Transform2D transform) {
 		return new Path2f(getPathIterator(transform));
@@ -65,6 +68,7 @@ public abstract class AbstractShape2F<T extends Shape2F> implements Shape2F {
 	
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public final PathIterator2f getPathIterator() {
 		return getPathIterator(null);
@@ -72,6 +76,7 @@ public abstract class AbstractShape2F<T extends Shape2F> implements Shape2F {
 	
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public double distance(Point2D p) {
 		return Math.sqrt(distanceSquared(p));
@@ -79,6 +84,7 @@ public abstract class AbstractShape2F<T extends Shape2F> implements Shape2F {
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public final boolean contains(Point2D p) {
 		return contains(p.getX(), p.getY());
@@ -87,6 +93,7 @@ public abstract class AbstractShape2F<T extends Shape2F> implements Shape2F {
 	
 	/** {@inheritDoc}
 	 */
+	@Pure
     @Override
     public abstract boolean equals(Object obj);
     
@@ -95,6 +102,7 @@ public abstract class AbstractShape2F<T extends Shape2F> implements Shape2F {
      * @param d
      * @return the bit representation.
      */
+	@Pure
     protected static long doubleToLongBits(double d) {
 		// Check for +0 or -0
 		if (d == 0) {
@@ -105,6 +113,7 @@ public abstract class AbstractShape2F<T extends Shape2F> implements Shape2F {
     
 	/** {@inheritDoc}
 	 */
+	@Pure
     @Override
     public abstract int hashCode();
     
