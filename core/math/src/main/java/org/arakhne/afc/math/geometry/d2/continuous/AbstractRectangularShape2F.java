@@ -99,7 +99,7 @@ public abstract class AbstractRectangularShape2F<T extends AbstractRectangularSh
 	 */
 	abstract public void set(double x, double y, double width, double height);
 	
-	/** Change the frame of te rectangle.
+	/** Change the frame of the rectangle.
 	 * 
 	 * @param min is the min corner of the rectangle.
 	 * @param max is the max corner of the rectangle.

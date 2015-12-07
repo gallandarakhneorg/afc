@@ -216,14 +216,8 @@ public class Ellipse2f extends AbstractEllipse2F<Ellipse2f> {
 	 */
 	@Override
 	public void setMinX(double x) {
-		double o = this.maxx;
-		if (o<x) {
-			this.minx = o;
-			this.maxx = x;
-		}
-		else {
+		if (this.minx>x)
 			this.minx = x;
-		}
 	}
 
 	/** Replies the center x.
@@ -252,14 +246,8 @@ public class Ellipse2f extends AbstractEllipse2F<Ellipse2f> {
 	 */
 	@Override
 	public void setMaxX(double x) {
-		double o = this.minx;
-		if (o>x) {
-			this.maxx = o;
-			this.minx = x;
-		}
-		else {
+		if (this.maxx<x)
 			this.maxx = x;
-		}
 	}
 
 	/** Replies the min y.
@@ -278,14 +266,8 @@ public class Ellipse2f extends AbstractEllipse2F<Ellipse2f> {
 	 */
 	@Override
 	public void setMinY(double y) {
-		double o = this.maxy;
-		if (o<y) {
-			this.miny = o;
-			this.maxy = y;
-		}
-		else {
+		if (this.miny>y)
 			this.miny = y;
-		}
 	}
 
 	/** Replies the center y.
@@ -314,14 +296,8 @@ public class Ellipse2f extends AbstractEllipse2F<Ellipse2f> {
 	 */
 	@Override
 	public void setMaxY(double y) {
-		double o = this.miny;
-		if (o>y) {
-			this.maxy = o;
-			this.miny = y;
-		}
-		else {
+		if (this.maxy<y)
 			this.maxy = y;
-		}
 	}
 
 	/** Replies the width.

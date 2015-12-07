@@ -205,14 +205,8 @@ public class Rectangle2d extends AbstractRectangle2F<Rectangle2d>{
 	 */
 	@Override
 	public void setMinX(double x) {
-		double o = this.getMaxX();
-		if (o<x) {
-			this.minxProperty.set(o);
-			this.maxxProperty.set(x);
-		}
-		else {
+		if (this.minxProperty.doubleValue()>x)
 			this.minxProperty.set(x);
-		}
 	}
 
 	/** Replies the center x.
@@ -241,14 +235,8 @@ public class Rectangle2d extends AbstractRectangle2F<Rectangle2d>{
 	 */
 	@Override
 	public void setMaxX(double x) {
-		double o = this.getMinX();
-		if (o>x) {
-			this.maxxProperty.set(o);
-			this.minxProperty.set(x);
-		}
-		else {
+		if (this.maxxProperty.doubleValue()<x)
 			this.maxxProperty.set(x);
-		}
 	}
 
 	/** Replies the min y.
@@ -267,14 +255,8 @@ public class Rectangle2d extends AbstractRectangle2F<Rectangle2d>{
 	 */
 	@Override
 	public void setMinY(double y) {
-		double o = this.getMaxY();
-		if (o<y) {
-			this.minyProperty.set(o);
-			this.maxyProperty.set(y);
-		}
-		else {
+		if (this.minyProperty.doubleValue()>y)
 			this.minyProperty.set(y);
-		}
 	}
 
 	/** Replies the center y.
@@ -300,17 +282,11 @@ public class Rectangle2d extends AbstractRectangle2F<Rectangle2d>{
 	/** Set the max Y.
 	 * 
 	 * @param y the max y.
-	 */
+	 */ 
 	@Override
 	public void setMaxY(double y) {
-		double o = this.getMinY();
-		if (o>y) {
-			this.maxyProperty.set(o);
-			this.minyProperty.set(y);
-		}
-		else {
-			this.maxyProperty.set(y);
-		}
+		if (this.maxyProperty.doubleValue()<y)
+			this.maxyProperty.set(y); 
 	}
 
 	/** Replies the width.

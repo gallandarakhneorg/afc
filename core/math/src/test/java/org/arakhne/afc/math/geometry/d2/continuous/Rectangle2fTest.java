@@ -23,20 +23,11 @@ package org.arakhne.afc.math.geometry.d2.continuous;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.d2.Point2D;
-import org.arakhne.afc.math.geometry.d2.continuous.Circle2f;
-import org.arakhne.afc.math.geometry.d2.continuous.Ellipse2f;
-import org.arakhne.afc.math.geometry.d2.continuous.Path2f;
-import org.arakhne.afc.math.geometry.d2.continuous.PathIterator2f;
-import org.arakhne.afc.math.geometry.d2.continuous.Point2f;
-import org.arakhne.afc.math.geometry.d2.continuous.Rectangle2f;
-import org.arakhne.afc.math.geometry.d2.continuous.Segment2f;
-import org.arakhne.afc.math.geometry.d2.continuous.Transform2D;
 import org.junit.Test;
 
 /**
@@ -267,7 +258,7 @@ public class Rectangle2fTest extends AbstractRectangularShape2fTestCase<Rectangl
 	@Override
 	public void toBoundingBox() {
 		Rectangle2f b = this.r.toBoundingBox();
-		assertSame(this.r, b);
+		assertTrue(this.r.equals(b));
 	}
 	
 	/**
@@ -364,42 +355,42 @@ public class Rectangle2fTest extends AbstractRectangularShape2fTestCase<Rectangl
 		Point2D p;
 		
 		p = this.r.getFarthestPointTo(new Point2f(0f, 0f));
-		assertEpsilonEquals(0f, p.getX());
-		assertEpsilonEquals(0f, p.getY());
+		assertEpsilonEquals(1f, p.getX());
+		assertEpsilonEquals(1f, p.getY());
 		
 		p = this.r.getFarthestPointTo(new Point2f(-2.3f, -3.4f));
-		assertEpsilonEquals(0f, p.getX());
-		assertEpsilonEquals(0f, p.getY());
-		p = this.r.getFarthestPointTo(new Point2f(-2.3f, .5f));
-		assertEpsilonEquals(0f, p.getX());
-		assertEpsilonEquals(.5f, p.getY());
-		p = this.r.getFarthestPointTo(new Point2f(-2.3f, 5.6f));
-		assertEpsilonEquals(0f, p.getX());
+		assertEpsilonEquals(1f, p.getX());
 		assertEpsilonEquals(1f, p.getY());
+		p = this.r.getFarthestPointTo(new Point2f(-2.3f, .5f));
+		assertEpsilonEquals(1f, p.getX());
+		assertEpsilonEquals(1f, p.getY());
+		p = this.r.getFarthestPointTo(new Point2f(-2.3f, 5.6f));
+		assertEpsilonEquals(1f, p.getX());
+		assertEpsilonEquals(0f, p.getY());
 		
 		p = this.r.getFarthestPointTo(new Point2f(.5f, -3.4f));
-		assertEpsilonEquals(.5f, p.getX());
-		assertEpsilonEquals(0f, p.getY());
-		p = this.r.getFarthestPointTo(new Point2f(.5f, .5f));
-		assertEpsilonEquals(.5f, p.getX());
-		assertEpsilonEquals(.5f, p.getY());
-		p = this.r.getFarthestPointTo(new Point2f(.5f, 5.6f));
-		assertEpsilonEquals(.5f, p.getX());
+		assertEpsilonEquals(1f, p.getX());
 		assertEpsilonEquals(1f, p.getY());
+		p = this.r.getFarthestPointTo(new Point2f(.5f, .5f));
+		assertEpsilonEquals(1f, p.getX());
+		assertEpsilonEquals(1f, p.getY());
+		p = this.r.getFarthestPointTo(new Point2f(.5f, 5.6f));
+		assertEpsilonEquals(1f, p.getX());
+		assertEpsilonEquals(0f, p.getY());
 
 		p = this.r.getFarthestPointTo(new Point2f(5.6f, -3.4f));
-		assertEpsilonEquals(1f, p.getX());
-		assertEpsilonEquals(0f, p.getY());
-		p = this.r.getFarthestPointTo(new Point2f(5.6f, .5f));
-		assertEpsilonEquals(1f, p.getX());
-		assertEpsilonEquals(.5f, p.getY());
-		p = this.r.getFarthestPointTo(new Point2f(5.6f, 5.6f));
-		assertEpsilonEquals(1f, p.getX());
+		assertEpsilonEquals(0f, p.getX());
 		assertEpsilonEquals(1f, p.getY());
+		p = this.r.getFarthestPointTo(new Point2f(5.6f, .5f));
+		assertEpsilonEquals(0f, p.getX());
+		assertEpsilonEquals(1f, p.getY());
+		p = this.r.getFarthestPointTo(new Point2f(5.6f, 5.6f));
+		assertEpsilonEquals(0f, p.getX());
+		assertEpsilonEquals(0f, p.getY());
 
 		p = this.r.getFarthestPointTo(new Point2f(.01f, .01f));
-		assertEpsilonEquals(.01f, p.getX());
-		assertEpsilonEquals(.01f, p.getY());
+		assertEpsilonEquals(1f, p.getX());
+		assertEpsilonEquals(1f, p.getY());
 	}
 
 	/**
