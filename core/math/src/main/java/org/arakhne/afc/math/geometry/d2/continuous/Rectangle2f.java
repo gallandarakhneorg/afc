@@ -71,7 +71,7 @@ public class Rectangle2f extends AbstractRectangle2F<Rectangle2f> {
 	 * @param height
 	 */
 	public Rectangle2f(double x, double y, double width, double height) {
-		super(x, y, width, height);
+		super(x, y, width, height); 
 	}
 	
 	/**
@@ -122,6 +122,31 @@ public class Rectangle2f extends AbstractRectangle2F<Rectangle2f> {
 		this.maxy = this.miny + Math.max(0f, height);
 	}
 
+	@Override
+	public void setInitiallyFromCorners(Point2D p1, Point2D p2) {
+		this.setInitiallyFromCorners(p1.getX(), p1.getY(), p2.getX(), p2.getY());
+	}
+
+	@Override
+	public void setInitiallyFromCorners(double x1, double y1, double x2, double y2) {
+		if (x1<x2) {
+			this.minx=x1;
+			this.maxx=x2;
+		}
+		else {
+			this.minx=x2;
+			this.maxx=x1;
+		}
+		if (y1<y2) {
+			this.miny=y1;
+			this.maxy=y2;
+		}
+		else {
+			this.miny=y2;
+			this.maxy=y1;
+		}
+	}
+
 	/** Change the frame of the rectangle.
 	 * 
 	 * @param p1 is the coordinate of the first corner.
@@ -150,12 +175,12 @@ public class Rectangle2f extends AbstractRectangle2F<Rectangle2f> {
 			this.setMaxX(x1);
 		}
 		if (y1<y2) {
-			this.setMinY(x1);
-			this.setMaxY(x2);
+			this.setMinY(y1);
+			this.setMaxY(y2);
 		}
 		else {
-			this.setMinY(x2);
-			this.setMaxY(x1);
+			this.setMinY(y2);
+			this.setMaxY(y1);
 		}
 	}
 	
@@ -333,6 +358,8 @@ public class Rectangle2f extends AbstractRectangle2F<Rectangle2f> {
 	public Rectangle2f toBoundingBox() {
 		return this.clone();
 	}
+
+	
 
 	
 

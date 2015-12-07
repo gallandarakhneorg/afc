@@ -120,6 +120,31 @@ public class Ellipse2f extends AbstractEllipse2F<Ellipse2f> {
 		this.maxy = this.miny + Math.max(0f, height);
 	}
 
+	@Override
+	public void setInitiallyFromCorners(Point2D p1, Point2D p2) {
+		this.setInitiallyFromCorners(p1.getX(), p1.getY(), p2.getX(), p2.getY());
+	}
+
+	@Override
+	public void setInitiallyFromCorners(double x1, double y1, double x2, double y2) {
+		if (x1<x2) {
+			this.minx=x1;
+			this.maxx=x2;
+		}
+		else {
+			this.minx=x2;
+			this.maxx=x1;
+		}
+		if (y1<y2) {
+			this.miny=y1;
+			this.maxy=y2;
+		}
+		else {
+			this.miny=y2;
+			this.maxy=y1;
+		}
+	}	
+	
 	/** Change the frame of the rectangle.
 	 * 
 	 * @param p1 is the coordinate of the first corner.

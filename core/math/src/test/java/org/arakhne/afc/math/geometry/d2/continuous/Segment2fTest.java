@@ -463,11 +463,11 @@ public class Segment2fTest extends AbstractShape2fTestCase<Segment2f> {
 						5f, -.01f, .75f, .5f));
 
 		assertEquals(
-				1,
+				MathConstants.SHAPE_INTERSECTS,
 				Segment2f.computeCrossingsFromSegment(
 						0,
 						0f, 1f, 1f, 0f,
-						20f, -5f, 0f, 1f));
+						20f, -5f, -1f, 1f));
 
 		assertEquals(
 				MathConstants.SHAPE_INTERSECTS,
@@ -560,7 +560,7 @@ public class Segment2fTest extends AbstractShape2fTestCase<Segment2f> {
 						20f, -5f, .75f, .5f));
 
 		assertEquals(
-				2,
+				MathConstants.SHAPE_INTERSECTS,
 				Segment2f.computeCrossingsFromSegment(
 						0,
 						1f, 0f, 0f, 1f,
@@ -1419,9 +1419,9 @@ public class Segment2fTest extends AbstractShape2fTestCase<Segment2f> {
 		p.moveTo(-2f, -2f);
 		p.lineTo(-2f, 2f);
 		p.lineTo(2f, -2f);
-		assertFalse(this.r.intersects(p));
+		assertTrue(this.r.intersects(p));
 		p.closePath();
-		assertFalse(this.r.intersects(p));
+		assertTrue(this.r.intersects(p));
 
 		p = new Path2f();
 		p.moveTo(-2f, 2f);
@@ -1474,9 +1474,9 @@ public class Segment2fTest extends AbstractShape2fTestCase<Segment2f> {
 		p.moveTo(-2f, -2f);
 		p.lineTo(-2f, 2f);
 		p.lineTo(2f, -2f);
-		assertFalse(this.r.intersects(p.getPathIterator()));
+		assertTrue(this.r.intersects(p.getPathIterator()));
 		p.closePath();
-		assertFalse(this.r.intersects(p.getPathIterator()));
+		assertTrue(this.r.intersects(p.getPathIterator()));
 
 		p = new Path2f();
 		p.moveTo(-2f, 2f);
@@ -1504,6 +1504,19 @@ public class Segment2fTest extends AbstractShape2fTestCase<Segment2f> {
 		assertEpsilonEquals(12f, this.r.getY1());
 		assertEpsilonEquals(24f, this.r.getX2());
 		assertEpsilonEquals(28f, this.r.getY2());
+		
+		this.r.set(new Rectangle2f(20f, 20f, 20f, 20f));
+		assertEpsilonEquals(20f, this.r.getX1());
+		assertEpsilonEquals(20f, this.r.getY1());
+		assertEpsilonEquals(40f, this.r.getX2());
+		assertEpsilonEquals(40f, this.r.getY2());
+		
+		
+		this.r.set(new Rectangle2d(-10f, 19f, 13f, 1f));
+		assertEpsilonEquals(-10f, this.r.getX1());
+		assertEpsilonEquals(19f, this.r.getY1());
+		assertEpsilonEquals(3f, this.r.getX2());
+		assertEpsilonEquals(20f, this.r.getY2());
 	}
 	
 	@Test

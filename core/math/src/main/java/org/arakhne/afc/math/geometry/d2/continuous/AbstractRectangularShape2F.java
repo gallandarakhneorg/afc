@@ -50,7 +50,7 @@ public abstract class AbstractRectangularShape2F<T extends AbstractRectangularSh
 	 * @param max is the max corner of the rectangle.
 	 */
 	public AbstractRectangularShape2F(FunctionalPoint2D min, FunctionalPoint2D max) {
-		setFromCorners(min.getX(), min.getY(), max.getX(), max.getY());
+		setInitiallyFromCorners(min.getX(), min.getY(), max.getX(), max.getY());
 	}
 	
 	/**
@@ -60,17 +60,14 @@ public abstract class AbstractRectangularShape2F<T extends AbstractRectangularSh
 	 * @param height
 	 */
 	public AbstractRectangularShape2F(double x, double y, double width, double height) {
-		setFromCorners(x, y, x+width, y+height);
+		setInitiallyFromCorners(x, y, x+width, y+height);
 	}
-	
+
 	/**
 	 * @param s
 	 */
 	public AbstractRectangularShape2F(AbstractRectangularShape2F<?> s) {
-		this.setMinX( s.getMinX());
-		this.setMinY(s.getMinY());
-		this.setMaxX(s.getMaxX());
-		this.setMaxY(s.getMaxY());
+		setInitiallyFromCorners( s.getMinX(),s.getMinY(),s.getMaxX(),s.getMaxY());
 	}
 
 	/** {@inheritDoc}
@@ -120,7 +117,25 @@ public abstract class AbstractRectangularShape2F<T extends AbstractRectangularSh
 	 * @param height
 	 */
 	abstract public void setHeight(double height);
-
+	
+	
+	/** Initialize the frame of the rectangle.
+	 * 
+	 * @param p1 is the coordinate of the first corner.
+	 * @param p2 is the coordinate of the second corner.
+	 */
+	abstract public void setInitiallyFromCorners(Point2D p1, Point2D p2);
+	
+	/** Initialize the frame of the rectangle.
+	 * 
+	 * @param x1 is the coordinate of the first corner.
+	 * @param y1 is the coordinate of the first corner.
+	 * @param x2 is the coordinate of the second corner.
+	 * @param y2 is the coordinate of the second corner.
+	 */
+	abstract public void setInitiallyFromCorners(double x1, double y1, double x2, double y2);
+	
+	
 	/** Change the frame of the rectangle.
 	 * 
 	 * @param p1 is the coordinate of the first corner.

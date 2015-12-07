@@ -134,6 +134,31 @@ public class RoundRectangle2d extends AbstractRoundRectangle2F<RoundRectangle2d>
 		this.setMaxY(this.getMinY() + Math.max(0f, height));
 	}
 
+	@Override
+	public void setInitiallyFromCorners(Point2D p1, Point2D p2) {
+		this.setInitiallyFromCorners(p1.getX(), p1.getY(), p2.getX(), p2.getY());
+	}
+
+	@Override
+	public void setInitiallyFromCorners(double x1, double y1, double x2, double y2) {
+		if (x1<x2) {
+			this.minxProperty.set(x1);
+			this.maxxProperty.set(x2);
+		}
+		else {
+			this.minxProperty.set(x2);
+			this.maxxProperty.set(x1);
+		}
+		if (y1<y2) {
+			this.minyProperty.set(y1);
+			this.maxyProperty.set(y2);
+		}
+		else {
+			this.minyProperty.set(y2);
+			this.maxyProperty.set(y1);
+		}
+	}
+	
 	/** Change the frame of the rectangle.
 	 * 
 	 * @param p1 is the coordinate of the first corner.

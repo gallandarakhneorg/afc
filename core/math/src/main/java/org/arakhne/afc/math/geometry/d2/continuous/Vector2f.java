@@ -23,6 +23,7 @@ package org.arakhne.afc.math.geometry.d2.continuous;
 import org.arakhne.afc.math.geometry.d2.FunctionalVector2D;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** 2D Vector with 2 floating-point values.
  * 
@@ -100,11 +101,13 @@ public class Vector2f extends Tuple2f<Vector2D> implements FunctionalVector2D {
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public Vector2f clone() {
 		return (Vector2f)super.clone();
 	}
 
+	@Pure
 	@Override
 	public Vector2D toUnmodifiable() {
 		return new UnmodifiableVector2f();
@@ -126,6 +129,7 @@ public class Vector2f extends Tuple2f<Vector2D> implements FunctionalVector2D {
 			//
 		}
 
+		@Pure
 		@Override
 		public UnmodifiableVector2f clone() {
 			return new UnmodifiableVector2f();
@@ -146,81 +150,97 @@ public class Vector2f extends Tuple2f<Vector2D> implements FunctionalVector2D {
 			Vector2f.this.get(t);
 		}
 
+		@Pure
 		@Override
 		public double getX() {
 			return Vector2f.this.getX();
 		}
 
+		@Pure
 		@Override
 		public int ix() {
 			return Vector2f.this.ix();
 		}
 
+		@Pure
 		@Override
 		public double getY() {
 			return Vector2f.this.getY();
 		}
 
+		@Pure
 		@Override
 		public int iy() {
 			return Vector2f.this.iy();
 		}
 
+		@Pure
 		@Override
 		public boolean equals(Tuple2D<?> t1) {
 			return Vector2f.this.equals(t1);
 		}
 
+		@Pure
 		@Override
 		public int hashCode() {
 			return Vector2f.this.hashCode();
 		}
 
+		@Pure
 		@Override
 		public boolean epsilonEquals(Vector2D t1, double epsilon) {
 			return Vector2f.this.epsilonEquals(t1, epsilon);
 		}
 
+		@Pure
 		@Override
 		public double dot(Vector2D v1) {
 			return Vector2f.this.dot(v1);
 		}
 
+		@Pure
 		@Override
 		public double length() {
 			return Vector2f.this.length();
 		}
 
+		@Pure
 		@Override
 		public double lengthSquared() {
 			return Vector2f.this.lengthSquared();
 		}
 
+		@Pure
 		@Override
 		public double angle(Vector2D v1) {
 			return Vector2f.this.angle(v1);
 		}
 
+		@Pure
 		@Override
 		public double signedAngle(Vector2D v) {
 			return Vector2f.this.signedAngle(v);
 		}
 
+		@Pure
 		@Override
 		public double getOrientationAngle() {
 			return Vector2f.this.getOrientationAngle();
 		}
 
+		@Pure
 		@Override
 		public boolean isUnitVector() {
 			return Vector2f.this.isUnitVector();
 		}
 
+		@Pure
 		@Override
 		public Vector2D toUnmodifiable() {
 			return this;
 		}
 
+		@Pure
 		@Override
 		public double perp(Vector2D x2) {
 			return Vector2f.this.perp(x2);
