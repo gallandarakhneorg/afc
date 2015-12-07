@@ -111,11 +111,11 @@ public enum CoordinateSystem3D implements CoordinateSystem {
 	XYZ_RIGHT_HAND(1,0,/* */0,1);
 
 	private static final byte PIVOT_SYSTEM = 0;
-	
+
 	private static CoordinateSystem3D userDefault;
 
 	private final byte system;
-	
+
 	/** {@inheritDoc}
 	 */
 	@Pure
@@ -187,12 +187,13 @@ public enum CoordinateSystem3D implements CoordinateSystem {
 			c1 = 1; c2 = 0; c3 = 0; c4 = 1;
 			break;
 		}
-		
+
 		return new double[] {c1,c2,c3,c4};
 	}
-	
+
 	/**
 	 */
+	@Pure
 	private CoordinateSystem3D(int lefty, int leftz, int topy, int topz) {
 		this.system = toSystemIndex(lefty,leftz,topy,topz);
 	}
@@ -276,7 +277,7 @@ public enum CoordinateSystem3D implements CoordinateSystem {
 			point.setZ(z);
 		}
 	}
-	
+
 	/** Convert the specified point from the default coordinate system.
 	 * 
 	 * @param point is the point to convert
@@ -344,15 +345,15 @@ public enum CoordinateSystem3D implements CoordinateSystem {
 			Vector3f vector = r.getAxis();
 			double ry = vector.getY() * factors[0] + vector.getZ() * factors[1];
 			double rz = vector.getY() * factors[2] + vector.getZ() * factors[3];
-			
+
 			double angle = r.getAngle();
-			
+
 			if (isLeftHanded()) angle = -angle;
-			
+
 			r.setAxisAngle(vector.getX(), ry, rz, angle);
 			trans.setRotation(r);
 		}
-		
+
 	}
 
 	/** Convert the specified rotation into the default coordinate system.
@@ -379,11 +380,11 @@ public enum CoordinateSystem3D implements CoordinateSystem {
 			double z = vector.getY() * factors[2] + vector.getZ() * factors[3];
 			vector.setY(y);
 			vector.setZ(z);
-			
+
 			double angle = quaternion.getAngle();
-			
+
 			if (isLeftHanded()) angle = -angle;
-			
+
 			quaternion.setAxisAngle(vector, angle);
 		}
 	}
@@ -395,7 +396,7 @@ public enum CoordinateSystem3D implements CoordinateSystem {
 	public void toDefault(Quaternion rotation) {
 		toSystem(rotation, getDefaultCoordinateSystem());
 	}
-	
+
 	private void fromPivot(Quaternion rotation) {
 		if (this.system!=PIVOT_SYSTEM) {
 			Vector3f vector = rotation.getAxis();
@@ -404,11 +405,11 @@ public enum CoordinateSystem3D implements CoordinateSystem {
 			double z = vector.getY() * factors[1] + vector.getZ() * factors[3];
 			vector.setY(y);
 			vector.setZ(z);
-			
+
 			double angle = rotation.getAngle();
-			
+
 			if (isLeftHanded()) angle = -angle;
-			
+
 			rotation.setAxisAngle(vector, angle);
 		}
 	}
@@ -425,6 +426,7 @@ public enum CoordinateSystem3D implements CoordinateSystem {
 	 * 
 	 * @return the preferred coordinate system.
 	 */
+	@Pure
 	public static CoordinateSystem3D getDefaultCoordinateSystem() {
 		if (userDefault!=null) return userDefault;
 		return CoordinateSystemConstants.SIMULATION_3D;
@@ -453,6 +455,7 @@ public enum CoordinateSystem3D implements CoordinateSystem {
 	 * @param tz
 	 * @return the coordinate system which is defined by the specified vectors.
 	 */
+	@Pure
 	public static CoordinateSystem3D fromVectors(int ly, int lz, int ty, int tz) {
 		byte system = toSystemIndex(ly, lz, ty, tz);
 		for(CoordinateSystem3D cs : CoordinateSystem3D.values()) {
@@ -474,10 +477,11 @@ public enum CoordinateSystem3D implements CoordinateSystem {
 	 * @param tz
 	 * @return the coordinate system which is defined by the specified vectors.
 	 */
+	@Pure
 	public static CoordinateSystem3D fromVectors(double ly, double lz, double ty, double tz) {
 		return fromVectors((int)ly,(int)lz,(int)ty,(int)tz);
 	}
-	
+
 	/** Replies the coordinate system which is corresponding to the specified
 	 * orientation unit vectors.
 	 *
@@ -492,6 +496,7 @@ public enum CoordinateSystem3D implements CoordinateSystem {
 	 * @param uz
 	 * @return the coordinate system which is defined by the specified vectors.
 	 */
+	@Pure
 	public static CoordinateSystem3D fromVectors(double vx, double vy, double vz, double lx, double ly, double lz, double ux, double uy, double uz) {
 		if (vx==1. && vy==0. && vz==0.) {
 			assert(lx==0. && ux==0.);
@@ -513,7 +518,7 @@ public enum CoordinateSystem3D implements CoordinateSystem {
 		Vector3f v1 = new Vector3f(vx, vy, vz);
 		mat.transform(v1);
 		normalizeVector(v1);
-		
+
 		Vector3f v2 = new Vector3f(lx, ly, lz);
 		mat.transform(v2);
 		normalizeVector(v2);
@@ -526,7 +531,7 @@ public enum CoordinateSystem3D implements CoordinateSystem {
 		assert(v2.getX()==0. && v3.getX()==0.);
 		return fromVectors(v2.getY(), v2.getZ(), v3.getY(), v3.getZ());
 	}
-	
+
 	private static void normalizeVector(Vector3f v) {
 		v.normalize();
 		if (MathUtil.isEpsilonZero(Math.abs(v.getX()-1.))) {
@@ -560,6 +565,7 @@ public enum CoordinateSystem3D implements CoordinateSystem {
 	 * @param uz
 	 * @return the coordinate system which is defined by the specified vectors.
 	 */
+	@Pure
 	public static CoordinateSystem3D fromVectors(int vx, int vy, int vz, int lx, int ly, int lz, int ux, int uy, int uz) {
 		if (vx==1 && vy==0 && vz==0) {
 			assert(lx==0 && ux==0);
@@ -581,7 +587,7 @@ public enum CoordinateSystem3D implements CoordinateSystem {
 		Vector3f v1 = new Vector3f(vx, vy, vz);
 		mat.transform(v1);
 		normalizeVector(v1);
-		
+
 		Vector3f v2 = new Vector3f(lx, ly, lz);
 		mat.transform(v2);
 		normalizeVector(v2);
@@ -600,6 +606,7 @@ public enum CoordinateSystem3D implements CoordinateSystem {
 	 * @param tuple
 	 * @return the vertical position in <var>x/<var>, <var>y</var> or </var>z</var>
 	 */
+	@Pure
 	public final double height(Tuple3f<?> tuple) {
 		return height(tuple.getX(), tuple.getY(), tuple.getZ());
 	}
@@ -611,17 +618,19 @@ public enum CoordinateSystem3D implements CoordinateSystem {
 	 * @param z
 	 * @return the vertical position in <var>x/<var>, <var>y</var> or </var>z</var>
 	 */
+	@Pure
 	public double height(double x, double y, double z) {
 		double[] factors = fromSystemIndex(this.system);
 		return (factors[2]!=0.) ? y : z;
 	}
-	
+
 	/** Replies the horizontal left-right position from the given 3D point for this coordinate system.
 	 * 
 	 * @param tuple
 	 * @return the horizontal and left-right position in <var>x/<var>, <var>y</var> or </var>z</var>
 	 * @since 4.0
 	 */
+	@Pure
 	public final double side(Tuple3f<?> tuple) {
 		return side(tuple.getX(), tuple.getY(), tuple.getZ());
 	}
@@ -634,17 +643,19 @@ public enum CoordinateSystem3D implements CoordinateSystem {
 	 * @return the horizontal and left-right position in <var>x/<var>, <var>y</var> or </var>z</var>
 	 * @since 4.0
 	 */
+	@Pure
 	public double side(double x, double y, double z) {
 		double[] factors = fromSystemIndex(this.system);
 		return (factors[2]!=0.) ? z : y;
 	}
-	
+
 	/** Replies the horizontal front-back position from the given 3D point for this coordinate system.
 	 * 
 	 * @param tuple
 	 * @return the horizontal and front-back position in <var>x/<var>, <var>y</var> or </var>z</var>
 	 * @since 4.0
 	 */
+	@Pure
 	public final static double view(Tuple3f<?> tuple) {
 		return view(tuple.getX(), tuple.getY(), tuple.getZ());
 	}
@@ -657,15 +668,17 @@ public enum CoordinateSystem3D implements CoordinateSystem {
 	 * @return the horizontal and front-back position in <var>x/<var>, <var>y</var> or </var>z</var>
 	 * @since 4.0
 	 */
+	@Pure
 	public static double view(double x, double y, double z) {
 		return x;
 	}
-	
+
 	/** Replies index of the coordinate which is corresponding to
 	 * the height for the coordinate system.
 	 * 
 	 * @return the index of the coordinate of the height.
 	 */
+	@Pure
 	public int getHeightCoordinateIndex() {
 		double[] factors = fromSystemIndex(this.system);
 		return (factors[2]!=0.) ? 1 : 2;
@@ -677,6 +690,7 @@ public enum CoordinateSystem3D implements CoordinateSystem {
 	 * @return the index of the coordinate of the side.
 	 * @since 4.0
 	 */
+	@Pure
 	public int getSideCoordinateIndex() {
 		double[] factors = fromSystemIndex(this.system);
 		return (factors[2]!=0.) ? 2 : 1;
@@ -688,6 +702,7 @@ public enum CoordinateSystem3D implements CoordinateSystem {
 	 * @return the index of the coordinate of the view.
 	 * @since 4.0
 	 */
+	@Pure
 	public static int getViewCoordinateIndex() {
 		return 0;
 	}
@@ -768,6 +783,7 @@ public enum CoordinateSystem3D implements CoordinateSystem {
 	 * 
 	 * @return the 2D coordinate system.
 	 */
+	@Pure
 	public CoordinateSystem2D toCoordinateSystem2D() {
 		switch(this) {
 		case XYZ_LEFT_HAND:
@@ -782,13 +798,14 @@ public enum CoordinateSystem3D implements CoordinateSystem {
 			throw new CoordinateSystemNotFoundException();
 		}
 	}
-	
+
 	/** Convert the specified point into from the current coordinate system
 	 * to the specified coordinate system.
 	 * 
 	 * @param point is the point to convert
 	 * @return the 2D point
 	 */
+	@Pure
 	public Point2f toCoordinateSystem2D(Point3f point) {
 		switch(this) {
 		case XYZ_RIGHT_HAND:
@@ -808,6 +825,7 @@ public enum CoordinateSystem3D implements CoordinateSystem {
 	 * @param point is the point to convert
 	 * @return the 2D point
 	 */
+	@Pure
 	public Point2D toCoordinateSystem2D(Point3D point) {
 		switch(this) {
 		case XYZ_RIGHT_HAND:
@@ -827,6 +845,7 @@ public enum CoordinateSystem3D implements CoordinateSystem {
 	 * @param vector is the vector to convert
 	 * @return the 2D vector
 	 */
+	@Pure
 	public Vector2f toCoordinateSystem2D(Vector3f vector) {
 		switch(this) {
 		case XYZ_RIGHT_HAND:
@@ -846,7 +865,8 @@ public enum CoordinateSystem3D implements CoordinateSystem {
 	 * @param transformation is the transformation to convert
 	 * @return the 2D transformation
 	 */
-	 public Transform2D toCoordinateSystem2D(Transform3D transformation) {
+	@Pure
+	public Transform2D toCoordinateSystem2D(Transform3D transformation) {
 		double angle = toCoordinateSystem2DAngleFromTransformation(transformation);
 		Point3f p = new Point3f();
 		transformation.transform(p);
@@ -862,12 +882,14 @@ public enum CoordinateSystem3D implements CoordinateSystem {
 	 * @param rotation is the rotation to convert
 	 * @return the 2D rotation
 	 */
+	@Pure
 	public double toCoordinateSystem2D(Quaternion rotation) {
 		Transform3D trans = new Transform3D();
 		trans.setRotation(rotation);
 		return toCoordinateSystem2DAngleFromTransformation(trans);
 	}
-	
+
+	@Pure
 	private double toCoordinateSystem2DAngleFromTransformation(Transform3D mat) {
 		Vector3f ptR = new Vector3f(1,0,0);
 		mat.transform(ptR);
@@ -882,7 +904,7 @@ public enum CoordinateSystem3D implements CoordinateSystem {
 		}
 		throw new CoordinateSystemNotFoundException();
 	}
-	
+
 	/** Convert the specified point from the 2D coordinate system
 	 * to this specified coordinate system.
 	 * <p>
@@ -891,6 +913,7 @@ public enum CoordinateSystem3D implements CoordinateSystem {
 	 * @param point is the point to convert
 	 * @return the 3D point
 	 */
+	@Pure
 	public final Point3f fromCoordinateSystem2D(Point2f point) {
 		return fromCoordinateSystem2D(point, 0);
 	}
@@ -903,6 +926,7 @@ public enum CoordinateSystem3D implements CoordinateSystem {
 	 * @param point is the point to convert
 	 * @return the 3D point
 	 */
+	@Pure
 	public final Point3D fromCoordinateSystem2D(Point2D point) {
 		return fromCoordinateSystem2D(point, 0);
 	}
@@ -914,6 +938,7 @@ public enum CoordinateSystem3D implements CoordinateSystem {
 	 * @param thirdCoordinate is the value of the third coordinate to put in the replied point.
 	 * @return the 3D point
 	 */
+	@Pure
 	public Point3f fromCoordinateSystem2D(Point2f point, double thirdCoordinate) {
 		switch(this) {
 		case XYZ_LEFT_HAND:
@@ -934,6 +959,7 @@ public enum CoordinateSystem3D implements CoordinateSystem {
 	 * @param thirdCoordinate is the value of the third coordinate to put in the replied point.
 	 * @return the 3D point
 	 */
+	@Pure
 	public Point3D fromCoordinateSystem2D(Point2D point, double thirdCoordinate) {
 		switch(this) {
 		case XYZ_LEFT_HAND:
@@ -955,6 +981,7 @@ public enum CoordinateSystem3D implements CoordinateSystem {
 	 * @param vector is the vector to convert
 	 * @return the 3D vector
 	 */
+	@Pure
 	public final Vector3f fromCoordinateSystem2D(Vector2f vector) {
 		return fromCoordinateSystem2D(vector, 0);
 	}
@@ -966,6 +993,7 @@ public enum CoordinateSystem3D implements CoordinateSystem {
 	 * @param thirdCoordinate is the value of the third coordinate to put in the replied vector.
 	 * @return the 3D vector
 	 */
+	@Pure
 	public Vector3f fromCoordinateSystem2D(Vector2f point, double thirdCoordinate) {
 		switch(this) {
 		case XYZ_LEFT_HAND:
@@ -985,6 +1013,7 @@ public enum CoordinateSystem3D implements CoordinateSystem {
 	 * @param rotation is the angle of rotation to convert.
 	 * @return the 3D axis angle
 	 */
+	@Pure
 	public Quaternion fromCoordinateSystem2D(double rotation) {
 		Quaternion q = new Quaternion();
 		switch(this) {
@@ -1001,7 +1030,7 @@ public enum CoordinateSystem3D implements CoordinateSystem {
 		}
 		return q;
 	}
-	
+
 	/** Replies the view vector of this coordinate space.
 	 * <p>
 	 * When objects have not been rotated, they are supposed to
@@ -1009,6 +1038,7 @@ public enum CoordinateSystem3D implements CoordinateSystem {
 	 * 
 	 * @return the view vector (always normalized).
 	 */
+	@Pure
 	public final Vector3f getViewVector() {
 		return getViewVector(new Vector3f());
 	}
@@ -1036,6 +1066,7 @@ public enum CoordinateSystem3D implements CoordinateSystem {
 	 * 
 	 * @return the back vector (always normalized).
 	 */
+	@Pure
 	public final Vector3f getBackVector() {
 		return getBackVector(new Vector3f());
 	}
@@ -1063,6 +1094,7 @@ public enum CoordinateSystem3D implements CoordinateSystem {
 	 * 
 	 * @return the left vector (always normalized).
 	 */
+	@Pure
 	public final Vector3f getLeftVector() {
 		return getLeftVector(new Vector3f());
 	}
@@ -1090,6 +1122,7 @@ public enum CoordinateSystem3D implements CoordinateSystem {
 	 * 
 	 * @return the right vector (always normalized).
 	 */
+	@Pure
 	public final Vector3f getRightVector() {
 		return getRightVector(new Vector3f());
 	}
@@ -1117,6 +1150,7 @@ public enum CoordinateSystem3D implements CoordinateSystem {
 	 * 
 	 * @return the up vector (always normalized).
 	 */
+	@Pure
 	public final Vector3f getUpVector() {
 		return getUpVector(new Vector3f());
 	}
@@ -1144,6 +1178,7 @@ public enum CoordinateSystem3D implements CoordinateSystem {
 	 * 
 	 * @return the down vector (always normalized).
 	 */
+	@Pure
 	public final Vector3f getDownVector() {
 		return getDownVector(new Vector3f());
 	}
@@ -1163,9 +1198,10 @@ public enum CoordinateSystem3D implements CoordinateSystem {
 		}
 		return vectorToFill;
 	}
-	
+
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public boolean isRightHanded() {
 		return this==XYZ_RIGHT_HAND || this==XZY_RIGHT_HAND;
@@ -1173,15 +1209,17 @@ public enum CoordinateSystem3D implements CoordinateSystem {
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public boolean isLeftHanded() {
 		return this==XYZ_LEFT_HAND || this==XZY_LEFT_HAND;
 	}
-	
+
 	/** Replies if the z coordinate is the up direction.
 	 * 
 	 * @return <code>true</code> if z coordiante is up.
 	 */
+	@Pure
 	public boolean isZOnUp() {
 		return this==XYZ_LEFT_HAND || this==XYZ_RIGHT_HAND;
 	}
@@ -1190,6 +1228,7 @@ public enum CoordinateSystem3D implements CoordinateSystem {
 	 * 
 	 * @return <code>true</code> if y coordiante is up.
 	 */
+	@Pure
 	public boolean isYOnUp() {
 		return this==XZY_LEFT_HAND || this==XZY_RIGHT_HAND;
 	}
@@ -1198,6 +1237,7 @@ public enum CoordinateSystem3D implements CoordinateSystem {
 	 * 
 	 * @return <code>true</code> if z coordiante is side.
 	 */
+	@Pure
 	public boolean isZOnSide() {
 		return this==XZY_LEFT_HAND || this==XZY_RIGHT_HAND;
 	}
@@ -1206,6 +1246,7 @@ public enum CoordinateSystem3D implements CoordinateSystem {
 	 * 
 	 * @return <code>true</code> if y coordiante is side.
 	 */
+	@Pure
 	public boolean isYOnSide() {
 		return this==XYZ_LEFT_HAND || this==XYZ_RIGHT_HAND;
 	}

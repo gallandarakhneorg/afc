@@ -2163,6 +2163,7 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 	 * @param p
 	 * @return <code>true</code> if the point is a control point of the path.
 	 */
+	@Pure
 	boolean containsControlPoint(Point2D p) {
 		double x, y;
 		for(int i=0; i<this.numCoords;) {
@@ -2308,6 +2309,7 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 			//
 		}
 
+		@Pure
 		@Override
 		public boolean hasNext() {
 			return this.iType<Path2f.this.numTypes;
@@ -2402,11 +2404,13 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 			throw new UnsupportedOperationException();
 		}
 
+		@Pure
 		@Override
 		public PathWindingRule getWindingRule() {
 			return Path2f.this.getWindingRule();
 		}
 
+		@Pure
 		@Override
 		public boolean isPolyline() {
 			return Path2f.this.isPolyline();
@@ -2440,6 +2444,7 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 			this.transform = transform1;
 		}
 
+		@Pure
 		@Override
 		public boolean hasNext() {
 			return this.iType<Path2f.this.numTypes;
@@ -2529,11 +2534,13 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 			throw new UnsupportedOperationException();
 		}
 
+		@Pure
 		@Override
 		public PathWindingRule getWindingRule() {
 			return Path2f.this.getWindingRule();
 		}
 
+		@Pure
 		@Override
 		public boolean isPolyline() {
 			return Path2f.this.isPolyline();
@@ -2683,6 +2690,7 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 		 * @return the flatness of the quadratic curve that is defined by the
 		 *          values in the specified array at the specified index.
 		 */
+		@Pure
 		private static double getQuadSquaredFlatness(double coords[], int offset) {
 			return AbstractSegment2F.distanceSquaredLinePoint(
 					coords[offset + 0], coords[offset + 1],
@@ -2766,6 +2774,7 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 		 *          specified by the coordinates in <code>coords</code> at
 		 *          the specified offset.
 		 */
+		@Pure
 		private static double getCurveSquaredFlatness(double coords[], int offset) {
 			return Math.max(
 					AbstractSegment2F.distanceSquaredSegmentPoint(
@@ -2994,6 +3003,7 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 			}
 		}
 
+		@Pure
 		@Override
 		public boolean hasNext() {
 			return !this.done;
@@ -3039,11 +3049,13 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 			throw new UnsupportedOperationException();
 		}
 
+		@Pure
 		@Override
 		public PathWindingRule getWindingRule() {
 			return this.windingRule;
 		}
-		
+
+		@Pure
 		@Override
 		public boolean isPolyline() {
 			return false; // Because the iterator flats the path, this is no curve inside.
@@ -3066,16 +3078,19 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 			//
 		}
 
+		@Pure
 		@Override
 		public int size() {
 			return Path2f.this.size();
 		}
 
+		@Pure
 		@Override
 		public boolean isEmpty() {
 			return Path2f.this.size()<=0;
 		}
 
+		@Pure
 		@Override
 		public boolean contains(Object o) {
 			if (o instanceof Point2D) {
@@ -3084,11 +3099,13 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 			return false;
 		}
 
+		@Pure
 		@Override
 		public Iterator<Point2D> iterator() {
 			return new PointIterator();
 		}
 
+		@Pure
 		@Override
 		public Object[] toArray() {
 			return Path2f.this.toPointArray();

@@ -20,6 +20,8 @@
  */
 package org.arakhne.afc.math.geometry.coordinatesystem;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /**
  * Represents a space referencial and provides the convertion utilities.
  * 
@@ -34,18 +36,21 @@ public interface CoordinateSystem {
 	 * 
 	 * @return the count of dimensions.
 	 */
+	@Pure
 	public int getDimensions();
 	
 	/** Replies if this coordinate system is a right-hand coordinate system.
 	 * 
 	 * @return <code>true</code> if this coordinate system is right-handed, otherwise <code>false</code>
 	 */
+	@Pure
 	public boolean isRightHanded();
 
 	/** Replies if this coordinate system is a left-hand coordinate system.
 	 * 
 	 * @return <code>true</code> if this coordinate system is left-handed, otherwise <code>false</code>
 	 */
+	@Pure
 	public boolean isLeftHanded();
 
 	/** Replies the name of the coordinate system.

@@ -24,6 +24,7 @@ package org.arakhne.afc.math.geometry.d2.continuous;
 import java.util.Iterator;
 
 import org.arakhne.afc.math.geometry.PathWindingRule;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 
 /** This interface describes an interator on path elements.
@@ -39,6 +40,7 @@ public interface PathIterator2f extends Iterator<AbstractPathElement2F> {
 	 * 
 	 * @return the winding rule for the path.
 	 */
+	@Pure
 	public PathWindingRule getWindingRule();
 	
 	/** Replies the iterator may reply only elements of type
@@ -49,6 +51,7 @@ public interface PathIterator2f extends Iterator<AbstractPathElement2F> {
 	 * contain curve primitives, <code>false</code>
 	 * otherwise.
 	 */
+	@Pure
 	public boolean isPolyline();
 
 }
