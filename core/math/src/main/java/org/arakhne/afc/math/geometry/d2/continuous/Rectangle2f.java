@@ -335,11 +335,4 @@ public class Rectangle2f extends AbstractRectangle2F<Rectangle2f> {
 		return this.clone();
 	}
 
-	
-
-	
-
-
-
-
 }
