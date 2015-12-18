@@ -1355,7 +1355,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 	 */
 	@Pure
 	@Override
-	public Rectangle2f toBoundingBox() {
+	public AbstractRectangle2F<?> toBoundingBox() {
 		Rectangle2f r = new Rectangle2f();
 		r.setFromCorners(
 				this.getX1(),
@@ -1368,7 +1368,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 	/** {@inheritDoc}
 	 */
 	@Override
-	public void toBoundingBox(Rectangle2f box) {
+	public void toBoundingBox(AbstractRectangle2F<?> box) {
 		box.setFromCorners(
 				this.getX1(),
 				this.getY1(),
@@ -1438,7 +1438,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 	 */
 	@Pure
 	@Override
-	public boolean contains(Rectangle2f r) {
+	public boolean contains(AbstractRectangle2F<?> r) {
 		return contains(r.getMinX(), r.getMinY())
 				&& contains(r.getMaxX(), r.getMaxY());
 	}
@@ -1473,11 +1473,19 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 	@Pure
 	@Override
 	public PathIterator2f getPathIterator(Transform2D transform) {
-		return new SegmentPathIterator(
+		return new SegmentPathIterator2f(
 				this.getX1(), this.getY1(), this.getX2(), this.getY2(),
 				transform);
 	}
 
+	@Pure
+	@Override
+	public PathIterator2d getPathIteratorProperty(Transform2D transform) {
+		return new SegmentPathIterator2d(
+				this.getX1(), this.getY1(), this.getX2(), this.getY2(),
+				transform);
+	}
+	
 	@SuppressWarnings("unchecked")
 	@Pure
 	@Override
@@ -1632,7 +1640,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 
 	@Pure
 	@Override
-	public boolean intersects(Ellipse2f s) {
+	public boolean intersects(AbstractEllipse2F<?> s) {
 		return AbstractEllipse2F.intersectsEllipseSegment(
 				s.getMinX(), s.getMinY(),
 				s.getWidth(), s.getHeight(),
@@ -1642,7 +1650,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 
 	@Pure
 	@Override
-	public boolean intersects(Circle2f s) {
+	public boolean intersects(AbstractCircle2F<?> s) {
 		return AbstractCircle2F.intersectsCircleSegment(
 				s.getX(), s.getY(),
 				s.getRadius(),
@@ -1652,7 +1660,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 
 	@Pure
 	@Override
-	public boolean intersects(Segment2f s) {
+	public boolean intersects(AbstractSegment2F<?> s) {
 		return intersectsSegmentSegmentWithEnds(
 				this.getX1(), this.getY1(),
 				this.getX2(), this.getY2(),
@@ -1664,6 +1672,12 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 	@Override
 	public boolean intersects(Path2f s) {
 		return intersects(s.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO));
+	}
+	
+	@Pure
+	@Override
+	public boolean intersects(Path2d s) {
+		return intersects(s.getPathIteratorProperty(MathConstants.SPLINE_APPROXIMATION_RATIO));
 	}
 
 	@Override
@@ -1677,10 +1691,22 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 		return (crossings == MathConstants.SHAPE_INTERSECTS ||
 				(crossings & mask) != 0);
 	}
+	
+	@Override
+	public boolean intersects(PathIterator2d s) {
+		int mask = (s.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2);
+		int crossings = Path2d.computeCrossingsFromSegment(
+				0,
+				s,
+				this.getX1(), this.getY1(), this.getX2(), this.getY2(),
+				false);
+		return (crossings == MathConstants.SHAPE_INTERSECTS ||
+				(crossings & mask) != 0);
+	}
 
 	@Pure
 	@Override
-	public boolean intersects(OrientedRectangle2f s) {
+	public boolean intersects(AbstractOrientedRectangle2F<?> s) {
 		return AbstractOrientedRectangle2F.intersectsOrientedRectangleSegment(
 				s.getCenterX(), s.getCenterY(), 
 				s.getFirstAxisX(), s.getFirstAxisY(), s.getFirstAxisExtent(),
@@ -1707,11 +1733,12 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 	/** Iterator on the path elements of the segment.
 	 * 
 	 * @author $Author: galland$
+	 * @author $Author: hjaffali$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	private static class SegmentPathIterator implements PathIterator2f {
+	private static class SegmentPathIterator2f implements PathIterator2f {
 
 		private final Point2D p1 = new Point2f();
 		private final Point2D p2 = new Point2f();
@@ -1729,7 +1756,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 		 * @param y21
 		 * @param transform1
 		 */
-		public SegmentPathIterator(double x11, double y11, double x21, double y21, Transform2D transform1) {
+		public SegmentPathIterator2f(double x11, double y11, double x21, double y21, Transform2D transform1) {
 			this.transform = transform1;
 			this.x1 = x11;
 			this.y1 = y11;
@@ -1766,6 +1793,94 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 					this.transform.transform(this.p2);
 				}
 				return new AbstractPathElement2F.LinePathElement2f(
+						this.p1.getX(), this.p1.getY(),
+						this.p2.getX(), this.p2.getY());
+			default:
+				throw new NoSuchElementException();
+			}
+		}
+
+		@Override
+		public void remove() {
+			throw new UnsupportedOperationException();
+		}
+
+		@Pure
+		@Override
+		public PathWindingRule getWindingRule() {
+			return PathWindingRule.NON_ZERO;
+		}
+
+		@Pure
+		@Override
+		public boolean isPolyline() {
+			return true;
+		}
+	}
+	
+	/** Iterator on the path elements of the segment.
+	 * 
+	 * @author $Author: galland$
+	 * @author $Author: hjaffali$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	private static class SegmentPathIterator2d implements PathIterator2d {
+
+		private final Point2D p1 = new Point2f();
+		private final Point2D p2 = new Point2f();
+		private final Transform2D transform;
+		private final double x1;
+		private final double y1;
+		private final double x2;
+		private final double y2;
+		private int index = 0;
+
+		/**
+		 * @param x11
+		 * @param y11
+		 * @param x21
+		 * @param y21
+		 * @param transform1
+		 */
+		public SegmentPathIterator2d(double x11, double y11, double x21, double y21, Transform2D transform1) {
+			this.transform = transform1;
+			this.x1 = x11;
+			this.y1 = y11;
+			this.x2 = x21;
+			this.y2 = y21;
+			if (this.x1==this.x2 && this.y1==this.y2) {
+				this.index = 2;
+			}
+		}
+
+		@Pure
+		@Override
+		public boolean hasNext() {
+			return this.index<=1;
+		}
+
+		@Override
+		public AbstractPathElement2D next() {
+			if (this.index>1) throw new NoSuchElementException();
+			int idx = this.index;
+			++this.index;
+			switch(idx) {
+			case 0:
+				this.p2.set(this.x1, this.y1);
+				if (this.transform!=null) {
+					this.transform.transform(this.p2);
+				}
+				return new AbstractPathElement2D.MovePathElement2d(
+						this.p2.getX(), this.p2.getY());
+			case 1:
+				this.p1.set(this.p2);
+				this.p2.set(this.x2, this.y2);
+				if (this.transform!=null) {
+					this.transform.transform(this.p2);
+				}
+				return new AbstractPathElement2D.LinePathElement2d(
 						this.p1.getX(), this.p1.getY(),
 						this.p2.getX(), this.p2.getY());
 			default:

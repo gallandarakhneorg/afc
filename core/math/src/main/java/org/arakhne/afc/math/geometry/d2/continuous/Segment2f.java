@@ -117,7 +117,7 @@ public class Segment2f extends AbstractSegment2F<Segment2f> {
 			Segment2f g = (Segment2f) s;
 			set(g.getX1(), g.getY1(), g.getX2(), g.getY2());
 		} else {
-			Rectangle2f r = s.toBoundingBox();
+			AbstractRectangle2F<?> r = s.toBoundingBox();
 			this.ax = r.getMinX();
 			this.ay = r.getMinY();
 			this.bx = r.getMaxX();

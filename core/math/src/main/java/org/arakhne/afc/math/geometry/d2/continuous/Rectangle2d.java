@@ -89,6 +89,11 @@ public class Rectangle2d extends AbstractRectangle2F<Rectangle2d>{
 	}
 
 
+	public Rectangle2d(Rectangle2f r) {
+		this();
+		this.setInitiallyFromCorners(r.getMinX(),r.getMinY(),r.getMaxX(),r.getMaxY());
+	}
+
 	/** Change the frame of the rectangle.
 	 * 
 	 * @param x

@@ -107,13 +107,13 @@ public interface Shape2i extends Shape2D<Shape2i> {
 	 * @param transform is the transformation to apply to the path.
 	 * @return the elements of the path.
 	 */
-	public PathIterator2i getPathIterator(Transform2D transform);
+	public PathIterator2i getPathIteratorDiscrete(Transform2D transform);
 
 	/** Replies the elements of the paths.
 	 * 
 	 * @return the elements of the path.
 	 */
-	public PathIterator2i getPathIterator();
+	public PathIterator2i getPathIteratorDiscrete();
 
 	/** Replies an iterator on the points covered by this shape.
 	 * <p>

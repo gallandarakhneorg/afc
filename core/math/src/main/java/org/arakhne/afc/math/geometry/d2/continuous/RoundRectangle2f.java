@@ -390,11 +390,10 @@ public class RoundRectangle2f extends AbstractRoundRectangle2F<RoundRectangle2f>
 					r.getWidth(), r.getHeight(),
 					r.getArcWidth(), r.getArcHeight());
 		} else {
-			Rectangle2f r = s.toBoundingBox();
+			AbstractRectangle2F<?> r = s.toBoundingBox();
 			setFromCorners(r.getMinX(), r.getMinY(), r.getMaxX(), r.getMaxY());
 		}
 	}
-
 	
 
 

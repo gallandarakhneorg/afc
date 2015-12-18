@@ -43,8 +43,13 @@ public class PathShadow2f {
 	/**
 	 * @param path1
 	 */
-	public PathShadow2f(Path2D<?,Rectangle2f,AbstractPathElement2F,PathIterator2f> path1) {
+	public PathShadow2f(Path2f path1) {
 		this.path = path1;
+		this.bounds = this.path.toBoundingBox();
+	}
+
+	public PathShadow2f(Path2d path1) {
+		this.path = new Path2f(path1);
 		this.bounds = this.path.toBoundingBox();
 	}
 

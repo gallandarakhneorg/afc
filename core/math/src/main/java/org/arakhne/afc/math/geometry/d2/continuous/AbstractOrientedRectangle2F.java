@@ -970,14 +970,14 @@ public abstract class AbstractOrientedRectangle2F<T extends Shape2F> extends Abs
 
 	@Pure
 	@Override
-	public Rectangle2f toBoundingBox() {
+	public AbstractRectangle2F<?> toBoundingBox() {
 		Rectangle2f rect = new Rectangle2f();
 		toBoundingBox(rect);
 		return rect;
 	}
 
 	@Override
-	public void toBoundingBox(Rectangle2f box) {
+	public void toBoundingBox(AbstractRectangle2F<?> box) {
 		Point2f minCorner, maxCorner;
 
 		minCorner = new Point2f(this.getCenterX(), this.getCenterY());
@@ -1064,7 +1064,7 @@ public abstract class AbstractOrientedRectangle2F<T extends Shape2F> extends Abs
 
 	@Pure
 	@Override
-	public boolean contains(Rectangle2f r) {
+	public boolean contains(AbstractRectangle2F<?> r) {
 		return containsOrientedRectangleRectangle(
 				this.getCenterX(), this.getCenterY(),
 				this.getFirstAxisX(), this.getFirstAxisY(), this.getFirstAxisExtent(),
@@ -1077,10 +1077,22 @@ public abstract class AbstractOrientedRectangle2F<T extends Shape2F> extends Abs
 	@Override
 	public PathIterator2f getPathIterator(Transform2D transform) {
 		if (transform == null) {
-			return new CopyPathIterator(
+			return new CopyPathIterator2f(
 					this.getCenterX(), this.getCenterY(), this.getFirstAxisX(), this.getFirstAxisY(), this.getFirstAxisExtent(), this.getSecondAxisExtent());
 		}
-		return new TransformPathIterator(
+		return new TransformPathIterator2f(
+				this.getCenterX(), this.getCenterY(), this.getFirstAxisX(), this.getFirstAxisY(), this.getFirstAxisExtent(), this.getSecondAxisExtent(),
+				transform);
+	}
+	
+	@Pure
+	@Override
+	public PathIterator2d getPathIteratorProperty(Transform2D transform) {
+		if (transform == null) {
+			return new CopyPathIterator2d(
+					this.getCenterX(), this.getCenterY(), this.getFirstAxisX(), this.getFirstAxisY(), this.getFirstAxisExtent(), this.getSecondAxisExtent());
+		}
+		return new TransformPathIterator2d(
 				this.getCenterX(), this.getCenterY(), this.getFirstAxisX(), this.getFirstAxisY(), this.getFirstAxisExtent(), this.getSecondAxisExtent(),
 				transform);
 	}
@@ -1096,31 +1108,31 @@ public abstract class AbstractOrientedRectangle2F<T extends Shape2F> extends Abs
 
 	@Pure
 	@Override
-	public boolean intersects(Ellipse2f s) {
+	public boolean intersects(AbstractEllipse2F<?> s) {
 		return intersectsOrientedRectangleEllipse(
 				this.getCenterX(), this.getCenterY(), this.getFirstAxisX(), this.getFirstAxisY(), this.getFirstAxisExtent(), this.getSecondAxisX(), this.getSecondAxisY(), this.getSecondAxisExtent(),
-				s.minx, s.miny, s.maxy - s.minx, s.maxy - s.maxy);
+				s.getMinX(), s.getMinY(), s.getMaxX() - s.getMinX(), s.getMaxY() - s.getMinY());
 	}
 
 	@Pure
 	@Override
-	public boolean intersects(Circle2f s) {
+	public boolean intersects(AbstractCircle2F<?> s) {
 		return intersectsOrientedRectangleSolidCircle(
 				this.getCenterX(), this.getCenterY(), this.getFirstAxisX(), this.getFirstAxisY(), this.getFirstAxisExtent(), this.getSecondAxisX(), this.getSecondAxisY(), this.getSecondAxisExtent(),
-				s.getX(),s.getY(), s.radius);
+				s.getX(),s.getY(), s.getRadius());
 	}
 
 	@Pure
 	@Override
-	public boolean intersects(Segment2f s) {
+	public boolean intersects(AbstractSegment2F<?> s) {
 		return intersectsOrientedRectangleSegment(
 				this.getCenterX(), this.getCenterY(), this.getFirstAxisX(), this.getFirstAxisY(), this.getFirstAxisExtent(), this.getSecondAxisX(), this.getSecondAxisY(), this.getSecondAxisExtent(),
-				s.ax, s.ay, s.bx, s.by);
+				s.getX1(), s.getY1(), s.getX2(), s.getY2());
 	}
 
 	@Pure
 	@Override
-	public boolean intersects(OrientedRectangle2f s) {
+	public boolean intersects(AbstractOrientedRectangle2F<?> s) {
 		return intersectsOrientedRectangleOrientedRectangle(
 				this.getCenterX(), this.getCenterY(),
 				this.getFirstAxisX(), this.getFirstAxisY(), this.getFirstAxisExtent(), this.getSecondAxisX(), this.getSecondAxisY(), this.getSecondAxisExtent(),
@@ -1134,6 +1146,12 @@ public abstract class AbstractOrientedRectangle2F<T extends Shape2F> extends Abs
 	public boolean intersects(Path2f s) {
 		return intersects(s.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO));
 	}
+	
+	@Pure
+	@Override
+	public boolean intersects(Path2d s) {
+		return intersects(s.getPathIteratorProperty(MathConstants.SPLINE_APPROXIMATION_RATIO));
+	}
 
 	@Override
 	public boolean intersects(PathIterator2f s) {
@@ -1144,7 +1162,24 @@ public abstract class AbstractOrientedRectangle2F<T extends Shape2F> extends Abs
 		int mask = (s.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2);
 
 		int crossings = Path2f.computeCrossingsFromRect(
-				new TranformPathIteratorWrapper(s), 
+				new TranformPathIteratorWrapper2f(s), 
+				this.getFirstAxisExtent()/-2., this.getSecondAxisExtent()/-2., this.getFirstAxisExtent()/2., this.getSecondAxisExtent()/2.,
+				false, true);
+
+		return (crossings == MathConstants.SHAPE_INTERSECTS ||
+				(crossings & mask) != 0);
+	}
+	
+	@Override
+	public boolean intersects(PathIterator2d s) {
+		if (isEmpty()) {
+			return false;
+		}
+
+		int mask = (s.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2);
+
+		int crossings = Path2d.computeCrossingsFromRect(
+				new TranformPathIteratorWrapper2d(s), 
 				this.getFirstAxisExtent()/-2., this.getSecondAxisExtent()/-2., this.getFirstAxisExtent()/2., this.getSecondAxisExtent()/2.,
 				false, true);
 
@@ -1256,11 +1291,12 @@ public abstract class AbstractOrientedRectangle2F<T extends Shape2F> extends Abs
 	/**
 	 * @author $Author: mgrolleau$
 	 * @author $Author: sgalland$
+	 * @author $Author: hjaffali$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	private static class CopyPathIterator implements PathIterator2f {
+	private static class CopyPathIterator2f implements PathIterator2f {
 
 		private double x1;
 		private double y1;
@@ -1276,7 +1312,7 @@ public abstract class AbstractOrientedRectangle2F<T extends Shape2F> extends Abs
 		 * @param axis1Extent
 		 * @param axis2Extent
 		 */
-		public CopyPathIterator(double centerx, double centery, double rx, double ry, double axis1Extent, double axis2Extent) {
+		public CopyPathIterator2f(double centerx, double centery, double rx, double ry, double axis1Extent, double axis2Extent) {
 			assert(axis1Extent > 0 && axis2Extent > 0);
 
 			this.r = new Vector2f(rx, ry);
@@ -1354,15 +1390,120 @@ public abstract class AbstractOrientedRectangle2F<T extends Shape2F> extends Abs
 			return true;
 		}
 	}
-
+	
+	
 	/**
 	 * @author $Author: mgrolleau$
 	 * @author $Author: sgalland$
+	 * @author $Author: hjaffali$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	private static class TransformPathIterator implements PathIterator2f {
+	private static class CopyPathIterator2d implements PathIterator2d {
+
+		private double x1;
+		private double y1;
+		private Vector2D r;
+		private Vector2D s;
+		private int index = 0;
+
+		/**
+		 * @param centerx
+		 * @param centery
+		 * @param rx
+		 * @param ry
+		 * @param axis1Extent
+		 * @param axis2Extent
+		 */
+		public CopyPathIterator2d(double centerx, double centery, double rx, double ry, double axis1Extent, double axis2Extent) {
+			assert(axis1Extent > 0 && axis2Extent > 0);
+
+			this.r = new Vector2f(rx, ry);
+
+			assert(this.r.lengthSquared() == 1);
+
+			this.s = new Vector2f(rx, ry);
+			this.s.perpendicularize();
+
+			this.r.scale(axis1Extent);
+			this.s.scale(axis2Extent);
+
+			this.x1 = centerx - (this.r.getX() + this.s.getX());
+			this.y1 = centerx - (this.r.getY() + this.s.getY());
+
+			this.index = 6;
+
+			this.r.scale(2);
+			this.s.scale(2);
+		}
+
+		@Pure
+		@Override
+		public boolean hasNext() {
+			return this.index<=5;
+		}
+
+		@Override
+		public AbstractPathElement2D next() {
+			int idx = this.index;
+			++this.index;
+			switch(idx) {
+			case 0:
+				return new AbstractPathElement2D.MovePathElement2d(
+						this.x1, this.y1);
+			case 1:
+				return new AbstractPathElement2D.LinePathElement2d(
+						this.x1, this.y1,
+						this.x1 + this.r.getX(), this.y1 + this.r.getY());
+			case 2:
+				return new AbstractPathElement2D.LinePathElement2d(
+						this.x1 + this.r.getX(), this.y1 + this.r.getY(),
+						this.x1 + this.r.getX() + this.s.getX(), this.y1 + this.r.getY() + this.s.getY());
+			case 3:
+				return new AbstractPathElement2D.LinePathElement2d(
+						this.x1 + this.r.getX() + this.s.getX(), this.y1 + this.r.getY() + this.s.getY(),
+						this.x1 + this.s.getX(), this.y1 + this.s.getY());
+			case 4:
+				return new AbstractPathElement2D.LinePathElement2d(
+						this.x1 + this.s.getX(), this.y1 + this.s.getY(),
+						this.x1, this.y1);
+			case 5:
+				return new AbstractPathElement2D.ClosePathElement2d(
+						this.x1, this.y1,
+						this.x1, this.y1);
+			default:
+				throw new NoSuchElementException();
+			}
+		}
+
+		@Override
+		public void remove() {
+			throw new UnsupportedOperationException();
+		}
+
+		@Pure
+		@Override
+		public PathWindingRule getWindingRule() {
+			return PathWindingRule.NON_ZERO;
+		}
+
+		@Pure
+		@Override
+		public boolean isPolyline() {
+			return true;
+		}
+	}
+
+	/**
+	 * @author $Author: mgrolleau$
+	 * @author $Author: sgalland$
+	 * @author $Author: hjaffali$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	private static class TransformPathIterator2f implements PathIterator2f {
 
 		private final Transform2D transform;
 		private double x1;
@@ -1384,7 +1525,7 @@ public abstract class AbstractOrientedRectangle2F<T extends Shape2F> extends Abs
 		 * @param axis2Extent
 		 * @param transform1
 		 */
-		public TransformPathIterator(double centerx, double centery, double rx, double ry, double axis1Extent, double axis2Extent, Transform2D transform1) {
+		public TransformPathIterator2f(double centerx, double centery, double rx, double ry, double axis1Extent, double axis2Extent, Transform2D transform1) {
 
 			assert(axis1Extent > 0 && axis2Extent > 0);
 
@@ -1488,7 +1629,143 @@ public abstract class AbstractOrientedRectangle2F<T extends Shape2F> extends Abs
 		}
 
 	}
+	
+	/**
+	 * @author $Author: mgrolleau$
+	 * @author $Author: sgalland$
+	 * @author $Author: hjaffali$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	private static class TransformPathIterator2d implements PathIterator2d {
 
+		private final Transform2D transform;
+		private double x1;
+		private double y1;
+		private Vector2D r;
+		private Vector2D s;
+
+		private int index = 0;
+
+		private final Point2D p1 = new Point2f();
+		private final Point2D p2 = new Point2f();
+
+		/**
+		 * @param centerx
+		 * @param centery
+		 * @param rx
+		 * @param ry
+		 * @param axis1Extent
+		 * @param axis2Extent
+		 * @param transform1
+		 */
+		public TransformPathIterator2d(double centerx, double centery, double rx, double ry, double axis1Extent, double axis2Extent, Transform2D transform1) {
+
+			assert(axis1Extent > 0 && axis2Extent > 0);
+
+			this.r = new Vector2f(rx, ry);
+
+			assert(this.r.lengthSquared() == 1);
+
+			this.s = new Vector2f(rx, ry);
+			this.s.perpendicularize();
+
+			this.r.scale(axis1Extent);
+			this.s.scale(axis2Extent);
+
+			this.transform = transform1;
+
+			this.x1 = centerx - 1/2*(this.r.getX() + this.s.getX());
+			this.y1 = centerx - 1/2*(this.r.getY() + this.s.getY());
+
+			this.index = 6;
+
+		}
+
+		@Pure
+		@Override
+		public boolean hasNext() {
+			return this.index<=5;
+		}
+
+		@Override
+		public AbstractPathElement2D next() {
+			int idx = this.index;
+			++this.index;
+			switch(idx) {
+			case 0:
+				this.p2.set(this.x1, this.y1);
+				if (this.transform!=null) {
+					this.transform.transform(this.p2);
+				}
+				return new AbstractPathElement2D.MovePathElement2d(
+						this.p2.getX(), this.p2.getY());
+			case 1:
+				this.p1.set(this.p2);
+				this.p2.add(this.r);
+				if (this.transform!=null) {
+					this.transform.transform(this.p2);
+				}
+				return new AbstractPathElement2D.LinePathElement2d(
+						this.p1.getX(), this.p1.getY(),
+						this.p2.getX(), this.p2.getY());
+			case 2:
+				this.p1.set(this.p2);
+				this.p2.add(this.s);
+				if (this.transform!=null) {
+					this.transform.transform(this.p2);
+				}
+				return new AbstractPathElement2D.LinePathElement2d(
+						this.p1.getX(), this.p1.getY(),
+						this.p2.getX(), this.p2.getY());
+			case 3:
+				this.p1.set(this.p2);
+				this.p2.sub(this.r);
+				if (this.transform!=null) {
+					this.transform.transform(this.p2);
+				}
+				return new AbstractPathElement2D.LinePathElement2d(
+						this.p1.getX(), this.p1.getY(),
+						this.p2.getX(), this.p2.getY());
+			case 4:
+				this.p1.set(this.p2);
+				this.p2.sub(this.s);
+				if (this.transform!=null) {
+					this.transform.transform(this.p2);
+				}
+				return new AbstractPathElement2D.LinePathElement2d(
+						this.p1.getX(), this.p1.getY(),
+						this.p2.getX(), this.p2.getY());
+			case 5:
+				return new AbstractPathElement2D.ClosePathElement2d(
+						this.p2.getX(), this.p2.getY(),
+						this.p2.getX(), this.p2.getY());
+			default:
+				throw new NoSuchElementException();
+			}
+		}
+
+		@Override
+		public void remove() {
+			throw new UnsupportedOperationException();
+		}
+
+		@Pure
+		@Override
+		public PathWindingRule getWindingRule() {
+			return PathWindingRule.NON_ZERO;
+		}
+
+		@Pure
+		@Override
+		public boolean isPolyline() {
+			return true;
+		}
+
+	}
+	
+	
 	/**
 	 * @author $Author: mgrolleau$
 	 * @author $Author: sgalland$
@@ -1496,11 +1773,11 @@ public abstract class AbstractOrientedRectangle2F<T extends Shape2F> extends Abs
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	private class TranformPathIteratorWrapper implements PathIterator2f{
+	private class TranformPathIteratorWrapper2f implements PathIterator2f {
 
 		private final PathIterator2f p;
 
-		public TranformPathIteratorWrapper(PathIterator2f p1){
+		public TranformPathIteratorWrapper2f(PathIterator2f p1){
 			this.p = p1;
 		}
 
@@ -1558,6 +1835,76 @@ public abstract class AbstractOrientedRectangle2F<T extends Shape2F> extends Abs
 
 	}
 
+	/**
+	 * @author $Author: mgrolleau$
+	 * @author $Author: sgalland$
+	 * @author $Author: hjaffali$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	private class TranformPathIteratorWrapper2d implements PathIterator2d {
+
+		private final PathIterator2d p;
+
+		public TranformPathIteratorWrapper2d(PathIterator2d p1){
+			this.p = p1;
+		}
+
+		@Pure
+		@Override
+		public boolean hasNext() {
+			return this.p.hasNext();
+		}
+
+		@Override
+		public AbstractPathElement2D next() {
+			AbstractPathElement2D elem = this.p.next();
+			switch(elem.type){
+			case CURVE_TO:
+				return new AbstractPathElement2D.CurvePathElement2d(
+						(elem.getFromX()-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getSecondAxisY() - (elem.getFromY()-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getSecondAxisX(), (elem.getFromY()-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getFirstAxisX() - (elem.getFromX()-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getFirstAxisY(),
+						(elem.getCtrlX1()-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getSecondAxisY() - (elem.getCtrlY1()-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getSecondAxisX(), (elem.getCtrlY1()-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getFirstAxisX() - (elem.getCtrlX1()-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getFirstAxisY(),
+						(elem.getCtrlX2()-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getSecondAxisY() - (elem.getCtrlY2()-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getSecondAxisX(), (elem.getCtrlY2()-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getFirstAxisX() - (elem.getCtrlX2()-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getFirstAxisY(),
+						(elem.getToX()-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getSecondAxisY() - (elem.getToY()-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getSecondAxisX(), (elem.getToY()-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getFirstAxisX() - (elem.getToX()-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getFirstAxisY());
+			case LINE_TO:
+				return new AbstractPathElement2D.LinePathElement2d(
+						(elem.getFromX()-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getSecondAxisY() - (elem.getFromY()-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getSecondAxisX(), (elem.getFromY()-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getFirstAxisX() - (elem.getFromX()-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getFirstAxisY(),
+						(elem.getToX()-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getSecondAxisY() - (elem.getToY()-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getSecondAxisX(), (elem.getToY()-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getFirstAxisX() - (elem.getToX()-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getFirstAxisY());
+			case MOVE_TO:
+				return new AbstractPathElement2D.MovePathElement2d((elem.getToX()-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getSecondAxisY() - (elem.getToY()-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getSecondAxisX(), (elem.getToY()-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getFirstAxisX() - (elem.getFromX()-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getFirstAxisY());
+			case QUAD_TO:
+				return new AbstractPathElement2D.QuadPathElement2d(
+						(elem.getFromX()-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getSecondAxisY() - (elem.getFromY()-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getSecondAxisX(), (elem.getFromY()-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getFirstAxisX() - (elem.getFromX()-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getFirstAxisY(),
+						(elem.getCtrlX1()-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getSecondAxisY() - (elem.getCtrlY1()-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getSecondAxisX(), (elem.getCtrlY1()-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getFirstAxisX() - (elem.getCtrlX1()-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getFirstAxisY(),
+						(elem.getToX()-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getSecondAxisY() - (elem.getToY()-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getSecondAxisX(), (elem.getToY()-AbstractOrientedRectangle2F.this.getCenterY()) * AbstractOrientedRectangle2F.this.getFirstAxisX() - (elem.getToX()-AbstractOrientedRectangle2F.this.getCenterX()) * AbstractOrientedRectangle2F.this.getFirstAxisY());
+			case CLOSE:
+			default:
+				break;
+
+			}
+			return null;
+		}
+
+		@Override
+		public void remove() {
+			this.p.remove();			
+		}
+
+		@Pure
+		@Override
+		public PathWindingRule getWindingRule() {
+			return this.p.getWindingRule();
+		}
+
+		@Pure
+		@Override
+		public boolean isPolyline() {
+			return this.p.isPolyline();
+		}
+
+	}
+	
 	/**
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$

@@ -82,6 +82,10 @@ public class Rectangle2f extends AbstractRectangle2F<Rectangle2f> {
 	}
 
 	
+	public Rectangle2f(Rectangle2d boundingBox) {
+		super(boundingBox.minxProperty.get(), boundingBox.minyProperty.get(), boundingBox.maxxProperty.get()-boundingBox.minxProperty.get(), boundingBox.maxyProperty.get()-boundingBox.minyProperty.get());
+	}
+
 	/** Change the frame of the rectangle.
 	 * 
 	 * @param x

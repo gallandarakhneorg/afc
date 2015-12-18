@@ -75,14 +75,14 @@ public abstract class AbstractRectangularShape2F<T extends AbstractRectangularSh
 	 */
 	@Pure
 	@Override
-	public Rectangle2f toBoundingBox() {
+	public AbstractRectangle2F<?> toBoundingBox() {
 		return new Rectangle2f(this.getMinX(), this.getMinY(), this.getMaxX()-this.getMinX(), this.getMaxY()-this.getMinY());
 	}
 	
 	/** {@inheritDoc}
 	 */
 	@Override
-	public void toBoundingBox(Rectangle2f box) {
+	public void toBoundingBox(AbstractRectangle2F<?> box) {
 		box.setFromCorners(this.getMinX(), this.getMinY(), this.getMaxX(), this.getMaxY());
 	}
 

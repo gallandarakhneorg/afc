@@ -20,7 +20,10 @@
  */
 package org.arakhne.afc.math.geometry.d2.continuous;
 
+import java.util.Iterator;
+
 import org.arakhne.afc.math.geometry.d2.Point2D;
+import org.arakhne.afc.math.geometry.d2.discrete.PathIterator2i;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 
@@ -70,8 +73,14 @@ public abstract class AbstractShape2F<T extends Shape2F> implements Shape2F {
 	 */
 	@Pure
 	@Override
-	public final PathIterator2f getPathIterator() {
+	public PathIterator2f getPathIterator() {
 		return getPathIterator(null);
+	}
+	
+	@Pure
+	@Override
+	public PathIterator2d getPathIteratorProperty() {
+		return getPathIteratorProperty(null);
 	}
 	
 	/** {@inheritDoc}

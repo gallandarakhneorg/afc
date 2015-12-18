@@ -73,9 +73,29 @@ public abstract class PathElement2d extends AbstractPathElement2D {
 	private DoubleProperty ctrlY2Property = new SimpleDoubleProperty(0f);
 	
 	
-	public PathElement2d(PathElementType type1, double fromx, double fromy, double ctrlx1, double ctrly1, double ctrlx2,
+	public PathElement2d(PathElementType type1, double fromX, double fromy, double ctrlx1, double ctrly1, double ctrlx2,
 			double ctrly2, double tox, double toy) {
-		super(type1, fromx, fromy, ctrlx1, ctrly1, ctrlx2, ctrly2, tox, toy);
+		
+		super(type1);
+		
+		this.fromXProperty = new SimpleDoubleProperty(0f);
+		this.fromYProperty = new SimpleDoubleProperty(0f);
+		this.toXProperty = new SimpleDoubleProperty(0f);
+		this.toYProperty = new SimpleDoubleProperty(0f);
+		this.ctrlX1Property = new SimpleDoubleProperty(0f);
+		this.ctrlY1Property = new SimpleDoubleProperty(0f);
+		this.ctrlX2Property = new SimpleDoubleProperty(0f);
+		this.ctrlY2Property = new SimpleDoubleProperty(0f);
+		
+		
+		this.setFromX(fromX);
+		this.setFromY(fromy);
+		this.setCtrlX1(ctrlx1);
+		this.setCtrlY1(ctrly1);
+		this.setCtrlX2(ctrlx2);
+		this.setCtrlY2(ctrly2);
+		this.setToX(tox);
+		this.setToY(toy);
 	}
 
 	@Pure

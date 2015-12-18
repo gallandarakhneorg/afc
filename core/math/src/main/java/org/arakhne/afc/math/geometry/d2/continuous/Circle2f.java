@@ -112,7 +112,7 @@ public class Circle2f extends AbstractCircle2F<Circle2f> {
 			Circle2f c = (Circle2f) s;
 			set(c.getX(), c.getY(), c.getRadius());
 		} else {
-			Rectangle2f r = s.toBoundingBox();
+			AbstractRectangle2F<?> r = s.toBoundingBox();
 			set(r.getCenterX(), r.getCenterY(),
 					Math.min(r.getWidth(), r.getHeight()) / 2.);
 		}

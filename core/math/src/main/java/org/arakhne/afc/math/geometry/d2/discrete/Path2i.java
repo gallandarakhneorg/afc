@@ -33,6 +33,8 @@ import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Path2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.continuous.AbstractSegment2F;
+import org.arakhne.afc.math.geometry.d2.continuous.PathIterator2d;
+import org.arakhne.afc.math.geometry.d2.continuous.PathIterator2f;
 import org.arakhne.afc.math.geometry.d2.continuous.Transform2D;
 
 
@@ -125,7 +127,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 						endx, endy);
 				numCrosses = computeCrossingsFromSegment(
 						numCrosses,
-						localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						localPath.getPathIteratorDiscrete(MathConstants.SPLINE_APPROXIMATION_RATIO),
 						x1, y1, x2, y2,
 						false);
 				curx = endx;
@@ -143,7 +145,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 						endx, endy);
 				numCrosses = computeCrossingsFromSegment(
 						numCrosses,
-						localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						localPath.getPathIteratorDiscrete(MathConstants.SPLINE_APPROXIMATION_RATIO),
 						x1, y1, x2, y2,
 						false);
 				curx = endx;
@@ -246,7 +248,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 						endx, endy);
 				numCrosses = computeCrossingsFromCircle(
 						numCrosses,
-						localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						localPath.getPathIteratorDiscrete(MathConstants.SPLINE_APPROXIMATION_RATIO),
 						cx, cy, radius,
 						false);
 				curx = endx;
@@ -264,7 +266,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 						endx, endy);
 				numCrosses = computeCrossingsFromCircle(
 						numCrosses,
-						localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						localPath.getPathIteratorDiscrete(MathConstants.SPLINE_APPROXIMATION_RATIO),
 						cx, cy, radius,
 						false);
 				curx = endx;
@@ -380,7 +382,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 				curve.moveTo(element.fromX, element.fromY);
 				curve.quadTo(element.ctrlX1, element.ctrlY1, endx, endy);
 				int numCrosses = computeCrossingsFromPoint(
-						curve.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						curve.getPathIteratorDiscrete(MathConstants.SPLINE_APPROXIMATION_RATIO),
 						px, py, false);
 				if (numCrosses==MathConstants.SHAPE_INTERSECTS) {
 					return numCrosses;
@@ -399,7 +401,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 						element.ctrlX2, element.ctrlY2,
 						endx, endy);
 				numCrosses = computeCrossingsFromPoint(
-						curve.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						curve.getPathIteratorDiscrete(MathConstants.SPLINE_APPROXIMATION_RATIO),
 						px, py, false);
 				if (numCrosses==MathConstants.SHAPE_INTERSECTS) {
 					return numCrosses;
@@ -584,7 +586,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 				curve.moveTo(pathElement.fromX, pathElement.fromY);
 				curve.quadTo(pathElement.ctrlX1, pathElement.ctrlY1, endx, endy);
 				int numCrosses = __computeCrossingsFromRect(
-						curve.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						curve.getPathIteratorDiscrete(MathConstants.SPLINE_APPROXIMATION_RATIO),
 						rxmin, rymin, rxmax, rymax,
 						false, intersectingBehavior);
 				if (numCrosses==MathConstants.SHAPE_INTERSECTS) {
@@ -601,7 +603,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 				curve.moveTo(pathElement.fromX, pathElement.fromY);
 				curve.curveTo(pathElement.ctrlX1, pathElement.ctrlY1, pathElement.ctrlX2, pathElement.ctrlY2, endx, endy);
 				numCrosses = __computeCrossingsFromRect(
-						curve.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						curve.getPathIteratorDiscrete(MathConstants.SPLINE_APPROXIMATION_RATIO),
 						rxmin, rymin, rxmax, rymax,
 						false, intersectingBehavior);
 				if (numCrosses==MathConstants.SHAPE_INTERSECTS) {
@@ -1017,8 +1019,8 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 
 
 	@Override
-	public PathIterator2i getPathIterator(double flatness) {
-		return new FlatteningPathIterator(getWindingRule(), getPathIterator(null), flatness, 10);
+	public PathIterator2i getPathIteratorDiscrete(double flatness) {
+		return new FlatteningPathIterator(getWindingRule(), getPathIteratorDiscrete(null), flatness, 10);
 	}
 
 	/** Replies an iterator on the path elements.
@@ -1044,20 +1046,28 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 	 * the curved segments are allowed to deviate from any point on the original curve.
 	 * @return an iterator on the path elements.
 	 */
-	public PathIterator2i getPathIterator(Transform2D transform, double flatness) {
-		return new FlatteningPathIterator(getWindingRule(), getPathIterator(transform), flatness, 10);
+	public PathIterator2i getPathIteratorDiscrete(Transform2D transform, double flatness) {
+		return new FlatteningPathIterator(getWindingRule(), getPathIteratorDiscrete(transform), flatness, 10);
 	}
 
 	/** {@inheritDoc}
 	 */
 	@Override
-	public PathIterator2i getPathIterator(Transform2D transform) {
+	public PathIterator2i getPathIteratorDiscrete(Transform2D transform) {
 		if (transform == null) {
 			return new CopyPathIterator();
 		}
 		return new TransformPathIterator(transform);
 	}
 
+	
+	/** {@inheritDoc}
+	 */
+	@Override
+	public PathIterator2i getPathIteratorDiscrete() {
+		return getPathIteratorDiscrete(null);
+	}
+	
 	/** Transform the current path.
 	 * This function changes the current path.
 	 * 
@@ -1098,7 +1108,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 	@Override
 	public Shape2i createTransformedShape(Transform2D transform) {
 		Path2i newPath = new Path2i(getWindingRule());
-		PathIterator2i pi = getPathIterator();
+		PathIterator2i pi = getPathIteratorDiscrete();
 		Point2i p = new Point2i();
 		Point2i t1 = new Point2i();
 		Point2i t2 = new Point2i();
@@ -1161,12 +1171,12 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 
 	@Override
 	public boolean contains(int x, int y) {
-		return contains(getPathIterator(), x, y);
+		return contains(getPathIteratorDiscrete(), x, y);
 	}
 
 	@Override
 	public boolean contains(Rectangle2i r) {
-		return contains(getPathIterator(),
+		return contains(getPathIteratorDiscrete(),
 				r.getMinX(), r.getMinY(), r.getWidth(), r.getHeight());
 	}
 
@@ -1176,7 +1186,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 		if (s.isEmpty()) return false;
 		int mask = (this.windingRule == PathWindingRule.NON_ZERO ? -1 : 2);
 		int crossings = __computeCrossingsFromRect(
-				getPathIterator(),
+				getPathIteratorDiscrete(),
 				s.getMinX(), s.getMinY(), s.getMaxX(), s.getMaxY(),
 				true, true);
 		return (crossings == MathConstants.SHAPE_INTERSECTS ||
@@ -1187,7 +1197,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 	public boolean intersects(Circle2i s) {
 		int mask = (this.windingRule == PathWindingRule.NON_ZERO ? -1 : 2);
 		int crossings = computeCrossingsFromCircle(
-				getPathIterator(),
+				getPathIteratorDiscrete(),
 				s.getX(), s.getY(), s.getRadius());
 		return (crossings == MathConstants.SHAPE_INTERSECTS ||
 				(crossings & mask) != 0);
@@ -1197,7 +1207,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 	public boolean intersects(Segment2i s) {
 		int mask = (this.windingRule == PathWindingRule.NON_ZERO ? -1 : 2);
 		int crossings = computeCrossingsFromSegment(
-				getPathIterator(),
+				getPathIteratorDiscrete(),
 				s.getX1(), s.getY1(), s.getX2(), s.getY2());
 		return (crossings == MathConstants.SHAPE_INTERSECTS ||
 				(crossings & mask) != 0);
@@ -1233,7 +1243,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 						element.ctrlX2, element.ctrlY2,
 						element.toX, element.toY);
 				if (buildGraphicalBoundingBox(
-						subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						subPath.getPathIteratorDiscrete(MathConstants.SPLINE_APPROXIMATION_RATIO),
 						box)) {
 					if (box.getMinX()<xmin) xmin = box.getMinX();
 					if (box.getMinY()<ymin) ymin = box.getMinY();
@@ -1249,7 +1259,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 						element.ctrlX1, element.ctrlY1,
 						element.toX, element.toY);
 				if (buildGraphicalBoundingBox(
-						subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						subPath.getPathIteratorDiscrete(MathConstants.SPLINE_APPROXIMATION_RATIO),
 						box)) {
 					if (box.getMinX()<xmin) xmin = box.getMinX();
 					if (box.getMinY()<ymin) ymin = box.getMinY();
@@ -1304,7 +1314,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 		if (bb==null) {
 			bb = new Rectangle2i();
 			buildGraphicalBoundingBox(
-					getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+					getPathIteratorDiscrete(MathConstants.SPLINE_APPROXIMATION_RATIO),
 					bb);
 			this.graphicalBounds = new SoftReference<>(bb);
 		}
@@ -1342,7 +1352,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 		if (bb==null) {
 			bb = new Rectangle2i();
 			buildGraphicalBoundingBox(
-					getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+					getPathIteratorDiscrete(MathConstants.SPLINE_APPROXIMATION_RATIO),
 					bb);
 			this.graphicalBounds = new SoftReference<>(bb);
 		}
@@ -1371,7 +1381,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 		Point2D solution = new Point2i();
 		double bestDist = Double.POSITIVE_INFINITY;
 		Point2D candidate;
-		PathIterator2i pi = getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO);
+		PathIterator2i pi = getPathIteratorDiscrete(MathConstants.SPLINE_APPROXIMATION_RATIO);
 		PathElement2i pe;
 
 		Segment2i seg = new Segment2i();
@@ -1454,7 +1464,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 		Point2D solution = new Point2i();
 		double bestDist = Double.NEGATIVE_INFINITY;
 		Point2D candidate;
-		PathIterator2i pi = getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO);
+		PathIterator2i pi = getPathIteratorDiscrete(MathConstants.SPLINE_APPROXIMATION_RATIO);
 		PathElement2i pe;
 
 		Segment2i seg = new Segment2i();
@@ -1634,7 +1644,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 	public boolean isEmpty() {
 		if (this.isEmpty==null) {
 			this.isEmpty = Boolean.TRUE;
-			PathIterator2i pi = getPathIterator();
+			PathIterator2i pi = getPathIteratorDiscrete();
 			PathElement2i pe;
 			while (this.isEmpty()==Boolean.TRUE.booleanValue() && pi.hasNext()) {
 				pe = pi.next();
@@ -1772,20 +1782,20 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 	@Override
 	public void set(Shape2i s) {
 		clear();
-		add(s.getPathIterator());
+		add(s.getPathIteratorDiscrete());
 	}
 
 	/** Replies the points along the path.
 	 * <p>
 	 * This function is equivalent to a
-	 * call to {@link #getPathIterator(double)}
+	 * call to {@link #getPathIteratorDiscrete(double)}
 	 * with the default flatness.
 	 * 
 	 * @return the points
 	 */
 	@Override
 	public Iterator<Point2i> getPointIterator() {
-		PathIterator2i pathIterator = getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO);
+		PathIterator2i pathIterator = getPathIteratorDiscrete(MathConstants.SPLINE_APPROXIMATION_RATIO);
 		return new PixelIterator(pathIterator);
 	}
 
@@ -1793,7 +1803,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 	public boolean isPolyline() {
 		if (this.isPolyline==null) {
 			this.isPolyline = Boolean.TRUE;
-			PathIterator2i pi = getPathIterator();
+			PathIterator2i pi = getPathIteratorDiscrete();
 			PathElement2i pe;
 			PathElementType t;
 			while (this.isPolyline==Boolean.TRUE && pi.hasNext()) {
@@ -2830,5 +2840,28 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 		}
 
 	} // class FlatteningPathIterator
+
+
+	@Override
+	public PathIterator2f getPathIterator(double flatness) {	
+		return null;
+	}
+
+	@Override
+	public PathIterator2d getPathIteratorProperty(double flatness) {
+		return null;
+	}
+
+	@Override
+	public PathIterator2d getPathIteratorProperty() {	
+		return null;
+	}
+
+	@Override
+	public PathIterator2f getPathIterator() {
+		return null;
+	}
+
+	
 
 }

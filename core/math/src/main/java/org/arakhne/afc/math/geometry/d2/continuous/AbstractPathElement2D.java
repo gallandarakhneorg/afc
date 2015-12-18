@@ -25,6 +25,9 @@ package org.arakhne.afc.math.geometry.d2.continuous;
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+
 /** An element of the path.
 *
 * @author $Author: hjaffali$
@@ -67,6 +70,11 @@ public abstract class AbstractPathElement2D implements AbstractPathElement2X {
 	 */
 	protected final PathElementType type;
 	
+	public AbstractPathElement2D(PathElementType type1) {
+		assert(type1!=null);
+		this.type = type1;
+	}
+	
 	/**
 	 * @param type1 is the type of the element.
 	 * @param fromx is the source point.
@@ -92,6 +100,12 @@ public abstract class AbstractPathElement2D implements AbstractPathElement2X {
 	}	
 	
 
+	/** Copy the coords into the given array, except the source point.
+	 * 
+	 * @param array
+	 */
+	public abstract void toArray(DoubleProperty[] array);
+	
 	/** An element of the path that represents a <code>MOVE_TO</code>.
 	 *
 	 * @author $Author: hjaffali$
@@ -151,6 +165,12 @@ public abstract class AbstractPathElement2D implements AbstractPathElement2X {
 		@Override
 		public final PathElementType getType() {
 			return PathElementType.MOVE_TO;
+		}
+
+		@Override
+		public void toArray(DoubleProperty[] array) {
+			array[0] = new SimpleDoubleProperty(this.getToX());
+			array[1] = new SimpleDoubleProperty(this.getToY());
 		}
 
 
@@ -217,6 +237,12 @@ public abstract class AbstractPathElement2D implements AbstractPathElement2X {
 			return "LINE("+ //$NON-NLS-1$
 					this.getToX()+"x"+ //$NON-NLS-1$
 					this.getToY()+")"; //$NON-NLS-1$
+		}
+
+		@Override
+		public void toArray(DoubleProperty[] array) {
+			array[0] = new SimpleDoubleProperty(this.getToX());
+			array[1] = new SimpleDoubleProperty(this.getToY());
 		}
 
 
@@ -290,6 +316,14 @@ public abstract class AbstractPathElement2D implements AbstractPathElement2X {
 					this.getCtrlY1()+"|"+ //$NON-NLS-1$
 					this.getToX()+"x"+ //$NON-NLS-1$
 					this.getToY()+")"; //$NON-NLS-1$
+		}
+
+		@Override
+		public void toArray(DoubleProperty[] array) {
+			array[0] = new SimpleDoubleProperty(this.getToX());
+			array[1] = new SimpleDoubleProperty(this.getToY());
+			array[2] = new SimpleDoubleProperty(this.getToX());
+			array[3] = new SimpleDoubleProperty(this.getToY());
 		}
 
 		
@@ -375,6 +409,16 @@ public abstract class AbstractPathElement2D implements AbstractPathElement2X {
 					this.getToY()+")"; //$NON-NLS-1$
 		}
 
+		@Override
+		public void toArray(DoubleProperty[] array) {
+			array[0] = new SimpleDoubleProperty(this.getCtrlX1());
+			array[1] = new SimpleDoubleProperty(this.getCtrlY1());
+			array[2] = new SimpleDoubleProperty(this.getCtrlX2());
+			array[3] = new SimpleDoubleProperty(this.getCtrlY2());
+			array[4] = new SimpleDoubleProperty(this.getToX());
+			array[5] = new SimpleDoubleProperty(this.getToY());
+		}
+
 		
 
 	}
@@ -437,6 +481,11 @@ public abstract class AbstractPathElement2D implements AbstractPathElement2X {
 		@Override
 		public String toString() {
 			return "CLOSE"; //$NON-NLS-1$
+		}
+
+		@Override
+		public void toArray(DoubleProperty[] array) {
+			// 
 		}
 
 	}

@@ -447,7 +447,7 @@ public class GeneratePictureForTest {
 		for(Path2f path : this.paths) {
 			g.setColor(colors[colorIndex]);
 			colorIndex = (colorIndex+1)%colors.length;
-			pi = path.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO);
+			pi = path.getPathIteratorDiscrete(MathConstants.SPLINE_APPROXIMATION_RATIO);
 			boolean closed = false;
 			int mx, my, cx, cy;
 			mx = my = cx = cy = 0;

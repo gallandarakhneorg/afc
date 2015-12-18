@@ -33,7 +33,11 @@ import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Path2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
+import org.arakhne.afc.math.geometry.d2.discrete.PathIterator2i;
 import org.eclipse.xtext.xbase.lib.Pure;
+
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 
 
 /** A generic path.
@@ -51,7 +55,7 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 	/** Multiple of cubic & quad curve size.
 	 */
 	static final int GROW_SIZE = 24;
-	
+
 	/** Replies the point on the path that is closest to the given point.
 	 * <p>
 	 * <strong>CAUTION:</strong> This function works only on path iterators
@@ -158,7 +162,7 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 		double bestDist = Double.NEGATIVE_INFINITY;
 		Point2D candidate;
 		AbstractPathElement2F pe;
-		
+
 		while (pi.hasNext()) {
 			pe = pi.next();
 
@@ -1177,6 +1181,31 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 		}
 	}
 
+	/**
+	 * @param p
+	 */
+	public Path2f(Path2d p) {
+		this.coords = new double[p.coordsProperty.length];
+		for(int i=0;i<p.numCoordsProperty.get();i++) {
+			this.coords[i] = p.coordsProperty[i].get();
+		}
+		this.isEmpty = Boolean.valueOf(p.isEmpty());
+		this.isPolyline = Boolean.valueOf(p.isPolyline());
+		this.numCoords = p.numCoordsProperty.get();
+		this.numTypes = p.numTypesProperty.get();
+		this.types = p.types.clone();
+		this.windingRule = p.windingRule;
+		Rectangle2f box;
+		box = new Rectangle2f(p.toBoundingBox());
+		if (box!=null) {
+			this.graphicalBounds = new SoftReference<>(box.clone());
+		}
+		box = new Rectangle2f(p.toBoundingBoxWithCtrlPoints());
+		if (box!=null) {
+			this.logicalBounds = new SoftReference<>(box.clone());
+		}
+	}
+
 	@Override
 	public void clear() {
 		this.types = new PathElementType[GROW_SIZE];
@@ -1213,7 +1242,7 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 		clone.windingRule = this.windingRule;
 		return clone;
 	}
-	
+
 
 	@Override
 	public PathWindingRule getWindingRule() {
@@ -1383,48 +1412,7 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 		}
 	}
 
-	@Pure
-	@Override
-	public PathIterator2f getPathIterator(double flatness) {
-		return new FlatteningPathIterator(getWindingRule(), getPathIterator(null), flatness, 10);
-	}
 
-	/** Replies an iterator on the path elements.
-	 * <p>
-	 * Only {@link PathElementType#MOVE_TO},
-	 * {@link PathElementType#LINE_TO}, and 
-	 * {@link PathElementType#CLOSE} types are returned by the iterator.
-	 * <p>
-	 * The amount of subdivision of the curved segments is controlled by the 
-	 * flatness parameter, which specifies the maximum distance that any point 
-	 * on the unflattened transformed curve can deviate from the returned
-	 * flattened path segments. Note that a limit on the accuracy of the
-	 * flattened path might be silently imposed, causing very small flattening
-	 * parameters to be treated as larger values. This limit, if there is one,
-	 * is defined by the particular implementation that is used.
-	 * <p>
-	 * The iterator for this class is not multi-threaded safe.
-	 *
-	 * @param transform is an optional affine Transform2D to be applied to the
-	 * coordinates as they are returned in the iteration, or <code>null</code> if 
-	 * untransformed coordinates are desired.
-	 * @param flatness is the maximum distance that the line segments used to approximate
-	 * the curved segments are allowed to deviate from any point on the original curve.
-	 * @return an iterator on the path elements.
-	 */
-	public PathIterator2f getPathIterator(Transform2D transform, double flatness) {
-		return new FlatteningPathIterator(getWindingRule(), getPathIterator(transform), flatness, 10);
-	}
-
-	/** {@inheritDoc}
-	 */
-	@Override
-	public PathIterator2f getPathIterator(Transform2D transform) {
-		if (transform == null) {
-			return new CopyPathIterator();
-		}
-		return new TransformPathIterator(transform);
-	}
 
 	/** Transform the current path.
 	 * This function changes the current path.
@@ -1464,9 +1452,70 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 	/** {@inheritDoc}
 	 */
 	@Override
+	public PathIterator2f getPathIterator(Transform2D transform) {
+		if (transform == null) {
+			return new CopyPathIterator2f();
+		}
+		return new TransformPathIterator2f(transform);
+	}
+
+	@Override
+	public PathIterator2d getPathIteratorProperty(Transform2D transform) {
+		if (transform == null) {
+			return new CopyPathIterator2d();
+		}
+		return new TransformPathIterator2d(transform);
+	}
+
+	/** Replies an iterator on the path elements.
+	 * <p>
+	 * Only {@link PathElementType#MOVE_TO},
+	 * {@link PathElementType#LINE_TO}, and 
+	 * {@link PathElementType#CLOSE} types are returned by the iterator.
+	 * <p>
+	 * The amount of subdivision of the curved segments is controlled by the 
+	 * flatness parameter, which specifies the maximum distance that any point 
+	 * on the unflattened transformed curve can deviate from the returned
+	 * flattened path segments. Note that a limit on the accuracy of the
+	 * flattened path might be silently imposed, causing very small flattening
+	 * parameters to be treated as larger values. This limit, if there is one,
+	 * is defined by the particular implementation that is used.
+	 * <p>
+	 * The iterator for this class is not multi-threaded safe.
+	 *
+	 * @param transform is an optional affine Transform2D to be applied to the
+	 * coordinates as they are returned in the iteration, or <code>null</code> if 
+	 * untransformed coordinates are desired.
+	 * @param flatness is the maximum distance that the line segments used to approximate
+	 * the curved segments are allowed to deviate from any point on the original curve.
+	 * @return an iterator on the path elements.
+	 */
+	public PathIterator2f getPathIterator(Transform2D transform, double flatness) {
+		return new FlatteningPathIterator(getWindingRule(), getPathIterator(transform), flatness, 10);
+	}
+	
+	@Pure
+	@Override
+	public PathIterator2f getPathIterator(double flatness) {
+		return new FlatteningPathIterator(getWindingRule(), getPathIterator(null), flatness, 10);
+	}
+
+	@Override
+	public PathIterator2d getPathIteratorProperty(double flatness) {
+		return new Path2d.FlatteningPathIterator(getWindingRule(), getPathIteratorProperty(null), flatness, 10);
+	}
+	
+	@Override
+	public PathIterator2i getPathIteratorDiscrete(double flatness) {
+		return null;
+	}
+	
+	/** {@inheritDoc}
+	 */
+	@Override
 	public Shape2F createTransformedShape(Transform2D transform) {
 		Path2f newPath = new Path2f(getWindingRule());
-		PathIterator2f pi = getPathIterator();
+		PathIterator2f pi = (PathIterator2f)getPathIterator();
 		Point2f p = new Point2f();
 		Point2f t1 = new Point2f();
 		Point2f t2 = new Point2f();
@@ -1533,7 +1582,7 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 	}
 
 	@Override
-	public boolean contains(Rectangle2f r) {
+	public boolean contains(AbstractRectangle2F<?> r) {
 		return contains(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
 				r.getMinX(), r.getMinY(), r.getWidth(), r.getHeight());
 	}
@@ -1552,7 +1601,7 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 	}
 
 	@Override
-	public boolean intersects(Ellipse2f s) {
+	public boolean intersects(AbstractEllipse2F<?> s) {
 		int mask = (this.windingRule == PathWindingRule.NON_ZERO ? -1 : 2);
 		int crossings = computeCrossingsFromEllipse(
 				0,
@@ -1564,7 +1613,7 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 	}
 
 	@Override
-	public boolean intersects(Circle2f s) {
+	public boolean intersects(AbstractCircle2F<?> s) {
 		int mask = (this.windingRule == PathWindingRule.NON_ZERO ? -1 : 2);
 		int crossings = computeCrossingsFromCircle(
 				0,
@@ -1577,7 +1626,7 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 	}
 
 	@Override
-	public boolean intersects(Segment2f s) {
+	public boolean intersects(AbstractSegment2F<?> s) {
 		int mask = (this.windingRule == PathWindingRule.NON_ZERO ? -1 : 2);
 		int crossings = computeCrossingsFromSegment(
 				0,
@@ -1599,6 +1648,18 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 		return (crossings == MathConstants.SHAPE_INTERSECTS ||
 				(crossings & mask) != 0);
 	}
+	
+	@Override
+	public boolean intersects(Path2d s) {
+		int mask = (this.windingRule == PathWindingRule.NON_ZERO ? -1 : 2);
+		int crossings = computeCrossingsFromPath(
+				s.getPathIteratorProperty(MathConstants.SPLINE_APPROXIMATION_RATIO),
+				new PathShadow2d(this),
+				false,
+				true);
+		return (crossings == MathConstants.SHAPE_INTERSECTS ||
+				(crossings & mask) != 0);
+	}
 
 	@Override
 	public boolean intersects(PathIterator2f s) {
@@ -1611,9 +1672,21 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 		return (crossings == MathConstants.SHAPE_INTERSECTS ||
 				(crossings & mask) != 0);
 	}
+	
+	@Override
+	public boolean intersects(PathIterator2d s) {
+		int mask = (this.windingRule == PathWindingRule.NON_ZERO ? -1 : 2);
+		int crossings = computeCrossingsFromPath(
+				s,
+				new PathShadow2d(this),
+				false,
+				true);
+		return (crossings == MathConstants.SHAPE_INTERSECTS ||
+				(crossings & mask) != 0);
+	}
 
 	@Override
-	public boolean intersects(OrientedRectangle2f s) {
+	public boolean intersects(AbstractOrientedRectangle2F<?> s) {
 		return s.intersects(this);
 	}
 
@@ -1709,6 +1782,142 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 						endx, endy);
 				n = computeCrossingsFromPath(
 						subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						shadow,
+						false,
+						false);
+				if (n==MathConstants.SHAPE_INTERSECTS)
+					return n;
+				crossings += n;
+				curx = endx;
+				cury = endy;
+				break;
+			case CLOSE:
+				if (curx != movx || cury != movy) {
+					crossings = shadow.computeCrossings(crossings,
+							curx, cury,
+							movx, movy);
+				}
+				// Stop as soon as possible
+				if (crossings!=0) return crossings;
+				curx = movx;
+				cury = movy;
+				break;
+			default:
+			}
+		}
+
+		assert(crossings != MathConstants.SHAPE_INTERSECTS);
+
+		boolean isOpen = (curx != movx) || (cury != movy);
+
+		if (isOpen) {
+			if (closeable) {
+				// Not closed
+				crossings = shadow.computeCrossings(crossings,
+						curx, cury,
+						movx, movy);
+			}
+			else if (onlyIntersectWhenOpen) {
+				// Assume that when is the path is open, only
+				// SHAPE_INTERSECTS may be return
+				crossings = 0;
+			}
+		}
+
+		return crossings;
+	}
+	
+	/**
+	 * Accumulate the number of times the path crosses the shadow
+	 * extending to the right of the second path.  See the comment
+	 * for the SHAPE_INTERSECTS constant for more complete details.
+	 * The return value is the sum of all crossings for both the
+	 * top and bottom of the shadow for every segment in the path,
+	 * or the special value SHAPE_INTERSECTS if the path ever enters
+	 * the interior of the rectangle.
+	 * The path must start with a SEG_MOVETO, otherwise an exception is
+	 * thrown.
+	 * The caller must check r[xy]{min,max} for NaN values.
+	 * 
+	 * @param iterator1 is the iterator on the path elements.
+	 * @param shadow is the description of the shape to project to the right.
+	 * @param closeable indicates if the shape is automatically closed or not.
+	 * @param onlyIntersectWhenOpen indicates if the crossings is set to 0 when
+	 * the path is open and there is not SHAPE_INTERSECT.
+	 * @return the crossings.
+	 * @see "Weiler–Atherton clipping algorithm"
+	 */
+	public static int computeCrossingsFromPath(
+			PathIterator2d iterator1, 
+			PathShadow2d shadow,
+			boolean closeable,
+			boolean onlyIntersectWhenOpen) {
+		if (!iterator1.hasNext()) return 0;
+
+		AbstractPathElement2D pathElement1 = iterator1.next();
+
+		if (pathElement1.type != PathElementType.MOVE_TO) {
+			throw new IllegalArgumentException("missing initial moveto in the first path definition"); //$NON-NLS-1$
+		}
+
+		Path2d subPath;
+		double curx, cury, movx, movy, endx, endy;
+		curx = movx = pathElement1.getToX();
+		cury = movy = pathElement1.getToY();
+		int crossings = 0;
+		int n;
+
+		while (crossings != MathConstants.SHAPE_INTERSECTS
+				&& iterator1.hasNext()) {
+			pathElement1 = iterator1.next();
+			switch (pathElement1.type) {
+			case MOVE_TO:
+				// Count should always be a multiple of 2 here.
+				// assert((crossings & 1) != 0);
+				movx = curx = pathElement1.getToX();
+				movy = cury = pathElement1.getToY();
+				break;
+			case LINE_TO:
+				endx = pathElement1.getToX();
+				endy = pathElement1.getToY();
+				crossings = shadow.computeCrossings(crossings,
+						curx, cury,
+						endx, endy);
+				if (crossings==MathConstants.SHAPE_INTERSECTS)
+					return crossings;
+				curx = endx;
+				cury = endy;
+				break;
+			case QUAD_TO:
+				endx = pathElement1.getToX();
+				endy = pathElement1.getToY();
+				subPath = new Path2d();
+				subPath.moveTo(curx, cury);
+				subPath.quadTo(
+						pathElement1.getCtrlX1(), pathElement1.getCtrlY1(),
+						endx, endy);
+				n = computeCrossingsFromPath(
+						subPath.getPathIteratorProperty(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						shadow,
+						false,
+						false);
+				if (n==MathConstants.SHAPE_INTERSECTS)
+					return n;
+				crossings += n;
+				curx = endx;
+				cury = endy;
+				break;
+			case CURVE_TO:
+				endx = pathElement1.getToX();
+				endy = pathElement1.getToY();
+				subPath = new Path2d();
+				subPath.moveTo(curx, cury);
+				subPath.curveTo(
+						pathElement1.getCtrlX1(), pathElement1.getCtrlY1(),
+						pathElement1.getCtrlX2(), pathElement1.getCtrlY2(),
+						endx, endy);
+				n = computeCrossingsFromPath(
+						subPath.getPathIteratorProperty(MathConstants.SPLINE_APPROXIMATION_RATIO),
 						shadow,
 						false,
 						false);
@@ -1888,7 +2097,7 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 	 * @see #toBoundingBoxWithCtrlPoints(Rectangle2f)
 	 */
 	@Override
-	public void toBoundingBox(Rectangle2f box) {
+	public void toBoundingBox(AbstractRectangle2F<?> box) {
 		Rectangle2f bb = this.graphicalBounds==null ? null : this.graphicalBounds.get();
 		if (bb==null) {
 			bb = new Rectangle2f();
@@ -1931,7 +2140,7 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 				p.getX(), p.getY());
 	}
 
-	
+
 	public boolean equals(Path2f path) {
 		return (this.numCoords==path.numCoords
 				&& this.numTypes==path.numTypes
@@ -1939,7 +2148,7 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 				&& Arrays.equals(this.types, path.types)
 				&& this.windingRule==path.windingRule);
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof Path2f) {
@@ -2129,7 +2338,7 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 	public boolean isEmpty() {
 		if (this.isEmpty==null) {
 			this.isEmpty = Boolean.TRUE;
-			PathIterator2f pi = getPathIterator();
+			PathIterator2f pi = (PathIterator2f)getPathIterator();
 			AbstractPathElement2F pe;
 			while (this.isEmpty==Boolean.TRUE && pi.hasNext()) {
 				pe = pi.next();
@@ -2145,7 +2354,7 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 	public boolean isPolyline() {
 		if (this.isPolyline==null) {
 			this.isPolyline = Boolean.TRUE;
-			PathIterator2f pi = getPathIterator();
+			PathIterator2f pi = (PathIterator2f)getPathIterator();
 			AbstractPathElement2F pe;
 			PathElementType t;
 			while (this.isPolyline==Boolean.TRUE && pi.hasNext()) {
@@ -2285,17 +2494,18 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 	@Override
 	public void set(Shape2F s) {
 		clear();
-		add(s.getPathIterator());
+		add((PathIterator2f)s.getPathIterator());
 	}
 
 	/** A path iterator that does not transform the coordinates.
 	 *
 	 * @author $Author: galland$
+	 * @author $Author: hjaffali$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	private class CopyPathIterator implements PathIterator2f {
+	private class CopyPathIterator2f implements PathIterator2f {
 
 		private final Point2D p1 = new Point2f();
 		private final Point2D p2 = new Point2f();
@@ -2305,7 +2515,7 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 
 		/**
 		 */
-		public CopyPathIterator() {
+		public CopyPathIterator2f() {
 			//
 		}
 
@@ -2416,16 +2626,148 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 			return Path2f.this.isPolyline();
 		}
 
-	} // class CopyPathIterator
-
-	/** A path iterator that transforms the coordinates.
+	} // class CopyPathIterator2d
+	
+	/** A path iterator that does not transform the coordinates.
 	 *
 	 * @author $Author: galland$
+	 * @author $Author: hjaffali$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	private class TransformPathIterator implements PathIterator2f {
+	private class CopyPathIterator2d implements PathIterator2d {
+
+		private final Point2D p1 = new Point2f();
+		private final Point2D p2 = new Point2f();
+		private int iType = 0;
+		private int iCoord = 0;
+		private double movex, movey;
+
+		/**
+		 */
+		public CopyPathIterator2d() {
+			//
+		}
+
+		@Pure
+		@Override
+		public boolean hasNext() {
+			return this.iType<Path2f.this.numTypes;
+		}
+
+		@Override
+		public AbstractPathElement2D next() {
+			int type = this.iType;
+			if (this.iType>=Path2f.this.numTypes) {
+				throw new NoSuchElementException();
+			}
+			AbstractPathElement2D element = null;
+			switch(Path2f.this.types[type]) {
+			case MOVE_TO:
+				if (this.iCoord+2>Path2f.this.numCoords) {
+					throw new NoSuchElementException();
+				}
+				this.movex = Path2f.this.coords[this.iCoord++];
+				this.movey = Path2f.this.coords[this.iCoord++];
+				this.p2.set(this.movex, this.movey);
+				element = new AbstractPathElement2D.MovePathElement2d(
+						this.p2.getX(), this.p2.getY());
+				break;
+			case LINE_TO:
+				if (this.iCoord+2>Path2f.this.numCoords) {
+					throw new NoSuchElementException();
+				}
+				this.p1.set(this.p2);
+				this.p2.set(
+						Path2f.this.coords[this.iCoord++],
+						Path2f.this.coords[this.iCoord++]);
+				element = new AbstractPathElement2D.LinePathElement2d(
+						this.p1.getX(), this.p1.getY(),
+						this.p2.getX(), this.p2.getY());
+				break;
+			case QUAD_TO:
+			{
+				if (this.iCoord+4>Path2f.this.numCoords) {
+					throw new NoSuchElementException();
+				}
+				this.p1.set(this.p2);
+				double ctrlx = Path2f.this.coords[this.iCoord++];
+				double ctrly = Path2f.this.coords[this.iCoord++];
+				this.p2.set(
+						Path2f.this.coords[this.iCoord++],
+						Path2f.this.coords[this.iCoord++]);
+				element = new AbstractPathElement2D.QuadPathElement2d(
+						this.p1.getX(), this.p1.getY(),
+						ctrlx, ctrly,
+						this.p2.getX(), this.p2.getY());
+			}
+			break;
+			case CURVE_TO:
+			{
+				if (this.iCoord+6>Path2f.this.numCoords) {
+					throw new NoSuchElementException();
+				}
+				this.p1.set(this.p2);
+				double ctrlx1 = Path2f.this.coords[this.iCoord++];
+				double ctrly1 = Path2f.this.coords[this.iCoord++];
+				double ctrlx2 = Path2f.this.coords[this.iCoord++];
+				double ctrly2 = Path2f.this.coords[this.iCoord++];
+				this.p2.set(
+						Path2f.this.coords[this.iCoord++],
+						Path2f.this.coords[this.iCoord++]);
+				element = new AbstractPathElement2D.CurvePathElement2d(
+						this.p1.getX(), this.p1.getY(),
+						ctrlx1, ctrly1,
+						ctrlx2, ctrly2,
+						this.p2.getX(), this.p2.getY());
+			}
+			break;
+			case CLOSE:
+				this.p1.set(this.p2);
+				this.p2.set(this.movex, this.movey);
+				element = new AbstractPathElement2D.ClosePathElement2d(
+						this.p1.getX(), this.p1.getY(),
+						this.p2.getX(), this.p2.getY());
+				break;
+			default:
+			}
+			if (element==null)
+				throw new NoSuchElementException();
+
+			++this.iType;
+
+			return element;
+		}
+
+		@Override
+		public void remove() {
+			throw new UnsupportedOperationException();
+		}
+
+		@Pure
+		@Override
+		public PathWindingRule getWindingRule() {
+			return Path2f.this.getWindingRule();
+		}
+
+		@Pure
+		@Override
+		public boolean isPolyline() {
+			return Path2f.this.isPolyline();
+		}
+
+	} // class CopyPathIterator2d
+
+	/** A path iterator that transforms the coordinates.
+	 *
+	 * @author $Author: galland$
+	 * @author $Author: hjaffali$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	private class TransformPathIterator2f implements PathIterator2f {
 
 		private final Transform2D transform;
 		private final Point2D p1 = new Point2f();
@@ -2439,7 +2781,7 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 		/**
 		 * @param transform1
 		 */
-		public TransformPathIterator(Transform2D transform1) {
+		public TransformPathIterator2f(Transform2D transform1) {
 			assert(transform1!=null);
 			this.transform = transform1;
 		}
@@ -2546,17 +2888,151 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 			return Path2f.this.isPolyline();
 		}
 
-	}  // class TransformPathIterator
+	}  // class TransformPathIterator2f
+	
+	/** A path iterator that transforms the coordinates.
+	 *
+	 * @author $Author: galland$
+	 * @author $Author: hjaffali$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	private class TransformPathIterator2d implements PathIterator2d {
+
+		private final Transform2D transform;
+		private final Point2D p1 = new Point2f();
+		private final Point2D p2 = new Point2f();
+		private final Point2D ptmp1 = new Point2f();
+		private final Point2D ptmp2 = new Point2f();
+		private int iType = 0;
+		private int iCoord = 0;
+		private double movex, movey;
+
+		/**
+		 * @param transform1
+		 */
+		public TransformPathIterator2d(Transform2D transform1) {
+			assert(transform1!=null);
+			this.transform = transform1;
+		}
+
+		@Pure
+		@Override
+		public boolean hasNext() {
+			return this.iType<Path2f.this.numTypes;
+		}
+
+		@Override
+		public AbstractPathElement2D next() {
+			if (this.iType>=Path2f.this.numTypes) {
+				throw new NoSuchElementException();
+			}
+			AbstractPathElement2D element = null;
+			switch(Path2f.this.types[this.iType++]) {
+			case MOVE_TO:
+				this.movex = Path2f.this.coords[this.iCoord++];
+				this.movey = Path2f.this.coords[this.iCoord++];
+				this.p2.set(this.movex, this.movey);
+				this.transform.transform(this.p2);
+				element = new AbstractPathElement2D.MovePathElement2d(
+						this.p2.getX(), this.p2.getY());
+				break;
+			case LINE_TO:
+				this.p1.set(this.p2);
+				this.p2.set(
+						Path2f.this.coords[this.iCoord++],
+						Path2f.this.coords[this.iCoord++]);
+				this.transform.transform(this.p2);
+				element = new AbstractPathElement2D.LinePathElement2d(
+						this.p1.getX(), this.p1.getY(),
+						this.p2.getX(), this.p2.getY());
+				break;
+			case QUAD_TO:
+			{
+				this.p1.set(this.p2);
+				this.ptmp1.set(
+						Path2f.this.coords[this.iCoord++],
+						Path2f.this.coords[this.iCoord++]);
+				this.transform.transform(this.ptmp1);
+				this.p2.set(
+						Path2f.this.coords[this.iCoord++],
+						Path2f.this.coords[this.iCoord++]);
+				this.transform.transform(this.p2);
+				element = new AbstractPathElement2D.QuadPathElement2d(
+						this.p1.getX(), this.p1.getY(),
+						this.ptmp1.getX(), this.ptmp1.getY(),
+						this.p2.getX(), this.p2.getY());
+			}
+			break;
+			case CURVE_TO:
+			{
+				this.p1.set(this.p2);
+				this.ptmp1.set(
+						Path2f.this.coords[this.iCoord++],
+						Path2f.this.coords[this.iCoord++]);
+				this.transform.transform(this.ptmp1);
+				this.ptmp2.set(
+						Path2f.this.coords[this.iCoord++],
+						Path2f.this.coords[this.iCoord++]);
+				this.transform.transform(this.ptmp2);
+				this.p2.set(
+						Path2f.this.coords[this.iCoord++],
+						Path2f.this.coords[this.iCoord++]);
+				this.transform.transform(this.p2);
+				element = new AbstractPathElement2D.CurvePathElement2d(
+						this.p1.getX(), this.p1.getY(),
+						this.ptmp1.getX(), this.ptmp1.getY(),
+						this.ptmp2.getX(), this.ptmp2.getY(),
+						this.p2.getX(), this.p2.getY());
+			}
+			break;
+			case CLOSE:
+				this.p1.set(this.p2);
+				this.p2.set(this.movex, this.movey);
+				this.transform.transform(this.p2);
+				element = new AbstractPathElement2D.ClosePathElement2d(
+						this.p1.getX(), this.p1.getY(),
+						this.p2.getX(), this.p2.getY());
+				break;
+			default:
+			}
+			if (element==null)
+				throw new NoSuchElementException();
+			return element;
+		}
+
+		@Override
+		public void remove() {
+			throw new UnsupportedOperationException();
+		}
+
+		@Pure
+		@Override
+		public PathWindingRule getWindingRule() {
+			return Path2f.this.getWindingRule();
+		}
+
+		@Pure
+		@Override
+		public boolean isPolyline() {
+			return Path2f.this.isPolyline();
+		}
+
+	}  // class TransformPathIterator2d
+	
+	
 
 	/** A path iterator that is flattening the path.
 	 * This iterator was copied from AWT FlatteningPathIterator.
 	 *
 	 * @author $Author: galland$
+	 * @author $Author: hjaffali$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	private static class FlatteningPathIterator implements PathIterator2f {
+	protected static class FlatteningPathIterator implements PathIterator2f {
 
 		/** Winding rule of the path.
 		 */
@@ -3060,8 +3536,9 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 		public boolean isPolyline() {
 			return false; // Because the iterator flats the path, this is no curve inside.
 		}
-		
-	} // class FlatteningPathIterator
+
+	} // class FlatteningPathIterator2f
+	
 
 	/** An collection of the points of the path.
 	 *
@@ -3236,5 +3713,11 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 		}
 
 	}
+
+	@Override
+	public PathIterator2i getPathIteratorDiscrete() {
+		return null;
+	}
 	
+
 }

@@ -300,7 +300,7 @@ public abstract class AbstractCircle2F<T extends Shape2F> extends AbstractShape2
 	 */
 	@Pure
 	@Override
-	public void toBoundingBox(Rectangle2f box) {
+	public void toBoundingBox(AbstractRectangle2F<?> box) {
 		box.setFromCorners(this.getX()-this.getRadius(),
 				this.getY()-this.getRadius(),
 				this.getX()+this.getRadius(),
@@ -355,7 +355,7 @@ public abstract class AbstractCircle2F<T extends Shape2F> extends AbstractShape2
 	 */
 	@Pure
 	@Override
-	public boolean contains(Rectangle2f r) {
+	public boolean contains(AbstractRectangle2F<?> r) {
 		return containsCircleRectangle(this.getX(), this.getY(), this.getRadius(),
 				r.getMinX(), r.getMinY(), r.getWidth(), r.getHeight());
 	}
@@ -398,10 +398,18 @@ public abstract class AbstractCircle2F<T extends Shape2F> extends AbstractShape2
 	@Override
 	public PathIterator2f getPathIterator(Transform2D transform) {
 		if (transform==null)
-			return new CopyPathIterator(this.getX(), this.getY(), this.getRadius());
-		return new TransformPathIterator(this.getX(), this.getY(), this.getRadius(), transform);
+			return new CopyPathIterator2f(this.getX(), this.getY(), this.getRadius());
+		return new TransformPathIterator2f(this.getX(), this.getY(), this.getRadius(), transform);
 	}
 
+	@Pure
+	@Override
+	public PathIterator2d getPathIteratorProperty(Transform2D transform) {
+		if (transform==null)
+			return new CopyPathIterator2d(this.getX(), this.getY(), this.getRadius());
+		return new TransformPathIterator2d(this.getX(), this.getY(), this.getRadius(), transform);
+	}
+	
 	@Pure
 	@Override
 	public boolean equals(Object obj) {
@@ -438,7 +446,7 @@ public abstract class AbstractCircle2F<T extends Shape2F> extends AbstractShape2
 
 	@Pure
 	@Override
-	public boolean intersects(Ellipse2f s) {
+	public boolean intersects(AbstractEllipse2F<?> s) {
 		return AbstractEllipse2F.intersectsEllipseEllipse(
 				this.getX()-this.getRadius(),this.getY()-this.getRadius(),
 				this.getX()+this.getRadius(), this.getY()+this.getRadius(),
@@ -448,7 +456,7 @@ public abstract class AbstractCircle2F<T extends Shape2F> extends AbstractShape2
 
 	@Pure
 	@Override
-	public boolean intersects(Circle2f s) {
+	public boolean intersects(AbstractCircle2F<?> s) {
 		return intersectsCircleCircle(
 				this.getX(), this.getY(), this.getRadius(),
 				s.getX(), s.getY(), s.getRadius());
@@ -456,7 +464,7 @@ public abstract class AbstractCircle2F<T extends Shape2F> extends AbstractShape2
 
 	@Pure
 	@Override
-	public boolean intersects(Segment2f s) {
+	public boolean intersects(AbstractSegment2F<?> s) {
 		return intersectsCircleSegment(
 				this.getX(), this.getY(), this.getRadius(),
 				s.getX1(), s.getY1(),
@@ -467,6 +475,12 @@ public abstract class AbstractCircle2F<T extends Shape2F> extends AbstractShape2
 	@Override
 	public boolean intersects(Path2f s) {
 		return intersects(s.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO));
+	}
+	
+	@Pure
+	@Override
+	public boolean intersects(Path2d s) {
+		return intersects(s.getPathIteratorProperty(MathConstants.SPLINE_APPROXIMATION_RATIO));
 	}
 	
 	@Override
@@ -480,10 +494,22 @@ public abstract class AbstractCircle2F<T extends Shape2F> extends AbstractShape2
 		return (crossings == MathConstants.SHAPE_INTERSECTS ||
 				(crossings & mask) != 0);
 	}
+	
+	@Override
+	public boolean intersects(PathIterator2d s) {
+		int mask = (s.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2);
+		int crossings = Path2d.computeCrossingsFromCircle(
+				0,
+				s,
+				this.getX(), this.getY(), this.getRadius(),
+				false, true);
+		return (crossings == MathConstants.SHAPE_INTERSECTS ||
+				(crossings & mask) != 0);
+	}
 
 	@Pure
 	@Override
-	public boolean intersects(OrientedRectangle2f s) {
+	public boolean intersects(AbstractOrientedRectangle2F<?> s) {
 		return AbstractOrientedRectangle2F.intersectsOrientedRectangleSolidCircle(
 				s.getCenterX(), s.getCenterY(), 
 				s.getFirstAxisX(), s.getFirstAxisY(), s.getFirstAxisExtent(),
@@ -508,11 +534,12 @@ public abstract class AbstractCircle2F<T extends Shape2F> extends AbstractShape2
 	/** Iterator on the path elements of the circle.
 	 * 
 	 * @author $Author: galland$
+	 * @author $Author: hjaffali$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	private static class CopyPathIterator implements PathIterator2f {
+	private static class CopyPathIterator2f implements PathIterator2f {
 		
 		private final double x;
 		private final double y;
@@ -526,7 +553,7 @@ public abstract class AbstractCircle2F<T extends Shape2F> extends AbstractShape2
 		 * @param y1
 		 * @param r1
 		 */
-		public CopyPathIterator(double x1, double y1, double r1) {
+		public CopyPathIterator2f(double x1, double y1, double r1) {
 			this.r = Math.max(0f, r1);
 			this.x = x1 - this.r;
 			this.y = y1 - this.r;
@@ -603,11 +630,108 @@ public abstract class AbstractCircle2F<T extends Shape2F> extends AbstractShape2
 	/** Iterator on the path elements of the circle.
 	 * 
 	 * @author $Author: galland$
+	 * @author $Author: hjaffali$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	private static class TransformPathIterator implements PathIterator2f {
+	private static class CopyPathIterator2d implements PathIterator2d {
+		
+		private final double x;
+		private final double y;
+		private final double r;
+		private int index = 0;
+		private double movex, movey;
+		private double lastx, lasty;
+		
+		/**
+		 * @param x1
+		 * @param y1
+		 * @param r1
+		 */
+		public CopyPathIterator2d(double x1, double y1, double r1) {
+			this.r = Math.max(0f, r1);
+			this.x = x1 - this.r;
+			this.y = y1 - this.r;
+			if (this.r<=0f) {
+				this.index = 6;
+			}
+		}
+
+		@Pure
+		@Override
+		public boolean hasNext() {
+			return this.index<=5;
+		}
+	
+		@SuppressWarnings("synthetic-access")
+		@Override
+		public AbstractPathElement2D next() {
+			if (this.index>5) throw new NoSuchElementException();
+			int idx = this.index;
+			++this.index;
+			if (idx==0) {
+				double dr = 2f * this.r;
+				double ctrls[] = CTRL_PTS[3];
+				this.movex = (this.x + ctrls[4] * dr);
+				this.movey = (this.y + ctrls[5] * dr);
+				this.lastx = this.movex;
+				this.lasty = this.movey;
+				return new AbstractPathElement2D.MovePathElement2d(
+						this.lastx, this.lasty);
+			}
+			else if (idx<5) {
+				double dr = 2f * this.r;
+				double ctrls[] = CTRL_PTS[idx - 1];
+				double ppx = this.lastx;
+				double ppy = this.lasty;
+				this.lastx = (this.x + ctrls[4] * dr);
+				this.lasty = (this.y + ctrls[5] * dr);
+				return new AbstractPathElement2D.CurvePathElement2d(
+						ppx, ppy,
+						(this.x + ctrls[0] * dr),
+						(this.y + ctrls[1] * dr),
+						(this.x + ctrls[2] * dr),
+						(this.y + ctrls[3] * dr),
+						this.lastx, this.lasty);
+			}
+			double ppx = this.lastx;
+			double ppy = this.lasty;
+			this.lastx = this.movex;
+			this.lasty = this.movey;
+			return new AbstractPathElement2D.ClosePathElement2d(
+					ppx, ppy,
+					this.lastx, this.lasty);
+		}
+	
+		@Override
+		public void remove() {
+			throw new UnsupportedOperationException();
+		}
+
+		@Pure
+		@Override
+		public PathWindingRule getWindingRule() {
+			return PathWindingRule.NON_ZERO;
+		}
+
+		@Pure
+		@Override
+		public boolean isPolyline() {
+			return false;
+		}
+
+	}
+	
+	/** Iterator on the path elements of the circle.
+	 * 
+	 * @author $Author: galland$
+	 * @author $Author: hjaffali$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	private static class TransformPathIterator2f implements PathIterator2f {
 			
 		private final Point2D p1 = new Point2f();
 		private final Point2D p2 = new Point2f();
@@ -626,7 +750,7 @@ public abstract class AbstractCircle2F<T extends Shape2F> extends AbstractShape2
 		 * @param r1
 		 * @param transform1
 		 */
-		public TransformPathIterator(double x1, double y1, double r1, Transform2D transform1) {
+		public TransformPathIterator2f(double x1, double y1, double r1, Transform2D transform1) {
 			assert(transform1!=null);
 			this.transform = transform1;
 			this.r = Math.max(0f, r1);
@@ -685,6 +809,115 @@ public abstract class AbstractCircle2F<T extends Shape2F> extends AbstractShape2
 			this.p2.set(this.movex, this.movey);
 			this.transform.transform(this.p2);
 			return new AbstractPathElement2F.ClosePathElement2f(
+					this.p1.getX(), this.p1.getY(),
+					this.p2.getX(), this.p2.getY());
+		}
+	
+		@Override
+		public void remove() {
+			throw new UnsupportedOperationException();
+		}
+
+		@Pure
+		@Override
+		public PathWindingRule getWindingRule() {
+			return PathWindingRule.NON_ZERO;
+		}
+
+		@Pure
+		@Override
+		public boolean isPolyline() {
+			return false;
+		}
+
+	}
+	
+	/** Iterator on the path elements of the circle.
+	 * 
+	 * @author $Author: galland$
+	 * @author $Author: hjaffali$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	private static class TransformPathIterator2d implements PathIterator2d {
+			
+		private final Point2D p1 = new Point2f();
+		private final Point2D p2 = new Point2f();
+		private final Point2D ptmp1 = new Point2f();
+		private final Point2D ptmp2 = new Point2f();
+		private final Transform2D transform;
+		private final double x;
+		private final double y;
+		private final double r;
+		private int index = 0;
+		private double movex, movey;
+		
+		/**
+		 * @param x1
+		 * @param y1
+		 * @param r1
+		 * @param transform1
+		 */
+		public TransformPathIterator2d(double x1, double y1, double r1, Transform2D transform1) {
+			assert(transform1!=null);
+			this.transform = transform1;
+			this.r = Math.max(0f, r1);
+			this.x = x1 - this.r;
+			this.y = y1 - this.r;
+			if (this.r<=0f) {
+				this.index = 6;
+			}
+		}
+
+		@Pure
+		@Override
+		public boolean hasNext() {
+			return this.index<=5;
+		}
+	
+		@SuppressWarnings("synthetic-access")
+		@Override
+		public AbstractPathElement2D next() {
+			if (this.index>5) throw new NoSuchElementException();
+			int idx = this.index;
+			++this.index;
+			if (idx==0) {
+				double dr = 2f * this.r;
+				double ctrls[] = CTRL_PTS[3];
+				this.movex = (this.x + ctrls[4] * dr);
+				this.movey = (this.y + ctrls[5] * dr);
+				this.p2.set(this.movex, this.movey);
+				this.transform.transform(this.p2);
+				return new AbstractPathElement2D.MovePathElement2d(
+						this.p2.getX(), this.p2.getY());
+			}
+			else if (idx<5) {
+				double dr = 2f * this.r;
+				double ctrls[] = CTRL_PTS[idx - 1];
+				this.p1.set(this.p2);
+				this.p2.set(
+						(this.x + ctrls[4] * dr),
+						(this.y + ctrls[5] * dr));
+				this.transform.transform(this.p2);
+				this.ptmp1.set(
+						(this.x + ctrls[0] * dr),
+						(this.y + ctrls[1] * dr));
+				this.transform.transform(this.ptmp1);
+				this.ptmp2.set(
+						(this.x + ctrls[2] * dr),
+						(this.y + ctrls[3] * dr));
+				this.transform.transform(this.ptmp2);
+				return new AbstractPathElement2D.CurvePathElement2d(
+						this.p1.getX(), this.p1.getY(),
+						this.ptmp1.getX(), this.ptmp1.getY(),
+						this.ptmp2.getX(), this.ptmp2.getY(),
+						this.p2.getX(), this.p2.getY());
+			}
+			this.p1.set(this.p2);
+			this.p2.set(this.movex, this.movey);
+			this.transform.transform(this.p2);
+			return new AbstractPathElement2D.ClosePathElement2d(
 					this.p1.getX(), this.p1.getY(),
 					this.p2.getX(), this.p2.getY());
 		}

@@ -580,7 +580,7 @@ public abstract class AbstractEllipse2F<T extends AbstractRectangularShape2F<T>>
 
 	@Pure
 	@Override
-	public boolean contains(Rectangle2f r) {
+	public boolean contains(AbstractRectangle2F<?> r) {
 		return containsEllipseRectangle(
 				getMinX(), getMinY(), getWidth(), getHeight(),
 				r.getMinX(), r.getMinY(), r.getWidth(), r.getHeight());
@@ -613,11 +613,25 @@ public abstract class AbstractEllipse2F<T extends AbstractRectangularShape2F<T>>
 	@Override
 	public PathIterator2f getPathIterator(Transform2D transform) {
 		if (transform==null) {
-			return new CopyPathIterator(
+			return new CopyPathIterator2f(
 					getMinX(), getMinY(),
 					getMaxX(), getMaxY());
 		}
-		return new TransformPathIterator(
+		return new TransformPathIterator2f(
+				getMinX(), getMinY(),
+				getMaxX(), getMaxY(),
+				transform);
+	}
+	
+	@Pure
+	@Override
+	public PathIterator2d getPathIteratorProperty(Transform2D transform) {
+		if (transform==null) {
+			return new CopyPathIterator2d(
+					getMinX(), getMinY(),
+					getMaxX(), getMaxY());
+		}
+		return new TransformPathIterator2d(
 				getMinX(), getMinY(),
 				getMaxX(), getMaxY(),
 				transform);
@@ -663,7 +677,7 @@ public abstract class AbstractEllipse2F<T extends AbstractRectangularShape2F<T>>
 
 	@Pure
 	@Override
-	public boolean intersects(Ellipse2f s) {
+	public boolean intersects(AbstractEllipse2F<?> s) {
 		return intersectsEllipseRectangle(
 				getMinX(), getMinY(),
 				getMaxX(), getMaxY(),
@@ -673,7 +687,7 @@ public abstract class AbstractEllipse2F<T extends AbstractRectangularShape2F<T>>
 
 	@Pure
 	@Override
-	public boolean intersects(Circle2f s) {
+	public boolean intersects(AbstractCircle2F<?> s) {
 		return intersectsEllipseEllipse(
 				getMinX(), getMinY(),
 				getMaxX(), getMaxY(),
@@ -683,7 +697,7 @@ public abstract class AbstractEllipse2F<T extends AbstractRectangularShape2F<T>>
 
 	@Pure
 	@Override
-	public boolean intersects(Segment2f s) {
+	public boolean intersects(AbstractSegment2F<?> s) {
 		return intersectsEllipseSegment(
 				getMinX(), getMinY(),
 				getWidth(), getHeight(),
@@ -695,6 +709,12 @@ public abstract class AbstractEllipse2F<T extends AbstractRectangularShape2F<T>>
 	@Override
 	public boolean intersects(Path2f s) {
 		return intersects(s.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO));
+	}
+	
+	@Pure
+	@Override
+	public boolean intersects(Path2d s) {
+		return intersects(s.getPathIteratorProperty(MathConstants.SPLINE_APPROXIMATION_RATIO));
 	}
 
 	@Override
@@ -708,10 +728,22 @@ public abstract class AbstractEllipse2F<T extends AbstractRectangularShape2F<T>>
 		return (crossings == MathConstants.SHAPE_INTERSECTS ||
 				(crossings & mask) != 0);
 	}
+	
+	@Override
+	public boolean intersects(PathIterator2d s) {
+		int mask = (s.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2);
+		int crossings = Path2d.computeCrossingsFromEllipse(
+				0,
+				s,
+				getMinX(), getMinY(), getWidth(), getHeight(),
+				false, true);
+		return (crossings == MathConstants.SHAPE_INTERSECTS ||
+				(crossings & mask) != 0);
+	}
 
 	@Pure
 	@Override
-	public boolean intersects(OrientedRectangle2f s) {
+	public boolean intersects(AbstractOrientedRectangle2F<?> s) {
 		return AbstractOrientedRectangle2F.intersectsOrientedRectangleEllipse(
 				s.getCenterX(), s.getCenterY(), 
 				s.getFirstAxisX(), s.getFirstAxisY(), s.getFirstAxisExtent(),
@@ -721,7 +753,7 @@ public abstract class AbstractEllipse2F<T extends AbstractRectangularShape2F<T>>
 
 	@Override
 	public void set(Shape2F s) {
-		Rectangle2f r = s.toBoundingBox();
+		AbstractRectangle2F<?> r = s.toBoundingBox();
 		setFromCorners(r.getMinX(), r.getMinY(), r.getMaxX(), r.getMaxY());
 	}
 
@@ -749,11 +781,12 @@ public abstract class AbstractEllipse2F<T extends AbstractRectangularShape2F<T>>
 
 	/**
 	 * @author $Author: galland$
+	 * @author $Author: hjaffali$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	public static class CopyPathIterator implements PathIterator2f {
+	public static class CopyPathIterator2f implements PathIterator2f {
 
 		private final double x1;
 		private final double y1;
@@ -768,7 +801,7 @@ public abstract class AbstractEllipse2F<T extends AbstractRectangularShape2F<T>>
 		 * @param x2
 		 * @param y2
 		 */
-		public CopyPathIterator(double x11, double y11, double x2, double y2) {
+		public CopyPathIterator2f(double x11, double y11, double x2, double y2) {
 			this.x1 = x11;
 			this.y1 = y11;
 			this.w = x2 - x11;
@@ -836,14 +869,106 @@ public abstract class AbstractEllipse2F<T extends AbstractRectangularShape2F<T>>
 		}
 
 	}
-
+	
 	/**
 	 * @author $Author: galland$
+	 * @author $Author: hjaffali$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	public static class TransformPathIterator implements PathIterator2f {
+	public static class CopyPathIterator2d implements PathIterator2d {
+
+		private final double x1;
+		private final double y1;
+		private final double w;
+		private final double h;
+		private int index;
+		private double lastX, lastY;
+
+		/**
+		 * @param x11
+		 * @param y11
+		 * @param x2
+		 * @param y2
+		 */
+		public CopyPathIterator2d(double x11, double y11, double x2, double y2) {
+			this.x1 = x11;
+			this.y1 = y11;
+			this.w = x2 - x11;
+			this.h = y2 - y11;
+			if (this.w==0f && this.h==0f) {
+				this.index = 6;
+			}
+		}
+
+		@Pure
+		@Override
+		public boolean hasNext() {
+			return this.index<=5;
+		}
+
+		@Override
+		public AbstractPathElement2D next() {
+			if (this.index>5) throw new NoSuchElementException();
+			int idx = this.index;
+			++this.index;
+
+			if (idx==0) {
+				double ctrls[] = CTRL_PTS[3];
+				this.lastX = this.x1 + ctrls[4] * this.w;
+				this.lastY = this.y1 + ctrls[5] * this.h;
+				return new AbstractPathElement2D.MovePathElement2d(
+						this.lastX,  this.lastY);
+			}
+			else if (idx<5) {
+				double ctrls[] = CTRL_PTS[idx - 1];
+				double ix = this.lastX;
+				double iy = this.lastY;
+				this.lastX = (this.x1 + ctrls[4] * this.w);
+				this.lastY = (this.y1 + ctrls[5] * this.h);
+				return new AbstractPathElement2D.CurvePathElement2d(
+						ix,  iy,
+						(this.x1 + ctrls[0] * this.w),
+						(this.y1 + ctrls[1] * this.h),
+						(this.x1 + ctrls[2] * this.w),
+						(this.y1 + ctrls[3] * this.h),
+						this.lastX,
+						this.lastY);
+			}
+
+			return new AbstractPathElement2D.ClosePathElement2d(
+					this.lastX, this.lastY,
+					this.lastX, this.lastY);
+		}
+
+		@Override
+		public void remove() {
+			throw new UnsupportedOperationException();
+		}
+
+		@Pure
+		@Override
+		public PathWindingRule getWindingRule() {
+			return PathWindingRule.NON_ZERO;
+		}
+
+		@Pure
+		@Override
+		public boolean isPolyline() {
+			return false;
+		}
+
+	}
+
+	/**
+	 * @author $Author: galland$
+	 * @author $Author: hjaffali$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	public static class TransformPathIterator2f implements PathIterator2f {
 
 		private final Point2D lastPoint = new Point2f();
 		private final Point2D ptmp1 = new Point2f();
@@ -862,7 +987,7 @@ public abstract class AbstractEllipse2F<T extends AbstractRectangularShape2F<T>>
 		 * @param y2
 		 * @param transform1
 		 */
-		public TransformPathIterator(double x11, double y11, double x2, double y2, Transform2D transform1) {
+		public TransformPathIterator2f(double x11, double y11, double x2, double y2, Transform2D transform1) {
 			this.transform = transform1;
 			this.x1 = x11;
 			this.y1 = y11;
@@ -920,6 +1045,113 @@ public abstract class AbstractEllipse2F<T extends AbstractRectangularShape2F<T>>
 			double ix = this.lastPoint.getX();
 			double iy = this.lastPoint.getY();
 			return new AbstractPathElement2F.ClosePathElement2f(
+					ix, iy,
+					ix, iy);
+		}
+
+		@Override
+		public void remove() {
+			throw new UnsupportedOperationException();
+		}
+
+		@Pure
+		@Override
+		public PathWindingRule getWindingRule() {
+			return PathWindingRule.NON_ZERO;
+		}
+
+		@Pure
+		@Override
+		public boolean isPolyline() {
+			return false;
+		}
+
+	}
+	
+	/**
+	 * @author $Author: galland$
+	 * @author $Author: hjaffali$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	public static class TransformPathIterator2d implements PathIterator2d {
+
+		private final Point2D lastPoint = new Point2f();
+		private final Point2D ptmp1 = new Point2f();
+		private final Point2D ptmp2 = new Point2f();
+		private final Transform2D transform;
+		private final double x1;
+		private final double y1;
+		private final double w;
+		private final double h;
+		private int index;
+
+		/**
+		 * @param x11
+		 * @param y11
+		 * @param x2
+		 * @param y2
+		 * @param transform1
+		 */
+		public TransformPathIterator2d(double x11, double y11, double x2, double y2, Transform2D transform1) {
+			this.transform = transform1;
+			this.x1 = x11;
+			this.y1 = y11;
+			this.w = x2 - x11;
+			this.h = y2 - y11;
+			if (this.w==0f && this.h==0f) {
+				this.index = 6;
+			}
+		}
+
+		@Pure
+		@Override
+		public boolean hasNext() {
+			return this.index<=5;
+		}
+
+		@Override
+		public AbstractPathElement2D next() {
+			if (this.index>5) throw new NoSuchElementException();
+			int idx = this.index;
+			++this.index;
+
+			if (idx==0) {
+				double ctrls[] = CTRL_PTS[3];
+				this.lastPoint.set(
+						this.x1 + ctrls[4] * this.w,
+						this.y1 + ctrls[5] * this.h);
+				this.transform.transform(this.lastPoint);
+				return new AbstractPathElement2D.MovePathElement2d(
+						this.lastPoint.getX(), this.lastPoint.getY());
+			}
+			else if (idx<5) {
+				double ctrls[] = CTRL_PTS[idx - 1];
+				double ix = this.lastPoint.getX();
+				double iy = this.lastPoint.getY();
+				this.lastPoint.set(
+						(this.x1 + ctrls[4] * this.w),
+						(this.y1 + ctrls[5] * this.h));
+				this.transform.transform(this.lastPoint);
+				this.ptmp1.set(
+						(this.x1 + ctrls[0] * this.w),
+						(this.y1 + ctrls[1] * this.h));
+				this.transform.transform(this.ptmp1);
+				this.ptmp2.set(
+						(this.x1 + ctrls[2] * this.w),
+						(this.y1 + ctrls[3] * this.h));
+				this.transform.transform(this.ptmp2);
+				return new AbstractPathElement2D.CurvePathElement2d(
+						ix,  iy,
+						this.ptmp1.getX(), this.ptmp1.getY(),
+						this.ptmp2.getX(), this.ptmp2.getY(),
+						this.lastPoint.getX(), this.lastPoint.getY());
+			}
+
+			double ix = this.lastPoint.getX();
+			double iy = this.lastPoint.getY();
+			return new AbstractPathElement2D.ClosePathElement2d(
 					ix, iy,
 					ix, iy);
 		}

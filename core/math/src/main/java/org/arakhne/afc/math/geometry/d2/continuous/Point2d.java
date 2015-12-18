@@ -32,6 +32,12 @@ public class Point2d extends Tuple2d<Point2D> implements FunctionalPoint2D {
 	private static final long serialVersionUID = -7665998909350010869L;
 	
 	/**
+	 */
+	public Point2d() {
+		//
+	}
+	
+	/**
 	 * @param x
 	 * @param y
 	 */

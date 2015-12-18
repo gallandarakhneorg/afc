@@ -528,7 +528,7 @@ public abstract class AbstractRectangle2F<T extends AbstractRectangularShape2F<T
 
 	@Pure
 	@Override
-	public boolean contains(Rectangle2f r) {
+	public boolean contains(AbstractRectangle2F<?> r) {
 		return containsRectangleRectangle(
 				getMinX(), getMinY(), getWidth(), getHeight(),
 				r.getMinX(), r.getMinY(), r.getWidth(), r.getHeight());
@@ -700,11 +700,25 @@ public abstract class AbstractRectangle2F<T extends AbstractRectangularShape2F<T
 	@Override
 	public PathIterator2f getPathIterator(Transform2D transform) {
 		if (transform==null) {
-			return new CopyPathIterator(
+			return new CopyPathIterator2f(
 					getMinX(), getMinY(),
 					getMaxX(), getMaxY());
 		}
-		return new TransformPathIterator(
+		return new TransformPathIterator2f(
+				getMinX(), getMinY(),
+				getMaxX(), getMaxY(),
+				transform);
+	}
+	
+	@Pure
+	@Override
+	public PathIterator2d getPathIteratorProperty(Transform2D transform) {
+		if (transform==null) {
+			return new CopyPathIterator2d(
+					getMinX(), getMinY(),
+					getMaxX(), getMaxY());
+		}
+		return new TransformPathIterator2d(
 				getMinX(), getMinY(),
 				getMaxX(), getMaxY(),
 				transform);
@@ -753,7 +767,7 @@ public abstract class AbstractRectangle2F<T extends AbstractRectangularShape2F<T
 
 	@Pure
 	@Override
-	public boolean intersects(Ellipse2f s) {
+	public boolean intersects(AbstractEllipse2F<?> s) {
 		return AbstractEllipse2F.intersectsEllipseRectangle(
 				s.getMinX(), s.getMinY(),
 				s.getMaxX(), s.getMaxY(),
@@ -763,7 +777,7 @@ public abstract class AbstractRectangle2F<T extends AbstractRectangularShape2F<T
 
 	@Pure
 	@Override
-	public boolean intersects(Circle2f s) {
+	public boolean intersects(AbstractCircle2F<?> s) {
 		return AbstractCircle2F.intersectsCircleRectangle(
 				s.getX(), s.getY(),
 				s.getRadius(),
@@ -773,7 +787,7 @@ public abstract class AbstractRectangle2F<T extends AbstractRectangularShape2F<T
 
 	@Pure
 	@Override
-	public boolean intersects(Segment2f s) {
+	public boolean intersects(AbstractSegment2F<?> s) {
 		return intersectsRectangleSegment(
 				getMinX(), getMinY(),
 				getMaxX(), getMaxY(),
@@ -785,6 +799,12 @@ public abstract class AbstractRectangle2F<T extends AbstractRectangularShape2F<T
 	@Override
 	public boolean intersects(Path2f s) {
 		return intersects(s.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO));
+	}
+	
+	@Pure
+	@Override
+	public boolean intersects(Path2d s) {
+		return intersects(s.getPathIteratorProperty(MathConstants.SPLINE_APPROXIMATION_RATIO));
 	}
 
 	@Override
@@ -799,10 +819,23 @@ public abstract class AbstractRectangle2F<T extends AbstractRectangularShape2F<T
 		return (crossings == MathConstants.SHAPE_INTERSECTS ||
 				(crossings & mask) != 0);
 	}
+	
+	@Override
+	public boolean intersects(PathIterator2d s) {
+		// Copied from AWT API
+		if (isEmpty()) return false;
+		int mask = (s.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2);
+		int crossings = Path2d.computeCrossingsFromRect(
+				s,
+				getMinX(), getMinY(), getMaxX(), getMaxY(),
+				false, true);
+		return (crossings == MathConstants.SHAPE_INTERSECTS ||
+				(crossings & mask) != 0);
+	}
 
 	@Pure
 	@Override
-	public boolean intersects(OrientedRectangle2f s) {
+	public boolean intersects(AbstractOrientedRectangle2F<?> s) {
 		return AbstractOrientedRectangle2F.intersectsOrientedRectangleRectangle(
 				s.getCenterX(), s.getCenterY(), 
 				s.getFirstAxisX(), s.getFirstAxisY(), s.getFirstAxisExtent(),
@@ -922,11 +955,12 @@ public abstract class AbstractRectangle2F<T extends AbstractRectangularShape2F<T
 	/** Iterator on the path elements of the rectangle.
 	 * 
 	 * @author $Author: galland$
+	 * @author $Author: hjaffali$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	private static class CopyPathIterator implements PathIterator2f {
+	private static class CopyPathIterator2f implements PathIterator2f {
 
 		private final double x1;
 		private final double y1;
@@ -940,7 +974,7 @@ public abstract class AbstractRectangle2F<T extends AbstractRectangularShape2F<T
 		 * @param x21
 		 * @param y21
 		 */
-		public CopyPathIterator(double x11, double y11, double x21, double y21) {
+		public CopyPathIterator2f(double x11, double y11, double x21, double y21) {
 			this.x1 = Math.min(x11, x21);
 			this.y1 = Math.min(y11, y21);
 			this.x2 = Math.max(x11, x21);
@@ -1007,15 +1041,106 @@ public abstract class AbstractRectangle2F<T extends AbstractRectangularShape2F<T
 		}
 
 	}
-
+	
 	/** Iterator on the path elements of the rectangle.
 	 * 
 	 * @author $Author: galland$
+	 * @author $Author: hjaffali$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	private static class TransformPathIterator implements PathIterator2f {
+	private static class CopyPathIterator2d implements PathIterator2d {
+
+		private final double x1;
+		private final double y1;
+		private final double x2;
+		private final double y2;
+		private int index = 0;
+
+		/**
+		 * @param x11
+		 * @param y11
+		 * @param x21
+		 * @param y21
+		 */
+		public CopyPathIterator2d(double x11, double y11, double x21, double y21) {
+			this.x1 = Math.min(x11, x21);
+			this.y1 = Math.min(y11, y21);
+			this.x2 = Math.max(x11, x21);
+			this.y2 = Math.max(y11, y21);
+			if (Math.abs(this.x1-this.x2)<=0f || Math.abs(this.y1-this.y2)<=0f) {
+				this.index = 6;
+			}
+		}
+
+		@Pure
+		@Override
+		public boolean hasNext() {
+			return this.index<=5;
+		}
+
+		@Override
+		public AbstractPathElement2D next() {
+			int idx = this.index;
+			++this.index;
+			switch(idx) {
+			case 0:
+				return new AbstractPathElement2D.MovePathElement2d(
+						this.x1, this.y1);
+			case 1:
+				return new AbstractPathElement2D.LinePathElement2d(
+						this.x1, this.y1,
+						this.x2, this.y1);
+			case 2:
+				return new AbstractPathElement2D.LinePathElement2d(
+						this.x2, this.y1,
+						this.x2, this.y2);
+			case 3:
+				return new AbstractPathElement2D.LinePathElement2d(
+						this.x2, this.y2,
+						this.x1, this.y2);
+			case 4:
+				return new AbstractPathElement2D.LinePathElement2d(
+						this.x1, this.y2,
+						this.x1, this.y1);
+			case 5:
+				return new AbstractPathElement2D.ClosePathElement2d(
+						this.x1, this.y1,
+						this.x1, this.y1);
+			default:
+				throw new NoSuchElementException();
+			}
+		}
+
+		@Override
+		public void remove() {
+			throw new UnsupportedOperationException();
+		}
+
+		@Pure
+		@Override
+		public PathWindingRule getWindingRule() {
+			return PathWindingRule.NON_ZERO;
+		}
+
+		@Pure
+		@Override
+		public boolean isPolyline() {
+			return true;
+		}
+
+	}
+
+	/** Iterator on the path elements of the rectangle.
+	 * 
+	 * @author $Author: galland$
+	 * @author $Author: hjaffali$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	private static class TransformPathIterator2f implements PathIterator2f {
 
 		private final Transform2D transform;
 		private final double x1;
@@ -1034,7 +1159,7 @@ public abstract class AbstractRectangle2F<T extends AbstractRectangularShape2F<T
 		 * @param y21
 		 * @param transform1
 		 */
-		public TransformPathIterator(double x11, double y11, double x21, double y21, Transform2D transform1) {
+		public TransformPathIterator2f(double x11, double y11, double x21, double y21, Transform2D transform1) {
 			this.transform = transform1;
 			this.x1 = Math.min(x11, x21);
 			this.y1 = Math.min(y11, y21);
@@ -1101,6 +1226,126 @@ public abstract class AbstractRectangle2F<T extends AbstractRectangularShape2F<T
 						this.p2.getX(), this.p2.getY());
 			case 5:
 				return new AbstractPathElement2F.ClosePathElement2f(
+						this.p2.getX(), this.p2.getY(),
+						this.p2.getX(), this.p2.getY());
+			default:
+				throw new NoSuchElementException();
+			}
+		}
+
+		@Override
+		public void remove() {
+			throw new UnsupportedOperationException();
+		}
+
+		@Pure
+		@Override
+		public PathWindingRule getWindingRule() {
+			return PathWindingRule.NON_ZERO;
+		}
+
+		@Pure
+		@Override
+		public boolean isPolyline() {
+			return true;
+		}
+
+	}
+	
+	/** Iterator on the path elements of the rectangle.
+	 * 
+	 * @author $Author: galland$
+	 * @author $Author: hjaffali$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	private static class TransformPathIterator2d implements PathIterator2d {
+
+		private final Transform2D transform;
+		private final double x1;
+		private final double y1;
+		private final double x2;
+		private final double y2;
+		private int index = 0;
+
+		private final Point2D p1 = new Point2f();
+		private final Point2D p2 = new Point2f();
+
+		/**
+		 * @param x11
+		 * @param y11
+		 * @param x21
+		 * @param y21
+		 * @param transform1
+		 */
+		public TransformPathIterator2d(double x11, double y11, double x21, double y21, Transform2D transform1) {
+			this.transform = transform1;
+			this.x1 = Math.min(x11, x21);
+			this.y1 = Math.min(y11, y21);
+			this.x2 = Math.max(x11, x21);
+			this.y2 = Math.max(y11, y21);
+			if (Math.abs(this.x1-this.x2)<=0f || Math.abs(this.y1-this.y2)<=0f) {
+				this.index = 6;
+			}
+		}
+
+		@Pure
+		@Override
+		public boolean hasNext() {
+			return this.index<=5;
+		}
+
+		@Override
+		public AbstractPathElement2D next() {
+			int idx = this.index;
+			++this.index;
+			switch(idx) {
+			case 0:
+				this.p2.set(this.x1, this.y1);
+				if (this.transform!=null) {
+					this.transform.transform(this.p2);
+				}
+				return new AbstractPathElement2D.MovePathElement2d(
+						this.p2.getX(), this.p2.getY());
+			case 1:
+				this.p1.set(this.p2);
+				this.p2.set(this.x2, this.y1);
+				if (this.transform!=null) {
+					this.transform.transform(this.p2);
+				}
+				return new AbstractPathElement2D.LinePathElement2d(
+						this.p1.getX(), this.p1.getY(),
+						this.p2.getX(), this.p2.getY());
+			case 2:
+				this.p1.set(this.p2);
+				this.p2.set(this.x2, this.y2);
+				if (this.transform!=null) {
+					this.transform.transform(this.p2);
+				}
+				return new AbstractPathElement2D.LinePathElement2d(
+						this.p1.getX(), this.p1.getY(),
+						this.p2.getX(), this.p2.getY());
+			case 3:
+				this.p1.set(this.p2);
+				this.p2.set(this.x1, this.y2);
+				if (this.transform!=null) {
+					this.transform.transform(this.p2);
+				}
+				return new AbstractPathElement2D.LinePathElement2d(
+						this.p1.getX(), this.p1.getY(),
+						this.p2.getX(), this.p2.getY());
+			case 4:
+				this.p1.set(this.p2);
+				this.p2.set(this.x1, this.y1);
+				if (this.transform!=null) {
+					this.transform.transform(this.p2);
+				}
+				return new AbstractPathElement2D.LinePathElement2d(
+						this.p1.getX(), this.p1.getY(),
+						this.p2.getX(), this.p2.getY());
+			case 5:
+				return new AbstractPathElement2D.ClosePathElement2d(
 						this.p2.getX(), this.p2.getY(),
 						this.p2.getX(), this.p2.getY());
 			default:

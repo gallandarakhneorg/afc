@@ -387,7 +387,7 @@ public class Rectangle2i extends AbstractRectangularShape2i<Rectangle2i> {
 	}
 
 	@Override
-	public PathIterator2i getPathIterator(Transform2D transform) {
+	public PathIterator2i getPathIteratorDiscrete(Transform2D transform) {
 		if (transform==null) {
 			return new CopyPathIterator(
 					getMinX(), getMinY(),

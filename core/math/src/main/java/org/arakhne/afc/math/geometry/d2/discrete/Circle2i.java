@@ -584,7 +584,7 @@ public class Circle2i extends AbstractShape2i<Circle2i> {
 	@Override
 	public Shape2i createTransformedShape(Transform2D transform) {
 		if (transform==null || transform.isIdentity()) return clone();
-		return new Path2i(getPathIterator(transform));
+		return new Path2i(getPathIteratorDiscrete(transform));
 	}
 
 	@Override
@@ -707,7 +707,7 @@ public class Circle2i extends AbstractShape2i<Circle2i> {
 	}
 
 	@Override
-	public PathIterator2i getPathIterator(Transform2D transform) {
+	public PathIterator2i getPathIteratorDiscrete(Transform2D transform) {
 		if (transform==null || transform.isIdentity())
 			return new CopyPathIterator(this.cx, this.cy, this.radius);
 		return new TransformPathIterator(this.cx, this.cy, this.radius, transform);

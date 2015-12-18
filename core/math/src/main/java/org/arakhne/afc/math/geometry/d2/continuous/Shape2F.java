@@ -20,6 +20,9 @@
  */
 package org.arakhne.afc.math.geometry.d2.continuous;
 
+import java.util.Iterator;
+
+import org.arakhne.afc.math.geometry.d2.Path2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Shape2D;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -41,14 +44,14 @@ public interface Shape2F extends Shape2D<Shape2F> {
 	 * @return the bounds of the shape.
 	 */
 	@Pure
-	public Rectangle2f toBoundingBox();
+	public AbstractRectangle2F<?> toBoundingBox();
 	
 	
 	/** Replies the bounds of the shape.
 	 * 
 	 * @param rectangle2f is set with the bounds of the shape.
 	 */
-	public void toBoundingBox(Rectangle2f rectangle2f);
+	public void toBoundingBox(AbstractRectangle2F<?> rectangle2f);
 	
 
 	/** Replies the minimal distance from this shape to the given point.
@@ -110,7 +113,7 @@ public interface Shape2F extends Shape2D<Shape2F> {
 	 * shape, otherwise <code>false</code>.
 	 */
 	@Pure
-	public boolean contains(Rectangle2f r);
+	public boolean contains(AbstractRectangle2F<?> r);
 
 	/** Replies the elements of the paths.
 	 * 
@@ -119,13 +122,29 @@ public interface Shape2F extends Shape2D<Shape2F> {
 	 */
 	@Pure
 	public PathIterator2f getPathIterator(Transform2D transform);
-
+	
+	/** Replies the elements of the paths.
+	 * 
+	 * @param transform is the transformation to apply to the path.
+	 * @return the elements of the path.
+	 */
+	@Pure
+	public PathIterator2d getPathIteratorProperty(Transform2D transform);
+	
+	
 	/** Replies the elements of the paths.
 	 * 
 	 * @return the elements of the path.
 	 */
 	@Pure
 	public PathIterator2f getPathIterator();
+	
+	/** Replies the elements of the paths.
+	 * 
+	 * @return the elements of the path.
+	 */
+	@Pure
+	public PathIterator2d getPathIteratorProperty();
 
 	/** Apply the transformation to the shape and reply the result.
 	 * This function does not change the current shape.
@@ -152,7 +171,7 @@ public interface Shape2F extends Shape2D<Shape2F> {
 	 * <code>false</code> if there is no intersection.
 	 */
 	@Pure
-	public boolean intersects(Ellipse2f s);
+	public boolean intersects(AbstractEllipse2F<?> s);
 
 	/** Replies if this shape is intersecting the given circle.
 	 * 
@@ -161,7 +180,7 @@ public interface Shape2F extends Shape2D<Shape2F> {
 	 * <code>false</code> if there is no intersection.
 	 */
 	@Pure
-	public boolean intersects(Circle2f s);
+	public boolean intersects(AbstractCircle2F<?> s);
 
 	/** Replies if this shape is intersecting the given line.
 	 * 
@@ -170,7 +189,7 @@ public interface Shape2F extends Shape2D<Shape2F> {
 	 * <code>false</code> if there is no intersection.
 	 */
 	@Pure
-	public boolean intersects(Segment2f s);
+	public boolean intersects(AbstractSegment2F<?> s);
 
 	/** Replies if this shape is intersecting the given path.
 	 * 
@@ -180,6 +199,15 @@ public interface Shape2F extends Shape2D<Shape2F> {
 	 */
 	@Pure
 	public boolean intersects(Path2f s);
+	
+	/** Replies if this shape is intersecting the given path.
+	 * 
+	 * @param s
+	 * @return <code>true</code> if this shape is intersecting the given path;
+	 * <code>false</code> if there is no intersection.
+	 */
+	@Pure
+	public boolean intersects(Path2d s);
 
 	/** Replies if this shape is intersecting the given path.
 	 * 
@@ -188,6 +216,15 @@ public interface Shape2F extends Shape2D<Shape2F> {
 	 * <code>false</code> if there is no intersection.
 	 */
 	public boolean intersects(PathIterator2f s);
+	
+	/** Replies if this shape is intersecting the given path.
+	 * 
+	 * @param s
+	 * @return <code>true</code> if this shape is intersecting the given path;
+	 * <code>false</code> if there is no intersection.
+	 */
+	public boolean intersects(PathIterator2d s);
+	
 
 	/** Replies if this shape is intersecting the given rectangle.
 	 * 
@@ -196,7 +233,7 @@ public interface Shape2F extends Shape2D<Shape2F> {
 	 * <code>false</code> if there is no intersection.
 	 */
 	@Pure
-	public boolean intersects(OrientedRectangle2f s);
+	public boolean intersects(AbstractOrientedRectangle2F<?> s);
 
 
 }

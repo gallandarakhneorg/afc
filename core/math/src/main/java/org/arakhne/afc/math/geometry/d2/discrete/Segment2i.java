@@ -986,7 +986,7 @@ public class Segment2i extends AbstractShape2i<Segment2i> {
 	}
 
 	@Override
-	public PathIterator2i getPathIterator(Transform2D transform) {
+	public PathIterator2i getPathIteratorDiscrete(Transform2D transform) {
 		return new SegmentPathIterator(
 				this.ax, this.ay, this.bx, this.by,
 				transform);

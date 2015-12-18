@@ -58,7 +58,7 @@ public abstract class AbstractShape2i<T extends Shape2i> implements Shape2i {
 	 */
 	@Override
 	public Shape2i createTransformedShape(Transform2D transform) {
-		return new Path2i(getPathIterator(transform));
+		return new Path2i(getPathIteratorDiscrete(transform));
 	}
 	
 	/** {@inheritDoc}
@@ -78,8 +78,8 @@ public abstract class AbstractShape2i<T extends Shape2i> implements Shape2i {
 	/** {@inheritDoc}
 	 */
 	@Override
-	public final PathIterator2i getPathIterator() {
-		return getPathIterator(null);
+	public PathIterator2i getPathIteratorDiscrete() {
+		return getPathIteratorDiscrete(null);
 	}
 	
 }
