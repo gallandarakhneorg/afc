@@ -136,14 +136,14 @@ public abstract class AbstractRectangularShape2F<T extends AbstractRectangularSh
 	abstract public void setInitiallyFromCorners(double x1, double y1, double x2, double y2);
 	
 	
-	/** Change the frame of the rectangle.
+	/** Change the frame of the rectangle conserving previous min and max if needed.
 	 * 
 	 * @param p1 is the coordinate of the first corner.
 	 * @param p2 is the coordinate of the second corner.
 	 */
 	abstract public void setFromCorners(Point2D p1, Point2D p2);
 
-	/** Change the frame of the rectangle.
+	/** Change the frame of the rectangle conserving previous min and max if needed.
 	 * 
 	 * @param x1 is the coordinate of the first corner.
 	 * @param y1 is the coordinate of the first corner.
@@ -172,7 +172,7 @@ public abstract class AbstractRectangularShape2F<T extends AbstractRectangularSh
 	@Pure
 	abstract public double getMinX();
 
-	/** Set the min X.
+	/** Set the min X conserving previous min if needed.
 	 * 
 	 * @param x the min x.
 	 */
@@ -192,7 +192,7 @@ public abstract class AbstractRectangularShape2F<T extends AbstractRectangularSh
 	@Pure
 	abstract public double getMaxX();
 
-	/** Set the max X.
+	/** Set the max X conserving previous max if needed.
 	 * 
 	 * @param x the max x.
 	 */
@@ -205,7 +205,7 @@ public abstract class AbstractRectangularShape2F<T extends AbstractRectangularSh
 	@Pure
 	abstract public double getMinY();
 
-	/** Set the min Y.
+	/** Set the min Y conserving previous min if needed.
 	 * 
 	 * @param y the min y.
 	 */
@@ -225,7 +225,7 @@ public abstract class AbstractRectangularShape2F<T extends AbstractRectangularSh
 	@Pure
 	abstract public double getMaxY();
 	
-	/** Set the max Y.
+	/** Set the max Y conserving previous max if needed.
 	 * 
 	 * @param y the max y.
 	 */
@@ -247,10 +247,7 @@ public abstract class AbstractRectangularShape2F<T extends AbstractRectangularSh
 	
 	@Override
 	public void translate(double dx, double dy) {
-		this.setMinX(this.getMinX()+dx);
-		this.setMinY(this.getMinY()+dy);
-		this.setMaxX(this.getMaxX()+dx);
-		this.setMaxY(this.getMaxY()+dy); 
+		this.setInitiallyFromCorners(this.getMinX()+dx,this.getMinY()+dy,this.getMaxX()+dx,this.getMaxY()+dy); 
 	}
 
 	/** Replies if this rectangular shape is empty.
@@ -274,10 +271,7 @@ public abstract class AbstractRectangularShape2F<T extends AbstractRectangularSh
 	 * @param bottom
 	 */
 	public void inflate(double left, double top, double right, double bottom) {
-		this.setMinX(this.getMinX()+left);
-		this.setMinY(this.getMinY()+top);
-		this.setMaxX(this.getMaxX()+right);
-		this.setMaxY(this.getMaxY()+bottom);
+		this.setInitiallyFromCorners(this.getMinX()+left,this.getMinY()+top,this.getMaxX()+right,this.getMaxY()+bottom);
 	}
 
 }

@@ -95,7 +95,7 @@ public class Rectangle2f extends AbstractRectangle2F<Rectangle2f> {
 	 */
 	@Override
 	public void set(double x, double y, double width, double height) {
-		setFromCorners(x, y, x+width, y+height);
+		this.setInitiallyFromCorners(x, y, x+width, y+height);
 	}
 	
 	/** Change the frame of te rectangle.
@@ -105,7 +105,7 @@ public class Rectangle2f extends AbstractRectangle2F<Rectangle2f> {
 	 */
 	@Override
 	public void set(Point2f min, Point2f max) {
-		setFromCorners(min.getX(), min.getY(), max.getX(), max.getY());
+		this.setInitiallyFromCorners(min.getX(), min.getY(), max.getX(), max.getY());
 	}
 	
 	/** Change the width of the rectangle, not the min corner.
@@ -151,23 +151,12 @@ public class Rectangle2f extends AbstractRectangle2F<Rectangle2f> {
 		}
 	}
 
-	/** Change the frame of the rectangle.
-	 * 
-	 * @param p1 is the coordinate of the first corner.
-	 * @param p2 is the coordinate of the second corner.
-	 */
 	@Override
 	public void setFromCorners(Point2D p1, Point2D p2) {
 		this.setFromCorners(p1.getX(), p1.getY(), p2.getX(), p2.getY());
 	}
 
-	/** Change the frame of the rectangle.
-	 * 
-	 * @param x1 is the coordinate of the first corner.
-	 * @param y1 is the coordinate of the first corner.
-	 * @param x2 is the coordinate of the second corner.
-	 * @param y2 is the coordinate of the second corner.
-	 */
+
 	@Override
 	public void setFromCorners(double x1, double y1, double x2, double y2) {
 		if (x1<x2) {
@@ -203,7 +192,7 @@ public class Rectangle2f extends AbstractRectangle2F<Rectangle2f> {
 	public void setFromCenter(double centerX, double centerY, double cornerX, double cornerY) {
 		double dx = centerX - cornerX;
 		double dy = centerY - cornerY;
-		setFromCorners(cornerX, cornerY, centerX + dx, centerY + dy);
+		setInitiallyFromCorners(cornerX, cornerY, centerX + dx, centerY + dy);
 	}
 	
 	/** Replies the min X.

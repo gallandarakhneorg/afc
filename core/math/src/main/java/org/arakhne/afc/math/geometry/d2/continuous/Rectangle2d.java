@@ -191,7 +191,7 @@ public class Rectangle2d extends AbstractRectangle2F<Rectangle2d>{
 	public void setFromCenter(double centerX, double centerY, double cornerX, double cornerY) {
 		double dx = centerX - cornerX;
 		double dy = centerY - cornerY;
-		setFromCorners(cornerX, cornerY, centerX + dx, centerY + dy);
+		setInitiallyFromCorners(cornerX, cornerY, centerX + dx, centerY + dy);
 	}
 
 	/** Replies the min X.

@@ -48,11 +48,11 @@ public class Rectangle2fTest extends AbstractRectangularShape2fTestCase<Rectangl
 	@Override
 	public void isEmpty() {
 		assertFalse(this.r.isEmpty());
-		this.r.setMinX(1f);
+		this.r.setInitiallyFromCorners(1f,this.r.getMinY(),this.r.getMaxX(),this.r.getMaxY());
 		assertFalse(this.r.isEmpty());
-		this.r.setMinY(1f);
+		this.r.setInitiallyFromCorners(this.r.getMinX(),1f,this.r.getMaxX(),this.r.getMaxY());
 		assertTrue(this.r.isEmpty());
-		this.r.setMinX(0f);
+		this.r.setInitiallyFromCorners(0f,this.r.getMinY(),this.r.getMaxX(),this.r.getMaxY());
 		assertFalse(this.r.isEmpty());
 	}
 
@@ -548,10 +548,10 @@ public class Rectangle2fTest extends AbstractRectangularShape2fTestCase<Rectangl
 				0f, 0f, 1f, 1f));
 		assertFalse(AbstractRectangle2F.containsRectanglePoint(1f, 1f,
 				-5f, -5f, 1f, 1f));
-		assertFalse(AbstractRectangle2F.containsRectanglePoint(1f, 1f,
+		assertTrue(AbstractRectangle2F.containsRectanglePoint(1f, 1f,
 				.5f, .5f, 5f, 5f));
 		assertFalse(AbstractRectangle2F.containsRectanglePoint(1f, 1f,
-				.5f, .5f, 5f, .6f));
+				.5f, .5f, 5f, .1f));
 		assertFalse(AbstractRectangle2F.containsRectanglePoint(1f, 1f,
 				-5f, -5f, 5f, 5f));
 		assertFalse(AbstractRectangle2F.containsRectanglePoint(1f, 1f,
@@ -560,7 +560,7 @@ public class Rectangle2fTest extends AbstractRectangularShape2fTestCase<Rectangl
 				-5f, -5f, 4f, -4f));
 		assertFalse(AbstractRectangle2F.containsRectanglePoint(1f, 1f,
 				5f, -5f, 6f, 5f));
-		assertTrue(AbstractRectangle2F.containsRectanglePoint(1f, 1f,
+		assertTrue(AbstractRectangle2F.containsRectanglePoint(0.5f, 0.5f,
 				.25f, .25f, .5f, .5f));
 	}
 
@@ -593,7 +593,7 @@ public class Rectangle2fTest extends AbstractRectangularShape2fTestCase<Rectangl
 	@Test
 	public void intersectsRectangleSegment() {
 		assertTrue(AbstractRectangle2F.intersectsRectangleSegment(0f, 0f, 1f, 1f,
-				0f, 0f, 1f, 1f));
+				0.5f, 0.5f, 1.5f, 1.5f));
 		assertTrue(AbstractRectangle2F.intersectsRectangleSegment(0f, 0f, 1f, 1f,
 				-5f, -5f, 1f, 1f));
 		assertTrue(AbstractRectangle2F.intersectsRectangleSegment(0f, 0f, 1f, 1f,
@@ -631,7 +631,7 @@ public class Rectangle2fTest extends AbstractRectangularShape2fTestCase<Rectangl
 	 */
 	@Test
 	public void intersectsSegment2f() {
-		assertTrue(this.r.intersects(new Segment2f(0f, 0f, 1f, 1f)));
+		assertTrue(this.r.intersects(new Segment2f(0.5f, 0f, 1.5f, 1.5f)));
 		assertTrue(this.r.intersects(new Segment2f(-5f, -5f, 1f, 1f)));
 		assertTrue(this.r.intersects(new Segment2f(.5f, .5f, 5f, 5f)));
 		assertTrue(this.r.intersects(new Segment2f(.5f, .5f, 5f, .6f)));

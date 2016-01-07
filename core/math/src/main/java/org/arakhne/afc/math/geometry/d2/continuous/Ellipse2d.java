@@ -199,7 +199,7 @@ public class Ellipse2d extends AbstractEllipse2F<Ellipse2d> {
 	public void setFromCenter(double centerX, double centerY, double cornerX, double cornerY) {
 		double dx = centerX - cornerX;
 		double dy = centerY - cornerY;
-		setFromCorners(cornerX, cornerY, centerX + dx, centerY + dy);
+		setInitiallyFromCorners(cornerX, cornerY, centerX + dx, centerY + dy);
 	}
 	
 	/** Replies the min X.

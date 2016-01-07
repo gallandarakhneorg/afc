@@ -204,7 +204,7 @@ public class RoundRectangle2f extends AbstractRoundRectangle2F<RoundRectangle2f>
 	public void setFromCenter(double centerX, double centerY, double cornerX, double cornerY) {
 		double dx = centerX - cornerX;
 		double dy = centerY - cornerY;
-		setFromCorners(cornerX, cornerY, centerX + dx, centerY + dy);
+		setInitiallyFromCorners(cornerX, cornerY, centerX + dx, centerY + dy);
 	}
 	
 	/** Replies the min X.

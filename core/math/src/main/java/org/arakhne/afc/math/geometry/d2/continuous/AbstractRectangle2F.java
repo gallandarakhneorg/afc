@@ -166,7 +166,7 @@ public abstract class AbstractRectangle2F<T extends AbstractRectangularShape2F<T
 	 * @param r2
 	 */
 	public static void union(AbstractRectangle2F<?> dest, AbstractRectangle2F<?> abstractRectangle2F, AbstractRectangle2F<?> r2) {
-		dest.setFromCorners(
+		dest.setInitiallyFromCorners(
 				Math.min(abstractRectangle2F.getMinX(), r2.getMinX()),
 				Math.min(abstractRectangle2F.getMinY(), r2.getMinY()),
 				Math.max(abstractRectangle2F.getMaxX(), r2.getMaxX()),
@@ -227,7 +227,7 @@ public abstract class AbstractRectangle2F<T extends AbstractRectangularShape2F<T
 		double x2 = Math.min(r1.getMaxX(), r2.getMaxX());
 		double y2 = Math.min(r1.getMaxY(), r2.getMaxY());
 		if (x1<=x2 && y1<=y2) {
-			dest.setFromCorners(x1, y1, x2, y2);
+			dest.setInitiallyFromCorners(x1, y1, x2, y2);
 		}
 		else {
 			dest.set(0, 0, 0, 0);
@@ -266,163 +266,110 @@ public abstract class AbstractRectangle2F<T extends AbstractRectangularShape2F<T
 	}
 
 
-	/** Change the frame of the rectangle.
-	 * 
-	 * @param x
-	 * @param y
-	 * @param width
-	 * @param height
+	/** {@inheritDoc}
 	 */
 	@Override
 	abstract public void set(double x, double y, double width, double height);
 
-	/** Change the frame of te rectangle.
-	 * 
-	 * @param min is the min corner of the rectangle.
-	 * @param max is the max corner of the rectangle.
+	/** {@inheritDoc}
 	 */
 	@Override
 	abstract public void set(Point2f min, Point2f max);
 
-	/** Change the width of the rectangle, not the min corner.
-	 * 
-	 * @param width
+	/** {@inheritDoc}
 	 */
 	@Override
 	abstract public void setWidth(double width);
 
-	/** Change the height of the rectangle, not the min corner.
-	 * 
-	 * @param height
+	/** {@inheritDoc}
 	 */
 	@Override
 	abstract public void setHeight(double height);
 
-	/** Change the frame of the rectangle.
-	 * 
-	 * @param p1 is the coordinate of the first corner.
-	 * @param p2 is the coordinate of the second corner.
+	/** {@inheritDoc}
 	 */
 	@Override
 	abstract public void setFromCorners(Point2D p1, Point2D p2);
 
-	/** Change the frame of the rectangle.
-	 * 
-	 * @param x1 is the coordinate of the first corner.
-	 * @param y1 is the coordinate of the first corner.
-	 * @param x2 is the coordinate of the second corner.
-	 * @param y2 is the coordinate of the second corner.
+	/** {@inheritDoc}
 	 */
 	@Override
 	abstract public void setFromCorners(double x1, double y1, double x2, double y2);
 
-	/**
-	 * Sets the framing rectangle of this <code>Shape</code>
-	 * based on the specified center point coordinates and corner point
-	 * coordinates.  The framing rectangle is used by the subclasses of
-	 * <code>RectangularShape</code> to define their geometry.
-	 *
-	 * @param centerX the X coordinate of the specified center point
-	 * @param centerY the Y coordinate of the specified center point
-	 * @param cornerX the X coordinate of the specified corner point
-	 * @param cornerY the Y coordinate of the specified corner point
+	/** {@inheritDoc}
 	 */
 	@Override
 	abstract public void setFromCenter(double centerX, double centerY, double cornerX, double cornerY);
 
-	/** Replies the min X.
-	 * 
-	 * @return the min x.
+	/** {@inheritDoc}
 	 */
 	@Pure
 	@Override
 	abstract public double getMinX();
 
-	/** Set the min X.
-	 * 
-	 * @param x the min x.
+	/** {@inheritDoc}
 	 */
 	@Override
 	abstract public void setMinX(double x);
 
-	/** Replies the center x.
-	 * 
-	 * @return the center x.
+	/** {@inheritDoc}
 	 */
 	@Override
 	abstract public double getCenterX();
 
-	/** Replies the max x.
-	 * 
-	 * @return the max x.
+	/** {@inheritDoc}
 	 */
 	@Pure
 	@Override
 	abstract public double getMaxX();
 
-	/** Set the max X.
-	 * 
-	 * @param x the max x.
+	/** {@inheritDoc}
 	 */
 	@Override
 	abstract public void setMaxX(double x);
 
-	/** Replies the min y.
-	 * 
-	 * @return the min y.
+	/** {@inheritDoc}
 	 */
-	@Pure
 	@Override
 	abstract public double getMinY();
 
-	/** Set the min Y.
-	 * 
-	 * @param y the min y.
+	/** {@inheritDoc}
 	 */
 	@Override
 	abstract public void setMinY(double y);
 
-	/** Replies the center y.
-	 * 
-	 * @return the center y.
+	/** {@inheritDoc}
 	 */
 	@Pure
 	@Override
 	abstract public double getCenterY();
 
-	/** Replies the max y.
-	 * 
-	 * @return the max y.
+	/** {@inheritDoc}
 	 */
 	@Pure
 	@Override
 	abstract public double getMaxY();
 
-	/** Set the max Y.
-	 * 
-	 * @param y the max y.
+	/** {@inheritDoc}
 	 */
 	@Override
 	abstract public void setMaxY(double y);
 
-	/** Replies the width.
-	 * 
-	 * @return the width.
+	/** {@inheritDoc}
 	 */
 	@Pure
 	@Override
 	abstract public double getWidth();
-
-	/** Replies the height.
-	 * 
-	 * @return the height.
+	
+	/** {@inheritDoc}
 	 */
 	@Pure
 	@Override
 	abstract public double getHeight();
 
 	
-	
+	/** {@inheritDoc}
+	 */
 	@Override
 	abstract public void set(Shape2F s);
 
@@ -526,6 +473,8 @@ public abstract class AbstractRectangle2F<T extends AbstractRectangularShape2F<T
 				(y>=getMinY() && y<=getMaxY());
 	}
 
+	/** {@inheritDoc}
+	 */
 	@Pure
 	@Override
 	public boolean contains(AbstractRectangle2F<?> r) {
@@ -696,6 +645,8 @@ public abstract class AbstractRectangle2F<T extends AbstractRectangularShape2F<T
 		intersection(this, this, r);
 	}
 
+	/** {@inheritDoc}
+	 */
 	@Pure
 	@Override
 	public PathIterator2f getPathIterator(Transform2D transform) {
@@ -709,7 +660,9 @@ public abstract class AbstractRectangle2F<T extends AbstractRectangularShape2F<T
 				getMaxX(), getMaxY(),
 				transform);
 	}
-	
+
+	/** {@inheritDoc}
+	 */
 	@Pure
 	@Override
 	public PathIterator2d getPathIteratorProperty(Transform2D transform) {
@@ -724,6 +677,8 @@ public abstract class AbstractRectangle2F<T extends AbstractRectangularShape2F<T
 				transform);
 	}
 
+	/** {@inheritDoc}
+	 */
 	@SuppressWarnings("unchecked")
 	@Pure
 	@Override
@@ -745,6 +700,8 @@ public abstract class AbstractRectangle2F<T extends AbstractRectangularShape2F<T
 		this.set(0f, 0f, 0f, 0f);
 	}
 
+	/** {@inheritDoc}
+	 */
 	@Pure
 	@Override
 	public int hashCode() {
@@ -756,6 +713,8 @@ public abstract class AbstractRectangle2F<T extends AbstractRectangularShape2F<T
 		return (int) (bits ^ (bits >> 32));
 	}
 
+	/** {@inheritDoc}
+	 */
 	@Override
 	public boolean intersects(AbstractRectangle2F<?> s) {
 		return intersectsRectangleRectangle(
@@ -765,6 +724,8 @@ public abstract class AbstractRectangle2F<T extends AbstractRectangularShape2F<T
 				s.getMaxX(), s.getMaxY());
 	}
 
+	/** {@inheritDoc}
+	 */
 	@Pure
 	@Override
 	public boolean intersects(AbstractEllipse2F<?> s) {
@@ -775,6 +736,8 @@ public abstract class AbstractRectangle2F<T extends AbstractRectangularShape2F<T
 				getMaxX(), getMaxY());
 	}
 
+	/** {@inheritDoc}
+	 */
 	@Pure
 	@Override
 	public boolean intersects(AbstractCircle2F<?> s) {
@@ -785,6 +748,8 @@ public abstract class AbstractRectangle2F<T extends AbstractRectangularShape2F<T
 				getMaxX(), getMaxY());
 	}
 
+	/** {@inheritDoc}
+	 */
 	@Pure
 	@Override
 	public boolean intersects(AbstractSegment2F<?> s) {
@@ -795,18 +760,24 @@ public abstract class AbstractRectangle2F<T extends AbstractRectangularShape2F<T
 				s.getX2(), s.getY2());
 	}
 
+	/** {@inheritDoc}
+	 */
 	@Pure
 	@Override
 	public boolean intersects(Path2f s) {
 		return intersects(s.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO));
 	}
-	
+
+	/** {@inheritDoc}
+	 */
 	@Pure
 	@Override
 	public boolean intersects(Path2d s) {
 		return intersects(s.getPathIteratorProperty(MathConstants.SPLINE_APPROXIMATION_RATIO));
 	}
 
+	/** {@inheritDoc}
+	 */
 	@Override
 	public boolean intersects(PathIterator2f s) {
 		// Copied from AWT API
@@ -819,7 +790,9 @@ public abstract class AbstractRectangle2F<T extends AbstractRectangularShape2F<T
 		return (crossings == MathConstants.SHAPE_INTERSECTS ||
 				(crossings & mask) != 0);
 	}
-	
+
+	/** {@inheritDoc}
+	 */
 	@Override
 	public boolean intersects(PathIterator2d s) {
 		// Copied from AWT API
@@ -833,6 +806,8 @@ public abstract class AbstractRectangle2F<T extends AbstractRectangularShape2F<T
 				(crossings & mask) != 0);
 	}
 
+	/** {@inheritDoc}
+	 */
 	@Pure
 	@Override
 	public boolean intersects(AbstractOrientedRectangle2F<?> s) {
@@ -843,6 +818,8 @@ public abstract class AbstractRectangle2F<T extends AbstractRectangularShape2F<T
 				this.getMinX(), this.getMinY(), getWidth(), getHeight());
 	}
 
+	/** {@inheritDoc}
+	 */
 	@Pure
 	@Override
 	public String toString() {
@@ -984,12 +961,16 @@ public abstract class AbstractRectangle2F<T extends AbstractRectangularShape2F<T
 			}
 		}
 
+		/** {@inheritDoc}
+		 */
 		@Pure
 		@Override
 		public boolean hasNext() {
 			return this.index<=5;
 		}
 
+		/** {@inheritDoc}
+		 */
 		@Override
 		public AbstractPathElement2F next() {
 			int idx = this.index;
@@ -1023,17 +1004,23 @@ public abstract class AbstractRectangle2F<T extends AbstractRectangularShape2F<T
 			}
 		}
 
+		/** {@inheritDoc}
+		 */
 		@Override
 		public void remove() {
 			throw new UnsupportedOperationException();
 		}
 
+		/** {@inheritDoc}
+		 */
 		@Pure
 		@Override
 		public PathWindingRule getWindingRule() {
 			return PathWindingRule.NON_ZERO;
 		}
 
+		/** {@inheritDoc}
+		 */
 		@Pure
 		@Override
 		public boolean isPolyline() {
@@ -1074,12 +1061,16 @@ public abstract class AbstractRectangle2F<T extends AbstractRectangularShape2F<T
 			}
 		}
 
+		/** {@inheritDoc}
+		 */
 		@Pure
 		@Override
 		public boolean hasNext() {
 			return this.index<=5;
 		}
 
+		/** {@inheritDoc}
+		 */
 		@Override
 		public AbstractPathElement2D next() {
 			int idx = this.index;
@@ -1113,17 +1104,23 @@ public abstract class AbstractRectangle2F<T extends AbstractRectangularShape2F<T
 			}
 		}
 
+		/** {@inheritDoc}
+		 */
 		@Override
 		public void remove() {
 			throw new UnsupportedOperationException();
 		}
 
+		/** {@inheritDoc}
+		 */
 		@Pure
 		@Override
 		public PathWindingRule getWindingRule() {
 			return PathWindingRule.NON_ZERO;
 		}
 
+		/** {@inheritDoc}
+		 */
 		@Pure
 		@Override
 		public boolean isPolyline() {
@@ -1170,12 +1167,16 @@ public abstract class AbstractRectangle2F<T extends AbstractRectangularShape2F<T
 			}
 		}
 
+		/** {@inheritDoc}
+		 */
 		@Pure
 		@Override
 		public boolean hasNext() {
 			return this.index<=5;
 		}
 
+		/** {@inheritDoc}
+		 */
 		@Override
 		public AbstractPathElement2F next() {
 			int idx = this.index;
@@ -1233,17 +1234,23 @@ public abstract class AbstractRectangle2F<T extends AbstractRectangularShape2F<T
 			}
 		}
 
+		/** {@inheritDoc}
+		 */
 		@Override
 		public void remove() {
 			throw new UnsupportedOperationException();
 		}
 
+		/** {@inheritDoc}
+		 */
 		@Pure
 		@Override
 		public PathWindingRule getWindingRule() {
 			return PathWindingRule.NON_ZERO;
 		}
 
+		/** {@inheritDoc}
+		 */
 		@Pure
 		@Override
 		public boolean isPolyline() {
@@ -1290,12 +1297,16 @@ public abstract class AbstractRectangle2F<T extends AbstractRectangularShape2F<T
 			}
 		}
 
+		/** {@inheritDoc}
+		 */
 		@Pure
 		@Override
 		public boolean hasNext() {
 			return this.index<=5;
 		}
 
+		/** {@inheritDoc}
+		 */
 		@Override
 		public AbstractPathElement2D next() {
 			int idx = this.index;
@@ -1353,17 +1364,23 @@ public abstract class AbstractRectangle2F<T extends AbstractRectangularShape2F<T
 			}
 		}
 
+		/** {@inheritDoc}
+		 */
 		@Override
 		public void remove() {
 			throw new UnsupportedOperationException();
 		}
 
+		/** {@inheritDoc}
+		 */
 		@Pure
 		@Override
 		public PathWindingRule getWindingRule() {
 			return PathWindingRule.NON_ZERO;
 		}
 
+		/** {@inheritDoc}
+		 */
 		@Pure
 		@Override
 		public boolean isPolyline() {
