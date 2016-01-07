@@ -403,7 +403,7 @@ public class Circle2iTest extends AbstractShape2iTestCase<Circle2i> {
 	 */
 	@Test
 	public void getPathIteratorVoid() {
-		PathIterator2i pi = this.r.getPathIterator();
+		PathIterator2i pi = this.r.getPathIteratorDiscrete();
 		assertElement(pi, PathElementType.MOVE_TO, 10,8);
 		assertElement(pi, PathElementType.CURVE_TO, 10,10, 7,13, 5,13);
 		assertElement(pi, PathElementType.CURVE_TO, 2,13, 0,10, 0,8);
@@ -421,7 +421,7 @@ public class Circle2iTest extends AbstractShape2iTestCase<Circle2i> {
 		PathIterator2i pi;
 		
 		tr = new Transform2D();
-		pi = this.r.getPathIterator(tr);
+		pi = this.r.getPathIteratorDiscrete(tr);
 		assertElement(pi, PathElementType.MOVE_TO, 10,8);
 		assertElement(pi, PathElementType.CURVE_TO, 10,10, 7,13, 5,13);
 		assertElement(pi, PathElementType.CURVE_TO, 2,13, 0,10, 0,8);
@@ -432,7 +432,7 @@ public class Circle2iTest extends AbstractShape2iTestCase<Circle2i> {
 
 		tr = new Transform2D();
 		tr.makeTranslationMatrix(3.4f, 4.5f);
-		pi = this.r.getPathIterator(tr);
+		pi = this.r.getPathIteratorDiscrete(tr);
 		assertElement(pi, PathElementType.MOVE_TO, 13,12);
 		assertElement(pi, PathElementType.CURVE_TO, 13,14, 10,17, 8,17);
 		assertElement(pi, PathElementType.CURVE_TO, 5,17, 3,14, 3,12);
@@ -444,7 +444,7 @@ public class Circle2iTest extends AbstractShape2iTestCase<Circle2i> {
 		tr = new Transform2D();
 		tr.makeRotationMatrix(MathConstants.QUARTER_PI);
 		
-		pi = this.r.getPathIterator(tr);
+		pi = this.r.getPathIteratorDiscrete(tr);
 		assertElement(pi, PathElementType.MOVE_TO, 1,12);
 		assertElement(pi, PathElementType.CURVE_TO, 0,14, -4,14, -5,12);
 		assertElement(pi, PathElementType.CURVE_TO, -7,10, -7,7, -5,5);

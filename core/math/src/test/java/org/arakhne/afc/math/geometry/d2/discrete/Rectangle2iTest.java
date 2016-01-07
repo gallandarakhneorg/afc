@@ -507,7 +507,7 @@ public class Rectangle2iTest extends AbstractShape2iTestCase<Rectangle2i> {
 	 */
 	@Test
 	public void getPathIteratorVoid() {
-		PathIterator2i pi = this.r.getPathIterator();
+		PathIterator2i pi = this.r.getPathIteratorDiscrete();
 		assertElement(pi, PathElementType.MOVE_TO, 5,8);
 		assertElement(pi, PathElementType.LINE_TO, 15,8);
 		assertElement(pi, PathElementType.LINE_TO, 15,13);
@@ -525,7 +525,7 @@ public class Rectangle2iTest extends AbstractShape2iTestCase<Rectangle2i> {
 		PathIterator2i pi;
 		
 		tr = new Transform2D();
-		pi = this.r.getPathIterator(tr);
+		pi = this.r.getPathIteratorDiscrete(tr);
 		assertElement(pi, PathElementType.MOVE_TO, 5,8);
 		assertElement(pi, PathElementType.LINE_TO, 15,8);
 		assertElement(pi, PathElementType.LINE_TO, 15,13);
@@ -536,7 +536,7 @@ public class Rectangle2iTest extends AbstractShape2iTestCase<Rectangle2i> {
 
 		tr = new Transform2D();
 		tr.makeTranslationMatrix(3.4f, 4.5f);
-		pi = this.r.getPathIterator(tr);
+		pi = this.r.getPathIteratorDiscrete(tr);
 		assertElement(pi, PathElementType.MOVE_TO, 8,12);
 		assertElement(pi, PathElementType.LINE_TO, 18,12);
 		assertElement(pi, PathElementType.LINE_TO, 18,17);
@@ -548,7 +548,7 @@ public class Rectangle2iTest extends AbstractShape2iTestCase<Rectangle2i> {
 		tr = new Transform2D();
 		tr.makeRotationMatrix(MathConstants.QUARTER_PI);
 		
-		pi = this.r.getPathIterator(tr);
+		pi = this.r.getPathIteratorDiscrete(tr);
 		assertElement(pi, PathElementType.MOVE_TO, -2,9);
 		assertElement(pi, PathElementType.LINE_TO, 4,16);
 		assertElement(pi, PathElementType.LINE_TO, 1,19);

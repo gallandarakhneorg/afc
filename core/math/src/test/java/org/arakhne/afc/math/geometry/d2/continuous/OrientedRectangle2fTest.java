@@ -841,7 +841,7 @@ public class OrientedRectangle2fTest extends AbstractShape2fTestCase<OrientedRec
 	public void intersectsOrientedRectangle2f() {
 		assertFalse(this.r.isEmpty());
 		
-		Rectangle2f bounds = this.r.toBoundingBox();
+		AbstractRectangle2F bounds = this.r.toBoundingBox();
 
 		Point2f center = new Point2f();
 		Vector2f axis1 = new Vector2f();
@@ -896,7 +896,7 @@ public class OrientedRectangle2fTest extends AbstractShape2fTestCase<OrientedRec
 	public void toBoundingBox() {
 		assertFalse(this.r.isEmpty());
 
-		Rectangle2f box = this.r.toBoundingBox();
+		AbstractRectangle2F box = this.r.toBoundingBox();
 		
 		assertEpsilonEquals(MathUtil.min(this.P1.x, this.P2.x, this.P3.x, this.P4.x), box.getMinX());
 		assertEpsilonEquals(MathUtil.min(this.P1.y, this.P2.y, this.P3.y, this.P4.y), box.getMinY());

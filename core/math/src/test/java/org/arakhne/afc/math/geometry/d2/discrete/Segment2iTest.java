@@ -352,7 +352,7 @@ public class Segment2iTest extends AbstractShape2iTestCase<Segment2i> implements
 	 */
 	@Test
 	public void getPathIteratorVoid() {
-		PathIterator2i pi = this.r.getPathIterator();
+		PathIterator2i pi = this.r.getPathIteratorDiscrete();
 		assertElement(pi, PathElementType.MOVE_TO, 0,0);
 		assertElement(pi, PathElementType.LINE_TO, 10,5);
 		assertNoElement(pi);
@@ -366,21 +366,21 @@ public class Segment2iTest extends AbstractShape2iTestCase<Segment2i> implements
 		PathIterator2i pi;
 		
 		tr = new Transform2D();
-		pi = this.r.getPathIterator(tr);
+		pi = this.r.getPathIteratorDiscrete(tr);
 		assertElement(pi, PathElementType.MOVE_TO, 0,0);
 		assertElement(pi, PathElementType.LINE_TO, 10,5);
 		assertNoElement(pi);
 
 		tr = new Transform2D();
 		tr.makeTranslationMatrix(3.4f, 4.5f);
-		pi = this.r.getPathIterator(tr);
+		pi = this.r.getPathIteratorDiscrete(tr);
 		assertElement(pi, PathElementType.MOVE_TO, 3, 4);
 		assertElement(pi, PathElementType.LINE_TO, 13, 9);
 		assertNoElement(pi);
 
 		tr = new Transform2D();
 		tr.makeRotationMatrix(MathConstants.QUARTER_PI);
-		pi = this.r.getPathIterator(tr);
+		pi = this.r.getPathIteratorDiscrete(tr);
 		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
 		assertElement(pi, PathElementType.LINE_TO, 3, 10);
 		assertNoElement(pi);

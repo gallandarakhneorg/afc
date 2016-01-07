@@ -118,8 +118,8 @@ public class Path2iTest extends AbstractShape2iTestCase<Path2i> {
 
 		assertNotSame(b, this.r);
 		PathElement2i pe1, pe2;
-		PathIterator2i i1 = this.r.getPathIterator();
-		PathIterator2i i2 = b.getPathIterator();
+		PathIterator2i i1 = this.r.getPathIteratorDiscrete();
+		PathIterator2i i2 = b.getPathIteratorDiscrete();
 		while (i1.hasNext()) {
 			assertTrue(i2.hasNext());
 			pe1 = i1.next();
@@ -139,8 +139,8 @@ public class Path2iTest extends AbstractShape2iTestCase<Path2i> {
 		
 		b.translate(1, 1);
 
-		i1 = this.r.getPathIterator();
-		i2 = b.getPathIterator();
+		i1 = this.r.getPathIteratorDiscrete();
+		i2 = b.getPathIteratorDiscrete();
 		boolean first = true;
 		while (i1.hasNext()) {
 			assertTrue(i2.hasNext());
@@ -405,11 +405,11 @@ public class Path2iTest extends AbstractShape2iTestCase<Path2i> {
 	 */
 	@Test
 	public void computeCrossingsFromPoint() {
-		assertEquals(0, Path2i.computeCrossingsFromPoint(this.r.getPathIterator(), -2, 1));
-		assertEquals(0, Path2i.computeCrossingsFromPoint(this.r.getPathIterator(), 0, -3));
+		assertEquals(0, Path2i.computeCrossingsFromPoint(this.r.getPathIteratorDiscrete(), -2, 1));
+		assertEquals(0, Path2i.computeCrossingsFromPoint(this.r.getPathIteratorDiscrete(), 0, -3));
 		assertEquals(MathConstants.SHAPE_INTERSECTS,
-				Path2i.computeCrossingsFromPoint(this.r.getPathIterator(), 4, 3));
-		assertEquals(-2, Path2i.computeCrossingsFromPoint(this.r.getPathIterator(), 3, 0));
+				Path2i.computeCrossingsFromPoint(this.r.getPathIteratorDiscrete(), 4, 3));
+		assertEquals(-2, Path2i.computeCrossingsFromPoint(this.r.getPathIteratorDiscrete(), 3, 0));
 	}
 
 	/**
@@ -417,28 +417,28 @@ public class Path2iTest extends AbstractShape2iTestCase<Path2i> {
 	@Test
 	public void computeCrossingsFromRect() {
 		assertEquals(0, Path2i.computeCrossingsFromRect(
-				this.r.getPathIterator(),
+				this.r.getPathIteratorDiscrete(),
 				-2, 1, -1, 2));
 		assertEquals(MathConstants.SHAPE_INTERSECTS, Path2i.computeCrossingsFromRect(
-				this.r.getPathIterator(),
+				this.r.getPathIteratorDiscrete(),
 				0, 1, 3, 6));
 		assertEquals(MathConstants.SHAPE_INTERSECTS, Path2i.computeCrossingsFromRect(
-				this.r.getPathIterator(),
+				this.r.getPathIteratorDiscrete(),
 				3, -1, 8, 0));
 		assertEquals(-2, Path2i.computeCrossingsFromRect(
-				this.r.getPathIterator(),
+				this.r.getPathIteratorDiscrete(),
 				3, -1, 4, 0));
 		assertEquals(-2, Path2i.computeCrossingsFromRect(
-				this.r.getPathIterator(),
+				this.r.getPathIteratorDiscrete(),
 				3, -1, 5, 0));
 		assertEquals(0, Path2i.computeCrossingsFromRect(
-				this.r.getPathIterator(),
+				this.r.getPathIteratorDiscrete(),
 				0, -4, 3, -3));
 		assertEquals(MathConstants.SHAPE_INTERSECTS, Path2i.computeCrossingsFromRect(
-				this.r.getPathIterator(),
+				this.r.getPathIteratorDiscrete(),
 				0, -4, 4, -3));
 		assertEquals(MathConstants.SHAPE_INTERSECTS, Path2i.computeCrossingsFromRect(
-				this.r.getPathIterator(),
+				this.r.getPathIteratorDiscrete(),
 				0, -4, 3, -2));
 	}
 
@@ -447,28 +447,28 @@ public class Path2iTest extends AbstractShape2iTestCase<Path2i> {
 	@Test
 	public void computeCrossingsFromSegment() {
 		assertEquals(0, Path2i.computeCrossingsFromSegment(
-				this.r.getPathIterator(),
+				this.r.getPathIteratorDiscrete(),
 				-2, 1, -1, 2));
 		assertEquals(0, Path2i.computeCrossingsFromSegment(
-				this.r.getPathIterator(),
+				this.r.getPathIteratorDiscrete(),
 				0, 1, 3, 6));
 		assertEquals(MathConstants.SHAPE_INTERSECTS, Path2i.computeCrossingsFromSegment(
-				this.r.getPathIterator(),
+				this.r.getPathIteratorDiscrete(),
 				3, -1, 8, 0));
 		assertEquals(-2, Path2i.computeCrossingsFromSegment(
-				this.r.getPathIterator(),
+				this.r.getPathIteratorDiscrete(),
 				3, -1, 4, 0));
 		assertEquals(-2, Path2i.computeCrossingsFromSegment(
-				this.r.getPathIterator(),
+				this.r.getPathIteratorDiscrete(),
 				3, -1, 5, 0));
 		assertEquals(0, Path2i.computeCrossingsFromSegment(
-				this.r.getPathIterator(),
+				this.r.getPathIteratorDiscrete(),
 				0, -4, 3, -3));
 		assertEquals(MathConstants.SHAPE_INTERSECTS, Path2i.computeCrossingsFromSegment(
-				this.r.getPathIterator(),
+				this.r.getPathIteratorDiscrete(),
 				0, -4, 4, -3));
 		assertEquals(MathConstants.SHAPE_INTERSECTS, Path2i.computeCrossingsFromSegment(
-				this.r.getPathIterator(),
+				this.r.getPathIteratorDiscrete(),
 				0, -4, 3, -2));
 	}
 	
@@ -477,25 +477,25 @@ public class Path2iTest extends AbstractShape2iTestCase<Path2i> {
 	@Test
 	public void computeCrossingsFromCircle() {
 		assertEquals(0, Path2i.computeCrossingsFromCircle(
-				this.r.getPathIterator(),
+				this.r.getPathIteratorDiscrete(),
 				-2, 1, 1));
 		assertEquals(MathConstants.SHAPE_INTERSECTS, Path2i.computeCrossingsFromCircle(
-				this.r.getPathIterator(),
+				this.r.getPathIteratorDiscrete(),
 				-2, 1, 2));
 		assertEquals(MathConstants.SHAPE_INTERSECTS, Path2i.computeCrossingsFromCircle(
-				this.r.getPathIterator(),
+				this.r.getPathIteratorDiscrete(),
 				0, 1, 3));
 		assertEquals(MathConstants.SHAPE_INTERSECTS, Path2i.computeCrossingsFromCircle(
-				this.r.getPathIterator(),
+				this.r.getPathIteratorDiscrete(),
 				3, -1, 8));
 		assertEquals(MathConstants.SHAPE_INTERSECTS, Path2i.computeCrossingsFromCircle(
-				this.r.getPathIterator(),
+				this.r.getPathIteratorDiscrete(),
 				3, -1, 1));
 		assertEquals(-2, Path2i.computeCrossingsFromCircle(
-				this.r.getPathIterator(),
+				this.r.getPathIteratorDiscrete(),
 				4, -1, 0));
 		assertEquals(0, Path2i.computeCrossingsFromCircle(
-				this.r.getPathIterator(),
+				this.r.getPathIteratorDiscrete(),
 				20, 0, 2));
 	}
 
@@ -503,35 +503,35 @@ public class Path2iTest extends AbstractShape2iTestCase<Path2i> {
 	 */
 	@Test
 	public void containsPathIterator2iIntInt() {
-		assertTrue(Path2i.contains(this.r.getPathIterator(), 0, 0));
-		assertTrue(Path2i.contains(this.r.getPathIterator(), 4, 3));
-		assertTrue(Path2i.contains(this.r.getPathIterator(), 2, 2));
-		assertTrue(Path2i.contains(this.r.getPathIterator(), 2, 1));
-		assertTrue(Path2i.contains(this.r.getPathIterator(), 4, 2));
-		assertTrue(Path2i.contains(this.r.getPathIterator(), 4, 3));
-		assertFalse(Path2i.contains(this.r.getPathIterator(), -1, -1));
-		assertFalse(Path2i.contains(this.r.getPathIterator(), 6, 2));
-		assertTrue(Path2i.contains(this.r.getPathIterator(), 3, -2));
-		assertFalse(Path2i.contains(this.r.getPathIterator(), 2, -2));
+		assertTrue(Path2i.contains(this.r.getPathIteratorDiscrete(), 0, 0));
+		assertTrue(Path2i.contains(this.r.getPathIteratorDiscrete(), 4, 3));
+		assertTrue(Path2i.contains(this.r.getPathIteratorDiscrete(), 2, 2));
+		assertTrue(Path2i.contains(this.r.getPathIteratorDiscrete(), 2, 1));
+		assertTrue(Path2i.contains(this.r.getPathIteratorDiscrete(), 4, 2));
+		assertTrue(Path2i.contains(this.r.getPathIteratorDiscrete(), 4, 3));
+		assertFalse(Path2i.contains(this.r.getPathIteratorDiscrete(), -1, -1));
+		assertFalse(Path2i.contains(this.r.getPathIteratorDiscrete(), 6, 2));
+		assertTrue(Path2i.contains(this.r.getPathIteratorDiscrete(), 3, -2));
+		assertFalse(Path2i.contains(this.r.getPathIteratorDiscrete(), 2, -2));
 	}
 
 	/**
 	 */
 	@Test
 	public void intersectsPathIterator2iIntIntIntInt() {
-		assertTrue(Path2i.intersects(this.r.getPathIterator(), 0, 0, 1, 1));
-		assertTrue(Path2i.intersects(this.r.getPathIterator(), 4, 3, 1, 1));
-		assertTrue(Path2i.intersects(this.r.getPathIterator(), 2, 2, 1, 1));
-		assertTrue(Path2i.intersects(this.r.getPathIterator(), 2, 1, 1, 1));
-		assertTrue(Path2i.intersects(this.r.getPathIterator(), 3, 0, 1, 1));
-		assertTrue(Path2i.intersects(this.r.getPathIterator(), -1, -1, 1, 1));
-		assertTrue(Path2i.intersects(this.r.getPathIterator(), 4, -3, 1, 1));
-		assertFalse(Path2i.intersects(this.r.getPathIterator(), -3, 4, 1, 1));
-		assertTrue(Path2i.intersects(this.r.getPathIterator(), 6, -5, 1, 1));
-		assertTrue(Path2i.intersects(this.r.getPathIterator(), 4, 0, 1, 1));
-		assertTrue(Path2i.intersects(this.r.getPathIterator(), 5, 0, 1, 1));
-		assertFalse(Path2i.intersects(this.r.getPathIterator(), 0, -3, 1, 1));
-		assertFalse(Path2i.intersects(this.r.getPathIterator(), 0, -3, 2, 1));
+		assertTrue(Path2i.intersects(this.r.getPathIteratorDiscrete(), 0, 0, 1, 1));
+		assertTrue(Path2i.intersects(this.r.getPathIteratorDiscrete(), 4, 3, 1, 1));
+		assertTrue(Path2i.intersects(this.r.getPathIteratorDiscrete(), 2, 2, 1, 1));
+		assertTrue(Path2i.intersects(this.r.getPathIteratorDiscrete(), 2, 1, 1, 1));
+		assertTrue(Path2i.intersects(this.r.getPathIteratorDiscrete(), 3, 0, 1, 1));
+		assertTrue(Path2i.intersects(this.r.getPathIteratorDiscrete(), -1, -1, 1, 1));
+		assertTrue(Path2i.intersects(this.r.getPathIteratorDiscrete(), 4, -3, 1, 1));
+		assertFalse(Path2i.intersects(this.r.getPathIteratorDiscrete(), -3, 4, 1, 1));
+		assertTrue(Path2i.intersects(this.r.getPathIteratorDiscrete(), 6, -5, 1, 1));
+		assertTrue(Path2i.intersects(this.r.getPathIteratorDiscrete(), 4, 0, 1, 1));
+		assertTrue(Path2i.intersects(this.r.getPathIteratorDiscrete(), 5, 0, 1, 1));
+		assertFalse(Path2i.intersects(this.r.getPathIteratorDiscrete(), 0, -3, 1, 1));
+		assertFalse(Path2i.intersects(this.r.getPathIteratorDiscrete(), 0, -3, 2, 1));
 	}
 	
 	/**
@@ -632,7 +632,7 @@ public class Path2iTest extends AbstractShape2iTestCase<Path2i> {
 	@Override
 	public void translateIntInt() {
 		this.r.translate(3, 4);
-		PathIterator2i pi = this.r.getPathIterator();
+		PathIterator2i pi = this.r.getPathIteratorDiscrete();
 		assertElement(pi, PathElementType.MOVE_TO, 3, 4);
 		assertElement(pi, PathElementType.LINE_TO, 5, 6);
 		assertElement(pi, PathElementType.QUAD_TO, 6, 4, 7, 7);
@@ -660,9 +660,9 @@ public class Path2iTest extends AbstractShape2iTestCase<Path2i> {
 		p2.moveTo(3, 4);
 		p2.lineTo(5, 6);
 		
-		this.r.add(p2.getPathIterator());
+		this.r.add(p2.getPathIteratorDiscrete());
 		
-		PathIterator2i pi = this.r.getPathIterator();
+		PathIterator2i pi = this.r.getPathIteratorDiscrete();
 		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
 		assertElement(pi, PathElementType.LINE_TO, 2, 2);
 		assertElement(pi, PathElementType.QUAD_TO, 3, 0, 4, 3);
@@ -677,7 +677,7 @@ public class Path2iTest extends AbstractShape2iTestCase<Path2i> {
 	 */
 	@Test
 	public void getPathIteratorVoid() {
-		PathIterator2i pi = this.r.getPathIterator();
+		PathIterator2i pi = this.r.getPathIteratorDiscrete();
 		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
 		assertElement(pi, PathElementType.LINE_TO, 2, 2);
 		assertElement(pi, PathElementType.QUAD_TO, 3, 0, 4, 3);
@@ -694,7 +694,7 @@ public class Path2iTest extends AbstractShape2iTestCase<Path2i> {
 		PathIterator2i pi;
 		
 		tr = new Transform2D();
-		pi = this.r.getPathIterator(tr);
+		pi = this.r.getPathIteratorDiscrete(tr);
 		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
 		assertElement(pi, PathElementType.LINE_TO, 2, 2);
 		assertElement(pi, PathElementType.QUAD_TO, 3, 0, 4, 3);
@@ -704,7 +704,7 @@ public class Path2iTest extends AbstractShape2iTestCase<Path2i> {
 
 		tr = new Transform2D();
 		tr.makeTranslationMatrix(3, 4);
-		pi = this.r.getPathIterator(tr);
+		pi = this.r.getPathIteratorDiscrete(tr);
 		assertElement(pi, PathElementType.MOVE_TO, 3, 4);
 		assertElement(pi, PathElementType.LINE_TO, 5, 6);
 		assertElement(pi, PathElementType.QUAD_TO, 6, 4, 7, 7);
@@ -725,7 +725,7 @@ public class Path2iTest extends AbstractShape2iTestCase<Path2i> {
 		Path2i clone = this.r.clone();
 		clone.transform(tr);
 
-		PathIterator2i pi = clone.getPathIterator();
+		PathIterator2i pi = clone.getPathIteratorDiscrete();
 		assertElement(pi, PathElementType.MOVE_TO, 3, 4);
 		assertElement(pi, PathElementType.LINE_TO, 5, 6);
 		assertElement(pi, PathElementType.QUAD_TO, 6, 4, 7, 7);
@@ -736,7 +736,7 @@ public class Path2iTest extends AbstractShape2iTestCase<Path2i> {
 		clone = this.r.clone();
 		clone.transform(tr2);
 
-		pi = clone.getPathIterator();
+		pi = clone.getPathIteratorDiscrete();
 		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
 		assertElement(pi, PathElementType.LINE_TO, 2, 0);
 		assertElement(pi, PathElementType.QUAD_TO, 2, -1, 4, -0);
@@ -749,7 +749,7 @@ public class Path2iTest extends AbstractShape2iTestCase<Path2i> {
 		clone = this.r.clone();
 		clone.transform(tr3);
 
-		pi = clone.getPathIterator();
+		pi = clone.getPathIteratorDiscrete();
 		assertElement(pi, PathElementType.MOVE_TO, 3, 4);
 		assertElement(pi, PathElementType.LINE_TO, 5, 4);
 		assertElement(pi, PathElementType.QUAD_TO, 5, 2, 7, 3);
@@ -766,7 +766,7 @@ public class Path2iTest extends AbstractShape2iTestCase<Path2i> {
 		tr.makeTranslationMatrix(3, 4);
 		Path2i p2 = (Path2i)this.r.createTransformedShape(tr);
 
-		PathIterator2i pi = p2.getPathIterator();
+		PathIterator2i pi = p2.getPathIteratorDiscrete();
 		assertElement(pi, PathElementType.MOVE_TO, 3, 4);
 		assertElement(pi, PathElementType.LINE_TO, 5, 6);
 		assertElement(pi, PathElementType.QUAD_TO, 6, 4, 7, 7);
@@ -894,7 +894,7 @@ public class Path2iTest extends AbstractShape2iTestCase<Path2i> {
 	 */
 	@Test
 	public void removeLast() {
-		PathIterator2i pi = this.r.getPathIterator();
+		PathIterator2i pi = this.r.getPathIteratorDiscrete();
 		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
 		assertElement(pi, PathElementType.LINE_TO, 2, 2);
 		assertElement(pi, PathElementType.QUAD_TO, 3, 0, 4, 3);
@@ -904,7 +904,7 @@ public class Path2iTest extends AbstractShape2iTestCase<Path2i> {
 		
 		this.r.removeLast();
 
-		pi = this.r.getPathIterator();
+		pi = this.r.getPathIteratorDiscrete();
 		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
 		assertElement(pi, PathElementType.LINE_TO, 2, 2);
 		assertElement(pi, PathElementType.QUAD_TO, 3, 0, 4, 3);
@@ -913,7 +913,7 @@ public class Path2iTest extends AbstractShape2iTestCase<Path2i> {
 
 		this.r.removeLast();
 
-		pi = this.r.getPathIterator();
+		pi = this.r.getPathIteratorDiscrete();
 		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
 		assertElement(pi, PathElementType.LINE_TO, 2, 2);
 		assertElement(pi, PathElementType.QUAD_TO, 3, 0, 4, 3);
@@ -921,25 +921,25 @@ public class Path2iTest extends AbstractShape2iTestCase<Path2i> {
 
 		this.r.removeLast();
 
-		pi = this.r.getPathIterator();
+		pi = this.r.getPathIteratorDiscrete();
 		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
 		assertElement(pi, PathElementType.LINE_TO, 2, 2);
 		assertNoElement(pi);
 
 		this.r.removeLast();
 
-		pi = this.r.getPathIterator();
+		pi = this.r.getPathIteratorDiscrete();
 		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
 		assertNoElement(pi);
 
 		this.r.removeLast();
 
-		pi = this.r.getPathIterator();
+		pi = this.r.getPathIteratorDiscrete();
 		assertNoElement(pi);
 
 		this.r.removeLast();
 
-		pi = this.r.getPathIterator();
+		pi = this.r.getPathIteratorDiscrete();
 		assertNoElement(pi);
 	}
 
@@ -947,7 +947,7 @@ public class Path2iTest extends AbstractShape2iTestCase<Path2i> {
 	 */
 	@Test
 	public void setLastPointIntInt() {
-		PathIterator2i pi = this.r.getPathIterator();
+		PathIterator2i pi = this.r.getPathIteratorDiscrete();
 		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
 		assertElement(pi, PathElementType.LINE_TO, 2, 2);
 		assertElement(pi, PathElementType.QUAD_TO, 3, 0, 4, 3);
@@ -957,7 +957,7 @@ public class Path2iTest extends AbstractShape2iTestCase<Path2i> {
 		
 		this.r.setLastPoint(123, 789);
 
-		pi = this.r.getPathIterator();
+		pi = this.r.getPathIteratorDiscrete();
 		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
 		assertElement(pi, PathElementType.LINE_TO, 2, 2);
 		assertElement(pi, PathElementType.QUAD_TO, 3, 0, 4, 3);
@@ -970,7 +970,7 @@ public class Path2iTest extends AbstractShape2iTestCase<Path2i> {
 	 */
 	@Test
 	public void removeIntInt() {
-		PathIterator2i pi = this.r.getPathIterator();
+		PathIterator2i pi = this.r.getPathIteratorDiscrete();
 		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
 		assertElement(pi, PathElementType.LINE_TO, 2, 2);
 		assertElement(pi, PathElementType.QUAD_TO, 3, 0, 4, 3);
@@ -980,7 +980,7 @@ public class Path2iTest extends AbstractShape2iTestCase<Path2i> {
 		
 		this.r.remove(2, 2);
 
-		pi = this.r.getPathIterator();
+		pi = this.r.getPathIteratorDiscrete();
 		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
 		assertElement(pi, PathElementType.QUAD_TO, 3, 0, 4, 3);
 		assertElement(pi, PathElementType.CURVE_TO, 5, -1, 6, 5, 7, -5);
@@ -989,7 +989,7 @@ public class Path2iTest extends AbstractShape2iTestCase<Path2i> {
 
 		this.r.remove(4, 3);
 
-		pi = this.r.getPathIterator();
+		pi = this.r.getPathIteratorDiscrete();
 		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
 		assertElement(pi, PathElementType.CURVE_TO, 5, -1, 6, 5, 7, -5);
 		assertElement(pi, PathElementType.CLOSE);
@@ -997,14 +997,14 @@ public class Path2iTest extends AbstractShape2iTestCase<Path2i> {
 
 		this.r.remove(6, 5);
 
-		pi = this.r.getPathIterator();
+		pi = this.r.getPathIteratorDiscrete();
 		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
 		assertElement(pi, PathElementType.CLOSE);
 		assertNoElement(pi);
 
 		this.r.remove(6, 5);
 
-		pi = this.r.getPathIterator();
+		pi = this.r.getPathIteratorDiscrete();
 		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
 		assertElement(pi, PathElementType.CLOSE);
 		assertNoElement(pi);
@@ -1014,7 +1014,7 @@ public class Path2iTest extends AbstractShape2iTestCase<Path2i> {
 	 */
 	@Test
 	public void containsPointPoint2D() {
-		PathIterator2i pi = this.r.getPathIterator();
+		PathIterator2i pi = this.r.getPathIteratorDiscrete();
 		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
 		assertElement(pi, PathElementType.LINE_TO, 2, 2);
 		assertElement(pi, PathElementType.QUAD_TO, 3, 0, 4, 3);

@@ -194,7 +194,7 @@ public class Ellipse2fTest extends AbstractRectangularShape2fTestCase<Ellipse2f>
 	@Test
 	@Override
 	public void toBoundingBox() {
-		Rectangle2f b = this.r.toBoundingBox();
+		AbstractRectangle2F b = this.r.toBoundingBox();
 		assertEpsilonEquals(0f, b.getMinX());
 		assertEpsilonEquals(0f, b.getMinY());
 		assertEpsilonEquals(2f, b.getMaxX());

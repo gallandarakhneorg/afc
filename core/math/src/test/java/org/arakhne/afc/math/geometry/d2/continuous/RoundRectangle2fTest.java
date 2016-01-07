@@ -205,7 +205,7 @@ public class RoundRectangle2fTest extends AbstractRectangularShape2fTestCase<Rou
 	@Test
 	@Override
 	public void toBoundingBox() {
-		Rectangle2f bb = this.r.toBoundingBox();
+		AbstractRectangle2F bb = this.r.toBoundingBox();
 		assertEpsilonEquals(0f, bb.getMinX());
 		assertEpsilonEquals(0f, bb.getMinY());
 		assertEpsilonEquals(1f, bb.getMaxX());

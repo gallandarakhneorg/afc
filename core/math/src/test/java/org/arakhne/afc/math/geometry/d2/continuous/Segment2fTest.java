@@ -1163,7 +1163,7 @@ public class Segment2fTest extends AbstractShape2fTestCase<Segment2f> {
 	@Test
 	@Override
 	public void toBoundingBox() {
-		Rectangle2f bb = this.r.toBoundingBox();
+		AbstractRectangle2F bb = this.r.toBoundingBox();
 		assertEpsilonEquals(0f, bb.getMinX());
 		assertEpsilonEquals(0f, bb.getMinY());
 		assertEpsilonEquals(1f, bb.getMaxX());
