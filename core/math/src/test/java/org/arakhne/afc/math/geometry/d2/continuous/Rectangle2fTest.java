@@ -257,7 +257,7 @@ public class Rectangle2fTest extends AbstractRectangularShape2fTestCase<Rectangl
 	@Test
 	@Override
 	public void toBoundingBox() {
-		Rectangle2f b = this.r.toBoundingBox();
+		AbstractRectangle2F<?> b = this.r.toBoundingBox();
 		assertTrue(this.r.equals(b));
 	}
 	

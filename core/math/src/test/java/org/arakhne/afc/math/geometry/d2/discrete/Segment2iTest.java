@@ -380,7 +380,7 @@ public class Segment2iTest extends AbstractShape2iTestCase<Segment2i> implements
 
 		tr = new Transform2D();
 		tr.makeRotationMatrix(MathConstants.QUARTER_PI);
-		pi = this.r.getPathIteratorDiscrete(tr);
+		pi = this.r.getPathIteratorDiscrete(tr); 
 		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
 		assertElement(pi, PathElementType.LINE_TO, 3, 10);
 		assertNoElement(pi);

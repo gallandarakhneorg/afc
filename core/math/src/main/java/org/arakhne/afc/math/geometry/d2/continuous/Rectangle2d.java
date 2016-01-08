@@ -103,7 +103,7 @@ public class Rectangle2d extends AbstractRectangle2F<Rectangle2d>{
 	 */
 	@Override
 	public void set(double x, double y, double width, double height) {
-		setFromCorners(x, y, x+width, y+height);
+		setInitiallyFromCorners(x, y, x+width, y+height);
 	}
 
 	/** Change the frame of te rectangle.
@@ -113,7 +113,7 @@ public class Rectangle2d extends AbstractRectangle2F<Rectangle2d>{
 	 */
 	@Override
 	public void set(Point2f min, Point2f max) {
-		setFromCorners(min.getX(), min.getY(), max.getX(), max.getY());
+		setInitiallyFromCorners(min.getX(), min.getY(), max.getX(), max.getY());
 	}
 
 	/** Change the width of the rectangle, not the min corner.
@@ -122,7 +122,7 @@ public class Rectangle2d extends AbstractRectangle2F<Rectangle2d>{
 	 */
 	@Override
 	public void setWidth(double width) {
-		this.setMaxX(this.getMinX() + Math.max(0f, width));
+		this.set(this.getMinX(),this.getMinY(),width,this.getHeight());
 	}
 
 	/** Change the height of the rectangle, not the min corner.
@@ -131,7 +131,7 @@ public class Rectangle2d extends AbstractRectangle2F<Rectangle2d>{
 	 */
 	@Override
 	public void setHeight(double height) {
-		this.setMaxY(this.getMinY() + Math.max(0f, height));
+		this.set(this.getMinX(),this.getMinY(),this.getWidth(),height);
 	}
 
 	@Override
@@ -317,7 +317,7 @@ public class Rectangle2d extends AbstractRectangle2F<Rectangle2d>{
 
 	@Override
 	public void set(Shape2F s) {
-		Rectangle2f r = new Rectangle2f();
+		AbstractRectangle2F<?> r = new Rectangle2f();
 		s.toBoundingBox(r);
 		this.setMaxX(r.getMaxX());
 		this.setMaxY(r.getMaxY());
@@ -330,8 +330,8 @@ public class Rectangle2d extends AbstractRectangle2F<Rectangle2d>{
 	 */
 	@Pure
 	@Override
-	public Rectangle2f toBoundingBox() {
-		Rectangle2f r = new Rectangle2f();
+	public AbstractRectangle2F<?> toBoundingBox() {
+		AbstractRectangle2F<?> r = new Rectangle2f();
 		r.setMaxX(this.getMaxX());
 		r.setMaxY(this.getMaxY());
 		r.setMinX(this.getMinX());

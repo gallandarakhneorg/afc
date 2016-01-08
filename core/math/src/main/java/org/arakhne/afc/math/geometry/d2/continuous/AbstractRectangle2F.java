@@ -377,7 +377,7 @@ public abstract class AbstractRectangle2F<T extends AbstractRectangularShape2F<T
 	 */
 	@Pure
 	@Override
-	abstract public Rectangle2f toBoundingBox();
+	abstract public AbstractRectangle2F<?> toBoundingBox();
 
 	/** {@inheritDoc}
 	 */

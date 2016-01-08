@@ -324,7 +324,7 @@ public class Rectangle2f extends AbstractRectangle2F<Rectangle2f> {
 
 	@Pure
 	@Override
-	public Rectangle2f toBoundingBox() {
+	public AbstractRectangle2F<?> toBoundingBox() {
 		return this.clone();
 	}
 
