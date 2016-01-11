@@ -108,7 +108,7 @@ public abstract class AbstractBoxedShape3fTestCase<T extends AbstractBoxedShape3
 	public abstract void setMaxYDouble();
 
 	@Test
-	public abstract void getMinz();
+	public abstract void getMinZ();
 
 	@Test
 	public abstract void setMinZDouble();

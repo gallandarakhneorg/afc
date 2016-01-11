@@ -166,22 +166,27 @@ public class AlignedBox3d extends AbstractBoxedShape3F<AlignedBox3f> {
 
 	
 	/** Lowest x-coordinate covered by this rectangular shape. */
-	protected DoubleProperty minxProperty = new SimpleDoubleProperty(0f);
+	protected DoubleProperty minxProperty;
 	/** Lowest y-coordinate covered by this rectangular shape. */
-	protected DoubleProperty minyProperty = new SimpleDoubleProperty(0f);
+	protected DoubleProperty minyProperty;
 	/** Lowest z-coordinate covered by this rectangular shape. */
-	protected DoubleProperty minzProperty = new SimpleDoubleProperty(0f);
+	protected DoubleProperty minzProperty;
 	/** Highest x-coordinate covered by this rectangular shape. */
-	protected DoubleProperty maxxProperty = new SimpleDoubleProperty(0f);
+	protected DoubleProperty maxxProperty;
 	/** Highest y-coordinate covered by this rectangular shape. */
-	protected DoubleProperty maxyProperty = new SimpleDoubleProperty(0f);
+	protected DoubleProperty maxyProperty;
 	/** Highest z-coordinate covered by this rectangular shape. */
-	protected DoubleProperty maxzProperty = new SimpleDoubleProperty(0f);
+	protected DoubleProperty maxzProperty;
 	
 	/**
 	 */
 	public AlignedBox3d() {
-		//
+		this.minxProperty = new SimpleDoubleProperty(0f);
+		this.minyProperty = new SimpleDoubleProperty(0f);
+		this.minzProperty = new SimpleDoubleProperty(0f);
+		this.maxxProperty = new SimpleDoubleProperty(0f);
+		this.maxyProperty = new SimpleDoubleProperty(0f);
+		this.maxzProperty = new SimpleDoubleProperty(0f);
 	}
 	
 	/**
@@ -189,6 +194,7 @@ public class AlignedBox3d extends AbstractBoxedShape3F<AlignedBox3f> {
 	 * @param max is the max corner of the box.
 	 */
 	public AlignedBox3d(Point3f min, Point3f max) {
+		this();
 		setFromCorners(
 				min.getX(), min.getY(), min.getZ(),
 				max.getX(), max.getY(), max.getZ());
@@ -203,6 +209,7 @@ public class AlignedBox3d extends AbstractBoxedShape3F<AlignedBox3f> {
 	 * @param sizez
 	 */
 	public AlignedBox3d(double x, double y, double z, double sizex, double sizey, double sizez) {
+		this();
 		setFromCorners(x, y, z, x+sizex, y+sizey, z+sizez);
 	}
 	
@@ -210,6 +217,7 @@ public class AlignedBox3d extends AbstractBoxedShape3F<AlignedBox3f> {
 	 * @param s
 	 */
 	public AlignedBox3d(AbstractBoxedShape3F<?> s) {
+		this();
 		this.minxProperty.set(s.getMinX());
 		this.minyProperty.set(s.getMinY());
 		this.minzProperty.set(s.getMinZ());

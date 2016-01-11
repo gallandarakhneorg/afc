@@ -161,22 +161,27 @@ public class AlignedBox3f extends AbstractBoxedShape3F<AlignedBox3f> {
 
 	
 	/** Lowest x-coordinate covered by this rectangular shape. */
-	protected double minx = 0f;
+	protected double minx;
 	/** Lowest y-coordinate covered by this rectangular shape. */
-	protected double miny = 0f;
+	protected double miny ;
 	/** Lowest z-coordinate covered by this rectangular shape. */
-	protected double minz = 0f;
+	protected double minz;
 	/** Highest x-coordinate covered by this rectangular shape. */
-	protected double maxx = 0f;
+	protected double maxx;
 	/** Highest y-coordinate covered by this rectangular shape. */
-	protected double maxy = 0f;
+	protected double maxy;
 	/** Highest z-coordinate covered by this rectangular shape. */
-	protected double maxz = 0f;
+	protected double maxz;
 	
 	/**
 	 */
 	public AlignedBox3f() {
-		//
+		this.minx = 0f;
+		this.miny = 0f;
+		this.minz = 0f;
+		this.maxx = 0f;
+		this.maxy = 0f;
+		this.maxz = 0f;
 	}
 	
 	/**

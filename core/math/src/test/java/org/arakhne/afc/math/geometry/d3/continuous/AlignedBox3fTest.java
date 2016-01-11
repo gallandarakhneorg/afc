@@ -26,22 +26,10 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
 
-import org.arakhne.afc.math.MathConstants;
-import org.arakhne.afc.math.geometry.PathElementType;
-import org.arakhne.afc.math.geometry.d2.Point2D;
-import org.arakhne.afc.math.geometry.d2.continuous.AbstractRectangle2F;
-import org.arakhne.afc.math.geometry.d2.continuous.Circle2f;
-import org.arakhne.afc.math.geometry.d2.continuous.Ellipse2f;
-import org.arakhne.afc.math.geometry.d2.continuous.Path2f;
-import org.arakhne.afc.math.geometry.d2.continuous.PathIterator2f;
-import org.arakhne.afc.math.geometry.d2.continuous.Point2f;
-import org.arakhne.afc.math.geometry.d3.continuous.Rectangle3f;
-import org.arakhne.afc.math.geometry.d2.continuous.Segment2f;
-import org.arakhne.afc.math.geometry.d2.continuous.Transform2D;
-import org.junit.Test;
+import org.arakhne.afc.math.geometry.d2.continuous.Rectangle2f;
 
 /**
- * @author $Author: galland$
+ * @author $Author: hjaffali$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -49,499 +37,423 @@ import org.junit.Test;
 public class AlignedBox3fTest extends AbstractBoxedShape3fTestCase<AlignedBox3f>{
 
 	@Override
+	protected AlignedBox3f createShape() {
+		return new AlignedBox3f(0, 0, 0, 1, 1, 1);
+	}
+
+	@Override
 	public void toBoundingBox() {
-		// TODO Auto-generated method stub
-		
+		assertTrue(new AlignedBox3f(0,0,0,1,1,1).equals(this.r.toBoundingBox()));
 	}
 
 	@Override
 	public void toBoundingBoxAlignedBox3f() {
-		// TODO Auto-generated method stub
-		
+		AlignedBox3f A = new AlignedBox3f();
+		this.r.toBoundingBox(A);
+
+		assertTrue(this.r.toBoundingBox().equals(A));
 	}
 
 	@Override
 	public void clear() {
-		// TODO Auto-generated method stub
-		
+		this.r.clear();
+
+		assertTrue(this.r.equals(new AlignedBox3f(0,0,0,0,0,0)));
 	}
 
 	@Override
 	public void setDoubleDoubleDoubleDoubleDoubleDouble() {
-		// TODO Auto-generated method stub
-		
+		this.r.set(0, 0, 0, 2, 2, 2);
+		assertTrue(this.r.equals(new AlignedBox3f(0,0,0,2,2,2)));
+
+		this.r.set(-1, -1, -1, 2, 2, 2);
+		assertTrue(this.r.equals(new AlignedBox3f(-1,-1,-1,2,2,2)));
+
+		this.r.set(1, 1, 1, 2, 2, 2);
+		assertTrue(this.r.equals(new AlignedBox3f(1,1,1,2,2,2)));
 	}
 
 	@Override
 	public void setPoint3fPoint3f() {
-		// TODO Auto-generated method stub
-		
+		this.r.set(new Point3f(0,0,0), new Point3f(2,2,2));
+		assertTrue(this.r.equals(new AlignedBox3f(0,0,0,2,2,2)));
+
+		this.r.set(new Point3f(-1,-1,-1), new Point3f(1,1,1));
+		assertTrue(this.r.equals(new AlignedBox3f(-1,-1,-1,2,2,2)));
+
+		this.r.set(new Point3f(1,1,1), new Point3f(3,3,3));
+		assertTrue(this.r.equals(new AlignedBox3f(1,1,1,2,2,2)));
 	}
 
 	@Override
 	public void setSizeXDouble() {
-		// TODO Auto-generated method stub
-		
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void setSizeYDouble() {
-		// TODO Auto-generated method stub
-		
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void setSizeZDouble() {
-		// TODO Auto-generated method stub
-		
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void setFromCornersPoint3DPoint3D() {
-		// TODO Auto-generated method stub
-		
+		this.r.setFromCorners(new Point3f(0,0,0), new Point3f(2,2,2));
+		assertTrue(this.r.equals(new AlignedBox3f(0,0,0,2,2,2)));
+
+		this.r.setFromCorners(new Point3f(-1,-1,-1), new Point3f(1,1,1));
+		assertTrue(this.r.equals(new AlignedBox3f(-1,-1,-1,2,2,2)));
+
+		this.r.setFromCorners(new Point3f(1,1,1), new Point3f(3,3,3));
+		assertTrue(this.r.equals(new AlignedBox3f(1,1,1,2,2,2)));
 	}
 
 	@Override
 	public void setFromCornersDoubleDoubleDoubleDoubleDoubleDouble() {
-		// TODO Auto-generated method stub
-		
+		this.r.setFromCorners(0,0,0,2,2,2);
+		assertTrue(this.r.equals(new AlignedBox3f(0,0,0,2,2,2)));
+
+		this.r.setFromCorners(-1,-1,-1,1,1,1);
+		assertTrue(this.r.equals(new AlignedBox3f(-1,-1,-1,2,2,2)));
+
+		this.r.setFromCorners(1,1,1,3,3,3);
+		assertTrue(this.r.equals(new AlignedBox3f(1,1,1,2,2,2)));
 	}
 
 	@Override
 	public void setFromCenterDoubleDoubleDoubleDoubleDoubleDouble() {
-		// TODO Auto-generated method stub
-		
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void getMinX() {
-		// TODO Auto-generated method stub
-		
+		assertEpsilonEquals(0, this.r.getMinX());
+
+		this.r.setFromCorners(-1,-1,-1,1,1,1);
+		assertEpsilonEquals(-1, this.r.getMinX());
+
+		this.r.setFromCorners(-2,-1,-1,1,1,1);
+		assertEpsilonEquals(-2, this.r.getMinX());
+
+		this.r.set(new Point3f(0,0,0), new Point3f(2,2,2));
+		assertEpsilonEquals(0, this.r.getMinX());
 	}
 
 	@Override
 	public void setMinXDouble() {
-		// TODO Auto-generated method stub
-		
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void getMin() {
-		// TODO Auto-generated method stub
-		
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void getMax() {
-		// TODO Auto-generated method stub
-		
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void getCenter() {
-		// TODO Auto-generated method stub
-		
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void getCenterX() {
-		// TODO Auto-generated method stub
-		
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void getMaxX() {
-		// TODO Auto-generated method stub
-		
+		assertEpsilonEquals(1, this.r.getMaxX());
+
+		this.r.setFromCorners(-1,-1,-1,1,1,1);
+		assertEpsilonEquals(1, this.r.getMaxX());
+
+		this.r.setFromCorners(-1,-1,-1,2,1,1);
+		assertEpsilonEquals(2, this.r.getMaxX());
+
+		this.r.set(new Point3f(0,0,0), new Point3f(2,2,2));
+		assertEpsilonEquals(2, this.r.getMaxX());
 	}
 
 	@Override
 	public void setMaxXDouble() {
-		// TODO Auto-generated method stub
-		
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void getMinY() {
-		// TODO Auto-generated method stub
-		
+		assertEpsilonEquals(0, this.r.getMinY());
+
+		this.r.setFromCorners(-1,-1,-1,1,1,1);
+		assertEpsilonEquals(-1, this.r.getMinY());
+
+		this.r.setFromCorners(-1,-2,-1,1,1,1);
+		assertEpsilonEquals(-2, this.r.getMinY());
+
+		this.r.set(new Point3f(0,0,0), new Point3f(2,2,2));
+		assertEpsilonEquals(0, this.r.getMinY());
 	}
 
 	@Override
 	public void setMinYDouble() {
-		// TODO Auto-generated method stub
-		
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void getCenterY() {
-		// TODO Auto-generated method stub
-		
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void getMaxY() {
-		// TODO Auto-generated method stub
-		
+		assertEpsilonEquals(1, this.r.getMaxY());
+
+		this.r.setFromCorners(-1,-1,-1,1,1,1);
+		assertEpsilonEquals(1, this.r.getMaxY());
+
+		this.r.setFromCorners(-1,-1,-1,1,2,1);
+		assertEpsilonEquals(2, this.r.getMaxY());
+
+		this.r.set(new Point3f(0,0,0), new Point3f(2,2,2));
+		assertEpsilonEquals(2, this.r.getMaxY());
 	}
 
 	@Override
 	public void setMaxYDouble() {
-		// TODO Auto-generated method stub
-		
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public void getMinz() {
-		// TODO Auto-generated method stub
-		
+	public void getMinZ() {
+		assertEpsilonEquals(0, this.r.getMinZ());
+
+		this.r.setFromCorners(-1,-1,-1,1,1,1);
+		assertEpsilonEquals(-1, this.r.getMinZ());
+
+		this.r.setFromCorners(-1,-1,-2,1,1,1);
+		assertEpsilonEquals(-2, this.r.getMinZ());
+
+		this.r.set(new Point3f(0,0,0), new Point3f(2,2,2));
+		assertEpsilonEquals(0, this.r.getMinZ());
 	}
 
 	@Override
 	public void setMinZDouble() {
-		// TODO Auto-generated method stub
-		
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void getCenterZ() {
-		// TODO Auto-generated method stub
-		
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void getMaxZ() {
-		// TODO Auto-generated method stub
-		
+		assertEpsilonEquals(1, this.r.getMaxZ());
+
+		this.r.setFromCorners(-1,-1,-1,1,1,9);
+		assertEpsilonEquals(9, this.r.getMaxZ());
+
+		this.r.setFromCorners(-1,-1,-1,1,1,3);
+		assertEpsilonEquals(3, this.r.getMaxZ());
+
+		this.r.set(new Point3f(0,0,0), new Point3f(2,2,2));
+		assertEpsilonEquals(2, this.r.getMaxZ());
 	}
 
 	@Override
 	public void setMaxZDouble() {
-		// TODO Auto-generated method stub
-		
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void getSizeX() {
-		// TODO Auto-generated method stub
-		
+		assertEpsilonEquals(1, this.r.getSizeX());
+
+		this.r.setFromCorners(-1,-1,-1,1,1,9);
+		assertEpsilonEquals(2, this.r.getSizeX());
+
+		this.r.setFromCorners(-1,-1,-1,1,1,3);
+		assertEpsilonEquals(2, this.r.getSizeX());
+
+		this.r.set(new Point3f(0,0,0), new Point3f(2,2,2));
+		assertEpsilonEquals(2, this.r.getSizeX());
 	}
 
 	@Override
 	public void getSizeY() {
-		// TODO Auto-generated method stub
-		
+		assertEpsilonEquals(1, this.r.getSizeY());
+
+		this.r.setFromCorners(-1,-1,-1,1,1,9);
+		assertEpsilonEquals(2, this.r.getSizeY());
+
+		this.r.setFromCorners(-1,-1,-1,1,2,3);
+		assertEpsilonEquals(3, this.r.getSizeY());
+
+		this.r.set(new Point3f(0,0,0), new Point3f(2,2,2));
+		assertEpsilonEquals(2, this.r.getSizeY());
 	}
 
 	@Override
 	public void getSizeZ() {
-		// TODO Auto-generated method stub
-		
+		assertEpsilonEquals(1, this.r.getSizeZ());
+
+		this.r.setFromCorners(-1,-1,-1,1,1,9);
+		assertEpsilonEquals(10, this.r.getSizeZ());
+
+		this.r.setFromCorners(-1,-1,-1,1,1,3);
+		assertEpsilonEquals(4, this.r.getSizeZ());
+
+		this.r.set(new Point3f(0,0,0), new Point3f(2,2,2));
+		assertEpsilonEquals(2, this.r.getSizeZ());
 	}
 
 	@Override
 	public void translateDoubleDoubleDouble() {
-		// TODO Auto-generated method stub
-		
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void isEmpty() {
-		// TODO Auto-generated method stub
-		
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void inflateDoubleDoubleDoubleDoubleDoubleDouble() {
-		// TODO Auto-generated method stub
-		
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void translateVector3D() {
-		// TODO Auto-generated method stub
-		
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void setXDoubleDouble() {
-		// TODO Auto-generated method stub
-		
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void setYDoubleDouble() {
-		// TODO Auto-generated method stub
-		
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void setZDoubleDouble() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	protected AlignedBox3f createShape() {
-		// TODO Auto-generated method stub
-		return null;
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void testClone() {
-		// TODO Auto-generated method stub
+		AlignedBox3f b = this.r.clone();
+
+		assertNotSame(b, this.r);
+		assertEpsilonEquals(this.r.getMinX(), b.getMinX());
+		assertEpsilonEquals(this.r.getMinY(), b.getMinY());
+		assertEpsilonEquals(this.r.getMinZ(), b.getMinZ());
+		assertEpsilonEquals(this.r.getMaxX(), b.getMaxX());
+		assertEpsilonEquals(this.r.getMaxY(), b.getMaxY());
+		assertEpsilonEquals(this.r.getMaxZ(), b.getMaxZ());
 		
+		b.set(this.r.getMinX()+1f, this.r.getMinY()+1f, this.r.getMinZ()+1f,
+				this.r.getSizeX()+1f, this.r.getSizeY()+1f, this.r.getSizeZ()+1f);
+
+		assertNotEpsilonEquals(this.r.getMinX(), b.getMinX());
+		assertNotEpsilonEquals(this.r.getMinY(), b.getMinY());
+		assertNotEpsilonEquals(this.r.getMinZ(), b.getMinZ());
+		assertNotEpsilonEquals(this.r.getMaxX(), b.getMaxX());
+		assertNotEpsilonEquals(this.r.getMaxY(), b.getMaxY());
+		assertNotEpsilonEquals(this.r.getMaxZ(), b.getMaxZ());
 	}
 
 	@Override
 	public void distancePoint3D() {
-		// TODO Auto-generated method stub
-		
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void containsPoint3D() {
-		// TODO Auto-generated method stub
-		
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void testEquals() {
-		// TODO Auto-generated method stub
+		AlignedBox3f b = this.r.clone();
+		AlignedBox3f c = new AlignedBox3f(this.r);
 		
+		assertTrue(b.equals(this.r));
+		assertTrue(this.r.equals(b));
+		assertTrue(this.r.equals(this.r));
+		assertTrue(b.equals(c));
+		assertTrue(this.r.equals(c));
 	}
 
 	@Override
 	public void testHashCode() {
-		// TODO Auto-generated method stub
-		
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void distanceSquaredPoint3D() {
-		// TODO Auto-generated method stub
-		
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void distanceL1Point3D() {
-		// TODO Auto-generated method stub
-		
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void distanceLinfPoint3D() {
-		// TODO Auto-generated method stub
-		
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void containsDoubleDoubleDouble() {
-		// TODO Auto-generated method stub
-		
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void intersectsAlignedBox3f() {
-		// TODO Auto-generated method stub
-		
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void intersectsSphere3f() {
-		// TODO Auto-generated method stub
-		
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void intersectsSegment3f() {
-		// TODO Auto-generated method stub
-		
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void intersectsTriangle3f() {
-		// TODO Auto-generated method stub
-		
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void intersectsCapsule3f() {
-		// TODO Auto-generated method stub
-		
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void intersectsOrientedBox3f() {
-		// TODO Auto-generated method stub
-		
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void intersectsAbstractPlane3D() {
-		// TODO Auto-generated method stub
-		
+		throw new UnsupportedOperationException();
 	}
-	
-	@Test
-	public void  () {
-		
-	}
-	
-	@Test
-	public void  () {
-		
-	}
-	
-	@Test
-	public void  () {
-		
-	}
-	
-	@Test
-	public void  () {
-		
-	}
-	
-	@Test
-	public void  () {
-		
-	}
-	
-	@Test
-	public void  () {
-		
-	}
-	
-	@Test
-	public void  () {
-		
-	}
-	
-	@Test
-	public void  () {
-		
-	}
-	
-	@Test
-	public void  () {
-		
-	}
-	
-	@Test
-	public void  () {
-		
-	}
-	
-	@Test
-	public void  () {
-		
-	}
-	
-	@Test
-	public void  () {
-		
-	}
-	
-	@Test
-	public void  () {
-		
-	}
-	
-	@Test
-	public void  () {
-		
-	}
-	
-	@Test
-	public void  () {
-		
-	}
-	
-	@Test
-	public void  () {
-		
-	}
-	
-	@Test
-	public void  () {
-		
-	}
-	
-	@Test
-	public void  () {
-		
-	}
-	
-	@Test
-	public void  () {
-		
-	}
-	
-	@Test
-	public void  () {
-		
-	}
-	
-	@Test
-	public void  () {
-		
-	}
-	
-	@Test
-	public void  () {
-		
-	}
-	
-	@Test
-	public void  () {
-		
-	}
-	
-	@Test
-	public void  () {
-		
-	}
-	
-	@Test
-	public void  () {
-		
-	}
-	
-	@Test
-	public void  () {
-		
-	}
-	
-	@Test
-	public void  () {
-		
-	}
-	
-	@Test
-	public void  () {
-		
-	}
-	
-	@Test
-	public void  () {
-		
-	}
-	
-	@Test
-	public void  () {
-		
-	}
-	
-	@Test
-	public void  () {
-		
-	}
-	
-	@Test
-	public void  () {
-		
-	}
-	
+
+
 }
