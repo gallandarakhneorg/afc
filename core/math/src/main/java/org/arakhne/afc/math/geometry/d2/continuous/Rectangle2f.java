@@ -95,7 +95,7 @@ public class Rectangle2f extends AbstractRectangle2F<Rectangle2f> {
 	 */
 	@Override
 	public void set(double x, double y, double width, double height) {
-		this.setInitiallyFromCorners(x, y, x+width, y+height);
+		this.setFromCorners(x, y, x+width, y+height);
 	}
 	
 	/** Change the frame of te rectangle.
@@ -105,7 +105,7 @@ public class Rectangle2f extends AbstractRectangle2F<Rectangle2f> {
 	 */
 	@Override
 	public void set(Point2f min, Point2f max) {
-		this.setInitiallyFromCorners(min.getX(), min.getY(), max.getX(), max.getY());
+		this.setFromCorners(min.getX(), min.getY(), max.getX(), max.getY());
 	}
 	
 	/** Change the width of the rectangle, not the min corner.
@@ -127,12 +127,12 @@ public class Rectangle2f extends AbstractRectangle2F<Rectangle2f> {
 	}
 
 	@Override
-	public void setInitiallyFromCorners(Point2D p1, Point2D p2) {
-		this.setInitiallyFromCorners(p1.getX(), p1.getY(), p2.getX(), p2.getY());
+	public void setFromCorners(Point2D p1, Point2D p2) {
+		this.setFromCorners(p1.getX(), p1.getY(), p2.getX(), p2.getY());
 	}
 
 	@Override
-	public void setInitiallyFromCorners(double x1, double y1, double x2, double y2) {
+	public void setFromCorners(double x1, double y1, double x2, double y2) {
 		if (x1<x2) {
 			this.minx=x1;
 			this.maxx=x2;
@@ -148,32 +148,6 @@ public class Rectangle2f extends AbstractRectangle2F<Rectangle2f> {
 		else {
 			this.miny=y2;
 			this.maxy=y1;
-		}
-	}
-
-	@Override
-	public void setFromCorners(Point2D p1, Point2D p2) {
-		this.setFromCorners(p1.getX(), p1.getY(), p2.getX(), p2.getY());
-	}
-
-
-	@Override
-	public void setFromCorners(double x1, double y1, double x2, double y2) {
-		if (x1<x2) {
-			this.setMinX(x1);
-			this.setMaxX(x2);
-		}
-		else {
-			this.setMinX(x2);
-			this.setMaxX(x1);
-		}
-		if (y1<y2) {
-			this.setMinY(y1);
-			this.setMaxY(y2);
-		}
-		else {
-			this.setMinY(y2);
-			this.setMaxY(y1);
 		}
 	}
 	
@@ -192,7 +166,7 @@ public class Rectangle2f extends AbstractRectangle2F<Rectangle2f> {
 	public void setFromCenter(double centerX, double centerY, double cornerX, double cornerY) {
 		double dx = centerX - cornerX;
 		double dy = centerY - cornerY;
-		setInitiallyFromCorners(cornerX, cornerY, centerX + dx, centerY + dy);
+		setFromCorners(cornerX, cornerY, centerX + dx, centerY + dy);
 	}
 	
 	/** Replies the min X.
@@ -212,8 +186,14 @@ public class Rectangle2f extends AbstractRectangle2F<Rectangle2f> {
 	 */
 	@Override
 	public void setMinX(double x) {
-		if (this.minx>x)
+		double o = this.maxx;
+		if (o<x) {
+			this.minx = o;
+			this.maxx = x;
+		}
+		else {
 			this.minx = x;
+		}
 	}
 
 	/** Replies the center x.
@@ -242,8 +222,14 @@ public class Rectangle2f extends AbstractRectangle2F<Rectangle2f> {
 	 */
 	@Override
 	public void setMaxX(double x) {
-		if (this.maxx<x)
+		double o = this.minx;
+		if (o>x) {
+			this.maxx = o;
+			this.minx = x;
+		}
+		else {
 			this.maxx = x;
+		}
 	}
 
 	/** Replies the min y.
@@ -262,8 +248,14 @@ public class Rectangle2f extends AbstractRectangle2F<Rectangle2f> {
 	 */
 	@Override
 	public void setMinY(double y) {
-		if (this.miny>y)
+		double o = this.maxy;
+		if (o<y) {
+			this.miny = o;
+			this.maxy = y;
+		}
+		else {
 			this.miny = y;
+		}
 	}
 
 	/** Replies the center y.
@@ -292,8 +284,14 @@ public class Rectangle2f extends AbstractRectangle2F<Rectangle2f> {
 	 */
 	@Override
 	public void setMaxY(double y) {
-		if (this.maxy<y)
+		double o = this.miny;
+		if (o>y) {
+			this.maxy = o;
+			this.miny = y;
+		}
+		else {
 			this.maxy = y;
+		}
 	}
 
 	/** Replies the width.

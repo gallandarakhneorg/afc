@@ -48,11 +48,11 @@ public class Rectangle2fTest extends AbstractRectangularShape2fTestCase<Rectangl
 	@Override
 	public void isEmpty() {
 		assertFalse(this.r.isEmpty());
-		this.r.setInitiallyFromCorners(1f,this.r.getMinY(),this.r.getMaxX(),this.r.getMaxY());
+		this.r.setFromCorners(1f,this.r.getMinY(),this.r.getMaxX(),this.r.getMaxY());
 		assertFalse(this.r.isEmpty());
-		this.r.setInitiallyFromCorners(this.r.getMinX(),1f,this.r.getMaxX(),this.r.getMaxY());
+		this.r.setFromCorners(this.r.getMinX(),1f,this.r.getMaxX(),this.r.getMaxY());
 		assertTrue(this.r.isEmpty());
-		this.r.setInitiallyFromCorners(0f,this.r.getMinY(),this.r.getMaxX(),this.r.getMaxY());
+		this.r.setFromCorners(0f,this.r.getMinY(),this.r.getMaxX(),this.r.getMaxY());
 		assertFalse(this.r.isEmpty());
 	}
 

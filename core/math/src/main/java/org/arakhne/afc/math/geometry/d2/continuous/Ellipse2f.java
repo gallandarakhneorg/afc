@@ -43,9 +43,9 @@ public class Ellipse2f extends AbstractEllipse2F<Ellipse2f> {
 	protected double maxx;
 	/** Highest y-coordinate covered by this rectangular shape. */
 	protected double maxy;
-	
-	
-	
+
+
+
 	/**
 	 */
 	public Ellipse2f() {
@@ -79,7 +79,7 @@ public class Ellipse2f extends AbstractEllipse2F<Ellipse2f> {
 		super(e);
 	}
 
-	
+
 	/** Change the frame of the rectangle.
 	 * 
 	 * @param x
@@ -87,11 +87,11 @@ public class Ellipse2f extends AbstractEllipse2F<Ellipse2f> {
 	 * @param width
 	 * @param height
 	 */
-	 @Override
+	@Override
 	public void set(double x, double y, double width, double height) {
 		setFromCorners(x, y, x+width, y+height);
 	}
-	
+
 	/** Change the frame of te rectangle.
 	 * 
 	 * @param min is the min corner of the rectangle.
@@ -101,7 +101,7 @@ public class Ellipse2f extends AbstractEllipse2F<Ellipse2f> {
 	public void set(Point2f min, Point2f max) {
 		setFromCorners(min.getX(), min.getY(), max.getX(), max.getY());
 	}
-	
+
 	/** Change the width of the rectangle, not the min corner.
 	 * 
 	 * @param width
@@ -118,33 +118,8 @@ public class Ellipse2f extends AbstractEllipse2F<Ellipse2f> {
 	@Override
 	public void setHeight(double height) {
 		this.maxy = this.miny + Math.max(0f, height);
-	}
-
-	@Override
-	public void setInitiallyFromCorners(Point2D p1, Point2D p2) {
-		this.setInitiallyFromCorners(p1.getX(), p1.getY(), p2.getX(), p2.getY());
-	}
-
-	@Override
-	public void setInitiallyFromCorners(double x1, double y1, double x2, double y2) {
-		if (x1<x2) {
-			this.minx=x1;
-			this.maxx=x2;
-		}
-		else {
-			this.minx=x2;
-			this.maxx=x1;
-		}
-		if (y1<y2) {
-			this.miny=y1;
-			this.maxy=y2;
-		}
-		else {
-			this.miny=y2;
-			this.maxy=y1;
-		}
 	}	
-	
+
 	/** Change the frame of the rectangle.
 	 * 
 	 * @param p1 is the coordinate of the first corner.
@@ -181,25 +156,25 @@ public class Ellipse2f extends AbstractEllipse2F<Ellipse2f> {
 			this.maxy = y1;
 		}
 	}
-	
+
 	/**
-     * Sets the framing rectangle of this <code>Shape</code>
-     * based on the specified center point coordinates and corner point
-     * coordinates.  The framing rectangle is used by the subclasses of
-     * <code>RectangularShape</code> to define their geometry.
-     *
-     * @param centerX the X coordinate of the specified center point
-     * @param centerY the Y coordinate of the specified center point
-     * @param cornerX the X coordinate of the specified corner point
-     * @param cornerY the Y coordinate of the specified corner point
-     */
+	 * Sets the framing rectangle of this <code>Shape</code>
+	 * based on the specified center point coordinates and corner point
+	 * coordinates.  The framing rectangle is used by the subclasses of
+	 * <code>RectangularShape</code> to define their geometry.
+	 *
+	 * @param centerX the X coordinate of the specified center point
+	 * @param centerY the Y coordinate of the specified center point
+	 * @param cornerX the X coordinate of the specified corner point
+	 * @param cornerY the Y coordinate of the specified corner point
+	 */
 	@Override
 	public void setFromCenter(double centerX, double centerY, double cornerX, double cornerY) {
 		double dx = centerX - cornerX;
 		double dy = centerY - cornerY;
-		setInitiallyFromCorners(cornerX, cornerY, centerX + dx, centerY + dy);
+		setFromCorners(cornerX, cornerY, centerX + dx, centerY + dy);
 	}
-	
+
 	/** Replies the min X.
 	 * 
 	 * @return the min x.
@@ -216,8 +191,14 @@ public class Ellipse2f extends AbstractEllipse2F<Ellipse2f> {
 	 */
 	@Override
 	public void setMinX(double x) {
-		if (this.minx>x)
+		double o = this.maxx;
+		if (o<x) {
+			this.minx = o;
+			this.maxx = x;
+		}
+		else {
 			this.minx = x;
+		}
 	}
 
 	/** Replies the center x.
@@ -246,8 +227,14 @@ public class Ellipse2f extends AbstractEllipse2F<Ellipse2f> {
 	 */
 	@Override
 	public void setMaxX(double x) {
-		if (this.maxx<x)
+		double o = this.minx;
+		if (o>x) {
+			this.maxx = o;
+			this.minx = x;
+		}
+		else {
 			this.maxx = x;
+		}
 	}
 
 	/** Replies the min y.
@@ -261,13 +248,19 @@ public class Ellipse2f extends AbstractEllipse2F<Ellipse2f> {
 	}
 
 	/** Set the min Y.
-	* 
+	 * 
 	 * @param y the min y.
 	 */
 	@Override
 	public void setMinY(double y) {
-		if (this.miny>y)
+		double o = this.maxy;
+		if (o<y) {
+			this.miny = o;
+			this.maxy = y;
+		}
+		else {
 			this.miny = y;
+		}
 	}
 
 	/** Replies the center y.
@@ -289,15 +282,21 @@ public class Ellipse2f extends AbstractEllipse2F<Ellipse2f> {
 	public double getMaxY() {
 		return this.maxy;
 	}
-	
+
 	/** Set the max Y.
 	 * 
 	 * @param y the max y.
 	 */
 	@Override
 	public void setMaxY(double y) {
-		if (this.maxy<y)
+		double o = this.miny;
+		if (o>y) {
+			this.maxy = o;
+			this.miny = y;
+		}
+		else {
 			this.maxy = y;
+		}
 	}
 
 	/** Replies the width.
@@ -319,6 +318,6 @@ public class Ellipse2f extends AbstractEllipse2F<Ellipse2f> {
 	public double getHeight() {
 		return this.maxy - this.miny;
 	}
-	
-	
+
+
 }

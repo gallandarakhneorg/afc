@@ -166,7 +166,7 @@ public abstract class AbstractRectangle2F<T extends AbstractRectangularShape2F<T
 	 * @param r2
 	 */
 	public static void union(AbstractRectangle2F<?> dest, AbstractRectangle2F<?> abstractRectangle2F, AbstractRectangle2F<?> r2) {
-		dest.setInitiallyFromCorners(
+		dest.setFromCorners(
 				Math.min(abstractRectangle2F.getMinX(), r2.getMinX()),
 				Math.min(abstractRectangle2F.getMinY(), r2.getMinY()),
 				Math.max(abstractRectangle2F.getMaxX(), r2.getMaxX()),
@@ -227,7 +227,7 @@ public abstract class AbstractRectangle2F<T extends AbstractRectangularShape2F<T
 		double x2 = Math.min(r1.getMaxX(), r2.getMaxX());
 		double y2 = Math.min(r1.getMaxY(), r2.getMaxY());
 		if (x1<=x2 && y1<=y2) {
-			dest.setInitiallyFromCorners(x1, y1, x2, y2);
+			dest.setFromCorners(x1, y1, x2, y2);
 		}
 		else {
 			dest.set(0, 0, 0, 0);

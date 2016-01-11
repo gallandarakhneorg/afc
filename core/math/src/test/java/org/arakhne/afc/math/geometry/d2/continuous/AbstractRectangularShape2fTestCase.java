@@ -50,8 +50,8 @@ public abstract class AbstractRectangularShape2fTestCase<T extends AbstractRecta
 	}
 	
 	@Test
-	public void setInitiallyFloatFloatFloatFloat() {
-		this.r.setInitiallyFromCorners(2.3f, 3.4f, 4.5f, 5.6f);
+	public void setFromCornersFloatFloatFloatFloat() {
+		this.r.setFromCorners(2.3f, 3.4f, 4.5f, 5.6f);
 		assertEpsilonEquals(2.3f, this.r.getMinX());
 		assertEpsilonEquals(3.4f, this.r.getMinY());
 		assertEpsilonEquals(4.5f-2.3f, this.r.getWidth()); 
@@ -92,37 +92,15 @@ public abstract class AbstractRectangularShape2fTestCase<T extends AbstractRecta
 		assertEpsilonEquals(2.3f, this.r.getMaxY());
 		assertEpsilonEquals(2.3f, this.r.getHeight());
 	}
-
-	/**
-	 */
-	@Test
-	public void setFromCornersPoint2DPoint2D() {
-		this.r.setFromCorners(new Point2f(-2.3f, 3.4f), new Point2f(0.5f, 5.6f));
-		assertEpsilonEquals(-2.3f, this.r.getMinX());
-		assertEpsilonEquals(0f, this.r.getMinY());
-		assertEpsilonEquals(1f, this.r.getMaxX());
-		assertEpsilonEquals(5.6f, this.r.getMaxY());
-	}
 	
 	/**
 	 */
 	@Test
 	public void setInitiallyFromCornersPoint2DPoint2D() {
-		this.r.setInitiallyFromCorners(new Point2f(-2.3f, 3.4f), new Point2f(0.5f, 5.6f));
+		this.r.setFromCorners(new Point2f(-2.3f, 3.4f), new Point2f(0.5f, 5.6f));
 		assertEpsilonEquals(-2.3f, this.r.getMinX());
 		assertEpsilonEquals(3.4f, this.r.getMinY());
 		assertEpsilonEquals(0.5f, this.r.getMaxX());
-		assertEpsilonEquals(5.6f, this.r.getMaxY());
-	}
-
-	/**
-	 */
-	@Test
-	public void setFromCornersFloatFloatFloatFloat() {
-		this.r.setFromCorners(2.3f, 3.4f, 4.5f, 5.6f);
-		assertEpsilonEquals(0f, this.r.getMinX());
-		assertEpsilonEquals(0f, this.r.getMinY());
-		assertEpsilonEquals(4.5f, this.r.getMaxX());
 		assertEpsilonEquals(5.6f, this.r.getMaxY());
 	}
 	
@@ -144,11 +122,11 @@ public abstract class AbstractRectangularShape2fTestCase<T extends AbstractRecta
 	@Test
 	public void setMinX() {
 		this.r.setMinX(2.3f);
-		assertEpsilonEquals(0f, this.r.getMinX());
-		assertEpsilonEquals(1f, this.r.getMaxX());
+		assertEpsilonEquals(1f, this.r.getMinX());
+		assertEpsilonEquals(2.3f, this.r.getMaxX());
 		this.r.setMinX(-3.4f);
 		assertEpsilonEquals(-3.4f, this.r.getMinX());
-		assertEpsilonEquals(1f, this.r.getMaxX());
+		assertEpsilonEquals(2.3f, this.r.getMaxX());
 	}
 
 	/**
@@ -159,8 +137,8 @@ public abstract class AbstractRectangularShape2fTestCase<T extends AbstractRecta
 		assertEpsilonEquals(0f, this.r.getMinX());
 		assertEpsilonEquals(2.3f, this.r.getMaxX());
 		this.r.setMaxX(-3.4f);
-		assertEpsilonEquals(0f, this.r.getMinX());
-		assertEpsilonEquals(2.3f, this.r.getMaxX());
+		assertEpsilonEquals(-3.4f, this.r.getMinX());
+		assertEpsilonEquals(0f, this.r.getMaxX());
 	}
 
 	/**
@@ -168,11 +146,11 @@ public abstract class AbstractRectangularShape2fTestCase<T extends AbstractRecta
 	@Test
 	public void setMinY() {
 		this.r.setMinY(2.3f);
-		assertEpsilonEquals(0f, this.r.getMinY());
-		assertEpsilonEquals(1f, this.r.getMaxY());
+		assertEpsilonEquals(1f, this.r.getMinY());
+		assertEpsilonEquals(2.3f, this.r.getMaxY());
 		this.r.setMinY(-3.4f);
 		assertEpsilonEquals(-3.4f, this.r.getMinY());
-		assertEpsilonEquals(1f, this.r.getMaxY());
+		assertEpsilonEquals(2.3f, this.r.getMaxY());
 	}
 
 	/**
@@ -183,8 +161,8 @@ public abstract class AbstractRectangularShape2fTestCase<T extends AbstractRecta
 		assertEpsilonEquals(0f, this.r.getMinY());
 		assertEpsilonEquals(2.3f, this.r.getMaxY());
 		this.r.setMaxY(-3.4f);
-		assertEpsilonEquals(0f, this.r.getMinY());
-		assertEpsilonEquals(2.3f, this.r.getMaxY());
+		assertEpsilonEquals(-3.4f, this.r.getMinY());
+		assertEpsilonEquals(0f, this.r.getMaxY());
 	}
 	
 	/**
