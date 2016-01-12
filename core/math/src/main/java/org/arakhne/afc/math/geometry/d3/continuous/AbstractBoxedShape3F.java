@@ -264,12 +264,7 @@ public abstract class AbstractBoxedShape3F<T extends AbstractBoxedShape3F<T>>   
 
 	@Override
 	public void translate(double dx, double dy, double dz) {
-		this.setMinX(this.getMinX()+ dx);
-		this.setMaxX(this.getMaxX()+ dx);
-		this.setMinY(this.getMinY()+ dy);
-		this.setMaxY(this.getMaxY()+ dy);
-		this.setMinZ(this.getMinZ()+ dz);
-		this.setMaxZ(this.getMaxZ()+ dz);
+		this.setFromCorners(this.getMinX()+ dx,this.getMinY()+ dy,this.getMinZ()+ dz,this.getMaxX()+ dx,this.getMaxY()+ dy,this.getMaxZ()+ dz);
 	}
 
 	@Override
@@ -308,12 +303,7 @@ public abstract class AbstractBoxedShape3F<T extends AbstractBoxedShape3F<T>>   
 	 * @param maxz
 	 */
 	public void inflate(double minx, double miny, double minz, double maxx, double maxy, double maxz) {
-		this.setMinX(this.getMinX()+ minx);
-		this.setMaxX(this.getMaxX()+ maxx);
-		this.setMinY(this.getMinY()+ miny);
-		this.setMaxY(this.getMaxY()+ maxy);
-		this.setMinZ(this.getMinZ()+ minz);
-		this.setMaxZ(this.getMaxZ()+ maxz);
+		this.setFromCorners(this.getMinX()+ minx,this.getMinY()+ miny,this.getMinZ()+ minz,this.getMaxX()+ maxx,this.getMaxY()+ maxy,this.getMaxZ()+ maxz);
 	}
 
 	/**
