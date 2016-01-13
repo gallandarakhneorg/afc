@@ -127,11 +127,11 @@ public class Plane4fTest extends AbstractPlane3DTestCase<AbstractPlane4F> {
 	public void getProjectionPoint3D() {
 		Point3f point = new Point3f(this.random.nextInt()%20,this.random.nextInt()%20,this.random.nextInt()%20);
 		
-		double k = (r.getEquationComponentA()*point.x+r.getEquationComponentB()*point.y+r.getEquationComponentC()*point.z+r.getEquationComponentD());
+		double k = (this.r.getEquationComponentA()*point.x+this.r.getEquationComponentB()*point.y+this.r.getEquationComponentC()*point.z+this.r.getEquationComponentD());
 	
-		double xProj = point.x -k*r.getEquationComponentA();
-		double yProj = point.y -k*r.getEquationComponentB();
-		double zProj = point.z -k*r.getEquationComponentC();
+		double xProj = point.x -k*this.r.getEquationComponentA();
+		double yProj = point.y -k*this.r.getEquationComponentB();
+		double zProj = point.z -k*this.r.getEquationComponentC();
 		
 		Point3f projection = new Point3f(xProj,yProj,zProj);
 		

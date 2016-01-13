@@ -661,7 +661,27 @@ public class AlignedBox3fTest extends AbstractBoxedShape3fTestCase<AlignedBox3f>
 
 	@Override
 	public void intersectsAlignedBox3f() {
-		throw new UnsupportedOperationException();
+		this.r.setFromCorners(0, 0, 0, 2, 2, 2);
+		
+		AlignedBox3f alignedBox = new AlignedBox3f();
+		
+		alignedBox.setFromCorners(0, 0, 0, 2, 2, 2);
+		assertTrue(this.r.intersects(alignedBox));
+		
+		alignedBox.setFromCorners(-2, 0, 0, 0, 2, 2);
+		assertFalse(this.r.intersects(alignedBox));
+		
+		alignedBox.setFromCorners(-1.9, 0, 0, 0.1, 2, 2);
+		assertTrue(this.r.intersects(alignedBox));
+		
+		alignedBox.setFromCorners(-1, 0, 0, 1, 2, 2);
+		assertTrue(this.r.intersects(alignedBox));
+		
+		alignedBox.setFromCorners(5, 5, 5, 10, 10, 10);
+		assertFalse(this.r.intersects(alignedBox));
+		
+		alignedBox.setFromCorners(1, 1, 1, 3, 3, 3);
+		assertTrue(this.r.intersects(alignedBox));
 	}
 
 	@Override
@@ -709,6 +729,17 @@ public class AlignedBox3fTest extends AbstractBoxedShape3fTestCase<AlignedBox3f>
 
 	@Override
 	public void intersectsAbstractPlane3D() {
-		throw new UnsupportedOperationException();
+		this.r.setFromCorners(0, 0, 0, 2, 2, 2);
+		
+		assertTrue(this.r.intersects(new Plane4f(new Vector3f(0,0,1),new Point3f(1,1,1))));
+		assertTrue(this.r.intersects(new Plane4f(new Vector3f(0,1,0),new Point3f(1,1,1))));
+		assertTrue(this.r.intersects(new Plane4f(new Vector3f(1,0,0),new Point3f(1,1,1))));
+		
+		assertFalse(this.r.intersects(new Plane4f(new Vector3f(0,1,0),new Point3f(1,3,1))));
+		
+		assertTrue(this.r.intersects(new Plane4f(new Vector3f(0,1,0),new Point3f(0,2,2))));
+		assertTrue(this.r.intersects(new Plane4f(new Vector3f(1,0,0),new Point3f(0,2,2))));
+		
+		assertFalse(this.r.intersects(new Plane4f(new Vector3f(1,0,1),new Point3f(4,0,4))));
 	}
 }

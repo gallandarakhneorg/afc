@@ -220,8 +220,8 @@ public abstract class AbstractEllipse2F<T extends AbstractRectangularShape2F<T>>
 		else {
 			// Compute the intersection between the ellipse
 			// centered on (0;0) and the line (0;0)-(x0;y0)
-			double a = ew / 2f;
-			double b = eh / 2f;
+			double a = ew / 2.;
+			double b = eh / 2.;
 			double x0 = px - (ex + a);
 			double y0 = py - (ey + b);
 
