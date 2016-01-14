@@ -27,6 +27,7 @@ import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Path2D;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
@@ -74,6 +75,7 @@ public class PathShadow2d {
 	 * @param y1 is the second point of the segment.
 	 * @return the crossings or {@link MathConstants#SHAPE_INTERSECTS}.
 	 */
+	@Pure
 	public int computeCrossings(
 			int crossings,
 			double x0, double y0,
@@ -376,6 +378,7 @@ public class PathShadow2d {
 		public DoubleProperty yminProperty;
 		public DoubleProperty ymaxProperty;
 
+		@Pure
 		@Override
 		public String toString() {
 			StringBuilder b = new StringBuilder();

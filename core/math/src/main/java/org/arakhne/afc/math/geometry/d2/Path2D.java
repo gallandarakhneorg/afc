@@ -27,6 +27,7 @@ import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.continuous.PathIterator2d;
 import org.arakhne.afc.math.geometry.d2.continuous.PathIterator2f;
 import org.arakhne.afc.math.geometry.d2.discrete.PathIterator2i;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** 2D Path.
  * 
@@ -52,6 +53,7 @@ public interface Path2D<PT extends Shape2D<? super PT>, B extends Shape2D<?>, E 
 	 * 
 	 * @return the winding rule for the path.
 	 */
+	@Pure
 	public PathWindingRule getWindingRule();
 	
 	/** Replies the path is composed only by
@@ -84,6 +86,7 @@ public interface Path2D<PT extends Shape2D<? super PT>, B extends Shape2D<?>, E 
 	 * the curved segments are allowed to deviate from any point on the original curve.
 	 * @return an iterator on the path elements.
 	 */
+	@Pure
 	public PathIterator2f getPathIterator(double flatness);
 
 	/** Replies an iterator on the path elements.
@@ -92,6 +95,7 @@ public interface Path2D<PT extends Shape2D<? super PT>, B extends Shape2D<?>, E 
 	 * 
 	 * @return an iterator on the path elements.
 	 */
+	@Pure
 	public PathIterator2f getPathIterator();
 	
 	/** Replies an iterator on the path elements.
@@ -114,6 +118,7 @@ public interface Path2D<PT extends Shape2D<? super PT>, B extends Shape2D<?>, E 
 	 * the curved segments are allowed to deviate from any point on the original curve.
 	 * @return an iterator on the path elements.
 	 */
+	@Pure
 	public PathIterator2d getPathIteratorProperty(double flatness);
 
 	/** Replies an iterator on the path elements.
@@ -122,6 +127,7 @@ public interface Path2D<PT extends Shape2D<? super PT>, B extends Shape2D<?>, E 
 	 * 
 	 * @return an iterator on the path elements.
 	 */
+	@Pure
 	public PathIterator2d getPathIteratorProperty();
 	
 	/** Replies an iterator on the path elements.
@@ -144,6 +150,7 @@ public interface Path2D<PT extends Shape2D<? super PT>, B extends Shape2D<?>, E 
 	 * the curved segments are allowed to deviate from any point on the original curve.
 	 * @return an iterator on the path elements.
 	 */
+	@Pure
 	public PathIterator2i getPathIteratorDiscrete(double flatness);
 
 	/** Replies an iterator on the path elements.
@@ -152,6 +159,7 @@ public interface Path2D<PT extends Shape2D<? super PT>, B extends Shape2D<?>, E 
 	 * 
 	 * @return an iterator on the path elements.
 	 */
+	@Pure
 	public PathIterator2i getPathIteratorDiscrete();
 	
 

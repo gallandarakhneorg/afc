@@ -23,6 +23,7 @@ package org.arakhne.afc.math.geometry.d2.continuous;
 import org.arakhne.afc.math.geometry.d2.FunctionalPoint2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** 2D Point with 2 floating-point numbers.
  * 
@@ -339,6 +340,7 @@ public class Point2f extends Tuple2f<Point2D> implements FunctionalPoint2D {
 //		this.y -= t1.getY();
 //	}
 
+	@Pure
 	@Override
 	public Point2D toUnmodifiable() {
 		return new UnmodifiablePoint2f();
@@ -358,7 +360,8 @@ public class Point2f extends Tuple2f<Point2D> implements FunctionalPoint2D {
 		 */
 		public UnmodifiablePoint2f() {
 		}
-		
+
+		@Pure
 		@Override
 		public UnmodifiablePoint2f clone() {
 			return new UnmodifiablePoint2f();
@@ -464,16 +467,19 @@ public class Point2f extends Tuple2f<Point2D> implements FunctionalPoint2D {
 //			throw new UnsupportedOperationException();
 //		}
 
+		@Pure
 		@Override
 		public void get(Point2D t) {
 			Point2f.this.get(t);
 		}
 
+		@Pure
 		@Override
 		public void get(int[] t) {
 			Point2f.this.get(t);
 		}
 
+		@Pure
 		@Override
 		public void get(double[] t) {
 			Point2f.this.get(t);
@@ -534,11 +540,13 @@ public class Point2f extends Tuple2f<Point2D> implements FunctionalPoint2D {
 //			throw new UnsupportedOperationException();
 //		}
 
+		@Pure
 		@Override
 		public double getX() {
 			return Point2f.this.getX();
 		}
 
+		@Pure
 		@Override
 		public int ix() {
 			return Point2f.this.ix();
@@ -554,11 +562,13 @@ public class Point2f extends Tuple2f<Point2D> implements FunctionalPoint2D {
 //			throw new UnsupportedOperationException();
 //		}
 
+		@Pure
 		@Override
 		public double getY() {
 			return Point2f.this.getY();
 		}
 
+		@Pure
 		@Override
 		public int iy() {
 			return Point2f.this.iy();
@@ -614,36 +624,43 @@ public class Point2f extends Tuple2f<Point2D> implements FunctionalPoint2D {
 //			throw new UnsupportedOperationException();
 //		}
 
+		@Pure
 		@Override
 		public boolean equals(Tuple2D<?> t1) {
 			return Point2f.this.equals(t1);
 		}
-		
+
+		@Pure
 		@Override
 		public int hashCode() {
 			return Point2f.this.hashCode();
 		}
 
+		@Pure
 		@Override
 		public boolean epsilonEquals(Point2D t1, double epsilon) {
 			return Point2f.this.epsilonEquals(t1, epsilon);
 		}
 
+		@Pure
 		@Override
 		public double getDistanceSquared(Point2D p1) {
 			return Point2f.this.getDistanceSquared(p1);
 		}
 
+		@Pure
 		@Override
 		public double getDistance(Point2D p1) {
 			return Point2f.this.getDistance(p1);
 		}
 
+		@Pure
 		@Override
 		public double getDistanceL1(Point2D p1) {
 			return Point2f.this.getDistanceL1(p1);
 		}
 
+		@Pure
 		@Override
 		public double getDistanceLinf(Point2D p1) {
 			return Point2f.this.getDistanceLinf(p1);
@@ -704,26 +721,31 @@ public class Point2f extends Tuple2f<Point2D> implements FunctionalPoint2D {
 //			throw new UnsupportedOperationException();
 //		}
 
+		@Pure
 		@Override
 		public Point2D toUnmodifiable() {
 			return this;
 		}
 
+		@Pure
 		@Override
 		public int distanceSquared(Point2D p1) {
 			return Point2f.this.distanceSquared(p1);
 		}
 
+		@Pure
 		@Override
 		public int distance(Point2D p1) {
 			return Point2f.this.distance(p1);
 		}
 
+		@Pure
 		@Override
 		public int distanceL1(Point2D p1) {
 			return Point2f.this.distanceL1(p1);
 		}
 
+		@Pure
 		@Override
 		public int distanceLinf(Point2D p1) {
 			return Point2f.this.distanceLinf(p1);

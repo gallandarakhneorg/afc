@@ -21,6 +21,7 @@ package org.arakhne.afc.math.geometry.d2.continuous;
 import org.arakhne.afc.math.geometry.d2.FunctionalPoint2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 
 /**
@@ -48,6 +49,7 @@ public class Point2d extends Tuple2d<Point2D> implements FunctionalPoint2D {
 	/* (non-Javadoc)
 	 * @see org.arakhne.afc.math.geometry.d2.Point2D#toUnmodifiable()
 	 */
+	@Pure
 	@Override
 	public Point2D toUnmodifiable() {
 		return new UnmodifiablePoint2d();
@@ -66,101 +68,121 @@ public class Point2d extends Tuple2d<Point2D> implements FunctionalPoint2D {
 		 */
 		public UnmodifiablePoint2d() {
 		}
-		
+
+		@Pure
 		@Override
 		public UnmodifiablePoint2f clone() {
 			return new UnmodifiablePoint2d();
 		}
 
+		@Pure
 		@Override
 		public void get(Point2D t) {
 			Point2d.this.get(t);
 		}
 
+		@Pure
 		@Override
 		public void get(int[] t) {
 			Point2d.this.get(t);
 		}
 
+		@Pure
 		@Override
 		public void get(double[] t) {
 			Point2d.this.get(t);
 		}
 
+		@Pure
 		public double getX() {
 			return Point2d.this.getX();
 		}
 
+		@Pure
 		@Override
 		public int ix() {
 			return Point2d.this.ix();
 		}
 
+		@Pure
 		@Override
 		public double getY() {
 			return Point2d.this.getY();
 		}
 
+		@Pure
 		@Override
 		public int iy() {
 			return Point2d.this.iy();
 		}
 
+		@Pure
 		@Override
 		public boolean equals(Tuple2D<?> t1) {
 			return Point2d.this.equals(t1);
 		}
-		
+
+		@Pure
 		@Override
 		public int hashCode() {
 			return Point2d.this.hashCode();
 		}
 
+		@Pure
 		@Override
 		public boolean epsilonEquals(Point2D t1, double epsilon) {
 			return Point2d.this.epsilonEquals(t1, epsilon);
 		}
 
+		@Pure
 		@Override
 		public double getDistanceSquared(Point2D p1) {
 			return Point2d.this.getDistanceSquared(p1);
 		}
 
+		@Pure
 		@Override
 		public double getDistance(Point2D p1) {
 			return Point2d.this.getDistance(p1);
 		}
 
+		@Pure
 		@Override
 		public double getDistanceL1(Point2D p1) {
 			return Point2d.this.getDistanceL1(p1);
 		}
 
+		@Pure
 		@Override
 		public double getDistanceLinf(Point2D p1) {
 			return Point2d.this.getDistanceLinf(p1);
 		}
 
+		@Pure
 		@Override
 		public Point2D toUnmodifiable() {
 			return this;
 		}
 
+		@Pure
 		@Override
 		public int distanceSquared(Point2D p1) {
 			return Point2d.this.distanceSquared(p1);
 		}
 
+		@Pure
 		@Override
 		public int distance(Point2D p1) {
 			return Point2d.this.distance(p1);
 		}
 
+		@Pure
 		@Override
 		public int distanceL1(Point2D p1) {
 			return Point2d.this.distanceL1(p1);
 		}
 
+		@Pure
 		@Override
 		public int distanceLinf(Point2D p1) {
 			return Point2d.this.distanceLinf(p1);

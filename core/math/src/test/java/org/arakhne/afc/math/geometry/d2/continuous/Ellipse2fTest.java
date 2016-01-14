@@ -707,10 +707,23 @@ public class Ellipse2fTest extends AbstractRectangularShape2fTestCase<Ellipse2f>
 		assertEpsilonEquals(28f, this.r.getMaxY());
 	}
 
-	@SuppressWarnings("all")
 	@Test
 	public void containsEllipsePoint() {
-		throw new UnsupportedOperationException();
+		assertTrue(this.r.contains(new Point2f(1,0.5)));
+		
+		assertTrue(this.r.contains(new Point2f(1.5,0.7)));
+		
+		assertTrue(this.r.contains(new Point2f(0.3,0.3)));
+		
+		assertTrue(this.r.contains(new Point2f(2,0.5)));
+		
+		assertTrue(this.r.contains(new Point2f(1,1)));
+		
+		assertFalse(this.r.contains(new Point2f(0,0)));
+		
+		assertFalse(this.r.contains(new Point2f(0,1)));
+		
+		assertFalse(this.r.contains(new Point2f(1,10)));
 	}
 
 }

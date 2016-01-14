@@ -92,7 +92,7 @@ public abstract class AbstractEllipse2F<T extends AbstractRectangularShape2F<T>>
 		}
 		double normx = (px - ellx) / ellw - 0.5f;
 		double normy = (py - elly) / ellh - 0.5f;
-		return (normx * normx + normy * normy) < 0.25f;
+		return (normx * normx + normy * normy) <= 0.25f;
 	}
 
 	/** Replies the closest point from the given point in the solid ellipse.

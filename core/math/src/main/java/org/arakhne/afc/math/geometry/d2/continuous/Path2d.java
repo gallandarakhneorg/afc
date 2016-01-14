@@ -68,12 +68,15 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 	 * @return <code>true</code> if every Property in the first array is equals to the Property 
 	 * in same index in the second array, <code>false</code> otherwise
 	 */
+	@Pure
 	public static boolean propertyArraysEquals (Property[] array, Property [] array2) {
 		if(array.length==array2.length) {
 			for(int i=0; i<array.length; i++) {
 				if(array[i]==null) {
 					if(array2[i]!=null)
 						return false;
+				} else if(array2[i]==null) {
+					return false;
 				} else if(!array[i].getValue().equals(array2[i].getValue())) {
 					return false;
 				}
@@ -1203,19 +1206,19 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 	 */
 	public Path2d(Path2d p) {
 		this();
-		
+
 		this.coordsProperty = new DoubleProperty[p.coordsProperty.length];
 		for(int i=0;i<p.coordsProperty.length;i++) {
 			this.coordsProperty[i] = new SimpleDoubleProperty(p.coordsProperty[i].get());
 		}
-			
+
 		if(p.isEmptyProperty==null) {
 			this.isEmptyProperty=null;
 		}
 		else {
 			this.isEmptyProperty = new SimpleBooleanProperty(p.isEmptyProperty.get());
 		}		
-		
+
 		if(p.isPolylineProperty==null) {
 			this.isPolylineProperty=null;
 		}
@@ -1255,13 +1258,9 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 		this.windingRule = p.windingRule;
 		Rectangle2d box;
 		box = new Rectangle2d(p.toBoundingBox());
-		if (box!=null) {
-			this.graphicalBounds = new SoftReference<>(box.clone());
-		}
+		this.graphicalBounds = new SoftReference<>(box.clone());
 		box = new Rectangle2d(p.toBoundingBoxWithCtrlPoints());
-		if (box!=null) {
-			this.logicalBounds = new SoftReference<>(box.clone());
-		}
+		this.logicalBounds = new SoftReference<>(box.clone());
 	}
 
 	@Override
@@ -1271,12 +1270,13 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 		this.windingRule = PathWindingRule.NON_ZERO;
 		this.numCoordsProperty.set(0);
 		this.numTypesProperty.set(0);
-		this.isEmptyProperty.set(Boolean.TRUE);
-		this.isPolylineProperty.set(Boolean.TRUE);
+		this.isEmptyProperty.set(true);
+		this.isPolylineProperty.set(true);
 		this.graphicalBounds = null;
 		this.logicalBounds = null;
 	}
 
+	@Pure
 	@Override
 	public String toString() {
 		StringBuilder b = new StringBuilder();
@@ -1292,6 +1292,7 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 		return b.toString();
 	}
 
+	@Pure
 	@Override
 	public Path2d clone() {
 		Path2d clone = super.clone();
@@ -1301,7 +1302,7 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 		return clone;
 	}
 
-
+	@Pure
 	@Override
 	public PathWindingRule getWindingRule() {
 		return this.windingRule;
@@ -1355,7 +1356,7 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 		while ((this.numCoordsProperty.get() + n)>=this.coordsProperty.length) {
 			this.coordsProperty = Arrays.copyOf(this.coordsProperty, this.coordsProperty.length+GROW_SIZE);
 		}
-		
+
 		for( int i=0; i<this.coordsProperty.length; i++) {
 			if(this.coordsProperty[i]==null)
 				this.coordsProperty[i] = new SimpleDoubleProperty();
@@ -1444,7 +1445,7 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 		this.numCoordsProperty.set(this.numCoordsProperty.get()+1);
 
 		this.isEmptyProperty = null;
-		this.isPolylineProperty.set(Boolean.FALSE);
+		this.isPolylineProperty.set(false);
 		this.graphicalBounds = null;
 		this.logicalBounds = null;
 	}
@@ -1467,14 +1468,14 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 	public void curveTo(double x1, double y1,
 			double x2, double y2,
 			double x3, double y3) {
-		
+
 		ensureSlots(true, 6);
 		this.types[this.numTypesProperty.get()] = PathElementType.CURVE_TO;
 		this.numTypesProperty.set(this.numTypesProperty.get()+1);
-		
+
 		this.coordsProperty[this.numCoordsProperty.get()].set(x1);
 		this.numCoordsProperty.set(this.numCoordsProperty.get()+1);
-		
+
 		this.coordsProperty[this.numCoordsProperty.get()].set(y1);
 		this.numCoordsProperty.set(this.numCoordsProperty.get()+1);
 
@@ -1483,7 +1484,7 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 
 		this.coordsProperty[this.numCoordsProperty.get()].set(y2);
 		this.numCoordsProperty.set(this.numCoordsProperty.get()+1);
-		
+
 		this.coordsProperty[this.numCoordsProperty.get()].set(x3);
 		this.numCoordsProperty.set(this.numCoordsProperty.get()+1);
 
@@ -1583,6 +1584,7 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public PathIterator2d getPathIteratorProperty(Transform2D transform) {
 		if (transform == null) {
@@ -1591,6 +1593,7 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 		return new TransformPathIterator2d(transform);
 	}
 
+	@Pure
 	@Override
 	public PathIterator2f getPathIterator(Transform2D transform) {
 		if (transform == null) {
@@ -1599,6 +1602,7 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 		return new TransformPathIterator2f(transform);
 	}
 
+	@Pure
 	@Override
 	public PathIterator2f getPathIterator(double flatness) {
 		return new Path2f.FlatteningPathIterator(getWindingRule(), getPathIterator(null), flatness, 10);
@@ -1611,13 +1615,21 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 		return new FlatteningPathIterator(getWindingRule(), getPathIteratorProperty(null), flatness, 10);
 	}
 
+	@Pure
 	@Override
 	public PathIterator2i getPathIteratorDiscrete(double flatness) {
 		return null;
 	}
 
+	@Pure
+	@Override
+	public PathIterator2i getPathIteratorDiscrete() {
+		return null;
+	}
+
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public Shape2F createTransformedShape(Transform2D transform) {
 		Path2d newPath = new Path2d(getWindingRule());
@@ -1664,35 +1676,41 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 		return newPath;
 	}
 
+	@Pure
 	@Override
 	public double distanceSquared(Point2D p) {
 		Point2D c = getClosestPointTo(p);
 		return c.getDistanceSquared(p);
 	}
 
+	@Pure
 	@Override
 	public double distanceL1(Point2D p) {
 		Point2D c = getClosestPointTo(p);
 		return c.getDistanceL1(p);
 	}
 
+	@Pure
 	@Override
 	public double distanceLinf(Point2D p) {
 		Point2D c = getClosestPointTo(p);
 		return c.getDistanceLinf(p);
 	}
 
+	@Pure
 	@Override
 	public boolean contains(double x, double y) {
 		return contains(getPathIteratorProperty(MathConstants.SPLINE_APPROXIMATION_RATIO), x, y);
 	}
 
+	@Pure
 	@Override
 	public boolean contains(AbstractRectangle2F<?> r) {
 		return contains(getPathIteratorProperty(MathConstants.SPLINE_APPROXIMATION_RATIO),
 				r.getMinX(), r.getMinY(), r.getWidth(), r.getHeight());
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(AbstractRectangle2F<?> s) {
 		// Copied from AWT API
@@ -1706,6 +1724,7 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 				(crossings & mask) != 0);
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(AbstractEllipse2F<?> s) {
 		int mask = (this.windingRule == PathWindingRule.NON_ZERO ? -1 : 2);
@@ -1718,6 +1737,7 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 				(crossings & mask) != 0);
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(AbstractCircle2F<?> s) {
 		int mask = (this.windingRule == PathWindingRule.NON_ZERO ? -1 : 2);
@@ -1731,6 +1751,7 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 				(crossings & mask) != 0);
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(AbstractSegment2F<?> s) {
 		int mask = (this.windingRule == PathWindingRule.NON_ZERO ? -1 : 2);
@@ -1743,6 +1764,7 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 				(crossings & mask) != 0);
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(Path2f s) {
 		int mask = (this.windingRule == PathWindingRule.NON_ZERO ? -1 : 2);
@@ -1755,6 +1777,7 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 				(crossings & mask) != 0);
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(Path2d s) {
 		int mask = (this.windingRule == PathWindingRule.NON_ZERO ? -1 : 2);
@@ -1767,6 +1790,7 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 				(crossings & mask) != 0);
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(PathIterator2f s) {
 		int mask = (this.windingRule == PathWindingRule.NON_ZERO ? -1 : 2);
@@ -1779,6 +1803,7 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 				(crossings & mask) != 0);
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(PathIterator2d s) {
 		int mask = (this.windingRule == PathWindingRule.NON_ZERO ? -1 : 2);
@@ -1791,6 +1816,7 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 				(crossings & mask) != 0);
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(AbstractOrientedRectangle2F<?> s) {
 		return s.intersects(this);
@@ -2235,6 +2261,7 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 		box.set(bb);
 	}
 
+	@Pure
 	@Override
 	public Point2D getClosestPointTo(Point2D p) {
 		return getClosestPointTo(
@@ -2242,6 +2269,7 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 				p.getX(), p.getY());
 	}
 
+	@Pure
 	@Override
 	public Point2D getFarthestPointTo(Point2D p) {
 		return getFarthestPointTo(
@@ -2250,6 +2278,7 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 	}
 
 
+	@Pure
 	public boolean equals(Path2d path) {
 		return (this.numCoordsProperty.get()==path.numCoordsProperty.get()
 				&& this.numTypesProperty.get()==path.numTypesProperty.get()
@@ -2258,6 +2287,7 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 				&& this.windingRule==path.windingRule);
 	}
 
+	@Pure
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof Path2d) {
@@ -2279,6 +2309,7 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 		return false;
 	}
 
+	@Pure
 	@Override
 	public int hashCode() {
 		long bits = 1L;
@@ -2295,6 +2326,7 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 	 * 
 	 * @return the coordinates.
 	 */
+	@Pure
 	public final double[] toFloatArray() {
 		return toFloatArray(null);
 	}
@@ -2305,6 +2337,7 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 	 * @param transform is the transformation to apply to all the coordinates.
 	 * @return the coordinates.
 	 */
+	@Pure
 	public double[] toFloatArray(Transform2D transform) {
 		Point2f p = new Point2f();
 		double[] clone = new double[this.numCoordsProperty.get()];
@@ -2327,6 +2360,7 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 	 * 
 	 * @return the coordinates.
 	 */
+	@Pure
 	public final double[] toDoubleArray() {
 		return toDoubleArray(null);
 	}
@@ -2337,6 +2371,7 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 	 * @param transform is the transformation to apply to all the coordinates.
 	 * @return the coordinates.
 	 */
+	@Pure
 	public double[] toDoubleArray(Transform2D transform) {
 		double[] clone = new double[this.numCoordsProperty.get()];
 		if (transform==null) {
@@ -2361,6 +2396,7 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 	 * 
 	 * @return the points.
 	 */
+	@Pure
 	public final Point2D[] toPointArray() {
 		return toPointArray(null);
 	}
@@ -2370,6 +2406,7 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 	 * @param transform is the transformation to apply to all the points.
 	 * @return the points.
 	 */
+	@Pure
 	public Point2D[] toPointArray(Transform2D transform) {
 		Point2D[] clone = new Point2D[this.numCoordsProperty.get()/2];
 		if (transform==null) {
@@ -2394,6 +2431,7 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 	 * 
 	 * @return the point collection.
 	 */
+	@Pure
 	public final Collection<Point2D> toCollection() {
 		PointCollection pC = new PointCollection();
 		Point2D[] array = this.toPointArray();
@@ -2409,6 +2447,7 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 	 * @param index
 	 * @return the coordinate at the given index.
 	 */
+	@Pure
 	public double getCoordAt(int index) {
 		return this.coordsProperty[index].get();
 	}
@@ -2419,6 +2458,7 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 	 * @param index
 	 * @return the point at the given index.
 	 */
+	@Pure
 	public Point2f getPointAt(int index) {
 		return new Point2f(
 				this.coordsProperty[index*2].get(),
@@ -2429,6 +2469,7 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 	 *
 	 * @return the last point.
 	 */
+	@Pure
 	public Point2f getCurrentPoint() {
 		return new Point2f(
 				this.coordsProperty[this.numCoordsProperty.get()-2].get(),
@@ -2439,6 +2480,7 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 	 *
 	 * @return the number of points in the path.
 	 */
+	@Pure
 	public int size() {
 		return this.numCoordsProperty.get()/2;
 	}
@@ -2455,13 +2497,13 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 	@Override
 	public boolean isEmpty() {
 		if (this.isEmptyProperty==null) {
-			this.isEmptyProperty = new SimpleBooleanProperty(Boolean.TRUE);
+			this.isEmptyProperty = new SimpleBooleanProperty(true);
 			PathIterator2d pi = getPathIteratorProperty();
 			AbstractPathElement2D pe;
-			while (this.isEmptyProperty.get()==Boolean.TRUE.booleanValue() && pi.hasNext()) {
+			while (this.isEmptyProperty.get()==true && pi.hasNext()) {
 				pe = pi.next();
 				if (pe.isDrawable()) { 
-					this.isEmptyProperty.set(Boolean.FALSE);
+					this.isEmptyProperty.set(true);
 				}
 			}
 		}
@@ -2471,15 +2513,15 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 	@Override
 	public boolean isPolyline() {
 		if (this.isPolylineProperty==null) {
-			this.isPolylineProperty.set(Boolean.TRUE);
+			this.isPolylineProperty.set(true);
 			PathIterator2d pi = getPathIteratorProperty();
 			AbstractPathElement2D pe;
 			PathElementType t;
-			while (this.isPolylineProperty.get()==Boolean.TRUE.booleanValue() && pi.hasNext()) {
+			while (this.isPolylineProperty.get()==true && pi.hasNext()) {
 				pe = pi.next();
 				t = pe.getType();
 				if (t==PathElementType.CURVE_TO || t==PathElementType.QUAD_TO) { 
-					this.isPolylineProperty.set(Boolean.FALSE);
+					this.isPolylineProperty.set(false);
 				}
 			}
 		}
@@ -2753,7 +2795,6 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 			return Path2d.this.getWindingRule();
 		}
 
-		@Pure
 		@Override
 		public boolean isPolyline() {
 			return Path2d.this.isPolyline();
@@ -2900,7 +2941,6 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 			return Path2d.this.getWindingRule();
 		}
 
-		@Pure
 		@Override
 		public boolean isPolyline() {
 			return Path2d.this.isPolyline();
@@ -3048,7 +3088,6 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 			return Path2d.this.getWindingRule();
 		}
 
-		@Pure
 		@Override
 		public boolean isPolyline() {
 			return Path2d.this.isPolyline();
@@ -3197,7 +3236,6 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 			return Path2d.this.getWindingRule();
 		}
 
-		@Pure
 		@Override
 		public boolean isPolyline() {
 			return Path2d.this.isPolyline();
@@ -3392,26 +3430,36 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 		 * @param rightoff the offset into the array of the beginning of the
 		 * the 6 right coordinates
 		 */
+		@SuppressWarnings("null")
 		private static void subdivideQuad(DoubleProperty srcProperties[], int srcoff,
 				DoubleProperty leftProperties[], int leftoff,
 				DoubleProperty rightProperties[], int rightoff) {
 
+			double src[] = null;
+			double left[] = null;
+			double right[] = null;
 
-			double src[] = new double[srcProperties.length];
-			for(int i=0;i<src.length;i++) {
-				src[i] = srcProperties[i].get();
+			if(srcProperties!=null) {
+				src = new double[srcProperties.length];
+				for(int i=0;i<src.length;i++) {
+					src[i] = srcProperties[i].get();
+				}
 			}
 
-			double left[] = new double[leftProperties.length];
-			for(int i=0;i<left.length;i++) {
-				left[i] = leftProperties[i].get();
+			if(leftProperties!=null) {
+				left = new double[leftProperties.length];
+				for(int i=0;i<left.length;i++) {
+					left[i] = leftProperties[i].get();
+				}
 			}
 
-			double right[] = new double[rightProperties.length];
-			for(int i=0;i<right.length;i++) {
-				right[i] = rightProperties[i].get();
+			if(rightProperties!=null) {
+				right = new double[rightProperties.length];
+				for(int i=0;i<right.length;i++) {
+					right[i] = rightProperties[i].get();
+				}
 			}
-
+			
 			double x1 = src[srcoff + 0];
 			double y1 = src[srcoff + 1];
 			double ctrlx = src[srcoff + 2];
@@ -3861,6 +3909,7 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 			return false;
 		}
 
+		@Pure
 		@Override
 		public boolean containsAll(Collection<?> c) {
 			for(Object obj : c) {
@@ -3928,6 +3977,7 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 			//
 		}
 
+		@Pure
 		@Override
 		public boolean hasNext() {
 			return this.index<Path2d.this.size();
@@ -3953,11 +4003,6 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 			Path2d.this.remove(p.getX(), p.getY());
 		}
 
-	}
-
-	@Override
-	public PathIterator2i getPathIteratorDiscrete() {
-		return null;
 	}
 
 }

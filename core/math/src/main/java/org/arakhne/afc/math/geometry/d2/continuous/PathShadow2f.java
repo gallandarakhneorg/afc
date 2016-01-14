@@ -27,6 +27,7 @@ import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Path2D;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Shadow of a path.
  *
@@ -63,6 +64,7 @@ public class PathShadow2f {
 	 * @param y1 is the second point of the segment.
 	 * @return the crossings or {@link MathConstants#SHAPE_INTERSECTS}.
 	 */
+	@Pure
 	public int computeCrossings(
 			int crossings,
 			double x0, double y0,
@@ -364,6 +366,7 @@ public class PathShadow2f {
 		public double ymin;
 		public double ymax;
 
+		@Pure
 		@Override
 		public String toString() {
 			StringBuilder b = new StringBuilder();

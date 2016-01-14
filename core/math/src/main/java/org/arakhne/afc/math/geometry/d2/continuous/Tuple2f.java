@@ -22,6 +22,7 @@ package org.arakhne.afc.math.geometry.d2.continuous;
 
 import org.arakhne.afc.math.geometry.d2.FunctionalTuple2D;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** 2D tuple with 2 floating-point numbers.
  * 
@@ -95,6 +96,7 @@ public class Tuple2f<T extends Tuple2D<? super T>> implements FunctionalTuple2D<
 	
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@SuppressWarnings("unchecked")
 	@Override
 	public T clone() {
@@ -109,6 +111,7 @@ public class Tuple2f<T extends Tuple2D<? super T>> implements FunctionalTuple2D<
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public double getX() {
 		return this.x;
@@ -125,6 +128,7 @@ public class Tuple2f<T extends Tuple2D<? super T>> implements FunctionalTuple2D<
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public double getY() {
 		return this.y;
@@ -141,6 +145,7 @@ public class Tuple2f<T extends Tuple2D<? super T>> implements FunctionalTuple2D<
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public int hashCode() {
 		long bits = 1;
@@ -153,6 +158,7 @@ public class Tuple2f<T extends Tuple2D<? super T>> implements FunctionalTuple2D<
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public String toString() {
 		return "(" //$NON-NLS-1$
