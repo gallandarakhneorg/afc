@@ -23,6 +23,8 @@ package org.arakhne.afc.math.geometry.d2.discrete;
 
 import java.util.Comparator;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /**
  * Comparator of Tuple2i.
  * 
@@ -42,6 +44,7 @@ public class Tuple2iComparator implements Comparator<Tuple2i<?>> {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public int compare(Tuple2i<?> o1, Tuple2i<?> o2) {
 		if (o1==o2) return 0;

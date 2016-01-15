@@ -23,6 +23,7 @@ package org.arakhne.afc.math.geometry.d2.discrete;
 
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.d2.PathElement2D;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** An element of the path.
  *
@@ -43,6 +44,7 @@ public abstract class PathElement2i implements PathElement2D {
 	 * @param coords are the coordinates.
 	 * @return the instance of path element.
 	 */
+	@Pure
 	public static PathElement2i newInstance(PathElementType type, int lastX, int lastY, int[] coords) {
 		switch(type) {
 		case MOVE_TO:
@@ -136,6 +138,7 @@ public abstract class PathElement2i implements PathElement2D {
 	 * 
 	 * @return the array of the points, except the source point.
 	 */
+	@Pure
 	public abstract int[] toArray();
 
 	/** An element of the path that represents a <code>MOVE_TO</code>.
@@ -158,17 +161,20 @@ public abstract class PathElement2i implements PathElement2D {
 					0, 0, 0, 0, 0, 0,
 					x, y);
 		}
-		
+
+		@Pure
 		@Override
 		public final PathElementType getType() {
 			return PathElementType.MOVE_TO;
 		}
 
+		@Pure
 		@Override
 		public boolean isEmpty() {
 			return (this.fromX==this.toX) && (this.fromY==this.toY);
 		}
 
+		@Pure
 		@Override
 		public boolean isDrawable() {
 			return false;
@@ -186,11 +192,13 @@ public abstract class PathElement2i implements PathElement2D {
 			array[1] = this.toY;
 		}
 
+		@Pure
 		@Override
 		public int[] toArray() {
 			return new int[] {this.toX, this.toY};
 		}
 
+		@Pure
 		@Override
 		public String toString() {
 			return "MOVE("+ //$NON-NLS-1$
@@ -223,17 +231,20 @@ public abstract class PathElement2i implements PathElement2D {
 					0, 0, 0, 0,
 					tox, toy);
 		}
-		
+
+		@Pure
 		@Override
 		public final PathElementType getType() {
 			return PathElementType.LINE_TO;
 		}
 
+		@Pure
 		@Override
 		public boolean isEmpty() {
 			return (this.fromX==this.toX) && (this.fromY==this.toY);
 		}
 
+		@Pure
 		@Override
 		public boolean isDrawable() {
 			return !isEmpty();
@@ -251,11 +262,13 @@ public abstract class PathElement2i implements PathElement2D {
 			array[1] = this.toY;
 		}
 
+		@Pure
 		@Override
 		public int[] toArray() {
 			return new int[] {this.toX, this.toY};
 		}
 
+		@Pure
 		@Override
 		public String toString() {
 			return "LINE("+ //$NON-NLS-1$
@@ -291,18 +304,21 @@ public abstract class PathElement2i implements PathElement2D {
 					0, 0,
 					tox, toy);
 		}
-		
+
+		@Pure
 		@Override
 		public final PathElementType getType() {
 			return PathElementType.QUAD_TO;
 		}
 
+		@Pure
 		@Override
 		public boolean isEmpty() {
 			return (this.fromX==this.toX) && (this.fromY==this.toY) &&
 					(this.ctrlX1==this.toX) && (this.ctrlY1==this.toY);
 		}
 
+		@Pure
 		@Override
 		public boolean isDrawable() {
 			return !isEmpty();
@@ -324,11 +340,13 @@ public abstract class PathElement2i implements PathElement2D {
 			array[3] = this.toY;
 		}
 
+		@Pure
 		@Override
 		public int[] toArray() {
 			return new int[] {this.ctrlX1, this.ctrlY1, this.toX, this.toY};
 		}
-		
+
+		@Pure
 		@Override
 		public String toString() {
 			return "QUAD("+ //$NON-NLS-1$
@@ -368,12 +386,14 @@ public abstract class PathElement2i implements PathElement2D {
 					ctrlx2, ctrly2,
 					tox, toy);
 		}
-		
+
+		@Pure
 		@Override
 		public final PathElementType getType() {
 			return PathElementType.CURVE_TO;
 		}
 
+		@Pure
 		@Override
 		public boolean isEmpty() {
 			return (this.fromX==this.toX) && (this.fromY==this.toY) &&
@@ -381,6 +401,7 @@ public abstract class PathElement2i implements PathElement2D {
 					(this.ctrlX2==this.toX) && (this.ctrlY2==this.toY);
 		}
 
+		@Pure
 		@Override
 		public boolean isDrawable() {
 			return !isEmpty();
@@ -406,11 +427,13 @@ public abstract class PathElement2i implements PathElement2D {
 			array[5] = this.toY;
 		}
 
+		@Pure
 		@Override
 		public int[] toArray() {
 			return new int[] {this.ctrlX1, this.ctrlY1, this.ctrlX2, this.ctrlY2, this.toX, this.toY};
 		}
 
+		@Pure
 		@Override
 		public String toString() {
 			return "CURVE("+ //$NON-NLS-1$
@@ -447,17 +470,20 @@ public abstract class PathElement2i implements PathElement2D {
 					0, 0, 0, 0,
 					tox, toy);
 		}
-		
+
+		@Pure
 		@Override
 		public final PathElementType getType() {
 			return PathElementType.CLOSE;
 		}
 
+		@Pure
 		@Override
 		public boolean isEmpty() {
 			return (this.fromX==this.toX) && (this.fromY==this.toY);
 		}
-		
+
+		@Pure
 		@Override
 		public boolean isDrawable() {
 			return false;
@@ -473,11 +499,13 @@ public abstract class PathElement2i implements PathElement2D {
 			//
 		}
 
+		@Pure
 		@Override
 		public int[] toArray() {
 			return new int[0];
 		}
-		
+
+		@Pure
 		@Override
 		public String toString() {
 			return "CLOSE"; //$NON-NLS-1$

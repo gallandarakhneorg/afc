@@ -20,6 +20,8 @@
  */
 package org.arakhne.afc.math.geometry.d2;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /** 2D Vector.
  * 
  * @author $Author: galland$
@@ -106,6 +108,7 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	 * @param v1 the other vector
 	 * @return the dot product.
 	 */
+	@Pure
 	public double dot(Vector2D v1);
 	
 	/** Compute the the perpendicular product of
@@ -119,6 +122,7 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	 * @param x2
 	 * @return the determinant
 	 */
+	@Pure
 	public double perp(Vector2D x2);
 
 	/** Change the coordinates of this vector to make it a perpendicular
@@ -130,12 +134,14 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	 * Returns the length of this vector.
 	 * @return the length of this vector
 	 */  
+	@Pure
 	public double length();
 
 	/**  
 	 * Returns the squared length of this vector.
 	 * @return the squared length of this vector
-	 */  
+	 */ 
+	@Pure 
 	public double lengthSquared();
 
 	/**
@@ -156,6 +162,7 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	 *   @param v1    the other vector
 	 *   @return   the angle in radians in the range [0,PI]
 	 */
+	@Pure
 	public double angle(Vector2D v1);
 
 	/** Compute a signed angle between this vector and the given vector.
@@ -176,6 +183,7 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	 * @return the rotation angle to turn this vector to reach
 	 * {@code v}.
 	 */
+	@Pure
 	public double signedAngle(Vector2D v);
 
 	/** Turn this vector about the given rotation angle.
@@ -190,6 +198,7 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	 * @return the angle on a trigonometric circle that is corresponding
 	 * to the given orientation vector.
 	 */
+	@Pure
 	public double getOrientationAngle();
 	
 	/** Replies if this first is a unit vector.
@@ -198,6 +207,7 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	 * @return <code>true</code> if the vector has a length equal to 1.
 	 * <code>false</code> otherwise.
 	 */
+	@Pure
 	public boolean isUnitVector();
 	
 	/** Change the length of the vector.
@@ -211,6 +221,7 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	 *
 	 * @return an unmodifiable copy.
 	 */
+	@Pure
 	public Vector2D toUnmodifiable();
 
 }

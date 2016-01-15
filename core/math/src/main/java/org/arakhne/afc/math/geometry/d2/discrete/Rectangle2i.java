@@ -27,6 +27,7 @@ import java.util.NoSuchElementException;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.continuous.Transform2D;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 
 
@@ -55,6 +56,7 @@ public class Rectangle2i extends AbstractRectangularShape2i<Rectangle2i> {
 	 * @return <code>true</code> if the two shapes are intersecting; otherwise
 	 * <code>false</code>
 	 */
+	@Pure
 	public static boolean intersectsRectangleRectangle(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4) {
 		assert(x1<=x2);
 		assert(y1<=y2);
@@ -68,7 +70,8 @@ public class Rectangle2i extends AbstractRectangularShape2i<Rectangle2i> {
 				&&
 				y1 < y4;
 	}
-	
+
+	@Pure
 	private static int code(int x, int y, int minx, int miny, int maxx, int maxy) {
 		int code = 0;
 		if (x<minx) code |= 0x8;
@@ -97,6 +100,7 @@ public class Rectangle2i extends AbstractRectangularShape2i<Rectangle2i> {
 	 * @return <code>true</code> if the two shapes are intersecting; otherwise
 	 * <code>false</code>
 	 */
+	@Pure
 	public static boolean intersectsRectangleSegment(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4) {
 		int c1 = code(x3, y3, x1, y1, x2, y2);
 		int c2 = code(x4, y4, x1, y1, x2, y2);
@@ -165,6 +169,7 @@ public class Rectangle2i extends AbstractRectangularShape2i<Rectangle2i> {
 	 * @param py is the y-coordinate of the point.
 	 * @return the closest point.
 	 */
+	@Pure
 	public static Point2i computeClosestPoint(int minx, int miny, int maxx, int maxy, int px, int py) {
 		int x;
 		int same = 0;
@@ -205,6 +210,7 @@ public class Rectangle2i extends AbstractRectangularShape2i<Rectangle2i> {
 	 * @param py is the y-coordinate of the point.
 	 * @return the farthest point.
 	 */
+	@Pure
 	public static Point2i computeFarthestPoint(int minx, int miny, int maxx, int maxy, int px, int py) {
 		int x;
 		if (px<=((minx + maxx)/2)) {
@@ -261,6 +267,7 @@ public class Rectangle2i extends AbstractRectangularShape2i<Rectangle2i> {
 	
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public Rectangle2i toBoundingBox() {
 		return this;
@@ -268,6 +275,7 @@ public class Rectangle2i extends AbstractRectangularShape2i<Rectangle2i> {
 	
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public double distanceSquared(Point2D p) {
 		int dx;
@@ -295,6 +303,7 @@ public class Rectangle2i extends AbstractRectangularShape2i<Rectangle2i> {
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public double distanceL1(Point2D p) {
 		int dx;
@@ -322,6 +331,7 @@ public class Rectangle2i extends AbstractRectangularShape2i<Rectangle2i> {
 	
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public double distanceLinf(Point2D p) {
 		int dx;
@@ -349,6 +359,7 @@ public class Rectangle2i extends AbstractRectangularShape2i<Rectangle2i> {
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public Point2i getClosestPointTo(Point2D p) {
 		return computeClosestPoint(this.minx, this.miny, this.maxx, this.maxy, p.ix(), p.iy());
@@ -356,11 +367,13 @@ public class Rectangle2i extends AbstractRectangularShape2i<Rectangle2i> {
 	
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public Point2i getFarthestPointTo(Point2D p) {
 		return computeFarthestPoint(this.minx, this.miny, this.maxx, this.maxy, p.ix(), p.iy());
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(Rectangle2i s) {
 		return intersectsRectangleRectangle(
@@ -370,6 +383,7 @@ public class Rectangle2i extends AbstractRectangularShape2i<Rectangle2i> {
 				s.getMaxX(), s.getMaxY());
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(Circle2i s) {
 		return Circle2i.intersectsCircleRectangle(
@@ -379,6 +393,7 @@ public class Rectangle2i extends AbstractRectangularShape2i<Rectangle2i> {
 				getMaxX(), getMaxY());
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(Segment2i s) {
 		return intersectsRectangleSegment(
@@ -386,6 +401,7 @@ public class Rectangle2i extends AbstractRectangularShape2i<Rectangle2i> {
 				s.getX1(), s.getY1(), s.getX2(), s.getY2());
 	}
 
+	@Pure
 	@Override
 	public PathIterator2i getPathIteratorDiscrete(Transform2D transform) {
 		if (transform==null) {
@@ -399,11 +415,13 @@ public class Rectangle2i extends AbstractRectangularShape2i<Rectangle2i> {
 				transform);
 	}
 
+	@Pure
 	@Override
 	public boolean contains(int x, int y) {
 		return x>=this.minx && x<=this.maxx && y>=this.miny && y<=this.maxy;
 	}
 
+	@Pure
 	@Override
 	public boolean contains(Rectangle2i r) {
 		return r.getMinX()>=getMinX() && r.getMaxX()<=getMaxX()
@@ -415,6 +433,7 @@ public class Rectangle2i extends AbstractRectangularShape2i<Rectangle2i> {
 	 * 
 	 * @return the points on the bounds of the rectangle.
 	 */
+	@Pure
 	@Override
 	public Iterator<Point2i> getPointIterator() {
 		return getPointIterator(Side.TOP);
@@ -425,6 +444,7 @@ public class Rectangle2i extends AbstractRectangularShape2i<Rectangle2i> {
 	 * @param startingBorder is the first border to reply.
 	 * @return the points on the bounds of the rectangle.
 	 */
+	@Pure
 	public Iterator<Point2i> getPointIterator(Side startingBorder) {
 		return new RectangleSideIterator(this.minx, this.miny, this.maxx, this.maxy, startingBorder);
 	}
@@ -460,6 +480,7 @@ public class Rectangle2i extends AbstractRectangularShape2i<Rectangle2i> {
 			}
 		}
 
+		@Pure
 		@Override
 		public boolean hasNext() {
 			return this.index<=5;
@@ -503,11 +524,13 @@ public class Rectangle2i extends AbstractRectangularShape2i<Rectangle2i> {
 			throw new UnsupportedOperationException();
 		}
 
+		@Pure
 		@Override
 		public PathWindingRule getWindingRule() {
 			return PathWindingRule.NON_ZERO;
 		}
-		
+
+		@Pure
 		@Override
 		public boolean isPolyline() {
 			return false;
@@ -552,6 +575,7 @@ public class Rectangle2i extends AbstractRectangularShape2i<Rectangle2i> {
 			}
 		}
 
+		@Pure
 		@Override
 		public boolean hasNext() {
 			return this.index<=5;
@@ -619,11 +643,13 @@ public class Rectangle2i extends AbstractRectangularShape2i<Rectangle2i> {
 			throw new UnsupportedOperationException();
 		}
 
+		@Pure
 		@Override
 		public PathWindingRule getWindingRule() {
 			return PathWindingRule.NON_ZERO;
 		}
-		
+
+		@Pure
 		@Override
 		public boolean isPolyline() {
 			return false;
@@ -693,6 +719,7 @@ public class Rectangle2i extends AbstractRectangularShape2i<Rectangle2i> {
 		/**
 		 * {@inheritDoc}
 		 */
+		@Pure
 		@Override
 		public boolean hasNext() {
 			return this.currentSide!=null;

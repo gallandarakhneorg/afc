@@ -25,6 +25,7 @@ import java.util.Iterator;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Shape2D;
 import org.arakhne.afc.math.geometry.d2.continuous.Transform2D;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** 2D shape with integer  points.
  * 
@@ -39,6 +40,7 @@ public interface Shape2i extends Shape2D<Shape2i> {
 	 * 
 	 * @return the bounding box of this shape.
 	 */
+	@Pure
 	public abstract Rectangle2i toBoundingBox();
 	
 	/** Replies the bounds of the shape.
@@ -52,6 +54,7 @@ public interface Shape2i extends Shape2D<Shape2i> {
 	 * @param p
 	 * @return the minimal distance between this shape and the point.
 	 */
+	@Pure
 	public double distance(Point2D p);
 
 	/** Replies the squared value of the minimal distance from this shape to the given point.
@@ -59,6 +62,7 @@ public interface Shape2i extends Shape2D<Shape2i> {
 	 * @param p
 	 * @return squared value of the minimal distance between this shape and the point.
 	 */
+	@Pure
 	public double distanceSquared(Point2D p);
 
 	/**
@@ -67,6 +71,7 @@ public interface Shape2i extends Shape2D<Shape2i> {
 	 * @param p the point
 	 * @return the distance.
 	 */
+	@Pure
 	public double distanceL1(Point2D p);
 
 	/**
@@ -76,6 +81,7 @@ public interface Shape2i extends Shape2D<Shape2i> {
 	 * @param p the point
 	 * @return the distance.
 	 */
+	@Pure
 	public double distanceLinf(Point2D p);
 
 	/** Replies if this shape is intersecting the given rectangle.
@@ -84,6 +90,7 @@ public interface Shape2i extends Shape2D<Shape2i> {
 	 * @return <code>true</code> if this shape is intersecting the given shape;
 	 * <code>false</code> if there is no intersection.
 	 */
+	@Pure
 	public boolean intersects(Rectangle2i s);
 
 	/** Replies if this shape is intersecting the given circle.
@@ -92,6 +99,7 @@ public interface Shape2i extends Shape2D<Shape2i> {
 	 * @return <code>true</code> if this shape is intersecting the given shape;
 	 * <code>false</code> if there is no intersection.
 	 */
+	@Pure
 	public boolean intersects(Circle2i s);
 
 	/** Replies if this shape is intersecting the given segment.
@@ -100,6 +108,7 @@ public interface Shape2i extends Shape2D<Shape2i> {
 	 * @return <code>true</code> if this shape is intersecting the given shape;
 	 * <code>false</code> if there is no intersection.
 	 */
+	@Pure
 	public boolean intersects(Segment2i s);
 
 	/** Replies the elements of the paths.
@@ -107,12 +116,14 @@ public interface Shape2i extends Shape2D<Shape2i> {
 	 * @param transform is the transformation to apply to the path.
 	 * @return the elements of the path.
 	 */
+	@Pure
 	public PathIterator2i getPathIteratorDiscrete(Transform2D transform);
 
 	/** Replies the elements of the paths.
 	 * 
 	 * @return the elements of the path.
 	 */
+	@Pure
 	public PathIterator2i getPathIteratorDiscrete();
 
 	/** Replies an iterator on the points covered by this shape.
@@ -122,6 +133,7 @@ public interface Shape2i extends Shape2D<Shape2i> {
 	 * 
 	 * @return an iterator on the points.
 	 */
+	@Pure
 	public Iterator<Point2i> getPointIterator();
 	
 	/** Apply the transformation to the shape and reply the result.
@@ -130,6 +142,7 @@ public interface Shape2i extends Shape2D<Shape2i> {
 	 * @param transform is the transformation to apply to the shape.
 	 * @return the result of the transformation.
 	 */
+	@Pure
 	public Shape2i createTransformedShape(Transform2D transform);
 	
 	/** Translate the shape.
@@ -146,6 +159,7 @@ public interface Shape2i extends Shape2D<Shape2i> {
 	 * @return <code>true</code> if the given point is inside this
 	 * shape, otherwise <code>false</code>.
 	 */
+	@Pure
 	public boolean contains(int x, int y);
 	
 	/** Replies if the given rectangle is inside this shape.
@@ -154,6 +168,7 @@ public interface Shape2i extends Shape2D<Shape2i> {
 	 * @return <code>true</code> if the given rectangle is inside this
 	 * shape, otherwise <code>false</code>.
 	 */
+	@Pure
 	public boolean contains(Rectangle2i r);
 
 }

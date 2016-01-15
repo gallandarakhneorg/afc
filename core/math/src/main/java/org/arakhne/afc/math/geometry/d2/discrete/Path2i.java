@@ -36,6 +36,7 @@ import org.arakhne.afc.math.geometry.d2.continuous.AbstractSegment2F;
 import org.arakhne.afc.math.geometry.d2.continuous.PathIterator2d;
 import org.arakhne.afc.math.geometry.d2.continuous.PathIterator2f;
 import org.arakhne.afc.math.geometry.d2.continuous.Transform2D;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 
 /** A generic path with integer coordinates.
@@ -484,7 +485,8 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 			int rxmax, int rymax) {
 		return __computeCrossingsFromRect(pi, rxmin, rymin, rxmax, rymax, true, true);
 	}
-	
+
+	@Pure
 	private static int crossingHelper1(
 			int crossings,
 			int rxmin, int rymin,
@@ -826,6 +828,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 		this.graphicalBounds = null;
 	}
 
+	@Pure
 	@Override
 	public String toString() {
 		StringBuilder b = new StringBuilder();
@@ -841,6 +844,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 		return b.toString();
 	}
 
+	@Pure
 	@Override
 	public Path2i clone() {
 		Path2i clone = super.clone();
@@ -849,6 +853,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 		return clone;
 	}
 
+	@Pure
 	@Override
 	public PathWindingRule getWindingRule() {
 		return this.windingRule;
@@ -1018,11 +1023,37 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 	}
 
 
+	@Pure
 	@Override
 	public PathIterator2i getPathIteratorDiscrete(double flatness) {
 		return new FlatteningPathIterator(getWindingRule(), getPathIteratorDiscrete(null), flatness, 10);
 	}
 
+	@Pure
+	@Override
+	public PathIterator2f getPathIterator(double flatness) {	
+		return null;
+	}
+
+	@Pure
+	@Override
+	public PathIterator2d getPathIteratorProperty(double flatness) {
+		return null;
+	}
+
+	@Pure
+	@Override
+	public PathIterator2d getPathIteratorProperty() {	
+		return null;
+	}
+
+	@Pure
+	@Override
+	public PathIterator2f getPathIterator() {
+		return null;
+	}
+	
+	
 	/** Replies an iterator on the path elements.
 	 * <p>
 	 * Only {@link PathElementType#MOVE_TO},
@@ -1046,12 +1077,14 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 	 * the curved segments are allowed to deviate from any point on the original curve.
 	 * @return an iterator on the path elements.
 	 */
+	@Pure
 	public PathIterator2i getPathIteratorDiscrete(Transform2D transform, double flatness) {
 		return new FlatteningPathIterator(getWindingRule(), getPathIteratorDiscrete(transform), flatness, 10);
 	}
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public PathIterator2i getPathIteratorDiscrete(Transform2D transform) {
 		if (transform == null) {
@@ -1063,6 +1096,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 	
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public PathIterator2i getPathIteratorDiscrete() {
 		return getPathIteratorDiscrete(null);
@@ -1105,6 +1139,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public Shape2i createTransformedShape(Transform2D transform) {
 		Path2i newPath = new Path2i(getWindingRule());
@@ -1151,35 +1186,41 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 		return newPath;
 	}
 
+	@Pure
 	@Override
 	public double distanceSquared(Point2D p) {
 		Point2D c = getClosestPointTo(p);
 		return c.getDistanceSquared(p);
 	}
 
+	@Pure
 	@Override
 	public double distanceL1(Point2D p) {
 		Point2D c = getClosestPointTo(p);
 		return c.getDistanceL1(p);
 	}
 
+	@Pure
 	@Override
 	public double distanceLinf(Point2D p) {
 		Point2D c = getClosestPointTo(p);
 		return c.getDistanceLinf(p);
 	}
 
+	@Pure
 	@Override
 	public boolean contains(int x, int y) {
 		return contains(getPathIteratorDiscrete(), x, y);
 	}
 
+	@Pure
 	@Override
 	public boolean contains(Rectangle2i r) {
 		return contains(getPathIteratorDiscrete(),
 				r.getMinX(), r.getMinY(), r.getWidth(), r.getHeight());
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(Rectangle2i s) {
 		// Copied from AWT API
@@ -1193,6 +1234,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 				(crossings & mask) != 0);
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(Circle2i s) {
 		int mask = (this.windingRule == PathWindingRule.NON_ZERO ? -1 : 2);
@@ -1203,6 +1245,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 				(crossings & mask) != 0);
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(Segment2i s) {
 		int mask = (this.windingRule == PathWindingRule.NON_ZERO ? -1 : 2);
@@ -1376,6 +1419,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 		box.set(bb);
 	}
 
+	@Pure
 	@Override
 	public Point2D getClosestPointTo(Point2D p) {
 		Point2D solution = new Point2i();
@@ -1459,6 +1503,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 		return solution;
 	}
 
+	@Pure
 	@Override
 	public Point2D getFarthestPointTo(Point2D p) {
 		Point2D solution = new Point2i();
@@ -1505,6 +1550,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 		return solution;
 	}
 
+	@Pure
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof Path2i) {
@@ -1518,6 +1564,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 		return false;
 	}
 
+	@Pure
 	@Override
 	public int hashCode() {
 		long bits = 1L;
@@ -1534,6 +1581,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 	 * 
 	 * @return the coordinates.
 	 */
+	@Pure
 	public final int[] toIntArray() {
 		return toIntArray(null);
 	}
@@ -1544,6 +1592,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 	 * @param transform is the transformation to apply to all the coordinates.
 	 * @return the coordinates.
 	 */
+	@Pure
 	public int[] toIntArray(Transform2D transform) {
 		if (transform==null) {
 			return Arrays.copyOf(this.coords, this.numCoords);
@@ -1564,6 +1613,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 	 * 
 	 * @return the points.
 	 */
+	@Pure
 	public final Point2D[] toPointArray() {
 		return toPointArray(null);
 	}
@@ -1573,6 +1623,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 	 * @param transform is the transformation to apply to all the points.
 	 * @return the points.
 	 */
+	@Pure
 	public Point2D[] toPointArray(Transform2D transform) {
 		Point2D[] clone = new Point2D[this.numCoords/2];
 		if (transform==null) {
@@ -1597,6 +1648,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 	 * 
 	 * @return the point collection.
 	 */
+	@Pure
 	public final Collection<Point2D> toCollection() {
 		return new PointCollection();
 	}
@@ -1607,6 +1659,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 	 * @param index
 	 * @return the coordinate at the given index.
 	 */
+	@Pure
 	public double getCoordAt(int index) {
 		return this.coords[index];
 	}
@@ -1617,6 +1670,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 	 * @param index
 	 * @return the point at the given index.
 	 */
+	@Pure
 	public Point2i getPointAt(int index) {
 		return new Point2i(
 				this.coords[index*2],
@@ -1627,6 +1681,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 	 *
 	 * @return the number of points in the path.
 	 */
+	@Pure
 	public int size() {
 		return this.numCoords/2;
 	}
@@ -1661,6 +1716,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 	 * @param p
 	 * @return <code>true</code> if the point is a control point of the path.
 	 */
+	@Pure
 	boolean containsPoint(Point2D p) {
 		double x, y;
 		for(int i=0; i<this.numCoords;) {
@@ -1793,6 +1849,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 	 * 
 	 * @return the points
 	 */
+	@Pure
 	@Override
 	public Iterator<Point2i> getPointIterator() {
 		PathIterator2i pathIterator = getPathIteratorDiscrete(MathConstants.SPLINE_APPROXIMATION_RATIO);
@@ -1838,6 +1895,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 			//
 		}
 
+		@Pure
 		@Override
 		public boolean hasNext() {
 			return this.iType<Path2i.this.numTypes;
@@ -1932,6 +1990,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 			throw new UnsupportedOperationException();
 		}
 
+		@Pure
 		@Override
 		public PathWindingRule getWindingRule() {
 			return Path2i.this.getWindingRule();
@@ -1970,6 +2029,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 			this.transform = transform;
 		}
 
+		@Pure
 		@Override
 		public boolean hasNext() {
 			return this.iType<Path2i.this.numTypes;
@@ -2059,6 +2119,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 			throw new UnsupportedOperationException();
 		}
 
+		@Pure
 		@Override
 		public PathWindingRule getWindingRule() {
 			return Path2i.this.getWindingRule();
@@ -2086,16 +2147,19 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 			//
 		}
 
+		@Pure
 		@Override
 		public int size() {
 			return Path2i.this.size();
 		}
 
+		@Pure
 		@Override
 		public boolean isEmpty() {
 			return Path2i.this.size()<=0;
 		}
 
+		@Pure
 		@Override
 		public boolean contains(Object o) {
 			if (o instanceof Point2D) {
@@ -2104,11 +2168,13 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 			return false;
 		}
 
+		@Pure
 		@Override
 		public Iterator<Point2D> iterator() {
 			return new PointIterator();
 		}
 
+		@Pure
 		@Override
 		public Object[] toArray() {
 			return Path2i.this.toPointArray();
@@ -2147,6 +2213,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 			return false;
 		}
 
+		@Pure
 		@Override
 		public boolean containsAll(Collection<?> c) {
 			for(Object obj : c) {
@@ -2213,6 +2280,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 			//
 		}
 
+		@Pure
 		@Override
 		public boolean hasNext() {
 			return this.index<Path2i.this.size();
@@ -2288,6 +2356,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 			}
 		}
 
+		@Pure
 		@Override
 		public boolean hasNext() {
 			return this.next!=null;
@@ -2450,6 +2519,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 		 * @return the flatness of the quadratic curve that is defined by the
 		 *          values in the specified array at the specified index.
 		 */
+		@Pure
 		private static double getQuadSquaredFlatness(double coords[], int offset) {
 			return AbstractSegment2F.distanceSquaredLinePoint(
 					coords[offset + 0], coords[offset + 1],
@@ -2533,6 +2603,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 		 *          specified by the coordinates in <code>coords</code> at
 		 *          the specified offset.
 		 */
+		@Pure
 		private static double getCurveSquaredFlatness(double coords[], int offset) {
 			return Math.max(
 					AbstractSegment2F.distanceSquaredSegmentPoint(
@@ -2636,7 +2707,8 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 			}
 			while (!this.done && !isFirst && isSame());
 		}
-		
+
+		@Pure
 		private boolean isSame() {
 			PathElementType type = this.holdType;
 			long x, y;
@@ -2782,6 +2854,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 			}
 		}
 
+		@Pure
 		@Override
 		public boolean hasNext() {
 			return !this.done;
@@ -2829,11 +2902,13 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 			throw new UnsupportedOperationException();
 		}
 
+		@Pure
 		@Override
 		public PathWindingRule getWindingRule() {
 			return this.windingRule;
 		}
-		
+
+		@Pure
 		@Override
 		public boolean isPolyline() {
 			return false; // Because the iterator flats the path, this is no curve inside.
@@ -2841,27 +2916,5 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 
 	} // class FlatteningPathIterator
 
-
-	@Override
-	public PathIterator2f getPathIterator(double flatness) {	
-		return null;
-	}
-
-	@Override
-	public PathIterator2d getPathIteratorProperty(double flatness) {
-		return null;
-	}
-
-	@Override
-	public PathIterator2d getPathIteratorProperty() {	
-		return null;
-	}
-
-	@Override
-	public PathIterator2f getPathIterator() {
-		return null;
-	}
-
-	
 
 }

@@ -18,6 +18,8 @@
  */
 package org.arakhne.afc.math.geometry.d2;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /**
  * @author Olivier LAMOTTE (olivier.lamotte@utbm.fr)
  *
@@ -337,6 +339,7 @@ public interface FunctionalTuple2D<TT extends Tuple2D<? super TT>> extends Tuple
 	/* (non-Javadoc)
 	 * @see org.arakhne.afc.math.geometry.d2.Tuple2D#ix()
 	 */
+	@Pure
 	@Override
 	default int ix() {
 		return (int)this.getX();
@@ -353,6 +356,7 @@ public interface FunctionalTuple2D<TT extends Tuple2D<? super TT>> extends Tuple
 	/* (non-Javadoc)
 	 * @see org.arakhne.afc.math.geometry.d2.Tuple2D#iy()
 	 */
+	@Pure
 	@Override
 	default int iy() {
 		return (int)this.getY();
@@ -437,6 +441,7 @@ public interface FunctionalTuple2D<TT extends Tuple2D<? super TT>> extends Tuple
 	/* (non-Javadoc)
 	 * @see org.arakhne.afc.math.geometry.d2.Tuple2D#equals(org.arakhne.afc.math.geometry.d2.Tuple2D)
 	 */
+	@Pure
 	@Override
 	default boolean equals(Tuple2D<?> t1) {
 		try {
@@ -450,6 +455,7 @@ public interface FunctionalTuple2D<TT extends Tuple2D<? super TT>> extends Tuple
 	/* (non-Javadoc)
 	 * @see org.arakhne.afc.math.geometry.d2.Tuple2D#epsilonEquals(org.arakhne.afc.math.geometry.d2.Tuple2D, double)
 	 */
+	@Pure
 	@Override
 	default boolean epsilonEquals(TT t1, double epsilon) {
 		double diff;

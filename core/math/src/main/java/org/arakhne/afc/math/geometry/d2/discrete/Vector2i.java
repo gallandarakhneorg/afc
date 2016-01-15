@@ -26,6 +26,7 @@ import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** 2D Vector with 2 integers.
  * 
@@ -100,6 +101,7 @@ public class Vector2i extends Tuple2i<Vector2D> implements Vector2D {
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public Vector2i clone() {
 		return (Vector2i)super.clone();
@@ -108,6 +110,7 @@ public class Vector2i extends Tuple2i<Vector2D> implements Vector2D {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public double angle(Vector2D v1) {
 		double vDot = dot(v1) / ( length()*v1.length() );
@@ -119,11 +122,13 @@ public class Vector2i extends Tuple2i<Vector2D> implements Vector2D {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public double dot(Vector2D v1) {
 	      return (this.x*v1.getX() + this.y*v1.getY());
 	}
 
+	@Pure
 	@Override
 	public double perp(Vector2D x2) {
 		return getX()*x2.getY() - x2.getX()*getY();
@@ -132,6 +137,7 @@ public class Vector2i extends Tuple2i<Vector2D> implements Vector2D {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public double length() {
         return Math.sqrt(this.x*this.x + this.y*this.y);
@@ -140,6 +146,7 @@ public class Vector2i extends Tuple2i<Vector2D> implements Vector2D {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public double lengthSquared() {
         return (this.x*this.x + this.y*this.y);
@@ -170,6 +177,7 @@ public class Vector2i extends Tuple2i<Vector2D> implements Vector2D {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public double signedAngle(Vector2D v) {
 		assert(v!=null);
@@ -261,12 +269,14 @@ public class Vector2i extends Tuple2i<Vector2D> implements Vector2D {
 	 * @param angle is the angle in radians to translate.
 	 * @return the orientation vector which is corresponding to the given angle.
 	 */
+	@Pure
 	public static Vector2i toOrientationVector(double angle) {
 		return new Vector2i(
 				Math.cos(angle),
 				Math.sin(angle));
 	}
-	
+
+	@Pure
 	@Override
 	public double getOrientationAngle() {
 		double angle = Math.acos(getX());
@@ -282,6 +292,7 @@ public class Vector2i extends Tuple2i<Vector2D> implements Vector2D {
 		set(-iy(), ix());
 	}
 
+	@Pure
 	@Override
 	public boolean isUnitVector() {
 		return MathUtil.isEpsilonEqual(lengthSquared(), 1.);
@@ -301,6 +312,7 @@ public class Vector2i extends Tuple2i<Vector2D> implements Vector2D {
 		}
 	}
 
+	@Pure
 	@Override
 	public Vector2D toUnmodifiable() {
 		return new UnmodifiableVector2i();
@@ -322,6 +334,7 @@ public class Vector2i extends Tuple2i<Vector2D> implements Vector2D {
 			//
 		}
 
+		@Pure
 		@Override
 		public UnmodifiableVector2i clone() {
 			return new UnmodifiableVector2i();
@@ -497,11 +510,13 @@ public class Vector2i extends Tuple2i<Vector2D> implements Vector2D {
 			throw new UnsupportedOperationException();
 		}
 
+		@Pure
 		@Override
 		public double getX() {
 			return Vector2i.this.getX();
 		}
 
+		@Pure
 		@Override
 		public int ix() {
 			return Vector2i.this.ix();
@@ -517,11 +532,13 @@ public class Vector2i extends Tuple2i<Vector2D> implements Vector2D {
 			throw new UnsupportedOperationException();
 		}
 
+		@Pure
 		@Override
 		public double getY() {
 			return Vector2i.this.getY();
 		}
 
+		@Pure
 		@Override
 		public int iy() {
 			return Vector2i.this.iy();
@@ -577,16 +594,19 @@ public class Vector2i extends Tuple2i<Vector2D> implements Vector2D {
 			throw new UnsupportedOperationException();
 		}
 
+		@Pure
 		@Override
 		public boolean equals(Tuple2D<?> t1) {
 			return Vector2i.this.equals(t1);
 		}
 
+		@Pure
 		@Override
 		public int hashCode() {
 			return Vector2i.this.hashCode();
 		}
 
+		@Pure
 		@Override
 		public boolean epsilonEquals(Vector2D t1, double epsilon) {
 			return Vector2i.this.epsilonEquals(t1, epsilon);
@@ -637,6 +657,7 @@ public class Vector2i extends Tuple2i<Vector2D> implements Vector2D {
 			throw new UnsupportedOperationException();
 		}
 
+		@Pure
 		@Override
 		public double dot(Vector2D v1) {
 			return Vector2i.this.dot(v1);
@@ -647,11 +668,13 @@ public class Vector2i extends Tuple2i<Vector2D> implements Vector2D {
 			throw new UnsupportedOperationException();
 		}
 
+		@Pure
 		@Override
 		public double length() {
 			return Vector2i.this.length();
 		}
 
+		@Pure
 		@Override
 		public double lengthSquared() {
 			return Vector2i.this.lengthSquared();
@@ -667,11 +690,13 @@ public class Vector2i extends Tuple2i<Vector2D> implements Vector2D {
 			throw new UnsupportedOperationException();
 		}
 
+		@Pure
 		@Override
 		public double angle(Vector2D v1) {
 			return Vector2i.this.angle(v1);
 		}
 
+		@Pure
 		@Override
 		public double signedAngle(Vector2D v) {
 			return Vector2i.this.signedAngle(v);
@@ -682,11 +707,13 @@ public class Vector2i extends Tuple2i<Vector2D> implements Vector2D {
 			throw new UnsupportedOperationException();
 		}
 
+		@Pure
 		@Override
 		public double getOrientationAngle() {
 			return Vector2i.this.getOrientationAngle();
 		}
 
+		@Pure
 		@Override
 		public boolean isUnitVector() {
 			return Vector2i.this.isUnitVector();
@@ -697,15 +724,16 @@ public class Vector2i extends Tuple2i<Vector2D> implements Vector2D {
 			throw new UnsupportedOperationException();
 		}
 
+		@Pure
 		@Override
 		public Vector2D toUnmodifiable() {
 			return this;
 		}
 
+		@Pure
 		@Override
 		public double perp(Vector2D x2) {
-			// TODO Auto-generated method stub
-			return 0;
+			return Vector2i.this.perp(x2);
 		}
 
 	}

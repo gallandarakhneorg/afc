@@ -29,6 +29,7 @@ import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.continuous.AbstractSegment2F;
 import org.arakhne.afc.math.geometry.d2.continuous.Transform2D;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 
 
@@ -67,6 +68,7 @@ public class Segment2i extends AbstractShape2i<Segment2i> {
 	 * @param y1 is the secondpoint of the line.
 	 * @return the crossing, or {@link MathConstants#SHAPE_INTERSECTS}.
 	 */
+	@Pure
 	public static int computeCrossingsFromCircle(
 			int crossings,
 			int cx, int cy,
@@ -137,6 +139,7 @@ public class Segment2i extends AbstractShape2i<Segment2i> {
 	 * @param y1 is the secondpoint of the line.
 	 * @return the crossing, or {@link MathConstants#SHAPE_INTERSECTS}.
 	 */
+	@Pure
 	public static int computeCrossingsFromSegment(
 			int crossings,
 			int sx1, int sy1,
@@ -238,6 +241,7 @@ public class Segment2i extends AbstractShape2i<Segment2i> {
 	 * @param y1 is the secondpoint of the line.
 	 * @return the crossing, or {@link MathConstants#SHAPE_INTERSECTS}.
 	 */
+	@Pure
 	public static int computeCrossingsFromRect(
 			int crossings,
 			int rxmin, int rymin,
@@ -411,6 +415,7 @@ public class Segment2i extends AbstractShape2i<Segment2i> {
 	 * @param y1 is the secondpoint of the line.
 	 * @return the crossing, {@link MathConstants#SHAPE_INTERSECTS}
 	 */
+	@Pure
 	public static int computeCrossingsFromPoint(
 			int crossing,
 			int px, int py,
@@ -446,6 +451,7 @@ public class Segment2i extends AbstractShape2i<Segment2i> {
 	 * @param enableBottomBorder indicates if the bottom border must be enabled in the crossing computation.
 	 * @return the crossing; or {@link MathConstants#SHAPE_INTERSECTS} if the segment is on the point.
 	 */
+	@Pure
 	public static int computeCrossingsFromPoint(
 			int crossing,
 			int px, int py,
@@ -507,6 +513,7 @@ public class Segment2i extends AbstractShape2i<Segment2i> {
 	 * @return <code>true</code> if the two shapes are intersecting; otherwise
 	 * <code>false</code>
 	 */
+	@Pure
 	public static boolean intersectsSegmentSegment(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4) {
 		int side1 = AbstractSegment2F.computeSideLinePoint(x1, y1, x2, y2, x3, y3, 0.);
 		int side2 = AbstractSegment2F.computeSideLinePoint(x1, y1, x2, y2, x4, y4, 0.);
@@ -708,6 +715,7 @@ public class Segment2i extends AbstractShape2i<Segment2i> {
 	 * @return <code>true</code> if the two points are
 	 * equal.
 	 */
+	@Pure
 	@Override
 	public boolean isEmpty() {
 		return this.ax==this.bx && this.ay==this.by;
@@ -754,6 +762,7 @@ public class Segment2i extends AbstractShape2i<Segment2i> {
 	 * 
 	 * @return the x of the first point.
 	 */
+	@Pure
 	public int getX1() {
 		return this.ax;
 	}
@@ -762,6 +771,7 @@ public class Segment2i extends AbstractShape2i<Segment2i> {
 	 * 
 	 * @return the y of the first point.
 	 */
+	@Pure
 	public int getY1() {
 		return this.ay;
 	}
@@ -770,6 +780,7 @@ public class Segment2i extends AbstractShape2i<Segment2i> {
 	 * 
 	 * @return the x of the second point.
 	 */
+	@Pure
 	public int getX2() {
 		return this.bx;
 	}
@@ -778,6 +789,7 @@ public class Segment2i extends AbstractShape2i<Segment2i> {
 	 * 
 	 * @return the y of the second point.
 	 */
+	@Pure
 	public int getY2() {
 		return this.by;
 	}
@@ -786,6 +798,7 @@ public class Segment2i extends AbstractShape2i<Segment2i> {
 	 * 
 	 * @return the first point.
 	 */
+	@Pure
 	public Point2D getP1() {
 		return new Point2i(this.ax, this.ay);
 	}
@@ -794,10 +807,12 @@ public class Segment2i extends AbstractShape2i<Segment2i> {
 	 * 
 	 * @return the second point.
 	 */
+	@Pure
 	public Point2D getP2() {
 		return new Point2i(this.bx, this.by);
 	}
 
+	@Pure
 	@Override
 	public Rectangle2i toBoundingBox() {
 		Rectangle2i r = new Rectangle2i();
@@ -820,6 +835,7 @@ public class Segment2i extends AbstractShape2i<Segment2i> {
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public double distanceSquared(Point2D p) {
 		Point2D closestPoint = getClosestPointTo(p);
@@ -828,6 +844,7 @@ public class Segment2i extends AbstractShape2i<Segment2i> {
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public double distanceL1(Point2D p) {
 		Point2D closestPoint = getClosestPointTo(p);
@@ -836,6 +853,7 @@ public class Segment2i extends AbstractShape2i<Segment2i> {
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public double distanceLinf(Point2D p) {
 		Point2D closestPoint = getClosestPointTo(p);
@@ -844,6 +862,7 @@ public class Segment2i extends AbstractShape2i<Segment2i> {
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public boolean contains(int x, int y) {
 		if (x>=this.ax && x<=this.bx && y>=this.ay && y<=this.by) {
@@ -873,6 +892,7 @@ public class Segment2i extends AbstractShape2i<Segment2i> {
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public boolean contains(Rectangle2i r) {
 		return r.isEmpty() && contains(r.getMinX(), r.getMinY());
@@ -880,6 +900,7 @@ public class Segment2i extends AbstractShape2i<Segment2i> {
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public Point2i getClosestPointTo(Point2D p) {
 		return computeClosestPointTo(this.ax, this.ay, this.bx, this.by, p.ix(), p.iy());
@@ -887,6 +908,7 @@ public class Segment2i extends AbstractShape2i<Segment2i> {
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public Point2i getFarthestPointTo(Point2D p) {
 		return computeFarthestPointTo(this.ax, this.ay, this.bx, this.by, p.ix(), p.iy());
@@ -902,6 +924,7 @@ public class Segment2i extends AbstractShape2i<Segment2i> {
 	 * @param py is the x-coordinate of the point
 	 * @return the closest point in the segment to the point.
 	 */
+	@Pure
 	public static Point2i computeClosestPointTo(int ax, int ay, int bx, int by, int px, int py) {
 		// Special case
 		//    0 1 2 3 4 5 6 7 8 9 10
@@ -966,6 +989,7 @@ public class Segment2i extends AbstractShape2i<Segment2i> {
 	 * @param py is the x-coordinate of the point
 	 * @return the farthest point in the segment to the point.
 	 */
+	@Pure
 	public static Point2i computeFarthestPointTo(int ax, int ay, int bx, int by, int px, int py) {
 		int v1x = px - ax;
 		int v1y = py - ay;
@@ -985,6 +1009,7 @@ public class Segment2i extends AbstractShape2i<Segment2i> {
 		this.by += dy;
 	}
 
+	@Pure
 	@Override
 	public PathIterator2i getPathIteratorDiscrete(Transform2D transform) {
 		return new SegmentPathIterator(
@@ -1013,11 +1038,13 @@ public class Segment2i extends AbstractShape2i<Segment2i> {
 	 * 
 	 * @return an iterator on the points along the Bresenham line.
 	 */
+	@Pure
 	@Override
 	public Iterator<Point2i> getPointIterator() {
 		return new LineIterator(this.ax, this.ay, this.bx, this.by);
 	}
 
+	@Pure
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == this) {
@@ -1033,6 +1060,7 @@ public class Segment2i extends AbstractShape2i<Segment2i> {
 		return false;
 	}
 
+	@Pure
 	@Override
 	public int hashCode() {
 		long bits = 1L;
@@ -1060,6 +1088,7 @@ public class Segment2i extends AbstractShape2i<Segment2i> {
 		this.by = p.iy();
 	}
 
+	@Pure
 	@Override
 	public Shape2i createTransformedShape(Transform2D transform) {
 		Point2D p1 = transform.transform(this.ax, this.ay);
@@ -1156,6 +1185,7 @@ public class Segment2i extends AbstractShape2i<Segment2i> {
 	}
 
 
+	@Pure
 	@Override
 	public boolean intersects(Rectangle2i s) {
 		return Rectangle2i.intersectsRectangleSegment(
@@ -1165,6 +1195,7 @@ public class Segment2i extends AbstractShape2i<Segment2i> {
 				getX2(), getY2());
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(Circle2i s) {
 		return Circle2i.intersectsCircleSegment(
@@ -1174,6 +1205,7 @@ public class Segment2i extends AbstractShape2i<Segment2i> {
 				getX2(), getY2());
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(Segment2i s) {
 		return intersectsSegmentSegment(
@@ -1181,6 +1213,7 @@ public class Segment2i extends AbstractShape2i<Segment2i> {
 				s.getX1(), s.getY1(), s.getX2(), s.getY2());
 	}
 
+	@Pure
 	@Override
 	public String toString() {
 		StringBuilder b = new StringBuilder();
@@ -1232,6 +1265,7 @@ public class Segment2i extends AbstractShape2i<Segment2i> {
 			}
 		}
 
+		@Pure
 		@Override
 		public boolean hasNext() {
 			return this.index<=1;
@@ -1274,6 +1308,7 @@ public class Segment2i extends AbstractShape2i<Segment2i> {
 			return PathWindingRule.NON_ZERO;
 		}
 
+		@Pure
 		@Override
 		public boolean isPolyline() {
 			return false;
@@ -1368,6 +1403,7 @@ public class Segment2i extends AbstractShape2i<Segment2i> {
 		/**
 		 * {@inheritDoc}
 		 */
+		@Pure
 		@Override
 		public boolean hasNext() {
 			return ((this.xstep>0) && (this.x <= this.x1))
@@ -1399,6 +1435,7 @@ public class Segment2i extends AbstractShape2i<Segment2i> {
 		/**
 		 * {@inheritDoc}
 		 */
+		@Pure
 		@Override
 		public Point2i next() {
 			Point2i p = new Point2i();

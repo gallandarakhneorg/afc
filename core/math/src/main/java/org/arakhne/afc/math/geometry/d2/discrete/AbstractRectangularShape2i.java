@@ -21,6 +21,7 @@
 package org.arakhne.afc.math.geometry.d2.discrete;
 
 import org.arakhne.afc.math.geometry.d2.Point2D;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 
 
@@ -63,6 +64,7 @@ public abstract class AbstractRectangularShape2i<T extends Shape2i> extends Abst
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public Rectangle2i toBoundingBox() {
 		return new Rectangle2i(this.minx, this.miny, this.maxx-this.minx, this.maxy-this.miny);
@@ -87,6 +89,7 @@ public abstract class AbstractRectangularShape2i<T extends Shape2i> extends Abst
 	 * @return <code>true</code> if the two corners are
 	 * at the same location; <code>false</code> otherwise.
 	 */
+	@Pure
 	@Override
 	public boolean isEmpty() {
 		return this.minx==this.maxx && this.miny==this.maxy; 
@@ -176,6 +179,7 @@ public abstract class AbstractRectangularShape2i<T extends Shape2i> extends Abst
 	 * 
 	 * @return the min x.
 	 */
+	@Pure
 	public int getMinX() {
 		return this.minx;
 	}
@@ -184,6 +188,7 @@ public abstract class AbstractRectangularShape2i<T extends Shape2i> extends Abst
 	 * 
 	 * @return the center x.
 	 */
+	@Pure
 	public int getCenterX() {
 		return (this.minx + this.maxx) / 2;
 	}
@@ -192,6 +197,7 @@ public abstract class AbstractRectangularShape2i<T extends Shape2i> extends Abst
 	 * 
 	 * @return the max x.
 	 */
+	@Pure
 	public int getMaxX() {
 		return this.maxx;
 	}
@@ -200,6 +206,7 @@ public abstract class AbstractRectangularShape2i<T extends Shape2i> extends Abst
 	 * 
 	 * @return the min y.
 	 */
+	@Pure
 	public int getMinY() {
 		return this.miny;
 	}
@@ -208,6 +215,7 @@ public abstract class AbstractRectangularShape2i<T extends Shape2i> extends Abst
 	 * 
 	 * @return the center y.
 	 */
+	@Pure
 	public int getCenterY() {
 		return (this.miny + this.maxy) / 2;
 	}
@@ -216,6 +224,7 @@ public abstract class AbstractRectangularShape2i<T extends Shape2i> extends Abst
 	 * 
 	 * @return the max y.
 	 */
+	@Pure
 	public int getMaxY() {
 		return this.maxy;
 	}
@@ -224,6 +233,7 @@ public abstract class AbstractRectangularShape2i<T extends Shape2i> extends Abst
 	 * 
 	 * @return the width.
 	 */
+	@Pure
 	public int getWidth() {
 		return this.maxx - this.minx;
 	}
@@ -232,6 +242,7 @@ public abstract class AbstractRectangularShape2i<T extends Shape2i> extends Abst
 	 * 
 	 * @return the height.
 	 */
+	@Pure
 	public int getHeight() {
 		return this.maxy - this.miny;
 	}

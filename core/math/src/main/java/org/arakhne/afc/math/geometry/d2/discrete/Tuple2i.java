@@ -22,6 +22,7 @@
 package org.arakhne.afc.math.geometry.d2.discrete;
 
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** 2D tuple with 2 integers.
  * 
@@ -103,6 +104,7 @@ public class Tuple2i<T extends Tuple2D<? super T>> implements Tuple2D<T> {
 	/** {@inheritDoc}
 	 */
 	@SuppressWarnings("unchecked")
+	@Pure
 	@Override
 	public T clone() {
 		try {
@@ -414,6 +416,7 @@ public class Tuple2i<T extends Tuple2D<? super T>> implements Tuple2D<T> {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public double getX() {
 		return this.x;
@@ -422,6 +425,7 @@ public class Tuple2i<T extends Tuple2D<? super T>> implements Tuple2D<T> {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public int ix() {
 		return this.x;
@@ -446,6 +450,7 @@ public class Tuple2i<T extends Tuple2D<? super T>> implements Tuple2D<T> {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public double getY() {
 		return this.y;
@@ -454,6 +459,7 @@ public class Tuple2i<T extends Tuple2D<? super T>> implements Tuple2D<T> {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public int iy() {
 		return this.y;
@@ -546,6 +552,7 @@ public class Tuple2i<T extends Tuple2D<? super T>> implements Tuple2D<T> {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public boolean equals(Tuple2D<?> t1) {
 		try {
@@ -560,6 +567,7 @@ public class Tuple2i<T extends Tuple2D<? super T>> implements Tuple2D<T> {
 	 * {@inheritDoc}
 	 */
 	@SuppressWarnings("unchecked")
+	@Pure
 	@Override
 	public boolean equals(Object t1) {
 		try {
@@ -577,6 +585,7 @@ public class Tuple2i<T extends Tuple2D<? super T>> implements Tuple2D<T> {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public boolean epsilonEquals(T t1, double epsilon) {
 		double diff;
@@ -595,6 +604,7 @@ public class Tuple2i<T extends Tuple2D<? super T>> implements Tuple2D<T> {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public int hashCode() {
 		int bits = 1;
@@ -606,6 +616,7 @@ public class Tuple2i<T extends Tuple2D<? super T>> implements Tuple2D<T> {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public String toString() {
 		return "(" //$NON-NLS-1$

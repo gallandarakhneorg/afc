@@ -439,6 +439,7 @@ public interface FunctionalVector2D extends Vector2D {
 	/* (non-Javadoc)
 	 * @see org.arakhne.afc.math.geometry.d2.Vector2D#toUnmodifiable()
 	 */
+	@Pure
 	@Override
 	default Vector2D toUnmodifiable() {
 		// TODO Auto-generated method stub
