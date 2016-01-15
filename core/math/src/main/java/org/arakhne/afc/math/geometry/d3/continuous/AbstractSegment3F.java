@@ -27,6 +27,7 @@ import org.arakhne.afc.math.geometry.d3.FunctionalVector3D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
 import org.arakhne.afc.util.Pair;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** This class represents a 3D line.
  * <p>
@@ -77,6 +78,7 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 	 * other; <code>false</code> otherwise.
 	 * @see "http://books.google.ca/books?id=fvA7zLEFWZgC"
 	 */
+	@Pure
 	public static boolean intersectsSegmentAlignedBox(
 			double sx1, double sy1, double sz1, double sx2, double sy2, double sz2,
 			double minx, double miny, double minz, double maxx, double maxy, double maxz) {

@@ -23,6 +23,7 @@ package org.arakhne.afc.math.geometry.d3.continuous;
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.d3.FunctionalPoint3D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 
 
@@ -465,6 +466,7 @@ public abstract class AbstractSphere3F extends AbstractShape3F<AbstractSphere3F>
 	 * @return <code>true</code> if the two shapes are intersecting; otherwise
 	 * <code>false</code>
 	 */
+	@Pure
 	public static boolean intersectsSolidSphereSolidAlignedBox(
 			double x1, double y1, double z1, double radius,
 			double bx, double by, double bz, double bsx, double bsy, double bsz) {

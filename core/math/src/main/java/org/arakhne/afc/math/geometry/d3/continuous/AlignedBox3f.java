@@ -22,6 +22,7 @@ package org.arakhne.afc.math.geometry.d3.continuous;
 
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.d3.Point3D;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 
 
@@ -51,6 +52,7 @@ public class AlignedBox3f extends AbstractBoxedShape3F<AlignedBox3f> {
 	 * @return the closest point on the shape; or the point itself
 	 * if it is inside the shape.
 	 */
+	@Pure
 	public static Point3f computeClosestPoint(
 			double minx, double miny, double minz,
 			double maxx, double maxy, double maxz,
@@ -108,6 +110,7 @@ public class AlignedBox3f extends AbstractBoxedShape3F<AlignedBox3f> {
 	 * @return <code>true</code> if the two 3D boxes intersect each 
 	 * other; <code>false</code> otherwise.
 	 */
+	@Pure
 	public static boolean intersectsAlignedBoxAlignedBox(
 			double lower1x, double lower1y, double lower1z, double upper1x, double upper1y, double upper1z,
 			double lower2x, double lower2y, double lower2z, double upper2x, double upper2y, double upper2z) {
@@ -149,6 +152,7 @@ public class AlignedBox3f extends AbstractBoxedShape3F<AlignedBox3f> {
 	 * @return <code>true</code> if the given point is inside this
 	 * shape, otherwise <code>false</code>.
 	 */
+	@Pure
 	public static boolean containsAlignedBoxPoint(
 			double minx, double miny, double minz, double maxx, double maxy, double maxz,
 			double px, double py, double pz) {
@@ -346,6 +350,7 @@ public class AlignedBox3f extends AbstractBoxedShape3F<AlignedBox3f> {
 	 * 
 	 * @return the min point.
 	 */
+	@Pure
 	@Override
 	public Point3f getMin() {
 		return new Point3f(this.minx, this.miny, this.minz);
@@ -355,6 +360,7 @@ public class AlignedBox3f extends AbstractBoxedShape3F<AlignedBox3f> {
 	 * 
 	 * @return the min point.
 	 */
+	@Pure
 	@Override
 	public Point3f getMax() {
 		return new Point3f(this.maxx, this.maxy, this.maxz);
@@ -364,6 +370,7 @@ public class AlignedBox3f extends AbstractBoxedShape3F<AlignedBox3f> {
 	 * 
 	 * @return the center point.
 	 */
+	@Pure
 	@Override
 	public Point3f getCenter() {
 		return new Point3f(
@@ -376,6 +383,7 @@ public class AlignedBox3f extends AbstractBoxedShape3F<AlignedBox3f> {
 	 * 
 	 * @return the min x.
 	 */
+	@Pure
 	@Override
 	public double getMinX() {
 		return this.minx;
@@ -401,6 +409,7 @@ public class AlignedBox3f extends AbstractBoxedShape3F<AlignedBox3f> {
 	 * 
 	 * @return the center x.
 	 */
+	@Pure
 	@Override
 	public double getCenterX() {
 		return (this.minx + this.maxx) / 2f;
@@ -410,6 +419,7 @@ public class AlignedBox3f extends AbstractBoxedShape3F<AlignedBox3f> {
 	 * 
 	 * @return the max x.
 	 */
+	@Pure
 	@Override
 	public double getMaxX() {
 		return this.maxx;
@@ -435,6 +445,7 @@ public class AlignedBox3f extends AbstractBoxedShape3F<AlignedBox3f> {
 	 * 
 	 * @return the min y.
 	 */
+	@Pure
 	@Override
 	public double getMinY() {
 		return this.miny;
@@ -460,6 +471,7 @@ public class AlignedBox3f extends AbstractBoxedShape3F<AlignedBox3f> {
 	 * 
 	 * @return the center y.
 	 */
+	@Pure
 	@Override
 	public double getCenterY() {
 		return (this.miny + this.maxy) / 2f;
@@ -469,6 +481,7 @@ public class AlignedBox3f extends AbstractBoxedShape3F<AlignedBox3f> {
 	 * 
 	 * @return the max y.
 	 */
+	@Pure
 	@Override
 	public double getMaxY() {
 		return this.maxy;
@@ -494,6 +507,7 @@ public class AlignedBox3f extends AbstractBoxedShape3F<AlignedBox3f> {
 	 * 
 	 * @return the min z.
 	 */
+	@Pure
 	@Override
 	public double getMinZ() {
 		return this.minz;
@@ -519,6 +533,7 @@ public class AlignedBox3f extends AbstractBoxedShape3F<AlignedBox3f> {
 	 * 
 	 * @return the center z.
 	 */
+	@Pure
 	@Override
 	public double getCenterZ() {
 		return (this.minz + this.maxz) / 2f;
@@ -528,6 +543,7 @@ public class AlignedBox3f extends AbstractBoxedShape3F<AlignedBox3f> {
 	 * 
 	 * @return the max z.
 	 */
+	@Pure
 	@Override
 	public double getMaxZ() {
 		return this.maxz;
@@ -553,6 +569,7 @@ public class AlignedBox3f extends AbstractBoxedShape3F<AlignedBox3f> {
 	 * 
 	 * @return the x-size.
 	 */
+	@Pure
 	@Override
 	public double getSizeX() {
 		return this.maxx - this.minx;
@@ -562,6 +579,7 @@ public class AlignedBox3f extends AbstractBoxedShape3F<AlignedBox3f> {
 	 * 
 	 * @return the y-size.
 	 */
+	@Pure
 	@Override
 	public double getSizeY() {
 		return this.maxy - this.miny;
@@ -571,6 +589,7 @@ public class AlignedBox3f extends AbstractBoxedShape3F<AlignedBox3f> {
 	 * 
 	 * @return the z-size.
 	 */
+	@Pure
 	@Override
 	public double getSizeZ() {
 		return this.maxz - this.minz;
@@ -629,11 +648,13 @@ public class AlignedBox3f extends AbstractBoxedShape3F<AlignedBox3f> {
 	
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public AlignedBox3f toBoundingBox() {
 		return this;
 	}
 
+	@Pure
 	@Override
 	public double distanceSquared(Point3D p) {
 		double d1 = 0;
@@ -666,6 +687,7 @@ public class AlignedBox3f extends AbstractBoxedShape3F<AlignedBox3f> {
 		return d1+d2+d3;
 	}
 
+	@Pure
 	@Override
 	public double distanceL1(Point3D p) {
 		double d1 = 0;
@@ -692,6 +714,7 @@ public class AlignedBox3f extends AbstractBoxedShape3F<AlignedBox3f> {
 		return d1+d2+d3;
 	}
 
+	@Pure
 	@Override
 	public double distanceLinf(Point3D p) {
 		double d1 = 0;
@@ -718,6 +741,7 @@ public class AlignedBox3f extends AbstractBoxedShape3F<AlignedBox3f> {
 		return MathUtil.max(d1, d2, d3);
 	}
 
+	@Pure
 	@Override
 	public boolean contains(double x, double y, double z) {
 		return containsAlignedBoxPoint(
@@ -725,6 +749,7 @@ public class AlignedBox3f extends AbstractBoxedShape3F<AlignedBox3f> {
 				x, y, z);
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(AlignedBox3f s) {
 		return intersectsAlignedBoxAlignedBox(
@@ -734,6 +759,7 @@ public class AlignedBox3f extends AbstractBoxedShape3F<AlignedBox3f> {
 				s.getMaxX(), s.getMaxY(), s.getMaxZ());
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(AbstractSphere3F s) {
 		return AbstractSphere3F.intersectsSolidSphereSolidAlignedBox(
@@ -742,6 +768,7 @@ public class AlignedBox3f extends AbstractBoxedShape3F<AlignedBox3f> {
 				getMaxX(), getMaxY(), getMaxZ());
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(AbstractSegment3F s) {
 		return AbstractSegment3F.intersectsSegmentAlignedBox(

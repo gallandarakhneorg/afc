@@ -21,6 +21,7 @@
 package org.arakhne.afc.math.geometry.d3.continuous;
 
 import org.arakhne.afc.math.geometry.d3.Point3D;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 
 
@@ -40,6 +41,7 @@ public abstract class AbstractBoxedShape3F<T extends AbstractBoxedShape3F<T>>   
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public AbstractBoxedShape3F<?> toBoundingBox() {
 		return new AlignedBox3f(
@@ -59,12 +61,7 @@ public abstract class AbstractBoxedShape3F<T extends AbstractBoxedShape3F<T>>   
 
 	@Override
 	public void clear() {
-		this.setMaxX(0f);
-		this.setMaxY(0f);
-		this.setMaxZ(0f);
-		this.setMinX(0f);
-		this.setMinY(0f);
-		this.setMinZ(0f);
+		this.setFromCorners(0,0,0,0,0,0);
 	}
 	
 	/** Change the frame of the box.
@@ -140,24 +137,28 @@ public abstract class AbstractBoxedShape3F<T extends AbstractBoxedShape3F<T>>   
 	 * 
 	 * @return the min point.
 	 */
+	@Pure
 	abstract public Point3f getMin();
 
 	/** Replies the min point.
 	 * 
 	 * @return the min point.
 	 */
+	@Pure
 	abstract public Point3f getMax();
 
 	/** Replies the center point.
 	 * 
 	 * @return the center point.
 	 */
+	@Pure
 	abstract public Point3f getCenter();
 
 	/** Replies the min X.
 	 * 
 	 * @return the min x.
 	 */
+	@Pure
 	abstract public double getMinX();
 
 	/** Set the min X.
@@ -170,12 +171,14 @@ public abstract class AbstractBoxedShape3F<T extends AbstractBoxedShape3F<T>>   
 	 * 
 	 * @return the center x.
 	 */
+	@Pure
 	abstract public double getCenterX();
 
 	/** Replies the max x.
 	 * 
 	 * @return the max x.
 	 */
+	@Pure
 	abstract public double getMaxX();
 
 	/** Set the max X.
@@ -188,6 +191,7 @@ public abstract class AbstractBoxedShape3F<T extends AbstractBoxedShape3F<T>>   
 	 * 
 	 * @return the min y.
 	 */
+	@Pure
 	abstract public double getMinY();
 
 	/** Set the min Y.
@@ -200,12 +204,14 @@ public abstract class AbstractBoxedShape3F<T extends AbstractBoxedShape3F<T>>   
 	 * 
 	 * @return the center y.
 	 */
+	@Pure
 	abstract public double getCenterY();
 
 	/** Replies the max y.
 	 * 
 	 * @return the max y.
 	 */
+	@Pure
 	abstract public double getMaxY();
 	
 	/** Set the max Y.
@@ -218,6 +224,7 @@ public abstract class AbstractBoxedShape3F<T extends AbstractBoxedShape3F<T>>   
 	 * 
 	 * @return the min z.
 	 */
+	@Pure
 	abstract public double getMinZ();
 
 	/** Set the min Z.
@@ -230,12 +237,14 @@ public abstract class AbstractBoxedShape3F<T extends AbstractBoxedShape3F<T>>   
 	 * 
 	 * @return the center z.
 	 */
+	@Pure
 	abstract public double getCenterZ();
 
 	/** Replies the max z.
 	 * 
 	 * @return the max z.
 	 */
+	@Pure
 	abstract public double getMaxZ();
 	
 	/** Set the max Z.
@@ -248,18 +257,21 @@ public abstract class AbstractBoxedShape3F<T extends AbstractBoxedShape3F<T>>   
 	 * 
 	 * @return the x-size.
 	 */
+	@Pure
 	abstract public double getSizeX();
 
 	/** Replies the y-size.
 	 * 
 	 * @return the y-size.
 	 */
+	@Pure
 	abstract public double getSizeY();
 	
 	/** Replies the z-size.
 	 * 
 	 * @return the z-size.
 	 */
+	@Pure
 	abstract public double getSizeZ();
 
 	@Override
@@ -273,6 +285,7 @@ public abstract class AbstractBoxedShape3F<T extends AbstractBoxedShape3F<T>>   
 		
 	}
 
+	@Pure
 	@Override
 	public Shape3F createTransformedShape(Transform3D transformationMatrix) {
 		AbstractBoxedShape3F<T> newB = this.clone();
@@ -288,6 +301,7 @@ public abstract class AbstractBoxedShape3F<T extends AbstractBoxedShape3F<T>>   
 	 * @return <code>true</code> if the rectangular shape is empty;
 	 * otherwise <code>false</code>.
 	 */
+	@Pure
 	@Override
 	public boolean isEmpty() {
 		return this.getMinX()==this.getMaxX() && this.getMinY()==this.getMaxY() && this.getMinZ()==this.getMaxZ(); 
@@ -309,6 +323,7 @@ public abstract class AbstractBoxedShape3F<T extends AbstractBoxedShape3F<T>>   
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder(64);
