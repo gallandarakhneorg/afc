@@ -20,10 +20,7 @@
  */
 package org.arakhne.afc.math.geometry.d2.continuous;
 
-import java.util.Iterator;
-
 import org.arakhne.afc.math.geometry.d2.Point2D;
-import org.arakhne.afc.math.geometry.d2.discrete.PathIterator2i;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 

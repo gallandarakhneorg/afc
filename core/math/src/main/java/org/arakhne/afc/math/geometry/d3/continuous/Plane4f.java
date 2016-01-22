@@ -27,6 +27,7 @@ import org.arakhne.afc.math.geometry.d3.FunctionalVector3D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Tuple3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**This class represents a 3D plane.
  * 
@@ -220,6 +221,7 @@ public final class Plane4f extends AbstractPlane4F {
 	
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public Vector3f getNormal() {
 		return new Vector3f(this.a,this.b,this.c);
@@ -227,6 +229,7 @@ public final class Plane4f extends AbstractPlane4F {
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public double getEquationComponentA() {
 		return this.a;
@@ -234,6 +237,7 @@ public final class Plane4f extends AbstractPlane4F {
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public double getEquationComponentB() {
 		return this.b;
@@ -241,6 +245,7 @@ public final class Plane4f extends AbstractPlane4F {
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public double getEquationComponentC() {
 		return this.c;
@@ -248,6 +253,7 @@ public final class Plane4f extends AbstractPlane4F {
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public double getEquationComponentD() {
 		return this.d;
@@ -283,6 +289,7 @@ public final class Plane4f extends AbstractPlane4F {
 		this.cachedPivot = null;
 	}
 
+	@Pure
 	@Override
 	public FunctionalPoint3D getProjection(double x, double y, double z) {
 		return computePointProjection(

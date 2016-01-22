@@ -21,6 +21,7 @@
 package org.arakhne.afc.math.geometry.d3.continuous;
 
 import org.arakhne.afc.math.geometry.PathElementType;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** An element of the path.
  *
@@ -42,6 +43,7 @@ public abstract class AbstractPathElement3F implements AbstractPathElement3X {
 	 * @param coords are the coordinates.
 	 * @return the instance of path element.
 	 */
+	@Pure
 	public static AbstractPathElement3F newInstance(PathElementType type, double lastX, double lastY, double lastZ, double[] coords) {
 		switch(type) {
 		case MOVE_TO:
@@ -124,11 +126,13 @@ public abstract class AbstractPathElement3F implements AbstractPathElement3X {
 					x, y, z);
 		}
 
+		@Pure
 		@Override
 		public boolean isEmpty() {
 			return (this.getFromX()==this.getToX()) && (this.getFromY()==this.getToY()) && (this.getFromZ()==this.getToZ());
 		}
 
+		@Pure
 		@Override
 		public boolean isDrawable() {
 			return false;
@@ -140,12 +144,14 @@ public abstract class AbstractPathElement3F implements AbstractPathElement3X {
 			array[1] = this.getToY();
 			array[2] = this.getToZ();
 		}
-		
+
+		@Pure
 		@Override
 		public double[] toArray() {
 			return new double[] {this.getToX(), this.getToY(), this.getToZ()};
 		}
 
+		@Pure
 		@Override
 		public String toString() {
 			return "MOVE("+ //$NON-NLS-1$
@@ -154,6 +160,7 @@ public abstract class AbstractPathElement3F implements AbstractPathElement3X {
 					this.getToZ()+")"; //$NON-NLS-1$
 		}
 
+		@Pure
 		@Override
 		public final PathElementType getType() {
 			return PathElementType.MOVE_TO;
@@ -189,17 +196,20 @@ public abstract class AbstractPathElement3F implements AbstractPathElement3X {
 					Double.NaN, Double.NaN, Double.NaN,
 					tox, toy, toz);
 		}
-		
+
+		@Pure
 		@Override
 		public final PathElementType getType() {
 			return PathElementType.LINE_TO;
 		}
 
+		@Pure
 		@Override
 		public boolean isEmpty() {
 			return (this.getFromX()==this.getToX()) && (this.getFromY()==this.getToY()) && (this.getFromZ()==this.getToZ());
 		}
 
+		@Pure
 		@Override
 		public boolean isDrawable() {
 			return !isEmpty();
@@ -211,12 +221,14 @@ public abstract class AbstractPathElement3F implements AbstractPathElement3X {
 			array[1] = this.getToY();
 			array[2] = this.getToZ();
 		}
-		
+
+		@Pure
 		@Override
 		public double[] toArray() {
 			return new double[] {this.getToX(), this.getToY(), this.getToZ()};
 		}
 
+		@Pure
 		@Override
 		public String toString() {
 			return "MOVE("+ //$NON-NLS-1$
@@ -258,18 +270,21 @@ public abstract class AbstractPathElement3F implements AbstractPathElement3X {
 					Double.NaN, Double.NaN, Double.NaN,
 					tox, toy, toz);
 		}
-		
+
+		@Pure
 		@Override
 		public final PathElementType getType() {
 			return PathElementType.QUAD_TO;
 		}
 
+		@Pure
 		@Override
 		public boolean isEmpty() {
 			return (this.getFromX()==this.getToX()) && (this.getFromY()==this.getToY()) && (this.getFromZ()==this.getToZ()) &&
 					(this.getCtrlX1()==this.getToX()) && (this.getCtrlY1()==this.getToY()) && (this.getCtrlZ1()==this.getToZ());
 		}
 
+		@Pure
 		@Override
 		public boolean isDrawable() {
 			return !isEmpty();
@@ -284,12 +299,14 @@ public abstract class AbstractPathElement3F implements AbstractPathElement3X {
 			array[4] = this.getToY();
 			array[5] = this.getToZ();
 		}
-		
+
+		@Pure
 		@Override
 		public double[] toArray() {
 			return new double[] {this.getCtrlX1(), this.getCtrlY1(), this.getCtrlZ1(), this.getToX(), this.getToY(), this.getToZ()};
 		}
-		
+
+		@Pure
 		@Override
 		public String toString() {
 			return "QUAD("+ //$NON-NLS-1$
@@ -300,8 +317,6 @@ public abstract class AbstractPathElement3F implements AbstractPathElement3X {
 					this.getToY()+"x"+ //$NON-NLS-1$
 					this.getToZ()+")"; //$NON-NLS-1$
 		}
-
-		
 
 	}
 
@@ -338,12 +353,14 @@ public abstract class AbstractPathElement3F implements AbstractPathElement3X {
 					ctrlx2, ctrly2, ctrlz2,
 					tox, toy, toz);
 		}
-		
+
+		@Pure
 		@Override
 		public final PathElementType getType() {
 			return PathElementType.CURVE_TO;
 		}
 
+		@Pure
 		@Override
 		public boolean isEmpty() {
 			return (this.getFromX()==this.getToX()) && (this.getFromY()==this.getToY()) && (this.getFromZ()==this.getToZ()) &&
@@ -351,6 +368,7 @@ public abstract class AbstractPathElement3F implements AbstractPathElement3X {
 					(this.getCtrlX2()==this.getToX()) && (this.getCtrlY2()==this.getToY()) && (this.getCtrlZ2()==this.getToZ());
 		}
 
+		@Pure
 		@Override
 		public boolean isDrawable() {
 			return !isEmpty();
@@ -368,12 +386,14 @@ public abstract class AbstractPathElement3F implements AbstractPathElement3X {
 			array[7] = this.getToY();
 			array[8] = this.getToZ();
 		}
-		
+
+		@Pure
 		@Override
 		public double[] toArray() {
 			return new double[] {this.getCtrlX1(), this.getCtrlY1(), this.getCtrlZ1(), this.getCtrlX2(), this.getCtrlY2(), this.getCtrlZ2(), this.getToX(), this.getToY(), this.getToZ()};
 		}
 
+		@Pure
 		@Override
 		public String toString() {
 			return "CURVE("+ //$NON-NLS-1$
@@ -387,8 +407,6 @@ public abstract class AbstractPathElement3F implements AbstractPathElement3X {
 					this.getToY()+"x"+ //$NON-NLS-1$
 					this.getToZ()+")"; //$NON-NLS-1$
 		}
-
-		
 
 	}
 
@@ -419,17 +437,20 @@ public abstract class AbstractPathElement3F implements AbstractPathElement3X {
 					Double.NaN, Double.NaN, Double.NaN,
 					tox, toy, toz);
 		}
-		
+
+		@Pure
 		@Override
 		public final PathElementType getType() {
 			return PathElementType.CLOSE;
 		}
 
+		@Pure
 		@Override
 		public boolean isEmpty() {
 			return (this.getFromX()==this.getToX()) && (this.getFromY()==this.getToY()) && (this.getFromZ()==this.getToZ());
 		}
-		
+
+		@Pure
 		@Override
 		public boolean isDrawable() {
 			return false;
@@ -439,12 +460,14 @@ public abstract class AbstractPathElement3F implements AbstractPathElement3X {
 		public void toArray(double[] array) {
 			//
 		}
-		
+
+		@Pure
 		@Override
 		public double[] toArray() {
 			return new double[0];
 		}
-		
+
+		@Pure
 		@Override
 		public String toString() {
 			return "CLOSE"; //$NON-NLS-1$

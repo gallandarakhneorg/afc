@@ -151,6 +151,7 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 	 * @return <code>true</code> if the two shapes intersect each 
 	 * other; <code>false</code> otherwise.
 	 */
+	@Pure
 	public static boolean intersectsSegmentOrientedBox(
 			double sx1, double sy1, double sz1, double sx2, double sy2, double sz2,
 			double centerx,double  centery,double  centerz,
@@ -200,6 +201,7 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 	 * other; <code>false</code> otherwise.
 	 * @see "http://books.google.ca/books?id=fvA7zLEFWZgC"
 	 */
+	@Pure
 	public static boolean intersectsSegmentCapsule(
 			double sx1, double sy1, double sz1, double sx2, double sy2, double sz2,
 			double mx1, double my1, double mz1, double mx2, double my2, double mz2, double radius) {
@@ -245,6 +247,7 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 	 * @return <code>true</code> if the two given lines are parallel.
 	 * @see #isCollinearLines(double, double, double, double, double, double, double, double, double, double, double, double)
 	 */
+	@Pure
 	public static boolean isParallelLines(
 			double x1, double y1, double z1, double x2, double y2, double z2,
 			double x3, double y3, double z3, double x4, double y4, double z4) {
@@ -288,6 +291,7 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 	 * @see #isParallelLines(double, double, double, double, double, double, double, double, double, double, double, double)
 	 * @see Point3f#isCollinearPoints(double, double, double, double, double, double, double, double, double, double)
 	 */
+	@Pure
 	public static boolean isCollinearLines(
 			double x1, double y1, double z1, double x2, double y2, double z2,
 			double x3, double y3, double z3, double x4, double y4, double z4) {
@@ -320,6 +324,7 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 	 * @param z4 is the second point of the second line.
 	 * @return <code>factor1</code> or {@link Double#NaN} if no intersection.
 	 */
+	@Pure
 	public static double computeLineLineIntersectionFactor(
 			double x1, double y1, double z1, double x2, double y2, double z2,
 			double x3, double y3, double z3, double x4, double y4, double z4) {
@@ -372,6 +377,7 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 	 * @param z4 is the second point of the second line.
 	 * @return the tuple (<code>factor1</code>, <code>factor2</code>) or <code>null</code> if no intersection.
 	 */
+	@Pure
 	public static Pair<Double,Double> computeLineLineIntersectionFactors(
 			double x1, double y1, double z1, double x2, double y2, double z2,
 			double x3, double y3, double z3, double x4, double y4, double z4) {
@@ -434,6 +440,7 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 	 * @param z4 is the second point of the second line.
 	 * @return the intersection point or <code>null</code> if no intersection.
 	 */
+	@Pure
 	public static Point3f computeLineLineIntersection(
 			double x1, double y1, double z1, double x2, double y2, double z2,
 			double x3, double y3, double z3, double x4, double y4, double z4) {
@@ -470,6 +477,7 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 	 * @param z4 is the second point of the second line.
 	 * @return the intersection point or <code>null</code> if no intersection.
 	 */
+	@Pure
 	public static Point3f computeSegmentSegmentIntersection(
 			double x1, double y1, double z1, double x2, double y2, double z2,
 			double x3, double y3, double z3, double x4, double y4, double z4) {
@@ -506,6 +514,7 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 	 * <code>false</code>
 	 * @see "http://mathworld.wolfram.com/Line-LineIntersection.html"
 	 */
+	@Pure
 	public static boolean intersectsLineLine(
 			double x1, double y1, double z1,
 			double x2, double y2, double z2,
@@ -537,6 +546,7 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 	 * <code>false</code>
 	 * @see #intersectsSegmentSegmentWithEnds(double, double, double, double, double, double, double, double, double, double, double, double)
 	 */
+	@Pure
 	public static boolean intersectsSegmentSegmentWithoutEnds(
 			double x1, double y1, double z1,
 			double x2, double y2, double z2,
@@ -573,6 +583,7 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 	 * <code>false</code>
 	 * @see #intersectsSegmentSegmentWithoutEnds(double, double, double, double, double, double, double, double, double, double, double, double)
 	 */
+	@Pure
 	public static boolean intersectsSegmentSegmentWithEnds(
 			double x1, double y1, double z1,
 			double x2, double y2, double z2,
@@ -617,6 +628,7 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 	 *            is the Z coord of the point
 	 * @return the distance
 	 */
+	@Pure
 	public static double distanceLinePoint(
 			double sx1, double sy1, double sz1, double sx2, double sy2, double sz2,
 			double px, double py, double pz) {
@@ -741,6 +753,7 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 	 * @return <code>true</code> if the points is on segment,
 	 * otherwise <code>false</code>
 	 */
+	@Pure
 	public static boolean containsSegmentPoint(
 			double px, double py, double pz,
 			double ax, double ay, double az,
@@ -784,6 +797,7 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 	 *            is the Z coord of the point
 	 * @return the distance
 	 */
+	@Pure
 	public static double distanceSquaredSegmentPoint(
 			double sx1, double sy1, double sz1, double sx2, double sy2, double sz2,
 			double px, double py, double pz) {
@@ -826,6 +840,7 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 	 *            is the Z coord of the point
 	 * @return the distance
 	 */
+	@Pure
 	public static double distanceL1SegmentPoint(
 			double sx1, double sy1, double sz1, double sx2, double sy2, double sz2,
 			double px, double py, double pz) {
@@ -869,6 +884,7 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 	 *            is the Z coord of the point
 	 * @return the distance
 	 */
+	@Pure
 	public static double distanceLinfSegmentPoint(
 			double sx1, double sy1, double sz1, double sx2, double sy2, double sz2,
 			double px, double py, double pz) {
@@ -910,6 +926,7 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 	 *            is the Z coord of the point
 	 * @return the distance
 	 */
+	@Pure
 	public static double distanceSegmentPoint(
 			double sx1, double sy1, double sz1, double sx2, double sy2, double sz2,
 			double px, double py, double pz) {
@@ -958,6 +975,7 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 	 *            is the Z coord of the point
 	 * @return the distance
 	 */
+	@Pure
 	public static double distanceSquaredLinePoint(
 			double sx1, double sy1, double sz1, double sx2, double sy2, double sz2,
 			double px, double py, double pz) {
@@ -994,6 +1012,7 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 	 * If inside {@code ]-inf;0[}, the projection is outside on the side of the first segment point.
 	 * If inside {@code ]1;+inf[}, the projection is outside on the side of the second segment point.
 	 */
+	@Pure
 	public static double getPointProjectionFactorOnSegmentLine(
 			double px, double py, double pz,
 			double s1x, double s1y, double s1z,
@@ -1038,6 +1057,7 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 	 *            is the Z coord of the second point of the second segment
 	 * @return the distance
 	 */
+	@Pure
 	public static double distanceSegmentSegment(
 			double ax1, double ay1, double az1, double ax2, double ay2, double az2,
 			double bx1, double by1, double bz1, double bx2, double by2, double bz2) {
@@ -1075,6 +1095,7 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 	 *            is the Z coord of the second point of the second segment
 	 * @return the squared distance
 	 */
+	@Pure
 	public static double distanceSquaredSegmentSegment(
 			double ax1, double ay1, double az1, double ax2, double ay2, double az2,
 			double bx1, double by1, double bz1, double bx2, double by2, double bz2) {
@@ -1209,6 +1230,7 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public String toString() {
 		StringBuilder b = new StringBuilder();
@@ -1235,6 +1257,7 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 	 * 
 	 * @return the vector from P1 to P2. It is not a unit vector.
 	 */
+	@Pure
 	abstract public FunctionalVector3D getSegmentVector();
 
 
@@ -1245,6 +1268,7 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 	 * 
 	 * @return the copy of the vector from P1 to P2. It is not a unit vector.
 	 */
+	@Pure
 	abstract public FunctionalVector3D getCloneSegmentVector();
 
 	/**
@@ -1255,6 +1279,7 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 	 * 
 	 * @return the unit vector of the direction of the segment..
 	 */
+	@Pure
 	abstract public FunctionalVector3D getDirection();
 
 	/** Set the points of the line.
@@ -1280,6 +1305,7 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 	 * 
 	 * @return the point on the line.
 	 */
+	@Pure
 	abstract public FunctionalPoint3D getP1();
 
 	/**
@@ -1287,6 +1313,7 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 	 * 
 	 * @return x coordinate of the first point on the line.
 	 */
+	@Pure
 	abstract public double getX1();
 
 	/**
@@ -1294,6 +1321,7 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 	 * 
 	 * @return y coordinate of the first point on the line.
 	 */
+	@Pure
 	abstract public double getY1();
 
 	/**
@@ -1301,6 +1329,7 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 	 * 
 	 * @return z coordinate of the first point on the line.
 	 */
+	@Pure
 	abstract public double getZ1();
 
 	/**
@@ -1333,6 +1362,7 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 	 * 
 	 * @return the point on the line.
 	 */
+	@Pure
 	abstract public FunctionalPoint3D getP2();
 
 	/**
@@ -1340,6 +1370,7 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 	 * 
 	 * @return x coordinate of the second point on the line.
 	 */
+	@Pure
 	abstract public double getX2();
 
 	/**
@@ -1347,6 +1378,7 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 	 * 
 	 * @return y coordinate of the second point on the line.
 	 */
+	@Pure
 	abstract public double getY2();
 
 	/**
@@ -1354,6 +1386,7 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 	 * 
 	 * @return y coordinate of the second point on the line.
 	 */
+	@Pure
 	abstract public double getZ2();
 
 	/**
@@ -1368,6 +1401,7 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 	 * @param point
 	 * @return the distance.
 	 */
+	@Pure
 	public double distanceSegment(Point3D point) {
 		return distanceSegmentPoint(
 				getX1(), getY1(), getZ1(),
@@ -1380,6 +1414,7 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 	 * @param point
 	 * @return the distance.
 	 */
+	@Pure
 	public double distanceLine(Point3D point) {
 		return distanceLinePoint(
 				getX1(), getY1(), getZ1(),
@@ -1392,6 +1427,7 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 	 * @param point
 	 * @return the squared distance.
 	 */
+	@Pure
 	public double distanceSquaredSegment(Point3D point) {
 		return distanceSquaredSegmentPoint(
 				getX1(), getY1(), getZ1(),
@@ -1404,6 +1440,7 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 	 * @param point
 	 * @return the squared distance.
 	 */
+	@Pure
 	public double distanceSquaredLine(Point3D point) {
 		return distanceSquaredLinePoint(
 				getX1(), getY1(), getZ1(),
@@ -1411,6 +1448,7 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 				point.getX(), point.getY(), point.getZ());
 	}
 
+	@Pure
 	@Override
 	public AlignedBox3f toBoundingBox() {
 		AlignedBox3f b = new AlignedBox3f();
@@ -1423,6 +1461,7 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 		box.setFromCorners(getX1(), getY1(), getZ1(), getX2(), getY2(), getZ2());
 	}
 
+	@Pure
 	@Override
 	public double distanceSquared(Point3D p) {
 		return distanceSquaredSegmentPoint(
@@ -1431,6 +1470,7 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 				p.getX(), p.getY(), p.getZ());
 	}
 
+	@Pure
 	@Override
 	public double distanceL1(Point3D p) {
 		return distanceL1SegmentPoint(
@@ -1439,6 +1479,7 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 				p.getX(), p.getY(), p.getZ());
 	}
 
+	@Pure
 	@Override
 	public double distanceLinf(Point3D p) {
 		return distanceLinfSegmentPoint(
@@ -1453,6 +1494,7 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 		transformationMatrix.transform(this.getSegmentVector());
 	}
 
+	@Pure
 	@Override
 	public Shape3F createTransformedShape(Transform3D transformationMatrix) {
 		AbstractSegment3F newB = this.clone();
@@ -1508,6 +1550,7 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 		}
 	}
 
+	@Pure
 	@Override
 	public boolean contains(double x, double y, double z) {
 		return containsSegmentPoint(
@@ -1518,6 +1561,7 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 				MathConstants.EPSILON);
 	}
 
+	@Pure
 	public Point3f computeIntersection (Segment3f s3) {
 		/*System.out.println("P1 = "+this.getP1().toString());
 		System.out.println("P2 = "+this.getP2().toString());
@@ -1538,9 +1582,10 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 				s3.getX1(), s3.getY1(), s3.getZ1(), 
 				s3.getX2(), s3.getY2(), s3.getZ2());
 	}
-	
+
+	@Pure
 	@Override
-	public boolean intersects(AlignedBox3f s) {
+	public boolean intersects(AbstractBoxedShape3F<?> s) {
 		return intersectsSegmentAlignedBox(
 				getX1(), getY1(), getZ1(),
 				getX2(), getY2(), getZ2(),
@@ -1548,6 +1593,7 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 				s.getMaxX(), s.getMaxY(), s.getMaxZ());
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(AbstractSphere3F s) {
 		return AbstractSphere3F.intersectsSphereSegment(
@@ -1556,6 +1602,7 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 				getX2(), getY2(), getZ2());
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(AbstractSegment3F s) {
 		if(this.getP1().equals(s.getP1()) || this.getP1().equals(s.getP2()) || this.getP2().equals(s.getP1()) || this.getP2().equals(s.getP2())) {
@@ -1568,6 +1615,7 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 				s.getX2(), s.getY2(), s.getZ2());
 	}	
 
+	@Pure
 	@Override
 	public boolean intersects(AbstractTriangle3F s) {
 		return AbstractTriangle3F.intersectsTriangleSegment(
@@ -1578,6 +1626,7 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 				getX2(), getY2(), getZ2());
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(AbstractCapsule3F s) {
 		return intersectsSegmentCapsule(
@@ -1588,6 +1637,7 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 				s.getRadius());
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(AbstractOrientedBox3F s) {
 		return intersectsSegmentOrientedBox(
@@ -1600,6 +1650,7 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 				s.getFirstAxisExtent(), s.getSecondAxisExtent(), s.getThirdAxisExtent());
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(Plane3D<?> p) {
 		Vector3f n = (Vector3f) p.getNormal();
@@ -1607,6 +1658,7 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 		return !MathUtil.isEpsilonZero(s);
 	}
 
+	@Pure
 	@Override
 	public boolean isEmpty() {
 		return this.getSegmentVector().lengthSquared() == 0.;
@@ -1618,6 +1670,7 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 		this.getSegmentVector().set(0., 0., 0.);
 	}
 
+	@Pure
 	@Override
 	public Point3D getClosestPointTo(Point3D p) {
 		double ratio = getPointProjectionFactorOnSegmentLine(
@@ -1639,6 +1692,7 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 				this.getP1().getZ() + ratio * this.getSegmentVector().getZ());
 	}
 
+	@Pure
 	@Override
 	public Point3D getFarthestPointTo(Point3D p) {
 		double ratio = getPointProjectionFactorOnSegmentLine(
@@ -1666,6 +1720,7 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 		}
 	}
 
+	@Pure
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == this) {
@@ -1683,6 +1738,7 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 		return false;
 	}
 
+	@Pure
 	@Override
 	public int hashCode() {
 		long bits = 1L;

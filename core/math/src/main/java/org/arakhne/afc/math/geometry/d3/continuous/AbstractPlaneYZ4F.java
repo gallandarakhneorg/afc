@@ -21,6 +21,7 @@
 package org.arakhne.afc.math.geometry.d3.continuous;
 
 import org.arakhne.afc.math.geometry.d3.FunctionalPoint3D;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** This class represents a 3D plane which is colinear to the Y and Z axis.
  *
@@ -45,6 +46,7 @@ public abstract class AbstractPlaneYZ4F extends AbstractOrthoPlane3D<AbstractPla
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public Vector3f getNormal() {
 		return new Vector3f(this.isPositive ? 1 : -1, 0, 0);
@@ -52,6 +54,7 @@ public abstract class AbstractPlaneYZ4F extends AbstractOrthoPlane3D<AbstractPla
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public double getEquationComponentA() {
 		return this.isPositive ? 1 : -1;
@@ -59,6 +62,7 @@ public abstract class AbstractPlaneYZ4F extends AbstractOrthoPlane3D<AbstractPla
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public double getEquationComponentB() {
 		return 0;
@@ -66,6 +70,7 @@ public abstract class AbstractPlaneYZ4F extends AbstractOrthoPlane3D<AbstractPla
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public double getEquationComponentC() {
 		return 0;
@@ -73,6 +78,7 @@ public abstract class AbstractPlaneYZ4F extends AbstractOrthoPlane3D<AbstractPla
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public final double getEquationComponentD() {
 		return this.isPositive ? -this.getX() : this.getX();
@@ -80,6 +86,7 @@ public abstract class AbstractPlaneYZ4F extends AbstractOrthoPlane3D<AbstractPla
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public double distanceTo(double px, double py, double pz) {
     	double d = px - this.getX();
@@ -98,7 +105,8 @@ public abstract class AbstractPlaneYZ4F extends AbstractOrthoPlane3D<AbstractPla
 	 */
 	@Override
 	abstract public void set(Plane3D<?> plane);
-	
+
+	@Pure
 	@Override
 	abstract public FunctionalPoint3D getProjection(double x1, double y, double z);
 
@@ -114,6 +122,7 @@ public abstract class AbstractPlaneYZ4F extends AbstractOrthoPlane3D<AbstractPla
 	/** Replies the x coordinate of the plane.
 	 *
 	 */
+	@Pure
 	abstract public double getX();
 
 }

@@ -751,7 +751,7 @@ public class AlignedBox3f extends AbstractBoxedShape3F<AlignedBox3f> {
 
 	@Pure
 	@Override
-	public boolean intersects(AlignedBox3f s) {
+	public boolean intersects(AbstractBoxedShape3F<?> s) {
 		return intersectsAlignedBoxAlignedBox(
 				getMinX(), getMinY(), getMinZ(),
 				getMaxX(), getMaxY(), getMaxZ(),
@@ -778,6 +778,7 @@ public class AlignedBox3f extends AbstractBoxedShape3F<AlignedBox3f> {
 				getMaxX(), getMaxY(), getMaxZ());
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(AbstractTriangle3F s) {
 		return AbstractTriangle3F.intersectsTriangleAlignedBox(
@@ -788,6 +789,7 @@ public class AlignedBox3f extends AbstractBoxedShape3F<AlignedBox3f> {
 				getMaxX(), getMaxY(), getMaxZ());
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(AbstractCapsule3F s) {
 		return AbstractCapsule3F.intersectsCapsuleAlignedBox(
@@ -798,6 +800,7 @@ public class AlignedBox3f extends AbstractBoxedShape3F<AlignedBox3f> {
 				getMaxX(), getMaxY(), getMaxZ());
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(AbstractOrientedBox3F s) {
 		return AbstractOrientedBox3F.intersectsOrientedBoxAlignedBox(
@@ -810,11 +813,13 @@ public class AlignedBox3f extends AbstractBoxedShape3F<AlignedBox3f> {
 				getMaxX(), getMaxY(), getMaxZ());
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(Plane3D<?> p) {
 		return p.intersects(this);
 	}
 
+	@Pure
 	@Override
 	public Point3D getClosestPointTo(Point3D p) {
 		return computeClosestPoint(
@@ -823,6 +828,7 @@ public class AlignedBox3f extends AbstractBoxedShape3F<AlignedBox3f> {
 				p.getX(), p.getY(), p.getZ());
 	}
 
+	@Pure
 	@Override
 	public Point3D getFarthestPointTo(Point3D p) {
 		Point3f farthest = new Point3f();
@@ -882,6 +888,7 @@ public class AlignedBox3f extends AbstractBoxedShape3F<AlignedBox3f> {
 		s.toBoundingBox(this);
 	}
 
+	@Pure
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == this) {
@@ -899,6 +906,7 @@ public class AlignedBox3f extends AbstractBoxedShape3F<AlignedBox3f> {
 		return false;
 	}
 
+	@Pure
 	@Override
 	public int hashCode() {
 		long bits = 1L;

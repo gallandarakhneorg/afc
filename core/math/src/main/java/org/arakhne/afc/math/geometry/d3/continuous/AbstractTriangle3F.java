@@ -32,6 +32,7 @@ import org.arakhne.afc.math.geometry.d3.FunctionalVector3D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
 import org.arakhne.afc.util.Pair;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Triangle in the space.
 *
@@ -48,6 +49,7 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 	 */
 	private static final long serialVersionUID = 5785943543088831957L;
 
+	@Pure
 	private static boolean mollerAlgorithmAxisTestX01(double a, double b, double fa, double fb,
 			double v0y, double v0z, double v2y, double v2z, double halfsizey, double halfsizez) {
 		double p0 = a * v0y - b * v0z;
@@ -64,6 +66,7 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 		return (min > rad || max < -rad);
 	}
 
+	@Pure
 	private static boolean mollerAlgorithmAxisTestX02(double a, double b, double fa, double fb,
 			double v0y, double v0z, double v1y, double v1z, double halfsizey, double halfsizez) {
 		double p0 = a * v0y - b * v0z;
@@ -80,6 +83,7 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 		return (min > rad || max < -rad);
 	}
 
+	@Pure
 	private static boolean mollerAlgorithmAxisTestY02(double a, double b, double fa, double fb,
 			double v0x, double v0z, double v2x, double v2z, double halfsizex, double halfsizez) {
 		double p0 = - a *v0x + b * v0z;
@@ -96,6 +100,7 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 		return (min > rad || max < -rad);
 	}
 
+	@Pure
 	private static boolean mollerAlgorithmAxisTestY01(double a, double b, double fa, double fb,
 			double v0x, double v0z, double v1x, double v1z, double halfsizex, double halfsizez) {
 		double p0 = -a * v0x + b * v0z;
@@ -112,6 +117,7 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 		return (min > rad || max < -rad);
 	}
 
+	@Pure
 	private static boolean mollerAlgorithmAxisTestZ12(double a, double b, double fa, double fb,
 			double v1x, double v1y, double v2x, double v2y, double halfsizex, double halfsizey) {
 		double p1 = a * v1x - b * v1y;
@@ -128,6 +134,7 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 		return (min > rad || max < -rad);
 	}
 
+	@Pure
 	private static boolean mollerAlgorithmAxisTestZ0(double a, double b, double fa, double fb,
 			double v0x, double v0y, double v1x, double v1y, double halfsizex, double halfsizey) {
 		double p0 = a * v0x - b * v0y;
@@ -144,6 +151,7 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 		return (min > rad || max < -rad);
 	}
 
+	@Pure
 	private static boolean mollerAlgorithmPlaneBoxOverlap(
 			double normalx, double normaly, double normalz,
 			double vertx, double verty, double vertz,
@@ -207,6 +215,7 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 	 * @param maxz z coordinate of the upper corner of the aligned box.
 	 * @return <code>true</code> if the triangle and aligned box are intersecting.
 	 */
+	@Pure
 	public static boolean intersectsTriangleAlignedBox(
 			double tx1, double ty1, double tz1,
 			double tx2, double ty2, double tz2,
@@ -388,6 +397,7 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 	 * @param tz3 z coordinate of the third point of the triangle.
 	 * @return the plane.
 	 */
+	@Pure
 	protected static Plane3D<?> toPlane(
 			double tx1, double ty1, double tz1,
 			double tx2, double ty2, double tz2,
@@ -511,6 +521,7 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 	 * @return the squared distance.
 	 * @see "https://github.com/juj/MathGeoLib"
 	 */
+	@Pure
 	@Unefficient
 	public static double distanceSquaredTriangleSegment(
 			double tx1, double ty1, double tz1,
@@ -558,6 +569,7 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 	 * @return <code>true</code> if the triangle and capsule are intersecting.
 	 * @see "https://github.com/juj/MathGeoLib"
 	 */
+	@Pure
 	@Unefficient
 	public static boolean intersectsTriangleCapsule(
 			double tx1, double ty1, double tz1,
@@ -601,6 +613,7 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 	 * @param u3z z coordinate of the third point of the second triangle.
 	 * @return <code>true</code> if the two triangles are intersecting.
 	 */
+	@Pure
 	public static boolean intersectsCoplanarTriangleTriangle(
 			double v1x, double v1y, double v1z,
 			double v2x, double v2y, double v2z,
@@ -689,6 +702,7 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 	 * @return <code>true</code> if the triangle and sphere are intersecting.
 	 * @see "http://realtimecollisiondetection.net/blog/?p=103"
 	 */
+	@Pure
 	public static boolean intersectsTriangleSphere(
 			double tx1, double ty1, double tz1,
 			double tx2, double ty2, double tz2,
@@ -842,6 +856,7 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 	 * @param ae3 the extent of the third axis.
 	 * @return <code>true</code> if the triangle and oriented box are intersecting.
 	 */
+	@Pure
 	public static boolean intersectsTriangleOrientedBox(
 			double tx1, double ty1, double tz1,
 			double tx2, double ty2, double tz2,
@@ -904,6 +919,7 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 	 * @param sz2 z coordinate of the second axis of the oriented box.
 	 * @return <code>true</code> if the triangle and segment are intersecting.
 	 */
+	@Pure
 	public static boolean intersectsTriangleSegment(
 			double tx1, double ty1, double tz1,
 			double tx2, double ty2, double tz2,
@@ -957,6 +973,7 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 	 * @return the barycentric coordinates.
 	 * @see #getTriangleSegmentIntersectionFactorWithBadouelAlgorithm(double, double, double, double, double, double, double, double, double, double, double, double, double, double, double)
 	 */
+	@Pure
 	public static double getTriangleSegmentIntersectionFactorWithJimenezAlgorithm(
 			double tx1, double ty1, double tz1,
 			double tx2, double ty2, double tz2,
@@ -1136,6 +1153,7 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 	 * when an infinite number of intersection points.
 	 * @see #getTriangleSegmentIntersectionFactorWithJimenezAlgorithm(double, double, double, double, double, double, double, double, double, double, double, double, double, double, double)
 	 */
+	@Pure
 	public static double getTriangleSegmentIntersectionFactorWithBadouelAlgorithm(
 			double tx1, double ty1, double tz1,
 			double tx2, double ty2, double tz2,
@@ -1198,6 +1216,7 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 	/** Replies if a point is inside a triangle.
 	 *
 	 */
+	@Pure
 	private static boolean containsTrianglePoint(
 			int i0, int i1, double[] v, double[] u1, double[] u2, double[] u3) {
 		// is T1 completly inside T2?
@@ -1222,6 +1241,7 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 
 	/** Replies if coplanar segment-triangle intersect.
 	 */
+	@Pure
 	private static boolean intersectsCoplanarTriangle(
 			int i0, int i1, int con, double[] s1, double[] s2, double[] u1, double[] u2, double[] u3) {
 		double Ax,Ay;
@@ -1242,7 +1262,8 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 	/** This edge to edge test is based on Franlin Antonio's gem:
 	 * "Faster Line Segment Intersection", in Graphics Gems III,
 	 * pp. 199-202.
-	 */   
+	 */
+	@Pure   
 	private static boolean intersectEdgeEdge(
 			int i0, int i1, int con, double Ax, double Ay, double[] v, double[] u1, double[] u2) {
 		// [v,b] is the segment that contains the point v
@@ -1471,6 +1492,7 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 	 * lies inside it, otherwise <code>false</code>
 	 * @since 3.0
 	 */
+	@Pure
 	public static boolean containsTrianglePoint(
 			double ax, double ay, double az,
 			double bx, double by, double bz,
@@ -1548,6 +1570,7 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 	 * @param point is the the point
 	 * @return <code>true</code> if the point is in the triangle , otherwise <code>false</code>.
 	 */
+	@Pure
 	public boolean contains(FunctionalPoint3D point) {
 		return containsTrianglePoint(
 				this.getP1().getX(), this.getP1().getY(), this.getP1().getZ(), 
@@ -1566,6 +1589,7 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 	 * 
 	 * @return the coplanar plane to this triangle
 	 */
+	@Pure
 	public Plane3D<?> getPlane() {
 		return toPlane(
 				getX1(), getY1(), getZ1(),
@@ -1596,6 +1620,7 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 	 * 
 	 * @return the first point of the triangle.
 	 */
+	@Pure
 	abstract public FunctionalPoint3D getP1();
 
 	/**
@@ -1619,6 +1644,7 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 	 * 
 	 * @return the second point of the triangle.
 	 */
+	@Pure
 	abstract public Point3D getP2();
 
 	/**
@@ -1642,6 +1668,7 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 	 * 
 	 * @return the third point of the triangle.
 	 */
+	@Pure
 	abstract public Point3D getP3();
 
 	/**
@@ -1664,12 +1691,14 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 	 * 
 	 * @return the x coordinate of the first point.
 	 */
+	@Pure
 	abstract public double getX1();
 
 	/** Replies the y coordinate of the first point.
 	 * 
 	 * @return the y coordinate of the first point.
 	 */
+	@Pure
 	abstract public double getY1();
 
 	/** Replies the z coordinate of the first point.
@@ -1682,36 +1711,42 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 	 * 
 	 * @return the x coordinate of the second point.
 	 */
+	@Pure
 	abstract public double getX2();
 
 	/** Replies the y coordinate of the second point.
 	 * 
 	 * @return the y coordinate of the second point.
 	 */
+	@Pure
 	abstract public double getY2();
 
 	/** Replies the z coordinate of the second point.
 	 * 
 	 * @return the z coordinate of the second point.
 	 */
+	@Pure
 	abstract public double getZ2();
 
 	/** Replies the x coordinate of the third point.
 	 * 
 	 * @return the x coordinate of the third point.
 	 */
+	@Pure
 	abstract public double getX3();
 
 	/** Replies the y coordinate of the third point.
 	 * 
 	 * @return the y coordinate of the third point.
 	 */
+	@Pure
 	abstract public double getY3();
 
 	/** Replies the z coordinate of the third point.
 	 * 
 	 * @return the z coordinate of the third point.
 	 */
+	@Pure
 	abstract public double getZ3();
 	
 	/** Replies the normal vector associated with this triangle.
@@ -1742,6 +1777,7 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 		}
 	}
 
+	@Pure
 	@Override
 	public String toString() {
 		StringBuilder buffer = new StringBuilder();
@@ -1767,11 +1803,13 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 		return buffer.toString();
 	}
 
+	@Pure
 	@Override
 	public double distance(Point3D p) {
 		return Math.sqrt(distanceSquared(p));
 	}
 
+	@Pure
 	@Override
 	public double distanceSquared(Point3D p) {
 		if (containsTrianglePoint(
@@ -1800,12 +1838,14 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 		return MathUtil.min(d1, d2, d3);
 	}
 
+	@Pure
 	@Override
 	public double distanceL1(Point3D p) {
 		Point3D c = getClosestPointTo(p);
 		return c.getDistanceL1(p);
 	}
 
+	@Pure
 	@Override
 	public double distanceLinf(Point3D p) {
 		Point3D c = getClosestPointTo(p);
@@ -1824,6 +1864,7 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 	 *
 	 * @return the pivot point.
 	 */
+	@Pure
 	abstract public FunctionalPoint3D getPivot();
 
 	/** Change the pivot point for this triangle.
@@ -1869,6 +1910,7 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 		clearBufferedData();
 	}
 
+	@Pure
 	@Override
 	public Shape3F createTransformedShape(Transform3D transformationMatrix) {
 		AbstractTriangle3F newB = this.clone();
@@ -1934,6 +1976,7 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 		}
 	}
 
+	@Pure
 	@Override
 	public AlignedBox3f toBoundingBox() {
 		AlignedBox3f b = new AlignedBox3f();
@@ -1952,6 +1995,7 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 		box.setZ(p.getA().doubleValue(), p.getB().doubleValue());
 	}
 
+	@Pure
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == this) {
@@ -1966,6 +2010,7 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 		return false;
 	}
 
+	@Pure
 	@Override
 	public int hashCode() {
 		long bits = 1L;
@@ -1981,6 +2026,7 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 		return (int) (bits ^ (bits >> 32));
 	}
 
+	@Pure
 	@Override
 	public boolean contains(double x, double y, double z) {
 		return containsTrianglePoint(
@@ -1997,6 +2043,7 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 	 * @param point is the the point
 	 * @return <code>true</code> if the projection of the point is in the triangle, otherwise <code>false</code>.
 	 */
+	@Pure
 	public boolean containsProjectionOf(Point3f point) {
 		return containsProjectionOf(point.getX(), point.getY(), point.getZ());
 	}
@@ -2009,6 +2056,7 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 	 * @param z
 	 * @return <code>true</code> if the projection of the point is in the triangle, otherwise <code>false</code>.
 	 */
+	@Pure
 	public boolean containsProjectionOf(double x, double y, double z) {
 		Point3f proj = (Point3f) getPlane().getProjection(x, y, z);
 		if (proj == null) {
@@ -2017,12 +2065,14 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 		return contains(proj);
 	}
 
+	@Pure
 	@Override
 	public boolean isEmpty() {
 		return this.getP1().equals(this.getP2()) && this.getP1().equals(this.getP3());
 	}
 
 	@Unefficient
+	@Pure
 	@Override
 	public Point3D getClosestPointTo(Point3D p) {
 		Point3f c = new Point3f();
@@ -2035,6 +2085,7 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 		return c;
 	}
 
+	@Pure
 	@Override
 	public Point3D getFarthestPointTo(Point3D p) {
 		double d1 = this.getP1().getDistanceSquared(p);
@@ -2208,8 +2259,9 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 		return getPointOnGround(point.getX(), point.getY(), system);
 	}
 
+	@Pure
 	@Override
-	public boolean intersects(AlignedBox3f s) {
+	public boolean intersects(AbstractBoxedShape3F<?> s) {
 		return intersectsTriangleAlignedBox(
 				getX1(), getY1(), getY1(),
 				getX2(), getY2(), getY3(),
@@ -2218,6 +2270,7 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 				s.getMaxX(), s.getMaxY(), s.getMaxZ());
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(AbstractSphere3F s) {
 		return intersectsTriangleSphere(
@@ -2228,6 +2281,7 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 				s.getRadius());
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(AbstractSegment3F s) {
 		return intersectsTriangleSegment(
@@ -2238,6 +2292,7 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 				s.getX2(), s.getY2(), s.getZ2());
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(AbstractTriangle3F s) {
 		return intersectsCoplanarTriangleTriangle(
@@ -2249,6 +2304,7 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 				s.getX3(), s.getY3(), s.getY3());
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(AbstractCapsule3F s) {
 		return intersectsTriangleCapsule(
@@ -2260,6 +2316,7 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 				s.getRadius());
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(AbstractOrientedBox3F s) {
 		return intersectsTriangleOrientedBox(
@@ -2273,6 +2330,7 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 				s.getFirstAxisExtent(), s.getSecondAxisExtent(), s.getThirdAxisExtent());
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(Plane3D<?> p) {
 		return p.intersects(getSegment1())
@@ -2284,6 +2342,7 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 	 *
 	 * @return the segment between P1 and P2.
 	 */
+	@Pure
 	public AbstractSegment3F getSegment1() {
 		return new Segment3f(getP1(), getP2());
 	}
@@ -2292,6 +2351,7 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 	 *
 	 * @return the segment between P2 and P3.
 	 */
+	@Pure
 	public AbstractSegment3F getSegment2() {
 		return new Segment3f(getP2(), getP3());
 	}
@@ -2300,6 +2360,7 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 	 *
 	 * @return the segment between P3 and P1.
 	 */
+	@Pure
 	public AbstractSegment3F getSegment3() {
 		return new Segment3f(getP3(), getP1());
 	}

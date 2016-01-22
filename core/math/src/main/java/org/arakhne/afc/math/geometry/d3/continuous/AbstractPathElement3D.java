@@ -1,8 +1,6 @@
 /* 
  * $Id$
  * 
- * Copyright (C) 2005-09 Stephane GALLAND.
- * Copyright (C) 2012 Stephane GALLAND.
  * Copyright (C) 2015 Hamza JAFFALI.
  * 
  * This library is free software; you can redistribute it and/or
@@ -20,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  * This program is free software; you can redistribute it and/or modify
  */
-package org.arakhne.afc.math.geometry.d2.continuous;
+package org.arakhne.afc.math.geometry.d3.continuous;
 
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -29,48 +27,56 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 
 /** An element of the path.
-*
-* @author $Author: hjaffali$
-* @version $FullVersion$
-* @mavengroupid $GroupId$
-* @mavenartifactid $ArtifactId$
-*/
-public abstract class AbstractPathElement2D implements AbstractPathElement2X {
+ *
+ * @author $Author: hjaffali$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ */
+public abstract class AbstractPathElement3D implements AbstractPathElement3X {
+
+	private static final long serialVersionUID = 5926100640197911368L;
 	
-	private static final long serialVersionUID = 1430444095467531433L;
-
-
 	/** Create an instance of path element.
 	 * 
 	 * @param type is the type of the new element.
 	 * @param lastX is the coordinate of the last point.
 	 * @param lastY is the coordinate of the last point.
+	 * @param lastZ is the coordinate of the last point.
 	 * @param coords are the coordinates.
 	 * @return the instance of path element.
 	 */
 	@Pure
-	public static AbstractPathElement2D newInstance(PathElementType type, double lastX, double lastY, double[] coords) {
+	public static AbstractPathElement3D newInstance(PathElementType type, double lastX, double lastY, double lastZ, double[] coords) {
 		switch(type) {
 		case MOVE_TO:
-			return new MovePathElement2d(coords[0], coords[1]);
+			return new MovePathElement3d(coords[0], coords[1], coords[2]);
 		case LINE_TO:
-			return new LinePathElement2d(lastX, lastY, coords[0], coords[1]);
+			return new LinePathElement3d(lastX, lastY, lastZ, coords[0], coords[1], coords[2]);
 		case QUAD_TO:
-			return new QuadPathElement2d(lastX, lastY, coords[0], coords[1], coords[2], coords[3]);
+			return new QuadPathElement3d(lastX, lastY, lastZ, coords[0], coords[1], coords[2], coords[3], coords[4], coords[5]);
 		case CURVE_TO:
-			return new CurvePathElement2d(lastX, lastY, coords[0], coords[1], coords[2], coords[3], coords[4], coords[5]);
+			return new CurvePathElement3d(lastX, lastY, lastZ, coords[0], coords[1], coords[2], coords[3], coords[4], coords[5], coords[6], coords[7], coords[8]);
 		case CLOSE:
-			return new ClosePathElement2d(lastX, lastY, coords[0], coords[1]);
+			return new ClosePathElement3d(lastX, lastY, lastZ, coords[0], coords[1], coords[2]);
 		default:
 		}
 		throw new IllegalArgumentException();
 	}
 	
+	
+	/** Copy the coords into the given array, except the source point.
+	 * 
+	 * @param array
+	 */
+	public abstract void toArray(DoubleProperty[] array);
+	
+	
 	/** Type of the path element.
 	 */
 	protected final PathElementType type;
 	
-	public AbstractPathElement2D(PathElementType type1) {
+	public AbstractPathElement3D(PathElementType type1) {
 		assert(type1!=null);
 		this.type = type1;
 	}
@@ -79,33 +85,38 @@ public abstract class AbstractPathElement2D implements AbstractPathElement2X {
 	 * @param type1 is the type of the element.
 	 * @param fromx is the source point.
 	 * @param fromy is the source point.
+	 * @param fromz is the source point.
 	 * @param ctrlx1 is the first control point.
 	 * @param ctrly1 is the first control point.
+	 * @param ctrlz1 is the first control point.
 	 * @param ctrlx2 is the first control point.
 	 * @param ctrly2 is the first control point.
+	 * @param ctrlz2 is the first control point.
 	 * @param tox is the target point.
 	 * @param toy is the target point.
+	 * @param toz is the target point.
 	 */
-	public AbstractPathElement2D(PathElementType type1, double fromx, double fromy, double ctrlx1, double ctrly1, double ctrlx2, double ctrly2, double tox, double toy) {
+	public AbstractPathElement3D(PathElementType type1, double fromx, double fromy, double fromz, double ctrlx1, double ctrly1, double ctrlz1, double ctrlx2, double ctrly2, double ctrlz2, double tox, double toy, double toz) {
 		assert(type1!=null);
 		this.type = type1;
 		this.setFromX(fromx);
 		this.setFromY(fromy);
+		this.setFromZ(fromz);
 		this.setCtrlX1(ctrlx1);
 		this.setCtrlY1(ctrly1);
+		this.setCtrlZ1(ctrlz1);
 		this.setCtrlX2(ctrlx2);
 		this.setCtrlY2(ctrly2);
+		this.setCtrlZ2(ctrlz2);
 		this.setToX(tox);
 		this.setToY(toy);
-	}	
+		this.setToZ(toz);
+	}
+
+	
+	
 	
 
-	/** Copy the coords into the given array, except the source point.
-	 * 
-	 * @param array
-	 */
-	public abstract void toArray(DoubleProperty[] array);
-	
 	/** An element of the path that represents a <code>MOVE_TO</code>.
 	 *
 	 * @author $Author: hjaffali$
@@ -113,26 +124,28 @@ public abstract class AbstractPathElement2D implements AbstractPathElement2X {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	public static class MovePathElement2d extends PathElement2d {
+	public static class MovePathElement3d extends PathElement3d {
 		
 		private static final long serialVersionUID = -5596181248741970433L;
 		
 		/**
+		 * 
 		 * @param x
 		 * @param y
+		 * @param z
 		 */
-		public MovePathElement2d(double x, double y) {
+		public MovePathElement3d(double x, double y,  double z) {
 			super(PathElementType.MOVE_TO,
-					Double.NaN, Double.NaN,
-					Double.NaN, Double.NaN,
-					Double.NaN, Double.NaN,
-					x, y);
+					Double.NaN, Double.NaN, Double.NaN,
+					Double.NaN, Double.NaN, Double.NaN, 
+					Double.NaN, Double.NaN, Double.NaN,
+					x, y, z);
 		}
 
 		@Pure
 		@Override
 		public boolean isEmpty() {
-			return (this.getFromX()==this.getToX()) && (this.getFromY()==this.getToY());
+			return (this.getFromX()==this.getToX()) && (this.getFromY()==this.getToY()) && (this.getFromZ()==this.getToZ());
 		}
 
 		@Pure
@@ -145,12 +158,13 @@ public abstract class AbstractPathElement2D implements AbstractPathElement2X {
 		public void toArray(double[] array) {
 			array[0] = this.getToX();
 			array[1] = this.getToY();
+			array[2] = this.getToZ();
 		}
 
 		@Pure
 		@Override
 		public double[] toArray() {
-			return new double[] {this.getToX(), this.getToY()};
+			return new double[] {this.getToX(), this.getToY(), this.getToZ()};
 		}
 
 		@Pure
@@ -158,7 +172,8 @@ public abstract class AbstractPathElement2D implements AbstractPathElement2X {
 		public String toString() {
 			return "MOVE("+ //$NON-NLS-1$
 					this.getToX()+"x"+ //$NON-NLS-1$
-					this.getToY()+")"; //$NON-NLS-1$
+					this.getToY()+"x"+ //$NON-NLS-1$
+					this.getToZ()+")"; //$NON-NLS-1$
 		}
 
 		@Pure
@@ -171,6 +186,7 @@ public abstract class AbstractPathElement2D implements AbstractPathElement2X {
 		public void toArray(DoubleProperty[] array) {
 			array[0] = new SimpleDoubleProperty(this.getToX());
 			array[1] = new SimpleDoubleProperty(this.getToY());
+			array[2] = new SimpleDoubleProperty(this.getToZ());
 		}
 
 
@@ -183,22 +199,25 @@ public abstract class AbstractPathElement2D implements AbstractPathElement2X {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	public static class LinePathElement2d extends PathElement2d {
+	public static class LinePathElement3d extends PathElement3d {
 		
 		private static final long serialVersionUID = -5878571187312098882L;
 		
 		/**
+		 * 
 		 * @param fromx
 		 * @param fromy
+		 * @param fromz
 		 * @param tox
 		 * @param toy
+		 * @param toz
 		 */
-		public LinePathElement2d(double fromx, double fromy, double tox, double toy) {
+		public LinePathElement3d(double fromx, double fromy, double fromz, double tox, double toy, double toz) {
 			super(PathElementType.LINE_TO,
-					fromx, fromy,
-					Double.NaN, Double.NaN,
-					Double.NaN, Double.NaN,
-					tox, toy);
+					fromx, fromy, fromz,
+					Double.NaN, Double.NaN, Double.NaN,
+					Double.NaN, Double.NaN, Double.NaN,
+					tox, toy, toz);
 		}
 
 		@Pure
@@ -210,7 +229,7 @@ public abstract class AbstractPathElement2D implements AbstractPathElement2X {
 		@Pure
 		@Override
 		public boolean isEmpty() {
-			return (this.getFromX()==this.getToX()) && (this.getFromY()==this.getToY());
+			return (this.getFromX()==this.getToX()) && (this.getFromY()==this.getToY()) && (this.getFromZ()==this.getToZ());
 		}
 
 		@Pure
@@ -223,26 +242,29 @@ public abstract class AbstractPathElement2D implements AbstractPathElement2X {
 		public void toArray(double[] array) {
 			array[0] = this.getToX();
 			array[1] = this.getToY();
+			array[2] = this.getToZ();
 		}
 
 		@Pure
 		@Override
 		public double[] toArray() {
-			return new double[] {this.getToX(), this.getToY()};
+			return new double[] {this.getToX(), this.getToY(), this.getToZ()};
 		}
 
 		@Pure
 		@Override
 		public String toString() {
-			return "LINE("+ //$NON-NLS-1$
+			return "MOVE("+ //$NON-NLS-1$
 					this.getToX()+"x"+ //$NON-NLS-1$
-					this.getToY()+")"; //$NON-NLS-1$
+					this.getToY()+"x"+ //$NON-NLS-1$
+					this.getToZ()+")"; //$NON-NLS-1$
 		}
 
 		@Override
 		public void toArray(DoubleProperty[] array) {
 			array[0] = new SimpleDoubleProperty(this.getToX());
 			array[1] = new SimpleDoubleProperty(this.getToY());
+			array[2] = new SimpleDoubleProperty(this.getToZ());
 		}
 
 
@@ -255,24 +277,28 @@ public abstract class AbstractPathElement2D implements AbstractPathElement2X {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	public static class QuadPathElement2d extends PathElement2d {
+	public static class QuadPathElement3d extends PathElement3d {
 		
 		private static final long serialVersionUID = 5641358330446739160L;
 		
 		/**
+		 * 
 		 * @param fromx
 		 * @param fromy
+		 * @param fromz
 		 * @param ctrlx
 		 * @param ctrly
+		 * @param ctrlz
 		 * @param tox
 		 * @param toy
+		 * @param toz
 		 */
-		public QuadPathElement2d(double fromx, double fromy, double ctrlx, double ctrly, double tox, double toy) {
+		public QuadPathElement3d(double fromx, double fromy, double fromz, double ctrlx, double ctrly, double ctrlz, double tox, double toy, double toz) {
 			super(PathElementType.QUAD_TO,
-					fromx, fromy,
-					ctrlx, ctrly,
-					Double.NaN, Double.NaN,
-					tox, toy);
+					fromx, fromy, fromz,
+					ctrlx, ctrly, ctrlz,
+					Double.NaN, Double.NaN, Double.NaN,
+					tox, toy, toz);
 		}
 
 		@Pure
@@ -284,8 +310,8 @@ public abstract class AbstractPathElement2D implements AbstractPathElement2X {
 		@Pure
 		@Override
 		public boolean isEmpty() {
-			return (this.getFromX()==this.getToX()) && (this.getFromY()==this.getToY()) &&
-					(this.getCtrlX1()==this.getToX()) && (this.getCtrlY1()==this.getToY());
+			return (this.getFromX()==this.getToX()) && (this.getFromY()==this.getToY()) && (this.getFromZ()==this.getToZ()) &&
+					(this.getCtrlX1()==this.getToX()) && (this.getCtrlY1()==this.getToY()) && (this.getCtrlZ1()==this.getToZ());
 		}
 
 		@Pure
@@ -298,14 +324,16 @@ public abstract class AbstractPathElement2D implements AbstractPathElement2X {
 		public void toArray(double[] array) {
 			array[0] = this.getCtrlX1();
 			array[1] = this.getCtrlY1();
-			array[2] = this.getToX();
-			array[3] = this.getToY();
+			array[2] = this.getCtrlZ1();
+			array[3] = this.getToX();
+			array[4] = this.getToY();
+			array[5] = this.getToZ();
 		}
 
 		@Pure
 		@Override
 		public double[] toArray() {
-			return new double[] {this.getCtrlX1(), this.getCtrlY1(), this.getToX(), this.getToY()};
+			return new double[] {this.getCtrlX1(), this.getCtrlY1(), this.getCtrlZ1(), this.getToX(), this.getToY(), this.getToZ()};
 		}
 
 		@Pure
@@ -313,20 +341,22 @@ public abstract class AbstractPathElement2D implements AbstractPathElement2X {
 		public String toString() {
 			return "QUAD("+ //$NON-NLS-1$
 					this.getCtrlX1()+"x"+ //$NON-NLS-1$
-					this.getCtrlY1()+"|"+ //$NON-NLS-1$
+					this.getCtrlY1()+"x"+ //$NON-NLS-1$
+					this.getCtrlZ1()+"|"+ //$NON-NLS-1$
 					this.getToX()+"x"+ //$NON-NLS-1$
-					this.getToY()+")"; //$NON-NLS-1$
+					this.getToY()+"x"+ //$NON-NLS-1$
+					this.getToZ()+")"; //$NON-NLS-1$
 		}
 
 		@Override
 		public void toArray(DoubleProperty[] array) {
 			array[0] = new SimpleDoubleProperty(this.getCtrlX1());
 			array[1] = new SimpleDoubleProperty(this.getCtrlY1());
-			array[2] = new SimpleDoubleProperty(this.getToX());
-			array[3] = new SimpleDoubleProperty(this.getToY());
+			array[2] = new SimpleDoubleProperty(this.getCtrlZ1());
+			array[3] = new SimpleDoubleProperty(this.getToX());
+			array[4] = new SimpleDoubleProperty(this.getToY());
+			array[5] = new SimpleDoubleProperty(this.getToZ());
 		}
-
-		
 
 	}
 
@@ -337,28 +367,31 @@ public abstract class AbstractPathElement2D implements AbstractPathElement2X {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	public static class CurvePathElement2d extends PathElement2d {
+	public static class CurvePathElement3d extends PathElement3d {
 		
 		private static final long serialVersionUID = -1449309552719221756L;
-
-		
 		
 		/**
+		 * 
 		 * @param fromx
 		 * @param fromy
+		 * @param fromz
 		 * @param ctrlx1
 		 * @param ctrly1
+		 * @param ctrlz1
 		 * @param ctrlx2
 		 * @param ctrly2
+		 * @param ctrlz2
 		 * @param tox
 		 * @param toy
+		 * @param toz
 		 */
-		public CurvePathElement2d(double fromx, double fromy, double ctrlx1, double ctrly1, double ctrlx2, double ctrly2, double tox, double toy) {
+		public CurvePathElement3d(double fromx, double fromy, double fromz, double ctrlx1, double ctrly1, double ctrlz1, double ctrlx2, double ctrly2, double ctrlz2, double tox, double toy, double toz) {
 			super(PathElementType.CURVE_TO,
-					fromx, fromy,
-					ctrlx1, ctrly1,
-					ctrlx2, ctrly2,
-					tox, toy);
+					fromx, fromy, fromz,
+					ctrlx1, ctrly1, ctrlz1,
+					ctrlx2, ctrly2, ctrlz2,
+					tox, toy, toz);
 		}
 
 		@Pure
@@ -370,9 +403,9 @@ public abstract class AbstractPathElement2D implements AbstractPathElement2X {
 		@Pure
 		@Override
 		public boolean isEmpty() {
-			return (this.getFromX()==this.getToX()) && (this.getFromY()==this.getToY()) &&
-					(this.getCtrlX1()==this.getToX()) && (this.getCtrlY1()==this.getToY()) &&
-					(this.getCtrlX2()==this.getToX()) && (this.getCtrlY2()==this.getToY());
+			return (this.getFromX()==this.getToX()) && (this.getFromY()==this.getToY()) && (this.getFromZ()==this.getToZ()) &&
+					(this.getCtrlX1()==this.getToX()) && (this.getCtrlY1()==this.getToY()) && (this.getCtrlZ1()==this.getToZ()) &&
+					(this.getCtrlX2()==this.getToX()) && (this.getCtrlY2()==this.getToY()) && (this.getCtrlZ2()==this.getToZ());
 		}
 
 		@Pure
@@ -385,16 +418,19 @@ public abstract class AbstractPathElement2D implements AbstractPathElement2X {
 		public void toArray(double[] array) {
 			array[0] = this.getCtrlX1();
 			array[1] = this.getCtrlY1();
-			array[2] = this.getCtrlX2();
-			array[3] = this.getCtrlY2();
-			array[4] = this.getToX();
-			array[5] = this.getToY();
+			array[2] = this.getCtrlZ1();
+			array[3] = this.getCtrlX2();
+			array[4] = this.getCtrlY2();
+			array[5] = this.getCtrlZ2();
+			array[6] = this.getToX();
+			array[7] = this.getToY();
+			array[8] = this.getToZ();
 		}
 
 		@Pure
 		@Override
 		public double[] toArray() {
-			return new double[] {this.getCtrlX1(), this.getCtrlY1(), this.getCtrlX2(), this.getCtrlY2(), this.getToX(), this.getToY()};
+			return new double[] {this.getCtrlX1(), this.getCtrlY1(), this.getCtrlZ1(), this.getCtrlX2(), this.getCtrlY2(), this.getCtrlZ2(), this.getToX(), this.getToY(), this.getToZ()};
 		}
 
 		@Pure
@@ -402,24 +438,28 @@ public abstract class AbstractPathElement2D implements AbstractPathElement2X {
 		public String toString() {
 			return "CURVE("+ //$NON-NLS-1$
 					this.getCtrlX1()+"x"+ //$NON-NLS-1$
-					this.getCtrlY1()+"|"+ //$NON-NLS-1$
+					this.getCtrlY1()+"x"+ //$NON-NLS-1$
+					this.getCtrlZ1()+"|"+ //$NON-NLS-1$
 					this.getCtrlX2()+"x"+ //$NON-NLS-1$
-					this.getCtrlY2()+"|"+ //$NON-NLS-1$
+					this.getCtrlY2()+"x"+ //$NON-NLS-1$
+					this.getCtrlZ2()+"|"+ //$NON-NLS-1$
 					this.getToX()+"x"+ //$NON-NLS-1$
-					this.getToY()+")"; //$NON-NLS-1$
+					this.getToY()+"x"+ //$NON-NLS-1$
+					this.getToZ()+")"; //$NON-NLS-1$
 		}
 
 		@Override
 		public void toArray(DoubleProperty[] array) {
 			array[0] = new SimpleDoubleProperty(this.getCtrlX1());
 			array[1] = new SimpleDoubleProperty(this.getCtrlY1());
-			array[2] = new SimpleDoubleProperty(this.getCtrlX2());
-			array[3] = new SimpleDoubleProperty(this.getCtrlY2());
-			array[4] = new SimpleDoubleProperty(this.getToX());
-			array[5] = new SimpleDoubleProperty(this.getToY());
+			array[2] = new SimpleDoubleProperty(this.getCtrlZ1());
+			array[3] = new SimpleDoubleProperty(this.getCtrlX2());
+			array[4] = new SimpleDoubleProperty(this.getCtrlY2());
+			array[5] = new SimpleDoubleProperty(this.getCtrlZ2());
+			array[6] = new SimpleDoubleProperty(this.getToX());
+			array[7] = new SimpleDoubleProperty(this.getToY());
+			array[8] = new SimpleDoubleProperty(this.getToZ());
 		}
-
-		
 
 	}
 
@@ -430,22 +470,25 @@ public abstract class AbstractPathElement2D implements AbstractPathElement2X {
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	public static class ClosePathElement2d extends PathElement2d {
+	public static class ClosePathElement3d extends PathElement3d {
 		
 		private static final long serialVersionUID = 4643537091880303796L;
 
 		/**
+		 * 
 		 * @param fromx
 		 * @param fromy
+		 * @param fromz
 		 * @param tox
 		 * @param toy
+		 * @param toz
 		 */
-		public ClosePathElement2d(double fromx, double fromy, double tox, double toy) {
+		public ClosePathElement3d(double fromx, double fromy, double fromz, double tox, double toy, double toz) {
 			super(PathElementType.CLOSE,
-					fromx, fromy,
-					Double.NaN, Double.NaN,
-					Double.NaN, Double.NaN,
-					tox, toy);
+					fromx, fromy, fromz,
+					Double.NaN, Double.NaN, Double.NaN,
+					Double.NaN, Double.NaN, Double.NaN,
+					tox, toy, toz);
 		}
 
 		@Pure
@@ -457,7 +500,7 @@ public abstract class AbstractPathElement2D implements AbstractPathElement2X {
 		@Pure
 		@Override
 		public boolean isEmpty() {
-			return (this.getFromX()==this.getToX()) && (this.getFromY()==this.getToY());
+			return (this.getFromX()==this.getToX()) && (this.getFromY()==this.getToY()) && (this.getFromZ()==this.getToZ());
 		}
 
 		@Pure
@@ -486,8 +529,10 @@ public abstract class AbstractPathElement2D implements AbstractPathElement2X {
 		@Override
 		public void toArray(DoubleProperty[] array) {
 			// 
+			
 		}
 
 	}
+
 
 }

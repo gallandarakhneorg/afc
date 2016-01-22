@@ -62,6 +62,7 @@ public abstract class AbstractSphere3F extends AbstractShape3F<AbstractSphere3F>
 	 * @param boxExtentAxis3 extent of the third axis of the oriented box.
 	 * @return <code>true</code> if intersecting, otherwise <code>false</code>
 	 */
+	@Pure
 	public static boolean intersectsSolidSphereOrientedBox(
 			double sphereCenterx, double sphereCentery, double sphereCenterz, double sphereRadius,
 			double boxCenterx, double boxCentery, double boxCenterz,
@@ -107,6 +108,7 @@ public abstract class AbstractSphere3F extends AbstractShape3F<AbstractSphere3F>
 	 * @param capsuleRadius - radius of the capsule
 	 * @return <code>true</code> if intersecting, otherwise <code>false</code>
 	 */
+	@Pure
 	public static boolean intersectsSphereCapsule(
 			double sphereCenterx, double sphereCentery, double sphereCenterz, double sphereRadius,
 			double capsuleAx, double capsuleAy, double capsuleAz,
@@ -143,6 +145,7 @@ public abstract class AbstractSphere3F extends AbstractShape3F<AbstractSphere3F>
      * @param upperz coordinates of the uppermost point of the box.
      * @return <code>true</code> if intersecting, otherwise <code>false</code>
      */
+	@Pure
     public static boolean intersectsSolidSphereHollowAlignedBox(
     		double sphereCenterx, double sphereCentery, double sphereCenterz, double radius,
 			double lowerx, double lowery, double lowerz,
@@ -223,6 +226,7 @@ public abstract class AbstractSphere3F extends AbstractShape3F<AbstractSphere3F>
      * @param upperz coordinates of the uppermost point of the box.
      * @return <code>true</code> if intersecting, otherwise <code>false</code>
      */
+	@Pure
     public static boolean intersectsHollowSphereSolidAlignedBox(
     		double sphereCenterx, double sphereCentery, double sphereCenterz, double radius,
 			double lowerx, double lowery, double lowerz,
@@ -291,6 +295,7 @@ public abstract class AbstractSphere3F extends AbstractShape3F<AbstractSphere3F>
      * @param upperz coordinates of the uppermost point of the box.
      * @return <code>true</code> if intersecting, otherwise <code>false</code>
      */
+	@Pure
     public static boolean intersectsHollowSphereHollowAlignedBox(
     		double sphereCenterx, double sphereCentery, double sphereCenterz, double radius,
     		double lowerx, double lowery, double lowerz,
@@ -383,6 +388,7 @@ public abstract class AbstractSphere3F extends AbstractShape3F<AbstractSphere3F>
 	 * @return <code>true</code> if the point is inside the circle;
 	 * <code>false</code> if not.
 	 */
+	@Pure
 	public static boolean containsSpherePoint(double cx, double cy, double cz, double radius,
 			double px, double py, double pz) {
 		return FunctionalPoint3D.distanceSquaredPointPoint(
@@ -405,6 +411,7 @@ public abstract class AbstractSphere3F extends AbstractShape3F<AbstractSphere3F>
 	 * @return <code>true</code> if the given box is inside the sphere;
 	 * otherwise <code>false</code>.
 	 */
+	@Pure
 	public static boolean containsSphereAlignedBox(
 			double cx, double cy, double cz, double radius,
 			double bx, double by, double bz, double bsx, double bsy, double bsz) {
@@ -436,6 +443,7 @@ public abstract class AbstractSphere3F extends AbstractShape3F<AbstractSphere3F>
 	 * @return <code>true</code> if the two shapes are intersecting; otherwise
 	 * <code>false</code>
 	 */
+	@Pure
 	public static boolean intersectsSphereSphere(
 			double x1, double y1, double z1, double radius1,
 			double x2, double y2, double z2, double radius2) {
@@ -518,6 +526,7 @@ public abstract class AbstractSphere3F extends AbstractShape3F<AbstractSphere3F>
 	 * @return <code>true</code> if the two shapes are intersecting; otherwise
 	 * <code>false</code>
 	 */
+	@Pure
 	public static boolean intersectsSphereLine(
 			double x1, double y1, double z1, double radius,
 			double x2, double y2, double z2,
@@ -541,6 +550,7 @@ public abstract class AbstractSphere3F extends AbstractShape3F<AbstractSphere3F>
 	 * @return <code>true</code> if the two shapes are intersecting; otherwise
 	 * <code>false</code>
 	 */
+	@Pure
 	public static boolean intersectsSphereSegment(
 			double x1, double y1, double z1, double radius,
 			double x2, double y2, double z2,
@@ -560,6 +570,7 @@ public abstract class AbstractSphere3F extends AbstractShape3F<AbstractSphere3F>
 	 * @return <code>true</code> if the radius is nul;
 	 * otherwise <code>false</code>.
 	 */
+	@Pure
 	@Override
 	public boolean isEmpty() {
 		return this.getRadius()<=+0f;
@@ -597,24 +608,28 @@ public abstract class AbstractSphere3F extends AbstractShape3F<AbstractSphere3F>
 	 * 
 	 * @return the center x.
 	 */
+	@Pure
 	abstract public double getX();
 
 	/** Replies the center y.
 	 * 
 	 * @return the center y.
 	 */
+	@Pure
 	abstract public double getY();
 
 	/** Replies the center z.
 	 * 
 	 * @return the center z.
 	 */
+	@Pure
 	abstract public double getZ();
 
 	/** Replies the center.
 	 * 
 	 * @return a copy of the center.
 	 */
+	@Pure
 	abstract public FunctionalPoint3D getCenter();
 
 	/** Change the center.
@@ -635,6 +650,7 @@ public abstract class AbstractSphere3F extends AbstractShape3F<AbstractSphere3F>
 	 * 
 	 * @return the radius.
 	 */
+	@Pure
 	abstract public double getRadius();
 
 	/** Set the radius.
@@ -645,6 +661,7 @@ public abstract class AbstractSphere3F extends AbstractShape3F<AbstractSphere3F>
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public AlignedBox3f toBoundingBox() {
 		AlignedBox3f r = new AlignedBox3f();
@@ -673,6 +690,7 @@ public abstract class AbstractSphere3F extends AbstractShape3F<AbstractSphere3F>
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public double distance(Point3D p) {
 		double d = FunctionalPoint3D.distancePointPoint(getX(), getY(), getZ(), p.getX(), p.getY(), p.getZ()) - getRadius();
@@ -681,6 +699,7 @@ public abstract class AbstractSphere3F extends AbstractShape3F<AbstractSphere3F>
 	
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public double distanceSquared(Point3D p) {
 		double d = FunctionalPoint3D.distanceSquaredPointPoint(getX(), getY(), getZ(), p.getX(), p.getY(), p.getZ()) - getRadius();
@@ -689,6 +708,7 @@ public abstract class AbstractSphere3F extends AbstractShape3F<AbstractSphere3F>
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public double distanceL1(Point3D p) {
 		Point3D r = getClosestPointTo(p);
@@ -697,6 +717,7 @@ public abstract class AbstractSphere3F extends AbstractShape3F<AbstractSphere3F>
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public double distanceLinf(Point3D p) {
 		Point3D r = getClosestPointTo(p);
@@ -705,6 +726,7 @@ public abstract class AbstractSphere3F extends AbstractShape3F<AbstractSphere3F>
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public boolean contains(double x, double y, double z) {
 		return containsSpherePoint(getX(), getY(), getZ(), getRadius(), x, y, z);
@@ -712,6 +734,7 @@ public abstract class AbstractSphere3F extends AbstractShape3F<AbstractSphere3F>
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public FunctionalPoint3D getClosestPointTo(Point3D p) {
 		Vector3f v = new Vector3f(p);
@@ -728,6 +751,7 @@ public abstract class AbstractSphere3F extends AbstractShape3F<AbstractSphere3F>
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public FunctionalPoint3D getFarthestPointTo(Point3D p) {
 		Vector3f v = new Vector3f(
@@ -742,7 +766,8 @@ public abstract class AbstractSphere3F extends AbstractShape3F<AbstractSphere3F>
 	public void translate(double dx, double dy, double dz) {
 		this.set(this.getX() + dx,this.getY() + dy,	this.getZ() + dz,this.getRadius());
 	}
-	
+
+	@Pure
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == this) {
@@ -758,6 +783,7 @@ public abstract class AbstractSphere3F extends AbstractShape3F<AbstractSphere3F>
 		return false;
 	}
 
+	@Pure
 	@Override
 	public int hashCode() {
 		long bits = 1L;
@@ -768,14 +794,16 @@ public abstract class AbstractSphere3F extends AbstractShape3F<AbstractSphere3F>
 		return (int) (bits ^ (bits >> 32));
 	}
 
+	@Pure
 	@Override
-	public boolean intersects(AlignedBox3f s) {
+	public boolean intersects(AbstractBoxedShape3F<?> s) {
 		return intersectsSolidSphereSolidAlignedBox(
 				getX(), getY(), getZ(), getRadius(),
 				s.getMinX(), s.getMinY(), s.getMinZ(),
 				s.getSizeX(), s.getSizeY(), s.getSizeZ());
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(AbstractSphere3F s) {
 		return intersectsSphereSphere(
@@ -783,6 +811,7 @@ public abstract class AbstractSphere3F extends AbstractShape3F<AbstractSphere3F>
 				s.getX(), s.getY(), s.getZ(), s.getRadius());
 	}
 
+	@Pure
 	@Override
 	public String toString() {
 		StringBuilder b = new StringBuilder();
@@ -798,6 +827,7 @@ public abstract class AbstractSphere3F extends AbstractShape3F<AbstractSphere3F>
 		return b.toString();
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(AbstractSegment3F s) {
 		return intersectsSphereSegment(
@@ -806,6 +836,7 @@ public abstract class AbstractSphere3F extends AbstractShape3F<AbstractSphere3F>
 				s.getX2(), s.getY2(), s.getZ2());
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(AbstractTriangle3F s) {
 		return AbstractTriangle3F.intersectsTriangleSphere(
@@ -815,6 +846,7 @@ public abstract class AbstractSphere3F extends AbstractShape3F<AbstractSphere3F>
 				getX(), getY(), getZ(), getRadius());
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(AbstractCapsule3F s) {
 		return intersectsSphereCapsule(
@@ -824,6 +856,7 @@ public abstract class AbstractSphere3F extends AbstractShape3F<AbstractSphere3F>
 				s.getRadius());
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(AbstractOrientedBox3F s) {
 		return intersectsSolidSphereOrientedBox(
@@ -835,6 +868,7 @@ public abstract class AbstractSphere3F extends AbstractShape3F<AbstractSphere3F>
 				s.getFirstAxisExtent(), s.getSecondAxisExtent(), s.getThirdAxisExtent());
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(Plane3D<?> p) {
 		return p.intersects(this);
@@ -849,6 +883,7 @@ public abstract class AbstractSphere3F extends AbstractShape3F<AbstractSphere3F>
 		set(c, MathUtil.max(v.getX(), v.getY(), v.getZ()));
 	}
 
+	@Pure
 	@Override
 	public Shape3F createTransformedShape(Transform3D transformationMatrix) {
 		AbstractSphere3F newB = this.clone();

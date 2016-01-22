@@ -22,6 +22,7 @@ package org.arakhne.afc.math.geometry.d3.continuous;
 
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** This class represents a 3D line.
  * <p>
@@ -104,6 +105,7 @@ public class Segment3f extends AbstractSegment3F {
 	 * 
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public Vector3f getSegmentVector() {
 		return this.d;
@@ -113,6 +115,7 @@ public class Segment3f extends AbstractSegment3F {
 	 * 
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public Vector3f getCloneSegmentVector() {
 		return this.d.clone();
@@ -122,6 +125,7 @@ public class Segment3f extends AbstractSegment3F {
 	 * 
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public Vector3f getDirection() {
 		Vector3f v = this.d.clone();
@@ -153,6 +157,7 @@ public class Segment3f extends AbstractSegment3F {
 	 * 
 	 * {@inheritDoc}
 	 */
+	@Pure
 	public Point3f getP1() {
 		return this.pivot;
 	}
@@ -161,6 +166,7 @@ public class Segment3f extends AbstractSegment3F {
 	 * 
 	 * {@inheritDoc}
 	 */
+	@Pure
 	public double getX1() {
 		return this.pivot.getX();
 	}

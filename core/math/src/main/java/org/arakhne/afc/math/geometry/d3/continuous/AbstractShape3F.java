@@ -20,8 +20,10 @@
  */
 package org.arakhne.afc.math.geometry.d3.continuous;
 
+import org.arakhne.afc.math.geometry.d2.continuous.PathIterator2d;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 
 
@@ -46,6 +48,7 @@ public abstract class AbstractShape3F<T extends Shape3F> implements Shape3F {
 	/** {@inheritDoc}
 	 */
 	@SuppressWarnings("unchecked")
+	@Pure
 	@Override
 	public T clone()  {
 		try {
@@ -58,6 +61,7 @@ public abstract class AbstractShape3F<T extends Shape3F> implements Shape3F {
 	
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public double distance(Point3D p) {
 		return Math.sqrt(distanceSquared(p));
@@ -65,6 +69,7 @@ public abstract class AbstractShape3F<T extends Shape3F> implements Shape3F {
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public final boolean contains(Point3D p) {
 		return contains(p.getX(), p.getY(), p.getZ());
@@ -73,6 +78,7 @@ public abstract class AbstractShape3F<T extends Shape3F> implements Shape3F {
 	
 	/** {@inheritDoc}
 	 */
+	@Pure
     @Override
     public abstract boolean equals(Object obj);
     
@@ -81,6 +87,7 @@ public abstract class AbstractShape3F<T extends Shape3F> implements Shape3F {
      * @param d
      * @return the bit representation.
      */
+	@Pure
     protected static long doubleToLongBits(double d) {
 		// Check for +0 or -0
 		if (d == 0) {
@@ -91,6 +98,7 @@ public abstract class AbstractShape3F<T extends Shape3F> implements Shape3F {
     
 	/** {@inheritDoc}
 	 */
+	@Pure
     @Override
     public abstract int hashCode();
     
@@ -101,9 +109,16 @@ public abstract class AbstractShape3F<T extends Shape3F> implements Shape3F {
 	
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public final PathIterator3f getPathIterator() {
 		return getPathIterator(null);
+	}
+	
+	@Pure
+	@Override
+	public PathIterator3d getPathIteratorProperty() {
+		return getPathIteratorProperty(null);
 	}
 	
 

@@ -20,9 +20,12 @@
  */
 package org.arakhne.afc.math.geometry.d3.continuous;
 
+import org.arakhne.afc.math.geometry.d2.continuous.Path2d;
+import org.arakhne.afc.math.geometry.d2.continuous.Path2f;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Shape3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** 2D shape with floating-point points.
  * 
@@ -122,6 +125,19 @@ public interface Shape3F extends Shape3D<Shape3F> {
 	 * 
 	 * @return the elements of the path.
 	 */
+	public PathIterator3d getPathIteratorProperty();
+	
+	/** Replies the elements of the paths.
+	 * 
+	 * @param transform is the transformation to apply to the path.
+	 * @return the elements of the path.
+	 */
+	public PathIterator3d getPathIteratorProperty(Transform3D transform);
+
+	/** Replies the elements of the paths.
+	 * 
+	 * @return the elements of the path.
+	 */
 	public PathIterator3f getPathIterator();
 	
 	/** Apply the transformation to the shape and reply the result.
@@ -138,7 +154,7 @@ public interface Shape3F extends Shape3D<Shape3F> {
 	 * @return <code>true</code> if this shape is intersecting the given shape;
 	 * <code>false</code> if there is no intersection.
 	 */
-	public boolean intersects(AlignedBox3f s);
+	public boolean intersects(AbstractBoxedShape3F<?> s);
 
 	/** Replies if this shape is intersecting the given circle.
 	 * 
@@ -187,5 +203,23 @@ public interface Shape3F extends Shape3D<Shape3F> {
 	 * <code>false</code> if there is no intersection.
 	 */
 	public boolean intersects(Plane3D<?> p);
+	
+	/** Replies if this shape is intersecting the given path.
+	 * 
+	 * @param s
+	 * @return <code>true</code> if this shape is intersecting the given path;
+	 * <code>false</code> if there is no intersection.
+	 */
+	@Pure
+	public boolean intersects(Path3f s);
+	
+	/** Replies if this shape is intersecting the given path.
+	 * 
+	 * @param s
+	 * @return <code>true</code> if this shape is intersecting the given path;
+	 * <code>false</code> if there is no intersection.
+	 */
+	@Pure
+	public boolean intersects(Path3d s);
 
 }

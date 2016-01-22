@@ -2503,7 +2503,7 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 			while (this.isEmptyProperty.get()==true && pi.hasNext()) {
 				pe = pi.next();
 				if (pe.isDrawable()) { 
-					this.isEmptyProperty.set(true);
+					this.isEmptyProperty.set(false);
 				}
 			}
 		}
@@ -2815,55 +2815,49 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 
 		private final Point2D p1 = new Point2f();
 		private final Point2D p2 = new Point2f();
-		private IntegerProperty iTypeProperty = new SimpleIntegerProperty(0);
-		private IntegerProperty iCoordProperty = new SimpleIntegerProperty(0);
-		private DoubleProperty movexProperty, moveyProperty;
+		private int iType = 0;
+		private int iCoord = 0;
+		private double movex, movey;
 
 		/**
 		 */
 		public CopyPathIterator2f() {
-			this.movexProperty = new SimpleDoubleProperty();
-			this.moveyProperty = new SimpleDoubleProperty();
+			//
 		}
 
 		@Pure
 		@Override
 		public boolean hasNext() {
-			return this.iTypeProperty.get()<Path2d.this.numTypesProperty.get();
+			return this.iType<Path2d.this.numTypesProperty.get();
 		}
 
 		@Override
 		public AbstractPathElement2F next() {
-			int type = this.iTypeProperty.get();
-			if (this.iTypeProperty.get()>=Path2d.this.numTypesProperty.get()) {
+			int type = this.iType;
+			if (this.iType>=Path2d.this.numTypesProperty.get()) {
 				throw new NoSuchElementException();
 			}
 			AbstractPathElement2F element = null;
 			switch(Path2d.this.types[type]) {
 			case MOVE_TO:
-				if (this.iCoordProperty.get()+2>Path2d.this.numCoordsProperty.get()) {
+				if (this.iCoord+2>Path2d.this.numCoordsProperty.get()) {
 					throw new NoSuchElementException();
 				}
-				this.movexProperty.set(Path2d.this.coordsProperty[this.iCoordProperty.get()].get());
-				this.iCoordProperty.set(this.iCoordProperty.get()+1);
+				this.movex= Path2d.this.coordsProperty[this.iCoord++].get();
+				this.movey= Path2d.this.coordsProperty[this.iCoord++].get();
 
-				this.moveyProperty.set(Path2d.this.coordsProperty[this.iCoordProperty.get()].get());
-				this.iCoordProperty.set(this.iCoordProperty.get()+1);
-
-				this.p2.set(this.movexProperty.get(), this.moveyProperty.get());
+				this.p2.set(this.movex, this.movey);
 				element = new AbstractPathElement2F.MovePathElement2f(
 						this.p2.getX(), this.p2.getY());
 				break;
 			case LINE_TO:
-				if (this.iCoordProperty.get()+2>Path2d.this.numCoordsProperty.get()) {
+				if (this.iCoord+2>Path2d.this.numCoordsProperty.get()) {
 					throw new NoSuchElementException();
 				}
 				this.p1.set(this.p2);
 				this.p2.set(
-						Path2d.this.coordsProperty[this.iCoordProperty.get()].get(),
-						Path2d.this.coordsProperty[this.iCoordProperty.get()+1].get());
-
-				this.iCoordProperty.set(this.iCoordProperty.get()+2);
+						Path2d.this.coordsProperty[this.iCoord++].get(),
+						Path2d.this.coordsProperty[this.iCoord++].get());
 
 				element = new AbstractPathElement2F.LinePathElement2f(
 						this.p1.getX(), this.p1.getY(),
@@ -2871,19 +2865,17 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 				break;
 			case QUAD_TO:
 			{
-				if (this.iCoordProperty.get()+4>Path2d.this.numCoordsProperty.get()) {
+				if (this.iCoord+4>Path2d.this.numCoordsProperty.get()) {
 					throw new NoSuchElementException();
 				}
 				this.p1.set(this.p2);
-				double ctrlx = Path2d.this.coordsProperty[this.iCoordProperty.get()].get();
-				double ctrly = Path2d.this.coordsProperty[this.iCoordProperty.get()+1].get();
-				this.iCoordProperty.set(this.iCoordProperty.get()+2);
+				double ctrlx = Path2d.this.coordsProperty[this.iCoord++].get();
+				double ctrly = Path2d.this.coordsProperty[this.iCoord++].get();
 
 				this.p2.set(
-						Path2d.this.coordsProperty[this.iCoordProperty.get()].get(),
-						Path2d.this.coordsProperty[this.iCoordProperty.get()+1].get());
+						Path2d.this.coordsProperty[this.iCoord++].get(),
+						Path2d.this.coordsProperty[this.iCoord++].get());
 
-				this.iCoordProperty.set(this.iCoordProperty.get()+2);
 				element = new AbstractPathElement2F.QuadPathElement2f(
 						this.p1.getX(), this.p1.getY(),
 						ctrlx, ctrly,
@@ -2892,19 +2884,18 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 			break;
 			case CURVE_TO:
 			{
-				if (this.iCoordProperty.get()+6>Path2d.this.numCoordsProperty.get()) {
+				if (this.iCoord+6>Path2d.this.numCoordsProperty.get()) {
 					throw new NoSuchElementException();
 				}
 				this.p1.set(this.p2);
-				double ctrlx1 = Path2d.this.coordsProperty[this.iCoordProperty.get()].get();
-				double ctrly1 = Path2d.this.coordsProperty[this.iCoordProperty.get()+1].get();
-				double ctrlx2 = Path2d.this.coordsProperty[this.iCoordProperty.get()+2].get();
-				double ctrly2 = Path2d.this.coordsProperty[this.iCoordProperty.get()+3].get();
+				double ctrlx1 = Path2d.this.coordsProperty[this.iCoord++].get();
+				double ctrly1 = Path2d.this.coordsProperty[this.iCoord++].get();
+				double ctrlx2 = Path2d.this.coordsProperty[this.iCoord++].get();
+				double ctrly2 = Path2d.this.coordsProperty[this.iCoord++].get();
 				this.p2.set(
-						Path2d.this.coordsProperty[this.iCoordProperty.get()+4].get(),
-						Path2d.this.coordsProperty[this.iCoordProperty.get()+5].get());
+						Path2d.this.coordsProperty[this.iCoord++].get(),
+						Path2d.this.coordsProperty[this.iCoord++].get());
 
-				this.iCoordProperty.set(this.iCoordProperty.get()+6);
 
 				element = new AbstractPathElement2F.CurvePathElement2f(
 						this.p1.getX(), this.p1.getY(),
@@ -2915,7 +2906,7 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 			break;
 			case CLOSE:
 				this.p1.set(this.p2);
-				this.p2.set(this.movexProperty.get(), this.moveyProperty.get());
+				this.p2.set(this.movex, this.movey);
 				element = new AbstractPathElement2F.ClosePathElement2f(
 						this.p1.getX(), this.p1.getY(),
 						this.p2.getX(), this.p2.getY());
@@ -2925,7 +2916,7 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 			if (element==null)
 				throw new NoSuchElementException();
 
-			this.iTypeProperty.set(this.iTypeProperty.get()+1);
+			this.iType++;
 
 			return element;
 		}
@@ -3111,9 +3102,9 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 		private final Point2D p2 = new Point2f();
 		private final Point2D ptmp1 = new Point2f();
 		private final Point2D ptmp2 = new Point2f();
-		private IntegerProperty iTypeProperty = new SimpleIntegerProperty(0);
-		private IntegerProperty iCoordProperty = new SimpleIntegerProperty(0);
-		private DoubleProperty movexProperty, moveyProperty;
+		private int iType = 0;
+		private int iCoord = 0;
+		private double movex, movey;
 
 		/**
 		 * @param transform1
@@ -3121,30 +3112,26 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 		public TransformPathIterator2f(Transform2D transform1) {
 			assert(transform1!=null);
 			this.transform = transform1;
-			this.movexProperty = new SimpleDoubleProperty();
-			this.moveyProperty = new SimpleDoubleProperty();
 		}
 
 		@Pure
 		@Override
 		public boolean hasNext() {
-			return this.iTypeProperty.get()<Path2d.this.numTypesProperty.get();
+			return this.iType<Path2d.this.numTypesProperty.get();
 		}
 
 		@Override
 		public AbstractPathElement2F next() {
-			if (this.iTypeProperty.get()>=Path2d.this.numTypesProperty.get()) {
+			if (this.iType>=Path2d.this.numTypesProperty.get()) {
 				throw new NoSuchElementException();
 			}
 			AbstractPathElement2F element = null;
-			switch(Path2d.this.types[this.iTypeProperty.get()]) {
+			switch(Path2d.this.types[this.iType]) {
 			case MOVE_TO:
-				this.movexProperty.set(Path2d.this.coordsProperty[this.iCoordProperty.get()].get());
-				this.moveyProperty.set(Path2d.this.coordsProperty[this.iCoordProperty.get()+1].get());
+				this.movex = Path2d.this.coordsProperty[this.iCoord++].get();
+				this.movey = Path2d.this.coordsProperty[this.iCoord++].get();
 
-				this.iCoordProperty.set(this.iCoordProperty.get()+2);
-
-				this.p2.set(this.movexProperty.get(), this.moveyProperty.get());
+				this.p2.set(this.movex, this.movey);
 				this.transform.transform(this.p2);
 				element = new AbstractPathElement2F.MovePathElement2f(
 						this.p2.getX(), this.p2.getY());
@@ -3152,10 +3139,8 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 			case LINE_TO:
 				this.p1.set(this.p2);
 				this.p2.set(
-						Path2d.this.coordsProperty[this.iCoordProperty.get()].get(),
-						Path2d.this.coordsProperty[this.iCoordProperty.get()+1].get());
-
-				this.iCoordProperty.set(this.iCoordProperty.get()+2);
+						Path2d.this.coordsProperty[this.iCoord++].get(),
+						Path2d.this.coordsProperty[this.iCoord++].get());
 
 				this.transform.transform(this.p2);
 				element = new AbstractPathElement2F.LinePathElement2f(
@@ -3166,14 +3151,12 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 			{
 				this.p1.set(this.p2);
 				this.ptmp1.set(
-						Path2d.this.coordsProperty[this.iCoordProperty.get()].get(),
-						Path2d.this.coordsProperty[this.iCoordProperty.get()+1].get());
+						Path2d.this.coordsProperty[this.iCoord++].get(),
+						Path2d.this.coordsProperty[this.iCoord++].get());
 				this.transform.transform(this.ptmp1);
 				this.p2.set(
-						Path2d.this.coordsProperty[this.iCoordProperty.get()+2].get(),
-						Path2d.this.coordsProperty[this.iCoordProperty.get()+3].get());
-
-				this.iCoordProperty.set(this.iCoordProperty.get()+4);
+						Path2d.this.coordsProperty[this.iCoord++].get(),
+						Path2d.this.coordsProperty[this.iCoord++].get());
 
 				this.transform.transform(this.p2);
 				element = new AbstractPathElement2F.QuadPathElement2f(
@@ -3186,19 +3169,17 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 			{
 				this.p1.set(this.p2);
 				this.ptmp1.set(
-						Path2d.this.coordsProperty[this.iCoordProperty.get()].get(),
-						Path2d.this.coordsProperty[this.iCoordProperty.get()+1].get());
+						Path2d.this.coordsProperty[this.iCoord++].get(),
+						Path2d.this.coordsProperty[this.iCoord++].get());
 				this.transform.transform(this.ptmp1);
 				this.ptmp2.set(
-						Path2d.this.coordsProperty[this.iCoordProperty.get()+2].get(),
-						Path2d.this.coordsProperty[this.iCoordProperty.get()+3].get());
+						Path2d.this.coordsProperty[this.iCoord++].get(),
+						Path2d.this.coordsProperty[this.iCoord++].get());
 				this.transform.transform(this.ptmp2);
 				this.p2.set(
-						Path2d.this.coordsProperty[this.iCoordProperty.get()+4].get(),
-						Path2d.this.coordsProperty[this.iCoordProperty.get()+5].get());
+						Path2d.this.coordsProperty[this.iCoord++].get(),
+						Path2d.this.coordsProperty[this.iCoord++].get());
 				this.transform.transform(this.p2);
-
-				this.iCoordProperty.set(this.iCoordProperty.get()+6);
 
 				element = new AbstractPathElement2F.CurvePathElement2f(
 						this.p1.getX(), this.p1.getY(),
@@ -3209,7 +3190,7 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 			break;
 			case CLOSE:
 				this.p1.set(this.p2);
-				this.p2.set(this.movexProperty.get(), this.moveyProperty.get());
+				this.p2.set(this.movex, this.movey);
 				this.transform.transform(this.p2);
 				element = new AbstractPathElement2F.ClosePathElement2f(
 						this.p1.getX(), this.p1.getY(),
@@ -3220,7 +3201,7 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 			if (element==null)
 				throw new NoSuchElementException();
 
-			this.iTypeProperty.set(this.iTypeProperty.get()+1);
+			this.iType++;
 
 			return element;
 		}
@@ -3690,7 +3671,7 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 							this.holdProperties, this.holdIndexProperty.get(),
 							this.holdProperties, this.holdIndexProperty.get() - 4,
 							this.holdProperties, this.holdIndexProperty.get());
-					//FIXME this.holdIndexProperty.set(this.holdIndexProperty.get()+4);
+					this.holdIndexProperty.set(this.holdIndexProperty.get()-4);
 
 					// Now that we have subdivided, we have constructed
 					// two curves of one depth lower than the original

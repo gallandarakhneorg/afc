@@ -28,6 +28,7 @@ import org.arakhne.afc.math.geometry.d3.FunctionalVector3D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
 import org.arakhne.afc.math.matrix.Matrix3f;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * Definition of a fixed Oriented Bounding Box (OBB).
@@ -77,6 +78,7 @@ public abstract class AbstractOrientedBox3F extends AbstractShape3F<AbstractOrie
 	 * @param capsule1Radius - capsule radius
 	 * @return <code>true</code> if intersecting, otherwise <code>false</code>
 	 */
+	@Pure
 	public static boolean intersectsOrientedBoxCapsule(
 			double centerx,double  centery,double  centerz,
 			double axis1x, double axis1y, double axis1z,
@@ -155,6 +157,7 @@ public abstract class AbstractOrientedBox3F extends AbstractShape3F<AbstractOrie
 	 * @see "RTCD pages 102-105"
 	 * @see <a href="http://www.gamasutra.com/features/19991018/Gomez_5.htm">OBB collision detection on Gamasutra.com</a>
 	 */
+	@Pure
 	public static boolean intersectsOrientedBoxAlignedBox(
 			double centerx,double  centery,double  centerz,
 			double axis1x, double axis1y, double axis1z,
@@ -237,6 +240,7 @@ public abstract class AbstractOrientedBox3F extends AbstractShape3F<AbstractOrie
 	 * @see "RTCD pages 102-105"
 	 * @see <a href="http://www.gamasutra.com/features/19991018/Gomez_5.htm">OBB collision detection on Gamasutra.com</a>
 	 */
+	@Pure
 	public static boolean intersectsOrientedBoxOrientedBox(
 			double center1x, double center1y, double center1z,
 			double box1Axis1x, double box1Axis1y, double box1Axis1z,
@@ -406,6 +410,7 @@ public abstract class AbstractOrientedBox3F extends AbstractShape3F<AbstractOrie
 	 * @return <code>true</code> if the given point is inside this
 	 * shape, otherwise <code>false</code>.
 	 */
+	@Pure
 	public static boolean containsOrientedBoxPoint(
 			double cx, double cy, double cz,
 			double axis1x, double axis1y, double axis1z,
@@ -674,6 +679,7 @@ public abstract class AbstractOrientedBox3F extends AbstractShape3F<AbstractOrie
 
 	
 
+	@Pure
 	@Override
 	public String toString() {
 		StringBuilder s = new StringBuilder("OBB "); //$NON-NLS-1$
@@ -698,24 +704,28 @@ public abstract class AbstractOrientedBox3F extends AbstractShape3F<AbstractOrie
 	 *
 	 * @return the center.
 	 */
+	@Pure
 	abstract public FunctionalPoint3D getCenter();
 
 	/** Replies the center x.
 	 *
 	 * @return the center x.
 	 */
+	@Pure
 	abstract public double getCenterX();
 
 	/** Replies the center y.
 	 *
 	 * @return the center y.
 	 */
+	@Pure
 	abstract public double getCenterY();
 
 	/** Replies the center z.
 	 *
 	 * @return the center z.
 	 */
+	@Pure
 	abstract public double getCenterZ();
 
 	/** Set the center.
@@ -736,78 +746,91 @@ public abstract class AbstractOrientedBox3F extends AbstractShape3F<AbstractOrie
 	 *
 	 * @return the unit vector of the first axis. 
 	 */
+	@Pure
 	abstract public FunctionalVector3D getFirstAxis();
 
 	/** Replies coordinate x of the first axis of the oriented box.
 	 *
 	 * @return the coordinate x of the unit vector of the first axis. 
 	 */
+	@Pure
 	abstract public double getFirstAxisX();
 
 	/** Replies coordinate y of the first axis of the oriented box.
 	 *
 	 * @return the coordinate y of the unit vector of the first axis. 
 	 */
+	@Pure
 	abstract public double getFirstAxisY();
 
 	/** Replies coordinate z of the first axis of the oriented box.
 	 *
 	 * @return the coordinate z of the unit vector of the first axis. 
 	 */
+	@Pure
 	abstract public double getFirstAxisZ();
 
 	/** Replies the second axis of the oriented box.
 	 *
 	 * @return the unit vector of the second axis. 
 	 */
+	@Pure
 	abstract public FunctionalVector3D getSecondAxis();
 
 	/** Replies coordinate x of the second axis of the oriented box.
 	 *
 	 * @return the coordinate x of the unit vector of the second axis. 
 	 */
+	@Pure
 	abstract public double getSecondAxisX();
 
 	/** Replies coordinate y of the second axis of the oriented box.
 	 *
 	 * @return the coordinate y of the unit vector of the second axis. 
 	 */
+	@Pure
 	abstract public double getSecondAxisY();
 
 	/** Replies coordinate z of the second axis of the oriented box.
 	 *
 	 * @return the coordinate z of the unit vector of the second axis. 
 	 */
+	@Pure
 	abstract public double getSecondAxisZ();
 
 	/** Replies the third axis of the oriented box.
 	 *
 	 * @return the unit vector of the third axis. 
 	 */
+	@Pure
 	abstract public FunctionalVector3D getThirdAxis();
 
 	/** Replies coordinate x of the third axis of the oriented box.
 	 *
 	 * @return the coordinate x of the unit vector of the third axis. 
 	 */
+	@Pure
 	abstract public double getThirdAxisX();
 
 	/** Replies coordinate y of the third axis of the oriented box.
 	 *
 	 * @return the coordinate y of the unit vector of the third axis. 
 	 */
+	@Pure
 	abstract public double getThirdAxisY();
 
 	/** Replies coordinate z of the third axis of the oriented box.
 	 *
 	 * @return the coordinate z of the unit vector of the third axis. 
 	 */
+	@Pure
 	abstract public double getThirdAxisZ();
 
 	/** Replies the demi-size of the box along its first axis.
 	 * 
 	 * @return the extent along the first axis.
 	 */
+	@Pure
 	abstract public double getFirstAxisExtent();
 
 	/** Change the demi-size of the box along its first axis.
@@ -820,6 +843,7 @@ public abstract class AbstractOrientedBox3F extends AbstractShape3F<AbstractOrie
 	 * 
 	 * @return the extent along the second axis.
 	 */
+	@Pure
 	abstract public double getSecondAxisExtent();
 
 	/** Change the demi-size of the box along its second axis.
@@ -832,6 +856,7 @@ public abstract class AbstractOrientedBox3F extends AbstractShape3F<AbstractOrie
 	 * 
 	 * @return the extent along the third axis.
 	 */
+	@Pure
 	abstract public double getThirdAxisExtent();
 
 	/** Change the demi-size of the box along its third axis.
@@ -1048,6 +1073,7 @@ public abstract class AbstractOrientedBox3F extends AbstractShape3F<AbstractOrie
 		this.setThirdAxisExtent(0.);
 	}
 
+	@Pure
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == this) {
@@ -1066,6 +1092,7 @@ public abstract class AbstractOrientedBox3F extends AbstractShape3F<AbstractOrie
 		return false;
 	}
 
+	@Pure
 	@Override
 	public int hashCode() {
 		long bits = 1L;
@@ -1087,6 +1114,7 @@ public abstract class AbstractOrientedBox3F extends AbstractShape3F<AbstractOrie
 		return (int) (bits ^ (bits >> 32));
 	}
 
+	@Pure
 	@Override
 	public AlignedBox3f toBoundingBox() {
 		AlignedBox3f box = new AlignedBox3f();
@@ -1178,6 +1206,7 @@ public abstract class AbstractOrientedBox3F extends AbstractShape3F<AbstractOrie
 		box.set(minx, miny, minz, maxx - minx, maxy - miny, maxz - minz);
 	}
 
+	@Pure
 	@Override
 	public double distanceSquared(Point3D p) {
 		Vector3f v = new Vector3f();
@@ -1218,6 +1247,7 @@ public abstract class AbstractOrientedBox3F extends AbstractShape3F<AbstractOrie
 		return sqDist;
 	}
 
+	@Pure
 	@Override
 	public double distanceL1(Point3D p) {
 		Vector3f v = new Vector3f();
@@ -1258,6 +1288,7 @@ public abstract class AbstractOrientedBox3F extends AbstractShape3F<AbstractOrie
 		return l1Dist;
 	}
 
+	@Pure
 	@Override
 	public double distanceLinf(Point3D p) {
 		Vector3f v = new Vector3f();
@@ -1311,6 +1342,7 @@ public abstract class AbstractOrientedBox3F extends AbstractShape3F<AbstractOrie
 		this.getThirdAxis().normalize();
 	}
 
+	@Pure
 	@Override
 	public Shape3F createTransformedShape(Transform3D transformationMatrix) {
 		AbstractOrientedBox3F newB = this.clone();
@@ -1369,11 +1401,13 @@ public abstract class AbstractOrientedBox3F extends AbstractShape3F<AbstractOrie
 		rotate(rotation);
 	}
 
+	@Pure
 	@Override
 	public boolean isEmpty() {
 		return this.getFirstAxisExtent() <= 0. || this.getSecondAxisExtent() <= 0. || this.getThirdAxisExtent() <= 0.;
 	}
 
+	@Pure
 	@Override
 	public Point3D getClosestPointTo(Point3D p) {
 		Point3f closest = new Point3f();
@@ -1388,6 +1422,7 @@ public abstract class AbstractOrientedBox3F extends AbstractShape3F<AbstractOrie
 		return closest;
 	}
 
+	@Pure
 	@Override
 	public Point3D getFarthestPointTo(Point3D p) {
 		Point3f farthest = new Point3f();
@@ -1402,6 +1437,7 @@ public abstract class AbstractOrientedBox3F extends AbstractShape3F<AbstractOrie
 		return farthest;
 	}
 
+	@Pure
 	@Override
 	public boolean contains(double x, double y, double z) {
 		return containsOrientedBoxPoint(
@@ -1413,8 +1449,9 @@ public abstract class AbstractOrientedBox3F extends AbstractShape3F<AbstractOrie
 				x, y, z);
 	}
 
+	@Pure
 	@Override
-	public boolean intersects(AlignedBox3f s) {
+	public boolean intersects(AbstractBoxedShape3F<?> s) {
 		return intersectsOrientedBoxAlignedBox(
 				getCenterX(), getCenterY(), getCenterZ(), 
 				getFirstAxisX(), getFirstAxisY(), getFirstAxisZ(),
@@ -1426,6 +1463,7 @@ public abstract class AbstractOrientedBox3F extends AbstractShape3F<AbstractOrie
 				s.getMaxX(), s.getMaxY(), s.getMaxZ());
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(AbstractSphere3F s) {
 		return AbstractSphere3F.intersectsSolidSphereOrientedBox(
@@ -1439,6 +1477,7 @@ public abstract class AbstractOrientedBox3F extends AbstractShape3F<AbstractOrie
 				getFirstAxisExtent(), getSecondAxisExtent(), getThirdAxisExtent());
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(AbstractSegment3F s) {
 		return AbstractSegment3F.intersectsSegmentOrientedBox(
@@ -1452,6 +1491,7 @@ public abstract class AbstractOrientedBox3F extends AbstractShape3F<AbstractOrie
 				getFirstAxisExtent(), getSecondAxisExtent(), getThirdAxisExtent());
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(AbstractTriangle3F s) {
 		return AbstractTriangle3F.intersectsTriangleOrientedBox(
@@ -1466,6 +1506,7 @@ public abstract class AbstractOrientedBox3F extends AbstractShape3F<AbstractOrie
 				getFirstAxisExtent(), getSecondAxisExtent(), getThirdAxisExtent());
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(AbstractCapsule3F s) {
 		return intersectsOrientedBoxCapsule(
@@ -1480,6 +1521,7 @@ public abstract class AbstractOrientedBox3F extends AbstractShape3F<AbstractOrie
 				s.getRadius());
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(AbstractOrientedBox3F s) {
 		return intersectsOrientedBoxOrientedBox(
@@ -1496,6 +1538,7 @@ public abstract class AbstractOrientedBox3F extends AbstractShape3F<AbstractOrie
 				s.getFirstAxisExtent(), s.getSecondAxisExtent(), s.getThirdAxisExtent());
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(Plane3D<?> plane) {
 		return plane.intersects(this);

@@ -21,6 +21,7 @@
 package org.arakhne.afc.math.geometry.d3.continuous;
 
 import org.arakhne.afc.math.geometry.d3.FunctionalPoint3D;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** This class represents a 3D plane which is colinear to the X and Z axis.
  *
@@ -45,6 +46,7 @@ public abstract class AbstractPlaneXZ4F extends AbstractOrthoPlane3D<AbstractPla
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public Vector3d getNormal() {
 		return new Vector3d(0,this.isPositive ? 1 : -1, 0);
@@ -52,6 +54,7 @@ public abstract class AbstractPlaneXZ4F extends AbstractOrthoPlane3D<AbstractPla
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public double getEquationComponentA() {
 		return 0;
@@ -59,6 +62,7 @@ public abstract class AbstractPlaneXZ4F extends AbstractOrthoPlane3D<AbstractPla
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public double getEquationComponentB() {
 		return this.isPositive ? 1 : -1;
@@ -66,6 +70,7 @@ public abstract class AbstractPlaneXZ4F extends AbstractOrthoPlane3D<AbstractPla
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public double getEquationComponentC() {
 		return 0;
@@ -73,6 +78,7 @@ public abstract class AbstractPlaneXZ4F extends AbstractOrthoPlane3D<AbstractPla
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public final double getEquationComponentD() {
 		return this.isPositive ? -this.getY() : this.getY();
@@ -82,6 +88,7 @@ public abstract class AbstractPlaneXZ4F extends AbstractOrthoPlane3D<AbstractPla
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public double distanceTo(double px, double py, double pz) {
     	double d = py - this.getY();
@@ -103,6 +110,7 @@ public abstract class AbstractPlaneXZ4F extends AbstractOrthoPlane3D<AbstractPla
 	@Override
 	abstract public void set(Plane3D<?> plane);
 
+	@Pure
 	@Override
 	abstract public FunctionalPoint3D getProjection(double x, double y1, double z);
 
@@ -118,5 +126,6 @@ public abstract class AbstractPlaneXZ4F extends AbstractOrthoPlane3D<AbstractPla
 	/** Replies the y coordinate of the plane.
 	 *
 	 */
+	@Pure
 	abstract public double getY();
 }

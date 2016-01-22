@@ -25,6 +25,7 @@ import java.io.Serializable;
 import org.arakhne.afc.math.geometry.d3.FunctionalPoint3D;
 import org.arakhne.afc.math.geometry.d3.FunctionalVector3D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** This class represents a 3D plane.
  *
@@ -46,6 +47,7 @@ public interface Plane3D<PT extends Plane3D<? super PT>> extends Serializable, C
 	 * 
 	 * @return the normal of the plane.
 	 */
+	@Pure
 	FunctionalVector3D getNormal();
 
 	/**
@@ -53,6 +55,7 @@ public interface Plane3D<PT extends Plane3D<? super PT>> extends Serializable, C
 	 * 
 	 * @return the component a of the plane equation.
 	 */
+	@Pure
 	double getEquationComponentA();
 
 	/**
@@ -60,6 +63,7 @@ public interface Plane3D<PT extends Plane3D<? super PT>> extends Serializable, C
 	 * 
 	 * @return the component b of the plane equation.
 	 */
+	@Pure
 	double getEquationComponentB();
 
 	/**
@@ -67,6 +71,7 @@ public interface Plane3D<PT extends Plane3D<? super PT>> extends Serializable, C
 	 * 
 	 * @return the component c of the plane equation.
 	 */
+	@Pure
 	double getEquationComponentC();
 
 	/**
@@ -74,6 +79,7 @@ public interface Plane3D<PT extends Plane3D<? super PT>> extends Serializable, C
 	 * 
 	 * @return the component d of the plane equation.
 	 */
+	@Pure
 	double getEquationComponentD();
 
     /**
@@ -105,6 +111,7 @@ public interface Plane3D<PT extends Plane3D<? super PT>> extends Serializable, C
 	 * 
 	 * @return a clone.
 	 */
+	@Pure
 	PT clone();
 
     /**
@@ -116,6 +123,7 @@ public interface Plane3D<PT extends Plane3D<? super PT>> extends Serializable, C
      * plane pointed to by the normal Vec3f, negative otherwise.
      * If the result is 0, the point is on the plane.
      */
+	@Pure
 	double distanceTo(Point3D v);
 
 	/**
@@ -128,6 +136,7 @@ public interface Plane3D<PT extends Plane3D<? super PT>> extends Serializable, C
 	 * If the result is 0, the planes are the same. 
 	 * If the result is NaN, the planes aren't colinear.
 	 */
+	@Pure
 	double distanceTo(Plane3D<?> p);
 
 	/** Replies the intersection between this plane and the specified one.
@@ -135,6 +144,7 @@ public interface Plane3D<PT extends Plane3D<? super PT>> extends Serializable, C
 	 * @param plane is used to compute the intersection.
 	 * @return the intersection segment or <code>null</code>
 	 */
+	@Pure
 	AbstractSegment3F getIntersection(Plane3D<?> plane);
 
 	/** Replies the intersection between this plane and the specified line.
@@ -142,6 +152,7 @@ public interface Plane3D<PT extends Plane3D<? super PT>> extends Serializable, C
 	 * @param line is used to compute the intersection.
 	 * @return the intersection point or <code>null</code>
 	 */
+	@Pure
 	FunctionalPoint3D getIntersection(AbstractSegment3F line);
 
 	/** Replies the projection of the given point on the plane.
@@ -149,6 +160,7 @@ public interface Plane3D<PT extends Plane3D<? super PT>> extends Serializable, C
 	 * @param point the point to project on the plane.
 	 * @return the projection point never <code>null</code>
 	 */
+	@Pure
 	FunctionalPoint3D getProjection(Point3D point);
 
 	/** Replies the projection of the given point on the plane.
@@ -158,6 +170,7 @@ public interface Plane3D<PT extends Plane3D<? super PT>> extends Serializable, C
 	 * @param z z coordinate is the point to project on the plane.
 	 * @return the projection point never <code>null</code>
 	 */
+	@Pure
 	FunctionalPoint3D getProjection(double x, double y, double z);
 
 	/**
@@ -171,6 +184,7 @@ public interface Plane3D<PT extends Plane3D<? super PT>> extends Serializable, C
 	 * plane pointed to by the normal Vec3f, negative otherwise.
 	 * If the result is 0, the point is on the plane.
 	 */
+	@Pure
 	double distanceTo(double x, double y, double z);
 
 	/**
@@ -181,6 +195,7 @@ public interface Plane3D<PT extends Plane3D<? super PT>> extends Serializable, C
 	 * @param z
 	 * @return <code>true</code> if intersection, otherwise <code>false</code>
 	 */
+	@Pure
 	boolean intersects(double x, double y, double z);
 	
 	/**
@@ -189,6 +204,7 @@ public interface Plane3D<PT extends Plane3D<? super PT>> extends Serializable, C
 	 * @param point
 	 * @return <code>true</code> if intersection, otherwise <code>false</code>
 	 */
+	@Pure
 	boolean intersects(Point3D point);
 	
 	/** Replies if this plane is intersecting the given plane.
@@ -196,6 +212,7 @@ public interface Plane3D<PT extends Plane3D<? super PT>> extends Serializable, C
 	 * @param otherPlane
 	 * @return <code>true</code> if intersection, otherwise <code>false</code>
 	 */
+	@Pure
 	boolean intersects(Plane3D<?> otherPlane);
 
 	/**
@@ -204,6 +221,7 @@ public interface Plane3D<PT extends Plane3D<? super PT>> extends Serializable, C
 	 * @param otherPlane is the plane to classify
 	 * @return the classification
 	 */
+	@Pure
 	PlaneClassification classifies(Plane3D<?> otherPlane);
 
 	/**
@@ -212,6 +230,7 @@ public interface Plane3D<PT extends Plane3D<? super PT>> extends Serializable, C
 	 * @param point
 	 * @return the classification
 	 */
+	@Pure
 	PlaneClassification classifies(Point3D point);
 
 	/**
@@ -222,6 +241,7 @@ public interface Plane3D<PT extends Plane3D<? super PT>> extends Serializable, C
 	 * @param z
 	 * @return the classification
 	 */
+	@Pure
 	PlaneClassification classifies(double x, double y, double z);
 
 	/**
@@ -230,6 +250,7 @@ public interface Plane3D<PT extends Plane3D<? super PT>> extends Serializable, C
 	 * @param sphere
 	 * @return the classification
 	 */
+	@Pure
 	PlaneClassification classifies(AbstractSphere3F sphere);
 	
 	/**
@@ -238,6 +259,7 @@ public interface Plane3D<PT extends Plane3D<? super PT>> extends Serializable, C
 	 * @param box
 	 * @return the classification
 	 */
+	@Pure
     PlaneClassification classifies(AbstractBoxedShape3F<?> box);
 
     /**
@@ -246,6 +268,7 @@ public interface Plane3D<PT extends Plane3D<? super PT>> extends Serializable, C
 	 * @param sphere
 	 * @return <code>true</code> if intersection, otherwise <code>false</code>
 	 */
+	@Pure
     boolean intersects(AbstractSphere3F sphere);
     
     /**
@@ -254,6 +277,7 @@ public interface Plane3D<PT extends Plane3D<? super PT>> extends Serializable, C
 	 * @param box
 	 * @return <code>true</code> if intersection, otherwise <code>false</code>
 	 */
+	@Pure
     boolean intersects(AbstractBoxedShape3F<?> box);
 
     /**
@@ -262,6 +286,7 @@ public interface Plane3D<PT extends Plane3D<? super PT>> extends Serializable, C
 	 * @param box
 	 * @return <code>true</code> if intersection, otherwise <code>false</code>
 	 */
+	@Pure
     boolean intersects(AbstractOrientedBox3F box);
 
     /**
@@ -273,6 +298,7 @@ public interface Plane3D<PT extends Plane3D<? super PT>> extends Serializable, C
 	 * @param segment
 	 * @return <code>true</code> if intersection, otherwise <code>false</code>
 	 */
+	@Pure
     boolean intersects(AbstractSegment3F segment);
 
     /** Set point that lies on the plane and is used a pivot point.

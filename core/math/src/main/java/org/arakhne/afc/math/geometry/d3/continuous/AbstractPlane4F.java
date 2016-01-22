@@ -25,6 +25,7 @@ import org.arakhne.afc.math.geometry.d3.FunctionalPoint3D;
 import org.arakhne.afc.math.geometry.d3.FunctionalVector3D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** This class represents a 3D plane.
  * <p>
@@ -243,6 +244,7 @@ public abstract class AbstractPlane4F extends AbstractPlane3D<AbstractPlane4F> {
 	 * {@link Double#NaN} when no intersection, {@link Double#POSITIVE_INFINITY}
 	 * when an infinite number of intersection points.
 	 */
+	@Pure
 	public static double getIntersectionFactorPlaneSegment(
 			double a, double b, double c, double d,
 			double sx1, double sy1, double sz1,
@@ -329,6 +331,7 @@ public abstract class AbstractPlane4F extends AbstractPlane3D<AbstractPlane4F> {
 	 * @param z the z coordinate of the project to project on the plane.
 	 * @return the projection of the specified point on the plane.
 	 */
+	@Pure
 	public static FunctionalPoint3D computePointProjection(
 			double a, double b, double c, double d,
 			double x, double y, double z) {
@@ -428,26 +431,31 @@ public abstract class AbstractPlane4F extends AbstractPlane3D<AbstractPlane4F> {
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	abstract public FunctionalVector3D getNormal();
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	abstract public double getEquationComponentA();
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	abstract public double getEquationComponentB();
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	abstract public double getEquationComponentC();
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	abstract public double getEquationComponentD();
 	
@@ -463,6 +471,7 @@ public abstract class AbstractPlane4F extends AbstractPlane3D<AbstractPlane4F> {
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public double distanceTo(double x, double y, double z) {
 		return this.getEquationComponentA() * x + this.getEquationComponentB() * y + this.getEquationComponentC() * z + this.getEquationComponentD();
@@ -484,6 +493,7 @@ public abstract class AbstractPlane4F extends AbstractPlane3D<AbstractPlane4F> {
 	 */
 	abstract public FunctionalPoint3D getPivot();
 
+	@Pure
 	@Override
 	abstract public FunctionalPoint3D getProjection(double x, double y, double z);
 
@@ -626,15 +636,18 @@ public abstract class AbstractPlane4F extends AbstractPlane3D<AbstractPlane4F> {
    	}
 
 	@SuppressWarnings("static-method")
+	@Pure
 	public boolean isValid() {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
+	@Pure
 	public boolean equals(Plane4f plane) {
 		return (plane.a == this.getEquationComponentA() && plane.b == this.getEquationComponentB() && plane.c == this.getEquationComponentC() && plane.d == this.getEquationComponentD());		
 	}
-	
+
+	@Pure
 	@Override
 	public boolean equals(Object t1) {
 		try {
@@ -648,6 +661,7 @@ public abstract class AbstractPlane4F extends AbstractPlane3D<AbstractPlane4F> {
 	
 	}
 
+	@Pure
 	@Override
 	public int hashCode() {
 		// TODO Auto-generated method stub

@@ -21,6 +21,7 @@
 package org.arakhne.afc.math.geometry.d3.continuous;
 
 import org.arakhne.afc.math.geometry.d3.Point3D;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * A bounding capsule is a swept sphere (i.e. the volume that a sphere takes as it moves
@@ -112,6 +113,7 @@ public class Capsule3f extends AbstractCapsule3F {
 	 * 
 	 * @return the first point of the capsule's segment.
 	 */
+	@Pure
 	@Override
 	public Point3f getMedial1() {
 		return this.medial1;
@@ -145,6 +147,7 @@ public class Capsule3f extends AbstractCapsule3F {
 	 * 
 	 * @return the x coordinate of the first point of the capsule's segment.
 	 */
+	@Pure
 	@Override
 	public double getMedialX1() {
 		return this.medial1.getX();
@@ -155,6 +158,7 @@ public class Capsule3f extends AbstractCapsule3F {
 	 * 
 	 * @return the y coordinate of the first point of the capsule's segment.
 	 */
+	@Pure
 	@Override
 	public double getMedialY1() {
 		return this.medial1.getY();
@@ -165,6 +169,7 @@ public class Capsule3f extends AbstractCapsule3F {
 	 * 
 	 * @return the z coordinate of the first point of the capsule's segment.
 	 */
+	@Pure
 	@Override
 	public double getMedialZ1() {
 		return this.medial1.getZ();
@@ -175,6 +180,7 @@ public class Capsule3f extends AbstractCapsule3F {
 	 * 
 	 * @return the second point of the capsule's segment.
 	 */
+	@Pure
 	@Override
 	public Point3f getMedial2() {
 		return this.medial2;
@@ -208,6 +214,7 @@ public class Capsule3f extends AbstractCapsule3F {
 	 * 
 	 * @return the x coordinate of the second point of the capsule's segment.
 	 */
+	@Pure
 	@Override
 	public double getMedialX2() {
 		return this.medial2.getX();
@@ -218,6 +225,7 @@ public class Capsule3f extends AbstractCapsule3F {
 	 * 
 	 * @return the y coordinate of the second point of the capsule's segment.
 	 */
+	@Pure
 	@Override
 	public double getMedialY2() {
 		return this.medial2.getY();
@@ -228,6 +236,7 @@ public class Capsule3f extends AbstractCapsule3F {
 	 * 
 	 * @return the z coordinate of the second point of the capsule's segment.
 	 */
+	@Pure
 	public double getMedialZ2() {
 		return this.medial2.getZ();
 	}
@@ -237,6 +246,7 @@ public class Capsule3f extends AbstractCapsule3F {
 	 * 
 	 * @return the radius of the capsule.
 	 */
+	@Pure
 	public double getRadius() {
 		return this.radius;
 	}
@@ -284,6 +294,7 @@ public class Capsule3f extends AbstractCapsule3F {
 	 * 
 	 * @return the center point.
 	 */
+	@Pure
 	@Override
 	public Point3f getCenter() {
 		return new Point3f(
@@ -296,6 +307,7 @@ public class Capsule3f extends AbstractCapsule3F {
 	 * 
 	 * @return the center x.
 	 */
+	@Pure
 	@Override
 	public double getCenterX() {
 		return (this.medial1.getX() + this.medial2.getX()) / 2.;
@@ -305,6 +317,7 @@ public class Capsule3f extends AbstractCapsule3F {
 	 * 
 	 * @return the center y.
 	 */
+	@Pure
 	@Override
 	public double getCenterY() {
 		return (this.medial1.getY() + this.medial2.getY()) / 2.;
@@ -314,6 +327,7 @@ public class Capsule3f extends AbstractCapsule3F {
 	 * 
 	 * @return the center z.
 	 */
+	@Pure
 	@Override
 	public double getCenterZ() {
 		return (this.medial1.getZ() + this.medial2.getZ()) / 2.;

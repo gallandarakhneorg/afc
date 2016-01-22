@@ -24,6 +24,7 @@ import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem3D;
 import org.arakhne.afc.math.geometry.d3.FunctionalPoint3D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * A bounding capsule is a swept sphere (i.e. the volume that a sphere takes as it moves
@@ -62,6 +63,7 @@ public abstract class AbstractCapsule3F extends AbstractShape3F<AbstractCapsule3
 	 * @param pz - the point to test
 	 * @return <code>true</code> if intersecting, otherwise <code>false</code>
 	 */
+	@Pure
 	public static boolean containsCapsulePoint(
 			double capsule1Ax, double capsule1Ay, double capsule1Az, double capsule1Bx, double capsule1By, double capsule1Bz, double capsule1Radius,
 			double px, double py, double pz) {
@@ -88,6 +90,7 @@ public abstract class AbstractCapsule3F extends AbstractShape3F<AbstractCapsule3
 	 * @param maxz z coordinate of the upper corner of the aligned box.
 	 * @return <code>true</code> if the capsule and aligned box are intersecting.
 	 */
+	@Pure
 	public static boolean intersectsCapsuleAlignedBox(
 			double mx1, double my1, double mz1,
 			double mx2, double my2, double mz2,
@@ -127,6 +130,7 @@ public abstract class AbstractCapsule3F extends AbstractShape3F<AbstractCapsule3
 	 * @param capsule2Radius - radius of the second capsule
 	 * @return <code>true</code> if intersecting, otherwise <code>false</code>
 	 */
+	@Pure
 	public static boolean intersectsCapsuleCapsule(
 			double capsule1Ax, double capsule1Ay, double capsule1Az, double capsule1Bx, double capsule1By, double capsule1Bz, double capsule1Radius,
 			double capsule2Ax, double capsule2Ay, double capsule2Az, double capsule2Bx, double capsule2By, double capsule2Bz, double capsule2Radius) {
@@ -140,8 +144,7 @@ public abstract class AbstractCapsule3F extends AbstractShape3F<AbstractCapsule3
 		return dist2 <= (radius * radius);
 	} 
 
-	
-
+	@Pure
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == this) {
@@ -156,6 +159,7 @@ public abstract class AbstractCapsule3F extends AbstractShape3F<AbstractCapsule3
 		return false;
 	}
 
+	@Pure
 	@Override
 	public int hashCode() {
 		long bits = 1L;
@@ -188,6 +192,7 @@ public abstract class AbstractCapsule3F extends AbstractShape3F<AbstractCapsule3
 		}
 	}
 
+	@Pure
 	@Override
 	public AlignedBox3f toBoundingBox() {
 		AlignedBox3f box = new AlignedBox3f();
@@ -208,6 +213,7 @@ public abstract class AbstractCapsule3F extends AbstractShape3F<AbstractCapsule3
 				maxx - minx, maxy - miny, maxz - minz);
 	}
 
+	@Pure
 	@Override
 	public boolean isEmpty() {
 		return this.getRadius() == 0. || this.getMedial1().equals(this.getMedial2());
@@ -225,6 +231,7 @@ public abstract class AbstractCapsule3F extends AbstractShape3F<AbstractCapsule3
 	 * 
 	 * @return the first point of the capsule's segment.
 	 */
+	@Pure
 	abstract public FunctionalPoint3D getMedial1();
 
 	/**
@@ -248,6 +255,7 @@ public abstract class AbstractCapsule3F extends AbstractShape3F<AbstractCapsule3
 	 * 
 	 * @return the x coordinate of the first point of the capsule's segment.
 	 */
+	@Pure
 	abstract public double getMedialX1();
 
 	/**
@@ -255,6 +263,7 @@ public abstract class AbstractCapsule3F extends AbstractShape3F<AbstractCapsule3
 	 * 
 	 * @return the y coordinate of the first point of the capsule's segment.
 	 */
+	@Pure
 	abstract public double getMedialY1();
 
 	/**
@@ -262,6 +271,7 @@ public abstract class AbstractCapsule3F extends AbstractShape3F<AbstractCapsule3
 	 * 
 	 * @return the z coordinate of the first point of the capsule's segment.
 	 */
+	@Pure
 	abstract public double getMedialZ1();
 
 	/**
@@ -269,6 +279,7 @@ public abstract class AbstractCapsule3F extends AbstractShape3F<AbstractCapsule3
 	 * 
 	 * @return the second point of the capsule's segment.
 	 */
+	@Pure
 	abstract public FunctionalPoint3D getMedial2();
 
 	/**
@@ -292,6 +303,7 @@ public abstract class AbstractCapsule3F extends AbstractShape3F<AbstractCapsule3
 	 * 
 	 * @return the x coordinate of the second point of the capsule's segment.
 	 */
+	@Pure
 	abstract public double getMedialX2();
 
 	/**
@@ -299,6 +311,7 @@ public abstract class AbstractCapsule3F extends AbstractShape3F<AbstractCapsule3
 	 * 
 	 * @return the y coordinate of the second point of the capsule's segment.
 	 */
+	@Pure
 	abstract public double getMedialY2();
 
 	/**
@@ -306,6 +319,7 @@ public abstract class AbstractCapsule3F extends AbstractShape3F<AbstractCapsule3
 	 * 
 	 * @return the z coordinate of the second point of the capsule's segment.
 	 */
+	@Pure
 	abstract public double getMedialZ2();
 
 	/**
@@ -313,6 +327,7 @@ public abstract class AbstractCapsule3F extends AbstractShape3F<AbstractCapsule3
 	 * 
 	 * @return the radius of the capsule.
 	 */
+	@Pure
 	abstract public double getRadius();
 
 	/**
@@ -381,26 +396,31 @@ public abstract class AbstractCapsule3F extends AbstractShape3F<AbstractCapsule3
 	 * 
 	 * @return the center point.
 	 */
+	@Pure
 	abstract public FunctionalPoint3D getCenter();
 
 	/** Replies the x coordinate of the center point of the capsule.
 	 * 
 	 * @return the center x.
 	 */
+	@Pure
 	abstract public double getCenterX();
 
 	/** Replies the y coordinate of the center point of the capsule.
 	 * 
 	 * @return the center y.
 	 */
+	@Pure
 	abstract public double getCenterY();
 
 	/** Replies the z coordinate of the center point of the capsule.
 	 * 
 	 * @return the center z.
 	 */
+	@Pure
 	abstract public double getCenterZ();
 
+	@Pure
 	@Override
 	public String toString() {
 		StringBuilder s= new StringBuilder("Capsule "); //$NON-NLS-1$
@@ -412,7 +432,8 @@ public abstract class AbstractCapsule3F extends AbstractShape3F<AbstractCapsule3
 		s.append(this.getRadius());
 		return s.toString();
 	}
-	
+
+	@Pure
 	@Override
 	public double distanceSquared(Point3D p) {
 		double r = getRadius();
@@ -424,18 +445,21 @@ public abstract class AbstractCapsule3F extends AbstractShape3F<AbstractCapsule3
 		return Math.max(0., d);
 	}
 
+	@Pure
 	@Override
 	public double distanceL1(Point3D p) {
 		Point3D r = getClosestPointTo(p);
 		return r.getDistanceL1(p);
 	}
 
+	@Pure
 	@Override
 	public double distanceLinf(Point3D p) {
 		Point3D r = getClosestPointTo(p);
 		return r.getDistanceLinf(p);
 	}
 
+	@Pure
 	@Override
 	public Point3D getClosestPointTo(Point3D p) {
 		double factor = AbstractSegment3F.getPointProjectionFactorOnSegmentLine(
@@ -460,6 +484,7 @@ public abstract class AbstractCapsule3F extends AbstractShape3F<AbstractCapsule3
 		return c;
 	}
 
+	@Pure
 	@Override
 	public Point3D getFarthestPointTo(Point3D p) {
 		Vector3f refToA = new Vector3f();
@@ -498,7 +523,8 @@ public abstract class AbstractCapsule3F extends AbstractShape3F<AbstractCapsule3
 		setRadius(MathUtil.max(v.getX(), v.getY(), v.getZ()));
 	}
 
-	
+
+	@Pure
 	@Override
 	public Shape3F createTransformedShape(Transform3D transformationMatrix) {
 		AbstractCapsule3F newB = this.clone();
@@ -522,8 +548,9 @@ public abstract class AbstractCapsule3F extends AbstractShape3F<AbstractCapsule3
 				x, y, z);
 	}
 
+	@Pure
 	@Override
-	public boolean intersects(AlignedBox3f s) {
+	public boolean intersects(AbstractBoxedShape3F<?> s) {
 		return intersectsCapsuleAlignedBox(
 				getMedialX1(), getMedialY1(), getMedialZ1(),
 				getMedialX2(), getMedialY2(), getMedialZ2(),
@@ -532,6 +559,7 @@ public abstract class AbstractCapsule3F extends AbstractShape3F<AbstractCapsule3
 				s.getMaxX(), s.getMaxY(), s.getMaxZ());
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(AbstractSphere3F s) {
 		return AbstractSphere3F.intersectsSphereCapsule(
@@ -542,6 +570,7 @@ public abstract class AbstractCapsule3F extends AbstractShape3F<AbstractCapsule3
 				getRadius());
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(AbstractSegment3F s) {
 		return AbstractSegment3F.intersectsSegmentCapsule(
@@ -552,6 +581,7 @@ public abstract class AbstractCapsule3F extends AbstractShape3F<AbstractCapsule3
 				getRadius());
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(AbstractTriangle3F s) {
 		return AbstractTriangle3F.intersectsTriangleCapsule(
@@ -563,6 +593,7 @@ public abstract class AbstractCapsule3F extends AbstractShape3F<AbstractCapsule3
 				getRadius());
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(AbstractCapsule3F s) {
 		return intersectsCapsuleCapsule(
@@ -574,6 +605,7 @@ public abstract class AbstractCapsule3F extends AbstractShape3F<AbstractCapsule3
 				s.getRadius());
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(AbstractOrientedBox3F s) {
 		return AbstractOrientedBox3F.intersectsOrientedBoxCapsule(
@@ -587,6 +619,7 @@ public abstract class AbstractCapsule3F extends AbstractShape3F<AbstractCapsule3
 				getRadius());
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(Plane3D<?> p) {
 		double d1 = p.distanceTo(getMedial1());

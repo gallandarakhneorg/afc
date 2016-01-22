@@ -3,6 +3,7 @@ package org.arakhne.afc.math.geometry.d3.continuous;
 import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem3D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 public class OrientedBox3f extends AbstractOrientedBox3F{
 	
@@ -162,6 +163,7 @@ public class OrientedBox3f extends AbstractOrientedBox3F{
 	 *
 	 * @return the center.
 	 */
+	@Pure
 	@Override
 	public Point3f getCenter() {
 		return this.center.clone();
@@ -171,6 +173,7 @@ public class OrientedBox3f extends AbstractOrientedBox3F{
 	 *
 	 * @return the center x.
 	 */
+	@Pure
 	@Override
 	public double getCenterX() {
 		return this.center.getX();
@@ -180,6 +183,7 @@ public class OrientedBox3f extends AbstractOrientedBox3F{
 	 *
 	 * @return the center y.
 	 */
+	@Pure
 	@Override
 	public double getCenterY() {
 		return this.center.getY();
@@ -189,6 +193,7 @@ public class OrientedBox3f extends AbstractOrientedBox3F{
 	 *
 	 * @return the center z.
 	 */
+	@Pure
 	@Override
 	public double getCenterZ() {
 		return this.center.getZ();
@@ -218,6 +223,7 @@ public class OrientedBox3f extends AbstractOrientedBox3F{
 	 *
 	 * @return the unit vector of the first axis. 
 	 */
+	@Pure
 	@Override
 	public Vector3f getFirstAxis() {
 		return this.axis1.clone();
@@ -227,6 +233,7 @@ public class OrientedBox3f extends AbstractOrientedBox3F{
 	 *
 	 * @return the coordinate x of the unit vector of the first axis. 
 	 */
+	@Pure
 	@Override
 	public double getFirstAxisX() {
 		return this.axis1.getX();
@@ -236,6 +243,7 @@ public class OrientedBox3f extends AbstractOrientedBox3F{
 	 *
 	 * @return the coordinate y of the unit vector of the first axis. 
 	 */
+	@Pure
 	@Override
 	public double getFirstAxisY() {
 		return this.axis1.getY();
@@ -245,6 +253,7 @@ public class OrientedBox3f extends AbstractOrientedBox3F{
 	 *
 	 * @return the coordinate z of the unit vector of the first axis. 
 	 */
+	@Pure
 	@Override
 	public double getFirstAxisZ() {
 		return this.axis1.getZ();
@@ -254,6 +263,7 @@ public class OrientedBox3f extends AbstractOrientedBox3F{
 	 *
 	 * @return the unit vector of the second axis. 
 	 */
+	@Pure
 	@Override
 	public Vector3f getSecondAxis() {
 		return this.axis2.clone();
@@ -263,6 +273,7 @@ public class OrientedBox3f extends AbstractOrientedBox3F{
 	 *
 	 * @return the coordinate x of the unit vector of the second axis. 
 	 */
+	@Pure
 	@Override
 	public double getSecondAxisX() {
 		return this.axis2.getX();
@@ -272,6 +283,7 @@ public class OrientedBox3f extends AbstractOrientedBox3F{
 	 *
 	 * @return the coordinate y of the unit vector of the second axis. 
 	 */
+	@Pure
 	@Override
 	public double getSecondAxisY() {
 		return this.axis2.getY();
@@ -281,6 +293,7 @@ public class OrientedBox3f extends AbstractOrientedBox3F{
 	 *
 	 * @return the coordinate z of the unit vector of the second axis. 
 	 */
+	@Pure
 	@Override
 	public double getSecondAxisZ() {
 		return this.axis2.getZ();
@@ -290,6 +303,7 @@ public class OrientedBox3f extends AbstractOrientedBox3F{
 	 *
 	 * @return the unit vector of the third axis. 
 	 */
+	@Pure
 	@Override
 	public Vector3f getThirdAxis() {
 		return this.axis3.clone();
@@ -299,6 +313,7 @@ public class OrientedBox3f extends AbstractOrientedBox3F{
 	 *
 	 * @return the coordinate x of the unit vector of the third axis. 
 	 */
+	@Pure
 	@Override
 	public double getThirdAxisX() {
 		return this.axis3.getX();
@@ -308,6 +323,7 @@ public class OrientedBox3f extends AbstractOrientedBox3F{
 	 *
 	 * @return the coordinate y of the unit vector of the third axis. 
 	 */
+	@Pure
 	@Override
 	public double getThirdAxisY() {
 		return this.axis3.getY();
@@ -317,6 +333,7 @@ public class OrientedBox3f extends AbstractOrientedBox3F{
 	 *
 	 * @return the coordinate z of the unit vector of the third axis. 
 	 */
+	@Pure
 	@Override
 	public double getThirdAxisZ() {
 		return this.axis3.getZ();
@@ -326,6 +343,7 @@ public class OrientedBox3f extends AbstractOrientedBox3F{
 	 * 
 	 * @return the extent along the first axis.
 	 */
+	@Pure
 	@Override
 	public double getFirstAxisExtent() {
 		return this.extent1;
@@ -344,6 +362,7 @@ public class OrientedBox3f extends AbstractOrientedBox3F{
 	 * 
 	 * @return the extent along the second axis.
 	 */
+	@Pure
 	@Override
 	public double getSecondAxisExtent() {
 		return this.extent2;
@@ -362,6 +381,7 @@ public class OrientedBox3f extends AbstractOrientedBox3F{
 	 * 
 	 * @return the extent along the third axis.
 	 */
+	@Pure
 	@Override
 	public double getThirdAxisExtent() {
 		return this.extent3;
@@ -592,10 +612,4 @@ public class OrientedBox3f extends AbstractOrientedBox3F{
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	
-	
-	
-	
-	
 }

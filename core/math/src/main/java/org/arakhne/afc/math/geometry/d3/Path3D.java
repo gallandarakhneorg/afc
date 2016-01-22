@@ -24,6 +24,9 @@ import java.util.Iterator;
 
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
+import org.arakhne.afc.math.geometry.d3.continuous.PathIterator3d;
+import org.arakhne.afc.math.geometry.d3.continuous.PathIterator3f;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** 3D Path.
  * 
@@ -81,7 +84,7 @@ public interface Path3D<PT extends Shape3D<? super PT>, B extends Shape3D<?>, E 
 	 * the curved segments are allowed to deviate from any point on the original curve.
 	 * @return an iterator on the path elements.
 	 */
-	public I getPathIterator(double flatness);
+	public PathIterator3f getPathIterator(double flatness);
 
 	/** Replies an iterator on the path elements.
 	 * <p>
@@ -89,6 +92,38 @@ public interface Path3D<PT extends Shape3D<? super PT>, B extends Shape3D<?>, E 
 	 * 
 	 * @return an iterator on the path elements.
 	 */
-	public I getPathIterator();
+	public PathIterator3f getPathIterator();
+	
+	/** Replies an iterator on the path elements.
+	 * <p>
+	 * Only {@link PathElementType#MOVE_TO},
+	 * {@link PathElementType#LINE_TO}, and 
+	 * {@link PathElementType#CLOSE} types are returned by the iterator.
+	 * <p>
+	 * The amount of subdivision of the curved segments is controlled by the 
+	 * flatness parameter, which specifies the maximum distance that any point 
+	 * on the unflattened transformed curve can deviate from the returned
+	 * flattened path segments. Note that a limit on the accuracy of the
+	 * flattened path might be silently imposed, causing very small flattening
+	 * parameters to be treated as larger values. This limit, if there is one,
+	 * is defined by the particular implementation that is used.
+	 * <p>
+	 * The iterator for this class is not multi-threaded safe.
+	 * 
+	 * @param flatness is the maximum distance that the line segments used to approximate
+	 * the curved segments are allowed to deviate from any point on the original curve.
+	 * @return an iterator on the path elements.
+	 */
+	@Pure
+	public PathIterator3d getPathIteratorProperty(double flatness);
+
+	/** Replies an iterator on the path elements.
+	 * <p>
+	 * The iterator for this class is not multi-threaded safe.
+	 * 
+	 * @return an iterator on the path elements.
+	 */
+	@Pure
+	public PathIterator3d getPathIteratorProperty();
 	
 }

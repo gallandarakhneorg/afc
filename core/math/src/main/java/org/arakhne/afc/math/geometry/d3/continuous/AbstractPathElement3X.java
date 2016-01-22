@@ -1,6 +1,7 @@
 package org.arakhne.afc.math.geometry.d3.continuous;
 
 import org.arakhne.afc.math.geometry.d3.PathElement3D;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 public interface AbstractPathElement3X extends PathElement3D {
 
@@ -15,36 +16,49 @@ public interface AbstractPathElement3X extends PathElement3D {
 	 * 
 	 * @return the array of the points, except the source point.
 	 */
+	@Pure
 	public abstract double[] toArray();
-	
+
+	@Pure
 	abstract public double getFromX();
 
+	@Pure
 	abstract public double getFromY();
-	
+
+	@Pure
 	abstract public double getFromZ();
 
-	
+
+	@Pure
 	abstract public double getToX();
 
-	
+
+	@Pure
 	abstract public double getToY();
-	
+
+	@Pure
 	abstract public double getToZ();
 
-	
+
+	@Pure
 	abstract public double getCtrlX1();
 
-	
+
+	@Pure
 	abstract public double getCtrlY1();
-	
+
+	@Pure
 	abstract public double getCtrlZ1();
 
-	
+
+	@Pure
 	abstract public double getCtrlX2();
 
-	
+
+	@Pure
 	abstract public double getCtrlY2();
-	
+
+	@Pure
 	abstract public double getCtrlZ2();
 
 
