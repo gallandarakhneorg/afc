@@ -3255,7 +3255,7 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 
 		/** The recursion level at which each curve being held in storage was generated.
 		 */
-		private IntegerProperty levelsProperties[];
+		private int levels[];
 
 		/** The cache of interpolated coords.
 		 * Note that this must be long enough
@@ -3267,7 +3267,7 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 		 * to the size of a full quad segment
 		 * and 2 relative quad segments.
 		 */
-		private DoubleProperty holdProperties[] = new SimpleDoubleProperty[14];
+		private double hold[] = new double[14];
 
 		/** The index of the last curve segment being held for interpolation.
 		 */
@@ -3335,14 +3335,7 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 			this.squaredFlatness = flatness * flatness;
 			this.limit = limit1;
 
-			this.levelsProperties = new SimpleIntegerProperty[limit1 + 1];
-			for (int i=0; i<this.levelsProperties.length; i++) {
-				this.levelsProperties[i] = new SimpleIntegerProperty();
-			}
-
-			for (int i=0; i<this.holdProperties.length; i++) {
-				this.holdProperties[i] = new SimpleDoubleProperty();
-			}
+			this.levels = new int[limit1 + 1];
 
 			searchNext();
 		}
@@ -3353,13 +3346,13 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 		 */
 		private void ensureHoldCapacity(int want) {
 			if (this.holdIndexProperty.get() - want < 0) {
-				int have = this.holdProperties.length - this.holdIndexProperty.get();
-				int newsize = this.holdProperties.length + GROW_SIZE;
-				DoubleProperty newhold[] = new DoubleProperty[newsize];
-				System.arraycopy(this.holdProperties, this.holdIndexProperty.get(),
+				int have = this.hold.length - this.holdIndexProperty.get();
+				int newsize = this.hold.length + GROW_SIZE;
+				double newhold[] = new double[newsize];
+				System.arraycopy(this.hold, this.holdIndexProperty.get(),
 						newhold, this.holdIndexProperty.get() + GROW_SIZE,
 						have);
-				this.holdProperties = newhold;
+				this.hold = newhold;
 				this.holdIndexProperty.set(this.holdIndexProperty.get()+GROW_SIZE);
 				this.holdEndProperty.set(this.holdEndProperty.get()+GROW_SIZE);
 			}
@@ -3377,11 +3370,11 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 		 *          values in the specified array at the specified index.
 		 */
 		@Pure
-		private static double getQuadSquaredFlatness(DoubleProperty coords[], int offset) {
+		private static double getQuadSquaredFlatness(double coords[], int offset) {
 			return AbstractSegment2F.distanceSquaredLinePoint(
-					coords[offset + 0].get(), coords[offset + 1].get(),
-					coords[offset + 4].get(), coords[offset + 5].get(),
-					coords[offset + 2].get(), coords[offset + 3].get());
+					coords[offset + 0], coords[offset + 1],
+					coords[offset + 4], coords[offset + 5],
+					coords[offset + 2], coords[offset + 3]);
 		}
 
 		/**
@@ -3411,23 +3404,22 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 		 * @param rightoff the offset into the array of the beginning of the
 		 * the 6 right coordinates
 		 */
-		private static void subdivideQuad(DoubleProperty src[], int srcoff,
-				DoubleProperty left[], int leftoff,
-				DoubleProperty right[], int rightoff) {
-			
-			double x1 = src[srcoff + 0].get();
-			double y1 = src[srcoff + 1].get();
-			double ctrlx = src[srcoff + 2].get();
-			double ctrly = src[srcoff + 3].get();
-			double x2 = src[srcoff + 4].get();
-			double y2 = src[srcoff + 5].get();
+		private static void subdivideQuad(double src[], int srcoff,
+				double left[], int leftoff,
+				double right[], int rightoff) {
+			double x1 = src[srcoff + 0];
+			double y1 = src[srcoff + 1];
+			double ctrlx = src[srcoff + 2];
+			double ctrly = src[srcoff + 3];
+			double x2 = src[srcoff + 4];
+			double y2 = src[srcoff + 5];
 			if (left != null) {
-				left[leftoff + 0].set(x1);
-				left[leftoff + 1].set(y1);
+				left[leftoff + 0] = x1;
+				left[leftoff + 1] = y1;
 			}
 			if (right != null) {
-				right[rightoff + 4].set(x2);
-				right[rightoff + 5].set(y2);
+				right[rightoff + 4] = x2;
+				right[rightoff + 5] = y2;
 			}
 			x1 = (x1 + ctrlx) / 2f;
 			y1 = (y1 + ctrly) / 2f;
@@ -3436,16 +3428,16 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 			ctrlx = (x1 + x2) / 2f;
 			ctrly = (y1 + y2) / 2f;
 			if (left != null) {
-				left[leftoff + 2].set(x1);
-				left[leftoff + 3].set(y1);
-				left[leftoff + 4].set(ctrlx);
-				left[leftoff + 5].set(ctrly);
+				left[leftoff + 2] = x1;
+				left[leftoff + 3] = y1;
+				left[leftoff + 4] = ctrlx;
+				left[leftoff + 5] = ctrly;
 			}
 			if (right != null) {
-				right[rightoff + 0].set(ctrlx);
-				right[rightoff + 1].set(ctrly);
-				right[rightoff + 2].set(x2);
-				right[rightoff + 3].set(y2);
+				right[rightoff + 0] = ctrlx;
+				right[rightoff + 1] = ctrly;
+				right[rightoff + 2] = x2;
+				right[rightoff + 3] = y2;
 			}
 		}
 
@@ -3462,23 +3454,23 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 		 *          the specified offset.
 		 */
 		@Pure
-		private static double getCurveSquaredFlatness(DoubleProperty coords[], int offset) {
+		private static double getCurveSquaredFlatness(double coords[], int offset) {
 			return Math.max(
 					AbstractSegment2F.distanceSquaredSegmentPoint(
-							coords[offset + 6].get(),
-							coords[offset + 7].get(),
-							coords[offset + 2].get(),
-							coords[offset + 3].get(),
-							coords[offset + 0].get(),
-							coords[offset + 1].get(),
+							coords[offset + 6],
+							coords[offset + 7],
+							coords[offset + 2],
+							coords[offset + 3],
+							coords[offset + 0],
+							coords[offset + 1],
 							null),
 					AbstractSegment2F.distanceSquaredSegmentPoint(
-							coords[offset + 6].get(),
-							coords[offset + 7].get(),
-							coords[offset + 4].get(),
-							coords[offset + 5].get(),
-							coords[offset + 0].get(),
-							coords[offset + 1].get(),
+							coords[offset + 6],
+							coords[offset + 7],
+							coords[offset + 4],
+							coords[offset + 5],
+							coords[offset + 0],
+							coords[offset + 1],
 							null));
 		}
 
@@ -3510,26 +3502,24 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 		 * the 6 right coordinates
 		 */
 		private static void subdivideCurve(
-				DoubleProperty src[], int srcoff,
-				DoubleProperty left[], int leftoff,
-				DoubleProperty right[], int rightoff) {
-
-			
-			double x1 = src[srcoff + 0].get();
-			double y1 = src[srcoff + 1].get();
-			double ctrlx1 = src[srcoff + 2].get();
-			double ctrly1 = src[srcoff + 3].get();
-			double ctrlx2 = src[srcoff + 4].get();
-			double ctrly2 = src[srcoff + 5].get();
-			double x2 = src[srcoff + 6].get();
-			double y2 = src[srcoff + 7].get();
+				double src[], int srcoff,
+				double left[], int leftoff,
+				double right[], int rightoff) {
+			double x1 = src[srcoff + 0];
+			double y1 = src[srcoff + 1];
+			double ctrlx1 = src[srcoff + 2];
+			double ctrly1 = src[srcoff + 3];
+			double ctrlx2 = src[srcoff + 4];
+			double ctrly2 = src[srcoff + 5];
+			double x2 = src[srcoff + 6];
+			double y2 = src[srcoff + 7];
 			if (left != null) {
-				left[leftoff + 0].set(x1);
-				left[leftoff + 1].set(y1);
+				left[leftoff + 0] = x1;
+				left[leftoff + 1] = y1;
 			}
 			if (right != null) {
-				right[rightoff + 6].set(x2);
-				right[rightoff + 7].set(y2);
+				right[rightoff + 6] = x2;
+				right[rightoff + 7] = y2;
 			}
 			x1 = (x1 + ctrlx1) / 2f;
 			y1 = (y1 + ctrly1) / 2f;
@@ -3544,20 +3534,20 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 			centerx = (ctrlx1 + ctrlx2) / 2f;
 			centery = (ctrly1 + ctrly2) / 2f;
 			if (left != null) {
-				left[leftoff + 2].set(x1);
-				left[leftoff + 3].set(y1);
-				left[leftoff + 4].set(ctrlx1);
-				left[leftoff + 5].set(ctrly1);
-				left[leftoff + 6].set(centerx);
-				left[leftoff + 7].set(centery);
+				left[leftoff + 2] = x1;
+				left[leftoff + 3] = y1;
+				left[leftoff + 4] = ctrlx1;
+				left[leftoff + 5] = ctrly1;
+				left[leftoff + 6] = centerx;
+				left[leftoff + 7] = centery;
 			}
 			if (right != null) {
-				right[rightoff + 0].set(centerx);
-				right[rightoff + 1].set(centery);
-				right[rightoff + 2].set(ctrlx2);
-				right[rightoff + 3].set(ctrly2);
-				right[rightoff + 4].set(x2);
-				right[rightoff + 5].set(y2);
+				right[rightoff + 0] = centerx;
+				right[rightoff + 1] = centery;
+				right[rightoff + 2] = ctrlx2;
+				right[rightoff + 3] = ctrly2;
+				right[rightoff + 4] = x2;
+				right[rightoff + 5] = y2;
 			}
 		}
 
@@ -3571,16 +3561,16 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 				}
 				AbstractPathElement2D pathElement = this.pathIterator.next();
 				this.holdType = pathElement.type;
-				pathElement.toArray(this.holdProperties);
+				pathElement.toArray(this.hold);
 				this.levelIndexProperty.set(0);
-				this.levelsProperties[0].set(0);
+				this.levels[0] = 0;
 			}
 
 			switch (this.holdType) {
 			case MOVE_TO:
 			case LINE_TO:
-				this.currentXProperty.set(this.holdProperties[0].get());
-				this.currentYProperty.set(this.holdProperties[1].get());
+				this.currentXProperty.set(this.hold[0]);
+				this.currentYProperty.set(this.hold[1]);
 				if (this.holdType == PathElementType.MOVE_TO) {
 					this.moveXProperty.set(this.currentXProperty.get());
 					this.moveYProperty.set(this.currentYProperty.get());
@@ -3597,29 +3587,29 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 			case QUAD_TO:
 				if (this.holdIndexProperty.get() >= this.holdEndProperty.get()) {
 					// Move the coordinates to the end of the array.
-					this.holdIndexProperty.set(this.holdProperties.length - 6);
-					this.holdEndProperty.set(this.holdProperties.length - 2);
-					this.holdProperties[this.holdIndexProperty.get() + 0].set(this.currentXProperty.get());
-					this.holdProperties[this.holdIndexProperty.get() + 1].set(this.currentYProperty.get());
-					this.holdProperties[this.holdIndexProperty.get() + 2].set(this.holdProperties[0].get());
-					this.holdProperties[this.holdIndexProperty.get() + 3].set(this.holdProperties[1].get());
-					this.holdProperties[this.holdIndexProperty.get() + 4].set(this.holdProperties[2].get());
-					this.currentXProperty.set(this.holdProperties[2].get());
-					this.holdProperties[this.holdIndexProperty.get() + 5].set(this.holdProperties[3].get());
-					this.currentYProperty.set(this.holdProperties[3].get());
+					this.holdIndexProperty.set(this.hold.length - 6);
+					this.holdEndProperty.set(this.hold.length - 2);
+					this.hold[this.holdIndexProperty.get() + 0] = this.currentXProperty.get();
+					this.hold[this.holdIndexProperty.get() + 1] = this.currentYProperty.get();
+					this.hold[this.holdIndexProperty.get() + 2] = this.hold[0];
+					this.hold[this.holdIndexProperty.get() + 3] = this.hold[1];
+					this.hold[this.holdIndexProperty.get() + 4] = this.hold[2];
+					this.currentXProperty.set(this.hold[2]);
+					this.hold[this.holdIndexProperty.get() + 5] = this.hold[3];
+					this.currentYProperty.set(this.hold[3]);
 				}
 
-				level = this.levelsProperties[this.levelIndexProperty.get()].get();
+				level = this.levels[this.levelIndexProperty.get()];
 				while (level < this.limit) {
-					if (getQuadSquaredFlatness(this.holdProperties, this.holdIndexProperty.get()) < this.squaredFlatness) {
+					if (getQuadSquaredFlatness(this.hold, this.holdIndexProperty.get()) < this.squaredFlatness) {
 						break;
 					}
 
 					ensureHoldCapacity(4);
 					subdivideQuad(
-							this.holdProperties, this.holdIndexProperty.get(),
-							this.holdProperties, this.holdIndexProperty.get() - 4,
-							this.holdProperties, this.holdIndexProperty.get());
+							this.hold, this.holdIndexProperty.get(),
+							this.hold, this.holdIndexProperty.get() - 4,
+							this.hold, this.holdIndexProperty.get());
 					this.holdIndexProperty.set(this.holdIndexProperty.get()-4);
 
 					// Now that we have subdivided, we have constructed
@@ -3629,9 +3619,9 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 					// set of held coordinate slots.  We now set both
 					// curves level values to the next higher level.
 					level++;
-					this.levelsProperties[this.levelIndexProperty.get()].set(level);
+					this.levels[this.levelIndexProperty.get()]= level;
 					this.levelIndexProperty.set(this.levelIndexProperty.get()+1);
-					this.levelsProperties[this.levelIndexProperty.get()].set(level);
+					this.levels[this.levelIndexProperty.get()]= level;
 				}
 
 				// This curve segment is flat enough, or it is too deep
@@ -3645,32 +3635,32 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 			case CURVE_TO:
 				if (this.holdIndexProperty.get() >= this.holdEndProperty.get()) {
 					// Move the coordinates to the end of the array.
-					this.holdIndexProperty.set(this.holdProperties.length - 8);
-					this.holdEndProperty.set(this.holdProperties.length - 2);
-					this.holdProperties[this.holdIndexProperty.get() + 0].set(this.currentXProperty.get());
-					this.holdProperties[this.holdIndexProperty.get() + 1].set(this.currentYProperty.get());
-					this.holdProperties[this.holdIndexProperty.get() + 2].set(this.holdProperties[0].get());
-					this.holdProperties[this.holdIndexProperty.get() + 3].set(this.holdProperties[1].get());
-					this.holdProperties[this.holdIndexProperty.get() + 4].set(this.holdProperties[2].get());
-					this.holdProperties[this.holdIndexProperty.get() + 5].set(this.holdProperties[3].get());
-					this.holdProperties[this.holdIndexProperty.get() + 6].set(this.holdProperties[4].get());
-					this.currentXProperty.set(this.holdProperties[4].get());
-					this.holdProperties[this.holdIndexProperty.get() + 7].set(this.holdProperties[5].get());
-					this.currentYProperty.set(this.holdProperties[5].get());
+					this.holdIndexProperty.set(this.hold.length - 8);
+					this.holdEndProperty.set(this.hold.length - 2);
+					this.hold[this.holdIndexProperty.get() + 0] = this.currentXProperty.get();
+					this.hold[this.holdIndexProperty.get() + 1] = this.currentYProperty.get();
+					this.hold[this.holdIndexProperty.get() + 2] = this.hold[0];
+					this.hold[this.holdIndexProperty.get() + 3] = this.hold[1];
+					this.hold[this.holdIndexProperty.get() + 4] = this.hold[2];
+					this.hold[this.holdIndexProperty.get() + 5] = this.hold[3];
+					this.hold[this.holdIndexProperty.get() + 6] = this.hold[4];
+					this.currentXProperty.set(this.hold[4]);
+					this.hold[this.holdIndexProperty.get() + 7] = this.hold[5];
+					this.currentYProperty.set(this.hold[5]);
 				}
 
-				level = this.levelsProperties[this.levelIndexProperty.get()].get();
+				level = this.levels[this.levelIndexProperty.get()];
 				while (level < this.limit) {
-					if (getCurveSquaredFlatness(this.holdProperties,this. holdIndexProperty.get()) < this.squaredFlatness) {
+					if (getCurveSquaredFlatness(this.hold,this. holdIndexProperty.get()) < this.squaredFlatness) {
 						break;
 					}
 
 					ensureHoldCapacity(6);
 
 					subdivideCurve(
-							this.holdProperties, this.holdIndexProperty.get(),
-							this.holdProperties, this.holdIndexProperty.get() - 6,
-							this.holdProperties, this.holdIndexProperty.get());
+							this.hold, this.holdIndexProperty.get(),
+							this.hold, this.holdIndexProperty.get() - 6,
+							this.hold, this.holdIndexProperty.get());
 					this.holdIndexProperty.set(this.holdIndexProperty.get()-6);
 
 					// Now that we have subdivided, we have constructed
@@ -3680,9 +3670,9 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 					// set of held coordinate slots.  We now set both
 					// curves level values to the next higher level.
 					level++;
-					this.levelsProperties[this.levelIndexProperty.get()].set(level);
+					this.levels[this.levelIndexProperty.get()] = level;
 					this.levelIndexProperty.set(this.levelIndexProperty.get()+1);
-					this.levelsProperties[this.levelIndexProperty.get()].set(level);
+					this.levels[this.levelIndexProperty.get()] = level;
 				}
 
 				// This curve segment is flat enough, or it is too deep
@@ -3712,8 +3702,8 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 			AbstractPathElement2D element;
 			PathElementType type = this.holdType;
 			if (type!=PathElementType.CLOSE) {
-				double x = this.holdProperties[this.holdIndexProperty.get() + 0].get();
-				double y = this.holdProperties[this.holdIndexProperty.get() + 1].get();
+				double x = this.hold[this.holdIndexProperty.get() + 0];
+				double y = this.hold[this.holdIndexProperty.get() + 1];
 				if (type == PathElementType.MOVE_TO) {
 					element = new AbstractPathElement2D.MovePathElement2d(x, y);
 				}
