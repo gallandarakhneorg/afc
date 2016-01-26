@@ -69,7 +69,7 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 	 * in same index in the second array, <code>false</code> otherwise
 	 */
 	@Pure
-	public static boolean propertyArraysEquals (Property[] array, Property [] array2) {
+	public static boolean propertyArraysEquals (Property<?>[] array, Property<?> [] array2) {
 		if(array.length==array2.length) {
 			for(int i=0; i<array.length; i++) {
 				if(array[i]==null) {
@@ -3411,49 +3411,23 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 		 * @param rightoff the offset into the array of the beginning of the
 		 * the 6 right coordinates
 		 */
-		@SuppressWarnings("null")
-		private static void subdivideQuad(DoubleProperty srcProperties[], int srcoff,
-				DoubleProperty leftProperties[], int leftoff,
-				DoubleProperty rightProperties[], int rightoff) {
-
-			double src[] = null;
-			double left[] = null;
-			double right[] = null;
-
-			if(srcProperties!=null) {
-				src = new double[srcProperties.length];
-				for(int i=0;i<src.length;i++) {
-					src[i] = srcProperties[i].get();
-				}
-			}
-
-			if(leftProperties!=null) {
-				left = new double[leftProperties.length];
-				for(int i=0;i<left.length;i++) {
-					left[i] = leftProperties[i].get();
-				}
-			}
-
-			if(rightProperties!=null) {
-				right = new double[rightProperties.length];
-				for(int i=0;i<right.length;i++) {
-					right[i] = rightProperties[i].get();
-				}
-			}
+		private static void subdivideQuad(DoubleProperty src[], int srcoff,
+				DoubleProperty left[], int leftoff,
+				DoubleProperty right[], int rightoff) {
 			
-			double x1 = src[srcoff + 0];
-			double y1 = src[srcoff + 1];
-			double ctrlx = src[srcoff + 2];
-			double ctrly = src[srcoff + 3];
-			double x2 = src[srcoff + 4];
-			double y2 = src[srcoff + 5];
+			double x1 = src[srcoff + 0].get();
+			double y1 = src[srcoff + 1].get();
+			double ctrlx = src[srcoff + 2].get();
+			double ctrly = src[srcoff + 3].get();
+			double x2 = src[srcoff + 4].get();
+			double y2 = src[srcoff + 5].get();
 			if (left != null) {
-				left[leftoff + 0] = x1;
-				left[leftoff + 1] = y1;
+				left[leftoff + 0].set(x1);
+				left[leftoff + 1].set(y1);
 			}
 			if (right != null) {
-				right[rightoff + 4] = x2;
-				right[rightoff + 5] = y2;
+				right[rightoff + 4].set(x2);
+				right[rightoff + 5].set(y2);
 			}
 			x1 = (x1 + ctrlx) / 2f;
 			y1 = (y1 + ctrly) / 2f;
@@ -3462,16 +3436,16 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 			ctrlx = (x1 + x2) / 2f;
 			ctrly = (y1 + y2) / 2f;
 			if (left != null) {
-				left[leftoff + 2] = x1;
-				left[leftoff + 3] = y1;
-				left[leftoff + 4] = ctrlx;
-				left[leftoff + 5] = ctrly;
+				left[leftoff + 2].set(x1);
+				left[leftoff + 3].set(y1);
+				left[leftoff + 4].set(ctrlx);
+				left[leftoff + 5].set(ctrly);
 			}
 			if (right != null) {
-				right[rightoff + 0] = ctrlx;
-				right[rightoff + 1] = ctrly;
-				right[rightoff + 2] = x2;
-				right[rightoff + 3] = y2;
+				right[rightoff + 0].set(ctrlx);
+				right[rightoff + 1].set(ctrly);
+				right[rightoff + 2].set(x2);
+				right[rightoff + 3].set(y2);
 			}
 		}
 
@@ -3536,51 +3510,26 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 		 * the 6 right coordinates
 		 */
 		private static void subdivideCurve(
-				DoubleProperty srcProperties[], int srcoff,
-				DoubleProperty leftProperties[], int leftoff,
-				DoubleProperty rightProperties[], int rightoff) {
+				DoubleProperty src[], int srcoff,
+				DoubleProperty left[], int leftoff,
+				DoubleProperty right[], int rightoff) {
 
-			double src[] = null;
-			double left[] = null;
-			double right[] = null;
-
-			if(srcProperties !=null) {
-				src = new double[srcProperties.length];				
-				for(int i=0;i<src.length;i++) {					
-					src[i] = srcProperties[i].get();
-				}
-			}
-
-			if(leftProperties !=null) {
-				left = new double[leftProperties.length];
-				for(int i=0;i<left.length;i++) {
-					left[i] = leftProperties[i].get();
-				}
-			}
-
-			if(rightProperties !=null) {
-				right = new double[rightProperties.length];
-				for(int i=0;i<right.length;i++) {
-					right[i] = rightProperties[i].get();
-				}
-			}
-
-
-			double x1 = src[srcoff + 0];
-			double y1 = src[srcoff + 1];
-			double ctrlx1 = src[srcoff + 2];
-			double ctrly1 = src[srcoff + 3];
-			double ctrlx2 = src[srcoff + 4];
-			double ctrly2 = src[srcoff + 5];
-			double x2 = src[srcoff + 6];
-			double y2 = src[srcoff + 7];
+			
+			double x1 = src[srcoff + 0].get();
+			double y1 = src[srcoff + 1].get();
+			double ctrlx1 = src[srcoff + 2].get();
+			double ctrly1 = src[srcoff + 3].get();
+			double ctrlx2 = src[srcoff + 4].get();
+			double ctrly2 = src[srcoff + 5].get();
+			double x2 = src[srcoff + 6].get();
+			double y2 = src[srcoff + 7].get();
 			if (left != null) {
-				left[leftoff + 0] = x1;
-				left[leftoff + 1] = y1;
+				left[leftoff + 0].set(x1);
+				left[leftoff + 1].set(y1);
 			}
 			if (right != null) {
-				right[rightoff + 6] = x2;
-				right[rightoff + 7] = y2;
+				right[rightoff + 6].set(x2);
+				right[rightoff + 7].set(y2);
 			}
 			x1 = (x1 + ctrlx1) / 2f;
 			y1 = (y1 + ctrly1) / 2f;
@@ -3595,20 +3544,20 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 			centerx = (ctrlx1 + ctrlx2) / 2f;
 			centery = (ctrly1 + ctrly2) / 2f;
 			if (left != null) {
-				left[leftoff + 2] = x1;
-				left[leftoff + 3] = y1;
-				left[leftoff + 4] = ctrlx1;
-				left[leftoff + 5] = ctrly1;
-				left[leftoff + 6] = centerx;
-				left[leftoff + 7] = centery;
+				left[leftoff + 2].set(x1);
+				left[leftoff + 3].set(y1);
+				left[leftoff + 4].set(ctrlx1);
+				left[leftoff + 5].set(ctrly1);
+				left[leftoff + 6].set(centerx);
+				left[leftoff + 7].set(centery);
 			}
 			if (right != null) {
-				right[rightoff + 0] = centerx;
-				right[rightoff + 1] = centery;
-				right[rightoff + 2] = ctrlx2;
-				right[rightoff + 3] = ctrly2;
-				right[rightoff + 4] = x2;
-				right[rightoff + 5] = y2;
+				right[rightoff + 0].set(centerx);
+				right[rightoff + 1].set(centery);
+				right[rightoff + 2].set(ctrlx2);
+				right[rightoff + 3].set(ctrly2);
+				right[rightoff + 4].set(x2);
+				right[rightoff + 5].set(y2);
 			}
 		}
 
@@ -3722,7 +3671,7 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 							this.holdProperties, this.holdIndexProperty.get(),
 							this.holdProperties, this.holdIndexProperty.get() - 6,
 							this.holdProperties, this.holdIndexProperty.get());
-					//FIXME this.holdIndexProperty.set(this.holdIndexProperty.get()-6);
+					this.holdIndexProperty.set(this.holdIndexProperty.get()-6);
 
 					// Now that we have subdivided, we have constructed
 					// two curves of one depth lower than the original

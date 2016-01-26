@@ -5,7 +5,6 @@ import org.arakhne.afc.math.geometry.d3.Point3D;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 
-@SuppressWarnings("restriction")
 public class Sphere3d extends AbstractSphere3F {
 	
 	/**
@@ -168,6 +167,12 @@ public class Sphere3d extends AbstractSphere3F {
 
 	@Override
 	public PathIterator3f getPathIterator(Transform3D transform) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public PathIterator3d getPathIteratorProperty(Transform3D transform) {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -8,7 +8,6 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 
-@SuppressWarnings("restriction")
 public class OrientedBox3d extends AbstractOrientedBox3F{
 
 	/**
@@ -612,6 +611,12 @@ public class OrientedBox3d extends AbstractOrientedBox3F{
 
 	@Override
 	public PathIterator3f getPathIterator(Transform3D transform) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public PathIterator3d getPathIteratorProperty(Transform3D transform) {
 		// TODO Auto-generated method stub
 		return null;
 	}

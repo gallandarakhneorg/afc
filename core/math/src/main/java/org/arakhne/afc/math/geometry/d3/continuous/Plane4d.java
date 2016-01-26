@@ -38,7 +38,6 @@ import javafx.beans.property.SimpleDoubleProperty;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@SuppressWarnings("restriction")
 public class Plane4d extends AbstractPlane4F {
 
 	

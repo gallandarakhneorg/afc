@@ -1234,7 +1234,7 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 	@Override
 	public String toString() {
 		StringBuilder b = new StringBuilder();
-		b.append("]p:("); //$NON-NLS-1$
+		b.append("[p:("); //$NON-NLS-1$
 		b.append(this.getP1().getX());
 		b.append(";"); //$NON-NLS-1$
 		b.append(this.getP1().getY());
@@ -1246,7 +1246,7 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 		b.append(this.getSegmentVector().getY());
 		b.append(";"); //$NON-NLS-1$
 		b.append(this.getSegmentVector().getZ());
-		b.append(")["); //$NON-NLS-1$
+		b.append(")]"); //$NON-NLS-1$
 		return b.toString();
 	}
 
@@ -1583,6 +1583,17 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 				s3.getX2(), s3.getY2(), s3.getZ2());
 	}
 
+	
+	@Override
+	public boolean intersects(Path3f s) {
+		return s.intersects(this);
+	}
+
+	@Override
+	public boolean intersects(Path3d s) {
+		return s.intersects(this);
+	}
+	
 	@Pure
 	@Override
 	public boolean intersects(AbstractBoxedShape3F<?> s) {

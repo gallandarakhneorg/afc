@@ -34,6 +34,7 @@ import org.junit.Test;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("boxing")
 public class PentaTreeNodeTest {
 
 	private final TreeNodeListenerStub<DefaultPentaTreeNode<Object>> listener =
@@ -264,10 +265,10 @@ public class PentaTreeNodeTest {
 		private final String name;
 		
 		/**
-		 * @param name
+		 * @param name1
 		 */
-		public NodeStub(String name) {
-			this.name = name;
+		public NodeStub(String name1) {
+			this.name = name1;
 		}
 		
 		/**

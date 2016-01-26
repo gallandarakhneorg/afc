@@ -38,15 +38,15 @@ class AStarEdgeStub implements GraphSegment<AStarEdgeStub,AStarNodeStub> {
 	private final String id;
 	
 	/**
-	 * @param id
-	 * @param c1
-	 * @param c2
+	 * @param id1
+	 * @param c11
+	 * @param c21
 	 * @param isOriented
 	 */
-	public AStarEdgeStub(String id, AStarNodeStub c1, AStarNodeStub c2, boolean isOriented) {
-		this.id = id;
-		this.c1 = c1;
-		this.c2 = c2;
+	public AStarEdgeStub(String id1, AStarNodeStub c11, AStarNodeStub c21, boolean isOriented) {
+		this.id = id1;
+		this.c1 = c11;
+		this.c2 = c21;
 		this.c1.segments.add(this);
 		if (!isOriented) this.c2.segments.add(this);
 	}

@@ -147,7 +147,8 @@ public class PrefixDataDepthFirstTreeIteratorTest extends AbstractDataTreeIterat
 			this.iterator.remove();
 			fail("Expecting NoSuchElementException"); //$NON-NLS-1$
 		}
-		catch(NoSuchElementException _) {
+		catch(NoSuchElementException e) {
+			e.printStackTrace();
 			// Expected exception
 		}
 		
@@ -197,7 +198,8 @@ public class PrefixDataDepthFirstTreeIteratorTest extends AbstractDataTreeIterat
 			this.iterator.remove();
 			fail("Expecting NoSuchElementException"); //$NON-NLS-1$
 		}
-		catch(NoSuchElementException _) {
+		catch(NoSuchElementException e) {
+			e.printStackTrace();
 			// Expected exception
 		}
 		

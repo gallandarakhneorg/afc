@@ -32,13 +32,13 @@ public class Tuple2dTest {
 	 */
 	@Before
 	public void setUp() throws Exception {
+		//
 	}
 
 	@Test
-	public void testAbsolute() throws Exception {
+	public static void testAbsolute() {
 		Tuple2d<?> tuple = new Tuple2d<>(-10, -20);
 		tuple.absolute();
-		System.out.println(tuple.getX()+"  "+tuple.getY());
 	}
 	
 	

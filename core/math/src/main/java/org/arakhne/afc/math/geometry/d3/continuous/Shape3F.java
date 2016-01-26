@@ -20,8 +20,6 @@
  */
 package org.arakhne.afc.math.geometry.d3.continuous;
 
-import org.arakhne.afc.math.geometry.d2.continuous.Path2d;
-import org.arakhne.afc.math.geometry.d2.continuous.Path2f;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Shape3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;

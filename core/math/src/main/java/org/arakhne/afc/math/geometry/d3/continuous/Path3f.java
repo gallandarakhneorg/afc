@@ -33,6 +33,11 @@ import org.arakhne.afc.math.geometry.d3.Path3D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+
 /** A generic 3D-path.
  *
  * @author $Author: hjaffali$
@@ -817,7 +822,6 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 
 	@Pure
 	public boolean intersects(Path3f p) {
-		//FIXME : STILL REMAIN A PROBLEM HERE
 		if (p.isEmpty()) return false;
 		int mask = (this.windingRule == PathWindingRule.NON_ZERO ? -1 : 2);
 		boolean intersects = false;
@@ -908,6 +912,101 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 
 		return intersects && (mask!=0);
 	}
+	
+	@Pure
+	@Override
+	public boolean intersects(Path3d p) {
+		if (p.isEmpty()) return false;
+		int mask = (this.windingRule == PathWindingRule.NON_ZERO ? -1 : 2);
+		boolean intersects = false;
+		PathIterator3d pi = getPathIteratorProperty(MathConstants.SPLINE_APPROXIMATION_RATIO);
+
+		AbstractPathElement3D pathElement = pi.next();
+
+		if (pathElement.type != PathElementType.MOVE_TO) {
+			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
+		}
+
+		Path3d subPath;
+		double curx, cury, curz, movx, movy, movz, endx, endy, endz;
+		curx = movx = pathElement.getToX();
+		cury = movy = pathElement.getToY();
+		curz = movz = pathElement.getToZ();
+
+		while (pi.hasNext() && intersects==false) {
+			pathElement = pi.next();
+
+			switch (pathElement.type) {
+			case MOVE_TO: 
+				movx = curx = pathElement.getToX();
+				movy = cury = pathElement.getToY();
+				movz = cury = pathElement.getToZ();
+				break;
+			case LINE_TO:
+				endx = pathElement.getToX();
+				endy = pathElement.getToY();
+				endz = pathElement.getToZ();
+
+				intersects = p.intersects(new Segment3f(
+						curx, cury, curz, 
+						endx, endy, endz));
+
+				curx = endx;
+				cury = endy;
+				curz = endz;
+				break;
+			case QUAD_TO:
+				endx = pathElement.getToX();
+				endy = pathElement.getToY();
+				endz = pathElement.getToZ();
+				subPath = new Path3d();
+				subPath.moveTo(curx, cury,curz);
+				subPath.quadTo(
+						pathElement.getCtrlX1(), pathElement.getCtrlY1(), pathElement.getCtrlZ1(),
+						endx, endy, endz);
+
+				intersects = subPath.intersects(p.clone());
+
+				curx = endx;
+				cury = endy;
+				curz = endz;
+				break;
+			case CURVE_TO:
+				endx = pathElement.getToX();
+				endy = pathElement.getToY();
+				endz = pathElement.getToZ();
+				subPath = new Path3d();
+				subPath.moveTo(curx, cury,curz);
+				subPath.curveTo(
+						pathElement.getCtrlX1(), pathElement.getCtrlY1(), pathElement.getCtrlZ1(),
+						pathElement.getCtrlX2(), pathElement.getCtrlY2(), pathElement.getCtrlZ2(),
+						endx, endy, endz);
+
+				intersects = subPath.intersects(p.clone());
+
+				curx = endx;
+				cury = endy;
+				curz = endz;
+				break;
+			case CLOSE:
+				if (curx != movx || cury != movy || curz != movz) {
+					intersects = p.intersects(new Segment3f(
+							curx, cury, curz, 
+							movx, movy, movz));
+				}
+
+				curx = movx;
+				cury = movy;
+				curz = movz;
+				break;
+			default:
+			}
+
+		}
+
+		return intersects && (mask!=0);
+	}
+	
 
 	@Pure
 	@Override
@@ -1589,6 +1688,51 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 		return new TransformPathIterator3f(transform);
 	}
 
+	
+	@Pure
+	@Override
+	public PathIterator3d getPathIteratorProperty(double flatness) {
+		return new Path3d.FlatteningPathIterator3d(getWindingRule(), getPathIteratorProperty(null), flatness, 10);
+	}
+	
+	/** Replies an iterator on the path elements.
+	 * <p>
+	 * Only {@link PathElementType#MOVE_TO},
+	 * {@link PathElementType#LINE_TO}, and 
+	 * {@link PathElementType#CLOSE} types are returned by the iterator.
+	 * <p>
+	 * The amount of subdivision of the curved segments is controlled by the 
+	 * flatness parameter, which specifies the maximum distance that any point 
+	 * on the unflattened transformed curve can deviate from the returned
+	 * flattened path segments. Note that a limit on the accuracy of the
+	 * flattened path might be silently imposed, causing very small flattening
+	 * parameters to be treated as larger values. This limit, if there is one,
+	 * is defined by the particular implementation that is used.
+	 * <p>
+	 * The iterator for this class is not multi-threaded safe.
+	 *
+	 * @param transform is an optional affine Transform3D to be applied to the
+	 * coordinates as they are returned in the iteration, or <code>null</code> if 
+	 * untransformed coordinates are desired.
+	 * @param flatness is the maximum distance that the line segments used to approximate
+	 * the curved segments are allowed to deviate from any point on the original curve.
+	 * @return an iterator on the path elements.
+	 */
+	@Pure
+	public PathIterator3d getPathIteratorProperty(Transform3D transform, double flatness) {
+		return new Path3d.FlatteningPathIterator3d(getWindingRule(), getPathIteratorProperty(transform), flatness, 10);
+	}
+	
+	@Pure
+	@Override
+	public PathIterator3d getPathIteratorProperty(Transform3D transform) {
+		if (transform == null) {
+			return new CopyPathIterator3d();
+		}
+		return new TransformPathIterator3d(transform);
+	}
+
+	
 	@Pure
 	@Override
 	public PathWindingRule getWindingRule() {
@@ -1916,7 +2060,6 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 	 *
 	 * @return the last point.
 	 */
-	//FIXME : TO BE VERIFYIED 
 	public Point3f getCurrentPoint() {
 		return new Point3f(
 				this.coords[this.numCoords-3],
@@ -2073,67 +2216,73 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 
 		private final Point3D p1 = new Point3f();
 		private final Point3D p2 = new Point3f();
-		private int iType = 0;
-		private int iCoord = 0;
-		private double movex, movey, movez;
+		private IntegerProperty iTypeProperty = new SimpleIntegerProperty(0);
+		private IntegerProperty iCoordProperty = new SimpleIntegerProperty(0);
+		private DoubleProperty movexProperty, moveyProperty, movezProperty;
 
 		/**
 		 */
-		public CopyPathIterator3f() {
-			//
+		public CopyPathIterator3d() {
+			this.movexProperty = new SimpleDoubleProperty();
+			this.moveyProperty = new SimpleDoubleProperty();
+			this.movezProperty = new SimpleDoubleProperty();
 		}
 
 		@Override
 		public boolean hasNext() {
-			return this.iType<Path3f.this.numTypes;
+			return this.iTypeProperty.get()<Path3f.this.numTypes;
 		}
 
 		@Override
-		public AbstractPathElement3F next() {
-			int type = this.iType;
-			if (this.iType>=Path3f.this.numTypes) {
+		public AbstractPathElement3D next() {
+			int type = this.iTypeProperty.get();
+			if (this.iTypeProperty.get()>=Path3f.this.numTypes) {
 				throw new NoSuchElementException();
 			}
-			AbstractPathElement3F element = null;
+			AbstractPathElement3D element = null;
 			switch(Path3f.this.types[type]) {
 			case MOVE_TO:
-				if (this.iCoord+3>Path3f.this.numCoords) {
+				if (this.iCoordProperty.get()+3>Path3f.this.numCoords) {
 					throw new NoSuchElementException();
 				}
-				this.movex = Path3f.this.coords[this.iCoord++];
-				this.movey = Path3f.this.coords[this.iCoord++];
-				this.movez = Path3f.this.coords[this.iCoord++];
-				this.p2.set(this.movex, this.movey, this.movez);
-				element = new AbstractPathElement3F.MovePathElement3f(
+				this.movexProperty.set(Path3f.this.coords[this.iCoordProperty.get()]);
+				this.moveyProperty.set(Path3f.this.coords[this.iCoordProperty.get()+1]);
+				this.movezProperty.set(Path3f.this.coords[this.iCoordProperty.get()+2]);
+				this.iCoordProperty.set(this.iCoordProperty.get()+3);
+				this.p2.set(this.movexProperty.get(), this.moveyProperty.get(), this.movezProperty.get());
+				element = new AbstractPathElement3D.MovePathElement3d(
 						this.p2.getX(), this.p2.getY(), this.p2.getZ());
 				break;
 			case LINE_TO:
-				if (this.iCoord+3>Path3f.this.numCoords) {
+				if (this.iCoordProperty.get()+3>Path3f.this.numCoords) {
 					throw new NoSuchElementException();
 				}
 				this.p1.set(this.p2);
 				this.p2.set(
-						Path3f.this.coords[this.iCoord++],
-						Path3f.this.coords[this.iCoord++],
-						Path3f.this.coords[this.iCoord++]);
-				element = new AbstractPathElement3F.LinePathElement3f(
+						Path3f.this.coords[this.iCoordProperty.get()],
+						Path3f.this.coords[this.iCoordProperty.get()+1],
+						Path3f.this.coords[this.iCoordProperty.get()+2]);
+				this.iCoordProperty.set(this.iCoordProperty.get()+3);
+				element = new AbstractPathElement3D.LinePathElement3d(
 						this.p1.getX(), this.p1.getY(), this.p1.getZ(),
 						this.p2.getX(), this.p2.getY(), this.p2.getZ());
 				break;
 			case QUAD_TO:
 			{
-				if (this.iCoord+6>Path3f.this.numCoords) {
+				if (this.iCoordProperty.get()+6>Path3f.this.numCoords) {
 					throw new NoSuchElementException();
 				}
 				this.p1.set(this.p2);
-				double ctrlx = Path3f.this.coords[this.iCoord++];
-				double ctrly = Path3f.this.coords[this.iCoord++];
-				double ctrlz = Path3f.this.coords[this.iCoord++];
+				double ctrlx = Path3f.this.coords[this.iCoordProperty.get()];
+				double ctrly = Path3f.this.coords[this.iCoordProperty.get()+1];
+				double ctrlz = Path3f.this.coords[this.iCoordProperty.get()+2];
+				this.iCoordProperty.set(this.iCoordProperty.get()+3);
 				this.p2.set(
-						Path3f.this.coords[this.iCoord++],
-						Path3f.this.coords[this.iCoord++],
-						Path3f.this.coords[this.iCoord++]);
-				element = new AbstractPathElement3F.QuadPathElement3f(
+						Path3f.this.coords[this.iCoordProperty.get()],
+						Path3f.this.coords[this.iCoordProperty.get()+1],
+						Path3f.this.coords[this.iCoordProperty.get()+2]);
+				this.iCoordProperty.set(this.iCoordProperty.get()+3);
+				element = new AbstractPathElement3D.QuadPathElement3d(
 						this.p1.getX(), this.p1.getY(), this.p1.getZ(),
 						ctrlx, ctrly, ctrlz,
 						this.p2.getX(), this.p2.getY(), this.p2.getZ());
@@ -2141,21 +2290,24 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 			break;
 			case CURVE_TO:
 			{
-				if (this.iCoord+9>Path3f.this.numCoords) {
+				if (this.iCoordProperty.get()+9>Path3f.this.numCoords) {
 					throw new NoSuchElementException();
 				}
 				this.p1.set(this.p2);
-				double ctrlx1 = Path3f.this.coords[this.iCoord++];
-				double ctrly1 = Path3f.this.coords[this.iCoord++];
-				double ctrlz1 = Path3f.this.coords[this.iCoord++];
-				double ctrlx2 = Path3f.this.coords[this.iCoord++];
-				double ctrly2 = Path3f.this.coords[this.iCoord++];
-				double ctrlz2 = Path3f.this.coords[this.iCoord++];
+				double ctrlx1 = Path3f.this.coords[this.iCoordProperty.get()];
+				double ctrly1 = Path3f.this.coords[this.iCoordProperty.get()+1];
+				double ctrlz1 = Path3f.this.coords[this.iCoordProperty.get()+2];
+				double ctrlx2 = Path3f.this.coords[this.iCoordProperty.get()+3];
+				double ctrly2 = Path3f.this.coords[this.iCoordProperty.get()+4];
+				double ctrlz2 = Path3f.this.coords[this.iCoordProperty.get()+5];
+				this.iCoordProperty.set(this.iCoordProperty.get()+6);
+				
 				this.p2.set(
-						Path3f.this.coords[this.iCoord++],
-						Path3f.this.coords[this.iCoord++],
-						Path3f.this.coords[this.iCoord++]);
-				element = new AbstractPathElement3F.CurvePathElement3f(
+						Path3f.this.coords[this.iCoordProperty.get()],
+						Path3f.this.coords[this.iCoordProperty.get()+1],
+						Path3f.this.coords[this.iCoordProperty.get()+2]);
+				this.iCoordProperty.set(this.iCoordProperty.get()+3);
+				element = new AbstractPathElement3D.CurvePathElement3d(
 						this.p1.getX(), this.p1.getY(), this.p1.getZ(),
 						ctrlx1, ctrly1, ctrlz1,
 						ctrlx2, ctrly2, ctrlz2,
@@ -2164,8 +2316,8 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 			break;
 			case CLOSE:
 				this.p1.set(this.p2);
-				this.p2.set(this.movex, this.movey, this.movez);
-				element = new AbstractPathElement3F.ClosePathElement3f(
+				this.p2.set(this.movexProperty.get(), this.moveyProperty.get(), this.movezProperty.get());
+				element = new AbstractPathElement3D.ClosePathElement3d(
 						this.p1.getX(), this.p1.getY(), this.p1.getZ(),
 						this.p2.getX(), this.p2.getY(), this.p2.getZ());
 				break;
@@ -2174,7 +2326,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 			if (element==null)
 				throw new NoSuchElementException();
 
-			++this.iType;
+			this.iTypeProperty.set(this.iTypeProperty.get()+1);
 
 			return element;
 		}
@@ -2332,7 +2484,160 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 			return Path3f.this.isPolyline();
 		}
 
-	}  // class TransformPathIterator
+	}  // class TransformPathIterator3f
+	
+	
+	/** A path iterator that transforms the coordinates.
+	 *
+	 * @author $Author: hjaffali$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	private class TransformPathIterator3d implements PathIterator3d {
+
+		private final Transform3D transform;
+		private final Point3D p1 = new Point3f();
+		private final Point3D p2 = new Point3f();
+		private final Point3D ptmp1 = new Point3f();
+		private final Point3D ptmp2 = new Point3f();
+		private IntegerProperty iTypeProperty = new SimpleIntegerProperty(0);
+		private IntegerProperty iCoordProperty = new SimpleIntegerProperty(0);
+		private DoubleProperty movexProperty, moveyProperty, movezProperty;
+
+		/**
+		 * @param transform1
+		 */
+		public TransformPathIterator3d(Transform3D transform1) {
+			assert(transform1!=null);
+			this.transform = transform1;
+			this.movexProperty = new SimpleDoubleProperty();
+			this.moveyProperty = new SimpleDoubleProperty();
+			this.movezProperty = new SimpleDoubleProperty();
+		}
+
+		@Override
+		public boolean hasNext() {
+			return this.iTypeProperty.get()<Path3f.this.numTypes;
+		}
+
+		@Override
+		public AbstractPathElement3D next() {
+			if (this.iTypeProperty.get()>=Path3f.this.numTypes) {
+				throw new NoSuchElementException();
+			}
+			AbstractPathElement3D element = null;
+			switch(Path3f.this.types[this.iTypeProperty.get()]) {
+			case MOVE_TO:
+				this.movexProperty.set(Path3f.this.coords[this.iCoordProperty.get()]);
+				this.iCoordProperty.set(this.iCoordProperty.get()+1);
+
+				this.moveyProperty.set(Path3f.this.coords[this.iCoordProperty.get()]);
+				this.iCoordProperty.set(this.iCoordProperty.get()+1);
+
+				this.movezProperty.set(Path3f.this.coords[this.iCoordProperty.get()]);
+				this.iCoordProperty.set(this.iCoordProperty.get()+1);
+				
+				this.p2.set(this.movexProperty.get(), this.moveyProperty.get(), this.movezProperty.get());
+				this.transform.transform(this.p2);
+				element = new AbstractPathElement3D.MovePathElement3d(
+						this.p2.getX(), this.p2.getY(), this.p2.getZ());
+				break;
+			case LINE_TO:
+				this.p1.set(this.p2);
+				this.p2.set(
+						Path3f.this.coords[this.iCoordProperty.get()],
+						Path3f.this.coords[this.iCoordProperty.get()+1],
+						Path3f.this.coords[this.iCoordProperty.get()+2]);
+				this.iCoordProperty.set(this.iCoordProperty.get()+3);
+				this.transform.transform(this.p2);
+				element = new AbstractPathElement3D.LinePathElement3d(
+						this.p1.getX(), this.p1.getY(), this.p1.getZ(),
+						this.p2.getX(), this.p2.getY(), this.p2.getZ());
+				break;
+			case QUAD_TO:
+			{
+				this.p1.set(this.p2);
+				this.ptmp1.set(
+						Path3f.this.coords[this.iCoordProperty.get()],
+						Path3f.this.coords[this.iCoordProperty.get()+1],
+						Path3f.this.coords[this.iCoordProperty.get()+2]);
+				this.iCoordProperty.set(this.iCoordProperty.get()+3);
+				this.transform.transform(this.ptmp1);
+				this.p2.set(
+						Path3f.this.coords[this.iCoordProperty.get()],
+						Path3f.this.coords[this.iCoordProperty.get()+1],
+						Path3f.this.coords[this.iCoordProperty.get()+2]);
+				this.iCoordProperty.set(this.iCoordProperty.get()+3);
+				this.transform.transform(this.p2);
+				element = new AbstractPathElement3D.QuadPathElement3d(
+						this.p1.getX(), this.p1.getY(), this.p1.getZ(),
+						this.ptmp1.getX(), this.ptmp1.getY(), this.ptmp1.getZ(),
+						this.p2.getX(), this.p2.getY(), this.p2.getZ());
+			}
+			break;
+			case CURVE_TO:
+			{
+				this.p1.set(this.p2);
+				this.ptmp1.set(
+						Path3f.this.coords[this.iCoordProperty.get()],
+						Path3f.this.coords[this.iCoordProperty.get()+1],
+						Path3f.this.coords[this.iCoordProperty.get()+2]);
+				this.iCoordProperty.set(this.iCoordProperty.get()+3);
+				this.transform.transform(this.ptmp1);
+				this.ptmp2.set(
+						Path3f.this.coords[this.iCoordProperty.get()],
+						Path3f.this.coords[this.iCoordProperty.get()+1],
+						Path3f.this.coords[this.iCoordProperty.get()+2]);
+				this.iCoordProperty.set(this.iCoordProperty.get()+3);
+				this.transform.transform(this.ptmp2);
+				this.p2.set(
+						Path3f.this.coords[this.iCoordProperty.get()],
+						Path3f.this.coords[this.iCoordProperty.get()+1],
+						Path3f.this.coords[this.iCoordProperty.get()+2]);
+				this.iCoordProperty.set(this.iCoordProperty.get()+3);
+				this.transform.transform(this.p2);
+				element = new AbstractPathElement3D.CurvePathElement3d(
+						this.p1.getX(), this.p1.getY(), this.p1.getZ(),
+						this.ptmp1.getX(), this.ptmp1.getY(), this.ptmp1.getZ(),
+						this.ptmp2.getX(), this.ptmp2.getY(), this.ptmp2.getZ(),
+						this.p2.getX(), this.p2.getY(), this.p2.getZ());
+			}
+			break;
+			case CLOSE:
+				this.p1.set(this.p2);
+				this.p2.set(this.movexProperty.get(), this.moveyProperty.get(), this.movezProperty.get());
+				this.transform.transform(this.p2);
+				element = new AbstractPathElement3D.ClosePathElement3d(
+						this.p1.getX(), this.p1.getY(), this.p1.getZ(),
+						this.p2.getX(), this.p2.getY(), this.p2.getZ());
+				break;
+			default:
+			}
+			if (element==null)
+				throw new NoSuchElementException();
+			
+			this.iTypeProperty.set(this.iTypeProperty.get()+1);
+			
+			return element;
+		}
+
+		@Override
+		public void remove() {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public PathWindingRule getWindingRule() {
+			return Path3f.this.getWindingRule();
+		}
+
+		@Override
+		public boolean isPolyline() {
+			return Path3f.this.isPolyline();
+		}
+
+	}  // class TransformPathIterator3d
 
 	/** A path iterator that is flattening the path.
 	 * This iterator was copied from AWT FlatteningPathIterator.
@@ -2342,7 +2647,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	private static class FlatteningPathIterator3f implements PathIterator3f {
+	protected static class FlatteningPathIterator3f implements PathIterator3f {
 
 		/** Winding rule of the path.
 		 */
@@ -3070,5 +3375,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 		}
 
 	}
+
+	
 
 }

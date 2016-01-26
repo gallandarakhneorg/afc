@@ -103,11 +103,11 @@ public class Circle2iTest extends AbstractShape2iTestCase<Circle2i> {
 	@Test
 	@Override
 	public void toBoundingBox() {
-		Rectangle2i r = this.r.toBoundingBox();
-		assertEquals(0, r.getMinX());
-		assertEquals(3, r.getMinY());
-		assertEquals(10, r.getMaxX());
-		assertEquals(13, r.getMaxY());
+		Rectangle2i r1 = this.r.toBoundingBox();
+		assertEquals(0, r1.getMinX());
+		assertEquals(3, r1.getMinY());
+		assertEquals(10, r1.getMaxX());
+		assertEquals(13, r1.getMaxY());
 	}
 
 	/**

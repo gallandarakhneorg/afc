@@ -342,5 +342,11 @@ public class Capsule3d extends AbstractCapsule3F {
 		return null;
 	}
 
+	@Override
+	public PathIterator3d getPathIteratorProperty(Transform3D transform) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 }

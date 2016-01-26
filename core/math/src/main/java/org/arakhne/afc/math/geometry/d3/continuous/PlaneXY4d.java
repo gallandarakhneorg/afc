@@ -4,7 +4,6 @@ import org.arakhne.afc.math.geometry.d3.Tuple3D;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 
-@SuppressWarnings("restriction")
 public class PlaneXY4d extends AbstractPlaneXY4F{
 	
 

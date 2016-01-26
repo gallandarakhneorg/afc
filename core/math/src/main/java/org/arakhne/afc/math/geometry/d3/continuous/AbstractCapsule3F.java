@@ -629,5 +629,17 @@ public abstract class AbstractCapsule3F extends AbstractShape3F<AbstractCapsule3
 		}
 		return d2 < getRadius();
 	}
+	
+	@Pure
+	@Override
+	public boolean intersects(Path3f s) {
+		return s.intersects(this);
+	}
+
+	@Pure
+	@Override
+	public boolean intersects(Path3d s) {
+		return s.intersects(this);
+	}
 
 }

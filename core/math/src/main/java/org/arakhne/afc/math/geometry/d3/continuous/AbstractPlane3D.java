@@ -378,6 +378,8 @@ public abstract class AbstractPlane3D<PT extends AbstractPlane3D<? super PT>> im
 	public boolean intersects(AbstractSegment3F segment) {
 		Vector3D n = getNormal();
 		Vector3D u = segment.getDirection();
+		
+		System.out.println(segment);
 
 	    double s = n.dot(u);
 

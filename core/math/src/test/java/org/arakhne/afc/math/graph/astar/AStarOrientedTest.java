@@ -101,7 +101,7 @@ public class AStarOrientedTest extends AbstractMathTestCase {
 	}
 
 	private static double dist(double a, double b) {
-		return (double)Math.sqrt(a*a+b*b);
+		return Math.sqrt(a*a+b*b);
 	}
 	
 	/**

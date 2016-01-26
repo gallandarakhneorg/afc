@@ -1543,5 +1543,17 @@ public abstract class AbstractOrientedBox3F extends AbstractShape3F<AbstractOrie
 	public boolean intersects(Plane3D<?> plane) {
 		return plane.intersects(this);
 	}
+	
+	@Pure
+	@Override
+	public boolean intersects(Path3f s) {
+		return s.intersects(this);
+	}
+
+	@Pure
+	@Override
+	public boolean intersects(Path3d s) {
+		return s.intersects(this);
+	}
 
 }

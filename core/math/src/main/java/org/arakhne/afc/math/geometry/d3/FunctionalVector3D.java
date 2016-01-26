@@ -498,13 +498,13 @@ public interface FunctionalVector3D extends Vector3D {
 	 */
 	@Override
 	default void normalize(Vector3D v1) {
-		if(v1.length()==0){
-			throw new ArithmeticException();
+		if(v1.length()!=0){
+			double norm = 1f / v1.length();
+			this.setX((v1.getX()*norm));
+			this.setY((v1.getY()*norm));
+			this.setZ((v1.getZ()*norm)); 
 		}
-		double norm = 1f / v1.length();
-		this.setX((int)(v1.getX()*norm));
-		this.setY((int)(v1.getY()*norm));
-		this.setZ((int)(v1.getZ()*norm));        
+		       
 	}
 
 	/* (non-Javadoc)
@@ -514,12 +514,11 @@ public interface FunctionalVector3D extends Vector3D {
 	default void normalize() {
 		double length = this.length();
 		
-		if(length==0){
-			throw new ArithmeticException();
+		if(length!=0){
+			this.setX(this.getX() / length);
+			this.setY(this.getY() / length);
+			this.setZ(this.getZ() / length);
 		}
-		this.setX(this.getX() / length);
-		this.setY(this.getY() / length);
-		this.setZ(this.getZ() / length);
 	}
 
 	/* (non-Javadoc)

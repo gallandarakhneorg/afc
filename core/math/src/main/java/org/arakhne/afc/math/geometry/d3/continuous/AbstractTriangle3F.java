@@ -2337,6 +2337,18 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 				|| p.intersects(getSegment2())
 				|| p.intersects(getSegment3());
 	}
+	
+	@Pure
+	@Override
+	public boolean intersects(Path3f s) {
+		return s.intersects(this);
+	}
+
+	@Pure
+	@Override
+	public boolean intersects(Path3d s) {
+		return s.intersects(this);
+	}
 
 	/** Replies the segment between P1 and P2.
 	 *

@@ -168,6 +168,12 @@ public class Sphere3f extends AbstractSphere3F {
 		return null;
 	}
 
+	@Override
+	public PathIterator3d getPathIteratorProperty(Transform3D transform) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	
 	
 }

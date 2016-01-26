@@ -32,7 +32,6 @@ import javafx.beans.property.ReadOnlyDoubleWrapper;
  * @author Olivier LAMOTTE (olivier.lamotte@utbm.fr)
  *
  */
-@SuppressWarnings("restriction")
 public class Vector3d extends Tuple3d<Vector3D> implements FunctionalVector3D {
 	
 	private static final long serialVersionUID = -2885355291282425412L;

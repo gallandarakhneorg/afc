@@ -268,7 +268,11 @@ public class Segment3f extends AbstractSegment3F {
 		return null;
 	}
 
-	
+	@Override
+	public PathIterator3d getPathIteratorProperty(Transform3D transform) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	
 }

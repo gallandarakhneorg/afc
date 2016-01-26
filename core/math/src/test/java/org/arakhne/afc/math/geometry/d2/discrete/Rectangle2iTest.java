@@ -108,8 +108,8 @@ public class Rectangle2iTest extends AbstractShape2iTestCase<Rectangle2i> {
 	@Test
 	@Override
 	public void toBoundingBox() {
-		Rectangle2i r = this.r.toBoundingBox();
-		assertSame(this.r, r);
+		Rectangle2i r1 = this.r.toBoundingBox();
+		assertSame(this.r, r1);
 	}
 
 	/**

@@ -32,16 +32,16 @@ public class Point2dTest {
 	 */
 	@Before
 	public void setUp() throws Exception {
+		//
 	}
 
 	/**
 	 * Test method for {@link org.arakhne.afc.math.geometry.d2.continuous.Point2d#Point2d(double, double)}.
 	 */
 	@Test
-	public void testPoint2d() throws Exception {
+	public static void testPoint2d() {
 		Point2d point = new Point2d(-1, -4);
 		point.absolute();
-		System.out.println(point.getX()+"  "+point.getY());
 	}
 
 }

@@ -205,7 +205,7 @@ public class RoundRectangle2fTest extends AbstractRectangularShape2fTestCase<Rou
 	@Test
 	@Override
 	public void toBoundingBox() {
-		AbstractRectangle2F bb = this.r.toBoundingBox();
+		AbstractRectangle2F<?> bb = this.r.toBoundingBox();
 		assertEpsilonEquals(0f, bb.getMinX());
 		assertEpsilonEquals(0f, bb.getMinY());
 		assertEpsilonEquals(1f, bb.getMaxX());
@@ -509,34 +509,34 @@ public class RoundRectangle2fTest extends AbstractRectangularShape2fTestCase<Rou
 	 */
 	@Test
 	public void containsRoundRectangleRectangle() {
-		assertFalse(RoundRectangle2f.containsRoundRectangleRectangle(
+		assertFalse(AbstractRoundRectangle2F.containsRoundRectangleRectangle(
 				0f, 0f, 1f, 1f, .2f, .4f,
 				0f, 0f, 1f, 1f));
-		assertFalse(RoundRectangle2f.containsRoundRectangleRectangle(
+		assertFalse(AbstractRoundRectangle2F.containsRoundRectangleRectangle(
 				0f, 0f, 1f, 1f, .2f, .4f,
 				-5f, -5f, 6f, 6f));
-		assertFalse(RoundRectangle2f.containsRoundRectangleRectangle(
+		assertFalse(AbstractRoundRectangle2F.containsRoundRectangleRectangle(
 				0f, 0f, 1f, 1f, .2f, .4f,
 				.5f, .5f, 4.5f, 4.5f));
-		assertFalse(RoundRectangle2f.containsRoundRectangleRectangle(
+		assertFalse(AbstractRoundRectangle2F.containsRoundRectangleRectangle(
 				0f, 0f, 1f, 1f, .2f, .4f,
 				-5f, -5f, 10f, 10f));
-		assertFalse(RoundRectangle2f.containsRoundRectangleRectangle(
+		assertFalse(AbstractRoundRectangle2F.containsRoundRectangleRectangle(
 				0f, 0f, 1f, 1f, .2f, .4f,
 				5f, .5f, 5f, .6f));
-		assertFalse(RoundRectangle2f.containsRoundRectangleRectangle(
+		assertFalse(AbstractRoundRectangle2F.containsRoundRectangleRectangle(
 				0f, 0f, 1f, 1f, .2f, .4f,
 				-5f, -5f, 1f, 1f));
-		assertFalse(RoundRectangle2f.containsRoundRectangleRectangle(
+		assertFalse(AbstractRoundRectangle2F.containsRoundRectangleRectangle(
 				0f, 0f, 1f, 1f, .2f, .4f,
 				-5f, -5f, 10f, 1f));
-		assertFalse(RoundRectangle2f.containsRoundRectangleRectangle(
+		assertFalse(AbstractRoundRectangle2F.containsRoundRectangleRectangle(
 				0f, 0f, 1f, 1f, .2f, .4f,
 				5f, -5f, 1f, 10f));
-		assertFalse(RoundRectangle2f.containsRoundRectangleRectangle(
+		assertFalse(AbstractRoundRectangle2F.containsRoundRectangleRectangle(
 				0f, 0f, 1f, 1f, .2f, .4f,
 				-5f, -5f, 5.01f, 5.01f));
-		assertTrue(RoundRectangle2f.containsRoundRectangleRectangle(
+		assertTrue(AbstractRoundRectangle2F.containsRoundRectangleRectangle(
 				0f, 0f, 1f, 1f, .2f, .4f,
 				.25f, .25f, .5f, .5f));
 	}

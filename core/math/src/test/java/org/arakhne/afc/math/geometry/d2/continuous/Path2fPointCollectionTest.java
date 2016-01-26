@@ -271,7 +271,8 @@ public class Path2fPointCollectionTest extends AbstractMathTestCase {
     		this.c.retainAll(Collections.emptyList());
     		fail("Expecting an exception"); //$NON-NLS-1$
     	}
-    	catch(Throwable _) {
+    	catch(Throwable e1) {
+    		e1.printStackTrace();
     		// Expecting an exception
     	}
     }

@@ -38,14 +38,14 @@ class SegmentStub implements GraphSegment<SegmentStub,ConnectionStub> {
 	private final String id;
 	
 	/**
-	 * @param id
-	 * @param c1
-	 * @param c2
+	 * @param id1
+	 * @param c11
+	 * @param c21
 	 */
-	public SegmentStub(String id, ConnectionStub c1, ConnectionStub c2) {
-		this.id = id;
-		this.c1 = c1;
-		this.c2 = c2;
+	public SegmentStub(String id1, ConnectionStub c11, ConnectionStub c21) {
+		this.id = id1;
+		this.c1 = c11;
+		this.c2 = c21;
 		this.c1.segments.add(this);
 		this.c2.segments.add(this);
 	}

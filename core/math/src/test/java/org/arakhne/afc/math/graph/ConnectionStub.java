@@ -38,10 +38,10 @@ class ConnectionStub implements GraphPoint<ConnectionStub,SegmentStub> {
 	private final String id;
 	
 	/**
-	 * @param id
+	 * @param id1
 	 */
-	public ConnectionStub(String id) {
-		this.id = id;
+	public ConnectionStub(String id1) {
+		this.id = id1;
 	}
 	
 	@Override
@@ -182,10 +182,10 @@ class ConnectionStub implements GraphPoint<ConnectionStub,SegmentStub> {
 		private final SegmentStub segment;
 		
 		/**
-		 * @param segment
+		 * @param segment1
 		 */
-		public GPC(SegmentStub segment) {
-			this.segment = segment;
+		public GPC(SegmentStub segment1) {
+			this.segment = segment1;
 		}
 
 		@Override

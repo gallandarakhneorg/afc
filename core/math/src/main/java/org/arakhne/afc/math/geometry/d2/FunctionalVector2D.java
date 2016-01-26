@@ -327,12 +327,12 @@ public interface FunctionalVector2D extends Vector2D {
 	 */
 	@Override
 	default void normalize(Vector2D v1) {
-		if(v1.length()==0){
-			throw new ArithmeticException();
+		if(v1.length()!=0){
+			double norm = 1f / v1.length();
+			this.setX((v1.getX()*norm));
+			this.setY((v1.getY()*norm));
 		}
-		double norm = 1f / v1.length();
-		this.setX((int)(v1.getX()*norm));
-		this.setY((int)(v1.getY()*norm));
+		
 	}
 
 	/* (non-Javadoc)
@@ -342,11 +342,11 @@ public interface FunctionalVector2D extends Vector2D {
 	default void normalize() {
 		double length = this.length();
 		
-		if(length==0){
-			throw new ArithmeticException();
+		if(length!=0){
+			this.setX(this.getX() / length);
+			this.setY(this.getY() / length);
 		}
-		this.setX(this.getX() / length);
-		this.setY(this.getY() / length);
+		
 	}
 
 	/* (non-Javadoc)

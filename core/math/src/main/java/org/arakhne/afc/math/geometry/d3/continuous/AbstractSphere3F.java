@@ -873,6 +873,18 @@ public abstract class AbstractSphere3F extends AbstractShape3F<AbstractSphere3F>
 	public boolean intersects(Plane3D<?> p) {
 		return p.intersects(this);
 	}
+	
+	@Pure
+	@Override
+	public boolean intersects(Path3f s) {
+		return s.intersects(this);
+	}
+
+	@Pure
+	@Override
+	public boolean intersects(Path3d s) {
+		return s.intersects(this);
+	}
 
 	@Override
 	public void transform(Transform3D transformationMatrix) {

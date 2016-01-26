@@ -821,6 +821,18 @@ public class AlignedBox3f extends AbstractBoxedShape3F<AlignedBox3f> {
 
 	@Pure
 	@Override
+	public boolean intersects(Path3f s) {
+		return s.intersects(this);
+	}
+
+	@Pure
+	@Override
+	public boolean intersects(Path3d s) {
+		return s.intersects(this);
+	}
+	
+	@Pure
+	@Override
 	public Point3D getClosestPointTo(Point3D p) {
 		return computeClosestPoint(
 				getMinX(), getMinY(), getMinZ(),
@@ -894,7 +906,7 @@ public class AlignedBox3f extends AbstractBoxedShape3F<AlignedBox3f> {
 		if (obj == this) {
 			return true;
 		}
-		if (obj instanceof AlignedBox3f) {
+		if (obj instanceof AbstractBoxedShape3F) {
 			AlignedBox3f ab3f = (AlignedBox3f) obj;
 			return ((getMinX() == ab3f.getMinX()) &&
 					(getMinY() == ab3f.getMinY()) &&
@@ -925,5 +937,10 @@ public class AlignedBox3f extends AbstractBoxedShape3F<AlignedBox3f> {
 		return null;
 	}
 
+	@Override
+	public PathIterator3d getPathIteratorProperty(Transform3D transform) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

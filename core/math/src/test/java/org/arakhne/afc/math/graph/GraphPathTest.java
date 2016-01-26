@@ -41,6 +41,7 @@ import org.junit.Test;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("unused")
 public class GraphPathTest {
 
 	private SegmentStub s1;
@@ -130,7 +131,7 @@ public class GraphPathTest {
 			this.path.getStartingPointFor(6);
 			fail("expecting IndexOutOfBoundsException"); //$NON-NLS-1$
 		}
-		catch(IndexOutOfBoundsException _) {
+		catch(IndexOutOfBoundsException e) {
 			//
 		}
 	}
@@ -162,7 +163,7 @@ public class GraphPathTest {
 			this.path.getStartingPointFor(8);
 			fail("expecting IndexOutOfBoundsException"); //$NON-NLS-1$
 		}
-		catch(IndexOutOfBoundsException _) {
+		catch(IndexOutOfBoundsException e) {
 			//
 		}
 	}
@@ -817,7 +818,7 @@ public class GraphPathTest {
 			this.path.get(6);
 			fail("expecting IndexOutOfBounds"); //$NON-NLS-1$
 		}
-		catch (Exception _) {
+		catch (Exception e) {
 			//
 		}
 	}
@@ -849,7 +850,7 @@ public class GraphPathTest {
 			this.path.get(8);
 			fail("expecting IndexOutOfBounds"); //$NON-NLS-1$
 		}
-		catch (Exception _) {
+		catch (Exception e) {
 			//
 		}
 	}
@@ -925,7 +926,7 @@ public class GraphPathTest {
 			this.path.add(45, this.s1);
 			fail("Expecting IndexOutOfBoundsException"); //$NON-NLS-1$
 		}
-		catch(IndexOutOfBoundsException _ ) {
+		catch(IndexOutOfBoundsException e ) {
 			// Expected exception
 		}
 		
@@ -949,7 +950,7 @@ public class GraphPathTest {
 			this.path.add(1, this.s2);
 			fail("Expecting IllegalArgumentException"); //$NON-NLS-1$
 		}
-		catch(IllegalArgumentException _) {
+		catch(IllegalArgumentException e) {
 			// expected exception
 		}
 		

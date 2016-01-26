@@ -45,9 +45,7 @@ public class Vector3dTest {
 	@Test
 	public void testSet() throws Exception {
 		
-		System.out.println(v.length());
 		this.v.set(20, 20, 20);
-		System.out.println(v.length());
 		
 	}
 
