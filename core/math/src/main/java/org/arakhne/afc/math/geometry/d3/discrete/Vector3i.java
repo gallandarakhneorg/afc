@@ -27,6 +27,7 @@ import org.arakhne.afc.math.geometry.d3.Tuple3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
 import org.arakhne.afc.math.geometry.d3.continuous.Quaternion;
 import org.arakhne.afc.math.geometry.d3.continuous.Transform3D;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** 3D Vector with 3 integers.
  * 
@@ -108,6 +109,7 @@ public class Vector3i extends Tuple3i<Vector3D> implements Vector3D {
 	
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public Vector3i clone() {
 		return (Vector3i)super.clone();
@@ -116,6 +118,7 @@ public class Vector3i extends Tuple3i<Vector3D> implements Vector3D {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public double angle(Vector3D v1) {
 		double vDot = dot(v1) / ( length()*v1.length() );
@@ -127,11 +130,13 @@ public class Vector3i extends Tuple3i<Vector3D> implements Vector3D {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public double dot(Vector3D v1) {
 	      return (this.x*v1.getX() + this.y*v1.getY() + this.z*v1.getZ());
 	}
 
+	@Pure
 	@Override
 	public double perp(Vector3D v) {
 		/* First method:
@@ -157,6 +162,7 @@ public class Vector3i extends Tuple3i<Vector3D> implements Vector3D {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public double length() {
         return Math.sqrt(this.x*this.x + this.y*this.y + this.z*this.z);
@@ -165,6 +171,7 @@ public class Vector3i extends Tuple3i<Vector3D> implements Vector3D {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public double lengthSquared() {
         return (this.x*this.x + this.y*this.y + this.z*this.z);
@@ -257,6 +264,7 @@ public class Vector3i extends Tuple3i<Vector3D> implements Vector3D {
 		this.z = (int)(this.z - t1.getZ());
 	}
 
+	@Pure
 	@Override
 	public Vector3D cross(Vector3D v1) {
 		return crossLeftHand(v1);
@@ -267,6 +275,7 @@ public class Vector3i extends Tuple3i<Vector3D> implements Vector3D {
 		crossLeftHand(v1, v2);
 	}
 
+	@Pure
 	@Override@SuppressWarnings("hiding")
 	public Vector3D crossLeftHand(Vector3D v1) {
 		double x = v1.getY()*getZ() - v1.getZ()*getY();
@@ -282,7 +291,8 @@ public class Vector3i extends Tuple3i<Vector3D> implements Vector3D {
 		double z = v2.getX()*v1.getY() - v2.getY()*v1.getX();
 		set(x,y,z);
 	}
-	
+
+	@Pure
 	@Override@SuppressWarnings("hiding")
 	public Vector3D crossRightHand(Vector3D v1) {
 		double x = getY()*v1.getZ() - getZ()*v1.getY();
@@ -306,11 +316,13 @@ public class Vector3i extends Tuple3i<Vector3D> implements Vector3D {
 		mat.transform(this);
 	}
 
+	@Pure
 	@Override
 	public boolean isUnitVector() {
 		return MathUtil.isEpsilonEqual(lengthSquared(), 1.);
 	}
 
+	@Pure
 	@Override
 	public boolean isColinear(Vector3D v) {
 		int cx = iy() * v.iz() - iz() * v.iy();
@@ -336,6 +348,7 @@ public class Vector3i extends Tuple3i<Vector3D> implements Vector3D {
 		}
 	}
 
+	@Pure
 	@Override
 	public Vector3D toUnmodifiable() {
 		return new UnmodifiableVector3i();
@@ -355,6 +368,7 @@ public class Vector3i extends Tuple3i<Vector3D> implements Vector3D {
 			//
 		}
 
+		@Pure
 		@Override
 		public Vector3D clone() {
 			try {
@@ -544,11 +558,13 @@ public class Vector3i extends Tuple3i<Vector3D> implements Vector3D {
 			throw new UnsupportedOperationException();
 		}
 
+		@Pure
 		@Override
 		public double getX() {
 			return Vector3i.this.getX();
 		}
 
+		@Pure
 		@Override
 		public int ix() {
 			return Vector3i.this.ix();
@@ -564,11 +580,13 @@ public class Vector3i extends Tuple3i<Vector3D> implements Vector3D {
 			throw new UnsupportedOperationException();
 		}
 
+		@Pure
 		@Override
 		public double getY() {
 			return Vector3i.this.getY();
 		}
 
+		@Pure
 		@Override
 		public int iy() {
 			return Vector3i.this.iy();
@@ -584,11 +602,13 @@ public class Vector3i extends Tuple3i<Vector3D> implements Vector3D {
 			throw new UnsupportedOperationException();
 		}
 
+		@Pure
 		@Override
 		public double getZ() {
 			return Vector3i.this.getZ();
 		}
 
+		@Pure
 		@Override
 		public int iz() {
 			return Vector3i.this.iz();
@@ -654,16 +674,19 @@ public class Vector3i extends Tuple3i<Vector3D> implements Vector3D {
 			throw new UnsupportedOperationException();
 		}
 
+		@Pure
 		@Override
 		public boolean equals(Tuple3D<?> t1) {
 			return Vector3i.this.equals(t1);
 		}
-		
+
+		@Pure
 		@Override
 		public int hashCode() {
 			return Vector3i.this.hashCode();
 		}
 
+		@Pure
 		@Override
 		public boolean epsilonEquals(Vector3D t1, double epsilon) {
 			return Vector3i.this.epsilonEquals(t1, epsilon);
@@ -714,11 +737,13 @@ public class Vector3i extends Tuple3i<Vector3D> implements Vector3D {
 			throw new UnsupportedOperationException();
 		}
 
+		@Pure
 		@Override
 		public double dot(Vector3D v1) {
 			return Vector3i.this.dot(v1);
 		}
 
+		@Pure
 		@Override
 		public Vector3D cross(Vector3D v1) {
 			return Vector3i.this.cross(v1);
@@ -729,6 +754,7 @@ public class Vector3i extends Tuple3i<Vector3D> implements Vector3D {
 			throw new UnsupportedOperationException();
 		}
 
+		@Pure
 		@Override
 		public Vector3D crossLeftHand(Vector3D v1) {
 			return Vector3i.this.crossLeftHand(v1);
@@ -739,6 +765,7 @@ public class Vector3i extends Tuple3i<Vector3D> implements Vector3D {
 			throw new UnsupportedOperationException();
 		}
 
+		@Pure
 		@Override
 		public Vector3D crossRightHand(Vector3D v1) {
 			return Vector3i.this.crossRightHand(v1);
@@ -749,11 +776,13 @@ public class Vector3i extends Tuple3i<Vector3D> implements Vector3D {
 			throw new UnsupportedOperationException();
 		}
 
+		@Pure
 		@Override
 		public double length() {
 			return Vector3i.this.length();
 		}
 
+		@Pure
 		@Override
 		public double lengthSquared() {
 			return Vector3i.this.lengthSquared();
@@ -769,6 +798,7 @@ public class Vector3i extends Tuple3i<Vector3D> implements Vector3D {
 			throw new UnsupportedOperationException();
 		}
 
+		@Pure
 		@Override
 		public double angle(Vector3D v1) {
 			return Vector3i.this.angle(v1);
@@ -779,6 +809,7 @@ public class Vector3i extends Tuple3i<Vector3D> implements Vector3D {
 			throw new UnsupportedOperationException();
 		}
 
+		@Pure
 		@Override
 		public boolean isUnitVector() {
 			return Vector3i.this.isUnitVector();
@@ -789,16 +820,19 @@ public class Vector3i extends Tuple3i<Vector3D> implements Vector3D {
 			throw new UnsupportedOperationException();
 		}
 
+		@Pure
 		@Override
 		public Vector3D toUnmodifiable() {
 			return this;
 		}
 
+		@Pure
 		@Override
 		public double perp(Vector3D v) {
 			return Vector3i.this.perp(v);
 		}
 
+		@Pure
 		@Override
 		public boolean isColinear(Vector3D v) {
 			return Vector3i.this.isColinear(v);

@@ -193,6 +193,13 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 		return false;
 	}
 
+	@SuppressWarnings("unused")
+	public static boolean overlapsCoplanarTriangle(Point3f point3f, Point3f point3f2, Point3f point3f3,
+			Point3f point3f4, Point3f point3f5, Point3f point3f6) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
 	/** Replies if the triangle intersects the aligned box.
 	 * 
 	 * <a href="./doc-files/aabb_triangle_intersection.pdf"> Tomas Akenine-Moller.
@@ -2376,15 +2383,6 @@ public abstract class AbstractTriangle3F extends AbstractShape3F<AbstractTriangl
 	public AbstractSegment3F getSegment3() {
 		return new Segment3f(getP3(), getP1());
 	}
-
-	@SuppressWarnings("unused")
-	public static boolean overlapsCoplanarTriangle(Point3f point3f, Point3f point3f2, Point3f point3f3,
-			Point3f point3f4, Point3f point3f5, Point3f point3f6) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-
 	
 
 }

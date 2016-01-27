@@ -175,6 +175,7 @@ public class Segment3f extends AbstractSegment3F {
 	 * 
 	 * {@inheritDoc}
 	 */
+	@Pure
 	public double getY1() {
 		return this.pivot.getY();
 	}
@@ -183,6 +184,7 @@ public class Segment3f extends AbstractSegment3F {
 	 * 
 	 * {@inheritDoc}
 	 */
+	@Pure
 	public double getZ1() {
 		return this.pivot.getZ();
 	}
@@ -218,6 +220,7 @@ public class Segment3f extends AbstractSegment3F {
 	 * 
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public Point3f getP2() {
 		return new Point3f(
@@ -230,6 +233,7 @@ public class Segment3f extends AbstractSegment3F {
 	 * 
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public double getX2() {
 		return this.pivot.getX() + this.d.getX();
@@ -239,6 +243,7 @@ public class Segment3f extends AbstractSegment3F {
 	 * 
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public double getY2() {
 		return this.pivot.getY() + this.d.getY();
@@ -248,6 +253,7 @@ public class Segment3f extends AbstractSegment3F {
 	 * 
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public double getZ2() {
 		return this.pivot.getZ() + this.d.getZ();
@@ -262,12 +268,14 @@ public class Segment3f extends AbstractSegment3F {
 		this.d.sub(p, this.pivot);
 	}
 
+	@Pure
 	@Override
 	public PathIterator3f getPathIterator(Transform3D transform) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	@Pure
 	@Override
 	public PathIterator3d getPathIteratorProperty(Transform3D transform) {
 		// TODO Auto-generated method stub

@@ -23,6 +23,7 @@ package org.arakhne.afc.math.geometry.d3.continuous;
 import java.util.Iterator;
 
 import org.arakhne.afc.math.geometry.PathWindingRule;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** This interface describes an interator on path elements.
 *
@@ -37,6 +38,7 @@ public interface PathIterator3f extends Iterator<AbstractPathElement3F> {
 	 * 
 	 * @return the winding rule for the path.
 	 */
+	@Pure
 	public PathWindingRule getWindingRule();
 	
 	/** Replies the iterator may reply only elements of type

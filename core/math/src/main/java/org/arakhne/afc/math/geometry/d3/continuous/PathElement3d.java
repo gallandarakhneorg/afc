@@ -21,6 +21,7 @@
 package org.arakhne.afc.math.geometry.d3.continuous;
 
 import org.arakhne.afc.math.geometry.PathElementType;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -117,41 +118,49 @@ public abstract class PathElement3d extends AbstractPathElement3D {
 		this.setToZ(toz);
 	}
 
-	
+
+	@Pure
 	public double getFromX() {
 		return this.fromXProperty.get();
 	}
 
+	@Pure
 	public double getFromY() {
 		return this.fromYProperty.get();
 	}
 
-	
+
+	@Pure
 	public double getToX() {
 		return this.toXProperty.get();
 	}
 
-	
+
+	@Pure
 	public double getToY() {
 		return this.toYProperty.get();
 	}
 
-	
+
+	@Pure
 	public double getCtrlX1() {
 		return this.ctrlX1Property.get();
 	}
 
-	
+
+	@Pure
 	public double getCtrlY1() {
 		return this.ctrlY1Property.get();
 	}
 
-	
+
+	@Pure
 	public double getCtrlX2() {
 		return this.ctrlX2Property.get();
 	}
 
-	
+
+	@Pure
 	public double getCtrlY2() {
 		return this.ctrlY2Property.get();
 	}
@@ -199,6 +208,7 @@ public abstract class PathElement3d extends AbstractPathElement3D {
 	}
 
 
+	@Pure
 	public double getFromZ() {
 		return this.fromZProperty.get();
 	}
@@ -209,6 +219,7 @@ public abstract class PathElement3d extends AbstractPathElement3D {
 	}
 
 
+	@Pure
 	public double getToZ() {
 		return this.toZProperty.get();
 	}
@@ -219,6 +230,7 @@ public abstract class PathElement3d extends AbstractPathElement3D {
 	}
 
 
+	@Pure
 	public double getCtrlZ1() {
 		return this.ctrlZ1Property.get();
 	}
@@ -229,6 +241,7 @@ public abstract class PathElement3d extends AbstractPathElement3D {
 	}
 
 
+	@Pure
 	public double getCtrlZ2() {
 		return this.ctrlZ2Property.get();
 	}
@@ -238,7 +251,4 @@ public abstract class PathElement3d extends AbstractPathElement3D {
 		this.ctrlZ2Property.set(ctrlZ21);
 	}
 
-
-	
-	
 }

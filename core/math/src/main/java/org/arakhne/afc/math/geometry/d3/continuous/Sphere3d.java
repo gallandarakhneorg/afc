@@ -1,6 +1,7 @@
 package org.arakhne.afc.math.geometry.d3.continuous;
 
 import org.arakhne.afc.math.geometry.d3.Point3D;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -13,21 +14,24 @@ public class Sphere3d extends AbstractSphere3F {
 	private static final long serialVersionUID = -77754164566103719L;
 
 	/** X-coordinate of the sphere center. */
-	protected DoubleProperty cxProperty = new SimpleDoubleProperty(0f);
+	protected DoubleProperty cxProperty;
 
 	/** Y-coordinate of the sphere center. */
-	protected DoubleProperty cyProperty = new SimpleDoubleProperty(0f);
+	protected DoubleProperty cyProperty;
 
 	/** Z-coordinate of the sphere center. */
-	protected DoubleProperty czProperty = new SimpleDoubleProperty(0f);
+	protected DoubleProperty czProperty;
 
 	/** Radius of the sphere center (must be always positive). */
-	protected DoubleProperty radiusProperty = new SimpleDoubleProperty(0f);
+	protected DoubleProperty radiusProperty;
 
 	/**
 	 */
 	public Sphere3d() {
-		//
+		this.cxProperty = new SimpleDoubleProperty(0f);
+		this.cyProperty = new SimpleDoubleProperty(0f);
+		this.czProperty = new SimpleDoubleProperty(0f);
+		this.radiusProperty = new SimpleDoubleProperty(0f);
 	}
 
 	/**
@@ -35,6 +39,7 @@ public class Sphere3d extends AbstractSphere3F {
 	 * @param radius1
 	 */
 	public Sphere3d(Point3D center, double radius1) {
+		this();
 		set(center, radius1);
 	}
 
@@ -45,6 +50,7 @@ public class Sphere3d extends AbstractSphere3F {
 	 * @param radius1
 	 */
 	public Sphere3d(double x, double y, double z, double radius1) {
+		this();
 		set(x, y, z, radius1);
 	}
 	
@@ -52,6 +58,7 @@ public class Sphere3d extends AbstractSphere3F {
 	 * @param c
 	 */
 	public Sphere3d(AbstractSphere3F c) {
+		this();
 		this.cxProperty.set(c.getX());
 		this.cyProperty.set(c.getY());
 		this.czProperty.set(c.getZ());
@@ -91,6 +98,7 @@ public class Sphere3d extends AbstractSphere3F {
 	 * 
 	 * @return the center x.
 	 */
+	@Pure
 	@Override
 	public double getX() {
 		return this.cxProperty.doubleValue();
@@ -100,6 +108,7 @@ public class Sphere3d extends AbstractSphere3F {
 	 * 
 	 * @return the center y.
 	 */
+	@Pure
 	@Override
 	public double getY() {
 		return this.cyProperty.doubleValue();
@@ -109,6 +118,7 @@ public class Sphere3d extends AbstractSphere3F {
 	 * 
 	 * @return the center z.
 	 */
+	@Pure
 	@Override
 	public double getZ() {
 		return this.czProperty.doubleValue();
@@ -118,6 +128,7 @@ public class Sphere3d extends AbstractSphere3F {
 	 * 
 	 * @return a copy of the center.
 	 */
+	@Pure
 	@Override
 	public Point3f getCenter() {
 		return new Point3f(this.cxProperty.doubleValue(), this.cyProperty.doubleValue(), this.czProperty.doubleValue());
@@ -151,6 +162,7 @@ public class Sphere3d extends AbstractSphere3F {
 	 * 
 	 * @return the radius.
 	 */
+	@Pure
 	@Override
 	public double getRadius() {
 		return this.radiusProperty.doubleValue();
@@ -165,19 +177,18 @@ public class Sphere3d extends AbstractSphere3F {
 		this.radiusProperty.set(Math.abs(radius1));
 	}
 
+	@Pure
 	@Override
 	public PathIterator3f getPathIterator(Transform3D transform) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	@Pure
 	@Override
 	public PathIterator3d getPathIteratorProperty(Transform3D transform) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	
-	
 
 }

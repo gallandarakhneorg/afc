@@ -20,6 +20,8 @@
  */
 package org.arakhne.afc.math.geometry.d3.continuous;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /**
  * This enumeration describes a classification from a plane.
  * <p>
@@ -71,6 +73,7 @@ public enum PlaneClassification {
 	 * @param t
 	 * @return the inverted classification.
 	 */
+	@Pure
 	public static PlaneClassification invert(PlaneClassification t) {
 		switch (t) {
 		case IN_FRONT_OF:
@@ -109,6 +112,7 @@ public enum PlaneClassification {
 	 * @param f2 is the classification of E against F2.
 	 * @return the classification of E against the whole object composed of F1 and F2.
 	 */
+	@Pure
 	public static PlaneClassification or(PlaneClassification f1, PlaneClassification f2) {
 		if (f1==f2) return f1;
 		if (f1==COINCIDENT || f2==COINCIDENT) return COINCIDENT;
@@ -141,6 +145,7 @@ public enum PlaneClassification {
 	 * @param f2 is the classification of E against F2.
 	 * @return the classification of E against the whole object composed of F1 and F2.
 	 */
+	@Pure
 	public PlaneClassification or(PlaneClassification f2) {
 		return or(this,f2);
 	}
@@ -170,6 +175,7 @@ public enum PlaneClassification {
 	 * @param f2
 	 * @return the result of the intersection.
 	 */
+	@Pure
 	public static PlaneClassification and(PlaneClassification f1, PlaneClassification f2) {
 		if (f1==f2) return f1;
 		return COINCIDENT;
@@ -199,6 +205,7 @@ public enum PlaneClassification {
 	 * @param f2
 	 * @return the result of the intersection.
 	 */
+	@Pure
 	public PlaneClassification and(PlaneClassification f2) {
 		return and(this,f2);
 	}

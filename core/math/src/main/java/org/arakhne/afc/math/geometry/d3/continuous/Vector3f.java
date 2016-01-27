@@ -23,6 +23,7 @@ package org.arakhne.afc.math.geometry.d3.continuous;
 import org.arakhne.afc.math.geometry.d3.FunctionalVector3D;
 import org.arakhne.afc.math.geometry.d3.Tuple3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** 3D Vector with 3 floating-point values.
  * 
@@ -360,6 +361,7 @@ public class Vector3f extends Tuple3f<Vector3D> implements FunctionalVector3D {
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public Vector3f clone() {
 		return (Vector3f)super.clone();
@@ -644,7 +646,8 @@ public class Vector3f extends Tuple3f<Vector3D> implements FunctionalVector3D {
 //	}
 
 	
-	
+
+	@Pure
 	@Override
 	public Vector3D toUnmodifiable() {
 		return new UnmodifiableVector3f();
@@ -666,6 +669,7 @@ public class Vector3f extends Tuple3f<Vector3D> implements FunctionalVector3D {
 			//
 		}
 
+		@Pure
 		@Override
 		public Vector3D clone() {
 			try {
@@ -690,101 +694,121 @@ public class Vector3f extends Tuple3f<Vector3D> implements FunctionalVector3D {
 			Vector3f.this.get(t);
 		}
 
+		@Pure
 		@Override
 		public double getX() {
 			return Vector3f.this.getX();
 		}
 
+		@Pure
 		@Override
 		public int ix() {
 			return Vector3f.this.ix();
 		}
 
+		@Pure
 		@Override
 		public double getY() {
 			return Vector3f.this.getY();
 		}
 
+		@Pure
 		@Override
 		public int iy() {
 			return Vector3f.this.iy();
 		}
 
+		@Pure
 		@Override
 		public double getZ() {
 			return Vector3f.this.getZ();
 		}
 
+		@Pure
 		@Override
 		public int iz() {
 			return Vector3f.this.iz();
 		}
 
+		@Pure
 		@Override
 		public boolean equals(Tuple3D<?> t1) {
 			return Vector3f.this.equals(t1);
 		}
-		
+
+		@Pure
 		@Override
 		public int hashCode() {
 			return Vector3f.this.hashCode();
 		}
 
+		@Pure
 		@Override
 		public boolean epsilonEquals(Vector3D t1, double epsilon) {
 			return Vector3f.this.epsilonEquals(t1, epsilon);
 		}
 
+		@Pure
 		@Override
 		public double dot(Vector3D v1) {
 			return Vector3f.this.dot(v1);
 		}
 
+		@Pure
 		@Override
 		public Vector3D cross(Vector3D v1) {
 			return Vector3f.this.cross(v1);
 		}
 
+		@Pure
 		@Override
 		public Vector3D crossLeftHand(Vector3D v1) {
 			return Vector3f.this.crossLeftHand(v1);
 		}
 
+		@Pure
 		@Override
 		public Vector3D crossRightHand(Vector3D v1) {
 			return Vector3f.this.crossRightHand(v1);
 		}
 
+		@Pure
 		@Override
 		public double length() {
 			return Vector3f.this.length();
 		}
 
+		@Pure
 		@Override
 		public double lengthSquared() {
 			return Vector3f.this.lengthSquared();
 		}
 
+		@Pure
 		@Override
 		public double angle(Vector3D v1) {
 			return Vector3f.this.angle(v1);
 		}
 
+		@Pure
 		@Override
 		public boolean isUnitVector() {
 			return Vector3f.this.isUnitVector();
 		}
 
+		@Pure
 		@Override
 		public boolean isColinear(Vector3D v) {
 			return Vector3f.this.isColinear(v);
 		}
 
+		@Pure
 		@Override
 		public Vector3D toUnmodifiable() {
 			return this;
 		}
 
+		@Pure
 		@Override
 		public double perp(Vector3D v) {
 			return Vector3f.this.perp(v);

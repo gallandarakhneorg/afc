@@ -20,6 +20,7 @@
  */
 package org.arakhne.afc.math.geometry.d3;
 
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** 3D Point.
  * 
@@ -35,13 +36,15 @@ public interface Point3D extends Tuple3D<Point3D> {
 	 * @param p1 the other point
 	 * @return the distance.
 	 */
+	@Pure
 	public double getDistanceSquared(Point3D p1);
 
 	/**
 	 * Computes the distance between this point and point p1.
 	 * @param p1 the other point
 	 * @return the distance. 
-	 */    
+	 */  
+	@Pure  
 	public double getDistance(Point3D p1);
 
 	/**
@@ -50,6 +53,7 @@ public interface Point3D extends Tuple3D<Point3D> {
 	 * @param p1 the other point
 	 * @return the distance.
 	 */
+	@Pure
 	public double getDistanceL1(Point3D p1);
 
 	/**
@@ -59,6 +63,7 @@ public interface Point3D extends Tuple3D<Point3D> {
 	 * @param p1 the other point
 	 * @return the distance.
 	 */
+	@Pure
 	public double getDistanceLinf(Point3D p1);
 	
 	/**
@@ -66,13 +71,15 @@ public interface Point3D extends Tuple3D<Point3D> {
 	 * @param p1 the other point
 	 * @return the distance.
 	 */
+	@Pure
 	public int distanceSquared(Point3D p1);
 
 	/**
 	 * Computes the distance between this point and point p1.
 	 * @param p1 the other point
 	 * @return the distance. 
-	 */    
+	 */   
+	@Pure 
 	public int distance(Point3D p1);
 
 	/**
@@ -81,6 +88,7 @@ public interface Point3D extends Tuple3D<Point3D> {
 	 * @param p1 the other point
 	 * @return the distance.
 	 */
+	@Pure
 	public int distanceL1(Point3D p1);
 
 	/**
@@ -90,6 +98,7 @@ public interface Point3D extends Tuple3D<Point3D> {
 	 * @param p1 the other point
 	 * @return the distance.
 	 */
+	@Pure
 	public int distanceLinf(Point3D p1);
 
 	/**
@@ -184,6 +193,7 @@ public interface Point3D extends Tuple3D<Point3D> {
 	 *
 	 * @return an unmodifiable copy.
 	 */
+	@Pure
 	public Point3D toUnmodifiable();
 
 }

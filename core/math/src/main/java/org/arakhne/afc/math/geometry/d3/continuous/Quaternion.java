@@ -28,6 +28,7 @@ import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
 import org.arakhne.afc.math.matrix.Matrix3f;
 import org.arakhne.afc.math.matrix.Matrix4f;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** A 4 element unit quaternion represented by single precision floating 
  * point x,y,z,w coordinates.  The quaternion is always normalized.
@@ -159,6 +160,7 @@ public class Quaternion implements Cloneable, Serializable {
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public Quaternion clone() {
 		try {
@@ -173,73 +175,74 @@ public class Quaternion implements Cloneable, Serializable {
 	 * 
 	 * @return x
 	 */
+	@Pure
 	public double getX() {
 		return this.x;
 	}
 
 	/** Set the X coordinate.
 	 * 
-	 * @param x
+	 * @param x1
 	 */
-	@SuppressWarnings("hiding")
-	public void setX(double x) {
-		this.x = x;
+	public void setX(double x1) {
+		this.x = x1;
 	}
 
 	/** Replies the Y coordinate.
 	 * 
 	 * @return y
 	 */
+	@Pure
 	public double getY() {
 		return this.y;
 	}
 
 	/** Set the Y coordinate.
 	 * 
-	 * @param y
+	 * @param y1
 	 */
-	@SuppressWarnings("hiding")
-	public void setY(double y) {
-		this.y = y;
+	public void setY(double y1) {
+		this.y = y1;
 	}
 
 	/** Replies the Z coordinate.
 	 * 
 	 * @return z
 	 */
+	@Pure
 	public double getZ() {
 		return this.z;
 	}
 
 	/** Set the Z coordinate.
 	 * 
-	 * @param z
+	 * @param z1
 	 */
-	@SuppressWarnings("hiding")
-	public void setZ(double z) {
-		this.z = z;
+	public void setZ(double z1) {
+		this.z = z1;
 	}
 
 	/** Replies the W coordinate.
 	 * 
 	 * @return w
 	 */
+	@Pure
 	public double getW() {
 		return this.w;
 	}
 
 	/** Set the W coordinate.
 	 * 
-	 * @param w
+	 * @param w1
 	 */
-	@SuppressWarnings("hiding")
-	public void setW(double w) {
-		this.w = w;
+	public void setW(double w1) {
+		this.w = w1;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public boolean equals(Object t1) {
 		try {
@@ -263,6 +266,7 @@ public class Quaternion implements Cloneable, Serializable {
 	 * @param epsilon  the threshold value  
 	 * @return  true or false
 	 */
+	@Pure
 	public boolean epsilonEquals(Quaternion t1, double epsilon) {
 		double diff;
 
@@ -288,6 +292,7 @@ public class Quaternion implements Cloneable, Serializable {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public int hashCode() {
 		long bits = 1;
@@ -302,6 +307,7 @@ public class Quaternion implements Cloneable, Serializable {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public String toString() {
 		return "(" //$NON-NLS-1$
@@ -668,6 +674,7 @@ public class Quaternion implements Cloneable, Serializable {
 	 * 
 	 * @return the rotation axis-angle.
 	 */
+	@Pure
 	public final Vector3f getAxis() {
 		double mag = this.x*this.x + this.y*this.y + this.z*this.z;  
 
@@ -690,6 +697,7 @@ public class Quaternion implements Cloneable, Serializable {
 	 * @see #setAxisAngle(double, double, double, double)
 	 * @see #getAxis()
 	 */
+	@Pure
 	public final double getAngle() {
 		double mag = this.x*this.x + this.y*this.y + this.z*this.z;  
 
@@ -708,6 +716,7 @@ public class Quaternion implements Cloneable, Serializable {
 	 * @see #getAngle()
 	 */
 	@SuppressWarnings("synthetic-access")
+	@Pure
 	public final AxisAngle getAxisAngle() {
 		double mag = this.x*this.x + this.y*this.y + this.z*this.z;  
 
@@ -882,6 +891,7 @@ public class Quaternion implements Cloneable, Serializable {
 	 * @see <a href="http://en.wikipedia.org/wiki/Euler_angles">Euler Angles</a>
 	 * @see <a href="http://www.euclideanspace.com/maths/geometry/rotations/conversions/quaternionToEuler/index.htm">Quaternion to Euler</a>
 	 */
+	@Pure
 	public EulerAngles getEulerAngles() {
 		return getEulerAngles(CoordinateSystem3D.getDefaultCoordinateSystem());
 	}
@@ -895,6 +905,7 @@ public class Quaternion implements Cloneable, Serializable {
 	 * @see <a href="http://www.euclideanspace.com/maths/geometry/rotations/conversions/quaternionToEuler/index.htm">Quaternion to Euler</a>
 	 */
 	@SuppressWarnings("synthetic-access")
+	@Pure
 	public EulerAngles getEulerAngles(CoordinateSystem3D system) {
 		// See http://www.euclideanspace.com/maths/geometry/rotations/conversions/quaternionToEuler/index.htm
 		// Standard used: XZY_RIGHT_HAND
@@ -973,6 +984,7 @@ public class Quaternion implements Cloneable, Serializable {
 		 *
 		 * @return the attitude angle.
 		 */
+		@Pure
 		public double getAttitude() {
 			return this.attitude;
 		}
@@ -981,6 +993,7 @@ public class Quaternion implements Cloneable, Serializable {
 		 *
 		 * @return the bank angle.
 		 */
+		@Pure
 		public double getBank() {
 			return this.bank;
 		}
@@ -989,6 +1002,7 @@ public class Quaternion implements Cloneable, Serializable {
 		 *
 		 * @return the heading angle.
 		 */
+		@Pure
 		public double getHeading() {
 			return this.heading;
 		}
@@ -997,6 +1011,7 @@ public class Quaternion implements Cloneable, Serializable {
 		 *
 		 * @return the coordinate system.
 		 */
+		@Pure
 		private CoordinateSystem3D getSystem() {
 			return this.system;
 		}
@@ -1039,6 +1054,7 @@ public class Quaternion implements Cloneable, Serializable {
 		 *
 		 * @return the rotation axis.
 		 */
+		@Pure
 		public Vector3f getAxis() {
 			return new Vector3f(this.x, this.y, this.z);
 		}
@@ -1047,6 +1063,7 @@ public class Quaternion implements Cloneable, Serializable {
 		 *
 		 * @return the rotation angle.
 		 */
+		@Pure
 		public double getAngle() {
 			return this.angle;
 		}

@@ -1,6 +1,7 @@
 package org.arakhne.afc.math.geometry.d3.continuous;
 
 import org.arakhne.afc.math.geometry.d3.Tuple3D;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 public class PlaneYZ4f extends AbstractPlaneYZ4F {
 	
@@ -33,7 +34,8 @@ public class PlaneYZ4f extends AbstractPlaneYZ4F {
 		this.x = plane.getEquationComponentA();
 		normalize();
 	}
-	
+
+	@Pure
 	@Override
 	public Point3f getProjection(double x1, double y, double z) {
 		return new Point3f(this.x, y, z);
@@ -55,6 +57,7 @@ public class PlaneYZ4f extends AbstractPlaneYZ4F {
 	/** Replies the x coordinate of the plane.
 	 *
 	 */
+	@Pure
 	public double getX() {
 		return this.x;
 	}

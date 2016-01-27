@@ -25,6 +25,7 @@ import java.io.Serializable;
 
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * Is represented internally as a 4x4 floating point matrix. The mathematical
@@ -265,6 +266,7 @@ public class Matrix4f implements Serializable, Cloneable {
 	 * 
 	 * @return the String representation
 	 */
+	@Pure
 	@Override
 	public String toString() {
 		return this.m00 + ", " //$NON-NLS-1$
@@ -413,6 +415,7 @@ public class Matrix4f implements Serializable, Cloneable {
 	 *            the column number to be retrieved (zero indexed)
 	 * @return the value at the indexed element.
 	 */
+	@Pure
 	public final double getElement(int row, int column) {
 		switch (row) {
 		case 0:
@@ -1100,6 +1103,7 @@ public class Matrix4f implements Serializable, Cloneable {
 	 * 
 	 * @return the determinant of the matrix
 	 */
+	@Pure
 	public final double determinant() {
 		double det1 = this.m22 * this.m33 - this.m23 * this.m32;
 		double det2 = this.m12 * this.m33 - this.m13 * this.m32;
@@ -1318,6 +1322,7 @@ public class Matrix4f implements Serializable, Cloneable {
 	 *            the matrix with which the comparison is made
 	 * @return true or false
 	 */
+	@Pure
 	public boolean equals(Matrix4f m1) {
 		try {
 			return (this.m00 == m1.m00 && this.m01 == m1.m01
@@ -1343,6 +1348,7 @@ public class Matrix4f implements Serializable, Cloneable {
 	 *            the matrix with which the comparison is made
 	 * @return true or false
 	 */
+	@Pure
 	@Override
 	public boolean equals(Object t1) {
 		try {
@@ -1375,6 +1381,7 @@ public class Matrix4f implements Serializable, Cloneable {
 	 *            the threshold value
 	 * @return <code>true</code> if this matrix is equals to the specified matrix at epsilon.
 	 */
+	@Pure
 	public boolean epsilonEquals(Matrix4f m1, double epsilon) {
 		double diff;
 
@@ -1454,6 +1461,7 @@ public class Matrix4f implements Serializable, Cloneable {
 	 * 
 	 * @return the integer hash code value
 	 */
+	@Pure
 	@Override
 	public int hashCode() {
 		long bits = 1L;
@@ -1476,6 +1484,7 @@ public class Matrix4f implements Serializable, Cloneable {
 		return (int) (bits ^ (bits >> 32));
 	}
 
+	@Pure
 	private static long doubleToLongBits(double d) {
 		// Check for +0 or -0
 		if (d == 0.) {
@@ -1603,6 +1612,7 @@ public class Matrix4f implements Serializable, Cloneable {
 	 *                if there is not enough memory.
 	 * @see java.lang.Cloneable
 	 */
+	@Pure
 	@Override
 	public Matrix4f clone() {
 		Matrix4f m1 = null;
@@ -1622,6 +1632,7 @@ public class Matrix4f implements Serializable, Cloneable {
 	 * 
 	 * @return Returns the m00f
 	 */
+	@Pure
 	public final double getM00() {
 		return this.m00;
 	}
@@ -1641,6 +1652,7 @@ public class Matrix4f implements Serializable, Cloneable {
 	 * 
 	 * @return Returns the m01.
 	 */
+	@Pure
 	public final double getM01() {
 		return this.m01;
 	}
@@ -1660,6 +1672,7 @@ public class Matrix4f implements Serializable, Cloneable {
 	 * 
 	 * @return Returns the m02.
 	 */
+	@Pure
 	public final double getM02() {
 		return this.m02;
 	}
@@ -1679,6 +1692,7 @@ public class Matrix4f implements Serializable, Cloneable {
 	 * 
 	 * @return Returns the m03.
 	 */
+	@Pure
 	public final double getM03() {
 		return this.m03;
 	}
@@ -1698,6 +1712,7 @@ public class Matrix4f implements Serializable, Cloneable {
 	 * 
 	 * @return Returns the m10
 	 */
+	@Pure
 	public final double getM10() {
 		return this.m10;
 	}
@@ -1717,6 +1732,7 @@ public class Matrix4f implements Serializable, Cloneable {
 	 * 
 	 * @return Returns the m11.
 	 */
+	@Pure
 	public final double getM11() {
 		return this.m11;
 	}
@@ -1736,6 +1752,7 @@ public class Matrix4f implements Serializable, Cloneable {
 	 * 
 	 * @return Returns the m12.
 	 */
+	@Pure
 	public final double getM12() {
 		return this.m12;
 	}
@@ -1755,6 +1772,7 @@ public class Matrix4f implements Serializable, Cloneable {
 	 * 
 	 * @return Returns the m13.
 	 */
+	@Pure
 	public final double getM13() {
 		return this.m13;
 	}
@@ -1774,6 +1792,7 @@ public class Matrix4f implements Serializable, Cloneable {
 	 * 
 	 * @return Returns the m20
 	 */
+	@Pure
 	public final double getM20() {
 		return this.m20;
 	}
@@ -1793,6 +1812,7 @@ public class Matrix4f implements Serializable, Cloneable {
 	 * 
 	 * @return Returns the m21.
 	 */
+	@Pure
 	public final double getM21() {
 		return this.m21;
 	}
@@ -1812,6 +1832,7 @@ public class Matrix4f implements Serializable, Cloneable {
 	 * 
 	 * @return Returns the m22.
 	 */
+	@Pure
 	public final double getM22() {
 		return this.m22;
 	}
@@ -1831,6 +1852,7 @@ public class Matrix4f implements Serializable, Cloneable {
 	 * 
 	 * @return Returns the m23.
 	 */
+	@Pure
 	public final double getM23() {
 		return this.m23;
 	}
@@ -1850,6 +1872,7 @@ public class Matrix4f implements Serializable, Cloneable {
 	 * 
 	 * @return Returns the m30
 	 */
+	@Pure
 	public final double getM30() {
 		return this.m30;
 	}
@@ -1869,6 +1892,7 @@ public class Matrix4f implements Serializable, Cloneable {
 	 * 
 	 * @return Returns the m31.
 	 */
+	@Pure
 	public final double getM31() {
 		return this.m31;
 	}
@@ -1888,6 +1912,7 @@ public class Matrix4f implements Serializable, Cloneable {
 	 * 
 	 * @return Returns the m32.
 	 */
+	@Pure
 	public final double getM32() {
 		return this.m32;
 	}
@@ -1907,6 +1932,7 @@ public class Matrix4f implements Serializable, Cloneable {
 	 * 
 	 * @return Returns the m33.
 	 */
+	@Pure
 	public final double getM33() {
 		return this.m33;
 	}
@@ -1926,6 +1952,7 @@ public class Matrix4f implements Serializable, Cloneable {
 	 * @return <code>true</code> if the matrix is symmetric, otherwise
 	 * <code>false</code>
 	 */
+	@Pure
 	public boolean isSymmetric() {
 		return	this.m01 == this.m10
 			&&	this.m02 == this.m20
@@ -1943,6 +1970,7 @@ public class Matrix4f implements Serializable, Cloneable {
 	 * @see MathUtil#isEpsilonZero(double)
 	 * @see MathUtil#isEpsilonEqual(double, double)
 	 */
+	@Pure
 	public boolean isIdentity() {
 		return MathUtil.isEpsilonEqual(this.m00, 1f)
 				&& MathUtil.isEpsilonZero(this.m01)

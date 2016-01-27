@@ -1,6 +1,7 @@
 package org.arakhne.afc.math.geometry.d3.continuous;
 
 import org.arakhne.afc.math.geometry.d3.Point3D;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 public class Sphere3f extends AbstractSphere3F {
 	
@@ -88,6 +89,7 @@ public class Sphere3f extends AbstractSphere3F {
 	 * 
 	 * @return the center x.
 	 */
+	@Pure
 	@Override
 	public double getX() {
 		return this.cx;
@@ -97,6 +99,7 @@ public class Sphere3f extends AbstractSphere3F {
 	 * 
 	 * @return the center y.
 	 */
+	@Pure
 	@Override
 	public double getY() {
 		return this.cy;
@@ -106,6 +109,7 @@ public class Sphere3f extends AbstractSphere3F {
 	 * 
 	 * @return the center z.
 	 */
+	@Pure
 	@Override
 	public double getZ() {
 		return this.cz;
@@ -115,6 +119,7 @@ public class Sphere3f extends AbstractSphere3F {
 	 * 
 	 * @return a copy of the center.
 	 */
+	@Pure
 	@Override
 	public Point3f getCenter() {
 		return new Point3f(this.cx, this.cy, this.cz);
@@ -148,6 +153,7 @@ public class Sphere3f extends AbstractSphere3F {
 	 * 
 	 * @return the radius.
 	 */
+	@Pure
 	@Override
 	public double getRadius() {
 		return this.radius;
@@ -162,12 +168,14 @@ public class Sphere3f extends AbstractSphere3F {
 		this.radius = Math.abs(radius1);
 	}
 
+	@Pure
 	@Override
 	public PathIterator3f getPathIterator(Transform3D transform) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	@Pure
 	@Override
 	public PathIterator3d getPathIteratorProperty(Transform3D transform) {
 		// TODO Auto-generated method stub

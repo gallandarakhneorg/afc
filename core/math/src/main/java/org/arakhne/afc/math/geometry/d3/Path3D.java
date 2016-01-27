@@ -52,6 +52,7 @@ public interface Path3D<PT extends Shape3D<? super PT>, B extends Shape3D<?>, E 
 	 * 
 	 * @return the winding rule for the path.
 	 */
+	@Pure
 	public PathWindingRule getWindingRule();
 	
 	/** Replies the path is composed only by
@@ -84,6 +85,7 @@ public interface Path3D<PT extends Shape3D<? super PT>, B extends Shape3D<?>, E 
 	 * the curved segments are allowed to deviate from any point on the original curve.
 	 * @return an iterator on the path elements.
 	 */
+	@Pure
 	public PathIterator3f getPathIterator(double flatness);
 
 	/** Replies an iterator on the path elements.
@@ -92,6 +94,7 @@ public interface Path3D<PT extends Shape3D<? super PT>, B extends Shape3D<?>, E 
 	 * 
 	 * @return an iterator on the path elements.
 	 */
+	@Pure
 	public PathIterator3f getPathIterator();
 	
 	/** Replies an iterator on the path elements.

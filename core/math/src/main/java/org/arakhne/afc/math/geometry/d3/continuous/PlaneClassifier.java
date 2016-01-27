@@ -18,6 +18,7 @@
 package org.arakhne.afc.math.geometry.d3.continuous;
 
 import org.arakhne.afc.math.geometry.d3.Tuple3D;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * This interface describes an object that permits to classify intersection
@@ -36,6 +37,7 @@ public interface PlaneClassifier {
 	 * @param otherPlane is the plane to classify
 	 * @return the classification
 	 */
+	@Pure
     public PlaneClassification classifies(Plane3D<?> otherPlane);
 
     /**
@@ -44,6 +46,7 @@ public interface PlaneClassifier {
 	 * @param vec
 	 * @return the classification
 	 */
+	@Pure
     public PlaneClassification classifies(Tuple3D<?> vec);
     
 	/**
@@ -54,6 +57,7 @@ public interface PlaneClassifier {
 	 * @param z
 	 * @return the classification
 	 */
+	@Pure
     public PlaneClassification classifies(double x, double y, double z);
 
 	/**
@@ -67,6 +71,7 @@ public interface PlaneClassifier {
 	 * @param uz
 	 * @return the classification
 	 */
+	@Pure
     public PlaneClassification classifies(double lx, double ly, double lz, double ux, double uy, double uz);
 
 	/**
@@ -78,6 +83,7 @@ public interface PlaneClassifier {
 	 * @param radius
 	 * @return the classification
 	 */
+	@Pure
     public PlaneClassification classifies(double x, double y, double z, double radius);
 
 	/**
@@ -86,6 +92,7 @@ public interface PlaneClassifier {
 	 * @param otherPlane is the plane to classify
 	 * @return <code>true</code> if intersection, otherwise <code>false</code>
 	 */
+	@Pure
     public boolean intersects(Plane3D<?> otherPlane);
 
     /**
@@ -94,6 +101,7 @@ public interface PlaneClassifier {
 	 * @param vec
 	 * @return <code>true</code> if intersection, otherwise <code>false</code>
 	 */
+	@Pure
     public boolean intersects(Tuple3D<?> vec);
     
 	/**
@@ -104,6 +112,7 @@ public interface PlaneClassifier {
 	 * @param z
 	 * @return <code>true</code> if intersection, otherwise <code>false</code>
 	 */
+	@Pure
     public boolean intersects(double x, double y, double z);
 
 	/**
@@ -117,6 +126,7 @@ public interface PlaneClassifier {
 	 * @param uz
 	 * @return <code>true</code> if intersection, otherwise <code>false</code>
 	 */
+	@Pure
     public boolean intersects(double lx, double ly, double lz, double ux, double uy, double uz);
 
 	/**
@@ -128,6 +138,7 @@ public interface PlaneClassifier {
 	 * @param radius
 	 * @return <code>true</code> if intersection, otherwise <code>false</code>
 	 */
+	@Pure
     public boolean intersects(double x, double y, double z, double radius);
 
 }

@@ -2092,6 +2092,7 @@ public class Path3d extends AbstractShape3F<Path3d> implements Path3D<Shape3F,Al
 	 *
 	 * @return the number of points in the path.
 	 */
+	@Pure
 	public int size() {
 		return this.numCoordsProperty.get()/3;
 	}
@@ -2101,6 +2102,7 @@ public class Path3d extends AbstractShape3F<Path3d> implements Path3D<Shape3F,Al
 	 * 
 	 * @return the coordinates.
 	 */
+	@Pure
 	public final double[] toDoubleArray() {
 		return toDoubleArray(null);
 	}
@@ -2111,6 +2113,7 @@ public class Path3d extends AbstractShape3F<Path3d> implements Path3D<Shape3F,Al
 	 * @param transform is the transformation to apply to all the coordinates.
 	 * @return the coordinates.
 	 */
+	@Pure
 	public double[] toDoubleArray(Transform3D transform) {
 		double[] clone = new double[this.numCoordsProperty.get()];
 		if (transform==null) {
@@ -2137,6 +2140,7 @@ public class Path3d extends AbstractShape3F<Path3d> implements Path3D<Shape3F,Al
 	 * 
 	 * @return the points.
 	 */
+	@Pure
 	public final Point3D[] toPointArray() {
 		return toPointArray(null);
 	}
@@ -2146,6 +2150,7 @@ public class Path3d extends AbstractShape3F<Path3d> implements Path3D<Shape3F,Al
 	 * @param transform is the transformation to apply to all the points.
 	 * @return the points.
 	 */
+	@Pure
 	public Point3D[] toPointArray(Transform3D transform) {
 		Point3D[] clone = new Point3D[this.numCoordsProperty.get()/3];
 		if (transform==null) {
@@ -2174,6 +2179,7 @@ public class Path3d extends AbstractShape3F<Path3d> implements Path3D<Shape3F,Al
 	 * @param index
 	 * @return the point at the given index.
 	 */
+	@Pure
 	public Point3f getPointAt(int index) {
 		return new Point3f(
 				this.coordsProperty[index*3].get(),
@@ -2185,6 +2191,7 @@ public class Path3d extends AbstractShape3F<Path3d> implements Path3D<Shape3F,Al
 	 *
 	 * @return the last point.
 	 */
+	@Pure
 	public Point3f getCurrentPoint() {
 		return new Point3f(
 				this.coordsProperty[this.numCoordsProperty.get()-3].get(),
@@ -2336,6 +2343,7 @@ public class Path3d extends AbstractShape3F<Path3d> implements Path3D<Shape3F,Al
 			throw new UnsupportedOperationException();
 		}
 
+		@Pure
 		@Override
 		public PathWindingRule getWindingRule() {
 			return Path3d.this.getWindingRule();
@@ -2479,6 +2487,7 @@ public class Path3d extends AbstractShape3F<Path3d> implements Path3D<Shape3F,Al
 			throw new UnsupportedOperationException();
 		}
 
+		@Pure
 		@Override
 		public PathWindingRule getWindingRule() {
 			return Path3d.this.getWindingRule();
@@ -2522,6 +2531,7 @@ public class Path3d extends AbstractShape3F<Path3d> implements Path3D<Shape3F,Al
 			this.movezProperty = new SimpleDoubleProperty();
 		}
 
+		@Pure
 		@Override
 		public boolean hasNext() {
 			return this.iTypeProperty.get()<Path3d.this.numTypesProperty.get();
@@ -2633,6 +2643,7 @@ public class Path3d extends AbstractShape3F<Path3d> implements Path3D<Shape3F,Al
 			throw new UnsupportedOperationException();
 		}
 
+		@Pure
 		@Override
 		public PathWindingRule getWindingRule() {
 			return Path3d.this.getWindingRule();
@@ -2672,6 +2683,7 @@ public class Path3d extends AbstractShape3F<Path3d> implements Path3D<Shape3F,Al
 			this.transform = transform1;
 		}
 
+		@Pure
 		@Override
 		public boolean hasNext() {
 			return this.iType<Path3d.this.numTypesProperty.get();
@@ -2774,6 +2786,7 @@ public class Path3d extends AbstractShape3F<Path3d> implements Path3D<Shape3F,Al
 			throw new UnsupportedOperationException();
 		}
 
+		@Pure
 		@Override
 		public PathWindingRule getWindingRule() {
 			return Path3d.this.getWindingRule();
@@ -2940,6 +2953,7 @@ public class Path3d extends AbstractShape3F<Path3d> implements Path3D<Shape3F,Al
 		 * @return the flatness of the quadratic curve that is defined by the
 		 *          values in the specified array at the specified index.
 		 */
+		@Pure
 		private static double getQuadSquaredFlatness(double coords[], int offset) {
 			return AbstractSegment3F.distanceSquaredLinePoint(
 					coords[offset + 0], coords[offset + 1], coords[offset + 2],
@@ -3035,6 +3049,7 @@ public class Path3d extends AbstractShape3F<Path3d> implements Path3D<Shape3F,Al
 		 *          specified by the coordinates in <code>coords</code> at
 		 *          the specified offset.
 		 */
+		@Pure
 		private static double getCurveSquaredFlatness(double coords[], int offset) {
 			return Math.max(
 					AbstractSegment3F.distanceSquaredSegmentPoint(
@@ -3352,11 +3367,13 @@ public class Path3d extends AbstractShape3F<Path3d> implements Path3D<Shape3F,Al
 			throw new UnsupportedOperationException();
 		}
 
+		@Pure
 		@Override
 		public PathWindingRule getWindingRule() {
 			return this.windingRule;
 		}
 
+		@Pure
 		@Override
 		public boolean isPolyline() {
 			return false; // Because the iterator flats the path, this is no curve inside.
@@ -3380,16 +3397,19 @@ public class Path3d extends AbstractShape3F<Path3d> implements Path3D<Shape3F,Al
 			//
 		}
 
+		@Pure
 		@Override
 		public int size() {
 			return Path3d.this.size();
 		}
 
+		@Pure
 		@Override
 		public boolean isEmpty() {
 			return Path3d.this.size()<=0;
 		}
 
+		@Pure
 		@Override
 		public boolean contains(Object o) {
 			if (o instanceof Point3D) {
@@ -3398,16 +3418,19 @@ public class Path3d extends AbstractShape3F<Path3d> implements Path3D<Shape3F,Al
 			return false;
 		}
 
+		@Pure
 		@Override
 		public Iterator<Point3D> iterator() {
 			return new PointIterator3d();
 		}
 
+		@Pure
 		@Override
 		public Object[] toArray() {
 			return Path3d.this.toPointArray();
 		}
 
+		@Pure
 		@SuppressWarnings("unchecked")
 		@Override
 		public <T> T[] toArray(T[] a) {
@@ -3441,6 +3464,7 @@ public class Path3d extends AbstractShape3F<Path3d> implements Path3D<Shape3F,Al
 			return false;
 		}
 
+		@Pure
 		@Override
 		public boolean containsAll(Collection<?> c) {
 			for(Object obj : c) {
@@ -3507,6 +3531,7 @@ public class Path3d extends AbstractShape3F<Path3d> implements Path3D<Shape3F,Al
 			//
 		}
 
+		@Pure
 		@Override
 		public boolean hasNext() {
 			return this.index<Path3d.this.size();

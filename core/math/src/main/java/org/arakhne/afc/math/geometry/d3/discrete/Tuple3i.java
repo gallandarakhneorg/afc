@@ -22,6 +22,7 @@
 package org.arakhne.afc.math.geometry.d3.discrete;
 
 import org.arakhne.afc.math.geometry.d3.Tuple3D;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** 3D tuple with 3 integers.
  * 
@@ -115,6 +116,7 @@ public class Tuple3i<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@SuppressWarnings("unchecked")
 	@Override
 	public T clone() {
@@ -467,6 +469,7 @@ public class Tuple3i<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public double getX() {
 		return this.x;
@@ -475,6 +478,7 @@ public class Tuple3i<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public int ix() {
 		return this.x;
@@ -499,6 +503,7 @@ public class Tuple3i<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public double getY() {
 		return this.y;
@@ -507,6 +512,7 @@ public class Tuple3i<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public int iy() {
 		return this.y;
@@ -531,6 +537,7 @@ public class Tuple3i<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public double getZ() {
 		return this.z;
@@ -539,6 +546,7 @@ public class Tuple3i<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public int iz() {
 		return this.z;
@@ -651,6 +659,7 @@ public class Tuple3i<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public boolean equals(Tuple3D<?> t1) {
 		try {
@@ -664,6 +673,7 @@ public class Tuple3i<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@SuppressWarnings("unchecked")
 	@Override
 	public boolean equals(Object t1) {
@@ -682,6 +692,7 @@ public class Tuple3i<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public boolean epsilonEquals(T t1, double epsilon) {
 		double diff;
@@ -704,6 +715,7 @@ public class Tuple3i<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public int hashCode() {
 		int bits = 1;
@@ -716,6 +728,7 @@ public class Tuple3i<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public String toString() {
 		return "(" //$NON-NLS-1$

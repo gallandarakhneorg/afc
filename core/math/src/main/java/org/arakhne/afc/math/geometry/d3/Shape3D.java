@@ -22,6 +22,8 @@ package org.arakhne.afc.math.geometry.d3;
 
 import java.io.Serializable;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /** 3D shape.
  * 
  * @param <ST> is the type of the shape implementation.
@@ -48,6 +50,7 @@ extends Cloneable, Serializable {
 	 * 
 	 * @return the clone.
 	 */
+	@Pure
 	public ST clone();
 
 	/** Reset this shape to be equivalent to
@@ -61,6 +64,7 @@ extends Cloneable, Serializable {
 	 * @return <code>true</code> if the given shape is intersecting this
 	 * shape, otherwise <code>false</code>.
 	 */
+	@Pure
 	public boolean contains(Point3D p);
 	
 	/** Replies the point on the shape that is closest to the given point.
@@ -69,6 +73,7 @@ extends Cloneable, Serializable {
 	 * @return the closest point on the shape; or the point itself
 	 * if it is inside the shape.
 	 */
+	@Pure
 	public Point3D getClosestPointTo(Point3D p);
 
 	/** Replies the point on the shape that is farthest to the given point.
@@ -76,6 +81,7 @@ extends Cloneable, Serializable {
 	 * @param p
 	 * @return the farthest point on the shape.
 	 */
+	@Pure
 	public Point3D getFarthestPointTo(Point3D p);
 
 	/** Set this shape with the attributes of the given shape.

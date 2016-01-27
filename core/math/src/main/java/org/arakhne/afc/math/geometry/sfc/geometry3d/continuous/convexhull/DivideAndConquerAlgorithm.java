@@ -41,6 +41,7 @@ import org.arakhne.afc.math.geometry.d3.continuous.AbstractTriangle3F;
 import org.arakhne.afc.math.geometry.d3.continuous.Plane4f;
 import org.arakhne.afc.math.geometry.d3.continuous.PlaneClassification;
 import org.arakhne.afc.math.geometry.d3.continuous.Point3f;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 
 /** This class permits to create convex hull from a
@@ -381,6 +382,7 @@ public class DivideAndConquerAlgorithm implements ConvexHullAlgorithm {
 	 * @param rightIndexes is the list of point's indexes for the right part
 	 * @return an array contains the left candidate and the right candidate
 	 */
+	@Pure
 	private int[] computeCandidates(List<Integer> leftIndexes, List<Integer> rightIndexes) {
 		int leftCandidate = leftIndexes.get(leftIndexes.size()-1).intValue();
 		int rightCandidate = rightIndexes.get(0).intValue();

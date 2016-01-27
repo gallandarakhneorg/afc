@@ -36,11 +36,12 @@ import org.eclipse.xtext.xbase.lib.Pure;
 public interface Shape3F extends Shape3D<Shape3F> {
 
 	/** Replies the bounds of the shape.
-	 * If the current shape is a AlignedBox2f, this function
+	 * If the current shape is a AlignedBox3f, this function
 	 * replies the current shape, NOT A CLONE.
 	 * 
 	 * @return the bounds of the shape.
 	 */
+	@Pure
 	public AbstractBoxedShape3F<?> toBoundingBox();
 	
 	/** Replies the bounds of the shape.
@@ -54,6 +55,7 @@ public interface Shape3F extends Shape3D<Shape3F> {
 	 * @param p
 	 * @return the minimal distance between this shape and the point.
 	 */
+	@Pure
 	public double distance(Point3D p);
 
 	/** Replies the squared value of the minimal distance from this shape to the given point.
@@ -61,6 +63,7 @@ public interface Shape3F extends Shape3D<Shape3F> {
 	 * @param p
 	 * @return squared value of the minimal distance between this shape and the point.
 	 */
+	@Pure
 	public double distanceSquared(Point3D p);
 
 	/**
@@ -69,6 +72,7 @@ public interface Shape3F extends Shape3D<Shape3F> {
 	 * @param p the point
 	 * @return the distance.
 	 */
+	@Pure
 	public double distanceL1(Point3D p);
 
 	/**
@@ -78,6 +82,7 @@ public interface Shape3F extends Shape3D<Shape3F> {
 	 * @param p the point
 	 * @return the distance.
 	 */
+	@Pure
 	public double distanceLinf(Point3D p);
 
 	/** Apply a transformation matrix to this shape.
@@ -110,6 +115,7 @@ public interface Shape3F extends Shape3D<Shape3F> {
 	 * @return <code>true</code> if the given point is inside this
 	 * shape, otherwise <code>false</code>.
 	 */
+	@Pure
 	public boolean contains(double x, double y, double z);
 	
 	/** Replies the elements of the paths.
@@ -117,12 +123,14 @@ public interface Shape3F extends Shape3D<Shape3F> {
 	 * @param transform is the transformation to apply to the path.
 	 * @return the elements of the path.
 	 */
+	@Pure
 	public PathIterator3f getPathIterator(Transform3D transform);
 
 	/** Replies the elements of the paths.
 	 * 
 	 * @return the elements of the path.
 	 */
+	@Pure
 	public PathIterator3d getPathIteratorProperty();
 	
 	/** Replies the elements of the paths.
@@ -130,12 +138,14 @@ public interface Shape3F extends Shape3D<Shape3F> {
 	 * @param transform is the transformation to apply to the path.
 	 * @return the elements of the path.
 	 */
+	@Pure
 	public PathIterator3d getPathIteratorProperty(Transform3D transform);
 
 	/** Replies the elements of the paths.
 	 * 
 	 * @return the elements of the path.
 	 */
+	@Pure
 	public PathIterator3f getPathIterator();
 	
 	/** Apply the transformation to the shape and reply the result.
@@ -144,6 +154,7 @@ public interface Shape3F extends Shape3D<Shape3F> {
 	 * @param transform is the transformation to apply to the shape.
 	 * @return the result of the transformation.
 	 */
+	@Pure
 	public Shape3F createTransformedShape(Transform3D transform);
 	
 	/** Replies if this shape is intersecting the given rectangle.
@@ -152,6 +163,7 @@ public interface Shape3F extends Shape3D<Shape3F> {
 	 * @return <code>true</code> if this shape is intersecting the given shape;
 	 * <code>false</code> if there is no intersection.
 	 */
+	@Pure
 	public boolean intersects(AbstractBoxedShape3F<?> s);
 
 	/** Replies if this shape is intersecting the given circle.
@@ -160,6 +172,7 @@ public interface Shape3F extends Shape3D<Shape3F> {
 	 * @return <code>true</code> if this shape is intersecting the given shape;
 	 * <code>false</code> if there is no intersection.
 	 */
+	@Pure
 	public boolean intersects(AbstractSphere3F s);
 
 	/** Replies if this shape is intersecting the given line.
@@ -168,6 +181,7 @@ public interface Shape3F extends Shape3D<Shape3F> {
 	 * @return <code>true</code> if this shape is intersecting the given shape;
 	 * <code>false</code> if there is no intersection.
 	 */
+	@Pure
 	public boolean intersects(AbstractSegment3F s);
 
 	/** Replies if this shape is intersecting the given triangle.
@@ -176,6 +190,7 @@ public interface Shape3F extends Shape3D<Shape3F> {
 	 * @return <code>true</code> if this shape is intersecting the given shape;
 	 * <code>false</code> if there is no intersection.
 	 */
+	@Pure
 	public boolean intersects(AbstractTriangle3F s);
 
 	/** Replies if this shape is intersecting the given capsule.
@@ -184,6 +199,7 @@ public interface Shape3F extends Shape3D<Shape3F> {
 	 * @return <code>true</code> if this shape is intersecting the given shape;
 	 * <code>false</code> if there is no intersection.
 	 */
+	@Pure
 	public boolean intersects(AbstractCapsule3F s);
 
 	/** Replies if this shape is intersecting the given rectangle.
@@ -192,6 +208,7 @@ public interface Shape3F extends Shape3D<Shape3F> {
 	 * @return <code>true</code> if this shape is intersecting the given shape;
 	 * <code>false</code> if there is no intersection.
 	 */
+	@Pure
 	public boolean intersects(AbstractOrientedBox3F s);
 
 	/** Replies if this shape is intersecting the given plane.
@@ -200,6 +217,7 @@ public interface Shape3F extends Shape3D<Shape3F> {
 	 * @return <code>true</code> if this shape is intersecting the given plane;
 	 * <code>false</code> if there is no intersection.
 	 */
+	@Pure
 	public boolean intersects(Plane3D<?> p);
 	
 	/** Replies if this shape is intersecting the given path.

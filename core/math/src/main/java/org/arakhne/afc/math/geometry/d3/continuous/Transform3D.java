@@ -22,6 +22,7 @@ package org.arakhne.afc.math.geometry.d3.continuous;
 
 import org.arakhne.afc.math.geometry.d3.Tuple3D;
 import org.arakhne.afc.math.matrix.Matrix4f;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 
 /** A 3D transformation.
@@ -107,6 +108,7 @@ public class Transform3D extends Matrix4f {
 		super(m);
 	}
 
+	@Pure
 	@Override
 	public Transform3D  clone() {
 		return (Transform3D)super.clone();
@@ -204,6 +206,7 @@ public class Transform3D extends Matrix4f {
 	 * 
 	 * @return the amount
 	 */
+	@Pure
 	public double getTranslationX() {
 		return this.m03;
 	}
@@ -212,6 +215,7 @@ public class Transform3D extends Matrix4f {
 	 * 
 	 * @return the amount
 	 */
+	@Pure
 	public double getTranslationY() {
 		return this.m13;
 	}
@@ -220,6 +224,7 @@ public class Transform3D extends Matrix4f {
 	 * 
 	 * @return the amount
 	 */
+	@Pure
 	public double getTranslationZ() {
 		return this.m23;
 	}
@@ -228,6 +233,7 @@ public class Transform3D extends Matrix4f {
 	 * 
 	 * @return the amount
 	 */
+	@Pure
 	public Vector3f getTranslation() {
 		return new Vector3f(this.m03, this.m13, this.m23);
 	}
@@ -237,6 +243,7 @@ public class Transform3D extends Matrix4f {
 	 * 
 	 * @return the amount
      */
+	@Pure
     public Quaternion getRotation() {
     	Quaternion q = new Quaternion();
     	q.setFromMatrix(this);

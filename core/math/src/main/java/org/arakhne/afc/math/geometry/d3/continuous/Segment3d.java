@@ -22,6 +22,7 @@ package org.arakhne.afc.math.geometry.d3.continuous;
 
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** 3D line with DoubleProperty points.
  * 
@@ -87,6 +88,7 @@ public class Segment3d extends AbstractSegment3F {
 	 * 
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public Vector3d getSegmentVector() {
 		return this.d;
@@ -96,6 +98,7 @@ public class Segment3d extends AbstractSegment3F {
 	 * 
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public Vector3d getCloneSegmentVector() {
 		return this.d.clone();
@@ -105,6 +108,7 @@ public class Segment3d extends AbstractSegment3F {
 	 * 
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public Vector3d getDirection() {
 		Vector3d v = this.d.clone();
@@ -136,6 +140,7 @@ public class Segment3d extends AbstractSegment3F {
 	 * 
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public Point3d getP1() {
 		return this.pivot;
@@ -145,6 +150,7 @@ public class Segment3d extends AbstractSegment3F {
 	 * 
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public double getX1() {
 		return this.pivot.getX();
@@ -154,6 +160,7 @@ public class Segment3d extends AbstractSegment3F {
 	 * 
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public double getY1() {
 		return this.pivot.getY();
@@ -163,6 +170,7 @@ public class Segment3d extends AbstractSegment3F {
 	 * 
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public double getZ1() {
 		return this.pivot.getZ();
@@ -199,6 +207,7 @@ public class Segment3d extends AbstractSegment3F {
 	 * 
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public Point3d getP2() {
 		return new Point3d(
@@ -211,6 +220,7 @@ public class Segment3d extends AbstractSegment3F {
 	 * 
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public double getX2() {
 		return this.pivot.getX() + this.d.getX();
@@ -220,6 +230,7 @@ public class Segment3d extends AbstractSegment3F {
 	 * 
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public double getY2() {
 		return this.pivot.getY() + this.d.getY();
@@ -229,6 +240,7 @@ public class Segment3d extends AbstractSegment3F {
 	 * 
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public double getZ2() {
 		return this.pivot.getZ() + this.d.getZ();
@@ -243,12 +255,14 @@ public class Segment3d extends AbstractSegment3F {
 		this.d.sub(p, this.pivot);
 	}
 
+	@Pure
 	@Override
 	public PathIterator3f getPathIterator(Transform3D transform) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	@Pure
 	@Override
 	public PathIterator3d getPathIteratorProperty(Transform3D transform) {
 		// TODO Auto-generated method stub

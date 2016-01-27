@@ -26,6 +26,7 @@ import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem3D;
 import org.arakhne.afc.math.geometry.d3.FunctionalPoint3D;
 import org.arakhne.afc.math.geometry.d3.FunctionalVector3D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * A triangle in space. It is defined by three points.
@@ -154,6 +155,7 @@ public class Triangle3d extends AbstractTriangle3F {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public Point3d getP1() {
 		return this.p1;
@@ -179,6 +181,7 @@ public class Triangle3d extends AbstractTriangle3F {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public Point3d getP2() {
 		return this.p2;
@@ -204,6 +207,7 @@ public class Triangle3d extends AbstractTriangle3F {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public Point3d getP3() {
 		return this.p3;
@@ -229,6 +233,7 @@ public class Triangle3d extends AbstractTriangle3F {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public double getX1() {
 		return this.p1.getX();
@@ -237,6 +242,7 @@ public class Triangle3d extends AbstractTriangle3F {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public double getY1() {
 		return this.p1.getY();
@@ -245,6 +251,7 @@ public class Triangle3d extends AbstractTriangle3F {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public double getZ1() {
 		return this.p1.getZ();
@@ -253,6 +260,7 @@ public class Triangle3d extends AbstractTriangle3F {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public double getX2() {
 		return this.p2.getX();
@@ -261,6 +269,7 @@ public class Triangle3d extends AbstractTriangle3F {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public double getY2() {
 		return this.p2.getY();
@@ -269,6 +278,7 @@ public class Triangle3d extends AbstractTriangle3F {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public double getZ2() {
 		return this.p2.getZ();
@@ -277,6 +287,7 @@ public class Triangle3d extends AbstractTriangle3F {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public double getX3() {
 		return this.p3.getX();
@@ -285,6 +296,7 @@ public class Triangle3d extends AbstractTriangle3F {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public double getY3() {
 		return this.p3.getY();
@@ -293,6 +305,7 @@ public class Triangle3d extends AbstractTriangle3F {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public double getZ3() {
 		return this.p3.getZ();
@@ -345,6 +358,7 @@ public class Triangle3d extends AbstractTriangle3F {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public Point3d getPivot() {
 		return this.pivot==null ? this.p1.clone() : this.pivot.clone();
@@ -391,12 +405,14 @@ public class Triangle3d extends AbstractTriangle3F {
 		this.orientation = orientation1;
 	}
 
+	@Pure
 	@Override
 	public PathIterator3f getPathIterator(Transform3D transform) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	@Pure
 	@Override
 	public PathIterator3d getPathIteratorProperty(Transform3D transform) {
 		// TODO Auto-generated method stub

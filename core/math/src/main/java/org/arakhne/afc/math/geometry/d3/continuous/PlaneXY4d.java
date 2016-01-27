@@ -1,6 +1,8 @@
 package org.arakhne.afc.math.geometry.d3.continuous;
 
 import org.arakhne.afc.math.geometry.d3.Tuple3D;
+import org.eclipse.xtext.xbase.lib.Pure;
+
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 
@@ -35,7 +37,8 @@ public class PlaneXY4d extends AbstractPlaneXY4F{
 		this.setZ(plane.getEquationComponentC());
 		normalize();
 	}
-	
+
+	@Pure
 	@Override
 	public Point3f getProjection(double x, double y, double z1) {
 		return new Point3f(x, y, this.getZ());
@@ -57,8 +60,9 @@ public class PlaneXY4d extends AbstractPlaneXY4F{
 	/** Replies the z coordinate of the plane.
 	 *
 	 */
+	@Pure
 	public double getZ() {
-		return this.zProperty.doubleValue();
+		return this.zProperty.get();
 	}
 	
 	

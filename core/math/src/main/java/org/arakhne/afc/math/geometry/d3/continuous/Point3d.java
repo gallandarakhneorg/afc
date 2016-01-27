@@ -22,6 +22,7 @@ package org.arakhne.afc.math.geometry.d3.continuous;
 import org.arakhne.afc.math.geometry.d3.FunctionalPoint3D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Tuple3D;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 
 /**
@@ -47,6 +48,7 @@ public class Point3d extends Tuple3d<Point3D> implements FunctionalPoint3D {
 	
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public Point3d clone() {
 		return (Point3d)super.clone();
@@ -71,6 +73,7 @@ public class Point3d extends Tuple3d<Point3D> implements FunctionalPoint3D {
 			//
 		}
 
+		@Pure
 		@Override
 		public Point3D clone() {
 			try {
@@ -80,6 +83,7 @@ public class Point3d extends Tuple3d<Point3D> implements FunctionalPoint3D {
 			}
 		}
 
+		@Pure
 		@Override
 		public void get(Point3D t) {
 			Point3d.this.get(t);
@@ -95,91 +99,109 @@ public class Point3d extends Tuple3d<Point3D> implements FunctionalPoint3D {
 			Point3d.this.get(t);
 		}
 
+		@Pure
 		@Override
 		public double getX() {
 			return Point3d.this.getX();
 		}
 
+		@Pure
 		@Override
 		public int ix() {
 			return Point3d.this.ix();
 		}
 
+		@Pure
 		@Override
 		public double getY() {
 			return Point3d.this.getY();
 		}
 
+		@Pure
 		@Override
 		public int iy() {
 			return Point3d.this.iy();
 		}
 
+		@Pure
 		@Override
 		public double getZ() {
 			return Point3d.this.getZ();
 		}
 
+		@Pure
 		@Override
 		public int iz() {
 			return Point3d.this.iz();
 		}
 
+		@Pure
 		@Override
 		public boolean equals(Tuple3D<?> t1) {
 			return Point3d.this.equals(t1);
 		}
-		
+
+		@Pure
 		@Override
 		public int hashCode() {
 			return Point3d.this.hashCode();
 		}
 
+		@Pure
 		@Override
 		public boolean epsilonEquals(Point3D t1, double epsilon) {
 			return Point3d.this.epsilonEquals(t1, epsilon);
 		}
 
+		@Pure
 		@Override
 		public int distanceSquared(Point3D p1) {
 			return Point3d.this.distanceSquared(p1);
 		}
 
+		@Pure
 		@Override
 		public int distance(Point3D p1) {
 			return Point3d.this.distance(p1);
 		}
 
+		@Pure
 		@Override
 		public int distanceL1(Point3D p1) {
 			return Point3d.this.distanceL1(p1);
 		}
 
+		@Pure
 		@Override
 		public int distanceLinf(Point3D p1) {
 			return Point3d.this.distanceLinf(p1);
 		}
 
+		@Pure
 		@Override
 		public Point3D toUnmodifiable() {
 			return this;
 		}
-		
+
+		@Pure
 		@Override
 		public double getDistanceSquared(Point3D p1) {
 			return Point3d.this.getDistanceSquared(p1);
 		}
 
+		@Pure
 		@Override
 		public double getDistance(Point3D p1) {
 			return Point3d.this.getDistance(p1);
 		}
 
+		@Pure
 		@Override
 		public double getDistanceL1(Point3D p1) {
 			return Point3d.this.getDistanceL1(p1);
 		}
 
+		@Pure
 		@Override
 		public double getDistanceLinf(Point3D p1) {
 			return Point3d.this.getDistanceLinf(p1);

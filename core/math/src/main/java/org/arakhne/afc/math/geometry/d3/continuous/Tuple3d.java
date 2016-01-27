@@ -21,6 +21,7 @@ package org.arakhne.afc.math.geometry.d3.continuous;
 
 import org.arakhne.afc.math.geometry.d3.FunctionalTuple3D;
 import org.arakhne.afc.math.geometry.d3.Tuple3D;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -73,29 +74,40 @@ public class Tuple3d<T extends Tuple3D<? super T>> implements FunctionalTuple3D<
 		this.set(v.getX(), v.getY(), v.getZ());
 	}
 	
-	
+
+	@Pure
 	public DoubleProperty xProperty() {
 		return this.xProperty;
 	}
+	
+	@Pure
 	public DoubleProperty yProperty() {
 		return this.yProperty;
 	}
+
+	@Pure
 	public DoubleProperty zProperty() {
 		return this.zProperty;
 	}
-	
+
+	@Pure
 	public double getX() {
 		return this.xProperty.doubleValue();
 	}
+
+	@Pure
 	public double getY() {
 		return this.yProperty.doubleValue();
 	}
+
+	@Pure
 	public double getZ() {
 		return this.zProperty.doubleValue();
 	}
 	
 		
 
+	@Pure
 	public String toString() {
 		return this.getX()+"  "+this.getY()+"  "+this.getZ(); //$NON-NLS-1$ //$NON-NLS-2$
 	}
@@ -104,6 +116,7 @@ public class Tuple3d<T extends Tuple3D<? super T>> implements FunctionalTuple3D<
 	 * @see org.arakhne.afc.math.geometry.d3.Tuple3D#clone()
 	 */
 	@SuppressWarnings("unchecked")
+	@Pure
 	@Override
 	public T clone() {
 		try {
@@ -117,6 +130,7 @@ public class Tuple3d<T extends Tuple3D<? super T>> implements FunctionalTuple3D<
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public int hashCode() {
 		long bits = 1;
