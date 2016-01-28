@@ -47,19 +47,19 @@ public class Plane4d extends AbstractPlane4F {
 
 	/** equation coefficient A.
 	 */
-	protected DoubleProperty aProperty = new SimpleDoubleProperty(0f);
+	protected DoubleProperty aProperty;
 
 	/** equation coefficient B.
 	 */
-	protected DoubleProperty bProperty = new SimpleDoubleProperty(0f);
+	protected DoubleProperty bProperty;
 
 	/** equation coefficient C.
 	 */
-	protected DoubleProperty cProperty = new SimpleDoubleProperty(0f);
+	protected DoubleProperty cProperty;
 
 	/** equation coefficient D.
 	 */
-	protected DoubleProperty dProperty = new SimpleDoubleProperty(0f);
+	protected DoubleProperty dProperty;
 
 	/** Cached pivot point.
 	 */
@@ -69,10 +69,7 @@ public class Plane4d extends AbstractPlane4F {
 	 *
 	 */
 	public Plane4d() {
-		this.aProperty.set(1);
-		this.bProperty.set(0);
-		this.cProperty.set(0);
-		this.dProperty.set(0);
+		this(1,0,0,0);
 	}
 
 	/**
@@ -82,10 +79,10 @@ public class Plane4d extends AbstractPlane4F {
 	 * @param d is the plane equation coefficient
 	 */
 	public Plane4d(double a, double b, double c, double d) {
-		this.aProperty.set(a);
-		this.bProperty.set(b);
-		this.cProperty.set(c);
-		this.dProperty.set(d);
+		this.aProperty = new SimpleDoubleProperty(a);
+		this.bProperty = new SimpleDoubleProperty(b);
+		this.cProperty = new SimpleDoubleProperty(c);
+		this.dProperty = new SimpleDoubleProperty(d);
 		normalize();
 	}
 
@@ -106,24 +103,20 @@ public class Plane4d extends AbstractPlane4F {
 	 * @param pz is the x coordinate of a point which lies on the plane.
 	 */
 	public Plane4d(double a, double b, double c, double px, double py, double pz) {
-		this.aProperty.set(a);
-		this.bProperty.set(b);
-		this.cProperty.set(c);
+		this.aProperty = new SimpleDoubleProperty(a);
+		this.bProperty = new SimpleDoubleProperty(b);
+		this.cProperty = new SimpleDoubleProperty(c);
 		normalize();
 		// a.x + b.y + c.z + d = 0
 		// where (x,y,z) is the translation point
-		this.dProperty.set(- (this.getEquationComponentA()*px + this.getEquationComponentB()*py + this.getEquationComponentC()*pz));
+		this.dProperty = new SimpleDoubleProperty(- (this.getEquationComponentA()*px + this.getEquationComponentB()*py + this.getEquationComponentC()*pz));
 	}
 
 	/**
 	 * @param plane is the plane to copy
 	 */
 	public Plane4d(Plane3D<?> plane) {
-		this.aProperty.set(plane.getEquationComponentA());
-		this.bProperty.set(plane.getEquationComponentB());
-		this.cProperty.set(plane.getEquationComponentC());
-		this.dProperty.set(plane.getEquationComponentD());
-		normalize();
+		this(plane.getEquationComponentA(),plane.getEquationComponentB(),plane.getEquationComponentC(),plane.getEquationComponentD());
 	}
 
 	/**
@@ -147,6 +140,7 @@ public class Plane4d extends AbstractPlane4F {
 	 * @param p3z is a point on the plane
 	 */
 	public Plane4d(double p1x, double p1y, double p1z, double p2x, double p2y, double p2z, double p3x, double p3y, double p3z) {
+		this();
 		set(p1x, p1y, p1z, p2x, p2y, p2z, p3x, p3y, p3z);
 	}
 	

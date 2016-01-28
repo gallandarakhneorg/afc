@@ -41,16 +41,18 @@ public class Circle2d extends AbstractCircle2F<Circle2d>{
 
 
 	/** X-coordinate of the circle center. */
-	protected DoubleProperty cxProperty = new SimpleDoubleProperty(0f);
+	protected DoubleProperty cxProperty;
 	/** Y-coordinate of the circle center. */
-	protected DoubleProperty cyProperty = new SimpleDoubleProperty(0f);
+	protected DoubleProperty cyProperty;
 	/** Radius of the circle center (must be always positive). */
-	protected DoubleProperty radiusProperty = new SimpleDoubleProperty(0f);
+	protected DoubleProperty radiusProperty;
 
 	/**
 	 */
 	public Circle2d() {
-		//
+		this.cxProperty = new SimpleDoubleProperty(0f);
+		this.cyProperty = new SimpleDoubleProperty(0f);
+		this.radiusProperty = new SimpleDoubleProperty(0f);
 	}
 
 	/**
@@ -58,6 +60,7 @@ public class Circle2d extends AbstractCircle2F<Circle2d>{
 	 * @param radius1
 	 */
 	public Circle2d(Point2D center, double radius1) {
+		this();
 		this.set(center, radius1);
 	}
 
@@ -67,6 +70,7 @@ public class Circle2d extends AbstractCircle2F<Circle2d>{
 	 * @param radius1
 	 */
 	public Circle2d(double x, double y, double radius1) {
+		this();
 		this.set(x, y, radius1);
 	}
 
@@ -74,6 +78,7 @@ public class Circle2d extends AbstractCircle2F<Circle2d>{
 	 * @param c
 	 */
 	public Circle2d(Circle2d c) {
+		this();
 		this.set(c.getX(),c.getY(),c.getRadius());
 	}
 

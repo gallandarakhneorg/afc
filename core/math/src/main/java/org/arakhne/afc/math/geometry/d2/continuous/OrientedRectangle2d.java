@@ -46,47 +46,54 @@ public class OrientedRectangle2d extends AbstractOrientedRectangle2F<OrientedRec
 	/**
 	 * Center of the OBR
 	 */
-	private DoubleProperty cxProperty = new SimpleDoubleProperty(0f);
+	private DoubleProperty cxProperty;
 
 	/**
 	 * Center of the OBR
 	 */
-	private DoubleProperty cyProperty = new SimpleDoubleProperty(0f);
+	private DoubleProperty cyProperty;
 
 	/**
 	 * X coordinate of the first axis of the OBR
 	 */
-	private DoubleProperty rxProperty = new SimpleDoubleProperty(0f);
+	private DoubleProperty rxProperty;
 
 	/**
 	 * Y coordinate of the first axis of the OBR
 	 */
-	private DoubleProperty ryProperty = new SimpleDoubleProperty(0f);
+	private DoubleProperty ryProperty;
 
 	/**
 	 * X coordinate of the second axis of the OBR
 	 */
-	private DoubleProperty sxProperty = new SimpleDoubleProperty(0f);
+	private DoubleProperty sxProperty;
 
 	/**
 	 * Y coordinate of the second axis of the OBR
 	 */
-	private DoubleProperty syProperty = new SimpleDoubleProperty(0f);
+	private DoubleProperty syProperty;
 
 	/**
 	 * Half-size of the first axis of the OBR
 	 */
-	private DoubleProperty extentRProperty = new SimpleDoubleProperty(0f);
+	private DoubleProperty extentRProperty;
 
 	/**
 	 * Half-size of the second axis of the OBR
 	 */
-	private DoubleProperty extentSProperty = new SimpleDoubleProperty(0f);
+	private DoubleProperty extentSProperty;
 
 	/** Create an empty oriented rectangle.
 	 */
 	public OrientedRectangle2d() {
-		//
+		this.cxProperty = new SimpleDoubleProperty(0f);
+		this.cyProperty = new SimpleDoubleProperty(0f);
+		this.rxProperty = new SimpleDoubleProperty(0f);
+		this.ryProperty = new SimpleDoubleProperty(0f);
+		this.sxProperty = new SimpleDoubleProperty(0f);
+		this.syProperty = new SimpleDoubleProperty(0f);
+		this.extentRProperty = new SimpleDoubleProperty(0f);
+		this.extentSProperty = new SimpleDoubleProperty(0f);
 	}
 
 	/** Create an oriented rectangle from the given OBR.
@@ -94,6 +101,7 @@ public class OrientedRectangle2d extends AbstractOrientedRectangle2F<OrientedRec
 	 * @param obr
 	 */
 	public OrientedRectangle2d(OrientedRectangle2d obr) {
+		this();
 		this.set(obr.getCenterX(),obr.getCenterY(),obr.getFirstAxisX(),obr.getFirstAxisY(),obr.getSecondAxisX(),obr.getSecondAxisY(),obr.getFirstAxisExtent(),obr.getSecondAxisExtent());
 	}
 
@@ -102,6 +110,7 @@ public class OrientedRectangle2d extends AbstractOrientedRectangle2F<OrientedRec
 	 * @param pointCloud - the cloud of points.
 	 */
 	public OrientedRectangle2d(Iterable<? extends Point2D> pointCloud) {
+		this();
 		setFromPointCloud(pointCloud);
 	}
 
@@ -110,6 +119,7 @@ public class OrientedRectangle2d extends AbstractOrientedRectangle2F<OrientedRec
 	 * @param pointCloud - the cloud of points.
 	 */
 	public OrientedRectangle2d(Point2D[] pointCloud) {
+		this();
 		setFromPointCloud(Arrays.asList(pointCloud));
 	}
 
@@ -125,6 +135,7 @@ public class OrientedRectangle2d extends AbstractOrientedRectangle2F<OrientedRec
 	public OrientedRectangle2d(double centerX, double centerY,
 			double axis1X, double axis1Y, double axis1Extent,
 			double axis2Extent) {
+		this();
 		this.set(centerX, centerY, axis1X, axis1Y, axis1Extent, axis2Extent);
 	}
 
@@ -136,6 +147,7 @@ public class OrientedRectangle2d extends AbstractOrientedRectangle2F<OrientedRec
 	 * @param axis2Extent is the extent of the second axis.
 	 */
 	public OrientedRectangle2d(Point2D center, Vector2D axis1, double axis1Extent, double axis2Extent) {
+		this();
 		this.set(center, axis1, axis1Extent, axis2Extent);
 	}
 

@@ -11,22 +11,24 @@ public class PlaneXZ4d extends AbstractPlaneXZ4F {
 	private static final long serialVersionUID = 4256782058890686993L;
 	
 	
-	/** Is the coordinate of the plane.
+	/**
+	 * Coordinate of the plane.
 	 */
-	protected DoubleProperty yProperty = new SimpleDoubleProperty(0f);
+	protected DoubleProperty yProperty;
 
 	/**
-	 * @param y1 is the coordinate of the plane
+	 * @param y1 is the coordinate of the plane.
 	 */
 	public PlaneXZ4d(double y1) {
-		this.yProperty.set(y1);
+		this.yProperty = new SimpleDoubleProperty(y1);
+		normalize();
 	}
-	
+
 	/**
 	 * @param p is a point on the plane.
 	 */
 	public PlaneXZ4d(Tuple3D<?> p) {
-		this.yProperty.set(p.getY());
+		this(p.getY());
 	}
 
 	/** {@inheritDoc}

@@ -75,14 +75,20 @@ public class RoundRectangle2d extends AbstractRoundRectangle2F<RoundRectangle2d>
 	 * @param arcHeight1
 	 */
 	public RoundRectangle2d(Point2f min, Point2f max, double arcWidth1, double arcHeight1) {
-		super(min, max, arcWidth1,arcHeight1);
+		this();
+		
+		setFromCorners(min.getX(), min.getY(), max.getX(), max.getY());
+		this.setArcWidth(arcWidth1);
+		this.setArcHeight(arcHeight1);
 	}
 
 	/**
 	 * @param rr
 	 */
 	public RoundRectangle2d(RoundRectangle2d rr) {
-		super(rr);
+		this();
+		
+		setFromCorners(rr.getMinX(),rr.getMinY(),rr.getMaxX(),rr.getMaxY());
 	}
 
 	/**
@@ -94,7 +100,11 @@ public class RoundRectangle2d extends AbstractRoundRectangle2F<RoundRectangle2d>
 	 * @param arcHeight1
 	 */
 	public RoundRectangle2d(double x, double y, double width, double height, double arcWidth1, double arcHeight1) {
-		super(x, y, width, height,arcWidth1,arcHeight1);
+		this();
+		
+		setFromCorners(x, y, x+width, y+height);
+		this.setArcWidth(arcWidth1);
+		this.setArcHeight(arcHeight1);
 	}
 
 

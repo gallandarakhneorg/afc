@@ -77,24 +77,15 @@ public abstract class PathElement2d extends AbstractPathElement2D {
 		
 		super(type1);
 		
-		this.fromXProperty = new SimpleDoubleProperty(0f);
-		this.fromYProperty = new SimpleDoubleProperty(0f);
-		this.toXProperty = new SimpleDoubleProperty(0f);
-		this.toYProperty = new SimpleDoubleProperty(0f);
-		this.ctrlX1Property = new SimpleDoubleProperty(0f);
-		this.ctrlY1Property = new SimpleDoubleProperty(0f);
-		this.ctrlX2Property = new SimpleDoubleProperty(0f);
-		this.ctrlY2Property = new SimpleDoubleProperty(0f);
+		this.fromXProperty = new SimpleDoubleProperty(fromX);
+		this.fromYProperty = new SimpleDoubleProperty(fromy);
+		this.toXProperty = new SimpleDoubleProperty(tox);
+		this.toYProperty = new SimpleDoubleProperty(toy);
+		this.ctrlX1Property = new SimpleDoubleProperty(ctrlx1);
+		this.ctrlY1Property = new SimpleDoubleProperty(ctrly1);
+		this.ctrlX2Property = new SimpleDoubleProperty(ctrlx2);
+		this.ctrlY2Property = new SimpleDoubleProperty(ctrly2);
 		
-		
-		this.setFromX(fromX);
-		this.setFromY(fromy);
-		this.setCtrlX1(ctrlx1);
-		this.setCtrlY1(ctrly1);
-		this.setCtrlX2(ctrlx2);
-		this.setCtrlY2(ctrly2);
-		this.setToX(tox);
-		this.setToY(toy);
 	}
 
 	@Pure

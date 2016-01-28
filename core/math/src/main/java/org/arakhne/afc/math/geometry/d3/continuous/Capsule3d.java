@@ -62,12 +62,12 @@ public class Capsule3d extends AbstractCapsule3F {
 	/**
 	 * Radius.
 	 */
-	protected DoubleProperty radiusProperty = new SimpleDoubleProperty(0f);
+	protected DoubleProperty radiusProperty;
 
 	/**
 	 */
 	public Capsule3d() {
-		//
+		this.radiusProperty = new SimpleDoubleProperty(0f);
 	}
 
 	/**
@@ -105,7 +105,7 @@ public class Capsule3d extends AbstractCapsule3F {
 	public Capsule3d(double x1, double y1, double z1, double x2, double y2, double z2, double radius1) {
 		this.medial1.set(x1, y2, z1);
 		this.medial2.set(x2, y2, z2);
-		this.radiusProperty.set(radius1);
+		this.radiusProperty = new SimpleDoubleProperty(radius1);
 		ensureAIsLowerPoint();
 	}
 	

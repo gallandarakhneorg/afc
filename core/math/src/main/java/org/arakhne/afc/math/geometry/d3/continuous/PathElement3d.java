@@ -90,32 +90,19 @@ public abstract class PathElement3d extends AbstractPathElement3D {
 			double ctrly2, double ctrlz2, double tox, double toy, double toz) {
 		super(type1);
 		
-		this.fromXProperty = new SimpleDoubleProperty(0f);
-		this.fromYProperty = new SimpleDoubleProperty(0f);
-		this.fromZProperty = new SimpleDoubleProperty(0f);
-		this.toXProperty = new SimpleDoubleProperty(0f);
-		this.toYProperty = new SimpleDoubleProperty(0f);
-		this.toZProperty = new SimpleDoubleProperty(0f);
-		this.ctrlX1Property = new SimpleDoubleProperty(0f);
-		this.ctrlY1Property = new SimpleDoubleProperty(0f);
-		this.ctrlZ1Property = new SimpleDoubleProperty(0f);
-		this.ctrlX2Property = new SimpleDoubleProperty(0f);
-		this.ctrlY2Property = new SimpleDoubleProperty(0f);
-		this.ctrlZ2Property = new SimpleDoubleProperty(0f);
+		this.fromXProperty = new SimpleDoubleProperty(fromx);
+		this.fromYProperty = new SimpleDoubleProperty(fromy);
+		this.fromZProperty = new SimpleDoubleProperty(fromz);
+		this.toXProperty = new SimpleDoubleProperty(tox);
+		this.toYProperty = new SimpleDoubleProperty(toy);
+		this.toZProperty = new SimpleDoubleProperty(toz);
+		this.ctrlX1Property = new SimpleDoubleProperty(ctrlx1);
+		this.ctrlY1Property = new SimpleDoubleProperty(ctrly1);
+		this.ctrlZ1Property = new SimpleDoubleProperty(ctrlz1);
+		this.ctrlX2Property = new SimpleDoubleProperty(ctrlx2);
+		this.ctrlY2Property = new SimpleDoubleProperty(ctrly2);
+		this.ctrlZ2Property = new SimpleDoubleProperty(ctrlz2);
 		
-		
-		this.setFromX(fromx);
-		this.setFromY(fromy);
-		this.setFromZ(fromz);
-		this.setCtrlX1(ctrlx1);
-		this.setCtrlY1(ctrly1);
-		this.setCtrlZ1(ctrlz1);
-		this.setCtrlX2(ctrlx2);
-		this.setCtrlY2(ctrly2);
-		this.setCtrlZ2(ctrlz2);
-		this.setToX(tox);
-		this.setToY(toy);
-		this.setToZ(toz);
 	}
 
 

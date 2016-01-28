@@ -195,8 +195,6 @@ public class Path3dTest extends AbstractMathTestCase {
 		Plane3D<AbstractPlane4F> plane = new Plane4f(new Vector3f(1f,1f,1f),new Point3f(0.5f,0.5,0.5));
 		Plane3D<AbstractPlane4F> plane2 = new Plane4f(new Vector3f(1f,1f,1f),new Point3f(20f,20f,20f));
 		
-		System.out.println(plane2);
-		
 		assertTrue(r.intersects(plane));
 		assertFalse(r.intersects(plane2));
 	}

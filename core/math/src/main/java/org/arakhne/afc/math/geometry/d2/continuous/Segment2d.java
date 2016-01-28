@@ -42,18 +42,21 @@ public class Segment2d extends AbstractSegment2F<Segment2d>{
 	private static final long serialVersionUID = -1326197951243020619L;
 
 	/** X-coordinate of the first point. */
-	protected DoubleProperty axProperty = new SimpleDoubleProperty(0f);
+	protected DoubleProperty axProperty;
 	/** Y-coordinate of the first point. */
-	protected DoubleProperty ayProperty = new SimpleDoubleProperty(0f);
+	protected DoubleProperty ayProperty;
 	/** X-coordinate of the second point. */
-	protected DoubleProperty bxProperty = new SimpleDoubleProperty(0f);
+	protected DoubleProperty bxProperty;
 	/** Y-coordinate of the second point. */
-	protected DoubleProperty byProperty = new SimpleDoubleProperty(0f);
+	protected DoubleProperty byProperty;
 
 	/**
 	 */
 	public Segment2d() {
-		//
+		this.axProperty = new SimpleDoubleProperty(0f);
+		this.ayProperty = new SimpleDoubleProperty(0f);
+		this.bxProperty = new SimpleDoubleProperty(0f);
+		this.byProperty = new SimpleDoubleProperty(0f);
 	}
 
 	/**
@@ -61,6 +64,7 @@ public class Segment2d extends AbstractSegment2F<Segment2d>{
 	 * @param b
 	 */
 	public Segment2d(Point2D a, Point2D b) {
+		this();
 		this.set(a, b);
 	}
 
@@ -68,6 +72,7 @@ public class Segment2d extends AbstractSegment2F<Segment2d>{
 	 * @param s
 	 */
 	public Segment2d(Segment2d s) {
+		this();
 		this.setX1(s.getX1());
 		this.setY1(s.getY1());
 		this.setX2(s.getX2());
@@ -81,6 +86,7 @@ public class Segment2d extends AbstractSegment2F<Segment2d>{
 	 * @param y2
 	 */
 	public Segment2d(double x1, double y1, double x2, double y2) {
+		this();
 		set(x1, y1, x2, y2);
 	}
 

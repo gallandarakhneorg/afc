@@ -379,8 +379,6 @@ public abstract class AbstractPlane3D<PT extends AbstractPlane3D<? super PT>> im
 		Vector3D n = getNormal();
 		Vector3D u = segment.getDirection();
 		
-		System.out.println(segment);
-
 	    double s = n.dot(u);
 
 		if (MathUtil.isEpsilonZero(s)) {

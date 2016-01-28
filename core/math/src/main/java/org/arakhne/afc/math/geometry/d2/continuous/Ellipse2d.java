@@ -64,7 +64,8 @@ public class Ellipse2d extends AbstractEllipse2F<Ellipse2d> {
 	 * @param max is the max corner of the ellipse.
 	 */
 	public Ellipse2d(Point2f min, Point2f max) {
-		super(min, max);
+		this();
+		setFromCorners(min.getX(), min.getY(), max.getX(), max.getY());
 	}
 
 	/**
@@ -74,14 +75,16 @@ public class Ellipse2d extends AbstractEllipse2F<Ellipse2d> {
 	 * @param height
 	 */
 	public Ellipse2d(double x, double y, double width, double height) {
-		super(x, y, width, height);
+		this();
+		setFromCorners(x, y, x+width, y+height);
 	}
 
 	/**
 	 * @param e
 	 */
 	public Ellipse2d(Ellipse2f e) {
-		super(e);
+		this();
+		setFromCorners(e.getMinX(),e.getMinY(),e.getMaxX(),e.getMaxY());
 	}
 
 	

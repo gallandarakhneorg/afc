@@ -14,20 +14,21 @@ public class PlaneXY4d extends AbstractPlaneXY4F{
 	/**
 	 * Coordinate of the plane.
 	 */
-	protected DoubleProperty zProperty = new SimpleDoubleProperty(0f);
+	protected DoubleProperty zProperty;
 
 	/**
 	 * @param z1 is the coordinate of the plane.
 	 */
 	public PlaneXY4d(double z1) {
-		this.setZ(z1);
+		this.zProperty = new SimpleDoubleProperty(z1);
+		normalize();
 	}
 
 	/**
 	 * @param p is a point on the plane.
 	 */
 	public PlaneXY4d(Tuple3D<?> p) {
-		this.setZ(p.getZ());
+		this(p.getZ());
 	}
 
 	/** {@inheritDoc}

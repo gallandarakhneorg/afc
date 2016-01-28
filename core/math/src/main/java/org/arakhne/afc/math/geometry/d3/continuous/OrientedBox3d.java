@@ -37,23 +37,25 @@ public class OrientedBox3d extends AbstractOrientedBox3F{
 	/**
 	 * First axis extent of the OBB, cannot be negative.
 	 */
-	protected DoubleProperty extent1Property = new SimpleDoubleProperty(0f);
+	protected DoubleProperty extent1Property;
 
 	/**
 	 * Second axis extent of the OBB, cannot be negative.
 	 */
-	protected DoubleProperty extent2Property = new SimpleDoubleProperty(0f);
+	protected DoubleProperty extent2Property;
 
 	/**
 	 * Third axis extent of the OBB, cannot be negative.
 	 */
-	protected DoubleProperty extent3Property = new SimpleDoubleProperty(0f);
+	protected DoubleProperty extent3Property;
 
 	/**
 	 * Build an empty OBB.
 	 */
 	public OrientedBox3d() {
-		//
+		this.extent1Property = new SimpleDoubleProperty(0f);
+		this.extent2Property = new SimpleDoubleProperty(0f);
+		this.extent3Property = new SimpleDoubleProperty(0f);
 	}
 
 	/**
@@ -82,6 +84,7 @@ public class OrientedBox3d extends AbstractOrientedBox3F{
 			double axis1x, double axis1y, double axis1z,
 			double axis2x, double axis2y, double axis2z,
 			double axis1Extent, double axis2Extent, double axis3Extent) {
+		this();
 		set(cx, cy, cz,
 				axis1x, axis1y, axis1z, axis2x, axis2y, axis2z,
 				axis1Extent, axis2Extent, axis3Extent,
@@ -116,6 +119,7 @@ public class OrientedBox3d extends AbstractOrientedBox3F{
 			double axis2x, double axis2y, double axis2z,
 			double axis1Extent, double axis2Extent, double axis3Extent,
 			CoordinateSystem3D system) {
+		this();
 		set(cx, cy, cz,
 				axis1x, axis1y, axis1z,
 				axis2x, axis2y, axis2z,
@@ -156,6 +160,7 @@ public class OrientedBox3d extends AbstractOrientedBox3F{
 	 * @param vertices
 	 */
 	public OrientedBox3d(Iterable<? extends Point3D> vertices) {
+		this();
 		setFromPointCloud(vertices);
 	}
 	
