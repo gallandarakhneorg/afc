@@ -156,18 +156,18 @@ public class OpenPath2fTest extends AbstractPath2fTestCase {
 		Point2D p;
 
 		p = this.r.getFarthestPointTo(new Point2f(0f, 0f));
-		assertEpsilonEquals(1f, p.getX());
-		assertEpsilonEquals(1f, p.getY());
+		assertEpsilonEquals(7f, p.getX());
+		assertEpsilonEquals(-5f, p.getY());
 
 		p = this.r.getFarthestPointTo(new Point2f(4f, 0f));
-		assertEpsilonEquals(3f, p.getX());
-		assertEpsilonEquals(1.25f, p.getY());
+		assertEpsilonEquals(7f, p.getX());
+		assertEpsilonEquals(-5f, p.getY());
 
 		p = this.r.getFarthestPointTo(new Point2f(4f, 2f));
-		assertEpsilonEquals(4.28125f, p.getX());
-		assertEpsilonEquals(2.11724f, p.getY());
+		assertEpsilonEquals(7f, p.getX());
+		assertEpsilonEquals(-5f, p.getY());
 
-		p = this.r.getFarthestPointTo(new Point2f(1f, 0f));
+		p = this.r.getFarthestPointTo(new Point2f(10f, 0f));
 		assertEpsilonEquals(1f, p.getX());
 		assertEpsilonEquals(1f, p.getY());
 	}
@@ -204,18 +204,18 @@ public class OpenPath2fTest extends AbstractPath2fTestCase {
 		Point2D p;
 
 		p = Path2f.getFarthestPointTo(this.r.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), 0f, 0f);
-		assertEpsilonEquals(1f, p.getX());
-		assertEpsilonEquals(1f, p.getY());
+		assertEpsilonEquals(7f, p.getX());
+		assertEpsilonEquals(-5f, p.getY());
 
 		p = Path2f.getFarthestPointTo(this.r.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), 4f, 0f);
-		assertEpsilonEquals(3f, p.getX());
-		assertEpsilonEquals(1.25f, p.getY());
+		assertEpsilonEquals(7f, p.getX());
+		assertEpsilonEquals(-5f, p.getY());
 
 		p = Path2f.getFarthestPointTo(this.r.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), 4f, 2f);
-		assertEpsilonEquals(4.28125f, p.getX());
-		assertEpsilonEquals(2.11724f, p.getY());
+		assertEpsilonEquals(7f, p.getX());
+		assertEpsilonEquals(-5f, p.getY());
 
-		p = Path2f.getFarthestPointTo(this.r.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), 1f, 0f);
+		p = Path2f.getFarthestPointTo(this.r.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), 10f, 0f);
 		assertEpsilonEquals(1f, p.getX());
 		assertEpsilonEquals(1f, p.getY());
 	}

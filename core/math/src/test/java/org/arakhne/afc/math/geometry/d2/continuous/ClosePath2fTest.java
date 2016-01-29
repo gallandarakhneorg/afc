@@ -157,20 +157,20 @@ public class ClosePath2fTest extends AbstractPath2fTestCase {
 		Point2D p;
 		
 		p = this.r.getFarthestPointTo(new Point2f(0f, 0f));
-		assertEpsilonEquals(1f, p.getX());
-		assertEpsilonEquals(1f, p.getY());
+		assertEpsilonEquals(7f, p.getX());
+		assertEpsilonEquals(-5f, p.getY());
 
 		p = this.r.getFarthestPointTo(new Point2f(4f, 0f));
-		assertEpsilonEquals(4f, p.getX());
-		assertEpsilonEquals(0f, p.getY());
+		assertEpsilonEquals(7f, p.getX());
+		assertEpsilonEquals(-5f, p.getY());
 
 		p = this.r.getFarthestPointTo(new Point2f(4f, 2f));
-		assertEpsilonEquals(4f, p.getX());
-		assertEpsilonEquals(2f, p.getY());
+		assertEpsilonEquals(7f, p.getX());
+		assertEpsilonEquals(-5f, p.getY());
 
-		p = this.r.getFarthestPointTo(new Point2f(1f, 0f));
-		assertEpsilonEquals(1.5f, p.getX());
-		assertEpsilonEquals(.5f, p.getY());
+		p = this.r.getFarthestPointTo(new Point2f(10f, 0f));
+		assertEpsilonEquals(1f, p.getX());
+		assertEpsilonEquals(1f, p.getY());
 	}
 
 	/**
@@ -205,20 +205,20 @@ public class ClosePath2fTest extends AbstractPath2fTestCase {
 		Point2D p;
 		
 		p = Path2f.getFarthestPointTo(this.r.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), 0f, 0f);
-		assertEpsilonEquals(1f, p.getX());
-		assertEpsilonEquals(1f, p.getY());
+		assertEpsilonEquals(7f, p.getX());
+		assertEpsilonEquals(-5f, p.getY());
 
 		p = Path2f.getFarthestPointTo(this.r.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), 4f, 0f);
-		assertEpsilonEquals(4f, p.getX());
-		assertEpsilonEquals(0f, p.getY());
+		assertEpsilonEquals(7f, p.getX());
+		assertEpsilonEquals(-5f, p.getY());
 
 		p = Path2f.getFarthestPointTo(this.r.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), 4f, 2f);
-		assertEpsilonEquals(4f, p.getX());
-		assertEpsilonEquals(2f, p.getY());
+		assertEpsilonEquals(7f, p.getX());
+		assertEpsilonEquals(-5f, p.getY());
 
-		p = Path2f.getFarthestPointTo(this.r.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), 1f, 0f);
-		assertEpsilonEquals(1.5f, p.getX());
-		assertEpsilonEquals(.5f, p.getY());
+		p = Path2f.getFarthestPointTo(this.r.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), 10f, 0f);
+		assertEpsilonEquals(1f, p.getX());
+		assertEpsilonEquals(1f, p.getY());
 	}
 
 	@Test
@@ -607,10 +607,10 @@ public class ClosePath2fTest extends AbstractPath2fTestCase {
 		assertTrue(this.r.intersects(new Segment2f(3f, 0f, 1f, 1f)));
 		assertTrue(this.r.intersects(new Segment2f(3f, 0f, 1.5f, 1f)));
 		assertFalse(this.r.intersects(new Segment2f(-1f, -1f, 1f, 1f)));
-		assertFalse(this.r.intersects(new Segment2f(4f, -3f, 1f, 1f)));
+		assertTrue(this.r.intersects(new Segment2f(4f, -3f, 1f, 1f)));
 		assertFalse(this.r.intersects(new Segment2f(4f, -3f, 1f, 0f)));
 		assertFalse(this.r.intersects(new Segment2f(-3f, 4f, 1f, 1f)));
-		assertFalse(this.r.intersects(new Segment2f(6f, -5f, 1f, 1f)));
+		assertTrue(this.r.intersects(new Segment2f(6f, -5f, 1f, 1f)));
 		assertFalse(this.r.intersects(new Segment2f(6f, -5f, 1f, 0f)));
 		assertTrue(this.r.intersects(new Segment2f(4f, 0f, 1f, 1f)));
 		assertTrue(this.r.intersects(new Segment2f(5f, 0f, 1f, 1f)));

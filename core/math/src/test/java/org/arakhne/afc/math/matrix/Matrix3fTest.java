@@ -24,6 +24,7 @@ package org.arakhne.afc.math.matrix;
 import static org.junit.Assert.*;
 
 import org.arakhne.afc.math.AbstractMathTestCase;
+import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.geometry.d3.continuous.Vector3f;
 import org.junit.Test;
 
@@ -171,7 +172,6 @@ public class Matrix3fTest extends AbstractMathTestCase{
 	
 	@Test
 	public void invert() {
-		//FIXME : still remain problem here, try with epsilonEquals maybe
 		Matrix3f m1 = new Matrix3f(1,0,0,0,2,0,0,0,3);
 		Matrix3f i1 = new Matrix3f(6,0,0,0,3,0,0,0,2);
 		i1.mul(1/6.);
@@ -192,7 +192,7 @@ public class Matrix3fTest extends AbstractMathTestCase{
 		assertTrue(i2.equals(m2));
 		
 		m3.invert();
-		assertTrue(i3.equals(m3));
+		assertTrue(i3.epsilonEquals(m3,10*MathConstants.EPSILON));
 		
 	}
 	
@@ -218,7 +218,8 @@ public class Matrix3fTest extends AbstractMathTestCase{
 		assertTrue(i2.equals(m2));
 		
 		m3.invert(m3);
-		assertTrue(i3.equals(m3));
+
+		assertTrue(i3.epsilonEquals(m3,10*MathConstants.EPSILON));
 	}
 	
 	@Test

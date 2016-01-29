@@ -313,7 +313,7 @@ public class Circle2i extends AbstractShape2i<Circle2i> {
 				cx, cy, cr, octant, octant+2, false);
 
 		int maxDist = Integer.MIN_VALUE;
-		Point2i close = new Point2i(x, y);
+		Point2i farthest = new Point2i(x, y);
 		
 		while (iterator.hasNext()) {
 			p = iterator.next();
@@ -322,11 +322,11 @@ public class Circle2i extends AbstractShape2i<Circle2i> {
 			d = cpx*cpx + cpy*cpy;
 			if (d>maxDist) {
 				maxDist = d;
-				close.set(p);
+				farthest.set(p);
 			}
 		}
 
-		return close;
+		return farthest;
 	}
 
 	/** Replies if two circles are intersecting.

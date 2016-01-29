@@ -36,7 +36,7 @@ public class Tuple2dTest {
 	}
 
 	@Test
-	public static void testAbsolute() {
+	public void testAbsolute() {
 		Tuple2d<?> tuple = new Tuple2d<>(-10, -20);
 		tuple.absolute();
 	}

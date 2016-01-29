@@ -272,7 +272,7 @@ public class Path2fPointCollectionTest extends AbstractMathTestCase {
     		fail("Expecting an exception"); //$NON-NLS-1$
     	}
     	catch(Throwable e1) {
-    		e1.printStackTrace();
+    		e1.equals(e1);
     		// Expecting an exception
     	}
     }

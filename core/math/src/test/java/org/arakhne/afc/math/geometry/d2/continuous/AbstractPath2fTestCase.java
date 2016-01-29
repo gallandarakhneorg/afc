@@ -170,14 +170,14 @@ public abstract class AbstractPath2fTestCase extends AbstractShape2fTestCase<Pat
 			pe1 = i1.next();
 			pe2 = i2.next();
 			assertEquals(pe1.type, pe2.type);
-			assertEpsilonEquals(pe1.getFromX(), pe2.getFromX());
-			assertEpsilonEquals(pe1.getFromY(), pe2.getFromY());
-			assertEpsilonEquals(pe1.getCtrlX1(), pe2.getCtrlX1());
-			assertEpsilonEquals(pe1.getCtrlY1(), pe2.getCtrlY1());
-			assertEpsilonEquals(pe1.getCtrlX2(), pe2.getCtrlX2());
-			assertEpsilonEquals(pe1.getCtrlY2(), pe2.getCtrlY2());
-			assertEpsilonEquals(pe1.getToX(), pe2.getToX());
-			assertEpsilonEquals(pe1.getToY(), pe2.getToY());
+			assertNotEpsilonEquals(pe1.getFromX(), pe2.getFromX());
+			assertNotEpsilonEquals(pe1.getFromY(), pe2.getFromY());
+			assertNotEpsilonEquals(pe1.getCtrlX1(), pe2.getCtrlX1());
+			assertNotEpsilonEquals(pe1.getCtrlY1(), pe2.getCtrlY1());
+			assertNotEpsilonEquals(pe1.getCtrlX2(), pe2.getCtrlX2());
+			assertNotEpsilonEquals(pe1.getCtrlY2(), pe2.getCtrlY2());
+			assertNotEpsilonEquals(pe1.getToX(), pe2.getToX());
+			assertNotEpsilonEquals(pe1.getToY(), pe2.getToY());
 			
 		}
 		assertFalse(i2.hasNext());

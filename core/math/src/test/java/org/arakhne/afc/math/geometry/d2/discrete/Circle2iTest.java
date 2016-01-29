@@ -261,8 +261,8 @@ public class Circle2iTest extends AbstractShape2iTestCase<Circle2i> {
 		
 		p = this.r.getFarthestPointTo(new Point2i(5,8));
 		assertNotNull(p);
-		assertEquals(5, p.ix());
-		assertEquals(8, p.iy());
+		assertEquals(3, p.ix());
+		assertEquals(3, p.iy());
 		
 		p = this.r.getFarthestPointTo(new Point2i(10,10));
 		assertNotNull(p);
