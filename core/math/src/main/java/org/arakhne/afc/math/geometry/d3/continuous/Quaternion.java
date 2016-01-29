@@ -101,7 +101,6 @@ public class Quaternion implements Cloneable, Serializable {
 	 * @param z
 	 * @param w
 	 */
-	@SuppressWarnings("hiding")
 	public Quaternion(double x, double y, double z, double w) {
 		double mag = (1.0/Math.sqrt( x*x + y*y + z*z + w*w ));
 		this.x = x*mag;
@@ -348,7 +347,6 @@ public class Quaternion implements Cloneable, Serializable {
 	 * @param q1 the first quaternion
 	 * @param q2 the second quaternion
 	 */
-	@SuppressWarnings("hiding")
 	public final void mul(Quaternion q1, Quaternion q2) {
 		if (this != q1 && this != q2) {
 			this.w = q1.w*q2.w - q1.x*q2.x - q1.y*q2.y - q1.z*q2.z;
@@ -375,7 +373,6 @@ public class Quaternion implements Cloneable, Serializable {
 	 * itself and q1 (this = this * q1).  
 	 * @param q1 the other quaternion
 	 */
-	@SuppressWarnings("hiding")
 	public final void mul(Quaternion q1) {
 		double x, y, w; 
 
@@ -611,7 +608,6 @@ public class Quaternion implements Cloneable, Serializable {
 	 * @param z
 	 * @param w
 	 */
-	@SuppressWarnings("hiding")
 	public void set(double x, double y, double z, double w) {
 		double mag = (1.0/Math.sqrt( x*x + y*y + z*z + w*w ));
 		this.x = x*mag;
@@ -649,7 +645,6 @@ public class Quaternion implements Cloneable, Serializable {
 	 * @param z is the z coordinate of the rotation axis
 	 * @param angle is the rotation around the axis.
 	 */
-	@SuppressWarnings("hiding")
 	public final void setAxisAngle(double x, double y, double z, double angle) {
 		double mag,amag;
 		// Quat = cos(theta/2) + sin(theta/2)(roation_axis) 
@@ -855,7 +850,6 @@ public class Quaternion implements Cloneable, Serializable {
 	 * @see <a href="http://en.wikipedia.org/wiki/Euler_angles">Euler Angles</a>
 	 * @see <a href="http://www.euclideanspace.com/maths/geometry/rotations/conversions/eulerToQuaternion/index.htm">Euler to Quaternion</a>
 	 */
-	@SuppressWarnings("hiding")
 	public void setEulerAngles(double attitude, double bank, double heading, CoordinateSystem3D system) {
 		CoordinateSystem3D cs = (system == null) ? CoordinateSystem3D.getDefaultCoordinateSystem() : system;
 
@@ -972,7 +966,6 @@ public class Quaternion implements Cloneable, Serializable {
 		private final double heading;
 		private final CoordinateSystem3D system;
 
-		@SuppressWarnings("hiding")
 		private EulerAngles(double attitude, double bank, double heading, CoordinateSystem3D system) {
 			this.attitude = attitude;
 			this.bank = bank;
@@ -1042,7 +1035,6 @@ public class Quaternion implements Cloneable, Serializable {
 		private final double z;
 		private final double angle;
 
-		@SuppressWarnings("hiding")
 		private AxisAngle(double x, double y, double z, double angle) {
 			this.x = x;
 			this.y = y;

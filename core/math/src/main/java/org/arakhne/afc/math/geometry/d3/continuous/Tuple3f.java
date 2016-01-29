@@ -88,7 +88,6 @@ public class Tuple3f<T extends Tuple3D<? super T>> implements FunctionalTuple3D<
 	 * @param y
 	 * @param z
 	 */
-	@SuppressWarnings("hiding")
 	public Tuple3f(int x, int y, int z) {
 		this.x = x;
 		this.y = y;
@@ -100,7 +99,6 @@ public class Tuple3f<T extends Tuple3D<? super T>> implements FunctionalTuple3D<
 	 * @param y
 	 * @param z
 	 */
-	@SuppressWarnings("hiding")
 	public Tuple3f(double x, double y, double z) {
 		this.x = x;
 		this.y = y;
@@ -127,7 +125,6 @@ public class Tuple3f<T extends Tuple3D<? super T>> implements FunctionalTuple3D<
 	 * @see org.arakhne.afc.math.geometry.d3.Tuple3D#set(double, double, double)
 	 */
 	@Override
-	@SuppressWarnings("hiding")
 	public void set(double x, double y, double z) {
 		this.x = x;
 		this.y = y;
@@ -138,7 +135,6 @@ public class Tuple3f<T extends Tuple3D<? super T>> implements FunctionalTuple3D<
 	 * @see org.arakhne.afc.math.geometry.d3.continuous.AbstractTuple3D#setX(double)
 	 */
 	@Override
-	@SuppressWarnings("hiding")
 	public void setX(double x) {
 		this.x = x;
 	}
@@ -147,7 +143,6 @@ public class Tuple3f<T extends Tuple3D<? super T>> implements FunctionalTuple3D<
 	 * @see org.arakhne.afc.math.geometry.d3.continuous.AbstractTuple3D#setY(double)
 	 */
 	@Override
-	@SuppressWarnings("hiding")
 	public void setY(double y) {
 		this.y = y;
 	}
@@ -156,7 +151,6 @@ public class Tuple3f<T extends Tuple3D<? super T>> implements FunctionalTuple3D<
 	 * @see org.arakhne.afc.math.geometry.d3.continuous.AbstractTuple3D#setZ(double)
 	 */
 	@Override
-	@SuppressWarnings("hiding")
 	public void setZ(double z) {
 		this.z = z;
 	}

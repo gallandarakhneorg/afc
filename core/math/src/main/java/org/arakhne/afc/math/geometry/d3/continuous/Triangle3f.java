@@ -72,7 +72,6 @@ public class Triangle3f extends AbstractTriangle3F {
 	 * @param p2
 	 * @param p3
 	 */
-	@SuppressWarnings("hiding")
 	public Triangle3f(Point3f p1, Point3f p2, Point3f p3) {
 		this(p1, p2, p3, false);
 	}
@@ -90,7 +89,6 @@ public class Triangle3f extends AbstractTriangle3F {
 	 * or referenced by this triangle. If <code>true</code> points
 	 * will be copied, <code>false</code> points will be referenced.
 	 */
-	@SuppressWarnings("hiding")
 	public Triangle3f(Point3f p1, Point3f p2, Point3f p3, boolean copyPoints) {
 		if (copyPoints) {
 			this.p1 = new Point3f(p1);
@@ -313,7 +311,6 @@ public class Triangle3f extends AbstractTriangle3F {
 	/**
 	 * {@inheritDoc}
 	 */
-	@SuppressWarnings("hiding")
 	public void set(Point3D p1, Point3D p2, Point3D p3) {
 		this.p1.set(p1);
 		this.p2.set(p2);

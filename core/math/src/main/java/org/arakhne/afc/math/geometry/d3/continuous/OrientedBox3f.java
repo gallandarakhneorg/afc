@@ -136,7 +136,6 @@ public class OrientedBox3f extends AbstractOrientedBox3F{
 	 * @param axis2Extent extent of the second axis.
 	 * @param axis3Extent extent of the third axis.
 	 */
-	@SuppressWarnings("hiding")
 	public OrientedBox3f(
 			Point3D center,
 			Vector3D axis1,

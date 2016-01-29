@@ -195,7 +195,6 @@ public class Point3f extends Tuple3f<Point3D> implements FunctionalPoint3D {
 	 * @param y
 	 * @param z
 	 */
-	@SuppressWarnings("hiding")
 	public Point3f(int x, int y, int z) {
 		super(x,y,z);
 	}
@@ -205,7 +204,6 @@ public class Point3f extends Tuple3f<Point3D> implements FunctionalPoint3D {
 	 * @param y
 	 * @param z
 	 */
-	@SuppressWarnings("hiding")
 	public Point3f(float x, float y, float z) {
 		super(x,y,z);
 	}
@@ -215,7 +213,6 @@ public class Point3f extends Tuple3f<Point3D> implements FunctionalPoint3D {
 	 * @param y
 	 * @param z
 	 */
-	@SuppressWarnings("hiding")
 	public Point3f(double x, double y, double z) {
 		super(x,y,z);
 	}
@@ -225,7 +222,6 @@ public class Point3f extends Tuple3f<Point3D> implements FunctionalPoint3D {
 	 * @param y
 	 * @param z
 	 */
-	@SuppressWarnings("hiding")
 	public Point3f(long x, long y, long z) {
 		super(x,y,z);
 	}

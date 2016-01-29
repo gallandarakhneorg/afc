@@ -324,7 +324,6 @@ public class Vector3f extends Tuple3f<Vector3D> implements FunctionalVector3D {
 	 * @param y
 	 * @param z
 	 */
-	@SuppressWarnings("hiding")
 	public Vector3f(int x, int y, int z) {
 		super(x,y,z);
 	}
@@ -334,7 +333,6 @@ public class Vector3f extends Tuple3f<Vector3D> implements FunctionalVector3D {
 	 * @param y
 	 * @param z
 	 */
-	@SuppressWarnings("hiding")
 	public Vector3f(float x, float y, float z) {
 		super(x,y,z);
 	}
@@ -344,7 +342,6 @@ public class Vector3f extends Tuple3f<Vector3D> implements FunctionalVector3D {
 	 * @param y
 	 * @param z
 	 */
-	@SuppressWarnings("hiding")
 	public Vector3f(double x, double y, double z) {
 		super(x,y,z);
 	}
@@ -354,7 +351,6 @@ public class Vector3f extends Tuple3f<Vector3D> implements FunctionalVector3D {
 	 * @param y
 	 * @param z
 	 */
-	@SuppressWarnings("hiding")
 	public Vector3f(long x, long y, long z) {
 		super(x,y,z);
 	}

@@ -86,7 +86,6 @@ public class Transform3D extends Matrix4f {
 	 * @param m23
 	 *            the [2][3] element
 	 */
-	@SuppressWarnings("hiding")
 	public Transform3D(double m00, double m01, double m02, double m03, double m10, double m11, double m12, double m13, double m20, double m21, double m22, double m23) {
 		super(m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, 0f, 0f, 0f, 1f);
 	}
@@ -448,7 +447,6 @@ public class Transform3D extends Matrix4f {
 	 * @param m23
 	 *            the [2][3] element
 	 */
-	@SuppressWarnings("hiding")
 	public void set(double m00, double m01, double m02, double m03, double m10, double m11, double m12, double m13, double m20, double m21, double m22, double m23) {
 		set(m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, 0f, 0f, 0f, 1f);
 	}

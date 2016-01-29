@@ -79,7 +79,6 @@ public final class Plane4f extends AbstractPlane4F {
 	 * @param c is the plane equation coefficient
 	 * @param d is the plane equation coefficient
 	 */
-	@SuppressWarnings("hiding")
 	public Plane4f(double a, double b, double c, double d) {
 		this.a = a;
 		this.b = b;
@@ -104,7 +103,6 @@ public final class Plane4f extends AbstractPlane4F {
 	 * @param py is the x coordinate of a point which lies on the plane.
 	 * @param pz is the x coordinate of a point which lies on the plane.
 	 */
-	@SuppressWarnings("hiding")
 	public Plane4f(double a, double b, double c, double px, double py, double pz) {
 		this.a = a;
 		this.b = b;
@@ -208,7 +206,6 @@ public final class Plane4f extends AbstractPlane4F {
 	 * @param c is the first factor of the plane equation.
 	 * @param d is the first factor of the plane equation.
 	 */
-	@SuppressWarnings("hiding")
 	public void set(double a, double b, double c, double d) {
 		this.a = a;
 		this.b = b;
