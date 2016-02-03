@@ -31,6 +31,7 @@ import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
+import org.arakhne.afc.math.geometry.d2.FunctionalPoint2D;
 import org.arakhne.afc.math.geometry.d2.Path2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.discrete.PathIterator2i;
@@ -2366,6 +2367,95 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 		return this.numCoords/2;
 	}
 
+	/** Replies the total lentgh of the path.
+	 *
+	 * @return the length of the path.
+	 */
+	public double length() {
+		
+		if (this.isEmpty()) return 0;
+		
+		double length = 0;
+		
+		PathIterator2f pi = getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO);
+		
+		AbstractPathElement2F pathElement = pi.next();
+		
+		if (pathElement.type != PathElementType.MOVE_TO) {
+			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
+		}
+		
+		Path2f subPath;
+		double curx, cury, movx, movy, endx, endy;
+		curx = movx = pathElement.getToX();
+		cury = movy = pathElement.getToY();
+		
+		while (pi.hasNext()) {
+			pathElement = pi.next();
+
+			switch (pathElement.type) {
+			case MOVE_TO: 
+				movx = curx = pathElement.getToX();
+				movy = cury = pathElement.getToY();
+				break;
+			case LINE_TO:
+				endx = pathElement.getToX();
+				endy = pathElement.getToY();
+
+				length += FunctionalPoint2D.distancePointPoint(
+						curx, cury,  
+						endx, endy);
+
+				curx = endx;
+				cury = endy;
+				break;
+			case QUAD_TO:
+				endx = pathElement.getToX();
+				endy = pathElement.getToY();
+				subPath = new Path2f();
+				subPath.moveTo(curx, cury);
+				subPath.quadTo(
+						pathElement.getCtrlX1(), pathElement.getCtrlY1(),
+						endx, endy);
+
+				length += subPath.length();
+
+				curx = endx;
+				cury = endy;
+				break;
+			case CURVE_TO:
+				endx = pathElement.getToX();
+				endy = pathElement.getToY();
+				subPath = new Path2f();
+				subPath.moveTo(curx, cury);
+				subPath.curveTo(
+						pathElement.getCtrlX1(), pathElement.getCtrlY1(),
+						pathElement.getCtrlX2(), pathElement.getCtrlY2(),
+						endx, endy);
+
+				length += subPath.length();
+
+				curx = endx;
+				cury = endy;
+				break;
+			case CLOSE:
+				if (curx != movx || cury != movy) {
+					length += FunctionalPoint2D.distancePointPoint(
+							curx, cury, 
+							movx, movy);
+				}
+
+				curx = movx;
+				cury = movy;
+				break;
+			default:
+			}
+
+		}
+		
+		return length;
+	}
+	
 	/** Replies if this path is empty.
 	 * The path is empty when there is no point inside, or
 	 * all the points are at the same coordinate, or

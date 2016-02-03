@@ -29,6 +29,7 @@ import java.util.List;
 
 import org.arakhne.afc.math.AbstractMathTestCase;
 import org.arakhne.afc.math.MathConstants;
+import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.junit.Test;
 
@@ -948,6 +949,42 @@ public class Path2dTest extends AbstractMathTestCase{
 		assertTrue(p.getCoordAt(12)==7);
 		assertTrue(p.getCoordAt(13)==-5);
 	}
+	
+	@Test
+    public void length() {
+		Path2d p = new Path2d();
+		p.moveTo(0f, 0f);
+		p.lineTo(1f, 1f);
+		p.lineTo(2f, 0f);
+		
+		assertEpsilonEquals(2*Math.sqrt(2), p.length());
+		
+		p = new Path2d();
+		p.moveTo(0f, 0f);
+		p.lineTo(1f, 1f);
+		p.lineTo(2f, 0f);
+		p.closePath();
+		
+		assertEpsilonEquals(2*Math.sqrt(2)+2, p.length());
+		
+		
+		p = new Path2d();
+		p.moveTo(0f, 0f);
+		p.quadTo(1f, 1f,2f,0f);
+		//p.closePath();
+		
+		assertTrue(MathUtil.isEpsilonEqual(p.length(),2.29559,0.02));
+		
+		p = new Path2d();
+		p.moveTo(0f, 0f);
+		p.quadTo(1f, 1f,2f,0f);
+		p.closePath();
+		
+		assertTrue(MathUtil.isEpsilonEqual(p.length(),2.29559+2,0.02));
+				
+	}
+	
+	
 	
 }
 

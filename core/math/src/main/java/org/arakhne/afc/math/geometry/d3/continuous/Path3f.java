@@ -29,6 +29,7 @@ import java.util.NoSuchElementException;
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
+import org.arakhne.afc.math.geometry.d3.FunctionalPoint3D;
 import org.arakhne.afc.math.geometry.d3.Path3D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -1972,6 +1973,105 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 		return this.numCoords/3;
 	}
 
+	/** Replies the total lentgh of the path.
+	 *
+	 * @return the length of the path.
+	 */
+	//FIXME TO BE TESTED 
+	public double length() {
+		
+		if (this.isEmpty()) return 0;
+		
+		double length = 0;
+		
+		PathIterator3f pi = getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO);
+		
+		AbstractPathElement3F pathElement = pi.next();
+		
+		if (pathElement.type != PathElementType.MOVE_TO) {
+			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
+		}
+		
+		Path3f subPath;
+		double curx, cury, curz, movx, movy, movz, endx, endy, endz;
+		curx = movx = pathElement.getToX();
+		cury = movy = pathElement.getToY();
+		curz = movz = pathElement.getToZ();
+		
+		while (pi.hasNext()) {
+			pathElement = pi.next();
+
+			switch (pathElement.type) {
+			case MOVE_TO: 
+				movx = curx = pathElement.getToX();
+				movy = cury = pathElement.getToY();
+				movz = curz = pathElement.getToZ();
+				break;
+			case LINE_TO:
+				endx = pathElement.getToX();
+				endy = pathElement.getToY();
+				endz = pathElement.getToZ();
+
+				length += FunctionalPoint3D.distancePointPoint(
+						curx, cury, curz,  
+						endx, endy, endz);
+
+				curx = endx;
+				cury = endy;
+				curz = endz;
+				break;
+			case QUAD_TO:
+				endx = pathElement.getToX();
+				endy = pathElement.getToY();
+				endz = pathElement.getToZ();
+				subPath = new Path3f();
+				subPath.moveTo(curx, cury, curz);
+				subPath.quadTo(
+						pathElement.getCtrlX1(), pathElement.getCtrlY1(), pathElement.getCtrlZ1(),
+						endx, endy, endz);
+
+				length += subPath.length();
+
+				curx = endx;
+				cury = endy;
+				curz = endz;
+				break;
+			case CURVE_TO:
+				endx = pathElement.getToX();
+				endy = pathElement.getToY();
+				endz = pathElement.getToZ();
+				subPath = new Path3f();
+				subPath.moveTo(curx, cury, curz);
+				subPath.curveTo(
+						pathElement.getCtrlX1(), pathElement.getCtrlY1(), pathElement.getCtrlZ1(),
+						pathElement.getCtrlX2(), pathElement.getCtrlY2(), pathElement.getCtrlZ2(),
+						endx, endy, endz);
+
+				length += subPath.length();
+
+				curx = endx;
+				cury = endy;
+				curz = endz;
+				break;
+			case CLOSE:
+				if (curx != movx || cury != movy || curz != movz) {
+					length += FunctionalPoint3D.distancePointPoint(
+							curx, cury, curz, 
+							movx, movy, movz);
+				}
+
+				curx = movx;
+				cury = movy;
+				cury = movz;
+				break;
+			default:
+			}
+
+		}
+		
+		return length;
+	}
+	
 	/** Replies the coordinates of this path in an array of
 	 * double precision floating-point numbers.
 	 * 
