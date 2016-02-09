@@ -138,21 +138,21 @@ public abstract class AbstractBoxedShape3F<T extends AbstractBoxedShape3F<T>>   
 	 * @return the min point.
 	 */
 	@Pure
-	abstract public Point3f getMin();
+	abstract public Point3D getMin();
 
 	/** Replies the min point.
 	 * 
 	 * @return the min point.
 	 */
 	@Pure
-	abstract public Point3f getMax();
+	abstract public Point3D getMax();
 
 	/** Replies the center point.
 	 * 
 	 * @return the center point.
 	 */
 	@Pure
-	abstract public Point3f getCenter();
+	abstract public Point3D getCenter();
 
 	/** Replies the min X.
 	 * 

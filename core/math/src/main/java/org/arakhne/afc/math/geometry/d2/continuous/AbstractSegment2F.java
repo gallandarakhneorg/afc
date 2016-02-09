@@ -639,16 +639,16 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 	 * @return the farthest point on the shape.
 	 */
 	@Pure
-	public static Point2f computeFarthestPointTo(
+	public static Point2D computeFarthestPointTo(
 			double ax, double ay, double bx, double by, double px, double py) {
 		double v1x = px - ax;
 		double v1y = py - ay;
 		double v2x = px - bx;
 		double v2y = py - by;
 		if ((v1x*v1x+v1y*v1y) >= (v2x*v2x+v2y*v2y)) {
-			return new Point2f(ax, ay);
+			return new Point2d(ax, ay);
 		}
-		return new Point2f(bx, by);
+		return new Point2d(bx, by);
 	}
 
 	/** Replies the point on the segment that is closest to the given point.
@@ -662,14 +662,14 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 	 * @return the is point on the shape.
 	 */
 	@Pure
-	public static Point2f computeClosestPointTo(
+	public static Point2d computeClosestPointTo(
 			double ax, double ay, double bx, double by, double px, double py) {
 		double ratio = AbstractSegment2F.computeProjectedPointOnLine(px, py,
 				ax, ay,
 				bx, by);
-		if (ratio<=0f) return new Point2f(ax, ay);
-		if (ratio>=1f) return new Point2f(bx, by);
-		return new Point2f(
+		if (ratio<=0f) return new Point2d(ax, ay);
+		if (ratio>=1f) return new Point2d(bx, by);
+		return new Point2d(
 				ax + (bx - ax) * ratio,
 				ay + (by - ay) * ratio); 
 	}
@@ -1137,7 +1137,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 
 			return (f2>=0 && f2<=1f);
 		}
-		
+
 		return false;
 	}
 
@@ -1247,7 +1247,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 		return intersectsSSWE(x3, y3, x4, y4, x1, y1, x2, y2);
 	}
 
-	
+
 
 	/**
 	 * Replies if this segment is empty.
@@ -1280,26 +1280,26 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 
 	@Override
 	abstract public void set(Shape2F s);
-	
-	
+
+
 	/**Sets a new value in the X of the first point.
 	 * 
 	 * @param the new value double x
 	 */
 	abstract public void setX1(double x);
-	
+
 	/**Sets a new value in the Y of the first point.
 	 * 
 	 * @param the new value double y
 	 */
 	abstract public void setY1(double y);
-	
+
 	/**Sets a new value in the X of the second point.
 	 * 
 	 * @param the new value double x
 	 */
 	abstract public void setX2(double x);
-	
+
 	/**Sets a new value in the Y of the second point.
 	 * 
 	 * @param the new value double y
@@ -1348,9 +1348,9 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 	@Pure
 	abstract public Point2D getP2();
 
-	
-	
-	
+
+
+
 	/** {@inheritDoc}
 	 */
 	@Pure
@@ -1363,6 +1363,10 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 				this.getX2(),
 				this.getY2());
 		return r;
+	}
+
+	public double length() {
+		return FunctionalPoint2D.distancePointPoint(getX1(), getY1(), getX2(), getY2());
 	}
 
 	/** {@inheritDoc}
@@ -1428,10 +1432,10 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 	public boolean contains(double x, double y) {
 		return MathUtil.isEpsilonZero(
 				distanceSquaredSegmentPoint(
-				this.getX1(),this.getY1(),
-				this.getX2(),this.getY2(),
-				x, y,
-				null));
+						this.getX1(),this.getY1(),
+						this.getX2(),this.getY2(),
+						x, y,
+						null));
 	}
 
 	/** {@inheritDoc}
@@ -1447,7 +1451,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 	 */
 	@Pure
 	@Override
-	public Point2f getClosestPointTo(Point2D p) {
+	public Point2D getClosestPointTo(Point2D p) {
 		return computeClosestPointTo(
 				this.getX1(), this.getY1(),
 				this.getX2(), this.getY2(),
@@ -1458,7 +1462,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 	 */
 	@Pure
 	@Override
-	public Point2f getFarthestPointTo(Point2D p) {
+	public Point2D getFarthestPointTo(Point2D p) {
 		return computeFarthestPointTo(
 				this.getX1(), this.getY1(),
 				this.getX2(), this.getY2(),
@@ -1485,7 +1489,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 				this.getX1(), this.getY1(), this.getX2(), this.getY2(),
 				transform);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Pure
 	@Override
@@ -1538,7 +1542,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 		Point2D p2 = transform.transform(this.getX2(), this.getY2());
 		return new Segment2f(p1, p2);
 	}
-	
+
 	/** Clip the segment against the clipping rectangle
 	 * according to the <a href="http://en.wikipedia.org/wiki/Cohen%E2%80%93Sutherland_algorithm">Cohen-Sutherland algorithm</a>.
 	 * 
@@ -1562,7 +1566,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 		boolean cont = true;
 		double x, y;
 		x = y = 0;
-		
+
 		while (cont) {
 			if ((code1 | code2)==0) {
 				// Bitwise OR is 0. Trivially accept and get out of loop
@@ -1673,7 +1677,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 	public boolean intersects(Path2f s) {
 		return intersects(s.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO));
 	}
-	
+
 	@Pure
 	@Override
 	public boolean intersects(Path2d s) {
@@ -1691,7 +1695,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 		return (crossings == MathConstants.SHAPE_INTERSECTS ||
 				(crossings & mask) != 0);
 	}
-	
+
 	@Override
 	public boolean intersects(PathIterator2d s) {
 		int mask = (s.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2);
@@ -1817,7 +1821,7 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 			return true;
 		}
 	}
-	
+
 	/** Iterator on the path elements of the segment.
 	 * 
 	 * @author $Author: galland$
@@ -1905,5 +1909,5 @@ public abstract class AbstractSegment2F<T extends Shape2F> extends AbstractShape
 			return true;
 		}
 	}
-	
+
 }

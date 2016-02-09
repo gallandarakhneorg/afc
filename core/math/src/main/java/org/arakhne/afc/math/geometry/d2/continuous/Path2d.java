@@ -103,10 +103,10 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 	 * @return the closest point on the shape; or the point itself
 	 * if it is inside the shape.
 	 */
-	public static Point2D getClosestPointTo(PathIterator2d pi, double x, double y) {
-		Point2D closest = null;
+	public static Point2d getClosestPointTo(PathIterator2d pi, double x, double y) {
+		Point2d closest = null;
 		double bestDist = Double.POSITIVE_INFINITY;
-		Point2D candidate;
+		Point2d candidate;
 		AbstractPathElement2D pe;
 
 		int mask = (pi.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 1);
@@ -127,7 +127,7 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 						x, y,
 						pe.getFromX(), pe.getFromY(), pe.getToX(), pe.getToY());
 				factor = MathUtil.clamp(factor, 0f, 1f);
-				Vector2f v = new Vector2f(pe.getToX(), pe.getToY());
+				Vector2d v = new Vector2d(pe.getToX(), pe.getToY());
 				v.sub(pe.getFromX(), pe.getFromY());
 				v.scale(factor);
 				candidate = new Point2d(
@@ -190,10 +190,10 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 	 * @param y
 	 * @return the farthest point on the shape.
 	 */
-	public static Point2D getFarthestPointTo(PathIterator2d pi, double x, double y) {
-		Point2D closest = null;
+	public static Point2d getFarthestPointTo(PathIterator2d pi, double x, double y) {
+		Point2d closest = null;
 		double bestDist = Double.NEGATIVE_INFINITY;
-		Point2D candidate;
+		Point2d candidate;
 		AbstractPathElement2D pe;
 
 		while (pi.hasNext()) {
@@ -207,7 +207,7 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 				break;
 			case LINE_TO:
 			case CLOSE:
-				candidate = AbstractSegment2F.computeFarthestPointTo(
+				candidate = (Point2d) AbstractSegment2F.computeFarthestPointTo(
 						pe.getFromX(), pe.getFromY(), pe.getToX(), pe.getToY(),
 						x, y);
 				break;
@@ -1202,7 +1202,11 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 		add(iterator);
 	}
 
-	/**
+	/** Copy constructor of Path2d. It doesn't match the properties, but it creates new properties
+	 * to store the values of p.
+	 * 
+	 * Si if the p Path2d is changed, this will not be affected
+	 * 
 	 * @param p
 	 */
 	public Path2d(Path2d p) {
@@ -1347,6 +1351,31 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 		}
 	}
 
+	/**Add the element in paramter into this path.
+	 * 
+	 * @param pathElement
+	 */
+	public void add(AbstractPathElement2D element) {
+		switch(element.type) {
+		case MOVE_TO:
+			moveTo(element.getToX(), element.getToY());
+			break;
+		case LINE_TO:
+			lineTo(element.getToX(), element.getToY());
+			break;
+		case QUAD_TO:
+			quadTo(element.getCtrlX1(), element.getCtrlY1(), element.getToX(), element.getToY());
+			break;
+		case CURVE_TO:
+			curveTo(element.getCtrlX1(), element.getCtrlY1(), element.getCtrlX2(), element.getCtrlY2(), element.getToX(), element.getToY());
+			break;
+		case CLOSE:
+			closePath();
+			break;
+		default:
+		}
+	}
+
 	private void ensureSlots(boolean needMove, int n) {
 		if (needMove && this.numTypesProperty.get()==0) {
 			throw new IllegalStateException("missing initial moveto in path definition"); //$NON-NLS-1$
@@ -1392,6 +1421,35 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 	}
 
 	/**
+	 * Adds a point to the path by moving to the specified
+	 * coordinates specified in point in paramater.
+	 * 
+	 * We store the property here, and not the values. So when the point changes,
+	 * the path will be automatically updated.
+	 *
+	 * @param point the specified point
+	 */
+	public void moveTo(Point2d point) {
+		if (this.numTypesProperty.get()>0 && this.types[this.numTypesProperty.get()-1]==PathElementType.MOVE_TO) {
+			this.coordsProperty[this.numCoordsProperty.get()-2] = point.xProperty;
+			this.coordsProperty[this.numCoordsProperty.get()-1] = point.yProperty;
+		}
+		else {
+			ensureSlots(false, 2);
+			this.types[this.numTypesProperty.get()] = PathElementType.MOVE_TO;
+			this.numTypesProperty.set(this.numTypesProperty.get()+1);
+
+			this.coordsProperty[this.numCoordsProperty.get()] = point.xProperty;
+			this.numCoordsProperty.set(this.numCoordsProperty.get()+1);
+
+			this.coordsProperty[this.numCoordsProperty.get()] = point.yProperty;
+			this.numCoordsProperty.set(this.numCoordsProperty.get()+1);
+		}
+		this.graphicalBounds = null;
+		this.logicalBounds = null;
+	}
+
+	/**
 	 * Adds a point to the path by drawing a straight line from the
 	 * current coordinates to the new specified coordinates
 	 * specified in double precision.
@@ -1408,6 +1466,32 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 		this.numCoordsProperty.set(this.numCoordsProperty.get()+1);
 
 		this.coordsProperty[this.numCoordsProperty.get()].set(y);
+		this.numCoordsProperty.set(this.numCoordsProperty.get()+1);
+
+		this.isEmptyProperty = null;
+		this.graphicalBounds = null;
+		this.logicalBounds = null;
+	}
+
+	/**
+	 * Adds a point to the path by drawing a straight line from the
+	 * current coordinates to the new specified coordinates
+	 * specified in the point in paramater.
+	 *
+	 * We store the property here, and not the value. So when the point changes,
+	 * the path will be automatically updated.
+	 *
+	 * @param point the specified point
+	 */
+	public void lineTo(Point2d point) {
+		ensureSlots(true, 2);
+		this.types[this.numTypesProperty.get()] = PathElementType.LINE_TO;
+		this.numTypesProperty.set(this.numTypesProperty.get()+1);
+
+		this.coordsProperty[this.numCoordsProperty.get()] = point.xProperty;
+		this.numCoordsProperty.set(this.numCoordsProperty.get()+1);
+
+		this.coordsProperty[this.numCoordsProperty.get()] = point.yProperty;
 		this.numCoordsProperty.set(this.numCoordsProperty.get()+1);
 
 		this.isEmptyProperty = null;
@@ -1452,6 +1536,44 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 	}
 
 	/**
+	 * Adds a curved segment, defined by two new points, to the path by
+	 * drawing a Quadratic curve that intersects both the current
+	 * coordinates and the specified endPoint,
+	 * using the specified controlPoint as a quadratic
+	 * parametric control point.
+	 * All coordinates are specified in Point2d.
+	 *
+	 * We store the property here, and not the value. So when the points changes,
+	 * the path will be automatically updated.
+	 *
+	 * @param controlPoint the quadratic control point
+	 * @param endPoint the final end point
+	 */
+	public void quadTo(Point2d controlPoint, Point2d endPoint) {
+		ensureSlots(true, 4);
+		this.types[this.numTypesProperty.get()] = PathElementType.QUAD_TO;
+		this.numTypesProperty.set(this.numTypesProperty.get()+1);
+
+		this.coordsProperty[this.numCoordsProperty.get()] = controlPoint.xProperty;
+		this.numCoordsProperty.set(this.numCoordsProperty.get()+1);
+
+		this.coordsProperty[this.numCoordsProperty.get()] = controlPoint.yProperty;
+		this.numCoordsProperty.set(this.numCoordsProperty.get()+1);
+
+		this.coordsProperty[this.numCoordsProperty.get()] = endPoint.xProperty;
+		this.numCoordsProperty.set(this.numCoordsProperty.get()+1);
+
+		this.coordsProperty[this.numCoordsProperty.get()] = endPoint.yProperty;
+		this.numCoordsProperty.set(this.numCoordsProperty.get()+1);
+
+		this.isEmptyProperty = null;
+		this.isPolylineProperty.set(false);
+		this.graphicalBounds = null;
+		this.logicalBounds = null;
+	}
+
+
+	/**
 	 * Adds a curved segment, defined by three new points, to the path by
 	 * drawing a B&eacute;zier curve that intersects both the current
 	 * coordinates and the specified coordinates {@code (x3,y3)},
@@ -1490,6 +1612,53 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 		this.numCoordsProperty.set(this.numCoordsProperty.get()+1);
 
 		this.coordsProperty[this.numCoordsProperty.get()].set(y3);
+		this.numCoordsProperty.set(this.numCoordsProperty.get()+1);
+
+		this.isEmptyProperty = null;
+		this.isPolylineProperty.set(false);
+		this.graphicalBounds = null;
+		this.logicalBounds = null;
+	}
+
+	/**
+	 * Adds a curved segment, defined by three new points, to the path by
+	 * drawing a B&eacute;zier curve that intersects both the current
+	 * coordinates and the specified endPoint,
+	 * using the specified points controlPoint1 and controlPoint2 as
+	 * B&eacute;zier control points.
+	 * All coordinates are specified in Point2d.
+	 *
+	 * We store the property here, and not the value. So when the points changes,
+	 * the path will be automatically updated.
+	 *
+	 * @param controlPoint1 the first B&eacute;zier control point
+	 * @param controlPoint2 the second B&eacute;zier control point
+	 * @param endPoint the final end point
+	 */
+	public void curveTo(Point2d controlPoint1,
+			Point2d controlPoint2,
+			Point2d endPoint) {
+
+		ensureSlots(true, 6);
+		this.types[this.numTypesProperty.get()] = PathElementType.CURVE_TO;
+		this.numTypesProperty.set(this.numTypesProperty.get()+1);
+
+		this.coordsProperty[this.numCoordsProperty.get()] = controlPoint1.xProperty;
+		this.numCoordsProperty.set(this.numCoordsProperty.get()+1);
+
+		this.coordsProperty[this.numCoordsProperty.get()] = controlPoint1.yProperty;
+		this.numCoordsProperty.set(this.numCoordsProperty.get()+1);
+
+		this.coordsProperty[this.numCoordsProperty.get()] = controlPoint2.xProperty;
+		this.numCoordsProperty.set(this.numCoordsProperty.get()+1);
+
+		this.coordsProperty[this.numCoordsProperty.get()] = controlPoint2.yProperty;
+		this.numCoordsProperty.set(this.numCoordsProperty.get()+1);
+
+		this.coordsProperty[this.numCoordsProperty.get()] = endPoint.xProperty;
+		this.numCoordsProperty.set(this.numCoordsProperty.get()+1);
+
+		this.coordsProperty[this.numCoordsProperty.get()] = endPoint.yProperty;
 		this.numCoordsProperty.set(this.numCoordsProperty.get()+1);
 
 		this.isEmptyProperty = null;
@@ -2264,7 +2433,7 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 
 	@Pure
 	@Override
-	public Point2D getClosestPointTo(Point2D p) {
+	public Point2d getClosestPointTo(Point2D p) {
 		return getClosestPointTo(
 				getPathIteratorProperty(MathConstants.SPLINE_APPROXIMATION_RATIO),
 				p.getX(), p.getY());
@@ -2272,7 +2441,7 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 
 	@Pure
 	@Override
-	public Point2D getFarthestPointTo(Point2D p) {
+	public Point2d getFarthestPointTo(Point2D p) {
 		return getFarthestPointTo(
 				getPathIteratorProperty(MathConstants.SPLINE_APPROXIMATION_RATIO),
 				p.getX(), p.getY());
@@ -2398,7 +2567,7 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 	 * @return the points.
 	 */
 	@Pure
-	public final Point2D[] toPointArray() {
+	public final Point2d[] toPointArray() {
 		return toPointArray(null);
 	}
 
@@ -2408,18 +2577,18 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 	 * @return the points.
 	 */
 	@Pure
-	public Point2D[] toPointArray(Transform2D transform) {
-		Point2D[] clone = new Point2D[this.numCoordsProperty.get()/2];
+	public Point2d[] toPointArray(Transform2D transform) {
+		Point2d[] clone = new Point2d[this.numCoordsProperty.get()/2];
 		if (transform==null) {
 			for(int i=0, j=0; j<this.numCoordsProperty.get(); ++i) {
-				clone[i] = new Point2f(
+				clone[i] = new Point2d(
 						this.coordsProperty[j++].get(),
 						this.coordsProperty[j++].get());
 			}
 		}
 		else {
 			for(int i=0, j=0; j<clone.length; ++i) {
-				clone[i] = new Point2f(
+				clone[i] = new Point2d(
 						this.coordsProperty[j++].get(),
 						this.coordsProperty[j++].get());
 				transform.transform(clone[i]);
@@ -2433,10 +2602,10 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 	 * @return the point collection.
 	 */
 	@Pure
-	public final Collection<Point2D> toCollection() {
+	public final Collection<Point2d> toCollection() {
 		PointCollection pC = new PointCollection();
-		Point2D[] array = this.toPointArray();
-		for(Point2D p : array) {
+		Point2d[] array = this.toPointArray();
+		for(Point2d p : array) {
 			pC.add(p);
 		}
 		return pC;
@@ -2460,10 +2629,12 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 	 * @return the point at the given index.
 	 */
 	@Pure
-	public Point2f getPointAt(int index) {
-		return new Point2f(
-				this.coordsProperty[index*2].get(),
-				this.coordsProperty[index*2+1].get());
+	public Point2d getPointAt(int index) {
+		Point2d point = new Point2d();
+		point.xProperty = this.coordsProperty[index*2];
+		point.yProperty = this.coordsProperty[index*2+1];
+
+		return point;
 	}
 
 	/** Replies the last point in the path.
@@ -2471,10 +2642,12 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 	 * @return the last point.
 	 */
 	@Pure
-	public Point2f getCurrentPoint() {
-		return new Point2f(
-				this.coordsProperty[this.numCoordsProperty.get()-2].get(),
-				this.coordsProperty[this.numCoordsProperty.get()-1].get());
+	public Point2d getCurrentPoint() {
+		Point2d point = new Point2d();
+		point.xProperty = this.coordsProperty[this.numCoordsProperty.get()-2];
+		point.yProperty = this.coordsProperty[this.numCoordsProperty.get()-1];
+
+		return point;
 	}
 
 	/** Replies the number of points in the path.
@@ -2490,25 +2663,26 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 	 *
 	 * @return the length of the path.
 	 */
+	//FIXME TO BE IMPLEMENTED IN POLYLINE
 	public double length() {
-		
+
 		if (this.isEmpty()) return 0;
-		
+
 		double length = 0;
-		
+
 		PathIterator2d pi = getPathIteratorProperty(MathConstants.SPLINE_APPROXIMATION_RATIO);
-		
+
 		AbstractPathElement2D pathElement = pi.next();
-		
+
 		if (pathElement.type != PathElementType.MOVE_TO) {
 			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
 		}
-		
+
 		Path2d subPath;
 		double curx, cury, movx, movy, endx, endy;
 		curx = movx = pathElement.getToX();
 		cury = movy = pathElement.getToY();
-		
+
 		while (pi.hasNext()) {
 			pathElement = pi.next();
 
@@ -2571,10 +2745,10 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 			}
 
 		}
-		
+
 		return length;
 	}
-	
+
 	/** Replies if this path is empty.
 	 * The path is empty when there is no point inside, or
 	 * all the points are at the same coordinate, or
@@ -3845,7 +4019,7 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	private class PointCollection implements Collection<Point2D> {
+	private class PointCollection implements Collection<Point2d> {
 
 		/**
 		 */
@@ -3868,15 +4042,15 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 		@Pure
 		@Override
 		public boolean contains(Object o) {
-			if (o instanceof Point2D) {
-				return Path2d.this.containsControlPoint((Point2D)o);
+			if (o instanceof Point2d) {
+				return Path2d.this.containsControlPoint((Point2d)o);
 			}
 			return false;
 		}
 
 		@Pure
 		@Override
-		public Iterator<Point2D> iterator() {
+		public Iterator<Point2d> iterator() {
 			return new PointIterator();
 		}
 
@@ -3889,7 +4063,7 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 		@SuppressWarnings("unchecked")
 		@Override
 		public <T> T[] toArray(T[] a) {
-			Iterator<Point2D> iterator = new PointIterator();
+			Iterator<Point2d> iterator = new PointIterator();
 			for(int i=0; i<a.length && iterator.hasNext(); ++i) {
 				a[i] = (T)iterator.next();
 			}
@@ -3897,13 +4071,13 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 		}
 
 		@Override
-		public boolean add(Point2D e) {
+		public boolean add(Point2d e) {
 			if (e!=null) {
 				if (Path2d.this.size()==0) {
-					Path2d.this.moveTo(e.getX(), e.getY());
+					Path2d.this.moveTo(e);
 				}
 				else {
-					Path2d.this.lineTo(e.getX(), e.getY());
+					Path2d.this.lineTo(e);
 				}
 				return true;
 			}
@@ -3912,8 +4086,8 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 
 		@Override
 		public boolean remove(Object o) {
-			if (o instanceof Point2D) {
-				Point2D p = (Point2D)o;
+			if (o instanceof Point2d) {
+				Point2d p = (Point2d)o;
 				return Path2d.this.remove(p.getX(), p.getY());
 			}
 			return false;
@@ -3923,8 +4097,8 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 		@Override
 		public boolean containsAll(Collection<?> c) {
 			for(Object obj : c) {
-				if ((!(obj instanceof Point2D))
-						||(!Path2d.this.containsControlPoint((Point2D)obj))) {
+				if ((!(obj instanceof Point2d))
+						||(!Path2d.this.containsControlPoint((Point2f)obj))) {
 					return false;
 				}
 			}
@@ -3932,9 +4106,9 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 		}
 
 		@Override
-		public boolean addAll(Collection<? extends Point2D> c) {
+		public boolean addAll(Collection<? extends Point2d> c) {
 			boolean changed = false;
-			for(Point2D pts : c) {
+			for(Point2d pts : c) {
 				if (add(pts)) {
 					changed = true;
 				}
@@ -3946,8 +4120,8 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 		public boolean removeAll(Collection<?> c) {
 			boolean changed = false;
 			for(Object obj : c) {
-				if (obj instanceof Point2D) {
-					Point2D pts = (Point2D)obj;
+				if (obj instanceof Point2d) {
+					Point2d pts = (Point2d)obj;
 					if (Path2d.this.remove(pts.getX(), pts.getY())) {
 						changed = true;
 					}
@@ -3976,10 +4150,10 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	private class PointIterator implements Iterator<Point2D> {
+	private class PointIterator implements Iterator<Point2d> {
 
 		private int index = 0;
-		private Point2D lastReplied = null;
+		private Point2d lastReplied = null;
 
 		/**
 		 */
@@ -3994,7 +4168,7 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 		}
 
 		@Override
-		public Point2D next() {
+		public Point2d next() {
 			try {
 				this.lastReplied = Path2d.this.getPointAt(this.index++);
 				return this.lastReplied;
@@ -4006,7 +4180,7 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 
 		@Override
 		public void remove() {
-			Point2D p = this.lastReplied;
+			Point2d p = this.lastReplied;
 			this.lastReplied = null;
 			if (p==null)
 				throw new NoSuchElementException();

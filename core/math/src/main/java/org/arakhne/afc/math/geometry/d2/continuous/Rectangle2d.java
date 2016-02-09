@@ -20,7 +20,6 @@
  */
 package org.arakhne.afc.math.geometry.d2.continuous;
 
-import org.arakhne.afc.math.geometry.d2.FunctionalPoint2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -64,9 +63,18 @@ public class Rectangle2d extends AbstractRectangle2F<Rectangle2d>{
 	 * @param min is the min corner of the rectangle.
 	 * @param max is the max corner of the rectangle.
 	 */
-	public Rectangle2d(FunctionalPoint2D min, FunctionalPoint2D max) {
+	public Rectangle2d(Point2f min, Point2f max) {
 		this();
 		this.setFromCorners(min, max);
+	}
+	
+	/**
+	 * @param min is the min corner of the rectangle.
+	 * @param max is the max corner of the rectangle.
+	 */
+	public Rectangle2d(Point2d min, Point2d max) {
+		this();
+		this.setFromCornersProperties(min, max);
 	}
 
 	/**
@@ -85,7 +93,7 @@ public class Rectangle2d extends AbstractRectangle2F<Rectangle2d>{
 	 */
 	public Rectangle2d(Rectangle2d r) {
 		this();
-		this.setFromCorners(r.getMinX(),r.getMinY(),r.getMaxX(),r.getMaxY());
+		this.setFromCornersProperties(new Point2d(r.minxProperty,r.minyProperty),new Point2d(r.maxxProperty,r.maxyProperty));
 	}
 
 
@@ -114,6 +122,15 @@ public class Rectangle2d extends AbstractRectangle2F<Rectangle2d>{
 	@Override
 	public void set(Point2f min, Point2f max) {
 		setFromCorners(min.getX(), min.getY(), max.getX(), max.getY());
+	}
+	
+	/** Change the frame of te rectangle.
+	 * 
+	 * @param min is the min corner of the rectangle.
+	 * @param max is the max corner of the rectangle.
+	 */
+	public void set(Point2d min, Point2d max) {
+		setFromCornersProperties(min, max);
 	}
 
 	/** Change the width of the rectangle, not the min corner.
@@ -156,6 +173,25 @@ public class Rectangle2d extends AbstractRectangle2F<Rectangle2d>{
 		else {
 			this.minyProperty.set(y2);
 			this.maxyProperty.set(y1);
+		}
+	}
+	
+	public void setFromCornersProperties(Point2d p1, Point2d p2) {
+		if (p1.getX()<p2.getX()) {
+			this.minxProperty = p1.xProperty;
+			this.maxxProperty = p2.xProperty;
+		}
+		else {
+			this.minxProperty = p2.xProperty;
+			this.maxxProperty = p1.xProperty;
+		}
+		if (p1.getY()<p2.getY()) {
+			this.minyProperty = p1.yProperty;
+			this.maxyProperty = p2.yProperty;
+		}
+		else {
+			this.minyProperty = p2.yProperty;
+			this.maxyProperty = p1.yProperty;
 		}
 	}
 
@@ -313,12 +349,9 @@ public class Rectangle2d extends AbstractRectangle2F<Rectangle2d>{
 
 	@Override
 	public void set(Shape2F s) {
-		AbstractRectangle2F<?> r = new Rectangle2f();
+		Rectangle2d r = new Rectangle2d();
 		s.toBoundingBox(r);
-		this.setMaxX(r.getMaxX());
-		this.setMaxY(r.getMaxY());
-		this.setMinX(r.getMinX());
-		this.setMinY(r.getMinY());
+		this.setFromCornersProperties(new Point2d(r.minxProperty,r.minyProperty),new Point2d(r.maxxProperty,r.maxyProperty));
 	}
 
 

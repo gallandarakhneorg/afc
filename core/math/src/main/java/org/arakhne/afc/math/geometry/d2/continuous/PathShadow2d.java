@@ -54,7 +54,7 @@ public class PathShadow2d {
 	 */
 	public PathShadow2d(Path2d path1) {
 		this.path = path1;
-		this.bounds = this.path.toBoundingBox();
+		this.bounds = new Rectangle2d(this.path.toBoundingBox());
 	}
 	
 	/**

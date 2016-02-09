@@ -39,7 +39,7 @@ public class Point2dTest {
 	 * Test method for {@link org.arakhne.afc.math.geometry.d2.continuous.Point2d#Point2d(double, double)}.
 	 */
 	@Test
-	public static void testPoint2d() {
+	public void testPoint2d() {
 		Point2d point = new Point2d(-1, -4);
 		point.absolute();
 	}

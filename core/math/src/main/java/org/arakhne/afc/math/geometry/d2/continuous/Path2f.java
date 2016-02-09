@@ -2371,6 +2371,7 @@ public class Path2f extends AbstractShape2F<Path2f> implements Path2D<Shape2F,Re
 	 *
 	 * @return the length of the path.
 	 */
+	//FIXME TO BE IMPLEMENTED IN POLYLINE
 	public double length() {
 		
 		if (this.isEmpty()) return 0;

@@ -81,14 +81,40 @@ public class RoundRectangle2d extends AbstractRoundRectangle2F<RoundRectangle2d>
 		this.setArcWidth(arcWidth1);
 		this.setArcHeight(arcHeight1);
 	}
+	
+	/**
+	 * @param min is the min corner of the rectangle.
+	 * @param max is the max corner of the rectangle.
+	 * @param arcWidth1
+	 * @param arcHeight1
+	 */
+	public RoundRectangle2d(Point2d min, Point2d max, DoubleProperty arcWidth1, DoubleProperty arcHeight1) {
+		this();
+		
+		setFromCornersProperties(min, max);
+		this.setArcWidthProperty(arcWidth1);
+		this.setArcWidthProperty(arcHeight1);
+	}
 
+	/**
+	 * @param rr
+	 */
+	public RoundRectangle2d(RoundRectangle2f rr) {
+		this();
+		setFromCorners(rr.getMinX(),rr.getMinY(),rr.getMaxX(),rr.getMaxY());
+	}
+	
 	/**
 	 * @param rr
 	 */
 	public RoundRectangle2d(RoundRectangle2d rr) {
 		this();
-		
-		setFromCorners(rr.getMinX(),rr.getMinY(),rr.getMaxX(),rr.getMaxY());
+		this.minxProperty = rr.minxProperty;
+		this.minyProperty = rr.minyProperty;
+		this.maxxProperty = rr.maxxProperty;
+		this.maxyProperty = rr.maxyProperty;
+		this.arcHeightProperty = rr.arcHeightProperty;
+		this.arcWidthProperty = rr.arcWidthProperty;
 	}
 
 	/**
@@ -131,6 +157,17 @@ public class RoundRectangle2d extends AbstractRoundRectangle2F<RoundRectangle2d>
 		setFromCorners(min.getX(), min.getY(), max.getX(), max.getY());
 	}
 	
+	/** Set the frame of te rectangle related to the Point2d points min and max.
+	 * 
+	 * When the points are changed, the RoundRectangle2d will be also changed.
+	 * 
+	 * @param min is the min corner of the rectangle.
+	 * @param max is the max corner of the rectangle.
+	 */
+	public void setProperties(Point2d min, Point2d max) {
+		setFromCornersProperties(min, max);
+	}
+	
 	/** Change the width of the rectangle, not the min corner.
 	 * 
 	 * @param width
@@ -159,6 +196,32 @@ public class RoundRectangle2d extends AbstractRoundRectangle2F<RoundRectangle2d>
 		setFromCorners(p1.getX(), p1.getY(), p2.getX(), p2.getY());
 	}
 
+	/** Set the frame of te rectangle related to the Point2d points min and max.
+	 * 
+	 * When the points are changed, the RoundRectangle2d will be also changed.
+	 * 
+	 * @param min is the min corner of the rectangle.
+	 * @param max is the max corner of the rectangle.
+	 */
+	public void setFromCornersProperties(Point2d p1, Point2d p2) {
+		if (p1.getX()<p2.getX()) {
+			this.minxProperty = p1.xProperty;
+			this.maxxProperty = p2.xProperty;
+		}
+		else {
+			this.minxProperty = p2.xProperty;
+			this.maxxProperty = p1.xProperty;
+		}
+		if (p1.getY()<p2.getY()) {
+			this.minyProperty = p1.yProperty;
+			this.maxyProperty = p2.yProperty;
+		}
+		else {
+			this.minyProperty = p2.yProperty;
+			this.maxyProperty = p1.yProperty;
+		}
+	}
+	
 	/** Change the frame of the rectangle.
 	 * 
 	 * @param x1 is the coordinate of the first corner.
@@ -371,19 +434,27 @@ public class RoundRectangle2d extends AbstractRoundRectangle2F<RoundRectangle2d>
 	/**
 	 * Set the width of the arc that rounds off the corners.
 	 * @param a is the width of the arc that rounds off the corners
-	 * of this <code>RoundRectangle2f</code>.
+	 * of this <code>RoundRectangle2d</code>.
 	 */
 	public void setArcWidth(double a) {
 		this.arcWidthProperty.set(a);
+	}
+	
+	public void setArcWidthProperty(DoubleProperty a) {
+		this.arcWidthProperty = a;
 	}
 
 	/**
 	 * Set the height of the arc that rounds off the corners.
 	 * @param a is the height of the arc that rounds off the corners
-	 * of this <code>RoundRectangle2f</code>.
+	 * of this <code>RoundRectangle2d</code>.
 	 */
 	public void setArcHeight(double a) {
 		this.arcHeightProperty.set(a);
+	}
+	
+	public void setArcHeightProperty(DoubleProperty a) {
+		this.arcHeightProperty = a;
 	}
 
 	/** Change the frame of the rectangle.

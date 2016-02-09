@@ -26,6 +26,7 @@ import org.arakhne.afc.math.geometry.d3.Vector3D;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.ReadOnlyDoubleWrapper;
 
@@ -46,8 +47,12 @@ public class Vector3d extends Tuple3d<Vector3D> implements FunctionalVector3D {
 		this(0d, 0d, 0d);
 	}
 	
-	public Vector3d(Tuple3D<?> v) {
-		this(v.getX(), v.getY(), v.getZ());
+	public Vector3d(Vector3d v) {
+		this(v.xProperty, v.yProperty, v.zProperty);
+	}
+	
+	public Vector3d(Tuple3D<?> tuple) {
+		super(tuple);
 	}
 	
 	public Vector3d(double x, double y, double z) {
@@ -68,6 +73,24 @@ public class Vector3d extends Tuple3d<Vector3D> implements FunctionalVector3D {
 		}, this.lengthSquareProperty));
 	}
 
+	public Vector3d(DoubleProperty x, DoubleProperty y, DoubleProperty z) {
+		super(x, y, z);
+		
+		this.lengthSquareProperty.bind(Bindings.createDoubleBinding(new Callable<Double>() {
+			@Override
+			public Double call() throws Exception {
+				return new Double(Vector3d.this.xProperty.doubleValue() * Vector3d.this.xProperty.doubleValue() + Vector3d.this.yProperty.doubleValue() * Vector3d.this.yProperty.doubleValue() + Vector3d.this.zProperty.doubleValue() * Vector3d.this.zProperty.doubleValue());
+			}
+		}, this.xProperty, this.yProperty, this.zProperty));
+		
+		this.lengthProperty.bind(Bindings.createDoubleBinding(new Callable<Double>() {
+			@Override
+			public Double call() throws Exception {
+				return new Double(Math.sqrt(Vector3d.this.lengthSquareProperty.doubleValue()));
+			}
+		}, this.lengthSquareProperty));
+	}
+	
 	/** {@inheritDoc}
 	 */
 	@Pure

@@ -24,6 +24,8 @@ import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Tuple3D;
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import javafx.beans.property.DoubleProperty;
+
 
 /**
  * @author Olivier LAMOTTE (olivier.lamotte@utbm.fr)
@@ -41,10 +43,17 @@ public class Point3d extends Tuple3d<Point3D> implements FunctionalPoint3D {
 		super(x, y, z);
 	}
 	
-	public Point3d(Tuple3D<?> point) {
-		super(point.getX(), point.getY(), point.getZ());
+	public Point3d(Tuple3D<?> tuple) {
+		super(tuple);
 	}
 	
+	public Point3d(Point3d point) {
+		super(point.xProperty,point.yProperty,point.zProperty);
+	}
+	
+	public Point3d(DoubleProperty x, DoubleProperty y, DoubleProperty z) {
+		super(x, y, z);
+	}
 	
 	/** {@inheritDoc}
 	 */

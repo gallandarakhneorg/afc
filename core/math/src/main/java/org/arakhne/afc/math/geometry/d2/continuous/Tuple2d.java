@@ -40,13 +40,22 @@ public class Tuple2d<TT extends Tuple2D<? super TT>> implements FunctionalTuple2
 		this(0, 0);
 	}
 	
-	public Tuple2d(Tuple2d<?> t) {
+	public Tuple2d(Tuple2D<?> t) {
 		this(t.getX(), t.getY());
+	}
+	
+	public Tuple2d(Tuple2d<?> t) {
+		this(t.xProperty, t.yProperty);
 	}
 	
 	public Tuple2d(double x, double y) {
 		this.xProperty = new SimpleDoubleProperty(x);
 		this.yProperty = new SimpleDoubleProperty(y);
+	}
+	
+	public Tuple2d(DoubleProperty x, DoubleProperty y) {
+		this.xProperty = x;
+		this.yProperty = y;
 	}
 
 	@Pure

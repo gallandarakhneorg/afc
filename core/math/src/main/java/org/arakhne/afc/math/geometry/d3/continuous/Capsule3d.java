@@ -52,12 +52,12 @@ public class Capsule3d extends AbstractCapsule3F {
 	/**
 	 * Medial line segment start point, it is also the lower point of the capsule
 	 */
-	protected final Point3d medial1 = new Point3d();
+	protected final Point3d medial1;
 
 	/**
 	 * Medial line segment endpoint
 	 */
-	protected final Point3d medial2 = new Point3d();
+	protected final Point3d medial2;
 
 	/**
 	 * Radius.
@@ -67,6 +67,8 @@ public class Capsule3d extends AbstractCapsule3F {
 	/**
 	 */
 	public Capsule3d() {
+		this.medial1 = new Point3d();
+		this.medial2 = new Point3d();
 		this.radiusProperty = new SimpleDoubleProperty(0f);
 	}
 
@@ -78,19 +80,41 @@ public class Capsule3d extends AbstractCapsule3F {
 	 * @param radius1
 	 *            is the radius of the capsule.
 	 */
-	public Capsule3d(Point3D a, Point3D b, double radius1) {
+	public Capsule3d(Point3f a, Point3f b, double radius1) {
 		this(a.getX(), a.getY(), a.getZ(),
 				b.getX(), b.getY(), b.getZ(),
 				radius1);
 	}
 
 	/**
+	 * @param a
+	 *            is the first point on the capsule's segment.
+	 * @param b
+	 *            is the second point on the capsule's segment.
+	 * @param radius1
+	 *            is the radius of the capsule.
+	 */
+	public Capsule3d(Point3d a, Point3d b, DoubleProperty radius1) {
+		this.medial1 = new Point3d(a);
+		this.medial2 = new Point3d(b);
+		this.radiusProperty = radius1;
+	}
+	
+	
+	/**
 	 * @param capsule the capsule to copy.
 	 */
-	public Capsule3d(AbstractCapsule3F capsule) {
+	public Capsule3d(Capsule3f capsule) {
 		this(capsule.getMedialX1(), capsule.getMedialY1(), capsule.getMedialZ1(),
 				capsule.getMedialX2(), capsule.getMedialY2(), capsule.getMedialZ2(),
 				capsule.getRadius());
+	}
+	
+	/**
+	 * @param capsule the capsule to bind.
+	 */
+	public Capsule3d(Capsule3d capsule) {
+		this(capsule.medial1,capsule.medial2,capsule.radiusProperty);
 	}
 
 	/**
@@ -103,8 +127,8 @@ public class Capsule3d extends AbstractCapsule3F {
 	 * @param radius1 the radius of the capsule.
 	 */
 	public Capsule3d(double x1, double y1, double z1, double x2, double y2, double z2, double radius1) {
-		this.medial1.set(x1, y2, z1);
-		this.medial2.set(x2, y2, z2);
+		this.medial1 = new Point3d(x1, y2, z1);
+		this.medial2 = new Point3d(x2, y2, z2);
 		this.radiusProperty = new SimpleDoubleProperty(radius1);
 		ensureAIsLowerPoint();
 	}
@@ -130,6 +154,16 @@ public class Capsule3d extends AbstractCapsule3F {
 	@Override
 	public void setMedial1(Point3D point) {
 		setMedial1(point.getX(), point.getY(), point.getZ());
+	}
+	
+	/**
+	 * Set the first point of the capsule's segment.
+	 * 
+	 * @param point the new first point for the capsule's segment..
+	 */
+	public void setMedial1Properties(Point3d point) {
+		this.medial1.setProperties(point.xProperty, point.yProperty, point.zProperty);
+		ensureAIsLowerPoint();
 	}
 
 	/**
@@ -198,6 +232,16 @@ public class Capsule3d extends AbstractCapsule3F {
 	public void setMedial2(Point3D point) {
 		setMedial2(point.getX(), point.getY(), point.getZ());
 	}
+	
+	/**
+	 * Set the second point of the capsule's segment.
+	 * 
+	 * @param point the new second point for the capsule's segment..
+	 */
+	public void setMedial2Properties(Point3d point) {
+		this.medial2.setProperties(point.xProperty, point.yProperty, point.zProperty);
+		ensureAIsLowerPoint();
+	}
 
 	/**
 	 * Set the second point of the capsule's segment.
@@ -262,6 +306,15 @@ public class Capsule3d extends AbstractCapsule3F {
 	public void setRadius(double radius1) {
 		this.radiusProperty.set(radius1);
 	}
+	
+	/**
+	 * Change the radius of the capsule.
+	 * 
+	 * @param radius1 the radius of the capsule.
+	 */
+	public void setRadiusProperty(DoubleProperty radius1) {
+		this.radiusProperty = radius1;
+	}
 
 	/** Set the capsule.
 	 * 
@@ -273,6 +326,19 @@ public class Capsule3d extends AbstractCapsule3F {
 		set(a.getX(), a.getY(), a.getZ(),
 				b.getX(),b.getY(), b.getZ(),
 				radius1);
+	}
+	
+	/** Set the capsule.
+	 * 
+	 * @param a the first point of the capsule's segment.
+	 * @param b the second point of the capsule's segment.
+	 * @param radius1 the radius of the capsule.
+	 */
+	public void setProperties(Point3d a, Point3d b, DoubleProperty radius1) {
+		this.medial1.setProperties(a.xProperty, a.yProperty, a.zProperty);
+		this.medial2.setProperties(b.xProperty, b.yProperty, b.zProperty);
+		this.radiusProperty = radius1;
+		ensureAIsLowerPoint();
 	}
 
 	/** Set the capsule.

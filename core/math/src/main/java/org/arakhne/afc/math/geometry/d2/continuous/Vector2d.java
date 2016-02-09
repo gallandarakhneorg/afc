@@ -26,6 +26,7 @@ import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ReadOnlyDoubleWrapper;
 
 /**
@@ -45,11 +46,33 @@ public class Vector2d extends Tuple2d<Vector2D>implements FunctionalVector2D {
 		this(0d, 0d);
 	}
 	
-	public Vector2d(Tuple2d<?> v) {
-		this(v.getX(), v.getY());
+	public Vector2d(Vector2d v) {
+		this(v.xProperty,v.yProperty);
+	}
+	
+	public Vector2d(Tuple2D<?> tuple) {
+		super(tuple);
 	}
 	
 	public Vector2d(double x, double y) {
+		super(x, y);
+		
+		this.lengthSquareProperty.bind(Bindings.createDoubleBinding(new Callable<Double>() {
+			@Override
+			public Double call() throws Exception {
+				return new Double(Vector2d.this.xProperty.doubleValue() * Vector2d.this.xProperty.doubleValue() + Vector2d.this.yProperty.doubleValue() * Vector2d.this.yProperty.doubleValue());
+			}
+		}, this.xProperty, this.yProperty));
+		
+		this.lengthProperty.bind(Bindings.createDoubleBinding(new Callable<Double>() {
+			@Override
+			public Double call() throws Exception {
+				return new Double(Math.sqrt(Vector2d.this.lengthSquareProperty.doubleValue()));
+			}
+		}, this.lengthSquareProperty));
+	}
+	
+	public Vector2d(DoubleProperty x, DoubleProperty y) {
 		super(x, y);
 		
 		this.lengthSquareProperty.bind(Bindings.createDoubleBinding(new Callable<Double>() {

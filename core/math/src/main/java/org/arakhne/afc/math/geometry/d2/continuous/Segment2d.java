@@ -63,20 +63,36 @@ public class Segment2d extends AbstractSegment2F<Segment2d>{
 	 * @param a
 	 * @param b
 	 */
-	public Segment2d(Point2D a, Point2D b) {
+	public Segment2d(Point2f a, Point2f b) {
 		this();
 		this.set(a, b);
+	}
+	
+	public Segment2d(Point2d a, Point2d b) {
+		this();
+		this.setProperties(a, b);
 	}
 
 	/**
 	 * @param s
 	 */
-	public Segment2d(Segment2d s) {
+	public Segment2d(Segment2f s) {
 		this();
 		this.setX1(s.getX1());
 		this.setY1(s.getY1());
 		this.setX2(s.getX2());
 		this.setY2(s.getY2());
+	}
+	
+	/**
+	 * @param s
+	 */
+	public Segment2d(Segment2d s) {
+		this();
+		this.axProperty = s.axProperty;
+		this.ayProperty = s.ayProperty;
+		this.bxProperty = s.bxProperty;
+		this.byProperty = s.byProperty;
 	}
 
 	/**
@@ -120,6 +136,18 @@ public class Segment2d extends AbstractSegment2F<Segment2d>{
 		this.setY1(a.getY());
 		this.setX2(b.getX());
 		this.setY2(b.getY());
+	}
+	
+	/** Change the line.
+	 * 
+	 * @param a
+	 * @param b
+	 */
+	public void setProperties(Point2d a, Point2d b) {
+		this.axProperty = a.xProperty;
+		this.ayProperty = a.yProperty;
+		this.bxProperty = b.xProperty;
+		this.byProperty = b.yProperty;
 	}
 
 	@Override
@@ -177,8 +205,8 @@ public class Segment2d extends AbstractSegment2F<Segment2d>{
 	 * @return the first point.
 	 */
 	@Pure
-	public Point2D getP1() {
-		return new Point2f(this.getX1(), this.getY1());
+	public Point2d getP1() {
+		return new Point2d(this.getX1(), this.getY1());
 	}
 
 	/** Replies the second point.
@@ -186,8 +214,8 @@ public class Segment2d extends AbstractSegment2F<Segment2d>{
 	 * @return the second point.
 	 */
 	@Pure
-	public Point2D getP2() {
-		return new Point2f(this.getX2(), this.getY2());
+	public Point2d getP2() {
+		return new Point2d(this.getX2(), this.getY2());
 	}
 
 	@Override

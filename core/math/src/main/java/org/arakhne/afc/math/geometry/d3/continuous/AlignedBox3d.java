@@ -205,6 +205,15 @@ public class AlignedBox3d extends AbstractBoxedShape3F<AlignedBox3d> {
 	}
 	
 	/**
+	 * @param min is the min corner of the box.
+	 * @param max is the max corner of the box.
+	 */
+	public AlignedBox3d(Point3d min, Point3d max) {
+		this();
+		setFromCornersProperties(min, max);
+	}
+	
+	/**
 	 * @param x
 	 * @param y
 	 * @param z
@@ -245,7 +254,7 @@ public class AlignedBox3d extends AbstractBoxedShape3F<AlignedBox3d> {
 		setFromCorners(x, y, z, x+sizex, y+sizey, z+sizez);
 	}
 	
-	/** Change the frame of te box.
+	/** Change the frame of the box.
 	 * 
 	 * @param min is the min corner of the box.
 	 * @param max is the max corner of the box.
@@ -255,6 +264,17 @@ public class AlignedBox3d extends AbstractBoxedShape3F<AlignedBox3d> {
 		setFromCorners(
 				min.getX(), min.getY(), min.getZ(), 
 				max.getX(), max.getY(), max.getZ());
+	}
+	
+	/** Change the frame of the box with Point3d points.
+	 * 
+	 * When the points are changed, the AlignedBox3d will also be changed
+	 * 
+	 * @param min is the min corner of the box.
+	 * @param max is the max corner of the box.
+	 */
+	public void setProperties(Point3d min, Point3d max) {
+		setFromCornersProperties(min, max);
 	}
 	
 	/** Change the X-size of the box, not the min corner.
@@ -294,6 +314,38 @@ public class AlignedBox3d extends AbstractBoxedShape3F<AlignedBox3d> {
 		setFromCorners(
 				p1.getX(), p1.getY(), p1.getZ(),
 				p2.getX(), p2.getY(), p2.getZ());
+	}
+	
+	/** Change the frame of the box.
+	 * 
+	 * @param p1 is the coordinate of the first corner.
+	 * @param p2 is the coordinate of the second corner.
+	 */
+	public void setFromCornersProperties(Point3d p1, Point3d p2) {
+		if (p1.getX()<p2.getX()) {
+			this.minxProperty = p1.xProperty;
+			this.maxxProperty = p2.xProperty;
+		}
+		else {
+			this.minxProperty = p2.xProperty;
+			this.maxxProperty = p1.xProperty;
+		}
+		if (p1.getY()<p2.getY()) {
+			this.minyProperty = p1.yProperty;
+			this.maxyProperty = p2.yProperty;
+		}
+		else {
+			this.minyProperty = p2.yProperty;
+			this.maxyProperty = p1.yProperty;
+		}
+		if (p1.getZ()<p2.getZ()) {
+			this.minzProperty = p1.zProperty;
+			this.maxzProperty = p2.zProperty;
+		}
+		else {
+			this.minzProperty = p2.zProperty;
+			this.maxzProperty = p1.zProperty;
+		}
 	}
 
 	/** Change the frame of the box.
@@ -360,8 +412,8 @@ public class AlignedBox3d extends AbstractBoxedShape3F<AlignedBox3d> {
 	 */
 	@Pure
 	@Override
-	public Point3f getMin() {
-		return new Point3f(this.minxProperty.doubleValue(), this.minyProperty.doubleValue(), this.minzProperty.doubleValue());
+	public Point3d getMin() {
+		return new Point3d(this.minxProperty, this.minyProperty, this.minzProperty);
 	}
 
 	/** Replies the min point.
@@ -370,8 +422,8 @@ public class AlignedBox3d extends AbstractBoxedShape3F<AlignedBox3d> {
 	 */
 	@Pure
 	@Override
-	public Point3f getMax() {
-		return new Point3f(this.maxxProperty.doubleValue(), this.maxyProperty.doubleValue(), this.maxzProperty.doubleValue());
+	public Point3d getMax() {
+		return new Point3d(this.maxxProperty, this.maxyProperty, this.maxzProperty);
 	}
 
 	/** Replies the center point.
@@ -380,8 +432,8 @@ public class AlignedBox3d extends AbstractBoxedShape3F<AlignedBox3d> {
 	 */
 	@Pure
 	@Override
-	public Point3f getCenter() {
-		return new Point3f(
+	public Point3d getCenter() {
+		return new Point3d(
 				(this.minxProperty.doubleValue() + this.maxxProperty.doubleValue()) / 2.,
 				(this.minyProperty.doubleValue() + this.getMaxY()) / 2.,
 				(this.minzProperty.doubleValue() + this.maxzProperty.doubleValue()) / 2.);
@@ -851,7 +903,7 @@ public class AlignedBox3d extends AbstractBoxedShape3F<AlignedBox3d> {
 	@Pure
 	@Override
 	public Point3D getFarthestPointTo(Point3D p) {
-		Point3f farthest = new Point3f();
+		Point3d farthest = new Point3d();
 		if (p.getX()<this.getMinX()) {
 			farthest.setX(this.getMaxX());
 		}

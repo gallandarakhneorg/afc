@@ -100,9 +100,17 @@ public class OrientedRectangle2d extends AbstractOrientedRectangle2F<OrientedRec
 	 * 
 	 * @param obr
 	 */
-	public OrientedRectangle2d(OrientedRectangle2d obr) {
+	public OrientedRectangle2d(OrientedRectangle2f obr) {
 		this();
 		this.set(obr.getCenterX(),obr.getCenterY(),obr.getFirstAxisX(),obr.getFirstAxisY(),obr.getSecondAxisX(),obr.getSecondAxisY(),obr.getFirstAxisExtent(),obr.getSecondAxisExtent());
+	}
+	
+	/** Create an oriented rectangle from the given OBR.
+	 * 
+	 * @param obr
+	 */
+	public OrientedRectangle2d(OrientedRectangle2d obr) {
+		this(obr.getCenter(),obr.getFirstAxis(),obr.extentRProperty,obr.extentSProperty);
 	}
 
 	/** Construct an oriented rectangle from the given cloud of points.
@@ -146,9 +154,16 @@ public class OrientedRectangle2d extends AbstractOrientedRectangle2F<OrientedRec
 	 * @param axis1Extent is the extent of the first axis.
 	 * @param axis2Extent is the extent of the second axis.
 	 */
-	public OrientedRectangle2d(Point2D center, Vector2D axis1, double axis1Extent, double axis2Extent) {
+	public OrientedRectangle2d(Point2f center, Vector2f axis1, double axis1Extent, double axis2Extent) {
 		this();
 		this.set(center, axis1, axis1Extent, axis2Extent);
+	}
+	
+	public OrientedRectangle2d(Point2d center, Vector2d axis1, DoubleProperty axis1Extent, DoubleProperty axis2Extent) {
+		this();
+		this.setCenterProperties(center);
+		this.setFirstAxisProperties(axis1, axis1Extent);
+		this.setSecondAxisExtentProperty(axis2Extent);
 	}
 
 	/** Replies the center.
@@ -156,8 +171,8 @@ public class OrientedRectangle2d extends AbstractOrientedRectangle2F<OrientedRec
 	 * @return the center.
 	 */
 	@Pure
-	public Point2f getCenter() {
-		return new Point2f(this.getCenterX(), this.getCenterY());
+	public Point2d getCenter() {
+		return new Point2d(this.cxProperty, this.cyProperty);
 	}
 
 	/** Replies the center x.
@@ -195,14 +210,23 @@ public class OrientedRectangle2d extends AbstractOrientedRectangle2F<OrientedRec
 	public void setCenter(Point2D center) {
 		setCenter(center.getX(), center.getY());
 	}
+	
+	/** Set the center.
+	 * 
+	 * @param center
+	 */
+	public void setCenterProperties(Point2d center) {
+		this.cxProperty = center.xProperty;
+		this.cyProperty = center.yProperty;
+	}
 
 	/** Replies the first axis of the oriented rectangle.
 	 *
 	 * @return the unit vector of the first axis. 
 	 */
 	@Pure
-	public Vector2f getFirstAxis() {
-		return new Vector2f(this.rxProperty.doubleValue(), this.ryProperty.doubleValue());
+	public Vector2d getFirstAxis() {
+		return new Vector2d(this.rxProperty, this.ryProperty);
 	}
 
 	/** Replies coordinate x of the first axis of the oriented rectangle.
@@ -228,8 +252,8 @@ public class OrientedRectangle2d extends AbstractOrientedRectangle2F<OrientedRec
 	 * @return the unit vector of the second axis. 
 	 */
 	@Pure
-	public Vector2f getSecondAxis() {
-		return new Vector2f(this.sxProperty.doubleValue(), this.syProperty.doubleValue());
+	public Vector2d getSecondAxis() {
+		return new Vector2d(this.sxProperty, this.syProperty);
 	}
 
 	/** Replies coordinate x of the second axis of the oriented rectangle.
@@ -266,6 +290,10 @@ public class OrientedRectangle2d extends AbstractOrientedRectangle2F<OrientedRec
 	public void setFirstAxisExtent(double extent) {
 		this.extentRProperty.set(Math.max(extent, 0));
 	}
+	
+	public void setFirstAxisExtentProperty(DoubleProperty extent) {
+		this.extentRProperty = extent;
+	}
 
 	/** Replies the demi-size of the rectangle along its second axis.
 	 * 
@@ -274,6 +302,10 @@ public class OrientedRectangle2d extends AbstractOrientedRectangle2F<OrientedRec
 	@Pure
 	public double getSecondAxisExtent() {
 		return this.extentSProperty.doubleValue();
+	}
+
+	public void setSecondAxisExtentProperty(DoubleProperty extent) {
+		this.extentSProperty = extent;
 	}
 
 	/** Change the demi-size of the rectangle along its second axis.
@@ -292,6 +324,10 @@ public class OrientedRectangle2d extends AbstractOrientedRectangle2F<OrientedRec
 	public void setFirstAxis(Vector2D axis) {
 		this.setFirstAxis(axis.getX(), axis.getY(), getFirstAxisExtent());
 	}
+	
+	public void setFirstAxisProperties(Vector2d axis) {
+		this.setFirstAxisProperties(axis, this.extentRProperty);
+	}
 
 	/** Set the first axis of the rectangle.
 	 * The second axis is updated to be perpendicular to the new first axis.
@@ -301,6 +337,20 @@ public class OrientedRectangle2d extends AbstractOrientedRectangle2F<OrientedRec
 	 */
 	public void setFirstAxis(Vector2D axis, double extent) {
 		this.setFirstAxis(axis.getX(), axis.getY(), extent);
+	}
+	
+	public void setFirstAxisProperties(Vector2d axis, DoubleProperty extent) {
+		assert(axis.isUnitVector());
+
+		this.rxProperty = axis.xProperty;
+		this.ryProperty = axis.xProperty;
+
+		Vector2d axis2 = axis.clone();
+		axis2.perpendicularize();
+		this.sxProperty.set(axis2.getX());
+		this.syProperty.set(axis2.getY());
+
+		this.extentRProperty = extent;
 	}
 
 	/** Set the first axis of the rectangle.
@@ -344,6 +394,10 @@ public class OrientedRectangle2d extends AbstractOrientedRectangle2F<OrientedRec
 		this.setSecondAxis(axis.getX(), axis.getY(), getSecondAxisExtent());
 	}
 
+	public void setSecondAxisProperties(Vector2d axis) {
+		this.setSecondAxisProperties(axis, this.extentRProperty);
+	}
+	
 	/** Set the second axis of the rectangle.
 	 * The first axis is updated to be perpendicular to the new second axis.
 	 * 
@@ -386,6 +440,20 @@ public class OrientedRectangle2d extends AbstractOrientedRectangle2F<OrientedRec
 		this.extentSProperty.set(extent);
 	}
 
+	public void setSecondAxisProperties(Vector2d axis, DoubleProperty extent) {
+		assert(axis.isUnitVector());
+
+		this.sxProperty = axis.xProperty;
+		this.syProperty = axis.xProperty;
+
+		Vector2d axis2 = axis.clone();
+		axis2.perpendicularize();
+		this.rxProperty.set(axis2.getX());
+		this.ryProperty.set(axis2.getY());
+
+		this.extentSProperty = extent;
+	}
+	
 	
 	@Override
 	public void clear() {
@@ -395,7 +463,7 @@ public class OrientedRectangle2d extends AbstractOrientedRectangle2F<OrientedRec
 	@Override
 	public void set(final Shape2F s) {
 		if (s instanceof OrientedRectangle2f) {
-			OrientedRectangle2f obr = (OrientedRectangle2f) s;
+			OrientedRectangle2d obr = (OrientedRectangle2d) s;
 			set(obr.getCenterX(), obr.getCenterY(),
 					obr.getFirstAxisX(), obr.getFirstAxisY(), obr.getFirstAxisExtent(),
 					obr.getSecondAxisX(), obr.getSecondAxisY(), obr.getSecondAxisExtent());
@@ -444,7 +512,7 @@ public class OrientedRectangle2d extends AbstractOrientedRectangle2F<OrientedRec
 				axis1X, axis1Y, axis1Extent,
 				axis2.getX(), axis2.getY(), axis2Extent);
 	}
-
+	
 	/** Set the oriented rectangle.
 	 *
 	 * @param centerX is the X coordinate of the OBR center.

@@ -756,7 +756,7 @@ public abstract class AbstractOrientedRectangle2F<T extends Shape2F> extends Abs
 	 * @return the center.
 	 */
 	@Pure
-	abstract public Point2f getCenter();
+	abstract public Point2D getCenter();
 
 	/** Replies the center x.
 	 *
@@ -790,7 +790,7 @@ public abstract class AbstractOrientedRectangle2F<T extends Shape2F> extends Abs
 	 * @return the unit vector of the first axis. 
 	 */
 	@Pure
-	abstract public Vector2f getFirstAxis();
+	abstract public Vector2D getFirstAxis();
 
 	/** Replies coordinate x of the first axis of the oriented rectangle.
 	 *
@@ -811,7 +811,7 @@ public abstract class AbstractOrientedRectangle2F<T extends Shape2F> extends Abs
 	 * @return the unit vector of the second axis. 
 	 */
 	@Pure
-	abstract public Vector2f getSecondAxis();
+	abstract public Vector2D getSecondAxis();
 
 	/** Replies coordinate x of the second axis of the oriented rectangle.
 	 *

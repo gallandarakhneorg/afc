@@ -23,8 +23,8 @@ package org.arakhne.afc.math.geometry.d2.continuous;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.eclipse.xtext.xbase.lib.Pure;
 
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 
 /**
  * @author $Author: hjaffali$
@@ -67,6 +67,15 @@ public class Ellipse2d extends AbstractEllipse2F<Ellipse2d> {
 		this();
 		setFromCorners(min.getX(), min.getY(), max.getX(), max.getY());
 	}
+	
+	/**
+	 * @param min is the min corner of the ellipse.
+	 * @param max is the max corner of the ellipse.
+	 */
+	public Ellipse2d(Point2d min, Point2d max) {
+		this();
+		setFromCornersProperties(min, max);
+	}
 
 	/**
 	 * @param x
@@ -85,6 +94,14 @@ public class Ellipse2d extends AbstractEllipse2F<Ellipse2d> {
 	public Ellipse2d(Ellipse2f e) {
 		this();
 		setFromCorners(e.getMinX(),e.getMinY(),e.getMaxX(),e.getMaxY());
+	}
+	
+	/**
+	 * @param e
+	 */
+	public Ellipse2d(Ellipse2d e) {
+		this();
+		setFromCornersProperties(new Point2d(e.minxProperty,e.minyProperty),new Point2d(e.maxxProperty,e.maxyProperty));
 	}
 
 	
@@ -137,7 +154,31 @@ public class Ellipse2d extends AbstractEllipse2F<Ellipse2d> {
 	public void setFromCorners(Point2D p1, Point2D p2) {
 		setFromCorners(p1.getX(), p1.getY(), p2.getX(), p2.getY());
 	}
-
+	
+	/** Change the frame of the rectangle.
+	 * 
+	 * @param p1 is the coordinate of the first corner.
+	 * @param p2 is the coordinate of the second corner.
+	 */
+	public void setFromCornersProperties(Point2d p1, Point2d p2) {
+		if (p1.getX()<p2.getX()) {
+			this.minxProperty = p1.xProperty;
+			this.maxxProperty = p2.xProperty;
+		}
+		else {
+			this.minxProperty = p2.xProperty;
+			this.maxxProperty = p1.xProperty;
+		}
+		if (p1.getY()<p2.getY()) {
+			this.minyProperty = p1.yProperty;
+			this.maxyProperty = p2.yProperty;
+		}
+		else {
+			this.minyProperty = p2.yProperty;
+			this.maxyProperty = p1.yProperty;
+		}
+	}
+	
 	/** Change the frame of the rectangle.
 	 * 
 	 * @param x1 is the coordinate of the first corner.

@@ -1974,10 +1974,12 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 	}
 
 	/** Replies the total lentgh of the path.
+	 * The length() method doesn't take into account the moveTo deplacement to calculate length.
+	 * It only calculate the lines can be drawed. 
 	 *
 	 * @return the length of the path.
 	 */
-	//FIXME TO BE TESTED 
+	//FIXME TO BE IMPLEMENTED IN POLYLINE 
 	public double length() {
 		
 		if (this.isEmpty()) return 0;

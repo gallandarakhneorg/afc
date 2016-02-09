@@ -254,7 +254,7 @@ public abstract class AbstractCircle2F<T extends Shape2F> extends AbstractShape2
 	 * @return a copy of the center.
 	 */
 	@Pure
-	abstract public Point2f getCenter();
+	abstract public Point2D getCenter();
 
 	/** Change the center.
 	 * 

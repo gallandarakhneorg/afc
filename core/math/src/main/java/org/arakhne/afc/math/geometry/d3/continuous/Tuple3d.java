@@ -48,10 +48,20 @@ public class Tuple3d<T extends Tuple3D<? super T>> implements FunctionalTuple3D<
 		this(t.getX(), t.getY(), t.getZ());
 	}
 	
+	public Tuple3d(Tuple3d<?> t) {
+		this(t.xProperty,t.yProperty,t.zProperty);
+	}
+	
 	public Tuple3d(double x, double y, double z) {
 		this.xProperty = new SimpleDoubleProperty(x);
 		this.yProperty = new SimpleDoubleProperty(y);
 		this.zProperty = new SimpleDoubleProperty(z);
+	}
+	
+	public Tuple3d(DoubleProperty x, DoubleProperty y, DoubleProperty z) {
+		this.xProperty = x;
+		this.yProperty = y;
+		this.zProperty = z;
 	}
 	
 	public void setX(double x) {
@@ -70,10 +80,19 @@ public class Tuple3d<T extends Tuple3D<? super T>> implements FunctionalTuple3D<
 		this.setZ(z);
 	}
 	
+	public void setProperties(DoubleProperty x, DoubleProperty y, DoubleProperty z) {
+		this.xProperty = x;
+		this.yProperty = y;
+		this.zProperty = z;
+	}
+	
 	public void set(Tuple3D<?> v) {
 		this.set(v.getX(), v.getY(), v.getZ());
 	}
 	
+	public void set(Tuple3d<?> v) {
+		this.setProperties(v.xProperty, v.yProperty, v.zProperty);
+	}
 
 	@Pure
 	public DoubleProperty xProperty() {

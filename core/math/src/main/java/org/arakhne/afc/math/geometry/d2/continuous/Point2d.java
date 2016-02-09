@@ -23,6 +23,8 @@ import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import javafx.beans.property.DoubleProperty;
+
 
 /**
  * @author Olivier LAMOTTE (olivier.lamotte@utbm.fr)
@@ -44,6 +46,18 @@ public class Point2d extends Tuple2d<Point2D> implements FunctionalPoint2D {
 	 */
 	public Point2d(double x, double y) {
 		super(x, y);
+	}
+	
+	public Point2d(Point2d p) {
+		super(p.xProperty,p.yProperty);
+	}
+	
+	public Point2d(Tuple2D<?> tuple) {
+		super(tuple);
+	}
+	
+	public Point2d(DoubleProperty x, DoubleProperty y) {
+		super(x,y);
 	}
 
 	/* (non-Javadoc)

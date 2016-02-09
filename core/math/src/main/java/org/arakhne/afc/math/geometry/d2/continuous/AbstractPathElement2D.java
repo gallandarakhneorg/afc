@@ -66,6 +66,33 @@ public abstract class AbstractPathElement2D implements AbstractPathElement2X {
 		throw new IllegalArgumentException();
 	}
 	
+	/** Create an instance of path element, associating properties of points to the PathElement.
+	 * 
+	 * When the point in parameter are changed, the PathElement will change also.
+	 * 
+	 * @param type is the type of the new element.
+	 * @param last is the last point.
+	 * @param coords are the eventual other points.
+	 * @return the instance of path element.
+	 */
+	@Pure
+	public static AbstractPathElement2D newInstance(PathElementType type, Point2d last, Point2d[] coords) {
+		switch(type) {
+		case MOVE_TO:
+			return new MovePathElement2d(coords[0]);
+		case LINE_TO:
+			return new LinePathElement2d(last, coords[0]);
+		case QUAD_TO:
+			return new QuadPathElement2d(last, coords[0], coords[1]);
+		case CURVE_TO:
+			return new CurvePathElement2d(last, coords[0], coords[1], coords[2]);
+		case CLOSE:
+			return new ClosePathElement2d(last, coords[0]);
+		default:
+		}
+		throw new IllegalArgumentException();
+	}
+	
 	/** Type of the path element.
 	 */
 	protected final PathElementType type;
@@ -127,6 +154,14 @@ public abstract class AbstractPathElement2D implements AbstractPathElement2X {
 					Double.NaN, Double.NaN,
 					Double.NaN, Double.NaN,
 					x, y);
+		}
+		
+		public MovePathElement2d(Point2d point) {
+			super(PathElementType.MOVE_TO,
+					null,
+					null,
+					null,
+					point);
 		}
 
 		@Pure
@@ -199,6 +234,14 @@ public abstract class AbstractPathElement2D implements AbstractPathElement2X {
 					Double.NaN, Double.NaN,
 					Double.NaN, Double.NaN,
 					tox, toy);
+		}
+		
+		public LinePathElement2d(Point2d from, Point2d to) {
+			super(PathElementType.LINE_TO,
+					from,
+					null,
+					null,
+					to);
 		}
 
 		@Pure
@@ -275,6 +318,15 @@ public abstract class AbstractPathElement2D implements AbstractPathElement2X {
 					tox, toy);
 		}
 
+		public QuadPathElement2d(Point2d from, Point2d ctrl, Point2d to) {
+			super(PathElementType.QUAD_TO,
+					from,
+					ctrl,
+					null,
+					to);
+		}
+
+		
 		@Pure
 		@Override
 		public final PathElementType getType() {
@@ -359,6 +411,14 @@ public abstract class AbstractPathElement2D implements AbstractPathElement2X {
 					ctrlx1, ctrly1,
 					ctrlx2, ctrly2,
 					tox, toy);
+		}
+		
+		public CurvePathElement2d(Point2d from, Point2d ctrl1, Point2d ctrl2, Point2d to) {
+			super(PathElementType.CURVE_TO,
+					from,
+					ctrl1,
+					ctrl2,
+					to);
 		}
 
 		@Pure
@@ -446,6 +506,14 @@ public abstract class AbstractPathElement2D implements AbstractPathElement2X {
 					Double.NaN, Double.NaN,
 					Double.NaN, Double.NaN,
 					tox, toy);
+		}
+		
+		public ClosePathElement2d(Point2d from, Point2d to) {
+			super(PathElementType.CLOSE,
+					from,
+					null,
+					null,
+					to);
 		}
 
 		@Pure

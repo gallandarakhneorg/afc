@@ -54,7 +54,7 @@ public class Path2fTest extends AbstractMathTestCase{
 		
 		
 		Rectangle2f aB = new Rectangle2f(0,0,2,2);
-		Rectangle2d aB2 = new Rectangle2d(new Point2f(-1f,-1f),new Point2d(-2f,-2f));
+		Rectangle2d aB2 = new Rectangle2d(new Point2d(-1f,-1f),new Point2d(-2f,-2f));
 		
 		assertTrue(p.intersects(aB));
 		assertFalse(p.intersects(aB2));
@@ -413,11 +413,11 @@ public class Path2fTest extends AbstractMathTestCase{
 
 		Point2f randomPoint = new Point2f(this.random.nextDouble()*50-25,this.random.nextDouble()*50-25);
 
-		list.add((new Segment2f(0f, 0f,1f, 1f)).getClosestPointTo(randomPoint));
-		list.add((new Segment2f(1f, 1f,-1f, 1f)).getClosestPointTo(randomPoint));
-		list.add((new Segment2f(-1f, 1f,0.5f, -3f)).getClosestPointTo(randomPoint));
-		list.add((new Segment2f(0.5f, -3f,6f, 2f)).getClosestPointTo(randomPoint));
-		list.add((new Segment2f(6f, 2f,0f, 5f)).getClosestPointTo(randomPoint));
+		list.add((Point2f) (new Segment2f(0f, 0f,1f, 1f)).getClosestPointTo(randomPoint));
+		list.add((Point2f) (new Segment2f(1f, 1f,-1f, 1f)).getClosestPointTo(randomPoint));
+		list.add((Point2f) (new Segment2f(-1f, 1f,0.5f, -3f)).getClosestPointTo(randomPoint));
+		list.add((Point2f) (new Segment2f(0.5f, -3f,6f, 2f)).getClosestPointTo(randomPoint));
+		list.add((Point2f) (new Segment2f(6f, 2f,0f, 5f)).getClosestPointTo(randomPoint));
 
 		Point2f closestPoint = new Point2f(0,0);
 
@@ -445,11 +445,11 @@ public class Path2fTest extends AbstractMathTestCase{
 		
 		Point2f randomPoint = new Point2f(this.random.nextDouble()*50-25,this.random.nextDouble()*50-25);
 
-		list.add((new Segment2f(0f, 0f,1f, 1f)).getFarthestPointTo(randomPoint));
-		list.add((new Segment2f(1f, 1f,-1f, 1f)).getFarthestPointTo(randomPoint));
-		list.add((new Segment2f(-1f, 1f,0.5f, -3f)).getFarthestPointTo(randomPoint));
-		list.add((new Segment2f(0.5f, -3f,6f, 2f)).getFarthestPointTo(randomPoint));
-		list.add((new Segment2f(6f, 2f,0f, 5f)).getFarthestPointTo(randomPoint));
+		list.add((Point2f) (new Segment2f(0f, 0f,1f, 1f)).getFarthestPointTo(randomPoint));
+		list.add((Point2f) (new Segment2f(1f, 1f,-1f, 1f)).getFarthestPointTo(randomPoint));
+		list.add((Point2f) (new Segment2f(-1f, 1f,0.5f, -3f)).getFarthestPointTo(randomPoint));
+		list.add((Point2f) (new Segment2f(0.5f, -3f,6f, 2f)).getFarthestPointTo(randomPoint));
+		list.add((Point2f) (new Segment2f(6f, 2f,0f, 5f)).getFarthestPointTo(randomPoint));
 		
 		Point2f farthestPoint = new Point2f(0,0);
 	

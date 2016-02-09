@@ -59,7 +59,7 @@ public class Circle2d extends AbstractCircle2F<Circle2d>{
 	 * @param center
 	 * @param radius1
 	 */
-	public Circle2d(Point2D center, double radius1) {
+	public Circle2d(Point2d center, double radius1) {
 		this();
 		this.set(center, radius1);
 	}
@@ -102,7 +102,9 @@ public class Circle2d extends AbstractCircle2F<Circle2d>{
 		this.radiusProperty.set(Math.abs(radius1));
 	}
 
-	/** Change the frame of te circle.
+	/** Change the frame of te circle, associating properties of point to the circle center.
+	 * 
+	 * When the point in parameter is changed, the Circle will change also.
 	 * 
 	 * @param center
 	 * @param radius1
@@ -112,12 +114,38 @@ public class Circle2d extends AbstractCircle2F<Circle2d>{
 		this.cyProperty.set(center.getY());
 		this.radiusProperty.set(Math.abs(radius1));
 	}
+	
+	/** Change the frame of te circle, associating properties of point to the circle center.
+	 * 
+	 * When the point in parameter is changed, the Circle will change also.
+	 * 
+	 * @param center
+	 * @param radius1
+	 */
+	public void setProperties(Point2d center, double radius1) {
+		this.cxProperty = center.xProperty;
+		this.cyProperty = center.yProperty;
+		this.radiusProperty.set(Math.abs(radius1));
+	}
+	
+	/** Change the frame of te circle, associating properties of point to the circle center and radius.
+	 * 
+	 * When the point and radius in parameter are changed, the Circle will change also.
+	 * 
+	 * @param center
+	 * @param radius1
+	 */
+	public void setProperties(Point2d center, DoubleProperty radius1) {
+		this.cxProperty = center.xProperty;
+		this.cyProperty = center.yProperty;
+		this.radiusProperty = radius1;
+	}
 
 	@Override
 	public void set(Shape2F s) {
 		if (s instanceof Circle2d) {
 			Circle2d c = (Circle2d) s;
-			set(c.getX(), c.getY(), c.getRadius());
+			set(c.getCenter(), c.getRadius());
 		} else {
 			AbstractRectangle2F<?> r = s.toBoundingBox();
 			set(r.getCenterX(), r.getCenterY(),
@@ -148,10 +176,21 @@ public class Circle2d extends AbstractCircle2F<Circle2d>{
 	 * @return a copy of the center.
 	 */
 	@Pure
-	public Point2f getCenter() {
-		return new Point2f(this.getX(), this.getY());
+	public Point2d getCenter() {
+		return new Point2d(this.cxProperty, this.cyProperty);
 	}
 
+	/** Change the center, associating properties of point to the circle center.
+	 * 
+	 * When the point in parameter is changed, the Circle will change also..
+	 * 
+	 * @param center
+	 */
+	public void setCenterProperties(Point2d center) {
+		this.cxProperty = center.xProperty;
+		this.cyProperty = center.yProperty;
+	}
+	
 	/** Change the center.
 	 * 
 	 * @param center
@@ -186,6 +225,10 @@ public class Circle2d extends AbstractCircle2F<Circle2d>{
 	 */
 	public void setRadius(double radius1) {
 		this.radiusProperty.set(Math.abs(radius1));
+	}
+	
+	public void setRadiusProperty(DoubleProperty radius1) {
+		this.radiusProperty = radius1;
 	}
 
 

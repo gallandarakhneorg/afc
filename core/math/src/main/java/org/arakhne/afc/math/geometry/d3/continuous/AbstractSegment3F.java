@@ -1396,6 +1396,11 @@ public abstract class AbstractSegment3F extends AbstractShape3F<AbstractSegment3
 	 */
 	abstract public void setP2(Point3D p);
 
+	public double length() {
+		return FunctionalPoint3D.distancePointPoint(getX1(), getY1(), getZ1(),getX2(), getY2(), getZ2());
+	}
+	
+	
 	/** Replies the distance between this segment and the given point.
 	 *
 	 * @param point
