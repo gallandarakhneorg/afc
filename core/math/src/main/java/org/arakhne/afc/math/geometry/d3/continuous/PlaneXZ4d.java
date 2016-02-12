@@ -25,12 +25,27 @@ public class PlaneXZ4d extends AbstractPlaneXZ4F {
 	}
 
 	/**
+	 * @param y1 is the coordinate of the plane.
+	 */
+	public PlaneXZ4d(DoubleProperty y1) {
+		this.yProperty = y1;
+		normalize();
+	}
+	
+	/**
 	 * @param p is a point on the plane.
 	 */
 	public PlaneXZ4d(Tuple3D<?> p) {
 		this(p.getY());
 	}
 
+	/**
+	 * @param p is a point on the plane.
+	 */
+	public PlaneXZ4d(Tuple3d<?> p) {
+		this(p.yProperty);
+	}
+	
 	/** {@inheritDoc}
 	 */
 	@Override
@@ -39,10 +54,17 @@ public class PlaneXZ4d extends AbstractPlaneXZ4F {
 		normalize();
 	}
 
+	/** {@inheritDoc}
+	 */
+	public void setProperties(Plane4d plane) {
+		this.setYProperty(plane.bProperty);
+		normalize();
+	}
+	
 	@Pure
 	@Override
 	public Point3d getProjection(double x, double y1, double z) {
-		return new Point3d(x, this.yProperty.doubleValue(), z);
+		return new Point3d(x, this.getY(), z);
 	}
 
 	@Override
@@ -50,6 +72,10 @@ public class PlaneXZ4d extends AbstractPlaneXZ4F {
 		this.yProperty.set(y1);
 	}
 
+	public void setPivot(Point3d pivot) {
+		this.setYProperty(pivot.yProperty);
+	}
+	
 	/** Set the y coordinate of the plane.
 	 *
 	 * @param y1
@@ -58,6 +84,14 @@ public class PlaneXZ4d extends AbstractPlaneXZ4F {
 		this.yProperty.set(y1);
 	}
 
+	/** Set the y coordinate of the plane.
+	 *
+	 * @param y1
+	 */
+	public void setYProperty(DoubleProperty y1) {
+		this.yProperty = y1;
+	}
+	
 	/** Replies the y coordinate of the plane.
 	 *
 	 */

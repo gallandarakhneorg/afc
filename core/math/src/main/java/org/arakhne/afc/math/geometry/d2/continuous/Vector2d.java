@@ -54,6 +54,10 @@ public class Vector2d extends Tuple2d<Vector2D>implements FunctionalVector2D {
 		super(tuple);
 	}
 	
+	public Vector2d(Tuple2d<?> tuple) {
+		super(tuple);
+	}
+	
 	public Vector2d(double x, double y) {
 		super(x, y);
 		

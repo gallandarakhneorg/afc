@@ -56,6 +56,10 @@ public class Point2d extends Tuple2d<Point2D> implements FunctionalPoint2D {
 		super(tuple);
 	}
 	
+	public Point2d(Tuple2d<?> tuple) {
+		super(tuple);
+	}
+	
 	public Point2d(DoubleProperty x, DoubleProperty y) {
 		super(x,y);
 	}

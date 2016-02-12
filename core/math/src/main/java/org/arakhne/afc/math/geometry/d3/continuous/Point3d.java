@@ -47,6 +47,10 @@ public class Point3d extends Tuple3d<Point3D> implements FunctionalPoint3D {
 		super(tuple);
 	}
 	
+	public Point3d(Tuple3d<?> tuple) {
+		super(tuple);
+	}
+	
 	public Point3d(Point3d point) {
 		super(point.xProperty,point.yProperty,point.zProperty);
 	}

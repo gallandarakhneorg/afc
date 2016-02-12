@@ -152,6 +152,56 @@ public class OrientedBox3d extends AbstractOrientedBox3F{
 				Axis2.getX(), Axis2.getY(), Axis2.getZ(),
 				axis1Extent, axis2Extent, axis3Extent);
 	}
+	
+	/**
+	 * Build an OBB.
+	 * <p>
+	 * The thirds axis is computed from the cross product with the two other axis.
+	 * The cross product may be {@link Vector3d#crossLeftHand(org.arakhne.afc.math.geometry.d3.Vector3D)}
+	 * or {@link Vector3d#crossRightHand(org.arakhne.afc.math.geometry.d3.Vector3D)} according to
+	 * the given <code>system</code>.
+	 *
+	 * @param center1 the box center.
+	 * @param Axis11 the first axis of the box.
+	 * @param axis21 the second axis of the box.
+	 * @param axis1Extent extent of the first axis.
+	 * @param axis2Extent extent of the second axis.
+	 * @param axis3Extent extent of the third axis.
+	 * @param system the coordinate system to use for computing the third axis.
+	 */
+	public OrientedBox3d(
+			Point3d center1,
+			Vector3d Axis1,
+			Vector3d Axis2,
+			DoubleProperty axis1Extent, DoubleProperty axis2Extent, DoubleProperty axis3Extent,
+			CoordinateSystem3D system) {
+		this();
+		setProperties(center1, Axis1, Axis2, axis1Extent, axis2Extent, axis3Extent,system);
+	}
+	
+	/**
+	 * Build an OBB.
+	 * <p>
+	 * The thirds axis is computed from the cross product with the two other axis.
+	 * The cross product may be {@link Vector3d#crossLeftHand(org.arakhne.afc.math.geometry.d3.Vector3D)}
+	 * or {@link Vector3d#crossRightHand(org.arakhne.afc.math.geometry.d3.Vector3D)} according to
+	 * {@link CoordinateSystem3D#getDefaultCoordinateSystem()}.
+	 *
+	 * @param center1 the box center.
+	 * @param Axis11 the first axis of the box.
+	 * @param axis21 the second axis of the box.
+	 * @param axis1Extent extent of the first axis.
+	 * @param axis2Extent extent of the second axis.
+	 * @param axis3Extent extent of the third axis.
+	 */
+	public OrientedBox3d(
+			Point3d center1,
+			Vector3d Axis1,
+			Vector3d Axis2,
+			DoubleProperty axis1Extent, DoubleProperty axis2Extent, DoubleProperty axis3Extent) {
+		this();
+		setProperties(center1, Axis1, Axis2, axis1Extent, axis2Extent, axis3Extent);
+	}
 
 	/**
 	 * Build an OBB from the set of vertex that composes the corresponding object 3D.
@@ -223,6 +273,14 @@ public class OrientedBox3d extends AbstractOrientedBox3F{
 	@Override
 	public void setCenter(Point3D center1) {
 		setCenter(center1.getX(), center1.getY(), center1.getZ());
+	}
+	
+	/** Set the center property.
+	 * 
+	 * @param center1
+	 */
+	public void setCenterProperties(Point3d center1) {
+		this.center.setProperties(center1.xProperty, center1.yProperty, center1.zProperty);
 	}
 
 	/** Replies the first axis of the oriented box.
@@ -472,6 +530,24 @@ public class OrientedBox3d extends AbstractOrientedBox3F{
 	/** Set the second axis of the box.
 	 * The third axis is updated to be perpendicular to the two other axis.
 	 * 
+	 * @param vector
+	 * @param extent
+	 * @param system
+	 */
+	public void setFirstAxisProperties(Vector3d vector, DoubleProperty extent, CoordinateSystem3D system) {
+		this.axis1.setProperties(vector.xProperty,vector.yProperty,vector.zProperty);
+		assert(this.axis1.isUnitVector());
+		if (system.isLeftHanded()) {
+			this.axis3.set(this.axis1.crossLeftHand(this.axis2));
+		} else {
+			this.axis3.set(this.axis3.crossRightHand(this.axis2));
+		}
+		this.extent1Property = extent;
+	}
+	
+	/** Set the second axis of the box.
+	 * The third axis is updated to be perpendicular to the two other axis.
+	 * 
 	 * @param axis - the new values for the first axis.
 	 */
 	@Override
@@ -543,7 +619,7 @@ public class OrientedBox3d extends AbstractOrientedBox3F{
 	 * @param extent
 	 * @param system
 	 */
-	public void setSecondAxis(Vector3d vector, DoubleProperty extent, CoordinateSystem3D system) {
+	public void setSecondAxisProperties(Vector3d vector, DoubleProperty extent, CoordinateSystem3D system) {
 		this.axis2.setProperties(vector.xProperty,vector.yProperty,vector.zProperty);
 		assert(this.axis2.isUnitVector());
 		if (system.isLeftHanded()) {

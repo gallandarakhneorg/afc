@@ -55,6 +55,10 @@ public class Vector3d extends Tuple3d<Vector3D> implements FunctionalVector3D {
 		super(tuple);
 	}
 	
+	public Vector3d(Tuple3d<?> tuple) {
+		super(tuple.xProperty,tuple.yProperty,tuple.zProperty);
+	}
+	
 	public Vector3d(double x, double y, double z) {
 		super(x, y, z);
 		

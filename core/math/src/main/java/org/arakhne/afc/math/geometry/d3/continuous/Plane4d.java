@@ -21,14 +21,15 @@
 package org.arakhne.afc.math.geometry.d3.continuous;
 
 import java.lang.ref.WeakReference;
+import java.util.concurrent.Callable;
 
-import org.arakhne.afc.math.geometry.d3.FunctionalPoint3D;
 import org.arakhne.afc.math.geometry.d3.FunctionalVector3D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Tuple3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 
@@ -85,6 +86,20 @@ public class Plane4d extends AbstractPlane4F {
 		this.dProperty = new SimpleDoubleProperty(d);
 		normalize();
 	}
+	
+	/**
+	 * @param a is the plane equation coefficient
+	 * @param b is the plane equation coefficient
+	 * @param c is the plane equation coefficient
+	 * @param d is the plane equation coefficient
+	 */
+	public Plane4d(DoubleProperty a, DoubleProperty b, DoubleProperty c, DoubleProperty d) {
+		this.aProperty = a;
+		this.bProperty = b;
+		this.cProperty = c;
+		this.dProperty = d;
+		normalize();
+	}
 
 	/**
 	 * @param normal is the normal of the plane.
@@ -92,6 +107,32 @@ public class Plane4d extends AbstractPlane4F {
 	 */
 	public Plane4d(Vector3D normal, Point3D p) {
 		this(normal.getX(), normal.getY(), normal.getZ(), p.getX(), p.getY(), p.getZ());
+	}
+	
+	/**The dProperty is binded to the properties of a,b,c coefficients, and to the Point3d point in parameter.
+	 * 
+	 * If the point moves, the coefficient d will change. On the other hand, if the d coefficient change, the 
+	 * point will not be affected
+	 * 
+	 * @param normal is the normal of the plane.
+	 * @param p is a point which lies on the plane.
+	 */
+	public Plane4d(Vector3d normal, Point3d p) {
+		this.aProperty = normal.xProperty;
+		this.bProperty = normal.yProperty;
+		this.cProperty = normal.zProperty;
+		normalize();
+		// a.x + b.y + c.z + d = 0
+		// where (x,y,z) is the translation point
+		this.dProperty = new SimpleDoubleProperty();
+
+		this.dProperty.bind(Bindings.createDoubleBinding(new Callable<Double>() {
+			@Override
+			public Double call() throws Exception {
+				return new Double(- (Plane4d.this.aProperty.doubleValue()*p.xProperty.doubleValue()+ Plane4d.this.bProperty.doubleValue()*p.yProperty.doubleValue() + Plane4d.this.cProperty.doubleValue()*p.zProperty.doubleValue()));
+			}
+		}, this.aProperty, this.bProperty, this.cProperty,p.xProperty,p.yProperty,p.zProperty));
+		
 	}
 
 	/**
@@ -117,6 +158,13 @@ public class Plane4d extends AbstractPlane4F {
 	 */
 	public Plane4d(Plane3D<?> plane) {
 		this(plane.getEquationComponentA(),plane.getEquationComponentB(),plane.getEquationComponentC(),plane.getEquationComponentD());
+	}
+	
+	/**
+	 * @param plane is the plane to bind properties
+	 */
+	public Plane4d(Plane4d plane) {
+		this(plane.aProperty,plane.bProperty,plane.cProperty,plane.dProperty);
 	}
 
 	/**
@@ -171,7 +219,7 @@ public class Plane4d extends AbstractPlane4F {
 	 */
 	@Override
 	public void set(double p1x, double p1y, double p1z, double p2x, double p2y, double p2z, double p3x, double p3y, double p3z) {
-		Vector3f v = new Vector3f();
+		Vector3d v = new Vector3d();
 		FunctionalVector3D.crossProduct(
 					p2x-p1x, p2y-p1y, p2z-p1z,
 					p3x-p1x, p3y-p1y, p3z-p1z,
@@ -216,7 +264,14 @@ public class Plane4d extends AbstractPlane4F {
 	 */
 	@Pure
 	@Override
-	public Vector3f getNormal() {
+	public Vector3d getNormal() {
+		return new Vector3d(this.aProperty,this.bProperty,this.cProperty);
+	}
+	
+	/** {@inheritDoc}
+	 */
+	@Pure
+	public Vector3f getNormalWithoutProperties() {
 		return new Vector3f(this.getEquationComponentA(),this.getEquationComponentB(),this.getEquationComponentC());
 	}
 
@@ -257,8 +312,25 @@ public class Plane4d extends AbstractPlane4F {
 		clearBufferedValues();
 		// a.x + b.y + c.z + d = 0
 		// where (x,y,z) is the translation point
+		this.unBindEquationComponentD();
 		this.dProperty.set(- (this.getEquationComponentA()*x + this.getEquationComponentB()*y + this.getEquationComponentC()*z));
 		this.cachedPivot = new WeakReference<>(new Point3d(x, y, z));
+	}
+	
+	public void setPivotProperties(Point3d pivot) {
+		clearBufferedValues();
+		// a.x + b.y + c.z + d = 0
+		// where (x,y,z) is the translation point
+		this.unBindEquationComponentD();
+		
+		this.dProperty.bind(Bindings.createDoubleBinding(new Callable<Double>() {
+			@Override
+			public Double call() throws Exception {
+				return new Double(- (Plane4d.this.aProperty.doubleValue()*pivot.xProperty.doubleValue()+ Plane4d.this.bProperty.doubleValue()*pivot.yProperty.doubleValue() + Plane4d.this.cProperty.doubleValue()*pivot.zProperty.doubleValue()));
+			}
+		}, this.aProperty, this.bProperty, this.cProperty,pivot.xProperty,pivot.yProperty,pivot.zProperty));
+		
+		this.cachedPivot = new WeakReference<>(pivot);
 	}
 
 	/** Replies the pivot point around which the rotation must be done.
@@ -269,10 +341,16 @@ public class Plane4d extends AbstractPlane4F {
 	public Point3d getPivot() {
 		Point3d pivot = this.cachedPivot == null ? null : this.cachedPivot.get();
 		if (pivot==null) {
-			pivot = (Point3d) getProjection(0., 0., 0.);
+			pivot = getProjection(0., 0., 0.);
 			this.cachedPivot = new WeakReference<>(pivot);
 		}
 		return pivot;
+	}
+	
+	/** Unbind the d equation component from the previous point
+	 */
+	protected void unBindEquationComponentD() {
+		this.dProperty.unbind();
 	}
 	
 	/** Clear buffered values.
@@ -284,7 +362,7 @@ public class Plane4d extends AbstractPlane4F {
 
 	@Pure
 	@Override
-	public FunctionalPoint3D getProjection(double x, double y, double z) {
+	public Point3d getProjection(double x, double y, double z) {
 		return computePointProjection(
 				getEquationComponentA(),
 				getEquationComponentB(),
@@ -296,25 +374,37 @@ public class Plane4d extends AbstractPlane4F {
 	@Override
 	protected void setEquationComponentC(double z) {
 		this.cProperty.set(z);
-		
 	}
 
 	@Override
 	protected void setEquationComponentB(double y) {
 		this.bProperty.set(y);
-		
 	}
 
 	@Override
 	protected void setEquationComponentA(double x) {
 		this.aProperty.set(x);
-		
 	}
 
 	@Override
 	protected void setEquationComponentD(double w) {
 		this.dProperty.set(w);
-		
+	}
+	
+	protected void setEquationComponentCProperty(DoubleProperty c) {
+		this.cProperty = c;
+	}
+
+	protected void setEquationComponentBProperty(DoubleProperty b) {
+		this.bProperty = b;
+	}
+
+	protected void setEquationComponentAProperty(DoubleProperty a) {
+		this.aProperty = a;
+	}
+
+	protected void setEquationComponentDProperty(DoubleProperty d) {
+		this.dProperty = d;
 	}
 	
 

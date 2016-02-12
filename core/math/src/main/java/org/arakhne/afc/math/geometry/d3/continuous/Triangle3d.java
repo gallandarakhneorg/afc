@@ -28,6 +28,8 @@ import org.arakhne.afc.math.geometry.d3.FunctionalVector3D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import javafx.beans.property.DoubleProperty;
+
 /**
  * A triangle in space. It is defined by three points.
  * <p>
@@ -73,15 +75,15 @@ public class Triangle3d extends AbstractTriangle3F {
 	 * @param p2
 	 * @param p3
 	 */
-	public Triangle3d(Point3d p1, Point3d p2, Point3d p3) {
-		this(p1, p2, p3, false);
+	public Triangle3d(Point3d point1, Point3d point2, Point3d point3) {
+		this(point1, point2, point3, false);
 	}
 
 	/**
 	 * Construct a triangle 3D.
 	 * This constructor does not copy the given points.
-	 * The triangle's points will be references to the
-	 * given points.
+	 * The triangle's points properties will be references to the
+	 * given points properties.
 	 * 
 	 * @param p1
 	 * @param p2
@@ -90,16 +92,16 @@ public class Triangle3d extends AbstractTriangle3F {
 	 * or referenced by this triangle. If <code>true</code> points
 	 * will be copied, <code>false</code> points will be referenced.
 	 */
-	public Triangle3d(Point3d p1, Point3d p2, Point3d p3, boolean copyPoints) {
+	public Triangle3d(Point3d point1, Point3d point2, Point3d point3, boolean copyPoints) {
 		if (copyPoints) {
-			this.p1 = new Point3d(p1);
-			this.p2 = new Point3d(p2);
-			this.p3 = new Point3d(p3);
+			this.p1 = new Point3d(point1.getX(),point1.getY(),point1.getZ());
+			this.p2 = new Point3d(point2.getX(),point2.getY(),point2.getZ());
+			this.p3 = new Point3d(point3.getX(),point3.getY(),point3.getZ());
 		}
 		else {
-			this.p1 = p1;
-			this.p2 = p2;
-			this.p3 = p3;
+			this.p1 = new Point3d(point1);
+			this.p2 = new Point3d(point2);
+			this.p3 = new Point3d(point3);
 		}
 	}
 
@@ -166,6 +168,10 @@ public class Triangle3d extends AbstractTriangle3F {
 	public void setP1(Point3D point) {
 		setP1(point.getX(), point.getY(), point.getZ());
 	}
+	
+	public void setP1Properties(Point3d point) {
+		setP1Properties(point.xProperty, point.yProperty, point.zProperty);
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -173,6 +179,11 @@ public class Triangle3d extends AbstractTriangle3F {
 	@Override
 	public void setP1(double x, double y, double z) {
 		this.p1.set(x, y, z);
+		clearBufferedData();
+	}
+ 
+	public void setP1Properties(DoubleProperty x, DoubleProperty y, DoubleProperty z) {
+		this.p1.setProperties(x, y, z);
 		clearBufferedData();
 	}
 	
@@ -193,6 +204,10 @@ public class Triangle3d extends AbstractTriangle3F {
 		setP2(point.getX(), point.getY(), point.getZ());
 	}
 
+	public void setP2Properties(Point3d point) {
+		setP2Properties(point.xProperty, point.yProperty, point.zProperty);
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -202,6 +217,11 @@ public class Triangle3d extends AbstractTriangle3F {
 		clearBufferedData();
 	}
 
+	public void setP2Properties(DoubleProperty x, DoubleProperty y, DoubleProperty z) {
+		this.p2.setProperties(x, y, z);
+		clearBufferedData();
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -219,12 +239,21 @@ public class Triangle3d extends AbstractTriangle3F {
 		setP3(point.getX(), point.getY(), point.getZ());
 	}
 
+	public void setP3Properties(Point3d point) {
+		setP3Properties(point.xProperty, point.yProperty, point.zProperty);
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	public void setP3(double x, double y, double z) {
 		this.p3.set(x, y, z);
+		clearBufferedData();
+	}
+	
+	public void setP3Properties(DoubleProperty x, DoubleProperty y, DoubleProperty z) {
+		this.p3.setProperties(x, y, z);
 		clearBufferedData();
 	}
 
@@ -312,10 +341,20 @@ public class Triangle3d extends AbstractTriangle3F {
 	/**
 	 * {@inheritDoc}
 	 */
-	public void set(Point3D p1, Point3D p2, Point3D p3) {
-		this.p1.set(p1);
-		this.p2.set(p2);
-		this.p3.set(p3);
+	public void set(Point3D point1, Point3D point2, Point3D point3) {
+		this.p1.set(point1);
+		this.p2.set(point2);
+		this.p3.set(point3);
+		clearBufferedData();
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	public void setProperties(Point3d point1, Point3d point2, Point3d point3) {
+		this.p1.setProperties(point1.xProperty,point1.yProperty,point1.zProperty);
+		this.p2.setProperties(point2.xProperty,point2.yProperty,point2.zProperty);
+		this.p3.setProperties(point3.xProperty,point3.yProperty,point3.zProperty);
 		clearBufferedData();
 	}
 
@@ -384,6 +423,17 @@ public class Triangle3d extends AbstractTriangle3F {
 	}
 	
 
+	public void setPivotProperties(Point3d point) {
+		if (point == null) {
+			this.pivot = null;
+		} else if (this.pivot == null) {
+			this.pivot = new Point3d(point);
+		} else {
+			this.pivot.set(point);
+		}
+	}
+	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -415,7 +465,5 @@ public class Triangle3d extends AbstractTriangle3F {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	
 
 }

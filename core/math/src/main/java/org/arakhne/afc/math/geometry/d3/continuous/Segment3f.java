@@ -43,6 +43,8 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * <math><mover><mi>D</mi><mo>&#x20D7;</mo></mover></math> is not
  * necessarily unit length. 
  *
+ * @author $Author: cbohrhauer$
+ * @author $Author: sgalland$
  * @author $Author: hjaffali$
  * @version $FullVersion$
  * @mavengroupid $GroupId$

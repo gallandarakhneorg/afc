@@ -42,6 +42,15 @@ public class Sphere3d extends AbstractSphere3F {
 		this();
 		set(center, radius1);
 	}
+	
+	/**
+	 * @param center
+	 * @param radius1
+	 */
+	public Sphere3d(Point3d center, DoubleProperty radius1) {
+		this();
+		setProperties(center,radius1);
+	}
 
 	/**
 	 * @param x
@@ -54,6 +63,17 @@ public class Sphere3d extends AbstractSphere3F {
 		set(x, y, z, radius1);
 	}
 	
+	/**
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @param radius1
+	 */
+	public Sphere3d(DoubleProperty x, DoubleProperty y, DoubleProperty z, DoubleProperty radius1) {
+		this();
+		setProperties(x, y, z, radius1);
+	}
+	
 	/** Construct a sphere from a sphere.
 	 * @param c
 	 */
@@ -63,6 +83,14 @@ public class Sphere3d extends AbstractSphere3F {
 		this.cyProperty.set(c.getY());
 		this.czProperty.set(c.getZ());
 		this.radiusProperty.set(c.getRadius());
+	}
+	
+	/** Bind a sphere from a sphere.
+	 * @param c
+	 */
+	public Sphere3d(Sphere3d c) {
+		this();
+		setProperties(c.cxProperty,c.cyProperty,c.czProperty,c.radiusProperty);
 	}
 
 	
@@ -80,8 +108,23 @@ public class Sphere3d extends AbstractSphere3F {
 		this.czProperty.set(z);
 		this.radiusProperty.set(Math.abs(radius1));
 	}
+	
+	/** Change the frame of the sphere.
+	 * 
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @param radius1
+	 */
+	public void setProperties(DoubleProperty x, DoubleProperty y, DoubleProperty z, DoubleProperty radius1) {
+		this.cxProperty = x;
+		this.cyProperty = y;
+		this.czProperty = z;
+		this.radiusProperty = radius1;
+		this.radiusProperty.set(Math.abs(this.radiusProperty.get()));
+	}
 
-	/** Change the frame of te sphere.
+	/** Change the frame of the sphere.
 	 * 
 	 * @param center
 	 * @param radius1
@@ -92,6 +135,15 @@ public class Sphere3d extends AbstractSphere3F {
 		this.cyProperty.set(center.getY());
 		this.czProperty.set(center.getZ());
 		this.radiusProperty.set(Math.abs(radius1));
+	}
+	
+	/** Bind the frame of the sphere with center and radisu properties.
+	 * 
+	 * @param center
+	 * @param radius1
+	 */
+	public void setProperties(Point3d center, DoubleProperty radius1) {
+		setProperties(center.xProperty,center.yProperty,center.zProperty, radius1);
 	}
 
 	/** Replies the center X.
@@ -130,7 +182,16 @@ public class Sphere3d extends AbstractSphere3F {
 	 */
 	@Pure
 	@Override
-	public Point3f getCenter() {
+	public Point3d getCenter() {
+		return new Point3d(this.cxProperty, this.cyProperty, this.czProperty);
+	}
+	
+	/** Replies the center.
+	 * 
+	 * @return a copy of the center.
+	 */
+	@Pure
+	public Point3f getCenterWithoutProperties() {
 		return new Point3f(this.cxProperty.doubleValue(), this.cyProperty.doubleValue(), this.czProperty.doubleValue());
 	}
 
@@ -144,6 +205,16 @@ public class Sphere3d extends AbstractSphere3F {
 		this.cyProperty.set(center.getY());
 		this.czProperty.set(center.getZ());
 	}
+	
+	/** Set the center properties with the properties of the Point3d in parameter.
+	 * 
+	 * @param center
+	 */
+	public void setCenterProperties(Point3d center) {
+		this.cxProperty = center.xProperty;
+		this.cyProperty = center.yProperty;
+		this.czProperty = center.zProperty;
+	}
 
 	/** Change the center.
 	 * 
@@ -156,6 +227,18 @@ public class Sphere3d extends AbstractSphere3F {
 		this.cxProperty.set(x);
 		this.cyProperty.set(y);
 		this.czProperty.set(z);
+	}
+	
+	/** Set the center properties with the properties in parameter.
+	 * 
+	 * @param x
+	 * @param y
+	 * @param z
+	 */
+	public void setCenterProperties(DoubleProperty x, DoubleProperty y, DoubleProperty z) {
+		this.cxProperty = x;
+		this.cyProperty = y;
+		this.czProperty = z;
 	}
 
 	/** Replies the radius.
@@ -175,6 +258,15 @@ public class Sphere3d extends AbstractSphere3F {
 	@Override
 	public void setRadius(double radius1) {
 		this.radiusProperty.set(Math.abs(radius1));
+	}
+	
+	/** Set the radius property with the property in parameter.
+	 * 
+	 * @param radius1 is the radius.
+	 */
+	public void setRadiusProperty(DoubleProperty radius1) {
+		this.radiusProperty = radius1;
+		this.radiusProperty.set(Math.abs(this.radiusProperty.get()));
 	}
 
 	@Pure

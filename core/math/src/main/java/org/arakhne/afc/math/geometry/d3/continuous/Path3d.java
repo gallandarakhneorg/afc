@@ -451,7 +451,7 @@ public class Path3d extends AbstractShape3F<Path3d> implements Path3D<Shape3F,Al
 	/** Copy constructor of Path3d. It doesn't match the properties, but it creates new properties
 	 * to store the values of p.
 	 * 
-	 * Si if the p Path3d is changed, this will not be affected
+	 * If the p Path3d is changed, this will not be affected
 	 * 
 	 * @param p
 	 */

@@ -54,7 +54,7 @@ public class PathShadow2d {
 	 */
 	public PathShadow2d(Path2d path1) {
 		this.path = path1;
-		this.bounds = new Rectangle2d(this.path.toBoundingBox());
+		this.bounds = new Rectangle2d(path1.toBoundingBox());
 	}
 	
 	/**
@@ -62,7 +62,7 @@ public class PathShadow2d {
 	 */
 	public PathShadow2d(Path2f path1) {
 		this.path = new Path2d(path1);
-		this.bounds = this.path.toBoundingBox();
+		this.bounds = new Rectangle2d(path1.toBoundingBox());
 	}
 
 	/** Compute the crossings between this shadow and
@@ -383,21 +383,21 @@ public class PathShadow2d {
 		public String toString() {
 			StringBuilder b = new StringBuilder();
 			b.append("SHADOW {\n\tlow: ( "); //$NON-NLS-1$
-			b.append(this.xmin4yminProperty);
+			b.append(this.xmin4yminProperty.doubleValue());
 			b.append(" | "); //$NON-NLS-1$
-			b.append(this.yminProperty);
+			b.append(this.yminProperty.doubleValue());
 			b.append(" )\n\thigh: ( "); //$NON-NLS-1$
-			b.append(this.xmin4ymaxProperty);
+			b.append(this.xmin4ymaxProperty.doubleValue());
 			b.append(" | "); //$NON-NLS-1$
-			b.append(this.ymaxProperty);
+			b.append(this.ymaxProperty.doubleValue());
 			b.append(")\n}\nCROSSINGS {\n\tcrossings="); //$NON-NLS-1$
-			b.append(this.crossingsProperty);
+			b.append(this.crossingsProperty.intValue());
 			b.append("\n\tlow: "); //$NON-NLS-1$
 			if (this.hasX4yminProperty.get()) {
 				b.append("( "); //$NON-NLS-1$
-				b.append(this.x4yminProperty);
+				b.append(this.x4yminProperty.doubleValue());
 				b.append(" | "); //$NON-NLS-1$
-				b.append(this.yminProperty);
+				b.append(this.yminProperty.doubleValue());
 				b.append(" )\n"); //$NON-NLS-1$
 			}
 			else {
@@ -406,9 +406,9 @@ public class PathShadow2d {
 			b.append("\thigh: "); //$NON-NLS-1$
 			if (this.hasX4ymaxProperty.get()) {
 				b.append("( "); //$NON-NLS-1$
-				b.append(this.x4ymaxProperty);
+				b.append(this.x4ymaxProperty.doubleValue());
 				b.append(" | "); //$NON-NLS-1$
-				b.append(this.ymaxProperty);
+				b.append(this.ymaxProperty.doubleValue());
 				b.append(" )\n"); //$NON-NLS-1$
 			}
 			else {

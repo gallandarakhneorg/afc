@@ -332,7 +332,7 @@ public abstract class AbstractPlane4F extends AbstractPlane3D<AbstractPlane4F> {
 	 * @return the projection of the specified point on the plane.
 	 */
 	@Pure
-	public static FunctionalPoint3D computePointProjection(
+	public static Point3d computePointProjection(
 			double a, double b, double c, double d,
 			double x, double y, double z) {
 		// Arithmetic resolution
@@ -351,17 +351,17 @@ public abstract class AbstractPlane4F extends AbstractPlane3D<AbstractPlane4F> {
 		 */
 
 		// Vectorial resolution
-		Vector3f invnormal = new Vector3f(-a, -b, -c);
+		Vector3d invnormal = new Vector3d(-a, -b, -c);
 		invnormal.normalize();
 
 		// Distance between the point and the plane
 		double distance = a * x + b * y + c * z + d;
 
-		double xaprime = x + distance * invnormal.x;
-		double yaprime = y + distance * invnormal.y;
-		double zaprime = z + distance * invnormal.z;
+		double xaprime = x + distance * invnormal.getX();
+		double yaprime = y + distance * invnormal.getY();
+		double zaprime = z + distance * invnormal.getZ();
 
-		return new Point3f(xaprime, yaprime, zaprime);
+		return new Point3d(xaprime, yaprime, zaprime);
 	}
 
 	

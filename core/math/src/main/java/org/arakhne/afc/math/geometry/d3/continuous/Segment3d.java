@@ -24,6 +24,8 @@ import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import javafx.beans.property.DoubleProperty;
+
 /** 3D line with DoubleProperty points.
  * 
  * @author $Author: hjaffali$
@@ -60,6 +62,15 @@ public class Segment3d extends AbstractSegment3F {
 		this.pivot.set(p1);
 		this.d.sub(p2, p1);
 	}
+	
+	/**
+	 * @param p1 is first point on the line
+	 * @param p2 is second point on the line
+	 */
+	public Segment3d(Point3d p1, Point3d p2) {
+		this.pivot.setProperties(p1.xProperty,p1.yProperty,p1.zProperty);
+		this.d.sub(p2, p1);
+	}
 
 	/**
 	 * @param pivot1 is a point on the line
@@ -68,6 +79,15 @@ public class Segment3d extends AbstractSegment3F {
 	public Segment3d(Point3D pivot1, Vector3D direction) {
 		this.pivot.set(pivot1);
 		this.d.set(direction);
+	}
+	
+	/**
+	 * @param pivot1 is a point on the line
+	 * @param direction is the direction of the line
+	 */
+	public Segment3d(Point3d pivot1, Vector3d direction) {
+		this.pivot.setProperties(pivot1.xProperty,pivot1.yProperty,pivot1.zProperty);
+		this.d.setProperties(direction.xProperty,direction.yProperty,direction.zProperty);
 	}
 
 	/**
@@ -125,6 +145,16 @@ public class Segment3d extends AbstractSegment3F {
 		this.pivot.set(p1);
 		this.d.sub(p2, p1);
 	}
+	
+	/**
+	 * 
+	 * {@inheritDoc}
+	 */
+	public void setProperties(Point3d p1, Point3d p2) {
+		this.pivot.setProperties(p1.xProperty,p1.yProperty,p1.zProperty);
+		this.d.sub(p2, p1);
+	}
+
 
 	/**
 	 * 
@@ -184,6 +214,14 @@ public class Segment3d extends AbstractSegment3F {
 	public void setP1(Point3D p) {
 		this.pivot.set(p);
 	}
+	
+	/**
+	 * 
+	 * {@inheritDoc}
+	 */
+	public void setP1Properties(Point3d p) {
+		this.pivot.setProperties(p.xProperty,p.yProperty,p.zProperty);
+	}
 
 	/**
 	 * 
@@ -192,6 +230,14 @@ public class Segment3d extends AbstractSegment3F {
 	@Override
 	public void setP1(double x, double y, double z) {
 		this.pivot.set(x, y, z);
+	}
+	
+	/**
+	 * 
+	 * {@inheritDoc}
+	 */
+	public void setP1(DoubleProperty x, DoubleProperty y, DoubleProperty z) {
+		this.pivot.setProperties(x,y,z);
 	}
 
 	/**
