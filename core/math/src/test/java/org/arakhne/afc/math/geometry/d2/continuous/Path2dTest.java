@@ -289,7 +289,7 @@ public class Path2dTest extends AbstractMathTestCase{
 		p.closePath();
 		
 		Path2d p3 = p.clone();
-		Path2d p2 = new Path2d(p);
+		Path2d p2 = new Path2d(p,true);
 		
 		
 		assertTrue(p2.toString().equals(p.toString()));

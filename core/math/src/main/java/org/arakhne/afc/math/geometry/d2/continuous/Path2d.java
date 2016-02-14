@@ -1202,47 +1202,92 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 		add(iterator);
 	}
 
-	/** Copy constructor of Path2d. It doesn't match the properties, but it creates new properties
-	 * to store the values of p.
+	/** Construct a path from an existing Path2d. 
 	 * 
-	 * Si if the p Path2d is changed, this will not be affected
+	 * If copyProperties is true, we only copy the properties values of Path2d into 
+	 * this properties.
+	 * 
+	 * If copyProperties is false, the properties of this path will have same references with the Path2d 
+	 * properties in parameter. So if the Path2d in parameter changes, this path will be affected.
+	 *
 	 * 
 	 * @param p
+	 * @param copyProperties indicates if the properties must be copied or binded
 	 */
-	public Path2d(Path2d p) {
+	public Path2d(Path2d p , boolean copyProperties) {
 		this();
 
 		this.coordsProperty = new DoubleProperty[p.coordsProperty.length];
-		for(int i=0;i<p.coordsProperty.length;i++) {
-			this.coordsProperty[i] = new SimpleDoubleProperty(p.coordsProperty[i].get());
-		}
+		
+		if(copyProperties) {
+			for(int i=0;i<p.coordsProperty.length;i++) {
+				this.coordsProperty[i] = new SimpleDoubleProperty(p.coordsProperty[i].get());
+			}
 
-		if(p.isEmptyProperty==null) {
-			this.isEmptyProperty=null;
+			if(p.isEmptyProperty==null) {
+				this.isEmptyProperty=null;
+			}
+			else {
+				this.isEmptyProperty = new SimpleBooleanProperty(p.isEmptyProperty.get());
+			}		
+
+			if(p.isPolylineProperty==null) {
+				this.isPolylineProperty=null;
+			}
+			else {
+				this.isPolylineProperty = new SimpleBooleanProperty(p.isPolylineProperty.get());
+			}
+
+			this.numCoordsProperty.set(p.numCoordsProperty.get());
+			this.numTypesProperty.set(p.numTypesProperty.get());
+			this.types = p.types.clone();
+			this.windingRule = p.windingRule;
+			
+			Rectangle2d box;
+			box = p.graphicalBounds==null ? null : p.graphicalBounds.get();
+			if (box!=null) {
+				this.graphicalBounds = new SoftReference<>(box.clone());
+			}
+			box = p.logicalBounds==null ? null : p.logicalBounds.get();
+			if (box!=null) {
+				this.logicalBounds = new SoftReference<>(box.clone());
+			}
+			
 		}
 		else {
-			this.isEmptyProperty = new SimpleBooleanProperty(p.isEmptyProperty.get());
-		}		
+			for(int i=0;i<p.coordsProperty.length;i++) {
+				this.coordsProperty[i] = p.coordsProperty[i];
+			}
 
-		if(p.isPolylineProperty==null) {
-			this.isPolylineProperty=null;
-		}
-		else {
-			this.isPolylineProperty = new SimpleBooleanProperty(p.isPolylineProperty.get());
-		}
+			if(p.isEmptyProperty==null) {
+				this.isEmptyProperty=null;
+			}
+			else {
+				this.isEmptyProperty = p.isEmptyProperty;
+			}		
 
-		this.numCoordsProperty.set(p.numCoordsProperty.get());
-		this.numTypesProperty.set(p.numTypesProperty.get());
-		this.types = p.types.clone();
-		this.windingRule = p.windingRule;
-		Rectangle2d box;
-		box = p.graphicalBounds==null ? null : p.graphicalBounds.get();
-		if (box!=null) {
-			this.graphicalBounds = new SoftReference<>(box.clone());
-		}
-		box = p.logicalBounds==null ? null : p.logicalBounds.get();
-		if (box!=null) {
-			this.logicalBounds = new SoftReference<>(box.clone());
+			if(p.isPolylineProperty==null) {
+				this.isPolylineProperty=null;
+			}
+			else {
+				this.isPolylineProperty = p.isPolylineProperty;
+			}
+
+			this.numCoordsProperty = p.numCoordsProperty;
+			this.numTypesProperty = p.numTypesProperty;
+			this.types = p.types.clone();
+			this.windingRule = p.windingRule;
+			
+			Rectangle2d box;
+			box = p.graphicalBounds==null ? null : new Rectangle2d(p.graphicalBounds.get());
+			if (box!=null) {
+				this.graphicalBounds = new SoftReference<>(box.clone());
+			}
+			box = p.logicalBounds==null ? null : new Rectangle2d(p.logicalBounds.get());
+			if (box!=null) {
+				this.logicalBounds = new SoftReference<>(box.clone());
+			}
+			
 		}
 	}
 
@@ -1351,7 +1396,9 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 		}
 	}
 
-	/**Add the element in paramter into this path.
+	/**Add the element in parameter into this path.
+	 * 
+	 * If the element changes, the path will not be affected. 
 	 * 
 	 * @param pathElement
 	 */
@@ -1694,7 +1741,7 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 	 */
 	public void transform(Transform2D transform) {
 		if (transform!=null) {
-			Point2D p = new Point2f();
+			Point2D p = new Point2d();
 			for(int i=0; i<this.numCoordsProperty.get();) {
 				p.set(this.coordsProperty[i].get(), this.coordsProperty[i+1].get());
 				transform.transform(p);
@@ -2624,6 +2671,8 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 
 	/** Replies the point at the given index.
 	 * The index is in [0;{@link #size()}).
+	 * 
+	 * If the returned point is modified, the path will be changed also. 
 	 *
 	 * @param index
 	 * @return the point at the given index.
@@ -2639,6 +2688,8 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 
 	/** Replies the last point in the path.
 	 *
+	 * If the returned point is modified, the path will be changed also. 
+	 * 
 	 * @return the last point.
 	 */
 	@Pure
@@ -2914,6 +2965,22 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 			this.logicalBounds = null;
 		}
 	}
+	
+	/** Change the coordinates of the last inserted point.
+	 * 
+	 * If the point in parameter is modified, the path will be changed also.
+	 * 
+	 * @param x
+	 * @param y
+	 */
+	public void setLastPoint(Point2d point) {
+		if (this.numCoordsProperty.get()>=2) {
+			this.coordsProperty[this.numCoordsProperty.get()-2] = point.xProperty;
+			this.coordsProperty[this.numCoordsProperty.get()-1] = point.yProperty;
+			this.graphicalBounds = null;
+			this.logicalBounds = null;
+		}
+	}
 
 	@Override
 	public void set(Shape2F s) {
@@ -2931,8 +2998,8 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 	 */
 	private class CopyPathIterator2d implements PathIterator2d {
 
-		private final Point2D p1 = new Point2f();
-		private final Point2D p2 = new Point2f();
+		private final Point2D p1 = new Point2d();
+		private final Point2D p2 = new Point2d();
 		private IntegerProperty iTypeProperty = new SimpleIntegerProperty(0);
 		private IntegerProperty iCoordProperty = new SimpleIntegerProperty(0);
 		private DoubleProperty movexProperty, moveyProperty;
@@ -3214,10 +3281,10 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 	private class TransformPathIterator2d implements PathIterator2d {
 
 		private final Transform2D transform;
-		private final Point2D p1 = new Point2f();
-		private final Point2D p2 = new Point2f();
-		private final Point2D ptmp1 = new Point2f();
-		private final Point2D ptmp2 = new Point2f();
+		private final Point2D p1 = new Point2d();
+		private final Point2D p2 = new Point2d();
+		private final Point2D ptmp1 = new Point2d();
+		private final Point2D ptmp2 = new Point2d();
 		private IntegerProperty iTypeProperty = new SimpleIntegerProperty(0);
 		private IntegerProperty iCoordProperty = new SimpleIntegerProperty(0);
 		private DoubleProperty movexProperty, moveyProperty;
@@ -4098,7 +4165,7 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 		public boolean containsAll(Collection<?> c) {
 			for(Object obj : c) {
 				if ((!(obj instanceof Point2d))
-						||(!Path2d.this.containsControlPoint((Point2f)obj))) {
+						||(!Path2d.this.containsControlPoint((Point2d)obj))) {
 					return false;
 				}
 			}
