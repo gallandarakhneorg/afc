@@ -103,10 +103,10 @@ public class Path3d extends AbstractShape3F<Path3d> implements Path3D<Shape3F,Al
 	 * @return the closest point on the shape; or the point itself
 	 * if it is inside the shape.
 	 */
-	public static Point3D getClosestPointTo(PathIterator3d pathIterator, double x, double y, double z) {
-		Point3D closest = null;
+	public static Point3d getClosestPointTo(PathIterator3d pathIterator, double x, double y, double z) {
+		Point3d closest = null;
 		double bestDist = Double.POSITIVE_INFINITY;
-		Point3D candidate;
+		Point3d candidate;
 		AbstractPathElement3D pe = pathIterator.next();
 		Path3d subPath;
 
@@ -114,7 +114,7 @@ public class Path3d extends AbstractShape3F<Path3d> implements Path3D<Shape3F,Al
 			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
 		}
 
-		candidate = new Point3f(pe.getToX(), pe.getToY(), pe.getToZ());
+		candidate = new Point3d(pe.getToX(), pe.getToY(), pe.getToZ());
 
 		while (pathIterator.hasNext()) {
 			pe = pathIterator.next();
@@ -123,16 +123,16 @@ public class Path3d extends AbstractShape3F<Path3d> implements Path3D<Shape3F,Al
 
 			switch(pe.type) {
 			case MOVE_TO:
-				candidate = new Point3f(pe.getToX(), pe.getToY(), pe.getToZ());
+				candidate = new Point3d(pe.getToX(), pe.getToY(), pe.getToZ());
 				break;
 			case LINE_TO:
 
-				candidate = (new Segment3f(pe.getFromX(), pe.getFromY(), pe.getFromZ(), pe.getToX(), pe.getToY(), pe.getToZ())).getClosestPointTo(new Point3f(x,y,z));
+				candidate = new Point3d((new Segment3d(pe.getFromX(), pe.getFromY(), pe.getFromZ(), pe.getToX(), pe.getToY(), pe.getToZ())).getClosestPointTo(new Point3d(x,y,z)));
 
 				break;
 			case CLOSE:
 				if (!pe.isEmpty()) {
-					candidate = (new Segment3f(pe.getFromX(), pe.getFromY(), pe.getFromZ(), pe.getToX(), pe.getToY(), pe.getToZ())).getClosestPointTo(new Point3f(x,y,z));
+					candidate = new Point3d((new Segment3d(pe.getFromX(), pe.getFromY(), pe.getFromZ(), pe.getToX(), pe.getToY(), pe.getToZ())).getClosestPointTo(new Point3d(x,y,z)));
 				}
 				break;
 			case QUAD_TO:
@@ -142,7 +142,7 @@ public class Path3d extends AbstractShape3F<Path3d> implements Path3D<Shape3F,Al
 						pe.getCtrlX1(), pe.getCtrlY1(), pe.getCtrlZ1(),
 						pe.getToX(), pe.getToY(), pe.getToZ());
 
-				candidate = subPath.getClosestPointTo(new Point3f(x,y,z));
+				candidate = subPath.getClosestPointTo(new Point3d(x,y,z));
 				break;
 			case CURVE_TO:
 				subPath = new Path3d();
@@ -152,7 +152,7 @@ public class Path3d extends AbstractShape3F<Path3d> implements Path3D<Shape3F,Al
 						pe.getCtrlX2(), pe.getCtrlY2(), pe.getCtrlZ2(),
 						pe.getToX(), pe.getToY(), pe.getToZ());
 
-				candidate = subPath.getClosestPointTo(new Point3f(x,y,z));
+				candidate = subPath.getClosestPointTo(new Point3d(x,y,z));
 				break;
 			default:
 				throw new IllegalStateException(
@@ -160,7 +160,7 @@ public class Path3d extends AbstractShape3F<Path3d> implements Path3D<Shape3F,Al
 			}
 
 			if (candidate!=null) {
-				double d = candidate.getDistanceSquared(new Point3f(x,y,z));
+				double d = candidate.getDistanceSquared(new Point3d(x,y,z));
 				if (d<bestDist) {
 					bestDist = d;
 					closest = candidate;
@@ -186,10 +186,10 @@ public class Path3d extends AbstractShape3F<Path3d> implements Path3D<Shape3F,Al
 	 * @param z
 	 * @return the farthest point on the shape.
 	 */
-	public static Point3D getFarthestPointTo(PathIterator3d pathIterator, double x, double y, double z) {
-		Point3D farthest = null;
+	public static Point3d getFarthestPointTo(PathIterator3d pathIterator, double x, double y, double z) {
+		Point3d farthest = null;
 		double bestDist = Double.NEGATIVE_INFINITY;
-		Point3D candidate;
+		Point3d candidate;
 		AbstractPathElement3D pe = pathIterator.next();
 		Path3d subPath;
 
@@ -197,7 +197,7 @@ public class Path3d extends AbstractShape3F<Path3d> implements Path3D<Shape3F,Al
 			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
 		}
 
-		candidate = new Point3f(pe.getToX(), pe.getToY(), pe.getToZ());
+		candidate = new Point3d(pe.getToX(), pe.getToY(), pe.getToZ());
 
 		while (pathIterator.hasNext()) {
 			pe = pathIterator.next();
@@ -206,16 +206,16 @@ public class Path3d extends AbstractShape3F<Path3d> implements Path3D<Shape3F,Al
 
 			switch(pe.type) {
 			case MOVE_TO:
-				candidate = new Point3f(pe.getToX(), pe.getToY(), pe.getToZ());
+				candidate = new Point3d(pe.getToX(), pe.getToY(), pe.getToZ());
 				break;
 			case LINE_TO:
 
-				candidate = (new Segment3f(pe.getFromX(), pe.getFromY(), pe.getFromZ(), pe.getToX(), pe.getToY(), pe.getToZ())).getFarthestPointTo(new Point3f(x,y,z));
+				candidate = new Point3d((new Segment3d(pe.getFromX(), pe.getFromY(), pe.getFromZ(), pe.getToX(), pe.getToY(), pe.getToZ())).getFarthestPointTo(new Point3d(x,y,z)));
 
 				break;
 			case CLOSE:
 				if (!pe.isEmpty()) {
-					candidate = (new Segment3f(pe.getFromX(), pe.getFromY(), pe.getFromZ(), pe.getToX(), pe.getToY(), pe.getToZ())).getFarthestPointTo(new Point3f(x,y,z));
+					candidate = new Point3d((new Segment3d(pe.getFromX(), pe.getFromY(), pe.getFromZ(), pe.getToX(), pe.getToY(), pe.getToZ())).getFarthestPointTo(new Point3d(x,y,z)));
 				}
 				break;
 			case QUAD_TO:
@@ -225,7 +225,7 @@ public class Path3d extends AbstractShape3F<Path3d> implements Path3D<Shape3F,Al
 						pe.getCtrlX1(), pe.getCtrlY1(), pe.getCtrlZ1(),
 						pe.getToX(), pe.getToY(), pe.getToZ());
 
-				candidate = subPath.getFarthestPointTo(new Point3f(x,y,z));
+				candidate = subPath.getFarthestPointTo(new Point3d(x,y,z));
 				break;
 			case CURVE_TO:
 				subPath = new Path3d();
@@ -235,7 +235,7 @@ public class Path3d extends AbstractShape3F<Path3d> implements Path3D<Shape3F,Al
 						pe.getCtrlX2(), pe.getCtrlY2(), pe.getCtrlZ2(),
 						pe.getToX(), pe.getToY(), pe.getToZ());
 
-				candidate = subPath.getFarthestPointTo(new Point3f(x,y,z));
+				candidate = subPath.getFarthestPointTo(new Point3d(x,y,z));
 				break;
 			default:
 				throw new IllegalStateException(
@@ -243,7 +243,7 @@ public class Path3d extends AbstractShape3F<Path3d> implements Path3D<Shape3F,Al
 			}
 
 			if (candidate!=null) {
-				double d = candidate.getDistanceSquared(new Point3f(x,y,z));
+				double d = candidate.getDistanceSquared(new Point3d(x,y,z));
 				if (d>bestDist) {
 					bestDist = d;
 					farthest = candidate;
@@ -448,49 +448,94 @@ public class Path3d extends AbstractShape3F<Path3d> implements Path3D<Shape3F,Al
 		add(iterator);
 	}
 
-	/** Copy constructor of Path3d. It doesn't match the properties, but it creates new properties
-	 * to store the values of p.
+	/** Construct a path from an existing Path3d. 
 	 * 
-	 * If the p Path3d is changed, this will not be affected
+	 * If copyProperties is true, we only copy the properties values of Path3d into 
+	 * this properties.
+	 * 
+	 * If copyProperties is false, the properties of this path will have same references with the Path3d 
+	 * properties in parameter. So if the Path3d in parameter changes, this path will be affected.
+	 *
 	 * 
 	 * @param p
+	 * @param copyProperties indicates if the properties must be copied or binded
 	 */
-	public Path3d(Path3d p) {
+	public Path3d(Path3d p , boolean copyProperties)  {
 		this();
 
 		this.coordsProperty = new DoubleProperty[p.coordsProperty.length];
-		for(int i=0;i<p.coordsProperty.length;i++) {
-			this.coordsProperty[i] = new SimpleDoubleProperty(p.coordsProperty[i].get());
-		}
 
-		if(p.isEmptyProperty==null) {
-			this.isEmptyProperty=null;
+		if(copyProperties) {
+			for(int i=0;i<p.coordsProperty.length;i++) {
+				this.coordsProperty[i] = new SimpleDoubleProperty(p.coordsProperty[i].get());
+			}
+
+			if(p.isEmptyProperty==null) {
+				this.isEmptyProperty=null;
+			}
+			else {
+				this.isEmptyProperty = new SimpleBooleanProperty(p.isEmptyProperty.get());
+			}		
+
+			if(p.isPolylineProperty==null) {
+				this.isPolylineProperty=null;
+			}
+			else {
+				this.isPolylineProperty = new SimpleBooleanProperty(p.isPolylineProperty.get());
+			}
+
+			this.numCoordsProperty.set(p.numCoordsProperty.get());
+			this.numTypesProperty.set(p.numTypesProperty.get());
+			this.types = p.types.clone();
+			this.windingRule = p.windingRule;
+
+			AlignedBox3d box;
+			box = p.graphicalBounds==null ? null : new AlignedBox3d(p.graphicalBounds.get());
+			if (box!=null) {
+				this.graphicalBounds = new SoftReference<>(box.clone());
+			}
+			box = p.logicalBounds==null ? null : new AlignedBox3d(p.logicalBounds.get());
+			if (box!=null) {
+				this.logicalBounds = new SoftReference<>(box.clone());
+			}
+
 		}
 		else {
-			this.isEmptyProperty = new SimpleBooleanProperty(p.isEmptyProperty.get());
-		}		
+			for(int i=0;i<p.coordsProperty.length;i++) {
+				this.coordsProperty[i] = p.coordsProperty[i];
+			}
 
-		if(p.isPolylineProperty==null) {
-			this.isPolylineProperty=null;
-		}
-		else {
-			this.isPolylineProperty = new SimpleBooleanProperty(p.isPolylineProperty.get());
+			if(p.isEmptyProperty==null) {
+				this.isEmptyProperty=null;
+			}
+			else {
+				this.isEmptyProperty = p.isEmptyProperty;
+			}		
+
+			if(p.isPolylineProperty==null) {
+				this.isPolylineProperty=null;
+			}
+			else {
+				this.isPolylineProperty = p.isPolylineProperty;
+			}
+
+			this.numCoordsProperty = p.numCoordsProperty;
+			this.numTypesProperty = p.numTypesProperty;
+			this.types = p.types.clone();
+			this.windingRule = p.windingRule;
+
+			AlignedBox3d box;
+			box = p.graphicalBounds==null ? null : new AlignedBox3d(p.graphicalBounds.get());
+			if (box!=null) {
+				this.graphicalBounds = new SoftReference<>(box.clone());
+			}
+			box = p.logicalBounds==null ? null : new AlignedBox3d(p.logicalBounds.get());
+			if (box!=null) {
+				this.logicalBounds = new SoftReference<>(box.clone());
+			}
+
 		}
 
-		this.numCoordsProperty.set(p.numCoordsProperty.get());
-		this.numTypesProperty.set(p.numTypesProperty.get());
-		this.types = p.types.clone();
-		this.windingRule = p.windingRule;
-
-		AlignedBox3d box;
-		box = p.graphicalBounds==null ? null : p.graphicalBounds.get();
-		if (box!=null) {
-			this.graphicalBounds = new SoftReference<>(box.clone());
-		}
-		box = p.logicalBounds==null ? null : p.logicalBounds.get();
-		if (box!=null) {
-			this.logicalBounds = new SoftReference<>(box.clone());
-		}
 	}
 
 	/** Remove the point with the given coordinates.
@@ -634,7 +679,7 @@ public class Path3d extends AbstractShape3F<Path3d> implements Path3D<Shape3F,Al
 
 	@Pure
 	@Override
-	public Point3D getClosestPointTo(Point3D p) {
+	public Point3d getClosestPointTo(Point3D p) {
 		return getClosestPointTo(
 				getPathIteratorProperty(MathConstants.SPLINE_APPROXIMATION_RATIO),
 				p.getX(), p.getY(),p.getZ());
@@ -642,7 +687,7 @@ public class Path3d extends AbstractShape3F<Path3d> implements Path3D<Shape3F,Al
 
 	@Pure
 	@Override
-	public Point3D getFarthestPointTo(Point3D p) {
+	public Point3d getFarthestPointTo(Point3D p) {
 		return getFarthestPointTo(
 				getPathIteratorProperty(MathConstants.SPLINE_APPROXIMATION_RATIO),
 				p.getX(), p.getY(), p.getZ());
@@ -747,7 +792,7 @@ public class Path3d extends AbstractShape3F<Path3d> implements Path3D<Shape3F,Al
 	@Override
 	public void transform(Transform3D transform) {
 		if (transform!=null) {
-			Point3D p = new Point3f();
+			Point3D p = new Point3d();
 			for(int i=0; i<this.numCoordsProperty.get();) {
 				p.set(this.coordsProperty[i].get(), this.coordsProperty[i+1].get(), this.coordsProperty[i+2].get());
 				transform.transform(p);
@@ -763,7 +808,7 @@ public class Path3d extends AbstractShape3F<Path3d> implements Path3D<Shape3F,Al
 	@Pure
 	@Override
 	public Shape3F createTransformedShape(Transform3D transform) {
-		Path3d newP = new Path3d(this);
+		Path3d newP = new Path3d(this,true);
 		newP.transform(transform);
 
 		return newP;
@@ -1547,6 +1592,7 @@ public class Path3d extends AbstractShape3F<Path3d> implements Path3D<Shape3F,Al
 		return intersects && (mask!=0);
 	}
 
+	@Override
 	@Pure
 	public boolean intersects(Plane3D<?> p) {
 		int mask = (this.windingRule == PathWindingRule.NON_ZERO ? -1 : 2);
@@ -1846,7 +1892,9 @@ public class Path3d extends AbstractShape3F<Path3d> implements Path3D<Shape3F,Al
 		}
 	}
 
-	/**Add the element in paramter into this path.
+	/**Add the element in parameter into this path.
+	 * 
+	 * If the element changes, the path will not be affected.
 	 * 
 	 * @param pathElement
 	 */
@@ -1914,6 +1962,22 @@ public class Path3d extends AbstractShape3F<Path3d> implements Path3D<Shape3F,Al
 			this.coordsProperty[this.numCoordsProperty.get()-3].set(x);
 			this.coordsProperty[this.numCoordsProperty.get()-2].set(y);
 			this.coordsProperty[this.numCoordsProperty.get()-1].set(z);
+			this.graphicalBounds = null;
+			this.logicalBounds = null;
+		}
+	}
+	
+	/** Change the coordinates of the last inserted point.
+	 * 
+	 * If the point in parameter is modified, the path will be changed also.
+	 * 
+	 * @param point
+	 */
+	public void setLastPoint(Point3d point) {
+		if (this.numCoordsProperty.get()>=3) {
+			this.coordsProperty[this.numCoordsProperty.get()-3] = point.xProperty;
+			this.coordsProperty[this.numCoordsProperty.get()-2] = point.yProperty;
+			this.coordsProperty[this.numCoordsProperty.get()-1] = point.zProperty;
 			this.graphicalBounds = null;
 			this.logicalBounds = null;
 		}
@@ -2475,6 +2539,8 @@ public class Path3d extends AbstractShape3F<Path3d> implements Path3D<Shape3F,Al
 	/** Replies the point at the given index.
 	 * The index is in [0;{@link #size()}).
 	 *
+	 * If the returned point is modified, the path will be changed also.
+	 *
 	 * @param index
 	 * @return the point at the given index.
 	 */
@@ -2489,6 +2555,8 @@ public class Path3d extends AbstractShape3F<Path3d> implements Path3D<Shape3F,Al
 	}
 
 	/** Replies the last point in the path.
+	 *
+	 * If the returned point is modified, the path will be changed also.
 	 *
 	 * @return the last point.
 	 */
@@ -2514,8 +2582,8 @@ public class Path3d extends AbstractShape3F<Path3d> implements Path3D<Shape3F,Al
 	 */
 	private class CopyPathIterator3d implements PathIterator3d {
 
-		private final Point3D p1 = new Point3f();
-		private final Point3D p2 = new Point3f();
+		private final Point3D p1 = new Point3d();
+		private final Point3D p2 = new Point3d();
 		private IntegerProperty iTypeProperty = new SimpleIntegerProperty(0);
 		private IntegerProperty iCoordProperty = new SimpleIntegerProperty(0);
 		private DoubleProperty movexProperty, moveyProperty, movezProperty;
@@ -2815,10 +2883,10 @@ public class Path3d extends AbstractShape3F<Path3d> implements Path3D<Shape3F,Al
 	private class TransformPathIterator3d implements PathIterator3d {
 
 		private final Transform3D transform;
-		private final Point3D p1 = new Point3f();
-		private final Point3D p2 = new Point3f();
-		private final Point3D ptmp1 = new Point3f();
-		private final Point3D ptmp2 = new Point3f();
+		private final Point3D p1 = new Point3d();
+		private final Point3D p2 = new Point3d();
+		private final Point3D ptmp1 = new Point3d();
+		private final Point3D ptmp2 = new Point3d();
 		private IntegerProperty iTypeProperty = new SimpleIntegerProperty(0);
 		private IntegerProperty iCoordProperty = new SimpleIntegerProperty(0);
 		private DoubleProperty movexProperty, moveyProperty, movezProperty;

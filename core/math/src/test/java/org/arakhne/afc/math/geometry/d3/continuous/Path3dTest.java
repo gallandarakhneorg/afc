@@ -289,7 +289,7 @@ public class Path3dTest extends AbstractMathTestCase {
 		p.closePath();
 		
 		Path3d p3 = p.clone();
-		Path3d p2 = new Path3d(p);
+		Path3d p2 = new Path3d(p,true);
 		
 		
 		assertTrue(p2.toString().equals(p.toString()));
@@ -526,11 +526,11 @@ public class Path3dTest extends AbstractMathTestCase {
 		p2.lineTo(0f, 3f, 3f);
 		p2.closePath();
 		
-		Point3f randomPoint = randomPoint3f();
+		Point3d randomPoint = new Point3d(randomPoint3f());
 		
-		Point3f closest = (Point3f) p.getClosestPointTo(randomPoint);
-		Point3f closest1 = (Point3f) p1.getClosestPointTo(randomPoint);
-		Point3f closest2 = (Point3f) p2.getClosestPointTo(randomPoint);
+		Point3d closest =  p.getClosestPointTo(randomPoint);
+		Point3d closest1 =  p1.getClosestPointTo(randomPoint);
+		Point3d closest2 =  p2.getClosestPointTo(randomPoint);
 		
 		assertEpsilonEquals(closest.getDistanceSquared(randomPoint),p.distanceSquared(randomPoint));
 		assertEpsilonEquals(closest1.getDistanceSquared(randomPoint),p1.distanceSquared(randomPoint));
@@ -564,11 +564,11 @@ public class Path3dTest extends AbstractMathTestCase {
 		p2.lineTo(0f, 3f, 3f);
 		p2.closePath();
 		
-		Point3f randomPoint = randomPoint3f();
+		Point3d randomPoint = new Point3d(randomPoint3f());
 		
-		Point3f closest = (Point3f) p.getClosestPointTo(randomPoint);
-		Point3f closest1 = (Point3f) p1.getClosestPointTo(randomPoint);
-		Point3f closest2 = (Point3f) p2.getClosestPointTo(randomPoint);
+		Point3d closest = p.getClosestPointTo(randomPoint);
+		Point3d closest1 = p1.getClosestPointTo(randomPoint);
+		Point3d closest2 = p2.getClosestPointTo(randomPoint);
 		
 		assertEpsilonEquals(closest.getDistanceL1(randomPoint),p.distanceL1(randomPoint));
 		assertEpsilonEquals(closest1.getDistanceL1(randomPoint),p1.distanceL1(randomPoint));
@@ -602,11 +602,11 @@ public class Path3dTest extends AbstractMathTestCase {
 		p2.lineTo(0f, 3f, 3f);
 		p2.closePath();
 		
-		Point3f randomPoint = randomPoint3f();
+		Point3d randomPoint = new Point3d(randomPoint3f());
 		
-		Point3f closest = (Point3f) p.getClosestPointTo(randomPoint);
-		Point3f closest1 = (Point3f) p1.getClosestPointTo(randomPoint);
-		Point3f closest2 = (Point3f) p2.getClosestPointTo(randomPoint);
+		Point3d closest =  p.getClosestPointTo(randomPoint);
+		Point3d closest1 =  p1.getClosestPointTo(randomPoint);
+		Point3d closest2 =  p2.getClosestPointTo(randomPoint);
 		
 		assertEpsilonEquals(closest.getDistanceLinf(randomPoint),p.distanceLinf(randomPoint));
 		assertEpsilonEquals(closest1.getDistanceLinf(randomPoint),p1.distanceLinf(randomPoint));

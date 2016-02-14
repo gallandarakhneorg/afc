@@ -2970,8 +2970,7 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 	 * 
 	 * If the point in parameter is modified, the path will be changed also.
 	 * 
-	 * @param x
-	 * @param y
+	 * @param point
 	 */
 	public void setLastPoint(Point2d point) {
 		if (this.numCoordsProperty.get()>=2) {
