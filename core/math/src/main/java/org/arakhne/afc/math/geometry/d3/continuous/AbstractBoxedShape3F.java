@@ -80,7 +80,7 @@ public abstract class AbstractBoxedShape3F<T extends AbstractBoxedShape3F<T>>   
 	 * @param min is the min corner of the box.
 	 * @param max is the max corner of the box.
 	 */
-	abstract public void set(Point3f min, Point3f max);
+	abstract public void set(Point3D min, Point3D max);
 	
 	/** Change the X-size of the box, not the min corner.
 	 * 

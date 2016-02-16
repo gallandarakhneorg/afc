@@ -219,13 +219,13 @@ public class Rectangle2fTest extends AbstractRectangularShape2fTestCase<Rectangl
 		// b: 6.5x5.4 - 10.8x8.6
 		Rectangle2f b = new Rectangle2f(6.5f, 5.4f, 4.3f, 3.2f);
 		
-		rr = this.r.createUnion(b);
+		rr = (Rectangle2f) this.r.createUnion(b);
 		assertEpsilonEquals(0f, rr.getMinX());
 		assertEpsilonEquals(0f, rr.getMinY());
 		assertEpsilonEquals(10.8f, rr.getMaxX());
 		assertEpsilonEquals(8.6f, rr.getMaxY());
 
-		rr = this.r.createUnion(b);
+		rr = (Rectangle2f) this.r.createUnion(b);
 		assertEpsilonEquals(0f, rr.getMinX());
 		assertEpsilonEquals(0f, rr.getMinY());
 		assertEpsilonEquals(10.8f, rr.getMaxX());
@@ -241,13 +241,13 @@ public class Rectangle2fTest extends AbstractRectangularShape2fTestCase<Rectangl
 		// b: 6.5x5.4 - 10.8x8.6
 		Rectangle2f b = new Rectangle2f(6.5f, 5.4f, 4.3f, 3.2f);
 		
-		rr = this.r.createIntersection(b);
+		rr = (Rectangle2f) this.r.createIntersection(b);
 		assertEpsilonEquals(0f, rr.getMinX());
 		assertEpsilonEquals(0f, rr.getMinY());
 		assertEpsilonEquals(0f, rr.getMaxX());
 		assertEpsilonEquals(0f, rr.getMaxY());
 
-		rr = this.r.createIntersection(b);
+		rr = (Rectangle2f) this.r.createIntersection(b);
 		assertEpsilonEquals(0f, rr.getMinX());
 		assertEpsilonEquals(0f, rr.getMinY());
 		assertEpsilonEquals(0f, rr.getMaxX());
@@ -796,6 +796,120 @@ public class Rectangle2fTest extends AbstractRectangularShape2fTestCase<Rectangl
 		assertEpsilonEquals(-2f, this.r.getMinY());
 		assertEpsilonEquals(24f, this.r.getMaxX());
 		assertEpsilonEquals(26f, this.r.getMaxY());
+	}
+
+	/**
+	 */
+	@Test
+	@Override
+	public void intersectsPath2d() {
+		Path2d p;
+		
+		p = new Path2d();
+		p.moveTo(-2f, -2f);
+		p.lineTo(-2f, 2f);
+		p.lineTo(2f, 2f);
+		p.lineTo(2f, -2f);
+		assertFalse(this.r.intersects(p));
+		p.closePath();
+		assertTrue(this.r.intersects(p));
+		
+		p = new Path2d();
+		p.moveTo(-2f, -2f);
+		p.lineTo(0f, 0f);
+		p.lineTo(-2f, 2f);
+		assertFalse(this.r.intersects(p));
+		p.closePath();
+		assertFalse(this.r.intersects(p));
+
+		p = new Path2d();
+		p.moveTo(-2f, -2f);
+		p.lineTo(2f, 2f);
+		p.lineTo(-2f, 2f);
+		assertTrue(this.r.intersects(p));
+		p.closePath();
+		assertTrue(this.r.intersects(p));
+
+		p = new Path2d();
+		p.moveTo(-2f, -2f);
+		p.lineTo(-2f, 2f);
+		p.lineTo(2f, -2f);
+		assertFalse(this.r.intersects(p));
+		p.closePath();
+		assertFalse(this.r.intersects(p));
+
+		p = new Path2d();
+		p.moveTo(-2f, 2f);
+		p.lineTo(1f, 0f);
+		p.lineTo(2f, 1f);
+		assertTrue(this.r.intersects(p));
+		p.closePath();
+		assertTrue(this.r.intersects(p));
+
+		p = new Path2d();
+		p.moveTo(-2f, 2f);
+		p.lineTo(2f, 1f);
+		p.lineTo(1f, 0f);
+		assertFalse(this.r.intersects(p));
+		p.closePath();
+		assertTrue(this.r.intersects(p));
+	}
+
+	/**
+	 */
+	@Test
+	@Override
+	public void intersectsPathIterator2d() {
+		Path2d p;
+
+		p = new Path2d();
+		p.moveTo(-2f, -2f);
+		p.lineTo(-2f, 2f);
+		p.lineTo(2f, 2f);
+		p.lineTo(2f, -2f);
+		assertFalse(this.r.intersects(p.getPathIteratorProperty()));
+		p.closePath();
+		assertTrue(this.r.intersects(p.getPathIteratorProperty()));
+		
+		p = new Path2d();
+		p.moveTo(-2f, -2f);
+		p.lineTo(0f, 0f);
+		p.lineTo(-2f, 2f);
+		assertFalse(this.r.intersects(p.getPathIteratorProperty()));
+		p.closePath();
+		assertFalse(this.r.intersects(p.getPathIteratorProperty()));
+
+		p = new Path2d();
+		p.moveTo(-2f, -2f);
+		p.lineTo(2f, 2f);
+		p.lineTo(-2f, 2f);
+		assertTrue(this.r.intersects(p.getPathIteratorProperty()));
+		p.closePath();
+		assertTrue(this.r.intersects(p.getPathIteratorProperty()));
+
+		p = new Path2d();
+		p.moveTo(-2f, -2f);
+		p.lineTo(-2f, 2f);
+		p.lineTo(2f, -2f);
+		assertFalse(this.r.intersects(p.getPathIteratorProperty()));
+		p.closePath();
+		assertFalse(this.r.intersects(p.getPathIteratorProperty()));
+
+		p = new Path2d();
+		p.moveTo(-2f, 2f);
+		p.lineTo(1f, 0f);
+		p.lineTo(2f, 1f);
+		assertTrue(this.r.intersects(p.getPathIteratorProperty()));
+		p.closePath();
+		assertTrue(this.r.intersects(p.getPathIteratorProperty()));
+
+		p = new Path2d();
+		p.moveTo(-2f, 2f);
+		p.lineTo(2f, 1f);
+		p.lineTo(1f, 0f);
+		assertFalse(this.r.intersects(p.getPathIteratorProperty()));
+		p.closePath();
+		assertTrue(this.r.intersects(p.getPathIteratorProperty()));
 	}
 
 }

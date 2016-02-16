@@ -514,7 +514,7 @@ public abstract class AbstractShape3fTestCase<T extends Shape3F> {
     public abstract void toBoundingBox();
 	
     @Test
-    public abstract void toBoundingBoxAlignedBox3f();
+    public abstract void toBoundingBoxAlignedBox3x();
 
     @Test
     public abstract void distanceSquaredPoint3D();
@@ -535,22 +535,22 @@ public abstract class AbstractShape3fTestCase<T extends Shape3F> {
     public abstract void containsDoubleDoubleDouble();
 	
     @Test
-    public abstract void intersectsAlignedBox3f();
+    public abstract void intersectsAlignedBox3x();
 
     @Test
-    public abstract void intersectsSphere3f();
+    public abstract void intersectsSphere3x();
 
     @Test
-    public abstract void intersectsSegment3f();
+    public abstract void intersectsSegment3x();
 
     @Test
-    public abstract void intersectsTriangle3f();
+    public abstract void intersectsTriangle3x();
 
     @Test
-    public abstract void intersectsCapsule3f();
+    public abstract void intersectsCapsule3x();
 
     @Test
-    public abstract void intersectsOrientedBox3f();
+    public abstract void intersectsOrientedBox3x();
 
     @Test
 	public abstract void intersectsAbstractPlane3D();

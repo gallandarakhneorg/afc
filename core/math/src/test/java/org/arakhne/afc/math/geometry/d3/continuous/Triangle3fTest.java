@@ -82,7 +82,7 @@ public class Triangle3fTest extends AbstractShape3fTestCase<Triangle3f> {
 
 	@Test
 	@Override
-	public void toBoundingBoxAlignedBox3f() {
+	public void toBoundingBoxAlignedBox3x() {
 		throw new UnsupportedOperationException();
 	}
 
@@ -106,37 +106,37 @@ public class Triangle3fTest extends AbstractShape3fTestCase<Triangle3f> {
 
 	@Test
 	@Override
-	public void intersectsAlignedBox3f() {
+	public void intersectsAlignedBox3x() {
 		throw new UnsupportedOperationException();
 	}
 
 	@Test
 	@Override
-	public void intersectsSphere3f() {
+	public void intersectsSphere3x() {
 		throw new UnsupportedOperationException();
 	}
 
 	@Test
 	@Override
-	public void intersectsSegment3f() {
+	public void intersectsSegment3x() {
 		throw new UnsupportedOperationException();
 	}
 
 	@Test
 	@Override
-	public void intersectsTriangle3f() {
+	public void intersectsTriangle3x() {
 		throw new UnsupportedOperationException();
 	}
 
 	@Test
 	@Override
-	public void intersectsCapsule3f() {
+	public void intersectsCapsule3x() {
 		throw new UnsupportedOperationException();
 	}
 
 	@Test
 	@Override
-	public void intersectsOrientedBox3f() {
+	public void intersectsOrientedBox3x() {
 		throw new UnsupportedOperationException();
 	}
 

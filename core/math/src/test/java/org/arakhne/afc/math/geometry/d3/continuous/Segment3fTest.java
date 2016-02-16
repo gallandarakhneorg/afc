@@ -114,7 +114,7 @@ public class Segment3fTest extends AbstractShape3fTestCase<AbstractSegment3F> {
 
 	@Test
 	@Override
-	public void toBoundingBoxAlignedBox3f() {
+	public void toBoundingBoxAlignedBox3x() {
 		throw new UnsupportedOperationException();
 	}
 
@@ -156,19 +156,19 @@ public class Segment3fTest extends AbstractShape3fTestCase<AbstractSegment3F> {
 
 	@Test
 	@Override
-	public void intersectsAlignedBox3f() {
+	public void intersectsAlignedBox3x() {
 		throw new UnsupportedOperationException();
 	}
 
 	@Test
 	@Override
-	public void intersectsSphere3f() {
+	public void intersectsSphere3x() {
 		throw new UnsupportedOperationException();
 	}
 
 	@Test
 	@Override
-	public void intersectsSegment3f() {
+	public void intersectsSegment3x() {
 		Segment3f s1 = new Segment3f(0,0,0,10,10,0);
 		Segment3f s2 = new Segment3f(0,10,0,10,0,0);
 		Segment3f s3 = new Segment3f(0,0,0,12,0,0);
@@ -216,7 +216,7 @@ public class Segment3fTest extends AbstractShape3fTestCase<AbstractSegment3F> {
 
 	@Test
 	@Override
-	public void intersectsTriangle3f() {
+	public void intersectsTriangle3x() {
 		Segment3f s1 = new Segment3f(0,0,0,10,10,0);
 		
 		AbstractTriangle3F t1 = new Triangle3f(10,10,0, 0,0,10, 10,10,10);
@@ -226,13 +226,13 @@ public class Segment3fTest extends AbstractShape3fTestCase<AbstractSegment3F> {
 
 	@Test
 	@Override
-	public void intersectsCapsule3f() {
+	public void intersectsCapsule3x() {
 		throw new UnsupportedOperationException();
 	}
 
 	@Test
 	@Override
-	public void intersectsOrientedBox3f() {
+	public void intersectsOrientedBox3x() {
 		throw new UnsupportedOperationException();
 	}
 

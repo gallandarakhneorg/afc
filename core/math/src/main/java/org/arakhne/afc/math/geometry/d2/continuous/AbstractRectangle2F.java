@@ -582,11 +582,11 @@ public abstract class AbstractRectangle2F<T extends AbstractRectangularShape2F<T
 	 * 
 	 * @param r
 	 * @return the union of this rectangle and the given rectangle.
-	 * @see #union(Rectangle2f, Rectangle2f, Rectangle2f)
-	 * @see #setUnion(Rectangle2f)
+	 * @see #union(AbstractRectangle2F<?>,AbstractRectangle2F<?>, AbstractRectangle2F<?>)
+	 * @see #setUnion(AbstractRectangle2F<?>)
 	 */
 	@Pure
-	public Rectangle2f createUnion(Rectangle2f r) {
+	public AbstractRectangle2F<?> createUnion(AbstractRectangle2F<?> r) {
 		Rectangle2f rr = new Rectangle2f();
 		union(rr, this, r);
 		return rr;
@@ -603,11 +603,11 @@ public abstract class AbstractRectangle2F<T extends AbstractRectangularShape2F<T
 	 * 
 	 * @param r
 	 * @return the union of this rectangle and the given rectangle.
-	 * @see #intersection(Rectangle2f, Rectangle2f, Rectangle2f)
-	 * @see #setIntersection(Rectangle2f)
+	 * @see #intersection(AbstractRectangle2F<?>, AbstractRectangle2F<?>, AbstractRectangle2F<?>)
+	 * @see #setIntersection(AbstractRectangle2F<?>)
 	 */
 	@Pure
-	public Rectangle2f createIntersection(Rectangle2f r) {
+	public AbstractRectangle2F<?> createIntersection(AbstractRectangle2F<?> r) {
 		Rectangle2f rr = new Rectangle2f();
 		intersection(rr, this, r);
 		return rr;

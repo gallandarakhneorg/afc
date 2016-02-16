@@ -766,4 +766,44 @@ public class OpenPath2fTest extends AbstractPath2fTestCase {
 		assertNoElement(pi);
 	}
 
+	@Test
+	@Override
+	public void intersectsPath2d() {
+		assertFalse(this.r.intersects(new Path2d(this.r2)));
+		assertTrue(this.r.intersects(new Path2d(this.r3)));
+		assertFalse(this.r.intersects(new Path2d(this.r4)));
+		assertFalse(this.r.intersects(new Path2d(this.r5)));
+		assertFalse(this.r.intersects(new Path2d(this.r6)));
+		assertTrue(this.r.intersects(new Path2d(this.r7)));
+		assertFalse(this.r.intersects(new Path2d(this.r8)));
+
+		assertFalse(new Path2d(this.r2).intersects(this.r));
+		assertTrue(new Path2d(this.r3).intersects(this.r));
+		assertFalse(new Path2d(this.r4).intersects(this.r));
+		assertFalse(new Path2d(this.r5).intersects(this.r));
+		assertFalse(new Path2d(this.r6).intersects(this.r));
+		assertTrue(new Path2d(this.r7).intersects(this.r));
+		assertFalse(new Path2d(this.r8).intersects(this.r));
+	}
+
+	@Test
+	@Override
+	public void intersectsPathIterator2d() {
+		assertFalse(this.r.intersects(new Path2d(this.r2).getPathIteratorProperty()));
+		assertTrue(this.r.intersects(new Path2d(this.r3).getPathIteratorProperty()));
+		assertFalse(this.r.intersects(new Path2d(this.r4).getPathIteratorProperty()));
+		assertFalse(this.r.intersects(new Path2d(this.r5).getPathIteratorProperty()));
+		assertFalse(this.r.intersects(new Path2d(this.r6).getPathIteratorProperty()));
+		assertTrue(this.r.intersects(new Path2d(this.r7).getPathIteratorProperty()));
+		assertFalse(this.r.intersects(new Path2d(this.r8).getPathIteratorProperty()));
+
+		assertFalse(new Path2d(this.r2).intersects(this.r.getPathIterator()));
+		assertTrue(new Path2d(this.r3).intersects(this.r.getPathIterator()));
+		assertFalse(new Path2d(this.r4).intersects(this.r.getPathIterator()));
+		assertFalse(new Path2d(this.r5).intersects(this.r.getPathIterator()));
+		assertFalse(new Path2d(this.r6).intersects(this.r.getPathIterator()));
+		assertTrue(new Path2d(this.r7).intersects(this.r.getPathIterator()));
+		assertFalse(new Path2d(this.r8).intersects(this.r.getPathIterator()));
+	}
+
 }

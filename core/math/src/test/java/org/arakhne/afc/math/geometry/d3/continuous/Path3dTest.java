@@ -892,5 +892,60 @@ public class Path3dTest extends AbstractMathTestCase {
 		assertTrue(p.getCurrentPoint().equals(new Point3f(7,-5,0)));
 	}
 	
+	/**
+	 */
+	@Test
+	public void testModifyProperties() {
+		Point3d pt0 = new Point3d(0,0,0);
+		Point3d pt1 = new Point3d(1,1,1);
+		Point3d pt2 = new Point3d(2,2,2);
+		Point3d pt3 = new Point3d(3,1,2);
+		Point3d pt4 = new Point3d(3,-2,2);
+		
+		Path3d test = new Path3d();
+		test.moveTo(pt0);
+		test.lineTo(pt1);
+		test.quadTo(pt2, pt3);
+		test.lineTo(pt4);
+		test.closePath();
+		
+		Path3d path = new Path3d();
+		path.moveTo(0,0,0);
+		path.lineTo(1,1,1);
+		path.quadTo(2,2,2,3,1,2);
+		path.lineTo(3,-2,2);
+		path.closePath();
+		
+		assertTrue(test.equals(path));
+		
+		test.getPointAt(2).set(2, 0,-2);
+		test.getCurrentPoint().set(6, 6, 6);
+		
+		assertTrue(pt0.equals(new Point3f(0,0,0)));
+		assertTrue(pt1.equals(new Point3f(1,1,1)));
+		assertTrue(pt2.equals(new Point3f(2,0,-2)));
+		assertTrue(pt3.equals(new Point3f(3,1,2)));
+		assertTrue(pt4.equals(new Point3f(6,6,6)));
+		
+		test = new Path3d(path,true);
+		
+		test.getPointAt(2).set(2, 0,-2);
+		test.getCurrentPoint().set(6, 6, 6);
+		
+		assertFalse(test.equals(path));
+
+		test = new Path3d(path,false);
+		
+		test.getPointAt(2).set(2, 0,-2);
+		test.getCurrentPoint().set(6, 6, 6);
+		
+		assertTrue(test.equals(path));
+		
+		path.setLastPoint(pt0.getX(),pt0.getY(),pt0.getZ());
+		
+		assertEpsilonEquals(pt0, test.getPointAt(test.size()));
+		assertTrue(test.equals(path));		
+	}
+	
 	
 }

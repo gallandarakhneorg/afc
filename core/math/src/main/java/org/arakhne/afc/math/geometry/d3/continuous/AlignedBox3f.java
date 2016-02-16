@@ -237,13 +237,13 @@ public class AlignedBox3f extends AbstractBoxedShape3F<AlignedBox3f> {
 		setFromCorners(x, y, z, x+sizex, y+sizey, z+sizez);
 	}
 	
-	/** Change the frame of te box.
+	/** Change the frame of the box.
 	 * 
 	 * @param min is the min corner of the box.
 	 * @param max is the max corner of the box.
 	 */
 	@Override
-	public void set(Point3f min, Point3f max) {
+	public void set(Point3D min, Point3D max) {
 		setFromCorners(
 				min.getX(), min.getY(), min.getZ(), 
 				max.getX(), max.getY(), max.getZ());

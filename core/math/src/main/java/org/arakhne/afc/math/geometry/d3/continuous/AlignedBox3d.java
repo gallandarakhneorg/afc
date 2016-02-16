@@ -240,6 +240,14 @@ public class AlignedBox3d extends AbstractBoxedShape3F<AlignedBox3d> {
 	}
 
 	
+	/**
+	 * @param s
+	 */
+	public AlignedBox3d(AlignedBox3d s) {
+		this();
+		this.setFromCornersProperties(new Point3d(s.minxProperty,s.minyProperty,s.minzProperty),new Point3d(s.maxxProperty,s.maxyProperty,s.maxzProperty));
+	}
+	
 	/** Change the frame of the box.
 	 * 
 	 * @param x
@@ -260,7 +268,7 @@ public class AlignedBox3d extends AbstractBoxedShape3F<AlignedBox3d> {
 	 * @param max is the max corner of the box.
 	 */
 	@Override
-	public void set(Point3f min, Point3f max) {
+	public void set(Point3D min, Point3D max) {
 		setFromCorners(
 				min.getX(), min.getY(), min.getZ(), 
 				max.getX(), max.getY(), max.getZ());
@@ -967,7 +975,7 @@ public class AlignedBox3d extends AbstractBoxedShape3F<AlignedBox3d> {
 			return true;
 		}
 		if (obj instanceof AbstractBoxedShape3F) {
-			AlignedBox3d ab3f = (AlignedBox3d) obj;
+			AbstractBoxedShape3F<?> ab3f = (AbstractBoxedShape3F<?>) obj;
 			return ((getMinX() == ab3f.getMinX()) &&
 					(getMinY() == ab3f.getMinY()) &&
 					(getMinZ() == ab3f.getMinZ()) &&
@@ -1002,6 +1010,5 @@ public class AlignedBox3d extends AbstractBoxedShape3F<AlignedBox3d> {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-
+	
 }

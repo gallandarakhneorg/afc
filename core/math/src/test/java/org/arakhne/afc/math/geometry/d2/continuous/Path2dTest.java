@@ -981,10 +981,62 @@ public class Path2dTest extends AbstractMathTestCase{
 		p.closePath();
 		
 		assertTrue(MathUtil.isEpsilonEqual(p.length(),2.29559+2,0.02));
-				
 	}
 	
-	
+	/**
+	 */
+	@Test
+	public void testModifyProperties() {
+		Point2d pt0 = new Point2d(0,0);
+		Point2d pt1 = new Point2d(1,1);
+		Point2d pt2 = new Point2d(2,2);
+		Point2d pt3 = new Point2d(3,1);
+		Point2d pt4 = new Point2d(3,-2);
+		
+		Path2d test = new Path2d();
+		test.moveTo(pt0);
+		test.lineTo(pt1);
+		test.quadTo(pt2, pt3);
+		test.lineTo(pt4);
+		test.closePath();
+		
+		Path2d path = new Path2d();
+		path.moveTo(0,0);
+		path.lineTo(1,1);
+		path.quadTo(2,2,3,1);
+		path.lineTo(3,-2);
+		path.closePath();
+		
+		assertTrue(test.equals(path));
+		
+		test.getPointAt(2).set(2, 0);
+		test.getCurrentPoint().set(6, 6);
+		
+		assertTrue(pt0.equals(new Point2f(0,0)));
+		assertTrue(pt1.equals(new Point2f(1,1)));
+		assertTrue(pt2.equals(new Point2f(2,0)));
+		assertTrue(pt3.equals(new Point2f(3,1)));
+		assertTrue(pt4.equals(new Point2f(6,6)));
+		
+		test = new Path2d(path,true);
+		
+		test.getPointAt(2).set(2, 0);
+		test.getCurrentPoint().set(6, 6);
+		
+		assertFalse(test.equals(path));
+
+		test = new Path2d(path,false);
+		
+		test.getPointAt(2).set(2, 0);
+		test.getCurrentPoint().set(6, 6);
+		
+		assertTrue(test.equals(path));
+		
+		path.setLastPoint(pt0.getX(),pt0.getY());
+		
+		assertEpsilonEquals(pt0, test.getPointAt(test.size()));
+		assertTrue(test.equals(path));		
+	}
 	
 }
 

@@ -97,7 +97,7 @@ public class Rectangle2d extends AbstractRectangle2F<Rectangle2d>{
 	}
 
 
-	public Rectangle2d(Rectangle2f r) {
+	public Rectangle2d(AbstractRectangle2F<?> r) {
 		this();
 		this.setFromCorners(r.getMinX(),r.getMinY(),r.getMaxX(),r.getMaxY());
 	}

@@ -26,27 +26,29 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
 
+import org.junit.Test;
+
 /**
  * @author $Author: hjaffali$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class AlignedBox3fTest extends AbstractBoxedShape3fTestCase<AlignedBox3f>{
+public class AlignedBox3dTest extends AbstractBoxedShape3fTestCase<AlignedBox3d>{
 
 	@Override
-	protected AlignedBox3f createShape() {
-		return new AlignedBox3f(0, 0, 0, 1, 1, 1);
+	protected AlignedBox3d createShape() {
+		return new AlignedBox3d(0, 0, 0, 1, 1, 1);
 	}
 
 	@Override
 	public void toBoundingBox() {
-		assertTrue(new AlignedBox3f(0,0,0,1,1,1).equals(this.r.toBoundingBox()));
+		assertTrue(new AlignedBox3d(0,0,0,1,1,1).equals(this.r.toBoundingBox()));
 	}
 
 	@Override
 	public void toBoundingBoxAlignedBox3x() {
-		AlignedBox3f A = new AlignedBox3f();
+		AlignedBox3d A = new AlignedBox3d();
 		this.r.toBoundingBox(A);
 
 		assertTrue(this.r.toBoundingBox().equals(A));
@@ -56,31 +58,31 @@ public class AlignedBox3fTest extends AbstractBoxedShape3fTestCase<AlignedBox3f>
 	public void clear() {
 		this.r.clear();
 
-		assertTrue(this.r.equals(new AlignedBox3f(0,0,0,0,0,0)));
+		assertTrue(this.r.equals(new AlignedBox3d(0,0,0,0,0,0)));
 	}
 
 	@Override
 	public void setDoubleDoubleDoubleDoubleDoubleDouble() {
 		this.r.set(0, 0, 0, 2, 2, 2);
-		assertTrue(this.r.equals(new AlignedBox3f(0,0,0,2,2,2)));
+		assertTrue(this.r.equals(new AlignedBox3d(0,0,0,2,2,2)));
 
 		this.r.set(-1, -1, -1, 2, 2, 2);
-		assertTrue(this.r.equals(new AlignedBox3f(-1,-1,-1,2,2,2)));
+		assertTrue(this.r.equals(new AlignedBox3d(-1,-1,-1,2,2,2)));
 
 		this.r.set(1, 1, 1, 2, 2, 2);
-		assertTrue(this.r.equals(new AlignedBox3f(1,1,1,2,2,2)));
+		assertTrue(this.r.equals(new AlignedBox3d(1,1,1,2,2,2)));
 	}
 
 	@Override
 	public void setPoint3xPoint3x() {
-		this.r.set(new Point3f(0,0,0), new Point3f(2,2,2));
-		assertTrue(this.r.equals(new AlignedBox3f(0,0,0,2,2,2)));
+		this.r.set(new Point3d(0,0,0), new Point3d(2,2,2));
+		assertTrue(this.r.equals(new AlignedBox3d(0,0,0,2,2,2)));
 
-		this.r.set(new Point3f(-1,-1,-1), new Point3f(1,1,1));
-		assertTrue(this.r.equals(new AlignedBox3f(-1,-1,-1,2,2,2)));
+		this.r.set(new Point3d(-1,-1,-1), new Point3d(1,1,1));
+		assertTrue(this.r.equals(new AlignedBox3d(-1,-1,-1,2,2,2)));
 
-		this.r.set(new Point3f(1,1,1), new Point3f(3,3,3));
-		assertTrue(this.r.equals(new AlignedBox3f(1,1,1,2,2,2)));
+		this.r.set(new Point3d(1,1,1), new Point3d(3,3,3));
+		assertTrue(this.r.equals(new AlignedBox3d(1,1,1,2,2,2)));
 	}
 
 	@Override
@@ -127,38 +129,38 @@ public class AlignedBox3fTest extends AbstractBoxedShape3fTestCase<AlignedBox3f>
 
 	@Override
 	public void setFromCornersPoint3DPoint3D() {
-		this.r.setFromCorners(new Point3f(0,0,0), new Point3f(2,2,2));
-		assertTrue(this.r.equals(new AlignedBox3f(0,0,0,2,2,2)));
+		this.r.setFromCorners(new Point3d(0,0,0), new Point3d(2,2,2));
+		assertTrue(this.r.equals(new AlignedBox3d(0,0,0,2,2,2)));
 
-		this.r.setFromCorners(new Point3f(-1,-1,-1), new Point3f(1,1,1));
-		assertTrue(this.r.equals(new AlignedBox3f(-1,-1,-1,2,2,2)));
+		this.r.setFromCorners(new Point3d(-1,-1,-1), new Point3d(1,1,1));
+		assertTrue(this.r.equals(new AlignedBox3d(-1,-1,-1,2,2,2)));
 
-		this.r.setFromCorners(new Point3f(1,1,1), new Point3f(3,3,3));
-		assertTrue(this.r.equals(new AlignedBox3f(1,1,1,2,2,2)));
+		this.r.setFromCorners(new Point3d(1,1,1), new Point3d(3,3,3));
+		assertTrue(this.r.equals(new AlignedBox3d(1,1,1,2,2,2)));
 	}
 
 	@Override
 	public void setFromCornersDoubleDoubleDoubleDoubleDoubleDouble() {
 		this.r.setFromCorners(0,0,0,2,2,2);
-		assertTrue(this.r.equals(new AlignedBox3f(0,0,0,2,2,2)));
+		assertTrue(this.r.equals(new AlignedBox3d(0,0,0,2,2,2)));
 
 		this.r.setFromCorners(-1,-1,-1,1,1,1);
-		assertTrue(this.r.equals(new AlignedBox3f(-1,-1,-1,2,2,2)));
+		assertTrue(this.r.equals(new AlignedBox3d(-1,-1,-1,2,2,2)));
 
 		this.r.setFromCorners(1,1,1,3,3,3);
-		assertTrue(this.r.equals(new AlignedBox3f(1,1,1,2,2,2)));
+		assertTrue(this.r.equals(new AlignedBox3d(1,1,1,2,2,2)));
 	}
 
 	@Override
 	public void setFromCenterDoubleDoubleDoubleDoubleDoubleDouble() {
 		this.r.setFromCenter(1, 1, 1, 2, 2, 2);
-		assertTrue(this.r.equals(new AlignedBox3f(0,0,0,2,2,2)));
+		assertTrue(this.r.equals(new AlignedBox3d(0,0,0,2,2,2)));
 
 		this.r.setFromCenter(0, 0, 0, -1, -1, -1);
-		assertTrue(this.r.equals(new AlignedBox3f(-1,-1,-1,2,2,2)));
+		assertTrue(this.r.equals(new AlignedBox3d(-1,-1,-1,2,2,2)));
 
 		this.r.setFromCenter(2, 2, 2, 3, 3, 3);
-		assertTrue(this.r.equals(new AlignedBox3f(1,1,1,2,2,2)));
+		assertTrue(this.r.equals(new AlignedBox3d(1,1,1,2,2,2)));
 	}
 
 	@Override
@@ -171,7 +173,7 @@ public class AlignedBox3fTest extends AbstractBoxedShape3fTestCase<AlignedBox3f>
 		this.r.setFromCorners(-2,-1,-1,1,1,1);
 		assertEpsilonEquals(-2, this.r.getMinX());
 
-		this.r.set(new Point3f(0,0,0), new Point3f(2,2,2));
+		this.r.set(new Point3d(0,0,0), new Point3d(2,2,2));
 		assertEpsilonEquals(0, this.r.getMinX());
 	}
 
@@ -187,29 +189,29 @@ public class AlignedBox3fTest extends AbstractBoxedShape3fTestCase<AlignedBox3f>
 
 	@Override
 	public void getMin() {
-		assertEpsilonEquals(new Point3f(0,0,0),this.r.getMin());
+		assertEpsilonEquals(new Point3d(0,0,0),this.r.getMin());
 		this.r.setMinX(2.3f);
 		this.r.setMinY(3f);
 		this.r.setMaxZ(2.3f);
-		assertEpsilonEquals(new Point3f(1,1,0),this.r.getMin());
+		assertEpsilonEquals(new Point3d(1,1,0),this.r.getMin());
 	}
 
 	@Override
 	public void getMax() {
-		assertEpsilonEquals(new Point3f(1,1,1),this.r.getMax());
+		assertEpsilonEquals(new Point3d(1,1,1),this.r.getMax());
 		this.r.setMinX(2.3f);
 		this.r.setMinY(3f);
 		this.r.setMaxZ(2.3f);
-		assertEpsilonEquals(new Point3f(2.3,3,2.3),this.r.getMax());
+		assertEpsilonEquals(new Point3d(2.3,3,2.3),this.r.getMax());
 	}
 
 	@Override
 	public void getCenter() {
-		assertEpsilonEquals(new Point3f(0.5,0.5,0.5),this.r.getCenter());
+		assertEpsilonEquals(new Point3d(0.5,0.5,0.5),this.r.getCenter());
 		this.r.setMinX(2.3f);
 		this.r.setMinY(3f);
 		this.r.setMaxZ(2.3f);
-		assertEpsilonEquals(new Point3f((2.3+1)/2.,2,2.3/2.),this.r.getCenter());
+		assertEpsilonEquals(new Point3d((2.3+1)/2.,2,2.3/2.),this.r.getCenter());
 	}
 
 	@Override
@@ -229,7 +231,7 @@ public class AlignedBox3fTest extends AbstractBoxedShape3fTestCase<AlignedBox3f>
 		this.r.setFromCorners(-1,-1,-1,2,1,1);
 		assertEpsilonEquals(2, this.r.getMaxX());
 
-		this.r.set(new Point3f(0,0,0), new Point3f(2,2,2));
+		this.r.set(new Point3d(0,0,0), new Point3d(2,2,2));
 		assertEpsilonEquals(2, this.r.getMaxX());
 	}
 
@@ -253,7 +255,7 @@ public class AlignedBox3fTest extends AbstractBoxedShape3fTestCase<AlignedBox3f>
 		this.r.setFromCorners(-1,-2,-1,1,1,1);
 		assertEpsilonEquals(-2, this.r.getMinY());
 
-		this.r.set(new Point3f(0,0,0), new Point3f(2,2,2));
+		this.r.set(new Point3d(0,0,0), new Point3d(2,2,2));
 		assertEpsilonEquals(0, this.r.getMinY());
 	}
 
@@ -284,7 +286,7 @@ public class AlignedBox3fTest extends AbstractBoxedShape3fTestCase<AlignedBox3f>
 		this.r.setFromCorners(-1,-1,-1,1,2,1);
 		assertEpsilonEquals(2, this.r.getMaxY());
 
-		this.r.set(new Point3f(0,0,0), new Point3f(2,2,2));
+		this.r.set(new Point3d(0,0,0), new Point3d(2,2,2));
 		assertEpsilonEquals(2, this.r.getMaxY());
 	}
 
@@ -308,7 +310,7 @@ public class AlignedBox3fTest extends AbstractBoxedShape3fTestCase<AlignedBox3f>
 		this.r.setFromCorners(-1,-1,-2,1,1,1);
 		assertEpsilonEquals(-2, this.r.getMinZ());
 
-		this.r.set(new Point3f(0,0,0), new Point3f(2,2,2));
+		this.r.set(new Point3d(0,0,0), new Point3d(2,2,2));
 		assertEpsilonEquals(0, this.r.getMinZ());
 	}
 
@@ -339,7 +341,7 @@ public class AlignedBox3fTest extends AbstractBoxedShape3fTestCase<AlignedBox3f>
 		this.r.setFromCorners(-1,-1,-1,1,1,3);
 		assertEpsilonEquals(3, this.r.getMaxZ());
 
-		this.r.set(new Point3f(0,0,0), new Point3f(2,2,2));
+		this.r.set(new Point3d(0,0,0), new Point3d(2,2,2));
 		assertEpsilonEquals(2, this.r.getMaxZ());
 	}
 
@@ -363,7 +365,7 @@ public class AlignedBox3fTest extends AbstractBoxedShape3fTestCase<AlignedBox3f>
 		this.r.setFromCorners(-1,-1,-1,1,1,3);
 		assertEpsilonEquals(2, this.r.getSizeX());
 
-		this.r.set(new Point3f(0,0,0), new Point3f(2,2,2));
+		this.r.set(new Point3d(0,0,0), new Point3d(2,2,2));
 		assertEpsilonEquals(2, this.r.getSizeX());
 	}
 
@@ -377,7 +379,7 @@ public class AlignedBox3fTest extends AbstractBoxedShape3fTestCase<AlignedBox3f>
 		this.r.setFromCorners(-1,-1,-1,1,2,3);
 		assertEpsilonEquals(3, this.r.getSizeY());
 
-		this.r.set(new Point3f(0,0,0), new Point3f(2,2,2));
+		this.r.set(new Point3d(0,0,0), new Point3d(2,2,2));
 		assertEpsilonEquals(2, this.r.getSizeY());
 	}
 
@@ -391,15 +393,15 @@ public class AlignedBox3fTest extends AbstractBoxedShape3fTestCase<AlignedBox3f>
 		this.r.setFromCorners(-1,-1,-1,1,1,3);
 		assertEpsilonEquals(4, this.r.getSizeZ());
 
-		this.r.set(new Point3f(0,0,0), new Point3f(2,2,2));
+		this.r.set(new Point3d(0,0,0), new Point3d(2,2,2));
 		assertEpsilonEquals(2, this.r.getSizeZ());
 	}
 
 	@Override
 	public void translateDoubleDoubleDouble() {
-		Vector3f translation = new Vector3f(this.random.nextDouble()*20,this.random.nextDouble()*20,this.random.nextDouble()*20);
+		Vector3d translation = new Vector3d(this.random.nextDouble()*20,this.random.nextDouble()*20,this.random.nextDouble()*20);
 		this.r.translate(translation.getX(),translation.getY(),translation.getZ());
-		assertTrue(this.r.equals(new AlignedBox3f(0+translation.getX(),0+translation.getY(),0+translation.getZ(),this.r.getSizeX(),this.r.getSizeY(),this.r.getSizeZ())));
+		assertTrue(this.r.equals(new AlignedBox3d(0+translation.getX(),0+translation.getY(),0+translation.getZ(),this.r.getSizeX(),this.r.getSizeY(),this.r.getSizeZ())));
 	}
 
 	@Override
@@ -420,7 +422,7 @@ public class AlignedBox3fTest extends AbstractBoxedShape3fTestCase<AlignedBox3f>
 		double maxY = 5;//this.random.nextDouble()*20;
 		double maxZ = 6;//this.random.nextDouble()*20;
 
-		AlignedBox3f A = new AlignedBox3f(0,0,0,1,1,1);
+		AlignedBox3d A = new AlignedBox3d(0,0,0,1,1,1);
 		A.setFromCorners(
 				minX + A.getMinX() ,minY + A.getMinY() ,minZ + A.getMinZ() ,
 				maxX + A.getMaxX() ,maxY + A.getMaxY() ,maxZ + A.getMaxZ() );
@@ -432,9 +434,9 @@ public class AlignedBox3fTest extends AbstractBoxedShape3fTestCase<AlignedBox3f>
 
 	@Override
 	public void translateVector3D() {
-		Vector3f translation = new Vector3f(this.random.nextDouble()*20,this.random.nextDouble()*20,this.random.nextDouble()*20);
+		Vector3d translation = new Vector3d(this.random.nextDouble()*20,this.random.nextDouble()*20,this.random.nextDouble()*20);
 		this.r.translate(translation);
-		assertTrue(this.r.equals(new AlignedBox3f(0+translation.getX(),0+translation.getY(),0+translation.getZ(),this.r.getSizeX(),this.r.getSizeY(),this.r.getSizeZ())));
+		assertTrue(this.r.equals(new AlignedBox3d(0+translation.getX(),0+translation.getY(),0+translation.getZ(),this.r.getSizeX(),this.r.getSizeY(),this.r.getSizeZ())));
 	}
 
 	@Override
@@ -502,7 +504,7 @@ public class AlignedBox3fTest extends AbstractBoxedShape3fTestCase<AlignedBox3f>
 
 	@Override
 	public void testClone() {
-		AlignedBox3f b = this.r.clone();
+		AlignedBox3d b = this.r.clone();
 
 		assertNotSame(b, this.r);
 		assertEpsilonEquals(this.r.getMinX(), b.getMinX());
@@ -527,18 +529,18 @@ public class AlignedBox3fTest extends AbstractBoxedShape3fTestCase<AlignedBox3f>
 	public void distancePoint3D() {
 		this.r.setFromCorners(0, 0, 0, 2, 2, 2);
 
-		assertEpsilonEquals(0,this.r.distance(new Point3f(0,0,0)));
-		assertEpsilonEquals(0,this.r.distance(new Point3f(1,1,1)));
-		assertEpsilonEquals(0,this.r.distance(new Point3f(2,0,2)));
-		assertEpsilonEquals(0,this.r.distance(new Point3f(0.5,0,2)));
+		assertEpsilonEquals(0,this.r.distance(new Point3d(0,0,0)));
+		assertEpsilonEquals(0,this.r.distance(new Point3d(1,1,1)));
+		assertEpsilonEquals(0,this.r.distance(new Point3d(2,0,2)));
+		assertEpsilonEquals(0,this.r.distance(new Point3d(0.5,0,2)));
 
-		assertEpsilonEquals(new Point3f(2,0,0).getDistance(new Point3f(3,0,0)),this.r.distance(new Point3f(3,0,0)));
+		assertEpsilonEquals(new Point3d(2,0,0).getDistance(new Point3d(3,0,0)),this.r.distance(new Point3d(3,0,0)));
 
-		assertEpsilonEquals(new Point3f(1,2,1).getDistance(new Point3f(1,7,1)),this.r.distance(new Point3f(1,7,1)));
+		assertEpsilonEquals(new Point3d(1,2,1).getDistance(new Point3d(1,7,1)),this.r.distance(new Point3d(1,7,1)));
 
-		assertEpsilonEquals(new Point3f(2,2,2).getDistance(new Point3f(3,7,3)),this.r.distance(new Point3f(3,7,3)));
+		assertEpsilonEquals(new Point3d(2,2,2).getDistance(new Point3d(3,7,3)),this.r.distance(new Point3d(3,7,3)));
 
-		assertEpsilonEquals(new Point3f(0,2,2).getDistance(new Point3f(-1,7,3)),this.r.distance(new Point3f(-1,7,3)));
+		assertEpsilonEquals(new Point3d(0,2,2).getDistance(new Point3d(-1,7,3)),this.r.distance(new Point3d(-1,7,3)));
 	}
 
 	@Override
@@ -546,8 +548,8 @@ public class AlignedBox3fTest extends AbstractBoxedShape3fTestCase<AlignedBox3f>
 		this.r.setFromCorners(0, 0, 0, 2, 2, 2);
 
 		assertTrue(this.r.contains(new Point3f(1, 1, 1)));
-		assertTrue(this.r.contains(new Point3f(0, 0, 0)));
-		assertTrue(this.r.contains(new Point3d(0, 0, 2)));
+		assertTrue(this.r.contains(new Point3d(0, 0, 0)));
+		assertTrue(this.r.contains(new Point3f(0, 0, 2)));
 		assertTrue(this.r.contains(new Point3d(2, 0, 2)));
 		assertTrue(this.r.contains(new Point3f(0.5, 1, 0.5)));
 		assertTrue(this.r.contains(new Point3d(1.5, 2, 1.5)));
@@ -562,8 +564,8 @@ public class AlignedBox3fTest extends AbstractBoxedShape3fTestCase<AlignedBox3f>
 
 	@Override
 	public void testEquals() {
-		AlignedBox3f b = this.r.clone();
-		AlignedBox3f c = new AlignedBox3f(this.r);
+		AlignedBox3d b = this.r.clone();
+		AlignedBox3d c = new AlignedBox3d(this.r);
 
 		assertTrue(b.equals(this.r));
 		assertTrue(this.r.equals(b));
@@ -590,54 +592,54 @@ public class AlignedBox3fTest extends AbstractBoxedShape3fTestCase<AlignedBox3f>
 	public void distanceSquaredPoint3D() {
 		this.r.setFromCorners(0, 0, 0, 2, 2, 2);
 
-		assertEpsilonEquals(0,this.r.distanceSquared(new Point3f(0,0,0)));
-		assertEpsilonEquals(0,this.r.distanceSquared(new Point3f(1,1,1)));
-		assertEpsilonEquals(0,this.r.distanceSquared(new Point3f(2,0,2)));
-		assertEpsilonEquals(0,this.r.distanceSquared(new Point3f(0.5,0,2)));
+		assertEpsilonEquals(0,this.r.distanceSquared(new Point3d(0,0,0)));
+		assertEpsilonEquals(0,this.r.distanceSquared(new Point3d(1,1,1)));
+		assertEpsilonEquals(0,this.r.distanceSquared(new Point3d(2,0,2)));
+		assertEpsilonEquals(0,this.r.distanceSquared(new Point3d(0.5,0,2)));
 
-		assertEpsilonEquals(new Point3f(2,0,0).getDistanceSquared(new Point3f(3,0,0)),this.r.distanceSquared(new Point3f(3,0,0)));
+		assertEpsilonEquals(new Point3d(2,0,0).getDistanceSquared(new Point3d(3,0,0)),this.r.distanceSquared(new Point3d(3,0,0)));
 
-		assertEpsilonEquals(new Point3f(1,2,1).getDistanceSquared(new Point3f(1,7,1)),this.r.distanceSquared(new Point3f(1,7,1)));
+		assertEpsilonEquals(new Point3d(1,2,1).getDistanceSquared(new Point3d(1,7,1)),this.r.distanceSquared(new Point3d(1,7,1)));
 
-		assertEpsilonEquals(new Point3f(2,2,2).getDistanceSquared(new Point3f(3,7,3)),this.r.distanceSquared(new Point3f(3,7,3)));
+		assertEpsilonEquals(new Point3d(2,2,2).getDistanceSquared(new Point3d(3,7,3)),this.r.distanceSquared(new Point3d(3,7,3)));
 
-		assertEpsilonEquals(new Point3f(0,2,2).getDistanceSquared(new Point3f(-1,7,3)),this.r.distanceSquared(new Point3f(-1,7,3)));
+		assertEpsilonEquals(new Point3d(0,2,2).getDistanceSquared(new Point3d(-1,7,3)),this.r.distanceSquared(new Point3d(-1,7,3)));
 	}
 
 	@Override
 	public void distanceL1Point3D() {
 		this.r.setFromCorners(0, 0, 0, 2, 2, 2);
 
-		assertEpsilonEquals(0,this.r.distanceL1(new Point3f(0,0,0)));
-		assertEpsilonEquals(0,this.r.distanceL1(new Point3f(1,1,1)));
-		assertEpsilonEquals(0,this.r.distanceL1(new Point3f(2,0,2)));
-		assertEpsilonEquals(0,this.r.distanceL1(new Point3f(0.5,0,2)));
+		assertEpsilonEquals(0,this.r.distanceL1(new Point3d(0,0,0)));
+		assertEpsilonEquals(0,this.r.distanceL1(new Point3d(1,1,1)));
+		assertEpsilonEquals(0,this.r.distanceL1(new Point3d(2,0,2)));
+		assertEpsilonEquals(0,this.r.distanceL1(new Point3d(0.5,0,2)));
 
-		assertEpsilonEquals(new Point3f(2,0,0).getDistanceL1(new Point3f(3,0,0)),this.r.distanceL1(new Point3f(3,0,0)));
+		assertEpsilonEquals(new Point3d(2,0,0).getDistanceL1(new Point3d(3,0,0)),this.r.distanceL1(new Point3d(3,0,0)));
 
-		assertEpsilonEquals(new Point3f(1,2,1).getDistanceL1(new Point3f(1,7,1)),this.r.distanceL1(new Point3f(1,7,1)));
+		assertEpsilonEquals(new Point3d(1,2,1).getDistanceL1(new Point3d(1,7,1)),this.r.distanceL1(new Point3d(1,7,1)));
 
-		assertEpsilonEquals(new Point3f(2,2,2).getDistanceL1(new Point3f(3,7,3)),this.r.distanceL1(new Point3f(3,7,3)));
+		assertEpsilonEquals(new Point3d(2,2,2).getDistanceL1(new Point3d(3,7,3)),this.r.distanceL1(new Point3d(3,7,3)));
 
-		assertEpsilonEquals(new Point3f(0,2,2).getDistanceL1(new Point3f(-1,7,3)),this.r.distanceL1(new Point3f(-1,7,3)));
+		assertEpsilonEquals(new Point3d(0,2,2).getDistanceL1(new Point3d(-1,7,3)),this.r.distanceL1(new Point3d(-1,7,3)));
 	}
 
 	@Override
 	public void distanceLinfPoint3D() {
 		this.r.setFromCorners(0, 0, 0, 2, 2, 2);
 
-		assertEpsilonEquals(0,this.r.distanceLinf(new Point3f(0,0,0)));
-		assertEpsilonEquals(0,this.r.distanceLinf(new Point3f(1,1,1)));
-		assertEpsilonEquals(0,this.r.distanceLinf(new Point3f(2,0,2)));
-		assertEpsilonEquals(0,this.r.distanceLinf(new Point3f(0.5,0,2)));
+		assertEpsilonEquals(0,this.r.distanceLinf(new Point3d(0,0,0)));
+		assertEpsilonEquals(0,this.r.distanceLinf(new Point3d(1,1,1)));
+		assertEpsilonEquals(0,this.r.distanceLinf(new Point3d(2,0,2)));
+		assertEpsilonEquals(0,this.r.distanceLinf(new Point3d(0.5,0,2)));
 
-		assertEpsilonEquals(new Point3f(2,0,0).getDistanceLinf(new Point3f(3,0,0)),this.r.distanceLinf(new Point3f(3,0,0)));
+		assertEpsilonEquals(new Point3d(2,0,0).getDistanceLinf(new Point3d(3,0,0)),this.r.distanceLinf(new Point3d(3,0,0)));
 
-		assertEpsilonEquals(new Point3f(1,2,1).getDistanceLinf(new Point3f(1,7,1)),this.r.distanceLinf(new Point3f(1,7,1)));
+		assertEpsilonEquals(new Point3d(1,2,1).getDistanceLinf(new Point3d(1,7,1)),this.r.distanceLinf(new Point3d(1,7,1)));
 
-		assertEpsilonEquals(new Point3f(2,2,2).getDistanceLinf(new Point3f(3,7,3)),this.r.distanceLinf(new Point3f(3,7,3)));
+		assertEpsilonEquals(new Point3d(2,2,2).getDistanceLinf(new Point3d(3,7,3)),this.r.distanceLinf(new Point3d(3,7,3)));
 
-		assertEpsilonEquals(new Point3f(0,2,2).getDistanceLinf(new Point3f(-1,7,3)),this.r.distanceLinf(new Point3f(-1,7,3)));
+		assertEpsilonEquals(new Point3d(0,2,2).getDistanceLinf(new Point3d(-1,7,3)),this.r.distanceLinf(new Point3d(-1,7,3)));
 	}
 
 	@Override
@@ -663,7 +665,7 @@ public class AlignedBox3fTest extends AbstractBoxedShape3fTestCase<AlignedBox3f>
 	public void intersectsAlignedBox3x() {
 		this.r.setFromCorners(0, 0, 0, 2, 2, 2);
 		
-		AlignedBox3f alignedBox = new AlignedBox3f();
+		AlignedBox3d alignedBox = new AlignedBox3d();
 		
 		alignedBox.setFromCorners(0, 0, 0, 2, 2, 2);
 		assertTrue(this.r.intersects(alignedBox));
@@ -693,28 +695,28 @@ public class AlignedBox3fTest extends AbstractBoxedShape3fTestCase<AlignedBox3f>
 	public void intersectsSegment3x() {
 		this.r.setFromCorners(0, 0, 0, 2, 2, 2);
 
-		assertTrue(this.r.intersects(new Segment3f(0,0,0,2,2,2)));
-		assertTrue(this.r.intersects(new Segment3f(-1,-1,-1,3,3,3)));
-		assertTrue(this.r.intersects(new Segment3f(0.5,0.5,0.5,1,1,1)));
-		assertTrue(this.r.intersects(new Segment3f(2,0,0,1,1,2)));
-		assertTrue(this.r.intersects(new Segment3f(0,0,0,-1,-1,-1)));
+		assertTrue(this.r.intersects(new Segment3d(0,0,0,2,2,2)));
+		assertTrue(this.r.intersects(new Segment3d(-1,-1,-1,3,3,3)));
+		assertTrue(this.r.intersects(new Segment3d(0.5,0.5,0.5,1,1,1)));
+		assertTrue(this.r.intersects(new Segment3d(2,0,0,1,1,2)));
+		assertTrue(this.r.intersects(new Segment3d(0,0,0,-1,-1,-1)));
 
-		assertFalse(this.r.intersects(new Segment3f(-1,-1,-1,-3,-3,-3)));
-		assertFalse(this.r.intersects(new Segment3f(-0.0001,-0.0001,-0.0001,-0.00001,-0.00001,-0.00001)));
+		assertFalse(this.r.intersects(new Segment3d(-1,-1,-1,-3,-3,-3)));
+		assertFalse(this.r.intersects(new Segment3d(-0.0001,-0.0001,-0.0001,-0.00001,-0.00001,-0.00001)));
 	}
 
 	@Override
 	public void intersectsTriangle3x() {
 		this.r.setFromCorners(0, 0, 0, 2, 2, 2);
 
-		assertTrue(this.r.intersects(new Triangle3f(0,0,0,2,2,2,1,3,1)));
-		assertTrue(this.r.intersects(new Triangle3f(-1,-1,-1,3,3,3,0,10,10)));
-		assertTrue(this.r.intersects(new Triangle3f(0.5,0.5,0.5,1.5,1,1,1,2,2)));
-		assertTrue(this.r.intersects(new Triangle3f(3,0,2,7,1,1,-0.5,-0.5,-2)));
-		assertTrue(this.r.intersects(new Triangle3f(0,0,0,-1,-1,-1,-1,1,1)));
+		assertTrue(this.r.intersects(new Triangle3d(0,0,0,2,2,2,1,3,1)));
+		assertTrue(this.r.intersects(new Triangle3d(-1,-1,-1,3,3,3,0,10,10)));
+		assertTrue(this.r.intersects(new Triangle3d(0.5,0.5,0.5,1.5,1,1,1,2,2)));
+		assertTrue(this.r.intersects(new Triangle3d(3,0,2,7,1,1,-0.5,-0.5,-2)));
+		assertTrue(this.r.intersects(new Triangle3d(0,0,0,-1,-1,-1,-1,1,1)));
 
-		assertFalse(this.r.intersects(new Triangle3f(-1,-1,-1,-3,0,-3,-5,-5,0)));
-		assertFalse(this.r.intersects(new Triangle3f(-0.0001,-0.0001,-0.0001,-0.00001,-0.00001,-0.00001,-1,-1,-1)));
+		assertFalse(this.r.intersects(new Triangle3d(-1,-1,-1,-3,0,-3,-5,-5,0)));
+		assertFalse(this.r.intersects(new Triangle3d(-0.0001,-0.0001,-0.0001,-0.00001,-0.00001,-0.00001,-1,-1,-1)));
 	}
 
 	@Override
@@ -731,15 +733,62 @@ public class AlignedBox3fTest extends AbstractBoxedShape3fTestCase<AlignedBox3f>
 	public void intersectsAbstractPlane3D() {
 		this.r.setFromCorners(0, 0, 0, 2, 2, 2);
 		
-		assertTrue(this.r.intersects(new Plane4f(new Vector3f(0,0,1),new Point3f(1,1,1))));
-		assertTrue(this.r.intersects(new Plane4f(new Vector3f(0,1,0),new Point3f(1,1,1))));
-		assertTrue(this.r.intersects(new Plane4f(new Vector3f(1,0,0),new Point3f(1,1,1))));
+		assertTrue(this.r.intersects(new Plane4d(new Vector3d(0,0,1),new Point3d(1,1,1))));
+		assertTrue(this.r.intersects(new Plane4d(new Vector3d(0,1,0),new Point3d(1,1,1))));
+		assertTrue(this.r.intersects(new Plane4d(new Vector3d(1,0,0),new Point3d(1,1,1))));
 		
-		assertFalse(this.r.intersects(new Plane4f(new Vector3f(0,1,0),new Point3f(1,3,1))));
+		assertFalse(this.r.intersects(new Plane4d(new Vector3d(0,1,0),new Point3d(1,3,1))));
 		
-		assertTrue(this.r.intersects(new Plane4f(new Vector3f(0,1,0),new Point3f(0,2,2))));
-		assertTrue(this.r.intersects(new Plane4f(new Vector3f(1,0,0),new Point3f(0,2,2))));
+		assertTrue(this.r.intersects(new Plane4d(new Vector3d(0,1,0),new Point3d(0,2,2))));
+		assertTrue(this.r.intersects(new Plane4d(new Vector3d(1,0,0),new Point3d(0,2,2))));
 		
-		assertFalse(this.r.intersects(new Plane4f(new Vector3f(1,0,1),new Point3f(4,0,4))));
+		assertFalse(this.r.intersects(new Plane4d(new Vector3d(1,0,1),new Point3d(4,0,4))));
+	}
+	
+	/**
+	 */
+	@Test
+	public void testModifyProperties() {
+		Point3d min = new Point3d(0,0,0);
+		Point3d max = new Point3d(1,1,1);
+		
+		AlignedBox3d test = new AlignedBox3d(min,max);
+		
+		assertTrue(test.equals(new AlignedBox3f(0,0,0,1,1,1)));
+		
+		min.set(2, 2, 2);
+		max.set(4, 4, 4);
+		
+		assertTrue(test.equals(new AlignedBox3f(2,2,2,2,2,2)));
+		
+		test.setFromCorners(0,0,0,10,5,10);
+		
+		assertTrue(min.equals(new Point3f(0,0,0)));
+		assertTrue(max.equals(new Point3f(10,5,10)));
+		
+		AlignedBox3d box = new AlignedBox3d(-1,-1,-1,2,2,2);
+		test = new AlignedBox3d(box);
+		
+		assertTrue(test.equals(new AlignedBox3d(-1,-1,-1,2,2,2)));
+		
+		box.setFromCorners(-10, 10, 1, 10, -10, 0);
+		
+		assertTrue(test.equals(new AlignedBox3d(-10,-10,0,20,20,1)));
+		
+		box.setFromCornersProperties(min, max);	
+		min.set(2, 2, 2);
+		max.set(4, 4, 4);
+		
+		assertTrue(test.equals(new AlignedBox3d(-10,-10,0,20,20,1)));
+		assertTrue(box.equals(new AlignedBox3f(2,2,2,2,2,2)));
+		
+		test.setFromCornersProperties(min, max);	
+		test.setFromCorners(0, 0, 0, 1, 1,1);
+		
+		assertTrue(box.equals(new AlignedBox3f(0,0,0,1,1,1)));
+		
+		assertTrue(min.equals(new Point3f(0,0,0)));
+		assertTrue(max.equals(new Point3f(1,1,1)));
+		
 	}
 }
