@@ -74,16 +74,16 @@ public final class Plane4f extends AbstractPlane4F {
 	}
 
 	/**
-	 * @param a is the plane equation coefficient
-	 * @param b is the plane equation coefficient
-	 * @param c is the plane equation coefficient
-	 * @param d is the plane equation coefficient
+	 * @param a1 is the plane equation coefficient
+	 * @param b1 is the plane equation coefficient
+	 * @param c1 is the plane equation coefficient
+	 * @param d1 is the plane equation coefficient
 	 */
-	public Plane4f(double a, double b, double c, double d) {
-		this.a = a;
-		this.b = b;
-		this.c = c;
-		this.d = d;
+	public Plane4f(double a1, double b1, double c1, double d1) {
+		this.a = a1;
+		this.b = b1;
+		this.c = c1;
+		this.d = d1;
 		normalize();
 	}
 
@@ -96,17 +96,17 @@ public final class Plane4f extends AbstractPlane4F {
 	}
 
 	/**
-	 * @param a is the plane equation coefficient
-	 * @param b is the plane equation coefficient
-	 * @param c is the plane equation coefficient
+	 * @param a1 is the plane equation coefficient
+	 * @param b1 is the plane equation coefficient
+	 * @param c1 is the plane equation coefficient
 	 * @param px is the x coordinate of a point which lies on the plane.
 	 * @param py is the x coordinate of a point which lies on the plane.
 	 * @param pz is the x coordinate of a point which lies on the plane.
 	 */
-	public Plane4f(double a, double b, double c, double px, double py, double pz) {
-		this.a = a;
-		this.b = b;
-		this.c = c;
+	public Plane4f(double a1, double b1, double c1, double px, double py, double pz) {
+		this.a = a1;
+		this.b = b1;
+		this.c = c1;
 		normalize();
 		// a.x + b.y + c.z + d = 0
 		// where (x,y,z) is the translation point
@@ -201,16 +201,16 @@ public final class Plane4f extends AbstractPlane4F {
 
 	/** Set this pane with the given factors.
 	 *  
-	 * @param a is the first factor of the plane equation.
-	 * @param b is the first factor of the plane equation.
-	 * @param c is the first factor of the plane equation.
-	 * @param d is the first factor of the plane equation.
+	 * @param a1 is the first factor of the plane equation.
+	 * @param b1 is the first factor of the plane equation.
+	 * @param c1 is the first factor of the plane equation.
+	 * @param d1 is the first factor of the plane equation.
 	 */
-	public void set(double a, double b, double c, double d) {
-		this.a = a;
-		this.b = b;
-		this.c = c;
-		this.d = d;
+	public void set(double a1, double b1, double c1, double d1) {
+		this.a = a1;
+		this.b = b1;
+		this.c = c1;
+		this.d = d1;
 		clearBufferedValues();
 	}
 	

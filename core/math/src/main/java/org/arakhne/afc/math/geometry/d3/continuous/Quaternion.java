@@ -96,17 +96,17 @@ public class Quaternion implements Cloneable, Serializable {
 
 	/** Construct a quaternion with the given components.
 	 *
-	 * @param x
-	 * @param y
-	 * @param z
-	 * @param w
+	 * @param x1
+	 * @param y1
+	 * @param z1
+	 * @param w1
 	 */
-	public Quaternion(double x, double y, double z, double w) {
-		double mag = (1.0/Math.sqrt( x*x + y*y + z*z + w*w ));
-		this.x = x*mag;
-		this.y = y*mag;
-		this.z = z*mag;
-		this.w = w*mag;
+	public Quaternion(double x1, double y1, double z1, double w1) {
+		double mag = (1.0/Math.sqrt( x1*x1 + y1*y1 + z1*z1 + w1*w1 ));
+		this.x = x1*mag;
+		this.y = y1*mag;
+		this.z = z1*mag;
+		this.w = w1*mag;
 	}
 
 	/** Construct a quaternion with the components of the given quaternion.
@@ -355,15 +355,15 @@ public class Quaternion implements Cloneable, Serializable {
 			this.z = q1.w*q2.z + q2.w*q1.z + q1.x*q2.y - q1.y*q2.x;
 		}
 		else {
-			double	x, y, w;
+			double	x1, y1, w1;
 
-			w = q1.w*q2.w - q1.x*q2.x - q1.y*q2.y - q1.z*q2.z;
-			x = q1.w*q2.x + q2.w*q1.x + q1.y*q2.z - q1.z*q2.y;
-			y = q1.w*q2.y + q2.w*q1.y - q1.x*q2.z + q1.z*q2.x;
+			w1 = q1.w*q2.w - q1.x*q2.x - q1.y*q2.y - q1.z*q2.z;
+			x1 = q1.w*q2.x + q2.w*q1.x + q1.y*q2.z - q1.z*q2.y;
+			y1 = q1.w*q2.y + q2.w*q1.y - q1.x*q2.z + q1.z*q2.x;
 			this.z = q1.w*q2.z + q2.w*q1.z + q1.x*q2.y - q1.y*q2.x;
-			this.w = w;
-			this.x = x;
-			this.y = y;
+			this.w = w1;
+			this.x = x1;
+			this.y = y1;
 		}
 	}
 
@@ -374,15 +374,15 @@ public class Quaternion implements Cloneable, Serializable {
 	 * @param q1 the other quaternion
 	 */
 	public final void mul(Quaternion q1) {
-		double x, y, w; 
+		double x1, y1, w1; 
 
-		w = this.w*q1.w - this.x*q1.x - this.y*q1.y - this.z*q1.z;
-		x = this.w*q1.x + q1.w*this.x + this.y*q1.z - this.z*q1.y;
-		y = this.w*q1.y + q1.w*this.y - this.x*q1.z + this.z*q1.x;
+		w1 = this.w*q1.w - this.x*q1.x - this.y*q1.y - this.z*q1.z;
+		x1 = this.w*q1.x + q1.w*this.x + this.y*q1.z - this.z*q1.y;
+		y1 = this.w*q1.y + q1.w*this.y - this.x*q1.z + this.z*q1.x;
 		this.z = this.w*q1.z + q1.w*this.z + this.x*q1.y - this.y*q1.x;
-		this.w = w;
-		this.x = x;
-		this.y = y;
+		this.w = w1;
+		this.x = x1;
+		this.y = y1;
 	} 
 
 	/** 
@@ -603,17 +603,17 @@ public class Quaternion implements Cloneable, Serializable {
 
 	/** Set the quaternion coordinates.
 	 * 
-	 * @param x
-	 * @param y
-	 * @param z
-	 * @param w
+	 * @param x1
+	 * @param y1
+	 * @param z1
+	 * @param w1
 	 */
-	public void set(double x, double y, double z, double w) {
-		double mag = (1.0/Math.sqrt( x*x + y*y + z*z + w*w ));
-		this.x = x*mag;
-		this.y = y*mag;
-		this.z = z*mag;
-		this.w = w*mag;
+	public void set(double x1, double y1, double z1, double w1) {
+		double mag = (1.0/Math.sqrt( x1*x1 + y1*y1 + z1*z1 + w1*w1 ));
+		this.x = x1*mag;
+		this.y = y1*mag;
+		this.z = z1*mag;
+		this.w = w1*mag;
 	}
 
 	/** Set the quaternion coordinates.
@@ -640,15 +640,15 @@ public class Quaternion implements Cloneable, Serializable {
 	/**
 	 * Sets the value of this quaternion to the equivalent rotation
 	 * of the Axis-Angle arguments.
-	 * @param x is the x coordinate of the rotation axis
-	 * @param y is the y coordinate of the rotation axis
-	 * @param z is the z coordinate of the rotation axis
+	 * @param x1 is the x coordinate of the rotation axis
+	 * @param y1 is the y coordinate of the rotation axis
+	 * @param z1 is the z coordinate of the rotation axis
 	 * @param angle is the rotation around the axis.
 	 */
-	public final void setAxisAngle(double x, double y, double z, double angle) {
+	public final void setAxisAngle(double x1, double y1, double z1, double angle) {
 		double mag,amag;
 		// Quat = cos(theta/2) + sin(theta/2)(roation_axis) 
-		amag = Math.sqrt(x*x + y*y + z*z);
+		amag = Math.sqrt(x1*x1 + y1*y1 + z1*z1);
 		if (amag < EPS ) {
 			this.w = 0.0f;
 			this.x = 0.0f;
@@ -659,9 +659,9 @@ public class Quaternion implements Cloneable, Serializable {
 			amag = 1.0f/amag; 
 			mag = Math.sin(angle/2.0);
 			this.w = Math.cos(angle/2.0);
-			this.x = x*amag*mag;
-			this.y = y*amag*mag;
-			this.z = z*amag*mag;
+			this.x = x1*amag*mag;
+			this.y = y1*amag*mag;
+			this.z = z1*amag*mag;
 		}
 	}
 
@@ -860,18 +860,18 @@ public class Quaternion implements Cloneable, Serializable {
 		double c3 = Math.cos(bank / 2.);
 		double s3 = Math.sin(bank / 2.);
 
-		double x, y, z, w;
+		double x1, y1, z1, w1;
 
 		// Source: http://www.euclideanspace.com/maths/geometry/rotations/conversions/eulerToQuaternion/index.htm
 		// Standard used: XZY_RIGHT_HAND
 		double c1c2 = c1 * c2;
 		double s1s2 = s1 * s2;
-		w = c1c2 * c3 - s1s2 * s3;
-		x = c1c2 * s3 + s1s2 * c3;
-		y = s1 * c2 * c3 + c1 * s2 * s3;
-		z = c1 * s2 * c3 - s1 * c2 * s3;
+		w1 = c1c2 * c3 - s1s2 * s3;
+		x1 = c1c2 * s3 + s1s2 * c3;
+		y1 = s1 * c2 * c3 + c1 * s2 * s3;
+		z1 = c1 * s2 * c3 - s1 * c2 * s3;
 
-		set(x, y, z, w);
+		set(x1, y1, z1, w1);
 		CoordinateSystem3D.XZY_RIGHT_HAND.toSystem(this, cs);
 	}
 
@@ -966,11 +966,11 @@ public class Quaternion implements Cloneable, Serializable {
 		private final double heading;
 		private final CoordinateSystem3D system;
 
-		private EulerAngles(double attitude, double bank, double heading, CoordinateSystem3D system) {
-			this.attitude = attitude;
-			this.bank = bank;
-			this.heading = heading;
-			this.system = system;
+		private EulerAngles(double attitude1, double bank1, double heading1, CoordinateSystem3D system1) {
+			this.attitude = attitude1;
+			this.bank = bank1;
+			this.heading = heading1;
+			this.system = system1;
 		}
 
 		/** Replies the attitude, the rotation around left vector.
@@ -1035,11 +1035,11 @@ public class Quaternion implements Cloneable, Serializable {
 		private final double z;
 		private final double angle;
 
-		private AxisAngle(double x, double y, double z, double angle) {
-			this.x = x;
-			this.y = y;
-			this.z = z;
-			this.angle = angle;
+		private AxisAngle(double x1, double y1, double z1, double angle1) {
+			this.x = x1;
+			this.y = y1;
+			this.z = z1;
+			this.angle = angle1;
 		}
 
 		/** Replies the rotation axis.

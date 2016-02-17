@@ -18,6 +18,8 @@
  */
 package org.arakhne.afc.math.geometry.d2.continuous;
 
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -38,10 +40,12 @@ public class Point2dTest {
 	/**
 	 * Test method for {@link org.arakhne.afc.math.geometry.d2.continuous.Point2d#Point2d(double, double)}.
 	 */
+	@SuppressWarnings("static-method")
 	@Test
 	public void testPoint2d() {
 		Point2d point = new Point2d(-1, -4);
 		point.absolute();
+		assertTrue(point.equals(new Point2f(1,4)));
 	}
 
 }

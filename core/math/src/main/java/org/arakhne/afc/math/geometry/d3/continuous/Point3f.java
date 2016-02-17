@@ -191,39 +191,39 @@ public class Point3f extends Tuple3f<Point3D> implements FunctionalPoint3D {
 	}
 
 	/**
-	 * @param x
-	 * @param y
-	 * @param z
+	 * @param x1
+	 * @param y1
+	 * @param z1
 	 */
-	public Point3f(int x, int y, int z) {
-		super(x,y,z);
+	public Point3f(int x1, int y1, int z1) {
+		super(x1,y1,z1);
 	}
 
 	/**
-	 * @param x
-	 * @param y
-	 * @param z
+	 * @param x1
+	 * @param y1
+	 * @param z1
 	 */
-	public Point3f(float x, float y, float z) {
-		super(x,y,z);
+	public Point3f(float x1, float y1, float z1) {
+		super(x1,y1,z1);
 	}
 
 	/**
-	 * @param x
-	 * @param y
-	 * @param z
+	 * @param x1
+	 * @param y1
+	 * @param z1
 	 */
-	public Point3f(double x, double y, double z) {
-		super(x,y,z);
+	public Point3f(double x1, double y1, double z1) {
+		super(x1,y1,z1);
 	}
 
 	/**
-	 * @param x
-	 * @param y
-	 * @param z
+	 * @param x1
+	 * @param y1
+	 * @param z1
 	 */
-	public Point3f(long x, long y, long z) {
-		super(x,y,z);
+	public Point3f(long x1, long y1, long z1) {
+		super(x1,y1,z1);
 	}
 
 	/** {@inheritDoc}

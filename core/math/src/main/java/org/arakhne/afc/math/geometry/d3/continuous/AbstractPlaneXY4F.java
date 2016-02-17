@@ -21,7 +21,6 @@
 package org.arakhne.afc.math.geometry.d3.continuous;
 
 import org.arakhne.afc.math.geometry.d3.FunctionalPoint3D;
-import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** This class represents a 3D plane which is colinear to the X and Y axis.

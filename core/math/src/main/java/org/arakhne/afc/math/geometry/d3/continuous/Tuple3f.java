@@ -84,25 +84,25 @@ public class Tuple3f<T extends Tuple3D<? super T>> implements FunctionalTuple3D<
 	}
 
 	/**
-	 * @param x
-	 * @param y
-	 * @param z
+	 * @param x1
+	 * @param y1
+	 * @param z1
 	 */
-	public Tuple3f(int x, int y, int z) {
-		this.x = x;
-		this.y = y;
-		this.z = z;
+	public Tuple3f(int x1, int y1, int z1) {
+		this.x = x1;
+		this.y = y1;
+		this.z = z1;
 	}
 
 	/**
-	 * @param x
-	 * @param y
-	 * @param z
+	 * @param x1
+	 * @param y1
+	 * @param z1
 	 */
-	public Tuple3f(double x, double y, double z) {
-		this.x = x;
-		this.y = y;
-		this.z = z;
+	public Tuple3f(double x1, double y1, double z1) {
+		this.x = x1;
+		this.y = y1;
+		this.z = z1;
 	}
 	
 	/* (non-Javadoc)
@@ -125,34 +125,34 @@ public class Tuple3f<T extends Tuple3D<? super T>> implements FunctionalTuple3D<
 	 * @see org.arakhne.afc.math.geometry.d3.Tuple3D#set(double, double, double)
 	 */
 	@Override
-	public void set(double x, double y, double z) {
-		this.x = x;
-		this.y = y;
-		this.z = z;
+	public void set(double x1, double y1, double z1) {
+		this.x = x1;
+		this.y = y1;
+		this.z = z1;
 	}
 
 	/* (non-Javadoc)
 	 * @see org.arakhne.afc.math.geometry.d3.continuous.AbstractTuple3D#setX(double)
 	 */
 	@Override
-	public void setX(double x) {
-		this.x = x;
+	public void setX(double x1) {
+		this.x = x1;
 	}
 
 	/* (non-Javadoc)
 	 * @see org.arakhne.afc.math.geometry.d3.continuous.AbstractTuple3D#setY(double)
 	 */
 	@Override
-	public void setY(double y) {
-		this.y = y;
+	public void setY(double y1) {
+		this.y = y1;
 	}
 
 	/* (non-Javadoc)
 	 * @see org.arakhne.afc.math.geometry.d3.continuous.AbstractTuple3D#setZ(double)
 	 */
 	@Override
-	public void setZ(double z) {
-		this.z = z;
+	public void setZ(double z1) {
+		this.z = z1;
 	}
 
 	/* (non-Javadoc)

@@ -747,6 +747,7 @@ public class AlignedBox3dTest extends AbstractBoxedShape3fTestCase<AlignedBox3d>
 	
 	/**
 	 */
+	@SuppressWarnings("static-method")
 	@Test
 	public void testModifyProperties() {
 		Point3d min = new Point3d(0,0,0);

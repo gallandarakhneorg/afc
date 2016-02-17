@@ -35,6 +35,7 @@ public class Tuple2dTest {
 		//
 	}
 
+	@SuppressWarnings("static-method")
 	@Test
 	public void testAbsolute() {
 		Tuple2d<?> tuple = new Tuple2d<>(-10, -20);

@@ -129,21 +129,21 @@ public class OrientedBox3f extends AbstractOrientedBox3F{
 	 * or {@link Vector3f#crossRightHand(org.arakhne.afc.math.geometry.d3.Vector3D)} according to
 	 * {@link CoordinateSystem3D#getDefaultCoordinateSystem()}.
 	 *
-	 * @param center the box center.
-	 * @param axis1 the first axis of the box.
-	 * @param axis2 the second axis of the box.
+	 * @param center1 the box center.
+	 * @param firstAxis the first axis of the box.
+	 * @param secondAxis the second axis of the box.
 	 * @param axis1Extent extent of the first axis.
 	 * @param axis2Extent extent of the second axis.
 	 * @param axis3Extent extent of the third axis.
 	 */
 	public OrientedBox3f(
-			Point3D center,
-			Vector3D axis1,
-			Vector3D axis2,
+			Point3D center1,
+			Vector3D firstAxis,
+			Vector3D secondAxis,
 			double axis1Extent, double axis2Extent, double axis3Extent) {
-		this(center.getX(), center.getY(), center.getZ(),
-				axis1.getX(), axis1.getY(), axis1.getZ(),
-				axis2.getX(), axis2.getY(), axis2.getZ(),
+		this(center1.getX(), center1.getY(), center1.getZ(),
+				firstAxis.getX(), firstAxis.getY(), firstAxis.getZ(),
+				secondAxis.getX(), secondAxis.getY(), secondAxis.getZ(),
 				axis1Extent, axis2Extent, axis3Extent);
 	}
 

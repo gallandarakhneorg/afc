@@ -324,8 +324,8 @@ public class Vector3f extends Tuple3f<Vector3D> implements FunctionalVector3D {
 	 * @param y
 	 * @param z
 	 */
-	public Vector3f(int x, int y, int z) {
-		super(x,y,z);
+	public Vector3f(int x1, int y1, int z1) {
+		super(x1,y1,z1);
 	}
 
 	/**
@@ -333,8 +333,8 @@ public class Vector3f extends Tuple3f<Vector3D> implements FunctionalVector3D {
 	 * @param y
 	 * @param z
 	 */
-	public Vector3f(float x, float y, float z) {
-		super(x,y,z);
+	public Vector3f(float x1, float y1, float z1) {
+		super(x1,y1,z1);
 	}
 
 	/**
@@ -342,8 +342,8 @@ public class Vector3f extends Tuple3f<Vector3D> implements FunctionalVector3D {
 	 * @param y
 	 * @param z
 	 */
-	public Vector3f(double x, double y, double z) {
-		super(x,y,z);
+	public Vector3f(double x1, double y1, double z1) {
+		super(x1,y1,z1);
 	}
 
 	/**
@@ -351,8 +351,8 @@ public class Vector3f extends Tuple3f<Vector3D> implements FunctionalVector3D {
 	 * @param y
 	 * @param z
 	 */
-	public Vector3f(long x, long y, long z) {
-		super(x,y,z);
+	public Vector3f(long x1, long y1, long z1) {
+		super(x1,y1,z1);
 	}
 
 	/** {@inheritDoc}
