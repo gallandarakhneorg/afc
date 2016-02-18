@@ -49,7 +49,7 @@ public class Plane4fTest extends AbstractPlane3DTestCase<AbstractPlane4F> {
 	@Override
 	public void testClone() {
 		Plane4f plane2 = (Plane4f) this.r.clone();
-		 
+
 		assertTrue(plane2.equals(this.r));
 	}
 
@@ -57,20 +57,20 @@ public class Plane4fTest extends AbstractPlane3DTestCase<AbstractPlane4F> {
 	@Override
 	public void distanceToPoint3D() {
 		Point3D a = new Point3f(Math.random()*20,Math.random()*20,Math.random()*20);
-		
+
 		double distance = Math.abs(r.getEquationComponentA()*a.getX()+r.getEquationComponentB()*a.getY() +r.getEquationComponentC()*a.getZ() +r.getEquationComponentD())
 				/Math.sqrt(r.getEquationComponentA()*r.getEquationComponentA()+r.getEquationComponentB()*r.getEquationComponentB()+r.getEquationComponentC()*r.getEquationComponentC());
-	
+
 		assertEpsilonEquals(Math.abs(this.r.distanceTo(a)),distance);
 	}
 
 	@Test
 	public void distanceToDoubleDoubleDouble() {
 		Point3D a = new Point3f(Math.random()*20,Math.random()*20,Math.random()*20);
-		
+
 		double distance = Math.abs(r.getEquationComponentA()*a.getX()+r.getEquationComponentB()*a.getY() +r.getEquationComponentC()*a.getZ() +r.getEquationComponentD())
 				/Math.sqrt(r.getEquationComponentA()*r.getEquationComponentA()+r.getEquationComponentB()*r.getEquationComponentB()+r.getEquationComponentC()*r.getEquationComponentC());
-	
+
 		assertEpsilonEquals(Math.abs(this.r.distanceTo(a.getX(), a.getY(), a.getZ())),distance);
 	}
 
@@ -79,13 +79,13 @@ public class Plane4fTest extends AbstractPlane3DTestCase<AbstractPlane4F> {
 	public void distanceToPlane3D() {
 		Plane4f plane1 = new Plane4f(1,1,1,5);
 		Plane4f plane2 = new Plane4f(1,1,1,10);
-		
-			
+
+
 		double distance1 = Math.abs(plane1.distanceTo(new Point3f(1,-8,-3)));
 		double distance2 = Math.abs(plane2.distanceTo(new Point3f(1,-4,-2)));
-		
+
 		assertEpsilonEquals(Math.abs(plane2.distanceTo(plane1)),Math.abs(plane1.distanceTo(plane2)));
-		//assertEpsilonEquals(Math.abs(plane2.distanceTo(plane1)),distance1);
+		assertEpsilonEquals(Math.abs(plane2.distanceTo(plane1)),distance1);
 		assertEpsilonEquals(Math.abs(plane2.distanceTo(plane1)),distance2);
 	}
 
@@ -94,21 +94,21 @@ public class Plane4fTest extends AbstractPlane3DTestCase<AbstractPlane4F> {
 	public void getIntersectionPlane3D() {
 		Plane4f plane1 = new Plane4f(1,1,1,5);
 		Plane4f plane2 = new Plane4f(1,1,1,10);
-		
+
 		Plane4f plane3 = new Plane4f(2,3,-1,2);
 		Plane4f plane4 = new Plane4f(1,1,-2,5);
-		
+
 		assertTrue(plane1.getIntersection(plane1)==null);
 		assertTrue(plane1.getIntersection(plane2)==null);
-		
-		
+
+
 		Segment3f intersection1 = (Segment3f) plane3.getIntersection(plane4);
 		Segment3f intersection2 = new Segment3f(new Point3f(-13,8,0),new Vector3f(5,-3,1));
-		
+
 		//assertEpsilonEquals(intersection1.pivot.x,intersection2.pivot.x);
 		//assertEpsilonEquals(intersection1.pivot.y,intersection2.pivot.y);
 		//assertEpsilonEquals(intersection1.pivot.z,intersection2.pivot.z);
-		
+
 		assertTrue(intersection1.isParallelLines(
 				intersection1.getX1(),intersection1.getY1(),intersection1.getZ1(),
 				intersection1.getX2(),intersection1.getY2(),intersection1.getZ2(),
@@ -119,24 +119,49 @@ public class Plane4fTest extends AbstractPlane3DTestCase<AbstractPlane4F> {
 	@Test
 	@Override
 	public void getIntersectionSegment3D() {
-		throw new UnsupportedOperationException();
+		// (P) : z = 1
+		Plane4f plane = new Plane4f(new Vector3f(0,0,1),new Point3f(0,0,1));
+
+		/* x = 5t-3
+		 * y = -t-1
+		 * z = -5t+3 */
+		Segment3f segm = new Segment3f(new Point3f(-3,-1,3),new Point3f(2,-2,-2));
+		assertTrue(new Point3f(-1,-1.4,1).equals(plane.getIntersection(segm)));
+
+		Segment3f segm2 = new Segment3f(new Point3f(1,-5,1),new Point3f(1,5,1));
+		assertTrue(plane.getIntersection(segm2)==null);
+
+		/* x = -2t+2
+		 * y = 10t-6
+		 * z = -10t+2 */
+		Segment3f segm3 = new Segment3f(new Point3f(2,-6,2),new Point3f(0,4,-8));
+		assertTrue(new Point3f(1.8,-5,1).equals(plane.getIntersection(segm3)));
+
+		// (P2) : x-2y+z = 3
+		Plane4f plane2 = new Plane4f(new Vector3f(1,-2,1),new Point3f(4,3,5));
+
+		/* x = 3t-2
+		 * y = t
+		 * z = -2t+2 */
+		Segment3f segm4 = new Segment3f(new Point3f(-2,0,2),new Point3f(1,1,0));
+		assertTrue(new Point3f(-11,-3,8).epsilonEquals(plane2.getIntersection(segm4),0.000000000000003));
 	}
 
 	@Test
 	@Override
 	public void getProjectionPoint3D() {
 		Point3f point = new Point3f(this.random.nextInt()%20,this.random.nextInt()%20,this.random.nextInt()%20);
-		
+
 		double k = (this.r.getEquationComponentA()*point.x+this.r.getEquationComponentB()*point.y+this.r.getEquationComponentC()*point.z+this.r.getEquationComponentD());
-	
+
 		double xProj = point.x -k*this.r.getEquationComponentA();
 		double yProj = point.y -k*this.r.getEquationComponentB();
 		double zProj = point.z -k*this.r.getEquationComponentC();
-		
+
 		Point3f projection = new Point3f(xProj,yProj,zProj);
-		
+
 		Point3f expected = this.r.getProjection(point);
-		
+
 		assertEpsilonEquals(projection.x,(expected.x));
 		assertEpsilonEquals(projection.y,(expected.y));
 		assertEpsilonEquals(projection.z,(expected.z));	
@@ -144,18 +169,18 @@ public class Plane4fTest extends AbstractPlane3DTestCase<AbstractPlane4F> {
 
 	@Test
 	public void getProjectionDoubleDoubleDouble() {
-Point3f point = new Point3f(this.random.nextInt()%20,this.random.nextInt()%20,this.random.nextInt()%20);
-		
+		Point3f point = new Point3f(this.random.nextInt()%20,this.random.nextInt()%20,this.random.nextInt()%20);
+
 		double k = (r.getEquationComponentA()*point.x+r.getEquationComponentB()*point.y+r.getEquationComponentC()*point.z+r.getEquationComponentD());
-	
+
 		double xProj = point.x -k*r.getEquationComponentA();
 		double yProj = point.y -k*r.getEquationComponentB();
 		double zProj = point.z -k*r.getEquationComponentC();
-		
+
 		Point3f projection = new Point3f(xProj,yProj,zProj);
-		
+
 		Point3f expected = (Point3f) this.r.getProjection(point.x,point.y,point.z);
-		
+
 		assertEpsilonEquals(projection.x,(expected.x));
 		assertEpsilonEquals(projection.y,(expected.y));
 		assertEpsilonEquals(projection.z,(expected.z));	
@@ -230,19 +255,19 @@ Point3f point = new Point3f(this.random.nextInt()%20,this.random.nextInt()%20,th
 
 	@Test
 	@Override
-    public void setPivotPoint3D() {
+	public void setPivotPoint3D() {
 		throw new UnsupportedOperationException();
 	}
 
 	@Test
 	@Override
-    public void setPivotDoubleDoubleDouble() {
+	public void setPivotDoubleDoubleDouble() {
 		throw new UnsupportedOperationException();
 	}
 
 	@Test
 	@Override
-    public void getPivot() {
+	public void getPivot() {
 		throw new UnsupportedOperationException();
 	}
 
@@ -250,7 +275,7 @@ Point3f point = new Point3f(this.random.nextInt()%20,this.random.nextInt()%20,th
 	public void computePointProjectionDoubleDoubleDoubleDoubleDoubleDoubleDouble() {
 		throw new UnsupportedOperationException();
 	}
-			
+
 	@Test
 	public void transformTransform3D() {
 		throw new UnsupportedOperationException();

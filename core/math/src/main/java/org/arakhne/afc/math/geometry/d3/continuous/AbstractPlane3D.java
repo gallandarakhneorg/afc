@@ -198,7 +198,7 @@ public abstract class AbstractPlane3D<PT extends AbstractPlane3D<? super PT>> im
 	@Pure
 	@Override
 	public Point3f getProjection(Point3D point) {
-		return (Point3f) getProjection(point.getX(), point.getY(), point.getZ());
+		return new Point3f(getProjection(point.getX(), point.getY(), point.getZ()));
 	}
 
 	@Pure

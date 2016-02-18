@@ -97,6 +97,15 @@ public class Path2dTest extends AbstractMathTestCase{
 		assertFalse(rCurv.intersects(p));
 	}
 	
+//	@Test
+//  public void intersectsPathIterator() {
+//
+//		
+//		//FIXME Must Be continued 
+//
+//	}
+//	
+	
 	@Test
     public void intersectsCircle() {
 		Path2d r = new Path2d();
@@ -134,7 +143,7 @@ public class Path2dTest extends AbstractMathTestCase{
 		Segment2d s5 = new Segment2d(4,0,0,-1);
 		
 		
-		//FIXME Problem with Path segment intersection ----> segment extended by the right side
+		//FIXME Problem with Path segment intersection ----> segment extended by the right side, why ?
 		assertTrue(r.intersects(segm));
 		assertFalse(r.intersects(s));
 		assertFalse(r.intersects(segm2));
@@ -145,38 +154,7 @@ public class Path2dTest extends AbstractMathTestCase{
 		
 	}
 	
-//	@Test
-//    public void intersectsPathIterator() {
-//		Path3d path1 = new Path2d();
-//		path1.moveTo(0f, 0f, 0f);
-//		path1.lineTo(1f, 1f, 1f);
-//		path1.closePath();
-//		
-//		Path3f path2 = new Path3f();
-//		path2.moveTo(0f, 0f, 0f);
-//		path2.quadTo(0f, 1f, 0f, 1f, 1f, 0f);
-//		path2.closePath();
-//		
-//		Path3f path3 = new Path3f();
-//		path3.moveTo(1f, 1f, 1f);
-//		path1.lineTo(0f, 0f, 1f);
-//		path3.closePath();
-//		
-//		
-//		AbstractTriangle3F triangle1 = new Triangle3f(-1,-1,-1, 5,5,0, 2,2,2);
-//		AbstractTriangle3F triangle2 = new Triangle3f(0,0,0, 1,1,1, 1,1,0);
-//		//AbstractTriangle3F triangle3 = new Triangle3f();
-//		
-//		//FIXME Must Be continued 
-//		assertFalse(path1.intersects(triangle1));
-//		assertTrue(path3.intersects(triangle2));
-//		
-//		
-//		//assertTrue(path2.intersects(triangle2));
-//		
-//		//assertTrue(path3.intersects(triangle3));
-//	}
-//	
+
 	@Test
     public void intersectsEllipse() {
 		Path2d r = new Path2d();
@@ -463,7 +441,6 @@ public class Path2dTest extends AbstractMathTestCase{
 		assertTrue(farthestPoint.equals(p.getFarthestPointTo(randomPoint))|| p.getFarthestPointTo(randomPoint).getDistance(randomPoint)==farthestPoint.getDistance(randomPoint));
 	}
 	
-	//FIXME PROBLEM HERE WITH THE INSTANCIANTION OF RECTANGLES
 	@Test
     public void toBoundingBox() {
 		Path2d p = new Path2d();
