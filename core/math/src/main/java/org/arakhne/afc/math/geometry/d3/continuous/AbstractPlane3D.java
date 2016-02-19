@@ -236,7 +236,7 @@ public abstract class AbstractPlane3D<PT extends AbstractPlane3D<? super PT>> im
 		// Planes intersect also when the distance
 		// is null
 
-		if ((distance==Double.NaN)||
+		if ((Double.isNaN(distance)) ||
 			(MathUtil.isEpsilonZero(distance)))
 			return PlaneClassification.COINCIDENT;
 

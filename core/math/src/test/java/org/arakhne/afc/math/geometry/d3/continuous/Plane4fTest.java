@@ -20,10 +20,12 @@
  */
 package org.arakhne.afc.math.geometry.d3.continuous;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Random;
 
+import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
 import org.junit.Test;
@@ -40,7 +42,7 @@ public class Plane4fTest extends AbstractPlane3DTestCase<AbstractPlane4F> {
 
 	@Override
 	protected AbstractPlane4F createPlane() {
-		Plane4f p = new Plane4f(Math.random()*20,Math.random()*20,Math.random()*20,Math.random()*20);
+		Plane4f p = new Plane4f((int)(Math.random()*10),(int)(Math.random()*10),(int)(Math.random()*10),(int)(Math.random()*10));
 		p.normalize();
 		return p;
 	}
@@ -196,7 +198,28 @@ public class Plane4fTest extends AbstractPlane3DTestCase<AbstractPlane4F> {
 	@Test
 	@Override
 	public void classifiesPlane3D() {
-		throw new UnsupportedOperationException();
+		for(int i=0; i<1000; i++) {
+
+			Plane4f plane = new Plane4f((int)(Math.random()*10),(int)(Math.random()*10),(int)(Math.random()*10),(int)(Math.random()*10));
+
+			if(Double.isNaN(this.r.distanceTo(plane)) || MathUtil.isEpsilonZero(this.r.distanceTo(plane))) {
+				assertTrue(this.r.classifies(plane).equals(PlaneClassification.COINCIDENT));
+				System.out.println("COINCIDENT");
+			}
+			else {
+				if(this.r.distanceTo(plane)>0) {
+					assertTrue(this.r.classifies(plane).equals(PlaneClassification.IN_FRONT_OF));
+					System.out.println("IN_FRONT_OF");
+				}
+				else if(this.r.distanceTo(plane)<0) {
+					assertTrue(this.r.classifies(plane).equals(PlaneClassification.BEHIND));
+					System.out.println("BEHIND");
+				}
+				else {
+					System.out.println(this.r.distanceTo(plane));
+				}
+			}
+		}
 	}
 
 	@Test
