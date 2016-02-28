@@ -46,13 +46,13 @@ public class NaturalOrderComparator<OBJ> implements Comparator<OBJ> {
 		try {
 			return ((Comparable)o1).compareTo(o2);
 		}
-		catch(Throwable _) {
+		catch(Throwable exception) {
 			//
 		}
 		try {
 			return -((Comparable)o2).compareTo(o1);
 		}
-		catch(Throwable _) {
+		catch(Throwable exception) {
 			//
 		}
 		throw new UnsupportedNaturalOrderException(o1);

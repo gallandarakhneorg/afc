@@ -379,14 +379,14 @@ public class FileSystemTest {
 			assertEquals("terrain_physx.dae", FileSystem.largeBasename("D:\\vivus_test\\export dae\\yup\\terrain_physx.dae")); //$NON-NLS-1$ //$NON-NLS-2$
 			fail("expecting assertion failure"); //$NON-NLS-1$
 		}
-		catch(AssertionError _) {
+		catch(AssertionError exception) {
 			//
 		}
 		try {
 			assertEquals("terrain_physx.dae", FileSystem.largeBasename("file:D:\\vivus_test\\export dae\\yup\\terrain_physx.dae")); //$NON-NLS-1$ //$NON-NLS-2$
 			fail("expecting assertion failure"); //$NON-NLS-1$
 		}
-		catch(AssertionError _) {
+		catch(AssertionError exception) {
 			//
 		}
 
@@ -424,7 +424,7 @@ public class FileSystemTest {
 			assertEquals("terrain_physx.dae", FileSystem.largeBasename(url)); //$NON-NLS-1$
 			fail("expecting assertion failure"); //$NON-NLS-1$
 		}
-		catch(AssertionError _) {
+		catch(AssertionError exception) {
 			//
 		}
 
@@ -447,14 +447,14 @@ public class FileSystemTest {
 			assertEquals("terrain_physx", FileSystem.basename("D:\\vivus_test\\export dae\\yup\\terrain_physx.dae")); //$NON-NLS-1$ //$NON-NLS-2$
 			fail("expecting assertion failure"); //$NON-NLS-1$
 		}
-		catch(AssertionError _) {
+		catch(AssertionError exception) {
 			//
 		}
 		try {
 			assertEquals("terrain_physx", FileSystem.basename("file:D:\\vivus_test\\export dae\\yup\\terrain_physx.dae")); //$NON-NLS-1$ //$NON-NLS-2$
 			fail("expecting assertion failure"); //$NON-NLS-1$
 		}
-		catch(AssertionError _) {
+		catch(AssertionError exception) {
 			//
 		}
 
@@ -492,7 +492,7 @@ public class FileSystemTest {
 			assertEquals("terrain_physx", FileSystem.basename(url)); //$NON-NLS-1$
 			fail("expecting assertion failure"); //$NON-NLS-1$
 		}
-		catch(AssertionError _) {
+		catch(AssertionError exception) {
 			//
 		}
 
@@ -547,7 +547,7 @@ public class FileSystemTest {
 			assertEquals("terrain_physx", FileSystem.shortBasename(url)); //$NON-NLS-1$
 			fail("expecting assertion failure"); //$NON-NLS-1$
 		}
-		catch(AssertionError _) {
+		catch(AssertionError exception) {
 			//
 		}
 
@@ -1035,7 +1035,7 @@ public class FileSystemTest {
 			FileSystem.convertURLToFile(new URL("http://www.arakhne.org")); //$NON-NLS-1$
 			fail("not a file URL"); //$NON-NLS-1$
 		}
-		catch(IllegalArgumentException _) {
+		catch(IllegalArgumentException exception) {
 			//
 		}
 		

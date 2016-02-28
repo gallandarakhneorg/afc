@@ -171,7 +171,7 @@ public class URLHandlerUtil {
 						this.next = (Class<? extends URLStreamHandler>)type;
 					}
 				}
-				catch(Throwable _) {
+				catch(Throwable exception) {
 					//
 				}
 			}

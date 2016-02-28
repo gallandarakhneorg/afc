@@ -478,7 +478,7 @@ public abstract class AbstractTestCase {
 			try {
 				assertSimilars(message,expected, actual);
 			}
-			catch(Throwable _) {
+			catch(Throwable exception) {
 				// ok
 				return;
 			}
@@ -500,7 +500,7 @@ public abstract class AbstractTestCase {
 			assertSimilars(null,obj1, obj2);
 			return true;
 		}
-		catch(Throwable _) {
+		catch(Throwable exception) {
 			return false;
 		}
 	}
@@ -719,7 +719,7 @@ public abstract class AbstractTestCase {
 			methodFunc.invoke(self, parameters);
 			fail((message==null ? "" : message)+"An exception was attempted but never thrown."); //$NON-NLS-1$ //$NON-NLS-2$
 		}
-		catch(Exception _) {
+		catch(Exception exception) {
 			// Expected behavior
 		}
 	}

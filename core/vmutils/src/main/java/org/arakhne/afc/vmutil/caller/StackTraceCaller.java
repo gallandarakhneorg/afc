@@ -99,7 +99,7 @@ public class StackTraceCaller implements Caller {
 		catch(AssertionError e) {
 			throw e;
 		}
-		catch(Throwable _) {
+		catch(Throwable exception) {
 			//
 		}
 		return null;

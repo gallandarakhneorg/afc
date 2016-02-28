@@ -309,13 +309,13 @@ public class ReflectionUtil {
 					try {
 						classes.add(Class.forName(entryClassname));
 					}
-					catch(ClassNotFoundException _) {
+					catch(ClassNotFoundException exception) {
 						//
 					}
 				}	
 			}
 		}
-		catch(IOException _) {
+		catch(IOException exception) {
 			//
 		}
 	}
@@ -337,7 +337,7 @@ public class ReflectionUtil {
 					catch(AssertionError e) {
 						throw e;
 					}
-					catch(Throwable _) {
+					catch(Throwable exception) {
 						//
 					}
 				}
@@ -415,14 +415,14 @@ public class ReflectionUtil {
 						catch(AssertionError e) {
 							throw e;
 						}
-						catch(Throwable _) {
+						catch(Throwable exception) {
 							//
 						}
 					}	
 				}
 			}
 		}
-		catch(IOException _) {
+		catch(IOException exception) {
 			//
 		}
 	}
@@ -471,7 +471,7 @@ public class ReflectionUtil {
 							catch(AssertionError e) {
 								throw e;
 							}
-							catch(Throwable _) {
+							catch(Throwable exception) {
 								//
 							}
 						}

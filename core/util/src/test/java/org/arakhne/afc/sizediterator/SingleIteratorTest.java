@@ -81,7 +81,7 @@ public class SingleIteratorTest {
 			this.iterator.next();
 			fail("expecting NoSuchElementException"); //$NON-NLS-1$
 		}
-		catch(NoSuchElementException _) {
+		catch(NoSuchElementException exception) {
 			// expected exception
 		}
 	}
@@ -94,7 +94,7 @@ public class SingleIteratorTest {
 			this.iterator.remove();
 			fail("expecting UnsupportedOperationException"); //$NON-NLS-1$
 		}
-		catch(UnsupportedOperationException _) {
+		catch(UnsupportedOperationException exception) {
 			// exepcted exception
 		}
 	}

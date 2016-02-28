@@ -51,7 +51,7 @@ public class UnclosableOutputStream extends FilterOutputStream {
 		try {
 			flush();
 		}
-		catch (IOException _) {
+		catch (IOException exception) {
 			//
 		}
 	}

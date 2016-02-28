@@ -49,7 +49,7 @@ public class UnclosableOutputStream extends FilterOutputStream {
 		try {
 			flush();
 		}
-		catch ( @SuppressWarnings("unused") IOException _) {
+		catch (IOException exception) {
 			//
 		}
 	}

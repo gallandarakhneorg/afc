@@ -576,7 +576,7 @@ public class Locale {
     		
     		return true;
     	}
-    	catch(CharacterCodingException _) {
+    	catch(CharacterCodingException exception) {
     		//
     	}
     	return false;

@@ -124,13 +124,13 @@ public final class MACNumber {
 						byte[] addr = inter.getHardwareAddress();
 						if (addr!=null) av.add(new MACNumber(addr));
 					}
-					catch(SocketException _) {
+					catch(SocketException exception) {
 						//
 					}
 				}
 			}
 		}
-		catch(SocketException _) {
+		catch(SocketException exception) {
 			//
 		}
 		return av;
@@ -169,13 +169,13 @@ public final class MACNumber {
 							}
 						}
 					}
-					catch(SocketException _) {
+					catch(SocketException exception) {
 						//
 					}
 				}
 			}
 		}
-		catch(SocketException _) {
+		catch(SocketException exception) {
 			//
 		}
 		return av;
@@ -196,13 +196,13 @@ public final class MACNumber {
 						byte[] addr = inter.getHardwareAddress();
 						if (addr!=null) return new MACNumber(addr);
 					}
-					catch(SocketException _) {
+					catch(SocketException exception) {
 						//
 					}
 				}
 			}
 		}
-		catch(SocketException _) {
+		catch(SocketException exception) {
 			//
 		}
 		return null;
@@ -232,13 +232,13 @@ public final class MACNumber {
 							return inetList;
 						}
 					}
-					catch(SocketException _) {
+					catch(SocketException exception) {
 						//
 					}
 				}
 			}
 		}
-		catch(SocketException _) {
+		catch(SocketException exception) {
 			//
 		}
 		return null;
@@ -300,7 +300,7 @@ public final class MACNumber {
 				this.bytes[i] = (byte)val;
 			}
 		}
-		catch(Exception _) {
+		catch(Exception exception) {
 			throw new IllegalArgumentException("mac address not 6 bytes long"); //$NON-NLS-1$
 		}
 	}

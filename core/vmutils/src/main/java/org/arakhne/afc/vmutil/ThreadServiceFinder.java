@@ -53,7 +53,7 @@ public class ThreadServiceFinder {
     	try {
     		return services.peek();
     	}
-    	catch(EmptyStackException _) {
+    	catch(EmptyStackException exception) {
     		return null;
     	}
     }

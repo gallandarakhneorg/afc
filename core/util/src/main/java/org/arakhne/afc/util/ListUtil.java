@@ -258,7 +258,7 @@ public class ListUtil {
 		catch(AssertionError e) {
 			throw e;
 		}
-		catch(Throwable _) {
+		catch(Throwable exception) {
 			//
 		}
 		return -1;
@@ -312,7 +312,7 @@ public class ListUtil {
 		catch(AssertionError e) {
 			throw e;
 		}
-		catch(Throwable _) {
+		catch(Throwable exception) {
 			//
 		}
 		return -1;
@@ -383,7 +383,7 @@ public class ListUtil {
 		catch(AssertionError e) {
 			throw e;
 		}
-		catch(Throwable _) {
+		catch(Throwable exception) {
 			return -1;
 		}
 	}
@@ -438,7 +438,7 @@ public class ListUtil {
 		catch(AssertionError e) {
 			throw e;
 		}
-		catch(Throwable _) {
+		catch(Throwable exception) {
 			return -1;
 		}
 	}
@@ -492,7 +492,7 @@ public class ListUtil {
 		catch(AssertionError e) {
 			throw e;
 		}
-		catch(Throwable _) {
+		catch(Throwable exception) {
 			return -1;
 		}
 	}
@@ -541,7 +541,7 @@ public class ListUtil {
 		catch(AssertionError e) {
 			throw e;
 		}
-		catch(Throwable _) {
+		catch(Throwable exception) {
 			return -1;
 		}
 	}
@@ -588,7 +588,7 @@ public class ListUtil {
 		catch(AssertionError e) {
 			throw e;
 		}
-		catch(Throwable _) {
+		catch(Throwable exception) {
 			return -1;
 		}
 	}

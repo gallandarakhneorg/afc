@@ -89,7 +89,7 @@ public class ComparableSoftReference<T> extends SoftReference<T> implements Comp
 			catch(AssertionError e) {
 				throw e;
 			}
-			catch(Throwable _) {
+			catch(Throwable exception) {
 				//
 			}
 		}
@@ -101,7 +101,7 @@ public class ComparableSoftReference<T> extends SoftReference<T> implements Comp
 			catch(AssertionError e) {
 				throw e;
 			}
-			catch(Throwable _) {
+			catch(Throwable exception) {
 				//
 			}
 		}

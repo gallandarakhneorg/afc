@@ -353,7 +353,7 @@ public abstract class AbstractReferencedValueMap<K,V> extends AbstractMap<K,V> {
 				catch(AssertionError e) {
 					throw e;
 				}
-				catch(Throwable _) {
+				catch(Throwable exception) {
 					//
 				}
 			}
@@ -373,7 +373,7 @@ public abstract class AbstractReferencedValueMap<K,V> extends AbstractMap<K,V> {
 					catch(AssertionError e) {
 						throw e;
 					}
-					catch(Throwable _) {
+					catch(Throwable exception) {
 						//
 					}
 				}
@@ -402,7 +402,7 @@ public abstract class AbstractReferencedValueMap<K,V> extends AbstractMap<K,V> {
 				catch(AssertionError e) {
 					throw e;
 				}
-				catch(Throwable _) {
+				catch(Throwable exception) {
 					//
 				}
 			}

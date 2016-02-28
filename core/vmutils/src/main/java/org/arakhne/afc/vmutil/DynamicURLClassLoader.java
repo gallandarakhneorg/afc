@@ -546,7 +546,7 @@ public class DynamicURLClassLoader extends SecureClassLoader {
     		try {
 				u[i] = new File(parts[i]).toURI().toURL();
 			}
-    		catch (MalformedURLException _) {
+    		catch (MalformedURLException exception) {
 				// ignore exception
 			}
     	}

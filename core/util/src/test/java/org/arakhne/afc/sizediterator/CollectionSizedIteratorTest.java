@@ -101,7 +101,7 @@ public class CollectionSizedIteratorTest {
 			this.iterator.next();
 			fail("expecting NoSuchElementException"); //$NON-NLS-1$
 		}
-		catch(NoSuchElementException _) {
+		catch(NoSuchElementException exception) {
 			// Expected exception
 		}
 	}

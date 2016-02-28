@@ -1204,7 +1204,7 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 				this.removable = true;
 				return new IntegerSegment(first,last);
 			}
-			catch(IndexOutOfBoundsException _) {
+			catch(IndexOutOfBoundsException exception) {
 				throw new NoSuchElementException();
 			}
 		}

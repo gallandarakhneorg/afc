@@ -277,7 +277,7 @@ public class LocaleTest {
     		Locale.getString(KEY2);
     		fail("expecting IllegalArgumentException"); //$NON-NLS-1$
     	}
-    	catch(IllegalArgumentException _) {
+    	catch(IllegalArgumentException exception) {
     		// expected exception
     	}
     	assertEquals(
@@ -304,7 +304,7 @@ public class LocaleTest {
     		Locale.getString(l, KEY2);
     		fail("expecting IllegalArgumentException"); //$NON-NLS-1$
     	}
-    	catch(IllegalArgumentException _) {
+    	catch(IllegalArgumentException exception) {
     		// expected exception
     	}
     	assertEquals(
@@ -329,7 +329,7 @@ public class LocaleTest {
     		Locale.getStringWithDefault(KEY2,DEFAULT);
     		fail("expecting IllegalArgumentException"); //$NON-NLS-1$
     	}
-    	catch(IllegalArgumentException _) {
+    	catch(IllegalArgumentException exception) {
     		//expected exception
     	}
     	assertEquals(
@@ -356,7 +356,7 @@ public class LocaleTest {
     		Locale.getStringWithDefault(l, KEY2, DEFAULT);
     		fail("expecting IllegalArgumentException"); //$NON-NLS-1$
     	}
-    	catch(IllegalArgumentException _) {
+    	catch(IllegalArgumentException exception) {
     		// expected exception
     	}
     	assertEquals(

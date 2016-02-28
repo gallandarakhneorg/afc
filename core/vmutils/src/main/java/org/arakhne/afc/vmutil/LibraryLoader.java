@@ -306,7 +306,7 @@ public class LibraryLoader {
 			catch(AssertionError e) {
 				throw e;
 			}
-			catch(Throwable _) {
+			catch(Throwable exception) {
 				//
 			}
 		}

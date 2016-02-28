@@ -75,7 +75,7 @@ class OperatingSystemAndroidWrapper extends AbstractOperatingSystemWrapper {
 							serial = v.toString();
 						}
 					}
-					catch (Throwable _) {
+					catch (Throwable exception) {
 						serial = null;
 					}
 
@@ -99,7 +99,7 @@ class OperatingSystemAndroidWrapper extends AbstractOperatingSystemWrapper {
 							}
 						}
 					}
-					catch (Throwable _) {
+					catch (Throwable exception) {
 						serial = null;
 					}
 
@@ -118,7 +118,7 @@ class OperatingSystemAndroidWrapper extends AbstractOperatingSystemWrapper {
 							}
 						}
 					}
-					catch (Throwable _) {
+					catch (Throwable exception) {
 						serial = null;
 					}
 
@@ -133,12 +133,12 @@ class OperatingSystemAndroidWrapper extends AbstractOperatingSystemWrapper {
 						m.invoke(v);
 					}
 				}
-				catch (Throwable _) {
+				catch (Throwable exception) {
 					serial = null;
 				}
 			}
 		}
-		catch (Throwable _) {
+		catch (Throwable exception) {
 			serial = null;
 		}
 
@@ -154,14 +154,14 @@ class OperatingSystemAndroidWrapper extends AbstractOperatingSystemWrapper {
 			try {
 				return UUID.fromString(serial).toString();
 			}
-			catch(Throwable _) {
+			catch(Throwable exception) {
 				//
 			}
 
 			try {
 				return UUID.nameUUIDFromBytes(serial.getBytes()).toString();
 			}
-			catch(Throwable _) {
+			catch(Throwable exception) {
 				//
 			}
 		}

@@ -129,7 +129,7 @@ public class Android {
 				}
 			}
 		}
-		catch(Throwable _) {
+		catch(Throwable exception) {
 			//
 		}
 		throw new AndroidException(ex);

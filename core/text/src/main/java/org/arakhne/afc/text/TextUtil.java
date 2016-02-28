@@ -153,7 +153,7 @@ public class TextUtil {
         		isoCode = Integer.valueOf(code);
         		if (isoCode!=null) map.put(entity, isoCode);
         	}
-        	catch(Throwable _) {
+        	catch(Throwable exception) {
         		//
         	}
 		}
@@ -225,7 +225,7 @@ public class TextUtil {
         		isoCode = Integer.valueOf(code);
         		if (isoCode!=null) map.put((char)isoCode.intValue(), entity);
         	}
-        	catch(Throwable _) {
+        	catch(Throwable exception) {
         		//
         	}
 		}
@@ -270,7 +270,7 @@ public class TextUtil {
 				try {
 					isoCode = Integer.valueOf(entity.substring(2), 16);
 				}
-				catch(Throwable _) {
+				catch(Throwable exception) {
 					isoCode = null;
 				}
 			}
@@ -278,7 +278,7 @@ public class TextUtil {
 				try {
 					isoCode = Integer.valueOf(entity.substring(1));
 				}
-				catch(Throwable _) {
+				catch(Throwable exception) {
 					isoCode = null;
 				}
 			}

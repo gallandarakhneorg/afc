@@ -134,7 +134,7 @@ public class FileSystem {
 		try {
 			return URLDecoder.decode(s, Charset.defaultCharset().displayName());
 		}
-		catch (UnsupportedEncodingException _) {
+		catch (UnsupportedEncodingException exception) {
 			return s;
 		}
 	}
@@ -149,7 +149,7 @@ public class FileSystem {
 		try {
 			return URLEncoder.encode(s, Charset.defaultCharset().displayName());
 		}
-		catch (UnsupportedEncodingException _) {
+		catch (UnsupportedEncodingException exception) {
 			return s;
 		}
 	}
@@ -211,7 +211,7 @@ public class FileSystem {
 		try {
 			return new URL(path);
 		}
-		catch(MalformedURLException _) {
+		catch(MalformedURLException exception) {
 			return null;
 		}
 	}
@@ -340,7 +340,7 @@ public class FileSystem {
 			}
 			return new URL(URISchemeType.FILE.name(), "", parent); //$NON-NLS-1$
 		}
-		catch(MalformedURLException _) {
+		catch(MalformedURLException exception) {
 			return null;
 		}
 	}
@@ -396,7 +396,7 @@ public class FileSystem {
 					null);
 			return uri.toURL();
 		}
-		catch (Throwable _) {
+		catch (Throwable exception) {
 			//
 		}
 
@@ -406,7 +406,7 @@ public class FileSystem {
 					filename.getHost(), 
 					path);
 		}
-		catch (Throwable _) {
+		catch (Throwable exception) {
 			//
 		}
 		return null;
@@ -854,7 +854,7 @@ public class FileSystem {
 					urlBase.getRef());
 			return uri.toURL();
 		}
-		catch (Throwable _) {
+		catch (Throwable exception) {
 			//
 		}
 		try {
@@ -863,7 +863,7 @@ public class FileSystem {
 					urlBase.getHost(), 
 					buf.toString());
 		}
-		catch (Throwable _) {
+		catch (Throwable exception) {
 			return null;
 		}
 	}
@@ -903,7 +903,7 @@ public class FileSystem {
 					urlBase.getRef());
 			return uri.toURL();
 		}
-		catch (Throwable _) {
+		catch (Throwable exception) {
 			//
 		}
 		try {
@@ -912,7 +912,7 @@ public class FileSystem {
 					urlBase.getHost(), 
 					buf.toString());
 		}
-		catch (Throwable _) {
+		catch (Throwable exception) {
 			return null;
 		}
 	}
@@ -1033,7 +1033,7 @@ public class FileSystem {
 		catch(AssertionError e) {
 			throw e;
 		}
-		catch(Throwable _) {
+		catch(Throwable exception) {
 			//
 		}
 		try {
@@ -1045,7 +1045,7 @@ public class FileSystem {
 		catch(AssertionError e) {
 			throw e;
 		}
-		catch(Throwable _) {
+		catch(Throwable exception) {
 			return null;
 		}
 	}
@@ -1127,7 +1127,7 @@ public class FileSystem {
 		catch(AssertionError e) {
 			throw e;
 		}
-		catch(Throwable _) {
+		catch(Throwable exception) {
 			//
 		}
 		try {
@@ -1139,7 +1139,7 @@ public class FileSystem {
 		catch(AssertionError e) {
 			throw e;
 		}
-		catch(Throwable _) {
+		catch(Throwable exception) {
 			return null;
 		}
 	}
@@ -1461,7 +1461,7 @@ public class FileSystem {
 			}
 			return new File(userHome,software);
 		}
-		catch(FileNotFoundException _) {
+		catch(FileNotFoundException exception) {
 			//
 		}
 		return null;
@@ -1843,7 +1843,7 @@ public class FileSystem {
 				try {
 					url = new URL(urlDescription);
 				}
-				catch (MalformedURLException _) {
+				catch (MalformedURLException exception) {
 					// ignore error
 				}
 			}
@@ -1869,7 +1869,7 @@ public class FileSystem {
 								try {
 									url = toJarURL(jarURL, urlPart.substring(idx+2));
 								}
-								catch (MalformedURLException _) {
+								catch (MalformedURLException exception) {
 									//
 								}
 							}
@@ -1945,7 +1945,7 @@ public class FileSystem {
 			try {
 				return new File(current.getCanonicalFile(), filename.getPath());
 			}
-			catch(IOException _) {
+			catch(IOException exception) {
 				return new File(current.getAbsoluteFile(), filename.getPath());
 			}
 		}
@@ -2066,7 +2066,7 @@ public class FileSystem {
 		try {
 			return makeAbsolute(filename, current==null ? null : current.toURI().toURL());
 		}
-		catch(MalformedURLException _) {
+		catch(MalformedURLException exception) {
 			//
 		}
 		return filename;
@@ -2177,7 +2177,7 @@ public class FileSystem {
 				File jarFile = getJarFile(filename);
 				return toJarURL(jarUrl, jarFile);
 			}
-			catch(MalformedURLException _) {
+			catch(MalformedURLException exception) {
 				// Ignore error
 			}
 			break;
@@ -2270,7 +2270,7 @@ public class FileSystem {
 				return new URL(URISchemeType.FILE.toString()+
 						getFilePath(filename));
 			}
-			catch (MalformedURLException _) {
+			catch (MalformedURLException exception) {
 				// ignore error
 			}
 		}
@@ -2642,10 +2642,10 @@ public class FileSystem {
 						url.getRef());
 				return uri.toURL();
 			}
-			catch (MalformedURLException _) {
+			catch (MalformedURLException exception) {
 				//
 			}
-			catch (URISyntaxException _) {
+			catch (URISyntaxException exception) {
 				//
 			}
 
@@ -2655,7 +2655,7 @@ public class FileSystem {
 						url.getHost(), 
 						newPathBuffer.toString());
 			}
-			catch (Throwable _) {
+			catch (Throwable exception) {
 				//
 			}
 		}
