@@ -39,61 +39,61 @@ public class TreeDataEvent {
 	private final int delta;
 
 	/**
-	 * @param node is the node on which the event that occurs
-	 * @param oldValues is the list of old user data associated to the node
-	 * @param newValues is the list of new user data associated to the node
-	 * @param allValues is the list of all user data currently associated to the node
+	 * @param node1 is the node on which the event that occurs
+	 * @param oldValues1 is the list of old user data associated to the node
+	 * @param newValues1 is the list of new user data associated to the node
+	 * @param allValues1 is the list of all user data currently associated to the node
 	 */
-	public TreeDataEvent(TreeNode<?,?> node, Collection<?> oldValues, Collection<?> newValues, Collection<?> allValues) {
+	public TreeDataEvent(TreeNode<?,?> node1, Collection<?> oldValues1, Collection<?> newValues1, Collection<?> allValues1) {
 		int aCount = 0;
 		int rCount = 0;
-		this.node = node;
-		if (oldValues==null)
+		this.node = node1;
+		if (oldValues1==null)
 			this.oldValues = null;
-		else if (oldValues instanceof List<?>) {
-			this.oldValues = (List<?>)oldValues;
+		else if (oldValues1 instanceof List<?>) {
+			this.oldValues = (List<?>)oldValues1;
 			rCount = this.oldValues.size();
 		}
 		else {
-			this.oldValues = new ArrayList<>(oldValues);
+			this.oldValues = new ArrayList<>(oldValues1);
 			rCount = this.oldValues.size();
 		}
-		if (newValues==null)
+		if (newValues1==null)
 			this.newValues = null;
-		else if (newValues instanceof List<?>) {
-			this.newValues = (List<?>)newValues;
+		else if (newValues1 instanceof List<?>) {
+			this.newValues = (List<?>)newValues1;
 			aCount = this.newValues.size();
 		}
 		else {
-			this.newValues = new ArrayList<>(newValues);
+			this.newValues = new ArrayList<>(newValues1);
 			aCount = this.newValues.size();
 		}
-		if (allValues==null)
+		if (allValues1==null)
 			this.allValues = null;
-		else if (allValues instanceof List<?>)
-			this.allValues = (List<?>)allValues;
+		else if (allValues1 instanceof List<?>)
+			this.allValues = (List<?>)allValues1;
 		else
-			this.allValues = new ArrayList<>(allValues);
+			this.allValues = new ArrayList<>(allValues1);
 		this.delta = aCount - rCount;
 	}
 	
 	/**
-	 * @param node is the node on which the event that occurs
-	 * @param delta is the difference between the size of the data list
+	 * @param node1 is the node on which the event that occurs
+	 * @param delta1 is the difference between the size of the data list
 	 * before change and size after change.
-	 * @param allValues is the list of all user data currently associated to the node
+	 * @param allValues1 is the list of all user data currently associated to the node
 	 */
-	public TreeDataEvent(TreeNode<?,?> node, int delta, Collection<?> allValues) {
+	public TreeDataEvent(TreeNode<?,?> node1, int delta1, Collection<?> allValues1) {
 		int aCount = 0;
 		int rCount = 0;
-		this.node = node;
+		this.node = node1;
 		this.oldValues = this.newValues = null;
-		if (allValues==null)
+		if (allValues1==null)
 			this.allValues = null;
-		else if (allValues instanceof List<?>)
-			this.allValues = (List<?>)allValues;
+		else if (allValues1 instanceof List<?>)
+			this.allValues = (List<?>)allValues1;
 		else
-			this.allValues = new ArrayList<>(allValues);
+			this.allValues = new ArrayList<>(allValues1);
 		this.delta = aCount - rCount;
 	}
 

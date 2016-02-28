@@ -34,6 +34,7 @@ import org.junit.Test;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("boxing")
 public class QuadTreeNodeTest {
 
 	private final TreeNodeListenerStub<DefaultQuadTreeNode<Object>> listener =
@@ -380,10 +381,10 @@ public class QuadTreeNodeTest {
 		private final String name;
 		
 		/**
-		 * @param name
+		 * @param name1
 		 */
-		public NodeStub(String name) {
-			this.name = name;
+		public NodeStub(String name1) {
+			this.name = name1;
 		}
 		
 		/**

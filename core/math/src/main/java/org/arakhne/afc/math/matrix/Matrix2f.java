@@ -32,6 +32,7 @@ import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.continuous.Vector2f;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * Is represented internally as a 2x2 floating point matrix. The mathematical
@@ -78,6 +79,7 @@ public class Matrix2f implements Serializable, Cloneable {
 	 * @param m11
 	 *            the [1][1] element
 	 */
+	@SuppressWarnings("hiding")
 	public Matrix2f(double m00, double m01, double m10, double m11) {
 		this.m00 = m00;
 		this.m01 = m01;
@@ -131,6 +133,7 @@ public class Matrix2f implements Serializable, Cloneable {
 	 * 
 	 * @return the String representation
 	 */
+	@Pure
 	@Override
 	public String toString() {
 		return this.m00 + ", " //$NON-NLS-1$
@@ -203,6 +206,7 @@ public class Matrix2f implements Serializable, Cloneable {
 	 *            the column number to be retrieved (zero indexed)
 	 * @return the value at the indexed element.
 	 */
+	@Pure
 	public final double getElement(int row, int column) {
 		switch (row) {
 		case 0:
@@ -639,6 +643,7 @@ public class Matrix2f implements Serializable, Cloneable {
 	 * @param m11
 	 *            the [1][1] element
 	 */
+	@SuppressWarnings("hiding")
 	public void set(double m00, double m01, double m10, double m11) {
 		this.m00 = m00;
 		this.m01 = m01;
@@ -652,6 +657,7 @@ public class Matrix2f implements Serializable, Cloneable {
 	 * 
 	 * @return the determinant of the matrix
 	 */
+	@Pure
 	public final double determinant() {
 		return this.m00*this.m11 - this.m01*this.m10;
 	}
@@ -715,6 +721,7 @@ public class Matrix2f implements Serializable, Cloneable {
 	 * @param v
 	 * @return this * v
 	 */
+	@Pure
 	public final Vector2f mul(Vector2D v) {
 		Vector2f r = new Vector2f();
 		r.set(
@@ -894,6 +901,7 @@ public class Matrix2f implements Serializable, Cloneable {
 	 *            the matrix with which the comparison is made
 	 * @return true or false
 	 */
+	@Pure
 	public boolean equals(Matrix2f m1) {
 		try {
 			return (this.m00 == m1.m00 && this.m01 == m1.m01
@@ -901,6 +909,7 @@ public class Matrix2f implements Serializable, Cloneable {
 					&& this.m11 == m1.m11);
 		}
 		catch (NullPointerException e2) {
+			e2.printStackTrace();
 			return false;
 		}
 	}
@@ -914,6 +923,7 @@ public class Matrix2f implements Serializable, Cloneable {
 	 *            the matrix with which the comparison is made
 	 * @return true or false
 	 */
+	@Pure
 	@Override
 	public boolean equals(Object t1) {
 		try {
@@ -923,9 +933,11 @@ public class Matrix2f implements Serializable, Cloneable {
 					&& this.m11 == m2.m11);
 		}
 		catch (ClassCastException e1) {
+			e1.printStackTrace();
 			return false;
 		}
 		catch (NullPointerException e2) {
+			e2.printStackTrace();
 			return false;
 		}
 	}
@@ -939,6 +951,7 @@ public class Matrix2f implements Serializable, Cloneable {
 	 * 
 	 * @return the integer hash code value
 	 */
+	@Pure
 	@Override
 	public int hashCode() {
 		long bits = 1L;
@@ -949,6 +962,7 @@ public class Matrix2f implements Serializable, Cloneable {
 		return (int) (bits ^ (bits >> 32));
 	}
 
+	@Pure
 	private static long doubleToLongBits(double d) {
 		// Check for +0 or -0
 		if (d == 0.) {
@@ -976,6 +990,7 @@ public class Matrix2f implements Serializable, Cloneable {
 	 * @param m11
 	 *            the second element of the diagonal
 	 */
+	@SuppressWarnings("hiding")
 	public final void setDiagonal(double m00, double m11) {
 		this.m00 = m00;
 		this.m01 = 0f;
@@ -1017,6 +1032,7 @@ public class Matrix2f implements Serializable, Cloneable {
 	 *                if there is not enough memory.
 	 * @see java.lang.Cloneable
 	 */
+	@Pure
 	@Override
 	public Matrix2f clone() {
 		Matrix2f m1 = null;
@@ -1025,6 +1041,7 @@ public class Matrix2f implements Serializable, Cloneable {
 		}
 		catch (CloneNotSupportedException e) {
 			// this shouldn't happen, since we are Cloneable
+			e.printStackTrace();
 			throw new InternalError();
 		}
 
@@ -1037,6 +1054,7 @@ public class Matrix2f implements Serializable, Cloneable {
 	 * 
 	 * @return Returns the m00.
 	 */
+	@Pure
 	public final double getM00() {
 		return this.m00;
 	}
@@ -1044,11 +1062,11 @@ public class Matrix2f implements Serializable, Cloneable {
 	/**
 	 * Set the first matrix element in the first row.
 	 * 
-	 * @param m00
+	 * @param m001
 	 *            The m00 to set.
 	 */
-	public final void setM00(double m00) {
-		this.m00 = m00;
+	public final void setM00(double m001) {
+		this.m00 = m001;
 	}
 
 	/**
@@ -1056,6 +1074,7 @@ public class Matrix2f implements Serializable, Cloneable {
 	 * 
 	 * @return Returns the m01.
 	 */
+	@Pure
 	public final double getM01() {
 		return this.m01;
 	}
@@ -1063,11 +1082,11 @@ public class Matrix2f implements Serializable, Cloneable {
 	/**
 	 * Set the second matrix element in the first row.
 	 * 
-	 * @param m01
+	 * @param m011
 	 *            The m01 to set.
 	 */
-	public final void setM01(double m01) {
-		this.m01 = m01;
+	public final void setM01(double m011) {
+		this.m01 = m011;
 	}
 
 	/**
@@ -1075,6 +1094,7 @@ public class Matrix2f implements Serializable, Cloneable {
 	 * 
 	 * @return Returns the m10.
 	 */
+	@Pure
 	public final double getM10() {
 		return this.m10;
 	}
@@ -1082,11 +1102,11 @@ public class Matrix2f implements Serializable, Cloneable {
 	/**
 	 * Set first matrix element in the second row.
 	 * 
-	 * @param m10
+	 * @param m101
 	 *            The m10 to set.
 	 */
-	public final void setM10(double m10) {
-		this.m10 = m10;
+	public final void setM10(double m101) {
+		this.m10 = m101;
 	}
 
 	/**
@@ -1094,6 +1114,7 @@ public class Matrix2f implements Serializable, Cloneable {
 	 * 
 	 * @return Returns the m11.
 	 */
+	@Pure
 	public final double getM11() {
 		return this.m11;
 	}
@@ -1101,11 +1122,11 @@ public class Matrix2f implements Serializable, Cloneable {
 	/**
 	 * Set the second matrix element in the second row.
 	 * 
-	 * @param m11
+	 * @param m111
 	 *            The m11 to set.
 	 */
-	public final void setM11(double m11) {
-		this.m11 = m11;
+	public final void setM11(double m111) {
+		this.m11 = m111;
 	}
 
 	/** Set this matrix with the covariance matrix's elements for the given
@@ -1172,6 +1193,7 @@ public class Matrix2f implements Serializable, Cloneable {
 	 * @return <code>true</code> if the matrix is symmetric, otherwise
 	 * <code>false</code>
 	 */
+	@Pure
 	public boolean isSymmetric() {
 		return	this.m01 == this.m10;
 	}
@@ -1185,6 +1207,7 @@ public class Matrix2f implements Serializable, Cloneable {
 	 * @return the eigenvalues which are corresponding to the <var>eigenVectors</var> columns.
 	 * @see #eigenVectorsOfSymmetricMatrix(Matrix2f) 
 	 */
+	@SuppressWarnings("hiding")
 	public double[] eigenVectorsOfSymmetricMatrix(Matrix2f eigenVectors) {
 		assert(eigenVectors!=null);
 
@@ -1247,6 +1270,7 @@ public class Matrix2f implements Serializable, Cloneable {
 	 * @see MathUtil#isEpsilonZero(double)
 	 * @see MathUtil#isEpsilonEqual(double, double)
 	 */
+	@Pure
 	public boolean isIdentity() {
 		return MathUtil.isEpsilonEqual(this.m00, 1f)
 				&& MathUtil.isEpsilonZero(this.m01)

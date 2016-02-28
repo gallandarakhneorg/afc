@@ -80,15 +80,15 @@ public class TriangularStochasticLaw extends StochasticLaw {
 	}
 
 	/**
-	 * @param minX is the lower bound where {@code f(minX) = 0}
-	 * @param mode is the maxima point of the distribution {@code f(mode) = max(f(x))} 
-	 * @param maxX is the upper bound where {@code f(maxX) = 0}
+	 * @param minX1 is the lower bound where {@code f(minX) = 0}
+	 * @param mode1 is the maxima point of the distribution {@code f(mode) = max(f(x))} 
+	 * @param maxX1 is the upper bound where {@code f(maxX) = 0}
 	 */
-	public TriangularStochasticLaw(double minX, double mode, double maxX) {
+	public TriangularStochasticLaw(double minX1, double mode1, double maxX1) {
 		double t;
-		double i = minX;
-		double a = maxX;
-		double m = mode;
+		double i = minX1;
+		double a = maxX1;
+		double m = mode1;
 		if (i>a) {
 			t = a;
 			a = i;

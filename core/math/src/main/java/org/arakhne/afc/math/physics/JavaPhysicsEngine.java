@@ -21,7 +21,9 @@
 package org.arakhne.afc.math.physics;
 
 import org.arakhne.afc.math.MathUtil;
+import org.arakhne.afc.math.geometry.d2.FunctionalVector2D;
 import org.arakhne.afc.math.geometry.d2.continuous.Vector2f;
+import org.arakhne.afc.math.geometry.d3.FunctionalVector3D;
 import org.arakhne.afc.math.geometry.d3.continuous.Vector3f;
 
 
@@ -125,7 +127,7 @@ class JavaPhysicsEngine implements PhysicsEngine {
 		oLength = Math.sqrt(vx*vx+vy*vy);
 		if (oLength!=0.) {
 			a = MathUtil.clamp(
-					(Vector2f.dotProduct(vx, vy, velocity.getX(), velocity.getY())<0.) ? -oLength : oLength, 
+					(FunctionalVector2D.dotProduct(vx, vy, velocity.getX(), velocity.getY())<0.) ? -oLength : oLength, 
 							minSpeed, 
 							maxSpeed);
 		
@@ -178,7 +180,7 @@ class JavaPhysicsEngine implements PhysicsEngine {
 		oLength = Math.sqrt(vx*vx+vy*vy);
 		if (oLength!=0.) {
 			a = MathUtil.clamp(
-					(Vector2f.dotProduct(vx, vy, velocity.getX(), velocity.getY())<0.) ? -oLength : oLength, 
+					(FunctionalVector2D.dotProduct(vx, vy, velocity.getX(), velocity.getY())<0.) ? -oLength : oLength, 
 							minSpeed, 
 							maxSpeed);
 		
@@ -253,7 +255,7 @@ class JavaPhysicsEngine implements PhysicsEngine {
 		oLength = Math.sqrt(vx*vx+vy*vy+vz*vz);
 		if (oLength!=0.) {
 			a = MathUtil.clamp(
-					(Vector3f.dotProduct(vx, vy, vz, velocity.getX(), velocity.getY(), velocity.getZ())<0.) ? -oLength : oLength, 
+					(FunctionalVector3D.dotProduct(vx, vy, vz, velocity.getX(), velocity.getY(), velocity.getZ())<0.) ? -oLength : oLength, 
 							minSpeed, 
 							maxSpeed);
 		

@@ -25,6 +25,7 @@ import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Tuple3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** 3D Point with 3 integers.
  * 
@@ -69,6 +70,7 @@ public class Point3i extends Tuple3i<Point3D> implements Point3D {
 	 * @param y
 	 * @param z
 	 */
+	@SuppressWarnings("hiding")
 	public Point3i(int x, int y, int z) {
 		super(x,y,z);
 	}
@@ -78,6 +80,7 @@ public class Point3i extends Tuple3i<Point3D> implements Point3D {
 	 * @param y
 	 * @param z
 	 */
+	@SuppressWarnings("hiding")
 	public Point3i(float x, float y, float z) {
 		super(x,y,z);
 	}
@@ -87,6 +90,7 @@ public class Point3i extends Tuple3i<Point3D> implements Point3D {
 	 * @param y
 	 * @param z
 	 */
+	@SuppressWarnings("hiding")
 	public Point3i(double x, double y, double z) {
 		super(x,y,z);
 	}
@@ -96,12 +100,14 @@ public class Point3i extends Tuple3i<Point3D> implements Point3D {
 	 * @param y
 	 * @param z
 	 */
+	@SuppressWarnings("hiding")
 	public Point3i(long x, long y, long z) {
 		super(x,y,z);
 	}
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public Point3i clone() {
 		return (Point3i)super.clone();
@@ -110,6 +116,7 @@ public class Point3i extends Tuple3i<Point3D> implements Point3D {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public int distanceSquared(Point3D p1) {
 	      double dx, dy, dz;
@@ -122,6 +129,7 @@ public class Point3i extends Tuple3i<Point3D> implements Point3D {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public int distance(Point3D p1) {
 	      double  dx, dy, dz;
@@ -134,6 +142,7 @@ public class Point3i extends Tuple3i<Point3D> implements Point3D {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public int distanceL1(Point3D p1) {
 	      return (int)(Math.abs(this.x-p1.getX()) + Math.abs(this.y-p1.getY())  + Math.abs(this.z-p1.getZ()));
@@ -141,11 +150,38 @@ public class Point3i extends Tuple3i<Point3D> implements Point3D {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public int distanceLinf(Point3D p1) {
 	      return (int)(MathUtil.max( Math.abs(this.x-p1.getX()), Math.abs(this.y-p1.getY()), Math.abs(this.z-p1.getZ())));
 	}
 
+
+	@Pure
+	@Override
+	public double getDistanceSquared(Point3D p1) {
+		return this.distanceSquared(p1);
+	}
+
+	@Pure
+	@Override
+	public double getDistance(Point3D p1) {
+		return this.distance(p1);
+	}
+
+	@Pure
+	@Override
+	public double getDistanceL1(Point3D p1) {
+		return this.distanceL1(p1);
+	}
+
+	@Pure
+	@Override
+	public double getDistanceLinf(Point3D p1) {
+		return this.distanceLinf(p1);
+	}
+	
+	
 	@Override
 	public void add(Point3D t1, Vector3D t2) {
 		this.x = (int)(t1.getX() + t2.getX());
@@ -223,6 +259,7 @@ public class Point3i extends Tuple3i<Point3D> implements Point3D {
 		this.z = (int)(this.z - t1.getZ());
 	}
 
+	@Pure
 	@Override
 	public Point3D toUnmodifiable() {
 		return new UnmodifiablePoint3i();
@@ -242,6 +279,7 @@ public class Point3i extends Tuple3i<Point3D> implements Point3D {
 			//
 		}
 
+		@Pure
 		@Override
 		public Point3D clone() {
 			try {
@@ -261,42 +299,42 @@ public class Point3i extends Tuple3i<Point3D> implements Point3D {
 			throw new UnsupportedOperationException();
 		}
 
-		@Override
+		@Override@SuppressWarnings("hiding")
 		public void add(int x, int y, int z) {
 			throw new UnsupportedOperationException();
 		}
 
-		@Override
+		@Override@SuppressWarnings("hiding")
 		public void add(double x, double y, double z) {
 			throw new UnsupportedOperationException();
 		}
 
-		@Override
+		@Override@SuppressWarnings("hiding")
 		public void addX(int x) {
 			throw new UnsupportedOperationException();
 		}
 
-		@Override
+		@Override@SuppressWarnings("hiding")
 		public void addX(double x) {
 			throw new UnsupportedOperationException();
 		}
 
-		@Override
+		@Override@SuppressWarnings("hiding")
 		public void addY(int y) {
 			throw new UnsupportedOperationException();
 		}
 
-		@Override
+		@Override@SuppressWarnings("hiding")
 		public void addY(double y) {
 			throw new UnsupportedOperationException();
 		}
 
-		@Override
+		@Override@SuppressWarnings("hiding")
 		public void addZ(int z) {
 			throw new UnsupportedOperationException();
 		}
 
-		@Override
+		@Override@SuppressWarnings("hiding")
 		public void addZ(double z) {
 			throw new UnsupportedOperationException();
 		}
@@ -411,12 +449,12 @@ public class Point3i extends Tuple3i<Point3D> implements Point3D {
 			throw new UnsupportedOperationException();
 		}
 
-		@Override
+		@Override@SuppressWarnings("hiding")
 		public void set(int x, int y, int z) {
 			throw new UnsupportedOperationException();
 		}
 
-		@Override
+		@Override@SuppressWarnings("hiding")
 		public void set(double x, double y, double z) {
 			throw new UnsupportedOperationException();
 		}
@@ -431,102 +469,108 @@ public class Point3i extends Tuple3i<Point3D> implements Point3D {
 			throw new UnsupportedOperationException();
 		}
 
+		@Pure
 		@Override
 		public double getX() {
 			return Point3i.this.getX();
 		}
 
+		@Pure
 		@Override
-		public int x() {
-			return Point3i.this.x();
+		public int ix() {
+			return Point3i.this.ix();
 		}
 
-		@Override
+		@Override@SuppressWarnings("hiding")
 		public void setX(int x) {
 			throw new UnsupportedOperationException();
 		}
 
-		@Override
+		@Override@SuppressWarnings("hiding")
 		public void setX(double x) {
 			throw new UnsupportedOperationException();
 		}
 
+		@Pure
 		@Override
 		public double getY() {
 			return Point3i.this.getY();
 		}
 
+		@Pure
 		@Override
-		public int y() {
-			return Point3i.this.y();
+		public int iy() {
+			return Point3i.this.iy();
 		}
 
-		@Override
+		@Override@SuppressWarnings("hiding")
 		public void setY(int y) {
 			throw new UnsupportedOperationException();
 		}
 
-		@Override
+		@Override@SuppressWarnings("hiding")
 		public void setY(double y) {
 			throw new UnsupportedOperationException();
 		}
 
+		@Pure
 		@Override
 		public double getZ() {
 			return Point3i.this.getZ();
 		}
 
+		@Pure
 		@Override
-		public int z() {
-			return Point3i.this.z();
+		public int iz() {
+			return Point3i.this.iz();
 		}
 
-		@Override
+		@Override@SuppressWarnings("hiding")
 		public void setZ(int z) {
 			throw new UnsupportedOperationException();
 		}
 
-		@Override
+		@Override@SuppressWarnings("hiding")
 		public void setZ(double z) {
 			throw new UnsupportedOperationException();
 		}
 
-		@Override
+		@Override@SuppressWarnings("hiding")
 		public void sub(int x, int y, int z) {
 			throw new UnsupportedOperationException();
 		}
 
-		@Override
+		@Override@SuppressWarnings("hiding")
 		public void sub(double x, double y, double z) {
 			throw new UnsupportedOperationException();
 		}
 
-		@Override
+		@Override@SuppressWarnings("hiding")
 		public void subX(int x) {
 			throw new UnsupportedOperationException();
 		}
 
-		@Override
+		@Override@SuppressWarnings("hiding")
 		public void subX(double x) {
 			throw new UnsupportedOperationException();
 		}
 
-		@Override
+		@Override@SuppressWarnings("hiding")
 		public void subY(int y) {
 			throw new UnsupportedOperationException();
 		}
 
-		@Override
+		@Override@SuppressWarnings("hiding")
 		public void subY(double y) {
 			throw new UnsupportedOperationException();
 		}
 
-		@Override
+		@Override@SuppressWarnings("hiding")
 		public void subZ(int z) {
 			throw new UnsupportedOperationException();
 		}
 
-		@Override
+		@Override@SuppressWarnings("hiding")
 		public void subZ(double z) {
 			throw new UnsupportedOperationException();
 		}
@@ -541,36 +585,43 @@ public class Point3i extends Tuple3i<Point3D> implements Point3D {
 			throw new UnsupportedOperationException();
 		}
 
+		@Pure
 		@Override
 		public boolean equals(Tuple3D<?> t1) {
 			return Point3i.this.equals(t1);
 		}
-		
+
+		@Pure
 		@Override
 		public int hashCode() {
 			return Point3i.this.hashCode();
 		}
 
+		@Pure
 		@Override
 		public boolean epsilonEquals(Point3D t1, double epsilon) {
 			return Point3i.this.epsilonEquals(t1, epsilon);
 		}
 
+		@Pure
 		@Override
 		public int distanceSquared(Point3D p1) {
 			return Point3i.this.distanceSquared(p1);
 		}
 
+		@Pure
 		@Override
 		public int distance(Point3D p1) {
 			return Point3i.this.distance(p1);
 		}
 
+		@Pure
 		@Override
 		public int distanceL1(Point3D p1) {
 			return Point3i.this.distanceL1(p1);
 		}
 
+		@Pure
 		@Override
 		public int distanceLinf(Point3D p1) {
 			return Point3i.this.distanceLinf(p1);
@@ -631,11 +682,38 @@ public class Point3i extends Tuple3i<Point3D> implements Point3D {
 			throw new UnsupportedOperationException();
 		}
 
+		@Pure
 		@Override
 		public Point3D toUnmodifiable() {
 			return this;
 		}
+
+		@Pure
+		@Override
+		public double getDistanceSquared(Point3D p1) {
+			return Point3i.this.distanceSquared(p1);
+		}
+
+		@Pure
+		@Override
+		public double getDistance(Point3D p1) {
+			return Point3i.this.distance(p1);
+		}
+
+		@Pure
+		@Override
+		public double getDistanceL1(Point3D p1) {
+			return Point3i.this.distanceL1(p1);
+		}
+
+		@Pure
+		@Override
+		public double getDistanceLinf(Point3D p1) {
+			return Point3i.this.distanceLinf(p1);
+		}
 		
 	}
+
+
 
 }

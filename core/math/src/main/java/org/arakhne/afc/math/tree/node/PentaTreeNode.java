@@ -549,7 +549,7 @@ public abstract class PentaTreeNode<D,N extends PentaTreeNode<D,N>> extends Abst
 	@Override
 	protected void getHeights(int currentHeight, List<Integer> heights) {
 		if (isLeaf()) {
-			heights.add(currentHeight);
+			heights.add(new Integer(currentHeight));
 		}
 		else {
 			if (this.child1!=null) this.child1.getHeights(currentHeight+1, heights);

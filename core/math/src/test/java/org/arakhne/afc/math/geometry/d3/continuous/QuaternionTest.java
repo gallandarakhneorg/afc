@@ -20,66 +20,148 @@
  */
 package org.arakhne.afc.math.geometry.d3.continuous;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import org.arakhne.afc.math.AbstractMathTestCase;
 import org.junit.Test;
 
 /**
  * @author $Author: galland$
+ * @author $Author: hjaffali$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
 public class QuaternionTest extends AbstractMathTestCase {
-
+	
 	@Test
 	public void testClone() {
-		throw new UnsupportedOperationException();
+		Quaternion q1 = new Quaternion(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		Quaternion q2 = q1.clone();
+		
+		//assertTrue(q1.equals(q2));
 	}
 
 	@Test
 	public void getX() {
-		throw new UnsupportedOperationException();
+		double a = this.random.nextDouble();
+		double b = this.random.nextDouble();
+		double c = this.random.nextDouble();
+		double d = this.random.nextDouble();
+		Quaternion q1 = new Quaternion(a,b,c,d);
+		
+		assertEpsilonEquals(a,q1.getX()*Math.sqrt(a*a+b*b+c*c+d*d));
 	}
 
 	@Test
 	public void setX() {
-		throw new UnsupportedOperationException();
+		double a = this.random.nextDouble();
+		double b = this.random.nextDouble();
+		double c = this.random.nextDouble();
+		double d = this.random.nextDouble();
+		Quaternion q1 = new Quaternion(a,b,c,d); 
+		
+		double set = this.random.nextDouble();
+		
+		q1.setX(set);
+		
+		assertEpsilonEquals(set,q1.getX());
 	}
 
 	@Test
 	public void getY() {
-		throw new UnsupportedOperationException();
+		double a = this.random.nextDouble();
+		double b = this.random.nextDouble();
+		double c = this.random.nextDouble();
+		double d = this.random.nextDouble();
+		Quaternion q1 = new Quaternion(a,b,c,d);
+		
+		assertEpsilonEquals(b,q1.getY()*Math.sqrt(a*a+b*b+c*c+d*d));
 	}
 
 	@Test
 	public void setY() {
-		throw new UnsupportedOperationException();
+		double a = this.random.nextDouble();
+		double b = this.random.nextDouble();
+		double c = this.random.nextDouble();
+		double d = this.random.nextDouble();
+		Quaternion q1 = new Quaternion(a,b,c,d); 
+		
+		double set = this.random.nextDouble();
+		
+		q1.setY(set);
+		
+		assertEpsilonEquals(set,q1.getY());
 	}
 
 	@Test
 	public void getZ() {
-		throw new UnsupportedOperationException();
+		double a = this.random.nextDouble();
+		double b = this.random.nextDouble();
+		double c = this.random.nextDouble();
+		double d = this.random.nextDouble();
+		Quaternion q1 = new Quaternion(a,b,c,d);
+		
+		assertEpsilonEquals(c,q1.getZ()*Math.sqrt(a*a+b*b+c*c+d*d));
 	}
 
 	@Test
 	public void setZ() {
-		throw new UnsupportedOperationException();
+		double a = this.random.nextDouble();
+		double b = this.random.nextDouble();
+		double c = this.random.nextDouble();
+		double d = this.random.nextDouble();
+		Quaternion q1 = new Quaternion(a,b,c,d); 
+		
+		double set = this.random.nextDouble();
+		
+		q1.setZ(set);
+		
+		assertEpsilonEquals(set,q1.getZ());
 	}
 
 	@Test
 	public void getW() {
-		throw new UnsupportedOperationException();
+		double a = this.random.nextDouble();
+		double b = this.random.nextDouble();
+		double c = this.random.nextDouble();
+		double d = this.random.nextDouble();
+		Quaternion q1 = new Quaternion(a,b,c,d);
+		
+		assertEpsilonEquals(d,q1.getW()*Math.sqrt(a*a+b*b+c*c+d*d));
 	}
 
 	@Test
 	public void setW() {
-		throw new UnsupportedOperationException();
+		double a = this.random.nextDouble();
+		double b = this.random.nextDouble();
+		double c = this.random.nextDouble();
+		double d = this.random.nextDouble();
+		Quaternion q1 = new Quaternion(a,b,c,d); 
+		
+		double set = this.random.nextDouble();
+		
+		q1.setW(set);
+		
+		assertEpsilonEquals(set,q1.getW());
 	}
 
 	@Test
 	public void testEquals() {
-		throw new UnsupportedOperationException();
+		double a = this.random.nextDouble();
+		double b = this.random.nextDouble();
+		double c = this.random.nextDouble();
+		double d = this.random.nextDouble();
+		Quaternion q1 = new Quaternion(a,b,c,d);
+		Quaternion q2 = new Quaternion(q1);
+		
+		assertTrue(q1.equals(q2));
+		
+		q2.set(b,a,d,c);
+		
+		assertFalse(q1.equals(q2));
 	}
 
 	@Test
@@ -94,53 +176,216 @@ public class QuaternionTest extends AbstractMathTestCase {
 
 	@Test
 	public void conjugateQuaternion() {
-		throw new UnsupportedOperationException();
+		double a = this.random.nextDouble();
+		double b = this.random.nextDouble();
+		double c = this.random.nextDouble();
+		double d = this.random.nextDouble();
+		Quaternion q1 = new Quaternion(a,b,c,d);
+		Quaternion conjugate = q1.clone();
+		
+		conjugate.setX(-conjugate.getX());
+		conjugate.setY(-conjugate.getY());
+		conjugate.setZ(-conjugate.getZ());
+		
+		q1.conjugate(q1);
+		assertTrue(conjugate.equals(q1));
 	}
 
 	@Test
 	public void conjugate() {
-		throw new UnsupportedOperationException();
+		double a = this.random.nextDouble();
+		double b = this.random.nextDouble();
+		double c = this.random.nextDouble();
+		double d = this.random.nextDouble();
+		Quaternion q1 = new Quaternion(a,b,c,d);
+		Quaternion conjugate = q1.clone();
+		
+		conjugate.setX(-conjugate.getX());
+		conjugate.setY(-conjugate.getY());
+		conjugate.setZ(-conjugate.getZ());
+		
+		q1.conjugate();
+		assertTrue(conjugate.equals(q1));
 	}
 
 	@Test
 	public void mulQuaternionQuaternion() {
-		throw new UnsupportedOperationException();
+		double a = this.random.nextDouble();
+		double b = this.random.nextDouble();
+		double c = this.random.nextDouble();
+		double d = this.random.nextDouble();
+		double aP = this.random.nextDouble();
+		double bP = this.random.nextDouble();
+		double cP = this.random.nextDouble();
+		double dP = this.random.nextDouble();
+		Quaternion q1 = new Quaternion(a,b,c,d);
+		Quaternion q2 = new Quaternion(aP,bP,cP,dP);
+		
+		Quaternion mul = new Quaternion();
+				
+		mul.setW(q1.getW()*q2.getW()-q1.getX()*q2.getX()-q1.getY()*q2.getY()-q1.getZ()*q2.getZ());
+		mul.setX(q1.getW()*q2.getX()+q1.getX()*q2.getW()+q1.getY()*q2.getZ()-q1.getZ()*q2.getY());
+		mul.setY(q1.getW()*q2.getY()+q1.getY()*q2.getW()-q1.getX()*q2.getZ()+q1.getZ()*q2.getX());
+		mul.setZ(q1.getZ()*q2.getW()+q1.getW()*q2.getZ()+q1.getX()*q2.getY()-q1.getY()*q2.getX());
+	
+		q1.mul(q1,q2);
+		assertTrue(mul.equals(q1));
 	}
 
 
 	@Test
 	public void mulQuaternion() {
-		throw new UnsupportedOperationException();
-	} 
+		double a = this.random.nextDouble();
+		double b = this.random.nextDouble();
+		double c = this.random.nextDouble();
+		double d = this.random.nextDouble();
+		double aP = this.random.nextDouble();
+		double bP = this.random.nextDouble();
+		double cP = this.random.nextDouble();
+		double dP = this.random.nextDouble();
+		Quaternion q1 = new Quaternion(a,b,c,d);
+		Quaternion q2 = new Quaternion(aP,bP,cP,dP);
+		
+		Quaternion mul = new Quaternion();
+				
+		mul.setW(q1.getW()*q2.getW()-q1.getX()*q2.getX()-q1.getY()*q2.getY()-q1.getZ()*q2.getZ());
+		mul.setX(q1.getW()*q2.getX()+q1.getX()*q2.getW()+q1.getY()*q2.getZ()-q1.getZ()*q2.getY());
+		mul.setY(q1.getW()*q2.getY()+q1.getY()*q2.getW()-q1.getX()*q2.getZ()+q1.getZ()*q2.getX());
+		mul.setZ(q1.getZ()*q2.getW()+q1.getW()*q2.getZ()+q1.getX()*q2.getY()-q1.getY()*q2.getX());
+	
+		q1.mul(q2);
+		assertTrue(mul.equals(q1));
+	}  
 
 	@Test
 	public void mulInverseQuaternionQuaternion() {   
-		throw new UnsupportedOperationException();
+		double a = this.random.nextDouble();
+		double b = this.random.nextDouble();
+		double c = this.random.nextDouble();
+		double d = this.random.nextDouble();
+		double aP = this.random.nextDouble();
+		double bP = this.random.nextDouble();
+		double cP = this.random.nextDouble();
+		double dP = this.random.nextDouble();
+		Quaternion q1 = new Quaternion(a,b,c,d);
+		Quaternion q2 = new Quaternion(aP,bP,cP,dP);
+		Quaternion mulInv = new Quaternion();
+		
+		mulInv.mulInverse(q1, q2);
+		
+		q2.inverse();
+		q1.mul(q2);
+		
+		assertTrue(q1.equals(mulInv));
+		
+		
 	}
 
 	@Test
 	public void mulInverseQuaternion() {  
-		throw new UnsupportedOperationException();
+		double a = this.random.nextDouble();
+		double b = this.random.nextDouble();
+		double c = this.random.nextDouble();
+		double d = this.random.nextDouble();
+		double aP = this.random.nextDouble();
+		double bP = this.random.nextDouble();
+		double cP = this.random.nextDouble();
+		double dP = this.random.nextDouble();
+		Quaternion q1 = new Quaternion(a,b,c,d);
+		Quaternion q2 = new Quaternion(aP,bP,cP,dP);
+		Quaternion cloneQ1 = q1.clone();
+		
+		q1.mulInverse(q2);
+		
+		q2.inverse();
+		cloneQ1.mul(q2);
+		
+		assertTrue(q1.equals(cloneQ1));
 	}
 
 	@Test
 	public void inverseQuaternion() {
-		throw new UnsupportedOperationException();
+		double a = this.random.nextDouble();
+		double b = this.random.nextDouble();
+		double c = this.random.nextDouble();
+		double d = this.random.nextDouble();
+		Quaternion q1 = new Quaternion(a,b,c,d);
+		
+		Quaternion inv = q1.clone();
+		inv.conjugate();
+		double normSquared = inv.getW()*inv.getW() + inv.getX()*inv.getX() + inv.getY()*inv.getY() + inv.getZ()*inv.getZ();
+		
+		inv.setW(inv.getW()/normSquared);
+		inv.setX(inv.getX()/normSquared);
+		inv.setY(inv.getY()/normSquared);
+		inv.setZ(inv.getZ()/normSquared);
+		
+		q1.inverse(q1);
+		
+		assertTrue(q1.equals(inv));
 	}
 
 	@Test
 	public void inverse() {
-		throw new UnsupportedOperationException();
+		double a = this.random.nextDouble();
+		double b = this.random.nextDouble();
+		double c = this.random.nextDouble();
+		double d = this.random.nextDouble();
+		Quaternion q1 = new Quaternion(a,b,c,d);
+		
+		Quaternion inv = q1.clone();
+		inv.conjugate();
+		double normSquared = inv.getW()*inv.getW() + inv.getX()*inv.getX() + inv.getY()*inv.getY() + inv.getZ()*inv.getZ();
+		
+		inv.setW(inv.getW()/normSquared);
+		inv.setX(inv.getX()/normSquared);
+		inv.setY(inv.getY()/normSquared);
+		inv.setZ(inv.getZ()/normSquared);
+		
+		q1.inverse();
+		
+		assertTrue(q1.equals(inv));
+		
 	}
 
 	@Test
 	public void normalizeQuaternion() {
-		throw new UnsupportedOperationException();
+		double a = this.random.nextDouble();
+		double b = this.random.nextDouble();
+		double c = this.random.nextDouble();
+		double d = this.random.nextDouble();
+		Quaternion q1 = new Quaternion();
+		
+		q1.setW(a);
+		q1.setX(b);
+		q1.setY(c);
+		q1.setZ(d);
+		
+		Quaternion q2 = new Quaternion(b,c,d,a);
+		
+		q1.normalize(q1);
+		
+		assertTrue(q1.equals(q2));
 	}
 
 	@Test
 	public void normalize() {
-		throw new UnsupportedOperationException();
+		double a = this.random.nextDouble();
+		double b = this.random.nextDouble();
+		double c = this.random.nextDouble();
+		double d = this.random.nextDouble();
+		Quaternion q1 = new Quaternion();
+		
+		q1.setW(a);
+		q1.setX(b);
+		q1.setY(c);
+		q1.setZ(d);
+		
+		Quaternion q2 = new Quaternion(b,c,d,a);
+		
+		q1.normalize();
+		
+		assertTrue(q1.equals(q2));
 	}
 
 	@Test

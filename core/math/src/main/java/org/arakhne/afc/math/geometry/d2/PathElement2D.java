@@ -24,10 +24,12 @@ package org.arakhne.afc.math.geometry.d2;
 import java.io.Serializable;
 
 import org.arakhne.afc.math.geometry.PathElementType;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** An element of the path.
  *
  * @author $Author: galland$
+ * @author $Author: hjaffali$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -39,6 +41,7 @@ public interface PathElement2D extends Serializable {
 	 * @return <code>true</code> if the points are
 	 * the same; otherwise <code>false</code>.
 	 */
+	@Pure
 	public PathElementType getType();
 
 	/** Replies if the element is empty, ie. the points are the same.
@@ -46,6 +49,7 @@ public interface PathElement2D extends Serializable {
 	 * @return <code>true</code> if the points are
 	 * the same; otherwise <code>false</code>.
 	 */
+	@Pure
 	public boolean isEmpty();
 	
 	/** Replies if the element is not empty and its drawable.
@@ -55,6 +59,7 @@ public interface PathElement2D extends Serializable {
 	 * @return <code>true</code> if the path element
 	 * is drawable; otherwise <code>false</code>.
 	 */
+	@Pure
 	public boolean isDrawable();
 
 }

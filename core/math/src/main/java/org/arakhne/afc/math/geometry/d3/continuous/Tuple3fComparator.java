@@ -22,6 +22,8 @@ package org.arakhne.afc.math.geometry.d3.continuous;
 
 import java.util.Comparator;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /**
  * Comparator of Tuple2f.
  * 
@@ -41,6 +43,7 @@ public class Tuple3fComparator implements Comparator<Tuple3f<?>> {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public int compare(Tuple3f<?> o1, Tuple3f<?> o2) {
 		if (o1==o2) return 0;

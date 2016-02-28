@@ -96,28 +96,28 @@ public class LinearStochasticLaw extends StochasticLaw {
 
 	/** Create a ascendent linear distribution.
 	 * 
-	 * @param minX is the lower bound of the distribution
-	 * @param maxX is the upper bound of the distribution
+	 * @param minX1 is the lower bound of the distribution
+	 * @param maxX1 is the upper bound of the distribution
 	 */
-	public LinearStochasticLaw(double minX, double maxX) {
-		this(minX, maxX, true);
+	public LinearStochasticLaw(double minX1, double maxX1) {
+		this(minX1, maxX1, true);
 	}
 
 	/**
-	 * @param minX is the lower bound of the distribution
-	 * @param maxX is the upper bound of the distribution
-	 * @param ascendent indicates of the distribution function is ascendent or not
+	 * @param minX1 is the lower bound of the distribution
+	 * @param maxX1 is the upper bound of the distribution
+	 * @param ascendent1 indicates of the distribution function is ascendent or not
 	 */
-	public LinearStochasticLaw(double minX, double maxX, boolean ascendent) {
-		double i = minX;
-		double a = maxX;
+	public LinearStochasticLaw(double minX1, double maxX1, boolean ascendent1) {
+		double i = minX1;
+		double a = maxX1;
 		if (i>a) {
 			double t = i;
 			i = a;
 			a = t;
 		}
 		
-		this.ascendent = ascendent;
+		this.ascendent = ascendent1;
 		this.minX = i;
 		this.maxX = a;
 		

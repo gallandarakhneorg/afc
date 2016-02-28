@@ -22,6 +22,7 @@ package org.arakhne.afc.math.geometry.d3.continuous;
 
 import org.arakhne.afc.math.geometry.d3.Tuple3D;
 import org.arakhne.afc.math.matrix.Matrix4f;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 
 /** A 3D transformation.
@@ -85,8 +86,8 @@ public class Transform3D extends Matrix4f {
 	 * @param m23
 	 *            the [2][3] element
 	 */
-	public Transform3D(double m00, double m01, double m02, double m03, double m10, double m11, double m12, double m13, double m20, double m21, double m22, double m23) {
-		super(m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, 0f, 0f, 0f, 1f);
+	public Transform3D(double m_00, double m_01, double m_02, double m_03, double m_10, double m_11, double m_12, double m_13, double m_20, double m_21, double m_22, double m_23) {
+		super(m_00, m_01, m_02, m_03, m_10, m_11, m_12, m_13, m_20, m_21, m_22, m_23, 0f, 0f, 0f, 1f);
 	}
 
 	/**
@@ -106,6 +107,7 @@ public class Transform3D extends Matrix4f {
 		super(m);
 	}
 
+	@Pure
 	@Override
 	public Transform3D  clone() {
 		return (Transform3D)super.clone();
@@ -203,6 +205,7 @@ public class Transform3D extends Matrix4f {
 	 * 
 	 * @return the amount
 	 */
+	@Pure
 	public double getTranslationX() {
 		return this.m03;
 	}
@@ -211,6 +214,7 @@ public class Transform3D extends Matrix4f {
 	 * 
 	 * @return the amount
 	 */
+	@Pure
 	public double getTranslationY() {
 		return this.m13;
 	}
@@ -219,6 +223,7 @@ public class Transform3D extends Matrix4f {
 	 * 
 	 * @return the amount
 	 */
+	@Pure
 	public double getTranslationZ() {
 		return this.m23;
 	}
@@ -227,6 +232,7 @@ public class Transform3D extends Matrix4f {
 	 * 
 	 * @return the amount
 	 */
+	@Pure
 	public Vector3f getTranslation() {
 		return new Vector3f(this.m03, this.m13, this.m23);
 	}
@@ -236,6 +242,7 @@ public class Transform3D extends Matrix4f {
 	 * 
 	 * @return the amount
      */
+	@Pure
     public Quaternion getRotation() {
     	Quaternion q = new Quaternion();
     	q.setFromMatrix(this);
@@ -440,8 +447,8 @@ public class Transform3D extends Matrix4f {
 	 * @param m23
 	 *            the [2][3] element
 	 */
-	public void set(double m00, double m01, double m02, double m03, double m10, double m11, double m12, double m13, double m20, double m21, double m22, double m23) {
-		set(m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, 0f, 0f, 0f, 1f);
+	public void set(double m_00, double m_01, double m_02, double m_03, double m_10, double m_11, double m_12, double m_13, double m_20, double m_21, double m_22, double m_23) {
+		set(m_00, m_01, m_02, m_03, m_10, m_11, m_12, m_13, m_20, m_21, m_22, m_23, 0f, 0f, 0f, 1f);
 	}
 
 }

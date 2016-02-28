@@ -34,6 +34,7 @@ import org.arakhne.afc.math.geometry.d3.Tuple3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
 import org.arakhne.afc.math.geometry.d3.continuous.Vector3f;
 import org.arakhne.afc.vmutil.locale.Locale;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * Is represented internally as a 3x3 floating point matrix. The mathematical
@@ -115,6 +116,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * @param m22
 	 *            the [2][2] element
 	 */
+	@SuppressWarnings("hiding")
 	public Matrix3f(double m00, double m01, double m02, double m10, double m11, double m12, double m20, double m21, double m22) {
 		this.m00 = m00;
 		this.m01 = m01;
@@ -192,6 +194,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * 
 	 * @return the String representation
 	 */
+	@Pure
 	@Override
 	public String toString() {
 		return this.m00 + ", " //$NON-NLS-1$
@@ -297,6 +300,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 *            the column number to be retrieved (zero indexed)
 	 * @return the value at the indexed element.
 	 */
+	@Pure
 	public final double getElement(int row, int column) {
 		switch (row) {
 		case 0:
@@ -886,6 +890,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * @param m22
 	 *            the [2][2] element
 	 */
+	@SuppressWarnings("hiding")
 	public void set(double m00, double m01, double m02, double m10, double m11, double m12, double m20, double m21, double m22) {
 		this.m00 = m00;
 		this.m01 = m01;
@@ -1122,7 +1127,7 @@ public class Matrix3f implements Serializable, Cloneable {
 			}
 		}
 
-		return true;
+		return true; 
 	}
 
 	/**
@@ -1143,6 +1148,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	// _Numerical_Recipes_in_C_, Cambridge University Press,
 	// 1988, pp 44-45.
 	//
+	@Pure
 	private static void luBacksubstitution(double[] matrix1, int[] row_perm,
 			double[] matrix2) {
 
@@ -1202,6 +1208,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * 
 	 * @return the determinant of the matrix
 	 */
+	@Pure
 	public final double determinant() {
 		/* det(A,B,C) = det( [ x1 x2 x3 ]
 		 *                   [ y1 y2 y3 ]
@@ -1238,6 +1245,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * @param v
 	 * @return the vector resulting of <code>this * v</code>.
 	 */
+	@Pure
 	public Vector3f mul(Vector3D v) {
 		return new Vector3f(
 				this.m00 * v.getX() + this.m01 * v.getY() + this.m02 * v.getZ(),
@@ -1250,6 +1258,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * @param v
 	 * @return the vector resulting of <code>transpose(this) * v</code>.
 	 */
+	@Pure
 	public Vector3f mulTransposeLeft(Vector3D v) {
 		return new Vector3f(
 				this.m00 * v.getX() + this.m10 * v.getY() + this.m20 * v.getZ(),
@@ -1692,6 +1701,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 *            the matrix with which the comparison is made
 	 * @return true or false
 	 */
+	@Pure
 	public boolean equals(Matrix3f m1) {
 		try {
 			return (this.m00 == m1.m00 && this.m01 == m1.m01
@@ -1699,6 +1709,7 @@ public class Matrix3f implements Serializable, Cloneable {
 					&& this.m11 == m1.m11 && this.m12 == m1.m12
 					&& this.m20 == m1.m20 && this.m21 == m1.m21 && this.m22 == m1.m22);
 		} catch (NullPointerException e2) {
+			e2.printStackTrace();
 			return false;
 		}
 
@@ -1713,6 +1724,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 *            the matrix with which the comparison is made
 	 * @return true or false
 	 */
+	@Pure
 	@Override
 	public boolean equals(Object t1) {
 		try {
@@ -1722,9 +1734,9 @@ public class Matrix3f implements Serializable, Cloneable {
 					&& this.m11 == m2.m11 && this.m12 == m2.m12
 					&& this.m20 == m2.m20 && this.m21 == m2.m21 && this.m22 == m2.m22);
 		} catch (ClassCastException e1) {
-			return false;
+			e1.printStackTrace();return false;
 		} catch (NullPointerException e2) {
-			return false;
+			e2.printStackTrace();return false;
 		}
 
 	}
@@ -1741,6 +1753,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 *            the threshold value
 	 * @return <code>true</code> if this matrix is equals to the specified matrix at epsilon.
 	 */
+	@Pure
 	public boolean epsilonEquals(Matrix3f m1, double epsilon) {
 		double diff;
 
@@ -1792,6 +1805,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * 
 	 * @return the integer hash code value
 	 */
+	@Pure
 	@Override
 	public int hashCode() {
 		long bits = 1L;
@@ -1807,6 +1821,7 @@ public class Matrix3f implements Serializable, Cloneable {
 		return (int) (bits ^ (bits >> 32));
 	}
 
+	@Pure
 	private static long doubleToLongBits(double d) {
 		// Check for +0 or -0
 		if (d == 0f) {
@@ -1842,6 +1857,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * @param m22
 	 *            the third element of the diagonal
 	 */
+	@SuppressWarnings("hiding")
 	public final void setDiagonal(double m00, double m11, double m22) {
 		this.m00 = m00;
 		this.m01 = 0f;
@@ -1893,6 +1909,7 @@ public class Matrix3f implements Serializable, Cloneable {
 		this.m22 = -m1.m22;
 	}
 
+	@Pure
 	private static boolean epsilonEquals(double a, double b) {
 		return Math.abs(a-b) <=  MathConstants.EPSILON;
 	}
@@ -2526,12 +2543,14 @@ public class Matrix3f implements Serializable, Cloneable {
 		return (0);
 	}
 
+	@Pure
 	private static double d_sign(double a, double b) {
 		double x;
 		x = (a >= 0 ? a : -a);
 		return (b >= 0 ? x : -x);
 	}
 
+	@Pure
 	private static double compute_shift(double f, double g, double h) {
 		double d__1, d__2;
 		double fhmn, fhmx, c, fa, ga, ha, as, at, au;
@@ -2884,6 +2903,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 *                if there is not enough memory.
 	 * @see java.lang.Cloneable
 	 */
+	@Pure
 	@Override
 	public Matrix3f clone() {
 		Matrix3f m1 = null;
@@ -2891,7 +2911,7 @@ public class Matrix3f implements Serializable, Cloneable {
 			m1 = (Matrix3f) super.clone();
 		} catch (CloneNotSupportedException e) {
 			// this shouldn't happen, since we are Cloneable
-			throw new InternalError();
+			e.printStackTrace();throw new InternalError();
 		}
 
 		// Also need to create new tmp arrays (no need to actually clone them)
@@ -2904,6 +2924,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * @return Returns the m00f
 	 * @since vecmath 1.5
 	 */
+	@Pure
 	public final double getM00() {
 		return this.m00;
 	}
@@ -2911,13 +2932,13 @@ public class Matrix3f implements Serializable, Cloneable {
 	/**
 	 * Set the first matrix element in the first row.
 	 * 
-	 * @param m00
+	 * @param m001
 	 *            The m00 to set.
 	 * 
 	 * @since vecmath 1.5
 	 */
-	public final void setM00(double m00) {
-		this.m00 = m00;
+	public final void setM00(double m001) {
+		this.m00 = m001;
 	}
 
 	/**
@@ -2927,6 +2948,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * 
 	 * @since vecmath 1.5
 	 */
+	@Pure
 	public final double getM01() {
 		return this.m01;
 	}
@@ -2934,13 +2956,13 @@ public class Matrix3f implements Serializable, Cloneable {
 	/**
 	 * Set the second matrix element in the first row.
 	 * 
-	 * @param m01
+	 * @param m011
 	 *            The m01 to set.
 	 * 
 	 * @since vecmath 1.5
 	 */
-	public final void setM01(double m01) {
-		this.m01 = m01;
+	public final void setM01(double m011) {
+		this.m01 = m011;
 	}
 
 	/**
@@ -2950,6 +2972,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * 
 	 * @since vecmath 1.5
 	 */
+	@Pure
 	public final double getM02() {
 		return this.m02;
 	}
@@ -2957,13 +2980,13 @@ public class Matrix3f implements Serializable, Cloneable {
 	/**
 	 * Set the third matrix element in the first row.
 	 * 
-	 * @param m02
+	 * @param m021
 	 *            The m02 to set.
 	 * 
 	 * @since vecmath 1.5
 	 */
-	public final void setM02(double m02) {
-		this.m02 = m02;
+	public final void setM02(double m021) {
+		this.m02 = m021;
 	}
 
 	/**
@@ -2973,6 +2996,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * 
 	 * @since vecmath 1.5
 	 */
+	@Pure
 	public final double getM10() {
 		return this.m10;
 	}
@@ -2980,13 +3004,13 @@ public class Matrix3f implements Serializable, Cloneable {
 	/**
 	 * Set first matrix element in the second row.
 	 * 
-	 * @param m10
+	 * @param m101
 	 *            The m10 to set.
 	 * 
 	 * @since vecmath 1.5
 	 */
-	public final void setM10(double m10) {
-		this.m10 = m10;
+	public final void setM10(double m101) {
+		this.m10 = m101;
 	}
 
 	/**
@@ -2996,6 +3020,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * 
 	 * @since vecmath 1.5
 	 */
+	@Pure
 	public final double getM11() {
 		return this.m11;
 	}
@@ -3003,13 +3028,13 @@ public class Matrix3f implements Serializable, Cloneable {
 	/**
 	 * Set the second matrix element in the second row.
 	 * 
-	 * @param m11
+	 * @param m111
 	 *            The m11 to set.
 	 * 
 	 * @since vecmath 1.5
 	 */
-	public final void setM11(double m11) {
-		this.m11 = m11;
+	public final void setM11(double m111) {
+		this.m11 = m111;
 	}
 
 	/**
@@ -3019,6 +3044,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * 
 	 * @since vecmath 1.5
 	 */
+	@Pure
 	public final double getM12() {
 		return this.m12;
 	}
@@ -3026,13 +3052,13 @@ public class Matrix3f implements Serializable, Cloneable {
 	/**
 	 * Set the third matrix element in the second row.
 	 * 
-	 * @param m12
+	 * @param m121
 	 *            The m12 to set.
 	 * 
 	 * @since vecmath 1.5
 	 */
-	public final void setM12(double m12) {
-		this.m12 = m12;
+	public final void setM12(double m121) {
+		this.m12 = m121;
 	}
 
 	/**
@@ -3042,6 +3068,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * 
 	 * @since vecmath 1.5
 	 */
+	@Pure
 	public final double getM20() {
 		return this.m20;
 	}
@@ -3049,13 +3076,13 @@ public class Matrix3f implements Serializable, Cloneable {
 	/**
 	 * Set the first matrix element in the third row.
 	 * 
-	 * @param m20
+	 * @param m201
 	 *            The m20 to set.
 	 * 
 	 * @since vecmath 1.5
 	 */
-	public final void setM20(double m20) {
-		this.m20 = m20;
+	public final void setM20(double m201) {
+		this.m20 = m201;
 	}
 
 	/**
@@ -3065,6 +3092,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * 
 	 * @since vecmath 1.5
 	 */
+	@Pure
 	public final double getM21() {
 		return this.m21;
 	}
@@ -3072,13 +3100,13 @@ public class Matrix3f implements Serializable, Cloneable {
 	/**
 	 * Set the second matrix element in the third row.
 	 * 
-	 * @param m21
+	 * @param m211
 	 *            The m21 to set.
 	 * 
 	 * @since vecmath 1.5
 	 */
-	public final void setM21(double m21) {
-		this.m21 = m21;
+	public final void setM21(double m211) {
+		this.m21 = m211;
 	}
 
 	/**
@@ -3088,6 +3116,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * 
 	 * @since vecmath 1.5
 	 */
+	@Pure
 	public final double getM22() {
 		return this.m22;
 	}
@@ -3095,13 +3124,13 @@ public class Matrix3f implements Serializable, Cloneable {
 	/**
 	 * Set the third matrix element in the third row.
 	 * 
-	 * @param m22
+	 * @param m221
 	 *            The m22 to set.
 	 * 
 	 * @since vecmath 1.5
 	 */
-	public final void setM22(double m22) {
-		this.m22 = m22;
+	public final void setM22(double m221) {
+		this.m22 = m221;
 	}
 
 	/**
@@ -3139,6 +3168,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * 
 	 * @return the scale factor of this matrix
 	 */
+	@Pure
 	public final double getScale() {
 
 		double[] tmp_scale = new double[3]; // scratch matrix
@@ -3269,6 +3299,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * @return <code>true</code> if the matrix is symmetric, otherwise
 	 * <code>false</code>
 	 */
+	@Pure
 	public boolean isSymmetric() {
 		return	this.m01 == this.m10
 				&&	this.m02 == this.m20
@@ -3355,6 +3386,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * @return the eigenvalues which are corresponding to the <var>eigenVectors</var> columns.
 	 * @see "Mathematics for 3D Game Programming and Computer Graphics, 2nd edition; pp.437." 
 	 */
+	@SuppressWarnings("hiding")
 	public double[] eigenVectorsOfSymmetricMatrix(Matrix3f eigenVectors) {
 		// Copy values up to the diagonal
 		double m11 = getElement(0,0);
@@ -3486,6 +3518,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * @see MathUtil#isEpsilonZero(double)
 	 * @see MathUtil#isEpsilonEqual(double, double)
 	 */
+	@Pure
 	public boolean isIdentity() {
 		return MathUtil.isEpsilonEqual(this.m00, 1f)
 				&& MathUtil.isEpsilonZero(this.m01)

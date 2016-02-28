@@ -43,10 +43,10 @@ public class ConstantStochasticLaw extends StochasticLaw {
 
 	/** Create a constant stochastic law.
 	 * 
-	 * @param value is the value replied by this law.
+	 * @param value1 is the value replied by this law.
 	 */
-	public ConstantStochasticLaw(double value) {
-		this.value = value;
+	public ConstantStochasticLaw(double value1) {
+		this.value = value1;
 	}
 
 	@Override

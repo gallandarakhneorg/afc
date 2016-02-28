@@ -39,7 +39,8 @@ import org.arakhne.afc.math.geometry.d2.continuous.Transform2D;
 import org.junit.Test;
 
 /**
- * @author $Author: galland$
+ * @author $Author: sgalland$
+ * @author $Author: hjaffali$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -48,7 +49,7 @@ import org.junit.Test;
 public class Segment2fTest extends AbstractShape2fTestCase<Segment2f> {
 	
 	@Override
-	protected Segment2f createShape() {
+	protected Segment2f createShape() { 
 		return new Segment2f(0f, 0f, 1f, 1f);
 	}
 	
@@ -462,11 +463,11 @@ public class Segment2fTest extends AbstractShape2fTestCase<Segment2f> {
 						5f, -.01f, .75f, .5f));
 
 		assertEquals(
-				1,
+				MathConstants.SHAPE_INTERSECTS,
 				Segment2f.computeCrossingsFromSegment(
 						0,
 						0f, 1f, 1f, 0f,
-						20f, -5f, 0f, 1f));
+						20f, -5f, -1f, 1f));
 
 		assertEquals(
 				MathConstants.SHAPE_INTERSECTS,
@@ -559,7 +560,7 @@ public class Segment2fTest extends AbstractShape2fTestCase<Segment2f> {
 						20f, -5f, .75f, .5f));
 
 		assertEquals(
-				2,
+				MathConstants.SHAPE_INTERSECTS,
 				Segment2f.computeCrossingsFromSegment(
 						0,
 						1f, 0f, 0f, 1f,
@@ -1162,7 +1163,7 @@ public class Segment2fTest extends AbstractShape2fTestCase<Segment2f> {
 	@Test
 	@Override
 	public void toBoundingBox() {
-		Rectangle2f bb = this.r.toBoundingBox();
+		AbstractRectangle2F bb = this.r.toBoundingBox();
 		assertEpsilonEquals(0f, bb.getMinX());
 		assertEpsilonEquals(0f, bb.getMinY());
 		assertEpsilonEquals(1f, bb.getMaxX());
@@ -1237,32 +1238,32 @@ public class Segment2fTest extends AbstractShape2fTestCase<Segment2f> {
 		Point2D p;
 		
 		p = this.r.getFarthestPointTo(new Point2f(0f,0f));
-		assertEpsilonEquals(0f, p.getX());
-		assertEpsilonEquals(0f, p.getY());
+		assertEpsilonEquals(1f, p.getX());
+		assertEpsilonEquals(1f, p.getY());
 
 		p = this.r.getFarthestPointTo(new Point2f(.5f,.5f));
-		assertEpsilonEquals(.5f, p.getX());
-		assertEpsilonEquals(.5f, p.getY());
-
-		p = this.r.getFarthestPointTo(new Point2f(1f,1f));
-		assertEpsilonEquals(1f, p.getX());
-		assertEpsilonEquals(1f, p.getY());
-
-		p = this.r.getFarthestPointTo(new Point2f(2f,2f));
-		assertEpsilonEquals(1f, p.getX());
-		assertEpsilonEquals(1f, p.getY());
-
-		p = this.r.getFarthestPointTo(new Point2f(-2f,2f));
 		assertEpsilonEquals(0f, p.getX());
 		assertEpsilonEquals(0f, p.getY());
 
-		p = this.r.getFarthestPointTo(new Point2f(0.1f,1.2f));
-		assertEpsilonEquals(0.65f, p.getX());
-		assertEpsilonEquals(0.65f, p.getY());
+		p = this.r.getFarthestPointTo(new Point2f(1f,1f));
+		assertEpsilonEquals(0f, p.getX());
+		assertEpsilonEquals(0f, p.getY());
 
-		p = this.r.getFarthestPointTo(new Point2f(10.1f,-.2f));
+		p = this.r.getFarthestPointTo(new Point2f(2f,2f));
+		assertEpsilonEquals(0f, p.getX());
+		assertEpsilonEquals(0f, p.getY());
+
+		p = this.r.getFarthestPointTo(new Point2f(-2f,2f));
 		assertEpsilonEquals(1f, p.getX());
 		assertEpsilonEquals(1f, p.getY());
+
+		p = this.r.getFarthestPointTo(new Point2f(0.1f,1.2f));
+		assertEpsilonEquals(0f, p.getX());
+		assertEpsilonEquals(0f, p.getY());
+
+		p = this.r.getFarthestPointTo(new Point2f(10.1f,-.2f));
+		assertEpsilonEquals(0f, p.getX());
+		assertEpsilonEquals(0f, p.getY());
 	}
 
 	/**
@@ -1418,9 +1419,9 @@ public class Segment2fTest extends AbstractShape2fTestCase<Segment2f> {
 		p.moveTo(-2f, -2f);
 		p.lineTo(-2f, 2f);
 		p.lineTo(2f, -2f);
-		assertFalse(this.r.intersects(p));
+		assertTrue(this.r.intersects(p));
 		p.closePath();
-		assertFalse(this.r.intersects(p));
+		assertTrue(this.r.intersects(p));
 
 		p = new Path2f();
 		p.moveTo(-2f, 2f);
@@ -1473,9 +1474,9 @@ public class Segment2fTest extends AbstractShape2fTestCase<Segment2f> {
 		p.moveTo(-2f, -2f);
 		p.lineTo(-2f, 2f);
 		p.lineTo(2f, -2f);
-		assertFalse(this.r.intersects(p.getPathIterator()));
+		assertTrue(this.r.intersects(p.getPathIterator()));
 		p.closePath();
-		assertFalse(this.r.intersects(p.getPathIterator()));
+		assertTrue(this.r.intersects(p.getPathIterator()));
 
 		p = new Path2f();
 		p.moveTo(-2f, 2f);
@@ -1498,11 +1499,24 @@ public class Segment2fTest extends AbstractShape2fTestCase<Segment2f> {
 	 */
 	@Test
 	public void setShape2f() {
-		this.r.set(new Rectangle2f(10, 12, 14, 16));
+		this.r.set(new Rectangle2f(10f, 12f, 14f, 16f));
 		assertEpsilonEquals(10f, this.r.getX1());
 		assertEpsilonEquals(12f, this.r.getY1());
 		assertEpsilonEquals(24f, this.r.getX2());
 		assertEpsilonEquals(28f, this.r.getY2());
+		
+		this.r.set(new Rectangle2f(20f, 20f, 20f, 20f));
+		assertEpsilonEquals(20f, this.r.getX1());
+		assertEpsilonEquals(20f, this.r.getY1());
+		assertEpsilonEquals(40f, this.r.getX2());
+		assertEpsilonEquals(40f, this.r.getY2());
+		
+		
+		this.r.set(new Rectangle2d(-10f, 19f, 13f, 1f));
+		assertEpsilonEquals(-10f, this.r.getX1());
+		assertEpsilonEquals(19f, this.r.getY1());
+		assertEpsilonEquals(3f, this.r.getX2());
+		assertEpsilonEquals(20f, this.r.getY2());
 	}
 	
 	@Test
@@ -1680,6 +1694,116 @@ public class Segment2fTest extends AbstractShape2fTestCase<Segment2f> {
 	@Test
 	public void isColinearLinesDoubleDoubleDoubleDoubleDoubleDoubleDoubleDouble() {
 		throw new UnsupportedOperationException();
+	}
+
+	@Test
+    @Override
+	public void intersectsPath2d() {
+		Path2d p;
+		
+		p = new Path2d();
+		p.moveTo(-2f, -2f);
+		p.lineTo(-2f, 2f);
+		p.lineTo(2f, 2f);
+		p.lineTo(2f, -2f);
+		assertFalse(this.r.intersects(p));
+		p.closePath();
+		assertTrue(this.r.intersects(p));
+		
+		p = new Path2d();
+		p.moveTo(-2f, -2f);
+		p.lineTo(0f, 0f);
+		p.lineTo(-2f, 2f);
+		assertFalse(this.r.intersects(p));
+		p.closePath();
+		assertFalse(this.r.intersects(p));
+
+		p = new Path2d();
+		p.moveTo(-2f, -2f);
+		p.lineTo(2f, 2f);
+		p.lineTo(-2f, 2f);
+		assertTrue(this.r.intersects(p));
+		p.closePath();
+		assertTrue(this.r.intersects(p));
+
+		p = new Path2d();
+		p.moveTo(-2f, -2f);
+		p.lineTo(-2f, 2f);
+		p.lineTo(2f, -2f);
+		assertTrue(this.r.intersects(p));
+		p.closePath();
+		assertTrue(this.r.intersects(p));
+
+		p = new Path2d();
+		p.moveTo(-2f, 2f);
+		p.lineTo(1f, 0f);
+		p.lineTo(2f, 1f);
+		assertTrue(this.r.intersects(p));
+		p.closePath();
+		assertTrue(this.r.intersects(p));
+
+		p = new Path2d();
+		p.moveTo(-2f, 2f);
+		p.lineTo(2f, 1f);
+		p.lineTo(1f, 0f);
+		assertFalse(this.r.intersects(p));
+		p.closePath();
+		assertTrue(this.r.intersects(p));
+	}
+
+	@Test
+    @Override
+	public void intersectsPathIterator2d() {
+		Path2d p;
+		
+		p = new Path2d();
+		p.moveTo(-2f, -2f);
+		p.lineTo(-2f, 2f);
+		p.lineTo(2f, 2f);
+		p.lineTo(2f, -2f);
+		assertFalse(this.r.intersects(p.getPathIteratorProperty()));
+		p.closePath();
+		assertTrue(this.r.intersects(p.getPathIteratorProperty()));
+		
+		p = new Path2d();
+		p.moveTo(-2f, -2f);
+		p.lineTo(0f, 0f);
+		p.lineTo(-2f, 2f);
+		assertFalse(this.r.intersects(p.getPathIteratorProperty()));
+		p.closePath();
+		assertFalse(this.r.intersects(p.getPathIteratorProperty()));
+
+		p = new Path2d();
+		p.moveTo(-2f, -2f);
+		p.lineTo(2f, 2f);
+		p.lineTo(-2f, 2f);
+		assertTrue(this.r.intersects(p.getPathIteratorProperty()));
+		p.closePath();
+		assertTrue(this.r.intersects(p.getPathIteratorProperty()));
+
+		p = new Path2d();
+		p.moveTo(-2f, -2f);
+		p.lineTo(-2f, 2f);
+		p.lineTo(2f, -2f);
+		assertTrue(this.r.intersects(p.getPathIteratorProperty()));
+		p.closePath();
+		assertTrue(this.r.intersects(p.getPathIteratorProperty()));
+
+		p = new Path2d();
+		p.moveTo(-2f, 2f);
+		p.lineTo(1f, 0f);
+		p.lineTo(2f, 1f);
+		assertTrue(this.r.intersects(p.getPathIteratorProperty()));
+		p.closePath();
+		assertTrue(this.r.intersects(p.getPathIteratorProperty()));
+
+		p = new Path2d();
+		p.moveTo(-2f, 2f);
+		p.lineTo(2f, 1f);
+		p.lineTo(1f, 0f);
+		assertFalse(this.r.intersects(p.getPathIteratorProperty()));
+		p.closePath();
+		assertTrue(this.r.intersects(p.getPathIteratorProperty()));
 	}
 
 }

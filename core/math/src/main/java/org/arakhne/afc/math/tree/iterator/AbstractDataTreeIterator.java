@@ -69,6 +69,7 @@ public abstract class AbstractDataTreeIterator<D,N extends TreeNode<D,?>> implem
 	 * @param nodeIterator is the iterator on the nodes.
 	 * @param dataSelector permits to filter the user data repliable by this iterator.
 	 */
+	@SuppressWarnings("hiding")
 	public AbstractDataTreeIterator(NodeSelectionTreeIterator<N> nodeIterator, DataSelector<D> dataSelector) {
 		assert(nodeIterator!=null);
 		this.dataSelector = dataSelector;

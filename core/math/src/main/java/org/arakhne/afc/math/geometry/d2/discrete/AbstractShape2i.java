@@ -22,6 +22,7 @@ package org.arakhne.afc.math.geometry.d2.discrete;
 
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.continuous.Transform2D;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** 2D shape with integer  points.
  * 
@@ -44,6 +45,7 @@ public abstract class AbstractShape2i<T extends Shape2i> implements Shape2i {
 	/** {@inheritDoc}
 	 */
 	@SuppressWarnings("unchecked")
+	@Pure
 	@Override
 	public T clone()  {
 		try {
@@ -56,20 +58,23 @@ public abstract class AbstractShape2i<T extends Shape2i> implements Shape2i {
 	
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public Shape2i createTransformedShape(Transform2D transform) {
-		return new Path2i(getPathIterator(transform));
+		return new Path2i(getPathIteratorDiscrete(transform));
 	}
 	
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public final boolean contains(Point2D p) {
-		return contains(p.x(), p.y());
+		return contains(p.ix(), p.iy());
 	}
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public final double distance(Point2D p) {
 		 return Math.sqrt(distanceSquared(p));
@@ -77,9 +82,10 @@ public abstract class AbstractShape2i<T extends Shape2i> implements Shape2i {
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
-	public final PathIterator2i getPathIterator() {
-		return getPathIterator(null);
+	public PathIterator2i getPathIteratorDiscrete() {
+		return getPathIteratorDiscrete(null);
 	}
 	
 }

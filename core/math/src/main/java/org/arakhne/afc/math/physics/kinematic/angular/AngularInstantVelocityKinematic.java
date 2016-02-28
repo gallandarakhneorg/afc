@@ -43,7 +43,7 @@ public interface AngularInstantVelocityKinematic {
 	 * 
 	 * @return the angular speed of this object in r/s.
 	 */
-	public float getAngularSpeed();
+	public double getAngularSpeed();
 	
 	/**
 	 * Returns the angular speed of this object.
@@ -54,7 +54,7 @@ public interface AngularInstantVelocityKinematic {
 	 * @param unit the unit in which the speed will be given.
 	 * @return the angular speed of this object in the given unit.
 	 */
-	public float getAngularSpeed(AngularUnit unit);
+	public double getAngularSpeed(AngularUnit unit);
 
 	
 	/** Replies the instant velocity of the object.
@@ -75,7 +75,7 @@ public interface AngularInstantVelocityKinematic {
 	 * 
 	 * @return the velocity of the object. 
 	 */
-	public float getAngularVelocity2D();
+	public double getAngularVelocity2D();
 
 	/** Replies the instant velocity of the object.
 	 * The velocity is the motion vector with a length
@@ -85,7 +85,7 @@ public interface AngularInstantVelocityKinematic {
 	 * 
 	 * @return the velocity of the object. 
 	 */
-	public float getAngularVelocity1D5();
+	public double getAngularVelocity1D5();
 
 	/** Replies the instant velocity of the object.
 	 * The velocity is the motion vector with a length
@@ -95,6 +95,6 @@ public interface AngularInstantVelocityKinematic {
 	 * 
 	 * @return the velocity of the object. 
 	 */
-	public float getAngularVelocity1D();
+	public double getAngularVelocity1D();
 
 }

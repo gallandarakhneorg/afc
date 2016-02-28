@@ -76,14 +76,14 @@ public class LogNormalStochasticLaw extends StochasticLaw {
 	}
 
 	/**
-	 * @param mean is the mean of the normal distribution.
-	 * @param standardDeviation is the standard deviation associated to the nromal distribution.
+	 * @param mean1 is the mean of the normal distribution.
+	 * @param standardDeviation1 is the standard deviation associated to the nromal distribution.
 	 * @throws OutsideDomainException when standardDevisition is negative or nul.
 	 */
-	public LogNormalStochasticLaw(double mean, double standardDeviation) throws OutsideDomainException {
-		if (standardDeviation<=0) throw new OutsideDomainException(standardDeviation);
-		this.mean = mean;
-		this.standardDeviation = standardDeviation;
+	public LogNormalStochasticLaw(double mean1, double standardDeviation1) throws OutsideDomainException {
+		if (standardDeviation1<=0) throw new OutsideDomainException(standardDeviation1);
+		this.mean = mean1;
+		this.standardDeviation = standardDeviation1;
 	}
 	
 	/**
@@ -117,7 +117,7 @@ public class LogNormalStochasticLaw extends StochasticLaw {
 	 */
 	@Override
 	public MathFunctionRange[] getRange() {
-		return new MathFunctionRange[] {new MathFunctionRange(0, false, Float.POSITIVE_INFINITY, false) };
+		return new MathFunctionRange[] {new MathFunctionRange(0, false, Double.POSITIVE_INFINITY, false) };
 	}
 	
 	/** Replies the x according to the value of the distribution function.

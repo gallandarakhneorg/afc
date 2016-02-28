@@ -24,6 +24,7 @@ package org.arakhne.afc.math.geometry.d2.discrete;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** 2D Point with 2 integers.
  * 
@@ -32,6 +33,7 @@ import org.arakhne.afc.math.geometry.d2.Vector2D;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("hiding")
 public class Point2i extends Tuple2i<Point2D> implements Point2D {
 
 	private static final long serialVersionUID = 6087683508168847436L;
@@ -97,6 +99,7 @@ public class Point2i extends Tuple2i<Point2D> implements Point2D {
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public Point2i clone() {
 		return (Point2i)super.clone();
@@ -105,6 +108,7 @@ public class Point2i extends Tuple2i<Point2D> implements Point2D {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public double getDistanceSquared(Point2D p1) {
 	      double dx, dy;
@@ -116,6 +120,7 @@ public class Point2i extends Tuple2i<Point2D> implements Point2D {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public double getDistance(Point2D p1) {
 	      double  dx, dy;
@@ -127,6 +132,7 @@ public class Point2i extends Tuple2i<Point2D> implements Point2D {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public double getDistanceL1(Point2D p1) {
 	      return (Math.abs(this.x-p1.getX()) + Math.abs(this.y-p1.getY()));
@@ -135,6 +141,7 @@ public class Point2i extends Tuple2i<Point2D> implements Point2D {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public double getDistanceLinf(Point2D p1) {
 	      return (Math.max( Math.abs(this.x-p1.getX()), Math.abs(this.y-p1.getY())));
@@ -143,6 +150,7 @@ public class Point2i extends Tuple2i<Point2D> implements Point2D {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public int distanceSquared(Point2D p1) {
 	      return (int) getDistanceSquared(p1);
@@ -151,6 +159,7 @@ public class Point2i extends Tuple2i<Point2D> implements Point2D {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public int distance(Point2D p1) {
 	      return (int) getDistance(p1);
@@ -159,6 +168,7 @@ public class Point2i extends Tuple2i<Point2D> implements Point2D {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public int distanceL1(Point2D p1) {
 	      return (int) getDistanceL1(p1);
@@ -167,6 +177,7 @@ public class Point2i extends Tuple2i<Point2D> implements Point2D {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public int distanceLinf(Point2D p1) {
 	      return (int) getDistanceLinf(p1);
@@ -238,6 +249,7 @@ public class Point2i extends Tuple2i<Point2D> implements Point2D {
 		this.y = (int)(this.y - t1.getY());
 	}
 
+	@Pure
 	@Override
 	public Point2D toUnmodifiable() {
 		return new UnmodifiablePoint2i();
@@ -258,7 +270,8 @@ public class Point2i extends Tuple2i<Point2D> implements Point2D {
 		public UnmodifiablePoint2i() {
 			//
 		}
-		
+
+		@Pure
 		@Override
 		public UnmodifiablePoint2i clone() {
 			return new UnmodifiablePoint2i();
@@ -434,14 +447,16 @@ public class Point2i extends Tuple2i<Point2D> implements Point2D {
 			throw new UnsupportedOperationException();
 		}
 
+		@Pure
 		@Override
 		public double getX() {
 			return Point2i.this.getX();
 		}
 
+		@Pure
 		@Override
-		public int x() {
-			return Point2i.this.x();
+		public int ix() {
+			return Point2i.this.ix();
 		}
 
 		@Override
@@ -454,14 +469,16 @@ public class Point2i extends Tuple2i<Point2D> implements Point2D {
 			throw new UnsupportedOperationException();
 		}
 
+		@Pure
 		@Override
 		public double getY() {
 			return Point2i.this.getY();
 		}
 
+		@Pure
 		@Override
-		public int y() {
-			return Point2i.this.y();
+		public int iy() {
+			return Point2i.this.iy();
 		}
 
 		@Override
@@ -514,36 +531,43 @@ public class Point2i extends Tuple2i<Point2D> implements Point2D {
 			throw new UnsupportedOperationException();
 		}
 
+		@Pure
 		@Override
 		public boolean equals(Tuple2D<?> t1) {
 			return Point2i.this.equals(t1);
 		}
-		
+
+		@Pure
 		@Override
 		public int hashCode() {
 			return Point2i.this.hashCode();
 		}
 
+		@Pure
 		@Override
 		public boolean epsilonEquals(Point2D t1, double epsilon) {
 			return Point2i.this.epsilonEquals(t1, epsilon);
 		}
 
+		@Pure
 		@Override
 		public double getDistanceSquared(Point2D p1) {
 			return Point2i.this.getDistanceSquared(p1);
 		}
 
+		@Pure
 		@Override
 		public double getDistance(Point2D p1) {
 			return Point2i.this.getDistance(p1);
 		}
 
+		@Pure
 		@Override
 		public double getDistanceL1(Point2D p1) {
 			return Point2i.this.getDistanceL1(p1);
 		}
 
+		@Pure
 		@Override
 		public double getDistanceLinf(Point2D p1) {
 			return Point2i.this.getDistanceLinf(p1);
@@ -604,26 +628,31 @@ public class Point2i extends Tuple2i<Point2D> implements Point2D {
 			throw new UnsupportedOperationException();
 		}
 
+		@Pure
 		@Override
 		public Point2D toUnmodifiable() {
 			return this;
 		}
 
+		@Pure
 		@Override
 		public int distanceSquared(Point2D p1) {
 			return Point2i.this.distanceSquared(p1);
 		}
 
+		@Pure
 		@Override
 		public int distance(Point2D p1) {
 			return Point2i.this.distance(p1);
 		}
 
+		@Pure
 		@Override
 		public int distanceL1(Point2D p1) {
 			return Point2i.this.distanceL1(p1);
 		}
 
+		@Pure
 		@Override
 		public int distanceLinf(Point2D p1) {
 			return Point2i.this.distanceLinf(p1);

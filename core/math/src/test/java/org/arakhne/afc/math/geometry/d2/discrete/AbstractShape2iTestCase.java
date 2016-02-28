@@ -99,6 +99,7 @@ public abstract class AbstractShape2iTestCase<T extends Shape2i> extends Abstrac
 	 * @return <code>true</code> if the two arrays are equal, otherwise
 	 * <code>false</code>.
 	 */
+	@SuppressWarnings("null")
 	public boolean isEpsilonEquals(float[] a, float[] b) {
 		if (a==b) return true;
 		if (a==null && b!=null) return false;
@@ -119,6 +120,7 @@ public abstract class AbstractShape2iTestCase<T extends Shape2i> extends Abstrac
 	 * @return <code>true</code> if the two arrays are equal, otherwise
 	 * <code>false</code>.
 	 */
+	@SuppressWarnings("null")
 	protected boolean isEquals(int[] a, int[] b) {
 		if (a==b) return true;
 		if (a==null && b!=null) return false;

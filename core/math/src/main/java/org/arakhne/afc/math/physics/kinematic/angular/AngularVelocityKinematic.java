@@ -40,7 +40,7 @@ public interface AngularVelocityKinematic extends AngularInstantVelocityKinemati
 	 * @return the maximal angular speed of this object in r/s,
 	 * always >=0.
 	 */
-	public float getMaxAngularSpeed();
+	public double getMaxAngularSpeed();
 
 	/**
 	 * Returns the maximal angular speed of this object.
@@ -49,6 +49,6 @@ public interface AngularVelocityKinematic extends AngularInstantVelocityKinemati
 	 * @return the maximal angular speed of this object in the given unit,
 	 * always >=0.
 	 */
-	public float getMaxAngularSpeed(AngularUnit unit);
+	public double getMaxAngularSpeed(AngularUnit unit);
 	
 }

@@ -148,8 +148,8 @@ implements Iterator<P> {
 					++notNullIndex;
 				}
 			}
-			catch(IndexOutOfBoundsException _) {
-				throw new ConcurrentModificationException();
+			catch(IndexOutOfBoundsException e) {
+				e.printStackTrace();throw new ConcurrentModificationException();
 			}
 		}
 		

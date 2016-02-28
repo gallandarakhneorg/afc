@@ -34,11 +34,11 @@ import java.io.OutputStream;
 public class UnclosableOutputStream extends FilterOutputStream {
 
 	/**
-	 * @param out
+	 * @param out1
 	 * @throws IOException
 	 */
-	public UnclosableOutputStream(OutputStream out) throws IOException {
-		super(out);
+	public UnclosableOutputStream(OutputStream out1) throws IOException {
+		super(out1);
 	}
 
 	/**
@@ -49,7 +49,7 @@ public class UnclosableOutputStream extends FilterOutputStream {
 		try {
 			flush();
 		}
-		catch (IOException _) {
+		catch ( @SuppressWarnings("unused") IOException _) {
 			//
 		}
 	}

@@ -33,13 +33,13 @@ import org.junit.Test;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
-public abstract class AbstractBoxedShape3fTestCase<T extends AbstractBoxedShape3f> extends AbstractShape3fTestCase<T> {
+public abstract class AbstractBoxedShape3fTestCase<T extends AbstractBoxedShape3F> extends AbstractShape3fTestCase<T> {
 
 	@Test
 	public abstract void toBoundingBox();
 	
 	@Test
-	public abstract void toBoundingBoxAlignedBox3f();
+	public abstract void toBoundingBoxAlignedBox3x();
 
 	@Test
 	public abstract void clear();
@@ -48,7 +48,7 @@ public abstract class AbstractBoxedShape3fTestCase<T extends AbstractBoxedShape3
 	public abstract void setDoubleDoubleDoubleDoubleDoubleDouble();
 	
 	@Test
-	public abstract void setPoint3fPoint3f();
+	public abstract void setPoint3xPoint3x();
 
 	@Test
 	public abstract void setSizeXDouble();
@@ -108,7 +108,7 @@ public abstract class AbstractBoxedShape3fTestCase<T extends AbstractBoxedShape3
 	public abstract void setMaxYDouble();
 
 	@Test
-	public abstract void getMinz();
+	public abstract void getMinZ();
 
 	@Test
 	public abstract void setMinZDouble();

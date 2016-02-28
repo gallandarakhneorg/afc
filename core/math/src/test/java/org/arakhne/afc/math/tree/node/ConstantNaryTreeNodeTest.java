@@ -34,6 +34,7 @@ import org.junit.Test;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("boxing")
 public class ConstantNaryTreeNodeTest {
 
 	private final TreeNodeListenerStub<DefaultConstantNaryTreeNode<Object>> listener =
@@ -262,11 +263,11 @@ public class ConstantNaryTreeNodeTest {
 		private final String name;
 		
 		/**
-		 * @param name
+		 * @param name1
 		 */
-		public NodeStub(String name) {
+		public NodeStub(String name1) {
 			super(5);
-			this.name = name;
+			this.name = name1;
 		}
 		
 		/**

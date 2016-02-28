@@ -1,0 +1,240 @@
+/**
+ * 
+ * fr.utbm.v3g.core.math.Vector2d.java
+ *
+ * Copyright (c) 2008-10, Multiagent Team - Systems and Transportation Laboratory (SeT)
+ * All rights reserved.
+ *
+ * This software is the confidential and proprietary information
+ * of the Systems and Transportation Laboratory ("Confidential Information").
+ * You shall not disclose such Confidential Information and shall use
+ * it only in accordance with the terms of the license agreement
+ * you entered into with the SeT.
+ * 
+ * http://www.multiagent.fr/
+ *
+ * Primary author : Olivier LAMOTTE (olivier.lamotte@utbm.fr) - 2015
+ *
+ */
+package org.arakhne.afc.math.geometry.d2.continuous;
+
+import java.util.concurrent.Callable;
+
+import org.arakhne.afc.math.geometry.d2.FunctionalVector2D;
+import org.arakhne.afc.math.geometry.d2.Tuple2D;
+import org.arakhne.afc.math.geometry.d2.Vector2D;
+import org.eclipse.xtext.xbase.lib.Pure;
+
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.ReadOnlyDoubleWrapper;
+
+/**
+ * @author Olivier LAMOTTE (olivier.lamotte@utbm.fr)
+ *
+ */
+public class Vector2d extends Tuple2d<Vector2D>implements FunctionalVector2D {
+
+	private static final long serialVersionUID = 2049284731039698587L;
+
+	
+	protected ReadOnlyDoubleWrapper lengthSquareProperty = new ReadOnlyDoubleWrapper();
+	private ReadOnlyDoubleWrapper lengthProperty = new ReadOnlyDoubleWrapper();
+	
+	
+	public Vector2d() {
+		this(0d, 0d);
+	}
+	
+	public Vector2d(Vector2d v) {
+		this(v.xProperty,v.yProperty);
+	}
+	
+	public Vector2d(Tuple2D<?> tuple) {
+		super(tuple);
+	}
+	
+	public Vector2d(Tuple2d<?> tuple) {
+		super(tuple);
+	}
+	
+	public Vector2d(double x, double y) {
+		super(x, y);
+		
+		this.lengthSquareProperty.bind(Bindings.createDoubleBinding(new Callable<Double>() {
+			@Override
+			public Double call() throws Exception {
+				return new Double(Vector2d.this.xProperty.doubleValue() * Vector2d.this.xProperty.doubleValue() + Vector2d.this.yProperty.doubleValue() * Vector2d.this.yProperty.doubleValue());
+			}
+		}, this.xProperty, this.yProperty));
+		
+		this.lengthProperty.bind(Bindings.createDoubleBinding(new Callable<Double>() {
+			@Override
+			public Double call() throws Exception {
+				return new Double(Math.sqrt(Vector2d.this.lengthSquareProperty.doubleValue()));
+			}
+		}, this.lengthSquareProperty));
+	}
+	
+	public Vector2d(DoubleProperty x, DoubleProperty y) {
+		super(x, y);
+		
+		this.lengthSquareProperty.bind(Bindings.createDoubleBinding(new Callable<Double>() {
+			@Override
+			public Double call() throws Exception {
+				return new Double(Vector2d.this.xProperty.doubleValue() * Vector2d.this.xProperty.doubleValue() + Vector2d.this.yProperty.doubleValue() * Vector2d.this.yProperty.doubleValue());
+			}
+		}, this.xProperty, this.yProperty));
+		
+		this.lengthProperty.bind(Bindings.createDoubleBinding(new Callable<Double>() {
+			@Override
+			public Double call() throws Exception {
+				return new Double(Math.sqrt(Vector2d.this.lengthSquareProperty.doubleValue()));
+			}
+		}, this.lengthSquareProperty));
+	}
+	
+	/** {@inheritDoc}
+	 */
+	@Pure
+	@Override
+	public Vector2d clone() {
+		return (Vector2d)super.clone();
+	}
+
+	@Pure
+	@Override
+	public Vector2D toUnmodifiable() {
+		return new UnmodifiableVector2d();
+	}
+
+	
+	public class UnmodifiableVector2d implements FunctionalVector2D.UnmodifiableVector2f {
+
+		private static final long serialVersionUID = -1444735824393226579L;
+
+		/**
+		 */
+		public UnmodifiableVector2d() {
+			//
+		}
+
+		@Pure
+		@Override
+		public UnmodifiableVector2d clone() {
+			return new UnmodifiableVector2d();
+		}
+
+		@Override
+		public void get(Vector2D t) {
+			Vector2d.this.get(t);
+		}
+
+		@Override
+		public void get(int[] t) {
+			Vector2d.this.get(t);
+		}
+
+		@Override
+		public void get(double[] t) {
+			Vector2d.this.get(t);
+		}
+
+		@Pure
+		@Override
+		public double getX() {
+			return Vector2d.this.getX();
+		}
+
+		@Pure
+		@Override
+		public int ix() {
+			return Vector2d.this.ix();
+		}
+
+		@Pure
+		@Override
+		public double getY() {
+			return Vector2d.this.getY();
+		}
+
+		@Pure
+		@Override
+		public int iy() {
+			return Vector2d.this.iy();
+		}
+
+		@Pure
+		@Override
+		public boolean equals(Tuple2D<?> t1) {
+			return Vector2d.this.equals(t1);
+		}
+
+		@Pure
+		@Override
+		public int hashCode() {
+			return Vector2d.this.hashCode();
+		}
+
+		@Pure
+		@Override
+		public boolean epsilonEquals(Vector2D t1, double epsilon) {
+			return Vector2d.this.epsilonEquals(t1, epsilon);
+		}
+
+		@Pure
+		@Override
+		public double dot(Vector2D v1) {
+			return Vector2d.this.dot(v1);
+		}
+
+		@Pure
+		@Override
+		public double length() {
+			return Vector2d.this.length();
+		}
+
+		@Pure
+		@Override
+		public double lengthSquared() {
+			return Vector2d.this.lengthSquared();
+		}
+
+		@Pure
+		@Override
+		public double angle(Vector2D v1) {
+			return Vector2d.this.angle(v1);
+		}
+
+		@Pure
+		@Override
+		public double signedAngle(Vector2D v) {
+			return Vector2d.this.signedAngle(v);
+		}
+
+		@Pure
+		@Override
+		public double getOrientationAngle() {
+			return Vector2d.this.getOrientationAngle();
+		}
+
+		@Pure
+		@Override
+		public boolean isUnitVector() {
+			return Vector2d.this.isUnitVector();
+		}
+
+		@Pure
+		@Override
+		public Vector2D toUnmodifiable() {
+			return this;
+		}
+
+		@Pure
+		@Override
+		public double perp(Vector2D x2) {
+			return Vector2d.this.perp(x2);
+		}
+
+	}	
+}

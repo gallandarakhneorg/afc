@@ -22,8 +22,10 @@ package org.arakhne.afc.math.geometry.d2.continuous;
 
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
+import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.matrix.Matrix3f;
 import org.arakhne.afc.math.matrix.SingularMatrixException;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 
 /** A 2D transformation.
@@ -91,10 +93,12 @@ public class Transform2D extends Matrix3f {
 	 * @param m12
 	 *            the [1][2] element
 	 */
+	@SuppressWarnings("hiding")
 	public Transform2D(double m00, double m01, double m02, double m10, double m11, double m12) {
 		super(m00, m01, m02, m10, m11, m12, 0f, 0f, 1f);
 	}
 
+	@Pure
 	@Override
 	public Transform2D  clone() {
 		return (Transform2D)super.clone();
@@ -173,7 +177,7 @@ public class Transform2D extends Matrix3f {
 	 * 
 	 * @param t
 	 */
-	public void translate(Vector2f t) {
+	public void translate(Vector2D t) {
 		translate(t.getX(), t.getY());
 	}
 
@@ -181,6 +185,7 @@ public class Transform2D extends Matrix3f {
 	 * 
 	 * @return the amount
 	 */
+	@Pure
 	public double getTranslationX() {
 		return this.m02;
 	}
@@ -189,6 +194,7 @@ public class Transform2D extends Matrix3f {
 	 * 
 	 * @return the amount
 	 */
+	@Pure
 	public double getTranslationY() {
 		return this.m12;
 	}
@@ -197,6 +203,7 @@ public class Transform2D extends Matrix3f {
 	 * 
 	 * @return the amount
 	 */
+	@Pure
 	public Vector2f getTranslationVector() {
 		return new Vector2f(this.m02, this.m12);
 	}
@@ -206,6 +213,7 @@ public class Transform2D extends Matrix3f {
 	 * 
 	 * @return the amount
 	 */
+	@Pure
 	public double getRotation() {
 		double cosAngle = Math.acos(this.m00);
 		double sinAngle = Math.asin(this.m10);
@@ -398,6 +406,7 @@ public class Transform2D extends Matrix3f {
 	 * 
 	 * @return the amount
 	 */
+	@Pure
 	public double getScaleX() {
 		return this.m00;
 	}
@@ -412,6 +421,7 @@ public class Transform2D extends Matrix3f {
 	 * 
 	 * @return the amount
 	 */
+	@Pure
 	public double getScaleY() {
 		return this.m11;
 	}
@@ -426,6 +436,7 @@ public class Transform2D extends Matrix3f {
 	 * 
 	 * @return the amount
 	 */
+	@Pure
 	public Vector2f getScaleVector() {
 		return new Vector2f(this.m00, this.m11);
 	}
@@ -526,6 +537,7 @@ public class Transform2D extends Matrix3f {
 	 * 
 	 * @return the amount
 	 */
+	@Pure
 	public double getShearX() {
 		return this.m01;
 	}
@@ -540,6 +552,7 @@ public class Transform2D extends Matrix3f {
 	 * 
 	 * @return the amount
 	 */
+	@Pure
 	public double getShearY() {
 		return this.m10;
 	}
@@ -554,6 +567,7 @@ public class Transform2D extends Matrix3f {
 	 * 
 	 * @return the amount
 	 */
+	@Pure
 	public Vector2f getShearVector() {
 		return new Vector2f(this.m01, this.m10);
 	}
@@ -724,6 +738,7 @@ public class Transform2D extends Matrix3f {
 	 * @param y
 	 * @return the transformation result
 	 */
+	@Pure
 	public Point2D transform(double x, double y) {
 		double rx, ry;
 		rx = this.m00 * x + this.m01 * y + this.m02;
@@ -773,6 +788,7 @@ public class Transform2D extends Matrix3f {
 	 * @see #determinant()
 	 * @throws SingularMatrixException if the matrix cannot be inverted.
 	 */
+	@Pure
 	public Transform2D createInverse() {
 		double det = this.m00 * this.m11 - this.m01 * this.m10;
 		if (Math.abs(det) <= Double.MIN_VALUE) {
@@ -803,6 +819,7 @@ public class Transform2D extends Matrix3f {
 	 * @param m12
 	 *            the [1][2] element
 	 */
+	@SuppressWarnings("hiding")
 	public void set(double m00, double m01, double m02, double m10, double m11, double m12) {
 		set(m00, m01, m02, m10, m11, m12, 0f, 0f, 1f);
 	}

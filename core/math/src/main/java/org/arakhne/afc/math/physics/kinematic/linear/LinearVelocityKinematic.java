@@ -41,7 +41,7 @@ public interface LinearVelocityKinematic extends LinearInstantVelocityKinematic 
 	 * @return the maximal linear speed of this object in m/s,
 	 * always >=0.
 	 */
-	public float getMaxLinearSpeed();
+	public double getMaxLinearSpeed();
 		
 	/**
 	 * Returns the maximal linear speed of this object.
@@ -50,6 +50,6 @@ public interface LinearVelocityKinematic extends LinearInstantVelocityKinematic 
 	 * @return the maximal linear speed of this object in the given unit,
 	 * always >=0.
 	 */
-	public float getMaxLinearSpeed(SpeedUnit unit);
+	public double getMaxLinearSpeed(SpeedUnit unit);
 
 }

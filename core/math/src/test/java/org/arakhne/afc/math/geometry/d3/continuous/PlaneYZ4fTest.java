@@ -30,10 +30,10 @@ import org.junit.Test;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
-public class PlaneYZ4fTest extends AbstractPlane3DTestCase<PlaneYZ4f> {
+public class PlaneYZ4fTest extends AbstractPlane3DTestCase<AbstractPlaneYZ4F> {
 
 	@Override
-	protected PlaneYZ4f createPlane() {
+	protected AbstractPlaneYZ4F createPlane() {
 		throw new UnsupportedOperationException();
 	}
 

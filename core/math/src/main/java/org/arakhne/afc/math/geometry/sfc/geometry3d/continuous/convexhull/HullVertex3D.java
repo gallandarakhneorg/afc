@@ -20,7 +20,8 @@
  */
 package org.arakhne.afc.math.geometry.sfc.geometry3d.continuous.convexhull;
 
-import org.arakhne.afc.math.geometry.sfc.geometry3d.continuous.Point3f;
+import org.arakhne.afc.math.geometry.d3.continuous.Point3f;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** This class represents a 3D vertex used inside
  * Convex Hull Computation Algorithms.
@@ -45,6 +46,7 @@ public class HullVertex3D<T extends Point3f> implements HullObject<T> {
 	 * @param index is the index of this vertex.
 	 * @param creationLevel is the level in the creation level.
 	 */
+	@SuppressWarnings("hiding")
 	public HullVertex3D(T[] points, int index, int creationLevel) {
 		this.index = index;
 		this.creationLevel = creationLevel;
@@ -52,6 +54,7 @@ public class HullVertex3D<T extends Point3f> implements HullObject<T> {
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public int getCreationLevel() {
 		return this.creationLevel;
@@ -62,6 +65,7 @@ public class HullVertex3D<T extends Point3f> implements HullObject<T> {
 	 * 
 	 * @return {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public String toString() {
 		return "[Vertex3D, "+this.index+"]\n";  //$NON-NLS-1$//$NON-NLS-2$
@@ -69,6 +73,7 @@ public class HullVertex3D<T extends Point3f> implements HullObject<T> {
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public Point3f[] getObjectPoints(T[] points) {
 		return new Point3f[] {
@@ -78,6 +83,7 @@ public class HullVertex3D<T extends Point3f> implements HullObject<T> {
 	
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public int[] getObjectIndexes() {
 		return new int[] {
@@ -87,6 +93,7 @@ public class HullVertex3D<T extends Point3f> implements HullObject<T> {
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public int indexesInRange(int min, int max) {
 		int i = min;

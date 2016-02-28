@@ -22,6 +22,7 @@
 package org.arakhne.afc.math.geometry.d2.discrete;
 
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** 2D tuple with 2 integers.
  * 
@@ -31,6 +32,7 @@ import org.arakhne.afc.math.geometry.d2.Tuple2D;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("hiding")
 public class Tuple2i<T extends Tuple2D<? super T>> implements Tuple2D<T> {
 
 	private static final long serialVersionUID = -7779997414431055683L;
@@ -102,6 +104,7 @@ public class Tuple2i<T extends Tuple2D<? super T>> implements Tuple2D<T> {
 	/** {@inheritDoc}
 	 */
 	@SuppressWarnings("unchecked")
+	@Pure
 	@Override
 	public T clone() {
 		try {
@@ -316,8 +319,8 @@ public class Tuple2i<T extends Tuple2D<? super T>> implements Tuple2D<T> {
 	 */
 	@Override
 	public void negate(T t1) {
-		this.x = -t1.x();
-		this.y = -t1.y();
+		this.x = -t1.ix();
+		this.y = -t1.iy();
 	}
 
 	/**
@@ -370,8 +373,8 @@ public class Tuple2i<T extends Tuple2D<? super T>> implements Tuple2D<T> {
 	 */
 	@Override
 	public void set(Tuple2D<?> t1) {
-		this.x = t1.x();
-		this.y = t1.y();
+		this.x = t1.ix();
+		this.y = t1.iy();
 	}
 
 	/**
@@ -413,6 +416,7 @@ public class Tuple2i<T extends Tuple2D<? super T>> implements Tuple2D<T> {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public double getX() {
 		return this.x;
@@ -421,8 +425,9 @@ public class Tuple2i<T extends Tuple2D<? super T>> implements Tuple2D<T> {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
-	public int x() {
+	public int ix() {
 		return this.x;
 	}
 
@@ -445,6 +450,7 @@ public class Tuple2i<T extends Tuple2D<? super T>> implements Tuple2D<T> {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public double getY() {
 		return this.y;
@@ -453,8 +459,9 @@ public class Tuple2i<T extends Tuple2D<? super T>> implements Tuple2D<T> {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
-	public int y() {
+	public int iy() {
 		return this.y;
 	}
 
@@ -545,13 +552,14 @@ public class Tuple2i<T extends Tuple2D<? super T>> implements Tuple2D<T> {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public boolean equals(Tuple2D<?> t1) {
 		try {
-			return(this.x == t1.x() && this.y == t1.y());
+			return(this.x == t1.ix() && this.y == t1.iy());
 		}
 		catch (NullPointerException e2) {
-			return false;
+			e2.printStackTrace();return false;
 		}
 	}
 
@@ -559,23 +567,25 @@ public class Tuple2i<T extends Tuple2D<? super T>> implements Tuple2D<T> {
 	 * {@inheritDoc}
 	 */
 	@SuppressWarnings("unchecked")
+	@Pure
 	@Override
 	public boolean equals(Object t1) {
 		try {
 			T t2 = (T) t1;
-			return(this.x == t2.x() && this.y == t2.y());
+			return(this.x == t2.ix() && this.y == t2.iy());
 		}
 		catch(AssertionError e) {
 			throw e;
 		}
 		catch (Throwable e2) {
-			return false;
+			e2.printStackTrace();return false;
 		}
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public boolean epsilonEquals(T t1, double epsilon) {
 		double diff;
@@ -594,6 +604,7 @@ public class Tuple2i<T extends Tuple2D<? super T>> implements Tuple2D<T> {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public int hashCode() {
 		int bits = 1;
@@ -605,6 +616,7 @@ public class Tuple2i<T extends Tuple2D<? super T>> implements Tuple2D<T> {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public String toString() {
 		return "(" //$NON-NLS-1$

@@ -82,33 +82,33 @@ public class AStarNotOrientedTest extends AbstractMathTestCase {
 	
 	private void reset() {
 		this.A.setArrivalConnection(null);
-		this.A.setCost(Float.NaN);
-		this.A.setEstimatedCost(Float.NaN);
+		this.A.setCost(Double.NaN);
+		this.A.setEstimatedCost(Double.NaN);
 		this.B.setArrivalConnection(null);
-		this.B.setCost(Float.NaN);
-		this.B.setEstimatedCost(Float.NaN);
+		this.B.setCost(Double.NaN);
+		this.B.setEstimatedCost(Double.NaN);
 		this.C.setArrivalConnection(null);
-		this.C.setCost(Float.NaN);
-		this.C.setEstimatedCost(Float.NaN);
+		this.C.setCost(Double.NaN);
+		this.C.setEstimatedCost(Double.NaN);
 		this.D.setArrivalConnection(null);
-		this.D.setCost(Float.NaN);
-		this.D.setEstimatedCost(Float.NaN);
+		this.D.setCost(Double.NaN);
+		this.D.setEstimatedCost(Double.NaN);
 		this.E.setArrivalConnection(null);
-		this.E.setCost(Float.NaN);
-		this.E.setEstimatedCost(Float.NaN);
+		this.E.setCost(Double.NaN);
+		this.E.setEstimatedCost(Double.NaN);
 	}
 	
-	private static float dist(float a, float b) {
-		return (float)Math.sqrt(a*a+b*b);
+	private static double dist(double a, double b) {
+		return Math.sqrt(a*a+b*b);
 	}
 	
 	/**
 	 */
 	@Test
 	public void estimatePTPT() {
-		float dDist = dist(20f,20f);
-		float mlDist = dist(10f,40f);
-		float msDist = dist(10f,20f);
+		double dDist = dist(20f,20f);
+		double mlDist = dist(10f,40f);
+		double msDist = dist(10f,20f);
 		
 		assertEpsilonEquals(0f, 				this.astar.estimate(this.A, this.A));
 		assertEpsilonEquals(20f, 				this.astar.estimate(this.A, this.B));

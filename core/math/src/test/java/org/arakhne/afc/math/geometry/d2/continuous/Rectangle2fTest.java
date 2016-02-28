@@ -23,20 +23,11 @@ package org.arakhne.afc.math.geometry.d2.continuous;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.d2.Point2D;
-import org.arakhne.afc.math.geometry.d2.continuous.Circle2f;
-import org.arakhne.afc.math.geometry.d2.continuous.Ellipse2f;
-import org.arakhne.afc.math.geometry.d2.continuous.Path2f;
-import org.arakhne.afc.math.geometry.d2.continuous.PathIterator2f;
-import org.arakhne.afc.math.geometry.d2.continuous.Point2f;
-import org.arakhne.afc.math.geometry.d2.continuous.Rectangle2f;
-import org.arakhne.afc.math.geometry.d2.continuous.Segment2f;
-import org.arakhne.afc.math.geometry.d2.continuous.Transform2D;
 import org.junit.Test;
 
 /**
@@ -57,11 +48,11 @@ public class Rectangle2fTest extends AbstractRectangularShape2fTestCase<Rectangl
 	@Override
 	public void isEmpty() {
 		assertFalse(this.r.isEmpty());
-		this.r.setMinX(1f);
+		this.r.setFromCorners(1f,this.r.getMinY(),this.r.getMaxX(),this.r.getMaxY());
 		assertFalse(this.r.isEmpty());
-		this.r.setMinY(1f);
+		this.r.setFromCorners(this.r.getMinX(),1f,this.r.getMaxX(),this.r.getMaxY());
 		assertTrue(this.r.isEmpty());
-		this.r.setMinX(0f);
+		this.r.setFromCorners(0f,this.r.getMinY(),this.r.getMaxX(),this.r.getMaxY());
 		assertFalse(this.r.isEmpty());
 	}
 
@@ -184,13 +175,13 @@ public class Rectangle2fTest extends AbstractRectangularShape2fTestCase<Rectangl
 		Rectangle2f a = new Rectangle2f(2.3f, 3.4f, 4.5f, 5.6f);
 		Rectangle2f b = new Rectangle2f(6.5f, 5.4f, 4.3f, 3.2f);
 		
-		Rectangle2f.union(this.r, a, b);
+		AbstractRectangle2F.union(this.r, a, b);
 		assertEpsilonEquals(2.3f, this.r.getMinX());
 		assertEpsilonEquals(3.4f, this.r.getMinY());
 		assertEpsilonEquals(10.8f, this.r.getMaxX());
 		assertEpsilonEquals(9f, this.r.getMaxY());
 
-		Rectangle2f.union(this.r, b, a);
+		AbstractRectangle2F.union(this.r, b, a);
 		assertEpsilonEquals(2.3f, this.r.getMinX());
 		assertEpsilonEquals(3.4f, this.r.getMinY());
 		assertEpsilonEquals(10.8f, this.r.getMaxX());
@@ -206,13 +197,13 @@ public class Rectangle2fTest extends AbstractRectangularShape2fTestCase<Rectangl
 		Rectangle2f a = new Rectangle2f(2.3f, 3.4f, 4.5f, 5.6f);
 		Rectangle2f b = new Rectangle2f(6.5f, 5.4f, 4.3f, 3.2f);
 		
-		Rectangle2f.intersection(this.r, a, b);
+		AbstractRectangle2F.intersection(this.r, a, b);
 		assertEpsilonEquals(6.5f, this.r.getMinX());
 		assertEpsilonEquals(5.4f, this.r.getMinY());
 		assertEpsilonEquals(6.8f, this.r.getMaxX());
 		assertEpsilonEquals(8.6f, this.r.getMaxY());
 
-		Rectangle2f.intersection(this.r, b, a);
+		AbstractRectangle2F.intersection(this.r, b, a);
 		assertEpsilonEquals(6.5f, this.r.getMinX());
 		assertEpsilonEquals(5.4f, this.r.getMinY());
 		assertEpsilonEquals(6.8f, this.r.getMaxX());
@@ -228,13 +219,13 @@ public class Rectangle2fTest extends AbstractRectangularShape2fTestCase<Rectangl
 		// b: 6.5x5.4 - 10.8x8.6
 		Rectangle2f b = new Rectangle2f(6.5f, 5.4f, 4.3f, 3.2f);
 		
-		rr = this.r.createUnion(b);
+		rr = (Rectangle2f) this.r.createUnion(b);
 		assertEpsilonEquals(0f, rr.getMinX());
 		assertEpsilonEquals(0f, rr.getMinY());
 		assertEpsilonEquals(10.8f, rr.getMaxX());
 		assertEpsilonEquals(8.6f, rr.getMaxY());
 
-		rr = this.r.createUnion(b);
+		rr = (Rectangle2f) this.r.createUnion(b);
 		assertEpsilonEquals(0f, rr.getMinX());
 		assertEpsilonEquals(0f, rr.getMinY());
 		assertEpsilonEquals(10.8f, rr.getMaxX());
@@ -250,13 +241,13 @@ public class Rectangle2fTest extends AbstractRectangularShape2fTestCase<Rectangl
 		// b: 6.5x5.4 - 10.8x8.6
 		Rectangle2f b = new Rectangle2f(6.5f, 5.4f, 4.3f, 3.2f);
 		
-		rr = this.r.createIntersection(b);
+		rr = (Rectangle2f) this.r.createIntersection(b);
 		assertEpsilonEquals(0f, rr.getMinX());
 		assertEpsilonEquals(0f, rr.getMinY());
 		assertEpsilonEquals(0f, rr.getMaxX());
 		assertEpsilonEquals(0f, rr.getMaxY());
 
-		rr = this.r.createIntersection(b);
+		rr = (Rectangle2f) this.r.createIntersection(b);
 		assertEpsilonEquals(0f, rr.getMinX());
 		assertEpsilonEquals(0f, rr.getMinY());
 		assertEpsilonEquals(0f, rr.getMaxX());
@@ -266,8 +257,8 @@ public class Rectangle2fTest extends AbstractRectangularShape2fTestCase<Rectangl
 	@Test
 	@Override
 	public void toBoundingBox() {
-		Rectangle2f b = this.r.toBoundingBox();
-		assertSame(this.r, b);
+		AbstractRectangle2F<?> b = this.r.toBoundingBox();
+		assertTrue(this.r.equals(b));
 	}
 	
 	/**
@@ -364,42 +355,42 @@ public class Rectangle2fTest extends AbstractRectangularShape2fTestCase<Rectangl
 		Point2D p;
 		
 		p = this.r.getFarthestPointTo(new Point2f(0f, 0f));
-		assertEpsilonEquals(0f, p.getX());
-		assertEpsilonEquals(0f, p.getY());
+		assertEpsilonEquals(1f, p.getX());
+		assertEpsilonEquals(1f, p.getY());
 		
 		p = this.r.getFarthestPointTo(new Point2f(-2.3f, -3.4f));
-		assertEpsilonEquals(0f, p.getX());
-		assertEpsilonEquals(0f, p.getY());
-		p = this.r.getFarthestPointTo(new Point2f(-2.3f, .5f));
-		assertEpsilonEquals(0f, p.getX());
-		assertEpsilonEquals(.5f, p.getY());
-		p = this.r.getFarthestPointTo(new Point2f(-2.3f, 5.6f));
-		assertEpsilonEquals(0f, p.getX());
+		assertEpsilonEquals(1f, p.getX());
 		assertEpsilonEquals(1f, p.getY());
+		p = this.r.getFarthestPointTo(new Point2f(-2.3f, .5f));
+		assertEpsilonEquals(1f, p.getX());
+		assertEpsilonEquals(1f, p.getY());
+		p = this.r.getFarthestPointTo(new Point2f(-2.3f, 5.6f));
+		assertEpsilonEquals(1f, p.getX());
+		assertEpsilonEquals(0f, p.getY());
 		
 		p = this.r.getFarthestPointTo(new Point2f(.5f, -3.4f));
-		assertEpsilonEquals(.5f, p.getX());
-		assertEpsilonEquals(0f, p.getY());
-		p = this.r.getFarthestPointTo(new Point2f(.5f, .5f));
-		assertEpsilonEquals(.5f, p.getX());
-		assertEpsilonEquals(.5f, p.getY());
-		p = this.r.getFarthestPointTo(new Point2f(.5f, 5.6f));
-		assertEpsilonEquals(.5f, p.getX());
+		assertEpsilonEquals(1f, p.getX());
 		assertEpsilonEquals(1f, p.getY());
+		p = this.r.getFarthestPointTo(new Point2f(.5f, .5f));
+		assertEpsilonEquals(1f, p.getX());
+		assertEpsilonEquals(1f, p.getY());
+		p = this.r.getFarthestPointTo(new Point2f(.5f, 5.6f));
+		assertEpsilonEquals(1f, p.getX());
+		assertEpsilonEquals(0f, p.getY());
 
 		p = this.r.getFarthestPointTo(new Point2f(5.6f, -3.4f));
-		assertEpsilonEquals(1f, p.getX());
-		assertEpsilonEquals(0f, p.getY());
-		p = this.r.getFarthestPointTo(new Point2f(5.6f, .5f));
-		assertEpsilonEquals(1f, p.getX());
-		assertEpsilonEquals(.5f, p.getY());
-		p = this.r.getFarthestPointTo(new Point2f(5.6f, 5.6f));
-		assertEpsilonEquals(1f, p.getX());
+		assertEpsilonEquals(0f, p.getX());
 		assertEpsilonEquals(1f, p.getY());
+		p = this.r.getFarthestPointTo(new Point2f(5.6f, .5f));
+		assertEpsilonEquals(0f, p.getX());
+		assertEpsilonEquals(1f, p.getY());
+		p = this.r.getFarthestPointTo(new Point2f(5.6f, 5.6f));
+		assertEpsilonEquals(0f, p.getX());
+		assertEpsilonEquals(0f, p.getY());
 
 		p = this.r.getFarthestPointTo(new Point2f(.01f, .01f));
-		assertEpsilonEquals(.01f, p.getX());
-		assertEpsilonEquals(.01f, p.getY());
+		assertEpsilonEquals(1f, p.getX());
+		assertEpsilonEquals(1f, p.getY());
 	}
 
 	/**
@@ -507,21 +498,21 @@ public class Rectangle2fTest extends AbstractRectangularShape2fTestCase<Rectangl
 	 */
 	@Test
 	public void intersectsRectangleRectangle() {
-		assertTrue(Rectangle2f.intersectsRectangleRectangle(0f, 0f, 1f, 1f,
+		assertTrue(AbstractRectangle2F.intersectsRectangleRectangle(0f, 0f, 1f, 1f,
 				0f, 0f, 1f, 1f));
-		assertTrue(Rectangle2f.intersectsRectangleRectangle(0f, 0f, 1f, 1f,
+		assertTrue(AbstractRectangle2F.intersectsRectangleRectangle(0f, 0f, 1f, 1f,
 				-5f, -5f, 1f, 1f));
-		assertTrue(Rectangle2f.intersectsRectangleRectangle(0f, 0f, 1f, 1f,
+		assertTrue(AbstractRectangle2F.intersectsRectangleRectangle(0f, 0f, 1f, 1f,
 				.5f, .5f, 5f, 5f));
-		assertTrue(Rectangle2f.intersectsRectangleRectangle(0f, 0f, 1f, 1f,
+		assertTrue(AbstractRectangle2F.intersectsRectangleRectangle(0f, 0f, 1f, 1f,
 				.5f, .5f, 5f, .6f));
-		assertTrue(Rectangle2f.intersectsRectangleRectangle(0f, 0f, 1f, 1f,
+		assertTrue(AbstractRectangle2F.intersectsRectangleRectangle(0f, 0f, 1f, 1f,
 				-5f, -5f, 5f, 5f));
-		assertFalse(Rectangle2f.intersectsRectangleRectangle(0f, 0f, 1f, 1f,
+		assertFalse(AbstractRectangle2F.intersectsRectangleRectangle(0f, 0f, 1f, 1f,
 				-5f, -5f, -4f, -4f));
-		assertFalse(Rectangle2f.intersectsRectangleRectangle(0f, 0f, 1f, 1f,
+		assertFalse(AbstractRectangle2F.intersectsRectangleRectangle(0f, 0f, 1f, 1f,
 				-5f, -5f, 4f, -4f));
-		assertFalse(Rectangle2f.intersectsRectangleRectangle(0f, 0f, 1f, 1f,
+		assertFalse(AbstractRectangle2F.intersectsRectangleRectangle(0f, 0f, 1f, 1f,
 				5f, -5f, 6f, 5f));
 	}
 
@@ -529,23 +520,23 @@ public class Rectangle2fTest extends AbstractRectangularShape2fTestCase<Rectangl
 	 */
 	@Test
 	public void containsRectangleRectangle() {
-		assertTrue(Rectangle2f.containsRectangleRectangle(0f, 0f, 1f, 1f,
+		assertTrue(AbstractRectangle2F.containsRectangleRectangle(0f, 0f, 1f, 1f,
 				0f, 0f, 1f, 1f));
-		assertFalse(Rectangle2f.containsRectangleRectangle(0f, 0f, 1f, 1f,
+		assertFalse(AbstractRectangle2F.containsRectangleRectangle(0f, 0f, 1f, 1f,
 				-5f, -5f, 1f, 1f));
-		assertFalse(Rectangle2f.containsRectangleRectangle(0f, 0f, 1f, 1f,
+		assertFalse(AbstractRectangle2F.containsRectangleRectangle(0f, 0f, 1f, 1f,
 				.5f, .5f, 5f, 5f));
-		assertFalse(Rectangle2f.containsRectangleRectangle(0f, 0f, 1f, 1f,
+		assertFalse(AbstractRectangle2F.containsRectangleRectangle(0f, 0f, 1f, 1f,
 				.5f, .5f, 5f, .6f));
-		assertFalse(Rectangle2f.containsRectangleRectangle(0f, 0f, 1f, 1f,
+		assertFalse(AbstractRectangle2F.containsRectangleRectangle(0f, 0f, 1f, 1f,
 				-5f, -5f, 5f, 5f));
-		assertFalse(Rectangle2f.containsRectangleRectangle(0f, 0f, 1f, 1f,
+		assertFalse(AbstractRectangle2F.containsRectangleRectangle(0f, 0f, 1f, 1f,
 				-5f, -5f, -4f, -4f));
-		assertFalse(Rectangle2f.containsRectangleRectangle(0f, 0f, 1f, 1f,
+		assertFalse(AbstractRectangle2F.containsRectangleRectangle(0f, 0f, 1f, 1f,
 				-5f, -5f, 4f, -4f));
-		assertFalse(Rectangle2f.containsRectangleRectangle(0f, 0f, 1f, 1f,
+		assertFalse(AbstractRectangle2F.containsRectangleRectangle(0f, 0f, 1f, 1f,
 				5f, -5f, 6f, 5f));
-		assertTrue(Rectangle2f.containsRectangleRectangle(0f, 0f, 1f, 1f,
+		assertTrue(AbstractRectangle2F.containsRectangleRectangle(0f, 0f, 1f, 1f,
 				.25f, .25f, .5f, .5f));
 	}
 
@@ -553,23 +544,23 @@ public class Rectangle2fTest extends AbstractRectangularShape2fTestCase<Rectangl
 	 */
 	@Test
 	public void containsRectanglePoint() {
-		assertTrue(Rectangle2f.containsRectanglePoint(1f, 1f,
+		assertTrue(AbstractRectangle2F.containsRectanglePoint(1f, 1f,
 				0f, 0f, 1f, 1f));
-		assertFalse(Rectangle2f.containsRectanglePoint(1f, 1f,
+		assertFalse(AbstractRectangle2F.containsRectanglePoint(1f, 1f,
 				-5f, -5f, 1f, 1f));
-		assertFalse(Rectangle2f.containsRectanglePoint(1f, 1f,
+		assertTrue(AbstractRectangle2F.containsRectanglePoint(1f, 1f,
 				.5f, .5f, 5f, 5f));
-		assertFalse(Rectangle2f.containsRectanglePoint(1f, 1f,
-				.5f, .5f, 5f, .6f));
-		assertFalse(Rectangle2f.containsRectanglePoint(1f, 1f,
+		assertFalse(AbstractRectangle2F.containsRectanglePoint(1f, 1f,
+				.5f, .5f, 5f, .1f));
+		assertFalse(AbstractRectangle2F.containsRectanglePoint(1f, 1f,
 				-5f, -5f, 5f, 5f));
-		assertFalse(Rectangle2f.containsRectanglePoint(1f, 1f,
+		assertFalse(AbstractRectangle2F.containsRectanglePoint(1f, 1f,
 				-5f, -5f, -4f, -4f));
-		assertFalse(Rectangle2f.containsRectanglePoint(1f, 1f,
+		assertFalse(AbstractRectangle2F.containsRectanglePoint(1f, 1f,
 				-5f, -5f, 4f, -4f));
-		assertFalse(Rectangle2f.containsRectanglePoint(1f, 1f,
+		assertFalse(AbstractRectangle2F.containsRectanglePoint(1f, 1f,
 				5f, -5f, 6f, 5f));
-		assertTrue(Rectangle2f.containsRectanglePoint(1f, 1f,
+		assertTrue(AbstractRectangle2F.containsRectanglePoint(0.5f, 0.5f,
 				.25f, .25f, .5f, .5f));
 	}
 
@@ -577,23 +568,23 @@ public class Rectangle2fTest extends AbstractRectangularShape2fTestCase<Rectangl
 	 */
 	@Test
 	public void intersectsRectangleLine() {
-		assertTrue(Rectangle2f.intersectsRectangleLine(0f, 0f, 1f, 1f,
+		assertTrue(AbstractRectangle2F.intersectsRectangleLine(0f, 0f, 1f, 1f,
 				0f, 0f, 1f, 1f));
-		assertTrue(Rectangle2f.intersectsRectangleLine(0f, 0f, 1f, 1f,
+		assertTrue(AbstractRectangle2F.intersectsRectangleLine(0f, 0f, 1f, 1f,
 				-5f, -5f, 1f, 1f));
-		assertTrue(Rectangle2f.intersectsRectangleLine(0f, 0f, 1f, 1f,
+		assertTrue(AbstractRectangle2F.intersectsRectangleLine(0f, 0f, 1f, 1f,
 				.5f, .5f, 5f, 5f));
-		assertTrue(Rectangle2f.intersectsRectangleLine(0f, 0f, 1f, 1f,
+		assertTrue(AbstractRectangle2F.intersectsRectangleLine(0f, 0f, 1f, 1f,
 				.5f, .5f, 5f, .6f));
-		assertTrue(Rectangle2f.intersectsRectangleLine(0f, 0f, 1f, 1f,
+		assertTrue(AbstractRectangle2F.intersectsRectangleLine(0f, 0f, 1f, 1f,
 				-5f, -5f, 5f, 5f));
-		assertTrue(Rectangle2f.intersectsRectangleLine(0f, 0f, 1f, 1f,
+		assertTrue(AbstractRectangle2F.intersectsRectangleLine(0f, 0f, 1f, 1f,
 				-5f, -5f, -4f, -4f));
-		assertFalse(Rectangle2f.intersectsRectangleLine(0f, 0f, 1f, 1f,
+		assertFalse(AbstractRectangle2F.intersectsRectangleLine(0f, 0f, 1f, 1f,
 				-5f, -5f, 4f, -4f));
-		assertFalse(Rectangle2f.intersectsRectangleLine(0f, 0f, 1f, 1f,
+		assertFalse(AbstractRectangle2F.intersectsRectangleLine(0f, 0f, 1f, 1f,
 				5f, -5f, 6f, 5f));
-		assertFalse(Rectangle2f.intersectsRectangleLine(0f, 0f, 1f, 1f,
+		assertFalse(AbstractRectangle2F.intersectsRectangleLine(0f, 0f, 1f, 1f,
 				5f, -5f, 5f, 5f));
 	}
 
@@ -601,23 +592,23 @@ public class Rectangle2fTest extends AbstractRectangularShape2fTestCase<Rectangl
 	 */
 	@Test
 	public void intersectsRectangleSegment() {
-		assertTrue(Rectangle2f.intersectsRectangleSegment(0f, 0f, 1f, 1f,
-				0f, 0f, 1f, 1f));
-		assertTrue(Rectangle2f.intersectsRectangleSegment(0f, 0f, 1f, 1f,
+		assertTrue(AbstractRectangle2F.intersectsRectangleSegment(0f, 0f, 1f, 1f,
+				0.5f, 0.5f, 1.5f, 1.5f));
+		assertTrue(AbstractRectangle2F.intersectsRectangleSegment(0f, 0f, 1f, 1f,
 				-5f, -5f, 1f, 1f));
-		assertTrue(Rectangle2f.intersectsRectangleSegment(0f, 0f, 1f, 1f,
+		assertTrue(AbstractRectangle2F.intersectsRectangleSegment(0f, 0f, 1f, 1f,
 				.5f, .5f, 5f, 5f));
-		assertTrue(Rectangle2f.intersectsRectangleSegment(0f, 0f, 1f, 1f,
+		assertTrue(AbstractRectangle2F.intersectsRectangleSegment(0f, 0f, 1f, 1f,
 				.5f, .5f, 5f, .6f));
-		assertTrue(Rectangle2f.intersectsRectangleSegment(0f, 0f, 1f, 1f,
+		assertTrue(AbstractRectangle2F.intersectsRectangleSegment(0f, 0f, 1f, 1f,
 				-5f, -5f, 5f, 5f));
-		assertFalse(Rectangle2f.intersectsRectangleSegment(0f, 0f, 1f, 1f,
+		assertFalse(AbstractRectangle2F.intersectsRectangleSegment(0f, 0f, 1f, 1f,
 				-5f, -5f, -4f, -4f));
-		assertFalse(Rectangle2f.intersectsRectangleSegment(0f, 0f, 1f, 1f,
+		assertFalse(AbstractRectangle2F.intersectsRectangleSegment(0f, 0f, 1f, 1f,
 				-5f, -5f, 4f, -4f));
-		assertFalse(Rectangle2f.intersectsRectangleSegment(0f, 0f, 1f, 1f,
+		assertFalse(AbstractRectangle2F.intersectsRectangleSegment(0f, 0f, 1f, 1f,
 				5f, -5f, 6f, 5f));
-		assertFalse(Rectangle2f.intersectsRectangleSegment(0f, 0f, 1f, 1f,
+		assertFalse(AbstractRectangle2F.intersectsRectangleSegment(0f, 0f, 1f, 1f,
 				5f, -5f, 5f, 5f));
 	}
 
@@ -640,7 +631,7 @@ public class Rectangle2fTest extends AbstractRectangularShape2fTestCase<Rectangl
 	 */
 	@Test
 	public void intersectsSegment2f() {
-		assertTrue(this.r.intersects(new Segment2f(0f, 0f, 1f, 1f)));
+		assertTrue(this.r.intersects(new Segment2f(0.5f, 0f, 1.5f, 1.5f)));
 		assertTrue(this.r.intersects(new Segment2f(-5f, -5f, 1f, 1f)));
 		assertTrue(this.r.intersects(new Segment2f(.5f, .5f, 5f, 5f)));
 		assertTrue(this.r.intersects(new Segment2f(.5f, .5f, 5f, .6f)));
@@ -805,6 +796,120 @@ public class Rectangle2fTest extends AbstractRectangularShape2fTestCase<Rectangl
 		assertEpsilonEquals(-2f, this.r.getMinY());
 		assertEpsilonEquals(24f, this.r.getMaxX());
 		assertEpsilonEquals(26f, this.r.getMaxY());
+	}
+
+	/**
+	 */
+	@Test
+	@Override
+	public void intersectsPath2d() {
+		Path2d p;
+		
+		p = new Path2d();
+		p.moveTo(-2f, -2f);
+		p.lineTo(-2f, 2f);
+		p.lineTo(2f, 2f);
+		p.lineTo(2f, -2f);
+		assertFalse(this.r.intersects(p));
+		p.closePath();
+		assertTrue(this.r.intersects(p));
+		
+		p = new Path2d();
+		p.moveTo(-2f, -2f);
+		p.lineTo(0f, 0f);
+		p.lineTo(-2f, 2f);
+		assertFalse(this.r.intersects(p));
+		p.closePath();
+		assertFalse(this.r.intersects(p));
+
+		p = new Path2d();
+		p.moveTo(-2f, -2f);
+		p.lineTo(2f, 2f);
+		p.lineTo(-2f, 2f);
+		assertTrue(this.r.intersects(p));
+		p.closePath();
+		assertTrue(this.r.intersects(p));
+
+		p = new Path2d();
+		p.moveTo(-2f, -2f);
+		p.lineTo(-2f, 2f);
+		p.lineTo(2f, -2f);
+		assertFalse(this.r.intersects(p));
+		p.closePath();
+		assertFalse(this.r.intersects(p));
+
+		p = new Path2d();
+		p.moveTo(-2f, 2f);
+		p.lineTo(1f, 0f);
+		p.lineTo(2f, 1f);
+		assertTrue(this.r.intersects(p));
+		p.closePath();
+		assertTrue(this.r.intersects(p));
+
+		p = new Path2d();
+		p.moveTo(-2f, 2f);
+		p.lineTo(2f, 1f);
+		p.lineTo(1f, 0f);
+		assertFalse(this.r.intersects(p));
+		p.closePath();
+		assertTrue(this.r.intersects(p));
+	}
+
+	/**
+	 */
+	@Test
+	@Override
+	public void intersectsPathIterator2d() {
+		Path2d p;
+
+		p = new Path2d();
+		p.moveTo(-2f, -2f);
+		p.lineTo(-2f, 2f);
+		p.lineTo(2f, 2f);
+		p.lineTo(2f, -2f);
+		assertFalse(this.r.intersects(p.getPathIteratorProperty()));
+		p.closePath();
+		assertTrue(this.r.intersects(p.getPathIteratorProperty()));
+		
+		p = new Path2d();
+		p.moveTo(-2f, -2f);
+		p.lineTo(0f, 0f);
+		p.lineTo(-2f, 2f);
+		assertFalse(this.r.intersects(p.getPathIteratorProperty()));
+		p.closePath();
+		assertFalse(this.r.intersects(p.getPathIteratorProperty()));
+
+		p = new Path2d();
+		p.moveTo(-2f, -2f);
+		p.lineTo(2f, 2f);
+		p.lineTo(-2f, 2f);
+		assertTrue(this.r.intersects(p.getPathIteratorProperty()));
+		p.closePath();
+		assertTrue(this.r.intersects(p.getPathIteratorProperty()));
+
+		p = new Path2d();
+		p.moveTo(-2f, -2f);
+		p.lineTo(-2f, 2f);
+		p.lineTo(2f, -2f);
+		assertFalse(this.r.intersects(p.getPathIteratorProperty()));
+		p.closePath();
+		assertFalse(this.r.intersects(p.getPathIteratorProperty()));
+
+		p = new Path2d();
+		p.moveTo(-2f, 2f);
+		p.lineTo(1f, 0f);
+		p.lineTo(2f, 1f);
+		assertTrue(this.r.intersects(p.getPathIteratorProperty()));
+		p.closePath();
+		assertTrue(this.r.intersects(p.getPathIteratorProperty()));
+
+		p = new Path2d();
+		p.moveTo(-2f, 2f);
+		p.lineTo(2f, 1f);
+		p.lineTo(1f, 0f);
+		assertFalse(this.r.intersects(p.getPathIteratorProperty()));
+		p.closePath();
+		assertTrue(this.r.intersects(p.getPathIteratorProperty()));
 	}
 
 }

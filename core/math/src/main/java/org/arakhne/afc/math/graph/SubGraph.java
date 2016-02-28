@@ -62,18 +62,18 @@ implements Graph<ST,PT> {
 	protected final GraphIterationElementComparator<ST,PT> iterationNotOrientedElementComparator;
 
 	/**
-	 * @param segments is the collection to use to store the segments.
-	 * @param pointNumber is the number of connection points in the subgraph described by the <var>segments</var>.
+	 * @param segments1 is the collection to use to store the segments.
+	 * @param pointNumber1 is the number of connection points in the subgraph described by the <var>segments</var>.
 	 * @param orientedIterator is a comparator which may be used by this subgraph.
 	 * @param notOrientedIterator is a comparator which may be used by this subgraph.
 	 */
 	protected SubGraph(
-			Collection<ST> segments,
-			int pointNumber,
+			Collection<ST> segments1,
+			int pointNumber1,
 			GraphIterationElementComparator<ST,PT> orientedIterator,
 			GraphIterationElementComparator<ST,PT> notOrientedIterator) {
-		this.segments = segments;
-		this.pointNumber = pointNumber;
+		this.segments = segments1;
+		this.pointNumber = pointNumber1;
 		assert(orientedIterator!=null);
 		this.iterationOrientedElementComparator = orientedIterator;
 		assert(notOrientedIterator!=null);
@@ -424,11 +424,11 @@ implements Graph<ST,PT> {
 		 * @param previous_segment is the previous element that permits to reach this object during an iteration
 		 * @param segment is the current segment
 		 * @param point is the point on which the iteration arrived on the current segment.
-		 * @param distanceToReach is the distance that is already consumed.
-		 * @param distanceToConsume is the distance to consume including the segment.
+		 * @param distanceToReach1 is the distance that is already consumed.
+		 * @param distanceToConsume1 is the distance to consume including the segment.
 		 */
-		public SubGraphIterationElement(ST previous_segment, ST segment, PT point, double distanceToReach, double distanceToConsume) {
-			super(previous_segment, segment, point, distanceToReach, distanceToConsume);
+		public SubGraphIterationElement(ST previous_segment, ST segment, PT point, double distanceToReach1, double distanceToConsume1) {
+			super(previous_segment, segment, point, distanceToReach1, distanceToConsume1);
 		}
 
 		/** {@inheritDoc}

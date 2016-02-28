@@ -65,26 +65,26 @@ public class GraphIterationElement<ST extends GraphSegment<ST,PT>,PT extends Gra
 	boolean replied = false;
 
 	/**
-	 * @param previousSegment is the previous element that permits to reach this object during an iteration
+	 * @param previousSegment1 is the previous element that permits to reach this object during an iteration
 	 * @param segment is the current segment
 	 * @param point is the point on which the iteration arrived on the current segment.
-	 * @param distanceToReach is the distance that is already consumed to reach the segment.
-	 * @param distanceToConsume is the distance to consume including this segment length.
+	 * @param distanceToReach1 is the distance that is already consumed to reach the segment.
+	 * @param distanceToConsume1 is the distance to consume including this segment length.
 	 */
-	GraphIterationElement(ST previousSegment, ST segment, PT point, double distanceToReach, double distanceToConsume) {
+	GraphIterationElement(ST previousSegment1, ST segment, PT point, double distanceToReach1, double distanceToConsume1) {
 		assert(segment!=null);
 		assert(point!=null);
-		this.previousSegment = previousSegment;
+		this.previousSegment = previousSegment1;
 		this.currentSegment = segment;
 		this.connectionPoint = point;
-		this.distanceToReach = distanceToReach;
+		this.distanceToReach = distanceToReach1;
 		
 		PT otherPoint = segment.getOtherSidePoint(point);
 		this.culDeSac = ((otherPoint!=null)&&(otherPoint!=point)&&(otherPoint.isFinalConnectionPoint()));
 
 		this.lastReachableSegment = this.culDeSac;
 		
-		this.distanceToConsume = distanceToConsume;
+		this.distanceToConsume = distanceToConsume1;
 	}
 	
 	/** Replies the segment from which the iterator arrived on the current segment.
@@ -193,8 +193,8 @@ public class GraphIterationElement<ST extends GraphSegment<ST,PT>,PT extends Gra
 			catch(AssertionError e) {
 				throw e;
 			}
-			catch(Throwable _) {
-				// ignore this error.
+			catch(Throwable e) {
+				e.printStackTrace();
 			}
 		}
 		return firstSegment.hashCode() - secondSegment.hashCode();

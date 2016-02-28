@@ -156,18 +156,18 @@ public class OpenPath2fTest extends AbstractPath2fTestCase {
 		Point2D p;
 
 		p = this.r.getFarthestPointTo(new Point2f(0f, 0f));
-		assertEpsilonEquals(1f, p.getX());
-		assertEpsilonEquals(1f, p.getY());
+		assertEpsilonEquals(7f, p.getX());
+		assertEpsilonEquals(-5f, p.getY());
 
 		p = this.r.getFarthestPointTo(new Point2f(4f, 0f));
-		assertEpsilonEquals(3f, p.getX());
-		assertEpsilonEquals(1.25f, p.getY());
+		assertEpsilonEquals(7f, p.getX());
+		assertEpsilonEquals(-5f, p.getY());
 
 		p = this.r.getFarthestPointTo(new Point2f(4f, 2f));
-		assertEpsilonEquals(4.28125f, p.getX());
-		assertEpsilonEquals(2.11724f, p.getY());
+		assertEpsilonEquals(7f, p.getX());
+		assertEpsilonEquals(-5f, p.getY());
 
-		p = this.r.getFarthestPointTo(new Point2f(1f, 0f));
+		p = this.r.getFarthestPointTo(new Point2f(10f, 0f));
 		assertEpsilonEquals(1f, p.getX());
 		assertEpsilonEquals(1f, p.getY());
 	}
@@ -204,18 +204,18 @@ public class OpenPath2fTest extends AbstractPath2fTestCase {
 		Point2D p;
 
 		p = Path2f.getFarthestPointTo(this.r.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), 0f, 0f);
-		assertEpsilonEquals(1f, p.getX());
-		assertEpsilonEquals(1f, p.getY());
+		assertEpsilonEquals(7f, p.getX());
+		assertEpsilonEquals(-5f, p.getY());
 
 		p = Path2f.getFarthestPointTo(this.r.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), 4f, 0f);
-		assertEpsilonEquals(3f, p.getX());
-		assertEpsilonEquals(1.25f, p.getY());
+		assertEpsilonEquals(7f, p.getX());
+		assertEpsilonEquals(-5f, p.getY());
 
 		p = Path2f.getFarthestPointTo(this.r.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), 4f, 2f);
-		assertEpsilonEquals(4.28125f, p.getX());
-		assertEpsilonEquals(2.11724f, p.getY());
+		assertEpsilonEquals(7f, p.getX());
+		assertEpsilonEquals(-5f, p.getY());
 
-		p = Path2f.getFarthestPointTo(this.r.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), 1f, 0f);
+		p = Path2f.getFarthestPointTo(this.r.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), 10f, 0f);
 		assertEpsilonEquals(1f, p.getX());
 		assertEpsilonEquals(1f, p.getY());
 	}
@@ -744,11 +744,11 @@ public class OpenPath2fTest extends AbstractPath2fTestCase {
 		assertElement(pi, PathElementType.CURVE_TO, 5f, -1f, 6f, 5f, 7f, -5f);
 		assertNoElement(pi);
 
-		assertTrue(this.r.containsPoint(new Point2f(2f, 2f)));
-		assertFalse(this.r.containsPoint(new Point2f(4f, 4f)));
-		assertTrue(this.r.containsPoint(new Point2f(6f, 5f)));
-		assertFalse(this.r.containsPoint(new Point2f(-1f, 6f)));
-		assertFalse(this.r.containsPoint(new Point2f(1234f, 5678f)));
+		assertTrue(this.r.containsControlPoint(new Point2f(2f, 2f)));
+		assertFalse(this.r.containsControlPoint(new Point2f(4f, 4f)));
+		assertTrue(this.r.containsControlPoint(new Point2f(6f, 5f)));
+		assertFalse(this.r.containsControlPoint(new Point2f(-1f, 6f)));
+		assertFalse(this.r.containsControlPoint(new Point2f(1234f, 5678f)));
 	}
 
 	/**
@@ -764,6 +764,46 @@ public class OpenPath2fTest extends AbstractPath2fTestCase {
 		assertElement(pi, PathElementType.LINE_TO, 10f, 12f);
 		assertElement(pi, PathElementType.CLOSE);
 		assertNoElement(pi);
+	}
+
+	@Test
+	@Override
+	public void intersectsPath2d() {
+		assertFalse(this.r.intersects(new Path2d(this.r2)));
+		assertTrue(this.r.intersects(new Path2d(this.r3)));
+		assertFalse(this.r.intersects(new Path2d(this.r4)));
+		assertFalse(this.r.intersects(new Path2d(this.r5)));
+		assertFalse(this.r.intersects(new Path2d(this.r6)));
+		assertTrue(this.r.intersects(new Path2d(this.r7)));
+		assertFalse(this.r.intersects(new Path2d(this.r8)));
+
+		assertFalse(new Path2d(this.r2).intersects(this.r));
+		assertTrue(new Path2d(this.r3).intersects(this.r));
+		assertFalse(new Path2d(this.r4).intersects(this.r));
+		assertFalse(new Path2d(this.r5).intersects(this.r));
+		assertFalse(new Path2d(this.r6).intersects(this.r));
+		assertTrue(new Path2d(this.r7).intersects(this.r));
+		assertFalse(new Path2d(this.r8).intersects(this.r));
+	}
+
+	@Test
+	@Override
+	public void intersectsPathIterator2d() {
+		assertFalse(this.r.intersects(new Path2d(this.r2).getPathIteratorProperty()));
+		assertTrue(this.r.intersects(new Path2d(this.r3).getPathIteratorProperty()));
+		assertFalse(this.r.intersects(new Path2d(this.r4).getPathIteratorProperty()));
+		assertFalse(this.r.intersects(new Path2d(this.r5).getPathIteratorProperty()));
+		assertFalse(this.r.intersects(new Path2d(this.r6).getPathIteratorProperty()));
+		assertTrue(this.r.intersects(new Path2d(this.r7).getPathIteratorProperty()));
+		assertFalse(this.r.intersects(new Path2d(this.r8).getPathIteratorProperty()));
+
+		assertFalse(new Path2d(this.r2).intersects(this.r.getPathIterator()));
+		assertTrue(new Path2d(this.r3).intersects(this.r.getPathIterator()));
+		assertFalse(new Path2d(this.r4).intersects(this.r.getPathIterator()));
+		assertFalse(new Path2d(this.r5).intersects(this.r.getPathIterator()));
+		assertFalse(new Path2d(this.r6).intersects(this.r.getPathIterator()));
+		assertTrue(new Path2d(this.r7).intersects(this.r.getPathIterator()));
+		assertFalse(new Path2d(this.r8).intersects(this.r.getPathIterator()));
 	}
 
 }

@@ -27,6 +27,7 @@ import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Path2D;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Shadow of a path.
  *
@@ -37,14 +38,19 @@ import org.arakhne.afc.math.geometry.d2.Path2D;
  */
 public class PathShadow2f {
 
-	private final Path2D<?,Rectangle2f,PathElement2f,PathIterator2f> path;
+	private final Path2D<?,Rectangle2f,AbstractPathElement2F,PathIterator2f> path;
 	private final Rectangle2f bounds;
 
 	/**
-	 * @param path
+	 * @param path1
 	 */
-	public PathShadow2f(Path2D<?,Rectangle2f,PathElement2f,PathIterator2f> path) {
-		this.path = path;
+	public PathShadow2f(Path2f path1) {
+		this.path = path1;
+		this.bounds = this.path.toBoundingBox();
+	}
+
+	public PathShadow2f(Path2d path1) {
+		this.path = new Path2f(path1);
 		this.bounds = this.path.toBoundingBox();
 	}
 
@@ -58,6 +64,7 @@ public class PathShadow2f {
 	 * @param y1 is the second point of the segment.
 	 * @return the crossings or {@link MathConstants#SHAPE_INTERSECTS}.
 	 */
+	@Pure
 	public int computeCrossings(
 			int crossings,
 			double x0, double y0,
@@ -65,7 +72,7 @@ public class PathShadow2f {
 		if (this.bounds==null) return crossings;
 
 		int numCrosses = 
-				Segment2f.computeCrossingsFromRect(crossings,
+				AbstractSegment2F.computeCrossingsFromRect(crossings,
 						this.bounds.getMinX(),
 						this.bounds.getMinY(),
 						this.bounds.getMaxX(),
@@ -121,19 +128,19 @@ public class PathShadow2f {
 	}
 
 	private static void computeCrossings1(
-			Iterator<PathElement2f> pi, 
+			Iterator<AbstractPathElement2F> pi, 
 			double x1, double y1, double x2, double y2, 
 			boolean closeable, PathShadowData data) {	
 		if (!pi.hasNext() || data.crossings==MathConstants.SHAPE_INTERSECTS) return;
-		PathElement2f element;
+		AbstractPathElement2F element;
 
 		element = pi.next();
 		if (element.type != PathElementType.MOVE_TO) {
 			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
 		}
 
-		double movx = element.toX;
-		double movy = element.toY;
+		double movx = element.getToX();
+		double movy = element.getToY();
 		double curx = movx;
 		double cury = movy;
 		double endx, endy;
@@ -141,12 +148,12 @@ public class PathShadow2f {
 			element = pi.next();
 			switch (element.type) {
 			case MOVE_TO:
-				movx = curx = element.toX;
-				movy = cury = element.toY;
+				movx = curx = element.getToX();
+				movy = cury = element.getToY();
 				break;
 			case LINE_TO:
-				endx = element.toX;
-				endy = element.toY;
+				endx = element.getToX();
+				endy = element.getToY();
 				computeCrossings2(
 						curx, cury,
 						endx, endy,
@@ -160,12 +167,12 @@ public class PathShadow2f {
 				break;
 			case QUAD_TO:
 			{
-				endx = element.toX;
-				endy = element.toY;
+				endx = element.getToX();
+				endy = element.getToY();
 				Path2f localPath = new Path2f();
 				localPath.moveTo(curx, cury);
 				localPath.quadTo(
-						element.ctrlX1, element.ctrlY1,
+						element.getCtrlX1(), element.getCtrlY1(),
 						endx, endy);
 				computeCrossings1(
 						localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
@@ -180,13 +187,13 @@ public class PathShadow2f {
 				break;
 			}
 			case CURVE_TO:
-				endx = element.toX;
-				endy = element.toY;
+				endx = element.getToX();
+				endy = element.getToY();
 				Path2f localPath = new Path2f();
 				localPath.moveTo(curx, cury);
 				localPath.curveTo(
-						element.ctrlX1, element.ctrlY1,
-						element.ctrlX2, element.ctrlY2,
+						element.getCtrlX1(), element.getCtrlY1(),
+						element.getCtrlX2(), element.getCtrlY2(),
 						endx, endy);
 				computeCrossings1(
 						localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
@@ -280,7 +287,7 @@ public class PathShadow2f {
 				}
 			}
 		}
-		else if (Segment2f.intersectsSegmentSegmentWithoutEnds(
+		else if (AbstractSegment2F.intersectsSegmentSegmentWithoutEnds(
 				shadow_x0, shadow_y0, shadow_x1, shadow_y1,
 				sx0, sy0, sx1, sy1)) {
 			data.crossings = MathConstants.SHAPE_INTERSECTS;
@@ -289,21 +296,21 @@ public class PathShadow2f {
 			int side1, side2;
 			boolean isUp = (shadow_y0<=shadow_y1);
 			if (isUp) {
-				side1 = Segment2f.computeSideLinePoint(
+				side1 = AbstractSegment2F.computeSideLinePoint(
 						shadow_x0, shadow_y0,
 						shadow_x1, shadow_y1,
 						sx0, sy0, 0.);
-				side2 = Segment2f.computeSideLinePoint(
+				side2 = AbstractSegment2F.computeSideLinePoint(
 						shadow_x0, shadow_y0,
 						shadow_x1, shadow_y1,
 						sx1, sy1, 0.);
 			}
 			else {
-				side1 = Segment2f.computeSideLinePoint(
+				side1 = AbstractSegment2F.computeSideLinePoint(
 						shadow_x1, shadow_y1,
 						shadow_x0, shadow_y0,
 						sx0, sy0, 0.);
-				side2 = Segment2f.computeSideLinePoint(
+				side2 = AbstractSegment2F.computeSideLinePoint(
 						shadow_x1, shadow_y1,
 						shadow_x0, shadow_y0,
 						sx1, sy1, 0.);
@@ -359,6 +366,7 @@ public class PathShadow2f {
 		public double ymin;
 		public double ymax;
 
+		@Pure
 		@Override
 		public String toString() {
 			StringBuilder b = new StringBuilder();

@@ -45,17 +45,17 @@ class AStarNodeStub implements GraphPoint<AStarNodeStub,AStarEdgeStub>, AStarNod
 	 */
 	final Point2f position;
 	
-	private double cost = Float.NaN;
-	private double eCost = Float.NaN;
+	private double cost = Double.NaN;
+	private double eCost = Double.NaN;
 	private AStarEdgeStub astarEntryConnection = null;
 	
 	/**
-	 * @param id
+	 * @param id1
 	 * @param x
 	 * @param y
 	 */
-	public AStarNodeStub(String id, double x, double y) {
-		this.id = id;
+	public AStarNodeStub(String id1, double x, double y) {
+		this.id = id1;
 		this.position = new Point2f(x,y);
 	}
 	
@@ -152,8 +152,8 @@ class AStarNodeStub implements GraphPoint<AStarNodeStub,AStarEdgeStub>, AStarNod
 	/** {@inheritDoc}
 	 */
 	@Override
-	public double setCost(double cost) {
-		return this.cost = cost;
+	public double setCost(double cost1) {
+		return this.cost = cost1;
 	}
 
 	/** {@inheritDoc}
@@ -167,8 +167,8 @@ class AStarNodeStub implements GraphPoint<AStarNodeStub,AStarEdgeStub>, AStarNod
 	 * {@inheritDoc}
 	 */
 	@Override
-	public double setEstimatedCost(double cost) {
-		return this.eCost = cost;
+	public double setEstimatedCost(double cost1) {
+		return this.eCost = cost1;
 	}
 
 	/**
@@ -278,10 +278,10 @@ class AStarNodeStub implements GraphPoint<AStarNodeStub,AStarEdgeStub>, AStarNod
 		private final AStarEdgeStub segment;
 		
 		/**
-		 * @param segment
+		 * @param segment1
 		 */
-		public GPC(AStarEdgeStub segment) {
-			this.segment = segment;
+		public GPC(AStarEdgeStub segment1) {
+			this.segment = segment1;
 		}
 
 		@Override

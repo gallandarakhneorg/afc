@@ -76,14 +76,14 @@ public class GaussianStochasticLaw extends StochasticLaw {
 	}
 
 	/**
-	 * @param mean is the mean of the normal distribution.
-	 * @param standardDeviation is the standard deviation associated to the nromal distribution.
+	 * @param mean1 is the mean of the normal distribution.
+	 * @param standardDeviation1 is the standard deviation associated to the nromal distribution.
 	 * @throws OutsideDomainException when standardDeviation is not positive or nul.
 	 */
-	public GaussianStochasticLaw(double mean, double standardDeviation) throws OutsideDomainException {
-		if (standardDeviation<=0) throw new OutsideDomainException(standardDeviation);
-		this.mean = mean;
-		this.standardDeviation = standardDeviation;
+	public GaussianStochasticLaw(double mean1, double standardDeviation1) throws OutsideDomainException {
+		if (standardDeviation1<=0) throw new OutsideDomainException(standardDeviation1);
+		this.mean = mean1;
+		this.standardDeviation = standardDeviation1;
 	}
 	
 	/**

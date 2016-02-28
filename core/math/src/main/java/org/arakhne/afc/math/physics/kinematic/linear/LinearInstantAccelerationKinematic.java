@@ -50,7 +50,7 @@ extends LinearInstantVelocityKinematic {
 	 * 
 	 * @return the linear acceleration of this object in m/s^2.
 	 */
-	public float getLinearAcceleration();
+	public double getLinearAcceleration();
 	
 	/**
 	 * Returns the linear acceleration of this object in the acceleration corresponding to the given speed unit
@@ -69,6 +69,6 @@ extends LinearInstantVelocityKinematic {
 	 * @param unit the unit in which the speed will be given.
 	 * @return the lineat acceleration of this object in the given unit.
 	 */
-	public float getLinearAcceleration(SpeedUnit unit);
+	public double getLinearAcceleration(SpeedUnit unit);
 
 }

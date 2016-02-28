@@ -35,14 +35,14 @@ public class TreeNodeAddedEvent extends EventObject {
 	private final TreeNode<?,?> child;
 
 	/**
-	 * @param source is the node on which the event occured
-	 * @param childIndex is the index of the new child
-	 * @param child is the new child
+	 * @param source1 is the node on which the event occured
+	 * @param childIndex1 is the index of the new child
+	 * @param child1 is the new child
 	 */
-	public TreeNodeAddedEvent(TreeNode<?,?> source, int childIndex, TreeNode<?,?> child) {
-		super(source);
-		this.childIndex = childIndex;
-		this.child = child;
+	public TreeNodeAddedEvent(TreeNode<?,?> source1, int childIndex1, TreeNode<?,?> child1) {
+		super(source1);
+		this.childIndex = childIndex1;
+		this.child = child1;
 	}
 	
 	/** Replies the node that fire the event.

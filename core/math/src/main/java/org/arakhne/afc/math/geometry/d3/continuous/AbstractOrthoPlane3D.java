@@ -20,6 +20,7 @@
  */
 package org.arakhne.afc.math.geometry.d3.continuous;
 
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** This class represents a 3D plane which is colinear to the axis.
  *
@@ -54,6 +55,7 @@ public abstract class AbstractOrthoPlane3D<PT extends AbstractOrthoPlane3D<? sup
 	}
 
 	@SuppressWarnings("unchecked")
+	@Pure
 	@Override
 	public PT normalize() {
 		return (PT) this;

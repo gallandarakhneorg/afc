@@ -48,6 +48,7 @@ implements NodeSelectionTreeIterator<N> {
 	 * @param tree is the tree to iterate.
 	 * @param selector permits to filter the nodes replied/traversed by this iterator.
 	 */
+	@SuppressWarnings("hiding")
 	public PostfixDepthFirstTreeIterator(Tree<?,N> tree, NodeSelector<N> selector) {
 		this(tree.getRoot(), selector);
 	}
@@ -63,6 +64,7 @@ implements NodeSelectionTreeIterator<N> {
 	 * @param node is the node to iterate.
 	 * @param selector permits to filter the nodes replied/traversed by this iterator.
 	 */
+	@SuppressWarnings("hiding")
 	public PostfixDepthFirstTreeIterator(N node, NodeSelector<N> selector) {
 		super(node);
 		this.selector = selector;
@@ -70,6 +72,7 @@ implements NodeSelectionTreeIterator<N> {
 
 	/** {@inheritDoc}
 	 */
+	@SuppressWarnings("hiding")
 	@Override
 	public void setNodeSelector(NodeSelector<N> selector) {
 		this.selector = selector;

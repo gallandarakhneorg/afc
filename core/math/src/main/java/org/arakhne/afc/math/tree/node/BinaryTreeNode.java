@@ -410,7 +410,7 @@ public abstract class BinaryTreeNode<D,N extends BinaryTreeNode<D,N>> extends Ab
 	@Override
 	protected void getHeights(int currentHeight, List<Integer> heights) {
 		if (isLeaf()) {
-			heights.add(currentHeight);
+			heights.add(new Integer(currentHeight));
 		}
 		else {
 			if (this.left!=null) this.left.getHeights(currentHeight+1, heights);

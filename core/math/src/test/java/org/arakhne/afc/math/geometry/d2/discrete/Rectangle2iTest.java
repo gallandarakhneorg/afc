@@ -108,8 +108,8 @@ public class Rectangle2iTest extends AbstractShape2iTestCase<Rectangle2i> {
 	@Test
 	@Override
 	public void toBoundingBox() {
-		Rectangle2i r = this.r.toBoundingBox();
-		assertSame(this.r, r);
+		Rectangle2i r1 = this.r.toBoundingBox();
+		assertSame(this.r, r1);
 	}
 
 	/**
@@ -126,8 +126,8 @@ public class Rectangle2iTest extends AbstractShape2iTestCase<Rectangle2i> {
 			assertTrue(iterator.hasNext());
 			p = iterator.next();
 			assertNotNull(p);
-			assertEquals(x, p.x());
-			assertEquals(8, p.y());
+			assertEquals(x, p.ix());
+			assertEquals(8, p.iy());
 		}
 
 		coords = new int[] {9,10,11,12,13};
@@ -135,8 +135,8 @@ public class Rectangle2iTest extends AbstractShape2iTestCase<Rectangle2i> {
 			assertTrue(iterator.hasNext());
 			p = iterator.next();
 			assertNotNull(p);
-			assertEquals(15, p.x());
-			assertEquals(y, p.y());
+			assertEquals(15, p.ix());
+			assertEquals(y, p.iy());
 		}
 
 		coords = new int[] {14,13,12,11,10,9,8,7,6,5};
@@ -144,8 +144,8 @@ public class Rectangle2iTest extends AbstractShape2iTestCase<Rectangle2i> {
 			assertTrue(iterator.hasNext());
 			p = iterator.next();
 			assertNotNull(p);
-			assertEquals(x, p.x());
-			assertEquals(13, p.y());
+			assertEquals(x, p.ix());
+			assertEquals(13, p.iy());
 		}
 
 		coords = new int[] {12,11,10,9};
@@ -153,8 +153,8 @@ public class Rectangle2iTest extends AbstractShape2iTestCase<Rectangle2i> {
 			assertTrue(iterator.hasNext());
 			p = iterator.next();
 			assertNotNull(p);
-			assertEquals(5, p.x());
-			assertEquals(y, p.y());
+			assertEquals(5, p.ix());
+			assertEquals(y, p.iy());
 		}
 
 		assertFalse(iterator.hasNext());
@@ -174,8 +174,8 @@ public class Rectangle2iTest extends AbstractShape2iTestCase<Rectangle2i> {
 			assertTrue(iterator.hasNext());
 			p = iterator.next();
 			assertNotNull(p);
-			assertEquals(x, p.x());
-			assertEquals(8, p.y());
+			assertEquals(x, p.ix());
+			assertEquals(8, p.iy());
 		}
 
 		coords = new int[] {9,10,11,12,13};
@@ -183,8 +183,8 @@ public class Rectangle2iTest extends AbstractShape2iTestCase<Rectangle2i> {
 			assertTrue(iterator.hasNext());
 			p = iterator.next();
 			assertNotNull(p);
-			assertEquals(15, p.x());
-			assertEquals(y, p.y());
+			assertEquals(15, p.ix());
+			assertEquals(y, p.iy());
 		}
 
 		coords = new int[] {14,13,12,11,10,9,8,7,6,5};
@@ -192,8 +192,8 @@ public class Rectangle2iTest extends AbstractShape2iTestCase<Rectangle2i> {
 			assertTrue(iterator.hasNext());
 			p = iterator.next();
 			assertNotNull(p);
-			assertEquals(x, p.x());
-			assertEquals(13, p.y());
+			assertEquals(x, p.ix());
+			assertEquals(13, p.iy());
 		}
 
 		coords = new int[] {12,11,10,9};
@@ -201,8 +201,8 @@ public class Rectangle2iTest extends AbstractShape2iTestCase<Rectangle2i> {
 			assertTrue(iterator.hasNext());
 			p = iterator.next();
 			assertNotNull(p);
-			assertEquals(5, p.x());
-			assertEquals(y, p.y());
+			assertEquals(5, p.ix());
+			assertEquals(y, p.iy());
 		}
 
 		assertFalse(iterator.hasNext());
@@ -222,8 +222,8 @@ public class Rectangle2iTest extends AbstractShape2iTestCase<Rectangle2i> {
 			assertTrue(iterator.hasNext());
 			p = iterator.next();
 			assertNotNull(p);
-			assertEquals(15, p.x());
-			assertEquals(y, p.y());
+			assertEquals(15, p.ix());
+			assertEquals(y, p.iy());
 		}
 
 		coords = new int[] {14,13,12,11,10,9,8,7,6,5};
@@ -231,8 +231,8 @@ public class Rectangle2iTest extends AbstractShape2iTestCase<Rectangle2i> {
 			assertTrue(iterator.hasNext());
 			p = iterator.next();
 			assertNotNull(p);
-			assertEquals(x, p.x());
-			assertEquals(13, p.y());
+			assertEquals(x, p.ix());
+			assertEquals(13, p.iy());
 		}
 
 		coords = new int[] {12,11,10,9};
@@ -240,8 +240,8 @@ public class Rectangle2iTest extends AbstractShape2iTestCase<Rectangle2i> {
 			assertTrue(iterator.hasNext());
 			p = iterator.next();
 			assertNotNull(p);
-			assertEquals(5, p.x());
-			assertEquals(y, p.y());
+			assertEquals(5, p.ix());
+			assertEquals(y, p.iy());
 		}
 
 		coords = new int[] {5,6,7,8,9,10,11,12,13,14,15};
@@ -249,8 +249,8 @@ public class Rectangle2iTest extends AbstractShape2iTestCase<Rectangle2i> {
 			assertTrue(iterator.hasNext());
 			p = iterator.next();
 			assertNotNull(p);
-			assertEquals(x, p.x());
-			assertEquals(8, p.y());
+			assertEquals(x, p.ix());
+			assertEquals(8, p.iy());
 		}
 
 		assertFalse(iterator.hasNext());
@@ -270,8 +270,8 @@ public class Rectangle2iTest extends AbstractShape2iTestCase<Rectangle2i> {
 			assertTrue(iterator.hasNext());
 			p = iterator.next();
 			assertNotNull(p);
-			assertEquals(x, p.x());
-			assertEquals(13, p.y());
+			assertEquals(x, p.ix());
+			assertEquals(13, p.iy());
 		}
 
 		coords = new int[] {12,11,10,9};
@@ -279,8 +279,8 @@ public class Rectangle2iTest extends AbstractShape2iTestCase<Rectangle2i> {
 			assertTrue(iterator.hasNext());
 			p = iterator.next();
 			assertNotNull(p);
-			assertEquals(5, p.x());
-			assertEquals(y, p.y());
+			assertEquals(5, p.ix());
+			assertEquals(y, p.iy());
 		}
 
 		coords = new int[] {5,6,7,8,9,10,11,12,13,14,15};
@@ -288,8 +288,8 @@ public class Rectangle2iTest extends AbstractShape2iTestCase<Rectangle2i> {
 			assertTrue(iterator.hasNext());
 			p = iterator.next();
 			assertNotNull(p);
-			assertEquals(x, p.x());
-			assertEquals(8, p.y());
+			assertEquals(x, p.ix());
+			assertEquals(8, p.iy());
 		}
 
 		coords = new int[] {9,10,11,12,13};
@@ -297,8 +297,8 @@ public class Rectangle2iTest extends AbstractShape2iTestCase<Rectangle2i> {
 			assertTrue(iterator.hasNext());
 			p = iterator.next();
 			assertNotNull(p);
-			assertEquals(15, p.x());
-			assertEquals(y, p.y());
+			assertEquals(15, p.ix());
+			assertEquals(y, p.iy());
 		}
 
 		assertFalse(iterator.hasNext());
@@ -318,8 +318,8 @@ public class Rectangle2iTest extends AbstractShape2iTestCase<Rectangle2i> {
 			assertTrue(iterator.hasNext());
 			p = iterator.next();
 			assertNotNull(p);
-			assertEquals(5, p.x());
-			assertEquals(y, p.y());
+			assertEquals(5, p.ix());
+			assertEquals(y, p.iy());
 		}
 
 		coords = new int[] {5,6,7,8,9,10,11,12,13,14,15};
@@ -327,8 +327,8 @@ public class Rectangle2iTest extends AbstractShape2iTestCase<Rectangle2i> {
 			assertTrue(iterator.hasNext());
 			p = iterator.next();
 			assertNotNull(p);
-			assertEquals(x, p.x());
-			assertEquals(8, p.y());
+			assertEquals(x, p.ix());
+			assertEquals(8, p.iy());
 		}
 
 		coords = new int[] {9,10,11,12,13};
@@ -336,8 +336,8 @@ public class Rectangle2iTest extends AbstractShape2iTestCase<Rectangle2i> {
 			assertTrue(iterator.hasNext());
 			p = iterator.next();
 			assertNotNull(p);
-			assertEquals(15, p.x());
-			assertEquals(y, p.y());
+			assertEquals(15, p.ix());
+			assertEquals(y, p.iy());
 		}
 
 		coords = new int[] {14,13,12,11,10,9,8,7,6,5};
@@ -345,8 +345,8 @@ public class Rectangle2iTest extends AbstractShape2iTestCase<Rectangle2i> {
 			assertTrue(iterator.hasNext());
 			p = iterator.next();
 			assertNotNull(p);
-			assertEquals(x, p.x());
-			assertEquals(13, p.y());
+			assertEquals(x, p.ix());
+			assertEquals(13, p.iy());
 		}
 
 		assertFalse(iterator.hasNext());
@@ -402,23 +402,23 @@ public class Rectangle2iTest extends AbstractShape2iTestCase<Rectangle2i> {
 		
 		p = this.r.getClosestPointTo(new Point2i(5,8));
 		assertNotNull(p);
-		assertEquals(5, p.x());
-		assertEquals(8, p.y());
+		assertEquals(5, p.ix());
+		assertEquals(8, p.iy());
 		
 		p = this.r.getClosestPointTo(new Point2i(10,10));
 		assertNotNull(p);
-		assertEquals(10, p.x());
-		assertEquals(10, p.y());
+		assertEquals(10, p.ix());
+		assertEquals(10, p.iy());
 		
 		p = this.r.getClosestPointTo(new Point2i(4,8));
 		assertNotNull(p);
-		assertEquals(5, p.x());
-		assertEquals(8, p.y());
+		assertEquals(5, p.ix());
+		assertEquals(8, p.iy());
 		
 		p = this.r.getClosestPointTo(new Point2i(0,0));
 		assertNotNull(p);
-		assertEquals(5, p.x());
-		assertEquals(8, p.y());
+		assertEquals(5, p.ix());
+		assertEquals(8, p.iy());
 	}
 
 	/**
@@ -429,33 +429,33 @@ public class Rectangle2iTest extends AbstractShape2iTestCase<Rectangle2i> {
 		
 		p = this.r.getFarthestPointTo(new Point2i(5,8));
 		assertNotNull(p);
-		assertEquals(15, p.x());
-		assertEquals(13, p.y());
+		assertEquals(15, p.ix());
+		assertEquals(13, p.iy());
 		
 		p = this.r.getFarthestPointTo(new Point2i(10,10));
 		assertNotNull(p);
-		assertEquals(15, p.x());
-		assertEquals(13, p.y());
+		assertEquals(15, p.ix());
+		assertEquals(13, p.iy());
 		
 		p = this.r.getFarthestPointTo(new Point2i(4,8));
 		assertNotNull(p);
-		assertEquals(15, p.x());
-		assertEquals(13, p.y());
+		assertEquals(15, p.ix());
+		assertEquals(13, p.iy());
 		
 		p = this.r.getFarthestPointTo(new Point2i(0,0));
 		assertNotNull(p);
-		assertEquals(15, p.x());
-		assertEquals(13, p.y());
+		assertEquals(15, p.ix());
+		assertEquals(13, p.iy());
 
 		p = this.r.getFarthestPointTo(new Point2i(24,0));
 		assertNotNull(p);
-		assertEquals(5, p.x());
-		assertEquals(13, p.y());
+		assertEquals(5, p.ix());
+		assertEquals(13, p.iy());
 
 		p = this.r.getFarthestPointTo(new Point2i(0,32));
 		assertNotNull(p);
-		assertEquals(15, p.x());
-		assertEquals(13, p.y());
+		assertEquals(15, p.ix());
+		assertEquals(13, p.iy());
 	}
 
 	/**
@@ -507,7 +507,7 @@ public class Rectangle2iTest extends AbstractShape2iTestCase<Rectangle2i> {
 	 */
 	@Test
 	public void getPathIteratorVoid() {
-		PathIterator2i pi = this.r.getPathIterator();
+		PathIterator2i pi = this.r.getPathIteratorDiscrete();
 		assertElement(pi, PathElementType.MOVE_TO, 5,8);
 		assertElement(pi, PathElementType.LINE_TO, 15,8);
 		assertElement(pi, PathElementType.LINE_TO, 15,13);
@@ -525,7 +525,7 @@ public class Rectangle2iTest extends AbstractShape2iTestCase<Rectangle2i> {
 		PathIterator2i pi;
 		
 		tr = new Transform2D();
-		pi = this.r.getPathIterator(tr);
+		pi = this.r.getPathIteratorDiscrete(tr);
 		assertElement(pi, PathElementType.MOVE_TO, 5,8);
 		assertElement(pi, PathElementType.LINE_TO, 15,8);
 		assertElement(pi, PathElementType.LINE_TO, 15,13);
@@ -536,7 +536,7 @@ public class Rectangle2iTest extends AbstractShape2iTestCase<Rectangle2i> {
 
 		tr = new Transform2D();
 		tr.makeTranslationMatrix(3.4f, 4.5f);
-		pi = this.r.getPathIterator(tr);
+		pi = this.r.getPathIteratorDiscrete(tr);
 		assertElement(pi, PathElementType.MOVE_TO, 8,12);
 		assertElement(pi, PathElementType.LINE_TO, 18,12);
 		assertElement(pi, PathElementType.LINE_TO, 18,17);
@@ -548,7 +548,7 @@ public class Rectangle2iTest extends AbstractShape2iTestCase<Rectangle2i> {
 		tr = new Transform2D();
 		tr.makeRotationMatrix(MathConstants.QUARTER_PI);
 		
-		pi = this.r.getPathIterator(tr);
+		pi = this.r.getPathIteratorDiscrete(tr);
 		assertElement(pi, PathElementType.MOVE_TO, -2,9);
 		assertElement(pi, PathElementType.LINE_TO, 4,16);
 		assertElement(pi, PathElementType.LINE_TO, 1,19);

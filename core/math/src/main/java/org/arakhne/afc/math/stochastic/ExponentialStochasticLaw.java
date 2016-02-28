@@ -74,14 +74,14 @@ public class ExponentialStochasticLaw extends StochasticLaw {
 	}
 
 	/**
-	 * @param lambda must be positive or nul.
-	 * @param xmin
+	 * @param lambda1 must be positive or nul.
+	 * @param xmin1
 	 * @throws OutsideDomainException when lambda is outside its domain
 	 */
-	public ExponentialStochasticLaw(double lambda, double xmin) throws OutsideDomainException {
-		if (lambda<=0) throw new OutsideDomainException(lambda);
-		this.lambda = lambda;
-		this.xmin = xmin;
+	public ExponentialStochasticLaw(double lambda1, double xmin1) throws OutsideDomainException {
+		if (lambda1<=0) throw new OutsideDomainException(lambda1);
+		this.lambda = lambda1;
+		this.xmin = xmin1;
 	}
 	
 	/**
@@ -112,7 +112,7 @@ public class ExponentialStochasticLaw extends StochasticLaw {
 	 */
 	@Override
 	public MathFunctionRange[] getRange() {
-		return MathFunctionRange.createSet(this.xmin,Float.POSITIVE_INFINITY);
+		return MathFunctionRange.createSet(this.xmin,Double.POSITIVE_INFINITY);
 	}
 	
 	/** Replies the x according to the value of the distribution function.

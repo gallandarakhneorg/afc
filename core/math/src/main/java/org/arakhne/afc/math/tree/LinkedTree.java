@@ -63,10 +63,10 @@ public class LinkedTree<D,N extends TreeNode<D,N>> extends AbstractTree<D,N> {
 
 	/** Create a tree with the given node
 	 * 
-	 * @param root is the root.
+	 * @param root1 is the root.
 	 */
-	public LinkedTree(N root) {
-		init(root);
+	public LinkedTree(N root1) {
+		init(root1);
 	}
 	
 	private void init(N rootNode) {

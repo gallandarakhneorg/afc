@@ -39,19 +39,19 @@ public abstract class AbstractFileFilter implements FileFilter {
 	private final String[] extensions;
 	
 	/**
-	 * @param acceptDirectories is <code>true</code> to
+	 * @param acceptDirectories1 is <code>true</code> to
 	 * permit to this file filter to accept directories;
 	 * <code>false</code> if the directories should not
 	 * match.
-	 * @param description is the description of the file filter.
-	 * @param extensions are the supported extensions.
+	 * @param description1 is the description of the file filter.
+	 * @param extensions1 are the supported extensions.
 	 */
-	public AbstractFileFilter(boolean acceptDirectories, String description, String... extensions) {
-		this.acceptDirectories = acceptDirectories;
-		this.extensions = extensions;
+	public AbstractFileFilter(boolean acceptDirectories1, String description1, String... extensions1) {
+		this.acceptDirectories = acceptDirectories1;
+		this.extensions = extensions1;
 
 		StringBuilder b = new StringBuilder();
-		b.append(description);
+		b.append(description1);
 		b.append(" ("); //$NON-NLS-1$
 		for(int i=0; i<this.extensions.length; ++i) {
 			if (i>0) b.append(", "); //$NON-NLS-1$

@@ -35,7 +35,7 @@ import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.geometry.d2.continuous.Circle2f;
 import org.arakhne.afc.math.geometry.d2.continuous.Ellipse2f;
 import org.arakhne.afc.math.geometry.d2.continuous.Path2f;
-import org.arakhne.afc.math.geometry.d2.continuous.PathElement2f;
+import org.arakhne.afc.math.geometry.d2.continuous.AbstractPathElement2F;
 import org.arakhne.afc.math.geometry.d2.continuous.PathIterator2f;
 import org.arakhne.afc.math.geometry.d2.continuous.Point2f;
 import org.arakhne.afc.math.geometry.d2.continuous.Rectangle2f;
@@ -452,24 +452,24 @@ public class GeneratePictureForTest {
 			int mx, my, cx, cy;
 			mx = my = cx = cy = 0;
 			while (pi.hasNext()) {
-				PathElement2f pe = pi.next();
+				AbstractPathElement2F pe = pi.next();
 				switch(pe.type) {
 				case MOVE_TO:
-					cx = mx = toX(pe.toX, docBounds);
-					cy = my = toY(pe.toY, docBounds);
+					cx = mx = toX(pe.getToX(), docBounds);
+					cy = my = toY(pe.getToY(), docBounds);
 					break;
 				case LINE_TO:
-					cx = toX(pe.toX, docBounds);
-					cy = toY(pe.toY, docBounds);
+					cx = toX(pe.getToX(), docBounds);
+					cy = toY(pe.getToY(), docBounds);
 					g.drawLine(
-							toX(pe.fromX, docBounds), toY(pe.fromY, docBounds),
+							toX(pe.getFromX(), docBounds), toY(pe.getFromY(), docBounds),
 							cx, cy);
 					break;
 				case CLOSE:
-					cx = toX(pe.toX, docBounds);
-					cy = toY(pe.toY, docBounds);
+					cx = toX(pe.getToX(), docBounds);
+					cy = toY(pe.getToY(), docBounds);
 					g.drawLine(
-							toX(pe.fromX, docBounds), toY(pe.fromY, docBounds),
+							toX(pe.getFromX(), docBounds), toY(pe.getFromY(), docBounds),
 							cx, cy);
 					closed = true;
 					break;

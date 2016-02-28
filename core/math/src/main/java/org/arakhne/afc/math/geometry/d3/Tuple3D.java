@@ -22,6 +22,8 @@ package org.arakhne.afc.math.geometry.d3;
 
 import java.io.Serializable;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /** 3D tuple.
  * 
  * @param <TT> is the type of data that can be added or substracted to this tuple.
@@ -37,6 +39,7 @@ extends Cloneable, Serializable {
 	 * 
 	 * @return the clone.
 	 */
+	@Pure
 	public TT clone();
 
 	/**
@@ -293,6 +296,7 @@ extends Cloneable, Serializable {
 	 * 
 	 * @return the x coordinate.
 	 */
+	@Pure
 	public double getX();
 
 	/**
@@ -300,7 +304,8 @@ extends Cloneable, Serializable {
 	 * 
 	 * @return the x coordinate.
 	 */
-	public int x();
+	@Pure
+	public int ix();
 
 	/**
 	 * Set the <i>x</i> coordinate.
@@ -321,6 +326,7 @@ extends Cloneable, Serializable {
 	 * 
 	 * @return  the <i>y</i> coordinate.
 	 */
+	@Pure
 	public double getY();
 
 	/**
@@ -328,7 +334,8 @@ extends Cloneable, Serializable {
 	 * 
 	 * @return  the <i>y</i> coordinate.
 	 */
-	public int y();
+	@Pure
+	public int iy();
 
 	/**
 	 * Set the <i>y</i> coordinate.
@@ -349,6 +356,7 @@ extends Cloneable, Serializable {
 	 * 
 	 * @return  the <i>z</i> coordinate.
 	 */
+	@Pure
 	public double getZ();
 
 	/**
@@ -356,7 +364,8 @@ extends Cloneable, Serializable {
 	 * 
 	 * @return  the <i>z</i> coordinate.
 	 */
-	public int z();
+	@Pure
+	public int iz();
 
 	/**
 	 * Set the <i>z</i> coordinate.
@@ -447,6 +456,7 @@ extends Cloneable, Serializable {
 	 * @param t1  the vector with which the comparison is made
 	 * @return  true or false
 	 */  
+	@Pure
 	public boolean equals(Tuple3D<?> t1);
 
 	/**   
@@ -456,6 +466,7 @@ extends Cloneable, Serializable {
 	 * @param t1  the object with which the comparison is made
 	 * @return  true or false
 	 */  
+	@Pure
 	@Override
 	public boolean equals(Object t1);
 
@@ -468,6 +479,7 @@ extends Cloneable, Serializable {
 	 * @param epsilon  the threshold value  
 	 * @return  true or false
 	 */
+	@Pure
 	public boolean epsilonEquals(TT t1, double epsilon);
 
 	/**
@@ -478,6 +490,7 @@ extends Cloneable, Serializable {
 	 * same hash value, although this is not likely.
 	 * @return the integer hash code value
 	 */  
+	@Pure
 	@Override
 	public int hashCode();
 

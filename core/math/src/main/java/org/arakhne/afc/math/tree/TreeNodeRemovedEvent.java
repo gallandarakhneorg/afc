@@ -35,14 +35,14 @@ public class TreeNodeRemovedEvent extends EventObject {
 	private final TreeNode<?,?> child;
 	
 	/**
-	 * @param source is the node on which the event occured
-	 * @param childIndex is the index of the removed child
-	 * @param child is the removed child.
+	 * @param source1 is the node on which the event occured
+	 * @param childIndex1 is the index of the removed child
+	 * @param child1 is the removed child.
 	 */
-	public TreeNodeRemovedEvent(TreeNode<?,?> source, int childIndex, TreeNode<?,?> child) {
-		super(source);
-		this.childIndex = childIndex;
-		this.child = child;
+	public TreeNodeRemovedEvent(TreeNode<?,?> source1, int childIndex1, TreeNode<?,?> child1) {
+		super(source1);
+		this.childIndex = childIndex1;
+		this.child = child1;
 	}
 	
 	/** Replies the node that fire the event.

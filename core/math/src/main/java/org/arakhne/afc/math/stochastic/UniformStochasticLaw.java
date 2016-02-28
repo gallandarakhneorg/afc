@@ -81,17 +81,17 @@ public class UniformStochasticLaw extends StochasticLaw {
 
 	/** Create a uniform stochastic law.
 	 * 
-	 * @param minX is the lower bound
-	 * @param maxX is the upper bound
+	 * @param minX1 is the lower bound
+	 * @param maxX1 is the upper bound
 	 */
-	public UniformStochasticLaw(double minX, double maxX) {
-		if (minX<maxX) {
-			this.minX = minX;
-			this.maxX = maxX;
+	public UniformStochasticLaw(double minX1, double maxX1) {
+		if (minX1<maxX1) {
+			this.minX = minX1;
+			this.maxX = maxX1;
 		}
 		else {
-			this.minX = maxX;
-			this.maxX = minX;
+			this.minX = maxX1;
+			this.maxX = minX1;
 		}
 		
 		this.delta = this.maxX - this.minX;

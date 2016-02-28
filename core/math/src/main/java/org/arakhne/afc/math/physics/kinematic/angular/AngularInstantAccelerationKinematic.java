@@ -50,7 +50,7 @@ extends AngularInstantVelocityKinematic {
 	 * 
 	 * @return the angular acceleration of this object in r/s^2.
 	 */
-	public float getAngularAcceleration();
+	public double getAngularAcceleration();
 	
 	/**
 	 * Returns the angular acceleration of this object in the acceleration corresponding to the given speed unit
@@ -69,6 +69,6 @@ extends AngularInstantVelocityKinematic {
 	 * @param unit the unit in which the speed will be given.
 	 * @return the angular acceleration of this object in the given unit.
 	 */
-	public float getAngularAcceleration(AngularUnit unit);
+	public double getAngularAcceleration(AngularUnit unit);
 
 }

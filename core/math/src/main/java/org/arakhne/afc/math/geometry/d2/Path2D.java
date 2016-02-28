@@ -24,6 +24,10 @@ import java.util.Iterator;
 
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
+import org.arakhne.afc.math.geometry.d2.continuous.PathIterator2d;
+import org.arakhne.afc.math.geometry.d2.continuous.PathIterator2f;
+import org.arakhne.afc.math.geometry.d2.discrete.PathIterator2i;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** 2D Path.
  * 
@@ -36,7 +40,7 @@ import org.arakhne.afc.math.geometry.PathWindingRule;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public interface Path2D<PT extends Shape2D<? super PT>, B extends Shape2D<?>, E extends PathElement2D, I extends Iterator<E>> extends Shape2D<PT> {
+public interface Path2D<PT extends Shape2D<? super PT>, B extends Shape2D<?>, E extends PathElement2D, I extends Iterator<? extends E>> extends Shape2D<PT> {
 
 	/**
 	 * Replies the bounds of this path.
@@ -49,6 +53,7 @@ public interface Path2D<PT extends Shape2D<? super PT>, B extends Shape2D<?>, E 
 	 * 
 	 * @return the winding rule for the path.
 	 */
+	@Pure
 	public PathWindingRule getWindingRule();
 	
 	/** Replies the path is composed only by
@@ -81,7 +86,8 @@ public interface Path2D<PT extends Shape2D<? super PT>, B extends Shape2D<?>, E 
 	 * the curved segments are allowed to deviate from any point on the original curve.
 	 * @return an iterator on the path elements.
 	 */
-	public I getPathIterator(double flatness);
+	@Pure
+	public PathIterator2f getPathIterator(double flatness);
 
 	/** Replies an iterator on the path elements.
 	 * <p>
@@ -89,6 +95,72 @@ public interface Path2D<PT extends Shape2D<? super PT>, B extends Shape2D<?>, E 
 	 * 
 	 * @return an iterator on the path elements.
 	 */
-	public I getPathIterator();
+	@Pure
+	public PathIterator2f getPathIterator();
+	
+	/** Replies an iterator on the path elements.
+	 * <p>
+	 * Only {@link PathElementType#MOVE_TO},
+	 * {@link PathElementType#LINE_TO}, and 
+	 * {@link PathElementType#CLOSE} types are returned by the iterator.
+	 * <p>
+	 * The amount of subdivision of the curved segments is controlled by the 
+	 * flatness parameter, which specifies the maximum distance that any point 
+	 * on the unflattened transformed curve can deviate from the returned
+	 * flattened path segments. Note that a limit on the accuracy of the
+	 * flattened path might be silently imposed, causing very small flattening
+	 * parameters to be treated as larger values. This limit, if there is one,
+	 * is defined by the particular implementation that is used.
+	 * <p>
+	 * The iterator for this class is not multi-threaded safe.
+	 * 
+	 * @param flatness is the maximum distance that the line segments used to approximate
+	 * the curved segments are allowed to deviate from any point on the original curve.
+	 * @return an iterator on the path elements.
+	 */
+	@Pure
+	public PathIterator2d getPathIteratorProperty(double flatness);
+
+	/** Replies an iterator on the path elements.
+	 * <p>
+	 * The iterator for this class is not multi-threaded safe.
+	 * 
+	 * @return an iterator on the path elements.
+	 */
+	@Pure
+	public PathIterator2d getPathIteratorProperty();
+	
+	/** Replies an iterator on the path elements.
+	 * <p>
+	 * Only {@link PathElementType#MOVE_TO},
+	 * {@link PathElementType#LINE_TO}, and 
+	 * {@link PathElementType#CLOSE} types are returned by the iterator.
+	 * <p>
+	 * The amount of subdivision of the curved segments is controlled by the 
+	 * flatness parameter, which specifies the maximum distance that any point 
+	 * on the unflattened transformed curve can deviate from the returned
+	 * flattened path segments. Note that a limit on the accuracy of the
+	 * flattened path might be silently imposed, causing very small flattening
+	 * parameters to be treated as larger values. This limit, if there is one,
+	 * is defined by the particular implementation that is used.
+	 * <p>
+	 * The iterator for this class is not multi-threaded safe.
+	 * 
+	 * @param flatness is the maximum distance that the line segments used to approximate
+	 * the curved segments are allowed to deviate from any point on the original curve.
+	 * @return an iterator on the path elements.
+	 */
+	@Pure
+	public PathIterator2i getPathIteratorDiscrete(double flatness);
+
+	/** Replies an iterator on the path elements.
+	 * <p>
+	 * The iterator for this class is not multi-threaded safe.
+	 * 
+	 * @return an iterator on the path elements.
+	 */
+	@Pure
+	public PathIterator2i getPathIteratorDiscrete();
+	
 
 }

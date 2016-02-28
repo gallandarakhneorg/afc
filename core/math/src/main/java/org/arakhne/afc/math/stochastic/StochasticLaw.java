@@ -54,8 +54,8 @@ public abstract class StochasticLaw implements MathInversableFunction {
 			catch(AssertionError e) {
 				throw e;
 			}
-			catch(Throwable _) {
-				//
+			catch(Throwable e) {
+				e.printStackTrace();
 			}
 		}
 		throw new LawParameterNotFoundException(paramName);
@@ -78,8 +78,8 @@ public abstract class StochasticLaw implements MathInversableFunction {
 			catch(AssertionError e) {
 				throw e;
 			}
-			catch(Throwable _) {
-				//
+			catch(Throwable e) {
+				e.printStackTrace();
 			}
 		}
 		throw new LawParameterNotFoundException(paramName);

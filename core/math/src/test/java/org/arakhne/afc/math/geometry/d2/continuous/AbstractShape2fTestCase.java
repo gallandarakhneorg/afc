@@ -24,26 +24,24 @@ package org.arakhne.afc.math.geometry.d2.continuous;
 import static org.junit.Assert.fail;
 
 import java.util.Arrays;
-
-import junit.framework.AssertionFailedError;
+import java.util.Iterator;
 
 import org.arakhne.afc.math.AbstractMathTestCase;
 import org.arakhne.afc.math.geometry.PathElementType;
-import org.arakhne.afc.math.geometry.d2.continuous.PathElement2f;
-import org.arakhne.afc.math.geometry.d2.continuous.PathIterator2f;
-import org.arakhne.afc.math.geometry.d2.continuous.Shape2f;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import junit.framework.AssertionFailedError;
+
 /**
  * @param <T> is the type of the shape to test
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public abstract class AbstractShape2fTestCase<T extends Shape2f> extends AbstractMathTestCase {
+public abstract class AbstractShape2fTestCase<T extends Shape2F> extends AbstractMathTestCase {
 	
 	/** Is the rectangular shape to test.
 	 */
@@ -78,13 +76,13 @@ public abstract class AbstractShape2fTestCase<T extends Shape2f> extends Abstrac
 	 * @param type
 	 * @param coords
 	 */
-	protected void assertElement(PathIterator2f pi, PathElementType type, double... coords) {
+	protected void assertElement(Iterator<? extends AbstractPathElement2X> pi, PathElementType type, double... coords) {
 		if (!pi.hasNext()) {
 			fail("expected path element but the iterator is empty"); //$NON-NLS-1$
 		}
-		PathElement2f pe = pi.next();
-		if (!type.equals(pe.type)) {
-			fail("expected: "+type+"; actual: "+pe.type);  //$NON-NLS-1$//$NON-NLS-2$
+		AbstractPathElement2X pe = pi.next();
+		if (!type.equals(pe.getType())) {
+			fail("expected: "+type+"; actual: "+pe.getType());  //$NON-NLS-1$//$NON-NLS-2$
 		}
 		double[] c = pe.toArray();
 		if (!isEpsilonEquals(c, coords)) {
@@ -97,7 +95,7 @@ public abstract class AbstractShape2fTestCase<T extends Shape2f> extends Abstrac
 	 * @param pi
 	 */
 	@SuppressWarnings("static-method")
-	protected void assertNoElement(PathIterator2f pi) {
+	protected void assertNoElement(Iterator<? extends AbstractPathElement2X> pi) {
 		if (pi.hasNext()) {
 			fail("expected no path element but the iterator is not empty"); //$NON-NLS-1$
 		}
@@ -157,5 +155,15 @@ public abstract class AbstractShape2fTestCase<T extends Shape2f> extends Abstrac
 	 */
 	@Test
 	public abstract void intersectsPathIterator2f();
+	
+	/**
+	 */
+	@Test
+	public abstract void intersectsPath2d();
+
+	/**
+	 */
+	@Test
+	public abstract void intersectsPathIterator2d();
 	
 }

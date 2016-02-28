@@ -205,7 +205,7 @@ public class RoundRectangle2fTest extends AbstractRectangularShape2fTestCase<Rou
 	@Test
 	@Override
 	public void toBoundingBox() {
-		Rectangle2f bb = this.r.toBoundingBox();
+		AbstractRectangle2F<?> bb = this.r.toBoundingBox();
 		assertEpsilonEquals(0f, bb.getMinX());
 		assertEpsilonEquals(0f, bb.getMinY());
 		assertEpsilonEquals(1f, bb.getMaxX());
@@ -376,8 +376,8 @@ public class RoundRectangle2fTest extends AbstractRectangularShape2fTestCase<Rou
 	 */
 	@Test
 	public void getPathIterator() {
-		float vt = 0.11045696f; // vertical tangent length for the arc
-		float ht = 0.055228f; // horizontal tangent length for the arc
+		double vt = 0.11045696f; // vertical tangent length for the arc
+		double ht = 0.055228f; // horizontal tangent length for the arc
 		PathIterator2f pi = this.r.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 0f, .2f);
 		assertElement(pi, PathElementType.LINE_TO, 0f, .8f);
@@ -397,8 +397,8 @@ public class RoundRectangle2fTest extends AbstractRectangularShape2fTestCase<Rou
 	public void getPathIteratorTransform2D() {
 		Transform2D tr;
 		PathIterator2f pi;
-		float vt = 0.11045696f; // vertical tangent length for the arc
-		float ht = 0.055228f; // horizontal tangent length for the arc
+		double vt = 0.11045696f; // vertical tangent length for the arc
+		double ht = 0.055228f; // horizontal tangent length for the arc
 		
 		tr = new Transform2D();
 		pi = this.r.getPathIterator(tr);
@@ -509,34 +509,34 @@ public class RoundRectangle2fTest extends AbstractRectangularShape2fTestCase<Rou
 	 */
 	@Test
 	public void containsRoundRectangleRectangle() {
-		assertFalse(RoundRectangle2f.containsRoundRectangleRectangle(
+		assertFalse(AbstractRoundRectangle2F.containsRoundRectangleRectangle(
 				0f, 0f, 1f, 1f, .2f, .4f,
 				0f, 0f, 1f, 1f));
-		assertFalse(RoundRectangle2f.containsRoundRectangleRectangle(
+		assertFalse(AbstractRoundRectangle2F.containsRoundRectangleRectangle(
 				0f, 0f, 1f, 1f, .2f, .4f,
 				-5f, -5f, 6f, 6f));
-		assertFalse(RoundRectangle2f.containsRoundRectangleRectangle(
+		assertFalse(AbstractRoundRectangle2F.containsRoundRectangleRectangle(
 				0f, 0f, 1f, 1f, .2f, .4f,
 				.5f, .5f, 4.5f, 4.5f));
-		assertFalse(RoundRectangle2f.containsRoundRectangleRectangle(
+		assertFalse(AbstractRoundRectangle2F.containsRoundRectangleRectangle(
 				0f, 0f, 1f, 1f, .2f, .4f,
 				-5f, -5f, 10f, 10f));
-		assertFalse(RoundRectangle2f.containsRoundRectangleRectangle(
+		assertFalse(AbstractRoundRectangle2F.containsRoundRectangleRectangle(
 				0f, 0f, 1f, 1f, .2f, .4f,
 				5f, .5f, 5f, .6f));
-		assertFalse(RoundRectangle2f.containsRoundRectangleRectangle(
+		assertFalse(AbstractRoundRectangle2F.containsRoundRectangleRectangle(
 				0f, 0f, 1f, 1f, .2f, .4f,
 				-5f, -5f, 1f, 1f));
-		assertFalse(RoundRectangle2f.containsRoundRectangleRectangle(
+		assertFalse(AbstractRoundRectangle2F.containsRoundRectangleRectangle(
 				0f, 0f, 1f, 1f, .2f, .4f,
 				-5f, -5f, 10f, 1f));
-		assertFalse(RoundRectangle2f.containsRoundRectangleRectangle(
+		assertFalse(AbstractRoundRectangle2F.containsRoundRectangleRectangle(
 				0f, 0f, 1f, 1f, .2f, .4f,
 				5f, -5f, 1f, 10f));
-		assertFalse(RoundRectangle2f.containsRoundRectangleRectangle(
+		assertFalse(AbstractRoundRectangle2F.containsRoundRectangleRectangle(
 				0f, 0f, 1f, 1f, .2f, .4f,
 				-5f, -5f, 5.01f, 5.01f));
-		assertTrue(RoundRectangle2f.containsRoundRectangleRectangle(
+		assertTrue(AbstractRoundRectangle2F.containsRoundRectangleRectangle(
 				0f, 0f, 1f, 1f, .2f, .4f,
 				.25f, .25f, .5f, .5f));
 	}
@@ -612,7 +612,7 @@ public class RoundRectangle2fTest extends AbstractRectangularShape2fTestCase<Rou
 		p.lineTo(2f, -2f);
 		assertFalse(this.r.intersects(p.getPathIterator()));
 		p.closePath();
-		assertTrue(this.r.intersects(p.getPathIterator()));
+		assertFalse(this.r.intersects(p.getPathIterator()));
 		
 		p = new Path2f();
 		p.moveTo(-2f, -2f);
@@ -664,6 +664,120 @@ public class RoundRectangle2fTest extends AbstractRectangularShape2fTestCase<Rou
 		assertEpsilonEquals(12f, this.r.getMinY());
 		assertEpsilonEquals(24f, this.r.getMaxX());
 		assertEpsilonEquals(28f, this.r.getMaxY());
+	}
+
+	/**
+	 */
+	@Test
+	@Override
+	public void intersectsPath2d() {
+		Path2d p;
+		
+		p = new Path2d();
+		p.moveTo(-2f, -2f);
+		p.lineTo(-2f, 2f);
+		p.lineTo(2f, 2f);
+		p.lineTo(2f, -2f);
+		assertFalse(this.r.intersects(p));
+		p.closePath();
+		assertFalse(this.r.intersects(p));
+		
+		p = new Path2d();
+		p.moveTo(-2f, -2f);
+		p.lineTo(0f, 0f);
+		p.lineTo(-2f, 2f);
+		assertFalse(this.r.intersects(p));
+		p.closePath();
+		assertFalse(this.r.intersects(p));
+
+		p = new Path2d();
+		p.moveTo(-2f, -2f);
+		p.lineTo(2f, 2f);
+		p.lineTo(-2f, 2f);
+		assertTrue(this.r.intersects(p));
+		p.closePath();
+		assertTrue(this.r.intersects(p));
+
+		p = new Path2d();
+		p.moveTo(-2f, -2f);
+		p.lineTo(-2f, 2f);
+		p.lineTo(2f, -2f);
+		assertFalse(this.r.intersects(p));
+		p.closePath();
+		assertFalse(this.r.intersects(p));
+
+		p = new Path2d();
+		p.moveTo(-2f, 2f);
+		p.lineTo(1f, 0f);
+		p.lineTo(2f, 1f);
+		assertTrue(this.r.intersects(p));
+		p.closePath();
+		assertTrue(this.r.intersects(p));
+
+		p = new Path2d();
+		p.moveTo(-2f, 2f);
+		p.lineTo(2f, 1f);
+		p.lineTo(1f, 0f);
+		assertFalse(this.r.intersects(p));
+		p.closePath();
+		assertTrue(this.r.intersects(p));
+	}
+
+	/**
+	 */
+	@Test
+	@Override
+	public void intersectsPathIterator2d() {
+		Path2d p;
+
+		p = new Path2d();
+		p.moveTo(-2f, -2f);
+		p.lineTo(-2f, 2f);
+		p.lineTo(2f, 2f);
+		p.lineTo(2f, -2f);
+		assertFalse(this.r.intersects(p.getPathIteratorProperty()));
+		p.closePath();
+		assertFalse(this.r.intersects(p.getPathIteratorProperty()));
+		
+		p = new Path2d();
+		p.moveTo(-2f, -2f);
+		p.lineTo(0f, 0f);
+		p.lineTo(-2f, 2f);
+		assertFalse(this.r.intersects(p.getPathIteratorProperty()));
+		p.closePath();
+		assertFalse(this.r.intersects(p.getPathIteratorProperty()));
+
+		p = new Path2d();
+		p.moveTo(-2f, -2f);
+		p.lineTo(2f, 2f);
+		p.lineTo(-2f, 2f);
+		assertTrue(this.r.intersects(p.getPathIteratorProperty()));
+		p.closePath();
+		assertTrue(this.r.intersects(p.getPathIteratorProperty()));
+
+		p = new Path2d();
+		p.moveTo(-2f, -2f);
+		p.lineTo(-2f, 2f);
+		p.lineTo(2f, -2f);
+		assertFalse(this.r.intersects(p.getPathIteratorProperty()));
+		p.closePath();
+		assertFalse(this.r.intersects(p.getPathIteratorProperty()));
+
+		p = new Path2d();
+		p.moveTo(-2f, 2f);
+		p.lineTo(1f, 0f);
+		p.lineTo(2f, 1f);
+		assertTrue(this.r.intersects(p.getPathIteratorProperty()));
+		p.closePath();
+		assertTrue(this.r.intersects(p.getPathIteratorProperty()));
+
+		p = new Path2d();
+		p.moveTo(-2f, 2f);
+		p.lineTo(2f, 1f);
+		p.lineTo(1f, 0f);
+		assertFalse(this.r.intersects(p.getPathIteratorProperty()));
+		p.closePath();
+		assertTrue(this.r.intersects(p.getPathIteratorProperty()));
 	}
 
 }

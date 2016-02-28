@@ -1095,7 +1095,7 @@ public class CoordinateSystem3DTest extends AbstractMathTestCase {
 		q = newAxisAngle(1, 2, 3, 4);
 		
 		assertFromDefaultQuaternion(CoordinateSystem3D.XYZ_RIGHT_HAND, q, 1, 2, 3, 4);
-		assertFromDefaultQuaternion(CoordinateSystem3D.XZY_RIGHT_HAND, q, 1, 3, 2, 4);
+		assertFromDefaultQuaternion(CoordinateSystem3D.XYZ_RIGHT_HAND, q, 1, 3, 2, 4);
 		assertFromDefaultQuaternion(CoordinateSystem3D.XYZ_LEFT_HAND, q, 1, -2, 3, -4);
 		assertFromDefaultQuaternion(CoordinateSystem3D.XZY_LEFT_HAND, q, 1, 3, -2, -4);
 	}
@@ -1658,16 +1658,16 @@ public class CoordinateSystem3DTest extends AbstractMathTestCase {
 		pt = randomPoint3f();
 
 		pt2 = new Point2f(pt.getX(),pt.getY());
-		assertEquals(pt2, CoordinateSystem3D.XYZ_LEFT_HAND.toCoordinateSystem2D(pt));
+		assertEpsilonEquals(pt2, CoordinateSystem3D.XYZ_LEFT_HAND.toCoordinateSystem2D(pt));
 
 		pt2 = new Point2f(pt.getX(),pt.getY());
-		assertEquals(pt2, CoordinateSystem3D.XYZ_RIGHT_HAND.toCoordinateSystem2D(pt));
+		assertEpsilonEquals(pt2, CoordinateSystem3D.XYZ_RIGHT_HAND.toCoordinateSystem2D(pt));
 
 		pt2 = new Point2f(pt.getX(),pt.getZ());
-		assertEquals(pt2, CoordinateSystem3D.XZY_LEFT_HAND.toCoordinateSystem2D(pt));
+		assertEpsilonEquals(pt2, CoordinateSystem3D.XZY_LEFT_HAND.toCoordinateSystem2D(pt));
 
 		pt2 = new Point2f(pt.getX(),pt.getZ());
-		assertEquals(pt2, CoordinateSystem3D.XZY_RIGHT_HAND.toCoordinateSystem2D(pt));
+		assertEpsilonEquals(pt2, CoordinateSystem3D.XZY_RIGHT_HAND.toCoordinateSystem2D(pt));
 	}
 
 	/**
@@ -1680,16 +1680,16 @@ public class CoordinateSystem3DTest extends AbstractMathTestCase {
 		vt = randomVector3f();
 
 		vt2 = new Vector2f(vt.getX(),vt.getY());
-		assertEquals(vt2, CoordinateSystem3D.XYZ_LEFT_HAND.toCoordinateSystem2D(vt));
+		assertEpsilonEquals(vt2, CoordinateSystem3D.XYZ_LEFT_HAND.toCoordinateSystem2D(vt));
 
 		vt2 = new Vector2f(vt.getX(),vt.getY());
-		assertEquals(vt2, CoordinateSystem3D.XYZ_RIGHT_HAND.toCoordinateSystem2D(vt));
+		assertEpsilonEquals(vt2, CoordinateSystem3D.XYZ_RIGHT_HAND.toCoordinateSystem2D(vt));
 
 		vt2 = new Vector2f(vt.getX(),vt.getZ());
-		assertEquals(vt2, CoordinateSystem3D.XZY_LEFT_HAND.toCoordinateSystem2D(vt));
+		assertEpsilonEquals(vt2, CoordinateSystem3D.XZY_LEFT_HAND.toCoordinateSystem2D(vt));
 
 		vt2 = new Vector2f(vt.getX(),vt.getZ());
-		assertEquals(vt2, CoordinateSystem3D.XZY_RIGHT_HAND.toCoordinateSystem2D(vt));
+		assertEpsilonEquals(vt2, CoordinateSystem3D.XZY_RIGHT_HAND.toCoordinateSystem2D(vt));
 	}
 
 	private double clamp(double angle) {
@@ -1753,16 +1753,16 @@ public class CoordinateSystem3DTest extends AbstractMathTestCase {
 		pt2 = randomPoint2f();
 
 		pt3 = new Point3f(pt2.getX(),pt2.getY(),0);
-		assertEquals(pt3, CoordinateSystem3D.XYZ_LEFT_HAND.fromCoordinateSystem2D(pt2));
+		assertEpsilonEquals(pt3, CoordinateSystem3D.XYZ_LEFT_HAND.fromCoordinateSystem2D(pt2));
 
 		pt3 = new Point3f(pt2.getX(),pt2.getY(),0);
-		assertEquals(pt3, CoordinateSystem3D.XYZ_RIGHT_HAND.fromCoordinateSystem2D(pt2));
+		assertEpsilonEquals(pt3, CoordinateSystem3D.XYZ_RIGHT_HAND.fromCoordinateSystem2D(pt2));
 
 		pt3 = new Point3f(pt2.getX(),0,pt2.getY());
-		assertEquals(pt3, CoordinateSystem3D.XZY_LEFT_HAND.fromCoordinateSystem2D(pt2));
+		assertEpsilonEquals(pt3, CoordinateSystem3D.XZY_LEFT_HAND.fromCoordinateSystem2D(pt2));
 
 		pt3 = new Point3f(pt2.getX(),0,pt2.getY());
-		assertEquals(pt3, CoordinateSystem3D.XZY_RIGHT_HAND.fromCoordinateSystem2D(pt2));
+		assertEpsilonEquals(pt3, CoordinateSystem3D.XZY_RIGHT_HAND.fromCoordinateSystem2D(pt2));
 	}
 
 	/**
@@ -1777,16 +1777,16 @@ public class CoordinateSystem3DTest extends AbstractMathTestCase {
 		vt2 = randomVector2f();
 
 		vt3 = new Vector3f(vt2.getX(),vt2.getY(),tc);
-		assertEquals(vt3, CoordinateSystem3D.XYZ_LEFT_HAND.fromCoordinateSystem2D(vt2, tc));
+		assertEpsilonEquals(vt3, CoordinateSystem3D.XYZ_LEFT_HAND.fromCoordinateSystem2D(vt2, tc));
 
 		vt3 = new Vector3f(vt2.getX(),vt2.getY(),tc);
-		assertEquals(vt3, CoordinateSystem3D.XYZ_RIGHT_HAND.fromCoordinateSystem2D(vt2, tc));
+		assertEpsilonEquals(vt3, CoordinateSystem3D.XYZ_RIGHT_HAND.fromCoordinateSystem2D(vt2, tc));
 
 		vt3 = new Vector3f(vt2.getX(),tc,vt2.getY());
-		assertEquals(vt3, CoordinateSystem3D.XZY_LEFT_HAND.fromCoordinateSystem2D(vt2, tc));
+		assertEpsilonEquals(vt3, CoordinateSystem3D.XZY_LEFT_HAND.fromCoordinateSystem2D(vt2, tc));
 
 		vt3 = new Vector3f(vt2.getX(),tc,vt2.getY());
-		assertEquals(vt3, CoordinateSystem3D.XZY_RIGHT_HAND.fromCoordinateSystem2D(vt2, tc));
+		assertEpsilonEquals(vt3, CoordinateSystem3D.XZY_RIGHT_HAND.fromCoordinateSystem2D(vt2, tc));
 	}
 
 	/**
@@ -1799,16 +1799,16 @@ public class CoordinateSystem3DTest extends AbstractMathTestCase {
 		vt2 = randomVector2f();
 
 		vt3 = new Vector3f(vt2.getX(),vt2.getY(),0);
-		assertEquals(vt3, CoordinateSystem3D.XYZ_LEFT_HAND.fromCoordinateSystem2D(vt2));
+		assertEpsilonEquals(vt3, CoordinateSystem3D.XYZ_LEFT_HAND.fromCoordinateSystem2D(vt2));
 
 		vt3 = new Vector3f(vt2.getX(),vt2.getY(),0);
-		assertEquals(vt3, CoordinateSystem3D.XYZ_RIGHT_HAND.fromCoordinateSystem2D(vt2));
+		assertEpsilonEquals(vt3, CoordinateSystem3D.XYZ_RIGHT_HAND.fromCoordinateSystem2D(vt2));
 
 		vt3 = new Vector3f(vt2.getX(),0,vt2.getY());
-		assertEquals(vt3, CoordinateSystem3D.XZY_LEFT_HAND.fromCoordinateSystem2D(vt2));
+		assertEpsilonEquals(vt3, CoordinateSystem3D.XZY_LEFT_HAND.fromCoordinateSystem2D(vt2));
 
 		vt3 = new Vector3f(vt2.getX(),0,vt2.getY());
-		assertEquals(vt3, CoordinateSystem3D.XZY_RIGHT_HAND.fromCoordinateSystem2D(vt2));
+		assertEpsilonEquals(vt3, CoordinateSystem3D.XZY_RIGHT_HAND.fromCoordinateSystem2D(vt2));
 	}
 
 	/**

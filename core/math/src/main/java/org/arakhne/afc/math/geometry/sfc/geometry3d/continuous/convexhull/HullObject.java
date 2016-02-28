@@ -20,7 +20,8 @@
  */
 package org.arakhne.afc.math.geometry.sfc.geometry3d.continuous.convexhull;
 
-import org.arakhne.afc.math.geometry.sfc.geometry3d.continuous.Point3f;
+import org.arakhne.afc.math.geometry.d3.continuous.Point3f;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** This class represents a 3D object used inside
  * Convex Hull Computation Algorithms.
@@ -39,18 +40,21 @@ public interface HullObject<T extends Point3f> {
 	 * @param points is the list of real coordinates of the points.
 	 * @return the list of the points of this object. 
 	 */
+	@Pure
 	public Point3f[] getObjectPoints(T[] points);
 	
 	/** Replies the point indexes that composed the Hull Object.
 	 * 
 	 * @return the point indexes that composed the Hull Object.
 	 */
+	@Pure
 	public int[] getObjectIndexes();
 
 	/** Replies the creation level of thos object.
 	 * 
 	 * @return  the creation level of thos object.
 	 */
+	@Pure
 	public int getCreationLevel();
 	
 	/** Replies if all the indexes of this object are
@@ -60,6 +64,7 @@ public interface HullObject<T extends Point3f> {
 	 * @param max is the maximal value to test.
 	 * @return the count of indexes inside the specified range.
 	 */
+	@Pure
 	public int indexesInRange(int min, int max);
 
 }

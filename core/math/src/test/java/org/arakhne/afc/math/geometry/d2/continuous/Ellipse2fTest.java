@@ -194,7 +194,7 @@ public class Ellipse2fTest extends AbstractRectangularShape2fTestCase<Ellipse2f>
 	@Test
 	@Override
 	public void toBoundingBox() {
-		Rectangle2f b = this.r.toBoundingBox();
+		AbstractRectangle2F b = this.r.toBoundingBox();
 		assertEpsilonEquals(0f, b.getMinX());
 		assertEpsilonEquals(0f, b.getMinY());
 		assertEpsilonEquals(2f, b.getMaxX());
@@ -281,30 +281,19 @@ public class Ellipse2fTest extends AbstractRectangularShape2fTestCase<Ellipse2f>
 		Point2D p;
 		
 		p = this.r.getFarthestPointTo(new Point2f(.5f, .4f));
-		assertEpsilonEquals(.5f, p.getX());
-		assertEpsilonEquals(.4f, p.getY());
+		System.out.println(p);
+		assertEpsilonEquals(0.25*Math.sqrt(400/29.)+1, p.getX());
+		assertEpsilonEquals(0.05*Math.sqrt(400/29.)+0.5, p.getY());
 		
 		p = this.r.getFarthestPointTo(new Point2f(-2.3f, -3.4f));
-		// ecenter = (1; 0.5)
-		// a = 1
-		// b = .5
-		// a*a = 1
-		// b*b = .25
-		// x0 = x - a = -2.3 - 1 = -3.3
-		// y0 = y - b = -3.4 - 0.5 = -3.9
-		// denom*denom = a*a*y0*y0 + b*b*x0*x0 = 17.9325
-		// denom = 4.234678264
-		// f = (a*b)/denom = 0.118072724
-		// x = f * x0 = -0.389639991
-		// y = f * y0 = -0.460483626
-		// px = x + a = -0.389639991 + 1 = 0.610360009
-		// py = y + b = -0.460483626 + 0.5 = 0.039516374
-		assertEpsilonEquals(0.610360009f, p.getX());
-		assertEpsilonEquals(0.039516374f, p.getY());
+		
+
+		assertEpsilonEquals(3.3*0.5*Math.sqrt(400/7173.)+1, p.getX());
+		assertEpsilonEquals(3.9*0.5*Math.sqrt(400/7173.)+0.5, p.getY());
 		
 		p = this.r.getFarthestPointTo(new Point2f(1f, 5.6f));
 		assertEpsilonEquals(1f, p.getX());
-		assertEpsilonEquals(1f, p.getY());
+		assertEpsilonEquals(0f, p.getY());
 	}
 
 	/**
@@ -368,7 +357,7 @@ public class Ellipse2fTest extends AbstractRectangularShape2fTestCase<Ellipse2f>
 	/**
 	 */
 	@Test
-	public static void containsEllipseRectangle() {
+	public void containsEllipseRectangle() {
 		assertFalse(Ellipse2f.containsEllipseRectangle(0f, 0f, 1f, 1f,
 				0f, 0f, 1f, 1f));
 		assertFalse(Ellipse2f.containsEllipseRectangle(0f, 0f, 1f, 1f,
@@ -396,7 +385,7 @@ public class Ellipse2fTest extends AbstractRectangularShape2fTestCase<Ellipse2f>
 	/**
 	 */
 	@Test
-	public static void intersectsEllipseEllipse() {
+	public void intersectsEllipseEllipse() {
 		assertTrue(Ellipse2f.intersectsEllipseEllipse(0f, 0f, 1f, 1f,
 				0f, 0f, 1f, 1f));
 		assertTrue(Ellipse2f.intersectsEllipseEllipse(0f, 0f, 1f, 1f,
@@ -422,7 +411,7 @@ public class Ellipse2fTest extends AbstractRectangularShape2fTestCase<Ellipse2f>
 	/**
 	 */
 	@Test
-	public static void intersectsEllipseRectangle() {
+	public void intersectsEllipseRectangle() {
 		assertTrue(Ellipse2f.intersectsEllipseRectangle(0f, 0f, 1f, 1f,
 				0f, 0f, 1f, 1f));
 		assertTrue(Ellipse2f.intersectsEllipseRectangle(0f, 0f, 1f, 1f,
@@ -448,7 +437,7 @@ public class Ellipse2fTest extends AbstractRectangularShape2fTestCase<Ellipse2f>
 	/**
 	 */
 	@Test
-	public static void intersectsEllipseLine() {
+	public void intersectsEllipseLine() {
 		assertTrue(Ellipse2f.intersectsEllipseLine(0f, 0f, 1f, 1f,
 				0f, 0f, 1f, 1f));
 		assertTrue(Ellipse2f.intersectsEllipseLine(0f, 0f, 1f, 1f,
@@ -520,7 +509,7 @@ public class Ellipse2fTest extends AbstractRectangularShape2fTestCase<Ellipse2f>
 	/**
 	 */
 	@Test
-	public static void intersectsEllipseSegment() {
+	public void intersectsEllipseSegment() {
 		assertTrue(Ellipse2f.intersectsEllipseSegment(0f, 0f, 1f, 1f,
 				0f, 0f, 1f, 1f));
 		assertTrue(Ellipse2f.intersectsEllipseSegment(0f, 0f, 1f, 1f,
@@ -718,10 +707,141 @@ public class Ellipse2fTest extends AbstractRectangularShape2fTestCase<Ellipse2f>
 		assertEpsilonEquals(28f, this.r.getMaxY());
 	}
 
-	@SuppressWarnings("all")
 	@Test
 	public void containsEllipsePoint() {
-		throw new UnsupportedOperationException();
+		assertTrue(this.r.contains(new Point2f(1,0.5)));
+		
+		assertTrue(this.r.contains(new Point2f(1.5,0.7)));
+		
+		assertTrue(this.r.contains(new Point2f(0.3,0.3)));
+		
+		assertTrue(this.r.contains(new Point2f(2,0.5)));
+		
+		assertTrue(this.r.contains(new Point2f(1,1)));
+		
+		assertFalse(this.r.contains(new Point2f(0,0)));
+		
+		assertFalse(this.r.contains(new Point2f(0,1)));
+		
+		assertFalse(this.r.contains(new Point2f(1,10)));
+	}
+
+	/**
+	 */
+	@Test
+	@Override
+	public void intersectsPath2d() {
+		Path2d p;
+
+		this.r.set(0f, 0f, 1.1f, 1f);
+		
+		p = new Path2d();
+		p.moveTo(-2f, -2f);
+		p.lineTo(-2f, 2f);
+		p.lineTo(2f, 2f);
+		p.lineTo(2f, -2f);
+		assertFalse(this.r.intersects(p));
+		p.closePath();
+		assertTrue(this.r.intersects(p));
+		
+		p = new Path2d();
+		p.moveTo(-2f, -2f);
+		p.lineTo(0f, 0f);
+		p.lineTo(-2f, 2f);
+		assertFalse(this.r.intersects(p));
+		p.closePath();
+		assertFalse(this.r.intersects(p));
+
+		p = new Path2d();
+		p.moveTo(-2f, -2f);
+		p.lineTo(2f, 2f);
+		p.lineTo(-2f, 2f);
+		assertTrue(this.r.intersects(p));
+		p.closePath();
+		assertTrue(this.r.intersects(p));
+
+		p = new Path2d();
+		p.moveTo(-2f, -2f);
+		p.lineTo(-2f, 2f);
+		p.lineTo(2f, -2f);
+		assertFalse(this.r.intersects(p));
+		p.closePath();
+		assertFalse(this.r.intersects(p));
+
+		p = new Path2d();
+		p.moveTo(-2f, 2f);
+		p.lineTo(1f, 0f);
+		p.lineTo(2f, 1f);
+		assertTrue(this.r.intersects(p));
+		p.closePath();
+		assertTrue(this.r.intersects(p));
+
+		p = new Path2d();
+		p.moveTo(-2f, 2f);
+		p.lineTo(2f, 1f);
+		p.lineTo(1f, 0f);
+		assertFalse(this.r.intersects(p));
+		p.closePath();
+		assertTrue(this.r.intersects(p));
+	}
+
+	/**
+	 */
+	@Test
+	@Override
+	public void intersectsPathIterator2d() {
+		Path2d p;
+
+		this.r.set(0f, 0f, 1.1f, 1f);
+		
+		p = new Path2d();
+		p.moveTo(-2f, -2f);
+		p.lineTo(-2f, 2f);
+		p.lineTo(2f, 2f);
+		p.lineTo(2f, -2f);
+		assertFalse(this.r.intersects(p.getPathIteratorProperty()));
+		p.closePath();
+		assertTrue(this.r.intersects(p.getPathIteratorProperty()));
+		
+		p = new Path2d();
+		p.moveTo(-2f, -2f);
+		p.lineTo(0f, 0f);
+		p.lineTo(-2f, 2f);
+		assertFalse(this.r.intersects(p.getPathIteratorProperty()));
+		p.closePath();
+		assertFalse(this.r.intersects(p.getPathIteratorProperty()));
+
+		p = new Path2d();
+		p.moveTo(-2f, -2f);
+		p.lineTo(2f, 2f);
+		p.lineTo(-2f, 2f);
+		assertTrue(this.r.intersects(p.getPathIteratorProperty()));
+		p.closePath();
+		assertTrue(this.r.intersects(p.getPathIteratorProperty()));
+
+		p = new Path2d();
+		p.moveTo(-2f, -2f);
+		p.lineTo(-2f, 2f);
+		p.lineTo(2f, -2f);
+		assertFalse(this.r.intersects(p.getPathIteratorProperty()));
+		p.closePath();
+		assertFalse(this.r.intersects(p.getPathIteratorProperty()));
+
+		p = new Path2d();
+		p.moveTo(-2f, 2f);
+		p.lineTo(1f, 0f);
+		p.lineTo(2f, 1f);
+		assertTrue(this.r.intersects(p.getPathIteratorProperty()));
+		p.closePath();
+		assertTrue(this.r.intersects(p.getPathIteratorProperty()));
+
+		p = new Path2d();
+		p.moveTo(-2f, 2f);
+		p.lineTo(2f, 1f);
+		p.lineTo(1f, 0f);
+		assertFalse(this.r.intersects(p.getPathIteratorProperty()));
+		p.closePath();
+		assertTrue(this.r.intersects(p.getPathIteratorProperty()));
 	}
 
 }

@@ -20,6 +20,8 @@
  */
 package org.arakhne.afc.math.geometry.d2;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /** 2D Point.
  * 
  * @author $Author: galland$
@@ -34,13 +36,15 @@ public interface Point2D extends Tuple2D<Point2D> {
 	 * @param p1 the other point
 	 * @return the distance.
 	 */
+	@Pure
 	public double getDistanceSquared(Point2D p1);
-
+	
 	/**
 	 * Computes the distance between this point and point p1.
 	 * @param p1 the other point
 	 * @return the distance. 
 	 */    
+	@Pure
 	public double getDistance(Point2D p1);
 
 	/**
@@ -49,6 +53,7 @@ public interface Point2D extends Tuple2D<Point2D> {
 	 * @param p1 the other point
 	 * @return the distance.
 	 */
+	@Pure
 	public double getDistanceL1(Point2D p1);
 
 	/**
@@ -58,6 +63,7 @@ public interface Point2D extends Tuple2D<Point2D> {
 	 * @param p1 the other point
 	 * @return the distance.
 	 */
+	@Pure
 	public double getDistanceLinf(Point2D p1);
 
 	/**
@@ -65,6 +71,7 @@ public interface Point2D extends Tuple2D<Point2D> {
 	 * @param p1 the other point
 	 * @return the distance.
 	 */
+	@Pure
 	public int distanceSquared(Point2D p1);
 
 	/**
@@ -72,6 +79,7 @@ public interface Point2D extends Tuple2D<Point2D> {
 	 * @param p1 the other point
 	 * @return the distance. 
 	 */    
+	@Pure
 	public int distance(Point2D p1);
 
 	/**
@@ -80,6 +88,7 @@ public interface Point2D extends Tuple2D<Point2D> {
 	 * @param p1 the other point
 	 * @return the distance.
 	 */
+	@Pure
 	public int distanceL1(Point2D p1);
 
 	/**
@@ -89,6 +98,7 @@ public interface Point2D extends Tuple2D<Point2D> {
 	 * @param p1 the other point
 	 * @return the distance.
 	 */
+	@Pure
 	public int distanceLinf(Point2D p1);
 
 	/**
@@ -183,6 +193,7 @@ public interface Point2D extends Tuple2D<Point2D> {
 	 *
 	 * @return an unmodifiable copy.
 	 */
+	@Pure
 	public Point2D toUnmodifiable();
 
 }

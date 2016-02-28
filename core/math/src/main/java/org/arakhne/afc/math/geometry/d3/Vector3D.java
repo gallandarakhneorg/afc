@@ -21,6 +21,7 @@
 package org.arakhne.afc.math.geometry.d3;
 
 import org.arakhne.afc.math.MathUtil;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 
 /** 3D Vector.
@@ -109,6 +110,7 @@ public interface Vector3D extends Tuple3D<Vector3D> {
 	 * @param v1 the other vector
 	 * @return the dot product.
 	 */
+	@Pure
 	public double dot(Vector3D v1);
 
 	/** Compute the determinant of two vectors.
@@ -121,6 +123,7 @@ public interface Vector3D extends Tuple3D<Vector3D> {
 	 * @param v
 	 * @return the perp product.
 	 */
+	@Pure
 	public double perp(Vector3D v);
 
 	/**
@@ -134,10 +137,11 @@ public interface Vector3D extends Tuple3D<Vector3D> {
 	 * <img src="doc-files/right_handed_cross_product.png" alt="[Right-Handed Cross Product]">
 	 * 
 	 * @param v1 the other vector
-	 * @return the dot product.
+	 * @return the cross product.
 	 * @see #crossLeftHand(Vector3D)
 	 * @see #crossRightHand(Vector3D)
 	 */
+	@Pure
 	public Vector3D cross(Vector3D v1);
 
 	/**
@@ -168,6 +172,7 @@ public interface Vector3D extends Tuple3D<Vector3D> {
 	 * @param v1 the other vector
 	 * @return the dot product.
 	 */
+	@Pure
 	public Vector3D crossLeftHand(Vector3D v1);
 
 	/**
@@ -191,6 +196,7 @@ public interface Vector3D extends Tuple3D<Vector3D> {
 	 * @param v1 the other vector
 	 * @return the dot product.
 	 */
+	@Pure
 	public Vector3D crossRightHand(Vector3D v1);
 
 	/**
@@ -209,12 +215,14 @@ public interface Vector3D extends Tuple3D<Vector3D> {
 	 * Returns the length of this vector.
 	 * @return the length of this vector
 	 */  
+	@Pure
 	public double length();
 
 	/**  
 	 * Returns the squared length of this vector.
 	 * @return the squared length of this vector
 	 */  
+	@Pure
 	public double lengthSquared();
 
 	/**
@@ -235,6 +243,7 @@ public interface Vector3D extends Tuple3D<Vector3D> {
 	 *   @param v1    the other vector
 	 *   @return   the angle in radians in the range [0,PI]
 	 */
+	@Pure
 	public double angle(Vector3D v1);
 
 	/** Turn this vector about the given rotation angle.
@@ -253,6 +262,7 @@ public interface Vector3D extends Tuple3D<Vector3D> {
 	 * @return <code>true</code> if the vector has a length equal to 1.
 	 * <code>false</code> otherwise.
 	 */
+	@Pure
 	public boolean isUnitVector();
 
 	/** Replies if this vector is colinear to the given vector.
@@ -260,6 +270,7 @@ public interface Vector3D extends Tuple3D<Vector3D> {
 	 * @param v
 	 * @return <code>true</code> if the vectors are colinear..
 	 */
+	@Pure
 	public boolean isColinear(Vector3D v);
 
 	/** Change the length of the vector.
@@ -273,6 +284,7 @@ public interface Vector3D extends Tuple3D<Vector3D> {
 	 *
 	 * @return an unmodifiable copy.
 	 */
+	@Pure
 	public Vector3D toUnmodifiable();
 
 }

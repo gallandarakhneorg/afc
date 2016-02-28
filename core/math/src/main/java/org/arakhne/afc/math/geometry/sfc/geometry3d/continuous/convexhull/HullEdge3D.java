@@ -20,7 +20,8 @@
  */
 package org.arakhne.afc.math.geometry.sfc.geometry3d.continuous.convexhull;
 
-import org.arakhne.afc.math.geometry.sfc.geometry3d.continuous.Point3f;
+import org.arakhne.afc.math.geometry.d3.continuous.Point3f;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** This class represents a 3D edge used inside
  * Convex Hull Computation Algorithms.
@@ -50,6 +51,7 @@ public class HullEdge3D<T extends Point3f> implements HullObject<T> {
 	 * @param b is the index of the last point.
 	 * @param creationLevel is the level inside the creation algorithm.
 	 */
+	@SuppressWarnings("hiding")
 	public HullEdge3D(T[] points, int a, int b, int creationLevel) {
 		this.a = a;
 		this.b = b;
@@ -58,6 +60,7 @@ public class HullEdge3D<T extends Point3f> implements HullObject<T> {
 	
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public int getCreationLevel() {
 		return this.creationLevel;
@@ -67,6 +70,7 @@ public class HullEdge3D<T extends Point3f> implements HullObject<T> {
 	 * 
 	 * @return {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public String toString() {
 		return "[Edge3D, "+this.a+","+this.b+"]\n";  //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
@@ -74,6 +78,7 @@ public class HullEdge3D<T extends Point3f> implements HullObject<T> {
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public Point3f[] getObjectPoints(T[] points) {
 		return new Point3f[] {
@@ -84,6 +89,7 @@ public class HullEdge3D<T extends Point3f> implements HullObject<T> {
 	
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public int[] getObjectIndexes() {
 		return new int[] {
@@ -94,6 +100,7 @@ public class HullEdge3D<T extends Point3f> implements HullObject<T> {
 
 	/** {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public int indexesInRange(int min, int max) {
 		int ci = min;

@@ -841,7 +841,7 @@ public class OrientedRectangle2fTest extends AbstractShape2fTestCase<OrientedRec
 	public void intersectsOrientedRectangle2f() {
 		assertFalse(this.r.isEmpty());
 		
-		Rectangle2f bounds = this.r.toBoundingBox();
+		AbstractRectangle2F bounds = this.r.toBoundingBox();
 
 		Point2f center = new Point2f();
 		Vector2f axis1 = new Vector2f();
@@ -896,7 +896,7 @@ public class OrientedRectangle2fTest extends AbstractShape2fTestCase<OrientedRec
 	public void toBoundingBox() {
 		assertFalse(this.r.isEmpty());
 
-		Rectangle2f box = this.r.toBoundingBox();
+		AbstractRectangle2F box = this.r.toBoundingBox();
 		
 		assertEpsilonEquals(MathUtil.min(this.P1.x, this.P2.x, this.P3.x, this.P4.x), box.getMinX());
 		assertEpsilonEquals(MathUtil.min(this.P1.y, this.P2.y, this.P3.y, this.P4.y), box.getMinY());
@@ -1038,37 +1038,37 @@ public class OrientedRectangle2fTest extends AbstractShape2fTestCase<OrientedRec
 	}
 
 	@Test
-	public boolean intersectsOrientedRectangleSegment() {
+	public void intersectsOrientedRectangleSegment() {
 		throw new UnsupportedOperationException();
 	}
 
 	@Test
-	public boolean intersectsOrientedRectangleEllipse(){
+	public void intersectsOrientedRectangleEllipse(){
 		throw new UnsupportedOperationException();
 	}
 
 	@Test
-	public boolean intersectsOrientedRectangleSolidCircle() {
+	public void intersectsOrientedRectangleSolidCircle() {
 		throw new UnsupportedOperationException();
 	}
 
 	@Test
-	public boolean intersectsOrientedRectangleOrientedRectangle(){
+	public void intersectsOrientedRectangleOrientedRectangle(){
 		throw new UnsupportedOperationException();
 	}
 
 	@Test
-	public boolean intersectsOrientedRectangleRectangle() {
+	public void intersectsOrientedRectangleRectangle() {
 		throw new UnsupportedOperationException();
 	}
 
 	@Test
-	public boolean containsOrientedRectangleRectangle() {
+	public void containsOrientedRectangleRectangle() {
 		throw new UnsupportedOperationException();
 	}
 
 	@Test
-	public boolean containsOrientedRectanglePoint() {
+	public void containsOrientedRectanglePoint() {
 		throw new UnsupportedOperationException();
 	}
 
@@ -1170,6 +1170,116 @@ public class OrientedRectangle2fTest extends AbstractShape2fTestCase<OrientedRec
 	@Test
 	public void setDoubleDoubleDoubleDoubleDoubleDouble() {
 		throw new UnsupportedOperationException();
+	}
+
+	@Test
+	@Override
+	public void intersectsPath2d() {
+		Path2d p;
+		
+		p = new Path2d();
+		p.moveTo(-2f, -2f);
+		p.lineTo(-2f, 2f);
+		p.lineTo(2f, 2f);
+		p.lineTo(2f, -2f);
+		assertFalse(this.r.intersects(p));
+		p.closePath();
+		assertTrue(this.r.intersects(p));
+		
+		p = new Path2d();
+		p.moveTo(-2f, -2f);
+		p.lineTo(0f, 0f);
+		p.lineTo(-2f, 2f);
+		assertFalse(this.r.intersects(p));
+		p.closePath();
+		assertFalse(this.r.intersects(p));
+
+		p = new Path2d();
+		p.moveTo(-2f, -2f);
+		p.lineTo(2f, 2f);
+		p.lineTo(-2f, 2f);
+		assertTrue(this.r.intersects(p));
+		p.closePath();
+		assertTrue(this.r.intersects(p));
+
+		p = new Path2d();
+		p.moveTo(-2f, -2f);
+		p.lineTo(-2f, 2f);
+		p.lineTo(2f, -2f);
+		assertFalse(this.r.intersects(p));
+		p.closePath();
+		assertFalse(this.r.intersects(p));
+
+		p = new Path2d();
+		p.moveTo(-2f, 2f);
+		p.lineTo(1f, 0f);
+		p.lineTo(2f, 1f);
+		assertTrue(this.r.intersects(p));
+		p.closePath();
+		assertTrue(this.r.intersects(p));
+
+		p = new Path2d();
+		p.moveTo(-2f, 2f);
+		p.lineTo(2f, 1f);
+		p.lineTo(1f, 0f);
+		assertFalse(this.r.intersects(p));
+		p.closePath();
+		assertTrue(this.r.intersects(p));
+	}
+
+	@Test
+	@Override
+	public void intersectsPathIterator2d() {
+		Path2d p;
+
+		p = new Path2d();
+		p.moveTo(-2f, -2f);
+		p.lineTo(-2f, 2f);
+		p.lineTo(2f, 2f);
+		p.lineTo(2f, -2f);
+		assertFalse(this.r.intersects(p.getPathIteratorProperty()));
+		p.closePath();
+		assertTrue(this.r.intersects(p.getPathIteratorProperty()));
+		
+		p = new Path2d();
+		p.moveTo(-2f, -2f);
+		p.lineTo(0f, 0f);
+		p.lineTo(-2f, 2f);
+		assertFalse(this.r.intersects(p.getPathIteratorProperty()));
+		p.closePath();
+		assertFalse(this.r.intersects(p.getPathIteratorProperty()));
+
+		p = new Path2d();
+		p.moveTo(-2f, -2f);
+		p.lineTo(2f, 2f);
+		p.lineTo(-2f, 2f);
+		assertTrue(this.r.intersects(p.getPathIteratorProperty()));
+		p.closePath();
+		assertTrue(this.r.intersects(p.getPathIteratorProperty()));
+
+		p = new Path2d();
+		p.moveTo(-2f, -2f);
+		p.lineTo(-2f, 2f);
+		p.lineTo(2f, -2f);
+		assertFalse(this.r.intersects(p.getPathIteratorProperty()));
+		p.closePath();
+		assertFalse(this.r.intersects(p.getPathIteratorProperty()));
+
+		p = new Path2d();
+		p.moveTo(-2f, 2f);
+		p.lineTo(1f, 0f);
+		p.lineTo(2f, 1f);
+		assertTrue(this.r.intersects(p.getPathIteratorProperty()));
+		p.closePath();
+		assertTrue(this.r.intersects(p.getPathIteratorProperty()));
+
+		p = new Path2d();
+		p.moveTo(-2f, 2f);
+		p.lineTo(2f, 1f);
+		p.lineTo(1f, 0f);
+		assertFalse(this.r.intersects(p.getPathIteratorProperty()));
+		p.closePath();
+		assertTrue(this.r.intersects(p.getPathIteratorProperty()));
 	}
 
 }

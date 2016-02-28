@@ -22,8 +22,10 @@ package org.arakhne.afc.math.geometry.d3.continuous;
 
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.Unefficient;
+import org.arakhne.afc.math.geometry.d3.FunctionalVector3D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** This class represents a 3D plane.
  *
@@ -42,6 +44,7 @@ public abstract class AbstractPlane3D<PT extends AbstractPlane3D<? super PT>> im
 	 * @return a clone.
 	 */
 	@SuppressWarnings("unchecked")
+	@Pure
 	@Override
 	public PT clone() {
 		try {
@@ -57,6 +60,7 @@ public abstract class AbstractPlane3D<PT extends AbstractPlane3D<? super PT>> im
 	 * 
 	 * @return {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public String toString() {
 		StringBuilder buf = new StringBuilder();
@@ -78,11 +82,13 @@ public abstract class AbstractPlane3D<PT extends AbstractPlane3D<? super PT>> im
 		return buf.toString();
 	}
 
+	@Pure
 	@Override
 	public double distanceTo(Point3D v) {
 		return distanceTo(v.getX(), v.getY(), v.getZ());
 	}
 
+	@Pure
 	@Override
 	public double distanceTo(Plane3D<?> p) {
 		// Compute the normales
@@ -117,8 +123,9 @@ public abstract class AbstractPlane3D<PT extends AbstractPlane3D<? super PT>> im
 		return Double.NaN;
 	}
 
+	@Pure
 	@Override
-	public Segment3f getIntersection(Plane3D<?> plane) {
+	public AbstractSegment3F getIntersection(Plane3D<?> plane) {
 		Vector3D n1 = getNormal();
 		Vector3D n2 = plane.getNormal();
 		Vector3f u = new Vector3f();
@@ -153,8 +160,9 @@ public abstract class AbstractPlane3D<PT extends AbstractPlane3D<? super PT>> im
 		return new Segment3f(new Point3f(n2), u);
 	}
 
+	@Pure
 	@Override
-	public Point3f getIntersection(Segment3f line) {
+	public Point3f getIntersection(AbstractSegment3F line) {
 		Vector3D n = getNormal();
 		Vector3D u = line.getDirection();
 
@@ -169,7 +177,7 @@ public abstract class AbstractPlane3D<PT extends AbstractPlane3D<? super PT>> im
 		//      -(a x0 + b y0 + c z0 + d)
 		// si = -------------------------
 		//               n.u
-		Point3f p0 = line.getP1();
+		Point3f p0 = (Point3f) line.getP1();
 
 		double si = -(
 				getEquationComponentA()*p0.getX()
@@ -187,22 +195,26 @@ public abstract class AbstractPlane3D<PT extends AbstractPlane3D<? super PT>> im
 		return p0;
 	}
 
+	@Pure
 	@Override
 	public Point3f getProjection(Point3D point) {
-		return getProjection(point.getX(), point.getY(), point.getZ());
+		return new Point3f(getProjection(point.getX(), point.getY(), point.getZ()));
 	}
 
+	@Pure
 	@Override
 	public boolean intersects(double x, double y, double z) {
 		double distance = distanceTo(x,y,z);
         return MathUtil.isEpsilonZero(distance);
 	}
-	
+
+	@Pure
 	@Override
 	public boolean intersects(Point3D vec) {
 		return intersects(vec.getX(), vec.getY(), vec.getZ());
 	}
-	
+
+	@Pure
 	@Override
 	public boolean intersects(Plane3D<?> otherPlane) {
 		double distance = distanceTo(otherPlane);
@@ -214,6 +226,7 @@ public abstract class AbstractPlane3D<PT extends AbstractPlane3D<? super PT>> im
     	return MathUtil.isEpsilonZero(distance);
 	}
 
+	@Pure
 	@Override
 	public PlaneClassification classifies(Plane3D<?> otherPlane) {
 		double distance = distanceTo(otherPlane);
@@ -223,7 +236,7 @@ public abstract class AbstractPlane3D<PT extends AbstractPlane3D<? super PT>> im
 		// Planes intersect also when the distance
 		// is null
 
-		if ((distance==Double.NaN)||
+		if ((Double.isNaN(distance)) ||
 			(MathUtil.isEpsilonZero(distance)))
 			return PlaneClassification.COINCIDENT;
 
@@ -231,11 +244,13 @@ public abstract class AbstractPlane3D<PT extends AbstractPlane3D<? super PT>> im
 		return PlaneClassification.BEHIND;
 	}
 
+	@Pure
 	@Override
 	public PlaneClassification classifies(Point3D vec) {
 		return classifies(vec.getX(), vec.getY(), vec.getZ());
 	}
 
+	@Pure
 	@Override
 	public PlaneClassification classifies(double x, double y, double z) {
 		PlaneClassification c;
@@ -249,8 +264,9 @@ public abstract class AbstractPlane3D<PT extends AbstractPlane3D<? super PT>> im
 		return c;
 	}
 
+	@Pure
 	@Override
-	public PlaneClassification classifies(Sphere3f sphere) {
+	public PlaneClassification classifies(AbstractSphere3F sphere) {
 		double distance = distanceTo(sphere.getX(), sphere.getY(), sphere.getZ());
 	    if (Math.abs(distance) >= sphere.getRadius()) {
 	        if (distance<0) return PlaneClassification.BEHIND;
@@ -258,9 +274,10 @@ public abstract class AbstractPlane3D<PT extends AbstractPlane3D<? super PT>> im
 	    }
 		return PlaneClassification.COINCIDENT;
 	}
-	
+
+	@Pure
 	@Override
-    public PlaneClassification classifies(AlignedBox3f box) {
+    public PlaneClassification classifies(AbstractBoxedShape3F<?> box) {
     	Vector3D normal = getNormal();
     	double minx, miny, minz, maxx, maxy, maxz;
 
@@ -296,55 +313,58 @@ public abstract class AbstractPlane3D<PT extends AbstractPlane3D<? super PT>> im
     	
     	double d = getEquationComponentD();
 
-    	if ((Vector3f.dotProduct(normal.getX(), normal.getY(), normal.getZ(), minx, miny, minz)+d)>0.)
+    	if ((FunctionalVector3D.dotProduct(normal.getX(), normal.getY(), normal.getZ(), minx, miny, minz)+d)>0.)
     		return PlaneClassification.IN_FRONT_OF; 
     	
-    	if ((Vector3f.dotProduct(normal.getX(), normal.getY(), normal.getZ(), maxx, maxy, maxz)+d)>=0.)
+    	if ((FunctionalVector3D.dotProduct(normal.getX(), normal.getY(), normal.getZ(), maxx, maxy, maxz)+d)>=0.)
     		return PlaneClassification.COINCIDENT;
     	
     	return PlaneClassification.BEHIND;
     }
 
+	@Pure
 	@Override
-    public boolean intersects(Sphere3f sphere) {
+    public boolean intersects(AbstractSphere3F sphere) {
     	double distance = distanceTo(sphere.getX(), sphere.getY(), sphere.getZ());
         return MathUtil.isEpsilonZero(distance);
     }
-    
+
+	@Pure
 	@Override
     @Unefficient
-    public boolean intersects(AlignedBox3f box) {
+    public boolean intersects(AbstractBoxedShape3F<?> box) {
     	return classifies(box) == PlaneClassification.COINCIDENT;
     }
 	
 
+	@Pure
 	@Override
-	public boolean intersects(OrientedBox3f box) {
+	public boolean intersects(AbstractOrientedBox3F box) {
 		// Compute the effective radius of the obb and
 		// compare it with the distance between the obb center
 		// and the plane; source MGPCG pp.235
-		Vector3f n = getNormal();
+		Vector3f n = (Vector3f) getNormal();
 
 		double dist = Math.abs(distanceTo(box.getCenter()));
 
 		double effectiveRadius;
 
 		effectiveRadius = Math.abs(
-				Vector3f.dotProduct(
+				FunctionalVector3D.dotProduct(
 						box.getFirstAxisX() * box.getFirstAxisExtent(), 
 						box.getFirstAxisY() * box.getFirstAxisExtent(),
 						box.getFirstAxisZ() * box.getFirstAxisExtent(),
 						n.getX(), n.getY(), n.getZ()));
 
 		effectiveRadius += Math.abs(
-				Vector3f.dotProduct(
+				FunctionalVector3D.dotProduct(
 						box.getSecondAxisX() * box.getSecondAxisExtent(), 
 						box.getSecondAxisY() * box.getSecondAxisExtent(),
 						box.getSecondAxisZ() * box.getSecondAxisExtent(),
 						n.getX(), n.getY(), n.getZ()));
 
 		effectiveRadius += Math.abs(
-				Vector3f.dotProduct(
+				FunctionalVector3D.dotProduct(
 						box.getThirdAxisX() * box.getThirdAxisExtent(), 
 						box.getThirdAxisY() * box.getThirdAxisExtent(),
 						box.getThirdAxisZ() * box.getThirdAxisExtent(),
@@ -353,11 +373,12 @@ public abstract class AbstractPlane3D<PT extends AbstractPlane3D<? super PT>> im
 		return MathUtil.compareEpsilon(dist, effectiveRadius) <= 0;
 	}
 
+	@Pure
 	@Override
-	public boolean intersects(Segment3f segment) {
+	public boolean intersects(AbstractSegment3F segment) {
 		Vector3D n = getNormal();
 		Vector3D u = segment.getDirection();
-
+		
 	    double s = n.dot(u);
 
 		if (MathUtil.isEpsilonZero(s)) {

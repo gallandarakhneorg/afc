@@ -149,7 +149,8 @@ public class PostfixDataDepthFirstTreeIteratorTest extends AbstractDataTreeItera
 			this.iterator.remove();
 			fail("Expecting NoSuchElementException"); //$NON-NLS-1$
 		}
-		catch(NoSuchElementException _) {
+		catch(NoSuchElementException e) {
+			e.printStackTrace();
 			// Expected exception
 		}
 
@@ -201,7 +202,8 @@ public class PostfixDataDepthFirstTreeIteratorTest extends AbstractDataTreeItera
 			this.iterator.remove();
 			fail("Expecting NoSuchElementException"); //$NON-NLS-1$
 		}
-		catch(NoSuchElementException _) {
+		catch(NoSuchElementException e) {
+			e.printStackTrace();
 			// Expected exception
 		}
 

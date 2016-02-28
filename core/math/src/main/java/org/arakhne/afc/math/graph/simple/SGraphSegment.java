@@ -46,23 +46,23 @@ public class SGraphSegment implements GraphSegment<SGraphSegment,SGraphPoint> {
 	private List<Object> userData = null;
 	
 	/**
-	 * @param graph is the graph in which the segment is.
+	 * @param graph1 is the graph in which the segment is.
 	 */
-	public SGraphSegment(SGraph graph) {
-		this(graph, Float.NaN);
+	public SGraphSegment(SGraph graph1) {
+		this(graph1, Double.NaN);
 	}
 	
 	/**
-	 * @param graph is the graph in which the segment is.
-	 * @param length is the length of the segment.
+	 * @param graph1 is the graph in which the segment is.
+	 * @param length1 is the length of the segment.
 	 */
-	public SGraphSegment(SGraph graph, double length) {
-		assert(graph!=null);
-		this.length = length;
-		graph.add(this);
-		this.graph = new WeakReference<>(graph);
-		this.startPoint = new SGraphPoint(graph);
-		this.endPoint = new SGraphPoint(graph);
+	public SGraphSegment(SGraph graph1, double length1) {
+		assert(graph1!=null);
+		this.length = length1;
+		graph1.add(this);
+		this.graph = new WeakReference<>(graph1);
+		this.startPoint = new SGraphPoint(graph1);
+		this.endPoint = new SGraphPoint(graph1);
 	}
 
 	/** Replies the graph in which this segment is.
@@ -227,31 +227,31 @@ public class SGraphSegment implements GraphSegment<SGraphSegment,SGraphPoint> {
 
     /** Set the length of the segment.
      * 
-     * @param length is the length of the segment.
+     * @param length1 is the length of the segment.
      */
-	public void setLength(double length) {
-		this.length = length;
+	public void setLength(double length1) {
+		this.length = length1;
 	}
 
 	/** Add a user data in the data associated to this point.
 	 * 
-	 * @param userData
+	 * @param userData1
 	 * @return <code>true</code> if the data was added; otherwise <code>false</code>.
 	 */
-	public boolean addUserData(Object userData) {
+	public boolean addUserData(Object userData1) {
 		if (this.userData==null) {
 			this.userData = new ArrayList<>();
 		}
-		return this.userData.add(userData);
+		return this.userData.add(userData1);
 	}
 
 	/** Remove a user data from the data associated to this point.
 	 * 
-	 * @param userData
+	 * @param userData1
 	 * @return <code>true</code> if the data was removed; otherwise <code>false</code>.
 	 */
-	public boolean removeUserData(Object userData) {
-		return (this.userData!=null && this.userData.remove(userData));
+	public boolean removeUserData(Object userData1) {
+		return (this.userData!=null && this.userData.remove(userData1));
 	}
 	
 	/** Replies the number of user data.

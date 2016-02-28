@@ -790,7 +790,7 @@ public abstract class OctTreeNode<D,N extends OctTreeNode<D,N>> extends Abstract
 	@Override
 	protected void getHeights(int currentHeight, List<Integer> heights) {
 		if (isLeaf()) {
-			heights.add(currentHeight);
+			heights.add(new Integer(currentHeight));
 		}
 		else {
 			if (this.child1!=null) this.child1.getHeights(currentHeight+1, heights);

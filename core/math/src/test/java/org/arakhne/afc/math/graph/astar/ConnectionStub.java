@@ -45,12 +45,12 @@ class ConnectionStub implements GraphPoint<ConnectionStub,SegmentStub> {
 	final Point2f position = new Point2f();
 	
 	/**
-	 * @param id
+	 * @param id1
 	 * @param x
 	 * @param y
 	 */
-	public ConnectionStub(String id, float x, float y) {
-		this.id = id;
+	public ConnectionStub(String id1, double x, double y) {
+		this.id = id1;
 		this.position.set(x,y);
 	}
 	
@@ -192,10 +192,10 @@ class ConnectionStub implements GraphPoint<ConnectionStub,SegmentStub> {
 		private final SegmentStub segment;
 		
 		/**
-		 * @param segment
+		 * @param segment1
 		 */
-		public GPC(SegmentStub segment) {
-			this.segment = segment;
+		public GPC(SegmentStub segment1) {
+			this.segment = segment1;
 		}
 
 		@Override

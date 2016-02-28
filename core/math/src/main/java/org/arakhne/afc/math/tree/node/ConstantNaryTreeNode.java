@@ -340,7 +340,7 @@ public abstract class ConstantNaryTreeNode<D,N extends ConstantNaryTreeNode<D,N>
 	@Override
 	protected void getHeights(int currentHeight, List<Integer> heights) {
 		if (isLeaf()) {
-			heights.add(currentHeight);
+			heights.add(new Integer(currentHeight));
 		}
 		else {
 			for(N child : this.children) {

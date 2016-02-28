@@ -37,13 +37,13 @@ implements Comparator<GraphIterationElement<ST,PT>> {
 	private final boolean assumeOrientedSegments;
 	
 	/**
-	 * @param assumeOrientedSegments may be <code>true</code> to assume that the same segment has two different
+	 * @param assumeOrientedSegments1 may be <code>true</code> to assume that the same segment has two different
 	 * instances for graph iteration: the first instance is associated the first point of the segment and the second
 	 * instance is associated to the last point of the segment. If this parameter is <code>false</code> to assume that
 	 * the end points of a segment are not distinguished.
 	 */
-	public GraphIterationElementComparator(boolean assumeOrientedSegments) {
-		this.assumeOrientedSegments = assumeOrientedSegments;
+	public GraphIterationElementComparator(boolean assumeOrientedSegments1) {
+		this.assumeOrientedSegments = assumeOrientedSegments1;
 	}
 
 	/**

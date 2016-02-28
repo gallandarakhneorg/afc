@@ -20,6 +20,8 @@
  */
 package org.arakhne.afc.math.geometry;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /**
  * This enumeration describes a intersection classification.
  * <p>
@@ -87,6 +89,7 @@ public enum IntersectionType {
 	 * @param t
 	 * @return the inverted classification
 	 */
+	@Pure
 	public static IntersectionType invert(IntersectionType t) {
 		switch (t) {
 		case INSIDE:
@@ -121,6 +124,7 @@ public enum IntersectionType {
 	 * 
 	 * @return the inverted classification
 	 */
+	@Pure
 	public IntersectionType invert() {
 		return invert(this);
 	}
@@ -170,6 +174,7 @@ public enum IntersectionType {
 	 * @param f2 is the classification of E against F2.
 	 * @return the classification of E against the whole object composed of F1 and F2.
 	 */
+	@Pure
 	public static IntersectionType or(IntersectionType f1, IntersectionType f2) {
 		if (f1==f2) return f1;
 		if (f1==INSIDE || f2==INSIDE) return INSIDE;
@@ -220,6 +225,7 @@ public enum IntersectionType {
 	 * @param f2 is the classification of E against F2.
 	 * @return the classification of E against the whole object composed of F1 and F2.
 	 */
+	@Pure
 	public IntersectionType or(IntersectionType f2) {
 		return or(this,f2);
 	}
@@ -267,6 +273,7 @@ public enum IntersectionType {
 	 * @param c
 	 * @return the result of the intersection.
 	 */
+	@Pure
 	public static IntersectionType and(IntersectionType t, IntersectionType c) {
 		if (t==c) return t;
 		if ((t==INSIDE && c==ENCLOSING)||
@@ -316,6 +323,7 @@ public enum IntersectionType {
 	 * @param c
 	 * @return the result of the intersection.
 	 */
+	@Pure
 	public IntersectionType and(IntersectionType c) {
 		return and(this,c);
 	}
