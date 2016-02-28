@@ -90,7 +90,7 @@ public class URLConnectionTest {
 	 */
 	@Test
 	public void testGetHeaderFieldInt() {
-		assertEquals("application/octet-stream", this.connection.getHeaderField(0)); //$NON-NLS-1$
+		assertEquals("text/plain", this.connection.getHeaderField(0)); //$NON-NLS-1$
 		assertEquals("25", this.connection.getHeaderField(1)); //$NON-NLS-1$
 		assertNotNull(this.connection.getHeaderField(2));
 		assertNull(this.connection.getHeaderField(3));
@@ -100,7 +100,7 @@ public class URLConnectionTest {
 	 */
 	@Test
 	public void testGetHeaderFieldString() {
-		assertEquals("application/octet-stream", this.connection.getHeaderField("content-type")); //$NON-NLS-1$ //$NON-NLS-2$
+		assertEquals("text/plain", this.connection.getHeaderField("content-type")); //$NON-NLS-1$ //$NON-NLS-2$
 		assertEquals("25", this.connection.getHeaderField("content-length")); //$NON-NLS-1$ //$NON-NLS-2$
 		assertNotNull(this.connection.getHeaderField("last-modified")); //$NON-NLS-1$
 		assertNull(this.connection.getHeaderField("expires")); //$NON-NLS-1$
@@ -113,7 +113,7 @@ public class URLConnectionTest {
 		Map<?,?> map = this.connection.getHeaderFields();
 		assertNotNull(map);
 		assertEquals(3, map.size());
-		assertEquals(Collections.singletonList("application/octet-stream"), map.get("content-type")); //$NON-NLS-1$ //$NON-NLS-2$
+		assertEquals(Collections.singletonList("text/plain"), map.get("content-type")); //$NON-NLS-1$ //$NON-NLS-2$
 		assertEquals(Collections.singletonList("25"), map.get("content-length")); //$NON-NLS-1$ //$NON-NLS-2$
 		assertNotNull(map.get("last-modified")); //$NON-NLS-1$
 		assertNull(map.get("expires")); //$NON-NLS-1$
