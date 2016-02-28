@@ -14,7 +14,7 @@
 	<properties>
 		<afc.version>13.0-SNAPSHOT</afc.version>
 		<afc.plugins.version>12.0</afc.plugins.version>
-		<year>2015</year>
+		<year>2016</year>
 		<copyrighters>Arakhn&amp;ecirc;.org Members</copyrighters>
 		<sourceEncoding>UTF-8</sourceEncoding>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -106,27 +106,27 @@
 			<dependency>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>org.apache.felix.main</artifactId>
-				<version>5.0.0</version>
+				<version>5.4.0</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.maven</groupId>
 				<artifactId>maven-plugin-api</artifactId>
-				<version>3.3.3</version>
+				<version>3.3.9</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.maven</groupId>
 				<artifactId>maven-artifact</artifactId>
-				<version>3.3.3</version>
+				<version>3.3.9</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.maven</groupId>
 				<artifactId>maven-core</artifactId>
-				<version>3.3.3</version>
+				<version>3.3.9</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.maven</groupId>
 				<artifactId>maven-compat</artifactId>
-				<version>3.3.3</version>
+				<version>3.3.9</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.maven</groupId>
@@ -148,12 +148,12 @@
 			<dependency>
 				<groupId>org.eclipse.aether</groupId>
 				<artifactId>aether-api</artifactId>
-				<version>1.0.2.v20150114</version>
+				<version>1.1.0</version>
 			</dependency>
 			<dependency>
 				<groupId>org.tmatesoft.svnkit</groupId>
 				<artifactId>svnkit</artifactId>
-				<version>1.8.10</version>
+				<version>1.8.11</version>
 			</dependency>
 			<dependency>
 				<groupId>junit</groupId>
@@ -185,7 +185,7 @@
 			<name>Apache 2.0</name>
 			<url>http://www.apache.org/licenses/LICENSE-2.0</url>
 			<distribution>repo</distribution>
-			<comments>Since 2015</comments>
+			<comments>2015-${year}</comments>
 		</license>
 	</licenses>
 
@@ -326,12 +326,12 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-source-plugin</artifactId>
-					<version>2.4</version>
+					<version>3.0.0</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
-					<version>3.3</version>
+					<version>3.5.1</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -351,7 +351,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-assembly-plugin</artifactId>
-					<version>2.5.4</version>
+					<version>2.6</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -361,17 +361,17 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-plugin</artifactId>
-					<version>2.18.1</version>
+					<version>2.19.1</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-enforcer-plugin</artifactId>
-					<version>1.4</version>
+					<version>1.4.1</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-site-plugin</artifactId>
-					<version>3.4</version>
+					<version>3.5</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -381,7 +381,7 @@
 				<plugin>
 					<groupId>org.apache.felix</groupId>
 					<artifactId>maven-bundle-plugin</artifactId>
-					<version>2.5.4</version>
+					<version>3.0.1</version>
 				</plugin>
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
