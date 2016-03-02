@@ -211,17 +211,6 @@ public abstract class AbstractAttributeCollection extends AbstractAttributeProvi
 	public final boolean renameAttribute(String oldname, String newname) {
 		return renameAttribute(oldname, newname, false);
 	}
-
-	/** {@inheritDoc}
-	 * @deprecated see {@link #addAttributes(AttributeProvider)}
-	 */
-	@Deprecated
-	@Override
-	public final void copyFrom(AttributeProvider otherContainer) throws AttributeException {
-		for (Attribute attr : otherContainer.attributes()) {
-			setAttribute(attr);
-		}
-	}
 	
 }
 

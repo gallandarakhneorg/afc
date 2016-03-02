@@ -36,14 +36,7 @@ import org.arakhne.afc.vmutil.ClassLoaderFinder;
  */
 public class StackTraceCaller implements Caller {
 
-	/** Load a class but avoid any exception.
-     *
-     * @param name the class name.
-     * @return the class or {@code null}.
-     * @deprecated No replacement.
-     */
-	@Deprecated
-	public static Class<?> loadClass(String name) {
+	private static Class<?> loadClass(String name) {
 		try {
 			return ClassLoaderFinder.findClassLoader().loadClass(name);
 		}

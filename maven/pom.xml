@@ -15,7 +15,6 @@
 	<modules>
 		<module>maventools</module>
 		<module>atomicdeploy</module>
-		<module>license-installer</module>
 		<module>tag-replacer</module>
 	</modules>
 

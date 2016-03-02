@@ -184,20 +184,6 @@ public class MultiAttributeCollection extends MultiAttributeProvider implements 
 
 	/**
 	 * {@inheritDoc}
-	 * @deprecated see {@link #addAttributes(AttributeProvider)}
-	 */
-	@Deprecated
-	@Override
-	public void copyFrom(AttributeProvider otherContainer) throws AttributeException {
-		if (otherContainer!=null) {
-			for(Attribute attr : otherContainer.attributes()) {
-				setAttribute(attr);
-			}
-		}
-	}
-
-	/**
-	 * {@inheritDoc}
 	 */
 	@Override
 	public void flush() {

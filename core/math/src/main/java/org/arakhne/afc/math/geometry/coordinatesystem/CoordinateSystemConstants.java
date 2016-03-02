@@ -51,24 +51,6 @@ public class CoordinateSystemConstants {
 	 */
 	public static final CoordinateSystem3D GIS_3D = CoordinateSystem3D.XYZ_RIGHT_HAND;
 
-	/** Replies the preferred coordinate system for
-	 * <a href='http://en.wikipedia.org/wiki/Geographic_information_system">Geographical 
-	 * Information System</a> (GIS) with a
-	 * <a href="http://en.wikipedia.org/wiki/Map_projection">conical map projection</a>.
-	 * @deprecated see {@link #GIS_2D}
-	 */
-	@Deprecated
-	public static final CoordinateSystem2D CONICAL_GIS_2D = GIS_2D;
-
-	/** Replies the preferred coordinate system for
-	 * <a href='http://en.wikipedia.org/wiki/Geographic_information_system">Geographical 
-	 * Information System</a> (GIS) with a
-	 * <a href="http://en.wikipedia.org/wiki/Map_projection">conical map projection</a>.
-	 * @deprecated see {@link #GIS_3D}
-	 */
-	@Deprecated
-	public static final CoordinateSystem3D CONICAL_GIS_3D = GIS_3D;
-
 	/** Replies the preferred coordinate system for simulation spaces.
 	 * <p>
 	 * Simulation use {@link CoordinateSystem2D#XY_RIGHT_HAND} coordinate system.

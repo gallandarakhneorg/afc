@@ -254,16 +254,6 @@ public final class ExtendedArtifact implements Artifact {
 
 	/**
 	 * {@inheritDoc}
-	 * @deprecated
-	 */
-	@Override
-	@Deprecated
-	public void addMetadata(ArtifactMetadata metadata) {
-		this.original.addMetadata(metadata);
-	}
-
-	/**
-	 * {@inheritDoc}
 	 */
 	@Override
 	public ArtifactHandler getArtifactHandler() {
@@ -356,16 +346,6 @@ public final class ExtendedArtifact implements Artifact {
 	@Override
 	public String getId() {
 		return this.original.getId();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * @deprecated
-	 */
-	@Override
-	@Deprecated
-	public Collection<ArtifactMetadata> getMetadataList() {
-		return this.original.getMetadataList();
 	}
 
 	/**

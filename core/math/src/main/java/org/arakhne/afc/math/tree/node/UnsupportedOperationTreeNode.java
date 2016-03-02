@@ -309,16 +309,6 @@ implements TreeNode<D,N> {
 
 	/**
 	 * {@inheritDoc}
-	 * @deprecated no replacement
-	 */
-	@Deprecated
-	@Override
-	public void setParentNode(N newParent) {
-		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * {@inheritDoc}
 	 */
 	@Override
 	public N getChildAt(int index) throws IndexOutOfBoundsException {

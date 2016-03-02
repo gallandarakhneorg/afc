@@ -39,14 +39,6 @@ public interface TreeNode<D,N extends TreeNode<D,?>> extends IterableNode<N>, Co
 	 */
 	public N getParentNode();
 	
-	/** Set the parent node or <code>null</code> for root.
-	 * 
-	 * @param newParent the node that is containing this object.
-	 * @deprecated see children addition in parent.
-	 */
-	@Deprecated
-	public void setParentNode(N newParent);
-
 	/** Set the n-th child in this node.
 	 * 
 	 * @param index is the index of the child to reply

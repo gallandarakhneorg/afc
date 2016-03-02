@@ -60,16 +60,6 @@ implements Graph<SGraphSegment,SGraphPoint> {
 
 	/**
 	 * {@inheritDoc}
-	 * @deprecated see {@link #getSegmentCount()}
-	 */
-	@Deprecated
-	@Override
-	public final int size() {
-		return getSegmentCount();
-	}
-
-	/**
-	 * {@inheritDoc}
 	 */
 	@Override
 	public int getSegmentCount() {

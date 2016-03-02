@@ -329,20 +329,6 @@ public interface PhysicsEngine {
 			double maxSpeed,
 			double dt);
 
-	/** Replies the new speed according to a previous velocity and
-	 * a mouvement during a given time.
-	 * <p>
-	 * From the first-order Newton-Euler method:
-	 * <code>velocity = movement / dt</code>
-	 * 
-	 * @param movement is the movement distance.
-	 * @param dt is the time
-	 * @return a new speed
-	 * @deprecated see {@link #speed(double, double)}
-	 */
-	@Deprecated
-	public double velocity(double movement, double dt);
-
 	/** Replies the new speed according to a previous speed and
 	 * a mouvement during a given time.
 	 * <p>

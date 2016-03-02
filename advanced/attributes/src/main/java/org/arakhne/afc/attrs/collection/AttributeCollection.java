@@ -300,15 +300,6 @@ public interface AttributeCollection extends AttributeProvider {
 	 */
 	public boolean renameAttribute(String oldname, String newname, boolean overwrite);
 
-	/** Copy the attributes from another container into this provider.
-	 * 
-	 * @param otherContainer is the container of attributes to copy.
-	 * @throws AttributeException on error.
-	 * @deprecated see {@link #addAttributes(AttributeProvider)}
-	 */
-	@Deprecated
-	public void copyFrom(AttributeProvider otherContainer) throws AttributeException;
-
 	/** Add a listener on the attribute value changes.
 	 * 
 	 * @param listener

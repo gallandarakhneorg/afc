@@ -354,15 +354,6 @@ class JavaPhysicsEngine implements PhysicsEngine {
 	}
 
 	/** {@inheritDoc}
-	 * @deprecated
-	 */
-	@Deprecated
-	@Override
-	public double velocity(double movement, double dt) {
-		return speed(movement, dt);
-	}
-
-	/** {@inheritDoc}
 	 */
 
 	@Override

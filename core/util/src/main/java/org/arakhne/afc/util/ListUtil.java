@@ -44,22 +44,6 @@ public class ListUtil {
 	 * @param list is the list to change.
 	 * @param comparator is the comparator of elements.
 	 * @param data is the data to remove.
-	 * @return <code>true</code> if the data was removed, otherwise <code>false</code>
-	 * @deprecated see {@link #remove(List, Comparator, Object)}
-	 */
-	@Deprecated
-	public static <E> boolean dichotomicRemove(List<E> list, Comparator<? super E> comparator, E data) {
-		return remove(list, comparator, data)>=0;
-	}
-	
-	/** Remove the given element from the list using a dichotomic algorithm.
-	 * <p>
-	 * This function ensure that the comparator is invoked as: <code>comparator(data, dataAlreadyInList)</code>.
-	 * 
-	 * @param <E> is the type of the elements in the list.
-	 * @param list is the list to change.
-	 * @param comparator is the comparator of elements.
-	 * @param data is the data to remove.
 	 * @return the index at which the element was removed in the list; or
 	 * <code>-1</code> if the element was not removed.
 	 */
@@ -90,26 +74,6 @@ public class ListUtil {
 		return -1;
 	}
 
-	/** Add the given element in the main list using a dichotomic algorithm.
-	 * <p>
-	 * This function ensure that the comparator is invoked as: <code>comparator(data, dataAlreadyInList)</code>.
-	 * <p>
-	 * If the data is al
-	 * 
-	 * @param <E> is the type of the elements in the list.
-	 * @param list is the list to change.
-	 * @param comparator is the comparator of elements.
-	 * @param data is the data to insert.
-	 * @param allowMultipleOccurencesOfSameValue indicates if multiple
-	 * occurrences of the same value are allowed in the list.
-	 * @return <code>true</code> if the data was added, otherwise <code>false</code>
-	 * @deprecated see {@link #add(List, Comparator, Object, boolean, boolean)}
-	 */
-	@Deprecated
-	public static <E> boolean dichotomicAdd(List<E> list, Comparator<? super E> comparator, E data, boolean allowMultipleOccurencesOfSameValue) {
-		return add(list, comparator, data, allowMultipleOccurencesOfSameValue, false)>=0;
-	}
-	
 	/** Add the given element in the main list using a dichotomic algorithm.
 	 * <p>
 	 * This function ensure that the comparator is invoked as: <code>comparator(data, dataAlreadyInList)</code>.
@@ -158,22 +122,6 @@ public class ListUtil {
 		return f;
 	}
 
-	/** Replies if the given element is inside the list, using a dichotomic algorithm.
-	 * <p>
-	 * This function ensure that the comparator is invoked as: <code>comparator(data, dataAlreadyInList)</code>.
-	 * 
-	 * @param <E> is the type of the elements in the list.
-	 * @param list is the list to explore.
-	 * @param comparator is the comparator of elements.
-	 * @param data is the data to search for.
-	 * @return <code>true</code> if the data is inside the list, otherwise <code>false</code>
-	 * @deprecated see {@link #contains(List, Comparator, Object)}
-	 */
-	@Deprecated
-	public static <E> boolean dichotomicContains(List<E> list, Comparator<? super E> comparator, E data) {
-		return contains(list, comparator, data);
-	}
-	
 	/** Replies if the given element is inside the list, using a dichotomic algorithm.
 	 * <p>
 	 * This function ensure that the comparator is invoked as: <code>comparator(data, dataAlreadyInList)</code>.

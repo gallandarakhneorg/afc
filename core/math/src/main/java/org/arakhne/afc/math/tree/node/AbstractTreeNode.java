@@ -135,14 +135,6 @@ public abstract class AbstractTreeNode<D,N extends AbstractTreeNode<D,N>> extend
 	/** {@inheritDoc}
 	 */
 	@Override
-	@Deprecated
-	public final void setParentNode(N newParent) {
-		throw new UnsupportedOperationException();
-	}
-
-	/** {@inheritDoc}
-	 */
-	@Override
 	public N removeFromParent() {
 		N lparent = getParentNode();
 		if (lparent!=null) {

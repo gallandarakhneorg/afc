@@ -375,21 +375,6 @@ public class PhysicsUtil {
 	 * @param movement is the movement distance.
 	 * @param dt is the time
 	 * @return a new speed
-	 * @deprecated see {@link #speed(double, double)}
-	 */
-	@Deprecated
-	public static double velocity(double movement, double dt) {
-		return engine.velocity(movement, dt);
-	}
-
-	/** Replies the new  velocity according to a previous velocity and
-	 * a mouvement during a given time.
-	 * <p>
-	 * <code>velocity = movement / dt</code>
-	 * 
-	 * @param movement is the movement distance.
-	 * @param dt is the time
-	 * @return a new speed
 	 * @since 4.1
 	 */
 	public static double speed(double movement, double dt) {

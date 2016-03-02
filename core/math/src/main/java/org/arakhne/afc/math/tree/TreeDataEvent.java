@@ -105,16 +105,6 @@ public class TreeDataEvent {
 		return this.node;
 	}
 	
-	/** Replies the count of old values.
-	 * 
-	 * @return the count of old values.
-	 * @deprecated see {@link #getRemovedValueCount()} 
-	 */
-	@Deprecated
-	public int getOldValueCount() {
-		return getRemovedValueCount();
-	}
-	
 	/** Replies the count of removed values.
 	 * 
 	 * @return the count of removed values.
@@ -122,16 +112,6 @@ public class TreeDataEvent {
 	 */
 	public int getRemovedValueCount() {
 		return (this.oldValues==null) ? 0 : this.oldValues.size();
-	}
-
-	/** Replies the count of new values.
-	 * 
-	 * @return the count of new values.
-	 * @deprecated {@link #getAddedValueCount()}
-	 */
-	@Deprecated
-	public int getNewValueCount() {
-		return getAddedValueCount();
 	}
 
 	/** Replies the count of added values.
@@ -155,43 +135,10 @@ public class TreeDataEvent {
 	 * 
 	 * @param index is the index of the value
 	 * @return the old value at the given index.
-	 * @deprecated {@link #getRemovedValueAt(int)}
-	 */
-	@Deprecated
-	public Object getOldValueAt(int index) {
-		return getRemovedValueAt(index);
-	}
-	
-	/** Replies the value removed from a node.
-	 * 
-	 * @param index is the index of the value
-	 * @return the old value at the given index.
-	 * @deprecated {@link #getRemovedValueAt(int)}
-	 */
-	@Deprecated
-	public Object getDeletedValueAt(int index) {
-		return getRemovedValueAt(index);
-	}
-
-	/** Replies the value removed from a node.
-	 * 
-	 * @param index is the index of the value
-	 * @return the old value at the given index.
 	 * @since 4.0
 	 */
 	public Object getRemovedValueAt(int index) {
 		return this.oldValues.get(index);
-	}
-
-	/** Replies the value added to a node.
-	 * 
-	 * @param index is the index of the value
-	 * @return the new value at the given index.
-	 * @deprecated see {@link #getAddedValueAt(int)}
-	 */
-	@Deprecated
-	public Object getNewValueAt(int index) {
-		return getAddedValueAt(index);
 	}
 
 	/** Replies the value added to a node.

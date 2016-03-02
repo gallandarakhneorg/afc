@@ -251,16 +251,6 @@ implements Graph<ST,PT> {
 
 	/**
 	 * {@inheritDoc}
-	 * @deprecated see {@link #getSegmentCount()}
-	 */
-	@Deprecated
-	@Override
-	public final int size() {
-		return getSegmentCount();
-	}
-
-	/**
-	 * {@inheritDoc}
 	 */
 	@Override
 	public final int getSegmentCount() {

@@ -36,14 +36,6 @@ extends Iterable<ST> {
     /** Replies the count of segments in this graph.
      * 
      * @return the count of segments in this graph.
-     * @deprecated see {@link #getSegmentCount()}
-     */
-	@Deprecated
-	public int size();
-	
-    /** Replies the count of segments in this graph.
-     * 
-     * @return the count of segments in this graph.
      * @since 4.1
      */
 	public int getSegmentCount();

@@ -1266,23 +1266,6 @@ public class FileSystem {
 	 * The content of the second file will be lost.
 	 * This copy function allows to do a copy between two different
 	 * partitions.
-	 * 
-	 * @param in is the file to copy.
-	 * @param out is the target file
-	 * @throws IOException in case of error.
-	 * @see #fileCopy(URL, File)
-	 * @deprecated {@link #copy(File, File)}
-	 */
-	@Deprecated
-	public static void fileCopy(File in, File out) throws IOException {
-		copy(in, out);
-	}
-
-	/** Copy the first file into the second file.
-	 * <p>
-	 * The content of the second file will be lost.
-	 * This copy function allows to do a copy between two different
-	 * partitions.
 	 * <p>
 	 * If the <var>out</var> parameter is a directory, the output file
 	 * is a file with the same basename as the input and inside
@@ -1308,23 +1291,6 @@ public class FileSystem {
 				copy(fis, (int)in.length(), fos);
 			}
 		}
-	}
-
-	/** Copy the first file into the second file.
-	 * <p>
-	 * The content of the second file will be lost.
-	 * This copy function allows to do a copy between two different
-	 * partitions.
-	 * 
-	 * @param in is the file to copy.
-	 * @param out is the target file
-	 * @throws IOException in case of error.
-	 * @see #fileCopy(File, File)
-	 * @deprecated {@link #copy(URL, File)}
-	 */
-	@Deprecated
-	public static void fileCopy(URL in, File out) throws IOException {
-		copy(in, out);
 	}
 
 	/** Copy the first file into the second file.
@@ -1594,18 +1560,6 @@ public class FileSystem {
 		return f.getAbsolutePath();
 	}
 
-	/** Convert an URL which represents a local file into a File.
-	 * 
-	 * @param url is the URL to convert.
-	 * @return the file.
-	 * @throws IllegalArgumentException is the URL was malformed.
-	 * @deprecated {@link #convertURLToFile(URL)}
-	 */
-	@Deprecated
-	public static File convertUrlToFile(URL url) {
-		return convertURLToFile(url);
-	}
-
 	/** Convert an URL which represents a local file or a resource into a File.
 	 * 
 	 * @param url is the URL to convert.
@@ -1689,71 +1643,9 @@ public class FileSystem {
 	 * @return the URL.
 	 * @throws IllegalArgumentException is the string could not be formatted to URL.
 	 * @see Resources#getResource(String)
-	 * @deprecated see {@link #convertStringToURL(String, boolean)}
-	 */
-	@Deprecated
-	public static URL convertStringToUrl(String urlDescription, boolean allowResourceSearch) {
-		return convertStringToURL(urlDescription, allowResourceSearch, true, true);
-	}
-
-	/** Convert a string to an URL according to several rules.
-	 * <p>
-	 * The rules are (the first succeeded is replied):
-	 * <ul>
-	 * <li>if <var>urlDescription</var> is <code>null</code> or empty, return <code>null</code>;</li>
-	 * <li>try to build an {@link URL} with <var>urlDescription</var> as parameter;</li>
-	 * <li>if <var>allowResourceSearch</var> is <code>true</code> and 
-	 * <var>urlDescription</var> starts with {@code "resource:"}, call
-	 * {@link Resources#getResource(String)} with the rest of the string as parameter;</li>
-	 * <li>if <var>allowResourceSearch</var> is <code>true</code>, call
-	 * {@link Resources#getResource(String)} with the <var>urlDescription</var> as
-	 * parameter;</li>
-	 * <li>assuming that the <var>urlDescription</var> is
-	 * a filename, call {@link File#toURI()} to retreive an URI and then
-	 * {@link URI#toURL()};</li>
-	 * <li>If everything else failed, return <code>null</code>.</li>
-	 * </ul>
-	 * 
-	 * @param urlDescription is a string which is describing an URL.
-	 * @param allowResourceSearch indicates if the convertion must take into account the Java resources.
-	 * @return the URL.
-	 * @throws IllegalArgumentException is the string could not be formatted to URL.
-	 * @see Resources#getResource(String)
 	 */
 	public static URL convertStringToURL(String urlDescription, boolean allowResourceSearch) {
 		return convertStringToURL(urlDescription, allowResourceSearch, true, true);
-	}
-
-	/** Convert a string to an URL according to several rules.
-	 * <p>
-	 * The rules are (the first succeeded is replied):
-	 * <ul>
-	 * <li>if <var>urlDescription</var> is <code>null</code> or empty, return <code>null</code>;</li>
-	 * <li>try to build an {@link URL} with <var>urlDescription</var> as parameter;</li>
-	 * <li>if <var>allowResourceSearch</var> is <code>true</code> and 
-	 * <var>urlDescription</var> starts with {@code "resource:"}, call
-	 * {@link Resources#getResource(String)} with the rest of the string as parameter;</li>
-	 * <li>if <var>allowResourceSearch</var> is <code>true</code>, call
-	 * {@link Resources#getResource(String)} with the <var>urlDescription</var> as
-	 * parameter;</li>
-	 * <li>if <var>repliesFileURL</var> is <code>true</code> and 
-	 * assuming that the <var>urlDescription</var> is
-	 * a filename, call {@link File#toURI()} to retreive an URI and then
-	 * {@link URI#toURL()};</li>
-	 * <li>If everything else failed, return <code>null</code>.</li>
-	 * </ul>
-	 * 
-	 * @param urlDescription is a string which is describing an URL.
-	 * @param allowResourceSearch indicates if the convertion must take into account the Java resources.
-	 * @param repliesFileURL indicates if urlDescription is allowed to be a filename.
-	 * @return the URL.
-	 * @throws IllegalArgumentException is the string could not be formatted to URL.
-	 * @see Resources#getResource(String)
-	 * @deprecated {@link #convertStringToURL(String, boolean, boolean)}
-	 */
-	@Deprecated
-	public static URL convertStringToUrl(String urlDescription, boolean allowResourceSearch, boolean repliesFileURL) {
-		return convertStringToURL(urlDescription, allowResourceSearch, repliesFileURL, true);
 	}
 
 	/** Convert a string to an URL according to several rules.
@@ -1950,37 +1842,6 @@ public class FileSystem {
 			}
 		}
 		return filename;
-	}
-
-	/** Replies if the given URL is using a protocol which could be map to files.
-	 * 
-	 * @param url
-	 * @return <code>true</code> if the given url is a "file", "http", 
-	 * "https", "ftp", "ssh", "jar" or "resource", otherwise <code>false</code>.
-	 * @deprecated see {@link URISchemeType#isFileBasedScheme()} 
-	 */
-	@Deprecated
-	public static boolean isFileBasedURL(URL url) {
-		if (url!=null) {
-			return isFileBasedScheme(URISchemeType.getSchemeType(url));
-		}
-		return false;
-	}
-
-	/** Replies if the given URL scheme is using a protocol which could be map to files.
-	 * 
-	 * @param scheme
-	 * @return <code>true</code> if the given scheme is a "file", "http", 
-	 * "https", "ftp", "ssh", "jar" or "resource", otherwise <code>false</code>.
-	 * @since 5.0
-	 * @deprecated see {@link URISchemeType#isFileBasedScheme()}
-	 */
-	@Deprecated
-	public static boolean isFileBasedScheme(URISchemeType scheme) {
-		if (scheme!=null) {
-			return scheme.isFileBasedScheme();
-		}
-		return false;
 	}
 
 	/**
