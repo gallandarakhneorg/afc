@@ -353,7 +353,7 @@ public class GraphPath<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<S
 				this.length += segment.getLength();
 				return true;
 			}
-			catch(@SuppressWarnings("unused") IndexOutOfBoundsException e) {
+			catch(IndexOutOfBoundsException e) {
 				//
 			}
 		}
@@ -967,10 +967,10 @@ public class GraphPath<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<S
 				changed = true;
 				++idx;
 			}
-			catch(@SuppressWarnings("unused") IndexOutOfBoundsException e) {
+			catch(IndexOutOfBoundsException e) {
 				//
 			}
-			catch(@SuppressWarnings("unused") IllegalArgumentException e2) {
+			catch(IllegalArgumentException e2) {
 				//
 			}
 		}

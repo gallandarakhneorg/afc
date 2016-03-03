@@ -467,7 +467,6 @@ public class AStar<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<ST,PT
 	 * @param endPoint is the point to reach.
 	 * @return the close list of the A* algorithm.
 	 */
-	@SuppressWarnings("null")
 	List<AStarNode<ST,PT>> findPath(AStarNode<ST,PT> startPoint, PT endPoint) {
 		CloseComparator<ST,PT> cComparator = new CloseComparator<>();
 		OpenComparator<ST,PT> oComparatorWithoutRef = new OpenComparator<>();
