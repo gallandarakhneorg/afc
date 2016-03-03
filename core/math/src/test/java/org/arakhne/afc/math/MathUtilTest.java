@@ -48,6 +48,17 @@ public class MathUtilTest extends AbstractMathTestCase {
 	} 
 
 	@Test
+	public void clampIntIntInt() {
+		// NaN is lower than all the other floating-point values 
+		
+		int min = (this.random.nextInt(1000) - this.random.nextInt(1000));
+		int max = min + this.random.nextInt() * 900 + 100;
+		
+		assertEpsilonEquals((min+max)/2, MathUtil.clamp((min+max)/2, min, max));
+		assertEpsilonEquals(max, MathUtil.clamp(Math.abs(max)*2, min, max));
+	} 
+
+	@Test
 	public void clampCyclic() {
 		double min = 50;
 		double max = 90;

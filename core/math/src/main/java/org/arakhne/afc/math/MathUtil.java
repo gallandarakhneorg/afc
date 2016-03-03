@@ -65,6 +65,30 @@ public final class MathUtil {
 		return v;
 	}	
 
+	/** Clamp the given value to the given range.
+	 * <p>
+	 * If the value is outside the {@code [min;max]}
+	 * range, it is clamp to the nearest bounding value
+	 * <var>min</var> or <var>max</var>.
+	 * 
+	 * @param v is the value to clamp.
+	 * @param min is the min value of the range.
+	 * @param max is the max value of the range.
+	 * @return the value in {@code [min;max]} range.
+	 */
+	@Pure
+	public static int clamp(int v, int min, int max) {
+		if (min<max) {
+			if (v<min) return min;
+			if (v>max) return max;
+		}
+		else {
+			if (v>min) return min;
+			if (v<max) return max;
+		}
+		return v;
+	}	
+
 	/** Replies if the given value is near zero.
 	 * 
 	 * @param value is the value to test.
