@@ -271,7 +271,7 @@ implements Forest<D> {
 			throw e;
 		}
 		catch(Throwable e) {
-			e.printStackTrace();return false;
+			return false;
 		}
 		if (this.trees.remove(tree)) {
 			fireTreeRemoval(t);

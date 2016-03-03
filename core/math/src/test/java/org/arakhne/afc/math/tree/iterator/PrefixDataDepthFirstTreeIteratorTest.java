@@ -148,7 +148,6 @@ public class PrefixDataDepthFirstTreeIteratorTest extends AbstractDataTreeIterat
 			fail("Expecting NoSuchElementException"); //$NON-NLS-1$
 		}
 		catch(NoSuchElementException e) {
-			e.printStackTrace();
 			// Expected exception
 		}
 		
@@ -199,7 +198,6 @@ public class PrefixDataDepthFirstTreeIteratorTest extends AbstractDataTreeIterat
 			fail("Expecting NoSuchElementException"); //$NON-NLS-1$
 		}
 		catch(NoSuchElementException e) {
-			e.printStackTrace();
 			// Expected exception
 		}
 		

@@ -194,24 +194,17 @@ public abstract class AbstractParentlessTreeNode<D,N extends AbstractParentlessT
 		return (N)this;
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public boolean isValid() {
 		return true;
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public boolean isEmpty() {
 		return isLeaf() && (getUserDataCount()==0);
 	}
 
 
-	/** {@inheritDoc}
-	 */
-	@SuppressWarnings("hiding")
 	@Override
 	public String toString() {
 		StringBuilder buffer = new StringBuilder();
@@ -248,30 +241,22 @@ public abstract class AbstractParentlessTreeNode<D,N extends AbstractParentlessT
 		return this.data;
 	}
 	
-	/** {@inheritDoc}
-	 */
 	@Override
 	public List<D> getAllUserData() {
 		return new DataCollection();
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public D getUserData() {
 		if ((this.data==null)||(this.data.size()==0)) return null;
 		return this.data.get(0);
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public int getUserDataCount() {
 		return (this.data==null) ? 0 : this.data.size();
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public D getUserDataAt(int index) throws IndexOutOfBoundsException {
 		if ((this.data==null)|| (index<0)|| (index>=this.data.size())) {
@@ -280,9 +265,6 @@ public abstract class AbstractParentlessTreeNode<D,N extends AbstractParentlessT
 		return this.data.get(index);
 	}
 
-	/** {@inheritDoc}
-	 */
-	@SuppressWarnings("hiding")
 	@Override
 	public boolean addUserData(Collection<? extends D> data) {
 		if ((data==null)||(data.size()==0)) return false;
@@ -301,8 +283,6 @@ public abstract class AbstractParentlessTreeNode<D,N extends AbstractParentlessT
 		return true;
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public final boolean addUserData(int index, Collection<? extends D> data1) {
 		if ((data1==null)||(data1.size()==0)) return false;
@@ -321,22 +301,16 @@ public abstract class AbstractParentlessTreeNode<D,N extends AbstractParentlessT
 		return false;
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public final boolean addUserData(D data1) {
 		return addUserData(Collections.singleton(data1));
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public final void addUserData(int index, D data1) {
 		addUserData(index, Collections.singleton(data1));
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public boolean removeUserData(Collection<D> data1) {
 		if ((data1==null)||(data1.size()==0)||(this.data==null)) return false;
@@ -349,8 +323,6 @@ public abstract class AbstractParentlessTreeNode<D,N extends AbstractParentlessT
 		return false;
 	}
  
-	/** {@inheritDoc}
-	 */
 	@Override
 	public final D removeUserData(int index) {
 		if (this.data==null) throw new IndexOutOfBoundsException();
@@ -363,16 +335,11 @@ public abstract class AbstractParentlessTreeNode<D,N extends AbstractParentlessT
 		return removedElement;
 	}
 
-
-	/** {@inheritDoc}
-	 */
 	@Override
 	public final boolean removeUserData(D data1) {
 		return removeUserData(Collections.singleton(data1));
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public void removeAllUserData() {
 		if (this.data!=null) {
@@ -382,8 +349,6 @@ public abstract class AbstractParentlessTreeNode<D,N extends AbstractParentlessT
 		}
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public boolean setUserData(Collection<D> data1) {
 		if ((data1==null)&&(this.data==null)) return false;
@@ -402,15 +367,11 @@ public abstract class AbstractParentlessTreeNode<D,N extends AbstractParentlessT
 		return true;
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public final boolean setUserData(D data1) {
 		return setUserData(Collections.singleton(data1));
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public boolean setUserDataAt(int index, D data1) throws IndexOutOfBoundsException {
 		int count= (this.data==null) ? 0 : this.data.size();
@@ -480,8 +441,6 @@ public abstract class AbstractParentlessTreeNode<D,N extends AbstractParentlessT
 		if (parent!=null) parent.firePropertyDataChanged(event);
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public final void addTreeNodeListener(TreeNodeListener listener) {
 		if (this.nodeListeners==null)
@@ -489,8 +448,6 @@ public abstract class AbstractParentlessTreeNode<D,N extends AbstractParentlessT
 		this.nodeListeners.add(listener);
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public final void removeTreeNodeListener(TreeNodeListener listener) {
 		if (this.nodeListeners==null) return;
@@ -542,8 +499,6 @@ public abstract class AbstractParentlessTreeNode<D,N extends AbstractParentlessT
     	return o.hashCode() - hashCode(); 
     }
     
-	/** {@inheritDoc}
-	 */
 	@Override
 	public int getDeepNodeCount() {
 		int count = 1;
@@ -555,8 +510,6 @@ public abstract class AbstractParentlessTreeNode<D,N extends AbstractParentlessT
 		return count;
 	}
 	
-	/** {@inheritDoc}
-	 */
 	@Override
 	public int getDeepUserDataCount() {
 		int count = getUserDataCount();
@@ -568,8 +521,6 @@ public abstract class AbstractParentlessTreeNode<D,N extends AbstractParentlessT
 		return count;
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public final int[] getHeights() {
 		List<Integer> list = new ArrayList<>();
@@ -620,8 +571,6 @@ public abstract class AbstractParentlessTreeNode<D,N extends AbstractParentlessT
 			this(null);
 		}
 
-		/** {@inheritDoc}
-		 */
 		@Override
 		public boolean add(D e) {
 			if (this.backgroundList==null) return addUserData(e);
@@ -632,8 +581,6 @@ public abstract class AbstractParentlessTreeNode<D,N extends AbstractParentlessT
 			return false;
 		}
 
-		/** {@inheritDoc}
-		 */
 		@Override
 		public void add(int index, D element) {
 			if (this.backgroundList==null) {
@@ -645,9 +592,6 @@ public abstract class AbstractParentlessTreeNode<D,N extends AbstractParentlessT
 			}
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public boolean addAll(Collection<? extends D> c) {
 			if (this.backgroundList==null) return addUserData(c);
@@ -658,9 +602,6 @@ public abstract class AbstractParentlessTreeNode<D,N extends AbstractParentlessT
 			return false;
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public boolean addAll(int index, Collection<? extends D> c) {
 			if (this.backgroundList==null) return addUserData(index, c);
@@ -671,9 +612,6 @@ public abstract class AbstractParentlessTreeNode<D,N extends AbstractParentlessT
 			return false;
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public void clear() {
 			if (this.backgroundList==null) {
@@ -686,9 +624,6 @@ public abstract class AbstractParentlessTreeNode<D,N extends AbstractParentlessT
 			}
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public boolean contains(Object o) {
 			if (this.backgroundList==null) {
@@ -699,9 +634,6 @@ public abstract class AbstractParentlessTreeNode<D,N extends AbstractParentlessT
 			return this.backgroundList.contains(o);
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public boolean containsAll(Collection<?> c) {
 			if (this.backgroundList==null) {
@@ -712,18 +644,12 @@ public abstract class AbstractParentlessTreeNode<D,N extends AbstractParentlessT
 			return this.backgroundList.containsAll(c);
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public D get(int index) {
 			if (this.backgroundList==null) return getUserDataAt(index);
 			return this.backgroundList.get(index);
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public int indexOf(Object o) {
 			if (this.backgroundList==null) {
@@ -734,9 +660,6 @@ public abstract class AbstractParentlessTreeNode<D,N extends AbstractParentlessT
 			return this.backgroundList.indexOf(o);
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public boolean isEmpty() {
 			if (this.backgroundList==null) {
@@ -747,9 +670,6 @@ public abstract class AbstractParentlessTreeNode<D,N extends AbstractParentlessT
 			return this.backgroundList.isEmpty();
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public int lastIndexOf(Object o) {
 			if (this.backgroundList==null) {
@@ -760,9 +680,6 @@ public abstract class AbstractParentlessTreeNode<D,N extends AbstractParentlessT
 			return this.backgroundList.lastIndexOf(o);
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		@SuppressWarnings("unchecked")
 		public boolean remove(Object o) {
@@ -771,7 +688,7 @@ public abstract class AbstractParentlessTreeNode<D,N extends AbstractParentlessT
 					return removeUserData((D)o);
 				}
 				catch(ClassCastException e) {
-					e.printStackTrace();return false;
+					return false;
 				}
 			}
 			if (this.backgroundList.remove(o)) {
@@ -781,9 +698,6 @@ public abstract class AbstractParentlessTreeNode<D,N extends AbstractParentlessT
 			return false;
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public D remove(int index) {
 			if (this.backgroundList==null) return removeUserData(index);
@@ -794,9 +708,6 @@ public abstract class AbstractParentlessTreeNode<D,N extends AbstractParentlessT
 			return oldElement;
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public boolean removeAll(Collection<?> c) {
 			boolean changed = false;
@@ -806,18 +717,12 @@ public abstract class AbstractParentlessTreeNode<D,N extends AbstractParentlessT
 			return changed;
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public int size() {
 			if (this.backgroundList==null) return getUserDataCount();
 			return this.backgroundList.size();
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public Object[] toArray() {
 			if (this.backgroundList==null) {
@@ -828,9 +733,6 @@ public abstract class AbstractParentlessTreeNode<D,N extends AbstractParentlessT
 			return this.backgroundList.toArray();
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public <T> T[] toArray(T[] a) {
 			if (this.backgroundList==null) {
@@ -841,9 +743,6 @@ public abstract class AbstractParentlessTreeNode<D,N extends AbstractParentlessT
 			return this.backgroundList.toArray(a);
 		}
 		
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public D set(int index, D element) {
 			if (this.backgroundList==null) setUserDataAt(index, element);
@@ -852,9 +751,6 @@ public abstract class AbstractParentlessTreeNode<D,N extends AbstractParentlessT
 			return oldElement;
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public boolean retainAll(Collection<?> c) {
 			List<D> removed = new ArrayList<>();
@@ -884,17 +780,11 @@ public abstract class AbstractParentlessTreeNode<D,N extends AbstractParentlessT
 			return false;
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public Iterator<D> iterator() {
 			return listIterator();
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public ListIterator<D> listIterator() {
 			if (this.backgroundList==null) {
@@ -905,23 +795,17 @@ public abstract class AbstractParentlessTreeNode<D,N extends AbstractParentlessT
 			return new DataIterator(this.backgroundList.listIterator());
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public ListIterator<D> listIterator(int index) {
 			return subList(index, size()).listIterator();
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public List<D> subList(int fromIndex, int toIndex) {
 			return new DataCollection(this.backgroundList.subList(fromIndex, toIndex));
 		}
 
-	} // class DataCollection
+	}
 	
 	/**
 	 * This iterator permits to iterate on the data of a tree node
@@ -944,57 +828,36 @@ public abstract class AbstractParentlessTreeNode<D,N extends AbstractParentlessT
 			this.backgroundIterator = iterator;
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public boolean hasNext() {
 			return this.backgroundIterator.hasNext();
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public D next() {
 			return this.removableElement = this.backgroundIterator.next();
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public boolean hasPrevious() {
 			return this.backgroundIterator.hasPrevious();
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public int nextIndex() {
 			return this.backgroundIterator.nextIndex();
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public D previous() {
 			return this.removableElement = this.backgroundIterator.previous();
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public int previousIndex() {
 			return this.backgroundIterator.previousIndex();
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public void set(D e) {
 			D re = this.removableElement;
@@ -1004,9 +867,6 @@ public abstract class AbstractParentlessTreeNode<D,N extends AbstractParentlessT
 			firePropertyDataChanged(Collections.singleton(re), Collections.singleton(e));
 		}
 		
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public void remove() {
 			D re = this.removableElement;
@@ -1016,15 +876,12 @@ public abstract class AbstractParentlessTreeNode<D,N extends AbstractParentlessT
 			firePropertyDataChanged(Collections.singleton(re), null);
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public void add(D e) {
 			this.backgroundIterator.add(e);
 			firePropertyDataChanged(null, Collections.singleton(e));
 		}
 
-	} // class DataIterator
+	}
 	
 }

@@ -104,7 +104,7 @@ implements Iterator<TreeNode<D,?>> {
 					this.availableNodes.offer(child);
 			}
 			catch(IndexOutOfBoundsException e) {
-				e.printStackTrace();throw new ConcurrentModificationException();
+				throw new ConcurrentModificationException(e);
 			}
 		}
 		

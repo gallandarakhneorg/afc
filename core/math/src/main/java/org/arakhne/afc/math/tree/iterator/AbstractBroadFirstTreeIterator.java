@@ -149,7 +149,7 @@ implements Iterator<P> {
 				}
 			}
 			catch(IndexOutOfBoundsException e) {
-				e.printStackTrace();throw new ConcurrentModificationException();
+				throw new ConcurrentModificationException();
 			}
 		}
 		

@@ -69,7 +69,6 @@ implements NodeSelectionTreeIterator<N> {
 	 * @param tree is the tree to iterate.
 	 * @param selector permits to filter the nodes replied/traversed by this iterator.
 	 */
-	@SuppressWarnings("hiding")
 	public InfixDepthFirstTreeIterator(Tree<?,N> tree, NodeSelector<N> selector) {
 		this(tree.getRoot(), -1, selector);
 	}
@@ -87,7 +86,6 @@ implements NodeSelectionTreeIterator<N> {
 	 * @param infixPosition is the index of the child which is assumed to be at the infixed position.
 	 * @param selector permits to filter the nodes replied/traversed by this iterator.
 	 */
-	@SuppressWarnings("hiding")
 	public InfixDepthFirstTreeIterator(Tree<?,N> tree, int infixPosition, NodeSelector<N> selector) {
 		this(tree.getRoot(), infixPosition, selector);
 	}
@@ -103,7 +101,6 @@ implements NodeSelectionTreeIterator<N> {
 	 * @param node is the node to iterate.
 	 * @param selector permits to filter the nodes replied/traversed by this iterator.
 	 */
-	@SuppressWarnings("hiding")
 	public InfixDepthFirstTreeIterator(N node, NodeSelector<N> selector) {
 		super(node);
 		this.selector = selector;
@@ -122,7 +119,6 @@ implements NodeSelectionTreeIterator<N> {
 	 * @param infixPosition is the index of the child which is assumed to be at the infixed position.
 	 * @param selector permits to filter the nodes replied/traversed by this iterator.
 	 */
-	@SuppressWarnings("hiding")
 	public InfixDepthFirstTreeIterator(N node, int infixPosition, NodeSelector<N> selector) {
 		super(node, infixPosition);
 		this.selector = selector;
@@ -130,7 +126,6 @@ implements NodeSelectionTreeIterator<N> {
 
 	/** {@inheritDoc}
 	 */
-	@SuppressWarnings("hiding")
 	@Override
 	public void setNodeSelector(NodeSelector<N> selector) {
 		this.selector = selector;

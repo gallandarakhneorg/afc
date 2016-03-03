@@ -48,7 +48,6 @@ implements NodeSelectionTreeIterator<N> {
 	 * @param tree is the tree to iterate.
 	 * @param selector permits to filter the nodes replied/traversed by this iterator.
 	 */
-	@SuppressWarnings("hiding")
 	public PrefixDepthFirstTreeIterator(Tree<?,N> tree, NodeSelector<N> selector) {
 		this(tree.getRoot(), selector);
 	}
@@ -64,31 +63,21 @@ implements NodeSelectionTreeIterator<N> {
 	 * @param node is the node to iterate.
 	 * @param selector permits to filter the nodes replied/traversed by this iterator.
 	 */
-	@SuppressWarnings("hiding")
 	public PrefixDepthFirstTreeIterator(N node, NodeSelector<N> selector) {
 		super(node);
 		this.selector = selector;
 	}
 
-	/** {@inheritDoc}
-	 */
-	@SuppressWarnings("hiding")
 	@Override
 	public void setNodeSelector(NodeSelector<N> selector) {
 		this.selector = selector;
 	}
 			
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	protected boolean isTraversableParent(N parent) {
 		return (parent!=null && (this.selector==null || this.selector.nodeCouldBeTreatedByIterator(parent)));
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	protected N toTraversableChild(N parent, N child) {
 		assert(child!=null & parent!=null);

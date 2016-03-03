@@ -170,7 +170,6 @@ implements Iterator<D> {
 		 * @param data
 		 * @param node
 		 */
-		@SuppressWarnings("hiding")
 		public DataPair(D data, TreeNode<D,?> node) {
 			this.data = data;
 			this.node = node;

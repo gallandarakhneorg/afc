@@ -206,7 +206,7 @@ public abstract class NaryTreeNode<D,N extends NaryTreeNode<D,N>> extends Abstra
 	 * of the children of the new parent node.
 	 * <p>
 	 * This function is preferred to a sequence of calls
-	 * to {@link #removeFromParent()} and {@link #setChildAt(int, TreeNode)}
+	 * to {@link #removeFromParent()} and {@link #setChildAt(int, NaryTreeNode)}
 	 * because it fires a limited set of events dedicated to the move
 	 * the node.
 	 * 

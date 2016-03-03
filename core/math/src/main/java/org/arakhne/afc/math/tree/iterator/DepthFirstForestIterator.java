@@ -44,7 +44,6 @@ implements Iterator<TreeNode<D,?>> {
 	 * @param order is the treatement order for data.
 	 * @param iterator is the trees to iterate on.
 	 */
-	@SuppressWarnings("hiding")
 	public DepthFirstForestIterator(DepthFirstNodeOrder order, Iterator<Tree<D,?>> iterator) {
 		assert(order!=null);
 		this.order = order;

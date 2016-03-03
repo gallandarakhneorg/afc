@@ -127,7 +127,6 @@ public class InfixDepthFirstTreeIteratorTest extends AbstractTreeIteratorTest {
 			fail("Expecting NoSuchElementException"); //$NON-NLS-1$
 		}
 		catch(NoSuchElementException e) {
-			e.printStackTrace();
 			// Expected exception
 		}
 

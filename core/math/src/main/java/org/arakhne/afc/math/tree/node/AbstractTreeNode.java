@@ -24,7 +24,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import org.arakhne.afc.math.tree.TreeNode;
 import org.arakhne.afc.math.tree.TreeNodeAddedEvent;
 import org.arakhne.afc.math.tree.TreeNodeListener;
 import org.arakhne.afc.math.tree.TreeNodeParentChangedEvent;
@@ -92,8 +91,6 @@ public abstract class AbstractTreeNode<D,N extends AbstractTreeNode<D,N>> extend
 		this.parent = null;
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public int getDepth() {
 		N p = getParentNode();
@@ -101,13 +98,9 @@ public abstract class AbstractTreeNode<D,N extends AbstractTreeNode<D,N>> extend
 		return p.getDepth()+1;
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public abstract boolean setChildAt(int index, N newChild) throws IndexOutOfBoundsException;
 	
-	/** {@inheritDoc}
-	 */
 	@Override
 	public final N getParentNode() {
 		return this.parent==null ? null : this.parent.get();
@@ -132,8 +125,6 @@ public abstract class AbstractTreeNode<D,N extends AbstractTreeNode<D,N>> extend
 		return false;
 	}
 	
-	/** {@inheritDoc}
-	 */
 	@Override
 	public N removeFromParent() {
 		N lparent = getParentNode();
@@ -146,8 +137,6 @@ public abstract class AbstractTreeNode<D,N extends AbstractTreeNode<D,N>> extend
 		return lparent;
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public void removeDeeplyFromParent() {
 		N lparent = getParentNode();
@@ -254,15 +243,11 @@ public abstract class AbstractTreeNode<D,N extends AbstractTreeNode<D,N>> extend
 		if (parentNode!=null) parentNode.firePropertyParentChanged(event);
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public final boolean isRoot() {
 		return this.parent == null;
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	@SuppressWarnings("unchecked")
 	public final N[] getChildren(Class<N> type) {
@@ -271,8 +256,6 @@ public abstract class AbstractTreeNode<D,N extends AbstractTreeNode<D,N>> extend
 		return array;
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public final Iterator<N> children() {
 		return new ChildIterator();
@@ -287,7 +270,7 @@ public abstract class AbstractTreeNode<D,N extends AbstractTreeNode<D,N>> extend
 	 * implementation.
 	 * <p>
 	 * This function is preferred to a sequence of calls
-	 * to {@link #removeFromParent()} and {@link #setChildAt(int, TreeNode)}
+	 * to {@link #removeFromParent()} and {@link #setChildAt(int, AbstractTreeNode)}
 	 * because it fires a limited set of events dedicated to the move
 	 * the node.
 	 * 
@@ -299,9 +282,7 @@ public abstract class AbstractTreeNode<D,N extends AbstractTreeNode<D,N>> extend
 	 * If <code>false</code> an {@link IndexOutOfBoundsException} is thrown when
 	 * the given <var>index</var> is outside the range of children of the parent node.
 	 * @return <code>true</code> on success, otherwise <code>false</code>.
-	 * @since 4.0
 	 */
-	@SuppressWarnings("null")
 	protected boolean moveTo(N newParent, int index, boolean isDynamicChildList) {
 		if (newParent==null) return false;
 		
@@ -389,17 +370,11 @@ public abstract class AbstractTreeNode<D,N extends AbstractTreeNode<D,N>> extend
 			}
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public boolean hasNext() {
 			return this.next!=null;
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public N next() {
 			if (this.next==null) throw new NoSuchElementException();
@@ -408,12 +383,9 @@ public abstract class AbstractTreeNode<D,N extends AbstractTreeNode<D,N>> extend
 			return n;
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public void remove() {
-			//
+			throw new UnsupportedOperationException();
 		}
 		
 	}

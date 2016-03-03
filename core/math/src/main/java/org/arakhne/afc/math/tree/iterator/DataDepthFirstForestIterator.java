@@ -45,7 +45,6 @@ implements Iterator<D> {
 	 * @param order is the treatement order for data.
 	 * @param iterator is the trees to iterate on.
 	 */
-	@SuppressWarnings("hiding")
 	public DataDepthFirstForestIterator(DepthFirstNodeOrder order, Iterator<Tree<D,?>> iterator) {
 		this.infixOrder = -1;
 		this.order = order;
@@ -137,7 +136,6 @@ implements Iterator<D> {
 		 * @param data
 		 * @param iterator
 		 */
-		@SuppressWarnings("hiding")
 		public DataPair(D data, Iterator<D> iterator) {
 			this.data = data;
 			this.iterator = iterator;

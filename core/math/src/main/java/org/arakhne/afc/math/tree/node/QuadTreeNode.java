@@ -464,7 +464,7 @@ public abstract class QuadTreeNode<D,N extends QuadTreeNode<D,N>> extends Abstra
 	/** Move this node in the given new node.
 	 * <p>
 	 * This function is preferred to a sequence of calls
-	 * to {@link #removeFromParent()} and {@link #setChildAt(int, TreeNode)}
+	 * to {@link #removeFromParent()} and {@link #setChildAt(int, QuadTreeNode)}
 	 * because it fires a limited set of events dedicated to the move
 	 * the node.
 	 * 

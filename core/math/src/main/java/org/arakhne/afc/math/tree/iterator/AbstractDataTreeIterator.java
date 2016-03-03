@@ -69,22 +69,17 @@ public abstract class AbstractDataTreeIterator<D,N extends TreeNode<D,?>> implem
 	 * @param nodeIterator is the iterator on the nodes.
 	 * @param dataSelector permits to filter the user data repliable by this iterator.
 	 */
-	@SuppressWarnings("hiding")
 	public AbstractDataTreeIterator(NodeSelectionTreeIterator<N> nodeIterator, DataSelector<D> dataSelector) {
 		assert(nodeIterator!=null);
 		this.dataSelector = dataSelector;
 		this.nodeIterator = nodeIterator;
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public void setDataSelector(DataSelector<D> selector) {
 		this.dataSelector = selector;
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public void setNodeSelector(NodeSelector<N> selector) {
 		this.nodeIterator.setNodeSelector(selector);
@@ -157,16 +152,12 @@ public abstract class AbstractDataTreeIterator<D,N extends TreeNode<D,?>> implem
 		//
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public boolean hasNext() {
 		if (!this.searched) searchNext();
 		return this.nextData!=null;
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public D next() {
 		if (!this.searched) searchNext();
@@ -175,8 +166,6 @@ public abstract class AbstractDataTreeIterator<D,N extends TreeNode<D,?>> implem
 		return this.nextData;
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public void remove() {
 		if (this.dataIterator==null) throw new NoSuchElementException();

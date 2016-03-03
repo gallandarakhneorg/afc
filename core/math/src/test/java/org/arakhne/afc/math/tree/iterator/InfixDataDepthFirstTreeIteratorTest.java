@@ -150,7 +150,6 @@ public class InfixDataDepthFirstTreeIteratorTest extends AbstractDataTreeIterato
 			fail("Expecting NoSuchElementException"); //$NON-NLS-1$
 		}
 		catch(NoSuchElementException e) {
-			e.printStackTrace();
 			// Expected exception
 		}
 
@@ -198,7 +197,6 @@ public class InfixDataDepthFirstTreeIteratorTest extends AbstractDataTreeIterato
 			fail("Expecting NoSuchElementException"); //$NON-NLS-1$
 		}
 		catch(NoSuchElementException e) {
-			e.printStackTrace();
 			// Expected exception
 		}
 
