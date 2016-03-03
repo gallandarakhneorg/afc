@@ -653,10 +653,8 @@ public abstract class AbstractPlane4F extends AbstractPlane3D<AbstractPlane4F> {
 		try {
 			AbstractPlane4F m2 = (AbstractPlane4F) t1;
 			return (m2.getEquationComponentA() == this.getEquationComponentA() && m2.getEquationComponentB() == this.getEquationComponentB() && m2.getEquationComponentC() == this.getEquationComponentC() && m2.getEquationComponentD() == this.getEquationComponentD());		
-		} catch (ClassCastException e1) {
-			e1.printStackTrace();return false;
-		} catch (NullPointerException e2) {
-			e2.printStackTrace();return false;
+		} catch (ClassCastException | NullPointerException e1) {
+			return false;
 		}
 	
 	}

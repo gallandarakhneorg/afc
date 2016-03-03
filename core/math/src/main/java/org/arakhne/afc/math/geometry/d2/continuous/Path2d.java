@@ -4240,7 +4240,7 @@ public class Path2d extends AbstractShape2F<Path2d> implements Path2D<Shape2F,Re
 				return this.lastReplied;
 			}
 			catch( Throwable e) {
-				e.printStackTrace();throw new NoSuchElementException();
+				throw new NoSuchElementException();
 			}
 		}
 

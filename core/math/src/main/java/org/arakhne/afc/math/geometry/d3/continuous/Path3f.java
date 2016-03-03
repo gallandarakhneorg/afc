@@ -3491,7 +3491,7 @@ public class Path3f extends AbstractShape3F<Path3f> implements Path3D<Shape3F,Al
 				return this.lastReplied;
 			}
 			catch( Throwable e) {
-				e.printStackTrace();throw new NoSuchElementException();
+				throw new NoSuchElementException();
 			}
 		}
 

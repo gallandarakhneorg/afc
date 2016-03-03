@@ -909,7 +909,6 @@ public class Matrix2f implements Serializable, Cloneable {
 					&& this.m11 == m1.m11);
 		}
 		catch (NullPointerException e2) {
-			e2.printStackTrace();
 			return false;
 		}
 	}
@@ -932,12 +931,7 @@ public class Matrix2f implements Serializable, Cloneable {
 					&& this.m10 == m2.m10
 					&& this.m11 == m2.m11);
 		}
-		catch (ClassCastException e1) {
-			e1.printStackTrace();
-			return false;
-		}
-		catch (NullPointerException e2) {
-			e2.printStackTrace();
+		catch (ClassCastException | NullPointerException e1) {
 			return false;
 		}
 	}
@@ -1041,8 +1035,7 @@ public class Matrix2f implements Serializable, Cloneable {
 		}
 		catch (CloneNotSupportedException e) {
 			// this shouldn't happen, since we are Cloneable
-			e.printStackTrace();
-			throw new InternalError();
+			throw new InternalError(e);
 		}
 
 		// Also need to create new tmp arrays (no need to actually clone them)

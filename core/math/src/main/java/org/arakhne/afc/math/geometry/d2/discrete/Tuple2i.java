@@ -559,7 +559,7 @@ public class Tuple2i<T extends Tuple2D<? super T>> implements Tuple2D<T> {
 			return(this.x == t1.ix() && this.y == t1.iy());
 		}
 		catch (NullPointerException e2) {
-			e2.printStackTrace();return false;
+			return false;
 		}
 	}
 
@@ -578,7 +578,7 @@ public class Tuple2i<T extends Tuple2D<? super T>> implements Tuple2D<T> {
 			throw e;
 		}
 		catch (Throwable e2) {
-			e2.printStackTrace();return false;
+			return false;
 		}
 	}
 

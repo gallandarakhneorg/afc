@@ -194,7 +194,7 @@ public class GraphIterationElement<ST extends GraphSegment<ST,PT>,PT extends Gra
 				throw e;
 			}
 			catch(Throwable e) {
-				e.printStackTrace();
+				//
 			}
 		}
 		return firstSegment.hashCode() - secondSegment.hashCode();

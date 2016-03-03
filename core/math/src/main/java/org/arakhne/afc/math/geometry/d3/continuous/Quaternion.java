@@ -252,7 +252,7 @@ public class Quaternion implements Cloneable, Serializable {
 			throw e;
 		}
 		catch (Throwable e2) {
-			e2.printStackTrace();return false;
+			return false;
 		}
 	}
 

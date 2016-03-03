@@ -2293,7 +2293,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 				return this.lastReplied;
 			}
 			catch(Throwable e) {
-				e.printStackTrace();throw new NoSuchElementException();
+				throw new NoSuchElementException();
 			}
 		}
 

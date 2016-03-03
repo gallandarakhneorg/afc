@@ -397,8 +397,7 @@ public class LibraryLoader {
 				throw e;
 			}
 			catch(Throwable e) {
-				System.err.println("could not load "+url); //$NON-NLS-1$
-				e.printStackTrace();
+				//
 			}
     	}
     	// Eclipse version  (according to Maven module)
@@ -414,8 +413,7 @@ public class LibraryLoader {
 					throw e;
 				}
     			catch(Throwable e) {
-    				System.err.println("could not load "+url); //$NON-NLS-1$
-    				e.printStackTrace();
+    				//
     			}
         	}
     	}

@@ -505,7 +505,7 @@ public interface FunctionalTuple3D<TT extends Tuple3D<? super TT>> extends Tuple
 			return(this.getX() == t1.getX() && this.getY() == t1.getY() && this.getZ() == t1.getZ());
 		}
 		catch (NullPointerException e2) {
-			e2.printStackTrace();return false;
+			return false;
 		}
 	}
 	

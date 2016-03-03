@@ -666,7 +666,7 @@ public class Tuple3i<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 			return(this.x == t1.ix() && this.y == t1.iy() && this.z == t1.iz());
 		}
 		catch (NullPointerException e2) {
-			e2.printStackTrace();return false;
+			return false;
 		}
 	}
 
@@ -685,7 +685,7 @@ public class Tuple3i<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 			throw e;
 		}
 		catch (Throwable e2) {
-			e2.printStackTrace();return false;
+			return false;
 		}
 	}
 

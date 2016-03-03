@@ -1709,7 +1709,6 @@ public class Matrix3f implements Serializable, Cloneable {
 					&& this.m11 == m1.m11 && this.m12 == m1.m12
 					&& this.m20 == m1.m20 && this.m21 == m1.m21 && this.m22 == m1.m22);
 		} catch (NullPointerException e2) {
-			e2.printStackTrace();
 			return false;
 		}
 
@@ -1733,10 +1732,8 @@ public class Matrix3f implements Serializable, Cloneable {
 					&& this.m02 == m2.m02 && this.m10 == m2.m10
 					&& this.m11 == m2.m11 && this.m12 == m2.m12
 					&& this.m20 == m2.m20 && this.m21 == m2.m21 && this.m22 == m2.m22);
-		} catch (ClassCastException e1) {
-			e1.printStackTrace();return false;
-		} catch (NullPointerException e2) {
-			e2.printStackTrace();return false;
+		} catch (ClassCastException | NullPointerException e1) {
+			return false;
 		}
 
 	}
@@ -2911,7 +2908,7 @@ public class Matrix3f implements Serializable, Cloneable {
 			m1 = (Matrix3f) super.clone();
 		} catch (CloneNotSupportedException e) {
 			// this shouldn't happen, since we are Cloneable
-			e.printStackTrace();throw new InternalError();
+			throw new InternalError(e);
 		}
 
 		// Also need to create new tmp arrays (no need to actually clone them)
