@@ -41,6 +41,7 @@ import org.arakhne.afc.math.tree.IcosepTreeNodeContainer;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 13.0
  */
 public abstract class IcosepBinaryTreeNode<D,N extends IcosepBinaryTreeNode<D,N>>
 extends BinaryTreeNode<D,N> 
@@ -321,6 +322,7 @@ implements IcosepTreeNodeContainer<N> {
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
+	 * @since 13.0
 	 */
 	public static enum IcosepBinaryTreeZone {
 		/** This is the index of the child that correspond to
@@ -371,6 +373,7 @@ implements IcosepTreeNodeContainer<N> {
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
+	 * @since 13.0
 	 */
 	public static class DefaultIcosepBinaryTreeNode<D> extends IcosepBinaryTreeNode<D,DefaultIcosepBinaryTreeNode<D>> {
 

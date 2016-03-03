@@ -30,6 +30,7 @@ import org.arakhne.afc.math.tree.Tree;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 13.0
  */
 public class DataDepthFirstForestIterator<D>
 implements Iterator<D> {
@@ -121,6 +122,7 @@ implements Iterator<D> {
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
+	 * @since 13.0
 	 */
 	private static class DataPair<D> {
 		

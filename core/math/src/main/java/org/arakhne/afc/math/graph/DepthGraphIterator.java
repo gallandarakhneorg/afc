@@ -38,6 +38,7 @@ package org.arakhne.afc.math.graph;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 13.0
  */
 public class DepthGraphIterator<ST extends GraphSegment<ST,PT>,PT extends GraphPoint<PT,ST>>
 extends GraphIterator<ST,PT> {

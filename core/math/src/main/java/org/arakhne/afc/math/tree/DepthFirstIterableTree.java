@@ -37,6 +37,7 @@ import org.arakhne.afc.math.tree.iterator.InfixDepthFirstTreeIterator;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 13.0
  */
 public interface DepthFirstIterableTree<D,N extends TreeNode<D,?>> extends Tree<D,N> {
 

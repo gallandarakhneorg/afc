@@ -42,6 +42,7 @@ import org.arakhne.afc.math.tree.TreeNode;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 13.0
  */
 public abstract class TernaryTreeNode<D, N extends TernaryTreeNode<D,N>> extends AbstractTreeNode<D,N> {
 
@@ -480,6 +481,7 @@ public abstract class TernaryTreeNode<D, N extends TernaryTreeNode<D,N>> extends
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
+	 * @since 13.0
 	 */
 	public static class DefaultTernaryTreeNode<D> extends TernaryTreeNode<D,DefaultTernaryTreeNode<D>> {
 

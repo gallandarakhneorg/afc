@@ -26,7 +26,7 @@ package org.arakhne.afc.math.tree;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 4.0
+ * @since 13.0
  */
 public interface IterableNode<N extends IterableNode<?>> {
 	

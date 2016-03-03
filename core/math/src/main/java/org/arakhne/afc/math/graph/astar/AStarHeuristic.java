@@ -31,7 +31,7 @@ import org.arakhne.afc.math.graph.GraphPoint;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @see AStar
- * @since 4.0
+ * @since 13.0
  */
 public interface AStarHeuristic<PT extends GraphPoint<PT,?>> {
 

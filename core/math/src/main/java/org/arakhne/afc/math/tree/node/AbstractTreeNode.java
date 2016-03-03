@@ -40,6 +40,7 @@ import org.arakhne.afc.math.tree.TreeNodeRemovedEvent;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 13.0
  */
 public abstract class AbstractTreeNode<D,N extends AbstractTreeNode<D,N>> extends AbstractParentlessTreeNode<D,N> {
 
@@ -349,6 +350,7 @@ public abstract class AbstractTreeNode<D,N extends AbstractTreeNode<D,N>> extend
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
+	 * @since 13.0
 	 */
 	private class ChildIterator implements Iterator<N> {
 

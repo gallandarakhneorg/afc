@@ -31,6 +31,7 @@ import org.arakhne.afc.math.tree.TreeNode;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 13.0
  */
 public class BroadFirstTreeIterator<N extends TreeNode<?,N>>
 extends AbstractBroadFirstTreeIterator<N,N>

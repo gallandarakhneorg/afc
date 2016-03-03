@@ -24,6 +24,7 @@ package org.arakhne.afc.math.tree.builder;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 13.0
  */
 public class TreeBuilderException extends Exception {
 
@@ -37,6 +38,7 @@ public class TreeBuilderException extends Exception {
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
+	 * @since 13.0
 	 */
 	public static class EmptyBoundingBoxException extends TreeBuilderException {
 
@@ -52,6 +54,7 @@ public class TreeBuilderException extends Exception {
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
+	 * @since 13.0
 	 */
 	public static class BuilderAlreadyStartedException extends TreeBuilderException {
 

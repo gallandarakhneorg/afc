@@ -52,6 +52,7 @@ import java.util.TreeSet;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 13.0
  */
 public class GraphIterator<ST extends GraphSegment<ST,PT>,
                            PT extends GraphPoint<PT,ST>>
@@ -372,6 +373,7 @@ implements Iterator<ST> {
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
+	 * @since 13.0
 	 */
     private static class ReverseIterator<E> implements Iterator<E> {
 

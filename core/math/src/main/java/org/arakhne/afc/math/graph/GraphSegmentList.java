@@ -32,6 +32,7 @@ import java.util.List;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 13.0
  */
 public interface GraphSegmentList<ST extends GraphSegment<ST,PT>,PT extends GraphPoint<PT,ST>> extends List<ST> {
 	

@@ -36,7 +36,7 @@ import org.arakhne.afc.references.WeakArrayList;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 4.1
+ * @since 13.0
  */
 public class SGraphPoint implements GraphPoint<SGraphPoint,SGraphSegment> {
 
@@ -269,6 +269,7 @@ public class SGraphPoint implements GraphPoint<SGraphPoint,SGraphSegment> {
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
+	 * @since 13.0
 	 */
 	private class PointConnection implements GraphPointConnection<SGraphPoint,SGraphSegment> {
 

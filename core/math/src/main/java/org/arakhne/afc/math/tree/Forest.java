@@ -34,7 +34,7 @@ import org.arakhne.afc.math.tree.iterator.InfixDepthFirstTreeIterator;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 3.0
+ * @since 13.0
  */
 public interface Forest<D> extends Collection<Tree<D,?>> {
 	

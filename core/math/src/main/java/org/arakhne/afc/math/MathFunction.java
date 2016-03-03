@@ -25,6 +25,7 @@ package org.arakhne.afc.math;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 13.0
  */
 public interface MathFunction {
 	

@@ -29,6 +29,7 @@ import java.io.Serializable;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 13.0
  */
 public class DoubleRange implements Cloneable, Serializable, Comparable<DoubleRange> {
 

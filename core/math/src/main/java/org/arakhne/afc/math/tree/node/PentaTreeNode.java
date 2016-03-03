@@ -42,6 +42,7 @@ import org.arakhne.afc.math.tree.TreeNode;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 13.0
  */
 public abstract class PentaTreeNode<D,N extends PentaTreeNode<D,N>> extends AbstractTreeNode<D,N> {	
 	
@@ -569,6 +570,7 @@ public abstract class PentaTreeNode<D,N extends PentaTreeNode<D,N>> extends Abst
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
+	 * @since 13.0
 	 */
 	public static class DefaultPentaTreeNode<D> extends PentaTreeNode<D,DefaultPentaTreeNode<D>> {
 		

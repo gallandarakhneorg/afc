@@ -27,6 +27,7 @@ package org.arakhne.afc.math;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 13.0
  * @see "http://en.wikipedia.org/wiki/Range_(mathematics)"
  */
 public class MathFunctionRange {

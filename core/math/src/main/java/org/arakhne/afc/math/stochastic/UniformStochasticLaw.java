@@ -44,6 +44,7 @@ import org.arakhne.afc.math.MathFunctionRange;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 13.0
  */
 public class UniformStochasticLaw extends StochasticLaw {
 	

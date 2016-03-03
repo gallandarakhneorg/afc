@@ -32,6 +32,7 @@ import org.arakhne.afc.math.MathFunction;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 13.0
  */
 public class StochasticGenerator {
 	

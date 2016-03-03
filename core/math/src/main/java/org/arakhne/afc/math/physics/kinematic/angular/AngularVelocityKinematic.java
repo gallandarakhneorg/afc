@@ -31,7 +31,7 @@ import org.arakhne.afc.math.physics.AngularUnit;
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 4.1
+ * @since 13.0
  */
 public interface AngularVelocityKinematic extends AngularInstantVelocityKinematic {
 

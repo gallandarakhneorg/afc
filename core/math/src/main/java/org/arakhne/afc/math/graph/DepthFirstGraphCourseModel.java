@@ -33,6 +33,7 @@ import java.util.Stack;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 13.0
  */
 public class DepthFirstGraphCourseModel<ST extends GraphSegment<ST,PT>,PT extends GraphPoint<PT,ST>> implements GraphCourseModel<ST,PT>{
 

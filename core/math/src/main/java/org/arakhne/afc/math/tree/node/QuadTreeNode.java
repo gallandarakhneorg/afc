@@ -42,6 +42,7 @@ import org.arakhne.afc.math.tree.TreeNode;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 13.0
  */
 public abstract class QuadTreeNode<D,N extends QuadTreeNode<D,N>> extends AbstractTreeNode<D,N> {	
 	
@@ -581,6 +582,7 @@ public abstract class QuadTreeNode<D,N extends QuadTreeNode<D,N>> extends Abstra
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
+	 * @since 13.0
 	 */
 	public static enum QuadTreeZone {
 		/** upper left zone.
@@ -622,6 +624,7 @@ public abstract class QuadTreeNode<D,N extends QuadTreeNode<D,N>> extends Abstra
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
+	 * @since 13.0
 	 */
 	public static class DefaultQuadTreeNode<D> extends QuadTreeNode<D,DefaultQuadTreeNode<D>> {
 

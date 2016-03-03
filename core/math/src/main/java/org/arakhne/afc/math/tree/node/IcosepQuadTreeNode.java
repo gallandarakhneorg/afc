@@ -41,6 +41,7 @@ import org.arakhne.afc.math.tree.IcosepTreeNodeContainer;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 13.0
  */
 public abstract class IcosepQuadTreeNode<D,N extends IcosepQuadTreeNode<D,N>>
 extends QuadTreeNode<D,N> 
@@ -318,6 +319,7 @@ implements IcosepTreeNodeContainer<N> {
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
+	 * @since 13.0
 	 */
 	public static enum IcosepQuadTreeZone {
 		/** upper left zone.
@@ -370,6 +372,7 @@ implements IcosepTreeNodeContainer<N> {
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
+	 * @since 13.0
 	 */
 	public static class DefaultIcosepQuadTreeNode<D> extends IcosepQuadTreeNode<D,DefaultIcosepQuadTreeNode<D>> {
 

@@ -33,6 +33,7 @@ import org.arakhne.afc.math.tree.Tree;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 13.0
  */
 public interface TreeBuilder<D,T extends Tree<D,?>> {
 

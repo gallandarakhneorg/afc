@@ -38,6 +38,7 @@ import org.arakhne.afc.math.geometry.d3.continuous.Vector3f;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 13.0
  */
 public class PhysicsUtil {
 

@@ -42,6 +42,7 @@ import org.arakhne.afc.math.tree.TreeNode;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 13.0
  */
 public abstract class BinaryTreeNode<D,N extends BinaryTreeNode<D,N>> extends AbstractTreeNode<D,N> {
 
@@ -427,6 +428,7 @@ public abstract class BinaryTreeNode<D,N extends BinaryTreeNode<D,N>> extends Ab
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
+	 * @since 13.0
 	 */
 	public static class DefaultBinaryTreeNode<D> extends BinaryTreeNode<D,DefaultBinaryTreeNode<D>> {
 		
@@ -465,6 +467,7 @@ public abstract class BinaryTreeNode<D,N extends BinaryTreeNode<D,N>> extends Ab
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
+	 * @since 13.0
 	 */
 	public static enum BinaryTreeZone {
 		/** This is the index of the child that correspond to

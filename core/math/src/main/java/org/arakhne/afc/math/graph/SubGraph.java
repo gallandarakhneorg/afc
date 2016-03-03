@@ -42,6 +42,7 @@ import org.arakhne.afc.references.WeakArrayList;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 13.0
  */
 public class SubGraph<ST extends GraphSegment<ST,PT>,
 PT extends GraphPoint<PT,ST>,
@@ -308,6 +309,7 @@ implements Graph<ST,PT> {
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
+	 * @since 13.0
 	 */
 	private class DepthSubGraphIterator extends DepthGraphIterator<ST,PT> {
 
@@ -348,6 +350,7 @@ implements Graph<ST,PT> {
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
+	 * @since 13.0
 	 */
 	private class SubGraphIterator extends GraphIterator<ST,PT> {
 
@@ -403,6 +406,7 @@ implements Graph<ST,PT> {
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
+	 * @since 13.0
 	 */
 	private final class SubGraphIterationElement extends GraphIterationElement<ST,PT> {
 
@@ -467,6 +471,7 @@ implements Graph<ST,PT> {
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
+	 * @since 13.0
 	 */
 	private class SubGraphSegmentIterator implements Iterator<ST> {
 

@@ -42,6 +42,7 @@ import org.arakhne.afc.math.tree.TreeNode;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 13.0
  */
 public abstract class OctTreeNode<D,N extends OctTreeNode<D,N>> extends AbstractTreeNode<D,N> {
 
@@ -812,6 +813,7 @@ public abstract class OctTreeNode<D,N extends OctTreeNode<D,N>> extends Abstract
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
+	 * @since 13.0
 	 */
 	public static enum OctTreeZone {
 		/** This is the index of the child that correspond to
@@ -880,6 +882,7 @@ public abstract class OctTreeNode<D,N extends OctTreeNode<D,N>> extends Abstract
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
+	 * @since 13.0
 	 */
 	public static class DefaultOctTreeNode<D> extends OctTreeNode<D,DefaultOctTreeNode<D>> {
 

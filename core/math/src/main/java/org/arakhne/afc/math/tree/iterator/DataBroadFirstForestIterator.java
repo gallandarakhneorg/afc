@@ -35,6 +35,7 @@ import org.arakhne.afc.math.tree.TreeNode;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 13.0
  */
 public class DataBroadFirstForestIterator<D>
 implements Iterator<D> {
@@ -155,6 +156,7 @@ implements Iterator<D> {
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
+	 * @since 13.0
 	 */
 	private static class DataPair<D> {
 		

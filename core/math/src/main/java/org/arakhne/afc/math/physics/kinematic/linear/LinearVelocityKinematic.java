@@ -31,7 +31,7 @@ import org.arakhne.afc.math.physics.SpeedUnit;
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 4.1
+ * @since 13.0
  */
 public interface LinearVelocityKinematic extends LinearInstantVelocityKinematic {
 

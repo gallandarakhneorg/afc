@@ -41,7 +41,7 @@ import org.arakhne.afc.math.tree.iterator.DepthFirstNodeOrder;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 3.0
+ * @since 13.0
  */
 public abstract class AbstractForest<D>
 implements Forest<D> {
@@ -397,7 +397,7 @@ implements Forest<D> {
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
-	 * @since 3.0
+	 * @since 13.0
 	 */
 	private class ForestIterator implements Iterator<Tree<D,?>> {
 		

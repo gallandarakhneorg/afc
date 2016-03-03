@@ -35,7 +35,7 @@ import org.arakhne.afc.math.graph.GraphSegment;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 4.1
+ * @since 13.0
  */
 public class SGraphSegment implements GraphSegment<SGraphSegment,SGraphPoint> {
 

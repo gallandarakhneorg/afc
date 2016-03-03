@@ -28,6 +28,7 @@ package org.arakhne.afc.math.graph;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 13.0
  */
 public interface GraphPoint<PT extends GraphPoint<PT,ST>, ST extends GraphSegment<ST,PT>> extends Comparable<GraphPoint<PT,ST>> {
 
@@ -103,10 +104,11 @@ public interface GraphPoint<PT extends GraphPoint<PT,ST>, ST extends GraphSegmen
      * 
      * @param <PT> is the type of node in the graph
      * @param <ST> is the type of edge in the graph
-     * @author St&eacute;phane GALLAND &lt;stephane.galland@utbm.fr&gt;
-     * @version $FullVersion$
-     * @mavengroupid fr.utbm.set.sfc
-     * @mavenartifactid setgraph
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+     * @since 13.0
      */
 	public static interface GraphPointConnection<PT extends GraphPoint<PT,ST>, ST extends GraphSegment<ST,PT>> {
 

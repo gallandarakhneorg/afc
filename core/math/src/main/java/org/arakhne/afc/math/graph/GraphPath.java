@@ -37,6 +37,7 @@ import java.util.NoSuchElementException;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 13.0
  */
 public class GraphPath<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<ST,PT>,PT extends GraphPoint<PT,ST>> implements GraphSegmentList<ST,PT>, Cloneable {
 	
@@ -1321,6 +1322,7 @@ public class GraphPath<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<S
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
+	 * @since 13.0
 	 */
 	private class PointIterable implements Iterable<PT> {
 		
@@ -1344,6 +1346,7 @@ public class GraphPath<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<S
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
+	 * @since 13.0
 	 */
 	private static class PointIterator<ST extends GraphSegment<ST,PT>,PT extends GraphPoint<PT,ST>> implements Iterator<PT> {
 

@@ -32,6 +32,7 @@ import java.util.Collection;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 13.0
  */
 public interface GraphCourseModel<ST extends GraphSegment<ST,PT>,PT extends GraphPoint<PT,ST>> {
 

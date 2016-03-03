@@ -30,6 +30,7 @@ import java.util.List;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 13.0
  */
 public interface TreeNode<D,N extends TreeNode<D,?>> extends IterableNode<N>, Comparable<N> {
 	

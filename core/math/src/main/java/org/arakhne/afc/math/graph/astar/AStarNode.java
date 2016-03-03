@@ -34,7 +34,7 @@ import org.arakhne.afc.math.graph.GraphSegment;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 4.0
+ * @since 13.0
  */
 public interface AStarNode<ST extends GraphSegment<ST,PT>, PT extends GraphPoint<PT,ST>> {
 

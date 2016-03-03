@@ -44,6 +44,7 @@ import org.arakhne.afc.math.tree.iterator.PrefixDepthFirstTreeIterator;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 13.0
  */
 public abstract class AbstractTree<D,N extends TreeNode<D,N>> implements DepthFirstIterableTree<D,N>, BroadFirstIterableTree<D,N>, Serializable {
 

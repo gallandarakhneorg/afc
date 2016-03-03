@@ -50,6 +50,7 @@ import org.arakhne.afc.math.MathConstants;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 13.0
  */
 public class MeasureUnitUtil {
 

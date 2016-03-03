@@ -26,6 +26,7 @@ package org.arakhne.afc.math.tree;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 13.0
  */
 public interface IcosepTreeNodeContainer<N extends TreeNode<?,N>> {
 

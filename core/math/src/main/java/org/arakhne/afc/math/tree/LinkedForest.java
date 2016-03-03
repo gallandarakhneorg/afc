@@ -29,7 +29,7 @@ import java.util.LinkedList;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 3.0
+ * @since 13.0
  */
 public class LinkedForest<D>
 extends AbstractForest<D> { 

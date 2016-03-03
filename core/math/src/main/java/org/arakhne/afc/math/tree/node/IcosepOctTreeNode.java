@@ -41,6 +41,7 @@ import org.arakhne.afc.math.tree.IcosepTreeNodeContainer;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 13.0
  */
 public abstract class IcosepOctTreeNode<D,N extends IcosepOctTreeNode<D,N>>
 extends OctTreeNode<D,N>
@@ -319,6 +320,7 @@ implements IcosepTreeNodeContainer<N> {
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
+	 * @since 13.0
 	 */
 	public static enum IcosepOctTreeZone {
 		/** This is the index of the child that correspond to
@@ -399,6 +401,7 @@ implements IcosepTreeNodeContainer<N> {
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
+	 * @since 13.0
 	 */
 	public static class DefaultIcosepOctTreeNode<D> extends IcosepOctTreeNode<D,DefaultIcosepOctTreeNode<D>> {
 

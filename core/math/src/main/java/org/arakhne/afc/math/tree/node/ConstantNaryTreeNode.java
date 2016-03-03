@@ -48,6 +48,7 @@ import org.arakhne.afc.math.tree.TreeNode;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 13.0
  */
 public abstract class ConstantNaryTreeNode<D,N extends ConstantNaryTreeNode<D,N>> extends AbstractTreeNode<D,N> {
 
@@ -358,6 +359,7 @@ public abstract class ConstantNaryTreeNode<D,N extends ConstantNaryTreeNode<D,N>
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
+	 * @since 13.0
 	 */
 	public static class DefaultConstantNaryTreeNode<D> extends ConstantNaryTreeNode<D,DefaultConstantNaryTreeNode<D>> {
 		

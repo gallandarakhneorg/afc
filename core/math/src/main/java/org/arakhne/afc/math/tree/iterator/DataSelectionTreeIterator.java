@@ -34,6 +34,7 @@ import org.arakhne.afc.math.tree.TreeNode;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 13.0
  */
 public interface DataSelectionTreeIterator<D, N extends TreeNode<D,?>>
 extends Iterator<D> {

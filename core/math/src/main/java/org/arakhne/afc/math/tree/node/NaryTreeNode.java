@@ -50,6 +50,7 @@ import org.arakhne.afc.math.tree.TreeNode;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 13.0
  */
 public abstract class NaryTreeNode<D,N extends NaryTreeNode<D,N>> extends AbstractTreeNode<D,N> {
 
@@ -453,6 +454,7 @@ public abstract class NaryTreeNode<D,N extends NaryTreeNode<D,N>> extends Abstra
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
+	 * @since 13.0
 	 */
 	public static class DefaultNaryTreeNode<D> extends NaryTreeNode<D,DefaultNaryTreeNode<D>> {
 		

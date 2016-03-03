@@ -28,6 +28,7 @@ package org.arakhne.afc.math.graph;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 13.0
  */
 public interface GraphSegment<ST extends GraphSegment<ST,PT>,
 							  PT extends GraphPoint<PT,ST>> {

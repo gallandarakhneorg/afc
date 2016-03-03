@@ -31,6 +31,7 @@ import java.util.concurrent.TimeUnit;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 13.0
  */
 public enum AngularUnit {
 

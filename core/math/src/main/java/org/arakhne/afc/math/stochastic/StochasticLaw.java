@@ -34,6 +34,7 @@ import org.arakhne.afc.math.MathInversableFunction;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 13.0
  */
 public abstract class StochasticLaw implements MathInversableFunction {
 

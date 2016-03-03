@@ -43,6 +43,7 @@ import org.arakhne.afc.math.tree.TreeNodeListener;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 13.0
  */
 public abstract class AbstractParentlessTreeNode<D,N extends AbstractParentlessTreeNode<D,N>> implements TreeNode<D,N>, Serializable {
 
@@ -551,6 +552,7 @@ public abstract class AbstractParentlessTreeNode<D,N extends AbstractParentlessT
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
+	 * @since 13.0
 	 */
 	private class DataCollection implements List<D>, Serializable {
 		
@@ -815,6 +817,7 @@ public abstract class AbstractParentlessTreeNode<D,N extends AbstractParentlessT
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
+	 * @since 13.0
 	 */
 	private class DataIterator implements ListIterator<D> {
 	

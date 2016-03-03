@@ -36,7 +36,7 @@ import org.arakhne.afc.math.graph.GraphIterator;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 4.1
+ * @since 13.0
  */
 public class SGraph
 implements Graph<SGraphSegment,SGraphPoint> {

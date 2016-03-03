@@ -34,7 +34,7 @@ import org.arakhne.afc.math.graph.GraphPoint.GraphPointConnection;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @see AStar
- * @since 4.0
+ * @since 13.0
  */
 public interface AStarSegmentOrientation<ST extends GraphSegment<ST,PT>, PT extends GraphPoint<PT,ST>> {
 

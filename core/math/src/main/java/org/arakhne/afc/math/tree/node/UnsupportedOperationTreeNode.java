@@ -37,6 +37,7 @@ import org.arakhne.afc.math.tree.TreeNodeListener;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 13.0
  */
 public class UnsupportedOperationTreeNode<D,N extends TreeNode<D,N>>
 implements TreeNode<D,N> {

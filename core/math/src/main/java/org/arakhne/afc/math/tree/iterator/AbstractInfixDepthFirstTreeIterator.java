@@ -57,7 +57,7 @@ import org.arakhne.afc.math.tree.IterableNode;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 4.0
+ * @since 13.0
  */
 public abstract class AbstractInfixDepthFirstTreeIterator<P extends IterableNode<? extends C>, C extends IterableNode<?>>
 implements Iterator<P> {

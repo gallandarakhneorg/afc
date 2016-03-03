@@ -31,6 +31,7 @@ import org.arakhne.afc.vmutil.locale.Locale;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 13.0
  */
 public enum SpaceUnit {
 	/** femtometer.

@@ -45,7 +45,7 @@ import org.arakhne.afc.util.ListUtil;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 4.0
+ * @since 13.0
  */
 public class AStar<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<ST,PT>, PT extends GraphPoint<PT,ST>> {
 
@@ -675,7 +675,7 @@ public class AStar<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<ST,PT
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
-	 * @since 4.0
+	 * @since 13.0
 	 */
 	protected class Candidate implements AStarNode<ST,PT> {
 
@@ -819,7 +819,7 @@ public class AStar<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<ST,PT
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
-	 * @since 4.0
+	 * @since 13.0
 	 */
 	protected static class OpenComparator<ST extends GraphSegment<ST,PT>, PT extends GraphPoint<PT,ST>> implements Comparator<AStarNode<ST,PT>> {
 
@@ -851,7 +851,7 @@ public class AStar<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<ST,PT
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
-	 * @since 4.0
+	 * @since 13.0
 	 */
 	protected static class CloseComparator<ST extends GraphSegment<ST,PT>, PT extends GraphPoint<PT,ST>> implements Comparator<AStarNode<ST,PT>> {
 
@@ -878,7 +878,7 @@ public class AStar<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<ST,PT
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
-	 * @since 4.0
+	 * @since 13.0
 	 */
 	private class OrientedConnectionCollection implements Iterable<ST> {
 		
@@ -908,7 +908,7 @@ public class AStar<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<ST,PT
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
-	 * @since 4.0
+	 * @since 13.0
 	 */
 	private class OrientedConnectionIterator implements Iterator<ST> {
 		
@@ -973,7 +973,7 @@ public class AStar<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<ST,PT
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
-	 * @since 4.0
+	 * @since 13.0
 	 */
 	private static class AStarReflectionPathFactory<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<ST,PT>, PT extends GraphPoint<PT,ST>>
 	implements AStarPathFactory<GP,ST,PT> {

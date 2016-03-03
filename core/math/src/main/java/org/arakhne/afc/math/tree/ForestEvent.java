@@ -26,6 +26,7 @@ import java.util.EventObject;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 13.0
  */
 public class ForestEvent extends EventObject {
 	

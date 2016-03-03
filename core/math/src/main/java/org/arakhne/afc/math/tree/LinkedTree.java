@@ -33,6 +33,7 @@ import java.io.ObjectInputStream;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 13.0
  */
 public class LinkedTree<D,N extends TreeNode<D,N>> extends AbstractTree<D,N> {
 
@@ -192,6 +193,7 @@ public class LinkedTree<D,N extends TreeNode<D,N>> extends AbstractTree<D,N> {
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
+	 * @since 13.0
 	 */
 	private class Listener implements TreeNodeListener {
 
