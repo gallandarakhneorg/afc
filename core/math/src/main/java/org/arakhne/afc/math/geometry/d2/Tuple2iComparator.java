@@ -1,7 +1,7 @@
 /* 
  * $Id$
  * 
- * Copyright (C) 2005-09 Stephane GALLAND.
+ * Copyright (C) 2011 Janus Core Developers
  * Copyright (C) 2012 Stephane GALLAND.
  * 
  * This library is free software; you can redistribute it and/or
@@ -21,46 +21,47 @@
  */
 package org.arakhne.afc.math.geometry.d2;
 
-import java.io.Serializable;
+import java.util.Comparator;
 
-import org.arakhne.afc.math.geometry.PathElementType;
 import org.eclipse.xtext.xbase.lib.Pure;
 
-/** An element of the path.
+/**
+ * Comparator of Tuple2D on their integer coordinates.
  *
+ * <p>For comparisons on the floating-point coordinates, see {@link Tuple2fComparator}.
+ * 
  * @author $Author: sgalland$
- * @author $Author: hjaffali$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @see Tuple2fComparator
+ * @since 13.0
  */
-public interface PathElement2D extends Serializable, Cloneable {
+public class Tuple2iComparator implements Comparator<Tuple2D<?>> {
 	
-	/** Replies the type of the element.
-	 * 
-	 * @return <code>true</code> if the points are
-	 * the same; otherwise <code>false</code>.
+	/**
 	 */
-	@Pure
-	PathElementType getType();
-
-	/** Replies if the element is empty, ie. the points are the same.
-	 * 
-	 * @return <code>true</code> if the points are
-	 * the same; otherwise <code>false</code>.
-	 */
-	@Pure
-	boolean isEmpty();
+	public Tuple2iComparator() {
+		//
+	}
 	
-	/** Replies if the element is not empty and is drawable.
-	 *
-	 * <p>Only the path elements that may produce pixels on the screen
-	 * must reply <code>true</code> in this function.
-	 * 
-	 * @return <code>true</code> if the path element
-	 * is drawable; otherwise <code>false</code>.
-	 */
 	@Pure
-	boolean isDrawable();
-
+	@Override
+	public int compare(Tuple2D<?> o1, Tuple2D<?> o2) {
+		if (o1==o2) {
+			return 0;
+		}
+		if (o1==null) {
+			return Integer.MIN_VALUE;
+		}
+		if (o2==null) {
+			return Integer.MAX_VALUE;
+		}
+		int cmp = o1.ix() - o2.ix();
+		if (cmp!=0) {
+			return cmp;
+		}
+		return o1.iy() - o2.iy();
+	}
+		
 }

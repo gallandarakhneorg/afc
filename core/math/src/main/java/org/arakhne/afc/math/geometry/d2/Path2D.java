@@ -24,23 +24,22 @@ import java.util.Iterator;
 
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
-import org.arakhne.afc.math.geometry.d2.continuous.PathIterator2d;
-import org.arakhne.afc.math.geometry.d2.continuous.PathIterator2f;
-import org.arakhne.afc.math.geometry.d2.discrete.PathIterator2i;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** 2D Path.
  * 
  * @param <PT> is the type of the path implementation.
  * @param <B> is the type of the bounding box.
- * @param <E> is the type of the elements of the path.
  * @param <I> is the type of the iterator used to obtain the elements of the path.
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public interface Path2D<PT extends Shape2D<? super PT>, B extends Shape2D<?>, E extends PathElement2D, I extends Iterator<? extends E>> extends Shape2D<PT> {
+public interface Path2D<
+		PT extends Shape2D<? super PT, ? super I>,
+		B extends Shape2D<?,?>,
+		I extends Iterator<? extends PathElement2D>> extends Shape2D<PT, I> {
 
 	/**
 	 * Replies the bounds of this path.
@@ -64,8 +63,21 @@ public interface Path2D<PT extends Shape2D<? super PT>, B extends Shape2D<?>, E 
 	 * contain curve primitives, <code>false</code>
 	 * otherwise.
 	 */
+	@Pure
 	public boolean isPolyline();
 
+	/** Replies the path is composed only by
+	 * one <code>MOVE_TO</code>, a sequence of <code>LINE_TO</code>
+	 * or <code>QUAD_TO</code> or <code>CURVE_TO</code>, and a
+	 * single <code>CLOSE</code> primitives.
+	 * 
+	 * @return <code>true</code> if the path does not
+	 * contain curve primitives, <code>false</code>
+	 * otherwise.
+	 */
+	@Pure
+	public boolean isPolygon();
+
 	/** Replies an iterator on the path elements.
 	 * <p>
 	 * Only {@link PathElementType#MOVE_TO},
@@ -87,80 +99,6 @@ public interface Path2D<PT extends Shape2D<? super PT>, B extends Shape2D<?>, E 
 	 * @return an iterator on the path elements.
 	 */
 	@Pure
-	public PathIterator2f getPathIterator(double flatness);
-
-	/** Replies an iterator on the path elements.
-	 * <p>
-	 * The iterator for this class is not multi-threaded safe.
-	 * 
-	 * @return an iterator on the path elements.
-	 */
-	@Pure
-	public PathIterator2f getPathIterator();
-	
-	/** Replies an iterator on the path elements.
-	 * <p>
-	 * Only {@link PathElementType#MOVE_TO},
-	 * {@link PathElementType#LINE_TO}, and 
-	 * {@link PathElementType#CLOSE} types are returned by the iterator.
-	 * <p>
-	 * The amount of subdivision of the curved segments is controlled by the 
-	 * flatness parameter, which specifies the maximum distance that any point 
-	 * on the unflattened transformed curve can deviate from the returned
-	 * flattened path segments. Note that a limit on the accuracy of the
-	 * flattened path might be silently imposed, causing very small flattening
-	 * parameters to be treated as larger values. This limit, if there is one,
-	 * is defined by the particular implementation that is used.
-	 * <p>
-	 * The iterator for this class is not multi-threaded safe.
-	 * 
-	 * @param flatness is the maximum distance that the line segments used to approximate
-	 * the curved segments are allowed to deviate from any point on the original curve.
-	 * @return an iterator on the path elements.
-	 */
-	@Pure
-	public PathIterator2d getPathIteratorProperty(double flatness);
-
-	/** Replies an iterator on the path elements.
-	 * <p>
-	 * The iterator for this class is not multi-threaded safe.
-	 * 
-	 * @return an iterator on the path elements.
-	 */
-	@Pure
-	public PathIterator2d getPathIteratorProperty();
-	
-	/** Replies an iterator on the path elements.
-	 * <p>
-	 * Only {@link PathElementType#MOVE_TO},
-	 * {@link PathElementType#LINE_TO}, and 
-	 * {@link PathElementType#CLOSE} types are returned by the iterator.
-	 * <p>
-	 * The amount of subdivision of the curved segments is controlled by the 
-	 * flatness parameter, which specifies the maximum distance that any point 
-	 * on the unflattened transformed curve can deviate from the returned
-	 * flattened path segments. Note that a limit on the accuracy of the
-	 * flattened path might be silently imposed, causing very small flattening
-	 * parameters to be treated as larger values. This limit, if there is one,
-	 * is defined by the particular implementation that is used.
-	 * <p>
-	 * The iterator for this class is not multi-threaded safe.
-	 * 
-	 * @param flatness is the maximum distance that the line segments used to approximate
-	 * the curved segments are allowed to deviate from any point on the original curve.
-	 * @return an iterator on the path elements.
-	 */
-	@Pure
-	public PathIterator2i getPathIteratorDiscrete(double flatness);
-
-	/** Replies an iterator on the path elements.
-	 * <p>
-	 * The iterator for this class is not multi-threaded safe.
-	 * 
-	 * @return an iterator on the path elements.
-	 */
-	@Pure
-	public PathIterator2i getPathIteratorDiscrete();
-	
+	public I getPathIterator(double flatness);	
 
 }

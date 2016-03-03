@@ -21,46 +21,51 @@
  */
 package org.arakhne.afc.math.geometry.d2;
 
-import java.io.Serializable;
+import java.util.Iterator;
 
-import org.arakhne.afc.math.geometry.PathElementType;
+import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.eclipse.xtext.xbase.lib.Pure;
 
-/** An element of the path.
+
+/** This interface describes an interator on path elements.
  *
+ * @param <T> the type of the path elements.
  * @author $Author: sgalland$
- * @author $Author: hjaffali$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 13.0
  */
-public interface PathElement2D extends Serializable, Cloneable {
-	
-	/** Replies the type of the element.
-	 * 
-	 * @return <code>true</code> if the points are
-	 * the same; otherwise <code>false</code>.
-	 */
-	@Pure
-	PathElementType getType();
+public interface PathIterator2D<T extends PathElement2D> extends Iterator<T> {
 
-	/** Replies if the element is empty, ie. the points are the same.
+	/** Replies the winding rule for the path.
 	 * 
-	 * @return <code>true</code> if the points are
-	 * the same; otherwise <code>false</code>.
+	 * @return the winding rule for the path.
 	 */
 	@Pure
-	boolean isEmpty();
-	
-	/** Replies if the element is not empty and is drawable.
-	 *
-	 * <p>Only the path elements that may produce pixels on the screen
-	 * must reply <code>true</code> in this function.
+	public PathWindingRule getWindingRule();
+
+	/** Replies the path is composed only by
+	 * <code>MOVE_TO</code>, <code>LINE_TO</code>
+	 * or <code>CLOSE</code> primitives (no curve).
 	 * 
-	 * @return <code>true</code> if the path element
-	 * is drawable; otherwise <code>false</code>.
+	 * @return <code>true</code> if the path does not
+	 * contain curve primitives, <code>false</code>
+	 * otherwise.
 	 */
 	@Pure
-	boolean isDrawable();
+	public boolean isPolyline();
+
+	/** Replies the path is composed only by
+	 * one <code>MOVE_TO</code>, a sequence of <code>LINE_TO</code>
+	 * or <code>QUAD_TO</code> or <code>CURVE_TO</code>, and a
+	 * single <code>CLOSE</code> primitives.
+	 * 
+	 * @return <code>true</code> if the path does not
+	 * contain curve primitives, <code>false</code>
+	 * otherwise.
+	 */
+	@Pure
+	public boolean isPolygon();
 
 }

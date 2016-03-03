@@ -21,19 +21,23 @@
 package org.arakhne.afc.math.geometry.d2;
 
 import java.io.Serializable;
+import java.util.Iterator;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** 2D shape.
  * 
  * @param <ST> is the type of the shape implementation.
+ * @param <I> is the type of the iterator used to obtain the elements of the path.
  * @author $Author: galland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public interface Shape2D<ST extends Shape2D<? super ST>>
-extends Cloneable, Serializable {
+public interface Shape2D<
+		ST extends Shape2D<? super ST, ? super I>,
+		I extends Iterator<? extends PathElement2D>>
+		extends Cloneable, Serializable {
 
 	/** Replies if this shape is empty.
 	 * The semantic associated to the state "empty"
@@ -89,5 +93,14 @@ extends Cloneable, Serializable {
 	 * @param s
 	 */
 	public void set(ST s);
+
+	/** Replies an iterator on the path elements.
+	 * <p>
+	 * The iterator for this class is not multi-threaded safe.
+	 * 
+	 * @return an iterator on the path elements.
+	 */
+	@Pure
+	public I getPathIterator();
 
 }
