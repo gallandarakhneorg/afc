@@ -19,11 +19,10 @@
  */
 package org.arakhne.afc.math;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import org.arakhne.afc.util.Pair;
 import org.junit.Test;
 
 /**
@@ -49,33 +48,19 @@ public class MathUtilTest extends AbstractMathTestCase {
 	} 
 
 	@Test
-	public void clampCyclic_0() {
-		double min = 56;
-		double max = 123;
-		double range = max - min;
-		
-		for(double a = min; a <= max; a += range / 50.) {
-			assertEpsilonEquals("value = " + a, a, MathUtil.clampCyclic(a, min, max));
-			double ap = a + range;
-			assertEpsilonEquals("value = " + ap, a, MathUtil.clampCyclic(ap, min, max));
-			double am = a - range;
-			assertEpsilonEquals("value = " + am, a, MathUtil.clampCyclic(am, min, max));
-		}
-	}
-
-	@Test
-	public void clampCyclic_1() {
-		double min = -123;
-		double max = 56;
-		double range = max - min;
-		
-		for(double a = min; a <= max; a += range / 50.) {
-			assertEpsilonEquals("value = " + a, a, MathUtil.clampCyclic(a, min, max));
-			double ap = a + range;
-			assertEpsilonEquals("value = " + ap, a, MathUtil.clampCyclic(ap, min, max));
-			double am = a - range;
-			assertEpsilonEquals("value = " + am, a, MathUtil.clampCyclic(am, min, max));
-		}
+	public void clampCyclic() {
+		double min = 50;
+		double max = 90;
+		assertEpsilonEquals(89, MathUtil.clampCyclic(9, min, max));
+		assertEpsilonEquals(50, MathUtil.clampCyclic(10, min, max));
+		assertEpsilonEquals(60, MathUtil.clampCyclic(20, min, max));
+		assertEpsilonEquals(89, MathUtil.clampCyclic(49, min, max));
+		assertEpsilonEquals(50, MathUtil.clampCyclic(50, min, max));
+		assertEpsilonEquals(70, MathUtil.clampCyclic(70, min, max));
+		assertEpsilonEquals(50, MathUtil.clampCyclic(90, min, max));
+		assertEpsilonEquals(51, MathUtil.clampCyclic(91, min, max));
+		assertEpsilonEquals(70, MathUtil.clampCyclic(110, min, max));
+		assertEpsilonEquals(50, MathUtil.clampCyclic(130, min, max));
 	}
 
 	@Test(expected = AssertionError.class)
@@ -99,11 +84,11 @@ public class MathUtilTest extends AbstractMathTestCase {
 
 	@Test
 	public void isEpsilonZeroDoubleDouble() {
-		assertTrue(MathUtil.isEpsilonZero(0., MathConstants.EPSILON));
-		assertFalse(MathUtil.isEpsilonZero(0.1, MathConstants.EPSILON));
-		assertFalse(MathUtil.isEpsilonZero(Double.NaN, MathConstants.EPSILON));
-		assertFalse(MathUtil.isEpsilonZero(Double.NEGATIVE_INFINITY, MathConstants.EPSILON));
-		assertFalse(MathUtil.isEpsilonZero(Double.POSITIVE_INFINITY, MathConstants.EPSILON));
+		assertTrue(MathUtil.isEpsilonZero(0., Math.ulp(0.)));
+		assertFalse(MathUtil.isEpsilonZero(0.1, Math.ulp(0.1)));
+		assertFalse(MathUtil.isEpsilonZero(Double.NaN, Math.ulp(Double.NaN)));
+		assertFalse(MathUtil.isEpsilonZero(Double.NEGATIVE_INFINITY, Math.ulp(0)));
+		assertFalse(MathUtil.isEpsilonZero(Double.POSITIVE_INFINITY, Math.ulp(0)));
 	}
 
 	@Test
@@ -117,11 +102,11 @@ public class MathUtilTest extends AbstractMathTestCase {
 
 	@Test
 	public void isEpsilonEqualDoubleDoubleDouble() {
-		assertTrue(MathUtil.isEpsilonEqual(0., 0., MathConstants.EPSILON));
-		assertFalse(MathUtil.isEpsilonEqual(0.1, 0., MathConstants.EPSILON));
-		assertFalse(MathUtil.isEpsilonEqual(Double.NaN, 0., MathConstants.EPSILON));
-		assertFalse(MathUtil.isEpsilonEqual(Double.NEGATIVE_INFINITY, 0., MathConstants.EPSILON));
-		assertFalse(MathUtil.isEpsilonEqual(Double.POSITIVE_INFINITY, 0., MathConstants.EPSILON));
+		assertTrue(MathUtil.isEpsilonEqual(0., 0., Math.ulp(0.)));
+		assertFalse(MathUtil.isEpsilonEqual(0.1, 0., Math.ulp(0.1)));
+		assertFalse(MathUtil.isEpsilonEqual(Double.NaN, 0., Math.ulp(Double.NaN)));
+		assertFalse(MathUtil.isEpsilonEqual(Double.NEGATIVE_INFINITY, 0., Math.ulp(0.)));
+		assertFalse(MathUtil.isEpsilonEqual(Double.POSITIVE_INFINITY, 0., Math.ulp(0.)));
 	}
 
 	@Test
@@ -140,22 +125,22 @@ public class MathUtilTest extends AbstractMathTestCase {
 
 	@Test
 	public void maxIntArray() {
-		assertNaN(MathUtil.max((int[]) null));
-		assertNaN(MathUtil.max(new int[0]));
+		assertZero(MathUtil.max((int[]) null));
+		assertZero(MathUtil.max(new int[0]));
 		assertEquals(3455, MathUtil.max(3, 5, 7, 8, 3455, 3245, 45, 0, -10, 45));
 	}
 
 	@Test
 	public void maxLongArray() {
-		assertNaN(MathUtil.max((long[]) null));
-		assertNaN(MathUtil.max(new long[0]));
+		assertZero(MathUtil.max((long[]) null));
+		assertZero(MathUtil.max(new long[0]));
 		assertEquals(3455l, MathUtil.max(3l, 5l, 7l, 8l, 3455l, 3245l, 45l, 0l, -10l, 45l));
 	}
 
 	@Test
 	public void maxShortArray() {
-		assertNaN(MathUtil.max((short[]) null));
-		assertNaN(MathUtil.max(new short[0]));
+		assertZero(MathUtil.max((short[]) null));
+		assertZero(MathUtil.max(new short[0]));
 		assertEquals(3455, MathUtil.max(new short[] {
 				3, 5, 7, 8, 3455, 3245, 45, 0, -10, 45
 			}));
@@ -177,22 +162,22 @@ public class MathUtilTest extends AbstractMathTestCase {
 
 	@Test
 	public void minIntArray() {
-		assertNaN(MathUtil.min((int[]) null));
-		assertNaN(MathUtil.min(new int[0]));
+		assertZero(MathUtil.min((int[]) null));
+		assertZero(MathUtil.min(new int[0]));
 		assertEquals(-10, MathUtil.min(3, 5, 7, 8, 3455, 3245, 45, 0, -10, 45));
 	}
 
 	@Test
 	public void minLongArray() {
-		assertNaN(MathUtil.min((long[]) null));
-		assertNaN(MathUtil.min(new long[0]));
+		assertZero(MathUtil.min((long[]) null));
+		assertZero(MathUtil.min(new long[0]));
 		assertEquals(-10l, MathUtil.min(3l, 5l, 7l, 8l, 3455l, 3245l, 45l, 0l, -10l, 45l));
 	}
 
 	@Test
 	public void minShortArray() {
-		assertNaN(MathUtil.min((short[]) null));
-		assertNaN(MathUtil.min(new short[0]));
+		assertZero(MathUtil.min((short[]) null));
+		assertZero(MathUtil.min(new short[0]));
 		assertEquals(-10, MathUtil.min(new short[] {
 				3, 5, 7, 8, 3455, 3245, 45, 0, -10, 45
 			}));
@@ -254,26 +239,123 @@ public class MathUtilTest extends AbstractMathTestCase {
 	@Test
 	public void compareEpsilonDoubleDouble() {
 		assertEquals(0, MathUtil.compareEpsilon(50., 50.));
-		assertEquals(51, MathUtil.compareEpsilon(0., 50.));
-		assertEquals(-51, MathUtil.compareEpsilon(50., 0.));
+		assertEquals(-1, MathUtil.compareEpsilon(0., 50.));
+		assertEquals(1, MathUtil.compareEpsilon(50., 0.));
 		//
-		assertEquals(0, MathUtil.compareEpsilon(50. + MathConstants.EPSILON / 2., 50.));
-		assertEquals(0, MathUtil.compareEpsilon(50. - MathConstants.EPSILON / 2., 50.));
+		assertEquals(0, MathUtil.compareEpsilon(50. + Math.ulp(50.) / 2., 50.));
+		assertEquals(0, MathUtil.compareEpsilon(50. - Math.ulp(50.) / 2., 50.));
 	}
 
 	@Test
 	public void compareEpsilonDoubleDoubleDouble() {
-		assertEquals(0, MathUtil.compareEpsilon(50., 50., MathConstants.EPSILON));
-		assertEquals(51, MathUtil.compareEpsilon(0., 50., MathConstants.EPSILON));
-		assertEquals(-51, MathUtil.compareEpsilon(50., 0., MathConstants.EPSILON));
-		//
-		assertEquals(0, MathUtil.compareEpsilon(50. + MathConstants.EPSILON / 2., 50., MathConstants.EPSILON));
-		assertEquals(0, MathUtil.compareEpsilon(50. - MathConstants.EPSILON / 2., 50., MathConstants.EPSILON));
+		assertEquals(0, MathUtil.compareEpsilon(50., 50., Math.ulp(50.)));
+		assertEquals(-1, MathUtil.compareEpsilon(0., 50., Math.ulp(0.)));
+		assertEquals(1, MathUtil.compareEpsilon(50., 0., Math.ulp(50.)));
+		
+		assertEquals(0, MathUtil.compareEpsilon(50. + Math.ulp(50.) / 2., 50., Math.ulp(50.)));
+		assertEquals(0, MathUtil.compareEpsilon(50. - Math.ulp(50.) / 2., 50., Math.ulp(50.)));
 	}
 
 	@Test
-	public void getMinMaxDoubleDoubleDoublePair() {
-		throw new UnsupportedOperationException();
+	public void getMinMaxDoubleDoubleDoublePair_0() {
+		DoubleRange range = MathUtil.getMinMax(3., 3455., -10.);
+		assertNotNull(range);
+		assertEpsilonEquals(-10., range.getMin());
+		assertEpsilonEquals(3455., range.getMax());
+	}
+
+	@Test
+	public void getMinMaxDoubleDoubleDoublePair_1() {
+		DoubleRange range = MathUtil.getMinMax(Double.NEGATIVE_INFINITY, 3455., -10.);
+		assertNotNull(range);
+		assertTrue(Double.isInfinite(range.getMin()));
+		assertEpsilonEquals(3455., range.getMax());
+	}
+
+	@Test
+	public void getMinMaxDoubleDoubleDoublePair_2() {
+		DoubleRange range = MathUtil.getMinMax(Double.POSITIVE_INFINITY, 3455., -10.);
+		assertNotNull(range);
+		assertEpsilonEquals(-10., range.getMin());
+		assertTrue(Double.isInfinite(range.getMax()));
+	}
+
+	@Test
+	public void getMinMaxDoubleDoubleDoublePair_3() {
+		DoubleRange range = MathUtil.getMinMax(Double.NaN, 3455., -10.);
+		assertNotNull(range);
+		assertEpsilonEquals(-10., range.getMin());
+		assertEpsilonEquals(3455, range.getMax());
+	}
+
+	@Test
+	public void getMinMaxDoubleDoubleDoublePair_4() {
+		DoubleRange range = MathUtil.getMinMax(3455., Double.NaN, -10.);
+		assertNotNull(range);
+		assertEpsilonEquals(-10., range.getMin());
+		assertEpsilonEquals(3455, range.getMax());
+	}
+
+	@Test
+	public void getMinMaxDoubleDoubleDoublePair_5() {
+		DoubleRange range = MathUtil.getMinMax(3455., -10., Double.NaN);
+		assertNotNull(range);
+		assertEpsilonEquals(-10., range.getMin());
+		assertEpsilonEquals(3455, range.getMax());
+	}
+
+	@Test
+	public void getMinMaxDoubleDoubleDoublePair_6() {
+		DoubleRange range = MathUtil.getMinMax(Double.NaN, -10., 3455.);
+		assertNotNull(range);
+		assertEpsilonEquals(-10., range.getMin());
+		assertEpsilonEquals(3455, range.getMax());
+	}
+
+	@Test
+	public void getMinMaxDoubleDoubleDoublePair_7() {
+		DoubleRange range = MathUtil.getMinMax(-10., Double.NaN, 3455.);
+		assertNotNull(range);
+		assertEpsilonEquals(-10., range.getMin());
+		assertEpsilonEquals(3455, range.getMax());
+	}
+
+	@Test
+	public void getMinMaxDoubleDoubleDoublePair_8() {
+		DoubleRange range = MathUtil.getMinMax(-10., 3455., Double.NaN);
+		assertNotNull(range);
+		assertEpsilonEquals(-10., range.getMin());
+		assertEpsilonEquals(3455, range.getMax());
+	}
+
+	@Test
+	public void getMinMaxDoubleDoubleDoublePair_9() {
+		DoubleRange range = MathUtil.getMinMax(-10., Double.NaN, Double.NaN);
+		assertNotNull(range);
+		assertEpsilonEquals(-10., range.getMin());
+		assertEpsilonEquals(-10, range.getMax());
+	}
+
+	@Test
+	public void getMinMaxDoubleDoubleDoublePair_10() {
+		DoubleRange range = MathUtil.getMinMax(Double.NaN, -10., Double.NaN);
+		assertNotNull(range);
+		assertEpsilonEquals(-10., range.getMin());
+		assertEpsilonEquals(-10, range.getMax());
+	}
+
+	@Test
+	public void getMinMaxDoubleDoubleDoublePair_11() {
+		DoubleRange range = MathUtil.getMinMax(Double.NaN, Double.NaN, -10.);
+		assertNotNull(range);
+		assertEpsilonEquals(-10., range.getMin());
+		assertEpsilonEquals(-10, range.getMax());
+	}
+
+	@Test
+	public void getMinMaxDoubleDoubleDoublePair_12() {
+		DoubleRange range = MathUtil.getMinMax(Double.NaN, Double.NaN, Double.NaN);
+		assertNull(range);
 	}
 
 }

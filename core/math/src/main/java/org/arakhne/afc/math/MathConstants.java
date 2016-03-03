@@ -54,12 +54,6 @@ public interface MathConstants {
 	 */
 	public static final double E = Math.E;
 
-	/** Epsilon value, smallest such that 1.0+EPSILON != 1.0
-	 * <p>
-	 * Given by the Java3D's implementation of the Matrix3d class.
-	 */
-	public static final double EPSILON = 1.110223024E-16;
-
 	/** 2 * PI
 	 */
 	public static final double TWO_PI = 2. * PI;

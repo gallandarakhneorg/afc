@@ -575,7 +575,6 @@ public abstract class AbstractMathTestCase {
 	 * @return <code>true</code> if the two arrays are equal, otherwise
 	 * <code>false</code>.
 	 */
-	@SuppressWarnings("null")
 	protected boolean isEpsilonEquals(double[] a, double[] b) {
 		if (a==b) return true;
 		if (a==null && b!=null) return false;
@@ -608,6 +607,66 @@ public abstract class AbstractMathTestCase {
 		}
 	}
 	
+	/** Test if the given value is equal to zero.
+	 *
+	 * @param value
+	 */
+	protected void assertZero(byte value) {
+		if (value != 0) {
+			fail("Expected zero, but has: " + value); //$NON-NLS-1$
+		}
+	}
+
+	/** Test if the given value is equal to zero.
+	 *
+	 * @param value
+	 */
+	protected void assertZero(short value) {
+		if (value != 0) {
+			fail("Expected zero, but has: " + value); //$NON-NLS-1$
+		}
+	}
+
+	/** Test if the given value is equal to zero.
+	 *
+	 * @param value
+	 */
+	protected void assertZero(int value) {
+		if (value != 0) {
+			fail("Expected zero, but has: " + value); //$NON-NLS-1$
+		}
+	}
+
+	/** Test if the given value is equal to zero.
+	 *
+	 * @param value
+	 */
+	protected void assertZero(long value) {
+		if (value != 0) {
+			fail("Expected zero, but has: " + value); //$NON-NLS-1$
+		}
+	}
+
+	/** Test if the given value is equal to zero.
+	 *
+	 * @param value
+	 */
+	protected void assertZero(float value) {
+		if (value != 0f) {
+			fail("Expected zero, but has: " + value); //$NON-NLS-1$
+		}
+	}
+
+	/** Test if the given value is equal to zero.
+	 *
+	 * @param value
+	 */
+	protected void assertZero(double value) {
+		if (value != 0.) {
+			fail("Expected zero, but has: " + value); //$NON-NLS-1$
+		}
+	}
+
 	/** Assert two iterable objects have the same elements.
 	 * 
 	 * @param expected

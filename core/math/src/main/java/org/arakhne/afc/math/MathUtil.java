@@ -24,10 +24,7 @@ import static org.arakhne.afc.math.MathConstants.COHEN_SUTHERLAND_INSIDE;
 import static org.arakhne.afc.math.MathConstants.COHEN_SUTHERLAND_LEFT;
 import static org.arakhne.afc.math.MathConstants.COHEN_SUTHERLAND_RIGHT;
 import static org.arakhne.afc.math.MathConstants.COHEN_SUTHERLAND_TOP;
-import static org.arakhne.afc.math.MathConstants.EPSILON;
 
-import org.arakhne.afc.math.geometry.d3.continuous.Vector3f;
-import org.arakhne.afc.util.Pair;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Mathematic and geometric utilities.
@@ -73,11 +70,11 @@ public final class MathUtil {
 	 * @param value is the value to test.
 	 * @return <code>true</code> if the given <var>value</var>
 	 * is near zero, otherwise <code>false</code>.
-	 * @see MathConstants#EPSILON
+	 * @see Math#ulp(double)
 	 */
 	@Pure
 	public static boolean isEpsilonZero(double value) {
-		return Math.abs(value) <= EPSILON;
+		return Math.abs(value) < Math.ulp(value);
 	}
 
 	/** Replies if the given value is near zero.
@@ -98,11 +95,12 @@ public final class MathUtil {
 	 * @param v2
 	 * @return <code>true</code> if the given <var>v1</var>
 	 * is near <var>v2</var>, otherwise <code>false</code>.
-	 * @see MathConstants#EPSILON
+	 * @see Math#ulp(double)
 	 */
 	@Pure
 	public static boolean isEpsilonEqual(double v1, double v2) {
-		return Math.abs(v1 - v2) <= EPSILON;
+		double v = v1 - v2;
+		return Math.abs(v) < Math.ulp(v);
 	}
 
 	/** Replies if the given values are near.
@@ -132,13 +130,13 @@ public final class MathUtil {
 	@Pure
 	public static int compareEpsilon(double v1, double v2) {
 		double v = v1 - v2;
-		if (Math.abs(v) <= EPSILON) {
+		if (Math.abs(v) < Math.ulp(v)) {
 			return 0;
 		}
 		if (v <= 0.) {
-			return (int) v - 1;
+			return -1;
 		}
-		return (int) v + 1;
+		return 1;
 	}
 
 	/** Compares its two arguments for order.
@@ -160,9 +158,9 @@ public final class MathUtil {
 			return 0;
 		}
 		if (v <= 0.) {
-			return (int) v - 1;
+			return -1;
 		}
-		return (int) v + 1;
+		return 1;
 	}
 
 	/** Replies the max value.
@@ -322,28 +320,30 @@ public final class MathUtil {
 	 * is modulo the min-max range.
 	 * 
 	 * @param value
-	 * @param min
-	 * @param max
+	 * @param min the minimum value inclusive.
+	 * @param max the maximum value exclusive.
 	 * @return the clamped value
 	 */
 	@Pure
 	public static double clampCyclic(double value, double min, double max) {
-		if (Double.isNaN(max)) { // NaN is lower than all the number according to double.compareTo()
+		if (Double.isNaN(max) || Double.isNaN(min) || Double.isNaN(max)) {
 			return Double.NaN;
 		}
-		if (Double.isNaN(min)) {
-			// Clamp max only
-			if (value>max) return max - Double.MAX_VALUE + value;
-		}
-		else {
-			assert(min<=max);
-			if (min==max) return min; // special case: empty interval
-			if (value<min || value >max) {
-				double perimeter = max - min;
-				double nvalue = value - min;
-				double rest = nvalue % perimeter;
-				return (value<0) ? max+rest : rest+min;
+		assert(min<=max);
+		if (value < min) {
+			double perimeter = max - min;
+			double nvalue = min - value;
+			double rest = perimeter - (nvalue % perimeter);
+			if (rest >= perimeter) {
+				rest -= perimeter;
 			}
+			return min + rest;
+		}
+		else if (value >= max) {
+			double perimeter = max - min;
+			double nvalue = value - max;
+			double rest = (nvalue % perimeter);
+			return min + rest;
 		}
 		return value;
 	}
@@ -441,16 +441,20 @@ public final class MathUtil {
 	}
 
 	/** Determine the min and max values from a set of three values.
-	 * <p>
-	 * This function has an algorithm that is efficient for 3 values.
+	 *
+	 * <p>This function has an algorithm that is efficient for 3 values.
+	 *
+	 * <p>If one of the value is {@link Double#NaN}, it is ignored.
+	 * If all the values are {@link Double#NaN}, the function replies
+	 * <code>null</code>.
 	 *
 	 * @param a the first value.
 	 * @param b the second value.
 	 * @param c the third value.
-	 * @param minmax the pair with the min and max values.
+	 * @return the min max range; or <code>null</code>.
 	 * @since 13.0
 	 */
-	public static void getMinMax(double a, double b, double c, Pair<Double, Double> minmax) {
+	public static DoubleRange getMinMax(double a, double b, double c) {
 		// Efficient implementation of the min/max determination
 		double min, max;
 		
@@ -469,6 +473,7 @@ public final class MathUtil {
 		// ---------------------------------
 		
 		if (a <= b) {
+			// A and B are not NaN
 			// case candidates: 123
 			if (a <= c) {
 				// case candidates: 12
@@ -482,16 +487,47 @@ public final class MathUtil {
 				}
 			} else {
 				// 3
-				min = c;
 				max = b;
+				if (Double.isNaN(c)) {
+					min = a;
+				} else {
+					min = c;
+				}
 			}
 		} else {
 			// case candidates: 456
 			if (a <= c) {
-				// case: 4
-				min = b;
 				max = c;
+				if (Double.isNaN(b)) {
+					min = a;
+				} else {
+					// case: 4
+					min = b;
+				}
+			} else if (Double.isNaN(a)) {
+				if (b <= c) {
+					min = b;
+					max = c;
+				} else if (Double.isNaN(b)) {
+					if (Double.isNaN(c)) {
+						return null;
+					}
+					min = max = c;
+				} else if (Double.isNaN(c)) {
+					min = max = b;
+				} else {
+					min = c;
+					max = b;
+				}
+			} else if (Double.isNaN(c)) {
+				if (Double.isNaN(b)) {
+					min = max = a;
+				} else {
+					min = b;
+					max = a;
+				}
 			} else {
+				// B may NaN
 				// case candidates: 56
 				max = a;
 				if (b <= c) {
@@ -503,7 +539,7 @@ public final class MathUtil {
 				}
 			}
 		}
-		minmax.set(new Double(min), new Double(max));
+		return new DoubleRange(min, max);
 	}
 
 	/** Replies the cosecant of the specified angle.
@@ -606,24 +642,6 @@ public final class MathUtil {
 	public static double haversine(double angle) {
 		double sin2 = Math.sin(angle/2.);
 		return sin2*sin2;
-	}
-
-	@SuppressWarnings("unused")
-	public static int epsilonDistanceSign(double distanceTo) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@SuppressWarnings("unused")
-	public static boolean epsilonColinear(Vector3f n1, Vector3f n2) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@SuppressWarnings("unused")
-	public static boolean epsilonEqualsDistance(double nw, double nw2) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 }
