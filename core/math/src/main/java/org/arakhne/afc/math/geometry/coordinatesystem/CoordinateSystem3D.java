@@ -806,14 +806,14 @@ public enum CoordinateSystem3D implements CoordinateSystem {
 	 * @return the 2D point
 	 */
 	@Pure
-	public Point2f toCoordinateSystem2D(Point3f point) {
+	public Point2fx toCoordinateSystem2D(Point3f point) {
 		switch(this) {
 		case XYZ_RIGHT_HAND:
 		case XYZ_LEFT_HAND:
-			return new Point2f(point.getX(), point.getY());
+			return new Point2fx(point.getX(), point.getY());
 		case XZY_LEFT_HAND:
 		case XZY_RIGHT_HAND:
-			return new Point2f(point.getX(), point.getZ());
+			return new Point2fx(point.getX(), point.getZ());
 		default:
 			throw new CoordinateSystemNotFoundException();
 		}
@@ -830,10 +830,10 @@ public enum CoordinateSystem3D implements CoordinateSystem {
 		switch(this) {
 		case XYZ_RIGHT_HAND:
 		case XYZ_LEFT_HAND:
-			return new Point2f(point.getX(), point.getY());
+			return new Point2fx(point.getX(), point.getY());
 		case XZY_LEFT_HAND:
 		case XZY_RIGHT_HAND:
-			return new Point2f(point.getX(), point.getZ());
+			return new Point2fx(point.getX(), point.getZ());
 		default:
 			throw new CoordinateSystemNotFoundException();
 		}
@@ -846,14 +846,14 @@ public enum CoordinateSystem3D implements CoordinateSystem {
 	 * @return the 2D vector
 	 */
 	@Pure
-	public Vector2f toCoordinateSystem2D(Vector3f vector) {
+	public Vector2fx toCoordinateSystem2D(Vector3f vector) {
 		switch(this) {
 		case XYZ_RIGHT_HAND:
 		case XYZ_LEFT_HAND:
-			return new Vector2f(vector.getX(), vector.getY());
+			return new Vector2fx(vector.getX(), vector.getY());
 		case XZY_LEFT_HAND:
 		case XZY_RIGHT_HAND:
-			return new Vector2f(vector.getX(), vector.getZ());
+			return new Vector2fx(vector.getX(), vector.getZ());
 		default:
 			throw new CoordinateSystemNotFoundException();
 		}
@@ -914,7 +914,7 @@ public enum CoordinateSystem3D implements CoordinateSystem {
 	 * @return the 3D point
 	 */
 	@Pure
-	public final Point3f fromCoordinateSystem2D(Point2f point) {
+	public final Point3f fromCoordinateSystem2D(Point2fx point) {
 		return fromCoordinateSystem2D(point, 0);
 	}
 
@@ -939,7 +939,7 @@ public enum CoordinateSystem3D implements CoordinateSystem {
 	 * @return the 3D point
 	 */
 	@Pure
-	public Point3f fromCoordinateSystem2D(Point2f point, double thirdCoordinate) {
+	public Point3f fromCoordinateSystem2D(Point2fx point, double thirdCoordinate) {
 		switch(this) {
 		case XYZ_LEFT_HAND:
 		case XYZ_RIGHT_HAND:
@@ -982,7 +982,7 @@ public enum CoordinateSystem3D implements CoordinateSystem {
 	 * @return the 3D vector
 	 */
 	@Pure
-	public final Vector3f fromCoordinateSystem2D(Vector2f vector) {
+	public final Vector3f fromCoordinateSystem2D(Vector2fx vector) {
 		return fromCoordinateSystem2D(vector, 0);
 	}
 
@@ -994,7 +994,7 @@ public enum CoordinateSystem3D implements CoordinateSystem {
 	 * @return the 3D vector
 	 */
 	@Pure
-	public Vector3f fromCoordinateSystem2D(Vector2f point, double thirdCoordinate) {
+	public Vector3f fromCoordinateSystem2D(Vector2fx point, double thirdCoordinate) {
 		switch(this) {
 		case XYZ_LEFT_HAND:
 		case XYZ_RIGHT_HAND:

@@ -36,6 +36,20 @@ import org.eclipse.xtext.xbase.lib.Pure;
 public interface Vector2D extends Tuple2D<Vector2D> {
 
 	/**
+	 * Replies if the vector is unit.
+	 * 
+	 * @param x is the X coordinate of the vector.
+	 * @param y is the Y coordinate of the vector.
+	 * @return <code>true</code> if the two given vectors are colinear.
+	 * @since 13.0
+	 * @see MathUtil#isEpsilonZero(double)
+	 */
+	@Pure
+	static boolean isUnitVector(double x, double y) {
+		return MathUtil.isEpsilonEqual(x * x + y *y, 1);
+	}
+
+	/**
 	 * Replies if two vectors are colinear.
 	 * <p>
 	 * This function uses the equal-to-zero test with the error {@link Math#ulp(double)}.
@@ -49,7 +63,7 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	 * @param y2
 	 *            is the Y coordinate of the second vector
 	 * @return <code>true</code> if the two given vectors are colinear.
-	 * @since 3.0
+	 * @since 13.0
 	 * @see MathUtil#isEpsilonZero(double)
 	 */
 	@Pure
@@ -437,7 +451,7 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	 */
 	@Pure
 	default boolean isUnitVector() {
-		return MathUtil.isEpsilonEqual(lengthSquared(), 1.);
+		return isUnitVector(getX(), getY());
 	}
 	
 	/** Change the length of the vector.

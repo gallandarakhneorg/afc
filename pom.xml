@@ -89,6 +89,13 @@
 			<!-- ################################################## Third-Party Libraries 
 				################################################## -->
 			<dependency>
+			  <groupId>javafx</groupId>
+			  <artifactId>jfxrt</artifactId>
+			  <version>${java.version}</version>
+			  <scope>system</scope>
+			  <systemPath>${java.home}/lib/ext/jfxrt.jar</systemPath>
+			</dependency>
+			<dependency>
 				<groupId>com.google.android</groupId>
 				<artifactId>android</artifactId>
 				<version>4.1.1.4</version>

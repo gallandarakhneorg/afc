@@ -43,18 +43,36 @@ public interface PathIterator2D<T extends PathElement2D> extends Iterator<T> {
 	 * @return the winding rule for the path.
 	 */
 	@Pure
-	public PathWindingRule getWindingRule();
+	PathWindingRule getWindingRule();
 
 	/** Replies the path is composed only by
-	 * <code>MOVE_TO</code>, <code>LINE_TO</code>
-	 * or <code>CLOSE</code> primitives (no curve).
+	 * one <code>MOVE_TO</code>, and a sequence of <code>LINE_TO</code>
+	 * primitives.
 	 * 
 	 * @return <code>true</code> if the path does not
 	 * contain curve primitives, <code>false</code>
 	 * otherwise.
 	 */
 	@Pure
-	public boolean isPolyline();
+	boolean isPolyline();
+
+	/** Replies the path contains a curve..
+	 * 
+	 * @return <code>true</code> if the path does not
+	 * contain curve primitives, <code>false</code>
+	 * otherwise.
+	 */
+	@Pure
+	boolean isCurved();
+
+	/** Replies the path has multiple parts, i.e. multiple <code>MOVE_TO</code> are inside.
+	 * primitives.
+	 * 
+	 * @return <code>true</code> if the path has multiple move-to primitive, <code>false</code>
+	 * otherwise.
+	 */
+	@Pure
+	boolean isMultiParts();
 
 	/** Replies the path is composed only by
 	 * one <code>MOVE_TO</code>, a sequence of <code>LINE_TO</code>
@@ -66,6 +84,6 @@ public interface PathIterator2D<T extends PathElement2D> extends Iterator<T> {
 	 * otherwise.
 	 */
 	@Pure
-	public boolean isPolygon();
+	boolean isPolygon();
 
 }

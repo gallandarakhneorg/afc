@@ -104,13 +104,15 @@ public final class MathUtil {
 	/** Replies if the given value is near zero.
 	 * 
 	 * @param value is the value to test.
-	 * @param epsilon the approximation epsilon.
+	 * @param epsilon the approximation epsilon. If {@link Double#NaN}, the function {@link Math#ulp(double)} is
+	 *     used for evaluating the epsilon.
 	 * @return <code>true</code> if the given <var>value</var>
 	 * is near zero, otherwise <code>false</code>.
 	 */
 	@Pure
 	public static boolean isEpsilonZero(double value, double epsilon) {
-		return Math.abs(value) <= epsilon;
+		double eps = Double.isNaN(epsilon) ? Math.ulp(value) : epsilon;
+		return Math.abs(value) <= eps;
 	}
 
 	/** Replies if the given values are near.
@@ -131,13 +133,16 @@ public final class MathUtil {
 	 * 
 	 * @param v1
 	 * @param v2
-	 * @param epsilon the approximation epsilon.
+	 * @param epsilon the approximation epsilon. If {@link Double#NaN}, the function {@link Math#ulp(double)} is
+	 *     used for evaluating the epsilon.
 	 * @return <code>true</code> if the given <var>v1</var>
 	 * is near <var>v2</var>, otherwise <code>false</code>.
 	 */
 	@Pure
 	public static boolean isEpsilonEqual(double v1, double v2, double epsilon) {
-		return Math.abs(v1 - v2) <= epsilon;
+		double value = Math.abs(v1 - v2);
+		double eps = Double.isNaN(epsilon) ? Math.ulp(value) : epsilon;
+		return value <= eps;
 	}
 
 	/** Compares its two arguments for order.
@@ -170,7 +175,8 @@ public final class MathUtil {
 	 * 
 	 * @param v1
 	 * @param v2
-	 * @param epsilon approximation epsilon
+	 * @param epsilon approximation epsilon. If {@link Double#NaN}, the function {@link Math#ulp(double)} is
+	 *     used for evaluating the epsilon.
 	 * @return a negative integer, zero, or a positive integer as the
      *         first argument is less than, equal to, or greater than the
      *         second.
@@ -178,7 +184,8 @@ public final class MathUtil {
 	@Pure
 	public static int compareEpsilon(double v1, double v2, double epsilon) {
 		double v = v1 - v2;
-		if (Math.abs(v) <= epsilon) {
+		double eps = Double.isNaN(epsilon) ? Math.ulp(v) : epsilon;
+		if (Math.abs(v) <= eps) {
 			return 0;
 		}
 		if (v <= 0.) {
