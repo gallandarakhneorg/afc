@@ -43,6 +43,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 13.0
  */
 public interface Rectangle2afp<
 		ST extends Shape2afp<?, ?, IE, P, B>,

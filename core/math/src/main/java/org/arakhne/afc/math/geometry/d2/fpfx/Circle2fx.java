@@ -28,7 +28,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.DoublePropertyBase;
 
-/** Fonctional interface that represented a 2D circle on a plane.
+/** Circle with 2 double precision floating-point FX properties.
  *
  * @author $Author: sgalland$
  * @author $Author: hjaffali$

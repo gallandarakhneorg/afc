@@ -26,7 +26,7 @@ import org.arakhne.afc.math.geometry.d2.afp.Rectangle2afp;
 import org.arakhne.afc.math.geometry.d2.afp.RectangularShape2afp;
 import org.eclipse.xtext.xbase.lib.Pure;
 
-/** Fonctional interface that represented a 2D circle on a plane.
+/** A rectangle with 2 double precision floating-point numbers.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$

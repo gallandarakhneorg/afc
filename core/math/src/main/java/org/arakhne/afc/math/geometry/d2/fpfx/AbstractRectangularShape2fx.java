@@ -26,7 +26,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.DoublePropertyBase;
 
-/** 2D shape with double precision floating-point points.
+/** Abstract rectangular shape with 2 double precision floating-point FX properties.
  * 
  * @param <IT> is the type of the implementation of this shape.
  * @author $Author: sgalland$

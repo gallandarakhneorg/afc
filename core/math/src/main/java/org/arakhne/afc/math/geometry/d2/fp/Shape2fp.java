@@ -22,7 +22,7 @@ package org.arakhne.afc.math.geometry.d2.fp;
 
 import org.arakhne.afc.math.geometry.d2.afp.Shape2afp;
 
-/** 2D shape with 2d floating coordinates.
+/** 2D shape with 2 double precision floating-point numbers.
  * 
  * @param <IT> is the type of the implementation of this shape.
  * @author $Author: sgalland$

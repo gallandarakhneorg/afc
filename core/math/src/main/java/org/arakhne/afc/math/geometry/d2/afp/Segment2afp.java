@@ -46,7 +46,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  */
 public interface Segment2afp<
 		ST extends Shape2afp<?, ?, IE, P, B>,
-		IT extends ST,
+		IT extends Segment2afp<?, ?, IE, P, B>,
 		IE extends PathElement2afp,
 		P extends Point2D,
 		B extends Rectangle2afp<?, ?, IE, P, B>>

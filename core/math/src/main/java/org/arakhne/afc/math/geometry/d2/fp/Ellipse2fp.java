@@ -24,7 +24,7 @@ package org.arakhne.afc.math.geometry.d2.fp;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.afp.Ellipse2afp;
 
-/** Fonctional interface that represented a 2D circle on a plane.
+/** An ellipse with 2 double precision floating-point numbers.
  *
  * @author $Author: sgalland$
  * @author $Author: hjaffali$

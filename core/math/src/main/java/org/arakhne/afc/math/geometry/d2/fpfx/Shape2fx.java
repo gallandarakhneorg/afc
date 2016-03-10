@@ -22,8 +22,8 @@ package org.arakhne.afc.math.geometry.d2.fpfx;
 
 import org.arakhne.afc.math.geometry.d2.afp.Shape2afp;
 
-/** 2D shape with 2d floating FX properties.
- * 
+/** 2D shape with 2 double precision floating-point FX properties.
+ *
  * @param <IT> is the type of the implementation of this shape.
  * @author $Author: sgalland$
  * @author $Author: olamotte$

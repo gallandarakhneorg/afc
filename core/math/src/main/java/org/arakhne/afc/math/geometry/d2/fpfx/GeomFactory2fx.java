@@ -26,7 +26,6 @@ import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.afp.GeomFactory2afp;
 import org.arakhne.afc.math.geometry.d2.afp.Path2afp;
 
-import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 
 /** Factory of geometrical elements.
@@ -109,17 +108,6 @@ public class GeomFactory2fx implements GeomFactory2afp<PathElement2fx, Point2fx,
 	@Override
 	public <T extends Vector2D> T newVector() {
 		return (T) new Vector2fx();
-	}
-
-	@Override
-	public Point2fx newPoint(DoubleProperty x, DoubleProperty y) {
-		return new Point2fx(x, y);
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public <T extends Vector2D> T newVector(DoubleProperty x, DoubleProperty y) {
-		return (T) new Vector2fx(x, y);
 	}
 
 	@Override

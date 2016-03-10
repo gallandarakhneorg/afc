@@ -39,12 +39,14 @@ public interface PathElement2afp extends PathElement2D {
 	 *
 	 * @return the x coordinate, or {@link Double#NaN} if the type is {@link PathElementType#MOVE_TO}.
 	 */
+	@Pure
 	double getFromX();
 
 	/** Replies the y coordinate of the starting point.
 	 *
 	 * @return the y coordinate, or {@link Double#NaN} if the type is {@link PathElementType#MOVE_TO}.
 	 */
+	@Pure
 	double getFromY();
 
 	/** Replies the x coordinate of the first control point.
@@ -52,6 +54,7 @@ public interface PathElement2afp extends PathElement2D {
 	 * @return the x coordinate, or {@link Double#NaN} if the type is {@link PathElementType#MOVE_TO},
 	 * {@link PathElementType#LINE_TO}, or {@link PathElementType#CLOSE}.
 	 */
+	@Pure
 	double getCtrlX1();
 
 	/** Replies the y coordinate of the first control point.
@@ -59,6 +62,7 @@ public interface PathElement2afp extends PathElement2D {
 	 * @return the y coordinate, or {@link Double#NaN} if the type is {@link PathElementType#MOVE_TO},
 	 * {@link PathElementType#LINE_TO}, or {@link PathElementType#CLOSE}.
 	 */
+	@Pure
 	double getCtrlY1();
 
 	/** Replies the x coordinate of the second control point.
@@ -66,6 +70,7 @@ public interface PathElement2afp extends PathElement2D {
 	 * @return the x coordinate, or {@link Double#NaN} if the type is {@link PathElementType#MOVE_TO},
 	 * {@link PathElementType#LINE_TO}, {@link PathElementType#QUAD_TO}, or {@link PathElementType#CLOSE}.
 	 */
+	@Pure
 	double getCtrlX2();
 
 	/** Replies the y coordinate of the second  control point.
@@ -73,18 +78,21 @@ public interface PathElement2afp extends PathElement2D {
 	 * @return the y coordinate, or {@link Double#NaN} if the type is {@link PathElementType#MOVE_TO},
 	 * {@link PathElementType#LINE_TO}, {@link PathElementType#QUAD_TO}, or {@link PathElementType#CLOSE}.
 	 */
+	@Pure
 	double getCtrlY2();
 
 	/** Replies the x coordinate of the target point.
 	 *
 	 * @return the x coordinate.
 	 */
+	@Pure
 	double getToX();
 
 	/** Replies the y coordinate of the target point.
 	 *
 	 * @return the y coordinate.
 	 */
+	@Pure
 	double getToY();
 
 	@Pure
@@ -96,12 +104,14 @@ public interface PathElement2afp extends PathElement2D {
 	 * 
 	 * @param array
 	 */
+	@Pure
 	void toArray(int[] array);
 
 	/** Copy the coords into the given array, except the source point.
 	 * 
 	 * @param array
 	 */
+	@Pure
 	void toArray(double[] array);
 
 }

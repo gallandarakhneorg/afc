@@ -34,7 +34,7 @@ import org.arakhne.afc.math.geometry.d2.afp.Path2afp;
 import org.arakhne.afc.math.geometry.d2.afp.PathIterator2afp;
 import org.eclipse.xtext.xbase.lib.Pure;
 
-/** Fonctional interface that represented a 2D circle on a plane.
+/** Path with 2 double precision floating-point numbers.
  *
  * @author $Author: sgalland$
  * @author $Author: hjaffali$

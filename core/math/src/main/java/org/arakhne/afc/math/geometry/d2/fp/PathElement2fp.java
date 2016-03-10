@@ -25,7 +25,7 @@ import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.d2.afp.PathElement2afp;
 import org.eclipse.xtext.xbase.lib.Pure;
 
-/** An element of the path.
+/** An element of the path with 2 double precision floating-point numbers.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$

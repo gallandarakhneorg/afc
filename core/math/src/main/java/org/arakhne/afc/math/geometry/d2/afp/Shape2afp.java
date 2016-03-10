@@ -27,7 +27,7 @@ import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.eclipse.xtext.xbase.lib.Pure;
 
-/** 2D shape with 2d floating coordinates.
+/** 2D shape with 2D floating coordinates.
  * 
  * @param <ST> is the type of the general implementation.
  * @param <IT> is the type of the implementation of this shape.
@@ -166,6 +166,7 @@ public interface Shape2afp<
 	 */
 	GeomFactory2afp<IE, P, B> getGeomFactory();
 	
+	@Pure
 	@SuppressWarnings("unchecked")
 	@Override
 	default ST createTransformedShape(Transform2D transform) {

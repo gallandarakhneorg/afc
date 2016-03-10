@@ -23,7 +23,7 @@ package org.arakhne.afc.math.geometry.d2.fp;
 import org.arakhne.afc.math.geometry.d2.afp.GeomFactory2afp;
 import org.eclipse.xtext.xbase.lib.Pure;
 
-/** 2D shape with double precision floating-point points.
+/** Abstract shape with 2 double precision floating-point numbers.
  * 
  * @param <T> the type of the shape.
  * @author $Author: sgalland$

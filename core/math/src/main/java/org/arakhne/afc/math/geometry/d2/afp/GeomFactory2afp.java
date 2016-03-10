@@ -24,8 +24,6 @@ import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 
-import javafx.beans.property.DoubleProperty;
-
 /** Factory of geometrical elements.
  * 
  * @param <E> the types of the path elements.
@@ -98,23 +96,6 @@ public interface GeomFactory2afp<E extends PathElement2afp, P extends Point2D, B
 	 * @return the vector.
 	 */
 	<T extends Vector2D> T newVector(double x, double y);
-
-	/** Create a point.
-	 *
-	 * @param x
-	 * @param y 
-	 * @return the point.
-	 */
-	P newPoint(DoubleProperty x, DoubleProperty y);
-
-	/** Create a vector.
-	 *
-	 * @param <T> the type of the vector.
-	 * @param x
-	 * @param y 
-	 * @return the vector.
-	 */
-	<T extends Vector2D> T newVector(DoubleProperty x, DoubleProperty y);
 
 	/** Create an empty path with the given winding rule.
 	 *

@@ -26,7 +26,7 @@ import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.afp.Segment2afp;
 import org.eclipse.xtext.xbase.lib.Pure;
 
-/** Fonctional interface that represented a 2D circle on a plane.
+/** A 2D segment/line with 2 double precision floating-point numbers.
  *
  * @author $Author: sgalland$
  * @author $Author: hjaffali$
