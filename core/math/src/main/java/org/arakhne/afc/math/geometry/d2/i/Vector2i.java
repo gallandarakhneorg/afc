@@ -19,14 +19,14 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  * This program is free software; you can redistribute it and/or modify
  */
-package org.arakhne.afc.math.geometry.d2.intnum;
+package org.arakhne.afc.math.geometry.d2.i;
 
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.eclipse.xtext.xbase.lib.Pure;
 
-/** 2D Point with 2 integers.
+/** 2D Vector with 2 integer numbers.
  * 
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -34,34 +34,45 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public class Point2i extends Tuple2i<Point2D, Point2i> implements Point2D {
+public class Vector2i extends Tuple2i<Vector2D, Vector2i> implements Vector2D {
 
-	private static final long serialVersionUID = -4977158382149954525L;
+	private static final long serialVersionUID = -7228108517874845303L;
+
+	/** Replies the orientation vector, which is corresponding
+	 * to the given angle on a trigonometric circle.
+	 * 
+	 * @param angle is the angle in radians to translate.
+	 * @return the orientation vector which is corresponding to the given angle.
+	 */
+	@Pure
+	public static Vector2i toOrientationVector(double angle) {
+		return new Vector2i(Math.cos(angle), Math.sin(angle));
+	}
 
 	/**
 	 */
-	public Point2i() {
+	public Vector2i() {
 		//
 	}
 
 	/**
 	 * @param tuple is the tuple to copy.
 	 */
-	public Point2i(Tuple2D<?> tuple) {
+	public Vector2i(Tuple2D<?> tuple) {
 		super(tuple);
 	}
 
 	/**
 	 * @param tuple is the tuple to copy.
 	 */
-	public Point2i(int[] tuple) {
+	public Vector2i(int[] tuple) {
 		super(tuple);
 	}
 
 	/**
 	 * @param tuple is the tuple to copy.
 	 */
-	public Point2i(double[] tuple) {
+	public Vector2i(double[] tuple) {
 		super(tuple);
 	}
 
@@ -69,7 +80,7 @@ public class Point2i extends Tuple2i<Point2D, Point2i> implements Point2D {
 	 * @param x
 	 * @param y
 	 */
-	public Point2i(int x, int y) {
+	public Vector2i(int x, int y) {
 		super(x,y);
 	}
 
@@ -77,7 +88,7 @@ public class Point2i extends Tuple2i<Point2D, Point2i> implements Point2D {
 	 * @param x
 	 * @param y
 	 */
-	public Point2i(float x, float y) {
+	public Vector2i(float x, float y) {
 		super(x,y);
 	}
 
@@ -85,7 +96,7 @@ public class Point2i extends Tuple2i<Point2D, Point2i> implements Point2D {
 	 * @param x
 	 * @param y
 	 */
-	public Point2i(double x, double y) {
+	public Vector2i(double x, double y) {
 		super(x,y);
 	}
 
@@ -93,60 +104,38 @@ public class Point2i extends Tuple2i<Point2D, Point2i> implements Point2D {
 	 * @param x
 	 * @param y
 	 */
-	public Point2i(long x, long y) {
+	public Vector2i(long x, long y) {
 		super(x,y);
 	}
 
 	@Pure
 	@Override
-	public double getDistanceSquared(Point2D p1) {
-	      double dx = this.x - p1.getX();  
-	      double dy = this.y - p1.getY();
-	      return (dx*dx+dy*dy);
+	public double dot(Vector2D v1) {
+	      return (this.x * v1.getX() + this.y * v1.getY());
 	}
 
 	@Pure
 	@Override
-	public double getDistance(Point2D p1) {
-	      double dx = this.x - p1.getX();  
-	      double dy = this.y - p1.getY();
-	      return Math.sqrt(dx*dx+dy*dy);
+	public double perp(Vector2D x2) {
+		return this.x * x2.getY() - x2.getX() * this.y;
 	}
 
 	@Pure
 	@Override
-	public double getDistanceL1(Point2D p1) {
-	      return (Math.abs(this.x-p1.getX()) + Math.abs(this.y-p1.getY()));
+	public double length() {
+        return Math.sqrt(this.x * this.x + this.y * this.y);
 	}
 
 	@Pure
 	@Override
-	public double getDistanceLinf(Point2D p1) {
-	      return (Math.max( Math.abs(this.x-p1.getX()), Math.abs(this.y-p1.getY())));
-	}
-
-	@Pure
-	@Override
-	public int getIdistanceL1(Point2D p1) {
-	      return (int) getDistanceL1(p1);
-	}
-
-	@Pure
-	@Override
-	public int getIdistanceLinf(Point2D p1) {
-	      return (int) getDistanceLinf(p1);
+	public double lengthSquared() {
+        return this.x * this.x + this.y * this.y;
 	}
 
 	@Override
-	public void add(Point2D t1, Vector2D t2) {
-		this.x = (int) (t1.getX() + t2.getX());
-		this.y = (int) (t1.getY() + t2.getY());
-	}
-
-	@Override
-	public void add(Vector2D t1, Point2D t2) {
-		this.x = (int) (t1.getX() + t2.getX());
-		this.y = (int) (t1.getY() + t2.getY());
+	public void add(Vector2D t1, Vector2D t2) {
+		this.x = (int)(t1.getX() + t2.getX());
+		this.y = (int)(t1.getY() + t2.getY());
 	}
 
 	@Override
@@ -156,25 +145,13 @@ public class Point2i extends Tuple2i<Point2D, Point2i> implements Point2D {
 	}
 
 	@Override
-	public void scaleAdd(int s, Vector2D t1, Point2D t2) {
+	public void scaleAdd(int s, Vector2D t1, Vector2D t2) {
 		this.x = (int) (s * t1.getX() + t2.getX());
 		this.y = (int) (s * t1.getY() + t2.getY());
 	}
 
 	@Override
-	public void scaleAdd(double s, Vector2D t1, Point2D t2) {
-		this.x = (int) (s * t1.getX() + t2.getX());
-		this.y = (int) (s * t1.getY() + t2.getY());
-	}
-
-	@Override
-	public void scaleAdd(int s, Point2D t1, Vector2D t2) {
-		this.x = (int) (s * t1.getX() + t2.getX());
-		this.y = (int) (s * t1.getY() + t2.getY());
-	}
-
-	@Override
-	public void scaleAdd(double s, Point2D t1, Vector2D t2) {
+	public void scaleAdd(double s, Vector2D t1, Vector2D t2) {
 		this.x = (int) (s * t1.getX() + t2.getX());
 		this.y = (int) (s * t1.getY() + t2.getY());
 	}
@@ -192,9 +169,15 @@ public class Point2i extends Tuple2i<Point2D, Point2i> implements Point2D {
 	}
 
 	@Override
-	public void sub(Point2D t1, Vector2D t2) {
-		this.x = (int) (t1.getX() - t1.getX());
-		this.y = (int) (t1.getY() - t1.getY());
+	public void sub(Vector2D t1, Vector2D t2) {
+		this.x = (int) (t1.getX() - t2.getX());
+		this.y = (int) (t1.getY() - t2.getY());
+	}
+
+	@Override
+	public void sub(Point2D t1, Point2D t2) {
+		this.x = (int) (t1.getX() - t2.getX());
+		this.y = (int) (t1.getY() - t2.getY());
 	}
 
 	@Override
@@ -203,38 +186,52 @@ public class Point2i extends Tuple2i<Point2D, Point2i> implements Point2D {
 		this.y = (int) (this.y - t1.getY());
 	}
 
+	@Override
+	public void setLength(double newLength) {
+		double nl = Math.max(0, newLength);
+		double l = length();
+		if (l != 0) {
+			double f = nl / l;
+			this.x *= f;
+			this.y *= f;
+		} else {
+			this.x = (int) newLength;
+			this.y = 0;
+		}
+	}
+
 	@Pure
 	@Override
-	public Point2D toUnmodifiable() {
-		return new UnmodifiablePoint2D() {
+	public Vector2D toUnmodifiable() {
+		return new UnmodifiableVector2D() {
 
-			private static final long serialVersionUID = -4844158582025788289L;
+			private static final long serialVersionUID = 7684988962796497763L;
 
 			@Override
-			public Point2D clone() {
-				return Point2i.this.toUnmodifiable();
+			public Vector2D clone() {
+				return Vector2i.this.toUnmodifiable();
 			}
 
 			@Override
 			public double getX() {
-				return Point2i.this.getX();
+				return Vector2i.this.getX();
 			}
 
 			@Override
 			public int ix() {
-				return Point2i.this.ix();
+				return Vector2i.this.ix();
 			}
 
 			@Override
 			public double getY() {
-				return Point2i.this.getY();
+				return Vector2i.this.getY();
 			}
 
 			@Override
 			public int iy() {
-				return Point2i.this.ix();
+				return Vector2i.this.iy();
 			}
-			
+
 		};
 	}
 

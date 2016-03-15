@@ -19,12 +19,12 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  * This program is free software; you can redistribute it and/or modify
  */
-package org.arakhne.afc.math.geometry.d2.intnum;
+package org.arakhne.afc.math.geometry.d2.i;
 
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.eclipse.xtext.xbase.lib.Pure;
 
-/** 2D tuple with 2 integers.
+/** 2D tuple with 2 integer numbers.
  * 
  * @param <T> is the abstract type of the tuple.
  * @param <IT> is the implementation type of the tuple.

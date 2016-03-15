@@ -1,8 +1,7 @@
 /* 
  * $Id$
  * 
- * Copyright (C) 2011 Janus Core Developers
- * Copyright (C) 2012 Stephane GALLAND.
+ * Copyright (C) 2010-2013 Stephane GALLAND.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,40 +18,20 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  * This program is free software; you can redistribute it and/or modify
  */
-package org.arakhne.afc.math.geometry.d2.discrete;
+package org.arakhne.afc.math.geometry.d2.i;
 
-import java.util.Comparator;
+import org.arakhne.afc.math.geometry.d2.ai.Shape2ai;
 
-import org.eclipse.xtext.xbase.lib.Pure;
-
-/**
- * Comparator of Tuple2i.
+/** 2D shape with 2 double precision floating-point numbers.
  * 
- * @author $Author: galland$
+ * @param <IT> is the type of the implementation of this shape.
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 13.0
  */
-public class Tuple2iComparator implements Comparator<Tuple2i<?>> {
-	
-	/**
-	 */
-	public Tuple2iComparator() {
-		//
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Pure
-	@Override
-	public int compare(Tuple2i<?> o1, Tuple2i<?> o2) {
-		if (o1==o2) return 0;
-		if (o1==null) return Integer.MIN_VALUE;
-		if (o2==null) return Integer.MAX_VALUE;
-		int cmp = o1.ix() - o2.ix();
-		if (cmp!=0) return cmp;
-		return o1.iy() - o2.iy();
-	}
-		
+public interface Shape2i<IT extends Shape2i<?>>
+		extends Shape2ai<Shape2i<?>, IT, PathElement2i, Point2i, Rectangle2i> {
+	// Provided for making easier the type tests.
 }

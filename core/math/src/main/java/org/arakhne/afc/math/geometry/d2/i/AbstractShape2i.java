@@ -18,20 +18,45 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  * This program is free software; you can redistribute it and/or modify
  */
-package org.arakhne.afc.math.geometry.d2.fp;
+package org.arakhne.afc.math.geometry.d2.i;
 
-import org.arakhne.afc.math.geometry.d2.afp.Shape2afp;
+import org.arakhne.afc.math.geometry.d2.ai.GeomFactory2ai;
+import org.eclipse.xtext.xbase.lib.Pure;
 
-/** 2D shape with 2 integer numbers.
+/** Abstract shape with 2 integer numbers.
  * 
- * @param <IT> is the type of the implementation of this shape.
+ * @param <T> the type of the shape.
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public interface Shape2fp<IT extends Shape2fp<?>>
-		extends Shape2afp<Shape2fp<?>, IT, PathElement2fp, Point2fp, Rectangle2fp> {
-	// Provided for making easier the type tests.
+public abstract class AbstractShape2i<T extends AbstractShape2i<?>> implements Shape2i<T> {
+
+	private static final long serialVersionUID = -1068879174912644974L;
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public T clone() {
+		try {
+			return (T) super.clone();
+		} catch (CloneNotSupportedException exception) {
+			throw new InternalError(exception);
+		}
+	}
+	
+	@Pure
+    @Override
+    public abstract boolean equals(Object obj);
+    
+	@Pure
+    @Override
+    public abstract int hashCode();
+
+	@Override
+	public final GeomFactory2ai<PathElement2i, Point2i, Rectangle2i> getGeomFactory() {
+		return GeomFactory2i.SINGLETON;
+	}
+
 }

@@ -37,7 +37,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public class PathShadow2afp<B extends Rectangle2afp<?, ?, ?, ?, B>> {
+class PathShadow2afp<B extends Rectangle2afp<?, ?, ?, ?, B>> {
 
 	private final Path2afp<?, ?, ?, ?, B> path;
 	private final B bounds;

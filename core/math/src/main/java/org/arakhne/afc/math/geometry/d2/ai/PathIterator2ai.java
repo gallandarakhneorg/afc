@@ -19,39 +19,26 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  * This program is free software; you can redistribute it and/or modify
  */
-package org.arakhne.afc.math.geometry.d2.discrete;
+package org.arakhne.afc.math.geometry.d2.ai;
 
-import java.util.Iterator;
-
-import org.arakhne.afc.math.geometry.PathWindingRule;
-import org.eclipse.xtext.xbase.lib.Pure;
+import org.arakhne.afc.math.geometry.d2.PathIterator2D;
 
 
-/** This interface describes an interator on path elements.
+/** This interface describes an iterator on path elements.
  *
- * @author $Author: galland$
+ * @param <T> the types of the path elements.
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 13.0
  */
-public interface PathIterator2i extends Iterator<PathElement2i> {
+public interface PathIterator2ai<T extends PathElement2ai> extends PathIterator2D<T> {
 
-	/** Replies the winding rule for the path.
-	 * 
-	 * @return the winding rule for the path.
+	/** Replies the factory of geometrical elements.
+	 *
+	 * @return the factory.
 	 */
-	@Pure
-	public PathWindingRule getWindingRule();
-
-	/** Replies the iterator may reply only elements of type
-	 * <code>MOVE_TO</code>, <code>LINE_TO</code>, or
-	 * <code>CLOSE</code> (no curve).
-	 * 
-	 * @return <code>true</code> if the iterator does not
-	 * contain curve primitives, <code>false</code>
-	 * otherwise.
-	 */
-	@Pure
-	public boolean isPolyline();
+	GeomFactory2ai<T, ?, ?> getGeomFactory();
 
 }

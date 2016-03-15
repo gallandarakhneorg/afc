@@ -19,22 +19,23 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  * This program is free software; you can redistribute it and/or modify
  */
-package org.arakhne.afc.math.geometry.d2.discrete;
+package org.arakhne.afc.math.geometry.d2.i;
 
 import org.arakhne.afc.math.geometry.PathElementType;
-import org.arakhne.afc.math.geometry.d2.PathElement2D;
+import org.arakhne.afc.math.geometry.d2.ai.PathElement2ai;
 import org.eclipse.xtext.xbase.lib.Pure;
 
-/** An element of the path.
+/** An element of the path with 2 integer numbers.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 13.0
  */
-public abstract class PathElement2i implements PathElement2D {
+public abstract class PathElement2i implements PathElement2ai {
 	
-	private static final long serialVersionUID = 7757419973445894032L;
+	private static final long serialVersionUID = -7762354100984227855L;
 
 	/** Create an instance of path element.
 	 * 
@@ -62,77 +63,84 @@ public abstract class PathElement2i implements PathElement2D {
 		throw new IllegalArgumentException();
 	}
 	
-	/** Type of the path element.
+	/** Type of the element.
 	 */
-	public final PathElementType type;
-	
-	/** Source point.
-	 */
-	public final int fromX;
-	
-	/** Source point.
-	 */
-	public final int fromY;
-
-	/** Target point.
-	 */
-	public final int toX;
+	protected final PathElementType type;
 	
 	/** Target point.
 	 */
-	public final int toY;
-
-	/** First control point.
-	 */
-	public final int ctrlX1;
+	protected final int toX;
 	
-	/** First control point.
+	/** Target point.
 	 */
-	public final int ctrlY1;
-
-	/** Second control point.
-	 */
-	public final int ctrlX2;
-	
-	/** Second control point.
-	 */
-	public final int ctrlY2;
+	protected final int toY;
 
 	/**
-	 * @param type1 is the type of the element.
-	 * @param fromx is the source point.
-	 * @param fromy is the source point.
-	 * @param ctrlx1 is the first control point.
-	 * @param ctrly1 is the first control point.
-	 * @param ctrlx2 is the first control point.
-	 * @param ctrly2 is the first control point.
-	 * @param tox is the target point.
-	 * @param toy is the target point.
+	 * @param type is the type of the element.
+	 * @param tox the x coordinate of the target point.
+	 * @param toy the x coordinate of the target point.
 	 */
-	public PathElement2i(PathElementType type1, int fromx, int fromy, int ctrlx1, int ctrly1, int ctrlx2, int ctrly2, int tox, int toy) {
-		assert(type1!=null);
-		this.type = type1;
-		this.fromX = fromx;
-		this.fromY = fromy;
-		this.ctrlX1 = ctrlx1;
-		this.ctrlY1 = ctrly1;
-		this.ctrlX2 = ctrlx2;
-		this.ctrlY2 = ctrly2;
+	PathElement2i(PathElementType type, int tox, int toy) {
+		assert(type!=null);
+		this.type = type;
 		this.toX = tox;
 		this.toY = toy;
 	}
+	
+	@Pure
+	@Override
+	public boolean equals(Object obj) {
+		try {
+			PathElement2ai elt = (PathElement2ai) obj;
+			return getType() == elt.getType()
+					&& getToX() == elt.getToX()
+					&& getToY() == elt.getToY()
+					&& getCtrlX1() == elt.getCtrlX1()
+					&& getCtrlY1() == elt.getCtrlY1()
+					&& getCtrlX2() == elt.getCtrlX2()
+					&& getCtrlY2() == elt.getCtrlY2()
+					&& getFromX() == elt.getFromX()
+					&& getFromY() == elt.getFromY();
+		} catch (Throwable exception) {
+			//
+		}
+		return false;
+	}
+	
+	@Pure
+	@Override
+	public int hashCode() {
+		int bits = 1;
+		bits = 31 * bits + this.type.ordinal();
+		bits = 31 * bits + getToX();
+		bits = 31 * bits + getToY();
+		bits = 31 * bits + getCtrlX1();
+		bits = 31 * bits + getCtrlY1();
+		bits = 31 * bits + getCtrlX2();
+		bits = 31 * bits + getCtrlY2();
+		bits = 31 * bits + getFromX();
+		bits = 31 * bits + getFromY();
+		return (bits ^ (bits >> 32));
+	}
 
-	/** Copy the coords into the given array, except the source point.
-	 * 
-	 * @param array
-	 */
-	public abstract void toArray(int[] array);
+	@Override
+	@Pure
+	public final int getToX() {
+		return this.toX;
+	}
 
-	/** Copy the coords into the given array, except the source point.
-	 * 
-	 * @param array
-	 */
-	public abstract void toArray(double[] array);
+	@Override
+	@Pure
+	public final int getToY() {
+		return this.toY;
+	}
+
+	@Pure
+	@Override
+	public final PathElementType getType() {
+		return this.type;
+	}
+
 
 	/** Copy the coords into an array, except the source point.
 	 * 
@@ -143,35 +151,28 @@ public abstract class PathElement2i implements PathElement2D {
 
 	/** An element of the path that represents a <code>MOVE_TO</code>.
 	 *
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
+	 * @since 13.0
 	 */
-	public static class MovePathElement2i extends PathElement2i {
+	static class MovePathElement2i extends PathElement2i {
 		
-		private static final long serialVersionUID = -8591881826671557331L;
+		private static final long serialVersionUID = -574266368740822686L;
 
 		/**
 		 * @param x
 		 * @param y
 		 */
 		public MovePathElement2i(int x, int y) {
-			super(PathElementType.MOVE_TO,
-					0, 0, 0, 0, 0, 0,
-					x, y);
-		}
-
-		@Pure
-		@Override
-		public final PathElementType getType() {
-			return PathElementType.MOVE_TO;
+			super(PathElementType.MOVE_TO, x, y);
 		}
 
 		@Pure
 		@Override
 		public boolean isEmpty() {
-			return (this.fromX==this.toX) && (this.fromY==this.toY);
+			return true;
 		}
 
 		@Pure
@@ -206,19 +207,54 @@ public abstract class PathElement2i implements PathElement2D {
 					this.toY+")"; //$NON-NLS-1$
 		}
 
+		@Override
+		public int getFromX() {
+			return 0;
+		}
+
+		@Override
+		public int getFromY() {
+			return 0;
+		}
+
+		@Override
+		public int getCtrlX1() {
+			return 0;
+		}
+
+		@Override
+		public int getCtrlY1() {
+			return 0;
+		}
+
+		@Override
+		public int getCtrlX2() {
+			return 0;
+		}
+
+		@Override
+		public int getCtrlY2() {
+			return 0;
+		}
+
 	}
 	
 	/** An element of the path that represents a <code>LINE_TO</code>.
 	 *
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
+	 * @since 13.0
 	 */
-	public static class LinePathElement2i extends PathElement2i {
+	static class LinePathElement2i extends PathElement2i {
 		
-		private static final long serialVersionUID = 497492389885992535L;
+		private static final long serialVersionUID = 7733931118894880566L;
 
+		private final int fromX;
+		
+		private final int fromY;
+		
 		/**
 		 * @param fromx
 		 * @param fromy
@@ -226,16 +262,9 @@ public abstract class PathElement2i implements PathElement2D {
 		 * @param toy
 		 */
 		public LinePathElement2i(int fromx, int fromy, int tox, int toy) {
-			super(PathElementType.LINE_TO,
-					fromx, fromy,
-					0, 0, 0, 0,
-					tox, toy);
-		}
-
-		@Pure
-		@Override
-		public final PathElementType getType() {
-			return PathElementType.LINE_TO;
+			super(PathElementType.LINE_TO, tox, toy);
+			this.fromX = fromx;
+			this.fromY = fromy;
 		}
 
 		@Pure
@@ -276,18 +305,57 @@ public abstract class PathElement2i implements PathElement2D {
 					this.toY+")"; //$NON-NLS-1$
 		}
 
+		@Override
+		public int getFromX() {
+			return this.fromX;
+		}
+
+		@Override
+		public int getFromY() {
+			return this.fromY;
+		}
+
+		@Override
+		public int getCtrlX1() {
+			return 0;
+		}
+
+		@Override
+		public int getCtrlY1() {
+			return 0;
+		}
+
+		@Override
+		public int getCtrlX2() {
+			return 0;
+		}
+
+		@Override
+		public int getCtrlY2() {
+			return 0;
+		}
+
 	}
 	
 	/** An element of the path that represents a <code>QUAD_TO</code>.
 	 *
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
+	 * @since 13.0
 	 */
-	public static class QuadPathElement2i extends PathElement2i {
+	static class QuadPathElement2i extends PathElement2i {
 		
-		private static final long serialVersionUID = 6341899683730854257L;
+		private static final long serialVersionUID = 3335394189817197203L;
+
+		private final int fromX;
+		
+		private final int fromY;
+
+		private final int ctrlX;
+		
+		private final int ctrlY;
 
 		/**
 		 * @param fromx
@@ -298,24 +366,18 @@ public abstract class PathElement2i implements PathElement2D {
 		 * @param toy
 		 */
 		public QuadPathElement2i(int fromx, int fromy, int ctrlx, int ctrly, int tox, int toy) {
-			super(PathElementType.QUAD_TO,
-					fromx, fromy,
-					ctrlx, ctrly,
-					0, 0,
-					tox, toy);
-		}
-
-		@Pure
-		@Override
-		public final PathElementType getType() {
-			return PathElementType.QUAD_TO;
+			super(PathElementType.QUAD_TO, tox, toy);
+			this.fromX = fromx;
+			this.fromY = fromy;
+			this.ctrlX = ctrlx;
+			this.ctrlY = ctrly;
 		}
 
 		@Pure
 		@Override
 		public boolean isEmpty() {
 			return (this.fromX==this.toX) && (this.fromY==this.toY) &&
-					(this.ctrlX1==this.toX) && (this.ctrlY1==this.toY);
+					(this.ctrlX==this.toX) && (this.ctrlY==this.toY);
 		}
 
 		@Pure
@@ -326,16 +388,16 @@ public abstract class PathElement2i implements PathElement2D {
 
 		@Override
 		public void toArray(int[] array) {
-			array[0] = this.ctrlX1;
-			array[1] = this.ctrlY1;
+			array[0] = this.ctrlX;
+			array[1] = this.ctrlY;
 			array[2] = this.toX;
 			array[3] = this.toY;
 		}
 		
 		@Override
 		public void toArray(double[] array) {
-			array[0] = this.ctrlX1;
-			array[1] = this.ctrlY1;
+			array[0] = this.ctrlX;
+			array[1] = this.ctrlY;
 			array[2] = this.toX;
 			array[3] = this.toY;
 		}
@@ -343,31 +405,74 @@ public abstract class PathElement2i implements PathElement2D {
 		@Pure
 		@Override
 		public int[] toArray() {
-			return new int[] {this.ctrlX1, this.ctrlY1, this.toX, this.toY};
+			return new int[] {this.ctrlX, this.ctrlY, this.toX, this.toY};
 		}
 
 		@Pure
 		@Override
 		public String toString() {
 			return "QUAD("+ //$NON-NLS-1$
-					this.ctrlX1+"x"+ //$NON-NLS-1$
-					this.ctrlY1+"|"+ //$NON-NLS-1$
+					this.ctrlX+"x"+ //$NON-NLS-1$
+					this.ctrlY+"|"+ //$NON-NLS-1$
 					this.toX+"x"+ //$NON-NLS-1$
 					this.toY+")"; //$NON-NLS-1$
+		}
+
+		@Override
+		public int getFromX() {
+			return this.fromX;
+		}
+
+		@Override
+		public int getFromY() {
+			return this.fromY;
+		}
+
+		@Override
+		public int getCtrlX1() {
+			return this.ctrlX;
+		}
+
+		@Override
+		public int getCtrlY1() {
+			return this.ctrlY;
+		}
+
+		@Override
+		public int getCtrlX2() {
+			return 0;
+		}
+
+		@Override
+		public int getCtrlY2() {
+			return 0;
 		}
 
 	}
 
 	/** An element of the path that represents a <code>CURVE_TO</code>.
 	 *
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
+	 * @since 13.0
 	 */
-	public static class CurvePathElement2i extends PathElement2i {
+	static class CurvePathElement2i extends PathElement2i {
 		
-		private static final long serialVersionUID = 1043302430176113524L;
+		private static final long serialVersionUID = 7009674542781709373L;
+
+		private final int fromX;
+		
+		private final int fromY;
+
+		private final int ctrlX1;
+		
+		private final int ctrlY1;
+
+		private final int ctrlX2;
+		
+		private final int ctrlY2;
 
 		/**
 		 * @param fromx
@@ -380,17 +485,13 @@ public abstract class PathElement2i implements PathElement2D {
 		 * @param toy
 		 */
 		public CurvePathElement2i(int fromx, int fromy, int ctrlx1, int ctrly1, int ctrlx2, int ctrly2, int tox, int toy) {
-			super(PathElementType.CURVE_TO,
-					fromx, fromy,
-					ctrlx1, ctrly1,
-					ctrlx2, ctrly2,
-					tox, toy);
-		}
-
-		@Pure
-		@Override
-		public final PathElementType getType() {
-			return PathElementType.CURVE_TO;
+			super(PathElementType.CURVE_TO, tox, toy);
+			this.fromX = fromx;
+			this.fromY = fromy;
+			this.ctrlX1 = ctrlx1;
+			this.ctrlY1 = ctrly1;
+			this.ctrlX2 = ctrlx2;
+			this.ctrlY2 = ctrly2;
 		}
 
 		@Pure
@@ -445,19 +546,54 @@ public abstract class PathElement2i implements PathElement2D {
 					this.toY+")"; //$NON-NLS-1$
 		}
 
+		@Override
+		public int getFromX() {
+			return this.fromX;
+		}
+
+		@Override
+		public int getFromY() {
+			return this.fromY;
+		}
+
+		@Override
+		public int getCtrlX1() {
+			return this.ctrlX1;
+		}
+
+		@Override
+		public int getCtrlY1() {
+			return this.ctrlY1;
+		}
+
+		@Override
+		public int getCtrlX2() {
+			return this.ctrlX1;
+		}
+
+		@Override
+		public int getCtrlY2() {
+			return this.ctrlY2;
+		}
+
 	}
 
 	/** An element of the path that represents a <code>CLOSE</code>.
 	 *
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
+	 * @since 13.0
 	 */
-	public static class ClosePathElement2i extends PathElement2i {
+	static class ClosePathElement2i extends PathElement2i {
 		
-		private static final long serialVersionUID = 2745123226508569279L;
+		private static final long serialVersionUID = -8709004906872207794L;
 
+		private final int fromX;
+		
+		private final int fromY;
+		
 		/**
 		 * @param fromx
 		 * @param fromy
@@ -465,16 +601,10 @@ public abstract class PathElement2i implements PathElement2D {
 		 * @param toy
 		 */
 		public ClosePathElement2i(int fromx, int fromy, int tox, int toy) {
-			super(PathElementType.CLOSE,
-					fromx, fromy,
-					0, 0, 0, 0,
-					tox, toy);
-		}
-
-		@Pure
-		@Override
-		public final PathElementType getType() {
-			return PathElementType.CLOSE;
+			super(PathElementType.CLOSE, tox, toy);
+			this.fromX = fromx;
+			this.fromY = fromy;
+			
 		}
 
 		@Pure
@@ -509,6 +639,36 @@ public abstract class PathElement2i implements PathElement2D {
 		@Override
 		public String toString() {
 			return "CLOSE"; //$NON-NLS-1$
+		}
+
+		@Override
+		public int getFromX() {
+			return this.fromX;
+		}
+
+		@Override
+		public int getFromY() {
+			return this.fromY;
+		}
+
+		@Override
+		public int getCtrlX1() {
+			return 0;
+		}
+
+		@Override
+		public int getCtrlY1() {
+			return 0;
+		}
+
+		@Override
+		public int getCtrlX2() {
+			return 0;
+		}
+
+		@Override
+		public int getCtrlY2() {
+			return 0;
 		}
 
 	}
