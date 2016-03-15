@@ -26,12 +26,10 @@ import static org.arakhne.afc.math.MathConstants.JACOBI_MAX_SWEEPS;
 import java.io.Serializable;
 import java.util.Arrays;
 
-import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
-import org.arakhne.afc.math.geometry.d2.continuous.Vector2f;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
@@ -50,22 +48,24 @@ public class Matrix2f implements Serializable, Cloneable {
 	/**
 	 * The first matrix element in the first row.
 	 */
-	public double m00;
+	private double m00;
 
 	/**
 	 * The second matrix element in the first row.
 	 */
-	public double m01;
+	private double m01;
 
 	/**
 	 * The first matrix element in the second row.
 	 */
-	public double m10;
+	private double m10;
 
 	/**
 	 * The second matrix element in the second row.
 	 */
-	public double m11;
+	private double m11;
+	
+	private Boolean isIdentity;
 
 	/**
 	 * Constructs and initializes a Matrix2d from the specified nine values.
@@ -79,7 +79,6 @@ public class Matrix2f implements Serializable, Cloneable {
 	 * @param m11
 	 *            the [1][1] element
 	 */
-	@SuppressWarnings("hiding")
 	public Matrix2f(double m00, double m01, double m10, double m11) {
 		this.m00 = m00;
 		this.m01 = m01;
@@ -121,11 +120,11 @@ public class Matrix2f implements Serializable, Cloneable {
 	 * Constructs and initializes a Matrix2d to all zeros.
 	 */
 	public Matrix2f() {
-		this.m00 = 0f;
-		this.m01 = 0f;
+		this.m00 = 0.;
+		this.m01 = 0.;
 
-		this.m10 = 0f;
-		this.m11 = 0f;
+		this.m10 = 0.;
+		this.m11 = 0.;
 	}
 
 	/**
@@ -146,11 +145,13 @@ public class Matrix2f implements Serializable, Cloneable {
 	 * Sets this Matrix2d to identity.
 	 */
 	public final void setIdentity() {
-		this.m00 = 1f;
-		this.m01 = 0f;
+		this.m00 = 1.;
+		this.m01 = 0.;
 
-		this.m10 = 0f;
-		this.m11 = 1f;
+		this.m10 = 0.;
+		this.m11 = 1.;
+		
+		this.isIdentity = Boolean.TRUE;
 	}
 
 	/**
@@ -194,6 +195,7 @@ public class Matrix2f implements Serializable, Cloneable {
 		default:
 			throw new ArrayIndexOutOfBoundsException();
 		}
+		this.isIdentity = null;
 	}
 
 	/**
@@ -350,6 +352,7 @@ public class Matrix2f implements Serializable, Cloneable {
 		default:
 			throw new ArrayIndexOutOfBoundsException();
 		}
+		this.isIdentity = null;
 	}
 
 	/**
@@ -375,6 +378,7 @@ public class Matrix2f implements Serializable, Cloneable {
 		default:
 			throw new ArrayIndexOutOfBoundsException();
 		}
+		this.isIdentity = null;
 	}
 
 	/**
@@ -400,6 +404,7 @@ public class Matrix2f implements Serializable, Cloneable {
 		default:
 			throw new ArrayIndexOutOfBoundsException();
 		}
+		this.isIdentity = null;
 	}
 
 	/**
@@ -427,6 +432,7 @@ public class Matrix2f implements Serializable, Cloneable {
 		default:
 			throw new ArrayIndexOutOfBoundsException();
 		}
+		this.isIdentity = null;
 	}
 
 	/**
@@ -452,6 +458,7 @@ public class Matrix2f implements Serializable, Cloneable {
 		default:
 			throw new ArrayIndexOutOfBoundsException();
 		}
+		this.isIdentity = null;
 	}
 
 	/**
@@ -477,6 +484,7 @@ public class Matrix2f implements Serializable, Cloneable {
 		default:
 			throw new ArrayIndexOutOfBoundsException();
 		}
+		this.isIdentity = null;
 	}
 
 	/**
@@ -491,6 +499,8 @@ public class Matrix2f implements Serializable, Cloneable {
 
 		this.m10 += scalar;
 		this.m11 += scalar;
+
+		this.isIdentity = null;
 	}
 
 	/**
@@ -508,6 +518,8 @@ public class Matrix2f implements Serializable, Cloneable {
 
 		this.m10 = m1.m10 + scalar;
 		this.m11 = m1.m11 + scalar;
+	
+		this.isIdentity = null;
 	}
 
 	/**
@@ -524,6 +536,8 @@ public class Matrix2f implements Serializable, Cloneable {
 
 		this.m10 = m1.m10 + m2.m10;
 		this.m11 = m1.m11 + m2.m11;
+
+		this.isIdentity = null;
 	}
 
 	/**
@@ -538,6 +552,8 @@ public class Matrix2f implements Serializable, Cloneable {
 
 		this.m10 += m1.m10;
 		this.m11 += m1.m11;
+
+		this.isIdentity = null;
 	}
 
 	/**
@@ -555,6 +571,8 @@ public class Matrix2f implements Serializable, Cloneable {
 
 		this.m10 = m1.m10 - m2.m10;
 		this.m11 = m1.m11 - m2.m11;
+
+		this.isIdentity = null;
 	}
 
 	/**
@@ -570,6 +588,8 @@ public class Matrix2f implements Serializable, Cloneable {
 
 		this.m10 -= m1.m10;
 		this.m11 -= m1.m11;
+
+		this.isIdentity = null;
 	}
 
 	/**
@@ -595,7 +615,9 @@ public class Matrix2f implements Serializable, Cloneable {
 
 			this.m10 = m1.m01;
 			this.m11 = m1.m11;
-		}
+
+			this.isIdentity = m1.isIdentity();
+	}
 		else {
 			transpose();
 		}
@@ -613,6 +635,8 @@ public class Matrix2f implements Serializable, Cloneable {
 
 		this.m10 = m1.m10;
 		this.m11 = m1.m11;
+
+		this.isIdentity = m1.isIdentity();
 	}
 
 	/**
@@ -629,6 +653,8 @@ public class Matrix2f implements Serializable, Cloneable {
 
 		this.m10 = m[2];
 		this.m11 = m[4];
+
+		this.isIdentity = null;
 	}
 
 	/**
@@ -643,13 +669,14 @@ public class Matrix2f implements Serializable, Cloneable {
 	 * @param m11
 	 *            the [1][1] element
 	 */
-	@SuppressWarnings("hiding")
 	public void set(double m00, double m01, double m10, double m11) {
 		this.m00 = m00;
 		this.m01 = m01;
 
 		this.m10 = m10;
 		this.m11 = m11;
+
+		this.isIdentity = null;
 	}
 	
 	/**
@@ -674,6 +701,8 @@ public class Matrix2f implements Serializable, Cloneable {
 
 		this.m10 *= scalar;
 		this.m11 *= scalar;
+
+		this.isIdentity = null;
 	}
 
 	/**
@@ -691,6 +720,8 @@ public class Matrix2f implements Serializable, Cloneable {
 
 		this.m10 = scalar * m1.m10;
 		this.m11 = scalar * m1.m11;
+
+		this.isIdentity = null;
 	}
 
 	/**
@@ -713,21 +744,21 @@ public class Matrix2f implements Serializable, Cloneable {
 		this.m01 = _m01;
 		this.m10 = _m10;
 		this.m11 = _m11;
+
+		this.isIdentity = null;
 	}
 
 	/**
-	 * Multiply this matrix by the given vector and replies the resulting vector.
+	 * Multiply this matrix by the given vector v and set the resulting vector.
 	 * 
-	 * @param v
-	 * @return this * v
+	 * @param v the input vector
+	 * @param result is set with (this * v).
 	 */
 	@Pure
-	public final Vector2f mul(Vector2D v) {
-		Vector2f r = new Vector2f();
-		r.set(
+	public final void mul(Vector2D v, Vector2D result) {
+		result.set(
 				this.m00 * v.getX() + this.m01 * v.getY(),
 				this.m10 * v.getX() + this.m11 * v.getY());
-		return r;
 	}
 
 	/**
@@ -761,6 +792,8 @@ public class Matrix2f implements Serializable, Cloneable {
 			this.m10 = _m10;
 			this.m11 = _m11;
 		}
+
+		this.isIdentity = null;
 	}
 
 	/**
@@ -795,6 +828,7 @@ public class Matrix2f implements Serializable, Cloneable {
 			this.m11 = _m11;
 		}
 
+		this.isIdentity = null;
 	}
 
 	/**
@@ -828,6 +862,8 @@ public class Matrix2f implements Serializable, Cloneable {
 			this.m10 = _m10;
 			this.m11 = _m11;
 		}
+
+		this.isIdentity = null;
 	}
 
 	/**
@@ -861,6 +897,8 @@ public class Matrix2f implements Serializable, Cloneable {
 			this.m10 = _m10;
 			this.m11 = _m11;
 		}
+
+		this.isIdentity = null;
 	}
 
 	/**
@@ -874,6 +912,8 @@ public class Matrix2f implements Serializable, Cloneable {
 		mag = 1.0 / Math.sqrt(this.m01 * this.m01 + this.m11 * this.m11);
 		this.m01 = this.m01 * mag;
 		this.m11 = this.m11 * mag;
+
+		this.isIdentity = null;
 	}
 
 	/**
@@ -891,6 +931,8 @@ public class Matrix2f implements Serializable, Cloneable {
 		mag = 1.0 / Math.sqrt(m1.m01 * m1.m01 + m1.m11 * m1.m11);
 		this.m01 = m1.m01 * mag;
 		this.m11 = m1.m11 * mag;
+
+		this.isIdentity = null;
 	}
 
 	/**
@@ -969,11 +1011,13 @@ public class Matrix2f implements Serializable, Cloneable {
 	 * Sets this matrix to all zeros.
 	 */
 	public final void setZero() {
-		this.m00 = 0f;
-		this.m01 = 0f;
+		this.m00 = 0.;
+		this.m01 = 0.;
 
-		this.m10 = 0f;
-		this.m11 = 0f;
+		this.m10 = 0.;
+		this.m11 = 0.;
+
+		this.isIdentity = Boolean.FALSE;
 	}
 
 	/**
@@ -984,12 +1028,13 @@ public class Matrix2f implements Serializable, Cloneable {
 	 * @param m11
 	 *            the second element of the diagonal
 	 */
-	@SuppressWarnings("hiding")
 	public final void setDiagonal(double m00, double m11) {
 		this.m00 = m00;
-		this.m01 = 0f;
-		this.m10 = 0f;
+		this.m01 = 0.;
+		this.m10 = 0.;
 		this.m11 = m11;
+
+		this.isIdentity = null;
 	}
 
 	/**
@@ -1001,6 +1046,8 @@ public class Matrix2f implements Serializable, Cloneable {
 
 		this.m10 = -this.m10;
 		this.m11 = -this.m11;
+
+		this.isIdentity = null;
 	}
 
 	/**
@@ -1016,6 +1063,8 @@ public class Matrix2f implements Serializable, Cloneable {
 
 		this.m10 = -m1.m10;
 		this.m11 = -m1.m11;
+
+		this.isIdentity = null;
 	}
 
 	/**
@@ -1120,57 +1169,65 @@ public class Matrix2f implements Serializable, Cloneable {
 	 */
 	public final void setM11(double m111) {
 		this.m11 = m111;
+		this.isIdentity = null;
 	}
 
 	/** Set this matrix with the covariance matrix's elements for the given
 	 * set of tuples.
 	 * 
+	 * @param result the mean of the tuples.
 	 * @param tuples
-	 * @return the mean of the tuples.
+	 * @return <code>true</code> if the covariance matrix could be computed.
 	 */
-	public final Vector2f cov(Vector2D... tuples) {
-		return cov(Arrays.asList(tuples));
+	public final boolean cov(Vector2D result, Vector2D... tuples) {
+		return cov(result, Arrays.asList(tuples));
 	}
 
 	/** Set this matrix with the covariance matrix's elements for the given
 	 * set of tuples.
 	 * 
+	 * @param result the mean of the tuples.
 	 * @param tuples
-	 * @return the mean of the tuples.
+	 * @return <code>true</code> if the covariance matrix could be computed.
 	 */
-	public final Vector2f cov(Point2D... tuples) {
-		return cov(Arrays.asList(tuples));
+	public final boolean cov(Vector2D result, Point2D... tuples) {
+		return cov(result, Arrays.asList(tuples));
 	}
 	
 	/** Set this matrix with the covariance matrix's elements for the given
 	 * set of tuples.
 	 * 
+	 * @param result the mean of the tuples.
 	 * @param tuples
-	 * @return the mean of the tuples.
+	 * @return <code>true</code> if the covariance matrix could be computed.
 	 */
-	public Vector2f cov(Iterable<? extends Tuple2D<?>> tuples) {
+	public boolean cov(Vector2D result, Iterable<? extends Tuple2D<?>> tuples) {
 		setZero();
 
 		// Compute the mean m
-		Vector2f m = new Vector2f();
+		double mx = 0;
+		double my = 0;
 		int count = 0;
 		for(Tuple2D<?> p : tuples) {
-			m.add(p.getX(), p.getY());
+			mx += p.getX();
+			my += p.getY();
 			++count;
 		}
 
-		if (count==0) return null;
+		if (count==0) return false;
 
-		m.scale(1f/count);
+		double scale = 1. / count;
+		mx *= scale;
+		my *= scale;
 
 		// Compute the covariance term [Gottshalk2000]
 		// c_ij = sum(p'_i * p'_j) / n
 		// c_ij = sum((p_i - m_i) * (p_j - m_j)) / n
 		for(Tuple2D<?> p : tuples) {
-			this.m00 += (p.getX() - m.getX()) * (p.getX() - m.getX());
-			this.m01 += (p.getX() - m.getX()) * (p.getY() - m.getY()); // same as m10
-			//cov.m10 += (p.getY() - m.getY()) * (p.getX() - m.getX()); // same as m01
-			this.m11 += (p.getY() - m.getY()) * (p.getY() - m.getY());
+			this.m00 += (p.getX() - mx) * (p.getX() - mx);
+			this.m01 += (p.getX() - mx) * (p.getY() - my); // same as m10
+			//cov.m10 += (p.getY() - my) * (p.getX() - mx); // same as m01
+			this.m11 += (p.getY() - my) * (p.getY() - my);
 		}
 
 		this.m00 /= count;
@@ -1178,7 +1235,11 @@ public class Matrix2f implements Serializable, Cloneable {
 		this.m10 = this.m01;
 		this.m11 /= count;
 
-		return m;
+		result.set(mx, my);
+		
+		this.isIdentity = null;
+
+		return true;
 	}
 
 	/** Replies if the matrix is symmetric.
@@ -1200,7 +1261,6 @@ public class Matrix2f implements Serializable, Cloneable {
 	 * @return the eigenvalues which are corresponding to the <var>eigenVectors</var> columns.
 	 * @see #eigenVectorsOfSymmetricMatrix(Matrix2f) 
 	 */
-	@SuppressWarnings("hiding")
 	public double[] eigenVectorsOfSymmetricMatrix(Matrix2f eigenVectors) {
 		assert(eigenVectors!=null);
 
@@ -1217,28 +1277,28 @@ public class Matrix2f implements Serializable, Cloneable {
 		for(int a=0; a<JACOBI_MAX_SWEEPS; ++a) {
 			
 			// Exit loop if off-diagonal entries are small enough
-			if ((Math.abs(m12) < MathConstants.EPSILON)) {
+			if (Math.abs(m12) < Math.ulp(m12)) {
 				sweepsConsumed = false;
 				break;
 			}
 			
 			// Annihilate (1,2) entry
 			if (m12 != 0.) {
-				u = (m22 - m11) *.5f / m12;
+				u = (m22 - m11) * .5 / m12;
 				u2 = u*u;
-				u2p1 = u2 + 1f;
+				u2p1 = u2 + 1.;
 				
 				if (u2p1!=u2)
 					t = Math.signum(u) * (Math.sqrt(u2p1) - Math.abs(u));
 				else
-					t = .5f / u;
+					t = .5 / u;
 				
-				c = 1f / Math.sqrt(t*t + 1);
+				c = 1. / Math.sqrt(t*t + 1);
 				s = c * t;
 				
 				m11 -= t * m12;
 				m22 += t * m12;
-				m12 = 0f;
+				m12 = 0.;
 				
 				for(i=0; i<2; ++i) {
 					ri0 = eigenVectors.getElement(i,0);
@@ -1257,7 +1317,7 @@ public class Matrix2f implements Serializable, Cloneable {
 	
 	/** Replies if the matrix is identity.
 	 * <p>
-	 * This function uses the equal-to-zero test with the error {@link MathConstants#EPSILON}.
+	 * This function uses the equal-to-zero test with the error {@link Math#ulp(double)}.
 	 * 
 	 * @return <code>true</code> if the matrix is identity; <code>false</code> otherwise.
 	 * @see MathUtil#isEpsilonZero(double)
@@ -1265,10 +1325,13 @@ public class Matrix2f implements Serializable, Cloneable {
 	 */
 	@Pure
 	public boolean isIdentity() {
-		return MathUtil.isEpsilonEqual(this.m00, 1f)
+		if (this.isIdentity == null) {
+			this.isIdentity = MathUtil.isEpsilonEqual(this.m00, 1.)
 				&& MathUtil.isEpsilonZero(this.m01)
 				&& MathUtil.isEpsilonZero(this.m10)
-				&& MathUtil.isEpsilonEqual(this.m11, 1f);
+				&& MathUtil.isEpsilonEqual(this.m11, 1.);
+		}
+		return this.isIdentity.booleanValue();
 	}
 
 }

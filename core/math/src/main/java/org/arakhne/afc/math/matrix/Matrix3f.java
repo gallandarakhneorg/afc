@@ -21,18 +21,15 @@
  */
 package org.arakhne.afc.math.matrix;
 
-import static org.arakhne.afc.math.MathConstants.EPSILON;
 import static org.arakhne.afc.math.MathConstants.JACOBI_MAX_SWEEPS;
 
 import java.io.Serializable;
 import java.util.Arrays;
 
-import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Tuple3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
-import org.arakhne.afc.math.geometry.d3.continuous.Vector3f;
 import org.arakhne.afc.vmutil.locale.Locale;
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -52,47 +49,49 @@ public class Matrix3f implements Serializable, Cloneable {
 	/**
 	 * The first matrix element in the first row.
 	 */
-	public double m00;
+	private double m00;
 
 	/**
 	 * The second matrix element in the first row.
 	 */
-	public double m01;
+	private double m01;
 
 	/**
 	 * The third matrix element in the first row.
 	 */
-	public double m02;
+	private double m02;
 
 	/**
 	 * The first matrix element in the second row.
 	 */
-	public double m10;
+	private double m10;
 
 	/**
 	 * The second matrix element in the second row.
 	 */
-	public double m11;
+	private double m11;
 
 	/**
 	 * The third matrix element in the second row.
 	 */
-	public double m12;
+	private double m12;
 
 	/**
 	 * The first matrix element in the third row.
 	 */
-	public double m20;
+	private double m20;
 
 	/**
 	 * The second matrix element in the third row.
 	 */
-	public double m21;
+	private double m21;
 
 	/**
 	 * The third matrix element in the third row.
 	 */
-	public double m22;
+	private double m22;
+	
+	private Boolean isIdentity;
 
 	/**
 	 * Constructs and initializes a Matrix3f from the specified nine values.
@@ -116,7 +115,6 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * @param m22
 	 *            the [2][2] element
 	 */
-	@SuppressWarnings("hiding")
 	public Matrix3f(double m00, double m01, double m02, double m10, double m11, double m12, double m20, double m21, double m22) {
 		this.m00 = m00;
 		this.m01 = m01;
@@ -176,17 +174,17 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * Constructs and initializes a Matrix3f to all zeros.
 	 */
 	public Matrix3f() {
-		this.m00 = 0f;
-		this.m01 = 0f;
-		this.m02 = 0f;
+		this.m00 = 0.;
+		this.m01 = 0.;
+		this.m02 = 0.;
 
-		this.m10 = 0f;
-		this.m11 = 0f;
-		this.m12 = 0f;
+		this.m10 = 0.;
+		this.m11 = 0.;
+		this.m12 = 0.;
 
-		this.m20 = 0f;
-		this.m21 = 0f;
-		this.m22 = 0f;
+		this.m20 = 0.;
+		this.m21 = 0.;
+		this.m22 = 0.;
 	}
 
 	/**
@@ -212,17 +210,19 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * Sets this Matrix3f to identity.
 	 */
 	public final void setIdentity() {
-		this.m00 = 1f;
-		this.m01 = 0f;
-		this.m02 = 0f;
+		this.m00 = 1.;
+		this.m01 = 0.;
+		this.m02 = 0.;
 
-		this.m10 = 0f;
-		this.m11 = 1f;
-		this.m12 = 0f;
+		this.m10 = 0.;
+		this.m11 = 1.;
+		this.m12 = 0.;
 
-		this.m20 = 0f;
-		this.m21 = 0f;
-		this.m22 = 1f;
+		this.m20 = 0.;
+		this.m21 = 0.;
+		this.m22 = 1.;
+		
+		this.isIdentity = Boolean.TRUE;
 	}
 
 	/**
@@ -288,6 +288,8 @@ public class Matrix3f implements Serializable, Cloneable {
 		default:
 			throw new ArrayIndexOutOfBoundsException();
 		}
+		
+		this.isIdentity = null;
 	}
 
 	/**
@@ -481,6 +483,8 @@ public class Matrix3f implements Serializable, Cloneable {
 		default:
 			throw new ArrayIndexOutOfBoundsException();
 		}
+		
+		this.isIdentity = null;
 	}
 
 	/**
@@ -514,6 +518,8 @@ public class Matrix3f implements Serializable, Cloneable {
 		default:
 			throw new ArrayIndexOutOfBoundsException();
 		}
+		
+		this.isIdentity = null;
 	}
 
 	/**
@@ -547,6 +553,8 @@ public class Matrix3f implements Serializable, Cloneable {
 		default:
 			throw new ArrayIndexOutOfBoundsException();
 		}
+		
+		this.isIdentity = null;
 	}
 
 	/**
@@ -584,6 +592,8 @@ public class Matrix3f implements Serializable, Cloneable {
 		default:
 			throw new ArrayIndexOutOfBoundsException();
 		}
+		
+		this.isIdentity = null;
 	}
 
 	/**
@@ -617,6 +627,8 @@ public class Matrix3f implements Serializable, Cloneable {
 		default:
 			throw new ArrayIndexOutOfBoundsException();
 		}
+		
+		this.isIdentity = null;
 	}
 
 	/**
@@ -650,6 +662,8 @@ public class Matrix3f implements Serializable, Cloneable {
 		default:
 			throw new ArrayIndexOutOfBoundsException();
 		}
+		
+		this.isIdentity = null;
 	}
 
 	/**
@@ -670,7 +684,8 @@ public class Matrix3f implements Serializable, Cloneable {
 		this.m20 += scalar;
 		this.m21 += scalar;
 		this.m22 += scalar;
-
+		
+		this.isIdentity = null;
 	}
 
 	/**
@@ -694,6 +709,8 @@ public class Matrix3f implements Serializable, Cloneable {
 		this.m20 = m1.m20 + scalar;
 		this.m21 = m1.m21 + scalar;
 		this.m22 = m1.m22 + scalar;
+		
+		this.isIdentity = null;
 	}
 
 	/**
@@ -716,6 +733,8 @@ public class Matrix3f implements Serializable, Cloneable {
 		this.m20 = m1.m20 + m2.m20;
 		this.m21 = m1.m21 + m2.m21;
 		this.m22 = m1.m22 + m2.m22;
+		
+		this.isIdentity = null;
 	}
 
 	/**
@@ -736,6 +755,8 @@ public class Matrix3f implements Serializable, Cloneable {
 		this.m20 += m1.m20;
 		this.m21 += m1.m21;
 		this.m22 += m1.m22;
+		
+		this.isIdentity = null;
 	}
 
 	/**
@@ -759,6 +780,8 @@ public class Matrix3f implements Serializable, Cloneable {
 		this.m20 = m1.m20 - m2.m20;
 		this.m21 = m1.m21 - m2.m21;
 		this.m22 = m1.m22 - m2.m22;
+		
+		this.isIdentity = null;
 	}
 
 	/**
@@ -780,6 +803,8 @@ public class Matrix3f implements Serializable, Cloneable {
 		this.m20 -= m1.m20;
 		this.m21 -= m1.m21;
 		this.m22 -= m1.m22;
+		
+		this.isIdentity = null;
 	}
 
 	/**
@@ -799,6 +824,8 @@ public class Matrix3f implements Serializable, Cloneable {
 		temp = this.m21;
 		this.m21 = this.m12;
 		this.m12 = temp;
+		
+		this.isIdentity = null;
 	}
 
 	/**
@@ -820,6 +847,8 @@ public class Matrix3f implements Serializable, Cloneable {
 			this.m20 = m1.m02;
 			this.m21 = m1.m12;
 			this.m22 = m1.m22;
+			
+			this.isIdentity = null;
 		} else
 			this.transpose();
 	}
@@ -843,6 +872,8 @@ public class Matrix3f implements Serializable, Cloneable {
 		this.m20 = m1.m20;
 		this.m21 = m1.m21;
 		this.m22 = m1.m22;
+		
+		this.isIdentity = m1.isIdentity;
 	}
 
 	/**
@@ -865,7 +896,8 @@ public class Matrix3f implements Serializable, Cloneable {
 		this.m20 = m[6];
 		this.m21 = m[7];
 		this.m22 = m[8];
-
+		
+		this.isIdentity = null;
 	}
 	
 	/**
@@ -890,7 +922,6 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * @param m22
 	 *            the [2][2] element
 	 */
-	@SuppressWarnings("hiding")
 	public void set(double m00, double m01, double m02, double m10, double m11, double m12, double m20, double m21, double m22) {
 		this.m00 = m00;
 		this.m01 = m01;
@@ -903,6 +934,8 @@ public class Matrix3f implements Serializable, Cloneable {
 		this.m20 = m20;
 		this.m21 = m21;
 		this.m22 = m22;
+		
+		this.isIdentity = null;
 	}
 
 	/**
@@ -960,10 +993,10 @@ public class Matrix3f implements Serializable, Cloneable {
 
 		// Perform back substitution on the identity matrix
 		for (i = 0; i < 9; ++i)
-			result[i] = 0f;
-		result[0] = 1f;
-		result[4] = 1f;
-		result[8] = 1f;
+			result[i] = 0.;
+		result[0] = 1.;
+		result[4] = 1.;
+		result[8] = 1.;
 		luBacksubstitution(tmp, row_perm, result);
 
 		this.m00 = result[0];
@@ -977,7 +1010,8 @@ public class Matrix3f implements Serializable, Cloneable {
 		this.m20 = result[6];
 		this.m21 = result[7];
 		this.m22 = result[8];
-
+		
+		this.isIdentity = null;
 	}
 
 	/**
@@ -1015,7 +1049,7 @@ public class Matrix3f implements Serializable, Cloneable {
 			// For each row ...
 			i = 3;
 			while (i-- != 0) {
-				big = 0f;
+				big = 0.;
 
 				// For each column, find the largest element in the row
 				j = 3;
@@ -1028,10 +1062,10 @@ public class Matrix3f implements Serializable, Cloneable {
 				}
 
 				// Is the matrix singular?
-				if (big == 0f) {
+				if (big == 0.) {
 					return false;
 				}
-				row_scale[rs++] = 1f / big;
+				row_scale[rs++] = 1. / big;
 			}
 		}
 
@@ -1064,7 +1098,7 @@ public class Matrix3f implements Serializable, Cloneable {
 
 				// Search for largest pivot element and calculate
 				// intermediate elements of lower diagonal matrix L.
-				big = 0f;
+				big = 0.;
 				imax = -1;
 				for (i = j; i < 3; ++i) {
 					target = mtx + (3 * i) + j;
@@ -1110,13 +1144,13 @@ public class Matrix3f implements Serializable, Cloneable {
 				row_perm[j] = imax;
 
 				// Is the matrix singular
-				if (matrix0[(mtx + (3 * j) + j)] == 0f) {
+				if (matrix0[(mtx + (3 * j) + j)] == 0.) {
 					return false;
 				}
 
 				// Divide elements of lower diagonal matrix L by pivot
 				if (j != (3 - 1)) {
-					temp = 1f / (matrix0[(mtx + (3 * j) + j)]);
+					temp = 1. / (matrix0[(mtx + (3 * j) + j)]);
 					target = mtx + (3 * (j + 1)) + j;
 					i = 2 - j;
 					while (i-- != 0) {
@@ -1178,7 +1212,7 @@ public class Matrix3f implements Serializable, Cloneable {
 					for (j = ii; j <= i - 1; ++j) {
 						sum -= matrix1[rv + j] * matrix2[cv + 3 * j];
 					}
-				} else if (sum != 0f) {
+				} else if (sum != 0.) {
 					ii = i;
 				}
 				matrix2[cv + 3 * i] = sum;
@@ -1238,16 +1272,18 @@ public class Matrix3f implements Serializable, Cloneable {
 		this.m20 *= scalar;
 		this.m21 *= scalar;
 		this.m22 *= scalar;
+		
+		this.isIdentity = null;
 	}
 
-	/** Multiply this matrix by the given vector.
+	/** Multiply this matrix by the given vector v and set the result..
 	 * 
 	 * @param v
-	 * @return the vector resulting of <code>this * v</code>.
+	 * @param result the vector resulting of <code>this * v</code>.
 	 */
 	@Pure
-	public Vector3f mul(Vector3D v) {
-		return new Vector3f(
+	public void mul(Vector3D v, Vector3D result) {
+		result.set(
 				this.m00 * v.getX() + this.m01 * v.getY() + this.m02 * v.getZ(),
 				this.m10 * v.getX() + this.m11 * v.getY() + this.m12 * v.getZ(),
 				this.m20 * v.getX() + this.m21 * v.getY() + this.m22 * v.getZ());
@@ -1256,11 +1292,11 @@ public class Matrix3f implements Serializable, Cloneable {
 	/** Multiply the transposing of this matrix by the given vector.
 	 * 
 	 * @param v
-	 * @return the vector resulting of <code>transpose(this) * v</code>.
+	 * @param result the vector resulting of <code>transpose(this) * v</code>.
 	 */
 	@Pure
-	public Vector3f mulTransposeLeft(Vector3D v) {
-		return new Vector3f(
+	public void mulTransposeLeft(Vector3D v, Vector3D result) {
+		result.set(
 				this.m00 * v.getX() + this.m10 * v.getY() + this.m20 * v.getZ(),
 				this.m01 * v.getX() + this.m11 * v.getY() + this.m21 * v.getZ(),
 				this.m02 * v.getX() + this.m12 * v.getY() + this.m22 * v.getZ());
@@ -1287,6 +1323,8 @@ public class Matrix3f implements Serializable, Cloneable {
 		this.m20 = scalar * m1.m20;
 		this.m21 = scalar * m1.m21;
 		this.m22 = scalar * m1.m22;
+		
+		this.isIdentity = null;
 	}
 
 	/**
@@ -1320,6 +1358,8 @@ public class Matrix3f implements Serializable, Cloneable {
 		this.m20 = _m20;
 		this.m21 = _m21;
 		this.m22 = _m22;
+		
+		this.isIdentity = null;
 	}
 
 	/**
@@ -1370,6 +1410,8 @@ public class Matrix3f implements Serializable, Cloneable {
 			this.m21 = _m21;
 			this.m22 = _m22;
 		}
+		
+		this.isIdentity = null;
 	}
 
 	/**
@@ -1411,7 +1453,8 @@ public class Matrix3f implements Serializable, Cloneable {
 		this.m20 = tmp_rot[6];
 		this.m21 = tmp_rot[7];
 		this.m22 = tmp_rot[8];
-
+		
+		this.isIdentity = null;
 	}
 
 	/**
@@ -1454,7 +1497,8 @@ public class Matrix3f implements Serializable, Cloneable {
 		this.m20 = tmp_rot[6];
 		this.m21 = tmp_rot[7];
 		this.m22 = tmp_rot[8];
-
+		
+		this.isIdentity = null;
 	}
 
 	/**
@@ -1505,7 +1549,8 @@ public class Matrix3f implements Serializable, Cloneable {
 			this.m21 = _m21;
 			this.m22 = _m22;
 		}
-
+		
+		this.isIdentity = null;
 	}
 
 	/**
@@ -1556,6 +1601,8 @@ public class Matrix3f implements Serializable, Cloneable {
 			this.m21 = _m21;
 			this.m22 = _m22;
 		}
+		
+		this.isIdentity = null;
 	}
 
 	/**
@@ -1606,6 +1653,8 @@ public class Matrix3f implements Serializable, Cloneable {
 			this.m21 = _m21;
 			this.m22 = _m22;
 		}
+		
+		this.isIdentity = null;
 	}
 
 	/**
@@ -1646,6 +1695,8 @@ public class Matrix3f implements Serializable, Cloneable {
 		this.m20 = tmp_rot[6];
 		this.m21 = tmp_rot[7];
 		this.m22 = tmp_rot[8];
+		
+		this.isIdentity = null;
 	}
 
 	/**
@@ -1653,12 +1704,12 @@ public class Matrix3f implements Serializable, Cloneable {
 	 */
 
 	public final void normalizeCP() {
-		double mag = 1f / Math.sqrt(this.m00 * this.m00 + this.m10 * this.m10 + this.m20 * this.m20);
+		double mag = 1. / Math.sqrt(this.m00 * this.m00 + this.m10 * this.m10 + this.m20 * this.m20);
 		this.m00 = this.m00 * mag;
 		this.m10 = this.m10 * mag;
 		this.m20 = this.m20 * mag;
 
-		mag = 1f / Math.sqrt(this.m01 * this.m01 + this.m11 * this.m11 + this.m21 * this.m21);
+		mag = 1. / Math.sqrt(this.m01 * this.m01 + this.m11 * this.m11 + this.m21 * this.m21);
 		this.m01 = this.m01 * mag;
 		this.m11 = this.m11 * mag;
 		this.m21 = this.m21 * mag;
@@ -1666,6 +1717,8 @@ public class Matrix3f implements Serializable, Cloneable {
 		this.m02 = this.m10 * this.m21 - this.m11 * this.m20;
 		this.m12 = this.m01 * this.m20 - this.m00 * this.m21;
 		this.m22 = this.m00 * this.m11 - this.m01 * this.m10;
+		
+		this.isIdentity = null;
 	}
 
 	/**
@@ -1676,13 +1729,13 @@ public class Matrix3f implements Serializable, Cloneable {
 	 *            Provides the matrix values to be normalized
 	 */
 	public final void normalizeCP(Matrix3f m1) {
-		double mag = 1f / Math.sqrt(m1.m00 * m1.m00 + m1.m10 * m1.m10 + m1.m20
+		double mag = 1. / Math.sqrt(m1.m00 * m1.m00 + m1.m10 * m1.m10 + m1.m20
 				* m1.m20);
 		this.m00 = m1.m00 * mag;
 		this.m10 = m1.m10 * mag;
 		this.m20 = m1.m20 * mag;
 
-		mag = 1f / Math.sqrt(m1.m01 * m1.m01 + m1.m11 * m1.m11 + m1.m21
+		mag = 1. / Math.sqrt(m1.m01 * m1.m01 + m1.m11 * m1.m11 + m1.m21
 				* m1.m21);
 		this.m01 = m1.m01 * mag;
 		this.m11 = m1.m11 * mag;
@@ -1691,6 +1744,8 @@ public class Matrix3f implements Serializable, Cloneable {
 		this.m02 = this.m10 * this.m21 - this.m11 * this.m20;
 		this.m12 = this.m01 * this.m20 - this.m00 * this.m21;
 		this.m22 = this.m00 * this.m11 - this.m01 * this.m10;
+		
+		this.isIdentity = null;
 	}
 
 	/**
@@ -1821,7 +1876,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	@Pure
 	private static long doubleToLongBits(double d) {
 		// Check for +0 or -0
-		if (d == 0f) {
+		if (d == 0.) {
 			return 0L;
 		}
 		return Double.doubleToLongBits(d);
@@ -1831,17 +1886,19 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * Sets this matrix to all zeros.
 	 */
 	public final void setZero() {
-		this.m00 = 0f;
-		this.m01 = 0f;
-		this.m02 = 0f;
+		this.m00 = 0.;
+		this.m01 = 0.;
+		this.m02 = 0.;
 
-		this.m10 = 0f;
-		this.m11 = 0f;
-		this.m12 = 0f;
+		this.m10 = 0.;
+		this.m11 = 0.;
+		this.m12 = 0.;
 
-		this.m20 = 0f;
-		this.m21 = 0f;
-		this.m22 = 0f;
+		this.m20 = 0.;
+		this.m21 = 0.;
+		this.m22 = 0.;
+		
+		this.isIdentity = Boolean.FALSE;
 	}
 
 	/**
@@ -1854,17 +1911,18 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * @param m22
 	 *            the third element of the diagonal
 	 */
-	@SuppressWarnings("hiding")
 	public final void setDiagonal(double m00, double m11, double m22) {
 		this.m00 = m00;
-		this.m01 = 0f;
-		this.m02 = 0f;
-		this.m10 = 0f;
+		this.m01 = 0.;
+		this.m02 = 0.;
+		this.m10 = 0.;
 		this.m11 = m11;
-		this.m12 = 0f;
-		this.m20 = 0f;
-		this.m21 = 0f;
+		this.m12 = 0.;
+		this.m20 = 0.;
+		this.m21 = 0.;
 		this.m22 = m22;
+		
+		this.isIdentity = null;
 	}
 
 	/**
@@ -1882,7 +1940,8 @@ public class Matrix3f implements Serializable, Cloneable {
 		this.m20 = -this.m20;
 		this.m21 = -this.m21;
 		this.m22 = -this.m22;
-
+		
+		this.isIdentity = null;
 	}
 
 	/**
@@ -1904,11 +1963,8 @@ public class Matrix3f implements Serializable, Cloneable {
 		this.m20 = -m1.m20;
 		this.m21 = -m1.m21;
 		this.m22 = -m1.m22;
-	}
-
-	@Pure
-	private static boolean epsilonEquals(double a, double b) {
-		return Math.abs(a-b) <=  MathConstants.EPSILON;
+		
+		this.isIdentity = null;
 	}
 
 	private static void compute_svd(double[] m, double[] outScale, double[] outRot) {
@@ -1935,17 +1991,17 @@ public class Matrix3f implements Serializable, Cloneable {
 
 		// u1
 
-		if (m[3] * m[3] < EPSILON) {
-			u1[0] = 1f;
-			u1[1] = 0f;
-			u1[2] = 0f;
-			u1[3] = 0f;
-			u1[4] = 1f;
-			u1[5] = 0f;
-			u1[6] = 0f;
-			u1[7] = 0f;
-			u1[8] = 1f;
-		} else if (m[0] * m[0] < EPSILON) {
+		if (MathUtil.isEpsilonZero(m[3] * m[3])) {
+			u1[0] = 1.;
+			u1[1] = 0.;
+			u1[2] = 0.;
+			u1[3] = 0.;
+			u1[4] = 1.;
+			u1[5] = 0.;
+			u1[6] = 0.;
+			u1[7] = 0.;
+			u1[8] = 1.;
+		} else if (MathUtil.isEpsilonZero(m[0] * m[0])) {
 			tmp[0] = m[0];
 			tmp[1] = m[1];
 			tmp[2] = m[2];
@@ -1957,17 +2013,17 @@ public class Matrix3f implements Serializable, Cloneable {
 			m[4] = -tmp[1];
 			m[5] = -tmp[2];
 
-			u1[0] = 0f;
-			u1[1] = 1f;
-			u1[2] = 0f;
-			u1[3] = -1f;
-			u1[4] = 0f;
-			u1[5] = 0f;
-			u1[6] = 0f;
-			u1[7] = 0f;
-			u1[8] = 1f;
+			u1[0] = 0.;
+			u1[1] = 1.;
+			u1[2] = 0.;
+			u1[3] = -1.;
+			u1[4] = 0.;
+			u1[5] = 0.;
+			u1[6] = 0.;
+			u1[7] = 0.;
+			u1[8] = 1.;
 		} else {
-			g = 1f / Math.sqrt(m[0] * m[0] + m[3] * m[3]);
+			g = 1. / Math.sqrt(m[0] * m[0] + m[3] * m[3]);
 			c1 = m[0] * g;
 			s1 = m[3] * g;
 			tmp[0] = c1 * m[0] + s1 * m[3];
@@ -1983,20 +2039,20 @@ public class Matrix3f implements Serializable, Cloneable {
 			m[2] = tmp[2];
 			u1[0] = c1;
 			u1[1] = s1;
-			u1[2] = 0f;
+			u1[2] = 0.;
 			u1[3] = -s1;
 			u1[4] = c1;
-			u1[5] = 0f;
-			u1[6] = 0f;
-			u1[7] = 0f;
-			u1[8] = 1f;
+			u1[5] = 0.;
+			u1[6] = 0.;
+			u1[7] = 0.;
+			u1[8] = 1.;
 		}
 
 		// u2
 
-		if (m[6] * m[6] < EPSILON) {
+		if (MathUtil.isEpsilonZero(m[6] * m[6])) {
 			//
-		} else if (m[0] * m[0] < EPSILON) {
+		} else if (MathUtil.isEpsilonZero(m[0] * m[0])) {
 			tmp[0] = m[0];
 			tmp[1] = m[1];
 			tmp[2] = m[2];
@@ -2019,7 +2075,7 @@ public class Matrix3f implements Serializable, Cloneable {
 			u1[7] = -tmp[1];
 			u1[8] = -tmp[2];
 		} else {
-			g = 1f / Math.sqrt(m[0] * m[0] + m[6] * m[6]);
+			g = 1. / Math.sqrt(m[0] * m[0] + m[6] * m[6]);
 			c2 = m[0] * g;
 			s2 = m[6] * g;
 			tmp[0] = c2 * m[0] + s2 * m[6];
@@ -2048,17 +2104,17 @@ public class Matrix3f implements Serializable, Cloneable {
 
 		// v1
 
-		if (m[2] * m[2] < EPSILON) {
-			v1[0] = 1f;
-			v1[1] = 0f;
-			v1[2] = 0f;
-			v1[3] = 0f;
-			v1[4] = 1f;
-			v1[5] = 0f;
-			v1[6] = 0f;
-			v1[7] = 0f;
-			v1[8] = 1f;
-		} else if (m[1] * m[1] < EPSILON) {
+		if (MathUtil.isEpsilonZero(m[2] * m[2])) {
+			v1[0] = 1.;
+			v1[1] = 0.;
+			v1[2] = 0.;
+			v1[3] = 0.;
+			v1[4] = 1.;
+			v1[5] = 0.;
+			v1[6] = 0.;
+			v1[7] = 0.;
+			v1[8] = 1.;
+		} else if (MathUtil.isEpsilonZero(m[1] * m[1])) {
 			tmp[2] = m[2];
 			tmp[5] = m[5];
 			tmp[8] = m[8];
@@ -2070,17 +2126,17 @@ public class Matrix3f implements Serializable, Cloneable {
 			m[4] = tmp[5];
 			m[7] = tmp[8];
 
-			v1[0] = 1f;
-			v1[1] = 0f;
-			v1[2] = 0f;
-			v1[3] = 0f;
-			v1[4] = 0f;
-			v1[5] = -1f;
-			v1[6] = 0f;
-			v1[7] = 1f;
-			v1[8] = 0f;
+			v1[0] = 1.;
+			v1[1] = 0.;
+			v1[2] = 0.;
+			v1[3] = 0.;
+			v1[4] = 0.;
+			v1[5] = -1.;
+			v1[6] = 0.;
+			v1[7] = 1.;
+			v1[8] = 0.;
 		} else {
-			g = 1f / Math.sqrt(m[1] * m[1] + m[2] * m[2]);
+			g = 1. / Math.sqrt(m[1] * m[1] + m[2] * m[2]);
 			c3 = m[1] * g;
 			s3 = m[2] * g;
 			tmp[1] = c3 * m[1] + s3 * m[2]; // can assign to m[1]?
@@ -2095,22 +2151,22 @@ public class Matrix3f implements Serializable, Cloneable {
 			m[8] = -s3 * m[7] + c3 * m[8];
 			m[7] = tmp[7];
 
-			v1[0] = 1f;
-			v1[1] = 0f;
-			v1[2] = 0f;
-			v1[3] = 0f;
+			v1[0] = 1.;
+			v1[1] = 0.;
+			v1[2] = 0.;
+			v1[3] = 0.;
 			v1[4] = c3;
 			v1[5] = -s3;
-			v1[6] = 0f;
+			v1[6] = 0.;
 			v1[7] = s3;
 			v1[8] = c3;
 		}
 
 		// u3
 
-		if (m[7] * m[7] < EPSILON) {
+		if (MathUtil.isEpsilonZero(m[7] * m[7])) {
 			//
-		} else if (m[4] * m[4] < EPSILON) {
+		} else if (MathUtil.isEpsilonZero(m[4] * m[4])) {
 			tmp[3] = m[3];
 			tmp[4] = m[4];
 			tmp[5] = m[5];
@@ -2134,7 +2190,7 @@ public class Matrix3f implements Serializable, Cloneable {
 			u1[8] = -tmp[5];
 
 		} else {
-			g = 1f / Math.sqrt(m[4] * m[4] + m[7] * m[7]);
+			g = 1. / Math.sqrt(m[4] * m[4] + m[7] * m[7]);
 			c4 = m[4] * g;
 			s4 = m[7] * g;
 			tmp[3] = c4 * m[3] + s4 * m[6];
@@ -2168,7 +2224,7 @@ public class Matrix3f implements Serializable, Cloneable {
 		e[0] = m[1];
 		e[1] = m[5];
 
-		if (e[0] * e[0] < EPSILON && e[1] * e[1] < EPSILON) {
+		if (MathUtil.isEpsilonZero(e[0] * e[0]) && MathUtil.isEpsilonZero(e[1] * e[1])) {
 			//
 		} else {
 			compute_qr(single_values, e, u1, v1);
@@ -2180,18 +2236,18 @@ public class Matrix3f implements Serializable, Cloneable {
 
 		// Do some optimization here. If scale is unity, simply return the
 		// rotation matrix.
-		if (epsilonEquals(Math.abs(scales[0]), 1f)
-				&& epsilonEquals(Math.abs(scales[1]), 1f)
-				&& epsilonEquals(Math.abs(scales[2]), 1f)) {
-			// System.out.println("Scale components almost to 1f");
+		if (MathUtil.isEpsilonEqual(Math.abs(scales[0]), 1.)
+				&& MathUtil.isEpsilonEqual(Math.abs(scales[1]), 1.)
+				&& MathUtil.isEpsilonEqual(Math.abs(scales[2]), 1.)) {
+			// System.out.println("Scale components almost to 1.");
 
 			for (i = 0; i < 3; ++i)
-				if (scales[i] < 0f)
+				if (scales[i] < 0.)
 					++negCnt;
 
 			if ((negCnt == 0) || (negCnt == 2)) {
 				// System.out.println("Optimize!!");
-				outScale[0] = outScale[1] = outScale[2] = 1f;
+				outScale[0] = outScale[1] = outScale[2] = 1.;
 				for (i = 0; i < 9; ++i)
 					outRot[i] = rot[i];
 
@@ -2215,19 +2271,19 @@ public class Matrix3f implements Serializable, Cloneable {
 		double[] rot = new double[9];
 
 		// check for rotation information in the scales
-		if (scales[0] < 0f) { // move the rotation info to rotation matrix
+		if (scales[0] < 0.) { // move the rotation info to rotation matrix
 			scales[0] = -scales[0];
 			t2[0] = -t2[0];
 			t2[1] = -t2[1];
 			t2[2] = -t2[2];
 		}
-		if (scales[1] < 0f) { // move the rotation info to rotation matrix
+		if (scales[1] < 0.) { // move the rotation info to rotation matrix
 			scales[1] = -scales[1];
 			t2[3] = -t2[3];
 			t2[4] = -t2[4];
 			t2[5] = -t2[5];
 		}
-		if (scales[2] < 0f) { // move the rotation info to rotation matrix
+		if (scales[2] < 0.) { // move the rotation info to rotation matrix
 			scales[2] = -scales[2];
 			t2[6] = -t2[6];
 			t2[7] = -t2[7];
@@ -2237,8 +2293,8 @@ public class Matrix3f implements Serializable, Cloneable {
 		mat_mul(t1, t2, rot);
 
 		// check for equal scales case and do not reorder
-		if (epsilonEquals(Math.abs(scales[0]), Math.abs(scales[1]))
-				&& epsilonEquals(Math.abs(scales[1]), Math.abs(scales[2]))) {
+		if (MathUtil.isEpsilonEqual(Math.abs(scales[0]), Math.abs(scales[1]))
+				&& MathUtil.isEpsilonEqual(Math.abs(scales[1]), Math.abs(scales[2]))) {
 			for (i = 0; i < 9; ++i) {
 				outRot[i] = rot[i];
 			}
@@ -2388,9 +2444,9 @@ public class Matrix3f implements Serializable, Cloneable {
 		double f, g;
 
 		final int MAX_INTERATIONS = 10;
-		final double CONVERGE_TOL = 4.89E-15f;
+		final double CONVERGE_TOL = 4.89E-15;
 
-		double c_b48 = 1f;
+		double c_b48 = 1.;
 		//int first;
 		converged = false;
 
@@ -2475,12 +2531,12 @@ public class Matrix3f implements Serializable, Cloneable {
 
 			m[0] = s[0];
 			m[1] = e[0];
-			m[2] = 0f;
-			m[3] = 0f;
+			m[2] = 0.;
+			m[3] = 0.;
 			m[4] = s[1];
 			m[5] = e[1];
-			m[6] = 0f;
-			m[7] = 0f;
+			m[6] = 0.;
+			m[7] = 0.;
 			m[8] = s[2];
 
 			if (Math.abs(e[1]) < CONVERGE_TOL || Math.abs(e[0]) < CONVERGE_TOL)
@@ -2558,32 +2614,32 @@ public class Matrix3f implements Serializable, Cloneable {
 		ha = Math.abs(h);
 		fhmn = Math.min(fa, ha);
 		fhmx = Math.max(fa, ha);
-		if (fhmn == 0f) {
-			ssmin = 0f;
-			if (fhmx == 0f) {
+		if (fhmn == 0.) {
+			ssmin = 0.;
+			if (fhmx == 0.) {
 				//
 			} else {
 				d__1 = Math.min(fhmx, ga) / Math.max(fhmx, ga);
 			}
 		} else {
 			if (ga < fhmx) {
-				as = fhmn / fhmx + 1f;
+				as = fhmn / fhmx + 1.;
 				at = (fhmx - fhmn) / fhmx;
 				d__1 = ga / fhmx;
 				au = d__1 * d__1;
-				c = 2f / (Math.sqrt(as * as + au) + Math.sqrt(at * at + au));
+				c = 2. / (Math.sqrt(as * as + au) + Math.sqrt(at * at + au));
 				ssmin = fhmn * c;
 			} else {
 				au = fhmx / ga;
-				if (au == 0f) {
+				if (au == 0.) {
 					ssmin = fhmn * fhmx / ga;
 				} else {
-					as = fhmn / fhmx + 1f;
+					as = fhmn / fhmx + 1.;
 					at = (fhmx - fhmn) / fhmx;
 					d__1 = as * au;
 					d__2 = at * au;
-					c = 1f / (Math.sqrt(d__1 * d__1 + 1f) + Math.sqrt(d__2
-							* d__2 + 1f));
+					c = 1. / (Math.sqrt(d__1 * d__1 + 1.) + Math.sqrt(d__2
+							* d__2 + 1.));
 					ssmin = fhmn * c * au;
 					ssmin += ssmin;
 				}
@@ -2597,8 +2653,8 @@ public class Matrix3f implements Serializable, Cloneable {
 			double[] single_values, double[] snl, double[] csl, double[] snr,
 			double[] csr, int index) {
 
-		double c_b3 = 2f;
-		double c_b4 = 1f;
+		double c_b3 = 2.;
+		double c_b4 = 1.;
 
 		double d__1;
 		int pmax;
@@ -2612,11 +2668,11 @@ public class Matrix3f implements Serializable, Cloneable {
 
 		ssmax = single_values[0];
 		ssmin = single_values[1];
-		clt = 0f;
-		crt = 0f;
-		slt = 0f;
-		srt = 0f;
-		tsign = 0f;
+		clt = 0.;
+		crt = 0.;
+		slt = 0.;
+		srt = 0.;
+		tsign = 0.;
 
 		ft = f;
 		fa = Math.abs(ft);
@@ -2641,20 +2697,20 @@ public class Matrix3f implements Serializable, Cloneable {
 		}
 		gt = g;
 		ga = Math.abs(gt);
-		if (ga == 0f) {
+		if (ga == 0.) {
 
 			single_values[1] = ha;
 			single_values[0] = fa;
-			clt = 1f;
-			crt = 1f;
-			slt = 0f;
-			srt = 0f;
+			clt = 1.;
+			crt = 1.;
+			slt = 0.;
+			srt = 0.;
 		} else {
 			gasmal = true;
 
 			if (ga > fa) {
 				pmax = 2;
-				if (fa / ga < EPSILON) {
+				if (MathUtil.isEpsilonZero(fa / ga)) {
 
 					gasmal = false;
 					ssmax = ga;
@@ -2663,9 +2719,9 @@ public class Matrix3f implements Serializable, Cloneable {
 					} else {
 						ssmin = fa / ga * ha;
 					}
-					clt = 1f;
+					clt = 1.;
 					slt = ht / gt;
-					srt = 1f;
+					srt = 1.;
 					crt = ft / gt;
 				}
 			}
@@ -2674,30 +2730,30 @@ public class Matrix3f implements Serializable, Cloneable {
 				d = fa - ha;
 				if (d == fa) {
 
-					l = 1f;
+					l = 1.;
 				} else {
 					l = d / fa;
 				}
 
 				m = gt / ft;
 
-				t = 2f - l;
+				t = 2. - l;
 
 				mm = m * m;
 				tt = t * t;
 				s = Math.sqrt(tt + mm);
 
-				if (l == 0f) {
+				if (l == 0.) {
 					r = Math.abs(m);
 				} else {
 					r = Math.sqrt(l * l + mm);
 				}
 
-				a = (s + r) * .5f;
+				a = (s + r) * .5;
 
 				if (ga > fa) {
 					pmax = 2;
-					if (fa / ga < EPSILON) {
+					if (MathUtil.isEpsilonZero(fa / ga)) {
 
 						gasmal = false;
 						ssmax = ga;
@@ -2706,9 +2762,9 @@ public class Matrix3f implements Serializable, Cloneable {
 						} else {
 							ssmin = fa / ga * ha;
 						}
-						clt = 1f;
+						clt = 1.;
 						slt = ht / gt;
-						srt = 1f;
+						srt = 1.;
 						crt = ft / gt;
 					}
 				}
@@ -2717,41 +2773,41 @@ public class Matrix3f implements Serializable, Cloneable {
 					d = fa - ha;
 					if (d == fa) {
 
-						l = 1f;
+						l = 1.;
 					} else {
 						l = d / fa;
 					}
 
 					m = gt / ft;
 
-					t = 2f - l;
+					t = 2. - l;
 
 					mm = m * m;
 					tt = t * t;
 					s = Math.sqrt(tt + mm);
 
-					if (l == 0f) {
+					if (l == 0.) {
 						r = Math.abs(m);
 					} else {
 						r = Math.sqrt(l * l + mm);
 					}
 
-					a = (s + r) * .5f;
+					a = (s + r) * .5;
 
 					ssmin = ha / a;
 					ssmax = fa * a;
-					if (mm == 0f) {
+					if (mm == 0.) {
 
-						if (l == 0f) {
+						if (l == 0.) {
 							t = d_sign(c_b3, ft) * d_sign(c_b4, gt);
 						} else {
 							t = gt / d_sign(d, ft) + m / t;
 						}
 					} else {
-						t = (m / (s + t) + m / (r + l)) * (a + 1f);
+						t = (m / (s + t) + m / (r + l)) * (a + 1.);
 					}
-					l = Math.sqrt(t * t + 4f);
-					crt = 2f / l;
+					l = Math.sqrt(t * t + 4.);
+					crt = 2. / l;
 					srt = t / l;
 					clt = (crt + srt * m) / a;
 					slt = ht / ft * srt / a;
@@ -2800,13 +2856,13 @@ public class Matrix3f implements Serializable, Cloneable {
 		final double safmn2 = 2.002083095183101E-146;
 		final double safmx2 = 4.994797680505588E+145;
 
-		if (g == 0f) {
-			cs = 1f;
-			sn = 0f;
+		if (g == 0.) {
+			cs = 1.;
+			sn = 0.;
 			r = f;
-		} else if (f == 0f) {
-			cs = 0f;
-			sn = 1f;
+		} else if (f == 0.) {
+			cs = 0.;
+			sn = 1.;
 			r = g;
 		} else {
 			f1 = f;
@@ -2845,7 +2901,7 @@ public class Matrix3f implements Serializable, Cloneable {
 				cs = f1 / r;
 				sn = g1 / r;
 			}
-			if (Math.abs(f) > Math.abs(g) && cs < 0f) {
+			if (Math.abs(f) > Math.abs(g) && cs < 0.) {
 				cs = -cs;
 				sn = -sn;
 				r = -r;
@@ -2918,7 +2974,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	/**
 	 * Get the first matrix element in the first row.
 	 * 
-	 * @return Returns the m00f
+	 * @return Returns the m00.
 	 * @since vecmath 1.5
 	 */
 	@Pure
@@ -2936,6 +2992,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 */
 	public final void setM00(double m001) {
 		this.m00 = m001;
+		this.isIdentity = null;
 	}
 
 	/**
@@ -2960,6 +3017,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 */
 	public final void setM01(double m011) {
 		this.m01 = m011;
+		this.isIdentity = null;
 	}
 
 	/**
@@ -2984,12 +3042,13 @@ public class Matrix3f implements Serializable, Cloneable {
 	 */
 	public final void setM02(double m021) {
 		this.m02 = m021;
+		this.isIdentity = null;
 	}
 
 	/**
 	 * Get first matrix element in the second row.
 	 * 
-	 * @return Returns the m10f
+	 * @return Returns the m10.
 	 * 
 	 * @since vecmath 1.5
 	 */
@@ -3008,6 +3067,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 */
 	public final void setM10(double m101) {
 		this.m10 = m101;
+		this.isIdentity = null;
 	}
 
 	/**
@@ -3032,6 +3092,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 */
 	public final void setM11(double m111) {
 		this.m11 = m111;
+		this.isIdentity = null;
 	}
 
 	/**
@@ -3056,6 +3117,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 */
 	public final void setM12(double m121) {
 		this.m12 = m121;
+		this.isIdentity = null;
 	}
 
 	/**
@@ -3080,6 +3142,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 */
 	public final void setM20(double m201) {
 		this.m20 = m201;
+		this.isIdentity = null;
 	}
 
 	/**
@@ -3104,6 +3167,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 */
 	public final void setM21(double m211) {
 		this.m21 = m211;
+		this.isIdentity = null;
 	}
 
 	/**
@@ -3128,6 +3192,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 */
 	public final void setM22(double m221) {
 		this.m22 = m221;
+		this.isIdentity = null;
 	}
 
 	/**
@@ -3155,6 +3220,8 @@ public class Matrix3f implements Serializable, Cloneable {
 		this.m20 = tmp_rot[6] * scale;
 		this.m21 = tmp_rot[7] * scale;
 		this.m22 = tmp_rot[8] * scale;
+
+		this.isIdentity = null;
 	}
 	
 	/**
@@ -3220,62 +3287,66 @@ public class Matrix3f implements Serializable, Cloneable {
 		this.m21 = tmp_rot[7];
 		this.m22 = tmp_rot[8];
 
+		this.isIdentity = null;
 	}
 
 	/** Set this matrix with the covariance matrix's elements for the given
 	 * set of tuples.
 	 * 
+	 * @param result the mean of the tuples.
 	 * @param tuples
-	 * @return the mean of the tuples.
+	 * @return <code>true</code> if the cov matrix is computed.
 	 */
-	public final Vector3f cov(Vector3D... tuples) {
-		return cov(Arrays.asList(tuples));
+	public final boolean cov(Vector3D result, Vector3D... tuples) {
+		return cov(result, Arrays.asList(tuples));
 	}
 
 	/** Set this matrix with the covariance matrix's elements for the given
 	 * set of tuples.
 	 * 
+	 * @param result the mean of the tuples.
 	 * @param tuples
-	 * @return the mean of the tuples.
+	 * @return <code>true</code> if the cov matrix is computed.
 	 */
-	public final Vector3f cov(Point3D... tuples) {
-		return cov(Arrays.asList(tuples));
+	public final boolean  cov(Vector3D result, Point3D... tuples) {
+		return cov(result, Arrays.asList(tuples));
 	}
 
 	/** Set this matrix with the covariance matrix's elements for the given
 	 * set of tuples.
 	 * 
+	 * @param result the mean of the tuples.
 	 * @param tuples
-	 * @return the mean of the tuples.
+	 * @return <code>true</code> if the cov matrix is computed.
 	 */
-	public Vector3f cov(Iterable<? extends Tuple3D<?>> tuples) {
+	public boolean cov(Vector3D result, Iterable<? extends Tuple3D<?>> tuples) {
 		setZero();
 
-		// Compute the mean m
-		Vector3f m = new Vector3f();
+		// Compute the mean m and set result with it.
+		result.set(0, 0, 0);
 		int count = 0;
 		for(Tuple3D<?> p : tuples) {
-			m.add(p.getX(), p.getY(), p.getZ());
+			result.add(p.getX(), p.getY(), p.getZ());
 			++count;
 		}
 
-		if (count==0) return null;
+		if (count==0) return false;
 
-		m.scale(1f/count);
+		result.scale(1./count);
 
 		// Compute the covariance term [Gottshalk2000]
 		// c_ij = sum(p'_i * p'_j) / n
 		// c_ij = sum((p_i - m_i) * (p_j - m_j)) / n
 		for(Tuple3D<?> p : tuples) {
-			this.m00 += (p.getX() - m.getX()) * (p.getX() - m.getX());
-			this.m01 += (p.getX() - m.getX()) * (p.getY() - m.getY()); // same as m10
-			this.m02 += (p.getX() - m.getX()) * (p.getZ() - m.getZ()); // same as m20
+			this.m00 += (p.getX() - result.getX()) * (p.getX() - result.getX());
+			this.m01 += (p.getX() - result.getX()) * (p.getY() - result.getY()); // same as m10
+			this.m02 += (p.getX() - result.getX()) * (p.getZ() - result.getZ()); // same as m20
 			//cov.m10 += (p.getY() - m.getY()) * (p.getX() - m.getX()); // same as m01
-			this.m11 += (p.getY() - m.getY()) * (p.getY() - m.getY());
-			this.m12 += (p.getY() - m.getY()) * (p.getZ() - m.getZ()); // same as m21
+			this.m11 += (p.getY() - result.getY()) * (p.getY() - result.getY());
+			this.m12 += (p.getY() - result.getY()) * (p.getZ() - result.getZ()); // same as m21
 			//cov.m20 += (p.getZ() - m.getZ()) * (p.getX() - m.getX()); // same as m02
 			//cov.m21 += (p.getZ() - m.getZ()) * (p.getY() - m.getY()); // same as m12
-			this.m22 += (p.getZ() - m.getZ()) * (p.getZ() - m.getZ());
+			this.m22 += (p.getZ() - result.getZ()) * (p.getZ() - result.getZ());
 		}
 
 		this.m00 /= count;
@@ -3288,7 +3359,9 @@ public class Matrix3f implements Serializable, Cloneable {
 		this.m21 = this.m12;
 		this.m22 /= count;
 
-		return m;
+		this.isIdentity = null;
+
+		return true;
 	}
 
 	/** Replies if the matrix is symmetric.
@@ -3383,7 +3456,6 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * @return the eigenvalues which are corresponding to the <var>eigenVectors</var> columns.
 	 * @see "Mathematics for 3D Game Programming and Computer Graphics, 2nd edition; pp.437." 
 	 */
-	@SuppressWarnings("hiding")
 	public double[] eigenVectorsOfSymmetricMatrix(Matrix3f eigenVectors) {
 		// Copy values up to the diagonal
 		double m11 = getElement(0,0);
@@ -3403,30 +3475,30 @@ public class Matrix3f implements Serializable, Cloneable {
 		for(int a=0; a<JACOBI_MAX_SWEEPS; ++a) {
 
 			// Exit loop if off-diagonal entries are small enough
-			if ((Math.abs(m12) < MathConstants.EPSILON)
-					&& (Math.abs(m13) < MathConstants.EPSILON)
-					&& (Math.abs(m23) < MathConstants.EPSILON)) {
+			if ((MathUtil.isEpsilonZero(m12))
+					&& (MathUtil.isEpsilonZero(m13))
+					&& (MathUtil.isEpsilonZero(m23))) {
 				sweepsConsumed = false;
 				break;
 			}
 
 			// Annihilate (1,2) entry
-			if (m12 != 0f) {
-				u = (m22 - m11) *.5f / m12;
+			if (m12 != 0.) {
+				u = (m22 - m11) *.5 / m12;
 				u2 = u*u;
-				u2p1 = u2 + 1f;
+				u2p1 = u2 + 1.;
 
 				if (u2p1!=u2)
 					t = Math.signum(u) * (Math.sqrt(u2p1) - Math.abs(u));
 				else
-					t = .5f / u;
+					t = .5 / u;
 
-				c = 1f / Math.sqrt(t*t + 1);
+				c = 1. / Math.sqrt(t*t + 1);
 				s = c * t;
 
 				m11 -= t * m12;
 				m22 += t * m12;
-				m12 = 0f;
+				m12 = 0.;
 
 				tmp = c * m13 - s * m23;
 				m23 = s * m13 + c * m23;
@@ -3441,22 +3513,22 @@ public class Matrix3f implements Serializable, Cloneable {
 			}
 
 			// Annihilate (1,3) entry
-			if (m13 != 0f) {
-				u = (m33 - m11) *.5f / m13;
+			if (m13 != 0.) {
+				u = (m33 - m11) *.5 / m13;
 				u2 = u*u;
-				u2p1 = u2 + 1f;
+				u2p1 = u2 + 1.;
 
 				if (u2p1!=u2)
 					t = Math.signum(u) * (Math.sqrt(u2p1) - Math.abs(u));
 				else
-					t = .5f / u;
+					t = .5 / u;
 
-				c = 1f / Math.sqrt(t*t + 1);
+				c = 1. / Math.sqrt(t*t + 1);
 				s = c * t;
 
 				m11 -= t * m13;
 				m33 += t * m13;
-				m13 = 0f;
+				m13 = 0.;
 
 				tmp = c * m12 - s * m23;
 				m23 = s * m12 + c * m23;
@@ -3471,22 +3543,22 @@ public class Matrix3f implements Serializable, Cloneable {
 			}
 
 			// Annihilate (2,3) entry
-			if (m23 != 0f) {
-				u = (m33 - m22) *.5f / m23;
+			if (m23 != 0.) {
+				u = (m33 - m22) *.5 / m23;
 				u2 = u*u;
-				u2p1 = u2 + 1f;
+				u2p1 = u2 + 1.;
 
 				if (u2p1!=u2)
 					t = Math.signum(u) * (Math.sqrt(u2p1) - Math.abs(u));
 				else
-					t = .5f / u;
+					t = .5 / u;
 
-				c = 1f / Math.sqrt(t*t + 1);
+				c = 1. / Math.sqrt(t*t + 1);
 				s = c * t;
 
 				m22 -= t * m23;
 				m33 += t * m23;
-				m23 = 0f;
+				m23 = 0.;
 
 				tmp = c * m12 - s * m13;
 				m13 = s * m12 + c * m13;
@@ -3509,7 +3581,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	
 	/** Replies if the matrix is identity.
 	 * <p>
-	 * This function uses the equal-to-zero test with the error {@link MathConstants#EPSILON}.
+	 * This function uses the equal-to-zero test with the error {@link Math#ulp(double)}.
 	 * 
 	 * @return <code>true</code> if the matrix is identity; <code>false</code> otherwise.
 	 * @see MathUtil#isEpsilonZero(double)
@@ -3517,15 +3589,18 @@ public class Matrix3f implements Serializable, Cloneable {
 	 */
 	@Pure
 	public boolean isIdentity() {
-		return MathUtil.isEpsilonEqual(this.m00, 1f)
-				&& MathUtil.isEpsilonZero(this.m01)
-				&& MathUtil.isEpsilonZero(this.m02)
-				&& MathUtil.isEpsilonZero(this.m10)
-				&& MathUtil.isEpsilonEqual(this.m11, 1f)
-				&& MathUtil.isEpsilonZero(this.m12)
-				&& MathUtil.isEpsilonZero(this.m20)
-				&& MathUtil.isEpsilonZero(this.m21)
-				&& MathUtil.isEpsilonEqual(this.m22, 1f);
+		if (this.isIdentity == null) {
+			this.isIdentity = MathUtil.isEpsilonEqual(this.m00, 1.)
+					&& MathUtil.isEpsilonZero(this.m01)
+					&& MathUtil.isEpsilonZero(this.m02)
+					&& MathUtil.isEpsilonZero(this.m10)
+					&& MathUtil.isEpsilonEqual(this.m11, 1.)
+					&& MathUtil.isEpsilonZero(this.m12)
+					&& MathUtil.isEpsilonZero(this.m20)
+					&& MathUtil.isEpsilonZero(this.m21)
+					&& MathUtil.isEpsilonEqual(this.m22, 1.);
+		}
+		return this.isIdentity.booleanValue();
 	}
 
 }
