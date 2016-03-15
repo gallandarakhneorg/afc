@@ -20,6 +20,7 @@
  */
 package org.arakhne.afc.math.geometry.d2;
 
+import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.matrix.Matrix3f;
 import org.arakhne.afc.math.matrix.SingularMatrixException;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -54,7 +55,7 @@ public class Transform2D extends Matrix3f {
 	 * Constructs a new Transform2D object and sets it to the identity transformation.
 	 */
 	public Transform2D() {
-		super(1f, 0f, 0f, 0f, 1f, 0f, 0f, 0f, 1f);
+		super(1., 0., 0., 0., 1., 0., 0., 0., 1.);
 	}
 
 	/**
@@ -91,7 +92,7 @@ public class Transform2D extends Matrix3f {
 	 *            the [1][2] element
 	 */
 	public Transform2D(double m00, double m01, double m02, double m10, double m11, double m12) {
-		super(m00, m01, m02, m10, m11, m12, 0f, 0f, 1f);
+		super(m00, m01, m02, m10, m11, m12, 0., 0., 1.);
 	}
 
 	@Pure
@@ -215,7 +216,7 @@ public class Transform2D extends Matrix3f {
 	public double getRotation() {
 		double cosAngle = Math.acos(this.m00);
 		double sinAngle = Math.asin(this.m10);
-		return (sinAngle<0f) ? -cosAngle : cosAngle;
+		return (sinAngle<0.) ? -cosAngle : cosAngle;
 	}
 
 	/**
@@ -260,18 +261,18 @@ public class Transform2D extends Matrix3f {
 	public void rotate(double theta) {
 		// Copied from AWT API
 		double sin = Math.sin(theta);
-		if (sin == 1f) {
+		if (sin == 1.) {
 			rotate90();
 		}
-		else if (sin == -1f) {
+		else if (sin == -1.) {
 			rotate270();
 		}
 		else {
 			double cos = Math.cos(theta);
-			if (cos == -1f) {
+			if (cos == -1.) {
 				rotate180();
 			}
-			else if (cos != 1f) {
+			else if (cos != 1.) {
 				double M0, M1;
 				M0 = this.m00;
 				M1 = this.m01;
@@ -601,15 +602,15 @@ public class Transform2D extends Matrix3f {
 
 		this.m00 = cosAngle;
 		this.m01 = -sinAngle;
-		this.m02 = 0f;
+		this.m02 = 0.;
 
 		this.m10 = sinAngle;
 		this.m11 = cosAngle;
-		this.m12 = 0f;
+		this.m12 = 0.;
 
-		this.m20 = 0f;
-		this.m21 = 0f;
-		this.m22 = 1f;
+		this.m20 = 0.;
+		this.m21 = 0.;
+		this.m22 = 1.;
 	}
 
 	/**
@@ -632,17 +633,17 @@ public class Transform2D extends Matrix3f {
 	 * @see #setTranslation(Tuple2D)
 	 */
 	public final void makeTranslationMatrix(double dx, double dy) {
-		this.m00 = 1f;
-		this.m01 = 0f;
+		this.m00 = 1.;
+		this.m01 = 0.;
 		this.m02 = dx;
 
-		this.m10 = 0f;
-		this.m11 = 1f;
+		this.m10 = 0.;
+		this.m11 = 1.;
 		this.m12 = dy;
 
-		this.m20 = 0f;
-		this.m21 = 0f;
-		this.m22 = 1f;
+		this.m20 = 0.;
+		this.m21 = 0.;
+		this.m22 = 1.;
 	}
 
 	/**
@@ -667,16 +668,16 @@ public class Transform2D extends Matrix3f {
 	 */
 	public final void makeScaleMatrix(double sx, double sy) {
 		this.m00 = sx;
-		this.m01 = 0f;
-		this.m02 = 0f;
+		this.m01 = 0.;
+		this.m02 = 0.;
 
-		this.m10 = 0f;
+		this.m10 = 0.;
 		this.m11 = sy;
-		this.m12 = 0f;
+		this.m12 = 0.;
 
-		this.m20 = 0f;
-		this.m21 = 0f;
-		this.m22 = 1f;
+		this.m20 = 0.;
+		this.m21 = 0.;
+		this.m22 = 1.;
 	}
 
 	/**
@@ -700,17 +701,17 @@ public class Transform2D extends Matrix3f {
 	 * @see #setShear(Tuple2D)
 	 */
 	public final void makeShearMatrix(double shx, double shy) {
-		this.m00 = 1f;
+		this.m00 = 1.;
 		this.m01 = shx;
-		this.m02 = 0f;
+		this.m02 = 0.;
 
 		this.m10 = shy;
-		this.m11 = 1f;
-		this.m12 = 0f;
+		this.m11 = 1.;
+		this.m12 = 0.;
 
-		this.m20 = 0f;
-		this.m21 = 0f;
-		this.m22 = 1f;
+		this.m20 = 0.;
+		this.m21 = 0.;
+		this.m22 = 1.;
 	}
 
 	/**
@@ -801,7 +802,7 @@ public class Transform2D extends Matrix3f {
 	 *            the [1][2] element
 	 */
 	public void set(double m00, double m01, double m02, double m10, double m11, double m12) {
-		set(m00, m01, m02, m10, m11, m12, 0f, 0f, 1f);
+		set(m00, m01, m02, m10, m11, m12, 0., 0., 1.);
 	}
 
 	/**
@@ -856,17 +857,17 @@ public class Transform2D extends Matrix3f {
 	 */
 	@Override
 	public void invert(Matrix3f m) {
-		double det = m.m00 * m.m11 - m.m01 * m.m10;
-		if (Math.abs(det) <= Double.MIN_VALUE) {
-			throw new SingularMatrixException("Determinant is "+det); //$NON-NLS-1$
+		double det = m.getM00() * m.getM11() - m.getM01() * m.getM10();
+		if (MathUtil.isEpsilonZero(det)) {
+			throw new SingularMatrixException("Determinant is too small: "+det); //$NON-NLS-1$
 		}
 		set(
-				m.m11 / det, 
-				-m.m01 / det, 
-				(m.m01 * m.m12 - m.m11 * m.m02) / det, 
-				-m.m10 / det, 
-				m.m00 / det, 
-				(m.m10 * m.m02 - m.m00 * m.m12) / det);
+				m.getM11() / det, 
+				-m.getM01() / det, 
+				(m.getM01() * m.getM12() - m.getM11() * m.getM02()) / det, 
+				-m.getM10() / det, 
+				m.getM00() / det, 
+				(m.getM10() * m.getM02() - m.getM00() * m.getM12()) / det);
 	}
 
 }

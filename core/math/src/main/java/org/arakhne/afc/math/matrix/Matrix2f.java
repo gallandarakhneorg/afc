@@ -48,24 +48,27 @@ public class Matrix2f implements Serializable, Cloneable {
 	/**
 	 * The first matrix element in the first row.
 	 */
-	private double m00;
+	protected double m00;
 
 	/**
 	 * The second matrix element in the first row.
 	 */
-	private double m01;
+	protected double m01;
 
 	/**
 	 * The first matrix element in the second row.
 	 */
-	private double m10;
+	protected double m10;
 
 	/**
 	 * The second matrix element in the second row.
 	 */
-	private double m11;
+	protected double m11;
 	
-	private Boolean isIdentity;
+	/** Indicates if the matrix is identity.
+	 * If <code>null</code> the identity flag must be determined.
+	 */
+	protected Boolean isIdentity;
 
 	/**
 	 * Constructs and initializes a Matrix2d from the specified nine values.

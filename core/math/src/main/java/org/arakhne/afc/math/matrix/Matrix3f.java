@@ -49,49 +49,52 @@ public class Matrix3f implements Serializable, Cloneable {
 	/**
 	 * The first matrix element in the first row.
 	 */
-	private double m00;
+	protected double m00;
 
 	/**
 	 * The second matrix element in the first row.
 	 */
-	private double m01;
+	protected double m01;
 
 	/**
 	 * The third matrix element in the first row.
 	 */
-	private double m02;
+	protected double m02;
 
 	/**
 	 * The first matrix element in the second row.
 	 */
-	private double m10;
+	protected double m10;
 
 	/**
 	 * The second matrix element in the second row.
 	 */
-	private double m11;
+	protected double m11;
 
 	/**
 	 * The third matrix element in the second row.
 	 */
-	private double m12;
+	protected double m12;
 
 	/**
 	 * The first matrix element in the third row.
 	 */
-	private double m20;
+	protected double m20;
 
 	/**
 	 * The second matrix element in the third row.
 	 */
-	private double m21;
+	protected double m21;
 
 	/**
 	 * The third matrix element in the third row.
 	 */
-	private double m22;
+	protected double m22;
 	
-	private Boolean isIdentity;
+	/** Indicates if the matrix is identity.
+	 * If <code>null</code> the identity flag must be determined.
+	 */
+	protected Boolean isIdentity;
 
 	/**
 	 * Constructs and initializes a Matrix3f from the specified nine values.

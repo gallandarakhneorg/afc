@@ -42,84 +42,87 @@ public class Matrix4f implements Serializable, Cloneable {
 	/**
 	 * The first matrix element in the first row.
 	 */
-	private double m00;
+	protected double m00;
 
 	/**
 	 * The second matrix element in the first row.
 	 */
-	private double m01;
+	protected double m01;
 
 	/**
 	 * The third matrix element in the first row.
 	 */
-	private double m02;
+	protected double m02;
 
 	/**
 	 * The fourth matrix element in the first row.
 	 */
-	private double m03;
+	protected double m03;
 
 	/**
 	 * The first matrix element in the second row.
 	 */
-	private double m10;
+	protected double m10;
 
 	/**
 	 * The second matrix element in the second row.
 	 */
-	private double m11;
+	protected double m11;
 
 	/**
 	 * The third matrix element in the second row.
 	 */
-	private double m12;
+	protected double m12;
 
 	/**
 	 * The fourth matrix element in the second row.
 	 */
-	private double m13;
+	protected double m13;
 
 	/**
 	 * The first matrix element in the third row.
 	 */
-	private double m20;
+	protected double m20;
 
 	/**
 	 * The second matrix element in the third row.
 	 */
-	private double m21;
+	protected double m21;
 
 	/**
 	 * The third matrix element in the third row.
 	 */
-	private double m22;
+	protected double m22;
 
 	/**
 	 * The fourth matrix element in the third row.
 	 */
-	public double m23;
+	protected double m23;
 
 	/**
 	 * The first matrix element in the fourth row.
 	 */
-	private double m30;
+	protected double m30;
 
 	/**
 	 * The second matrix element in the fourth row.
 	 */
-	private double m31;
+	protected double m31;
 
 	/**
 	 * The third matrix element in the fourth row.
 	 */
-	private double m32;
+	protected double m32;
 
 	/**
 	 * The fourth matrix element in the fourth row.
 	 */
-	private double m33;
+	protected double m33;
 
-	private Boolean isIdentity;
+	/** Indicates if the matrix is identity.
+	 * If <code>null</code> the identity flag must be determined.
+	 */
+	protected Boolean isIdentity;
 	
 	/**
 	 * Constructs and initializes a Matrix4f from the specified nine values.
