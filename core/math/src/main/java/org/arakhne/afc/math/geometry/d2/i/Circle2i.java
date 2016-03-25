@@ -34,16 +34,13 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @since 13.0
  */
 public class Circle2i
-		extends AbstractShape2i<Circle2i>
-		implements Circle2ai<Shape2i<?>, Circle2i, PathElement2i, Point2i, Rectangle2i> {
+extends AbstractShape2i<Circle2i>
+implements Circle2ai<Shape2i<?>, Circle2i, PathElement2i, Point2i, Rectangle2i> {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -7692549016859323986L;
 
 	private int centerX;
-	
+
 	private int centerY;
 
 	private int radius;
@@ -70,26 +67,12 @@ public class Circle2i
 	public Circle2i(int x, int y, int radius) {
 		set(x, y, radius);
 	}
-	
+
 	/** Construct a circle from a circle.
 	 * @param c
 	 */
 	public Circle2i(Circle2ai<?, ?, ?, ?, ?> c) {
 		set(c.getX(), c.getY(), c.getRadius());
-	}
-	
-	@Pure
-	@Override
-	public boolean equals(Object obj) {
-		try {
-			Circle2ai<?, ?, ?, ?, ?> shape = (Circle2ai<?, ?, ?, ?, ?>) obj;
-			return this.centerX == shape.getX()
-					&& this.centerY == shape.getY()
-					&& this.radius == shape.getRadius();
-		} catch (Throwable exception) {
-			//
-		}
-		return false;
 	}
 
 	@Pure

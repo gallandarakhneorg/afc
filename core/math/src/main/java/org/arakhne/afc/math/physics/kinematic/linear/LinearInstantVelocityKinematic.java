@@ -20,8 +20,8 @@
  */
 package org.arakhne.afc.math.physics.kinematic.linear;
 
-import org.arakhne.afc.math.geometry.d2.continuous.Vector2f;
-import org.arakhne.afc.math.geometry.d3.continuous.Vector3f;
+import org.arakhne.afc.math.geometry.d2.Vector2D;
+import org.arakhne.afc.math.geometry.d3.Vector3D;
 import org.arakhne.afc.math.physics.SpeedUnit;
 
 /**
@@ -66,7 +66,7 @@ public interface LinearInstantVelocityKinematic {
 	 * 
 	 * @return the velocity of the object. 
 	 */
-	public Vector3f getLinearVelocity3D();
+	public Vector3D getLinearVelocity3D();
 	
 	/** Replies the instant velocity of the object.
 	 * The velocity is the motion vector with a length
@@ -76,7 +76,7 @@ public interface LinearInstantVelocityKinematic {
 	 * 
 	 * @return the velocity of the object. 
 	 */
-	public Vector2f getLinearVelocity2D();
+	public Vector2D getLinearVelocity2D();
 
 	/** Replies the instant velocity of the object.
 	 * The velocity is the motion vector with a length
@@ -86,7 +86,7 @@ public interface LinearInstantVelocityKinematic {
 	 * 
 	 * @return the velocity of the object. 
 	 */
-	public Vector2f getLinearVelocity1D5();
+	public Vector2D getLinearVelocity1D5();
 
 	/** Replies the instant velocity of the object.
 	 * The velocity is the motion vector with a length

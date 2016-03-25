@@ -20,8 +20,8 @@
  */
 package org.arakhne.afc.math.physics;
 
-import org.arakhne.afc.math.geometry.d2.continuous.Vector2f;
-import org.arakhne.afc.math.geometry.d3.continuous.Vector3f;
+import org.arakhne.afc.math.geometry.d2.Vector2D;
+import org.arakhne.afc.math.geometry.d3.Vector3D;
 
 /**
  * Some physic utility functions.
@@ -145,18 +145,19 @@ public class PhysicsUtil {
 	 * Length of this vector is the acceleration amount. Direction of this
 	 * vector becomes movement direction.
 	 * @param dt is the time.
-	 * @return the motion.
+	 * @param result the motion.
 	 * @see "http://en.wikibooks.org/wiki/High_School_Physics/Velocity"
 	 */
-	public static Vector2f motionNewtonLaw1D5(
-			Vector2f velocity,
+	public static void motionNewtonLaw1D5(
+			Vector2D velocity,
 			double minSpeed,
 			double maxSpeed,
-			Vector2f acceleration, 
+			Vector2D acceleration, 
 			double minAcceleration,
 			double maxAcceleration,
-			double dt) {
-		return engine.motionNewtonLaw1D5(velocity, minSpeed, maxSpeed, acceleration, minAcceleration, maxAcceleration, dt);
+			double dt,
+			Vector2D result) {
+		engine.motionNewtonLaw1D5(velocity, minSpeed, maxSpeed, acceleration, minAcceleration, maxAcceleration, dt, result);
 	}
 
 	/** Compute and replies a motion according
@@ -178,18 +179,19 @@ public class PhysicsUtil {
 	 * Length of this vector is the acceleration amount. Direction of this
 	 * vector becomes movement direction.
 	 * @param dt is the time.
-	 * @return the motion.
+	 * @param result the motion.
 	 * @see "http://en.wikibooks.org/wiki/High_School_Physics/Velocity"
 	 */
-	public static Vector2f motionNewtonLaw2D(
-			Vector2f velocity,
+	public static void motionNewtonLaw2D(
+			Vector2D velocity,
 			double minSpeed,
 			double maxSpeed,
-			Vector2f acceleration, 
+			Vector2D acceleration, 
 			double minAcceleration,
 			double maxAcceleration,
-			double dt) {
-		return engine.motionNewtonLaw2D(velocity, minSpeed, maxSpeed, acceleration, minAcceleration, maxAcceleration, dt);
+			double dt,
+			Vector2D result) {
+		engine.motionNewtonLaw2D(velocity, minSpeed, maxSpeed, acceleration, minAcceleration, maxAcceleration, dt, result);
 	}
 
 	/** Compute and replies a motion according
@@ -211,18 +213,19 @@ public class PhysicsUtil {
 	 * Length of this vector is the acceleration amount. Direction of this
 	 * vector becomes movement direction.
 	 * @param dt is the time.
-	 * @return the motion.
+	 * @param result the motion.
 	 * @see "http://en.wikibooks.org/wiki/High_School_Physics/Velocity"
 	 */
-	public static Vector3f motionNewtonLaw2D5(
-			Vector3f velocity,
+	public static void motionNewtonLaw2D5(
+			Vector3D velocity,
 			double minSpeed,
 			double maxSpeed,
-			Vector3f acceleration, 
+			Vector3D acceleration, 
 			double minAcceleration,
 			double maxAcceleration,
-			double dt) {
-		return engine.motionNewtonLaw2D5(velocity, minSpeed, maxSpeed, acceleration, minAcceleration, maxAcceleration, dt);
+			double dt,
+			Vector3D result) {
+		engine.motionNewtonLaw2D5(velocity, minSpeed, maxSpeed, acceleration, minAcceleration, maxAcceleration, dt, result);
 	}
 	
 	/** Compute and replies a motion according
@@ -244,18 +247,19 @@ public class PhysicsUtil {
 	 * Length of this vector is the acceleration amount. Direction of this
 	 * vector becomes movement direction.
 	 * @param dt is the time.
-	 * @return the motion.
+	 * @param result the motion.
 	 * @see "http://en.wikibooks.org/wiki/High_School_Physics/Velocity"
 	 */
-	public static Vector3f motionNewtonLaw3D(
-			Vector3f velocity,
+	public static void motionNewtonLaw3D(
+			Vector3D velocity,
 			double minSpeed,
 			double maxSpeed,
-			Vector3f acceleration, 
+			Vector3D acceleration, 
 			double minAcceleration,
 			double maxAcceleration,
-			double dt) {
-		return engine.motionNewtonLaw3D(velocity, minSpeed, maxSpeed, acceleration, minAcceleration, maxAcceleration, dt);
+			double dt,
+			Vector3D result) {
+		engine.motionNewtonLaw3D(velocity, minSpeed, maxSpeed, acceleration, minAcceleration, maxAcceleration, dt, result);
 	}
 
 	/** Compute and replies a motion according
@@ -301,14 +305,15 @@ public class PhysicsUtil {
 	 * @param minSpeed is the minimal speed allowed (clamped to 0 if negative).
 	 * @param maxSpeed is the maximal speed allowed.
 	 * @param dt is the time
-	 * @return a motion
+	 * @param result a motion
 	 */
-	public static Vector2f motionNewtonEuler1Law1D5(
-			Vector2f velocity,
+	public static void motionNewtonEuler1Law1D5(
+			Vector2D velocity,
 			double minSpeed,
 			double maxSpeed,
-			double dt) {
-		return engine.motionNewtonEuler1Law1D5(velocity, minSpeed, maxSpeed, dt);
+			double dt,
+			Vector2D result) {
+		engine.motionNewtonEuler1Law1D5(velocity, minSpeed, maxSpeed, dt, result);
 	}
 
 	/** Compute and replies a motion according
@@ -320,14 +325,15 @@ public class PhysicsUtil {
 	 * @param minSpeed is the minimal speed allowed (clamped to 0 if negative).
 	 * @param maxSpeed is the maximal speed allowed.
 	 * @param dt is the time
-	 * @return a motion
+	 * @param result a motion
 	 */
-	public static Vector2f motionNewtonEuler1Law2D(
-			Vector2f velocity,
+	public static void motionNewtonEuler1Law2D(
+			Vector2D velocity,
 			double minSpeed,
 			double maxSpeed,
-			double dt) {
-		return engine.motionNewtonEuler1Law2D(velocity, minSpeed, maxSpeed, dt);
+			double dt,
+			Vector2D result) {
+		engine.motionNewtonEuler1Law2D(velocity, minSpeed, maxSpeed, dt, result);
 	}
 
 	/** Compute and replies a motion according
@@ -339,14 +345,15 @@ public class PhysicsUtil {
 	 * @param minSpeed is the minimal speed allowed (clamped to 0 if negative).
 	 * @param maxSpeed is the maximal speed allowed.
 	 * @param dt is the time
-	 * @return a motion
+	 * @param result a motion
 	 */
-	public static Vector3f motionNewtonEuler1Law2D5(
-			Vector3f velocity,
+	public static void motionNewtonEuler1Law2D5(
+			Vector3D velocity,
 			double minSpeed,
 			double maxSpeed,
-			double dt) {
-		return engine.motionNewtonEuler1Law2D5(velocity, minSpeed, maxSpeed, dt);
+			double dt,
+			Vector3D result) {
+		engine.motionNewtonEuler1Law2D5(velocity, minSpeed, maxSpeed, dt, result);
 	}
 
 	/** Compute and replies a motion according
@@ -358,14 +365,15 @@ public class PhysicsUtil {
 	 * @param minSpeed is the minimal speed allowed (clamped to 0 if negative).
 	 * @param maxSpeed is the maximal speed allowed.
 	 * @param dt is the time
-	 * @return a motion
+	 * @param result a motion
 	 */
-	public static Vector3f motionNewtonEuler1Law3D(
-			Vector3f velocity,
+	public static void motionNewtonEuler1Law3D(
+			Vector3D velocity,
 			double minSpeed,
 			double maxSpeed,
-			double dt) {
-		return engine.motionNewtonEuler1Law3D(velocity, minSpeed, maxSpeed, dt);
+			double dt,
+			Vector3D result) {
+		engine.motionNewtonEuler1Law3D(velocity, minSpeed, maxSpeed, dt, result);
 	}
 
 	/** Replies the new  velocity according to a previous velocity and

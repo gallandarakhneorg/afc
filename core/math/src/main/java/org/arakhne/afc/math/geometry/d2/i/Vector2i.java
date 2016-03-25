@@ -23,6 +23,7 @@ package org.arakhne.afc.math.geometry.d2.i;
 
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
+import org.arakhne.afc.math.geometry.d2.UnmodifiableVector2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -37,17 +38,6 @@ import org.eclipse.xtext.xbase.lib.Pure;
 public class Vector2i extends Tuple2i<Vector2D, Vector2i> implements Vector2D {
 
 	private static final long serialVersionUID = -7228108517874845303L;
-
-	/** Replies the orientation vector, which is corresponding
-	 * to the given angle on a trigonometric circle.
-	 * 
-	 * @param angle is the angle in radians to translate.
-	 * @return the orientation vector which is corresponding to the given angle.
-	 */
-	@Pure
-	public static Vector2i toOrientationVector(double angle) {
-		return new Vector2i(Math.cos(angle), Math.sin(angle));
-	}
 
 	/**
 	 */
@@ -110,14 +100,14 @@ public class Vector2i extends Tuple2i<Vector2D, Vector2i> implements Vector2D {
 
 	@Pure
 	@Override
-	public double dot(Vector2D v1) {
-	      return (this.x * v1.getX() + this.y * v1.getY());
+	public double dot(Vector2D vector) {
+	      return (this.x * vector.getX() + this.y * vector.getY());
 	}
 
 	@Pure
 	@Override
-	public double perp(Vector2D x2) {
-		return this.x * x2.getY() - x2.getX() * this.y;
+	public double perp(Vector2D vector) {
+		return this.x * vector.getY() - vector.getX() * this.y;
 	}
 
 	@Pure
@@ -133,57 +123,57 @@ public class Vector2i extends Tuple2i<Vector2D, Vector2i> implements Vector2D {
 	}
 
 	@Override
-	public void add(Vector2D t1, Vector2D t2) {
-		this.x = (int)(t1.getX() + t2.getX());
-		this.y = (int)(t1.getY() + t2.getY());
+	public void add(Vector2D vector1, Vector2D vector2) {
+		this.x = (int) Math.round(vector1.getX() + vector2.getX());
+		this.y = (int) Math.round(vector1.getY() + vector2.getY());
 	}
 
 	@Override
-	public void add(Vector2D t1) {
-		this.x = (int) (this.x + t1.getX());
-		this.y = (int) (this.y + t1.getY());
+	public void add(Vector2D vector) {
+		this.x = (int) Math.round(this.x + vector.getX());
+		this.y = (int) Math.round(this.y + vector.getY());
 	}
 
 	@Override
-	public void scaleAdd(int s, Vector2D t1, Vector2D t2) {
-		this.x = (int) (s * t1.getX() + t2.getX());
-		this.y = (int) (s * t1.getY() + t2.getY());
+	public void scaleAdd(int scale, Vector2D vector1, Vector2D vector2) {
+		this.x = (int) Math.round(scale * vector1.getX() + vector2.getX());
+		this.y = (int) Math.round(scale * vector1.getY() + vector2.getY());
 	}
 
 	@Override
-	public void scaleAdd(double s, Vector2D t1, Vector2D t2) {
-		this.x = (int) (s * t1.getX() + t2.getX());
-		this.y = (int) (s * t1.getY() + t2.getY());
+	public void scaleAdd(double scale, Vector2D vector1, Vector2D vector2) {
+		this.x = (int) Math.round(scale * vector1.getX() + vector2.getX());
+		this.y = (int) Math.round(scale * vector1.getY() + vector2.getY());
 	}
 
 	@Override
-	public void scaleAdd(int s, Vector2D t1) {
-		this.x = (int) (s * this.x + t1.getX());
-		this.y = (int) (s * this.y + t1.getY());
+	public void scaleAdd(int scale, Vector2D vector) {
+		this.x = (int) Math.round(scale * this.x + vector.getX());
+		this.y = (int) Math.round(scale * this.y + vector.getY());
 	}
 
 	@Override
-	public void scaleAdd(double s, Vector2D t1) {
-		this.x = (int) (s * this.x + t1.getX());
-		this.y = (int) (s * this.y + t1.getY());
+	public void scaleAdd(double scale, Vector2D vector) {
+		this.x = (int) Math.round(scale * this.x + vector.getX());
+		this.y = (int) Math.round(scale * this.y + vector.getY());
 	}
 
 	@Override
-	public void sub(Vector2D t1, Vector2D t2) {
-		this.x = (int) (t1.getX() - t2.getX());
-		this.y = (int) (t1.getY() - t2.getY());
+	public void sub(Vector2D vector1, Vector2D vector2) {
+		this.x = (int) Math.round(vector1.getX() - vector2.getX());
+		this.y = (int) Math.round(vector1.getY() - vector2.getY());
 	}
 
 	@Override
-	public void sub(Point2D t1, Point2D t2) {
-		this.x = (int) (t1.getX() - t2.getX());
-		this.y = (int) (t1.getY() - t2.getY());
+	public void sub(Point2D point1, Point2D point2) {
+		this.x = (int) Math.round(point1.getX() - point2.getX());
+		this.y = (int) Math.round(point1.getY() - point2.getY());
 	}
 
 	@Override
-	public void sub(Vector2D t1) {
-		this.x = (int) (this.x - t1.getX());
-		this.y = (int) (this.y - t1.getY());
+	public void sub(Vector2D vector) {
+		this.x = (int) Math.round(this.x - vector.getX());
+		this.y = (int) Math.round(this.y - vector.getY());
 	}
 
 	@Override
@@ -192,10 +182,10 @@ public class Vector2i extends Tuple2i<Vector2D, Vector2i> implements Vector2D {
 		double l = length();
 		if (l != 0) {
 			double f = nl / l;
-			this.x *= f;
-			this.y *= f;
+			this.x = (int) Math.round(this.x * f);
+			this.y = (int) Math.round(this.y * f);
 		} else {
-			this.x = (int) newLength;
+			this.x = (int) Math.round(newLength);
 			this.y = 0;
 		}
 	}

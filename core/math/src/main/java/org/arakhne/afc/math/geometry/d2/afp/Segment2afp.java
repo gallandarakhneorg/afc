@@ -29,6 +29,7 @@ import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
+import org.arakhne.afc.math.geometry.d2.fp.Point2fp;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Fonctional interface that represented a 2D segment/line on a plane.
@@ -1294,6 +1295,21 @@ public interface Segment2afp<
 		return ensureNoSegmentSegmentWithEndsIntersection(x3, y3, x4, y4, x1, y1, x2, y2).booleanValue();
 	}
 
+	@Pure
+	@Override
+	default boolean equalsToShape(IT shape) {
+		if (shape == null) {
+			return false;
+		}
+		if (shape == this) {
+			return true;
+		}
+		return getX1() == shape.getX1()
+			&& getY1() == shape.getY1()
+			&& getX2() == shape.getX2()
+			&& getY2() == shape.getY2();
+	}
+
 	@Override
 	default boolean isEmpty() {
 		return getX1()==getX2() && getY1()==getY2();
@@ -1307,7 +1323,7 @@ public interface Segment2afp<
 	 * @param y2
 	 */
 	// No default implementation for ensuring atomic change.
-	public void set(double x1, double y1, double x2, double y2);
+	void set(double x1, double y1, double x2, double y2);
 
 	/** Change the line.
 	 * 
@@ -1485,7 +1501,7 @@ public interface Segment2afp<
 	 * @see #createTransformedShape
 	 */
 	default void transform(Transform2D transform) {
-		Point2D p = new FakePoint(getX1(),  getY1());
+		Point2D p = new Point2fp(getX1(),  getY1());
 		transform.transform(p);
 		double x1 = p.getX();
 		double y1 = p.getY();
@@ -1588,6 +1604,7 @@ public interface Segment2afp<
 		return accept;
 	}
 	
+	@Pure
 	@Override
 	default boolean intersects(Circle2afp<?, ?, ?, ?, ?> s) {
 		return Circle2afp.intersectsCircleSegment(
@@ -1597,6 +1614,7 @@ public interface Segment2afp<
 				getX2(), getY2());
 	}
 	
+	@Pure
 	@Override
 	default boolean intersects(Ellipse2afp<?, ?, ?, ?, ?> s) {
 		return Ellipse2afp.intersectsEllipseSegment(
@@ -1606,6 +1624,7 @@ public interface Segment2afp<
 				getX2(), getY2());
 	}
 	
+	@Pure
 	@Override
 	default boolean intersects(OrientedRectangle2afp<?, ?, ?, ?, ?> s) {
 		return OrientedRectangle2afp.intersectsOrientedRectangleSegment(
@@ -1615,6 +1634,7 @@ public interface Segment2afp<
 				getX1(), getY1(), getX2(), getY2());
 	}
 	
+	@Pure
 	@Override
 	default boolean intersects(Rectangle2afp<?, ?, ?, ?, ?> s) {
 		return Rectangle2afp.intersectsRectangleSegment(
@@ -1624,11 +1644,13 @@ public interface Segment2afp<
 				getX2(), getY2());
 	}
 	
+	@Pure
 	@Override
 	default boolean intersects(RoundRectangle2afp<?, ?, ?, ?, ?> s) {
 		return s.intersects(this);
 	}
 	
+	@Pure
 	@Override
 	default boolean intersects(Segment2afp<?, ?, ?, ?, ?> s) {
 		return intersectsSegmentSegmentWithEnds(
@@ -1638,6 +1660,7 @@ public interface Segment2afp<
 				s.getX2(), s.getY2());
 	}
 	
+	@Pure
 	@Override
 	default boolean intersects(PathIterator2afp<?> iterator) {
 		int mask = (iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2);

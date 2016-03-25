@@ -45,7 +45,7 @@ public class Point2fTest extends AbstractMathTestCase {
 
 	@Test
 	public void distancePointPoint() {
-		Point2D point = new Point2f();
+		Point2D point = new Point2fx();
 		
 		assertEpsilonEquals(0,FunctionalPoint2D.distancePointPoint(0, 0, 0, 0));
 		assertEpsilonEquals(Math.sqrt(5),FunctionalPoint2D.distancePointPoint(0, 0, 1, 2));
@@ -54,7 +54,7 @@ public class Point2fTest extends AbstractMathTestCase {
 
 	@Test
 	public void distanceSquaredPointPoint() {
-		Point2D point = new Point2f();
+		Point2D point = new Point2fx();
 		
 		assertEpsilonEquals(0,FunctionalPoint2D.distanceSquaredPointPoint(0, 0, 0, 0));
 		assertEpsilonEquals(5,FunctionalPoint2D.distanceSquaredPointPoint(0, 0, 1, 2));
@@ -63,7 +63,7 @@ public class Point2fTest extends AbstractMathTestCase {
 
 	@Test
 	public void distanceL1PointPoint() {
-		Point2f point = new Point2f();
+		Point2fx point = new Point2fx();
 		
 		assertEpsilonEquals(4,FunctionalPoint2D.distanceL1PointPoint(1.0, 2.0, 3.0, 0));
 		assertEpsilonEquals(0,FunctionalPoint2D.distanceL1PointPoint(1.0, 2.0, 1 ,2));
@@ -73,7 +73,7 @@ public class Point2fTest extends AbstractMathTestCase {
 
 	@Test
 	public void distanceLinfPointPoint() {
-		Point2f point = new Point2f();
+		Point2fx point = new Point2fx();
 		
 		assertEpsilonEquals(2,FunctionalPoint2D.distanceLinfPointPoint(1.0,2.0,3.0,0));
 		assertEpsilonEquals(0,FunctionalPoint2D.distanceLinfPointPoint(1.0,2.0,1,2));
@@ -83,7 +83,7 @@ public class Point2fTest extends AbstractMathTestCase {
 
 	@Test
 	public void testClone() {
-		Point2D point = new Point2f(1,2);
+		Point2D point = new Point2fx(1,2);
 		Point2D pointClone = point.clone();
 		
 		assertTrue(point.equals(pointClone));
@@ -92,9 +92,9 @@ public class Point2fTest extends AbstractMathTestCase {
 	@Test
 	public void distanceSquared() {
 		int tab[] = {1, 2};
-		Point2f point = new Point2f(0, 0);
-		Point2f point2 = new Point2f(tab);
-		Point2f point3 = new Point2f(1, 1);
+		Point2fx point = new Point2fx(0, 0);
+		Point2fx point2 = new Point2fx(tab);
+		Point2fx point3 = new Point2fx(1, 1);
 				
 		assertEpsilonEquals(0,point.distanceSquared(point));
 		assertEpsilonEquals(5,point.distanceSquared(point2));
@@ -104,9 +104,9 @@ public class Point2fTest extends AbstractMathTestCase {
 	@Test
 	public void distance() {
 		int tab[] = {1, 2};
-		Point2f point = new Point2f(0, 0);
-		Point2f point2 = new Point2f(tab);
-		Point2f point3 = new Point2f(1, 1);
+		Point2fx point = new Point2fx(0, 0);
+		Point2fx point2 = new Point2fx(tab);
+		Point2fx point3 = new Point2fx(1, 1);
 				
 		assertEpsilonEquals(0,point.distance(point));
 		assertEpsilonEquals(2,point.distance(point2));
@@ -115,9 +115,9 @@ public class Point2fTest extends AbstractMathTestCase {
 
 	@Test
 	public void distanceL1() {
-		Point2f point = new Point2f(1.0, 2.0);
-		Point2f point2 = new Point2f(3.0, 0);
-		Point2f point3 = new Point2f(-1, 0);
+		Point2fx point = new Point2fx(1.0, 2.0);
+		Point2fx point2 = new Point2fx(3.0, 0);
+		Point2fx point3 = new Point2fx(-1, 0);
 		
 		assertEpsilonEquals(4,point.distanceL1(point2));
 		assertEpsilonEquals(0,point.distanceL1(point));
@@ -126,9 +126,9 @@ public class Point2fTest extends AbstractMathTestCase {
 
 	@Test
 	public void distanceLinf() {
-		Point2f point = new Point2f(1.0, 2.0);
-		Point2f point2 = new Point2f(3.0, 0);
-		Point2f point3 = new Point2f(-1, 0);
+		Point2fx point = new Point2fx(1.0, 2.0);
+		Point2fx point2 = new Point2fx(3.0, 0);
+		Point2fx point3 = new Point2fx(-1, 0);
 		
 		assertEpsilonEquals(2,point.distanceLinf(point2));
 		assertEpsilonEquals(0,point.distanceLinf(point));
@@ -138,9 +138,9 @@ public class Point2fTest extends AbstractMathTestCase {
 	@Test
 	public void getDistanceSquared() {
 		int tab[] = {1, 2};
-		Point2f point = new Point2f(0, 0);
-		Point2f point2 = new Point2f(tab);
-		Point2f point3 = new Point2f(1, 1);
+		Point2fx point = new Point2fx(0, 0);
+		Point2fx point2 = new Point2fx(tab);
+		Point2fx point3 = new Point2fx(1, 1);
 				
 		assertEpsilonEquals(0,point.getDistanceSquared(point));
 		assertEpsilonEquals(5,point.getDistanceSquared(point2));
@@ -150,9 +150,9 @@ public class Point2fTest extends AbstractMathTestCase {
 	@Test
 	public void getDistance() {
 		int tab[] = {1, 2};
-		Point2f point = new Point2f(0, 0);
-		Point2f point2 = new Point2f(tab);
-		Point2f point3 = new Point2f(1, 1);
+		Point2fx point = new Point2fx(0, 0);
+		Point2fx point2 = new Point2fx(tab);
+		Point2fx point3 = new Point2fx(1, 1);
 				
 		assertEpsilonEquals(0,point.getDistanceSquared(point));
 		assertEpsilonEquals(Math.sqrt(5),point.getDistance(point2));
@@ -161,9 +161,9 @@ public class Point2fTest extends AbstractMathTestCase {
 
 	@Test
 	public void getDistanceL1() {
-		Point2f point = new Point2f(1.0, 2.0);
-		Point2f point2 = new Point2f(3.0, 0);
-		Point2f point3 = new Point2f(-1, 0);
+		Point2fx point = new Point2fx(1.0, 2.0);
+		Point2fx point2 = new Point2fx(3.0, 0);
+		Point2fx point3 = new Point2fx(-1, 0);
 		
 		assertEpsilonEquals(4,point.getDistanceL1(point2));
 		assertEpsilonEquals(0,point.getDistanceL1(point));
@@ -172,9 +172,9 @@ public class Point2fTest extends AbstractMathTestCase {
 
 	@Test
 	public void getDistanceLinf() {
-		Point2f point = new Point2f(1.0, 2.0);
-		Point2f point2 = new Point2f(3.0, 0);
-		Point2f point3 = new Point2f(-1, 0);
+		Point2fx point = new Point2fx(1.0, 2.0);
+		Point2fx point2 = new Point2fx(3.0, 0);
+		Point2fx point3 = new Point2fx(-1, 0);
 		
 		assertEpsilonEquals(2,point.getDistanceLinf(point2));
 		assertEpsilonEquals(0,point.getDistanceLinf(point));
@@ -183,189 +183,189 @@ public class Point2fTest extends AbstractMathTestCase {
 
 	@Test
 	public void addPoint2DVector2D() {
-		Point2f point = new Point2f(0,0);
-		Point2f point2 = new Point2f(-1,0);
-		Vector2f vector = new Vector2f(1.2,1.2);
-		Vector2f vector2 = new Vector2f(2.0,1.5);
-		Point2f newPoint = new Point2f(0.0,0.0);
+		Point2fx point = new Point2fx(0,0);
+		Point2fx point2 = new Point2fx(-1,0);
+		Vector2fx vector = new Vector2fx(1.2,1.2);
+		Vector2fx vector2 = new Vector2fx(2.0,1.5);
+		Point2fx newPoint = new Point2fx(0.0,0.0);
 		
 		newPoint.add(point,vector);
-		assertTrue(newPoint.equals(new Point2f(1.2,1.2)));
+		assertTrue(newPoint.equalsToPathIterator(new Point2fx(1.2,1.2)));
 		
 		newPoint.add(point2,vector2);
-		assertTrue(newPoint.equals(new Point2f(1.0,1.5)));
+		assertTrue(newPoint.equalsToPathIterator(new Point2fx(1.0,1.5)));
 	}
 
 	@Test
 	public void addVector2DPoint2D() {
-		Point2f point = new Point2f(0,0);
-		Point2f point2 = new Point2f(-1,0);
-		Vector2f vector = new Vector2f(1.2,1.2);
-		Vector2f vector2 = new Vector2f(2.0,1.5);
-		Point2f newPoint = new Point2f(0.0,0.0);
+		Point2fx point = new Point2fx(0,0);
+		Point2fx point2 = new Point2fx(-1,0);
+		Vector2fx vector = new Vector2fx(1.2,1.2);
+		Vector2fx vector2 = new Vector2fx(2.0,1.5);
+		Point2fx newPoint = new Point2fx(0.0,0.0);
 		
 		newPoint.add(vector,point);
-		assertTrue(newPoint.equals(new Point2f(1.2,1.2)));
+		assertTrue(newPoint.equalsToPathIterator(new Point2fx(1.2,1.2)));
 		
 		newPoint.add(vector2,point2);
-		assertTrue(newPoint.equals(new Point2f(1.0,1.5))); 
+		assertTrue(newPoint.equalsToPathIterator(new Point2fx(1.0,1.5))); 
 	}
 
 	@Test
 	public void addVector2D() {
-		Point2f point = new Point2f(0,0);
-		Point2f point2 = new Point2f(-1,0);
-		Vector2f vector = new Vector2f(1.2,1.2);
-		Vector2f vector2 = new Vector2f(2.0,1.5);
-		Point2f newPoint = new Point2f(0.0,0.0);
+		Point2fx point = new Point2fx(0,0);
+		Point2fx point2 = new Point2fx(-1,0);
+		Vector2fx vector = new Vector2fx(1.2,1.2);
+		Vector2fx vector2 = new Vector2fx(2.0,1.5);
+		Point2fx newPoint = new Point2fx(0.0,0.0);
 		
 		point.add(vector);
-		assertTrue(point.equals(new Point2f(1.2,1.2)));
+		assertTrue(point.equalsToPathIterator(new Point2fx(1.2,1.2)));
 		
 		point2.add(vector2);
-		assertTrue(point2.equals(new Point2f(1.0,1.5)));
+		assertTrue(point2.equalsToPathIterator(new Point2fx(1.0,1.5)));
 	}
 
 	@Test
 	public void scaleAddIntVector2DPoint2D() {
-		Point2f point = new Point2f(-1,0);
-		Vector2f vector = new Vector2f(1.0,1.2);
-		Point2f newPoint = new Point2f(0.0,0.0);
+		Point2fx point = new Point2fx(-1,0);
+		Vector2fx vector = new Vector2fx(1.0,1.2);
+		Point2fx newPoint = new Point2fx(0.0,0.0);
 		
 		newPoint.scaleAdd(0,vector,point);
-		assertTrue(newPoint.equals(new Point2f(-1,0)));
+		assertTrue(newPoint.equalsToPathIterator(new Point2fx(-1,0)));
 		
 		newPoint.scaleAdd(1,vector,point);
-		assertTrue(newPoint.equals(new Point2f(0.0,1.2)));
+		assertTrue(newPoint.equalsToPathIterator(new Point2fx(0.0,1.2)));
 		
 		newPoint.scaleAdd(-1,vector,point);
-		assertTrue(newPoint.equals(new Point2f(-2.0,-1.2)));
+		assertTrue(newPoint.equalsToPathIterator(new Point2fx(-2.0,-1.2)));
 		
 		newPoint.scaleAdd(10,vector,point);
-		assertTrue(newPoint.equals(new Point2f(9,12)));
+		assertTrue(newPoint.equalsToPathIterator(new Point2fx(9,12)));
 	}
 
 	@Test
 	public void scaleAddDoubleVector2DPoint2D() {
-		Point2f point = new Point2f(1,0);
-		Vector2f vector = new Vector2f(-1,1);
-		Point2f newPoint = new Point2f(0.0,0.0);
+		Point2fx point = new Point2fx(1,0);
+		Vector2fx vector = new Vector2fx(-1,1);
+		Point2fx newPoint = new Point2fx(0.0,0.0);
 		
 		newPoint.scaleAdd(0.0,vector,point);
-		assertTrue(newPoint.equals(new Point2f(1,0)));
+		assertTrue(newPoint.equalsToPathIterator(new Point2fx(1,0)));
 		
 		newPoint.scaleAdd(1.5,vector,point);
-		assertTrue(newPoint.equals(new Point2f(-0.5,1.5)));
+		assertTrue(newPoint.equalsToPathIterator(new Point2fx(-0.5,1.5)));
 		
 		newPoint.scaleAdd(-1.5,vector,point);
-		assertTrue(newPoint.equals(new Point2f(2.5,-1.5)));
+		assertTrue(newPoint.equalsToPathIterator(new Point2fx(2.5,-1.5)));
 		
 		newPoint.scaleAdd(0.1,vector,point);
-		assertTrue(newPoint.equals(new Point2f(0.9,0.1)));
+		assertTrue(newPoint.equalsToPathIterator(new Point2fx(0.9,0.1)));
 		
 	}
 
 	@Test
 	public void scaleAddIntPoint2DVector2D() {
-		Point2f point = new Point2f(1.0,1.2);
-		Vector2f vector = new Vector2f(-1,0);
-		Point2f newPoint = new Point2f(0.0,0.0);
+		Point2fx point = new Point2fx(1.0,1.2);
+		Vector2fx vector = new Vector2fx(-1,0);
+		Point2fx newPoint = new Point2fx(0.0,0.0);
 		
 		newPoint.scaleAdd(0,point,vector);
-		assertTrue(newPoint.equals(new Point2f(-1,0)));
+		assertTrue(newPoint.equalsToPathIterator(new Point2fx(-1,0)));
 		
 		newPoint.scaleAdd(1,point,vector);
-		assertTrue(newPoint.equals(new Point2f(0.0,1.2)));
+		assertTrue(newPoint.equalsToPathIterator(new Point2fx(0.0,1.2)));
 		
 		newPoint.scaleAdd(-1,point,vector);
-		assertTrue(newPoint.equals(new Point2f(-2.0,-1.2)));
+		assertTrue(newPoint.equalsToPathIterator(new Point2fx(-2.0,-1.2)));
 		
 		newPoint.scaleAdd(10,point,vector);
-		assertTrue(newPoint.equals(new Point2f(9,12)));
+		assertTrue(newPoint.equalsToPathIterator(new Point2fx(9,12)));
 	}
 
 	@Test
 	public void scaleAddDoublePoint2DVector2D() {
-		Point2f point = new Point2f(-1,1);
-		Vector2f vector = new Vector2f(1,0);
-		Point2f newPoint = new Point2f(0.0,0.0);
+		Point2fx point = new Point2fx(-1,1);
+		Vector2fx vector = new Vector2fx(1,0);
+		Point2fx newPoint = new Point2fx(0.0,0.0);
 		
 		newPoint.scaleAdd(0.0,point,vector);
-		assertTrue(newPoint.equals(new Point2f(1,0)));
+		assertTrue(newPoint.equalsToPathIterator(new Point2fx(1,0)));
 		
 		newPoint.scaleAdd(1.5,point,vector);
-		assertTrue(newPoint.equals(new Point2f(-0.5,1.5)));
+		assertTrue(newPoint.equalsToPathIterator(new Point2fx(-0.5,1.5)));
 		
 		newPoint.scaleAdd(-1.5,point,vector);
-		assertTrue(newPoint.equals(new Point2f(2.5,-1.5)));
+		assertTrue(newPoint.equalsToPathIterator(new Point2fx(2.5,-1.5)));
 		
 		newPoint.scaleAdd(0.1,point,vector);
-		assertTrue(newPoint.equals(new Point2f(0.9,0.1)));
+		assertTrue(newPoint.equalsToPathIterator(new Point2fx(0.9,0.1)));
 	}
 
 	@Test
 	public void scaleAddIntVector2D() {
-		Vector2f vector = new Vector2f(1,0);
-		Point2f newPoint = new Point2f(0,0);
+		Vector2fx vector = new Vector2fx(1,0);
+		Point2fx newPoint = new Point2fx(0,0);
 		
 		newPoint.scaleAdd(0,vector);
-		assertTrue(newPoint.equals(new Point2f(1,0)));
+		assertTrue(newPoint.equalsToPathIterator(new Point2fx(1,0)));
 		
 		newPoint.scaleAdd(1,vector);
-		assertTrue(newPoint.equals(new Point2f(2,0)));
+		assertTrue(newPoint.equalsToPathIterator(new Point2fx(2,0)));
 		
 		newPoint.scaleAdd(-10,vector);
-		assertTrue(newPoint.equals(new Point2f(-19,0)));
+		assertTrue(newPoint.equalsToPathIterator(new Point2fx(-19,0)));
 	}
 
 	@Test
 	public void scaleAddDoubleVector2D() {
-		Vector2f vector = new Vector2f(1,0);
-		Point2f newPoint = new Point2f(0.0,0.0);
+		Vector2fx vector = new Vector2fx(1,0);
+		Point2fx newPoint = new Point2fx(0.0,0.0);
 		
 		newPoint.scaleAdd(0.5,vector);
-		assertTrue(newPoint.equals(new Point2f(1,0)));
+		assertTrue(newPoint.equalsToPathIterator(new Point2fx(1,0)));
 		
 		newPoint.scaleAdd(1.2,vector);
-		assertTrue(newPoint.equals(new Point2f(2.2,0.0)));
+		assertTrue(newPoint.equalsToPathIterator(new Point2fx(2.2,0.0)));
 		
 		newPoint.scaleAdd(-10,vector);
-		assertTrue(newPoint.equals(new Point2f(-21,0)));
+		assertTrue(newPoint.equalsToPathIterator(new Point2fx(-21,0)));
 	}
 
 	@Test
 	public void subPoint2DVector2D() {
-		Point2f point = new Point2f(0,0);
-		Point2f point2 = new Point2f(1,0);
-		Vector2f vector = new Vector2f(-1.2,-1.2);
-		Vector2f vector2 = new Vector2f(2.0,1.5);
-		Point2f newPoint = new Point2f(0.0,0.0);
+		Point2fx point = new Point2fx(0,0);
+		Point2fx point2 = new Point2fx(1,0);
+		Vector2fx vector = new Vector2fx(-1.2,-1.2);
+		Vector2fx vector2 = new Vector2fx(2.0,1.5);
+		Point2fx newPoint = new Point2fx(0.0,0.0);
 		
 		newPoint.sub(point,vector);
-		assertTrue(newPoint.equals(new Point2f(1.2,1.2)));
+		assertTrue(newPoint.equalsToPathIterator(new Point2fx(1.2,1.2)));
 		
 		newPoint.sub(point2,vector2);
-		assertTrue(newPoint.equals(new Point2f(-1.0,-1.5))); 
+		assertTrue(newPoint.equalsToPathIterator(new Point2fx(-1.0,-1.5))); 
 	}
 
 	@Test
 	public void subVector2D() {
-		Point2f point = new Point2f(0,0);
-		Point2f point2 = new Point2f(-1,0);
-		Vector2f vector = new Vector2f(-1.2,-1.2);
-		Vector2f vector2 = new Vector2f(-2.0,-1.5);
-		Point2f newPoint = new Point2f(0.0,0.0);
+		Point2fx point = new Point2fx(0,0);
+		Point2fx point2 = new Point2fx(-1,0);
+		Vector2fx vector = new Vector2fx(-1.2,-1.2);
+		Vector2fx vector2 = new Vector2fx(-2.0,-1.5);
+		Point2fx newPoint = new Point2fx(0.0,0.0);
 		
 		point.sub(vector);
-		assertTrue(point.equals(new Point2f(1.2,1.2)));
+		assertTrue(point.equalsToPathIterator(new Point2fx(1.2,1.2)));
 		
 		point2.sub(vector2);
-		assertTrue(point2.equals(new Point2f(1.0,1.5)));
+		assertTrue(point2.equalsToPathIterator(new Point2fx(1.0,1.5)));
 	}
 
 	@Test
 	public void isCollinearPointsDoubleDoubleDoubleDoubleDoubleDouble() {
-		Point2f point = new Point2f();
+		Point2fx point = new Point2fx();
 		
 		assertTrue(FunctionalPoint2D.isCollinearPoints(0, 0, 0, 0, 0, 0));
 		assertTrue(FunctionalPoint2D.isCollinearPoints(-6, -4, -1, 3, 4, 10));

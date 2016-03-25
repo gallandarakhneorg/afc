@@ -21,17 +21,12 @@
 package org.arakhne.afc.math.geometry.coordinatesystem;
 
 import org.arakhne.afc.math.MathUtil;
-import org.arakhne.afc.math.geometry.d2.FunctionalVector2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
-import org.arakhne.afc.math.geometry.d2.continuous.Point2f;
-import org.arakhne.afc.math.geometry.d2.continuous.Transform2D;
-import org.arakhne.afc.math.geometry.d2.continuous.Vector2f;
+import org.arakhne.afc.math.geometry.d2.Transform2D;
+import org.arakhne.afc.math.geometry.d2.Vector2D;
+import org.arakhne.afc.math.geometry.d2.afp.FakePoint2afp;
 import org.arakhne.afc.math.geometry.d3.Point3D;
-import org.arakhne.afc.math.geometry.d3.continuous.Point3f;
-import org.arakhne.afc.math.geometry.d3.continuous.Quaternion;
-import org.arakhne.afc.math.geometry.d3.continuous.Transform3D;
-import org.arakhne.afc.math.geometry.d3.continuous.Tuple3f;
-import org.arakhne.afc.math.geometry.d3.continuous.Vector3f;
+import org.arakhne.afc.math.geometry.d3.Vector3D;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
@@ -83,6 +78,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 13.0
  */
 public enum CoordinateSystem3D implements CoordinateSystem {
 
@@ -338,8 +334,8 @@ public enum CoordinateSystem3D implements CoordinateSystem {
 	private void toPivot(Transform3D trans) {
 		if (this.system!=PIVOT_SYSTEM) {
 			double[] factors = fromSystemIndex(this.system);
-			double ty = trans.m13 * factors[0] + trans.m23* factors[1];
-			double tz = trans.m13 * factors[2] + trans.m23* factors[3];
+			double ty = trans.getM13() * factors[0] + trans.getM23()* factors[1];
+			double tz = trans.getM13() * factors[2] + trans.getM23()* factors[3];
 			trans.setTranslation(trans.getTranslationX(), ty, tz);
 			Quaternion r = trans.getRotation();
 			Vector3f vector = r.getAxis();
@@ -504,16 +500,7 @@ public enum CoordinateSystem3D implements CoordinateSystem {
 		}
 
 		// Transform the given vectors to align V along (1,0,0)
-		Transform3D mat = new Transform3D();
-		mat.m00 = vx;
-		mat.m10 = lx;
-		mat.m20 = ux;
-		mat.m01 = vy;
-		mat.m11 = ly;
-		mat.m21 = uy;
-		mat.m02 = vz;
-		mat.m12 = lz;
-		mat.m22 = uz;
+		Transform3D mat = new Transform3D(vx, vy, vz, 0, lx, ly, lz, 0, ux, uy, uz, 0);
 
 		Vector3f v1 = new Vector3f(vx, vy, vz);
 		mat.transform(v1);
@@ -573,16 +560,7 @@ public enum CoordinateSystem3D implements CoordinateSystem {
 		}
 
 		// Transform the given vectors to align V along (1,0,0)
-		Transform3D mat = new Transform3D();
-		mat.m00 = vx;
-		mat.m10 = lx;
-		mat.m20 = ux;
-		mat.m01 = vy;
-		mat.m11 = ly;
-		mat.m21 = uy;
-		mat.m02 = vz;
-		mat.m12 = lz;
-		mat.m22 = uz;
+		Transform3D mat = new Transform3D(vx, vy, vz, 0, lx, ly, lz, 0, ux, uy, uz, 0);
 
 		Vector3f v1 = new Vector3f(vx, vy, vz);
 		mat.transform(v1);
@@ -803,37 +781,19 @@ public enum CoordinateSystem3D implements CoordinateSystem {
 	 * to the specified coordinate system.
 	 * 
 	 * @param point is the point to convert
-	 * @return the 2D point
+	 * @param result the 2D point.
 	 */
 	@Pure
-	public Point2fx toCoordinateSystem2D(Point3f point) {
+	public void toCoordinateSystem2D(Point3D point, Point2D result) {
 		switch(this) {
 		case XYZ_RIGHT_HAND:
 		case XYZ_LEFT_HAND:
-			return new Point2fx(point.getX(), point.getY());
+			result.set(point.getX(), point.getY());
+			break;
 		case XZY_LEFT_HAND:
 		case XZY_RIGHT_HAND:
-			return new Point2fx(point.getX(), point.getZ());
-		default:
-			throw new CoordinateSystemNotFoundException();
-		}
-	}
-
-	/** Convert the specified point into from the current coordinate system
-	 * to the specified coordinate system.
-	 * 
-	 * @param point is the point to convert
-	 * @return the 2D point
-	 */
-	@Pure
-	public Point2D toCoordinateSystem2D(Point3D point) {
-		switch(this) {
-		case XYZ_RIGHT_HAND:
-		case XYZ_LEFT_HAND:
-			return new Point2fx(point.getX(), point.getY());
-		case XZY_LEFT_HAND:
-		case XZY_RIGHT_HAND:
-			return new Point2fx(point.getX(), point.getZ());
+			result.set(point.getX(), point.getZ());
+			break;
 		default:
 			throw new CoordinateSystemNotFoundException();
 		}
@@ -843,17 +803,19 @@ public enum CoordinateSystem3D implements CoordinateSystem {
 	 * to the specified coordinate system.
 	 * 
 	 * @param vector is the vector to convert
-	 * @return the 2D vector
+	 * @param result the 2D vector
 	 */
 	@Pure
-	public Vector2fx toCoordinateSystem2D(Vector3f vector) {
+	public void toCoordinateSystem2D(Vector3D vector, Vector2D result) {
 		switch(this) {
 		case XYZ_RIGHT_HAND:
 		case XYZ_LEFT_HAND:
-			return new Vector2fx(vector.getX(), vector.getY());
+			result.set(vector.getX(), vector.getY());
+			break;
 		case XZY_LEFT_HAND:
 		case XZY_RIGHT_HAND:
-			return new Vector2fx(vector.getX(), vector.getZ());
+			result.set(vector.getX(), vector.getZ());
+			break;
 		default:
 			throw new CoordinateSystemNotFoundException();
 		}
@@ -863,17 +825,18 @@ public enum CoordinateSystem3D implements CoordinateSystem {
 	 * to the specified coordinate system.
 	 * 
 	 * @param transformation is the transformation to convert
-	 * @return the 2D transformation
+	 * @param result the 2D transformation
 	 */
 	@Pure
-	public Transform2D toCoordinateSystem2D(Transform3D transformation) {
+	public void toCoordinateSystem2D(Transform3D transformation, Transform2D result) {
 		double angle = toCoordinateSystem2DAngleFromTransformation(transformation);
-		Point3f p = new Point3f();
+		Point3D p = new FakePoint3afp();
 		transformation.transform(p);
-		Transform2D out = new Transform2D();		
-		out.setRotation(angle);
-		out.setTranslation(toCoordinateSystem2D(p));
-		return out;
+		result.setIdentity();		
+		result.setRotation(angle);
+		Point2D p2 = new FakePoint2afp();
+		toCoordinateSystem2D(p, p2);
+		result.setTranslation(p2);
 	}
 
 	/** Convert the specified rotation axis into from the current coordinate system
@@ -896,10 +859,10 @@ public enum CoordinateSystem3D implements CoordinateSystem {
 		switch(this) {
 		case XYZ_LEFT_HAND:
 		case XYZ_RIGHT_HAND:
-			return FunctionalVector2D.signedAngle(1, 0,ptR.getX(), ptR.getY());
+			return Vector2D.signedAngle(1, 0,ptR.getX(), ptR.getY());
 		case XZY_LEFT_HAND:
 		case XZY_RIGHT_HAND:
-			return FunctionalVector2D.signedAngle(ptR.getX(), ptR.getZ(), 1, 0);
+			return Vector2D.signedAngle(ptR.getX(), ptR.getZ(), 1, 0);
 		default:
 		}
 		throw new CoordinateSystemNotFoundException();

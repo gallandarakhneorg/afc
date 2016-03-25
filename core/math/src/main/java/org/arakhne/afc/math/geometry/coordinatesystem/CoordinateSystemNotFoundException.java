@@ -24,9 +24,11 @@ package org.arakhne.afc.math.geometry.coordinatesystem;
  * Exception thrown when no coordinate system was found.
  * 
  * @author $Author: cbohrhauer$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 13.0
  */
 public class CoordinateSystemNotFoundException
 extends AssertionError {

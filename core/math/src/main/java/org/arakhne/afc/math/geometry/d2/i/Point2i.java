@@ -23,6 +23,7 @@ package org.arakhne.afc.math.geometry.d2.i;
 
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
+import org.arakhne.afc.math.geometry.d2.UnmodifiablePoint2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -99,108 +100,108 @@ public class Point2i extends Tuple2i<Point2D, Point2i> implements Point2D {
 
 	@Pure
 	@Override
-	public double getDistanceSquared(Point2D p1) {
-	      double dx = this.x - p1.getX();  
-	      double dy = this.y - p1.getY();
-	      return (dx*dx+dy*dy);
+	public double getDistanceSquared(Point2D point) {
+	      double dx = this.x - point.getX();  
+	      double dy = this.y - point.getY();
+	      return dx * dx + dy * dy;
 	}
 
 	@Pure
 	@Override
-	public double getDistance(Point2D p1) {
-	      double dx = this.x - p1.getX();  
-	      double dy = this.y - p1.getY();
-	      return Math.sqrt(dx*dx+dy*dy);
+	public double getDistance(Point2D point) {
+	      double dx = this.x - point.getX();  
+	      double dy = this.y - point.getY();
+	      return Math.sqrt(dx * dx + dy * dy);
 	}
 
 	@Pure
 	@Override
-	public double getDistanceL1(Point2D p1) {
-	      return (Math.abs(this.x-p1.getX()) + Math.abs(this.y-p1.getY()));
+	public double getDistanceL1(Point2D point) {
+	      return Math.abs(this.x - point.getX()) + Math.abs(this.y - point.getY());
 	}
 
 	@Pure
 	@Override
-	public double getDistanceLinf(Point2D p1) {
-	      return (Math.max( Math.abs(this.x-p1.getX()), Math.abs(this.y-p1.getY())));
+	public double getDistanceLinf(Point2D point) {
+	      return Math.max( Math.abs(this.x - point.getX()), Math.abs(this.y - point.getY()));
 	}
 
 	@Pure
 	@Override
-	public int getIdistanceL1(Point2D p1) {
-	      return (int) getDistanceL1(p1);
+	public int getIdistanceL1(Point2D point) {
+	      return (int) Math.round(getDistanceL1(point));
 	}
 
 	@Pure
 	@Override
-	public int getIdistanceLinf(Point2D p1) {
-	      return (int) getDistanceLinf(p1);
+	public int getIdistanceLinf(Point2D point) {
+	      return (int) Math.round(getDistanceLinf(point));
 	}
 
 	@Override
-	public void add(Point2D t1, Vector2D t2) {
-		this.x = (int) (t1.getX() + t2.getX());
-		this.y = (int) (t1.getY() + t2.getY());
+	public void add(Point2D point, Vector2D vector) {
+		this.x = (int) Math.round(point.getX() + vector.getX());
+		this.y = (int) Math.round(point.getY() + vector.getY());
 	}
 
 	@Override
-	public void add(Vector2D t1, Point2D t2) {
-		this.x = (int) (t1.getX() + t2.getX());
-		this.y = (int) (t1.getY() + t2.getY());
+	public void add(Vector2D vector, Point2D point) {
+		this.x = (int) Math.round(vector.getX() + point.getX());
+		this.y = (int) Math.round(vector.getY() + point.getY());
 	}
 
 	@Override
-	public void add(Vector2D t1) {
-		this.x = (int) (this.x + t1.getX());
-		this.y = (int) (this.y + t1.getY());
+	public void add(Vector2D vector) {
+		this.x = (int) Math.round(this.x + vector.getX());
+		this.y = (int) Math.round(this.y + vector.getY());
 	}
 
 	@Override
-	public void scaleAdd(int s, Vector2D t1, Point2D t2) {
-		this.x = (int) (s * t1.getX() + t2.getX());
-		this.y = (int) (s * t1.getY() + t2.getY());
+	public void scaleAdd(int scale, Vector2D vector, Point2D point) {
+		this.x = (int) Math.round(scale * vector.getX() + point.getX());
+		this.y = (int) Math.round(scale * vector.getY() + point.getY());
 	}
 
 	@Override
-	public void scaleAdd(double s, Vector2D t1, Point2D t2) {
-		this.x = (int) (s * t1.getX() + t2.getX());
-		this.y = (int) (s * t1.getY() + t2.getY());
+	public void scaleAdd(double scale, Vector2D vector, Point2D point) {
+		this.x = (int) Math.round(scale * vector.getX() + point.getX());
+		this.y = (int) Math.round(scale * vector.getY() + point.getY());
 	}
 
 	@Override
-	public void scaleAdd(int s, Point2D t1, Vector2D t2) {
-		this.x = (int) (s * t1.getX() + t2.getX());
-		this.y = (int) (s * t1.getY() + t2.getY());
+	public void scaleAdd(int scale, Point2D point, Vector2D vector) {
+		this.x = (int) Math.round(scale * point.getX() + vector.getX());
+		this.y = (int) Math.round(scale * point.getY() + vector.getY());
 	}
 
 	@Override
-	public void scaleAdd(double s, Point2D t1, Vector2D t2) {
-		this.x = (int) (s * t1.getX() + t2.getX());
-		this.y = (int) (s * t1.getY() + t2.getY());
+	public void scaleAdd(double scale, Point2D point, Vector2D vector) {
+		this.x = (int) Math.round(scale * point.getX() + vector.getX());
+		this.y = (int) Math.round(scale * point.getY() + vector.getY());
 	}
 
 	@Override
-	public void scaleAdd(int s, Vector2D t1) {
-		this.x = (int) (s * this.x + t1.getX());
-		this.y = (int) (s * this.y + t1.getY());
+	public void scaleAdd(int scale, Vector2D vector) {
+		this.x = (int) Math.round(scale * this.x + vector.getX());
+		this.y = (int) Math.round(scale * this.y + vector.getY());
 	}
 
 	@Override
-	public void scaleAdd(double s, Vector2D t1) {
-		this.x = (int) (s * this.x + t1.getX());
-		this.y = (int) (s * this.y + t1.getY());
+	public void scaleAdd(double scale, Vector2D vector) {
+		this.x = (int) Math.round(scale * this.x + vector.getX());
+		this.y = (int) Math.round(scale * this.y + vector.getY());
 	}
 
 	@Override
-	public void sub(Point2D t1, Vector2D t2) {
-		this.x = (int) (t1.getX() - t1.getX());
-		this.y = (int) (t1.getY() - t1.getY());
+	public void sub(Point2D point, Vector2D vector) {
+		this.x = (int) Math.round(point.getX() - vector.getX());
+		this.y = (int) Math.round(point.getY() - vector.getY());
 	}
 
 	@Override
-	public void sub(Vector2D t1) {
-		this.x = (int) (this.x - t1.getX());
-		this.y = (int) (this.y - t1.getY());
+	public void sub(Vector2D vector) {
+		this.x = (int) Math.round(this.x - vector.getX());
+		this.y = (int) Math.round(this.y - vector.getY());
 	}
 
 	@Pure

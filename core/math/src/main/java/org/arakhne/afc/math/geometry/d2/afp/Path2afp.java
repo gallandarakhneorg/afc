@@ -33,6 +33,7 @@ import org.arakhne.afc.math.geometry.d2.Path2D;
 import org.arakhne.afc.math.geometry.d2.PathIterator2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
+import org.arakhne.afc.math.geometry.d2.fp.Point2fp;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Fonctional interface that represented a 2D path on a plane.
@@ -316,7 +317,7 @@ public interface Path2afp<
 		double bestDist = Double.NEGATIVE_INFINITY;
 		PathElement2afp pe;
 		// Only for internal use.
-		Point2D point = new FakePoint();
+		Point2D point = new Point2fp();
 
 		while (pi.hasNext()) {
 			pe = pi.next();
@@ -1340,6 +1341,18 @@ public interface Path2afp<
 		return foundOneLine;
 	}
 
+	@Pure
+	@Override
+	default boolean equalsToShape(IT shape) {
+		if (shape == null) {
+			return false;
+		}
+		if (shape == this) {
+			return true;
+		}
+		return equalsToPathIterator(shape.getPathIterator());
+	}
+
 	/** Add the elements replied by the iterator into this path.
 	 * 
 	 * @param iterator
@@ -1485,6 +1498,7 @@ public interface Path2afp<
 				r.getMinX(), r.getMinY(), r.getWidth(), r.getHeight());
 	}
 
+	@Pure
 	@Override
 	default boolean intersects(Rectangle2afp<?, ?, ?, ?, ?> s) {
 		// Copied from AWT API
@@ -1498,11 +1512,13 @@ public interface Path2afp<
 				(crossings & mask) != 0);
 	}
 	
+	@Pure
 	@Override
 	default boolean intersects(RoundRectangle2afp<?, ?, ?, ?, ?> s) {
 		return s.intersects(this);
 	}
 	
+	@Pure
 	@Override
 	default boolean intersects(Ellipse2afp<?, ?, ?, ?, ?> s) {
 		int mask = (getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2);
@@ -1515,6 +1531,7 @@ public interface Path2afp<
 				(crossings & mask) != 0);
 	}
 	
+	@Pure
 	@Override
 	default boolean intersects(Circle2afp<?, ?, ?, ?, ?> s) {
 		int mask = (getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2);
@@ -1528,6 +1545,7 @@ public interface Path2afp<
 				(crossings & mask) != 0);
 	}
 	
+	@Pure
 	@Override
 	default boolean intersects(Segment2afp<?, ?, ?, ?, ?> s) {
 		int mask = (getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2);
@@ -1540,11 +1558,13 @@ public interface Path2afp<
 				(crossings & mask) != 0);
 	}
 	
+	@Pure
 	@Override
 	default boolean intersects(OrientedRectangle2afp<?, ?, ?, ?, ?> s) {
 		return s.intersects(this);
 	}
 
+	@Pure
 	@Override
 	default boolean intersects(Path2afp<?, ?, ?, ?, ?> s) {
 		int mask = (getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2);
@@ -1557,6 +1577,7 @@ public interface Path2afp<
 				(crossings & mask) != 0);
 	}
 	
+	@Pure
 	@Override
 	default boolean intersects(PathIterator2afp<?> iterator) {
 		int mask = (getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2);
@@ -1726,23 +1747,6 @@ public interface Path2afp<
 	@Pure
 	default PathIterator2afp<IE> getPathIterator(Transform2D transform, double flatness) {
 		return new FlatteningPathIterator<>(getPathIterator(transform), flatness, DEFAULT_FLATENING_LIMIT);
-	}
-
-	@Pure
-	@Override
-	default boolean equals(PathIterator2afp<IE> iterator) {
-		if (iterator != null) {
-			PathIterator2afp<IE> myIterator = getPathIterator();
-			while (iterator.hasNext() && myIterator.hasNext()) {
-				IE element1 = iterator.next();
-				IE element2 = myIterator.next();
-				if (!element1.equals(element2)) {
-					return false;
-				}
-			}
-			return !iterator.hasNext() && !myIterator.hasNext();
-		}
-		return false;
 	}
 
 	@Pure

@@ -33,6 +33,8 @@ import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
+import org.arakhne.afc.math.geometry.d2.fp.Point2fp;
+import org.arakhne.afc.math.geometry.d2.fp.Vector2fp;
 import org.arakhne.afc.math.matrix.Matrix2f;
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -256,8 +258,8 @@ public interface OrientedRectangle2afp<
 		// Find points on OBR closest and farest to sphere center
 
 		// Create instances of "fp" points since they are used internally.
-		Point2D closest = new FakePoint();
-		Point2D farthest = new FakePoint();
+		Point2D closest = new Point2fp();
+		Point2D farthest = new Point2fp();
 
 		computeClosestFarthestPoints(
 				circleX, circleY,
@@ -748,6 +750,25 @@ public interface OrientedRectangle2afp<
 		}
 	}
 
+	@Pure
+	@Override
+	default boolean equalsToShape(IT shape) {
+		if (shape == null) {
+			return false;
+		}
+		if (shape == this) {
+			return true;
+		}
+		return getCenterX() == shape.getCenterX()
+			&& getCenterY() == shape.getCenterY()
+			&& getFirstAxisX() == shape.getFirstAxisX()
+			&& getFirstAxisY() == shape.getFirstAxisY()
+			&& getFirstAxisExtent() == shape.getFirstAxisExtent()
+			&& getSecondAxisX() == shape.getSecondAxisX()
+			&& getSecondAxisY() == shape.getSecondAxisY()
+			&& getSecondAxisExtent() == shape.getSecondAxisExtent();
+	}
+
 	/** Replies the center.
 	 *
 	 * @return the center.
@@ -1022,11 +1043,11 @@ public interface OrientedRectangle2afp<
 	 * @param pointCloud - the cloud of points.
 	 */
 	default void setFromPointCloud(Iterable<? extends Point2D> pointCloud) {
-		Vector2D r = new FakeVector();
-		Vector2D s = new FakeVector();
+		Vector2D r = new Vector2fp();
+		Vector2D s = new Vector2fp();
 		OrientedRectangle2afp.computeOBRAxis(pointCloud, r, s);
-		Point2D center = new FakePoint();
-		Vector2D extents = new FakeVector();
+		Point2D center = new Point2fp();
+		Vector2D extents = new Vector2fp();
 		OrientedRectangle2afp.computeOBRCenterExtents(pointCloud, r, s, center, extents);
 		set(center.getX(), center.getY(),
 				r.getX(), r.getY(), extents.getX(),
@@ -1045,7 +1066,7 @@ public interface OrientedRectangle2afp<
 	@Override
 	default double getDistanceSquared(Point2D p) {
 		// Only for internal usage.
-		Point2D closest = new FakePoint();
+		Point2D closest = new Point2fp();
 		computeClosestPoint(
 				p.getX(), p.getY(),
 				getCenterX(), getCenterY(),
@@ -1059,7 +1080,7 @@ public interface OrientedRectangle2afp<
 	@Override
 	default double getDistanceL1(Point2D p) {
 		// Only for internal usage.
-		Point2D closest = new FakePoint();
+		Point2D closest = new Point2fp();
 		computeClosestPoint(
 				p.getX(), p.getY(),
 				getCenterX(), getCenterY(),
@@ -1073,7 +1094,7 @@ public interface OrientedRectangle2afp<
 	@Override
 	default double getDistanceLinf(Point2D p) {
 		// Only for internal usage.
-		Point2D closest = new FakePoint();
+		Point2D closest = new Point2fp();
 		computeClosestPoint(
 				p.getX(), p.getY(),
 				getCenterX(), getCenterY(),
@@ -1202,8 +1223,8 @@ public interface OrientedRectangle2afp<
 		Point2D minCorner;
 		Point2D maxCorner;
 
-		minCorner = new FakePoint(getCenterX(), getCenterY());
-		maxCorner = new FakePoint(getCenterX(), getCenterY());
+		minCorner = new Point2fp(getCenterX(), getCenterY());
+		maxCorner = new Point2fp(getCenterX(), getCenterY());
 
 		double srx = getFirstAxisX() * getFirstAxisExtent();
 		double sry = getFirstAxisY() * getFirstAxisExtent();

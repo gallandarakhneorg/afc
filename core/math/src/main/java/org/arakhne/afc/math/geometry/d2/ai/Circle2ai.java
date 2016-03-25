@@ -26,11 +26,13 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.Tuple2iComparator;
-import org.arakhne.afc.math.geometry.d2.ai.FakePoint.FakeGeomFactory;
+import org.arakhne.afc.math.geometry.d2.i.GeomFactory2i;
+import org.arakhne.afc.math.geometry.d2.i.Point2i;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Fonctional interface that represented a 2D circle on a plane.
@@ -94,9 +96,8 @@ public interface Circle2ai<
 			int px, py, ccw, cpx, cpy;
 			boolean allNull = true;
 			Point2D p;
-			@SuppressWarnings("unchecked")
-			CirclePerimeterIterator<FakePoint> iterator = new CirclePerimeterIterator<>(
-					FakeGeomFactory.SINGLETON,
+			CirclePerimeterIterator<Point2i> iterator = new CirclePerimeterIterator<>(
+					GeomFactory2i.SINGLETON,
 					cx, cy, cr, octant, octant+2, false);
 
 			while (iterator.hasNext()) {
@@ -141,7 +142,6 @@ public interface Circle2ai<
 	 * @param y is the y-coordinate of the point
 	 * @return <code>true</code> if the point is inside the circle.
 	 */
-	@SuppressWarnings("unchecked")
 	@Pure
 	static boolean contains(int cx, int cy, int cr, int quadrant, int x, int y) {
 		int vx = x - cx;
@@ -173,8 +173,8 @@ public interface Circle2ai<
 
 			int px, py, ccw, cpx, cpy;
 			Point2D p;
-			CirclePerimeterIterator<FakePoint> iterator = new CirclePerimeterIterator<>(
-					FakeGeomFactory.SINGLETON,
+			CirclePerimeterIterator<Point2i> iterator = new CirclePerimeterIterator<>(
+					GeomFactory2i.SINGLETON,
 					cx, cy, cr, octant, octant+2, false);
 
 			while (iterator.hasNext()) {
@@ -196,6 +196,9 @@ public interface Circle2ai<
 
 	/** Replies the closest point in a circle to a point.
 	 * 
+	 * <p>The closest point is the point on the perimeter or inside the circle's disk that 
+	 * has the lowest Manhatan distance to the given origin point.
+	 * 
 	 * @param cx is the center of the circle
 	 * @param cy is the center of the circle
 	 * @param cr is the radius of the circle
@@ -203,7 +206,6 @@ public interface Circle2ai<
 	 * @param y is the point
 	 * @param result the closest point in the circle to the point.
 	 */
-	@SuppressWarnings("unchecked")
 	@Pure
 	static void computeClosestPointTo(int cx, int cy, int cr, int x, int y, Point2D result) {
 		int vx = x - cx;
@@ -231,8 +233,8 @@ public interface Circle2ai<
 
 		int d, px, py, cpx, cpy, ccw;
 		Point2D p;
-		CirclePerimeterIterator<FakePoint> iterator = new CirclePerimeterIterator<>(
-				FakeGeomFactory.SINGLETON,
+		CirclePerimeterIterator<Point2i> iterator = new CirclePerimeterIterator<>(
+				GeomFactory2i.SINGLETON,
 				cx, cy, cr, octant, octant+2, false);
 
 		boolean isInside = true;
@@ -245,10 +247,11 @@ public interface Circle2ai<
 			cpx = x - p.ix();
 			cpy = y - p.iy();
 			ccw = cpx * py - cpy * px;
-			if (ccw>=0) {
+			if (ccw >= 0) {
 				isInside = false;
-				d = cpx*cpx + cpy*cpy;
-				if (d<minDist) {
+				// Mahantan distance
+				d = Math.abs(cpx) + Math.abs(cpy);
+				if (d < minDist) {
 					minDist = d;
 					result.set(p);
 				}
@@ -263,6 +266,9 @@ public interface Circle2ai<
 
 	/** Replies the farthest point in a circle to a point.
 	 * 
+	 * <p>The farthest point is the point on the perimeter of the circle that has the highest Manhatan distance
+	 * to the given origin point.
+	 * 
 	 * @param cx is the center of the circle
 	 * @param cy is the center of the circle
 	 * @param cr is the radius of the circle
@@ -270,7 +276,6 @@ public interface Circle2ai<
 	 * @param y is the point
 	 * @param result the farthest point in the circle to the point.
 	 */
-	@SuppressWarnings("unchecked")
 	@Pure
 	static void computeFarthestPointTo(int cx, int cy, int cr, int x, int y, Point2D result) {
 		int vx = x - cx;
@@ -296,22 +301,26 @@ public interface Circle2ai<
 			}
 		}
 
-		int d, cpx, cpy;
+		int l1, linfinv, cpx, cpy;
 		Point2D p;
-		CirclePerimeterIterator<FakePoint> iterator = new CirclePerimeterIterator<>(
-				FakeGeomFactory.SINGLETON,
+		CirclePerimeterIterator<Point2i> iterator = new CirclePerimeterIterator<>(
+				GeomFactory2i.SINGLETON,
 				cx, cy, cr, octant, octant+2, false);
 
-		int maxDist = Integer.MIN_VALUE;
+		int maxL1Dist = Integer.MIN_VALUE;
+		int maxLinfDist = Integer.MIN_VALUE;
 		result.set(x, y);
 		
 		while (iterator.hasNext()) {
 			p = iterator.next();
-			cpx = x - p.ix();
-			cpy = y - p.iy();
-			d = cpx*cpx + cpy*cpy;
-			if (d>maxDist) {
-				maxDist = d;
+			cpx = Math.abs(p.ix() - x);
+			cpy = Math.abs(p.iy() - y);
+			// Mahantan distance
+			l1 = cpx + cpy;
+			linfinv = Math.min(cpx, cpy);
+			if (l1 > maxL1Dist || (l1 == maxL1Dist && linfinv < maxLinfDist)) {
+				maxL1Dist = l1;
+				maxLinfDist = linfinv;
 				result.set(p);
 			}
 		}
@@ -330,7 +339,7 @@ public interface Circle2ai<
 	 */
 	@Pure
 	static boolean intersectsCircleCircle(int x1, int y1, int radius1, int x2, int y2, int radius2) {
-		Point2D point = new FakePoint();
+		Point2D point = new Point2i();
 		computeClosestPointTo(x1, y1, radius1, x2, y2, point);
 		return contains(x2, y2, radius2, point.ix(), point.iy());
 	}
@@ -349,7 +358,7 @@ public interface Circle2ai<
 	 */
 	@Pure
 	static boolean intersectsCircleRectangle(int x1, int y1, int radius, int x2, int y2, int x3, int y3) {
-		Point2D point = new FakePoint();
+		Point2D point = new Point2i();
 		Rectangle2ai.computeClosestPoint(x2, y2, x3, y3, x1, y1, point);
 		return contains(x1, y1, radius, point.ix(), point.iy());
 	}
@@ -367,7 +376,7 @@ public interface Circle2ai<
 	 * <code>false</code>
 	 */
 	public static boolean intersectsCircleSegment(int x1, int y1, int radius, int x2, int y2, int x3, int y3) {
-		Point2D point = new FakePoint();
+		Point2D point = new Point2i();
 		Segment2ai.computeClosestPointTo(x2, y2, x3, y3, x1, y1, point);
 		return contains(x1, y1, radius, point.ix(), point.iy());
 	}
@@ -560,8 +569,21 @@ public interface Circle2ai<
 				cx, cy, radius,
 				startOctant, maxOctant, true);
 	}
-	
 
+	@Pure
+	@Override
+	default boolean equalsToShape(IT shape) {
+		if (shape == null) {
+			return false;
+		}
+		if (shape == this) {
+			return true;
+		}
+		return getX() == shape.getX()
+			&& getY() == shape.getY()
+			&& getRadius() == shape.getRadius();
+	}
+	
 	@Override
 	default void clear() {
 		set(0, 0, 0);
@@ -592,7 +614,7 @@ public interface Circle2ai<
 	 * @param center the center of the circle.
 	 */
 	default void setCenter(Point2D center) {
-		setCenter(center.ix(), center.iy());
+		set(center.ix(), center.iy(), getRadius());
 	}
 
 	/** Change the circle's center.
@@ -601,7 +623,7 @@ public interface Circle2ai<
 	 * @param y y coordinate of the center of the circle.
 	 */
 	default void setCenter(int x, int y) {
-		setCenter(x, y);
+		set(x, y, getRadius());
 	}
 
 	/** Change the circle.
@@ -741,15 +763,18 @@ public interface Circle2ai<
 				s.getX2(), s.getY2());
 	}
 
-	/** Replies if this shape is intersecting the given path.
-	 * 
-	 * @param p
-	 * @return <code>true</code> if this shape is intersecting the given shape;
-	 * <code>false</code> if there is no intersection.
-	 */
 	@Pure
-	default boolean intersects(Path2ai<?, ?, ?, ?, ?> p) {
-		return p.intersects(this);
+	@Override
+	default boolean intersects(PathIterator2ai<?> iterator) {
+		int mask = (iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2);
+		int crossings = Path2ai.computeCrossingsFromCircle(
+				0,
+				iterator,
+				getX(), getY(), getRadius(),
+				false);
+		return (crossings == MathConstants.SHAPE_INTERSECTS ||
+				(crossings & mask) != 0);
+
 	}
 
 	@Override

@@ -110,6 +110,16 @@ public interface GeomFactory2afp<E extends PathElement2afp, P extends Point2D, B
 	 */
 	B newBox();
 
+	/** Create a bounding box.
+	 *
+	 * @param x the x coordinate of the lower corner.
+	 * @param y the y coordinate of the lower corner.
+	 * @param width the width of the box.
+	 * @param height the height of the box.
+	 * @return the box.
+	 */
+	B newBox(double x, double y, double width, double height);
+
 	/** Create a move-to path element to the given point.
 	 * 
 	 * @param x x coordinate of the target point.

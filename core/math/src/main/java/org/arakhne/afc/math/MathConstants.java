@@ -85,6 +85,13 @@ public interface MathConstants {
 	public static final int JACOBI_MAX_SWEEPS = 32;
 	
 	/**
+	 * Number precision for the Jacoby's algorithms.
+	 *
+	 * <p>Given by the Java3D's implementation of the Matrix3d class.
+	 */
+	public static final double JACOBI_EPSILON = 1.110223024E-16;
+
+	/**
 	 * Max sweeps in the Ellipse's algorithms.
 	 */
 	public static final int ELLIPSE_MAX_SWEEPS = 32;

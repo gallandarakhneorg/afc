@@ -146,23 +146,6 @@ public abstract class AbstractRectangularShape2fp<IT extends AbstractRectangular
 
 	@Pure
 	@Override
-	public boolean equals(Object obj) {
-		try {
-			if (getClass().isAssignableFrom(obj.getClass())) {
-				RectangularShape2afp<?, ?, ?, ?, ?> shape = (RectangularShape2afp<?, ?, ?, ?, ?>) obj;
-				return this.minx == shape.getMinX()
-						&& this.miny == shape.getMinY()
-						&& this.maxx == shape.getMaxX()
-						&& this.maxy == shape.getMaxY();
-			}
-		} catch (Throwable exception) {
-			//
-		}
-		return false;
-	}
-
-	@Pure
-	@Override
 	public int hashCode() {
 		long bits = 1;
 		bits = 31 * bits + Double.doubleToLongBits(this.minx);

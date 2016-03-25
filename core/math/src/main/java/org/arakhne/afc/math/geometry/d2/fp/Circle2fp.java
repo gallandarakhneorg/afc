@@ -78,20 +78,6 @@ public class Circle2fp
 	
 	@Pure
 	@Override
-	public boolean equals(Object obj) {
-		try {
-			Circle2afp<?, ?, ?, ?, ?> shape = (Circle2afp<?, ?, ?, ?, ?>) obj;
-			return this.centerX == shape.getX()
-					&& this.centerY == shape.getY()
-					&& this.radius == shape.getRadius();
-		} catch (Throwable exception) {
-			//
-		}
-		return false;
-	}
-
-	@Pure
-	@Override
 	public int hashCode() {
 		long bits = 1;
 		bits = 31 * bits + Double.doubleToLongBits(this.centerX);

@@ -21,22 +21,24 @@
  */
 package org.arakhne.afc.math.matrix;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.arakhne.afc.math.AbstractMathTestCase;
 import org.arakhne.afc.math.MathConstants;
+import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2DTestRule;
+import org.arakhne.afc.math.geometry.d2.Vector2D;
+import org.arakhne.afc.math.geometry.d2.fp.Vector2fp;
+import org.arakhne.afc.math.geometry.d3.Vector3D;
 import org.arakhne.afc.math.geometry.d3.continuous.Vector3f;
+import org.junit.Rule;
 import org.junit.Test;
 
-/**
- * @author $Author: hjaffali$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
- */
-@SuppressWarnings("static-method")
-public class Matrix3fTest extends AbstractMathTestCase{
+@SuppressWarnings("all")
+public class Matrix3fTest extends AbstractMathTestCase {
 
+	@Rule
+	public CoordinateSystem2DTestRule csTestRule = new CoordinateSystem2DTestRule();
 	
 	@Test
 	public void toStringTest() {
@@ -192,8 +194,7 @@ public class Matrix3fTest extends AbstractMathTestCase{
 		assertTrue(i2.equals(m2));
 		
 		m3.invert();
-		assertTrue(i3.epsilonEquals(m3,10*MathConstants.EPSILON));
-		
+		assertTrue(i3.epsilonEquals(m3,EPSILON));
 	}
 	
 	@Test
@@ -219,19 +220,9 @@ public class Matrix3fTest extends AbstractMathTestCase{
 		
 		m3.invert(m3);
 
-		assertTrue(i3.epsilonEquals(m3,10*MathConstants.EPSILON));
+		assertTrue(i3.epsilonEquals(m3,EPSILON));
 	}
-	
-	@Test
-	public void luDecomposition() {
-		throw new UnsupportedOperationException();
-	}
-	
-	@Test
-	public void luBacksubstitution() {
-		throw new UnsupportedOperationException();
-	}
-	
+
 	@Test
 	public void determinant() {
 		double a = this.random.nextDouble();
@@ -277,8 +268,9 @@ public class Matrix3fTest extends AbstractMathTestCase{
 		
 		Vector3f product = new Vector3f(vector.getX()+2*vector.getY()+4*vector.getZ(),5*vector.getX()+vector.getY()+3*vector.getZ(),9*vector.getX()-2*vector.getY()+vector.getZ());
 		
-		
-		assertTrue(product.equals(matrix.mul(vector)));
+		Vector3f result = new Vector3f();
+		matrix.mul(vector, result);
+		assertEpsilonEquals(product, result);
 	}
 	
 	@Test
@@ -289,7 +281,9 @@ public class Matrix3fTest extends AbstractMathTestCase{
 		Vector3f product = new Vector3f(vector.getX()+5*vector.getY()+9*vector.getZ(),2*vector.getX()+vector.getY()-2*vector.getZ(),4*vector.getX()+3*vector.getY()+vector.getZ());
 		
 		matrix.transpose();
-		assertTrue(product.equals(matrix.mul(vector)));
+		Vector3f result = new Vector3f();
+		matrix.mul(vector, result);
+		assertEpsilonEquals(product, result);
 	}
 	
 	@Test
@@ -394,12 +388,47 @@ public class Matrix3fTest extends AbstractMathTestCase{
 	
 	@Test
 	public void mulNormalizeMatrix3D() {
-		throw new UnsupportedOperationException();
+		Matrix3f m = new Matrix3f(
+				0.030612, 0.061224, 0.051020,
+				-0.061224, 1.377551, -0.102041,
+				-0.153061, 2.693878, -0.255102);
+		Matrix3f m2 = new Matrix3f(
+				18, 45, 2,
+			    4, 6, 8,
+			    4, 5, 48);
+		m.mulNormalize(m2);
+		assertEpsilonEquals(-0.41938, m.getM00());
+		assertEpsilonEquals(-0.27752, m.getM01());
+		assertEpsilonEquals(0.86435, m.getM02());
+		assertEpsilonEquals(-0.27752, m.getM10());
+		assertEpsilonEquals(0.94574, m.getM11());
+		assertEpsilonEquals(0.169, m.getM12());
+		assertEpsilonEquals(0.86435, m.getM20());
+		assertEpsilonEquals(0.169, m.getM21());
+		assertEpsilonEquals(0.47365, m.getM22());
 	}
 	
 	@Test
 	public void mulNormalizeMatrix3DMatrix3D() {
-		throw new UnsupportedOperationException();
+		Matrix3f m = new Matrix3f();
+		Matrix3f m1 = new Matrix3f(
+				0.030612, 0.061224, 0.051020,
+				-0.061224, 1.377551, -0.102041,
+				-0.153061, 2.693878, -0.255102);
+		Matrix3f m2 = new Matrix3f(
+				18, 45, 2,
+			    4, 6, 8,
+			    4, 5, 48);
+		m.mulNormalize(m1, m2);
+		assertEpsilonEquals(-0.41938, m.getM00());
+		assertEpsilonEquals(-0.27752, m.getM01());
+		assertEpsilonEquals(0.86435, m.getM02());
+		assertEpsilonEquals(-0.27752, m.getM10());
+		assertEpsilonEquals(0.94574, m.getM11());
+		assertEpsilonEquals(0.169, m.getM12());
+		assertEpsilonEquals(0.86435, m.getM20());
+		assertEpsilonEquals(0.169, m.getM21());
+		assertEpsilonEquals(0.47365, m.getM22());
 	}
 	
 	@Test
@@ -443,18 +472,104 @@ public class Matrix3fTest extends AbstractMathTestCase{
 	}
 	
 	@Test
-	public void normalizeMatrix3D() {
-		throw new UnsupportedOperationException();
+	public void normalizeCP_zero() {
+		Matrix3f m = new Matrix3f();
+		m.normalizeCP();
+		assertNaN(m.getM00());
+		assertNaN(m.getM01());
+		assertNaN(m.getM02());
+		assertNaN(m.getM10());
+		assertNaN(m.getM11());
+		assertNaN(m.getM12());
+		assertNaN(m.getM20());
+		assertNaN(m.getM21());
+		assertNaN(m.getM22());
 	}
 	
 	@Test
-	public void normalizeCrossProduct() {
-		throw new UnsupportedOperationException();
+	public void normalizeCP_identity() {
+		Matrix3f m = new Matrix3f();
+		m.setIdentity();
+		m.normalizeCP();
+		assertEpsilonEquals(1, m.getM00());
+		assertEpsilonEquals(0, m.getM01());
+		assertEpsilonEquals(0, m.getM02());
+		assertEpsilonEquals(0, m.getM10());
+		assertEpsilonEquals(1, m.getM11());
+		assertEpsilonEquals(0, m.getM12());
+		assertEpsilonEquals(0, m.getM20());
+		assertEpsilonEquals(0, m.getM21());
+		assertEpsilonEquals(1, m.getM22());
+	}
+
+	@Test
+	public void normalizeCP_std() {
+		Matrix3f m = new Matrix3f(
+				1, 2, 3,
+				4, 5, 6,
+				7, 8, 9);
+		m.normalizeCP();
+		assertEpsilonEquals(1/Math.sqrt(1*1+4*4+7*7), m.getM00());
+		assertEpsilonEquals(2/Math.sqrt(2*2+5*5+8*8), m.getM01());
+		assertEpsilonEquals(m.getM00()*m.getM11()-m.getM01()*m.getM10(), m.getM02());
+		assertEpsilonEquals(4/Math.sqrt(1*1+4*4+7*7), m.getM10());
+		assertEpsilonEquals(5/Math.sqrt(2*2+5*5+8*8), m.getM11());
+		assertEpsilonEquals(m.getM01()*m.getM20()-m.getM00()*m.getM21(), m.getM12());
+		assertEpsilonEquals(7/Math.sqrt(1*1+4*4+7*7), m.getM20());
+		assertEpsilonEquals(8/Math.sqrt(2*2+5*5+8*8), m.getM21());
+		assertEpsilonEquals(m.getM00()*m.getM11()-m.getM01()*m.getM10(), m.getM22());
 	}
 	
 	@Test
-	public void normalizeCrossProductMatrix3D() {
-		throw new UnsupportedOperationException();
+	public void normalizeCPMatrix3D_zero() {
+		Matrix3f m = new Matrix3f();
+		Matrix3f r = new Matrix3f();
+		r.normalizeCP(m);
+		assertNaN(r.getM00());
+		assertNaN(r.getM01());
+		assertNaN(r.getM02());
+		assertNaN(r.getM10());
+		assertNaN(r.getM11());
+		assertNaN(r.getM12());
+		assertNaN(r.getM20());
+		assertNaN(r.getM21());
+		assertNaN(r.getM22());
+	}
+	
+	@Test
+	public void normalizeCPMatrix3D_identity() {
+		Matrix3f m = new Matrix3f();
+		m.setIdentity();
+		Matrix3f r = new Matrix3f();
+		r.normalizeCP(m);
+		assertEpsilonEquals(1, r.getM00());
+		assertEpsilonEquals(0, r.getM01());
+		assertEpsilonEquals(0, r.getM02());
+		assertEpsilonEquals(0, r.getM10());
+		assertEpsilonEquals(1, r.getM11());
+		assertEpsilonEquals(0, r.getM12());
+		assertEpsilonEquals(0, r.getM20());
+		assertEpsilonEquals(0, r.getM21());
+		assertEpsilonEquals(1, r.getM22());
+	}
+
+	@Test
+	public void normalizeCPMatrix3D_std() {
+		Matrix3f m = new Matrix3f(
+				1, 2, 3,
+				4, 5, 6,
+				7, 8, 9);
+		Matrix3f r = new Matrix3f();
+		r.normalizeCP(m);
+		assertEpsilonEquals(1/Math.sqrt(1*1+4*4+7*7), r.getM00());
+		assertEpsilonEquals(2/Math.sqrt(2*2+5*5+8*8), r.getM01());
+		assertEpsilonEquals(r.getM00()*r.getM11()-r.getM01()*r.getM10(), r.getM02());
+		assertEpsilonEquals(4/Math.sqrt(1*1+4*4+7*7), r.getM10());
+		assertEpsilonEquals(5/Math.sqrt(2*2+5*5+8*8), r.getM11());
+		assertEpsilonEquals(r.getM01()*r.getM20()-r.getM00()*r.getM21(), r.getM12());
+		assertEpsilonEquals(7/Math.sqrt(1*1+4*4+7*7), r.getM20());
+		assertEpsilonEquals(8/Math.sqrt(2*2+5*5+8*8), r.getM21());
+		assertEpsilonEquals(r.getM00()*r.getM11()-r.getM01()*r.getM10(), r.getM22());
 	}
 	
 	@Test
@@ -541,22 +656,119 @@ public class Matrix3fTest extends AbstractMathTestCase{
 	}
 	
 	@Test
-	public void normalize() {
-		throw new UnsupportedOperationException();
+	public void normalize_zero() {
+		Matrix3f m = new Matrix3f();
+		m.normalize();
+		assertEpsilonEquals(1, m.getM00());
+		assertEpsilonEquals(0, m.getM01());
+		assertEpsilonEquals(0, m.getM02());
+		assertEpsilonEquals(0, m.getM10());
+		assertEpsilonEquals(1, m.getM11());
+		assertEpsilonEquals(0, m.getM12());
+		assertEpsilonEquals(0, m.getM20());
+		assertEpsilonEquals(0, m.getM21());
+		assertEpsilonEquals(1, m.getM22());
 	}
 	
+	@Test
+	public void normalize_identity() {
+		Matrix3f m = new Matrix3f();
+		m.setIdentity();
+		m.normalize();
+		assertEpsilonEquals(1, m.getM00());
+		assertEpsilonEquals(0, m.getM01());
+		assertEpsilonEquals(0, m.getM02());
+		assertEpsilonEquals(0, m.getM10());
+		assertEpsilonEquals(1, m.getM11());
+		assertEpsilonEquals(0, m.getM12());
+		assertEpsilonEquals(0, m.getM20());
+		assertEpsilonEquals(0, m.getM21());
+		assertEpsilonEquals(1, m.getM22());
+	}
+
+	@Test
+	public void normalize_std() {
+		Matrix3f m = new Matrix3f(
+				1, 2, 3,
+				4, 5, 6,
+				7, 8, 9);
+		m.normalize();
+		assertEpsilonEquals(-0.41938, m.getM00());
+		assertEpsilonEquals(-0.27752, m.getM01());
+		assertEpsilonEquals(0.86435, m.getM02());
+		assertEpsilonEquals(-0.27752, m.getM10());
+		assertEpsilonEquals(0.94574, m.getM11());
+		assertEpsilonEquals(0.169, m.getM12());
+		assertEpsilonEquals(0.86435, m.getM20());
+		assertEpsilonEquals(0.169, m.getM21());
+		assertEpsilonEquals(0.47365, m.getM22());
+	}
+
+	@Test
+	public void normalizeMatrix3D_zero() {
+		Matrix3f m = new Matrix3f();
+		Matrix3f r = new Matrix3f();
+		r.normalize(m);
+		assertEpsilonEquals(1, r.getM00());
+		assertEpsilonEquals(0, r.getM01());
+		assertEpsilonEquals(0, r.getM02());
+		assertEpsilonEquals(0, r.getM10());
+		assertEpsilonEquals(1, r.getM11());
+		assertEpsilonEquals(0, r.getM12());
+		assertEpsilonEquals(0, r.getM20());
+		assertEpsilonEquals(0, r.getM21());
+		assertEpsilonEquals(1, r.getM22());
+	}
+	
+	@Test
+	public void normalizeMatrix3D_identity() {
+		Matrix3f m = new Matrix3f();
+		m.setIdentity();
+		Matrix3f r = new Matrix3f();
+		r.normalize(m);
+		assertEpsilonEquals(1, r.getM00());
+		assertEpsilonEquals(0, r.getM01());
+		assertEpsilonEquals(0, r.getM02());
+		assertEpsilonEquals(0, r.getM10());
+		assertEpsilonEquals(1, r.getM11());
+		assertEpsilonEquals(0, r.getM12());
+		assertEpsilonEquals(0, r.getM20());
+		assertEpsilonEquals(0, r.getM21());
+		assertEpsilonEquals(1, r.getM22());
+	}
+
+	@Test
+	public void normalizeMatrix3D_std() {
+		Matrix3f m = new Matrix3f(
+				1, 2, 3,
+				4, 5, 6,
+				7, 8, 9);
+		Matrix3f r = new Matrix3f();
+		r.normalize(m);
+		assertEpsilonEquals(-0.41938, r.getM00());
+		assertEpsilonEquals(-0.27752, r.getM01());
+		assertEpsilonEquals(0.86435, r.getM02());
+		assertEpsilonEquals(-0.27752, r.getM10());
+		assertEpsilonEquals(0.94574, r.getM11());
+		assertEpsilonEquals(0.169, r.getM12());
+		assertEpsilonEquals(0.86435, r.getM20());
+		assertEpsilonEquals(0.169, r.getM21());
+		assertEpsilonEquals(0.47365, r.getM22());
+	}
+
 	@Test
 	public void cov() {
 		//Verification of the function, by verifying all  the properties of the covariant matrix
 		Matrix3f covMatrix = new Matrix3f();
 		
-		Vector3f v1 = this.randomVector3f();
-		Vector3f v2 = this.randomVector3f();
-		Vector3f v3 = this.randomVector3f();
-		Vector3f v4 = this.randomVector3f();
+		Vector3D v1 = randomVector3f();
+		Vector3D v2 = this.randomVector3f();
+		Vector3D v3 = this.randomVector3f();
+		Vector3D v4 = this.randomVector3f();
 		
 		Vector3f meanTest = new Vector3f((v1.getX()+v2.getX()+v3.getX()+v4.getX())/4.,(v1.getY()+v2.getY()+v3.getY()+v4.getY())/4.,(v1.getZ()+v2.getZ()+v3.getZ()+v4.getZ())/4.);
-		Vector3f mean = covMatrix.cov(v1,v2,v3,v4);
+		Vector3f mean = new Vector3f();
+		covMatrix.cov(mean, v1,v2,v3,v4);
 		
 		//equality of the means
 		assertTrue(mean.equals(meanTest));
@@ -565,9 +777,9 @@ public class Matrix3fTest extends AbstractMathTestCase{
 		assertTrue(covMatrix.isSymmetric());
 		
 		//verification of positive-definite property
-		Vector3f vector = this.randomVector3f();
-		Vector3f temp = vector.clone();
-		vector.mul(covMatrix);
+		Vector3D vector = this.randomVector3f();
+		Vector3D temp = vector.clone();
+		covMatrix.mul(vector, temp);
 		double s = vector.dot(temp);
 		assertTrue(s>0);
 		
@@ -596,13 +808,74 @@ public class Matrix3fTest extends AbstractMathTestCase{
 	}
 	
 	@Test
-	public void eigenVectorsOfSymmetricMatrix() {
-		throw new UnsupportedOperationException();
+	public void eigenVectorsOfSymmetricMatrix_zero() {
+		Matrix3f m = new Matrix3f();
+		Matrix3f eigenVectors = new Matrix3f();
+		double[] eigenValues = m.eigenVectorsOfSymmetricMatrix(eigenVectors);
+
+		assertEpsilonEquals(0, eigenValues[0]);
+		assertEpsilonEquals(0, eigenValues[1]);
+		assertEpsilonEquals(0, eigenValues[2]);
+
+		Vector3D vector1 = new Vector3f();
+		Vector3D vector2 = new Vector3f();
+		Vector3D vector3 = new Vector3f();
+		eigenVectors.getColumn(0, vector1);
+		eigenVectors.getColumn(1, vector2);
+		eigenVectors.getColumn(2, vector3);
+		assertFpVectorEquals(1, 0, 0, vector1);
+		assertFpVectorEquals(0, 1, 0, vector2);
+		assertFpVectorEquals(0, 0, 1, vector3);
+	}
+	
+	@Test
+	public void eigenVectorsOfSymmetricMatrix_identity() {
+		Matrix3f m = new Matrix3f();
+		m.setIdentity();
+		Matrix3f eigenVectors = new Matrix3f();
+		double[] eigenValues = m.eigenVectorsOfSymmetricMatrix(eigenVectors);
+
+		assertEpsilonEquals(1, eigenValues[0]);
+		assertEpsilonEquals(1, eigenValues[1]);
+		assertEpsilonEquals(1, eigenValues[2]);
+
+		Vector3D vector1 = new Vector3f();
+		Vector3D vector2 = new Vector3f();
+		Vector3D vector3 = new Vector3f();
+		eigenVectors.getColumn(0, vector1);
+		eigenVectors.getColumn(1, vector2);
+		eigenVectors.getColumn(2, vector3);
+		assertFpVectorEquals(1, 0, 0, vector1);
+		assertFpVectorEquals(0, 1, 0, vector2);
+		assertFpVectorEquals(0, 0, 1, vector3);
+	}
+
+	@Test
+	public void eigenVectorsOfSymmetricMatrix_sym() {
+		Matrix3f m = new Matrix3f(1, 5, 0, 5, 2, 3, 0, 3, 1);
+		Matrix3f eigenVectors = new Matrix3f();
+		double[] eigenValues = m.eigenVectorsOfSymmetricMatrix(eigenVectors);
+		
+		assertEpsilonEquals(-4.3523, eigenValues[0]);
+		assertEpsilonEquals(7.3523, eigenValues[1]);
+		assertEpsilonEquals(1, eigenValues[2]);
+		
+		Vector3D vector1 = new Vector3f();
+		Vector3D vector2 = new Vector3f();
+		Vector3D vector3 = new Vector3f();
+		eigenVectors.getColumn(0, vector1);
+		eigenVectors.getColumn(1, vector2);
+		eigenVectors.getColumn(2, vector3);
+		
+		assertFpVectorEquals(6.3171e-01, -6.7623e-01, 3.7903e-01, vector1);
+		assertFpVectorEquals(5.7986e-01, 7.3669e-01, 3.4792e-01, vector2);
+		assertFpVectorEquals(-5.1450e-01, 6.9389e-17, 8.5749e-01, vector3);
 	}
 	
 	@Test
 	public void isIdentity() {
 		Matrix3f m1 = new Matrix3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		assertFalse(m1.isIdentity());
 		
 		m1.setIdentity();
 		assertTrue(m1.isIdentity());

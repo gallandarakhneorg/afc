@@ -87,22 +87,6 @@ public class RoundRectangle2fp extends AbstractRectangularShape2fp<RoundRectangl
 
 	@Pure
 	@Override
-	public boolean equals(Object obj) {
-		if (!super.equals(obj)) {
-			return false;
-		}
-		try {
-			RoundRectangle2afp<?, ?, ?, ?, ?> shape = (RoundRectangle2afp<?, ?, ?, ?, ?>) obj;
-			return this.arcWidth == shape.getArcWidth()
-					&& this.arcHeight == shape.getArcHeight();
-		} catch (Throwable exception) {
-			//
-		}
-		return false;
-	}
-
-	@Pure
-	@Override
 	public int hashCode() {
 		long bits = super.hashCode();
 		bits = 31 * bits + Double.doubleToLongBits(this.arcWidth);

@@ -61,8 +61,8 @@ public class JavaPhysicsEngineTest extends AbstractMathTestCase {
 		this.engine = null;
 	}
 	
-	private Vector2f makeVect(double x, double y, double n) {
-		Vector2f v = new Vector2f(x,y);
+	private Vector2fx makeVect(double x, double y, double n) {
+		Vector2fx v = new Vector2fx(x,y);
 		if (v.lengthSquared()!=0.) v.normalize();
 		v.scale(n);
 		return v;
@@ -163,27 +163,27 @@ public class JavaPhysicsEngineTest extends AbstractMathTestCase {
 	/**
 	 */
 	public void motionNewtonLaw1D5() {
-		Vector2f v = new Vector2f();
-		Vector2f a = new Vector2f();
+		Vector2fx v = new Vector2fx();
+		Vector2fx a = new Vector2fx();
 
 		//--- DT: 1
 
 		// velocity = (0,0)
 		v.set(0.,0.);
 		a.set(0.,0.);
-		assertEpsilonEquals(new Vector2f(0., 0.), 
+		assertEpsilonEquals(new Vector2fx(0., 0.), 
 				this.engine.motionNewtonLaw1D5(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1.));
 		a.set(PI,0.);
-		assertEpsilonEquals(new Vector2f(QUARTER_PI,0.), 
+		assertEpsilonEquals(new Vector2fx(QUARTER_PI,0.), 
 				this.engine.motionNewtonLaw1D5(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1.));
 		a.set(-PI,0.);
-		assertEpsilonEquals(new Vector2f(-QUARTER_PI,0.), 
+		assertEpsilonEquals(new Vector2fx(-QUARTER_PI,0.), 
 				this.engine.motionNewtonLaw1D5(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1.));
 		a.set(0.,PI);
-		assertEpsilonEquals(new Vector2f(0., QUARTER_PI), 
+		assertEpsilonEquals(new Vector2fx(0., QUARTER_PI), 
 				this.engine.motionNewtonLaw1D5(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1.));
 		a.set(0.,-PI);
-		assertEpsilonEquals(new Vector2f(0., -QUARTER_PI), 
+		assertEpsilonEquals(new Vector2fx(0., -QUARTER_PI), 
 				this.engine.motionNewtonLaw1D5(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1.));
 		a.set(-PI,PI);
 		assertEpsilonEquals(makeVect(-1,1,QUARTER_PI), 
@@ -195,13 +195,13 @@ public class JavaPhysicsEngineTest extends AbstractMathTestCase {
 		// velocity = (PI/2,0)
 		v.set(DEMI_PI,0.);
 		a.set(0.,0.);
-		assertEpsilonEquals(new Vector2f(DEMI_PI, 0.), 
+		assertEpsilonEquals(new Vector2fx(DEMI_PI, 0.), 
 				this.engine.motionNewtonLaw1D5(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1.));
 		a.set(PI,0.);
-		assertEpsilonEquals(new Vector2f(DEMI_PI,0.), 
+		assertEpsilonEquals(new Vector2fx(DEMI_PI,0.), 
 				this.engine.motionNewtonLaw1D5(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1.));
 		a.set(-PI,0.);
-		assertEpsilonEquals(new Vector2f(DEMI_PI-QUARTER_PI/2.,0.), 
+		assertEpsilonEquals(new Vector2fx(DEMI_PI-QUARTER_PI/2.,0.), 
 				this.engine.motionNewtonLaw1D5(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1.));
 		a.set(0.,PI);
 		assertEpsilonEquals(makeVect(1., .5, DEMI_PI), 
@@ -224,19 +224,19 @@ public class JavaPhysicsEngineTest extends AbstractMathTestCase {
 		// velocity = (0,0)
 		v.set(0.,0.);
 		a.set(0.,0.);
-		assertEpsilonEquals(new Vector2f(0., 0.), 
+		assertEpsilonEquals(new Vector2fx(0., 0.), 
 				this.engine.motionNewtonLaw1D5(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5));
 		a.set(PI,0.);
-		assertEpsilonEquals(new Vector2f(PI/16.,0.), 
+		assertEpsilonEquals(new Vector2fx(PI/16.,0.), 
 				this.engine.motionNewtonLaw1D5(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5));
 		a.set(-PI,0.);
-		assertEpsilonEquals(new Vector2f(-PI/16.,0.), 
+		assertEpsilonEquals(new Vector2fx(-PI/16.,0.), 
 				this.engine.motionNewtonLaw1D5(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5));
 		a.set(0.,PI);
-		assertEpsilonEquals(new Vector2f(0., PI/16.), 
+		assertEpsilonEquals(new Vector2fx(0., PI/16.), 
 				this.engine.motionNewtonLaw1D5(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5));
 		a.set(0.,-PI);
-		assertEpsilonEquals(new Vector2f(0., -PI/16.), 
+		assertEpsilonEquals(new Vector2fx(0., -PI/16.), 
 				this.engine.motionNewtonLaw1D5(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5));
 		a.set(-PI,PI);
 		assertEpsilonEquals(makeVect(-1,1,PI/16.), 
@@ -248,40 +248,40 @@ public class JavaPhysicsEngineTest extends AbstractMathTestCase {
 		// velocity = (PI/2,0)
 		v.set(DEMI_PI,0.);
 		a.set(0.,0.);
-		assertEpsilonEquals(new Vector2f(DEMI_PI/2., 0.), 
+		assertEpsilonEquals(new Vector2fx(DEMI_PI/2., 0.), 
 				this.engine.motionNewtonLaw1D5(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5));
 		a.set(PI,0.);
-		assertEpsilonEquals(new Vector2f(DEMI_PI/2.,0.), 
+		assertEpsilonEquals(new Vector2fx(DEMI_PI/2.,0.), 
 				this.engine.motionNewtonLaw1D5(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5));
 		a.set(-PI,0.);
-		assertEpsilonEquals(new Vector2f((DEMI_PI-PI/16.)/2.,0.), 
+		assertEpsilonEquals(new Vector2fx((DEMI_PI-PI/16.)/2.,0.), 
 				this.engine.motionNewtonLaw1D5(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5));
 	}
 
 	/**
 	 */
 	public void motionNewtonLaw2D() {
-		Vector2f v = new Vector2f();
-		Vector2f a = new Vector2f();
+		Vector2fx v = new Vector2fx();
+		Vector2fx a = new Vector2fx();
 
 		//--- DT: 1
 
 		// velocity = (0,0)
 		v.set(0.,0.);
 		a.set(0.,0.);
-		assertEpsilonEquals(new Vector2f(0., 0.), 
+		assertEpsilonEquals(new Vector2fx(0., 0.), 
 				this.engine.motionNewtonLaw2D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1.));
 		a.set(PI,0.);
-		assertEpsilonEquals(new Vector2f(QUARTER_PI,0.), 
+		assertEpsilonEquals(new Vector2fx(QUARTER_PI,0.), 
 				this.engine.motionNewtonLaw2D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1.));
 		a.set(-PI,0.);
-		assertEpsilonEquals(new Vector2f(-QUARTER_PI,0.), 
+		assertEpsilonEquals(new Vector2fx(-QUARTER_PI,0.), 
 				this.engine.motionNewtonLaw2D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1.));
 		a.set(0.,PI);
-		assertEpsilonEquals(new Vector2f(0., QUARTER_PI), 
+		assertEpsilonEquals(new Vector2fx(0., QUARTER_PI), 
 				this.engine.motionNewtonLaw2D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1.));
 		a.set(0.,-PI);
-		assertEpsilonEquals(new Vector2f(0., -QUARTER_PI), 
+		assertEpsilonEquals(new Vector2fx(0., -QUARTER_PI), 
 				this.engine.motionNewtonLaw2D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1.));
 		a.set(-PI,PI);
 		assertEpsilonEquals(makeVect(-1,1,QUARTER_PI), 
@@ -293,13 +293,13 @@ public class JavaPhysicsEngineTest extends AbstractMathTestCase {
 		// velocity = (PI/2,0)
 		v.set(DEMI_PI,0.);
 		a.set(0.,0.);
-		assertEpsilonEquals(new Vector2f(DEMI_PI, 0.), 
+		assertEpsilonEquals(new Vector2fx(DEMI_PI, 0.), 
 				this.engine.motionNewtonLaw2D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1.));
 		a.set(PI,0.);
-		assertEpsilonEquals(new Vector2f(DEMI_PI,0.), 
+		assertEpsilonEquals(new Vector2fx(DEMI_PI,0.), 
 				this.engine.motionNewtonLaw2D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1.));
 		a.set(-PI,0.);
-		assertEpsilonEquals(new Vector2f(DEMI_PI-QUARTER_PI/2.,0.), 
+		assertEpsilonEquals(new Vector2fx(DEMI_PI-QUARTER_PI/2.,0.), 
 				this.engine.motionNewtonLaw2D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, 1.));
 		a.set(0.,PI);
 		assertEpsilonEquals(makeVect(1., .5, DEMI_PI), 
@@ -322,19 +322,19 @@ public class JavaPhysicsEngineTest extends AbstractMathTestCase {
 		// velocity = (0,0)
 		v.set(0.,0.);
 		a.set(0.,0.);
-		assertEpsilonEquals(new Vector2f(0., 0.), 
+		assertEpsilonEquals(new Vector2fx(0., 0.), 
 				this.engine.motionNewtonLaw2D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5));
 		a.set(PI,0.);
-		assertEpsilonEquals(new Vector2f(PI/16.,0.), 
+		assertEpsilonEquals(new Vector2fx(PI/16.,0.), 
 				this.engine.motionNewtonLaw2D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5));
 		a.set(-PI,0.);
-		assertEpsilonEquals(new Vector2f(-PI/16.,0.), 
+		assertEpsilonEquals(new Vector2fx(-PI/16.,0.), 
 				this.engine.motionNewtonLaw2D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5));
 		a.set(0.,PI);
-		assertEpsilonEquals(new Vector2f(0., PI/16.), 
+		assertEpsilonEquals(new Vector2fx(0., PI/16.), 
 				this.engine.motionNewtonLaw2D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5));
 		a.set(0.,-PI);
-		assertEpsilonEquals(new Vector2f(0., -PI/16.), 
+		assertEpsilonEquals(new Vector2fx(0., -PI/16.), 
 				this.engine.motionNewtonLaw2D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5));
 		a.set(-PI,PI);
 		assertEpsilonEquals(makeVect(-1,1,PI/16.), 
@@ -346,13 +346,13 @@ public class JavaPhysicsEngineTest extends AbstractMathTestCase {
 		// velocity = (PI/2,0)
 		v.set(DEMI_PI,0.);
 		a.set(0.,0.);
-		assertEpsilonEquals(new Vector2f(DEMI_PI/2., 0.), 
+		assertEpsilonEquals(new Vector2fx(DEMI_PI/2., 0.), 
 				this.engine.motionNewtonLaw2D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5));
 		a.set(PI,0.);
-		assertEpsilonEquals(new Vector2f(DEMI_PI/2.,0.), 
+		assertEpsilonEquals(new Vector2fx(DEMI_PI/2.,0.), 
 				this.engine.motionNewtonLaw2D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5));
 		a.set(-PI,0.);
-		assertEpsilonEquals(new Vector2f((DEMI_PI-PI/16.)/2.,0.), 
+		assertEpsilonEquals(new Vector2fx((DEMI_PI-PI/16.)/2.,0.), 
 				this.engine.motionNewtonLaw2D(v, 0, DEMI_PI, a, -QUARTER_PI, DEMI_PI, .5));
 	}
 
@@ -481,7 +481,7 @@ public class JavaPhysicsEngineTest extends AbstractMathTestCase {
 	/**
 	 */
 	public void motionNewtonEuler1Law1D5() {
-		Vector2f v = new Vector2f();
+		Vector2fx v = new Vector2fx();
 		
 		v.set(0.,0.);
 		assertEpsilonEquals(makeVect(1.,0.,0.),
@@ -543,7 +543,7 @@ public class JavaPhysicsEngineTest extends AbstractMathTestCase {
 	/**
 	 */
 	public void motionNewtonEuler1Law2D() {
-		Vector2f v = new Vector2f();
+		Vector2fx v = new Vector2fx();
 		
 		v.set(0.,0.);
 		assertEpsilonEquals(makeVect(1.,0.,0.),

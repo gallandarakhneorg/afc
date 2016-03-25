@@ -21,10 +21,8 @@
 package org.arakhne.afc.math.physics;
 
 import org.arakhne.afc.math.MathUtil;
-import org.arakhne.afc.math.geometry.d2.FunctionalVector2D;
-import org.arakhne.afc.math.geometry.d2.continuous.Vector2f;
-import org.arakhne.afc.math.geometry.d3.FunctionalVector3D;
-import org.arakhne.afc.math.geometry.d3.continuous.Vector3f;
+import org.arakhne.afc.math.geometry.d2.Vector2D;
+import org.arakhne.afc.math.geometry.d3.Vector3D;
 
 
 /**
@@ -90,14 +88,15 @@ class JavaPhysicsEngine implements PhysicsEngine {
 	/** {@inheritDoc}
 	 */
 	@Override
-	public Vector2f motionNewtonLaw1D5(
-			Vector2f velocity,
+	public void motionNewtonLaw1D5(
+			Vector2D velocity,
 			double minSpeed,
 			double maxSpeed,
-			Vector2f acceleration, 
+			Vector2D acceleration, 
 			double minAcceleration,
 			double maxAcceleration,
-			double dt) {
+			double dt,
+			Vector2D result) {
 		assert(velocity!=null);
 		assert(acceleration!=null);
 		assert(minSpeed>=0.);
@@ -128,29 +127,30 @@ class JavaPhysicsEngine implements PhysicsEngine {
 		oLength = Math.sqrt(vx*vx+vy*vy);
 		if (oLength!=0.) {
 			a = MathUtil.clamp(
-					(FunctionalVector2D.dotProduct(vx, vy, velocity.getX(), velocity.getY())<0.) ? -oLength : oLength, 
+					(Vector2D.dotProduct(vx, vy, velocity.getX(), velocity.getY())<0.) ? -oLength : oLength, 
 							minSpeed, 
 							maxSpeed);
 		
 			a = dt * Math.abs(a) / oLength;
 		
-			return new Vector2f(a * vx, a * vy);
+			result.set(a * vx, a * vy);
+		} else {
+			result.set(0., 0.);
 		}
-		
-		return new Vector2f(0., 0.);
 	}
 
 	/** {@inheritDoc}
 	 */
 	@Override
-	public Vector2f motionNewtonLaw2D(
-			Vector2f velocity,
+	public void motionNewtonLaw2D(
+			Vector2D velocity,
 			double minSpeed,
 			double maxSpeed,
-			Vector2f acceleration, 
+			Vector2D acceleration, 
 			double minAcceleration,
 			double maxAcceleration,
-			double dt) {
+			double dt,
+			Vector2D result) {
 		assert(velocity!=null);
 		assert(acceleration!=null);
 		assert(minSpeed>=0.);
@@ -181,48 +181,51 @@ class JavaPhysicsEngine implements PhysicsEngine {
 		oLength = Math.sqrt(vx*vx+vy*vy);
 		if (oLength!=0.) {
 			a = MathUtil.clamp(
-					(FunctionalVector2D.dotProduct(vx, vy, velocity.getX(), velocity.getY())<0.) ? -oLength : oLength, 
+					(Vector2D.dotProduct(vx, vy, velocity.getX(), velocity.getY())<0.) ? -oLength : oLength, 
 							minSpeed, 
 							maxSpeed);
 		
 			a = dt * Math.abs(a) / oLength;
 		
-			return new Vector2f(a * vx, a * vy);
+			result.set(a * vx, a * vy);
+		} else {
+			result.set(0., 0.);
 		}
-		
-		return new Vector2f(0., 0.);
 	}
 
 	/** {@inheritDoc}
 	 */
 	@Override
-	public Vector3f motionNewtonLaw2D5(
-			Vector3f velocity,
+	public void motionNewtonLaw2D5(
+			Vector3D velocity,
 			double minSpeed,
 			double maxSpeed,
-			Vector3f acceleration, 
+			Vector3D acceleration, 
 			double minAcceleration,
 			double maxAcceleration,
-			double dt) {
-		return motionNewtonLaw3D(
+			double dt,
+			Vector3D result) {
+		motionNewtonLaw3D(
 				velocity, 
 				minSpeed, maxSpeed, 
 				acceleration, 
 				minAcceleration, maxAcceleration, 
-				dt);
+				dt,
+				result);
 	}
 	
 	/** {@inheritDoc}
 	 */
 	@Override
-	public Vector3f motionNewtonLaw3D(
-			Vector3f velocity,
+	public void motionNewtonLaw3D(
+			Vector3D velocity,
 			double minSpeed,
 			double maxSpeed,
-			Vector3f acceleration, 
+			Vector3D acceleration, 
 			double minAcceleration,
 			double maxAcceleration,
-			double dt) {
+			double dt,
+			Vector3D result) {
 		assert(velocity!=null);
 		assert(acceleration!=null);
 		assert(minSpeed>=0.);
@@ -256,16 +259,16 @@ class JavaPhysicsEngine implements PhysicsEngine {
 		oLength = Math.sqrt(vx*vx+vy*vy+vz*vz);
 		if (oLength!=0.) {
 			a = MathUtil.clamp(
-					(FunctionalVector3D.dotProduct(vx, vy, vz, velocity.getX(), velocity.getY(), velocity.getZ())<0.) ? -oLength : oLength, 
+					(Vector3D.dotProduct(vx, vy, vz, velocity.getX(), velocity.getY(), velocity.getZ())<0.) ? -oLength : oLength, 
 							minSpeed, 
 							maxSpeed);
 		
 			a = dt * Math.abs(a) / oLength;
 		
-			return new Vector3f(a * vx, a * vy, a * vz);
+			result.set(a * vx, a * vy, a * vz);
+		} else {
+			result.set(0., 0., 0.);
 		}
-		
-		return new Vector3f(0., 0., 0.);
 	}
 
 	/** {@inheritDoc}
@@ -292,66 +295,74 @@ class JavaPhysicsEngine implements PhysicsEngine {
 	/** {@inheritDoc}
 	 */
 	@Override
-	public Vector2f motionNewtonEuler1Law1D5(
-			Vector2f velocity,
+	public void motionNewtonEuler1Law1D5(
+			Vector2D velocity,
 			double minSpeed,
 			double maxSpeed,
-			double dt) {
+			double dt,
+			Vector2D result) {
 		assert(minSpeed>=0.);
 		double l = velocity.length();
 		if (l!=0.) {
 			double a = dt * MathUtil.clamp(l, minSpeed, maxSpeed) / l;
-			return new Vector2f(velocity.getX() * a, velocity.getY() * a);
+			result.set(velocity.getX() * a, velocity.getY() * a);
+		} else {
+			result.set(0.,0.);
 		}
-		return new Vector2f(0.,0.);
 	}
 
 	/** {@inheritDoc}
 	 */
 	@Override
-	public Vector2f motionNewtonEuler1Law2D(
-			Vector2f velocity,
+	public void motionNewtonEuler1Law2D(
+			Vector2D velocity,
 			double minSpeed,
 			double maxSpeed,
-			double dt) {
+			double dt,
+			Vector2D result) {
 		assert(minSpeed>=0.);
 		double l = velocity.length();
 		if (l!=0.) {
 			double a = dt * MathUtil.clamp(l, minSpeed, maxSpeed) / l;
-			return new Vector2f(velocity.getX() * a, velocity.getY() * a);
+			result.set(velocity.getX() * a, velocity.getY() * a);
+		} else {
+			result.set(0.,0.);
 		}
-		return new Vector2f(0.,0.);
 	}
 
 	/** {@inheritDoc}
 	 */
 	@Override
-	public Vector3f motionNewtonEuler1Law2D5(
-			Vector3f velocity,
+	public void motionNewtonEuler1Law2D5(
+			Vector3D velocity,
 			double minSpeed,
 			double maxSpeed,
-			double dt) {
-		return motionNewtonEuler1Law3D(
+			double dt,
+			Vector3D result) {
+		motionNewtonEuler1Law3D(
 				velocity, 
 				minSpeed, maxSpeed,
-				dt);
+				dt,
+				result);
 	}
 
 	/** {@inheritDoc}
 	 */
 	@Override
-	public Vector3f motionNewtonEuler1Law3D(
-			Vector3f velocity,
+	public void motionNewtonEuler1Law3D(
+			Vector3D velocity,
 			double minSpeed,
 			double maxSpeed,
-			double dt) {
+			double dt,
+			Vector3D result) {
 		assert(minSpeed>=0.);
 		double l = velocity.length();
 		if (l!=0.) {
 			double a = dt * MathUtil.clamp(l, minSpeed, maxSpeed) / l;
-			return new Vector3f(velocity.getX() * a, velocity.getY() * a, velocity.getZ() * a);
+			result.set(velocity.getX() * a, velocity.getY() * a, velocity.getZ() * a);
+		} else {
+			result.set(0., 0., 0.);
 		}
-		return new Vector3f(0., 0., 0.);
 	}
 
 	/** {@inheritDoc}

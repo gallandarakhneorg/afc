@@ -32,6 +32,7 @@ import org.arakhne.afc.math.geometry.d2.Path2D;
 import org.arakhne.afc.math.geometry.d2.PathIterator2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
+import org.arakhne.afc.math.geometry.d2.afp.Segment2afp;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Fonctional interface that represented a 2D path on a plane.
@@ -59,6 +60,10 @@ extends Shape2ai<ST, IT, IE, P, B>, Path2D<ST, IT, PathIterator2ai<IE>, P, B> {
 	/** Multiple of cubic & quad curve size.
 	 */
 	static final int GROW_SIZE = 24;
+
+	/** Default depth for the flattening of the path.
+	 */
+	static final int DEFAULT_FLATTENING_LIMIT = 10;
 
 	/** The default winding rule: {@link PathWindingRule#NON_ZERO}.
 	 */
@@ -109,7 +114,7 @@ extends Shape2ai<ST, IT, IE, P, B>, Path2D<ST, IT, PathIterator2ai<IE>, P, B> {
 					if (box.getMinX()<xmin) xmin = box.getMinX();
 					if (box.getMinY()<ymin) ymin = box.getMinY();
 					if (box.getMaxX()>xmax) xmax = box.getMaxX();
-					if (box.getMinY()>ymax) ymax = box.getMinY();
+					if (box.getMaxY()>ymax) ymax = box.getMaxY();
 					foundOneLine = true;
 				}
 				break;
@@ -125,7 +130,7 @@ extends Shape2ai<ST, IT, IE, P, B>, Path2D<ST, IT, PathIterator2ai<IE>, P, B> {
 					if (box.getMinX()<xmin) xmin = box.getMinX();
 					if (box.getMinY()<ymin) ymin = box.getMinY();
 					if (box.getMaxX()>xmax) xmax = box.getMaxX();
-					if (box.getMinY()>ymax) ymax = box.getMinY();
+					if (box.getMaxY()>ymax) ymax = box.getMaxY();
 					foundOneLine = true;
 				}
 				break;
@@ -531,6 +536,146 @@ extends Shape2ai<ST, IT, IE, P, B>, Path2D<ST, IT, PathIterator2ai<IE>, P, B> {
 	}
 
 	/**
+	 * Accumulate the number of times the path crosses the shadow
+	 * extending to the right of the second path.  See the comment
+	 * for the SHAPE_INTERSECTS constant for more complete details.
+	 * The return value is the sum of all crossings for both the
+	 * top and bottom of the shadow for every segment in the path,
+	 * or the special value SHAPE_INTERSECTS if the path ever enters
+	 * the interior of the rectangle.
+	 * The path must start with a SEG_MOVETO, otherwise an exception is
+	 * thrown.
+	 * The caller must check r[xy]{min,max} for NaN values.
+	 * 
+	 * @param iterator is the iterator on the path elements.
+	 * @param shadow is the description of the shape to project to the right.
+	 * @param closeable indicates if the shape is automatically closed or not.
+	 * @param onlyIntersectWhenOpen indicates if the crossings is set to 0 when
+	 * the path is open and there is not SHAPE_INTERSECT. If <code>true</code> assumes that
+	 * the function can only reply <code>0</code> or {@link MathConstants#SHAPE_INTERSECTS}.
+	 * @return the crossings.
+	 * @see "Weiler–Atherton clipping algorithm"
+	 */
+	static int computeCrossingsFromPath(
+			PathIterator2ai<?> iterator, 
+			PathShadow2ai<?> shadow,
+			boolean closeable,
+			boolean onlyIntersectWhenOpen) {
+		if (!iterator.hasNext()) return 0;
+
+		PathElement2ai pathElement1 = iterator.next();
+
+		if (pathElement1.getType() != PathElementType.MOVE_TO) {
+			throw new IllegalArgumentException("missing initial moveto in the first path definition"); //$NON-NLS-1$
+		}
+
+		GeomFactory2ai<?, ?, ?> factory = iterator.getGeomFactory();
+		Path2ai<?, ?, ?, ?, ?> subPath;
+		int curx, cury, movx, movy, endx, endy;
+		curx = movx = pathElement1.getToX();
+		cury = movy = pathElement1.getToY();
+		int crossings = 0;
+		int n;
+
+		while (crossings != MathConstants.SHAPE_INTERSECTS
+				&& iterator.hasNext()) {
+			pathElement1 = iterator.next();
+			switch (pathElement1.getType()) {
+			case MOVE_TO:
+				// Count should always be a multiple of 2 here.
+				// assert((crossings & 1) != 0);
+				movx = curx = pathElement1.getToX();
+				movy = cury = pathElement1.getToY();
+				break;
+			case LINE_TO:
+				endx = pathElement1.getToX();
+				endy = pathElement1.getToY();
+				crossings = shadow.computeCrossings(crossings,
+						curx, cury,
+						endx, endy);
+				if (crossings==MathConstants.SHAPE_INTERSECTS)
+					return crossings;
+				curx = endx;
+				cury = endy;
+				break;
+			case QUAD_TO:
+				endx = pathElement1.getToX();
+				endy = pathElement1.getToY();
+				// only for local use.
+				subPath = factory.newPath(iterator.getWindingRule());
+				subPath.moveTo(curx, cury);
+				subPath.quadTo(
+						pathElement1.getCtrlX1(), pathElement1.getCtrlY1(),
+						endx, endy);
+				n = computeCrossingsFromPath(
+						subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						shadow,
+						false,
+						false);
+				if (n==MathConstants.SHAPE_INTERSECTS)
+					return n;
+				crossings += n;
+				curx = endx;
+				cury = endy;
+				break;
+			case CURVE_TO:
+				endx = pathElement1.getToX();
+				endy = pathElement1.getToY();
+				// only for local use
+				subPath = factory.newPath(iterator.getWindingRule());
+				subPath.moveTo(curx, cury);
+				subPath.curveTo(
+						pathElement1.getCtrlX1(), pathElement1.getCtrlY1(),
+						pathElement1.getCtrlX2(), pathElement1.getCtrlY2(),
+						endx, endy);
+				n = computeCrossingsFromPath(
+						subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						shadow,
+						false,
+						false);
+				if (n==MathConstants.SHAPE_INTERSECTS)
+					return n;
+				crossings += n;
+				curx = endx;
+				cury = endy;
+				break;
+			case CLOSE:
+				if (curx != movx || cury != movy) {
+					crossings = shadow.computeCrossings(crossings,
+							curx, cury,
+							movx, movy);
+				}
+				// Stop as soon as possible
+				if (crossings!=0) return crossings;
+				curx = movx;
+				cury = movy;
+				break;
+			default:
+			}
+		}
+
+		assert(crossings != MathConstants.SHAPE_INTERSECTS);
+
+		boolean isOpen = (curx != movx) || (cury != movy);
+
+		if (isOpen) {
+			if (closeable) {
+				// Not closed
+				crossings = shadow.computeCrossings(crossings,
+						curx, cury,
+						movx, movy);
+			}
+			else if (onlyIntersectWhenOpen) {
+				// Assume that when is the path is open, only
+				// SHAPE_INTERSECTS may be return
+				crossings = 0;
+			}
+		}
+
+		return crossings;
+	}
+
+	/**
 	 * Tests if the specified coordinates are inside the closed
 	 * boundary of the specified {@link PathIterator2ai}.
 	 * <p>
@@ -655,7 +800,8 @@ extends Shape2ai<ST, IT, IE, P, B>, Path2D<ST, IT, PathIterator2ai<IE>, P, B> {
 	 * if it is inside the shape.
 	 */
 	static void getClosestPointTo(PathIterator2ai<? extends PathElement2ai> pi, int x, int y, Point2D result) {
-		double bestDist = Double.POSITIVE_INFINITY;
+		int bestManhantanDist = Integer.MAX_VALUE;
+		int bestLinfinvDist = Integer.MAX_VALUE;
 		Point2D candidate;
 		PathElement2ai pe;
 
@@ -712,13 +858,17 @@ extends Shape2ai<ST, IT, IE, P, B>, Path2D<ST, IT, PathIterator2ai<IE>, P, B> {
 			}
 
 			if (candidate!=null) {
-				double d = Point2D.getDistanceSquaredPointPoint(x, y, candidate.ix(), candidate.iy());
-				if (d<=0) {
+				int dx = Math.abs(x - candidate.ix());
+				int dy = Math.abs(y - candidate.iy());
+				int manhatanDist = dx + dy;
+				if (manhatanDist <= 0) {
 					result.set(candidate);
 					return;
 				}
-				if (d<bestDist) {
-					bestDist = d;
+				int linfinvDist = Math.min(dx, dy);
+				if (manhatanDist < bestManhantanDist || (manhatanDist == bestManhantanDist && linfinvDist < bestLinfinvDist)) {
+					bestManhantanDist = manhatanDist;
+					bestLinfinvDist = linfinvDist;
 					result.set(candidate);
 				}
 			}
@@ -751,19 +901,18 @@ extends Shape2ai<ST, IT, IE, P, B>, Path2D<ST, IT, PathIterator2ai<IE>, P, B> {
 	 * @param result the farthest point on the shape.
 	 */
 	static void getFarthestPointTo(PathIterator2ai<? extends PathElement2ai> pi, int x, int y, Point2D result) {
-		double bestX = Double.NaN;
-		double bestY = Double.NaN;
-		double bestDist = Double.NEGATIVE_INFINITY;
+		int bestX = x;
+		int bestY = y;
+		int bestManhatanDist = Integer.MIN_VALUE;
+		int bestLinfinvDist = Integer.MIN_VALUE;
 		PathElement2ai pe;
-		// Only for internal use.
-		Point2D point = new FakePoint();
+		Point2D point = pi.getGeomFactory().newPoint();
 
 		while (pi.hasNext()) {
 			pe = pi.next();
 
 			boolean foundCandidate = false;
-			double candidateX = Double.NaN;
-			double candidateY = Double.NaN;
+			int candidateX, candidateY;
 
 			switch(pe.getType()) {
 			case MOVE_TO:
@@ -777,8 +926,8 @@ extends Shape2ai<ST, IT, IE, P, B>, Path2D<ST, IT, PathIterator2ai<IE>, P, B> {
 						pe.getFromX(), pe.getFromY(), pe.getToX(), pe.getToY(),
 						x, y, point);
 				foundCandidate = true;
-				candidateX = point.getX();
-				candidateY = point.getY();
+				candidateX = point.ix();
+				candidateY = point.iy();
 				break;
 			case QUAD_TO:
 			case CURVE_TO:
@@ -788,16 +937,32 @@ extends Shape2ai<ST, IT, IE, P, B>, Path2D<ST, IT, PathIterator2ai<IE>, P, B> {
 			}
 
 			if (foundCandidate) {
-				double d = Point2D.getDistanceSquaredPointPoint(x, y, candidateX, candidateY);
-				if (d > bestDist) {
-					bestDist = d;
+				int dx = Math.abs(x - candidateX);
+				int dy = Math.abs(y - candidateY);
+				int manhatanDist = dx + dy;
+				int linfinvDist = Math.min(dx, dy);
+				if ((manhatanDist > bestManhatanDist) || (manhatanDist == bestManhatanDist && linfinvDist < bestLinfinvDist)) {
+					bestManhatanDist = manhatanDist;
+					bestLinfinvDist = linfinvDist;
 					bestX = candidateX;
-					bestY = candidateX;
+					bestY = candidateY;
 				}
 			}
 		}
 
 		result.set(bestX, bestY);
+	}
+
+	@Pure
+	@Override
+	default boolean equalsToShape(IT shape) {
+		if (shape == null) {
+			return false;
+		}
+		if (shape == this) {
+			return true;
+		}
+		return equalsToPathIterator(shape.getPathIterator());
 	}
 
 	/** Add the elements replied by the iterator into this path.
@@ -948,22 +1113,6 @@ extends Shape2ai<ST, IT, IE, P, B>, Path2D<ST, IT, PathIterator2ai<IE>, P, B> {
 	}
 
 	@Override
-	default boolean equals(PathIterator2ai<IE> iterator) {
-		if (iterator != null) {
-			PathIterator2ai<IE> myIterator = getPathIterator();
-			while (iterator.hasNext() && myIterator.hasNext()) {
-				IE element1 = iterator.next();
-				IE element2 = myIterator.next();
-				if (!element1.equals(element2)) {
-					return false;
-				}
-			}
-			return !iterator.hasNext() && !myIterator.hasNext();
-		}
-		return false;
-	}
-
-	@Override
 	default double lengthSquared() {
 		if (isEmpty()) return 0;
 
@@ -977,71 +1126,24 @@ extends Shape2ai<ST, IT, IE, P, B>, Path2D<ST, IT, PathIterator2ai<IE>, P, B> {
 			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
 		}
 
-		// only for internal use
-		GeomFactory2ai<IE, P, B> factory = getGeomFactory();
-		Path2ai<?, ?, ?, ?, ?> subPath;
-		int curx, cury, movx, movy, endx, endy;
-		curx = movx = pathElement.getToX();
-		cury = movy = pathElement.getToY();
-
 		while (pi.hasNext()) {
 			pathElement = pi.next();
 
 			switch (pathElement.getType()) {
-			case MOVE_TO: 
-				movx = curx = pathElement.getToX();
-				movy = cury = pathElement.getToY();
-				break;
 			case LINE_TO:
-				endx = pathElement.getToX();
-				endy = pathElement.getToY();
-
 				length += Point2D.getDistanceSquaredPointPoint(
-						curx, cury,  
-						endx, endy);
-
-				curx = endx;
-				cury = endy;
-				break;
-			case QUAD_TO:
-				endx = pathElement.getToX();
-				endy = pathElement.getToY();
-				subPath = factory.newPath(getWindingRule());
-				subPath.moveTo(curx, cury);
-				subPath.quadTo(
-						pathElement.getCtrlX1(), pathElement.getCtrlY1(),
-						endx, endy);
-
-				length += subPath.lengthSquared();
-
-				curx = endx;
-				cury = endy;
-				break;
-			case CURVE_TO:
-				endx = pathElement.getToX();
-				endy = pathElement.getToY();
-				subPath = factory.newPath(getWindingRule());
-				subPath.moveTo(curx, cury);
-				subPath.curveTo(
-						pathElement.getCtrlX1(), pathElement.getCtrlY1(),
-						pathElement.getCtrlX2(), pathElement.getCtrlY2(),
-						endx, endy);
-
-				length += subPath.lengthSquared();
-
-				curx = endx;
-				cury = endy;
+						pathElement.getFromX(), pathElement.getFromY(),  
+						pathElement.getToX(), pathElement.getToY());
 				break;
 			case CLOSE:
-				if (curx != movx || cury != movy) {
-					length += Point2D.getDistanceSquaredPointPoint(
-							curx, cury, 
-							movx, movy);
-				}
-
-				curx = movx;
-				cury = movy;
+				length += Point2D.getDistanceSquaredPointPoint(
+						pathElement.getFromX(), pathElement.getFromY(), 
+						pathElement.getToX(), pathElement.getToY());
 				break;
+			case QUAD_TO:
+			case CURVE_TO:
+				throw new IllegalStateException("Curve in path is not supported"); //$NON-NLS-1$
+			case MOVE_TO: 
 			default:
 			}
 
@@ -1101,12 +1203,13 @@ extends Shape2ai<ST, IT, IE, P, B>, Path2D<ST, IT, PathIterator2ai<IE>, P, B> {
 	 */
 	boolean remove(int x, int y);
 
+	@Pure
 	@Override
 	default PathIterator2ai<IE> getPathIterator(double flatness) {
-		// TODO Auto-generated method stub
-		return null;
+		return new FlatteningPathIterator<>(this, getPathIterator(null), flatness, DEFAULT_FLATTENING_LIMIT);
 	}
 
+	@Pure
 	@Override
 	default PathIterator2ai<IE> getPathIterator(Transform2D transform) {
 		if (transform == null || transform.isIdentity()) {
@@ -1115,12 +1218,14 @@ extends Shape2ai<ST, IT, IE, P, B>, Path2D<ST, IT, PathIterator2ai<IE>, P, B> {
 		return new TransformedPathIterator<>(this, transform);
 	}
 
+	@Pure
 	@Override
 	default Iterator<P> getPointIterator() {
 		PathIterator2ai<IE> pathIterator = getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO);
 		return new PixelIterator<>(pathIterator, getGeomFactory());
 	}
 
+	@Pure
 	@Override
 	default boolean intersects(Circle2ai<?, ?, ?, ?, ?> s) {
 		int mask = (getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2);
@@ -1131,6 +1236,7 @@ extends Shape2ai<ST, IT, IE, P, B>, Path2D<ST, IT, PathIterator2ai<IE>, P, B> {
 				(crossings & mask) != 0);
 	}
 
+	@Pure
 	@Override
 	default boolean intersects(Rectangle2ai<?, ?, ?, ?, ?> s) {
 		// Copied from AWT API
@@ -1144,6 +1250,7 @@ extends Shape2ai<ST, IT, IE, P, B>, Path2D<ST, IT, PathIterator2ai<IE>, P, B> {
 				(crossings & mask) != 0);
 	}
 
+	@Pure
 	@Override
 	default boolean intersects(Segment2ai<?, ?, ?, ?, ?> s) {
 		int mask = (getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2);
@@ -1154,6 +1261,19 @@ extends Shape2ai<ST, IT, IE, P, B>, Path2D<ST, IT, PathIterator2ai<IE>, P, B> {
 				(crossings & mask) != 0);
 	}
 
+	@Override
+	default boolean intersects(PathIterator2ai<?> iterator) {
+		int mask = (getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2);
+		int crossings = computeCrossingsFromPath(
+				iterator,
+				new PathShadow2ai<>(this),
+				false,
+				true);
+		return (crossings == MathConstants.SHAPE_INTERSECTS ||
+				(crossings & mask) != 0);
+	}
+	
+	@Pure
 	@Override
 	default Collection<Point2D> toCollection() {
 		return new PointCollection(this);
@@ -1920,4 +2040,560 @@ extends Shape2ai<ST, IT, IE, P, B>, Path2D<ST, IT, PathIterator2ai<IE>, P, B> {
 
 	}
 
+	/** A path iterator that is flattening the path.
+	 * This iterator was copied from AWT FlatteningPathIterator.
+	 *
+	 * @param <E> the type of the path elements.
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 13.0
+	 */
+	class FlatteningPathIterator<E extends PathElement2ai> implements PathIterator2ai<E> {
+
+		/** Path.
+		 */
+		private final Path2ai<?, ?, E, ?, ?> path;
+		
+		/** The source iterator.
+		 */
+		private final Iterator<? extends E> pathIterator;
+
+		/**
+		 * Square of the flatness parameter for testing against squared lengths.
+		 */
+		private final double squaredFlatness;
+
+		/**
+		 * Maximum number of recursion levels.
+		 */
+		private final int limit; 
+
+		/** The recursion level at which each curve being held in storage was generated.
+		 */
+		private int levels[];
+
+		/** The cache of interpolated coords.
+		 * Note that this must be long enough
+		 * to store a full cubic segment and
+		 * a relative cubic segment to avoid
+		 * aliasing when copying the coords
+		 * of a curve to the end of the array.
+		 * This is also serendipitously equal
+		 * to the size of a full quad segment
+		 * and 2 relative quad segments.
+		 */
+		private double hold[] = new double[14];
+
+		/** The index of the last curve segment being held for interpolation.
+		 */
+		private int holdEnd;
+
+		/**
+		 * The index of the curve segment that was last interpolated.  This
+		 * is the curve segment ready to be returned in the next call to
+		 * next().
+		 */
+		private int holdIndex;
+
+		/** The ending x of the last segment.
+		 */
+		private double currentX;
+
+		/** The ending y of the last segment.
+		 */
+		private double currentY;
+
+		/** The x of the last move segment.
+		 */
+		private double moveX;
+
+		/** The y of the last move segment.
+		 */
+		private double moveY;
+
+		/** The index of the entry in the
+		 * levels array of the curve segment
+		 * at the holdIndex
+		 */
+		private int levelIndex;
+
+		/** True when iteration is done.
+		 */
+		private boolean done;
+
+		/** The type of the path element.
+		 */
+		private PathElementType holdType;
+
+		/** The x of the last move segment replied by next.
+		 */
+		private int lastNextX;
+
+		/** The y of the last move segment replied by next.
+		 */
+		private int lastNextY;
+
+		/**
+		 * @param path is the path.
+		 * @param pathIterator is the path iterator that may be used to initialize the path.
+		 * @param flatness the maximum allowable distance between the
+		 *     control points and the flattened curve
+		 * @param limit the maximum number of recursive subdivisions
+		 *     allowed for any curved segment
+		 */
+		public FlatteningPathIterator(Path2ai<?, ?, E, ?, ?> path, Iterator<? extends E> pathIterator,
+				double flatness, int limit) {
+			assert(path != null);
+			assert(flatness >= 0f);
+			assert(limit >= 0);
+			this.path = path;
+			this.pathIterator = pathIterator;
+			this.squaredFlatness = flatness * flatness;
+			this.limit = limit;
+			this.levels = new int[limit + 1];
+			searchNext(true);
+		}
+
+		/**
+		 * Ensures that the hold array can hold up to (want) more values.
+		 * It is currently holding (hold.length - holdIndex) values.
+		 */
+		private void ensureHoldCapacity(int want) {
+			if (this.holdIndex - want < 0) {
+				int have = this.hold.length - this.holdIndex;
+				int newsize = this.hold.length + GROW_SIZE;
+				double newhold[] = new double[newsize];
+				System.arraycopy(this.hold, this.holdIndex,
+						newhold, this.holdIndex + GROW_SIZE,
+						have);
+				this.hold = newhold;
+				this.holdIndex += GROW_SIZE;
+				this.holdEnd += GROW_SIZE;
+			}
+		}
+
+		/**
+		 * Returns the square of the flatness, or maximum distance of a
+		 * control point from the line connecting the end points, of the
+		 * quadratic curve specified by the control points stored in the
+		 * indicated array at the indicated index.
+		 * @param coords an array containing coordinate values
+		 * @param offset the index into <code>coords</code> from which to
+		 *          to start getting the values from the array
+		 * @return the flatness of the quadratic curve that is defined by the
+		 *          values in the specified array at the specified index.
+		 */
+		private static double getQuadSquaredFlatness(double coords[], int offset) {
+			return Segment2afp.getDistanceSquaredLinePoint(
+					coords[offset + 0], coords[offset + 1],
+					coords[offset + 4], coords[offset + 5],
+					coords[offset + 2], coords[offset + 3]);
+		}
+
+		/**
+		 * Subdivides the quadratic curve specified by the coordinates
+		 * stored in the <code>src</code> array at indices
+		 * <code>srcoff</code> through <code>srcoff</code>&nbsp;+&nbsp;5
+		 * and stores the resulting two subdivided curves into the two
+		 * result arrays at the corresponding indices.
+		 * Either or both of the <code>left</code> and <code>right</code>
+		 * arrays can be <code>null</code> or a reference to the same array
+		 * and offset as the <code>src</code> array.
+		 * Note that the last point in the first subdivided curve is the
+		 * same as the first point in the second subdivided curve.  Thus,
+		 * it is possible to pass the same array for <code>left</code> and
+		 * <code>right</code> and to use offsets such that
+		 * <code>rightoff</code> equals <code>leftoff</code> + 4 in order
+		 * to avoid allocating extra storage for this common point.
+		 * @param src the array holding the coordinates for the source curve
+		 * @param srcoff the offset into the array of the beginning of the
+		 * the 6 source coordinates
+		 * @param left the array for storing the coordinates for the first
+		 * half of the subdivided curve
+		 * @param leftoff the offset into the array of the beginning of the
+		 * the 6 left coordinates
+		 * @param right the array for storing the coordinates for the second
+		 * half of the subdivided curve
+		 * @param rightoff the offset into the array of the beginning of the
+		 * the 6 right coordinates
+		 */
+		private static void subdivideQuad(double src[], int srcoff,
+				double left[], int leftoff,
+				double right[], int rightoff) {
+			double x1 = src[srcoff + 0];
+			double y1 = src[srcoff + 1];
+			double ctrlx = src[srcoff + 2];
+			double ctrly = src[srcoff + 3];
+			double x2 = src[srcoff + 4];
+			double y2 = src[srcoff + 5];
+			if (left != null) {
+				left[leftoff + 0] = x1;
+				left[leftoff + 1] = y1;
+			}
+			if (right != null) {
+				right[rightoff + 4] = x2;
+				right[rightoff + 5] = y2;
+			}
+			x1 = (x1 + ctrlx) / 2;
+			y1 = (y1 + ctrly) / 2;
+			x2 = (x2 + ctrlx) / 2;
+			y2 = (y2 + ctrly) / 2;
+			ctrlx = (x1 + x2) / 2;
+			ctrly = (y1 + y2) / 2;
+			if (left != null) {
+				left[leftoff + 2] = x1;
+				left[leftoff + 3] = y1;
+				left[leftoff + 4] = ctrlx;
+				left[leftoff + 5] = ctrly;
+			}
+			if (right != null) {
+				right[rightoff + 0] = ctrlx;
+				right[rightoff + 1] = ctrly;
+				right[rightoff + 2] = x2;
+				right[rightoff + 3] = y2;
+			}
+		}
+
+		/**
+		 * Returns the square of the flatness of the cubic curve specified
+		 * by the control points stored in the indicated array at the
+		 * indicated index. The flatness is the maximum distance
+		 * of a control point from the line connecting the end points.
+		 * @param coords an array containing coordinates
+		 * @param offset the index of <code>coords</code> from which to begin
+		 *          getting the end points and control points of the curve
+		 * @return the square of the flatness of the <code>CubicCurve2D</code>
+		 *          specified by the coordinates in <code>coords</code> at
+		 *          the specified offset.
+		 */
+		private static double getCurveSquaredFlatness(double coords[], int offset) {
+			return Math.max(
+					Segment2afp.getDistanceSquaredSegmentPoint(
+							coords[offset + 6],
+							coords[offset + 7],
+							coords[offset + 2],
+							coords[offset + 3],
+							coords[offset + 0],
+							coords[offset + 1],
+							null),							
+					Segment2afp.getDistanceSquaredSegmentPoint(
+							coords[offset + 6],
+							coords[offset + 7],
+							coords[offset + 4],
+							coords[offset + 5],
+							coords[offset + 0],
+							coords[offset + 1],
+							null));
+		}
+
+		/**
+		 * Subdivides the cubic curve specified by the coordinates
+		 * stored in the <code>src</code> array at indices <code>srcoff</code>
+		 * through (<code>srcoff</code>&nbsp;+&nbsp;7) and stores the
+		 * resulting two subdivided curves into the two result arrays at the
+		 * corresponding indices.
+		 * Either or both of the <code>left</code> and <code>right</code>
+		 * arrays may be <code>null</code> or a reference to the same array
+		 * as the <code>src</code> array.
+		 * Note that the last point in the first subdivided curve is the
+		 * same as the first point in the second subdivided curve. Thus,
+		 * it is possible to pass the same array for <code>left</code>
+		 * and <code>right</code> and to use offsets, such as <code>rightoff</code>
+		 * equals (<code>leftoff</code> + 6), in order
+		 * to avoid allocating extra storage for this common point.
+		 * @param src the array holding the coordinates for the source curve
+		 * @param srcoff the offset into the array of the beginning of the
+		 * the 6 source coordinates
+		 * @param left the array for storing the coordinates for the first
+		 * half of the subdivided curve
+		 * @param leftoff the offset into the array of the beginning of the
+		 * the 6 left coordinates
+		 * @param right the array for storing the coordinates for the second
+		 * half of the subdivided curve
+		 * @param rightoff the offset into the array of the beginning of the
+		 * the 6 right coordinates
+		 */
+		private static void subdivideCurve(
+				double src[], int srcoff,
+				double left[], int leftoff,
+				double right[], int rightoff) {
+			double x1 = src[srcoff + 0];
+			double y1 = src[srcoff + 1];
+			double ctrlx1 = src[srcoff + 2];
+			double ctrly1 = src[srcoff + 3];
+			double ctrlx2 = src[srcoff + 4];
+			double ctrly2 = src[srcoff + 5];
+			double x2 = src[srcoff + 6];
+			double y2 = src[srcoff + 7];
+			if (left != null) {
+				left[leftoff + 0] = x1;
+				left[leftoff + 1] = y1;
+			}
+			if (right != null) {
+				right[rightoff + 6] = x2;
+				right[rightoff + 7] = y2;
+			}
+			x1 = (x1 + ctrlx1) / 2f;
+			y1 = (y1 + ctrly1) / 2f;
+			x2 = (x2 + ctrlx2) / 2f;
+			y2 = (y2 + ctrly2) / 2f;
+			double centerx = (ctrlx1 + ctrlx2) / 2f;
+			double centery = (ctrly1 + ctrly2) / 2f;
+			ctrlx1 = (x1 + centerx) / 2f;
+			ctrly1 = (y1 + centery) / 2f;
+			ctrlx2 = (x2 + centerx) / 2f;
+			ctrly2 = (y2 + centery) / 2f;
+			centerx = (ctrlx1 + ctrlx2) / 2f;
+			centery = (ctrly1 + ctrly2) / 2f;
+			if (left != null) {
+				left[leftoff + 2] = x1;
+				left[leftoff + 3] = y1;
+				left[leftoff + 4] = ctrlx1;
+				left[leftoff + 5] = ctrly1;
+				left[leftoff + 6] = centerx;
+				left[leftoff + 7] = centery;
+			}
+			if (right != null) {
+				right[rightoff + 0] = centerx;
+				right[rightoff + 1] = centery;
+				right[rightoff + 2] = ctrlx2;
+				right[rightoff + 3] = ctrly2;
+				right[rightoff + 4] = x2;
+				right[rightoff + 5] = y2;
+			}
+		}
+		
+		private void searchNext(boolean isFirst) {
+			do {
+				flattening();
+			}
+			while (!this.done && !isFirst && isSame());
+		}
+		
+		private boolean isSame() {
+			PathElementType type = this.holdType;
+			int x, y;
+			if (type==PathElementType.CLOSE) {
+				x = (int) Math.round(this.moveX);
+				y = (int) Math.round(this.moveY);
+			}
+			else {
+				x = (int) Math.round(this.hold[this.holdIndex + 0]);
+				y = (int) Math.round(this.hold[this.holdIndex + 1]);
+			}
+			return x==this.lastNextX && y==this.lastNextY;
+		}
+
+		private void flattening() {
+			int level;
+
+			if (this.holdIndex >= this.holdEnd) {
+				if (!this.pathIterator.hasNext()) {
+					this.done = true;
+					return;
+				}
+				PathElement2ai pathElement = this.pathIterator.next();
+				this.holdType = pathElement.getType();
+				pathElement.toArray(this.hold);
+				this.levelIndex = 0;
+				this.levels[0] = 0;
+			}
+
+			switch (this.holdType) {
+			case MOVE_TO:
+			case LINE_TO:
+				this.currentX = this.hold[0];
+				this.currentY = this.hold[1];
+				if (this.holdType == PathElementType.MOVE_TO) {
+					this.moveX = this.currentX;
+					this.moveY = this.currentY;
+				}
+				this.holdIndex = 0;
+				this.holdEnd = 0;
+				break;
+			case CLOSE:
+				this.currentX = this.moveX;
+				this.currentY = this.moveY;
+				this.holdIndex = 0;
+				this.holdEnd = 0;
+				break;
+			case QUAD_TO:
+				if (this.holdIndex >= this.holdEnd) {
+					// Move the coordinates to the end of the array.
+					this.holdIndex = this.hold.length - 6;
+					this.holdEnd = this.hold.length - 2;
+					this.hold[this.holdIndex + 0] = this.currentX;
+					this.hold[this.holdIndex + 1] = this.currentY;
+					this.hold[this.holdIndex + 2] = this.hold[0];
+					this.hold[this.holdIndex + 3] = this.hold[1];
+					this.hold[this.holdIndex + 4] = this.currentX = this.hold[2];
+					this.hold[this.holdIndex + 5] = this.currentY = this.hold[3];
+				}
+
+				level = this.levels[this.levelIndex];
+				while (level < this.limit) {
+					if (getQuadSquaredFlatness(this.hold, this.holdIndex) < this.squaredFlatness) {
+						break;
+					}
+
+					ensureHoldCapacity(4);
+					subdivideQuad(
+							this.hold, this.holdIndex,
+							this.hold, this.holdIndex - 4,
+							this.hold, this.holdIndex);
+					this.holdIndex -= 4;
+
+					// Now that we have subdivided, we have constructed
+					// two curves of one depth lower than the original
+					// curve.  One of those curves is in the place of
+					// the former curve and one of them is in the next
+					// set of held coordinate slots.  We now set both
+					// curves level values to the next higher level.
+					level++;
+					this.levels[this.levelIndex] = level;
+					this.levelIndex++;
+					this.levels[this.levelIndex] = level;
+				}
+
+				// This curve segment is flat enough, or it is too deep
+				// in recursion levels to try to flatten any more.  The
+				// two coordinates at holdIndex+4 and holdIndex+5 now
+				// contain the endpoint of the curve which can be the
+				// endpoint of an approximating line segment.
+				this.holdIndex += 4;
+				this.levelIndex--;
+				break;
+			case CURVE_TO:
+				if (this.holdIndex >= this.holdEnd) {
+					// Move the coordinates to the end of the array.
+					this.holdIndex = this.hold.length - 8;
+					this.holdEnd = this.hold.length - 2;
+					this.hold[this.holdIndex + 0] = this.currentX;
+					this.hold[this.holdIndex + 1] = this.currentY;
+					this.hold[this.holdIndex + 2] = this.hold[0];
+					this.hold[this.holdIndex + 3] = this.hold[1];
+					this.hold[this.holdIndex + 4] = this.hold[2];
+					this.hold[this.holdIndex + 5] = this.hold[3];
+					this.hold[this.holdIndex + 6] = this.currentX = this.hold[4];
+					this.hold[this.holdIndex + 7] = this.currentY = this.hold[5];
+				}
+
+				level = this.levels[this.levelIndex];
+				while (level < this.limit) {
+					if (getCurveSquaredFlatness(this.hold,this. holdIndex) < this.squaredFlatness) {
+						break;
+					}
+
+					ensureHoldCapacity(6);
+					subdivideCurve(
+							this.hold, this.holdIndex,
+							this.hold, this.holdIndex - 6,
+							this.hold, this.holdIndex);
+					this.holdIndex -= 6;
+
+					// Now that we have subdivided, we have constructed
+					// two curves of one depth lower than the original
+					// curve.  One of those curves is in the place of
+					// the former curve and one of them is in the next
+					// set of held coordinate slots.  We now set both
+					// curves level values to the next higher level.
+					level++;
+					this.levels[this.levelIndex] = level;
+					this.levelIndex++;
+					this.levels[this.levelIndex] = level;
+				}
+
+				// This curve segment is flat enough, or it is too deep
+				// in recursion levels to try to flatten any more.  The
+				// two coordinates at holdIndex+6 and holdIndex+7 now
+				// contain the endpoint of the curve which can be the
+				// endpoint of an approximating line segment.
+				this.holdIndex += 6;
+				this.levelIndex--;
+				break;
+			default:
+			}
+		}
+
+		@Override
+		public boolean hasNext() {
+			return !this.done;
+		}
+
+		@Override
+		public E next() {
+			if (this.done) {
+				throw new NoSuchElementException("flattening iterator out of bounds"); //$NON-NLS-1$
+			}
+
+			E element;
+			PathElementType type = this.holdType;
+			if (type!=PathElementType.CLOSE) {
+				int x = (int) Math.round(this.hold[this.holdIndex + 0]);
+				int y = (int) Math.round(this.hold[this.holdIndex + 1]);
+				if (type == PathElementType.MOVE_TO) {
+					element = this.path.getGeomFactory().newMovePathElement(x, y);
+				}
+				else {
+					element = this.path.getGeomFactory().newLinePathElement(
+							this.lastNextX, this.lastNextY,
+							x, y);
+				}
+				this.lastNextX = x;
+				this.lastNextY = y;
+			}
+			else {
+				int x = (int) Math.round(this.moveX);
+				int y = (int) Math.round(this.moveY);
+				element = this.path.getGeomFactory().newClosePathElement(
+						this.lastNextX, this.lastNextY,
+						x, y);
+				this.lastNextX = x;
+				this.lastNextY = y;
+			}
+
+			searchNext(false);
+
+			return element;
+		}
+
+		@Override
+		public void remove() {
+			throw new UnsupportedOperationException();
+		}
+
+		@Override
+		public PathWindingRule getWindingRule() {
+			return this.path.getWindingRule();
+		}
+		
+		@Override
+		public boolean isPolyline() {
+			return !isMultiParts() && !isPolygon();
+		}
+
+		@Override
+		public boolean isCurved() {
+			// Because the iterator flats the path, this is no curve inside.
+			return false;
+		}
+
+		@Override
+		public boolean isMultiParts() {
+			return this.path.isMultiParts();
+		}
+
+		@Override
+		public boolean isPolygon() {
+			return this.path.isPolygon();
+		}
+
+		@Override
+		public GeomFactory2ai<E, ?, ?> getGeomFactory() {
+			return this.path.getGeomFactory();
+		}
+
+	}
 }

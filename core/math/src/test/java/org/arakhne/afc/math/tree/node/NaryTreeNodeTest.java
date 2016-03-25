@@ -35,7 +35,7 @@ import org.junit.Test;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@SuppressWarnings({"unused","boxing"})
+@SuppressWarnings({"boxing"})
 public class NaryTreeNodeTest {
 
 	private final TreeNodeListenerStub<DefaultNaryTreeNode<Object>> listener =

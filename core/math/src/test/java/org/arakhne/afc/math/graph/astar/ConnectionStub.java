@@ -42,7 +42,7 @@ class ConnectionStub implements GraphPoint<ConnectionStub,SegmentStub> {
 	
 	/**
 	 */
-	final Point2f position = new Point2f();
+	final Point2fx position = new Point2fx();
 	
 	/**
 	 * @param id1

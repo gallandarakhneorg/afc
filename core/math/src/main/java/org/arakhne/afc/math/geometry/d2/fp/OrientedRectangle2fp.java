@@ -144,25 +144,6 @@ public class OrientedRectangle2fp extends AbstractShape2fp<OrientedRectangle2fp>
 
 	@Pure
 	@Override
-	public boolean equals(Object obj) {
-		try {
-			OrientedRectangle2afp<?, ?, ?, ?, ?> shape = (OrientedRectangle2afp<?, ?, ?, ?, ?>) obj;
-			return this.cx == shape.getCenterX()
-					&& this.cy == shape.getCenterY()
-					&& this.rx == shape.getFirstAxisX()
-					&& this.ry == shape.getFirstAxisY()
-					&& this.sx == shape.getSecondAxisX()
-					&& this.sy == shape.getSecondAxisY()
-					&& this.extentR == shape.getFirstAxisExtent()
-					&& this.extentS == shape.getSecondAxisExtent();
-		} catch (Throwable exception) {
-			//
-		}
-		return false;
-	}
-
-	@Pure
-	@Override
 	public int hashCode() {
 		long bits = 1;
 		bits = 31 * bits + Double.doubleToLongBits(this.cx);

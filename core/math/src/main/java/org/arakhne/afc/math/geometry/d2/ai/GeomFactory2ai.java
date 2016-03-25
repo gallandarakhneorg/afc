@@ -39,33 +39,33 @@ public interface GeomFactory2ai<E extends PathElement2ai, P extends Point2D, B e
 
 	/** Convert the given point if it is not of the right type.
 	 *
-	 * @param p the point to convert. 
+	 * @param point the point to convert. 
 	 * @return <code>p</code> if it is of type <code>P</code>, or a copy of <code>p</code>.
 	 */
-	P convertToPoint(Point2D p);
+	P convertToPoint(Point2D point);
 	
 	/** Convert the given point.
 	 *
 	 * @param <T> the type of the vector.
-	 * @param p the point to convert. 
+	 * @param point the point to convert. 
 	 * @return the vector.
 	 */
-	<T extends Vector2D> T convertToVector(Point2D p);
+	<T extends Vector2D> T convertToVector(Point2D point);
 
 	/** Convert the given vector.
 	 *
-	 * @param v the vector to convert. 
+	 * @param vector the vector to convert. 
 	 * @return the point.
 	 */
-	P convertToPoint(Vector2D v);
+	P convertToPoint(Vector2D vector);
 	
 	/** Convert the given vector.
 	 *
 	 * @param <T> the type of the vector.
-	 * @param v the vector to convert. 
+	 * @param vector the vector to convert. 
 	 * @return the vector.
 	 */
-	<T extends Vector2D> T convertToVector(Vector2D v);
+	<T extends Vector2D> T convertToVector(Vector2D vector);
 
 	/** Create a point.
 	 *
@@ -119,6 +119,16 @@ public interface GeomFactory2ai<E extends PathElement2ai, P extends Point2D, B e
 	 * @return the box.
 	 */
 	B newBox();
+
+	/** Create a bounding box.
+	 *
+	 * @param x the x coordinate of the lower corner.
+	 * @param y the y coordinate of the lower corner.
+	 * @param width the width of the box.
+	 * @param height the height of the box.
+	 * @return the box.
+	 */
+	B newBox(int x, int y, int width, int height);
 
 	/** Create a move-to path element to the given point.
 	 * 

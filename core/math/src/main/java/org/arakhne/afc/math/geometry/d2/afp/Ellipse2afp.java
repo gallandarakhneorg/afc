@@ -498,6 +498,21 @@ public interface Ellipse2afp<
 
 	@Pure
 	@Override
+	default boolean equalsToShape(IT shape) {
+		if (shape == null) {
+			return false;
+		}
+		if (shape == this) {
+			return true;
+		}
+		return getMinX() == shape.getMinX()
+			&& getMinY() == shape.getMinY()
+			&& getMaxX() == shape.getMaxX()
+			&& getMaxY() == shape.getMaxY();
+	}
+
+	@Pure
+	@Override
 	default double getDistanceSquared(Point2D p) {
 		Point2D r = getClosestPointTo(p);
 		return r.getDistanceSquared(p);

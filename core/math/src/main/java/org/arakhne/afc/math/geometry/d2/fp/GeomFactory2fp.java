@@ -105,6 +105,11 @@ public class GeomFactory2fp implements GeomFactory2afp<PathElement2fp, Point2fp,
 	}
 
 	@Override
+	public Rectangle2fp newBox(double x, double y, double width, double height) {
+		return new Rectangle2fp(x, y, width, height);
+	}
+	
+	@Override
 	public PathElement2fp newMovePathElement(double x, double y) {
 		return new PathElement2fp.MovePathElement2fp(x, y);
 	}

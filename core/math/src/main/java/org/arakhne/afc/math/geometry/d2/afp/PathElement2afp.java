@@ -37,21 +37,21 @@ public interface PathElement2afp extends PathElement2D {
 	
 	/** Replies the x coordinate of the starting point.
 	 *
-	 * @return the x coordinate, or {@link Double#NaN} if the type is {@link PathElementType#MOVE_TO}.
+	 * @return the x coordinate, or <code>0</code> if the type is {@link PathElementType#MOVE_TO}.
 	 */
 	@Pure
 	double getFromX();
 
 	/** Replies the y coordinate of the starting point.
 	 *
-	 * @return the y coordinate, or {@link Double#NaN} if the type is {@link PathElementType#MOVE_TO}.
+	 * @return the y coordinate, or <code>0</code> if the type is {@link PathElementType#MOVE_TO}.
 	 */
 	@Pure
 	double getFromY();
 
 	/** Replies the x coordinate of the first control point.
 	 *
-	 * @return the x coordinate, or {@link Double#NaN} if the type is {@link PathElementType#MOVE_TO},
+	 * @return the x coordinate, or <code>0</code> if the type is {@link PathElementType#MOVE_TO},
 	 * {@link PathElementType#LINE_TO}, or {@link PathElementType#CLOSE}.
 	 */
 	@Pure
@@ -59,7 +59,7 @@ public interface PathElement2afp extends PathElement2D {
 
 	/** Replies the y coordinate of the first control point.
 	 *
-	 * @return the y coordinate, or {@link Double#NaN} if the type is {@link PathElementType#MOVE_TO},
+	 * @return the y coordinate, or <code>0</code> if the type is {@link PathElementType#MOVE_TO},
 	 * {@link PathElementType#LINE_TO}, or {@link PathElementType#CLOSE}.
 	 */
 	@Pure
@@ -67,7 +67,7 @@ public interface PathElement2afp extends PathElement2D {
 
 	/** Replies the x coordinate of the second control point.
 	 *
-	 * @return the x coordinate, or {@link Double#NaN} if the type is {@link PathElementType#MOVE_TO},
+	 * @return the x coordinate, or <code>0</code> if the type is {@link PathElementType#MOVE_TO},
 	 * {@link PathElementType#LINE_TO}, {@link PathElementType#QUAD_TO}, or {@link PathElementType#CLOSE}.
 	 */
 	@Pure
@@ -75,7 +75,7 @@ public interface PathElement2afp extends PathElement2D {
 
 	/** Replies the y coordinate of the second  control point.
 	 *
-	 * @return the y coordinate, or {@link Double#NaN} if the type is {@link PathElementType#MOVE_TO},
+	 * @return the y coordinate, or <code>0</code> if the type is {@link PathElementType#MOVE_TO},
 	 * {@link PathElementType#LINE_TO}, {@link PathElementType#QUAD_TO}, or {@link PathElementType#CLOSE}.
 	 */
 	@Pure

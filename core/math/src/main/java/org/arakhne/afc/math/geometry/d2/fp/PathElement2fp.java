@@ -89,39 +89,11 @@ public abstract class PathElement2fp implements PathElement2afp {
 	
 	@Pure
 	@Override
-	public boolean equals(Object obj) {
-		try {
-			PathElement2afp elt = (PathElement2afp) obj;
-			return getType() == elt.getType()
-					&& getToX() == elt.getToX()
-					&& getToY() == elt.getToY()
-					&& getCtrlX1() == elt.getCtrlX1()
-					&& getCtrlY1() == elt.getCtrlY1()
-					&& getCtrlX2() == elt.getCtrlX2()
-					&& getCtrlY2() == elt.getCtrlY2()
-					&& getFromX() == elt.getFromX()
-					&& getFromY() == elt.getFromY();
-		} catch (Throwable exception) {
-			//
-		}
-		return false;
-	}
+	public abstract boolean equals(Object obj);
 	
 	@Pure
 	@Override
-	public int hashCode() {
-		long bits = 1L;
-		bits = 31L * bits + this.type.ordinal();
-		bits = 31L * bits + Double.doubleToLongBits(getToX());
-		bits = 31L * bits + Double.doubleToLongBits(getToY());
-		bits = 31L * bits + Double.doubleToLongBits(getCtrlX1());
-		bits = 31L * bits + Double.doubleToLongBits(getCtrlY1());
-		bits = 31L * bits + Double.doubleToLongBits(getCtrlX2());
-		bits = 31L * bits + Double.doubleToLongBits(getCtrlY2());
-		bits = 31L * bits + Double.doubleToLongBits(getFromX());
-		bits = 31L * bits + Double.doubleToLongBits(getFromY());
-		return (int) (bits ^ (bits >> 32));
-	}
+	public abstract int hashCode();
 
 	@Override
 	@Pure
@@ -171,6 +143,30 @@ public abstract class PathElement2fp implements PathElement2afp {
 
 		@Pure
 		@Override
+		public boolean equals(Object obj) {
+			try {
+				PathElement2afp elt = (PathElement2afp) obj;
+				return getType() == elt.getType()
+						&& getToX() == elt.getToX()
+						&& getToY() == elt.getToY();
+			} catch (Throwable exception) {
+				//
+			}
+			return false;
+		}
+
+		@Pure
+		@Override
+		public int hashCode() {
+			long bits = 1L;
+			bits = 31L * bits + this.type.ordinal();
+			bits = 31L * bits + Double.doubleToLongBits(getToX());
+			bits = 31L * bits + Double.doubleToLongBits(getToY());
+			return (int) (bits ^ (bits >> 32));
+		}
+
+		@Pure
+		@Override
 		public boolean isEmpty() {
 			return true;
 		}
@@ -209,32 +205,32 @@ public abstract class PathElement2fp implements PathElement2afp {
 
 		@Override
 		public double getFromX() {
-			return Double.NaN;
+			return 0.;
 		}
 
 		@Override
 		public double getFromY() {
-			return Double.NaN;
+			return 0.;
 		}
 
 		@Override
 		public double getCtrlX1() {
-			return Double.NaN;
+			return 0.;
 		}
 
 		@Override
 		public double getCtrlY1() {
-			return Double.NaN;
+			return 0.;
 		}
 
 		@Override
 		public double getCtrlX2() {
-			return Double.NaN;
+			return 0.;
 		}
 
 		@Override
 		public double getCtrlY2() {
-			return Double.NaN;
+			return 0.;
 		}
 
 	}
@@ -265,6 +261,34 @@ public abstract class PathElement2fp implements PathElement2afp {
 			super(PathElementType.LINE_TO, tox, toy);
 			this.fromX = fromx;
 			this.fromY = fromy;
+		}
+
+		@Pure
+		@Override
+		public boolean equals(Object obj) {
+			try {
+				PathElement2afp elt = (PathElement2afp) obj;
+				return getType() == elt.getType()
+						&& getToX() == elt.getToX()
+						&& getToY() == elt.getToY()
+						&& getFromX() == elt.getFromX()
+						&& getFromY() == elt.getFromY();
+			} catch (Throwable exception) {
+				//
+			}
+			return false;
+		}
+
+		@Pure
+		@Override
+		public int hashCode() {
+			long bits = 1L;
+			bits = 31L * bits + this.type.ordinal();
+			bits = 31L * bits + Double.doubleToLongBits(getToX());
+			bits = 31L * bits + Double.doubleToLongBits(getToY());
+			bits = 31L * bits + Double.doubleToLongBits(getFromX());
+			bits = 31L * bits + Double.doubleToLongBits(getFromY());
+			return (int) (bits ^ (bits >> 32));
 		}
 
 		@Pure
@@ -317,22 +341,22 @@ public abstract class PathElement2fp implements PathElement2afp {
 
 		@Override
 		public double getCtrlX1() {
-			return Double.NaN;
+			return 0.;
 		}
 
 		@Override
 		public double getCtrlY1() {
-			return Double.NaN;
+			return 0.;
 		}
 
 		@Override
 		public double getCtrlX2() {
-			return Double.NaN;
+			return 0.;
 		}
 
 		@Override
 		public double getCtrlY2() {
-			return Double.NaN;
+			return 0.;
 		}
 
 	}
@@ -372,6 +396,39 @@ public abstract class PathElement2fp implements PathElement2afp {
 			this.ctrlX = ctrlx;
 			this.ctrlY = ctrly;
 		}
+
+		@Pure
+		@Override
+		public boolean equals(Object obj) {
+			try {
+				PathElement2afp elt = (PathElement2afp) obj;
+				return getType() == elt.getType()
+						&& getToX() == elt.getToX()
+						&& getToY() == elt.getToY()
+						&& getCtrlX1() == elt.getCtrlX1()
+						&& getCtrlY1() == elt.getCtrlY1()
+						&& getFromX() == elt.getFromX()
+						&& getFromY() == elt.getFromY();
+			} catch (Throwable exception) {
+				//
+			}
+			return false;
+		}
+
+		@Pure
+		@Override
+		public int hashCode() {
+			long bits = 1L;
+			bits = 31L * bits + this.type.ordinal();
+			bits = 31L * bits + Double.doubleToLongBits(getToX());
+			bits = 31L * bits + Double.doubleToLongBits(getToY());
+			bits = 31L * bits + Double.doubleToLongBits(getCtrlX1());
+			bits = 31L * bits + Double.doubleToLongBits(getCtrlY1());
+			bits = 31L * bits + Double.doubleToLongBits(getFromX());
+			bits = 31L * bits + Double.doubleToLongBits(getFromY());
+			return (int) (bits ^ (bits >> 32));
+		}
+
 
 		@Pure
 		@Override
@@ -440,12 +497,12 @@ public abstract class PathElement2fp implements PathElement2afp {
 
 		@Override
 		public double getCtrlX2() {
-			return Double.NaN;
+			return 0.;
 		}
 
 		@Override
 		public double getCtrlY2() {
-			return Double.NaN;
+			return 0.;
 		}
 
 	}
@@ -492,6 +549,42 @@ public abstract class PathElement2fp implements PathElement2afp {
 			this.ctrlY1 = ctrly1;
 			this.ctrlX2 = ctrlx2;
 			this.ctrlY2 = ctrly2;
+		}
+
+		@Pure
+		@Override
+		public boolean equals(Object obj) {
+			try {
+				PathElement2afp elt = (PathElement2afp) obj;
+				return getType() == elt.getType()
+						&& getToX() == elt.getToX()
+						&& getToY() == elt.getToY()
+						&& getCtrlX1() == elt.getCtrlX1()
+						&& getCtrlY1() == elt.getCtrlY1()
+						&& getCtrlX2() == elt.getCtrlX2()
+						&& getCtrlY2() == elt.getCtrlY2()
+						&& getFromX() == elt.getFromX()
+						&& getFromY() == elt.getFromY();
+			} catch (Throwable exception) {
+				//
+			}
+			return false;
+		}
+
+		@Pure
+		@Override
+		public int hashCode() {
+			long bits = 1L;
+			bits = 31L * bits + this.type.ordinal();
+			bits = 31L * bits + Double.doubleToLongBits(getToX());
+			bits = 31L * bits + Double.doubleToLongBits(getToY());
+			bits = 31L * bits + Double.doubleToLongBits(getCtrlX1());
+			bits = 31L * bits + Double.doubleToLongBits(getCtrlY1());
+			bits = 31L * bits + Double.doubleToLongBits(getCtrlX2());
+			bits = 31L * bits + Double.doubleToLongBits(getCtrlY2());
+			bits = 31L * bits + Double.doubleToLongBits(getFromX());
+			bits = 31L * bits + Double.doubleToLongBits(getFromY());
+			return (int) (bits ^ (bits >> 32));
 		}
 
 		@Pure
@@ -568,7 +661,7 @@ public abstract class PathElement2fp implements PathElement2afp {
 
 		@Override
 		public double getCtrlX2() {
-			return this.ctrlX1;
+			return this.ctrlX2;
 		}
 
 		@Override
@@ -605,6 +698,34 @@ public abstract class PathElement2fp implements PathElement2afp {
 			this.fromX = fromx;
 			this.fromY = fromy;
 			
+		}
+
+		@Pure
+		@Override
+		public boolean equals(Object obj) {
+			try {
+				PathElement2afp elt = (PathElement2afp) obj;
+				return getType() == elt.getType()
+						&& getToX() == elt.getToX()
+						&& getToY() == elt.getToY()
+						&& getFromX() == elt.getFromX()
+						&& getFromY() == elt.getFromY();
+			} catch (Throwable exception) {
+				//
+			}
+			return false;
+		}
+
+		@Pure
+		@Override
+		public int hashCode() {
+			long bits = 1L;
+			bits = 31L * bits + this.type.ordinal();
+			bits = 31L * bits + Double.doubleToLongBits(getToX());
+			bits = 31L * bits + Double.doubleToLongBits(getToY());
+			bits = 31L * bits + Double.doubleToLongBits(getFromX());
+			bits = 31L * bits + Double.doubleToLongBits(getFromY());
+			return (int) (bits ^ (bits >> 32));
 		}
 
 		@Pure
@@ -653,22 +774,22 @@ public abstract class PathElement2fp implements PathElement2afp {
 
 		@Override
 		public double getCtrlX1() {
-			return Double.NaN;
+			return 0.;
 		}
 
 		@Override
 		public double getCtrlY1() {
-			return Double.NaN;
+			return 0.;
 		}
 
 		@Override
 		public double getCtrlX2() {
-			return Double.NaN;
+			return 0.;
 		}
 
 		@Override
 		public double getCtrlY2() {
-			return Double.NaN;
+			return 0.;
 		}
 
 	}

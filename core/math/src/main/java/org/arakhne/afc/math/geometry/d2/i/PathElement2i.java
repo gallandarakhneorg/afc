@@ -89,39 +89,11 @@ public abstract class PathElement2i implements PathElement2ai {
 	
 	@Pure
 	@Override
-	public boolean equals(Object obj) {
-		try {
-			PathElement2ai elt = (PathElement2ai) obj;
-			return getType() == elt.getType()
-					&& getToX() == elt.getToX()
-					&& getToY() == elt.getToY()
-					&& getCtrlX1() == elt.getCtrlX1()
-					&& getCtrlY1() == elt.getCtrlY1()
-					&& getCtrlX2() == elt.getCtrlX2()
-					&& getCtrlY2() == elt.getCtrlY2()
-					&& getFromX() == elt.getFromX()
-					&& getFromY() == elt.getFromY();
-		} catch (Throwable exception) {
-			//
-		}
-		return false;
-	}
+	public abstract boolean equals(Object obj);
 	
 	@Pure
 	@Override
-	public int hashCode() {
-		int bits = 1;
-		bits = 31 * bits + this.type.ordinal();
-		bits = 31 * bits + getToX();
-		bits = 31 * bits + getToY();
-		bits = 31 * bits + getCtrlX1();
-		bits = 31 * bits + getCtrlY1();
-		bits = 31 * bits + getCtrlX2();
-		bits = 31 * bits + getCtrlY2();
-		bits = 31 * bits + getFromX();
-		bits = 31 * bits + getFromY();
-		return (bits ^ (bits >> 32));
-	}
+	public abstract int hashCode();
 
 	@Override
 	@Pure
@@ -167,6 +139,30 @@ public abstract class PathElement2i implements PathElement2ai {
 		 */
 		public MovePathElement2i(int x, int y) {
 			super(PathElementType.MOVE_TO, x, y);
+		}
+
+		@Pure
+		@Override
+		public boolean equals(Object obj) {
+			try {
+				PathElement2ai elt = (PathElement2ai) obj;
+				return getType() == elt.getType()
+						&& getToX() == elt.getToX()
+						&& getToY() == elt.getToY();
+			} catch (Throwable exception) {
+				//
+			}
+			return false;
+		}
+
+		@Pure
+		@Override
+		public int hashCode() {
+			int bits = 1;
+			bits = 31 * bits + this.type.ordinal();
+			bits = 31 * bits + getToX();
+			bits = 31 * bits + getToY();
+			return (bits ^ (bits >> 32));
 		}
 
 		@Pure
@@ -265,6 +261,34 @@ public abstract class PathElement2i implements PathElement2ai {
 			super(PathElementType.LINE_TO, tox, toy);
 			this.fromX = fromx;
 			this.fromY = fromy;
+		}
+
+		@Pure
+		@Override
+		public boolean equals(Object obj) {
+			try {
+				PathElement2ai elt = (PathElement2ai) obj;
+				return getType() == elt.getType()
+						&& getToX() == elt.getToX()
+						&& getToY() == elt.getToY()
+						&& getFromX() == elt.getFromX()
+						&& getFromY() == elt.getFromY();
+			} catch (Throwable exception) {
+				//
+			}
+			return false;
+		}
+
+		@Pure
+		@Override
+		public int hashCode() {
+			int bits = 1;
+			bits = 31 * bits + this.type.ordinal();
+			bits = 31 * bits + getToX();
+			bits = 31 * bits + getToY();
+			bits = 31 * bits + getFromX();
+			bits = 31 * bits + getFromY();
+			return (bits ^ (bits >> 32));
 		}
 
 		@Pure
@@ -371,6 +395,38 @@ public abstract class PathElement2i implements PathElement2ai {
 			this.fromY = fromy;
 			this.ctrlX = ctrlx;
 			this.ctrlY = ctrly;
+		}
+
+		@Pure
+		@Override
+		public boolean equals(Object obj) {
+			try {
+				PathElement2ai elt = (PathElement2ai) obj;
+				return getType() == elt.getType()
+						&& getToX() == elt.getToX()
+						&& getToY() == elt.getToY()
+						&& getCtrlX1() == elt.getCtrlX1()
+						&& getCtrlY1() == elt.getCtrlY1()
+						&& getFromX() == elt.getFromX()
+						&& getFromY() == elt.getFromY();
+			} catch (Throwable exception) {
+				//
+			}
+			return false;
+		}
+
+		@Pure
+		@Override
+		public int hashCode() {
+			int bits = 1;
+			bits = 31 * bits + this.type.ordinal();
+			bits = 31 * bits + getToX();
+			bits = 31 * bits + getToY();
+			bits = 31 * bits + getCtrlX1();
+			bits = 31 * bits + getCtrlY1();
+			bits = 31 * bits + getFromX();
+			bits = 31 * bits + getFromY();
+			return (bits ^ (bits >> 32));
 		}
 
 		@Pure
@@ -496,6 +552,42 @@ public abstract class PathElement2i implements PathElement2ai {
 
 		@Pure
 		@Override
+		public boolean equals(Object obj) {
+			try {
+				PathElement2ai elt = (PathElement2ai) obj;
+				return getType() == elt.getType()
+						&& getToX() == elt.getToX()
+						&& getToY() == elt.getToY()
+						&& getCtrlX1() == elt.getCtrlX1()
+						&& getCtrlY1() == elt.getCtrlY1()
+						&& getCtrlX2() == elt.getCtrlX2()
+						&& getCtrlY2() == elt.getCtrlY2()
+						&& getFromX() == elt.getFromX()
+						&& getFromY() == elt.getFromY();
+			} catch (Throwable exception) {
+				//
+			}
+			return false;
+		}
+
+		@Pure
+		@Override
+		public int hashCode() {
+			int bits = 1;
+			bits = 31 * bits + this.type.ordinal();
+			bits = 31 * bits + getToX();
+			bits = 31 * bits + getToY();
+			bits = 31 * bits + getCtrlX1();
+			bits = 31 * bits + getCtrlY1();
+			bits = 31 * bits + getCtrlX2();
+			bits = 31 * bits + getCtrlY2();
+			bits = 31 * bits + getFromX();
+			bits = 31 * bits + getFromY();
+			return (bits ^ (bits >> 32));
+		}
+
+		@Pure
+		@Override
 		public boolean isEmpty() {
 			return (this.fromX==this.toX) && (this.fromY==this.toY) &&
 					(this.ctrlX1==this.toX) && (this.ctrlY1==this.toY) &&
@@ -568,7 +660,7 @@ public abstract class PathElement2i implements PathElement2ai {
 
 		@Override
 		public int getCtrlX2() {
-			return this.ctrlX1;
+			return this.ctrlX2;
 		}
 
 		@Override
@@ -605,6 +697,34 @@ public abstract class PathElement2i implements PathElement2ai {
 			this.fromX = fromx;
 			this.fromY = fromy;
 			
+		}
+
+		@Pure
+		@Override
+		public boolean equals(Object obj) {
+			try {
+				PathElement2ai elt = (PathElement2ai) obj;
+				return getType() == elt.getType()
+						&& getToX() == elt.getToX()
+						&& getToY() == elt.getToY()
+						&& getFromX() == elt.getFromX()
+						&& getFromY() == elt.getFromY();
+			} catch (Throwable exception) {
+				//
+			}
+			return false;
+		}
+
+		@Pure
+		@Override
+		public int hashCode() {
+			int bits = 1;
+			bits = 31 * bits + this.type.ordinal();
+			bits = 31 * bits + getToX();
+			bits = 31 * bits + getToY();
+			bits = 31 * bits + getFromX();
+			bits = 31 * bits + getFromY();
+			return (bits ^ (bits >> 32));
 		}
 
 		@Pure

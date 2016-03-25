@@ -21,6 +21,7 @@
  */
 package org.arakhne.afc.math.matrix;
 
+import static org.arakhne.afc.math.MathConstants.JACOBI_EPSILON;
 import static org.arakhne.afc.math.MathConstants.JACOBI_MAX_SWEEPS;
 
 import java.io.Serializable;
@@ -94,29 +95,29 @@ public class Matrix2f implements Serializable, Cloneable {
 	 * Constructs and initializes a Matrix2d from the specified nine- element
 	 * array.
 	 * 
-	 * @param v
+	 * @param matrix
 	 *            the array of length 4 containing in order
 	 */
-	public Matrix2f(double[] v) {
-		this.m00 = v[0];
-		this.m01 = v[1];
+	public Matrix2f(double[] matrix) {
+		this.m00 = matrix[0];
+		this.m01 = matrix[1];
 
-		this.m10 = v[2];
-		this.m11 = v[3];
+		this.m10 = matrix[2];
+		this.m11 = matrix[3];
 	}
 
 	/**
 	 * Constructs a new matrix with the same values as the Matrix2d parameter.
 	 * 
-	 * @param m1
+	 * @param matrix
 	 *            the source matrix
 	 */
-	public Matrix2f(Matrix2f m1) {
-		this.m00 = m1.m00;
-		this.m01 = m1.m01;
+	public Matrix2f(Matrix2f matrix) {
+		this.m00 = matrix.m00;
+		this.m01 = matrix.m01;
 
-		this.m10 = m1.m10;
-		this.m11 = m1.m11;
+		this.m10 = matrix.m10;
+		this.m11 = matrix.m11;
 	}
 
 	/**
@@ -247,15 +248,15 @@ public class Matrix2f implements Serializable, Cloneable {
 	 * 
 	 * @param row
 	 *            the matrix row
-	 * @param v
+	 * @param vector
 	 *            the vector into which the matrix row values will be copied
 	 */
-	public final void getRow(int row, Vector2D v) {
+	public final void getRow(int row, Vector2D vector) {
 		if (row == 0) {
-			v.set(this.m00, this.m01);
+			vector.set(this.m00, this.m01);
 		}
 		else if (row == 1) {
-			v.set(this.m10, this.m11);
+			vector.set(this.m10, this.m11);
 		}
 		else {
 			throw new ArrayIndexOutOfBoundsException();
@@ -268,17 +269,17 @@ public class Matrix2f implements Serializable, Cloneable {
 	 * 
 	 * @param row
 	 *            the matrix row
-	 * @param v
+	 * @param vector
 	 *            the array into which the matrix row values will be copied
 	 */
-	public final void getRow(int row, double v[]) {
+	public final void getRow(int row, double vector[]) {
 		if (row == 0) {
-			v[0] = this.m00;
-			v[1] = this.m01;
+			vector[0] = this.m00;
+			vector[1] = this.m01;
 		}
 		else if (row == 1) {
-			v[0] = this.m10;
-			v[1] = this.m11;
+			vector[0] = this.m10;
+			vector[1] = this.m11;
 		}
 		else {
 			throw new ArrayIndexOutOfBoundsException();
@@ -292,15 +293,15 @@ public class Matrix2f implements Serializable, Cloneable {
 	 * 
 	 * @param column
 	 *            the matrix column
-	 * @param v
+	 * @param vector
 	 *            the vector into which the matrix row values will be copied
 	 */
-	public final void getColumn(int column, Vector2D v) {
+	public final void getColumn(int column, Vector2D vector) {
 		if (column == 0) {
-			v.set(this.m00, this.m10);
+			vector.set(this.m00, this.m10);
 		}
 		else if (column == 1) {
-			v.set(this.m01, this.m11);
+			vector.set(this.m01, this.m11);
 		}
 		else {
 			throw new ArrayIndexOutOfBoundsException();
@@ -313,17 +314,17 @@ public class Matrix2f implements Serializable, Cloneable {
 	 * 
 	 * @param column
 	 *            the matrix column
-	 * @param v
+	 * @param vector
 	 *            the array into which the matrix row values will be copied
 	 */
-	public final void getColumn(int column, double v[]) {
+	public final void getColumn(int column, double vector[]) {
 		if (column == 0) {
-			v[0] = this.m00;
-			v[1] = this.m10;
+			vector[0] = this.m00;
+			vector[1] = this.m10;
 		}
 		else if (column == 1) {
-			v[0] = this.m01;
-			v[1] = this.m11;
+			vector[0] = this.m01;
+			vector[1] = this.m11;
 		}
 		else {
 			throw new ArrayIndexOutOfBoundsException();
@@ -363,19 +364,19 @@ public class Matrix2f implements Serializable, Cloneable {
 	 * 
 	 * @param row
 	 *            the row number to be modified (zero indexed)
-	 * @param v
+	 * @param vector
 	 *            the replacement row
 	 */
-	public final void setRow(int row, Vector2D v) {
+	public final void setRow(int row, Vector2D vector) {
 		switch (row) {
 		case 0:
-			this.m00 = v.getX();
-			this.m01 = v.getY();
+			this.m00 = vector.getX();
+			this.m01 = vector.getY();
 			break;
 
 		case 1:
-			this.m10 = v.getX();
-			this.m11 = v.getY();
+			this.m10 = vector.getX();
+			this.m11 = vector.getY();
 			break;
 
 		default:
@@ -389,19 +390,19 @@ public class Matrix2f implements Serializable, Cloneable {
 	 * 
 	 * @param row
 	 *            the row number to be modified (zero indexed)
-	 * @param v
+	 * @param vector
 	 *            the replacement row
 	 */
-	public final void setRow(int row, double v[]) {
+	public final void setRow(int row, double vector[]) {
 		switch (row) {
 		case 0:
-			this.m00 = v[0];
-			this.m01 = v[1];
+			this.m00 = vector[0];
+			this.m01 = vector[1];
 			break;
 
 		case 1:
-			this.m10 = v[0];
-			this.m11 = v[1];
+			this.m10 = vector[0];
+			this.m11 = vector[1];
 			break;
 
 		default:
@@ -443,19 +444,19 @@ public class Matrix2f implements Serializable, Cloneable {
 	 * 
 	 * @param column
 	 *            the column number to be modified (zero indexed)
-	 * @param v
+	 * @param vector
 	 *            the replacement column
 	 */
-	public final void setColumn(int column, Vector2D v) {
+	public final void setColumn(int column, Vector2D vector) {
 		switch (column) {
 		case 0:
-			this.m00 = v.getX();
-			this.m10 = v.getY();
+			this.m00 = vector.getX();
+			this.m10 = vector.getY();
 			break;
 
 		case 1:
-			this.m01 = v.getX();
-			this.m11 = v.getY();
+			this.m01 = vector.getX();
+			this.m11 = vector.getY();
 			break;
 
 		default:
@@ -469,19 +470,19 @@ public class Matrix2f implements Serializable, Cloneable {
 	 * 
 	 * @param column
 	 *            the column number to be modified (zero indexed)
-	 * @param v
+	 * @param vector
 	 *            the replacement column
 	 */
-	public final void setColumn(int column, double v[]) {
+	public final void setColumn(int column, double vector[]) {
 		switch (column) {
 		case 0:
-			this.m00 = v[0];
-			this.m10 = v[1];
+			this.m00 = vector[0];
+			this.m10 = vector[1];
 			break;
 
 		case 1:
-			this.m01 = v[0];
-			this.m11 = v[1];
+			this.m01 = vector[0];
+			this.m11 = vector[1];
 			break;
 
 		default:
@@ -512,15 +513,15 @@ public class Matrix2f implements Serializable, Cloneable {
 	 * 
 	 * @param scalar
 	 *            the scalar adder
-	 * @param m1
+	 * @param matrix
 	 *            the original matrix values
 	 */
-	public final void add(double scalar, Matrix2f m1) {
-		this.m00 = m1.m00 + scalar;
-		this.m01 = m1.m01 + scalar;
+	public final void add(double scalar, Matrix2f matrix) {
+		this.m00 = matrix.m00 + scalar;
+		this.m01 = matrix.m01 + scalar;
 
-		this.m10 = m1.m10 + scalar;
-		this.m11 = m1.m11 + scalar;
+		this.m10 = matrix.m10 + scalar;
+		this.m11 = matrix.m11 + scalar;
 	
 		this.isIdentity = null;
 	}
@@ -528,17 +529,17 @@ public class Matrix2f implements Serializable, Cloneable {
 	/**
 	 * Sets the value of this matrix to the matrix sum of matrices m1 and m2.
 	 * 
-	 * @param m1
+	 * @param matrix1
 	 *            the first matrix
-	 * @param m2
+	 * @param matrix2
 	 *            the second matrix
 	 */
-	public final void add(Matrix2f m1, Matrix2f m2) {
-		this.m00 = m1.m00 + m2.m00;
-		this.m01 = m1.m01 + m2.m01;
+	public final void add(Matrix2f matrix1, Matrix2f matrix2) {
+		this.m00 = matrix1.m00 + matrix2.m00;
+		this.m01 = matrix1.m01 + matrix2.m01;
 
-		this.m10 = m1.m10 + m2.m10;
-		this.m11 = m1.m11 + m2.m11;
+		this.m10 = matrix1.m10 + matrix2.m10;
+		this.m11 = matrix1.m11 + matrix2.m11;
 
 		this.isIdentity = null;
 	}
@@ -546,15 +547,15 @@ public class Matrix2f implements Serializable, Cloneable {
 	/**
 	 * Sets the value of this matrix to the sum of itself and matrix m1.
 	 * 
-	 * @param m1
+	 * @param matrix
 	 *            the other matrix
 	 */
-	public final void add(Matrix2f m1) {
-		this.m00 += m1.m00;
-		this.m01 += m1.m01;
+	public final void add(Matrix2f matrix) {
+		this.m00 += matrix.m00;
+		this.m01 += matrix.m01;
 
-		this.m10 += m1.m10;
-		this.m11 += m1.m11;
+		this.m10 += matrix.m10;
+		this.m11 += matrix.m11;
 
 		this.isIdentity = null;
 	}
@@ -563,17 +564,17 @@ public class Matrix2f implements Serializable, Cloneable {
 	 * Sets the value of this matrix to the matrix difference of matrices m1 and
 	 * m2.
 	 * 
-	 * @param m1
+	 * @param matrix1
 	 *            the first matrix
-	 * @param m2
+	 * @param matrix2
 	 *            the second matrix
 	 */
-	public final void sub(Matrix2f m1, Matrix2f m2) {
-		this.m00 = m1.m00 - m2.m00;
-		this.m01 = m1.m01 - m2.m01;
+	public final void sub(Matrix2f matrix1, Matrix2f matrix2) {
+		this.m00 = matrix1.m00 - matrix2.m00;
+		this.m01 = matrix1.m01 - matrix2.m01;
 
-		this.m10 = m1.m10 - m2.m10;
-		this.m11 = m1.m11 - m2.m11;
+		this.m10 = matrix1.m10 - matrix2.m10;
+		this.m11 = matrix1.m11 - matrix2.m11;
 
 		this.isIdentity = null;
 	}
@@ -582,15 +583,15 @@ public class Matrix2f implements Serializable, Cloneable {
 	 * Sets the value of this matrix to the matrix difference of itself and
 	 * matrix m1 (this = this - m1).
 	 * 
-	 * @param m1
+	 * @param matrix
 	 *            the other matrix
 	 */
-	public final void sub(Matrix2f m1) {
-		this.m00 -= m1.m00;
-		this.m01 -= m1.m01;
+	public final void sub(Matrix2f matrix) {
+		this.m00 -= matrix.m00;
+		this.m01 -= matrix.m01;
 
-		this.m10 -= m1.m10;
-		this.m11 -= m1.m11;
+		this.m10 -= matrix.m10;
+		this.m11 -= matrix.m11;
 
 		this.isIdentity = null;
 	}
@@ -608,18 +609,18 @@ public class Matrix2f implements Serializable, Cloneable {
 	/**
 	 * Sets the value of this matrix to the transpose of the argument matrix.
 	 * 
-	 * @param m1
+	 * @param matrix
 	 *            the matrix to be transposed
 	 */
-	public final void transpose(Matrix2f m1) {
-		if (this != m1) {
-			this.m00 = m1.m00;
-			this.m01 = m1.m10;
+	public final void transpose(Matrix2f matrix) {
+		if (this != matrix) {
+			this.m00 = matrix.m00;
+			this.m01 = matrix.m10;
 
-			this.m10 = m1.m01;
-			this.m11 = m1.m11;
+			this.m10 = matrix.m01;
+			this.m11 = matrix.m11;
 
-			this.isIdentity = m1.isIdentity();
+			this.isIdentity = matrix.isIdentity();
 	}
 		else {
 			transpose();
@@ -629,17 +630,17 @@ public class Matrix2f implements Serializable, Cloneable {
 	/**
 	 * Sets the value of this matrix to the value of the Matrix2d argument.
 	 * 
-	 * @param m1
+	 * @param matrix
 	 *            the source Matrix2d
 	 */
-	public final void set(Matrix2f m1) {
-		this.m00 = m1.m00;
-		this.m01 = m1.m01;
+	public final void set(Matrix2f matrix) {
+		this.m00 = matrix.m00;
+		this.m01 = matrix.m01;
 
-		this.m10 = m1.m10;
-		this.m11 = m1.m11;
+		this.m10 = matrix.m10;
+		this.m11 = matrix.m11;
 
-		this.isIdentity = m1.isIdentity();
+		this.isIdentity = matrix.isIdentity();
 	}
 
 	/**
@@ -647,15 +648,15 @@ public class Matrix2f implements Serializable, Cloneable {
 	 * (ie, the first two elements of the array will be copied into the first
 	 * row of this matrix, etc.).
 	 * 
-	 * @param m
+	 * @param matrix
 	 *            the double precision array of length 4
 	 */
-	public final void set(double[] m) {
-		this.m00 = m[0];
-		this.m01 = m[1];
+	public final void set(double[] matrix) {
+		this.m00 = matrix[0];
+		this.m01 = matrix[1];
 
-		this.m10 = m[2];
-		this.m11 = m[4];
+		this.m10 = matrix[2];
+		this.m11 = matrix[4];
 
 		this.isIdentity = null;
 	}
@@ -714,15 +715,15 @@ public class Matrix2f implements Serializable, Cloneable {
 	 * 
 	 * @param scalar
 	 *            the scalar multiplier
-	 * @param m1
+	 * @param matrix
 	 *            the original matrix
 	 */
-	public final void mul(double scalar, Matrix2f m1) {
-		this.m00 = scalar * m1.m00;
-		this.m01 = scalar * m1.m01;
+	public final void mul(double scalar, Matrix2f matrix) {
+		this.m00 = scalar * matrix.m00;
+		this.m01 = scalar * matrix.m01;
 
-		this.m10 = scalar * m1.m10;
-		this.m11 = scalar * m1.m11;
+		this.m10 = scalar * matrix.m10;
+		this.m11 = scalar * matrix.m11;
 
 		this.isIdentity = null;
 	}
@@ -731,17 +732,17 @@ public class Matrix2f implements Serializable, Cloneable {
 	 * Sets the value of this matrix to the result of multiplying itself with
 	 * matrix m1.
 	 * 
-	 * @param m1
+	 * @param matrix
 	 *            the other matrix
 	 */
-	public final void mul(Matrix2f m1) {
+	public final void mul(Matrix2f matrix) {
 		double _m00, _m01, _m10, _m11;
 
-		_m00 = this.m00 * m1.m00 + this.m01 * m1.m10;
-		_m01 = this.m00 * m1.m01 + this.m01 * m1.m11;
+		_m00 = this.m00 * matrix.m00 + this.m01 * matrix.m10;
+		_m01 = this.m00 * matrix.m01 + this.m01 * matrix.m11;
 
-		_m10 = this.m10 * m1.m00 + this.m11 * m1.m10;
-		_m11 = this.m10 * m1.m01 + this.m11 * m1.m11;
+		_m10 = this.m10 * matrix.m00 + this.m11 * matrix.m10;
+		_m11 = this.m10 * matrix.m01 + this.m11 * matrix.m11;
 
 		this.m00 = _m00;
 		this.m01 = _m01;
@@ -754,41 +755,41 @@ public class Matrix2f implements Serializable, Cloneable {
 	/**
 	 * Multiply this matrix by the given vector v and set the resulting vector.
 	 * 
-	 * @param v the input vector
+	 * @param vector the input vector
 	 * @param result is set with (this * v).
 	 */
 	@Pure
-	public final void mul(Vector2D v, Vector2D result) {
+	public final void mul(Vector2D vector, Vector2D result) {
 		result.set(
-				this.m00 * v.getX() + this.m01 * v.getY(),
-				this.m10 * v.getX() + this.m11 * v.getY());
+				this.m00 * vector.getX() + this.m01 * vector.getY(),
+				this.m10 * vector.getX() + this.m11 * vector.getY());
 	}
 
 	/**
 	 * Sets the value of this matrix to the result of multiplying the two
 	 * argument matrices together.
 	 * 
-	 * @param m1
+	 * @param matrix1
 	 *            the first matrix
-	 * @param m2
+	 * @param matrix2
 	 *            the second matrix
 	 */
-	public final void mul(Matrix2f m1, Matrix2f m2) {
-		if (this != m1 && this != m2) {
-			this.m00 = m1.m00 * m2.m00 + m1.m01 * m2.m10;
-			this.m01 = m1.m00 * m2.m01 + m1.m01 * m2.m11;
+	public final void mul(Matrix2f matrix1, Matrix2f matrix2) {
+		if (this != matrix1 && this != matrix2) {
+			this.m00 = matrix1.m00 * matrix2.m00 + matrix1.m01 * matrix2.m10;
+			this.m01 = matrix1.m00 * matrix2.m01 + matrix1.m01 * matrix2.m11;
 
-			this.m10 = m1.m10 * m2.m00 + m1.m11 * m2.m10;
-			this.m11 = m1.m10 * m2.m01 + m1.m11 * m2.m11;
+			this.m10 = matrix1.m10 * matrix2.m00 + matrix1.m11 * matrix2.m10;
+			this.m11 = matrix1.m10 * matrix2.m01 + matrix1.m11 * matrix2.m11;
 		}
 		else {
 			double _m00, _m01, _m10, _m11; // vars for temp result matrix
 
-			_m00 = m1.m00 * m2.m00 + m1.m01 * m2.m10;
-			_m01 = m1.m00 * m2.m01 + m1.m01 * m2.m11;
+			_m00 = matrix1.m00 * matrix2.m00 + matrix1.m01 * matrix2.m10;
+			_m01 = matrix1.m00 * matrix2.m01 + matrix1.m01 * matrix2.m11;
 
-			_m10 = m1.m10 * m2.m00 + m1.m11 * m2.m10;
-			_m11 = m1.m10 * m2.m01 + m1.m11 * m2.m11;
+			_m10 = matrix1.m10 * matrix2.m00 + matrix1.m11 * matrix2.m10;
+			_m11 = matrix1.m10 * matrix2.m01 + matrix1.m11 * matrix2.m11;
 
 			this.m00 = _m00;
 			this.m01 = _m01;
@@ -803,27 +804,27 @@ public class Matrix2f implements Serializable, Cloneable {
 	 * Multiplies the transpose of matrix m1 times the transpose of matrix m2,
 	 * and places the result into this.
 	 * 
-	 * @param m1
+	 * @param matrix1
 	 *            the matrix on the left hand side of the multiplication
-	 * @param m2
+	 * @param matrix2
 	 *            the matrix on the right hand side of the multiplication
 	 */
-	public final void mulTransposeBoth(Matrix2f m1, Matrix2f m2) {
-		if (this != m1 && this != m2) {
-			this.m00 = m1.m00 * m2.m00 + m1.m10 * m2.m01;
-			this.m01 = m1.m00 * m2.m10 + m1.m10 * m2.m11;
+	public final void mulTransposeBoth(Matrix2f matrix1, Matrix2f matrix2) {
+		if (this != matrix1 && this != matrix2) {
+			this.m00 = matrix1.m00 * matrix2.m00 + matrix1.m10 * matrix2.m01;
+			this.m01 = matrix1.m00 * matrix2.m10 + matrix1.m10 * matrix2.m11;
 
-			this.m10 = m1.m01 * m2.m00 + m1.m11 * m2.m01;
-			this.m11 = m1.m01 * m2.m10 + m1.m11 * m2.m11;
+			this.m10 = matrix1.m01 * matrix2.m00 + matrix1.m11 * matrix2.m01;
+			this.m11 = matrix1.m01 * matrix2.m10 + matrix1.m11 * matrix2.m11;
 		}
 		else {
 			double _m00, _m01, _m10, _m11; // vars for temp result matrix
 
-			_m00 = m1.m00 * m2.m00 + m1.m10 * m2.m01;
-			_m01 = m1.m00 * m2.m10 + m1.m10 * m2.m11;
+			_m00 = matrix1.m00 * matrix2.m00 + matrix1.m10 * matrix2.m01;
+			_m01 = matrix1.m00 * matrix2.m10 + matrix1.m10 * matrix2.m11;
 
-			_m10 = m1.m01 * m2.m00 + m1.m11 * m2.m01;
-			_m11 = m1.m01 * m2.m10 + m1.m11 * m2.m11;
+			_m10 = matrix1.m01 * matrix2.m00 + matrix1.m11 * matrix2.m01;
+			_m11 = matrix1.m01 * matrix2.m10 + matrix1.m11 * matrix2.m11;
 
 			this.m00 = _m00;
 			this.m01 = _m01;
@@ -838,27 +839,27 @@ public class Matrix2f implements Serializable, Cloneable {
 	 * Multiplies matrix m1 times the transpose of matrix m2, and places the
 	 * result into this.
 	 * 
-	 * @param m1
+	 * @param matrix1
 	 *            the matrix on the left hand side of the multiplication
-	 * @param m2
+	 * @param matrix2
 	 *            the matrix on the right hand side of the multiplication
 	 */
-	public final void mulTransposeRight(Matrix2f m1, Matrix2f m2) {
-		if (this != m1 && this != m2) {
-			this.m00 = m1.m00 * m2.m00 + m1.m01 * m2.m01;
-			this.m01 = m1.m00 * m2.m10 + m1.m01 * m2.m11;
+	public final void mulTransposeRight(Matrix2f matrix1, Matrix2f matrix2) {
+		if (this != matrix1 && this != matrix2) {
+			this.m00 = matrix1.m00 * matrix2.m00 + matrix1.m01 * matrix2.m01;
+			this.m01 = matrix1.m00 * matrix2.m10 + matrix1.m01 * matrix2.m11;
 
-			this.m10 = m1.m10 * m2.m00 + m1.m11 * m2.m01;
-			this.m11 = m1.m10 * m2.m10 + m1.m11 * m2.m11;
+			this.m10 = matrix1.m10 * matrix2.m00 + matrix1.m11 * matrix2.m01;
+			this.m11 = matrix1.m10 * matrix2.m10 + matrix1.m11 * matrix2.m11;
 		}
 		else {
 			double _m00, _m01, _m10, _m11; // vars for temp result matrix
 
-			_m00 = m1.m00 * m2.m00 + m1.m01 * m2.m01;
-			_m01 = m1.m00 * m2.m10 + m1.m01 * m2.m11;
+			_m00 = matrix1.m00 * matrix2.m00 + matrix1.m01 * matrix2.m01;
+			_m01 = matrix1.m00 * matrix2.m10 + matrix1.m01 * matrix2.m11;
 
-			_m10 = m1.m10 * m2.m00 + m1.m11 * m2.m01;
-			_m11 = m1.m10 * m2.m10 + m1.m11 * m2.m11;
+			_m10 = matrix1.m10 * matrix2.m00 + matrix1.m11 * matrix2.m01;
+			_m11 = matrix1.m10 * matrix2.m10 + matrix1.m11 * matrix2.m11;
 
 			this.m00 = _m00;
 			this.m01 = _m01;
@@ -873,27 +874,27 @@ public class Matrix2f implements Serializable, Cloneable {
 	 * Multiplies the transpose of matrix m1 times matrix m2, and places the
 	 * result into this.
 	 * 
-	 * @param m1
+	 * @param matrix1
 	 *            the matrix on the left hand side of the multiplication
-	 * @param m2
+	 * @param matrix2
 	 *            the matrix on the right hand side of the multiplication
 	 */
-	public final void mulTransposeLeft(Matrix2f m1, Matrix2f m2) {
-		if (this != m1 && this != m2) {
-			this.m00 = m1.m00 * m2.m00 + m1.m10 * m2.m10;
-			this.m01 = m1.m00 * m2.m01 + m1.m10 * m2.m11;
+	public final void mulTransposeLeft(Matrix2f matrix1, Matrix2f matrix2) {
+		if (this != matrix1 && this != matrix2) {
+			this.m00 = matrix1.m00 * matrix2.m00 + matrix1.m10 * matrix2.m10;
+			this.m01 = matrix1.m00 * matrix2.m01 + matrix1.m10 * matrix2.m11;
 
-			this.m10 = m1.m01 * m2.m00 + m1.m11 * m2.m10;
-			this.m11 = m1.m01 * m2.m01 + m1.m11 * m2.m11;
+			this.m10 = matrix1.m01 * matrix2.m00 + matrix1.m11 * matrix2.m10;
+			this.m11 = matrix1.m01 * matrix2.m01 + matrix1.m11 * matrix2.m11;
 		}
 		else {
 			double _m00, _m01, _m10, _m11; // vars for temp result matrix
 
-			_m00 = m1.m00 * m2.m00 + m1.m10 * m2.m10;
-			_m01 = m1.m00 * m2.m01 + m1.m10 * m2.m11;
+			_m00 = matrix1.m00 * matrix2.m00 + matrix1.m10 * matrix2.m10;
+			_m01 = matrix1.m00 * matrix2.m01 + matrix1.m10 * matrix2.m11;
 
-			_m10 = m1.m01 * m2.m00 + m1.m11 * m2.m10;
-			_m11 = m1.m01 * m2.m01 + m1.m11 * m2.m11;
+			_m10 = matrix1.m01 * matrix2.m00 + matrix1.m11 * matrix2.m10;
+			_m11 = matrix1.m01 * matrix2.m01 + matrix1.m11 * matrix2.m11;
 
 			this.m00 = _m00;
 			this.m01 = _m01;
@@ -923,17 +924,17 @@ public class Matrix2f implements Serializable, Cloneable {
 	 * Perform cross product normalization of matrix m1 and place the normalized
 	 * values into this.
 	 * 
-	 * @param m1
+	 * @param matrix
 	 *            Provides the matrix values to be normalized
 	 */
-	public final void normalizeCP(Matrix2f m1) {
-		double mag = 1.0 / Math.sqrt(m1.m00 * m1.m00 + m1.m10 * m1.m10);
-		this.m00 = m1.m00 * mag;
-		this.m10 = m1.m10 * mag;
+	public final void normalizeCP(Matrix2f matrix) {
+		double mag = 1.0 / Math.sqrt(matrix.m00 * matrix.m00 + matrix.m10 * matrix.m10);
+		this.m00 = matrix.m00 * mag;
+		this.m10 = matrix.m10 * mag;
 
-		mag = 1.0 / Math.sqrt(m1.m01 * m1.m01 + m1.m11 * m1.m11);
-		this.m01 = m1.m01 * mag;
-		this.m11 = m1.m11 * mag;
+		mag = 1.0 / Math.sqrt(matrix.m01 * matrix.m01 + matrix.m11 * matrix.m11);
+		this.m01 = matrix.m01 * mag;
+		this.m11 = matrix.m11 * mag;
 
 		this.isIdentity = null;
 	}
@@ -942,16 +943,16 @@ public class Matrix2f implements Serializable, Cloneable {
 	 * Returns true if all of the data members of Matrix2d m1 are equal to the
 	 * corresponding data members in this Matrix2d.
 	 * 
-	 * @param m1
+	 * @param matrix
 	 *            the matrix with which the comparison is made
 	 * @return true or false
 	 */
 	@Pure
-	public boolean equals(Matrix2f m1) {
+	public boolean equals(Matrix2f matrix) {
 		try {
-			return (this.m00 == m1.m00 && this.m01 == m1.m01
-					&& this.m10 == m1.m10
-					&& this.m11 == m1.m11);
+			return (this.m00 == matrix.m00 && this.m01 == matrix.m01
+					&& this.m10 == matrix.m10
+					&& this.m11 == matrix.m11);
 		}
 		catch (NullPointerException e2) {
 			return false;
@@ -963,15 +964,15 @@ public class Matrix2f implements Serializable, Cloneable {
 	 * members of t1 are equal to the corresponding data members in this
 	 * Matrix2d.
 	 * 
-	 * @param t1
+	 * @param object
 	 *            the matrix with which the comparison is made
 	 * @return true or false
 	 */
 	@Pure
 	@Override
-	public boolean equals(Object t1) {
+	public boolean equals(Object object) {
 		try {
-			Matrix2f m2 = (Matrix2f) t1;
+			Matrix2f m2 = (Matrix2f) object;
 			return (this.m00 == m2.m00 && this.m01 == m2.m01
 					&& this.m10 == m2.m10
 					&& this.m11 == m2.m11);
@@ -1057,15 +1058,15 @@ public class Matrix2f implements Serializable, Cloneable {
 	 * Sets the value of this matrix equal to the negation of of the Matrix2d
 	 * parameter.
 	 * 
-	 * @param m1
+	 * @param matrix
 	 *            the source matrix
 	 */
-	public final void negate(Matrix2f m1) {
-		this.m00 = -m1.m00;
-		this.m01 = -m1.m01;
+	public final void negate(Matrix2f matrix) {
+		this.m00 = -matrix.m00;
+		this.m01 = -matrix.m01;
 
-		this.m10 = -m1.m10;
-		this.m11 = -m1.m11;
+		this.m10 = -matrix.m10;
+		this.m11 = -matrix.m11;
 
 		this.isIdentity = null;
 	}
@@ -1107,11 +1108,11 @@ public class Matrix2f implements Serializable, Cloneable {
 	/**
 	 * Set the first matrix element in the first row.
 	 * 
-	 * @param m001
+	 * @param m00
 	 *            The m00 to set.
 	 */
-	public final void setM00(double m001) {
-		this.m00 = m001;
+	public final void setM00(double m00) {
+		this.m00 = m00;
 	}
 
 	/**
@@ -1127,11 +1128,11 @@ public class Matrix2f implements Serializable, Cloneable {
 	/**
 	 * Set the second matrix element in the first row.
 	 * 
-	 * @param m011
+	 * @param m01
 	 *            The m01 to set.
 	 */
-	public final void setM01(double m011) {
-		this.m01 = m011;
+	public final void setM01(double m01) {
+		this.m01 = m01;
 	}
 
 	/**
@@ -1147,11 +1148,11 @@ public class Matrix2f implements Serializable, Cloneable {
 	/**
 	 * Set first matrix element in the second row.
 	 * 
-	 * @param m101
+	 * @param m10
 	 *            The m10 to set.
 	 */
-	public final void setM10(double m101) {
-		this.m10 = m101;
+	public final void setM10(double m10) {
+		this.m10 = m10;
 	}
 
 	/**
@@ -1167,11 +1168,11 @@ public class Matrix2f implements Serializable, Cloneable {
 	/**
 	 * Set the second matrix element in the second row.
 	 * 
-	 * @param m111
+	 * @param m11
 	 *            The m11 to set.
 	 */
-	public final void setM11(double m111) {
-		this.m11 = m111;
+	public final void setM11(double m11) {
+		this.m11 = m11;
 		this.isIdentity = null;
 	}
 
@@ -1268,9 +1269,11 @@ public class Matrix2f implements Serializable, Cloneable {
 		assert(eigenVectors!=null);
 
 		// Copy values up to the diagonal
-		double m11 = getElement(0,0);
-		double m12 = getElement(0,1);
-		double m22 = getElement(1,1);
+		double m11 = getM00();
+		double m12 = getM01();
+		double m22 = getM11();
+		
+		eigenVectors.setIdentity();
 		
 		boolean sweepsConsumed = true;
 		int i;
@@ -1280,14 +1283,14 @@ public class Matrix2f implements Serializable, Cloneable {
 		for(int a=0; a<JACOBI_MAX_SWEEPS; ++a) {
 			
 			// Exit loop if off-diagonal entries are small enough
-			if (Math.abs(m12) < Math.ulp(m12)) {
+			if ((Math.abs(m12) < JACOBI_EPSILON)) {
 				sweepsConsumed = false;
 				break;
 			}
 			
 			// Annihilate (1,2) entry
 			if (m12 != 0.) {
-				u = (m22 - m11) * .5 / m12;
+				u = (m22 - m11) *.5 / m12;
 				u2 = u*u;
 				u2p1 = u2 + 1.;
 				

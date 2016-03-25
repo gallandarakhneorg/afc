@@ -84,21 +84,6 @@ public class Segment2fx extends AbstractShape2fx<Segment2fx>
 
 	@Pure
 	@Override
-	public boolean equals(Object obj) {
-		try {
-			Segment2afp<?, ?, ?, ?, ?> shape = (Segment2afp<?, ?, ?, ?, ?>) obj;
-			return getX1() == shape.getX1()
-					&& getY1() == shape.getY1()
-					&& getX2() == shape.getX2()
-					&& getY2() == shape.getY2();
-		} catch (Throwable exception) {
-			//
-		}
-		return false;
-	}
-
-	@Pure
-	@Override
 	public int hashCode() {
 		long bits = 1;
 		bits = 31 * bits + Double.doubleToLongBits(getX1());

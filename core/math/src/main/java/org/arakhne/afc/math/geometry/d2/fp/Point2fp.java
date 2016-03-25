@@ -23,6 +23,7 @@ package org.arakhne.afc.math.geometry.d2.fp;
 
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
+import org.arakhne.afc.math.geometry.d2.UnmodifiablePoint2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -193,8 +194,8 @@ public class Point2fp extends Tuple2fp<Point2D, Point2fp> implements Point2D {
 
 	@Override
 	public void sub(Point2D t1, Vector2D t2) {
-		this.x = t1.getX() - t1.getX();
-		this.y = t1.getY() - t1.getY();
+		this.x = t1.getX() - t2.getX();
+		this.y = t1.getY() - t2.getY();
 	}
 
 	@Override

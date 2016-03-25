@@ -25,19 +25,16 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.arakhne.afc.math.AbstractMathTestCase;
+import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2DTestRule;
+import org.junit.Rule;
 import org.junit.Test;
 
-/**
- * @author $Author: hjaffali$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
- */
-@SuppressWarnings({"nls","static-method"})
+@SuppressWarnings("all")
 public class Matrix4fTest extends AbstractMathTestCase{
 	
-	
-	
+	@Rule
+	public CoordinateSystem2DTestRule csTestRule = new CoordinateSystem2DTestRule();
+
 	@Test
 	public void toStringTest() {
 		Matrix4f matrix = new Matrix4f(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15);

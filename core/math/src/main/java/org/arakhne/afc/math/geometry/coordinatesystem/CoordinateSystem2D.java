@@ -20,9 +20,10 @@
  */
 package org.arakhne.afc.math.geometry.coordinatesystem;
 
-import org.arakhne.afc.math.geometry.d2.continuous.Point2f;
-import org.arakhne.afc.math.geometry.d2.continuous.Transform2D;
-import org.arakhne.afc.math.geometry.d2.continuous.Vector2f;
+import org.arakhne.afc.math.geometry.d2.ImmutableVector2D;
+import org.arakhne.afc.math.geometry.d2.Point2D;
+import org.arakhne.afc.math.geometry.d2.Transform2D;
+import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
@@ -42,9 +43,11 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * </ul>
  * 
  * @author $Author: cbohrhauer$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 13.0
  */
 public enum CoordinateSystem2D implements CoordinateSystem {
 
@@ -76,7 +79,7 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 	 * @param point is the point to convert
 	 * @param targetCoordinateSystem is the target coordinate system.
 	 */
-	public void toSystem(Point2fx point, CoordinateSystem2D targetCoordinateSystem) {
+	public void toSystem(Point2D point, CoordinateSystem2D targetCoordinateSystem) {
 		if (this!=targetCoordinateSystem) {
 			point.setY(-point.getY());
 		}
@@ -88,7 +91,7 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 	 * @param point is the point to convert
 	 * @param targetCoordinateSystem is the target coordinate system.
 	 */
-	public void toSystem(Vector2fx point, CoordinateSystem2D targetCoordinateSystem) {
+	public void toSystem(Vector2D point, CoordinateSystem2D targetCoordinateSystem) {
 		if (this!=targetCoordinateSystem) {
 			point.setY(-point.getY());
 		}
@@ -119,7 +122,7 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 		if (this!=targetCoordinateSystem) {
 			double r = -matrix.getRotation();
 			matrix.setRotation(r);
-			matrix.m21 = -matrix.m21;
+			matrix.setM21(-matrix.getM21());
 		}
 	}
 
@@ -127,7 +130,7 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 	 * 
 	 * @param point is the point to convert
 	 */
-	public void toDefault(Point2fx point) {
+	public void toDefault(Point2D point) {
 		if (this!=getDefaultCoordinateSystem()) {
 			point.setY(-point.getY());
 		}
@@ -137,7 +140,7 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 	 * 
 	 * @param point is the point to convert
 	 */
-	public void fromDefault(Point2fx point) {
+	public void fromDefault(Point2D point) {
 		if (this!=getDefaultCoordinateSystem()) {
 			point.setY(-point.getY());
 		}
@@ -147,7 +150,7 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 	 * 
 	 * @param vector is the vector to convert
 	 */
-	public void toDefault(Vector2fx vector) {
+	public void toDefault(Vector2D vector) {
 		if (this!=getDefaultCoordinateSystem()) {
 			vector.setY(-vector.getY());
 		}
@@ -157,7 +160,7 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 	 * 
 	 * @param vector is the vector to convert
 	 */
-	public void fromDefault(Vector2fx vector) {
+	public void fromDefault(Vector2D vector) {
 		if (this!=getDefaultCoordinateSystem()) {
 			vector.setY(-vector.getY());
 		}
@@ -172,7 +175,7 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 		if (this!=getDefaultCoordinateSystem()) {
 			double r = -matrix.getRotation();
 			matrix.setRotation(r);
-			matrix.m21 = -matrix.m21;
+			matrix.setM21(-matrix.getM21());
 		}
 	}
 
@@ -184,7 +187,7 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 		if (this!=getDefaultCoordinateSystem()) {
 			double r = -matrix.getRotation();
 			matrix.setRotation(r);
-			matrix.m21 = -matrix.m21;
+			matrix.setM21(-matrix.getM21());
 		}
 	}
 
@@ -284,8 +287,8 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 	 * @return the front vector.
 	 */
 	@Pure
-	public static Vector2fx getViewVector() {
-		return new Vector2fx(1,0);
+	public static Vector2D getViewVector() {
+		return new ImmutableVector2D(1,0);
 	}
 
 	/** Replies the front vector.
@@ -294,7 +297,7 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 	 * @return the front vector.
 	 * @since 4.0
 	 */
-	public static Vector2fx getViewVector(Vector2fx vectorToFill) {
+	public static <T extends Vector2D> T getViewVector(T vectorToFill) {
 		assert(vectorToFill!=null);
 		vectorToFill.set(1,0);
 		return vectorToFill;
@@ -305,8 +308,8 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 	 * @return the back vector.
 	 */
 	@Pure
-	public static Vector2fx getBackVector() {
-		return new Vector2fx(-1,0);
+	public static Vector2D getBackVector() {
+		return new ImmutableVector2D(-1,0);
 	}
 
 	/** Replies the back vector.
@@ -315,7 +318,7 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 	 * @return the back vector.
 	 * @since 4.0
 	 */
-	public static Vector2fx getBackVector(Vector2fx vectorToFill) {
+	public static <T extends Vector2D> T getBackVector(T vectorToFill) {
 		assert(vectorToFill!=null);
 		vectorToFill.set(-1,0);
 		return vectorToFill;
@@ -326,12 +329,12 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 	 * @return the left vector.
 	 */
 	@Pure
-	public Vector2fx getLeftVector() {
+	public Vector2D getLeftVector() {
 		switch(this) {
 		case XY_LEFT_HAND:
-			return new Vector2fx(0,-1);
+			return new ImmutableVector2D(0,-1);
 		case XY_RIGHT_HAND:
-			return new Vector2fx(0,1);
+			return new ImmutableVector2D(0,1);
 		default:
 			throw new IllegalArgumentException("this"); //$NON-NLS-1$
 		}
@@ -343,7 +346,7 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 	 * @return the left vector.
 	 * @since 4.0
 	 */
-	public Vector2fx getLeftVector(Vector2fx vectorToFill) {
+	public <T extends Vector2D> T getLeftVector(T vectorToFill) {
 		assert(vectorToFill!=null);
 		switch(this) {
 		case XY_LEFT_HAND:
@@ -363,12 +366,12 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 	 * @return the right vector.
 	 */
 	@Pure
-	public Vector2fx getRightVector() {
+	public Vector2D getRightVector() {
 		switch(this) {
 		case XY_LEFT_HAND:
-			return new Vector2fx(0,1);
+			return new ImmutableVector2D(0,1);
 		case XY_RIGHT_HAND:
-			return new Vector2fx(0,-1);
+			return new ImmutableVector2D(0,-1);
 		default:
 			throw new IllegalArgumentException("this"); //$NON-NLS-1$
 		}
@@ -380,7 +383,7 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 	 * @return the right vector.
 	 * @since 4.0
 	 */
-	public Vector2fx getRightVector(Vector2fx vectorToFill) {
+	public <T extends Vector2D> T getRightVector(T vectorToFill) {
 		assert(vectorToFill!=null);
 		switch(this) {
 		case XY_LEFT_HAND:

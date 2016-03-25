@@ -80,21 +80,6 @@ public class Segment2i extends AbstractShape2i<Segment2i>
 
 	@Pure
 	@Override
-	public boolean equals(Object obj) {
-		try {
-			Segment2ai<?, ?, ?, ?, ?> shape = (Segment2ai<?, ?, ?, ?, ?>) obj;
-			return this.ax == shape.getX1()
-					&& this.ay == shape.getY1()
-					&& this.bx == shape.getX2()
-					&& this.by == shape.getY2();
-		} catch (Throwable exception) {
-			//
-		}
-		return false;
-	}
-
-	@Pure
-	@Override
 	public int hashCode() {
 		int bits = 1;
 		bits = 31 * bits + this.ax;

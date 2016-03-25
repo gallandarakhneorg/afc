@@ -23,7 +23,6 @@ package org.arakhne.afc.math.geometry.d2.i;
 
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.ai.Rectangle2ai;
-import org.arakhne.afc.math.geometry.d2.ai.RectangularShape2ai;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** A rectangle with 2 integer numbers.
@@ -105,10 +104,8 @@ public class Rectangle2i extends AbstractShape2i<Rectangle2i>
 
 	@Override
 	public void setMinX(int x) {
-		if (x <= this.maxx) {
-			this.minx = x;
-		} else {
-			this.minx = this.maxx;
+		this.minx = x;
+		if (this.maxx < x) {
 			this.maxx = x;
 		}
 	}
@@ -121,10 +118,8 @@ public class Rectangle2i extends AbstractShape2i<Rectangle2i>
 
 	@Override
 	public void setMaxX(int x) {
-		if (x > this.minx) {
-			this.maxx = x;
-		} else {
-			this.maxx = this.minx;
+		this.maxx = x;
+		if (this.minx > x) {
 			this.minx = x;
 		}
 	}
@@ -137,10 +132,8 @@ public class Rectangle2i extends AbstractShape2i<Rectangle2i>
 
 	@Override
 	public void setMinY(int y) {
-		if (y <= this.maxy) {
-			this.miny = y;
-		} else {
-			this.miny = this.maxy;
+		this.miny = y;
+		if (this.maxy < y) {
 			this.maxy = y;
 		}
 	}
@@ -153,29 +146,10 @@ public class Rectangle2i extends AbstractShape2i<Rectangle2i>
 
 	@Override
 	public void setMaxY(int y) {
-		if (y > this.miny) {
-			this.maxy = y;
-		} else {
-			this.maxy = this.miny;
+		this.maxy = y;
+		if (this.miny > y) {
 			this.miny = y;
 		}
-	}
-
-	@Pure
-	@Override
-	public boolean equals(Object obj) {
-		try {
-			if (getClass().isAssignableFrom(obj.getClass())) {
-				RectangularShape2ai<?, ?, ?, ?, ?> shape = (RectangularShape2ai<?, ?, ?, ?, ?>) obj;
-				return this.minx == shape.getMinX()
-						&& this.miny == shape.getMinY()
-						&& this.maxx == shape.getMaxX()
-						&& this.maxy == shape.getMaxY();
-			}
-		} catch (Throwable exception) {
-			//
-		}
-		return false;
 	}
 
 	@Pure

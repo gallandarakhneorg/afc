@@ -147,23 +147,6 @@ public abstract class AbstractRectangularShape2i<IT extends AbstractRectangularS
 
 	@Pure
 	@Override
-	public boolean equals(Object obj) {
-		try {
-			if (getClass().isAssignableFrom(obj.getClass())) {
-				RectangularShape2ai<?, ?, ?, ?, ?> shape = (RectangularShape2ai<?, ?, ?, ?, ?>) obj;
-				return this.minx == shape.getMinX()
-						&& this.miny == shape.getMinY()
-						&& this.maxx == shape.getMaxX()
-						&& this.maxy == shape.getMaxY();
-			}
-		} catch (Throwable exception) {
-			//
-		}
-		return false;
-	}
-
-	@Pure
-	@Override
 	public int hashCode() {
 		int bits = 1;
 		bits = 31 * bits + this.minx;

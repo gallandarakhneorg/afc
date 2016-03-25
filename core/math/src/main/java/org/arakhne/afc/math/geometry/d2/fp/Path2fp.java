@@ -218,18 +218,6 @@ public class Path2fp
 
 	@Pure
 	@Override
-	public boolean equals(Object obj) {
-		try {
-			Path2afp<?, ?, ?, ?, ?> path = (Path2afp<?, ?, ?, ?, ?>) obj;
-			return equals(path.getPathIterator());
-		} catch (Throwable exception) {
-			//
-		}
-		return false;
-	}
-	
-	@Pure
-	@Override
 	public int hashCode() {
 		long bits = 1L;
 		bits = 31L * bits + this.numCoords;

@@ -53,12 +53,13 @@ public interface Tuple2D<TT extends Tuple2D<? super TT>>
 	}
 
 	/**
-	 *  Sets each component of the tuple parameter to its absolute
-	 *  value and places the modified values into this tuple.
-	 *  @param t   the source tuple, which will not be modified
+	 * Sets each component of the tuple parameter to its absolute
+	 * value and places the modified values into this tuple.
+	 *
+	 * @param tuple   the source tuple, which will not be modified
 	 */
-	default void absolute(TT t)  {
-		t.set(Math.abs(getX()), Math.abs(getY()));
+	default void absolute(TT tuple)  {
+		tuple.set(Math.abs(getX()), Math.abs(getY()));
 	}
 
 	/**
@@ -200,13 +201,14 @@ public interface Tuple2D<TT extends Tuple2D<? super TT>>
 	/**
 	 *  Clamps the tuple parameter to the range [min, max] and
 	 *  places the values into this tuple.
+	 *
 	 *  @param min   the lowest value in the tuple after clamping
 	 *  @param max  the highest value in the tuple after clamping
-	 *  @param t   the source tuple, which will not be modified
+	 *  @param tuple   the source tuple, which will not be modified
 	 */
-	default void clamp(int min, int max, TT t) {
-		double x = MathUtil.clamp(t.getX(), min, max);
-		double y = MathUtil.clamp(t.getY(), min, max);
+	default void clamp(int min, int max, TT tuple) {
+		double x = MathUtil.clamp(tuple.getX(), min, max);
+		double y = MathUtil.clamp(tuple.getY(), min, max);
 		set(x, y);
 	}
 
@@ -215,11 +217,11 @@ public interface Tuple2D<TT extends Tuple2D<? super TT>>
 	 *  places the values into this tuple.
 	 *  @param min   the lowest value in the tuple after clamping
 	 *  @param max  the highest value in the tuple after clamping
-	 *  @param t   the source tuple, which will not be modified
+	 *  @param tuple   the source tuple, which will not be modified
 	 */
-	default void clamp(double min, double max, TT t) {
-		double x = MathUtil.clamp(t.getX(), min, max);
-		double y = MathUtil.clamp(t.getY(), min, max);
+	default void clamp(double min, double max, TT tuple) {
+		double x = MathUtil.clamp(tuple.getX(), min, max);
+		double y = MathUtil.clamp(tuple.getY(), min, max);
 		set(x, y);
 	}
 
@@ -227,11 +229,11 @@ public interface Tuple2D<TT extends Tuple2D<? super TT>>
 	 *  Clamps the minimum value of the tuple parameter to the min
 	 *  parameter and places the values into this tuple.
 	 *  @param min   the lowest value in the tuple after clamping
-	 *  @param t   the source tuple, which will not be modified
+	 *  @param tuple   the source tuple, which will not be modified
 	 */
-	default void clampMin(int min, TT t) {
-		double x = t.getX();
-		double y = t.getY();
+	default void clampMin(int min, TT tuple) {
+		double x = tuple.getX();
+		double y = tuple.getY();
 		if (x < min) {
 			x = min;
 		}
@@ -245,11 +247,11 @@ public interface Tuple2D<TT extends Tuple2D<? super TT>>
 	 *  Clamps the minimum value of the tuple parameter to the min
 	 *  parameter and places the values into this tuple.
 	 *  @param min   the lowest value in the tuple after clamping
-	 *  @param t   the source tuple, which will not be modified
+	 *  @param tuple   the source tuple, which will not be modified
 	 */
-	default void clampMin(double min, TT t) {
-		double x = t.getX();
-		double y = t.getY();
+	default void clampMin(double min, TT tuple) {
+		double x = tuple.getX();
+		double y = tuple.getY();
 		if (x < min) {
 			x = min;
 		}
@@ -263,11 +265,11 @@ public interface Tuple2D<TT extends Tuple2D<? super TT>>
 	 *  Clamps the maximum value of the tuple parameter to the max
 	 *  parameter and places the values into this tuple.
 	 *  @param max   the highest value in the tuple after clamping
-	 *  @param t   the source tuple, which will not be modified
+	 *  @param tuple   the source tuple, which will not be modified
 	 */
-	default void clampMax(int max, TT t) {
-		double x = t.getX();
-		double y = t.getY();
+	default void clampMax(int max, TT tuple) {
+		double x = tuple.getX();
+		double y = tuple.getY();
 		if (x > max) {
 			x = max;
 		}
@@ -281,11 +283,11 @@ public interface Tuple2D<TT extends Tuple2D<? super TT>>
 	 *  Clamps the maximum value of the tuple parameter to the max
 	 *  parameter and places the values into this tuple.
 	 *  @param max   the highest value in the tuple after clamping
-	 *  @param t   the source tuple, which will not be modified
+	 *  @param tuple   the source tuple, which will not be modified
 	 */
-	default void clampMax(double max, TT t) {
-		double x = t.getX();
-		double y = t.getY();
+	default void clampMax(double max, TT tuple) {
+		double x = tuple.getX();
+		double y = tuple.getY();
 		if (x > max) {
 			x = max;
 		}
@@ -297,89 +299,89 @@ public interface Tuple2D<TT extends Tuple2D<? super TT>>
 
 	/**
 	 * Copies the values of this tuple into the tuple t.
-	 * @param t is the target tuple
+	 * @param tuple is the target tuple
 	 */
-	default void get(TT t) {
-		t.set(getX(), getY());
+	default void get(TT tuple) {
+		tuple.set(getX(), getY());
 	}
 
 	/**
 	 *  Copies the value of the elements of this tuple into the array t.
-	 *  @param t the array that will contain the values of the vector
+	 *  @param tuple the array that will contain the values of the vector
 	 */
-	default void get(int[] t) {
-		t[0] = ix();
-		t[1] = iy();
+	default void get(int[] tuple) {
+		tuple[0] = ix();
+		tuple[1] = iy();
 	}
 
 	/**
 	 *  Copies the value of the elements of this tuple into the array t.
-	 *  @param t the array that will contain the values of the vector
+	 *  @param tuple the array that will contain the values of the vector
 	 */
-	default void get(double[] t) {
-		t[0] = getX();
-		t[1]= getY();
+	default void get(double[] tuple) {
+		tuple[0] = getX();
+		tuple[1]= getY();
 	}
 
 	/**
 	 * Sets the value of this tuple to the negation of tuple t1.
-	 * @param t1 the source tuple
+	 * @param tuple the source tuple
 	 */
-	default void negate(TT t1) {
-		set(-t1.getX(), -t1.getY());
+	default void negate(TT tuple) {
+		set(-tuple.getX(), -tuple.getY());
 	}
 
 	/**
 	 * Negates the value of this tuple in place.
 	 */
 	default void negate() {
-		set(getX(), getY());
+		set(-getX(), -getY());
 	}
 
 	/**
 	 * Sets the value of this tuple to the scalar multiplication
 	 * of tuple t1.
-	 * @param s the scalar value
-	 * @param t1 the source tuple
+	 * @param scale the scalar value
+	 * @param tuple the source tuple
 	 */
-	default void scale(int s, TT t1) {
-		set(s * t1.getX(), s * t1.getY());
+	default void scale(int scale, TT tuple) {
+		set(scale * tuple.getX(), scale * tuple.getY());
 	}
 
 	/**
 	 * Sets the value of this tuple to the scalar multiplication
 	 * of tuple t1.
-	 * @param s the scalar value
-	 * @param t1 the source tuple
+	 * @param scale the scalar value
+	 * @param tuple the source tuple
 	 */
-	default void scale(double s, TT t1) {
-		set(s * t1.getX(), s * t1.getY());
+	default void scale(double scale, TT tuple) {
+		set(scale * tuple.getX(), scale * tuple.getY());
 	}
 
 	/**
 	 * Sets the value of this tuple to the scalar multiplication
 	 * of the scale factor with this.
-	 * @param s the scalar value
+	 * @param scale the scalar value
 	 */
-	default void scale(int s) {
-		set(s * getX(), s * getY());
+	default void scale(int scale) {
+		set(scale * getX(), scale * getY());
 	}
 
 	/**
 	 * Sets the value of this tuple to the scalar multiplication
 	 * of the scale factor with this.
-	 * @param s the scalar value
+	 * @param scale the scalar value
 	 */
-	default void scale(double s) {
-		set(s * getX(), s * getY());
+	default void scale(double scale) {
+		set(scale * getX(), scale * getY());
 	}
 
 	/**
 	 * Sets the value of this tuple to the value of tuple t1.
-	 * @param t1 the tuple to be copied
+	 * @param tuple the tuple to be copied
 	 */
-	default void set(Tuple2D<?> t1) {
-		set(t1.getX(), t1.getY());
+	default void set(Tuple2D<?> tuple) {
+		set(tuple.getX(), tuple.getY());
 	}
 
 	/**
@@ -407,21 +409,21 @@ public interface Tuple2D<TT extends Tuple2D<? super TT>>
 	/**
 	 * Sets the value of this tuple from the 2 values specified in 
 	 * the array.
-	 * @param t the array of length 2 containing xy in order
+	 * @param tuple the array of length 2 containing xy in order
 	 */
-	default void set(int[] t) {
-		setX(t[0]);
-		setY(t[1]);
+	default void set(int[] tuple) {
+		setX(tuple[0]);
+		setY(tuple[1]);
 	}
 
 	/**
 	 * Sets the value of this tuple from the 2 values specified in 
 	 * the array.
-	 * @param t the array of length 2 containing xy in order
+	 * @param tuple the array of length 2 containing xy in order
 	 */
-	default void set(double[] t) {
-		setX(t[0]);
-		setY(t[1]);
+	default void set(double[] tuple) {
+		setX(tuple[0]);
+		setY(tuple[1]);
 	}
 
 	/**
@@ -537,38 +539,38 @@ public interface Tuple2D<TT extends Tuple2D<? super TT>>
 	/** 
 	 *  Linearly interpolates between tuples t1 and t2 and places the 
 	 *  result into this tuple:  this = (1-alpha)*t1 + alpha*t2.
-	 *  @param t1  the first tuple
-	 *  @param t2  the second tuple
+	 *  @param tuple1  the first tuple
+	 *  @param tuple2  the second tuple
 	 *  @param alpha  the alpha interpolation parameter
 	 */
-	default void interpolate(TT t1, TT t2, double alpha) {
-		set((1. - alpha) * t1.getX() + alpha * t2.getX(),
-			(1. - alpha) * t1.getY() + alpha * t2.getY());
+	default void interpolate(TT tuple1, TT tuple2, double alpha) {
+		set((1. - alpha) * tuple1.getX() + alpha * tuple2.getX(),
+			(1. - alpha) * tuple1.getY() + alpha * tuple2.getY());
 	}
 
 	/**  
 	 *  Linearly interpolates between this tuple and tuple t1 and 
 	 *  places the result into this tuple:  this = (1-alpha)*this + alpha*t1.
-	 *  @param t1  the first tuple
+	 *  @param tuple  the first tuple
 	 *  @param alpha  the alpha interpolation parameter  
 	 */   
-	default void interpolate(TT t1, double alpha) {
-		set((1. - alpha) * getX() + alpha * t1.getX(),
-			(1. - alpha) * getY() + alpha * t1.getY());
+	default void interpolate(TT tuple, double alpha) {
+		set((1. - alpha) * getX() + alpha * tuple.getX(),
+			(1. - alpha) * getY() + alpha * tuple.getY());
 	} 
 
 	/**   
 	 * Returns true if all of the data members of Tuple2D t1 are
 	 * equal to the corresponding data members in this Tuple2D.
-	 * @param t1  the vector with which the comparison is made
+	 * @param tuple  the vector with which the comparison is made
 	 * @return  true or false
 	 */  
 	@Pure
-	default boolean equals(Tuple2D<?> t1) {
+	default boolean equals(Tuple2D<?> tuple) {
 		try {
-			return (getX() == getX() && getY() == getY());
+			return (getX() == tuple.getX() && getY() == tuple.getY());
 		}
-		catch (NullPointerException e2) {
+		catch (Throwable exception) {
 			return false;
 		}
 	}
@@ -577,26 +579,26 @@ public interface Tuple2D<TT extends Tuple2D<? super TT>>
 	 * Returns true if the Object t1 is of type Tuple2D and all of the
 	 * data members of t1 are equal to the corresponding data members in
 	 * this Tuple2D.
-	 * @param t1  the object with which the comparison is made
+	 * @param object  the object with which the comparison is made
 	 * @return  true or false
 	 */  
 	@Pure
 	@Override
-	boolean equals(Object t1);
+	boolean equals(Object object);
 
 	/**
 	 * Returns true if the Euclidian distance between this tuple
 	 * and tuple t1 is less than or equal to the epsilon parameter, 
 	 * otherwise returns false.
 	 * 
-	 * @param t1  the tuple to be compared to this tuple
+	 * @param tuple  the tuple to be compared to this tuple
 	 * @param epsilon  the threshold value  
 	 * @return  true or false
 	 */
 	@Pure
-	default boolean epsilonEquals(TT t1, double epsilon) {
-		double dx = getX() - t1.getX();
-		double dy = getY() - t1.getY();
+	default boolean epsilonEquals(TT tuple, double epsilon) {
+		double dx = getX() - tuple.getX();
+		double dy = getY() - tuple.getY();
 		return (dx * dx + dy * dy) <= (epsilon * epsilon);
 	}
 
@@ -612,234 +614,5 @@ public interface Tuple2D<TT extends Tuple2D<? super TT>>
 	@Pure
 	@Override
 	int hashCode();
-
-	/** Unmodifiable 2D tuple.
-	 * 
-	 * @param <TT> is the type of data that can be added or substracted to this tuple.
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 * @since 13.0
-	 */
-	public interface UnmodifiableTuple2D<TT extends Tuple2D<? super TT>>
-			extends Tuple2D<TT> {
-
-		@Override
-		default void absolute() {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		default void absolute(TT t)  {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		default void add(int x, int y) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		default void add(double x, double y) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		default void addX(int x) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		default void addX(double x) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		default void addY(int y) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		default void addY(double y) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		default void clamp(int min, int max) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		default void clamp(double min, double max) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		default void clampMin(int min) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		default void clampMin(double min) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		default void clampMax(int max) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		default void clampMax(double max) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		default void clamp(int min, int max, TT t) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		default void clamp(double min, double max, TT t) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		default void clampMin(int min, TT t) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		default void clampMin(double min, TT t) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		default void clampMax(int max, TT t) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		default void clampMax(double max, TT t) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		default void negate(TT t1) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		default void negate() {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		default void scale(int s, TT t1) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		default void scale(double s, TT t1) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		default void scale(int s) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		default void scale(double s) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		default void set(Tuple2D<?> t1) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		default void set(int x, int y) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		default void set(double x, double y) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		default void set(int[] t) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		default void set(double[] t) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		default void setX(int x) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		default void setX(double x) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		default void setY(int y) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		default void setY(double y) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		default void sub(int x, int y) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		default void sub(double x, double y) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		default void subX(int x) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		default void subX(double x) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		default void subY(int y) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		default void subY(double y) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		default void interpolate(TT t1, TT t2, double alpha) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		default void interpolate(TT t1, double alpha) {
-			throw new UnsupportedOperationException();
-		} 
-
-	}
 	
 }

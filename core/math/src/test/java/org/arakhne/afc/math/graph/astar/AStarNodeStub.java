@@ -43,7 +43,7 @@ class AStarNodeStub implements GraphPoint<AStarNodeStub,AStarEdgeStub>, AStarNod
 	
 	/** Position of the node.
 	 */
-	final Point2f position;
+	final Point2fx position;
 	
 	private double cost = Double.NaN;
 	private double eCost = Double.NaN;
@@ -56,7 +56,7 @@ class AStarNodeStub implements GraphPoint<AStarNodeStub,AStarEdgeStub>, AStarNod
 	 */
 	public AStarNodeStub(String id1, double x, double y) {
 		this.id = id1;
-		this.position = new Point2f(x,y);
+		this.position = new Point2fx(x,y);
 	}
 	
 	@Override

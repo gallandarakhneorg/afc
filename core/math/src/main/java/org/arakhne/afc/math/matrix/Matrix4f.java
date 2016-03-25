@@ -1689,11 +1689,11 @@ public class Matrix4f implements Serializable, Cloneable {
 	/**
 	 * Set the first matrix element in the first row.
 	 * 
-	 * @param m001
+	 * @param m00
 	 *            The m00 to set.
 	 */
-	public final void setM00(double m001) {
-		this.m00 = m001;
+	public final void setM00(double m00) {
+		this.m00 = m00;
 		this.isIdentity = null;
 	}
 
@@ -1710,11 +1710,11 @@ public class Matrix4f implements Serializable, Cloneable {
 	/**
 	 * Set the second matrix element in the first row.
 	 * 
-	 * @param m011
+	 * @param m01
 	 *            The m01 to set.
 	 */
-	public final void setM01(double m011) {
-		this.m01 = m011;
+	public final void setM01(double m01) {
+		this.m01 = m01;
 		this.isIdentity = null;
 	}
 
@@ -1731,11 +1731,11 @@ public class Matrix4f implements Serializable, Cloneable {
 	/**
 	 * Set the third matrix element in the first row.
 	 * 
-	 * @param m021
+	 * @param m02
 	 *            The m02 to set.
 	 */
-	public final void setM02(double m021) {
-		this.m02 = m021;
+	public final void setM02(double m02) {
+		this.m02 = m02;
 		this.isIdentity = null;
 	}
 
@@ -1752,11 +1752,11 @@ public class Matrix4f implements Serializable, Cloneable {
 	/**
 	 * Set the fourth matrix element in the first row.
 	 * 
-	 * @param m031
+	 * @param m03
 	 *            The m03 to set.
 	 */
-	public final void setM03(double m031) {
-		this.m03 = m031;
+	public final void setM03(double m03) {
+		this.m03 = m03;
 		this.isIdentity = null;
 	}
 
@@ -1773,11 +1773,11 @@ public class Matrix4f implements Serializable, Cloneable {
 	/**
 	 * Set first matrix element in the second row.
 	 * 
-	 * @param m101
+	 * @param m10
 	 *            The m10 to set.
 	 */
-	public final void setM10(double m101) {
-		this.m10 = m101;
+	public final void setM10(double m10) {
+		this.m10 = m10;
 		this.isIdentity = null;
 	}
 
@@ -1794,11 +1794,11 @@ public class Matrix4f implements Serializable, Cloneable {
 	/**
 	 * Set the second matrix element in the second row.
 	 * 
-	 * @param m111
+	 * @param m11
 	 *            The m11 to set.
 	 */
-	public final void setM11(double m111) {
-		this.m11 = m111;
+	public final void setM11(double m11) {
+		this.m11 = m11;
 		this.isIdentity = null;
 	}
 
@@ -1815,11 +1815,11 @@ public class Matrix4f implements Serializable, Cloneable {
 	/**
 	 * Set the third matrix element in the second row.
 	 * 
-	 * @param m121
+	 * @param m12
 	 *            The m12 to set.
 	 */
-	public final void setM12(double m121) {
-		this.m12 = m121;
+	public final void setM12(double m12) {
+		this.m12 = m12;
 		this.isIdentity = null;
 	}
 
@@ -1836,11 +1836,11 @@ public class Matrix4f implements Serializable, Cloneable {
 	/**
 	 * Set the fourth matrix element in the second row.
 	 * 
-	 * @param m131
+	 * @param m13
 	 *            The m13 to set.
 	 */
-	public final void setM13(double m131) {
-		this.m13 = m131;
+	public final void setM13(double m13) {
+		this.m13 = m13;
 		this.isIdentity = null;
 	}
 
@@ -1857,11 +1857,11 @@ public class Matrix4f implements Serializable, Cloneable {
 	/**
 	 * Set the first matrix element in the third row.
 	 * 
-	 * @param m201
+	 * @param m20
 	 *            The m20 to set.
 	 */
-	public final void setM20(double m201) {
-		this.m20 = m201;
+	public final void setM20(double m20) {
+		this.m20 = m20;
 		this.isIdentity = null;
 	}
 
@@ -1878,11 +1878,11 @@ public class Matrix4f implements Serializable, Cloneable {
 	/**
 	 * Set the second matrix element in the third row.
 	 * 
-	 * @param m211
+	 * @param m21
 	 *            The m21 to set.
 	 */
-	public final void setM21(double m211) {
-		this.m21 = m211;
+	public final void setM21(double m21) {
+		this.m21 = m21;
 		this.isIdentity = null;
 	}
 
@@ -1899,11 +1899,11 @@ public class Matrix4f implements Serializable, Cloneable {
 	/**
 	 * Set the third matrix element in the third row.
 	 * 
-	 * @param m221
+	 * @param m22
 	 *            The m22 to set.
 	 */
-	public final void setM22(double m221) {
-		this.m22 = m221;
+	public final void setM22(double m22) {
+		this.m22 = m22;
 		this.isIdentity = null;
 	}
 
@@ -1920,11 +1920,11 @@ public class Matrix4f implements Serializable, Cloneable {
 	/**
 	 * Set the fourth matrix element in the third row.
 	 * 
-	 * @param m231
+	 * @param m23
 	 *            The m23 to set.
 	 */
-	public final void setM23(double m231) {
-		this.m23 = m231;
+	public final void setM23(double m23) {
+		this.m23 = m23;
 		this.isIdentity = null;
 	}
 
@@ -1941,11 +1941,11 @@ public class Matrix4f implements Serializable, Cloneable {
 	/**
 	 * Set the first matrix element in the fourth row.
 	 * 
-	 * @param m301
+	 * @param m30
 	 *            The m30 to set.
 	 */
-	public final void setM30(double m301) {
-		this.m30 = m301;
+	public final void setM30(double m30) {
+		this.m30 = m30;
 		this.isIdentity = null;
 	}
 
@@ -1962,11 +1962,11 @@ public class Matrix4f implements Serializable, Cloneable {
 	/**
 	 * Set the second matrix element in the fourth row.
 	 * 
-	 * @param m311
+	 * @param m31
 	 *            The m31 to set.
 	 */
-	public final void setM31(double m311) {
-		this.m31 = m311;
+	public final void setM31(double m31) {
+		this.m31 = m31;
 		this.isIdentity = null;
 	}
 
@@ -1983,11 +1983,11 @@ public class Matrix4f implements Serializable, Cloneable {
 	/**
 	 * Set the third matrix element in the fourth row.
 	 * 
-	 * @param m321
+	 * @param m32
 	 *            The m32 to set.
 	 */
-	public final void setM32(double m321) {
-		this.m32 = m321;
+	public final void setM32(double m32) {
+		this.m32 = m32;
 		this.isIdentity = null;
 	}
 
@@ -2004,11 +2004,11 @@ public class Matrix4f implements Serializable, Cloneable {
 	/**
 	 * Set the fourth matrix element in the fourth row.
 	 * 
-	 * @param m331
+	 * @param m33
 	 *            The m33 to set.
 	 */
-	public final void setM33(double m331) {
-		this.m33 = m331;
+	public final void setM33(double m33) {
+		this.m33 = m33;
 		this.isIdentity = null;
 	}
 

@@ -230,10 +230,25 @@ public interface Rectangle2afp<
 	 * otherwise <code>false</code>.
 	 */
 	@Pure
-	public static boolean containsRectanglePoint(
+	static boolean containsRectanglePoint(
 			double px, double py,
 			double rx, double ry, double rwidth, double rheight) {
 		return (px >= rx && px <= (rx + rwidth)) && (py >= ry && py <= (ry + rheight));
+	}
+
+	@Pure
+	@Override
+	default boolean equalsToShape(IT shape) {
+		if (shape == null) {
+			return false;
+		}
+		if (shape == this) {
+			return true;
+		}
+		return getMinX() == shape.getMinX()
+			&& getMinY() == shape.getMinY()
+			&& getMaxX() == shape.getMaxX()
+			&& getMaxY() == shape.getMaxY();
 	}
 
 	@Override
@@ -463,6 +478,7 @@ public interface Rectangle2afp<
 		}
 	}
 
+	@Pure
 	@Override
 	default boolean intersects(Rectangle2afp<?, ?, ?, ?, ?> s) {
 		return intersectsRectangleRectangle(
@@ -472,6 +488,7 @@ public interface Rectangle2afp<
 				s.getMaxX(), s.getMaxY());
 	}
 	
+	@Pure
 	@Override
 	default boolean intersects(Ellipse2afp<?, ?, ?, ?, ?> s) {
 		return Ellipse2afp.intersectsEllipseRectangle(
@@ -481,6 +498,7 @@ public interface Rectangle2afp<
 				getMaxX(), getMaxY());
 	}
 	
+	@Pure
 	@Override
 	default boolean intersects(Circle2afp<?, ?, ?, ?, ?> s) {
 		return Circle2afp.intersectsCircleRectangle(
@@ -490,6 +508,7 @@ public interface Rectangle2afp<
 				getMaxX(), getMaxY());
 	}
 	
+	@Pure
 	@Override
 	default boolean intersects(Segment2afp<?, ?, ?, ?, ?> s) {
 		return intersectsRectangleSegment(
@@ -499,6 +518,7 @@ public interface Rectangle2afp<
 				s.getX2(), s.getY2());
 	}
 	
+	@Pure
 	@Override
 	default boolean intersects(OrientedRectangle2afp<?, ?, ?, ?, ?> s) {
 		return OrientedRectangle2afp.intersectsOrientedRectangleRectangle(
@@ -508,11 +528,13 @@ public interface Rectangle2afp<
 				getMinX(), getMinY(), getWidth(), getHeight());
 	}
 	
+	@Pure
 	@Override
 	default boolean intersects(RoundRectangle2afp<?, ?, ?, ?, ?> s) {
 		return s.intersects(this);
 	}
 	
+	@Pure
 	@Override
 	default boolean intersects(PathIterator2afp<?> iterator) {
 		int mask = (iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2);

@@ -258,7 +258,7 @@ public class Rectangle2dTest extends AbstractRectangularShape2fTestCase<Rectangl
 	@Override
 	public void toBoundingBox() {
 		AbstractRectangle2F<?> b = this.r.toBoundingBox();
-		assertTrue(this.r.equals(b));
+		assertTrue(this.r.equalsToPathIterator(b));
 	}
 	
 	/**
@@ -286,21 +286,21 @@ public class Rectangle2dTest extends AbstractRectangularShape2fTestCase<Rectangl
 	 */
 	@Test
 	public void containsPoint2D() {
-		assertTrue(this.r.contains(new Point2f(0f, 0f)));
+		assertTrue(this.r.contains(new Point2fx(0f, 0f)));
 		
-		assertFalse(this.r.contains(new Point2f(-2.3f, -3.4f)));
-		assertFalse(this.r.contains(new Point2f(-2.3f, .5f)));
-		assertFalse(this.r.contains(new Point2f(-2.3f, 5.6f)));
+		assertFalse(this.r.contains(new Point2fx(-2.3f, -3.4f)));
+		assertFalse(this.r.contains(new Point2fx(-2.3f, .5f)));
+		assertFalse(this.r.contains(new Point2fx(-2.3f, 5.6f)));
 		
-		assertFalse(this.r.contains(new Point2f(.5f, -3.4f)));
-		assertTrue(this.r.contains(new Point2f(.5f, .5f)));
-		assertFalse(this.r.contains(new Point2f(.5f, 5.6f)));
+		assertFalse(this.r.contains(new Point2fx(.5f, -3.4f)));
+		assertTrue(this.r.contains(new Point2fx(.5f, .5f)));
+		assertFalse(this.r.contains(new Point2fx(.5f, 5.6f)));
 
-		assertFalse(this.r.contains(new Point2f(5.6f, -3.4f)));
-		assertFalse(this.r.contains(new Point2f(5.6f, .5f)));
-		assertFalse(this.r.contains(new Point2f(5.6f, 5.6f)));
+		assertFalse(this.r.contains(new Point2fx(5.6f, -3.4f)));
+		assertFalse(this.r.contains(new Point2fx(5.6f, .5f)));
+		assertFalse(this.r.contains(new Point2fx(5.6f, 5.6f)));
 
-		assertTrue(this.r.contains(new Point2f(.01f, .01f)));
+		assertTrue(this.r.contains(new Point2fx(.01f, .01f)));
 	}
 
 	/**
@@ -921,41 +921,41 @@ public class Rectangle2dTest extends AbstractRectangularShape2fTestCase<Rectangl
 		
 		Rectangle2d test = new Rectangle2d(min,max);
 		
-		assertTrue(test.equals(new Rectangle2f(0,0,1,1)));
+		assertTrue(test.equalsToPathIterator(new Rectangle2f(0,0,1,1)));
 		
 		min.set(2, 2);
 		max.set(4, 4);
 		
-		assertTrue(test.equals(new Rectangle2f(2,2,2,2)));
+		assertTrue(test.equalsToPathIterator(new Rectangle2f(2,2,2,2)));
 		
 		test.setFromCorners(0,0,10,5);
 		
-		assertTrue(min.equals(new Point2f(0,0)));
-		assertTrue(max.equals(new Point2f(10,5)));
+		assertTrue(min.equalsToPathIterator(new Point2fx(0,0)));
+		assertTrue(max.equalsToPathIterator(new Point2fx(10,5)));
 		
 		Rectangle2d rectangle = new Rectangle2d(-1,-1,2,2);
 		test = new Rectangle2d(rectangle);
 		
-		assertTrue(test.equals(new Rectangle2f(-1,-1,2,2)));
+		assertTrue(test.equalsToPathIterator(new Rectangle2f(-1,-1,2,2)));
 		
 		rectangle.setFromCorners(-10, 10, 10, -10);
 		
-		assertTrue(test.equals(new Rectangle2f(-10,-10,20,20)));
+		assertTrue(test.equalsToPathIterator(new Rectangle2f(-10,-10,20,20)));
 		
 		rectangle.setFromCornersProperties(min, max);	
 		min.set(2, 2);
 		max.set(4, 4);
 		
-		assertTrue(test.equals(new Rectangle2f(-10,-10,20,20)));
-		assertTrue(rectangle.equals(new Rectangle2f(2,2,2,2)));
+		assertTrue(test.equalsToPathIterator(new Rectangle2f(-10,-10,20,20)));
+		assertTrue(rectangle.equalsToPathIterator(new Rectangle2f(2,2,2,2)));
 		
 		test.setFromCornersProperties(min, max);	
 		test.setFromCorners(0, 0, 1, 1);
 		
-		assertTrue(rectangle.equals(new Rectangle2f(0,0,1,1)));
+		assertTrue(rectangle.equalsToPathIterator(new Rectangle2f(0,0,1,1)));
 		
-		assertTrue(min.equals(new Point2f(0,0)));
-		assertTrue(max.equals(new Point2f(1,1)));
+		assertTrue(min.equalsToPathIterator(new Point2fx(0,0)));
+		assertTrue(max.equalsToPathIterator(new Point2fx(1,1)));
 		
 	}
 

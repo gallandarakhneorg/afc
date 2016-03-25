@@ -1653,20 +1653,20 @@ public class CoordinateSystem3DTest extends AbstractMathTestCase {
 	@Test
 	public void toCoordinateSystem2DPoint2f() {
 		Point3f pt;
-		Point2f pt2;
+		Point2fx pt2;
 		
 		pt = randomPoint3f();
 
-		pt2 = new Point2f(pt.getX(),pt.getY());
+		pt2 = new Point2fx(pt.getX(),pt.getY());
 		assertEpsilonEquals(pt2, CoordinateSystem3D.XYZ_LEFT_HAND.toCoordinateSystem2D(pt));
 
-		pt2 = new Point2f(pt.getX(),pt.getY());
+		pt2 = new Point2fx(pt.getX(),pt.getY());
 		assertEpsilonEquals(pt2, CoordinateSystem3D.XYZ_RIGHT_HAND.toCoordinateSystem2D(pt));
 
-		pt2 = new Point2f(pt.getX(),pt.getZ());
+		pt2 = new Point2fx(pt.getX(),pt.getZ());
 		assertEpsilonEquals(pt2, CoordinateSystem3D.XZY_LEFT_HAND.toCoordinateSystem2D(pt));
 
-		pt2 = new Point2f(pt.getX(),pt.getZ());
+		pt2 = new Point2fx(pt.getX(),pt.getZ());
 		assertEpsilonEquals(pt2, CoordinateSystem3D.XZY_RIGHT_HAND.toCoordinateSystem2D(pt));
 	}
 
@@ -1675,20 +1675,20 @@ public class CoordinateSystem3DTest extends AbstractMathTestCase {
 	@Test
 	public void toCoordinateSystem2DVector3f() {
 		Vector3f vt;
-		Vector2f vt2;
+		Vector2fx vt2;
 		
 		vt = randomVector3f();
 
-		vt2 = new Vector2f(vt.getX(),vt.getY());
+		vt2 = new Vector2fx(vt.getX(),vt.getY());
 		assertEpsilonEquals(vt2, CoordinateSystem3D.XYZ_LEFT_HAND.toCoordinateSystem2D(vt));
 
-		vt2 = new Vector2f(vt.getX(),vt.getY());
+		vt2 = new Vector2fx(vt.getX(),vt.getY());
 		assertEpsilonEquals(vt2, CoordinateSystem3D.XYZ_RIGHT_HAND.toCoordinateSystem2D(vt));
 
-		vt2 = new Vector2f(vt.getX(),vt.getZ());
+		vt2 = new Vector2fx(vt.getX(),vt.getZ());
 		assertEpsilonEquals(vt2, CoordinateSystem3D.XZY_LEFT_HAND.toCoordinateSystem2D(vt));
 
-		vt2 = new Vector2f(vt.getX(),vt.getZ());
+		vt2 = new Vector2fx(vt.getX(),vt.getZ());
 		assertEpsilonEquals(vt2, CoordinateSystem3D.XZY_RIGHT_HAND.toCoordinateSystem2D(vt));
 	}
 
@@ -1748,7 +1748,7 @@ public class CoordinateSystem3DTest extends AbstractMathTestCase {
 	@Test
 	public void fromCoordinateSystem2DPoint2f() {
 		Point3f pt3;
-		Point2f pt2;
+		Point2fx pt2;
 		
 		pt2 = randomPoint2f();
 
@@ -1770,7 +1770,7 @@ public class CoordinateSystem3DTest extends AbstractMathTestCase {
 	@Test
 	public void fromCoordinateSystem2DVector2fFloat() {
 		Vector3f vt3;
-		Vector2f vt2;
+		Vector2fx vt2;
 		double tc;
 		
 		tc = this.random.nextDouble();
@@ -1794,7 +1794,7 @@ public class CoordinateSystem3DTest extends AbstractMathTestCase {
 	@Test
 	public void fromCoordinateSystem2DVector2f() {
 		Vector3f vt3;
-		Vector2f vt2;
+		Vector2fx vt2;
 
 		vt2 = randomVector2f();
 

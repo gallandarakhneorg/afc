@@ -48,14 +48,29 @@ public class MathUtilTest extends AbstractMathTestCase {
 	} 
 
 	@Test
-	public void clampIntIntInt() {
-		// NaN is lower than all the other floating-point values 
-		
-		int min = (this.random.nextInt(1000) - this.random.nextInt(1000));
-		int max = min + this.random.nextInt() * 900 + 100;
-		
-		assertEpsilonEquals((min+max)/2, MathUtil.clamp((min+max)/2, min, max));
-		assertEpsilonEquals(max, MathUtil.clamp(Math.abs(max)*2, min, max));
+	public void clampIntIntInt_minmax() {
+		int min = 693;
+		int max = 1240;
+		assertEquals(924, MathUtil.clamp(924, min, max));
+		assertEquals(min, MathUtil.clamp(min, min, max));
+		assertEquals(max, MathUtil.clamp(max, min, max));
+		assertEquals(max, MathUtil.clamp(max+1, min, max));
+		assertEquals(max, MathUtil.clamp(9000, min, max));
+		assertEquals(min, MathUtil.clamp(min-1, min, max));
+		assertEquals(min, MathUtil.clamp(-124, min, max));
+	} 
+
+	@Test
+	public void clampIntIntInt_maxmin() {
+		int min = 693;
+		int max = 1240;
+		assertEquals(924, MathUtil.clamp(924, max, min));
+		assertEquals(min, MathUtil.clamp(min, max, min));
+		assertEquals(max, MathUtil.clamp(max, max, min));
+		assertEquals(max, MathUtil.clamp(max+1, max, min));
+		assertEquals(max, MathUtil.clamp(9000, max, min));
+		assertEquals(min, MathUtil.clamp(min-1, max, min));
+		assertEquals(min, MathUtil.clamp(-124, max, min));
 	} 
 
 	@Test

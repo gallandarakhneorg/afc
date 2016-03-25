@@ -78,13 +78,13 @@ public final class MathUtil {
 	 */
 	@Pure
 	public static int clamp(int v, int min, int max) {
-		if (min<max) {
-			if (v<min) return min;
-			if (v>max) return max;
+		if (min <= max) {
+			if (v < min) return min;
+			if (v > max) return max;
 		}
 		else {
-			if (v>min) return min;
-			if (v<max) return max;
+			if (v > min) return min;
+			if (v < max) return max;
 		}
 		return v;
 	}	
@@ -125,8 +125,7 @@ public final class MathUtil {
 	 */
 	@Pure
 	public static boolean isEpsilonEqual(double v1, double v2) {
-		double v = v1 - v2;
-		return Math.abs(v) < Math.ulp(v);
+		return isEpsilonEqual(v1, v2, Math.ulp(1.));
 	}
 
 	/** Replies if the given values are near.
@@ -674,5 +673,5 @@ public final class MathUtil {
 		double sin2 = Math.sin(angle/2.);
 		return sin2*sin2;
 	}
-
+	
 }

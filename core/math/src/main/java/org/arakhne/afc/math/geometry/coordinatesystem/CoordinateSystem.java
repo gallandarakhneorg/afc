@@ -26,9 +26,11 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * Represents a space referencial and provides the convertion utilities.
  * 
  * @author $Author: cbohrhauer$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 13.0
  */
 public interface CoordinateSystem {
 	

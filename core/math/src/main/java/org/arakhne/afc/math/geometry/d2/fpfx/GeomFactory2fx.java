@@ -114,6 +114,11 @@ public class GeomFactory2fx implements GeomFactory2afp<PathElement2fx, Point2fx,
 	public Rectangle2fx newBox() {
 		return new Rectangle2fx();
 	}
+	
+	@Override
+	public Rectangle2fx newBox(double x, double y, double width, double height) {
+		return new Rectangle2fx(x,  y, width, height);
+	}
 
 	@Override
 	public Path2afp<?, ?, PathElement2fx, Point2fx, ?> newPath(PathWindingRule rule) {
@@ -139,7 +144,7 @@ public class GeomFactory2fx implements GeomFactory2afp<PathElement2fx, Point2fx,
 	@Override
 	public PathElement2fx newClosePathElement(double lastPointX, double lastPointY, double firstPointX,
 			double firstPointY) {
-		return new PathElement2fx.LinePathElement2fx(
+		return new PathElement2fx.ClosePathElement2fx(
 				new SimpleDoubleProperty(lastPointX),
 				new SimpleDoubleProperty(lastPointY),
 				new SimpleDoubleProperty(firstPointX),

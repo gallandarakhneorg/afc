@@ -56,9 +56,9 @@ public interface Path2D<
 	
 	/** Set the winding rule for the path.
 	 * 
-	 * @param r is the winding rule for the path.
+	 * @param rule is the winding rule for the path.
 	 */
-	void setWindingRule(PathWindingRule r);
+	void setWindingRule(PathWindingRule rule);
 
 	/** Replies the path is composed only by
 	 * one <code>MOVE_TO</code>, and a sequence of <code>LINE_TO</code>
@@ -341,19 +341,10 @@ public interface Path2D<
 
 	/** Replies if the given points exists in the coordinates of this path.
 	 * 
-	 * @param p
+	 * @param point
 	 * @return <code>true</code> if the point is a control point of the path.
 	 */
 	@Pure
-	boolean containsControlPoint(Point2D p);
+	boolean containsControlPoint(Point2D point);
 
-	/** Replies if this path has the same elements as the given iterator.
-	 *
-	 * @param iterator the iterator.
-	 * @return <code>true</code> if this path as a similar iterator.
-	 */
-	public boolean equals(I iterator);
-	
-
-	
 }

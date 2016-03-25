@@ -47,21 +47,21 @@ public class Tuple2fComparator implements Comparator<Tuple2D<?>> {
 	
 	@Pure
 	@Override
-	public int compare(Tuple2D<?> o1, Tuple2D<?> o2) {
-		if (o1==o2) {
+	public int compare(Tuple2D<?> tuple1, Tuple2D<?> tuple2) {
+		if (tuple1==tuple2) {
 			return 0;
 		}
-		if (o1==null) {
+		if (tuple1==null) {
 			return Integer.MIN_VALUE;
 		}
-		if (o2==null) {
+		if (tuple2==null) {
 			return Integer.MAX_VALUE;
 		}
-		int cmp = Double.compare(o1.getX(), o2.getX());
+		int cmp = Double.compare(tuple1.getX(), tuple2.getX());
 		if (cmp!=0) {
 			return cmp;
 		}
-		return Double.compare(o1.getY(), o2.getY());
+		return Double.compare(tuple1.getY(), tuple2.getY());
 	}
 		
 }

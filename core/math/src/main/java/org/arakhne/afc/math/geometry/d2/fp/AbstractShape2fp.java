@@ -20,6 +20,7 @@
  */
 package org.arakhne.afc.math.geometry.d2.fp;
 
+import org.arakhne.afc.math.geometry.d2.PathIterator2D;
 import org.arakhne.afc.math.geometry.d2.afp.GeomFactory2afp;
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -46,9 +47,24 @@ public abstract class AbstractShape2fp<T extends AbstractShape2fp<?>> implements
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Pure
-    @Override
-    public abstract boolean equals(Object obj);
+	@Override
+	public final boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		try {
+			try {
+				return equalsToShape((T) obj);
+			} catch (ClassCastException exception) {
+				return equalsToPathIterator((PathIterator2D<?>) obj);
+			}
+		} catch (Throwable exception) {
+			//
+		}
+		return false;
+	}
     
 	@Pure
     @Override

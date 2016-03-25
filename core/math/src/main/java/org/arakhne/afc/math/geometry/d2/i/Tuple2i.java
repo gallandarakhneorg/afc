@@ -81,8 +81,8 @@ public class Tuple2i<T extends Tuple2D<? super T>, IT extends T> implements Tupl
 	 * @param tuple is the tuple to copy.
 	 */
 	public Tuple2i(double[] tuple) {
-		this.x = (int) tuple[0];
-		this.y = (int) tuple[1];
+		this.x = (int) Math.round(tuple[0]);
+		this.y = (int) Math.round(tuple[1]);
 	}
 
 	/**
@@ -99,8 +99,8 @@ public class Tuple2i<T extends Tuple2D<? super T>, IT extends T> implements Tupl
 	 * @param y
 	 */
 	public Tuple2i(double x, double y) {
-		this.x = (int) x;
-		this.y = (int) y;
+		this.x = (int) Math.round(x);
+		this.y = (int) Math.round(y);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -122,8 +122,8 @@ public class Tuple2i<T extends Tuple2D<? super T>, IT extends T> implements Tupl
 	}
 
 	@Override
-	public void absolute(T t) {
-		t.set(Math.abs(this.x), Math.abs(this.y));
+	public void absolute(T tuple) {
+		tuple.set(Math.abs(this.x), Math.abs(this.y));
 	}
 
 	@Override
@@ -134,8 +134,8 @@ public class Tuple2i<T extends Tuple2D<? super T>, IT extends T> implements Tupl
 
 	@Override
 	public void add(double x, double y) {
-		this.x += x;
-		this.y += y;
+		this.x = (int) Math.round(this.x + x);
+		this.y = (int) Math.round(this.y + y);
 	}
 
 	@Override
@@ -145,7 +145,7 @@ public class Tuple2i<T extends Tuple2D<? super T>, IT extends T> implements Tupl
 
 	@Override
 	public void addX(double x) {
-		this.x += x;
+		this.x = (int) Math.round(this.x + x);
 	}
 
 	@Override
@@ -155,13 +155,13 @@ public class Tuple2i<T extends Tuple2D<? super T>, IT extends T> implements Tupl
 
 	@Override
 	public void addY(double y) {
-		this.y += y;
+		this.y = (int) Math.round(this.y + y);
 	}
 
 	@Override
-	public void negate(T t1) {
-		this.x = -t1.ix();
-		this.y = -t1.iy();
+	public void negate(T tuple) {
+		this.x = -tuple.ix();
+		this.y = -tuple.iy();
 	}
 
 	@Override
@@ -171,33 +171,33 @@ public class Tuple2i<T extends Tuple2D<? super T>, IT extends T> implements Tupl
 	}
 
 	@Override
-	public void scale(int s, T t1) {
-		this.x = (int) (s * t1.getX());
-		this.y = (int) (s * t1.getY());
+	public void scale(int scale, T tuple) {
+		this.x = (int) Math.round(scale * tuple.getX());
+		this.y = (int) Math.round(scale * tuple.getY());
 	}
 
 	@Override
-	public void scale(double s, T t1) {
-		this.x = (int) (s * t1.getX());
-		this.y = (int) (s * t1.getY());
+	public void scale(double scale, T tuple) {
+		this.x = (int) Math.round(scale * tuple.getX());
+		this.y = (int) Math.round(scale * tuple.getY());
 	}
 
 	@Override
-	public void scale(int s) {
-		this.x = s * this.x;
-		this.y = s * this.y;
+	public void scale(int scale) {
+		this.x *= scale;
+		this.y *= scale;
 	}
 
 	@Override
-	public void scale(double s) {
-		this.x = (int) (s * this.x);
-		this.y = (int) (s * this.y);
+	public void scale(double scale) {
+		this.x = (int) Math.round(scale * this.x);
+		this.y = (int) Math.round(scale * this.y);
 	}
 
 	@Override
-	public void set(Tuple2D<?> t1) {
-		this.x = t1.ix();
-		this.y = t1.iy();
+	public void set(Tuple2D<?> tuple) {
+		this.x = tuple.ix();
+		this.y = tuple.iy();
 	}
 
 	@Override
@@ -208,20 +208,20 @@ public class Tuple2i<T extends Tuple2D<? super T>, IT extends T> implements Tupl
 
 	@Override
 	public void set(double x, double y) {
-		this.x = (int) x;
-		this.y = (int) y;
+		this.x = (int) Math.round(x);
+		this.y = (int) Math.round(y);
 	}
 
 	@Override
-	public void set(int[] t) {
-		this.x = t[0];
-		this.y = t[1];
+	public void set(int[] tuple) {
+		this.x = tuple[0];
+		this.y = tuple[1];
 	}
 
 	@Override
-	public void set(double[] t) {
-		this.x = (int) t[0];
-		this.y = (int) t[1];
+	public void set(double[] tuple) {
+		this.x = (int) Math.round(tuple[0]);
+		this.y = (int) Math.round(tuple[1]);
 	}
 
 	@Pure
@@ -243,7 +243,7 @@ public class Tuple2i<T extends Tuple2D<? super T>, IT extends T> implements Tupl
 
 	@Override
 	public void setX(double x) {
-		this.x = (int) x;
+		this.x = (int) Math.round(x);
 	}
 
 	@Pure
@@ -265,7 +265,7 @@ public class Tuple2i<T extends Tuple2D<? super T>, IT extends T> implements Tupl
 
 	@Override
 	public void setY(double y) {
-		this.y = (int) y;
+		this.y = (int) Math.round(y);
 	}
 
 	@Override
@@ -286,26 +286,26 @@ public class Tuple2i<T extends Tuple2D<? super T>, IT extends T> implements Tupl
 
 	@Override
 	public void sub(double x, double y) {
-		this.x -= x;
-		this.y -= y;
+		this.x = (int) Math.round(this.x - x);
+		this.y = (int) Math.round(this.y - y);
 	}
 
 	@Override
 	public void subX(double x) {
-		this.x -= x;
+		this.x = (int) Math.round(this.x - x);
 	}
 
 	@Override
 	public void subY(double y) {
-		this.y -= y;
+		this.y = (int) Math.round(this.y + y);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Pure
 	@Override
-	public boolean equals(Object t1) {
+	public boolean equals(Object object) {
 		try {
-			return equals((T) t1);
+			return equals((T) object);
 		}
 		catch(AssertionError e) {
 			throw e;

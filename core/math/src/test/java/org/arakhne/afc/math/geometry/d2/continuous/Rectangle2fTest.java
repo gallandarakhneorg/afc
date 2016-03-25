@@ -90,18 +90,18 @@ public class Rectangle2fTest extends AbstractRectangularShape2fTestCase<Rectangl
 	@Override
 	public void distancePoint2D() {
 		double d;
-		d = this.r.distance(new Point2f(.5f,.5f));
+		d = this.r.distance(new Point2fx(.5f,.5f));
 		assertEpsilonEquals(0f,d);
 
-		d = this.r.distance(new Point2f(-1.2f,-3.4f));
+		d = this.r.distance(new Point2fx(-1.2f,-3.4f));
 		//sqrt( 1.2*1.2 + 3.4*3.4 ) = sqrt( 1.44 + 11.56 ) = sqrt( 13 )
 		assertEpsilonEquals(3.605551275f,d);
 
-		d = this.r.distance(new Point2f(-1.2f,5.6f));
+		d = this.r.distance(new Point2fx(-1.2f,5.6f));
 		//sqrt( 1.2*1.2 + 4.6*4.6 ) = sqrt( 1.44 + 21.16 ) = sqrt( 22.6 )
 		assertEpsilonEquals(4.75394573f,d);
 
-		d = this.r.distance(new Point2f(7.6f,5.6f));
+		d = this.r.distance(new Point2fx(7.6f,5.6f));
 		//sqrt( 6.6*6 + 4.6*4.6 ) = sqrt( 43.56 + 21.16 ) = sqrt( 64.72 )
 		assertEpsilonEquals(8.044874144f,d);
 	}
@@ -110,18 +110,18 @@ public class Rectangle2fTest extends AbstractRectangularShape2fTestCase<Rectangl
 	@Override
 	public void distanceSquaredPoint2D() {
 		double d;
-		d = this.r.distanceSquared(new Point2f(.5f,.5f));
+		d = this.r.distanceSquared(new Point2fx(.5f,.5f));
 		assertEpsilonEquals(0f,d);
 
-		d = this.r.distanceSquared(new Point2f(-1.2f,-3.4f));
+		d = this.r.distanceSquared(new Point2fx(-1.2f,-3.4f));
 		//sqrt( 1.2*1.2 + 3.4*3.4 ) = sqrt( 1.44 + 11.56 ) = sqrt( 13 )
 		assertEpsilonEquals(13f,d);
 
-		d = this.r.distanceSquared(new Point2f(-1.2f,5.6f));
+		d = this.r.distanceSquared(new Point2fx(-1.2f,5.6f));
 		//sqrt( 1.2*1.2 + 4.6*4.6 ) = sqrt( 1.44 + 21.16 ) = sqrt( 22.6 )
 		assertEpsilonEquals(22.6f,d);
 
-		d = this.r.distanceSquared(new Point2f(7.6f,5.6f));
+		d = this.r.distanceSquared(new Point2fx(7.6f,5.6f));
 		//sqrt( 6.6*6 + 4.6*4.6 ) = sqrt( 43.56 + 21.16 ) = sqrt( 64.72 )
 		assertEpsilonEquals(64.72f,d);
 	}
@@ -130,18 +130,18 @@ public class Rectangle2fTest extends AbstractRectangularShape2fTestCase<Rectangl
 	@Override
 	public void distanceL1Point2D() {
 		double d;
-		d = this.r.distanceL1(new Point2f(.5f,.5f));
+		d = this.r.distanceL1(new Point2fx(.5f,.5f));
 		assertEpsilonEquals(0f,d);
 
-		d = this.r.distanceL1(new Point2f(-1.2f,-3.4f));
+		d = this.r.distanceL1(new Point2fx(-1.2f,-3.4f));
 		//1.2 + 3.4
 		assertEpsilonEquals(4.6f,d);
 
-		d = this.r.distanceL1(new Point2f(-1.2f,5.6f));
+		d = this.r.distanceL1(new Point2fx(-1.2f,5.6f));
 		//1.2 + 4.6
 		assertEpsilonEquals(5.8f,d);
 
-		d = this.r.distanceL1(new Point2f(7.6f,5.6f));
+		d = this.r.distanceL1(new Point2fx(7.6f,5.6f));
 		//6.6 + 4.6
 		assertEpsilonEquals(11.2f,d);
 	}
@@ -150,18 +150,18 @@ public class Rectangle2fTest extends AbstractRectangularShape2fTestCase<Rectangl
 	@Override
 	public void distanceLinfPoint2D() {
 		double d;
-		d = this.r.distanceLinf(new Point2f(.5f,.5f));
+		d = this.r.distanceLinf(new Point2fx(.5f,.5f));
 		assertEpsilonEquals(0f,d);
 
-		d = this.r.distanceLinf(new Point2f(-1.2f,-3.4f));
+		d = this.r.distanceLinf(new Point2fx(-1.2f,-3.4f));
 		//max( 1.2, 3.4 )
 		assertEpsilonEquals(3.4f,d);
 
-		d = this.r.distanceLinf(new Point2f(-1.2f,5.6f));
+		d = this.r.distanceLinf(new Point2fx(-1.2f,5.6f));
 		//max( 1.2, 4.6 )
 		assertEpsilonEquals(4.6f,d);
 
-		d = this.r.distanceLinf(new Point2f(7.6f,5.6f));
+		d = this.r.distanceLinf(new Point2fx(7.6f,5.6f));
 		//max( 6.6, 4.6 )
 		assertEpsilonEquals(6.6f,d);
 	}
@@ -258,7 +258,7 @@ public class Rectangle2fTest extends AbstractRectangularShape2fTestCase<Rectangl
 	@Override
 	public void toBoundingBox() {
 		AbstractRectangle2F<?> b = this.r.toBoundingBox();
-		assertTrue(this.r.equals(b));
+		assertTrue(this.r.equalsToPathIterator(b));
 	}
 	
 	/**
@@ -286,21 +286,21 @@ public class Rectangle2fTest extends AbstractRectangularShape2fTestCase<Rectangl
 	 */
 	@Test
 	public void containsPoint2D() {
-		assertTrue(this.r.contains(new Point2f(0f, 0f)));
+		assertTrue(this.r.contains(new Point2fx(0f, 0f)));
 		
-		assertFalse(this.r.contains(new Point2f(-2.3f, -3.4f)));
-		assertFalse(this.r.contains(new Point2f(-2.3f, .5f)));
-		assertFalse(this.r.contains(new Point2f(-2.3f, 5.6f)));
+		assertFalse(this.r.contains(new Point2fx(-2.3f, -3.4f)));
+		assertFalse(this.r.contains(new Point2fx(-2.3f, .5f)));
+		assertFalse(this.r.contains(new Point2fx(-2.3f, 5.6f)));
 		
-		assertFalse(this.r.contains(new Point2f(.5f, -3.4f)));
-		assertTrue(this.r.contains(new Point2f(.5f, .5f)));
-		assertFalse(this.r.contains(new Point2f(.5f, 5.6f)));
+		assertFalse(this.r.contains(new Point2fx(.5f, -3.4f)));
+		assertTrue(this.r.contains(new Point2fx(.5f, .5f)));
+		assertFalse(this.r.contains(new Point2fx(.5f, 5.6f)));
 
-		assertFalse(this.r.contains(new Point2f(5.6f, -3.4f)));
-		assertFalse(this.r.contains(new Point2f(5.6f, .5f)));
-		assertFalse(this.r.contains(new Point2f(5.6f, 5.6f)));
+		assertFalse(this.r.contains(new Point2fx(5.6f, -3.4f)));
+		assertFalse(this.r.contains(new Point2fx(5.6f, .5f)));
+		assertFalse(this.r.contains(new Point2fx(5.6f, 5.6f)));
 
-		assertTrue(this.r.contains(new Point2f(.01f, .01f)));
+		assertTrue(this.r.contains(new Point2fx(.01f, .01f)));
 	}
 
 	/**
@@ -309,41 +309,41 @@ public class Rectangle2fTest extends AbstractRectangularShape2fTestCase<Rectangl
 	public void getClosestPointTo() {
 		Point2D p;
 		
-		p = this.r.getClosestPointTo(new Point2f(0f, 0f));
+		p = this.r.getClosestPointTo(new Point2fx(0f, 0f));
 		assertEpsilonEquals(0f, p.getX());
 		assertEpsilonEquals(0f, p.getY());
 		
-		p = this.r.getClosestPointTo(new Point2f(-2.3f, -3.4f));
+		p = this.r.getClosestPointTo(new Point2fx(-2.3f, -3.4f));
 		assertEpsilonEquals(0f, p.getX());
 		assertEpsilonEquals(0f, p.getY());
-		p = this.r.getClosestPointTo(new Point2f(-2.3f, .5f));
+		p = this.r.getClosestPointTo(new Point2fx(-2.3f, .5f));
 		assertEpsilonEquals(0f, p.getX());
 		assertEpsilonEquals(.5f, p.getY());
-		p = this.r.getClosestPointTo(new Point2f(-2.3f, 5.6f));
+		p = this.r.getClosestPointTo(new Point2fx(-2.3f, 5.6f));
 		assertEpsilonEquals(0f, p.getX());
 		assertEpsilonEquals(1f, p.getY());
 		
-		p = this.r.getClosestPointTo(new Point2f(.5f, -3.4f));
+		p = this.r.getClosestPointTo(new Point2fx(.5f, -3.4f));
 		assertEpsilonEquals(.5f, p.getX());
 		assertEpsilonEquals(0f, p.getY());
-		p = this.r.getClosestPointTo(new Point2f(.5f, .5f));
+		p = this.r.getClosestPointTo(new Point2fx(.5f, .5f));
 		assertEpsilonEquals(.5f, p.getX());
 		assertEpsilonEquals(.5f, p.getY());
-		p = this.r.getClosestPointTo(new Point2f(.5f, 5.6f));
+		p = this.r.getClosestPointTo(new Point2fx(.5f, 5.6f));
 		assertEpsilonEquals(.5f, p.getX());
 		assertEpsilonEquals(1f, p.getY());
 
-		p = this.r.getClosestPointTo(new Point2f(5.6f, -3.4f));
+		p = this.r.getClosestPointTo(new Point2fx(5.6f, -3.4f));
 		assertEpsilonEquals(1f, p.getX());
 		assertEpsilonEquals(0f, p.getY());
-		p = this.r.getClosestPointTo(new Point2f(5.6f, .5f));
+		p = this.r.getClosestPointTo(new Point2fx(5.6f, .5f));
 		assertEpsilonEquals(1f, p.getX());
 		assertEpsilonEquals(.5f, p.getY());
-		p = this.r.getClosestPointTo(new Point2f(5.6f, 5.6f));
+		p = this.r.getClosestPointTo(new Point2fx(5.6f, 5.6f));
 		assertEpsilonEquals(1f, p.getX());
 		assertEpsilonEquals(1f, p.getY());
 
-		p = this.r.getClosestPointTo(new Point2f(.01f, .01f));
+		p = this.r.getClosestPointTo(new Point2fx(.01f, .01f));
 		assertEpsilonEquals(.01f, p.getX());
 		assertEpsilonEquals(.01f, p.getY());
 	}
@@ -354,41 +354,41 @@ public class Rectangle2fTest extends AbstractRectangularShape2fTestCase<Rectangl
 	public void getFarthestPointTo() {
 		Point2D p;
 		
-		p = this.r.getFarthestPointTo(new Point2f(0f, 0f));
+		p = this.r.getFarthestPointTo(new Point2fx(0f, 0f));
 		assertEpsilonEquals(1f, p.getX());
 		assertEpsilonEquals(1f, p.getY());
 		
-		p = this.r.getFarthestPointTo(new Point2f(-2.3f, -3.4f));
+		p = this.r.getFarthestPointTo(new Point2fx(-2.3f, -3.4f));
 		assertEpsilonEquals(1f, p.getX());
 		assertEpsilonEquals(1f, p.getY());
-		p = this.r.getFarthestPointTo(new Point2f(-2.3f, .5f));
+		p = this.r.getFarthestPointTo(new Point2fx(-2.3f, .5f));
 		assertEpsilonEquals(1f, p.getX());
 		assertEpsilonEquals(1f, p.getY());
-		p = this.r.getFarthestPointTo(new Point2f(-2.3f, 5.6f));
+		p = this.r.getFarthestPointTo(new Point2fx(-2.3f, 5.6f));
 		assertEpsilonEquals(1f, p.getX());
 		assertEpsilonEquals(0f, p.getY());
 		
-		p = this.r.getFarthestPointTo(new Point2f(.5f, -3.4f));
+		p = this.r.getFarthestPointTo(new Point2fx(.5f, -3.4f));
 		assertEpsilonEquals(1f, p.getX());
 		assertEpsilonEquals(1f, p.getY());
-		p = this.r.getFarthestPointTo(new Point2f(.5f, .5f));
+		p = this.r.getFarthestPointTo(new Point2fx(.5f, .5f));
 		assertEpsilonEquals(1f, p.getX());
 		assertEpsilonEquals(1f, p.getY());
-		p = this.r.getFarthestPointTo(new Point2f(.5f, 5.6f));
+		p = this.r.getFarthestPointTo(new Point2fx(.5f, 5.6f));
 		assertEpsilonEquals(1f, p.getX());
 		assertEpsilonEquals(0f, p.getY());
 
-		p = this.r.getFarthestPointTo(new Point2f(5.6f, -3.4f));
+		p = this.r.getFarthestPointTo(new Point2fx(5.6f, -3.4f));
 		assertEpsilonEquals(0f, p.getX());
 		assertEpsilonEquals(1f, p.getY());
-		p = this.r.getFarthestPointTo(new Point2f(5.6f, .5f));
+		p = this.r.getFarthestPointTo(new Point2fx(5.6f, .5f));
 		assertEpsilonEquals(0f, p.getX());
 		assertEpsilonEquals(1f, p.getY());
-		p = this.r.getFarthestPointTo(new Point2f(5.6f, 5.6f));
+		p = this.r.getFarthestPointTo(new Point2fx(5.6f, 5.6f));
 		assertEpsilonEquals(0f, p.getX());
 		assertEpsilonEquals(0f, p.getY());
 
-		p = this.r.getFarthestPointTo(new Point2f(.01f, .01f));
+		p = this.r.getFarthestPointTo(new Point2fx(.01f, .01f));
 		assertEpsilonEquals(1f, p.getX());
 		assertEpsilonEquals(1f, p.getY());
 	}
@@ -397,19 +397,19 @@ public class Rectangle2fTest extends AbstractRectangularShape2fTestCase<Rectangl
 	 */
 	@Test
 	public void addPoint2D() {
-		this.r.add(new Point2f(2.3f, 3.4f));
+		this.r.add(new Point2fx(2.3f, 3.4f));
 		assertEpsilonEquals(0f, this.r.getMinX());
 		assertEpsilonEquals(0f, this.r.getMinY());
 		assertEpsilonEquals(2.3f, this.r.getMaxX());
 		assertEpsilonEquals(3.4f, this.r.getMaxY());
 
-		this.r.add(new Point2f(-2.3f, -3.4f));
+		this.r.add(new Point2fx(-2.3f, -3.4f));
 		assertEpsilonEquals(-2.3f, this.r.getMinX());
 		assertEpsilonEquals(-3.4f, this.r.getMinY());
 		assertEpsilonEquals(2.3f, this.r.getMaxX());
 		assertEpsilonEquals(3.4f, this.r.getMaxY());
 
-		this.r.add(new Point2f(0f, 0f));
+		this.r.add(new Point2fx(0f, 0f));
 		assertEpsilonEquals(-2.3f, this.r.getMinX());
 		assertEpsilonEquals(-3.4f, this.r.getMinY());
 		assertEpsilonEquals(2.3f, this.r.getMaxX());

@@ -23,6 +23,7 @@ package org.arakhne.afc.math.geometry.d2;
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2D;
+import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** 2D Vector.
@@ -46,7 +47,7 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	 */
 	@Pure
 	static boolean isUnitVector(double x, double y) {
-		return MathUtil.isEpsilonEqual(x * x + y *y, 1);
+		return MathUtil.isEpsilonEqual(x * x + y * y, 1.);
 	}
 
 	/**
@@ -196,108 +197,117 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	}
 	
 	/**
-	 * Sets the value of this tuple to the sum of tuples t1 and t2.
-	 * @param t1 the first tuple
-	 * @param t2 the second tuple
+	 * Sets the value of this tuple to the sum of tuples vector1 and vector2.
+	 *
+	 * @param vector1 the first tuple
+	 * @param vector2 the second tuple
 	 */
-	default void add(Vector2D t1, Vector2D t2) {
-		set(t1.getX() + t2.getX(),
-			t1.getY() + t2.getY());
+	default void add(Vector2D vector1, Vector2D vector2) {
+		set(vector1.getX() + vector2.getX(),
+			vector1.getY() + vector2.getY());
 	}
 
 	/**
-	 * Sets the value of this tuple to the sum of itself and t1.
-	 * @param t1 the other tuple
+	 * Sets the value of this tuple to the sum of itself and the given vector.
+	 *
+	 * @param vector the other tuple
 	 */
-	default void add(Vector2D t1) {
-		set(t1.getX() + getX(),
-			t1.getY() + getY());
-	}
-
-	/**
-	 * Sets the value of this tuple to the scalar multiplication
-	 * of tuple t1 plus tuple t2 (this = s*t1 + t2).
-	 * @param s the scalar value
-	 * @param t1 the tuple to be multipled
-	 * @param t2 the tuple to be added
-	 */
-	default void scaleAdd(int s, Vector2D t1, Vector2D t2) {
-		set(s * t1.getX() + t2.getX(),
-			s * t1.getY() + t2.getY());
+	default void add(Vector2D vector) {
+		set(vector.getX() + getX(),
+			vector.getY() + getY());
 	}
 
 	/**
 	 * Sets the value of this tuple to the scalar multiplication
 	 * of tuple t1 plus tuple t2 (this = s*t1 + t2).
-	 * @param s the scalar value
+	 * @param scale the scalar value
 	 * @param t1 the tuple to be multipled
 	 * @param t2 the tuple to be added
 	 */
-	default void scaleAdd(double s, Vector2D t1, Vector2D t2) {
-		set(s * t1.getX() + t2.getX(),
-			s * t1.getY() + t2.getY());
+	default void scaleAdd(int scale, Vector2D t1, Vector2D t2) {
+		set(scale * t1.getX() + t2.getX(),
+			scale * t1.getY() + t2.getY());
 	}
 
 	/**
 	 * Sets the value of this tuple to the scalar multiplication
-	 * of itself and then adds tuple t1 (this = s*this + t1).
-	 * @param s the scalar value
-	 * @param t1 the tuple to be added
+	 * of the tuple vector1 plus the tuple vector2 (this = s*vector1 + vector2).
+	 *
+	 * @param scale the scalar value
+	 * @param vector1 the tuple to be multipled
+	 * @param vector2 the tuple to be added
 	 */
-	default void scaleAdd(int s, Vector2D t1) {
-		set(s * getX() + t1.getX(),
-			s * getY() + t1.getY());
+	default void scaleAdd(double scale, Vector2D vector1, Vector2D vector2) {
+		set(scale * vector1.getX() + vector2.getX(),
+			scale * vector1.getY() + vector2.getY());
 	}
 
 	/**
 	 * Sets the value of this tuple to the scalar multiplication
-	 * of itself and then adds tuple t1 (this = s*this + t1).
-	 * @param s the scalar value
-	 * @param t1 the tuple to be added
+	 * of itself and then adds tuple vector (this = s*this + vector).
+	 *
+	 * @param scale the scalar value
+	 * @param vector the tuple to be added
 	 */
-	default void scaleAdd(double s, Vector2D t1) {
-		set(s * getX() + t1.getX(),
-			s * getY() + t1.getY());
+	default void scaleAdd(int scale, Vector2D vector) {
+		set(scale * getX() + vector.getX(),
+			scale * getY() + vector.getY());
+	}
+
+	/**
+	 * Sets the value of this tuple to the scalar multiplication
+	 * of itself and then adds tuple vector (this = s*this + vector).
+	 *
+	 * @param scale the scalar value
+	 * @param vector the tuple to be added
+	 */
+	default void scaleAdd(double scale, Vector2D vector) {
+		set(scale * getX() + vector.getX(),
+			scale * getY() + vector.getY());
 	}
 
 	
 	/**
 	 * Sets the value of this tuple to the difference
-	 * of tuples t1 and t2 (this = t1 - t2).
-	 * @param t1 the first tuple
-	 * @param t2 the second tuple
+	 * of tuples vector1 and vector2 (this = vector1 - vector2).
+	 *
+	 * @param vector1 the first tuple
+	 * @param vector2 the second tuple
 	 */
-	default void sub(Vector2D t1, Vector2D t2) {
-		set(t1.getX() - t2.getX(), t1.getY() - t2.getY());
+	default void sub(Vector2D vector1, Vector2D vector2) {
+		set(vector1.getX() - vector2.getX(), vector1.getY() - vector2.getY());
 	}
 
 	/**
 	 * Sets the value of this tuple to the difference
-	 * of tuples t1 and t2 (this = t1 - t2).
-	 * @param t1 the first tuple
-	 * @param t2 the second tuple
+	 * of tuples point1 and point2 (this = point1 - point2).
+	 *
+	 * @param point1 the first tuple
+	 * @param point2 the second tuple
 	 */
-	default void sub(Point2D t1, Point2D t2) {
-		set(t1.getX() - t2.getX(), t1.getY() - t2.getY());
+	default void sub(Point2D point1, Point2D point2) {
+		set(point1.getX() - point2.getX(), point1.getY() - point2.getY());
 	}
 
 	/**
 	 * Sets the value of this tuple to the difference
-	 * of itself and t1 (this = this - t1).
-	 * @param t1 the other tuple
+	 * of itself and vector (this = this - vector).
+	 *
+	 * @param vector the other tuple
 	 */
-	default void sub(Vector2D t1) {
-		set(getX() - t1.getX(), getY() - t1.getY());
+	default void sub(Vector2D vector) {
+		set(getX() - vector.getX(), getY() - vector.getY());
 	}
 
 	/**
-	 * Computes the dot product of the this vector and vector v1.
-	 * @param v1 the other vector
+	 * Computes the dot product of the this vector and the given vector.
+	 *
+	 * @param vector the other vector
 	 * @return the dot product.
 	 */
 	@Pure
-	default double dot(Vector2D v1) {
-		return dotProduct(getX(), getY(), v1.getX(), v1.getY());
+	default double dot(Vector2D vector) {
+		return dotProduct(getX(), getY(), vector.getX(), vector.getY());
 	}
 	
 	/** Compute the the perpendicular product of
@@ -308,27 +318,24 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	 * and <code>a</code> is the angle between <code>X1</code>
 	 * and <code>X2</code>. 
 	 * 
-	 * @param v1
+	 * @param vector the vertor.
 	 * @return the determinant
 	 */
 	@Pure
-	default double perp(Vector2D v1) {
-		return perpProduct(getX(), getY(), v1.getX(), v1.getY());
+	default double perp(Vector2D vector) {
+		return perpProduct(getX(), getY(), vector.getX(), vector.getY());
 	}
 
 	/** Change the coordinates of this vector to make it a perpendicular
 	 * vector to the original coordinates.
 	 */
 	default void perpendicularize() {
-		if (CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded()) {
-			set(getY(), -getX());
-		} else {
-			set(-getY(), getX());
-		}
+		set(-getY(), getX());
 	}
 
 	/**  
 	 * Returns the length of this vector.
+	 *
 	 * @return the length of this vector
 	 */  
 	@Pure
@@ -340,6 +347,7 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 
 	/**  
 	 * Returns the squared length of this vector.
+	 *
 	 * @return the squared length of this vector
 	 */ 
 	@Pure 
@@ -350,12 +358,13 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	}
 
 	/**
-	 * Sets the value of this vector to the normalization of vector v1.
-	 * @param v1 the un-normalized vector
+	 * Sets the value of this vector to the normalization of vector vector.
+	 *
+	 * @param vector the un-normalized vector
 	 */  
-	default void normalize(Vector2D v1) {
-		double x = v1.getX();
-		double y = v1.getY();
+	default void normalize(Vector2D vector) {
+		double x = vector.getX();
+		double y = vector.getY();
 		double sqlength = x * x + y * y;
 		if(sqlength != 0.) {
 			sqlength = Math.sqrt(sqlength);
@@ -367,6 +376,8 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 
 	/**
 	 * Normalizes this vector in place.
+	 * 
+	 * <p>If the length of the vector is zero, x and y are set to zero.
 	 */  
 	default void normalize() {
 		double x = getX();
@@ -375,19 +386,22 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 		if(sqlength != 0.) {
 			sqlength = Math.sqrt(sqlength);
 			set(x / sqlength, y / sqlength);
+		} else {
+			set(0, 0);
 		}
 	}
 
 
 	/**
-	 *   Returns the angle in radians between this vector and the vector
-	 *   parameter; the return value is constrained to the range [0,PI].
-	 *   @param v1    the other vector
-	 *   @return   the angle in radians in the range [0,PI]
+	 * Returns the angle in radians between this vector and the vector
+	 * parameter; the return value is constrained to the range [0,PI].
+	 *
+	 * @param vector the other vector
+	 * @return the angle in radians in the range [0,PI]
 	 */
 	@Pure
-	default double angle(Vector2D v1) {
-		double vDot = dotProduct(getX(), getY(), v1.getX(), v1.getY()) / ( length()*v1.length() );
+	default double angle(Vector2D vector) {
+		double vDot = dotProduct(getX(), getY(), vector.getX(), vector.getY()) / ( length()*vector.length() );
 		if( vDot < -1.) vDot = -1.;
 		if( vDot >  1.) vDot =  1.;
 		return (Math.acos( vDot ));
@@ -395,9 +409,9 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 
 	/** Compute a signed angle between this vector and the given vector.
 	 * <p>
-	 * The signed angle between this vector and {@code v}
+	 * The signed angle between this vector and the given {@code vector}
 	 * is the rotation angle to apply to this vector
-	 * to be colinear to {@code v} and pointing the
+	 * to be colinear to the given {@code vector} and pointing the
 	 * same demi-plane. It means that the angle replied
 	 * by this function is be negative if the rotation
 	 * to apply is clockwise, and positive if
@@ -406,28 +420,87 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	 * The value replied by {@link #angle(Vector2D)}
 	 * is the absolute value of the vlaue replied by this
 	 * function. 
-	 * 
-	 * @param v is the vector to reach.
+	 *
+	 * @param vector is the vector to reach.
 	 * @return the rotation angle to turn this vector to reach
 	 * {@code v}.
 	 */
 	@Pure
-	default double signedAngle(Vector2D v) {
-		return signedAngle(getX(), getY(), v.getX(), v.getY());
+	default double signedAngle(Vector2D vector) {
+		return signedAngle(getX(), getY(), vector.getX(), vector.getY());
 	}
 
 	/** Turn this vector about the given rotation angle.
-	 * 
+	 *
+	 * <p>The rotation is done according to the trigonometric coordinate.
+	 * A positive rotation angle corresponds to a left or right rotation
+	 * according to the current {@link CoordinateSystem2D}.
+	 *
 	 * @param angle is the rotation angle in radians.
+	 * @deprecated {@link #turn(double)}
 	 */
+	@Deprecated
 	default void turnVector(double angle) {
-		double sin = Math.sin(angle);
-		double cos = Math.cos(angle);
-		double x =  cos * getX() + sin * getY(); 
-		double y = -sin * getX() + cos * getY();
-		set(x,y);
+		turn(angle);
 	}
 	
+	/** Turn this vector about the given rotation angle.
+	 *
+	 * <p>The rotation is done according to the trigonometric coordinate.
+	 * A positive rotation angle corresponds to a left or right rotation
+	 * according to the current {@link CoordinateSystem2D}.
+	 *
+	 * @param angle is the rotation angle in radians.
+	 * @see #turnLeft(double)
+	 * @see #turnRight(double)
+	 */
+	default void turn(double angle) {
+		double sin = Math.sin(angle);
+		double cos = Math.cos(angle);
+		double x =  cos * getX() - sin * getY(); 
+		double y =  sin * getX() + cos * getY();
+		set(x,y);
+	}
+
+	/** Turn this vector on the left when the given rotation angle is positive.
+	 *
+	 * <p>A positive rotation angle corresponds to a left or right rotation
+	 * according to the current {@link CoordinateSystem2D}.
+	 *
+	 * @param angle is the rotation angle in radians.
+	 * @see CoordinateSystem2D
+	 * @see #turn(double)
+	 * @see #turnRight(double)
+	 */
+	default void turnLeft(double angle) {
+		double sin = Math.sin(angle);
+		double cos = Math.cos(angle);
+		double x, y;
+		if (CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded()) {
+			x =  cos * getX() - sin * getY(); 
+			y =  sin * getX() + cos * getY();
+		} else {
+			x =  cos * getX() + sin * getY(); 
+			y = -sin * getX() + cos * getY();
+		}
+		set(x,y);
+	}
+
+	/** Turn this vector on the right when the given rotation angle is positive.
+	 *
+	 * <p>A positive rotation angle corresponds to a left or right rotation
+	 * according to the current {@link CoordinateSystem2D}.
+	 *
+	 * @param angle is the rotation angle in radians.
+	 * @see CoordinateSystem2D
+	 * @see #turn(double)
+	 * @see #turnLeft(double)
+	 */
+	@Inline(value = "turnLeft(-($1))")
+	default void turnRight(double angle) {
+		turnLeft(-angle);
+	}
+
 	/** Replies the orientation angle on a trigonometric circle
 	 * that is corresponding to the given direction of this vector.
 	 * 
@@ -476,93 +549,5 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	 */
 	@Pure
 	Vector2D toUnmodifiable();
-
-	/** Unmodifiable 2D Vector.
-	 * 
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 * @since 13.0
-	 */
-	public interface UnmodifiableVector2D extends UnmodifiableTuple2D<Vector2D>, Vector2D {
-
-		@Override
-		default void add(Vector2D t1, Vector2D t2) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		default void add(Vector2D t1) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		default void scaleAdd(int s, Vector2D t1, Vector2D t2) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		default void scaleAdd(double s, Vector2D t1, Vector2D t2) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		default void scaleAdd(int s, Vector2D t1) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		default void scaleAdd(double s, Vector2D t1) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		default void sub(Vector2D t1, Vector2D t2) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		default void sub(Point2D t1, Point2D t2) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		default void sub(Vector2D t1) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		default void perpendicularize() {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		default void normalize(Vector2D v1) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		default void normalize() {
-			throw new UnsupportedOperationException();
-		}
-
-
-		@Override
-		default void turnVector(double angle) {
-			throw new UnsupportedOperationException();
-		}
-		
-		@Override
-		default void setLength(double newLength) {
-			throw new UnsupportedOperationException();
-		}
-		
-		@Override
-		default Vector2D toUnmodifiable() {
-			return this;
-		}
-
-	}
 	
 }

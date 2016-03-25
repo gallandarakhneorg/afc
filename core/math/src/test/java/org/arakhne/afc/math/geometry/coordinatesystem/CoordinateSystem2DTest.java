@@ -17,15 +17,14 @@
  */
 package org.arakhne.afc.math.geometry.coordinatesystem;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.fail;
 
-import java.util.Random;
-
 import org.arakhne.afc.math.AbstractMathTestCase;
-import org.arakhne.afc.math.geometry.d2.continuous.Point2f;
-import org.arakhne.afc.math.geometry.d2.continuous.Vector2f;
+import org.arakhne.afc.math.geometry.d2.Point2D;
+import org.arakhne.afc.math.geometry.d2.Vector2D;
+import org.arakhne.afc.math.geometry.d2.fp.Point2fp;
+import org.arakhne.afc.math.geometry.d2.fp.Vector2fp;
 import org.junit.Test;
 
 /**
@@ -83,16 +82,16 @@ public class CoordinateSystem2DTest extends AbstractMathTestCase {
 	 */
 	@Test
 	public void toDefaultPoint2f() {
-		Point2f pt, pt2, ptInv;
+		Point2D pt, pt2, ptInv;
 		
 		pt = randomPoint2f();
-		ptInv = new Point2f(pt.getX(), -pt.getY());
+		ptInv = new Point2fp(pt.getX(), -pt.getY());
 		
-		pt2 = new Point2f(pt);
+		pt2 = new Point2fp(pt);
 		CoordinateSystem2D.XY_RIGHT_HAND.toDefault(pt2);
 		assertEpsilonEquals(pt, pt2);
 		
-		pt2 = new Point2f(pt);
+		pt2 = new Point2fp(pt);
 		CoordinateSystem2D.XY_LEFT_HAND.toDefault(pt2);
 		assertEpsilonEquals(ptInv, pt2);
 	}
@@ -101,16 +100,16 @@ public class CoordinateSystem2DTest extends AbstractMathTestCase {
 	 */
 	@Test
 	public void fromDefaultPoint2f() {
-		Point2f pt, pt2, ptInv;
+		Point2D pt, pt2, ptInv;
 		
 		pt = randomPoint2f();
-		ptInv = new Point2f(pt.getX(), -pt.getY());
+		ptInv = new Point2fp(pt.getX(), -pt.getY());
 		
-		pt2 = new Point2f(pt);
+		pt2 = new Point2fp(pt);
 		CoordinateSystem2D.XY_RIGHT_HAND.fromDefault(pt2);
 		assertEpsilonEquals(pt, pt2);
 		
-		pt2 = new Point2f(pt);
+		pt2 = new Point2fp(pt);
 		CoordinateSystem2D.XY_LEFT_HAND.fromDefault(pt2);
 		assertEpsilonEquals(ptInv, pt2);
 	}
@@ -119,16 +118,16 @@ public class CoordinateSystem2DTest extends AbstractMathTestCase {
 	 */
 	@Test
 	public void toDefaultVector2f() {
-		Vector2f vt, vt2, vtInv;
+		Vector2D vt, vt2, vtInv;
 		
 		vt = randomVector2f();
-		vtInv = new Vector2f(vt.getX(), -vt.getY());
+		vtInv = new Vector2fp(vt.getX(), -vt.getY());
 		
-		vt2 = new Vector2f(vt);
+		vt2 = new Vector2fp(vt);
 		CoordinateSystem2D.XY_RIGHT_HAND.fromDefault(vt2);
 		assertEpsilonEquals(vt, vt2);
 		
-		vt2 = new Vector2f(vt);
+		vt2 = new Vector2fp(vt);
 		CoordinateSystem2D.XY_LEFT_HAND.fromDefault(vt2);
 		assertEpsilonEquals(vtInv, vt2);
 	}
@@ -137,16 +136,16 @@ public class CoordinateSystem2DTest extends AbstractMathTestCase {
 	 */
 	@Test
 	public void fromDefaultVector2f() {
-		Vector2f vt, vt2, vtInv;
+		Vector2D vt, vt2, vtInv;
 		
 		vt = randomVector2f();
-		vtInv = new Vector2f(vt.getX(), -vt.getY());
+		vtInv = new Vector2fp(vt.getX(), -vt.getY());
 		
-		vt2 = new Vector2f(vt);
+		vt2 = new Vector2fp(vt);
 		CoordinateSystem2D.XY_RIGHT_HAND.fromDefault(vt2);
 		assertEpsilonEquals(vt, vt2);
 		
-		vt2 = new Vector2f(vt);
+		vt2 = new Vector2fp(vt);
 		CoordinateSystem2D.XY_LEFT_HAND.fromDefault(vt2);
 		assertEpsilonEquals(vtInv, vt2);
 	}
@@ -185,24 +184,24 @@ public class CoordinateSystem2DTest extends AbstractMathTestCase {
 	 */
 	@Test
 	public void toSystemPoint2fCoordinateSystem2D() {
-		Point2f pt, pt2, ptInv;
+		Point2D pt, pt2, ptInv;
 		
 		pt = randomPoint2f();
-		ptInv = new Point2f(pt.getX(), -pt.getY());
+		ptInv = new Point2fp(pt.getX(), -pt.getY());
 		
-		pt2 = new Point2f(pt);
+		pt2 = new Point2fp(pt);
 		CoordinateSystem2D.XY_RIGHT_HAND.toSystem(pt2, CoordinateSystem2D.XY_RIGHT_HAND);
 		assertEpsilonEquals(pt, pt2);
 		
-		pt2 = new Point2f(pt);
+		pt2 = new Point2fp(pt);
 		CoordinateSystem2D.XY_RIGHT_HAND.toSystem(pt2, CoordinateSystem2D.XY_LEFT_HAND);
 		assertEpsilonEquals(ptInv, pt2);
 
-		pt2 = new Point2f(pt);
+		pt2 = new Point2fp(pt);
 		CoordinateSystem2D.XY_LEFT_HAND.toSystem(pt2, CoordinateSystem2D.XY_LEFT_HAND);
 		assertEpsilonEquals(pt, pt2);
 		
-		pt2 = new Point2f(pt);
+		pt2 = new Point2fp(pt);
 		CoordinateSystem2D.XY_LEFT_HAND.toSystem(pt2, CoordinateSystem2D.XY_RIGHT_HAND);
 		assertEpsilonEquals(ptInv, pt2);
 	}
@@ -211,24 +210,24 @@ public class CoordinateSystem2DTest extends AbstractMathTestCase {
 	 */
 	@Test
 	public void toSystemVector2fCoordinateSystem2D() {
-		Vector2f vt, vt2, vtInv;
+		Vector2D vt, vt2, vtInv;
 		
 		vt = randomVector2f();
-		vtInv = new Vector2f(vt.getX(), -vt.getY());
+		vtInv = new Vector2fp(vt.getX(), -vt.getY());
 		
-		vt2 = new Vector2f(vt);
+		vt2 = new Vector2fp(vt);
 		CoordinateSystem2D.XY_RIGHT_HAND.toSystem(vt2, CoordinateSystem2D.XY_RIGHT_HAND);
 		assertEpsilonEquals(vt, vt2);
 		
-		vt2 = new Vector2f(vt);
+		vt2 = new Vector2fp(vt);
 		CoordinateSystem2D.XY_RIGHT_HAND.toSystem(vt2, CoordinateSystem2D.XY_LEFT_HAND);
 		assertEpsilonEquals(vtInv, vt2);
 
-		vt2 = new Vector2f(vt);
+		vt2 = new Vector2fp(vt);
 		CoordinateSystem2D.XY_LEFT_HAND.toSystem(vt2, CoordinateSystem2D.XY_LEFT_HAND);
 		assertEpsilonEquals(vt, vt2);
 		
-		vt2 = new Vector2f(vt);
+		vt2 = new Vector2fp(vt);
 		CoordinateSystem2D.XY_LEFT_HAND.toSystem(vt2, CoordinateSystem2D.XY_RIGHT_HAND);
 		assertEpsilonEquals(vtInv, vt2);
 	}

@@ -217,18 +217,6 @@ public class Path2i
 
 	@Pure
 	@Override
-	public boolean equals(Object obj) {
-		try {
-			Path2ai<?, ?, ?, ?, ?> path = (Path2ai<?, ?, ?, ?, ?>) obj;
-			return equals(path.getPathIterator());
-		} catch (Throwable exception) {
-			//
-		}
-		return false;
-	}
-	
-	@Pure
-	@Override
 	public int hashCode() {
 		int bits = 1;
 		bits = 31 * bits + this.numCoords;

@@ -45,8 +45,8 @@ public class Vector2fTest extends AbstractMathTestCase {
 
 	@Test
 	public void testClone() {
-		Vector2f r = new Vector2f(this.random.nextDouble(),this.random.nextDouble());
-		Vector2f b = r.clone();
+		Vector2fx r = new Vector2fx(this.random.nextDouble(),this.random.nextDouble());
+		Vector2fx b = r.clone();
 		
 		assertNotSame(b, r);
 		assertEpsilonEquals(r.getX(), b.getX());
@@ -61,10 +61,10 @@ public class Vector2fTest extends AbstractMathTestCase {
 
 	@Test
 	public void angleVector2D() {
-		Vector2f vector = new Vector2f(1,2);
-		Vector2f vector2 = new Vector2f(-2,1);
-		Vector2f vector3 = new Vector2f(1,1);
-		Vector2f vector4 = new Vector2f(1,0);
+		Vector2fx vector = new Vector2fx(1,2);
+		Vector2fx vector2 = new Vector2fx(-2,1);
+		Vector2fx vector3 = new Vector2fx(1,1);
+		Vector2fx vector4 = new Vector2fx(1,0);
 		
 		assertEpsilonEquals(PI/2f,vector.angle(vector2));
 		assertEpsilonEquals(PI/4f,vector4.angle(vector3));
@@ -75,9 +75,9 @@ public class Vector2fTest extends AbstractMathTestCase {
 
 	@Test
 	public void dotVector2D() {
-		Vector2f vector = new Vector2f(1,2);
-		Vector2f vector2 = new Vector2f(3,4);
-		Vector2f vector3 = new Vector2f(1,-2);
+		Vector2fx vector = new Vector2fx(1,2);
+		Vector2fx vector2 = new Vector2fx(3,4);
+		Vector2fx vector3 = new Vector2fx(1,-2);
 		
 		assertEpsilonEquals(5,vector.dot(vector));
 		assertEpsilonEquals(11,vector.dot(vector2));
@@ -86,9 +86,9 @@ public class Vector2fTest extends AbstractMathTestCase {
 
 	@Test
 	public void perpVector2D() {
-		Vector2f vector = new Vector2f(1,2);
-		Vector2f vector2 = new Vector2f(3,4);
-		Vector2f vector3 = new Vector2f(1,-2);
+		Vector2fx vector = new Vector2fx(1,2);
+		Vector2fx vector2 = new Vector2fx(3,4);
+		Vector2fx vector3 = new Vector2fx(1,-2);
 		
 		assertEpsilonEquals(0,vector.perp(vector));
 		assertEpsilonEquals(-2,vector.perp(vector2));
@@ -97,45 +97,45 @@ public class Vector2fTest extends AbstractMathTestCase {
 
 	@Test
 	public void mulMatrix2f() {
-		Vector2f vector = new Vector2f(0,0);
-		Vector2f vector2 = new Vector2f(1,1);
-		Vector2f vector3 = new Vector2f(1,-1);
+		Vector2fx vector = new Vector2fx(0,0);
+		Vector2fx vector2 = new Vector2fx(1,1);
+		Vector2fx vector3 = new Vector2fx(1,-1);
 		
 		Matrix2f matrix = new Matrix2f();
 		Matrix2f matrix2 = new Matrix2f(0.5,3,2,0);
 		
-		assertTrue(vector2.mul(matrix).equals(new Vector2f(0,0)));
-		assertTrue(vector.mul(matrix2).equals(new Vector2f(0,0)));
-		assertTrue(vector2.mul(matrix2).equals(new Vector2f(3.5,2)));
-		assertTrue(vector3.mul(matrix2).equals(new Vector2f(-2.5,2)));
+		assertTrue(vector2.mul(matrix).equalsToPathIterator(new Vector2fx(0,0)));
+		assertTrue(vector.mul(matrix2).equalsToPathIterator(new Vector2fx(0,0)));
+		assertTrue(vector2.mul(matrix2).equalsToPathIterator(new Vector2fx(3.5,2)));
+		assertTrue(vector3.mul(matrix2).equalsToPathIterator(new Vector2fx(-2.5,2)));
 		
 		matrix.setIdentity();
-		assertTrue(vector2.mul(matrix).equals(new Vector2f(1,1)));
+		assertTrue(vector2.mul(matrix).equalsToPathIterator(new Vector2fx(1,1)));
 		
 	}
 
 	@Test
 	public void perpendicularize() {
-		Vector2f vector = new Vector2f(1,2);
-		Vector2f vector2 = new Vector2f(0,0);
-		Vector2f vector3 = new Vector2f(1,1);
+		Vector2fx vector = new Vector2fx(1,2);
+		Vector2fx vector2 = new Vector2fx(0,0);
+		Vector2fx vector3 = new Vector2fx(1,1);
 		
 		vector.perpendicularize();
 		vector2.perpendicularize();
 		vector3.perpendicularize();
 		
-		assertTrue(vector.equals(new Vector2f(-2,1)));
-		assertFalse(vector.equals(new Vector2f(2,-1)));
-		assertTrue(vector2.equals(new Vector2f(0,0)));
-		assertTrue(vector3.equals(new Vector2f(-1,1)));
+		assertTrue(vector.equalsToPathIterator(new Vector2fx(-2,1)));
+		assertFalse(vector.equalsToPathIterator(new Vector2fx(2,-1)));
+		assertTrue(vector2.equalsToPathIterator(new Vector2fx(0,0)));
+		assertTrue(vector3.equalsToPathIterator(new Vector2fx(-1,1)));
 		
 	}
 
 	@Test
 	public void length() {
-		Vector2f vector = new Vector2f(1,2);
-		Vector2f vector2 = new Vector2f(0,0);
-		Vector2f vector3 = new Vector2f(-1,1);
+		Vector2fx vector = new Vector2fx(1,2);
+		Vector2fx vector2 = new Vector2fx(0,0);
+		Vector2fx vector3 = new Vector2fx(-1,1);
 		
 		assertEpsilonEquals(Math.sqrt(5),vector.length());
 		assertEpsilonEquals(0,vector2.length());
@@ -144,9 +144,9 @@ public class Vector2fTest extends AbstractMathTestCase {
 
 	@Test
 	public void lengthSquared() {
-		Vector2f vector = new Vector2f(1,2);
-		Vector2f vector2 = new Vector2f(0,0);
-		Vector2f vector3 = new Vector2f(Math.sqrt(2)/2,Math.sqrt(2)/2);
+		Vector2fx vector = new Vector2fx(1,2);
+		Vector2fx vector2 = new Vector2fx(0,0);
+		Vector2fx vector3 = new Vector2fx(Math.sqrt(2)/2,Math.sqrt(2)/2);
 		
 		assertEpsilonEquals(5,vector.lengthSquared());
 		assertEpsilonEquals(0,vector2.lengthSquared());
@@ -155,38 +155,38 @@ public class Vector2fTest extends AbstractMathTestCase {
 
 	@Test (expected = ArithmeticException.class)
 	public void normalizeVector2D() {
-		Vector2f vector = new Vector2f(1,2);
-		Vector2f vector2 = new Vector2f(0,0);
-		Vector2f vector3 = new Vector2f(-1,1);
+		Vector2fx vector = new Vector2fx(1,2);
+		Vector2fx vector2 = new Vector2fx(0,0);
+		Vector2fx vector3 = new Vector2fx(-1,1);
 		
 		vector.normalize(vector);
-		assertTrue(vector.equals(new Vector2f((int)(1/Math.sqrt(5)),(int)(2/Math.sqrt(5)))));
+		assertTrue(vector.equalsToPathIterator(new Vector2fx((int)(1/Math.sqrt(5)),(int)(2/Math.sqrt(5)))));
 		
 		vector.normalize(vector2);
 		
 		
 		vector.normalize(vector3);
-		assertTrue(vector.equals(new Vector2f((int)(-1/Math.sqrt(2)),(int)(1/Math.sqrt(2)))));	
+		assertTrue(vector.equalsToPathIterator(new Vector2fx((int)(-1/Math.sqrt(2)),(int)(1/Math.sqrt(2)))));	
 	}
 
 	@Test (expected = ArithmeticException.class)
 	public void normalize() {
-		Vector2f vector = new Vector2f(1,2);
-		Vector2f vector2 = new Vector2f(0,0);
-		Vector2f vector3 = new Vector2f(-1,1);
+		Vector2fx vector = new Vector2fx(1,2);
+		Vector2fx vector2 = new Vector2fx(0,0);
+		Vector2fx vector3 = new Vector2fx(-1,1);
 		
 		vector.normalize();
 		vector2.normalize();
 		vector3.normalize();
 		
-		assertTrue(vector.equals(new Vector2f(1/Math.sqrt(5),2/Math.sqrt(5))));
-		assertTrue(vector3.equals(new Vector2f(-1/Math.sqrt(2),1/Math.sqrt(2))));
+		assertTrue(vector.equalsToPathIterator(new Vector2fx(1/Math.sqrt(5),2/Math.sqrt(5))));
+		assertTrue(vector3.equalsToPathIterator(new Vector2fx(-1/Math.sqrt(2),1/Math.sqrt(2))));
 	}
 
 	@Test
 	public void signedAngleVector2D() {
-		Vector2f v1 = new Vector2f(this.random.nextDouble(), this.random.nextDouble());
-		Vector2f v2 = new Vector2f(this.random.nextDouble(), this.random.nextDouble());
+		Vector2fx v1 = new Vector2fx(this.random.nextDouble(), this.random.nextDouble());
+		Vector2fx v2 = new Vector2fx(this.random.nextDouble(), this.random.nextDouble());
 
 		assertEpsilonEquals(
 				0.f,
@@ -216,8 +216,8 @@ public class Vector2fTest extends AbstractMathTestCase {
 	@Test
 	
 	public void turnVectorDouble() {
-		Vector2f vector = new Vector2f(this.random.nextDouble(), this.random.nextDouble());
-		Vector2f vector2 = vector.clone();;
+		Vector2fx vector = new Vector2fx(this.random.nextDouble(), this.random.nextDouble());
+		Vector2fx vector2 = vector.clone();;
 		
 		double angle = this.random.nextDouble();
 		vector.turnVector(angle);
@@ -227,8 +227,8 @@ public class Vector2fTest extends AbstractMathTestCase {
 
 	@Test
 	public void toOrientationVector() {
-		Vector2f vector = new Vector2f(this.random.nextDouble(), this.random.nextDouble());
-		Vector2f base1 = new Vector2f(1,0);
+		Vector2fx vector = new Vector2fx(this.random.nextDouble(), this.random.nextDouble());
+		Vector2fx base1 = new Vector2fx(1,0);
 		double angle = this.random.nextDouble();
 		double length = vector.length();
 		
@@ -241,8 +241,8 @@ public class Vector2fTest extends AbstractMathTestCase {
 	
 	@Test
 	public void getOrientationAngle() {
-		Vector2f vector = new Vector2f();
-		Vector2f base1 = new Vector2f(1,0);
+		Vector2fx vector = new Vector2fx();
+		Vector2fx base1 = new Vector2fx(1,0);
 		double angle = this.random.nextDouble();
 		double angle2;
 		
@@ -256,151 +256,151 @@ public class Vector2fTest extends AbstractMathTestCase {
 
 	@Test
 	public void addVector2DVector2D() {
-		Vector2f vector = new Vector2f(0,0);
-		Vector2f vector2 = new Vector2f(-1,0);
-		Vector2f vector3 = new Vector2f(1.2,1.2);
-		Vector2f vector4 = new Vector2f(2.0,1.5);
-		Vector2f vector5 = new Vector2f(0.0,0.0);
+		Vector2fx vector = new Vector2fx(0,0);
+		Vector2fx vector2 = new Vector2fx(-1,0);
+		Vector2fx vector3 = new Vector2fx(1.2,1.2);
+		Vector2fx vector4 = new Vector2fx(2.0,1.5);
+		Vector2fx vector5 = new Vector2fx(0.0,0.0);
 		
 		vector5.add(vector3,vector);
-		assertTrue(vector5.equals(new Vector2f(1.2,1.2)));
+		assertTrue(vector5.equalsToPathIterator(new Vector2fx(1.2,1.2)));
 		
 		vector5.add(vector4,vector2);
-		assertTrue(vector5.equals(new Vector2f(1.0,1.5))); 
+		assertTrue(vector5.equalsToPathIterator(new Vector2fx(1.0,1.5))); 
 	}
 
 	@Test
 	public void addVector2D() {
-		Vector2f vector = new Vector2f(0,0);
-		Vector2f vector2 = new Vector2f(-1,0);
-		Vector2f vector3 = new Vector2f(1.2,1.2);
-		Vector2f vector4 = new Vector2f(2.0,1.5);
+		Vector2fx vector = new Vector2fx(0,0);
+		Vector2fx vector2 = new Vector2fx(-1,0);
+		Vector2fx vector3 = new Vector2fx(1.2,1.2);
+		Vector2fx vector4 = new Vector2fx(2.0,1.5);
 		
 		vector.add(vector3);
-		assertTrue(vector.equals(new Vector2f(1.2,1.2)));
+		assertTrue(vector.equalsToPathIterator(new Vector2fx(1.2,1.2)));
 		
 		vector2.add(vector4);
-		assertTrue(vector2.equals(new Vector2f(1.0,1.5)));
+		assertTrue(vector2.equalsToPathIterator(new Vector2fx(1.0,1.5)));
 	}
 
 	@Test
 	public void scaleAddIntVector2DVector2D() {
-		Vector2f vector = new Vector2f(-1,0);
-		Vector2f vector2 = new Vector2f(1.0,1.2);
-		Vector2f vector3 = new Vector2f(0.0,0.0);
+		Vector2fx vector = new Vector2fx(-1,0);
+		Vector2fx vector2 = new Vector2fx(1.0,1.2);
+		Vector2fx vector3 = new Vector2fx(0.0,0.0);
 		
 		vector3.scaleAdd(0,vector2,vector);
-		assertTrue(vector3.equals(new Vector2f(-1,0)));
+		assertTrue(vector3.equalsToPathIterator(new Vector2fx(-1,0)));
 		
 		vector3.scaleAdd(1,vector2,vector);
-		assertTrue(vector3.equals(new Vector2f(0.0,1.2)));
+		assertTrue(vector3.equalsToPathIterator(new Vector2fx(0.0,1.2)));
 		
 		vector3.scaleAdd(-1,vector2,vector);
-		assertTrue(vector3.equals(new Vector2f(-2.0,-1.2)));
+		assertTrue(vector3.equalsToPathIterator(new Vector2fx(-2.0,-1.2)));
 		
 		vector3.scaleAdd(10,vector2,vector);
-		assertTrue(vector3.equals(new Vector2f(9,12)));
+		assertTrue(vector3.equalsToPathIterator(new Vector2fx(9,12)));
 	}
 
 	@Test
 	public void scaleAddDoubleVector2DVector2D() {
-		Vector2f point = new Vector2f(1,0);
-		Vector2f vector = new Vector2f(-1,1);
-		Vector2f newPoint = new Vector2f(0.0,0.0);
+		Vector2fx point = new Vector2fx(1,0);
+		Vector2fx vector = new Vector2fx(-1,1);
+		Vector2fx newPoint = new Vector2fx(0.0,0.0);
 		
 		newPoint.scaleAdd(0.0,vector,point);
-		assertTrue(newPoint.equals(new Vector2f(1,0)));
+		assertTrue(newPoint.equalsToPathIterator(new Vector2fx(1,0)));
 		
 		newPoint.scaleAdd(1.5,vector,point);
-		assertTrue(newPoint.equals(new Vector2f(-0.5,1.5)));
+		assertTrue(newPoint.equalsToPathIterator(new Vector2fx(-0.5,1.5)));
 		
 		newPoint.scaleAdd(-1.5,vector,point);
-		assertTrue(newPoint.equals(new Vector2f(2.5,-1.5)));
+		assertTrue(newPoint.equalsToPathIterator(new Vector2fx(2.5,-1.5)));
 		
 		newPoint.scaleAdd(0.1,vector,point);
-		assertTrue(newPoint.equals(new Vector2f(0.9,0.1)));
+		assertTrue(newPoint.equalsToPathIterator(new Vector2fx(0.9,0.1)));
 	}
 
 	@Test
 	public void scaleAddIntVector2D() {
-		Vector2f vector = new Vector2f(1,0);
-		Vector2f newPoint = new Vector2f(0,0);
+		Vector2fx vector = new Vector2fx(1,0);
+		Vector2fx newPoint = new Vector2fx(0,0);
 		
 		newPoint.scaleAdd(0,vector);
-		assertTrue(newPoint.equals(new Vector2f(1,0)));
+		assertTrue(newPoint.equalsToPathIterator(new Vector2fx(1,0)));
 		
 		newPoint.scaleAdd(1,vector);
-		assertTrue(newPoint.equals(new Vector2f(2,0)));
+		assertTrue(newPoint.equalsToPathIterator(new Vector2fx(2,0)));
 		
 		newPoint.scaleAdd(-10,vector);
-		assertTrue(newPoint.equals(new Vector2f(-19,0)));
+		assertTrue(newPoint.equalsToPathIterator(new Vector2fx(-19,0)));
 	}
 
 	@Test
 	public void scaleAddDoubleVector2D() {
-		Vector2f vector = new Vector2f(1,0);
-		Vector2f newPoint = new Vector2f(0.0,0.0);
+		Vector2fx vector = new Vector2fx(1,0);
+		Vector2fx newPoint = new Vector2fx(0.0,0.0);
 		
 		newPoint.scaleAdd(0.5,vector);
-		assertTrue(newPoint.equals(new Vector2f(1,0)));
+		assertTrue(newPoint.equalsToPathIterator(new Vector2fx(1,0)));
 		
 		newPoint.scaleAdd(1.2,vector);
-		assertTrue(newPoint.equals(new Vector2f(2.2,0.0)));
+		assertTrue(newPoint.equalsToPathIterator(new Vector2fx(2.2,0.0)));
 		
 		newPoint.scaleAdd(-10,vector);
-		assertTrue(newPoint.equals(new Vector2f(-21,0)));
+		assertTrue(newPoint.equalsToPathIterator(new Vector2fx(-21,0)));
 	}
 
 	@Test
 	public void subVector2DVector2D() {
-		Vector2f point = new Vector2f(0,0);
-		Vector2f point2 = new Vector2f(1,0);
-		Vector2f vector = new Vector2f(-1.2,-1.2);
-		Vector2f vector2 = new Vector2f(2.0,1.5);
-		Vector2f newPoint = new Vector2f(0.0,0.0);
+		Vector2fx point = new Vector2fx(0,0);
+		Vector2fx point2 = new Vector2fx(1,0);
+		Vector2fx vector = new Vector2fx(-1.2,-1.2);
+		Vector2fx vector2 = new Vector2fx(2.0,1.5);
+		Vector2fx newPoint = new Vector2fx(0.0,0.0);
 		
 		newPoint.sub(point,vector);
-		assertTrue(newPoint.equals(new Vector2f(1.2,1.2)));
+		assertTrue(newPoint.equalsToPathIterator(new Vector2fx(1.2,1.2)));
 		
 		newPoint.sub(point2,vector2);
-		assertTrue(newPoint.equals(new Vector2f(-1.0,-1.5))); 
+		assertTrue(newPoint.equalsToPathIterator(new Vector2fx(-1.0,-1.5))); 
 	}
 
 	@Test
 	public void subPoint2DPoint2D() {
-		Point2f point = new Point2f(0,0);
-		Point2f point2 = new Point2f(1,0);
-		Point2f vector = new Point2f(-1.2,-1.2);
-		Point2f vector2 = new Point2f(2.0,1.5);
-		Vector2f newPoint = new Vector2f(0.0,0.0);
+		Point2fx point = new Point2fx(0,0);
+		Point2fx point2 = new Point2fx(1,0);
+		Point2fx vector = new Point2fx(-1.2,-1.2);
+		Point2fx vector2 = new Point2fx(2.0,1.5);
+		Vector2fx newPoint = new Vector2fx(0.0,0.0);
 		
 		newPoint.sub(point,vector);
-		assertTrue(newPoint.equals(new Vector2f(1.2,1.2)));
+		assertTrue(newPoint.equalsToPathIterator(new Vector2fx(1.2,1.2)));
 		
 		newPoint.sub(point2,vector2);
-		assertTrue(newPoint.equals(new Vector2f(-1.0,-1.5))); 
+		assertTrue(newPoint.equalsToPathIterator(new Vector2fx(-1.0,-1.5))); 
 	}
 	
 	@Test
 	public void subVector2D() {
-		Vector2f point = new Vector2f(0,0);
-		Vector2f point2 = new Vector2f(-1,0);
-		Vector2f vector = new Vector2f(-1.2,-1.2);
-		Vector2f vector2 = new Vector2f(-2.0,-1.5);
-		Vector2f newPoint = new Vector2f(0.0,0.0);
+		Vector2fx point = new Vector2fx(0,0);
+		Vector2fx point2 = new Vector2fx(-1,0);
+		Vector2fx vector = new Vector2fx(-1.2,-1.2);
+		Vector2fx vector2 = new Vector2fx(-2.0,-1.5);
+		Vector2fx newPoint = new Vector2fx(0.0,0.0);
 		
 		point.sub(vector);
-		assertTrue(point.equals(new Vector2f(1.2,1.2)));
+		assertTrue(point.equalsToPathIterator(new Vector2fx(1.2,1.2)));
 		
 		point2.sub(vector2);
-		assertTrue(point2.equals(new Vector2f(1.0,1.5)));
+		assertTrue(point2.equalsToPathIterator(new Vector2fx(1.0,1.5)));
 	}
 
 	@Test
 	public void setLength() {
-		Vector2f vector = new Vector2f(this.random.nextDouble(), this.random.nextDouble());
-		Vector2f vector2 = new Vector2f(0,0);
-		Vector2f oldVector = vector.clone();
+		Vector2fx vector = new Vector2fx(this.random.nextDouble(), this.random.nextDouble());
+		Vector2fx vector2 = new Vector2fx(0,0);
+		Vector2fx oldVector = vector.clone();
 		
 		double newLength = this.random.nextDouble();
 		
@@ -409,22 +409,22 @@ public class Vector2fTest extends AbstractMathTestCase {
 		
 		assertEpsilonEquals(vector.angle(oldVector), 0);
 		assertEpsilonEquals(vector.length()*oldVector.length()/newLength,oldVector.length());
-		assertTrue(vector2.equals(new Vector2f(newLength,0)));
+		assertTrue(vector2.equalsToPathIterator(new Vector2fx(newLength,0)));
 	}
 
 	@Test
 	public void isUnitVector() {
 		// TODO still remain problem here
-		Vector2f vector = new Vector2f(7.15161,6.7545);
-		Vector2f vector2 = new Vector2f(1,1);
+		Vector2fx vector = new Vector2fx(7.15161,6.7545);
+		Vector2fx vector2 = new Vector2fx(1,1);
 		
 		vector.normalize();
 		vector2.setLength(1.);
 		
 		assertTrue(vector.isUnitVector());
 		assertTrue(vector2.isUnitVector());
-		assertTrue((new Vector2f(Math.sqrt(2)/2,Math.sqrt(2)/2)).isUnitVector());
-		assertTrue((new Vector2f(1,0)).isUnitVector()); 
+		assertTrue((new Vector2fx(Math.sqrt(2)/2,Math.sqrt(2)/2)).isUnitVector());
+		assertTrue((new Vector2fx(1,0)).isUnitVector()); 
 		
 	}
 
@@ -437,15 +437,15 @@ public class Vector2fTest extends AbstractMathTestCase {
 		double x2 = this.random.nextDouble();
 		double y2 = this.random.nextDouble();
 		
-		Vector2f vector = new Vector2f(x2-x1,y2-y1);
+		Vector2fx vector = new Vector2fx(x2-x1,y2-y1);
 		
-		assertEpsilonEquals((new Vector2f(1,0)).signedAngle(vector),FunctionalVector2D.angleOfVector(x1, y1, x2, y2));
+		assertEpsilonEquals((new Vector2fx(1,0)).signedAngle(vector),FunctionalVector2D.angleOfVector(x1, y1, x2, y2));
 		
 	}
 
 	@Test
 	public void angleOfVectorDoubleDouble() {
-		Vector2f temp = new Vector2f();
+		Vector2fx temp = new Vector2fx();
 		
 		assertEpsilonEquals(Math.acos(1/Math.sqrt(5)),FunctionalVector2D.angleOfVector(1,2));
 		assertEpsilonEquals(PI/2f+Math.acos(1/Math.sqrt(5)),FunctionalVector2D.angleOfVector(-2,1));
@@ -455,8 +455,8 @@ public class Vector2fTest extends AbstractMathTestCase {
 
 	@Test
 	public void signedAngleDoubleDoubleDoubleDouble() {
-		Vector2f v1 = new Vector2f(this.random.nextDouble(), this.random.nextDouble());
-		Vector2f v2 = new Vector2f(this.random.nextDouble(), this.random.nextDouble());
+		Vector2fx v1 = new Vector2fx(this.random.nextDouble(), this.random.nextDouble());
+		Vector2fx v2 = new Vector2fx(this.random.nextDouble(), this.random.nextDouble());
 
 		assertEpsilonEquals(
 				0.f,
@@ -489,7 +489,7 @@ public class Vector2fTest extends AbstractMathTestCase {
 
 	@Test
 	public void perpProductDoubleDoubleDoubleDouble() {
-		Vector2f vector = new Vector2f();
+		Vector2fx vector = new Vector2fx();
 		
 		assertEpsilonEquals(0,FunctionalVector2D.perpProduct(1, 2, 1, 2));
 		assertEpsilonEquals(-2,FunctionalVector2D.perpProduct(1, 2, 3, 4));
@@ -498,7 +498,7 @@ public class Vector2fTest extends AbstractMathTestCase {
 
 	@Test
 	public void dotProductDoubleDoubleDoubleDouble() {
-Vector2f vector = new Vector2f();
+Vector2fx vector = new Vector2fx();
 		
 		assertEpsilonEquals(5,FunctionalVector2D.dotProduct(1, 2, 1, 2));
 		assertEpsilonEquals(11,FunctionalVector2D.dotProduct(1, 2, 3, 4));

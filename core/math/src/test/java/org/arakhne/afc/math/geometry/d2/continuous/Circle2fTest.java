@@ -180,18 +180,18 @@ public class Circle2fTest extends AbstractShape2fTestCase<Circle2f> {
 	@Override
 	public void distancePoint2D() {
 		double d;
-		d = this.r.distance(new Point2f(.5f,.5f));
+		d = this.r.distance(new Point2fx(.5f,.5f));
 		assertEpsilonEquals(0f,d);
 
-		d = this.r.distance(new Point2f(-1.2f,-3.4f));
+		d = this.r.distance(new Point2fx(-1.2f,-3.4f));
 		//d = sqrt( 1.2*1.2 + 3.4*3.4 ) - 1 = sqrt( 1.44 + 11.56 ) - 1 = sqrt( 13 ) - 1
 		assertEpsilonEquals(2.605551275f,d);
 
-		d = this.r.distance(new Point2f(-1.2f,5.6f));
+		d = this.r.distance(new Point2fx(-1.2f,5.6f));
 		//d = sqrt( 1.2*1.2 + 5.6*5.6 ) - 1 = sqrt( 1.44 + 31.36 ) - 1 = sqrt( 32.8 ) - 1
 		assertEpsilonEquals(4.727128425f,d);
 
-		d = this.r.distance(new Point2f(7.6f,5.6f));
+		d = this.r.distance(new Point2fx(7.6f,5.6f));
 		//d = sqrt( 7.6*7.6 + 5.6*5.6 ) - 1 = sqrt( 57.76 + 31.36 ) - 1 = sqrt( 89.12 ) - 1
 		assertEpsilonEquals(8.440338977f,d);
 	}
@@ -201,18 +201,18 @@ public class Circle2fTest extends AbstractShape2fTestCase<Circle2f> {
 	public void distanceSquaredPoint2D() {
 		double sd;
 		//d*d = sd
-		sd = this.r.distanceSquared(new Point2f(.5f,.5f));
+		sd = this.r.distanceSquared(new Point2fx(.5f,.5f));
 		assertEpsilonEquals(0f,sd);
 
-		sd = this.r.distanceSquared(new Point2f(-1.2f,-3.4f));
+		sd = this.r.distanceSquared(new Point2fx(-1.2f,-3.4f));
 		//d = sqrt( 1.2*1.2 + 3.4*3.4 ) - 1 = sqrt( 1.44 + 11.56 ) - 1 = sqrt( 13 ) - 1
 		assertEpsilonEquals(6.788897449f,sd);
 
-		sd = this.r.distanceSquared(new Point2f(-1.2f,5.6f));
+		sd = this.r.distanceSquared(new Point2fx(-1.2f,5.6f));
 		//d = sqrt( 1.2*1.2 + 5.6*5.6 ) - 1 = sqrt( 1.44 + 31.36 ) - 1 = sqrt( 32.8 ) - 1
 		assertEpsilonEquals(22.345743149f,sd);
 
-		sd = this.r.distanceSquared(new Point2f(7.6f,5.6f));
+		sd = this.r.distanceSquared(new Point2fx(7.6f,5.6f));
 		//d = sqrt( 7.6*7.6 + 5.6*5.6 ) - 1 = sqrt( 57.76 + 31.36 ) - 1 = sqrt( 89.12 ) - 1
 		assertEpsilonEquals(71.239322046f,sd);
 	}
@@ -221,22 +221,22 @@ public class Circle2fTest extends AbstractShape2fTestCase<Circle2f> {
 	@Override
 	public void distanceL1Point2D() {
 		double d;
-		d = this.r.distanceL1(new Point2f(.5f,.5f));
+		d = this.r.distanceL1(new Point2fx(.5f,.5f));
 		assertEpsilonEquals(0f,d);
 
-		d = this.r.distanceL1(new Point2f(-1.2f,-3.4f));
+		d = this.r.distanceL1(new Point2fx(-1.2f,-3.4f));
 		// closest point: (-0.332820118; -0.942990334)
 		// vec(p->closest point) = (0.867179882; 2.457009666)
 		// d = 0.867179882 + 2.457009666 
 		assertEpsilonEquals(3.324189548f,d);
 
-		d = this.r.distanceL1(new Point2f(-1.2f,5.6f));
+		d = this.r.distanceL1(new Point2fx(-1.2f,5.6f));
 		// closest point: (-0.209529089; 0.977802414)
 		// vec(p->closest point) = (0.990470911; -4.622197586)
 		// d = 0.990470911 + 4.62219758
 		assertEpsilonEquals(5.612668491f,d);
 
-		d = this.r.distanceL1(new Point2f(7.6f,5.6f));
+		d = this.r.distanceL1(new Point2fx(7.6f,5.6f));
 		// length = 9.440338977
 		// closest point: (0.805055837; 0.593199038)
 		// vec(p->closest point) = (-6.794944163; -5.006800962)
@@ -248,22 +248,22 @@ public class Circle2fTest extends AbstractShape2fTestCase<Circle2f> {
 	@Override
 	public void distanceLinfPoint2D() {
 		double d;
-		d = this.r.distanceLinf(new Point2f(.5f,.5f));
+		d = this.r.distanceLinf(new Point2fx(.5f,.5f));
 		assertEpsilonEquals(0f,d);
 
-		d = this.r.distanceLinf(new Point2f(-1.2f,-3.4f));
+		d = this.r.distanceLinf(new Point2fx(-1.2f,-3.4f));
 		// closest point: (-0.332820118; -0.942990334)
 		// vec(p->closest point) = (0.867179882; 2.457009666)
 		// d = max(0.867179882; 2.457009666) 
 		assertEpsilonEquals(2.457009666f,d);
 
-		d = this.r.distanceLinf(new Point2f(-1.2f,5.6f));
+		d = this.r.distanceLinf(new Point2fx(-1.2f,5.6f));
 		// closest point: (-0.209529089; 0.977802414)
 		// vec(p->closest point) = (0.990470911; -4.622197586)
 		// d = max(0.990470911; 4.62219758)
 		assertEpsilonEquals(4.62219758f,d);
 
-		d = this.r.distanceLinf(new Point2f(7.6f,5.6f));
+		d = this.r.distanceLinf(new Point2fx(7.6f,5.6f));
 		// length = 9.440338977
 		// closest point: (0.805055837; 0.593199038)
 		// vec(p->closest point) = (-6.794944163; -5.006800962)
@@ -318,19 +318,19 @@ public class Circle2fTest extends AbstractShape2fTestCase<Circle2f> {
 	 */
 	@Test
 	public void containsPoint2D() {
-		assertTrue(this.r.contains(new Point2f(0f, 0f)));
+		assertTrue(this.r.contains(new Point2fx(0f, 0f)));
 		
-		assertFalse(this.r.contains(new Point2f(-2.3f, -3.4f)));
-		assertFalse(this.r.contains(new Point2f(-2.3f, .5f)));
-		assertFalse(this.r.contains(new Point2f(-2.3f, 5.6f)));
+		assertFalse(this.r.contains(new Point2fx(-2.3f, -3.4f)));
+		assertFalse(this.r.contains(new Point2fx(-2.3f, .5f)));
+		assertFalse(this.r.contains(new Point2fx(-2.3f, 5.6f)));
 		
-		assertFalse(this.r.contains(new Point2f(.5f, -3.4f)));
-		assertTrue(this.r.contains(new Point2f(.5f, .5f)));
-		assertFalse(this.r.contains(new Point2f(.5f, 5.6f)));
+		assertFalse(this.r.contains(new Point2fx(.5f, -3.4f)));
+		assertTrue(this.r.contains(new Point2fx(.5f, .5f)));
+		assertFalse(this.r.contains(new Point2fx(.5f, 5.6f)));
 
-		assertFalse(this.r.contains(new Point2f(5.6f, -3.4f)));
-		assertFalse(this.r.contains(new Point2f(5.6f, .5f)));
-		assertFalse(this.r.contains(new Point2f(5.6f, 5.6f)));
+		assertFalse(this.r.contains(new Point2fx(5.6f, -3.4f)));
+		assertFalse(this.r.contains(new Point2fx(5.6f, .5f)));
+		assertFalse(this.r.contains(new Point2fx(5.6f, 5.6f)));
 	}
 
 	/**
@@ -339,23 +339,23 @@ public class Circle2fTest extends AbstractShape2fTestCase<Circle2f> {
 	public void getClosestPointTo() {
 		Point2D p;
 		
-		p = this.r.getClosestPointTo(new Point2f(0f, 0f));
+		p = this.r.getClosestPointTo(new Point2fx(0f, 0f));
 		assertEpsilonEquals(0f, p.getX());
 		assertEpsilonEquals(0f, p.getY());
 		
-		p = this.r.getClosestPointTo(new Point2f(.5f, .1f));
+		p = this.r.getClosestPointTo(new Point2fx(.5f, .1f));
 		assertEpsilonEquals(.5f, p.getX());
 		assertEpsilonEquals(.1f, p.getY());
 
-		p = this.r.getClosestPointTo(new Point2f(-1.2f,-3.4f));
+		p = this.r.getClosestPointTo(new Point2fx(-1.2f,-3.4f));
 		assertEpsilonEquals(-0.332820118f, p.getX());
 		assertEpsilonEquals(-0.942990334f, p.getY());
 
-		p = this.r.getClosestPointTo(new Point2f(-1.2f,5.6f));
+		p = this.r.getClosestPointTo(new Point2fx(-1.2f,5.6f));
 		assertEpsilonEquals(-0.209529089f, p.getX());
 		assertEpsilonEquals(0.977802414f, p.getY());
 
-		p = this.r.getClosestPointTo(new Point2f(7.6f,5.6f));
+		p = this.r.getClosestPointTo(new Point2fx(7.6f,5.6f));
 		assertEpsilonEquals(0.805055837f, p.getX());
 		assertEpsilonEquals(0.593199038f, p.getY());
 	}
@@ -366,23 +366,23 @@ public class Circle2fTest extends AbstractShape2fTestCase<Circle2f> {
 	public void getFarthestPointTo() {
 		Point2D p;
 		
-		p = this.r.getClosestPointTo(new Point2f(0f, 0f));
+		p = this.r.getClosestPointTo(new Point2fx(0f, 0f));
 		assertEpsilonEquals(1f, p.getX());
 		assertEpsilonEquals(0f, p.getY());
 		
-		p = this.r.getClosestPointTo(new Point2f(.5f, .1f));
+		p = this.r.getClosestPointTo(new Point2fx(.5f, .1f));
 		assertEpsilonEquals(.5f, p.getX());
 		assertEpsilonEquals(.1f, p.getY());
 
-		p = this.r.getClosestPointTo(new Point2f(-1.2f,-3.4f));
+		p = this.r.getClosestPointTo(new Point2fx(-1.2f,-3.4f));
 		assertEpsilonEquals(-0.332820118f, p.getX());
 		assertEpsilonEquals(-0.942990334f, p.getY());
 
-		p = this.r.getClosestPointTo(new Point2f(-1.2f,5.6f));
+		p = this.r.getClosestPointTo(new Point2fx(-1.2f,5.6f));
 		assertEpsilonEquals(-0.209529089f, p.getX());
 		assertEpsilonEquals(0.977802414f, p.getY());
 
-		p = this.r.getClosestPointTo(new Point2f(7.6f,5.6f));
+		p = this.r.getClosestPointTo(new Point2fx(7.6f,5.6f));
 		assertEpsilonEquals(0.805055837f, p.getX());
 		assertEpsilonEquals(0.593199038f, p.getY());
 	}
@@ -473,12 +473,12 @@ public class Circle2fTest extends AbstractShape2fTestCase<Circle2f> {
 	 */
 	@Test
 	public void setPoint2DFloat() {
-		this.r.set(new Point2f(3.4f, 4.5f), 5.6f);
+		this.r.set(new Point2fx(3.4f, 4.5f), 5.6f);
 		assertEpsilonEquals(3.4f, this.r.getX());
 		assertEpsilonEquals(4.5f, this.r.getY());
 		assertEpsilonEquals(5.6f, this.r.getRadius());
 
-		this.r.set(new Point2f(3.4f, 4.5f), -7.8f);
+		this.r.set(new Point2fx(3.4f, 4.5f), -7.8f);
 		assertEpsilonEquals(3.4f, this.r.getX());
 		assertEpsilonEquals(4.5f, this.r.getY());
 		assertEpsilonEquals(7.8f, this.r.getRadius());
@@ -497,7 +497,7 @@ public class Circle2fTest extends AbstractShape2fTestCase<Circle2f> {
 	 */
 	@Test
 	public void setCenterPoint2D() {
-		this.r.setCenter(new Point2f(3.4f, 4.5f));
+		this.r.setCenter(new Point2fx(3.4f, 4.5f));
 		assertEpsilonEquals(3.4f, this.r.getX());
 		assertEpsilonEquals(4.5f, this.r.getY());
 	}

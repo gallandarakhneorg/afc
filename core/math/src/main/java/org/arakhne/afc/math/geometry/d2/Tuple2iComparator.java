@@ -47,21 +47,21 @@ public class Tuple2iComparator implements Comparator<Tuple2D<?>> {
 	
 	@Pure
 	@Override
-	public int compare(Tuple2D<?> o1, Tuple2D<?> o2) {
-		if (o1==o2) {
+	public int compare(Tuple2D<?> tuple1, Tuple2D<?> tuple2) {
+		if (tuple1==tuple2) {
 			return 0;
 		}
-		if (o1==null) {
+		if (tuple1==null) {
 			return Integer.MIN_VALUE;
 		}
-		if (o2==null) {
+		if (tuple2==null) {
 			return Integer.MAX_VALUE;
 		}
-		int cmp = o1.ix() - o2.ix();
+		int cmp = tuple1.ix() - tuple2.ix();
 		if (cmp!=0) {
 			return cmp;
 		}
-		return o1.iy() - o2.iy();
+		return tuple1.iy() - tuple2.iy();
 	}
 		
 }

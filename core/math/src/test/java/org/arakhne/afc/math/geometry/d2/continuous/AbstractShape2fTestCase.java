@@ -81,7 +81,7 @@ public abstract class AbstractShape2fTestCase<T extends Shape2F> extends Abstrac
 			fail("expected path element but the iterator is empty"); //$NON-NLS-1$
 		}
 		AbstractPathElement2X pe = pi.next();
-		if (!type.equals(pe.getType())) {
+		if (!type.equalsToPathIterator(pe.getType())) {
 			fail("expected: "+type+"; actual: "+pe.getType());  //$NON-NLS-1$//$NON-NLS-2$
 		}
 		double[] c = pe.toArray();

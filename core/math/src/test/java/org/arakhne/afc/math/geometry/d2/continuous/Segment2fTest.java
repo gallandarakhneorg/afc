@@ -1083,49 +1083,49 @@ public class Segment2fTest extends AbstractShape2fTestCase<Segment2f> {
 	@Test
 	@Override
 	public void distancePoint2D() {
-		assertEpsilonEquals(0f, this.r.distance(new Point2f(0f, 0f)));
-		assertEpsilonEquals(0f, this.r.distance(new Point2f(.5f, .5f)));
-		assertEpsilonEquals(0f, this.r.distance(new Point2f(1f, 1f)));
+		assertEpsilonEquals(0f, this.r.distance(new Point2fx(0f, 0f)));
+		assertEpsilonEquals(0f, this.r.distance(new Point2fx(.5f, .5f)));
+		assertEpsilonEquals(0f, this.r.distance(new Point2fx(1f, 1f)));
 		
-		assertEpsilonEquals(3.733630941f, this.r.distance(new Point2f(2.3f, 4.5f)));
+		assertEpsilonEquals(3.733630941f, this.r.distance(new Point2fx(2.3f, 4.5f)));
 
-		assertEpsilonEquals(1.414213562f, this.r.distance(new Point2f(2f, 2f)));
+		assertEpsilonEquals(1.414213562f, this.r.distance(new Point2fx(2f, 2f)));
 	}
 
 	@Test
 	@Override
 	public void distanceSquaredPoint2D() {
-		assertEpsilonEquals(0f, this.r.distanceSquared(new Point2f(0f, 0f)));
-		assertEpsilonEquals(0f, this.r.distanceSquared(new Point2f(.5f, .5f)));
-		assertEpsilonEquals(0f, this.r.distanceSquared(new Point2f(1f, 1f)));
+		assertEpsilonEquals(0f, this.r.distanceSquared(new Point2fx(0f, 0f)));
+		assertEpsilonEquals(0f, this.r.distanceSquared(new Point2fx(.5f, .5f)));
+		assertEpsilonEquals(0f, this.r.distanceSquared(new Point2fx(1f, 1f)));
 		
-		assertEpsilonEquals(13.94f, this.r.distanceSquared(new Point2f(2.3f, 4.5f)));
+		assertEpsilonEquals(13.94f, this.r.distanceSquared(new Point2fx(2.3f, 4.5f)));
 
-		assertEpsilonEquals(2f, this.r.distanceSquared(new Point2f(2f, 2f)));
+		assertEpsilonEquals(2f, this.r.distanceSquared(new Point2fx(2f, 2f)));
 	}
 
 	@Test
 	@Override
 	public void distanceL1Point2D() {
-		assertEpsilonEquals(0f, this.r.distanceL1(new Point2f(0f, 0f)));
-		assertEpsilonEquals(0f, this.r.distanceL1(new Point2f(.5f, .5f)));
-		assertEpsilonEquals(0f, this.r.distanceL1(new Point2f(1f, 1f)));
+		assertEpsilonEquals(0f, this.r.distanceL1(new Point2fx(0f, 0f)));
+		assertEpsilonEquals(0f, this.r.distanceL1(new Point2fx(.5f, .5f)));
+		assertEpsilonEquals(0f, this.r.distanceL1(new Point2fx(1f, 1f)));
 		
-		assertEpsilonEquals(4.8f, this.r.distanceL1(new Point2f(2.3f, 4.5f)));
+		assertEpsilonEquals(4.8f, this.r.distanceL1(new Point2fx(2.3f, 4.5f)));
 
-		assertEpsilonEquals(2f, this.r.distanceL1(new Point2f(2f, 2f)));
+		assertEpsilonEquals(2f, this.r.distanceL1(new Point2fx(2f, 2f)));
 	}
 
 	@Test
 	@Override
 	public void distanceLinfPoint2D() {
-		assertEpsilonEquals(0f, this.r.distanceLinf(new Point2f(0f, 0f)));
-		assertEpsilonEquals(0f, this.r.distanceLinf(new Point2f(.5f, .5f)));
-		assertEpsilonEquals(0f, this.r.distanceLinf(new Point2f(1f, 1f)));
+		assertEpsilonEquals(0f, this.r.distanceLinf(new Point2fx(0f, 0f)));
+		assertEpsilonEquals(0f, this.r.distanceLinf(new Point2fx(.5f, .5f)));
+		assertEpsilonEquals(0f, this.r.distanceLinf(new Point2fx(1f, 1f)));
 		
-		assertEpsilonEquals(3.5f, this.r.distanceLinf(new Point2f(2.3f, 4.5f)));
+		assertEpsilonEquals(3.5f, this.r.distanceLinf(new Point2fx(2.3f, 4.5f)));
 
-		assertEpsilonEquals(1f, this.r.distanceLinf(new Point2f(2f, 2f)));
+		assertEpsilonEquals(1f, this.r.distanceLinf(new Point2fx(2f, 2f)));
 	}
 
 	@Test
@@ -1153,7 +1153,7 @@ public class Segment2fTest extends AbstractShape2fTestCase<Segment2f> {
 	 */
 	@Test
 	public void setPoint2DPoint2D() {
-		this.r.set(new Point2f(3.4f,  4.5f), new Point2f(5.6f, 6.7f));
+		this.r.set(new Point2fx(3.4f,  4.5f), new Point2fx(5.6f, 6.7f));
 		assertEpsilonEquals(3.4f, this.r.getX1());
 		assertEpsilonEquals(4.5f, this.r.getY1());
 		assertEpsilonEquals(5.6f, this.r.getX2());
@@ -1174,13 +1174,13 @@ public class Segment2fTest extends AbstractShape2fTestCase<Segment2f> {
 	 */
 	@Test
 	public void containsPoint2D() {
-		assertTrue(this.r.contains(new Point2f(0f, 0f)));
-		assertTrue(this.r.contains(new Point2f(.5f, .5f)));
-		assertTrue(this.r.contains(new Point2f(1f, 1f)));
+		assertTrue(this.r.contains(new Point2fx(0f, 0f)));
+		assertTrue(this.r.contains(new Point2fx(.5f, .5f)));
+		assertTrue(this.r.contains(new Point2fx(1f, 1f)));
 		
-		assertFalse(this.r.contains(new Point2f(2.3f, 4.5f)));
+		assertFalse(this.r.contains(new Point2fx(2.3f, 4.5f)));
 
-		assertFalse(this.r.contains(new Point2f(2f, 2f)));
+		assertFalse(this.r.contains(new Point2fx(2f, 2f)));
 	}
 
 	/**
@@ -1202,31 +1202,31 @@ public class Segment2fTest extends AbstractShape2fTestCase<Segment2f> {
 	public void getClosestPointTo() {
 		Point2D p;
 		
-		p = this.r.getClosestPointTo(new Point2f(0f,0f));
+		p = this.r.getClosestPointTo(new Point2fx(0f,0f));
 		assertEpsilonEquals(0f, p.getX());
 		assertEpsilonEquals(0f, p.getY());
 
-		p = this.r.getClosestPointTo(new Point2f(.5f,.5f));
+		p = this.r.getClosestPointTo(new Point2fx(.5f,.5f));
 		assertEpsilonEquals(.5f, p.getX());
 		assertEpsilonEquals(.5f, p.getY());
 
-		p = this.r.getClosestPointTo(new Point2f(1f,1f));
+		p = this.r.getClosestPointTo(new Point2fx(1f,1f));
 		assertEpsilonEquals(1f, p.getX());
 		assertEpsilonEquals(1f, p.getY());
 
-		p = this.r.getClosestPointTo(new Point2f(2f,2f));
+		p = this.r.getClosestPointTo(new Point2fx(2f,2f));
 		assertEpsilonEquals(1f, p.getX());
 		assertEpsilonEquals(1f, p.getY());
 
-		p = this.r.getClosestPointTo(new Point2f(-2f,2f));
+		p = this.r.getClosestPointTo(new Point2fx(-2f,2f));
 		assertEpsilonEquals(0f, p.getX());
 		assertEpsilonEquals(0f, p.getY());
 
-		p = this.r.getClosestPointTo(new Point2f(0.1f,1.2f));
+		p = this.r.getClosestPointTo(new Point2fx(0.1f,1.2f));
 		assertEpsilonEquals(0.65f, p.getX());
 		assertEpsilonEquals(0.65f, p.getY());
 
-		p = this.r.getClosestPointTo(new Point2f(10.1f,-.2f));
+		p = this.r.getClosestPointTo(new Point2fx(10.1f,-.2f));
 		assertEpsilonEquals(1f, p.getX());
 		assertEpsilonEquals(1f, p.getY());
 	}
@@ -1237,31 +1237,31 @@ public class Segment2fTest extends AbstractShape2fTestCase<Segment2f> {
 	public void getFarthestPointTo() {
 		Point2D p;
 		
-		p = this.r.getFarthestPointTo(new Point2f(0f,0f));
+		p = this.r.getFarthestPointTo(new Point2fx(0f,0f));
 		assertEpsilonEquals(1f, p.getX());
 		assertEpsilonEquals(1f, p.getY());
 
-		p = this.r.getFarthestPointTo(new Point2f(.5f,.5f));
+		p = this.r.getFarthestPointTo(new Point2fx(.5f,.5f));
 		assertEpsilonEquals(0f, p.getX());
 		assertEpsilonEquals(0f, p.getY());
 
-		p = this.r.getFarthestPointTo(new Point2f(1f,1f));
+		p = this.r.getFarthestPointTo(new Point2fx(1f,1f));
 		assertEpsilonEquals(0f, p.getX());
 		assertEpsilonEquals(0f, p.getY());
 
-		p = this.r.getFarthestPointTo(new Point2f(2f,2f));
+		p = this.r.getFarthestPointTo(new Point2fx(2f,2f));
 		assertEpsilonEquals(0f, p.getX());
 		assertEpsilonEquals(0f, p.getY());
 
-		p = this.r.getFarthestPointTo(new Point2f(-2f,2f));
+		p = this.r.getFarthestPointTo(new Point2fx(-2f,2f));
 		assertEpsilonEquals(1f, p.getX());
 		assertEpsilonEquals(1f, p.getY());
 
-		p = this.r.getFarthestPointTo(new Point2f(0.1f,1.2f));
+		p = this.r.getFarthestPointTo(new Point2fx(0.1f,1.2f));
 		assertEpsilonEquals(0f, p.getX());
 		assertEpsilonEquals(0f, p.getY());
 
-		p = this.r.getFarthestPointTo(new Point2f(10.1f,-.2f));
+		p = this.r.getFarthestPointTo(new Point2fx(10.1f,-.2f));
 		assertEpsilonEquals(0f, p.getX());
 		assertEpsilonEquals(0f, p.getY());
 	}
@@ -1521,25 +1521,25 @@ public class Segment2fTest extends AbstractShape2fTestCase<Segment2f> {
 	
 	@Test
 	public void interpolateDoubleDoubleDoubleDoubleDouble() {
-		assertEpsilonEquals(new Point2f(1, 2),
+		assertEpsilonEquals(new Point2fx(1, 2),
 				Segment2f.interpolate(1.f, 2.f, 3.f, 4.f, 0.f));
-		assertEpsilonEquals(new Point2f(1.5f, 2.5f),
+		assertEpsilonEquals(new Point2fx(1.5f, 2.5f),
 				Segment2f.interpolate(1.f, 2.f, 3.f, 4.f, .25f));
-		assertEpsilonEquals(new Point2f(2, 3.f),
+		assertEpsilonEquals(new Point2fx(2, 3.f),
 				Segment2f.interpolate(1.f, 2.f, 3.f, 4.f, .5f));
-		assertEpsilonEquals(new Point2f(2.5f, 3.5f),
+		assertEpsilonEquals(new Point2fx(2.5f, 3.5f),
 				Segment2f.interpolate(1.f, 2.f, 3.f, 4.f, .75f));
-		assertEpsilonEquals(new Point2f(3, 4),
+		assertEpsilonEquals(new Point2fx(3, 4),
 				Segment2f.interpolate(1.f, 2.f, 3.f, 4.f, 1.f));
 	}
 	
 	@Test
 	public void ccwDoubleDoubleDoubleDoubleDoubleDoubleBoolean() {
-		Point2f p1 = new Point2f(-100.f, -100.f);
-		Point2f p2 = new Point2f(100.f, 100.f);
-		Point2f p3;
+		Point2fx p1 = new Point2fx(-100.f, -100.f);
+		Point2fx p2 = new Point2fx(100.f, 100.f);
+		Point2fx p3;
 
-		p3 = new Point2f(p1);
+		p3 = new Point2fx(p1);
 		assertEquals(
 				0,
 				Segment2f.ccw(
@@ -1550,7 +1550,7 @@ public class Segment2fTest extends AbstractShape2fTestCase<Segment2f> {
 				Segment2f.ccw(p2.getX(), p2.getY(), p1.getX(), p1.getY(),
 						p3.getX(), p3.getY(), 0));
 
-		p3 = new Point2f(p2);
+		p3 = new Point2fx(p2);
 		assertEquals(
 				0,
 				Segment2f.ccw(p1.getX(), p1.getY(), p2.getX(), p2.getY(),
@@ -1560,7 +1560,7 @@ public class Segment2fTest extends AbstractShape2fTestCase<Segment2f> {
 				Segment2f.ccw(p2.getX(), p2.getY(), p1.getX(), p1.getY(),
 						p3.getX(), p3.getY(), 0));
 
-		p3 = new Point2f(0.f, 0.f);
+		p3 = new Point2fx(0.f, 0.f);
 		assertEquals(
 				0,
 				Segment2f.ccw(p1.getX(), p1.getY(), p2.getX(), p2.getY(),
@@ -1570,7 +1570,7 @@ public class Segment2fTest extends AbstractShape2fTestCase<Segment2f> {
 				Segment2f.ccw(p2.getX(), p2.getY(), p1.getX(), p1.getY(),
 						p3.getX(), p3.getY(), 0));
 
-		p3 = new Point2f(0.f, 0.f);
+		p3 = new Point2fx(0.f, 0.f);
 		assertEquals(
 				0,
 				Segment2f.ccw(p1.getX(), p1.getY(), p2.getX(), p2.getY(),
@@ -1580,7 +1580,7 @@ public class Segment2fTest extends AbstractShape2fTestCase<Segment2f> {
 				Segment2f.ccw(p2.getX(), p2.getY(), p1.getX(), p1.getY(),
 						p3.getX(), p3.getY(), 0));
 
-		p3 = new Point2f(-200.f, -200.f);
+		p3 = new Point2fx(-200.f, -200.f);
 		assertEquals(
 				-1,
 				Segment2f.ccw(p1.getX(), p1.getY(), p2.getX(), p2.getY(),
@@ -1590,7 +1590,7 @@ public class Segment2fTest extends AbstractShape2fTestCase<Segment2f> {
 				Segment2f.ccw(p2.getX(), p2.getY(), p1.getX(), p1.getY(),
 						p3.getX(), p3.getY(), 0));
 
-		p3 = new Point2f(200.f, 200.f);
+		p3 = new Point2fx(200.f, 200.f);
 		assertEquals(
 				1,
 				Segment2f.ccw(p1.getX(), p1.getY(), p2.getX(), p2.getY(),
@@ -1600,7 +1600,7 @@ public class Segment2fTest extends AbstractShape2fTestCase<Segment2f> {
 				Segment2f.ccw(p2.getX(), p2.getY(), p1.getX(), p1.getY(),
 						p3.getX(), p3.getY(), 0));
 
-		p3 = new Point2f(-200.f, 200.f);
+		p3 = new Point2fx(-200.f, 200.f);
 		assertEquals(
 				-1,
 				Segment2f.ccw(p1.getX(), p1.getY(), p2.getX(), p2.getY(),
@@ -1610,7 +1610,7 @@ public class Segment2fTest extends AbstractShape2fTestCase<Segment2f> {
 				Segment2f.ccw(p2.getX(), p2.getY(), p1.getX(), p1.getY(),
 						p3.getX(), p3.getY(), 0));
 
-		p3 = new Point2f(200.f, -200.f);
+		p3 = new Point2fx(200.f, -200.f);
 		assertEquals(
 				1,
 				Segment2f.ccw(p1.getX(), p1.getY(), p2.getX(), p2.getY(),

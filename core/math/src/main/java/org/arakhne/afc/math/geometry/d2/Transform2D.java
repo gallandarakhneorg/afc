@@ -33,9 +33,9 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * <p>
  * The transformation matrix is:
  * <pre><code>
- * | cos(theta) | -sin(theta) | Tx |
- * | sin(theta) | cos(theta)  | Ty |
- * | 0          | 0           | 1  |
+ * | cos(theta)   | -+sin(theta) | Tx |
+ * | -+sin(theta) |   cos(theta) | Ty |
+ * | 0            | 0            | 1  |
  * </code></pre>
  *
  * @author $Author: galland$
@@ -62,17 +62,17 @@ public class Transform2D extends Matrix3f {
 	 * Constructs a new Transform2D object and initializes it from the
 	 * specified transform.
 	 * 
-	 * @param t
+	 * @param tranform
 	 */
-	public Transform2D(Transform2D t) {
-		super(t);
+	public Transform2D(Transform2D tranform) {
+		super(tranform);
 	}
 
 	/**
-	 * @param m
+	 * @param matrix
 	 */
-	public Transform2D(Matrix3f m) {
-		super(m);
+	public Transform2D(Matrix3f matrix) {
+		super(matrix);
 	}
 
 	/**
@@ -138,20 +138,20 @@ public class Transform2D extends Matrix3f {
 	 *          [   ?    ?    ?     ]
 	 * </pre>
 	 * 
-	 * @param t
+	 * @param translation
 	 * @see #makeTranslationMatrix(double, double)
 	 */
-	public void setTranslation(Tuple2D<?> t) {
-		this.m02 = t.getX();
-		this.m12 = t.getY();
+	public void setTranslation(Tuple2D<?> translation) {
+		this.m02 = translation.getX();
+		this.m12 = translation.getY();
 	}
 
 	/** Translate the position.
 	 * <p>
 	 * This function is equivalent to:
 	 * <pre>
-	 * this = this *  [   0    0    dx   ]
-	 *                [   0    0    dy   ]
+	 * this = this *  [   1    0    dx   ]
+	 *                [   0    1    dy   ]
 	 *                [   0    0    1    ]
 	 * </pre>
 	 * 
@@ -167,15 +167,15 @@ public class Transform2D extends Matrix3f {
 	 * <p>
 	 * This function is equivalent to:
 	 * <pre>
-	 * this = this *  [   0    0    t.x   ]
-	 *                [   0    0    t.y   ]
+	 * this = this *  [   1    0    t.x   ]
+	 *                [   0    1    t.y   ]
 	 *                [   0    0    1     ]
 	 * </pre>
 	 * 
-	 * @param t
+	 * @param translation
 	 */
-	public void translate(Vector2D t) {
-		translate(t.getX(), t.getY());
+	public void translate(Vector2D translation) {
+		translate(translation.getX(), translation.getY());
 	}
 
 	/** Replies the X translation.
@@ -215,8 +215,9 @@ public class Transform2D extends Matrix3f {
 	@Pure
 	public double getRotation() {
 		double cosAngle = Math.acos(this.m00);
-		double sinAngle = Math.asin(this.m10);
-		return (sinAngle<0.) ? -cosAngle : cosAngle;
+		// According to the documentation of Math.asin,
+		// Math.sign(Math.asin(this.m10)) == Math.sign(this.m10).
+		return (this.m10 < 0.) ? -cosAngle : cosAngle;
 	}
 
 	/**
@@ -320,7 +321,8 @@ public class Transform2D extends Matrix3f {
 	 * <p>
 	 * This function changes only the elements of 
 	 * the matrix related to the scaling (m00,
-	 * m11). The shearing and the translation are not changed. 
+	 * m11). The shearing and the translation are not changed.
+	 * The rotation is lost.
 	 * <p>
 	 * After a call to this function, the matrix will
 	 * contains (? means any value):
@@ -330,13 +332,13 @@ public class Transform2D extends Matrix3f {
 	 *          [   ?   ?   ?   ]
 	 * </pre>
 	 * 
-	 * @param sx
-	 * @param sy
+	 * @param scaleX
+	 * @param scaleY
 	 * @see #makeScaleMatrix(double, double)
 	 */
-	public void setScale(double sx, double sy) {
-		this.m00 = sx;
-		this.m11 = sy;
+	public void setScale(double scaleX, double scaleY) {
+		this.m00 = scaleX;
+		this.m11 = scaleY;
 	}
 
 	/** Set the scale.
@@ -344,6 +346,7 @@ public class Transform2D extends Matrix3f {
 	 * This function changes only the elements of 
 	 * the matrix related to the scaling (m00,
 	 * m11). The shearing and the translation are not changed. 
+	 * The rotation is lost.
 	 * <p>
 	 * After a call to this function, the matrix will
 	 * contains (? means any value):
@@ -353,12 +356,12 @@ public class Transform2D extends Matrix3f {
 	 *          [   ?    ?    ?   ]
 	 * </pre>
 	 * 
-	 * @param t
+	 * @param tuple
 	 * @see #makeScaleMatrix(double, double)
 	 */
-	public void setScale(Tuple2D<?> t) {
-		this.m00 = t.getX();
-		this.m11 = t.getY();
+	public void setScale(Tuple2D<?> tuple) {
+		this.m00 = tuple.getX();
+		this.m11 = tuple.getY();
 	}
 
 	/** Concatenates this transform with a scaling transformation.
@@ -370,14 +373,14 @@ public class Transform2D extends Matrix3f {
 	 *                [   0    0    1   ]
 	 * </pre>
 	 * 
-	 * @param sx
-	 * @param sy
+	 * @param scaleX
+	 * @param scaleY
 	 */
-	public void scale(double sx, double sy) {
-        this.m00 *= sx;
-        this.m11 *= sy;
-        this.m01 *= sy;
-        this.m10 *= sx;
+	public void scale(double scaleX, double scaleY) {
+        this.m00 *= scaleX;
+        this.m11 *= scaleY;
+        this.m01 *= scaleY;
+        this.m10 *= scaleX;
 	}
 
 	/** Concatenates this transform with a scaling transformation.
@@ -389,10 +392,10 @@ public class Transform2D extends Matrix3f {
 	 *                [   0     0     1   ]
 	 * </pre>
 	 * 
-	 * @param t
+	 * @param tuple
 	 */
-	public void scale(Tuple2D<?> t) {
-		scale(t.getX(), t.getY());
+	public void scale(Tuple2D<?> tuple) {
+		scale(tuple.getX(), tuple.getY());
 	}
 
 	/** Replies the X scaling.
@@ -447,6 +450,7 @@ public class Transform2D extends Matrix3f {
 	 * This function changes only the elements of 
 	 * the matrix related to the shearing (m01,
 	 * m10). The scaling and the translation are not changed. 
+	 * The rotation is lost.
 	 * <p>
 	 * After a call to this function, the matrix will
 	 * contains (? means any value):
@@ -456,13 +460,13 @@ public class Transform2D extends Matrix3f {
 	 *          [   ?    ?    ?   ]
 	 * </pre>
 	 * 
-	 * @param shx
-	 * @param shy
+	 * @param shearX
+	 * @param shearY
 	 * @see #makeShearMatrix(double, double)
 	 */
-	public void setShear(double shx,  double shy) {
-		this.m01 = shx;
-		this.m10 = shy;
+	public void setShear(double shearX,  double shearY) {
+		this.m01 = shearX;
+		this.m10 = shearY;
 	}
 
 	/** Set the shearing elements.
@@ -470,6 +474,7 @@ public class Transform2D extends Matrix3f {
 	 * This function changes only the elements of 
 	 * the matrix related to the shearing (m01,
 	 * m10). The scaling and the translation are not changed. 
+	 * The rotation is lost.
 	 * <p>
 	 * After a call to this function, the matrix will
 	 * contains (? means any value):
@@ -479,12 +484,12 @@ public class Transform2D extends Matrix3f {
 	 *          [   ?    ?    ?   ]
 	 * </pre>
 	 * 
-	 * @param t
+	 * @param tuple
 	 * @see #makeShearMatrix(double, double)
 	 */
-	public void setShear(Tuple2D<?> t) {
-		this.m01 = t.getX();
-		this.m10 = t.getY();
+	public void setShear(Tuple2D<?> tuple) {
+		this.m01 = tuple.getX();
+		this.m10 = tuple.getY();
 	}
 
 	/** Concatenates this transform with a shearing transformation.
@@ -496,21 +501,21 @@ public class Transform2D extends Matrix3f {
 	 *                [   0    0    1   ]
 	 * </pre>
 	 * 
-	 * @param shx
-	 * @param shy
+	 * @param shearX
+	 * @param shearY
 	 */
-	public void shear(double shx, double shy) {
+	public void shear(double shearX, double shearY) {
 		double M0, M1;
 		M0 = this.m00;
 		M1 = this.m01;
 		
-		this.m00 = M0 + M1 * shy;
-		this.m01 = M0 * shx + M1;
+		this.m00 = M0 + M1 * shearY;
+		this.m01 = M0 * shearX + M1;
 
 		M0 = this.m10;
 		M1 = this.m11;
-		this.m10 = M0 + M1 * shy;
-		this.m11 = M0 * shx + M1;
+		this.m10 = M0 + M1 * shearY;
+		this.m11 = M0 * shearX + M1;
 	}
 
 	/** Concatenates this transform with a shearing transformation.
@@ -522,10 +527,10 @@ public class Transform2D extends Matrix3f {
 	 *                [   0    0    1   ]
 	 * </pre>
 	 * 
-	 * @param t
+	 * @param tuple
 	 */
-	public void shear(Tuple2D<?> t) {
-		shear(t.getX(), t.getY());
+	public void shear(Tuple2D<?> tuple) {
+		shear(tuple.getX(), tuple.getY());
 	}
 
 	/** Replies the X shearing.
@@ -604,8 +609,8 @@ public class Transform2D extends Matrix3f {
 		this.m01 = -sinAngle;
 		this.m02 = 0.;
 
-		this.m10 = sinAngle;
 		this.m11 = cosAngle;
+		this.m10 = sinAngle;
 		this.m12 = 0.;
 
 		this.m20 = 0.;
@@ -661,18 +666,18 @@ public class Transform2D extends Matrix3f {
 	 *          [   0   0   1   ]
 	 * </pre>
 	 * 
-	 * @param sx is the scaling along X.
-	 * @param sy is the scaling along Y.
+	 * @param scaleX is the scaling along X.
+	 * @param scaleY is the scaling along Y.
 	 * @see #setScale(double, double)
 	 * @see #setScale(Tuple2D)
 	 */
-	public final void makeScaleMatrix(double sx, double sy) {
-		this.m00 = sx;
+	public final void makeScaleMatrix(double scaleX, double scaleY) {
+		this.m00 = scaleX;
 		this.m01 = 0.;
 		this.m02 = 0.;
 
 		this.m10 = 0.;
-		this.m11 = sy;
+		this.m11 = scaleY;
 		this.m12 = 0.;
 
 		this.m20 = 0.;
@@ -695,17 +700,17 @@ public class Transform2D extends Matrix3f {
 	 *          [   0    0    1   ]
 	 * </pre>
 	 * 
-	 * @param shx is the shearing along X.
-	 * @param shy is the shearing along Y.
+	 * @param shearX is the shearing along X.
+	 * @param shearY is the shearing along Y.
 	 * @see #setShear(double, double)
 	 * @see #setShear(Tuple2D)
 	 */
-	public final void makeShearMatrix(double shx, double shy) {
+	public final void makeShearMatrix(double shearX, double shearY) {
 		this.m00 = 1.;
-		this.m01 = shx;
+		this.m01 = shearX;
 		this.m02 = 0.;
 
-		this.m10 = shy;
+		this.m10 = shearY;
 		this.m11 = 1.;
 		this.m12 = 0.;
 
@@ -718,16 +723,16 @@ public class Transform2D extends Matrix3f {
 	 * Multiply this matrix by the tuple t and place the result back into the
 	 * tuple (t = this*t).
 	 * 
-	 * @param t
+	 * @param tuple
 	 *            the tuple to be multiplied by this matrix and then replaced
 	 */
-	public void transform(Tuple2D<?> t) {
+	public void transform(Tuple2D<?> tuple) {
 		double x, y;
-		x = this.m00 * t.getX() + this.m01 * t.getY() + this.m02;
-		y = this.m10 * t.getX() + this.m11 * t.getY() + this.m12;
-		t.set(x, y);
+		x = this.m00 * tuple.getX() + this.m01 * tuple.getY() + this.m02;
+		y = this.m10 * tuple.getX() + this.m11 * tuple.getY() + this.m12;
+		tuple.set(x, y);
 	}
-
+	
 	/**
 	 * Multiply this matrix by the tuple t and and place the result into the
 	 * tuple "result".
@@ -739,15 +744,15 @@ public class Transform2D extends Matrix3f {
 	 *                  [   1     ]
 	 * </pre>
 	 * 
-	 * @param t
+	 * @param tuple
 	 *            the tuple to be multiplied by this matrix
 	 * @param result
 	 *            the tuple into which the product is placed
 	 */
-	public void transform(Tuple2D<?> t, Tuple2D<?> result) {
+	public void transform(Tuple2D<?> tuple, Tuple2D<?> result) {
 		result.set(
-				this.m00 * t.getX() + this.m01 * t.getY() + this.m02,
-				this.m10 * t.getX() + this.m11 * t.getY() + this.m12);
+				this.m00 * tuple.getX() + this.m01 * tuple.getY() + this.m02,
+				this.m10 * tuple.getX() + this.m11 * tuple.getY() + this.m12);
 	}
 
 	/**
@@ -851,23 +856,23 @@ public class Transform2D extends Matrix3f {
 	 * The <code>determinant</code> method can be used to determine if this
 	 * transform has no inverse, in which case an exception will be
 	 * thrown if the <code>createInverse</code> method is called.
-	 * @param m is the matrix to invert
+	 * @param matrix is the matrix to invert
 	 * @see #determinant()
 	 * @throws SingularMatrixException if the matrix cannot be inverted.
 	 */
 	@Override
-	public void invert(Matrix3f m) {
-		double det = m.getM00() * m.getM11() - m.getM01() * m.getM10();
+	public void invert(Matrix3f matrix) {
+		double det = matrix.getM00() * matrix.getM11() - matrix.getM01() * matrix.getM10();
 		if (MathUtil.isEpsilonZero(det)) {
 			throw new SingularMatrixException("Determinant is too small: "+det); //$NON-NLS-1$
 		}
 		set(
-				m.getM11() / det, 
-				-m.getM01() / det, 
-				(m.getM01() * m.getM12() - m.getM11() * m.getM02()) / det, 
-				-m.getM10() / det, 
-				m.getM00() / det, 
-				(m.getM10() * m.getM02() - m.getM00() * m.getM12()) / det);
+				matrix.getM11() / det, 
+				-matrix.getM01() / det, 
+				(matrix.getM01() * matrix.getM12() - matrix.getM11() * matrix.getM02()) / det, 
+				-matrix.getM10() / det, 
+				matrix.getM00() / det, 
+				(matrix.getM10() * matrix.getM02() - matrix.getM00() * matrix.getM12()) / det);
 	}
 
 }

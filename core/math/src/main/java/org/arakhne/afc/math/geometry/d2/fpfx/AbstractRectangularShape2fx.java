@@ -64,10 +64,20 @@ public abstract class AbstractRectangularShape2fx<IT extends AbstractRectangular
 
 	@Override
 	public void setFromCorners(double x1, double y1, double x2, double y2) {
-		minXProperty().set(x1);
-		maxXProperty().set(x2);
-		minYProperty().set(y1);
-		maxYProperty().set(y2);
+		if (x1 <= x2) {
+			minXProperty().set(x1);
+			maxXProperty().set(x2);
+		} else {
+			minXProperty().set(x2);
+			maxXProperty().set(x1);
+		}
+		if (y1 <= y2) {
+			minYProperty().set(y1);
+			maxYProperty().set(y2);
+		} else {
+			minYProperty().set(y2);
+			maxYProperty().set(y1);
+		}
 	}
 
 	@Pure
@@ -105,7 +115,6 @@ public abstract class AbstractRectangularShape2fx<IT extends AbstractRectangular
 					double currentMax = getMaxX();
 					if (currentMin > currentMax) {
 						// min-max constrain is broken
-						set(currentMax);
 						maxXProperty().set(currentMin);
 					}
 				}
@@ -149,7 +158,6 @@ public abstract class AbstractRectangularShape2fx<IT extends AbstractRectangular
 					double currentMin = getMinX();
 					if (currentMin > currentMax) {
 						// min-max constrain is broken
-						set(currentMin);
 						minXProperty().set(currentMax);
 					}
 				}
@@ -193,7 +201,6 @@ public abstract class AbstractRectangularShape2fx<IT extends AbstractRectangular
 					double currentMax = getMaxY();
 					if (currentMin > currentMax) {
 						// min-max constrain is broken
-						set(currentMax);
 						maxYProperty().set(currentMin);
 					}
 				}
@@ -237,30 +244,12 @@ public abstract class AbstractRectangularShape2fx<IT extends AbstractRectangular
 					double currentMin = getMinY();
 					if (currentMin > currentMax) {
 						// min-max constrain is broken
-						set(currentMin);
 						minYProperty().set(currentMax);
 					}
 				}
 			};
 		}
 		return this.maxY;
-	}
-
-	@Pure
-	@Override
-	public boolean equals(Object obj) {
-		try {
-			if (getClass().isAssignableFrom(obj.getClass())) {
-				RectangularShape2afp<?, ?, ?, ?, ?> shape = (RectangularShape2afp<?, ?, ?, ?, ?>) obj;
-				return getMinX() == shape.getMinX()
-						&& getMinY() == shape.getMinY()
-						&& getMaxX() == shape.getMaxX()
-						&& getMaxY() == shape.getMaxY();
-			}
-		} catch (Throwable exception) {
-			//
-		}
-		return false;
 	}
 
 	@Pure

@@ -111,49 +111,49 @@ public class OrientedRectangle2fTest extends AbstractShape2fTestCase<OrientedRec
 
 	private final Random random = new Random();
 	
-	private final Point2f P1 = new Point2f(-1., -2.);
-	private final Point2f P2 = new Point2f(1., 0.);
-	private final Point2f P3 = new Point2f(2., -1.);
-	private final Point2f P4 = new Point2f(2., -1.);
+	private final Point2fx P1 = new Point2fx(-1., -2.);
+	private final Point2fx P2 = new Point2fx(1., 0.);
+	private final Point2fx P3 = new Point2fx(2., -1.);
+	private final Point2fx P4 = new Point2fx(2., -1.);
 	
-	private final Vector2f R = new Vector2f(0.92388, 0.38268);
-	private final Vector2f S = new Vector2f(-0.38268, 0.92388);
+	private final Vector2fx R = new Vector2fx(0.92388, 0.38268);
+	private final Vector2fx S = new Vector2fx(-0.38268, 0.92388);
 	
-	private final Point2f Q = new Point2f(0.29291, -0.99996);
+	private final Point2fx Q = new Point2fx(0.29291, -0.99996);
 
 	private final double u = 1.5772;
 	private final double v = 0.65326;
 	
-	private final Vector2f E1 = new Vector2f(1.2071, 1.2071);
-	private final Vector2f E2 = new Vector2f(1.7071e+00, 9.9132e-06);
-	private final Vector2f E3 = new Vector2f(-1.7071e+00, -9.9132e-06);
-	private final Vector2f E4 = new Vector2f(-1.2071, -1.2071);
+	private final Vector2fx E1 = new Vector2fx(1.2071, 1.2071);
+	private final Vector2fx E2 = new Vector2fx(1.7071e+00, 9.9132e-06);
+	private final Vector2fx E3 = new Vector2fx(-1.7071e+00, -9.9132e-06);
+	private final Vector2fx E4 = new Vector2fx(-1.2071, -1.2071);
 
-	private final Point2f V1 = new Point2f(1.50002, 0.20711);
-	private final Point2f V2 = new Point2f(2.00000, -0.99995);
-	private final Point2f V3 = new Point2f(-1.41417, -0.99997);
-	private final Point2f V4 = new Point2f(-0.91420, -2.20704);
+	private final Point2fx V1 = new Point2fx(1.50002, 0.20711);
+	private final Point2fx V2 = new Point2fx(2.00000, -0.99995);
+	private final Point2fx V3 = new Point2fx(-1.41417, -0.99997);
+	private final Point2fx V4 = new Point2fx(-0.91420, -2.20704);
 	
 	/** aR = u * R
 	 */
-	private Vector2f aR;
+	private Vector2fx aR;
 	/** bS = v * S
 	 */
-	private Vector2f bS;
+	private Vector2fx bS;
 	/** maR = -u * R
 	 */
-	private Vector2f maR;
+	private Vector2fx maR;
 	/** mbS = -v * S
 	 */
-	private Vector2f mbS;
+	private Vector2fx mbS;
 	
 	/** Expected vertices
 	 */
-	private Point2f[] expectedVertices;
+	private Point2fx[] expectedVertices;
 	
 	/** Expected axis vectors from center to vertices
 	 */
-	private Vector2f[] expectedVectors;
+	private Vector2fx[] expectedVectors;
 
 	@Override
 	protected OrientedRectangle2f createShape() {
@@ -167,18 +167,18 @@ public class OrientedRectangle2fTest extends AbstractShape2fTestCase<OrientedRec
 	 */
 	@Before
 	public void setUp() throws Exception {
-		this.aR = new Vector2f();
+		this.aR = new Vector2fx();
 		this.aR.scale(this.u, this.R);
-		this.bS = new Vector2f();
+		this.bS = new Vector2fx();
 		this.bS.scale(this.v, this.S);
-		this.maR = new Vector2f(this.aR);
+		this.maR = new Vector2fx(this.aR);
 		this.maR.negate();
-		this.mbS = new Vector2f(this.bS);
+		this.mbS = new Vector2fx(this.bS);
 		this.mbS.negate();
-		this.expectedVertices = new Point2f[] {
+		this.expectedVertices = new Point2fx[] {
 			this.V1, this.V2, this.V3, this.V4
 		};
-		this.expectedVectors = new Vector2f[] {
+		this.expectedVectors = new Vector2fx[] {
 				this.E1, this.E3, this.E4, this.E2
 		};
 		super.setUp();
@@ -214,11 +214,11 @@ public class OrientedRectangle2fTest extends AbstractShape2fTestCase<OrientedRec
 	 */
 	@Test
 	public void orientedRectangleTuple2dArray() {
-		Point2f center = this.r.getCenter();
+		Point2fx center = this.r.getCenter();
 		double e1 = this.r.getFirstAxisExtent();
 		double e2 = this.r.getSecondAxisExtent();
-		Vector2f axis1 = this.r.getFirstAxis();
-		Vector2f axis2 = this.r.getSecondAxis();
+		Vector2fx axis1 = this.r.getFirstAxis();
+		Vector2fx axis2 = this.r.getSecondAxis();
 		
 		assertEpsilonEquals(this.R, axis1);
 		assertEpsilonEquals(this.S, axis2);
@@ -305,7 +305,7 @@ public class OrientedRectangle2fTest extends AbstractShape2fTestCase<OrientedRec
 	public void getCenter() {
 		assertFalse(this.r.isEmpty());
 	
-		Point2f center = this.r.getCenter();
+		Point2fx center = this.r.getCenter();
 		assertEpsilonEquals(this.Q, center);
 	}
 
@@ -385,11 +385,11 @@ public class OrientedRectangle2fTest extends AbstractShape2fTestCase<OrientedRec
 	public void translateFloatFloat() {
 		assertFalse(this.r.isEmpty());
 		
-		Vector2f vect = randomVector2f();
+		Vector2fx vect = randomVector2f();
 		
 		this.r.translate(vect.getX(), vect.getY());
 		
-		Point2f expectedPt = new Point2f();
+		Point2fx expectedPt = new Point2fx();
 		
 		expectedPt.add(this.Q, vect);
 		assertEpsilonEquals(expectedPt, this.r.getCenter());
@@ -421,7 +421,7 @@ public class OrientedRectangle2fTest extends AbstractShape2fTestCase<OrientedRec
 		assertEpsilonEquals(0., this.r.distance(this.V3));
 		assertEpsilonEquals(0., this.r.distance(this.V4));
 		
-		Point2f p = new Point2f();
+		Point2fx p = new Point2fx();
 
 		// Points near a side and on one of the axis 
 		p.scaleAdd(this.u * 4., this.R, this.Q);
@@ -471,7 +471,7 @@ public class OrientedRectangle2fTest extends AbstractShape2fTestCase<OrientedRec
 		assertEpsilonEquals(0., this.r.distanceSquared(this.V3));
 		assertEpsilonEquals(0., this.r.distanceSquared(this.V4));
 		
-		Point2f p = new Point2f();
+		Point2fx p = new Point2fx();
 
 		// Points near a side and on one of the axis 
 		p.scaleAdd(this.u * 4., this.R, this.Q);
@@ -520,7 +520,7 @@ public class OrientedRectangle2fTest extends AbstractShape2fTestCase<OrientedRec
 		assertEpsilonEquals(0., this.r.distanceL1(this.V3));
 		assertEpsilonEquals(0., this.r.distanceL1(this.V4));
 		
-		Point2f p = new Point2f();
+		Point2fx p = new Point2fx();
 
 		// Points near a side and on one of the axis 
 		p.scaleAdd(this.u * 4., this.R, this.Q);
@@ -569,7 +569,7 @@ public class OrientedRectangle2fTest extends AbstractShape2fTestCase<OrientedRec
 		assertEpsilonEquals(0., this.r.distanceLinf(this.V3));
 		assertEpsilonEquals(0., this.r.distanceLinf(this.V4));
 		
-		Point2f p = new Point2f();
+		Point2fx p = new Point2fx();
 
 		// Points near a side and on one of the axis 
 		p.scaleAdd(this.u * 4., this.R, this.Q);
@@ -602,7 +602,7 @@ public class OrientedRectangle2fTest extends AbstractShape2fTestCase<OrientedRec
 	public void setCenterPoint2D() {
 		assertFalse(this.r.isEmpty());
 		
-		Point2f p = randomPoint2f();
+		Point2fx p = randomPoint2f();
 		
 		this.r.setCenter(p);
 		
@@ -613,15 +613,15 @@ public class OrientedRectangle2fTest extends AbstractShape2fTestCase<OrientedRec
 		assertEpsilonEquals(0., this.r.getFirstAxisExtent());
 		assertEpsilonEquals(0., this.r.getSecondAxisExtent());
 
-		assertEquals(new Vector2f(1.,0.), this.r.getFirstAxis());
-		assertEquals(new Vector2f(0.,1.), this.r.getSecondAxis());
+		assertEquals(new Vector2fx(1.,0.), this.r.getFirstAxis());
+		assertEquals(new Vector2fx(0.,1.), this.r.getSecondAxis());
 	}
 
 	@Test
 	public void setCenterDoubleDouble() {
 		assertFalse(this.r.isEmpty());
 		
-		Point2f p = randomPoint2f();
+		Point2fx p = randomPoint2f();
 		
 		this.r.setCenter(p.getX(), p.getY());
 		
@@ -632,8 +632,8 @@ public class OrientedRectangle2fTest extends AbstractShape2fTestCase<OrientedRec
 		assertEpsilonEquals(0., this.r.getFirstAxisExtent());
 		assertEpsilonEquals(0., this.r.getSecondAxisExtent());
 
-		assertEquals(new Vector2f(1.,0.), this.r.getFirstAxis());
-		assertEquals(new Vector2f(0.,1.), this.r.getSecondAxis());
+		assertEquals(new Vector2fx(1.,0.), this.r.getFirstAxis());
+		assertEquals(new Vector2fx(0.,1.), this.r.getSecondAxis());
 	}
 
 	//-------------------------------------------
@@ -658,7 +658,7 @@ public class OrientedRectangle2fTest extends AbstractShape2fTestCase<OrientedRec
 		assertEpsilonEquals(this.P3, this.r.getClosestPointTo(this.P3));
 		assertEpsilonEquals(this.P4, this.r.getClosestPointTo(this.P4));
 
-		Point2f p = new Point2f();
+		Point2fx p = new Point2fx();
 		
 		// Near V1
 		p.scaleAdd(this.u * 3., this.R, this.Q);
@@ -685,7 +685,7 @@ public class OrientedRectangle2fTest extends AbstractShape2fTestCase<OrientedRec
 		assertEpsilonEquals(this.V3, this.r.getFarthestPointTo(this.P3));
 		assertEpsilonEquals(this.V3, this.r.getFarthestPointTo(this.P4));
 
-		Point2f p = new Point2f();
+		Point2fx p = new Point2fx();
 		
 		// Near V8 -> V1
 		p.scaleAdd(-this.u * 4., this.R, this.Q);
@@ -698,11 +698,11 @@ public class OrientedRectangle2fTest extends AbstractShape2fTestCase<OrientedRec
 		assertEpsilonEquals(this.V2, this.r.getFarthestPointTo(p));
 	}
 
-	private Point2f mkPt(Point2f p) {
-		Vector2f vv = new Vector2f();
+	private Point2fx mkPt(Point2fx p) {
+		Vector2fx vv = new Vector2fx();
 		vv.sub(this.Q, p);
 		vv.scale(MathConstants.EPSILON);
-		Point2f p2 = new Point2f(p);
+		Point2fx p2 = new Point2fx(p);
 		p2.add(vv);
 		return p2;
 	}
@@ -718,7 +718,7 @@ public class OrientedRectangle2fTest extends AbstractShape2fTestCase<OrientedRec
 		assertTrue(this.r.contains(mkPt(this.P3)));
 		assertTrue(this.r.contains(mkPt(this.P4)));
 
-		Point2f p = new Point2f();
+		Point2fx p = new Point2fx();
 		
 		p.x = -1000.;
 		p.y = -1000.;
@@ -733,8 +733,8 @@ public class OrientedRectangle2fTest extends AbstractShape2fTestCase<OrientedRec
 	public void intersectsRectangle2f() {
 		assertFalse(this.r.isEmpty());
 
-		Point2f p1 = new Point2f();
-		Point2f p2 = new Point2f();
+		Point2fx p1 = new Point2fx();
+		Point2fx p2 = new Point2fx();
 		
 		double minE = Math.min(this.u, this.v);
 		double maxE = Math.max(this.u, this.v);
@@ -780,7 +780,7 @@ public class OrientedRectangle2fTest extends AbstractShape2fTestCase<OrientedRec
 	public void intersectsCircle2f() {
 		assertFalse(this.r.isEmpty());
 
-		Point2f c = new Point2f();
+		Point2fx c = new Point2fx();
 		double r;
 		
 		double minE = Math.min(this.u, this.v);
@@ -843,8 +843,8 @@ public class OrientedRectangle2fTest extends AbstractShape2fTestCase<OrientedRec
 		
 		AbstractRectangle2F bounds = this.r.toBoundingBox();
 
-		Point2f center = new Point2f();
-		Vector2f axis1 = new Vector2f();
+		Point2fx center = new Point2fx();
+		Vector2fx axis1 = new Vector2fx();
 		double extent1 = 0.;
 		double extent2 = 0.;
 		

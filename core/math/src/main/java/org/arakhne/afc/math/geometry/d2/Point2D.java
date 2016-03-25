@@ -135,189 +135,189 @@ public interface Point2D extends Tuple2D<Point2D> {
 
 	/**
 	 * Computes the square of the distance between this point and point p1.
-	 * @param p1 the other point
+	 * @param point the other point
 	 * @return the distance.
 	 */
 	@Pure
-	default double getDistanceSquared(Point2D p1) {
-		return getDistanceSquaredPointPoint(getX(), getY(), p1.getX(), p1.getY());
+	default double getDistanceSquared(Point2D point) {
+		return getDistanceSquaredPointPoint(getX(), getY(), point.getX(), point.getY());
 	}
 	
 	/**
 	 * Computes the distance between this point and point p1.
-	 * @param p1 the other point
+	 * @param point the other point
 	 * @return the distance. 
 	 */    
 	@Pure
-	default double getDistance(Point2D p1) {
-		return getDistancePointPoint(getX(), getY(), p1.getX(), p1.getY());
+	default double getDistance(Point2D point) {
+		return getDistancePointPoint(getX(), getY(), point.getX(), point.getY());
 	}
 
 	/**
 	 * Computes the L-1 (Manhattan) distance between this point and
 	 * point p1.  The L-1 distance is equal to abs(x1-x2) + abs(y1-y2).
-	 * @param p1 the other point
+	 * @param point the other point
 	 * @return the distance.
 	 */
 	@Pure
-	default double getDistanceL1(Point2D p1) {
-		return getDistanceL1PointPoint(getX(), getY(), p1.getX(), p1.getY());
+	default double getDistanceL1(Point2D point) {
+		return getDistanceL1PointPoint(getX(), getY(), point.getX(), point.getY());
 	}
 
 	/**
 	 * Computes the L-infinite distance between this point and
 	 * point p1.  The L-infinite distance is equal to 
 	 * MAX[abs(x1-x2), abs(y1-y2)]. 
-	 * @param p1 the other point
+	 * @param point the other point
 	 * @return the distance.
 	 */
 	@Pure
-	default double getDistanceLinf(Point2D p1) {
-		return getDistanceLinfPointPoint(getX(), getY(), p1.getX(), p1.getY());
+	default double getDistanceLinf(Point2D point) {
+		return getDistanceLinfPointPoint(getX(), getY(), point.getX(), point.getY());
 	}
 
 	/**
 	 * Computes the L-1 (Manhattan) distance between this point and
 	 * point p1.  The L-1 distance is equal to abs(x1-x2) + abs(y1-y2).
-	 * @param p1 the other point
+	 * @param point the other point
 	 * @return the distance.
 	 */
 	@Pure
-	default int getIdistanceL1(Point2D p1) {
-		return Math.abs(ix() - p1.ix()) + Math.abs(iy() - p1.iy());
+	default int getIdistanceL1(Point2D point) {
+		return Math.abs(ix() - point.ix()) + Math.abs(iy() - point.iy());
 	}
 
 	/**
 	 * Computes the L-infinite distance between this point and
 	 * point p1.  The L-infinite distance is equal to 
 	 * MAX[abs(x1-x2), abs(y1-y2)]. 
-	 * @param p1 the other point
+	 * @param point the other point
 	 * @return the distance.
 	 */
 	@Pure
-	default int getIdistanceLinf(Point2D p1) {
-		return Math.max(Math.abs(ix() - p1.ix()), Math.abs(iy() - p1.iy()));
+	default int getIdistanceLinf(Point2D point) {
+		return Math.max(Math.abs(ix() - point.ix()), Math.abs(iy() - point.iy()));
 	}
 
 	/**
 	 * Sets the value of this tuple to the sum of tuples t1 and t2.
-	 * @param t1 the first tuple
-	 * @param t2 the second tuple
+	 * @param point the first tuple
+	 * @param vector the second tuple
 	 */
-	default void add(Point2D t1, Vector2D t2) {
-		set(t1.getX() + t2.getX(),
-			t1.getY() + t2.getY());
+	default void add(Point2D point, Vector2D vector) {
+		set(point.getX() + vector.getX(),
+			point.getY() + vector.getY());
 	}
 
 	/**
 	 * Sets the value of this tuple to the sum of tuples t1 and t2.
-	 * @param t1 the first tuple
-	 * @param t2 the second tuple
+	 * @param vector the first tuple
+	 * @param point the second tuple
 	 */
-	default void add(Vector2D t1, Point2D t2) {
-		set(t1.getX() + t2.getX(),
-			t1.getY() + t2.getY());
+	default void add(Vector2D vector, Point2D point) {
+		set(vector.getX() + point.getX(),
+			vector.getY() + point.getY());
 	}
 	
 	/**
 	 * Sets the value of this tuple to the sum of itself and t1.
-	 * @param t1 the other tuple
+	 * @param vector the other tuple
 	 */
-	default void add(Vector2D t1) {
-		set(getX() + t1.getX(),
-			getY() + t1.getY());
+	default void add(Vector2D vector) {
+		set(getX() + vector.getX(),
+			getY() + vector.getY());
 	}
 
 	/**
 	 * Sets the value of this tuple to the scalar multiplication
-	 * of tuple t1 plus tuple t2 (this = s*t1 + t2).
-	 * @param s the scalar value
-	 * @param t1 the tuple to be multipled
-	 * @param t2 the tuple to be added
+	 * of tuple t1 plus tuple t2 (this = s*vector + point).
+	 * @param scale the scalar value
+	 * @param vector the tuple to be multipled
+	 * @param point the tuple to be added
 	 */
-	default void scaleAdd(int s, Vector2D t1, Point2D t2) {
-		set(s * t1.getX() + t2.getX(),
-			s * t1.getY() + t2.getY());
+	default void scaleAdd(int scale, Vector2D vector, Point2D point) {
+		set(scale * vector.getX() + point.getX(),
+			scale * vector.getY() + point.getY());
 	}
 
 	/**
 	 * Sets the value of this tuple to the scalar multiplication
-	 * of tuple t1 plus tuple t2 (this = s*t1 + t2).
-	 * @param s the scalar value
-	 * @param t1 the tuple to be multipled
-	 * @param t2 the tuple to be added
+	 * of tuple t1 plus tuple t2 (this = s*vector + point).
+	 * @param scale the scalar value
+	 * @param vector the tuple to be multipled
+	 * @param point the tuple to be added
 	 */
-	default void scaleAdd(double s, Vector2D t1, Point2D t2) {
-		set(s * t1.getX() + t2.getX(),
-			s * t1.getY() + t2.getY());
+	default void scaleAdd(double scale, Vector2D vector, Point2D point) {
+		set(scale * vector.getX() + point.getX(),
+			scale * vector.getY() + point.getY());
 	}
 
 	/**
 	 * Sets the value of this tuple to the scalar multiplication
-	 * of tuple t1 plus tuple t2 (this = s*t1 + t2).
-	 * @param s the scalar value
-	 * @param t1 the tuple to be multipled
-	 * @param t2 the tuple to be added
+	 * of tuple t1 plus tuple t2 (this = s*point + vector).
+	 * @param scale the scalar value
+	 * @param point the tuple to be multipled
+	 * @param vector the tuple to be added
 	 */
-	default void scaleAdd(int s, Point2D t1, Vector2D t2) {
-		set(s * t1.getX() + t2.getX(),
-			s * t1.getY() + t2.getY());
+	default void scaleAdd(int scale, Point2D point, Vector2D vector) {
+		set(scale * point.getX() + vector.getX(),
+			scale * point.getY() + vector.getY());
 	}
 
 	/**
 	 * Sets the value of this tuple to the scalar multiplication
-	 * of tuple t1 plus tuple t2 (this = s*t1 + t2).
-	 * @param s the scalar value
-	 * @param t1 the tuple to be multipled
-	 * @param t2 the tuple to be added
+	 * of tuple t1 plus tuple t2 (this = s*point + vector).
+	 * @param scale the scalar value
+	 * @param point the tuple to be multipled
+	 * @param vector the tuple to be added
 	 */
-	default void scaleAdd(double s, Point2D t1, Vector2D t2) {
-		set(s * t1.getX() + t2.getX(),
-			s * t1.getY() + t2.getY());
+	default void scaleAdd(double scale, Point2D point, Vector2D vector) {
+		set(scale * point.getX() + vector.getX(),
+			scale * point.getY() + vector.getY());
 	}
 
 	/**
 	 * Sets the value of this tuple to the scalar multiplication
-	 * of itself and then adds tuple t1 (this = s*this + t1).
-	 * @param s the scalar value
-	 * @param t1 the tuple to be added
+	 * of itself and then adds tuple t1 (this = s*this + vector).
+	 * @param scale the scalar value
+	 * @param vector the tuple to be added
 	 */
-	default void scaleAdd(int s, Vector2D t1) {
-		set(s * getX() + t1.getX(),
-			s * getY() + t1.getY());
+	default void scaleAdd(int scale, Vector2D vector) {
+		set(scale * getX() + vector.getX(),
+			scale * getY() + vector.getY());
 	}
 
 	/**
 	 * Sets the value of this tuple to the scalar multiplication
-	 * of itself and then adds tuple t1 (this = s*this + t1).
-	 * @param s the scalar value
-	 * @param t1 the tuple to be added
+	 * of itself and then adds tuple t1 (this = s*this + vector).
+	 * @param scale the scalar value
+	 * @param vector the tuple to be added
 	 */
-	default void scaleAdd(double s, Vector2D t1) {
-		set(s * getX() + t1.getX(),
-			s * getY() + t1.getY());
+	default void scaleAdd(double scale, Vector2D vector) {
+		set(scale * getX() + vector.getX(),
+			scale * getY() + vector.getY());
 	}
 
 	
 	/**
 	 * Sets the value of this tuple to the difference
-	 * of tuples t1 and t2 (this = t1 - t2).
-	 * @param t1 the first tuple
-	 * @param t2 the second tuple
+	 * of tuples point and vector (this = point - vector).
+	 * @param point the first tuple
+	 * @param vector the second tuple
 	 */
-	default void sub(Point2D t1, Vector2D t2) {
-		set(t1.getX() - t2.getX(),
-			t1.getY() - t2.getY());
+	default void sub(Point2D point, Vector2D vector) {
+		set(point.getX() - vector.getX(),
+			point.getY() - vector.getY());
 	}
 
 	/**
 	 * Sets the value of this tuple to the difference
-	 * of itself and t1 (this = this - t1).
-	 * @param t1 the other tuple
+	 * of itself and the given vector (this = this - vector).
+	 * @param vector the other tuple
 	 */
-	default void sub(Vector2D t1) {
-		set(getX() - t1.getX(),
-			getY() - t1.getY());
+	default void sub(Vector2D vector) {
+		set(getX() - vector.getX(),
+			getY() - vector.getY());
 	}
 
 	/** Replies an unmodifiable copy of this point.
@@ -326,77 +326,5 @@ public interface Point2D extends Tuple2D<Point2D> {
 	 */
 	@Pure
 	Point2D toUnmodifiable();
-
-	/** Unmodifiable2D Point.
-	 * 
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 * @since 13.0
-	 */
-	public interface UnmodifiablePoint2D extends UnmodifiableTuple2D<Point2D>, Point2D {
-
-		@Override
-		default void add(Point2D t1, Vector2D t2) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		default void add(Vector2D t1, Point2D t2) {
-			throw new UnsupportedOperationException();
-		}
-		
-		@Override
-		default void add(Vector2D t1) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		default void scaleAdd(int s, Vector2D t1, Point2D t2) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		default void scaleAdd(double s, Vector2D t1, Point2D t2) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		default void scaleAdd(int s, Point2D t1, Vector2D t2) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		default void scaleAdd(double s, Point2D t1, Vector2D t2) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		default void scaleAdd(int s, Vector2D t1) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		default void scaleAdd(double s, Vector2D t1) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		default void sub(Point2D t1, Vector2D t2) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		default void sub(Vector2D t1) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		default Point2D toUnmodifiable() {
-			return this;
-		}
-
-	}
 	
 }

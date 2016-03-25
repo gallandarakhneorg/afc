@@ -96,6 +96,11 @@
 			  <systemPath>${java.home}/lib/ext/jfxrt.jar</systemPath>
 			</dependency>
 			<dependency>
+				<groupId>org.eclipse.xtext</groupId>
+				<artifactId>org.eclipse.xtext.xbase.lib</artifactId>
+			  <version>2.9.0</version>
+			</dependency>
+			<dependency>
 				<groupId>com.google.android</groupId>
 				<artifactId>android</artifactId>
 				<version>4.1.1.4</version>
@@ -166,6 +171,13 @@
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
 				<version>4.12</version>
+				<scope>test</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.mockito</groupId>
+				<artifactId>mockito-all</artifactId>
+				<version>2.0.2-beta</version>
+				<scope>test</scope>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

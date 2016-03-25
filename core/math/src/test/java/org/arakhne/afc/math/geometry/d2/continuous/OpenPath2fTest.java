@@ -131,19 +131,19 @@ public class OpenPath2fTest extends AbstractPath2fTestCase {
 	public void getClosestPointToPoint2D() {
 		Point2D p;
 
-		p = this.r.getClosestPointTo(new Point2f(0f, 0f));
+		p = this.r.getClosestPointTo(new Point2fx(0f, 0f));
 		assertEpsilonEquals(1f, p.getX());
 		assertEpsilonEquals(1f, p.getY());
 
-		p = this.r.getClosestPointTo(new Point2f(4f, 0f));
+		p = this.r.getClosestPointTo(new Point2fx(4f, 0f));
 		assertEpsilonEquals(3f, p.getX());
 		assertEpsilonEquals(1.25f, p.getY());
 
-		p = this.r.getClosestPointTo(new Point2f(4f, 2f));
+		p = this.r.getClosestPointTo(new Point2fx(4f, 2f));
 		assertEpsilonEquals(4.28125f, p.getX());
 		assertEpsilonEquals(2.11724f, p.getY());
 
-		p = this.r.getClosestPointTo(new Point2f(1f, 0f));
+		p = this.r.getClosestPointTo(new Point2fx(1f, 0f));
 		assertEpsilonEquals(1f, p.getX());
 		assertEpsilonEquals(1f, p.getY());
 	}
@@ -155,19 +155,19 @@ public class OpenPath2fTest extends AbstractPath2fTestCase {
 	public void getFarthestPointToPoint2D() {
 		Point2D p;
 
-		p = this.r.getFarthestPointTo(new Point2f(0f, 0f));
+		p = this.r.getFarthestPointTo(new Point2fx(0f, 0f));
 		assertEpsilonEquals(7f, p.getX());
 		assertEpsilonEquals(-5f, p.getY());
 
-		p = this.r.getFarthestPointTo(new Point2f(4f, 0f));
+		p = this.r.getFarthestPointTo(new Point2fx(4f, 0f));
 		assertEpsilonEquals(7f, p.getX());
 		assertEpsilonEquals(-5f, p.getY());
 
-		p = this.r.getFarthestPointTo(new Point2f(4f, 2f));
+		p = this.r.getFarthestPointTo(new Point2fx(4f, 2f));
 		assertEpsilonEquals(7f, p.getX());
 		assertEpsilonEquals(-5f, p.getY());
 
-		p = this.r.getFarthestPointTo(new Point2f(10f, 0f));
+		p = this.r.getFarthestPointTo(new Point2fx(10f, 0f));
 		assertEpsilonEquals(1f, p.getX());
 		assertEpsilonEquals(1f, p.getY());
 	}
@@ -223,45 +223,45 @@ public class OpenPath2fTest extends AbstractPath2fTestCase {
 	@Test
 	@Override
 	public void distancePoint2D() {
-		assertEpsilonEquals(1.414213562f, this.r.distance(new Point2f(0f, 0f)));
-		assertEpsilonEquals(1.600781059f, this.r.distance(new Point2f(4f, 0f)));
-		assertEpsilonEquals(0.304707696f, this.r.distance(new Point2f(4f, 2f)));
-		assertEpsilonEquals(1f, this.r.distance(new Point2f(1f, 0f)));
+		assertEpsilonEquals(1.414213562f, this.r.distance(new Point2fx(0f, 0f)));
+		assertEpsilonEquals(1.600781059f, this.r.distance(new Point2fx(4f, 0f)));
+		assertEpsilonEquals(0.304707696f, this.r.distance(new Point2fx(4f, 2f)));
+		assertEpsilonEquals(1f, this.r.distance(new Point2fx(1f, 0f)));
 	}
 
 	@Test
 	@Override
 	public void distanceSquaredPoint2D() {
-		assertEpsilonEquals(2f, this.r.distanceSquared(new Point2f(0f, 0f)));
-		assertEpsilonEquals(2.5625f, this.r.distanceSquared(new Point2f(4f, 0f)));
-		assertEpsilonEquals(.09284678f, this.r.distanceSquared(new Point2f(4f, 2f)));
-		assertEpsilonEquals(1f, this.r.distanceSquared(new Point2f(1f, 0f)));
+		assertEpsilonEquals(2f, this.r.distanceSquared(new Point2fx(0f, 0f)));
+		assertEpsilonEquals(2.5625f, this.r.distanceSquared(new Point2fx(4f, 0f)));
+		assertEpsilonEquals(.09284678f, this.r.distanceSquared(new Point2fx(4f, 2f)));
+		assertEpsilonEquals(1f, this.r.distanceSquared(new Point2fx(1f, 0f)));
 	}
 
 	@Test
 	@Override
 	public void distanceL1Point2D() {
 		// (1,1)
-		assertEpsilonEquals(2f, this.r.distanceL1(new Point2f(0f, 0f)));
+		assertEpsilonEquals(2f, this.r.distanceL1(new Point2fx(0f, 0f)));
 		// (3,1.25)
-		assertEpsilonEquals(2.25f, this.r.distanceL1(new Point2f(4f, 0f)));
+		assertEpsilonEquals(2.25f, this.r.distanceL1(new Point2fx(4f, 0f)));
 		// (4.28125,2.11724)
-		assertEpsilonEquals(.39849f, this.r.distanceL1(new Point2f(4f, 2f)));
+		assertEpsilonEquals(.39849f, this.r.distanceL1(new Point2fx(4f, 2f)));
 		// (1,1)
-		assertEpsilonEquals(1f, this.r.distanceL1(new Point2f(1f, 0f)));
+		assertEpsilonEquals(1f, this.r.distanceL1(new Point2fx(1f, 0f)));
 	}
 
 	@Test
 	@Override
 	public void distanceLinfPoint2D() {
 		// (1,1)
-		assertEpsilonEquals(1f, this.r.distanceLinf(new Point2f(0f, 0f)));
+		assertEpsilonEquals(1f, this.r.distanceLinf(new Point2fx(0f, 0f)));
 		// (3,1.25)
-		assertEpsilonEquals(1.25f, this.r.distanceLinf(new Point2f(4f, 0f)));
+		assertEpsilonEquals(1.25f, this.r.distanceLinf(new Point2fx(4f, 0f)));
 		// (4.28125,2.11724)
-		assertEpsilonEquals(.28125f, this.r.distanceLinf(new Point2f(4f, 2f)));
+		assertEpsilonEquals(.28125f, this.r.distanceLinf(new Point2fx(4f, 2f)));
 		// (1,1)
-		assertEpsilonEquals(1f, this.r.distanceLinf(new Point2f(1f, 0f)));
+		assertEpsilonEquals(1f, this.r.distanceLinf(new Point2fx(1f, 0f)));
 	}
 
 	@Test
@@ -744,11 +744,11 @@ public class OpenPath2fTest extends AbstractPath2fTestCase {
 		assertElement(pi, PathElementType.CURVE_TO, 5f, -1f, 6f, 5f, 7f, -5f);
 		assertNoElement(pi);
 
-		assertTrue(this.r.containsControlPoint(new Point2f(2f, 2f)));
-		assertFalse(this.r.containsControlPoint(new Point2f(4f, 4f)));
-		assertTrue(this.r.containsControlPoint(new Point2f(6f, 5f)));
-		assertFalse(this.r.containsControlPoint(new Point2f(-1f, 6f)));
-		assertFalse(this.r.containsControlPoint(new Point2f(1234f, 5678f)));
+		assertTrue(this.r.containsControlPoint(new Point2fx(2f, 2f)));
+		assertFalse(this.r.containsControlPoint(new Point2fx(4f, 4f)));
+		assertTrue(this.r.containsControlPoint(new Point2fx(6f, 5f)));
+		assertFalse(this.r.containsControlPoint(new Point2fx(-1f, 6f)));
+		assertFalse(this.r.containsControlPoint(new Point2fx(1234f, 5678f)));
 	}
 
 	/**

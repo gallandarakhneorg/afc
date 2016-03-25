@@ -115,6 +115,26 @@ public interface Shape2ai<
 	@Pure
 	public boolean intersects(Segment2ai<?, ?, ?, ?, ?> s);
 		
+	/** Replies if this shape is intersecting the given path.
+	 * 
+	 * @param s
+	 * @return <code>true</code> if this shape is intersecting the given shape;
+	 * <code>false</code> if there is no intersection.
+	 */
+	@Pure
+	default boolean intersects(Path2ai<?, ?, ?, ?, ?> s) {
+		return intersects(s.getPathIterator(/*MathConstants.SPLINE_APPROXIMATION_RATIO*/));
+	}
+
+	/** Replies if this shape is intersecting the path described by the given iterator.
+	 * 
+	 * @param s
+	 * @return <code>true</code> if this shape is intersecting the given shape;
+	 * <code>false</code> if there is no intersection.
+	 */
+	@Pure
+	public boolean intersects(PathIterator2ai<?> s);
+
 	/** Translate the shape.
 	 * 
 	 * @param dx
@@ -155,12 +175,12 @@ public interface Shape2ai<
 			case MOVE_TO:
 				p.set(e.getToX(), e.getToY());
 				transform.transform(p);
-				newPath.moveTo(p.ix(), p.ix());
+				newPath.moveTo(p.ix(), p.iy());
 				break;
 			case LINE_TO:
 				p.set(e.getToX(), e.getToY());
 				transform.transform(p);
-				newPath.lineTo(p);
+				newPath.lineTo(p.ix(), p.iy());
 				break;
 			case QUAD_TO:
 				t1.set(e.getCtrlX1(), e.getCtrlY1());

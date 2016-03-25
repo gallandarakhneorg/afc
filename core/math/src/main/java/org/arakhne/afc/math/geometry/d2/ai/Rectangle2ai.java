@@ -30,6 +30,7 @@ import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.ai.Segment2ai.BresenhamLineIterator;
+import org.arakhne.afc.math.geometry.d2.i.Point2i;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Fonctional interface that represented a 2D rectangle on a plane.
@@ -123,7 +124,8 @@ public interface Rectangle2ai<
 		int sx2 = x4;
 		int sy2 = y4;
 
-		Point2D pts = new FakePoint();
+		// Only for internal use
+		Point2D pts = new Point2i();
 		BresenhamLineIterator<Point2D> iterator = new BresenhamLineIterator<>(null, sx1, sy1, sx2, sy2);
 		
 		while (iterator.hasNext() && c1 != MathConstants.COHEN_SUTHERLAND_INSIDE
@@ -184,10 +186,10 @@ public interface Rectangle2ai<
 	public static void computeClosestPoint(int minx, int miny, int maxx, int maxy, int px, int py, Point2D result) {
 		int x;
 		int same = 0;
-		if (px<minx) {
+		if (px < minx) {
 			x = minx;
 		}
-		else if (px>maxx) {
+		else if (px > maxx) {
 			x = maxx;
 		}
 		else {
@@ -195,17 +197,17 @@ public interface Rectangle2ai<
 			++same;
 		}
 		int y;
-		if (py<miny) {
+		if (py < miny) {
 			y = miny;
 		}
-		else if (py>maxy) {
+		else if (py > maxy) {
 			y = maxy;
 		}
 		else {
 			y = py;
 			++same;
 		}
-		if (same==2) {
+		if (same == 2) {
 			result.set(px,py);
 		} else {
 			result.set(x,y);
@@ -225,20 +227,35 @@ public interface Rectangle2ai<
 	@Pure
 	public static void computeFarthestPoint(int minx, int miny, int maxx, int maxy, int px, int py, Point2D result) {
 		int x;
-		if (px<=((minx + maxx)/2)) {
+		if (px <= ((minx + maxx) / 2)) {
 			x = maxx;
 		}
 		else {
 			x = minx;
 		}
 		int y;
-		if (py<=((miny + maxy)/2)) {
+		if (py <= ((miny + maxy) / 2)) {
 			y = maxy;
 		}
 		else {
 			y = miny;
 		}
 		result.set(x,y);
+	}
+
+	@Pure
+	@Override
+	default boolean equalsToShape(IT shape) {
+		if (shape == null) {
+			return false;
+		}
+		if (shape == this) {
+			return true;
+		}
+		return getMinX() == shape.getMinX()
+			&& getMinY() == shape.getMinY()
+			&& getMaxX() == shape.getMaxX()
+			&& getMaxY() == shape.getMaxY();
 	}
 
 	@Pure
@@ -270,15 +287,16 @@ public interface Rectangle2ai<
 				s.getX1(), s.getY1(), s.getX2(), s.getY2());
 	}
 
-	/** Replies if this shape is intersecting the given path.
-	 * 
-	 * @param p
-	 * @return <code>true</code> if this shape is intersecting the given shape;
-	 * <code>false</code> if there is no intersection.
-	 */
 	@Pure
-	default boolean intersects(Path2ai<?, ?, ?, ?, ?> p) {
-		return p.intersects(this);
+	@Override
+	default boolean intersects(PathIterator2ai<?> iterator) {
+		int mask = (iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2);
+		int crossings = Path2ai.computeCrossingsFromRect(
+				iterator,
+				getMinX(), getMinY(), getMaxX(), getMaxY());
+		return (crossings == MathConstants.SHAPE_INTERSECTS ||
+				(crossings & mask) != 0);
+
 	}
 
 	@Pure

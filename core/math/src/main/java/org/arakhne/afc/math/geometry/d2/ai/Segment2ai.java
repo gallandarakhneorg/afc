@@ -29,6 +29,7 @@ import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
+import org.arakhne.afc.math.geometry.d2.i.Point2i;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Fonctional interface that represented a 2D segment/line on a plane.
@@ -83,7 +84,8 @@ public interface Segment2ai<
 		int a,b;
 		boolean oneBestFound = false;
 		result.set(ax, ay);
-		Point2D cp = new FakePoint();
+		// Only for internal use
+		Point2D cp = new Point2i();
 		BresenhamLineIterator<Point2D> iterator = new BresenhamLineIterator<>(null, ax, ay, bx, by);
 		while (iterator.hasNext()) {
 			iterator.next(cp);
@@ -146,14 +148,15 @@ public interface Segment2ai<
 
 	/**
 	 * Replies on which side of a line the given point is located.
-	 * <p>
-	 * A return value of 1 indicates that the line segment must turn in the direction
+	 *
+	 * <p>A return value of 1 indicates that the line segment must turn in the direction
 	 * that takes the positive X axis towards the negative Y axis. In the default
 	 * coordinate system used by Java 2D, this direction is counterclockwise.
-	 * <p>
-	 * A return value of -1 indicates that the line segment must turn in the direction that takes the positive X axis towards the positive Y axis. In the default coordinate system, this direction is clockwise.
-	 * <p>
-	 * A return value of 0 indicates that the point lies exactly on the line segment. Note that an indicator value of 0 is rare and not useful for determining colinearity because of floating point rounding issues.
+	 *
+	 * <p>A return value of -1 indicates that the line segment must turn in the direction that takes the
+	 * positive X axis towards the positive Y axis. In the default coordinate system by Java 2D, this direction is clockwise.
+	 *
+	 * <p>A return value of 0 indicates that the point lies exactly on the line segment.
 	 * 
 	 * @param x1
 	 *            the X coordinate of the start point of the specified line segment
@@ -172,11 +175,11 @@ public interface Segment2ai<
 	 */
 	@Pure
 	static int computeSideLinePoint(int x1, int y1, int x2, int y2, int px, int py) {
-		int cx2 = x2 - x1;
-		int cy2 = y2 - y1;
-		int cpx = px - x1;
-		int cpy = py - y1;
-		double side = cpx * cy2 - cpy * cx2;
+		int segmentX = x2 - x1;
+		int segmentY = y2 - y1;
+		int targetX = px - x1;
+		int targetY = py - y1;
+		int side = segmentX * targetY - segmentY * targetX;
 		return (side < 0) ? -1 : ((side > 0) ? 1 : 0);
 	}
 
@@ -333,7 +336,7 @@ public interface Segment2ai<
 				side1 = computeSideLinePoint(sx2, sy2, sx1, sy1, x0, y0);
 				side2 = computeSideLinePoint(sx2, sy2, sx1, sy1, x1, y1);
 			}
-			if (side1>=0 || side2>=0) {
+			if (side1<=0 || side2<=0) {
 				// At least one point is on the side of the shadow.
 				// Now we compute the intersection with the up and bottom borders.
 				// Intersection is obtained by computed the crossing value from
@@ -442,7 +445,7 @@ public interface Segment2ai<
 				iterator = new BresenhamLineIterator<>(null, x1, y1, x0, y0);
 				ymaxline = y0;
 			}
-			Point2D p = new FakePoint();
+			Point2D p = new Point2i();
 			Integer xintercept1 = null;
 			Integer xintercept2 = null;
 			boolean cont = true;
@@ -608,7 +611,8 @@ public interface Segment2ai<
 		
 		BresenhamLineIterator<Point2D> iterator = new BresenhamLineIterator<>(null, x0, y0, x1, y1);
 		
-		Point2D p = new FakePoint();
+		// Only for internal use.
+		Point2D p = new Point2i();
 		while (iterator.hasNext()) {
 			iterator.next(p);
 			if (p.iy()==py) {
@@ -723,8 +727,10 @@ public interface Segment2ai<
 		}
 
 		if (it1.hasNext() && it2.hasNext()) {
-			Point2D p1 = new FakePoint();
-			Point2D p2 = new FakePoint();
+			// Only for internal use
+			Point2D p1 = new Point2i();
+			// Only for internal use
+			Point2D p2 = new Point2i();
 
 			boolean isFirstPointOfSecondSegment = true;
 
@@ -792,6 +798,21 @@ public interface Segment2ai<
 		}
 
 		return 0;
+	}
+
+	@Pure
+	@Override
+	default boolean equalsToShape(IT shape) {
+		if (shape == null) {
+			return false;
+		}
+		if (shape == this) {
+			return true;
+		}
+		return getX1() == shape.getX1()
+			&& getY1() == shape.getY1()
+			&& getX2() == shape.getX2()
+			&& getY2() == shape.getY2();
 	}
 
 	@Override
@@ -1203,17 +1224,20 @@ public interface Segment2ai<
 				s.getX1(), s.getY1(), s.getX2(), s.getY2());
 	}
 	
-	/** Replies if this shape is intersecting the given path.
-	 * 
-	 * @param p
-	 * @return <code>true</code> if this shape is intersecting the given shape;
-	 * <code>false</code> if there is no intersection.
-	 */
 	@Pure
-	default boolean intersects(Path2ai<?, ?, ?, ?, ?> p) {
-		return p.intersects(this);
-	}
+	@Override
+	default boolean intersects(PathIterator2ai<?> iterator) {
+		int mask = (iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2);
+		int crossings = Path2ai.computeCrossingsFromSegment(
+				0,
+				iterator,
+				getX1(), getY1(), getX2(), getY2(),
+				false);
+		return (crossings == MathConstants.SHAPE_INTERSECTS ||
+				(crossings & mask) != 0);
 
+	}
+	
 	/** The Bresenham line algorithm is an algorithm which determines which points in 
 	 * an n-dimensional raster should be plotted in order to form a close 
 	 * approximation to a straight line between two given points. It is 
@@ -1449,7 +1473,7 @@ public interface Segment2ai<
 		public TransformedSegmentPathIterator(Segment2ai<?, ?, IE, ?, ?> segment, Transform2D transform) {
 			super(segment.getGeomFactory());
 			this.transform = transform;
-			if (this.x1 == this.x2 && this.y1 == this.y2) {
+			if (segment.getX1() == segment.getX2() && segment.getY1() == segment.getY2()) {
 				this.index = 2;
 			} else {
 				this.p1 = this.factory.newPoint();
@@ -1522,7 +1546,7 @@ public interface Segment2ai<
 		 */
 		public SegmentPathIterator(Segment2ai<?, ?, IE, ?, ?> segment) {
 			super(segment.getGeomFactory());
-			if (this.x1 == this.x2 && this.y1 == this.y2) {
+			if (segment.getX1() == segment.getX2() && segment.getY1() == segment.getY2()) {
 				this.index = 2;
 			} else {
 				this.x1 = segment.getX1();

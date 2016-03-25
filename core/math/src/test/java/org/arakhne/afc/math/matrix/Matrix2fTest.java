@@ -25,23 +25,21 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.arakhne.afc.math.AbstractMathTestCase;
-import org.arakhne.afc.math.geometry.d2.continuous.Point2f;
-import org.arakhne.afc.math.geometry.d2.continuous.Tuple2f;
-import org.arakhne.afc.math.geometry.d2.continuous.Vector2f;
+import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2DTestRule;
+import org.arakhne.afc.math.geometry.d2.Point2D;
+import org.arakhne.afc.math.geometry.d2.Vector2D;
+import org.arakhne.afc.math.geometry.d2.fp.Point2fp;
+import org.arakhne.afc.math.geometry.d2.fp.Vector2fp;
+import org.arakhne.afc.math.geometry.d3.Vector3D;
+import org.junit.Rule;
 import org.junit.Test;
 
-/**
- * @author $Author: galland$
- * @author $Author: hjaffali$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
- */
-@SuppressWarnings("static-method")
+@SuppressWarnings("all")
 public class Matrix2fTest extends AbstractMathTestCase {
 	
-	
-	
+	@Rule
+	public CoordinateSystem2DTestRule csTestRule = new CoordinateSystem2DTestRule();
+
 	@Test
 	public void toStringTest() {
 		Matrix2f matrix = new Matrix2f(0,1,2,3);
@@ -242,13 +240,15 @@ public class Matrix2fTest extends AbstractMathTestCase {
 	
 	@Test
 	public void mulVector2D() {
-		Vector2f vector = this.randomVector2f();
+		Vector2D vector = this.randomVector2f();
 		Matrix2f matrix = new Matrix2f(1,2,4,-1);
 		
-		Vector2f product = new Vector2f(vector.getX()+2*vector.getY(),4*vector.getX()-vector.getY());
+		Vector2D product = new Vector2fp(vector.getX()+2*vector.getY(),4*vector.getX()-vector.getY());
 		
+		Vector2D result = new Vector2fp();
+		matrix.mul(vector, result);
 		
-		assertTrue(product.equals(matrix.mul(vector)));
+		assertEpsilonEquals(product, result);
 	}
 	
 	@Test
@@ -322,15 +322,70 @@ public class Matrix2fTest extends AbstractMathTestCase {
 	}
 	
 	@Test
-	public void normalizeCP() {
-		// it's okay for this one
+	public void normalizeCP_zero() {
+		Matrix2f m = new Matrix2f();
+		m.normalizeCP();
+		assertNaN(m.getM00());
+		assertNaN(m.getM01());
+		assertNaN(m.getM10());
+		assertNaN(m.getM10());
 	}
 	
 	@Test
-	public void normalizeCPMatrix2D() {
-		// it's okay for this one
+	public void normalizeCP_identity() {
+		Matrix2f m = new Matrix2f();
+		m.setIdentity();
+		m.normalizeCP();
+		assertEpsilonEquals(1, m.getM00());
+		assertEpsilonEquals(0, m.getM01());
+		assertEpsilonEquals(0, m.getM10());
+		assertEpsilonEquals(1, m.getM11());
+	}
+
+	@Test
+	public void normalizeCP_std() {
+		Matrix2f m = new Matrix2f(1, 2, 3, 4);
+		m.normalizeCP();
+		assertEpsilonEquals(1/Math.sqrt(10), m.getM00());
+		assertEpsilonEquals(2/Math.sqrt(20), m.getM01());
+		assertEpsilonEquals(3/Math.sqrt(10), m.getM10());
+		assertEpsilonEquals(4/Math.sqrt(20), m.getM11());
+	}
+
+	@Test
+	public void normalizeCPMatrix2D_zero() {
+		Matrix2f m = new Matrix2f();
+		Matrix2f r = new Matrix2f();
+		r.normalizeCP(m);
+		assertNaN(r.getM00());
+		assertNaN(r.getM01());
+		assertNaN(r.getM00());
+		assertNaN(r.getM01());
 	}
 	
+	@Test
+	public void normalizeCPMatrix2D_identity() {
+		Matrix2f m = new Matrix2f();
+		m.setIdentity();
+		Matrix2f r = new Matrix2f();
+		r.normalizeCP(m);
+		assertEpsilonEquals(1, r.getM00());
+		assertEpsilonEquals(0, r.getM01());
+		assertEpsilonEquals(0, r.getM10());
+		assertEpsilonEquals(1, r.getM11());
+	}
+
+	@Test
+	public void normalizeCPMatrix2D_std() {
+		Matrix2f m = new Matrix2f(1, 2, 3, 4);
+		Matrix2f r = new Matrix2f();
+		r.normalizeCP(m);
+		assertEpsilonEquals(1/Math.sqrt(10), r.getM00());
+		assertEpsilonEquals(2/Math.sqrt(20), r.getM01());
+		assertEpsilonEquals(3/Math.sqrt(10), r.getM10());
+		assertEpsilonEquals(4/Math.sqrt(20), r.getM11());
+	}
+
 	@Test
 	public void setZero() {
 		Matrix2f m = this.randomMatrix2f();
@@ -410,10 +465,58 @@ public class Matrix2fTest extends AbstractMathTestCase {
 	}
 	
 	@Test
-	public void eigenVectorsOfSymmetricMatrix() {
-		throw new UnsupportedOperationException();
+	public void eigenVectorsOfSymmetricMatrix_zero() {
+		Matrix2f m = new Matrix2f();
+		Matrix2f eigenVectors = new Matrix2f();
+		double[] eigenValues = m.eigenVectorsOfSymmetricMatrix(eigenVectors);
+
+		assertEpsilonEquals(0, eigenValues[0]);
+		assertEpsilonEquals(0, eigenValues[1]);
+
+		Vector2D vector1 = new Vector2fp();
+		Vector2D vector2 = new Vector2fp();
+		eigenVectors.getColumn(0, vector1);
+		eigenVectors.getColumn(1, vector2);
+		assertFpVectorEquals(1, 0, vector1);
+		assertFpVectorEquals(0, 1, vector2);
 	}
 	
+	@Test
+	public void eigenVectorsOfSymmetricMatrix_identity() {
+		Matrix2f m = new Matrix2f();
+		m.setIdentity();
+		Matrix2f eigenVectors = new Matrix2f();
+		double[] eigenValues = m.eigenVectorsOfSymmetricMatrix(eigenVectors);
+
+		assertEpsilonEquals(1, eigenValues[0]);
+		assertEpsilonEquals(1, eigenValues[1]);
+
+		Vector2D vector1 = new Vector2fp();
+		Vector2D vector2 = new Vector2fp();
+		eigenVectors.getColumn(0, vector1);
+		eigenVectors.getColumn(1, vector2);
+		assertFpVectorEquals(1, 0, vector1);
+		assertFpVectorEquals(0, 1, vector2);
+	}
+
+	@Test
+	public void eigenVectorsOfSymmetricMatrix_sym() {
+		Matrix2f m = new Matrix2f(1, 5, 5, 2);
+		Matrix2f eigenVectors = new Matrix2f();
+		double[] eigenValues = m.eigenVectorsOfSymmetricMatrix(eigenVectors);
+		
+		assertEpsilonEquals(-3.5249, eigenValues[0]);
+		assertEpsilonEquals(6.5249, eigenValues[1]);
+		
+		Vector2D vector1 = new Vector2fp();
+		Vector2D vector2 = new Vector2fp();
+		eigenVectors.getColumn(0, vector1);
+		eigenVectors.getColumn(1, vector2);
+		
+		assertFpVectorEquals(0.74145, -0.67101, vector1);
+		assertFpVectorEquals(0.67101, 0.74145, vector2);
+	}
+
 	@Test
 	public void isIdentity() {
 		Matrix2f m = this.randomMatrix2f();
@@ -436,9 +539,9 @@ public class Matrix2fTest extends AbstractMathTestCase {
 	 */
 	@Test
 	public void covMatrix2Tuple2dArray_theory() {
-		Vector2f v1 = new Vector2f(1, 3);
-		Vector2f v2 = new Vector2f(4, -2);
-		Vector2f m = new Vector2f();
+		Vector2D v1 = new Vector2fp(1, 3);
+		Vector2D v2 = new Vector2fp(4, -2);
+		Vector2D m = new Vector2fp();
 		m.add(v1,v2);
 		m.scale(.5f);
 		
@@ -449,7 +552,8 @@ public class Matrix2fTest extends AbstractMathTestCase {
 		expected.m11 = ((v1.getY()-m.getY()) * (v1.getY()-m.getY()) + (v2.getY()-m.getY()) * (v2.getY()-m.getY())) / 2f;
 		
 		Matrix2f mat = new Matrix2f();
-		Tuple2f<?> mean = mat.cov(v1, v2);
+		Vector2D mean = new Vector2fp(); 
+		mat.cov(mean, v1, v2);
 		
 		assertEpsilonEquals(m, mean);
 		for(int i=0; i<2; ++i) {
@@ -478,15 +582,16 @@ public class Matrix2fTest extends AbstractMathTestCase {
 		// Cov = [ 1.5 ,  .5 ]
 		//       [  .5 ,  .5 ]
 		
-		Point2f p1 = new Point2f(-1, -2);
-		Point2f p2 = new Point2f(1, 0);
-		Point2f p3 = new Point2f(2, -1);
-		Point2f p4 = new Point2f(2, -1);
+		Point2D p1 = new Point2fp(-1, -2);
+		Point2D p2 = new Point2fp(1, 0);
+		Point2D p3 = new Point2fp(2, -1);
+		Point2D p4 = new Point2fp(2, -1);
 		
 		Matrix2f cov = new Matrix2f();
-		Tuple2f<?> mean = cov.cov(p1, p2, p3, p4);
+		Vector2D mean = new Vector2fp();
+		cov.cov(mean, p1, p2, p3, p4);
 		
-		Point2f expectedMean = new Point2f(1, -1); 
+		Point2D expectedMean = new Point2fp(1, -1); 
 		Matrix2f expectedCov = new Matrix2f();
 		expectedCov.m00 = 1.5f;
 		expectedCov.m01 = .5f;

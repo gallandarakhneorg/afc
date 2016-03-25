@@ -118,9 +118,9 @@ public class Path2fPointCollectionTest extends AbstractMathTestCase {
 	@Test
     public void containsObject() {
     	assertFalse(this.c.contains(new Object()));
-    	assertTrue(this.c.contains(new Point2f(2f, 2f)));
-    	assertTrue(this.c.contains(new Point2f(6f, 5f)));
-    	assertFalse(this.c.contains(new Point2f(-1f, 6f)));
+    	assertTrue(this.c.contains(new Point2fx(2f, 2f)));
+    	assertTrue(this.c.contains(new Point2fx(6f, 5f)));
+    	assertFalse(this.c.contains(new Point2fx(-1f, 6f)));
     }
 
     /**
@@ -213,13 +213,13 @@ public class Path2fPointCollectionTest extends AbstractMathTestCase {
      */
 	@Test
     public void add() {
-    	assertTrue(this.c.add(new Point2f(123f, 456f)));
+    	assertTrue(this.c.add(new Point2fx(123f, 456f)));
     	assertCoords(1f, 1f, 2f, 2f, 3f, 0f, 4f, 3f, 5f, -1f, 6f, 5f, 7f, -5f, 123f, 456f);
     	this.r.clear();
     	assertCoords();
-    	assertTrue(this.c.add(new Point2f(123f, 456f)));
+    	assertTrue(this.c.add(new Point2fx(123f, 456f)));
     	assertCoords(123f, 456f);
-    	assertTrue(this.c.add(new Point2f(789f, 1011f)));
+    	assertTrue(this.c.add(new Point2fx(789f, 1011f)));
     	assertCoords(123f, 456f, 789f, 1011f);
     }
 
@@ -228,9 +228,9 @@ public class Path2fPointCollectionTest extends AbstractMathTestCase {
 	@Test
     public void remove() {
     	assertFalse(this.c.remove(new Object()));
-    	assertTrue(this.c.remove(new Point2f(2f, 2f)));
+    	assertTrue(this.c.remove(new Point2fx(2f, 2f)));
     	assertCoords(1f, 1f, 3f, 0f, 4f, 3f, 5f, -1f, 6f, 5f, 7f, -5f);
-    	assertTrue(this.c.remove(new Point2f(6f, 5f)));
+    	assertTrue(this.c.remove(new Point2fx(6f, 5f)));
     	assertCoords(1f, 1f, 3f, 0f, 4f, 3f);
     }
 
@@ -240,9 +240,9 @@ public class Path2fPointCollectionTest extends AbstractMathTestCase {
 	@Test
     public void containsAll() {
     	assertTrue(this.c.containsAll(
-    			Arrays.asList(new Point2f(1f, 1f), new Point2f(6f, 5f))));
+    			Arrays.asList(new Point2fx(1f, 1f), new Point2fx(6f, 5f))));
     	assertFalse(this.c.containsAll(
-    			Arrays.asList(new Point2f(1f, 1f), new Point2f(6f, 6f))));
+    			Arrays.asList(new Point2fx(1f, 1f), new Point2fx(6f, 6f))));
     }
 
     /**
@@ -250,7 +250,7 @@ public class Path2fPointCollectionTest extends AbstractMathTestCase {
 	@Test
     public void addAll() {
     	this.c.addAll(
-    			Arrays.asList(new Point2f(123f, 456f), new Point2f(789f, 1011f)));
+    			Arrays.asList(new Point2fx(123f, 456f), new Point2fx(789f, 1011f)));
     	assertCoords(1f, 1f, 2f, 2f, 3f, 0f, 4f, 3f, 5f, -1f, 6f, 5f, 7f, -5f, 123f, 456f, 789f, 1011f);
     }
 
@@ -259,7 +259,7 @@ public class Path2fPointCollectionTest extends AbstractMathTestCase {
 	@Test
     public void removeAll() {
     	this.c.removeAll(
-    			Arrays.asList(new Point2f(123f, 456f), new Point2f(2f, 2f)));
+    			Arrays.asList(new Point2fx(123f, 456f), new Point2fx(2f, 2f)));
     	assertCoords(1f, 1f, 3f, 0f, 4f, 3f, 5f, -1f, 6f, 5f, 7f, -5f);
     }
 

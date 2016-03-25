@@ -23,6 +23,7 @@ package org.arakhne.afc.math.geometry.d2.fpfx;
 
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
+import org.arakhne.afc.math.geometry.d2.UnmodifiablePoint2D;
 
 import javafx.beans.property.DoubleProperty;
 

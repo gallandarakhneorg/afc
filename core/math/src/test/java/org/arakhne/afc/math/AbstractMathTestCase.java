@@ -21,17 +21,20 @@
  */
 package org.arakhne.afc.math;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 
 import java.math.BigDecimal;
 import java.util.Iterator;
 import java.util.Objects;
 import java.util.Random;
 
+import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
-import org.arakhne.afc.math.geometry.d2.continuous.Point2f;
-import org.arakhne.afc.math.geometry.d2.continuous.Vector2f;
+import org.arakhne.afc.math.geometry.d2.Vector2D;
+import org.arakhne.afc.math.geometry.d2.fp.Point2fp;
+import org.arakhne.afc.math.geometry.d2.fp.Vector2fp;
 import org.arakhne.afc.math.geometry.d3.Tuple3D;
+import org.arakhne.afc.math.geometry.d3.Vector3D;
 import org.arakhne.afc.math.geometry.d3.continuous.Point3f;
 import org.arakhne.afc.math.geometry.d3.continuous.Quaternion;
 import org.arakhne.afc.math.geometry.d3.continuous.Vector3f;
@@ -53,6 +56,10 @@ public abstract class AbstractMathTestCase {
 	 */
 	protected final static int DEFAULT_DECIMAL_COUNT = 8;
 	
+	/** Precision of the floating point number epsilon-tests.
+	 */
+	protected final static double EPSILON = 10 * 1.110223024E-16;
+
 	private int decimalPrecision = DEFAULT_DECIMAL_COUNT;
 	
 	/** Random number sequence.
@@ -163,10 +170,10 @@ public abstract class AbstractMathTestCase {
 	 */
 	protected void assertEpsilonEquals(String message, double expected, double actual) {
 		if (isEpsilonEquals(expected,actual)) return;
-		fail((message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
-				+"not same double value, expected:"+ //$NON-NLS-1$
-				expected
-				+", actual:"+actual); //$NON-NLS-1$
+		throw new ComparisonFailure((message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
+				+"not same double value.", //$NON-NLS-1$
+				Double.toString(expected),
+				Double.toString(actual));
 	}
 
 	/** Test if the actual value is not equal to the expected value with
@@ -178,10 +185,10 @@ public abstract class AbstractMathTestCase {
 	 */
 	protected void assertNotEpsilonEquals(String message, double expected, double actual) {
 		if (!isEpsilonEquals(expected,actual, false)) return;
-		fail((message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
-				+"same double value, unexpected:"+ //$NON-NLS-1$
-				expected
-				+", actual:"+actual); //$NON-NLS-1$
+		throw new ComparisonFailure((message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
+				+"same double value.", //$NON-NLS-1$
+				Double.toString(expected),
+				Double.toString(actual));
 	}
 
 	/** Test if the actual value is equal to the expected value with
@@ -472,8 +479,8 @@ public abstract class AbstractMathTestCase {
 	 *
 	 * @return the random point.
 	 */
-	protected Point2f randomPoint2f() {
-		return new Point2f(
+	protected Point2D randomPoint2f() {
+		return new Point2fp(
 				this.random.nextDouble() * 1000 - 500,
 				this.random.nextDouble() * 1000 - 500);
 	}
@@ -482,8 +489,8 @@ public abstract class AbstractMathTestCase {
 	 *
 	 * @return the random vector.
 	 */
-	protected Vector2f randomVector2f() {
-		return new Vector2f(
+	protected Vector2D randomVector2f() {
+		return new Vector2fp(
 				this.random.nextDouble() * 1000 - 500,
 				this.random.nextDouble() * 1000 - 500);
 	}
@@ -503,7 +510,7 @@ public abstract class AbstractMathTestCase {
 	 *
 	 * @return the random vector.
 	 */
-	protected Vector3f randomVector3f() {
+	protected Vector3D randomVector3f() {
 		return new Vector3f(
 				this.random.nextDouble() * 1000 - 500,
 				this.random.nextDouble() * 1000 - 500,
@@ -697,6 +704,198 @@ public abstract class AbstractMathTestCase {
 			b.append(",\n"); //$NON-NLS-1$
 		}
 		return b.toString();
+	}
+
+	/** Test if the actual vector is equal to the expected values.
+	 * 
+	 * @param v
+	 * @param x
+	 * @param y
+	 */
+	protected void assertFpVectorEquals(double x, double y, Vector2D v) {
+		double dx = x - v.getX();
+		double dy = y - v.getY();
+		double distSq = dx * dx + dy * dy;
+		if (!isEpsilonEquals(distSq, 0.)) {
+			throw new ComparisonFailure("Not same vector", //$NON-NLS-1$
+					"(" + x + "; " + y + ")", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					"(" + v.getX() + "; " + v.getY() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		}
+	}
+
+	/** Test if the actual vector is equal to the expected values.
+	 * 
+	 * @param v
+	 * @param x
+	 * @param y
+	 */
+	protected void assertIntVectorEquals(int x, int y, Vector2D v) {
+		if (x != v.getX() || y != v.iy()) {
+			throw new ComparisonFailure("Not same vector", //$NON-NLS-1$
+					"(" + x + "; " + y + ")", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					"(" + v.ix() + "; " + v.iy() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		}
+	}
+
+	/** Test if the actual vector is not equal to the expected values.
+	 * 
+	 * @param v
+	 * @param x
+	 * @param y
+	 */
+	protected void assertFpVectorNotEquals(double x, double y, Vector2D v) {
+		double dx = x - v.getX();
+		double dy = y - v.getY();
+		double distSq = dx * dx + dy * dy;
+		if (isEpsilonEquals(distSq, 0.)) {
+			throw new ComparisonFailure("Same vector", //$NON-NLS-1$
+					"(" + x + "; " + y + ")", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					"(" + v.getX() + "; " + v.getY() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		}
+	}
+
+	/** Test if the actual vector is not equal to the expected values.
+	 * 
+	 * @param v
+	 * @param x
+	 * @param y
+	 */
+	protected void assertIntVectorNotEquals(int x, int y, Vector2D v) {
+		if (x == v.ix() && y == v.iy()) {
+			throw new ComparisonFailure("Same vector", //$NON-NLS-1$
+					"(" + x + "; " + y + ")", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					"(" + v.ix() + "; " + v.iy() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		}
+	}
+
+	/** Test if the actual vector is equal to the expected values.
+	 * 
+	 * @param v
+	 * @param x
+	 * @param y
+	 * @param z
+	 */
+	protected void assertFpVectorEquals(double x, double y, double z, Vector3D v) {
+		double dx = x - v.getX();
+		double dy = y - v.getY();
+		double dz = z - v.getZ();
+		double distSq = dx * dx + dy * dy + dz * dz;
+		if (!isEpsilonEquals(distSq, 0.)) {
+			throw new ComparisonFailure("Not same vector", //$NON-NLS-1$
+					"(" + x + "; " + y + "; " + z + ")", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+					"(" + v.getX() + "; " + v.getY() + "; " + v.getZ() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		}
+	}
+
+	/** Test if the actual vector is equal to the expected values.
+	 * 
+	 * @param v
+	 * @param x
+	 * @param y
+	 * @param z
+	 */
+	protected void assertIntVectorEquals(int x, int y, int z, Vector3D v) {
+		if (x != v.ix() || y != v.iy() || z != v.iz()) {
+			throw new ComparisonFailure("Not same vector", //$NON-NLS-1$
+					"(" + x + "; " + y + "; " + z + ")", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+					"(" + v.ix() + "; " + v.iy() + "; " + v.iz() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		}
+	}
+
+	/** Test if the actual vector is not equal to the expected values.
+	 * 
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @param v
+	 */
+	protected void assertFpVectorNotEquals(double x, double y, double z, Vector3D v) {
+		double dx = x - v.getX();
+		double dy = y - v.getY();
+		double dz = z - v.getZ();
+		double distSq = dx * dx + dy * dy + dz * dz;
+		if (isEpsilonEquals(distSq, 0.)) {
+			throw new ComparisonFailure("Same vector", //$NON-NLS-1$
+					"(" + x + "; " + y + "; " + z + ")", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+					"(" + v.getX() + "; " + v.getY() + "; " +  ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		}
+	}
+
+	/** Test if the actual vector is not equal to the expected values.
+	 * 
+	 * @param v
+	 * @param x
+	 * @param y
+	 * @param z
+	 */
+	protected void assertIntVectorNotEquals(int x, int y, int z, Vector3D v) {
+		if (x == v.ix() && y == v.iy() && z == v.iz()) {
+			throw new ComparisonFailure("Same vector", //$NON-NLS-1$
+					"(" + x + "; " + y + "; " + z + ")", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+					"(" + v.ix() + "; " + v.iy() + "; " + v.iz() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		}
+	}
+
+	/** Test if the actual point is equal to the expected values.
+	 * 
+	 * @param v
+	 * @param x
+	 * @param y
+	 */
+	protected void assertFpPointEquals(double x, double y, Point2D v) {
+		double dx = x - v.getX();
+		double dy = y - v.getY();
+		double distSq = dx * dx + dy * dy;
+		if (!isEpsilonEquals(distSq, 0.)) {
+			throw new ComparisonFailure("Not same point", //$NON-NLS-1$
+					"(" + x + "; " + y + ")", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					"(" + v.getX() + "; " + v.getY() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		}
+	}
+
+	/** Test if the actual point is equal to the expected values.
+	 * 
+	 * @param v
+	 * @param x
+	 * @param y
+	 */
+	protected void assertIntPointEquals(int x, int y, Point2D v) {
+		if (x != v.ix() || y != v.iy()) {
+			throw new ComparisonFailure("Not same point", //$NON-NLS-1$
+					"(" + x + "; " + y + ")", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					"(" + v.ix() + "; " + v.iy() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		}
+	}
+
+	/** Test if the actual point is not equal to the expected values.
+	 * 
+	 * @param v
+	 * @param x
+	 * @param y
+	 */
+	protected void assertFpPointNotEquals(double x, double y, Point2D v) {
+		double dx = x - v.getX();
+		double dy = y - v.getY();
+		double distSq = dx * dx + dy * dy;
+		if (isEpsilonEquals(distSq, 0.)) {
+			throw new ComparisonFailure("Same point", //$NON-NLS-1$
+					"(" + x + "; " + y + ")", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					"(" + v.getX() + "; " + v.getY() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		}
+	}
+
+	/** Test if the actual point is not equal to the expected values.
+	 * 
+	 * @param v
+	 * @param x
+	 * @param y
+	 */
+	protected void assertIntPointNotEquals(int x, int y, Point2D v) {
+		if (x == v.ix() && y == v.iy()) {
+			throw new ComparisonFailure("Same point", //$NON-NLS-1$
+					"(" + x + "; " + y + ")", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					"(" + v.ix() + "; " + v.iy() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		}
 	}
 
 }

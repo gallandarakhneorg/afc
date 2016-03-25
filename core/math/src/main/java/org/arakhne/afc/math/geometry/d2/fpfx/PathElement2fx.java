@@ -21,6 +21,7 @@
  */
 package org.arakhne.afc.math.geometry.d2.fpfx;
 
+import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.d2.afp.PathElement2afp;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -92,39 +93,11 @@ public abstract class PathElement2fx implements PathElement2afp {
 
 	@Pure
 	@Override
-	public boolean equals(Object obj) {
-		try {
-			PathElement2afp elt = (PathElement2afp) obj;
-			return getType() == elt.getType()
-					&& getToX() == elt.getToX()
-					&& getToY() == elt.getToY()
-					&& getCtrlX1() == elt.getCtrlX1()
-					&& getCtrlY1() == elt.getCtrlY1()
-					&& getCtrlX2() == elt.getCtrlX2()
-					&& getCtrlY2() == elt.getCtrlY2()
-					&& getFromX() == elt.getFromX()
-					&& getFromY() == elt.getFromY();
-		} catch (Throwable exception) {
-			//
-		}
-		return false;
-	}
+	public abstract boolean equals(Object obj);
 	
 	@Pure
 	@Override
-	public int hashCode() {
-		long bits = 1L;
-		bits = 31L * bits + this.type.ordinal();
-		bits = 31L * bits + Double.doubleToLongBits(getToX());
-		bits = 31L * bits + Double.doubleToLongBits(getToY());
-		bits = 31L * bits + Double.doubleToLongBits(getCtrlX1());
-		bits = 31L * bits + Double.doubleToLongBits(getCtrlY1());
-		bits = 31L * bits + Double.doubleToLongBits(getCtrlX2());
-		bits = 31L * bits + Double.doubleToLongBits(getCtrlY2());
-		bits = 31L * bits + Double.doubleToLongBits(getFromX());
-		bits = 31L * bits + Double.doubleToLongBits(getFromY());
-		return (int) (bits ^ (bits >> 32));
-	}
+	public abstract int hashCode();
 
 	@Pure
 	@Override
@@ -142,12 +115,14 @@ public abstract class PathElement2fx implements PathElement2afp {
 	 *
 	 * @return the x coordinate, or <code>null</code> if the type is {@link PathElementType#MOVE_TO}.
 	 */
+	@Pure
 	public abstract DoubleProperty fromXProperty();
 
 	/** Replies the y coordinate of the starting point property.
 	 *
 	 * @return the y coordinate, or <code>null</code> if the type is {@link PathElementType#MOVE_TO}.
 	 */
+	@Pure
 	public abstract DoubleProperty fromYProperty();
 
 	/** Replies the x coordinate of the first control point property.
@@ -155,6 +130,7 @@ public abstract class PathElement2fx implements PathElement2afp {
 	 * @return the x coordinate, or <code>null</code> if the type is {@link PathElementType#MOVE_TO},
 	 * {@link PathElementType#LINE_TO}, or {@link PathElementType#CLOSE}.
 	 */
+	@Pure
 	public abstract DoubleProperty ctrlX1Property();
 
 	/** Replies the y coordinate of the first control point property.
@@ -162,6 +138,7 @@ public abstract class PathElement2fx implements PathElement2afp {
 	 * @return the y coordinate, or {@link Double#NaN} if the type is {@link PathElementType#MOVE_TO},
 	 * {@link PathElementType#LINE_TO}, or {@link PathElementType#CLOSE}.
 	 */
+	@Pure
 	public abstract DoubleProperty ctrlY1Property();
 
 	/** Replies the x coordinate of the second control point property.
@@ -169,6 +146,7 @@ public abstract class PathElement2fx implements PathElement2afp {
 	 * @return the x coordinate, or <code>null</code> if the type is {@link PathElementType#MOVE_TO},
 	 * {@link PathElementType#LINE_TO}, {@link PathElementType#QUAD_TO}, or {@link PathElementType#CLOSE}.
 	 */
+	@Pure
 	public abstract DoubleProperty ctrlX2Property();
 
 	/** Replies the y coordinate of the second  control point property.
@@ -176,12 +154,14 @@ public abstract class PathElement2fx implements PathElement2afp {
 	 * @return the y coordinate, or <code>null</code> if the type is {@link PathElementType#MOVE_TO},
 	 * {@link PathElementType#LINE_TO}, {@link PathElementType#QUAD_TO}, or {@link PathElementType#CLOSE}.
 	 */
+	@Pure
 	public abstract DoubleProperty ctrlY2Property();
 
 	/** Replies the x coordinate of the target point property.
 	 *
 	 * @return the x coordinate.
 	 */
+	@Pure
 	public DoubleProperty toXProperty() {
 		return this.toX;
 	}
@@ -190,6 +170,7 @@ public abstract class PathElement2fx implements PathElement2afp {
 	 *
 	 * @return the y coordinate.
 	 */
+	@Pure
 	public DoubleProperty toYProperty() {
 		return this.toY;
 	}
@@ -204,6 +185,7 @@ public abstract class PathElement2fx implements PathElement2afp {
 	 * 
 	 * @param array
 	 */
+	@Pure
 	public abstract void toArray(DoubleProperty[] array);
 
 	/** Copy the coords into an array, except the source point.
@@ -236,6 +218,30 @@ public abstract class PathElement2fx implements PathElement2afp {
 
 		@Pure
 		@Override
+		public boolean equals(Object obj) {
+			try {
+				PathElement2afp elt = (PathElement2afp) obj;
+				return getType() == elt.getType()
+						&& getToX() == elt.getToX()
+						&& getToY() == elt.getToY();
+			} catch (Throwable exception) {
+				//
+			}
+			return false;
+		}
+
+		@Pure
+		@Override
+		public int hashCode() {
+			long bits = 1L;
+			bits = 31L * bits + this.type.ordinal();
+			bits = 31L * bits + Double.doubleToLongBits(getToX());
+			bits = 31L * bits + Double.doubleToLongBits(getToY());
+			return (int) (bits ^ (bits >> 32));
+		}
+
+		@Pure
+		@Override
 		public boolean isEmpty() {
 			return true;
 		}
@@ -246,18 +252,21 @@ public abstract class PathElement2fx implements PathElement2afp {
 			return false;
 		}
 		
+		@Pure
 		@Override
 		public void toArray(int[] array) {
 			array[0] = this.toX.intValue();
 			array[1] = this.toY.intValue();
 		}
 		
+		@Pure
 		@Override
 		public void toArray(double[] array) {
 			array[0] = this.toX.doubleValue();
 			array[1] = this.toY.doubleValue();
 		}
 
+		@Pure
 		@Override
 		public void toArray(DoubleProperty[] array) {
 			array[0] = this.toX;
@@ -278,61 +287,73 @@ public abstract class PathElement2fx implements PathElement2afp {
 					this.toY+")"; //$NON-NLS-1$
 		}
 
+		@Pure
 		@Override
 		public double getFromX() {
-			return Double.NaN;
+			return 0.;
 		}
 
+		@Pure
 		@Override
 		public double getFromY() {
-			return Double.NaN;
+			return 0.;
 		}
 
+		@Pure
 		@Override
 		public double getCtrlX1() {
-			return Double.NaN;
+			return 0.;
 		}
 
+		@Pure
 		@Override
 		public double getCtrlY1() {
-			return Double.NaN;
+			return 0.;
 		}
 
+		@Pure
 		@Override
 		public double getCtrlX2() {
-			return Double.NaN;
+			return 0.;
 		}
 
+		@Pure
 		@Override
 		public double getCtrlY2() {
-			return Double.NaN;
+			return 0.;
 		}
 
+		@Pure
 		@Override
 		public DoubleProperty fromXProperty() {
 			return null;
 		}
 
+		@Pure
 		@Override
 		public DoubleProperty fromYProperty() {
 			return null;
 		}
 
+		@Pure
 		@Override
 		public DoubleProperty ctrlX1Property() {
 			return null;
 		}
 
+		@Pure
 		@Override
 		public DoubleProperty ctrlY1Property() {
 			return null;
 		}
 
+		@Pure
 		@Override
 		public DoubleProperty ctrlX2Property() {
 			return null;
 		}
 
+		@Pure
 		@Override
 		public DoubleProperty ctrlY2Property() {
 			return null;
@@ -371,8 +392,37 @@ public abstract class PathElement2fx implements PathElement2afp {
 
 		@Pure
 		@Override
+		public boolean equals(Object obj) {
+			try {
+				PathElement2afp elt = (PathElement2afp) obj;
+				return getType() == elt.getType()
+						&& getToX() == elt.getToX()
+						&& getToY() == elt.getToY()
+						&& getFromX() == elt.getFromX()
+						&& getFromY() == elt.getFromY();
+			} catch (Throwable exception) {
+				//
+			}
+			return false;
+		}
+
+		@Pure
+		@Override
+		public int hashCode() {
+			long bits = 1L;
+			bits = 31L * bits + this.type.ordinal();
+			bits = 31L * bits + Double.doubleToLongBits(getToX());
+			bits = 31L * bits + Double.doubleToLongBits(getToY());
+			bits = 31L * bits + Double.doubleToLongBits(getFromX());
+			bits = 31L * bits + Double.doubleToLongBits(getFromY());
+			return (int) (bits ^ (bits >> 32));
+		}
+
+		@Pure
+		@Override
 		public boolean isEmpty() {
-			return (this.fromX.equals(this.toX)) && (this.fromY.equals(this.toY));
+			return MathUtil.isEpsilonEqual(this.fromX.get(), this.toX.get())
+					&& MathUtil.isEpsilonEqual(this.fromY.get(), this.toY.get());
 		}
 
 		@Pure
@@ -381,18 +431,21 @@ public abstract class PathElement2fx implements PathElement2afp {
 			return !isEmpty();
 		}
 
+		@Pure
 		@Override
 		public void toArray(int[] array) {
 			array[0] = this.toX.intValue();
 			array[1] = this.toY.intValue();
 		}
 		
+		@Pure
 		@Override
 		public void toArray(double[] array) {
 			array[0] = this.toX.doubleValue();
 			array[1] = this.toY.doubleValue();
 		}
 
+		@Pure
 		@Override
 		public void toArray(DoubleProperty[] array) {
 			array[0] = this.toX;
@@ -413,61 +466,73 @@ public abstract class PathElement2fx implements PathElement2afp {
 					this.toY+")"; //$NON-NLS-1$
 		}
 
+		@Pure
 		@Override
 		public double getFromX() {
 			return this.fromX.get();
 		}
 
+		@Pure
 		@Override
 		public double getFromY() {
 			return this.fromY.get();
 		}
 
+		@Pure
 		@Override
 		public double getCtrlX1() {
-			return Double.NaN;
+			return 0.;
 		}
 
+		@Pure
 		@Override
 		public double getCtrlY1() {
-			return Double.NaN;
+			return 0.;
 		}
 
+		@Pure
 		@Override
 		public double getCtrlX2() {
-			return Double.NaN;
+			return 0.;
 		}
 
+		@Pure
 		@Override
 		public double getCtrlY2() {
-			return Double.NaN;
+			return 0.;
 		}
 
+		@Pure
 		@Override
 		public DoubleProperty fromXProperty() {
 			return this.fromX;
 		}
 
+		@Pure
 		@Override
 		public DoubleProperty fromYProperty() {
 			return this.fromY;
 		}
 
+		@Pure
 		@Override
 		public DoubleProperty ctrlX1Property() {
 			return null;
 		}
 
+		@Pure
 		@Override
 		public DoubleProperty ctrlY1Property() {
 			return null;
 		}
 
+		@Pure
 		@Override
 		public DoubleProperty ctrlX2Property() {
 			return null;
 		}
 
+		@Pure
 		@Override
 		public DoubleProperty ctrlY2Property() {
 			return null;
@@ -514,9 +579,44 @@ public abstract class PathElement2fx implements PathElement2afp {
 
 		@Pure
 		@Override
+		public boolean equals(Object obj) {
+			try {
+				PathElement2afp elt = (PathElement2afp) obj;
+				return getType() == elt.getType()
+						&& getToX() == elt.getToX()
+						&& getToY() == elt.getToY()
+						&& getCtrlX1() == elt.getCtrlX1()
+						&& getCtrlY1() == elt.getCtrlY1()
+						&& getFromX() == elt.getFromX()
+						&& getFromY() == elt.getFromY();
+			} catch (Throwable exception) {
+				//
+			}
+			return false;
+		}
+
+		@Pure
+		@Override
+		public int hashCode() {
+			long bits = 1L;
+			bits = 31L * bits + this.type.ordinal();
+			bits = 31L * bits + Double.doubleToLongBits(getToX());
+			bits = 31L * bits + Double.doubleToLongBits(getToY());
+			bits = 31L * bits + Double.doubleToLongBits(getCtrlX1());
+			bits = 31L * bits + Double.doubleToLongBits(getCtrlY1());
+			bits = 31L * bits + Double.doubleToLongBits(getFromX());
+			bits = 31L * bits + Double.doubleToLongBits(getFromY());
+			return (int) (bits ^ (bits >> 32));
+		}
+
+		@Pure
+		@Override
 		public boolean isEmpty() {
-			return (this.fromX.equals(this.toX)) && (this.fromY.equals(this.toY)) &&
-					(this.ctrlX.equals(this.toX)) && (this.ctrlY.equals(this.toY));
+			return MathUtil.isEpsilonEqual(this.fromX.get(), this.toX.get())
+					&& MathUtil.isEpsilonEqual(this.fromY.get(), this.toY.get())
+					&& MathUtil.isEpsilonEqual(this.ctrlX.get(), this.toX.get())
+					&& MathUtil.isEpsilonEqual(this.ctrlY.get(), this.toY.get());
+
 		}
 
 		@Pure
@@ -525,6 +625,7 @@ public abstract class PathElement2fx implements PathElement2afp {
 			return !isEmpty();
 		}
 
+		@Pure
 		@Override
 		public void toArray(int[] array) {
 			array[0] = this.ctrlX.intValue();
@@ -533,6 +634,7 @@ public abstract class PathElement2fx implements PathElement2afp {
 			array[3] = this.toY.intValue();
 		}
 		
+		@Pure
 		@Override
 		public void toArray(double[] array) {
 			array[0] = this.ctrlX.doubleValue();
@@ -541,6 +643,7 @@ public abstract class PathElement2fx implements PathElement2afp {
 			array[3] = this.toY.doubleValue();
 		}
 
+		@Pure
 		@Override
 		public void toArray(DoubleProperty[] array) {
 			array[0] = this.ctrlX;
@@ -565,61 +668,73 @@ public abstract class PathElement2fx implements PathElement2afp {
 					this.toY+")"; //$NON-NLS-1$
 		}
 
+		@Pure
 		@Override
 		public double getFromX() {
 			return this.fromX.get();
 		}
 
+		@Pure
 		@Override
 		public double getFromY() {
 			return this.fromY.get();
 		}
 
+		@Pure
 		@Override
 		public double getCtrlX1() {
 			return this.ctrlX.get();
 		}
 
+		@Pure
 		@Override
 		public double getCtrlY1() {
 			return this.ctrlY.get();
 		}
 
+		@Pure
 		@Override
 		public double getCtrlX2() {
-			return Double.NaN;
+			return 0.;
 		}
 
+		@Pure
 		@Override
 		public double getCtrlY2() {
-			return Double.NaN;
+			return 0.;
 		}
 
+		@Pure
 		@Override
 		public DoubleProperty fromXProperty() {
 			return this.fromX;
 		}
 
+		@Pure
 		@Override
 		public DoubleProperty fromYProperty() {
 			return this.fromY;
 		}
 
+		@Pure
 		@Override
 		public DoubleProperty ctrlX1Property() {
 			return this.ctrlX;
 		}
 
+		@Pure
 		@Override
 		public DoubleProperty ctrlY1Property() {
 			return this.ctrlY;
 		}
 
+		@Pure
 		@Override
 		public DoubleProperty ctrlX2Property() {
 			return null;
 		}
 
+		@Pure
 		@Override
 		public DoubleProperty ctrlY2Property() {
 			return null;
@@ -674,10 +789,49 @@ public abstract class PathElement2fx implements PathElement2afp {
 
 		@Pure
 		@Override
+		public boolean equals(Object obj) {
+			try {
+				PathElement2afp elt = (PathElement2afp) obj;
+				return getType() == elt.getType()
+						&& getToX() == elt.getToX()
+						&& getToY() == elt.getToY()
+						&& getCtrlX1() == elt.getCtrlX1()
+						&& getCtrlY1() == elt.getCtrlY1()
+						&& getCtrlX2() == elt.getCtrlX2()
+						&& getCtrlY2() == elt.getCtrlY2()
+						&& getFromX() == elt.getFromX()
+						&& getFromY() == elt.getFromY();
+			} catch (Throwable exception) {
+				//
+			}
+			return false;
+		}
+
+		@Pure
+		@Override
+		public int hashCode() {
+			long bits = 1L;
+			bits = 31L * bits + this.type.ordinal();
+			bits = 31L * bits + Double.doubleToLongBits(getToX());
+			bits = 31L * bits + Double.doubleToLongBits(getToY());
+			bits = 31L * bits + Double.doubleToLongBits(getCtrlX1());
+			bits = 31L * bits + Double.doubleToLongBits(getCtrlY1());
+			bits = 31L * bits + Double.doubleToLongBits(getCtrlX2());
+			bits = 31L * bits + Double.doubleToLongBits(getCtrlY2());
+			bits = 31L * bits + Double.doubleToLongBits(getFromX());
+			bits = 31L * bits + Double.doubleToLongBits(getFromY());
+			return (int) (bits ^ (bits >> 32));
+		}
+
+		@Pure
+		@Override
 		public boolean isEmpty() {
-			return (this.fromX.equals(this.toX)) && (this.fromY.equals(this.toY)) &&
-					(this.ctrlX1.equals(this.toX)) && (this.ctrlY1.equals(this.toY)) &&
-					(this.ctrlX2.equals(this.toX)) && (this.ctrlY2.equals(this.toY));
+			return MathUtil.isEpsilonEqual(this.fromX.get(), this.toX.get())
+					&& MathUtil.isEpsilonEqual(this.fromY.get(), this.toY.get())
+					&& MathUtil.isEpsilonEqual(this.ctrlX1.get(), this.toX.get())
+					&& MathUtil.isEpsilonEqual(this.ctrlY1.get(), this.toY.get())
+					&& MathUtil.isEpsilonEqual(this.ctrlX2.get(), this.toX.get())
+					&& MathUtil.isEpsilonEqual(this.ctrlY2.get(), this.toY.get());
 		}
 
 		@Pure
@@ -686,6 +840,7 @@ public abstract class PathElement2fx implements PathElement2afp {
 			return !isEmpty();
 		}
 
+		@Pure
 		@Override
 		public void toArray(int[] array) {
 			array[0] = this.ctrlX1.intValue();
@@ -696,6 +851,7 @@ public abstract class PathElement2fx implements PathElement2afp {
 			array[5] = this.toY.intValue();
 		}
 		
+		@Pure
 		@Override
 		public void toArray(DoubleProperty[] array) {
 			array[0] = this.ctrlX1;
@@ -706,6 +862,7 @@ public abstract class PathElement2fx implements PathElement2afp {
 			array[5] = this.toY;
 		}
 
+		@Pure
 		@Override
 		public void toArray(double[] array) {
 			array[0] = this.ctrlX1.doubleValue();
@@ -734,61 +891,73 @@ public abstract class PathElement2fx implements PathElement2afp {
 					this.toY+")"; //$NON-NLS-1$
 		}
 
+		@Pure
 		@Override
 		public double getFromX() {
 			return this.fromX.get();
 		}
 
+		@Pure
 		@Override
 		public double getFromY() {
 			return this.fromY.get();
 		}
 
+		@Pure
 		@Override
 		public double getCtrlX1() {
 			return this.ctrlX1.get();
 		}
 
+		@Pure
 		@Override
 		public double getCtrlY1() {
 			return this.ctrlY1.get();
 		}
 
+		@Pure
 		@Override
 		public double getCtrlX2() {
-			return this.ctrlX1.get();
+			return this.ctrlX2.get();
 		}
 
+		@Pure
 		@Override
 		public double getCtrlY2() {
 			return this.ctrlY2.get();
 		}
 
+		@Pure
 		@Override
 		public DoubleProperty fromXProperty() {
 			return this.fromX;
 		}
 
+		@Pure
 		@Override
 		public DoubleProperty fromYProperty() {
 			return this.fromY;
 		}
 
+		@Pure
 		@Override
 		public DoubleProperty ctrlX1Property() {
 			return this.ctrlX1;
 		}
 
+		@Pure
 		@Override
 		public DoubleProperty ctrlY1Property() {
 			return this.ctrlY1;
 		}
 
+		@Pure
 		@Override
 		public DoubleProperty ctrlX2Property() {
 			return this.ctrlX2;
 		}
 
+		@Pure
 		@Override
 		public DoubleProperty ctrlY2Property() {
 			return this.ctrlY2;
@@ -828,8 +997,37 @@ public abstract class PathElement2fx implements PathElement2afp {
 
 		@Pure
 		@Override
+		public boolean equals(Object obj) {
+			try {
+				PathElement2afp elt = (PathElement2afp) obj;
+				return getType() == elt.getType()
+						&& getToX() == elt.getToX()
+						&& getToY() == elt.getToY()
+						&& getFromX() == elt.getFromX()
+						&& getFromY() == elt.getFromY();
+			} catch (Throwable exception) {
+				//
+			}
+			return false;
+		}
+
+		@Pure
+		@Override
+		public int hashCode() {
+			long bits = 1L;
+			bits = 31L * bits + this.type.ordinal();
+			bits = 31L * bits + Double.doubleToLongBits(getToX());
+			bits = 31L * bits + Double.doubleToLongBits(getToY());
+			bits = 31L * bits + Double.doubleToLongBits(getFromX());
+			bits = 31L * bits + Double.doubleToLongBits(getFromY());
+			return (int) (bits ^ (bits >> 32));
+		}
+
+		@Pure
+		@Override
 		public boolean isEmpty() {
-			return (this.fromX.equals(this.toX)) && (this.fromY.equals(this.toY));
+			return MathUtil.isEpsilonEqual(this.fromX.get(), this.toX.get())
+					&& MathUtil.isEpsilonEqual(this.fromY.get(), this.toY.get());
 		}
 
 		@Pure
@@ -838,16 +1036,19 @@ public abstract class PathElement2fx implements PathElement2afp {
 			return false;
 		}
 
+		@Pure
 		@Override
 		public void toArray(int[] array) {
 			//
 		}
 		
+		@Pure
 		@Override
 		public void toArray(DoubleProperty[] array) {
 			//
 		}
 
+		@Pure
 		@Override
 		public void toArray(double[] array) {
 			//
@@ -865,61 +1066,73 @@ public abstract class PathElement2fx implements PathElement2afp {
 			return "CLOSE"; //$NON-NLS-1$
 		}
 
+		@Pure
 		@Override
 		public double getFromX() {
 			return this.fromX.get();
 		}
 
+		@Pure
 		@Override
 		public double getFromY() {
 			return this.fromY.get();
 		}
 
+		@Pure
 		@Override
 		public double getCtrlX1() {
-			return Double.NaN;
+			return 0.;
 		}
 
+		@Pure
 		@Override
 		public double getCtrlY1() {
-			return Double.NaN;
+			return 0.;
 		}
 
+		@Pure
 		@Override
 		public double getCtrlX2() {
-			return Double.NaN;
+			return 0.;
 		}
 
+		@Pure
 		@Override
 		public double getCtrlY2() {
-			return Double.NaN;
+			return 0.;
 		}
 
+		@Pure
 		@Override
 		public DoubleProperty fromXProperty() {
 			return this.fromX;
 		}
 
+		@Pure
 		@Override
 		public DoubleProperty fromYProperty() {
 			return this.fromY;
 		}
 
+		@Pure
 		@Override
 		public DoubleProperty ctrlX1Property() {
 			return null;
 		}
 
+		@Pure
 		@Override
 		public DoubleProperty ctrlY1Property() {
 			return null;
 		}
 
+		@Pure
 		@Override
 		public DoubleProperty ctrlX2Property() {
 			return null;
 		}
 
+		@Pure
 		@Override
 		public DoubleProperty ctrlY2Property() {
 			return null;

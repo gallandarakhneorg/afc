@@ -58,7 +58,7 @@ public class GeneratePictureForTest {
 	private static final double CELL_SIZE = 100;
 
 	private Path2f[] paths;
-	private Point2f[] points;
+	private Point2fx[] points;
 	private Segment2f[] lines;
 	private Segment2f[] segments;
 	private Circle2f[] circles;
@@ -121,7 +121,7 @@ public class GeneratePictureForTest {
 
 		//
 		// POINTS
-		this.points = new Point2f[] {
+		this.points = new Point2fx[] {
 				//				new Point2f(0f, 0f),
 				//				new Point2f(4f, 3f),
 				//				new Point2f(2f, 2f),
@@ -245,7 +245,7 @@ public class GeneratePictureForTest {
 		// Compute the bounds
 		Rectangle2f docBounds = new Rectangle2f();
 		boolean isset = false;
-		for(Point2f obj : this.points) {
+		for(Point2fx obj : this.points) {
 			if (isset)
 				docBounds.add(obj.getX(), obj.getY());
 			else {
@@ -351,7 +351,7 @@ public class GeneratePictureForTest {
 
 		// Elements
 		g.setColor(Color.ORANGE);
-		for(Point2f obj : this.points) {
+		for(Point2fx obj : this.points) {
 			g.fillRect(
 					toX(obj.getX(), docBounds) - 4, toY(obj.getY(), docBounds) - 4,
 					9, 9);
@@ -364,7 +364,7 @@ public class GeneratePictureForTest {
 			int yy2 = toY(obj.getY2(), docBounds);
 
 			g.setStroke(new BasicStroke(2));
-			Vector2f v = new Vector2f(xx2 - xx1, yy2 - yy1);
+			Vector2fx v = new Vector2fx(xx2 - xx1, yy2 - yy1);
 			v.normalize();
 			v.scale(1000);
 			int px1 = (int)(xx1 + v.x);

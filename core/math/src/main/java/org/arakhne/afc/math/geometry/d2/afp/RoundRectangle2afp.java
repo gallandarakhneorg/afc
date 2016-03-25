@@ -122,6 +122,23 @@ public interface RoundRectangle2afp<
 		return (xx * xx + yy * yy <= 1f);
 	}
 
+	@Pure
+	@Override
+	default boolean equalsToShape(IT shape) {
+		if (shape == null) {
+			return false;
+		}
+		if (shape == this) {
+			return true;
+		}
+		return getMinX() == shape.getMinX()
+			&& getMinY() == shape.getMinY()
+			&& getMaxX() == shape.getMaxX()
+			&& getMaxY() == shape.getMaxY()
+			&& getArcWidth() == shape.getArcWidth()
+			&& getArcHeight() == shape.getArcHeight();
+	}
+
 	/**
 	 * Gets the width of the arc that rounds off the corners.
 	 * @return the width of the arc that rounds off the corners

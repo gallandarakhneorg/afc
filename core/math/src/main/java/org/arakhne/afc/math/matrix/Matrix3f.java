@@ -136,41 +136,41 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * Constructs and initializes a Matrix3f from the specified nine- element
 	 * array.
 	 * 
-	 * @param v
+	 * @param values
 	 *            the array of length 9 containing in order
 	 */
-	public Matrix3f(double[] v) {
-		this.m00 = v[0];
-		this.m01 = v[1];
-		this.m02 = v[2];
+	public Matrix3f(double[] values) {
+		this.m00 = values[0];
+		this.m01 = values[1];
+		this.m02 = values[2];
 
-		this.m10 = v[3];
-		this.m11 = v[4];
-		this.m12 = v[5];
+		this.m10 = values[3];
+		this.m11 = values[4];
+		this.m12 = values[5];
 
-		this.m20 = v[6];
-		this.m21 = v[7];
-		this.m22 = v[8];
+		this.m20 = values[6];
+		this.m21 = values[7];
+		this.m22 = values[8];
 	}
 
 	/**
 	 * Constructs a new matrix with the same values as the Matrix3f parameter.
 	 * 
-	 * @param m1
+	 * @param matrix
 	 *            the source matrix
 	 */
-	public Matrix3f(Matrix3f m1) {
-		this.m00 = m1.m00;
-		this.m01 = m1.m01;
-		this.m02 = m1.m02;
+	public Matrix3f(Matrix3f matrix) {
+		this.m00 = matrix.m00;
+		this.m01 = matrix.m01;
+		this.m02 = matrix.m02;
 
-		this.m10 = m1.m10;
-		this.m11 = m1.m11;
-		this.m12 = m1.m12;
+		this.m10 = matrix.m10;
+		this.m11 = matrix.m11;
+		this.m12 = matrix.m12;
 
-		this.m20 = m1.m20;
-		this.m21 = m1.m21;
-		this.m22 = m1.m22;
+		this.m20 = matrix.m20;
+		this.m21 = matrix.m21;
+		this.m22 = matrix.m22;
 	}
 
 	/**
@@ -358,16 +358,16 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * 
 	 * @param row
 	 *            the matrix row
-	 * @param v
+	 * @param vector
 	 *            the vector into which the matrix row values will be copied
 	 */
-	public final void getRow(int row, Vector3D v) {
+	public final void getRow(int row, Vector3D vector) {
 		if (row == 0) {
-			v.set(this.m00, this.m01, this.m02);
+			vector.set(this.m00, this.m01, this.m02);
 		} else if (row == 1) {
-			v.set(this.m10, this.m11, this.m12);
+			vector.set(this.m10, this.m11, this.m12);
 		} else if (row == 2) {
-			v.set(this.m20, this.m21, this.m22);
+			vector.set(this.m20, this.m21, this.m22);
 		} else {
 			throw new ArrayIndexOutOfBoundsException();
 		}
@@ -379,22 +379,22 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * 
 	 * @param row
 	 *            the matrix row
-	 * @param v
+	 * @param vector
 	 *            the array into which the matrix row values will be copied
 	 */
-	public final void getRow(int row, double v[]) {
+	public final void getRow(int row, double vector[]) {
 		if (row == 0) {
-			v[0] = this.m00;
-			v[1] = this.m01;
-			v[2] = this.m02;
+			vector[0] = this.m00;
+			vector[1] = this.m01;
+			vector[2] = this.m02;
 		} else if (row == 1) {
-			v[0] = this.m10;
-			v[1] = this.m11;
-			v[2] = this.m12;
+			vector[0] = this.m10;
+			vector[1] = this.m11;
+			vector[2] = this.m12;
 		} else if (row == 2) {
-			v[0] = this.m20;
-			v[1] = this.m21;
-			v[2] = this.m22;
+			vector[0] = this.m20;
+			vector[1] = this.m21;
+			vector[2] = this.m22;
 		} else {
 			throw new ArrayIndexOutOfBoundsException();
 		}
@@ -429,22 +429,22 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * 
 	 * @param column
 	 *            the matrix column
-	 * @param v
+	 * @param vector
 	 *            the array into which the matrix row values will be copied
 	 */
-	public final void getColumn(int column, double v[]) {
+	public final void getColumn(int column, double vector[]) {
 		if (column == 0) {
-			v[0] = this.m00;
-			v[1] = this.m10;
-			v[2] = this.m20;
+			vector[0] = this.m00;
+			vector[1] = this.m10;
+			vector[2] = this.m20;
 		} else if (column == 1) {
-			v[0] = this.m01;
-			v[1] = this.m11;
-			v[2] = this.m21;
+			vector[0] = this.m01;
+			vector[1] = this.m11;
+			vector[2] = this.m21;
 		} else if (column == 2) {
-			v[0] = this.m02;
-			v[1] = this.m12;
-			v[2] = this.m22;
+			vector[0] = this.m02;
+			vector[1] = this.m12;
+			vector[2] = this.m22;
 		} else {
 			throw new ArrayIndexOutOfBoundsException();
 		}
@@ -495,27 +495,27 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * 
 	 * @param row
 	 *            the row number to be modified (zero indexed)
-	 * @param v
+	 * @param vector
 	 *            the replacement row
 	 */
-	public final void setRow(int row, Vector3D v) {
+	public final void setRow(int row, Vector3D vector) {
 		switch (row) {
 		case 0:
-			this.m00 = v.getX();
-			this.m01 = v.getY();
-			this.m02 = v.getZ();
+			this.m00 = vector.getX();
+			this.m01 = vector.getY();
+			this.m02 = vector.getZ();
 			break;
 
 		case 1:
-			this.m10 = v.getX();
-			this.m11 = v.getY();
-			this.m12 = v.getZ();
+			this.m10 = vector.getX();
+			this.m11 = vector.getY();
+			this.m12 = vector.getZ();
 			break;
 
 		case 2:
-			this.m20 = v.getX();
-			this.m21 = v.getY();
-			this.m22 = v.getZ();
+			this.m20 = vector.getX();
+			this.m21 = vector.getY();
+			this.m22 = vector.getZ();
 			break;
 
 		default:
@@ -530,27 +530,27 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * 
 	 * @param row
 	 *            the row number to be modified (zero indexed)
-	 * @param v
+	 * @param vector
 	 *            the replacement row
 	 */
-	public final void setRow(int row, double v[]) {
+	public final void setRow(int row, double vector[]) {
 		switch (row) {
 		case 0:
-			this.m00 = v[0];
-			this.m01 = v[1];
-			this.m02 = v[2];
+			this.m00 = vector[0];
+			this.m01 = vector[1];
+			this.m02 = vector[2];
 			break;
 
 		case 1:
-			this.m10 = v[0];
-			this.m11 = v[1];
-			this.m12 = v[2];
+			this.m10 = vector[0];
+			this.m11 = vector[1];
+			this.m12 = vector[2];
 			break;
 
 		case 2:
-			this.m20 = v[0];
-			this.m21 = v[1];
-			this.m22 = v[2];
+			this.m20 = vector[0];
+			this.m21 = vector[1];
+			this.m22 = vector[2];
 			break;
 
 		default:
@@ -604,27 +604,27 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * 
 	 * @param column
 	 *            the column number to be modified (zero indexed)
-	 * @param v
+	 * @param vector
 	 *            the replacement column
 	 */
-	public final void setColumn(int column, Vector3D v) {
+	public final void setColumn(int column, Vector3D vector) {
 		switch (column) {
 		case 0:
-			this.m00 = v.getX();
-			this.m10 = v.getY();
-			this.m20 = v.getZ();
+			this.m00 = vector.getX();
+			this.m10 = vector.getY();
+			this.m20 = vector.getZ();
 			break;
 
 		case 1:
-			this.m01 = v.getX();
-			this.m11 = v.getY();
-			this.m21 = v.getZ();
+			this.m01 = vector.getX();
+			this.m11 = vector.getY();
+			this.m21 = vector.getZ();
 			break;
 
 		case 2:
-			this.m02 = v.getX();
-			this.m12 = v.getY();
-			this.m22 = v.getZ();
+			this.m02 = vector.getX();
+			this.m12 = vector.getY();
+			this.m22 = vector.getZ();
 			break;
 
 		default:
@@ -639,27 +639,27 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * 
 	 * @param column
 	 *            the column number to be modified (zero indexed)
-	 * @param v
+	 * @param vector
 	 *            the replacement column
 	 */
-	public final void setColumn(int column, double v[]) {
+	public final void setColumn(int column, double vector[]) {
 		switch (column) {
 		case 0:
-			this.m00 = v[0];
-			this.m10 = v[1];
-			this.m20 = v[2];
+			this.m00 = vector[0];
+			this.m10 = vector[1];
+			this.m20 = vector[2];
 			break;
 
 		case 1:
-			this.m01 = v[0];
-			this.m11 = v[1];
-			this.m21 = v[2];
+			this.m01 = vector[0];
+			this.m11 = vector[1];
+			this.m21 = vector[2];
 			break;
 
 		case 2:
-			this.m02 = v[0];
-			this.m12 = v[1];
-			this.m22 = v[2];
+			this.m02 = vector[0];
+			this.m12 = vector[1];
+			this.m22 = vector[2];
 			break;
 
 		default:
@@ -697,21 +697,21 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * 
 	 * @param scalar
 	 *            the scalar adder
-	 * @param m1
+	 * @param matrix
 	 *            the original matrix values
 	 */
-	public final void add(double scalar, Matrix3f m1) {
-		this.m00 = m1.m00 + scalar;
-		this.m01 = m1.m01 + scalar;
-		this.m02 = m1.m02 + scalar;
+	public final void add(double scalar, Matrix3f matrix) {
+		this.m00 = matrix.m00 + scalar;
+		this.m01 = matrix.m01 + scalar;
+		this.m02 = matrix.m02 + scalar;
 
-		this.m10 = m1.m10 + scalar;
-		this.m11 = m1.m11 + scalar;
-		this.m12 = m1.m12 + scalar;
+		this.m10 = matrix.m10 + scalar;
+		this.m11 = matrix.m11 + scalar;
+		this.m12 = matrix.m12 + scalar;
 
-		this.m20 = m1.m20 + scalar;
-		this.m21 = m1.m21 + scalar;
-		this.m22 = m1.m22 + scalar;
+		this.m20 = matrix.m20 + scalar;
+		this.m21 = matrix.m21 + scalar;
+		this.m22 = matrix.m22 + scalar;
 		
 		this.isIdentity = null;
 	}
@@ -719,23 +719,23 @@ public class Matrix3f implements Serializable, Cloneable {
 	/**
 	 * Sets the value of this matrix to the matrix sum of matrices m1 and m2.
 	 * 
-	 * @param m1
+	 * @param matrix1
 	 *            the first matrix
-	 * @param m2
+	 * @param matrix2
 	 *            the second matrix
 	 */
-	public final void add(Matrix3f m1, Matrix3f m2) {
-		this.m00 = m1.m00 + m2.m00;
-		this.m01 = m1.m01 + m2.m01;
-		this.m02 = m1.m02 + m2.m02;
+	public final void add(Matrix3f matrix1, Matrix3f matrix2) {
+		this.m00 = matrix1.m00 + matrix2.m00;
+		this.m01 = matrix1.m01 + matrix2.m01;
+		this.m02 = matrix1.m02 + matrix2.m02;
 
-		this.m10 = m1.m10 + m2.m10;
-		this.m11 = m1.m11 + m2.m11;
-		this.m12 = m1.m12 + m2.m12;
+		this.m10 = matrix1.m10 + matrix2.m10;
+		this.m11 = matrix1.m11 + matrix2.m11;
+		this.m12 = matrix1.m12 + matrix2.m12;
 
-		this.m20 = m1.m20 + m2.m20;
-		this.m21 = m1.m21 + m2.m21;
-		this.m22 = m1.m22 + m2.m22;
+		this.m20 = matrix1.m20 + matrix2.m20;
+		this.m21 = matrix1.m21 + matrix2.m21;
+		this.m22 = matrix1.m22 + matrix2.m22;
 		
 		this.isIdentity = null;
 	}
@@ -743,21 +743,21 @@ public class Matrix3f implements Serializable, Cloneable {
 	/**
 	 * Sets the value of this matrix to the sum of itself and matrix m1.
 	 * 
-	 * @param m1
+	 * @param matrix
 	 *            the other matrix
 	 */
-	public final void add(Matrix3f m1) {
-		this.m00 += m1.m00;
-		this.m01 += m1.m01;
-		this.m02 += m1.m02;
+	public final void add(Matrix3f matrix) {
+		this.m00 += matrix.m00;
+		this.m01 += matrix.m01;
+		this.m02 += matrix.m02;
 
-		this.m10 += m1.m10;
-		this.m11 += m1.m11;
-		this.m12 += m1.m12;
+		this.m10 += matrix.m10;
+		this.m11 += matrix.m11;
+		this.m12 += matrix.m12;
 
-		this.m20 += m1.m20;
-		this.m21 += m1.m21;
-		this.m22 += m1.m22;
+		this.m20 += matrix.m20;
+		this.m21 += matrix.m21;
+		this.m22 += matrix.m22;
 		
 		this.isIdentity = null;
 	}
@@ -766,23 +766,23 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * Sets the value of this matrix to the matrix difference of matrices m1 and
 	 * m2.
 	 * 
-	 * @param m1
+	 * @param matrix1
 	 *            the first matrix
-	 * @param m2
+	 * @param matrix2
 	 *            the second matrix
 	 */
-	public final void sub(Matrix3f m1, Matrix3f m2) {
-		this.m00 = m1.m00 - m2.m00;
-		this.m01 = m1.m01 - m2.m01;
-		this.m02 = m1.m02 - m2.m02;
+	public final void sub(Matrix3f matrix1, Matrix3f matrix2) {
+		this.m00 = matrix1.m00 - matrix2.m00;
+		this.m01 = matrix1.m01 - matrix2.m01;
+		this.m02 = matrix1.m02 - matrix2.m02;
 
-		this.m10 = m1.m10 - m2.m10;
-		this.m11 = m1.m11 - m2.m11;
-		this.m12 = m1.m12 - m2.m12;
+		this.m10 = matrix1.m10 - matrix2.m10;
+		this.m11 = matrix1.m11 - matrix2.m11;
+		this.m12 = matrix1.m12 - matrix2.m12;
 
-		this.m20 = m1.m20 - m2.m20;
-		this.m21 = m1.m21 - m2.m21;
-		this.m22 = m1.m22 - m2.m22;
+		this.m20 = matrix1.m20 - matrix2.m20;
+		this.m21 = matrix1.m21 - matrix2.m21;
+		this.m22 = matrix1.m22 - matrix2.m22;
 		
 		this.isIdentity = null;
 	}
@@ -791,21 +791,21 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * Sets the value of this matrix to the matrix difference of itself and
 	 * matrix m1 (this = this - m1).
 	 * 
-	 * @param m1
+	 * @param matrix
 	 *            the other matrix
 	 */
-	public final void sub(Matrix3f m1) {
-		this.m00 -= m1.m00;
-		this.m01 -= m1.m01;
-		this.m02 -= m1.m02;
+	public final void sub(Matrix3f matrix) {
+		this.m00 -= matrix.m00;
+		this.m01 -= matrix.m01;
+		this.m02 -= matrix.m02;
 
-		this.m10 -= m1.m10;
-		this.m11 -= m1.m11;
-		this.m12 -= m1.m12;
+		this.m10 -= matrix.m10;
+		this.m11 -= matrix.m11;
+		this.m12 -= matrix.m12;
 
-		this.m20 -= m1.m20;
-		this.m21 -= m1.m21;
-		this.m22 -= m1.m22;
+		this.m20 -= matrix.m20;
+		this.m21 -= matrix.m21;
+		this.m22 -= matrix.m22;
 		
 		this.isIdentity = null;
 	}
@@ -834,22 +834,22 @@ public class Matrix3f implements Serializable, Cloneable {
 	/**
 	 * Sets the value of this matrix to the transpose of the argument matrix.
 	 * 
-	 * @param m1
+	 * @param matrix
 	 *            the matrix to be transposed
 	 */
-	public final void transpose(Matrix3f m1) {
-		if (this != m1) {
-			this.m00 = m1.m00;
-			this.m01 = m1.m10;
-			this.m02 = m1.m20;
+	public final void transpose(Matrix3f matrix) {
+		if (this != matrix) {
+			this.m00 = matrix.m00;
+			this.m01 = matrix.m10;
+			this.m02 = matrix.m20;
 
-			this.m10 = m1.m01;
-			this.m11 = m1.m11;
-			this.m12 = m1.m21;
+			this.m10 = matrix.m01;
+			this.m11 = matrix.m11;
+			this.m12 = matrix.m21;
 
-			this.m20 = m1.m02;
-			this.m21 = m1.m12;
-			this.m22 = m1.m22;
+			this.m20 = matrix.m02;
+			this.m21 = matrix.m12;
+			this.m22 = matrix.m22;
 			
 			this.isIdentity = null;
 		} else
@@ -860,23 +860,23 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * Sets the value of this matrix to the double value of the Matrix3f
 	 * argument.
 	 * 
-	 * @param m1
+	 * @param matrix
 	 *            the Matrix3f to be converted to double
 	 */
-	public final void set(Matrix3f m1) {
-		this.m00 = m1.m00;
-		this.m01 = m1.m01;
-		this.m02 = m1.m02;
+	public final void set(Matrix3f matrix) {
+		this.m00 = matrix.m00;
+		this.m01 = matrix.m01;
+		this.m02 = matrix.m02;
 
-		this.m10 = m1.m10;
-		this.m11 = m1.m11;
-		this.m12 = m1.m12;
+		this.m10 = matrix.m10;
+		this.m11 = matrix.m11;
+		this.m12 = matrix.m12;
 
-		this.m20 = m1.m20;
-		this.m21 = m1.m21;
-		this.m22 = m1.m22;
+		this.m20 = matrix.m20;
+		this.m21 = matrix.m21;
+		this.m22 = matrix.m22;
 		
-		this.isIdentity = m1.isIdentity;
+		this.isIdentity = matrix.isIdentity;
 	}
 
 	/**
@@ -884,21 +884,21 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * (ie, the first three elements of the array will be copied into the first
 	 * row of this matrix, etc.).
 	 * 
-	 * @param m
+	 * @param matrix
 	 *            the double precision array of length 9
 	 */
-	public final void set(double[] m) {
-		this.m00 = m[0];
-		this.m01 = m[1];
-		this.m02 = m[2];
+	public final void set(double[] matrix) {
+		this.m00 = matrix[0];
+		this.m01 = matrix[1];
+		this.m02 = matrix[2];
 
-		this.m10 = m[3];
-		this.m11 = m[4];
-		this.m12 = m[5];
+		this.m10 = matrix[3];
+		this.m11 = matrix[4];
+		this.m12 = matrix[5];
 
-		this.m20 = m[6];
-		this.m21 = m[7];
-		this.m22 = m[8];
+		this.m20 = matrix[6];
+		this.m21 = matrix[7];
+		this.m22 = matrix[8];
 		
 		this.isIdentity = null;
 	}
@@ -945,11 +945,11 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * Sets the value of this matrix to the matrix inverse of the passed matrix
 	 * m1.
 	 * 
-	 * @param m1
+	 * @param matrix
 	 *            the matrix to be inverted
 	 */
-	public void invert(Matrix3f m1) {
-		invertGeneral(m1);
+	public void invert(Matrix3f matrix) {
+		invertGeneral(matrix);
 	}
 
 	/**
@@ -964,10 +964,10 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * that this routine handles both the "this" version and the non-"this"
 	 * version.
 	 * 
-	 * Also note that since this routine is slow anyway, we won't worry about
+	 * <p>Also note that since this routine is slow anyway, we won't worry about
 	 * allocating a little bit of garbage.
 	 */
-	private final void invertGeneral(Matrix3f m1) {
+	private final void invertGeneral(Matrix3f matrix) {
 		double result[] = new double[9];
 		int row_perm[] = new int[3];
 		int i;
@@ -977,17 +977,17 @@ public class Matrix3f implements Serializable, Cloneable {
 		// for floating-point 3x3 matrices.
 
 		// Copy source matrix to t1tmp
-		tmp[0] = m1.m00;
-		tmp[1] = m1.m01;
-		tmp[2] = m1.m02;
+		tmp[0] = matrix.m00;
+		tmp[1] = matrix.m01;
+		tmp[2] = matrix.m02;
 
-		tmp[3] = m1.m10;
-		tmp[4] = m1.m11;
-		tmp[5] = m1.m12;
+		tmp[3] = matrix.m10;
+		tmp[4] = matrix.m11;
+		tmp[5] = matrix.m12;
 
-		tmp[6] = m1.m20;
-		tmp[7] = m1.m21;
-		tmp[8] = m1.m22;
+		tmp[6] = matrix.m20;
+		tmp[7] = matrix.m21;
+		tmp[8] = matrix.m22;
 
 		// Calculate LU decomposition: Is the matrix singular?
 		if (!luDecomposition(tmp, row_perm)) {
@@ -1281,28 +1281,28 @@ public class Matrix3f implements Serializable, Cloneable {
 
 	/** Multiply this matrix by the given vector v and set the result..
 	 * 
-	 * @param v
+	 * @param vector
 	 * @param result the vector resulting of <code>this * v</code>.
 	 */
 	@Pure
-	public void mul(Vector3D v, Vector3D result) {
+	public void mul(Vector3D vector, Vector3D result) {
 		result.set(
-				this.m00 * v.getX() + this.m01 * v.getY() + this.m02 * v.getZ(),
-				this.m10 * v.getX() + this.m11 * v.getY() + this.m12 * v.getZ(),
-				this.m20 * v.getX() + this.m21 * v.getY() + this.m22 * v.getZ());
+				this.m00 * vector.getX() + this.m01 * vector.getY() + this.m02 * vector.getZ(),
+				this.m10 * vector.getX() + this.m11 * vector.getY() + this.m12 * vector.getZ(),
+				this.m20 * vector.getX() + this.m21 * vector.getY() + this.m22 * vector.getZ());
 	}
 
 	/** Multiply the transposing of this matrix by the given vector.
 	 * 
-	 * @param v
+	 * @param vector
 	 * @param result the vector resulting of <code>transpose(this) * v</code>.
 	 */
 	@Pure
-	public void mulTransposeLeft(Vector3D v, Vector3D result) {
+	public void mulTransposeLeft(Vector3D vector, Vector3D result) {
 		result.set(
-				this.m00 * v.getX() + this.m10 * v.getY() + this.m20 * v.getZ(),
-				this.m01 * v.getX() + this.m11 * v.getY() + this.m21 * v.getZ(),
-				this.m02 * v.getX() + this.m12 * v.getY() + this.m22 * v.getZ());
+				this.m00 * vector.getX() + this.m10 * vector.getY() + this.m20 * vector.getZ(),
+				this.m01 * vector.getX() + this.m11 * vector.getY() + this.m21 * vector.getZ(),
+				this.m02 * vector.getX() + this.m12 * vector.getY() + this.m22 * vector.getZ());
 	}
 
 	/**
@@ -1311,21 +1311,21 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * 
 	 * @param scalar
 	 *            the scalar multiplier
-	 * @param m1
+	 * @param matrix
 	 *            the original matrix
 	 */
-	public final void mul(double scalar, Matrix3f m1) {
-		this.m00 = scalar * m1.m00;
-		this.m01 = scalar * m1.m01;
-		this.m02 = scalar * m1.m02;
+	public final void mul(double scalar, Matrix3f matrix) {
+		this.m00 = scalar * matrix.m00;
+		this.m01 = scalar * matrix.m01;
+		this.m02 = scalar * matrix.m02;
 
-		this.m10 = scalar * m1.m10;
-		this.m11 = scalar * m1.m11;
-		this.m12 = scalar * m1.m12;
+		this.m10 = scalar * matrix.m10;
+		this.m11 = scalar * matrix.m11;
+		this.m12 = scalar * matrix.m12;
 
-		this.m20 = scalar * m1.m20;
-		this.m21 = scalar * m1.m21;
-		this.m22 = scalar * m1.m22;
+		this.m20 = scalar * matrix.m20;
+		this.m21 = scalar * matrix.m21;
+		this.m22 = scalar * matrix.m22;
 		
 		this.isIdentity = null;
 	}
@@ -1334,23 +1334,23 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * Sets the value of this matrix to the result of multiplying itself with
 	 * matrix m1.
 	 * 
-	 * @param m1
+	 * @param matrix
 	 *            the other matrix
 	 */
-	public final void mul(Matrix3f m1) {
+	public final void mul(Matrix3f matrix) {
 		double _m00, _m01, _m02, _m10, _m11, _m12, _m20, _m21, _m22;
 
-		_m00 = this.m00 * m1.m00 + this.m01 * m1.m10 + this.m02 * m1.m20;
-		_m01 = this.m00 * m1.m01 + this.m01 * m1.m11 + this.m02 * m1.m21;
-		_m02 = this.m00 * m1.m02 + this.m01 * m1.m12 + this.m02 * m1.m22;
+		_m00 = this.m00 * matrix.m00 + this.m01 * matrix.m10 + this.m02 * matrix.m20;
+		_m01 = this.m00 * matrix.m01 + this.m01 * matrix.m11 + this.m02 * matrix.m21;
+		_m02 = this.m00 * matrix.m02 + this.m01 * matrix.m12 + this.m02 * matrix.m22;
 
-		_m10 = this.m10 * m1.m00 + this.m11 * m1.m10 + this.m12 * m1.m20;
-		_m11 = this.m10 * m1.m01 + this.m11 * m1.m11 + this.m12 * m1.m21;
-		_m12 = this.m10 * m1.m02 + this.m11 * m1.m12 + this.m12 * m1.m22;
+		_m10 = this.m10 * matrix.m00 + this.m11 * matrix.m10 + this.m12 * matrix.m20;
+		_m11 = this.m10 * matrix.m01 + this.m11 * matrix.m11 + this.m12 * matrix.m21;
+		_m12 = this.m10 * matrix.m02 + this.m11 * matrix.m12 + this.m12 * matrix.m22;
 
-		_m20 = this.m20 * m1.m00 + this.m21 * m1.m10 + this.m22 * m1.m20;
-		_m21 = this.m20 * m1.m01 + this.m21 * m1.m11 + this.m22 * m1.m21;
-		_m22 = this.m20 * m1.m02 + this.m21 * m1.m12 + this.m22 * m1.m22;
+		_m20 = this.m20 * matrix.m00 + this.m21 * matrix.m10 + this.m22 * matrix.m20;
+		_m21 = this.m20 * matrix.m01 + this.m21 * matrix.m11 + this.m22 * matrix.m21;
+		_m22 = this.m20 * matrix.m02 + this.m21 * matrix.m12 + this.m22 * matrix.m22;
 
 		this.m00 = _m00;
 		this.m01 = _m01;
@@ -1369,39 +1369,39 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * Sets the value of this matrix to the result of multiplying the two
 	 * argument matrices together.
 	 * 
-	 * @param m1
+	 * @param matrix1
 	 *            the first matrix
-	 * @param m2
+	 * @param matrix2
 	 *            the second matrix
 	 */
-	public final void mul(Matrix3f m1, Matrix3f m2) {
-		if (this != m1 && this != m2) {
-			this.m00 = m1.m00 * m2.m00 + m1.m01 * m2.m10 + m1.m02 * m2.m20;
-			this.m01 = m1.m00 * m2.m01 + m1.m01 * m2.m11 + m1.m02 * m2.m21;
-			this.m02 = m1.m00 * m2.m02 + m1.m01 * m2.m12 + m1.m02 * m2.m22;
+	public final void mul(Matrix3f matrix1, Matrix3f matrix2) {
+		if (this != matrix1 && this != matrix2) {
+			this.m00 = matrix1.m00 * matrix2.m00 + matrix1.m01 * matrix2.m10 + matrix1.m02 * matrix2.m20;
+			this.m01 = matrix1.m00 * matrix2.m01 + matrix1.m01 * matrix2.m11 + matrix1.m02 * matrix2.m21;
+			this.m02 = matrix1.m00 * matrix2.m02 + matrix1.m01 * matrix2.m12 + matrix1.m02 * matrix2.m22;
 
-			this.m10 = m1.m10 * m2.m00 + m1.m11 * m2.m10 + m1.m12 * m2.m20;
-			this.m11 = m1.m10 * m2.m01 + m1.m11 * m2.m11 + m1.m12 * m2.m21;
-			this.m12 = m1.m10 * m2.m02 + m1.m11 * m2.m12 + m1.m12 * m2.m22;
+			this.m10 = matrix1.m10 * matrix2.m00 + matrix1.m11 * matrix2.m10 + matrix1.m12 * matrix2.m20;
+			this.m11 = matrix1.m10 * matrix2.m01 + matrix1.m11 * matrix2.m11 + matrix1.m12 * matrix2.m21;
+			this.m12 = matrix1.m10 * matrix2.m02 + matrix1.m11 * matrix2.m12 + matrix1.m12 * matrix2.m22;
 
-			this.m20 = m1.m20 * m2.m00 + m1.m21 * m2.m10 + m1.m22 * m2.m20;
-			this.m21 = m1.m20 * m2.m01 + m1.m21 * m2.m11 + m1.m22 * m2.m21;
-			this.m22 = m1.m20 * m2.m02 + m1.m21 * m2.m12 + m1.m22 * m2.m22;
+			this.m20 = matrix1.m20 * matrix2.m00 + matrix1.m21 * matrix2.m10 + matrix1.m22 * matrix2.m20;
+			this.m21 = matrix1.m20 * matrix2.m01 + matrix1.m21 * matrix2.m11 + matrix1.m22 * matrix2.m21;
+			this.m22 = matrix1.m20 * matrix2.m02 + matrix1.m21 * matrix2.m12 + matrix1.m22 * matrix2.m22;
 		} else {
 			double _m00, _m01, _m02, _m10, _m11, _m12, _m20, _m21, _m22; // vars for temp
 			// result matrix
 
-			_m00 = m1.m00 * m2.m00 + m1.m01 * m2.m10 + m1.m02 * m2.m20;
-			_m01 = m1.m00 * m2.m01 + m1.m01 * m2.m11 + m1.m02 * m2.m21;
-			_m02 = m1.m00 * m2.m02 + m1.m01 * m2.m12 + m1.m02 * m2.m22;
+			_m00 = matrix1.m00 * matrix2.m00 + matrix1.m01 * matrix2.m10 + matrix1.m02 * matrix2.m20;
+			_m01 = matrix1.m00 * matrix2.m01 + matrix1.m01 * matrix2.m11 + matrix1.m02 * matrix2.m21;
+			_m02 = matrix1.m00 * matrix2.m02 + matrix1.m01 * matrix2.m12 + matrix1.m02 * matrix2.m22;
 
-			_m10 = m1.m10 * m2.m00 + m1.m11 * m2.m10 + m1.m12 * m2.m20;
-			_m11 = m1.m10 * m2.m01 + m1.m11 * m2.m11 + m1.m12 * m2.m21;
-			_m12 = m1.m10 * m2.m02 + m1.m11 * m2.m12 + m1.m12 * m2.m22;
+			_m10 = matrix1.m10 * matrix2.m00 + matrix1.m11 * matrix2.m10 + matrix1.m12 * matrix2.m20;
+			_m11 = matrix1.m10 * matrix2.m01 + matrix1.m11 * matrix2.m11 + matrix1.m12 * matrix2.m21;
+			_m12 = matrix1.m10 * matrix2.m02 + matrix1.m11 * matrix2.m12 + matrix1.m12 * matrix2.m22;
 
-			_m20 = m1.m20 * m2.m00 + m1.m21 * m2.m10 + m1.m22 * m2.m20;
-			_m21 = m1.m20 * m2.m01 + m1.m21 * m2.m11 + m1.m22 * m2.m21;
-			_m22 = m1.m20 * m2.m02 + m1.m21 * m2.m12 + m1.m22 * m2.m22;
+			_m20 = matrix1.m20 * matrix2.m00 + matrix1.m21 * matrix2.m10 + matrix1.m22 * matrix2.m20;
+			_m21 = matrix1.m20 * matrix2.m01 + matrix1.m21 * matrix2.m11 + matrix1.m22 * matrix2.m21;
+			_m22 = matrix1.m20 * matrix2.m02 + matrix1.m21 * matrix2.m12 + matrix1.m22 * matrix2.m22;
 
 			this.m00 = _m00;
 			this.m01 = _m01;
@@ -1422,26 +1422,26 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * result, and places the result back into this matrix this =
 	 * SVDnorm(this*m1).
 	 * 
-	 * @param m1
+	 * @param matrix
 	 *            the matrix on the right hand side of the multiplication
 	 */
-	public final void mulNormalize(Matrix3f m1) {
+	public final void mulNormalize(Matrix3f matrix) {
 
 		double[] tmp = new double[9]; // scratch matrix
 		double[] tmp_rot = new double[9]; // scratch matrix
 		double[] tmp_scale = new double[3]; // scratch matrix
 
-		tmp[0] = this.m00 * m1.m00 + this.m01 * m1.m10 + this.m02 * m1.m20;
-		tmp[1] = this.m00 * m1.m01 + this.m01 * m1.m11 + this.m02 * m1.m21;
-		tmp[2] = this.m00 * m1.m02 + this.m01 * m1.m12 + this.m02 * m1.m22;
+		tmp[0] = this.m00 * matrix.m00 + this.m01 * matrix.m10 + this.m02 * matrix.m20;
+		tmp[1] = this.m00 * matrix.m01 + this.m01 * matrix.m11 + this.m02 * matrix.m21;
+		tmp[2] = this.m00 * matrix.m02 + this.m01 * matrix.m12 + this.m02 * matrix.m22;
 
-		tmp[3] = this.m10 * m1.m00 + this.m11 * m1.m10 + this.m12 * m1.m20;
-		tmp[4] = this.m10 * m1.m01 + this.m11 * m1.m11 + this.m12 * m1.m21;
-		tmp[5] = this.m10 * m1.m02 + this.m11 * m1.m12 + this.m12 * m1.m22;
+		tmp[3] = this.m10 * matrix.m00 + this.m11 * matrix.m10 + this.m12 * matrix.m20;
+		tmp[4] = this.m10 * matrix.m01 + this.m11 * matrix.m11 + this.m12 * matrix.m21;
+		tmp[5] = this.m10 * matrix.m02 + this.m11 * matrix.m12 + this.m12 * matrix.m22;
 
-		tmp[6] = this.m20 * m1.m00 + this.m21 * m1.m10 + this.m22 * m1.m20;
-		tmp[7] = this.m20 * m1.m01 + this.m21 * m1.m11 + this.m22 * m1.m21;
-		tmp[8] = this.m20 * m1.m02 + this.m21 * m1.m12 + this.m22 * m1.m22;
+		tmp[6] = this.m20 * matrix.m00 + this.m21 * matrix.m10 + this.m22 * matrix.m20;
+		tmp[7] = this.m20 * matrix.m01 + this.m21 * matrix.m11 + this.m22 * matrix.m21;
+		tmp[8] = this.m20 * matrix.m02 + this.m21 * matrix.m12 + this.m22 * matrix.m22;
 
 		compute_svd(tmp, tmp_scale, tmp_rot);
 
@@ -1464,28 +1464,28 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * Multiplies matrix m1 by matrix m2, does an SVD normalization of the
 	 * result, and places the result into this matrix this = SVDnorm(m1*m2).
 	 * 
-	 * @param m1
+	 * @param matrix1
 	 *            the matrix on the left hand side of the multiplication
-	 * @param m2
+	 * @param matrix2
 	 *            the matrix on the right hand side of the multiplication
 	 */
-	public final void mulNormalize(Matrix3f m1, Matrix3f m2) {
+	public final void mulNormalize(Matrix3f matrix1, Matrix3f matrix2) {
 
 		double[] tmp = new double[9]; // scratch matrix
 		double[] tmp_rot = new double[9]; // scratch matrix
 		double[] tmp_scale = new double[3]; // scratch matrix
 
-		tmp[0] = m1.m00 * m2.m00 + m1.m01 * m2.m10 + m1.m02 * m2.m20;
-		tmp[1] = m1.m00 * m2.m01 + m1.m01 * m2.m11 + m1.m02 * m2.m21;
-		tmp[2] = m1.m00 * m2.m02 + m1.m01 * m2.m12 + m1.m02 * m2.m22;
+		tmp[0] = matrix1.m00 * matrix2.m00 + matrix1.m01 * matrix2.m10 + matrix1.m02 * matrix2.m20;
+		tmp[1] = matrix1.m00 * matrix2.m01 + matrix1.m01 * matrix2.m11 + matrix1.m02 * matrix2.m21;
+		tmp[2] = matrix1.m00 * matrix2.m02 + matrix1.m01 * matrix2.m12 + matrix1.m02 * matrix2.m22;
 
-		tmp[3] = m1.m10 * m2.m00 + m1.m11 * m2.m10 + m1.m12 * m2.m20;
-		tmp[4] = m1.m10 * m2.m01 + m1.m11 * m2.m11 + m1.m12 * m2.m21;
-		tmp[5] = m1.m10 * m2.m02 + m1.m11 * m2.m12 + m1.m12 * m2.m22;
+		tmp[3] = matrix1.m10 * matrix2.m00 + matrix1.m11 * matrix2.m10 + matrix1.m12 * matrix2.m20;
+		tmp[4] = matrix1.m10 * matrix2.m01 + matrix1.m11 * matrix2.m11 + matrix1.m12 * matrix2.m21;
+		tmp[5] = matrix1.m10 * matrix2.m02 + matrix1.m11 * matrix2.m12 + matrix1.m12 * matrix2.m22;
 
-		tmp[6] = m1.m20 * m2.m00 + m1.m21 * m2.m10 + m1.m22 * m2.m20;
-		tmp[7] = m1.m20 * m2.m01 + m1.m21 * m2.m11 + m1.m22 * m2.m21;
-		tmp[8] = m1.m20 * m2.m02 + m1.m21 * m2.m12 + m1.m22 * m2.m22;
+		tmp[6] = matrix1.m20 * matrix2.m00 + matrix1.m21 * matrix2.m10 + matrix1.m22 * matrix2.m20;
+		tmp[7] = matrix1.m20 * matrix2.m01 + matrix1.m21 * matrix2.m11 + matrix1.m22 * matrix2.m21;
+		tmp[8] = matrix1.m20 * matrix2.m02 + matrix1.m21 * matrix2.m12 + matrix1.m22 * matrix2.m22;
 
 		compute_svd(tmp, tmp_scale, tmp_rot);
 
@@ -1508,39 +1508,39 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * Multiplies the transpose of matrix m1 times the transpose of matrix m2,
 	 * and places the result into this.
 	 * 
-	 * @param m1
+	 * @param matrix1
 	 *            the matrix on the left hand side of the multiplication
-	 * @param m2
+	 * @param matrix2
 	 *            the matrix on the right hand side of the multiplication
 	 */
-	public final void mulTransposeBoth(Matrix3f m1, Matrix3f m2) {
-		if (this != m1 && this != m2) {
-			this.m00 = m1.m00 * m2.m00 + m1.m10 * m2.m01 + m1.m20 * m2.m02;
-			this.m01 = m1.m00 * m2.m10 + m1.m10 * m2.m11 + m1.m20 * m2.m12;
-			this.m02 = m1.m00 * m2.m20 + m1.m10 * m2.m21 + m1.m20 * m2.m22;
+	public final void mulTransposeBoth(Matrix3f matrix1, Matrix3f matrix2) {
+		if (this != matrix1 && this != matrix2) {
+			this.m00 = matrix1.m00 * matrix2.m00 + matrix1.m10 * matrix2.m01 + matrix1.m20 * matrix2.m02;
+			this.m01 = matrix1.m00 * matrix2.m10 + matrix1.m10 * matrix2.m11 + matrix1.m20 * matrix2.m12;
+			this.m02 = matrix1.m00 * matrix2.m20 + matrix1.m10 * matrix2.m21 + matrix1.m20 * matrix2.m22;
 
-			this.m10 = m1.m01 * m2.m00 + m1.m11 * m2.m01 + m1.m21 * m2.m02;
-			this.m11 = m1.m01 * m2.m10 + m1.m11 * m2.m11 + m1.m21 * m2.m12;
-			this.m12 = m1.m01 * m2.m20 + m1.m11 * m2.m21 + m1.m21 * m2.m22;
+			this.m10 = matrix1.m01 * matrix2.m00 + matrix1.m11 * matrix2.m01 + matrix1.m21 * matrix2.m02;
+			this.m11 = matrix1.m01 * matrix2.m10 + matrix1.m11 * matrix2.m11 + matrix1.m21 * matrix2.m12;
+			this.m12 = matrix1.m01 * matrix2.m20 + matrix1.m11 * matrix2.m21 + matrix1.m21 * matrix2.m22;
 
-			this.m20 = m1.m02 * m2.m00 + m1.m12 * m2.m01 + m1.m22 * m2.m02;
-			this.m21 = m1.m02 * m2.m10 + m1.m12 * m2.m11 + m1.m22 * m2.m12;
-			this.m22 = m1.m02 * m2.m20 + m1.m12 * m2.m21 + m1.m22 * m2.m22;
+			this.m20 = matrix1.m02 * matrix2.m00 + matrix1.m12 * matrix2.m01 + matrix1.m22 * matrix2.m02;
+			this.m21 = matrix1.m02 * matrix2.m10 + matrix1.m12 * matrix2.m11 + matrix1.m22 * matrix2.m12;
+			this.m22 = matrix1.m02 * matrix2.m20 + matrix1.m12 * matrix2.m21 + matrix1.m22 * matrix2.m22;
 		} else {
 			double _m00, _m01, _m02, _m10, _m11, _m12, _m20, _m21, _m22; // vars for temp
 			// result matrix
 
-			_m00 = m1.m00 * m2.m00 + m1.m10 * m2.m01 + m1.m20 * m2.m02;
-			_m01 = m1.m00 * m2.m10 + m1.m10 * m2.m11 + m1.m20 * m2.m12;
-			_m02 = m1.m00 * m2.m20 + m1.m10 * m2.m21 + m1.m20 * m2.m22;
+			_m00 = matrix1.m00 * matrix2.m00 + matrix1.m10 * matrix2.m01 + matrix1.m20 * matrix2.m02;
+			_m01 = matrix1.m00 * matrix2.m10 + matrix1.m10 * matrix2.m11 + matrix1.m20 * matrix2.m12;
+			_m02 = matrix1.m00 * matrix2.m20 + matrix1.m10 * matrix2.m21 + matrix1.m20 * matrix2.m22;
 
-			_m10 = m1.m01 * m2.m00 + m1.m11 * m2.m01 + m1.m21 * m2.m02;
-			_m11 = m1.m01 * m2.m10 + m1.m11 * m2.m11 + m1.m21 * m2.m12;
-			_m12 = m1.m01 * m2.m20 + m1.m11 * m2.m21 + m1.m21 * m2.m22;
+			_m10 = matrix1.m01 * matrix2.m00 + matrix1.m11 * matrix2.m01 + matrix1.m21 * matrix2.m02;
+			_m11 = matrix1.m01 * matrix2.m10 + matrix1.m11 * matrix2.m11 + matrix1.m21 * matrix2.m12;
+			_m12 = matrix1.m01 * matrix2.m20 + matrix1.m11 * matrix2.m21 + matrix1.m21 * matrix2.m22;
 
-			_m20 = m1.m02 * m2.m00 + m1.m12 * m2.m01 + m1.m22 * m2.m02;
-			_m21 = m1.m02 * m2.m10 + m1.m12 * m2.m11 + m1.m22 * m2.m12;
-			_m22 = m1.m02 * m2.m20 + m1.m12 * m2.m21 + m1.m22 * m2.m22;
+			_m20 = matrix1.m02 * matrix2.m00 + matrix1.m12 * matrix2.m01 + matrix1.m22 * matrix2.m02;
+			_m21 = matrix1.m02 * matrix2.m10 + matrix1.m12 * matrix2.m11 + matrix1.m22 * matrix2.m12;
+			_m22 = matrix1.m02 * matrix2.m20 + matrix1.m12 * matrix2.m21 + matrix1.m22 * matrix2.m22;
 
 			this.m00 = _m00;
 			this.m01 = _m01;
@@ -1560,39 +1560,39 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * Multiplies matrix m1 times the transpose of matrix m2, and places the
 	 * result into this.
 	 * 
-	 * @param m1
+	 * @param matrix1
 	 *            the matrix on the left hand side of the multiplication
-	 * @param m2
+	 * @param matrix2
 	 *            the matrix on the right hand side of the multiplication
 	 */
-	public final void mulTransposeRight(Matrix3f m1, Matrix3f m2) {
-		if (this != m1 && this != m2) {
-			this.m00 = m1.m00 * m2.m00 + m1.m01 * m2.m01 + m1.m02 * m2.m02;
-			this.m01 = m1.m00 * m2.m10 + m1.m01 * m2.m11 + m1.m02 * m2.m12;
-			this.m02 = m1.m00 * m2.m20 + m1.m01 * m2.m21 + m1.m02 * m2.m22;
+	public final void mulTransposeRight(Matrix3f matrix1, Matrix3f matrix2) {
+		if (this != matrix1 && this != matrix2) {
+			this.m00 = matrix1.m00 * matrix2.m00 + matrix1.m01 * matrix2.m01 + matrix1.m02 * matrix2.m02;
+			this.m01 = matrix1.m00 * matrix2.m10 + matrix1.m01 * matrix2.m11 + matrix1.m02 * matrix2.m12;
+			this.m02 = matrix1.m00 * matrix2.m20 + matrix1.m01 * matrix2.m21 + matrix1.m02 * matrix2.m22;
 
-			this.m10 = m1.m10 * m2.m00 + m1.m11 * m2.m01 + m1.m12 * m2.m02;
-			this.m11 = m1.m10 * m2.m10 + m1.m11 * m2.m11 + m1.m12 * m2.m12;
-			this.m12 = m1.m10 * m2.m20 + m1.m11 * m2.m21 + m1.m12 * m2.m22;
+			this.m10 = matrix1.m10 * matrix2.m00 + matrix1.m11 * matrix2.m01 + matrix1.m12 * matrix2.m02;
+			this.m11 = matrix1.m10 * matrix2.m10 + matrix1.m11 * matrix2.m11 + matrix1.m12 * matrix2.m12;
+			this.m12 = matrix1.m10 * matrix2.m20 + matrix1.m11 * matrix2.m21 + matrix1.m12 * matrix2.m22;
 
-			this.m20 = m1.m20 * m2.m00 + m1.m21 * m2.m01 + m1.m22 * m2.m02;
-			this.m21 = m1.m20 * m2.m10 + m1.m21 * m2.m11 + m1.m22 * m2.m12;
-			this.m22 = m1.m20 * m2.m20 + m1.m21 * m2.m21 + m1.m22 * m2.m22;
+			this.m20 = matrix1.m20 * matrix2.m00 + matrix1.m21 * matrix2.m01 + matrix1.m22 * matrix2.m02;
+			this.m21 = matrix1.m20 * matrix2.m10 + matrix1.m21 * matrix2.m11 + matrix1.m22 * matrix2.m12;
+			this.m22 = matrix1.m20 * matrix2.m20 + matrix1.m21 * matrix2.m21 + matrix1.m22 * matrix2.m22;
 		} else {
 			double _m00, _m01, _m02, _m10, _m11, _m12, _m20, _m21, _m22; // vars for temp
 			// result matrix
 
-			_m00 = m1.m00 * m2.m00 + m1.m01 * m2.m01 + m1.m02 * m2.m02;
-			_m01 = m1.m00 * m2.m10 + m1.m01 * m2.m11 + m1.m02 * m2.m12;
-			_m02 = m1.m00 * m2.m20 + m1.m01 * m2.m21 + m1.m02 * m2.m22;
+			_m00 = matrix1.m00 * matrix2.m00 + matrix1.m01 * matrix2.m01 + matrix1.m02 * matrix2.m02;
+			_m01 = matrix1.m00 * matrix2.m10 + matrix1.m01 * matrix2.m11 + matrix1.m02 * matrix2.m12;
+			_m02 = matrix1.m00 * matrix2.m20 + matrix1.m01 * matrix2.m21 + matrix1.m02 * matrix2.m22;
 
-			_m10 = m1.m10 * m2.m00 + m1.m11 * m2.m01 + m1.m12 * m2.m02;
-			_m11 = m1.m10 * m2.m10 + m1.m11 * m2.m11 + m1.m12 * m2.m12;
-			_m12 = m1.m10 * m2.m20 + m1.m11 * m2.m21 + m1.m12 * m2.m22;
+			_m10 = matrix1.m10 * matrix2.m00 + matrix1.m11 * matrix2.m01 + matrix1.m12 * matrix2.m02;
+			_m11 = matrix1.m10 * matrix2.m10 + matrix1.m11 * matrix2.m11 + matrix1.m12 * matrix2.m12;
+			_m12 = matrix1.m10 * matrix2.m20 + matrix1.m11 * matrix2.m21 + matrix1.m12 * matrix2.m22;
 
-			_m20 = m1.m20 * m2.m00 + m1.m21 * m2.m01 + m1.m22 * m2.m02;
-			_m21 = m1.m20 * m2.m10 + m1.m21 * m2.m11 + m1.m22 * m2.m12;
-			_m22 = m1.m20 * m2.m20 + m1.m21 * m2.m21 + m1.m22 * m2.m22;
+			_m20 = matrix1.m20 * matrix2.m00 + matrix1.m21 * matrix2.m01 + matrix1.m22 * matrix2.m02;
+			_m21 = matrix1.m20 * matrix2.m10 + matrix1.m21 * matrix2.m11 + matrix1.m22 * matrix2.m12;
+			_m22 = matrix1.m20 * matrix2.m20 + matrix1.m21 * matrix2.m21 + matrix1.m22 * matrix2.m22;
 
 			this.m00 = _m00;
 			this.m01 = _m01;
@@ -1612,39 +1612,39 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * Multiplies the transpose of matrix m1 times matrix m2, and places the
 	 * result into this.
 	 * 
-	 * @param m1
+	 * @param matrix1
 	 *            the matrix on the left hand side of the multiplication
-	 * @param m2
+	 * @param matrix2
 	 *            the matrix on the right hand side of the multiplication
 	 */
-	public final void mulTransposeLeft(Matrix3f m1, Matrix3f m2) {
-		if (this != m1 && this != m2) {
-			this.m00 = m1.m00 * m2.m00 + m1.m10 * m2.m10 + m1.m20 * m2.m20;
-			this.m01 = m1.m00 * m2.m01 + m1.m10 * m2.m11 + m1.m20 * m2.m21;
-			this.m02 = m1.m00 * m2.m02 + m1.m10 * m2.m12 + m1.m20 * m2.m22;
+	public final void mulTransposeLeft(Matrix3f matrix1, Matrix3f matrix2) {
+		if (this != matrix1 && this != matrix2) {
+			this.m00 = matrix1.m00 * matrix2.m00 + matrix1.m10 * matrix2.m10 + matrix1.m20 * matrix2.m20;
+			this.m01 = matrix1.m00 * matrix2.m01 + matrix1.m10 * matrix2.m11 + matrix1.m20 * matrix2.m21;
+			this.m02 = matrix1.m00 * matrix2.m02 + matrix1.m10 * matrix2.m12 + matrix1.m20 * matrix2.m22;
 
-			this.m10 = m1.m01 * m2.m00 + m1.m11 * m2.m10 + m1.m21 * m2.m20;
-			this.m11 = m1.m01 * m2.m01 + m1.m11 * m2.m11 + m1.m21 * m2.m21;
-			this.m12 = m1.m01 * m2.m02 + m1.m11 * m2.m12 + m1.m21 * m2.m22;
+			this.m10 = matrix1.m01 * matrix2.m00 + matrix1.m11 * matrix2.m10 + matrix1.m21 * matrix2.m20;
+			this.m11 = matrix1.m01 * matrix2.m01 + matrix1.m11 * matrix2.m11 + matrix1.m21 * matrix2.m21;
+			this.m12 = matrix1.m01 * matrix2.m02 + matrix1.m11 * matrix2.m12 + matrix1.m21 * matrix2.m22;
 
-			this.m20 = m1.m02 * m2.m00 + m1.m12 * m2.m10 + m1.m22 * m2.m20;
-			this.m21 = m1.m02 * m2.m01 + m1.m12 * m2.m11 + m1.m22 * m2.m21;
-			this.m22 = m1.m02 * m2.m02 + m1.m12 * m2.m12 + m1.m22 * m2.m22;
+			this.m20 = matrix1.m02 * matrix2.m00 + matrix1.m12 * matrix2.m10 + matrix1.m22 * matrix2.m20;
+			this.m21 = matrix1.m02 * matrix2.m01 + matrix1.m12 * matrix2.m11 + matrix1.m22 * matrix2.m21;
+			this.m22 = matrix1.m02 * matrix2.m02 + matrix1.m12 * matrix2.m12 + matrix1.m22 * matrix2.m22;
 		} else {
 			double _m00, _m01, _m02, _m10, _m11, _m12, _m20, _m21, _m22; // vars for temp
 			// result matrix
 
-			_m00 = m1.m00 * m2.m00 + m1.m10 * m2.m10 + m1.m20 * m2.m20;
-			_m01 = m1.m00 * m2.m01 + m1.m10 * m2.m11 + m1.m20 * m2.m21;
-			_m02 = m1.m00 * m2.m02 + m1.m10 * m2.m12 + m1.m20 * m2.m22;
+			_m00 = matrix1.m00 * matrix2.m00 + matrix1.m10 * matrix2.m10 + matrix1.m20 * matrix2.m20;
+			_m01 = matrix1.m00 * matrix2.m01 + matrix1.m10 * matrix2.m11 + matrix1.m20 * matrix2.m21;
+			_m02 = matrix1.m00 * matrix2.m02 + matrix1.m10 * matrix2.m12 + matrix1.m20 * matrix2.m22;
 
-			_m10 = m1.m01 * m2.m00 + m1.m11 * m2.m10 + m1.m21 * m2.m20;
-			_m11 = m1.m01 * m2.m01 + m1.m11 * m2.m11 + m1.m21 * m2.m21;
-			_m12 = m1.m01 * m2.m02 + m1.m11 * m2.m12 + m1.m21 * m2.m22;
+			_m10 = matrix1.m01 * matrix2.m00 + matrix1.m11 * matrix2.m10 + matrix1.m21 * matrix2.m20;
+			_m11 = matrix1.m01 * matrix2.m01 + matrix1.m11 * matrix2.m11 + matrix1.m21 * matrix2.m21;
+			_m12 = matrix1.m01 * matrix2.m02 + matrix1.m11 * matrix2.m12 + matrix1.m21 * matrix2.m22;
 
-			_m20 = m1.m02 * m2.m00 + m1.m12 * m2.m10 + m1.m22 * m2.m20;
-			_m21 = m1.m02 * m2.m01 + m1.m12 * m2.m11 + m1.m22 * m2.m21;
-			_m22 = m1.m02 * m2.m02 + m1.m12 * m2.m12 + m1.m22 * m2.m22;
+			_m20 = matrix1.m02 * matrix2.m00 + matrix1.m12 * matrix2.m10 + matrix1.m22 * matrix2.m20;
+			_m21 = matrix1.m02 * matrix2.m01 + matrix1.m12 * matrix2.m11 + matrix1.m22 * matrix2.m21;
+			_m22 = matrix1.m02 * matrix2.m02 + matrix1.m12 * matrix2.m12 + matrix1.m22 * matrix2.m22;
 
 			this.m00 = _m00;
 			this.m01 = _m01;
@@ -1664,26 +1664,26 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * Perform singular value decomposition normalization of matrix m1 and place
 	 * the normalized values into this.
 	 * 
-	 * @param m1
+	 * @param matrix
 	 *            Provides the matrix values to be normalized
 	 */
-	public final void normalize(Matrix3f m1) {
+	public final void normalize(Matrix3f matrix) {
 
 		double[] tmp = new double[9]; // scratch matrix
 		double[] tmp_rot = new double[9]; // scratch matrix
 		double[] tmp_scale = new double[3]; // scratch matrix
 
-		tmp[0] = m1.m00;
-		tmp[1] = m1.m01;
-		tmp[2] = m1.m02;
+		tmp[0] = matrix.m00;
+		tmp[1] = matrix.m01;
+		tmp[2] = matrix.m02;
 
-		tmp[3] = m1.m10;
-		tmp[4] = m1.m11;
-		tmp[5] = m1.m12;
+		tmp[3] = matrix.m10;
+		tmp[4] = matrix.m11;
+		tmp[5] = matrix.m12;
 
-		tmp[6] = m1.m20;
-		tmp[7] = m1.m21;
-		tmp[8] = m1.m22;
+		tmp[6] = matrix.m20;
+		tmp[7] = matrix.m21;
+		tmp[8] = matrix.m22;
 
 		compute_svd(tmp, tmp_scale, tmp_rot);
 
@@ -1728,21 +1728,21 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * Perform cross product normalization of matrix m1 and place the normalized
 	 * values into this.
 	 * 
-	 * @param m1
+	 * @param matrix
 	 *            Provides the matrix values to be normalized
 	 */
-	public final void normalizeCP(Matrix3f m1) {
-		double mag = 1. / Math.sqrt(m1.m00 * m1.m00 + m1.m10 * m1.m10 + m1.m20
-				* m1.m20);
-		this.m00 = m1.m00 * mag;
-		this.m10 = m1.m10 * mag;
-		this.m20 = m1.m20 * mag;
+	public final void normalizeCP(Matrix3f matrix) {
+		double mag = 1. / Math.sqrt(matrix.m00 * matrix.m00 + matrix.m10 * matrix.m10 + matrix.m20
+				* matrix.m20);
+		this.m00 = matrix.m00 * mag;
+		this.m10 = matrix.m10 * mag;
+		this.m20 = matrix.m20 * mag;
 
-		mag = 1. / Math.sqrt(m1.m01 * m1.m01 + m1.m11 * m1.m11 + m1.m21
-				* m1.m21);
-		this.m01 = m1.m01 * mag;
-		this.m11 = m1.m11 * mag;
-		this.m21 = m1.m21 * mag;
+		mag = 1. / Math.sqrt(matrix.m01 * matrix.m01 + matrix.m11 * matrix.m11 + matrix.m21
+				* matrix.m21);
+		this.m01 = matrix.m01 * mag;
+		this.m11 = matrix.m11 * mag;
+		this.m21 = matrix.m21 * mag;
 
 		this.m02 = this.m10 * this.m21 - this.m11 * this.m20;
 		this.m12 = this.m01 * this.m20 - this.m00 * this.m21;
@@ -1755,17 +1755,17 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * Returns true if all of the data members of Matrix3f m1 are equal to the
 	 * corresponding data members in this Matrix3f.
 	 * 
-	 * @param m1
+	 * @param matrix
 	 *            the matrix with which the comparison is made
 	 * @return true or false
 	 */
 	@Pure
-	public boolean equals(Matrix3f m1) {
+	public boolean equals(Matrix3f matrix) {
 		try {
-			return (this.m00 == m1.m00 && this.m01 == m1.m01
-					&& this.m02 == m1.m02 && this.m10 == m1.m10
-					&& this.m11 == m1.m11 && this.m12 == m1.m12
-					&& this.m20 == m1.m20 && this.m21 == m1.m21 && this.m22 == m1.m22);
+			return (this.m00 == matrix.m00 && this.m01 == matrix.m01
+					&& this.m02 == matrix.m02 && this.m10 == matrix.m10
+					&& this.m11 == matrix.m11 && this.m12 == matrix.m12
+					&& this.m20 == matrix.m20 && this.m21 == matrix.m21 && this.m22 == matrix.m22);
 		} catch (NullPointerException e2) {
 			return false;
 		}
@@ -1777,15 +1777,15 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * members of t1 are equal to the corresponding data members in this
 	 * Matrix3f.
 	 * 
-	 * @param t1
+	 * @param object
 	 *            the matrix with which the comparison is made
 	 * @return true or false
 	 */
 	@Pure
 	@Override
-	public boolean equals(Object t1) {
+	public boolean equals(Object object) {
 		try {
-			Matrix3f m2 = (Matrix3f) t1;
+			Matrix3f m2 = (Matrix3f) object;
 			return (this.m00 == m2.m00 && this.m01 == m2.m01
 					&& this.m02 == m2.m02 && this.m10 == m2.m10
 					&& this.m11 == m2.m11 && this.m12 == m2.m12
@@ -1795,6 +1795,10 @@ public class Matrix3f implements Serializable, Cloneable {
 		}
 
 	}
+	
+	private static double epsilon(double value, double epsilon) {
+		return Double.isNaN(epsilon) ? Math.ulp(value) : epsilon;
+	}
 
 	/**
 	 * Returns true if the L-infinite distance between this matrix and matrix m1
@@ -1802,50 +1806,50 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * The L-infinite distance is equal to MAX[i=0,1,2 ; j=0,1,2 ;
 	 * abs(this.m(i,j) - m1.m(i,j)]
 	 * 
-	 * @param m1
+	 * @param matrix
 	 *            the matrix to be compared to this matrix
 	 * @param epsilon
 	 *            the threshold value
 	 * @return <code>true</code> if this matrix is equals to the specified matrix at epsilon.
 	 */
 	@Pure
-	public boolean epsilonEquals(Matrix3f m1, double epsilon) {
+	public boolean epsilonEquals(Matrix3f matrix, double epsilon) {
 		double diff;
 
-		diff = this.m00 - m1.m00;
-		if ((diff < 0 ? -diff : diff) > epsilon)
+		diff = this.m00 - matrix.m00;
+		if ((diff < 0 ? -diff : diff) > epsilon(diff, epsilon))
 			return false;
 
-		diff = this.m01 - m1.m01;
-		if ((diff < 0 ? -diff : diff) > epsilon)
+		diff = this.m01 - matrix.m01;
+		if ((diff < 0 ? -diff : diff) > epsilon(diff, epsilon))
 			return false;
 
-		diff = this.m02 - m1.m02;
-		if ((diff < 0 ? -diff : diff) > epsilon)
+		diff = this.m02 - matrix.m02;
+		if ((diff < 0 ? -diff : diff) > epsilon(diff, epsilon))
 			return false;
 
-		diff = this.m10 - m1.m10;
-		if ((diff < 0 ? -diff : diff) > epsilon)
+		diff = this.m10 - matrix.m10;
+		if ((diff < 0 ? -diff : diff) > epsilon(diff, epsilon))
 			return false;
 
-		diff = this.m11 - m1.m11;
-		if ((diff < 0 ? -diff : diff) > epsilon)
+		diff = this.m11 - matrix.m11;
+		if ((diff < 0 ? -diff : diff) > epsilon(diff, epsilon))
 			return false;
 
-		diff = this.m12 - m1.m12;
-		if ((diff < 0 ? -diff : diff) > epsilon)
+		diff = this.m12 - matrix.m12;
+		if ((diff < 0 ? -diff : diff) > epsilon(diff, epsilon))
 			return false;
 
-		diff = this.m20 - m1.m20;
-		if ((diff < 0 ? -diff : diff) > epsilon)
+		diff = this.m20 - matrix.m20;
+		if ((diff < 0 ? -diff : diff) > epsilon(diff, epsilon))
 			return false;
 
-		diff = this.m21 - m1.m21;
-		if ((diff < 0 ? -diff : diff) > epsilon)
+		diff = this.m21 - matrix.m21;
+		if ((diff < 0 ? -diff : diff) > epsilon(diff, epsilon))
 			return false;
 
-		diff = this.m22 - m1.m22;
-		if ((diff < 0 ? -diff : diff) > epsilon)
+		diff = this.m22 - matrix.m22;
+		if ((diff < 0 ? -diff : diff) > epsilon(diff, epsilon))
 			return false;
 
 		return true;
@@ -1951,21 +1955,21 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * Sets the value of this matrix equal to the negation of of the Matrix3f
 	 * parameter.
 	 * 
-	 * @param m1
+	 * @param matrix
 	 *            the source matrix
 	 */
-	public final void negate(Matrix3f m1) {
-		this.m00 = -m1.m00;
-		this.m01 = -m1.m01;
-		this.m02 = -m1.m02;
+	public final void negate(Matrix3f matrix) {
+		this.m00 = -matrix.m00;
+		this.m01 = -matrix.m01;
+		this.m02 = -matrix.m02;
 
-		this.m10 = -m1.m10;
-		this.m11 = -m1.m11;
-		this.m12 = -m1.m12;
+		this.m10 = -matrix.m10;
+		this.m11 = -matrix.m11;
+		this.m12 = -matrix.m12;
 
-		this.m20 = -m1.m20;
-		this.m21 = -m1.m21;
-		this.m22 = -m1.m22;
+		this.m20 = -matrix.m20;
+		this.m21 = -matrix.m21;
+		this.m22 = -matrix.m22;
 		
 		this.isIdentity = null;
 	}
@@ -2988,13 +2992,13 @@ public class Matrix3f implements Serializable, Cloneable {
 	/**
 	 * Set the first matrix element in the first row.
 	 * 
-	 * @param m001
+	 * @param m00
 	 *            The m00 to set.
 	 * 
 	 * @since vecmath 1.5
 	 */
-	public final void setM00(double m001) {
-		this.m00 = m001;
+	public final void setM00(double m00) {
+		this.m00 = m00;
 		this.isIdentity = null;
 	}
 
@@ -3013,13 +3017,13 @@ public class Matrix3f implements Serializable, Cloneable {
 	/**
 	 * Set the second matrix element in the first row.
 	 * 
-	 * @param m011
+	 * @param m01
 	 *            The m01 to set.
 	 * 
 	 * @since vecmath 1.5
 	 */
-	public final void setM01(double m011) {
-		this.m01 = m011;
+	public final void setM01(double m01) {
+		this.m01 = m01;
 		this.isIdentity = null;
 	}
 
@@ -3038,13 +3042,13 @@ public class Matrix3f implements Serializable, Cloneable {
 	/**
 	 * Set the third matrix element in the first row.
 	 * 
-	 * @param m021
+	 * @param m02
 	 *            The m02 to set.
 	 * 
 	 * @since vecmath 1.5
 	 */
-	public final void setM02(double m021) {
-		this.m02 = m021;
+	public final void setM02(double m02) {
+		this.m02 = m02;
 		this.isIdentity = null;
 	}
 
@@ -3063,13 +3067,13 @@ public class Matrix3f implements Serializable, Cloneable {
 	/**
 	 * Set first matrix element in the second row.
 	 * 
-	 * @param m101
+	 * @param m10
 	 *            The m10 to set.
 	 * 
 	 * @since vecmath 1.5
 	 */
-	public final void setM10(double m101) {
-		this.m10 = m101;
+	public final void setM10(double m10) {
+		this.m10 = m10;
 		this.isIdentity = null;
 	}
 
@@ -3088,13 +3092,13 @@ public class Matrix3f implements Serializable, Cloneable {
 	/**
 	 * Set the second matrix element in the second row.
 	 * 
-	 * @param m111
+	 * @param m11
 	 *            The m11 to set.
 	 * 
 	 * @since vecmath 1.5
 	 */
-	public final void setM11(double m111) {
-		this.m11 = m111;
+	public final void setM11(double m11) {
+		this.m11 = m11;
 		this.isIdentity = null;
 	}
 
@@ -3113,13 +3117,13 @@ public class Matrix3f implements Serializable, Cloneable {
 	/**
 	 * Set the third matrix element in the second row.
 	 * 
-	 * @param m121
+	 * @param m11
 	 *            The m12 to set.
 	 * 
 	 * @since vecmath 1.5
 	 */
-	public final void setM12(double m121) {
-		this.m12 = m121;
+	public final void setM12(double m11) {
+		this.m12 = m11;
 		this.isIdentity = null;
 	}
 
@@ -3138,13 +3142,13 @@ public class Matrix3f implements Serializable, Cloneable {
 	/**
 	 * Set the first matrix element in the third row.
 	 * 
-	 * @param m201
+	 * @param m20
 	 *            The m20 to set.
 	 * 
 	 * @since vecmath 1.5
 	 */
-	public final void setM20(double m201) {
-		this.m20 = m201;
+	public final void setM20(double m20) {
+		this.m20 = m20;
 		this.isIdentity = null;
 	}
 
@@ -3163,13 +3167,13 @@ public class Matrix3f implements Serializable, Cloneable {
 	/**
 	 * Set the second matrix element in the third row.
 	 * 
-	 * @param m211
+	 * @param m21
 	 *            The m21 to set.
 	 * 
 	 * @since vecmath 1.5
 	 */
-	public final void setM21(double m211) {
-		this.m21 = m211;
+	public final void setM21(double m21) {
+		this.m21 = m21;
 		this.isIdentity = null;
 	}
 
@@ -3188,13 +3192,13 @@ public class Matrix3f implements Serializable, Cloneable {
 	/**
 	 * Set the third matrix element in the third row.
 	 * 
-	 * @param m221
+	 * @param m22
 	 *            The m22 to set.
 	 * 
 	 * @since vecmath 1.5
 	 */
-	public final void setM22(double m221) {
-		this.m22 = m221;
+	public final void setM22(double m22) {
+		this.m22 = m22;
 		this.isIdentity = null;
 	}
 
@@ -3264,9 +3268,8 @@ public class Matrix3f implements Serializable, Cloneable {
 		tmp[6] = this.m20;
 		tmp[7] = this.m21;
 		tmp[8] = this.m22;
-		compute_svd(tmp, scales, rots);
 
-		return;
+		compute_svd(tmp, scales, rots);
 	}
 	
 	/**

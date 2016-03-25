@@ -137,8 +137,8 @@ public class Tuple2fx<T extends Tuple2D<? super T>, IT extends T> implements Tup
 	@Override
 	public int hashCode() {
 		long bits = 1;
-		bits = 31 * bits + Double.doubleToLongBits(this.x.doubleValue());
-		bits = 31 * bits + Double.doubleToLongBits(this.y.doubleValue());
+		bits = 31 * bits + Double.doubleToLongBits(this.x.get());
+		bits = 31 * bits + Double.doubleToLongBits(this.y.get());
 		int b = (int) bits;
 		return b ^ (b >> 32);
 	}
@@ -147,9 +147,9 @@ public class Tuple2fx<T extends Tuple2D<? super T>, IT extends T> implements Tup
 	@Override
 	public String toString() {
 		return "(" //$NON-NLS-1$
-				+this.x.doubleValue()
+				+this.x.get()
 				+";" //$NON-NLS-1$
-				+this.y.doubleValue()
+				+this.y.get()
 				+")"; //$NON-NLS-1$
 	}
 

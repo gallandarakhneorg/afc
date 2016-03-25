@@ -45,7 +45,7 @@ public class Point2dTest {
 	public void testPoint2d() {
 		Point2d point = new Point2d(-1, -4);
 		point.absolute();
-		assertTrue(point.equals(new Point2f(1,4)));
+		assertTrue(point.equalsToPathIterator(new Point2fx(1,4)));
 	}
 
 }

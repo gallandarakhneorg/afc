@@ -28,7 +28,8 @@ import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.eclipse.xtext.xbase.lib.Pure;
 
-/** Shadow of a path.
+/** Shadow of a path that is used for computing the crossing values
+ * between a shape and the shadow.
  *
  * @param <B> the type of the bounds.
  * @author $Author: sgalland$
@@ -37,7 +38,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-class PathShadow2afp<B extends Rectangle2afp<?, ?, ?, ?, B>> {
+public class PathShadow2afp<B extends Rectangle2afp<?, ?, ?, ?, B>> {
 
 	private final Path2afp<?, ?, ?, ?, B> path;
 	private final B bounds;

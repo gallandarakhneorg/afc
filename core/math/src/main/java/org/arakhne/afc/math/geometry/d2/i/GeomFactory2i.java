@@ -42,33 +42,33 @@ public class GeomFactory2i implements GeomFactory2ai<PathElement2i, Point2i, Rec
 	public static final GeomFactory2i SINGLETON = new GeomFactory2i();
 	
 	@Override
-	public Point2i convertToPoint(Point2D p) {
+	public Point2i convertToPoint(Point2D point) {
 		try {
-			return (Point2i) p;
+			return (Point2i) point;
 		} catch (Throwable exception) {
-			return new Point2i(p);
+			return new Point2i(point);
 		}
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends Vector2D> T convertToVector(Point2D p) {
-		return (T) new Vector2i(p.ix(), p.iy());
+	public <T extends Vector2D> T convertToVector(Point2D point) {
+		return (T) new Vector2i(point.ix(), point.iy());
 	}
 
 	@Override
-	public Point2i convertToPoint(Vector2D v) {
-		return new Point2i(v.ix(), v.iy());
+	public Point2i convertToPoint(Vector2D vector) {
+		return new Point2i(vector.ix(), vector.iy());
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends Vector2D> T convertToVector(Vector2D v) {
+	public <T extends Vector2D> T convertToVector(Vector2D vector) {
 		Vector2i vv;
 		try {
-			vv = (Vector2i) v;
+			vv = (Vector2i) vector;
 		} catch (Throwable exception) {
-			vv = new Vector2i(v.ix(), v.iy());
+			vv = new Vector2i(vector.ix(), vector.iy());
 		}
 		return (T) vv;
 	}
@@ -103,6 +103,11 @@ public class GeomFactory2i implements GeomFactory2ai<PathElement2i, Point2i, Rec
 	@Override
 	public Rectangle2i newBox() {
 		return new Rectangle2i();
+	}
+	
+	@Override
+	public Rectangle2i newBox(int x, int y, int width, int height) {
+		return new Rectangle2i(x, y, width, height);
 	}
 
 	@Override

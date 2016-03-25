@@ -23,7 +23,6 @@ package org.arakhne.afc.math.geometry.d2.fp;
 
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.afp.Rectangle2afp;
-import org.arakhne.afc.math.geometry.d2.afp.RectangularShape2afp;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** A rectangle with 2 double precision floating-point numbers.
@@ -159,23 +158,6 @@ public class Rectangle2fp extends AbstractShape2fp<Rectangle2fp>
 			this.maxy = this.miny;
 			this.miny = y;
 		}
-	}
-
-	@Pure
-	@Override
-	public boolean equals(Object obj) {
-		try {
-			if (getClass().isAssignableFrom(obj.getClass())) {
-				RectangularShape2afp<?, ?, ?, ?, ?> shape = (RectangularShape2afp<?, ?, ?, ?, ?>) obj;
-				return this.minx == shape.getMinX()
-						&& this.miny == shape.getMinY()
-						&& this.maxx == shape.getMaxX()
-						&& this.maxy == shape.getMaxY();
-			}
-		} catch (Throwable exception) {
-			//
-		}
-		return false;
 	}
 
 	@Pure

@@ -130,10 +130,10 @@ public class Ellipse2fTest extends AbstractRectangularShape2fTestCase<Ellipse2f>
 	@Override
 	public void distancePoint2D() {
 		double d;
-		d = this.r.distance(new Point2f(.5f,.5f));
+		d = this.r.distance(new Point2fx(.5f,.5f));
 		assertEpsilonEquals(0f,d);
 
-		d = this.r.distance(new Point2f(0f,0f));
+		d = this.r.distance(new Point2fx(0f,0f));
 		// ecenter = (1; 0.5)
 		// a = 1
 		// b = .5
@@ -156,10 +156,10 @@ public class Ellipse2fTest extends AbstractRectangularShape2fTestCase<Ellipse2f>
 	@Override
 	public void distanceSquaredPoint2D() {
 		double d;
-		d = this.r.distanceSquared(new Point2f(.5f,.5f));
+		d = this.r.distanceSquared(new Point2fx(.5f,.5f));
 		assertEpsilonEquals(0f,d);
 
-		d = this.r.distanceSquared(new Point2f(0f,0f));
+		d = this.r.distanceSquared(new Point2fx(0f,0f));
 		// See testDistancePoint2D for details
 		// Closest point is (0.292893219;0.146446609)
 		assertEpsilonEquals(0.107233047f,d);
@@ -169,10 +169,10 @@ public class Ellipse2fTest extends AbstractRectangularShape2fTestCase<Ellipse2f>
 	@Override
 	public void distanceL1Point2D() {
 		double d;
-		d = this.r.distanceL1(new Point2f(.5f,.5f));
+		d = this.r.distanceL1(new Point2fx(.5f,.5f));
 		assertEpsilonEquals(0f,d);
 
-		d = this.r.distanceL1(new Point2f(0f,0f));
+		d = this.r.distanceL1(new Point2fx(0f,0f));
 		// See testDistancePoint2D for details
 		// Closest point is (0.292893219;0.146446609)
 		assertEpsilonEquals(0.439339828f,d);
@@ -182,10 +182,10 @@ public class Ellipse2fTest extends AbstractRectangularShape2fTestCase<Ellipse2f>
 	@Override
 	public void distanceLinfPoint2D() {
 		double d;
-		d = this.r.distanceLinf(new Point2f(.5f,.5f));
+		d = this.r.distanceLinf(new Point2fx(.5f,.5f));
 		assertEpsilonEquals(0f,d);
 
-		d = this.r.distanceLinf(new Point2f(0f,0f));
+		d = this.r.distanceLinf(new Point2fx(0f,0f));
 		// See testDistancePoint2D for details
 		// Closest point is (0.292893219;0.146446609)
 		assertEpsilonEquals(0.292893219f,d);
@@ -225,20 +225,20 @@ public class Ellipse2fTest extends AbstractRectangularShape2fTestCase<Ellipse2f>
 	 */
 	@Test
 	public void containsPoint2D() {
-		assertFalse(this.r.contains(new Point2f(0f, 0f)));
-		assertTrue(this.r.contains(new Point2f(.5f, .5f)));
+		assertFalse(this.r.contains(new Point2fx(0f, 0f)));
+		assertTrue(this.r.contains(new Point2fx(.5f, .5f)));
 		
-		assertFalse(this.r.contains(new Point2f(-2.3f, -3.4f)));
-		assertFalse(this.r.contains(new Point2f(-2.3f, .5f)));
-		assertFalse(this.r.contains(new Point2f(-2.3f, 5.6f)));
+		assertFalse(this.r.contains(new Point2fx(-2.3f, -3.4f)));
+		assertFalse(this.r.contains(new Point2fx(-2.3f, .5f)));
+		assertFalse(this.r.contains(new Point2fx(-2.3f, 5.6f)));
 		
-		assertFalse(this.r.contains(new Point2f(.5f, -3.4f)));
-		assertTrue(this.r.contains(new Point2f(.5f, .5f)));
-		assertFalse(this.r.contains(new Point2f(.5f, 5.6f)));
+		assertFalse(this.r.contains(new Point2fx(.5f, -3.4f)));
+		assertTrue(this.r.contains(new Point2fx(.5f, .5f)));
+		assertFalse(this.r.contains(new Point2fx(.5f, 5.6f)));
 
-		assertFalse(this.r.contains(new Point2f(5.6f, -3.4f)));
-		assertFalse(this.r.contains(new Point2f(5.6f, .5f)));
-		assertFalse(this.r.contains(new Point2f(5.6f, 5.6f)));
+		assertFalse(this.r.contains(new Point2fx(5.6f, -3.4f)));
+		assertFalse(this.r.contains(new Point2fx(5.6f, .5f)));
+		assertFalse(this.r.contains(new Point2fx(5.6f, 5.6f)));
 	}
 
 	/**
@@ -247,11 +247,11 @@ public class Ellipse2fTest extends AbstractRectangularShape2fTestCase<Ellipse2f>
 	public void getClosestPointTo() {
 		Point2D p;
 		
-		p = this.r.getClosestPointTo(new Point2f(.5f, .4f));
+		p = this.r.getClosestPointTo(new Point2fx(.5f, .4f));
 		assertEpsilonEquals(.5f, p.getX());
 		assertEpsilonEquals(.4f, p.getY());
 		
-		p = this.r.getClosestPointTo(new Point2f(-2.3f, -3.4f));
+		p = this.r.getClosestPointTo(new Point2fx(-2.3f, -3.4f));
 		// ecenter = (1; 0.5)
 		// a = 1
 		// b = .5
@@ -269,7 +269,7 @@ public class Ellipse2fTest extends AbstractRectangularShape2fTestCase<Ellipse2f>
 		assertEpsilonEquals(0.610360009f, p.getX());
 		assertEpsilonEquals(0.039516374f, p.getY());
 		
-		p = this.r.getClosestPointTo(new Point2f(1f, 5.6f));
+		p = this.r.getClosestPointTo(new Point2fx(1f, 5.6f));
 		assertEpsilonEquals(1f, p.getX());
 		assertEpsilonEquals(1f, p.getY());
 	}
@@ -280,18 +280,18 @@ public class Ellipse2fTest extends AbstractRectangularShape2fTestCase<Ellipse2f>
 	public void getFarthestPointTo() {
 		Point2D p;
 		
-		p = this.r.getFarthestPointTo(new Point2f(.5f, .4f));
+		p = this.r.getFarthestPointTo(new Point2fx(.5f, .4f));
 		System.out.println(p);
 		assertEpsilonEquals(0.25*Math.sqrt(400/29.)+1, p.getX());
 		assertEpsilonEquals(0.05*Math.sqrt(400/29.)+0.5, p.getY());
 		
-		p = this.r.getFarthestPointTo(new Point2f(-2.3f, -3.4f));
+		p = this.r.getFarthestPointTo(new Point2fx(-2.3f, -3.4f));
 		
 
 		assertEpsilonEquals(3.3*0.5*Math.sqrt(400/7173.)+1, p.getX());
 		assertEpsilonEquals(3.9*0.5*Math.sqrt(400/7173.)+0.5, p.getY());
 		
-		p = this.r.getFarthestPointTo(new Point2f(1f, 5.6f));
+		p = this.r.getFarthestPointTo(new Point2fx(1f, 5.6f));
 		assertEpsilonEquals(1f, p.getX());
 		assertEpsilonEquals(0f, p.getY());
 	}
@@ -709,21 +709,21 @@ public class Ellipse2fTest extends AbstractRectangularShape2fTestCase<Ellipse2f>
 
 	@Test
 	public void containsEllipsePoint() {
-		assertTrue(this.r.contains(new Point2f(1,0.5)));
+		assertTrue(this.r.contains(new Point2fx(1,0.5)));
 		
-		assertTrue(this.r.contains(new Point2f(1.5,0.7)));
+		assertTrue(this.r.contains(new Point2fx(1.5,0.7)));
 		
-		assertTrue(this.r.contains(new Point2f(0.3,0.3)));
+		assertTrue(this.r.contains(new Point2fx(0.3,0.3)));
 		
-		assertTrue(this.r.contains(new Point2f(2,0.5)));
+		assertTrue(this.r.contains(new Point2fx(2,0.5)));
 		
-		assertTrue(this.r.contains(new Point2f(1,1)));
+		assertTrue(this.r.contains(new Point2fx(1,1)));
 		
-		assertFalse(this.r.contains(new Point2f(0,0)));
+		assertFalse(this.r.contains(new Point2fx(0,0)));
 		
-		assertFalse(this.r.contains(new Point2f(0,1)));
+		assertFalse(this.r.contains(new Point2fx(0,1)));
 		
-		assertFalse(this.r.contains(new Point2f(1,10)));
+		assertFalse(this.r.contains(new Point2fx(1,10)));
 	}
 
 	/**

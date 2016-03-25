@@ -185,6 +185,20 @@ public interface Circle2afp<
 		return d<(radius*radius);
 	}
 	
+	@Pure
+	@Override
+	default boolean equalsToShape(IT shape) {
+		if (shape == null) {
+			return false;
+		}
+		if (shape == this) {
+			return true;
+		}
+		return getX() == shape.getX()
+			&& getY() == shape.getY()
+			&& getRadius() == shape.getRadius();
+	}
+
 	/** Replies the center X.
 	 * 
 	 * @return the center x.
@@ -387,7 +401,8 @@ public interface Circle2afp<
 				s.getSecondAxisX(), s.getSecondAxisY(), s.getSecondAxisExtent(),
 				getX(), getY(), getRadius());
 	}
-	
+
+	@Pure
 	@Override
 	default boolean intersects(PathIterator2afp<?> iterator) {
 		int mask = (iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2);

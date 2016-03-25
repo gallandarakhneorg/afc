@@ -23,7 +23,6 @@ package org.arakhne.afc.math.geometry.d2.fpfx;
 
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.afp.Rectangle2afp;
-import org.arakhne.afc.math.geometry.d2.afp.RectangularShape2afp;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import javafx.beans.property.DoubleProperty;
@@ -111,21 +110,6 @@ public class Rectangle2fx extends AbstractShape2fx<Rectangle2fx>
 
 	@Pure
 	@Override
-	public boolean equals(Object obj) {
-		try {
-			RectangularShape2afp<?, ?, ?, ?, ?> shape = (RectangularShape2afp<?, ?, ?, ?, ?>) obj;
-			return getMinX() == shape.getMinX()
-					&& getMinY() == shape.getMinY()
-					&& getMaxX() == shape.getMaxX()
-					&& getMaxY() == shape.getMaxY();
-		} catch (Throwable exception) {
-			//
-		}
-		return false;
-	}
-
-	@Pure
-	@Override
 	public int hashCode() {
 		long bits = 1;
 		bits = 31 * bits + Double.doubleToLongBits(getMinX());
@@ -154,10 +138,20 @@ public class Rectangle2fx extends AbstractShape2fx<Rectangle2fx>
 
 	@Override
 	public void setFromCorners(double x1, double y1, double x2, double y2) {
-		minXProperty().set(x1);
-		maxXProperty().set(x2);
-		minYProperty().set(y1);
-		maxYProperty().set(y2);
+		if (x1 <= x2) {
+			minXProperty().set(x1);
+			maxXProperty().set(x2);
+		} else {
+			minXProperty().set(x2);
+			maxXProperty().set(x1);
+		}
+		if (y1 <= y2) {
+			minYProperty().set(y1);
+			maxYProperty().set(y2);
+		} else {
+			minYProperty().set(y2);
+			maxYProperty().set(y1);
+		}
 	}
 
 	@Pure
@@ -193,9 +187,8 @@ public class Rectangle2fx extends AbstractShape2fx<Rectangle2fx>
 				protected void invalidated() {
 					double currentMin = get();
 					double currentMax = getMaxX();
-					if (currentMin > currentMax) {
+					if (currentMax < currentMin) {
 						// min-max constrain is broken
-						set(currentMax);
 						maxXProperty().set(currentMin);
 					}
 				}
@@ -237,9 +230,8 @@ public class Rectangle2fx extends AbstractShape2fx<Rectangle2fx>
 				protected void invalidated() {
 					double currentMax = get();
 					double currentMin = getMinX();
-					if (currentMin > currentMax) {
+					if (currentMax < currentMin) {
 						// min-max constrain is broken
-						set(currentMin);
 						minXProperty().set(currentMax);
 					}
 				}
@@ -281,9 +273,8 @@ public class Rectangle2fx extends AbstractShape2fx<Rectangle2fx>
 				protected void invalidated() {
 					double currentMin = get();
 					double currentMax = getMaxY();
-					if (currentMin > currentMax) {
+					if (currentMax < currentMin) {
 						// min-max constrain is broken
-						set(currentMax);
 						maxYProperty().set(currentMin);
 					}
 				}
@@ -325,9 +316,8 @@ public class Rectangle2fx extends AbstractShape2fx<Rectangle2fx>
 				protected void invalidated() {
 					double currentMax = get();
 					double currentMin = getMinY();
-					if (currentMin > currentMax) {
+					if (currentMax < currentMin) {
 						// min-max constrain is broken
-						set(currentMin);
 						minYProperty().set(currentMax);
 					}
 				}

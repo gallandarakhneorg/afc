@@ -136,7 +136,7 @@ public class Path2dTest extends AbstractMathTestCase{
 		
 		Segment2f segm = new Segment2f(1,0,0,1);
 		Segment2f s = new Segment2f(1,0,-1,-1);
-		Segment2f segm2 = new Segment2f(new Point2f(20f,20f),new Point2f(30f,30f));
+		Segment2f segm2 = new Segment2f(new Point2fx(20f,20f),new Point2fx(30f,30f));
 		Segment2d s2 = new Segment2d(2,2,8,-4);
 		Segment2f s3 = new Segment2f(1,0,7,0);
 		Segment2f s4 = new Segment2f(3,3,3,0);
@@ -164,7 +164,7 @@ public class Path2dTest extends AbstractMathTestCase{
 		r.curveTo(5f, -1f, 6f, 5f,7f, -5f);
 		r.closePath();
 		
-		Ellipse2f ellipse = new Ellipse2f(new Point2f(1,0), new Point2f(3,2));
+		Ellipse2f ellipse = new Ellipse2f(new Point2fx(1,0), new Point2fx(3,2));
 		Ellipse2f ellipse2 = new Ellipse2f();
 		ellipse2.setFromCenter(4, 3, 3, 2.5);
 		Ellipse2f ellipse3 = new Ellipse2f();
@@ -218,23 +218,23 @@ public class Path2dTest extends AbstractMathTestCase{
 		
 		Rectangle2d box = p.toBoundingBox();
 		
-		Point2f randomP1 = new Point2f(this.random.nextDouble()*20-10,this.random.nextDouble()*20-10);
-		Point2f randomP2 = new Point2f(this.random.nextDouble()*20-10,this.random.nextDouble()*20-10);
-		Point2f randomP3 = new Point2f(this.random.nextDouble()*20-10,this.random.nextDouble()*20-10);
-		Point2f randomP4 = new Point2f(this.random.nextDouble()*20-10,this.random.nextDouble()*20-10);
-		Point2f randomP5 = new Point2f(this.random.nextDouble()*20-10,this.random.nextDouble()*20-10);
-		Point2f randomP6 = new Point2f(this.random.nextDouble()*20-10,this.random.nextDouble()*20-10);
-		Point2f randomP7 = new Point2f(this.random.nextDouble()*20-10,this.random.nextDouble()*20-10);
-		Point2f randomP8 = new Point2f(this.random.nextDouble()*20-10,this.random.nextDouble()*20-10);
-		Point2f randomP9 = new Point2f(this.random.nextDouble()*20-10,this.random.nextDouble()*20-10);
-		Point2f randomP10 = new Point2f(this.random.nextDouble()*20-10,this.random.nextDouble()*20-10);
-		Point2f randomP11 = new Point2f(this.random.nextDouble()*20-10,this.random.nextDouble()*20-10);
-		Point2f randomP12 = new Point2f(this.random.nextDouble()*20-10,this.random.nextDouble()*20-10);
-		Point2f randomP13 = new Point2f(this.random.nextDouble()*20-10,this.random.nextDouble()*20-10);
-		Point2f randomP14 = new Point2f(this.random.nextDouble()*20-10,this.random.nextDouble()*20-10);
-		Point2f randomP15 = new Point2f(this.random.nextDouble()*20-10,this.random.nextDouble()*20-10);
-		Point2f randomP16 = new Point2f(this.random.nextDouble()*20-10,this.random.nextDouble()*20-10);
-		Point2f randomP17 = new Point2f(this.random.nextDouble()*20-10,this.random.nextDouble()*20-10);
+		Point2fx randomP1 = new Point2fx(this.random.nextDouble()*20-10,this.random.nextDouble()*20-10);
+		Point2fx randomP2 = new Point2fx(this.random.nextDouble()*20-10,this.random.nextDouble()*20-10);
+		Point2fx randomP3 = new Point2fx(this.random.nextDouble()*20-10,this.random.nextDouble()*20-10);
+		Point2fx randomP4 = new Point2fx(this.random.nextDouble()*20-10,this.random.nextDouble()*20-10);
+		Point2fx randomP5 = new Point2fx(this.random.nextDouble()*20-10,this.random.nextDouble()*20-10);
+		Point2fx randomP6 = new Point2fx(this.random.nextDouble()*20-10,this.random.nextDouble()*20-10);
+		Point2fx randomP7 = new Point2fx(this.random.nextDouble()*20-10,this.random.nextDouble()*20-10);
+		Point2fx randomP8 = new Point2fx(this.random.nextDouble()*20-10,this.random.nextDouble()*20-10);
+		Point2fx randomP9 = new Point2fx(this.random.nextDouble()*20-10,this.random.nextDouble()*20-10);
+		Point2fx randomP10 = new Point2fx(this.random.nextDouble()*20-10,this.random.nextDouble()*20-10);
+		Point2fx randomP11 = new Point2fx(this.random.nextDouble()*20-10,this.random.nextDouble()*20-10);
+		Point2fx randomP12 = new Point2fx(this.random.nextDouble()*20-10,this.random.nextDouble()*20-10);
+		Point2fx randomP13 = new Point2fx(this.random.nextDouble()*20-10,this.random.nextDouble()*20-10);
+		Point2fx randomP14 = new Point2fx(this.random.nextDouble()*20-10,this.random.nextDouble()*20-10);
+		Point2fx randomP15 = new Point2fx(this.random.nextDouble()*20-10,this.random.nextDouble()*20-10);
+		Point2fx randomP16 = new Point2fx(this.random.nextDouble()*20-10,this.random.nextDouble()*20-10);
+		Point2fx randomP17 = new Point2fx(this.random.nextDouble()*20-10,this.random.nextDouble()*20-10);
 		
 		assertEquals(box.contains(randomP1),p.contains(randomP1.getX(),randomP1.getY()));
 		assertEquals(box.contains(randomP2),p.contains(randomP2.getX(),randomP2.getY()));
@@ -270,14 +270,14 @@ public class Path2dTest extends AbstractMathTestCase{
 		Path2d p2 = new Path2d(p,true);
 		
 		
-		assertTrue(p2.toString().equals(p.toString()));
-		assertTrue(p3.toString().equals(p.toString()));
-		assertTrue(p3.toString().equals(p2.toString()));
+		assertTrue(p2.toString().equalsToPathIterator(p.toString()));
+		assertTrue(p3.toString().equalsToPathIterator(p.toString()));
+		assertTrue(p3.toString().equalsToPathIterator(p2.toString()));
 		
-		assertTrue(p3.equals(p));
+		assertTrue(p3.equalsToPathIterator(p));
 		
-		assertTrue(p2.equals(p3));
-		assertTrue(p.equals(p2));
+		assertTrue(p2.equalsToPathIterator(p3));
+		assertTrue(p.equalsToPathIterator(p2));
 	}
 	
 	
@@ -291,7 +291,7 @@ public class Path2dTest extends AbstractMathTestCase{
 		p.closePath();
 		
 		assertTrue(p.remove(5, -1));
-		assertTrue(p.getCurrentPoint().equals(new Point2f(4,3)));
+		assertTrue(p.getCurrentPoint().equalsToPathIterator(new Point2fx(4,3)));
 		assertTrue(p.remove(1, 1));
 		assertTrue(p.size()==3);
 		assertFalse(p.remove(35, 35));
@@ -299,13 +299,13 @@ public class Path2dTest extends AbstractMathTestCase{
 	
 	@Test
     public void containsControlPoint2D() {
-		Point2f p1 = this.randomPoint2f();
-		Point2f p2 = this.randomPoint2f();
-		Point2f p3 = this.randomPoint2f();
-		Point2f p4 = this.randomPoint2f();
-		Point2f p5 = this.randomPoint2f();
-		Point2f p6 = this.randomPoint2f();
-		Point2f p7 = this.randomPoint2f();
+		Point2fx p1 = this.randomPoint2f();
+		Point2fx p2 = this.randomPoint2f();
+		Point2fx p3 = this.randomPoint2f();
+		Point2fx p4 = this.randomPoint2f();
+		Point2fx p5 = this.randomPoint2f();
+		Point2fx p6 = this.randomPoint2f();
+		Point2fx p7 = this.randomPoint2f();
 		
 		Path2d path = new Path2d();
 		path.moveTo(p1.getX(),p1.getY());
@@ -336,7 +336,7 @@ public class Path2dTest extends AbstractMathTestCase{
 		p.curveTo(5f, -1f, 6f, 5f,7f, -5f);
 		p.closePath();
 		
-		assertTrue(p.toString().equals(
+		assertTrue(p.toString().equalsToPathIterator(
 				"[0.0, 0.0, " //$NON-NLS-1$
 				+ "1.0, 1.0, " //$NON-NLS-1$
 				+ "3.0, 0.0, 4.0, 3.0, " //$NON-NLS-1$
@@ -373,8 +373,8 @@ public class Path2dTest extends AbstractMathTestCase{
 		
 		Path2d p2 = p.clone();
 		
-		assertTrue(p.equals(p2));
-		assertTrue(p2.equals(p));
+		assertTrue(p.equalsToPathIterator(p2));
+		assertTrue(p2.equalsToPathIterator(p));
 	}
 	
 	@Test
@@ -406,7 +406,7 @@ public class Path2dTest extends AbstractMathTestCase{
 			}
 		}
 
-		assertTrue(closestPoint.equals(p.getClosestPointTo(randomPoint))|| p.getClosestPointTo(randomPoint).getDistance(randomPoint)==closestPoint.getDistance(randomPoint));
+		assertTrue(closestPoint.equalsToPathIterator(p.getClosestPointTo(randomPoint))|| p.getClosestPointTo(randomPoint).getDistance(randomPoint)==closestPoint.getDistance(randomPoint));
 	}
 
 	@Test
@@ -438,7 +438,7 @@ public class Path2dTest extends AbstractMathTestCase{
 			}
 		}
 		
-		assertTrue(farthestPoint.equals(p.getFarthestPointTo(randomPoint))|| p.getFarthestPointTo(randomPoint).getDistance(randomPoint)==farthestPoint.getDistance(randomPoint));
+		assertTrue(farthestPoint.equalsToPathIterator(p.getFarthestPointTo(randomPoint))|| p.getFarthestPointTo(randomPoint).getDistance(randomPoint)==farthestPoint.getDistance(randomPoint));
 	}
 	
 	@Test
@@ -468,9 +468,9 @@ public class Path2dTest extends AbstractMathTestCase{
 		p2.lineTo(0f, 3f);
 		p2.closePath();
 		
-		Rectangle2d pBox = new Rectangle2d(new Point2f(0,-5),new Point2f(7,5));
-		Rectangle2d p1Box = new Rectangle2d(new Point2f(-1,-3),new Point2f(6,5));
-		Rectangle2d p2Box = new Rectangle2d(new Point2f(-10,-10),new Point2f(6,7));
+		Rectangle2d pBox = new Rectangle2d(new Point2fx(0,-5),new Point2fx(7,5));
+		Rectangle2d p1Box = new Rectangle2d(new Point2fx(-1,-3),new Point2fx(6,5));
+		Rectangle2d p2Box = new Rectangle2d(new Point2fx(-10,-10),new Point2fx(6,7));
 		
 	/*	System.out.println(pBox.toString());
 		System.out.println(p.toBoundingBoxWithCtrlPoints());
@@ -482,9 +482,9 @@ public class Path2dTest extends AbstractMathTestCase{
 		System.out.println(p2.toBoundingBoxWithCtrlPoints());
 		*/
 		
-		assertTrue(pBox.equals(p.toBoundingBoxWithCtrlPoints()));
-		assertTrue(p1Box.equals(p1.toBoundingBox()));
-		assertTrue(p2Box.equals(p2.toBoundingBox()));
+		assertTrue(pBox.equalsToPathIterator(p.toBoundingBoxWithCtrlPoints()));
+		assertTrue(p1Box.equalsToPathIterator(p1.toBoundingBox()));
+		assertTrue(p2Box.equalsToPathIterator(p2.toBoundingBox()));
 	}
 	
 	@Test
@@ -514,11 +514,11 @@ public class Path2dTest extends AbstractMathTestCase{
 		p2.lineTo(0f, 3f);
 		p2.closePath();
 		
-		Point2f randomPoint = randomPoint2f();
+		Point2fx randomPoint = randomPoint2f();
 		
-		Point2f closest = new Point2f(p.getClosestPointTo(randomPoint));
-		Point2f closest1 = new Point2f(p1.getClosestPointTo(randomPoint));
-		Point2f closest2 = new Point2f(p2.getClosestPointTo(randomPoint));
+		Point2fx closest = new Point2fx(p.getClosestPointTo(randomPoint));
+		Point2fx closest1 = new Point2fx(p1.getClosestPointTo(randomPoint));
+		Point2fx closest2 = new Point2fx(p2.getClosestPointTo(randomPoint));
 		
 		assertEpsilonEquals(closest.getDistanceSquared(randomPoint),p.distanceSquared(randomPoint));
 		assertEpsilonEquals(closest1.getDistanceSquared(randomPoint),p1.distanceSquared(randomPoint));
@@ -552,11 +552,11 @@ public class Path2dTest extends AbstractMathTestCase{
 		p2.lineTo(0f, 3f);
 		p2.closePath();
 		
-		Point2f randomPoint = randomPoint2f();
+		Point2fx randomPoint = randomPoint2f();
 		
-		Point2f closest = new Point2f(p.getClosestPointTo(randomPoint));
-		Point2f closest1 = new Point2f(p1.getClosestPointTo(randomPoint));
-		Point2f closest2 = new Point2f(p2.getClosestPointTo(randomPoint));
+		Point2fx closest = new Point2fx(p.getClosestPointTo(randomPoint));
+		Point2fx closest1 = new Point2fx(p1.getClosestPointTo(randomPoint));
+		Point2fx closest2 = new Point2fx(p2.getClosestPointTo(randomPoint));
 		
 		assertEpsilonEquals(closest.getDistanceL1(randomPoint),p.distanceL1(randomPoint));
 		assertEpsilonEquals(closest1.getDistanceL1(randomPoint),p1.distanceL1(randomPoint));
@@ -590,11 +590,11 @@ public class Path2dTest extends AbstractMathTestCase{
 		p2.lineTo(0f, 3f);
 		p2.closePath();
 		
-		Point2f randomPoint = randomPoint2f();
+		Point2fx randomPoint = randomPoint2f();
 		
-		Point2f closest =  new Point2f(p.getClosestPointTo(randomPoint));
-		Point2f closest1 =  new Point2f(p1.getClosestPointTo(randomPoint));
-		Point2f closest2 =  new Point2f(p2.getClosestPointTo(randomPoint));
+		Point2fx closest =  new Point2fx(p.getClosestPointTo(randomPoint));
+		Point2fx closest1 =  new Point2fx(p1.getClosestPointTo(randomPoint));
+		Point2fx closest2 =  new Point2fx(p2.getClosestPointTo(randomPoint));
 		
 		assertEpsilonEquals(closest.getDistanceLinf(randomPoint),p.distanceLinf(randomPoint));
 		assertEpsilonEquals(closest1.getDistanceLinf(randomPoint),p1.distanceLinf(randomPoint));
@@ -603,13 +603,13 @@ public class Path2dTest extends AbstractMathTestCase{
 	
 	@Test
     public void transform() {
-		Point2f p1 = this.randomPoint2f();
-		Point2f p2 = this.randomPoint2f();
-		Point2f p3 = this.randomPoint2f();
-		Point2f p4 = this.randomPoint2f();
-		Point2f p5 = this.randomPoint2f();
-		Point2f p6 = this.randomPoint2f();
-		Point2f p7 = this.randomPoint2f();
+		Point2fx p1 = this.randomPoint2f();
+		Point2fx p2 = this.randomPoint2f();
+		Point2fx p3 = this.randomPoint2f();
+		Point2fx p4 = this.randomPoint2f();
+		Point2fx p5 = this.randomPoint2f();
+		Point2fx p6 = this.randomPoint2f();
+		Point2fx p7 = this.randomPoint2f();
 		
 		Path2d path = new Path2d();
 		path.moveTo(p1.getX(),p1.getY());
@@ -637,7 +637,7 @@ public class Path2dTest extends AbstractMathTestCase{
 		
 		path.transform(trans);
 		
-		assertTrue(path.equals(pathTrans));
+		assertTrue(path.equalsToPathIterator(pathTrans));
 	}
 	
 	@Test
@@ -659,18 +659,18 @@ public class Path2dTest extends AbstractMathTestCase{
 		
 		p.translate(dx, dy);
 		
-		assertTrue(p.equals(p2));		
+		assertTrue(p.equalsToPathIterator(p2));		
 	}
 	
 	@Test
 	public void createTransformedShape() {
-		Point2f p1 = this.randomPoint2f();
-		Point2f p2 = this.randomPoint2f();
-		Point2f p3 = this.randomPoint2f();
-		Point2f p4 = this.randomPoint2f();
-		Point2f p5 = this.randomPoint2f();
-		Point2f p6 = this.randomPoint2f();
-		Point2f p7 = this.randomPoint2f();
+		Point2fx p1 = this.randomPoint2f();
+		Point2fx p2 = this.randomPoint2f();
+		Point2fx p3 = this.randomPoint2f();
+		Point2fx p4 = this.randomPoint2f();
+		Point2fx p5 = this.randomPoint2f();
+		Point2fx p6 = this.randomPoint2f();
+		Point2fx p7 = this.randomPoint2f();
 		
 		Path2d path = new Path2d();
 		path.moveTo(p1.getX(),p1.getY());
@@ -685,7 +685,7 @@ public class Path2dTest extends AbstractMathTestCase{
 		
 		path.transform(trans);
 	
-		assertTrue(path.equals(transformedShape));
+		assertTrue(path.equalsToPathIterator(transformedShape));
 	}
 	
 	@Test
@@ -717,7 +717,7 @@ public class Path2dTest extends AbstractMathTestCase{
 		iterator.next();
 		p.add(iterator);
 		
-		assertTrue(p.equals(p3));
+		assertTrue(p.equalsToPathIterator(p3));
 	}
 	
 	@Test
@@ -753,11 +753,11 @@ public class Path2dTest extends AbstractMathTestCase{
 		p.curveTo(5f, -1f, 6f, 5f, 7f, -5f);
 		p.closePath();
 		
-		assertTrue(p.getCurrentPoint().equals(new Point2f(7,-5)));
+		assertTrue(p.getCurrentPoint().equalsToPathIterator(new Point2fx(7,-5)));
 		
 		p.setLastPoint(2, 2);
 		
-		assertTrue(p.getCurrentPoint().equals(new Point2f(2,2)));
+		assertTrue(p.getCurrentPoint().equalsToPathIterator(new Point2fx(2,2)));
 	}
 	
 	@Test
@@ -813,13 +813,13 @@ public class Path2dTest extends AbstractMathTestCase{
 		
 		double [] array = p.toDoubleArray();
 		
-		assertTrue(new Point2f(array[0],array[1]).equals(new Point2f(0,0)));
-		assertTrue(new Point2f(array[2],array[3]).equals(new Point2f(1,1)));
-		assertTrue(new Point2f(array[4],array[5]).equals(new Point2f(3,0)));
-		assertTrue(new Point2f(array[6],array[7]).equals(new Point2f(4,3)));
-		assertTrue(new Point2f(array[8],array[9]).equals(new Point2f(5,-1)));
-		assertTrue(new Point2f(array[10],array[11]).equals(new Point2f(6,5)));
-		assertTrue(new Point2f(array[12],array[13]).equals(new Point2f(7,-5)));
+		assertTrue(new Point2fx(array[0],array[1]).equalsToPathIterator(new Point2fx(0,0)));
+		assertTrue(new Point2fx(array[2],array[3]).equalsToPathIterator(new Point2fx(1,1)));
+		assertTrue(new Point2fx(array[4],array[5]).equalsToPathIterator(new Point2fx(3,0)));
+		assertTrue(new Point2fx(array[6],array[7]).equalsToPathIterator(new Point2fx(4,3)));
+		assertTrue(new Point2fx(array[8],array[9]).equalsToPathIterator(new Point2fx(5,-1)));
+		assertTrue(new Point2fx(array[10],array[11]).equalsToPathIterator(new Point2fx(6,5)));
+		assertTrue(new Point2fx(array[12],array[13]).equalsToPathIterator(new Point2fx(7,-5)));
 	}
 	
 	@Test
@@ -833,13 +833,13 @@ public class Path2dTest extends AbstractMathTestCase{
 		
 		Point2D [] array = p.toPointArray();
 		
-		assertTrue(array[0].equals(new Point2f(0,0)));
-		assertTrue(array[1].equals(new Point2f(1,1)));
-		assertTrue(array[2].equals(new Point2f(3,0)));
-		assertTrue(array[3].equals(new Point2f(4,3)));
-		assertTrue(array[4].equals(new Point2f(5,-1)));
-		assertTrue(array[5].equals(new Point2f(6,5)));
-		assertTrue(array[6].equals(new Point2f(7,-5)));
+		assertTrue(array[0].equalsToPathIterator(new Point2fx(0,0)));
+		assertTrue(array[1].equalsToPathIterator(new Point2fx(1,1)));
+		assertTrue(array[2].equalsToPathIterator(new Point2fx(3,0)));
+		assertTrue(array[3].equalsToPathIterator(new Point2fx(4,3)));
+		assertTrue(array[4].equalsToPathIterator(new Point2fx(5,-1)));
+		assertTrue(array[5].equalsToPathIterator(new Point2fx(6,5)));
+		assertTrue(array[6].equalsToPathIterator(new Point2fx(7,-5)));
 	}
 	
 	@Test
@@ -851,29 +851,29 @@ public class Path2dTest extends AbstractMathTestCase{
 		p.curveTo(5f, -1f, 6f, 5f, 7f, -5f);
 		p.closePath();
 		
-		assertTrue(p.getPointAt(0).equals(new Point2f(0,0)));
-		assertTrue(p.getPointAt(1).equals(new Point2f(1,1)));
-		assertTrue(p.getPointAt(2).equals(new Point2f(3,0)));
-		assertTrue(p.getPointAt(3).equals(new Point2f(4,3)));
-		assertTrue(p.getPointAt(4).equals(new Point2f(5,-1)));
-		assertTrue(p.getPointAt(5).equals(new Point2f(6,5)));
-		assertTrue(p.getPointAt(6).equals(new Point2f(7,-5)));
+		assertTrue(p.getPointAt(0).equalsToPathIterator(new Point2fx(0,0)));
+		assertTrue(p.getPointAt(1).equalsToPathIterator(new Point2fx(1,1)));
+		assertTrue(p.getPointAt(2).equalsToPathIterator(new Point2fx(3,0)));
+		assertTrue(p.getPointAt(3).equalsToPathIterator(new Point2fx(4,3)));
+		assertTrue(p.getPointAt(4).equalsToPathIterator(new Point2fx(5,-1)));
+		assertTrue(p.getPointAt(5).equalsToPathIterator(new Point2fx(6,5)));
+		assertTrue(p.getPointAt(6).equalsToPathIterator(new Point2fx(7,-5)));
 	}
 	
 	@Test
     public void getCurrentPoint() {
 		Path2d p = new Path2d();
 		p.moveTo(0f, 0f);
-		assertTrue(p.getCurrentPoint().equals(new Point2f(0,0)));
+		assertTrue(p.getCurrentPoint().equalsToPathIterator(new Point2fx(0,0)));
 		p.lineTo(1f, 1f);
-		assertTrue(p.getCurrentPoint().equals(new Point2f(1,1)));
+		assertTrue(p.getCurrentPoint().equalsToPathIterator(new Point2fx(1,1)));
 		p.quadTo(3f, 0f, 4f, 3f);
-		assertTrue(p.getCurrentPoint().equals(new Point2f(4,3)));
+		assertTrue(p.getCurrentPoint().equalsToPathIterator(new Point2fx(4,3)));
 		p.curveTo(5f, -1f, 6f, 5f, 7f, -5f);
-		assertTrue(p.getCurrentPoint().equals(new Point2f(7,-5)));
+		assertTrue(p.getCurrentPoint().equalsToPathIterator(new Point2fx(7,-5)));
 		p.closePath();
 		
-		assertTrue(p.getCurrentPoint().equals(new Point2f(7,-5)));
+		assertTrue(p.getCurrentPoint().equalsToPathIterator(new Point2fx(7,-5)));
 	}
 	
 	
@@ -893,13 +893,13 @@ public class Path2dTest extends AbstractMathTestCase{
 		
 		double [] array = p.toFloatArray();
 		
-		assertTrue(new Point2f(array[0],array[1]).equals(new Point2f(0,0)));
-		assertTrue(new Point2f(array[2],array[3]).equals(new Point2f(1,1)));
-		assertTrue(new Point2f(array[4],array[5]).equals(new Point2f(3,0)));
-		assertTrue(new Point2f(array[6],array[7]).equals(new Point2f(4,3)));
-		assertTrue(new Point2f(array[8],array[9]).equals(new Point2f(5,-1)));
-		assertTrue(new Point2f(array[10],array[11]).equals(new Point2f(6,5)));
-		assertTrue(new Point2f(array[12],array[13]).equals(new Point2f(7,-5)));
+		assertTrue(new Point2fx(array[0],array[1]).equalsToPathIterator(new Point2fx(0,0)));
+		assertTrue(new Point2fx(array[2],array[3]).equalsToPathIterator(new Point2fx(1,1)));
+		assertTrue(new Point2fx(array[4],array[5]).equalsToPathIterator(new Point2fx(3,0)));
+		assertTrue(new Point2fx(array[6],array[7]).equalsToPathIterator(new Point2fx(4,3)));
+		assertTrue(new Point2fx(array[8],array[9]).equalsToPathIterator(new Point2fx(5,-1)));
+		assertTrue(new Point2fx(array[10],array[11]).equalsToPathIterator(new Point2fx(6,5)));
+		assertTrue(new Point2fx(array[12],array[13]).equalsToPathIterator(new Point2fx(7,-5)));
 	}
 	
 	@Test
@@ -984,35 +984,35 @@ public class Path2dTest extends AbstractMathTestCase{
 		path.lineTo(3,-2);
 		path.closePath();
 		
-		assertTrue(test.equals(path));
+		assertTrue(test.equalsToPathIterator(path));
 		
 		test.getPointAt(2).set(2, 0);
 		test.getCurrentPoint().set(6, 6);
 		
-		assertTrue(pt0.equals(new Point2f(0,0)));
-		assertTrue(pt1.equals(new Point2f(1,1)));
-		assertTrue(pt2.equals(new Point2f(2,0)));
-		assertTrue(pt3.equals(new Point2f(3,1)));
-		assertTrue(pt4.equals(new Point2f(6,6)));
+		assertTrue(pt0.equalsToPathIterator(new Point2fx(0,0)));
+		assertTrue(pt1.equalsToPathIterator(new Point2fx(1,1)));
+		assertTrue(pt2.equalsToPathIterator(new Point2fx(2,0)));
+		assertTrue(pt3.equalsToPathIterator(new Point2fx(3,1)));
+		assertTrue(pt4.equalsToPathIterator(new Point2fx(6,6)));
 		
 		test = new Path2d(path,true);
 		
 		test.getPointAt(2).set(2, 0);
 		test.getCurrentPoint().set(6, 6);
 		
-		assertFalse(test.equals(path));
+		assertFalse(test.equalsToPathIterator(path));
 
 		test = new Path2d(path,false);
 		
 		test.getPointAt(2).set(2, 0);
 		test.getCurrentPoint().set(6, 6);
 		
-		assertTrue(test.equals(path));
+		assertTrue(test.equalsToPathIterator(path));
 		
 		path.setLastPoint(pt0.getX(),pt0.getY());
 		
 		assertEpsilonEquals(pt0, test.getPointAt(test.size()));
-		assertTrue(test.equals(path));		
+		assertTrue(test.equalsToPathIterator(path));		
 	}
 	
 }

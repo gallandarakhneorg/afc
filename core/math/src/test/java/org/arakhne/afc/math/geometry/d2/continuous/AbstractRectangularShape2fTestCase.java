@@ -62,7 +62,7 @@ public abstract class AbstractRectangularShape2fTestCase<T extends AbstractRecta
 	 */
 	@Test
 	public void setPoint2DPoint2D() {
-		this.r.set(new Point2f(2.3f, 3.4f), new Point2f(4.5f, 5.6f));
+		this.r.set(new Point2fx(2.3f, 3.4f), new Point2fx(4.5f, 5.6f));
 		assertEpsilonEquals(2.3f, this.r.getMinX());
 		assertEpsilonEquals(3.4f, this.r.getMinY());
 		assertEpsilonEquals(4.5f, this.r.getMaxX());
@@ -97,7 +97,7 @@ public abstract class AbstractRectangularShape2fTestCase<T extends AbstractRecta
 	 */
 	@Test
 	public void setInitiallyFromCornersPoint2DPoint2D() {
-		this.r.setFromCorners(new Point2f(-2.3f, 3.4f), new Point2f(0.5f, 5.6f));
+		this.r.setFromCorners(new Point2fx(-2.3f, 3.4f), new Point2fx(0.5f, 5.6f));
 		assertEpsilonEquals(-2.3f, this.r.getMinX());
 		assertEpsilonEquals(3.4f, this.r.getMinY());
 		assertEpsilonEquals(0.5f, this.r.getMaxX());
