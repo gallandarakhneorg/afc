@@ -21,7 +21,10 @@
  */
 package org.arakhne.afc.math.geometry.d2.ifx;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertSame;
 
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
@@ -29,6 +32,8 @@ import org.arakhne.afc.math.geometry.d2.ai.AbstractSegment2aiTest;
 import org.arakhne.afc.math.geometry.d2.ai.Circle2ai;
 import org.arakhne.afc.math.geometry.d2.ai.Path2ai;
 import org.junit.Test;
+
+import javafx.beans.property.IntegerProperty;
 
 @SuppressWarnings("all")
 public class Segment2ifxTest extends AbstractSegment2aiTest<Segment2ifx, Rectangle2ifx> {
@@ -61,6 +66,98 @@ public class Segment2ifxTest extends AbstractSegment2aiTest<Segment2ifx, Rectang
 	@Override
 	protected Path2ai<?, ?, ?, ?, ?> createPath() {
 		return new Path2ifx();
+	}
+
+	@Test
+	public void x1Property() {
+		IntegerProperty property = this.shape.x1Property();
+		assertNotNull(property);
+		IntegerProperty property2 = this.shape.x1Property();
+		assertSame(property, property2);
+		assertEquals(0, property.get());
+	}
+
+	@Test
+	public void y1Property() {
+		IntegerProperty property = this.shape.y1Property();
+		assertNotNull(property);
+		IntegerProperty property2 = this.shape.y1Property();
+		assertSame(property, property2);
+		assertEquals(0, property.get());
+	}
+
+	@Test
+	public void x2Property() {
+		IntegerProperty property = this.shape.x2Property();
+		assertNotNull(property);
+		IntegerProperty property2 = this.shape.x2Property();
+		assertSame(property, property2);
+		assertEquals(10, property.get());
+	}
+
+	@Test
+	public void y2Property() {
+		IntegerProperty property = this.shape.y2Property();
+		assertNotNull(property);
+		IntegerProperty property2 = this.shape.y2Property();
+		assertSame(property, property2);
+		assertEquals(5, property.get());
+	}
+
+	@Test
+	public void x1PropertySetter() {
+		assertEquals(0, this.shape.getX1());
+		assertEquals(0, this.shape.getY1());
+		assertEquals(10, this.shape.getX2());
+		assertEquals(5, this.shape.getY2());
+		IntegerProperty property = this.shape.x1Property();
+		property.set(345);
+		assertEquals(345, this.shape.getX1());
+		assertEquals(0, this.shape.getY1());
+		assertEquals(10, this.shape.getX2());
+		assertEquals(5, this.shape.getY2());
+	}
+
+	@Test
+	public void y1PropertySetter() {
+		assertEquals(0, this.shape.getX1());
+		assertEquals(0, this.shape.getY1());
+		assertEquals(10, this.shape.getX2());
+		assertEquals(5, this.shape.getY2());
+		IntegerProperty property = this.shape.y1Property();
+		property.set(345);
+		assertEquals(0, this.shape.getX1());
+		assertEquals(345, this.shape.getY1());
+		assertEquals(10, this.shape.getX2());
+		assertEquals(5, this.shape.getY2());
+	}
+
+	@Test
+	public void x2PropertySetter() {
+		assertEquals(0, this.shape.getX1());
+		assertEquals(0, this.shape.getY1());
+		assertEquals(10, this.shape.getX2());
+		assertEquals(5, this.shape.getY2());
+		IntegerProperty property = this.shape.x2Property();
+		property.set(345);
+		assertEquals(0, this.shape.getX1());
+		assertEquals(0, this.shape.getY1());
+		assertEquals(345, this.shape.getX2());
+		assertEquals(5, this.shape.getY2());
+	}
+
+	@Test
+	public void y2PropertySetter() {
+		assertEquals(0, this.shape.getX1());
+		assertEquals(0, this.shape.getY1());
+		assertEquals(10, this.shape.getX2());
+		assertEquals(5, this.shape.getY2());
+		IntegerProperty property = this.shape.y2Property();
+		property.set(345);
+		assertEquals(0, this.shape.getX1());
+		assertEquals(0, this.shape.getY1());
+		assertEquals(10, this.shape.getX2());
+		assertEquals(345, this.shape.getY2());
 	}
 
 	@Test

@@ -21,7 +21,10 @@
  */
 package org.arakhne.afc.math.geometry.d2.ifx;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertSame;
 
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
@@ -29,6 +32,8 @@ import org.arakhne.afc.math.geometry.d2.ai.AbstractRectangle2aiTest;
 import org.arakhne.afc.math.geometry.d2.ai.Path2ai;
 import org.arakhne.afc.math.geometry.d2.ai.Segment2ai;
 import org.junit.Test;
+
+import javafx.beans.property.IntegerProperty;
 
 @SuppressWarnings("all")
 public class Rectangle2ifxTest extends AbstractRectangle2aiTest<Rectangle2ifx> {
@@ -61,6 +66,98 @@ public class Rectangle2ifxTest extends AbstractRectangle2aiTest<Rectangle2ifx> {
 	@Override
 	protected Path2ai<?, ?, ?, ?, ?> createPath() {
 		return new Path2ifx();
+	}
+
+	@Test
+	public void minXProperty() {
+		IntegerProperty property = this.shape.minXProperty();
+		assertNotNull(property);
+		IntegerProperty property2 = this.shape.minXProperty();
+		assertSame(property, property2);
+		assertEquals(5, property.get());
+	}
+
+	@Test
+	public void minYProperty() {
+		IntegerProperty property = this.shape.minYProperty();
+		assertNotNull(property);
+		IntegerProperty property2 = this.shape.minYProperty();
+		assertSame(property, property2);
+		assertEquals(8, property.get());
+	}
+
+	@Test
+	public void maxXProperty() {
+		IntegerProperty property = this.shape.maxXProperty();
+		assertNotNull(property);
+		IntegerProperty property2 = this.shape.maxXProperty();
+		assertSame(property, property2);
+		assertEquals(15, property.get());
+	}
+
+	@Test
+	public void maxYProperty() {
+		IntegerProperty property = this.shape.maxYProperty();
+		assertNotNull(property);
+		IntegerProperty property2 = this.shape.maxYProperty();
+		assertSame(property, property2);
+		assertEquals(13, property.get());
+	}
+
+	@Test
+	public void minXPropertySetter() {
+		assertEquals(5, this.shape.getMinX());
+		assertEquals(8, this.shape.getMinY());
+		assertEquals(15, this.shape.getMaxX());
+		assertEquals(13, this.shape.getMaxY());
+		IntegerProperty property = this.shape.minXProperty();
+		property.set(345);
+		assertEquals(345, this.shape.getMinX());
+		assertEquals(8, this.shape.getMinY());
+		assertEquals(345, this.shape.getMaxX());
+		assertEquals(13, this.shape.getMaxY());
+	}
+
+	@Test
+	public void minYPropertySetter() {
+		assertEquals(5, this.shape.getMinX());
+		assertEquals(8, this.shape.getMinY());
+		assertEquals(15, this.shape.getMaxX());
+		assertEquals(13, this.shape.getMaxY());
+		IntegerProperty property = this.shape.minYProperty();
+		property.set(345);
+		assertEquals(5, this.shape.getMinX());
+		assertEquals(345, this.shape.getMinY());
+		assertEquals(15, this.shape.getMaxX());
+		assertEquals(345, this.shape.getMaxY());
+	}
+
+	@Test
+	public void maxXPropertySetter() {
+		assertEquals(5, this.shape.getMinX());
+		assertEquals(8, this.shape.getMinY());
+		assertEquals(15, this.shape.getMaxX());
+		assertEquals(13, this.shape.getMaxY());
+		IntegerProperty property = this.shape.maxXProperty();
+		property.set(345);
+		assertEquals(5, this.shape.getMinX());
+		assertEquals(8, this.shape.getMinY());
+		assertEquals(345, this.shape.getMaxX());
+		assertEquals(13, this.shape.getMaxY());
+	}
+
+	@Test
+	public void maxYPropertySetter() {
+		assertEquals(5, this.shape.getMinX());
+		assertEquals(8, this.shape.getMinY());
+		assertEquals(15, this.shape.getMaxX());
+		assertEquals(13, this.shape.getMaxY());
+		IntegerProperty property = this.shape.maxYProperty();
+		property.set(345);
+		assertEquals(5, this.shape.getMinX());
+		assertEquals(8, this.shape.getMinY());
+		assertEquals(15, this.shape.getMaxX());
+		assertEquals(345, this.shape.getMaxY());
 	}
 
 	@Test

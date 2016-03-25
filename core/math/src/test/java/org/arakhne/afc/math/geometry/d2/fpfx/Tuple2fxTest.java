@@ -75,5 +75,10 @@ public class Tuple2fxTest extends AbstractTuple2DTest<Tuple2fx> {
 		assertEpsilonEquals(1, this.t.getX());
 		assertEpsilonEquals(345., this.t.getY());
 	}
+	
+	@Override
+	public void testClone() {
+		super.testClone();
+	}
 
 }
