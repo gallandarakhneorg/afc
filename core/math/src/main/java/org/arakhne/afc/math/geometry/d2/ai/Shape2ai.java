@@ -162,41 +162,27 @@ public interface Shape2ai<
 	@SuppressWarnings("unchecked")
 	@Override
 	default ST createTransformedShape(Transform2D transform) {
-		PathIterator2ai<?> pi = getPathIterator();
+		if (transform == null || transform.isIdentity()) {
+			return (ST) clone();
+		}
+		PathIterator2ai<?> pi = getPathIterator(transform);
 		GeomFactory2ai<IE, P, B> factory = getGeomFactory();
 		Path2ai<?, ?, ?, P, ?> newPath = factory.newPath(pi.getWindingRule());
-		Point2D p = factory.newPoint();
-		Point2D t1 = factory.newPoint();
-		Point2D t2 = factory.newPoint();
 		PathElement2ai e;
 		while (pi.hasNext()) {
 			e = pi.next();
 			switch(e.getType()) {
 			case MOVE_TO:
-				p.set(e.getToX(), e.getToY());
-				transform.transform(p);
-				newPath.moveTo(p.ix(), p.iy());
+				newPath.moveTo(e.getToX(), e.getToY());
 				break;
 			case LINE_TO:
-				p.set(e.getToX(), e.getToY());
-				transform.transform(p);
-				newPath.lineTo(p.ix(), p.iy());
+				newPath.lineTo(e.getToX(), e.getToY());
 				break;
 			case QUAD_TO:
-				t1.set(e.getCtrlX1(), e.getCtrlY1());
-				transform.transform(t1);
-				p.set(e.getToX(), e.getToY());
-				transform.transform(p);
-				newPath.quadTo(t1.ix(), t1.iy(), p.ix(), p.iy());
+				newPath.quadTo(e.getCtrlX1(), e.getCtrlY1(), e.getToX(), e.getToY());
 				break;
 			case CURVE_TO:
-				t1.set(e.getCtrlX1(), e.getCtrlY1());
-				transform.transform(t1);
-				t2.set(e.getCtrlX2(), e.getCtrlY2());
-				transform.transform(t2);
-				p.set(e.getToX(), e.getToY());
-				transform.transform(p);
-				newPath.curveTo(t1.ix(), t1.iy(), t2.ix(), t2.iy(), p.ix(), p.iy());
+				newPath.curveTo(e.getCtrlX1(), e.getCtrlY1(), e.getCtrlX2(), e.getCtrlY2(), e.getToX(), e.getToY());
 				break;
 			case CLOSE:
 				newPath.closePath();

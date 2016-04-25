@@ -24,9 +24,6 @@ package org.arakhne.afc.math.stochastic;
 import java.util.Map;
 import java.util.Random;
 
-import org.arakhne.afc.math.MathException;
-import org.arakhne.afc.math.MathFunctionRange;
-
 /**
  * Law that representes a Bernoulli density.
  * <p>

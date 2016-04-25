@@ -56,6 +56,7 @@ public abstract class AbstractRectangularShape2fp<IT extends AbstractRectangular
 	 * @param r
 	 */
 	public AbstractRectangularShape2fp(RectangularShape2afp<?, ?, ?, ?, ?> r) {
+		assert (r != null) : "Shape must be not null"; //$NON-NLS-1$
 		this.minx = r.getMinX();
 		this.miny = r.getMinY();
 		this.maxx = r.getMaxX();
@@ -88,10 +89,8 @@ public abstract class AbstractRectangularShape2fp<IT extends AbstractRectangular
 
 	@Override
 	public void setMinX(double x) {
-		if (x <= this.maxx) {
-			this.minx = x;
-		} else {
-			this.minx = this.maxx;
+		this.minx = x;
+		if (x > this.maxx) {
 			this.maxx = x;
 		}
 	}
@@ -104,10 +103,8 @@ public abstract class AbstractRectangularShape2fp<IT extends AbstractRectangular
 
 	@Override
 	public void setMaxX(double x) {
-		if (x > this.minx) {
-			this.maxx = x;
-		} else {
-			this.maxx = this.minx;
+		this.maxx = x;
+		if (x < this.minx) {
 			this.minx = x;
 		}
 	}
@@ -120,10 +117,8 @@ public abstract class AbstractRectangularShape2fp<IT extends AbstractRectangular
 
 	@Override
 	public void setMinY(double y) {
-		if (y <= this.maxy) {
-			this.miny = y;
-		} else {
-			this.miny = this.maxy;
+		this.miny = y;
+		if (y > this.maxy) {
 			this.maxy = y;
 		}
 	}
@@ -136,10 +131,8 @@ public abstract class AbstractRectangularShape2fp<IT extends AbstractRectangular
 
 	@Override
 	public void setMaxY(double y) {
-		if (y > this.miny) {
-			this.maxy = y;
-		} else {
-			this.maxy = this.miny;
+		this.maxy = y;
+		if (y < this.miny) {
 			this.miny = y;
 		}
 	}

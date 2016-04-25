@@ -57,6 +57,7 @@ public class Tuple2i<T extends Tuple2D<? super T>, IT extends T> implements Tupl
 	 * @param tuple is the tuple to copy.
 	 */
 	public Tuple2i(Tuple2i<?,?> tuple) {
+		assert (tuple != null) : "Input tuple must not be null"; //$NON-NLS-1$
 		this.x = tuple.x;
 		this.y = tuple.y;
 	}
@@ -65,6 +66,7 @@ public class Tuple2i<T extends Tuple2D<? super T>, IT extends T> implements Tupl
 	 * @param tuple is the tuple to copy.
 	 */
 	public Tuple2i(Tuple2D<?> tuple) {
+		assert (tuple != null) : "Input tuple must not be null"; //$NON-NLS-1$
 		this.x = tuple.ix();
 		this.y = tuple.iy();
 	}
@@ -73,6 +75,8 @@ public class Tuple2i<T extends Tuple2D<? super T>, IT extends T> implements Tupl
 	 * @param tuple is the tuple to copy.
 	 */
 	public Tuple2i(int[] tuple) {
+		assert (tuple != null) : "Input tuple must not be null"; //$NON-NLS-1$
+		assert (tuple.length >= 2) : "Size of the input array is too small"; //$NON-NLS-1$
 		this.x = tuple[0];
 		this.y = tuple[1];
 	}
@@ -81,6 +85,8 @@ public class Tuple2i<T extends Tuple2D<? super T>, IT extends T> implements Tupl
 	 * @param tuple is the tuple to copy.
 	 */
 	public Tuple2i(double[] tuple) {
+		assert (tuple != null) : "Input tuple must not be null"; //$NON-NLS-1$
+		assert (tuple.length >= 2) : "Size of the input array is too small"; //$NON-NLS-1$
 		this.x = (int) Math.round(tuple[0]);
 		this.y = (int) Math.round(tuple[1]);
 	}
@@ -123,6 +129,7 @@ public class Tuple2i<T extends Tuple2D<? super T>, IT extends T> implements Tupl
 
 	@Override
 	public void absolute(T tuple) {
+		assert (tuple != null) : "Output tuple must not be null"; //$NON-NLS-1$
 		tuple.set(Math.abs(this.x), Math.abs(this.y));
 	}
 
@@ -160,6 +167,7 @@ public class Tuple2i<T extends Tuple2D<? super T>, IT extends T> implements Tupl
 
 	@Override
 	public void negate(T tuple) {
+		assert (tuple != null) : "Input tuple must not be null"; //$NON-NLS-1$
 		this.x = -tuple.ix();
 		this.y = -tuple.iy();
 	}
@@ -172,12 +180,14 @@ public class Tuple2i<T extends Tuple2D<? super T>, IT extends T> implements Tupl
 
 	@Override
 	public void scale(int scale, T tuple) {
+		assert (tuple != null) : "Input tuple must not be null"; //$NON-NLS-1$
 		this.x = (int) Math.round(scale * tuple.getX());
 		this.y = (int) Math.round(scale * tuple.getY());
 	}
 
 	@Override
 	public void scale(double scale, T tuple) {
+		assert (tuple != null) : "Input tuple must not be null"; //$NON-NLS-1$
 		this.x = (int) Math.round(scale * tuple.getX());
 		this.y = (int) Math.round(scale * tuple.getY());
 	}
@@ -196,6 +206,7 @@ public class Tuple2i<T extends Tuple2D<? super T>, IT extends T> implements Tupl
 
 	@Override
 	public void set(Tuple2D<?> tuple) {
+		assert (tuple != null) : "Input tuple must not be null"; //$NON-NLS-1$
 		this.x = tuple.ix();
 		this.y = tuple.iy();
 	}
@@ -214,12 +225,16 @@ public class Tuple2i<T extends Tuple2D<? super T>, IT extends T> implements Tupl
 
 	@Override
 	public void set(int[] tuple) {
+		assert (tuple != null) : "Input tuple must not be null"; //$NON-NLS-1$
+		assert (tuple.length >= 2) : "Size of the input tuple is too small"; //$NON-NLS-1$
 		this.x = tuple[0];
 		this.y = tuple[1];
 	}
 
 	@Override
 	public void set(double[] tuple) {
+		assert (tuple != null) : "Input tuple must not be null"; //$NON-NLS-1$
+		assert (tuple.length >= 2) : "Size of the input tuple is too small"; //$NON-NLS-1$
 		this.x = (int) Math.round(tuple[0]);
 		this.y = (int) Math.round(tuple[1]);
 	}

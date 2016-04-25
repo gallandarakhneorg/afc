@@ -20,7 +20,7 @@
  */
 package org.arakhne.afc.math.geometry.d2.afp;
 
-import org.arakhne.afc.math.MathConstants;
+import org.arakhne.afc.math.Unefficient;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Shape2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
@@ -51,6 +51,7 @@ public interface Shape2afp<
 	@Pure
 	@Override
 	default boolean contains(Point2D p) {
+		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
 		return contains(p.getX(), p.getY());
 	}
 
@@ -66,9 +67,56 @@ public interface Shape2afp<
 	@Pure
 	@Override
 	default void translate(Vector2D vector) {
+		assert (vector != null) : "Vector must be not null"; //$NON-NLS-1$
 		translate(vector.getX(), vector.getY());
 	}
 	
+	/** Replies if this shape is intersecting the given shape.
+	 * 
+	 * <p>You must use the intersection functions with a specific parameter type in place of
+	 * this general function. Indeed, the implementation of this function is unefficient due
+	 * to the tests against the types of the given shape, and the cast operators.
+	 * 
+	 * @param s
+	 * @return <code>true</code> if this shape is intersecting the given shape;
+	 * <code>false</code> if there is no intersection.
+	 */
+	@Pure
+	@Unefficient
+	default boolean intersects(Shape2afp<?, ?, ?, ?, ?> s) {
+		if (s instanceof Circle2afp) {
+			return intersects((Circle2afp<?, ?, ?, ?, ?>) s);
+		}
+		if (s instanceof Ellipse2afp) {
+			return intersects((Ellipse2afp<?, ?, ?, ?, ?>) s);
+		}
+		if (s instanceof Rectangle2afp) {
+			return intersects((Path2afp<?, ?, ?, ?, ?>) s);
+		}
+		if (s instanceof OrientedRectangle2afp) {
+			return intersects((OrientedRectangle2afp<?, ?, ?, ?, ?>) s);
+		}
+		if (s instanceof Parallelogram2afp) {
+			return intersects((Parallelogram2afp<?, ?, ?, ?, ?>) s);
+		}
+		if (s instanceof Path2afp) {
+			return intersects((Path2afp<?, ?, ?, ?, ?>) s);
+		}
+		if (s instanceof PathIterator2afp) {
+			return intersects((PathIterator2afp<?>) s);
+		}
+		if (s instanceof RoundRectangle2afp) {
+			return intersects((RoundRectangle2afp<?, ?, ?, ?, ?>) s);
+		}
+		if (s instanceof Triangle2afp) {
+			return intersects((Path2afp<?, ?, ?, ?, ?>) s);
+		}
+		if (s instanceof MultiShape2afp) {
+			return intersects((MultiShape2afp<?, ?, ?, ?, ?, ?>) s);
+		}
+		return intersects(getPathIterator());
+	}
+
 	/** Replies if this shape is intersecting the given ellipse.
 	 * 
 	 * @param s
@@ -76,7 +124,7 @@ public interface Shape2afp<
 	 * <code>false</code> if there is no intersection.
 	 */
 	@Pure
-	public boolean intersects(Ellipse2afp<?, ?, ?, ?, ?> s);
+	boolean intersects(Ellipse2afp<?, ?, ?, ?, ?> s);
 
 	/** Replies if this shape is intersecting the given circle.
 	 * 
@@ -85,7 +133,7 @@ public interface Shape2afp<
 	 * <code>false</code> if there is no intersection.
 	 */
 	@Pure
-	public boolean intersects(Circle2afp<?, ?, ?, ?, ?> s);
+	boolean intersects(Circle2afp<?, ?, ?, ?, ?> s);
 
 	/** Replies if this shape is intersecting the given rectangle.
 	 * 
@@ -103,7 +151,16 @@ public interface Shape2afp<
 	 * <code>false</code> if there is no intersection.
 	 */
 	@Pure
-	public boolean intersects(Segment2afp<?, ?, ?, ?, ?> s);
+	boolean intersects(Segment2afp<?, ?, ?, ?, ?> s);
+
+	/** Replies if this shape is intersecting the given triangle.
+	 * 
+	 * @param s
+	 * @return <code>true</code> if this shape is intersecting the given shape;
+	 * <code>false</code> if there is no intersection.
+	 */
+	@Pure
+	boolean intersects(Triangle2afp<?, ?, ?, ?, ?> s);
 
 	/** Replies if this shape is intersecting the given path.
 	 * 
@@ -113,7 +170,8 @@ public interface Shape2afp<
 	 */
 	@Pure
 	default boolean intersects(Path2afp<?, ?, ?, ?, ?> s) {
-		return intersects(s.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO));
+		assert (s != null) : "Path must be not null"; //$NON-NLS-1$
+		return intersects(s.getPathIterator());
 	}
 
 	/** Replies if this shape is intersecting the shape representing the given path iterator.
@@ -132,8 +190,17 @@ public interface Shape2afp<
 	 * <code>false</code> if there is no intersection.
 	 */
 	@Pure
-	public boolean intersects(OrientedRectangle2afp<?, ?, ?, ?, ?> s);
+	boolean intersects(OrientedRectangle2afp<?, ?, ?, ?, ?> s);
 		
+	/** Replies if this shape is intersecting the given parallelogram.
+	 * 
+	 * @param s
+	 * @return <code>true</code> if this shape is intersecting the given shape;
+	 * <code>false</code> if there is no intersection.
+	 */
+	@Pure
+	boolean intersects(Parallelogram2afp<?, ?, ?, ?, ?> s);
+
 	/** Replies if this shape is intersecting the given rectangle.
 	 * 
 	 * @param s
@@ -141,14 +208,23 @@ public interface Shape2afp<
 	 * <code>false</code> if there is no intersection.
 	 */
 	@Pure
-	public boolean intersects(RoundRectangle2afp<?, ?, ?, ?, ?> s);
+	boolean intersects(RoundRectangle2afp<?, ?, ?, ?, ?> s);
+
+	/** Replies if this shape is intersecting the given multishape.
+	 * 
+	 * @param s
+	 * @return <code>true</code> if this shape is intersecting the given shape;
+	 * <code>false</code> if there is no intersection.
+	 */
+	@Pure
+	boolean intersects(MultiShape2afp<?, ?, ?, ?, ?, ?> s);
 
 	/** Translate the shape.
 	 * 
 	 * @param dx
 	 * @param dy
 	 */
-	public void translate(double dx, double dy); 
+	void translate(double dx, double dy); 
 
 	/** Replies if the given point is inside this shape.
 	 * 
@@ -158,7 +234,7 @@ public interface Shape2afp<
 	 * shape, otherwise <code>false</code>.
 	 */
 	@Pure
-	public boolean contains(double x, double y);
+	boolean contains(double x, double y);
 
 	/** Replies the factory of geometrical elements.
 	 *
@@ -170,41 +246,27 @@ public interface Shape2afp<
 	@SuppressWarnings("unchecked")
 	@Override
 	default ST createTransformedShape(Transform2D transform) {
-		PathIterator2afp<?> pi = getPathIterator();
+		if (transform == null || transform.isIdentity()) {
+			return (ST) clone();
+		}
+		PathIterator2afp<?> pi = getPathIterator(transform);
 		GeomFactory2afp<IE, P, B> factory = getGeomFactory();
 		Path2afp<?, ?, ?, P, ?> newPath = factory.newPath(pi.getWindingRule());
-		Point2D p = factory.newPoint();
-		Point2D t1 = factory.newPoint();
-		Point2D t2 = factory.newPoint();
 		PathElement2afp e;
 		while (pi.hasNext()) {
 			e = pi.next();
 			switch(e.getType()) {
 			case MOVE_TO:
-				p.set(e.getToX(), e.getToY());
-				transform.transform(p);
-				newPath.moveTo(p.getX(), p.getY());
+				newPath.moveTo(e.getToX(), e.getToY());
 				break;
 			case LINE_TO:
-				p.set(e.getToX(), e.getToY());
-				transform.transform(p);
-				newPath.lineTo(p);
+				newPath.lineTo(e.getToX(), e.getToY());
 				break;
 			case QUAD_TO:
-				t1.set(e.getCtrlX1(), e.getCtrlY1());
-				transform.transform(t1);
-				p.set(e.getToX(), e.getToY());
-				transform.transform(p);
-				newPath.quadTo(t1.getX(), t1.getY(), p.getX(), p.getY());
+				newPath.quadTo(e.getCtrlX1(), e.getCtrlY1(), e.getToX(), e.getToY());
 				break;
 			case CURVE_TO:
-				t1.set(e.getCtrlX1(), e.getCtrlY1());
-				transform.transform(t1);
-				t2.set(e.getCtrlX2(), e.getCtrlY2());
-				transform.transform(t2);
-				p.set(e.getToX(), e.getToY());
-				transform.transform(p);
-				newPath.curveTo(t1.getX(), t1.getY(), t2.getX(), t2.getY(), p.getX(), p.getY());
+				newPath.curveTo(e.getCtrlX1(), e.getCtrlY1(), e.getCtrlX2(), e.getCtrlY2(), e.getToX(), e.getToY());
 				break;
 			case CLOSE:
 				newPath.closePath();

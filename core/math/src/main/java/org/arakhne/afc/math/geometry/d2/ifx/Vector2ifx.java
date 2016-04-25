@@ -26,7 +26,10 @@ import org.arakhne.afc.math.geometry.d2.UnmodifiableVector2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.ReadOnlyDoubleWrapper;
 
 /** 2D Vector with 2 integer FX properties.
  * 
@@ -39,6 +42,14 @@ import javafx.beans.property.IntegerProperty;
 public class Vector2ifx extends Tuple2ifx<Vector2D, Vector2ifx> implements Vector2D {
 
 	private static final long serialVersionUID = 5782200591782721145L;
+
+	/** Property that contains the squared length.
+	 */
+	private ReadOnlyDoubleWrapper lengthSquareProperty;
+	
+	/** Property that contains the length.
+	 */
+	private ReadOnlyDoubleWrapper lengthProperty;
 
 	/**
 	 */
@@ -106,6 +117,69 @@ public class Vector2ifx extends Tuple2ifx<Vector2D, Vector2ifx> implements Vecto
 	public Vector2ifx(long x, long y) {
 		super(x,y);
 	}
+	
+	@Override
+	public Vector2ifx clone() {
+		Vector2ifx clone = super.clone();
+		clone.lengthSquareProperty = null;
+		clone.lengthProperty = null;
+		return clone;
+	}
+
+	@Override
+	public Vector2D toUnitVector() {
+		double length = getLength();
+		if (length == 0.) {
+			return new Vector2ifx();
+		}
+		return new Vector2ifx(getX() / length, getY() / length);
+	}
+
+	@Override
+	public Vector2D toOrthogonalVector() {
+		return new Vector2ifx(-iy(), ix());
+	}
+	
+	@Override
+	public double getLength() {
+		return lengthProperty().get();
+	}
+	
+	/** Replies the property that represents the length of the vector.
+	 *
+	 * @return the length property
+	 */
+	public DoubleProperty lengthProperty() {
+		if (this.lengthProperty == null) {
+			this.lengthProperty = new ReadOnlyDoubleWrapper(this, "length"); //$NON-NLS-1$
+			this.lengthProperty.bind(Bindings.createDoubleBinding(
+					() -> {
+						return Math.sqrt(lengthSquaredProperty().doubleValue());
+					}, lengthSquaredProperty()));
+		}
+		return this.lengthProperty;
+	}
+
+	@Override
+	public double getLengthSquared() {
+		return lengthSquaredProperty().get();
+	}
+	
+	/** Replies the property that represents the length of the vector.
+	 *
+	 * @return the length property
+	 */
+	public DoubleProperty lengthSquaredProperty() {
+		if (this.lengthSquareProperty == null) {
+			this.lengthSquareProperty = new ReadOnlyDoubleWrapper(this, "lengthSquared"); //$NON-NLS-1$
+			this.lengthSquareProperty.bind(Bindings.createDoubleBinding(
+					() -> {
+						return Vector2ifx.this.x.doubleValue() * Vector2ifx.this.x.doubleValue()
+								+ Vector2ifx.this.y.doubleValue() * Vector2ifx.this.y.doubleValue();
+					}, this.x, this.y));
+		}
+		return this.lengthSquareProperty;
+	}
 
 	@Pure
 	@Override
@@ -114,6 +188,16 @@ public class Vector2ifx extends Tuple2ifx<Vector2D, Vector2ifx> implements Vecto
 
 			private static final long serialVersionUID = -3525974627723161583L;
 
+			@Override
+			public Vector2D toUnitVector() {
+				return Vector2ifx.this.toUnitVector();
+			}
+			
+			@Override
+			public Vector2D toOrthogonalVector() {
+				return Vector2ifx.this.toOrthogonalVector();
+			}
+			
 			@Override
 			public Vector2D clone() {
 				return Vector2ifx.this.toUnmodifiable();

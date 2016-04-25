@@ -59,6 +59,7 @@ public interface Tuple2D<TT extends Tuple2D<? super TT>>
 	 * @param tuple   the source tuple, which will not be modified
 	 */
 	default void absolute(TT tuple)  {
+		assert (tuple != null) : "Tuple must be not be null"; //$NON-NLS-1$
 		tuple.set(Math.abs(getX()), Math.abs(getY()));
 	}
 
@@ -118,6 +119,7 @@ public interface Tuple2D<TT extends Tuple2D<? super TT>>
 	 *  @param max  the highest value in this tuple after clamping
 	 */
 	default void clamp(int min, int max) {
+		assert (min <= max) : "min must be lower or equal to max"; //$NON-NLS-1$
 		double x = MathUtil.clamp(getX(), min, max);
 		double y = MathUtil.clamp(getY(), min, max);
 		set(x, y);
@@ -129,6 +131,7 @@ public interface Tuple2D<TT extends Tuple2D<? super TT>>
 	 *  @param max  the highest value in this tuple after clamping
 	 */
 	default void clamp(double min, double max) {
+		assert (min <= max) : "min must be lower or equal to max"; //$NON-NLS-1$
 		double x = MathUtil.clamp(getX(), min, max);
 		double y = MathUtil.clamp(getY(), min, max);
 		set(x, y);
@@ -207,6 +210,8 @@ public interface Tuple2D<TT extends Tuple2D<? super TT>>
 	 *  @param tuple   the source tuple, which will not be modified
 	 */
 	default void clamp(int min, int max, TT tuple) {
+		assert (min <= max) : "min must be lower or equal to max"; //$NON-NLS-1$
+		assert (tuple != null) : "Tuple must not be null"; //$NON-NLS-1$
 		double x = MathUtil.clamp(tuple.getX(), min, max);
 		double y = MathUtil.clamp(tuple.getY(), min, max);
 		set(x, y);
@@ -220,6 +225,8 @@ public interface Tuple2D<TT extends Tuple2D<? super TT>>
 	 *  @param tuple   the source tuple, which will not be modified
 	 */
 	default void clamp(double min, double max, TT tuple) {
+		assert (min <= max) : "min must be lower or equal to max"; //$NON-NLS-1$
+		assert (tuple != null) : "Tuple must not be null"; //$NON-NLS-1$
 		double x = MathUtil.clamp(tuple.getX(), min, max);
 		double y = MathUtil.clamp(tuple.getY(), min, max);
 		set(x, y);
@@ -232,6 +239,7 @@ public interface Tuple2D<TT extends Tuple2D<? super TT>>
 	 *  @param tuple   the source tuple, which will not be modified
 	 */
 	default void clampMin(int min, TT tuple) {
+		assert (tuple != null) : "Tuple must not be null"; //$NON-NLS-1$
 		double x = tuple.getX();
 		double y = tuple.getY();
 		if (x < min) {
@@ -250,6 +258,7 @@ public interface Tuple2D<TT extends Tuple2D<? super TT>>
 	 *  @param tuple   the source tuple, which will not be modified
 	 */
 	default void clampMin(double min, TT tuple) {
+		assert (tuple != null) : "Tuple must not be null"; //$NON-NLS-1$
 		double x = tuple.getX();
 		double y = tuple.getY();
 		if (x < min) {
@@ -268,6 +277,7 @@ public interface Tuple2D<TT extends Tuple2D<? super TT>>
 	 *  @param tuple   the source tuple, which will not be modified
 	 */
 	default void clampMax(int max, TT tuple) {
+		assert (tuple != null) : "Tuple must not be null"; //$NON-NLS-1$
 		double x = tuple.getX();
 		double y = tuple.getY();
 		if (x > max) {
@@ -286,6 +296,7 @@ public interface Tuple2D<TT extends Tuple2D<? super TT>>
 	 *  @param tuple   the source tuple, which will not be modified
 	 */
 	default void clampMax(double max, TT tuple) {
+		assert (tuple != null) : "Tuple must not be null"; //$NON-NLS-1$
 		double x = tuple.getX();
 		double y = tuple.getY();
 		if (x > max) {
@@ -302,6 +313,7 @@ public interface Tuple2D<TT extends Tuple2D<? super TT>>
 	 * @param tuple is the target tuple
 	 */
 	default void get(TT tuple) {
+		assert (tuple != null) : "Tuple must not be null"; //$NON-NLS-1$
 		tuple.set(getX(), getY());
 	}
 
@@ -310,6 +322,8 @@ public interface Tuple2D<TT extends Tuple2D<? super TT>>
 	 *  @param tuple the array that will contain the values of the vector
 	 */
 	default void get(int[] tuple) {
+		assert (tuple != null) : "Tuple must not be null"; //$NON-NLS-1$
+		assert (tuple.length >= 2) : "Size of the array too low"; //$NON-NLS-1$
 		tuple[0] = ix();
 		tuple[1] = iy();
 	}
@@ -319,8 +333,10 @@ public interface Tuple2D<TT extends Tuple2D<? super TT>>
 	 *  @param tuple the array that will contain the values of the vector
 	 */
 	default void get(double[] tuple) {
+		assert (tuple != null) : "Tuple must not be null"; //$NON-NLS-1$
+		assert (tuple.length >= 2) : "Size of the array too low"; //$NON-NLS-1$
 		tuple[0] = getX();
-		tuple[1]= getY();
+		tuple[1] = getY();
 	}
 
 	/**
@@ -328,6 +344,7 @@ public interface Tuple2D<TT extends Tuple2D<? super TT>>
 	 * @param tuple the source tuple
 	 */
 	default void negate(TT tuple) {
+		assert (tuple != null) : "Tuple must not be null"; //$NON-NLS-1$
 		set(-tuple.getX(), -tuple.getY());
 	}
 
@@ -345,6 +362,7 @@ public interface Tuple2D<TT extends Tuple2D<? super TT>>
 	 * @param tuple the source tuple
 	 */
 	default void scale(int scale, TT tuple) {
+		assert (tuple != null) : "Tuple must not be null"; //$NON-NLS-1$
 		set(scale * tuple.getX(), scale * tuple.getY());
 	}
 
@@ -355,6 +373,7 @@ public interface Tuple2D<TT extends Tuple2D<? super TT>>
 	 * @param tuple the source tuple
 	 */
 	default void scale(double scale, TT tuple) {
+		assert (tuple != null) : "Tuple must not be null"; //$NON-NLS-1$
 		set(scale * tuple.getX(), scale * tuple.getY());
 	}
 
@@ -381,6 +400,7 @@ public interface Tuple2D<TT extends Tuple2D<? super TT>>
 	 * @param tuple the tuple to be copied
 	 */
 	default void set(Tuple2D<?> tuple) {
+		assert (tuple != null) : "Tuple must not be null"; //$NON-NLS-1$
 		set(tuple.getX(), tuple.getY());
 	}
 
@@ -412,6 +432,8 @@ public interface Tuple2D<TT extends Tuple2D<? super TT>>
 	 * @param tuple the array of length 2 containing xy in order
 	 */
 	default void set(int[] tuple) {
+		assert (tuple != null) : "Tuple must not be null"; //$NON-NLS-1$
+		assert (tuple.length >= 2) : "Array size is too low"; //$NON-NLS-1$
 		setX(tuple[0]);
 		setY(tuple[1]);
 	}
@@ -422,6 +444,8 @@ public interface Tuple2D<TT extends Tuple2D<? super TT>>
 	 * @param tuple the array of length 2 containing xy in order
 	 */
 	default void set(double[] tuple) {
+		assert (tuple != null) : "Tuple must not be null"; //$NON-NLS-1$
+		assert (tuple.length >= 2) : "Array size is too low"; //$NON-NLS-1$
 		setX(tuple[0]);
 		setY(tuple[1]);
 	}
@@ -541,9 +565,12 @@ public interface Tuple2D<TT extends Tuple2D<? super TT>>
 	 *  result into this tuple:  this = (1-alpha)*t1 + alpha*t2.
 	 *  @param tuple1  the first tuple
 	 *  @param tuple2  the second tuple
-	 *  @param alpha  the alpha interpolation parameter
+	 *  @param alpha  the alpha interpolation parameter (value in [0;1]).
 	 */
 	default void interpolate(TT tuple1, TT tuple2, double alpha) {
+		assert (tuple1 != null) : "First tuple must not be null"; //$NON-NLS-1$
+		assert (tuple2 != null) : "Second tuple must not be null"; //$NON-NLS-1$
+		assert (alpha >= 0. && alpha <= 1.) : "Alpha must be in [0; 1]"; //$NON-NLS-1$
 		set((1. - alpha) * tuple1.getX() + alpha * tuple2.getX(),
 			(1. - alpha) * tuple1.getY() + alpha * tuple2.getY());
 	}
@@ -555,6 +582,8 @@ public interface Tuple2D<TT extends Tuple2D<? super TT>>
 	 *  @param alpha  the alpha interpolation parameter  
 	 */   
 	default void interpolate(TT tuple, double alpha) {
+		assert (tuple != null) : "Tuple must not be null"; //$NON-NLS-1$
+		assert (alpha >= 0. && alpha <= 1.) : "Alpha must be in [0; 1]"; //$NON-NLS-1$
 		set((1. - alpha) * getX() + alpha * tuple.getX(),
 			(1. - alpha) * getY() + alpha * tuple.getY());
 	} 
@@ -597,6 +626,7 @@ public interface Tuple2D<TT extends Tuple2D<? super TT>>
 	 */
 	@Pure
 	default boolean epsilonEquals(TT tuple, double epsilon) {
+		assert (tuple != null) : "Tuple must not be null"; //$NON-NLS-1$
 		double dx = getX() - tuple.getX();
 		double dy = getY() - tuple.getY();
 		return (dx * dx + dy * dy) <= (epsilon * epsilon);

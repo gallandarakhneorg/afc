@@ -27,7 +27,7 @@ import org.arakhne.afc.math.geometry.d2.afp.RoundRectangle2afp;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.DoublePropertyBase;
+import javafx.beans.property.ReadOnlyDoubleProperty;
 
 /** Round rectangle with 2 double precision floating-point FX properties.
  *
@@ -81,11 +81,25 @@ public class RoundRectangle2fx extends AbstractRectangularShape2fx<RoundRectangl
 	 * @param y
 	 * @param width
 	 * @param height
-	 * @param arcWidth1
-	 * @param arcHeight1
+	 * @param arcWidth
+	 * @param arcHeight
 	 */
-	public RoundRectangle2fx(double x, double y, double width, double height, double arcWidth1, double arcHeight1) {
-		set(x, y, width, height, arcWidth1, arcHeight1);
+	public RoundRectangle2fx(double x, double y, double width, double height, double arcWidth, double arcHeight) {
+		set(x, y, width, height, arcWidth, arcHeight);
+	}
+	
+	@Override
+	public RoundRectangle2fx clone() {
+		RoundRectangle2fx clone = super.clone();
+		if (clone.arcWidth != null) {
+			clone.arcWidth = null;
+			clone.arcWidthProperty().set(getArcWidth());
+		}
+		if (clone.arcHeight != null) {
+			clone.arcHeight = null;
+			clone.arcHeightProperty().set(getArcHeight());
+		}
+		return clone;
 	}
 
 	@Pure
@@ -130,21 +144,18 @@ public class RoundRectangle2fx extends AbstractRectangularShape2fx<RoundRectangl
 	 */
 	public DoubleProperty arcWidthProperty() {
 		if (this.arcWidth == null) {
-			this.arcWidth = new DoublePropertyBase(0) {
+			this.arcWidth = new DependentSimpleDoubleProperty<ReadOnlyDoubleProperty>(
+					this, "arcWidth", widthProperty()) { //$NON-NLS-1$
 				@Override
-				public String getName() {
-					return "arcWidth"; //$NON-NLS-1$
-				}
-				
-				@Override
-				public Object getBean() {
-					return RoundRectangle2fx.this;
-				}
-				
-				@Override
-				protected void invalidated() {
-					if (get() < 0.) {
+				protected void invalidated(ReadOnlyDoubleProperty dependency) {
+					double value = get();
+					if (value < 0.) {
 						set(0.);
+					} else {
+						double maxArcWidth = dependency.get() / 2.;
+						if (value > maxArcWidth) {
+							set(maxArcWidth);
+						}
 					}
 				}
 			};
@@ -164,21 +175,18 @@ public class RoundRectangle2fx extends AbstractRectangularShape2fx<RoundRectangl
 	 */
 	public DoubleProperty arcHeightProperty() {
 		if (this.arcHeight == null) {
-			this.arcHeight = new DoublePropertyBase(0) {
+			this.arcHeight = new DependentSimpleDoubleProperty<ReadOnlyDoubleProperty>(
+					this, "arcHeight", heightProperty()) { //$NON-NLS-1$
 				@Override
-				public String getName() {
-					return "arcHeight"; //$NON-NLS-1$
-				}
-				
-				@Override
-				public Object getBean() {
-					return RoundRectangle2fx.this;
-				}
-				
-				@Override
-				protected void invalidated() {
-					if (get() < 0.) {
+				protected void invalidated(ReadOnlyDoubleProperty dependency) {
+					double value = get();
+					if (value < 0.) {
 						set(0.);
+					} else {
+						double maxArcHeight = dependency.get() / 2.;
+						if (value > maxArcHeight) {
+							set(maxArcHeight);
+						}
 					}
 				}
 			};
@@ -188,19 +196,43 @@ public class RoundRectangle2fx extends AbstractRectangularShape2fx<RoundRectangl
 
 	@Override
 	public void setArcWidth(double a) {
+		assert (a >= 0.) : "Arc width must be positive or zero"; //$NON-NLS-1$
 		arcWidthProperty().set(a);
 	}
 
 	@Override
 	public void setArcHeight(double a) {
+		assert (a >= 0.) : "Arc height must be positive or zero"; //$NON-NLS-1$
 		arcHeightProperty().set(a);
 	}
 
 	@Override
+	public void setFromCorners(double x1, double y1, double x2, double y2) {
+		double arcWidth = getArcWidth();
+		double arcHeight = getArcHeight();
+		setFromCorners(x1, y1, x2, y2, arcWidth, arcHeight);
+	}
+
+	@Override
 	public void setFromCorners(double x1, double y1, double x2, double y2, double arcWidth, double arcHeight) {
-		arcWidthProperty().set(arcWidth);
-		arcHeightProperty().set(arcHeight);
-		super.setFromCorners(x1, y1, x2, y2);
+		assert (arcWidth >= 0.) : "Arc width must be positive or zero"; //$NON-NLS-1$
+		assert (arcHeight >= 0.) : "Arc height must be positive or zero"; //$NON-NLS-1$
+		if (x1 <= x2) {
+			minXProperty().set(x1);
+			maxXProperty().set(x2);
+		} else {
+			minXProperty().set(x2);
+			maxXProperty().set(x1);
+		}
+		if (y1 <= y2) {
+			minYProperty().set(y1);
+			maxYProperty().set(y2);
+		} else {
+			minYProperty().set(y2);
+			maxYProperty().set(y1);
+		}
+		setArcWidth(arcWidth);
+		setArcHeight(arcHeight);
 	}
 
 }

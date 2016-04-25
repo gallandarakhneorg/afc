@@ -145,6 +145,7 @@ public interface Shape2D<
 	 */
 	@Pure
 	default double getDistance(Point2D point) {
+		assert (point != null) : "Point must not be null"; //$NON-NLS-1$
 		return Math.sqrt(getDistanceSquared(point));
 	}
 

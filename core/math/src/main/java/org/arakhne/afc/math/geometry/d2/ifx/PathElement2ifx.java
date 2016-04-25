@@ -50,14 +50,19 @@ public abstract class PathElement2ifx implements PathElement2ai {
 	 */
 	@Pure
 	public static PathElement2ifx newInstance(PathElementType type, IntegerProperty lastX, IntegerProperty lastY, IntegerProperty[] coords) {
+		assert (type != null) : "Path winding rule must be not null"; //$NON-NLS-1$
+		assert (coords != null) : "Coordinate array must be not null"; //$NON-NLS-1$
+		assert (coords.length >= 2) : "Size of the oordinate array is too small"; //$NON-NLS-1$
 		switch(type) {
 		case MOVE_TO:
 			return new MovePathElement2ifx(coords[0], coords[1]);
 		case LINE_TO:
 			return new LinePathElement2ifx(lastX, lastY, coords[0], coords[1]);
 		case QUAD_TO:
+			assert (coords.length >= 4) : "Size of the oordinate array is too small"; //$NON-NLS-1$
 			return new QuadPathElement2ifx(lastX, lastY, coords[0], coords[1], coords[2], coords[3]);
 		case CURVE_TO:
+			assert (coords.length >= 6) : "Size of the oordinate array is too small"; //$NON-NLS-1$
 			return new CurvePathElement2ifx(lastX, lastY, coords[0], coords[1], coords[2], coords[3], coords[4], coords[5]);
 		case CLOSE:
 			return new ClosePathElement2ifx(lastX, lastY, coords[0], coords[1]);
@@ -84,8 +89,9 @@ public abstract class PathElement2ifx implements PathElement2ai {
 	 * @param toy the x coordinate of the target point.
 	 */
 	PathElement2ifx(PathElementType type, IntegerProperty tox, IntegerProperty toy) {
-		assert (type!=null);
-		assert (tox != null && toy != null);
+		assert (type != null) : "Path winding rule must be not null"; //$NON-NLS-1$
+		assert (tox != null) : "Property toX must be not null"; //$NON-NLS-1$
+		assert (toy != null) : "Property toY must be not null"; //$NON-NLS-1$
 		this.type = type;
 		this.toX = tox;
 		this.toY = toy;
@@ -255,6 +261,8 @@ public abstract class PathElement2ifx implements PathElement2ai {
 		@Pure
 		@Override
 		public void toArray(int[] array) {
+			assert (array != null) : "Array must be not null"; //$NON-NLS-1$
+			assert (array.length >= 2) : "Size of the array is too small"; //$NON-NLS-1$
 			array[0] = this.toX.get();
 			array[1] = this.toY.get();
 		}
@@ -262,6 +270,8 @@ public abstract class PathElement2ifx implements PathElement2ai {
 		@Pure
 		@Override
 		public void toArray(double[] array) {
+			assert (array != null) : "Array must be not null"; //$NON-NLS-1$
+			assert (array.length >= 2) : "Size of the array is too small"; //$NON-NLS-1$
 			array[0] = this.toX.get();
 			array[1] = this.toY.get();
 		}
@@ -269,6 +279,8 @@ public abstract class PathElement2ifx implements PathElement2ai {
 		@Pure
 		@Override
 		public void toArray(IntegerProperty[] array) {
+			assert (array != null) : "Array must be not null"; //$NON-NLS-1$
+			assert (array.length >= 2) : "Size of the array is too small"; //$NON-NLS-1$
 			array[0] = this.toX;
 			array[1] = this.toY;
 		}
@@ -385,6 +397,8 @@ public abstract class PathElement2ifx implements PathElement2ai {
 		 */
 		public LinePathElement2ifx(IntegerProperty fromx, IntegerProperty fromy, IntegerProperty tox, IntegerProperty toy) {
 			super(PathElementType.LINE_TO, tox, toy);
+			assert (fromx != null) : "Property fromX must be not null"; //$NON-NLS-1$
+			assert (fromy != null) : "Property fromY must be not null"; //$NON-NLS-1$
 			this.fromX = fromx;
 			this.fromY = fromy;
 		}
@@ -433,6 +447,8 @@ public abstract class PathElement2ifx implements PathElement2ai {
 		@Pure
 		@Override
 		public void toArray(int[] array) {
+			assert (array != null) : "Array must be not null"; //$NON-NLS-1$
+			assert (array.length >= 2) : "Size of the array is too small"; //$NON-NLS-1$
 			array[0] = this.toX.get();
 			array[1] = this.toY.get();
 		}
@@ -440,6 +456,8 @@ public abstract class PathElement2ifx implements PathElement2ai {
 		@Pure
 		@Override
 		public void toArray(double[] array) {
+			assert (array != null) : "Array must be not null"; //$NON-NLS-1$
+			assert (array.length >= 2) : "Size of the array is too small"; //$NON-NLS-1$
 			array[0] = this.toX.get();
 			array[1] = this.toY.get();
 		}
@@ -453,6 +471,8 @@ public abstract class PathElement2ifx implements PathElement2ai {
 		@Pure
 		@Override
 		public void toArray(IntegerProperty[] array) {
+			assert (array != null) : "Array must be not null"; //$NON-NLS-1$
+			assert (array.length >= 2) : "Size of the array is too small"; //$NON-NLS-1$
 			array[0] = this.toX;
 			array[1] = this.toY;
 		}
@@ -569,6 +589,10 @@ public abstract class PathElement2ifx implements PathElement2ai {
 		 */
 		public QuadPathElement2ifx(IntegerProperty fromx, IntegerProperty fromy, IntegerProperty ctrlx, IntegerProperty ctrly, IntegerProperty tox, IntegerProperty toy) {
 			super(PathElementType.QUAD_TO, tox, toy);
+			assert (fromx != null) : "Property fromX must be not null"; //$NON-NLS-1$
+			assert (fromy != null) : "Property fromY must be not null"; //$NON-NLS-1$
+			assert (ctrlx != null) : "Property ctrlX must be not null"; //$NON-NLS-1$
+			assert (ctrly != null) : "Property ctrlY must be not null"; //$NON-NLS-1$
 			this.fromX = fromx;
 			this.fromY = fromy;
 			this.ctrlX = ctrlx;
@@ -626,6 +650,8 @@ public abstract class PathElement2ifx implements PathElement2ai {
 		@Pure
 		@Override
 		public void toArray(int[] array) {
+			assert (array != null) : "Array must be not null"; //$NON-NLS-1$
+			assert (array.length >= 4) : "Size of the array is too small"; //$NON-NLS-1$
 			array[0] = this.ctrlX.get();
 			array[1] = this.ctrlY.get();
 			array[2] = this.toX.get();
@@ -635,6 +661,8 @@ public abstract class PathElement2ifx implements PathElement2ai {
 		@Pure
 		@Override
 		public void toArray(double[] array) {
+			assert (array != null) : "Array must be not null"; //$NON-NLS-1$
+			assert (array.length >= 4) : "Size of the array is too small"; //$NON-NLS-1$
 			array[0] = this.ctrlX.get();
 			array[1] = this.ctrlY.get();
 			array[2] = this.toX.get();
@@ -650,6 +678,8 @@ public abstract class PathElement2ifx implements PathElement2ai {
 		@Pure
 		@Override
 		public void toArray(IntegerProperty[] array) {
+			assert (array != null) : "Array must be not null"; //$NON-NLS-1$
+			assert (array.length >= 4) : "Size of the array is too small"; //$NON-NLS-1$
 			array[0] = this.ctrlX;
 			array[1] = this.ctrlY;
 			array[2] = this.toX;
@@ -777,6 +807,12 @@ public abstract class PathElement2ifx implements PathElement2ai {
 		public CurvePathElement2ifx(IntegerProperty fromx, IntegerProperty fromy, IntegerProperty ctrlx1, IntegerProperty ctrly1,
 				IntegerProperty ctrlx2, IntegerProperty ctrly2, IntegerProperty tox, IntegerProperty toy) {
 			super(PathElementType.CURVE_TO, tox, toy);
+			assert (fromx != null) : "Property fromX must be not null"; //$NON-NLS-1$
+			assert (fromy != null) : "Property fromY must be not null"; //$NON-NLS-1$
+			assert (ctrlx1 != null) : "Property ctrlX1 must be not null"; //$NON-NLS-1$
+			assert (ctrly1 != null) : "Property ctrlY1 must be not null"; //$NON-NLS-1$
+			assert (ctrlx2 != null) : "Property ctrlX2 must be not null"; //$NON-NLS-1$
+			assert (ctrly2 != null) : "Property ctrlY2 must be not null"; //$NON-NLS-1$
 			this.fromX = fromx;
 			this.fromY = fromy;
 			this.ctrlX1 = ctrlx1;
@@ -842,6 +878,8 @@ public abstract class PathElement2ifx implements PathElement2ai {
 		@Pure
 		@Override
 		public void toArray(int[] array) {
+			assert (array != null) : "Array must be not null"; //$NON-NLS-1$
+			assert (array.length >= 6) : "Size of the array is too small"; //$NON-NLS-1$
 			array[0] = this.ctrlX1.get();
 			array[1] = this.ctrlY1.get();
 			array[2] = this.ctrlX2.get();
@@ -853,6 +891,8 @@ public abstract class PathElement2ifx implements PathElement2ai {
 		@Pure
 		@Override
 		public void toArray(double[] array) {
+			assert (array != null) : "Array must be not null"; //$NON-NLS-1$
+			assert (array.length >= 6) : "Size of the array is too small"; //$NON-NLS-1$
 			array[0] = this.ctrlX1.get();
 			array[1] = this.ctrlY1.get();
 			array[2] = this.ctrlX2.get();
@@ -870,6 +910,8 @@ public abstract class PathElement2ifx implements PathElement2ai {
 		@Pure
 		@Override
 		public void toArray(IntegerProperty[] array) {
+			assert (array != null) : "Array must be not null"; //$NON-NLS-1$
+			assert (array.length >= 6) : "Size of the array is too small"; //$NON-NLS-1$
 			array[0] = this.ctrlX1;
 			array[1] = this.ctrlY1;
 			array[2] = this.ctrlX2;
@@ -988,6 +1030,8 @@ public abstract class PathElement2ifx implements PathElement2ai {
 		 */
 		public ClosePathElement2ifx(IntegerProperty fromx, IntegerProperty fromy, IntegerProperty tox, IntegerProperty toy) {
 			super(PathElementType.CLOSE, tox, toy);
+			assert (fromx != null) : "Property fromX must be not null"; //$NON-NLS-1$
+			assert (fromy != null) : "Property fromY must be not null"; //$NON-NLS-1$
 			this.fromX = fromx;
 			this.fromY = fromy;
 			

@@ -24,10 +24,13 @@ package org.arakhne.afc.math.geometry.d2.afp;
 import java.util.NoSuchElementException;
 
 import org.arakhne.afc.math.MathConstants;
-import org.arakhne.afc.math.geometry.PathElementType;
+import org.arakhne.afc.math.MathUtil;
+import org.arakhne.afc.math.Unefficient;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
+import org.arakhne.afc.math.geometry.d2.afp.Circle2afp.AbstractCirclePathIterator;
+import org.arakhne.afc.math.geometry.d2.afp.Path2afp.CrossingComputationType;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Fonctional interface that represented a 2D round rectangle on a plane.
@@ -67,17 +70,30 @@ public interface RoundRectangle2afp<
 	 * otherwise <code>false</code>.
 	 */
 	@Pure
-	static boolean containsRoundRectangleRectangle(double rx1, double ry1, double rwidth1, double rheight1, double awidth, double aheight, double rx2, double ry2, double rwidth2, double rheight2) {
-		double rcx1 = (rx1 + rwidth1/2f);
-		double rcy1 = (ry1 + rheight1/2f);
-		double rcx2 = (rx2 + rwidth2/2f);
-		double rcy2 = (ry2 + rheight2/2f);
+	static boolean containsRoundRectangleRectangle(double rx1, double ry1, double rwidth1, double rheight1,
+			double awidth, double aheight, double rx2, double ry2, double rwidth2, double rheight2) {
+		assert (rwidth1 >= 0.) : "Round rectangle width must be positive or zero"; //$NON-NLS-1$
+		assert (rheight1 >= 0.) : "Round rectangle height must be positive or zero"; //$NON-NLS-1$
+		assert (awidth >= 0.) : "Round rectangle arc width must be positive or zero"; //$NON-NLS-1$
+		assert (aheight >= 0.) : "Round rectangle arc height must be positive or zero"; //$NON-NLS-1$
+		assert (rwidth2 >= 0.) : "Rectangle width must be positive or zero"; //$NON-NLS-1$
+		assert (rheight2 >= 0.) : "Rectangle height must be positive or zero"; //$NON-NLS-1$
+		double rcx1 = rx1 + rwidth1 / 2;
+		double rcy1 = ry1 + rheight1 / 2;
+		double rcx2 = rx2 + rwidth2 / 2;
+		double rcy2 = ry2 + rheight2 / 2;
 		double farX; 
-		if (rcx1<=rcx2) farX = rx2 + rwidth2;
-		else farX = rx2;
+		if (rcx1 <= rcx2) {
+			farX = rx2 + rwidth2;
+		} else {
+			farX = rx2;
+		}
 		double farY;
-		if (rcy1<=rcy2) farY = ry2 + rheight2;
-		else farY = ry2;
+		if (rcy1 <= rcy2) {
+			farY = ry2 + rheight2;
+		} else {
+			farY = ry2;
+		}
 		return containsRoundRectanglePoint(rx1, ry1, rwidth1, rheight1, awidth, aheight, farX, farY);
 	}
 
@@ -96,7 +112,11 @@ public interface RoundRectangle2afp<
 	 */
 	@Pure
 	static boolean containsRoundRectanglePoint(double rx, double ry, double rwidth, double rheight, double awidth, double aheight, double px, double py) {
-		if (rwidth<=0f && rheight<=0f) {
+		assert (rwidth >= 0.) : "Round rectangle width must be positive or zero"; //$NON-NLS-1$
+		assert (rheight >= 0.) : "Round rectangle height must be positive or zero"; //$NON-NLS-1$
+		assert (awidth >= 0.) : "Round rectangle arc width must be positive or zero"; //$NON-NLS-1$
+		assert (aheight >= 0.) : "Round rectangle arc height must be positive or zero"; //$NON-NLS-1$
+		if (rwidth<=0 && rheight<=0) {
 			return rx==px && ry==py;
 		}
 		double rx0 = rx;
@@ -107,8 +127,8 @@ public interface RoundRectangle2afp<
 		if (px < rx0 || py < ry0 || px >= rrx1 || py >= rry1) {
 			return false;
 		}
-		double aw = Math.min(rwidth, Math.abs(awidth)) / 2f;
-		double ah = Math.min(rheight, Math.abs(aheight)) / 2f;
+		double aw = Math.min(rwidth, Math.abs(awidth)) / 2;
+		double ah = Math.min(rheight, Math.abs(aheight)) / 2;
 		// Check which corner point is in and do circular containment
 		// test - otherwise simple acceptance
 		if (px >= (rx0 += aw) && px < (rx0 = rrx1 - aw)) {
@@ -119,7 +139,394 @@ public interface RoundRectangle2afp<
 		}
 		double xx = (px - rx0) / aw;
 		double yy = (py - ry0) / ah;
-		return (xx * xx + yy * yy <= 1f);
+		return (xx * xx + yy * yy <= 1);
+	}
+
+	/** Replies if the round rectangle is intersecting the segment.
+	 * 
+	 * @param rx1 is the first corner of the rectangle.
+	 * @param ry1 is the first corner of the rectangle.
+	 * @param rx2 is the second corner of the rectangle.
+	 * @param ry2 is the second corner of the rectangle.
+	 * @param aw is the width of the arcs of the rectangle.
+	 * @param ah is the height of the arcs of the rectangle.
+	 * @param sx1 is the first point of the segment.
+	 * @param sy1 is the first point of the segment.
+	 * @param sx2 is the second point of the segment.
+	 * @param sy2 is the second point of the segment.
+	 * @return <code>true</code> if the two shapes are intersecting; otherwise
+	 * <code>false</code>
+	 */
+	@Pure
+	static boolean intersectsRoundRectangleSegment(double rx1, double ry1, double rx2, double ry2, double aw, double ah, double sx1, double sy1, double sx2, double sy2) {
+		assert (rx1 <= rx2) : "rx1 must be lower or equal rx2"; //$NON-NLS-1$
+		assert (ry1 <= ry2) : "ry1 must be lower or equal ry2"; //$NON-NLS-1$
+		assert (aw >= 0.) : "Round rectangle arc width must be positive or zero"; //$NON-NLS-1$
+		assert (ah >= 0.) : "Round rectangle arc height must be positive or zero"; //$NON-NLS-1$
+		double segmentX1 = sx1;
+		double segmentY1 = sy1;
+		double segmentX2 = sx2;
+		double segmentY2 = sy2;
+		
+		int code1 = MathUtil.getCohenSutherlandCode(segmentX1, segmentY1, rx1, ry1, rx2, ry2);
+		int code2 = MathUtil.getCohenSutherlandCode(segmentX2, segmentY2, rx1, ry1, rx2, ry2);
+
+		while (true) {
+			if ((code1 | code2) == 0) {
+				// Bitwise OR is 0. Trivially accept and get out of loop
+				// Special case: if the segment is empty, it is on the border => no intersection.
+				if (segmentX1 != segmentX2 || segmentY1 != segmentY2) {
+					// Special case: intersecting outside the corner's ellipse.
+					double ellipseMinX = rx1 + aw; 
+					if (segmentX1 <= ellipseMinX && segmentX2 <= ellipseMinX) {
+						double ellipseMinY = ry1 + ah;
+						if (segmentY1 <= ellipseMinY && segmentY2 <= ellipseMinY) {
+							return Ellipse2afp.intersectsEllipseSegment(
+									rx1, ry1, aw * 2, ah * 2,
+									sx1, sy1, sx2, sy2, false);
+						}
+						double ellipseMaxY = ry2 - ah;
+						if (segmentY1 >= ellipseMaxY && segmentY2 >= ellipseMaxY) {
+							double ellipseHeight = ah * 2;
+							return Ellipse2afp.intersectsEllipseSegment(
+									rx1, ry1 - ellipseHeight, aw * 2, ellipseHeight,
+									sx1, sy1, sx2, sy2, false);
+						}
+					} else {
+						double ellipseMaxX = rx2 - aw;
+						if (segmentX1 >= ellipseMaxX && segmentX2 >= ellipseMaxX) {
+							double ellipseMinY = ry1 + ah;
+							double ellipseWidth = aw * 2;
+							if (segmentY1 <= ellipseMinY && segmentY2 <= ellipseMinY) {
+								return Ellipse2afp.intersectsEllipseSegment(
+										rx2 - ellipseWidth, ry1, ellipseWidth, ah * 2,
+										sx1, sy1, sx2, sy2, false);
+							}
+							double ellipseMaxY = ry2 - ah;
+							if (segmentY1 >= ellipseMaxY && segmentY2 >= ellipseMaxY) {
+								double ellipseHeight = ah * 2;
+								return Ellipse2afp.intersectsEllipseSegment(
+										rx2 - ellipseWidth, ry2 - ellipseHeight, ellipseWidth, ellipseHeight,
+										sx1, sy1, sx2, sy2, false);
+							}
+						}
+					}
+					return true;
+				}
+				return false;
+			}
+			if ((code1 & code2) != 0) {
+				// Bitwise AND is not 0. Trivially reject and get out of loop
+				return false;
+			}
+
+			// failed both tests, so calculate the line segment intersection
+
+			// At least one endpoint is outside the clip rectangle; pick it.
+			int code3 = (code1 != 0) ? code1 : code2;
+
+			double x = 0;
+			double y = 0;
+			
+			// Now find the intersection point;
+			// use formulas y = y0 + slope * (x - x0), x = x0 + (1 / slope) * (y - y0)
+			if ((code3 & MathConstants.COHEN_SUTHERLAND_TOP) != 0) {
+				// point is above the clip rectangle
+				x = segmentX1 + (segmentX2 - segmentX1) * (ry2 - segmentY1) / (segmentY2 - segmentY1);
+				y = ry2;
+			}
+			else if ((code3 & MathConstants.COHEN_SUTHERLAND_BOTTOM) != 0) {
+				// point is below the clip rectangle
+				x = segmentX1 + (segmentX2 - segmentX1) * (ry1 - segmentY1) / (segmentY2 - segmentY1);
+				y = ry1;
+			}
+			else if ((code3 & MathConstants.COHEN_SUTHERLAND_RIGHT) != 0) { 
+				// point is to the right of clip rectangle
+				y = segmentY1 + (segmentY2 - segmentY1) * (rx2 - segmentX1) / (segmentX2 - segmentX1);
+				x = rx2;
+			}
+			else if ((code3 & MathConstants.COHEN_SUTHERLAND_LEFT) != 0) {
+				// point is to the left of clip rectangle
+				y = segmentY1 + (segmentY2 - segmentY1) * (rx1 - segmentX1) / (segmentX2 - segmentX1);
+				x = rx1;
+			}
+			else {
+				code3 = 0;
+			}
+
+			if (code3 != 0) {
+				// Now we move outside point to intersection point to clip
+				// and get ready for next pass.
+				if (code3 == code1) {
+					segmentX1 = x;
+					segmentY1 = y;
+					code1 = MathUtil.getCohenSutherlandCode(segmentX1, segmentY1, rx1, ry1, rx2, ry2);
+				}
+				else {
+					segmentX2 = x;
+					segmentY2 = y;
+					code2 = MathUtil.getCohenSutherlandCode(segmentX2, segmentY2, rx1, ry1, rx2, ry2);
+				}
+			}
+		}
+	}
+
+	/** Replies if two round rectangles are intersecting.
+	 * 
+	 * @param r1x1 is the first corner of the first rectangle.
+	 * @param r1y1 is the first corner of the first rectangle.
+	 * @param r1x2 is the second corner of the first rectangle.
+	 * @param r1y2 is the second corner of the first rectangle.
+	 * @param r1aw is the width of the arcs of the first rectangle.
+	 * @param r1ah is the height of the arcs of the first rectangle.
+	 * @param r2x1 is the first corner of the second rectangle.
+	 * @param r2y1 is the first corner of the second rectangle.
+	 * @param r2x2 is the second corner of the second rectangle.
+	 * @param r2y2 is the second corner of the second rectangle.
+	 * @param r2aw is the width of the arcs of the second rectangle.
+	 * @param r2ah is the height of the arcs of the second rectangle.
+	 * @return <code>true</code> if the two shapes are intersecting; otherwise
+	 * <code>false</code>
+	 */
+	@Pure
+	@Unefficient
+	static boolean intersectsRoundRectangleRoundRectangle(double r1x1, double r1y1, double r1x2,
+			double r1y2, double r1aw, double r1ah, 
+			double r2x1, double r2y1, double r2x2, double r2y2, double r2aw, double r2ah) {
+		assert (r1x1 <= r1x2) : "r1x1 must be lower or equal r1x2"; //$NON-NLS-1$
+		assert (r1y1 <= r1y2) : "r1y1 must be lower or equal r1y2"; //$NON-NLS-1$
+		assert (r1aw >= 0.) : "First round rectangle arc width must be positive or zero"; //$NON-NLS-1$
+		assert (r1ah >= 0.) : "First round rectangle arc height must be positive or zero"; //$NON-NLS-1$
+		assert (r2x1 <= r2x2) : "r2x1 must be lower or equal r2x2"; //$NON-NLS-1$
+		assert (r2y1 <= r2y2) : "r2y1 must be lower or equal r2y2"; //$NON-NLS-1$
+		assert (r2aw >= 0.) : "Second round rectangle arc width must be positive or zero"; //$NON-NLS-1$
+		assert (r2ah >= 0.) : "Second round rectangle arc height must be positive or zero"; //$NON-NLS-1$
+		if (Rectangle2afp.intersectsRectangleRectangle(r1x1, r1y1, r1x2, r1y2, r2x1, r2y1, r2x2, r2y2)) {
+			// Boundings rectangles are intersecting
+			
+			// Test internal rectangles
+			double r1InnerMinX = r1x1 + r1aw;
+			double r1InnerMaxX = r1x2 - r1aw;
+			double r1InnerMinY = r1y1 + r1ah;
+			double r1InnerMaxY = r1y2 - r1ah;
+			double r2InnerMinX = r2x1 + r2aw;
+			double r2InnerMaxX = r2x2 - r2aw;
+			double r2InnerMinY = r2y1 + r2ah;
+			double r2InnerMaxY = r2y2 - r2ah;
+			if (Rectangle2afp.intersectsRectangleRectangle(
+					r1InnerMinX, r1y1, r1InnerMaxX, r1y2,
+					r2InnerMinX, r2y1, r2InnerMaxX, r2y2)
+				|| Rectangle2afp.intersectsRectangleRectangle(
+						r1InnerMinX, r1y1, r1InnerMaxX, r1y2,
+						r2x1, r2InnerMinY, r2x2, r2InnerMaxY)
+				|| Rectangle2afp.intersectsRectangleRectangle(
+						r1x1, r1InnerMinY, r1x2, r1InnerMaxY,
+						r2InnerMinX, r2y1, r2InnerMaxX, r2y2)
+				|| Rectangle2afp.intersectsRectangleRectangle(
+						r1x1, r1InnerMinY, r1x2, r1InnerMaxY,
+						r2x1, r2InnerMinY, r2x2, r2InnerMaxY)) {
+				return true;
+			}
+			
+			// Test closest corner ellipses
+			double ex1, ey1;
+			double ex2, ey2;
+			
+			if (r1InnerMaxX <= r2x1) {
+				ex1 = r1InnerMaxX - r1aw;
+				ex2 = r2x1;
+			} else {
+				ex1 = r1x1;
+				ex2 = r2InnerMaxX - r2aw;
+			}
+			
+			if (r1InnerMaxY < r2y1) {
+				ey1 = r1InnerMaxY - r1ah;
+				ey2 = r2y1;
+			} else {
+				ey1 = r1y1;
+				ey2 = r2InnerMaxY - r2ah;
+			}
+
+			return Ellipse2afp.intersectsEllipseEllipse(
+					ex1, ey1, r1aw * 2, r1ah * 2,
+					ex2, ey2, r2aw * 2, r2ah * 2);
+		}
+		return false;
+	}
+
+	/** Replies if a round rectangle and a circle are intersecting.
+	 * 
+	 * @param rx1 is the first corner of the rectangle.
+	 * @param ry1 is the first corner of the rectangle.
+	 * @param rx2 is the second corner of the rectangle.
+	 * @param ry2 is the second corner of the rectangle.
+	 * @param aw is the width of the arcs of the rectangle.
+	 * @param ah is the height of the arcs of the rectangle.
+	 * @param cx is the center of the circle.
+	 * @param cy is the center of the circle.
+	 * @param radius is the radius of the circle.
+	 * @return <code>true</code> if the two shapes are intersecting; otherwise
+	 * <code>false</code>
+	 */
+	@Pure
+	@Unefficient
+	static boolean intersectsRoundRectangleCircle(double rx1, double ry1, double rx2,
+			double ry2, double aw, double ah, 
+			double cx, double cy, double radius) {
+		assert (rx1 <= rx2) : "rx1 must be lower or equal rx2"; //$NON-NLS-1$
+		assert (ry1 <= ry2) : "ry1 must be lower or equal ry2"; //$NON-NLS-1$
+		assert (aw >= 0.) : "Round rectangle arc width must be positive or zero"; //$NON-NLS-1$
+		assert (ah >= 0.) : "Round rectangle arc height must be positive or zero"; //$NON-NLS-1$
+		assert (radius >= 0.) : "Circle radius must be positive or zero"; //$NON-NLS-1$
+		
+		double rInnerMinX = rx1 + aw;
+		double rInnerMaxX = rx2 - aw;
+		double rInnerMinY = ry1 + ah;
+		double rInnerMaxY = ry2 - ah;
+		
+		if (cx < rInnerMinX) {
+			if (cy < rInnerMinY) {
+				return Ellipse2afp.intersectsEllipseCircle(rx1, ry1, aw * 2, ah * 2, cx, cy, radius);
+			}
+			if (cy > rInnerMaxY) {
+				return Ellipse2afp.intersectsEllipseCircle(rx1, rInnerMaxY - ah, aw * 2, ah * 2, cx, cy, radius);
+			}
+			return cx > (rx1 - radius) && cx < (rx2 + radius);
+		}
+		if (cx > rInnerMaxX) {
+			if (cy < ry1) {
+				return Ellipse2afp.intersectsEllipseCircle(rInnerMaxX - aw, ry1, aw * 2, ah * 2, cx, cy, radius);
+			}
+			if (cy > rInnerMaxY) {
+				return Ellipse2afp.intersectsEllipseCircle(rInnerMaxX - aw, rInnerMaxY - ah, aw * 2, ah * 2, cx, cy, radius);
+			}
+			return cx > (rx1 - radius) && cx < (rx2 + radius);
+		}
+		return cy > (ry1 - radius) && cy < (ry2 + radius);
+	}
+
+	/** Replies if a round rectangle and a rectangle are intersecting.
+	 * 
+	 * @param r1x1 is the first corner of the first rectangle.
+	 * @param r1y1 is the first corner of the first rectangle.
+	 * @param r1x2 is the second corner of the first rectangle.
+	 * @param r1y2 is the second corner of the first rectangle.
+	 * @param r1aw is the width of the arcs of the first rectangle.
+	 * @param r1ah is the height of the arcs of the first rectangle.
+	 * @param r2x1 is the first corner of the second rectangle.
+	 * @param r2y1 is the first corner of the second rectangle.
+	 * @param r2x2 is the second corner of the second rectangle.
+	 * @param r2y2 is the second corner of the second rectangle.
+	 * @return <code>true</code> if the two shapes are intersecting; otherwise
+	 * <code>false</code>
+	 */
+	@Pure
+	@Unefficient
+	static boolean intersectsRoundRectangleRectangle(double r1x1, double r1y1, double r1x2,
+			double r1y2, double r1aw, double r1ah, 
+			double r2x1, double r2y1, double r2x2, double r2y2) {
+		assert (r1x1 <= r1x2) : "r1x1 must be lower or equal r1x2"; //$NON-NLS-1$
+		assert (r1y1 <= r1y2) : "r1y1 must be lower or equal r1y2"; //$NON-NLS-1$
+		assert (r1aw >= 0.) : "Round rectangle arc width must be positive or zero"; //$NON-NLS-1$
+		assert (r1ah >= 0.) : "Round rectangle arc height must be positive or zero"; //$NON-NLS-1$
+		assert (r2x1 <= r2x2) : "r2x1 must be lower or equal r2x2"; //$NON-NLS-1$
+		assert (r2y1 <= r2y2) : "r2y1 must be lower or equal r2y2"; //$NON-NLS-1$
+		if (Rectangle2afp.intersectsRectangleRectangle(r1x1, r1y1, r1x2, r1y2, r2x1, r2y1, r2x2, r2y2)) {
+			// Boundings rectangles are intersecting
+			
+			// Test internal rectangles
+			double r1InnerMinX = r1x1 + r1aw;
+			double r1InnerMaxX = r1x2 - r1aw;
+			double r1InnerMinY = r1y1 + r1ah;
+			double r1InnerMaxY = r1y2 - r1ah;
+			if (Rectangle2afp.intersectsRectangleRectangle(
+					r1InnerMinX, r1y1, r1InnerMaxX, r1y2,
+					r2x1, r2y1, r2x2, r2y2)
+				|| Rectangle2afp.intersectsRectangleRectangle(
+					r1x1, r1InnerMinY, r1x2, r1InnerMaxY,
+					r2x1, r2y1, r2x2, r2y2)) {
+				return true;
+			}
+			
+			// Test closest corner ellipses
+			double ex1, ey1;
+			
+			if (r1InnerMaxX <= r2x1) {
+				ex1 = r1InnerMaxX - r1aw;
+			} else {
+				ex1 = r1x1;
+			}
+			
+			if (r1InnerMaxY < r2y1) {
+				ey1 = r1InnerMaxY - r1ah;
+			} else {
+				ey1 = r1y1;
+			}
+
+			return Ellipse2afp.intersectsEllipseRectangle(
+					ex1, ey1, r1aw * 2, r1ah * 2,
+					r2x1, r2y1, r2x2, r2y2);
+		}
+		return false;
+	}
+
+	/** Replies if a round rectangle and an ellipse are intersecting.
+	 * 
+	 * @param rx1 is the first corner of the rectangle.
+	 * @param ry1 is the first corner of the rectangle.
+	 * @param rx2 is the second corner of the rectangle.
+	 * @param ry2 is the second corner of the rectangle.
+	 * @param aw is the width of the arcs of the rectangle.
+	 * @param ah is the height of the arcs of the rectangle.
+	 * @param ex is the coordinate of the ellipse corner.
+	 * @param ey is the coordinate of the ellipse corner.
+	 * @param ew is the width of the ellipse.
+	 * @param eh is the height of the ellipse.
+	 * @return <code>true</code> if the two shapes are intersecting; otherwise
+	 * <code>false</code>
+	 */
+	@Pure
+	@Unefficient
+	static boolean intersectsRoundRectangleEllipse(double rx1, double ry1, double rx2,
+			double ry2, double aw, double ah, 
+			double ex, double ey, double ew, double eh) {
+		assert (rx1 <= rx2) : "rx1 must be lower or equal rx2"; //$NON-NLS-1$
+		assert (ry1 <= ry2) : "ry1 must be lower or equal ry2"; //$NON-NLS-1$
+		assert (aw >= 0.) : "Round rectangle arc width must be positive or zero"; //$NON-NLS-1$
+		assert (ah >= 0.) : "Round rectangle arc height must be positive or zero"; //$NON-NLS-1$
+		assert (ew >= 0.) : "Ellipse width must be positive or zero"; //$NON-NLS-1$
+		assert (eh >= 0.) : "Ellipse height must be positive or zero"; //$NON-NLS-1$
+		
+		double rInnerMinX = rx1 + aw;
+		double rInnerMaxX = rx2 - aw;
+		double rInnerMinY = ry1 + ah;
+		double rInnerMaxY = ry2 - ah;
+		
+		double radius1 = ew / 2;
+		double radius2 = eh / 2;
+		double centerX = ex + radius1;
+		double centerY = ey + radius2;
+		
+		if (centerX < rInnerMinX) {
+			if (centerY < rInnerMinY) {
+				return Ellipse2afp.intersectsEllipseEllipse(rx1, ry1, aw * 2, ah * 2, ex, ey, ew, eh);
+			}
+			if (centerY > rInnerMaxY) {
+				return Ellipse2afp.intersectsEllipseEllipse(rx1, rInnerMaxY - ah, aw * 2, ah * 2, ex, ey, ew, eh);
+			}
+			return centerX > (rx1 - radius1) && centerX < (rx2 + radius1);
+		}
+		if (centerX > rInnerMaxX) {
+			if (centerY < ry1) {
+				return Ellipse2afp.intersectsEllipseEllipse(rInnerMaxX - aw, ry1, aw * 2, ah * 2, ex, ey, ew, eh);
+			}
+			if (centerY > rInnerMaxY) {
+				return Ellipse2afp.intersectsEllipseEllipse(rInnerMaxX - aw, rInnerMaxY - ah, aw * 2, ah * 2, ex, ey, ew, eh);
+			}
+			return centerX > (rx1 - radius1) && centerX < (rx2 + radius1);
+		}
+		return centerY > (ry1 - radius2) && centerY < (ry2 + radius2);
 	}
 
 	@Pure
@@ -132,11 +539,11 @@ public interface RoundRectangle2afp<
 			return true;
 		}
 		return getMinX() == shape.getMinX()
-			&& getMinY() == shape.getMinY()
-			&& getMaxX() == shape.getMaxX()
-			&& getMaxY() == shape.getMaxY()
-			&& getArcWidth() == shape.getArcWidth()
-			&& getArcHeight() == shape.getArcHeight();
+				&& getMinY() == shape.getMinY()
+				&& getMaxX() == shape.getMaxX()
+				&& getMaxY() == shape.getMaxY()
+				&& getArcWidth() == shape.getArcWidth()
+				&& getArcHeight() == shape.getArcHeight();
 	}
 
 	/**
@@ -181,14 +588,13 @@ public interface RoundRectangle2afp<
 	 * of this <code>RoundRectangle2afp</code>.
 	 */
 	default void set(double x, double y, double width, double height, double arcWidth, double arcHeight) {
+		assert (width >= 0.) : "Rectangle width must be positive or zero"; //$NON-NLS-1$
+		assert (height >= 0.) : "Rectangle geight must be positive or zero"; //$NON-NLS-1$
+		assert (arcWidth >= 0.) : "Rectangle arc width must be positive or zero"; //$NON-NLS-1$
+		assert (arcHeight >= 0.) : "Rectangle arc height must be positive or zero"; //$NON-NLS-1$
 		setFromCorners(x, y, x + width, y + height, arcWidth, arcHeight);
 	}
 
-	@Override
-	default void setFromCorners(double x1, double y1, double x2, double y2) {
-		setFromCorners(x1, y1, x2, y2, getArcWidth(), getArcHeight());
-	}
-	
 	/** Change the frame of the rectangle.
 	 * 
 	 * @param x1 is the coordinate of the first corner.
@@ -203,22 +609,30 @@ public interface RoundRectangle2afp<
 	void setFromCorners(double x1, double y1, double x2, double y2, double arcWidth, double arcHeight);
 
 	@Override
+	default void set(IT s) {
+		assert (s != null) : "Shape must be not null"; //$NON-NLS-1$
+		setFromCorners(s.getMinX(), s.getMinY(), s.getMaxX(), s.getMaxY(), s.getArcWidth(), s.getArcHeight());
+	}
+
+	@Override
 	default boolean contains(double x, double y) {
 		return containsRoundRectanglePoint(
 				getMinX(), getMinY(), getWidth(), getHeight(), getArcWidth(), getArcHeight(),
 				x, y);
 	}
-	
+
 	@Override
 	default boolean contains(Rectangle2afp<?, ?, ?, ?, ?> r) {
+		assert (r != null) : "Rectangle must be not null"; //$NON-NLS-1$
 		return containsRoundRectangleRectangle(
 				getMinX(), getMinY(), getWidth(), getHeight(), getArcWidth(), getArcHeight(),
 				r.getMinX(), r.getMinY(), r.getWidth(), r.getHeight());
 	}
-	
+
 	@Pure
 	@Override
 	default double getDistanceSquared(Point2D p) {
+		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
 		Point2D n = getClosestPointTo(p);
 		return n.getDistanceSquared(p);
 	}
@@ -226,6 +640,7 @@ public interface RoundRectangle2afp<
 	@Pure
 	@Override
 	default double getDistanceL1(Point2D p) {
+		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
 		Point2D n = getClosestPointTo(p);
 		return n.getDistanceL1(p);
 	}
@@ -233,77 +648,114 @@ public interface RoundRectangle2afp<
 	@Pure
 	@Override
 	default double getDistanceLinf(Point2D p) {
+		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
 		Point2D n = getClosestPointTo(p);
 		return n.getDistanceLinf(p);
 	}
-	
+
 	@Override
 	default boolean intersects(Circle2afp<?, ?, ?, ?, ?> s) {
-		return Circle2afp.intersectsCircleRectangle(
-				s.getX(), s.getY(),
-				s.getRadius(),
+		assert (s != null) : "Circle must be not null"; //$NON-NLS-1$
+		return intersectsRoundRectangleCircle(
 				getMinX(), getMinY(),
-				getMaxX(), getMaxY());
+				getMaxX(), getMaxY(),
+				getArcWidth(), getArcHeight(),
+				s.getX(), s.getY(),
+				s.getRadius());
 	}
-	
+
 	@Override
 	default boolean intersects(Ellipse2afp<?, ?, ?, ?, ?> s) {
-		return Ellipse2afp.intersectsEllipseRectangle(
-				s.getMinX(), s.getMinY(),
-				s.getMaxX(), s.getMaxY(),
+		assert (s != null) : "Ellipse must be not null"; //$NON-NLS-1$
+		return intersectsRoundRectangleEllipse(
 				getMinX(), getMinY(),
-				getMaxX(), getMaxY());
+				getMaxX(), getMaxY(),
+				getArcWidth(), getArcHeight(),
+				s.getMinX(), s.getMinY(),
+				s.getWidth(), s.getHeight());
 	}
-	
+
 	@Override
 	default boolean intersects(OrientedRectangle2afp<?, ?, ?, ?, ?> s) {
-		return OrientedRectangle2afp.intersectsOrientedRectangleRectangle(
+		assert (s != null) : "Oriented rectangle must be not null"; //$NON-NLS-1$
+		return OrientedRectangle2afp.intersectsOrientedRectangleRoundRectangle(
+				s.getCenterX(), s.getCenterY(), 
+				s.getFirstAxisX(), s.getFirstAxisY(), s.getFirstAxisExtent(),
+				s.getSecondAxisExtent(),
+				getMinX(), getMinY(), getWidth(), getHeight(), getArcWidth(), getArcHeight());
+	}
+
+	@Override
+	default boolean intersects(Parallelogram2afp<?, ?, ?, ?, ?> s) {
+		assert (s != null) : "Parallelogram must be not null"; //$NON-NLS-1$
+		return Parallelogram2afp.intersectsParallelogramRoundRectangle(
 				s.getCenterX(), s.getCenterY(), 
 				s.getFirstAxisX(), s.getFirstAxisY(), s.getFirstAxisExtent(),
 				s.getSecondAxisX(), s.getSecondAxisY(), s.getSecondAxisExtent(),
-				getMinX(), getMinY(), getWidth(), getHeight());
+				getMinX(), getMinY(), getWidth(), getHeight(), getArcWidth(), getArcHeight());
 	}
-	
+
 	@Override
 	default boolean intersects(Rectangle2afp<?, ?, ?, ?, ?> s) {
-		return Rectangle2afp.intersectsRectangleRectangle(
+		assert (s != null) : "Rectangle must be not null"; //$NON-NLS-1$
+		return intersectsRoundRectangleRectangle(
 				getMinX(), getMinY(),
 				getMaxX(), getMaxY(),
+				getArcWidth(), getArcHeight(),
 				s.getMinX(), s.getMinY(),
 				s.getMaxX(), s.getMaxY());
 	}
-	
+
 	@Override
 	default boolean intersects(RoundRectangle2afp<?, ?, ?, ?, ?> s) {
-		return Rectangle2afp.intersectsRectangleRectangle(
+		assert (s != null) : "Round rectangle must be not null"; //$NON-NLS-1$
+		return intersectsRoundRectangleRoundRectangle(
 				getMinX(), getMinY(),
 				getMaxX(), getMaxY(),
+				getArcWidth(), getArcHeight(),
 				s.getMinX(), s.getMinY(),
-				s.getMaxX(), s.getMaxY());
+				s.getMaxX(), s.getMaxY(),
+				s.getArcWidth(), s.getArcHeight());
 	}
-	
+
 	@Override
 	default boolean intersects(Segment2afp<?, ?, ?, ?, ?> s) {
-		return Rectangle2afp.intersectsRectangleSegment(
+		assert (s != null) : "Segment must be not null"; //$NON-NLS-1$
+		return RoundRectangle2afp.intersectsRoundRectangleSegment(
 				getMinX(), getMinY(),
 				getMaxX(), getMaxY(),
+				getArcWidth(), getArcHeight(),
 				s.getX1(), s.getY1(),
 				s.getX2(), s.getY2());
 	}
 
 	@Override
+	default boolean intersects(Triangle2afp<?, ?, ?, ?, ?> s) {
+		assert (s != null) : "Triangle must be not null"; //$NON-NLS-1$
+		return intersects(s.getPathIterator());
+	}
+
+	@Override
 	default boolean intersects(PathIterator2afp<?> iterator) {
+		assert (iterator != null) : "Iterator must be not null"; //$NON-NLS-1$
 		int mask = (iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2);
-		int crossings = Path2afp.computeCrossingsFromRect(
+		int crossings = Path2afp.computeCrossingsFromRoundRect(
+				0,
 				iterator,
-				getMinX(), getMinY(), getWidth(), getHeight(),
-				false,
-				true);
+				getMinX(), getMinY(), getMaxX(), getMaxY(), getArcWidth(), getArcHeight(),
+				CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
 		return (crossings == MathConstants.SHAPE_INTERSECTS ||
 				(crossings & mask) != 0);
 
 	}
-	
+
+	@Pure
+	@Override
+	default boolean intersects(MultiShape2afp<?, ?, ?, ?, ?, ?> s) {
+		assert (s != null) : "MultiShape must be not null"; //$NON-NLS-1$
+		return s.intersects(this);
+	}
+
 	@Pure
 	@Override
 	default PathIterator2afp<IE> getPathIterator(Transform2D transform) {
@@ -312,10 +764,11 @@ public interface RoundRectangle2afp<
 		}
 		return new TransformedRoundRectanglePathIterator<>(this, transform);
 	}
-	
+
 	@Pure
 	@Override
 	default P getClosestPointTo(Point2D p) {
+		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
 		double px = p.getX();
 		double py = p.getY();
 		double rx1 = getMinX();
@@ -326,122 +779,132 @@ public interface RoundRectangle2afp<
 		double aw = getArcWidth();
 		double ah = getArcHeight();
 
-		int same = 0;
-		double x, y;
-		
 		GeomFactory2afp<?, P, ?> factory = getGeomFactory();
 
-		if (px<rx1+aw) {
-			if (py<ry1+ah) {
+		if (px < rx1 + aw) {
+			if (py < ry1 + ah) {
 				P point = factory.newPoint();
 				Ellipse2afp.computeClosestPointToSolidEllipse(
 						px, py,
 						rx1, ry1,
-						aw, ah,
+						aw * 2, ah * 2,
 						point);
 				return point;
 			}
-			if (py>ry2-ah) {
+			if (py > ry2 - ah) {
+				double eh = ah * 2;
 				P point = factory.newPoint();
 				Ellipse2afp.computeClosestPointToSolidEllipse(
 						px, py,
-						rx1, ry2-ah,
-						aw, ah,
+						rx1, ry2 - eh,
+						aw * 2, eh,
 						point);
 				return point;
 			}
 		}
-		else if (px>rx2-aw) {
-			if (py<ry1+ah) {
+		else if (px > rx2 - aw) {
+			if (py < ry1 + ah) {
+				double ew = aw * 2;
 				P point = factory.newPoint();
 				Ellipse2afp.computeClosestPointToSolidEllipse(
 						px, py,
-						rx2-aw, ry1,
-						aw, ah,
+						rx2 - ew, ry1,
+						ew, ah * 2,
 						point);
 				return point;
 			}
-			if (py>ry2-ah) {
+			if (py > ry2 - ah) {
+				double ew = aw * 2;
+				double eh = ah * 2;
 				P point = factory.newPoint();
 				Ellipse2afp.computeClosestPointToSolidEllipse(
 						px, py,
-						rx2-aw, ry2-ah,
-						aw, ah,
+						rx2 - ew, ry2 - eh,
+						ew, eh,
 						point);
 				return point;
 			}
 		}
 
+		int same = 0;
+		double x, y;
 
-		if (px<rx1) {
+		if (px < rx1) {
 			x = rx1;
-		}
-		else if (px>rx2) {
+		} else if (px > rx2) {
 			x = rx2;
-		}
-		else {
+		} else {
 			x = px;
 			++same;
 		}
 
-		if (py<ry1) {
+		if (py < ry1) {
 			y = ry1;
 		}
-		else if (py>ry2) {
+		else if (py > ry2) {
 			y = ry2;
-		}
-		else {
+		} else {
 			y = py;
 			++same;
 		}
 
-		if (same==2) return factory.convertToPoint(p);
-		return factory.newPoint(x,y);
+		if (same == 2) {
+			return factory.convertToPoint(p);
+		}
+		return factory.newPoint(x, y);
 	}
 
 	@Pure
 	@Override
 	default P getFarthestPointTo(Point2D p) {
+		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
 		double px = p.getX();
 		double py = p.getY();
 		double rx1 = getMinX();
 		double ry1 = getMinY();
 		double rx2 = getMaxX();
 		double ry2 = getMaxY();
+		double centerX = getCenterX();
+		double centerY = getCenterY();
 
 		double aw = getArcWidth();
 		double ah = getArcHeight();
 
-		GeomFactory2afp<?, P, ?> factory = getGeomFactory();
-		P point = factory.newPoint();
-		
-		if (px<=getCenterX()) {
-			if (py<=getCenterY()) {
+		P point = getGeomFactory().newPoint();
+
+		if (px <= centerX) {
+			if (py <= centerY) {
+				double ew = aw * 2;
+				double eh = ah * 2;
 				Ellipse2afp.computeFarthestPointToShallowEllipse(
 						px, py,
-						rx2-aw, ry2-ah,
-						aw, ah,
+						rx2 - ew, ry2 - eh,
+						ew, eh,
 						point);
-			} else { 
+			} else {
+				double ew = aw * 2;
 				Ellipse2afp.computeFarthestPointToShallowEllipse(
-					px, py,
-					rx2-aw, ry1,
-					aw, ah,
-					point);
+						px, py,
+						rx2 - ew, ry1,
+						ew, ah * 2,
+						point);
 			}
-		} else if (py<=getCenterY()) {
+		}
+		else if (px <= centerY) {
+			double eh = ah * 2;
 			Ellipse2afp.computeFarthestPointToShallowEllipse(
 					px, py,
-					rx1, ry2-ah,
-					aw, ah,
+					rx1, ry2 - eh,
+					aw * 2, eh,
 					point);
 		} else {
 			Ellipse2afp.computeFarthestPointToShallowEllipse(
-				px, py,
-				rx1, ry1,
-				aw, ah,
-				point);
+					px, py,
+					rx1, ry1,
+					aw * 2, ah * 2,
+					point);
 		}
+
 		return point;
 	}
 
@@ -455,68 +918,26 @@ public interface RoundRectangle2afp<
 	 * @mavenartifactid $ArtifactId$
 	 */
 	abstract class AbstractRoundRectanglePathIterator<T extends PathElement2afp> implements PathIterator2afp<T> {
-				
-		private static final double ANGLE = Math.PI / 4;
-		
-		private static final double A = 1 - Math.cos(ANGLE);
-		
-		private static final double B = Math.tan(ANGLE);
-		
-		private static final double C = Math.sqrt(1 + B * B) - 1 + A;
-		
-		private static final double CV = 4 / 3 * A * B / C;
 
-		private static final double ACV = (1f- CV) / 2;
-
-		/** For each array:
-		 * 4 values for each point {v0, v1, v2, v3}:
-		 * point = (x + v0 * w + v1 * arcWidth,
-		 * y + v2 * h + v3 * arcHeight)
+		/** Number of elements in the path (except move).
 		 */
-		protected static double CTRL_PTS[][] = {
-				{  0f,  0f,  0f,  .5f },
-				{  0f,  0f,  1f, -.5f },
-				{  0f,  0f,  1f, -ACV,
-					0f,  ACV,  1f,  0f,
-					0f,  .5f,  1f,  0f },
-				{  1f, -.5f,  1f,  0f },
-				{  1f, -ACV,  1f,  0f,
-					1f,  0f,  1f, -ACV,
-					1f,  0f,  1f, -.5f },
-				{  1f,  0f,  0f,  .5f },
-				{  1f,  0f,  0f,  ACV,
-					1f, -ACV,  0f,  0f,
-					1f, -.5f,  0f,  0f },
-				{  0f,  .5f,  0f,  0f },
-				{  0f,  ACV,  0f,  0f,
-					0f,  0f,  0f,  ACV,
-					0f,  0f,  0f,  .5f },
-				{},
-		};
-
-		/** Types of path elements for the round rectangle.
+		protected static final int ELEMENT_COUNT = 9;
+		
+		/** The iterator round rectangle.
 		 */
-		protected static PathElementType TYPES[] = {
-				PathElementType.MOVE_TO,
-				PathElementType.LINE_TO, PathElementType.CURVE_TO,
-				PathElementType.LINE_TO, PathElementType.CURVE_TO,
-				PathElementType.LINE_TO, PathElementType.CURVE_TO,
-				PathElementType.LINE_TO, PathElementType.CURVE_TO,
-				PathElementType.CLOSE,
-		};
-
-		private final GeomFactory2afp<T, ?, ?> factory;
+		protected final RoundRectangle2afp<?, ?, T, ?, ?> rectangle;
 
 		/**
-		 * @param factory the factory.
+		 * @param rectangle the iterated rectangle.
 		 */
-		public AbstractRoundRectanglePathIterator(GeomFactory2afp<T, ?, ?> factory) {
-			this.factory = factory;
+		public AbstractRoundRectanglePathIterator(RoundRectangle2afp<?, ?, T, ?, ?> rectangle) {
+			assert (rectangle != null) : "Round rectangle must be not null"; //$NON-NLS-1$
+			this.rectangle = rectangle;
 		}
 
 		@Override
 		public GeomFactory2afp<T, ?, ?> getGeomFactory() {
-			return this.factory;
+			return this.rectangle.getGeomFactory();
 		}
 
 		@Override
@@ -570,32 +991,32 @@ public interface RoundRectangle2afp<
 		private double x;
 
 		private double y;
-		
-		private double w;
-		
-		private double h;
-		
-		private double aw;
-		
-		private double ah;
-		
-		private int index = 0;
 
-		private double moveX;
-		
-		private double moveY;
+		private double w;
+
+		private double h;
+
+		private double aw;
+
+		private double ah;
+
+		private int index;
 		
 		private double lastX;
 		
 		private double lastY;
+
+		private double moveX;
 		
+		private double moveY;
+
 		/**
 		 * @param rectangle the round rectangle to iterate on.
 		 */
 		public RoundRectanglePathIterator(RoundRectangle2afp<?, ?, T, ?, ?> rectangle) {
-			super(rectangle.getGeomFactory());
+			super(rectangle);
 			if (rectangle.isEmpty()) {
-				this.index = TYPES.length;
+				this.index = ELEMENT_COUNT;
 			} else {
 				this.x = rectangle.getMinX();
 				this.y = rectangle.getMinY();
@@ -603,76 +1024,109 @@ public interface RoundRectangle2afp<
 				this.h = rectangle.getHeight();
 				this.aw = rectangle.getArcWidth();
 				this.ah = rectangle.getArcHeight();
+				this.index = -1;
 			}
+		}
+		
+		@Override
+		public PathIterator2afp<T> restartIterations() {
+			return new RoundRectanglePathIterator<>(this.rectangle);
 		}
 
 		@Pure
 		@Override
 		public boolean hasNext() {
-			return this.index<TYPES.length;
+			return this.index < ELEMENT_COUNT;
 		}
 
 		@Override
 		public T next() {
-			if (this.index>=TYPES.length) throw new NoSuchElementException();
-			int idx = this.index;
-
-			T element = null;
-			PathElementType type = TYPES[idx];
-			double ctrls[] = CTRL_PTS[idx];
-			double ix, iy;
-			double ctrlx1, ctrly1, ctrlx2, ctrly2;
-
-			switch(type) {
-			case MOVE_TO:
-				this.moveX = this.lastX = this.x + ctrls[0] * this.w + ctrls[1] * this.aw;
-				this.moveY = this.lastY = this.y + ctrls[2] * this.h + ctrls[3] * this.ah;
-				element = getGeomFactory().newMovePathElement(
-						this.lastX, this.lastY);
-				break;
-			case LINE_TO:
-				ix = this.lastX;
-				iy = this.lastY;
-				this.lastX = this.x + ctrls[0] * this.w + ctrls[1] * this.aw;
-				this.lastY = this.y + ctrls[2] * this.h + ctrls[3] * this.ah;
-				element = getGeomFactory().newLinePathElement(
-						ix, iy,
-						this.lastX, this.lastY);
-				break;
-			case CURVE_TO:
-				ix = this.lastX;
-				iy = this.lastY;
-				ctrlx1 = this.x + ctrls[0] * this.w + ctrls[1] * this.aw;
-				ctrly1 = this.y + ctrls[2] * this.h + ctrls[3] * this.ah;
-				ctrlx2 = this.x + ctrls[4] * this.w + ctrls[5] * this.aw;
-				ctrly2 = this.y + ctrls[6] * this.h + ctrls[7] * this.ah;
-				this.lastX = this.x + ctrls[8] * this.w + ctrls[9] * this.aw;
-				this.lastY = this.y + ctrls[10] * this.h + ctrls[11] * this.ah;
-				element = getGeomFactory().newCurvePathElement(
-						ix, iy,
-						ctrlx1, ctrly1,
-						ctrlx2, ctrly2,
-						this.lastX, this.lastY);
-				break;
-			case CLOSE:
-				ix = this.lastX;
-				iy = this.lastY;
-				this.lastX = this.moveX;
-				this.lastY = this.moveY;
-				element = getGeomFactory().newClosePathElement(
-						ix, iy,
-						this.lastX, this.lastY);
-				break;
-			case QUAD_TO:
-			default:
+			if (this.index >= ELEMENT_COUNT) {
 				throw new NoSuchElementException();
 			}
-
-			assert(element!=null);
-
+			int idx = this.index;
 			++this.index;
-
-			return element;
+			
+			if (idx < 0) {
+				this.moveX = this.x + this.aw;
+				this.moveY = this.y;
+				this.lastX = this.moveX;
+				this.lastY = this.moveY;
+				return getGeomFactory().newMovePathElement(
+						this.lastX, this.lastY);
+			}
+			
+			double x = this.lastX;
+			double y = this.lastY;
+			
+			double curveX, curveY;
+			
+			switch(idx) {
+			case 0:
+				this.lastX = this.x + this.w - this.aw;
+				return getGeomFactory().newLinePathElement(
+						x, y,
+						this.lastX, this.lastY);
+			case 1:
+				this.lastX += this.aw;
+				this.lastY += this.ah;
+				curveX = x + AbstractCirclePathIterator.CTRL_POINT_DISTANCE * this.aw;
+				curveY = this.lastY - AbstractCirclePathIterator.CTRL_POINT_DISTANCE * this.ah;
+				return getGeomFactory().newCurvePathElement(
+						x, y,
+						curveX, y,
+						this.lastX, curveY,
+						this.lastX, this.lastY);
+			case 2:
+				this.lastY = this.y + this.h - this.ah;
+				return getGeomFactory().newLinePathElement(
+						x, y,
+						this.lastX, this.lastY);
+			case 3:
+				this.lastX -= this.aw;
+				this.lastY += this.ah;
+				curveX = this.lastX + AbstractCirclePathIterator.CTRL_POINT_DISTANCE * this.aw;
+				curveY = y + AbstractCirclePathIterator.CTRL_POINT_DISTANCE * this.ah;
+				return getGeomFactory().newCurvePathElement(
+						x, y,
+						x, curveY,
+						curveX, this.lastY,
+						this.lastX, this.lastY);
+			case 4:
+				this.lastX = this.x + this.aw;
+				return getGeomFactory().newLinePathElement(
+						x, y,
+						this.lastX, this.lastY);
+			case 5:
+				this.lastX -= this.aw;
+				this.lastY -= this.ah;
+				curveX = x - AbstractCirclePathIterator.CTRL_POINT_DISTANCE * this.aw;
+				curveY = this.lastY + AbstractCirclePathIterator.CTRL_POINT_DISTANCE * this.ah;
+				return getGeomFactory().newCurvePathElement(
+						x, y,
+						curveX, y,
+						this.lastX, curveY,
+						this.lastX, this.lastY);
+			case 6:
+				this.lastY = this.y + this.ah;
+				return getGeomFactory().newLinePathElement(
+						x, y,
+						this.lastX, this.lastY);
+			case 7:
+				this.lastX += this.aw;
+				this.lastY -= this.ah;
+				curveX = this.lastX - AbstractCirclePathIterator.CTRL_POINT_DISTANCE * this.aw;
+				curveY = y - AbstractCirclePathIterator.CTRL_POINT_DISTANCE * this.ah;
+				return getGeomFactory().newCurvePathElement(
+						x, y,
+						x, curveY,
+						curveX, this.lastY,
+						this.lastX, this.lastY);
+			default:
+				return getGeomFactory().newClosePathElement(
+						x, y,
+						this.moveX, this.moveY);
+			}
 		}
 
 	}
@@ -688,130 +1142,190 @@ public interface RoundRectangle2afp<
 	class TransformedRoundRectanglePathIterator<T extends PathElement2afp> extends AbstractRoundRectanglePathIterator<T> {
 
 		private final Transform2D transform;
-		
-		private double x;
-		
-		private double y;
-		
-		private double w;
-		
-		private double h;
-		
-		private double aw;
-		
-		private double ah;
-		
-		private int index = 0;
 
-		private double moveX;
-		
-		private double moveY;
+		private double x;
+
+		private double y;
+
+		private double w;
+
+		private double h;
+
+		private double aw;
+
+		private double ah;
+
+		private int index;
 		
 		private Point2D last;
 		
-		private Point2D ctrl1;
-		
-		private Point2D ctrl2;
+		private Point2D move;
+
+		private Point2D controlPoint1;
+
+		private Point2D controlPoint2;
 
 		/**
-		 * @param rectangle the roudn rectangle to iterate on.
-		 * @param transform the transformation to apply.
+		 * @param rectangle the round rectangle to iterate on.
+		 * @param transform the transformation.
 		 */
 		public TransformedRoundRectanglePathIterator(RoundRectangle2afp<?, ?, T, ?, ?> rectangle, Transform2D transform) {
-			super(rectangle.getGeomFactory());
+			super(rectangle);
+			assert (transform != null) : "Transformation must be not null"; //$NON-NLS-1$
 			this.transform = transform;
 			if (rectangle.isEmpty()) {
-				this.index = TYPES.length;
+				this.index = ELEMENT_COUNT;
 			} else {
-				GeomFactory2afp<T, ?, ?> factory = getGeomFactory();
-				this.last = factory.newPoint();
-				this.ctrl1 = factory.newPoint();
-				this.ctrl2 = factory.newPoint();
+				this.last = new InnerComputationPoint2afp();
+				this.move = new InnerComputationPoint2afp();
+				this.controlPoint1 = new InnerComputationPoint2afp();
+				this.controlPoint2 = new InnerComputationPoint2afp();
 				this.x = rectangle.getMinX();
 				this.y = rectangle.getMinY();
 				this.w = rectangle.getWidth();
 				this.h = rectangle.getHeight();
 				this.aw = rectangle.getArcWidth();
 				this.ah = rectangle.getArcHeight();
+				this.index = -1;
 			}
+		}
+		
+		@Override
+		public PathIterator2afp<T> restartIterations() {
+			return new TransformedRoundRectanglePathIterator<>(this.rectangle, this.transform);
 		}
 
 		@Pure
 		@Override
 		public boolean hasNext() {
-			return this.index<TYPES.length;
+			return this.index < ELEMENT_COUNT;
 		}
 
 		@Override
 		public T next() {
-			if (this.index>=TYPES.length) throw new NoSuchElementException();
-			int idx = this.index;
-
-			T element = null;
-			PathElementType type = TYPES[idx];
-			double ctrls[] = CTRL_PTS[idx];
-			double ix, iy;
-
-			switch(type) {
-			case MOVE_TO:
-				this.moveX = this.x + ctrls[0] * this.w + ctrls[1] * this.aw;
-				this.moveY = this.y + ctrls[2] * this.h + ctrls[3] * this.ah;
-				this.last.set(this.moveX, this.moveY);
-				this.transform.transform(this.last);
-				element = getGeomFactory().newMovePathElement(
-						this.last.getX(), this.last.getY());
-				break;
-			case LINE_TO:
-				ix = this.last.getX();
-				iy = this.last.getY();
-				this.last.set(
-						this.x + ctrls[0] * this.w + ctrls[1] * this.aw,
-						this.y + ctrls[2] * this.h + ctrls[3] * this.ah);
-				this.transform.transform(this.last);
-				element = getGeomFactory().newLinePathElement(
-						ix, iy,
-						this.last.getX(), this.last.getY());
-				break;
-			case CURVE_TO:
-				ix = this.last.getX();
-				iy = this.last.getY();
-				this.ctrl1.set(
-						this.x + ctrls[0] * this.w + ctrls[1] * this.aw,
-						this.y + ctrls[2] * this.h + ctrls[3] * this.ah);
-				this.transform.transform(this.ctrl1);
-				this.ctrl2.set(
-						this.x + ctrls[4] * this.w + ctrls[5] * this.aw,
-						this.y + ctrls[6] * this.h + ctrls[7] * this.ah);
-				this.transform.transform(this.ctrl2);
-				this.last.set(
-						this.x + ctrls[8] * this.w + ctrls[9] * this.aw,
-						this.y + ctrls[10] * this.h + ctrls[11] * this.ah);
-				this.transform.transform(this.last);
-				element = getGeomFactory().newCurvePathElement(
-						ix, iy,
-						this.ctrl1.getX(), this.ctrl1.getY(),
-						this.ctrl2.getX(), this.ctrl2.getY(),
-						this.last.getX(), this.last.getY());
-				break;
-			case CLOSE:
-				ix = this.last.getX();
-				iy = this.last.getY();
-				this.last.set(this.moveX, this.moveY);
-				this.transform.transform(this.last);
-				element = getGeomFactory().newClosePathElement(
-						ix, iy,
-						this.last.getX(), this.last.getY());
-				break;
-			case QUAD_TO:
-			default:
+			if (this.index >= ELEMENT_COUNT) {
 				throw new NoSuchElementException();
 			}
-
-			assert(element!=null);
-
+			int idx = this.index;
 			++this.index;
-
-			return element;
+			
+			if (idx < 0) {
+				this.move.set(this.x + this.aw, this.y);
+				this.transform.transform(this.move);
+				this.last.set(this.move);
+				return getGeomFactory().newMovePathElement(
+						this.last.getX(), this.last.getY());
+			}
+			
+			double x = this.last.getX();
+			double y = this.last.getY();
+			
+			switch(idx) {
+			case 0:
+				this.last.set(
+						this.x + this.w - this.aw,
+						this.y);
+				this.transform.transform(this.last);
+				return getGeomFactory().newLinePathElement(
+						x, y,
+						this.last.getX(), this.last.getY());
+			case 1:
+				this.last.set(
+						this.x + this.w,
+						this.y + this.ah);
+				this.controlPoint1.set(
+						this.x + this.w - this.aw + AbstractCirclePathIterator.CTRL_POINT_DISTANCE * this.aw,
+						this.y);
+				this.controlPoint2.set(
+						this.x + this.w,
+						this.y + this.ah - AbstractCirclePathIterator.CTRL_POINT_DISTANCE * this.ah);
+				this.transform.transform(this.last);
+				this.transform.transform(this.controlPoint1);
+				this.transform.transform(this.controlPoint2);
+				return getGeomFactory().newCurvePathElement(
+						x, y,
+						this.controlPoint1.getX(), this.controlPoint1.getY(),
+						this.controlPoint2.getX(), this.controlPoint2.getY(),
+						this.last.getX(), this.last.getY());
+			case 2:
+				this.last.set(
+						this.x + this.w,
+						this.y + this.h - this.ah);
+				this.transform.transform(this.last);
+				return getGeomFactory().newLinePathElement(
+						x, y,
+						this.last.getX(), this.last.getY());
+			case 3:
+				this.last.set(
+						this.x + this.w - this.aw,
+						this.y + this.h);
+				this.controlPoint1.set(
+						this.x + this.w,
+						this.y + this.h - this.ah + AbstractCirclePathIterator.CTRL_POINT_DISTANCE * this.ah);
+				this.controlPoint2.set(
+						this.x + this.w - this.aw + AbstractCirclePathIterator.CTRL_POINT_DISTANCE * this.aw,
+						this.y + this.h);
+				this.transform.transform(this.last);
+				this.transform.transform(this.controlPoint1);
+				this.transform.transform(this.controlPoint2);
+				return getGeomFactory().newCurvePathElement(
+						x, y,
+						this.controlPoint1.getX(), this.controlPoint1.getY(),
+						this.controlPoint2.getX(), this.controlPoint2.getY(),
+						this.last.getX(), this.last.getY());
+			case 4:
+				this.last.set(
+						this.x + this.aw,
+						this.y + this.h);
+				this.transform.transform(this.last);
+				return getGeomFactory().newLinePathElement(
+						x, y,
+						this.last.getX(), this.last.getY());
+			case 5:
+				this.last.set(
+						this.x,
+						this.y + this.h - this.ah);
+				this.controlPoint1.set(
+						this.x + this.aw - AbstractCirclePathIterator.CTRL_POINT_DISTANCE * this.aw,
+						this.y + this.h);
+				this.controlPoint2.set(
+						this.x,
+						this.y + this.h - this.ah + AbstractCirclePathIterator.CTRL_POINT_DISTANCE * this.ah);
+				this.transform.transform(this.last);
+				this.transform.transform(this.controlPoint1);
+				this.transform.transform(this.controlPoint2);
+				return getGeomFactory().newCurvePathElement(
+						x, y,
+						this.controlPoint1.getX(), this.controlPoint1.getY(),
+						this.controlPoint2.getX(), this.controlPoint2.getY(),
+						this.last.getX(), this.last.getY());
+			case 6:
+				this.last.set(
+						this.x,
+						this.y + this.ah);
+				this.transform.transform(this.last);
+				return getGeomFactory().newLinePathElement(
+						x, y,
+						this.last.getX(), this.last.getY());
+			case 7:
+				this.controlPoint1.set(
+						this.x,
+						this.y + this.ah - AbstractCirclePathIterator.CTRL_POINT_DISTANCE * this.ah);
+				this.controlPoint2.set(
+						this.x + this.aw - AbstractCirclePathIterator.CTRL_POINT_DISTANCE * this.aw,
+						this.y);
+				this.transform.transform(this.controlPoint1);
+				this.transform.transform(this.controlPoint2);
+				return getGeomFactory().newCurvePathElement(
+						x, y,
+						this.controlPoint1.getX(), this.controlPoint1.getY(),
+						this.controlPoint2.getX(), this.controlPoint2.getY(),
+						this.move.getX(), this.move.getY());
+			default:
+				return getGeomFactory().newClosePathElement(
+						x, y,
+						this.move.getX(), this.move.getY());
+			}
 		}
 
 	}

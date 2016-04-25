@@ -80,7 +80,7 @@ public interface Point2D extends Tuple2D<Point2D> {
 	static double getDistancePointPoint(double x1, double y1, double x2, double y2) {
 		double dx = x1 - x2;
 		double dy = y1 - y2;
-		return Math.sqrt(dx*dx+dy*dy);
+		return Math.hypot(dx, dy);
 	}
 
 	/** Compute the squared distance between 2 points.
@@ -140,6 +140,7 @@ public interface Point2D extends Tuple2D<Point2D> {
 	 */
 	@Pure
 	default double getDistanceSquared(Point2D point) {
+		assert (point != null) : "Point must not be null"; //$NON-NLS-1$
 		return getDistanceSquaredPointPoint(getX(), getY(), point.getX(), point.getY());
 	}
 	
@@ -150,6 +151,7 @@ public interface Point2D extends Tuple2D<Point2D> {
 	 */    
 	@Pure
 	default double getDistance(Point2D point) {
+		assert (point != null) : "Point must not be null"; //$NON-NLS-1$
 		return getDistancePointPoint(getX(), getY(), point.getX(), point.getY());
 	}
 
@@ -161,6 +163,7 @@ public interface Point2D extends Tuple2D<Point2D> {
 	 */
 	@Pure
 	default double getDistanceL1(Point2D point) {
+		assert (point != null) : "Point must not be null"; //$NON-NLS-1$
 		return getDistanceL1PointPoint(getX(), getY(), point.getX(), point.getY());
 	}
 
@@ -173,6 +176,7 @@ public interface Point2D extends Tuple2D<Point2D> {
 	 */
 	@Pure
 	default double getDistanceLinf(Point2D point) {
+		assert (point != null) : "Point must not be null"; //$NON-NLS-1$
 		return getDistanceLinfPointPoint(getX(), getY(), point.getX(), point.getY());
 	}
 
@@ -184,6 +188,7 @@ public interface Point2D extends Tuple2D<Point2D> {
 	 */
 	@Pure
 	default int getIdistanceL1(Point2D point) {
+		assert (point != null) : "Point must not be null"; //$NON-NLS-1$
 		return Math.abs(ix() - point.ix()) + Math.abs(iy() - point.iy());
 	}
 
@@ -196,6 +201,7 @@ public interface Point2D extends Tuple2D<Point2D> {
 	 */
 	@Pure
 	default int getIdistanceLinf(Point2D point) {
+		assert (point != null) : "Point must not be null"; //$NON-NLS-1$
 		return Math.max(Math.abs(ix() - point.ix()), Math.abs(iy() - point.iy()));
 	}
 
@@ -205,6 +211,8 @@ public interface Point2D extends Tuple2D<Point2D> {
 	 * @param vector the second tuple
 	 */
 	default void add(Point2D point, Vector2D vector) {
+		assert (point != null) : "Point must not be null"; //$NON-NLS-1$
+		assert (vector != null) : "Vector must not be null"; //$NON-NLS-1$
 		set(point.getX() + vector.getX(),
 			point.getY() + vector.getY());
 	}
@@ -215,6 +223,8 @@ public interface Point2D extends Tuple2D<Point2D> {
 	 * @param point the second tuple
 	 */
 	default void add(Vector2D vector, Point2D point) {
+		assert (point != null) : "Point must not be null"; //$NON-NLS-1$
+		assert (vector != null) : "Vector must not be null"; //$NON-NLS-1$
 		set(vector.getX() + point.getX(),
 			vector.getY() + point.getY());
 	}
@@ -224,6 +234,7 @@ public interface Point2D extends Tuple2D<Point2D> {
 	 * @param vector the other tuple
 	 */
 	default void add(Vector2D vector) {
+		assert (vector != null) : "Vector must not be null"; //$NON-NLS-1$
 		set(getX() + vector.getX(),
 			getY() + vector.getY());
 	}
@@ -236,6 +247,8 @@ public interface Point2D extends Tuple2D<Point2D> {
 	 * @param point the tuple to be added
 	 */
 	default void scaleAdd(int scale, Vector2D vector, Point2D point) {
+		assert (point != null) : "Point must not be null"; //$NON-NLS-1$
+		assert (vector != null) : "Vector must not be null"; //$NON-NLS-1$
 		set(scale * vector.getX() + point.getX(),
 			scale * vector.getY() + point.getY());
 	}
@@ -248,6 +261,8 @@ public interface Point2D extends Tuple2D<Point2D> {
 	 * @param point the tuple to be added
 	 */
 	default void scaleAdd(double scale, Vector2D vector, Point2D point) {
+		assert (point != null) : "Point must not be null"; //$NON-NLS-1$
+		assert (vector != null) : "Vector must not be null"; //$NON-NLS-1$
 		set(scale * vector.getX() + point.getX(),
 			scale * vector.getY() + point.getY());
 	}
@@ -260,6 +275,8 @@ public interface Point2D extends Tuple2D<Point2D> {
 	 * @param vector the tuple to be added
 	 */
 	default void scaleAdd(int scale, Point2D point, Vector2D vector) {
+		assert (point != null) : "Point must not be null"; //$NON-NLS-1$
+		assert (vector != null) : "Vector must not be null"; //$NON-NLS-1$
 		set(scale * point.getX() + vector.getX(),
 			scale * point.getY() + vector.getY());
 	}
@@ -272,6 +289,8 @@ public interface Point2D extends Tuple2D<Point2D> {
 	 * @param vector the tuple to be added
 	 */
 	default void scaleAdd(double scale, Point2D point, Vector2D vector) {
+		assert (point != null) : "Point must not be null"; //$NON-NLS-1$
+		assert (vector != null) : "Vector must not be null"; //$NON-NLS-1$
 		set(scale * point.getX() + vector.getX(),
 			scale * point.getY() + vector.getY());
 	}
@@ -283,6 +302,7 @@ public interface Point2D extends Tuple2D<Point2D> {
 	 * @param vector the tuple to be added
 	 */
 	default void scaleAdd(int scale, Vector2D vector) {
+		assert (vector != null) : "Vector must not be null"; //$NON-NLS-1$
 		set(scale * getX() + vector.getX(),
 			scale * getY() + vector.getY());
 	}
@@ -294,6 +314,7 @@ public interface Point2D extends Tuple2D<Point2D> {
 	 * @param vector the tuple to be added
 	 */
 	default void scaleAdd(double scale, Vector2D vector) {
+		assert (vector != null) : "Vector must not be null"; //$NON-NLS-1$
 		set(scale * getX() + vector.getX(),
 			scale * getY() + vector.getY());
 	}
@@ -306,6 +327,8 @@ public interface Point2D extends Tuple2D<Point2D> {
 	 * @param vector the second tuple
 	 */
 	default void sub(Point2D point, Vector2D vector) {
+		assert (point != null) : "Point must not be null"; //$NON-NLS-1$
+		assert (vector != null) : "Vector must not be null"; //$NON-NLS-1$
 		set(point.getX() - vector.getX(),
 			point.getY() - vector.getY());
 	}
@@ -316,6 +339,7 @@ public interface Point2D extends Tuple2D<Point2D> {
 	 * @param vector the other tuple
 	 */
 	default void sub(Vector2D vector) {
+		assert (vector != null) : "Vector must not be null"; //$NON-NLS-1$
 		set(getX() - vector.getX(),
 			getY() - vector.getY());
 	}

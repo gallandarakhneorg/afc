@@ -24,8 +24,10 @@ package org.arakhne.afc.math.geometry.d2.ifx;
 import org.arakhne.afc.math.geometry.d2.ai.RectangularShape2ai;
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.IntegerPropertyBase;
+import javafx.beans.property.ReadOnlyIntegerWrapper;
+import javafx.beans.property.SimpleIntegerProperty;
 
 /** A rectangular shape with 2 integer FX properties.
  *
@@ -42,13 +44,29 @@ public abstract class AbstractRectangularShape2ifx<IT extends AbstractRectangula
 
 	private static final long serialVersionUID = -6551989261232962403L;
 
-	private IntegerProperty minX;
+	/** minX property.
+	 */
+	IntegerProperty minX;
 
-	private IntegerProperty minY;
+	/** minY property.
+	 */
+	IntegerProperty minY;
 
-	private IntegerProperty maxX;
+	/** maxX property.
+	 */
+	IntegerProperty maxX;
 
-	private IntegerProperty maxY;
+	/** maxY property.
+	 */
+	IntegerProperty maxY;
+
+	/** width property.
+	 */
+	ReadOnlyIntegerWrapper width;
+	
+	/** height property.
+	 */
+	ReadOnlyIntegerWrapper height;
 
 	/**
 	 */
@@ -61,6 +79,30 @@ public abstract class AbstractRectangularShape2ifx<IT extends AbstractRectangula
 	 */
 	public AbstractRectangularShape2ifx(RectangularShape2ai<?, ?, ?, ?, ?> r) {
 		setFromCorners(r.getMinX(), r.getMinY(), r.getMaxX(), r.getMaxY());
+	}
+	
+	@Override
+	public IT clone() {
+		IT clone = super.clone();
+		if (clone.minX != null) {
+			clone.minX = null;
+			clone.minXProperty().set(getMinX());
+		}
+		if (clone.minY != null) {
+			clone.minY = null;
+			clone.minYProperty().set(getMinY());
+		}
+		if (clone.maxX != null) {
+			clone.maxX = null;
+			clone.maxXProperty().set(getMaxX());
+		}
+		if (clone.maxY != null) {
+			clone.maxY = null;
+			clone.maxYProperty().set(getMaxY());
+		}
+		clone.width = null;
+		clone.height = null;
+		return clone;
 	}
 
 	@Override
@@ -99,17 +141,7 @@ public abstract class AbstractRectangularShape2ifx<IT extends AbstractRectangula
 	@Pure
 	public IntegerProperty minXProperty() {
 		if (this.minX == null) {
-			this.minX = new IntegerPropertyBase(0) {
-				@Override
-				public String getName() {
-					return "minX"; //$NON-NLS-1$
-				}
-				
-				@Override
-				public Object getBean() {
-					return AbstractRectangularShape2ifx.this;
-				}
-				
+			this.minX = new SimpleIntegerProperty(this, "minX") { //$NON-NLS-1$
 				@Override
 				protected void invalidated() {
 					int currentMin = get();
@@ -142,17 +174,7 @@ public abstract class AbstractRectangularShape2ifx<IT extends AbstractRectangula
 	@Pure
 	public IntegerProperty maxXProperty() {
 		if (this.maxX == null) {
-			this.maxX = new IntegerPropertyBase(0) {
-				@Override
-				public String getName() {
-					return "maxX"; //$NON-NLS-1$
-				}
-				
-				@Override
-				public Object getBean() {
-					return AbstractRectangularShape2ifx.this;
-				}
-				
+			this.maxX = new SimpleIntegerProperty(this, "maxX") { //$NON-NLS-1$
 				@Override
 				protected void invalidated() {
 					int currentMax = get();
@@ -185,17 +207,7 @@ public abstract class AbstractRectangularShape2ifx<IT extends AbstractRectangula
 	@Pure
 	public IntegerProperty minYProperty() {
 		if (this.minY == null) {
-			this.minY = new IntegerPropertyBase(0) {
-				@Override
-				public String getName() {
-					return "minY"; //$NON-NLS-1$
-				}
-				
-				@Override
-				public Object getBean() {
-					return AbstractRectangularShape2ifx.this;
-				}
-				
+			this.minY = new SimpleIntegerProperty(this, "minY") { //$NON-NLS-1$
 				@Override
 				protected void invalidated() {
 					int currentMin = get();
@@ -228,17 +240,7 @@ public abstract class AbstractRectangularShape2ifx<IT extends AbstractRectangula
 	@Pure
 	public IntegerProperty maxYProperty() {
 		if (this.maxY == null) {
-			this.maxY = new IntegerPropertyBase(0) {
-				@Override
-				public String getName() {
-					return "maxY"; //$NON-NLS-1$
-				}
-				
-				@Override
-				public Object getBean() {
-					return AbstractRectangularShape2ifx.this;
-				}
-				
+			this.maxY = new SimpleIntegerProperty(this, "maxY") { //$NON-NLS-1$
 				@Override
 				protected void invalidated() {
 					int currentMax = get();
@@ -278,6 +280,42 @@ public abstract class AbstractRectangularShape2ifx<IT extends AbstractRectangula
 		b.append(getMaxY());
 		b.append("]"); //$NON-NLS-1$
 		return b.toString();
+	}
+
+	@Override
+	public int getWidth() {
+		return widthProperty().get();
+	}
+	
+	/** Replies the property that is the width of the box.
+	 *
+	 * @return the width property.
+	 */
+	@Pure
+	public IntegerProperty widthProperty() {
+		if (this.width == null) {
+			this.width = new ReadOnlyIntegerWrapper(this, "width"); //$NON-NLS-1$
+			this.width.bind(Bindings.subtract(maxXProperty(), minXProperty()));
+		}
+		return this.width;
+	}
+	
+	@Override
+	public int getHeight() {
+		return heightProperty().get();
+	}
+
+	/** Replies the property that is the height of the box.
+	 *
+	 * @return the height property.
+	 */
+	@Pure
+	public IntegerProperty heightProperty() {
+		if (this.height == null) {
+			this.height = new ReadOnlyIntegerWrapper(this, "height"); //$NON-NLS-1$
+			this.height.bind(Bindings.subtract(maxYProperty(), minYProperty()));
+		}
+		return this.height;
 	}
 
 }

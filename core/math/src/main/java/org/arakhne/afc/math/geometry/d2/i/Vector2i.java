@@ -101,93 +101,123 @@ public class Vector2i extends Tuple2i<Vector2D, Vector2i> implements Vector2D {
 	@Pure
 	@Override
 	public double dot(Vector2D vector) {
-	      return (this.x * vector.getX() + this.y * vector.getY());
+		assert (vector != null) : "Vector must not be null"; //$NON-NLS-1$
+		return (this.x * vector.getX() + this.y * vector.getY());
 	}
 
 	@Pure
 	@Override
 	public double perp(Vector2D vector) {
+		assert (vector != null) : "Vector must not be null"; //$NON-NLS-1$
 		return this.x * vector.getY() - vector.getX() * this.y;
 	}
 
 	@Pure
 	@Override
-	public double length() {
-        return Math.sqrt(this.x * this.x + this.y * this.y);
+	public double getLength() {
+		return Math.sqrt(this.x * this.x + this.y * this.y);
 	}
 
 	@Pure
 	@Override
-	public double lengthSquared() {
-        return this.x * this.x + this.y * this.y;
+	public double getLengthSquared() {
+		return this.x * this.x + this.y * this.y;
 	}
 
 	@Override
 	public void add(Vector2D vector1, Vector2D vector2) {
+		assert (vector1 != null) : "First vector must not be null"; //$NON-NLS-1$
+		assert (vector2 != null) : "Second vector must not be null"; //$NON-NLS-1$
 		this.x = (int) Math.round(vector1.getX() + vector2.getX());
 		this.y = (int) Math.round(vector1.getY() + vector2.getY());
 	}
 
 	@Override
 	public void add(Vector2D vector) {
+		assert (vector != null) : "Vector must not be null"; //$NON-NLS-1$
 		this.x = (int) Math.round(this.x + vector.getX());
 		this.y = (int) Math.round(this.y + vector.getY());
 	}
 
 	@Override
 	public void scaleAdd(int scale, Vector2D vector1, Vector2D vector2) {
+		assert (vector1 != null) : "First vector must not be null"; //$NON-NLS-1$
+		assert (vector2 != null) : "Second vector must not be null"; //$NON-NLS-1$
 		this.x = (int) Math.round(scale * vector1.getX() + vector2.getX());
 		this.y = (int) Math.round(scale * vector1.getY() + vector2.getY());
 	}
 
 	@Override
 	public void scaleAdd(double scale, Vector2D vector1, Vector2D vector2) {
+		assert (vector1 != null) : "First vector must not be null"; //$NON-NLS-1$
+		assert (vector2 != null) : "Second vector must not be null"; //$NON-NLS-1$
 		this.x = (int) Math.round(scale * vector1.getX() + vector2.getX());
 		this.y = (int) Math.round(scale * vector1.getY() + vector2.getY());
 	}
 
 	@Override
 	public void scaleAdd(int scale, Vector2D vector) {
+		assert (vector != null) : "Vector must not be null"; //$NON-NLS-1$
 		this.x = (int) Math.round(scale * this.x + vector.getX());
 		this.y = (int) Math.round(scale * this.y + vector.getY());
 	}
 
 	@Override
 	public void scaleAdd(double scale, Vector2D vector) {
+		assert (vector != null) : "Vector must not be null"; //$NON-NLS-1$
 		this.x = (int) Math.round(scale * this.x + vector.getX());
 		this.y = (int) Math.round(scale * this.y + vector.getY());
 	}
 
 	@Override
 	public void sub(Vector2D vector1, Vector2D vector2) {
+		assert (vector1 != null) : "First vector must not be null"; //$NON-NLS-1$
+		assert (vector2 != null) : "Second vector must not be null"; //$NON-NLS-1$
 		this.x = (int) Math.round(vector1.getX() - vector2.getX());
 		this.y = (int) Math.round(vector1.getY() - vector2.getY());
 	}
 
 	@Override
 	public void sub(Point2D point1, Point2D point2) {
+		assert (point1 != null) : "First point must not be null"; //$NON-NLS-1$
+		assert (point2 != null) : "Second point must not be null"; //$NON-NLS-1$
 		this.x = (int) Math.round(point1.getX() - point2.getX());
 		this.y = (int) Math.round(point1.getY() - point2.getY());
 	}
 
 	@Override
 	public void sub(Vector2D vector) {
+		assert (vector != null) : "Vector must not be null"; //$NON-NLS-1$
 		this.x = (int) Math.round(this.x - vector.getX());
 		this.y = (int) Math.round(this.y - vector.getY());
 	}
 
 	@Override
 	public void setLength(double newLength) {
-		double nl = Math.max(0, newLength);
-		double l = length();
+		assert (newLength >= 0) : "New length must be positive or zero";  //$NON-NLS-1$
+		double l = getLength();
 		if (l != 0) {
-			double f = nl / l;
+			double f = newLength / l;
 			this.x = (int) Math.round(this.x * f);
 			this.y = (int) Math.round(this.y * f);
 		} else {
 			this.x = (int) Math.round(newLength);
 			this.y = 0;
 		}
+	}
+
+	@Override
+	public Vector2D toUnitVector() {
+		double length = getLength();
+		if (length == 0.) {
+			return new Vector2i(0, 0);
+		}
+		return new Vector2i(getX() / length, getY() / length);
+	}
+	
+	@Override
+	public Vector2D toOrthogonalVector() {
+		return new Vector2i(-iy(), ix());
 	}
 
 	@Pure
@@ -197,6 +227,16 @@ public class Vector2i extends Tuple2i<Vector2D, Vector2i> implements Vector2D {
 
 			private static final long serialVersionUID = 7684988962796497763L;
 
+			@Override
+			public Vector2D toUnitVector() {
+				return Vector2i.this.toUnitVector();
+			}
+			
+			@Override
+			public Vector2D toOrthogonalVector() {
+				return Vector2i.this.toOrthogonalVector();
+			}
+			
 			@Override
 			public Vector2D clone() {
 				return Vector2i.this.toUnmodifiable();

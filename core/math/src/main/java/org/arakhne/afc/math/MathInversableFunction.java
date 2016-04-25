@@ -25,8 +25,9 @@ package org.arakhne.afc.math;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 13.0
+ * @deprecated see {@link org.arakhne.afc.math.stochastic.MathInversableFunction}
  */
+@Deprecated
 public interface MathInversableFunction extends MathFunction {
 	
 	/** Replies the value of the inverse function.

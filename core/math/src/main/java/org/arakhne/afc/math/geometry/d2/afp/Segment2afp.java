@@ -29,7 +29,7 @@ import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
-import org.arakhne.afc.math.geometry.d2.fp.Point2fp;
+import org.arakhne.afc.math.geometry.d2.afp.Path2afp.CrossingComputationType;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Fonctional interface that represented a 2D segment/line on a plane.
@@ -143,9 +143,11 @@ public interface Segment2afp<
 	static boolean computeSegmentSegmentIntersection(double x1, double y1, double x2, double y2,
 			double x3, double y3, double x4, double y4,
 			Point2D result) {
+		assert (result != null) : "Result must be not null"; //$NON-NLS-1$
 		double m = computeSegmentSegmentIntersectionFactor(x1, y1, x2, y2, x3, y3, x4, y4);
-		if (Double.isNaN(m))
+		if (Double.isNaN(m)) {
 			return false;
+		}
 		result.set(x1 + m * (x2 - x1), y1 + m * (y2 - y1));
 		return true;
 	}
@@ -180,16 +182,18 @@ public interface Segment2afp<
 	 * @return <code>factor1</code> or {@link Double#NaN} if no intersection.
 	 */
 	@Pure
-	public static double computeSegmentSegmentIntersectionFactor(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4) {
-		double X1 = x2 - x1;
-		double Y1 = y2 - y1;
-		double X2 = x4 - x3;
-		double Y2 = y4 - y3;
-
+	public static double computeSegmentSegmentIntersectionFactor(double x1, double y1, double x2, double y2,
+			double x3, double y3, double x4, double y4) {
+		double vx1 = x2 - x1;
+		double vy1 = y2 - y1;
+		double vx2 = x4 - x3;
+		double vy2 = y4 - y3;
+		
 		// determinant is zero when parallel = det(L1,L2)
-		double det = Vector2D.perpProduct(X1, Y1, X2, Y2);
-		if (det == 0.)
+		double det = Vector2D.perpProduct(vx1, vy1, vx2, vy2);
+		if (det == 0.) {
 			return Double.NaN;
+		}
 
 		// Given line equations:
 		// Pa = P1 + ua (P2-P1), and
@@ -199,11 +203,14 @@ public interface Segment2afp<
 		// then
 		// ua = det(L2,V) / det(L1,L2)
 		// ub = det(L1,V) / det(L1,L2)
-		double u = Vector2D.perpProduct(X1, Y1, x1 - x3, y1 - y3) / det;
-		if (u < 0. || u > 1.)
+		double vx3 = x1 - x3;
+		double vy3 = y1 - y3;
+		double intersectionFactor = Vector2D.perpProduct(vx1, vy1, vx3, vy3) / det;
+		if (intersectionFactor < 0. || intersectionFactor > 1.) {
 			return Double.NaN;
-		u = Vector2D.perpProduct(X2, Y2, x1 - x3, y1 - y3) / det;
-		return (u < 0. || u > 1.) ? Double.NaN : u;
+		}
+		intersectionFactor = Vector2D.perpProduct(vx2, vy2, vx3, vy3) / det;
+		return (intersectionFactor < 0. || intersectionFactor > 1.) ? Double.NaN : intersectionFactor;
 	}
 
 	/**
@@ -236,16 +243,18 @@ public interface Segment2afp<
 	 * @return <code>factor1</code> or {@link Double#NaN} if no intersection.
 	 */
 	@Pure
-	static double computeLineLineIntersectionFactor(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4) {
-		double X1 = x2 - x1;
-		double Y1 = y2 - y1;
-		double X2 = x4 - x3;
-		double Y2 = y4 - y3;
+	static double computeLineLineIntersectionFactor(double x1, double y1, double x2, double y2,
+			double x3, double y3, double x4, double y4) {
+		double vx1 = x2 - x1;
+		double vy1 = y2 - y1;
+		double vx2 = x4 - x3;
+		double vy2 = y4 - y3;
 
 		// determinant is zero when parallel = det(L1,L2)
-		double det = Vector2D.perpProduct(X1, Y1, X2, Y2);
-		if (det == 0.)
+		double det = Vector2D.perpProduct(vx1, vy1, vx2, vy2);
+		if (det == 0.) {
 			return Double.NaN;
+		}
 
 		// Given line equations:
 		// Pa = P1 + ua (P2-P1), and
@@ -255,7 +264,7 @@ public interface Segment2afp<
 		// then
 		// ua = det(L2,V) / det(L1,L2)
 		// ub = det(L1,V) / det(L1,L2)
-		return Vector2D.perpProduct(X2, Y2, x1 - x3, y1 - y3) / det;
+		return Vector2D.perpProduct(vx2, vy2, x1 - x3, y1 - y3) / det;
 	}
 
 	/** Compute the intersection of two lines specified
@@ -276,15 +285,27 @@ public interface Segment2afp<
 	static boolean computeLineLineIntersection(double x1, double y1, double x2, double y2,
 			double x3, double y3, double x4, double y4,
 			Point2D result) {
-		double denom = (y4-y3)*(x2-x1) - (x4-x3)*(y2-y1);
-		if (denom==0.) return false;
-		double ua = ((x4-x3)*(y1-y3) - (y4-y3)*(x1-x3));
-		double ub = ((x2-x1)*(y1-y3) - (y2-y1)*(x1-x3));
-		if (ua==ub) return false;
-		ua = ua / denom;
+		assert (result != null) : "Result must be not null"; //$NON-NLS-1$
+		double x21 = x2 - x1;
+		double x43 = x4 - x3;
+		double y21 = y2 - y1;
+		double y43 = y4 - y3;
+		
+		double denom = y43 * x21 - x43 * y21;
+		if (denom == 0.) {
+			return false;
+		}
+		double x13 = x1 - x3;
+		double y13 = y1 - y3;
+		double intersectionFactor1 = x43 * y13 - y43 * x13;
+		double intersectionFactor2 = x21 * y13 - y21 * x13;
+		if (intersectionFactor1 == intersectionFactor2) {
+			return false;
+		}
+		intersectionFactor1 = intersectionFactor1 / denom;
 		result.set(
-				x1 + ua * (x2 - x1),
-				y1 + ua * (y2 - y1));
+				x1 + intersectionFactor1 * x21,
+				y1 + intersectionFactor1 * y21);
 		return true;
 	}
 
@@ -297,14 +318,18 @@ public interface Segment2afp<
 	 * @param px horizontal position of the point.
 	 * @param py vertical position of the point.
 	 * @return the distance beetween the point and the line.
-	 * @see #getDistanceLinePoint(double, double, double, double, double, double)
+	 * @see #computeDistanceLinePoint(double, double, double, double, double, double)
 	 */
 	@Pure
-	public static double getDistanceSquaredLinePoint(double x1, double y1, double x2, double y2, double px, double py) {
-		double r_denomenator = (x2-x1)*(x2-x1) + (y2-y1)*(y2-y1);
-		if (r_denomenator==0.) return Point2D.getDistanceSquaredPointPoint(px, py, x1, y1);
-		double s = ((y1-py)*(x2-x1)-(x1-px)*(y2-y1) ) / r_denomenator;
-		return (s * s) * Math.abs(r_denomenator);
+	public static double computeDistanceSquaredLinePoint(double x1, double y1, double x2, double y2, double px, double py) {
+		double x21 = x2 - x1;
+		double y21 = y2 - y1;
+		double denomenator = x21 * x21 + y21 * y21;
+		if (denomenator == 0.) {
+			return Point2D.getDistanceSquaredPointPoint(px, py, x1, y1);
+		}
+		double s = ((y1 - py) * x21 - (x1 - px) * y21 ) / denomenator;
+		return (s * s) * Math.abs(denomenator);
 	}
 
 	/** Compute the square distance between a point and a segment.
@@ -315,32 +340,33 @@ public interface Segment2afp<
 	 * @param y2 vertical position of the second point of the segment.
 	 * @param px horizontal position of the point.
 	 * @param py vertical position of the point.
-	 * @param pts is the point that will be set with the coordinates of the nearest point,
-	 * if not <code>null</code>.
 	 * @return the distance beetween the point and the segment.
 	 */
-	static double getDistanceSquaredSegmentPoint(double x1, double y1, double x2, double y2, double px, double py, Point2D pts) {
-		double r_denomenator = (x2-x1)*(x2-x1) + (y2-y1)*(y2-y1);
-		if (r_denomenator==0f) return Point2D.getDistanceSquaredPointPoint(px, py, x1, y1);
-		double r_numerator = (px-x1)*(x2-x1) + (py-y1)*(y2-y1);
-		double ratio = r_numerator / r_denomenator;
+	static double computeDistanceSquaredSegmentPoint(double x1, double y1, double x2, double y2, double px, double py) {
+		double x21 = x2 - x1;
+		double y21 = y2 - y1;
+		double denomenator = x21 * x21 + y21 * y21;
+		if (denomenator == 0.) {
+			return Point2D.getDistanceSquaredPointPoint(px, py, x1, y1);
+		}
+		
+		double xp1 = px - x1;
+		double yp1 = py - y1;
+		double numerator = xp1 * x21 + yp1 * y21;
+		double ratio = numerator / denomenator;
 
-		if (ratio<=0f) {
-			if (pts!=null) pts.set(x1, y1);
-			return Math.abs((px-x1)*(px-x1) + (py-y1)*(py-y1));
+		if (ratio <= 0.) {
+			return Math.abs(xp1 * xp1 + yp1 * yp1);
 		}
 
-		if (ratio>=1f) {
-			if (pts!=null) pts.set(x2, y2);
-			return Math.abs((px-x2)*(px-x2) + (py-y2)*(py-y2));
+		if (ratio >= 1.) {
+			double xp2 = px - x2;
+			double yp2 = py - y2;
+			return Math.abs(xp2 * xp2 + yp2 * yp2);
 		}
 
-		if (pts!=null) pts.set(
-				ratio * (x2-x1),
-				ratio * (y2-y1));
-
-		double s =  ((y1-py)*(x2-x1)-(x1-px)*(y2-y1) ) / r_denomenator;
-		return (s * s) * Math.abs(r_denomenator);
+		double factor =  (xp1 * y21 - yp1 * x21 ) / denomenator;
+		return (factor * factor) * Math.abs(denomenator);
 	}
 
 	/** Compute the distance between a point and a segment.
@@ -351,32 +377,34 @@ public interface Segment2afp<
 	 * @param y2 vertical position of the second point of the segment.
 	 * @param px horizontal position of the point.
 	 * @param py vertical position of the point.
-	 * @param pts is the point that will be set with the coordinates of the nearest point,
-	 * if not <code>null</code>.
 	 * @return the distance beetween the point and the segment.
 	 */
-	static double getDistanceSegmentPoint(double x1, double y1, double x2, double y2, double px, double py, Point2D pts) {
-		double r_denomenator = (x2-x1)*(x2-x1) + (y2-y1)*(y2-y1);
-		if (r_denomenator==0.) return Point2D.getDistancePointPoint(px, py, x1, y1);
-		double r_numerator = (px-x1)*(x2-x1) + (py-y1)*(y2-y1);
-		double ratio = r_numerator / r_denomenator;
+	static double computeDistanceSegmentPoint(double x1, double y1, double x2, double y2, double px, double py) {
+		double x21 = x2 - x1;
+		double y21 = y2 - y1;
 
-		if (ratio<=0.) {
-			if (pts!=null) pts.set(x1, y1);
-			return Math.sqrt((px-x1)*(px-x1) + (py-y1)*(py-y1));
+		double denomenator = x21 * x21 + y21 * y21;
+		if (denomenator == 0.) {
+			return Point2D.getDistancePointPoint(px, py, x1, y1);
 		}
 
-		if (ratio>=1.) {
-			if (pts!=null) pts.set(x2, y2);
-			return Math.sqrt((px-x2)*(px-x2) + (py-y2)*(py-y2));
+		double xp1 = px - x1;
+		double yp1 = py - y1;
+		double numerator = (xp1) * x21 + (yp1) * y21;
+		double ratio = numerator / denomenator;
+		
+		if (ratio <= 0.) {
+			return Math.sqrt(xp1 * xp1 + yp1 * yp1);
 		}
 
-		if (pts!=null) pts.set(
-				ratio * (x2-x1),
-				ratio * (y2-y1));
+		if (ratio >= 1.) {
+			double xp2 = px - x2;
+			double yp2 = py - y2;
+			return Math.sqrt(xp2 * xp2 + yp2 * yp2);
+		}
 
-		double s =  ((y1-py)*(x2-x1)-(x1-px)*(y2-y1) ) / r_denomenator;
-		return Math.abs(s) * Math.sqrt(r_denomenator);
+		double factor = (xp1 * y21 - yp1 * x21 ) / denomenator;
+		return Math.abs(factor) * Math.sqrt(denomenator);
 	}
 
 	/** Compute the distance between a point and a line.
@@ -388,15 +416,19 @@ public interface Segment2afp<
 	 * @param px horizontal position of the point.
 	 * @param py vertical position of the point.
 	 * @return the distance beetween the point and the line.
-	 * @see #getDistanceSquaredLinePoint(double, double, double, double, double, double)
+	 * @see #computeDistanceSquaredLinePoint(double, double, double, double, double, double)
 	 * @see #computeRelativeDistanceLinePoint(double, double, double, double, double, double)
 	 */
 	@Pure
-	static double getDistanceLinePoint(double x1, double y1, double x2, double y2, double px, double py) {
-		double r_denomenator = (x2-x1)*(x2-x1) + (y2-y1)*(y2-y1);
-		if (r_denomenator==0.) return Point2D.getDistancePointPoint(px, py, x1, y1);
-		double s = ((y1-py)*(x2-x1)-(x1-px)*(y2-y1) ) / r_denomenator;
-		return Math.abs(s) * Math.sqrt(r_denomenator);
+	static double computeDistanceLinePoint(double x1, double y1, double x2, double y2, double px, double py) {
+		double x21 = x2 - x1;
+		double y21 = y2 - y1;
+		double denomenator = x21 * x21 + y21 * y21;
+		if (denomenator == 0.) {
+			return Point2D.getDistancePointPoint(px, py, x1, y1);
+		}
+		double factor = ((y1 - py)* x21 - (x1 - px) * y21 ) / denomenator;
+		return Math.abs(factor) * Math.sqrt(denomenator);
 	}
 
 	/** Replies if a point is closed to a segment.
@@ -415,7 +447,8 @@ public interface Segment2afp<
 	static boolean isPointClosedToSegment( double x1, double y1, 
 			double x2, double y2, 
 			double x, double y, double hitDistance ) {
-		return ( getDistanceSegmentPoint(x1, y1, x2, y2, x, y, null) < hitDistance ) ;
+		assert (hitDistance >= 0.) : "Hit distance must be positive or zero"; //$NON-NLS-1$
+		return ( computeDistanceSegmentPoint(x1, y1, x2, y2, x, y) < hitDistance );
 	}
 
 	/** Replies if a point is closed to a line.
@@ -434,7 +467,8 @@ public interface Segment2afp<
 	static boolean isPointClosedToLine( double x1, double y1, 
 			double x2, double y2, 
 			double x, double y, double hitDistance ) {
-		return ( getDistanceLinePoint(x1, y1, x2, y2, x, y) < hitDistance ) ;
+		assert (hitDistance >= 0.) : "Hit distance must be positive or zero"; //$NON-NLS-1$
+		return ( computeDistanceLinePoint(x1, y1, x2, y2, x, y) < hitDistance );
 	}
 
 	/**
@@ -462,9 +496,11 @@ public interface Segment2afp<
 	 */
 	@Pure
 	static double computeProjectedPointOnLine(double px, double py, double s1x, double s1y, double s2x, double s2y) {
-		double r_numerator = (px-s1x)*(s2x-s1x) + (py-s1y)*(s2y-s1y);
-		double r_denomenator = (s2x-s1x)*(s2x-s1x) + (s2y-s1y)*(s2y-s1y);
-		return r_numerator / r_denomenator;
+		double vx = s2x - s1x;
+		double vy = s2y - s1y;
+		double numerator = (px - s1x) * vx + (py - s1y) * vy;
+		double denomenator = vx * vx + vy * vy;
+		return numerator / denomenator;
 	}
 
 	/**
@@ -490,10 +526,14 @@ public interface Segment2afp<
 	 */
 	@Pure
 	static double computeRelativeDistanceLinePoint(double x1, double y1, double x2, double y2, double px, double py) {
-		double r_denomenator = (x2-x1)*(x2-x1) + (y2-y1)*(y2-y1);
-		if (r_denomenator==0.) return Point2D.getDistancePointPoint(px, py, x1, y1);
-		double s = ((y1-py)*(x2-x1)-(x1-px)*(y2-y1) ) / r_denomenator;
-		return s * Math.sqrt(r_denomenator);
+		double x21 = x2 - x1;
+		double y21 = y2 - y1;
+		double denomenator = x21 * x21 + y21 * y21;
+		if (denomenator == 0.) {
+			return Point2D.getDistancePointPoint(px, py, x1, y1);
+		}
+		double factor = ((y1 - py) * x21 -(x1 - px) * y21) / denomenator;
+		return factor * Math.sqrt(denomenator);
 	}
 
 	/**
@@ -533,15 +573,15 @@ public interface Segment2afp<
 	 */
 	@Pure
 	static int computeSideLinePoint(double x1, double y1, double x2, double y2, double px, double py, double epsilon) {
-		double cx2 = x2 - x1;
-		double cy2 = y2 - y1;
-		double cpx = px - x1;
-		double cpy = py - y1;
-		double side = cpx * cy2 - cpy * cx2;
+		double x21 = x2 - x1;
+		double y21 = y2 - y1;
+		double xp1 = px - x1;
+		double yp1 = py - y1;
+		double side = xp1 * y21 - yp1 * x21;
 		if (side != 0f && MathUtil.isEpsilonZero(side, epsilon)) {
 			side = 0f;
 		}
-		return (side < 0f) ? -1 : ((side > 0f) ? 1 : 0);
+		return (side < 0) ? -1 : ((side > 0) ? 1 : 0);
 	}
 
 	/**
@@ -590,11 +630,11 @@ public interface Segment2afp<
 	 */
 	@Pure
 	static int ccw(double x1, double y1, double x2, double y2, double px, double py, double epsilon) {
-		double cx2 = x2 - x1;
-		double cy2 = y2 - y1;
-		double cpx = px - x1;
-		double cpy = py - y1;
-		double ccw = cpx * cy2 - cpy * cx2;
+		double x21 = x2 - x1;
+		double y21 = y2 - y1;
+		double xp1 = px - x1;
+		double yp1 = py - y1;
+		double ccw = xp1 * y21 - yp1 * x21;
 		if (MathUtil.isEpsilonZero(ccw, epsilon)) {
 			// The point is colinear, classify based on which side of
 			// the segment the point falls on. We can calculate a
@@ -602,7 +642,7 @@ public interface Segment2afp<
 			// segment - a negative value indicates the point projects
 			// outside of the segment in the direction of the particular
 			// endpoint used as the origin for the projection.
-			ccw = cpx * cx2 + cpy * cy2;
+			ccw = xp1 * x21 + yp1 * y21;
 			if (ccw > 0.) {
 				// Reverse the projection to be relative to the original x2,y2
 				// x2 and y2 are simply negated.
@@ -611,15 +651,15 @@ public interface Segment2afp<
 				// Since we really want to get a positive answer when the
 				// point is "beyond (x2,y2)", then we want to calculate
 				// the inverse anyway - thus we leave x2 & y2 negated.
-				cpx -= cx2;
-				cpy -= cy2;
-				ccw = cpx * cx2 + cpy * cy2;
-				if (ccw < 0f) {
-					ccw = 0f;
+				xp1 -= x21;
+				yp1 -= y21;
+				ccw = xp1 * x21 + yp1 * y21;
+				if (ccw < 0) {
+					ccw = 0.;
 				}
 			}
 		}
-		return (ccw < 0f) ? -1 : ((ccw > 0f) ? 1 : 0);
+		return (ccw < 0.) ? -1 : ((ccw > 0.) ? 1 : 0);
 	}
 
 	/** Compute the interpolate point between the two points.
@@ -633,8 +673,8 @@ public interface Segment2afp<
 	 */
 	@Pure
 	static void interpolate(double p1x, double p1y, double p2x, double p2y, double factor, Point2D result) {
-		double f = (factor<0f) ? 0f : factor;
-		if (f>1f) f = 1f;
+		assert (result != null) : "Result must be not null"; //$NON-NLS-1$
+		assert (factor >= 0. && factor <= 1.) : "Factor must be in [0;1]"; //$NON-NLS-1$
 		double vx = p2x - p1x;
 		double vy = p2y - p1y;
 		result.set(
@@ -655,11 +695,12 @@ public interface Segment2afp<
 	@Pure
 	static void computeFarthestPointTo(
 			double ax, double ay, double bx, double by, double px, double py, Point2D result) {
-		double v1x = px - ax;
-		double v1y = py - ay;
-		double v2x = px - bx;
-		double v2y = py - by;
-		if ((v1x*v1x+v1y*v1y) >= (v2x*v2x+v2y*v2y)) {
+		assert (result != null) : "Result must be not null"; //$NON-NLS-1$
+		double xpa = px - ax;
+		double ypa = py - ay;
+		double xpb = px - bx;
+		double ypb = py - by;
+		if ((xpa * xpa + ypa * ypa) >= (xpb * xpb + ypb * ypb)) {
 			result.set(ax, ay);
 		} else {
 			result.set(bx, by);
@@ -680,14 +721,17 @@ public interface Segment2afp<
 	static void computeClosestPointTo(
 			double ax, double ay, double bx, double by, double px, double py,
 			Point2D result) {
-		double ratio = Segment2afp.computeProjectedPointOnLine(px, py,
-				ax, ay,
-				bx, by);
-		if (ratio<=0f) result.set(ax, ay);
-		else if (ratio>=1f) result.set(bx, by);
-		else result.set(
-				ax + (bx - ax) * ratio,
-				ay + (by - ay) * ratio); 
+		assert (result != null) : "Result must be not null"; //$NON-NLS-1$
+		double ratio = Segment2afp.computeProjectedPointOnLine(px, py, ax, ay, bx, by);
+		if (ratio <= 0.) {
+			result.set(ax, ay);
+		} else if (ratio >= 1.) {
+			result.set(bx, by);
+		} else {
+			result.set(
+					ax + (bx - ax) * ratio,
+					ay + (by - ay) * ratio); 
+		}
 	}
 
 	/**
@@ -696,6 +740,9 @@ public interface Segment2afp<
 	 * If the point lies on the line, then no crossings are recorded.
 	 * +1 is returned for a crossing where the Y coordinate is increasing
 	 * -1 is returned for a crossing where the Y coordinate is decreasing
+	 * <p>
+	 * This function differs from {@link #computeCrossingsFromPointWithoutEquality(double, double, double, double, double, double)}.
+	 * The equality test is used in this function.
 	 * 
 	 * @param px is the reference point to test.
 	 * @param py is the reference point to test.
@@ -711,13 +758,23 @@ public interface Segment2afp<
 			double x0, double y0,
 			double x1, double y1) {
 		// Copied from AWT API
-		if (py <  y0 && py <  y1) return 0;
-		if (py >= y0 && py >= y1) return 0;
+		if (py < y0 && py < y1) {
+			return 0;
+		}
+		if (py >= y0 && py >= y1) {
+			return 0;
+		}
 		// assert(y0 != y1);
-		if (px >= x0 && px >= x1) return 0;
-		if (px <  x0 && px <  x1) return (y0 < y1) ? 1 : -1;
+		if (px >= x0 && px >= x1) {
+			return 0;
+		}
+		if (px <  x0 && px <  x1) {
+			return (y0 < y1) ? 1 : -1;
+		}
 		double xintercept = x0 + (py - y0) * (x1 - x0) / (y1 - y0);
-		if (px >= xintercept) return 0;
+		if (px >= xintercept) {
+			return 0;
+		}
 		return (y0 < y1) ? 1 : -1;
 	}
 
@@ -740,18 +797,28 @@ public interface Segment2afp<
 	 * @return the crossing.
 	 */
 	@Pure
-	static int computeCrossingsFromPoint1(
+	static int computeCrossingsFromPointWithoutEquality(
 			double px, double py,
 			double x0, double y0,
 			double x1, double y1) {
 		// Copied from AWT API
-		if (py <  y0 && py <  y1) return 0;
-		if (py > y0 && py > y1) return 0;
+		if (py < y0 && py < y1) {
+			return 0;
+		}
+		if (py > y0 && py > y1) {
+			return 0;
+		}
 		// assert(y0 != y1);
-		if (px > x0 && px > x1) return 0;
-		if (px <  x0 && px <  x1) return (y0 < y1) ? 1 : -1;
+		if (px > x0 && px > x1) {
+			return 0;
+		}
+		if (px < x0 && px < x1) {
+			return (y0 < y1) ? 1 : -1;
+		}
 		double xintercept = x0 + (py - y0) * (x1 - x0) / (y1 - y0);
-		if (px > xintercept) return 0;
+		if (px > xintercept) {
+			return 0;
+		}
 		return (y0 < y1) ? 1 : -1;
 	}
 
@@ -784,18 +851,32 @@ public interface Segment2afp<
 		double ymin = Math.min(sy1, sy2);
 		double ymax = Math.max(sy1, sy2);
 
-		if (y0<=ymin && y1<=ymin) return numCrosses;
-		if (y0>=ymax && y1>=ymax) return numCrosses;
-		if (x0<=xmin && x1<=xmin) return numCrosses;
-		if (x0>=xmax && x1>=xmax) {
+		if (y0 <= ymin && y1 <= ymin) {
+			return numCrosses;
+		}
+		if (y0 >= ymax && y1 >= ymax) {
+			return numCrosses;
+		}
+		if (x0 <= xmin && x1 <= xmin) {
+			return numCrosses;
+		}
+		if (x0 >= xmax && x1 >= xmax) {
 			// The line is entirely at the right of the shadow
-			if (y0<y1) {
-				if (y0<=ymin) ++numCrosses;
-				if (y1>=ymax) ++numCrosses;
+			if (y0 < y1) {
+				if (y0 <= ymin) {
+					++numCrosses;
+				}
+				if (y1 >= ymax) {
+					++numCrosses;
+				}
 			}
 			else {
-				if (y1<=ymin) --numCrosses;
-				if (y0>=ymax) --numCrosses;
+				if (y1 <= ymin) {
+					--numCrosses;
+				}
+				if (y0 >= ymax) {
+					--numCrosses;
+				}
 			}
 		}
 		else if (intersectsSegmentSegmentWithEnds(x0, y0, x1, y1, sx1, sy1, sx2, sy2)) {
@@ -803,7 +884,7 @@ public interface Segment2afp<
 		}
 		else {
 			int side1, side2;
-			if (sy1<=sy2) {
+			if (sy1 <= sy2) {
 				side1 = computeSideLinePoint(sx1, sy1, sx2, sy2, x0, y0, 0.);
 				side2 = computeSideLinePoint(sx1, sy1, sx2, sy2, x1, y1, 0.);
 			}
@@ -811,11 +892,11 @@ public interface Segment2afp<
 				side1 = computeSideLinePoint(sx2, sy2, sx1, sy1, x0, y0, 0.);
 				side2 = computeSideLinePoint(sx2, sy2, sx1, sy1, x1, y1, 0.);
 			}
-			if (side1>0 || side2>0) {
+			if (side1 > 0 || side2 > 0) {
 				int n1 = computeCrossingsFromPoint(sx1, sy1, x0, y0, x1, y1);
 				int n2;
-				if (n1!=0) {
-					n2 = computeCrossingsFromPoint1(sx2, sy2, x0, y0, x1, y1);
+				if (n1 != 0) {
+					n2 = computeCrossingsFromPointWithoutEquality(sx2, sy2, x0, y0, x1, y1);
 				}
 				else {
 					n2 = computeCrossingsFromPoint(sx2, sy2, x0, y0, x1, y1);
@@ -850,6 +931,8 @@ public interface Segment2afp<
 			double ew, double eh,
 			double x0, double y0,
 			double x1, double y1) {
+		assert (ew >= 0.) : "Ellipse width must be positive or zero"; //$NON-NLS-1$
+		assert (eh >= 0) : "Ellipse height must be positive or zero"; //$NON-NLS-1$
 		int numCrosses = crossings;
 
 		double xmin = ex;
@@ -874,7 +957,7 @@ public interface Segment2afp<
 		}
 		else if (Ellipse2afp.intersectsEllipseSegment(
 				xmin, ymin, xmax-xmin, ymax-ymin,
-				x0, y0, x1, y1)) {
+				x0, y0, x1, y1, true)) {
 			return MathConstants.SHAPE_INTERSECTS;
 		}
 		else {
@@ -888,7 +971,7 @@ public interface Segment2afp<
 
 	/**
 	 * Calculates the number of times the line from (x0,y0) to (x1,y1)
-	 * crosses the ellipse (ex0,ey0) to (ex1,ey1) extending to the right.
+	 * crosses the circle (cx,cy) with radius extending to the right.
 	 * 
 	 * @param crossings is the initial value for the number of crossings.
 	 * @param cx is the center of the circle to extend.
@@ -907,6 +990,7 @@ public interface Segment2afp<
 			double radius,
 			double x0, double y0,
 			double x1, double y1) {
+		assert (radius >= 0.) : "Circle radius must be positive or zero"; //$NON-NLS-1$
 		int numCrosses = crossings;
 
 		double xmin = cx - Math.abs(radius);
@@ -932,12 +1016,11 @@ public interface Segment2afp<
 				cx, cy, radius,
 				x0, y0, x1, y1)) {
 			return MathConstants.SHAPE_INTERSECTS;
-		}
-		else {
+		} else {
 			numCrosses += computeCrossingsFromPoint(cx, ymin, x0, y0, x1, y1);
 			numCrosses += computeCrossingsFromPoint(cx, ymax, x0, y0, x1, y1);
 		}
-
+		
 		return numCrosses;
 	}
 
@@ -964,6 +1047,8 @@ public interface Segment2afp<
 			double rxmax, double rymax,
 			double x0, double y0,
 			double x1, double y1) {
+		assert (rxmin <= rxmax) : "rxmin must be lower or equal to rxmax"; //$NON-NLS-1$
+		assert (rymin <= rymax) : "rymin must be lower or equal to rymax"; //$NON-NLS-1$
 		int numCrosses = crossings;
 
 		if (y0 >= rymax && y1 >= rymax) return numCrosses;
@@ -1032,6 +1117,183 @@ public interface Segment2afp<
 		return MathConstants.SHAPE_INTERSECTS;
 	}
 
+	/**
+	 * Accumulate the number of times the line crosses the shadow
+	 * extending to the right of the triangle.  See the comment
+	 * for the {@link MathConstants#SHAPE_INTERSECTS} constant for more complete details.
+	 * 
+	 * @param crossings is the initial value for the number of crossings.
+	 * @param tx1 is the first point of the triangle.
+	 * @param ty1 is the first point of the triangle.
+	 * @param tx2 is the second point of the triangle.
+	 * @param ty2 is the second point of the triangle.
+	 * @param tx3 is the third point of the triangle.
+	 * @param ty3 is the third point of the triangle.
+	 * @param x0 is the first point of the line.
+	 * @param y0 is the first point of the line.
+	 * @param x1 is the second point of the line.
+	 * @param y1 is the secondpoint of the line.
+	 * @return the crossing, or {@link MathConstants#SHAPE_INTERSECTS}.
+	 */
+	@Pure
+	static int computeCrossingsFromTriangle(
+			int crossings,
+			double tx1, double ty1,
+			double tx2, double ty2,
+			double tx3, double ty3,
+			double x0, double y0,
+			double x1, double y1) {
+		int numCrosses = crossings;
+		
+		double xmin = tx1;
+		double xmax = tx1;
+		double ymin = ty1;
+		double ymax = ty1;
+		double x4ymin = tx1;
+		double x4ymax = tx1;
+		
+		if (tx2 < xmin) {
+			xmin = tx2;
+		}
+		if (tx2 > xmax) {
+			xmax = tx2;
+		}
+		if (ty2 == ymin) {
+			x4ymin = Math.max(tx2, x4ymin);
+		} else if (ty2 < ymin) {
+			ymin = ty2;
+			x4ymin = tx2;
+		}
+		if (ty2 == ymax) {
+			x4ymax = Math.max(tx2, x4ymax);
+		} else if (ty2 > ymax) {
+			ymax = ty2;
+			x4ymax = tx2;
+		}
+
+		if (tx3 < xmin) {
+			xmin = tx3;
+		}
+		if (tx3 > xmax) {
+			xmax = tx3;
+		}
+		if (ty3 == ymin) {
+			x4ymin = Math.max(tx3, x4ymin);
+		} else if (ty3 < ymin) {
+			ymin = ty3;
+			x4ymin = tx3;
+		}
+		if (ty3 == ymax) {
+			x4ymax = Math.max(tx3, x4ymax);
+		} else if (ty3 > ymax) {
+			ymax = ty3;
+			x4ymax = tx3;
+		}
+
+		if (y0 <= ymin && y1 <= ymin) {
+			return numCrosses;
+		}
+		if (y0 >= ymax && y1 >= ymax) {
+			return numCrosses;
+		}
+		if (x0 <= xmin && x1 <= xmin) {
+			return numCrosses;
+		}
+
+		if (x0 >= xmax && x1 >= xmax) {
+			// The line is entirely at the right of the shadow
+			if (y0<y1) {
+				if (y0<=ymin) ++numCrosses;
+				if (y1>=ymax) ++numCrosses;
+			}
+			else {
+				if (y1<=ymin) --numCrosses;
+				if (y0>=ymax) --numCrosses;
+			}
+		}
+		else if (Triangle2afp.intersectsTriangleSegment(
+				tx1, ty1, tx2, ty2, tx3, ty3,
+				x0, y0, x1, y1)) {
+			return MathConstants.SHAPE_INTERSECTS;
+		} else {
+			numCrosses += computeCrossingsFromPoint(x4ymin, ymin, x0, y0, x1, y1);
+			numCrosses += computeCrossingsFromPoint(x4ymax, ymax, x0, y0, x1, y1);
+		}
+		
+		return numCrosses;
+	}
+
+	/**
+	 * Accumulate the number of times the line crosses the shadow
+	 * extending to the right of the round rectangle.  See the comment
+	 * for the {@link MathConstants#SHAPE_INTERSECTS} constant for more complete details.
+	 * 
+	 * @param crossings is the initial value for the number of crossings.
+	 * @param rxmin is the first corner of the rectangle.
+	 * @param rymin is the first corner of the rectangle.
+	 * @param rxmax is the second corner of the rectangle.
+	 * @param rymax is the second corner of the rectangle.
+	 * @param arcWidth is the width of the rectangle arcs.
+	 * @param arcHeight is the height of the rectangle arcs.
+	 * @param x0 is the first point of the line.
+	 * @param y0 is the first point of the line.
+	 * @param x1 is the second point of the line.
+	 * @param y1 is the secondpoint of the line.
+	 * @return the crossing, or {@link MathConstants#SHAPE_INTERSECTS}.
+	 */
+	@Pure
+	static int computeCrossingsFromRoundRect(
+			int crossings,
+			double rxmin, double rymin,
+			double rxmax, double rymax,
+			double arcWidth, double arcHeight,
+			double x0, double y0,
+			double x1, double y1) {
+		assert (rxmin <= rxmax) : "rxmin must be lower or equal to rxmax"; //$NON-NLS-1$
+		assert (rymin <= rymax) : "rymin must be lower or equal to rymax"; //$NON-NLS-1$
+		assert (arcWidth >= 0. && arcWidth <= (rxmax - rxmin) / 2.) : "arcWidth is too big"; //$NON-NLS-1$
+		assert (arcHeight >= 0. && arcHeight <= (rymax - rymin) / 2.) : "arcHeight is too big"; //$NON-NLS-1$
+		int numCrosses = crossings;
+
+		if (y0 >= rymax && y1 >= rymax) return numCrosses;
+		if (y0 <= rymin && y1 <= rymin) return numCrosses;
+		if (x0 <= rxmin && x1 <= rxmin) return numCrosses;
+		if (x0 >= rxmax && x1 >= rxmax) {
+			// Line is entirely to the right of the rect
+			// and the vertical ranges of the two overlap by a non-empty amount
+			// Thus, this line segment is partially in the "right-shadow"
+			// Path may have done a complete crossing
+			// Or path may have entered or exited the right-shadow
+			if (y0 < y1) {
+				// y-increasing line segment...
+				// We know that y0 < rymax and y1 > rymin
+				if (y0 <= rymin) ++numCrosses;
+				if (y1 >= rymax) ++numCrosses;
+			}
+			else if (y1 < y0) {
+				// y-decreasing line segment...
+				// We know that y1 < rymax and y0 > rymin
+				if (y1 <= rymin) --numCrosses;
+				if (y0 >= rymax) --numCrosses;
+			}
+			return numCrosses;
+		}
+		// Remaining case:
+		// Both x and y ranges overlap by a non-empty amount
+		// First do trivial INTERSECTS rejection.
+		if (RoundRectangle2afp.intersectsRoundRectangleSegment(
+				rxmin, rymin, rxmax, rymax, arcWidth, arcHeight,
+				x0, y0, x1, y1)) {
+			return MathConstants.SHAPE_INTERSECTS;
+		}
+
+		double x = rxmax - arcWidth;
+		numCrosses += computeCrossingsFromPoint(x, rymin, x0, y0, x1, y1);
+		numCrosses += computeCrossingsFromPoint(x, rymax, x0, y0, x1, y1);
+
+		return numCrosses;
+	}
+
 	/** Replies if two lines are intersecting.
 	 * 
 	 * @param x1 is the first point of the first line.
@@ -1073,9 +1335,12 @@ public interface Segment2afp<
 	}
 
 	/** Do an intersection test of two segments for ensuring that the answer of "no intersect" is safe.
-	 * If the function replies <code>true</code>, it may
-	 * This function considers that the ends of
-	 * the segments are intersecting.
+	 * 
+	 * <p>If the function replies {@link UncertainIntersection#NO}, we are sure that the two given segments are not
+	 * intersecting. If the function replies {@link UncertainIntersection#PERHAPS}, the two segments may intersects
+	 * (uncertain answer).
+	 * 
+	 * <p>This function considers that the ends of the segments are intersecting.
 	 * 
 	 * @param x1 is the first point of the first segment.
 	 * @param y1 is the first point of the first segment.
@@ -1089,7 +1354,8 @@ public interface Segment2afp<
 	 * @see #intersectsSegmentSegmentWithEnds(double, double, double, double, double, double, double, double)
 	 */
 	@Pure
-	static UncertainIntersection ensureNoSegmentSegmentWithEndsIntersection(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4) {
+	static UncertainIntersection getNoSegmentSegmentWithEndsIntersection(double x1, double y1, double x2, double y2,
+			double x3, double y3, double x4, double y4) {
 		double vx1, vy1, vx2a, vy2a, vx2b, vy2b, f1, f2, sign;
 
 		vx1 = x2 - x1;
@@ -1119,12 +1385,12 @@ public interface Segment2afp<
 		//  1   1   1  F
 		sign = f1 * f2;
 
-		if (sign<0f) return UncertainIntersection.PERHAPS;
-		if (sign>0f) return UncertainIntersection.NO;
+		if (sign<0) return UncertainIntersection.PERHAPS;
+		if (sign>0) return UncertainIntersection.NO;
 
 		double squaredLength = vx1*vx1 + vy1*vy1;
 
-		if (f1==0f && f2==0f) {
+		if (f1==0f && f2==0) {
 			// Projection of the point on the segment line:
 			// <0 -> means before first point
 			// >1 -> means after second point
@@ -1137,10 +1403,10 @@ public interface Segment2afp<
 			// f1<0 && f2<0 or
 			// f1>1 && f2>1
 
-			return UncertainIntersection.fromBoolean((f1>=0f || f2>=0) && (f1<=1f || f2<=1f));
+			return UncertainIntersection.fromBoolean((f1>=0f || f2>=0) && (f1<=1f || f2<=1));
 		}
 
-		if (f1==0f) {
+		if (f1==0) {
 			// Projection of the point on the segment line:
 			// <0 -> means before first point
 			// >1 -> means after second point
@@ -1152,10 +1418,10 @@ public interface Segment2afp<
 			// f1<=0 && f2<=0 or
 			// f1>=1 && f2>=1
 
-			return UncertainIntersection.fromBoolean(f1>=0f && f1<=1f);
+			return UncertainIntersection.fromBoolean(f1>=0f && f1<=1);
 		}
 
-		if (f2==0f) {
+		if (f2==0) {
 			// Projection of the point on the segment line:
 			// <0 -> means before first point
 			// >1 -> means after second point
@@ -1167,7 +1433,7 @@ public interface Segment2afp<
 			// f1<0 && f2<0 or
 			// f1>1 && f2>1
 
-			return UncertainIntersection.fromBoolean(f2>=0 && f2<=1f);
+			return UncertainIntersection.fromBoolean(f2>=0 && f2<=1);
 		}
 
 		return UncertainIntersection.NO;
@@ -1190,7 +1456,8 @@ public interface Segment2afp<
 	 * @see #intersectsSegmentSegmentWithoutEnds(double, double, double, double, double, double, double, double)
 	 */
 	@Pure
-	static UncertainIntersection ensureNoSegmentSegmentWithoutEndsIntersection(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4) {
+	static UncertainIntersection getNoSegmentSegmentWithoutEndsIntersection(double x1, double y1, double x2, double y2,
+			double x3, double y3, double x4, double y4) {
 		double vx1, vy1, vx2a, vy2a, vx2b, vy2b, f1, f2, sign;
 
 		vx1 = x2 - x1;
@@ -1219,10 +1486,10 @@ public interface Segment2afp<
 
 		sign = f1 * f2;
 
-		if (sign<0f) return UncertainIntersection.PERHAPS;
-		if (sign>0f) return UncertainIntersection.NO;
+		if (sign<0) return UncertainIntersection.PERHAPS;
+		if (sign>0) return UncertainIntersection.NO;
 
-		if (f1==0f && f2==0f) {
+		if (f1==0f && f2==0) {
 			// Projection of the point on the segment line:
 			// <0 -> means before first point
 			// >1 -> means after second point
@@ -1237,7 +1504,7 @@ public interface Segment2afp<
 			// f1<=0 && f2<=0 or
 			// f1>=1 && f2>=1
 
-			return UncertainIntersection.fromBoolean((f1>0f || f2>0) && (f1<1f || f2<1f));
+			return UncertainIntersection.fromBoolean((f1>0f || f2>0) && (f1<1f || f2<1));
 		}
 
 		return UncertainIntersection.NO;
@@ -1262,11 +1529,12 @@ public interface Segment2afp<
 	 * @see #intersectsSegmentSegmentWithEnds(double, double, double, double, double, double, double, double)
 	 */
 	@Pure
-	static boolean intersectsSegmentSegmentWithoutEnds(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4) {
+	static boolean intersectsSegmentSegmentWithoutEnds(double x1, double y1, double x2, double y2,
+			double x3, double y3, double x4, double y4) {
 		UncertainIntersection r;
-		r = ensureNoSegmentSegmentWithoutEndsIntersection(x1, y1, x2, y2, x3, y3, x4, y4);
+		r = getNoSegmentSegmentWithoutEndsIntersection(x1, y1, x2, y2, x3, y3, x4, y4);
 		if (!r.booleanValue()) return r.booleanValue();
-		return ensureNoSegmentSegmentWithoutEndsIntersection(x3, y3, x4, y4, x1, y1, x2, y2).booleanValue();
+		return getNoSegmentSegmentWithoutEndsIntersection(x3, y3, x4, y4, x1, y1, x2, y2).booleanValue();
 	}
 
 	/** Replies if two segments are intersecting.
@@ -1288,11 +1556,12 @@ public interface Segment2afp<
 	 * @see #intersectsSegmentSegmentWithoutEnds(double, double, double, double, double, double, double, double)
 	 */
 	@Pure
-	static boolean intersectsSegmentSegmentWithEnds(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4) {
+	static boolean intersectsSegmentSegmentWithEnds(double x1, double y1, double x2, double y2,
+			double x3, double y3, double x4, double y4) {
 		UncertainIntersection r;
-		r = ensureNoSegmentSegmentWithEndsIntersection(x1, y1, x2, y2, x3, y3, x4, y4);
+		r = getNoSegmentSegmentWithEndsIntersection(x1, y1, x2, y2, x3, y3, x4, y4);
 		if (!r.booleanValue()) return r.booleanValue();
-		return ensureNoSegmentSegmentWithEndsIntersection(x3, y3, x4, y4, x1, y1, x2, y2).booleanValue();
+		return getNoSegmentSegmentWithEndsIntersection(x3, y3, x4, y4, x1, y1, x2, y2).booleanValue();
 	}
 
 	@Pure
@@ -1331,13 +1600,15 @@ public interface Segment2afp<
 	 * @param b
 	 */
 	default void set(Point2D a, Point2D b) {
+		assert (a != null) : "First point must be not null"; //$NON-NLS-1$
+		assert (b != null) : "Second point must be not null"; //$NON-NLS-1$
 		set(a.getX(), a.getY(), b.getX(), b.getY());
 	}
 	
 	@Override
 	default void set(IT s) {
-		Rectangle2afp<?, ?, ?, ?, ?> box = s.toBoundingBox();
-		set(box.getMinX(), box.getMinY(), box.getMaxX(), box.getMaxY());
+		assert (s != null) : "Shape must be not null"; //$NON-NLS-1$
+		set(s.getX1(), s.getY1(), s.getX2(), s.getY2());
 	}
 
 	/** Sets a new value in the X of the first point.
@@ -1411,7 +1682,7 @@ public interface Segment2afp<
 	 * @return the length.
 	 */
 	@Pure
-	default double length() {
+	default double getLength() {
 		return Point2D.getDistancePointPoint(getX1(), getY1(), getX2(), getY2());
 	}
 
@@ -1420,13 +1691,14 @@ public interface Segment2afp<
 	 * @return the squared length.
 	 */
 	@Pure
-	default double lengthSquared() {
+	default double getLengthSquared() {
 		return Point2D.getDistanceSquaredPointPoint(getX1(), getY1(), getX2(), getY2());
 	}
 
 	@Pure
 	@Override
 	default void toBoundingBox(B box) {
+		assert (box != null) : "Rectangle must be not null"; //$NON-NLS-1$
 		box.setFromCorners(
 				this.getX1(),
 				this.getY1(),
@@ -1437,18 +1709,19 @@ public interface Segment2afp<
 	@Pure
 	@Override
 	default double getDistanceSquared(Point2D p) {
-		return getDistanceSquaredSegmentPoint(
+		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
+		return computeDistanceSquaredSegmentPoint(
 				getX1(), getY1(),
 				getX2(), getY2(),
-				p.getX(), p.getY(),
-				null);
+				p.getX(), p.getY());
 	}
 
 	@Pure
 	@Override
 	default double getDistanceL1(Point2D p) {
+		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
 		double ratio = computeProjectedPointOnLine(p.getX(), p.getY(), getX1(), getY1(), getX2(), getY2());
-		ratio = MathUtil.clamp(ratio, 0f, 1f);
+		ratio = MathUtil.clamp(ratio, 0, 1);
 		double vx = (getX2() - getX1()) * ratio;
 		double vy = (getY2() - getY1()) * ratio;
 		return Math.abs(getX1() + vx - p.getX())
@@ -1458,8 +1731,9 @@ public interface Segment2afp<
 	@Pure
 	@Override
 	default double getDistanceLinf(Point2D p) {
+		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
 		double ratio = computeProjectedPointOnLine(p.getX(), p.getY(), getX1(), getY1(), getX2(), getY2());
-		ratio = MathUtil.clamp(ratio, 0f, 1f);
+		ratio = MathUtil.clamp(ratio, 0, 1);
 		double vx = (getX2() - getX1()) * ratio;
 		double vy = (getY2() - getY1()) * ratio;
 		return Math.max(
@@ -1476,16 +1750,17 @@ public interface Segment2afp<
 	@Override
 	default boolean contains(double x, double y) {
 		return MathUtil.isEpsilonZero(
-				getDistanceSquaredSegmentPoint(
+				computeDistanceSquaredSegmentPoint(
 						getX1(), getY1(),
 						getX2(), getY2(),
-						x, y,
-						null));
+						x, y));
 	}
 	
 	@Override
 	default boolean contains(Rectangle2afp<?, ?, ?, ?, ?> r) {
-		return contains(r.getMinX(), r.getMinY())
+		assert (r != null) : "Rectangle must be not null"; //$NON-NLS-1$
+		return (getX1() == getX2() || getY1() == getY2())
+				&& contains(r.getMinX(), r.getMinY())
 				&& contains(r.getMaxX(), r.getMaxY());
 	}
 	
@@ -1501,7 +1776,8 @@ public interface Segment2afp<
 	 * @see #createTransformedShape
 	 */
 	default void transform(Transform2D transform) {
-		Point2D p = new Point2fp(getX1(),  getY1());
+		assert (transform != null) : "Transformation must be not null"; //$NON-NLS-1$
+		Point2D p = new InnerComputationPoint2afp(getX1(),  getY1());
 		transform.transform(p);
 		double x1 = p.getX();
 		double y1 = p.getY();
@@ -1528,10 +1804,12 @@ public interface Segment2afp<
 	 */
 	@Pure
 	default boolean clipToRectangle(double rxmin, double rymin, double rxmax, double rymax) {
-		double x0 = this.getX1();
-		double y0 = this.getY1();
-		double x1 = this.getX2();
-		double y1 = this.getY2();
+		assert (rxmin <= rxmax) : "rxmin must be lower or equal to rymin"; //$NON-NLS-1$
+		assert (rymin <= rymax) : "rxmin must be lower or equal to rymin"; //$NON-NLS-1$
+		double x0 = getX1();
+		double y0 = getY1();
+		double x1 = getX2();
+		double y1 = getY2();
 		int code1 = MathUtil.getCohenSutherlandCode(x0, y0, rxmin, rymin, rxmax, rymax);
 		int code2 = MathUtil.getCohenSutherlandCode(x1, y1, rxmin, rymin, rxmax, rymax);
 		boolean accept = false;
@@ -1607,6 +1885,7 @@ public interface Segment2afp<
 	@Pure
 	@Override
 	default boolean intersects(Circle2afp<?, ?, ?, ?, ?> s) {
+		assert (s != null) : "Circle must be not null"; //$NON-NLS-1$
 		return Circle2afp.intersectsCircleSegment(
 				s.getX(), s.getY(),
 				s.getRadius(),
@@ -1617,26 +1896,40 @@ public interface Segment2afp<
 	@Pure
 	@Override
 	default boolean intersects(Ellipse2afp<?, ?, ?, ?, ?> s) {
+		assert (s != null) : "Ellipse must be not null"; //$NON-NLS-1$
 		return Ellipse2afp.intersectsEllipseSegment(
 				s.getMinX(), s.getMinY(),
 				s.getWidth(), s.getHeight(),
 				getX1(), getY1(),
-				getX2(), getY2());
+				getX2(), getY2(), false);
 	}
 	
 	@Pure
 	@Override
 	default boolean intersects(OrientedRectangle2afp<?, ?, ?, ?, ?> s) {
+		assert (s != null) : "Oriented rectangle must be not null"; //$NON-NLS-1$
 		return OrientedRectangle2afp.intersectsOrientedRectangleSegment(
 				s.getCenterX(), s.getCenterY(), 
 				s.getFirstAxisX(), s.getFirstAxisY(), s.getFirstAxisExtent(),
-				s.getSecondAxisX(), s.getSecondAxisY(), s.getSecondAxisExtent(),
+				s.getSecondAxisExtent(),
 				getX1(), getY1(), getX2(), getY2());
 	}
 	
 	@Pure
 	@Override
+	default boolean intersects(Parallelogram2afp<?, ?, ?, ?, ?> s) {
+		assert (s != null) : "Parallelogram must be not null"; //$NON-NLS-1$
+		return Parallelogram2afp.intersectsParallelogramSegment(
+				s.getCenterX(), s.getCenterY(), 
+				s.getFirstAxisX(), s.getFirstAxisY(), s.getFirstAxisExtent(),
+				s.getSecondAxisX(), s.getSecondAxisY(), s.getSecondAxisExtent(),
+				getX1(), getY1(), getX2(), getY2());
+	}
+
+	@Pure
+	@Override
 	default boolean intersects(Rectangle2afp<?, ?, ?, ?, ?> s) {
+		assert (s != null) : "Rectangle must be not null"; //$NON-NLS-1$
 		return Rectangle2afp.intersectsRectangleSegment(
 				s.getMinX(), s.getMinY(),
 				s.getMaxX(), s.getMaxY(),
@@ -1647,12 +1940,16 @@ public interface Segment2afp<
 	@Pure
 	@Override
 	default boolean intersects(RoundRectangle2afp<?, ?, ?, ?, ?> s) {
-		return s.intersects(this);
+		assert (s != null) : "Round rectangle must be not null"; //$NON-NLS-1$
+		return RoundRectangle2afp.intersectsRoundRectangleSegment(
+				s.getMinX(), s.getMinY(), s.getMaxX(), s.getMaxY(), s.getArcWidth(), s.getArcHeight(),
+				getX1(), getY1(), getX2(), getY2());
 	}
 	
 	@Pure
 	@Override
 	default boolean intersects(Segment2afp<?, ?, ?, ?, ?> s) {
+		assert (s != null) : "Segment must be not null"; //$NON-NLS-1$
 		return intersectsSegmentSegmentWithEnds(
 				getX1(), getY1(),
 				getX2(), getY2(),
@@ -1662,24 +1959,48 @@ public interface Segment2afp<
 	
 	@Pure
 	@Override
+	default boolean intersects(Triangle2afp<?, ?, ?, ?, ?> s) {
+		assert (s != null) : "Segment must be not null"; //$NON-NLS-1$
+		return Triangle2afp.intersectsTriangleSegment(
+				s.getX1(), s.getY1(),
+				s.getX2(), s.getY2(),
+				s.getX3(), s.getY3(),
+				getX1(), getY1(),
+				getX2(), getY2());
+	}
+
+	@Pure
+	@Override
 	default boolean intersects(PathIterator2afp<?> iterator) {
+		assert (iterator != null) : "Iterator must be not null"; //$NON-NLS-1$
 		int mask = (iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2);
 		int crossings = Path2afp.computeCrossingsFromSegment(
 				0,
 				iterator,
 				getX1(), getY1(), getX2(), getY2(),
-				false);
+				CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
 		return (crossings == MathConstants.SHAPE_INTERSECTS ||
 				(crossings & mask) != 0);
 
 	}
 
-	/** Fonctional interface that represented a 2D segment/line on a plane.
+	@Pure
+	@Override
+	default boolean intersects(MultiShape2afp<?, ?, ?, ?, ?, ?> s) {
+		assert (s != null) : "MultiShape must be not null"; //$NON-NLS-1$
+		return s.intersects(this);
+	}
+
+	/** Result of the intersection between segments in a context where a single
+	 * test is not enough.
 	 *
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
+	 * @since 13.0
+	 * @see Segment2afp#getNoSegmentSegmentWithEndsIntersection(double, double, double, double, double, double, double, double)
+	 * @see Segment2afp#getNoSegmentSegmentWithoutEndsIntersection(double, double, double, double, double, double, double, double)
 	 */
 	enum UncertainIntersection {
 		/** Intersection, uncertainly.
@@ -1728,6 +2049,7 @@ public interface Segment2afp<
 	@Pure
 	@Override
 	default P getClosestPointTo(Point2D p) {
+		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
 		P point = getGeomFactory().newPoint();
 		Segment2afp.computeClosestPointTo(
 				getX1(), getY1(),
@@ -1740,6 +2062,7 @@ public interface Segment2afp<
 	@Pure
 	@Override
 	default P getFarthestPointTo(Point2D p) {
+		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
 		P point = getGeomFactory().newPoint();
 		Segment2afp.computeFarthestPointTo(
 				getX1(), getY1(),
@@ -1760,7 +2083,7 @@ public interface Segment2afp<
 	 */
 	static class SegmentPathIterator<T extends PathElement2afp> implements PathIterator2afp<T> {
 
-		private final GeomFactory2afp<T, ?, ?> factory;
+		private final Segment2afp<?, ?, T, ?, ?> segment;
 
 		private final Point2D p1;
 
@@ -1783,9 +2106,10 @@ public interface Segment2afp<
 		 * @param transform the transformation, or <code>null</code>.
 		 */
 		public SegmentPathIterator(Segment2afp<?, ?, T, ?, ?> segment, Transform2D transform) {
-			this.factory = segment.getGeomFactory();
-			this.p1 = this.factory.newPoint();
-			this.p2 = this.factory.newPoint();
+			assert (segment != null) : "Segment must be not null"; //$NON-NLS-1$
+			this.segment = segment;
+			this.p1 = new InnerComputationPoint2afp();
+			this.p2 = new InnerComputationPoint2afp();
 			this.transform = (transform == null || transform.isIdentity()) ? null : transform;
 			this.x1 = segment.getX1();
 			this.y1 = segment.getY1();
@@ -1794,6 +2118,11 @@ public interface Segment2afp<
 			if (this.x1 == this.x2 && this.y1 == this.y2) {
 				this.index = 2;
 			}
+		}
+		
+		@Override
+		public PathIterator2afp<T> restartIterations() {
+			return new SegmentPathIterator<>(this.segment, this.transform);
 		}
 
 		@Pure
@@ -1813,7 +2142,7 @@ public interface Segment2afp<
 				if (this.transform!=null) {
 					this.transform.transform(this.p2);
 				}
-				return this.factory.newMovePathElement(
+				return this.segment.getGeomFactory().newMovePathElement(
 						this.p2.getX(), this.p2.getY());
 			case 1:
 				this.p1.set(this.p2);
@@ -1821,7 +2150,7 @@ public interface Segment2afp<
 				if (this.transform!=null) {
 					this.transform.transform(this.p2);
 				}
-				return this.factory.newLinePathElement(
+				return this.segment.getGeomFactory().newLinePathElement(
 						this.p1.getX(), this.p1.getY(),
 						this.p2.getX(), this.p2.getY());
 			default:
@@ -1866,7 +2195,7 @@ public interface Segment2afp<
 
 		@Override
 		public GeomFactory2afp<T, ?, ?> getGeomFactory() {
-			return this.factory;
+			return this.segment.getGeomFactory();
 		}
 
 	}

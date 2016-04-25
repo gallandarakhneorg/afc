@@ -273,7 +273,7 @@ public interface Path2D<
 	 * @return the point collection.
 	 */
 	@Pure
-	Collection<Point2D> toCollection();
+	Collection<P> toCollection();
 
 	/** Replies the point at the given index.
 	 * The index is in [0;{@link #size()}).
@@ -319,15 +319,17 @@ public interface Path2D<
 	 *
 	 * @return the length of the path.
 	 */
-	default double length() {
-		return Math.sqrt(lengthSquared());
+	@Pure
+	default double getLength() {
+		return Math.sqrt(getLengthSquared());
 	}
 
 	/** Replies the total squared length of the path.
 	 *
 	 * @return the length of the path.
 	 */
-	double lengthSquared();
+	@Pure
+	double getLengthSquared();
 
 	/** Remove the last action.
 	 */

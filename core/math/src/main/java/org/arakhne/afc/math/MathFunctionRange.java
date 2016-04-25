@@ -27,9 +27,10 @@ package org.arakhne.afc.math;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 13.0
  * @see "http://en.wikipedia.org/wiki/Range_(mathematics)"
+ * @deprecated see {@link org.arakhne.afc.math.stochastic.MathFunctionRange}
  */
+@Deprecated
 public class MathFunctionRange {
 	
 	/** Create a set of bounds that correspond to the specified discrete values.

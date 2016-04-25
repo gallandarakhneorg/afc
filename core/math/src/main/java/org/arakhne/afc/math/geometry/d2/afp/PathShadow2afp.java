@@ -44,10 +44,11 @@ public class PathShadow2afp<B extends Rectangle2afp<?, ?, ?, ?, B>> {
 	private final B bounds;
 
 	/**
-	 * @param path1
+	 * @param path
 	 */
-	public PathShadow2afp(Path2afp<?, ?, ?, ?, B> path1) {
-		this.path = path1;
+	public PathShadow2afp(Path2afp<?, ?, ?, ?, B> path) {
+		assert (path != null) : "Path must be not null"; //$NON-NLS-1$
+		this.path = path;
 		this.bounds = this.path.toBoundingBox();
 	}
 

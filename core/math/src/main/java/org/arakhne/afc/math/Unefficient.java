@@ -26,6 +26,8 @@ import java.lang.annotation.Target;
  * When this annotation is present, the function is
  * assumed to be not optimized, according to the current
  * literature knowledge.
+ * Implicitly, the optimization of the annotated function
+ * is a To-Do task.
  * 
  * @author $Author: sgalland$
  * @version $FullVersion$

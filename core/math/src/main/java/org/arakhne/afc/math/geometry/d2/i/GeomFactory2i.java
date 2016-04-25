@@ -43,6 +43,7 @@ public class GeomFactory2i implements GeomFactory2ai<PathElement2i, Point2i, Rec
 	
 	@Override
 	public Point2i convertToPoint(Point2D point) {
+		assert (point != null) : "Point must be not null"; //$NON-NLS-1$
 		try {
 			return (Point2i) point;
 		} catch (Throwable exception) {
@@ -53,17 +54,20 @@ public class GeomFactory2i implements GeomFactory2ai<PathElement2i, Point2i, Rec
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends Vector2D> T convertToVector(Point2D point) {
+		assert (point != null) : "Point must be not null"; //$NON-NLS-1$
 		return (T) new Vector2i(point.ix(), point.iy());
 	}
 
 	@Override
 	public Point2i convertToPoint(Vector2D vector) {
+		assert (vector != null) : "Point must be not null"; //$NON-NLS-1$
 		return new Point2i(vector.ix(), vector.iy());
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends Vector2D> T convertToVector(Vector2D vector) {
+		assert (vector != null) : "Point must be not null"; //$NON-NLS-1$
 		Vector2i vv;
 		try {
 			vv = (Vector2i) vector;
@@ -97,6 +101,7 @@ public class GeomFactory2i implements GeomFactory2ai<PathElement2i, Point2i, Rec
 
 	@Override
 	public Path2ai<?, ?, PathElement2i, Point2i, ?> newPath(PathWindingRule rule) {
+		assert (rule != null) : "Path winding rule must be not null"; //$NON-NLS-1$
 		return new Path2i(rule);
 	}
 	
@@ -107,6 +112,8 @@ public class GeomFactory2i implements GeomFactory2ai<PathElement2i, Point2i, Rec
 	
 	@Override
 	public Rectangle2i newBox(int x, int y, int width, int height) {
+		assert (width >= 0) : "Width must be positive or zero"; //$NON-NLS-1$
+		assert (height >= 0) : "Height must be positive or zero"; //$NON-NLS-1$
 		return new Rectangle2i(x, y, width, height);
 	}
 

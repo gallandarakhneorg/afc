@@ -27,7 +27,7 @@ import org.arakhne.afc.math.geometry.d2.ai.Segment2ai;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.IntegerPropertyBase;
+import javafx.beans.property.SimpleIntegerProperty;
 
 /** A 2D segment/line with 2 integer FX properties.
  *
@@ -133,6 +133,7 @@ public class Segment2ifx extends AbstractShape2ifx<Segment2ifx>
 	@Pure
 	@Override
 	public Shape2ifx<?> createTransformedShape(Transform2D transform) {
+		assert (transform != null) : "Transformation must be not null"; //$NON-NLS-1$
 		Point2ifx point = new Point2ifx(getX1(), getY1());
 		transform.transform(point);
 		int x1 = point.ix();
@@ -183,17 +184,7 @@ public class Segment2ifx extends AbstractShape2ifx<Segment2ifx>
 	@Pure
 	public IntegerProperty x1Property() {
 		if (this.ax == null) {
-			this.ax = new IntegerPropertyBase(0) {
-				@Override
-				public String getName() {
-					return "x1"; //$NON-NLS-1$
-				}
-				
-				@Override
-				public Object getBean() {
-					return Segment2ifx.this;
-				}
-			};
+			this.ax = new SimpleIntegerProperty(this, "x1"); //$NON-NLS-1$
 		}
 		return this.ax;
 	}
@@ -211,17 +202,7 @@ public class Segment2ifx extends AbstractShape2ifx<Segment2ifx>
 	@Pure
 	public IntegerProperty y1Property() {
 		if (this.ay == null) {
-			this.ay = new IntegerPropertyBase(0) {
-				@Override
-				public String getName() {
-					return "y1"; //$NON-NLS-1$
-				}
-				
-				@Override
-				public Object getBean() {
-					return Segment2ifx.this;
-				}
-			};
+			this.ay = new SimpleIntegerProperty(this, "y1"); //$NON-NLS-1$
 		}
 		return this.ay;
 	}
@@ -239,17 +220,7 @@ public class Segment2ifx extends AbstractShape2ifx<Segment2ifx>
 	@Pure
 	public IntegerProperty x2Property() {
 		if (this.bx == null) {
-			this.bx = new IntegerPropertyBase(0) {
-				@Override
-				public String getName() {
-					return "x2"; //$NON-NLS-1$
-				}
-				
-				@Override
-				public Object getBean() {
-					return Segment2ifx.this;
-				}
-			};
+			this.bx = new SimpleIntegerProperty(this, "x2"); //$NON-NLS-1$
 		}
 		return this.bx;
 	}
@@ -267,28 +238,18 @@ public class Segment2ifx extends AbstractShape2ifx<Segment2ifx>
 	@Pure
 	public IntegerProperty y2Property() {
 		if (this.by == null) {
-			this.by = new IntegerPropertyBase(0) {
-				@Override
-				public String getName() {
-					return "y2"; //$NON-NLS-1$
-				}
-				
-				@Override
-				public Object getBean() {
-					return Segment2ifx.this;
-				}
-			};
+			this.by = new SimpleIntegerProperty(this, "y2"); //$NON-NLS-1$
 		}
 		return this.by;
 	}
 
 	@Override
-	public Point2D getP1() {
+	public Point2ifx getP1() {
 		return new Point2ifx(this.ax, this.ay);
 	}
 
 	@Override
-	public Point2D getP2() {
+	public Point2ifx getP2() {
 		return new Point2ifx(this.bx, this.by);
 	}
 

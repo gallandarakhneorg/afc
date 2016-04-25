@@ -110,8 +110,14 @@ public class Tuple2fx<T extends Tuple2D<? super T>, IT extends T> implements Tup
 	public IT clone() {
 		try {
 			Tuple2fx<?, ?> clone = (Tuple2fx<?, ?>) super.clone();
-			clone.x = new SimpleDoubleProperty(this.x.doubleValue());
-			clone.y = new SimpleDoubleProperty(this.y.doubleValue());
+			if (clone.x != null) {
+				clone.x = null;
+				clone.xProperty().set(getX());
+			}
+			if (clone.y != null) {
+				clone.y = null;
+				clone.yProperty().set(getY());
+			}
 			return (IT) clone;
 		}
 		catch(CloneNotSupportedException e) {
@@ -137,8 +143,8 @@ public class Tuple2fx<T extends Tuple2D<? super T>, IT extends T> implements Tup
 	@Override
 	public int hashCode() {
 		long bits = 1;
-		bits = 31 * bits + Double.doubleToLongBits(this.x.get());
-		bits = 31 * bits + Double.doubleToLongBits(this.y.get());
+		bits = 31 * bits + Double.doubleToLongBits(getX());
+		bits = 31 * bits + Double.doubleToLongBits(getY());
 		int b = (int) bits;
 		return b ^ (b >> 32);
 	}
@@ -147,10 +153,10 @@ public class Tuple2fx<T extends Tuple2D<? super T>, IT extends T> implements Tup
 	@Override
 	public String toString() {
 		return "(" //$NON-NLS-1$
-				+this.x.get()
-				+";" //$NON-NLS-1$
-				+this.y.get()
-				+")"; //$NON-NLS-1$
+				+ getX()
+				+ ";" //$NON-NLS-1$
+				+ getY()
+				+ ")"; //$NON-NLS-1$
 	}
 
 	/** Replies the x property.
@@ -159,6 +165,9 @@ public class Tuple2fx<T extends Tuple2D<? super T>, IT extends T> implements Tup
 	 */
 	@Pure
 	public DoubleProperty xProperty() {
+		if (this.x == null) {
+			this.x = new SimpleDoubleProperty(this, "x"); //$NON-NLS-1$;
+		}
 		return this.x;
 	}
 
@@ -168,47 +177,50 @@ public class Tuple2fx<T extends Tuple2D<? super T>, IT extends T> implements Tup
 	 */
 	@Pure
 	public DoubleProperty yProperty() {
+		if (this.y == null) {
+			this.y = new SimpleDoubleProperty(this, "y"); //$NON-NLS-1$
+		}
 		return this.y;
 	}
 
 	@Override
 	public double getX() {
-		return this.x.doubleValue();
+		return this.x == null ? 0 : this.x.doubleValue();
 	}
 
 	@Override
 	public int ix() {
-		return this.x.intValue();
+		return this.x == null ? 0 : this.x.intValue();
 	}
 
 	@Override
 	public void setX(int x) {
-		this.x.set(x);
+		xProperty().set(x);
 	}
 
 	@Override
 	public void setX(double x) {
-		this.x.set(x);
+		xProperty().set(x);
 	}
 
 	@Override
 	public double getY() {
-		return this.y.doubleValue();
+		return this.y == null ? 0 : this.y.doubleValue();
 	}
 
 	@Override
 	public int iy() {
-		return this.y.intValue();
+		return this.y == null ? 0 : this.y.intValue();
 	}
 
 	@Override
 	public void setY(int y) {
-		this.y.set(y);
+		yProperty().set(y);
 	}
 
 	@Override
 	public void setY(double y) {
-		this.y.set(y);
+		yProperty().set(y);
 	}
 
 }

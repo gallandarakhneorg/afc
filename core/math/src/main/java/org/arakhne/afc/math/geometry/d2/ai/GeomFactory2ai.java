@@ -42,7 +42,9 @@ public interface GeomFactory2ai<E extends PathElement2ai, P extends Point2D, B e
 	 * @param point the point to convert. 
 	 * @return <code>p</code> if it is of type <code>P</code>, or a copy of <code>p</code>.
 	 */
-	P convertToPoint(Point2D point);
+	default P convertToPoint(Point2D point) {
+		throw new UnsupportedOperationException();
+	}
 	
 	/** Convert the given point.
 	 *
@@ -50,14 +52,18 @@ public interface GeomFactory2ai<E extends PathElement2ai, P extends Point2D, B e
 	 * @param point the point to convert. 
 	 * @return the vector.
 	 */
-	<T extends Vector2D> T convertToVector(Point2D point);
+	default <T extends Vector2D> T convertToVector(Point2D point) {
+		throw new UnsupportedOperationException();
+	}
 
 	/** Convert the given vector.
 	 *
 	 * @param vector the vector to convert. 
 	 * @return the point.
 	 */
-	P convertToPoint(Vector2D vector);
+	default P convertToPoint(Vector2D vector) {
+		throw new UnsupportedOperationException();
+	}
 	
 	/** Convert the given vector.
 	 *
@@ -65,13 +71,17 @@ public interface GeomFactory2ai<E extends PathElement2ai, P extends Point2D, B e
 	 * @param vector the vector to convert. 
 	 * @return the vector.
 	 */
-	<T extends Vector2D> T convertToVector(Vector2D vector);
+	default <T extends Vector2D> T convertToVector(Vector2D vector) {
+		throw new UnsupportedOperationException();
+	}
 
 	/** Create a point.
 	 *
 	 * @return the point.
 	 */
-	P newPoint();
+	default P newPoint() {
+		throw new UnsupportedOperationException();
+	}
 
 	/** Create a point.
 	 *
@@ -79,14 +89,18 @@ public interface GeomFactory2ai<E extends PathElement2ai, P extends Point2D, B e
 	 * @param y 
 	 * @return the point.
 	 */
-	P newPoint(int x, int y);
+	default P newPoint(int x, int y) {
+		throw new UnsupportedOperationException();
+	}
 
 	/** Create a vector.
 	 *
 	 * @param <T> the type of the vector.
 	 * @return the vector.
 	 */
-	<T extends Vector2D> T newVector();
+	default <T extends Vector2D> T newVector() {
+		throw new UnsupportedOperationException();
+	}
 
 	/** Create a vector.
 	 *
@@ -95,14 +109,18 @@ public interface GeomFactory2ai<E extends PathElement2ai, P extends Point2D, B e
 	 * @param y 
 	 * @return the vector.
 	 */
-	<T extends Vector2D> T newVector(int x, int y);
+	default <T extends Vector2D> T newVector(int x, int y) {
+		throw new UnsupportedOperationException();
+	}
 
 	/** Create an empty path with the given winding rule.
 	 *
 	 * @param rule the rule.
 	 * @return the new path.
 	 */
-	Path2ai<?, ?, E, P, ?> newPath(PathWindingRule rule);
+	default Path2ai<?, ?, E, P, ?> newPath(PathWindingRule rule) {
+		throw new UnsupportedOperationException();
+	}
 	
 	/** Create a segment.
 	 *
@@ -112,13 +130,17 @@ public interface GeomFactory2ai<E extends PathElement2ai, P extends Point2D, B e
 	 * @param y2 the y coordinate of the second point of the segment.
 	 * @return the new segment.
 	 */
-	Segment2ai<?, ?, E, P, ?> newSegment(int x1, int y1, int x2, int y2);
+	default Segment2ai<?, ?, E, P, ?> newSegment(int x1, int y1, int x2, int y2) {
+		throw new UnsupportedOperationException();
+	}
 	
 	/** Create an empty bounding box.
 	 *
 	 * @return the box.
 	 */
-	B newBox();
+	default B newBox() {
+		throw new UnsupportedOperationException();
+	}
 
 	/** Create a bounding box.
 	 *
@@ -128,7 +150,9 @@ public interface GeomFactory2ai<E extends PathElement2ai, P extends Point2D, B e
 	 * @param height the height of the box.
 	 * @return the box.
 	 */
-	B newBox(int x, int y, int width, int height);
+	default B newBox(int x, int y, int width, int height) {
+		throw new UnsupportedOperationException();
+	}
 
 	/** Create a move-to path element to the given point.
 	 * 
@@ -136,7 +160,9 @@ public interface GeomFactory2ai<E extends PathElement2ai, P extends Point2D, B e
 	 * @param y y coordinate of the target point.
 	 * @return the path element.
 	 */
-	E newMovePathElement(int x, int y);
+	default E newMovePathElement(int x, int y) {
+		throw new UnsupportedOperationException();
+	}
 	
 	/** Create a line-to path element to the given point.
 	 * 
@@ -146,7 +172,9 @@ public interface GeomFactory2ai<E extends PathElement2ai, P extends Point2D, B e
 	 * @param targetY y coordinate of the target point.
 	 * @return the path element.
 	 */
-	E newLinePathElement(int startX, int startY, int targetX, int targetY);
+	default E newLinePathElement(int startX, int startY, int targetX, int targetY) {
+		throw new UnsupportedOperationException();
+	}
 
 	/** Create a close path element.
 	 * 
@@ -156,7 +184,9 @@ public interface GeomFactory2ai<E extends PathElement2ai, P extends Point2D, B e
 	 * @param firstPointY y coordinate of the first point on the path.
 	 * @return the path element.
 	 */
-	E newClosePathElement(int lastPointX, int lastPointy, int firstPointX, int firstPointY);
+	default E newClosePathElement(int lastPointX, int lastPointy, int firstPointX, int firstPointY) {
+		throw new UnsupportedOperationException();
+	}
 
 	/** Create a quadratic curve path element to the given point through the given control point.
 	 * 
@@ -168,7 +198,9 @@ public interface GeomFactory2ai<E extends PathElement2ai, P extends Point2D, B e
 	 * @param targetY y coordinate of the target point.
 	 * @return the path element.
 	 */
-	E newCurvePathElement(int startX, int startY, int controlX, int controlY, int targetX, int targetY);
+	default E newCurvePathElement(int startX, int startY, int controlX, int controlY, int targetX, int targetY) {
+		throw new UnsupportedOperationException();
+	}
 
 	/** Create a curve path element to the given point through the two given control points.
 	 * 
@@ -182,7 +214,9 @@ public interface GeomFactory2ai<E extends PathElement2ai, P extends Point2D, B e
 	 * @param targetY y coordinate of the target point.
 	 * @return the path element.
 	 */
-	E newCurvePathElement(int startX, int startY, int controlX1, int controlY1,
-			int controlX2, int controlY2, int targetX, int targetY);
+	default E newCurvePathElement(int startX, int startY, int controlX1, int controlY1,
+			int controlX2, int controlY2, int targetX, int targetY) {
+		throw new UnsupportedOperationException();
+	}
 
 }

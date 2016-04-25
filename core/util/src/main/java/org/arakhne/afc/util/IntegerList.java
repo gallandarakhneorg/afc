@@ -953,7 +953,6 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 
 	@Override
 	public Spliterator<Integer> spliterator() {
-		// TODO Auto-generated method stub
 		return SortedSet.super.spliterator();
 	}
 

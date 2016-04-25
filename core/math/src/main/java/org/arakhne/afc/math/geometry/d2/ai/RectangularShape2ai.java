@@ -48,6 +48,7 @@ public interface RectangularShape2ai<
 
 	@Override
 	default void toBoundingBox(B box) {
+		assert (box != null) : "Rectangle must not be null"; //$NON-NLS-1$
 		box.setFromCorners(getMinX(), getMinY(), getMaxX(), getMaxY());
 	}
 	
@@ -64,6 +65,8 @@ public interface RectangularShape2ai<
 	 * @param height
 	 */
 	default void set(int x, int y, int width, int height) {
+		assert (width >= 0) : "Width must be positive or zero"; //$NON-NLS-1$
+		assert (height >= 0) : "Height must be positive or zero"; //$NON-NLS-1$
 		setFromCorners(x, y, x + width, y + height);
 	}
 	
@@ -73,6 +76,8 @@ public interface RectangularShape2ai<
 	 * @param max is the max corner of the rectangle.
 	 */
 	default void set(Point2D min, Point2D max) {
+		assert (min != null) : "Minimum point must be not be null"; //$NON-NLS-1$
+		assert (max != null) : "Maximum point must be not be null"; //$NON-NLS-1$
 		setFromCorners(min.ix(), min.iy(), max.ix(), max.iy());
 	}
 	
@@ -81,6 +86,7 @@ public interface RectangularShape2ai<
 	 * @param width
 	 */
 	default void setWidth(int width) {
+		assert (width >= 0) : "Width must be positive or zero"; //$NON-NLS-1$
 		setMaxX(getMinX() + width);
 	}
 
@@ -89,6 +95,7 @@ public interface RectangularShape2ai<
 	 * @param height
 	 */
 	default void setHeight(int height) {
+		assert (height >= 0) : "Height must be positive or zero"; //$NON-NLS-1$
 		setMaxY(getMinY() + height);
 	}
 	
@@ -99,7 +106,6 @@ public interface RectangularShape2ai<
 	 * @param x2 is the coordinate of the second corner.
 	 * @param y2 is the coordinate of the second corner.
 	 */
-	// This function has no default implementation for allowing implementation to be atomic. 
 	void setFromCorners(int x1, int y1, int x2, int y2);
 	
 	/** Change the frame of the rectangle conserving previous min and max if needed.
@@ -108,6 +114,8 @@ public interface RectangularShape2ai<
 	 * @param p2 the second corner.
 	 */
 	default void setFromCorners(Point2D p1, Point2D p2) {
+		assert (p1 != null) : "First corner must be not be null"; //$NON-NLS-1$
+		assert (p2 != null) : "Second corner must be not be null"; //$NON-NLS-1$
 		setFromCorners(p1.ix(), p1.iy(), p2.ix(), p2.iy());
 	}
 
@@ -138,6 +146,8 @@ public interface RectangularShape2ai<
      * @param corner the specified corner point
      */
 	default void setFromCenter(Point2D center, Point2D corner) {
+		assert (center != null) : "Center must be not be null"; //$NON-NLS-1$
+		assert (corner != null) : "Corner must be not be null"; //$NON-NLS-1$
 		setFromCenter(center.ix(), center.iy(), corner.ix(), corner.iy());
 	}
 
@@ -242,17 +252,17 @@ public interface RectangularShape2ai<
 	
 	/** Inflate this rectangle with the given amounts.
 	 * 
-	 * @param left
-	 * @param top
-	 * @param right
-	 * @param bottom
+	 * @param minXBorder
+	 * @param minYBorder
+	 * @param maxXBorder
+	 * @param maxYBorder
 	 */
-	default void inflate(int left, int top, int right, int bottom) {
+	default void inflate(int minXBorder, int minYBorder, int maxXBorder, int maxYBorder) {
 		setFromCorners(
-				getMinX()+left,
-				getMinY()+top,
-				getMaxX()+right,
-				getMaxY()+bottom);
+				getMinX() - minXBorder,
+				getMinY() - minYBorder,
+				getMaxX() + maxXBorder,
+				getMaxY() + maxYBorder);
 	}
 
 }

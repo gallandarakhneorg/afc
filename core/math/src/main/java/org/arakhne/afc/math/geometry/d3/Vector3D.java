@@ -33,6 +33,21 @@ import org.eclipse.xtext.xbase.lib.Pure;
  */
 public interface Vector3D extends Tuple3D<Vector3D> {
 
+	/** Compute the dot product of two vectors.
+	 * 
+	 * @param x1
+	 * @param y1
+	 * @param z1
+	 * @param x2
+	 * @param y2
+	 * @param z2
+	 * @return the dot product.
+	 */
+	@Pure
+	static double dotProduct(double x1, double y1, double z1, double x2, double y2, double z2) {
+		return x1 * x2 + y1 * y2 +  z1 * z2;
+	}
+	
 	/**
 	 * Sets the value of this tuple to the sum of tuples t1 and t2.
 	 * @param t1 the first tuple

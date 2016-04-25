@@ -28,17 +28,15 @@ import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.Unefficient;
 import org.arakhne.afc.math.geometry.PathWindingRule;
-import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
-import org.arakhne.afc.math.geometry.d2.fp.Point2fp;
-import org.arakhne.afc.math.geometry.d2.fp.Vector2fp;
-import org.arakhne.afc.math.matrix.Matrix2f;
+import org.arakhne.afc.math.geometry.d2.afp.Path2afp.CrossingComputationType;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Fonctional interface that represented a 2D oriented rectangle on a plane.
+ * An oriented rectangle is a parallelogram with orthogonal axes.
  *
  * @param <ST> is the type of the general implementation.
  * @param <IT> is the type of the implementation of this shape.
@@ -46,69 +44,94 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @param <P> is the type of the points.
  * @param <B> is the type of the bounding boxes.
  * @author $Author: sgalland$
- * @author $Author: hjaffali$
+ * @author $Author: ngaud$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
 public interface OrientedRectangle2afp<
-		ST extends Shape2afp<?, ?, IE, P, B>,
-		IT extends OrientedRectangle2afp<?, ?, IE, P, B>,
-		IE extends PathElement2afp,
-		P extends Point2D,
-		B extends Rectangle2afp<?, ?, IE, P, B>>
-		extends Shape2afp<ST, IT, IE, P, B> {
+ST extends Shape2afp<?, ?, IE, P, B>,
+IT extends OrientedRectangle2afp<?, ?, IE, P, B>,
+IE extends PathElement2afp,
+P extends Point2D,
+B extends Rectangle2afp<?, ?, IE, P, B>>
+extends Shape2afp<ST, IT, IE, P, B> {
 
-	/**
-	 * Compute the oriented bounding box axis.
-	 * 
-	 * @param points is the list of the points enclosed by the OBR
-	 * @param R is the vector where the R axis of the OBR is put
-	 * @param S is the vector where the S axis of the OBR is put
-	 * @see "MGPCG pages 219-221"
+	/** Project the given vector on the R axis, assuming S axis is orthogonal.
+	 *
+	 * <p>This function assumes that axes are orthogonal. For a general projection on the R axis,
+	 * see {@link Parallelogram2afp#projectVectorOnParallelogramRAxis(double, double, double, double, double, double)}.
+	 *
+	 * @param rx the x coordinate of the R axis.
+	 * @param ry the y coordinate of the R axis.
+	 * @param x the x coordinate of the vector.
+	 * @param y the y coordinate of the vector.
+	 * @return the coordinate of the projection of the vector on R
+	 * @see Parallelogram2afp#projectVectorOnParallelogramRAxis(double, double, double, double, double, double)
 	 */
-	static void computeOBRAxis(Iterable<? extends Point2D> points, Vector2D R, Vector2D S) {
-		// Determining the covariance matrix of the points
-		// and set the center of the box
-		Matrix2f cov = new Matrix2f();
-		cov.cov(R, points);
+	@Pure
+	static double projectVectorOnOrientedRectangleRAxis(double rx, double ry, double x,  double y) {
+		assert (Vector2D.isUnitVector(rx, ry)) : "Vector R is not a unit vector"; //$NON-NLS-1$
+		return Vector2D.dotProduct(x, y, rx, ry);
+	}
 
-		//Determining eigenvectors of covariance matrix and defines RS axis
-		Matrix2f rs = new Matrix2f();//eigenvectors                         
-		cov.eigenVectorsOfSymmetricMatrix(rs);
-
-		rs.getColumn(0,R);
-		rs.getColumn(1,S);
+	/** Project the given vector on the S axis, assuming R axis is orthogonal.
+	 *
+	 * <p>This function assumes that axes are orthogonal. For a general projection on the S axis,
+	 * see {@link Parallelogram2afp#projectVectorOnParallelogramSAxis(double, double, double, double, double, double)}.
+	 *
+	 * @param rx the x coordinate of the R axis (NOT the S axis).
+	 * @param ry the y coordinate of the R axis (NOT the S axis).
+	 * @param x the x coordinate of the vector.
+	 * @param y the y coordinate of the vector.
+	 * @return the coordinate of the projection of the vector on S
+	 * @see Parallelogram2afp#projectVectorOnParallelogramSAxis(double, double, double, double, double, double)
+	 */
+	@Pure
+	static double projectVectorOnOrientedRectangleSAxis(double rx, double ry, double x,  double y) {
+		assert (Vector2D.isUnitVector(rx, ry)) : "Vector R is not a unit vector"; //$NON-NLS-1$
+		return Vector2D.dotProduct(x, y, -ry, rx);
 	}
 
 	/**
-	 * Compute the OBR center and extents.
+	 * Compute the center and extents of an oriented rectangle from a set of points and the oriented rectangle axes.
+	 *
+	 * <p>This function assumes orthogonal axes, in opposite to
+	 * {@link Parallelogram2afp#computeCenterExtents(Iterable, Vector2D, Vector2D, Point2D, Tuple2D)}, which
+	 * assumes not constraint on the axes.
 	 * 
-	 * @param points is the list of the points enclosed by the OBR
-	 * @param R is the R axis of the OBR
-	 * @param S is the S axis of the OBR
-	 * @param center is the point which is set with the OBR's center coordinates.
-	 * @param extents are the extents of the OBR for the R and S axis.
-	 * @see "MGPCG pages 222-223"
+	 * @param points is the list of the points enclosed by the oriented rectangle.
+	 * @param R is the R axis of the oriented rectangle.
+	 * @param center is the point which is set with the parallogram's center coordinates.
+	 * @param extents are the extents of the parallogram for the R and S axis.
+	 * @see "MGPCG pages 222-223 (oriented bounding box)"
+	 * @see Parallelogram2afp#computeCenterExtents(Iterable, Vector2D, Vector2D, Point2D, Tuple2D)
 	 */
-	static void computeOBRCenterExtents(
+	static void computeCenterExtents(
 			Iterable<? extends Point2D> points,
-			Vector2D R, Vector2D S,
+			Vector2D R,
 			Point2D center, Tuple2D<?> extents) {
-		assert(points!=null);
-		assert(center!=null);
-		assert(extents!=null);
+		assert(points != null) : "Collection of points must be not null"; //$NON-NLS-1$
+		assert(R != null) : "First axis vector must be not null"; //$NON-NLS-1$
+		assert(R.isUnitVector()) : "First axis vector must be unit vector"; //$NON-NLS-1$
+		assert(center != null) : "Center point must be not null"; //$NON-NLS-1$
+		assert(extents != null) : "Extent tuple must be not null"; //$NON-NLS-1$
 
 		double minR = Double.POSITIVE_INFINITY;
 		double maxR = Double.NEGATIVE_INFINITY;
 		double minS = Double.POSITIVE_INFINITY;
 		double maxS = Double.NEGATIVE_INFINITY;
 
+		double ux = R.getX();
+		double uy = R.getY();
+		double vx = -uy;
+		double vy = ux;
+
 		double PdotR;
 		double PdotS;
 		for(Point2D tuple : points) {
-			PdotR = Vector2D.dotProduct(tuple.getX(), tuple.getY(), R.getX(), R.getY());
-			PdotS = Vector2D.dotProduct(tuple.getX(), tuple.getY(), S.getX(), S.getY());
+			PdotR = projectVectorOnOrientedRectangleRAxis(ux, uy, tuple.getX(), tuple.getY());
+			PdotS = projectVectorOnOrientedRectangleSAxis(ux, uy, tuple.getX(), tuple.getY());
 
 			if (PdotR < minR) minR = PdotR;			
 			if (PdotR > maxR) maxR = PdotR;			
@@ -119,13 +142,13 @@ public interface OrientedRectangle2afp<
 		double a = (maxR + minR) / 2.;
 		double b = (maxS + minS) / 2.;
 
-		// Set the center of the OBR
+		// Set the center of the oriented rectangle
 		center.set(
-				a*R.getX()
-				+b*S.getX(),
+				a * ux
+				+b * vx,
 
-				a*R.getY()
-				+b*S.getY());
+				a * uy
+				+b * vy);
 
 		// Compute extents
 		extents.set(
@@ -133,24 +156,225 @@ public interface OrientedRectangle2afp<
 				(maxS - minS) / 2.);
 	}
 
+	/** Replies if a point is inside in the oriented rectangle.
+	 * 
+	 * @param px
+	 *            is the X coordinate of the point to test.
+	 * @param py
+	 *            is the Y coordinate of the point to test.
+	 * @param centerX
+	 *            is the X coordinate of the oriented rectangle center.
+	 * @param centerY
+	 *            is the Y coordinate of the oriented rectangle center.
+	 * @param axis1X
+	 *            is the X coordinate of the axis 1 unit vector.
+	 * @param axis1Y
+	 *            is the Y coordinate of the axis 1 unit vector.
+	 * @param axis1Extent
+	 *            is the extent of the axis 1 of the oriented rectangle.
+	 * @param axis2Extent
+	 *            is the extent of the axis 2 of the oriented rectangle.
+	 * @return <code>true</code> if the given point is inside the oriented rectangle;
+	 * otherwise <code>false</code>.
+	 */
+	@Pure
+	static boolean containsOrientedRectanglePoint(
+			double centerX, double centerY,
+			double axis1X, double axis1Y,
+			double axis1Extent,
+			double axis2Extent,
+			double px, double py) {
+		assert (axis1Extent >= 0) : "Extent of axis 1 must be positive or zero"; //$NON-NLS-1$
+		assert (axis2Extent >= 0) : "Extent of axis 2 must be positive or zero"; //$NON-NLS-1$
+		assert (Vector2D.isUnitVector(axis1X, axis1Y)) : "Axis 1 is not a unit vector"; //$NON-NLS-1$
+		double x = px - centerX;
+		double y = py - centerY;
+		double coordinate = projectVectorOnOrientedRectangleRAxis(axis1X, axis1Y, x, y);
+		if (coordinate < -axis1Extent || coordinate > axis1Extent) {
+			return false;
+		}
+		coordinate = projectVectorOnOrientedRectangleSAxis(axis1X, axis1Y, x, y);
+		return (coordinate >= -axis2Extent && coordinate <= axis2Extent);
+	}
+
+	/** Replies if a point is inside the oriented rectangle.
+	 * 
+	 * @param centerX
+	 *            is the X coordinate of the oriented rectangle center.
+	 * @param centerY
+	 *            is the Y coordinate of the oriented rectangle center.
+	 * @param axis1X
+	 *            is the X coordinate of the axis 1 unit vector.
+	 * @param axis1Y
+	 *            is the Y coordinate of the axis 1 unit vector.
+	 * @param axis1Extent
+	 *            is the extent of the axis 1 of the oriented rectangle.
+	 * @param axis2Extent
+	 *            is the extent of the axis 2 of the oriented rectangle.
+	 * @param rx
+	 *            is the X coordinate of the lower point of the rectangle.
+	 * @param ry
+	 *            is the Y coordinate of the lower point of the rectangle.
+	 * @param rwidth
+	 *            is the width of the rectangle.
+	 * @param rheight
+	 *            is the height of the rectangle.
+	 * @return <code>true</code> if the given rectangle is inside the oriented rectangle;
+	 * otherwise <code>false</code>.
+	 */
+	@Pure
+	@Unefficient
+	static boolean containsOrientedRectangleRectangle(
+			double centerX, double centerY,
+			double axis1X, double axis1Y,
+			double axis1Extent,
+			double axis2Extent,
+			double rx, double ry,
+			double rwidth, double rheight) {
+		assert (axis1Extent >= 0) : "Extent of axis 1 must be positive or zero"; //$NON-NLS-1$
+		assert (axis2Extent >= 0) : "Extent of axis 2 must be positive or zero"; //$NON-NLS-1$
+		assert (Vector2D.isUnitVector(axis1X, axis1Y)) : "Axis 1 is not a unit vector"; //$NON-NLS-1$
+		assert (rwidth >= 0) : "Width of the rectangle must be positive or zero"; //$NON-NLS-1$
+		assert (rheight >= 0) : "Height of the rectangle must be positive or zero"; //$NON-NLS-1$
+
+		double x, y, coordinate;
+
+		double basex = rx - centerX;
+		double basey = ry - centerY;
+
+		x = basex;
+		y = basey;
+		coordinate = projectVectorOnOrientedRectangleRAxis(axis1X, axis1Y, x, y);
+		if (coordinate < -axis1Extent || coordinate > axis1Extent) {
+			return false;
+		}
+		coordinate = projectVectorOnOrientedRectangleSAxis(axis1X, axis1Y, x, y);
+		if (coordinate < -axis2Extent || coordinate > axis2Extent) {
+			return false;
+		}
+
+		x = basex + rwidth;
+		coordinate = projectVectorOnOrientedRectangleRAxis(axis1X, axis1Y, x, y);
+		if (coordinate < -axis1Extent || coordinate > axis1Extent) {
+			return false;
+		}
+		coordinate = projectVectorOnOrientedRectangleSAxis(axis1X, axis1Y, x, y);
+		if (coordinate < -axis2Extent || coordinate > axis2Extent) {
+			return false;
+		}
+
+		y = basey + rheight;
+		coordinate = projectVectorOnOrientedRectangleRAxis(axis1X, axis1Y, x, y);
+		if (coordinate < -axis1Extent || coordinate > axis1Extent) {
+			return false;
+		}
+		coordinate = projectVectorOnOrientedRectangleSAxis(axis1X, axis1Y, x, y);
+		if (coordinate < -axis2Extent || coordinate > axis2Extent) {
+			return false;
+		}
+
+		x = basex;
+		coordinate = projectVectorOnOrientedRectangleRAxis(axis1X, axis1Y, x, y);
+		if (coordinate < -axis1Extent || coordinate > axis1Extent) {
+			return false;
+		}
+		coordinate = projectVectorOnOrientedRectangleSAxis(axis1X, axis1Y, x, y);
+		return (coordinate >= -axis2Extent && coordinate <= axis2Extent);
+	}
+
+	/**
+	 * Given a point p, this function computes the point q1 on (or in) this oriented rectangle,
+	 * closest to p; and the point q2 on the oriented rectangle, farthest to p. If there are several
+	 * points, the function will return one of those. Remember this function may
+	 * return an approximate result when points remain on oriented rectangle plane of symmetry.
+	 * 
+	 * @param px
+	 *            is the X coordinate of the point to test.
+	 * @param py
+	 *            is the Y coordinate of the point to test.
+	 * @param centerX
+	 *            is the X coordinate of the oriented rectangle center.
+	 * @param centerY
+	 *            is the Y coordinate of the oriented rectangle center.
+	 * @param axis1X
+	 *            is the X coordinate of the axis 1 vector.
+	 * @param axis1Y
+	 *            is the Y coordinate of the axis 1 vector.
+	 * @param axis1Extent
+	 *            is the extent of the axis 1 of the oriented rectangle.
+	 * @param axis2Extent
+	 *            is the extent of the axis 2 of the oriented rectangle.
+	 * @param closest the closest point. If <code>null</code>, the closest point is not computed.
+	 * @param farthest the farthest point. If <code>null</code>, the farthest point is not computed.
+	 */
+	static void computeClosestFarthestPoints(
+			double px, double py,
+			double centerX, double centerY,
+			double axis1X, double axis1Y,
+			double axis1Extent,
+			double axis2Extent,
+			Point2D closest, Point2D farthest) {
+		assert (axis1Extent >= 0.) : "Extent of the first axis must be positive or zero"; //$NON-NLS-1$
+		assert (axis2Extent >= 0.) : "Extent of the second axis must be positive or zero"; //$NON-NLS-1$
+		assert (Vector2D.isUnitVector(axis1X, axis1Y)) : "Axis 1 is not a unit vector"; //$NON-NLS-1$
+		assert (closest != null || farthest != null) : "Neither closest point nor farthest point has a result vector"; //$NON-NLS-1$
+
+		double dx = px - centerX;
+		double dy = py - centerY;
+
+		// For each axis project d onto that axis to get the distance along
+		// the axis of d from the parallelogram center
+		double d1 = projectVectorOnOrientedRectangleRAxis(axis1X, axis1Y, dx, dy);
+		double d2 = projectVectorOnOrientedRectangleSAxis(axis1X, axis1Y, dx, dy);
+
+		if (closest != null) {
+			double clampedD1 = MathUtil.clamp(d1, -axis1Extent, axis1Extent);
+			double clampedD2 = MathUtil.clamp(d2, -axis2Extent, axis2Extent);
+
+			// Step that distance along the axis to get world coordinate
+			// q1 += dist * this.axis[i]; (If distance farther than the box
+			// extents, clamp to the box)
+			closest.set(
+					centerX + clampedD1 * axis1X - clampedD2 * axis1Y,
+					centerY + clampedD1 * axis1Y + clampedD2 * axis1X);
+		}
+
+		if (farthest != null) {
+			// Clamp to the other side of the box
+			if (d1 >= 0.) {
+				d1 = -axis1Extent;
+			} else {
+				d1 = axis1Extent;
+			}
+			if (d2 >= 0.) {
+				d2 = -axis2Extent;
+			} else {
+				d2 = axis2Extent;
+			}
+
+			// Step that distance along the axis to get world coordinate
+			// q2 += dist * this.axis[i];
+			farthest.set(
+					centerX + d1 * axis1X - d2 * axis1Y,
+					centerY + d1 * axis1Y + d2 * axis1X);
+
+		}
+	}
+
 	/** Replies if the specified rectangle intersects the specified segment.
 	 *
-	 * @param obrCenterX
-	 *            is the X coordinate of the OBR center.
-	 * @param obrCenterY
-	 *            is the Y coordinate of the OBR center.
-	 * @param obrAxis1X
+	 * @param centerX
+	 *            is the X coordinate of the oriented rectangle center.
+	 * @param centerY
+	 *            is the Y coordinate of the oriented rectangle center.
+	 * @param axis1X
 	 *            is the X coordinate of the axis 1 unit vector.
-	 * @param obrAxis1Y
+	 * @param axis1Y
 	 *            is the Y coordinate of the axis 1 unit vector.
-	 * @param obrAxis1Extent
-	 *            is the extent of the axis 1 of the OBB.
-	 * @param obrAxis2X
-	 *            is the X coordinate of the axis 2 unit vector.
-	 * @param obrAxis2Y
-	 *            is the Y coordinate of the axis 2 unit vector.
-	 * @param obrAxis2Extent
-	 *            is the extent of the axis 2 of the OBB.
+	 * @param axis1Extent
+	 *            is the extent of the axis 1 of the oriented rectangle.
+	 * @param axis2Extent
+	 *            is the extent of the axis 2 of the oriented rectangle.
 	 * @param s1x is the X coordinate of the first point of the segment.
 	 * @param s1y is the Y coordinate of the first point of the segment.
 	 * @param s2x is the X coordinate of the second point of the segment.
@@ -159,41 +383,94 @@ public interface OrientedRectangle2afp<
 	 */
 	@Pure
 	static boolean intersectsOrientedRectangleSegment(
-			double obrCenterX, double obrCenterY,
-			double obrAxis1X, double obrAxis1Y,
-			double obrAxis1Extent,
-			double obrAxis2X, double obrAxis2Y,
-			double obrAxis2Extent,
+			double centerX, double centerY,
+			double axis1X, double axis1Y,
+			double axis1Extent,
+			double axis2Extent,
 			double s1x, double s1y, double s2x, double s2y) {
+		assert (axis1Extent >= 0.) : "Axis 1 extent must be positive or zero"; //$NON-NLS-1$
+		assert (axis2Extent >= 0.) : "Axis 2 extent must be positive or zero"; //$NON-NLS-1$
+		assert (Vector2D.isUnitVector(axis1X, axis1Y)) : "Axis 1 must be a unit vector"; //$NON-NLS-1$
 		//Changing Segment coordinate basis.
-		double ax = (s1x-obrCenterX) * obrAxis2Y - (s1y-obrCenterY) * obrAxis2X;
-		double ay = (s1y-obrCenterY) * obrAxis1X - (s1x-obrCenterX) * obrAxis1Y;
-		double bx = (s2x-obrCenterX) * obrAxis2Y - (s2y-obrCenterY) * obrAxis2X;
-		double by = (s2y-obrCenterY) * obrAxis1X - (s2x-obrCenterX) * obrAxis1Y;
+		double x = s1x - centerX;
+		double y = s1y - centerY;
+		double ax = projectVectorOnOrientedRectangleRAxis(axis1X, axis1Y, x, y);
+		double ay = projectVectorOnOrientedRectangleSAxis(axis1X, axis1Y, x, y);
+		x = s2x - centerX;
+		y = s2y - centerY;
+		double bx = projectVectorOnOrientedRectangleRAxis(axis1X, axis1Y, x, y);
+		double by = projectVectorOnOrientedRectangleSAxis(axis1X, axis1Y, x, y);
 
 		return Rectangle2afp.intersectsRectangleSegment(
-				-obrAxis1Extent, -obrAxis2Extent, obrAxis1Extent, obrAxis2Extent,
+				-axis1Extent, -axis2Extent, axis1Extent, axis2Extent,
 				ax, ay,  bx,  by);
 	}
 
-	/** Replies if the specified rectangle intersects the specified ellipse.
+	/** Replies if the specified rectangle intersects the specified triangle.
 	 *
-	 * @param obrCenterX
-	 *            is the X coordinate of the OBR center.
-	 * @param obrCenterY
-	 *            is the Y coordinate of the OBR center.
-	 * @param obrAxis1X
+	 * @param centerX
+	 *            is the X coordinate of the oriented rectangle center.
+	 * @param centerY
+	 *            is the Y coordinate of the oriented rectangle center.
+	 * @param axis1X
 	 *            is the X coordinate of the axis 1 unit vector.
-	 * @param obrAxis1Y
+	 * @param axis1Y
 	 *            is the Y coordinate of the axis 1 unit vector.
-	 * @param obrAxis1Extent
-	 *            is the extent of the axis 1 of the OBB.
-	 * @param obrAxis2X
-	 *            is the X coordinate of the axis 2 unit vector.
-	 * @param obrAxis2Y
-	 *            is the Y coordinate of the axis 2 unit vector.
-	 * @param obrAxis2Extent
-	 *            is the extent of the axis 2 of the OBB.
+	 * @param axis1Extent
+	 *            is the extent of the axis 1 of the oriented rectangle.
+	 * @param axis2Extent
+	 *            is the extent of the axis 2 of the oriented rectangle.
+	 * @param s1x is the X coordinate of the first point of the triangle.
+	 * @param s1y is the Y coordinate of the first point of the triangle.
+	 * @param s2x is the X coordinate of the second point of the triangle.
+	 * @param s2y is the Y coordinate of the second point of the triangle.
+	 * @param s3x is the X coordinate of the third point of the triangle.
+	 * @param s3y is the Y coordinate of the third point of the triangle.
+	 * @return <code>true</code> if intersecting, otherwise <code>false</code>
+	 */
+	@Pure
+	static boolean intersectsOrientedRectangleTriangle(
+			double centerX, double centerY,
+			double axis1X, double axis1Y,
+			double axis1Extent,
+			double axis2Extent,
+			double s1x, double s1y, double s2x, double s2y, double s3x, double s3y) {
+		assert (axis1Extent >= 0.) : "Axis 1 extent must be positive or zero"; //$NON-NLS-1$
+		assert (axis2Extent >= 0.) : "Axis 2 extent must be positive or zero"; //$NON-NLS-1$
+		assert (Vector2D.isUnitVector(axis1X, axis1Y)) : "Axis 1 must be a unit vector"; //$NON-NLS-1$
+		//Changing Triangle coordinate basis.
+		double x = s1x - centerX;
+		double y = s1y - centerY;
+		double ax = projectVectorOnOrientedRectangleRAxis(axis1X, axis1Y, x, y);
+		double ay = projectVectorOnOrientedRectangleSAxis(axis1X, axis1Y, x, y);
+		x = s2x - centerX;
+		y = s2y - centerY;
+		double bx = projectVectorOnOrientedRectangleRAxis(axis1X, axis1Y, x, y);
+		double by = projectVectorOnOrientedRectangleSAxis(axis1X, axis1Y, x, y);
+		x = s3x - centerX;
+		y = s3y - centerY;
+		double cx = projectVectorOnOrientedRectangleRAxis(axis1X, axis1Y, x, y);
+		double cy = projectVectorOnOrientedRectangleSAxis(axis1X, axis1Y, x, y);
+
+		return Triangle2afp.intersectsTriangleRectangle(
+				ax, ay,  bx,  by, cx, cy,
+				-axis1Extent, -axis2Extent, 2. * axis1Extent, 2. * axis2Extent);
+	}
+
+	/** Replies if the parallelogram intersects the given ellipse.
+	 *
+	 * @param centerX
+	 *            is the X coordinate of the parallelogram center.
+	 * @param centerY
+	 *            is the Y coordinate of the parallelogram center.
+	 * @param axis1X
+	 *            is the X coordinate of the axis 1 unit vector.
+	 * @param axis1Y
+	 *            is the Y coordinate of the axis 1 unit vector.
+	 * @param axis1Extent
+	 *            is the extent of the axis 1 of the parallelogram.
+	 * @param axis2Extent
+	 *            is the extent of the axis 2 of the parallelogram.
 	 * @param ex is the coordinate of the min point of the ellipse rectangle.
 	 * @param ey is the coordinate of the min point of the ellipse rectangle.
 	 * @param ewidth is the width of the ellipse.
@@ -201,82 +478,96 @@ public interface OrientedRectangle2afp<
 	 * @return <code>true</code> if intersecting, otherwise <code>false</code>
 	 */
 	@Pure
+	@Unefficient
 	static boolean intersectsOrientedRectangleEllipse(
-			double obrCenterX, double obrCenterY,
-			double obrAxis1X, double obrAxis1Y,
-			double obrAxis1Extent,
-			double obrAxis2X, double obrAxis2Y,
-			double obrAxis2Extent,
+			double centerX, double centerY,
+			double axis1X, double axis1Y,
+			double axis1Extent,
+			double axis2Extent,
 			double ex, double ey, double ewidth, double eheight){
+		assert (axis1Extent >= 0) : "Extent of axis 1 must be positive or zero"; //$NON-NLS-1$
+		assert (axis2Extent >= 0) : "Extent of axis 2 must be positive or zero"; //$NON-NLS-1$
+		assert (Vector2D.isUnitVector(axis1X, axis1Y)) : "Axis 1 is not a unit vector"; //$NON-NLS-1$
+		assert (ewidth >= 0) : "Width of the rectangle must be positive or zero"; //$NON-NLS-1$
+		assert (eheight >= 0) : "Height of the rectangle must be positive or zero"; //$NON-NLS-1$
 
-		// Get the semimajor and semiminor axes.
+		if (ewidth <= 0 || eheight <= 0) {
+			return false;
+		}
+
+		// Convert the oriented rectangle elements so that the ellipse is transformed to a circle centered at the origin.
 		double a = ewidth / 2.;
 		double b = eheight / 2.;
 
-		// Translate so the ellipse is centered at the origin.
-		double centerx = obrCenterX - (ex + a);
-		double centery = obrCenterY - (ey + b);
+		double translateX = ex + a;
+		double translateY = ey + b;
 
-		return intersectsOrientedRectangleSolidCircle(
-				centerx, centery,
-				obrAxis1X, obrAxis1Y, obrAxis1Extent / (a*a),
-				obrAxis2X, obrAxis2Y, obrAxis2Extent / (b*b),
+		double transCenterX = (centerX - translateX) / a;
+		double transCenterY = (centerY - translateY) / b;
+
+		double transAxis1X = axis1Extent * axis1X / a;
+		double transAxis1Y = axis1Extent * axis1Y / b;
+		double length1 = Math.hypot(transAxis1X, transAxis1Y);
+		transAxis1X /= length1;
+		transAxis1Y /= length1;
+
+		double transAxis2X = axis2Extent * -axis1Y / a;
+		double transAxis2Y = axis2Extent * axis1X / b;
+		double length2 = Math.hypot(transAxis2X, transAxis2Y);
+		transAxis2X /= length2;
+		transAxis2Y /= length2;
+
+		return Parallelogram2afp.intersectsParallelogramCircle(
+				transCenterX, transCenterY,
+				transAxis1X, transAxis1Y, length1,
+				transAxis2X, transAxis2Y, length2,
 				0, 0, 1);
 	}
 
-	/** Replies if the specified rectangle intersects the specified circle.
+	/** Replies if the specified parallelogram intersects the specified circle.
 	 *
-	 * @param obrCenterX
-	 *            is the X coordinate of the OBR center.
-	 * @param obrCenterY
-	 *            is the Y coordinate of the OBR center.
-	 * @param obrAxis1X
+	 * @param centerX
+	 *            is the X coordinate of the parallelogram center.
+	 * @param centerY
+	 *            is the Y coordinate of the parallelogram center.
+	 * @param axis1X
 	 *            is the X coordinate of the axis 1 unit vector.
-	 * @param obrAxis1Y
+	 * @param axis1Y
 	 *            is the Y coordinate of the axis 1 unit vector.
-	 * @param obrAxis1Extent
-	 *            is the extent of the axis 1 of the OBB.
-	 * @param obrAxis2X
-	 *            is the X coordinate of the axis 2 unit vector.
-	 * @param obrAxis2Y
-	 *            is the Y coordinate of the axis 2 unit vector.
-	 * @param obrAxis2Extent
-	 *            is the extent of the axis 2 of the OBB.
+	 * @param axis1Extent
+	 *            is the extent of the axis 1 of the parallelogram.
+	 * @param axis2Extent
+	 *            is the extent of the axis 2 of the parallelogram.
 	 * @param circleX is the coordinate of the circle center.
 	 * @param circleY is the coordinate of the circle center.
 	 * @param circleRadius is the radius of the circle.
 	 * @return <code>true</code> if intersecting, otherwise <code>false</code>
 	 */
 	@Pure
-	static boolean intersectsOrientedRectangleSolidCircle(
-			double obrCenterX, double obrCenterY,
-			double obrAxis1X, double obrAxis1Y,
-			double obrAxis1Extent,
-			double obrAxis2X, double obrAxis2Y,
-			double obrAxis2Extent,
+	static boolean intersectsOrientedRectangleCircle(
+			double centerX, double centerY,
+			double axis1X, double axis1Y,
+			double axis1Extent,
+			double axis2Extent,
 			double circleX, double circleY, double circleRadius) {
-		// Find points on OBR closest and farest to sphere center
-
-		// Create instances of "fp" points since they are used internally.
-		Point2D closest = new Point2fp();
-		Point2D farthest = new Point2fp();
-
+		assert (axis1Extent >= 0) : "Extent of axis 1 must be positive or zero"; //$NON-NLS-1$
+		assert (axis2Extent >= 0) : "Extent of axis 2 must be positive or zero"; //$NON-NLS-1$
+		assert (Vector2D.isUnitVector(axis1X, axis1Y)) : "Axis 1 is not a unit vector"; //$NON-NLS-1$
+		assert (circleRadius >= 0) : "Circle radius must be positive or zero"; //$NON-NLS-1$
+		Point2D closest = new InnerComputationPoint2afp();
 		computeClosestFarthestPoints(
 				circleX, circleY,
-				obrCenterX, obrCenterY,
-				obrAxis1X, obrAxis1Y, obrAxis1Extent,
-				obrAxis2X, obrAxis2Y, obrAxis2Extent,
-				closest, farthest);
-
-		// Circle and OBR intersect if the (squared) distance from sphere
+				centerX, centerY,
+				axis1X, axis1Y, axis1Extent,
+				axis2Extent,
+				closest, null);
+		// Circle and oriented rectangle intersect if the (squared) distance from sphere
 		// center to point p is less than the (squared) sphere radius
 		double squaredRadius = circleRadius * circleRadius;
 
-		return ! (MathUtil.isEpsilonEqual(
-				Point2D.getDistanceSquaredPointPoint(
-						obrCenterX, obrCenterY,
-						closest.getX(), closest.getY()),
-				squaredRadius));
+		return Point2D.getDistanceSquaredPointPoint(
+				circleX, circleY,
+				closest.getX(), closest.getY()) <= squaredRadius;
 	}
 
 	/** Replies if the specified rectangles intersect.
@@ -285,113 +576,121 @@ public interface OrientedRectangle2afp<
 	 * The lengths of the given arrays are assumed to be <code>2</code>.
 	 * <p>
 	 * This function uses the "separating axis theorem" which states that 
-	 * for any two OBBs (AABB is a special case of OBB)
+	 * for any two oriented rectangles (AABB is a special case of oriented rectangle)
 	 * that do not touch, a separating axis can be found.
 	 * <p>
-	 * This function uses an general intersection test between two OBR.
+	 * This function uses an general intersection test between two oriented rectangle.
 	 * If the first box is expected to be an MBR, please use the
 	 * optimized algorithm given by
-	 * {@link #intersectsOrientedRectangleRectangle(double, double, double, double, double, double, double, double, double, double, double, double)}.
+	 * {@link #intersectsOrientedRectangleRectangle(double, double, double, double, double, double, double, double, double, double)}.
 	 *
-	 * @param obr1CenterX
-	 *            is the X coordinate of the OBR center.
-	 * @param obr1CenterY
-	 *            is the Y coordinate of the OBR center.
-	 * @param obr1Axis1X
+	 * @param centerX1
+	 *            is the X coordinate of the oriented rectangle center.
+	 * @param centerY1
+	 *            is the Y coordinate of the oriented rectangle center.
+	 * @param axis1X1
 	 *            is the X coordinate of the axis 1 unit vector.
-	 * @param obr1Axis1Y
+	 * @param axis1Y1
 	 *            is the Y coordinate of the axis 1 unit vector.
-	 * @param obr1Axis1Extent
-	 *            is the extent of the axis 1 of the OBB.
-	 * @param obr1Axis2X
-	 *            is the X coordinate of the axis 2 unit vector.
-	 * @param obr1Axis2Y
-	 *            is the Y coordinate of the axis 2 unit vector.
-	 * @param obr1Axis2Extent
-	 *            is the extent of the axis 2 of the OBB.
-	 * @param obr2CenterX
-	 *            is the X coordinate of the OBR center.
-	 * @param obr2CenterY
-	 *            is the Y coordinate of the OBR center.
-	 * @param obr2Axis1X
+	 * @param axis1Extent1
+	 *            is the extent of the axis 1 of the oriented rectangle.
+	 * @param axis2Extent1
+	 *            is the extent of the axis 2 of the oriented rectangle.
+	 * @param centerX2
+	 *            is the X coordinate of the oriented rectangle center.
+	 * @param centerY2
+	 *            is the Y coordinate of the oriented rectangle center.
+	 * @param axis1X2
 	 *            is the X coordinate of the axis 1 unit vector.
-	 * @param obr2Axis1Y
+	 * @param axis1Y2
 	 *            is the Y coordinate of the axis 1 unit vector.
-	 * @param obr2Axis1Extent
-	 *            is the extent of the axis 1 of the OBB.
-	 * @param obr2Axis2X
-	 *            is the X coordinate of the axis 2 unit vector.
-	 * @param obr2Axis2Y
-	 *            is the Y coordinate of the axis 2 unit vector.
-	 * @param obr2Axis2Extent
-	 *            is the extent of the axis 2 of the OBB.
+	 * @param axis1Extent2
+	 *            is the extent of the axis 1 of the oriented rectangle.
+	 * @param axis2Extent2
+	 *            is the extent of the axis 2 of the oriented rectangle.
 	 * @return <code>true</code> if intersecting, otherwise <code>false</code>
 	 * @see "RTCD pages 102-105"
 	 * @see <a href="http://www.jkh.me/files/tutorials/Separating%20Axis%20Theorem%20for%20Oriented%20Bounding%20Boxes.pdf">Intersection between two oriented boudning rectangles</a>
 	 */
 	@Pure
 	static boolean intersectsOrientedRectangleOrientedRectangle(
-			double obr1CenterX, double obr1CenterY,
-			double obr1Axis1X, double obr1Axis1Y,
-			double obr1Axis1Extent,
-			double obr1Axis2X, double obr1Axis2Y,
-			double obr1Axis2Extent,
-			double obr2CenterX, double obr2CenterY,
-			double obr2Axis1X, double obr2Axis1Y,
-			double obr2Axis1Extent,
-			double obr2Axis2X, double obr2Axis2Y,
-			double obr2Axis2Extent){
-		assert(obr1Axis1Extent >= 0.);
-		assert(obr1Axis2Extent >= 0.);
-		assert(obr2Axis1Extent >= 0.);
-		assert(obr2Axis2Extent >= 0.);
+			double centerX1, double centerY1,
+			double axis1X1, double axis1Y1,
+			double axis1Extent1,
+			double axis2Extent1,
+			double centerX2, double centerY2,
+			double axis1X2, double axis1Y2,
+			double axis1Extent2,
+			double axis2Extent2) {
+		assert(axis1Extent1 >= 0.) : "First axis extent of the first rectangle must be positive or zero"; //$NON-NLS-1$
+		assert(axis2Extent1 >= 0.) : "Second axis extent of the first rectangle must be positive or zero"; //$NON-NLS-1$
+		assert(axis1Extent2 >= 0.) : "First axis extent of the second rectangle must be positive or zero"; //$NON-NLS-1$
+		assert(axis2Extent2 >= 0.) : "Second axis extent of the second rectangle must be positive or zero"; //$NON-NLS-1$
 
-		double tx = obr2CenterX - obr1CenterX;
-		double ty = obr2CenterY - obr1CenterY;
+		double Tx = centerX2 - centerX1;
+		double Ty = centerY2 - centerY1;
 
-		double scaledObr1Axis1X = obr1Axis1X * obr1Axis1Extent;
-		double scaledObr1Axis1Y = obr1Axis1Y * obr1Axis1Extent;
-		double scaledObr1Axis2X = obr1Axis2X * obr1Axis2Extent;
-		double scaledObr1Axis2Y = obr1Axis2Y * obr1Axis2Extent;
-		double scaledObr2Axis1X = obr2Axis1X * obr2Axis1Extent;
-		double scaledObr2Axis1Y = obr2Axis1Y * obr2Axis1Extent;
-		double scaledObr2Axis2X = obr2Axis2X * obr2Axis2Extent;
-		double scaledObr2Axis2Y = obr2Axis2Y * obr2Axis2Extent;
+		// Let A the first box and B the second one.
+		// Let Ax and Ay the axes of A.
+		// Let WA the extent related to Ax.
+		// Let HA the extent related to Ay.
+		// Let Bx and By the axes of B.
+		// Let WB the extent related to Bx.
+		// Let HB the extent related to By.
 
-		//Let A the first box and B the second one
-		//L = Ax
-		if (Math.abs(Vector2D.dotProduct(tx, ty, obr1Axis1X, obr1Axis1Y)) 
-				> obr1Axis1Extent
-				+ Math.abs(Vector2D.dotProduct(scaledObr2Axis1X, scaledObr2Axis1Y, obr1Axis1X, obr1Axis1Y)) 
-				+ Math.abs(Vector2D.dotProduct(scaledObr2Axis2X, scaledObr2Axis2Y, obr1Axis1X, obr1Axis1Y))) {
+		// Case 1: 
+		//   L = Ax
+		//   L is a separating axis iff:
+		//   | T.Ax | > WA + | ( WB * Bx ) . Ax | + |( HB * By ) . Ax |
+		double absTAx = Math.abs(projectVectorOnOrientedRectangleRAxis(axis1X1, axis1Y1, Tx, Ty));
+		double Bxx = axis1Extent2 * axis1X2;
+		double Bxy = axis1Extent2 * axis1Y2;
+		double absBxAx = Math.abs(projectVectorOnOrientedRectangleRAxis(axis1X1, axis1Y1, Bxx, Bxy));
+		double Byx = axis2Extent2 * -axis1Y2;
+		double Byy = axis2Extent2 * axis1X2;
+		double absByAx = Math.abs(projectVectorOnOrientedRectangleRAxis(axis1X1, axis1Y1, Byx, Byy));
+		if ( absTAx > (axis1Extent1 + absBxAx + absByAx)) {
 			return false;
 		}
 
-		//L = Ay
-		if (Math.abs(Vector2D.dotProduct(tx, ty, obr1Axis2X, obr1Axis2Y))
-				> obr1Axis2Extent
-				+ Math.abs(Vector2D.dotProduct(scaledObr2Axis1X, scaledObr2Axis1Y, obr1Axis2X, obr1Axis2Y))
-				+ Math.abs(Vector2D.dotProduct(scaledObr2Axis2X, scaledObr2Axis2Y, obr1Axis2X, obr1Axis2Y))) {
+		// Case 2:
+		//   L = Ay
+		//   L is a separating axis iff:
+		//   | T.Ay | > HA + | ( WB * Bx ) . Ay | + |( HB * By ) . Ay |
+		double absTAy = Math.abs(projectVectorOnOrientedRectangleSAxis(axis1X1, axis1Y1, Tx, Ty));
+		double absBxAy = Math.abs(projectVectorOnOrientedRectangleRAxis(-axis1Y1, axis1X1, Bxx, Bxy));
+		double absByAy = Math.abs(projectVectorOnOrientedRectangleRAxis(-axis1Y1, axis1X1, Byx, Byy));
+		if (absTAy > (axis2Extent1 + absBxAy + absByAy)) {
 			return false;
 		}
 
-		//L=Bx
-		if (Math.abs(Vector2D.dotProduct(tx, ty, obr2Axis1X, obr2Axis1Y))
-				> obr2Axis1Extent
-				+ Math.abs(Vector2D.dotProduct(scaledObr1Axis1X, scaledObr1Axis1Y, obr2Axis1X, obr2Axis1Y))
-				+ Math.abs(Vector2D.dotProduct(scaledObr1Axis2X, scaledObr1Axis2Y, obr2Axis1X, obr2Axis1Y))) {
+		// Case 3:
+		//   L = Bx
+		//   L is a separating axis iff:
+		//   | T . Bx | > | ( WA * Ax ) . Bx | + | ( HA * Ay ) . Bx | + WB
+		double absTBx = Math.abs(projectVectorOnOrientedRectangleRAxis(axis1X2, axis1Y2, Tx, Ty));
+		double Axx = axis1Extent1 * axis1X1;
+		double Axy = axis1Extent1 * axis1Y1;
+		double absAxBx = Math.abs(projectVectorOnOrientedRectangleRAxis(axis1X2, axis1Y2, Axx, Axy));
+		double Ayx = axis2Extent1 * -axis1Y1;
+		double Ayy = axis2Extent1 * axis1X1;
+		double absAyBx = Math.abs(projectVectorOnOrientedRectangleRAxis(axis1X2, axis1Y2, Ayx, Ayy));		
+		if (absTBx > (absAxBx + absAyBx + axis1Extent2)) {
 			return false;
 		}
 
-		//L=By
-		if (Math.abs(Vector2D.dotProduct(tx, ty, obr2Axis2X, obr2Axis2Y))
-				> obr2Axis2Extent
-				+ Math.abs(Vector2D.dotProduct(scaledObr1Axis1X, scaledObr1Axis1Y, obr2Axis2X, obr2Axis2Y))
-				+ Math.abs(Vector2D.dotProduct(scaledObr1Axis2X, scaledObr1Axis2Y, obr2Axis2X, obr2Axis2Y))) {
+		// Case 4:
+		//   L = By
+		//   L is a separating axis iff:
+		//   | T . By | > | ( WA * Ax ) . By | + | ( HA * Ay ) . By | + HB
+		double absTBy = Math.abs(projectVectorOnOrientedRectangleRAxis(-axis1Y2, axis1X2, Tx, Ty));
+		double absAxBy = Math.abs(projectVectorOnOrientedRectangleRAxis(-axis1Y2, axis1X2, Axx, Axy));
+		double absAyBy = Math.abs(projectVectorOnOrientedRectangleRAxis(-axis1Y2, axis1X2, Ayx, Ayy));
+		if (absTBy > (absAxBy + absAyBy + axis2Extent2)) {
 			return false;
 		}
 
-		/*no separating axis found, the two boxes overlap */
+		// No separating axis found, the two boxes are overlaping.
 		return true;
 	}
 
@@ -404,29 +703,25 @@ public interface OrientedRectangle2afp<
 	 * The lengths of the given arrays are assumed to be <code>2</code>.
 	 * <p>
 	 * This function uses the "separating axis theorem" which states that 
-	 * for any two OBBs (AABB is a special case of OBB)
+	 * for any two oriented rectangles (AABB is a special case of oriented rectangle)
 	 * that do not touch, a separating axis can be found.
 	 * <p>
 	 * This function uses an optimized algorithm for AABB as first parameter.
-	 * The general intersection type between two OBB is given by
+	 * The general intersection type between two oriented rectangle is given by
 	 * {@link #intersectsOrientedRectangleOrientedRectangle}.
 	 *
-	 * @param obrCenterX
-	 *            is the X coordinate of the OBR center.
-	 * @param obrCenterY
-	 *            is the Y coordinate of the OBR center.
-	 * @param obrAxis1X
+	 * @param centerX
+	 *            is the X coordinate of the oriented rectangle center.
+	 * @param centerY
+	 *            is the Y coordinate of the oriented rectangle center.
+	 * @param axis1X
 	 *            is the X coordinate of the axis 1 unit vector.
-	 * @param obrAxis1Y
+	 * @param axis1Y
 	 *            is the Y coordinate of the axis 1 unit vector.
-	 * @param obrAxis1Extent
-	 *            is the extent of the axis 1 of the OBB.
-	 * @param obrAxis2X
-	 *            is the X coordinate of the axis 2 unit vector.
-	 * @param obrAxis2Y
-	 *            is the Y coordinate of the axis 2 unit vector.
-	 * @param obrAxis2Extent
-	 *            is the extent of the axis 2 of the OBB.
+	 * @param axis1Extent
+	 *            is the extent of the axis 1 of the oriented rectangle.
+	 * @param axis2Extent
+	 *            is the extent of the axis 2 of the oriented rectangle.
 	 * @param rx
 	 *            is the X coordinate of the lower point of the rectangle.
 	 * @param ry
@@ -441,48 +736,77 @@ public interface OrientedRectangle2afp<
 	 */
 	@Pure
 	static boolean intersectsOrientedRectangleRectangle(
-			double obrCenterX, double obrCenterY,
-			double obrAxis1X, double obrAxis1Y,
-			double obrAxis1Extent,
-			double obrAxis2X, double obrAxis2Y,
-			double obrAxis2Extent,
+			double centerX, double centerY,
+			double axis1X, double axis1Y,
+			double axis1Extent,
+			double axis2Extent,
 			double rx, double ry,
 			double rwidth, double rheight) {
-		assert(rwidth >= 0.);
-		assert(rheight >= 0.);
-		assert(obrAxis1Extent >= 0.);
-		assert(obrAxis2Extent >= 0.);
+		assert (rwidth >= 0.) : "Rectangle width must be positive or zero"; //$NON-NLS-1$
+		assert (rheight >= 0.) : "Rectangle height must be positive or zero"; //$NON-NLS-1$
+		assert (axis1Extent >= 0.) : "Axis 1 extent for the oriented rectangle must be positive or zero"; //$NON-NLS-1$
+		assert (axis2Extent >= 0.) : "Axis 2 extent for the oriented rectangle must be positive or zero"; //$NON-NLS-1$
+		assert (Vector2D.isUnitVector(axis1X, axis1Y)) : "Axis 1 of the oriented rectangle must be a unit vector"; //$NON-NLS-1$
+		double rx2 = rx + rwidth;
+		double ry2 = ry + rheight;
+		double axis2X = -axis1Y;
+		double axis2Y = axis1X;
+		// Test border intersections
+		double px1 = centerX + axis1Extent * axis1X + axis2Extent * axis2X;
+		double py1 = centerY + axis1Extent * axis1Y + axis2Extent * axis2Y;
+		double px2 = centerX - axis1Extent * axis1X + axis2Extent * axis2X;
+		double py2 = centerY - axis1Extent * axis1Y + axis2Extent * axis2Y;
+		if (Rectangle2afp.intersectsRectangleSegment(rx, ry, rx2, ry2,
+				px1, py1, px2, py2)) {
+			return true;
+		}
+		double px3 = centerX - axis1Extent * axis1X - axis2Extent * axis2X;
+		double py3 = centerY - axis1Extent * axis1Y - axis2Extent * axis2Y;
+		if (Rectangle2afp.intersectsRectangleSegment(rx, ry, rx2, ry2,
+				px2, py2, px3, py3)) {
+			return true;
+		}
+		double px4 = centerX + axis1Extent * axis1X - axis2Extent * axis2X;
+		double py4 = centerY + axis1Extent * axis1Y - axis2Extent * axis2Y;
+		if (Rectangle2afp.intersectsRectangleSegment(rx, ry, rx2, ry2,
+				px3, py3, px4, py4)) {
+			return true;
+		}
+		if (Rectangle2afp.intersectsRectangleSegment(rx, ry, rx2, ry2,
+				px4, py4, px1, py1)) {
+			return true;
+		}
 
-		double mbrCenterx = rx + rwidth / 2.;
-		double mbrCentery = ry + rheight / 2.;
+		// The rectangle is entirely outside or entirely inside the parallelogram.
 
-		return intersectsOrientedRectangleOrientedRectangle(
-				mbrCenterx, mbrCentery,
-				1., 0., 0., 1.,
-				rwidth / 2., rheight / 2.,
-				obrCenterX, obrCenterY,
-				obrAxis1X, obrAxis1Y, obrAxis1Extent,
-				obrAxis2X, obrAxis2Y, obrAxis2Extent);
+		// Test if one rectangle point is inside the parallelogram.
+		// We need to test only one point from the rectangle, since if the first
+		// point is not inside, the other three points are not too.
+		if (containsOrientedRectanglePoint(
+				centerX, centerY, axis1X, axis1Y, axis1Extent, axis2Extent, rx, ry)) {
+			return true;
+		}
+
+		// Test if one parallelogram point is inside the rectangle
+		// We need to test only one point from the rectangle, since if the first
+		// point is not inside, the other three points are not too.
+		return (Rectangle2afp.containsRectanglePoint(rx, ry, rx2, ry2, px1, py1));
 	}
 
-	/** Replies if a point is inside the round rectangle.
+	/**  Replies if the oriented rectangle intersects the given rectangle.
 	 * 
-	 * @param obrCenterX
-	 *            is the X coordinate of the OBR center.
-	 * @param obrCenterY
-	 *            is the Y coordinate of the OBR center.
-	 * @param obrAxis1X
+	 * @param centerX
+	 *            is the X coordinate of the parallelogram center.
+	 * @param centerY
+	 *            is the Y coordinate of the parallelogram center.
+	 * @param axis1X
 	 *            is the X coordinate of the axis 1 unit vector.
-	 * @param obrAxis1Y
+	 * @param axis1Y
 	 *            is the Y coordinate of the axis 1 unit vector.
-	 * @param obrAxis1Extent
-	 *            is the extent of the axis 1 of the OBB.
-	 * @param obrAxis2X
-	 *            is the X coordinate of the axis 2 unit vector.
-	 * @param obrAxis2Y
-	 *            is the Y coordinate of the axis 2 unit vector.
-	 * @param obrAxis2Extent
-	 *            is the extent of the axis 2 of the OBB.
+	 * @param axis1Extent
+	 *            is the extent of the axis 1 of the parallelogram.
+	 * @param axis2Extent
+	 *            is the extent of the axis 2 of the parallelogram.
 	 * @param rx
 	 *            is the X coordinate of the lower point of the rectangle.
 	 * @param ry
@@ -491,263 +815,162 @@ public interface OrientedRectangle2afp<
 	 *            is the width of the rectangle.
 	 * @param rheight
 	 *            is the height of the rectangle.
-	 * @return <code>true</code> if the given rectangle is inside the OBR;
-	 * otherwise <code>false</code>.
+	 * @param rArcWidth
+	 *            is the width of the rectangle arcs.
+	 * @param rArcHeight
+	 *            is the height of the rectangle arcs.
+	 * @return <code>true</code> if intersecting, otherwise <code>false</code>.
 	 */
 	@Pure
 	@Unefficient
-	static boolean containsOrientedRectangleRectangle(
-			double obrCenterX, double obrCenterY,
-			double obrAxis1X, double obrAxis1Y,
-			double obrAxis1Extent,
-			double obrAxis2X, double obrAxis2Y,
-			double obrAxis2Extent,
+	static boolean intersectsOrientedRectangleRoundRectangle(
+			double centerX, double centerY,
+			double axis1X, double axis1Y,
+			double axis1Extent,
+			double axis2Extent,
 			double rx, double ry,
-			double rwidth, double rheight) {
+			double rwidth, double rheight,
+			double rArcWidth, double rArcHeight) {
+		assert (axis1Extent >= 0) : "Extent of axis 1 must be positive or zero"; //$NON-NLS-1$
+		assert (axis2Extent >= 0) : "Extent of axis 2 must be positive or zero"; //$NON-NLS-1$
+		assert (Vector2D.isUnitVector(axis1X, axis1Y)) : "Axis 1 is not a unit vector"; //$NON-NLS-1$
+		assert (rwidth >= 0) : "Width of the rectangle must be positive or zero"; //$NON-NLS-1$
+		assert (rheight >= 0) : "Height of the rectangle must be positive or zero"; //$NON-NLS-1$
+		assert (rArcWidth >= 0) : "Arc width of the rectangle must be positive or zero"; //$NON-NLS-1$
+		assert (rArcHeight >= 0) : "Arc height of the rectangle must be positive or zero"; //$NON-NLS-1$
+
+		double rx2 = rx + rwidth;
+		double ry2 = ry + rheight;
+		double rxmin = rx + rArcWidth;
+		double rxmax = rx2 - rArcWidth;
+		double rymin = ry + rArcHeight;
+		double rymax = ry2 - rArcHeight;
+		double ew = rArcWidth * 2;
+		double eh = rArcWidth * 2;
+		double emaxx = rxmax - rArcWidth;
+		double emaxy = rymax - rArcHeight;
+		double axis2X = -axis1Y;
+		double axis2Y = axis1X;
+		// Test border intersections
+		double px1 = centerX + axis1Extent * axis1X + axis2Extent * axis2X;
+		double py1 = centerY + axis1Extent * axis1Y + axis2Extent * axis2Y;
+		double px2 = centerX - axis1Extent * axis1X + axis2Extent * axis2X;
+		double py2 = centerY - axis1Extent * axis1Y + axis2Extent * axis2Y;
+		if (Rectangle2afp.intersectsRectangleSegment(rxmin, ry, rxmax, ry2,
+				px1, py1, px2, py2)
+				|| Rectangle2afp.intersectsRectangleSegment(rx, rymin, rx2, rymax,
+						px1, py1, px2, py2)
+				|| Ellipse2afp.intersectsEllipseSegment(rx, ry, ew, eh,
+						px1, py1, px2, py2, false)
+				|| Ellipse2afp.intersectsEllipseSegment(rx, emaxy, ew, eh,
+						px1, py1, px2, py2, false)
+				|| Ellipse2afp.intersectsEllipseSegment(emaxx, emaxy, ew, eh,
+						px1, py1, px2, py2, false)
+				|| Ellipse2afp.intersectsEllipseSegment(emaxx, ry, ew, eh,
+						px1, py1, px2, py2, false)) {
+			return true;
+		}
+		double px3 = centerX - axis1Extent * axis1X - axis2Extent * axis2X;
+		double py3 = centerY - axis1Extent * axis1Y - axis2Extent * axis2Y;
+		if (Rectangle2afp.intersectsRectangleSegment(rxmin, ry, rxmax, ry2,
+				px2, py2, px3, py3)
+				|| Rectangle2afp.intersectsRectangleSegment(rx, rymin, rx2, rymax,
+						px2, py2, px3, py3)
+				|| Ellipse2afp.intersectsEllipseSegment(rx, ry, ew, eh,
+						px2, py2, px3, py3, false)
+				|| Ellipse2afp.intersectsEllipseSegment(rx, emaxy, ew, eh,
+						px2, py2, px3, py3, false)
+				|| Ellipse2afp.intersectsEllipseSegment(emaxx, emaxy, ew, eh,
+						px2, py2, px3, py3, false)
+				|| Ellipse2afp.intersectsEllipseSegment(emaxx, ry, ew, eh,
+						px2, py2, px3, py3, false)) {
+			return true;
+		}
+		double px4 = centerX + axis1Extent * axis1X - axis2Extent * axis2X;
+		double py4 = centerY + axis1Extent * axis1Y - axis2Extent * axis2Y;
+		if (Rectangle2afp.intersectsRectangleSegment(rxmin, ry, rxmax, ry2,
+				px3, py3, px4, py4)
+				|| Rectangle2afp.intersectsRectangleSegment(rx, rymin, rx2, rymax,
+						px3, py3, px4, py4)
+				|| Ellipse2afp.intersectsEllipseSegment(rx, ry, ew, eh,
+						px3, py3, px4, py4, false)
+				|| Ellipse2afp.intersectsEllipseSegment(rx, emaxy, ew, eh,
+						px3, py3, px4, py4, false)
+				|| Ellipse2afp.intersectsEllipseSegment(emaxx, emaxy, ew, eh,
+						px3, py3, px4, py4, false)
+				|| Ellipse2afp.intersectsEllipseSegment(emaxx, ry, ew, eh,
+						px3, py3, px4, py4, false)) {
+			return true;
+		}
+		if (Rectangle2afp.intersectsRectangleSegment(rxmin, ry, rxmax, ry2,
+				px4, py4, px1, py1)
+				|| Rectangle2afp.intersectsRectangleSegment(rx, rymin, rx2, rymax,
+						px4, py4, px1, py1)
+				|| Ellipse2afp.intersectsEllipseSegment(rx, ry, ew, eh,
+						px4, py4, px1, py1, false)
+				|| Ellipse2afp.intersectsEllipseSegment(rx, emaxy, ew, eh,
+						px4, py4, px1, py1, false)
+				|| Ellipse2afp.intersectsEllipseSegment(emaxx, emaxy, ew, eh,
+						px4, py4, px1, py1, false)
+				|| Ellipse2afp.intersectsEllipseSegment(emaxx, ry, ew, eh,
+						px4, py4, px1, py1, false)) {
+			return true;
+		}
+
+		// The rectangle is entirely outside or entirely inside the oriented rectangle.
+
+		// Test if one rectangle point is inside the oriented rectangle.
+		// We need to test only one point from the rectangle, since if the first
+		// point is not inside, the other three points are not too.
 		if (containsOrientedRectanglePoint(
-				obrCenterX, obrCenterY,
-				obrAxis1X, obrAxis1Y, obrAxis1Extent,
-				obrAxis2X, obrAxis2Y, obrAxis2Extent,
-				2.5 * rx + rwidth,
-				2.5 * ry + rheight)) {
-			return !intersectsOrientedRectangleRectangle(
-					obrCenterX, obrCenterY,
-					obrAxis1X, obrAxis1Y, obrAxis1Extent,
-					obrAxis2X, obrAxis2Y, obrAxis2Extent,
-					rx, ry, rwidth, rheight);
+				centerX, centerY, axis1X, axis1Y, axis1Extent, axis2Extent, rx, ry)) {
+			return true;
 		}
-		return false;
-	}
 
-	/** Replies if a point is inside in the round rectangle.
-	 * 
-	 * @param px
-	 *            is the X coordinate of the point to test.
-	 * @param py
-	 *            is the Y coordinate of the point to test.
-	 * @param obrCenterX
-	 *            is the X coordinate of the OBR center.
-	 * @param obrCenterY
-	 *            is the Y coordinate of the OBR center.
-	 * @param obrAxis1X
-	 *            is the X coordinate of the axis 1 unit vector.
-	 * @param obrAxis1Y
-	 *            is the Y coordinate of the axis 1 unit vector.
-	 * @param obrAxis1Extent
-	 *            is the extent of the axis 1 of the OBB.
-	 * @param obrAxis2X
-	 *            is the X coordinate of the axis 2 unit vector.
-	 * @param obrAxis2Y
-	 *            is the Y coordinate of the axis 2 unit vector.
-	 * @param obrAxis2Extent
-	 *            is the extent of the axis 2 of the OBB.
-	 * @return <code>true</code> if the given point is inside the OBR;
-	 * otherwise <code>false</code>.
-	 */
-	@Pure
-	static boolean containsOrientedRectanglePoint(
-			double obrCenterX, double obrCenterY,
-			double obrAxis1X, double obrAxis1Y,
-			double obrAxis1Extent,
-			double obrAxis2X, double obrAxis2Y,
-			double obrAxis2Extent,
-			double px, double py) {
-		// Changing P(x,y) coordinate basis.
-		double nx = (px
-				- (obrCenterX + obrAxis1Extent/2*obrAxis1X + obrAxis2Extent/2*obrAxis2X)) * obrAxis2Y
-				- (py - (obrCenterY + obrAxis1Extent/2*obrAxis1Y + obrAxis2Extent/2*obrAxis2Y))
-				* obrAxis2X;
-		double ny = (py
-				- (obrCenterY + obrAxis1Extent/2*obrAxis1Y + obrAxis2Extent/2*obrAxis2Y)) * obrAxis1X
-				- (px - (obrCenterX + obrAxis1Extent/2*obrAxis1X + obrAxis2Extent/2*obrAxis2X))
-				* obrAxis1Y;
-
-		double rx = obrAxis1Extent / -2.;
-		double ry = obrAxis2Extent / -2.;
-		return Rectangle2afp.containsRectanglePoint(
-				nx, ny,
-				rx, ry,
-				(obrAxis1Extent / 2.) - rx,
-				(obrAxis2Extent / 2.) - ry);
+		// Test if one oriented rectangle point is inside the rectangle
+		// We need to test only one point from the rectangle, since if the first
+		// point is not inside, the other three points are not too.
+		return (Rectangle2afp.containsRectanglePoint(rx, ry, rx2, ry2, px1, py1));
 	}
 
 	/**
-	 * Given a point p, this function computes the point q1 on (or in) this OBB,
-	 * closest to p. If there are several
-	 * points, the function will return one of those. Remember this function may
-	 * return an approximate result when points remain on OBB plane of symmetry.
-	 * 
-	 * @param px
-	 *            is the X coordinate of the point to test.
-	 * @param py
-	 *            is the Y coordinate of the point to test.
-	 * @param obrCenterX
-	 *            is the X coordinate of the OBR center.
-	 * @param obrCenterY
-	 *            is the Y coordinate of the OBR center.
-	 * @param obrAxis1X
-	 *            is the X coordinate of the axis 1 unit vector.
-	 * @param obrAxis1Y
-	 *            is the Y coordinate of the axis 1 unit vector.
-	 * @param obrAxis1Extent
-	 *            is the extent of the axis 1 of the OBB.
-	 * @param obrAxis2X
-	 *            is the X coordinate of the axis 2 unit vector.
-	 * @param obrAxis2Y
-	 *            is the Y coordinate of the axis 2 unit vector.
-	 * @param obrAxis2Extent
-	 *            is the extent of the axis 2 of the OBB.
-	 * @param result the closest point.
+	 * Tests if the interior of the specified {@link PathIterator2afp}
+	 * intersects the interior of a specified set of oriented rectangular
+	 * coordinates.
+	 *
+	 * @param <T> the type of the path elements to iterate on.
+	 * @param centerX the specified X coordinate of the rectangle center.
+	 * @param centerY the specified Y coordinate of the rectangle center.
+	 * @param axis1X the X coordinate of the first axis of the rectangle.
+	 * @param axis1Y the Y coordinate of the first axis of the rectangle.
+	 * @param extent1 the extent the rectangle along the first axis.
+	 * @param extent2 the extent the rectangle along the second axis.
+	 * @param pathIterator the specified {@link PathIterator2afp}.
+	 * @return <code>true</code> if the specified {@link PathIterator2afp} and
+	 *         the interior of the specified set of rectangular
+	 *         coordinates intersect each other; <code>false</code> otherwise.
 	 */
 	@Pure
-	static void computeClosestPoint(
-			double px, double py,
-			double obrCenterX, double obrCenterY,
-			double obrAxis1X, double obrAxis1Y,
-			double obrAxis1Extent,
-			double obrAxis2X, double obrAxis2Y,
-			double obrAxis2Extent,
-			Point2D result) {
-		computeClosestFarthestPoints(
-				px, py,
-				obrCenterX, obrCenterY,
-				obrAxis1X, obrAxis1Y,
-				obrAxis1Extent,
-				obrAxis2X, obrAxis2Y,
-				obrAxis2Extent,
-				result, null);
-	}
-
-	/**
-	 * Given a point p, this function computes the point q1 on this OBB,
-	 * farthest to p. If there are several
-	 * points, the function will return one of those. Remember this function may
-	 * return an approximate result when points remain on OBB plane of symmetry.
-	 * 
-	 * @param px
-	 *            is the X coordinate of the point to test.
-	 * @param py
-	 *            is the Y coordinate of the point to test.
-	 * @param obrCenterX
-	 *            is the X coordinate of the OBR center.
-	 * @param obrCenterY
-	 *            is the Y coordinate of the OBR center.
-	 * @param obrAxis1X
-	 *            is the X coordinate of the axis 1 unit vector.
-	 * @param obrAxis1Y
-	 *            is the Y coordinate of the axis 1 unit vector.
-	 * @param obrAxis1Extent
-	 *            is the extent of the axis 1 of the OBB.
-	 * @param obrAxis2X
-	 *            is the X coordinate of the axis 2 unit vector.
-	 * @param obrAxis2Y
-	 *            is the Y coordinate of the axis 2 unit vector.
-	 * @param obrAxis2Extent
-	 *            is the extent of the axis 2 of the OBB.
-	 * @param result the farthest point.
-	 */
-	@Pure
-	static void computeFarthestPoint(
-			double px, double py,
-			double obrCenterX, double obrCenterY,
-			double obrAxis1X, double obrAxis1Y,
-			double obrAxis1Extent,
-			double obrAxis2X, double obrAxis2Y,
-			double obrAxis2Extent,
-			Point2D result) {
-		computeClosestFarthestPoints(
-				px, py,
-				obrCenterX, obrCenterY,
-				obrAxis1X, obrAxis1Y,
-				obrAxis1Extent,
-				obrAxis2X, obrAxis2Y,
-				obrAxis2Extent,
-				null, result);
-	}
-
-	/**
-	 * Given a point p, this function computes the point q1 on (or in) this OBB,
-	 * closest to p. If there are several
-	 * points, the function will return one of those. Remember this function may
-	 * return an approximate result when points remain on OBB plane of symmetry.
-	 * 
-	 * @param px
-	 *            is the X coordinate of the point to test.
-	 * @param py
-	 *            is the Y coordinate of the point to test.
-	 * @param obrCenterX
-	 *            is the X coordinate of the OBR center.
-	 * @param obrCenterY
-	 *            is the Y coordinate of the OBR center.
-	 * @param obrAxis1X
-	 *            is the X coordinate of the axis 1 unit vector.
-	 * @param obrAxis1Y
-	 *            is the Y coordinate of the axis 1 unit vector.
-	 * @param obrAxis1Extent
-	 *            is the extent of the axis 1 of the OBB.
-	 * @param obrAxis2X
-	 *            is the X coordinate of the axis 2 unit vector.
-	 * @param obrAxis2Y
-	 *            is the Y coordinate of the axis 2 unit vector.
-	 * @param obrAxis2Extent
-	 *            is the extent of the axis 2 of the OBB.
-	 * @param closest the closest point.
-	 * @param farthest the farthest point.
-	 */
-	static void computeClosestFarthestPoints(
-			double px, double py,
-			double obrCenterX, double obrCenterY,
-			double obrAxis1X, double obrAxis1Y,
-			double obrAxis1Extent,
-			double obrAxis2X, double obrAxis2Y,
-			double obrAxis2Extent,
-			Point2D closest, Point2D farthest) {
-		assert (obrAxis1Extent >= 0.);
-		assert (obrAxis2Extent >= 0.);
-
-		assert (MathUtil.isEpsilonZero(Vector2D.dotProduct(obrAxis1X, obrAxis1Y, obrAxis1X, obrAxis1Y)));
-		assert (MathUtil.isEpsilonZero(Vector2D.dotProduct(obrAxis2X, obrAxis2Y, obrAxis2X, obrAxis2Y)));
-
-		double dx = px - obrCenterX;
-		double dy = py - obrCenterY;
-
-		// For each OBB axis project d onto that axis to get the distance along
-		// the axis of d from the box center
-		double d1 = Vector2D.dotProduct(dx, dy, obrAxis1X, obrAxis1Y);
-		double d2 = Vector2D.dotProduct(dx, dy, obrAxis2X, obrAxis2Y);
-
-		if (closest != null) {
-			double clampedD1 = MathUtil.clamp(d1, -obrAxis1Extent, obrAxis1Extent);
-			double clampedD2 = MathUtil.clamp(d2, -obrAxis2Extent, obrAxis2Extent);
-
-			// Step that distance along the axis to get world coordinate
-			// q1 += dist * this.axis[i]; (If distance farther than the box
-			// extents, clamp to the box)
-			closest.set(
-					obrCenterX + clampedD1 * obrAxis1X + clampedD2 * obrAxis2X,
-					obrCenterY + clampedD1 * obrAxis1Y + clampedD2 * obrAxis2Y);
-		}
-
-		if (farthest != null) {
-			// Clamp to the other side of the box
-			if (d1 >= 0.) {
-				d1 = -obrAxis1Extent;
-			} else {
-				d1 = obrAxis1Extent;
-			}
-			if (d2 >= 0.) {
-				d2 = -obrAxis2Extent;
-			} else {
-				d2 = obrAxis2Extent;
-			}
-
-			// Step that distance along the axis to get world coordinate
-			// q2 += dist * this.axis[i];
-			farthest.set(
-					obrCenterX + d1 * obrAxis1X + d2 * obrAxis2X,
-					obrCenterY + d1 * obrAxis1Y + d2 * obrAxis2Y);
-
-		}
+	static <T extends PathElement2afp> boolean intersectsOrientedRectanglePathIterator(
+			double centerX, double centerY, double axis1X, double axis1Y, double extent1, double extent2,
+			PathIterator2afp<T> pathIterator) {
+		assert (pathIterator != null) : "Iterator must be not null"; //$NON-NLS-1$
+		assert (extent1 >= 0.) : "Axis 1 extent must be positive or zero"; //$NON-NLS-1$
+		assert (extent2 >= 0.) : "Axis 2 extent must be positive or zero"; //$NON-NLS-1$
+		assert (Vector2D.isUnitVector(axis1X, axis1Y)) : "Axis must be a unit vector"; //$NON-NLS-1$
+		int mask = (pathIterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2);
+		ProjectionToOrientedRectangleLocalCoordinateSystemPathIterator<T> localIterator = 
+				new ProjectionToOrientedRectangleLocalCoordinateSystemPathIterator<>(
+						centerX, centerY, axis1X, axis1Y,
+						pathIterator);
+		int crossings = Path2afp.computeCrossingsFromRect(
+				0,
+				localIterator, 
+				-extent1, -extent2,
+				extent1, extent2,
+				CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
+		return (crossings == MathConstants.SHAPE_INTERSECTS ||
+				(crossings & mask) != 0);
 	}
 
 	@Pure
@@ -760,13 +983,13 @@ public interface OrientedRectangle2afp<
 			return true;
 		}
 		return getCenterX() == shape.getCenterX()
-			&& getCenterY() == shape.getCenterY()
-			&& getFirstAxisX() == shape.getFirstAxisX()
-			&& getFirstAxisY() == shape.getFirstAxisY()
-			&& getFirstAxisExtent() == shape.getFirstAxisExtent()
-			&& getSecondAxisX() == shape.getSecondAxisX()
-			&& getSecondAxisY() == shape.getSecondAxisY()
-			&& getSecondAxisExtent() == shape.getSecondAxisExtent();
+				&& getCenterY() == shape.getCenterY()
+				&& getFirstAxisX() == shape.getFirstAxisX()
+				&& getFirstAxisY() == shape.getFirstAxisY()
+				&& getFirstAxisExtent() == shape.getFirstAxisExtent()
+				&& getSecondAxisX() == shape.getSecondAxisX()
+				&& getSecondAxisY() == shape.getSecondAxisY()
+				&& getSecondAxisExtent() == shape.getSecondAxisExtent();
 	}
 
 	/** Replies the center.
@@ -891,6 +1114,7 @@ public interface OrientedRectangle2afp<
 	 * @param axis - the new values for the first axis.
 	 */
 	default void setFirstAxis(Vector2D axis) {
+		assert (axis != null) : "Axis must be not null"; //$NON-NLS-1$
 		setFirstAxis(axis.getX(), axis.getY(), getFirstAxisExtent());
 	}
 
@@ -901,6 +1125,7 @@ public interface OrientedRectangle2afp<
 	 * @param extent - the extent of the axis.
 	 */
 	default void setFirstAxis(Vector2D axis, double extent) {
+		assert (axis != null) : "Axis must be not null"; //$NON-NLS-1$
 		setFirstAxis(axis.getX(), axis.getY(), extent);
 	}
 
@@ -929,6 +1154,7 @@ public interface OrientedRectangle2afp<
 	 * @param axis - the new values for the first axis.
 	 */
 	default void setSecondAxis(Vector2D axis) {
+		assert (axis != null) : "Axis must be not null"; //$NON-NLS-1$
 		setSecondAxis(axis.getX(), axis.getY(), getSecondAxisExtent());
 	}
 
@@ -939,6 +1165,7 @@ public interface OrientedRectangle2afp<
 	 * @param extent - the extent of the axis.
 	 */
 	default void setSecondAxis(Vector2D axis, double extent) {
+		assert (axis != null) : "Axis must be not null"; //$NON-NLS-1$
 		setSecondAxis(axis.getX(), axis.getY(), extent);
 	}
 
@@ -976,82 +1203,55 @@ public interface OrientedRectangle2afp<
 	}
 
 	@Override
-	default void set(IT obr) {
-		set(obr.getCenterX(), obr.getCenterY(),
-				obr.getFirstAxisX(), obr.getFirstAxisY(), obr.getFirstAxisExtent(),
-				obr.getSecondAxisX(), obr.getSecondAxisY(), obr.getSecondAxisExtent());
+	default void set(IT rectangle) {
+		assert (rectangle != null) : "Oriented rectangle must be not null"; //$NON-NLS-1$
+		set(rectangle.getCenterX(), rectangle.getCenterY(),
+				rectangle.getFirstAxisX(), rectangle.getFirstAxisY(), rectangle.getFirstAxisExtent(),
+				rectangle.getSecondAxisExtent());
 	}
 
 	/** Set the oriented rectangle.
 	 * The second axis is automatically computed.
 	 *
-	 * @param center is the OBR center.
-	 * @param axis1 is the first axis of the OBR.
+	 * @param center is the oriented rectangle center.
+	 * @param axis1 is the first axis of the oriented rectangle.
 	 * @param axis1Extent is the extent of the first axis.
 	 * @param axis2Extent is the extent of the second axis.
 	 */
 	default void set(Point2D center, Vector2D axis1, double axis1Extent, double axis2Extent) {
+		assert (center != null) : "Center point must be not null"; //$NON-NLS-1$
+		assert (axis1 != null) : "Axis vector must be not null"; //$NON-NLS-1$
 		set(center.getX(), center.getY(), axis1.getX(), axis1.getY(), axis1Extent, axis2Extent);
 	}
 
 	/** Set the oriented rectangle.
 	 * The second axis is automatically computed.
 	 *
-	 * @param centerX is the X coordinate of the OBR center.
-	 * @param centerY is the Y coordinate of the OBR center.
-	 * @param axis1X is the X coordinate of first axis of the OBR.
-	 * @param axis1Y is the Y coordinate of first axis of the OBR.
+	 * @param centerX is the X coordinate of the oriented rectangle center.
+	 * @param centerY is the Y coordinate of the oriented rectangle center.
+	 * @param axis1X is the X coordinate of first axis of the oriented rectangle.
+	 * @param axis1Y is the Y coordinate of first axis of the oriented rectangle.
 	 * @param axis1Extent is the extent of the first axis.
-	 * @param axis2Extent is the extent of the second axis.
-	 */
-	default void set(double centerX, double centerY,
-			double axis1X, double axis1Y, double axis1Extent,
-			double axis2Extent) {
-		assert (MathUtil.isEpsilonZero(Vector2D.dotProduct(axis1X, axis1Y, axis1X, axis1Y)));
-		double axis2X;
-		double axis2Y;
-		if (CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded()) {
-			axis2X = axis1Y;
-			axis2Y = -axis1X;
-		} else {
-			axis2X = -axis1Y;
-			axis2Y = axis1X;
-		}
-		assert (MathUtil.isEpsilonZero(Vector2D.dotProduct(axis2X, axis2Y, axis2X, axis2Y)));
-		set(centerX, centerY,
-				axis1X, axis1Y, axis1Extent,
-				axis2X, axis2X, axis2Extent);
-	}
-
-	/** Set the oriented rectangle.
-	 *
-	 * @param centerX is the X coordinate of the OBR center.
-	 * @param centerY is the Y coordinate of the OBR center.
-	 * @param axis1X is the X coordinate of first axis of the OBR.
-	 * @param axis1Y is the Y coordinate of first axis of the OBR.
-	 * @param axis1Extent is the extent of the first axis.
-	 * @param axis2X is the X coordinate of second axis of the OBR.
-	 * @param axis2Y is the Y coordinate of second axis of the OBR.
 	 * @param axis2Extent is the extent of the second axis.
 	 */
 	void set(double centerX, double centerY,
 			double axis1X, double axis1Y, double axis1Extent,
-			double axis2X, double axis2Y, double axis2Extent);
+			double axis2Extent);
 
 	/** Set the oriented rectangle from a could of points.
 	 *
 	 * @param pointCloud - the cloud of points.
 	 */
 	default void setFromPointCloud(Iterable<? extends Point2D> pointCloud) {
-		Vector2D r = new Vector2fp();
-		Vector2D s = new Vector2fp();
-		OrientedRectangle2afp.computeOBRAxis(pointCloud, r, s);
-		Point2D center = new Point2fp();
-		Vector2D extents = new Vector2fp();
-		OrientedRectangle2afp.computeOBRCenterExtents(pointCloud, r, s, center, extents);
+		assert (pointCloud != null) : "Iterable of points must be not null"; //$NON-NLS-1$
+		Vector2D r = new InnerComputationVector2afp();
+		Parallelogram2afp.computeOrthogonalAxes(pointCloud, r, null);
+		Point2D center = new InnerComputationPoint2afp();
+		Vector2D extents = new InnerComputationVector2afp();
+		OrientedRectangle2afp.computeCenterExtents(pointCloud, r, center, extents);
 		set(center.getX(), center.getY(),
 				r.getX(), r.getY(), extents.getX(),
-				s.getX(), s.getY(), extents.getY());
+				extents.getY());
 	}
 
 	/** Set the oriented rectangle from a could of points.
@@ -1059,48 +1259,51 @@ public interface OrientedRectangle2afp<
 	 * @param pointCloud - the cloud of points.
 	 */
 	default void setFromPointCloud(Point2D... pointCloud) {
+		assert (pointCloud != null) : "Array of points must be not null"; //$NON-NLS-1$
 		setFromPointCloud(Arrays.asList(pointCloud));
 	}
 
 	@Pure
 	@Override
 	default double getDistanceSquared(Point2D p) {
-		// Only for internal usage.
-		Point2D closest = new Point2fp();
-		computeClosestPoint(
+		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
+		Point2D closest = new InnerComputationPoint2afp();
+		computeClosestFarthestPoints(
 				p.getX(), p.getY(),
 				getCenterX(), getCenterY(),
 				getFirstAxisX(), getFirstAxisY(), getFirstAxisExtent(),
-				getSecondAxisX(), getSecondAxisY(), getSecondAxisExtent(),
-				closest);
+				getSecondAxisExtent(),
+				closest,
+				null);
 		return closest.getDistanceSquared(p);
 	}
 
 	@Pure
 	@Override
 	default double getDistanceL1(Point2D p) {
-		// Only for internal usage.
-		Point2D closest = new Point2fp();
-		computeClosestPoint(
+		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
+		Point2D closest = new InnerComputationPoint2afp();
+		computeClosestFarthestPoints(
 				p.getX(), p.getY(),
 				getCenterX(), getCenterY(),
 				getFirstAxisX(), getFirstAxisY(), getFirstAxisExtent(),
-				getSecondAxisX(), getSecondAxisY(), getSecondAxisExtent(),
-				closest);
+				getSecondAxisExtent(),
+				closest,
+				null);
 		return closest.getDistanceL1(p);
 	}
 
 	@Pure
 	@Override
 	default double getDistanceLinf(Point2D p) {
-		// Only for internal usage.
-		Point2D closest = new Point2fp();
-		computeClosestPoint(
+		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
+		Point2D closest = new InnerComputationPoint2afp();
+		computeClosestFarthestPoints(
 				p.getX(), p.getY(),
 				getCenterX(), getCenterY(),
 				getFirstAxisX(), getFirstAxisY(), getFirstAxisExtent(),
-				getSecondAxisX(), getSecondAxisY(), getSecondAxisExtent(),
-				closest);
+				getSecondAxisExtent(),
+				closest, null);
 		return closest.getDistanceLinf(p);
 	}
 
@@ -1108,85 +1311,116 @@ public interface OrientedRectangle2afp<
 	default void translate(double dx, double dy) {
 		setCenter(getCenterX() + dx, getCenterY() + dy);
 	}
-	
+
 	@Pure
 	@Override
 	default boolean contains(double x, double y) {
 		return containsOrientedRectanglePoint(
 				getCenterX(), getCenterY(),
 				getFirstAxisX(), getFirstAxisY(), getFirstAxisExtent(),
-				getSecondAxisX(), getSecondAxisY(), getSecondAxisExtent(),
+				getSecondAxisExtent(),
 				x, y);
 	}
-	
+
 	@Pure
 	@Override
 	default boolean contains(Rectangle2afp<?, ?, ?, ?, ?> r) {
+		assert (r != null) : "Rectangle must be not null"; //$NON-NLS-1$
 		return containsOrientedRectangleRectangle(
 				getCenterX(), getCenterY(),
 				getFirstAxisX(), getFirstAxisY(), getFirstAxisExtent(),
-				getSecondAxisX(), getSecondAxisY(), getSecondAxisExtent(),
+				getSecondAxisExtent(),
 				r.getMinX(), r.getMinY(),
 				r.getWidth(), r.getHeight());
 	}
-	
+
 	@Pure
 	@Override
 	default boolean intersects(Circle2afp<?, ?, ?, ?, ?> s) {
-		return intersectsOrientedRectangleSolidCircle(
+		assert (s != null) : "Circle must be not null"; //$NON-NLS-1$
+		return intersectsOrientedRectangleCircle(
 				getCenterX(), getCenterY(),
 				getFirstAxisX(), getFirstAxisY(), getFirstAxisExtent(),
-				getSecondAxisX(), getSecondAxisY(), getSecondAxisExtent(),
+				getSecondAxisExtent(),
 				s.getX(),s.getY(), s.getRadius());
 	}
-	
+
 	@Pure
 	@Override
 	default boolean intersects(Ellipse2afp<?, ?, ?, ?, ?> s) {
+		assert (s != null) : "Ellipse must be not null"; //$NON-NLS-1$
 		return intersectsOrientedRectangleEllipse(
 				getCenterX(), getCenterY(),
 				getFirstAxisX(), getFirstAxisY(), getFirstAxisExtent(),
-				getSecondAxisX(), getSecondAxisY(), getSecondAxisExtent(),
+				getSecondAxisExtent(),
 				s.getMinX(), s.getMinY(), s.getMaxX() - s.getMinX(), s.getMaxY() - s.getMinY());
 	}
-	
+
 	@Pure
 	@Override
 	default boolean intersects(OrientedRectangle2afp<?, ?, ?, ?, ?> s) {
+		assert (s != null) : "Oriented rectangle must be not null"; //$NON-NLS-1$
 		return intersectsOrientedRectangleOrientedRectangle(
 				getCenterX(), getCenterY(),
 				getFirstAxisX(), getFirstAxisY(), getFirstAxisExtent(),
-				getSecondAxisX(), getSecondAxisY(), getSecondAxisExtent(),
+				getSecondAxisExtent(),
 				s.getCenterX(), s.getCenterY(),
 				s.getFirstAxisX(), s.getFirstAxisY(), s.getFirstAxisExtent(),
-				s.getSecondAxisX(), s.getSecondAxisY(), s.getSecondAxisExtent());
+				s.getSecondAxisExtent());
 	}
-	
+
+	@Pure
+	@Override
+	default boolean intersects(Parallelogram2afp<?, ?, ?, ?, ?> s) {
+		assert (s != null) : "Parallelogram must be not null"; //$NON-NLS-1$
+		return Parallelogram2afp.intersectsParallelogramParallelogram(
+				s.getCenterX(), s.getCenterY(),
+				s.getFirstAxisX(), s.getFirstAxisY(), s.getFirstAxisExtent(),
+				s.getSecondAxisX(), s.getSecondAxisY(), s.getSecondAxisExtent(),
+				getCenterX(), getCenterY(),
+				getFirstAxisX(), getFirstAxisY(), getFirstAxisExtent(),
+				getSecondAxisX(), getSecondAxisY(), getSecondAxisExtent());
+	}
+
 	@Pure
 	@Override
 	default boolean intersects(Rectangle2afp<?, ?, ?, ?, ?> s) {
+		assert (s != null) : "Rectangle must be not null"; //$NON-NLS-1$
 		return intersectsOrientedRectangleRectangle(
 				getCenterX(), getCenterY(),
 				getFirstAxisX(), getFirstAxisY(), getFirstAxisExtent(),
-				getSecondAxisX(), getSecondAxisY(), getSecondAxisExtent(),
+				getSecondAxisExtent(),
 				s.getMinX(), s.getMinY(),
 				s.getWidth(), s.getHeight());
 	}
-	
+
 	@Pure
 	@Override
 	default boolean intersects(RoundRectangle2afp<?, ?, ?, ?, ?> s) {
+		assert (s != null) : "round rectangle must be not null"; //$NON-NLS-1$
 		return s.intersects(this);
 	}
-	
+
 	@Pure
 	@Override
 	default boolean intersects(Segment2afp<?, ?, ?, ?, ?> s) {
+		assert (s != null) : "Segment must be not null"; //$NON-NLS-1$
 		return intersectsOrientedRectangleSegment(
 				getCenterX(), getCenterY(),
 				getFirstAxisX(), getFirstAxisY(), getFirstAxisExtent(),
-				getSecondAxisX(), getSecondAxisY(), getSecondAxisExtent(),
+				getSecondAxisExtent(),
 				s.getX1(), s.getY1(), s.getX2(), s.getY2());
+	}
+
+	@Pure
+	@Override
+	default boolean intersects(Triangle2afp<?, ?, ?, ?, ?> s) {
+		assert (s != null) : "Triangle must be not null"; //$NON-NLS-1$
+		return intersectsOrientedRectangleTriangle(
+				getCenterX(), getCenterY(),
+				getFirstAxisX(), getFirstAxisY(), getFirstAxisExtent(),
+				getSecondAxisExtent(),
+				s.getX1(), s.getY1(), s.getX2(), s.getY2(), s.getX3(), s.getY3());
 	}
 
 	@Pure
@@ -1200,21 +1434,20 @@ public interface OrientedRectangle2afp<
 
 	@Pure
 	@Override
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	default boolean intersects(PathIterator2afp<?> iterator) {
-		if (isEmpty()) {
-			return false;
-		}
-		int mask = (iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2);
-		LocalCoordinateSystemPathIterator<?> localIterator = new LocalCoordinateSystemPathIterator(this, iterator);
-		int crossings = Path2afp.computeCrossingsFromRect(
-				localIterator, 
-				getFirstAxisExtent() / -2., getSecondAxisExtent() / -2.,
-				getFirstAxisExtent() / 2., getSecondAxisExtent() / 2.,
-				false, true);
+		assert (iterator != null) : "Oriented rectangle must be not null"; //$NON-NLS-1$
+		return intersectsOrientedRectanglePathIterator(
+				getCenterX(), getCenterY(),
+				getFirstAxisX(), getFirstAxisY(),
+				getFirstAxisExtent(), getSecondAxisExtent(),
+				iterator);
+	}
 
-		return (crossings == MathConstants.SHAPE_INTERSECTS ||
-				(crossings & mask) != 0);
+	@Pure
+	@Override
+	default boolean intersects(MultiShape2afp<?, ?, ?, ?, ?, ?> s) {
+		assert (s != null) : "MultiShape must be not null"; //$NON-NLS-1$
+		return s.intersects(this);
 	}
 
 	@Pure
@@ -1223,8 +1456,8 @@ public interface OrientedRectangle2afp<
 		Point2D minCorner;
 		Point2D maxCorner;
 
-		minCorner = new Point2fp(getCenterX(), getCenterY());
-		maxCorner = new Point2fp(getCenterX(), getCenterY());
+		minCorner = new InnerComputationPoint2afp(getCenterX(), getCenterY());
+		maxCorner = new InnerComputationPoint2afp(getCenterX(), getCenterY());
 
 		double srx = getFirstAxisX() * getFirstAxisExtent();
 		double sry = getFirstAxisY() * getFirstAxisExtent();
@@ -1254,52 +1487,40 @@ public interface OrientedRectangle2afp<
 	@Pure
 	@Override
 	default P getClosestPointTo(Point2D p) {
-		double dx = p.getX() - getCenterX();
-		double dy = p.getY() - getCenterY();
-
-		// For each OBB axis project d onto that axis to get the distance along
-		// the axis of d from the box center
-		double d1 = Vector2D.dotProduct(dx, dy, getFirstAxisX(), getFirstAxisY());
-		double d2 = Vector2D.dotProduct(dx, dy, getSecondAxisX(), getSecondAxisY());
-
-		double clampedD1 = MathUtil.clamp(d1, -getFirstAxisExtent(), getFirstAxisExtent());
-		double clampedD2 = MathUtil.clamp(d2, -getSecondAxisExtent(), getSecondAxisExtent());
-
-		// Step that distance along the axis to get world coordinate
-		// q1 += dist * this.axis[i]; (If distance farther than the box
-		// extents, clamp to the box)
-		return getGeomFactory().newPoint(
-				getCenterX() + clampedD1 * getFirstAxisX() + clampedD2 * getSecondAxisX(),
-				getCenterY() + clampedD1 * getFirstAxisY() + clampedD2 * getSecondAxisY());
+		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
+		P point = getGeomFactory().newPoint();
+		computeClosestFarthestPoints(
+				p.getX(), p.getY(),
+				getCenterX(), getCenterY(),
+				getFirstAxisX(), getFirstAxisY(), getFirstAxisExtent(),
+				getSecondAxisExtent(),
+				point, null);
+		return point;
 	}
 
 	@Pure
 	@Override
 	default P getFarthestPointTo(Point2D p) {
-		double dx = p.getX() - getCenterX();
-		double dy = p.getY() - getCenterY();
+		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
+		P point = getGeomFactory().newPoint();
+		computeClosestFarthestPoints(
+				p.getX(), p.getY(),
+				getCenterX(), getCenterY(),
+				getFirstAxisX(), getFirstAxisY(), getFirstAxisExtent(),
+				getSecondAxisExtent(),
+				null, point);
+		return point;
+	}
 
-		// For each OBB axis project d onto that axis to get the distance along
-		// the axis of d from the box center
-		double d1 = Vector2D.dotProduct(dx, dy, getFirstAxisX(), getFirstAxisY());
-		double d2 = Vector2D.dotProduct(dx, dy, getSecondAxisX(), getSecondAxisY());
-
-		// Clamp to the other side of the box
-		if (d1 >= 0.)
-			d1 = -getFirstAxisExtent();
-		else
-			d1 = getFirstAxisExtent();
-
-		if (d2 >= 0.)
-			d2 = -getSecondAxisExtent();
-		else
-			d2 = getFirstAxisExtent();
-
-		// Step that distance along the axis to get world coordinate
-		// q2 += dist * this.axis[i];
-		return getGeomFactory().newPoint(
-				getCenterX() + d1 * getFirstAxisX() + d2 * getSecondAxisX(),
-				getCenterY() + d1 * getFirstAxisY() + d2 * getSecondAxisY());
+	/** Roate the oriented rectangle around its center.
+	 *
+	 * @param angle the angle of rotation.
+	 */
+	default void rotate(double angle) {
+		Vector2D axis1 = getFirstAxis();
+		Vector2D newAxis = getGeomFactory().newVector();
+		newAxis.turn(angle, axis1);
+		setFirstAxis(newAxis.getX(), newAxis.getY());
 	}
 
 	/** Abstract iterator on the path elements of the oriented rectangle.
@@ -1312,18 +1533,24 @@ public interface OrientedRectangle2afp<
 	 */
 	abstract class AbstractOrientedRectanglePathIterator<T extends PathElement2afp> implements PathIterator2afp<T> {
 
-		private final GeomFactory2afp<T, ?, ?> factory;
+		/** Number of path elements.
+		 */
+		protected static final int ELEMENT_COUNT = 4;
+
+		/** The iterated shape.
+		 */
+		protected final OrientedRectangle2afp<?, ?, T, ?, ?> rectangle;
 
 		/**
-		 * @param factory the factory.
+		 * @param rectangle the iterated rectangle.
 		 */
-		public AbstractOrientedRectanglePathIterator(GeomFactory2afp<T, ?, ?> factory) {
-			this.factory = factory;
+		public AbstractOrientedRectanglePathIterator(OrientedRectangle2afp<?, ?, T, ?, ?> rectangle) {
+			this.rectangle = rectangle;
 		}
 
 		@Override
 		public GeomFactory2afp<T, ?, ?> getGeomFactory() {
-			return this.factory;
+			return this.rectangle.getGeomFactory();
 		}
 
 		@Override
@@ -1354,7 +1581,7 @@ public interface OrientedRectangle2afp<
 		public boolean isPolygon() {
 			return true;
 		}
-		
+
 		@Pure
 		@Override
 		public boolean isMultiParts() {
@@ -1378,67 +1605,80 @@ public interface OrientedRectangle2afp<
 		private double x;
 
 		private double y;
-		
+
 		private Vector2D r;
-		
+
 		private Vector2D s;
-		
-		private int index = 0;
+
+		private int index;
+
+		private double moveX;
+
+		private double moveY;
+
+		private double lastX;
+
+		private double lastY;
 
 		/**
 		 * @param rectangle the oriented rectangle to iterate on.
 		 */
 		public OrientedRectanglePathIterator(OrientedRectangle2afp<?, ?, T, ?, ?> rectangle) {
-			super(rectangle.getGeomFactory());
+			super(rectangle);
 			if (rectangle.isEmpty()) {
-				this.index = 6;
+				this.index = ELEMENT_COUNT;
 			} else {
-				GeomFactory2afp<T, ?, ?> factory = getGeomFactory();
-				this.r = factory.newVector(rectangle.getFirstAxisX(), rectangle.getFirstAxisY());
-				this.s = factory.newVector(rectangle.getFirstAxisX(), rectangle.getFirstAxisY());
+				this.r = new InnerComputationVector2afp(rectangle.getFirstAxisX(), rectangle.getFirstAxisY());
+				this.s = new InnerComputationVector2afp(rectangle.getSecondAxisX(), rectangle.getSecondAxisY());
 				this.r.scale(rectangle.getFirstAxisExtent());
 				this.s.scale(rectangle.getSecondAxisExtent());
-				this.x = rectangle.getCenterX() - (this.r.getX() + this.s.getX());
-				this.y = rectangle.getCenterY() - (this.r.getY() + this.s.getY());
-				this.r.scale(2);
-				this.s.scale(2);
+				this.x = rectangle.getCenterX();
+				this.y = rectangle.getCenterY();
+				this.index = -1;
 			}
+		}
+
+		@Override
+		public PathIterator2afp<T> restartIterations() {
+			return new OrientedRectanglePathIterator<>(this.rectangle);
 		}
 
 		@Pure
 		@Override
 		public boolean hasNext() {
-			return this.index<=5;
+			return this.index < ELEMENT_COUNT;
 		}
 
 		@Override
 		public T next() {
 			int idx = this.index;
 			++this.index;
+			if (idx < 0) {
+				this.moveX = this.x + this.r.getX() + this.s.getX();
+				this.moveY = this.y + this.r.getY() + this.s.getY();
+				this.lastX = this.moveX;
+				this.lastY = this.moveY;
+				return getGeomFactory().newMovePathElement(this.moveX, this.moveY);
+			}
+			double lx = this.lastX;
+			double ly = this.lastY;
 			switch(idx) {
 			case 0:
-				return getGeomFactory().newMovePathElement(
-						this.x, this.y);
+				this.lastX = this.x - this.r.getX() + this.s.getX();
+				this.lastY = this.y - this.r.getY() + this.s.getY();
+				return getGeomFactory().newLinePathElement(lx, ly, this.lastX, this.lastY);
 			case 1:
-				return getGeomFactory().newLinePathElement(
-						this.x, this.y,
-						this.x + this.r.getX(), this.y + this.r.getY());
+				this.lastX = this.x - this.r.getX() - this.s.getX();
+				this.lastY = this.y - this.r.getY() - this.s.getY();
+				return getGeomFactory().newLinePathElement(lx, ly, this.lastX, this.lastY);
 			case 2:
-				return getGeomFactory().newLinePathElement(
-						this.x + this.r.getX(), this.y + this.r.getY(),
-						this.x + this.r.getX() + this.s.getX(), this.y + this.r.getY() + this.s.getY());
+				this.lastX = this.x + this.r.getX() - this.s.getX();
+				this.lastY = this.y + this.r.getY() - this.s.getY();
+				return getGeomFactory().newLinePathElement(lx, ly, this.lastX, this.lastY);
 			case 3:
-				return getGeomFactory().newLinePathElement(
-						this.x + this.r.getX() + this.s.getX(), this.y + this.r.getY() + this.s.getY(),
-						this.x + this.s.getX(), this.y + this.s.getY());
-			case 4:
-				return getGeomFactory().newLinePathElement(
-						this.x + this.s.getX(), this.y + this.s.getY(),
-						this.x, this.y);
-			case 5:
 				return getGeomFactory().newClosePathElement(
-						this.x, this.y,
-						this.x, this.y);
+						this.lastX, this.lastY,
+						this.moveX, this.moveY);
 			default:
 				throw new NoSuchElementException();
 			}
@@ -1458,103 +1698,93 @@ public interface OrientedRectangle2afp<
 	class TransformedOrientedRectanglePathIterator<T extends PathElement2afp> extends AbstractOrientedRectanglePathIterator<T> {
 
 		private final Transform2D transform;
-		
+
 		private double x;
-		
+
 		private double y;
-		
+
 		private Vector2D r;
-		
+
 		private Vector2D s;
 
-		private int index = 0;
+		private int index;
 
-		private Point2D p1;
-		
-		private Point2D p2;
+		private Point2D move;
+
+		private Point2D last;
 
 		/**
 		 * @param rectangle the oriented rectangle to iterate on.
-		 * @param transform the transformation to apply on the rectangle.
+		 * @param transform the transformation to apply.
 		 */
-		public TransformedOrientedRectanglePathIterator(OrientedRectangle2afp<?, ?, T, ?, ?> rectangle, Transform2D transform) {
-			super(rectangle.getGeomFactory());
+		public TransformedOrientedRectanglePathIterator(OrientedRectangle2afp<?, ?, T, ?, ?> rectangle,
+				Transform2D transform) {
+			super(rectangle);
+			assert (transform != null) : "Transformation must be not null"; //$NON-NLS-1$
 			this.transform = transform;
 			if (rectangle.isEmpty()) {
-				this.index = 6;
+				this.index = ELEMENT_COUNT;
 			} else {
-				GeomFactory2afp<T, ?, ?> factory = getGeomFactory();
-				this.p1 = factory.newPoint();
-				this.p2 = factory.newPoint();
-				this.r = factory.newVector(rectangle.getFirstAxisX(), rectangle.getFirstAxisY());
-				this.s = factory.newVector(rectangle.getFirstAxisX(), rectangle.getFirstAxisY());
+				this.move = getGeomFactory().newPoint();
+				this.last = getGeomFactory().newPoint();
+				this.r = new InnerComputationVector2afp(rectangle.getFirstAxisX(), rectangle.getFirstAxisY());
+				this.s = new InnerComputationVector2afp(rectangle.getSecondAxisX(), rectangle.getSecondAxisY());
 				this.r.scale(rectangle.getFirstAxisExtent());
 				this.s.scale(rectangle.getSecondAxisExtent());
-				this.x = rectangle.getCenterX() - (this.r.getX() + this.s.getX());
-				this.y = rectangle.getCenterY() - (this.r.getY() + this.s.getY());
-				this.r.scale(2);
-				this.s.scale(2);
+				this.x = rectangle.getCenterX();
+				this.y = rectangle.getCenterY();
+				this.index = -1;
 			}
+		}
+
+		@Override
+		public PathIterator2afp<T> restartIterations() {
+			return new TransformedOrientedRectanglePathIterator<>(this.rectangle, this.transform);
 		}
 
 		@Pure
 		@Override
 		public boolean hasNext() {
-			return this.index <= 5;
+			return this.index < ELEMENT_COUNT;
 		}
 
 		@Override
 		public T next() {
 			int idx = this.index;
 			++this.index;
+			if (idx < 0) {
+				this.move.set(
+						this.x + this.r.getX() + this.s.getX(),
+						this.y + this.r.getY() + this.s.getY());
+				this.transform.transform(this.move);
+				this.last.set(this.move);
+				return getGeomFactory().newMovePathElement(this.move.getX(), this.move.getY());
+			}
+			double lx = this.last.getX();
+			double ly = this.last.getY();
 			switch(idx) {
 			case 0:
-				this.p2.set(this.x, this.y);
-				if (this.transform!=null) {
-					this.transform.transform(this.p2);
-				}
-				return getGeomFactory().newMovePathElement(
-						this.p2.getX(), this.p2.getY());
+				this.last.set(
+						this.x - this.r.getX() + this.s.getX(),
+						this.y - this.r.getY() + this.s.getY());
+				this.transform.transform(this.last);
+				return getGeomFactory().newLinePathElement(lx, ly, this.last.getX(), this.last.getY());
 			case 1:
-				this.p1.set(this.p2);
-				this.p2.add(this.r);
-				if (this.transform!=null) {
-					this.transform.transform(this.p2);
-				}
-				return getGeomFactory().newLinePathElement(
-						this.p1.getX(), this.p1.getY(),
-						this.p2.getX(), this.p2.getY());
+				this.last.set(
+						this.x - this.r.getX() - this.s.getX(),
+						this.y - this.r.getY() - this.s.getY());
+				this.transform.transform(this.last);
+				return getGeomFactory().newLinePathElement(lx, ly, this.last.getX(), this.last.getY());
 			case 2:
-				this.p1.set(this.p2);
-				this.p2.add(this.s);
-				if (this.transform!=null) {
-					this.transform.transform(this.p2);
-				}
-				return getGeomFactory().newLinePathElement(
-						this.p1.getX(), this.p1.getY(),
-						this.p2.getX(), this.p2.getY());
+				this.last.set(
+						this.x + this.r.getX() - this.s.getX(),
+						this.y + this.r.getY() - this.s.getY());
+				this.transform.transform(this.last);
+				return getGeomFactory().newLinePathElement(lx, ly, this.last.getX(), this.last.getY());
 			case 3:
-				this.p1.set(this.p2);
-				this.p2.sub(this.r);
-				if (this.transform!=null) {
-					this.transform.transform(this.p2);
-				}
-				return getGeomFactory().newLinePathElement(
-						this.p1.getX(), this.p1.getY(),
-						this.p2.getX(), this.p2.getY());
-			case 4:
-				this.p1.set(this.p2);
-				this.p2.sub(this.s);
-				if (this.transform!=null) {
-					this.transform.transform(this.p2);
-				}
-				return getGeomFactory().newLinePathElement(
-						this.p1.getX(), this.p1.getY(),
-						this.p2.getX(), this.p2.getY());
-			case 5:
 				return getGeomFactory().newClosePathElement(
-						this.p2.getX(), this.p2.getY(),
-						this.p2.getX(), this.p2.getY());
+						this.last.getX(), this.last.getY(),
+						this.move.getX(), this.move.getY());
 			default:
 				throw new NoSuchElementException();
 			}
@@ -1562,21 +1792,22 @@ public interface OrientedRectangle2afp<
 
 	}
 
-	/** An iterator that replies the path elements in the local coordinate system
-	 * of an oriented rectangle.
+	/** An iterator that automatically transform and reply the path elements from the given iterator such that
+	 * the coordinates of the path elements are projected in the local coordinate system of the given oriented
+	 * box.
 	 *
 	 * @param <T> the type of the path elements.
-	 * @author $Author: mgrolleau$
 	 * @author $Author: sgalland$
+	 * @author $Author: mgrolleau$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 * @since 13.0
 	 */
-	class LocalCoordinateSystemPathIterator<T extends PathElement2afp> extends AbstractOrientedRectanglePathIterator<T> {
+	class ProjectionToOrientedRectangleLocalCoordinateSystemPathIterator<T extends PathElement2afp> implements PathIterator2afp<T> {
 
-		private final PathIterator2afp<? extends T> iterator;
-		
+		private final PathIterator2afp<T> iterator;
+
 		private final double centerX;
 
 		private final double centerY;
@@ -1585,24 +1816,29 @@ public interface OrientedRectangle2afp<
 
 		private final double axisY1;
 
-		private final double axisX2;
-
-		private final double axisY2;
-
 		/**
-		 * @param rectangle the basis rectangle.
+		 * @param x the specified X coordinate of the rectangle center.
+		 * @param y the specified Y coordinate of the rectangle center.
+		 * @param axis1X the X coordinate of the first axis of the rectangle.
+		 * @param axis1Y the Y coordinate of the first axis of the rectangle.
 		 * @param iterator the iterator to transform.
 		 */
-		public LocalCoordinateSystemPathIterator(OrientedRectangle2afp<?, ?, T, ?, ?> rectangle,
-				PathIterator2afp<? extends T> iterator) {
-			super(rectangle.getGeomFactory());
+		public ProjectionToOrientedRectangleLocalCoordinateSystemPathIterator(
+				double x, double y, double axis1X, double axis1Y,
+				PathIterator2afp<T> iterator) {
 			this.iterator = iterator;
-			this.centerX = rectangle.getCenterX();
-			this.centerY = rectangle.getCenterY();
-			this.axisX1 = rectangle.getFirstAxisX();
-			this.axisY1 = rectangle.getFirstAxisY();
-			this.axisX2 = rectangle.getSecondAxisX();
-			this.axisY2 = rectangle.getSecondAxisY();
+			this.centerX = x;
+			this.centerY = y;
+			this.axisX1 = axis1X;
+			this.axisY1 = axis1Y;
+		}
+
+		@Override
+		public PathIterator2afp<T> restartIterations() {
+			return new ProjectionToOrientedRectangleLocalCoordinateSystemPathIterator<>(
+					this.centerX, this.centerY,
+					this.axisX1, this.axisY1,
+					this.iterator.restartIterations());
 		}
 
 		@Pure
@@ -1617,38 +1853,62 @@ public interface OrientedRectangle2afp<
 			switch(elem.getType()){
 			case CURVE_TO:
 				return getGeomFactory().newCurvePathElement(
-						(elem.getFromX() - this.centerX) * this.axisY2 - (elem.getFromY() - this.centerY) * this.axisX2,
-						(elem.getFromY() - this.centerY) * this.axisX1 - (elem.getFromX() - this.centerX) * this.axisY1,
-						(elem.getCtrlX1() - this.centerX) * this.axisY2 - (elem.getCtrlY1() - this.centerY) * this.axisX2,
-						(elem.getCtrlY1() - this.centerY) * this.axisX1 - (elem.getCtrlX1() - this.centerX) * this.axisY1,
-						(elem.getCtrlX2() - this.centerX) * this.axisY2 - (elem.getCtrlY2() - this.centerY) * this.axisX2,
-						(elem.getCtrlY2() - this.centerY) * this.axisX1 - (elem.getCtrlX2() - this.centerX) * this.axisY1,
-						(elem.getToX() - this.centerX) * this.axisY2 - (elem.getToY() - this.centerY) * this.axisX2,
-						(elem.getToY() - this.centerY) * this.axisX2 - (elem.getToX() - this.centerX) * this.axisY1);
+						projectVectorOnOrientedRectangleRAxis(this.axisX1, this.axisY1, 
+								elem.getFromX() - this.centerX, elem.getFromY() - this.centerY),
+						projectVectorOnOrientedRectangleSAxis(this.axisX1, this.axisY1, 
+								elem.getFromX() - this.centerX, elem.getFromY() - this.centerY),
+						projectVectorOnOrientedRectangleRAxis(this.axisX1, this.axisY1, 
+								elem.getCtrlX1() - this.centerX, elem.getCtrlY1() - this.centerY),
+						projectVectorOnOrientedRectangleSAxis(this.axisX1, this.axisY1,
+								elem.getCtrlX1() - this.centerX, elem.getCtrlY1() - this.centerY),
+						projectVectorOnOrientedRectangleRAxis(this.axisX1, this.axisY1,
+								elem.getCtrlX2() - this.centerX, elem.getCtrlY2() - this.centerY),
+						projectVectorOnOrientedRectangleSAxis(this.axisX1, this.axisY1,
+								elem.getCtrlX2() - this.centerX, elem.getCtrlY2() - this.centerY),
+						projectVectorOnOrientedRectangleRAxis(this.axisX1, this.axisY1,
+								elem.getToX() - this.centerX, elem.getToY() - this.centerY),
+						projectVectorOnOrientedRectangleSAxis(this.axisX1, this.axisY1,
+								elem.getToX() - this.centerX, elem.getToY() - this.centerY));
 			case LINE_TO:
 				return getGeomFactory().newLinePathElement(
-						(elem.getFromX() - this.centerX) * this.axisY2 - (elem.getFromY() - this.centerY) * this.axisX2,
-						(elem.getFromY() - this.centerY) * this.axisX1 - (elem.getFromX() - this.centerX) * this.axisY1,
-						(elem.getToX() - this.centerX) * this.axisY2 - (elem.getToY() - this.centerY) * this.axisX2,
-						(elem.getToY() - this.centerY) * this.axisX1 - (elem.getToX() - this.centerX) * this.axisY1);
+						projectVectorOnOrientedRectangleRAxis(this.axisX1, this.axisY1, 
+								elem.getFromX() - this.centerX, elem.getFromY() - this.centerY),
+						projectVectorOnOrientedRectangleSAxis(this.axisX1, this.axisY1, 
+								elem.getFromX() - this.centerX, elem.getFromY() - this.centerY),
+						projectVectorOnOrientedRectangleRAxis(this.axisX1, this.axisY1,
+								elem.getToX() - this.centerX, elem.getToY() - this.centerY),
+						projectVectorOnOrientedRectangleSAxis(this.axisX1, this.axisY1,
+								elem.getToX() - this.centerX, elem.getToY() - this.centerY));
 			case MOVE_TO:
 				return getGeomFactory().newMovePathElement(
-						(elem.getToX() - this.centerX) * this.axisY2 - (elem.getToY() - this.centerY) * this.axisX2,
-						(elem.getToY() - this.centerY) * this.axisX1 - (elem.getFromX()-this.centerX) * this.axisY1);
+						projectVectorOnOrientedRectangleRAxis(this.axisX1, this.axisY1,
+								elem.getToX() - this.centerX, elem.getToY() - this.centerY),
+						projectVectorOnOrientedRectangleSAxis(this.axisX1, this.axisY1,
+								elem.getToX() - this.centerX, elem.getToY() - this.centerY));
 			case QUAD_TO:
 				return getGeomFactory().newCurvePathElement(
-						(elem.getFromX() - this.centerX) * this.axisY2 - (elem.getFromY() - this.centerY) * this.axisX2,
-						(elem.getFromY() - this.centerY) * this.axisX1 - (elem.getFromX() - this.centerX) * this.axisY1,
-						(elem.getCtrlX1() - this.centerX) * this.axisY2 - (elem.getCtrlY1() - this.centerY) * this.axisX2,
-						(elem.getCtrlY1() - this.centerY) * this.axisX1 - (elem.getCtrlX1() - this.centerX) * this.axisY1,
-						(elem.getToX() - this.centerX) * this.axisY2 - (elem.getToY() - this.centerY) * this.axisX2,
-						(elem.getToY() - this.centerY) * this.axisX1 - (elem.getToX() - this.centerX) * this.axisY1);
+						projectVectorOnOrientedRectangleRAxis(this.axisX1, this.axisY1, 
+								elem.getFromX() - this.centerX, elem.getFromY() - this.centerY),
+						projectVectorOnOrientedRectangleSAxis(this.axisX1, this.axisY1, 
+								elem.getFromX() - this.centerX, elem.getFromY() - this.centerY),
+						projectVectorOnOrientedRectangleRAxis(this.axisX1, this.axisY1, 
+								elem.getCtrlX1() - this.centerX, elem.getCtrlY1() - this.centerY),
+						projectVectorOnOrientedRectangleSAxis(this.axisX1, this.axisY1,
+								elem.getCtrlX1() - this.centerX, elem.getCtrlY1() - this.centerY),
+						projectVectorOnOrientedRectangleRAxis(this.axisX1, this.axisY1,
+								elem.getToX() - this.centerX, elem.getToY() - this.centerY),
+						projectVectorOnOrientedRectangleSAxis(this.axisX1, this.axisY1,
+								elem.getToX() - this.centerX, elem.getToY() - this.centerY));
 			case CLOSE:
 				return getGeomFactory().newClosePathElement(
-						(elem.getFromX() - this.centerX) * this.axisY2 - (elem.getFromY() - this.centerY) * this.axisX2,
-						(elem.getFromY() - this.centerY) * this.axisX1 - (elem.getFromX() - this.centerX) * this.axisY1,
-						(elem.getToX() - this.centerX) * this.axisY2 - (elem.getToY() - this.centerY) * this.axisX2,
-						(elem.getToY() - this.centerY) * this.axisX1 - (elem.getToX() - this.centerX) * this.axisY1);
+						projectVectorOnOrientedRectangleRAxis(this.axisX1, this.axisY1, 
+								elem.getFromX() - this.centerX, elem.getFromY() - this.centerY),
+						projectVectorOnOrientedRectangleSAxis(this.axisX1, this.axisY1, 
+								elem.getFromX() - this.centerX, elem.getFromY() - this.centerY),
+						projectVectorOnOrientedRectangleRAxis(this.axisX1, this.axisY1,
+								elem.getToX() - this.centerX, elem.getToY() - this.centerY),
+						projectVectorOnOrientedRectangleSAxis(this.axisX1, this.axisY1,
+								elem.getToX() - this.centerX, elem.getToY() - this.centerY));
 			default:
 				break;
 
@@ -1684,11 +1944,16 @@ public interface OrientedRectangle2afp<
 		public boolean isPolygon() {
 			return this.iterator.isPolygon();
 		}
-	
+
 		@Pure
 		@Override
 		public boolean isMultiParts() {
 			return this.iterator.isMultiParts();
+		}
+
+		@Override
+		public GeomFactory2afp<T, ?, ?> getGeomFactory() {
+			return this.iterator.getGeomFactory();
 		}
 
 	}

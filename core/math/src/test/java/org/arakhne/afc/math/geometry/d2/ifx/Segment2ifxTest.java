@@ -31,6 +31,7 @@ import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.ai.AbstractSegment2aiTest;
 import org.arakhne.afc.math.geometry.d2.ai.Circle2ai;
 import org.arakhne.afc.math.geometry.d2.ai.Path2ai;
+import org.arakhne.afc.math.geometry.d2.ai.TestShapeFactory;
 import org.junit.Test;
 
 import javafx.beans.property.IntegerProperty;
@@ -39,33 +40,8 @@ import javafx.beans.property.IntegerProperty;
 public class Segment2ifxTest extends AbstractSegment2aiTest<Segment2ifx, Rectangle2ifx> {
 
 	@Override
-	protected Segment2ifx createSegment(int x1, int y1, int x2, int y2) {
-		return new Segment2ifx(x1, y1, x2, y2);
-	}
-
-	@Override
-	protected Point2D createPoint(int x, int y) {
-		return new Point2ifx(x, y);
-	}
-
-	@Override
-	protected Vector2D createVector(int x, int y) {
-		return new Vector2ifx(x, y);
-	}
-
-	@Override
-	protected Rectangle2ifx createRectangle(int x, int y, int width, int height) {
-		return new Rectangle2ifx(x, y, width, height);
-	}
-
-	@Override
-	protected Circle2ai<?, ?, ?, ?, Rectangle2ifx> createCircle(int x, int y, int radius) {
-		return new Circle2ifx(x, y, radius);
-	}
-
-	@Override
-	protected Path2ai<?, ?, ?, ?, ?> createPath() {
-		return new Path2ifx();
+	protected TestShapeFactory<Rectangle2ifx> createFactory() {
+		return TestShapeFactory2ifx.SINGLETON;
 	}
 
 	@Test

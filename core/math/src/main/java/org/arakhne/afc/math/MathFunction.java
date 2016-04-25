@@ -25,8 +25,9 @@ package org.arakhne.afc.math;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 13.0
+ * @deprecated see {@link org.arakhne.afc.math.stochastic.MathFunction}
  */
+@Deprecated
 public interface MathFunction {
 	
 	/** Replies the value of the function.

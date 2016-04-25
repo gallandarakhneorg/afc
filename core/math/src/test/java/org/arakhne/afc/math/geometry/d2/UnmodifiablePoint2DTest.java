@@ -76,6 +76,16 @@ public class UnmodifiablePoint2DTest extends AbstractUnmodifiablePoint2DTest {
 				return new ImVector2D();
 			}
 
+			@Override
+			public Vector2D toUnitVector() {
+				throw new UnsupportedOperationException();
+			}
+
+			@Override
+			public Vector2D toOrthogonalVector() {
+				throw new UnsupportedOperationException();
+			}
+
 			class ImVector2D implements Vector2D {
 
 				@Override
@@ -128,6 +138,16 @@ public class UnmodifiablePoint2DTest extends AbstractUnmodifiablePoint2DTest {
 					return this;
 				}
 				
+				@Override
+				public Vector2D toUnitVector() {
+					throw new UnsupportedOperationException();
+				}
+
+				@Override
+				public Vector2D toOrthogonalVector() {
+					throw new UnsupportedOperationException();
+				}
+
 			}
 		};
 	}

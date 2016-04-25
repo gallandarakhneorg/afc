@@ -21,8 +21,6 @@
  */
 package org.arakhne.afc.math.geometry.d2.fpfx;
 
-import java.util.concurrent.Callable;
-
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.arakhne.afc.math.geometry.d2.UnmodifiableVector2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
@@ -30,6 +28,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.property.ReadOnlyDoubleWrapper;
 
 /** 2D Vector with 2 double precision floating-point FX properties.
@@ -48,11 +47,11 @@ public class Vector2fx extends Tuple2fx<Vector2D, Vector2fx> implements Vector2D
 
 	/** Property that contains the squared length.
 	 */
-	ReadOnlyDoubleWrapper lengthSquareProperty = new ReadOnlyDoubleWrapper();
+	private ReadOnlyDoubleWrapper lengthSquareProperty;
 	
 	/** Property that contains the length.
 	 */
-	ReadOnlyDoubleWrapper lengthProperty = new ReadOnlyDoubleWrapper();
+	private ReadOnlyDoubleWrapper lengthProperty;
 
 	/** Replies the orientation vector, which is corresponding
 	 * to the given angle on a trigonometric circle.
@@ -68,7 +67,7 @@ public class Vector2fx extends Tuple2fx<Vector2D, Vector2fx> implements Vector2D
 	/**
 	 */
 	public Vector2fx() {
-		bind();
+		//
 	}
 
 	/**
@@ -77,7 +76,6 @@ public class Vector2fx extends Tuple2fx<Vector2D, Vector2fx> implements Vector2D
 	 */
 	public Vector2fx(DoubleProperty x, DoubleProperty y) {
 		super(x, y);
-		bind();
 	}
 
 	/**
@@ -85,7 +83,6 @@ public class Vector2fx extends Tuple2fx<Vector2D, Vector2fx> implements Vector2D
 	 */
 	public Vector2fx(Tuple2D<?> tuple) {
 		super(tuple);
-		bind();
 	}
 
 	/**
@@ -93,7 +90,6 @@ public class Vector2fx extends Tuple2fx<Vector2D, Vector2fx> implements Vector2D
 	 */
 	public Vector2fx(int[] tuple) {
 		super(tuple);
-		bind();
 	}
 
 	/**
@@ -101,7 +97,6 @@ public class Vector2fx extends Tuple2fx<Vector2D, Vector2fx> implements Vector2D
 	 */
 	public Vector2fx(double[] tuple) {
 		super(tuple);
-		bind();
 	}
 
 	/**
@@ -110,7 +105,6 @@ public class Vector2fx extends Tuple2fx<Vector2D, Vector2fx> implements Vector2D
 	 */
 	public Vector2fx(int x, int y) {
 		super(x,y);
-		bind();
 	}
 
 	/**
@@ -119,7 +113,6 @@ public class Vector2fx extends Tuple2fx<Vector2D, Vector2fx> implements Vector2D
 	 */
 	public Vector2fx(float x, float y) {
 		super(x,y);
-		bind();
 	}
 
 	/**
@@ -128,7 +121,6 @@ public class Vector2fx extends Tuple2fx<Vector2D, Vector2fx> implements Vector2D
 	 */
 	public Vector2fx(double x, double y) {
 		super(x,y);
-		bind();
 	}
 
 	/**
@@ -137,33 +129,69 @@ public class Vector2fx extends Tuple2fx<Vector2D, Vector2fx> implements Vector2D
 	 */
 	public Vector2fx(long x, long y) {
 		super(x,y);
-		bind();
-	}
-	
-	private void bind() {
-		this.lengthSquareProperty.bind(Bindings.createDoubleBinding(new Callable<Double>() {
-			@Override
-			public Double call() throws Exception {
-				return Vector2fx.this.x.doubleValue() * Vector2fx.this.x.doubleValue()
-						+ Vector2fx.this.y.doubleValue() * Vector2fx.this.y.doubleValue();
-			}
-		}, this.x, this.y));
-		
-		this.lengthProperty.bind(Bindings.createDoubleBinding(new Callable<Double>() {
-			@Override
-			public Double call() throws Exception {
-				return Math.sqrt(Vector2fx.this.lengthSquareProperty.doubleValue());
-			}
-		}, this.lengthSquareProperty));
 	}
 	
 	@Override
 	public Vector2fx clone() {
 		Vector2fx clone = super.clone();
-		clone.lengthSquareProperty = new ReadOnlyDoubleWrapper();
-		clone.lengthProperty = new ReadOnlyDoubleWrapper();
-		clone.bind();
+		clone.lengthSquareProperty = null;
+		clone.lengthProperty = null;
 		return clone;
+	}
+	
+	@Override
+	public Vector2D toUnitVector() {
+		double length = getLength();
+		if (length == 0.) {
+			return new Vector2fx();
+		}
+		return new Vector2fx(getX() / length, getY() / length);
+	}
+	
+	@Override
+	public Vector2D toOrthogonalVector() {
+		return new Vector2fx(-getY(), getX());
+	}
+	
+	@Override
+	public double getLength() {
+		return lengthProperty().get();
+	}
+	
+	/** Replies the property that represents the length of the vector.
+	 *
+	 * @return the length property
+	 */
+	public ReadOnlyDoubleProperty lengthProperty() {
+		if (this.lengthProperty == null) {
+			this.lengthProperty = new ReadOnlyDoubleWrapper(this, "length"); //$NON-NLS-1$
+			this.lengthProperty.bind(Bindings.createDoubleBinding(
+					() -> {
+						return Math.sqrt(lengthSquaredProperty().doubleValue());
+					}, lengthSquaredProperty()));
+		}
+		return this.lengthProperty.getReadOnlyProperty();
+	}
+
+	@Override
+	public double getLengthSquared() {
+		return lengthSquaredProperty().get();
+	}
+	
+	/** Replies the property that represents the length of the vector.
+	 *
+	 * @return the length property
+	 */
+	public ReadOnlyDoubleProperty lengthSquaredProperty() {
+		if (this.lengthSquareProperty == null) {
+			this.lengthSquareProperty = new ReadOnlyDoubleWrapper(this, "lengthSquared"); //$NON-NLS-1$
+			this.lengthSquareProperty.bind(Bindings.createDoubleBinding(
+					() -> {
+						return Vector2fx.this.x.doubleValue() * Vector2fx.this.x.doubleValue()
+								+ Vector2fx.this.y.doubleValue() * Vector2fx.this.y.doubleValue();
+					}, this.x, this.y));
+		}
+		return this.lengthSquareProperty.getReadOnlyProperty();
 	}
 
 	@Override
@@ -171,6 +199,16 @@ public class Vector2fx extends Tuple2fx<Vector2D, Vector2fx> implements Vector2D
 		return new UnmodifiableVector2D() {
 			
 			private static final long serialVersionUID = 1638306005394957111L;
+
+			@Override
+			public Vector2D toUnitVector() {
+				return Vector2fx.this.toUnitVector();
+			}
+			
+			@Override
+			public Vector2D toOrthogonalVector() {
+				return Vector2fx.this.toOrthogonalVector();
+			}
 
 			@Override
 			public Vector2D clone() {

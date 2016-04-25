@@ -26,7 +26,7 @@ import org.arakhne.afc.math.geometry.d2.afp.Circle2afp;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.DoublePropertyBase;
+import javafx.beans.property.SimpleDoubleProperty;
 
 /** Circle with 2 double precision floating-point FX properties.
  *
@@ -60,6 +60,7 @@ public class Circle2fx
 	 * @param radius
 	 */
 	public Circle2fx(Point2D center, double radius) {
+		assert (center != null) : "Center must be not null"; //$NON-NLS-1$
 		set(center.getX(), center.getY(), radius);
 	}
 
@@ -76,7 +77,27 @@ public class Circle2fx
 	 * @param c
 	 */
 	public Circle2fx(Circle2afp<?, ?, ?, ?, ?> c) {
+		assert (c != null) : "Circle must be not null"; //$NON-NLS-1$
 		set(c.getX(), c.getY(), c.getRadius());
+	}
+
+	@Pure
+	@Override
+	public Circle2fx clone() {
+		Circle2fx clone = super.clone();
+		if (clone.centerX != null) {
+			clone.centerX = null;
+			clone.xProperty().set(getX());
+		}
+		if (clone.centerY != null) {
+			clone.centerY = null;
+			clone.yProperty().set(getY());
+		}
+		if (clone.radius != null) {
+			clone.radius = null;
+			clone.radiusProperty().set(getRadius());
+		}
+		return clone;
 	}
 	
 	@Pure
@@ -139,17 +160,7 @@ public class Circle2fx
 	@Pure
 	public DoubleProperty xProperty() {
 		if (this.centerX == null) {
-			this.centerX = new DoublePropertyBase(0) {
-				@Override
-				public String getName() {
-					return "x"; //$NON-NLS-1$
-				}
-				
-				@Override
-				public Object getBean() {
-					return Circle2fx.this;
-				}
-			};
+			this.centerX = new SimpleDoubleProperty(this, "x"); //$NON-NLS-1$
 		}
 		return this.centerX;
 	}
@@ -161,17 +172,7 @@ public class Circle2fx
 	@Pure
 	public DoubleProperty yProperty() {
 		if (this.centerY == null) {
-			this.centerY = new DoublePropertyBase(0) {
-				@Override
-				public String getName() {
-					return "y"; //$NON-NLS-1$
-				}
-				
-				@Override
-				public Object getBean() {
-					return Circle2fx.this;
-				}
-			};
+			this.centerY = new SimpleDoubleProperty(this, "y"); //$NON-NLS-1$
 		}
 		return this.centerY;
 	}
@@ -184,6 +185,7 @@ public class Circle2fx
 
 	@Override
 	public void setRadius(double radius) {
+		assert (radius >= 0) : "Radius must be positive or zero"; //$NON-NLS-1$
 		radiusProperty().set(radius);
 	}
 
@@ -194,17 +196,7 @@ public class Circle2fx
 	@Pure
 	public DoubleProperty radiusProperty() {
 		if (this.radius == null) {
-			this.radius = new DoublePropertyBase(0) {
-				@Override
-				public String getName() {
-					return "radius"; //$NON-NLS-1$
-				}
-				
-				@Override
-				public Object getBean() {
-					return Circle2fx.this;
-				}
-				
+			this.radius = new SimpleDoubleProperty(this, "radius") { //$NON-NLS-1$
 				@Override
 				protected void invalidated() {
 					if (get() < 0.) {
@@ -218,6 +210,7 @@ public class Circle2fx
 
 	@Override
 	public void set(double x, double y, double radius) {
+		assert (radius >= 0) : "Radius must be positive or zero"; //$NON-NLS-1$
 		xProperty().set(x);
 		yProperty().set(y);
 		radiusProperty().set(radius);

@@ -104,10 +104,8 @@ public class Rectangle2fp extends AbstractShape2fp<Rectangle2fp>
 
 	@Override
 	public void setMinX(double x) {
-		if (x <= this.maxx) {
-			this.minx = x;
-		} else {
-			this.minx = this.maxx;
+		this.minx = x;
+		if (this.maxx < x) {
 			this.maxx = x;
 		}
 	}
@@ -120,10 +118,8 @@ public class Rectangle2fp extends AbstractShape2fp<Rectangle2fp>
 
 	@Override
 	public void setMaxX(double x) {
-		if (x > this.minx) {
-			this.maxx = x;
-		} else {
-			this.maxx = this.minx;
+		this.maxx = x;
+		if (this.minx > x) {
 			this.minx = x;
 		}
 	}
@@ -136,10 +132,8 @@ public class Rectangle2fp extends AbstractShape2fp<Rectangle2fp>
 
 	@Override
 	public void setMinY(double y) {
-		if (y <= this.maxy) {
-			this.miny = y;
-		} else {
-			this.miny = this.maxy;
+		this.miny = y;
+		if (this.maxy < y)  {
 			this.maxy = y;
 		}
 	}
@@ -152,10 +146,8 @@ public class Rectangle2fp extends AbstractShape2fp<Rectangle2fp>
 
 	@Override
 	public void setMaxY(double y) {
-		if (y > this.miny) {
-			this.maxy = y;
-		} else {
-			this.maxy = this.miny;
+		this.maxy = y;
+		if (this.miny > y) {
 			this.miny = y;
 		}
 	}

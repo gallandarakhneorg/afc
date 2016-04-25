@@ -25,7 +25,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Iterator;
@@ -44,13 +43,6 @@ public abstract class AbstractRectangle2aiTest<T extends Rectangle2ai<?, T, ?, ?
 	protected final T createShape() {
 		return createRectangle(5, 8, 10, 5);
 	}
-	
-	@Override
-	protected final T createRectangle(int x, int y, int width, int height) {
-		return createRectangularShape(x, y, width, height);
-	}
-
-	protected abstract Path2ai<?, ?, ?, ?, ?> createPath();
 
 	@Test
 	@Override
@@ -578,6 +570,45 @@ public abstract class AbstractRectangle2aiTest<T extends Rectangle2ai<?, T, ?, ?
 
 	@Test
 	@Override
+	public void createTransformedShape() {
+		Transform2D tr;
+		PathIterator2ai pi;
+		
+		tr = new Transform2D();
+		pi = this.shape.createTransformedShape(tr).getPathIterator();
+		assertElement(pi, PathElementType.MOVE_TO, 5,8);
+		assertElement(pi, PathElementType.LINE_TO, 15,8);
+		assertElement(pi, PathElementType.LINE_TO, 15,13);
+		assertElement(pi, PathElementType.LINE_TO, 5,13);
+		assertElement(pi, PathElementType.LINE_TO, 5,8);
+		assertElement(pi, PathElementType.CLOSE);
+		assertNoElement(pi);
+
+		tr = new Transform2D();
+		tr.makeTranslationMatrix(3.4f, 4.5f);
+		pi = this.shape.createTransformedShape(tr).getPathIterator();
+		assertElement(pi, PathElementType.MOVE_TO, 8,13);
+		assertElement(pi, PathElementType.LINE_TO, 18,13);
+		assertElement(pi, PathElementType.LINE_TO, 18,18);
+		assertElement(pi, PathElementType.LINE_TO, 8,18);
+		assertElement(pi, PathElementType.LINE_TO, 8,13);
+		assertElement(pi, PathElementType.CLOSE);
+		assertNoElement(pi);
+
+		tr = new Transform2D();
+		tr.makeRotationMatrix(MathConstants.QUARTER_PI);		
+		pi = this.shape.createTransformedShape(tr).getPathIterator();
+		assertElement(pi, PathElementType.MOVE_TO, -2,9);
+		assertElement(pi, PathElementType.LINE_TO, 5,16);
+		assertElement(pi, PathElementType.LINE_TO, 1,20);
+		assertElement(pi, PathElementType.LINE_TO, -6,13);
+		assertElement(pi, PathElementType.LINE_TO, -2,9);
+		assertElement(pi, PathElementType.CLOSE);
+		assertNoElement(pi);
+	}
+
+	@Test
+	@Override
 	public void setIT() {
 		this.shape.set(createRectangle(10, 12, 14, 16));
 		assertEquals(10, this.shape.getMinX());
@@ -692,6 +723,15 @@ public abstract class AbstractRectangle2aiTest<T extends Rectangle2ai<?, T, ?, ?
 		assertTrue(Rectangle2ai.intersectsRectangleSegment(5, 8, 15, 13, 0, 0, 100, 100));
 		assertTrue(Rectangle2ai.intersectsRectangleSegment(5, 8, 15, 13, 7, 10, 8, 11));
 		assertFalse(Rectangle2ai.intersectsRectangleSegment(5, 8, 15, 13, 16, 0, 116, 100));
+	}
+
+	@Test
+	public void inflate() {
+		this.shape.inflate(1, 2, 3, 4);
+		assertEquals(4, this.shape.getMinX());
+		assertEquals(6, this.shape.getMinY());
+		assertEquals(18, this.shape.getMaxX());
+		assertEquals(17, this.shape.getMaxY());
 	}
 
 }

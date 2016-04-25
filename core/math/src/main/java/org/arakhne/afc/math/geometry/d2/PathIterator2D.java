@@ -56,10 +56,10 @@ public interface PathIterator2D<T extends PathElement2D> extends Iterator<T> {
 	@Pure
 	boolean isPolyline();
 
-	/** Replies the path contains a curve..
+	/** Replies the path contains a curve.
 	 * 
-	 * @return <code>true</code> if the path does not
-	 * contain curve primitives, <code>false</code>
+	 * @return <code>true</code> if the path contains
+	 * curve primitives, <code>false</code>
 	 * otherwise.
 	 */
 	@Pure

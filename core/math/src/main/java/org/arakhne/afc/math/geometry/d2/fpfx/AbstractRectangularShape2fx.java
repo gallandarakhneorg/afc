@@ -23,8 +23,11 @@ package org.arakhne.afc.math.geometry.d2.fpfx;
 import org.arakhne.afc.math.geometry.d2.afp.RectangularShape2afp;
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.DoublePropertyBase;
+import javafx.beans.property.ReadOnlyDoubleProperty;
+import javafx.beans.property.ReadOnlyDoubleWrapper;
+import javafx.beans.property.SimpleDoubleProperty;
 
 /** Abstract rectangular shape with 2 double precision floating-point FX properties.
  * 
@@ -41,25 +44,66 @@ public abstract class AbstractRectangularShape2fx<IT extends AbstractRectangular
 
 	private static final long serialVersionUID = 562658629477723655L;
 
-	private DoubleProperty minX;
+	/** minX property.
+	 */
+	DoubleProperty minX;
 
-	private DoubleProperty minY;
+	/** minY property.
+	 */
+	DoubleProperty minY;
 
-	private DoubleProperty maxX;
+	/** maxX property.
+	 */
+	DoubleProperty maxX;
 
-	private DoubleProperty maxY;
+	/** maxY property.
+	 */
+	DoubleProperty maxY;
 	
+	/** width property.
+	 */
+	ReadOnlyDoubleWrapper width;
+	
+	/** height property.
+	 */
+	ReadOnlyDoubleWrapper height;
+
 	/**
 	 */
 	public AbstractRectangularShape2fx() {
 		//
 	}
-
+	
 	/**
 	 * @param r
 	 */
 	public AbstractRectangularShape2fx(RectangularShape2afp<?, ?, ?, ?, ?> r) {
+		assert (r != null) : "Shape must be not null"; //$NON-NLS-1$
 		setFromCorners(r.getMinX(), r.getMinY(), r.getMaxX(), r.getMaxY());
+	}
+
+	@Override
+	public IT clone() {
+		IT clone = super.clone();
+		if (clone.minX != null) {
+			clone.minX = null;
+			clone.minXProperty().set(getMinX());
+		}
+		if (clone.minY != null) {
+			clone.minY = null;
+			clone.minYProperty().set(getMinY());
+		}
+		if (clone.maxX != null) {
+			clone.maxX = null;
+			clone.maxXProperty().set(getMaxX());
+		}
+		if (clone.maxY != null) {
+			clone.maxY = null;
+			clone.maxYProperty().set(getMaxY());
+		}
+		clone.width = null;
+		clone.height = null;
+		return clone;
 	}
 
 	@Override
@@ -98,17 +142,7 @@ public abstract class AbstractRectangularShape2fx<IT extends AbstractRectangular
 	@Pure
 	public DoubleProperty minXProperty() {
 		if (this.minX == null) {
-			this.minX = new DoublePropertyBase(0) {
-				@Override
-				public String getName() {
-					return "minX"; //$NON-NLS-1$
-				}
-				
-				@Override
-				public Object getBean() {
-					return AbstractRectangularShape2fx.this;
-				}
-				
+			this.minX = new SimpleDoubleProperty(this, "minX") { //$NON-NLS-1$
 				@Override
 				protected void invalidated() {
 					double currentMin = get();
@@ -141,17 +175,7 @@ public abstract class AbstractRectangularShape2fx<IT extends AbstractRectangular
 	@Pure
 	public DoubleProperty maxXProperty() {
 		if (this.maxX == null) {
-			this.maxX = new DoublePropertyBase(0) {
-				@Override
-				public String getName() {
-					return "maxX"; //$NON-NLS-1$
-				}
-				
-				@Override
-				public Object getBean() {
-					return AbstractRectangularShape2fx.this;
-				}
-				
+			this.maxX = new SimpleDoubleProperty(this, "maxX") { //$NON-NLS-1$
 				@Override
 				protected void invalidated() {
 					double currentMax = get();
@@ -184,17 +208,7 @@ public abstract class AbstractRectangularShape2fx<IT extends AbstractRectangular
 	@Pure
 	public DoubleProperty minYProperty() {
 		if (this.minY == null) {
-			this.minY = new DoublePropertyBase(0) {
-				@Override
-				public String getName() {
-					return "minY"; //$NON-NLS-1$
-				}
-				
-				@Override
-				public Object getBean() {
-					return AbstractRectangularShape2fx.this;
-				}
-				
+			this.minY = new SimpleDoubleProperty(this, "minY") { //$NON-NLS-1$
 				@Override
 				protected void invalidated() {
 					double currentMin = get();
@@ -227,17 +241,7 @@ public abstract class AbstractRectangularShape2fx<IT extends AbstractRectangular
 	@Pure
 	public DoubleProperty maxYProperty() {
 		if (this.maxY == null) {
-			this.maxY = new DoublePropertyBase(0) {
-				@Override
-				public String getName() {
-					return "maxY"; //$NON-NLS-1$
-				}
-				
-				@Override
-				public Object getBean() {
-					return AbstractRectangularShape2fx.this;
-				}
-				
+			this.maxY = new SimpleDoubleProperty(this, "maxY") { //$NON-NLS-1$
 				@Override
 				protected void invalidated() {
 					double currentMax = get();
@@ -250,6 +254,42 @@ public abstract class AbstractRectangularShape2fx<IT extends AbstractRectangular
 			};
 		}
 		return this.maxY;
+	}
+	
+	@Override
+	public double getWidth() {
+		return widthProperty().get();
+	}
+	
+	/** Replies the property that is the width of the box.
+	 *
+	 * @return the width property.
+	 */
+	@Pure
+	public ReadOnlyDoubleProperty widthProperty() {
+		if (this.width == null) {
+			this.width = new ReadOnlyDoubleWrapper(this, "width"); //$NON-NLS-1$
+			this.width.bind(Bindings.subtract(maxXProperty(), minXProperty()));
+		}
+		return this.width.getReadOnlyProperty();
+	}
+	
+	@Override
+	public double getHeight() {
+		return heightProperty().get();
+	}
+
+	/** Replies the property that is the height of the box.
+	 *
+	 * @return the height property.
+	 */
+	@Pure
+	public ReadOnlyDoubleProperty heightProperty() {
+		if (this.height == null) {
+			this.height = new ReadOnlyDoubleWrapper(this, "height"); //$NON-NLS-1$
+			this.height.bind(Bindings.subtract(maxYProperty(), minYProperty()));
+		}
+		return this.height.getReadOnlyProperty();
 	}
 
 	@Pure

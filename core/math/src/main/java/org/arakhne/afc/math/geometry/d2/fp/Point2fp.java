@@ -100,108 +100,130 @@ public class Point2fp extends Tuple2fp<Point2D, Point2fp> implements Point2D {
 
 	@Pure
 	@Override
-	public double getDistanceSquared(Point2D p1) {
-	      double dx = this.x - p1.getX();  
-	      double dy = this.y - p1.getY();
-	      return (dx*dx+dy*dy);
+	public double getDistanceSquared(Point2D p) {
+		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
+		double dx = this.x - p.getX();  
+		double dy = this.y - p.getY();
+		return (dx*dx+dy*dy);
 	}
 
 	@Pure
 	@Override
-	public double getDistance(Point2D p1) {
-	      double dx = this.x - p1.getX();  
-	      double dy = this.y - p1.getY();
-	      return Math.sqrt(dx*dx+dy*dy);
+	public double getDistance(Point2D p) {
+		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
+		double dx = this.x - p.getX();  
+		double dy = this.y - p.getY();
+		return Math.sqrt(dx*dx+dy*dy);
 	}
 
 	@Pure
 	@Override
-	public double getDistanceL1(Point2D p1) {
-	      return (Math.abs(this.x-p1.getX()) + Math.abs(this.y-p1.getY()));
+	public double getDistanceL1(Point2D p) {
+		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
+		return (Math.abs(this.x-p.getX()) + Math.abs(this.y-p.getY()));
 	}
 
 	@Pure
 	@Override
-	public double getDistanceLinf(Point2D p1) {
-	      return (Math.max( Math.abs(this.x-p1.getX()), Math.abs(this.y-p1.getY())));
+	public double getDistanceLinf(Point2D p) {
+		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
+		return (Math.max( Math.abs(this.x-p.getX()), Math.abs(this.y-p.getY())));
 	}
 
 	@Pure
 	@Override
-	public int getIdistanceL1(Point2D p1) {
-	      return (int) getDistanceL1(p1);
+	public int getIdistanceL1(Point2D p) {
+		return (int) getDistanceL1(p);
 	}
 
 	@Pure
 	@Override
-	public int getIdistanceLinf(Point2D p1) {
-	      return (int) getDistanceLinf(p1);
+	public int getIdistanceLinf(Point2D p) {
+		return (int) getDistanceLinf(p);
 	}
 
 	@Override
-	public void add(Point2D t1, Vector2D t2) {
-		this.x = t1.getX() + t2.getX();
-		this.y = t1.getY() + t2.getY();
+	public void add(Point2D point, Vector2D vector) {
+		assert (point != null) : "Point must be not null"; //$NON-NLS-1$
+		assert (vector != null) : "Vector must be not null"; //$NON-NLS-1$
+		this.x = point.getX() + vector.getX();
+		this.y = point.getY() + vector.getY();
 	}
 
 	@Override
-	public void add(Vector2D t1, Point2D t2) {
-		this.x = t1.getX() + t2.getX();
-		this.y = t1.getY() + t2.getY();
+	public void add(Vector2D vector, Point2D point) {
+		assert (point != null) : "Point must be not null"; //$NON-NLS-1$
+		assert (vector != null) : "Vector must be not null"; //$NON-NLS-1$
+		this.x = vector.getX() + point.getX();
+		this.y = vector.getY() + point.getY();
 	}
 
 	@Override
-	public void add(Vector2D t1) {
-		this.x = this.x + t1.getX();
-		this.y = this.y + t1.getY();
+	public void add(Vector2D vector) {
+		assert (vector != null) : "Vector must be not null"; //$NON-NLS-1$
+		this.x = this.x + vector.getX();
+		this.y = this.y + vector.getY();
 	}
 
 	@Override
-	public void scaleAdd(int s, Vector2D t1, Point2D t2) {
-		this.x = s * t1.getX() + t2.getX();
-		this.y = s * t1.getY() + t2.getY();
+	public void scaleAdd(int s, Vector2D vector, Point2D point) {
+		assert (point != null) : "Point must be not null"; //$NON-NLS-1$
+		assert (vector != null) : "Vector must be not null"; //$NON-NLS-1$
+		this.x = s * vector.getX() + point.getX();
+		this.y = s * vector.getY() + point.getY();
 	}
 
 	@Override
-	public void scaleAdd(double s, Vector2D t1, Point2D t2) {
-		this.x = s * t1.getX() + t2.getX();
-		this.y = s * t1.getY() + t2.getY();
+	public void scaleAdd(double s, Vector2D vector, Point2D point) {
+		assert (point != null) : "Point must be not null"; //$NON-NLS-1$
+		assert (vector != null) : "Vector must be not null"; //$NON-NLS-1$
+		this.x = s * vector.getX() + point.getX();
+		this.y = s * vector.getY() + point.getY();
 	}
 
 	@Override
-	public void scaleAdd(int s, Point2D t1, Vector2D t2) {
-		this.x = s * t1.getX() + t2.getX();
-		this.y = s * t1.getY() + t2.getY();
+	public void scaleAdd(int s, Point2D point, Vector2D vector) {
+		assert (point != null) : "Point must be not null"; //$NON-NLS-1$
+		assert (vector != null) : "Vector must be not null"; //$NON-NLS-1$
+		this.x = s * point.getX() + vector.getX();
+		this.y = s * point.getY() + vector.getY();
 	}
 
 	@Override
-	public void scaleAdd(double s, Point2D t1, Vector2D t2) {
-		this.x = s * t1.getX() + t2.getX();
-		this.y = s * t1.getY() + t2.getY();
+	public void scaleAdd(double s, Point2D point, Vector2D vector) {
+		assert (point != null) : "Point must be not null"; //$NON-NLS-1$
+		assert (vector != null) : "Vector must be not null"; //$NON-NLS-1$
+		this.x = s * point.getX() + vector.getX();
+		this.y = s * point.getY() + vector.getY();
 	}
 
 	@Override
-	public void scaleAdd(int s, Vector2D t1) {
-		this.x = s * this.x + t1.getX();
-		this.y = s * this.y + t1.getY();
+	public void scaleAdd(int s, Vector2D vector) {
+		assert (vector != null) : "Vector must be not null"; //$NON-NLS-1$
+		this.x = s * this.x + vector.getX();
+		this.y = s * this.y + vector.getY();
 	}
 
 	@Override
-	public void scaleAdd(double s, Vector2D t1) {
-		this.x = s * this.x + t1.getX();
-		this.y = s * this.y + t1.getY();
+	public void scaleAdd(double s, Vector2D vector) {
+		assert (vector != null) : "Vector must be not null"; //$NON-NLS-1$
+		this.x = s * this.x + vector.getX();
+		this.y = s * this.y + vector.getY();
 	}
 
 	@Override
-	public void sub(Point2D t1, Vector2D t2) {
-		this.x = t1.getX() - t2.getX();
-		this.y = t1.getY() - t2.getY();
+	public void sub(Point2D point, Vector2D vector) {
+		assert (point != null) : "Point must be not null"; //$NON-NLS-1$
+		assert (vector != null) : "Vector must be not null"; //$NON-NLS-1$
+		this.x = point.getX() - vector.getX();
+		this.y = point.getY() - vector.getY();
 	}
 
 	@Override
-	public void sub(Vector2D t1) {
-		this.x = this.x - t1.getX();
-		this.y = this.y - t1.getY();
+	public void sub(Vector2D vector) {
+		assert (vector != null) : "Vector must be not null"; //$NON-NLS-1$
+		this.x = this.x - vector.getX();
+		this.y = this.y - vector.getY();
 	}
 
 	@Pure
@@ -235,7 +257,7 @@ public class Point2fp extends Tuple2fp<Point2D, Point2fp> implements Point2D {
 			public int iy() {
 				return Point2fp.this.ix();
 			}
-			
+
 		};
 	}
 

@@ -98,7 +98,7 @@ public class Transform2D extends Matrix3f {
 	@Pure
 	@Override
 	public Transform2D  clone() {
-		return (Transform2D)super.clone();
+		return (Transform2D) super.clone();
 	}
 
 	/** Set the position.
@@ -142,6 +142,7 @@ public class Transform2D extends Matrix3f {
 	 * @see #makeTranslationMatrix(double, double)
 	 */
 	public void setTranslation(Tuple2D<?> translation) {
+		assert (translation != null) : "Translation must not be null"; //$NON-NLS-1$
 		this.m02 = translation.getX();
 		this.m12 = translation.getY();
 	}
@@ -175,6 +176,7 @@ public class Transform2D extends Matrix3f {
 	 * @param translation
 	 */
 	public void translate(Vector2D translation) {
+		assert (translation != null) : "Translation must not be null"; //$NON-NLS-1$
 		translate(translation.getX(), translation.getY());
 	}
 
@@ -203,6 +205,7 @@ public class Transform2D extends Matrix3f {
 	 */
 	@Pure
 	public Vector2D getTranslationVector(Vector2D translation) {
+		assert (translation != null) : "Output translation vector must not be null"; //$NON-NLS-1$
 		translation.set(this.m02, this.m12);
 		return translation;
 	}
@@ -360,6 +363,7 @@ public class Transform2D extends Matrix3f {
 	 * @see #makeScaleMatrix(double, double)
 	 */
 	public void setScale(Tuple2D<?> tuple) {
+		assert (tuple != null) : "Tuple must not be null"; //$NON-NLS-1$
 		this.m00 = tuple.getX();
 		this.m11 = tuple.getY();
 	}
@@ -395,6 +399,7 @@ public class Transform2D extends Matrix3f {
 	 * @param tuple
 	 */
 	public void scale(Tuple2D<?> tuple) {
+		assert (tuple != null) : "Tuple must not be null"; //$NON-NLS-1$
 		scale(tuple.getX(), tuple.getY());
 	}
 
@@ -441,6 +446,7 @@ public class Transform2D extends Matrix3f {
 	 */
 	@Pure
 	public Vector2D getScaleVector(Vector2D scale) {
+		assert (scale != null) : "The output scaling vector must not be null"; //$NON-NLS-1$
 		scale.set(this.m00, this.m11);
 		return scale;
 	}
@@ -488,6 +494,7 @@ public class Transform2D extends Matrix3f {
 	 * @see #makeShearMatrix(double, double)
 	 */
 	public void setShear(Tuple2D<?> tuple) {
+		assert (tuple != null) : "The shearing vector must not be null"; //$NON-NLS-1$
 		this.m01 = tuple.getX();
 		this.m10 = tuple.getY();
 	}
@@ -530,6 +537,7 @@ public class Transform2D extends Matrix3f {
 	 * @param tuple
 	 */
 	public void shear(Tuple2D<?> tuple) {
+		assert (tuple != null) : "The shearing vector must not be null"; //$NON-NLS-1$
 		shear(tuple.getX(), tuple.getY());
 	}
 
@@ -576,6 +584,7 @@ public class Transform2D extends Matrix3f {
 	 */
 	@Pure
 	public Vector2D getShearVector(Vector2D shear) {
+		assert (shear != null) : "The output shearing vector must not be null"; //$NON-NLS-1$
 		shear.set(this.m01, this.m10);
 		return shear;
 	}
@@ -727,6 +736,7 @@ public class Transform2D extends Matrix3f {
 	 *            the tuple to be multiplied by this matrix and then replaced
 	 */
 	public void transform(Tuple2D<?> tuple) {
+		assert (tuple != null) : "Tuple to transform must not be null"; //$NON-NLS-1$
 		double x, y;
 		x = this.m00 * tuple.getX() + this.m01 * tuple.getY() + this.m02;
 		y = this.m10 * tuple.getX() + this.m11 * tuple.getY() + this.m12;
@@ -750,6 +760,8 @@ public class Transform2D extends Matrix3f {
 	 *            the tuple into which the product is placed
 	 */
 	public void transform(Tuple2D<?> tuple, Tuple2D<?> result) {
+		assert (tuple != null) : "Tuple to transform must not be null"; //$NON-NLS-1$
+		assert (result != null) : "Output tuple must not be null"; //$NON-NLS-1$
 		result.set(
 				this.m00 * tuple.getX() + this.m01 * tuple.getY() + this.m02,
 				this.m10 * tuple.getX() + this.m11 * tuple.getY() + this.m12);
@@ -862,6 +874,7 @@ public class Transform2D extends Matrix3f {
 	 */
 	@Override
 	public void invert(Matrix3f matrix) {
+		assert (matrix != null) : "Matrix must not be null"; //$NON-NLS-1$
 		double det = matrix.getM00() * matrix.getM11() - matrix.getM01() * matrix.getM10();
 		if (MathUtil.isEpsilonZero(det)) {
 			throw new SingularMatrixException("Determinant is too small: "+det); //$NON-NLS-1$

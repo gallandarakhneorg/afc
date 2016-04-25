@@ -27,7 +27,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -38,16 +37,15 @@ import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
-import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.junit.Test;
 
 @SuppressWarnings("all")
 public abstract class AbstractPath2aiTest<T extends Path2ai<?, T, ?, ?, B>,
-		B extends Rectangle2ai<?, ?, ?, ?, B>> extends AbstractShape2aiTest<T> {
+		B extends Rectangle2ai<?, ?, ?, ?, B>> extends AbstractShape2aiTest<T, B> {
 
 	@Override
 	protected final T createShape() {
-		T path = createPath();
+		T path = (T) createPath();
 		path.moveTo(0, 0);
 		path.lineTo(2, 2);
 		path.quadTo(3, 0, 4, 3);
@@ -56,18 +54,6 @@ public abstract class AbstractPath2aiTest<T extends Path2ai<?, T, ?, ?, B>,
 		return path;
 	}
 	
-	protected abstract T createPath();
-
-	protected abstract Segment2ai<?, ?, ?, ?, B> createSegment(int x1, int y1, int x2, int y2);
-	
-	protected abstract B createRectangle(int x, int y, int width, int height);
-
-	protected abstract Circle2ai<?, ?, ?, ?, B> createCircle(int x, int y, int radius);
-	
-	protected abstract Point2D createPoint(int x, int y);
-
-	protected abstract Vector2D createVector(int x, int y);
-
 	@Test
 	@Override
 	public void testClone() {
@@ -120,9 +106,9 @@ public abstract class AbstractPath2aiTest<T extends Path2ai<?, T, ?, ?, B>,
 	@Override
 	public void equalsToShape() {
 		assertFalse(this.shape.equalsToShape(null));
-		assertFalse(this.shape.equalsToShape(createPath()));
+		assertFalse(this.shape.equalsToShape((T) createPath()));
 		assertTrue(this.shape.equalsToShape(this.shape));
-		T path = createPath();
+		T path = (T) createPath();
 		path.moveTo(0, 0);
 		path.lineTo(2, 2);
 		path.quadTo(3, 0, 4, 3);
@@ -1195,7 +1181,7 @@ public abstract class AbstractPath2aiTest<T extends Path2ai<?, T, ?, ?, B>,
 	@Test
 	@Override
 	public void toBoundingBoxB() {
-		B bb = createRectangle(0, 0, 0, 0);
+		B bb = (B) createRectangle(0, 0, 0, 0);
 		this.shape.toBoundingBox(bb);
 		assertEquals(0, bb.getMinX());
 		assertEquals(-5, bb.getMinY());
@@ -1342,7 +1328,7 @@ public abstract class AbstractPath2aiTest<T extends Path2ai<?, T, ?, ?, B>,
 
 	@Test
 	public void staticComputeDrawableElementBoundingBox() {
-		B box = createRectangle(0, 0, 0, 0);
+		B box = (B) createRectangle(0, 0, 0, 0);
 		assertTrue(Path2ai.computeDrawableElementBoundingBox(this.shape.getPathIterator(), box));
 		assertEquals(0, box.getMinX());
 		assertEquals(-5, box.getMinY());
@@ -1629,12 +1615,12 @@ public abstract class AbstractPath2aiTest<T extends Path2ai<?, T, ?, ?, B>,
 
 	@Test
 	public void lengthSquared() {
-		assertEpsilonEquals(98, this.shape.lengthSquared());
+		assertEpsilonEquals(98, this.shape.getLengthSquared());
 	}
 
 	@Test
 	public void length() {
-		assertEpsilonEquals(9.899494937, this.shape.length());
+		assertEpsilonEquals(9.899494937, this.shape.getLength());
 	}
 
 	@Test
@@ -1687,14 +1673,14 @@ public abstract class AbstractPath2aiTest<T extends Path2ai<?, T, ?, ?, B>,
 				createPoint(5, -1),
 				createPoint(6, 5),
 				createPoint(7, -5));
-		Collection<Point2D> points = this.shape.toCollection();
+		Collection<?> points = this.shape.toCollection();
 		assertCollectionEquals(expected, points);
 	}
 
 	@Test
 	@Override
 	public void setIT() {
-		T newPath = createPath();
+		T newPath = (T) createPath();
 		newPath.moveTo(14, -5);
 		newPath.lineTo(1, 6);
 		newPath.quadTo(-5, 1, 10, -1);

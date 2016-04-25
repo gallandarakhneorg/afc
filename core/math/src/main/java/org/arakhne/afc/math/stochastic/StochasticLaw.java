@@ -23,9 +23,6 @@ package org.arakhne.afc.math.stochastic;
 import java.util.Map;
 import java.util.Random;
 
-import org.arakhne.afc.math.MathException;
-import org.arakhne.afc.math.MathInversableFunction;
-
 /**
  * Abstract implementation of a stochastic law that
  * provides the bounds of a law.

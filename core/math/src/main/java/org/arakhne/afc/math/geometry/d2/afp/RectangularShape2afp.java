@@ -48,6 +48,7 @@ public interface RectangularShape2afp<
 
 	@Override
 	default void toBoundingBox(B box) {
+		assert (box != null) : "Rectangle must be not null"; //$NON-NLS-1$
 		box.setFromCorners(getMinX(), getMinY(), getMaxX(), getMaxY());
 	}
 	
@@ -64,6 +65,8 @@ public interface RectangularShape2afp<
 	 * @param height
 	 */
 	default void set(double x, double y, double width, double height) {
+		assert (width >= 0.) : "Width must be positive or zero"; //$NON-NLS-1$
+		assert (height >= 0.) : "Height must be positive or zero"; //$NON-NLS-1$
 		setFromCorners(x, y, x + width, y + height);
 	}
 	
@@ -73,6 +76,8 @@ public interface RectangularShape2afp<
 	 * @param max is the max corner of the rectangle.
 	 */
 	default void set(Point2D min, Point2D max) {
+		assert (min != null) : "Minimum point must be not null"; //$NON-NLS-1$
+		assert (max != null) : "Maximum point must be not null"; //$NON-NLS-1$
 		setFromCorners(min.getX(), min.getY(), max.getX(), max.getY());
 	}
 	
@@ -81,6 +86,7 @@ public interface RectangularShape2afp<
 	 * @param width
 	 */
 	default void setWidth(double width) {
+		assert (width >= 0.) : "Width must be positive or zero"; //$NON-NLS-1$
 		setMaxX(getMinX() + width);
 	}
 
@@ -89,6 +95,7 @@ public interface RectangularShape2afp<
 	 * @param height
 	 */
 	default void setHeight(double height) {
+		assert (height >= 0.) : "Height must be positive or zero"; //$NON-NLS-1$
 		setMaxY(getMinY() + height);
 	}
 	
@@ -109,6 +116,8 @@ public interface RectangularShape2afp<
 	 */
 	// This function has no default implementation for allowing implementation to be atomic. 
 	default void setFromCorners(Point2D p1, Point2D p2) {
+		assert (p1 != null) : "First corner point must be not null"; //$NON-NLS-1$
+		assert (p2 != null) : "Second corner point must be not null"; //$NON-NLS-1$
 		setFromCorners(p1.getX(), p1.getY(), p2.getX(), p2.getY());
 	}
 
@@ -139,6 +148,8 @@ public interface RectangularShape2afp<
      * @param corner the specified corner point
      */
 	default void setFromCenter(Point2D center, Point2D corner) {
+		assert (center != null) : "Center point must be not null"; //$NON-NLS-1$
+		assert (corner != null) : "Corner point must be not null"; //$NON-NLS-1$
 		setFromCenter(center.getX(), center.getY(), corner.getX(), corner.getY());
 	}
 
@@ -243,23 +254,23 @@ public interface RectangularShape2afp<
 	
 	/** Inflate this rectangle with the given amounts.
 	 * 
-	 * @param left
-	 * @param top
-	 * @param right
-	 * @param bottom
+	 * @param minXBorder
+	 * @param minYBorder
+	 * @param maxXBorder
+	 * @param maxYBorder
 	 */
-	default void inflate(double left, double top, double right, double bottom) {
+	default void inflate(double minXBorder, double minYBorder, double maxXBorder, double maxYBorder) {
 		setFromCorners(
-				getMinX()+left,
-				getMinY()+top,
-				getMaxX()+right,
-				getMaxY()+bottom);
+				getMinX() - minXBorder,
+				getMinY() - minYBorder,
+				getMaxX() + maxXBorder,
+				getMaxY() + maxYBorder);
 	}
 
 	@Override
 	default void set(IT s) {
-		Rectangle2afp<?, ?, ?, ?, ?> r = s.toBoundingBox();
-		setFromCorners(r.getMinX(), r.getMinY(), r.getMaxX(), r.getMaxY());
+		assert (s != null) : "Shape must be not null"; //$NON-NLS-1$
+		setFromCorners(s.getMinX(), s.getMinY(), s.getMaxX(), s.getMaxY());
 	}
 
 }

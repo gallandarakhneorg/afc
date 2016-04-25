@@ -33,11 +33,10 @@ import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.fp.Point2fp;
 import org.arakhne.afc.math.geometry.d2.fp.Vector2fp;
+import org.arakhne.afc.math.geometry.d3.Point3D;
+import org.arakhne.afc.math.geometry.d3.Quaternion;
 import org.arakhne.afc.math.geometry.d3.Tuple3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
-import org.arakhne.afc.math.geometry.d3.continuous.Point3f;
-import org.arakhne.afc.math.geometry.d3.continuous.Quaternion;
-import org.arakhne.afc.math.geometry.d3.continuous.Vector3f;
 import org.arakhne.afc.math.matrix.Matrix2f;
 import org.arakhne.afc.math.matrix.Matrix3f;
 import org.arakhne.afc.math.matrix.Matrix4f;
@@ -49,7 +48,7 @@ import org.junit.ComparisonFailure;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@SuppressWarnings("static-method")
+@SuppressWarnings("all")
 public abstract class AbstractMathTestCase {
 	
 	/** Precision of the floating point number epsilon-tests.
@@ -499,11 +498,13 @@ public abstract class AbstractMathTestCase {
 	 *
 	 * @return the random point.
 	 */
-	protected Point3f randomPoint3f() {
-		return new Point3f(
-				this.random.nextDouble() * 1000 - 500,
-				this.random.nextDouble() * 1000 - 500,
-				this.random.nextDouble() * 1000 - 500);
+	protected Point3D randomPoint3f() {
+		// TODO
+		throw new UnsupportedOperationException();
+//		return new Point3D(
+//				this.random.nextDouble() * 1000 - 500,
+//				this.random.nextDouble() * 1000 - 500,
+//				this.random.nextDouble() * 1000 - 500);
 	}
 	
 	/** Create a random vector.
@@ -511,10 +512,12 @@ public abstract class AbstractMathTestCase {
 	 * @return the random vector.
 	 */
 	protected Vector3D randomVector3f() {
-		return new Vector3f(
-				this.random.nextDouble() * 1000 - 500,
-				this.random.nextDouble() * 1000 - 500,
-				this.random.nextDouble() * 1000 - 500);
+		// TODO
+		throw new UnsupportedOperationException();
+//		return new Vector3f(
+//				this.random.nextDouble() * 1000 - 500,
+//				this.random.nextDouble() * 1000 - 500,
+//				this.random.nextDouble() * 1000 - 500);
 	}
 
 	/** Create a random matrix.

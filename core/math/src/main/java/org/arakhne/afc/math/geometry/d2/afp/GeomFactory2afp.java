@@ -42,7 +42,9 @@ public interface GeomFactory2afp<E extends PathElement2afp, P extends Point2D, B
 	 * @param p the point to convert. 
 	 * @return <code>p</code> if it is of type <code>P</code>, or a copy of <code>p</code>.
 	 */
-	P convertToPoint(Point2D p);
+	default P convertToPoint(Point2D p) {
+		throw new UnsupportedOperationException();
+	}
 	
 	/** Convert the given point.
 	 *
@@ -50,14 +52,18 @@ public interface GeomFactory2afp<E extends PathElement2afp, P extends Point2D, B
 	 * @param p the point to convert. 
 	 * @return the vector.
 	 */
-	<T extends Vector2D> T convertToVector(Point2D p);
+	default <T extends Vector2D> T convertToVector(Point2D p) {
+		throw new UnsupportedOperationException();
+	}
 
 	/** Convert the given vector.
 	 *
 	 * @param v the vector to convert. 
 	 * @return the point.
 	 */
-	P convertToPoint(Vector2D v);
+	default P convertToPoint(Vector2D v) {
+		throw new UnsupportedOperationException();
+	}
 	
 	/** Convert the given vector.
 	 *
@@ -65,13 +71,17 @@ public interface GeomFactory2afp<E extends PathElement2afp, P extends Point2D, B
 	 * @param v the vector to convert. 
 	 * @return the vector.
 	 */
-	<T extends Vector2D> T convertToVector(Vector2D v);
+	default <T extends Vector2D> T convertToVector(Vector2D v) {
+		throw new UnsupportedOperationException();
+	}
 
 	/** Create a point.
 	 *
 	 * @return the point.
 	 */
-	P newPoint();
+	default P newPoint() {
+		throw new UnsupportedOperationException();
+	}
 
 	/** Create a point.
 	 *
@@ -79,14 +89,18 @@ public interface GeomFactory2afp<E extends PathElement2afp, P extends Point2D, B
 	 * @param y 
 	 * @return the point.
 	 */
-	P newPoint(double x, double y);
+	default P newPoint(double x, double y) {
+		throw new UnsupportedOperationException();
+	}
 
 	/** Create a vector.
 	 *
 	 * @param <T> the type of the vector.
 	 * @return the vector.
 	 */
-	<T extends Vector2D> T newVector();
+	default <T extends Vector2D> T newVector() {
+		throw new UnsupportedOperationException();
+	}
 
 	/** Create a vector.
 	 *
@@ -95,20 +109,34 @@ public interface GeomFactory2afp<E extends PathElement2afp, P extends Point2D, B
 	 * @param y 
 	 * @return the vector.
 	 */
-	<T extends Vector2D> T newVector(double x, double y);
+	default <T extends Vector2D> T newVector(double x, double y) {
+		throw new UnsupportedOperationException();
+	}
 
 	/** Create an empty path with the given winding rule.
 	 *
 	 * @param rule the rule.
 	 * @return the new path.
 	 */
-	Path2afp<?, ?, E, P, ?> newPath(PathWindingRule rule);
+	default Path2afp<?, ?, E, P, ?> newPath(PathWindingRule rule) {
+		throw new UnsupportedOperationException();
+	}
 	
+	/** Create an empty multishape.
+	 *
+	 * @return the new multishape.
+	 */
+	default MultiShape2afp<?, ?, ?, E, P, B> newMultiShape() {
+		throw new UnsupportedOperationException();
+	}
+
 	/** Create an empty bounding box.
 	 *
 	 * @return the box.
 	 */
-	B newBox();
+	default B newBox() {
+		throw new UnsupportedOperationException();
+	}
 
 	/** Create a bounding box.
 	 *
@@ -118,7 +146,9 @@ public interface GeomFactory2afp<E extends PathElement2afp, P extends Point2D, B
 	 * @param height the height of the box.
 	 * @return the box.
 	 */
-	B newBox(double x, double y, double width, double height);
+	default B newBox(double x, double y, double width, double height) {
+		throw new UnsupportedOperationException();
+	}
 
 	/** Create a move-to path element to the given point.
 	 * 
@@ -126,7 +156,9 @@ public interface GeomFactory2afp<E extends PathElement2afp, P extends Point2D, B
 	 * @param y y coordinate of the target point.
 	 * @return the path element.
 	 */
-	E newMovePathElement(double x, double y);
+	default E newMovePathElement(double x, double y) {
+		throw new UnsupportedOperationException();
+	}
 	
 	/** Create a line-to path element to the given point.
 	 * 
@@ -136,7 +168,9 @@ public interface GeomFactory2afp<E extends PathElement2afp, P extends Point2D, B
 	 * @param targetY y coordinate of the target point.
 	 * @return the path element.
 	 */
-	E newLinePathElement(double startX, double startY, double targetX, double targetY);
+	default E newLinePathElement(double startX, double startY, double targetX, double targetY) {
+		throw new UnsupportedOperationException();
+	}
 
 	/** Create a close path element.
 	 * 
@@ -146,7 +180,9 @@ public interface GeomFactory2afp<E extends PathElement2afp, P extends Point2D, B
 	 * @param firstPointY y coordinate of the first point on the path.
 	 * @return the path element.
 	 */
-	E newClosePathElement(double lastPointX, double lastPointy, double firstPointX, double firstPointY);
+	default E newClosePathElement(double lastPointX, double lastPointy, double firstPointX, double firstPointY) {
+		throw new UnsupportedOperationException();
+	}
 
 	/** Create a quadratic curve path element to the given point through the given control point.
 	 * 
@@ -158,7 +194,9 @@ public interface GeomFactory2afp<E extends PathElement2afp, P extends Point2D, B
 	 * @param targetY y coordinate of the target point.
 	 * @return the path element.
 	 */
-	E newCurvePathElement(double startX, double startY, double controlX, double controlY, double targetX, double targetY);
+	default E newCurvePathElement(double startX, double startY, double controlX, double controlY, double targetX, double targetY) {
+		throw new UnsupportedOperationException();
+	}
 
 	/** Create a curve path element to the given point through the two given control points.
 	 * 
@@ -172,7 +210,9 @@ public interface GeomFactory2afp<E extends PathElement2afp, P extends Point2D, B
 	 * @param targetY y coordinate of the target point.
 	 * @return the path element.
 	 */
-	E newCurvePathElement(double startX, double startY, double controlX1, double controlY1,
-			double controlX2, double controlY2, double targetX, double targetY);
+	default E newCurvePathElement(double startX, double startY, double controlX1, double controlY1,
+			double controlX2, double controlY2, double targetX, double targetY) {
+		throw new UnsupportedOperationException();
+	}
 
 }

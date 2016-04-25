@@ -108,8 +108,14 @@ public class Tuple2ifx<T extends Tuple2D<? super T>, IT extends T> implements Tu
 		try {
 			IT clone = (IT) super.clone();
 			Tuple2ifx<?, ?> tifx = (Tuple2ifx<?, ?>) clone;
-			tifx.x = new SimpleIntegerProperty(this.x.get());
-			tifx.y = new SimpleIntegerProperty(this.y.get());
+			if (this.x != null) {
+				tifx.x = null;
+				tifx.xProperty().set(ix());
+			}
+			if (this.y != null) {
+				tifx.y = null;
+				tifx.yProperty().set(iy());
+			}
 			return clone;
 		}
 		catch(CloneNotSupportedException e) {
@@ -136,8 +142,8 @@ public class Tuple2ifx<T extends Tuple2D<? super T>, IT extends T> implements Tu
 	@Override
 	public int hashCode() {
 		int bits = 1;
-		bits = 31 * bits + this.x.get();
-		bits = 31 * bits + this.y.get();
+		bits = 31 * bits + ix();
+		bits = 31 * bits + iy();
 		return bits ^ (bits >> 32);
 	}
 	
@@ -145,9 +151,9 @@ public class Tuple2ifx<T extends Tuple2D<? super T>, IT extends T> implements Tu
 	@Override
 	public String toString() {
 		return "(" //$NON-NLS-1$
-				+this.x
+				+ix()
 				+";" //$NON-NLS-1$
-				+this.y
+				+iy()
 				+")"; //$NON-NLS-1$
 	}
 
@@ -157,6 +163,9 @@ public class Tuple2ifx<T extends Tuple2D<? super T>, IT extends T> implements Tu
 	 */
 	@Pure
 	public IntegerProperty xProperty() {
+		if (this.x == null) {
+			this.x = new SimpleIntegerProperty(this, "x"); //$NON-NLS-1$
+		}
 		return this.x;
 	}
 
@@ -166,47 +175,50 @@ public class Tuple2ifx<T extends Tuple2D<? super T>, IT extends T> implements Tu
 	 */
 	@Pure
 	public IntegerProperty yProperty() {
+		if (this.y == null) {
+			this.y = new SimpleIntegerProperty(this, "y"); //$NON-NLS-1$
+		}
 		return this.y;
 	}
 
 	@Override
 	public double getX() {
-		return this.x.get();
+		return this.x == null ? 0 : this.x.get();
 	}
 
 	@Override
 	public int ix() {
-		return this.x.get();
+		return this.x == null ? 0 : this.x.get();
 	}
 
 	@Override
 	public void setX(int x) {
-		this.x.set(x);
+		xProperty().set(x);
 	}
 
 	@Override
 	public void setX(double x) {
-		this.x.set((int) Math.round(x));
+		xProperty().set((int) Math.round(x));
 	}
 
 	@Override
 	public double getY() {
-		return this.y.get();
+		return this.y == null ? 0 : this.y.get();
 	}
 
 	@Override
 	public int iy() {
-		return this.y.get();
+		return this.y == null ? 0 : this.y.get();
 	}
 
 	@Override
 	public void setY(int y) {
-		this.y.set(y);
+		yProperty().set(y);
 	}
 
 	@Override
 	public void setY(double y) {
-		this.y.set((int) Math.round(y));
+		yProperty().set((int) Math.round(y));
 	}
 
 }

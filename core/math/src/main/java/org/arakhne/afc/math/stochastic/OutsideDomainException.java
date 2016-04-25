@@ -20,8 +20,6 @@
  */
 package org.arakhne.afc.math.stochastic;
 
-import org.arakhne.afc.math.MathException;
-
 /**
  * Exception thrown when a value is outside its domain. 
  * 

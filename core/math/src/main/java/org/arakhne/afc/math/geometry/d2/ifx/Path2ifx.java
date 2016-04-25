@@ -36,7 +36,7 @@ import org.arakhne.afc.math.geometry.d2.fp.Point2fp;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.IntegerPropertyBase;
+import javafx.beans.property.SimpleIntegerProperty;
 
 /** Path with 2 integer FX properties.
  *
@@ -125,7 +125,7 @@ public class Path2ifx
 	 * @param windingRule
 	 */
 	public Path2ifx(PathWindingRule windingRule) {
-		assert(windingRule != null);
+		assert (windingRule != null) : "Path winding rule must be not null"; //$NON-NLS-1$
 		this.types = new PathElementType[GROW_SIZE];
 		this.coords = new IntegerProperty[GROW_SIZE];
 		this.windingRule = windingRule;
@@ -136,7 +136,8 @@ public class Path2ifx
 	 * @param iterator
 	 */
 	public Path2ifx(PathWindingRule windingRule, Iterator<PathElement2ifx> iterator) {
-		assert(windingRule!=null);
+		assert (windingRule != null) : "Path winding rule must be not null"; //$NON-NLS-1$
+		assert (iterator != null) : "Iterator must be not null"; //$NON-NLS-1$
 		this.types = new PathElementType[GROW_SIZE];
 		this.coords = new IntegerProperty[GROW_SIZE];
 		this.windingRule = windingRule;
@@ -151,6 +152,7 @@ public class Path2ifx
 	}
 
 	private boolean buildLogicalBoundingBox(Rectangle2ifx box) {
+		assert (box != null) : "Rectangle must be not null"; //$NON-NLS-1$
 		if (this.numCoords>0) {
 			int xmin = getCoordAt(0);
 			int ymin = getCoordAt(1);
@@ -186,6 +188,7 @@ public class Path2ifx
 	@Pure
 	@Override
 	public boolean containsControlPoint(Point2D p) {
+		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
 		int x, y;
 		for(int i=0; i<this.numCoords;) {
 			x = getCoordAt(i++);
@@ -273,14 +276,13 @@ public class Path2ifx
 	
 	@Override
 	public void transform(Transform2D transform) {
-		if (transform != null) {
-			for(int i=0; i<this.numCoords;) {
-				Point2D p = new Point2ifx(coordPropertyAt(i++), coordPropertyAt(i++));
-				transform.transform(p);
-			}
-			this.graphicalBounds = null;
-			this.logicalBounds = null;
+		assert (transform != null) : "Transformation must be not null"; //$NON-NLS-1$
+		for(int i=0; i<this.numCoords;) {
+			Point2D p = new Point2ifx(coordPropertyAt(i++), coordPropertyAt(i++));
+			transform.transform(p);
 		}
+		this.graphicalBounds = null;
+		this.logicalBounds = null;
 	}
 
 	@Override
@@ -315,6 +317,7 @@ public class Path2ifx
 
 	@Override
 	public void toBoundingBox(Rectangle2ifx box) {
+		assert (box != null) : "Rectangle must be not null"; //$NON-NLS-1$
 		Rectangle2ifx bb = this.graphicalBounds==null ? null : this.graphicalBounds.get();
 		if (bb==null) {
 			bb = new Rectangle2ifx();
@@ -459,6 +462,7 @@ public class Path2ifx
 
 	@Override
 	public void toBoundingBoxWithCtrlPoints(Rectangle2ifx box) {
+		assert (box != null) : "Rectangle must be not null"; //$NON-NLS-1$
 		Rectangle2ifx bb = this.logicalBounds==null ? null : this.logicalBounds.get();
 		if (bb==null) {
 			bb = new Rectangle2ifx();
@@ -471,7 +475,7 @@ public class Path2ifx
 	@Override
 	public int[] toIntArray(Transform2D transform) {
 		int[] clone = new int[this.numCoords];
-		if (transform==null) {
+		if (transform == null || transform.isIdentity()) {
 			for(int i=0; i<clone.length;) {
 				clone[i] = getCoordAt(i);
 				++i;
@@ -493,7 +497,7 @@ public class Path2ifx
 	@Override
 	public float[] toFloatArray(Transform2D transform) {
 		float[] clone = new float[this.numCoords];
-		if (transform==null) {
+		if (transform == null || transform.isIdentity()) {
 			for(int i=0; i<clone.length;) {
 				clone[i] = getCoordAt(i);
 				++i;
@@ -515,7 +519,7 @@ public class Path2ifx
 	@Override
 	public double[] toDoubleArray(Transform2D transform) {
 		double[] clone = new double[this.numCoords];
-		if (transform==null) {
+		if (transform == null || transform.isIdentity()) {
 			for(int i=0; i<clone.length;) {
 				clone[i] = getCoordAt(i);
 				++i;
@@ -537,7 +541,7 @@ public class Path2ifx
 	@Override
 	public Point2D[] toPointArray(Transform2D transform) {
 		Point2D[] points = new Point2D[this.numCoords / 2];
-		if (transform==null) {
+		if (transform == null || transform.isIdentity()) {
 			for(int i = 0, j = 0; i<points.length; ++i) {
 				int x = getCoordAt(j);
 				++j;
@@ -558,6 +562,7 @@ public class Path2ifx
 
 	@Override
 	public Point2ifx getPointAt(int index) {
+		assert (index >= 0 && index < (this.coords.length/2)) : "Index must be in [0;" + this.coords.length/2 + ")"; //$NON-NLS-1$ //$NON-NLS-2$
 		return new Point2ifx(
 				this.coords[index*2],
 				this.coords[index*2+1]);
@@ -689,19 +694,10 @@ public class Path2ifx
 	 */
 	@Pure
 	public IntegerProperty coordPropertyAt(int index) {
+		assert (index >= 0 && index < this.coords.length) : "Index must be in [0;" + this.coords.length + ")"; //$NON-NLS-1$ //$NON-NLS-2$
 		if (this.coords[index] == null) {
 			final String label = "coord[" + index + "]"; //$NON-NLS-1$ //$NON-NLS-2$
-			this.coords[index] = new IntegerPropertyBase(0) {
-				@Override
-				public String getName() {
-					return label;
-				}
-				
-				@Override
-				public Object getBean() {
-					return Path2ifx.this;
-				}
-			};
+			this.coords[index] = new SimpleIntegerProperty(this, label);
 		}
 		return this.coords[index];
 	}
@@ -718,7 +714,7 @@ public class Path2ifx
 	
 	@Override
 	public void setWindingRule(PathWindingRule r) {
-		assert(r!=null);
+		assert (r != null) : "Path winding rule must be not null"; //$NON-NLS-1$
 		this.windingRule = r;
 	}
 
@@ -782,6 +778,7 @@ public class Path2ifx
 
 	@Override
 	public void set(Path2ifx s) {
+		assert (s != null) : "Path must be not null"; //$NON-NLS-1$
 		clear();
 		add(s.getPathIterator());
 	}
@@ -793,6 +790,7 @@ public class Path2ifx
 
 	@Override
 	public PathElementType getPathElementTypeAt(int index) {
+		assert (index >= 0 && index < this.types.length) : "Index must be in [0;" + this.types.length + ")"; //$NON-NLS-1$ //$NON-NLS-2$
 		return this.types[index];
 	}
 

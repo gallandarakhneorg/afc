@@ -28,6 +28,7 @@ import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
+import org.arakhne.afc.math.geometry.d2.afp.Path2afp.CrossingComputationType;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Fonctional interface that represented a 2D circle on a plane.
@@ -65,6 +66,7 @@ public interface Circle2afp<
 	 */
 	@Pure
 	static boolean containsCirclePoint(double cx, double cy, double radius, double px, double py) {
+		assert (radius >= 0) : "Circle radius must be positive or zero"; //$NON-NLS-1$
 		return Point2D.getDistanceSquaredPointPoint(
 				px, py,
 				cx, cy) <= (radius * radius);
@@ -75,23 +77,32 @@ public interface Circle2afp<
 	 * @param cx is the center of the circle.
 	 * @param cy is the center of the circle.
 	 * @param radius is the radius of the circle.
-	 * @param rx is the lowest corner of the rectangle.
-	 * @param ry is the lowest corner of the rectangle.
-	 * @param rwidth is the width of the rectangle.
-	 * @param rheight is the height of the rectangle.
+	 * @param rxmin is the lowest corner of the rectangle.
+	 * @param rymin is the lowest corner of the rectangle.
+	 * @param rxmax is the uppest corner of the rectangle.
+	 * @param rymax is the uppest corner of the rectangle.
 	 * @return <code>true</code> if the given rectangle is inside the circle;
 	 * otherwise <code>false</code>.
 	 */
 	@Pure
-	static boolean containsCircleRectangle(double cx, double cy, double radius, double rx, double ry, double rwidth, double rheight) {
-		double rcx = (rx + rwidth/2f);
-		double rcy = (ry + rheight/2f);
+	static boolean containsCircleRectangle(double cx, double cy, double radius, double rxmin, double rymin, double rxmax, double rymax) {
+		assert (radius >= 0) : "Circle radius must be positive or zero"; //$NON-NLS-1$
+		assert (rxmin <= rxmax) : "rxmin must be lower or equal to rxmax"; //$NON-NLS-1$
+		assert (rymin <= rymax) : "rymin must be lower or equal to rymax"; //$NON-NLS-1$
+		double rcx = (rxmin + rxmax) / 2;
+		double rcy = (rymin + rymax) / 2;
 		double farX;
-		if (cx<=rcx) farX = rx + rwidth;
-		else farX = rx;
+		if (cx<=rcx) {
+			farX = rxmax;
+		} else {
+			farX = rxmin;
+		}
 		double farY;
-		if (cy<=rcy) farY = ry + rheight;
-		else farY = ry;
+		if (cy<=rcy) {
+			farY = rymax;
+		} else {
+			farY = rymin;
+		}
 		return containsCirclePoint(cx, cy, radius, farX, farY);
 	}
 
@@ -108,8 +119,10 @@ public interface Circle2afp<
 	 */
 	@Pure
 	static boolean intersectsCircleCircle(double x1, double y1, double radius1, double x2, double y2, double radius2) {
-		double r = radius1+radius2;
-		return Point2D.getDistanceSquaredPointPoint(x1, y1, x2, y2) < (r*r);
+		assert (radius1 >= 0) : "First circle radius must be positive or zero"; //$NON-NLS-1$
+		assert (radius1 >= 0) : "Second circle radius must be positive or zero"; //$NON-NLS-1$
+		double r = radius1 + radius2;
+		return Point2D.getDistanceSquaredPointPoint(x1, y1, x2, y2) < (r * r);
 	}
 
 	/** Replies if a circle and a rectangle are intersecting.
@@ -126,27 +139,26 @@ public interface Circle2afp<
 	 */
 	@Pure
 	static boolean intersectsCircleRectangle(double x1, double y1, double radius, double x2, double y2, double x3, double y3) {
+		assert (radius >= 0) : "Circle radius must be positive or zero"; //$NON-NLS-1$
+		assert (x2 <= x3) : "x2 must be lower or equal to x3"; //$NON-NLS-1$
+		assert (y2 <= y3) : "y2 must be lower or equal to y3"; //$NON-NLS-1$
 		double dx;
-		if (x1<x2) {
+		if (x1 < x2) {
 			dx = x2 - x1;
-		}
-		else if (x1>x3) {
+		} else if (x1 > x3) {
 			dx = x1 - x3;
-		}
-		else {
-			dx = 0f;
+		} else {
+			dx = 0;
 		}
 		double dy;
-		if (y1<y2) {
+		if (y1 < y2) {
 			dy = y2 - y1;
-		}
-		else if (y1>y3) {
+		} else if (y1 > y3) {
 			dy = y1 - y3;
+		} else {
+			dy = 0;
 		}
-		else {
-			dy = 0f;
-		}
-		return (dx*dx+dy*dy) < (radius*radius);
+		return (dx * dx + dy * dy) < (radius * radius);
 	}
 
 	/** Replies if a circle and a line are intersecting.
@@ -163,8 +175,9 @@ public interface Circle2afp<
 	 */
 	@Pure
 	static boolean intersectsCircleLine(double x1, double y1, double radius, double x2, double y2, double x3, double y3) {
-		double d = Segment2afp.getDistanceSquaredLinePoint(x2, y2, x3, y3, x1, y1);
-		return d<(radius*radius);
+		assert (radius >= 0) : "Circle radius must be positive or zero"; //$NON-NLS-1$
+		double d = Segment2afp.computeDistanceSquaredLinePoint(x2, y2, x3, y3, x1, y1);
+		return d < (radius * radius);
 	}
 
 	/** Replies if a circle and a segment are intersecting.
@@ -181,8 +194,9 @@ public interface Circle2afp<
 	 */
 	@Pure
 	static boolean intersectsCircleSegment(double x1, double y1, double radius, double x2, double y2, double x3, double y3) {
-		double d = Segment2afp.getDistanceSquaredSegmentPoint(x2, y2, x3, y3, x1, y1, null);
-		return d<(radius*radius);
+		assert (radius >= 0) : "Circle radius must be positive or zero"; //$NON-NLS-1$
+		double d = Segment2afp.computeDistanceSquaredSegmentPoint(x2, y2, x3, y3, x1, y1);
+		return d < (radius * radius);
 	}
 	
 	@Pure
@@ -227,6 +241,7 @@ public interface Circle2afp<
 	 * @param center
 	 */
 	default void setCenter(Point2D center) {
+		assert (center != null) : "Point must be not null"; //$NON-NLS-1$
 		set(center.getX(), center.getY(), getRadius());
 	}
 
@@ -280,13 +295,14 @@ public interface Circle2afp<
 	 * @param radius
 	 */
 	default void set(Point2D center, double radius) {
+		assert (center != null) : "Point must be not null"; //$NON-NLS-1$
 		set(center.getX(), center.getY(), radius);
 	}
 
 	@Override
 	default void set(IT s) {
-		Rectangle2afp<?, ?, ?, ?, ?> box = s.toBoundingBox();
-		set(box.getCenterX(), box.getCenterX(), Math.min(box.getWidth(), box.getHeight()) / 2);
+		assert (s != null) : "Shape must be not null"; //$NON-NLS-1$
+		set(s.getX(), s.getY(), s.getRadius());
 	}
 	
 	@Override
@@ -296,6 +312,7 @@ public interface Circle2afp<
 	
 	@Override
 	default void toBoundingBox(B box) {
+		assert (box != null) : "Rectangle must be not null"; //$NON-NLS-1$
 		double x = getX();
 		double y = getY();
 		double radius = getRadius();
@@ -312,20 +329,33 @@ public interface Circle2afp<
 	@Pure
 	@Override
 	default double getDistance(Point2D p) {
-		double d = Point2D.getDistancePointPoint(getX(), getY(), p.getX(), p.getY()) - getRadius();
+		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
+		double d = Point2D.getDistancePointPoint(getX(), getY(), p.getX(), p.getY());
+		d = d - getRadius();
 		return Math.max(0., d);
 	}
 	
 	@Pure
 	@Override
 	default double getDistanceSquared(Point2D p) {
-		double d = Point2D.getDistanceSquaredPointPoint(getX(), getY(), p.getX(), p.getY()) - getRadius();
-		return Math.max(0., d);
+		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
+		double x = getX();
+		double y = getY();
+		double radius = getRadius();
+		double vx = p.getX() - x;
+		double vy = p.getY() - y;
+		double sqLength = vx * vx + vy * vy;
+		double sqRadius = radius * radius;
+		if (sqLength <= sqRadius) {
+			return 0;
+		}
+		return Math.max(0., sqLength - 2 * Math.sqrt(sqLength) * radius + sqRadius);
 	}
 
 	@Pure
 	@Override
 	default double getDistanceL1(Point2D p) {
+		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
 		Point2D r = getClosestPointTo(p);
 		return r.getDistanceL1(p);
 	}
@@ -333,6 +363,7 @@ public interface Circle2afp<
 	@Pure
 	@Override
 	default double getDistanceLinf(Point2D p) {
+		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
 		Point2D r = getClosestPointTo(p);
 		return r.getDistanceLinf(p);
 	}
@@ -345,8 +376,9 @@ public interface Circle2afp<
 	
 	@Override
 	default boolean contains(Rectangle2afp<?, ?, ?, ?, ?> r) {
+		assert (r != null) : "Rectangle must be not null"; //$NON-NLS-1$
 		return containsCircleRectangle(getX(), getY(), getRadius(),
-				r.getMinX(), r.getMinY(), r.getWidth(), r.getHeight());
+				r.getMinX(), r.getMinY(), r.getMaxX(), r.getMaxY());
 	}
 	
 	@Override
@@ -357,27 +389,26 @@ public interface Circle2afp<
 	@Pure
 	@Override
 	default boolean intersects(Rectangle2afp<?, ?, ?, ?, ?> r) {
+		assert (r != null) : "Rectangle must be not null"; //$NON-NLS-1$
 		return intersectsCircleRectangle(
 				getX(), getY(), getRadius(),
-				r.getMinX(), r.getMinY(), r.getWidth(), r.getHeight());
+				r.getMinX(), r.getMinY(), r.getMaxX(), r.getMaxY());
 	}
 
 	@Pure
 	@Override
 	default boolean intersects(Ellipse2afp<?, ?, ?, ?, ?> s) {
-		double x = getX();
-		double y = getY();
-		double r = getRadius();
-		return Ellipse2afp.intersectsEllipseEllipse(
-				x - r, y - r,
-				x + r, y + r,
+		assert (s != null) : "Ellipse must be not null"; //$NON-NLS-1$
+		return Ellipse2afp.intersectsEllipseCircle(
 				s.getMinX(), s.getMinY(),
-				s.getMaxX(), s.getMaxY());
+				s.getWidth(), s.getHeight(),
+				getX(), getY(), getRadius());
 	}
 	
 	@Pure
 	@Override
 	default boolean intersects(Circle2afp<?, ?, ?, ?, ?> s) {
+		assert (s != null) : "Circle must be not null"; //$NON-NLS-1$
 		return intersectsCircleCircle(
 				getX(), getY(), getRadius(),
 				s.getX(), s.getY(), s.getRadius());
@@ -385,7 +416,20 @@ public interface Circle2afp<
 	
 	@Pure
 	@Override
+	default boolean intersects(Triangle2afp<?, ?, ?, ?, ?> s) {
+		assert (s != null) : "Triangle must be not null"; //$NON-NLS-1$
+		return Triangle2afp.intersectsTriangleCircle(
+				s.getX1(), s.getY1(),
+				s.getX2(), s.getY2(),
+				s.getX3(), s.getY3(),
+				getX(), getY(),
+				getRadius());
+	}
+
+	@Pure
+	@Override
 	default boolean intersects(Segment2afp<?, ?, ?, ?, ?> s) {
+		assert (s != null) : "Segment must be not null"; //$NON-NLS-1$
 		return intersectsCircleSegment(
 				getX(), getY(), getRadius(),
 				s.getX1(), s.getY1(),
@@ -395,7 +439,19 @@ public interface Circle2afp<
 	@Pure
 	@Override
 	default boolean intersects(OrientedRectangle2afp<?, ?, ?, ?, ?> s) {
-		return OrientedRectangle2afp.intersectsOrientedRectangleSolidCircle(
+		assert (s != null) : "Oriented rectangle must be not null"; //$NON-NLS-1$
+		return OrientedRectangle2afp.intersectsOrientedRectangleCircle(
+				s.getCenterX(), s.getCenterY(), 
+				s.getFirstAxisX(), s.getFirstAxisY(), s.getFirstAxisExtent(),
+				s.getSecondAxisExtent(),
+				getX(), getY(), getRadius());
+	}
+
+	@Pure
+	@Override
+	default boolean intersects(Parallelogram2afp<?, ?, ?, ?, ?> s) {
+		assert (s != null) : "Parallelogram must be not null"; //$NON-NLS-1$
+		return Parallelogram2afp.intersectsParallelogramCircle(
 				s.getCenterX(), s.getCenterY(), 
 				s.getFirstAxisX(), s.getFirstAxisY(), s.getFirstAxisExtent(),
 				s.getSecondAxisX(), s.getSecondAxisY(), s.getSecondAxisExtent(),
@@ -405,13 +461,13 @@ public interface Circle2afp<
 	@Pure
 	@Override
 	default boolean intersects(PathIterator2afp<?> iterator) {
+		assert (iterator != null) : "Iterator must be not null"; //$NON-NLS-1$
 		int mask = (iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2);
 		int crossings = Path2afp.computeCrossingsFromCircle(
 				0,
 				iterator,
 				getX(), getY(), getRadius(),
-				false,
-				true);
+				CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
 		return (crossings == MathConstants.SHAPE_INTERSECTS ||
 				(crossings & mask) != 0);
 
@@ -420,12 +476,25 @@ public interface Circle2afp<
 	@Pure
 	@Override
 	default boolean intersects(RoundRectangle2afp<?, ?, ?, ?, ?> s) {
-		return s.intersects(this);
+		assert (s!= null) : "Round rectangle must be not null"; //$NON-NLS-1$
+		return RoundRectangle2afp.intersectsRoundRectangleCircle(
+				s.getMinX(), s.getMinY(),
+				s.getMaxX(), s.getMaxY(),
+				s.getArcWidth(), s.getArcHeight(),
+				getX(), getY(), getRadius());
 	}
 		
 	@Pure
 	@Override
+	default boolean intersects(MultiShape2afp<?, ?, ?, ?, ?, ?> s) {
+		assert (s != null) : "MultiShape must be not null"; //$NON-NLS-1$
+		return s.intersects(this);
+	}
+
+	@Pure
+	@Override
 	default P getClosestPointTo(Point2D p) {
+		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
 		double x = getX();
 		double y = getY();
 		double radius = getRadius();
@@ -442,6 +511,7 @@ public interface Circle2afp<
 	@Pure
 	@Override
 	default P getFarthestPointTo(Point2D p) {
+		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
 		double x = getX();
 		double y = getY();
 		double vx = x - p.getX();
@@ -466,6 +536,18 @@ public interface Circle2afp<
 
 	/** Abstract iterator on the path elements of the circle.
 	 * 
+	 * <h3>Discretization of the circle with Bezier</h3>
+	 * 
+	 * <p>For n segments on the circle, the optimal distance to the control points, in the sense that the
+	 * middle of the curve lies on the circle itself, is (4/3)*tan(pi/(2n)).
+	 * 
+	 * <p><center><img src="./doc-files/circlebezier.png" width="100%" /></center>
+	 * 
+	 * <p>In the case of a discretization with 4 bezier curves, the distance is is
+	 * (4/3)*tan(pi/8) = 4*(sqrt(2)-1)/3 = 0.552284749831.
+	 * 
+	 * <p><center><img src="./doc-files/circlepathiterator.png" width="100%" /></center>
+	 * 
 	 * @param <T> the type of the path elements.
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
@@ -475,53 +557,47 @@ public interface Circle2afp<
 	abstract class AbstractCirclePathIterator<T extends PathElement2afp> implements PathIterator2afp<T> {
 		
 		/**
-		 * ArcIterator.btan(Math.PI/2)
+		 * Distance from a Bezier curve control point on the circle to the other control point.
+		 *
+		 * <p>4/3 tan (PI/(2*n)), where n is the number on points on the circle.
 		 */ 
-		protected static final double CTRL_VAL = 0.5522847498307933;
+		public static final double CTRL_POINT_DISTANCE = 0.5522847498307933;
 
 		/**
-		 * ctrlpts contains the control points for a set of 4 cubic
-		 * bezier curves that approximate a circle of radius 0.5
-		 * centered at 0.5, 0.5
+		 * Contains the control points for a set of 4 cubic
+		 * bezier curves that approximate a circle of radius 1
+		 * centered at (0,0).
 		 */
-		protected static final double PCV = 0.5 + CTRL_VAL * 0.5;
-	
-		/**
-		 * ctrlpts contains the control points for a set of 4 cubic
-		 * bezier curves that approximate a circle of radius 0.5
-		 * centered at 0.5, 0.5
-		 */
-		protected static final double NCV = 0.5 - CTRL_VAL * 0.5;
-		
-		/**
-		 * ctrlpts contains the control points for a set of 4 cubic
-		 * bezier curves that approximate a circle of radius 0.5
-		 * centered at 0.5, 0.5
-		 */
-		protected static double CTRL_PTS[][] = {
-			{  1.0,  PCV,  PCV,  1.0,  0.5,  1.0 },
-			{  NCV,  1.0,  0.0,  PCV,  0.0,  0.5 },
-			{  0.0,  NCV,  NCV,  0.0,  0.5,  0.0 },
-			{  PCV,  0.0,  1.0,  NCV,  1.0,  0.5 }
+		public static double BEZIER_CONTROL_POINTS[][] = {
+			// First quarter: max x, max y.
+			{ 1, CTRL_POINT_DISTANCE, CTRL_POINT_DISTANCE, 1, 0, 1 },
+			// Second quarter: min x, max y.
+			{ -CTRL_POINT_DISTANCE, 1, -1, CTRL_POINT_DISTANCE, -1, 0 },
+			// Third quarter: min x, min y.
+			{ -1, -CTRL_POINT_DISTANCE, -CTRL_POINT_DISTANCE, -1, 0, -1 },
+			// Fourth quarter: max x, min y.
+			{ CTRL_POINT_DISTANCE, -1, 1, -CTRL_POINT_DISTANCE, 1, 0 },
 		};
 		
-		private final GeomFactory2afp<T, ?, ?> factory;
+		/** 4 segments + close
+		 */
+		protected static final int NUMBER_ELEMENTS = 5;
+
+		/** The iterated shape.
+		 */
+		protected final Circle2afp<?, ?, T, ?, ?> circle;
 
 		/**
-		 * @param factory the factory.
+		 * @param circle the circle.
 		 */
-		public AbstractCirclePathIterator(GeomFactory2afp<T, ?, ?> factory) {
-			this.factory = factory;
+		public AbstractCirclePathIterator(Circle2afp<?, ?, T, ?, ?> circle) {
+			assert (circle != null) : "Circle must be not null"; //$NON-NLS-1$
+			this.circle = circle;
 		}
 
 		@Override
 		public GeomFactory2afp<T, ?, ?> getGeomFactory() {
-			return this.factory;
-		}
-
-		@Override
-		public void remove() {
-			throw new UnsupportedOperationException();
+			return this.circle.getGeomFactory();
 		}
 
 		@Pure
@@ -563,14 +639,14 @@ public interface Circle2afp<
 	 * @mavenartifactid $ArtifactId$
 	 */
 	class CirclePathIterator<T extends PathElement2afp> extends AbstractCirclePathIterator<T> {
-		
+
 		private double x;
 		
 		private double y;
 		
 		private double r;
 		
-		private int index = 0;
+		private int index;
 		
 		private double movex;
 		
@@ -584,59 +660,61 @@ public interface Circle2afp<
 		 * @param circle the circle to iterate on.
 		 */
 		public CirclePathIterator(Circle2afp<?, ?, T, ?, ?> circle) {
-			super(circle.getGeomFactory());
+			super(circle);
 			if (circle.isEmpty()) {
-				this.index = 6;
+				this.index = NUMBER_ELEMENTS;
 			} else {
 				this.r = circle.getRadius();
 				this.x = circle.getX();
 				this.y = circle.getY();
+				this.index = -1;
 			}
 		}
-
+		
+		@Override
+		public PathIterator2afp<T> restartIterations() {
+			return new CirclePathIterator<>(this.circle);
+		}
+		
 		@Pure
 		@Override
 		public boolean hasNext() {
-			return this.index <= 5;
+			return this.index < NUMBER_ELEMENTS;
 		}
 	
 		@Override
 		public T next() {
-			if (this.index > 5) throw new NoSuchElementException();
+			if (this.index >= NUMBER_ELEMENTS) {
+				throw new NoSuchElementException();
+			}
 			int idx = this.index;
 			++this.index;
-			if (idx==0) {
-				double dr = 2f * this.r;
-				double ctrls[] = CTRL_PTS[3];
-				this.movex = (this.x + ctrls[4] * dr);
-				this.movey = (this.y + ctrls[5] * dr);
+			if (idx < 0) {
+				double ctrls[] = BEZIER_CONTROL_POINTS[3];
+				this.movex = (this.x + ctrls[4] * this.r);
+				this.movey = (this.y + ctrls[5] * this.r);
 				this.lastx = this.movex;
 				this.lasty = this.movey;
 				return getGeomFactory().newMovePathElement(
 						this.lastx, this.lasty);
 			}
-			else if (idx<5) {
-				double dr = 2f * this.r;
-				double ctrls[] = CTRL_PTS[idx - 1];
+			if (idx < (NUMBER_ELEMENTS - 1)) {
+				double ctrls[] = BEZIER_CONTROL_POINTS[idx];
 				double ppx = this.lastx;
 				double ppy = this.lasty;
-				this.lastx = (this.x + ctrls[4] * dr);
-				this.lasty = (this.y + ctrls[5] * dr);
+				this.lastx = (this.x + ctrls[4] * this.r);
+				this.lasty = (this.y + ctrls[5] * this.r);
 				return getGeomFactory().newCurvePathElement(
 						ppx, ppy,
-						(this.x + ctrls[0] * dr),
-						(this.y + ctrls[1] * dr),
-						(this.x + ctrls[2] * dr),
-						(this.y + ctrls[3] * dr),
+						(this.x + ctrls[0] * this.r),
+						(this.y + ctrls[1] * this.r),
+						(this.x + ctrls[2] * this.r),
+						(this.y + ctrls[3] * this.r),
 						this.lastx, this.lasty);
 			}
-			double ppx = this.lastx;
-			double ppy = this.lasty;
-			this.lastx = this.movex;
-			this.lasty = this.movey;
 			return getGeomFactory().newClosePathElement(
-					ppx, ppy,
-					this.lastx, this.lasty);
+					this.lastx, this.lasty,
+					this.movex, this.movey);
 		}
 	
 	}
@@ -653,13 +731,7 @@ public interface Circle2afp<
 			
 		private final Transform2D transform;
 
-		private Point2D p1;
-		
-		private Point2D p2;
-		
-		private Point2D ptmp1;
-		
-		private Point2D ptmp2;
+		private final Point2D tmpPoint;
 		
 		private double x;
 		
@@ -667,81 +739,88 @@ public interface Circle2afp<
 		
 		private double r;
 		
-		private double movex, movey;
+		private double movex;
 		
-		private int index = 0;
+		private double movey;
+
+		private double lastx;
+		
+		private double lasty;
+
+		private int index;
 
 		/**
 		 * @param circle the iterated circle.
 		 * @param transform the transformation to apply.
 		 */
 		public TransformedCirclePathIterator(Circle2afp<?, ?, T, ?, ?> circle, Transform2D transform) {
-			super(circle.getGeomFactory());
-			assert(transform!=null);
+			super(circle);
+			assert(transform != null) : "Transformation must be not null"; //$NON-NLS-1$
 			this.transform = transform;
-			if (this.r<=0f) {
-				this.index = 6;
+			if (circle.isEmpty()) {
+				this.index = NUMBER_ELEMENTS;
+				this.tmpPoint = null;
 			} else {
-				GeomFactory2afp<T, ?, ?> factory = getGeomFactory();
-				this.p1 = factory.newPoint();
-				this.p2 = factory.newPoint();
-				this.ptmp1 = factory.newPoint();
-				this.ptmp2 = factory.newPoint();
+				this.tmpPoint = new InnerComputationPoint2afp();
 				this.r = circle.getRadius();
-				this.x = circle.getX() - this.r;
-				this.y = circle.getY() - this.r;
+				this.x = circle.getX();
+				this.y = circle.getY();
+				this.index = -1;
 			}
 		}
 
+		@Override
+		public PathIterator2afp<T> restartIterations() {
+			return new TransformedCirclePathIterator<>(this.circle, this.transform);
+		}
+		
 		@Pure
 		@Override
 		public boolean hasNext() {
-			return this.index<=5;
+			return this.index < NUMBER_ELEMENTS;
 		}
 	
 		@Override
 		public T next() {
-			if (this.index>5) throw new NoSuchElementException();
+			if (this.index >= NUMBER_ELEMENTS) {
+				throw new NoSuchElementException();
+			}
 			int idx = this.index;
 			++this.index;
-			if (idx==0) {
-				double dr = 2f * this.r;
-				double ctrls[] = CTRL_PTS[3];
-				this.movex = (this.x + ctrls[4] * dr);
-				this.movey = (this.y + ctrls[5] * dr);
-				this.p2.set(this.movex, this.movey);
-				this.transform.transform(this.p2);
+			if (idx < 0) {
+				double ctrls[] = BEZIER_CONTROL_POINTS[3];
+				this.tmpPoint.set(this.x + ctrls[4] * this.r, this.y + ctrls[5] * this.r);
+				this.transform.transform(this.tmpPoint);
+				this.movex = this.lastx = this.tmpPoint.getX();
+				this.movey = this.lasty = this.tmpPoint.getY();
 				return getGeomFactory().newMovePathElement(
-						this.p2.getX(), this.p2.getY());
+						this.lastx, this.lasty);
 			}
-			else if (idx<5) {
-				double dr = 2f * this.r;
-				double ctrls[] = CTRL_PTS[idx - 1];
-				this.p1.set(this.p2);
-				this.p2.set(
-						(this.x + ctrls[4] * dr),
-						(this.y + ctrls[5] * dr));
-				this.transform.transform(this.p2);
-				this.ptmp1.set(
-						(this.x + ctrls[0] * dr),
-						(this.y + ctrls[1] * dr));
-				this.transform.transform(this.ptmp1);
-				this.ptmp2.set(
-						(this.x + ctrls[2] * dr),
-						(this.y + ctrls[3] * dr));
-				this.transform.transform(this.ptmp2);
+			if (idx < (NUMBER_ELEMENTS - 1)) {
+				double ctrls[] = BEZIER_CONTROL_POINTS[idx];
+				double ppx = this.lastx;
+				double ppy = this.lasty;
+				this.tmpPoint.set(this.x + ctrls[0] * this.r, this.y + ctrls[1] * this.r);
+				this.transform.transform(this.tmpPoint);
+				double ctrlX1 = this.tmpPoint.getX();
+				double ctrlY1 = this.tmpPoint.getY();
+				this.tmpPoint.set(this.x + ctrls[2] * this.r, this.y + ctrls[3] * this.r);
+				this.transform.transform(this.tmpPoint);
+				double ctrlX2 = this.tmpPoint.getX();
+				double ctrlY2 = this.tmpPoint.getY();
+				this.tmpPoint.set(this.x + ctrls[4] * this.r, this.y + ctrls[5] * this.r);
+				this.transform.transform(this.tmpPoint);
+				this.lastx = this.tmpPoint.getX();
+				this.lasty = this.tmpPoint.getY();
 				return getGeomFactory().newCurvePathElement(
-						this.p1.getX(), this.p1.getY(),
-						this.ptmp1.getX(), this.ptmp1.getY(),
-						this.ptmp2.getX(), this.ptmp2.getY(),
-						this.p2.getX(), this.p2.getY());
+						ppx, ppy,
+						ctrlX1, ctrlY1,
+						ctrlX2, ctrlY2,
+						this.lastx, this.lasty);
 			}
-			this.p1.set(this.p2);
-			this.p2.set(this.movex, this.movey);
-			this.transform.transform(this.p2);
 			return getGeomFactory().newClosePathElement(
-					this.p1.getX(), this.p1.getY(),
-					this.p2.getX(), this.p2.getY());
+					this.lastx, this.lasty,
+					this.movex, this.movey);
 		}
 	
 	}

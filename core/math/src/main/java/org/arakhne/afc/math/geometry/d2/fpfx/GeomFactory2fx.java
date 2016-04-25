@@ -24,6 +24,7 @@ import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.afp.GeomFactory2afp;
+import org.arakhne.afc.math.geometry.d2.afp.MultiShape2afp;
 import org.arakhne.afc.math.geometry.d2.afp.Path2afp;
 
 import javafx.beans.property.SimpleDoubleProperty;
@@ -44,6 +45,7 @@ public class GeomFactory2fx implements GeomFactory2afp<PathElement2fx, Point2fx,
 	
 	@Override
 	public Point2fx convertToPoint(Point2D p) {
+		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
 		try {
 			return (Point2fx) p;
 		} catch (Throwable exception) {
@@ -54,6 +56,7 @@ public class GeomFactory2fx implements GeomFactory2afp<PathElement2fx, Point2fx,
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends Vector2D> T convertToVector(Point2D p) {
+		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
 		Vector2fx v;
 		try {
 			Point2fx pp = (Point2fx) p;
@@ -66,6 +69,7 @@ public class GeomFactory2fx implements GeomFactory2afp<PathElement2fx, Point2fx,
 
 	@Override
 	public Point2fx convertToPoint(Vector2D v) {
+		assert (v != null) : "Vector must be not null"; //$NON-NLS-1$
 		Point2fx p;
 		try {
 			Vector2fx pp = (Vector2fx) v;
@@ -79,6 +83,7 @@ public class GeomFactory2fx implements GeomFactory2afp<PathElement2fx, Point2fx,
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends Vector2D> T convertToVector(Vector2D v) {
+		assert (v != null) : "Vector must be not null"; //$NON-NLS-1$
 		Vector2fx vv;
 		try {
 			vv = (Vector2fx) v;
@@ -117,11 +122,14 @@ public class GeomFactory2fx implements GeomFactory2afp<PathElement2fx, Point2fx,
 	
 	@Override
 	public Rectangle2fx newBox(double x, double y, double width, double height) {
+		assert (width >= 0.) : "Width must be positive or zero"; //$NON-NLS-1$
+		assert (height >= 0.) : "Height must be positive or zero"; //$NON-NLS-1$
 		return new Rectangle2fx(x,  y, width, height);
 	}
 
 	@Override
 	public Path2afp<?, ?, PathElement2fx, Point2fx, ?> newPath(PathWindingRule rule) {
+		assert (rule != null) : "Path winding rule must be not null"; //$NON-NLS-1$
 		return new Path2fx(rule);
 	}
 
@@ -175,6 +183,11 @@ public class GeomFactory2fx implements GeomFactory2afp<PathElement2fx, Point2fx,
 				new SimpleDoubleProperty(controlY2),
 				new SimpleDoubleProperty(targetX),
 				new SimpleDoubleProperty(targetY));
+	}
+
+	@Override
+	public MultiShape2afp<?, ?, ?, PathElement2fx, Point2fx, Rectangle2fx> newMultiShape() {
+		return new MultiShape2fx();
 	}
 
 }

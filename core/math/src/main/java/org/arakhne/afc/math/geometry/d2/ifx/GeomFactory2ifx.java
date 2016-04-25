@@ -45,6 +45,7 @@ public class GeomFactory2ifx implements GeomFactory2ai<PathElement2ifx, Point2if
 	
 	@Override
 	public Point2ifx convertToPoint(Point2D point) {
+		assert (point != null) : "Point must be not null"; //$NON-NLS-1$
 		try {
 			return (Point2ifx) point;
 		} catch (Throwable exception) {
@@ -55,17 +56,20 @@ public class GeomFactory2ifx implements GeomFactory2ai<PathElement2ifx, Point2if
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends Vector2D> T convertToVector(Point2D point) {
+		assert (point != null) : "Point must be not null"; //$NON-NLS-1$
 		return (T) new Vector2ifx(point.ix(), point.iy());
 	}
 
 	@Override
 	public Point2ifx convertToPoint(Vector2D vector) {
+		assert (vector != null) : "Vector must be not null"; //$NON-NLS-1$
 		return new Point2ifx(vector.ix(), vector.iy());
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends Vector2D> T convertToVector(Vector2D vector) {
+		assert (vector != null) : "Vector must be not null"; //$NON-NLS-1$
 		Vector2ifx vv;
 		try {
 			vv = (Vector2ifx) vector;
@@ -99,6 +103,7 @@ public class GeomFactory2ifx implements GeomFactory2ai<PathElement2ifx, Point2if
 
 	@Override
 	public Path2ai<?, ?, PathElement2ifx, Point2ifx, ?> newPath(PathWindingRule rule) {
+		assert (rule != null) : "Path winding rule must be not null"; //$NON-NLS-1$
 		return new Path2ifx(rule);
 	}
 	
@@ -109,6 +114,8 @@ public class GeomFactory2ifx implements GeomFactory2ai<PathElement2ifx, Point2if
 	
 	@Override
 	public Rectangle2ifx newBox(int x, int y, int width, int height) {
+		assert (width >= 0) : "Width must be positive or zero"; //$NON-NLS-1$
+		assert (height >= 0) : "Height must be positive or zero"; //$NON-NLS-1$
 		return new Rectangle2ifx(x, y, width, height);
 	}
 

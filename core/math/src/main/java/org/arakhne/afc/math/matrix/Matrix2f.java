@@ -99,6 +99,8 @@ public class Matrix2f implements Serializable, Cloneable {
 	 *            the array of length 4 containing in order
 	 */
 	public Matrix2f(double[] matrix) {
+		assert (matrix != null) : "Matrix must not be null"; //$NON-NLS-1$
+		assert (matrix.length >= 4) : "Size of the array is too small"; //$NON-NLS-1$
 		this.m00 = matrix[0];
 		this.m01 = matrix[1];
 
@@ -113,6 +115,7 @@ public class Matrix2f implements Serializable, Cloneable {
 	 *            the source matrix
 	 */
 	public Matrix2f(Matrix2f matrix) {
+		assert (matrix != null) : "Matrix must not be null"; //$NON-NLS-1$
 		this.m00 = matrix.m00;
 		this.m01 = matrix.m01;
 
@@ -169,6 +172,8 @@ public class Matrix2f implements Serializable, Cloneable {
 	 *            the new value
 	 */
 	public final void setElement(int row, int column, double value) {
+		assert (row >= 0 && row < 2) : "Row index must be in [0;1]"; //$NON-NLS-1$
+		assert (column >= 0 && column < 2) : "Column index must be in [0;1]"; //$NON-NLS-1$
 		switch (row) {
 		case 0:
 			switch (column) {
@@ -214,6 +219,8 @@ public class Matrix2f implements Serializable, Cloneable {
 	 */
 	@Pure
 	public final double getElement(int row, int column) {
+		assert (row >= 0 && row < 2) : "Row index must be in [0;1]"; //$NON-NLS-1$
+		assert (column >= 0 && column < 2) : "Column index must be in [0;1]"; //$NON-NLS-1$
 		switch (row) {
 		case 0:
 			switch (column) {
@@ -252,6 +259,8 @@ public class Matrix2f implements Serializable, Cloneable {
 	 *            the vector into which the matrix row values will be copied
 	 */
 	public final void getRow(int row, Vector2D vector) {
+		assert (row >= 0 && row < 2) : "Row index must be in [0;1]"; //$NON-NLS-1$
+		assert (vector != null) : "Value vector must not be null"; //$NON-NLS-1$
 		if (row == 0) {
 			vector.set(this.m00, this.m01);
 		}
@@ -273,6 +282,9 @@ public class Matrix2f implements Serializable, Cloneable {
 	 *            the array into which the matrix row values will be copied
 	 */
 	public final void getRow(int row, double vector[]) {
+		assert (row >= 0 && row < 2) : "Row index must be in [0;1]"; //$NON-NLS-1$
+		assert (vector != null) : "Value vector must not be null"; //$NON-NLS-1$
+		assert (vector.length >= 2) : "Size of the value vector is too small"; //$NON-NLS-1$
 		if (row == 0) {
 			vector[0] = this.m00;
 			vector[1] = this.m01;
@@ -297,6 +309,8 @@ public class Matrix2f implements Serializable, Cloneable {
 	 *            the vector into which the matrix row values will be copied
 	 */
 	public final void getColumn(int column, Vector2D vector) {
+		assert (column >= 0 && column < 2) : "Column index must be in [0;1]"; //$NON-NLS-1$
+		assert (vector != null) : "Value vector must not be null"; //$NON-NLS-1$
 		if (column == 0) {
 			vector.set(this.m00, this.m10);
 		}
@@ -318,6 +332,9 @@ public class Matrix2f implements Serializable, Cloneable {
 	 *            the array into which the matrix row values will be copied
 	 */
 	public final void getColumn(int column, double vector[]) {
+		assert (column >= 0 && column < 2) : "Column index must be in [0;1]"; //$NON-NLS-1$
+		assert (vector != null) : "Value vector must not be null"; //$NON-NLS-1$
+		assert (vector.length >= 2) : "Size of the value vector is too small"; //$NON-NLS-1$
 		if (column == 0) {
 			vector[0] = this.m00;
 			vector[1] = this.m10;
@@ -342,6 +359,7 @@ public class Matrix2f implements Serializable, Cloneable {
 	 *            the second column element
 	 */
 	public final void setRow(int row, double x, double y) {
+		assert (row >= 0 && row < 2) : "Row index must be in [0;1]"; //$NON-NLS-1$
 		switch (row) {
 		case 0:
 			this.m00 = x;
@@ -368,6 +386,8 @@ public class Matrix2f implements Serializable, Cloneable {
 	 *            the replacement row
 	 */
 	public final void setRow(int row, Vector2D vector) {
+		assert (row >= 0 && row < 2) : "Row index must be in [0;1]"; //$NON-NLS-1$
+		assert (vector != null) : "Value vector must not be null"; //$NON-NLS-1$
 		switch (row) {
 		case 0:
 			this.m00 = vector.getX();
@@ -394,6 +414,9 @@ public class Matrix2f implements Serializable, Cloneable {
 	 *            the replacement row
 	 */
 	public final void setRow(int row, double vector[]) {
+		assert (row >= 0 && row < 2) : "Row index must be in [0;1]"; //$NON-NLS-1$
+		assert (vector != null) : "Value vector must not be null"; //$NON-NLS-1$
+		assert (vector.length >= 2) : "Size of the value vector is too small"; //$NON-NLS-1$
 		switch (row) {
 		case 0:
 			this.m00 = vector[0];
@@ -422,6 +445,7 @@ public class Matrix2f implements Serializable, Cloneable {
 	 *            the second row element
 	 */
 	public final void setColumn(int column, double x, double y) {
+		assert (column >= 0 && column < 2) : "Column index must be in [0;1]"; //$NON-NLS-1$
 		switch (column) {
 		case 0:
 			this.m00 = x;
@@ -448,6 +472,8 @@ public class Matrix2f implements Serializable, Cloneable {
 	 *            the replacement column
 	 */
 	public final void setColumn(int column, Vector2D vector) {
+		assert (column >= 0 && column < 2) : "Column index must be in [0;1]"; //$NON-NLS-1$
+		assert (vector != null) : "Value vector must not be null"; //$NON-NLS-1$
 		switch (column) {
 		case 0:
 			this.m00 = vector.getX();
@@ -474,6 +500,9 @@ public class Matrix2f implements Serializable, Cloneable {
 	 *            the replacement column
 	 */
 	public final void setColumn(int column, double vector[]) {
+		assert (column >= 0 && column < 2) : "Column index must be in [0;1]"; //$NON-NLS-1$
+		assert (vector != null) : "Value vector must not be null"; //$NON-NLS-1$
+		assert (vector.length >= 2) : "Size of the value vector is too small"; //$NON-NLS-1$
 		switch (column) {
 		case 0:
 			this.m00 = vector[0];
@@ -517,6 +546,7 @@ public class Matrix2f implements Serializable, Cloneable {
 	 *            the original matrix values
 	 */
 	public final void add(double scalar, Matrix2f matrix) {
+		assert (matrix != null) : "Matrix must not be null"; //$NON-NLS-1$
 		this.m00 = matrix.m00 + scalar;
 		this.m01 = matrix.m01 + scalar;
 
@@ -535,6 +565,8 @@ public class Matrix2f implements Serializable, Cloneable {
 	 *            the second matrix
 	 */
 	public final void add(Matrix2f matrix1, Matrix2f matrix2) {
+		assert (matrix1 != null) : "First matrix must not be null"; //$NON-NLS-1$
+		assert (matrix2 != null) : "Second matrix must not be null"; //$NON-NLS-1$
 		this.m00 = matrix1.m00 + matrix2.m00;
 		this.m01 = matrix1.m01 + matrix2.m01;
 
@@ -551,6 +583,7 @@ public class Matrix2f implements Serializable, Cloneable {
 	 *            the other matrix
 	 */
 	public final void add(Matrix2f matrix) {
+		assert (matrix != null) : "Matrix must not be null"; //$NON-NLS-1$
 		this.m00 += matrix.m00;
 		this.m01 += matrix.m01;
 
@@ -570,6 +603,8 @@ public class Matrix2f implements Serializable, Cloneable {
 	 *            the second matrix
 	 */
 	public final void sub(Matrix2f matrix1, Matrix2f matrix2) {
+		assert (matrix1 != null) : "First matrix must not be null"; //$NON-NLS-1$
+		assert (matrix2 != null) : "Second matrix must not be null"; //$NON-NLS-1$
 		this.m00 = matrix1.m00 - matrix2.m00;
 		this.m01 = matrix1.m01 - matrix2.m01;
 
@@ -587,6 +622,7 @@ public class Matrix2f implements Serializable, Cloneable {
 	 *            the other matrix
 	 */
 	public final void sub(Matrix2f matrix) {
+		assert (matrix != null) : "Matrix must not be null"; //$NON-NLS-1$
 		this.m00 -= matrix.m00;
 		this.m01 -= matrix.m01;
 
@@ -613,6 +649,7 @@ public class Matrix2f implements Serializable, Cloneable {
 	 *            the matrix to be transposed
 	 */
 	public final void transpose(Matrix2f matrix) {
+		assert (matrix != null) : "Matrix must not be null"; //$NON-NLS-1$
 		if (this != matrix) {
 			this.m00 = matrix.m00;
 			this.m01 = matrix.m10;
@@ -634,6 +671,7 @@ public class Matrix2f implements Serializable, Cloneable {
 	 *            the source Matrix2d
 	 */
 	public final void set(Matrix2f matrix) {
+		assert (matrix != null) : "Matrix must not be null"; //$NON-NLS-1$
 		this.m00 = matrix.m00;
 		this.m01 = matrix.m01;
 
@@ -652,6 +690,8 @@ public class Matrix2f implements Serializable, Cloneable {
 	 *            the double precision array of length 4
 	 */
 	public final void set(double[] matrix) {
+		assert (matrix != null) : "Matrix must not be null"; //$NON-NLS-1$
+		assert (matrix.length >= 2) : "Size of the matrix is too small"; //$NON-NLS-1$
 		this.m00 = matrix[0];
 		this.m01 = matrix[1];
 
@@ -719,6 +759,7 @@ public class Matrix2f implements Serializable, Cloneable {
 	 *            the original matrix
 	 */
 	public final void mul(double scalar, Matrix2f matrix) {
+		assert (matrix != null) : "Matrix must not be null"; //$NON-NLS-1$
 		this.m00 = scalar * matrix.m00;
 		this.m01 = scalar * matrix.m01;
 
@@ -736,6 +777,7 @@ public class Matrix2f implements Serializable, Cloneable {
 	 *            the other matrix
 	 */
 	public final void mul(Matrix2f matrix) {
+		assert (matrix != null) : "Matrix must not be null"; //$NON-NLS-1$
 		double _m00, _m01, _m10, _m11;
 
 		_m00 = this.m00 * matrix.m00 + this.m01 * matrix.m10;
@@ -760,6 +802,8 @@ public class Matrix2f implements Serializable, Cloneable {
 	 */
 	@Pure
 	public final void mul(Vector2D vector, Vector2D result) {
+		assert (vector != null) : "Input vector must not be null"; //$NON-NLS-1$
+		assert (result != null) : "Result vector must be not null"; //$NON-NLS-1$
 		result.set(
 				this.m00 * vector.getX() + this.m01 * vector.getY(),
 				this.m10 * vector.getX() + this.m11 * vector.getY());
@@ -775,6 +819,8 @@ public class Matrix2f implements Serializable, Cloneable {
 	 *            the second matrix
 	 */
 	public final void mul(Matrix2f matrix1, Matrix2f matrix2) {
+		assert (matrix1 != null) : "First matrix must not be null"; //$NON-NLS-1$
+		assert (matrix2 != null) : "Second matrix must be not null"; //$NON-NLS-1$
 		if (this != matrix1 && this != matrix2) {
 			this.m00 = matrix1.m00 * matrix2.m00 + matrix1.m01 * matrix2.m10;
 			this.m01 = matrix1.m00 * matrix2.m01 + matrix1.m01 * matrix2.m11;
@@ -810,6 +856,8 @@ public class Matrix2f implements Serializable, Cloneable {
 	 *            the matrix on the right hand side of the multiplication
 	 */
 	public final void mulTransposeBoth(Matrix2f matrix1, Matrix2f matrix2) {
+		assert (matrix1 != null) : "First matrix must not be null"; //$NON-NLS-1$
+		assert (matrix2 != null) : "Second matrix must be not null"; //$NON-NLS-1$
 		if (this != matrix1 && this != matrix2) {
 			this.m00 = matrix1.m00 * matrix2.m00 + matrix1.m10 * matrix2.m01;
 			this.m01 = matrix1.m00 * matrix2.m10 + matrix1.m10 * matrix2.m11;
@@ -845,6 +893,8 @@ public class Matrix2f implements Serializable, Cloneable {
 	 *            the matrix on the right hand side of the multiplication
 	 */
 	public final void mulTransposeRight(Matrix2f matrix1, Matrix2f matrix2) {
+		assert (matrix1 != null) : "First matrix must not be null"; //$NON-NLS-1$
+		assert (matrix2 != null) : "Second matrix must be not null"; //$NON-NLS-1$
 		if (this != matrix1 && this != matrix2) {
 			this.m00 = matrix1.m00 * matrix2.m00 + matrix1.m01 * matrix2.m01;
 			this.m01 = matrix1.m00 * matrix2.m10 + matrix1.m01 * matrix2.m11;
@@ -880,6 +930,8 @@ public class Matrix2f implements Serializable, Cloneable {
 	 *            the matrix on the right hand side of the multiplication
 	 */
 	public final void mulTransposeLeft(Matrix2f matrix1, Matrix2f matrix2) {
+		assert (matrix1 != null) : "First matrix must not be null"; //$NON-NLS-1$
+		assert (matrix2 != null) : "Second matrix must be not null"; //$NON-NLS-1$
 		if (this != matrix1 && this != matrix2) {
 			this.m00 = matrix1.m00 * matrix2.m00 + matrix1.m10 * matrix2.m10;
 			this.m01 = matrix1.m00 * matrix2.m01 + matrix1.m10 * matrix2.m11;
@@ -928,6 +980,7 @@ public class Matrix2f implements Serializable, Cloneable {
 	 *            Provides the matrix values to be normalized
 	 */
 	public final void normalizeCP(Matrix2f matrix) {
+		assert (matrix != null) : "Matrix must not be null"; //$NON-NLS-1$
 		double mag = 1.0 / Math.sqrt(matrix.m00 * matrix.m00 + matrix.m10 * matrix.m10);
 		this.m00 = matrix.m00 * mag;
 		this.m10 = matrix.m10 * mag;
@@ -1062,6 +1115,7 @@ public class Matrix2f implements Serializable, Cloneable {
 	 *            the source matrix
 	 */
 	public final void negate(Matrix2f matrix) {
+		assert (matrix != null) : "Matrix must not be null"; //$NON-NLS-1$
 		this.m00 = -matrix.m00;
 		this.m01 = -matrix.m01;
 
@@ -1184,6 +1238,8 @@ public class Matrix2f implements Serializable, Cloneable {
 	 * @return <code>true</code> if the covariance matrix could be computed.
 	 */
 	public final boolean cov(Vector2D result, Vector2D... tuples) {
+		assert (result != null) : "Result vector must not be null"; //$NON-NLS-1$
+		assert (tuples != null) : "List of tuples must be not null"; //$NON-NLS-1$
 		return cov(result, Arrays.asList(tuples));
 	}
 
@@ -1195,6 +1251,8 @@ public class Matrix2f implements Serializable, Cloneable {
 	 * @return <code>true</code> if the covariance matrix could be computed.
 	 */
 	public final boolean cov(Vector2D result, Point2D... tuples) {
+		assert (result != null) : "Result vector must not be null"; //$NON-NLS-1$
+		assert (tuples != null) : "List of tuples must be not null"; //$NON-NLS-1$
 		return cov(result, Arrays.asList(tuples));
 	}
 	
@@ -1206,6 +1264,8 @@ public class Matrix2f implements Serializable, Cloneable {
 	 * @return <code>true</code> if the covariance matrix could be computed.
 	 */
 	public boolean cov(Vector2D result, Iterable<? extends Tuple2D<?>> tuples) {
+		assert (result != null) : "Result vector must not be null"; //$NON-NLS-1$
+		assert (tuples != null) : "List of tuples must be not null"; //$NON-NLS-1$
 		setZero();
 
 		// Compute the mean m
@@ -1266,7 +1326,7 @@ public class Matrix2f implements Serializable, Cloneable {
 	 * @see #eigenVectorsOfSymmetricMatrix(Matrix2f) 
 	 */
 	public double[] eigenVectorsOfSymmetricMatrix(Matrix2f eigenVectors) {
-		assert(eigenVectors!=null);
+		assert (eigenVectors != null) : "Matrix of eigen vectors must be not null"; //$NON-NLS-1$
 
 		// Copy values up to the diagonal
 		double m11 = getM00();

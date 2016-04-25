@@ -84,6 +84,17 @@ public class Vector2DTest extends AbstractVector2DTest {
 				return new ImVector2D();
 			}
 
+			@Override
+			public Vector2D toUnitVector() {
+				double l = getLength();
+				return createVector(this.x / l, this.y / l);
+			}
+			
+			@Override
+			public Vector2D toOrthogonalVector() {
+				return createVector(-this.y, this.x);
+			}
+
 			class ImVector2D implements Vector2D {
 
 				@Override
@@ -136,6 +147,16 @@ public class Vector2DTest extends AbstractVector2DTest {
 					return this;
 				}
 				
+				@Override
+				public Vector2D toUnitVector() {
+					throw new UnsupportedOperationException();
+				}
+				
+				@Override
+				public Vector2D toOrthogonalVector() {
+					throw new UnsupportedOperationException();
+				}
+
 			}
 		};
 	}

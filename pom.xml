@@ -228,74 +228,12 @@
 
 	<developers>
 		<developer>
-			<id>sgalland</id>
-			<name>St&amp;eacute;phane GALLAND</name>
-			<email>galland@arakhne.org</email>
-			<url>http://www.arakhne.org/homes/galland.html</url>
-			<roles>
-				<role>Founder</role>
-				<role>Architect</role>
-				<role>Developer</role>
-			</roles>
-		</developer>
-		<developer>
-			<id>ngaud</id>
-			<name>Nicolas GAUD</name>
-			<email>gaud@arakhne.org</email>
-			<url>http://www.arakhne.org/homes/gaud.html</url>
-			<roles>
-				<role>Developer</role>
-			</roles>
-		</developer>
-		<developer>
 			<id>awillaume</id>
 			<name>Alexandre WILLAUME</name>
 			<email>willaume@arakhne.org</email>
 			<url>http://www.arakhne.org/homes/willaume.html</url>
 			<roles>
 				<role>Developer</role>
-			</roles>
-		</developer>
-		<developer>
-			<id>olamotte</id>
-			<name>Olivier LAMOTTE</name>
-			<email>lamotte@arakhne.org</email>
-			<url>http://www.arakhne.org/homes/lamotte.html</url>
-			<roles>
-				<role>Developer</role>
-			</roles>
-		</developer>
-		<developer>
-			<id>mhannoun</id>
-			<name>Mahdi HANNOUN</name>
-			<email>mahdi.hannoun@emse.fr</email>
-			<roles>
-				<role>Founder</role>
-				<role>Contributor</role>
-			</roles>
-		</developer>
-		<developer>
-			<id>mbaumgartner</id>
-			<name>Marc BAUMGARTNER</name>
-			<email>mabaumga@stud.uni-frankfurt.de</email>
-			<roles>
-				<role>Contributor</role>
-			</roles>
-		</developer>
-		<developer>
-			<id>ysugianto</id>
-			<name>Yuku Sugianto</name>
-			<email>yukuku@gmail.com</email>
-			<roles>
-				<role>Contributor</role>
-			</roles>
-		</developer>
-		<developer>
-			<id>mgrolleau</id>
-			<name>Maxime Grolleau</name>
-			<email>maxime.grolleau@utbm.fr</email>
-			<roles>
-				<role>Student Developer</role>
 			</roles>
 		</developer>
 		<developer>
@@ -312,6 +250,76 @@
 			<email>hamza.jaffali@utbm.fr</email>
 			<roles>
 				<role>Student Developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>mbaumgartner</id>
+			<name>Marc BAUMGARTNER</name>
+			<email>mabaumga@stud.uni-frankfurt.de</email>
+			<roles>
+				<role>Contributor</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>mgrolleau</id>
+			<name>Maxime Grolleau</name>
+			<email>maxime.grolleau@utbm.fr</email>
+			<roles>
+				<role>Student Developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>mhannoun</id>
+			<name>Mahdi HANNOUN</name>
+			<email>mahdi.hannoun@emse.fr</email>
+			<roles>
+				<role>Founder</role>
+				<role>Contributor</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>ngaud</id>
+			<name>Nicolas GAUD</name>
+			<email>gaud@arakhne.org</email>
+			<url>http://www.arakhne.org/homes/gaud.html</url>
+			<roles>
+				<role>Developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>olamotte</id>
+			<name>Olivier LAMOTTE</name>
+			<email>lamotte@arakhne.org</email>
+			<url>http://www.arakhne.org/homes/lamotte.html</url>
+			<roles>
+				<role>Developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>sgalland</id>
+			<name>St&amp;eacute;phane GALLAND</name>
+			<email>galland@arakhne.org</email>
+			<url>http://www.arakhne.org/homes/galland.html</url>
+			<roles>
+				<role>Founder</role>
+				<role>Architect</role>
+				<role>Developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>tpiotrowski</id>
+			<name>Thomas PIOTROWSKI</name>
+			<email>thomas.piotrowski@utbm.fr</email>
+			<roles>
+				<role>Student Developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>ysugianto</id>
+			<name>Yuku Sugianto</name>
+			<email>yukuku@gmail.com</email>
+			<roles>
+				<role>Contributor</role>
 			</roles>
 		</developer>
 	</developers>

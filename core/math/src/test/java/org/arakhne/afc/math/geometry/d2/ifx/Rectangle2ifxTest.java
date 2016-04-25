@@ -31,41 +31,18 @@ import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.ai.AbstractRectangle2aiTest;
 import org.arakhne.afc.math.geometry.d2.ai.Path2ai;
 import org.arakhne.afc.math.geometry.d2.ai.Segment2ai;
+import org.arakhne.afc.math.geometry.d2.ai.TestShapeFactory;
 import org.junit.Test;
 
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.ReadOnlyIntegerProperty;
 
 @SuppressWarnings("all")
 public class Rectangle2ifxTest extends AbstractRectangle2aiTest<Rectangle2ifx> {
 
 	@Override
-	protected Segment2ai<?, ?, ?, ?, ?> createSegment(int x1, int y1, int x2, int y2) {
-		return new Segment2ifx(x1, y1, x2, y2);
-	}
-
-	@Override
-	protected Rectangle2ifx createRectangularShape(int x, int y, int width, int height) {
-		return new Rectangle2ifx(x, y, width, height);
-	}
-
-	@Override
-	protected Circle2ifx createCircle(int x, int y, int radius) {
-		return new Circle2ifx(x, y, radius);
-	}
-
-	@Override
-	protected Point2D createPoint(int x, int y) {
-		return new Point2ifx(x, y);
-	}
-
-	@Override
-	protected Vector2D createVector(int x, int y) {
-		return new Vector2ifx(x, y);
-	}
-
-	@Override
-	protected Path2ai<?, ?, ?, ?, ?> createPath() {
-		return new Path2ifx();
+	protected TestShapeFactory<Rectangle2ifx> createFactory() {
+		return TestShapeFactory2ifx.SINGLETON;
 	}
 
 	@Test
@@ -169,6 +146,42 @@ public class Rectangle2ifxTest extends AbstractRectangle2aiTest<Rectangle2ifx> {
 		assertNotSame(this.shape.maxXProperty(), clone.maxXProperty());
 		assertNotSame(this.shape.minYProperty(), clone.minYProperty());
 		assertNotSame(this.shape.maxYProperty(), clone.maxYProperty());
+	}
+
+	@Test
+	public void widthProperty() {
+		assertEpsilonEquals(10, this.shape.getWidth());
+
+		ReadOnlyIntegerProperty property = this.shape.widthProperty();
+		assertNotNull(property);
+		assertEpsilonEquals(10, property.get());
+		
+		this.shape.setMinX(7);
+		assertEpsilonEquals(8, property.get());
+
+		this.shape.setMinX(-5);
+		assertEpsilonEquals(20, property.get());
+
+		this.shape.setMaxX(0);
+		assertEpsilonEquals(5, property.get());
+	}
+
+	@Test
+	public void heightProperty() {
+		assertEpsilonEquals(5, this.shape.getHeight());
+
+		ReadOnlyIntegerProperty property = this.shape.heightProperty();
+		assertNotNull(property);
+		assertEpsilonEquals(5, property.get());
+		
+		this.shape.setMinY(9);
+		assertEpsilonEquals(4, property.get());
+
+		this.shape.setMinY(-5);
+		assertEpsilonEquals(18, property.get());
+
+		this.shape.setMaxY(0);
+		assertEpsilonEquals(5, property.get());
 	}
 
 }

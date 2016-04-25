@@ -31,8 +31,6 @@ import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.Tuple2iComparator;
-import org.arakhne.afc.math.geometry.d2.i.GeomFactory2i;
-import org.arakhne.afc.math.geometry.d2.i.Point2i;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Fonctional interface that represented a 2D circle on a plane.
@@ -68,6 +66,8 @@ public interface Circle2ai<
 	 */
 	@Pure
 	static boolean contains(int cx, int cy, int cr, int x, int y) {
+		assert (cr >= 0) : "Circle radius must be positive or zero."; //$NON-NLS-1$
+		
 		int vx = x - cx;
 		int vy = y - cy;
 
@@ -96,8 +96,7 @@ public interface Circle2ai<
 			int px, py, ccw, cpx, cpy;
 			boolean allNull = true;
 			Point2D p;
-			CirclePerimeterIterator<Point2i> iterator = new CirclePerimeterIterator<>(
-					GeomFactory2i.SINGLETON,
+			CirclePerimeterIterator<Point2D> iterator = new CirclePerimeterIterator<>(
 					cx, cy, cr, octant, octant+2, false);
 
 			while (iterator.hasNext()) {
@@ -144,11 +143,13 @@ public interface Circle2ai<
 	 */
 	@Pure
 	static boolean contains(int cx, int cy, int cr, int quadrant, int x, int y) {
+		assert (cr >= 0) : "Circle radius must be positive or zero."; //$NON-NLS-1$
+		assert (quadrant >= 0 && quadrant <= 3) : "invalid quadrant value"; //$NON-NLS-1$
+
 		int vx = x - cx;
 		int vy = y - cy;
 
-		if (vx>=-cr && vx<=cr
-				&& vy>=-cr && vy<=cr) {
+		if (vx>=-cr && vx<=cr && vy>=-cr && vy<=cr) {
 			int octant;
 			boolean xpos = (vx>=0);
 			boolean ypos = (vy>=0);
@@ -173,8 +174,7 @@ public interface Circle2ai<
 
 			int px, py, ccw, cpx, cpy;
 			Point2D p;
-			CirclePerimeterIterator<Point2i> iterator = new CirclePerimeterIterator<>(
-					GeomFactory2i.SINGLETON,
+			CirclePerimeterIterator<Point2D> iterator = new CirclePerimeterIterator<>(
 					cx, cy, cr, octant, octant+2, false);
 
 			while (iterator.hasNext()) {
@@ -208,6 +208,9 @@ public interface Circle2ai<
 	 */
 	@Pure
 	static void computeClosestPointTo(int cx, int cy, int cr, int x, int y, Point2D result) {
+		assert (cr >= 0) : "Circle radius must be positive or zero."; //$NON-NLS-1$
+		assert (result != null) : "Result point must be positive or zero."; //$NON-NLS-1$
+		
 		int vx = x - cx;
 		int vy = y - cy;
 
@@ -233,8 +236,7 @@ public interface Circle2ai<
 
 		int d, px, py, cpx, cpy, ccw;
 		Point2D p;
-		CirclePerimeterIterator<Point2i> iterator = new CirclePerimeterIterator<>(
-				GeomFactory2i.SINGLETON,
+		CirclePerimeterIterator<Point2D> iterator = new CirclePerimeterIterator<>(
 				cx, cy, cr, octant, octant+2, false);
 
 		boolean isInside = true;
@@ -278,6 +280,8 @@ public interface Circle2ai<
 	 */
 	@Pure
 	static void computeFarthestPointTo(int cx, int cy, int cr, int x, int y, Point2D result) {
+		assert (cr >= 0) : "Circle radius must be positive or zero."; //$NON-NLS-1$
+
 		int vx = x - cx;
 		int vy = y - cy;
 
@@ -303,8 +307,7 @@ public interface Circle2ai<
 
 		int l1, linfinv, cpx, cpy;
 		Point2D p;
-		CirclePerimeterIterator<Point2i> iterator = new CirclePerimeterIterator<>(
-				GeomFactory2i.SINGLETON,
+		CirclePerimeterIterator<Point2D> iterator = new CirclePerimeterIterator<>(
 				cx, cy, cr, octant, octant+2, false);
 
 		int maxL1Dist = Integer.MIN_VALUE;
@@ -339,7 +342,9 @@ public interface Circle2ai<
 	 */
 	@Pure
 	static boolean intersectsCircleCircle(int x1, int y1, int radius1, int x2, int y2, int radius2) {
-		Point2D point = new Point2i();
+		assert (radius1 >= 0) : "Radius of the first circle must be positive or zero."; //$NON-NLS-1$
+		assert (radius2 >= 0) : "Radius of the second circle must be positive or zero."; //$NON-NLS-1$
+		Point2D point = new InnerComputationPoint2ai();
 		computeClosestPointTo(x1, y1, radius1, x2, y2, point);
 		return contains(x2, y2, radius2, point.ix(), point.iy());
 	}
@@ -358,7 +363,8 @@ public interface Circle2ai<
 	 */
 	@Pure
 	static boolean intersectsCircleRectangle(int x1, int y1, int radius, int x2, int y2, int x3, int y3) {
-		Point2D point = new Point2i();
+		assert (radius >= 0) : "Circle radius must be positive or zero."; //$NON-NLS-1$
+		Point2D point = new InnerComputationPoint2ai();
 		Rectangle2ai.computeClosestPoint(x2, y2, x3, y3, x1, y1, point);
 		return contains(x1, y1, radius, point.ix(), point.iy());
 	}
@@ -376,169 +382,10 @@ public interface Circle2ai<
 	 * <code>false</code>
 	 */
 	public static boolean intersectsCircleSegment(int x1, int y1, int radius, int x2, int y2, int x3, int y3) {
-		Point2D point = new Point2i();
+		assert (radius >= 0) : "Circle radius must be positive or zero."; //$NON-NLS-1$
+		Point2D point = new InnerComputationPoint2ai();
 		Segment2ai.computeClosestPointTo(x2, y2, x3, y3, x1, y1, point);
 		return contains(x1, y1, radius, point.ix(), point.iy());
-	}
-
-	/** Iterates on points on the perimeter of a circle.
-	 * <p>
-	 * The rastrerization is based on a Bresenham algorithm.
-	 * 
-	 * @param <P> the type of the points.
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 * @since 13.0
-	 */
-	class CirclePerimeterIterator<P extends Point2D> implements Iterator<P> {
-
-		private final GeomFactory2ai<?, P, ?> factory;
-		
-		private final int cx;
-		private final int cy;
-		private final int cr;
-
-		private final boolean skip;
-		private final int maxOctant;
-
-		private int currentOctant;
-		private int x, y, d;
-		
-		private P next = null;
-		
-		private final Set<P> junctionPoint = new TreeSet<>(new Tuple2iComparator());
-
-		/** Construct the iterator.
-		 *
-		 * @param factory the point factory.
-		 * @param centerX the x coordinate of the center of the circle. 
-		 * @param centerY the y coordinate of the center of the circle. 
-		 * @param radius the radius of the circle. 
-		 * @param initialOctant the octant from which the iteration must start.
-		 * @param maxOctant the maximal number of octants to iterate on.
-		 * @param skip indicates if the first point on an octant must be skip, because it is already replied when treating the
-		 *     previous octant.
-		 */
-		public CirclePerimeterIterator(GeomFactory2ai<?, P, ?> factory,
-				int centerX, int centerY, int radius, int initialOctant, int maxOctant, boolean skip) {
-			this.factory = factory;
-			this.cx = centerX;
-			this.cy = centerY;
-			this.cr = radius;
-			this.skip = skip;
-			this.maxOctant = maxOctant;
-			this.currentOctant = initialOctant;
-			reset();
-			searchNext();
-		}
-
-		private void reset() {
-			this.x = 0;
-			this.y = this.cr;
-			this.d = 3 - 2 * this.cr;
-			if (this.skip && (this.currentOctant==3 || this.currentOctant==4 || this.currentOctant==6 || this.currentOctant==7)) {
-				// skip the first point because already replied in previous octant
-				if (this.d<=0) {
-					this.d += 4 * this.x + 6;
-				}
-				else {
-					this.d += 4 * (this.x - this.y) + 10;
-					--this.y;
-				}
-				++this.x;
-			}
-		}
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Pure
-		@Override
-		public boolean hasNext() {
-			return this.next!=null;
-		}
-		
-		private void searchNext() {
-			if (this.currentOctant>=this.maxOctant) {
-				this.next = null;
-			}
-			else {
-				this.next = this.factory.newPoint();
-				while (true) {
-					switch(this.currentOctant) {
-					case 0:
-						this.next.set(this.cx + this.x, this.cy + this.y);
-						break;
-					case 1:
-						this.next.set(this.cx + this.y, this.cy + this.x);
-						break;
-					case 2:
-						this.next.set(this.cx + this.x, this.cy - this.y);
-						break;
-					case 3:
-						this.next.set(this.cx + this.y, this.cy - this.x);
-						break;
-					case 4:
-						this.next.set(this.cx - this.x, this.cy - this.y);
-						break;
-					case 5:
-						this.next.set(this.cx - this.y, this.cy - this.x);
-						break;
-					case 6:
-						this.next.set(this.cx - this.x, this.cy + this.y);
-						break;
-					case 7:
-						this.next.set(this.cx - this.y, this.cy + this.x);
-						break;
-					default:
-						throw new NoSuchElementException();
-					}
-		
-					if (this.d<=0) {
-						this.d += 4 * this.x + 6;
-					}
-					else {
-						this.d += 4 * (this.x - this.y) + 10;
-						--this.y;
-					}
-					++this.x;
-	
-					if (this.x>this.y) {
-						// The octant is finished.
-						// Save the junction.
-						boolean cont = this.junctionPoint.contains(this.next);
-						if (!cont) this.junctionPoint.add(this.factory.newPoint(this.next.ix(), this.next.iy()));
-						// Goto next.
-						++this.currentOctant;
-						reset();
-						if (this.currentOctant>=this.maxOctant) {
-							if (cont) this.next = null;
-							cont = false;
-						}
-						if (!cont) return;
-					}
-					else {
-						return;
-					}
-				}
-			}
-		}
-
-		@Override
-		public P next() {
-			P pixel = this.next;
-			if (pixel==null) throw new NoSuchElementException();
-			searchNext();
-			return pixel;
-		}
-
-		@Override
-		public void remove() {
-			throw new UnsupportedOperationException();
-		}
-
 	}
 
 	/** Replies the points of the circle perimeters starting by the first octant.
@@ -547,27 +394,25 @@ public interface Circle2ai<
 	 * @param cx is the center of the radius.
 	 * @param cy is the center of the radius.
 	 * @param radius is the radius of the radius.
-	 * @param firstOctantIndex is the index of the first octant (see figure) to treat.
-	 * @param nbOctants is the number of octants to traverse (greater than zero).
-	 * @param factory the factory of points.
+	 * @param firstOctantIndex is the index of the first octant to treat (value in [0;7].
+	 * @param nbOctants is the number of octants to traverse (value in [0; 7 - firstOctantIndex].
+	 * @param factory the factory to use for creating the points.
 	 * @return the points on the perimeters.
 	 */
 	@Pure
 	static <P extends Point2D> Iterator<P> getPointIterator(int cx, int cy,  int radius, int firstOctantIndex, int nbOctants,
 			GeomFactory2ai<?, P, ?> factory) {
-		int startOctant, maxOctant;
-		if (firstOctantIndex<=0)
-			startOctant = 0;
-		else if (firstOctantIndex>=8)
-			startOctant = 7;
-		else
-			startOctant = firstOctantIndex;
-		maxOctant = startOctant + nbOctants;
-		if (maxOctant>8) maxOctant = 8;
+		assert (radius >= 0) : "Circle radius must be positive or zero."; //$NON-NLS-1$
+		assert (firstOctantIndex >= 0 && firstOctantIndex < 8) : "invalid quadrant value"; //$NON-NLS-1$
+		int maxOctant;
+		maxOctant = Math.min(8, firstOctantIndex + nbOctants);
+		if (maxOctant > 8) {
+			maxOctant = 8;
+		}
 		return new CirclePerimeterIterator<>(
 				factory,
 				cx, cy, radius,
-				startOctant, maxOctant, true);
+				firstOctantIndex, maxOctant, true);
 	}
 
 	@Pure
@@ -667,7 +512,7 @@ public interface Circle2ai<
 	 * @return a copy of the center.
 	 */
 	@Pure
-	default Point2D getCenter() {
+	default P getCenter() {
 		return getGeomFactory().newPoint(getX(), getY());
 	}
 
@@ -688,6 +533,7 @@ public interface Circle2ai<
 	@Pure
 	@Override
 	default void toBoundingBox(B box) {
+		assert (box != null) : "Box must be not null."; //$NON-NLS-1$
 		int centerX = getX();
 		int centerY = getY();
 		int radius = getRadius();
@@ -701,6 +547,7 @@ public interface Circle2ai<
 	@Pure
 	@Override
 	default double getDistanceSquared(Point2D p) {
+		assert (p != null) : "Point must be not null."; //$NON-NLS-1$
 		P c = getClosestPointTo(p);
 		return c.getDistanceSquared(p);
 	}
@@ -708,6 +555,7 @@ public interface Circle2ai<
 	@Pure
 	@Override
 	default double getDistanceL1(Point2D p) {
+		assert (p != null) : "Point must be not null."; //$NON-NLS-1$
 		P c = getClosestPointTo(p);
 		return c.getDistanceL1(p);
 	}
@@ -722,16 +570,16 @@ public interface Circle2ai<
 	@Pure
 	@Override
 	default P getClosestPointTo(Point2D p) {
+		assert (p != null) : "Point must be not null."; //$NON-NLS-1$
 		P point = getGeomFactory().newPoint();
 		computeClosestPointTo(getX(), getY(), getRadius(), p.ix(), p.iy(), point);
 		return point;
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Pure
 	@Override
 	default P getFarthestPointTo(Point2D p) {
+		assert (p != null) : "Point must be not null."; //$NON-NLS-1$
 		P point = getGeomFactory().newPoint();
 		computeFarthestPointTo(getX(), getY(), getRadius(), p.ix(), p.iy(), point);
 		return point;
@@ -740,6 +588,7 @@ public interface Circle2ai<
 	@Pure
 	@Override
 	default boolean intersects(Rectangle2ai<?, ?, ?, ?, ?> s) {
+		assert (s != null) : "Rectangle must be not null."; //$NON-NLS-1$
 		return intersectsCircleRectangle(
 				getX(), getY(), getRadius(),
 				s.getMinX(), s.getMinY(),
@@ -749,6 +598,7 @@ public interface Circle2ai<
 	@Pure
 	@Override
 	default boolean intersects(Circle2ai<?, ?, ?, ?, ?> s) {
+		assert (s != null) : "Circle must be not null."; //$NON-NLS-1$
 		return intersectsCircleCircle(
 				getX(), getY(), getRadius(),
 				s.getX(), s.getY(), s.getRadius());
@@ -757,6 +607,7 @@ public interface Circle2ai<
 	@Pure
 	@Override
 	default boolean intersects(Segment2ai<?, ?, ?, ?, ?> s) {
+		assert (s != null) : "Segment must be not null."; //$NON-NLS-1$
 		return intersectsCircleSegment(
 				getX(), getY(), getRadius(),
 				s.getX1(), s.getY1(),
@@ -766,6 +617,7 @@ public interface Circle2ai<
 	@Pure
 	@Override
 	default boolean intersects(PathIterator2ai<?> iterator) {
+		assert (iterator != null) : "Iterator must be not null."; //$NON-NLS-1$
 		int mask = (iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2);
 		int crossings = Path2ai.computeCrossingsFromCircle(
 				0,
@@ -791,6 +643,7 @@ public interface Circle2ai<
 	@Pure
 	@Override
 	default boolean contains(Rectangle2ai<?, ?, ?, ?, ?> box) {
+		assert (box != null) : "Rectangle must be not null."; //$NON-NLS-1$
 		int cx = getX();
 		int cy = getY();
 		int radius = getRadius();
@@ -829,7 +682,6 @@ public interface Circle2ai<
 			for(int i=0; i<quadrants.length; ++i) {
 				if (quadrants[i]!=0) {
 					CirclePerimeterIterator<P> iterator = new CirclePerimeterIterator<>(
-							getGeomFactory(),
 							cx, cy, radius, i*2, i*2+2, false);
 					int px, py, ccw, cpx, cpy;
 					P p;
@@ -936,6 +788,7 @@ public interface Circle2ai<
 		 * @param factory the element factory.
 		 */
 		public AbstractCirclePathIterator(GeomFactory2ai<IE, ?, ?> factory) {
+			assert (factory != null) : "Factory must be not null."; //$NON-NLS-1$
 			this.factory = factory;
 		}
 		
@@ -1107,15 +960,15 @@ public interface Circle2ai<
 		 */
 		public TransformedCirclePathIterator(Circle2ai<?, ?, IE, ?, ?> circle, Transform2D transform) {
 			super(circle.getGeomFactory());
-			assert(transform != null);
+			assert(transform != null) : "Transformation must not be null."; //$NON-NLS-1$
 			this.transform = transform;
 			if (circle.isEmpty()) {
 				this.index = 6;
 			} else {
-				this.p1 = this.factory.newPoint();
-				this.p2 = this.factory.newPoint();
-				this.ptmp1 = this.factory.newPoint();
-				this.ptmp2 = this.factory.newPoint();
+				this.p1 = new InnerComputationPoint2ai();
+				this.p2 = new InnerComputationPoint2ai();
+				this.ptmp1 = new InnerComputationPoint2ai();
+				this.ptmp2 = new InnerComputationPoint2ai();
 				this.r = circle.getRadius();
 				this.x = circle.getX() - this.r;
 				this.y = circle.getY() - this.r;
@@ -1171,6 +1024,185 @@ public interface Circle2ai<
 			return this.factory.newClosePathElement(
 					this.p1.ix(), this.p1.iy(),
 					this.p2.ix(), this.p2.iy());
+		}
+
+	}
+
+	/** Iterates on points on the perimeter of a circle.
+	 * <p>
+	 * The rastrerization is based on a Bresenham algorithm.
+	 * 
+	 * @param <P> the type of the points.
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 13.0
+	 */
+	class CirclePerimeterIterator<P extends Point2D> implements Iterator<P> {
+
+		private final GeomFactory2ai<?, P, ?> factory;
+		
+		private final int cx;
+		private final int cy;
+		private final int cr;
+
+		private final boolean skip;
+		private final int maxOctant;
+
+		private int currentOctant;
+		private int x, y, d;
+		
+		private P next = null;
+		
+		private final Set<P> junctionPoint = new TreeSet<>(new Tuple2iComparator());
+
+		/** Construct the iterator from the initialOctant (inclusive) to the lastOctant (exclusive).
+		 *
+		 * @param centerX the x coordinate of the center of the circle. 
+		 * @param centerY the y coordinate of the center of the circle. 
+		 * @param radius the radius of the circle. 
+		 * @param initialOctant the octant from which the iteration must start.
+		 * @param lastOctant the first octant that must not be iterated on.
+		 * @param skip indicates if the first point on an octant must be skip, because it is already replied when treating the
+		 *     previous octant.
+		 */
+		@SuppressWarnings("unchecked")
+		CirclePerimeterIterator(int centerX, int centerY, int radius, int initialOctant, int lastOctant, boolean skip) {
+			this(InnerGeomFactory2ai.DEFAULT, centerX, centerY, radius, initialOctant, lastOctant, skip);
+		}
+
+		/** Construct the iterator from the initialOctant (inclusive) to the lastOctant (exclusive).
+		 *
+		 * @param factory the point factory.
+		 * @param centerX the x coordinate of the center of the circle. 
+		 * @param centerY the y coordinate of the center of the circle. 
+		 * @param radius the radius of the circle. 
+		 * @param initialOctant the octant from which the iteration must start.
+		 * @param lastOctant the first octant that must not be iterated on.
+		 * @param skip indicates if the first point on an octant must be skip, because it is already replied when treating the
+		 *     previous octant.
+		 */
+		public CirclePerimeterIterator(GeomFactory2ai<?, P, ?> factory,
+				int centerX, int centerY, int radius, int initialOctant, int lastOctant, boolean skip) {
+			assert (factory != null) : "Factory must be not null."; //$NON-NLS-1$			
+			assert (radius >= 0) : "Circle radius must be positive or zero."; //$NON-NLS-1$
+			assert (initialOctant >= 0 && initialOctant < 8) : "Initial octant must be in [0; 7]"; //$NON-NLS-1$
+			assert (lastOctant > initialOctant && lastOctant <= 8) : "Last octant must be in [initialOctant + 1; 8]"; //$NON-NLS-1$
+			this.factory = factory;
+			this.cx = centerX;
+			this.cy = centerY;
+			this.cr = radius;
+			this.skip = skip;
+			this.maxOctant = lastOctant;
+			this.currentOctant = initialOctant;
+			reset();
+			searchNext();
+		}
+
+		private void reset() {
+			this.x = 0;
+			this.y = this.cr;
+			this.d = 3 - 2 * this.cr;
+			if (this.skip && (this.currentOctant==3 || this.currentOctant==4 || this.currentOctant==6 || this.currentOctant==7)) {
+				// skip the first point because already replied in previous octant
+				if (this.d<=0) {
+					this.d += 4 * this.x + 6;
+				}
+				else {
+					this.d += 4 * (this.x - this.y) + 10;
+					--this.y;
+				}
+				++this.x;
+			}
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Pure
+		@Override
+		public boolean hasNext() {
+			return this.next!=null;
+		}
+		
+		private void searchNext() {
+			if (this.currentOctant>=this.maxOctant) {
+				this.next = null;
+			}
+			else {
+				this.next = this.factory.newPoint();
+				while (true) {
+					switch(this.currentOctant) {
+					case 0:
+						this.next.set(this.cx + this.x, this.cy + this.y);
+						break;
+					case 1:
+						this.next.set(this.cx + this.y, this.cy + this.x);
+						break;
+					case 2:
+						this.next.set(this.cx + this.x, this.cy - this.y);
+						break;
+					case 3:
+						this.next.set(this.cx + this.y, this.cy - this.x);
+						break;
+					case 4:
+						this.next.set(this.cx - this.x, this.cy - this.y);
+						break;
+					case 5:
+						this.next.set(this.cx - this.y, this.cy - this.x);
+						break;
+					case 6:
+						this.next.set(this.cx - this.x, this.cy + this.y);
+						break;
+					case 7:
+						this.next.set(this.cx - this.y, this.cy + this.x);
+						break;
+					default:
+						throw new NoSuchElementException();
+					}
+		
+					if (this.d<=0) {
+						this.d += 4 * this.x + 6;
+					}
+					else {
+						this.d += 4 * (this.x - this.y) + 10;
+						--this.y;
+					}
+					++this.x;
+	
+					if (this.x>this.y) {
+						// The octant is finished.
+						// Save the junction.
+						boolean cont = this.junctionPoint.contains(this.next);
+						if (!cont) this.junctionPoint.add(this.factory.newPoint(this.next.ix(), this.next.iy()));
+						// Goto next.
+						++this.currentOctant;
+						reset();
+						if (this.currentOctant>=this.maxOctant) {
+							if (cont) this.next = null;
+							cont = false;
+						}
+						if (!cont) return;
+					}
+					else {
+						return;
+					}
+				}
+			}
+		}
+
+		@Override
+		public P next() {
+			P pixel = this.next;
+			if (pixel==null) throw new NoSuchElementException();
+			searchNext();
+			return pixel;
+		}
+
+		@Override
+		public void remove() {
+			throw new UnsupportedOperationException();
 		}
 
 	}

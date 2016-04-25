@@ -56,6 +56,7 @@ implements Circle2ai<Shape2i<?>, Circle2i, PathElement2i, Point2i, Rectangle2i> 
 	 * @param radius
 	 */
 	public Circle2i(Point2D center, int radius) {
+		assert (center != null) : "Center point must be not null"; //$NON-NLS-1$
 		set(center.ix(), center.iy(), radius);
 	}
 
@@ -69,10 +70,11 @@ implements Circle2ai<Shape2i<?>, Circle2i, PathElement2i, Point2i, Rectangle2i> 
 	}
 
 	/** Construct a circle from a circle.
-	 * @param c
+	 * @param circle
 	 */
-	public Circle2i(Circle2ai<?, ?, ?, ?, ?> c) {
-		set(c.getX(), c.getY(), c.getRadius());
+	public Circle2i(Circle2ai<?, ?, ?, ?, ?> circle) {
+		assert (circle != null) : "Circle must be not null"; //$NON-NLS-1$
+		set(circle.getX(), circle.getY(), circle.getRadius());
 	}
 
 	@Pure
@@ -129,14 +131,16 @@ implements Circle2ai<Shape2i<?>, Circle2i, PathElement2i, Point2i, Rectangle2i> 
 
 	@Override
 	public void setRadius(int radius) {
-		this.radius = Math.max(radius, 0);
+		assert (radius >= 0) : "Radius must be positive or equal"; //$NON-NLS-1$
+		this.radius = radius;
 	}
 
 	@Override
 	public void set(int x, int y, int radius) {
+		assert (radius >= 0) : "Radius must be positive or equal"; //$NON-NLS-1$
 		this.centerX = x;
 		this.centerY = y;
-		this.radius = Math.max(radius, 0);
+		this.radius = radius;
 	}
 
 }

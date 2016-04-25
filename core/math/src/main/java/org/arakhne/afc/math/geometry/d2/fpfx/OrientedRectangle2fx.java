@@ -23,16 +23,17 @@ package org.arakhne.afc.math.geometry.d2.fpfx;
 
 import java.util.Arrays;
 
-import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
+import org.arakhne.afc.math.geometry.d2.afp.InnerComputationVector2afp;
 import org.arakhne.afc.math.geometry.d2.afp.OrientedRectangle2afp;
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.DoublePropertyBase;
+import javafx.beans.property.SimpleDoubleProperty;
 
-/** Oriented rectangle with 2 double precision floating-point FX properties.
+/** Orineted rectangle with 2 double precision floating-point FX properties.
  *
  * @author $Author: sgalland$
  * @author $Author: ngaud$
@@ -58,24 +59,14 @@ public class OrientedRectangle2fx extends AbstractShape2fx<OrientedRectangle2fx>
 	private DoubleProperty cy;
 
 	/**
-	 * X coordinate of the first axis of the OBR
+	 * The first axis of the OBR
 	 */
-	private DoubleProperty rx;
+	private UnitVectorProperty rVector;
 
 	/**
-	 * Y coordinate of the first axis of the OBR
+	 * The second axis of the OBR
 	 */
-	private DoubleProperty ry;
-
-	/**
-	 * X coordinate of the second axis of the OBR
-	 */
-	private DoubleProperty sx;
-
-	/**
-	 * Y coordinate of the second axis of the OBR
-	 */
-	private DoubleProperty sy;
+	private ReadOnlyUnitVectorWrapper sVector;
 
 	/**
 	 * Half-size of the first axis of the OBR
@@ -98,10 +89,11 @@ public class OrientedRectangle2fx extends AbstractShape2fx<OrientedRectangle2fx>
 	 * @param obr
 	 */
 	public OrientedRectangle2fx(OrientedRectangle2afp<?, ?, ?, ?, ?> obr) {
+		assert (obr != null) : "Oriented rectangle must be not null"; //$NON-NLS-1$
 		set(obr.getCenterX(), obr.getCenterY(),
 				obr.getFirstAxisX(), obr.getFirstAxisY(),
 				obr.getFirstAxisExtent(),
-				obr.getSecondAxisX(), obr.getSecondAxisY(), obr.getSecondAxisExtent());
+				obr.getSecondAxisExtent());
 	}
 
 	/** Construct an oriented rectangle from the given cloud of points.
@@ -109,6 +101,7 @@ public class OrientedRectangle2fx extends AbstractShape2fx<OrientedRectangle2fx>
 	 * @param pointCloud - the cloud of points.
 	 */
 	public OrientedRectangle2fx(Iterable<? extends Point2D> pointCloud) {
+		assert (pointCloud != null) : "Collection of points must be not null"; //$NON-NLS-1$
 		setFromPointCloud(pointCloud);
 	}
 
@@ -117,6 +110,7 @@ public class OrientedRectangle2fx extends AbstractShape2fx<OrientedRectangle2fx>
 	 * @param pointCloud - the cloud of points.
 	 */
 	public OrientedRectangle2fx(Point2D... pointCloud) {
+		assert (pointCloud != null) : "Collection of points must be not null"; //$NON-NLS-1$
 		setFromPointCloud(Arrays.asList(pointCloud));
 	}
 
@@ -144,6 +138,33 @@ public class OrientedRectangle2fx extends AbstractShape2fx<OrientedRectangle2fx>
 	 */
 	public OrientedRectangle2fx(Point2D center, Vector2D axis1, double axis1Extent, double axis2Extent) {
 		set(center, axis1, axis1Extent, axis2Extent);
+	}
+	
+	@Override
+	public OrientedRectangle2fx clone() {
+		OrientedRectangle2fx clone = super.clone();
+		if (clone.cx != null) {
+			clone.cx = null;
+			clone.centerXProperty().set(getCenterX());
+		}
+		if (clone.cy != null) {
+			clone.cy = null;
+			clone.centerYProperty().set(getCenterY());
+		}
+		if (clone.rVector != null) {
+			clone.rVector = null;
+			clone.firstAxisProperty().set(getFirstAxis());
+		}
+		if (clone.extentR != null) {
+			clone.extentR = null;
+			clone.firstAxisExtentProperty().set(getFirstAxisExtent());
+		}
+		clone.sVector = null;
+		if (clone.extentS != null) {
+			clone.extentS = null;
+			clone.secondAxisExtentProperty().set(getSecondAxisExtent());
+		}
+		return clone;
 	}
 
 	@Pure
@@ -211,17 +232,7 @@ public class OrientedRectangle2fx extends AbstractShape2fx<OrientedRectangle2fx>
 	@Pure
 	public DoubleProperty centerXProperty() {
 		if (this.cx == null) {
-			this.cx = new DoublePropertyBase(0) {
-				@Override
-				public String getName() {
-					return "centerX"; //$NON-NLS-1$
-				}
-				
-				@Override
-				public Object getBean() {
-					return OrientedRectangle2fx.this;
-				}
-			};
+			this.cx = new SimpleDoubleProperty(this, "centerX"); //$NON-NLS-1$
 		}
 		return this.cx;
 	}
@@ -233,17 +244,7 @@ public class OrientedRectangle2fx extends AbstractShape2fx<OrientedRectangle2fx>
 	@Pure
 	public DoubleProperty centerYProperty() {
 		if (this.cy == null) {
-			this.cy = new DoublePropertyBase(0) {
-				@Override
-				public String getName() {
-					return "centerY"; //$NON-NLS-1$
-				}
-				
-				@Override
-				public Object getBean() {
-					return OrientedRectangle2fx.this;
-				}
-			};
+			this.cy = new SimpleDoubleProperty(this, "centerX"); //$NON-NLS-1$
 		}
 		return this.cy;
 	}
@@ -267,201 +268,66 @@ public class OrientedRectangle2fx extends AbstractShape2fx<OrientedRectangle2fx>
 	@Pure
 	@Override
 	public Vector2D getFirstAxis() {
-		return new Vector2fx(firstAxisXProperty(), firstAxisYProperty());
+		return firstAxisProperty().get();
 	}
 
 	@Pure
 	@Override
 	public double getFirstAxisX() {
-		return this.rx == null ? 0 : this.rx.get();
+		return this.rVector == null ? 1 : this.rVector.getX();
 	}
 
 	@Pure
 	@Override
 	public double getFirstAxisY() {
-		return this.ry == null ? 0 : this.ry.get();
+		return this.rVector == null ? 0 : this.rVector.getY();
 	}
 
 	@Pure
 	@Override
 	public Vector2D getSecondAxis() {
-		return new Vector2fx(secondAxisXProperty(), secondAxisYProperty());
+		return secondAxisProperty().get();
 	}
 
 	@Pure
 	@Override
 	public double getSecondAxisX() {
-		return this.sx == null ? 0 : this.sx.get();
+		return secondAxisProperty().getX();
 	}
 
 	@Pure
 	@Override
 	public double getSecondAxisY() {
-		return this.sy == null ? 0 : this.sy.get();
+		return secondAxisProperty().getY();
 	}
 
-	/** Replies the property for the x coordinate of the first rectangle axis.
+	/** Replies the property for the first rectangle axis.
 	 *
-	 * @return the firstAxisX property.
+	 * @return the firstAxis property.
 	 */
 	@Pure
-	public DoubleProperty firstAxisXProperty() {
-		if (this.rx == null) {
-			this.rx = new DoublePropertyBase(0) {
-				@Override
-				public String getName() {
-					return "firstAxisX"; //$NON-NLS-1$
-				}
-				
-				@Override
-				public Object getBean() {
-					return OrientedRectangle2fx.this;
-				}
-				
-				@Override
-				protected void invalidated() {
-					// Ensure that the second axis is perpendicular
-					ensureValidCoordinateSystemWhenFirstAxisChanged();
-				}
-			};
+	public UnitVectorProperty firstAxisProperty() {
+		if (this.rVector == null) {
+			this.rVector = new UnitVectorProperty(this, "firstAxis", new InnerComputationVector2afp()); //$NON-NLS-1$
 		}
-		return this.rx;
-	}
-
-	/** Replies the property for the y coordinate of the first rectangle axis.
-	 *
-	 * @return the firstAxisY property.
-	 */
-	@Pure
-	public DoubleProperty firstAxisYProperty() {
-		if (this.ry == null) {
-			this.ry = new DoublePropertyBase(0) {
-				@Override
-				public String getName() {
-					return "firstAxisY"; //$NON-NLS-1$
-				}
-				
-				@Override
-				public Object getBean() {
-					return OrientedRectangle2fx.this;
-				}
-				
-				@Override
-				protected void invalidated() {
-					// Ensure that the second axis is perpendicular
-					ensureValidCoordinateSystemWhenFirstAxisChanged();
-				}
-			};
-		}
-		return this.ry;
-	}
-
-	/** Replies the property for the x coordinate of the second rectangle axis.
-	 *
-	 * @return the secondAxisX property.
-	 */
-	@Pure
-	public DoubleProperty secondAxisXProperty() {
-		if (this.sx == null) {
-			this.sx = new DoublePropertyBase(0) {
-				@Override
-				public String getName() {
-					return "secondAxisX"; //$NON-NLS-1$
-				}
-				
-				@Override
-				public Object getBean() {
-					return OrientedRectangle2fx.this;
-				}
-				
-				@Override
-				protected void invalidated() {
-					// Ensure that the second axis is perpendicular
-					ensureValidCoordinateSystemWhenSecondAxisChanged();
-				}
-			};
-		}
-		return this.sx;
-	}
-
-	/** Replies the property for the y coordinate of the second rectangle axis.
-	 *
-	 * @return the secondAxisY property.
-	 */
-	@Pure
-	public DoubleProperty secondAxisYProperty() {
-		if (this.sy == null) {
-			this.sy = new DoublePropertyBase(0) {
-				@Override
-				public String getName() {
-					return "secondAxisY"; //$NON-NLS-1$
-				}
-				
-				@Override
-				public Object getBean() {
-					return OrientedRectangle2fx.this;
-				}
-				
-				@Override
-				protected void invalidated() {
-					// Ensure that the second axis is perpendicular
-					ensureValidCoordinateSystemWhenSecondAxisChanged();
-				}
-			};
-		}
-		return this.sy;
+		return this.rVector;
 	}
 	
-	/** Ensure that the local coordinate system is valid.
+	/** Replies the property for the second rectangle axis.
 	 *
-	 * <p>The exis vectors must be unit vectors. And, the two axis must be perpendicular.
+	 * @return the secondAxis property.
 	 */
-	protected void ensureValidCoordinateSystemWhenFirstAxisChanged() {
-		double baseX = getFirstAxisX();
-		double baseY = getFirstAxisY();
-		double otherX;
-		double otherY;
-		if (CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded()) {
-			otherX = baseY;
-			otherY = -baseX;
-		} else {
-			otherX = -baseY;
-			otherY = baseX;
+	@Pure
+	public ReadOnlyUnitVectorProperty secondAxisProperty() {
+		if (this.sVector == null) {
+			this.sVector = new ReadOnlyUnitVectorWrapper(this, "secondAxis"); //$NON-NLS-1$
+			this.sVector.bind(Bindings.<Vector2D>createObjectBinding(
+					() -> {
+						return firstAxisProperty().get().toOrthogonalVector();
+					},
+					firstAxisProperty()));
 		}
-		double length = otherX * otherX + otherY * otherY;
-		if (length != 0.) {
-			length = Math.sqrt(length);
-			otherX /= length;
-			otherY /= length;
-		}
-		secondAxisXProperty().set(otherX);
-		secondAxisYProperty().set(otherY);
-	}
-
-	/** Ensure that the local coordinate system is valid.
-	 *
-	 * <p>The exis vectors must be unit vectors. And, the two axis must be perpendicular.
-	 */
-	protected void ensureValidCoordinateSystemWhenSecondAxisChanged() {
-		double baseX = getSecondAxisX();
-		double baseY = getSecondAxisY();
-		double otherX;
-		double otherY;
-		if (CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded()) {
-			otherX = -baseY;
-			otherY = baseX;
-		} else {
-			otherX = baseY;
-			otherY = -baseX;
-		}
-		double length = otherX * otherX + otherY * otherY;
-		if (length != 0.) {
-			length = Math.sqrt(length);
-			otherX /= length;
-			otherY /= length;
-		}
-		firstAxisXProperty().set(otherX);
-		firstAxisYProperty().set(otherY);
+		return this.sVector.getReadOnlyProperty();
 	}
 
 	@Pure
@@ -472,6 +338,7 @@ public class OrientedRectangle2fx extends AbstractShape2fx<OrientedRectangle2fx>
 
 	@Override
 	public void setFirstAxisExtent(double extent) {
+		assert (extent >= 0) : "Extent must be positive or zero"; //$NON-NLS-1$
 		firstAxisExtentProperty().set(extent);
 	}
 
@@ -482,17 +349,7 @@ public class OrientedRectangle2fx extends AbstractShape2fx<OrientedRectangle2fx>
 	@Pure
 	public DoubleProperty firstAxisExtentProperty() {
 		if (this.extentR == null) {
-			this.extentR = new DoublePropertyBase(0) {
-				@Override
-				public String getName() {
-					return "firstAxisExtent"; //$NON-NLS-1$
-				}
-				
-				@Override
-				public Object getBean() {
-					return OrientedRectangle2fx.this;
-				}
-	
+			this.extentR = new SimpleDoubleProperty(this, "firstAxisExtent") { //$NON-NLS-1$
 				@Override
 				protected void invalidated() {
 					if (get() < 0.) {
@@ -512,6 +369,7 @@ public class OrientedRectangle2fx extends AbstractShape2fx<OrientedRectangle2fx>
 
 	@Override
 	public void setSecondAxisExtent(double extent) {
+		assert (extent >= 0) : "Extent must be positive or zero"; //$NON-NLS-1$
 		secondAxisExtentProperty().set(extent);
 	}
 
@@ -522,17 +380,7 @@ public class OrientedRectangle2fx extends AbstractShape2fx<OrientedRectangle2fx>
 	@Pure
 	public DoubleProperty secondAxisExtentProperty() {
 		if (this.extentS == null) {
-			this.extentS = new DoublePropertyBase(0) {
-				@Override
-				public String getName() {
-					return "secondAxisExtent"; //$NON-NLS-1$
-				}
-				
-				@Override
-				public Object getBean() {
-					return OrientedRectangle2fx.this;
-				}
-	
+			this.extentS = new SimpleDoubleProperty(this, "secondAxisExtent") { //$NON-NLS-1$
 				@Override
 				protected void invalidated() {
 					if (get() < 0.) {
@@ -546,29 +394,28 @@ public class OrientedRectangle2fx extends AbstractShape2fx<OrientedRectangle2fx>
 
 	@Override
 	public void setFirstAxis(double x, double y, double extent) {
-		assert (Vector2D.isUnitVector(x, y));
-		firstAxisXProperty().set(x);
-		firstAxisYProperty().set(y);
+		assert (Vector2D.isUnitVector(x, y)) : "Axis must be unit vector"; //$NON-NLS-1$
+		assert (extent >= 0) : "Extent must be positive or zero"; //$NON-NLS-1$
+		firstAxisProperty().set(x, y);
 		firstAxisExtentProperty().set(extent);
 	}
 
 	@Override
 	public void setSecondAxis(double x, double y, double extent) {
-		assert (Vector2D.isUnitVector(x, y));
-		secondAxisXProperty().set(x);
-		secondAxisYProperty().set(y);
+		assert (Vector2D.isUnitVector(x, y)) : "Axis must be unit vector"; //$NON-NLS-1$
+		assert (extent >= 0) : "Extent must be positive or zero"; //$NON-NLS-1$
+		firstAxisProperty().set(y, -x);
 		secondAxisExtentProperty().set(extent);
 	}
 
 	@Override
-	public void set(double centerX, double centerY, double axis1x, double axis1y, double axis1Extent, double axis2x,
-			double axis2y, double axis2Extent) {
-		assert (Vector2D.isUnitVector(axis1x, axis1y));
-		assert (Vector2D.isUnitVector(axis2x, axis2y));
+	public void set(double centerX, double centerY, double axis1x, double axis1y, double axis1Extent, double axis2Extent) {
+		assert (Vector2D.isUnitVector(axis1x, axis1y)) : "First axis must be unit vector"; //$NON-NLS-1$
+		assert (axis1Extent >= 0) : "First axis extent must be positive or zero"; //$NON-NLS-1$
+		assert (axis2Extent >= 0) : "Second axis extent must be positive or zero"; //$NON-NLS-1$
 		centerXProperty().set(centerX);
 		centerYProperty().set(centerY);
-		firstAxisXProperty().set(axis1x);
-		firstAxisYProperty().set(axis1y);
+		firstAxisProperty().set(axis1x, axis1y);
 		firstAxisExtentProperty().set(axis1Extent);
 		// Do not need to the second axis coordinates since it will be automatically done by the properties of the first axis.
 		secondAxisExtentProperty().set(axis2Extent);

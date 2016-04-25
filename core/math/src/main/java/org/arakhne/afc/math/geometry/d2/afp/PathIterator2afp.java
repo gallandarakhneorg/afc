@@ -33,12 +33,20 @@ import org.arakhne.afc.math.geometry.d2.PathIterator2D;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public interface PathIterator2afp<T extends PathElement2afp> extends PathIterator2D<T> {
+public interface PathIterator2afp<T extends PathElement2afp> extends PathIterator2D<T>, Cloneable {
 
 	/** Replies the factory of geometrical elements.
 	 *
 	 * @return the factory.
 	 */
 	GeomFactory2afp<T, ?, ?> getGeomFactory();
+	
+	/** Replies a reset instance of this iterator.
+	 *
+	 * <p>The reset instance enables to restart iterations with the replied iterator.
+	 *
+	 * @return the reset iterator.
+	 */
+	PathIterator2afp<T> restartIterations();
 
 }

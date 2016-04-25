@@ -73,6 +73,7 @@ public class Circle2fp
 	 * @param c
 	 */
 	public Circle2fp(Circle2afp<?, ?, ?, ?, ?> c) {
+		assert (c != null) : "Circle must be not null"; //$NON-NLS-1$
 		set(c.getX(), c.getY(), c.getRadius());
 	}
 	
@@ -136,6 +137,7 @@ public class Circle2fp
 
 	@Override
 	public void set(double x, double y, double radius) {
+		assert (radius >= 0.) : "Radius must be positive or zero"; //$NON-NLS-1$
 		this.centerX = x;
 		this.centerY = y;
 		this.radius = radius;

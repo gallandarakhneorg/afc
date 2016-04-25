@@ -24,9 +24,10 @@ package org.arakhne.afc.math;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 13.0
+ * @deprecated see {@link org.arakhne.afc.math.stochastic.MathException}
  */
-public class MathException extends Exception {
+@Deprecated
+public class MathException extends org.arakhne.afc.math.stochastic.MathException {
 	
 	private static final long serialVersionUID = -3499177554318732766L;
 

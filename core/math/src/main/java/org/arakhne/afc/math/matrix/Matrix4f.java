@@ -190,6 +190,8 @@ public class Matrix4f implements Serializable, Cloneable {
 	 *            the array of length 16 containing in order
 	 */
 	public Matrix4f(double[] v) {
+		assert (v != null) : "Array must not be null"; //$NON-NLS-1$
+		assert (v.length >= 16) : "Size of the array is to small"; //$NON-NLS-1$
 		this.m00 = v[0];
 		this.m01 = v[1];
 		this.m02 = v[2];
@@ -214,29 +216,30 @@ public class Matrix4f implements Serializable, Cloneable {
 	/**
 	 * Constructs a new matrix with the same values as the Matrix4f parameter.
 	 * 
-	 * @param m1
+	 * @param matrix
 	 *            the source matrix
 	 */
-	public Matrix4f(Matrix4f m1) {
-		this.m00 = m1.m00;
-		this.m01 = m1.m01;
-		this.m02 = m1.m02;
-		this.m03 = m1.m03;
+	public Matrix4f(Matrix4f matrix) {
+		assert (matrix != null) : "Matrix must not be null"; //$NON-NLS-1$
+		this.m00 = matrix.m00;
+		this.m01 = matrix.m01;
+		this.m02 = matrix.m02;
+		this.m03 = matrix.m03;
 
-		this.m10 = m1.m10;
-		this.m11 = m1.m11;
-		this.m12 = m1.m12;
-		this.m13 = m1.m13;
+		this.m10 = matrix.m10;
+		this.m11 = matrix.m11;
+		this.m12 = matrix.m12;
+		this.m13 = matrix.m13;
 
-		this.m20 = m1.m20;
-		this.m21 = m1.m21;
-		this.m22 = m1.m22;
-		this.m23 = m1.m23;
+		this.m20 = matrix.m20;
+		this.m21 = matrix.m21;
+		this.m22 = matrix.m22;
+		this.m23 = matrix.m23;
 
-		this.m30 = m1.m30;
-		this.m31 = m1.m31;
-		this.m32 = m1.m32;
-		this.m33 = m1.m33;
+		this.m30 = matrix.m30;
+		this.m31 = matrix.m31;
+		this.m32 = matrix.m32;
+		this.m33 = matrix.m33;
 	}
 
 	/**
@@ -328,6 +331,8 @@ public class Matrix4f implements Serializable, Cloneable {
 	 *            the new value
 	 */
 	public final void setElement(int row, int column, double value) {
+		assert (row >= 0 && row < 4) : "Row number must be in [0; 4]"; //$NON-NLS-1$
+		assert (column >= 0 && column < 4) : "Column number must be in [0; 4]"; //$NON-NLS-1$
 		switch (row) {
 		case 0:
 			switch (column) {
@@ -424,6 +429,8 @@ public class Matrix4f implements Serializable, Cloneable {
 	 */
 	@Pure
 	public final double getElement(int row, int column) {
+		assert (row >= 0 && row < 4) : "Row number must be in [0; 4]"; //$NON-NLS-1$
+		assert (column >= 0 && column < 4) : "Column number must be in [0; 4]"; //$NON-NLS-1$
 		switch (row) {
 		case 0:
 			switch (column) {
@@ -500,6 +507,9 @@ public class Matrix4f implements Serializable, Cloneable {
 	 *            the array into which the matrix row values will be copied
 	 */
 	public final void getRow(int row, double v[]) {
+		assert (row >= 0 && row < 4) : "Row number must be in [0; 4]"; //$NON-NLS-1$
+		assert (v != null) : "Array of values must not be null"; //$NON-NLS-1$
+		assert (v.length >= 4) : "Size of the array of values is too small"; //$NON-NLS-1$
 		if (row == 0) {
 			v[0] = this.m00;
 			v[1] = this.m01;
@@ -536,6 +546,9 @@ public class Matrix4f implements Serializable, Cloneable {
 	 *            the array into which the matrix row values will be copied
 	 */
 	public final void getColumn(int column, double v[]) {
+		assert (column >= 0 && column < 4) : "Column number must be in [0; 4]"; //$NON-NLS-1$
+		assert (v != null) : "Array of values must not be null"; //$NON-NLS-1$
+		assert (v.length >= 4) : "Size of the array of values is too small"; //$NON-NLS-1$
 		if (column == 0) {
 			v[0] = this.m00;
 			v[1] = this.m10;
@@ -577,6 +590,7 @@ public class Matrix4f implements Serializable, Cloneable {
 	 *            the fourth column element
 	 */
 	public final void setRow(int row, double a, double b, double c, double d) {
+		assert (row >= 0 && row < 4) : "Row number must be in [0; 4]"; //$NON-NLS-1$
 		switch (row) {
 		case 0:
 			this.m00 = a;
@@ -622,6 +636,9 @@ public class Matrix4f implements Serializable, Cloneable {
 	 *            the replacement row
 	 */
 	public final void setRow(int row, double v[]) {
+		assert (row >= 0 && row < 4) : "Row number must be in [0; 4]"; //$NON-NLS-1$
+		assert (v != null) : "Array of values must not be null"; //$NON-NLS-1$
+		assert (v.length >= 4) : "Size of the array of values is too small"; //$NON-NLS-1$
 		switch (row) {
 		case 0:
 			this.m00 = v[0];
@@ -673,6 +690,7 @@ public class Matrix4f implements Serializable, Cloneable {
 	 *            the fourth row element
 	 */
 	public final void setColumn(int column, double a, double b, double c, double d) {
+		assert (column >= 0 && column < 4) : "Column number must be in [0; 4]"; //$NON-NLS-1$
 		switch (column) {
 		case 0:
 			this.m00 = a;
@@ -718,6 +736,9 @@ public class Matrix4f implements Serializable, Cloneable {
 	 *            the replacement column
 	 */
 	public final void setColumn(int column, double v[]) {
+		assert (column >= 0 && column < 4) : "Column number must be in [0; 4]"; //$NON-NLS-1$
+		assert (v != null) : "Array of values must not be null"; //$NON-NLS-1$
+		assert (v.length >= 4) : "Size of the array of values is too small"; //$NON-NLS-1$
 		switch (column) {
 		case 0:
 			this.m00 = v[0];
@@ -790,29 +811,30 @@ public class Matrix4f implements Serializable, Cloneable {
 	 * 
 	 * @param scalar
 	 *            the scalar adder
-	 * @param m1
+	 * @param matrix
 	 *            the original matrix values
 	 */
-	public final void add(double scalar, Matrix4f m1) {
-		this.m00 = m1.m00 + scalar;
-		this.m01 = m1.m01 + scalar;
-		this.m02 = m1.m02 + scalar;
-		this.m03 = m1.m03 + scalar;
+	public final void add(double scalar, Matrix4f matrix) {
+		assert (matrix != null) : "Matrix must not be null"; //$NON-NLS-1$
+		this.m00 = matrix.m00 + scalar;
+		this.m01 = matrix.m01 + scalar;
+		this.m02 = matrix.m02 + scalar;
+		this.m03 = matrix.m03 + scalar;
 
-		this.m10 = m1.m10 + scalar;
-		this.m11 = m1.m11 + scalar;
-		this.m12 = m1.m12 + scalar;
-		this.m13 = m1.m13 + scalar;
+		this.m10 = matrix.m10 + scalar;
+		this.m11 = matrix.m11 + scalar;
+		this.m12 = matrix.m12 + scalar;
+		this.m13 = matrix.m13 + scalar;
 
-		this.m20 = m1.m20 + scalar;
-		this.m21 = m1.m21 + scalar;
-		this.m22 = m1.m22 + scalar;
-		this.m23 = m1.m23 + scalar;
+		this.m20 = matrix.m20 + scalar;
+		this.m21 = matrix.m21 + scalar;
+		this.m22 = matrix.m22 + scalar;
+		this.m23 = matrix.m23 + scalar;
 
-		this.m30 = m1.m30 + scalar;
-		this.m31 = m1.m31 + scalar;
-		this.m32 = m1.m32 + scalar;
-		this.m33 = m1.m33 + scalar;
+		this.m30 = matrix.m30 + scalar;
+		this.m31 = matrix.m31 + scalar;
+		this.m32 = matrix.m32 + scalar;
+		this.m33 = matrix.m33 + scalar;
 		
 		this.isIdentity = null;
 	}
@@ -820,31 +842,33 @@ public class Matrix4f implements Serializable, Cloneable {
 	/**
 	 * Sets the value of this matrix to the matrix sum of matrices m1 and m2.
 	 * 
-	 * @param m1
+	 * @param matrix1
 	 *            the first matrix
-	 * @param m2
+	 * @param matrix2
 	 *            the second matrix
 	 */
-	public final void add(Matrix4f m1, Matrix4f m2) {
-		this.m00 = m1.m00 + m2.m00;
-		this.m01 = m1.m01 + m2.m01;
-		this.m02 = m1.m02 + m2.m02;
-		this.m03 = m1.m03 + m2.m03;
+	public final void add(Matrix4f matrix1, Matrix4f matrix2) {
+		assert (matrix1 != null) : "First matrix must not be null"; //$NON-NLS-1$
+		assert (matrix2 != null) : "Second matrix must not be null"; //$NON-NLS-1$
+		this.m00 = matrix1.m00 + matrix2.m00;
+		this.m01 = matrix1.m01 + matrix2.m01;
+		this.m02 = matrix1.m02 + matrix2.m02;
+		this.m03 = matrix1.m03 + matrix2.m03;
 
-		this.m10 = m1.m10 + m2.m10;
-		this.m11 = m1.m11 + m2.m11;
-		this.m12 = m1.m12 + m2.m12;
-		this.m13 = m1.m13 + m2.m13;
+		this.m10 = matrix1.m10 + matrix2.m10;
+		this.m11 = matrix1.m11 + matrix2.m11;
+		this.m12 = matrix1.m12 + matrix2.m12;
+		this.m13 = matrix1.m13 + matrix2.m13;
 
-		this.m20 = m1.m20 + m2.m20;
-		this.m21 = m1.m21 + m2.m21;
-		this.m22 = m1.m22 + m2.m22;
-		this.m23 = m1.m23 + m2.m23;
+		this.m20 = matrix1.m20 + matrix2.m20;
+		this.m21 = matrix1.m21 + matrix2.m21;
+		this.m22 = matrix1.m22 + matrix2.m22;
+		this.m23 = matrix1.m23 + matrix2.m23;
 
-		this.m30 = m1.m30 + m2.m30;
-		this.m31 = m1.m31 + m2.m31;
-		this.m32 = m1.m32 + m2.m32;
-		this.m33 = m1.m33 + m2.m33;
+		this.m30 = matrix1.m30 + matrix2.m30;
+		this.m31 = matrix1.m31 + matrix2.m31;
+		this.m32 = matrix1.m32 + matrix2.m32;
+		this.m33 = matrix1.m33 + matrix2.m33;
 		
 		this.isIdentity = null;
 	}
@@ -852,29 +876,30 @@ public class Matrix4f implements Serializable, Cloneable {
 	/**
 	 * Sets the value of this matrix to the sum of itself and matrix m1.
 	 * 
-	 * @param m1
+	 * @param matrix
 	 *            the other matrix
 	 */
-	public final void add(Matrix4f m1) {
-		this.m00 += m1.m00;
-		this.m01 += m1.m01;
-		this.m02 += m1.m02;
-		this.m03 += m1.m03;
+	public final void add(Matrix4f matrix) {
+		assert (matrix != null) : "Matrix must not be null"; //$NON-NLS-1$
+		this.m00 += matrix.m00;
+		this.m01 += matrix.m01;
+		this.m02 += matrix.m02;
+		this.m03 += matrix.m03;
 
-		this.m10 += m1.m10;
-		this.m11 += m1.m11;
-		this.m12 += m1.m12;
-		this.m13 += m1.m13;
+		this.m10 += matrix.m10;
+		this.m11 += matrix.m11;
+		this.m12 += matrix.m12;
+		this.m13 += matrix.m13;
 
-		this.m20 += m1.m20;
-		this.m21 += m1.m21;
-		this.m22 += m1.m22;
-		this.m23 += m1.m23;
+		this.m20 += matrix.m20;
+		this.m21 += matrix.m21;
+		this.m22 += matrix.m22;
+		this.m23 += matrix.m23;
 
-		this.m30 += m1.m30;
-		this.m31 += m1.m31;
-		this.m32 += m1.m32;
-		this.m33 += m1.m33;
+		this.m30 += matrix.m30;
+		this.m31 += matrix.m31;
+		this.m32 += matrix.m32;
+		this.m33 += matrix.m33;
 		
 		this.isIdentity = null;
 	}
@@ -883,31 +908,33 @@ public class Matrix4f implements Serializable, Cloneable {
 	 * Sets the value of this matrix to the matrix difference of matrices m1 and
 	 * m2.
 	 * 
-	 * @param m1
+	 * @param matrix1
 	 *            the first matrix
-	 * @param m2
+	 * @param matrix2
 	 *            the second matrix
 	 */
-	public final void sub(Matrix4f m1, Matrix4f m2) {
-		this.m00 = m1.m00 - m2.m00;
-		this.m01 = m1.m01 - m2.m01;
-		this.m02 = m1.m02 - m2.m02;
-		this.m03 = m1.m03 - m2.m03;
+	public final void sub(Matrix4f matrix1, Matrix4f matrix2) {
+		assert (matrix1 != null) : "First matrix must not be null"; //$NON-NLS-1$
+		assert (matrix2 != null) : "Second matrix must not be null"; //$NON-NLS-1$
+		this.m00 = matrix1.m00 - matrix2.m00;
+		this.m01 = matrix1.m01 - matrix2.m01;
+		this.m02 = matrix1.m02 - matrix2.m02;
+		this.m03 = matrix1.m03 - matrix2.m03;
 
-		this.m10 = m1.m10 - m2.m10;
-		this.m11 = m1.m11 - m2.m11;
-		this.m12 = m1.m12 - m2.m12;
-		this.m13 = m1.m13 - m2.m13;
+		this.m10 = matrix1.m10 - matrix2.m10;
+		this.m11 = matrix1.m11 - matrix2.m11;
+		this.m12 = matrix1.m12 - matrix2.m12;
+		this.m13 = matrix1.m13 - matrix2.m13;
 
-		this.m20 = m1.m20 - m2.m20;
-		this.m21 = m1.m21 - m2.m21;
-		this.m22 = m1.m22 - m2.m22;
-		this.m23 = m1.m23 - m2.m23;
+		this.m20 = matrix1.m20 - matrix2.m20;
+		this.m21 = matrix1.m21 - matrix2.m21;
+		this.m22 = matrix1.m22 - matrix2.m22;
+		this.m23 = matrix1.m23 - matrix2.m23;
 
-		this.m30 = m1.m30 - m2.m30;
-		this.m31 = m1.m31 - m2.m31;
-		this.m32 = m1.m32 - m2.m32;
-		this.m33 = m1.m33 - m2.m33;
+		this.m30 = matrix1.m30 - matrix2.m30;
+		this.m31 = matrix1.m31 - matrix2.m31;
+		this.m32 = matrix1.m32 - matrix2.m32;
+		this.m33 = matrix1.m33 - matrix2.m33;
 		
 		this.isIdentity = null;
 	}
@@ -916,29 +943,30 @@ public class Matrix4f implements Serializable, Cloneable {
 	 * Sets the value of this matrix to the matrix difference of itself and
 	 * matrix m1 (this = this - m1).
 	 * 
-	 * @param m1
+	 * @param matrix
 	 *            the other matrix
 	 */
-	public final void sub(Matrix4f m1) {
-		this.m00 -= m1.m00;
-		this.m01 -= m1.m01;
-		this.m02 -= m1.m02;
-		this.m03 -= m1.m03;
+	public final void sub(Matrix4f matrix) {
+		assert (matrix != null) : "Matrix must not be null"; //$NON-NLS-1$
+		this.m00 -= matrix.m00;
+		this.m01 -= matrix.m01;
+		this.m02 -= matrix.m02;
+		this.m03 -= matrix.m03;
 
-		this.m10 -= m1.m10;
-		this.m11 -= m1.m11;
-		this.m12 -= m1.m12;
-		this.m13 -= m1.m13;
+		this.m10 -= matrix.m10;
+		this.m11 -= matrix.m11;
+		this.m12 -= matrix.m12;
+		this.m13 -= matrix.m13;
 
-		this.m20 -= m1.m20;
-		this.m21 -= m1.m21;
-		this.m22 -= m1.m22;
-		this.m23 -= m1.m23;
+		this.m20 -= matrix.m20;
+		this.m21 -= matrix.m21;
+		this.m22 -= matrix.m22;
+		this.m23 -= matrix.m23;
 
-		this.m30 -= m1.m30;
-		this.m31 -= m1.m31;
-		this.m32 -= m1.m32;
-		this.m33 -= m1.m33;
+		this.m30 -= matrix.m30;
+		this.m31 -= matrix.m31;
+		this.m32 -= matrix.m32;
+		this.m33 -= matrix.m33;
 		
 		this.isIdentity = null;
 	}
@@ -1005,7 +1033,7 @@ public class Matrix4f implements Serializable, Cloneable {
 			this.m33 = m1.m33;
 		}
 		else {
-			this.transpose();
+			transpose();
 		}
 		
 		this.isIdentity = null;
@@ -1015,29 +1043,30 @@ public class Matrix4f implements Serializable, Cloneable {
 	 * Sets the value of this matrix to the double value of the Matrix3.
 	 * argument.
 	 * 
-	 * @param m1
+	 * @param matrix
 	 *            the Matrix4f to be converted to double
 	 */
-	public final void set(Matrix4f m1) {
-		this.m00 = m1.m00;
-		this.m01 = m1.m01;
-		this.m02 = m1.m02;
-		this.m03 = m1.m03;
+	public final void set(Matrix4f matrix) {
+		assert (matrix != null) : "Matrix must not be null"; //$NON-NLS-1$
+		this.m00 = matrix.m00;
+		this.m01 = matrix.m01;
+		this.m02 = matrix.m02;
+		this.m03 = matrix.m03;
 
-		this.m10 = m1.m10;
-		this.m11 = m1.m11;
-		this.m12 = m1.m12;
-		this.m13 = m1.m13;
+		this.m10 = matrix.m10;
+		this.m11 = matrix.m11;
+		this.m12 = matrix.m12;
+		this.m13 = matrix.m13;
 
-		this.m20 = m1.m20;
-		this.m21 = m1.m21;
-		this.m22 = m1.m22;
-		this.m23 = m1.m23;
+		this.m20 = matrix.m20;
+		this.m21 = matrix.m21;
+		this.m22 = matrix.m22;
+		this.m23 = matrix.m23;
 
-		this.m30 = m1.m30;
-		this.m31 = m1.m31;
-		this.m32 = m1.m32;
-		this.m33 = m1.m33;
+		this.m30 = matrix.m30;
+		this.m31 = matrix.m31;
+		this.m32 = matrix.m32;
+		this.m33 = matrix.m33;
 		
 		this.isIdentity = null;
 	}
@@ -1047,29 +1076,31 @@ public class Matrix4f implements Serializable, Cloneable {
 	 * (ie, the first four elements of the array will be copied into the first
 	 * row of this matrix, etc.).
 	 * 
-	 * @param m
+	 * @param matrix
 	 *            the double precision array of length 16
 	 */
-	public final void set(double[] m) {
-		this.m00 = m[0];
-		this.m01 = m[1];
-		this.m02 = m[2];
-		this.m03 = m[3];
+	public final void set(double[] matrix) {
+		assert (matrix != null) : "Matrix must not be null"; //$NON-NLS-1$
+		assert (matrix.length >= 16) : "Size of the array too small"; //$NON-NLS-1$
+		this.m00 = matrix[0];
+		this.m01 = matrix[1];
+		this.m02 = matrix[2];
+		this.m03 = matrix[3];
 
-		this.m10 = m[4];
-		this.m11 = m[5];
-		this.m12 = m[6];
-		this.m13 = m[7];
+		this.m10 = matrix[4];
+		this.m11 = matrix[5];
+		this.m12 = matrix[6];
+		this.m13 = matrix[7];
 
-		this.m20 = m[8];
-		this.m21 = m[9];
-		this.m22 = m[10];
-		this.m23 = m[11];
+		this.m20 = matrix[8];
+		this.m21 = matrix[9];
+		this.m22 = matrix[10];
+		this.m23 = matrix[11];
 
-		this.m30 = m[12];
-		this.m31 = m[13];
-		this.m32 = m[14];
-		this.m33 = m[15];
+		this.m30 = matrix[12];
+		this.m31 = matrix[13];
+		this.m32 = matrix[14];
+		this.m33 = matrix[15];
 		
 		this.isIdentity = null;
 	}
@@ -1206,29 +1237,30 @@ public class Matrix4f implements Serializable, Cloneable {
 	 * 
 	 * @param scalar
 	 *            the scalar multiplier
-	 * @param m1
+	 * @param matrix
 	 *            the original matrix
 	 */
-	public final void mul(double scalar, Matrix4f m1) {
-		this.m00 = scalar * m1.m00;
-		this.m01 = scalar * m1.m01;
-		this.m02 = scalar * m1.m02;
-		this.m03 = scalar * m1.m03;
+	public final void mul(double scalar, Matrix4f matrix) {
+		assert (matrix != null) : "Matrix must not be null"; //$NON-NLS-1$
+		this.m00 = scalar * matrix.m00;
+		this.m01 = scalar * matrix.m01;
+		this.m02 = scalar * matrix.m02;
+		this.m03 = scalar * matrix.m03;
 
-		this.m10 = scalar * m1.m10;
-		this.m11 = scalar * m1.m11;
-		this.m12 = scalar * m1.m12;
-		this.m13 = scalar * m1.m13;
+		this.m10 = scalar * matrix.m10;
+		this.m11 = scalar * matrix.m11;
+		this.m12 = scalar * matrix.m12;
+		this.m13 = scalar * matrix.m13;
 
-		this.m20 = scalar * m1.m20;
-		this.m21 = scalar * m1.m21;
-		this.m22 = scalar * m1.m22;
-		this.m23 = scalar * m1.m23;
+		this.m20 = scalar * matrix.m20;
+		this.m21 = scalar * matrix.m21;
+		this.m22 = scalar * matrix.m22;
+		this.m23 = scalar * matrix.m23;
 
-		this.m30 = scalar * m1.m30;
-		this.m31 = scalar * m1.m31;
-		this.m32 = scalar * m1.m32;
-		this.m33 = scalar * m1.m33;
+		this.m30 = scalar * matrix.m30;
+		this.m31 = scalar * matrix.m31;
+		this.m32 = scalar * matrix.m32;
+		this.m33 = scalar * matrix.m33;
 		
 		this.isIdentity = null;
 	}
@@ -1237,31 +1269,32 @@ public class Matrix4f implements Serializable, Cloneable {
 	 * Sets the value of this matrix to the result of multiplying itself with
 	 * matrix m1.
 	 * 
-	 * @param m1
+	 * @param matrix
 	 *            the other matrix
 	 */
-	public final void mul(Matrix4f m1) {
+	public final void mul(Matrix4f matrix) {
+		assert (matrix != null) : "Matrix must not be null"; //$NON-NLS-1$
 		double _m00, _m01, _m02, _m03, _m10, _m11, _m12, _m13, _m20, _m21, _m22, _m23, _m30, _m31, _m32, _m33;
 
-		_m00 = this.m00 * m1.m00 + this.m01 * m1.m10 + this.m02 * m1.m20 + this.m03 * m1.m30;
-		_m01 = this.m00 * m1.m01 + this.m01 * m1.m11 + this.m02 * m1.m21 + this.m03 * m1.m31;
-		_m02 = this.m00 * m1.m02 + this.m01 * m1.m12 + this.m02 * m1.m22 + this.m03 * m1.m32;
-		_m03 = this.m00 * m1.m03 + this.m01 * m1.m13 + this.m02 * m1.m23 + this.m03 * m1.m33;
+		_m00 = this.m00 * matrix.m00 + this.m01 * matrix.m10 + this.m02 * matrix.m20 + this.m03 * matrix.m30;
+		_m01 = this.m00 * matrix.m01 + this.m01 * matrix.m11 + this.m02 * matrix.m21 + this.m03 * matrix.m31;
+		_m02 = this.m00 * matrix.m02 + this.m01 * matrix.m12 + this.m02 * matrix.m22 + this.m03 * matrix.m32;
+		_m03 = this.m00 * matrix.m03 + this.m01 * matrix.m13 + this.m02 * matrix.m23 + this.m03 * matrix.m33;
 
-		_m10 = this.m10 * m1.m00 + this.m11 * m1.m10 + this.m12 * m1.m20 + this.m13 * m1.m30;
-		_m11 = this.m10 * m1.m01 + this.m11 * m1.m11 + this.m12 * m1.m21 + this.m13 * m1.m31;
-		_m12 = this.m10 * m1.m02 + this.m11 * m1.m12 + this.m12 * m1.m22 + this.m13 * m1.m32;
-		_m13 = this.m10 * m1.m03 + this.m11 * m1.m13 + this.m12 * m1.m23 + this.m13 * m1.m33;
+		_m10 = this.m10 * matrix.m00 + this.m11 * matrix.m10 + this.m12 * matrix.m20 + this.m13 * matrix.m30;
+		_m11 = this.m10 * matrix.m01 + this.m11 * matrix.m11 + this.m12 * matrix.m21 + this.m13 * matrix.m31;
+		_m12 = this.m10 * matrix.m02 + this.m11 * matrix.m12 + this.m12 * matrix.m22 + this.m13 * matrix.m32;
+		_m13 = this.m10 * matrix.m03 + this.m11 * matrix.m13 + this.m12 * matrix.m23 + this.m13 * matrix.m33;
 
-		_m20 = this.m20 * m1.m00 + this.m21 * m1.m10 + this.m22 * m1.m20 + this.m23 * m1.m30;
-		_m21 = this.m20 * m1.m01 + this.m21 * m1.m11 + this.m22 * m1.m21 + this.m23 * m1.m31;
-		_m22 = this.m20 * m1.m02 + this.m21 * m1.m12 + this.m22 * m1.m22 + this.m23 * m1.m32;
-		_m23 = this.m20 * m1.m03 + this.m21 * m1.m13 + this.m22 * m1.m23 + this.m23 * m1.m33;
+		_m20 = this.m20 * matrix.m00 + this.m21 * matrix.m10 + this.m22 * matrix.m20 + this.m23 * matrix.m30;
+		_m21 = this.m20 * matrix.m01 + this.m21 * matrix.m11 + this.m22 * matrix.m21 + this.m23 * matrix.m31;
+		_m22 = this.m20 * matrix.m02 + this.m21 * matrix.m12 + this.m22 * matrix.m22 + this.m23 * matrix.m32;
+		_m23 = this.m20 * matrix.m03 + this.m21 * matrix.m13 + this.m22 * matrix.m23 + this.m23 * matrix.m33;
 
-		_m30 = this.m30 * m1.m00 + this.m31 * m1.m10 + this.m32 * m1.m20 + this.m33 * m1.m30;
-		_m31 = this.m30 * m1.m01 + this.m31 * m1.m11 + this.m32 * m1.m21 + this.m33 * m1.m31;
-		_m32 = this.m30 * m1.m02 + this.m31 * m1.m12 + this.m32 * m1.m22 + this.m33 * m1.m32;
-		_m33 = this.m30 * m1.m03 + this.m31 * m1.m13 + this.m32 * m1.m23 + this.m33 * m1.m33;
+		_m30 = this.m30 * matrix.m00 + this.m31 * matrix.m10 + this.m32 * matrix.m20 + this.m33 * matrix.m30;
+		_m31 = this.m30 * matrix.m01 + this.m31 * matrix.m11 + this.m32 * matrix.m21 + this.m33 * matrix.m31;
+		_m32 = this.m30 * matrix.m02 + this.m31 * matrix.m12 + this.m32 * matrix.m22 + this.m33 * matrix.m32;
+		_m33 = this.m30 * matrix.m03 + this.m31 * matrix.m13 + this.m32 * matrix.m23 + this.m33 * matrix.m33;
 
 		this.m00 = _m00;
 		this.m01 = _m01;
@@ -1287,55 +1320,57 @@ public class Matrix4f implements Serializable, Cloneable {
 	 * Sets the value of this matrix to the result of multiplying the two
 	 * argument matrices together.
 	 * 
-	 * @param m1
+	 * @param matrix1
 	 *            the first matrix
-	 * @param m2
+	 * @param matrix2
 	 *            the second matrix
 	 */
-	public final void mul(Matrix4f m1, Matrix4f m2) {
-		if (this != m1 && this != m2) {
-			this.m00 = m1.m00 * m2.m00 + m1.m01 * m2.m10 + m1.m02 * m2.m20 + m1.m03 * m2.m30;
-			this.m01 = m1.m00 * m2.m01 + m1.m01 * m2.m11 + m1.m02 * m2.m21 + m1.m03 * m2.m31;
-			this.m02 = m1.m00 * m2.m02 + m1.m01 * m2.m12 + m1.m02 * m2.m22 + m1.m03 * m2.m32;
-			this.m03 = m1.m00 * m2.m03 + m1.m01 * m2.m13 + m1.m02 * m2.m23 + m1.m03 * m2.m33;
+	public final void mul(Matrix4f matrix1, Matrix4f matrix2) {
+		assert (matrix1 != null) : "First matrix must not be null"; //$NON-NLS-1$
+		assert (matrix2 != null) : "Second matrix must not be null"; //$NON-NLS-1$
+		if (this != matrix1 && this != matrix2) {
+			this.m00 = matrix1.m00 * matrix2.m00 + matrix1.m01 * matrix2.m10 + matrix1.m02 * matrix2.m20 + matrix1.m03 * matrix2.m30;
+			this.m01 = matrix1.m00 * matrix2.m01 + matrix1.m01 * matrix2.m11 + matrix1.m02 * matrix2.m21 + matrix1.m03 * matrix2.m31;
+			this.m02 = matrix1.m00 * matrix2.m02 + matrix1.m01 * matrix2.m12 + matrix1.m02 * matrix2.m22 + matrix1.m03 * matrix2.m32;
+			this.m03 = matrix1.m00 * matrix2.m03 + matrix1.m01 * matrix2.m13 + matrix1.m02 * matrix2.m23 + matrix1.m03 * matrix2.m33;
 
-			this.m10 = m1.m10 * m2.m00 + m1.m11 * m2.m10 + m1.m12 * m2.m20 + m1.m13 * m2.m30;
-			this.m11 = m1.m10 * m2.m01 + m1.m11 * m2.m11 + m1.m12 * m2.m21 + m1.m13 * m2.m31;
-			this.m12 = m1.m10 * m2.m02 + m1.m11 * m2.m12 + m1.m12 * m2.m22 + m1.m13 * m2.m32;
-			this.m13 = m1.m10 * m2.m03 + m1.m11 * m2.m13 + m1.m12 * m2.m23 + m1.m13 * m2.m33;
+			this.m10 = matrix1.m10 * matrix2.m00 + matrix1.m11 * matrix2.m10 + matrix1.m12 * matrix2.m20 + matrix1.m13 * matrix2.m30;
+			this.m11 = matrix1.m10 * matrix2.m01 + matrix1.m11 * matrix2.m11 + matrix1.m12 * matrix2.m21 + matrix1.m13 * matrix2.m31;
+			this.m12 = matrix1.m10 * matrix2.m02 + matrix1.m11 * matrix2.m12 + matrix1.m12 * matrix2.m22 + matrix1.m13 * matrix2.m32;
+			this.m13 = matrix1.m10 * matrix2.m03 + matrix1.m11 * matrix2.m13 + matrix1.m12 * matrix2.m23 + matrix1.m13 * matrix2.m33;
 
-			this.m20 = m1.m20 * m2.m00 + m1.m21 * m2.m10 + m1.m22 * m2.m20 + m1.m23 * m2.m30;
-			this.m21 = m1.m20 * m2.m01 + m1.m21 * m2.m11 + m1.m22 * m2.m21 + m1.m23 * m2.m31;
-			this.m22 = m1.m20 * m2.m02 + m1.m21 * m2.m12 + m1.m22 * m2.m22 + m1.m23 * m2.m32;
-			this.m23 = m1.m20 * m2.m03 + m1.m21 * m2.m13 + m1.m22 * m2.m23 + m1.m23 * m2.m33;
+			this.m20 = matrix1.m20 * matrix2.m00 + matrix1.m21 * matrix2.m10 + matrix1.m22 * matrix2.m20 + matrix1.m23 * matrix2.m30;
+			this.m21 = matrix1.m20 * matrix2.m01 + matrix1.m21 * matrix2.m11 + matrix1.m22 * matrix2.m21 + matrix1.m23 * matrix2.m31;
+			this.m22 = matrix1.m20 * matrix2.m02 + matrix1.m21 * matrix2.m12 + matrix1.m22 * matrix2.m22 + matrix1.m23 * matrix2.m32;
+			this.m23 = matrix1.m20 * matrix2.m03 + matrix1.m21 * matrix2.m13 + matrix1.m22 * matrix2.m23 + matrix1.m23 * matrix2.m33;
 
-			this.m30 = m1.m30 * m2.m00 + m1.m31 * m2.m10 + m1.m32 * m2.m20 + m1.m33 * m2.m30;
-			this.m31 = m1.m30 * m2.m01 + m1.m31 * m2.m11 + m1.m32 * m2.m21 + m1.m33 * m2.m31;
-			this.m32 = m1.m30 * m2.m02 + m1.m31 * m2.m12 + m1.m32 * m2.m22 + m1.m33 * m2.m32;
-			this.m33 = m1.m30 * m2.m03 + m1.m31 * m2.m13 + m1.m32 * m2.m23 + m1.m33 * m2.m33;
+			this.m30 = matrix1.m30 * matrix2.m00 + matrix1.m31 * matrix2.m10 + matrix1.m32 * matrix2.m20 + matrix1.m33 * matrix2.m30;
+			this.m31 = matrix1.m30 * matrix2.m01 + matrix1.m31 * matrix2.m11 + matrix1.m32 * matrix2.m21 + matrix1.m33 * matrix2.m31;
+			this.m32 = matrix1.m30 * matrix2.m02 + matrix1.m31 * matrix2.m12 + matrix1.m32 * matrix2.m22 + matrix1.m33 * matrix2.m32;
+			this.m33 = matrix1.m30 * matrix2.m03 + matrix1.m31 * matrix2.m13 + matrix1.m32 * matrix2.m23 + matrix1.m33 * matrix2.m33;
 		} else {
 			double _m00, _m01, _m02, _m03, _m10, _m11, _m12, _m13, _m20, _m21, _m22, _m23, _m30, _m31, _m32, _m33; // vars for temp
 																// result matrix
 
-			_m00 = m1.m00 * m2.m00 + m1.m01 * m2.m10 + m1.m02 * m2.m20 + m1.m03 * m2.m30;
-			_m01 = m1.m00 * m2.m01 + m1.m01 * m2.m11 + m1.m02 * m2.m21 + m1.m03 * m2.m31;
-			_m02 = m1.m00 * m2.m02 + m1.m01 * m2.m12 + m1.m02 * m2.m22 + m1.m03 * m2.m32;
-			_m03 = m1.m00 * m2.m03 + m1.m01 * m2.m13 + m1.m02 * m2.m23 + m1.m03 * m2.m33;
+			_m00 = matrix1.m00 * matrix2.m00 + matrix1.m01 * matrix2.m10 + matrix1.m02 * matrix2.m20 + matrix1.m03 * matrix2.m30;
+			_m01 = matrix1.m00 * matrix2.m01 + matrix1.m01 * matrix2.m11 + matrix1.m02 * matrix2.m21 + matrix1.m03 * matrix2.m31;
+			_m02 = matrix1.m00 * matrix2.m02 + matrix1.m01 * matrix2.m12 + matrix1.m02 * matrix2.m22 + matrix1.m03 * matrix2.m32;
+			_m03 = matrix1.m00 * matrix2.m03 + matrix1.m01 * matrix2.m13 + matrix1.m02 * matrix2.m23 + matrix1.m03 * matrix2.m33;
 
-			_m10 = m1.m10 * m2.m00 + m1.m11 * m2.m10 + m1.m12 * m2.m20 + m1.m13 * m2.m30;
-			_m11 = m1.m10 * m2.m01 + m1.m11 * m2.m11 + m1.m12 * m2.m21 + m1.m13 * m2.m31;
-			_m12 = m1.m10 * m2.m02 + m1.m11 * m2.m12 + m1.m12 * m2.m22 + m1.m13 * m2.m32;
-			_m13 = m1.m10 * m2.m03 + m1.m11 * m2.m13 + m1.m12 * m2.m23 + m1.m13 * m2.m33;
+			_m10 = matrix1.m10 * matrix2.m00 + matrix1.m11 * matrix2.m10 + matrix1.m12 * matrix2.m20 + matrix1.m13 * matrix2.m30;
+			_m11 = matrix1.m10 * matrix2.m01 + matrix1.m11 * matrix2.m11 + matrix1.m12 * matrix2.m21 + matrix1.m13 * matrix2.m31;
+			_m12 = matrix1.m10 * matrix2.m02 + matrix1.m11 * matrix2.m12 + matrix1.m12 * matrix2.m22 + matrix1.m13 * matrix2.m32;
+			_m13 = matrix1.m10 * matrix2.m03 + matrix1.m11 * matrix2.m13 + matrix1.m12 * matrix2.m23 + matrix1.m13 * matrix2.m33;
 
-			_m20 = m1.m20 * m2.m00 + m1.m21 * m2.m10 + m1.m22 * m2.m20 + m1.m23 * m2.m30;
-			_m21 = m1.m20 * m2.m01 + m1.m21 * m2.m11 + m1.m22 * m2.m21 + m1.m23 * m2.m31;
-			_m22 = m1.m20 * m2.m02 + m1.m21 * m2.m12 + m1.m22 * m2.m22 + m1.m23 * m2.m32;
-			_m23 = m1.m20 * m2.m03 + m1.m21 * m2.m13 + m1.m22 * m2.m23 + m1.m23 * m2.m33;
+			_m20 = matrix1.m20 * matrix2.m00 + matrix1.m21 * matrix2.m10 + matrix1.m22 * matrix2.m20 + matrix1.m23 * matrix2.m30;
+			_m21 = matrix1.m20 * matrix2.m01 + matrix1.m21 * matrix2.m11 + matrix1.m22 * matrix2.m21 + matrix1.m23 * matrix2.m31;
+			_m22 = matrix1.m20 * matrix2.m02 + matrix1.m21 * matrix2.m12 + matrix1.m22 * matrix2.m22 + matrix1.m23 * matrix2.m32;
+			_m23 = matrix1.m20 * matrix2.m03 + matrix1.m21 * matrix2.m13 + matrix1.m22 * matrix2.m23 + matrix1.m23 * matrix2.m33;
 
-			_m30 = m1.m30 * m2.m00 + m1.m31 * m2.m10 + m1.m32 * m2.m20 + m1.m33 * m2.m30;
-			_m31 = m1.m30 * m2.m01 + m1.m31 * m2.m11 + m1.m32 * m2.m21 + m1.m33 * m2.m31;
-			_m32 = m1.m30 * m2.m02 + m1.m31 * m2.m12 + m1.m32 * m2.m22 + m1.m33 * m2.m32;
-			_m33 = m1.m30 * m2.m03 + m1.m31 * m2.m13 + m1.m32 * m2.m23 + m1.m33 * m2.m33;
+			_m30 = matrix1.m30 * matrix2.m00 + matrix1.m31 * matrix2.m10 + matrix1.m32 * matrix2.m20 + matrix1.m33 * matrix2.m30;
+			_m31 = matrix1.m30 * matrix2.m01 + matrix1.m31 * matrix2.m11 + matrix1.m32 * matrix2.m21 + matrix1.m33 * matrix2.m31;
+			_m32 = matrix1.m30 * matrix2.m02 + matrix1.m31 * matrix2.m12 + matrix1.m32 * matrix2.m22 + matrix1.m33 * matrix2.m32;
+			_m33 = matrix1.m30 * matrix2.m03 + matrix1.m31 * matrix2.m13 + matrix1.m32 * matrix2.m23 + matrix1.m33 * matrix2.m33;
 
 			this.m00 = _m00;
 			this.m01 = _m01;
@@ -1362,21 +1397,22 @@ public class Matrix4f implements Serializable, Cloneable {
 	 * Returns true if all of the data members of Matrix4f m1 are equal to the
 	 * corresponding data members in this Matrix4f.
 	 * 
-	 * @param m1
+	 * @param matrix
 	 *            the matrix with which the comparison is made
 	 * @return true or false
 	 */
 	@Pure
-	public boolean equals(Matrix4f m1) {
+	public boolean equals(Matrix4f matrix) {
+		assert (matrix != null) : "Matrix must not be null"; //$NON-NLS-1$
 		try {
-			return (this.m00 == m1.m00 && this.m01 == m1.m01
-					&& this.m02 == m1.m02 && this.m03 == m1.m03
-					&& this.m10 == m1.m10 && this.m11 == m1.m11
-					&& this.m12 == m1.m12 && this.m13 == m1.m13
-					&& this.m20 == m1.m20 && this.m21 == m1.m21
-					&& this.m22 == m1.m22 && this.m23 == m1.m23
-					&& this.m30 == m1.m30 && this.m31 == m1.m31
-					&& this.m32 == m1.m32 && this.m33 == m1.m33);
+			return (this.m00 == matrix.m00 && this.m01 == matrix.m01
+					&& this.m02 == matrix.m02 && this.m03 == matrix.m03
+					&& this.m10 == matrix.m10 && this.m11 == matrix.m11
+					&& this.m12 == matrix.m12 && this.m13 == matrix.m13
+					&& this.m20 == matrix.m20 && this.m21 == matrix.m21
+					&& this.m22 == matrix.m22 && this.m23 == matrix.m23
+					&& this.m30 == matrix.m30 && this.m31 == matrix.m31
+					&& this.m32 == matrix.m32 && this.m33 == matrix.m33);
 		} catch (NullPointerException e2) {
 			return false;
 		}
@@ -1417,77 +1453,79 @@ public class Matrix4f implements Serializable, Cloneable {
 	 * The L-infinite distance is equal to MAX[i=0,1,2,3 ; j=0,1,2,3 ;
 	 * abs(this.m(i,j) - m1.m(i,j)]
 	 * 
-	 * @param m1
+	 * @param matrix
 	 *            the matrix to be compared to this matrix
 	 * @param epsilon
 	 *            the threshold value
 	 * @return <code>true</code> if this matrix is equals to the specified matrix at epsilon.
 	 */
 	@Pure
-	public boolean epsilonEquals(Matrix4f m1, double epsilon) {
+	public boolean epsilonEquals(Matrix4f matrix, double epsilon) {
+		assert (matrix != null) : "Matrix must not be null"; //$NON-NLS-1$
+
 		double diff;
 
-		diff = this.m00 - m1.m00;
+		diff = this.m00 - matrix.m00;
 		if ((diff < 0 ? -diff : diff) > epsilon)
 			return false;
 
-		diff = this.m01 - m1.m01;
+		diff = this.m01 - matrix.m01;
 		if ((diff < 0 ? -diff : diff) > epsilon)
 			return false;
 
-		diff = this.m02 - m1.m02;
+		diff = this.m02 - matrix.m02;
 		if ((diff < 0 ? -diff : diff) > epsilon)
 			return false;
 
-		diff = this.m03 - m1.m03;
+		diff = this.m03 - matrix.m03;
 		if ((diff < 0 ? -diff : diff) > epsilon)
 			return false;
 
-		diff = this.m10 - m1.m10;
+		diff = this.m10 - matrix.m10;
 		if ((diff < 0 ? -diff : diff) > epsilon)
 			return false;
 
-		diff = this.m11 - m1.m11;
+		diff = this.m11 - matrix.m11;
 		if ((diff < 0 ? -diff : diff) > epsilon)
 			return false;
 
-		diff = this.m12 - m1.m12;
+		diff = this.m12 - matrix.m12;
 		if ((diff < 0 ? -diff : diff) > epsilon)
 			return false;
 
-		diff = this.m13 - m1.m13;
+		diff = this.m13 - matrix.m13;
 		if ((diff < 0 ? -diff : diff) > epsilon)
 			return false;
 
-		diff = this.m20 - m1.m20;
+		diff = this.m20 - matrix.m20;
 		if ((diff < 0 ? -diff : diff) > epsilon)
 			return false;
 
-		diff = this.m21 - m1.m21;
+		diff = this.m21 - matrix.m21;
 		if ((diff < 0 ? -diff : diff) > epsilon)
 			return false;
 
-		diff = this.m22 - m1.m22;
+		diff = this.m22 - matrix.m22;
 		if ((diff < 0 ? -diff : diff) > epsilon)
 			return false;
 
-		diff = this.m23 - m1.m23;
+		diff = this.m23 - matrix.m23;
 		if ((diff < 0 ? -diff : diff) > epsilon)
 			return false;
 
-		diff = this.m30 - m1.m30;
+		diff = this.m30 - matrix.m30;
 		if ((diff < 0 ? -diff : diff) > epsilon)
 			return false;
 
-		diff = this.m31 - m1.m31;
+		diff = this.m31 - matrix.m31;
 		if ((diff < 0 ? -diff : diff) > epsilon)
 			return false;
 
-		diff = this.m32 - m1.m32;
+		diff = this.m32 - matrix.m32;
 		if ((diff < 0 ? -diff : diff) > epsilon)
 			return false;
 
-		diff = this.m33 - m1.m33;
+		diff = this.m33 - matrix.m33;
 		if ((diff < 0 ? -diff : diff) > epsilon)
 			return false;
 
@@ -1626,29 +1664,30 @@ public class Matrix4f implements Serializable, Cloneable {
 	 * Sets the value of this matrix equal to the negation of of the Matrix4f
 	 * parameter.
 	 * 
-	 * @param m1
+	 * @param matrix
 	 *            the source matrix
 	 */
-	public final void negate(Matrix4f m1) {
-		this.m00 = -m1.m00;
-		this.m01 = -m1.m01;
-		this.m02 = -m1.m02;
-		this.m03 = -m1.m03;
+	public final void negate(Matrix4f matrix) {
+		assert (matrix != null) : "First matrix must not be null"; //$NON-NLS-1$
+		this.m00 = -matrix.m00;
+		this.m01 = -matrix.m01;
+		this.m02 = -matrix.m02;
+		this.m03 = -matrix.m03;
 
-		this.m10 = -m1.m10;
-		this.m11 = -m1.m11;
-		this.m12 = -m1.m12;
-		this.m13 = -m1.m13;
+		this.m10 = -matrix.m10;
+		this.m11 = -matrix.m11;
+		this.m12 = -matrix.m12;
+		this.m13 = -matrix.m13;
 
-		this.m20 = -m1.m20;
-		this.m21 = -m1.m21;
-		this.m22 = -m1.m22;
-		this.m23 = -m1.m23;
+		this.m20 = -matrix.m20;
+		this.m21 = -matrix.m21;
+		this.m22 = -matrix.m22;
+		this.m23 = -matrix.m23;
 
-		this.m30 = -m1.m30;
-		this.m31 = -m1.m31;
-		this.m32 = -m1.m32;
-		this.m33 = -m1.m33;
+		this.m30 = -matrix.m30;
+		this.m31 = -matrix.m31;
+		this.m32 = -matrix.m32;
+		this.m33 = -matrix.m33;
 		
 		this.isIdentity = null;
 	}

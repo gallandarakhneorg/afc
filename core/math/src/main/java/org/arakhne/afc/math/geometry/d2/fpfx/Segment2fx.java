@@ -27,7 +27,7 @@ import org.arakhne.afc.math.geometry.d2.afp.Segment2afp;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.DoublePropertyBase;
+import javafx.beans.property.SimpleDoubleProperty;
 
 /** Segment with 2 double precision floating-point FX properties.
  *
@@ -81,6 +81,29 @@ public class Segment2fx extends AbstractShape2fx<Segment2fx>
 	public Segment2fx(double x1, double y1, double x2, double y2) {
 		set(x1, y1, x2, y2);
 	}
+	
+	@Override
+	public Segment2fx clone() {
+		Segment2fx clone = super.clone();
+		if (clone.ax != null) {
+			clone.ax = null;
+			clone.x1Property().set(getX1());
+		}
+		if (clone.ay != null) {
+			clone.ay = null;
+			clone.y1Property().set(getY1());
+		}
+		if (clone.bx != null) {
+			clone.bx = null;
+			clone.x2Property().set(getX2());
+		}
+		if (clone.by != null) {
+			clone.by = null;
+			clone.y2Property().set(getY2());
+		}
+		return clone;
+	}
+	
 
 	@Pure
 	@Override
@@ -112,7 +135,8 @@ public class Segment2fx extends AbstractShape2fx<Segment2fx>
 
 	@Pure
 	@Override
-	public Shape2fx<?> createTransformedShape(Transform2D transform) {
+	public Segment2fx createTransformedShape(Transform2D transform) {
+		assert (transform != null) : "Transformation must be not null"; //$NON-NLS-1$
 		Point2fx point = new Point2fx(getX1(), getY1());
 		transform.transform(point);
 		double x1 = point.getX();
@@ -163,17 +187,7 @@ public class Segment2fx extends AbstractShape2fx<Segment2fx>
 	@Pure
 	public DoubleProperty x1Property() {
 		if (this.ax == null) {
-			this.ax = new DoublePropertyBase(0) {
-				@Override
-				public String getName() {
-					return "x1"; //$NON-NLS-1$
-				}
-				
-				@Override
-				public Object getBean() {
-					return Segment2fx.this;
-				}
-			};
+			this.ax = new SimpleDoubleProperty(this, "x1"); //$NON-NLS-1$
 		}
 		return this.ax;
 	}
@@ -191,17 +205,7 @@ public class Segment2fx extends AbstractShape2fx<Segment2fx>
 	@Pure
 	public DoubleProperty y1Property() {
 		if (this.ay == null) {
-			this.ay = new DoublePropertyBase(0) {
-				@Override
-				public String getName() {
-					return "y1"; //$NON-NLS-1$
-				}
-				
-				@Override
-				public Object getBean() {
-					return Segment2fx.this;
-				}
-			};
+			this.ay = new SimpleDoubleProperty(this, "y1"); //$NON-NLS-1$
 		}
 		return this.ay;
 	}
@@ -219,17 +223,7 @@ public class Segment2fx extends AbstractShape2fx<Segment2fx>
 	@Pure
 	public DoubleProperty x2Property() {
 		if (this.bx == null) {
-			this.bx = new DoublePropertyBase(0) {
-				@Override
-				public String getName() {
-					return "x2"; //$NON-NLS-1$
-				}
-				
-				@Override
-				public Object getBean() {
-					return Segment2fx.this;
-				}
-			};
+			this.bx = new SimpleDoubleProperty(this, "x2"); //$NON-NLS-1$
 		}
 		return this.bx;
 	}
@@ -247,17 +241,7 @@ public class Segment2fx extends AbstractShape2fx<Segment2fx>
 	@Pure
 	public DoubleProperty y2Property() {
 		if (this.by == null) {
-			this.by = new DoublePropertyBase(0) {
-				@Override
-				public String getName() {
-					return "y2"; //$NON-NLS-1$
-				}
-				
-				@Override
-				public Object getBean() {
-					return Segment2fx.this;
-				}
-			};
+			this.by = new SimpleDoubleProperty(this, "y2"); //$NON-NLS-1$
 		}
 		return this.by;
 	}

@@ -101,7 +101,7 @@ class JavaPhysicsEngine implements PhysicsEngine {
 		assert(acceleration!=null);
 		assert(minSpeed>=0.);
 
-		double oLength = acceleration.length();
+		double oLength = acceleration.getLength();
 		double vx, vy, a;
 		
 		if (oLength!=0.) {
@@ -155,7 +155,7 @@ class JavaPhysicsEngine implements PhysicsEngine {
 		assert(acceleration!=null);
 		assert(minSpeed>=0.);
 
-		double oLength = acceleration.length();
+		double oLength = acceleration.getLength();
 		double vx, vy, a;
 		
 		if (oLength!=0.) {
@@ -302,7 +302,7 @@ class JavaPhysicsEngine implements PhysicsEngine {
 			double dt,
 			Vector2D result) {
 		assert(minSpeed>=0.);
-		double l = velocity.length();
+		double l = velocity.getLength();
 		if (l!=0.) {
 			double a = dt * MathUtil.clamp(l, minSpeed, maxSpeed) / l;
 			result.set(velocity.getX() * a, velocity.getY() * a);
@@ -321,7 +321,7 @@ class JavaPhysicsEngine implements PhysicsEngine {
 			double dt,
 			Vector2D result) {
 		assert(minSpeed>=0.);
-		double l = velocity.length();
+		double l = velocity.getLength();
 		if (l!=0.) {
 			double a = dt * MathUtil.clamp(l, minSpeed, maxSpeed) / l;
 			result.set(velocity.getX() * a, velocity.getY() * a);

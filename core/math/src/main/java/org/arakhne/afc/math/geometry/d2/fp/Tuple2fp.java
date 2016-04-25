@@ -57,6 +57,7 @@ public class Tuple2fp<T extends Tuple2D<? super T>, IT extends T> implements Tup
 	 * @param tuple is the tuple to copy.
 	 */
 	public Tuple2fp(Tuple2fp<?,?> tuple) {
+		assert (tuple != null) : "Tuple must be not null"; //$NON-NLS-1$
 		this.x = tuple.x;
 		this.y = tuple.y;
 	}
@@ -65,6 +66,7 @@ public class Tuple2fp<T extends Tuple2D<? super T>, IT extends T> implements Tup
 	 * @param tuple is the tuple to copy.
 	 */
 	public Tuple2fp(Tuple2D<?> tuple) {
+		assert (tuple != null) : "Tuple must be not null"; //$NON-NLS-1$
 		this.x = tuple.getX();
 		this.y = tuple.getY();
 	}
@@ -73,6 +75,8 @@ public class Tuple2fp<T extends Tuple2D<? super T>, IT extends T> implements Tup
 	 * @param tuple is the tuple to copy.
 	 */
 	public Tuple2fp(int[] tuple) {
+		assert (tuple != null) : "Tuple must be not null"; //$NON-NLS-1$
+		assert (tuple.length >= 2) : "Tuple size is too small"; //$NON-NLS-1$
 		this.x = tuple[0];
 		this.y = tuple[1];
 	}
@@ -81,6 +85,8 @@ public class Tuple2fp<T extends Tuple2D<? super T>, IT extends T> implements Tup
 	 * @param tuple is the tuple to copy.
 	 */
 	public Tuple2fp(double[] tuple) {
+		assert (tuple != null) : "Tuple must be not null"; //$NON-NLS-1$
+		assert (tuple.length >= 2) : "Tuple size is too small"; //$NON-NLS-1$
 		this.x = tuple[0];
 		this.y = tuple[1];
 	}
@@ -122,8 +128,9 @@ public class Tuple2fp<T extends Tuple2D<? super T>, IT extends T> implements Tup
 	}
 
 	@Override
-	public void absolute(T t) {
-		t.set(Math.abs(this.x), Math.abs(this.y));
+	public void absolute(T tuple) {
+		assert (tuple != null) : "Tuple must be not null"; //$NON-NLS-1$
+		tuple.set(Math.abs(this.x), Math.abs(this.y));
 	}
 
 	@Override
@@ -159,9 +166,10 @@ public class Tuple2fp<T extends Tuple2D<? super T>, IT extends T> implements Tup
 	}
 
 	@Override
-	public void negate(T t1) {
-		this.x = -t1.getX();
-		this.y = -t1.getY();
+	public void negate(T tuple) {
+		assert (tuple != null) : "Tuple must be not null"; //$NON-NLS-1$
+		this.x = -tuple.getX();
+		this.y = -tuple.getY();
 	}
 
 	@Override
@@ -171,15 +179,17 @@ public class Tuple2fp<T extends Tuple2D<? super T>, IT extends T> implements Tup
 	}
 
 	@Override
-	public void scale(int s, T t1) {
-		this.x = s * t1.getX();
-		this.y = s * t1.getY();
+	public void scale(int s, T tuple) {
+		assert (tuple != null) : "Tuple must be not null"; //$NON-NLS-1$
+		this.x = s * tuple.getX();
+		this.y = s * tuple.getY();
 	}
 
 	@Override
-	public void scale(double s, T t1) {
-		this.x = s * t1.getX();
-		this.y = s * t1.getY();
+	public void scale(double s, T tuple) {
+		assert (tuple != null) : "Tuple must be not null"; //$NON-NLS-1$
+		this.x = s * tuple.getX();
+		this.y = s * tuple.getY();
 	}
 
 	@Override
@@ -195,9 +205,10 @@ public class Tuple2fp<T extends Tuple2D<? super T>, IT extends T> implements Tup
 	}
 
 	@Override
-	public void set(Tuple2D<?> t1) {
-		this.x = t1.getX();
-		this.y = t1.getY();
+	public void set(Tuple2D<?> tuple) {
+		assert (tuple != null) : "Tuple must be not null"; //$NON-NLS-1$
+		this.x = tuple.getX();
+		this.y = tuple.getY();
 	}
 
 	@Override
@@ -213,15 +224,19 @@ public class Tuple2fp<T extends Tuple2D<? super T>, IT extends T> implements Tup
 	}
 
 	@Override
-	public void set(int[] t) {
-		this.x = t[0];
-		this.y = t[1];
+	public void set(int[] tuple) {
+		assert (tuple != null) : "Tuple must be not null"; //$NON-NLS-1$
+		assert (tuple.length >= 2) : "Tuple size is too small"; //$NON-NLS-1$
+		this.x = tuple[0];
+		this.y = tuple[1];
 	}
 
 	@Override
-	public void set(double[] t) {
-		this.x = t[0];
-		this.y = t[1];
+	public void set(double[] tuple) {
+		assert (tuple != null) : "Tuple must be not null"; //$NON-NLS-1$
+		assert (tuple.length >= 2) : "Tuple size is too small"; //$NON-NLS-1$
+		this.x = tuple[0];
+		this.y = tuple[1];
 	}
 
 	@Pure

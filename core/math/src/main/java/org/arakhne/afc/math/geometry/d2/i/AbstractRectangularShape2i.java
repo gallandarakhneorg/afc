@@ -57,6 +57,7 @@ public abstract class AbstractRectangularShape2i<IT extends AbstractRectangularS
 	 * @param r
 	 */
 	public AbstractRectangularShape2i(RectangularShape2ai<?, ?, ?, ?, ?> r) {
+		assert (r != null) : "Shape must be not null"; //$NON-NLS-1$
 		this.minx = r.getMinX();
 		this.miny = r.getMinY();
 		this.maxx = r.getMaxX();

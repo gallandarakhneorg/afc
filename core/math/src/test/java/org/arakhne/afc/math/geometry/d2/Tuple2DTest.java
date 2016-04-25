@@ -44,7 +44,7 @@ public class Tuple2DTest extends AbstractTuple2DTest<Tuple2D> {
 			private double y = ty;
 			@Override
 			public Tuple2D clone() {
-				throw new UnsupportedOperationException();
+				return createTuple(this.x, this.y);
 			}
 
 			@Override

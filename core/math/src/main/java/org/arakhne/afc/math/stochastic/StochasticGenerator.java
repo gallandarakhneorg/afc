@@ -22,9 +22,6 @@ package org.arakhne.afc.math.stochastic;
 
 import java.util.Random;
 
-import org.arakhne.afc.math.MathException;
-import org.arakhne.afc.math.MathFunction;
-
 /**
  * Generator of random values according to stochastic laws.
  * 

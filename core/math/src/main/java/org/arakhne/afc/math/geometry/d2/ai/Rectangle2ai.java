@@ -30,7 +30,6 @@ import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.ai.Segment2ai.BresenhamLineIterator;
-import org.arakhne.afc.math.geometry.d2.i.Point2i;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Fonctional interface that represented a 2D rectangle on a plane.
@@ -70,17 +69,11 @@ public interface Rectangle2ai<
 	 */
 	@Pure
 	public static boolean intersectsRectangleRectangle(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4) {
-		assert(x1<=x2);
-		assert(y1<=y2);
-		assert(x3<=x4);
-		assert(y3<=y4);
-		return x2 > x3
-				&&
-				x1 < x4
-				&&
-				y2 > y3
-				&&
-				y1 < y4;
+		assert (x1 <= x2) : "x1 must be lower or equal to x2"; //$NON-NLS-1$
+		assert (y1 <= y2) : "y1 must be lower or equal to y2"; //$NON-NLS-1$
+		assert (x3 <= x4) : "x3 must be lower or equal to x4"; //$NON-NLS-1$
+		assert (y3 <= y4) : "y3 must be lower or equal to y4"; //$NON-NLS-1$
+		return x2 > x3 && x1 < x4 && y2 > y3 && y1 < y4;
 	}
 
 	/** Replies if a rectangle is intersecting a segment.
@@ -104,6 +97,9 @@ public interface Rectangle2ai<
 	 */
 	@Pure
 	public static boolean intersectsRectangleSegment(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4) {
+		assert (x1 <= x2) : "x1 must be lower or equal to x2"; //$NON-NLS-1$
+		assert (y1 <= y2) : "y1 must be lower or equal to y2"; //$NON-NLS-1$
+
 		int c1 = MathUtil.getCohenSutherlandCode(x3, y3, x1, y1, x2, y2);
 		int c2 = MathUtil.getCohenSutherlandCode(x4, y4, x1, y1, x2, y2);
 		
@@ -125,8 +121,8 @@ public interface Rectangle2ai<
 		int sy2 = y4;
 
 		// Only for internal use
-		Point2D pts = new Point2i();
-		BresenhamLineIterator<Point2D> iterator = new BresenhamLineIterator<>(null, sx1, sy1, sx2, sy2);
+		Point2D pts = new InnerComputationPoint2ai();
+		BresenhamLineIterator<Point2D> iterator = new BresenhamLineIterator<>(sx1, sy1, sx2, sy2);
 		
 		while (iterator.hasNext() && c1 != MathConstants.COHEN_SUTHERLAND_INSIDE
 				&& c2 != MathConstants.COHEN_SUTHERLAND_INSIDE && (c1 & c2) == 0) {
@@ -184,6 +180,10 @@ public interface Rectangle2ai<
 	 */
 	@Pure
 	public static void computeClosestPoint(int minx, int miny, int maxx, int maxy, int px, int py, Point2D result) {
+		assert (minx <= maxx) : "minx must be lower or equal to maxx"; //$NON-NLS-1$
+		assert (miny <= maxy) : "maxx must be lower or equal to maxy"; //$NON-NLS-1$
+		assert (result != null) : "Point must not be null"; //$NON-NLS-1$
+
 		int x;
 		int same = 0;
 		if (px < minx) {
@@ -226,6 +226,10 @@ public interface Rectangle2ai<
 	 */
 	@Pure
 	public static void computeFarthestPoint(int minx, int miny, int maxx, int maxy, int px, int py, Point2D result) {
+		assert (minx <= maxx) : "minx must be lower or equal to maxx"; //$NON-NLS-1$
+		assert (miny <= maxy) : "maxx must be lower or equal to maxy"; //$NON-NLS-1$
+		assert (result != null) : "Point must not be null"; //$NON-NLS-1$
+
 		int x;
 		if (px <= ((minx + maxx) / 2)) {
 			x = maxx;
@@ -261,6 +265,7 @@ public interface Rectangle2ai<
 	@Pure
 	@Override
 	default boolean intersects(Rectangle2ai<?, ?, ?, ?, ?> s) {
+		assert (s != null) : "Rectangle must not be null"; //$NON-NLS-1$
 		return intersectsRectangleRectangle(
 				getMinX(), getMinY(),
 				getMaxX(), getMaxY(),
@@ -271,6 +276,7 @@ public interface Rectangle2ai<
 	@Pure
 	@Override
 	default boolean intersects(Circle2ai<?, ?, ?, ?, ?> s) {
+		assert (s != null) : "Circle must not be null"; //$NON-NLS-1$
 		return Circle2ai.intersectsCircleRectangle(
 				s.getX(), s.getY(),
 				s.getRadius(),
@@ -281,6 +287,7 @@ public interface Rectangle2ai<
 	@Pure
 	@Override
 	default boolean intersects(Segment2ai<?, ?, ?, ?, ?> s) {
+		assert (s != null) : "Segment must not be null"; //$NON-NLS-1$
 		return intersectsRectangleSegment(
 				getMinX(), getMinY(),
 				getMaxX(), getMaxY(),
@@ -290,6 +297,7 @@ public interface Rectangle2ai<
 	@Pure
 	@Override
 	default boolean intersects(PathIterator2ai<?> iterator) {
+		assert (iterator != null) : "Iterator must not be null"; //$NON-NLS-1$
 		int mask = (iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2);
 		int crossings = Path2ai.computeCrossingsFromRect(
 				iterator,
@@ -308,19 +316,21 @@ public interface Rectangle2ai<
 	@Pure
 	@Override
 	default boolean contains(Rectangle2ai<?, ?, ?, ?, ?> box) {
+		assert (box != null) : "Rectangle must not be null"; //$NON-NLS-1$
 		return box.getMinX() >= getMinX() && box.getMaxX() <= getMaxX()
 				&& box.getMinY() >= getMinY() && box.getMaxY() <= getMaxY();		
 	}
 
 	@Override
 	default void set(IT s) {
-		Rectangle2ai<?, ?, ?, ?, ?> r = s.toBoundingBox();
-		setFromCorners(r.getMinX(), r.getMinY(), r.getMaxX(), r.getMaxY());
+		assert (s != null) : "Rectangle must not be null"; //$NON-NLS-1$
+		setFromCorners(s.getMinX(), s.getMinY(), s.getMaxX(), s.getMaxY());
 	}
 	
 	@Pure
 	@Override
 	default P getClosestPointTo(Point2D p) {
+		assert (p != null) : "Point must not be null"; //$NON-NLS-1$
 		P point = getGeomFactory().newPoint();
 		computeClosestPoint(getMinX(), getMinY(), getMaxX(), getMaxY(), p.ix(), p.iy(), point);
 		return point;
@@ -329,6 +339,7 @@ public interface Rectangle2ai<
 	@Pure
 	@Override
 	default P getFarthestPointTo(Point2D p) {
+		assert (p != null) : "Point must not be null"; //$NON-NLS-1$
 		P point = getGeomFactory().newPoint();
 		computeFarthestPoint(getMinX(), getMinY(), getMaxX(), getMaxY(), p.ix(), p.iy(), point);
 		return point;
@@ -337,6 +348,7 @@ public interface Rectangle2ai<
 	@Pure
 	@Override
 	default double getDistanceSquared(Point2D p) {
+		assert (p != null) : "Point must not be null"; //$NON-NLS-1$
 		int dx;
 		if (p.ix()<getMinX()) {
 			dx = getMinX() - p.ix();
@@ -363,6 +375,7 @@ public interface Rectangle2ai<
 	@Pure
 	@Override
 	default double getDistanceL1(Point2D p) {
+		assert (p != null) : "Point must not be null"; //$NON-NLS-1$
 		int dx;
 		if (p.ix()<getMinX()) {
 			dx = getMinX() - p.ix();
@@ -389,6 +402,7 @@ public interface Rectangle2ai<
 	@Pure
 	@Override
 	default double getDistanceLinf(Point2D p) {
+		assert (p != null) : "Point must not be null"; //$NON-NLS-1$
 		int dx;
 		if (p.ix()<getMinX()) {
 			dx = getMinX() - p.ix();
@@ -425,6 +439,7 @@ public interface Rectangle2ai<
 	 */
 	@Pure
 	default Iterator<P> getPointIterator(Side startingBorder) {
+		assert (startingBorder != null) : "Side border must not be null"; //$NON-NLS-1$
 		return new RectangleSideIterator<>(this, startingBorder);
 	}
 
@@ -491,6 +506,8 @@ public interface Rectangle2ai<
 		 * @param firstSide the first side to iterate on.
 		 */
 		public RectangleSideIterator(Rectangle2ai<?, ?, ?, P, ?> rectangle, Side firstSide) {
+			assert (rectangle != null) : "Rectangle must not be null"; //$NON-NLS-1$
+			assert (firstSide != null) : "First side must not be null"; //$NON-NLS-1$
 			this.factory = rectangle.getGeomFactory();
 			this.firstSide = firstSide;
 			this.x0 = rectangle.getMinX();
@@ -605,6 +622,7 @@ public interface Rectangle2ai<
 		 * @param rectangle is the rectangle to iterate.
 		 */
 		public RectanglePathIterator(Rectangle2ai<?, ?, E, ?, ?> rectangle) {
+			assert (rectangle != null) : "Rectangle must not be null"; //$NON-NLS-1$
 			this.factory = rectangle.getGeomFactory();
 			if (rectangle.isEmpty()) {
 				this.index = 6;
@@ -728,13 +746,15 @@ public interface Rectangle2ai<
 		 * @param transform the transformation to apply on the rectangle.
 		 */
 		public TransformedRectanglePathIterator(Rectangle2ai<?, ?, E, ?, ?> rectangle, Transform2D transform) {
+			assert (rectangle != null) : "Rectangle must not be null"; //$NON-NLS-1$
+			assert (transform != null) : "Transformation must not be null"; //$NON-NLS-1$
 			this.factory = rectangle.getGeomFactory();
 			this.transform = transform;
 			if (rectangle.isEmpty()) {
 				this.index = 6;
 			} else {
-				this.p1 = this.factory.newPoint();
-				this.p2 = this.factory.newPoint();
+				this.p1 = new InnerComputationPoint2ai();
+				this.p2 = new InnerComputationPoint2ai();
 				this.x1 = rectangle.getMinX();
 				this.y1 = rectangle.getMinY();
 				this.x2 = rectangle.getMaxX();

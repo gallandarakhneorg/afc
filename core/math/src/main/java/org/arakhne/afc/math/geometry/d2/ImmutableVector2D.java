@@ -120,5 +120,19 @@ public final class ImmutableVector2D implements UnmodifiableVector2D {
 	public int iy() {
 		return (int) this.y;
 	}
-	
+
+	@Override
+	public Vector2D toUnitVector() {
+		double length = getLength();
+		if (length == 0.) {
+			return new ImmutableVector2D(0, 0);
+		}
+		return new ImmutableVector2D(getX() / length, getY() / length);
+	}
+
+	@Override
+	public Vector2D toOrthogonalVector() {
+		return new ImmutableVector2D(-getY(), getX());
+	}
+
 }

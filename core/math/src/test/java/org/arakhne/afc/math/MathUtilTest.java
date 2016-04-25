@@ -48,7 +48,7 @@ public class MathUtilTest extends AbstractMathTestCase {
 	} 
 
 	@Test
-	public void clampIntIntInt_minmax() {
+	public void clampIntIntInt() {
 		int min = 693;
 		int max = 1240;
 		assertEquals(924, MathUtil.clamp(924, min, max));
@@ -58,19 +58,6 @@ public class MathUtilTest extends AbstractMathTestCase {
 		assertEquals(max, MathUtil.clamp(9000, min, max));
 		assertEquals(min, MathUtil.clamp(min-1, min, max));
 		assertEquals(min, MathUtil.clamp(-124, min, max));
-	} 
-
-	@Test
-	public void clampIntIntInt_maxmin() {
-		int min = 693;
-		int max = 1240;
-		assertEquals(924, MathUtil.clamp(924, max, min));
-		assertEquals(min, MathUtil.clamp(min, max, min));
-		assertEquals(max, MathUtil.clamp(max, max, min));
-		assertEquals(max, MathUtil.clamp(max+1, max, min));
-		assertEquals(max, MathUtil.clamp(9000, max, min));
-		assertEquals(min, MathUtil.clamp(min-1, max, min));
-		assertEquals(min, MathUtil.clamp(-124, max, min));
 	} 
 
 	@Test

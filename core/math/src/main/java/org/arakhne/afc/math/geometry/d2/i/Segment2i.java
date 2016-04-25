@@ -108,6 +108,7 @@ public class Segment2i extends AbstractShape2i<Segment2i>
 	@Pure
 	@Override
 	public Shape2i<?> createTransformedShape(Transform2D transform) {
+		assert (transform != null) : "Transformation must be not null"; //$NON-NLS-1$
 		Point2i point = new Point2i(getX1(), getY1());
 		transform.transform(point);
 		int x1 = point.ix();
@@ -170,12 +171,12 @@ public class Segment2i extends AbstractShape2i<Segment2i>
 	}
 
 	@Override
-	public Point2D getP1() {
+	public Point2i getP1() {
 		return new Point2i(this.ax, this.ay);
 	}
 
 	@Override
-	public Point2D getP2() {
+	public Point2i getP2() {
 		return new Point2i(this.bx, this.by);
 	}
 

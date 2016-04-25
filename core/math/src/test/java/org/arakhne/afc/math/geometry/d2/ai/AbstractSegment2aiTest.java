@@ -32,34 +32,19 @@ import java.util.Iterator;
 
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.geometry.PathElementType;
-import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
-import org.arakhne.afc.math.geometry.d2.Vector2D;
-import org.junit.Assume;
 import org.junit.Test;
 
 @SuppressWarnings("all")
 public abstract class AbstractSegment2aiTest<T extends Segment2ai<?, T, ?, ?, B>,
-		B extends Rectangle2ai<?, ?, ?, ?, B>> extends AbstractShape2aiTest<T> {
+		B extends Rectangle2ai<?, ?, ?, ?, B>> extends AbstractShape2aiTest<T, B> {
 
 	@Override
 	protected final T createShape() {
-		return createSegment(0, 0, 10, 5);
+		return (T) createSegment(0, 0, 10, 5);
 	}
 	
-	protected abstract T createSegment(int x1, int y1, int x2, int y2);
-	
-	protected abstract B createRectangle(int x, int y, int width, int height);
-
-	protected abstract Circle2ai<?, ?, ?, ?, B> createCircle(int x, int y, int radius);
-	
-	protected abstract Point2D createPoint(int x, int y);
-
-	protected abstract Path2ai<?, ?, ?, ?, ?> createPath();
-
-	protected abstract Vector2D createVector(int x, int y);
-
 	@Test
 	@Override
 	public void testClone() {
@@ -99,10 +84,10 @@ public abstract class AbstractSegment2aiTest<T extends Segment2ai<?, T, ?, ?, B>
 	@Override
 	public void equalsToShape() {
 		assertFalse(this.shape.equalsToShape(null));
-		assertFalse(this.shape.equalsToShape(createSegment(0, 0, 5, 5)));
-		assertFalse(this.shape.equalsToShape(createSegment(0, 0, 10, 6)));
+		assertFalse(this.shape.equalsToShape((T) createSegment(0, 0, 5, 5)));
+		assertFalse(this.shape.equalsToShape((T) createSegment(0, 0, 10, 6)));
 		assertTrue(this.shape.equalsToShape(this.shape));
-		assertTrue(this.shape.equalsToShape(createSegment(0, 0, 10, 5)));
+		assertTrue(this.shape.equalsToShape((T) createSegment(0, 0, 10, 5)));
 	}
 
 	@Test
@@ -689,7 +674,7 @@ public abstract class AbstractSegment2aiTest<T extends Segment2ai<?, T, ?, ?, B>
 	@Test
 	@Override
 	public void setIT() {
-		this.shape.set(createSegment(10, 12, 14, 16));
+		this.shape.set((T) createSegment(10, 12, 14, 16));
 		assertEquals(10, this.shape.getX1());
 		assertEquals(12, this.shape.getY1());
 		assertEquals(14, this.shape.getX2());
@@ -908,7 +893,7 @@ public abstract class AbstractSegment2aiTest<T extends Segment2ai<?, T, ?, ?, B>
 		assertFalse(this.shape.contains(createRectangle(16,0,100,100)));
 		assertFalse(this.shape.contains(createRectangle(0,3,3,10)));
 		
-		this.shape = createSegment(0, 0, 10, 0);
+		this.shape = (T) createSegment(0, 0, 10, 0);
 		assertTrue(this.shape.contains(createRectangle(0,0,2,0)));
 	}
 

@@ -76,7 +76,7 @@ public interface UnmodifiableVector2D extends UnmodifiableTuple2D<Vector2D>, Vec
 	}
 
 	@Override
-	default void perpendicularize() {
+	default void makeOrthogonal() {
 		throw new UnsupportedOperationException();
 	}
 

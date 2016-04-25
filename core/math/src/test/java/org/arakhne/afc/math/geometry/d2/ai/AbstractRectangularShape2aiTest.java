@@ -25,14 +25,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import org.arakhne.afc.math.geometry.d2.Point2D;
-import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.junit.Ignore;
 import org.junit.Test;
 
 @SuppressWarnings("all")
 public abstract class AbstractRectangularShape2aiTest<T extends Rectangle2ai<?, T, ?, ?, B>,
-		B extends Rectangle2ai<?, ?, ?, ?, B>> extends AbstractShape2aiTest<T> {
+		B extends Rectangle2ai<?, ?, ?, ?, B>> extends AbstractShape2aiTest<T, B> {
 
 	protected static final int MINX = 5;
 	
@@ -46,22 +44,10 @@ public abstract class AbstractRectangularShape2aiTest<T extends Rectangle2ai<?, 
 	
 	protected static final int MAXY = MINY + HEIGHT;
 
-	protected abstract T createRectangularShape(int x, int y, int width, int height);
-
-	protected abstract B createRectangle(int x, int y, int width, int height);
-
-	protected abstract Segment2ai<?, ?, ?, ?, ?> createSegment(int x1, int y1, int x2, int y2);
-	
-	protected abstract Circle2ai<?, ?, ?, ?, ?> createCircle(int x, int y, int radius);
-	
-	protected abstract Point2D createPoint(int x, int y);
-	
-	protected abstract Vector2D createVector(int x, int y);
-	
 	@Test
 	@Override
 	public void toBoundingBoxB() {
-		B box = createRectangle(0, 0, 0, 0);
+		B box = (B) createRectangle(0, 0, 0, 0);
 		this.shape.toBoundingBox(box);
 		assertEquals(this.shape.getMinX(), box.getMinX());
 		assertEquals(this.shape.getMinY(), box.getMinY());
@@ -256,14 +242,6 @@ public abstract class AbstractRectangularShape2aiTest<T extends Rectangle2ai<?, 
 	}
 
 	@Test
-	@Ignore
-	@Override
-	public void createTransformedShape() {
-		// XXX: Must be written
-	}
-	
-	@Test
-	public void inflate() {
-	}
+	public abstract void inflate();
 
 }

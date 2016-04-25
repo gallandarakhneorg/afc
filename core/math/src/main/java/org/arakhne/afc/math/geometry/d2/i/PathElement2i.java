@@ -47,14 +47,19 @@ public abstract class PathElement2i implements PathElement2ai {
 	 */
 	@Pure
 	public static PathElement2i newInstance(PathElementType type, int lastX, int lastY, int[] coords) {
+		assert (type != null) : "Path element type must be not null"; //$NON-NLS-1$
+		assert (coords != null) : "Array of coordinates must be not null"; //$NON-NLS-1$
+		assert (coords.length >= 2) : "Size of the array of coordinates is too small"; //$NON-NLS-1$
 		switch(type) {
 		case MOVE_TO:
 			return new MovePathElement2i(coords[0], coords[1]);
 		case LINE_TO:
 			return new LinePathElement2i(lastX, lastY, coords[0], coords[1]);
 		case QUAD_TO:
+			assert (coords.length >= 4) : "Size of the array of coordinates is too small"; //$NON-NLS-1$
 			return new QuadPathElement2i(lastX, lastY, coords[0], coords[1], coords[2], coords[3]);
 		case CURVE_TO:
+			assert (coords.length >= 6) : "Size of the array of coordinates is too small"; //$NON-NLS-1$
 			return new CurvePathElement2i(lastX, lastY, coords[0], coords[1], coords[2], coords[3], coords[4], coords[5]);
 		case CLOSE:
 			return new ClosePathElement2i(lastX, lastY, coords[0], coords[1]);
@@ -81,7 +86,7 @@ public abstract class PathElement2i implements PathElement2ai {
 	 * @param toy the x coordinate of the target point.
 	 */
 	PathElement2i(PathElementType type, int tox, int toy) {
-		assert(type!=null);
+		assert (type != null) : "Path element type must be not null"; //$NON-NLS-1$
 		this.type = type;
 		this.toX = tox;
 		this.toY = toy;
@@ -179,12 +184,16 @@ public abstract class PathElement2i implements PathElement2ai {
 		
 		@Override
 		public void toArray(int[] array) {
+			assert (array != null) : "Array must be not null"; //$NON-NLS-1$
+			assert (array.length >= 2) : "Array size is too small"; //$NON-NLS-1$
 			array[0] = this.toX;
 			array[1] = this.toY;
 		}
 		
 		@Override
 		public void toArray(double[] array) {
+			assert (array != null) : "Array must be not null"; //$NON-NLS-1$
+			assert (array.length >= 2) : "Array size is too small"; //$NON-NLS-1$
 			array[0] = this.toX;
 			array[1] = this.toY;
 		}
@@ -305,12 +314,16 @@ public abstract class PathElement2i implements PathElement2ai {
 
 		@Override
 		public void toArray(int[] array) {
+			assert (array != null) : "Array must be not null"; //$NON-NLS-1$
+			assert (array.length >= 2) : "Array size is too small"; //$NON-NLS-1$
 			array[0] = this.toX;
 			array[1] = this.toY;
 		}
 		
 		@Override
 		public void toArray(double[] array) {
+			assert (array != null) : "Array must be not null"; //$NON-NLS-1$
+			assert (array.length >= 2) : "Array size is too small"; //$NON-NLS-1$
 			array[0] = this.toX;
 			array[1] = this.toY;
 		}
@@ -444,6 +457,8 @@ public abstract class PathElement2i implements PathElement2ai {
 
 		@Override
 		public void toArray(int[] array) {
+			assert (array != null) : "Array must be not null"; //$NON-NLS-1$
+			assert (array.length >= 4) : "Array size is too small"; //$NON-NLS-1$
 			array[0] = this.ctrlX;
 			array[1] = this.ctrlY;
 			array[2] = this.toX;
@@ -452,6 +467,8 @@ public abstract class PathElement2i implements PathElement2ai {
 		
 		@Override
 		public void toArray(double[] array) {
+			assert (array != null) : "Array must be not null"; //$NON-NLS-1$
+			assert (array.length >= 4) : "Array size is too small"; //$NON-NLS-1$
 			array[0] = this.ctrlX;
 			array[1] = this.ctrlY;
 			array[2] = this.toX;
@@ -602,6 +619,8 @@ public abstract class PathElement2i implements PathElement2ai {
 
 		@Override
 		public void toArray(int[] array) {
+			assert (array != null) : "Array must be not null"; //$NON-NLS-1$
+			assert (array.length >= 6) : "Array size is too small"; //$NON-NLS-1$
 			array[0] = this.ctrlX1;
 			array[1] = this.ctrlY1;
 			array[2] = this.ctrlX2;
@@ -612,6 +631,8 @@ public abstract class PathElement2i implements PathElement2ai {
 		
 		@Override
 		public void toArray(double[] array) {
+			assert (array != null) : "Array must be not null"; //$NON-NLS-1$
+			assert (array.length >= 6) : "Array size is too small"; //$NON-NLS-1$
 			array[0] = this.ctrlX1;
 			array[1] = this.ctrlY1;
 			array[2] = this.ctrlX2;

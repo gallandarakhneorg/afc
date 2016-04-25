@@ -109,7 +109,10 @@ public class Segment2fp extends AbstractShape2fp<Segment2fp>
 
 	@Pure
 	@Override
-	public Shape2fp<?> createTransformedShape(Transform2D transform) {
+	public Segment2fp createTransformedShape(Transform2D transform) {
+		if (transform == null || transform.isIdentity()) {
+			return clone();
+		}
 		Point2fp point = new Point2fp(getX1(), getY1());
 		transform.transform(point);
 		double x1 = point.getX();

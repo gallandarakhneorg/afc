@@ -41,7 +41,7 @@ import org.junit.Test;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@SuppressWarnings("unused")
+@SuppressWarnings("all")
 public class GraphPathTest {
 
 	private SegmentStub s1;

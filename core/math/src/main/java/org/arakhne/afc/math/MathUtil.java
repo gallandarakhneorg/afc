@@ -41,7 +41,7 @@ public final class MathUtil {
 		//
 	}
 
-	/** Clamp the given value to the given range.
+    /** Clamp the given value to the given range.
 	 * <p>
 	 * If the value is outside the {@code [min;max]}
 	 * range, it is clamp to the nearest bounding value
@@ -54,14 +54,9 @@ public final class MathUtil {
 	 */
 	@Pure
 	public static double clamp(double v, double min, double max) {
-		if (min<max) {
-			if (v<min) return min;
-			if (v>max) return max;
-		}
-		else {
-			if (v>min) return min;
-			if (v<max) return max;
-		}
+		assert (min <= max) : "min must be lower or equal to max"; //$NON-NLS-1$
+		if (v < min) return min;
+		if (v > max) return max;
 		return v;
 	}	
 
@@ -78,14 +73,9 @@ public final class MathUtil {
 	 */
 	@Pure
 	public static int clamp(int v, int min, int max) {
-		if (min <= max) {
-			if (v < min) return min;
-			if (v > max) return max;
-		}
-		else {
-			if (v > min) return min;
-			if (v < max) return max;
-		}
+		assert (min <= max) : "min must be lower or equal to max"; //$NON-NLS-1$
+		if (v < min) return min;
+		if (v > max) return max;
 		return v;
 	}	
 
@@ -125,7 +115,7 @@ public final class MathUtil {
 	 */
 	@Pure
 	public static boolean isEpsilonEqual(double v1, double v2) {
-		return isEpsilonEqual(v1, v2, Math.ulp(1.));
+		return isEpsilonEqual(v1, v2, Double.NaN);
 	}
 
 	/** Replies if the given values are near.
@@ -139,6 +129,11 @@ public final class MathUtil {
 	 */
 	@Pure
 	public static boolean isEpsilonEqual(double v1, double v2, double epsilon) {
+		if (Double.isInfinite(v1)) {
+			return Double.isInfinite(v2) && Math.signum(v1) == Math.signum(v2);
+		} else if (Double.isNaN(v1)) {
+			return false;
+		}
 		double value = Math.abs(v1 - v2);
 		double eps = Double.isNaN(epsilon) ? Math.ulp(value) : epsilon;
 		return value <= eps;
@@ -356,10 +351,10 @@ public final class MathUtil {
 	 */
 	@Pure
 	public static double clampCyclic(double value, double min, double max) {
+		assert (min <= max) : "min must be lower or equal to max"; //$NON-NLS-1$
 		if (Double.isNaN(max) || Double.isNaN(min) || Double.isNaN(max)) {
 			return Double.NaN;
 		}
-		assert(min<=max);
 		if (value < min) {
 			double perimeter = max - min;
 			double nvalue = min - value;
@@ -391,8 +386,8 @@ public final class MathUtil {
 	 * @return <var>minBounds</var> or <var>maxBounds</var>.
 	 */
 	@Pure
-	public static double clampToNearestBounds( double value, double minBounds, double maxBounds ) {
-		assert(minBounds<=maxBounds);
+	public static double clampToNearestBounds(double value, double minBounds, double maxBounds) {
+		assert (minBounds <= maxBounds) : "min must be lower or equal to max"; //$NON-NLS-1$
 		double center = (minBounds+maxBounds) / 2f;
 		if (value<=center) return minBounds;
 		return maxBounds;
@@ -411,8 +406,8 @@ public final class MathUtil {
 	 */
 	@Pure
 	public static int getCohenSutherlandCode(int px, int py, int rxmin, int rymin, int rxmax, int rymax) {
-		assert(rxmin<=rxmax);
-		assert(rymin<=rymax);
+		assert (rxmin <= rxmax) : "rxmin must be lower or equal to rxmax"; //$NON-NLS-1$
+		assert (rymin <= rymax) : "rymin must be lower or equal to rymax"; //$NON-NLS-1$
 		// initialised as being inside of clip window
 		int code = COHEN_SUTHERLAND_INSIDE;
 		if (px<rxmin) {
@@ -437,6 +432,9 @@ public final class MathUtil {
 	/** Compute the zone where the point is against the given rectangle
 	 * according to the <a href="http://en.wikipedia.org/wiki/Cohen%E2%80%93Sutherland_algorithm">Cohen-Sutherland algorithm</a>.
 	 * 
+	 * <p>This function considers that if a point coordinate is equal to the a border coordinate of the rectangle,
+	 * it is inside the rectangle. 
+	 * 
 	 * @param px is the coordinates of the points.
 	 * @param py is the coordinates of the points.
 	 * @param rxmin is the min of the coordinates of the rectangle.
@@ -447,23 +445,23 @@ public final class MathUtil {
 	 */
 	@Pure
 	public static int getCohenSutherlandCode(double px, double py, double rxmin, double rymin, double rxmax, double rymax) {
-		assert(rxmin<=rxmax);
-		assert(rymin<=rymax);
+		assert (rxmin <= rxmax) : "rxmin must be lower or equal to rxmax"; //$NON-NLS-1$
+		assert (rymin <= rymax) : "rymin must be lower or equal to rymax"; //$NON-NLS-1$
 		// initialised as being inside of clip window
 		int code = COHEN_SUTHERLAND_INSIDE;
-		if (px<rxmin) {
+		if (px < rxmin) {
 			// to the left of clip window
 			code |= COHEN_SUTHERLAND_LEFT;
 		}
-		if (px>rxmax) {
+		if (px > rxmax) {
 			// to the right of clip window
 			code |= COHEN_SUTHERLAND_RIGHT;
 		}
-		if (py<rymin) {
+		if (py < rymin) {
 			// to the bottom of clip window
 			code |= COHEN_SUTHERLAND_BOTTOM;
 		}
-		if (py>rymax) {
+		if (py > rymax) {
 			// to the top of clip window
 			code |= COHEN_SUTHERLAND_TOP;
 		}

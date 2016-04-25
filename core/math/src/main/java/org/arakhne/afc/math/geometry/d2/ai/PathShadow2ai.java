@@ -44,11 +44,13 @@ public class PathShadow2ai<B extends Rectangle2ai<?, ?, ?, ?, B>> {
 	private final B bounds;
 
 	/**
-	 * @param path1
+	 * @param path
 	 */
-	public PathShadow2ai(Path2ai<?, ?, ?, ?, B> path1) {
-		this.path = path1;
+	public PathShadow2ai(Path2ai<?, ?, ?, ?, B> path) {
+		assert (path != null) : "Path must not be null"; //$NON-NLS-1$
+		this.path = path;
 		this.bounds = this.path.toBoundingBox();
+		assert (this.bounds != null) : "Bounding box of the path must not be null"; //$NON-NLS-1$
 	}
 
 	/** Compute the crossings between this shadow and
@@ -66,8 +68,6 @@ public class PathShadow2ai<B extends Rectangle2ai<?, ?, ?, ?, B>> {
 			int crossings,
 			int x0, int y0,
 			int x1, int y1) {
-		if (this.bounds==null) return crossings;
-
 		int numCrosses = 
 				Segment2ai.computeCrossingsFromRect(crossings,
 						this.bounds.getMinX(),

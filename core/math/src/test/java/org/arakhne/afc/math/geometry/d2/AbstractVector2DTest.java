@@ -53,6 +53,16 @@ public abstract class AbstractVector2DTest extends AbstractMathTestCase {
 	}
 
 	@Test
+	public void staticIsOrthogonal() {
+		assertFalse(Vector2D.isOrthogonal(1., 0, 1., 0));
+		assertFalse(Vector2D.isOrthogonal(1., 0, -1., 0));
+		assertTrue(Vector2D.isOrthogonal(1., 0, 0., 1));
+		assertTrue(Vector2D.isOrthogonal(1., 0, 0., -1));
+		assertFalse(Vector2D.isOrthogonal(1., 0, 1., 2));
+		assertTrue(Vector2D.isOrthogonal(1., 0, 0, 1 + Math.ulp(1)));
+	}
+
+	@Test
 	public void staticIsCollinearVectors() {
 		assertTrue(Vector2D.isCollinearVectors(1, 0, 3, 0));
 		assertTrue(Vector2D.isCollinearVectors(1, 0, -3, 0));
@@ -431,16 +441,16 @@ public abstract class AbstractVector2DTest extends AbstractMathTestCase {
 	}
 
 	@Test
-	public void perpendicularize() {
+	public void makeOrthogonal() {
 		Vector2D vector = createVector(1,2);
 		Vector2D vector2 = createVector(0,0);
 		Vector2D vector3 = createVector(1,1);
 		Vector2D vector4 = createVector(1,0);
 
-		vector.perpendicularize();
-		vector2.perpendicularize();
-		vector3.perpendicularize();
-		vector4.perpendicularize();
+		vector.makeOrthogonal();
+		vector2.makeOrthogonal();
+		vector3.makeOrthogonal();
+		vector4.makeOrthogonal();
 
 		assertFpVectorEquals(-2, 1, vector);
 		assertFpVectorNotEquals(2, -1, vector);
@@ -455,9 +465,9 @@ public abstract class AbstractVector2DTest extends AbstractMathTestCase {
 		Vector2D vector2 = createVector(0, 0);
 		Vector2D vector3 = createVector(-1, 1);
 
-		assertEpsilonEquals(Math.sqrt(5),vector.length());
-		assertEpsilonEquals(0,vector2.length());
-		assertEpsilonEquals(Math.sqrt(2),vector3.length());
+		assertEpsilonEquals(Math.sqrt(5),vector.getLength());
+		assertEpsilonEquals(0,vector2.getLength());
+		assertEpsilonEquals(Math.sqrt(2),vector3.getLength());
 	}
 
 	@Test
@@ -467,9 +477,9 @@ public abstract class AbstractVector2DTest extends AbstractMathTestCase {
 		Vector2D vector2 = createVector(0, 0);
 		Vector2D vector3 = createVector(Math.sqrt(2.) / 2., Math.sqrt(2.) / 2.);
 
-		assertEpsilonEquals(5,vector.lengthSquared());
-		assertEpsilonEquals(0,vector2.lengthSquared());
-		assertEpsilonEquals(1,vector3.lengthSquared());
+		assertEpsilonEquals(5,vector.getLengthSquared());
+		assertEpsilonEquals(0,vector2.getLengthSquared());
+		assertEpsilonEquals(1,vector3.getLengthSquared());
 	}
 
 	@Test
@@ -479,9 +489,9 @@ public abstract class AbstractVector2DTest extends AbstractMathTestCase {
 		Vector2D vector2 = createVector(0, 0);
 		Vector2D vector3 = createVector(Math.sqrt(2.) / 2., Math.sqrt(2.) / 2.);
 
-		assertEpsilonEquals(5,vector.lengthSquared());
-		assertEpsilonEquals(0,vector2.lengthSquared());
-		assertEpsilonEquals(2,vector3.lengthSquared());
+		assertEpsilonEquals(5,vector.getLengthSquared());
+		assertEpsilonEquals(0,vector2.getLengthSquared());
+		assertEpsilonEquals(2,vector3.getLengthSquared());
 	}
 
 	@Test
@@ -702,6 +712,50 @@ public abstract class AbstractVector2DTest extends AbstractMathTestCase {
 		vector = createVector(2, 0);
 		vector.turn(-MathConstants.DEMI_PI/3);
 		assertIntVectorEquals(2, -1, vector); 
+	}
+
+	@Test
+	public void turnVector_iffp() {
+		Assume.assumeFalse(isIntCoordinates());
+		Vector2D vector1;
+		Vector2D vector2;
+		
+		vector1 = createVector(Double.NaN, Double.NaN);
+		vector2 = createVector(2, 0);
+		vector1.turn(MathConstants.DEMI_PI, vector2);
+		assertFpVectorEquals(0, 2, vector1); 
+
+		vector1 = createVector(Double.NaN, Double.NaN);
+		vector2 = createVector(2, 0);
+		vector1.turn(-MathConstants.DEMI_PI, vector2);
+		assertFpVectorEquals(0, -2, vector1); 
+
+		vector1 = createVector(Double.NaN, Double.NaN);
+		vector2 = createVector(2, 0);
+		vector1.turn(-MathConstants.DEMI_PI/3, vector2);
+		assertFpVectorEquals(1.732, -1, vector1); 
+	}
+
+	@Test
+	public void turnVector_ifi() {
+		Assume.assumeTrue(isIntCoordinates());
+		Vector2D vector1;
+		Vector2D vector2;
+		
+		vector1 = createVector(Double.NaN, Double.NaN);
+		vector2 = createVector(2, 0);
+		vector1.turn(MathConstants.DEMI_PI, vector2);
+		assertIntVectorEquals(0, 2, vector1); 
+
+		vector1 = createVector(Double.NaN, Double.NaN);
+		vector2 = createVector(2, 0);
+		vector1.turn(-MathConstants.DEMI_PI, vector2);
+		assertIntVectorEquals(0, -2, vector1); 
+
+		vector1 = createVector(Double.NaN, Double.NaN);
+		vector2 = createVector(2, 0);
+		vector1.turn(-MathConstants.DEMI_PI/3, vector2);
+		assertIntVectorEquals(2, -1, vector1); 
 	}
 
 	@Test
@@ -1001,6 +1055,190 @@ public abstract class AbstractVector2DTest extends AbstractMathTestCase {
 	}
 
 	@Test
+	public void turnLeftVector_iffp_rightHanded() {
+		Assume.assumeFalse(isIntCoordinates());
+		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
+		Vector2D vector1;
+		Vector2D vector2;
+		
+		vector1 = createVector(Double.NaN, Double.NaN);
+		vector2 = createVector(2, 0);
+		vector1.turnLeft(MathConstants.DEMI_PI, vector2);
+		assertFpVectorEquals(0, 2, vector1); 
+
+		vector1 = createVector(Double.NaN, Double.NaN);
+		vector2 = createVector(2, 0);
+		vector1.turnLeft(-MathConstants.DEMI_PI, vector2);
+		assertFpVectorEquals(0, -2, vector1); 
+
+		vector1 = createVector(Double.NaN, Double.NaN);
+		vector2 = createVector(2, 0);
+		vector1.turnLeft(-MathConstants.DEMI_PI/3, vector2);
+		assertFpVectorEquals(1.732, -1, vector1); 
+	}
+
+	@Test
+	public void turnLeftVector_iffp_leftHanded() {
+		Assume.assumeFalse(isIntCoordinates());
+		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());
+		Vector2D vector1;
+		Vector2D vector2;
+		
+		vector1 = createVector(Double.NaN, Double.NaN);
+		vector2 = createVector(2, 0);
+		vector1.turnLeft(MathConstants.DEMI_PI, vector2);
+		assertFpVectorEquals(0, -2, vector1); 
+
+		vector1 = createVector(Double.NaN, Double.NaN);
+		vector2 = createVector(2, 0);
+		vector1.turnLeft(-MathConstants.DEMI_PI, vector2);
+		assertFpVectorEquals(0, 2, vector1); 
+
+		vector1 = createVector(Double.NaN, Double.NaN);
+		vector2 = createVector(2, 0);
+		vector1.turnLeft(-MathConstants.DEMI_PI/3, vector2);
+		assertFpVectorEquals(1.732, 1, vector1); 
+	}
+
+	@Test
+	public void turnLeftVector_ifi_rightHanded() {
+		Assume.assumeTrue(isIntCoordinates());
+		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
+		Vector2D vector1;
+		Vector2D vector2;
+		
+		vector1 = createVector(Double.NaN, Double.NaN);
+		vector2 = createVector(2, 0);
+		vector1.turnLeft(MathConstants.DEMI_PI, vector2);
+		assertIntVectorEquals(0, 2, vector1); 
+
+		vector1 = createVector(Double.NaN, Double.NaN);
+		vector2 = createVector(2, 0);
+		vector1.turnLeft(-MathConstants.DEMI_PI, vector2);
+		assertIntVectorEquals(0, -2, vector1); 
+
+		vector1 = createVector(Double.NaN, Double.NaN);
+		vector2 = createVector(2, 0);
+		vector1.turnLeft(-MathConstants.DEMI_PI/3, vector2);
+		assertIntVectorEquals(2, -1, vector1); 
+	}
+
+	@Test
+	public void turnLeftVector_ifi_leftHanded() {
+		Assume.assumeTrue(isIntCoordinates());
+		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());
+		Vector2D vector1;
+		Vector2D vector2;
+		
+		vector1 = createVector(Double.NaN, Double.NaN);
+		vector2 = createVector(2, 0);
+		vector1.turnLeft(MathConstants.DEMI_PI, vector2);
+		assertIntVectorEquals(0, -2, vector1); 
+
+		vector1 = createVector(Double.NaN, Double.NaN);
+		vector2 = createVector(2, 0);
+		vector1.turnLeft(-MathConstants.DEMI_PI, vector2);
+		assertIntVectorEquals(0, 2, vector1); 
+
+		vector1 = createVector(Double.NaN, Double.NaN);
+		vector2 = createVector(2, 0);
+		vector1.turnLeft(-MathConstants.DEMI_PI/3, vector2);
+		assertIntVectorEquals(2, 1, vector1); 
+	}
+
+	@Test
+	public void turnRightVector_iffp_rightHanded() {
+		Assume.assumeFalse(isIntCoordinates());
+		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
+		Vector2D vector1;
+		Vector2D vector2;
+		
+		vector1 = createVector(Double.NaN, Double.NaN);
+		vector2 = createVector(2, 0);
+		vector1.turnRight(MathConstants.DEMI_PI, vector2);
+		assertFpVectorEquals(0, -2, vector1); 
+
+		vector1 = createVector(Double.NaN, Double.NaN);
+		vector2 = createVector(2, 0);
+		vector1.turnRight(-MathConstants.DEMI_PI, vector2);
+		assertFpVectorEquals(0, 2, vector1); 
+
+		vector1 = createVector(Double.NaN, Double.NaN);
+		vector2 = createVector(2, 0);
+		vector1.turnRight(-MathConstants.DEMI_PI/3, vector2);
+		assertFpVectorEquals(1.732, 1, vector1); 
+	}
+
+	@Test
+	public void turnRightVector_iffp_leftHanded() {
+		Assume.assumeFalse(isIntCoordinates());
+		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());
+		Vector2D vector1;
+		Vector2D vector2;
+		
+		vector1 = createVector(Double.NaN, Double.NaN);
+		vector2 = createVector(2, 0);
+		vector1.turnRight(MathConstants.DEMI_PI, vector2);
+		assertFpVectorEquals(0, 2, vector1); 
+
+		vector1 = createVector(Double.NaN, Double.NaN);
+		vector2 = createVector(2, 0);
+		vector1.turnRight(-MathConstants.DEMI_PI, vector2);
+		assertFpVectorEquals(0, -2, vector1); 
+
+		vector1 = createVector(Double.NaN, Double.NaN);
+		vector2 = createVector(2, 0);
+		vector1.turnRight(-MathConstants.DEMI_PI/3, vector2);
+		assertFpVectorEquals(1.732, -1, vector1); 
+	}
+
+	@Test
+	public void turnRightVector_ifi_rightHanded() {
+		Assume.assumeTrue(isIntCoordinates());
+		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
+		Vector2D vector1;
+		Vector2D vector2;
+		
+		vector1 = createVector(Double.NaN, Double.NaN);
+		vector2 = createVector(2, 0);
+		vector1.turnRight(MathConstants.DEMI_PI, vector2);
+		assertIntVectorEquals(0, -2, vector1); 
+
+		vector1 = createVector(Double.NaN, Double.NaN);
+		vector2 = createVector(2, 0);
+		vector1.turnRight(-MathConstants.DEMI_PI, vector2);
+		assertIntVectorEquals(0, 2, vector1); 
+
+		vector1 = createVector(Double.NaN, Double.NaN);
+		vector2 = createVector(2, 0);
+		vector1.turnRight(-MathConstants.DEMI_PI/3, vector2);
+		assertIntVectorEquals(2, 1, vector1); 
+	}
+
+	@Test
+	public void turnRightVector_ifi_leftHanded() {
+		Assume.assumeTrue(isIntCoordinates());
+		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());
+		Vector2D vector1;
+		Vector2D vector2;
+		
+		vector1 = createVector(Double.NaN, Double.NaN);
+		vector2 = createVector(2, 0);
+		vector1.turnRight(MathConstants.DEMI_PI, vector2);
+		assertIntVectorEquals(0, 2, vector1); 
+
+		vector1 = createVector(Double.NaN, Double.NaN);
+		vector2 = createVector(2, 0);
+		vector1.turnRight(-MathConstants.DEMI_PI, vector2);
+		assertIntVectorEquals(0, -2, vector1); 
+
+		vector1 = createVector(Double.NaN, Double.NaN);
+		vector2 = createVector(2, 0);
+		vector1.turnRight(-MathConstants.DEMI_PI/3, vector2);
+		assertIntVectorEquals(2, -1, vector1); 
+	}
+
+	@Test
 	public abstract void staticGetOrientationAngle();
 
 	@Test
@@ -1038,6 +1276,17 @@ public abstract class AbstractVector2DTest extends AbstractMathTestCase {
 	}
 
 	@Test
+	public void isOrthogonal() {
+		Vector2D v = createVector(1, 0);
+		assertFalse(v.isOrthogonal(createVector(1., 0)));
+		assertFalse(v.isOrthogonal(createVector(-1., 0)));
+		assertTrue(v.isOrthogonal(createVector(0., 1)));
+		assertTrue(v.isOrthogonal(createVector(0., -1)));
+		assertFalse(v.isOrthogonal(createVector(1., 2)));
+		assertTrue(v.isOrthogonal(createVector(0, 1 + Math.ulp(1))));
+	}
+
+	@Test
 	public void setLength_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
 		Vector2D vector = createVector(this.random.nextDouble(), this.random.nextDouble());
@@ -1050,7 +1299,7 @@ public abstract class AbstractVector2DTest extends AbstractMathTestCase {
 		vector2.setLength(newLength);
 		
 		assertEpsilonEquals(vector.angle(oldVector), 0);
-		assertEpsilonEquals(vector.length()*oldVector.length()/newLength,oldVector.length());
+		assertEpsilonEquals(vector.getLength()*oldVector.getLength()/newLength,oldVector.getLength());
 		assertFpVectorEquals(newLength,0, vector2);
 	}
 
@@ -1096,6 +1345,45 @@ public abstract class AbstractVector2DTest extends AbstractMathTestCase {
 		assertNotSame(origin, clone);
 		assertEpsilonEquals(origin.getX(), clone.getX());
 		assertEpsilonEquals(origin.getY(), clone.getY());
+	}
+
+	@Test
+	public void toUnitVector_iffp() {
+		Assume.assumeFalse(isIntCoordinates());
+		Vector2D origin = createVector(23, 45);
+		Vector2D unitVector = origin.toUnitVector();
+		assertNotNull(unitVector);
+		assertNotSame(origin, unitVector);
+		assertEpsilonEquals(.45511, unitVector.getX());
+		assertEpsilonEquals(.89043, unitVector.getY());
+	}
+
+	@Test
+	public void toUnitVector_ifi() {
+		Assume.assumeTrue(isIntCoordinates());
+		Vector2D origin = createVector(23, 45);
+		Vector2D unitVector = origin.toUnitVector();
+		assertNotNull(unitVector);
+		assertNotSame(origin, unitVector);
+		assertEpsilonEquals(0, unitVector.getX());
+		assertEpsilonEquals(1, unitVector.getY());
+		//
+		origin = createVector(-45, 0);
+		unitVector = origin.toUnitVector();
+		assertNotNull(unitVector);
+		assertNotSame(origin, unitVector);
+		assertEpsilonEquals(-1, unitVector.getX());
+		assertEpsilonEquals(0, unitVector.getY());
+	}
+
+	@Test
+	public void toOrthogonalVector() {
+		Vector2D origin = createVector(23, 45);
+		Vector2D orthoVector = origin.toOrthogonalVector();
+		assertNotNull(orthoVector);
+		assertNotSame(origin, orthoVector);
+		assertEpsilonEquals(-45, orthoVector.getX());
+		assertEpsilonEquals(23, orthoVector.getY());
 	}
 
 }

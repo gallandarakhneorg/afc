@@ -59,6 +59,16 @@ public class UnmodifiableVector2DTest extends AbstractUnmodifiableVector2DTest {
 				return this;
 			}
 
+			@Override
+			public Vector2D toUnitVector() {
+				throw new UnsupportedOperationException();
+			}
+
+			@Override
+			public Vector2D toOrthogonalVector() {
+				throw new UnsupportedOperationException();
+			}
+
 		};
 	}
 

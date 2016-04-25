@@ -22,9 +22,6 @@ package org.arakhne.afc.math.stochastic;
 
 import java.util.Random;
 
-import org.arakhne.afc.math.MathException;
-import org.arakhne.afc.math.MathFunctionRange;
-
 /**
  * Law that representes an uniform density with as its upper and lower bounds
  * equal.

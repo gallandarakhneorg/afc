@@ -44,7 +44,7 @@ public class DoubleRange implements Cloneable, Serializable, Comparable<DoubleRa
 	 * @param max
 	 */
 	public DoubleRange(double min, double max) {
-		assert (min <= max) : "invalid assertion, " + min + "<=" + max; //$NON-NLS-1$ //$NON-NLS-2$
+		assert (min <= max) : "min must be lower or equal to max"; //$NON-NLS-1$
 		this.min = min;
 		this.max = max;
 	}

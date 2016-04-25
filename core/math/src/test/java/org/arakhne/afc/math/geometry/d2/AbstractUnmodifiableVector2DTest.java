@@ -129,9 +129,9 @@ public abstract class AbstractUnmodifiableVector2DTest extends AbstractUnmodifia
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public void perpendicularize() {
+	public void makeOrthogonal() {
 		Vector2D vector = createVector(1,2);
-		vector.perpendicularize();
+		vector.makeOrthogonal();
 	}
 
 	@Test
@@ -140,9 +140,9 @@ public abstract class AbstractUnmodifiableVector2DTest extends AbstractUnmodifia
 		Vector2D vector2 = createVector(0, 0);
 		Vector2D vector3 = createVector(-1, 1);
 
-		assertEpsilonEquals(Math.sqrt(5),vector.length());
-		assertEpsilonEquals(0,vector2.length());
-		assertEpsilonEquals(Math.sqrt(2),vector3.length());
+		assertEpsilonEquals(Math.sqrt(5),vector.getLength());
+		assertEpsilonEquals(0,vector2.getLength());
+		assertEpsilonEquals(Math.sqrt(2),vector3.getLength());
 	}
 
 	@Test
@@ -151,9 +151,9 @@ public abstract class AbstractUnmodifiableVector2DTest extends AbstractUnmodifia
 		Vector2D vector2 = createVector(0, 0);
 		Vector2D vector3 = createVector(Math.sqrt(2.) / 2., Math.sqrt(2.) / 2.);
 
-		assertEpsilonEquals(5,vector.lengthSquared());
-		assertEpsilonEquals(0,vector2.lengthSquared());
-		assertEpsilonEquals(1,vector3.lengthSquared());
+		assertEpsilonEquals(5,vector.getLengthSquared());
+		assertEpsilonEquals(0,vector2.getLengthSquared());
+		assertEpsilonEquals(1,vector3.getLengthSquared());
 	}
 
 	@Test(expected = UnsupportedOperationException.class)

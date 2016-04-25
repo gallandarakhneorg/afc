@@ -43,8 +43,8 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @since 13.0
  */
 public class Path2i
-	extends AbstractShape2i<Path2i>
-	implements Path2ai<Shape2i<?>, Path2i, PathElement2i, Point2i, Rectangle2i> {
+extends AbstractShape2i<Path2i>
+implements Path2ai<Shape2i<?>, Path2i, PathElement2i, Point2i, Rectangle2i> {
 
 	private static final long serialVersionUID = 2542453596839860853L;
 
@@ -121,7 +121,7 @@ public class Path2i
 	 * @param windingRule
 	 */
 	public Path2i(PathWindingRule windingRule) {
-		assert(windingRule != null);
+		assert (windingRule != null) : "Path winding rule must be not null"; //$NON-NLS-1$
 		this.types = new PathElementType[GROW_SIZE];
 		this.coords = new int[GROW_SIZE];
 		this.windingRule = windingRule;
@@ -132,7 +132,8 @@ public class Path2i
 	 * @param iterator
 	 */
 	public Path2i(PathWindingRule windingRule, Iterator<PathElement2i> iterator) {
-		assert(windingRule!=null);
+		assert (windingRule != null) : "Path winding rule must be not null"; //$NON-NLS-1$
+		assert (iterator != null) : "Iterator must be not null"; //$NON-NLS-1$
 		this.types = new PathElementType[GROW_SIZE];
 		this.coords = new int[GROW_SIZE];
 		this.windingRule = windingRule;
@@ -163,7 +164,7 @@ public class Path2i
 		}
 		return false;
 	}
-	
+
 	private void ensureSlots(boolean needMove, int n) {
 		if (needMove && this.numTypes==0) {
 			throw new IllegalStateException("missing initial moveto in path definition"); //$NON-NLS-1$
@@ -175,15 +176,18 @@ public class Path2i
 			this.coords = Arrays.copyOf(this.coords, this.coords.length+GROW_SIZE);
 		}
 	}
-	
+
 	@Pure
 	@Override
 	public boolean containsControlPoint(Point2D p) {
+		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
+		int px = p.ix();
+		int py = p.iy();
 		int x, y;
 		for(int i=0; i<this.numCoords;) {
 			x = this.coords[i++];
 			y = this.coords[i++];
-			if (x==p.ix() && y==p.iy()) {
+			if (x == px && y == py) {
 				return true;
 			}
 		}
@@ -255,20 +259,19 @@ public class Path2i
 		bb = this.graphicalBounds==null ? null : this.graphicalBounds.get();
 		if (bb!=null) bb.translate(dx, dy);
 	}
-	
+
 	@Override
 	public void transform(Transform2D transform) {
-		if (transform != null) {
-			Point2D p = new Point2i();
-			for(int i=0; i<this.numCoords;) {
-				p.set(this.coords[i], this.coords[i+1]);
-				transform.transform(p);
-				this.coords[i++] = p.ix();
-				this.coords[i++] = p.iy();
-			}
-			this.graphicalBounds = null;
-			this.logicalBounds = null;
+		assert (transform != null) : "Transformation must be not null"; //$NON-NLS-1$
+		Point2D p = new Point2i();
+		for(int i=0; i<this.numCoords;) {
+			p.set(this.coords[i], this.coords[i+1]);
+			transform.transform(p);
+			this.coords[i++] = p.ix();
+			this.coords[i++] = p.iy();
 		}
+		this.graphicalBounds = null;
+		this.logicalBounds = null;
 	}
 
 	@Override
@@ -286,7 +289,7 @@ public class Path2i
 		}
 		return this.isEmpty.booleanValue();
 	}
-	
+
 	@Override
 	public Rectangle2i toBoundingBox() {
 		Rectangle2i bb = this.graphicalBounds==null ? null : this.graphicalBounds.get();
@@ -303,6 +306,7 @@ public class Path2i
 
 	@Override
 	public void toBoundingBox(Rectangle2i box) {
+		assert (box != null) : "Rectangle must be not null"; //$NON-NLS-1$
 		Rectangle2i bb = this.graphicalBounds==null ? null : this.graphicalBounds.get();
 		if (bb==null) {
 			bb = new Rectangle2i();
@@ -447,6 +451,7 @@ public class Path2i
 
 	@Override
 	public void toBoundingBoxWithCtrlPoints(Rectangle2i box) {
+		assert (box != null) : "Rectangle must be not null"; //$NON-NLS-1$
 		Rectangle2i bb = this.logicalBounds==null ? null : this.logicalBounds.get();
 		if (bb==null) {
 			bb = new Rectangle2i();
@@ -458,7 +463,7 @@ public class Path2i
 
 	@Override
 	public int[] toIntArray(Transform2D transform) {
-		if (transform==null) {
+		if (transform == null || transform.isIdentity()) {
 			return Arrays.copyOf(this.coords, this.numCoords);
 		}
 		Point2i p = new Point2i();
@@ -476,7 +481,7 @@ public class Path2i
 	@Override
 	public float[] toFloatArray(Transform2D transform) {
 		float[] clone = new float[this.numCoords];
-		if (transform==null) {
+		if (transform == null || transform.isIdentity()) {
 			for(int i=0; i<this.numCoords; ++i) {
 				clone[i] = this.coords[i];
 			}
@@ -497,7 +502,7 @@ public class Path2i
 	@Override
 	public double[] toDoubleArray(Transform2D transform) {
 		double[] clone = new double[this.numCoords];
-		if (transform==null) {
+		if (transform == null || transform.isIdentity()) {
 			for(int i=0; i<this.numCoords; ++i) {
 				clone[i] = this.coords[i];
 			}
@@ -518,7 +523,7 @@ public class Path2i
 	@Override
 	public Point2D[] toPointArray(Transform2D transform) {
 		Point2D[] clone = new Point2D[this.numCoords/2];
-		if (transform==null) {
+		if (transform == null || transform.isIdentity()) {
 			for(int i=0, j=0; j<this.numCoords; ++i) {
 				clone[i] = new Point2i(
 						this.coords[j++],
@@ -671,11 +676,11 @@ public class Path2i
 			this.logicalBounds = null;
 		}
 	}
-	
+
 	@Override
-	public void setWindingRule(PathWindingRule r) {
-		assert(r!=null);
-		this.windingRule = r;
+	public void setWindingRule(PathWindingRule rule) {
+		assert (rule != null) : "Path winding rule must be not null"; //$NON-NLS-1$
+		this.windingRule = rule;
 	}
 
 	@Override
@@ -738,6 +743,7 @@ public class Path2i
 
 	@Override
 	public void set(Path2i s) {
+		assert (s != null) : "Path must be not null"; //$NON-NLS-1$
 		clear();
 		add(s.getPathIterator());
 	}

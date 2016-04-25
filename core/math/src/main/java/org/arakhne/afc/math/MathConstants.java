@@ -33,51 +33,55 @@ public interface MathConstants {
 
 	/** Inside zone according to the Cohen-Sutherland algorithm.
 	 */
-	public static final int COHEN_SUTHERLAND_INSIDE = 0; // 0000
+	public static final int COHEN_SUTHERLAND_INSIDE = 0;
+	
 	/** Left zone according to the Cohen-Sutherland algorithm.
 	 */
-	public static final int COHEN_SUTHERLAND_LEFT = 1;   // 0001
+	public static final int COHEN_SUTHERLAND_LEFT = 1;
+	
 	/** Right zone according to the Cohen-Sutherland algorithm.
 	 */
-	public static final int COHEN_SUTHERLAND_RIGHT = 2;  // 0010
+	public static final int COHEN_SUTHERLAND_RIGHT = 2;
+	
 	/** Bottom zone according to the Cohen-Sutherland algorithm.
 	 */
-	public static final int COHEN_SUTHERLAND_BOTTOM = 4; // 0100
+	public static final int COHEN_SUTHERLAND_BOTTOM = 4;
+
 	/** Top zone according to the Cohen-Sutherland algorithm.
 	 */
-	public static final int COHEN_SUTHERLAND_TOP = 8;    // 1000
+	public static final int COHEN_SUTHERLAND_TOP = 8;
 	
-	/** PI
+	/** PI.
 	 */
 	public static final double PI = Math.PI;
 
-	/** E
+	/** E.
 	 */
 	public static final double E = Math.E;
 
-	/** 2 * PI
+	/** 2 * PI.
 	 */
 	public static final double TWO_PI = 2. * PI;
 
-	/** PI + PI/2
+	/** PI + PI/2.
 	 */
 	public static final double ONE_HALF_PI = 1.5 * PI;
 
-	/** PI/2
+	/** PI/2.
 	 */
 	public static final double DEMI_PI = .5 * PI;
 
-	/** PI/4
+	/** PI/4.
 	 */
 	public static final double QUARTER_PI = .25 * PI;
 
-	/** 3*PI/4
+	/** 3*PI/4.
 	 */
 	public static final double THREE_QUARTER_PI = .75 * PI;
 
-	/** Square root of 2
+	/** Square root of 2.
 	 */
-	public static final double SQRT_2 = 1.*Math.sqrt(2.);
+	public static final double SQRT_2 = Math.sqrt(2.);
 
 	/**
 	 * Max sweeps in the Jacoby's algorithms.
@@ -93,12 +97,18 @@ public interface MathConstants {
 
 	/**
 	 * Max sweeps in the Ellipse's algorithms.
+	 *
+	 * @deprecated
 	 */
+	@Deprecated
 	public static final int ELLIPSE_MAX_SWEEPS = 32;
 
 	/** This is the maximale distance that
-	 *  permits to detect hits.
+	 * permits to detect hits.
+	 *
+	 * @deprecated
 	 */
+	@Deprecated
 	public static final double HIT_DISTANCE = 5 ;
 
 	/** The maximum distance that the line 
@@ -143,5 +153,21 @@ public interface MathConstants {
      * further processing is ever needed if an intersection occurs.
      */
     public static final int SHAPE_INTERSECTS = 0x80000000;
+
+	/**
+	 * Number precision for testing is a vector is a unit vector.
+	 *
+	 * <p>The approximation introduced by the vector's length computation make this
+	 * epsilon still mandatory.
+	 */
+	public static final double UNIT_VECTOR_EPSILON = 1E-5;
+
+	/**
+	 * Number precision for testing is the orthogonality of two unit vectors.
+	 *
+	 * <p>The approximation introduced by the vector's length computation make this
+	 * epsilon still mandatory.
+	 */
+	public static final double ORTHOGONAL_VECTOR_EPSILON = 1E-5;
 
 }

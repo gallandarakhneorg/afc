@@ -37,17 +37,83 @@ import org.eclipse.xtext.xbase.lib.Pure;
 public interface Vector2D extends Tuple2D<Vector2D> {
 
 	/**
-	 * Replies if the vector is unit.
+	 * Replies if the vector is a unit vector.
+	 *
+	 * <p>Due to the precision on floating-point computations, the test of unit-vector
+	 * must consider that the norm of the given vector is approximatively equal
+	 * to 1. The precision (i.e. the number of significant decimals) is given
+	 * by {@link MathConstants#UNIT_VECTOR_EPSILON}.
 	 * 
 	 * @param x is the X coordinate of the vector.
 	 * @param y is the Y coordinate of the vector.
 	 * @return <code>true</code> if the two given vectors are colinear.
 	 * @since 13.0
-	 * @see MathUtil#isEpsilonZero(double)
+	 * @see MathUtil#isEpsilonEqual(double, double, double)
+	 * @see MathConstants#UNIT_VECTOR_EPSILON
+	 * @see #isUnitVector(double, double, double)
 	 */
 	@Pure
 	static boolean isUnitVector(double x, double y) {
-		return MathUtil.isEpsilonEqual(x * x + y * y, 1.);
+		return isUnitVector(x, y, MathConstants.UNIT_VECTOR_EPSILON);
+	}
+
+	/**
+	 * Replies if the vector is a unit vector.
+	 *
+	 * <p>Due to the precision on floating-point computations, the test of unit-vector
+	 * must consider that the norm of the given vector is approximatively equal
+	 * to 1. The precision (i.e. the number of significant decimals) is given
+	 * by <code>epsilon</code>.
+	 * 
+	 * @param x is the X coordinate of the vector.
+	 * @param y is the Y coordinate of the vector.
+	 * @param epsilon the precision distance to assumed for equality.
+	 * @return <code>true</code> if the two given vectors are colinear.
+	 * @since 13.0
+	 * @see MathUtil#isEpsilonEqual(double, double, double)
+	 * @see #isUnitVector(double, double)
+	 */
+	@Pure
+	static boolean isUnitVector(double x, double y, double epsilon) {
+		return MathUtil.isEpsilonEqual(x * x + y * y, 1., epsilon);
+	}
+	
+	/**
+	 * Replies if the vectors are orthogonal vectors.
+	 *
+	 * <p>Due to the precision on floating-point computations, the test of orthogonality
+	 * is approximated. The default epsilon is {@link MathConstants#ORTHOGONAL_VECTOR_EPSILON}.
+	 * 
+	 * @param x1 is the X coordinate of the first unit vector.
+	 * @param y1 is the Y coordinate of the first unit vector.
+	 * @param x2 is the X coordinate of the second unit vector.
+	 * @param y2 is the Y coordinate of the second unit vector.
+	 * @return <code>true</code> if the two given vectors are colinear.
+	 * @since 13.0
+	 * @see MathUtil#isEpsilonEqual(double, double, double)
+	 * @see MathConstants#ORTHOGONAL_VECTOR_EPSILON
+	 * @see #isUnitVector(double, double, double)
+	 */
+	@Pure
+	static boolean isOrthogonal(double x1, double y1, double x2, double y2) {
+		return isOrthogonal(x1, y1, x2, y2, MathConstants.ORTHOGONAL_VECTOR_EPSILON);
+	}
+
+	/**
+	 * Replies if the vectors are orthogonal vectors.
+	 * 
+	 * @param x1 is the X coordinate of the first unit vector.
+	 * @param y1 is the Y coordinate of the first unit vector.
+	 * @param x2 is the X coordinate of the second unit vector.
+	 * @param y2 is the Y coordinate of the second unit vector.
+	 * @param epsilon the precision distance to assumed for equality.
+	 * @return <code>true</code> if the two given vectors are orthogonal.
+	 * @since 13.0
+	 * @see #isOrthogonal(double, double, double,  double)
+	 */
+	@Pure
+	static boolean isOrthogonal(double x1, double y1, double x2, double y2, double epsilon) {
+		return MathUtil.isEpsilonZero(dotProduct(x1, y1, x2, y2), epsilon);
 	}
 
 	/**
@@ -92,9 +158,9 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	 */
 	@Pure
 	static double perpProduct(double x1, double y1, double x2, double y2) {
-		return x1*y2 - x2*y1;
+		return x1 * y2 - x2 * y1;
 	}
-
+	
 	/** Compute the dot product of two vectors.
 	 * 
 	 * @param x1
@@ -105,7 +171,7 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	 */
 	@Pure
 	static double dotProduct(double x1, double y1, double x2, double y2) {
-		return x1*x2 + y1*y2;
+		return x1 * x2 + y1 * y2;
 	}
 
 	/**
@@ -203,6 +269,8 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	 * @param vector2 the second tuple
 	 */
 	default void add(Vector2D vector1, Vector2D vector2) {
+		assert (vector1 != null) : "First vector must be not be null"; //$NON-NLS-1$
+		assert (vector2 != null) : "Second vector must be not be null"; //$NON-NLS-1$
 		set(vector1.getX() + vector2.getX(),
 			vector1.getY() + vector2.getY());
 	}
@@ -213,6 +281,7 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	 * @param vector the other tuple
 	 */
 	default void add(Vector2D vector) {
+		assert (vector != null) : "Vector must be not be null"; //$NON-NLS-1$
 		set(vector.getX() + getX(),
 			vector.getY() + getY());
 	}
@@ -225,6 +294,8 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	 * @param t2 the tuple to be added
 	 */
 	default void scaleAdd(int scale, Vector2D t1, Vector2D t2) {
+		assert (t1 != null) : "First vector must be not be null"; //$NON-NLS-1$
+		assert (t2 != null) : "Second vector must be not be null"; //$NON-NLS-1$
 		set(scale * t1.getX() + t2.getX(),
 			scale * t1.getY() + t2.getY());
 	}
@@ -238,6 +309,8 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	 * @param vector2 the tuple to be added
 	 */
 	default void scaleAdd(double scale, Vector2D vector1, Vector2D vector2) {
+		assert (vector1 != null) : "First vector must be not be null"; //$NON-NLS-1$
+		assert (vector2 != null) : "Second vector must be not be null"; //$NON-NLS-1$
 		set(scale * vector1.getX() + vector2.getX(),
 			scale * vector1.getY() + vector2.getY());
 	}
@@ -250,6 +323,7 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	 * @param vector the tuple to be added
 	 */
 	default void scaleAdd(int scale, Vector2D vector) {
+		assert (vector != null) : "Vector must be not be null"; //$NON-NLS-1$
 		set(scale * getX() + vector.getX(),
 			scale * getY() + vector.getY());
 	}
@@ -262,6 +336,7 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	 * @param vector the tuple to be added
 	 */
 	default void scaleAdd(double scale, Vector2D vector) {
+		assert (vector != null) : "Vector must be not be null"; //$NON-NLS-1$
 		set(scale * getX() + vector.getX(),
 			scale * getY() + vector.getY());
 	}
@@ -275,6 +350,8 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	 * @param vector2 the second tuple
 	 */
 	default void sub(Vector2D vector1, Vector2D vector2) {
+		assert (vector1 != null) : "First vector must be not be null"; //$NON-NLS-1$
+		assert (vector2 != null) : "Second vector must be not be null"; //$NON-NLS-1$
 		set(vector1.getX() - vector2.getX(), vector1.getY() - vector2.getY());
 	}
 
@@ -286,6 +363,8 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	 * @param point2 the second tuple
 	 */
 	default void sub(Point2D point1, Point2D point2) {
+		assert (point1 != null) : "First point must be not be null"; //$NON-NLS-1$
+		assert (point2 != null) : "Second point must be not be null"; //$NON-NLS-1$
 		set(point1.getX() - point2.getX(), point1.getY() - point2.getY());
 	}
 
@@ -296,6 +375,7 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	 * @param vector the other tuple
 	 */
 	default void sub(Vector2D vector) {
+		assert (vector != null) : "Vector must be not be null"; //$NON-NLS-1$
 		set(getX() - vector.getX(), getY() - vector.getY());
 	}
 
@@ -307,6 +387,7 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	 */
 	@Pure
 	default double dot(Vector2D vector) {
+		assert (vector != null) : "Vector must be not be null"; //$NON-NLS-1$
 		return dotProduct(getX(), getY(), vector.getX(), vector.getY());
 	}
 	
@@ -323,15 +404,22 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	 */
 	@Pure
 	default double perp(Vector2D vector) {
+		assert (vector != null) : "Vector must be not be null"; //$NON-NLS-1$
 		return perpProduct(getX(), getY(), vector.getX(), vector.getY());
 	}
 
-	/** Change the coordinates of this vector to make it a perpendicular
+	/** Change the coordinates of this vector to make it an orthogonal
 	 * vector to the original coordinates.
 	 */
-	default void perpendicularize() {
+	default void makeOrthogonal() {
 		set(-getY(), getX());
 	}
+
+	/** Replies the orthogonal vector to this vector.
+	 *
+	 * @return the orthogonal vector.
+	 */
+	Vector2D toOrthogonalVector();
 
 	/**  
 	 * Returns the length of this vector.
@@ -339,7 +427,7 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	 * @return the length of this vector
 	 */  
 	@Pure
-	default double length() {
+	default double getLength() {
 		double x = getX();
 		double y = getY();
 		return Math.sqrt(x * x + y * y);
@@ -351,7 +439,7 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	 * @return the squared length of this vector
 	 */ 
 	@Pure 
-	default double lengthSquared() {
+	default double getLengthSquared() {
 		double x = getX();
 		double y = getY();
 		return x * x + y * y;
@@ -363,6 +451,7 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	 * @param vector the un-normalized vector
 	 */  
 	default void normalize(Vector2D vector) {
+		assert (vector != null) : "Vector must be not be null"; //$NON-NLS-1$
 		double x = vector.getX();
 		double y = vector.getY();
 		double sqlength = x * x + y * y;
@@ -401,7 +490,8 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	 */
 	@Pure
 	default double angle(Vector2D vector) {
-		double vDot = dotProduct(getX(), getY(), vector.getX(), vector.getY()) / ( length()*vector.length() );
+		assert (vector != null) : "Vector must be not be null"; //$NON-NLS-1$
+		double vDot = dotProduct(getX(), getY(), vector.getX(), vector.getY()) / ( getLength()*vector.getLength() );
 		if( vDot < -1.) vDot = -1.;
 		if( vDot >  1.) vDot =  1.;
 		return (Math.acos( vDot ));
@@ -427,6 +517,7 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	 */
 	@Pure
 	default double signedAngle(Vector2D vector) {
+		assert (vector != null) : "Vector must be not be null"; //$NON-NLS-1$
 		return signedAngle(getX(), getY(), vector.getX(), vector.getY());
 	}
 
@@ -451,14 +542,33 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	 * according to the current {@link CoordinateSystem2D}.
 	 *
 	 * @param angle is the rotation angle in radians.
+	 * @see #turn(double, Vector2D)
 	 * @see #turnLeft(double)
 	 * @see #turnRight(double)
 	 */
 	default void turn(double angle) {
+		turn(angle, this);
+	}
+
+	/** Turn the given vector about the given rotation angle, and set this
+	 * vector with the result.
+	 *
+	 * <p>The rotation is done according to the trigonometric coordinate.
+	 * A positive rotation angle corresponds to a left or right rotation
+	 * according to the current {@link CoordinateSystem2D}.
+	 *
+	 * @param angle is the rotation angle in radians.
+	 * @param vectorToTurn the vector to turn.
+	 * @see #turn(double)
+	 * @see #turnLeft(double)
+	 * @see #turnRight(double)
+	 */
+	default void turn(double angle, Vector2D vectorToTurn) {
+		assert (vectorToTurn != null) : "Vector must be not null"; //$NON-NLS-1$
 		double sin = Math.sin(angle);
 		double cos = Math.cos(angle);
-		double x =  cos * getX() - sin * getY(); 
-		double y =  sin * getX() + cos * getY();
+		double x =  cos * vectorToTurn.getX() - sin * vectorToTurn.getY(); 
+		double y =  sin * vectorToTurn.getX() + cos * vectorToTurn.getY();
 		set(x,y);
 	}
 
@@ -469,19 +579,37 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	 *
 	 * @param angle is the rotation angle in radians.
 	 * @see CoordinateSystem2D
+	 * @see #turnLeft(double, Vector2D)
 	 * @see #turn(double)
 	 * @see #turnRight(double)
 	 */
 	default void turnLeft(double angle) {
+		turnLeft(angle, this);
+	}
+
+	/** Turn the given vector on the left, and set this
+	 * vector with the result.
+	 *
+	 * <p>A positive rotation angle corresponds to a left or right rotation
+	 * according to the current {@link CoordinateSystem2D}.
+	 *
+	 * @param angle is the rotation angle in radians.
+	 * @param vectorToTurn the vector to turn.
+	 * @see CoordinateSystem2D
+	 * @see #turnLeft(double, Vector2D)
+	 * @see #turn(double)
+	 * @see #turnRight(double)
+	 */
+	default void turnLeft(double angle, Vector2D vectorToTurn) {
 		double sin = Math.sin(angle);
 		double cos = Math.cos(angle);
 		double x, y;
 		if (CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded()) {
-			x =  cos * getX() - sin * getY(); 
-			y =  sin * getX() + cos * getY();
+			x =  cos * vectorToTurn.getX() - sin * vectorToTurn.getY(); 
+			y =  sin * vectorToTurn.getX() + cos * vectorToTurn.getY();
 		} else {
-			x =  cos * getX() + sin * getY(); 
-			y = -sin * getX() + cos * getY();
+			x =  cos * vectorToTurn.getX() + sin * vectorToTurn.getY(); 
+			y = -sin * vectorToTurn.getX() + cos * vectorToTurn.getY();
 		}
 		set(x,y);
 	}
@@ -498,7 +626,22 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	 */
 	@Inline(value = "turnLeft(-($1))")
 	default void turnRight(double angle) {
-		turnLeft(-angle);
+		turnLeft(-angle, this);
+	}
+
+	/** Turn this vector on the right when the given rotation angle is positive.
+	 *
+	 * <p>A positive rotation angle corresponds to a left or right rotation
+	 * according to the current {@link CoordinateSystem2D}.
+	 *
+	 * @param angle is the rotation angle in radians.
+	 * @param vectorToTurn the vector to turn.
+	 * @see CoordinateSystem2D
+	 * @see #turn(double)
+	 * @see #turnLeft(double)
+	 */
+	default void turnRight(double angle, Vector2D vectorToTurn) {
+		turnLeft(-angle, vectorToTurn);
 	}
 
 	/** Replies the orientation angle on a trigonometric circle
@@ -516,7 +659,7 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 		return angle;
 	}
 	
-	/** Replies if this first is a unit vector.
+	/** Replies if this vector is a unit vector.
 	 * A unit vector has a length equal to 1.
 	 *
 	 * @return <code>true</code> if the vector has a length equal to 1.
@@ -527,22 +670,40 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 		return isUnitVector(getX(), getY());
 	}
 	
+	/** Replies if this vector is orthogonal to the given vector.
+	 *
+	 * @param vector the vector to compare to this vector.
+	 * @return <code>true</code> if the vectors are orthogonal.
+	 * <code>false</code> otherwise.
+	 */
+	@Pure
+	default boolean isOrthogonal(Vector2D vector) {
+		assert (vector != null) : "Vector must be not null"; //$NON-NLS-1$
+		return isOrthogonal(getX(), getY(), vector.getX(), vector.getY());
+	}
+
 	/** Change the length of the vector.
 	 * The direction of the vector is unchanged.
 	 *
 	 * @param newLength - the new length.
 	 */
 	default void setLength(double newLength) {
-		double nl = Math.max(0., newLength);
-		double l = length();
+		assert (newLength >= 0) : "Length must be positive or zero"; //$NON-NLS-1$
+		double l = getLength();
 		if (l != 0.) {
-			double f = nl / l;
+			double f = newLength / l;
 			set(getX() * f, getY() * f);
 		} else {
 			set(newLength, 0);
 		}
 	}
 
+	/** Replies the unit vector of this vector.
+	 *
+	 * @return the unit vector of this vector.
+	 */
+	Vector2D toUnitVector();
+	
 	/** Replies an unmodifiable copy of this vector.
 	 *
 	 * @return an unmodifiable copy.

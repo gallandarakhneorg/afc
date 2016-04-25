@@ -24,6 +24,7 @@ import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.afp.GeomFactory2afp;
+import org.arakhne.afc.math.geometry.d2.afp.MultiShape2afp;
 import org.arakhne.afc.math.geometry.d2.afp.Path2afp;
 
 /** Factory of geometrical elements.
@@ -42,6 +43,7 @@ public class GeomFactory2fp implements GeomFactory2afp<PathElement2fp, Point2fp,
 	
 	@Override
 	public Point2fp convertToPoint(Point2D p) {
+		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
 		try {
 			return (Point2fp) p;
 		} catch (Throwable exception) {
@@ -52,17 +54,20 @@ public class GeomFactory2fp implements GeomFactory2afp<PathElement2fp, Point2fp,
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends Vector2D> T convertToVector(Point2D p) {
+		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
 		return (T) new Vector2fp(p.getX(), p.getY());
 	}
 
 	@Override
 	public Point2fp convertToPoint(Vector2D v) {
+		assert (v != null) : "Vector must be not null"; //$NON-NLS-1$
 		return new Point2fp(v.getX(), v.getY());
 	}
 	
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends Vector2D> T convertToVector(Vector2D v) {
+		assert (v != null) : "Vector must be not null"; //$NON-NLS-1$
 		Vector2fp vv;
 		try {
 			vv = (Vector2fp) v;
@@ -96,6 +101,7 @@ public class GeomFactory2fp implements GeomFactory2afp<PathElement2fp, Point2fp,
 
 	@Override
 	public Path2afp<?, ?, PathElement2fp, Point2fp, ?> newPath(PathWindingRule rule) {
+		assert (rule != null) : "Path winding rule must be not null"; //$NON-NLS-1$
 		return new Path2fp(rule);
 	}
 	
@@ -106,6 +112,8 @@ public class GeomFactory2fp implements GeomFactory2afp<PathElement2fp, Point2fp,
 
 	@Override
 	public Rectangle2fp newBox(double x, double y, double width, double height) {
+		assert (width >= 0.) : "Width must be positive or zero"; //$NON-NLS-1$
+		assert (height >= 0.) : "Height must be positive or zero"; //$NON-NLS-1$
 		return new Rectangle2fp(x, y, width, height);
 	}
 	
@@ -136,6 +144,11 @@ public class GeomFactory2fp implements GeomFactory2afp<PathElement2fp, Point2fp,
 			double controlX2, double controlY2, double targetX, double targetY) {
 		return new PathElement2fp.CurvePathElement2fp(startX, startY, controlX1, controlY1,
 				controlX2, controlY2, targetX, targetY);
+	}
+
+	@Override
+	public MultiShape2afp<?, ?, ?, PathElement2fp, Point2fp, Rectangle2fp> newMultiShape() {
+		return new MultiShape2fp();
 	}
 
 }

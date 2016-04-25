@@ -58,6 +58,8 @@ public class Rectangle2i extends AbstractShape2i<Rectangle2i>
 	 * @param max is the max corner of the rectangle.
 	 */
 	public Rectangle2i(Point2D min, Point2D max) {
+		assert (min != null) : "Minimum corner must be not null"; //$NON-NLS-1$
+		assert (max != null) : "Maximum corner must be not null"; //$NON-NLS-1$
 		setFromCorners(min.ix(), min.iy(), max.ix(), max.iy());
 	}
 
@@ -68,6 +70,8 @@ public class Rectangle2i extends AbstractShape2i<Rectangle2i>
 	 * @param height
 	 */
 	public Rectangle2i(int x, int y, int width, int height) {
+		assert (width >= 0.) : "Width must be positive or zero"; //$NON-NLS-1$
+		assert (height >= 0.) : "Height must be positive or zero"; //$NON-NLS-1$
 		setFromCorners(x, y, x + width, y + height);
 	}
 	

@@ -26,7 +26,7 @@ import org.arakhne.afc.math.geometry.d2.ai.Circle2ai;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.IntegerPropertyBase;
+import javafx.beans.property.SimpleIntegerProperty;
 
 /** A circle with 2 integer FX properties.
  *
@@ -75,6 +75,7 @@ public class Circle2ifx
 	 * @param c
 	 */
 	public Circle2ifx(Circle2ai<?, ?, ?, ?, ?> c) {
+		assert (c != null) : "Circle must be not null"; //$NON-NLS-1$
 		set(c.getX(), c.getY(), c.getRadius());
 	}
 	
@@ -133,17 +134,7 @@ public class Circle2ifx
 	@Pure
 	public IntegerProperty xProperty() {
 		if (this.centerX == null) {
-			this.centerX = new IntegerPropertyBase(0) {
-				@Override
-				public String getName() {
-					return "x"; //$NON-NLS-1$
-				}
-				
-				@Override
-				public Object getBean() {
-					return Circle2ifx.this;
-				}
-			};
+			this.centerX = new SimpleIntegerProperty(this, "x"); //$NON-NLS-1$
 		}
 		return this.centerX;
 	}
@@ -161,17 +152,7 @@ public class Circle2ifx
 	@Pure
 	public IntegerProperty yProperty() {
 		if (this.centerY == null) {
-			this.centerY = new IntegerPropertyBase(0) {
-				@Override
-				public String getName() {
-					return "y"; //$NON-NLS-1$
-				}
-				
-				@Override
-				public Object getBean() {
-					return Circle2ifx.this;
-				}
-			};
+			this.centerY = new SimpleIntegerProperty(this, "y"); //$NON-NLS-1$
 		}
 		return this.centerY;
 	}
@@ -194,6 +175,7 @@ public class Circle2ifx
 
 	@Override
 	public void setRadius(int radius) {
+		assert (radius >= 0) : "Radius must be positive or zero"; //$NON-NLS-1$
 		radiusProperty().set(radius);
 	}
 
@@ -204,17 +186,7 @@ public class Circle2ifx
 	@Pure
 	public IntegerProperty radiusProperty() {
 		if (this.radius == null) {
-			this.radius = new IntegerPropertyBase(0) {
-				@Override
-				public String getName() {
-					return "radius"; //$NON-NLS-1$
-				}
-				
-				@Override
-				public Object getBean() {
-					return Circle2ifx.this;
-				}
-				
+			this.radius = new SimpleIntegerProperty(this, "radius") { //$NON-NLS-1$
 				@Override
 				protected void invalidated() {
 					if (get() < 0) {
@@ -228,6 +200,7 @@ public class Circle2ifx
 
 	@Override
 	public void set(int x, int y, int radius) {
+		assert (radius >= 0) : "Radius must be positive or zero"; //$NON-NLS-1$
 		xProperty().set(x);
 		yProperty().set(y);
 		radiusProperty().set(radius);

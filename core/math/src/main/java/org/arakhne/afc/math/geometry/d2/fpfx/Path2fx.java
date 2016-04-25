@@ -105,6 +105,10 @@ public class Path2fx
 	 */
 	private SoftReference<Rectangle2fx> logicalBounds = null;
 
+	/** Buffer for the squared length of the path.
+	 */
+	private Double length;
+	
 	/**
 	 */
 	public Path2fx() {
@@ -122,7 +126,7 @@ public class Path2fx
 	 * @param windingRule
 	 */
 	public Path2fx(PathWindingRule windingRule) {
-		assert(windingRule != null);
+		assert (windingRule != null) : "Path winding rule must be not null"; //$NON-NLS-1$
 		this.types = new PathElementType[GROW_SIZE];
 		this.coords = new double[GROW_SIZE];
 		this.windingRule = windingRule;
@@ -133,7 +137,8 @@ public class Path2fx
 	 * @param iterator
 	 */
 	public Path2fx(PathWindingRule windingRule, Iterator<PathElement2fx> iterator) {
-		assert(windingRule!=null);
+		assert (windingRule != null) : "Path winding rule must be not null"; //$NON-NLS-1$
+		assert (iterator != null) : "Iterator must be not null"; //$NON-NLS-1$
 		this.types = new PathElementType[GROW_SIZE];
 		this.coords = new double[GROW_SIZE];
 		this.windingRule = windingRule;
@@ -145,24 +150,6 @@ public class Path2fx
 	 */
 	public Path2fx(Path2afp<?, ?, ?, ?, ?> p) {
 		set(p);
-	}
-
-	private boolean buildLogicalBoundingBox(Rectangle2fx box) {
-		if (this.numCoords>0) {
-			double xmin = Double.POSITIVE_INFINITY;
-			double ymin = Double.POSITIVE_INFINITY;
-			double xmax = Double.NEGATIVE_INFINITY;
-			double ymax = Double.NEGATIVE_INFINITY;
-			for(int i=0; i<this.numCoords; i+= 2) {
-				if (this.coords[i]<xmin) xmin = this.coords[i];
-				if (this.coords[i+1]<ymin) ymin = this.coords[i+1];
-				if (this.coords[i]>xmax) xmax = this.coords[i];
-				if (this.coords[i+1]>ymax) ymax = this.coords[i+1];
-			}
-			box.setFromCorners(xmin,  ymin, xmax, ymax);
-			return true;
-		}
-		return false;
 	}
 	
 	private void ensureSlots(boolean needMove, int n) {
@@ -180,6 +167,7 @@ public class Path2fx
 	@Pure
 	@Override
 	public boolean containsControlPoint(Point2D p) {
+		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
 		double x, y;
 		for(int i=0; i<this.numCoords;) {
 			x = this.coords[i++];
@@ -204,6 +192,7 @@ public class Path2fx
 		this.isCurved = Boolean.FALSE;
 		this.graphicalBounds = null;
 		this.logicalBounds = null;
+		this.length = null;
 	}
 
 	@Pure
@@ -259,17 +248,17 @@ public class Path2fx
 	
 	@Override
 	public void transform(Transform2D transform) {
-		if (transform != null) {
-			Point2D p = new Point2fx();
-			for(int i=0; i<this.numCoords;) {
-				p.set(this.coords[i], this.coords[i+1]);
-				transform.transform(p);
-				this.coords[i++] = p.getX();
-				this.coords[i++] = p.getY();
-			}
-			this.graphicalBounds = null;
-			this.logicalBounds = null;
+		assert (transform != null) : "Transformation must be not null"; //$NON-NLS-1$
+		Point2D p = new Point2fx();
+		for(int i=0; i<this.numCoords;) {
+			p.set(this.coords[i], this.coords[i+1]);
+			transform.transform(p);
+			this.coords[i++] = p.getX();
+			this.coords[i++] = p.getY();
 		}
+		this.graphicalBounds = null;
+		this.logicalBounds = null;
+		this.length = null;
 	}
 
 	@Override
@@ -304,6 +293,7 @@ public class Path2fx
 
 	@Override
 	public void toBoundingBox(Rectangle2fx box) {
+		assert (box != null) : "Rectangle must be not null"; //$NON-NLS-1$
 		Rectangle2fx bb = this.graphicalBounds==null ? null : this.graphicalBounds.get();
 		if (bb==null) {
 			bb = new Rectangle2fx();
@@ -440,7 +430,9 @@ public class Path2fx
 		Rectangle2fx bb = this.logicalBounds==null ? null : this.logicalBounds.get();
 		if (bb==null) {
 			bb = new Rectangle2fx();
-			buildLogicalBoundingBox(bb);
+			Path2afp.computeDrawableElementBoundingBox(
+					getPathIterator(),
+					bb);
 			this.logicalBounds = new SoftReference<>(bb);
 		}
 		return bb;
@@ -448,10 +440,13 @@ public class Path2fx
 
 	@Override
 	public void toBoundingBoxWithCtrlPoints(Rectangle2fx box) {
+		assert (box != null) : "Rectangle must be not null"; //$NON-NLS-1$
 		Rectangle2fx bb = this.logicalBounds==null ? null : this.logicalBounds.get();
 		if (bb==null) {
 			bb = new Rectangle2fx();
-			buildLogicalBoundingBox(bb);
+			Path2afp.computeDrawableElementBoundingBox(
+					getPathIterator(),
+					bb);
 			this.logicalBounds = new SoftReference<>(bb);
 		}
 		box.set(bb);
@@ -460,7 +455,7 @@ public class Path2fx
 	@Override
 	public int[] toIntArray(Transform2D transform) {
 		int[] clone = new int[this.numCoords];
-		if (transform==null) {
+		if (transform == null || transform.isIdentity()) {
 			for(int i=0; i<this.numCoords; ++i) {
 				clone[i] = (int) this.coords[i];
 			}
@@ -480,7 +475,7 @@ public class Path2fx
 	@Override
 	public float[] toFloatArray(Transform2D transform) {
 		float[] clone = new float[this.numCoords];
-		if (transform==null) {
+		if (transform == null || transform.isIdentity()) {
 			for(int i=0; i<this.numCoords; ++i) {
 				clone[i] = (float) this.coords[i];
 			}
@@ -499,7 +494,7 @@ public class Path2fx
 
 	@Override
 	public double[] toDoubleArray(Transform2D transform) {
-		if (transform==null) {
+		if (transform == null || transform.isIdentity()) {
 			return Arrays.copyOf(this.coords, this.numCoords);
 		}
 		Point2fx p = new Point2fx();
@@ -516,7 +511,7 @@ public class Path2fx
 	@Override
 	public Point2D[] toPointArray(Transform2D transform) {
 		Point2D[] clone = new Point2D[this.numCoords/2];
-		if (transform==null) {
+		if (transform == null || transform.isIdentity()) {
 			for(int i=0, j=0; j<this.numCoords; ++i) {
 				clone[i] = new Point2fx(
 						this.coords[j++],
@@ -588,6 +583,7 @@ public class Path2fx
 			this.isEmpty = null;
 			this.graphicalBounds = null;
 			this.logicalBounds = null;
+			this.length = null;
 		}
 	}
 
@@ -598,7 +594,7 @@ public class Path2fx
 			this.isPolygon = Boolean.FALSE;
 		}
 		this.isMultipart = Boolean.valueOf(this.isMultipart == Boolean.TRUE);
-		if (this.numTypes>0 && this.types[this.numTypes-1]==PathElementType.MOVE_TO) {
+		if (this.numTypes>0 && this.types[this.numTypes-1] == PathElementType.MOVE_TO) {
 			this.coords[this.numCoords-2] = x;
 			this.coords[this.numCoords-1] = y;
 		}
@@ -610,6 +606,7 @@ public class Path2fx
 		}
 		this.graphicalBounds = null;
 		this.logicalBounds = null;
+		this.length = null;
 	}
 
 	@Override
@@ -621,6 +618,7 @@ public class Path2fx
 		this.isEmpty = null;
 		this.graphicalBounds = null;
 		this.logicalBounds = null;
+		this.length = null;
 	}
 
 	@Override
@@ -636,6 +634,7 @@ public class Path2fx
 		this.isCurved = Boolean.TRUE;
 		this.graphicalBounds = null;
 		this.logicalBounds = null;
+		this.length = null;
 	}
 
 	@Override
@@ -653,6 +652,7 @@ public class Path2fx
 		this.isCurved = Boolean.TRUE;
 		this.graphicalBounds = null;
 		this.logicalBounds = null;
+		this.length = null;
 	}
 
 	@Override
@@ -667,12 +667,13 @@ public class Path2fx
 			this.coords[this.numCoords-1] = y;
 			this.graphicalBounds = null;
 			this.logicalBounds = null;
+			this.length = null;
 		}
 	}
 	
 	@Override
 	public void setWindingRule(PathWindingRule r) {
-		assert(r!=null);
+		assert (r != null) : "Path winding rule must be not null"; //$NON-NLS-1$
 		this.windingRule = r;
 	}
 
@@ -690,6 +691,7 @@ public class Path2fx
 					System.arraycopy(this.coords, i+2, this.coords, i, this.numCoords);
 					System.arraycopy(this.types, j+1, this.types, j, this.numTypes);
 					this.isEmpty = null;
+					this.length = null;
 					return true;
 				}
 				i += 2;
@@ -705,6 +707,7 @@ public class Path2fx
 					System.arraycopy(this.types, j+1, this.types, j, this.numTypes);
 					this.isEmpty = null;
 					this.isPolyline = null;
+					this.length = null;
 					return true;
 				}
 				i += 6;
@@ -719,6 +722,7 @@ public class Path2fx
 					System.arraycopy(this.types, j+1, this.types, j, this.numTypes);
 					this.isEmpty = null;
 					this.isPolyline = null;
+					this.length = null;
 					return true;
 				}
 				i += 4;
@@ -736,6 +740,7 @@ public class Path2fx
 
 	@Override
 	public void set(Path2fx s) {
+		assert (s != null) : "Shape must be not null"; //$NON-NLS-1$
 		clear();
 		add(s.getPathIterator());
 	}
@@ -748,6 +753,14 @@ public class Path2fx
 	@Override
 	public PathElementType getPathElementTypeAt(int index) {
 		return this.types[index];
+	}
+
+	@Override
+	public double getLength() {
+		if (this.length == null) {
+			this.length = Double.valueOf(Path2afp.computeLength(getPathIterator()));
+		}
+		return this.length.doubleValue();
 	}
 
 }

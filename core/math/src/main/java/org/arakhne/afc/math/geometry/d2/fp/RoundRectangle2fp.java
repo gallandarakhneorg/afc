@@ -129,19 +129,70 @@ public class RoundRectangle2fp extends AbstractRectangularShape2fp<RoundRectangl
 
 	@Override
 	public void setArcWidth(double a) {
-		this.arcWidth = Math.max(0, a);
+		assert (a >= 0) : "Arc width must be positive or zero"; //$NON-NLS-1$
+		this.arcWidth = Math.min(getWidth() / 2, a);
 	}
 
 	@Override
 	public void setArcHeight(double a) {
-		this.arcHeight = Math.max(0,  a);
+		assert (a >= 0) : "Arc height must be positive or zero"; //$NON-NLS-1$
+		this.arcHeight = Math.min(getHeight() / 2, a);
+	}
+	
+	@Override
+	public void setFromCorners(double x1, double y1, double x2, double y2) {
+		super.setFromCorners(x1, y1, x2, y2);
+		ensureValidArcWidth();
+		ensureValidArcHeight();
 	}
 
 	@Override
 	public void setFromCorners(double x1, double y1, double x2, double y2, double arcWidth, double arcHeight) {
-		this.arcWidth = Math.max(0, arcWidth);
-		this.arcHeight = Math.max(0,  arcHeight);
 		super.setFromCorners(x1, y1, x2, y2);
+		setArcWidth(arcWidth);
+		setArcHeight(arcHeight);
+	}
+	
+	/** Ensure that the size of the arc width is valid, i.e. not too big or too small.
+	 */
+	protected void ensureValidArcWidth() {
+		double halfWidth = getWidth() / 2;
+		if (this.arcWidth > halfWidth) {
+			this.arcWidth = halfWidth;
+		}
+	}
+	
+	/** Ensure that the size of the arc height is valid, i.e. not too big or too small.
+	 */
+	protected void ensureValidArcHeight() {
+		double halfHeight = getHeight() / 2;
+		if (this.arcHeight > halfHeight) {
+			this.arcHeight = halfHeight;
+		}
+	}
+
+	@Override
+	public void setMinX(double x) {
+		super.setMinX(x);
+		ensureValidArcWidth();
+	}
+	
+	@Override
+	public void setMaxX(double x) {
+		super.setMaxX(x);
+		ensureValidArcWidth();
+	}
+
+	@Override
+	public void setMinY(double y) {
+		super.setMinY(y);
+		ensureValidArcHeight();
+	}
+	
+	@Override
+	public void setMaxY(double y) {
+		super.setMaxY(y);
+		ensureValidArcHeight();
 	}
 
 }

@@ -25,18 +25,11 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
 import java.util.Arrays;
-import java.util.Iterator;
 
 import org.arakhne.afc.math.AbstractMathTestCase;
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2DTestRule;
-import org.arakhne.afc.math.geometry.d2.ImmutableVector2D;
-import org.arakhne.afc.math.geometry.d2.PathIterator2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
-import org.arakhne.afc.math.geometry.d2.Shape2D;
-import org.arakhne.afc.math.geometry.d2.Transform2D;
-import org.arakhne.afc.math.geometry.d2.UnmodifiablePoint2D;
-import org.arakhne.afc.math.geometry.d2.UnmodifiableVector2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.junit.After;
 import org.junit.Before;
@@ -44,7 +37,8 @@ import org.junit.Rule;
 import org.junit.Test;
 
 @SuppressWarnings("all")
-public abstract class AbstractShape2aiTest<T extends Shape2ai<?, ?, ?, ?, ?>> extends AbstractMathTestCase {
+public abstract class AbstractShape2aiTest<T extends Shape2ai<?, ?, ?, ?, B>,
+		B extends Rectangle2ai<?, ?, ?, ?, B>> extends AbstractMathTestCase implements TestShapeFactory<B> {
 	
 	@Rule
 	public CoordinateSystem2DTestRule csTestRule = new CoordinateSystem2DTestRule();
@@ -53,13 +47,20 @@ public abstract class AbstractShape2aiTest<T extends Shape2ai<?, ?, ?, ?, ?>> ex
 	 */
 	protected T shape;
 	
+	/** Factory of shapes.
+	 */
+	protected TestShapeFactory<B> factory;
+	
 	/**
 	 * @throws Exception
 	 */
 	@Before
 	public void setUp() throws Exception {
+		this.factory = createFactory();
 		this.shape = createShape();
 	}
+	
+	protected abstract TestShapeFactory<B> createFactory();
 	
 	/** Create the shape to test.
 	 * 
@@ -67,6 +68,30 @@ public abstract class AbstractShape2aiTest<T extends Shape2ai<?, ?, ?, ?, ?>> ex
 	 */
 	protected abstract T createShape();
 	
+	public final Segment2ai<?, ?, ?, ?, B> createSegment(int x1, int y1, int x2, int y2) {
+		return this.factory.createSegment(x1, y1, x2, y2);
+	}
+	
+	public final B createRectangle(int x, int y, int width, int height) {
+		return this.factory.createRectangle(x, y, width, height);
+	}
+
+	public final Circle2ai<?, ?, ?, ?, B> createCircle(int x, int y, int radius) {
+		return this.factory.createCircle(x, y, radius);
+	}
+	
+	public final Point2D createPoint(int x, int y) {
+		return this.factory.createPoint(x, y);
+	}
+
+	public final Vector2D createVector(int x, int y) {
+		return this.factory.createVector(x, y);
+	}
+
+	public final Path2ai<?, ?, ?, ?, B> createPath() {
+		return this.factory.createPath();
+	}
+
 	/**
 	 * @throws Exception
 	 */
