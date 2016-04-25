@@ -51,6 +51,7 @@ import org.arakhne.afc.math.continous.object2d.Point2f;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("all")
 public abstract class AbstractAttributeProviderTest<T extends AttributeProvider> extends AbstractAttrTestCase {
 
 	/**

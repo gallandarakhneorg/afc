@@ -194,7 +194,9 @@ public interface AttributeCollection extends AttributeProvider {
 	 * @param name is the name of the attribute to set.
 	 * @param value is the value to store.
 	 * @return the changed attribute or <code>null</code>
+	 * @deprecated
 	 */
+	@Deprecated
 	public Attribute setAttribute(String name, Image value);
 
 	/** Set the value for the given attribute.
@@ -210,7 +212,9 @@ public interface AttributeCollection extends AttributeProvider {
 	 * @param name is the name of the attribute to set.
 	 * @param value is the value to store.
 	 * @return the changed attribute or <code>null</code>
+	 * @deprecated
 	 */
+	@Deprecated
 	public Attribute setAttribute(String name, Color value);
 
 	/** Set the value for the given attribute.

@@ -55,6 +55,7 @@ import org.arakhne.afc.ui.vector.VectorToolkit;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("all")
 public class AttributeTest extends AbstractAttrTestCase {
 
 	/**
@@ -66,7 +67,7 @@ public class AttributeTest extends AbstractAttrTestCase {
 			attr.getValue();
 			fail("getValue: the exception AttributeNotInitializedException was not thrown for "+type); //$NON-NLS-1$
 		}
-		catch(AttributeException _) {
+		catch(AttributeException exception) {
 			// expected case
 		}
 
@@ -74,7 +75,7 @@ public class AttributeTest extends AbstractAttrTestCase {
 			attr.getBoolean();
 			fail("getBoolean: the exception AttributeNotInitializedException was not thrown for "+type); //$NON-NLS-1$
 		}
-		catch(AttributeException _) {
+		catch(AttributeException exception) {
 			// expected case
 		}
 
@@ -82,7 +83,7 @@ public class AttributeTest extends AbstractAttrTestCase {
 			attr.getColor();
 			fail("getColor: the exception AttributeNotInitializedException was not thrown for "+type); //$NON-NLS-1$
 		}
-		catch(AttributeException _) {
+		catch(AttributeException exception) {
 			// expected case
 		}
 
@@ -90,7 +91,7 @@ public class AttributeTest extends AbstractAttrTestCase {
 			attr.getDate();
 			fail("getDate: the exception AttributeNotInitializedException was not thrown for "+type); //$NON-NLS-1$
 		}
-		catch(AttributeException _) {
+		catch(AttributeException exception) {
 			// expected case
 		}
 
@@ -98,7 +99,7 @@ public class AttributeTest extends AbstractAttrTestCase {
 			attr.getImage();
 			fail("getImage: the exception AttributeNotInitializedException was not thrown for "+type); //$NON-NLS-1$
 		}
-		catch(AttributeException _) {
+		catch(AttributeException exception) {
 			// expected case
 		}
 
@@ -106,7 +107,7 @@ public class AttributeTest extends AbstractAttrTestCase {
 			attr.getInteger();
 			fail("getInteger: the exception AttributeNotInitializedException was not thrown for "+type); //$NON-NLS-1$
 		}
-		catch(AttributeException _) {
+		catch(AttributeException exception) {
 			// expected case
 		}
 
@@ -115,10 +116,10 @@ public class AttributeTest extends AbstractAttrTestCase {
 			if (type.isBaseType())
 				fail("getJavaObject: the exception AttributeNotInitializedException was not thrown for "+type); //$NON-NLS-1$
 		}
-		catch(AttributeNotInitializedException _) {
+		catch(AttributeNotInitializedException exception) {
 			// expected case
 		}
-		catch(InvalidAttributeTypeException _) {
+		catch(InvalidAttributeTypeException exception) {
 			if (attr.isObjectValue())
 				fail("getJavaObject: unexpected exception InvalidAttributeTypeException for "+type); //$NON-NLS-1$
 		}
@@ -127,7 +128,7 @@ public class AttributeTest extends AbstractAttrTestCase {
 			attr.getPoint();
 			fail("getPoint: the exception AttributeNotInitializedException was not thrown for "+type); //$NON-NLS-1$
 		}
-		catch(AttributeException _) {
+		catch(AttributeException exception) {
 			// expected case
 		}
 
@@ -135,7 +136,7 @@ public class AttributeTest extends AbstractAttrTestCase {
 			attr.getPoint3D();
 			fail("getPoint3D: the exception AttributeNotInitializedException was not thrown for "+type); //$NON-NLS-1$
 		}
-		catch(AttributeException _) {
+		catch(AttributeException exception) {
 			// expected case
 		}
 
@@ -143,7 +144,7 @@ public class AttributeTest extends AbstractAttrTestCase {
 			attr.getPoint3D();
 			fail("getPoint3D: the exception AttributeNotInitializedException was not thrown for "+type); //$NON-NLS-1$
 		}
-		catch(AttributeException _) {
+		catch(AttributeException exception) {
 			// expected case
 		}
 
@@ -151,7 +152,7 @@ public class AttributeTest extends AbstractAttrTestCase {
 			attr.getPolyline3D();
 			fail("getPolyline3D: the exception AttributeNotInitializedException was not thrown for "+type); //$NON-NLS-1$
 		}
-		catch(AttributeException _) {
+		catch(AttributeException exception) {
 			// expected case
 		}
 
@@ -159,7 +160,7 @@ public class AttributeTest extends AbstractAttrTestCase {
 			attr.getReal();
 			fail("getReal: the exception AttributeNotInitializedException was not thrown for "+type); //$NON-NLS-1$
 		}
-		catch(AttributeException _) {
+		catch(AttributeException exception) {
 			// expected case
 		}
 
@@ -167,10 +168,10 @@ public class AttributeTest extends AbstractAttrTestCase {
 			attr.getString();
 			fail("getString: the exception AttributeNotInitializedException was not thrown for "+type); //$NON-NLS-1$
 		}
-		catch(AttributeNotInitializedException _) {
+		catch(AttributeNotInitializedException exception) {
 			// expected case
 		}
-		catch(InvalidAttributeTypeException _) {
+		catch(InvalidAttributeTypeException exception) {
 			if (!attr.isObjectValue())
 				fail("getString: unexpected exception InvalidAttributeTypeException for "+type); //$NON-NLS-1$
 		}
@@ -179,7 +180,7 @@ public class AttributeTest extends AbstractAttrTestCase {
 			attr.getTimestamp();
 			fail("getTimestamp: the exception AttributeNotInitializedException was not thrown for "+type); //$NON-NLS-1$
 		}
-		catch(AttributeException _) {
+		catch(AttributeException exception) {
 			// expected case
 		}
 
@@ -187,7 +188,7 @@ public class AttributeTest extends AbstractAttrTestCase {
 			attr.getURI();
 			fail("getURI: the exception AttributeNotInitializedException was not thrown for "+type); //$NON-NLS-1$
 		}
-		catch(AttributeException _) {
+		catch(AttributeException exception) {
 			// expected case
 		}
 
@@ -195,7 +196,7 @@ public class AttributeTest extends AbstractAttrTestCase {
 			attr.getURL();
 			fail("getURL: the exception AttributeNotInitializedException was not thrown for "+type); //$NON-NLS-1$
 		}
-		catch(AttributeException _) {
+		catch(AttributeException exception) {
 			// expected case
 		}
 
@@ -203,7 +204,7 @@ public class AttributeTest extends AbstractAttrTestCase {
 			attr.getUUID();
 			fail("getUUID: the exception AttributeNotInitializedException was not thrown for "+type); //$NON-NLS-1$
 		}
-		catch(AttributeException _) {
+		catch(AttributeException exception) {
 			// expected case
 		}
 }
@@ -247,10 +248,10 @@ public class AttributeTest extends AbstractAttrTestCase {
 			attr.getValue();
 			fail("the exception AttributeNotInitializedException was not thrown"); //$NON-NLS-1$
 		}
-		catch(AttributeNotInitializedException _) {
+		catch(AttributeNotInitializedException exception) {
 			// expected case
 		}
-		catch(InvalidAttributeTypeException _) {
+		catch(InvalidAttributeTypeException exception) {
 			fail("unexpected exception InvalidAttributeTypeException"); //$NON-NLS-1$
 		}
 
@@ -258,7 +259,7 @@ public class AttributeTest extends AbstractAttrTestCase {
 			attr.getBoolean();
 			fail("the exception AttributeNotInitializedException was not thrown"); //$NON-NLS-1$
 		}
-		catch(AttributeException _) {
+		catch(AttributeException exception) {
 			// expected case
 		}
 	}

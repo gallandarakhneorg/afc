@@ -60,7 +60,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 	
 	private static final long serialVersionUID = 4362736589775617590L;
 	
-	private Map<String,Object> heap = new TreeMap<String,Object>(new AttributeNameStringComparator());
+	private Map<String,Object> heap = new TreeMap<>(new AttributeNameStringComparator());
 	
 	/** Make a deep copy of this object and replies the copy.
 	 * 
@@ -69,7 +69,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 	@Override
 	public HeapAttributeCollection clone() {
 		HeapAttributeCollection clone = (HeapAttributeCollection)super.clone();
-		clone.heap = new TreeMap<String,Object>(new AttributeNameStringComparator());
+		clone.heap = new TreeMap<>(new AttributeNameStringComparator());
 		clone.heap.putAll(this.heap);
 		return clone;
 	}
@@ -120,7 +120,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 	 */
 	@Override
 	public void setAttributes(Map<String, Object> content) {
-		setAttributesInternal(new TreeMap<String,Object>(content));
+		setAttributesInternal(new TreeMap<>(content));
 	}
 	
 	/**
@@ -128,7 +128,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 	 */
 	@Override
 	public void setAttributes(AttributeProvider content) throws AttributeException {
-		Map<String,Object> newAttributes = new TreeMap<String,Object>();
+		Map<String,Object> newAttributes = new TreeMap<>();
 		content.toMap(newAttributes);
 		setAttributesInternal(newAttributes);
 	}
@@ -197,7 +197,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 	 */
 	@Override
 	public Collection<Attribute> getAllAttributes() {
-		ArrayList<Attribute> list = new ArrayList<Attribute>(getAttributeCount());
+		ArrayList<Attribute> list = new ArrayList<>(getAttributeCount());
 		String name;
 		AttributeImpl newAttr;
 		Object rawValue;
@@ -220,7 +220,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 	 */
 	@Override
 	public Map<AttributeType,Collection<Attribute>> getAllAttributesByType() {
-		TreeMap<AttributeType,Collection<Attribute>> map = new TreeMap<AttributeType,Collection<Attribute>>();
+		TreeMap<AttributeType,Collection<Attribute>> map = new TreeMap<>();
 		AttributeType type;
 		Attribute attr;
 		Object value;
@@ -231,7 +231,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 				value = unprotectNull(value);
 				Collection<Attribute> list = map.get(type);
 				if (list==null) {
-					list = new ArrayList<Attribute>();
+					list = new ArrayList<>();
 					map.put(type, list);
 				}
 				attr = new AttributeImpl(entry.getKey());
@@ -605,6 +605,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 	 * {@inheritDoc}
 	 */
 	@Override
+	@Deprecated
 	public Attribute setAttribute(String name, Image value) {
 		assert(name!=null);
 
@@ -656,6 +657,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 	 * {@inheritDoc}
 	 */
 	@Override
+	@Deprecated
 	public Attribute setAttribute(String name, Color value) {
 		assert(name!=null);
 

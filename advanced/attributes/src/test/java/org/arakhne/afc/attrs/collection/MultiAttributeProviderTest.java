@@ -45,6 +45,7 @@ import org.arakhne.afc.attrs.collection.MultiAttributeProvider;
  * @mavenartifactid $ArtifactId$
  * @since 4.0
  */
+@SuppressWarnings("all")
 public class MultiAttributeProviderTest extends AbstractAttrTestCase {
 
 	private MultiAttributeProvider container;

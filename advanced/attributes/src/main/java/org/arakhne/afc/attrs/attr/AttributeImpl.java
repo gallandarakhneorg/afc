@@ -30,8 +30,8 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.UUID;
 
-import org.arakhne.afc.math.generic.Point2D;
-import org.arakhne.afc.math.generic.Point3D;
+import org.arakhne.afc.math.geometry.d2.Point2D;
+import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.ui.vector.Color;
 import org.arakhne.afc.ui.vector.Image;
 
@@ -171,7 +171,9 @@ public class AttributeImpl extends AttributeValueImpl implements Attribute {
 	/**
 	 * @param name is the name of the attribute
 	 * @param value is the vaule of this new attribute.
+	 * @deprecated No replacement
 	 */
+	@Deprecated
 	public AttributeImpl(String name, Color value) {
 		super(value);
 		this.name = name;
@@ -207,7 +209,9 @@ public class AttributeImpl extends AttributeValueImpl implements Attribute {
 	/**
 	 * @param name is the name of the attribute
 	 * @param value is the vaule of this new attribute.
+	 * @deprecated No replacement
 	 */
+	@Deprecated
 	public AttributeImpl(String name, Image value) {
 		super(value);
 		this.name = name;

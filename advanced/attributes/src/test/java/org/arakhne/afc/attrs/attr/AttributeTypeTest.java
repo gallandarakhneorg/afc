@@ -56,6 +56,7 @@ import org.arakhne.afc.ui.vector.VectorToolkit;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("all")
 public class AttributeTypeTest extends AbstractAttrTestCase {
 
 	/** 

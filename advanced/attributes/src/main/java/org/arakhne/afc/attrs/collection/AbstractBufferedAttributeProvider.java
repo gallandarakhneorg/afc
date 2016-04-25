@@ -48,7 +48,7 @@ public abstract class AbstractBufferedAttributeProvider extends AbstractAttribut
 	
 	private static final long serialVersionUID = -4231000555346674004L;
 	
-	private transient Map<String,AttributeValue> cache = new SoftValueTreeMap<String,AttributeValue>();
+	private transient Map<String,AttributeValue> cache = new SoftValueTreeMap<>();
 	
 	/** Make a deep copy of this object and replies the copy.
 	 * 
@@ -57,7 +57,7 @@ public abstract class AbstractBufferedAttributeProvider extends AbstractAttribut
 	@Override
 	public AbstractBufferedAttributeProvider clone() {
 		AbstractBufferedAttributeProvider clone = (AbstractBufferedAttributeProvider)super.clone();
-		clone.cache = new SoftValueTreeMap<String,AttributeValue>(this.cache);
+		clone.cache = new SoftValueTreeMap<>(this.cache);
 		return clone;
 	}
 
@@ -102,7 +102,7 @@ public abstract class AbstractBufferedAttributeProvider extends AbstractAttribut
 	 */
 	@Override
 	public Collection<Attribute> getAllAttributes() {
-		ArrayList<Attribute> list = new ArrayList<Attribute>(getAttributeCount());
+		ArrayList<Attribute> list = new ArrayList<>(getAttributeCount());
 		Attribute newAttr;
 		for(String name : getAllAttributeNames()) {
 			if (name!=null) {
@@ -110,7 +110,7 @@ public abstract class AbstractBufferedAttributeProvider extends AbstractAttribut
 					newAttr = new AttributeImpl(name, extractValueFor(name));
 					list.add(newAttr);
 				}
-				catch(AttributeException _) {
+				catch(AttributeException exception) {
 					//
 				}
 			}
@@ -123,7 +123,7 @@ public abstract class AbstractBufferedAttributeProvider extends AbstractAttribut
 	 */
 	@Override
 	public Map<AttributeType,Collection<Attribute>> getAllAttributesByType() {
-		TreeMap<AttributeType,Collection<Attribute>> map = new TreeMap<AttributeType,Collection<Attribute>>();
+		TreeMap<AttributeType,Collection<Attribute>> map = new TreeMap<>();
 		Attribute newAttr;
 		for(String name : getAllAttributeNames()) {
 			if (name!=null) {
@@ -131,12 +131,12 @@ public abstract class AbstractBufferedAttributeProvider extends AbstractAttribut
 					newAttr = new AttributeImpl(name, extractValueFor(name));
 					Collection<Attribute> list = map.get(newAttr.getType());
 					if (list==null) {
-						list = new ArrayList<Attribute>();
+						list = new ArrayList<>();
 						map.put(newAttr.getType(), list);
 					}
 					list.add(newAttr);
 				}
-				catch(AttributeException _) {
+				catch(AttributeException exception) {
 					//
 				}
 			}
@@ -153,7 +153,7 @@ public abstract class AbstractBufferedAttributeProvider extends AbstractAttribut
 		try {
 			return new AttributeValueImpl(extractValueFor(name));
 		}
-		catch(AttributeException _) {
+		catch(AttributeException exception) {
 			//
 		}
 		return null;
@@ -168,7 +168,7 @@ public abstract class AbstractBufferedAttributeProvider extends AbstractAttribut
 		try {
 			value = new AttributeValueImpl(extractValueFor(name));
 		}
-		catch(AttributeException _) {
+		catch(AttributeException exception) {
 			value = default_value;
 		}
 		return value;
@@ -182,7 +182,7 @@ public abstract class AbstractBufferedAttributeProvider extends AbstractAttribut
 		try {
 			return new AttributeImpl(name,extractValueFor(name));
 		}
-		catch(AttributeException _) {
+		catch(AttributeException exception) {
 			//
 		}
 		return null;

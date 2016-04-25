@@ -42,6 +42,7 @@ import org.arakhne.afc.attrs.collection.AttributeCollection;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("all")
 public abstract class AbstractAttributeCollectionTest<T extends AttributeCollection> extends AbstractAttributeProviderTest<T> {
 
 	private Attribute[] newValues;

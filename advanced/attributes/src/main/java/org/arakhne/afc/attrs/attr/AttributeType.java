@@ -37,12 +37,11 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.arakhne.afc.math.continous.object2d.Point2f;
-import org.arakhne.afc.math.continous.object3d.Point3f;
-import org.arakhne.afc.math.generic.Point2D;
-import org.arakhne.afc.math.generic.Point3D;
-import org.arakhne.afc.math.generic.Tuple2D;
-import org.arakhne.afc.math.generic.Tuple3D;
+import org.arakhne.afc.math.geometry.d2.Point2D;
+import org.arakhne.afc.math.geometry.d2.Tuple2D;
+import org.arakhne.afc.math.geometry.d2.fp.Point2fp;
+import org.arakhne.afc.math.geometry.d3.Point3D;
+import org.arakhne.afc.math.geometry.d3.Tuple3D;
 import org.arakhne.afc.ui.vector.Color;
 import org.arakhne.afc.ui.vector.Colors;
 import org.arakhne.afc.ui.vector.Image;
@@ -57,6 +56,7 @@ import org.arakhne.afc.vmutil.locale.Locale;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("deprecation")
 public enum AttributeType {
 
 	/** Represents an enumeration.
@@ -96,7 +96,9 @@ public enum AttributeType {
 	INET_ADDRESS,
 
 	/** Represents a color value.
+	 * @deprecated No replacement
 	 */
+	@Deprecated
 	COLOR,
 
 	/** Represents an URL.
@@ -130,7 +132,9 @@ public enum AttributeType {
 	POLYLINE,
 
 	/** Represents an image value.
+	 * @deprecated No replacement
 	 */
+	@Deprecated
 	IMAGE,
 		
 	/** Represents a string.
@@ -215,7 +219,7 @@ public enum AttributeType {
 	 */
 	public static AttributeType fromInteger(int type) {
 		AttributeType[] vals = values();
-		if ((vals!=null)&&(type>=0)&&(type<vals.length))
+		if ((type>=0)&&(type<vals.length))
 			return vals[type];
 		return OBJECT;
 	}
@@ -272,8 +276,10 @@ public enum AttributeType {
 			if (Calendar.class.isAssignableFrom(type)) return DATE;
 	
 			if (Tuple3D.class.isAssignableFrom(type)) return POINT3D;
+			if (org.arakhne.afc.math.generic.Tuple3D.class.isAssignableFrom(type)) return POINT3D;
 
 			if (Tuple2D.class.isAssignableFrom(type)) return POINT;
+			if (org.arakhne.afc.math.generic.Tuple2D.class.isAssignableFrom(type)) return POINT;
 
 			if (Color.class.isAssignableFrom(type)) return COLOR;
 
@@ -291,7 +297,9 @@ public enum AttributeType {
 			if (type.isArray()) {
 				Class<?> elementType = type.getComponentType();
 				if (Point2D.class.isAssignableFrom(elementType)) return POLYLINE;
+				if (org.arakhne.afc.math.generic.Point2D.class.isAssignableFrom(elementType)) return POLYLINE;
 				if (Point3D.class.isAssignableFrom(elementType)) return POLYLINE3D;
+				if (org.arakhne.afc.math.generic.Point3D.class.isAssignableFrom(elementType)) return POLYLINE3D;
 			}
 
 
@@ -331,9 +339,9 @@ public enum AttributeType {
 		case TIMESTAMP:
 			return new Timestamp(System.currentTimeMillis());
 		case POINT3D:
-			return new Point3f();
+			return null; //TODO: Fix code: new Point3fp();
 		case POINT:
-			return new Point2f();
+			return new Point2fp();
 		case COLOR:
 			return Colors.BLACK;
 		case UUID:
@@ -354,7 +362,7 @@ public enum AttributeType {
 			try {
 				return InetAddress.getLocalHost();
 			}
-			catch (UnknownHostException _) {
+			catch (UnknownHostException exception) {
 				return null;
 			}
 		case ENUMERATION:
@@ -523,14 +531,14 @@ public enum AttributeType {
 			// Possible ClassCastException
 			if (obj==null) throw new NullPointerException();
 			if (obj instanceof Tuple3D && !(obj instanceof Point3D)) {
-				return new Point3f((Tuple3D)obj);
+				return null; // TODO: Fix code: new Point3f((Tuple3D)obj);
 			}
 			return Point3D.class.cast(obj);
 		case POINT:
 			// Possible ClassCastException
 			if (obj==null) throw new NullPointerException();
 			if (obj instanceof Tuple2D && !(obj instanceof Point2D)) {
-				return new Point2f((Tuple2D)obj);
+				return new Point2fp((Tuple2D)obj);
 			}
 			return Point2D.class.cast(obj);
 		case COLOR:
@@ -610,7 +618,7 @@ public enum AttributeType {
 					int length = Array.getLength(obj);
 					Point3D[] tab = new Point3D[length];
 					for(int i=0; i<length; ++i)
-						tab[i] = new Point3f((Tuple3D)Array.get(obj, i));
+						tab[i] = null; //FIXME: Fi code: new Point3fp((Tuple3D)Array.get(obj, i));
 					return tab;
 				}
 			}
@@ -625,7 +633,7 @@ public enum AttributeType {
 					int length = Array.getLength(obj);
 					Point2D[] tab = new Point2D[length];
 					for(int i=0; i<length; ++i)
-						tab[i] = new Point2f((Tuple2D)Array.get(obj, i));
+						tab[i] = new Point2fp((Tuple2D)Array.get(obj, i));
 					return tab;
 				}
 			}
@@ -646,7 +654,7 @@ public enum AttributeType {
 				try {
 					return InetAddress.getByName(url.getHost());
 				}
-				catch (UnknownHostException _) {
+				catch (UnknownHostException exception) {
 					//
 				}
 			}
@@ -655,7 +663,7 @@ public enum AttributeType {
 				try {
 					return InetAddress.getByName(uri.getHost());
 				}
-				catch (UnknownHostException _) {
+				catch (UnknownHostException exception) {
 					//
 				}
 			}
@@ -667,13 +675,13 @@ public enum AttributeType {
 						try {
 							return InetAddress.getByName(ipStr.substring(index+1));
 						}
-						catch (UnknownHostException _) {
+						catch (UnknownHostException exception) {
 							//
 						}
 					}
 					return InetAddress.getByName(ipStr);
 				}
-				catch (UnknownHostException _) {
+				catch (UnknownHostException exception) {
 					//
 				}
 			}
@@ -693,7 +701,7 @@ public enum AttributeType {
 							 if (v!=null) return v;
 						}
 					}
-					catch(Throwable _) {
+					catch(Throwable exception) {
 						//
 					}
 				}
