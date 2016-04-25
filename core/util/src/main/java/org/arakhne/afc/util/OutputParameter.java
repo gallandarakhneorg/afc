@@ -54,7 +54,7 @@ package org.arakhne.afc.util;
  * </code></pre>
  *
  * @param <T> is the type of the value to output with this object.
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

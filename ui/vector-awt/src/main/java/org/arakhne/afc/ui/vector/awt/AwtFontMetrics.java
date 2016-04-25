@@ -29,11 +29,13 @@ import org.arakhne.afc.ui.vector.FontMetrics;
 
 /** AWT implementation of the generic font metrics.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 class AwtFontMetrics implements FontMetrics, NativeWrapper {
 
 	private final java.awt.FontMetrics fontMetrics;

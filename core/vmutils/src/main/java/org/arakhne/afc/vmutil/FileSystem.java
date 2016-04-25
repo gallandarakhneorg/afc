@@ -53,7 +53,7 @@ import java.util.zip.ZipOutputStream;
 
 /** An utility class that permits to deal with filenames.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -2782,7 +2782,7 @@ public class FileSystem {
 
     /** Hook to recursively delete files on JVM exit. 
 	 * 
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

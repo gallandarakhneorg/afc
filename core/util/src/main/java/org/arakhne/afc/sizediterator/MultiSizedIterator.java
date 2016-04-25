@@ -29,7 +29,7 @@ import java.util.NoSuchElementException;
  * a collection of sized iterators.
  * 
  * @param <M> is the type of element.
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

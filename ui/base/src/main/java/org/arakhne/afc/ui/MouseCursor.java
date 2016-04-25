@@ -22,11 +22,13 @@ package org.arakhne.afc.ui;
 
 /** Mouse cursors. 
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public enum MouseCursor {
 
 	/** Default mouse cursor.

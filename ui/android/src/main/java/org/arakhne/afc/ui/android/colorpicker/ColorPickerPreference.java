@@ -37,11 +37,13 @@ import android.view.View;
  * AFC compliance.
  * 
  * @author $Author: yukuku$
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public class ColorPickerPreference extends Preference {
 
 	private int rgb;
@@ -186,7 +188,7 @@ public class ColorPickerPreference extends Preference {
 	 * AFC compliance.
 	 * 
 	 * @author $Author: yukuku$
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $Name$ $Revision$ $Date$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

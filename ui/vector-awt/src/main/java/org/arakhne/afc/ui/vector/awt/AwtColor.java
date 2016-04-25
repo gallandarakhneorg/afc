@@ -25,11 +25,13 @@ import org.arakhne.afc.ui.vector.Color;
 
 /** AWT implementation of the generic color.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 class AwtColor extends java.awt.Color implements Color, NativeWrapper {
 
 	private static final long serialVersionUID = 6487706440529938798L;

@@ -33,15 +33,17 @@ import android.widget.Button;
 
 /** A button for picking a color.  
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public class ColorButton extends Button {
 
 	private final Listener eventListener = new Listener();
-	private final ListenerCollection<ColorChangeListener> listeners = new ListenerCollection<ColorChangeListener>();
+	private final ListenerCollection<ColorChangeListener> listeners = new ListenerCollection<>();
 	private Integer color = null;
 	private boolean enableDefaultColor = true;
 
@@ -142,7 +144,7 @@ public class ColorButton extends Button {
 	}
 
 	/**
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $Name$ $Revision$ $Date$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

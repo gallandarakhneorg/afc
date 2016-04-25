@@ -24,7 +24,7 @@ import java.io.FilenameFilter;
 
 /** File filter.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

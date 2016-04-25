@@ -26,7 +26,7 @@ import java.util.NoSuchElementException;
 /** Iterator which is disabling the {@code remove()} function.
  * 
  * @param <OBJ> is the type of the objects to iterator on.
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

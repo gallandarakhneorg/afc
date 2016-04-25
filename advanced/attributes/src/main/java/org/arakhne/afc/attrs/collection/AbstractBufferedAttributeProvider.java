@@ -39,7 +39,7 @@ import org.arakhne.afc.references.SoftValueTreeMap;
  * This class implements an abstract attribute container that use
  * a memory cache.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

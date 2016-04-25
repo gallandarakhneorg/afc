@@ -42,7 +42,7 @@ import java.util.Set;
  *
  * @param <E> is the type of the values.
  * @param <R> is the type of the references.
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -182,7 +182,7 @@ public abstract class AbstractReferencedSet<E,R extends Reference<E>> extends Ab
 	}
 
 	/**
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -256,7 +256,7 @@ public abstract class AbstractReferencedSet<E,R extends Reference<E>> extends Ab
 	 * 
 	 * @param <E> is the type of the values.
 	 * @param <R> is the type of the references.
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

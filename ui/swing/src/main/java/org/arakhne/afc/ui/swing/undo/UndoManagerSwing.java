@@ -33,16 +33,18 @@ import org.arakhne.afc.util.ListenerCollection;
 /** Implementation of a {@link org.arakhne.afc.ui.undo.UndoManager} based on the
  * standard Swing {@link UndoManager}.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public class UndoManagerSwing extends UndoManager implements org.arakhne.afc.ui.undo.UndoManager {
 
 	private static final long serialVersionUID = 4936381853383834466L;
 
-	private final ListenerCollection<UndoListener> listeners = new ListenerCollection<UndoListener>();
+	private final ListenerCollection<UndoListener> listeners = new ListenerCollection<>();
 
 	/**
 	 */
@@ -152,7 +154,7 @@ public class UndoManagerSwing extends UndoManager implements org.arakhne.afc.ui.
 	}
 
 	/**
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $Name$ $Revision$ $Date$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

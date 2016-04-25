@@ -27,7 +27,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 /** 3D tuple.
  * 
  * @param <TT> is the type of data that can be added or substracted to this tuple.
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

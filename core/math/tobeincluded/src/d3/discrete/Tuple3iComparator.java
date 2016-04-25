@@ -28,7 +28,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 /**
  * Comparator of Tuple3i.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

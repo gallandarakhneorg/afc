@@ -30,7 +30,7 @@ import java.io.FileNotFoundException;
  * These informations are extracted by the Java or the native
  * libraries from <code>arakhneVmutils</code>.  
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

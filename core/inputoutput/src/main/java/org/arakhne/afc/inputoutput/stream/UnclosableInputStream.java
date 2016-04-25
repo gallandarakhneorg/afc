@@ -26,7 +26,7 @@ import java.io.InputStream;
 
 /** An input stream that is ignoring all request to {@link #close()}.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

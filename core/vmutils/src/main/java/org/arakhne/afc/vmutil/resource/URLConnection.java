@@ -41,7 +41,7 @@ import org.arakhne.afc.vmutil.Resources;
  * Supported header fields are the same as the real resource URL
  * (basicaly, file or jar protocols).
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @author $Author: willaume$
  * @version $FullVersion$
  * @mavengroupid $GroupId$

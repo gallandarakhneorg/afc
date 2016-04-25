@@ -39,7 +39,7 @@ import java.net.URL;
  * retreive and load native libraries. When it is
  * disable, it ignore all the loading queries. 
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

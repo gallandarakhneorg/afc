@@ -27,7 +27,7 @@ import java.util.Iterator;
 /** Iterator on collection.
  * 
  * @param <OBJ> is the type of the objects to iterator on.
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

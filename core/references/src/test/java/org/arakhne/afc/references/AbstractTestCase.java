@@ -38,7 +38,7 @@ import org.junit.Assert;
 
 /** Test case with utility functions.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid org.arakhne.afc
  * @mavenartifactid arakhneRefs

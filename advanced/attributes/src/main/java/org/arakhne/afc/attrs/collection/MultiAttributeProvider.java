@@ -58,7 +58,7 @@ import org.arakhne.afc.references.SoftValueTreeMap;
  * 		</ol></li>
  * </ol>
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -329,7 +329,7 @@ public class MultiAttributeProvider extends AbstractAttributeProvider {
 	 * that may be marked with an indicators that many
 	 * values are possibles for the attribute.
 	 * 
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

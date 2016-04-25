@@ -24,7 +24,7 @@ import java.io.FileFilter;
 /**
  * File filter for HTML Java file.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

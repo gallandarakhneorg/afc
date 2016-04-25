@@ -30,11 +30,13 @@ import org.arakhne.afc.ui.selection.Selectable;
 
 /** Describes the interaction event.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public class SelectableInteractionEvent extends EventObject {
 
 	private static final long serialVersionUID = -1039544916556548342L;

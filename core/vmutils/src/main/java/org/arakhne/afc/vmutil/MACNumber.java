@@ -34,7 +34,7 @@ import java.util.regex.Pattern;
 
 /** A MACNumber is the unique number associated to a network interface.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

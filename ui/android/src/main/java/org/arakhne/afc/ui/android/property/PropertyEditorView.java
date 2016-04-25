@@ -52,11 +52,13 @@ import android.widget.LinearLayout;
  * package (see {@link Context#getPackageName()}) and in the package of
  * this ApkLib (see {@link R}).   
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public abstract class PropertyEditorView extends LinearLayout {
 
 	private final List<String> packageNames;

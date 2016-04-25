@@ -1323,7 +1323,7 @@ public interface Path2ai<
 	
 	/** Private API for Path2ai.
 	 * 
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $Name$ $Revision$ $Date$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

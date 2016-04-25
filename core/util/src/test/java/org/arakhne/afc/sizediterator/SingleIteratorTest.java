@@ -35,7 +35,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 /** 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

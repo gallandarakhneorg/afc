@@ -22,11 +22,13 @@ package org.arakhne.afc.ui.vector;
 
 /** Default system colors.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public class Colors {
 	
     /**

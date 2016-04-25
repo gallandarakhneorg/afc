@@ -32,7 +32,7 @@ import java.util.TreeMap;
  * on the fly in HTML files.
  * Supported macros are described in {@link AbstractReplaceMojo}.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -54,7 +54,7 @@ public class ReplaceHtmlMojo extends AbstractReplaceMojo {
 
 	/** Set of the files inside the file system.
 	 */
-	private final Map<File,Collection<File>> bufferedFiles = new TreeMap<File,Collection<File>>();
+	private final Map<File,Collection<File>> bufferedFiles = new TreeMap<>();
 
 	/**
      * {@inheritDoc}
@@ -76,7 +76,7 @@ public class ReplaceHtmlMojo extends AbstractReplaceMojo {
 		for(File htmlDir : htmlDirs) {
 			Collection<File> textBasedFiles = this.bufferedFiles.get(htmlDir);
 			if (textBasedFiles==null) {
-				textBasedFiles = new ArrayList<File>();
+				textBasedFiles = new ArrayList<>();
 	    		if ( htmlDir.isDirectory() ) {
 	    			// Search for .html files
 	    			findFiles(htmlDir, new PropertyFileFilter(), textBasedFiles);

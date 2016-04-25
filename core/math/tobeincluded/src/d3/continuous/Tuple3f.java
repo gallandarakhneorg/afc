@@ -27,7 +27,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 /** 3D tuple with 3 floating-point numbers.
  * 
  * @param <T> is the implementation type of the tuple.
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @author $Author: hjaffali$
  * @version $FullVersion$
  * @mavengroupid $GroupId$

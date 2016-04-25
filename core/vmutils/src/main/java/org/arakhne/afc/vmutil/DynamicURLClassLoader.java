@@ -56,7 +56,7 @@ import sun.security.util.SecurityConstants;
 /** This class loader permits to load classes from
  * a set of classpaths.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -555,7 +555,7 @@ public class DynamicURLClassLoader extends SecureClassLoader {
     }
 
     /** 
-     * @author $Author: galland$
+     * @author $Author: sgalland$
      * @version $FullVersion$
      * @mavengroupid $GroupId$
      * @mavenartifactid $ArtifactId$

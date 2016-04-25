@@ -26,7 +26,7 @@ import java.util.Comparator;
 /**
  * This comparator permits to compare two objects according to there references.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

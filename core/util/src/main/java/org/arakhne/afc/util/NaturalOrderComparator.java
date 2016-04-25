@@ -27,7 +27,7 @@ import java.util.Comparator;
  * the elements must implements {@link Comparable}
  * 
  * @param <OBJ> is the type of the objects to compare to.
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

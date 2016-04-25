@@ -23,11 +23,13 @@ package org.arakhne.afc.ui.actionmode ;
 
 /** This interface represents a listener on the mode events.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public class ActionModeAdapter implements ActionModeListener {
 
 	/** {@inheritDoc}

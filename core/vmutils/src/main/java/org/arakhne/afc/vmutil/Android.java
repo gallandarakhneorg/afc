@@ -31,7 +31,7 @@ import java.lang.reflect.Method;
  * The stored informations are used by the arakhneVmutil
  * tools to proceed several tasks, such as {@link OperatingSystem}. 
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -269,7 +269,7 @@ public class Android {
 	 * This exception is thrown when the {@link Android} attributes
 	 * are not correctly initialized.
 	 *
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

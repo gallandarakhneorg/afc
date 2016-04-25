@@ -29,11 +29,13 @@ import org.arakhne.afc.ui.event.PointerEvent;
 
 /** Implementation of a pointer event for action modes.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public class ActionPointerEvent implements PointerEvent {
 
 	private static final long serialVersionUID = -6024600428453074472L;

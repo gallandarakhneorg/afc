@@ -24,7 +24,7 @@ import org.arakhne.afc.vmutil.locale.Locale;
 
 /** File filter for all bitmap-based images.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

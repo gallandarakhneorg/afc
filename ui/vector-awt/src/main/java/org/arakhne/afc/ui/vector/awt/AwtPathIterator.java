@@ -30,11 +30,13 @@ import org.arakhne.afc.math.generic.PathWindingRule;
 
 /** AWT implementation of the generic path iterator.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 class AwtPathIterator implements PathIterator, NativeWrapper {
 
 	private final PathIterator2f pathIterator;

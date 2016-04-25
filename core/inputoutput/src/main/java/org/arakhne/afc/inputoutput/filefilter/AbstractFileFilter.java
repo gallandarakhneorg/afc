@@ -27,7 +27,7 @@ import org.arakhne.afc.vmutil.FileSystem;
 /** Abstract implementation of a file filter that may be
  * used in all the standard Java tools.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

@@ -28,7 +28,7 @@ import java.lang.ref.WeakReference;
  * compared on its pointed value.
  * 
  * @param <T> is the type of the referenced object.
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

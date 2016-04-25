@@ -32,7 +32,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @param <I> is the type of the iterator used to obtain the elements of the path.
  * @param <P> is the type of the points.
  * @param <B> is the type of the bounding boxes.
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

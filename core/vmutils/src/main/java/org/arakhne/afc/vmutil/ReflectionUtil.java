@@ -40,7 +40,7 @@ import java.util.regex.Pattern;
  * This utility class provides a way to extend the reflection API and
  * the Class class with autoboxing-compliant functions.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

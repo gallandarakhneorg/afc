@@ -29,7 +29,7 @@ import javafx.beans.property.SimpleDoubleProperty;
 
 /** 3D axis-aligned box with DoubleProperty points.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @author $Author: hjaffali$
  * @version $FullVersion$
  * @mavengroupid $GroupId$

@@ -26,7 +26,7 @@ import java.net.URL;
  * Indicates that the object implementing this interface
  * owns a external resource.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

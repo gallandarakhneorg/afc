@@ -35,11 +35,13 @@ import android.view.View.OnLongClickListener;
  * This manager tries to detected scaling, move and click gestures and
  * avoid to generate unecessary events.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 class TouchManager {
 
 	/** Constant that is the identifier representing of an invalid pointer
@@ -76,7 +78,7 @@ class TouchManager {
 	 */
 	public TouchManager(ZoomableView view) {
 		assert(view!=null);
-		this.view = new WeakReference<ZoomableView>(view);
+		this.view = new WeakReference<>(view);
 		this.scaleGestureManager = new ScaleGestureManager();
 		this.scaleGestureDetector = new ScaleGestureDetector(view.getContext(), this.scaleGestureManager);
 		this.moveGestureDetector = new MoveGestureManager();
@@ -208,7 +210,7 @@ class TouchManager {
 	/** This class provides listening functions on the View click and
 	 * long click events.
 	 * 
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $Name$ $Revision$ $Date$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -284,7 +286,7 @@ class TouchManager {
 	 * It invoked {@link TouchManager#onScale(float, float, float)} when
 	 * a scaling gesture is detected.
 	 * 
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $Name$ $Revision$ $Date$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -313,7 +315,7 @@ class TouchManager {
 
 	/** This class detects move gestures.
 	 * 
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $Name$ $Revision$ $Date$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

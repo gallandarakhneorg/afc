@@ -27,7 +27,7 @@ import java.util.EventObject;
 /**
  * Task progression event.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

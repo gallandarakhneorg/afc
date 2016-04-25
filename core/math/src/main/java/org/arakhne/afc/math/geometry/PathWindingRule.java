@@ -24,7 +24,7 @@ package org.arakhne.afc.math.geometry;
 
 /** The winding rule to determine the interior of a path.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

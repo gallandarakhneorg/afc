@@ -53,11 +53,13 @@ import android.widget.TextView;
 
 /** Abstract implementation of a property editor inside a fragment. 
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public abstract class TablePropertyEditorView extends PropertyEditorView {
 
 	/** Replies the field type that is supporting the given Java type.
@@ -115,7 +117,7 @@ public abstract class TablePropertyEditorView extends PropertyEditorView {
 	}
 
 	private TableLayout tableLayout;
-	private final Map<String,FieldType> fieldTypes = new TreeMap<String,FieldType>();
+	private final Map<String,FieldType> fieldTypes = new TreeMap<>();
 
 	/** Create a view to edit properties with only the android
 	 * application package and this ApkLib package in the list
@@ -233,10 +235,10 @@ public abstract class TablePropertyEditorView extends PropertyEditorView {
 	protected final <T> ComboEditor<T> getComboEditor(String fieldId, Class<T> type) {
 		View v = findViewWithTag(fieldId);
 		if (v instanceof ColorButton) {
-			return new ComboEditor<T>((ColorButton)v); 
+			return new ComboEditor<>((ColorButton)v); 
 		}
 		if (v instanceof TextView) {
-			return new ComboEditor<T>((TextView)v); 
+			return new ComboEditor<>((TextView)v); 
 		}
 		return null;
 	}
@@ -637,14 +639,14 @@ public abstract class TablePropertyEditorView extends PropertyEditorView {
 			// Spinner
 			Spinner editView = new Spinner(getContext());
 			editView.setTag(fieldId);
-			ArrayAdapter<T> adapter = new ArrayAdapter<T>(getContext(), android.R.layout.simple_spinner_item, choices);
+			ArrayAdapter<T> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, choices);
 			adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 			editView.setAdapter(adapter);
 			row.addView(editView, new TableRow.LayoutParams(
 					android.view.ViewGroup.LayoutParams.MATCH_PARENT,
 					android.view.ViewGroup.LayoutParams.WRAP_CONTENT,
 					1f));
-			editor = new ComboEditor<T>(editView, adapter);
+			editor = new ComboEditor<>(editView, adapter);
 		}
 		else {
 			TextView textView = new TextView(getContext());
@@ -653,7 +655,7 @@ public abstract class TablePropertyEditorView extends PropertyEditorView {
 					android.view.ViewGroup.LayoutParams.MATCH_PARENT,
 					android.view.ViewGroup.LayoutParams.WRAP_CONTENT,
 					1f));
-			editor = new ComboEditor<T>(textView);
+			editor = new ComboEditor<>(textView);
 		}
 
 		editor.setValue(value);
@@ -671,7 +673,7 @@ public abstract class TablePropertyEditorView extends PropertyEditorView {
 	 */
 	@Override
 	public Map<String,Object> getEditedProperties() {
-		Map<String,Object> properties = new TreeMap<String,Object>();
+		Map<String,Object> properties = new TreeMap<>();
 		for(Entry<String,FieldType> entry : this.fieldTypes.entrySet()) {
 			switch(entry.getValue()) {
 			case BOOLEAN:
@@ -768,7 +770,7 @@ public abstract class TablePropertyEditorView extends PropertyEditorView {
 
 	/** Wrapper to a TextEdit or a TextView depending the editable flag.
 	 * 
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $Name$ $Revision$ $Date$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -823,7 +825,7 @@ public abstract class TablePropertyEditorView extends PropertyEditorView {
 
 	/** Wrapper to a CheckBox or a ImageView depending the editable flag.
 	 * 
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $Name$ $Revision$ $Date$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -900,7 +902,7 @@ public abstract class TablePropertyEditorView extends PropertyEditorView {
 
 	/** Wrapper to a ColorButton or a TextView depending the editable flag.
 	 * 
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $Name$ $Revision$ $Date$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -967,7 +969,7 @@ public abstract class TablePropertyEditorView extends PropertyEditorView {
 	/** Wrapper to a Spinner or a TextView depending the editable flag.
 	 * 
 	 * @param <T> is the type of the values in the combo.
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $Name$ $Revision$ $Date$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -1034,7 +1036,7 @@ public abstract class TablePropertyEditorView extends PropertyEditorView {
 
 	/** Types of fields. 
 	 * 
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $Name$ $Revision$ $Date$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

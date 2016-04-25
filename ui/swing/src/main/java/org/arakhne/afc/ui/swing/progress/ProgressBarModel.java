@@ -44,11 +44,13 @@ import org.arakhne.afc.progress.Progression;
  * ProgressBarModel pbm = new ProgressBarModel(pb);
  * </code></pre>
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public class ProgressBarModel extends DefaultProgression implements BoundedRangeModel {
 
 	/** Create a wrapped for the given task progression model that may
@@ -115,7 +117,7 @@ public class ProgressBarModel extends DefaultProgression implements BoundedRange
 	public ProgressBarModel(JProgressBar progressBar, int value, int min, int max, boolean adjusting, boolean percentInTooltip) {
     	super(value, min, max, adjusting);
     	this.percentInTooltip = percentInTooltip;
-    	this.progressBar = progressBar==null ? null : new WeakReference<JProgressBar>(progressBar);
+    	this.progressBar = progressBar==null ? null : new WeakReference<>(progressBar);
     	sharedInit(progressBar);
 	}
 
@@ -131,7 +133,7 @@ public class ProgressBarModel extends DefaultProgression implements BoundedRange
 	public ProgressBarModel(JProgressBar progressBar, int value, int min, int max) {
     	super(value, min, max);
     	this.percentInTooltip = true;
-    	this.progressBar = progressBar==null ? null : new WeakReference<JProgressBar>(progressBar);
+    	this.progressBar = progressBar==null ? null : new WeakReference<>(progressBar);
     	sharedInit(progressBar);
 	}
 
@@ -146,7 +148,7 @@ public class ProgressBarModel extends DefaultProgression implements BoundedRange
 	public ProgressBarModel(JProgressBar progressBar, int min, int max, boolean percentInTooltip) {
     	super(min, max);
     	this.percentInTooltip = percentInTooltip;
-    	this.progressBar = progressBar==null ? null : new WeakReference<JProgressBar>(progressBar);
+    	this.progressBar = progressBar==null ? null : new WeakReference<>(progressBar);
     	sharedInit(progressBar);
 	}
 
@@ -171,7 +173,7 @@ public class ProgressBarModel extends DefaultProgression implements BoundedRange
 	public ProgressBarModel(JProgressBar progressBar, boolean percentInTooltip) {
 		super();
     	this.percentInTooltip = percentInTooltip;
-    	this.progressBar = progressBar==null ? null : new WeakReference<JProgressBar>(progressBar);
+    	this.progressBar = progressBar==null ? null : new WeakReference<>(progressBar);
     	sharedInit(progressBar);
 	}
 
@@ -348,7 +350,7 @@ public class ProgressBarModel extends DefaultProgression implements BoundedRange
 						isAdjusting());
 				oldBar.setModel(defaultModel);
 			}
-	    	this.progressBar = bar==null ? null : new WeakReference<JProgressBar>(bar);
+	    	this.progressBar = bar==null ? null : new WeakReference<>(bar);
 	    	if (bar!=null) {
 	    		bar.setModel(this);
 	    	}

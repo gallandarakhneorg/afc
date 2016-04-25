@@ -66,7 +66,7 @@ import java.util.List;
  * released values (sometimes the queue is empty even if a value was released).
  *
  * @param <T> is the type of the array's elements.
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

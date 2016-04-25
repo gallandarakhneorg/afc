@@ -27,7 +27,7 @@ import java.util.EventListener;
 /**
  * Listener on a task progression.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

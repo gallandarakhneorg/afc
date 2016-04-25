@@ -29,7 +29,7 @@ import org.arakhne.afc.vmutil.ClassLoaderFinder;
  * <p>
  * It inspirated from the Andriod API.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

@@ -43,7 +43,7 @@ import org.arakhne.afc.math.matrix.Matrix4f;
 import org.junit.ComparisonFailure;
 
 /**
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

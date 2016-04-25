@@ -37,11 +37,13 @@ import android.widget.TextView;
 
 /** Dialog that is displaying a "about this app" message.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public class AboutDialog extends Dialog {
 
 	private final int applicationIconId;
@@ -118,7 +120,7 @@ public class AboutDialog extends Dialog {
 				inputStream.close();
 			}
 		}
-		catch (IOException _) {
+		catch (IOException exception) {
 			return null;
 		}
 	}

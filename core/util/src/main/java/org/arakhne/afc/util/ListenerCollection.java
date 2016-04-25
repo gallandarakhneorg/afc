@@ -33,7 +33,7 @@ import java.util.EventListener;
  * This class is inspirated by <code>EventListenerList</code>.
  * 
  * @param <L> is the type of listeners.
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

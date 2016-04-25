@@ -26,7 +26,7 @@ package org.arakhne.afc.attrs.attr;
  * This exception is generated each time an uninitialized
  * attribute value was accessed.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

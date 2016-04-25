@@ -42,7 +42,7 @@ import org.arakhne.afc.ui.vector.Image;
  * collection of attributes with a reading and a
  * writing API.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

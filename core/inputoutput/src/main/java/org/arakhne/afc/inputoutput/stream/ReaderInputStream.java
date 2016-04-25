@@ -29,7 +29,7 @@ import java.io.Reader;
 
 /** An output stream that is writing inside a Writer.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

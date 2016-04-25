@@ -33,7 +33,7 @@ import org.arakhne.afc.attrs.collection.AttributeChangeEvent.Type;
 /**
  * This class implements an abstract object with attributes.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

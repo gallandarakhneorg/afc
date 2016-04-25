@@ -28,7 +28,7 @@ import java.util.Comparator;
 /**
  * This interface contains a metadata with a name.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

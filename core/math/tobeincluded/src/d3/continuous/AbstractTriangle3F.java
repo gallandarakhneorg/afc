@@ -36,7 +36,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Triangle in the space.
 *
-* @author $Author: galland$
+* @author $Author: sgalland$
 * @author $Author: hjaffali$
 * @version $FullVersion$
 * @mavengroupid $GroupId$

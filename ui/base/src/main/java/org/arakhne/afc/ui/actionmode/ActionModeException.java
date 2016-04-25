@@ -23,11 +23,13 @@ package org.arakhne.afc.ui.actionmode ;
 
 /** Exception in modes.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public class ActionModeException extends RuntimeException {
 
 	private static final long serialVersionUID = 4879931058627554098L;

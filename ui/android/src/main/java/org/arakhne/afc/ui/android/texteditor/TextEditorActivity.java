@@ -44,11 +44,13 @@ import android.widget.EditText;
 /**
  * Text editor embedded inside an activity fragment. 
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public class TextEditorActivity extends Activity {
 
 	private EditText textView = null;
@@ -101,7 +103,7 @@ public class TextEditorActivity extends Activity {
 				try {
 					this.file = FileSystem.convertURLToFile(jURL);
 				}
-				catch(Throwable _) {
+				catch(Throwable exception) {
 					//
 				}
 				

@@ -879,7 +879,7 @@ public interface Rectangle2afp<
 	/** Iterator on the path elements of the rectangle.
 	 * 
 	 * @param <T> the type of the path elements.
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

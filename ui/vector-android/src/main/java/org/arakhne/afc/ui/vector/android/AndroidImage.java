@@ -35,11 +35,13 @@ import android.graphics.Color;
 
 /** Android implementation of the generic image.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 class AndroidImage implements Image, NativeWrapper, Cloneable {
 
 	private Bitmap image;

@@ -28,14 +28,14 @@ import java.util.Collection;
  * File filter that is matching a collection
  * of file filters.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
 public class MultiFileFilter implements FileFilter {
 
-	private final Collection<FileFilter> filters = new ArrayList<FileFilter>();
+	private final Collection<FileFilter> filters = new ArrayList<>();
 	
 	/**
 	 */

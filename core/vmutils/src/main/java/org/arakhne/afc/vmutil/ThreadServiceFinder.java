@@ -30,7 +30,7 @@ import java.util.concurrent.ScheduledExecutorService;
 /**
  * This class permits to centralize the identify of the thread service providers. 
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -84,7 +84,7 @@ public class ThreadServiceFinder {
     }
 
     /**
-     * @author $Author: galland$
+     * @author $Author: sgalland$
      * @version $FullVersion$
      * @mavengroupid $GroupId$
      * @mavenartifactid $ArtifactId$

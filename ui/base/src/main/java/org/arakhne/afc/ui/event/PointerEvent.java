@@ -25,11 +25,13 @@ import org.arakhne.afc.math.continous.object2d.Shape2f;
 
 /** Describe the event related to the pointer (mouse or finger).
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public interface PointerEvent extends InputEvent {
 
 	/** Replies the minimal size (in pixels) of the touch area.
@@ -163,7 +165,7 @@ public interface PointerEvent extends InputEvent {
 	
 	/** Types of tools.
 	 *
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

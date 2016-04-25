@@ -24,11 +24,13 @@ package org.arakhne.afc.ui.vector.awt;
 
 /** Interface for all the AWT wrappers.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 interface NativeWrapper {
 
 	/** Return the native object.

@@ -27,7 +27,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 /** 3D shape.
  * 
  * @param <ST> is the type of the shape implementation.
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @author $Author: hjaffali$
  * @version $FullVersion$
  * @mavengroupid $GroupId$

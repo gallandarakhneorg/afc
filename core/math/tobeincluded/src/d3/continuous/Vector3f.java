@@ -27,7 +27,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 /** 3D Vector with 3 floating-point values.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -652,7 +652,7 @@ public class Vector3f extends Tuple3f<Vector3D> implements FunctionalVector3D {
 	
 	
 	/**
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $Name$ $Revision$ $Date$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

@@ -26,11 +26,13 @@ import org.arakhne.afc.math.discrete.object2d.Rectangle2i;
 /** Interface that is representing a color. 
  * See {@link VectorToolkit} to create an instance.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public interface Image {
 	
 	/**

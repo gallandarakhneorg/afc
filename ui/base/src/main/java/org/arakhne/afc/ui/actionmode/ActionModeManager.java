@@ -53,17 +53,19 @@ import org.arakhne.afc.util.ListenerCollection;
  * @param <DRAW> is the type of the data supported by this container.
  * @param <CANVAS> is the type of the drawing canvas.
  * @param <COLOR> is the type that is representing a color.
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @author $Author: hannoun$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public class ActionModeManager<DRAW extends Selectable, CANVAS, COLOR> {
 
 	private final WeakReference<ActionModeManagerOwner<DRAW,CANVAS,COLOR>> container;
 	
-	private final LinkedList<ActionMode<? super DRAW,CANVAS,COLOR>> modeStack = new LinkedList<ActionMode<? super DRAW,CANVAS,COLOR>>();
+	private final LinkedList<ActionMode<? super DRAW,CANVAS,COLOR>> modeStack = new LinkedList<>();
 	
 	private final UUID viewID;
 	
@@ -74,7 +76,7 @@ public class ActionModeManager<DRAW extends Selectable, CANVAS, COLOR> {
 	
 	private boolean isForceHitResetWhenRelease = true;
 	
-	private final ListenerCollection<EventListener> listeners = new ListenerCollection<EventListener>();
+	private final ListenerCollection<EventListener> listeners = new ListenerCollection<>();
 	
 	private ActionPointerEvent lastPointerEvent = null;
 
@@ -88,7 +90,7 @@ public class ActionModeManager<DRAW extends Selectable, CANVAS, COLOR> {
 		assert(viewID!=null);
 		this.viewID = viewID;
 		assert(component!=null);
-		this.container = new WeakReference<ActionModeManagerOwner<DRAW,CANVAS,COLOR>>(component); 
+		this.container = new WeakReference<>(component); 
 	}
 	
 	/** Replies an unmodifiable list of the modes.
@@ -398,7 +400,7 @@ public class ActionModeManager<DRAW extends Selectable, CANVAS, COLOR> {
 	public void resetModes() {
 		unsetExclusiveMode();
 		
-		List<ActionMode<? super DRAW,CANVAS,COLOR>> removedModes = new ArrayList<ActionMode<? super DRAW,CANVAS,COLOR>>();
+		List<ActionMode<? super DRAW,CANVAS,COLOR>> removedModes = new ArrayList<>();
 
 		boolean stop = false;
 		Iterator<ActionMode<? super DRAW,CANVAS,COLOR>> iterator = this.modeStack.descendingIterator();
@@ -678,7 +680,7 @@ public class ActionModeManager<DRAW extends Selectable, CANVAS, COLOR> {
 					}
 				}
 				if (fig!=null) {
-					this.figureUnderTheMouse = new WeakReference<DRAW>(fig);
+					this.figureUnderTheMouse = new WeakReference<>(fig);
 					this.selectionShapeForFigureUnderTheMouse = selectionArea;
 				}
 			}

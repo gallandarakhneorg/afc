@@ -33,7 +33,7 @@ import org.junit.Test;
 
 /**
  * @param <COL>
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

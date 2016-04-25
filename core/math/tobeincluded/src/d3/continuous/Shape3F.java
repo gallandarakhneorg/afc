@@ -27,7 +27,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 /** 2D shape with floating-point points.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @author $Author: hjaffali$
  * @version $FullVersion$
  * @mavengroupid $GroupId$

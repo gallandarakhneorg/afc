@@ -23,11 +23,13 @@ package org.arakhne.afc.ui.undo ;
 
 /** Manager of undoable actions.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public interface UndoManager {
 
 	/** Add listener on the changes in the undo list.

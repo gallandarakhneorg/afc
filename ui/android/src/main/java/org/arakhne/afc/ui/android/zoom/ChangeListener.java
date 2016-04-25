@@ -27,11 +27,13 @@ import java.util.EventListener;
 /** This interface represents a piece of document
  * that could be graphically rendered.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public interface ChangeListener extends EventListener {
 
 	/** Notifies the listener that the wrapped document has changed.

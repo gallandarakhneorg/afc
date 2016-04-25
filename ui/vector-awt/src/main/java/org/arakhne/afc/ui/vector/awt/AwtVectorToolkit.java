@@ -75,11 +75,13 @@ import org.arakhne.afc.vmutil.OperatingSystem;
 
 /** AWT implementation of the generic Window toolkit.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public class AwtVectorToolkit extends VectorToolkit {
 
 	/**
@@ -444,7 +446,7 @@ public class AwtVectorToolkit extends VectorToolkit {
 
 	/** This class permits to filter the color of an icon.
 	 * 
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

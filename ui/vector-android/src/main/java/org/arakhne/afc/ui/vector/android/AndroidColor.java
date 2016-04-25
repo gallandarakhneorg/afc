@@ -26,11 +26,13 @@ import android.graphics.drawable.Drawable;
 
 /** Android implementation of the generic color.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 class AndroidColor implements Color, NativeWrapper, Cloneable {
 
 	private static final long serialVersionUID = -3729571234595878175L;

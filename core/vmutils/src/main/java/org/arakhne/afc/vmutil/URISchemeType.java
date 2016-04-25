@@ -26,7 +26,7 @@ import java.net.URL;
 
 /** Commonly supported types of schemes for URL.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

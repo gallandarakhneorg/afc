@@ -26,7 +26,7 @@ import java.io.IOException;
  * The exception <code>ResourceNotFoundException</code> is 
  * thrown when a required Java resource was not found.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @author $Author: willaume$
  * @version $FullVersion$
  * @mavengroupid $GroupId$

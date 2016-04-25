@@ -25,11 +25,13 @@ package org.arakhne.afc.ui;
 
 /** Text alignment
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public enum TextAlignment {
 	/** Left alignment.
 	 */

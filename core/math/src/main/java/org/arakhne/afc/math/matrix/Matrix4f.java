@@ -30,7 +30,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * Is represented internally as a 4x4 floating point matrix. The mathematical
  * representation is row major, as in traditional matrix mathematics.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

@@ -30,11 +30,13 @@ import org.arakhne.afc.ui.undo.Undoable;
 /** Abstract implementation of an undoable edit that is also
  * directly callable to run/redo the action.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public class UndoableGroupSwing extends CompoundEdit implements Undoable {
 
 	private static final long serialVersionUID = -5363974010663738749L;

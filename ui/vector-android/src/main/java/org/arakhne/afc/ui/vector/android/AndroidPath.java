@@ -48,11 +48,13 @@ import android.graphics.RectF;
 
 /** Android implementation of the Path2f.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 class AndroidPath implements Shape2f, Path2D<Shape2f,Rectangle2f,PathElement2f,PathIterator2f>, NativeWrapper {
 
 	private static final long serialVersionUID = 3395487582331474537L;
@@ -215,19 +217,19 @@ class AndroidPath implements Shape2f, Path2D<Shape2f,Rectangle2f,PathElement2f,P
 
 	@Override
 	public boolean contains(float x, float y) {
-		return Path2f.contains(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), x, y);
+		return Path2f.contains(getPathIterator((float)MathConstants.SPLINE_APPROXIMATION_RATIO), x, y);
 	}
 
 	@Override
 	public boolean contains(Rectangle2f r) {
-		return Path2f.contains(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+		return Path2f.contains(getPathIterator((float)MathConstants.SPLINE_APPROXIMATION_RATIO),
 				r.getMinX(), r.getMinY(),
 				r.getWidth(), r.getHeight());
 	}
 
 	@Override
 	public boolean intersects(Rectangle2f s) {
-		return Path2f.intersects(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+		return Path2f.intersects(getPathIterator((float)MathConstants.SPLINE_APPROXIMATION_RATIO),
 				s.getMinX(), s.getMinY(),
 				s.getWidth(), s.getHeight());
 	}
@@ -238,7 +240,7 @@ class AndroidPath implements Shape2f, Path2D<Shape2f,Rectangle2f,PathElement2f,P
 		int mask = (type == FillType.WINDING || type == FillType.INVERSE_WINDING ? -1 : 2);
 		int crossings = Path2f.computeCrossingsFromEllipse(
 				0,
-				getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+				getPathIterator((float)MathConstants.SPLINE_APPROXIMATION_RATIO),
 				s.getMinX(), s.getMinY(), s.getWidth(), s.getHeight(),
 				false, true);
 		return (crossings == MathConstants.SHAPE_INTERSECTS ||
@@ -251,7 +253,7 @@ class AndroidPath implements Shape2f, Path2D<Shape2f,Rectangle2f,PathElement2f,P
 		int mask = (type == FillType.WINDING || type == FillType.INVERSE_WINDING ? -1 : 2);
 		int crossings = Path2f.computeCrossingsFromCircle(
 				0,
-				getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+				getPathIterator((float)MathConstants.SPLINE_APPROXIMATION_RATIO),
 				s.getX(), s.getY(), s.getRadius(),
 				false,
 				true);
@@ -265,7 +267,7 @@ class AndroidPath implements Shape2f, Path2D<Shape2f,Rectangle2f,PathElement2f,P
 		int mask = (type == FillType.WINDING || type == FillType.INVERSE_WINDING ? -1 : 2);
 		int crossings = Path2f.computeCrossingsFromSegment(
 				0,
-				getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+				getPathIterator((float)MathConstants.SPLINE_APPROXIMATION_RATIO),
 				s.getX1(), s.getY1(), s.getX2(), s.getY2(),
 				false);
 		return (crossings == MathConstants.SHAPE_INTERSECTS ||
@@ -277,7 +279,7 @@ class AndroidPath implements Shape2f, Path2D<Shape2f,Rectangle2f,PathElement2f,P
 		FillType type = this.path.getFillType();
 		int mask = (type == FillType.WINDING || type == FillType.INVERSE_WINDING ? -1 : 2);
 		int crossings = Path2f.computeCrossingsFromPath(
-				s.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+				s.getPathIterator((float)MathConstants.SPLINE_APPROXIMATION_RATIO),
 				new PathShadow2f(this),
 				false,
 				true);
@@ -300,12 +302,12 @@ class AndroidPath implements Shape2f, Path2D<Shape2f,Rectangle2f,PathElement2f,P
 
 	@Override
 	public PathIterator2f getPathIterator(float flatness) {
-		return new FlatteningPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO, null);
+		return new FlatteningPathIterator((float)MathConstants.SPLINE_APPROXIMATION_RATIO, null);
 	}
 
 	@Override
 	public PathIterator2f getPathIterator(Transform2D transform) {
-		return new FlatteningPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO, transform);
+		return new FlatteningPathIterator((float)MathConstants.SPLINE_APPROXIMATION_RATIO, transform);
 	}
 
 	@Override
@@ -316,7 +318,7 @@ class AndroidPath implements Shape2f, Path2D<Shape2f,Rectangle2f,PathElement2f,P
 	/**
 	 * Iterator that is replies the points of a flatenning path. 
 	 *  
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $Name$ $Revision$ $Date$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

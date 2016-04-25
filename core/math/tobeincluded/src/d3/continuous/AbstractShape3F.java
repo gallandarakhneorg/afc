@@ -29,7 +29,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 /** Abstract implementation of shapes.
  * 
  * @param <T> is the type of the shape implemented by the instance of this class.
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

@@ -28,7 +28,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 /** Abstract implementation of 3D box.
  * 
  * @param <T> is the type of the shape implemented by the instance of this class.
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @author $Author: hjaffali$
  * @version $FullVersion$
  * @mavengroupid $GroupId$

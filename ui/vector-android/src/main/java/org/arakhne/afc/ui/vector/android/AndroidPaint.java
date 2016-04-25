@@ -42,11 +42,13 @@ import android.graphics.Typeface;
 
 /** Android implementation of the generic stroke, font and font metrics.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 class AndroidPaint implements Stroke, org.arakhne.afc.ui.vector.Paint, Font, FontMetrics, NativeWrapper, Cloneable {
 
 	private static int toAndroid(FontStyle fs) {
@@ -412,7 +414,7 @@ class AndroidPaint implements Stroke, org.arakhne.afc.ui.vector.Paint, Font, Fon
 	}
 
 	/**
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -460,7 +462,7 @@ class AndroidPaint implements Stroke, org.arakhne.afc.ui.vector.Paint, Font, Fon
 				tab = new float[this.characters.length];
 				Paint paint = getPaint();
 				paint.getTextWidths(this.characters, 0, tab.length, tab);
-				this.widths = new SoftReference<float[]>(tab);
+				this.widths = new SoftReference<>(tab);
 			}
 			return tab[index];
 		}
@@ -489,7 +491,7 @@ class AndroidPaint implements Stroke, org.arakhne.afc.ui.vector.Paint, Font, Fon
 				Paint paint = getPaint();
 				paint.getTextPath(this.characters, 0, this.characters.length, 0, 0, path);
 				p = new AndroidPath(path);
-				this.globalPath = new SoftReference<AndroidPath>(p);
+				this.globalPath = new SoftReference<>(p);
 			}
 			return p;
 		}
@@ -532,7 +534,7 @@ class AndroidPaint implements Stroke, org.arakhne.afc.ui.vector.Paint, Font, Fon
 				p = new Rectangle2f(
 						rect.left, rect.top,
 						rect.width(), rect.height());
-				this.globalBounds = new SoftReference<Rectangle2f>(p);
+				this.globalBounds = new SoftReference<>(p);
 			}
 			return p;
 		}

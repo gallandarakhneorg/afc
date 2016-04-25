@@ -49,7 +49,7 @@ import org.arakhne.afc.ui.vector.Image;
  * 
  * XXX: Make this provider to save asynchronously on the remote storage area.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

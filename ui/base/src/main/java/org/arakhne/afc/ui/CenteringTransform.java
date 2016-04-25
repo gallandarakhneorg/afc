@@ -27,11 +27,13 @@ import org.arakhne.afc.math.matrix.Transform2D;
 /** This feature describes all the parameters that must
  * be used to center logical points on the screen view. 
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public class CenteringTransform {
 
 	/** Is the translation to add to the logical coordinate.

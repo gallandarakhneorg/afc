@@ -26,11 +26,13 @@ import java.io.Serializable;
 
 /** Describe the event related to an input device.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public interface InputEvent extends Serializable {
 
 	/** Replies the identifier of the device.

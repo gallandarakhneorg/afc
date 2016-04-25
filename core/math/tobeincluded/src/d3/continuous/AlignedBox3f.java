@@ -28,7 +28,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 /** 3D axis-aligned box with floating-point points.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @author $Author: hjaffali$
  * @version $FullVersion$
  * @mavengroupid $GroupId$

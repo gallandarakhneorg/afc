@@ -24,7 +24,7 @@ import org.arakhne.afc.vmutil.locale.Locale;
 
 /** File filter for PDF document.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

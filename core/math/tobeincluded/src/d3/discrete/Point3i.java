@@ -29,7 +29,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 /** 3D Point with 3 integers.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -266,7 +266,7 @@ public class Point3i extends Tuple3i<Point3D> implements Point3D {
 	}
 
 	/**
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $Name$ $Revision$ $Date$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

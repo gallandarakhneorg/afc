@@ -60,7 +60,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * <img src="doc-files/euler_plane.gif" alt="[NASA Aircraft Standard]">
  * <img src="doc-files/euler_telescop.gif" alt="[Telescope Standard]">
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -366,7 +366,7 @@ public interface Quaternion extends Cloneable, Serializable {
 	 * <strong>For creating an instance of this class, you must invoke
 	 * {@link Quaternion#getEulerAngles(CoordinateSystem3D)}. 
 	 * 
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $Name$ $Revision$ $Date$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -435,7 +435,7 @@ public interface Quaternion extends Cloneable, Serializable {
 	 * <strong>For creating an instance of this class, you must invoke
 	 * {@link Quaternion#getAxisAngle()}. 
 	 * 
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $Name$ $Revision$ $Date$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

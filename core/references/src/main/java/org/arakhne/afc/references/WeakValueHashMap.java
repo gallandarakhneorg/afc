@@ -59,7 +59,7 @@ import java.util.WeakHashMap;
  *
  * @param <K> is the type of the keys.
  * @param <V> is the type of the values.
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

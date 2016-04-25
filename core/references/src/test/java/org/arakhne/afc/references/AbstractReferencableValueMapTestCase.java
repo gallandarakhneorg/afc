@@ -25,7 +25,7 @@ import java.util.TreeSet;
 import java.util.UUID;
 
 /**
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

@@ -36,7 +36,7 @@ import org.junit.Test;
 /**
  * @param <K>
  * @param <V>
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

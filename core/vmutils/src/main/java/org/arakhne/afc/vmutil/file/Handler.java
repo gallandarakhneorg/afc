@@ -40,7 +40,7 @@ import org.arakhne.afc.vmutil.URISchemeType;
  * To use this factory, invoke the following code only ONCE time:
  * <code>URL.setURLStreamHandlerFactory(new FileURLStreamHandlerFactory());</code>.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @author $Author: willaume$
  * @version $FullVersion$
  * @mavengroupid $GroupId$

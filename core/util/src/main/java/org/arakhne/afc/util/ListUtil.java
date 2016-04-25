@@ -28,7 +28,7 @@ import java.util.NavigableSet;
 /**
  * Utilities on lists.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

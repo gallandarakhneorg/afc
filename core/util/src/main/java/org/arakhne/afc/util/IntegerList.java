@@ -1134,7 +1134,7 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 	
 	/** This class describes a integers' segment.
 	 *
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

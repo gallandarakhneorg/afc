@@ -30,7 +30,7 @@ import java.util.Iterator;
  * in the next iterations.
  * 
  * @param <M> is the type of element.
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

@@ -25,11 +25,13 @@ import org.arakhne.afc.ui.vector.Paint;
 
 /** Public implementation of a Paint.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 class AwtPaint implements Paint, NativeWrapper {
 
 	private final java.awt.Paint paint;

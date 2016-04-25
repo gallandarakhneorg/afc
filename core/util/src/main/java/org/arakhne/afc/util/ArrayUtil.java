@@ -36,7 +36,7 @@ import org.arakhne.afc.sizediterator.SizedIterator;
 /**
  * Some utilities functions for arrays. 
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -931,7 +931,7 @@ public class ArrayUtil {
 	 * Some utilities functions for arrays. 
 	 *
 	 * @param <T> is the type of the value to pass to the filter.
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -947,7 +947,7 @@ public class ArrayUtil {
 	}	
 	
 	/**
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavenartifactid $ArtifactId$
 	 * @mavengroupid $GroupId$
@@ -1017,7 +1017,7 @@ public class ArrayUtil {
 	} // class NativeBooleanToObjectBooleanIterator
 
 	/**
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavenartifactid $ArtifactId$
 	 * @mavengroupid $GroupId$
@@ -1087,7 +1087,7 @@ public class ArrayUtil {
 	} // class NativeCharacterToObjectCharacterIterator
 
 	/**
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavenartifactid $ArtifactId$
 	 * @mavengroupid $GroupId$
@@ -1157,7 +1157,7 @@ public class ArrayUtil {
 	} // class NativeByteToObjectByteIterator
 
 	/**
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavenartifactid $ArtifactId$
 	 * @mavengroupid $GroupId$
@@ -1227,7 +1227,7 @@ public class ArrayUtil {
 	} // class NativeShortToObjectShortIterator
 	
 	/**
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavenartifactid $ArtifactId$
 	 * @mavengroupid $GroupId$
@@ -1297,7 +1297,7 @@ public class ArrayUtil {
 	} // class NativeIntegerToObjectIntegerIterator
 
 	/**
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavenartifactid $ArtifactId$
 	 * @mavengroupid $GroupId$
@@ -1367,7 +1367,7 @@ public class ArrayUtil {
 	} // class NativeLongToObjectLongIterator
 
 	/**
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavenartifactid $ArtifactId$
 	 * @mavengroupid $GroupId$
@@ -1437,7 +1437,7 @@ public class ArrayUtil {
 	} // class NativeFloatToObjectFloatIterator
 
 	/**
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavenartifactid $ArtifactId$
 	 * @mavengroupid $GroupId$

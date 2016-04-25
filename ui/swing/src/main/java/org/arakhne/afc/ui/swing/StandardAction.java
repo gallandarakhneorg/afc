@@ -30,11 +30,13 @@ import javax.swing.Icon;
 /** This is the default implementation of an action which
  * could be associated to a text, an icon and a tooltip text.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public abstract class StandardAction extends AbstractAction {
 	
 	private static final long serialVersionUID = -4672742688176987414L;

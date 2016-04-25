@@ -51,7 +51,7 @@ import org.arakhne.afc.ui.vector.Image;
  * This class implements an attribute provider which
  * only works with the Heap space.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

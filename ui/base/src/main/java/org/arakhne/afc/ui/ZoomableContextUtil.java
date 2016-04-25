@@ -36,11 +36,13 @@ import org.arakhne.afc.math.generic.PathWindingRule;
 
 /** Utilities for ZoomableContext.
 *
-* @author $Author: galland$
+* @author $Author: sgalland$
 * @version $FullVersion$
 * @mavengroupid $GroupId$
 * @mavenartifactid $ArtifactId$
-*/
+ * @deprecated see JavaFX API
+ */
+@Deprecated
 public class ZoomableContextUtil {
 
 	/** Replies the scaling factor that permits to pass
@@ -545,7 +547,7 @@ public class ZoomableContextUtil {
 	
 	/** Pixel-to-logical translator for path iterator.
 	*
-	* @author $Author: galland$
+	* @author $Author: sgalland$
 	* @version $FullVersion$
 	* @mavengroupid $GroupId$
 	* @mavenartifactid $ArtifactId$
@@ -609,7 +611,7 @@ public class ZoomableContextUtil {
 	
 	/** Logical-to-pixel translator for path iterator.
 	*
-	* @author $Author: galland$
+	* @author $Author: sgalland$
 	* @version $FullVersion$
 	* @mavengroupid $GroupId$
 	* @mavenartifactid $ArtifactId$

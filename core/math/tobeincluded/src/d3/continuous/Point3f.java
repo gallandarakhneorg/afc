@@ -28,7 +28,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 /** 3D Point with 3 floating-point numbers.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -363,7 +363,7 @@ public class Point3f extends Tuple3f<Point3D> implements FunctionalPoint3D {
 	}
 
 	/**
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $Name$ $Revision$ $Date$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

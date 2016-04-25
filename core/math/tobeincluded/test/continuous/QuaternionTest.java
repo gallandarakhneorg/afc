@@ -27,7 +27,7 @@ import org.arakhne.afc.math.AbstractMathTestCase;
 import org.junit.Test;
 
 /**
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @author $Author: hjaffali$
  * @version $FullVersion$
  * @mavengroupid $GroupId$

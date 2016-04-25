@@ -28,11 +28,13 @@ import org.arakhne.afc.math.continous.object2d.Rectangle2f;
 /** This interface represents a piece of document
  * that could be graphically rendered.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public interface DocumentWrapper {
 	
 	/** Replies the bounds of the document.

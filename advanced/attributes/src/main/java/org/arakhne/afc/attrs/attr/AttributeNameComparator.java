@@ -30,7 +30,7 @@ import java.util.Comparator;
 /**
  * Comparator for attribute names.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

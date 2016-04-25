@@ -31,7 +31,7 @@ import java.util.logging.Logger;
  * a task. This monitor display on the console the progression
  * of the task.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -143,7 +143,7 @@ public class ProgressionConsoleMonitor implements ProgressionListener {
 	}
 
 	/**
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $Name$ $Revision$ $Date$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

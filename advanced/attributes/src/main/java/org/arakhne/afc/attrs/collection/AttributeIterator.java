@@ -31,7 +31,7 @@ import org.arakhne.afc.attrs.attr.Attribute;
 /**
  * Iterator on attributes.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

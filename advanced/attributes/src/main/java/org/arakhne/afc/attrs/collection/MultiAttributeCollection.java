@@ -68,7 +68,7 @@ import org.arakhne.afc.ui.vector.Image;
  * If an attribute is set from this AttributeProviderContainer, all the containers inside it
  * are changed.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -666,7 +666,7 @@ public class MultiAttributeCollection extends MultiAttributeProvider implements 
 	}
 
 	/**
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

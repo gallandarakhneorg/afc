@@ -27,11 +27,13 @@ import org.arakhne.afc.ui.vector.Composite;
 
 /** AWT implementation of the generic alpha composite.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 class AwtComposite implements Composite, NativeWrapper {
 
 	private final java.awt.Composite composite;

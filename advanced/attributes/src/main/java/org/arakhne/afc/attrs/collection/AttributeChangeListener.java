@@ -27,7 +27,7 @@ import java.util.EventListener;
 /**
  * This interface representes a listener on the attribute changes
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

@@ -52,7 +52,7 @@ import org.arakhne.afc.vmutil.locale.Locale;
 /**
  * List of supported types for the metadata.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

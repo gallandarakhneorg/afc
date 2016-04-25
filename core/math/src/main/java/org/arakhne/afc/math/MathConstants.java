@@ -23,7 +23,7 @@ package org.arakhne.afc.math;
 
 /** Several mathematical constants.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

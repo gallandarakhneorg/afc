@@ -25,7 +25,7 @@ package org.arakhne.afc.vmutil.caller;
  * This utility class provides a way to determine which class
  * call a function.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

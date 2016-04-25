@@ -24,7 +24,7 @@ package org.arakhne.afc.math.geometry;
 
 /** Type of a path element.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

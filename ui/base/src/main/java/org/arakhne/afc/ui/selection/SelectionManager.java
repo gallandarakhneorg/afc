@@ -33,14 +33,16 @@ import org.arakhne.afc.util.ListenerCollection;
 /** Abstracxt implementation of a selection manager.
  *
  * @param <OBJ> is the type of the objects inside this manager.
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public abstract class SelectionManager<OBJ extends Selectable> implements Set<OBJ> {
 
-	private final ListenerCollection<SelectionListener> listeners = new ListenerCollection<SelectionListener>();
+	private final ListenerCollection<SelectionListener> listeners = new ListenerCollection<>();
 
 	private final Class<OBJ> elementType;
 	
@@ -165,6 +167,7 @@ public abstract class SelectionManager<OBJ extends Selectable> implements Set<OB
 	 * has changed; <code>false</code> if no object has changed
 	 * of selection state.
 	 */
+	@SuppressWarnings("unchecked")
 	public final boolean toggle(OBJ... selectableObject) {
 		return toggle(Arrays.asList(selectableObject));
 	}
@@ -361,6 +364,7 @@ public abstract class SelectionManager<OBJ extends Selectable> implements Set<OB
 	 * @return <code>true</code> if the selection has changed;
 	 * otherwise <code>false</code>.
 	 */
+	@SuppressWarnings("unchecked")
 	public final boolean setSelection(OBJ... e) {
 		return setSelection(Arrays.asList(e));
 	}
@@ -376,7 +380,7 @@ public abstract class SelectionManager<OBJ extends Selectable> implements Set<OB
 	public synchronized final boolean setSelection(Collection<? extends OBJ> e) {
 		boolean changed = false;
 
-		Set<OBJ> alreadySelected = new TreeSet<OBJ>();
+		Set<OBJ> alreadySelected = new TreeSet<>();
 		OBJ unselected = null;
 		OBJ selected = null;
 
@@ -460,7 +464,7 @@ public abstract class SelectionManager<OBJ extends Selectable> implements Set<OB
 	}
 
 	/** 
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

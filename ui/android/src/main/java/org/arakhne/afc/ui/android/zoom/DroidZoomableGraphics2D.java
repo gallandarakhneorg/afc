@@ -69,11 +69,13 @@ import android.util.Log;
 /**
  * This is the droid-based implementation of a VectorGraphics2D and a ZoomableContext.
  *  
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public class DroidZoomableGraphics2D extends AbstractVectorGraphics2D implements ZoomableContext {
 	
 	/** Convert the droid matrix to Arakhne transformation matrix.
@@ -107,13 +109,13 @@ public class DroidZoomableGraphics2D extends AbstractVectorGraphics2D implements
 		Matrix at = new Matrix();
 		if (!t.isIdentity()) {
 			float[] values = new float[] {
-					ZoomableContextUtil.logical2pixel_size(t.m00, scale),
-					t.m01,
-					ZoomableContextUtil.logical2pixel_size(t.m02, scale),
-					t.m10,
-					ZoomableContextUtil.logical2pixel_size(t.m11, scale),
-					ZoomableContextUtil.logical2pixel_size(t.m12, scale),
-					t.m20, t.m21, t.m22
+					ZoomableContextUtil.logical2pixel_size((float)t.getM00(), scale),
+					(float)t.getM01(),
+					ZoomableContextUtil.logical2pixel_size((float)t.getM02(), scale),
+					(float)t.getM10(),
+					ZoomableContextUtil.logical2pixel_size((float)t.getM11(), scale),
+					ZoomableContextUtil.logical2pixel_size((float)t.getM12(), scale),
+					(float)t.getM20(), (float)t.getM21(), (float)t.getM22()
 			};
 			at.setValues(values);
 		}

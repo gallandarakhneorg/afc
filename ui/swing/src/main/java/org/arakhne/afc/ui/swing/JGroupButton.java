@@ -32,11 +32,13 @@ import javax.swing.JToggleButton;
 
 /** Button which could acts as a wrapper to a set of buttons.
 *
-* @author $Author: galland$
+* @author $Author: sgalland$
 * @version $FullVersion$
 * @mavengroupid $GroupId$
 * @mavenartifactid $ArtifactId$
-*/
+ * @deprecated see JavaFX API
+ */
+@Deprecated
 public class JGroupButton extends AbstractButton implements ItemListener {
 
 	private static final long serialVersionUID = -8179091743419793116L;

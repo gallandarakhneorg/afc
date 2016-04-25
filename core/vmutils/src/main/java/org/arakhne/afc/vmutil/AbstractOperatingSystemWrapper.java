@@ -32,7 +32,7 @@ import java.util.regex.Pattern;
  * In this way, on operating system without the support
  * for the native libs is still able to be run. 
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

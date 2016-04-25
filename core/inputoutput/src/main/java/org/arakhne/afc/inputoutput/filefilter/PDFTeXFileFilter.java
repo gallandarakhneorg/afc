@@ -25,7 +25,7 @@ import org.arakhne.afc.vmutil.locale.Locale;
 /** File filter for a TeX part of
  * a PDF document combined with TeX macros.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

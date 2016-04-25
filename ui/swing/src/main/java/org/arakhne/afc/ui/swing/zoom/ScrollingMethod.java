@@ -30,11 +30,13 @@ import javax.swing.SwingUtilities;
 /** This enumeration contains all the methods to start
  * scrolling.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public enum ScrollingMethod {
 
 	/** Scroll on middle mouse press.
@@ -67,7 +69,7 @@ public enum ScrollingMethod {
 
 	/** Listener on scrolling start.
 	 *
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

@@ -24,16 +24,18 @@ import java.util.ArrayList;
 
 /** A group of undoable actions.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public class UndoableGroup implements Undoable {
 
 	private static final long serialVersionUID = 515680393060970792L;
 	
-	private final ArrayList<Undoable> undoables = new ArrayList<Undoable>();
+	private final ArrayList<Undoable> undoables = new ArrayList<>();
 	private final String presentationName;
 	private boolean died = false;
 	private boolean finalized = false;

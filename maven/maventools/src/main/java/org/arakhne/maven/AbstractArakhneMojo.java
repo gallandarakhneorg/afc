@@ -98,7 +98,7 @@ import org.tmatesoft.svn.core.wc.SVNRevision;
 /**
  * Abstract implementation for all Arakhn&ecirc; maven modules. This implementation is thread safe.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -121,7 +121,7 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 				try {
 					url = new URL(s);
 				}
-				catch(Throwable _) {
+				catch(Throwable exception) {
 					url = null;
 				}
 			}
@@ -131,7 +131,7 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 					try {
 						url = new URL("mailto:"+s); //$NON-NLS-1$
 					}
-					catch(Throwable _) {
+					catch(Throwable exception) {
 						url = null;
 					}
 				}
@@ -195,7 +195,7 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 		getLog().debug(in.toString()+"->"+out.toString());  //$NON-NLS-1$
 		getLog().debug("Ignore hidden files: "+skipHiddenFiles);  //$NON-NLS-1$
 		out.mkdirs();
-		LinkedList<File> candidates = new LinkedList<File>();
+		LinkedList<File> candidates = new LinkedList<>();
 		candidates.add(in);
 		File f, targetFile;
 		File[] children;
@@ -239,7 +239,7 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 	public final void dirRemove(File dir) throws IOException {
 		if (dir!=null) {
 			getLog().debug("Deleting tree: "+dir.toString()); //$NON-NLS-1$
-			LinkedList<File> candidates = new LinkedList<File>();
+			LinkedList<File> candidates = new LinkedList<>();
 			candidates.add(dir);
 			File f;
 			File[] children;
@@ -289,18 +289,16 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 		assert (in != null);
 		assert (out != null);
 		getLog().debug("Copying file: "+in.toString()+" into "+out.toString()); //$NON-NLS-1$ //$NON-NLS-2$
-		FileInputStream fis = new FileInputStream(in);
-		FileChannel inChannel = fis.getChannel();
-		FileOutputStream fos = new FileOutputStream(out);
-		FileChannel outChannel = fos.getChannel();
-		try {
-			inChannel.transferTo(0, inChannel.size(), outChannel);
+		try (FileInputStream fis = new FileInputStream(in)) {
+			try (FileChannel inChannel = fis.getChannel()) {
+				try (FileOutputStream fos = new FileOutputStream(out)) {
+					try (FileChannel outChannel = fos.getChannel()) {
+						inChannel.transferTo(0, inChannel.size(), outChannel);
+					}
+				}
+			}
 		}
 		finally {
-			outChannel.close();
-			fos.close();
-			inChannel.close();
-			fis.close();
 			getBuildContext().refresh(out);
 		}
 	}
@@ -314,18 +312,16 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 	 */
 	public final void fileCopy(URL in, File out) throws IOException {
 		assert (in != null);
-		InputStream inStream = in.openStream();
-		OutputStream outStream = new FileOutputStream(out);
-		try { 
-			byte[] buf = new byte[4096];
-			int len;
-			while ((len = inStream.read(buf)) > 0) {
-				outStream.write(buf, 0, len);
+		try (InputStream inStream = in.openStream()) {
+			try (OutputStream outStream = new FileOutputStream(out)) {
+				byte[] buf = new byte[4096];
+				int len;
+				while ((len = inStream.read(buf)) > 0) {
+					outStream.write(buf, 0, len);
+				}
 			}
 		}
 		finally {
-			outStream.close();
-			inStream.close();
 			getBuildContext().refresh(out);
 		}
 	}
@@ -375,12 +371,12 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 	/**
 	 * Map the directory of pom.xml files to the definition of the corresponding maven module.
 	 */
-	private final Map<File, ExtendedArtifact> localArtifactDescriptions = new TreeMap<File,ExtendedArtifact>();
+	private final Map<File, ExtendedArtifact> localArtifactDescriptions = new TreeMap<>();
 
 	/**
 	 * Map the artifact id to the definition of the corresponding maven module.
 	 */
-	private final Map<String, ExtendedArtifact> remoteArtifactDescriptions = new TreeMap<String,ExtendedArtifact>();
+	private final Map<String, ExtendedArtifact> remoteArtifactDescriptions = new TreeMap<>();
 
 	/**
 	 * Manager of the SVN repository.
@@ -395,7 +391,7 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 	/**
 	 */
 	public AbstractArakhneMojo() {
-		List<Charset> availableCharsets = new ArrayList<Charset>();
+		List<Charset> availableCharsets = new ArrayList<>();
 
 		// New Mac OS and Linux OS
 		addCharset(availableCharsets, PREFERRED_CHARSET_UNIX);
@@ -417,7 +413,7 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 			if (!availableCharsets.contains(cs)) {
 				availableCharsets.add(cs);
 			}
-		} catch (Throwable _) {
+		} catch (Throwable exception) {
 			//
 		}
 	}
@@ -499,7 +495,7 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 	 * @return the build context.
 	 */
 	public abstract BuildContext getBuildContext();
-	
+
 	/**
 	 * Replies the current maven session. Basically it is an internal component of Maven.
 	 * <p>
@@ -528,7 +524,7 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 	 * @return the maven session
 	 */
 	public abstract MavenSession getMavenSession();
-	
+
 	/**
 	 * Search and reply the maven artifact which is corresponding to the given file.
 	 * 
@@ -611,7 +607,7 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 	 * @return the repository system
 	 */
 	public abstract RepositorySystemSession getRepositorySystemSession();
-	
+
 	/**
 	 * Retreive the extended artifact definition of the given artifact.
 	 * @param mavenArtifact - the artifact to resolve
@@ -621,16 +617,16 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 	public final Artifact resolveArtifact(Artifact mavenArtifact) throws MojoExecutionException {
 		org.eclipse.aether.artifact.Artifact aetherArtifact = createArtifact(mavenArtifact);
 		ArtifactRequest request = new ArtifactRequest();
-        request.setArtifact(aetherArtifact);
-        request.setRepositories(getRemoteRepositoryList());
-        ArtifactResult result;
+		request.setArtifact(aetherArtifact);
+		request.setRepositories(getRemoteRepositoryList());
+		ArtifactResult result;
 		try {
 			result = getRepositorySystem().resolveArtifact( getRepositorySystemSession(), request );
 		}
 		catch (ArtifactResolutionException e) {
-			 throw new MojoExecutionException( e.getMessage(), e );
+			throw new MojoExecutionException( e.getMessage(), e );
 		}
-        return createArtifact(result.getArtifact());
+		return createArtifact(result.getArtifact());
 	}
 
 	/**
@@ -659,7 +655,7 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 	 * @return the list of files.
 	 */
 	public final Collection<File> findFiles(File directory, FileFilter filter) {
-		Collection<File> files = new ArrayList<File>();
+		Collection<File> files = new ArrayList<>();
 		findFiles(directory, filter, files);
 		return files;
 	}
@@ -677,7 +673,7 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 	public final synchronized void findFiles(File directory, FileFilter filter, Collection<? super File> fileOut) {
 		if (directory != null && filter != null) {
 			File candidate;
-			List<File> candidates = new ArrayList<File>();
+			List<File> candidates = new ArrayList<>();
 
 			String relativePath = removePathPrefix(getBaseDirectory(), directory);
 
@@ -739,7 +735,7 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 			FindFileListener listener) {
 		if (directory != null && filter != null) {
 			File candidate;
-			List<File> candidates = new ArrayList<File>();
+			List<File> candidates = new ArrayList<>();
 
 			String relativePath = removePathPrefix(getBaseDirectory(), directory);
 
@@ -813,56 +809,47 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 			return null;
 
 		MavenXpp3Reader pomReader = new MavenXpp3Reader();
-		try {
-			FileReader fr = new FileReader(pomFile);
-			try {
-				Model model = pomReader.read(fr);
-				groupId = model.getGroupId();
-				artifactId = model.getArtifactId();
-				name = model.getName();
-				version = model.getVersion();
-				url = model.getUrl();
-				organization = model.getOrganization();
-				scm = model.getScm();
+		try (FileReader fr = new FileReader(pomFile)) {
+			Model model = pomReader.read(fr);
+			groupId = model.getGroupId();
+			artifactId = model.getArtifactId();
+			name = model.getName();
+			version = model.getVersion();
+			url = model.getUrl();
+			organization = model.getOrganization();
+			scm = model.getScm();
 
-				developers = model.getDevelopers();
-				contributors = model.getContributors();
-				licenses = model.getLicenses();
+			developers = model.getDevelopers();
+			contributors = model.getContributors();
+			licenses = model.getLicenses();
 
-				parent = model.getParent();
-			}
-			catch (IOException e) {
-				return null;
-			}
-			catch (XmlPullParserException e) {
-				return null;
-			}
-			finally {
-				fr.close();
-			}
+			parent = model.getParent();
 		}
 		catch (IOException e) {
 			return null;
 		}
+		catch (XmlPullParserException e) {
+			return null;
+		}
 
 		if (developers == null) {
-			developers = new ArrayList<Developer>();
+			developers = new ArrayList<>();
 		} else {
-			List<Developer> list = new ArrayList<Developer>();
+			List<Developer> list = new ArrayList<>();
 			list.addAll(developers);
 			developers = list;
 		}
 		if (contributors == null) {
-			contributors = new ArrayList<Contributor>();
+			contributors = new ArrayList<>();
 		} else {
-			List<Contributor> list = new ArrayList<Contributor>();
+			List<Contributor> list = new ArrayList<>();
 			list.addAll(contributors);
 			contributors = list;
 		}
 		if (licenses == null) {
-			licenses = new ArrayList<License>();
+			licenses = new ArrayList<>();
 		} else {
-			List<License> list = new ArrayList<License>();
+			List<License> list = new ArrayList<>();
 			list.addAll(licenses);
 			licenses = list;
 		}
@@ -946,7 +933,7 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 					scmRevision = Long.toString(revision.getNumber());
 				}
 			}
-		} catch (SVNException _) {
+		} catch (SVNException exception) {
 			//
 		}
 
@@ -1144,21 +1131,17 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 	private static void detectEncoding(File file, CharsetDecoder decoder) throws IOException, CharacterCodingException {
 		decoder.onMalformedInput(CodingErrorAction.REPORT);
 		decoder.onUnmappableCharacter(CodingErrorAction.REPORT);
-		FileInputStream fis = new FileInputStream(file);
-		ReadableByteChannel channel = Channels.newChannel(fis);
-		Reader reader = Channels.newReader(channel, decoder, -1);
-		BufferedReader bReader = new BufferedReader(reader);
-		try {
-			String line = bReader.readLine();
-			while (line != null) {
-				line = bReader.readLine();
+		try (FileInputStream fis = new FileInputStream(file)) {
+			try (ReadableByteChannel channel = Channels.newChannel(fis)) {
+				try (Reader reader = Channels.newReader(channel, decoder, -1)) {
+					try (BufferedReader bReader = new BufferedReader(reader)) {
+						String line = bReader.readLine();
+						while (line != null) {
+							line = bReader.readLine();
+						}
+					}
+				}
 			}
-		}
-		finally {
-			bReader.close();
-			reader.close();
-			channel.close();
-			fis.close();
 		}
 	}
 
@@ -1172,7 +1155,7 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 	 * @see #setPreferredCharsets(Charset...)
 	 */
 	public final Charset detectEncoding(File file) {
-		Collection<Charset> fittingCharsets = new TreeSet<Charset>();
+		Collection<Charset> fittingCharsets = new TreeSet<>();
 		for (Charset c : Charset.availableCharsets().values()) {
 			CharsetDecoder decoder = c.newDecoder();
 			try {
@@ -1284,7 +1267,7 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 	}
 
 	/**
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -1294,8 +1277,8 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 		private final List<ArtifactRepository> remoteRepositiories;
 		private final boolean isTransitive;
 		private final File projectFile;
-		private List<Dependency> dependencies = new ArrayList<Dependency>();
-		private Set<String> treated = new TreeSet<String>();
+		private List<Dependency> dependencies = new ArrayList<>();
+		private Set<String> treated = new TreeSet<>();
 		private MavenProject next;
 
 		/**
@@ -1397,7 +1380,7 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 	} // class DependencyIterator
 
 	/**
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -1468,7 +1451,7 @@ public abstract class AbstractArakhneMojo extends AbstractMojo {
 	/**
 	 * Abstract implementation for all Arakhn&ecirc; maven modules. This implementation is thread safe.
 	 * 
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

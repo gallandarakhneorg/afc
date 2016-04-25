@@ -27,7 +27,7 @@
 package org.arakhne.afc.vmutil.locale;
 
 /**
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

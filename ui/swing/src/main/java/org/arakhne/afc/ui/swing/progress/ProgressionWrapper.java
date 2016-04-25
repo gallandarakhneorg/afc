@@ -30,12 +30,14 @@ import org.arakhne.afc.progress.Progression;
  * This interface corresponds to a Swing range model which is wrapping
  * a {@link Progression}. 
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 11.0
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public interface ProgressionWrapper extends BoundedRangeModel {
 
 	/** Replies the wrapped model.

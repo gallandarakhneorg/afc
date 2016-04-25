@@ -31,7 +31,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 /** 3D Vector with 3 integers.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -355,7 +355,7 @@ public class Vector3i extends Tuple3i<Vector3D> implements Vector3D {
 	}
 
 	/**
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $Name$ $Revision$ $Date$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

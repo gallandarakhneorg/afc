@@ -45,7 +45,7 @@ import java.util.Set;
  *
  * @param <K> is the type of the keys.
  * @param <V> is the type of the values.
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -280,7 +280,7 @@ public abstract class AbstractReferencedValueMap<K,V> extends AbstractMap<K,V> {
 	 * 
 	 * @param <K> is the type of the map keys.
 	 * @param <V> is the type of the map values.
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -309,7 +309,7 @@ public abstract class AbstractReferencedValueMap<K,V> extends AbstractMap<K,V> {
 	} // interface ReferencableValue
 
 	/**
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -474,7 +474,7 @@ public abstract class AbstractReferencedValueMap<K,V> extends AbstractMap<K,V> {
 	} // class InnerEntrySet
 
 	/**
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -546,7 +546,7 @@ public abstract class AbstractReferencedValueMap<K,V> extends AbstractMap<K,V> {
 	} // class InnerIterator
 
 	/**
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -586,7 +586,7 @@ public abstract class AbstractReferencedValueMap<K,V> extends AbstractMap<K,V> {
 	 * 
 	 * @param <VK> is the type of the key associated to the value.
 	 * @param <VV> is the type of the value.
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -692,7 +692,7 @@ public abstract class AbstractReferencedValueMap<K,V> extends AbstractMap<K,V> {
 	 * 
 	 * @param <VK> is the type of the key associated to the value.
 	 * @param <VV> is the type of the value.
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -798,7 +798,7 @@ public abstract class AbstractReferencedValueMap<K,V> extends AbstractMap<K,V> {
 	 * 
 	 * @param <VK> is the type of the key associated to the value.
 	 * @param <VV> is the type of the value.
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

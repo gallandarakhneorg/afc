@@ -32,7 +32,7 @@ import java.util.TreeMap;
  * on the fly.
  * Supported macros are described in {@link AbstractReplaceMojo}.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -53,7 +53,7 @@ public class ReplaceResourceMojo extends AbstractReplaceMojo {
 
 	/** Set of the files inside the file system.
 	 */
-	private final Map<File,Collection<File>> bufferedFiles = new TreeMap<File,Collection<File>>();
+	private final Map<File,Collection<File>> bufferedFiles = new TreeMap<>();
 
 	/**
      * {@inheritDoc}
@@ -76,7 +76,7 @@ public class ReplaceResourceMojo extends AbstractReplaceMojo {
 		for(File sourceDir : sourceDirs) {
 			Collection<File> textBasedFiles = this.bufferedFiles.get(sourceDir);
 			if (textBasedFiles==null) {
-				textBasedFiles = new ArrayList<File>();
+				textBasedFiles = new ArrayList<>();
 	    		if ( sourceDir.isDirectory() ) {
 	    			// Search for .properties files
 	    			findFiles(sourceDir, new PropertyFileFilter(), textBasedFiles);

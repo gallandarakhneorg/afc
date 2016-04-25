@@ -29,7 +29,7 @@ import java.io.Serializable;
  * Class that is representing a <code>null</code> value
  * for the embedded type of attribute.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

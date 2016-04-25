@@ -51,11 +51,13 @@ import android.widget.EditText;
 /**
  * File chooser embedded inside an activity fragment. 
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public class FileChooserActivity extends FragmentActivity implements OnBackStackChangedListener {
 
 	/** Name of the extra data that is containing the options of the file chooser.
@@ -417,7 +419,7 @@ public class FileChooserActivity extends FragmentActivity implements OnBackStack
 					this.fileFilter = (FileFilter)type.newInstance();
 				}
 			}
-			catch(Throwable _) {
+			catch(Throwable exception) {
 				//
 			}
 		}
@@ -429,7 +431,7 @@ public class FileChooserActivity extends FragmentActivity implements OnBackStack
 					this.iconSelector = (FileChooserIconSelector)type.newInstance();
 				}
 			}
-			catch(Throwable _) {
+			catch(Throwable exception) {
 				//
 			}
 		}
@@ -452,12 +454,12 @@ public class FileChooserActivity extends FragmentActivity implements OnBackStack
 		}
 		File validatedFile = file;
 		if (validatedFile!=null) {
-			if (!this.isOpen && this.fileFilter instanceof org.arakhne.afc.io.filefilter.FileFilter) {
-				if (!this.fileFilter.accept(validatedFile)) {
-					String ext = ((org.arakhne.afc.io.filefilter.FileFilter)this.fileFilter).getExtensions()[0];
-					validatedFile = FileSystem.addExtension(validatedFile, ext);
-				}
-			}
+//			if (!this.isOpen && this.fileFilter instanceof FileFilter) {
+//				if (!this.fileFilter.accept(validatedFile)) {
+//					String ext = ((org.arakhne.afc.io.filefilter.FileFilter)this.fileFilter).getExtensions()[0];
+//					validatedFile = FileSystem.addExtension(validatedFile, ext);
+//				}
+//			}
 
 			if (this.path!=null) {
 				File preferencePath = this.path;
@@ -530,7 +532,7 @@ public class FileChooserActivity extends FragmentActivity implements OnBackStack
 	}
 	
 	/**
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $Name$ $Revision$ $Date$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

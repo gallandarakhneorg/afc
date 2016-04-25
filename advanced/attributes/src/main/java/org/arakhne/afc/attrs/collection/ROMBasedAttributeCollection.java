@@ -33,7 +33,7 @@ import org.arakhne.afc.attrs.attr.Attribute;
  * The changed values are stored inside the memory and never
  * written back into the ROM.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

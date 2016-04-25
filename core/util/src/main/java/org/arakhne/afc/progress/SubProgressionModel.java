@@ -28,7 +28,7 @@ import java.lang.ref.WeakReference;
  * An object that permits to indicates the progression of
  * a task.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

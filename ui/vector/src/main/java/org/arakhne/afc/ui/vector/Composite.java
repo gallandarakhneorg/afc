@@ -24,11 +24,13 @@ package org.arakhne.afc.ui.vector;
 /** Interface that is representing a composite. 
  * See {@link VectorToolkit} to create an instance.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public interface Composite {
 	
 	/** Replies the alpha composition.

@@ -38,11 +38,13 @@ import android.support.v4.content.AsyncTaskLoader;
  * to update the list of the files when this list
  * was changed by the action of an other application.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 class AsyncFileLoader extends AsyncTaskLoader<List<File>> {
 
 	private final File path;
@@ -85,7 +87,7 @@ class AsyncFileLoader extends AsyncTaskLoader<List<File>> {
 		else {
 			array = this.path.listFiles();
 		}
-		List<File> list = new ArrayList<File>(array.length);
+		List<File> list = new ArrayList<>(array.length);
 		// Dichotomic insertion
 		Comparator<File> comparator = new Comparator<File>() {
 			@Override

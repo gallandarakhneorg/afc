@@ -54,7 +54,7 @@ import org.arakhne.afc.vmutil.FileSystem;
  * <li><code>last-modified</code></li>
  * </ul>
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @author $Author: willaume$
  * @version $FullVersion$
  * @mavengroupid $GroupId$

@@ -30,7 +30,7 @@ import org.arakhne.afc.vmutil.locale.Locale;
 /**
  * A RFC 1521 compliant Base64 Encoder and Decoder.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

@@ -35,11 +35,13 @@ import org.arakhne.afc.progress.ProgressionListener;
 /**
  * A ProgressMonitor ables to react to {@link ProgressionEvent}.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public class ProgressMonitor extends javax.swing.ProgressMonitor implements ProgressionListener {
 
 	/** Create a {@link Progression} model and link it to a
@@ -107,12 +109,12 @@ public class ProgressMonitor extends javax.swing.ProgressMonitor implements Prog
             int min,
             int max) {
 		super(parentComponent, message, note, min, max);
-		this.progressionModel = new WeakReference<Progression>(progressionModel);
+		this.progressionModel = new WeakReference<>(progressionModel);
 	}
 	
 	@Override
 	public void onProgressionValueChanged(ProgressionEvent event) {
-		if (event.isTaskFinished()) {
+		if (event.isFinished()) {
 			Progression progression = this.progressionModel.get();
 			this.progressionModel.clear();
 			if (progression!=null) {
@@ -130,7 +132,7 @@ public class ProgressMonitor extends javax.swing.ProgressMonitor implements Prog
 
 	@Override
 	public void onProgressionStateChanged(ProgressionEvent event) {
-		if (event.isTaskFinished()) {
+		if (event.isFinished()) {
 			setNote(event.getComment());
 		}
 	}	

@@ -453,7 +453,7 @@ public interface Rectangle2ai<
 
 	/** Sides of a rectangle.
 	 * 
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

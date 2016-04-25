@@ -24,7 +24,7 @@ import java.util.Map;
 import org.arakhne.afc.references.SoftValueTreeMap;
 
 /**
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

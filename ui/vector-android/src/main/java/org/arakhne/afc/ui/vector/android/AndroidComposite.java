@@ -27,11 +27,13 @@ import android.graphics.Paint.Style;
 
 /** Android implementation of the generic composite.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 class AndroidComposite implements Composite, NativeWrapper, Cloneable {
 
 	private Paint original;

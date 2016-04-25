@@ -43,7 +43,7 @@ import org.arakhne.afc.ui.vector.Image;
  * This interface representes a provider of attributes
  * that provide a reading API only.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

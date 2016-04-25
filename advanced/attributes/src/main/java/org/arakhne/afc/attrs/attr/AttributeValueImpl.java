@@ -53,7 +53,7 @@ import org.arakhne.afc.ui.vector.VectorToolkit;
 /**
  * This class contains an attribute value.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

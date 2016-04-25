@@ -29,7 +29,7 @@ import java.io.InputStream;
 /**
  * InputStream that is able to notify about the reading progression.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
