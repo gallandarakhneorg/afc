@@ -29,8 +29,8 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 @SuppressWarnings("all")
-public abstract class AbstractRectangularShape2aiTest<T extends Rectangle2ai<?, T, ?, ?, B>,
-		B extends Rectangle2ai<?, ?, ?, ?, B>> extends AbstractShape2aiTest<T, B> {
+public abstract class AbstractRectangularShape2aiTest<T extends Rectangle2ai<?, T, ?, ?, ?, B>,
+		B extends Rectangle2ai<?, ?, ?, ?, ?, B>> extends AbstractShape2aiTest<T, B> {
 
 	protected static final int MINX = 5;
 	

@@ -21,8 +21,12 @@
 package org.arakhne.afc.math.geometry.d2.fpfx;
 
 import org.arakhne.afc.math.geometry.d2.Vector2D;
-import org.arakhne.afc.math.geometry.d2.fp.Vector2fp;
+import org.eclipse.xtext.xbase.lib.Pure;
 
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.ReadOnlyDoubleProperty;
+import javafx.beans.property.ReadOnlyDoubleWrapper;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 
 /**
@@ -34,33 +38,65 @@ import javafx.beans.property.SimpleObjectProperty;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public class UnitVectorProperty extends SimpleObjectProperty<Vector2D> {
+public class UnitVectorProperty extends SimpleObjectProperty<Vector2fx> {
+
+	private ReadOnlyDoubleWrapper x;
+	
+	private ReadOnlyDoubleWrapper y;
+	
+	private Vector2fx fake;
 
 	/** Construct a property.
 	 *
 	 * @param bean the owner of the property.
 	 * @param name the name of the property.
-	 * @param initialValue the initial value.
 	 */
-	public UnitVectorProperty(Object bean, String name, Vector2D initialValue) {
-		super(bean, name, initialValue.toUnitVector());
+	public UnitVectorProperty(Object bean, String name) {
+		super(bean, name);
+	}
+	
+	private ReadOnlyDoubleWrapper internalXProperty() {
+		if (this.x == null) {
+			init();
+		}
+		return this.x;
+	}
+	
+	private ReadOnlyDoubleWrapper internalYProperty() {
+		if (this.y == null) {
+			init();
+		}
+		return this.y;
+	}
+
+	private void init() {
+		Vector2fx v = new Vector2fx();
+		this.x = new ReadOnlyDoubleWrapper(v, "x"); //$NON-NLS-1$
+		this.y = new ReadOnlyDoubleWrapper(v, "y"); //$NON-NLS-1$
+		v.set(this.x, this.y);
+		super.set(v);
 	}
 	
 	@Override
-	public Vector2D get() {
-		// Avoid external changes
-		return super.get().toUnmodifiable();
+	public Vector2fx get() {
+		if (isBound()) {
+			return super.get();
+		}
+		if (this.fake == null) {
+			this.fake = new Vector2fx();
+			DoubleProperty x = new SimpleDoubleProperty(this.fake, "x"); //$NON-NLS-1$
+			x.bind(internalXProperty());
+			DoubleProperty y = new SimpleDoubleProperty(this.fake, "y"); //$NON-NLS-1$
+			y.bind(internalYProperty());
+			this.fake.set(x, y);
+		}
+		return this.fake;
 	}
 	
 	@Override
-	public void set(Vector2D newValue) {
+	public void set(Vector2fx newValue) {
 		assert (newValue != null) : "Initial value must be not null"; //$NON-NLS-1$
-		super.set(new Vector2fx(newValue));
-	}
-	
-	@Override
-	protected void invalidated() {
-		super.get().normalize();
+		set(newValue.getX(), newValue.getY());
 	}
 
 	/** Change the coordinates of the vector.
@@ -69,7 +105,12 @@ public class UnitVectorProperty extends SimpleObjectProperty<Vector2D> {
 	 * @param y y coordinate of the vector.
 	 */
 	public void set(double x, double y) {
-		set(new Vector2fp(x, y));
+		assert (Vector2D.isUnitVector(x, y)) : "Vector coordinates must correspond to a unit vector"; //$NON-NLS-1$
+		if ((x != getX() || y != getY()) && !isBound()) {
+			Vector2fx v = super.get();
+			v.set(x, y);
+			fireValueChangedEvent();
+		}
 	}
 
 	/** Replies the x coordinate of the vector.
@@ -77,7 +118,10 @@ public class UnitVectorProperty extends SimpleObjectProperty<Vector2D> {
 	 * @return the x coordinate of the vector.
 	 */
 	public double getX() {
-		return super.get().getX();
+		if (isBound()) {
+			return super.get().getX();
+		}
+		return internalXProperty().get();
 	}
 
 	/** Replies the y coordinate of the vector.
@@ -85,7 +129,34 @@ public class UnitVectorProperty extends SimpleObjectProperty<Vector2D> {
 	 * @return the y coordinate of the vector.
 	 */
 	public double getY() {
-		return super.get().getY();
+		if (isBound()) {
+			return super.get().getY();
+		}
+		return internalYProperty().get();
+	}
+
+	/** Replies the x property.
+	 *
+	 * @return the x property.
+	 */
+	@Pure
+	public ReadOnlyDoubleProperty xProperty() {
+		if (isBound()) {
+			return super.get().xProperty();
+		}
+		return internalXProperty().getReadOnlyProperty();
+	}
+
+	/** Replies the y property.
+	 *
+	 * @return the y property.
+	 */
+	@Pure
+	public ReadOnlyDoubleProperty yProperty() {
+		if (isBound()) {
+			return super.get().yProperty();
+		}
+		return internalYProperty().getReadOnlyProperty();
 	}
 
 }

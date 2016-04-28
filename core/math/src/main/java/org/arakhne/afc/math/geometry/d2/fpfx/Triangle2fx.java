@@ -42,7 +42,7 @@ import javafx.beans.property.SimpleDoubleProperty;
  */
 public class Triangle2fx
 		extends AbstractShape2fx<Triangle2fx>
-		implements Triangle2afp<Shape2fx<?>, Triangle2fx, PathElement2fx, Point2fx, Rectangle2fx> {
+		implements Triangle2afp<Shape2fx<?>, Triangle2fx, PathElement2fx, Point2fx, Vector2fx, Rectangle2fx> {
 
 	private static final long serialVersionUID = -1872758222696617883L;
 
@@ -71,7 +71,7 @@ public class Triangle2fx
 	 * @param p2
 	 * @param p3
 	 */
-	public Triangle2fx(Point2D p1, Point2D p2, Point2D p3) {
+	public Triangle2fx(Point2D<?, ?> p1, Point2D<?, ?> p2, Point2D<?, ?> p3) {
 		assert (p1 != null) : "Point 1 must not be null"; //$NON-NLS-1$
 		assert (p2 != null) : "Point 1 must not be null"; //$NON-NLS-1$
 		assert (p3 != null) : "Point 1 must not be null"; //$NON-NLS-1$
@@ -93,7 +93,7 @@ public class Triangle2fx
 	/** Construct a triangle from a triangle.
 	 * @param t
 	 */
-	public Triangle2fx(Triangle2afp<?, ?, ?, ?, ?> t) {
+	public Triangle2fx(Triangle2afp<?, ?, ?, ?, ?, ?> t) {
 		assert (t != null) : "Triangle must be not null"; //$NON-NLS-1$
 		set(t.getX1(), t.getY1(), t.getX2(), t.getY2(), t.getX3(), t.getY3());
 	}

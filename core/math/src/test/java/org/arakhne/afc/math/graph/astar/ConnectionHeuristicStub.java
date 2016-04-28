@@ -22,8 +22,8 @@ package org.arakhne.afc.math.graph.astar;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 4.0
  */
+@SuppressWarnings("all")
 public class ConnectionHeuristicStub implements AStarHeuristic<ConnectionStub> {
 
 	/**

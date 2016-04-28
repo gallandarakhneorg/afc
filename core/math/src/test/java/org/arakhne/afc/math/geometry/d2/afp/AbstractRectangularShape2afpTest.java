@@ -37,8 +37,8 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.junit.Test;
 
 @SuppressWarnings("all")
-public abstract class AbstractRectangularShape2afpTest<T extends RectangularShape2afp<?, T, ?, ?, B>,
-		B extends Rectangle2afp<?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
+public abstract class AbstractRectangularShape2afpTest<T extends RectangularShape2afp<?, T, ?, ?, ?, B>,
+		B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
 
 	@Test
 	public abstract void inflate();

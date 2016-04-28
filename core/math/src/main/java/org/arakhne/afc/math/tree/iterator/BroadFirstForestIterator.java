@@ -25,6 +25,7 @@ import java.util.Queue;
 
 import org.arakhne.afc.math.tree.Tree;
 import org.arakhne.afc.math.tree.TreeNode;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * This class is an iterator on a forest that replies the tree nodes.
@@ -69,25 +70,13 @@ implements Iterator<TreeNode<D,?>> {
 		this.isStarted = true;
 	}
 	
-	/** {@inheritDoc}
-	 */
-	@Override
-	public void remove() {
-		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public boolean hasNext() {
 		if (!this.isStarted) startIterator();
 		return !this.availableNodes.isEmpty();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public TreeNode<D,?> next() {
 		if (!this.isStarted) startIterator();

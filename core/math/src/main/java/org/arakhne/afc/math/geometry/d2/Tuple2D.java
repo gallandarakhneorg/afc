@@ -27,14 +27,14 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 /** 2D tuple.
  * 
- * @param <TT> is the type of data that can be added or substracted to this tuple.
+ * @param <RT> is the type of data that can be returned by this tuple.
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public interface Tuple2D<TT extends Tuple2D<? super TT>>
+public interface Tuple2D<RT extends Tuple2D<? super RT>>
 		extends Cloneable, Serializable {
 
 	/** Clone this point.
@@ -42,7 +42,7 @@ public interface Tuple2D<TT extends Tuple2D<? super TT>>
 	 * @return the clone.
 	 */
 	@Pure
-	TT clone();
+	RT clone();
 
 	/**
 	 *  Sets each component of this tuple to its absolute value.
@@ -58,7 +58,7 @@ public interface Tuple2D<TT extends Tuple2D<? super TT>>
 	 *
 	 * @param tuple   the source tuple, which will not be modified
 	 */
-	default void absolute(TT tuple)  {
+	default void absolute(Tuple2D<?> tuple)  {
 		assert (tuple != null) : "Tuple must be not be null"; //$NON-NLS-1$
 		tuple.set(Math.abs(getX()), Math.abs(getY()));
 	}
@@ -209,7 +209,7 @@ public interface Tuple2D<TT extends Tuple2D<? super TT>>
 	 *  @param max  the highest value in the tuple after clamping
 	 *  @param tuple   the source tuple, which will not be modified
 	 */
-	default void clamp(int min, int max, TT tuple) {
+	default void clamp(int min, int max, Tuple2D<?> tuple) {
 		assert (min <= max) : "min must be lower or equal to max"; //$NON-NLS-1$
 		assert (tuple != null) : "Tuple must not be null"; //$NON-NLS-1$
 		double x = MathUtil.clamp(tuple.getX(), min, max);
@@ -224,7 +224,7 @@ public interface Tuple2D<TT extends Tuple2D<? super TT>>
 	 *  @param max  the highest value in the tuple after clamping
 	 *  @param tuple   the source tuple, which will not be modified
 	 */
-	default void clamp(double min, double max, TT tuple) {
+	default void clamp(double min, double max, Tuple2D<?> tuple) {
 		assert (min <= max) : "min must be lower or equal to max"; //$NON-NLS-1$
 		assert (tuple != null) : "Tuple must not be null"; //$NON-NLS-1$
 		double x = MathUtil.clamp(tuple.getX(), min, max);
@@ -238,7 +238,7 @@ public interface Tuple2D<TT extends Tuple2D<? super TT>>
 	 *  @param min   the lowest value in the tuple after clamping
 	 *  @param tuple   the source tuple, which will not be modified
 	 */
-	default void clampMin(int min, TT tuple) {
+	default void clampMin(int min, Tuple2D<?> tuple) {
 		assert (tuple != null) : "Tuple must not be null"; //$NON-NLS-1$
 		double x = tuple.getX();
 		double y = tuple.getY();
@@ -257,7 +257,7 @@ public interface Tuple2D<TT extends Tuple2D<? super TT>>
 	 *  @param min   the lowest value in the tuple after clamping
 	 *  @param tuple   the source tuple, which will not be modified
 	 */
-	default void clampMin(double min, TT tuple) {
+	default void clampMin(double min, Tuple2D<?> tuple) {
 		assert (tuple != null) : "Tuple must not be null"; //$NON-NLS-1$
 		double x = tuple.getX();
 		double y = tuple.getY();
@@ -276,7 +276,7 @@ public interface Tuple2D<TT extends Tuple2D<? super TT>>
 	 *  @param max   the highest value in the tuple after clamping
 	 *  @param tuple   the source tuple, which will not be modified
 	 */
-	default void clampMax(int max, TT tuple) {
+	default void clampMax(int max, Tuple2D<?> tuple) {
 		assert (tuple != null) : "Tuple must not be null"; //$NON-NLS-1$
 		double x = tuple.getX();
 		double y = tuple.getY();
@@ -295,7 +295,7 @@ public interface Tuple2D<TT extends Tuple2D<? super TT>>
 	 *  @param max   the highest value in the tuple after clamping
 	 *  @param tuple   the source tuple, which will not be modified
 	 */
-	default void clampMax(double max, TT tuple) {
+	default void clampMax(double max, Tuple2D<?> tuple) {
 		assert (tuple != null) : "Tuple must not be null"; //$NON-NLS-1$
 		double x = tuple.getX();
 		double y = tuple.getY();
@@ -312,7 +312,7 @@ public interface Tuple2D<TT extends Tuple2D<? super TT>>
 	 * Copies the values of this tuple into the tuple t.
 	 * @param tuple is the target tuple
 	 */
-	default void get(TT tuple) {
+	default void get(Tuple2D<?> tuple) {
 		assert (tuple != null) : "Tuple must not be null"; //$NON-NLS-1$
 		tuple.set(getX(), getY());
 	}
@@ -343,7 +343,7 @@ public interface Tuple2D<TT extends Tuple2D<? super TT>>
 	 * Sets the value of this tuple to the negation of tuple t1.
 	 * @param tuple the source tuple
 	 */
-	default void negate(TT tuple) {
+	default void negate(Tuple2D<?> tuple) {
 		assert (tuple != null) : "Tuple must not be null"; //$NON-NLS-1$
 		set(-tuple.getX(), -tuple.getY());
 	}
@@ -361,7 +361,7 @@ public interface Tuple2D<TT extends Tuple2D<? super TT>>
 	 * @param scale the scalar value
 	 * @param tuple the source tuple
 	 */
-	default void scale(int scale, TT tuple) {
+	default void scale(int scale, Tuple2D<?> tuple) {
 		assert (tuple != null) : "Tuple must not be null"; //$NON-NLS-1$
 		set(scale * tuple.getX(), scale * tuple.getY());
 	}
@@ -372,7 +372,7 @@ public interface Tuple2D<TT extends Tuple2D<? super TT>>
 	 * @param scale the scalar value
 	 * @param tuple the source tuple
 	 */
-	default void scale(double scale, TT tuple) {
+	default void scale(double scale, Tuple2D<?> tuple) {
 		assert (tuple != null) : "Tuple must not be null"; //$NON-NLS-1$
 		set(scale * tuple.getX(), scale * tuple.getY());
 	}
@@ -567,7 +567,7 @@ public interface Tuple2D<TT extends Tuple2D<? super TT>>
 	 *  @param tuple2  the second tuple
 	 *  @param alpha  the alpha interpolation parameter (value in [0;1]).
 	 */
-	default void interpolate(TT tuple1, TT tuple2, double alpha) {
+	default void interpolate(Tuple2D<?> tuple1, Tuple2D<?> tuple2, double alpha) {
 		assert (tuple1 != null) : "First tuple must not be null"; //$NON-NLS-1$
 		assert (tuple2 != null) : "Second tuple must not be null"; //$NON-NLS-1$
 		assert (alpha >= 0. && alpha <= 1.) : "Alpha must be in [0; 1]"; //$NON-NLS-1$
@@ -581,7 +581,7 @@ public interface Tuple2D<TT extends Tuple2D<? super TT>>
 	 *  @param tuple  the first tuple
 	 *  @param alpha  the alpha interpolation parameter  
 	 */   
-	default void interpolate(TT tuple, double alpha) {
+	default void interpolate(Tuple2D<?> tuple, double alpha) {
 		assert (tuple != null) : "Tuple must not be null"; //$NON-NLS-1$
 		assert (alpha >= 0. && alpha <= 1.) : "Alpha must be in [0; 1]"; //$NON-NLS-1$
 		set((1. - alpha) * getX() + alpha * tuple.getX(),
@@ -625,7 +625,7 @@ public interface Tuple2D<TT extends Tuple2D<? super TT>>
 	 * @return  true or false
 	 */
 	@Pure
-	default boolean epsilonEquals(TT tuple, double epsilon) {
+	default boolean epsilonEquals(Tuple2D<?> tuple, double epsilon) {
 		assert (tuple != null) : "Tuple must not be null"; //$NON-NLS-1$
 		double dx = getX() - tuple.getX();
 		double dy = getY() - tuple.getY();

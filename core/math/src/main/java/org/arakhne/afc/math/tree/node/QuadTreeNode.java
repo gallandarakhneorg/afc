@@ -22,7 +22,9 @@ import java.io.ObjectInputStream;
 import java.util.Collection;
 import java.util.List;
 
+import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.tree.TreeNode;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 
 /**
@@ -119,9 +121,8 @@ public abstract class QuadTreeNode<D,N extends QuadTreeNode<D,N>> extends Abstra
 		this.nSouthEast = null;
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
+	@Pure
 	public Class<? extends Enum<?>> getPartitionEnumeration() {
 		return QuadTreeZone.class;
 	}
@@ -176,25 +177,20 @@ public abstract class QuadTreeNode<D,N extends QuadTreeNode<D,N>> extends Abstra
 		removeAllUserData();
 	}
 
-	/** Replies count of children in this node.
-	 * 
-	 * @return always 4
-	 */
 	@Override
+	@Pure
 	public int getChildCount() {
 		return 4;
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
+	@Pure
 	public int getNotNullChildCount() {
 		return this.notNullChildCount;
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
+	@Pure
 	public N getChildAt(int index) throws IndexOutOfBoundsException {
 		QuadTreeZone[] zones = QuadTreeZone.values();
 		if (index>=0 && index<zones.length)
@@ -207,6 +203,7 @@ public abstract class QuadTreeNode<D,N extends QuadTreeNode<D,N>> extends Abstra
 	 * @param zone
 	 * @return the child node for the given zone, or <code>null</code> 
 	 */
+	@Pure
 	public N getChildAt(QuadTreeZone zone) {
 		switch(zone) {
 		case NORTH_WEST:
@@ -259,6 +256,7 @@ public abstract class QuadTreeNode<D,N extends QuadTreeNode<D,N>> extends Abstra
 	 * 
 	 * @return the child for the first zone
 	 */
+	@Pure
 	public final N getFirstChild() {
 		return this.nNorthWest;
 	}
@@ -300,6 +298,7 @@ public abstract class QuadTreeNode<D,N extends QuadTreeNode<D,N>> extends Abstra
 	 * 
 	 * @return the child for the second zone
 	 */
+	@Pure
 	public final N getSecondChild() {
 		return this.nNorthEast;
 	}
@@ -341,6 +340,7 @@ public abstract class QuadTreeNode<D,N extends QuadTreeNode<D,N>> extends Abstra
 	 * 
 	 * @return the child for the third zone
 	 */
+	@Pure
 	public final N getThirdChild() {
 		return this.nSouthWest;
 	}
@@ -382,27 +382,22 @@ public abstract class QuadTreeNode<D,N extends QuadTreeNode<D,N>> extends Abstra
 	 * 
 	 * @return the child for the fourth zone
 	 */
+	@Pure
 	public final N getFourthChild() {
 		return this.nSouthEast;
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
+	@Pure
 	public boolean isLeaf() {
 		return this.nNorthEast==null && this.nNorthWest==null && this.nSouthEast==null && this.nSouthWest==null;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public boolean moveTo(N newParent, int index) {
 		return moveTo(newParent, index, false);
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public boolean setChildAt(int index, N newChild) throws IndexOutOfBoundsException {
 		QuadTreeZone[] zones = QuadTreeZone.values();
@@ -411,8 +406,6 @@ public abstract class QuadTreeNode<D,N extends QuadTreeNode<D,N>> extends Abstra
 		throw new IndexOutOfBoundsException(index+" >= 4"); //$NON-NLS-1$
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	protected void setChildAtWithoutEventFiring(int index, N newChild) throws IndexOutOfBoundsException {
 		switch(QuadTreeZone.values()[index]) {
@@ -441,8 +434,6 @@ public abstract class QuadTreeNode<D,N extends QuadTreeNode<D,N>> extends Abstra
 		}
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public boolean removeChild(N child) {
 		if (child!=null) {
@@ -472,7 +463,6 @@ public abstract class QuadTreeNode<D,N extends QuadTreeNode<D,N>> extends Abstra
 	 * @param newParent is the new parent for this node.
 	 * @param zone is the position of this node in the new parent.
 	 * @return <code>true</code> on success, otherwise <code>false</code>.
-	 * @since 4.0
 	 */
 	public boolean moveTo(N newParent, QuadTreeZone zone) {
 		return moveTo(newParent, zone.ordinal());
@@ -499,9 +489,8 @@ public abstract class QuadTreeNode<D,N extends QuadTreeNode<D,N>> extends Abstra
 		return false;
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
+	@Pure
 	public int indexOf(N child) {
 		QuadTreeZone zone = zoneOf(child);
 		if (zone==null) return -1;
@@ -513,6 +502,7 @@ public abstract class QuadTreeNode<D,N extends QuadTreeNode<D,N>> extends Abstra
 	 * @param child
 	 * @return the index or <code>null</code>.
 	 */
+	@Pure
 	public QuadTreeZone zoneOf(N child) {
 		if (child==this.nNorthWest) return QuadTreeZone.NORTH_WEST;
 		if (child==this.nNorthEast) return QuadTreeZone.NORTH_EAST;
@@ -521,9 +511,6 @@ public abstract class QuadTreeNode<D,N extends QuadTreeNode<D,N>> extends Abstra
 		return null;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void getChildren(Object[] array) {
 		if (array!=null) {
@@ -534,34 +521,26 @@ public abstract class QuadTreeNode<D,N extends QuadTreeNode<D,N>> extends Abstra
 		}
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
+	@Pure
 	public int getMinHeight() {
-		return 1+minInteger(
+		return 1+MathUtil.min(
 				this.nNorthWest!=null ? this.nNorthWest.getMinHeight() : 0,
 				this.nNorthEast!=null ? this.nNorthEast.getMinHeight() : 0,
 				this.nSouthWest!=null ? this.nSouthWest.getMinHeight() : 0,
 				this.nSouthEast!=null ? this.nSouthEast.getMinHeight() : 0);
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
+	@Pure
 	public int getMaxHeight() {
-		return 1+maxInteger(
+		return 1+MathUtil.max(
 				this.nNorthWest!=null ? this.nNorthWest.getMaxHeight() : 0,
 				this.nNorthEast!=null ? this.nNorthEast.getMaxHeight() : 0,
 				this.nSouthWest!=null ? this.nSouthWest.getMaxHeight() : 0,
 				this.nSouthEast!=null ? this.nSouthEast.getMaxHeight() : 0);
 	}
 
-	/** Replies the heights of all the leaf nodes.
-	 * The order of the heights is given by a depth-first iteration.
-	 * 
-	 * @param currentHeight is the current height of this node.
-	 * @param heights is the list of heights to fill
-	 */
 	@Override
 	protected void getHeights(int currentHeight, List<Integer> heights) {
 		if (isLeaf()) {

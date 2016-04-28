@@ -23,6 +23,8 @@ package org.arakhne.afc.math.stochastic;
 import java.util.Map;
 import java.util.Random;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /**
  * Law that representes a Pareto density.
  * <p>
@@ -84,11 +86,7 @@ public class ParetoStochasticLaw extends StochasticLaw {
 		this.k = k1;
 	}
 	
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @return {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public String toString() {
 		StringBuilder b = new StringBuilder();
@@ -100,8 +98,7 @@ public class ParetoStochasticLaw extends StochasticLaw {
 		return b.toString();
 	}
 	
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public double f(double x)  throws MathException {
 		if (x<this.xmin)
@@ -109,8 +106,7 @@ public class ParetoStochasticLaw extends StochasticLaw {
 		return this.k * ((Math.pow(this.xmin, this.k))/(Math.pow(x, this.k+1)));
 	}
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public MathFunctionRange[] getRange() {
 		return MathFunctionRange.createSet(this.xmin, Double.POSITIVE_INFINITY);
@@ -122,6 +118,7 @@ public class ParetoStochasticLaw extends StochasticLaw {
 	 * @return {@code F<sup>-1</sup>(u)}
 	 * @throws MathException in case {@code F<sup>-1</sup>(u)} could not be computed
 	 */
+	@Pure
 	@Override
 	public double inverseF(double u) throws MathException {
 		return this.xmin / Math.pow(u, 1/this.k); 

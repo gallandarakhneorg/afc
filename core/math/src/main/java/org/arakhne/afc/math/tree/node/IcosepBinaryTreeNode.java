@@ -23,6 +23,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.arakhne.afc.math.tree.IcosepTreeNodeContainer;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 
 /**
@@ -107,8 +108,7 @@ implements IcosepTreeNodeContainer<N> {
 		this.nIcosep = null;
 	}
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public Class<? extends Enum<?>> getPartitionEnumeration() {
 		return IcosepBinaryTreeZone.class;
@@ -144,17 +144,13 @@ implements IcosepTreeNodeContainer<N> {
 		}
 	}
 
-	/** Replies count of children in this node.
-	 * 
-	 * @return always 5
-	 */
+	@Pure
 	@Override
 	public int getChildCount() {
 		return super.getChildCount()+1;
 	}
 
-	/** Replies count of children in this node.
-	 */
+	@Pure
 	@Override
 	public N getChildAt(int index) throws IndexOutOfBoundsException {
 		if (index==IcosepBinaryTreeZone.ICOSEP.ordinal())
@@ -167,6 +163,7 @@ implements IcosepTreeNodeContainer<N> {
 	 * @param zone
 	 * @return the child node for the given zone, or <code>null</code> 
 	 */
+	@Pure
 	public N getChildAt(IcosepBinaryTreeZone zone) {
 		if (zone==IcosepBinaryTreeZone.ICOSEP) {
 			return this.nIcosep;
@@ -174,8 +171,6 @@ implements IcosepTreeNodeContainer<N> {
 		return getChildAt(zone.toBinaryTreeZone());
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public boolean setIcosepChild(N newChild) {
 		N oldChild = this.nIcosep;
@@ -205,24 +200,18 @@ implements IcosepTreeNodeContainer<N> {
 		return true;
 	}
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public N getIcosepChild() {
 		return this.nIcosep;
 	}
 
-	/** {@inheritDoc}
-	 * 
-	 * @return {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public boolean isLeaf() {
 		return super.isLeaf() && this.nIcosep==null;
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public boolean setChildAt(int index, N newChild) throws IndexOutOfBoundsException {
 		if (index==IcosepBinaryTreeZone.ICOSEP.ordinal())
@@ -230,8 +219,6 @@ implements IcosepTreeNodeContainer<N> {
 		return super.setChildAt(index, newChild);
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	protected void setChildAtWithoutEventFiring(int index, N newChild) throws IndexOutOfBoundsException {
 		if (index==IcosepBinaryTreeZone.ICOSEP.ordinal()) {
@@ -244,8 +231,6 @@ implements IcosepTreeNodeContainer<N> {
 		}
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public boolean removeChild(N child) {
 		if (child!=null) {
@@ -257,19 +242,13 @@ implements IcosepTreeNodeContainer<N> {
 		return false;
 	}
 
-	/** Replies the index of the specified child.
-	 * 
-	 * @return the index or <code>-1</code>.
-	 */
+	@Pure
 	@Override
 	public int indexOf(N child) {
 		if (child==this.nIcosep) return IcosepBinaryTreeZone.ICOSEP.ordinal();
 		return super.indexOf(child);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void getChildren(Object[] array) {
 		if (array!=null) {
@@ -280,10 +259,7 @@ implements IcosepTreeNodeContainer<N> {
 		}
 	}
 
-	/** Replies the minimal height of the tree.
-	 * 
-	 * @return the height of the uppest leaf in the tree.
-	 */
+	@Pure
 	@Override
 	public int getMinHeight() {
 		return Math.min(
@@ -291,10 +267,7 @@ implements IcosepTreeNodeContainer<N> {
 				1+(this.nIcosep!=null ? this.nIcosep.getMinHeight() : 0));
 	}
 
-	/** Replies the maximal height of the tree.
-	 * 
-	 * @return the height of the lowest leaf in the tree.
-	 */
+	@Pure
 	@Override
 	public int getMaxHeight() {
 		return Math.max(
@@ -302,12 +275,6 @@ implements IcosepTreeNodeContainer<N> {
 				1+(this.nIcosep!=null ? this.nIcosep.getMaxHeight() : 0));
 	}
 
-	/** Replies the heights of all the leaf nodes.
-	 * The order of the heights is given by a depth-first iteration.
-	 * 
-	 * @param currentHeight is the current height of this node.
-	 * @param heights is the list of heights to fill
-	 */
 	@Override
 	protected void getHeights(int currentHeight, List<Integer> heights) {
 		super.getHeights(currentHeight, heights);
@@ -355,6 +322,7 @@ implements IcosepTreeNodeContainer<N> {
 		 * @param index
 		 * @return the zone or <code>null</code>
 		 */
+		@Pure
 		public static IcosepBinaryTreeZone fromInteger(int index) {
 			if (index<0) return null;
 			IcosepBinaryTreeZone[] nodes = values();

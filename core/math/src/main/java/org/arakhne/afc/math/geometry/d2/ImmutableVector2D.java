@@ -31,7 +31,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public final class ImmutableVector2D implements UnmodifiableVector2D {
+public final class ImmutableVector2D implements UnmodifiableVector2D<ImmutableVector2D, ImmutablePoint2D> {
 
 	private static final long serialVersionUID = 1590949485248939642L;
 
@@ -72,6 +72,11 @@ public final class ImmutableVector2D implements UnmodifiableVector2D {
 		}
 	}
 
+	@Override
+	public GeomFactory<ImmutableVector2D, ImmutablePoint2D> getGeomFactory() {
+		return ImmutableGeomFactory.SINGLETON;
+	}
+
 	@Pure
 	@Override
 	public int hashCode() {
@@ -93,36 +98,41 @@ public final class ImmutableVector2D implements UnmodifiableVector2D {
 	}
 	
 	@Override
-	public Vector2D clone() {
+	public ImmutableVector2D clone() {
 		try {
-			return (Vector2D) super.clone();
+			return (ImmutableVector2D) super.clone();
 		} catch (CloneNotSupportedException exception) {
 			throw new InternalError(exception);
 		}
 	}
 
+	@Pure
 	@Override
 	public double getX() {
 		return this.x;
 	}
 
+	@Pure
 	@Override
 	public int ix() {
 		return (int) this.x;
 	}
 
+	@Pure
 	@Override
 	public double getY() {
 		return this.y;
 	}
 
+	@Pure
 	@Override
 	public int iy() {
 		return (int) this.y;
 	}
 
+	@Pure
 	@Override
-	public Vector2D toUnitVector() {
+	public ImmutableVector2D toUnitVector() {
 		double length = getLength();
 		if (length == 0.) {
 			return new ImmutableVector2D(0, 0);
@@ -130,8 +140,9 @@ public final class ImmutableVector2D implements UnmodifiableVector2D {
 		return new ImmutableVector2D(getX() / length, getY() / length);
 	}
 
+	@Pure
 	@Override
-	public Vector2D toOrthogonalVector() {
+	public ImmutableVector2D toOrthogonalVector() {
 		return new ImmutableVector2D(-getY(), getX());
 	}
 

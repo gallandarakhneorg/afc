@@ -38,34 +38,34 @@ import org.junit.Rule;
 import org.junit.Test;
 
 @SuppressWarnings("all")
-public interface TestShapeFactory<P extends Point2D, B extends Rectangle2afp<?, ?, ?, P, B>> {
+public interface TestShapeFactory<P extends Point2D<? super P, ? super V>, V extends Vector2D<? super V, ? super P>, B extends Rectangle2afp<?, ?, ?, P, V, B>> {
 	
-	Segment2afp<?, ?, ?, P, B> createSegment(double x1, double y1, double x2, double y2);
+	Segment2afp<?, ?, ?, P, V, B> createSegment(double x1, double y1, double x2, double y2);
 	
 	B createRectangle(double x, double y, double width, double height);
 
-	Ellipse2afp<?, ?, ?, P, B> createEllipse(double x, double y, double width, double height);
+	Ellipse2afp<?, ?, ?, P, V, B> createEllipse(double x, double y, double width, double height);
 
-	RoundRectangle2afp<?, ?, ?, P, B> createRoundRectangle(double x, double y,
+	RoundRectangle2afp<?, ?, ?, P, V, B> createRoundRectangle(double x, double y,
 			double width, double height, double arcWidth, double arcHeight);
 
-	OrientedRectangle2afp<?, ?, ?, P, B> createOrientedRectangle(
+	OrientedRectangle2afp<?, ?, ?, P, V, B> createOrientedRectangle(
 			double centerX, double centerY, double axis1X, double axis1Y, double extent1, double extent2);
 
-	Parallelogram2afp<?, ?, ?, P, B> createParallelogram(
+	Parallelogram2afp<?, ?, ?, P, V, B> createParallelogram(
 			double cx, double cy, double ux, double uy, double extent1, double vx, double vy, double extent2);
 
-	Triangle2afp<?, ?, ?, P, B> createTriangle(
+	Triangle2afp<?, ?, ?, P, V, B> createTriangle(
 			double x1, double y1, double x2, double y2, double x3, double y3);
 
-	Circle2afp<?, ?, ?, P, B> createCircle(double x, double y, double radius);
+	Circle2afp<?, ?, ?, P, V, B> createCircle(double x, double y, double radius);
 	
 	P createPoint(double x, double y);
 
 	Vector2D createVector(double x, double y);
 
-	Path2afp<?, ?, ?, P, B> createPath(PathWindingRule rule);
+	Path2afp<?, ?, ?, P, V, B> createPath(PathWindingRule rule);
 
-	MultiShape2afp<?, ?, ?, ?, P, B> createMultiShape();
+	MultiShape2afp<?, ?, ?, ?, P, V, B> createMultiShape();
 
 }

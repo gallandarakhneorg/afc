@@ -27,14 +27,15 @@ import static org.junit.Assert.assertTrue;
 
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.d2.Point2D;
+import org.arakhne.afc.math.geometry.d2.Shape2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.ai.PathIterator2ai;
 import org.junit.Test;
 
 @SuppressWarnings("all")
-public abstract class AbstractRectangle2afpTest<T extends Rectangle2afp<?, T, ?, ?, B>,
-		B extends Rectangle2afp<?, ?, ?, ?, B>> extends AbstractRectangularShape2afpTest<T, B> {
+public abstract class AbstractRectangle2afpTest<T extends Rectangle2afp<?, T, ?, ?, ?, B>,
+		B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractRectangularShape2afpTest<T, B> {
 
 	@Override
 	protected final T createShape() {
@@ -737,7 +738,7 @@ public abstract class AbstractRectangle2afpTest<T extends Rectangle2afp<?, T, ?,
 
 	@Override
 	public void intersectsPathIterator2afp() {
-		Path2afp<?, ?, ?, ?, B> p;
+		Path2afp<?, ?, ?, ?, ?, B> p;
 		
 		p = createPath();
 		p.moveTo(-20, -20);
@@ -895,6 +896,104 @@ public abstract class AbstractRectangle2afpTest<T extends Rectangle2afp<?, T, ?,
 		assertEpsilonEquals(6, this.shape.getMinY());
 		assertEpsilonEquals(13, this.shape.getMaxX());
 		assertEpsilonEquals(22, this.shape.getMaxY());
+	}
+
+	@Override
+	public void intersectsShape2D() {
+		assertTrue(createRectangle(0, 0, 5.1, 100).intersects((Shape2D) this.shape));
+		assertTrue(createRectangle(.25, .25, .5, .5).intersects((Shape2D) createEllipse(0, 0, 1, 1)));
+	}
+
+	@Override
+	public void operator_addVector2D() {
+		this.shape.operator_add(createVector(123.456, 456.789));
+		assertEpsilonEquals(128.456, this.shape.getMinX());
+		assertEpsilonEquals(464.789, this.shape.getMinY());
+		assertEpsilonEquals(133.456, this.shape.getMaxX());
+		assertEpsilonEquals(474.789, this.shape.getMaxY());
+	}
+
+	@Override
+	public void operator_plusVector2D() {
+		T shape = this.shape.operator_plus(createVector(123.456, 456.789));
+		assertEpsilonEquals(128.456, shape.getMinX());
+		assertEpsilonEquals(464.789, shape.getMinY());
+		assertEpsilonEquals(133.456, shape.getMaxX());
+		assertEpsilonEquals(474.789, shape.getMaxY());
+	}
+
+	@Override
+	public void operator_removeVector2D() {
+		this.shape.operator_remove(createVector(123.456, 456.789));
+		assertEpsilonEquals(-118.456, this.shape.getMinX());
+		assertEpsilonEquals(-448.789, this.shape.getMinY());
+		assertEpsilonEquals(-113.456, this.shape.getMaxX());
+		assertEpsilonEquals(-438.789, this.shape.getMaxY());
+	}
+
+	@Override
+	public void operator_minusVector2D() {
+		T shape = this.shape.operator_minus(createVector(123.456, 456.789));
+		assertEpsilonEquals(-118.456, shape.getMinX());
+		assertEpsilonEquals(-448.789, shape.getMinY());
+		assertEpsilonEquals(-113.456, shape.getMaxX());
+		assertEpsilonEquals(-438.789, shape.getMaxY());
+	}
+
+	@Override
+	public void operator_multiplyTransform2D() {
+		Transform2D tr;
+		tr = new Transform2D();
+		tr.setTranslation(123.456, 456.789);
+		PathIterator2afp pi = this.shape.operator_multiply(tr).getPathIterator();
+		assertElement(pi, PathElementType.MOVE_TO, 128.456, 464.789);
+		assertElement(pi, PathElementType.LINE_TO, 133.456, 464.789);
+		assertElement(pi, PathElementType.LINE_TO, 133.456, 474.789);
+		assertElement(pi, PathElementType.LINE_TO, 128.456, 474.789);
+		assertElement(pi, PathElementType.CLOSE, 128.456, 464.789);
+		assertNoElement(pi);
+	}
+
+	@Override
+	public void operator_andPoint2D() {
+		this.shape.set(10, 12, 30, 25);
+		assertFalse(this.shape.operator_and(createPoint(20, 45)));
+		assertFalse(this.shape.operator_and(createPoint(20, 55)));
+		assertFalse(this.shape.operator_and(createPoint(20, 0)));
+		assertFalse(this.shape.operator_and(createPoint(0, 45)));
+		assertFalse(this.shape.operator_and(createPoint(5, 45)));
+		assertFalse(this.shape.operator_and(createPoint(40, 55)));
+		assertFalse(this.shape.operator_and(createPoint(40, 0)));
+		assertFalse(this.shape.operator_and(createPoint(0, 40)));
+		assertFalse(this.shape.operator_and(createPoint(20, 100)));
+		assertFalse(this.shape.operator_and(createPoint(100, 45)));
+		assertFalse(this.shape.operator_and(createPoint(-100, 45)));
+		assertFalse(this.shape.operator_and(createPoint(-100, 60)));
+		assertTrue(this.shape.operator_and(createPoint(10, 12)));
+		assertTrue(this.shape.operator_and(createPoint(40, 12)));
+		assertTrue(this.shape.operator_and(createPoint(40, 37)));
+		assertTrue(this.shape.operator_and(createPoint(10, 37)));
+		assertTrue(this.shape.operator_and(createPoint(35, 24)));
+	}
+
+	@Override
+	public void operator_andShape2D() {
+		assertTrue(createRectangle(0, 0, 5.1, 100).operator_and(this.shape));
+		assertTrue(createRectangle(.25, .25, .5, .5).operator_and(createEllipse(0, 0, 1, 1)));
+	}
+
+	@Override
+	public void operator_upToPoint2D() {
+		assertEpsilonEquals(9.43398, this.shape.operator_upTo(createPoint(0, 0)));
+		assertEpsilonEquals(90.35486, this.shape.operator_upTo(createPoint(100, 0)));
+		assertEpsilonEquals(121.75385, this.shape.operator_upTo(createPoint(100, 100)));
+		assertEpsilonEquals(82.1523, this.shape.operator_upTo(createPoint(0, 100)));
+		assertEpsilonEquals(5, this.shape.operator_upTo(createPoint(0, 10)));
+		assertEpsilonEquals(8, this.shape.operator_upTo(createPoint(7, 0)));
+		assertEpsilonEquals(144, this.shape.operator_upTo(createPoint(154, 17)));
+		assertEpsilonEquals(136, this.shape.operator_upTo(createPoint(9, 154)));
+		assertEpsilonEquals(0, this.shape.operator_upTo(createPoint(8, 18)));
+		assertEpsilonEquals(0, this.shape.operator_upTo(createPoint(7, 12)));
 	}
 
 }

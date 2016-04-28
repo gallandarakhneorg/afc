@@ -41,6 +41,6 @@ public interface NodeSelectionTreeIterator<N extends TreeNode<?,?>> extends Iter
 	 * 
 	 * @param selector permits to filter the nodes replied/tranversed by this iterator.
 	 */
-	public void setNodeSelector(NodeSelector<N> selector);
+	void setNodeSelector(NodeSelector<N> selector);
 	
 }

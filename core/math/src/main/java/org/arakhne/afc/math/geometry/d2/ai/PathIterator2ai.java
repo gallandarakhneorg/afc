@@ -39,6 +39,6 @@ public interface PathIterator2ai<T extends PathElement2ai> extends PathIterator2
 	 *
 	 * @return the factory.
 	 */
-	GeomFactory2ai<T, ?, ?> getGeomFactory();
+	GeomFactory2ai<T, ?, ?, ?> getGeomFactory();
 
 }

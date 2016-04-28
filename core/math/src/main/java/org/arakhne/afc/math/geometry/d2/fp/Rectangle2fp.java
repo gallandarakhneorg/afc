@@ -34,7 +34,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @since 13.0
  */
 public class Rectangle2fp extends AbstractShape2fp<Rectangle2fp>
-	implements Rectangle2afp<Shape2fp<?>, Rectangle2fp, PathElement2fp, Point2fp, Rectangle2fp> {
+	implements Rectangle2afp<Shape2fp<?>, Rectangle2fp, PathElement2fp, Point2fp, Vector2fp, Rectangle2fp> {
 
 	private static final long serialVersionUID = -2138921378214589458L;
 
@@ -57,7 +57,7 @@ public class Rectangle2fp extends AbstractShape2fp<Rectangle2fp>
 	 * @param min is the min corner of the rectangle.
 	 * @param max is the max corner of the rectangle.
 	 */
-	public Rectangle2fp(Point2D min, Point2D max) {
+	public Rectangle2fp(Point2D<?, ?> min, Point2D<?, ?> max) {
 		setFromCorners(min.getX(), min.getY(), max.getX(), max.getY());
 	}
 

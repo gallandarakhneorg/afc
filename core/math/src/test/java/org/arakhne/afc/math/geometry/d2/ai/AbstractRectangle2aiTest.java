@@ -37,7 +37,8 @@ import org.arakhne.afc.math.geometry.d2.ai.Rectangle2ai.Side;
 import org.junit.Test;
 
 @SuppressWarnings("all")
-public abstract class AbstractRectangle2aiTest<T extends Rectangle2ai<?, T, ?, ?, T>> extends AbstractRectangularShape2aiTest<T, T> {
+public abstract class AbstractRectangle2aiTest<T extends Rectangle2ai<?, T, ?, ?, ?, T>>
+		extends AbstractRectangularShape2aiTest<T, T> {
 
 	@Override
 	protected final T createShape() {

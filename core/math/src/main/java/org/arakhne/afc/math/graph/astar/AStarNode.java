@@ -22,6 +22,7 @@ package org.arakhne.afc.math.graph.astar;
 
 import org.arakhne.afc.math.graph.GraphPoint;
 import org.arakhne.afc.math.graph.GraphSegment;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** This interface provides services for an A* node.
  * This interface may be implemented by the
@@ -42,18 +43,21 @@ public interface AStarNode<ST extends GraphSegment<ST,PT>, PT extends GraphPoint
 	 * 
 	 * @return the graph point associated to this AStarNode.
 	 */
+	@Pure
 	public PT getGraphPoint();
 	
 	/** Replies the segments which are traversable from this node.
 	 * 
 	 * @return the traversable segments.
 	 */
+	@Pure
 	public Iterable<ST> getGraphSegments();
 
 	/** Replies the connection to reach the node.
 	 * 
 	 * @return the connection to reach the node, or <code>null</code> if none.
 	 */
+	@Pure
 	public ST getArrivalConnection();
 	
 	/** Set the connection to reach the node.
@@ -67,7 +71,8 @@ public interface AStarNode<ST extends GraphSegment<ST,PT>, PT extends GraphPoint
 	 * 
 	 * @return the cost to reach the node.
 	 */
-	public double cost();
+	@Pure
+	public double getCost();
 	
 	/** Set the cost to reach the node.
 	 * 
@@ -80,7 +85,8 @@ public interface AStarNode<ST extends GraphSegment<ST,PT>, PT extends GraphPoint
 	 * 
 	 * @return the cost from the node to the target point.
 	 */
-	public double estimatedCost();
+	@Pure
+	public double getEstimatedCost();
 	
 	/** Set the cost from the node to the target point.
 	 * 
@@ -90,11 +96,12 @@ public interface AStarNode<ST extends GraphSegment<ST,PT>, PT extends GraphPoint
 	public double setEstimatedCost(double cost);
 
 	/** Replies the cost of the overall path.
-	 * It is the sum of {@link #cost()} and
-	 * {@link #estimatedCost()}.
+	 * It is the sum of {@link #getCost()} and
+	 * {@link #getEstimatedCost()}.
 	 * 
 	 * @return the cost of the path.
 	 */
-	public double pathCost();
+	@Pure
+	public double getPathCost();
 
 }

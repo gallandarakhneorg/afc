@@ -22,6 +22,7 @@ package org.arakhne.afc.math.physics;
 
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * Some physic utility functions implementing in Java.
@@ -54,6 +55,7 @@ public interface PhysicsEngine {
 	 * @param dt is the time
 	 * @return a motion
 	 */
+	@Pure
 	public double motionNewtonLaw(
 			double speed,
 			double acceleration, 
@@ -82,6 +84,7 @@ public interface PhysicsEngine {
 	 * @return the motion
 	 * @see "http://en.wikibooks.org/wiki/High_School_Physics/Velocity"
 	 */
+	@Pure
 	public double motionNewtonLaw1D(
 			double velocity,
 			double minSpeed,
@@ -114,6 +117,7 @@ public interface PhysicsEngine {
 	 * @param result the motion.
 	 * @see "http://en.wikibooks.org/wiki/High_School_Physics/Velocity"
 	 */
+	@Pure
 	public void motionNewtonLaw1D5(
 			Vector2D velocity,
 			double minSpeed,
@@ -147,6 +151,7 @@ public interface PhysicsEngine {
 	 * @param result the motion.
 	 * @see "http://en.wikibooks.org/wiki/High_School_Physics/Velocity"
 	 */
+	@Pure
 	public void motionNewtonLaw2D(
 			Vector2D velocity,
 			double minSpeed,
@@ -180,6 +185,7 @@ public interface PhysicsEngine {
 	 * @param result the motion.
 	 * @see "http://en.wikibooks.org/wiki/High_School_Physics/Velocity"
 	 */
+	@Pure
 	public void motionNewtonLaw2D5(
 			Vector3D velocity,
 			double minSpeed,
@@ -213,6 +219,7 @@ public interface PhysicsEngine {
 	 * @param result the motion.
 	 * @see "http://en.wikibooks.org/wiki/High_School_Physics/Velocity"
 	 */
+	@Pure
 	public void motionNewtonLaw3D(
 			Vector3D velocity,
 			double minSpeed,
@@ -235,6 +242,7 @@ public interface PhysicsEngine {
 	 * @param dt is the time
 	 * @return a motion
 	 */
+	@Pure
 	public double motionNewtonEuler1Law(
 			double speed,
 			double dt);
@@ -252,6 +260,7 @@ public interface PhysicsEngine {
 	 * @param dt is the time
 	 * @return a motion
 	 */
+	@Pure
 	public double motionNewtonEuler1Law1D(
 			double velocity,
 			double minSpeed,
@@ -271,6 +280,7 @@ public interface PhysicsEngine {
 	 * @param dt is the time
 	 * @param result a motion
 	 */
+	@Pure
 	public void motionNewtonEuler1Law1D5(
 			Vector2D velocity,
 			double minSpeed,
@@ -291,6 +301,7 @@ public interface PhysicsEngine {
 	 * @param dt is the time
 	 * @param result a motion
 	 */
+	@Pure
 	public void motionNewtonEuler1Law2D(
 			Vector2D velocity,
 			double minSpeed,
@@ -311,6 +322,7 @@ public interface PhysicsEngine {
 	 * @param dt is the time
 	 * @param result a motion
 	 */
+	@Pure
 	public void motionNewtonEuler1Law2D5(
 			Vector3D velocity,
 			double minSpeed,
@@ -331,6 +343,7 @@ public interface PhysicsEngine {
 	 * @param dt is the time
 	 * @param result a motion
 	 */
+	@Pure
 	public void motionNewtonEuler1Law3D(
 			Vector3D velocity,
 			double minSpeed,
@@ -349,6 +362,7 @@ public interface PhysicsEngine {
 	 * @return a new speed
 	 * @since 4.1
 	 */
+	@Pure
 	public double speed(double movement, double dt);
 
 	/** Replies the new  acceleration according to a previous 
@@ -362,6 +376,7 @@ public interface PhysicsEngine {
 	 * @param dt is the time
 	 * @return a new acceleration
 	 */
+	@Pure
 	public double acceleration(
 			double previousSpeed,
 			double currentSpeed, 

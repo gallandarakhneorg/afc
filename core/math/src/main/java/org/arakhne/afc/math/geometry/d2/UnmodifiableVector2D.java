@@ -22,56 +22,59 @@ package org.arakhne.afc.math.geometry.d2;
 
 /** Unmodifiable 2D Vector.
  * 
+ * @param <RV> is the type of vector that can be returned by this tuple.
+ * @param <RP> is the type of point that can be returned by this tuple.
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public interface UnmodifiableVector2D extends UnmodifiableTuple2D<Vector2D>, Vector2D {
+public interface UnmodifiableVector2D<RV extends Vector2D<? super RV, ? super RP>,
+		RP extends Point2D<? super RP, ? super RV>> extends UnmodifiableTuple2D<RV>, Vector2D<RV, RP> {
 
 	@Override
-	default void add(Vector2D vector1, Vector2D vector2) {
+	default void add(Vector2D<?, ?> vector1, Vector2D<?, ?> vector2) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	default void add(Vector2D vector) {
+	default void add(Vector2D<?, ?> vector) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	default void scaleAdd(int scale, Vector2D vector1, Vector2D vector2) {
+	default void scaleAdd(int scale, Vector2D<?, ?> vector1, Vector2D<?, ?> vector2) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	default void scaleAdd(double scale, Vector2D vector1, Vector2D vector2) {
+	default void scaleAdd(double scale, Vector2D<?, ?> vector1, Vector2D<?, ?> vector2) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	default void scaleAdd(int scale, Vector2D vector) {
+	default void scaleAdd(int scale, Vector2D<?, ?> vector) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	default void scaleAdd(double scale, Vector2D vector) {
+	default void scaleAdd(double scale, Vector2D<?, ?> vector) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	default void sub(Vector2D vector1, Vector2D vector2) {
+	default void sub(Vector2D<?, ?> vector1, Vector2D<?, ?> vector2) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	default void sub(Point2D point1, Point2D point2) {
+	default void sub(Point2D<?, ?> point1, Point2D<?, ?> point2) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	default void sub(Vector2D vector1) {
+	default void sub(Vector2D<?, ?> vector1) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -81,7 +84,7 @@ public interface UnmodifiableVector2D extends UnmodifiableTuple2D<Vector2D>, Vec
 	}
 
 	@Override
-	default void normalize(Vector2D vector) {
+	default void normalize(Vector2D<?, ?> vector) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -112,7 +115,7 @@ public interface UnmodifiableVector2D extends UnmodifiableTuple2D<Vector2D>, Vec
 	}
 
 	@Override
-	default Vector2D toUnmodifiable() {
+	default UnmodifiableVector2D<RV, RP> toUnmodifiable() {
 		return this;
 	}
 

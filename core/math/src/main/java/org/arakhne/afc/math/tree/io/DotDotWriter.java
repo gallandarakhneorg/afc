@@ -67,9 +67,6 @@ public class DotDotWriter {
 		this.graphIndex = 1;
 	}
 	
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	protected void finalize() throws Throwable {
 		close();

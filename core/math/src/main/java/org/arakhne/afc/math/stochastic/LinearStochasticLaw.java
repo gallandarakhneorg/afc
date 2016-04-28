@@ -23,6 +23,8 @@ package org.arakhne.afc.math.stochastic;
 import java.util.Map;
 import java.util.Random;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /**
  * Law that representes a linear density.
  * <p>
@@ -122,11 +124,7 @@ public class LinearStochasticLaw extends StochasticLaw {
 		this.delta = this.ascendent ? (this.maxX - this.minX) : (this.minX - this.maxX);
 	}
 	
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @return {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public String toString() {
 		StringBuilder b = new StringBuilder();
@@ -143,8 +141,7 @@ public class LinearStochasticLaw extends StochasticLaw {
 		return b.toString();
 	}
 	
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public double f(double x)  throws MathException {
 		if ((x<this.minX)||(x>this.maxX))
@@ -158,8 +155,7 @@ public class LinearStochasticLaw extends StochasticLaw {
 		return a * x + b;
 	}
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public MathFunctionRange[] getRange() {
 		return MathFunctionRange.createSet(this.minX, this.maxX);
@@ -172,6 +168,7 @@ public class LinearStochasticLaw extends StochasticLaw {
 	 * @throws MathException in case {@code F<sup>-1</sup>(u)} could not be computed
 	 */
 	@Override
+	@Pure
 	public double inverseF(double u) throws MathException {
 		if (this.ascendent) {
 			return this.delta * Math.sqrt( u ) + this.minX;

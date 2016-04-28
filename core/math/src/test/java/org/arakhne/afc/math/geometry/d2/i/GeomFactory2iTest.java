@@ -31,7 +31,7 @@ import org.junit.Rule;
 @SuppressWarnings("all")
 public class GeomFactory2iTest extends AbstractGeomFactory2aiTest {
 
-	protected GeomFactory2ai<?, ?, ?> createFactory() {
+	protected GeomFactory2ai<?, ?, ?, ?> createFactory() {
 		return new GeomFactory2i();
 	}
 	

@@ -22,6 +22,8 @@ package org.arakhne.afc.math.graph;
 
 import java.util.Collection;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /**
  * This class permits to implement specifical
  * algorithm to make a course inside a graph.
@@ -45,6 +47,7 @@ public interface GraphCourseModel<ST extends GraphSegment<ST,PT>,PT extends Grap
 	 * 
 	 * @return <code>true</code> if reversed, otherwise <code>false</code>
 	 */
+	@Pure
 	public boolean isReversedRestitution();
 	
 	/** Add an element to iterate on.
@@ -58,6 +61,7 @@ public interface GraphCourseModel<ST extends GraphSegment<ST,PT>,PT extends Grap
 	 * 
 	 * @return <code>true</code> if an element exists, otherwhise <code>false</code>.
 	 */
+	@Pure
 	public boolean isEmpty();
 		
 	/** Replies the next element without removing it from the iterator list.

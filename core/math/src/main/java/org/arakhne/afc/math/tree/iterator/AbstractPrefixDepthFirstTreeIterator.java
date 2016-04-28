@@ -23,6 +23,7 @@ import java.util.NoSuchElementException;
 import java.util.Stack;
 
 import org.arakhne.afc.math.tree.IterableNode;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 
 /**
@@ -67,6 +68,7 @@ implements Iterator<P> {
 	 * @return <code>true</code> if the given node is traversable, <code>false</code>
 	 * otherwise.
 	 */
+	@Pure
 	protected abstract boolean isTraversableParent(P parent);
 
 	private void startIterator() {
@@ -78,16 +80,13 @@ implements Iterator<P> {
 		this.isStarted = true;
 	}
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public boolean hasNext() {
 		if (!this.isStarted) startIterator();
 		return !this.availableNodes.isEmpty();
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public P next() {
 		this.lastReplied = null;
@@ -109,8 +108,6 @@ implements Iterator<P> {
 		return current;
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public void remove() {
 		P lr = this.lastReplied;

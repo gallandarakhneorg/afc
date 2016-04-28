@@ -35,6 +35,7 @@ import org.arakhne.afc.math.AbstractMathTestCase;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2DTestRule;
 import org.arakhne.afc.math.geometry.d2.Point2D;
+import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.junit.After;
 import org.junit.Assume;
 import org.junit.Before;
@@ -42,25 +43,27 @@ import org.junit.Rule;
 import org.junit.Test;
 
 @SuppressWarnings("all")
-public abstract class AbstractPathWindingRule2afpTest<P extends Point2D, B extends Rectangle2afp<?, ?, ?, P, B>> extends AbstractMathTestCase {
+public abstract class AbstractPathWindingRule2afpTest<P extends Point2D<? super P, ? super V>,
+		V extends Vector2D<? super V, ? super P>,
+		B extends Rectangle2afp<?, ?, ?, P, V, B>> extends AbstractMathTestCase {
 	
 	@Rule
 	public final PathWindingRule2afpTestRule csTestRule = new PathWindingRule2afpTestRule();
 	
 	/** Is the shape to test.
 	 */
-	protected Path2afp<?, ?, ?, P, B> shape;
+	protected Path2afp<?, ?, ?, P, V, B> shape;
 	
 	/** Shape factory.
 	 */
-	protected TestShapeFactory<P, B> factory;
+	protected TestShapeFactory<P, V, B> factory;
 
-	protected abstract TestShapeFactory<P, B> createFactory();
+	protected abstract TestShapeFactory<P, V, B> createFactory();
 
 	@Before
 	public void setUp() throws Exception {
 		this.factory = createFactory();
-		this.shape = (Path2afp<?, ?, ?, P, B>) this.factory.createPath(PathWindingRule2afpTestRule.CURRENT_RULE);
+		this.shape = (Path2afp<?, ?, ?, P, V, B>) this.factory.createPath(PathWindingRule2afpTestRule.CURRENT_RULE);
 		this.shape.moveTo(1, -3);
 		this.shape.lineTo(4, -4);
 		this.shape.lineTo(6, -2);

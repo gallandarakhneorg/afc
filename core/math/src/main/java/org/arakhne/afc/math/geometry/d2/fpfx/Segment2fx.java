@@ -39,7 +39,7 @@ import javafx.beans.property.SimpleDoubleProperty;
  * @since 13.0
  */
 public class Segment2fx extends AbstractShape2fx<Segment2fx>
-	implements Segment2afp<Shape2fx<?>, Segment2fx, PathElement2fx, Point2fx, Rectangle2fx> {
+	implements Segment2afp<Shape2fx<?>, Segment2fx, PathElement2fx, Point2fx, Vector2fx, Rectangle2fx> {
 
 	private static final long serialVersionUID = -5603953934276693947L;
 
@@ -61,14 +61,14 @@ public class Segment2fx extends AbstractShape2fx<Segment2fx>
 	 * @param a
 	 * @param b
 	 */
-	public Segment2fx(Point2D a, Point2D b) {
+	public Segment2fx(Point2D<?, ?> a, Point2D<?, ?> b) {
 		this(a.getX(), a.getY(), b.getX(), b.getY());
 	}
 
 	/**
 	 * @param s
 	 */
-	public Segment2fx(Segment2afp<?, ?, ?, ?, ?> s) {
+	public Segment2fx(Segment2afp<?, ?, ?, ?, ?, ?> s) {
 		this(s.getX1(), s.getY1(), s.getX2(), s.getY2());
 	}
 
@@ -247,12 +247,12 @@ public class Segment2fx extends AbstractShape2fx<Segment2fx>
 	}
 
 	@Override
-	public Point2D getP1() {
+	public Point2fx getP1() {
 		return new Point2fx(this.ax, this.ay);
 	}
 
 	@Override
-	public Point2D getP2() {
+	public Point2fx getP2() {
 		return new Point2fx(this.bx, this.by);
 	}
 

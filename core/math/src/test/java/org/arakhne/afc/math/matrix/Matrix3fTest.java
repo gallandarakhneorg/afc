@@ -26,7 +26,6 @@ import static org.junit.Assert.assertTrue;
 
 import org.arakhne.afc.math.AbstractMathTestCase;
 import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2DTestRule;
-import org.arakhne.afc.math.geometry.d3.Vector3D;
 import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
@@ -50,32 +49,31 @@ public class Matrix3fTest extends AbstractMathTestCase {
 		Matrix3f matrix = new Matrix3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
 		matrix.setIdentity();
 		
-		assertTrue((new Matrix3f(1,0,0,0,1,0,0,0,1)).equals(matrix));
-	
+		assertEpsilonEquals(new Matrix3f(1,0,0,0,1,0,0,0,1), matrix);
 	}
 	
 	@Test
 	public void addDouble() {
 		Matrix3f m1 = new Matrix3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
 		Matrix3f m2 = m1.clone();
-		double s = this.random.nextDouble();
+		double s = this.random.nextDouble() * 100;
 		
 		m2.set(m2.m00+s, m2.m01+s, m2.m02+s, m2.m10+s, m2.m11+s, m2.m12+s, m2.m20+s, m2.m21+s, m2.m22+s);
 		m1.add(s);
 		
-		assertTrue(m2.equals(m1));
+		assertEpsilonEquals(m2, m1);
 	}
 	
 	@Test
 	public void addDoubleMatrix3D() {
 		Matrix3f m1 = new Matrix3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
 		Matrix3f m2 = new Matrix3f();
-		double s = this.random.nextDouble();
+		double s = this.random.nextDouble() * 100;
 		
 		m2.set(m1.m00+s, m1.m01+s, m1.m02+s, m1.m10+s, m1.m11+s, m1.m12+s, m1.m20+s, m1.m21+s, m1.m22+s);
 		m1.add(s,m1);
 		
-		assertTrue(m2.equals(m1));
+		assertEpsilonEquals(m2, m1);
 	}
 	
 	@Test
@@ -87,7 +85,7 @@ public class Matrix3fTest extends AbstractMathTestCase {
 		m3.set(m1.m00+m2.m00, m1.m01+m2.m01, m1.m02+m2.m02, m1.m10+m2.m10, m1.m11+m2.m11, m1.m12+m2.m12, m1.m20+m2.m20, m1.m21+m2.m21, m1.m22+m2.m22);
 		m1.add(m1,m2);
 		
-		assertTrue(m3.equals(m1));
+		assertEpsilonEquals(m3, m1);
 	}
 	
 	@Test
@@ -99,7 +97,7 @@ public class Matrix3fTest extends AbstractMathTestCase {
 		m3.set(m1.m00+m2.m00, m1.m01+m2.m01, m1.m02+m2.m02, m1.m10+m2.m10, m1.m11+m2.m11, m1.m12+m2.m12, m1.m20+m2.m20, m1.m21+m2.m21, m1.m22+m2.m22);
 		m1.add(m2);
 		
-		assertTrue(m3.equals(m1));
+		assertEpsilonEquals(m3, m1);
 	}
 	
 	@Test
@@ -111,7 +109,7 @@ public class Matrix3fTest extends AbstractMathTestCase {
 		m3.set(m1.m00-m2.m00, m1.m01-m2.m01, m1.m02-m2.m02, m1.m10-m2.m10, m1.m11-m2.m11, m1.m12-m2.m12, m1.m20-m2.m20, m1.m21-m2.m21, m1.m22-m2.m22);
 		m1.sub(m1,m2);
 		
-		assertTrue(m3.equals(m1));
+		assertEpsilonEquals(m3, m1);
 	}
 	
 	@Test
@@ -123,7 +121,7 @@ public class Matrix3fTest extends AbstractMathTestCase {
 		m3.set(m1.m00-m2.m00, m1.m01-m2.m01, m1.m02-m2.m02, m1.m10-m2.m10, m1.m11-m2.m11, m1.m12-m2.m12, m1.m20-m2.m20, m1.m21-m2.m21, m1.m22-m2.m22);
 		m1.sub(m2);
 		
-		assertTrue(m3.equals(m1));
+		assertEpsilonEquals(m3, m1);
 	}
 	
 	@Test
@@ -144,8 +142,7 @@ public class Matrix3fTest extends AbstractMathTestCase {
 		
 		m1.transpose();
 		
-		assertTrue(transpose.equals(m1));
-		
+		assertEpsilonEquals(transpose, m1);
 	}
 	
 	@Test
@@ -166,7 +163,7 @@ public class Matrix3fTest extends AbstractMathTestCase {
 		
 		m1.transpose(m1);
 		
-		assertTrue(transpose.equals(m1));
+		assertEpsilonEquals(transpose, m1);
 	}
 	
 	@Test
@@ -191,7 +188,7 @@ public class Matrix3fTest extends AbstractMathTestCase {
 		assertTrue(i2.equals(m2));
 		
 		m3.invert();
-		assertTrue(i3.epsilonEquals(m3,EPSILON));
+		assertEpsilonEquals(i3, m3);
 	}
 	
 	@Test
@@ -217,20 +214,20 @@ public class Matrix3fTest extends AbstractMathTestCase {
 		
 		m3.invert(m3);
 
-		assertTrue(i3.epsilonEquals(m3,EPSILON));
+		assertEpsilonEquals(i3, m3);
 	}
 
 	@Test
 	public void determinant() {
-		double a = this.random.nextDouble();
-		double b = this.random.nextDouble();
-		double c = this.random.nextDouble();
-		double d = this.random.nextDouble();
-		double e = this.random.nextDouble();
-		double f = this.random.nextDouble();
-		double g = this.random.nextDouble();
-		double h = this.random.nextDouble();
-		double i = this.random.nextDouble();
+		double a = this.random.nextDouble() * 100;
+		double b = this.random.nextDouble() * 100;
+		double c = this.random.nextDouble() * 100;
+		double d = this.random.nextDouble() * 100;
+		double e = this.random.nextDouble() * 100;
+		double f = this.random.nextDouble() * 100;
+		double g = this.random.nextDouble() * 100;
+		double h = this.random.nextDouble() * 100;
+		double i = this.random.nextDouble() * 100;
 		Matrix3f matrix = new Matrix3f(a,b,c,d,e,f,g,h,i);
 		
 		double determinant = a*e*i -a*f*h -b*d*i + b*f*g + c*d*h - c*e*g;
@@ -240,22 +237,22 @@ public class Matrix3fTest extends AbstractMathTestCase {
 	
 	@Test
 	public void mulDouble() {
-		double a = this.random.nextDouble();
-		double b = this.random.nextDouble();
-		double c = this.random.nextDouble();
-		double d = this.random.nextDouble();
-		double e = this.random.nextDouble();
-		double f = this.random.nextDouble();
-		double g = this.random.nextDouble();
-		double h = this.random.nextDouble();
-		double i = this.random.nextDouble();
+		double a = this.random.nextDouble() * 100;
+		double b = this.random.nextDouble() * 100;
+		double c = this.random.nextDouble() * 100;
+		double d = this.random.nextDouble() * 100;
+		double e = this.random.nextDouble() * 100;
+		double f = this.random.nextDouble() * 100;
+		double g = this.random.nextDouble() * 100;
+		double h = this.random.nextDouble() * 100;
+		double i = this.random.nextDouble() * 100;
 		Matrix3f matrix = new Matrix3f(a,b,c,d,e,f,g,h,i);
 		
-		double s = this.random.nextDouble();
+		double s = this.random.nextDouble() * 100;
 		Matrix3f prodScal = new Matrix3f(a*s,b*s,c*s,d*s,e*s,f*s,g*s,h*s,i*s);
 		
 		matrix.mul(s);
-		assertTrue(prodScal.equals(matrix));
+		assertEpsilonEquals(prodScal, matrix);
 	}
 	
 	@Test
@@ -289,46 +286,46 @@ public class Matrix3fTest extends AbstractMathTestCase {
 	
 	@Test
 	public void mulDoubleMatrix3D() {
-		double a = this.random.nextDouble();
-		double b = this.random.nextDouble();
-		double c = this.random.nextDouble();
-		double d = this.random.nextDouble();
-		double e = this.random.nextDouble();
-		double f = this.random.nextDouble();
-		double g = this.random.nextDouble();
-		double h = this.random.nextDouble();
-		double i = this.random.nextDouble();
+		double a = this.random.nextDouble() * 100;
+		double b = this.random.nextDouble() * 100;
+		double c = this.random.nextDouble() * 100;
+		double d = this.random.nextDouble() * 100;
+		double e = this.random.nextDouble() * 100;
+		double f = this.random.nextDouble() * 100;
+		double g = this.random.nextDouble() * 100;
+		double h = this.random.nextDouble() * 100;
+		double i = this.random.nextDouble() * 100;
 		Matrix3f matrix = new Matrix3f(a,b,c,d,e,f,g,h,i);
 		
-		double s = this.random.nextDouble();
+		double s = this.random.nextDouble() * 100;
 		Matrix3f prodScal = new Matrix3f(a*s,b*s,c*s,d*s,e*s,f*s,g*s,h*s,i*s);
 		
 		matrix.mul(s,matrix);
-		assertTrue(prodScal.equals(matrix));
+		assertEpsilonEquals(prodScal, matrix);
 	}
 	
 	@Test
 	public void mulMatrix3D() {
-		double a = this.random.nextDouble();
-		double b = this.random.nextDouble();
-		double c = this.random.nextDouble();
-		double d = this.random.nextDouble();
-		double e = this.random.nextDouble();
-		double f = this.random.nextDouble();
-		double g = this.random.nextDouble();
-		double h = this.random.nextDouble();
-		double i = this.random.nextDouble();
+		double a = this.random.nextDouble() * 100;
+		double b = this.random.nextDouble() * 100;
+		double c = this.random.nextDouble() * 100;
+		double d = this.random.nextDouble() * 100;
+		double e = this.random.nextDouble() * 100;
+		double f = this.random.nextDouble() * 100;
+		double g = this.random.nextDouble() * 100;
+		double h = this.random.nextDouble() * 100;
+		double i = this.random.nextDouble() * 100;
 		Matrix3f m1 = new Matrix3f(a,b,c,d,e,f,g,h,i);
 		
-		double j = this.random.nextDouble();
-		double k = this.random.nextDouble();
-		double l = this.random.nextDouble();
-		double m = this.random.nextDouble();
-		double n = this.random.nextDouble();
-		double o = this.random.nextDouble();
-		double p = this.random.nextDouble();
-		double q = this.random.nextDouble();
-		double r = this.random.nextDouble();
+		double j = this.random.nextDouble() * 100;
+		double k = this.random.nextDouble() * 100;
+		double l = this.random.nextDouble() * 100;
+		double m = this.random.nextDouble() * 100;
+		double n = this.random.nextDouble() * 100;
+		double o = this.random.nextDouble() * 100;
+		double p = this.random.nextDouble() * 100;
+		double q = this.random.nextDouble() * 100;
+		double r = this.random.nextDouble() * 100;
 		Matrix3f m2 = new Matrix3f(j,k,l,m,n,o,p,q,r);
 		
 		Matrix3f prod = new Matrix3f(
@@ -344,31 +341,31 @@ public class Matrix3fTest extends AbstractMathTestCase {
 				
 		m1.mul(m2);
 		
-		assertTrue(prod.equals(m1));
+		assertEpsilonEquals(prod, m1);
 	}
 	
 	@Test
 	public void mulMatrix3DMatrix3D() {
-		double a = this.random.nextDouble();
-		double b = this.random.nextDouble();
-		double c = this.random.nextDouble();
-		double d = this.random.nextDouble();
-		double e = this.random.nextDouble();
-		double f = this.random.nextDouble();
-		double g = this.random.nextDouble();
-		double h = this.random.nextDouble();
-		double i = this.random.nextDouble();
+		double a = this.random.nextDouble() * 100;
+		double b = this.random.nextDouble() * 100;
+		double c = this.random.nextDouble() * 100;
+		double d = this.random.nextDouble() * 100;
+		double e = this.random.nextDouble() * 100;
+		double f = this.random.nextDouble() * 100;
+		double g = this.random.nextDouble() * 100;
+		double h = this.random.nextDouble() * 100;
+		double i = this.random.nextDouble() * 100;
 		Matrix3f m1 = new Matrix3f(a,b,c,d,e,f,g,h,i);
 		
-		double j = this.random.nextDouble();
-		double k = this.random.nextDouble();
-		double l = this.random.nextDouble();
-		double m = this.random.nextDouble();
-		double n = this.random.nextDouble();
-		double o = this.random.nextDouble();
-		double p = this.random.nextDouble();
-		double q = this.random.nextDouble();
-		double r = this.random.nextDouble();
+		double j = this.random.nextDouble() * 100;
+		double k = this.random.nextDouble() * 100;
+		double l = this.random.nextDouble() * 100;
+		double m = this.random.nextDouble() * 100;
+		double n = this.random.nextDouble() * 100;
+		double o = this.random.nextDouble() * 100;
+		double p = this.random.nextDouble() * 100;
+		double q = this.random.nextDouble() * 100;
+		double r = this.random.nextDouble() * 100;
 		Matrix3f m2 = new Matrix3f(j,k,l,m,n,o,p,q,r);
 		
 		Matrix3f prod = new Matrix3f(
@@ -384,7 +381,7 @@ public class Matrix3fTest extends AbstractMathTestCase {
 				
 		m1.mul(m1,m2);
 		
-		assertTrue(prod.equals(m1));
+		assertEpsilonEquals(prod, m1);
 	}
 	
 	@Test
@@ -443,7 +440,7 @@ public class Matrix3fTest extends AbstractMathTestCase {
 		m2.transpose();
 		m1.mul(m1, m2);
 		
-		assertTrue(m1.equals(mulTrans));
+		assertEpsilonEquals(m1, mulTrans);
 	}
 	
 	@Test
@@ -456,7 +453,7 @@ public class Matrix3fTest extends AbstractMathTestCase {
 		m2.transpose();
 		m1.mul(m1, m2);
 		
-		assertTrue(m1.equals(mulTrans));
+		assertEpsilonEquals(m1, mulTrans);
 	}
 	
 	@Test
@@ -469,7 +466,7 @@ public class Matrix3fTest extends AbstractMathTestCase {
 		m1.transpose();
 		m1.mul(m1, m2);
 		
-		assertTrue(m1.equals(mulTrans));
+		assertEpsilonEquals(m1, mulTrans);
 	}
 	
 	@Test
@@ -578,7 +575,7 @@ public class Matrix3fTest extends AbstractMathTestCase {
 		Matrix3f m1 = new Matrix3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
 		Matrix3f m2 = new Matrix3f(m1);
 		
-		assertTrue(m1.equals(m2));
+		assertEpsilonEquals(m1, m2);
 	}
 	
 	@Test
@@ -586,20 +583,19 @@ public class Matrix3fTest extends AbstractMathTestCase {
 		Matrix3f m1 = new Matrix3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
 		m1.setZero();
 		
-		assertTrue(m1.equals(new Matrix3f(0,0,0,0,0,0,0,0,0)));
-		
+		assertEpsilonEquals(new Matrix3f(0,0,0,0,0,0,0,0,0), m1);
 	}
 	
 	@Test
 	public void setDiagonalDoubleDoubleDouble() {
 		Matrix3f m1 = new Matrix3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
-		double a = this.random.nextDouble();
-		double b = this.random.nextDouble();
-		double c = this.random.nextDouble();
+		double a = this.random.nextDouble() * 100;
+		double b = this.random.nextDouble() * 100;
+		double c = this.random.nextDouble() * 100;
 				
 		m1.setDiagonal(a,b,c);
 		
-		assertTrue(m1.equals(new Matrix3f(a,0,0,0,b,0,0,0,c)));
+		assertEpsilonEquals(new Matrix3f(a,0,0,0,b,0,0,0,c), m1);
 	}
 	
 	@Test
@@ -611,15 +607,15 @@ public class Matrix3fTest extends AbstractMathTestCase {
 		
 		m1.negate();
 		temp.add(m1, m2);
-		assertTrue(temp.equals(new Matrix3f(0,0,0,0,0,0,0,0,0)));
+		assertEpsilonEquals(new Matrix3f(0,0,0,0,0,0,0,0,0), temp);
 		temp.mul(m1, m2);
 		
 		m2.negate();
-		assertTrue(m1.equals(m2));
+		assertEpsilonEquals(m1, m2);
 		
 		m1.negate();
 		temp2.mul(m1, m2);
-		assertTrue(temp.equals(temp2));
+		assertEpsilonEquals(temp, temp2);
 	}
 	
 	@Test
@@ -631,15 +627,15 @@ public class Matrix3fTest extends AbstractMathTestCase {
 		
 		m1.negate(m1);
 		temp.add(m1, m2);
-		assertTrue(temp.equals(new Matrix3f(0,0,0,0,0,0,0,0,0)));
+		assertEpsilonEquals(new Matrix3f(0,0,0,0,0,0,0,0,0), temp);
 		temp.mul(m1, m2);
 		
 		m2.negate(m2);
-		assertTrue(m1.equals(m2));
+		assertEpsilonEquals(m1, m2);
 		
 		m1.negate(m1);
 		temp2.mul(m1, m2);
-		assertTrue(temp.equals(temp2));
+		assertEpsilonEquals(temp, temp2);
 	}
 	
 	@Test
@@ -648,12 +644,11 @@ public class Matrix3fTest extends AbstractMathTestCase {
 		Matrix3f m1 = new Matrix3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
 		Matrix3f m2 = m1.clone();
 		
-		assertTrue(m1.equals(m2));
+		assertEpsilonEquals(m1, m2);
 		
 		m1.add(1f);
 		
-		assertFalse(m1.equals(m2));
-		
+		assertNotEpsilonEquals(m1, m2);
 	}
 	
 	@Test
@@ -774,7 +769,7 @@ public class Matrix3fTest extends AbstractMathTestCase {
 //		covMatrix.cov(mean, v1,v2,v3,v4);
 //		
 //		//equality of the means
-//		assertTrue(mean.equals(meanTest));
+//		assertEpsilonEquals(mean, meanTest);
 //		
 //		//verification of symmetry property
 //		assertTrue(covMatrix.isSymmetric());
@@ -787,17 +782,17 @@ public class Matrix3fTest extends AbstractMathTestCase {
 //		assertTrue(s>0);
 //		
 //		//verification of derivability property
-//		assertTrue(covMatrix.determinant()!=0);
+//		assertNotEpsilonEquals(0, covMatrix.determinant());
 	}
 	
 	@Test
 	public void isSymmetric() {
-		double a = this.random.nextDouble();
-		double b = this.random.nextDouble();
-		double c = this.random.nextDouble();
-		double d = this.random.nextDouble();
-		double e = this.random.nextDouble();
-		double f = this.random.nextDouble();
+		double a = this.random.nextDouble() * 100;
+		double b = this.random.nextDouble() * 100;
+		double c = this.random.nextDouble() * 100;
+		double d = this.random.nextDouble() * 100;
+		double e = this.random.nextDouble() * 100;
+		double f = this.random.nextDouble() * 100;
 		Matrix3f m1 = new Matrix3f(a,d,e,d,b,f,e,f,c);
 		
 		assertTrue(m1.isSymmetric());
@@ -890,6 +885,235 @@ public class Matrix3fTest extends AbstractMathTestCase {
 		m1.setZero();
 		assertFalse(m1.isIdentity());
 	}
-	
+
+	@Test
+	public void operator_addMatrix3f() {
+		Matrix3f m1 = new Matrix3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		Matrix3f m2 = new Matrix3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		Matrix3f m3 = new Matrix3f();
+		
+		m3.set(m1.m00+m2.m00, m1.m01+m2.m01, m1.m02+m2.m02, m1.m10+m2.m10, m1.m11+m2.m11, m1.m12+m2.m12, m1.m20+m2.m20, m1.m21+m2.m21, m1.m22+m2.m22);
+		m1.operator_add(m2);
+		
+		assertEpsilonEquals(m3, m1);
+	}
+
+	@Test
+	public void operator_addDouble() {
+		Matrix3f m1 = new Matrix3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		Matrix3f m2 = m1.clone();
+		double s = this.random.nextDouble() * 100;
+		
+		m2.set(m2.m00+s, m2.m01+s, m2.m02+s, m2.m10+s, m2.m11+s, m2.m12+s, m2.m20+s, m2.m21+s, m2.m22+s);
+		m1.operator_add(s);
+		
+		assertEpsilonEquals(m2, m1);
+	}
+
+	@Test
+	public void operator_removeMatrix3f() {
+		Matrix3f m1 = new Matrix3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		Matrix3f m2 = new Matrix3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		Matrix3f m3 = new Matrix3f();
+		
+		m3.set(m1.m00-m2.m00, m1.m01-m2.m01, m1.m02-m2.m02, m1.m10-m2.m10, m1.m11-m2.m11, m1.m12-m2.m12, m1.m20-m2.m20, m1.m21-m2.m21, m1.m22-m2.m22);
+		m1.operator_remove(m2);
+		
+		assertEpsilonEquals(m3, m1);
+	}
+
+	@Test
+	public void operator_removeDouble() {
+		Matrix3f m1 = new Matrix3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		Matrix3f m2 = m1.clone();
+		double s = this.random.nextDouble() * 100;
+		
+		m2.set(m2.m00-s, m2.m01-s, m2.m02-s, m2.m10-s, m2.m11-s, m2.m12-s, m2.m20-s, m2.m21-s, m2.m22-s);
+		m1.operator_remove(s);
+		
+		assertEpsilonEquals(m2, m1);
+	}
+
+	@Test
+	public void operator_plusMatrix3f() {
+		Matrix3f m1 = new Matrix3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		Matrix3f m2 = new Matrix3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		Matrix3f m3 = new Matrix3f();
+		
+		m3.set(m1.m00+m2.m00, m1.m01+m2.m01, m1.m02+m2.m02, m1.m10+m2.m10, m1.m11+m2.m11, m1.m12+m2.m12, m1.m20+m2.m20, m1.m21+m2.m21, m1.m22+m2.m22);
+		Matrix3f r = m1.operator_plus(m2);
+		
+		assertEpsilonEquals(m3, r);
+	}
+
+	@Test
+	public void operator_plusDouble() {
+		Matrix3f m1 = new Matrix3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		Matrix3f m2 = m1.clone();
+		double s = this.random.nextDouble() * 100;
+		
+		m2.set(m2.m00+s, m2.m01+s, m2.m02+s, m2.m10+s, m2.m11+s, m2.m12+s, m2.m20+s, m2.m21+s, m2.m22+s);
+		Matrix3f r = m1.operator_plus(s);
+		
+		assertEpsilonEquals(m2, r);
+	}
+
+	@Test
+	public void operator_minusMatrix3f() {
+		Matrix3f m1 = new Matrix3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		Matrix3f m2 = m1.clone();
+		double s = this.random.nextDouble() * 100;
+		
+		m2.set(m2.m00-s, m2.m01-s, m2.m02-s, m2.m10-s, m2.m11-s, m2.m12-s, m2.m20-s, m2.m21-s, m2.m22-s);
+		Matrix3f r = m1.operator_minus(s);
+		
+		assertEpsilonEquals(m2, r);
+	}
+
+	@Test
+	public void operator_minusDouble() {
+		Matrix3f m1 = new Matrix3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		Matrix3f m2 = m1.clone();
+		double s = this.random.nextDouble() * 100;
+		
+		m2.set(m2.m00-s, m2.m01-s, m2.m02-s, m2.m10-s, m2.m11-s, m2.m12-s, m2.m20-s, m2.m21-s, m2.m22-s);
+		Matrix3f r = m1.operator_minus(s);
+		
+		assertEpsilonEquals(m2, r);
+	}
+
+	@Test
+	public void operator_minus() {
+		Matrix3f m1 = new Matrix3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		Matrix3f m2 = m1.clone();
+		
+		m2.set(-m2.m00, -m2.m01, -m2.m02, -m2.m10, -m2.m11, -m2.m12, -m2.m20, -m2.m21, -m2.m22);
+		Matrix3f r = m1.operator_minus();
+		
+		assertEpsilonEquals(m2, r);
+	}
+
+	@Test
+	public void operator_multiplyMatrix3f() {
+		double a = this.random.nextDouble() * 100;
+		double b = this.random.nextDouble() * 100;
+		double c = this.random.nextDouble() * 100;
+		double d = this.random.nextDouble() * 100;
+		double e = this.random.nextDouble() * 100;
+		double f = this.random.nextDouble() * 100;
+		double g = this.random.nextDouble() * 100;
+		double h = this.random.nextDouble() * 100;
+		double i = this.random.nextDouble() * 100;
+		Matrix3f m1 = new Matrix3f(a,b,c,d,e,f,g,h,i);
+		
+		double j = this.random.nextDouble() * 100;
+		double k = this.random.nextDouble() * 100;
+		double l = this.random.nextDouble() * 100;
+		double m = this.random.nextDouble() * 100;
+		double n = this.random.nextDouble() * 100;
+		double o = this.random.nextDouble() * 100;
+		double p = this.random.nextDouble() * 100;
+		double q = this.random.nextDouble() * 100;
+		double r = this.random.nextDouble() * 100;
+		Matrix3f m2 = new Matrix3f(j,k,l,m,n,o,p,q,r);
+		
+		Matrix3f prod = new Matrix3f(
+				a*j+b*m+c*p,
+				a*k+b*n+c*q,
+				a*l+b*o+c*r,
+				d*j+e*m+f*p,
+				d*k+e*n+f*q,
+				d*l+e*o+f*r,
+				g*j+h*m+i*p,
+				g*k+h*n+i*q,
+				g*l+h*o+i*r);
+				
+		Matrix3f result = m1.operator_multiply(m2);
+		
+		assertEpsilonEquals(prod, result);
+	}
+
+	@Test
+	public void operator_multiplyDouble() {
+		double a = this.random.nextDouble() * 100;
+		double b = this.random.nextDouble() * 100;
+		double c = this.random.nextDouble() * 100;
+		double d = this.random.nextDouble() * 100;
+		double e = this.random.nextDouble() * 100;
+		double f = this.random.nextDouble() * 100;
+		double g = this.random.nextDouble() * 100;
+		double h = this.random.nextDouble() * 100;
+		double i = this.random.nextDouble() * 100;
+		Matrix3f matrix = new Matrix3f(a,b,c,d,e,f,g,h,i);
+		
+		double s = this.random.nextDouble() * 100;
+		Matrix3f prodScal = new Matrix3f(a*s,b*s,c*s,d*s,e*s,f*s,g*s,h*s,i*s);
+		
+		Matrix3f r = matrix.operator_multiply(s);
+		assertEpsilonEquals(prodScal, r);
+	}
+
+	@Test
+	public void operator_divideDouble() {
+		double a = this.random.nextDouble() * 100;
+		double b = this.random.nextDouble() * 100;
+		double c = this.random.nextDouble() * 100;
+		double d = this.random.nextDouble() * 100;
+		double e = this.random.nextDouble() * 100;
+		double f = this.random.nextDouble() * 100;
+		double g = this.random.nextDouble() * 100;
+		double h = this.random.nextDouble() * 100;
+		double i = this.random.nextDouble() * 100;
+		Matrix3f matrix = new Matrix3f(a,b,c,d,e,f,g,h,i);
+		
+		double s = this.random.nextDouble() * 100 + 2;
+		Matrix3f prodScal = new Matrix3f(a/s,b/s,c/s,d/s,e/s,f/s,g/s,h/s,i/s);
+		
+		Matrix3f r = matrix.operator_divide(s);
+		assertEpsilonEquals(prodScal, r);
+	}
+
+	@Test
+	public void operator_plusPlus() {
+		Matrix3f m1 = new Matrix3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		Matrix3f m2 = m1.clone();
+		
+		m2.set(m2.m00+1, m2.m01+1, m2.m02+1, m2.m10+1, m2.m11+1, m2.m12+1, m2.m20+1, m2.m21+1, m2.m22+1);
+		m1.operator_plusPlus();
+		
+		assertEpsilonEquals(m2, m1);
+	}
+
+	@Test
+	public void operator_moinsMoins() {
+		Matrix3f m1 = new Matrix3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		Matrix3f m2 = m1.clone();
+		
+		m2.set(m2.m00-1, m2.m01-1, m2.m02-1, m2.m10-1, m2.m11-1, m2.m12-1, m2.m20-1, m2.m21-1, m2.m22-1);
+		m1.operator_moinsMoins();
+		
+		assertEpsilonEquals(m2, m1);
+	}
+
+	@Test
+	public void operator_not() {
+		Matrix3f m1 = new Matrix3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		Matrix3f transpose = new Matrix3f();
+		
+		double [] v = new double[3];
+		
+		m1.getRow(0, v);
+		transpose.setColumn(0, v);
+		
+		m1.getRow(1, v);
+		transpose.setColumn(1, v);
+		
+		m1.getRow(2, v);
+		transpose.setColumn(2, v);
+		
+		Matrix3f r = m1.operator_not();
+		
+		assertEpsilonEquals(transpose, r);
+	}
 	
 }

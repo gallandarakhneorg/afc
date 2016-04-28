@@ -23,6 +23,9 @@ package org.arakhne.afc.math.stochastic;
 import java.util.Map;
 import java.util.Random;
 
+import org.eclipse.xtext.xbase.lib.Inline;
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /**
  * Law that representes a triangular density.
  * <p>
@@ -48,6 +51,8 @@ public class TriangularStochasticLaw extends StochasticLaw {
 	 * @return a value depending of the stochastic law parameters
 	 * @throws MathException 
 	 */
+	@Inline(value = "(StochasticGenerator.generateRandomValue(new TriangularStochasticLaw($1, $2, $3)))",
+			imported = {StochasticGenerator.class, TriangularStochasticLaw.class})
 	public static double random(double minX, double mode, double maxX) throws MathException {
 		return StochasticGenerator.generateRandomValue(new TriangularStochasticLaw(minX, mode, maxX));
 	}
@@ -112,12 +117,8 @@ public class TriangularStochasticLaw extends StochasticLaw {
 
 		this.Dxmode = (this.mode-this.minX) / (this.maxX-this.minX);
 	}
-	
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @return {@inheritDoc}
-	 */
+
+	@Pure
 	@Override
 	public String toString() {
 		StringBuilder b = new StringBuilder();
@@ -131,8 +132,7 @@ public class TriangularStochasticLaw extends StochasticLaw {
 		return b.toString();
 	}
 	
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public double f(double x)  throws MathException {
 		if ((x<this.minX)||(x>this.maxX))
@@ -150,8 +150,7 @@ public class TriangularStochasticLaw extends StochasticLaw {
 			
 	}
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public MathFunctionRange[] getRange() {
 		return MathFunctionRange.createSet(this.minX, this.maxX);
@@ -163,6 +162,7 @@ public class TriangularStochasticLaw extends StochasticLaw {
 	 * @return {@code F<sup>-1</sup>(u)}
 	 * @throws MathException in case {@code F<sup>-1</sup>(u)} could not be computed
 	 */
+	@Pure
 	@Override
 	public double inverseF(double u) throws MathException {
 		if ((u<0)||(u>1)) throw new OutsideDomainException(u);

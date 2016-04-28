@@ -22,6 +22,7 @@ package org.arakhne.afc.math.physics;
 import java.util.concurrent.TimeUnit;
 
 import org.arakhne.afc.vmutil.locale.Locale;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * A <tt>SpeedUnit</tt> represents speed at a given unit of
@@ -50,6 +51,7 @@ public enum SpeedUnit {
 	 * 
 	 * @return the time unit.
 	 */
+	@Pure
 	public TimeUnit toTimeUnit() {
 		switch(this) {
 		case KILOMETERS_PER_HOUR:
@@ -66,6 +68,7 @@ public enum SpeedUnit {
 	 * 
 	 * @return the space unit.
 	 */
+	@Pure
 	public SpaceUnit toSpaceUnit() {
 		switch(this) {
 		case KILOMETERS_PER_HOUR:
@@ -85,8 +88,8 @@ public enum SpeedUnit {
 	 * @return the speed unit just lower than the
 	 * current speed unit, or the speed unit itself if
 	 * it is the smallest.
-	 * @since 4.0
 	 */
+	@Pure
 	public SpeedUnit lower() {
 		int o = ordinal();
 		if (o<=0) return this;
@@ -99,8 +102,8 @@ public enum SpeedUnit {
 	 * @return the speed unit just upper than the
 	 * current speed unit, or the speed unit itself if
 	 * it is the uppest.
-	 * @since 4.0
 	 */
+	@Pure
 	public SpeedUnit upper() {
 		int o = ordinal();
 		SpeedUnit[] units = values();
@@ -111,8 +114,8 @@ public enum SpeedUnit {
 	/** Replies the localized symbol for this space unit.
 	 * 
 	 * @return the localized symbol for this space unit.
-	 * @since 4.0
 	 */
+	@Pure
 	public String getSymbol() {
 		return Locale.getString(name());
 	}

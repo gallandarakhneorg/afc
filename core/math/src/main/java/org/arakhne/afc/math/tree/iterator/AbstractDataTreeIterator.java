@@ -21,6 +21,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import org.arakhne.afc.math.tree.TreeNode;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * This class is an iterator on a tree that replies the user data.
@@ -153,6 +154,7 @@ public abstract class AbstractDataTreeIterator<D,N extends TreeNode<D,?>> implem
 		//
 	}
 
+	@Pure
 	@Override
 	public boolean hasNext() {
 		if (!this.searched) searchNext();

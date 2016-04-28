@@ -23,6 +23,8 @@ package org.arakhne.afc.math.stochastic;
 import java.util.Map;
 import java.util.Random;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 
 /**
  * Law that representes a Cauchy-Lorentz density.
@@ -84,11 +86,7 @@ public class CauchyStochasticLaw extends StochasticLaw {
 		this.gamma = gamma1;
 	}
 	
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @return {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public String toString() {
 		StringBuilder b = new StringBuilder();
@@ -100,16 +98,14 @@ public class CauchyStochasticLaw extends StochasticLaw {
 		return b.toString();
 	}
 	
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public double f(double x)  throws MathException {
 		double xm = x - this.x0;
 		return 1.f/Math.PI * (this.gamma/((xm * xm)+(this.gamma * this.gamma))); 
 	}
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public MathFunctionRange[] getRange() {
 		return MathFunctionRange.createInfinitySet();
@@ -121,6 +117,7 @@ public class CauchyStochasticLaw extends StochasticLaw {
 	 * @return {@code F<sup>-1</sup>(u)}
 	 * @throws MathException in case {@code F<sup>-1</sup>(u)} could not be computed
 	 */
+	@Pure
 	@Override
 	public double inverseF(double u) throws MathException {
 		return this.x0 + this.gamma * Math.tan(Math.PI * (u-.5f)); 

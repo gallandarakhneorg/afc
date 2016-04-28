@@ -19,6 +19,8 @@ package org.arakhne.afc.math.tree;
 
 import java.util.Iterator;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /**
  * This is the generic implementation of a
  * tree service that permits to iterate
@@ -37,26 +39,26 @@ import java.util.Iterator;
  */
 public interface BroadFirstIterableTree<D,N extends TreeNode<D,?>> extends Tree<D,N> {
 
-	/** {@inheritDoc}
-	 */
 	@Override
+	@Pure
 	public Iterator<N> broadFirstIterator();
 
-	/** {@inheritDoc}
-	 */
 	@Override
+	@Pure
 	public Iterator<D> dataBroadFirstIterator();
 
 	/** Replies the broad-first iterator on the tree.
 	 * 
 	 * @return the iterator on nodes.
 	 */
+	@Pure
 	public Iterable<N> toBroadFirstIterable();
 
 	/** Replies the broad-first iterator on the tree.
 	 * 
 	 * @return the iterator on user data.
 	 */
+	@Pure
 	public Iterable<D> toDataBroadFirstIterable();
 	
 }

@@ -23,133 +23,7 @@ public class UnmodifiablePoint2DTest extends AbstractUnmodifiablePoint2DTest {
 	
 	@Override
 	protected Vector2D createVector(final double tx, final double ty) {
-		return new Vector2D() {
-			private double x = tx;
-			private double y = ty;
-			@Override
-			public Vector2D clone() {
-				return createVector(this.x, this.y);
-			}
-
-			@Override
-			public double getX() {
-				return this.x;
-			}
-
-			@Override
-			public int ix() {
-				return (int) this.x;
-			}
-
-			@Override
-			public void setX(int x) {
-				this.x = x;
-			}
-
-			@Override
-			public void setX(double x) {
-				this.x = x;
-			}
-
-			@Override
-			public double getY() {
-				return this.y;
-			}
-
-			@Override
-			public int iy() {
-				return (int) this.y;
-			}
-
-			@Override
-			public void setY(int y) {
-				this.y = y;
-			}
-
-			@Override
-			public void setY(double y) {
-				this.y = y;
-			}
-
-			@Override
-			public Vector2D toUnmodifiable() {
-				return new ImVector2D();
-			}
-
-			@Override
-			public Vector2D toUnitVector() {
-				throw new UnsupportedOperationException();
-			}
-
-			@Override
-			public Vector2D toOrthogonalVector() {
-				throw new UnsupportedOperationException();
-			}
-
-			class ImVector2D implements Vector2D {
-
-				@Override
-				public Vector2D clone() {
-					return new ImVector2D();
-				}
-
-				@Override
-				public double getX() {
-					return x;
-				}
-
-				@Override
-				public int ix() {
-					return (int) x;
-				}
-
-				@Override
-				public void setX(int x) {
-					throw new UnsupportedOperationException();
-				}
-
-				@Override
-				public void setX(double x) {
-					throw new UnsupportedOperationException();
-				}
-
-				@Override
-				public double getY() {
-					return y;
-				}
-
-				@Override
-				public int iy() {
-					return (int) y;
-				}
-
-				@Override
-				public void setY(int y) {
-					throw new UnsupportedOperationException();
-				}
-
-				@Override
-				public void setY(double y) {
-					throw new UnsupportedOperationException();
-				}
-
-				@Override
-				public Vector2D toUnmodifiable() {
-					return this;
-				}
-				
-				@Override
-				public Vector2D toUnitVector() {
-					throw new UnsupportedOperationException();
-				}
-
-				@Override
-				public Vector2D toOrthogonalVector() {
-					throw new UnsupportedOperationException();
-				}
-
-			}
-		};
+		return new Vector2DStub(tx, ty);
 	}
 
 	@Override
@@ -161,6 +35,11 @@ public class UnmodifiablePoint2DTest extends AbstractUnmodifiablePoint2DTest {
 			public Point2D clone() {
 				return createPoint(this.x, this.y);
 			}
+			
+			@Override
+			public GeomFactory getGeomFactory() {
+				return ImmutableGeomFactory.SINGLETON;
+			}
 
 			@Override
 			public double getX() {
@@ -183,7 +62,7 @@ public class UnmodifiablePoint2DTest extends AbstractUnmodifiablePoint2DTest {
 			}
 
 			@Override
-			public Point2D toUnmodifiable() {
+			public UnmodifiablePoint2D toUnmodifiable() {
 				return this;
 			}
 

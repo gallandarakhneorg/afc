@@ -39,7 +39,7 @@ public interface PathIterator2afp<T extends PathElement2afp> extends PathIterato
 	 *
 	 * @return the factory.
 	 */
-	GeomFactory2afp<T, ?, ?> getGeomFactory();
+	GeomFactory2afp<T, ?, ?, ?> getGeomFactory();
 	
 	/** Replies a reset instance of this iterator.
 	 *

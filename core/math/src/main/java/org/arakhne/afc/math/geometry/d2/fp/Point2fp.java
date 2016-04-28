@@ -21,6 +21,7 @@
  */
 package org.arakhne.afc.math.geometry.d2.fp;
 
+import org.arakhne.afc.math.geometry.d2.GeomFactory;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.arakhne.afc.math.geometry.d2.UnmodifiablePoint2D;
@@ -35,7 +36,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public class Point2fp extends Tuple2fp<Point2D, Point2fp> implements Point2D {
+public class Point2fp extends Tuple2fp<Point2fp> implements Point2D<Point2fp, Vector2fp> {
 
 	private static final long serialVersionUID = -8318943957531471869L;
 
@@ -97,10 +98,15 @@ public class Point2fp extends Tuple2fp<Point2D, Point2fp> implements Point2D {
 	public Point2fp(long x, long y) {
 		super(x,y);
 	}
+	
+	@Override
+	public GeomFactory2fp getGeomFactory() {
+		return GeomFactory2fp.SINGLETON;
+	}
 
 	@Pure
 	@Override
-	public double getDistanceSquared(Point2D p) {
+	public double getDistanceSquared(Point2D<?, ?> p) {
 		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
 		double dx = this.x - p.getX();  
 		double dy = this.y - p.getY();
@@ -109,7 +115,7 @@ public class Point2fp extends Tuple2fp<Point2D, Point2fp> implements Point2D {
 
 	@Pure
 	@Override
-	public double getDistance(Point2D p) {
+	public double getDistance(Point2D<?, ?> p) {
 		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
 		double dx = this.x - p.getX();  
 		double dy = this.y - p.getY();
@@ -118,32 +124,32 @@ public class Point2fp extends Tuple2fp<Point2D, Point2fp> implements Point2D {
 
 	@Pure
 	@Override
-	public double getDistanceL1(Point2D p) {
+	public double getDistanceL1(Point2D<?, ?> p) {
 		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
 		return (Math.abs(this.x-p.getX()) + Math.abs(this.y-p.getY()));
 	}
 
 	@Pure
 	@Override
-	public double getDistanceLinf(Point2D p) {
+	public double getDistanceLinf(Point2D<?, ?> p) {
 		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
 		return (Math.max( Math.abs(this.x-p.getX()), Math.abs(this.y-p.getY())));
 	}
 
 	@Pure
 	@Override
-	public int getIdistanceL1(Point2D p) {
+	public int getIdistanceL1(Point2D<?, ?> p) {
 		return (int) getDistanceL1(p);
 	}
 
 	@Pure
 	@Override
-	public int getIdistanceLinf(Point2D p) {
+	public int getIdistanceLinf(Point2D<?, ?> p) {
 		return (int) getDistanceLinf(p);
 	}
 
 	@Override
-	public void add(Point2D point, Vector2D vector) {
+	public void add(Point2D<?, ?> point, Vector2D<?, ?> vector) {
 		assert (point != null) : "Point must be not null"; //$NON-NLS-1$
 		assert (vector != null) : "Vector must be not null"; //$NON-NLS-1$
 		this.x = point.getX() + vector.getX();
@@ -151,7 +157,7 @@ public class Point2fp extends Tuple2fp<Point2D, Point2fp> implements Point2D {
 	}
 
 	@Override
-	public void add(Vector2D vector, Point2D point) {
+	public void add(Vector2D<?, ?> vector, Point2D<?, ?> point) {
 		assert (point != null) : "Point must be not null"; //$NON-NLS-1$
 		assert (vector != null) : "Vector must be not null"; //$NON-NLS-1$
 		this.x = vector.getX() + point.getX();
@@ -159,14 +165,14 @@ public class Point2fp extends Tuple2fp<Point2D, Point2fp> implements Point2D {
 	}
 
 	@Override
-	public void add(Vector2D vector) {
+	public void add(Vector2D<?, ?> vector) {
 		assert (vector != null) : "Vector must be not null"; //$NON-NLS-1$
 		this.x = this.x + vector.getX();
 		this.y = this.y + vector.getY();
 	}
 
 	@Override
-	public void scaleAdd(int s, Vector2D vector, Point2D point) {
+	public void scaleAdd(int s, Vector2D<?, ?> vector, Point2D<?, ?> point) {
 		assert (point != null) : "Point must be not null"; //$NON-NLS-1$
 		assert (vector != null) : "Vector must be not null"; //$NON-NLS-1$
 		this.x = s * vector.getX() + point.getX();
@@ -174,7 +180,7 @@ public class Point2fp extends Tuple2fp<Point2D, Point2fp> implements Point2D {
 	}
 
 	@Override
-	public void scaleAdd(double s, Vector2D vector, Point2D point) {
+	public void scaleAdd(double s, Vector2D<?, ?> vector, Point2D<?, ?> point) {
 		assert (point != null) : "Point must be not null"; //$NON-NLS-1$
 		assert (vector != null) : "Vector must be not null"; //$NON-NLS-1$
 		this.x = s * vector.getX() + point.getX();
@@ -182,7 +188,7 @@ public class Point2fp extends Tuple2fp<Point2D, Point2fp> implements Point2D {
 	}
 
 	@Override
-	public void scaleAdd(int s, Point2D point, Vector2D vector) {
+	public void scaleAdd(int s, Point2D<?, ?> point, Vector2D<?, ?> vector) {
 		assert (point != null) : "Point must be not null"; //$NON-NLS-1$
 		assert (vector != null) : "Vector must be not null"; //$NON-NLS-1$
 		this.x = s * point.getX() + vector.getX();
@@ -190,7 +196,7 @@ public class Point2fp extends Tuple2fp<Point2D, Point2fp> implements Point2D {
 	}
 
 	@Override
-	public void scaleAdd(double s, Point2D point, Vector2D vector) {
+	public void scaleAdd(double s, Point2D<?, ?> point, Vector2D<?, ?> vector) {
 		assert (point != null) : "Point must be not null"; //$NON-NLS-1$
 		assert (vector != null) : "Vector must be not null"; //$NON-NLS-1$
 		this.x = s * point.getX() + vector.getX();
@@ -198,21 +204,21 @@ public class Point2fp extends Tuple2fp<Point2D, Point2fp> implements Point2D {
 	}
 
 	@Override
-	public void scaleAdd(int s, Vector2D vector) {
+	public void scaleAdd(int s, Vector2D<?, ?> vector) {
 		assert (vector != null) : "Vector must be not null"; //$NON-NLS-1$
 		this.x = s * this.x + vector.getX();
 		this.y = s * this.y + vector.getY();
 	}
 
 	@Override
-	public void scaleAdd(double s, Vector2D vector) {
+	public void scaleAdd(double s, Vector2D<?, ?> vector) {
 		assert (vector != null) : "Vector must be not null"; //$NON-NLS-1$
 		this.x = s * this.x + vector.getX();
 		this.y = s * this.y + vector.getY();
 	}
 
 	@Override
-	public void sub(Point2D point, Vector2D vector) {
+	public void sub(Point2D<?, ?> point, Vector2D<?, ?> vector) {
 		assert (point != null) : "Point must be not null"; //$NON-NLS-1$
 		assert (vector != null) : "Vector must be not null"; //$NON-NLS-1$
 		this.x = point.getX() - vector.getX();
@@ -220,7 +226,7 @@ public class Point2fp extends Tuple2fp<Point2D, Point2fp> implements Point2D {
 	}
 
 	@Override
-	public void sub(Vector2D vector) {
+	public void sub(Vector2D<?, ?> vector) {
 		assert (vector != null) : "Vector must be not null"; //$NON-NLS-1$
 		this.x = this.x - vector.getX();
 		this.y = this.y - vector.getY();
@@ -228,14 +234,19 @@ public class Point2fp extends Tuple2fp<Point2D, Point2fp> implements Point2D {
 
 	@Pure
 	@Override
-	public Point2D toUnmodifiable() {
-		return new UnmodifiablePoint2D() {
+	public UnmodifiablePoint2D<Point2fp, Vector2fp> toUnmodifiable() {
+		return new UnmodifiablePoint2D<Point2fp, Vector2fp>() {
 
 			private static final long serialVersionUID = 3305735799920201356L;
 
 			@Override
-			public Point2D clone() {
-				return Point2fp.this.toUnmodifiable();
+			public GeomFactory<Vector2fp, Point2fp> getGeomFactory() {
+				return Point2fp.this.getGeomFactory();
+			}
+			
+			@Override
+			public Point2fp clone() {
+				return new Point2fp(this);
 			}
 
 			@Override

@@ -21,17 +21,20 @@
 package org.arakhne.afc.math.geometry.d2;
 
 import org.arakhne.afc.math.MathUtil;
+import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** 2D Point.
- * 
+ *
+ * @param <RP> is the type of point that can be returned by this tuple.
+ * @param <RV> is the type of vector that can be returned by this tuple.
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public interface Point2D extends Tuple2D<Point2D> {
+public interface Point2D<RP extends Point2D<? super RP, ? super RV>, RV extends Vector2D<? super RV, ? super RP>> extends Tuple2D<RP> {
 
 	/**
 	 * Replies if three points are colinear, ie. one the same line.
@@ -57,6 +60,8 @@ public interface Point2D extends Tuple2D<Point2D> {
 	 * @see MathUtil#isEpsilonZero(double)
 	 */
 	@Pure
+	@Inline(value = "(MathUtil.isEpsilonZero($1 * ($4 - $6) + $3 * ($6 - $2) + $5 * ($2 - $4)))",
+			imported = {MathUtil.class})
 	static boolean isCollinearPoints(double x1, double y1, double x2, double y2, double x3, double y3) {
 		// Test if three points are colinears
 		// iff det( [ x1 x2 x3 ]
@@ -77,10 +82,10 @@ public interface Point2D extends Tuple2D<Point2D> {
 	 * @see #getDistanceL1PointPoint(double, double, double, double)
 	 */
 	@Pure
+	@Inline(value = "(Math.hypot($1 - $3, $2- $4))",
+			imported = {Math.class})
 	static double getDistancePointPoint(double x1, double y1, double x2, double y2) {
-		double dx = x1 - x2;
-		double dy = y1 - y2;
-		return Math.hypot(dx, dy);
+		return Math.hypot(x1 - x2, y1 - y2);
 	}
 
 	/** Compute the squared distance between 2 points.
@@ -94,6 +99,7 @@ public interface Point2D extends Tuple2D<Point2D> {
 	 * @see #getDistanceL1PointPoint(double, double, double, double)
 	 */
 	@Pure
+	@Inline(value = "(($1-$3)*($1-$3) + ($2-$4)*($2-$4))")
 	static double getDistanceSquaredPointPoint(double x1, double y1, double x2, double y2) {
 		double dx = x1 - x2;
 		double dy = y1 - y2;
@@ -112,6 +118,8 @@ public interface Point2D extends Tuple2D<Point2D> {
 	 * @see #getDistanceSquaredPointPoint(double, double, double, double)
 	 */
 	@Pure
+	@Inline(value = "(Math.abs($1 - $3) + Math.abs($2 - $4))",
+			imported = {Math.class})
 	static double getDistanceL1PointPoint(double x1, double y1, double x2, double y2) {
 		return Math.abs(x1 - x2) + Math.abs(y1 - y2);
 	}
@@ -129,6 +137,8 @@ public interface Point2D extends Tuple2D<Point2D> {
 	 * @see #getDistanceSquaredPointPoint(double, double, double, double)
 	 */
 	@Pure
+	@Inline(value = "(Math.max(Math.abs($1 - $3), Math.abs($2 - $4)))",
+			imported = {Math.class})
 	static double getDistanceLinfPointPoint(double x1, double y1, double x2, double y2) {
 		return Math.max(Math.abs(x1 - x2), Math.abs(y1 - y2));
 	}
@@ -139,7 +149,7 @@ public interface Point2D extends Tuple2D<Point2D> {
 	 * @return the distance.
 	 */
 	@Pure
-	default double getDistanceSquared(Point2D point) {
+	default double getDistanceSquared(Point2D<?, ?> point) {
 		assert (point != null) : "Point must not be null"; //$NON-NLS-1$
 		return getDistanceSquaredPointPoint(getX(), getY(), point.getX(), point.getY());
 	}
@@ -150,7 +160,7 @@ public interface Point2D extends Tuple2D<Point2D> {
 	 * @return the distance. 
 	 */    
 	@Pure
-	default double getDistance(Point2D point) {
+	default double getDistance(Point2D<?, ?> point) {
 		assert (point != null) : "Point must not be null"; //$NON-NLS-1$
 		return getDistancePointPoint(getX(), getY(), point.getX(), point.getY());
 	}
@@ -162,7 +172,7 @@ public interface Point2D extends Tuple2D<Point2D> {
 	 * @return the distance.
 	 */
 	@Pure
-	default double getDistanceL1(Point2D point) {
+	default double getDistanceL1(Point2D<?, ?> point) {
 		assert (point != null) : "Point must not be null"; //$NON-NLS-1$
 		return getDistanceL1PointPoint(getX(), getY(), point.getX(), point.getY());
 	}
@@ -175,7 +185,7 @@ public interface Point2D extends Tuple2D<Point2D> {
 	 * @return the distance.
 	 */
 	@Pure
-	default double getDistanceLinf(Point2D point) {
+	default double getDistanceLinf(Point2D<?, ?> point) {
 		assert (point != null) : "Point must not be null"; //$NON-NLS-1$
 		return getDistanceLinfPointPoint(getX(), getY(), point.getX(), point.getY());
 	}
@@ -187,7 +197,7 @@ public interface Point2D extends Tuple2D<Point2D> {
 	 * @return the distance.
 	 */
 	@Pure
-	default int getIdistanceL1(Point2D point) {
+	default int getIdistanceL1(Point2D<?, ?> point) {
 		assert (point != null) : "Point must not be null"; //$NON-NLS-1$
 		return Math.abs(ix() - point.ix()) + Math.abs(iy() - point.iy());
 	}
@@ -200,7 +210,7 @@ public interface Point2D extends Tuple2D<Point2D> {
 	 * @return the distance.
 	 */
 	@Pure
-	default int getIdistanceLinf(Point2D point) {
+	default int getIdistanceLinf(Point2D<?, ?> point) {
 		assert (point != null) : "Point must not be null"; //$NON-NLS-1$
 		return Math.max(Math.abs(ix() - point.ix()), Math.abs(iy() - point.iy()));
 	}
@@ -210,7 +220,7 @@ public interface Point2D extends Tuple2D<Point2D> {
 	 * @param point the first tuple
 	 * @param vector the second tuple
 	 */
-	default void add(Point2D point, Vector2D vector) {
+	default void add(Point2D<?, ?> point, Vector2D<?, ?> vector) {
 		assert (point != null) : "Point must not be null"; //$NON-NLS-1$
 		assert (vector != null) : "Vector must not be null"; //$NON-NLS-1$
 		set(point.getX() + vector.getX(),
@@ -222,7 +232,7 @@ public interface Point2D extends Tuple2D<Point2D> {
 	 * @param vector the first tuple
 	 * @param point the second tuple
 	 */
-	default void add(Vector2D vector, Point2D point) {
+	default void add(Vector2D<?, ?> vector, Point2D<?, ?> point) {
 		assert (point != null) : "Point must not be null"; //$NON-NLS-1$
 		assert (vector != null) : "Vector must not be null"; //$NON-NLS-1$
 		set(vector.getX() + point.getX(),
@@ -233,7 +243,7 @@ public interface Point2D extends Tuple2D<Point2D> {
 	 * Sets the value of this tuple to the sum of itself and t1.
 	 * @param vector the other tuple
 	 */
-	default void add(Vector2D vector) {
+	default void add(Vector2D<?, ?> vector) {
 		assert (vector != null) : "Vector must not be null"; //$NON-NLS-1$
 		set(getX() + vector.getX(),
 			getY() + vector.getY());
@@ -246,7 +256,7 @@ public interface Point2D extends Tuple2D<Point2D> {
 	 * @param vector the tuple to be multipled
 	 * @param point the tuple to be added
 	 */
-	default void scaleAdd(int scale, Vector2D vector, Point2D point) {
+	default void scaleAdd(int scale, Vector2D<?, ?> vector, Point2D<?, ?> point) {
 		assert (point != null) : "Point must not be null"; //$NON-NLS-1$
 		assert (vector != null) : "Vector must not be null"; //$NON-NLS-1$
 		set(scale * vector.getX() + point.getX(),
@@ -260,7 +270,7 @@ public interface Point2D extends Tuple2D<Point2D> {
 	 * @param vector the tuple to be multipled
 	 * @param point the tuple to be added
 	 */
-	default void scaleAdd(double scale, Vector2D vector, Point2D point) {
+	default void scaleAdd(double scale, Vector2D<?, ?> vector, Point2D<?, ?> point) {
 		assert (point != null) : "Point must not be null"; //$NON-NLS-1$
 		assert (vector != null) : "Vector must not be null"; //$NON-NLS-1$
 		set(scale * vector.getX() + point.getX(),
@@ -274,7 +284,7 @@ public interface Point2D extends Tuple2D<Point2D> {
 	 * @param point the tuple to be multipled
 	 * @param vector the tuple to be added
 	 */
-	default void scaleAdd(int scale, Point2D point, Vector2D vector) {
+	default void scaleAdd(int scale, Point2D<?, ?> point, Vector2D<?, ?> vector) {
 		assert (point != null) : "Point must not be null"; //$NON-NLS-1$
 		assert (vector != null) : "Vector must not be null"; //$NON-NLS-1$
 		set(scale * point.getX() + vector.getX(),
@@ -288,7 +298,7 @@ public interface Point2D extends Tuple2D<Point2D> {
 	 * @param point the tuple to be multipled
 	 * @param vector the tuple to be added
 	 */
-	default void scaleAdd(double scale, Point2D point, Vector2D vector) {
+	default void scaleAdd(double scale, Point2D<?, ?> point, Vector2D<?, ?> vector) {
 		assert (point != null) : "Point must not be null"; //$NON-NLS-1$
 		assert (vector != null) : "Vector must not be null"; //$NON-NLS-1$
 		set(scale * point.getX() + vector.getX(),
@@ -301,7 +311,7 @@ public interface Point2D extends Tuple2D<Point2D> {
 	 * @param scale the scalar value
 	 * @param vector the tuple to be added
 	 */
-	default void scaleAdd(int scale, Vector2D vector) {
+	default void scaleAdd(int scale, Vector2D<?, ?> vector) {
 		assert (vector != null) : "Vector must not be null"; //$NON-NLS-1$
 		set(scale * getX() + vector.getX(),
 			scale * getY() + vector.getY());
@@ -313,7 +323,7 @@ public interface Point2D extends Tuple2D<Point2D> {
 	 * @param scale the scalar value
 	 * @param vector the tuple to be added
 	 */
-	default void scaleAdd(double scale, Vector2D vector) {
+	default void scaleAdd(double scale, Vector2D<?, ?> vector) {
 		assert (vector != null) : "Vector must not be null"; //$NON-NLS-1$
 		set(scale * getX() + vector.getX(),
 			scale * getY() + vector.getY());
@@ -326,7 +336,7 @@ public interface Point2D extends Tuple2D<Point2D> {
 	 * @param point the first tuple
 	 * @param vector the second tuple
 	 */
-	default void sub(Point2D point, Vector2D vector) {
+	default void sub(Point2D<?, ?> point, Vector2D<?, ?> vector) {
 		assert (point != null) : "Point must not be null"; //$NON-NLS-1$
 		assert (vector != null) : "Vector must not be null"; //$NON-NLS-1$
 		set(point.getX() - vector.getX(),
@@ -338,7 +348,7 @@ public interface Point2D extends Tuple2D<Point2D> {
 	 * of itself and the given vector (this = this - vector).
 	 * @param vector the other tuple
 	 */
-	default void sub(Vector2D vector) {
+	default void sub(Vector2D<?, ?> vector) {
 		assert (vector != null) : "Vector must not be null"; //$NON-NLS-1$
 		set(getX() - vector.getX(),
 			getY() - vector.getY());
@@ -349,6 +359,182 @@ public interface Point2D extends Tuple2D<Point2D> {
 	 * @return an unmodifiable copy.
 	 */
 	@Pure
-	Point2D toUnmodifiable();
+	UnmodifiablePoint2D<RP, RV> toUnmodifiable();
 	
+	/** Replies the geometry factory associated to this point.
+	 * 
+	 * @return the factory.
+	 */
+	@Pure
+	GeomFactory<RV, RP> getGeomFactory();
+
+	/** Sum of this point and a vector: {@code this + v}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param v the vector to add
+	 * @return the result.
+	 * @see #add(Point2D, Vector2D)
+	 */
+	@Pure
+	default RP operator_plus(Vector2D<?, ?> v) {
+		RP r = getGeomFactory().newPoint();
+		r.add(this, v);
+		return r;
+	}
+
+	/** Increment this point with the given vector: {@code this += v}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param v the vector to add
+	 * @see #add(Vector2D)
+	 */
+	default void operator_add(Vector2D<?, ?> v) {
+		add(v);
+	}
+
+	/** Subtract the v vector to this point: {@code this - v}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param v the vector to substract.
+	 * @return the result.
+	 * @see #sub(Point2D, Vector2D)
+	 */
+	@Pure
+	default RP operator_minus(Vector2D<?, ?> v) {
+		RP r = getGeomFactory().newPoint();
+		r.sub(this, v);
+		return r;
+	}
+
+	/** Subtract the p point to this point: {@code this - p}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param p the point to substract
+	 * @return the vector from the p to this.
+	 * @see Vector2D#sub(Point2D, Point2D)
+	 */
+	@Pure
+	default RV operator_minus(Point2D<?, ?> p) {
+		RV r = getGeomFactory().newVector();
+		r.sub(this, p);
+		return r;
+	}
+
+	/** Subtract the v vector to this: {@code this -= v}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param v the vector to substract.
+	 * @see #sub(Vector2D)
+	 */
+	default void operator_remove(Vector2D<?, ?> v) {
+		sub(v);
+	}
+
+	/** Replies if the given vector is equal to this vector: {@code this == v}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param v the vector.
+	 * @return test result.
+	 * @see #equals(Tuple2D)
+	 */
+	@Pure
+	default boolean operator_equals(Tuple2D<?> v) {
+		return equals(v);
+	}
+
+	/** Replies if the given vector is different than this vector: {@code this != v}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param v the vector.
+	 * @return test result.
+	 * @see #equals(Tuple2D)
+	 */
+	@Pure
+	default boolean operator_notEquals(Tuple2D<?> v) {
+		return !equals(v);
+	}
+
+	/** Replies if the distance between this and the p point: {@code this .. p}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param p the point.
+	 * @return the distance.
+	 * @see #getDistance(Point2D)
+	 */
+	@Pure
+	default double operator_upTo(Point2D<?, ?> p) {
+		return getDistance(p);
+	}
+
+	/** If this point is epsilon equal to zero then reply p else reply this: {@code this ?: p}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param p the point.
+	 * @return the point.
+	 */
+	@Pure
+	default Point2D<? extends RP, ? extends RV> operator_elvis(Point2D<? extends RP, ? extends RV> p) {
+		if (MathUtil.isEpsilonZero(getX()) && MathUtil.isEpsilonZero(getY())) {
+			return p;
+		}
+		return this;
+	}
+	
+	/** Replies if the this point is inside the given shape: {@code this && s}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param s the shape to test.
+	 * @return <code>true</code> if the point is inside the shape. Otherwise, <code>false</code>.
+	 * @see Shape2D#contains(Point2D)
+	 */
+	@Pure
+	default boolean operator_and(Shape2D<?, ?, ?, ?, ?, ?> s) {
+		return s.contains(this);
+	}
+
+	/** Replies the distance between this point and the given shape: {@code this .. s}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param s the shape to test.
+	 * @return the distance.
+	 * @see Shape2D#getDistance(Point2D)
+	 */
+	@Pure
+	default double operator_upTo(Shape2D<?, ?, ?, ?, ?, ?> s) {
+		return s.getDistance(this);
+	}
+
 }

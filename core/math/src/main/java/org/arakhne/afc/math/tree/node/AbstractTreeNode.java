@@ -28,6 +28,7 @@ import org.arakhne.afc.math.tree.TreeNodeAddedEvent;
 import org.arakhne.afc.math.tree.TreeNodeListener;
 import org.arakhne.afc.math.tree.TreeNodeParentChangedEvent;
 import org.arakhne.afc.math.tree.TreeNodeRemovedEvent;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 
 /**
@@ -93,6 +94,7 @@ public abstract class AbstractTreeNode<D,N extends AbstractTreeNode<D,N>> extend
 	}
 
 	@Override
+	@Pure
 	public int getDepth() {
 		N p = getParentNode();
 		if (p==null) return 0;
@@ -103,6 +105,7 @@ public abstract class AbstractTreeNode<D,N extends AbstractTreeNode<D,N>> extend
 	public abstract boolean setChildAt(int index, N newChild) throws IndexOutOfBoundsException;
 	
 	@Override
+	@Pure
 	public final N getParentNode() {
 		return this.parent==null ? null : this.parent.get();
 	}
@@ -245,12 +248,14 @@ public abstract class AbstractTreeNode<D,N extends AbstractTreeNode<D,N>> extend
 	}
 
 	@Override
+	@Pure
 	public final boolean isRoot() {
 		return this.parent == null;
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
+	@Pure
 	public final N[] getChildren(Class<N> type) {
 		N[] array = (N[])Array.newInstance(type, getChildCount());
 		getChildren(array);
@@ -258,6 +263,7 @@ public abstract class AbstractTreeNode<D,N extends AbstractTreeNode<D,N>> extend
 	}
 
 	@Override
+	@Pure
 	public final Iterator<N> children() {
 		return new ChildIterator();
 	}

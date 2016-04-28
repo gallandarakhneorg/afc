@@ -29,15 +29,14 @@ import javafx.beans.property.SimpleIntegerProperty;
 
 /** 2D tuple with 2 integer FX properties.
  * 
- * @param <T> is the abstract type of the tuple.
- * @param <IT> is the implementation type of the tuple.
+ * @param <RT> is the type of return tuples by the tuple.
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public class Tuple2ifx<T extends Tuple2D<? super T>, IT extends T> implements Tuple2D<T> {
+public class Tuple2ifx<RT extends Tuple2ifx<? super RT>> implements Tuple2D<RT> {
 
 	private static final long serialVersionUID = 3136314939750740492L;
 
@@ -104,17 +103,16 @@ public class Tuple2ifx<T extends Tuple2D<? super T>, IT extends T> implements Tu
 	@SuppressWarnings("unchecked")
 	@Pure
 	@Override
-	public IT clone() {
+	public RT clone() {
 		try {
-			IT clone = (IT) super.clone();
-			Tuple2ifx<?, ?> tifx = (Tuple2ifx<?, ?>) clone;
+			RT clone = (RT) super.clone();
 			if (this.x != null) {
-				tifx.x = null;
-				tifx.xProperty().set(ix());
+				clone.x = null;
+				clone.xProperty().set(ix());
 			}
 			if (this.y != null) {
-				tifx.y = null;
-				tifx.yProperty().set(iy());
+				clone.y = null;
+				clone.yProperty().set(iy());
 			}
 			return clone;
 		}
@@ -128,7 +126,7 @@ public class Tuple2ifx<T extends Tuple2D<? super T>, IT extends T> implements Tu
 	@Override
 	public boolean equals(Object object) {
 		try {
-			return equals((T) object);
+			return equals((RT) object);
 		}
 		catch(AssertionError e) {
 			throw e;

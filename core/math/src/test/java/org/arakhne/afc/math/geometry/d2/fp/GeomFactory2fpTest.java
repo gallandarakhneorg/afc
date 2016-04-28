@@ -29,7 +29,7 @@ import org.arakhne.afc.math.geometry.d2.afp.GeomFactory2afp;
 @SuppressWarnings("all")
 public class GeomFactory2fpTest extends AbstractGeomFactory2afpTest {
 
-	protected GeomFactory2afp<?, ?, ?> createFactory() {
+	protected GeomFactory2afp<?, ?, ?, ?> createFactory() {
 		return new GeomFactory2fp();
 	}
 	

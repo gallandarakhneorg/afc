@@ -37,6 +37,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @param <IT> is the type of the implementation of this shape.
  * @param <IE> is the type of the path elements.
  * @param <P> is the type of the points.
+ * @param <V> is the type of the vectors.
  * @param <B> is the type of the bounding boxes.
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -45,12 +46,13 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @since 13.0
  */
 public interface Triangle2afp<
-ST extends Shape2afp<?, ?, IE, P, B>,
-IT extends Triangle2afp<?, ?, IE, P, B>,
-IE extends PathElement2afp,
-P extends Point2D,
-B extends Rectangle2afp<?, ?, IE, P, B>>
-extends Shape2afp<ST, IT, IE, P, B> {
+		ST extends Shape2afp<?, ?, IE, P, V, B>,
+		IT extends Triangle2afp<?, ?, IE, P, V, B>,
+		IE extends PathElement2afp,
+		P extends Point2D<? super P, ? super V>,
+		V extends Vector2D<? super V, ? super P>,
+		B extends Rectangle2afp<?, ?, IE, P, V, B>>
+		extends Shape2afp<ST, IT, IE, P, V, B> {
 
 	/**
 	 * Replies if three points of a triangle are defined in a counter-clockwise order.
@@ -151,7 +153,7 @@ extends Shape2afp<ST, IT, IE, P, B> {
 	 */
 	@Pure
 	static void computeClosestFarthestPoints(double tx1, double ty1, double tx2, double ty2,
-			double tx3, double ty3, double px, double py, Point2D closest, Point2D farthest) {
+			double tx3, double ty3, double px, double py, Point2D<?, ?> closest, Point2D<?, ?> farthest) {
 		assert (closest != null || farthest != null) : "Both closest and farthest cannot be null"; //$NON-NLS-1$
 		if (closest != null) {
 			double side1 = Vector2D.perpProduct(tx2 - tx1, ty2 - ty1, px - tx1, py - ty1);
@@ -550,7 +552,7 @@ extends Shape2afp<ST, IT, IE, P, B> {
 	 * 
 	 * @param point
 	 */
-	default void setP1(Point2D point) {
+	default void setP1(Point2D<?, ?> point) {
 		assert (point != null) : "Point must be not null"; //$NON-NLS-1$
 		setX1(point.getX());
 		setY1(point.getY());
@@ -570,7 +572,7 @@ extends Shape2afp<ST, IT, IE, P, B> {
 	 * 
 	 * @param point
 	 */
-	default void setP2(Point2D point) {
+	default void setP2(Point2D<?, ?> point) {
 		assert (point != null) : "Point must be not null"; //$NON-NLS-1$
 		setX2(point.getX());
 		setY2(point.getY());
@@ -590,7 +592,7 @@ extends Shape2afp<ST, IT, IE, P, B> {
 	 * 
 	 * @param point
 	 */
-	default void setP3(Point2D point) {
+	default void setP3(Point2D<?, ?> point) {
 		assert (point != null) : "Point must be not null"; //$NON-NLS-1$
 		setX3(point.getX());
 		setY3(point.getY());
@@ -713,24 +715,24 @@ extends Shape2afp<ST, IT, IE, P, B> {
 
 	@Pure
 	@Override
-	default double getDistanceSquared(Point2D p) {
+	default double getDistanceSquared(Point2D<?, ?> p) {
 		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
 		return computeSquaredDistanceTrianglePoint(getX1(), getY1(), getX2(), getY2(), getX3(), getY3(), p.getX(), p.getY());
 	}
 
 	@Pure
 	@Override
-	default double getDistanceL1(Point2D p) {
+	default double getDistanceL1(Point2D<?, ?> p) {
 		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
-		Point2D r = getClosestPointTo(p);
+		Point2D<?, ?> r = getClosestPointTo(p);
 		return r.getDistanceL1(p);
 	}
 
 	@Pure
 	@Override
-	default double getDistanceLinf(Point2D p) {
+	default double getDistanceLinf(Point2D<?, ?> p) {
 		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
-		Point2D r = getClosestPointTo(p);
+		Point2D<?, ?> r = getClosestPointTo(p);
 		return r.getDistanceLinf(p);
 	}
 
@@ -741,7 +743,7 @@ extends Shape2afp<ST, IT, IE, P, B> {
 	}
 
 	@Override
-	default boolean contains(Rectangle2afp<?, ?, ?, ?, ?> r) {
+	default boolean contains(Rectangle2afp<?, ?, ?, ?, ?, ?> r) {
 		assert (r != null) : "Rectangle must be not null"; //$NON-NLS-1$
 		return containsTriangleRectangle(getX1(), getY1(), getX2(), getY2(), getX3(), getY3(),
 				r.getMinX(), r.getMinY(), r.getWidth(), r.getHeight());
@@ -756,7 +758,7 @@ extends Shape2afp<ST, IT, IE, P, B> {
 
 	@Pure
 	@Override
-	default boolean intersects(Rectangle2afp<?, ?, ?, ?, ?> r) {
+	default boolean intersects(Rectangle2afp<?, ?, ?, ?, ?, ?> r) {
 		assert (r != null) : "Rectangle must be not null"; //$NON-NLS-1$
 		return intersectsTriangleRectangle(getX1(), getY1(), getX2(), getY2(), getX3(), getY3(),
 				r.getMinX(), r.getMinY(), r.getWidth(), r.getHeight());
@@ -764,7 +766,7 @@ extends Shape2afp<ST, IT, IE, P, B> {
 
 	@Pure
 	@Override
-	default boolean intersects(Ellipse2afp<?, ?, ?, ?, ?> s) {
+	default boolean intersects(Ellipse2afp<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Ellipse must be not null"; //$NON-NLS-1$
 		return intersectsTriangleEllipse(getX1(), getY1(), getX2(), getY2(), getX3(), getY3(),
 				s.getMinX(), s.getMinY(), s.getWidth(), s.getHeight());
@@ -772,7 +774,7 @@ extends Shape2afp<ST, IT, IE, P, B> {
 
 	@Pure
 	@Override
-	default boolean intersects(Circle2afp<?, ?, ?, ?, ?> s) {
+	default boolean intersects(Circle2afp<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Circle must be not null"; //$NON-NLS-1$
 		return intersectsTriangleCircle(getX1(), getY1(), getX2(), getY2(), getX3(), getY3(),
 				s.getX(), s.getY(), s.getRadius());
@@ -780,7 +782,7 @@ extends Shape2afp<ST, IT, IE, P, B> {
 
 	@Pure
 	@Override
-	default boolean intersects(Segment2afp<?, ?, ?, ?, ?> s) {
+	default boolean intersects(Segment2afp<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Segment must be not null"; //$NON-NLS-1$
 		return intersectsTriangleSegment(getX1(), getY1(), getX2(), getY2(), getX3(), getY3(),
 				s.getX1(), s.getY1(), s.getX2(), s.getY2());
@@ -788,7 +790,7 @@ extends Shape2afp<ST, IT, IE, P, B> {
 
 	@Pure
 	@Override
-	default boolean intersects(Triangle2afp<?, ?, ?, ?, ?> s) {
+	default boolean intersects(Triangle2afp<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Triangle must be not null"; //$NON-NLS-1$
 		if (isCCW()) {
 			return intersectsTriangleTriangle(getX1(), getY1(), getX2(), getY2(), getX3(), getY3(),
@@ -800,7 +802,7 @@ extends Shape2afp<ST, IT, IE, P, B> {
 
 	@Pure
 	@Override
-	default boolean intersects(OrientedRectangle2afp<?, ?, ?, ?, ?> s) {
+	default boolean intersects(OrientedRectangle2afp<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Oriented rectangle must be not null"; //$NON-NLS-1$
 		return OrientedRectangle2afp.intersectsOrientedRectangleTriangle(
 				s.getCenterX(), s.getCenterY(),
@@ -811,7 +813,7 @@ extends Shape2afp<ST, IT, IE, P, B> {
 
 	@Pure
 	@Override
-	default boolean intersects(Parallelogram2afp<?, ?, ?, ?, ?> s) {
+	default boolean intersects(Parallelogram2afp<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Parallelogram must be not null"; //$NON-NLS-1$
 		return Parallelogram2afp.intersectsParallelogramTriangle(
 				s.getCenterX(), s.getCenterY(),
@@ -842,21 +844,21 @@ extends Shape2afp<ST, IT, IE, P, B> {
 
 	@Pure
 	@Override
-	default boolean intersects(RoundRectangle2afp<?, ?, ?, ?, ?> s) {
+	default boolean intersects(RoundRectangle2afp<?, ?, ?, ?, ?, ?> s) {
 		assert (s!= null) : "Round rectangle must be not null"; //$NON-NLS-1$
 		return s.intersects(getPathIterator());
 	}
 
 	@Pure
 	@Override
-	default boolean intersects(MultiShape2afp<?, ?, ?, ?, ?, ?> s) {
+	default boolean intersects(MultiShape2afp<?, ?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "MultiShape must be not null"; //$NON-NLS-1$
 		return s.intersects(this);
 	}
 
 	@Pure
 	@Override
-	default P getClosestPointTo(Point2D p) {
+	default P getClosestPointTo(Point2D<?, ?> p) {
 		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
 		P point = getGeomFactory().newPoint();
 		computeClosestFarthestPoints(getX1(), getY1(), getX2(), getY2(), getX3(), getY3(),
@@ -866,7 +868,7 @@ extends Shape2afp<ST, IT, IE, P, B> {
 
 	@Pure
 	@Override
-	default P getFarthestPointTo(Point2D p) {
+	default P getFarthestPointTo(Point2D<?, ?> p) {
 		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
 		P point = getGeomFactory().newPoint();
 		computeClosestFarthestPoints(getX1(), getY1(), getX2(), getY2(), getX3(), getY3(),
@@ -899,18 +901,18 @@ extends Shape2afp<ST, IT, IE, P, B> {
 
 		/** The iterated shape.
 		 */
-		protected final Triangle2afp<?, ?, T, ?, ?> triangle;
+		protected final Triangle2afp<?, ?, T, ?, ?, ?> triangle;
 
 		/**
 		 * @param triangle the iterated shape.
 		 */
-		public AbstractTrianglePathIterator(Triangle2afp<?, ?, T, ?, ?> triangle) {
+		public AbstractTrianglePathIterator(Triangle2afp<?, ?, T, ?, ?, ?> triangle) {
 			assert (triangle != null) : "Triangle must be not null"; //$NON-NLS-1$
 			this.triangle = triangle;
 		}
 
 		@Override
-		public GeomFactory2afp<T, ?, ?> getGeomFactory() {
+		public GeomFactory2afp<T, ?, ?, ?> getGeomFactory() {
 			return this.triangle.getGeomFactory();
 		}
 
@@ -984,7 +986,7 @@ extends Shape2afp<ST, IT, IE, P, B> {
 		/**
 		 * @param triangle the triangle to iterate on.
 		 */
-		public TrianglePathIterator(Triangle2afp<?, ?, T, ?, ?> triangle) {
+		public TrianglePathIterator(Triangle2afp<?, ?, T, ?, ?, ?> triangle) {
 			super(triangle);
 			if (triangle.isEmpty()) {
 				this.index = NUMBER_ELEMENTS;
@@ -1061,7 +1063,7 @@ extends Shape2afp<ST, IT, IE, P, B> {
 
 		private final Transform2D transform;
 
-		private final Point2D tmpPoint;
+		private final Point2D<?, ?> tmpPoint;
 
 		private double x1;
 
@@ -1089,7 +1091,7 @@ extends Shape2afp<ST, IT, IE, P, B> {
 		 * @param triangle the iterated triangle.
 		 * @param transform the transformation to apply.
 		 */
-		public TransformedTrianglePathIterator(Triangle2afp<?, ?, T, ?, ?> triangle, Transform2D transform) {
+		public TransformedTrianglePathIterator(Triangle2afp<?, ?, T, ?, ?, ?> triangle, Transform2D transform) {
 			super(triangle);
 			assert(transform != null) : "Transformation must be not null"; //$NON-NLS-1$
 			this.transform = transform;

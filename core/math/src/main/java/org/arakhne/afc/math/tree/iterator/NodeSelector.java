@@ -18,6 +18,7 @@
 package org.arakhne.afc.math.tree.iterator;
 
 import org.arakhne.afc.math.tree.TreeNode;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * This interface is used to select the nodes to treat
@@ -41,6 +42,7 @@ public interface NodeSelector<N extends TreeNode<?,?>> {
 	 * @return <code>true</code> if the node could be treated by the iterator,
 	 * otherwhise <code>false</code>
 	 */
-	public boolean nodeCouldBeTreatedByIterator(N node);
+	@Pure
+	boolean nodeCouldBeTreatedByIterator(N node);
 	
 }

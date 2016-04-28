@@ -21,6 +21,8 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /**
  * This is the generic implementation of a tree node.
  * 
@@ -38,6 +40,7 @@ public interface TreeNode<D,N extends TreeNode<D,?>> extends IterableNode<N>, Co
 	 * 
 	 * @return the node that is containing this object.
 	 */
+	@Pure
 	public N getParentNode();
 	
 	/** Set the n-th child in this node.
@@ -54,6 +57,7 @@ public interface TreeNode<D,N extends TreeNode<D,?>> extends IterableNode<N>, Co
 	 * @param child is the node to search for.
 	 * @return the index or <code>-1</code>.
 	 */
+	@Pure
 	public int indexOf(N child);
 
 	/** Replies the enumeration type that is defining
@@ -62,8 +66,8 @@ public interface TreeNode<D,N extends TreeNode<D,?>> extends IterableNode<N>, Co
 	 * @return the enumeration type of the child partition, 
 	 * or <code>null</code> if no such enumeration type is
 	 * defined.
-	 * @since 4.0
 	 */
+	@Pure
 	public Class<? extends Enum<?>> getPartitionEnumeration();
 
 	/** Replies the all user data associated to this node.
@@ -77,18 +81,21 @@ public interface TreeNode<D,N extends TreeNode<D,?>> extends IterableNode<N>, Co
 	 * 
 	 * @return all the user data
 	 */
+	@Pure
 	public List<D> getAllUserData();
 
 	/** Replies the first user data associated to this node.
 	 * 
 	 * @return first user data
 	 */
+	@Pure
 	public D getUserData();
 
 	/** Replies the count of user data associated to this node.
 	 * 
 	 * @return the count of user data.
 	 */
+	@Pure
 	public int getUserDataCount();
 
 	/** Replies the user data associated to this node which
@@ -98,6 +105,7 @@ public interface TreeNode<D,N extends TreeNode<D,?>> extends IterableNode<N>, Co
 	 * @return the user data
 	 * @throws IndexOutOfBoundsException when the given index in not valid
 	 */
+	@Pure
 	public D getUserDataAt(int index) throws IndexOutOfBoundsException;
 
 	/** Add a user data associated to this node.
@@ -202,6 +210,7 @@ public interface TreeNode<D,N extends TreeNode<D,?>> extends IterableNode<N>, Co
 	 * @return <code>true</code> is this node is a leaf without user data,
 	 * otherwise <code>false</code>
 	 */
+	@Pure
 	public boolean isEmpty();
 
 	/** Replies if this node is a root.
@@ -209,6 +218,7 @@ public interface TreeNode<D,N extends TreeNode<D,?>> extends IterableNode<N>, Co
 	 * @return <code>true</code> is this node is the root,
 	 * otherwise <code>false</code>
 	 */
+	@Pure
 	public boolean isRoot();
 
 	/** Replies if this node is a valid. The validity of a node depends of
@@ -217,6 +227,7 @@ public interface TreeNode<D,N extends TreeNode<D,?>> extends IterableNode<N>, Co
 	 * @return <code>true</code> is this node is valid,
 	 * otherwise <code>false</code>
 	 */
+	@Pure
 	public boolean isValid();
 
 	/** Clear the tree.
@@ -251,6 +262,7 @@ public interface TreeNode<D,N extends TreeNode<D,?>> extends IterableNode<N>, Co
 	 * 
 	 * @return the count of node inside the subtree.
 	 */
+	@Pure
 	public int getDeepNodeCount();
 	
 	/** Replies the count of user data inside the tree for which the root
@@ -258,6 +270,7 @@ public interface TreeNode<D,N extends TreeNode<D,?>> extends IterableNode<N>, Co
 	 * 
 	 * @return the count of user data inside the subtree.
 	 */
+	@Pure
 	public int getDeepUserDataCount();
 
 	/** Replies the not-null child nodes of this node.
@@ -268,6 +281,7 @@ public interface TreeNode<D,N extends TreeNode<D,?>> extends IterableNode<N>, Co
 	 * @see #getChildren(Object[])
 	 * @see #getChildren(Class)
 	 */
+	@Pure
 	public Iterator<N> children();
 	
 	/** Replies the child nodes of this node.
@@ -281,6 +295,7 @@ public interface TreeNode<D,N extends TreeNode<D,?>> extends IterableNode<N>, Co
 	 * @see #getChildren(Object[])
 	 * @see #children()
 	 */
+	@Pure
 	public N[] getChildren(Class<N> type);
 
 	/** Replies the child nodes of this node.
@@ -300,20 +315,22 @@ public interface TreeNode<D,N extends TreeNode<D,?>> extends IterableNode<N>, Co
 	 * <code>1</code> are the children of the root node, etc.
 	 * 
 	 * @return the height of the lowest leaf in the tree.
-	 * @since 4.0
 	 */
+	@Pure
 	public int getDepth();
 
 	/** Replies the minimal height of the tree.
 	 * 
 	 * @return the height of the uppest leaf in the tree.
 	 */
+	@Pure
 	public int getMinHeight();
 
 	/** Replies the maximal height of the tree.
 	 * 
 	 * @return the height of the lowest leaf in the tree.
 	 */
+	@Pure
 	public int getMaxHeight();
 
 	/** Replies the heights of all the leaf nodes.
@@ -321,6 +338,7 @@ public interface TreeNode<D,N extends TreeNode<D,?>> extends IterableNode<N>, Co
 	 * 
 	 * @return the heights of the leaf nodes
 	 */
+	@Pure
 	public int[] getHeights();
 
 	/** Move this node in the given new node.
@@ -339,7 +357,6 @@ public interface TreeNode<D,N extends TreeNode<D,?>> extends IterableNode<N>, Co
 	 * @param newParent is the new parent for this node.
 	 * @param index is the position of this node in the new parent.
 	 * @return <code>true</code> on success, otherwise <code>false</code>.
-	 * @since 4.0
 	 */
 	public boolean moveTo(N newParent, int index);
 

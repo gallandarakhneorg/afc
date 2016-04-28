@@ -23,6 +23,8 @@ package org.arakhne.afc.math;
 
 import java.io.Serializable;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /** A range of double floating-point numbers.
  * 
  * @author $Author: sgalland$
@@ -59,6 +61,7 @@ public class DoubleRange implements Cloneable, Serializable, Comparable<DoubleRa
 	}
 	
 	@Override
+	@Pure
 	public boolean equals(Object obj) {
 		if (obj instanceof DoubleRange) {
 			DoubleRange range = (DoubleRange) obj;
@@ -68,6 +71,7 @@ public class DoubleRange implements Cloneable, Serializable, Comparable<DoubleRa
 	}
 	
 	@Override
+	@Pure
 	public int hashCode() {
 		long bits = 1;
 		bits = 31 * bits + Double.doubleToLongBits(this.min);
@@ -80,6 +84,7 @@ public class DoubleRange implements Cloneable, Serializable, Comparable<DoubleRa
 	 *
 	 * @return the minimum value.
 	 */
+	@Pure
 	public double getMin() {
 		return this.min;
 	}
@@ -88,6 +93,7 @@ public class DoubleRange implements Cloneable, Serializable, Comparable<DoubleRa
 	 *
 	 * @return the maximum value.
 	 */
+	@Pure
 	public double getMax() {
 		return this.max;
 	}
@@ -97,11 +103,13 @@ public class DoubleRange implements Cloneable, Serializable, Comparable<DoubleRa
 	 * @param value the value.
 	 * @return <code>true</code> if the value is in the range; <code>false</code> otherwise.
 	 */
+	@Pure
 	public boolean contains(double value) {
 		return this.min <= value && value <= this.max;
 	}
 
 	@Override
+	@Pure
 	public int compareTo(DoubleRange o) {
 		if (o == null) {
 			return Integer.MAX_VALUE;
@@ -114,6 +122,7 @@ public class DoubleRange implements Cloneable, Serializable, Comparable<DoubleRa
 	}
 	
 	@Override
+	@Pure
 	public String toString() {
 		return "[" + Double.toString(this.min) + "; " + Double.toString(this.max) + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}

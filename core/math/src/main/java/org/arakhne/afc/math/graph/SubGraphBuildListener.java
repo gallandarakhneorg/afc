@@ -38,7 +38,9 @@ public interface SubGraphBuildListener<ST extends GraphSegment<ST,PT>,PT extends
 	 * @param graph is the subgraph under building.
 	 * @param elementDescription is the added segment.
 	 */
-	public void segmentAdded(SubGraph<ST,PT,?> graph, GraphIterationElement<ST,PT> elementDescription);
+	default void segmentAdded(SubGraph<ST,PT,?> graph, GraphIterationElement<ST,PT> elementDescription) {
+		//
+	}
 	
 	/** Invoked when a terminal point was added to a subgraph.
 	 * <p>
@@ -49,7 +51,9 @@ public interface SubGraphBuildListener<ST extends GraphSegment<ST,PT>,PT extends
 	 * @param point is the added terminal point.
 	 * @param arrivingSegment is the segment from which this point is reached.
 	 */
-	public void terminalPointReached(SubGraph<ST,PT,?> graph, PT point, ST arrivingSegment);
+	default void terminalPointReached(SubGraph<ST,PT,?> graph, PT point, ST arrivingSegment) {
+		//
+	}
 
 	/** Invoked when a non terminal point was added to a subgraph.
 	 * <p>
@@ -60,6 +64,8 @@ public interface SubGraphBuildListener<ST extends GraphSegment<ST,PT>,PT extends
 	 * @param point is the added terminal point.
 	 * @param arrivingSegment is the segment from which this point is reached.
 	 */
-	public void nonTerminalPointReached(SubGraph<ST,PT,?> graph, PT point, ST arrivingSegment);
+	default void nonTerminalPointReached(SubGraph<ST,PT,?> graph, PT point, ST arrivingSegment) {
+		//
+	}
 
 }

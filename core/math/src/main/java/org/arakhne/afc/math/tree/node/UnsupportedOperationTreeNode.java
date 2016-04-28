@@ -23,6 +23,7 @@ import java.util.List;
 
 import org.arakhne.afc.math.tree.TreeNode;
 import org.arakhne.afc.math.tree.TreeNodeListener;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 
 /**
@@ -42,315 +43,244 @@ import org.arakhne.afc.math.tree.TreeNodeListener;
 public class UnsupportedOperationTreeNode<D,N extends TreeNode<D,N>>
 implements TreeNode<D,N> {
 	
-	/** {@inheritDoc}
-	 */
 	@Override
+	@Pure
 	public N getParentNode() {
 		throw new UnsupportedOperationException();
 	}
 	
-	/** {@inheritDoc}
-	 */
 	@Override
 	public boolean setChildAt(int index, N child) throws IndexOutOfBoundsException {
 		throw new UnsupportedOperationException();
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
+	@Pure
 	public int indexOf(N child) {
 		throw new UnsupportedOperationException();
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
+	@Pure
 	public Class<? extends Enum<?>> getPartitionEnumeration() {
 		throw new UnsupportedOperationException();
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public D[] getAllUserData(D[] a) {
 		throw new UnsupportedOperationException();
 	}
 	
-	/** {@inheritDoc}
-	 */
 	@Override
+	@Pure
 	public List<D> getAllUserData() {
 		throw new UnsupportedOperationException();
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
+	@Pure
 	public D getUserData() {
 		throw new UnsupportedOperationException();
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
+	@Pure
 	public int getUserDataCount() {
 		throw new UnsupportedOperationException();
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
+	@Pure
 	public D getUserDataAt(int index) throws IndexOutOfBoundsException {
 		throw new UnsupportedOperationException();
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public boolean addUserData(Collection<? extends D> data) {
 		throw new UnsupportedOperationException();
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public boolean addUserData(int index, Collection<? extends D> data) {
 		throw new UnsupportedOperationException();
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public boolean addUserData(D data) {
 		throw new UnsupportedOperationException();
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public void addUserData(int index, D data) {
 		throw new UnsupportedOperationException();
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public boolean removeUserData(Collection<D> data) {
 		throw new UnsupportedOperationException();
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public boolean removeUserData(D data) {
 		throw new UnsupportedOperationException();
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public D removeUserData(int index) {
 		throw new UnsupportedOperationException();
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public boolean setUserData(Collection<D> data) {
 		throw new UnsupportedOperationException();
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public boolean setUserData(D data) {
 		throw new UnsupportedOperationException();
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public boolean setUserDataAt(int index, D data) throws IndexOutOfBoundsException {
 		throw new UnsupportedOperationException();
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public void addTreeNodeListener(TreeNodeListener listener) {
 		throw new UnsupportedOperationException();
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public void removeTreeNodeListener(TreeNodeListener listener) {
 		throw new UnsupportedOperationException();
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
+	@Pure
 	public boolean isEmpty() {
 		throw new UnsupportedOperationException();
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
+	@Pure
 	public boolean isRoot() {
 		throw new UnsupportedOperationException();
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
+	@Pure
 	public boolean isValid() {
 		throw new UnsupportedOperationException();
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public void clear() {
 		throw new UnsupportedOperationException();
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public void removeAllUserData() {
 		throw new UnsupportedOperationException();
 	}
 	
-	/** {@inheritDoc}
-	 */
 	@Override
 	public boolean removeChild(N child) {
 		throw new UnsupportedOperationException();
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public void removeDeeplyFromParent() {
 		throw new UnsupportedOperationException();
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
+	@Pure
 	public int getDeepNodeCount() {
 		throw new UnsupportedOperationException();
 	}
 	
-	/** {@inheritDoc}
-	 */
 	@Override
+	@Pure
 	public int getDeepUserDataCount() {
 		throw new UnsupportedOperationException();
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
+	@Pure
 	public Iterator<N> children() {
 		throw new UnsupportedOperationException();
 	}
 	
-	/** {@inheritDoc}
-	 */
 	@Override
+	@Pure
 	public N[] getChildren(Class<N> type) {
 		throw new UnsupportedOperationException();
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public void getChildren(Object[] array) {
 		throw new UnsupportedOperationException();
 	}
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public int getDepth() {
 		throw new UnsupportedOperationException();
 	}
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public int getMinHeight() {
 		throw new UnsupportedOperationException();
 	}
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public int getMaxHeight() {
 		throw new UnsupportedOperationException();
 	}
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public int[] getHeights() {
 		throw new UnsupportedOperationException();
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public boolean moveTo(N newParent, int index) {
 		throw new UnsupportedOperationException();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public N getChildAt(int index) throws IndexOutOfBoundsException {
 		throw new UnsupportedOperationException();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public int getChildCount() {
 		throw new UnsupportedOperationException();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public int getNotNullChildCount() {
 		throw new UnsupportedOperationException();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public boolean isLeaf() {
 		throw new UnsupportedOperationException();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public N removeFromParent() {
 		throw new UnsupportedOperationException();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public int compareTo(N o) {
 		throw new UnsupportedOperationException();

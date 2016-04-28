@@ -45,7 +45,7 @@ import org.junit.Test;
 public class Circle2fpTest extends AbstractCircle2afpTest<Circle2fp, Rectangle2fp> {
 
 	@Override
-	protected TestShapeFactory<Point2fp, Rectangle2fp> createFactory() {
+	protected TestShapeFactory2fp createFactory() {
 		return TestShapeFactory2fp.SINGLETON;
 	}
 

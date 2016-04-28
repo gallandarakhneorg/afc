@@ -48,7 +48,7 @@ import javafx.beans.property.SimpleIntegerProperty;
  */
 public class Path2ifx
 	extends AbstractShape2ifx<Path2ifx>
-	implements Path2ai<Shape2ifx<?>, Path2ifx, PathElement2ifx, Point2ifx, Rectangle2ifx> {
+	implements Path2ai<Shape2ifx<?>, Path2ifx, PathElement2ifx, Point2ifx, Vector2ifx, Rectangle2ifx> {
 
 	private static final long serialVersionUID = -5410743023218999966L;
 
@@ -147,7 +147,7 @@ public class Path2ifx
 	/**
 	 * @param p
 	 */
-	public Path2ifx(Path2ai<?, ?, ?, ?, ?> p) {
+	public Path2ifx(Path2ai<?, ?, ?, ?, ?, ?> p) {
 		set(p);
 	}
 
@@ -187,7 +187,7 @@ public class Path2ifx
 	
 	@Pure
 	@Override
-	public boolean containsControlPoint(Point2D p) {
+	public boolean containsControlPoint(Point2D<?, ?> p) {
 		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
 		int x, y;
 		for(int i=0; i<this.numCoords;) {
@@ -278,7 +278,7 @@ public class Path2ifx
 	public void transform(Transform2D transform) {
 		assert (transform != null) : "Transformation must be not null"; //$NON-NLS-1$
 		for(int i=0; i<this.numCoords;) {
-			Point2D p = new Point2ifx(coordPropertyAt(i++), coordPropertyAt(i++));
+			Point2D<?, ?> p = new Point2ifx(coordPropertyAt(i++), coordPropertyAt(i++));
 			transform.transform(p);
 		}
 		this.graphicalBounds = null;
@@ -539,8 +539,8 @@ public class Path2ifx
 	}
 
 	@Override
-	public Point2D[] toPointArray(Transform2D transform) {
-		Point2D[] points = new Point2D[this.numCoords / 2];
+	public Point2ifx[] toPointArray(Transform2D transform) {
+		Point2ifx[] points = new Point2ifx[this.numCoords / 2];
 		if (transform == null || transform.isIdentity()) {
 			for(int i = 0, j = 0; i<points.length; ++i) {
 				int x = getCoordAt(j);

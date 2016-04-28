@@ -24,6 +24,8 @@ package org.arakhne.afc.math.stochastic;
 import java.util.Map;
 import java.util.Random;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /**
  * Law that representes a Bernoulli density.
  * <p>
@@ -76,11 +78,7 @@ public class BernoulliStochasticLaw extends StochasticLaw {
 		this.p = p1;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @return {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public String toString() {
 		StringBuilder b = new StringBuilder();
@@ -92,8 +90,7 @@ public class BernoulliStochasticLaw extends StochasticLaw {
 		return b.toString();
 	}
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public double f(double x)  throws MathException {
 		if ((x!=0.)&&(x!=1.))
@@ -101,8 +98,7 @@ public class BernoulliStochasticLaw extends StochasticLaw {
 		return (x==1.) ? this.p : (1.f-this.p); 
 	}
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public MathFunctionRange[] getRange() {
 		return MathFunctionRange.createDiscreteSet(0.f, 1.f);
@@ -114,6 +110,7 @@ public class BernoulliStochasticLaw extends StochasticLaw {
 	 * @return {@code F<sup>-1</sup>(u)}
 	 * @throws MathException in case {@code F<sup>-1</sup>(u)} could not be computed
 	 */
+	@Pure
 	@Override
 	public double inverseF(double u) throws MathException {
 		return (u<=this.p) ? 1.f : 0.f;

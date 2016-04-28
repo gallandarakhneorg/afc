@@ -41,7 +41,7 @@ import javafx.beans.property.SimpleDoubleProperty;
  * @since 13.0
  */
 public class Rectangle2fx extends AbstractShape2fx<Rectangle2fx>
-	implements Rectangle2afp<Shape2fx<?>, Rectangle2fx, PathElement2fx, Point2fx, Rectangle2fx> {
+	implements Rectangle2afp<Shape2fx<?>, Rectangle2fx, PathElement2fx, Point2fx, Vector2fx, Rectangle2fx> {
 
 	private static final long serialVersionUID = -1393290109630714626L;
 
@@ -71,7 +71,7 @@ public class Rectangle2fx extends AbstractShape2fx<Rectangle2fx>
 	 * @param min is the min corner of the rectangle.
 	 * @param max is the max corner of the rectangle.
 	 */
-	public Rectangle2fx(Point2D min, Point2D max) {
+	public Rectangle2fx(Point2D<?, ?> min, Point2D<?, ?> max) {
 		assert (min != null) : "Minimum corner must be not null"; //$NON-NLS-1$
 		assert (max != null) : "Maximum corner must be not null"; //$NON-NLS-1$
 		setFromCorners(min.getX(), min.getY(), max.getX(), max.getY());

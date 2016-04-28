@@ -21,6 +21,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import org.arakhne.afc.math.tree.Tree;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * This class is an iterator on a forest data.
@@ -84,8 +85,6 @@ implements Iterator<D> {
 		}
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public void remove() {
 		DataPair<D> pair = this.lastlyReplied;
@@ -97,17 +96,12 @@ implements Iterator<D> {
 		pair.iterator.remove();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public boolean hasNext() {
 		return this.nextData!=null;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public D next() {
 		this.lastlyReplied = this.nextData;

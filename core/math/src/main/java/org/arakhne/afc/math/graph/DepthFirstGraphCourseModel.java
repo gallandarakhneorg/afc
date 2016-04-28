@@ -23,6 +23,8 @@ package org.arakhne.afc.math.graph;
 import java.util.Collection;
 import java.util.Stack;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /**
  * This class permits to implement a depth-first
  * algorithm to make a course inside a graph.
@@ -49,42 +51,34 @@ public class DepthFirstGraphCourseModel<ST extends GraphSegment<ST,PT>,PT extend
 	 * @return <code>true</code> if reversed, otherwise <code>false</code>
 	 */
 	@Override
+	@Pure
 	public final boolean isReversedRestitution() {
 		return true;
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public void addIterationElement(GraphIterationElement<ST,PT> element) {
 		this.stack.push(element);
 	}
 	
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public boolean isEmpty() {
 		return this.stack.isEmpty();
 	}
 		
-	/** {@inheritDoc}
-	 */
 	@Override
 	public GraphIterationElement<ST,PT> getNextIterationElement() {
 		if (this.stack.isEmpty()) return null;
 		return this.stack.peek();
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public GraphIterationElement<ST,PT> removeNextIterationElement() {
 		if (this.stack.isEmpty()) return null;
 		return this.stack.pop();
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public void removeIterationElements(Collection<GraphIterationElement<ST,PT>> elements) {
 		this.stack.removeAll(elements);

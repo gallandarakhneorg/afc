@@ -21,6 +21,7 @@ import java.util.Iterator;
 
 import org.arakhne.afc.math.tree.iterator.DepthFirstNodeOrder;
 import org.arakhne.afc.math.tree.iterator.InfixDepthFirstTreeIterator;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 
 /**
@@ -41,13 +42,8 @@ import org.arakhne.afc.math.tree.iterator.InfixDepthFirstTreeIterator;
  */
 public interface DepthFirstIterableTree<D,N extends TreeNode<D,?>> extends Tree<D,N> {
 
-	/** Replies the depth first iterator on the tree.
-	 * 
-	 * @param nodeOrder is the order in which the parent node
-	 * will be treated in comparison to its children.
-	 * @return the iterator on nodes
-	 */
 	@Override
+	@Pure
 	public Iterator<N> depthFirstIterator(DepthFirstNodeOrder nodeOrder);
 
 	/** Replies the infixes depth first iterator on the tree.
@@ -57,26 +53,22 @@ public interface DepthFirstIterableTree<D,N extends TreeNode<D,?>> extends Tree<
 	 * @return the iterator on nodes
 	 * @see InfixDepthFirstTreeIterator
 	 */
+	@Pure
 	public Iterator<N> depthFirstIterator(int infixPosition);
 
-	/** Replies the depth first iterator on the tree.
-	 * 
-	 * @return the iterator on nodes
-	 */
 	@Override
+	@Pure
 	public Iterator<N> depthFirstIterator();
 
-	/** Replies the depth first iterator on the tree.
-	 * 
-	 * @return the iterator on user data
-	 */
 	@Override
+	@Pure
 	public Iterator<D> dataDepthFirstIterator();
 
 	/** Replies the depth first iterator on the tree.
 	 * 
 	 * @return the iterator on nodes
 	 */
+	@Pure
 	public Iterable<N> toDepthFirstIterable();
 
 	/** Replies the depth first iterator on the tree.
@@ -85,6 +77,7 @@ public interface DepthFirstIterableTree<D,N extends TreeNode<D,?>> extends Tree<
 	 * will be treated in comparison to its children.
 	 * @return the iterator on nodes
 	 */
+	@Pure
 	public Iterable<N> toDepthFirstIterable(DepthFirstNodeOrder nodeOrder);
 
 	/** Replies the infixed depth first iterator on the tree.
@@ -94,12 +87,14 @@ public interface DepthFirstIterableTree<D,N extends TreeNode<D,?>> extends Tree<
 	 * @return the iterator on nodes
 	 * @see InfixDepthFirstTreeIterator
 	 */
+	@Pure
 	public Iterable<N> toDepthFirstIterable(int infixPosition);
 
 	/** Replies the depth first iterator on the tree.
 	 * 
 	 * @return the iterator on user data
 	 */
+	@Pure
 	public Iterable<D> toDataDepthFirstIterable();
 
 	/** Replies the depth first iterator on the tree.
@@ -108,6 +103,7 @@ public interface DepthFirstIterableTree<D,N extends TreeNode<D,?>> extends Tree<
 	 * will be treated in comparison to its children.
 	 * @return the iterator on user data
 	 */
+	@Pure
 	public Iterable<D> toDataDepthFirstIterable(DepthFirstNodeOrder nodeOrder);
 
 	/** Replies the infixed depth first iterator on the tree.
@@ -117,6 +113,7 @@ public interface DepthFirstIterableTree<D,N extends TreeNode<D,?>> extends Tree<
 	 * @return the iterator on user data
 	 * @see InfixDepthFirstTreeIterator
 	 */
+	@Pure
 	public Iterable<D> toDataDepthFirstIterable(int infixPosition);
 
 }

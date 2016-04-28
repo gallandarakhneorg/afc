@@ -38,6 +38,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @param <IT> is the type of the implementation of this shape.
  * @param <IE> is the type of the path elements.
  * @param <P> is the type of the points.
+ * @param <V> is the type of the vectors.
  * @param <B> is the type of the bounding boxes.
  * @author $Author: sgalland$
  * @author $Author: hjaffali$
@@ -47,12 +48,13 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @since 13.0
  */
 public interface Rectangle2afp<
-		ST extends Shape2afp<?, ?, IE, P, B>,
-		IT extends Rectangle2afp<?, ?, IE, P, B>,
+		ST extends Shape2afp<?, ?, IE, P, V, B>,
+		IT extends Rectangle2afp<?, ?, IE, P, V, B>,
 		IE extends PathElement2afp,
-		P extends Point2D,
-		B extends Rectangle2afp<?, ?, IE, P, B>>
-		extends RectangularShape2afp<ST, IT, IE, P, B> {
+		P extends Point2D<? super P, ? super V>,
+		V extends Vector2D<? super V, ? super P>,
+		B extends Rectangle2afp<?, ?, IE, P, V, B>>
+		extends RectangularShape2afp<ST, IT, IE, P, V, B> {
 
 	/** Replies if two rectangles are intersecting.
 	 * 
@@ -261,7 +263,7 @@ public interface Rectangle2afp<
 
 	@Pure
 	@Override
-	default double getDistanceSquared(Point2D p) {
+	default double getDistanceSquared(Point2D<?, ?> p) {
 		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
 		double dx;
 		if (p.getX()<getMinX()) {
@@ -288,7 +290,7 @@ public interface Rectangle2afp<
 
 	@Pure
 	@Override
-	default double getDistanceL1(Point2D p) {
+	default double getDistanceL1(Point2D<?, ?> p) {
 		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
 		double dx;
 		if (p.getX()<getMinX()) {
@@ -315,7 +317,7 @@ public interface Rectangle2afp<
 
 	@Pure
 	@Override
-	default double getDistanceLinf(Point2D p) {
+	default double getDistanceLinf(Point2D<?, ?> p) {
 		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
 		double dx;
 		if (p.getX()<getMinX()) {
@@ -350,7 +352,7 @@ public interface Rectangle2afp<
 
 	@Pure
 	@Override
-	default boolean contains(Rectangle2afp<?, ?, ?, ?, ?> r) {
+	default boolean contains(Rectangle2afp<?, ?, ?, ?, ?, ?> r) {
 		assert (r != null) : "Rectangle must be not null"; //$NON-NLS-1$
 		return containsRectangleRectangle(
 				getMinX(), getMinY(), getMaxX(), getMaxY(),
@@ -364,7 +366,7 @@ public interface Rectangle2afp<
 	 * 
 	 * @param p
 	 */
-	default void add(Point2D p) {
+	default void add(Point2D<?, ?> p) {
 		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
 		add(p.getX(), p.getY());
 	}
@@ -404,7 +406,7 @@ public interface Rectangle2afp<
 	 * @see #setUnion(RectangularShape2afp)
 	 */
 	@Pure
-	default B createUnion(RectangularShape2afp<?, ?, ?, ?, ?> r) {
+	default B createUnion(RectangularShape2afp<?, ?, ?, ?, ?, ?> r) {
 		assert (r != null) : "Shape must be not null"; //$NON-NLS-1$
 		B rr = getGeomFactory().newBox();
 		rr.setFromCorners(getMinX(), getMinY(), getMaxX(), getMaxY());
@@ -426,7 +428,7 @@ public interface Rectangle2afp<
 	 * @see #setIntersection(RectangularShape2afp)
 	 */
 	@Pure
-	default B createIntersection(RectangularShape2afp<?, ?, ?, ?, ?> r) {
+	default B createIntersection(RectangularShape2afp<?, ?, ?, ?, ?, ?> r) {
 		assert (r != null) : "Shape must be not null"; //$NON-NLS-1$
 		B rr = getGeomFactory().newBox();
 		double x1 = Math.max(getMinX(), r.getMinX());
@@ -448,7 +450,7 @@ public interface Rectangle2afp<
 	 * @param r
 	 * @see #createUnion(RectangularShape2afp)
 	 */
-	default void setUnion(RectangularShape2afp<?, ?, ?, ?, ?> r) {
+	default void setUnion(RectangularShape2afp<?, ?, ?, ?, ?, ?> r) {
 		assert (r != null) : "Shape must be not null"; //$NON-NLS-1$
 		setFromCorners(
 				Math.min(getMinX(), r.getMinX()),
@@ -466,7 +468,7 @@ public interface Rectangle2afp<
 	 * @see #createIntersection(RectangularShape2afp)
 	 * @see #clear()
 	 */
-	default void setIntersection(RectangularShape2afp<?, ?, ?, ?, ?> r) {
+	default void setIntersection(RectangularShape2afp<?, ?, ?, ?, ?, ?> r) {
 		assert (r != null) : "Shape must be not null"; //$NON-NLS-1$
 		double x1 = Math.max(getMinX(), r.getMinX());
 		double y1 = Math.max(getMinY(), r.getMinY());
@@ -482,7 +484,7 @@ public interface Rectangle2afp<
 
 	@Pure
 	@Override
-	default boolean intersects(Rectangle2afp<?, ?, ?, ?, ?> s) {
+	default boolean intersects(Rectangle2afp<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Rectangle must be not null"; //$NON-NLS-1$
 		return intersectsRectangleRectangle(
 				getMinX(), getMinY(),
@@ -493,7 +495,7 @@ public interface Rectangle2afp<
 	
 	@Pure
 	@Override
-	default boolean intersects(Ellipse2afp<?, ?, ?, ?, ?> s) {
+	default boolean intersects(Ellipse2afp<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Ellipse must be not null"; //$NON-NLS-1$
 		return Ellipse2afp.intersectsEllipseRectangle(
 				s.getMinX(), s.getMinY(),
@@ -504,7 +506,7 @@ public interface Rectangle2afp<
 	
 	@Pure
 	@Override
-	default boolean intersects(Circle2afp<?, ?, ?, ?, ?> s) {
+	default boolean intersects(Circle2afp<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Circle must be not null"; //$NON-NLS-1$
 		return Circle2afp.intersectsCircleRectangle(
 				s.getX(), s.getY(),
@@ -515,7 +517,7 @@ public interface Rectangle2afp<
 	
 	@Pure
 	@Override
-	default boolean intersects(Segment2afp<?, ?, ?, ?, ?> s) {
+	default boolean intersects(Segment2afp<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Segment must be not null"; //$NON-NLS-1$
 		return intersectsRectangleSegment(
 				getMinX(), getMinY(),
@@ -526,7 +528,7 @@ public interface Rectangle2afp<
 	
 	@Pure
 	@Override
-	default boolean intersects(OrientedRectangle2afp<?, ?, ?, ?, ?> s) {
+	default boolean intersects(OrientedRectangle2afp<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Oriented rectangle must be not null"; //$NON-NLS-1$
 		return OrientedRectangle2afp.intersectsOrientedRectangleRectangle(
 				s.getCenterX(), s.getCenterY(), 
@@ -537,7 +539,7 @@ public interface Rectangle2afp<
 	
 	@Pure
 	@Override
-	default boolean intersects(Parallelogram2afp<?, ?, ?, ?, ?> s) {
+	default boolean intersects(Parallelogram2afp<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Parallelogram must be not null"; //$NON-NLS-1$
 		return Parallelogram2afp.intersectsParallelogramRectangle(
 				s.getCenterX(), s.getCenterY(), 
@@ -548,7 +550,7 @@ public interface Rectangle2afp<
 
 	@Pure
 	@Override
-	default boolean intersects(RoundRectangle2afp<?, ?, ?, ?, ?> s) {
+	default boolean intersects(RoundRectangle2afp<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Round rectangle must be not null"; //$NON-NLS-1$
 		return RoundRectangle2afp.intersectsRoundRectangleRectangle(
 				s.getMinX(), s.getMinY(),
@@ -559,7 +561,7 @@ public interface Rectangle2afp<
 	}
 	
 	@Override
-	default boolean intersects(Triangle2afp<?, ?, ?, ?, ?> s) {
+	default boolean intersects(Triangle2afp<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Triangle must be not null"; //$NON-NLS-1$
 		return Triangle2afp.intersectsTriangleRectangle(
 				s.getX1(), s.getY1(),
@@ -586,7 +588,7 @@ public interface Rectangle2afp<
 	
 	@Pure
 	@Override
-	default boolean intersects(MultiShape2afp<?, ?, ?, ?, ?, ?> s) {
+	default boolean intersects(MultiShape2afp<?, ?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "MultiShape must be not null"; //$NON-NLS-1$
 		return s.intersects(this);
 	}
@@ -597,7 +599,7 @@ public interface Rectangle2afp<
 	 * @param reference is the rectangle to avoid collision with.
 	 * @param result the displacement vector.
 	 */
-	default void avoidCollisionWith(Rectangle2afp<?, ?, ?, ?, ?> reference, Vector2D result) {
+	default void avoidCollisionWith(Rectangle2afp<?, ?, ?, ?, ?, ?> reference, Vector2D<?, ?> result) {
 		assert (reference != null) : "Reference rectangle must be not null"; //$NON-NLS-1$
 		assert (result != null) : "Result vector must be not null"; //$NON-NLS-1$
 		double dx1 = reference.getMaxX() - getMinX();
@@ -647,7 +649,7 @@ public interface Rectangle2afp<
 	 *     This vector is set according to the result before returning.
 	 * @param result the displacement vector.
 	 */
-	default void avoidCollisionWith(Rectangle2afp<?, ?, ?, ?, ?> reference, Vector2D displacementDirection, Vector2D result) {
+	default void avoidCollisionWith(Rectangle2afp<?, ?, ?, ?, ?, ?> reference, Vector2D<?, ?> displacementDirection, Vector2D<?, ?> result) {
 		assert (reference != null) : "Reference rectangle must be not null"; //$NON-NLS-1$
 		assert (result != null) : "Result vector must be not null"; //$NON-NLS-1$
 		if (displacementDirection == null || displacementDirection.getLengthSquared() == 0) {
@@ -693,7 +695,7 @@ public interface Rectangle2afp<
 
 	@Pure
 	@Override
-	default P getClosestPointTo(Point2D p) {
+	default P getClosestPointTo(Point2D<?, ?> p) {
 		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
 		double x;
 		int same = 0;
@@ -726,7 +728,7 @@ public interface Rectangle2afp<
 
 	@Pure
 	@Override
-	default P getFarthestPointTo(Point2D p) {
+	default P getFarthestPointTo(Point2D<?, ?> p) {
 		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
 		double x;
 		if (p.getX()<=getCenterX()) {
@@ -766,7 +768,7 @@ public interface Rectangle2afp<
 	class RectanglePathIterator<T extends PathElement2afp>
 			implements PathIterator2afp<T> {
 
-		private final Rectangle2afp<?, ?, T, ?, ?> rectangle;
+		private final Rectangle2afp<?, ?, T, ?, ?, ?> rectangle;
 
 		private double x1;
 		
@@ -781,7 +783,7 @@ public interface Rectangle2afp<
 		/**
 		 * @param rectangle the iterated rectangle.
 		 */
-		public RectanglePathIterator(Rectangle2afp<?, ?, T, ?, ?> rectangle) {
+		public RectanglePathIterator(Rectangle2afp<?, ?, T, ?, ?, ?> rectangle) {
 			assert (rectangle != null) : "Rectangle must be not null"; //$NON-NLS-1$
 			this.rectangle = rectangle;
 			if (rectangle.isEmpty()) {
@@ -870,7 +872,7 @@ public interface Rectangle2afp<
 		}
 
 		@Override
-		public GeomFactory2afp<T, ?, ?> getGeomFactory() {
+		public GeomFactory2afp<T, ?, ?, ?> getGeomFactory() {
 			return this.rectangle.getGeomFactory();
 		}
 
@@ -888,11 +890,11 @@ public interface Rectangle2afp<
 
 		private final Transform2D transform;
 
-		private final Rectangle2afp<?, ?, T, ?, ?> rectangle;
+		private final Rectangle2afp<?, ?, T, ?, ?, ?> rectangle;
 
-		private Point2D p1;
+		private Point2D<?, ?> p1;
 
-		private Point2D p2;
+		private Point2D<?, ?> p2;
 
 		private double x1;
 		
@@ -908,7 +910,7 @@ public interface Rectangle2afp<
 		 * @param rectangle the iterated rectangle.
 		 * @param transform the transformation.
 		 */
-		public TransformedRectanglePathIterator(Rectangle2afp<?, ?, T, ?, ?> rectangle, Transform2D transform) {
+		public TransformedRectanglePathIterator(Rectangle2afp<?, ?, T, ?, ?, ?> rectangle, Transform2D transform) {
 			assert (rectangle != null) : "Rectangle must be not null"; //$NON-NLS-1$
 			assert (transform != null) : "Transformation must be not null"; //$NON-NLS-1$
 			this.rectangle = rectangle;
@@ -1016,7 +1018,7 @@ public interface Rectangle2afp<
 		}
 
 		@Override
-		public GeomFactory2afp<T, ?, ?> getGeomFactory() {
+		public GeomFactory2afp<T, ?, ?, ?> getGeomFactory() {
 			return this.rectangle.getGeomFactory();
 		}
 

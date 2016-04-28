@@ -25,10 +25,10 @@ import org.arakhne.afc.math.geometry.d2.afp.AbstractPathWindingRule2afpTest;
 import org.arakhne.afc.math.geometry.d2.afp.TestShapeFactory;
 
 @SuppressWarnings("all")
-public class PathWindingRule2fpTest extends AbstractPathWindingRule2afpTest<Point2fp, Rectangle2fp> {
+public class PathWindingRule2fpTest extends AbstractPathWindingRule2afpTest<Point2fp, Vector2fp, Rectangle2fp> {
 
 	@Override
-	protected TestShapeFactory<Point2fp, Rectangle2fp> createFactory() {
+	protected TestShapeFactory2fp createFactory() {
 		return TestShapeFactory2fp.SINGLETON;
 	}
 

@@ -38,7 +38,7 @@ import javafx.beans.property.SimpleIntegerProperty;
  */
 public class Circle2ifx
 		extends AbstractShape2ifx<Circle2ifx>
-		implements Circle2ai<Shape2ifx<?>, Circle2ifx, PathElement2ifx, Point2ifx, Rectangle2ifx> {
+		implements Circle2ai<Shape2ifx<?>, Circle2ifx, PathElement2ifx, Point2ifx, Vector2ifx, Rectangle2ifx> {
 
 	private static final long serialVersionUID = 3750916959512063017L;
 
@@ -58,7 +58,7 @@ public class Circle2ifx
 	 * @param center
 	 * @param radius
 	 */
-	public Circle2ifx(Point2D center, int radius) {
+	public Circle2ifx(Point2D<?, ?> center, int radius) {
 		set(center.ix(), center.iy(), radius);
 	}
 
@@ -74,7 +74,7 @@ public class Circle2ifx
 	/** Construct a circle from a circle.
 	 * @param c
 	 */
-	public Circle2ifx(Circle2ai<?, ?, ?, ?, ?> c) {
+	public Circle2ifx(Circle2ai<?, ?, ?, ?, ?, ?> c) {
 		assert (c != null) : "Circle must be not null"; //$NON-NLS-1$
 		set(c.getX(), c.getY(), c.getRadius());
 	}

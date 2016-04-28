@@ -21,7 +21,6 @@
 package org.arakhne.afc.math.geometry.d2.i;
 
 import org.arakhne.afc.math.geometry.d2.PathIterator2D;
-import org.arakhne.afc.math.geometry.d2.ai.GeomFactory2ai;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Abstract shape with 2 integer numbers.
@@ -71,7 +70,7 @@ public abstract class AbstractShape2i<T extends AbstractShape2i<?>> implements S
     public abstract int hashCode();
 
 	@Override
-	public final GeomFactory2ai<PathElement2i, Point2i, Rectangle2i> getGeomFactory() {
+	public final GeomFactory2i getGeomFactory() {
 		return GeomFactory2i.SINGLETON;
 	}
 

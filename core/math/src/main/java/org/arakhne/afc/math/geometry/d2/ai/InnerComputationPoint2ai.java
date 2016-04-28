@@ -21,7 +21,9 @@
 
 package org.arakhne.afc.math.geometry.d2.ai;
 
+import org.arakhne.afc.math.geometry.d2.GeomFactory;
 import org.arakhne.afc.math.geometry.d2.Point2D;
+import org.arakhne.afc.math.geometry.d2.UnmodifiablePoint2D;
 
 /** A point that is used for internal computations.
  *
@@ -31,7 +33,7 @@ import org.arakhne.afc.math.geometry.d2.Point2D;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public class InnerComputationPoint2ai implements Point2D {
+public class InnerComputationPoint2ai implements Point2D<InnerComputationPoint2ai, InnerComputationVector2ai> {
 
 	private static final long serialVersionUID = 8578192819251519051L;
 	
@@ -54,7 +56,7 @@ public class InnerComputationPoint2ai implements Point2D {
 	}
 
 	@Override
-	public Point2D clone() {
+	public InnerComputationPoint2ai clone() {
 		throw new UnsupportedOperationException();
 	}
 
@@ -99,7 +101,12 @@ public class InnerComputationPoint2ai implements Point2D {
 	}
 
 	@Override
-	public Point2D toUnmodifiable() {
+	public GeomFactory<InnerComputationVector2ai, InnerComputationPoint2ai> getGeomFactory() {
+		return InnerComputationGeomFactory.SINGLETON;
+	}
+
+	@Override
+	public UnmodifiablePoint2D<InnerComputationPoint2ai, InnerComputationVector2ai> toUnmodifiable() {
 		throw new UnsupportedOperationException();
 	}
 	

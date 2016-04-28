@@ -23,6 +23,7 @@ package org.arakhne.afc.math.graph.astar;
 import org.arakhne.afc.math.graph.GraphPoint;
 import org.arakhne.afc.math.graph.GraphSegment;
 import org.arakhne.afc.math.graph.GraphPoint.GraphPointConnection;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** This interface provides a way to the {@link AStar A* algorithm}
  * to retreive the orientation of a segment.
@@ -49,6 +50,7 @@ public interface AStarSegmentOrientation<ST extends GraphSegment<ST,PT>, PT exte
 	 * @return <code>true</code> if the segment <var>s</var> is traversable,
 	 * otherwise <code>false</code>.
 	 */
+	@Pure
 	public boolean isTraversable(ST entrySegment, GraphPointConnection<PT,ST> connection);
 
 }

@@ -19,6 +19,8 @@ package org.arakhne.afc.math.tree;
 
 import java.util.EventObject;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /**
  * Called each time an hierarchy update event occurs on a tree node.
  * 
@@ -50,6 +52,7 @@ public class TreeNodeParentChangedEvent extends EventObject {
 	 * 
 	 * @return the node that fire the event. 
 	 */
+	@Pure
 	public TreeNode<?,?> getChildNode() {
 		return (TreeNode<?,?>)getSource();
 	}
@@ -58,6 +61,7 @@ public class TreeNodeParentChangedEvent extends EventObject {
 	 * 
 	 * @return the old parent node of the event firing node.
 	 */
+	@Pure
 	public TreeNode<?,?> getOldParent() {
 		return this.oldParent;
 	}
@@ -66,6 +70,7 @@ public class TreeNodeParentChangedEvent extends EventObject {
 	 * 
 	 * @return the new parent node of the event firing node.
 	 */
+	@Pure
 	public TreeNode<?,?> getNewParent() {
 		return this.newParent;
 	}

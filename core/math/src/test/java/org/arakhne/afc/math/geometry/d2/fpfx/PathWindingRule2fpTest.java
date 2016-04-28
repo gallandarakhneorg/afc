@@ -22,13 +22,12 @@
 package org.arakhne.afc.math.geometry.d2.fpfx;
 
 import org.arakhne.afc.math.geometry.d2.afp.AbstractPathWindingRule2afpTest;
-import org.arakhne.afc.math.geometry.d2.afp.TestShapeFactory;
 
 @SuppressWarnings("all")
-public class PathWindingRule2fpTest extends AbstractPathWindingRule2afpTest<Point2fx, Rectangle2fx> {
+public class PathWindingRule2fpTest extends AbstractPathWindingRule2afpTest<Point2fx, Vector2fx, Rectangle2fx> {
 
 	@Override
-	protected TestShapeFactory<Point2fx, Rectangle2fx> createFactory() {
+	protected TestShapeFactory2fx createFactory() {
 		return TestShapeFactory2fx.SINGLETON;
 	}
 

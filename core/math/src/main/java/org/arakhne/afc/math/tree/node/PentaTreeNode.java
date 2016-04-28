@@ -22,7 +22,9 @@ import java.io.ObjectInputStream;
 import java.util.Collection;
 import java.util.List;
 
+import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.tree.TreeNode;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 
 /**
@@ -124,8 +126,7 @@ public abstract class PentaTreeNode<D,N extends PentaTreeNode<D,N>> extends Abst
 		this.child5 = null;
 	}
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public Class<? extends Enum<?>> getPartitionEnumeration() {
 		return null;
@@ -187,24 +188,19 @@ public abstract class PentaTreeNode<D,N extends PentaTreeNode<D,N>> extends Abst
 		removeAllUserData();
 	}
 
-	/** Replies count of children in this node.
-	 * 
-	 * @return always 5
-	 */
+	@Pure
 	@Override
 	public int getChildCount() {
 		return 5;
 	}
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public int getNotNullChildCount() {
 		return this.notNullChildCount;
 	}
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public N getChildAt(int index) throws IndexOutOfBoundsException {
 		switch(index) {
@@ -223,8 +219,7 @@ public abstract class PentaTreeNode<D,N extends PentaTreeNode<D,N>> extends Abst
 		throw new IndexOutOfBoundsException(index+" >= 5"); //$NON-NLS-1$
 	}
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public boolean isLeaf() {
 		return this.child1==null && this.child2==null && this.child3==null && this.child4==null && this.child5==null;
@@ -395,15 +390,11 @@ public abstract class PentaTreeNode<D,N extends PentaTreeNode<D,N>> extends Abst
 		
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public boolean moveTo(N newParent, int index) {
 		return moveTo(newParent, index, false);
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public boolean setChildAt(int index, N newChild) throws IndexOutOfBoundsException {
 		switch(index) {
@@ -422,8 +413,6 @@ public abstract class PentaTreeNode<D,N extends PentaTreeNode<D,N>> extends Abst
 		throw new IndexOutOfBoundsException(index+">= 5"); //$NON-NLS-1$
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	protected void setChildAtWithoutEventFiring(int index, N newChild) throws IndexOutOfBoundsException {
 		switch(index) {
@@ -457,8 +446,6 @@ public abstract class PentaTreeNode<D,N extends PentaTreeNode<D,N>> extends Abst
 		}
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public boolean removeChild(N child) {
 		if (child!=null) {
@@ -481,8 +468,7 @@ public abstract class PentaTreeNode<D,N extends PentaTreeNode<D,N>> extends Abst
 		return false;
 	}
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public int indexOf(N child) {
 		if (child==this.child1) return 0;
@@ -493,9 +479,6 @@ public abstract class PentaTreeNode<D,N extends PentaTreeNode<D,N>> extends Abst
 		return -1;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void getChildren(Object[] array) {
 		if (array!=null) {
@@ -517,11 +500,10 @@ public abstract class PentaTreeNode<D,N extends PentaTreeNode<D,N>> extends Abst
 		}
 	}
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public int getMinHeight() {
-		return 1+minInteger(
+		return 1+MathUtil.min(
 				this.child1!=null ? this.child1.getMinHeight() : 0,
 				this.child2!=null ? this.child2.getMinHeight() : 0,
 				this.child3!=null ? this.child3.getMinHeight() : 0,
@@ -529,11 +511,10 @@ public abstract class PentaTreeNode<D,N extends PentaTreeNode<D,N>> extends Abst
 				this.child5!=null ? this.child5.getMinHeight() : 0);
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
+	@Pure
 	public int getMaxHeight() {
-		return 1+maxInteger(
+		return 1+MathUtil.max(
 				this.child1!=null ? this.child1.getMaxHeight() : 0,
 				this.child2!=null ? this.child2.getMaxHeight() : 0,
 				this.child3!=null ? this.child3.getMaxHeight() : 0,
@@ -541,12 +522,6 @@ public abstract class PentaTreeNode<D,N extends PentaTreeNode<D,N>> extends Abst
 				this.child5!=null ? this.child5.getMaxHeight() : 0);
 	}
 
-	/** Replies the heights of all the leaf nodes.
-	 * The order of the heights is given by a depth-first iteration.
-	 * 
-	 * @param currentHeight is the current height of this node.
-	 * @param heights is the list of heights to fill
-	 */
 	@Override
 	protected void getHeights(int currentHeight, List<Integer> heights) {
 		if (isLeaf()) {

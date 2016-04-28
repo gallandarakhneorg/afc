@@ -26,15 +26,14 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 /** 2D tuple with 2 integer numbers.
  * 
- * @param <T> is the abstract type of the tuple.
- * @param <IT> is the implementation type of the tuple.
+ * @param <RT> is the replied type by the tuple.
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public class Tuple2i<T extends Tuple2D<? super T>, IT extends T> implements Tuple2D<T> {
+public class Tuple2i<RT extends Tuple2i<? super RT>> implements Tuple2D<RT> {
 
 	private static final long serialVersionUID = 3136314939750740492L;
 
@@ -56,7 +55,7 @@ public class Tuple2i<T extends Tuple2D<? super T>, IT extends T> implements Tupl
 	/**
 	 * @param tuple is the tuple to copy.
 	 */
-	public Tuple2i(Tuple2i<?,?> tuple) {
+	public Tuple2i(Tuple2i<?> tuple) {
 		assert (tuple != null) : "Input tuple must not be null"; //$NON-NLS-1$
 		this.x = tuple.x;
 		this.y = tuple.y;
@@ -112,9 +111,9 @@ public class Tuple2i<T extends Tuple2D<? super T>, IT extends T> implements Tupl
 	@SuppressWarnings("unchecked")
 	@Pure
 	@Override
-	public IT clone() {
+	public RT clone() {
 		try {
-			return (IT) super.clone();
+			return (RT) super.clone();
 		}
 		catch(CloneNotSupportedException e) {
 			throw new InternalError(e);
@@ -128,7 +127,7 @@ public class Tuple2i<T extends Tuple2D<? super T>, IT extends T> implements Tupl
 	}
 
 	@Override
-	public void absolute(T tuple) {
+	public void absolute(Tuple2D<?> tuple) {
 		assert (tuple != null) : "Output tuple must not be null"; //$NON-NLS-1$
 		tuple.set(Math.abs(this.x), Math.abs(this.y));
 	}
@@ -166,7 +165,7 @@ public class Tuple2i<T extends Tuple2D<? super T>, IT extends T> implements Tupl
 	}
 
 	@Override
-	public void negate(T tuple) {
+	public void negate(Tuple2D<?> tuple) {
 		assert (tuple != null) : "Input tuple must not be null"; //$NON-NLS-1$
 		this.x = -tuple.ix();
 		this.y = -tuple.iy();
@@ -179,14 +178,14 @@ public class Tuple2i<T extends Tuple2D<? super T>, IT extends T> implements Tupl
 	}
 
 	@Override
-	public void scale(int scale, T tuple) {
+	public void scale(int scale, Tuple2D<?> tuple) {
 		assert (tuple != null) : "Input tuple must not be null"; //$NON-NLS-1$
 		this.x = (int) Math.round(scale * tuple.getX());
 		this.y = (int) Math.round(scale * tuple.getY());
 	}
 
 	@Override
-	public void scale(double scale, T tuple) {
+	public void scale(double scale, Tuple2D<?> tuple) {
 		assert (tuple != null) : "Input tuple must not be null"; //$NON-NLS-1$
 		this.x = (int) Math.round(scale * tuple.getX());
 		this.y = (int) Math.round(scale * tuple.getY());
@@ -320,7 +319,7 @@ public class Tuple2i<T extends Tuple2D<? super T>, IT extends T> implements Tupl
 	@Override
 	public boolean equals(Object object) {
 		try {
-			return equals((T) object);
+			return equals((RT) object);
 		}
 		catch(AssertionError e) {
 			throw e;

@@ -29,6 +29,8 @@ import org.arakhne.afc.math.geometry.d2.fp.Vector2fp;
 import org.junit.Before;
 import org.junit.Test;
 
+import javafx.beans.property.ReadOnlyDoubleProperty;
+
 @SuppressWarnings("all")
 public class UnitVectorPropertyTest extends AbstractMathTestCase {
 
@@ -41,9 +43,47 @@ public class UnitVectorPropertyTest extends AbstractMathTestCase {
 	
 	@Before
 	public void setUp() {
-		this.property = new UnitVectorProperty(this, "test", new Vector2fp(ox, oy));
+		this.property = new UnitVectorProperty(this, "test");
+		double length = Math.hypot(ox, oy);
+		this.property.set(ox / length, oy / length);
 	}
 	
+	@Test(expected = AssertionError.class)
+	public void setDoubleDouble_notUnitVector() {
+		this.property.set(ox, oy);
+	}
+	
+	@Test
+	public void setDoubleDouble_unitVector() {
+		this.property.set(0.031598, -0.999501);
+		assertEpsilonEquals(0.031598, this.property.getX());
+		assertEpsilonEquals(-0.999501, this.property.getY());
+	}
+
+	@Test(expected = AssertionError.class)
+	public void setVector2fx_notUnitVector() {
+		this.property.set(new Vector2fx(ox, oy));
+	}
+	
+	@Test
+	public void setVector2fx_unitVector() {
+		this.property.set(new Vector2fx(0.031598, -0.999501));
+		assertEpsilonEquals(0.031598, this.property.getX());
+		assertEpsilonEquals(-0.999501, this.property.getY());
+	}
+
+	@Test(expected = RuntimeException.class)
+	public void setVector2D_onVector() {
+		Vector2D v = this.property.get();
+		v.set(new Vector2fx(0.031598, -0.999501));
+	}
+
+	@Test(expected = RuntimeException.class)
+	public void setDoubleDouble_onVector() {
+		Vector2D v = this.property.get();
+		v.set(0.031598, -0.999501);
+	}
+
 	@Test
 	public void get() {
 		Vector2D v = this.property.get();
@@ -53,26 +93,6 @@ public class UnitVectorPropertyTest extends AbstractMathTestCase {
 	}
 	
 	@Test
-	public void setVector2D() {
-		Vector2D o = new Vector2fp(3456, 47521);
-		this.property.set(o);
-		Vector2D v = this.property.get();
-		assertNotNull(v);
-		assertNotSame(o, v);
-		assertEpsilonEquals(.072534, v.getX());
-		assertEpsilonEquals(.997366, v.getY());
-	}
-	
-	@Test
-	public void setDoubleDouble() {
-		this.property.set(3456, 47521);
-		Vector2D v = this.property.get();
-		assertNotNull(v);
-		assertEpsilonEquals(.072534, v.getX());
-		assertEpsilonEquals(.997366, v.getY());
-	}
-
-	@Test
 	public void getX() {
 		assertEpsilonEquals(ux, this.property.getX());
 	}
@@ -80,6 +100,20 @@ public class UnitVectorPropertyTest extends AbstractMathTestCase {
 	@Test
 	public void getY() {
 		assertEpsilonEquals(uy, this.property.getY());
+	}
+
+	@Test
+	public void xProperty() {
+		ReadOnlyDoubleProperty x = this.property.xProperty();
+		assertNotNull(x);
+		assertEpsilonEquals(ux, x.get());
+	}
+
+	@Test
+	public void yProperty() {
+		ReadOnlyDoubleProperty y = this.property.yProperty();
+		assertNotNull(y);
+		assertEpsilonEquals(uy, y.get());
 	}
 
 }

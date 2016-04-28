@@ -68,9 +68,6 @@ public class DotGxlWriter {
 		this.graphIndex = 1;
 	}
 	
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	protected void finalize() throws Throwable {
 		close();

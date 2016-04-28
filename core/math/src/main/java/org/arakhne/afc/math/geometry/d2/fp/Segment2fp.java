@@ -36,7 +36,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @since 13.0
  */
 public class Segment2fp extends AbstractShape2fp<Segment2fp>
-	implements Segment2afp<Shape2fp<?>, Segment2fp, PathElement2fp, Point2fp, Rectangle2fp> {
+	implements Segment2afp<Shape2fp<?>, Segment2fp, PathElement2fp, Point2fp, Vector2fp, Rectangle2fp> {
 
 	private static final long serialVersionUID = -5667213589442134247L;
 
@@ -58,14 +58,14 @@ public class Segment2fp extends AbstractShape2fp<Segment2fp>
 	 * @param a
 	 * @param b
 	 */
-	public Segment2fp(Point2D a, Point2D b) {
+	public Segment2fp(Point2D<?, ?> a, Point2D<?, ?> b) {
 		this(a.getX(), a.getY(), b.getX(), b.getY());
 	}
 
 	/**
 	 * @param s
 	 */
-	public Segment2fp(Segment2afp<?, ?, ?, ?, ?> s) {
+	public Segment2fp(Segment2afp<?, ?, ?, ?, ?, ?> s) {
 		this(s.getX1(), s.getY1(), s.getX2(), s.getY2());
 	}
 
@@ -175,12 +175,12 @@ public class Segment2fp extends AbstractShape2fp<Segment2fp>
 	}
 
 	@Override
-	public Point2D getP1() {
+	public Point2fp getP1() {
 		return new Point2fp(this.ax, this.ay);
 	}
 
 	@Override
-	public Point2D getP2() {
+	public Point2fp getP2() {
 		return new Point2fp(this.bx, this.by);
 	}
 

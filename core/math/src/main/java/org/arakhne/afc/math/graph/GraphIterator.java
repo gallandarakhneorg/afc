@@ -28,6 +28,8 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.TreeSet;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /**
  * This class is an iterator on a graph.
  * <p>
@@ -154,6 +156,7 @@ implements Iterator<ST> {
 	 * @return the graph element iterator, or <code>null</code> to use the
 	 * default comparation behaviour of the <code>GraphIterationElement</code>. 
 	 */
+	@Pure
 	protected GraphIterationElementComparator<ST,PT> createVisitedSegmentComparator(boolean assumeOrientedSegments1) {
 		return new GraphIterationElementComparator<>(assumeOrientedSegments1);
 	}
@@ -162,6 +165,7 @@ implements Iterator<ST> {
 	 * 
 	 * @return the graph.
 	 */
+	@Pure
 	Graph<ST,PT> getGraph() {
 		return this.graph.get();
 	}
@@ -223,8 +227,7 @@ implements Iterator<ST> {
 		return this.courseModel.getNextIterationElement();
 	}
 	
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public boolean hasNext() {
 		if (this.courseModel.isEmpty()) {
@@ -234,8 +237,6 @@ implements Iterator<ST> {
 		return true;
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public final ST next() {
 		GraphIterationElement<ST,PT> theElement = nextElement();
@@ -313,6 +314,7 @@ implements Iterator<ST> {
 	 * @param element
 	 * @return <code>true</code> if the given element is addable into the associated list.
 	 */
+	@Pure
 	protected boolean canGotoIntoElement(GraphIterationElement<ST,PT> element) {
 		return true;
 	}
@@ -338,8 +340,6 @@ implements Iterator<ST> {
 		}
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public void remove() {
 		if (this.current!=null) {
@@ -356,6 +356,7 @@ implements Iterator<ST> {
 	 * 
 	 * @return <code>true</code> if this iterator allows cycles, otherwise <code>false</code>
 	 */
+	@Pure
 	public final boolean isManySegmentReplyEnabled() {
 		return this.allowManyReplies;
 	}
@@ -364,6 +365,7 @@ implements Iterator<ST> {
 	 * 
 	 * @return <code>true</code> if this iterator assumes oriented segments, otherwise <code>false</code>
 	 */
+	@Pure
 	public final boolean isOrientedSegmentSupportEnabled() {
 		return this.assumeOrientedSegments;
 	}
@@ -387,6 +389,7 @@ implements Iterator<ST> {
     		this.list = list1;
     	}
 
+    	@Pure
 		@Override
 		public boolean hasNext() {
 			return this.list!=null && this.index>=0 && this.index<this.list.size();
@@ -402,11 +405,6 @@ implements Iterator<ST> {
 			return elt;
 		}
 
-		@Override
-		public void remove() {
-			throw new UnsupportedOperationException();
-		}
-    	
     }
 
 }

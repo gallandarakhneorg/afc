@@ -22,6 +22,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /**
  * Event on tree nodes.
  * 
@@ -102,6 +104,7 @@ public class TreeDataEvent {
 	 * 
 	 * @return the node on which the event occurs.
 	 */
+	@Pure
 	public TreeNode<?,?> getNode() {
 		return this.node;
 	}
@@ -109,8 +112,8 @@ public class TreeDataEvent {
 	/** Replies the count of removed values.
 	 * 
 	 * @return the count of removed values.
-	 * @since 4.0
 	 */
+	@Pure
 	public int getRemovedValueCount() {
 		return (this.oldValues==null) ? 0 : this.oldValues.size();
 	}
@@ -118,8 +121,8 @@ public class TreeDataEvent {
 	/** Replies the count of added values.
 	 * 
 	 * @return the count of added values.
-	 * @since 4.0
 	 */
+	@Pure
 	public int getAddedValueCount() {
 		return (this.newValues==null) ? 0 : this.newValues.size();
 	}
@@ -128,6 +131,7 @@ public class TreeDataEvent {
 	 * 
 	 * @return the count of all associated values.
 	 */
+	@Pure
 	public int getCurrentValueCount() {
 		return (this.allValues==null) ? 0 : this.allValues.size();
 	}
@@ -136,8 +140,8 @@ public class TreeDataEvent {
 	 * 
 	 * @param index is the index of the value
 	 * @return the old value at the given index.
-	 * @since 4.0
 	 */
+	@Pure
 	public Object getRemovedValueAt(int index) {
 		return this.oldValues.get(index);
 	}
@@ -146,8 +150,8 @@ public class TreeDataEvent {
 	 * 
 	 * @param index is the index of the value
 	 * @return the new value at the given index.
-	 * @since 4.0
 	 */
+	@Pure
 	public Object getAddedValueAt(int index) {
 		return this.newValues.get(index);
 	}
@@ -157,6 +161,7 @@ public class TreeDataEvent {
 	 * @param index is the index of the value
 	 * @return the value at the given index.
 	 */
+	@Pure
 	public Object getCurrentValueAt(int index) {
 		return this.allValues.get(index);
 	}
@@ -173,6 +178,7 @@ public class TreeDataEvent {
 	 * 
 	 * @return amount of data change.
 	 */
+	@Pure
 	public int getDelta() {
 		return this.delta;
 	}
@@ -180,8 +186,8 @@ public class TreeDataEvent {
 	/** Replies the list of added data.
 	 * 
 	 * @return the list of added data.
-	 * @since 4.0
 	 */
+	@Pure
 	public List<Object> getAddedValues() {
 		if (this.newValues==null) return Collections.emptyList();
 		return Collections.unmodifiableList(this.newValues);
@@ -190,8 +196,8 @@ public class TreeDataEvent {
 	/** Replies the list of removed data.
 	 * 
 	 * @return the list of removed data.
-	 * @since 4.0
 	 */
+	@Pure
 	public List<Object> getRemovedValues() {
 		if (this.oldValues==null) return Collections.emptyList();
 		return Collections.unmodifiableList(this.oldValues);
@@ -200,8 +206,8 @@ public class TreeDataEvent {
 	/** Replies the list of current data.
 	 * 
 	 * @return the list of current data.
-	 * @since 4.0
 	 */
+	@Pure
 	public List<Object> getCurrentValues() {
 		if (this.allValues==null) return Collections.emptyList();
 		return Collections.unmodifiableList(this.allValues);

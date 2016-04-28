@@ -1703,16 +1703,12 @@ public class Matrix4f implements Serializable, Cloneable {
 	@Pure
 	@Override
 	public Matrix4f clone() {
-		Matrix4f m1 = null;
 		try {
-			m1 = (Matrix4f) super.clone();
+			return (Matrix4f) super.clone();
 		} catch (CloneNotSupportedException e) {
 			// this shouldn't happen, since we are Cloneable
 			throw new InternalError(e);
 		}
-
-		// Also need to create new tmp arrays (no need to actually clone them)
-		return m1;
 	}
 
 	/**
@@ -2095,6 +2091,232 @@ public class Matrix4f implements Serializable, Cloneable {
 					&& MathUtil.isEpsilonEqual(this.m33, 1.);
 		}
 		return this.isIdentity;
+	}
+
+	/** Add the given matrix to this matrix: {@code this += matrix}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param matrix the matrix.
+	 * @see #add(Matrix4f)
+	 */
+	public void operator_add(Matrix4f matrix) {
+		add(matrix);
+	}
+	
+	/** Add the given scalar to this matrix: {@code this += scalar}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param scalar the scalar.
+	 * @see #add(double)
+	 */
+	public void operator_add(double scalar) {
+		add(scalar);
+	}
+
+	/** Substract the given matrix to this matrix: {@code this -= matrix}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param matrix the matrix.
+	 * @see #sub(Matrix4f)
+	 */
+	public void operator_remove(Matrix4f matrix) {
+		sub(matrix);
+	}
+	
+	/** Substract the given scalar to this matrix: {@code this -= scalar}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param scalar the scalar.
+	 * @see #add(double)
+	 */
+	public void operator_remove(double scalar) {
+		add(-scalar);
+	}
+
+	/** Replies the addition of the given matrix to this matrix: {@code this + matrix}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param matrix the matrix.
+	 * @return the sum of the matrices.
+	 * @see #add(Matrix4f)
+	 */
+	@Pure
+	public Matrix4f operator_plus(Matrix4f matrix) {
+		Matrix4f result = new Matrix4f();
+		result.add(this, matrix);
+		return result;
+	}
+
+	/** Replies the addition of the given scalar to this matrix: {@code this + scalar}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param scalar the scalar.
+	 * @return the sum of the matrix and the scalar.
+	 * @see #add(double)
+	 */
+	@Pure
+	public Matrix4f operator_plus(double scalar) {
+		Matrix4f result = new Matrix4f();
+		result.add(scalar, this);
+		return result;
+	}
+
+	/** Replies the substraction of the given matrix to this matrix: {@code this - matrix}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param matrix the matrix.
+	 * @return the result of the substraction.
+	 * @see #sub(Matrix4f)
+	 */
+	@Pure
+	public Matrix4f operator_minus(Matrix4f matrix) {
+		Matrix4f result = new Matrix4f();
+		result.sub(this, matrix);
+		return result;
+	}
+
+	/** Replies the substraction of the given scalar to this matrix: {@code this - scalar}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param scalar the scalar.
+	 * @return the result of the substraction.
+	 * @see #add(double)
+	 */
+	@Pure
+	public Matrix4f operator_minus(double scalar) {
+		Matrix4f result = new Matrix4f();
+		result.add(-scalar, this);
+		return result;
+	}
+
+	/** Replies the negation of this matrix: {@code -this}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @return the negation of this matrix.
+	 * @see #negate()
+	 */
+	@Pure
+	public Matrix4f operator_minus() {
+		Matrix4f result = new Matrix4f();
+		result.negate(this);
+		return result;
+	}
+
+	/** Replies the multiplication of the given matrix and this matrix: {@code this * matrix}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param matrix the matrix.
+	 * @return the multiplication of the matrices.
+	 * @see #mul(Matrix4f)
+	 */
+	@Pure
+	public Matrix4f operator_multiply(Matrix4f matrix) {
+		Matrix4f result = new Matrix4f();
+		result.mul(this, matrix);
+		return result;
+	}
+
+	/** Replies the multiplication of the given scalar and this matrix: {@code this * scalar}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param scalar the scalar.
+	 * @return the multiplication of the scalar and the matrix.
+	 * @see #mul(Matrix4f)
+	 */
+	@Pure
+	public Matrix4f operator_multiply(double scalar) {
+		Matrix4f result = new Matrix4f();
+		result.mul(scalar, this);
+		return result;
+	}
+
+	/** Replies the division of this matrix by the given scalar: {@code this / scalar}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param scalar the scalar.
+	 * @return the division of the matrix by the scalar.
+	 * @see #mul(double)
+	 */
+	@Pure
+	public Matrix4f operator_divide(double scalar) {
+		Matrix4f result = new Matrix4f();
+		result.mul(1./scalar, this);
+		return result;
+	}
+
+	/** Increment this matrix: {@code this++}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @see #add(double)
+	 */
+	public void operator_plusPlus() {
+		add(1);
+	}
+
+	/** Increment this matrix: {@code this--}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @see #add(double)
+	 */
+	public void operator_moinsMoins() {
+		add(-1);
+	}
+
+	/** Replies the transposition of this matrix: {@code !this}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @return the transpose
+	 * @see #add(double)
+	 */
+	public Matrix4f operator_not() {
+		Matrix4f result = new Matrix4f();
+		result.transpose(this);
+		return result;
 	}
 
 }

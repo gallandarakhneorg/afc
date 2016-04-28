@@ -29,8 +29,8 @@ import org.arakhne.afc.math.AbstractMathTestCase;
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2DTestRule;
-import org.arakhne.afc.math.geometry.d2.ImmutablePoint2D;
-import org.arakhne.afc.math.geometry.d2.ImmutableVector2D;
+import org.arakhne.afc.math.geometry.d2.Point2DStub;
+import org.arakhne.afc.math.geometry.d2.Vector2DStub;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.junit.After;
@@ -41,12 +41,12 @@ import org.junit.Test;
 @SuppressWarnings("all")
 public abstract class AbstractGeomFactory2afpTest extends AbstractMathTestCase {
 
-	private GeomFactory2afp<?, ?, ?> factory;
+	private GeomFactory2afp<?, ?, ?, ?> factory;
 	
 	@Rule
 	public CoordinateSystem2DTestRule csTestRule = new CoordinateSystem2DTestRule();
 
-	protected abstract GeomFactory2afp<?, ?, ?> createFactory();
+	protected abstract GeomFactory2afp<?, ?, ?, ?> createFactory();
 	
 	protected abstract Point2D createPoint(double x, double y);
 
@@ -71,7 +71,7 @@ public abstract class AbstractGeomFactory2afpTest extends AbstractMathTestCase {
 	
 	@Test
 	public void convertToPointPoint2D_notExpectedPointType() {
-		Point2D p = new ImmutablePoint2D(45, 56);
+		Point2D p = new Point2DStub(45, 56);
 		Point2D p2 = this.factory.convertToPoint(p);
 		assertNotSame(p, p2);
 		assertEquals(p, p2);
@@ -79,7 +79,7 @@ public abstract class AbstractGeomFactory2afpTest extends AbstractMathTestCase {
 
 	@Test
 	public void convertToVectorPoint2D() {
-		Point2D p = new ImmutablePoint2D(45, 56);
+		Point2D p = new Point2DStub(45, 56);
 		Vector2D v = this.factory.convertToVector(p);
 		assertNotSame(p, v);
 		assertEquals(p, v);
@@ -87,7 +87,7 @@ public abstract class AbstractGeomFactory2afpTest extends AbstractMathTestCase {
 
 	@Test
 	public void convertToPointVector2D() {
-		Vector2D v = new ImmutableVector2D(45, 56);
+		Vector2D v = new Vector2DStub(45, 56);
 		Point2D p = this.factory.convertToPoint(v);
 		assertNotSame(v, p);
 		assertEquals(v, p);
@@ -102,7 +102,7 @@ public abstract class AbstractGeomFactory2afpTest extends AbstractMathTestCase {
 	
 	@Test
 	public void convertToVectorVector2D_notExpectedVectorType() {
-		Vector2D v = new ImmutableVector2D(45, 56);
+		Vector2D v = new Vector2DStub(45, 56);
 		Vector2D v2 = this.factory.convertToVector(v);
 		assertNotSame(v, v2);
 		assertEquals(v, v2);
@@ -150,7 +150,7 @@ public abstract class AbstractGeomFactory2afpTest extends AbstractMathTestCase {
 
 	@Test
 	public void newPath_NONZERO() {
-		Path2afp<?, ?, ?, ?, ?> path = this.factory.newPath(PathWindingRule.NON_ZERO);
+		Path2afp<?, ?, ?, ?, ?, ?> path = this.factory.newPath(PathWindingRule.NON_ZERO);
 		assertNotNull(path);
 		assertSame(PathWindingRule.NON_ZERO, path.getWindingRule());
 		assertEquals(0, path.size());
@@ -158,7 +158,7 @@ public abstract class AbstractGeomFactory2afpTest extends AbstractMathTestCase {
 	
 	@Test
 	public void newPath_EVENODD() {
-		Path2afp<?, ?, ?, ?, ?> path = this.factory.newPath(PathWindingRule.EVEN_ODD);
+		Path2afp<?, ?, ?, ?, ?, ?> path = this.factory.newPath(PathWindingRule.EVEN_ODD);
 		assertNotNull(path);
 		assertSame(PathWindingRule.EVEN_ODD, path.getWindingRule());
 		assertEquals(0, path.size());
@@ -166,7 +166,7 @@ public abstract class AbstractGeomFactory2afpTest extends AbstractMathTestCase {
 
 	@Test
 	public void newBox() {
-		Rectangle2afp<?, ?, ?, ?, ?> r = this.factory.newBox();
+		Rectangle2afp<?, ?, ?, ?, ?, ?> r = this.factory.newBox();
 		assertNotNull(r);
 		assertEpsilonEquals(0, r.getMinX());
 		assertEpsilonEquals(0, r.getMinY());
@@ -176,7 +176,7 @@ public abstract class AbstractGeomFactory2afpTest extends AbstractMathTestCase {
 
 	@Test
 	public void newBoxNumberNumberNumberNumber() {
-		Rectangle2afp<?, ?, ?, ?, ?> r = this.factory.newBox(1, 2, 3, 4);
+		Rectangle2afp<?, ?, ?, ?, ?, ?> r = this.factory.newBox(1, 2, 3, 4);
 		assertNotNull(r);
 		assertEpsilonEquals(1, r.getMinX());
 		assertEpsilonEquals(2, r.getMinY());

@@ -17,6 +17,8 @@
  */
 package org.arakhne.afc.math.tree.iterator;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /**
  * This interface is used to select the data to reply
  * by a Data*TreeIterator.
@@ -39,6 +41,7 @@ public interface DataSelector<D> {
 	 * @return <code>true</code> if the data could be replied by the iterator,
 	 * otherwhise <code>false</code>
 	 */
-	public boolean dataCouldBeRepliedByIterator(D data);
+	@Pure
+	boolean dataCouldBeRepliedByIterator(D data);
 
 }

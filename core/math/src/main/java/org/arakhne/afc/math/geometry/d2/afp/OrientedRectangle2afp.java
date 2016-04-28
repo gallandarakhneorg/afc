@@ -42,6 +42,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @param <IT> is the type of the implementation of this shape.
  * @param <IE> is the type of the path elements.
  * @param <P> is the type of the points.
+ * @param <V> is the type of the vectors.
  * @param <B> is the type of the bounding boxes.
  * @author $Author: sgalland$
  * @author $Author: ngaud$
@@ -50,12 +51,13 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @mavenartifactid $ArtifactId$
  */
 public interface OrientedRectangle2afp<
-ST extends Shape2afp<?, ?, IE, P, B>,
-IT extends OrientedRectangle2afp<?, ?, IE, P, B>,
-IE extends PathElement2afp,
-P extends Point2D,
-B extends Rectangle2afp<?, ?, IE, P, B>>
-extends Shape2afp<ST, IT, IE, P, B> {
+		ST extends Shape2afp<?, ?, IE, P, V, B>,
+		IT extends OrientedRectangle2afp<?, ?, IE, P, V, B>,
+		IE extends PathElement2afp,
+		P extends Point2D<? super P, ? super V>,
+		V extends Vector2D<? super V, ? super P>,
+		B extends Rectangle2afp<?, ?, IE, P, V, B>>
+		extends Shape2afp<ST, IT, IE, P, V, B> {
 
 	/** Project the given vector on the R axis, assuming S axis is orthogonal.
 	 *
@@ -108,9 +110,9 @@ extends Shape2afp<ST, IT, IE, P, B> {
 	 * @see Parallelogram2afp#computeCenterExtents(Iterable, Vector2D, Vector2D, Point2D, Tuple2D)
 	 */
 	static void computeCenterExtents(
-			Iterable<? extends Point2D> points,
-			Vector2D R,
-			Point2D center, Tuple2D<?> extents) {
+			Iterable<? extends Point2D<?, ?>> points,
+			Vector2D<?, ?> R,
+			Point2D<?, ?> center, Tuple2D<?> extents) {
 		assert(points != null) : "Collection of points must be not null"; //$NON-NLS-1$
 		assert(R != null) : "First axis vector must be not null"; //$NON-NLS-1$
 		assert(R.isUnitVector()) : "First axis vector must be unit vector"; //$NON-NLS-1$
@@ -129,7 +131,7 @@ extends Shape2afp<ST, IT, IE, P, B> {
 
 		double PdotR;
 		double PdotS;
-		for(Point2D tuple : points) {
+		for(Point2D<?, ?> tuple : points) {
 			PdotR = projectVectorOnOrientedRectangleRAxis(ux, uy, tuple.getX(), tuple.getY());
 			PdotS = projectVectorOnOrientedRectangleSAxis(ux, uy, tuple.getX(), tuple.getY());
 
@@ -313,7 +315,7 @@ extends Shape2afp<ST, IT, IE, P, B> {
 			double axis1X, double axis1Y,
 			double axis1Extent,
 			double axis2Extent,
-			Point2D closest, Point2D farthest) {
+			Point2D<?, ?> closest, Point2D<?, ?> farthest) {
 		assert (axis1Extent >= 0.) : "Extent of the first axis must be positive or zero"; //$NON-NLS-1$
 		assert (axis2Extent >= 0.) : "Extent of the second axis must be positive or zero"; //$NON-NLS-1$
 		assert (Vector2D.isUnitVector(axis1X, axis1Y)) : "Axis 1 is not a unit vector"; //$NON-NLS-1$
@@ -554,7 +556,7 @@ extends Shape2afp<ST, IT, IE, P, B> {
 		assert (axis2Extent >= 0) : "Extent of axis 2 must be positive or zero"; //$NON-NLS-1$
 		assert (Vector2D.isUnitVector(axis1X, axis1Y)) : "Axis 1 is not a unit vector"; //$NON-NLS-1$
 		assert (circleRadius >= 0) : "Circle radius must be positive or zero"; //$NON-NLS-1$
-		Point2D closest = new InnerComputationPoint2afp();
+		Point2D<?, ?> closest = new InnerComputationPoint2afp();
 		computeClosestFarthestPoints(
 				circleX, circleY,
 				centerX, centerY,
@@ -997,7 +999,7 @@ extends Shape2afp<ST, IT, IE, P, B> {
 	 * @return the center.
 	 */
 	@Pure
-	Point2D getCenter();
+	P getCenter();
 
 	/** Replies the center x.
 	 *
@@ -1036,7 +1038,7 @@ extends Shape2afp<ST, IT, IE, P, B> {
 	 * 
 	 * @param center
 	 */
-	default void setCenter(Point2D center) {
+	default void setCenter(Point2D<?, ?> center) {
 		setCenter(center.getX(), center.getY());
 	}
 
@@ -1045,7 +1047,7 @@ extends Shape2afp<ST, IT, IE, P, B> {
 	 * @return the unit vector of the first axis. 
 	 */
 	@Pure
-	Vector2D getFirstAxis();
+	V getFirstAxis();
 
 	/** Replies coordinate x of the first axis of the oriented rectangle.
 	 *
@@ -1066,7 +1068,7 @@ extends Shape2afp<ST, IT, IE, P, B> {
 	 * @return the unit vector of the second axis. 
 	 */
 	@Pure
-	Vector2D getSecondAxis();
+	V getSecondAxis();
 
 	/** Replies coordinate x of the second axis of the oriented rectangle.
 	 *
@@ -1113,7 +1115,7 @@ extends Shape2afp<ST, IT, IE, P, B> {
 	 * 
 	 * @param axis - the new values for the first axis.
 	 */
-	default void setFirstAxis(Vector2D axis) {
+	default void setFirstAxis(Vector2D<?, ?> axis) {
 		assert (axis != null) : "Axis must be not null"; //$NON-NLS-1$
 		setFirstAxis(axis.getX(), axis.getY(), getFirstAxisExtent());
 	}
@@ -1124,7 +1126,7 @@ extends Shape2afp<ST, IT, IE, P, B> {
 	 * @param axis - the new values for the first axis.
 	 * @param extent - the extent of the axis.
 	 */
-	default void setFirstAxis(Vector2D axis, double extent) {
+	default void setFirstAxis(Vector2D<?, ?> axis, double extent) {
 		assert (axis != null) : "Axis must be not null"; //$NON-NLS-1$
 		setFirstAxis(axis.getX(), axis.getY(), extent);
 	}
@@ -1153,7 +1155,7 @@ extends Shape2afp<ST, IT, IE, P, B> {
 	 * 
 	 * @param axis - the new values for the first axis.
 	 */
-	default void setSecondAxis(Vector2D axis) {
+	default void setSecondAxis(Vector2D<?, ?> axis) {
 		assert (axis != null) : "Axis must be not null"; //$NON-NLS-1$
 		setSecondAxis(axis.getX(), axis.getY(), getSecondAxisExtent());
 	}
@@ -1164,7 +1166,7 @@ extends Shape2afp<ST, IT, IE, P, B> {
 	 * @param axis - the new values for the first axis.
 	 * @param extent - the extent of the axis.
 	 */
-	default void setSecondAxis(Vector2D axis, double extent) {
+	default void setSecondAxis(Vector2D<?, ?> axis, double extent) {
 		assert (axis != null) : "Axis must be not null"; //$NON-NLS-1$
 		setSecondAxis(axis.getX(), axis.getY(), extent);
 	}
@@ -1218,7 +1220,7 @@ extends Shape2afp<ST, IT, IE, P, B> {
 	 * @param axis1Extent is the extent of the first axis.
 	 * @param axis2Extent is the extent of the second axis.
 	 */
-	default void set(Point2D center, Vector2D axis1, double axis1Extent, double axis2Extent) {
+	default void set(Point2D<?, ?> center, Vector2D<?, ?> axis1, double axis1Extent, double axis2Extent) {
 		assert (center != null) : "Center point must be not null"; //$NON-NLS-1$
 		assert (axis1 != null) : "Axis vector must be not null"; //$NON-NLS-1$
 		set(center.getX(), center.getY(), axis1.getX(), axis1.getY(), axis1Extent, axis2Extent);
@@ -1242,12 +1244,12 @@ extends Shape2afp<ST, IT, IE, P, B> {
 	 *
 	 * @param pointCloud - the cloud of points.
 	 */
-	default void setFromPointCloud(Iterable<? extends Point2D> pointCloud) {
+	default void setFromPointCloud(Iterable<? extends Point2D<?, ?>> pointCloud) {
 		assert (pointCloud != null) : "Iterable of points must be not null"; //$NON-NLS-1$
-		Vector2D r = new InnerComputationVector2afp();
+		Vector2D<?, ?> r = new InnerComputationVector2afp();
 		Parallelogram2afp.computeOrthogonalAxes(pointCloud, r, null);
-		Point2D center = new InnerComputationPoint2afp();
-		Vector2D extents = new InnerComputationVector2afp();
+		Point2D<?, ?> center = new InnerComputationPoint2afp();
+		Vector2D<?, ?> extents = new InnerComputationVector2afp();
 		OrientedRectangle2afp.computeCenterExtents(pointCloud, r, center, extents);
 		set(center.getX(), center.getY(),
 				r.getX(), r.getY(), extents.getX(),
@@ -1258,16 +1260,16 @@ extends Shape2afp<ST, IT, IE, P, B> {
 	 *
 	 * @param pointCloud - the cloud of points.
 	 */
-	default void setFromPointCloud(Point2D... pointCloud) {
+	default void setFromPointCloud(Point2D<?, ?>... pointCloud) {
 		assert (pointCloud != null) : "Array of points must be not null"; //$NON-NLS-1$
 		setFromPointCloud(Arrays.asList(pointCloud));
 	}
 
 	@Pure
 	@Override
-	default double getDistanceSquared(Point2D p) {
+	default double getDistanceSquared(Point2D<?, ?> p) {
 		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
-		Point2D closest = new InnerComputationPoint2afp();
+		Point2D<?, ?> closest = new InnerComputationPoint2afp();
 		computeClosestFarthestPoints(
 				p.getX(), p.getY(),
 				getCenterX(), getCenterY(),
@@ -1280,9 +1282,9 @@ extends Shape2afp<ST, IT, IE, P, B> {
 
 	@Pure
 	@Override
-	default double getDistanceL1(Point2D p) {
+	default double getDistanceL1(Point2D<?, ?> p) {
 		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
-		Point2D closest = new InnerComputationPoint2afp();
+		Point2D<?, ?> closest = new InnerComputationPoint2afp();
 		computeClosestFarthestPoints(
 				p.getX(), p.getY(),
 				getCenterX(), getCenterY(),
@@ -1295,9 +1297,9 @@ extends Shape2afp<ST, IT, IE, P, B> {
 
 	@Pure
 	@Override
-	default double getDistanceLinf(Point2D p) {
+	default double getDistanceLinf(Point2D<?, ?> p) {
 		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
-		Point2D closest = new InnerComputationPoint2afp();
+		Point2D<?, ?> closest = new InnerComputationPoint2afp();
 		computeClosestFarthestPoints(
 				p.getX(), p.getY(),
 				getCenterX(), getCenterY(),
@@ -1324,7 +1326,7 @@ extends Shape2afp<ST, IT, IE, P, B> {
 
 	@Pure
 	@Override
-	default boolean contains(Rectangle2afp<?, ?, ?, ?, ?> r) {
+	default boolean contains(Rectangle2afp<?, ?, ?, ?, ?, ?> r) {
 		assert (r != null) : "Rectangle must be not null"; //$NON-NLS-1$
 		return containsOrientedRectangleRectangle(
 				getCenterX(), getCenterY(),
@@ -1336,7 +1338,7 @@ extends Shape2afp<ST, IT, IE, P, B> {
 
 	@Pure
 	@Override
-	default boolean intersects(Circle2afp<?, ?, ?, ?, ?> s) {
+	default boolean intersects(Circle2afp<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Circle must be not null"; //$NON-NLS-1$
 		return intersectsOrientedRectangleCircle(
 				getCenterX(), getCenterY(),
@@ -1347,7 +1349,7 @@ extends Shape2afp<ST, IT, IE, P, B> {
 
 	@Pure
 	@Override
-	default boolean intersects(Ellipse2afp<?, ?, ?, ?, ?> s) {
+	default boolean intersects(Ellipse2afp<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Ellipse must be not null"; //$NON-NLS-1$
 		return intersectsOrientedRectangleEllipse(
 				getCenterX(), getCenterY(),
@@ -1358,7 +1360,7 @@ extends Shape2afp<ST, IT, IE, P, B> {
 
 	@Pure
 	@Override
-	default boolean intersects(OrientedRectangle2afp<?, ?, ?, ?, ?> s) {
+	default boolean intersects(OrientedRectangle2afp<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Oriented rectangle must be not null"; //$NON-NLS-1$
 		return intersectsOrientedRectangleOrientedRectangle(
 				getCenterX(), getCenterY(),
@@ -1371,7 +1373,7 @@ extends Shape2afp<ST, IT, IE, P, B> {
 
 	@Pure
 	@Override
-	default boolean intersects(Parallelogram2afp<?, ?, ?, ?, ?> s) {
+	default boolean intersects(Parallelogram2afp<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Parallelogram must be not null"; //$NON-NLS-1$
 		return Parallelogram2afp.intersectsParallelogramParallelogram(
 				s.getCenterX(), s.getCenterY(),
@@ -1384,7 +1386,7 @@ extends Shape2afp<ST, IT, IE, P, B> {
 
 	@Pure
 	@Override
-	default boolean intersects(Rectangle2afp<?, ?, ?, ?, ?> s) {
+	default boolean intersects(Rectangle2afp<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Rectangle must be not null"; //$NON-NLS-1$
 		return intersectsOrientedRectangleRectangle(
 				getCenterX(), getCenterY(),
@@ -1396,14 +1398,14 @@ extends Shape2afp<ST, IT, IE, P, B> {
 
 	@Pure
 	@Override
-	default boolean intersects(RoundRectangle2afp<?, ?, ?, ?, ?> s) {
+	default boolean intersects(RoundRectangle2afp<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "round rectangle must be not null"; //$NON-NLS-1$
 		return s.intersects(this);
 	}
 
 	@Pure
 	@Override
-	default boolean intersects(Segment2afp<?, ?, ?, ?, ?> s) {
+	default boolean intersects(Segment2afp<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Segment must be not null"; //$NON-NLS-1$
 		return intersectsOrientedRectangleSegment(
 				getCenterX(), getCenterY(),
@@ -1414,7 +1416,7 @@ extends Shape2afp<ST, IT, IE, P, B> {
 
 	@Pure
 	@Override
-	default boolean intersects(Triangle2afp<?, ?, ?, ?, ?> s) {
+	default boolean intersects(Triangle2afp<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Triangle must be not null"; //$NON-NLS-1$
 		return intersectsOrientedRectangleTriangle(
 				getCenterX(), getCenterY(),
@@ -1445,7 +1447,7 @@ extends Shape2afp<ST, IT, IE, P, B> {
 
 	@Pure
 	@Override
-	default boolean intersects(MultiShape2afp<?, ?, ?, ?, ?, ?> s) {
+	default boolean intersects(MultiShape2afp<?, ?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "MultiShape must be not null"; //$NON-NLS-1$
 		return s.intersects(this);
 	}
@@ -1453,8 +1455,8 @@ extends Shape2afp<ST, IT, IE, P, B> {
 	@Pure
 	@Override
 	default void toBoundingBox(B box) {
-		Point2D minCorner;
-		Point2D maxCorner;
+		Point2D<?, ?> minCorner;
+		Point2D<?, ?> maxCorner;
 
 		minCorner = new InnerComputationPoint2afp(getCenterX(), getCenterY());
 		maxCorner = new InnerComputationPoint2afp(getCenterX(), getCenterY());
@@ -1486,7 +1488,7 @@ extends Shape2afp<ST, IT, IE, P, B> {
 
 	@Pure
 	@Override
-	default P getClosestPointTo(Point2D p) {
+	default P getClosestPointTo(Point2D<?, ?> p) {
 		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
 		P point = getGeomFactory().newPoint();
 		computeClosestFarthestPoints(
@@ -1500,7 +1502,7 @@ extends Shape2afp<ST, IT, IE, P, B> {
 
 	@Pure
 	@Override
-	default P getFarthestPointTo(Point2D p) {
+	default P getFarthestPointTo(Point2D<?, ?> p) {
 		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
 		P point = getGeomFactory().newPoint();
 		computeClosestFarthestPoints(
@@ -1517,8 +1519,8 @@ extends Shape2afp<ST, IT, IE, P, B> {
 	 * @param angle the angle of rotation.
 	 */
 	default void rotate(double angle) {
-		Vector2D axis1 = getFirstAxis();
-		Vector2D newAxis = getGeomFactory().newVector();
+		Vector2D<?, ?> axis1 = getFirstAxis();
+		Vector2D<?, ?> newAxis = getGeomFactory().newVector();
 		newAxis.turn(angle, axis1);
 		setFirstAxis(newAxis.getX(), newAxis.getY());
 	}
@@ -1539,17 +1541,17 @@ extends Shape2afp<ST, IT, IE, P, B> {
 
 		/** The iterated shape.
 		 */
-		protected final OrientedRectangle2afp<?, ?, T, ?, ?> rectangle;
+		protected final OrientedRectangle2afp<?, ?, T, ?, ?, ?> rectangle;
 
 		/**
 		 * @param rectangle the iterated rectangle.
 		 */
-		public AbstractOrientedRectanglePathIterator(OrientedRectangle2afp<?, ?, T, ?, ?> rectangle) {
+		public AbstractOrientedRectanglePathIterator(OrientedRectangle2afp<?, ?, T, ?, ?, ?> rectangle) {
 			this.rectangle = rectangle;
 		}
 
 		@Override
-		public GeomFactory2afp<T, ?, ?> getGeomFactory() {
+		public GeomFactory2afp<T, ?, ?, ?> getGeomFactory() {
 			return this.rectangle.getGeomFactory();
 		}
 
@@ -1606,9 +1608,9 @@ extends Shape2afp<ST, IT, IE, P, B> {
 
 		private double y;
 
-		private Vector2D r;
+		private Vector2D<?, ?> r;
 
-		private Vector2D s;
+		private Vector2D<?, ?> s;
 
 		private int index;
 
@@ -1623,7 +1625,7 @@ extends Shape2afp<ST, IT, IE, P, B> {
 		/**
 		 * @param rectangle the oriented rectangle to iterate on.
 		 */
-		public OrientedRectanglePathIterator(OrientedRectangle2afp<?, ?, T, ?, ?> rectangle) {
+		public OrientedRectanglePathIterator(OrientedRectangle2afp<?, ?, T, ?, ?, ?> rectangle) {
 			super(rectangle);
 			if (rectangle.isEmpty()) {
 				this.index = ELEMENT_COUNT;
@@ -1703,21 +1705,21 @@ extends Shape2afp<ST, IT, IE, P, B> {
 
 		private double y;
 
-		private Vector2D r;
+		private Vector2D<?, ?> r;
 
-		private Vector2D s;
+		private Vector2D<?, ?> s;
 
 		private int index;
 
-		private Point2D move;
+		private Point2D<?, ?> move;
 
-		private Point2D last;
+		private Point2D<?, ?> last;
 
 		/**
 		 * @param rectangle the oriented rectangle to iterate on.
 		 * @param transform the transformation to apply.
 		 */
-		public TransformedOrientedRectanglePathIterator(OrientedRectangle2afp<?, ?, T, ?, ?> rectangle,
+		public TransformedOrientedRectanglePathIterator(OrientedRectangle2afp<?, ?, T, ?, ?, ?> rectangle,
 				Transform2D transform) {
 			super(rectangle);
 			assert (transform != null) : "Transformation must be not null"; //$NON-NLS-1$
@@ -1952,7 +1954,7 @@ extends Shape2afp<ST, IT, IE, P, B> {
 		}
 
 		@Override
-		public GeomFactory2afp<T, ?, ?> getGeomFactory() {
+		public GeomFactory2afp<T, ?, ?, ?> getGeomFactory() {
 			return this.iterator.getGeomFactory();
 		}
 

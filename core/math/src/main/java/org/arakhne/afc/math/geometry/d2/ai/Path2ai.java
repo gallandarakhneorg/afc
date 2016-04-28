@@ -32,6 +32,7 @@ import org.arakhne.afc.math.geometry.d2.Path2D;
 import org.arakhne.afc.math.geometry.d2.PathIterator2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
+import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.afp.Segment2afp;
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -41,6 +42,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @param <IT> is the type of the implementation of this shape.
  * @param <IE> is the type of the path elements.
  * @param <P> is the type of the points.
+ * @param <V> is the type of the vectors.
  * @param <B> is the type of the bounding boxes.
  * @author $Author: sgalland$
  * @author $Author: hjaffali$
@@ -50,12 +52,13 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @since 13.0
  */
 public interface Path2ai<
-		ST extends Shape2ai<?, ?, IE, P, B>,
-		IT extends Path2ai<?, ?, IE, P, B>,
+		ST extends Shape2ai<?, ?, IE, P, V, B>,
+		IT extends Path2ai<?, ?, IE, P, V, B>,
 		IE extends PathElement2ai,
-		P extends Point2D,
-		B extends Rectangle2ai<?, ?, IE, P, B>>
-		extends Shape2ai<ST, IT, IE, P, B>, Path2D<ST, IT, PathIterator2ai<IE>, P, B> {
+		P extends Point2D<? super P, ? super V>,
+		V extends Vector2D<? super V, ? super P>,
+		B extends Rectangle2ai<?, ?, IE, P, V, B>>
+		extends Shape2ai<ST, IT, IE, P, V, B>, Path2D<ST, IT, PathIterator2ai<IE>, P, V, B> {
 
 	/** Multiple of cubic & quad curve size.
 	 */
@@ -78,17 +81,17 @@ public interface Path2ai<
 	 * @return <code>true</code> if a drawable element was found.
 	 */
 	static boolean computeDrawableElementBoundingBox(PathIterator2ai<?> iterator,
-			Rectangle2ai<?, ?, ?, ?, ?> box) {
+			Rectangle2ai<?, ?, ?, ?, ?, ?> box) {
 		assert (iterator != null) : "Iterator must not be null"; //$NON-NLS-1$
 		assert (box != null) : "Rectangle must not be null"; //$NON-NLS-1$
-		GeomFactory2ai<?, ?, ?> factory = iterator.getGeomFactory();
+		GeomFactory2ai<?, ?, ?, ?> factory = iterator.getGeomFactory();
 		boolean foundOneLine = false;
 		int xmin = Integer.MAX_VALUE;
 		int ymin = Integer.MAX_VALUE;
 		int xmax = Integer.MIN_VALUE;
 		int ymax = Integer.MIN_VALUE;
 		PathElement2ai element;
-		Path2ai<?, ?, ?, ?, ?> subPath;
+		Path2ai<?, ?, ?, ?, ?, ?> subPath;
 		while (iterator.hasNext()) {
 			element = iterator.next();
 			switch(element.getType()) {
@@ -218,7 +221,7 @@ public interface Path2ai<
 			{
 				endx = element.getToX();
 				endy = element.getToY();
-				Path2ai<?, ?, ?, ?, ?> localPath = pi.getGeomFactory().newPath(pi.getWindingRule());
+				Path2ai<?, ?, ?, ?, ?, ?> localPath = pi.getGeomFactory().newPath(pi.getWindingRule());
 				localPath.moveTo(element.getFromX(), element.getFromY());
 				localPath.quadTo(
 						element.getCtrlX1(), element.getCtrlY1(),
@@ -235,7 +238,7 @@ public interface Path2ai<
 			case CURVE_TO:
 				endx = element.getToX();
 				endy = element.getToY();
-				Path2ai<?, ?, ?, ?, ?> localPath = pi.getGeomFactory().newPath(pi.getWindingRule());
+				Path2ai<?, ?, ?, ?, ?, ?> localPath = pi.getGeomFactory().newPath(pi.getWindingRule());
 				localPath.moveTo(element.getFromX(), element.getFromY());
 				localPath.curveTo(
 						element.getCtrlX1(), element.getCtrlY1(),
@@ -342,7 +345,7 @@ public interface Path2ai<
 			{
 				endx = element.getToX();
 				endy = element.getToY();
-				Path2ai<?, ?, ?, ?, ?> localPath = pi.getGeomFactory().newPath(pi.getWindingRule());
+				Path2ai<?, ?, ?, ?, ?, ?> localPath = pi.getGeomFactory().newPath(pi.getWindingRule());
 				localPath.moveTo(element.getFromX(), element.getFromY());
 				localPath.quadTo(
 						element.getCtrlX1(), element.getCtrlY1(),
@@ -359,7 +362,7 @@ public interface Path2ai<
 			case CURVE_TO:
 				endx = element.getToX();
 				endy = element.getToY();
-				Path2ai<?, ?, ?, ?, ?> localPath = pi.getGeomFactory().newPath(pi.getWindingRule());
+				Path2ai<?, ?, ?, ?, ?, ?> localPath = pi.getGeomFactory().newPath(pi.getWindingRule());
 				localPath.moveTo(element.getFromX(), element.getFromY());
 				localPath.curveTo(
 						element.getCtrlX1(), element.getCtrlY1(),
@@ -481,7 +484,7 @@ public interface Path2ai<
 			case QUAD_TO:
 				endx = element.getToX();
 				endy = element.getToY();
-				Path2ai<?, ?, ?, ?, ?> curve = pi.getGeomFactory().newPath(pi.getWindingRule());
+				Path2ai<?, ?, ?, ?, ?, ?> curve = pi.getGeomFactory().newPath(pi.getWindingRule());
 				curve.moveTo(element.getFromX(), element.getFromY());
 				curve.quadTo(element.getCtrlX1(), element.getCtrlY1(), endx, endy);
 				int numCrosses = computeCrossingsFromPoint(
@@ -579,8 +582,8 @@ public interface Path2ai<
 			throw new IllegalArgumentException("missing initial moveto in the first path definition"); //$NON-NLS-1$
 		}
 
-		GeomFactory2ai<?, ?, ?> factory = iterator.getGeomFactory();
-		Path2ai<?, ?, ?, ?, ?> subPath;
+		GeomFactory2ai<?, ?, ?, ?> factory = iterator.getGeomFactory();
+		Path2ai<?, ?, ?, ?, ?, ?> subPath;
 		int curx, cury, movx, movy, endx, endy;
 		curx = movx = pathElement1.getToX();
 		cury = movy = pathElement1.getToY();
@@ -818,12 +821,12 @@ public interface Path2ai<
 	 * @param result the closest point on the shape; or the point itself
 	 * if it is inside the shape.
 	 */
-	static void getClosestPointTo(PathIterator2ai<? extends PathElement2ai> pi, int x, int y, Point2D result) {
+	static void getClosestPointTo(PathIterator2ai<? extends PathElement2ai> pi, int x, int y, Point2D<?, ?> result) {
 		assert (pi != null) : "Iterator must not be null"; //$NON-NLS-1$
 
 		int bestManhantanDist = Integer.MAX_VALUE;
 		int bestLinfinvDist = Integer.MAX_VALUE;
-		Point2D candidate;
+		Point2D<?, ?> candidate;
 		PathElement2ai pe;
 
 		int mask = (pi.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 1);
@@ -921,7 +924,7 @@ public interface Path2ai<
 	 * @param y
 	 * @param result the farthest point on the shape.
 	 */
-	static void getFarthestPointTo(PathIterator2ai<? extends PathElement2ai> pi, int x, int y, Point2D result) {
+	static void getFarthestPointTo(PathIterator2ai<? extends PathElement2ai> pi, int x, int y, Point2D<?, ?> result) {
 		assert (pi != null) : "Iterator must not be null"; //$NON-NLS-1$
 
 		int bestX = x;
@@ -929,7 +932,7 @@ public interface Path2ai<
 		int bestManhatanDist = Integer.MIN_VALUE;
 		int bestLinfinvDist = Integer.MIN_VALUE;
 		PathElement2ai pe;
-		Point2D point = new InnerComputationPoint2ai();
+		Point2D<?, ?> point = new InnerComputationPoint2ai();
 
 		while (pi.hasNext()) {
 			pe = pi.next();
@@ -1022,7 +1025,7 @@ public interface Path2ai<
 	 *
 	 * @param s the path to copy.
 	 */
-	default void set(Path2ai<?, ?, ?, ?, ?> s) {
+	default void set(Path2ai<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Path must not be null"; //$NON-NLS-1$
 		clear();
 		add(s.getPathIterator());
@@ -1038,7 +1041,7 @@ public interface Path2ai<
 	void moveTo(int x, int y);
 
 	@Override
-	default void moveTo(Point2D position) {
+	default void moveTo(Point2D<?, ?> position) {
 		assert (position != null) : "Position must not be null"; //$NON-NLS-1$
 		moveTo(position.ix(), position.iy());
 	}
@@ -1054,7 +1057,7 @@ public interface Path2ai<
 	void lineTo(int x, int y);
 
 	@Override
-	default void lineTo(Point2D to) {
+	default void lineTo(Point2D<?, ?> to) {
 		assert (to != null) : "Position must not be null"; //$NON-NLS-1$
 		lineTo(to.ix(), to.iy());
 	}
@@ -1075,7 +1078,7 @@ public interface Path2ai<
 	void quadTo(int x1, int y1, int x2, int y2);
 
 	@Override
-	default void quadTo(Point2D ctrl, Point2D to) {
+	default void quadTo(Point2D<?, ?> ctrl, Point2D<?, ?> to) {
 		assert (ctrl != null) : "Control point must not be null"; //$NON-NLS-1$
 		assert (to != null) : "Destination point must not be null"; //$NON-NLS-1$
 		quadTo(ctrl.ix(), ctrl.iy(), to.ix(), to.iy());
@@ -1101,7 +1104,7 @@ public interface Path2ai<
 			int x3, int y3);
 
 	@Override
-	default void curveTo(Point2D ctrl1, Point2D ctrl2, Point2D to) {
+	default void curveTo(Point2D<?, ?> ctrl1, Point2D<?, ?> ctrl2, Point2D<?, ?> to) {
 		assert (ctrl1 != null) : "First control point must not be null"; //$NON-NLS-1$
 		assert (ctrl2 != null) : "Second control point must not be null"; //$NON-NLS-1$
 		assert (to != null) : "Destination point must not be null"; //$NON-NLS-1$
@@ -1110,30 +1113,30 @@ public interface Path2ai<
 
 	@Pure
 	@Override
-	default double getDistanceSquared(Point2D p) {
+	default double getDistanceSquared(Point2D<?, ?> p) {
 		assert (p != null) : "Point must not be null"; //$NON-NLS-1$
-		Point2D c = getClosestPointTo(p);
+		Point2D<?, ?> c = getClosestPointTo(p);
 		return c.getDistanceSquared(p);
 	}
 
 	@Pure
 	@Override
-	default double getDistanceL1(Point2D p) {
+	default double getDistanceL1(Point2D<?, ?> p) {
 		assert (p != null) : "Point must not be null"; //$NON-NLS-1$
-		Point2D c = getClosestPointTo(p);
+		Point2D<?, ?> c = getClosestPointTo(p);
 		return c.getDistanceL1(p);
 	}
 
 	@Pure
 	@Override
-	default double getDistanceLinf(Point2D p) {
+	default double getDistanceLinf(Point2D<?, ?> p) {
 		assert (p != null) : "Point must not be null"; //$NON-NLS-1$
-		Point2D c = getClosestPointTo(p);
+		Point2D<?, ?> c = getClosestPointTo(p);
 		return c.getDistanceLinf(p);
 	}
 
 	@Override
-	default P getClosestPointTo(Point2D p) {
+	default P getClosestPointTo(Point2D<?, ?> p) {
 		assert (p != null) : "Point must not be null"; //$NON-NLS-1$
 		P point = getGeomFactory().newPoint();
 		getClosestPointTo(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), p.ix(), p.iy(), point);
@@ -1141,7 +1144,7 @@ public interface Path2ai<
 	}
 
 	@Override
-	default P getFarthestPointTo(Point2D p) {
+	default P getFarthestPointTo(Point2D<?, ?> p) {
 		assert (p != null) : "Point must not be null"; //$NON-NLS-1$
 		P point = getGeomFactory().newPoint();
 		getFarthestPointTo(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), p.ix(), p.iy(), point);
@@ -1205,7 +1208,7 @@ public interface Path2ai<
 	void setLastPoint(int x, int y);
 
 	@Override
-	default void setLastPoint(Point2D point) {
+	default void setLastPoint(Point2D<?, ?> point) {
 		assert (point != null) : "Point must not be null"; //$NON-NLS-1$
 		setLastPoint(point.ix(), point.iy());
 	}
@@ -1220,7 +1223,7 @@ public interface Path2ai<
 
 	@Pure
 	@Override
-	default boolean contains(Rectangle2ai<?, ?, ?, ?, ?> box) {
+	default boolean contains(Rectangle2ai<?, ?, ?, ?, ?, ?> box) {
 		assert (box != null) : "Rectangle must not be null"; //$NON-NLS-1$
 		return contains(getPathIterator(),
 				box.getMinX(), box.getMinY(), box.getWidth(), box.getHeight());
@@ -1265,7 +1268,7 @@ public interface Path2ai<
 
 	@Pure
 	@Override
-	default boolean intersects(Circle2ai<?, ?, ?, ?, ?> s) {
+	default boolean intersects(Circle2ai<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Circle must not be null"; //$NON-NLS-1$
 		int mask = (getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2);
 		int crossings = computeCrossingsFromCircle(
@@ -1277,7 +1280,7 @@ public interface Path2ai<
 
 	@Pure
 	@Override
-	default boolean intersects(Rectangle2ai<?, ?, ?, ?, ?> s) {
+	default boolean intersects(Rectangle2ai<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Rectangle must not be null"; //$NON-NLS-1$
 		// Copied from AWT API
 		if (s.isEmpty()) return false;
@@ -1292,7 +1295,7 @@ public interface Path2ai<
 
 	@Pure
 	@Override
-	default boolean intersects(Segment2ai<?, ?, ?, ?, ?> s) {
+	default boolean intersects(Segment2ai<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Segment must not be null"; //$NON-NLS-1$
 		int mask = (getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2);
 		int crossings = computeCrossingsFromSegment(
@@ -1448,7 +1451,7 @@ public interface Path2ai<
 				case QUAD_TO:
 					endx = pathElement.getToX();
 					endy = pathElement.getToY();
-					Path2ai<?, ?, ?, ?, ?> curve = pi.getGeomFactory().newPath(pi.getWindingRule());
+					Path2ai<?, ?, ?, ?, ?, ?> curve = pi.getGeomFactory().newPath(pi.getWindingRule());
 					curve.moveTo(pathElement.getFromX(), pathElement.getFromY());
 					curve.quadTo(pathElement.getCtrlX1(), pathElement.getCtrlY1(), endx, endy);
 					int numCrosses = computeCrossingsFromRect(
@@ -1525,16 +1528,16 @@ public interface Path2ai<
 
 		/** Element factory.
 		 */
-		protected final GeomFactory2ai<E, ?, ?> factory;
+		protected final GeomFactory2ai<E, ?, ?, ?> factory;
 
 		/** Path.
 		 */
-		protected final Path2ai<?, ?, E, ?, ?> path;
+		protected final Path2ai<?, ?, E, ?, ?, ?> path;
 
 		/**
 		 * @param path the path.
 		 */
-		public AbstractPathIterator(Path2ai<?, ?, E, ?, ?> path) {
+		public AbstractPathIterator(Path2ai<?, ?, E, ?, ?, ?> path) {
 			assert (path != null) : "Path must not be null"; //$NON-NLS-1$
 			this.path = path;
 			this.factory = path.getGeomFactory();
@@ -1571,7 +1574,7 @@ public interface Path2ai<
 		}
 
 		@Override
-		public GeomFactory2ai<E, ?, ?> getGeomFactory() {
+		public GeomFactory2ai<E, ?, ?, ?> getGeomFactory() {
 			return this.factory;
 		}
 
@@ -1588,9 +1591,9 @@ public interface Path2ai<
 	 */
 	class PathPathIterator<E extends PathElement2ai> extends AbstractPathIterator<E> {
 
-		private final Point2D p1;
+		private final Point2D<?, ?> p1;
 
-		private final Point2D p2;
+		private final Point2D<?, ?> p2;
 
 		private int iType = 0;
 
@@ -1603,7 +1606,7 @@ public interface Path2ai<
 		/**
 		 * @param path the path.
 		 */
-		public PathPathIterator(Path2ai<?, ?, E, ?, ?> path) {
+		public PathPathIterator(Path2ai<?, ?, E, ?, ?, ?> path) {
 			super(path);
 			this.p1 = new InnerComputationPoint2ai();
 			this.p2 = new InnerComputationPoint2ai();
@@ -1713,13 +1716,13 @@ public interface Path2ai<
 
 		private final Transform2D transform;
 
-		private final Point2D p1;
+		private final Point2D<?, ?> p1;
 
-		private final Point2D p2;
+		private final Point2D<?, ?> p2;
 
-		private final Point2D ptmp1;
+		private final Point2D<?, ?> ptmp1;
 
-		private final Point2D ptmp2;
+		private final Point2D<?, ?> ptmp2;
 
 		private int iType = 0;
 
@@ -1731,7 +1734,7 @@ public interface Path2ai<
 		 * @param path the path.
 		 * @param transform the transformation.
 		 */
-		public TransformedPathIterator(Path2ai<?, ?, E, ?, ?> path, Transform2D transform) {
+		public TransformedPathIterator(Path2ai<?, ?, E, ?, ?, ?> path, Transform2D transform) {
 			super(path);
 			assert(transform != null) : "Transformation must not be null"; //$NON-NLS-1$
 			this.transform = transform;
@@ -1830,17 +1833,19 @@ public interface Path2ai<
 	/** Iterator on the pixels of the path.
 	 *
 	 * @param <P> the type of the points.
+	 * @param <V> the type of the vectors.
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 * @since 13.0
 	 */
-	class PixelIterator<P extends Point2D> implements Iterator<P> {
+	class PixelIterator<P extends Point2D<? super P, ? super V>,
+			V extends Vector2D<? super V, ? super P>> implements Iterator<P> {
 
 		private final PathIterator2ai<?> pathIterator;
 
-		private final GeomFactory2ai<?, P, ?> factory;
+		private final GeomFactory2ai<?, P, V, ?> factory;
 
 		private Iterator<P> lineIterator = null;
 
@@ -1850,7 +1855,7 @@ public interface Path2ai<
 		 * @param pi the iterator.
 		 * @param factory the element factory.
 		 */
-		public PixelIterator(PathIterator2ai<?> pi, GeomFactory2ai<?, P, ?> factory) {
+		public PixelIterator(PathIterator2ai<?> pi, GeomFactory2ai<?, P, V, ?> factory) {
 			assert (pi != null) : "Iterator must not be null"; //$NON-NLS-1$
 			assert (factory != null) : "Factory must not be null"; //$NON-NLS-1$
 			this.pathIterator = pi;
@@ -1867,7 +1872,7 @@ public interface Path2ai<
 				if (elt.isDrawable()) {
 					switch(elt.getType()) {
 					case LINE_TO:
-						Segment2ai<?, ?, ?, P, ?> segment = this.factory.newSegment(
+						Segment2ai<?, ?, ?, P, V, ?> segment = this.factory.newSegment(
 								elt.getFromX(), elt.getFromY(),
 								elt.getToX(), elt.getToY());
 						this.lineIterator = segment.getPointIterator();
@@ -1912,20 +1917,22 @@ public interface Path2ai<
 	/** An collection of the points of the path.
 	 *
 	 * @param <P> the type of the points.
+	 * @param <V> the type of the vectors.
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 * @since 13.0
 	 */
-	class PointCollection<P extends Point2D> implements Collection<P> {
+	class PointCollection<P extends Point2D<? super P, ? super V>,
+			V extends Vector2D<? super V, ? super P>> implements Collection<P> {
 
-		private final Path2ai<?, ?, ?, P, ?> path;
+		private final Path2ai<?, ?, ?, P, V, ?> path;
 		
 		/**
 		 * @param path the path from which the points are extracted.
 		 */
-		public PointCollection(Path2ai<?, ?, ?, P, ?> path) {
+		public PointCollection(Path2ai<?, ?, ?, P, V, ?> path) {
 			assert (path != null) : "Path must not be null"; //$NON-NLS-1$
 			this.path = path;
 		}
@@ -1943,7 +1950,7 @@ public interface Path2ai<
 		@Override
 		public boolean contains(Object o) {
 			if (o instanceof Point2D) {
-				return this.path.contains((Point2D)o);
+				return this.path.contains((Point2D<?, ?>) o);
 			}
 			return false;
 		}
@@ -1986,7 +1993,7 @@ public interface Path2ai<
 		@Override
 		public boolean remove(Object o) {
 			if (o instanceof Point2D) {
-				Point2D p = (Point2D)o;
+				Point2D<?, ?> p = (Point2D<?, ?>) o;
 				return this.path.remove(p.ix(), p.iy());
 			}
 			return false;
@@ -1997,7 +2004,7 @@ public interface Path2ai<
 			assert (c != null) : "Collection must not be null"; //$NON-NLS-1$
 			for(Object obj : c) {
 				if ((!(obj instanceof Point2D))
-						||(!this.path.contains((Point2D)obj))) {
+						||(!this.path.contains((Point2D<?, ?>) obj))) {
 					return false;
 				}
 			}
@@ -2022,7 +2029,7 @@ public interface Path2ai<
 			boolean changed = false;
 			for(Object obj : c) {
 				if (obj instanceof Point2D) {
-					Point2D pts = (Point2D)obj;
+					Point2D<?, ?> pts = (Point2D<?, ?>) obj;
 					if (this.path.remove(pts.ix(), pts.iy())) {
 						changed = true;
 					}
@@ -2046,15 +2053,17 @@ public interface Path2ai<
 	/** Iterator on the points of the path.
 	 *
 	 * @param <P> the type of the points.
+	 * @param <V> the type of the vectors.
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 * @since 13.0
 	 */
-	class PointIterator<P extends Point2D> implements Iterator<P> {
+	class PointIterator<P extends Point2D<? super P, ? super V>,
+			V extends Vector2D<? super V, ? super P>> implements Iterator<P> {
 
-		private final Path2ai<?, ?, ?, P, ?> path;
+		private final Path2ai<?, ?, ?, P, V, ?> path;
 		
 		private int index = 0;
 		
@@ -2063,7 +2072,7 @@ public interface Path2ai<
 		/**
 		 * @param path the path to iterate on.
 		 */
-		public PointIterator(Path2ai<?, ?, ?, P, ?> path) {
+		public PointIterator(Path2ai<?, ?, ?, P, V, ?> path) {
 			assert (path != null) : "Path must not be null"; //$NON-NLS-1$
 			this.path = path;
 		}
@@ -2085,7 +2094,7 @@ public interface Path2ai<
 
 		@Override
 		public void remove() {
-			Point2D p = this.lastReplied;
+			Point2D<?, ?> p = this.lastReplied;
 			this.lastReplied = null;
 			if (p==null)
 				throw new NoSuchElementException();
@@ -2108,7 +2117,7 @@ public interface Path2ai<
 
 		/** Path.
 		 */
-		private final Path2ai<?, ?, E, ?, ?> path;
+		private final Path2ai<?, ?, E, ?, ?, ?> path;
 		
 		/** The source iterator.
 		 */
@@ -2197,7 +2206,7 @@ public interface Path2ai<
 		 * @param limit the maximum number of recursive subdivisions
 		 *     allowed for any curved segment
 		 */
-		public FlatteningPathIterator(Path2ai<?, ?, E, ?, ?> path, Iterator<? extends E> pathIterator,
+		public FlatteningPathIterator(Path2ai<?, ?, E, ?, ?, ?> path, Iterator<? extends E> pathIterator,
 				double flatness, int limit) {
 			assert (path != null) : "Path must not be null"; //$NON-NLS-1$
 			assert (pathIterator != null) : "Iterator must not be null"; //$NON-NLS-1$
@@ -2644,7 +2653,7 @@ public interface Path2ai<
 		}
 
 		@Override
-		public GeomFactory2ai<E, ?, ?> getGeomFactory() {
+		public GeomFactory2ai<E, ?, ?, ?> getGeomFactory() {
 			return this.path.getGeomFactory();
 		}
 

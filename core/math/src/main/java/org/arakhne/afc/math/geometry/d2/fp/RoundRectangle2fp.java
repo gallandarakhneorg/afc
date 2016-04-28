@@ -35,7 +35,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @since 13.0
  */
 public class RoundRectangle2fp extends AbstractRectangularShape2fp<RoundRectangle2fp>
-	implements RoundRectangle2afp<Shape2fp<?>, RoundRectangle2fp, PathElement2fp, Point2fp, Rectangle2fp> {
+	implements RoundRectangle2afp<Shape2fp<?>, RoundRectangle2fp, PathElement2fp, Point2fp, Vector2fp, Rectangle2fp> {
 
 	private static final long serialVersionUID = -6419985193487310000L;
 
@@ -55,21 +55,21 @@ public class RoundRectangle2fp extends AbstractRectangularShape2fp<RoundRectangl
 	 * @param arcWidth
 	 * @param arcHeight
 	 */
-	public RoundRectangle2fp(Point2D min, Point2D max, double arcWidth, double arcHeight) {
+	public RoundRectangle2fp(Point2D<?, ?> min, Point2D<?, ?> max, double arcWidth, double arcHeight) {
 		this(min.getX(), min.getY(), max.getX(), max.getY(), arcWidth, arcHeight);
 	}
 
 	/**
 	 * @param rr
 	 */
-	public RoundRectangle2fp(RoundRectangle2afp<?, ?, ?, ?, ?> rr) {
+	public RoundRectangle2fp(RoundRectangle2afp<?, ?, ?, ?, ?, ?> rr) {
 		this(rr.getMinX(), rr.getMinY(), rr.getMaxX(), rr.getMaxY(), rr.getArcWidth(), rr.getArcHeight());
 	}
 
 	/**
 	 * @param rr
 	 */
-	public RoundRectangle2fp(RectangularShape2afp<?, ?, ?, ?, ?> rr) {
+	public RoundRectangle2fp(RectangularShape2afp<?, ?, ?, ?, ?, ?> rr) {
 		this(rr.getMinX(), rr.getMinY(), rr.getMaxX(), rr.getMaxY(), 0, 0);
 	}
 

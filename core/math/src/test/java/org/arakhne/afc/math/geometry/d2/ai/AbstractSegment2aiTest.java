@@ -37,8 +37,8 @@ import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.junit.Test;
 
 @SuppressWarnings("all")
-public abstract class AbstractSegment2aiTest<T extends Segment2ai<?, T, ?, ?, B>,
-		B extends Rectangle2ai<?, ?, ?, ?, B>> extends AbstractShape2aiTest<T, B> {
+public abstract class AbstractSegment2aiTest<T extends Segment2ai<?, T, ?, ?, ?, B>,
+		B extends Rectangle2ai<?, ?, ?, ?, ?, B>> extends AbstractShape2aiTest<T, B> {
 
 	@Override
 	protected final T createShape() {

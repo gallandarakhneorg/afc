@@ -24,6 +24,7 @@ import java.util.NoSuchElementException;
 import java.util.Queue;
 
 import org.arakhne.afc.math.tree.IterableNode;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 
 /**
@@ -69,6 +70,7 @@ implements Iterator<P> {
 	 * 
 	 * @return the listener
 	 */
+	@Pure
 	public BroadFirstIterationListener getBroadFirstIterationListener() {
 		return this.levelListener;
 	}
@@ -109,17 +111,15 @@ implements Iterator<P> {
 	 * is always lower or equal to <var>childIndex</var>.
 	 * @return the traversable node, or <code>null</code> if the node is not traversable.
 	 */
+	@Pure
 	protected abstract P toTraversableChild(P parent, C child, int childIndex, int notNullChildIndex);
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public boolean hasNext() {
 		return !this.availableNodes.isEmpty();
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public P next() {
 		this.lastReplied = null;
@@ -170,8 +170,6 @@ implements Iterator<P> {
 		return current;
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public void remove() {
 		P lr = this.lastReplied;

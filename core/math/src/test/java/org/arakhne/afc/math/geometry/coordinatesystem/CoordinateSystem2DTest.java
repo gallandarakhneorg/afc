@@ -82,7 +82,7 @@ public class CoordinateSystem2DTest extends AbstractMathTestCase {
 	 */
 	@Test
 	public void toDefaultPoint2f() {
-		Point2D pt, pt2, ptInv;
+		Point2fp pt, pt2, ptInv;
 		
 		pt = randomPoint2f();
 		ptInv = new Point2fp(pt.getX(), -pt.getY());
@@ -100,7 +100,7 @@ public class CoordinateSystem2DTest extends AbstractMathTestCase {
 	 */
 	@Test
 	public void fromDefaultPoint2f() {
-		Point2D pt, pt2, ptInv;
+		Point2fp pt, pt2, ptInv;
 		
 		pt = randomPoint2f();
 		ptInv = new Point2fp(pt.getX(), -pt.getY());
@@ -118,7 +118,7 @@ public class CoordinateSystem2DTest extends AbstractMathTestCase {
 	 */
 	@Test
 	public void toDefaultVector2f() {
-		Vector2D vt, vt2, vtInv;
+		Vector2fp vt, vt2, vtInv;
 		
 		vt = randomVector2f();
 		vtInv = new Vector2fp(vt.getX(), -vt.getY());
@@ -136,7 +136,7 @@ public class CoordinateSystem2DTest extends AbstractMathTestCase {
 	 */
 	@Test
 	public void fromDefaultVector2f() {
-		Vector2D vt, vt2, vtInv;
+		Vector2fp vt, vt2, vtInv;
 		
 		vt = randomVector2f();
 		vtInv = new Vector2fp(vt.getX(), -vt.getY());
@@ -184,7 +184,7 @@ public class CoordinateSystem2DTest extends AbstractMathTestCase {
 	 */
 	@Test
 	public void toSystemPoint2fCoordinateSystem2D() {
-		Point2D pt, pt2, ptInv;
+		Point2fp pt, pt2, ptInv;
 		
 		pt = randomPoint2f();
 		ptInv = new Point2fp(pt.getX(), -pt.getY());
@@ -210,7 +210,7 @@ public class CoordinateSystem2DTest extends AbstractMathTestCase {
 	 */
 	@Test
 	public void toSystemVector2fCoordinateSystem2D() {
-		Vector2D vt, vt2, vtInv;
+		Vector2fp vt, vt2, vtInv;
 		
 		vt = randomVector2f();
 		vtInv = new Vector2fp(vt.getX(), -vt.getY());

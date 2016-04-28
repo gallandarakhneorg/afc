@@ -21,7 +21,6 @@
 package org.arakhne.afc.math.geometry.d2.ifx;
 
 import org.arakhne.afc.math.geometry.d2.PathIterator2D;
-import org.arakhne.afc.math.geometry.d2.ai.GeomFactory2ai;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Abstract shape with 2 integer FX properties.
@@ -71,7 +70,7 @@ public abstract class AbstractShape2ifx<T extends AbstractShape2ifx<?>> implemen
     public abstract int hashCode();
 
 	@Override
-	public final GeomFactory2ai<PathElement2ifx, Point2ifx, Rectangle2ifx> getGeomFactory() {
+	public final GeomFactory2ifx getGeomFactory() {
 		return GeomFactory2ifx.SINGLETON;
 	}
 

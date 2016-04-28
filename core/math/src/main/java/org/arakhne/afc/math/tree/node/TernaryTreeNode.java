@@ -22,7 +22,9 @@ import java.io.ObjectInputStream;
 import java.util.Collection;
 import java.util.List;
 
+import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.tree.TreeNode;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 
 /**
@@ -113,8 +115,7 @@ public abstract class TernaryTreeNode<D, N extends TernaryTreeNode<D,N>> extends
 		this.right = null;
 	}
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public Class<? extends Enum<?>> getPartitionEnumeration() {
 		return null;
@@ -164,24 +165,19 @@ public abstract class TernaryTreeNode<D, N extends TernaryTreeNode<D,N>> extends
 		removeAllUserData();
 	}
 
-	/** {@inheritDoc}
-	 * 
-	 * @return always 3
-	 */
+	@Pure
 	@Override
 	public final int getChildCount() {
 		return 3;
 	}
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public int getNotNullChildCount() {
 		return this.notNullChildCount;
 	}
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public final N getChildAt(int index) throws IndexOutOfBoundsException {
 		switch(index) {
@@ -233,6 +229,7 @@ public abstract class TernaryTreeNode<D, N extends TernaryTreeNode<D,N>> extends
 	 * 
 	 * @return the left child.
 	 */
+	@Pure
 	public final N getLeftChild() {
 		return this.left;
 	}
@@ -274,6 +271,7 @@ public abstract class TernaryTreeNode<D, N extends TernaryTreeNode<D,N>> extends
 	 * 
 	 * @return the middle child.
 	 */
+	@Pure
 	public final N getMiddleChild() {
 		return this.middle;
 	}
@@ -315,27 +313,22 @@ public abstract class TernaryTreeNode<D, N extends TernaryTreeNode<D,N>> extends
 	 * 
 	 * @return the right child.
 	 */
+	@Pure
 	public final N getRightChild() {
 		return this.right;
 	}
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public final boolean isLeaf() {
 		return this.left==null && this.right==null && this.middle==null;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public boolean moveTo(N newParent, int index) {
 		return moveTo(newParent, index, false);
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public final boolean setChildAt(int index, N newChild) throws IndexOutOfBoundsException {
 		switch(index) {
@@ -350,8 +343,6 @@ public abstract class TernaryTreeNode<D, N extends TernaryTreeNode<D,N>> extends
 		}
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	protected void setChildAtWithoutEventFiring(int index, N newChild) throws IndexOutOfBoundsException {
 		switch(index) {
@@ -375,8 +366,6 @@ public abstract class TernaryTreeNode<D, N extends TernaryTreeNode<D,N>> extends
 		}
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public boolean removeChild(N child) {
 		if (child!=null) {
@@ -393,8 +382,7 @@ public abstract class TernaryTreeNode<D, N extends TernaryTreeNode<D,N>> extends
 		return false;
 	}
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public final int indexOf(N child) {
 		if (child==this.left) return 0;
@@ -409,6 +397,7 @@ public abstract class TernaryTreeNode<D, N extends TernaryTreeNode<D,N>> extends
 	 * @param potentialChild - the node to test
 	 * @return a boolean, true if the specified node is effectively a child of this node, false otherwise
 	 */
+	@Pure
 	public boolean hasChild(N potentialChild) {
 		if ((this.left == potentialChild) || (this.middle == potentialChild) || (this.right == potentialChild)) {
 			return true;
@@ -416,9 +405,6 @@ public abstract class TernaryTreeNode<D, N extends TernaryTreeNode<D,N>> extends
 		return false;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void getChildren(Object[] array) {
 		if (array!=null) {
@@ -434,21 +420,19 @@ public abstract class TernaryTreeNode<D, N extends TernaryTreeNode<D,N>> extends
 		}
 	}
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public int getMinHeight() {
-		return 1+minInteger(
+		return 1+MathUtil.min(
 				this.left!=null ? this.left.getMinHeight() : 0,
 				this.middle!=null ? this.middle.getMinHeight() : 0,
 				this.right!=null ? this.right.getMinHeight() : 0);
 	}
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public int getMaxHeight() {
-		return 1+maxInteger(
+		return 1+MathUtil.max(
 				this.left!=null ? this.left.getMaxHeight() : 0,
 				this.middle!=null ? this.middle.getMaxHeight() : 0,
 				this.right!=null ? this.right.getMaxHeight() : 0);

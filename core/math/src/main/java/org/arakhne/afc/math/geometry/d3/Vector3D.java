@@ -21,6 +21,7 @@
 package org.arakhne.afc.math.geometry.d3;
 
 import org.arakhne.afc.math.MathUtil;
+import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 
@@ -44,6 +45,7 @@ public interface Vector3D extends Tuple3D<Vector3D> {
 	 * @return the dot product.
 	 */
 	@Pure
+	@Inline(value = "($1 * $4 + $2 * $5 +  $3 * $6)")
 	static double dotProduct(double x1, double y1, double z1, double x2, double y2, double z2) {
 		return x1 * x2 + y1 * y2 +  z1 * z2;
 	}

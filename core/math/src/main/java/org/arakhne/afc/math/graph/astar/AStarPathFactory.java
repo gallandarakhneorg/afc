@@ -23,6 +23,7 @@ package org.arakhne.afc.math.graph.astar;
 import org.arakhne.afc.math.graph.GraphPath;
 import org.arakhne.afc.math.graph.GraphPoint;
 import org.arakhne.afc.math.graph.GraphSegment;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** This interface provides a mean to create a path factory
  * for the {@link AStar A* algorithm}.
@@ -45,6 +46,7 @@ public interface AStarPathFactory<GP extends GraphPath<GP,ST,PT>, ST extends Gra
 	 * @param segment is the first connection to follow.
 	 * @return the path instance.
 	 */
+	@Pure
 	public GP newPath(PT startPoint, ST segment);
 	
 	/** Add the given segment into the given path.

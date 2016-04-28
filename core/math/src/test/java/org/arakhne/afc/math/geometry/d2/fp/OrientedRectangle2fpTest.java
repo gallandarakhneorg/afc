@@ -28,7 +28,7 @@ import org.arakhne.afc.math.geometry.d2.afp.TestShapeFactory;
 public class OrientedRectangle2fpTest extends AbstractOrientedRectangle2afpTest<OrientedRectangle2fp, Rectangle2fp> {
 
 	@Override
-	protected TestShapeFactory<Point2fp, Rectangle2fp> createFactory() {
+	protected TestShapeFactory2fp createFactory() {
 		return TestShapeFactory2fp.SINGLETON;
 	}
 

@@ -38,15 +38,15 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public class PathShadow2ai<B extends Rectangle2ai<?, ?, ?, ?, B>> {
+public class PathShadow2ai<B extends Rectangle2ai<?, ?, ?, ?, ?, B>> {
 
-	private final Path2ai<?, ?, ?, ?, B> path;
+	private final Path2ai<?, ?, ?, ?, ?, B> path;
 	private final B bounds;
 
 	/**
 	 * @param path
 	 */
-	public PathShadow2ai(Path2ai<?, ?, ?, ?, B> path) {
+	public PathShadow2ai(Path2ai<?, ?, ?, ?, ?, B> path) {
 		assert (path != null) : "Path must not be null"; //$NON-NLS-1$
 		this.path = path;
 		this.bounds = this.path.toBoundingBox();
@@ -131,7 +131,7 @@ public class PathShadow2ai<B extends Rectangle2ai<?, ?, ?, ?, B>> {
 			int x1, int y1, int x2, int y2, 
 			boolean closeable,
 			PathWindingRule rule,
-			GeomFactory2ai<E, ?, ?> factory,
+			GeomFactory2ai<E, ?, ?, ?> factory,
 			PathShadowData data) {	
 		if (!pi.hasNext() || data.crossings==MathConstants.SHAPE_INTERSECTS) return;
 		PathElement2ai element;
@@ -141,7 +141,7 @@ public class PathShadow2ai<B extends Rectangle2ai<?, ?, ?, ?, B>> {
 			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
 		}
 
-		Path2ai<?, ?, E, ?, ?> localPath;
+		Path2ai<?, ?, E, ?, ?, ?> localPath;
 		int movx = element.getToX();
 		int movy = element.getToY();
 		int curx = movx;

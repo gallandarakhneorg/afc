@@ -34,7 +34,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  */
 public abstract class AbstractRectangularShape2fp<IT extends AbstractRectangularShape2fp<?>>
 	extends AbstractShape2fp<IT>
-	implements RectangularShape2afp<Shape2fp<?>, IT, PathElement2fp, Point2fp, Rectangle2fp> {
+	implements RectangularShape2afp<Shape2fp<?>, IT, PathElement2fp, Point2fp, Vector2fp, Rectangle2fp> {
 
 	private static final long serialVersionUID = 562658629477723655L;
 
@@ -55,7 +55,7 @@ public abstract class AbstractRectangularShape2fp<IT extends AbstractRectangular
 	/**
 	 * @param r
 	 */
-	public AbstractRectangularShape2fp(RectangularShape2afp<?, ?, ?, ?, ?> r) {
+	public AbstractRectangularShape2fp(RectangularShape2afp<?, ?, ?, ?, ?, ?> r) {
 		assert (r != null) : "Shape must be not null"; //$NON-NLS-1$
 		this.minx = r.getMinX();
 		this.miny = r.getMinY();

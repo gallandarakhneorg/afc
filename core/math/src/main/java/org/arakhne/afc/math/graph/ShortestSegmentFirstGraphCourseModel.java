@@ -24,6 +24,8 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /**
  * This class permits to implement a shortest path
  * algorithm to make a course inside a graph.
@@ -50,12 +52,11 @@ public class ShortestSegmentFirstGraphCourseModel<ST extends GraphSegment<ST,PT>
 	 * @return <code>true</code> if reversed, otherwise <code>false</code>
 	 */
 	@Override
+	@Pure
 	public final boolean isReversedRestitution() {
 		return false;
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public void addIterationElement(GraphIterationElement<ST,PT> element) {
 		// Search for the insertion index
@@ -81,31 +82,24 @@ public class ShortestSegmentFirstGraphCourseModel<ST extends GraphSegment<ST,PT>
 		this.list.add(index,element);
 	}
 	
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public boolean isEmpty() {
 		return this.list.isEmpty();
 	}
 		
-	/** {@inheritDoc}
-	 */
 	@Override
 	public GraphIterationElement<ST,PT> getNextIterationElement() {
 		if (this.list.isEmpty()) return null;
 		return this.list.getFirst();
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public GraphIterationElement<ST,PT> removeNextIterationElement() {
 		if (this.list.isEmpty()) return null;
 		return this.list.removeFirst();
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public void removeIterationElements(Collection<GraphIterationElement<ST,PT>> elements) {
 		this.list.removeAll(elements);

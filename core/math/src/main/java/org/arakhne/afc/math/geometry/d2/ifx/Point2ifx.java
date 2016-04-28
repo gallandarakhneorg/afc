@@ -21,6 +21,7 @@
  */
 package org.arakhne.afc.math.geometry.d2.ifx;
 
+import org.arakhne.afc.math.geometry.d2.GeomFactory;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.arakhne.afc.math.geometry.d2.UnmodifiablePoint2D;
@@ -36,7 +37,7 @@ import javafx.beans.property.IntegerProperty;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public class Point2ifx extends Tuple2ifx<Point2D, Point2ifx> implements Point2D {
+public class Point2ifx extends Tuple2ifx<Point2ifx> implements Point2D<Point2ifx, Vector2ifx> {
 
 	private static final long serialVersionUID = -1421615416984636660L;
 
@@ -106,17 +107,27 @@ public class Point2ifx extends Tuple2ifx<Point2D, Point2ifx> implements Point2D 
 	public Point2ifx(long x, long y) {
 		super(x,y);
 	}
+	
+	@Override
+	public GeomFactory2ifx getGeomFactory() {
+		return GeomFactory2ifx.SINGLETON;
+	}
 
 	@Pure
 	@Override
-	public Point2D toUnmodifiable() {
-		return new UnmodifiablePoint2D() {
+	public UnmodifiablePoint2D<Point2ifx, Vector2ifx> toUnmodifiable() {
+		return new UnmodifiablePoint2D<Point2ifx, Vector2ifx>() {
 
 			private static final long serialVersionUID = -8264299960804312720L;
 
 			@Override
-			public Point2D clone() {
-				return Point2ifx.this.toUnmodifiable();
+			public GeomFactory<Vector2ifx, Point2ifx> getGeomFactory() {
+				return Point2ifx.this.getGeomFactory();
+			}
+			
+			@Override
+			public Point2ifx clone() {
+				return new Point2ifx(Point2ifx.this);
 			}
 
 			@Override

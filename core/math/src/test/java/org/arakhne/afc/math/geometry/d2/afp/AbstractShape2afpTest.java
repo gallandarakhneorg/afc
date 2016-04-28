@@ -27,11 +27,15 @@ import static org.junit.Assert.fail;
 import java.util.Arrays;
 
 import org.arakhne.afc.math.AbstractMathTestCase;
+import org.arakhne.afc.math.Unefficient;
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2DTestRule;
 import org.arakhne.afc.math.geometry.d2.Point2D;
+import org.arakhne.afc.math.geometry.d2.Shape2D;
+import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
+import org.eclipse.xtext.xbase.lib.Pure;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.ComparisonFailure;
@@ -39,8 +43,8 @@ import org.junit.Rule;
 import org.junit.Test;
 
 @SuppressWarnings("all")
-public abstract class AbstractShape2afpTest<T extends Shape2afp<?, ?, ?, ?, ?>,
-		B extends Rectangle2afp<?, ?, ?, ?, B>> extends AbstractMathTestCase {
+public abstract class AbstractShape2afpTest<T extends Shape2afp<?, ?, ?, ?, ?, ?>,
+		B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractMathTestCase {
 	
 	@Rule
 	public CoordinateSystem2DTestRule csTestRule = new CoordinateSystem2DTestRule();
@@ -51,7 +55,7 @@ public abstract class AbstractShape2afpTest<T extends Shape2afp<?, ?, ?, ?, ?>,
 	
 	/** Shape factory.
 	 */
-	protected TestShapeFactory<? extends Point2D, B> factory;
+	protected TestShapeFactory<? extends Point2D, ? extends Vector2D, B> factory;
 	
 	/**
 	 * @throws Exception
@@ -62,7 +66,7 @@ public abstract class AbstractShape2afpTest<T extends Shape2afp<?, ?, ?, ?, ?>,
 		this.shape = createShape();
 	}
 	
-	protected abstract TestShapeFactory<? extends Point2D, B> createFactory();
+	protected abstract TestShapeFactory<? extends Point2D, ? extends Vector2D, B> createFactory();
 	
 	/** Create the shape to test.
 	 * 
@@ -70,7 +74,7 @@ public abstract class AbstractShape2afpTest<T extends Shape2afp<?, ?, ?, ?, ?>,
 	 */
 	protected abstract T createShape();
 	
-	public final Segment2afp<?, ?, ?, ?, B> createSegment(double x1, double y1, double x2, double y2) {
+	public final Segment2afp<?, ?, ?, ?, ?, B> createSegment(double x1, double y1, double x2, double y2) {
 		return this.factory.createSegment(x1, y1, x2, y2);
 	}
 	
@@ -78,11 +82,11 @@ public abstract class AbstractShape2afpTest<T extends Shape2afp<?, ?, ?, ?, ?>,
 		return this.factory.createRectangle(x, y, width, height);
 	}
 
-	public final Ellipse2afp<?, ?, ?, ?, B> createEllipse(double x, double y, double width, double height) {
+	public final Ellipse2afp<?, ?, ?, ?, ?, B> createEllipse(double x, double y, double width, double height) {
 		return this.factory.createEllipse(x, y, width, height);
 	}
 
-	public final Ellipse2afp<?, ?, ?, ?, B> createEllipseFromCorners(double minx, double miny, double maxx, double maxy) {
+	public final Ellipse2afp<?, ?, ?, ?, ?, B> createEllipseFromCorners(double minx, double miny, double maxx, double maxy) {
 		double x, width, y, height;
 		if (minx < maxx) {
 			x = minx;
@@ -101,31 +105,31 @@ public abstract class AbstractShape2afpTest<T extends Shape2afp<?, ?, ?, ?, ?>,
 		return this.factory.createEllipse(x, y, width, height);
 	}
 
-	public final RoundRectangle2afp<?, ?, ?, ?, B> createRoundRectangle(double x, double y,
+	public final RoundRectangle2afp<?, ?, ?, ?, ?, B> createRoundRectangle(double x, double y,
 			double width, double height, double arcWidth, double arcHeight) {
 		return this.factory.createRoundRectangle(x, y, width, height, arcWidth, arcHeight);
 	}
 
-	public final OrientedRectangle2afp<?, ?, ?, ?, B> createOrientedRectangle(
+	public final OrientedRectangle2afp<?, ?, ?, ?, ?, B> createOrientedRectangle(
 			double centerX, double centerY, double axis1X, double axis1Y, double extent1, double extent2) {
 		return this.factory.createOrientedRectangle(centerX, centerY, axis1X, axis1Y, extent1, extent2);
 	}
 
-	public final Parallelogram2afp<?, ?, ?, ?, B> createParallelogram(
+	public final Parallelogram2afp<?, ?, ?, ?, ?, B> createParallelogram(
 			double cx, double cy, double ux, double uy, double extent1, double vx, double vy, double extent2) {
 		return this.factory.createParallelogram(cx, cy, ux, uy, extent1, vx, vy, extent2);
 	}
 
-	public final Triangle2afp<?, ?, ?, ?, B> createTriangle(
+	public final Triangle2afp<?, ?, ?, ?, ?, B> createTriangle(
 			double x1, double y1, double x2, double y2, double x3, double y3) {
 		return this.factory.createTriangle(x1, y1, x2, y2, x3, y3);
 	}
 
-	public final Circle2afp<?, ?, ?, ?, B> createCircle(double x, double y, double radius) {
+	public final Circle2afp<?, ?, ?, ?, ?, B> createCircle(double x, double y, double radius) {
 		return this.factory.createCircle(x, y, radius);
 	}
 	
-	public final MultiShape2afp<?, ?, ?, ?, ?, B> createMultiShape() {
+	public final MultiShape2afp<?, ?, ?, ?, ?, ?, B> createMultiShape() {
 		return this.factory.createMultiShape();
 	}
 
@@ -137,16 +141,16 @@ public abstract class AbstractShape2afpTest<T extends Shape2afp<?, ?, ?, ?, ?>,
 		return this.factory.createVector(x, y);
 	}
 
-	public final Path2afp<?, ?, ?, ?, B> createPath() {
+	public final Path2afp<?, ?, ?, ?, ?, B> createPath() {
 		return this.factory.createPath(null);
 	}
 
-	public final Path2afp<?, ?, ?, ?, B> createPath(PathWindingRule rule) {
+	public final Path2afp<?, ?, ?, ?, ?, B> createPath(PathWindingRule rule) {
 		return this.factory.createPath(rule);
 	}
 
-	public final Path2afp<?, ?, ?, ?, B> createPolyline(double... coordinates) {
-		Path2afp<?, ?, ?, ?, B>  path = createPath();
+	public final Path2afp<?, ?, ?, ?, ?, B> createPolyline(double... coordinates) {
+		Path2afp<?, ?, ?, ?, ?, B>  path = createPath();
 		path.moveTo(coordinates[0], coordinates[1]);
 		for (int i = 2; i < coordinates.length; i += 2) {
 			path.lineTo(coordinates[i], coordinates[i + 1]);
@@ -344,4 +348,31 @@ public abstract class AbstractShape2afpTest<T extends Shape2afp<?, ?, ?, ?, ?>,
 		assertNotNull(this.shape.getGeomFactory());
 	}
 	
+	@Test
+	public abstract void intersectsShape2D();
+
+	@Test
+	public abstract void operator_addVector2D();
+
+	@Test
+	public abstract void operator_plusVector2D();
+
+	@Test
+	public abstract void operator_removeVector2D();
+
+	@Test
+	public abstract void operator_minusVector2D();
+
+	@Test
+	public abstract void operator_multiplyTransform2D();
+
+	@Test
+	public abstract void operator_andPoint2D();
+
+	@Test
+	public abstract void operator_andShape2D();
+
+	@Test
+	public abstract void operator_upToPoint2D();
+
 }

@@ -35,14 +35,14 @@ import org.arakhne.afc.math.geometry.d2.ai.Segment2ai;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public class GeomFactory2i implements GeomFactory2ai<PathElement2i, Point2i, Rectangle2i> {
+public class GeomFactory2i implements GeomFactory2ai<PathElement2i, Point2i, Vector2i, Rectangle2i> {
 
 	/** The singleton of the factory.
 	 */
 	public static final GeomFactory2i SINGLETON = new GeomFactory2i();
 	
 	@Override
-	public Point2i convertToPoint(Point2D point) {
+	public Point2i convertToPoint(Point2D<?, ?> point) {
 		assert (point != null) : "Point must be not null"; //$NON-NLS-1$
 		try {
 			return (Point2i) point;
@@ -51,22 +51,20 @@ public class GeomFactory2i implements GeomFactory2ai<PathElement2i, Point2i, Rec
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends Vector2D> T convertToVector(Point2D point) {
+	public Vector2i convertToVector(Point2D<?, ?> point) {
 		assert (point != null) : "Point must be not null"; //$NON-NLS-1$
-		return (T) new Vector2i(point.ix(), point.iy());
+		return new Vector2i(point.ix(), point.iy());
 	}
 
 	@Override
-	public Point2i convertToPoint(Vector2D vector) {
+	public Point2i convertToPoint(Vector2D<?, ?> vector) {
 		assert (vector != null) : "Point must be not null"; //$NON-NLS-1$
 		return new Point2i(vector.ix(), vector.iy());
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends Vector2D> T convertToVector(Vector2D vector) {
+	public Vector2i convertToVector(Vector2D<?, ?> vector) {
 		assert (vector != null) : "Point must be not null"; //$NON-NLS-1$
 		Vector2i vv;
 		try {
@@ -74,7 +72,7 @@ public class GeomFactory2i implements GeomFactory2ai<PathElement2i, Point2i, Rec
 		} catch (Throwable exception) {
 			vv = new Vector2i(vector.ix(), vector.iy());
 		}
-		return (T) vv;
+		return vv;
 	}
 
 	@Override
@@ -82,10 +80,9 @@ public class GeomFactory2i implements GeomFactory2ai<PathElement2i, Point2i, Rec
 		return new Point2i(x, y);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends Vector2D> T newVector(int x, int y) {
-		return (T) new Vector2i(x, y);
+	public Vector2i newVector(int x, int y) {
+		return new Vector2i(x, y);
 	}
 
 	@Override
@@ -93,14 +90,13 @@ public class GeomFactory2i implements GeomFactory2ai<PathElement2i, Point2i, Rec
 		return new Point2i();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends Vector2D> T newVector() {
-		return (T) new Vector2i();
+	public Vector2i newVector() {
+		return new Vector2i();
 	}
 
 	@Override
-	public Path2ai<?, ?, PathElement2i, Point2i, ?> newPath(PathWindingRule rule) {
+	public Path2ai<?, ?, PathElement2i, Point2i, Vector2i, Rectangle2i> newPath(PathWindingRule rule) {
 		assert (rule != null) : "Path winding rule must be not null"; //$NON-NLS-1$
 		return new Path2i(rule);
 	}
@@ -147,7 +143,7 @@ public class GeomFactory2i implements GeomFactory2ai<PathElement2i, Point2i, Rec
 	}
 
 	@Override
-	public Segment2ai<?, ?, PathElement2i, Point2i, ?> newSegment(int x1, int y1, int x2, int y2) {
+	public Segment2ai<?, ?, PathElement2i, Point2i, Vector2i, Rectangle2i> newSegment(int x1, int y1, int x2, int y2) {
 		return new Segment2i(x1, y1, x2, y2);
 	}
 

@@ -28,6 +28,7 @@ import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
+import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.afp.Path2afp.CrossingComputationType;
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -37,6 +38,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @param <IT> is the type of the implementation of this shape.
  * @param <IE> is the type of the path elements.
  * @param <P> is the type of the points.
+ * @param <V> is the type of the vectors.
  * @param <B> is the type of the bounding boxes.
  * @author $Author: sgalland$
  * @author $Author: hjaffali$
@@ -46,12 +48,13 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @since 13.0
  */
 public interface Circle2afp<
-		ST extends Shape2afp<?, ?, IE, P, B>,
-		IT extends Circle2afp<?, ?, IE, P, B>,
+		ST extends Shape2afp<?, ?, IE, P, V, B>,
+		IT extends Circle2afp<?, ?, IE, P, V, B>,
 		IE extends PathElement2afp,
-		P extends Point2D,
-		B extends Rectangle2afp<?, ?, IE, P, B>>
-		extends Shape2afp<ST, IT, IE, P, B> {
+		P extends Point2D<? super P, ? super V>,
+		V extends Vector2D<? super V, ? super P>,
+		B extends Rectangle2afp<?, ?, IE, P, V, B>>
+		extends Shape2afp<ST, IT, IE, P, V, B> {
 
 	/**
 	 * Replies if the given point is inside the given ellipse.
@@ -240,7 +243,7 @@ public interface Circle2afp<
 	 * 
 	 * @param center
 	 */
-	default void setCenter(Point2D center) {
+	default void setCenter(Point2D<?, ?> center) {
 		assert (center != null) : "Point must be not null"; //$NON-NLS-1$
 		set(center.getX(), center.getY(), getRadius());
 	}
@@ -294,7 +297,7 @@ public interface Circle2afp<
 	 * @param center
 	 * @param radius
 	 */
-	default void set(Point2D center, double radius) {
+	default void set(Point2D<?, ?> center, double radius) {
 		assert (center != null) : "Point must be not null"; //$NON-NLS-1$
 		set(center.getX(), center.getY(), radius);
 	}
@@ -328,7 +331,7 @@ public interface Circle2afp<
 
 	@Pure
 	@Override
-	default double getDistance(Point2D p) {
+	default double getDistance(Point2D<?, ?> p) {
 		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
 		double d = Point2D.getDistancePointPoint(getX(), getY(), p.getX(), p.getY());
 		d = d - getRadius();
@@ -337,7 +340,7 @@ public interface Circle2afp<
 	
 	@Pure
 	@Override
-	default double getDistanceSquared(Point2D p) {
+	default double getDistanceSquared(Point2D<?, ?> p) {
 		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
 		double x = getX();
 		double y = getY();
@@ -354,17 +357,17 @@ public interface Circle2afp<
 
 	@Pure
 	@Override
-	default double getDistanceL1(Point2D p) {
+	default double getDistanceL1(Point2D<?, ?> p) {
 		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
-		Point2D r = getClosestPointTo(p);
+		Point2D<?, ?> r = getClosestPointTo(p);
 		return r.getDistanceL1(p);
 	}
 
 	@Pure
 	@Override
-	default double getDistanceLinf(Point2D p) {
+	default double getDistanceLinf(Point2D<?, ?> p) {
 		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
-		Point2D r = getClosestPointTo(p);
+		Point2D<?, ?> r = getClosestPointTo(p);
 		return r.getDistanceLinf(p);
 	}
 
@@ -375,7 +378,7 @@ public interface Circle2afp<
 	}
 	
 	@Override
-	default boolean contains(Rectangle2afp<?, ?, ?, ?, ?> r) {
+	default boolean contains(Rectangle2afp<?, ?, ?, ?, ?, ?> r) {
 		assert (r != null) : "Rectangle must be not null"; //$NON-NLS-1$
 		return containsCircleRectangle(getX(), getY(), getRadius(),
 				r.getMinX(), r.getMinY(), r.getMaxX(), r.getMaxY());
@@ -388,7 +391,7 @@ public interface Circle2afp<
 
 	@Pure
 	@Override
-	default boolean intersects(Rectangle2afp<?, ?, ?, ?, ?> r) {
+	default boolean intersects(Rectangle2afp<?, ?, ?, ?, ?, ?> r) {
 		assert (r != null) : "Rectangle must be not null"; //$NON-NLS-1$
 		return intersectsCircleRectangle(
 				getX(), getY(), getRadius(),
@@ -397,7 +400,7 @@ public interface Circle2afp<
 
 	@Pure
 	@Override
-	default boolean intersects(Ellipse2afp<?, ?, ?, ?, ?> s) {
+	default boolean intersects(Ellipse2afp<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Ellipse must be not null"; //$NON-NLS-1$
 		return Ellipse2afp.intersectsEllipseCircle(
 				s.getMinX(), s.getMinY(),
@@ -407,7 +410,7 @@ public interface Circle2afp<
 	
 	@Pure
 	@Override
-	default boolean intersects(Circle2afp<?, ?, ?, ?, ?> s) {
+	default boolean intersects(Circle2afp<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Circle must be not null"; //$NON-NLS-1$
 		return intersectsCircleCircle(
 				getX(), getY(), getRadius(),
@@ -416,7 +419,7 @@ public interface Circle2afp<
 	
 	@Pure
 	@Override
-	default boolean intersects(Triangle2afp<?, ?, ?, ?, ?> s) {
+	default boolean intersects(Triangle2afp<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Triangle must be not null"; //$NON-NLS-1$
 		return Triangle2afp.intersectsTriangleCircle(
 				s.getX1(), s.getY1(),
@@ -428,7 +431,7 @@ public interface Circle2afp<
 
 	@Pure
 	@Override
-	default boolean intersects(Segment2afp<?, ?, ?, ?, ?> s) {
+	default boolean intersects(Segment2afp<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Segment must be not null"; //$NON-NLS-1$
 		return intersectsCircleSegment(
 				getX(), getY(), getRadius(),
@@ -438,7 +441,7 @@ public interface Circle2afp<
 	
 	@Pure
 	@Override
-	default boolean intersects(OrientedRectangle2afp<?, ?, ?, ?, ?> s) {
+	default boolean intersects(OrientedRectangle2afp<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Oriented rectangle must be not null"; //$NON-NLS-1$
 		return OrientedRectangle2afp.intersectsOrientedRectangleCircle(
 				s.getCenterX(), s.getCenterY(), 
@@ -449,7 +452,7 @@ public interface Circle2afp<
 
 	@Pure
 	@Override
-	default boolean intersects(Parallelogram2afp<?, ?, ?, ?, ?> s) {
+	default boolean intersects(Parallelogram2afp<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Parallelogram must be not null"; //$NON-NLS-1$
 		return Parallelogram2afp.intersectsParallelogramCircle(
 				s.getCenterX(), s.getCenterY(), 
@@ -475,7 +478,7 @@ public interface Circle2afp<
 
 	@Pure
 	@Override
-	default boolean intersects(RoundRectangle2afp<?, ?, ?, ?, ?> s) {
+	default boolean intersects(RoundRectangle2afp<?, ?, ?, ?, ?, ?> s) {
 		assert (s!= null) : "Round rectangle must be not null"; //$NON-NLS-1$
 		return RoundRectangle2afp.intersectsRoundRectangleCircle(
 				s.getMinX(), s.getMinY(),
@@ -486,14 +489,14 @@ public interface Circle2afp<
 		
 	@Pure
 	@Override
-	default boolean intersects(MultiShape2afp<?, ?, ?, ?, ?, ?> s) {
+	default boolean intersects(MultiShape2afp<?, ?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "MultiShape must be not null"; //$NON-NLS-1$
 		return s.intersects(this);
 	}
 
 	@Pure
 	@Override
-	default P getClosestPointTo(Point2D p) {
+	default P getClosestPointTo(Point2D<?, ?> p) {
 		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
 		double x = getX();
 		double y = getY();
@@ -510,7 +513,7 @@ public interface Circle2afp<
 
 	@Pure
 	@Override
-	default P getFarthestPointTo(Point2D p) {
+	default P getFarthestPointTo(Point2D<?, ?> p) {
 		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
 		double x = getX();
 		double y = getY();
@@ -585,18 +588,18 @@ public interface Circle2afp<
 
 		/** The iterated shape.
 		 */
-		protected final Circle2afp<?, ?, T, ?, ?> circle;
+		protected final Circle2afp<?, ?, T, ?, ?, ?> circle;
 
 		/**
 		 * @param circle the circle.
 		 */
-		public AbstractCirclePathIterator(Circle2afp<?, ?, T, ?, ?> circle) {
+		public AbstractCirclePathIterator(Circle2afp<?, ?, T, ?, ?, ?> circle) {
 			assert (circle != null) : "Circle must be not null"; //$NON-NLS-1$
 			this.circle = circle;
 		}
 
 		@Override
-		public GeomFactory2afp<T, ?, ?> getGeomFactory() {
+		public GeomFactory2afp<T, ?, ?, ?> getGeomFactory() {
 			return this.circle.getGeomFactory();
 		}
 
@@ -659,7 +662,7 @@ public interface Circle2afp<
 		/**
 		 * @param circle the circle to iterate on.
 		 */
-		public CirclePathIterator(Circle2afp<?, ?, T, ?, ?> circle) {
+		public CirclePathIterator(Circle2afp<?, ?, T, ?, ?, ?> circle) {
 			super(circle);
 			if (circle.isEmpty()) {
 				this.index = NUMBER_ELEMENTS;
@@ -731,7 +734,7 @@ public interface Circle2afp<
 			
 		private final Transform2D transform;
 
-		private final Point2D tmpPoint;
+		private final Point2D<?, ?> tmpPoint;
 		
 		private double x;
 		
@@ -753,7 +756,7 @@ public interface Circle2afp<
 		 * @param circle the iterated circle.
 		 * @param transform the transformation to apply.
 		 */
-		public TransformedCirclePathIterator(Circle2afp<?, ?, T, ?, ?> circle, Transform2D transform) {
+		public TransformedCirclePathIterator(Circle2afp<?, ?, T, ?, ?, ?> circle, Transform2D transform) {
 			super(circle);
 			assert(transform != null) : "Transformation must be not null"; //$NON-NLS-1$
 			this.transform = transform;

@@ -34,6 +34,7 @@ import org.arakhne.afc.math.graph.GraphPoint;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("all")
 class AStarNodeStub implements GraphPoint<AStarNodeStub,AStarEdgeStub>, AStarNode<AStarEdgeStub,AStarNodeStub> {
 
 	/**
@@ -44,7 +45,7 @@ class AStarNodeStub implements GraphPoint<AStarNodeStub,AStarEdgeStub>, AStarNod
 	
 	/** Position of the node.
 	 */
-	final Point2D position;
+	final Point2fp position;
 	
 	private double cost = Double.NaN;
 	private double eCost = Double.NaN;
@@ -68,11 +69,11 @@ class AStarNodeStub implements GraphPoint<AStarNodeStub,AStarEdgeStub>, AStarNod
 		b.append(";E="); //$NON-NLS-1$
 		b.append(this.astarEntryConnection);
 		b.append(";g="); //$NON-NLS-1$
-		b.append(Double.toString(cost()));
+		b.append(Double.toString(getCost()));
 		b.append(";h="); //$NON-NLS-1$
-		b.append(Double.toString(estimatedCost()));
+		b.append(Double.toString(getEstimatedCost()));
 		b.append(";f="); //$NON-NLS-1$
-		b.append(Double.toString(pathCost()));
+		b.append(Double.toString(getPathCost()));
 		b.append("}"); //$NON-NLS-1$
 		return b.toString();
 	}
@@ -146,7 +147,7 @@ class AStarNodeStub implements GraphPoint<AStarNodeStub,AStarEdgeStub>, AStarNod
 	/** {@inheritDoc}
 	 */
 	@Override
-	public double cost() {
+	public double getCost() {
 		return this.cost;
 	}
 
@@ -160,7 +161,7 @@ class AStarNodeStub implements GraphPoint<AStarNodeStub,AStarEdgeStub>, AStarNod
 	/** {@inheritDoc}
 	 */
 	@Override
-	public double estimatedCost() {
+	public double getEstimatedCost() {
 		return this.eCost;
 	}
 
@@ -200,7 +201,7 @@ class AStarNodeStub implements GraphPoint<AStarNodeStub,AStarEdgeStub>, AStarNod
 	 * {@inheritDoc}
 	 */
 	@Override
-	public double pathCost() {
+	public double getPathCost() {
 		return this.cost + this.eCost;
 	}
 

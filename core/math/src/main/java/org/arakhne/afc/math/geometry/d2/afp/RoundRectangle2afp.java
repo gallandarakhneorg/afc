@@ -29,6 +29,7 @@ import org.arakhne.afc.math.Unefficient;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
+import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.afp.Circle2afp.AbstractCirclePathIterator;
 import org.arakhne.afc.math.geometry.d2.afp.Path2afp.CrossingComputationType;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -39,6 +40,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @param <IT> is the type of the implementation of this shape.
  * @param <IE> is the type of the path elements.
  * @param <P> is the type of the points.
+ * @param <V> is the type of the vectors.
  * @param <B> is the type of the bounding boxes.
  * @author $Author: sgalland$
  * @author $Author: hjaffali$
@@ -47,12 +49,13 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @mavenartifactid $ArtifactId$
  */
 public interface RoundRectangle2afp<
-		ST extends Shape2afp<?, ?, IE, P, B>,
-		IT extends RoundRectangle2afp<?, ?, IE, P, B>,
+		ST extends Shape2afp<?, ?, IE, P, V, B>,
+		IT extends RoundRectangle2afp<?, ?, IE, P, V, B>,
 		IE extends PathElement2afp,
-		P extends Point2D,
-		B extends Rectangle2afp<?, ?, IE, P, B>>
-		extends RectangularShape2afp<ST, IT, IE, P, B> {
+		P extends Point2D<? super P, ? super V>,
+		V extends Vector2D<? super V, ? super P>,
+		B extends Rectangle2afp<?, ?, IE, P, V, B>>
+		extends RectangularShape2afp<ST, IT, IE, P, V, B> {
 
 	/** Replies if a rectangle is inside in the round rectangle.
 	 * 
@@ -622,7 +625,7 @@ public interface RoundRectangle2afp<
 	}
 
 	@Override
-	default boolean contains(Rectangle2afp<?, ?, ?, ?, ?> r) {
+	default boolean contains(Rectangle2afp<?, ?, ?, ?, ?, ?> r) {
 		assert (r != null) : "Rectangle must be not null"; //$NON-NLS-1$
 		return containsRoundRectangleRectangle(
 				getMinX(), getMinY(), getWidth(), getHeight(), getArcWidth(), getArcHeight(),
@@ -631,30 +634,30 @@ public interface RoundRectangle2afp<
 
 	@Pure
 	@Override
-	default double getDistanceSquared(Point2D p) {
+	default double getDistanceSquared(Point2D<?, ?> p) {
 		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
-		Point2D n = getClosestPointTo(p);
+		Point2D<?, ?> n = getClosestPointTo(p);
 		return n.getDistanceSquared(p);
 	}
 
 	@Pure
 	@Override
-	default double getDistanceL1(Point2D p) {
+	default double getDistanceL1(Point2D<?, ?> p) {
 		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
-		Point2D n = getClosestPointTo(p);
+		Point2D<?, ?> n = getClosestPointTo(p);
 		return n.getDistanceL1(p);
 	}
 
 	@Pure
 	@Override
-	default double getDistanceLinf(Point2D p) {
+	default double getDistanceLinf(Point2D<?, ?> p) {
 		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
-		Point2D n = getClosestPointTo(p);
+		Point2D<?, ?> n = getClosestPointTo(p);
 		return n.getDistanceLinf(p);
 	}
 
 	@Override
-	default boolean intersects(Circle2afp<?, ?, ?, ?, ?> s) {
+	default boolean intersects(Circle2afp<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Circle must be not null"; //$NON-NLS-1$
 		return intersectsRoundRectangleCircle(
 				getMinX(), getMinY(),
@@ -665,7 +668,7 @@ public interface RoundRectangle2afp<
 	}
 
 	@Override
-	default boolean intersects(Ellipse2afp<?, ?, ?, ?, ?> s) {
+	default boolean intersects(Ellipse2afp<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Ellipse must be not null"; //$NON-NLS-1$
 		return intersectsRoundRectangleEllipse(
 				getMinX(), getMinY(),
@@ -676,7 +679,7 @@ public interface RoundRectangle2afp<
 	}
 
 	@Override
-	default boolean intersects(OrientedRectangle2afp<?, ?, ?, ?, ?> s) {
+	default boolean intersects(OrientedRectangle2afp<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Oriented rectangle must be not null"; //$NON-NLS-1$
 		return OrientedRectangle2afp.intersectsOrientedRectangleRoundRectangle(
 				s.getCenterX(), s.getCenterY(), 
@@ -686,7 +689,7 @@ public interface RoundRectangle2afp<
 	}
 
 	@Override
-	default boolean intersects(Parallelogram2afp<?, ?, ?, ?, ?> s) {
+	default boolean intersects(Parallelogram2afp<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Parallelogram must be not null"; //$NON-NLS-1$
 		return Parallelogram2afp.intersectsParallelogramRoundRectangle(
 				s.getCenterX(), s.getCenterY(), 
@@ -696,7 +699,7 @@ public interface RoundRectangle2afp<
 	}
 
 	@Override
-	default boolean intersects(Rectangle2afp<?, ?, ?, ?, ?> s) {
+	default boolean intersects(Rectangle2afp<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Rectangle must be not null"; //$NON-NLS-1$
 		return intersectsRoundRectangleRectangle(
 				getMinX(), getMinY(),
@@ -707,7 +710,7 @@ public interface RoundRectangle2afp<
 	}
 
 	@Override
-	default boolean intersects(RoundRectangle2afp<?, ?, ?, ?, ?> s) {
+	default boolean intersects(RoundRectangle2afp<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Round rectangle must be not null"; //$NON-NLS-1$
 		return intersectsRoundRectangleRoundRectangle(
 				getMinX(), getMinY(),
@@ -719,7 +722,7 @@ public interface RoundRectangle2afp<
 	}
 
 	@Override
-	default boolean intersects(Segment2afp<?, ?, ?, ?, ?> s) {
+	default boolean intersects(Segment2afp<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Segment must be not null"; //$NON-NLS-1$
 		return RoundRectangle2afp.intersectsRoundRectangleSegment(
 				getMinX(), getMinY(),
@@ -730,7 +733,7 @@ public interface RoundRectangle2afp<
 	}
 
 	@Override
-	default boolean intersects(Triangle2afp<?, ?, ?, ?, ?> s) {
+	default boolean intersects(Triangle2afp<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Triangle must be not null"; //$NON-NLS-1$
 		return intersects(s.getPathIterator());
 	}
@@ -751,7 +754,7 @@ public interface RoundRectangle2afp<
 
 	@Pure
 	@Override
-	default boolean intersects(MultiShape2afp<?, ?, ?, ?, ?, ?> s) {
+	default boolean intersects(MultiShape2afp<?, ?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "MultiShape must be not null"; //$NON-NLS-1$
 		return s.intersects(this);
 	}
@@ -767,7 +770,7 @@ public interface RoundRectangle2afp<
 
 	@Pure
 	@Override
-	default P getClosestPointTo(Point2D p) {
+	default P getClosestPointTo(Point2D<?, ?> p) {
 		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
 		double px = p.getX();
 		double py = p.getY();
@@ -779,7 +782,7 @@ public interface RoundRectangle2afp<
 		double aw = getArcWidth();
 		double ah = getArcHeight();
 
-		GeomFactory2afp<?, P, ?> factory = getGeomFactory();
+		GeomFactory2afp<?, P, V, ?> factory = getGeomFactory();
 
 		if (px < rx1 + aw) {
 			if (py < ry1 + ah) {
@@ -856,7 +859,7 @@ public interface RoundRectangle2afp<
 
 	@Pure
 	@Override
-	default P getFarthestPointTo(Point2D p) {
+	default P getFarthestPointTo(Point2D<?, ?> p) {
 		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
 		double px = p.getX();
 		double py = p.getY();
@@ -925,18 +928,18 @@ public interface RoundRectangle2afp<
 		
 		/** The iterator round rectangle.
 		 */
-		protected final RoundRectangle2afp<?, ?, T, ?, ?> rectangle;
+		protected final RoundRectangle2afp<?, ?, T, ?, ?, ?> rectangle;
 
 		/**
 		 * @param rectangle the iterated rectangle.
 		 */
-		public AbstractRoundRectanglePathIterator(RoundRectangle2afp<?, ?, T, ?, ?> rectangle) {
+		public AbstractRoundRectanglePathIterator(RoundRectangle2afp<?, ?, T, ?, ?, ?> rectangle) {
 			assert (rectangle != null) : "Round rectangle must be not null"; //$NON-NLS-1$
 			this.rectangle = rectangle;
 		}
 
 		@Override
-		public GeomFactory2afp<T, ?, ?> getGeomFactory() {
+		public GeomFactory2afp<T, ?, ?, ?> getGeomFactory() {
 			return this.rectangle.getGeomFactory();
 		}
 
@@ -1013,7 +1016,7 @@ public interface RoundRectangle2afp<
 		/**
 		 * @param rectangle the round rectangle to iterate on.
 		 */
-		public RoundRectanglePathIterator(RoundRectangle2afp<?, ?, T, ?, ?> rectangle) {
+		public RoundRectanglePathIterator(RoundRectangle2afp<?, ?, T, ?, ?, ?> rectangle) {
 			super(rectangle);
 			if (rectangle.isEmpty()) {
 				this.index = ELEMENT_COUNT;
@@ -1157,19 +1160,19 @@ public interface RoundRectangle2afp<
 
 		private int index;
 		
-		private Point2D last;
+		private Point2D<?, ?> last;
 		
-		private Point2D move;
+		private Point2D<?, ?> move;
 
-		private Point2D controlPoint1;
+		private Point2D<?, ?> controlPoint1;
 
-		private Point2D controlPoint2;
+		private Point2D<?, ?> controlPoint2;
 
 		/**
 		 * @param rectangle the round rectangle to iterate on.
 		 * @param transform the transformation.
 		 */
-		public TransformedRoundRectanglePathIterator(RoundRectangle2afp<?, ?, T, ?, ?> rectangle, Transform2D transform) {
+		public TransformedRoundRectanglePathIterator(RoundRectangle2afp<?, ?, T, ?, ?, ?> rectangle, Transform2D transform) {
 			super(rectangle);
 			assert (transform != null) : "Transformation must be not null"; //$NON-NLS-1$
 			this.transform = transform;

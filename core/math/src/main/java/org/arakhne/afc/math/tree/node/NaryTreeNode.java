@@ -24,6 +24,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.arakhne.afc.math.tree.TreeNode;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 
 /**
@@ -112,8 +113,7 @@ public abstract class NaryTreeNode<D,N extends NaryTreeNode<D,N>> extends Abstra
 		this.children = null;
 	}
 	
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public Class<? extends Enum<?>> getPartitionEnumeration() {
 		return null;
@@ -163,22 +163,19 @@ public abstract class NaryTreeNode<D,N extends NaryTreeNode<D,N>> extends Abstra
 		}
 	}
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public final int getChildCount() {
 		return (this.children==null) ? 0 : this.children.size();
 	}
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public int getNotNullChildCount() {
 		return this.notNullChildCount;
 	}
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public final int indexOf(N child) {
 		int i=0;
@@ -193,8 +190,7 @@ public abstract class NaryTreeNode<D,N extends NaryTreeNode<D,N>> extends Abstra
 		return -1;
 	}
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public final N getChildAt(int index) throws IndexOutOfBoundsException {
 		if (this.children!=null) return this.children.get(index);
@@ -213,26 +209,17 @@ public abstract class NaryTreeNode<D,N extends NaryTreeNode<D,N>> extends Abstra
 	 * 
 	 * @param newParent is the new parent for this node.
 	 * @return <code>true</code> on success, otherwise <code>false</code>.
-	 * @since 4.0
 	 */
 	public boolean moveTo(N newParent) {
 		if (newParent==null) return false;
 		return moveTo(newParent, newParent.getChildCount());
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public boolean moveTo(N newParent, int index) {
 		return moveTo(newParent, index, true);
 	}
 
-	/** Set the child at the given index in this node.
-	 * 
-	 * @param index is the index of the new child between <code>0</code>
-	 * and <code>getChildCount()</code> (inclusive).
-	 * @param newChild is the child to insert.
-	 */
 	@Override
 	public boolean setChildAt(int index, N newChild) throws IndexOutOfBoundsException {
 		int count = (this.children==null) ? 0 : this.children.size();
@@ -275,8 +262,6 @@ public abstract class NaryTreeNode<D,N extends NaryTreeNode<D,N>> extends Abstra
 		return true;
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	protected void setChildAtWithoutEventFiring(int index, N newChild) throws IndexOutOfBoundsException {
 		int count = (this.children==null) ? 0 : this.children.size();
@@ -298,8 +283,6 @@ public abstract class NaryTreeNode<D,N extends NaryTreeNode<D,N>> extends Abstra
 		}
 	}
 	
-	/** {@inheritDoc}
-	 */
 	@Override
 	public final boolean removeChild(N child) {
 		if (child!=null && this.children!=null) {
@@ -366,16 +349,12 @@ public abstract class NaryTreeNode<D,N extends NaryTreeNode<D,N>> extends Abstra
 		return true;
 	}
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public final boolean isLeaf() {
 		return ((this.children==null)||(this.children.isEmpty()));
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void getChildren(Object[] array) {
 		if (array!=null && this.children!=null) {
@@ -383,8 +362,7 @@ public abstract class NaryTreeNode<D,N extends NaryTreeNode<D,N>> extends Abstra
 		}
 	}
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public int getMinHeight() {
 		int min = Integer.MAX_VALUE;
@@ -405,8 +383,7 @@ public abstract class NaryTreeNode<D,N extends NaryTreeNode<D,N>> extends Abstra
 		return 1+(set ? min : 0);
 	}
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public int getMaxHeight() {
 		int max = Integer.MIN_VALUE;
@@ -427,12 +404,6 @@ public abstract class NaryTreeNode<D,N extends NaryTreeNode<D,N>> extends Abstra
 		return 1+(set ? max : 0);
 	}
 
-	/** Replies the heights of all the leaf nodes.
-	 * The order of the heights is given by a depth-first iteration.
-	 * 
-	 * @param currentHeight is the current height of this node.
-	 * @param heights is the list of heights to fill
-	 */
 	@Override
 	protected void getHeights(int currentHeight, List<Integer> heights) {
 		if (isLeaf()) {

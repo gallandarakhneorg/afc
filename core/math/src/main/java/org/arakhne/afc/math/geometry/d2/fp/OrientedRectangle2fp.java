@@ -39,7 +39,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @since 13.0
  */
 public class OrientedRectangle2fp extends AbstractShape2fp<OrientedRectangle2fp>
-	implements OrientedRectangle2afp<Shape2fp<?>, OrientedRectangle2fp, PathElement2fp, Point2fp, Rectangle2fp> {
+	implements OrientedRectangle2afp<Shape2fp<?>, OrientedRectangle2fp, PathElement2fp, Point2fp, Vector2fp, Rectangle2fp> {
 
 	private static final long serialVersionUID = 7619908159953423088L;
 
@@ -83,7 +83,7 @@ public class OrientedRectangle2fp extends AbstractShape2fp<OrientedRectangle2fp>
 	 * 
 	 * @param obr
 	 */
-	public OrientedRectangle2fp(OrientedRectangle2afp<?, ?, ?, ?, ?> obr) {
+	public OrientedRectangle2fp(OrientedRectangle2afp<?, ?, ?, ?, ?, ?> obr) {
 		assert (obr != null) : "Oriented Rectangle must be not null"; //$NON-NLS-1$
 		set(obr.getCenterX(), obr.getCenterY(),
 				obr.getFirstAxisX(), obr.getFirstAxisY(),
@@ -95,7 +95,7 @@ public class OrientedRectangle2fp extends AbstractShape2fp<OrientedRectangle2fp>
 	 *
 	 * @param pointCloud - the cloud of points.
 	 */
-	public OrientedRectangle2fp(Iterable<? extends Point2D> pointCloud) {
+	public OrientedRectangle2fp(Iterable<? extends Point2D<?, ?>> pointCloud) {
 		assert (pointCloud != null) : "List of points must be not null"; //$NON-NLS-1$
 		setFromPointCloud(pointCloud);
 	}
@@ -104,7 +104,7 @@ public class OrientedRectangle2fp extends AbstractShape2fp<OrientedRectangle2fp>
 	 *
 	 * @param pointCloud - the cloud of points.
 	 */
-	public OrientedRectangle2fp(Point2D... pointCloud) {
+	public OrientedRectangle2fp(Point2D<?, ?>... pointCloud) {
 		assert (pointCloud != null) : "List of points must be not null"; //$NON-NLS-1$
 		setFromPointCloud(Arrays.asList(pointCloud));
 	}
@@ -134,7 +134,7 @@ public class OrientedRectangle2fp extends AbstractShape2fp<OrientedRectangle2fp>
 	 * @param axis1Extent is the extent of the first axis.
 	 * @param axis2Extent is the extent of the second axis.
 	 */
-	public OrientedRectangle2fp(Point2D center, Vector2D axis1, double axis1Extent, double axis2Extent) {
+	public OrientedRectangle2fp(Point2D<?, ?> center, Vector2D<?, ?> axis1, double axis1Extent, double axis2Extent) {
 		set(center, axis1, axis1Extent, axis2Extent);
 	}
 
@@ -178,7 +178,7 @@ public class OrientedRectangle2fp extends AbstractShape2fp<OrientedRectangle2fp>
 
 	@Pure
 	@Override
-	public Point2D getCenter() {
+	public Point2fp getCenter() {
 		return new Point2fp(this.cx, this.cy);
 	}
 
@@ -212,7 +212,7 @@ public class OrientedRectangle2fp extends AbstractShape2fp<OrientedRectangle2fp>
 
 	@Pure
 	@Override
-	public Vector2D getFirstAxis() {
+	public Vector2fp getFirstAxis() {
 		return new Vector2fp(this.rx, this.ry);
 	}
 
@@ -230,7 +230,7 @@ public class OrientedRectangle2fp extends AbstractShape2fp<OrientedRectangle2fp>
 
 	@Pure
 	@Override
-	public Vector2D getSecondAxis() {
+	public Vector2fp getSecondAxis() {
 		return new Vector2fp(-this.ry, this.rx);
 	}
 

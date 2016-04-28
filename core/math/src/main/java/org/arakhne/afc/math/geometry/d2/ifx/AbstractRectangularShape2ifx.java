@@ -40,7 +40,7 @@ import javafx.beans.property.SimpleIntegerProperty;
  */
 public abstract class AbstractRectangularShape2ifx<IT extends AbstractRectangularShape2ifx<?>>
 	extends AbstractShape2ifx<IT>
-	implements RectangularShape2ai<Shape2ifx<?>, IT, PathElement2ifx, Point2ifx, Rectangle2ifx> {
+	implements RectangularShape2ai<Shape2ifx<?>, IT, PathElement2ifx, Point2ifx, Vector2ifx, Rectangle2ifx> {
 
 	private static final long serialVersionUID = -6551989261232962403L;
 
@@ -77,7 +77,7 @@ public abstract class AbstractRectangularShape2ifx<IT extends AbstractRectangula
 	/**
 	 * @param r
 	 */
-	public AbstractRectangularShape2ifx(RectangularShape2ai<?, ?, ?, ?, ?> r) {
+	public AbstractRectangularShape2ifx(RectangularShape2ai<?, ?, ?, ?, ?, ?> r) {
 		setFromCorners(r.getMinX(), r.getMinY(), r.getMaxX(), r.getMaxY());
 	}
 	

@@ -37,8 +37,8 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 @SuppressWarnings("all")
-public abstract class AbstractCircle2aiTest<T extends Circle2ai<?, T, ?, ?, B>,
-		B extends Rectangle2ai<?, ?, ?, ?, B>> extends AbstractShape2aiTest<T, B> {
+public abstract class AbstractCircle2aiTest<T extends Circle2ai<?, T, ?, ?, ?, B>,
+		B extends Rectangle2ai<?, ?, ?, ?, ?, B>> extends AbstractShape2aiTest<T, B> {
 
 	@Override
 	protected final T createShape() {
@@ -129,7 +129,7 @@ public abstract class AbstractCircle2aiTest<T extends Circle2ai<?, T, ?, ?, B>,
 	@Test
 	@Override
 	public void toBoundingBox() {
-		Rectangle2ai<?, ?, ?, ?, ?> r1 = this.shape.toBoundingBox();
+		Rectangle2ai<?, ?, ?, ?, ?, ?> r1 = this.shape.toBoundingBox();
 		assertEquals(0, r1.getMinX());
 		assertEquals(3, r1.getMinY());
 		assertEquals(10, r1.getMaxX());
@@ -195,7 +195,7 @@ public abstract class AbstractCircle2aiTest<T extends Circle2ai<?, T, ?, ?, B>,
 
 	@Test
 	public void getPointIterator_small() {
-		Circle2ai<?, ?, ?, ?, ?> circle = createCircle(4, 6, 3);
+		Circle2ai<?, ?, ?, ?, ?, ?> circle = createCircle(4, 6, 3);
 		Iterator<? extends Point2D> iterator = circle.getPointIterator();
 		Point2D p;
 		
@@ -518,7 +518,8 @@ public abstract class AbstractCircle2aiTest<T extends Circle2ai<?, T, ?, ?, B>,
 		assertEpsilonEquals(0f, this.shape.getDistance(createPoint(10,10)));
 		assertEpsilonEquals(0f, this.shape.getDistance(createPoint(4,8)));
 		assertEpsilonEquals(4.242640687f, this.shape.getDistance(createPoint(0,0)));
-		assertEpsilonEquals(1f, this.shape.getDistance(createPoint(5,14)));	}
+		assertEpsilonEquals(1f, this.shape.getDistance(createPoint(5,14)));
+	}
 
 	@Test
 	@Override

@@ -37,14 +37,14 @@ import javafx.beans.property.SimpleIntegerProperty;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public class GeomFactory2ifx implements GeomFactory2ai<PathElement2ifx, Point2ifx, Rectangle2ifx> {
+public class GeomFactory2ifx implements GeomFactory2ai<PathElement2ifx, Point2ifx, Vector2ifx, Rectangle2ifx> {
 
 	/** The singleton of the factory.
 	 */
 	public static final GeomFactory2ifx SINGLETON = new GeomFactory2ifx();
 	
 	@Override
-	public Point2ifx convertToPoint(Point2D point) {
+	public Point2ifx convertToPoint(Point2D<?, ?> point) {
 		assert (point != null) : "Point must be not null"; //$NON-NLS-1$
 		try {
 			return (Point2ifx) point;
@@ -53,22 +53,20 @@ public class GeomFactory2ifx implements GeomFactory2ai<PathElement2ifx, Point2if
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends Vector2D> T convertToVector(Point2D point) {
+	public Vector2ifx convertToVector(Point2D<?, ?> point) {
 		assert (point != null) : "Point must be not null"; //$NON-NLS-1$
-		return (T) new Vector2ifx(point.ix(), point.iy());
+		return new Vector2ifx(point.ix(), point.iy());
 	}
 
 	@Override
-	public Point2ifx convertToPoint(Vector2D vector) {
+	public Point2ifx convertToPoint(Vector2D<?, ?> vector) {
 		assert (vector != null) : "Vector must be not null"; //$NON-NLS-1$
 		return new Point2ifx(vector.ix(), vector.iy());
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends Vector2D> T convertToVector(Vector2D vector) {
+	public Vector2ifx convertToVector(Vector2D<?, ?> vector) {
 		assert (vector != null) : "Vector must be not null"; //$NON-NLS-1$
 		Vector2ifx vv;
 		try {
@@ -76,7 +74,7 @@ public class GeomFactory2ifx implements GeomFactory2ai<PathElement2ifx, Point2if
 		} catch (Throwable exception) {
 			vv = new Vector2ifx(vector.ix(), vector.iy());
 		}
-		return (T) vv;
+		return vv;
 	}
 
 	@Override
@@ -84,10 +82,9 @@ public class GeomFactory2ifx implements GeomFactory2ai<PathElement2ifx, Point2if
 		return new Point2ifx(x, y);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends Vector2D> T newVector(int x, int y) {
-		return (T) new Vector2ifx(x, y);
+	public Vector2ifx newVector(int x, int y) {
+		return new Vector2ifx(x, y);
 	}
 
 	@Override
@@ -95,14 +92,13 @@ public class GeomFactory2ifx implements GeomFactory2ai<PathElement2ifx, Point2if
 		return new Point2ifx();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends Vector2D> T newVector() {
-		return (T) new Vector2ifx();
+	public Vector2ifx newVector() {
+		return new Vector2ifx();
 	}
 
 	@Override
-	public Path2ai<?, ?, PathElement2ifx, Point2ifx, ?> newPath(PathWindingRule rule) {
+	public Path2ai<?, ?, PathElement2ifx, Point2ifx, Vector2ifx, Rectangle2ifx> newPath(PathWindingRule rule) {
 		assert (rule != null) : "Path winding rule must be not null"; //$NON-NLS-1$
 		return new Path2ifx(rule);
 	}
@@ -172,7 +168,7 @@ public class GeomFactory2ifx implements GeomFactory2ai<PathElement2ifx, Point2if
 	}
 
 	@Override
-	public Segment2ai<?, ?, PathElement2ifx, Point2ifx, ?> newSegment(int x1, int y1, int x2, int y2) {
+	public Segment2ai<?, ?, PathElement2ifx, Point2ifx, Vector2ifx, Rectangle2ifx> newSegment(int x1, int y1, int x2, int y2) {
 		return new Segment2ifx(x1, y1, x2, y2);
 	}
 

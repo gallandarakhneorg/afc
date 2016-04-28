@@ -45,7 +45,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  */
 public class Path2fp
 	extends AbstractShape2fp<Path2fp>
-	implements Path2afp<Shape2fp<?>, Path2fp, PathElement2fp, Point2fp, Rectangle2fp> {
+	implements Path2afp<Shape2fp<?>, Path2fp, PathElement2fp, Point2fp, Vector2fp, Rectangle2fp> {
 
 	private static final long serialVersionUID = 4567950736238157802L;
 
@@ -148,7 +148,7 @@ public class Path2fp
 	/**
 	 * @param p
 	 */
-	public Path2fp(Path2afp<?, ?, ?, ?, ?> p) {
+	public Path2fp(Path2afp<?, ?, ?, ?, ?, ?> p) {
 		set(p);
 	}
 	
@@ -166,7 +166,7 @@ public class Path2fp
 	
 	@Pure
 	@Override
-	public boolean containsControlPoint(Point2D p) {
+	public boolean containsControlPoint(Point2D<?, ?> p) {
 		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
 		double x, y;
 		for(int i=0; i<this.numCoords;) {
@@ -249,7 +249,7 @@ public class Path2fp
 	@Override
 	public void transform(Transform2D transform) {
 		assert (transform != null) : "Transformation must be not null"; //$NON-NLS-1$
-		Point2D p = new Point2fp();
+		Point2D<?, ?> p = new Point2fp();
 		for(int i=0; i<this.numCoords;) {
 			p.set(this.coords[i], this.coords[i+1]);
 			transform.transform(p);
@@ -512,8 +512,8 @@ public class Path2fp
 	}
 
 	@Override
-	public Point2D[] toPointArray(Transform2D transform) {
-		Point2D[] clone = new Point2D[this.numCoords/2];
+	public Point2fp[] toPointArray(Transform2D transform) {
+		Point2fp[] clone = new Point2fp[this.numCoords/2];
 		if (transform == null || transform.isIdentity()) {
 			for(int i=0, j=0; j<this.numCoords; ++i) {
 				clone[i] = new Point2fp(

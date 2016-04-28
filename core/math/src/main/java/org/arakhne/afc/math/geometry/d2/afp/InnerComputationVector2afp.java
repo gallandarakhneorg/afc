@@ -21,6 +21,7 @@
 
 package org.arakhne.afc.math.geometry.d2.afp;
 
+import org.arakhne.afc.math.geometry.d2.UnmodifiableVector2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 
 /** A vector that is used for internal computations.
@@ -31,7 +32,7 @@ import org.arakhne.afc.math.geometry.d2.Vector2D;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public class InnerComputationVector2afp implements Vector2D {
+public class InnerComputationVector2afp implements Vector2D<InnerComputationVector2afp, InnerComputationPoint2afp> {
 
 	private static final long serialVersionUID = 8578192819251519051L;
 	
@@ -54,12 +55,17 @@ public class InnerComputationVector2afp implements Vector2D {
 	}
 
 	@Override
+	public InnerComputationGeomFactory getGeomFactory() {
+		return InnerComputationGeomFactory.SINGLETON;
+	}
+
+	@Override
 	public String toString() {
 		return "[" + this.x + "; " + this.y + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 
 	@Override
-	public Vector2D clone() {
+	public InnerComputationVector2afp clone() {
 		throw new UnsupportedOperationException();
 	}
 
@@ -104,12 +110,12 @@ public class InnerComputationVector2afp implements Vector2D {
 	}
 
 	@Override
-	public Vector2D toUnmodifiable() {
+	public UnmodifiableVector2D<InnerComputationVector2afp, InnerComputationPoint2afp> toUnmodifiable() {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public Vector2D toUnitVector() {
+	public InnerComputationVector2afp toUnitVector() {
 		double length = getLength();
 		if (length == 0) {
 			return new InnerComputationVector2afp();
@@ -118,7 +124,7 @@ public class InnerComputationVector2afp implements Vector2D {
 	}
 	
 	@Override
-	public Vector2D toOrthogonalVector() {
+	public InnerComputationVector2afp toOrthogonalVector() {
 		return new InnerComputationVector2afp(-getY(), getX());
 	}
 

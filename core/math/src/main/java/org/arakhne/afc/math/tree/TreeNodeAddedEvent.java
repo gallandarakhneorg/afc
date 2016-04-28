@@ -19,6 +19,8 @@ package org.arakhne.afc.math.tree;
 
 import java.util.EventObject;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /**
  * Called each time an addition event occurs on a tree node.
  * 
@@ -50,6 +52,7 @@ public class TreeNodeAddedEvent extends EventObject {
 	 * 
 	 * @return the node inside which a node was added.
 	 */
+	@Pure
 	public TreeNode<?,?> getParentNode() {
 		return (TreeNode<?,?>)getSource();
 	}
@@ -58,6 +61,7 @@ public class TreeNodeAddedEvent extends EventObject {
 	 * 
 	 * @return the index of the new node
 	 */
+	@Pure
 	public int getChildIndex() {
 		return this.childIndex;
 	}
@@ -66,6 +70,7 @@ public class TreeNodeAddedEvent extends EventObject {
 	 * 
 	 * @return the new node
 	 */
+	@Pure
 	public TreeNode<?,?> getChild() {
 		return this.child;
 	}

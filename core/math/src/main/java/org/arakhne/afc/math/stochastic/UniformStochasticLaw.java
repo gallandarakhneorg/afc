@@ -23,6 +23,9 @@ package org.arakhne.afc.math.stochastic;
 import java.util.Map;
 import java.util.Random;
 
+import org.eclipse.xtext.xbase.lib.Inline;
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /**
  * Law that representes an uniform density.
  * <p>
@@ -53,6 +56,8 @@ public class UniformStochasticLaw extends StochasticLaw {
 	 * @return a value depending of the stochastic law parameters
 	 * @throws MathException 
 	 */
+	@Inline(value = "(StochasticGenerator.generateRandomValue(new UniformStochasticLaw($1, $2)))",
+			imported = {StochasticGenerator.class, UniformStochasticLaw.class})
 	public static double random(double minX, double maxX) throws MathException {
 		return StochasticGenerator.generateRandomValue(new UniformStochasticLaw(minX, maxX));
 	}
@@ -95,8 +100,7 @@ public class UniformStochasticLaw extends StochasticLaw {
 		this.delta = this.maxX - this.minX;
 	}
 	
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public double f(double x)  throws MathException {
 		if ((x<this.minX)||(x>this.maxX))
@@ -104,9 +108,8 @@ public class UniformStochasticLaw extends StochasticLaw {
 		return 1.f/this.delta;
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
+	@Pure
 	public MathFunctionRange[] getRange() {
 		return MathFunctionRange.createSet(this.minX, this.maxX);
 	}
@@ -117,6 +120,7 @@ public class UniformStochasticLaw extends StochasticLaw {
 	 * @return {@code F<sup>-1</sup>(u)}
 	 * @throws MathException in case {@code F<sup>-1</sup>(u)} could not be computed
 	 */
+	@Pure
 	@Override
 	public double inverseF(double u) throws MathException {
 		return this.delta*u + this.minX;

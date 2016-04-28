@@ -21,6 +21,8 @@ package org.arakhne.afc.math.physics;
 
 import java.util.concurrent.TimeUnit;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 
 /**
  * A <tt>AngularUnit</tt> represents speed at a given unit of
@@ -49,6 +51,7 @@ public enum AngularUnit {
 	 * 
 	 * @return the time unit.
 	 */
+	@Pure
 	public TimeUnit toTimeUnit() {
 		switch(this) {
 		case TURNS_PER_SECOND:

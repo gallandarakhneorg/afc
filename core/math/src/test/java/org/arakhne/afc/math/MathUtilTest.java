@@ -35,6 +35,17 @@ import org.junit.Test;
 public class MathUtilTest extends AbstractMathTestCase {
 
 	@Test
+	public void sign() {
+		assertEquals(-1, MathUtil.sign(-145.25));
+		assertEquals(-1, MathUtil.sign(-0.25));
+		assertEquals(0, MathUtil.sign(-0.));
+		assertEquals(0, MathUtil.sign(0.));
+		assertEquals(0, MathUtil.sign(+0.));
+		assertEquals(1, MathUtil.sign(145.25));
+		assertEquals(1, MathUtil.sign(0.25));
+	}
+	
+	@Test
 	public void clampDoubleDoubleDouble() {
 		// NaN is lower than all the other floating-point values 
 		

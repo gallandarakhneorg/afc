@@ -23,6 +23,8 @@ package org.arakhne.afc.math.stochastic;
 import java.util.Map;
 import java.util.Random;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /**
  * Law that representes a logistic density.
  * <p>
@@ -82,11 +84,7 @@ public class LogisticStochasticLaw extends StochasticLaw {
 		this.scale = scale1;
 	}
 	
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @return {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public String toString() {
 		StringBuilder b = new StringBuilder();
@@ -98,8 +96,7 @@ public class LogisticStochasticLaw extends StochasticLaw {
 		return b.toString();
 	}
 	
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public double f(double x)  throws MathException {
 		double ex = Math.exp((this.mu-x)/this.scale);
@@ -107,8 +104,7 @@ public class LogisticStochasticLaw extends StochasticLaw {
 		return ex / (this.scale*denom);
 	}
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public MathFunctionRange[] getRange() {
 		return MathFunctionRange.createInfinitySet();
@@ -120,6 +116,7 @@ public class LogisticStochasticLaw extends StochasticLaw {
 	 * @return {@code F<sup>-1</sup>(u)}
 	 * @throws MathException in case {@code F<sup>-1</sup>(u)} could not be computed
 	 */
+	@Pure
 	@Override
 	public double inverseF(double u) throws MathException {
 		return this.mu + this.scale*Math.log(u/(1.f-u)); 

@@ -22,6 +22,7 @@ package org.arakhne.afc.math.geometry.d2.ai;
 
 import java.util.Iterator;
 
+import org.arakhne.afc.math.Unefficient;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Shape2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
@@ -34,6 +35,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @param <IT> is the type of the implementation of this shape.
  * @param <IE> is the type of the path elements.
  * @param <P> is the type of the points.
+ * @param <V> is the type of the vectors.
  * @param <B> is the type of the bounding boxes.
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -42,12 +44,13 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @since 13.0
  */
 public interface Shape2ai<
-		ST extends Shape2ai<?, ?, IE, P, B>,
-		IT extends Shape2ai<?, ?, IE, P, B>,
+		ST extends Shape2ai<?, ?, IE, P, V, B>,
+		IT extends Shape2ai<?, ?, IE, P, V, B>,
 		IE extends PathElement2ai,
-		P extends Point2D,
-		B extends Rectangle2ai<?, ?, IE, P, B>>
-		extends Shape2D<ST, IT, PathIterator2ai<IE>, P, B> {
+		P extends Point2D<? super P, ? super V>,
+		V extends Vector2D<? super V, ? super P>,
+		B extends Rectangle2ai<?, ?, IE, P, V, B>>
+		extends Shape2D<ST, IT, PathIterator2ai<IE>, P, V, B> {
 
 	/** Replies an iterator on the points covered by this shape.
 	 * <p>
@@ -61,7 +64,7 @@ public interface Shape2ai<
 
 	@Pure
 	@Override
-	default boolean contains(Point2D p) {
+	default boolean contains(Point2D<?, ?> p) {
 		return contains(p.ix(), p.iy());
 	}
 	
@@ -71,11 +74,11 @@ public interface Shape2ai<
 	 * @return <code>true</code> if the given box is inside the shape.
 	 */
 	@Pure
-	boolean contains(Rectangle2ai<?, ?, ?, ?, ?> box);
+	boolean contains(Rectangle2ai<?, ?, ?, ?, ?, ?> box);
 
 	@Pure
 	@Override
-	default void translate(Vector2D vector) {
+	default void translate(Vector2D<?, ?> vector) {
 		translate(vector.ix(), vector.iy());
 	}
 
@@ -87,6 +90,28 @@ public interface Shape2ai<
 		toBoundingBox(box);
 		return box;
 	}
+	
+	@Pure
+	@Unefficient
+	@Override
+	default boolean intersects(Shape2D<?, ?, ?, ?, ?, ?> s) {
+		if (s instanceof Circle2ai) {
+			return intersects((Circle2ai<?, ?, ?, ?, ?, ?>) s);
+		}
+		if (s instanceof Path2ai) {
+			return intersects((Path2ai<?, ?, ?, ?, ?, ?>) s);
+		}
+		if (s instanceof PathIterator2ai) {
+			return intersects((PathIterator2ai<?>) s);
+		}
+		if (s instanceof Rectangle2ai) {
+			return intersects((Rectangle2ai<?, ?, ?, ?, ?, ?>) s);
+		}
+		if (s instanceof Segment2ai) {
+			return intersects((Segment2ai<?, ?, ?, ?, ?, ?>) s);
+		}
+		return intersects(getPathIterator());
+	}
 
 	/** Replies if this shape is intersecting the given rectangle.
 	 * 
@@ -95,7 +120,7 @@ public interface Shape2ai<
 	 * <code>false</code> if there is no intersection.
 	 */
 	@Pure
-	public boolean intersects(Rectangle2ai<?, ?, ?, ?, ?> s);
+	public boolean intersects(Rectangle2ai<?, ?, ?, ?, ?, ?> s);
 
 	/** Replies if this shape is intersecting the given circle.
 	 * 
@@ -104,7 +129,7 @@ public interface Shape2ai<
 	 * <code>false</code> if there is no intersection.
 	 */
 	@Pure
-	public boolean intersects(Circle2ai<?, ?, ?, ?, ?> s);
+	public boolean intersects(Circle2ai<?, ?, ?, ?, ?, ?> s);
 
 	/** Replies if this shape is intersecting the given segment.
 	 * 
@@ -113,7 +138,7 @@ public interface Shape2ai<
 	 * <code>false</code> if there is no intersection.
 	 */
 	@Pure
-	public boolean intersects(Segment2ai<?, ?, ?, ?, ?> s);
+	public boolean intersects(Segment2ai<?, ?, ?, ?, ?, ?> s);
 		
 	/** Replies if this shape is intersecting the given path.
 	 * 
@@ -122,7 +147,7 @@ public interface Shape2ai<
 	 * <code>false</code> if there is no intersection.
 	 */
 	@Pure
-	default boolean intersects(Path2ai<?, ?, ?, ?, ?> s) {
+	default boolean intersects(Path2ai<?, ?, ?, ?, ?, ?> s) {
 		return intersects(s.getPathIterator(/*MathConstants.SPLINE_APPROXIMATION_RATIO*/));
 	}
 
@@ -152,11 +177,8 @@ public interface Shape2ai<
 	@Pure
 	public boolean contains(int x, int y);
 
-	/** Replies the factory of geometrical elements.
-	 *
-	 * @return the factory.
-	 */
-	GeomFactory2ai<IE, P, B> getGeomFactory();
+	@Override
+	GeomFactory2ai<IE, P, V, B> getGeomFactory();
 
 	@Pure
 	@SuppressWarnings("unchecked")
@@ -166,8 +188,8 @@ public interface Shape2ai<
 			return (ST) clone();
 		}
 		PathIterator2ai<?> pi = getPathIterator(transform);
-		GeomFactory2ai<IE, P, B> factory = getGeomFactory();
-		Path2ai<?, ?, ?, P, ?> newPath = factory.newPath(pi.getWindingRule());
+		GeomFactory2ai<IE, P, V, B> factory = getGeomFactory();
+		Path2ai<?, ?, ?, P, V, ?> newPath = factory.newPath(pi.getWindingRule());
 		PathElement2ai e;
 		while (pi.hasNext()) {
 			e = pi.next();

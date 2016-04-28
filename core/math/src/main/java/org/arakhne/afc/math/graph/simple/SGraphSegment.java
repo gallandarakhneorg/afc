@@ -27,6 +27,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.arakhne.afc.math.graph.GraphSegment;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** This class provides a simple implementation of a graph's segment
  * for a {@link SGraph}.
@@ -69,6 +70,7 @@ public class SGraphSegment implements GraphSegment<SGraphSegment,SGraphPoint> {
 	 * 
 	 * @return the graph in which this segment is.
 	 */
+	@Pure
 	public SGraph getGraph() {
 		return this.graph.get();
 	}
@@ -196,15 +198,13 @@ public class SGraphSegment implements GraphSegment<SGraphSegment,SGraphPoint> {
 		return this.startPoint;
 	}
 
-    /** {@inheritDoc}
-     */
+	@Pure
 	@Override
 	public SGraphPoint getEndPoint() {
 		return this.endPoint;
 	}
 
-    /** {@inheritDoc}
-     */
+	@Pure
 	@Override
 	public SGraphPoint getOtherSidePoint(SGraphPoint point) {
 		if (point!=null) {
@@ -218,8 +218,7 @@ public class SGraphSegment implements GraphSegment<SGraphSegment,SGraphPoint> {
 		return null;
 	}
 	
-    /** {@inheritDoc}
-     */
+	@Pure
 	@Override
 	public double getLength() {
 		return this.length;
@@ -258,6 +257,7 @@ public class SGraphSegment implements GraphSegment<SGraphSegment,SGraphPoint> {
 	 * 
 	 * @return the number of user data.
 	 */
+	@Pure
 	public int getUserDataCount() {
 		return (this.userData==null) ? 0 : this.userData.size();
 	}
@@ -268,6 +268,7 @@ public class SGraphSegment implements GraphSegment<SGraphSegment,SGraphPoint> {
 	 * @return the data
 	 * @throws IndexOutOfBoundsException
 	 */
+	@Pure
 	public Object getUserDataAt(int index) {
 		if (this.userData==null) throw new IndexOutOfBoundsException();
 		return this.userData.get(index);
@@ -288,6 +289,7 @@ public class SGraphSegment implements GraphSegment<SGraphSegment,SGraphPoint> {
 	 * 
 	 * @return an unmodifiable collection of user data.
 	 */
+	@Pure
 	public Collection<Object> getAllUserData() {
 		if (this.userData==null) return Collections.emptyList();
 		return Collections.unmodifiableCollection(this.userData);

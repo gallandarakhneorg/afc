@@ -37,14 +37,14 @@ import javafx.beans.property.SimpleDoubleProperty;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public class GeomFactory2fx implements GeomFactory2afp<PathElement2fx, Point2fx, Rectangle2fx> {
+public class GeomFactory2fx implements GeomFactory2afp<PathElement2fx, Point2fx, Vector2fx, Rectangle2fx> {
 
 	/** The singleton of the factory.
 	 */
 	public static final GeomFactory2fx SINGLETON = new GeomFactory2fx();
 	
 	@Override
-	public Point2fx convertToPoint(Point2D p) {
+	public Point2fx convertToPoint(Point2D<?, ?> p) {
 		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
 		try {
 			return (Point2fx) p;
@@ -53,9 +53,8 @@ public class GeomFactory2fx implements GeomFactory2afp<PathElement2fx, Point2fx,
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends Vector2D> T convertToVector(Point2D p) {
+	public Vector2fx convertToVector(Point2D<?, ?> p) {
 		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
 		Vector2fx v;
 		try {
@@ -64,11 +63,11 @@ public class GeomFactory2fx implements GeomFactory2afp<PathElement2fx, Point2fx,
 		} catch (Throwable exception) {
 			v = new Vector2fx(p.getX(), p.getY());
 		}
-		return (T) v;
+		return v;
 	}
 
 	@Override
-	public Point2fx convertToPoint(Vector2D v) {
+	public Point2fx convertToPoint(Vector2D<?, ?> v) {
 		assert (v != null) : "Vector must be not null"; //$NON-NLS-1$
 		Point2fx p;
 		try {
@@ -80,9 +79,8 @@ public class GeomFactory2fx implements GeomFactory2afp<PathElement2fx, Point2fx,
 		return p;
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends Vector2D> T convertToVector(Vector2D v) {
+	public Vector2fx convertToVector(Vector2D<?, ?> v) {
 		assert (v != null) : "Vector must be not null"; //$NON-NLS-1$
 		Vector2fx vv;
 		try {
@@ -90,7 +88,7 @@ public class GeomFactory2fx implements GeomFactory2afp<PathElement2fx, Point2fx,
 		} catch (Throwable exception) {
 			vv = new Vector2fx(v.getX(), v.getY());
 		}
-		return (T) vv;
+		return vv;
 	}
 
 	@Override
@@ -98,10 +96,9 @@ public class GeomFactory2fx implements GeomFactory2afp<PathElement2fx, Point2fx,
 		return new Point2fx(x, y);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends Vector2D> T newVector(double x, double y) {
-		return (T) new Vector2fx(x, y);
+	public Vector2fx newVector(double x, double y) {
+		return new Vector2fx(x, y);
 	}
 
 	@Override
@@ -109,10 +106,9 @@ public class GeomFactory2fx implements GeomFactory2afp<PathElement2fx, Point2fx,
 		return new Point2fx();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends Vector2D> T newVector() {
-		return (T) new Vector2fx();
+	public Vector2fx newVector() {
+		return new Vector2fx();
 	}
 
 	@Override
@@ -128,7 +124,7 @@ public class GeomFactory2fx implements GeomFactory2afp<PathElement2fx, Point2fx,
 	}
 
 	@Override
-	public Path2afp<?, ?, PathElement2fx, Point2fx, ?> newPath(PathWindingRule rule) {
+	public Path2afp<?, ?, PathElement2fx, Point2fx, Vector2fx, Rectangle2fx> newPath(PathWindingRule rule) {
 		assert (rule != null) : "Path winding rule must be not null"; //$NON-NLS-1$
 		return new Path2fx(rule);
 	}
@@ -186,7 +182,7 @@ public class GeomFactory2fx implements GeomFactory2afp<PathElement2fx, Point2fx,
 	}
 
 	@Override
-	public MultiShape2afp<?, ?, ?, PathElement2fx, Point2fx, Rectangle2fx> newMultiShape() {
+	public MultiShape2afp<?, ?, ?, PathElement2fx, Point2fx, Vector2fx, Rectangle2fx> newMultiShape() {
 		return new MultiShape2fx();
 	}
 

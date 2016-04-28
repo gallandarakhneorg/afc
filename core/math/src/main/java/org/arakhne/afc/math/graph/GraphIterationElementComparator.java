@@ -22,6 +22,8 @@ package org.arakhne.afc.math.graph;
 
 import java.util.Comparator;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /** Compare two iteration elements.
  * 
  * @param <PT> is the type of node in the graph
@@ -47,9 +49,7 @@ implements Comparator<GraphIterationElement<ST,PT>> {
 		this.assumeOrientedSegments = assumeOrientedSegments1;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public int compare(
 			GraphIterationElement<ST, PT> o1,
@@ -69,6 +69,7 @@ implements Comparator<GraphIterationElement<ST,PT>> {
 	 * <code>1</code> if <var>s1</var> is greater than <var>s2</var>,
 	 * otherwise <code>0</code>.
 	 */
+	@Pure
 	protected int compareSegments(ST s1, ST s2) {
 		assert(s1!=null && s2!=null);
 		return s1.hashCode() - s2.hashCode();
@@ -82,6 +83,7 @@ implements Comparator<GraphIterationElement<ST,PT>> {
 	 * <code>1</code> if <var>p1</var> is greater than <var>p2</var>,
 	 * otherwise <code>0</code>.
 	 */
+	@Pure
 	protected int compareConnections(PT p1, PT p2) {
 		assert(p1!=null && p2!=null);
 		return p1.hashCode() - p2.hashCode();
@@ -93,6 +95,7 @@ implements Comparator<GraphIterationElement<ST,PT>> {
 	 * @return <code>true</code> if segments are oriented,
 	 * otherwise <code>false</code>
 	 */
+	@Pure
 	public boolean isOrientedSegments() {
 		return this.assumeOrientedSegments;
 	}

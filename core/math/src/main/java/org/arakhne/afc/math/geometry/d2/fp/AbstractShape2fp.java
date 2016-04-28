@@ -21,7 +21,6 @@
 package org.arakhne.afc.math.geometry.d2.fp;
 
 import org.arakhne.afc.math.geometry.d2.PathIterator2D;
-import org.arakhne.afc.math.geometry.d2.afp.GeomFactory2afp;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Abstract shape with 2 double precision floating-point numbers.
@@ -71,7 +70,7 @@ public abstract class AbstractShape2fp<T extends AbstractShape2fp<?>> implements
     public abstract int hashCode();
 
 	@Override
-	public final GeomFactory2afp<PathElement2fp, Point2fp, Rectangle2fp> getGeomFactory() {
+	public final GeomFactory2fp getGeomFactory() {
 		return GeomFactory2fp.SINGLETON;
 	}
 

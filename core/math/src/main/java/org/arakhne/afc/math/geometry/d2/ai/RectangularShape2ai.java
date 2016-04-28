@@ -22,6 +22,7 @@
 package org.arakhne.afc.math.geometry.d2.ai;
 
 import org.arakhne.afc.math.geometry.d2.Point2D;
+import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Fonctional interface that represented a rectangular shape on a plane.
@@ -30,6 +31,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @param <IT> is the type of the implementation of this shape.
  * @param <IE> is the type of the path elements.
  * @param <P> is the type of the points.
+ * @param <V> is the type of the vectors.
  * @param <B> is the type of the bounding boxes.
  * @author $Author: sgalland$
  * @author $Author: hjaffali$
@@ -39,12 +41,13 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @since 13.0
  */
 public interface RectangularShape2ai<
-		ST extends Shape2ai<?, ?, IE, P, B>,
-		IT extends RectangularShape2ai<?, ?, IE, P, B>,
+		ST extends Shape2ai<?, ?, IE, P, V, B>,
+		IT extends RectangularShape2ai<?, ?, IE, P, V, B>,
 		IE extends PathElement2ai,
-		P extends Point2D,
-		B extends Rectangle2ai<?, ?, IE, P, B>>
-		extends Shape2ai<ST, IT, IE, P, B> {
+		P extends Point2D<? super P, ? super V>,
+		V extends Vector2D<? super V, ? super P>,
+		B extends Rectangle2ai<?, ?, IE, P, V, B>>
+		extends Shape2ai<ST, IT, IE, P, V, B> {
 
 	@Override
 	default void toBoundingBox(B box) {
@@ -75,7 +78,7 @@ public interface RectangularShape2ai<
 	 * @param min is the min corner of the rectangle.
 	 * @param max is the max corner of the rectangle.
 	 */
-	default void set(Point2D min, Point2D max) {
+	default void set(Point2D<?, ?> min, Point2D<?, ?> max) {
 		assert (min != null) : "Minimum point must be not be null"; //$NON-NLS-1$
 		assert (max != null) : "Maximum point must be not be null"; //$NON-NLS-1$
 		setFromCorners(min.ix(), min.iy(), max.ix(), max.iy());
@@ -113,7 +116,7 @@ public interface RectangularShape2ai<
 	 * @param p1 the first corner.
 	 * @param p2 the second corner.
 	 */
-	default void setFromCorners(Point2D p1, Point2D p2) {
+	default void setFromCorners(Point2D<?, ?> p1, Point2D<?, ?> p2) {
 		assert (p1 != null) : "First corner must be not be null"; //$NON-NLS-1$
 		assert (p2 != null) : "Second corner must be not be null"; //$NON-NLS-1$
 		setFromCorners(p1.ix(), p1.iy(), p2.ix(), p2.iy());
@@ -145,7 +148,7 @@ public interface RectangularShape2ai<
      * @param center the specified center point
      * @param corner the specified corner point
      */
-	default void setFromCenter(Point2D center, Point2D corner) {
+	default void setFromCenter(Point2D<?, ?> center, Point2D<?, ?> corner) {
 		assert (center != null) : "Center must be not be null"; //$NON-NLS-1$
 		assert (corner != null) : "Corner must be not be null"; //$NON-NLS-1$
 		setFromCenter(center.ix(), center.iy(), corner.ix(), corner.iy());

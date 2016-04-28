@@ -23,6 +23,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.arakhne.afc.math.tree.TreeNode;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 
 /**
@@ -109,9 +110,8 @@ public abstract class BinaryTreeNode<D,N extends BinaryTreeNode<D,N>> extends Ab
 		this.right = null;
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
+	@Pure
 	public Class<? extends Enum<?>> getPartitionEnumeration() {
 		return BinaryTreeZone.class;
 	}
@@ -152,25 +152,20 @@ public abstract class BinaryTreeNode<D,N extends BinaryTreeNode<D,N>> extends Ab
 		removeAllUserData();
 	}
 
-	/** Replies count of children in this node.
-	 * 
-	 * @return always 2.
-	 */
 	@Override
+	@Pure
 	public int getChildCount() {
 		return 2;
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
+	@Pure
 	public int getNotNullChildCount() {
 		return this.notNullChildCount;
 	}
 	
-	/** {@inheritDoc}
-	 */
 	@Override
+	@Pure
 	public N getChildAt(int index) throws IndexOutOfBoundsException {
 		switch(index) {
 		case 0:
@@ -187,6 +182,7 @@ public abstract class BinaryTreeNode<D,N extends BinaryTreeNode<D,N>> extends Ab
 	 * @param index is the position of the child to reply.
 	 * @return the child or <code>null</code>
 	 */
+	@Pure
 	public final N getChildAt(BinaryTreeZone index) {
 		switch(index) {
 		case LEFT:
@@ -235,6 +231,7 @@ public abstract class BinaryTreeNode<D,N extends BinaryTreeNode<D,N>> extends Ab
 	 * 
 	 * @return the left child or <code>null</code> if it does not exist
 	 */
+	@Pure
 	public final N getLeftChild() {
 		return this.left;
 	}
@@ -276,19 +273,17 @@ public abstract class BinaryTreeNode<D,N extends BinaryTreeNode<D,N>> extends Ab
 	 * 
 	 * @return the right child or <code>null</code> if it does not exist
 	 */
+	@Pure
 	public final N getRightChild() {
 		return this.right;
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
+	@Pure
 	public boolean isLeaf() {
 		return this.left==null && this.right==null;
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public boolean setChildAt(int index, N newChild) throws IndexOutOfBoundsException {
 		switch(index) {
@@ -301,8 +296,6 @@ public abstract class BinaryTreeNode<D,N extends BinaryTreeNode<D,N>> extends Ab
 		}
 	}
 	
-	/** {@inheritDoc}
-	 */
 	@Override
 	protected void setChildAtWithoutEventFiring(int index, N newChild) throws IndexOutOfBoundsException {
 		switch(index) {
@@ -321,8 +314,6 @@ public abstract class BinaryTreeNode<D,N extends BinaryTreeNode<D,N>> extends Ab
 		}
 	}
 	
-	/** {@inheritDoc}
-	 */
 	@Override
 	public boolean moveTo(N newParent, int index) {
 		return moveTo(newParent, index, false);
@@ -345,8 +336,6 @@ public abstract class BinaryTreeNode<D,N extends BinaryTreeNode<D,N>> extends Ab
 		}
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public boolean removeChild(N child) {
 		if (child!=null) {
@@ -360,8 +349,7 @@ public abstract class BinaryTreeNode<D,N extends BinaryTreeNode<D,N>> extends Ab
 		return false;
 	}
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public int indexOf(N child) {
 		if (child==this.left) return 0;
@@ -369,9 +357,6 @@ public abstract class BinaryTreeNode<D,N extends BinaryTreeNode<D,N>> extends Ab
 		return -1;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void getChildren(Object[] array) {
 		if (array!=null) {
@@ -384,8 +369,7 @@ public abstract class BinaryTreeNode<D,N extends BinaryTreeNode<D,N>> extends Ab
 		}
 	}
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public int getMinHeight() {
 		return 1+Math.min(
@@ -393,8 +377,7 @@ public abstract class BinaryTreeNode<D,N extends BinaryTreeNode<D,N>> extends Ab
 				this.right!=null ? this.right.getMinHeight() : 0);
 	}
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public int getMaxHeight() {
 		return 1+Math.max(
@@ -488,6 +471,7 @@ public abstract class BinaryTreeNode<D,N extends BinaryTreeNode<D,N>> extends Ab
 		 * @param index
 		 * @return the zone or <code>null</code>
 		 */
+		@Pure
 		public static BinaryTreeZone fromInteger(int index) {
 			if (index<0) return null;
 			BinaryTreeZone[] nodes = values();

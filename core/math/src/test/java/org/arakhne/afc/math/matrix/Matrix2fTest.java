@@ -21,16 +21,14 @@
  */
 package org.arakhne.afc.math.matrix;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.arakhne.afc.math.AbstractMathTestCase;
 import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2DTestRule;
-import org.arakhne.afc.math.geometry.d2.Point2D;
-import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.fp.Point2fp;
 import org.arakhne.afc.math.geometry.d2.fp.Vector2fp;
-import org.arakhne.afc.math.geometry.d3.Vector3D;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -45,7 +43,7 @@ public class Matrix2fTest extends AbstractMathTestCase {
 		Matrix2f matrix = new Matrix2f(0,1,2,3);
 		String s = "0.0, 1.0\n2.0, 3.0\n"; //$NON-NLS-1$
 				
-		assertTrue(s.equals(matrix.toString()));
+		assertEquals(s, matrix.toString());
 	}
 	
 	@Test
@@ -53,7 +51,7 @@ public class Matrix2fTest extends AbstractMathTestCase {
 		Matrix2f matrix = this.randomMatrix2f();
 		matrix.setIdentity();
 		
-		assertTrue((new Matrix2f(1,0,0,1)).equals(matrix));
+		assertEpsilonEquals(new Matrix2f(1,0,0,1), matrix);
 	}
 	
 	@Test
@@ -65,7 +63,7 @@ public class Matrix2fTest extends AbstractMathTestCase {
 		m2.set(m2.m00+s, m2.m01+s, m2.m10+s, m2.m11+s);
 		m1.add(s);
 		
-		assertTrue(m2.equals(m1));
+		assertEpsilonEquals(m2, m1);
 	}
 	
 	@Test
@@ -77,7 +75,7 @@ public class Matrix2fTest extends AbstractMathTestCase {
 		m2.set(m2.m00+s, m2.m01+s, m2.m10+s, m2.m11+s);
 		m1.add(s,m1);
 		
-		assertTrue(m2.equals(m1));
+		assertEpsilonEquals(m2, m1);
 	}
 	
 	@Test
@@ -89,7 +87,7 @@ public class Matrix2fTest extends AbstractMathTestCase {
 		m3.set(m1.m00+m2.m00, m1.m01+m2.m01, m1.m10+m2.m10, m1.m11+m2.m11);
 		m1.add(m1,m2);
 		
-		assertTrue(m3.equals(m1));
+		assertEpsilonEquals(m3, m1);
 	}
 	
 	@Test
@@ -101,7 +99,7 @@ public class Matrix2fTest extends AbstractMathTestCase {
 		m3.set(m1.m00+m2.m00, m1.m01+m2.m01, m1.m10+m2.m10, m1.m11+m2.m11);
 		m1.add(m2);
 		
-		assertTrue(m3.equals(m1));
+		assertEpsilonEquals(m3, m1);
 	}
 	
 	@Test
@@ -113,7 +111,7 @@ public class Matrix2fTest extends AbstractMathTestCase {
 		m3.set(m1.m00-m2.m00, m1.m01-m2.m01, m1.m10-m2.m10, m1.m11-m2.m11);
 		m1.sub(m1,m2);
 		
-		assertTrue(m3.equals(m1));
+		assertEpsilonEquals(m3, m1);
 	}
 	
 	@Test
@@ -125,7 +123,7 @@ public class Matrix2fTest extends AbstractMathTestCase {
 		m3.set(m1.m00-m2.m00, m1.m01-m2.m01, m1.m10-m2.m10, m1.m11-m2.m11);
 		m1.sub(m2);
 		
-		assertTrue(m3.equals(m1));
+		assertEpsilonEquals(m3, m1);
 	}
 	
 	@Test
@@ -143,7 +141,7 @@ public class Matrix2fTest extends AbstractMathTestCase {
 		
 		m1.transpose();
 		
-		assertTrue(transpose.equals(m1));
+		assertEpsilonEquals(transpose,m1);
 	}
 	
 	@Test
@@ -161,7 +159,7 @@ public class Matrix2fTest extends AbstractMathTestCase {
 		
 		m1.transpose(m1);
 		
-		assertTrue(transpose.equals(m1));
+		assertEpsilonEquals(transpose, m1);
 	}
 	
 	@Test
@@ -191,7 +189,7 @@ public class Matrix2fTest extends AbstractMathTestCase {
 		Matrix2f prodScal = new Matrix2f(a*s,b*s,c*s,d*s);
 		
 		matrix.mul(s);
-		assertTrue(prodScal.equals(matrix));
+		assertEpsilonEquals(prodScal, matrix);
 	}
 	
 	@Test
@@ -207,7 +205,7 @@ public class Matrix2fTest extends AbstractMathTestCase {
 		Matrix2f prodScal = new Matrix2f(a*s,b*s,c*s,d*s);
 		
 		matrix.mul(s,matrix);
-		assertTrue(prodScal.equals(matrix));
+		assertEpsilonEquals(prodScal, matrix);
 	}
 	
 	@Test
@@ -235,17 +233,17 @@ public class Matrix2fTest extends AbstractMathTestCase {
 				
 		m1.mul(m2);
 		
-		assertTrue(prod.equals(m1));
+		assertEpsilonEquals(prod, m1);
 	}
 	
 	@Test
 	public void mulVector2D() {
-		Vector2D vector = this.randomVector2f();
+		Vector2fp vector = this.randomVector2f();
 		Matrix2f matrix = new Matrix2f(1,2,4,-1);
 		
-		Vector2D product = new Vector2fp(vector.getX()+2*vector.getY(),4*vector.getX()-vector.getY());
+		Vector2fp product = new Vector2fp(vector.getX()+2*vector.getY(),4*vector.getX()-vector.getY());
 		
-		Vector2D result = new Vector2fp();
+		Vector2fp result = new Vector2fp();
 		matrix.mul(vector, result);
 		
 		assertEpsilonEquals(product, result);
@@ -276,7 +274,7 @@ public class Matrix2fTest extends AbstractMathTestCase {
 				
 		m1.mul(m1,m2);
 		
-		assertTrue(prod.equals(m1));
+		assertEpsilonEquals(prod, m1);
 	}
 	
 	@Test
@@ -290,7 +288,7 @@ public class Matrix2fTest extends AbstractMathTestCase {
 		m2.transpose();
 		m1.mul(m2);
 		
-		assertTrue(multrans.equals(m1));
+		assertEpsilonEquals(multrans, m1);
 	}
 	
 	@Test
@@ -304,7 +302,7 @@ public class Matrix2fTest extends AbstractMathTestCase {
 		m2.transpose();
 		m1.mul(m2);
 		
-		assertTrue(multrans.equals(m1));
+		assertEpsilonEquals(multrans, m1);
 	}
 	
 	@Test
@@ -318,7 +316,7 @@ public class Matrix2fTest extends AbstractMathTestCase {
 		//m2.transpose();
 		m1.mul(m2);
 		
-		assertTrue(multrans.equals(m1));
+		assertEpsilonEquals(multrans, m1);
 	}
 	
 	@Test
@@ -390,7 +388,7 @@ public class Matrix2fTest extends AbstractMathTestCase {
 	public void setZero() {
 		Matrix2f m = this.randomMatrix2f();
 		m.setZero();
-		assertTrue(m.equals(new Matrix2f(0,0,0,0)));
+		assertEpsilonEquals(new Matrix2f(0,0,0,0), m);
 	}
 	
 	@Test
@@ -398,7 +396,7 @@ public class Matrix2fTest extends AbstractMathTestCase {
 		Matrix2f m = this.randomMatrix2f();
 		double s = this.random.nextDouble();
 		m.setDiagonal(s,s);
-		assertTrue(m.equals(new Matrix2f(s,0,0,s)));
+		assertEpsilonEquals(new Matrix2f(s,0,0,s), m);
 	}
 	
 	@Test
@@ -410,15 +408,15 @@ public class Matrix2fTest extends AbstractMathTestCase {
 		
 		m1.negate();
 		temp.add(m1, m2);
-		assertTrue(temp.equals(new Matrix2f(0,0,0,0)));
+		assertEpsilonEquals(new Matrix2f(0,0,0,0), temp);
 		temp.mul(m1, m2);
 		
 		m2.negate();
-		assertTrue(m1.equals(m2));
+		assertEpsilonEquals(m1, m2);
 		
 		m1.negate();
 		temp2.mul(m1, m2);
-		assertTrue(temp.equals(temp2));
+		assertEpsilonEquals(temp, temp2);
 	}
 	
 	@Test
@@ -430,29 +428,29 @@ public class Matrix2fTest extends AbstractMathTestCase {
 		
 		m1.negate(m1);
 		temp.add(m1, m2);
-		assertTrue(temp.equals(new Matrix2f(0,0,0,0)));
+		assertEpsilonEquals(new Matrix2f(0,0,0,0), temp);
 		temp.mul(m1, m2);
 		
 		m2.negate(m2);
-		assertTrue(m1.equals(m2));
+		assertEpsilonEquals(m1, m2);
 		
 		m1.negate(m1);
 		temp2.mul(m1, m2);
-		assertTrue(temp.equals(temp2));
+		assertEpsilonEquals(temp, temp2);
 	}
 	
 	@Test
 	public void cloneTest() {
 		Matrix2f m = this.randomMatrix2f();
 		Matrix2f m2 = m.clone();
-		assertTrue(m.equals(m2));
+		assertEpsilonEquals(m, m2);
 	}
 	
 	@Test
 	public void isSymmetric() {
 		Matrix2f m = this.randomMatrix2f();
 		boolean b = m.m01==m.m10;
-		assertTrue(b==m.isSymmetric());
+		assertEquals(b, m.isSymmetric());
 		
 		m.setZero();
 		assertTrue(m.isSymmetric());
@@ -473,8 +471,8 @@ public class Matrix2fTest extends AbstractMathTestCase {
 		assertEpsilonEquals(0, eigenValues[0]);
 		assertEpsilonEquals(0, eigenValues[1]);
 
-		Vector2D vector1 = new Vector2fp();
-		Vector2D vector2 = new Vector2fp();
+		Vector2fp vector1 = new Vector2fp();
+		Vector2fp vector2 = new Vector2fp();
 		eigenVectors.getColumn(0, vector1);
 		eigenVectors.getColumn(1, vector2);
 		assertFpVectorEquals(1, 0, vector1);
@@ -491,8 +489,8 @@ public class Matrix2fTest extends AbstractMathTestCase {
 		assertEpsilonEquals(1, eigenValues[0]);
 		assertEpsilonEquals(1, eigenValues[1]);
 
-		Vector2D vector1 = new Vector2fp();
-		Vector2D vector2 = new Vector2fp();
+		Vector2fp vector1 = new Vector2fp();
+		Vector2fp vector2 = new Vector2fp();
 		eigenVectors.getColumn(0, vector1);
 		eigenVectors.getColumn(1, vector2);
 		assertFpVectorEquals(1, 0, vector1);
@@ -508,8 +506,8 @@ public class Matrix2fTest extends AbstractMathTestCase {
 		assertEpsilonEquals(-3.5249, eigenValues[0]);
 		assertEpsilonEquals(6.5249, eigenValues[1]);
 		
-		Vector2D vector1 = new Vector2fp();
-		Vector2D vector2 = new Vector2fp();
+		Vector2fp vector1 = new Vector2fp();
+		Vector2fp vector2 = new Vector2fp();
 		eigenVectors.getColumn(0, vector1);
 		eigenVectors.getColumn(1, vector2);
 		
@@ -533,15 +531,11 @@ public class Matrix2fTest extends AbstractMathTestCase {
 		assertFalse(m.isIdentity());
 	}
 	
-	
-	
-	/**
-	 */
 	@Test
 	public void covMatrix2Tuple2dArray_theory() {
-		Vector2D v1 = new Vector2fp(1, 3);
-		Vector2D v2 = new Vector2fp(4, -2);
-		Vector2D m = new Vector2fp();
+		Vector2fp v1 = new Vector2fp(1, 3);
+		Vector2fp v2 = new Vector2fp(4, -2);
+		Vector2fp m = new Vector2fp();
 		m.add(v1,v2);
 		m.scale(.5f);
 		
@@ -552,7 +546,7 @@ public class Matrix2fTest extends AbstractMathTestCase {
 		expected.m11 = ((v1.getY()-m.getY()) * (v1.getY()-m.getY()) + (v2.getY()-m.getY()) * (v2.getY()-m.getY())) / 2f;
 		
 		Matrix2f mat = new Matrix2f();
-		Vector2D mean = new Vector2fp(); 
+		Vector2fp mean = new Vector2fp(); 
 		mat.cov(mean, v1, v2);
 		
 		assertEpsilonEquals(m, mean);
@@ -582,16 +576,16 @@ public class Matrix2fTest extends AbstractMathTestCase {
 		// Cov = [ 1.5 ,  .5 ]
 		//       [  .5 ,  .5 ]
 		
-		Point2D p1 = new Point2fp(-1, -2);
-		Point2D p2 = new Point2fp(1, 0);
-		Point2D p3 = new Point2fp(2, -1);
-		Point2D p4 = new Point2fp(2, -1);
+		Point2fp p1 = new Point2fp(-1, -2);
+		Point2fp p2 = new Point2fp(1, 0);
+		Point2fp p3 = new Point2fp(2, -1);
+		Point2fp p4 = new Point2fp(2, -1);
 		
 		Matrix2f cov = new Matrix2f();
-		Vector2D mean = new Vector2fp();
+		Vector2fp mean = new Vector2fp();
 		cov.cov(mean, p1, p2, p3, p4);
 		
-		Point2D expectedMean = new Point2fp(1, -1); 
+		Point2fp expectedMean = new Point2fp(1, -1); 
 		Matrix2f expectedCov = new Matrix2f();
 		expectedCov.m00 = 1.5f;
 		expectedCov.m01 = .5f;
@@ -608,4 +602,210 @@ public class Matrix2fTest extends AbstractMathTestCase {
 		}
 	}
 	
+	@Test
+	public void operator_addMatrix2f() {
+		Matrix2f m1 = this.randomMatrix2f();
+		Matrix2f m2 = this.randomMatrix2f();
+		Matrix2f m3 = new Matrix2f();
+		
+		m3.set(m1.m00+m2.m00, m1.m01+m2.m01, m1.m10+m2.m10, m1.m11+m2.m11);
+		m1.operator_add(m2);
+		
+		assertEpsilonEquals(m3, m1);
+	}
+
+	@Test
+	public void operator_addDouble() {
+		Matrix2f m1 = this.randomMatrix2f();
+		Matrix2f m2 = m1.clone();
+		double s = this.random.nextDouble() * 100;
+		
+		m2.set(m2.m00+s, m2.m01+s, m2.m10+s, m2.m11+s);
+		m1.operator_add(s);
+		
+		assertEpsilonEquals(m2, m1);
+	}
+
+	@Test
+	public void operator_removeMatrix2f() {
+		Matrix2f m1 = this.randomMatrix2f();
+		Matrix2f m2 = this.randomMatrix2f();
+		Matrix2f m3 = new Matrix2f();
+		
+		m3.set(m1.m00-m2.m00, m1.m01-m2.m01, m1.m10-m2.m10, m1.m11-m2.m11);
+		m1.operator_remove(m2);
+		
+		assertEpsilonEquals(m3, m1);
+	}
+
+	@Test
+	public void operator_removeDouble() {
+		Matrix2f m1 = this.randomMatrix2f();
+		Matrix2f m2 = m1.clone();
+		double s = this.random.nextDouble() * 100;
+		
+		m2.set(m2.m00-s, m2.m01-s, m2.m10-s, m2.m11-s);
+		m1.operator_remove(s);
+		
+		assertEpsilonEquals(m2, m1);
+	}
+
+	@Test
+	public void operator_plusMatrix2f() {
+		Matrix2f m1 = this.randomMatrix2f();
+		Matrix2f m2 = this.randomMatrix2f();
+		Matrix2f m3 = new Matrix2f();
+		
+		m3.set(m1.m00+m2.m00, m1.m01+m2.m01, m1.m10+m2.m10, m1.m11+m2.m11);
+		Matrix2f r = m1.operator_plus(m2);
+		
+		assertEpsilonEquals(m3, r);
+	}
+
+	@Test
+	public void operator_plusDouble() {
+		Matrix2f m1 = this.randomMatrix2f();
+		Matrix2f m2 = m1.clone();
+		double s = this.random.nextDouble() * 100;
+		
+		m2.set(m2.m00+s, m2.m01+s, m2.m10+s, m2.m11+s);
+		Matrix2f r = m1.operator_plus(s);
+		
+		assertEpsilonEquals(m2, r);
+	}
+
+	@Test
+	public void operator_minusMatrix2f() {
+		Matrix2f m1 = this.randomMatrix2f();
+		Matrix2f m2 = this.randomMatrix2f();
+		Matrix2f m3 = new Matrix2f();
+		
+		m3.set(m1.m00-m2.m00, m1.m01-m2.m01, m1.m10-m2.m10, m1.m11-m2.m11);
+		Matrix2f r = m1.operator_minus(m2);
+		
+		assertEpsilonEquals(m3, r);
+	}
+
+	@Test
+	public void operator_minusDouble() {
+		Matrix2f m1 = this.randomMatrix2f();
+		Matrix2f m2 = m1.clone();
+		double s = this.random.nextDouble() * 100;
+		
+		m2.set(m2.m00-s, m2.m01-s, m2.m10-s, m2.m11-s);
+		Matrix2f r = m1.operator_minus(s);
+		
+		assertEpsilonEquals(m2, r);
+	}
+
+	@Test
+	public void operator_minus() {
+		Matrix2f m1 = this.randomMatrix2f();
+		Matrix2f m2 = m1.clone();
+		
+		m2.set(-m2.m00, -m2.m01, -m2.m10, -m2.m11);
+		Matrix2f r = m1.operator_minus();
+		assertEpsilonEquals(m2, r);
+	}
+
+	@Test
+	public void operator_multiplyMatrix2f() {
+		double a = this.random.nextDouble() * 100;
+		double b = this.random.nextDouble() * 100;
+		double c = this.random.nextDouble() * 100;
+		double d = this.random.nextDouble() * 100;
+		
+		//double i = this.random.nextDouble();
+		Matrix2f m1 = new Matrix2f(a,b,c,d);
+		
+		double e = this.random.nextDouble() * 100;
+		double f = this.random.nextDouble() * 100;
+		double g = this.random.nextDouble() * 100;
+		double h = this.random.nextDouble() * 100;
+		
+		Matrix2f m2= new Matrix2f(e,f,g,h);
+		
+		Matrix2f prod = new Matrix2f(
+				a*e+b*g,
+				a*f+b*h,
+				c*e+d*g,
+				c*f+d*h);
+				
+		Matrix2f r = m1.operator_multiply(m2);
+		
+		assertEpsilonEquals(prod, r);
+	}
+
+	@Test
+	public void operator_multiplyDouble() {
+		double a = this.random.nextDouble() * 100;
+		double b = this.random.nextDouble() * 100;
+		double c = this.random.nextDouble() * 100;
+		double d = this.random.nextDouble() * 100;
+		
+		Matrix2f matrix = new Matrix2f(a,b,c,d);
+		
+		double s = this.random.nextDouble() * 100;
+		Matrix2f prodScal = new Matrix2f(a*s,b*s,c*s,d*s);
+		
+		Matrix2f r = matrix.operator_multiply(s);
+		assertEpsilonEquals(prodScal, r);
+	}
+
+	@Test
+	public void operator_divideDouble() {
+		double a = this.random.nextDouble() * 100;
+		double b = this.random.nextDouble() * 100;
+		double c = this.random.nextDouble() * 100;
+		double d = this.random.nextDouble() * 100;
+		
+		Matrix2f matrix = new Matrix2f(a,b,c,d);
+		
+		double s = this.random.nextDouble() * 100;
+		Matrix2f prodScal = new Matrix2f(a/s,b/s,c/s,d/s);
+		
+		Matrix2f r = matrix.operator_divide(s);
+		assertEpsilonEquals(prodScal, r);
+	}
+
+	@Test
+	public void operator_plusPlus() {
+		Matrix2f m1 = this.randomMatrix2f();
+		Matrix2f m2 = m1.clone();
+		
+		m2.set(m2.m00+1, m2.m01+1, m2.m10+1, m2.m11+1);
+		m1.operator_plusPlus();
+		
+		assertEpsilonEquals(m2, m1);
+	}
+
+	@Test
+	public void operator_moinsMoins() {
+		Matrix2f m1 = this.randomMatrix2f();
+		Matrix2f m2 = m1.clone();
+		
+		m2.set(m2.m00-1, m2.m01-1, m2.m10-1, m2.m11-1);
+		m1.operator_moinsMoins();
+		
+		assertEpsilonEquals(m2, m1);
+	}
+
+	@Test
+	public void operator_not() {
+		Matrix2f m1 = this.randomMatrix2f();
+		Matrix2f transpose = new Matrix2f();
+		
+		double [] v = new double[3];
+		
+		m1.getRow(0, v);
+		transpose.setColumn(0, v);
+		
+		m1.getRow(1, v);
+		transpose.setColumn(1, v);
+		
+		Matrix2f r = m1.operator_not();
+		
+		assertEpsilonEquals(transpose, r);
+	}
+
 }

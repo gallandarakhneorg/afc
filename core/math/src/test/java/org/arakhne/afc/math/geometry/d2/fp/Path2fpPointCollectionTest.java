@@ -26,10 +26,10 @@ import org.arakhne.afc.math.geometry.d2.afp.AbstractPath2afpPointCollectionTest;
 import org.arakhne.afc.math.geometry.d2.afp.TestShapeFactory;
 
 @SuppressWarnings("all")
-public class Path2fpPointCollectionTest extends AbstractPath2afpPointCollectionTest<Point2fp, Rectangle2fp> {
+public class Path2fpPointCollectionTest extends AbstractPath2afpPointCollectionTest<Point2fp, Vector2fp, Rectangle2fp> {
 
 	@Override
-	protected TestShapeFactory<Point2fp, Rectangle2fp> createFactory() {
+	protected TestShapeFactory2fp createFactory() {
 		return TestShapeFactory2fp.SINGLETON;
 	}
 

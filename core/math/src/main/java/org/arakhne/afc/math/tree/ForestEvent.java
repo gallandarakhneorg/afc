@@ -19,6 +19,8 @@ package org.arakhne.afc.math.tree;
 
 import java.util.EventObject;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /**
  * Event on tree forest.
  * 
@@ -50,6 +52,7 @@ public class ForestEvent extends EventObject {
 	 * 
 	 * @return the forest
 	 */
+	@Pure
 	public Forest<?> getForest() {
 		return (Forest<?>)getSource();
 	}
@@ -58,6 +61,7 @@ public class ForestEvent extends EventObject {
 	 * 
 	 * @return the removed tree.
 	 */
+	@Pure
 	public Tree<?,?> getRemovedTree() {
 		return this.oldValue;
 	}
@@ -66,6 +70,7 @@ public class ForestEvent extends EventObject {
 	 * 
 	 * @return the added tree.
 	 */
+	@Pure
 	public Tree<?,?> getAddedTree() {
 		return this.newValue;
 	}

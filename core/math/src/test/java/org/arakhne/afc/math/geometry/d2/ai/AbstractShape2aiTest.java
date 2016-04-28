@@ -37,8 +37,8 @@ import org.junit.Rule;
 import org.junit.Test;
 
 @SuppressWarnings("all")
-public abstract class AbstractShape2aiTest<T extends Shape2ai<?, ?, ?, ?, B>,
-		B extends Rectangle2ai<?, ?, ?, ?, B>> extends AbstractMathTestCase implements TestShapeFactory<B> {
+public abstract class AbstractShape2aiTest<T extends Shape2ai<?, ?, ?, ?, ?, B>,
+		B extends Rectangle2ai<?, ?, ?, ?, ?, B>> extends AbstractMathTestCase implements TestShapeFactory<B> {
 	
 	@Rule
 	public CoordinateSystem2DTestRule csTestRule = new CoordinateSystem2DTestRule();
@@ -68,7 +68,7 @@ public abstract class AbstractShape2aiTest<T extends Shape2ai<?, ?, ?, ?, B>,
 	 */
 	protected abstract T createShape();
 	
-	public final Segment2ai<?, ?, ?, ?, B> createSegment(int x1, int y1, int x2, int y2) {
+	public final Segment2ai<?, ?, ?, ?, ?, B> createSegment(int x1, int y1, int x2, int y2) {
 		return this.factory.createSegment(x1, y1, x2, y2);
 	}
 	
@@ -76,7 +76,7 @@ public abstract class AbstractShape2aiTest<T extends Shape2ai<?, ?, ?, ?, B>,
 		return this.factory.createRectangle(x, y, width, height);
 	}
 
-	public final Circle2ai<?, ?, ?, ?, B> createCircle(int x, int y, int radius) {
+	public final Circle2ai<?, ?, ?, ?, ?, B> createCircle(int x, int y, int radius) {
 		return this.factory.createCircle(x, y, radius);
 	}
 	
@@ -88,7 +88,7 @@ public abstract class AbstractShape2aiTest<T extends Shape2ai<?, ?, ?, ?, B>,
 		return this.factory.createVector(x, y);
 	}
 
-	public final Path2ai<?, ?, ?, ?, B> createPath() {
+	public final Path2ai<?, ?, ?, ?, ?, B> createPath() {
 		return this.factory.createPath();
 	}
 

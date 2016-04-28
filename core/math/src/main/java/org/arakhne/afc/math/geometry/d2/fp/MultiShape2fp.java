@@ -41,7 +41,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @since 13.0
  */
 public class MultiShape2fp extends AbstractShape2fp<MultiShape2fp> implements 
-	MultiShape2afp<Shape2fp<?>, MultiShape2fp, Shape2fp<?>, PathElement2fp, Point2fp, Rectangle2fp> {
+	MultiShape2afp<Shape2fp<?>, MultiShape2fp, Shape2fp<?>, PathElement2fp, Point2fp, Vector2fp, Rectangle2fp> {
 
 	private static final long serialVersionUID = -4727279807601027239L;
 

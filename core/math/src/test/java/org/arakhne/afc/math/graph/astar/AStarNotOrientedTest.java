@@ -37,8 +37,8 @@ import org.junit.Test;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 4.0
  */
+@SuppressWarnings("all")
 public class AStarNotOrientedTest extends AbstractMathTestCase {
 
 	private AStar<AStarPathStub,AStarEdgeStub,AStarNodeStub> astar;

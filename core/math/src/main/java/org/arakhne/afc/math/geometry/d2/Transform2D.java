@@ -175,7 +175,7 @@ public class Transform2D extends Matrix3f {
 	 * 
 	 * @param translation
 	 */
-	public void translate(Vector2D translation) {
+	public void translate(Vector2D<?, ?> translation) {
 		assert (translation != null) : "Translation must not be null"; //$NON-NLS-1$
 		translate(translation.getX(), translation.getY());
 	}
@@ -204,7 +204,7 @@ public class Transform2D extends Matrix3f {
 	 * @return the <code>translation</code> vector.
 	 */
 	@Pure
-	public Vector2D getTranslationVector(Vector2D translation) {
+	public <T extends Vector2D<?, ?>> T getTranslationVector(T translation) {
 		assert (translation != null) : "Output translation vector must not be null"; //$NON-NLS-1$
 		translation.set(this.m02, this.m12);
 		return translation;
@@ -445,7 +445,7 @@ public class Transform2D extends Matrix3f {
 	 * @return the <code>scale</code> vector.
 	 */
 	@Pure
-	public Vector2D getScaleVector(Vector2D scale) {
+	public <T extends Vector2D<?, ?>> T getScaleVector(T scale) {
 		assert (scale != null) : "The output scaling vector must not be null"; //$NON-NLS-1$
 		scale.set(this.m00, this.m11);
 		return scale;
@@ -583,7 +583,7 @@ public class Transform2D extends Matrix3f {
 	 * @return the <code>shear</code> vector.
 	 */
 	@Pure
-	public Vector2D getShearVector(Vector2D shear) {
+	public <T extends Vector2D<?, ?>> T getShearVector(T shear) {
 		assert (shear != null) : "The output shearing vector must not be null"; //$NON-NLS-1$
 		shear.set(this.m01, this.m10);
 		return shear;

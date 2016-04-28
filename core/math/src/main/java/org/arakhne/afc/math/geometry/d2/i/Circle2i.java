@@ -35,7 +35,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  */
 public class Circle2i
 extends AbstractShape2i<Circle2i>
-implements Circle2ai<Shape2i<?>, Circle2i, PathElement2i, Point2i, Rectangle2i> {
+implements Circle2ai<Shape2i<?>, Circle2i, PathElement2i, Point2i, Vector2i, Rectangle2i> {
 
 	private static final long serialVersionUID = -7692549016859323986L;
 
@@ -55,7 +55,7 @@ implements Circle2ai<Shape2i<?>, Circle2i, PathElement2i, Point2i, Rectangle2i> 
 	 * @param center
 	 * @param radius
 	 */
-	public Circle2i(Point2D center, int radius) {
+	public Circle2i(Point2D<?, ?> center, int radius) {
 		assert (center != null) : "Center point must be not null"; //$NON-NLS-1$
 		set(center.ix(), center.iy(), radius);
 	}
@@ -72,7 +72,7 @@ implements Circle2ai<Shape2i<?>, Circle2i, PathElement2i, Point2i, Rectangle2i> 
 	/** Construct a circle from a circle.
 	 * @param circle
 	 */
-	public Circle2i(Circle2ai<?, ?, ?, ?, ?> circle) {
+	public Circle2i(Circle2ai<?, ?, ?, ?, ?, ?> circle) {
 		assert (circle != null) : "Circle must be not null"; //$NON-NLS-1$
 		set(circle.getX(), circle.getY(), circle.getRadius());
 	}

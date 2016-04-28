@@ -21,21 +21,20 @@
  */
 package org.arakhne.afc.math.geometry.d2.afp;
 
-import static org.junit.Assert.*;
-import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.d2.Point2D;
+import org.arakhne.afc.math.geometry.d2.Shape2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
-import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.ai.PathIterator2ai;
-import org.junit.Test;
 
 @SuppressWarnings("all")
-public abstract class AbstractMultiShape2afpTest<T extends MultiShape2afp<?, T, C, ?, ?, B>,
-		C extends Shape2afp<?, ?, ?, ?, B>,
-		B extends Rectangle2afp<?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
+public abstract class AbstractMultiShape2afpTest<T extends MultiShape2afp<?, T, C, ?, ?, ?, B>,
+		C extends Shape2afp<?, ?, ?, ?, ?, B>,
+		B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
 
 	@Override
 	protected final T createShape() {
@@ -662,6 +661,160 @@ public abstract class AbstractMultiShape2afpTest<T extends MultiShape2afp<?, T, 
 		// Inside
 		assertTrue(this.shape.intersects(createRoundRectangle(-4, 18, .5, .5, .1, .1)));
 		assertTrue(this.shape.intersects(createRoundRectangle(5.5, 8.5, .5, .5, .1, .1)));
+	}
+
+	@Override
+	public void intersectsShape2D() {
+		assertTrue(this.shape.intersects((Shape2D) createCircle(4.75, 8, .5)));
+		Path2afp path = createPath();
+		path.moveTo(-6, 2);
+		path.lineTo(10, 6);
+		path.lineTo(8, 14);
+		path.lineTo(-4, 12);
+		path.lineTo(-12, 22);
+		path.lineTo(6, 20);
+		assertFalse(this.shape.intersects((Shape2D) path));
+		path.closePath();
+		assertTrue(this.shape.intersects((Shape2D) path));
+	}
+
+	@Override
+	public void operator_addVector2D() {
+		this.shape.operator_add(createVector(10, -2));
+		PathIterator2afp pi = this.shape.getPathIterator();
+		assertElement(pi, PathElementType.MOVE_TO, 15, 6);
+		assertElement(pi, PathElementType.LINE_TO, 17, 6);
+		assertElement(pi, PathElementType.LINE_TO, 17, 7);
+		assertElement(pi, PathElementType.LINE_TO, 15, 7);
+		assertElement(pi, PathElementType.CLOSE, 15, 6);
+		assertElement(pi, PathElementType.MOVE_TO, 7, 16);
+		assertElement(pi, PathElementType.CURVE_TO, 7, 17.10457, 6.10457, 18, 5, 18);
+		assertElement(pi, PathElementType.CURVE_TO, 3.89543, 18, 3, 17.10457, 3, 16);
+		assertElement(pi, PathElementType.CURVE_TO, 3, 14.89543, 3.89543, 14, 5, 14);
+		assertElement(pi, PathElementType.CURVE_TO, 6.10457, 14, 7, 14.89543, 7, 16);
+		assertElement(pi, PathElementType.CLOSE, 7, 16);
+		assertNoElement(pi);
+	}
+
+	@Override
+	public void operator_plusVector2D() {
+		T shape = this.shape.operator_plus(createVector(10, -2));
+		PathIterator2afp pi = shape.getPathIterator();
+		assertElement(pi, PathElementType.MOVE_TO, 15, 6);
+		assertElement(pi, PathElementType.LINE_TO, 17, 6);
+		assertElement(pi, PathElementType.LINE_TO, 17, 7);
+		assertElement(pi, PathElementType.LINE_TO, 15, 7);
+		assertElement(pi, PathElementType.CLOSE, 15, 6);
+		assertElement(pi, PathElementType.MOVE_TO, 7, 16);
+		assertElement(pi, PathElementType.CURVE_TO, 7, 17.10457, 6.10457, 18, 5, 18);
+		assertElement(pi, PathElementType.CURVE_TO, 3.89543, 18, 3, 17.10457, 3, 16);
+		assertElement(pi, PathElementType.CURVE_TO, 3, 14.89543, 3.89543, 14, 5, 14);
+		assertElement(pi, PathElementType.CURVE_TO, 6.10457, 14, 7, 14.89543, 7, 16);
+		assertElement(pi, PathElementType.CLOSE, 7, 16);
+		assertNoElement(pi);
+	}
+
+	@Override
+	public void operator_removeVector2D() {
+		this.shape.operator_remove(createVector(10, -2));
+		PathIterator2afp pi = this.shape.getPathIterator();
+		assertElement(pi, PathElementType.MOVE_TO, -5, 10);
+		assertElement(pi, PathElementType.LINE_TO, -3, 10);
+		assertElement(pi, PathElementType.LINE_TO, -3, 11);
+		assertElement(pi, PathElementType.LINE_TO, -5, 11);
+		assertElement(pi, PathElementType.CLOSE, -5, 10);
+		assertElement(pi, PathElementType.MOVE_TO, -13, 20);
+		assertElement(pi, PathElementType.CURVE_TO, -13, 21.10457, -13.89543, 22, -15, 22);
+		assertElement(pi, PathElementType.CURVE_TO, -16.10457, 22, -17, 21.10457, -17, 20);
+		assertElement(pi, PathElementType.CURVE_TO, -17, 18.89543, -16.10457, 18, -15, 18);
+		assertElement(pi, PathElementType.CURVE_TO, -13.89543, 18, -13, 18.89543, -13, 20);
+		assertElement(pi, PathElementType.CLOSE, -13, 20);
+		assertNoElement(pi);
+	}
+
+	@Override
+	public void operator_minusVector2D() {
+		T shape = this.shape.operator_minus(createVector(10, -2));
+		PathIterator2afp pi = shape.getPathIterator();
+		assertElement(pi, PathElementType.MOVE_TO, -5, 10);
+		assertElement(pi, PathElementType.LINE_TO, -3, 10);
+		assertElement(pi, PathElementType.LINE_TO, -3, 11);
+		assertElement(pi, PathElementType.LINE_TO, -5, 11);
+		assertElement(pi, PathElementType.CLOSE, -5, 10);
+		assertElement(pi, PathElementType.MOVE_TO, -13, 20);
+		assertElement(pi, PathElementType.CURVE_TO, -13, 21.10457, -13.89543, 22, -15, 22);
+		assertElement(pi, PathElementType.CURVE_TO, -16.10457, 22, -17, 21.10457, -17, 20);
+		assertElement(pi, PathElementType.CURVE_TO, -17, 18.89543, -16.10457, 18, -15, 18);
+		assertElement(pi, PathElementType.CURVE_TO, -13.89543, 18, -13, 18.89543, -13, 20);
+		assertElement(pi, PathElementType.CLOSE, -13, 20);
+		assertNoElement(pi);
+	}
+
+	@Override
+	public void operator_multiplyTransform2D() {
+		Transform2D transform = new Transform2D();
+		transform.setTranslation(10, -2);
+		Shape2afp newShape = this.shape.operator_multiply(transform);
+		PathIterator2afp pi = (PathIterator2afp) newShape.getPathIterator();
+		assertElement(pi, PathElementType.MOVE_TO, 15, 6);
+		assertElement(pi, PathElementType.LINE_TO, 17, 6);
+		assertElement(pi, PathElementType.LINE_TO, 17, 7);
+		assertElement(pi, PathElementType.LINE_TO, 15, 7);
+		assertElement(pi, PathElementType.CLOSE, 15, 6);
+		assertElement(pi, PathElementType.MOVE_TO, 7, 16);
+		assertElement(pi, PathElementType.CURVE_TO, 7, 17.10457, 6.10457, 18, 5, 18);
+		assertElement(pi, PathElementType.CURVE_TO, 3.89543, 18, 3, 17.10457, 3, 16);
+		assertElement(pi, PathElementType.CURVE_TO, 3, 14.89543, 3.89543, 14, 5, 14);
+		assertElement(pi, PathElementType.CURVE_TO, 6.10457, 14, 7, 14.89543, 7, 16);
+		assertElement(pi, PathElementType.CLOSE, 7, 16);
+		assertNoElement(pi);
+	}
+
+	@Override
+	public void operator_andPoint2D() {
+		assertFalse(this.shape.operator_and(createPoint(-10, 2)));
+		assertFalse(this.shape.operator_and(createPoint(-10, 14)));
+		assertFalse(this.shape.operator_and(createPoint(-10, 25)));
+		assertFalse(this.shape.operator_and(createPoint(-1, 25)));
+		assertFalse(this.shape.operator_and(createPoint(1, 2)));
+		assertFalse(this.shape.operator_and(createPoint(12, 2)));
+		assertFalse(this.shape.operator_and(createPoint(12, 14)));
+		assertFalse(this.shape.operator_and(createPoint(12, 25)));
+		assertFalse(this.shape.operator_and(createPoint(-6, 8)));
+		assertFalse(this.shape.operator_and(createPoint(4, 17)));
+		assertTrue(this.shape.operator_and(createPoint(-4, 19)));
+		assertTrue(this.shape.operator_and(createPoint(6, 8.25)));
+	}
+
+	@Override
+	public void operator_andShape2D() {
+		assertTrue(this.shape.operator_and(createCircle(4.75, 8, .5)));
+		Path2afp path = createPath();
+		path.moveTo(-6, 2);
+		path.lineTo(10, 6);
+		path.lineTo(8, 14);
+		path.lineTo(-4, 12);
+		path.lineTo(-12, 22);
+		path.lineTo(6, 20);
+		assertFalse(this.shape.operator_and(path));
+		path.closePath();
+		assertTrue(this.shape.operator_and(path));
+	}
+
+	@Override
+	public void operator_upToPoint2D() {
+		assertEpsilonEquals(14.76305, this.shape.operator_upTo(createPoint(-10, 2)));
+		assertEpsilonEquals(4.40312, this.shape.operator_upTo(createPoint(-10, 14)));
+		assertEpsilonEquals(6.60233, this.shape.operator_upTo(createPoint(-10, 25)));
+		assertEpsilonEquals(6.06226, this.shape.operator_upTo(createPoint(-1, 25)));
+		assertEpsilonEquals(7.21110, this.shape.operator_upTo(createPoint(1, 2)));
+		assertEpsilonEquals(7.81025, this.shape.operator_upTo(createPoint(12, 2)));
+		assertEpsilonEquals(7.07107, this.shape.operator_upTo(createPoint(12, 14)));
+		assertEpsilonEquals(16.38478, this.shape.operator_upTo(createPoint(12, 25)));
+		assertEpsilonEquals(8.04988, this.shape.operator_upTo(createPoint(-6, 8)));
+		assertEpsilonEquals(7.05538, this.shape.operator_upTo(createPoint(4, 17)));
+		assertEpsilonEquals(0, this.shape.operator_upTo(createPoint(-4, 19)));
+		assertEpsilonEquals(0, this.shape.operator_upTo(createPoint(6, 8.25)));
 	}
 
 }

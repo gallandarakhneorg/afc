@@ -21,7 +21,9 @@ package org.arakhne.afc.math.geometry.d2;
 import static org.junit.Assert.*;
 
 import org.arakhne.afc.math.AbstractMathTestCase;
+import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2DTestRule;
+import org.eclipse.xtext.xbase.lib.Pure;
 import org.junit.Assume;
 import org.junit.Rule;
 import org.junit.Test;
@@ -551,11 +553,227 @@ public abstract class AbstractPoint2DTest extends AbstractMathTestCase {
 	@Test
 	public void testClone() {
 		Point2D origin = createPoint(23, 45);
-		Point2D clone = origin.clone();
+		Tuple2D clone = origin.clone();
 		assertNotNull(clone);
 		assertNotSame(origin, clone);
 		assertEpsilonEquals(origin.getX(), clone.getX());
 		assertEpsilonEquals(origin.getY(), clone.getY());
 	}
+
+	@Test
+	public void operator_plusVector2D() {
+		Point2D point = createPoint(1, 2);
+		Point2D point2 = createPoint(3, 0);
+		Vector2D vector1 = createVector(0, 0);
+		Vector2D vector2 = createVector(1, 2);
+		Vector2D vector3 = createVector(1, -5);
+		Point2D r;
+		
+		r = point.operator_plus(vector1);
+		assertFpPointEquals(1, 2, r);
+
+		r = point.operator_plus(vector2);
+		assertFpPointEquals(2, 4, r);
+
+		r = point.operator_plus(vector3);
+		assertFpPointEquals(2, -3, r);
+
+		r = point2.operator_plus(vector1);
+		assertFpPointEquals(3, 0, r);
+
+		r = point2.operator_plus(vector2);
+		assertFpPointEquals(4, 2, r);
+
+		r = point2.operator_plus(vector3);
+		assertFpPointEquals(4, -5, r);
+	}
+
+	@Test
+	public void operator_addVector2D() {
+		Point2D point = createPoint(1, 2);
+		Point2D point2 = createPoint(3, 0);
+		Vector2D vector1 = createVector(0, 0);
+		Vector2D vector2 = createVector(1, 2);
+		Vector2D vector3 = createVector(1, -5);
+		Point2D r;
+		
+		point.operator_add(vector1);
+		assertFpPointEquals(1, 2, point);
+
+		point.operator_add(vector2);
+		assertFpPointEquals(2, 4, point);
+
+		point.operator_add(vector3);
+		assertFpPointEquals(3, -1, point);
+
+		point.operator_add(vector1);
+		assertFpPointEquals(3, -1, point);
+
+		point.operator_add(vector2);
+		assertFpPointEquals(4, 1, point);
+
+		point.operator_add(vector3);
+		assertFpPointEquals(5, -4, point);
+	}
+
+	@Test
+	public void operator_minusVector2D() {
+		Point2D point = createPoint(1, 2);
+		Point2D point2 = createPoint(3, 0);
+		Vector2D vector1 = createVector(0, 0);
+		Vector2D vector2 = createVector(1, 2);
+		Vector2D vector3 = createVector(1, -5);
+		Point2D r;
+		
+		r = point.operator_minus(vector1);
+		assertFpPointEquals(1, 2, r);
+
+		r = point.operator_minus(vector2);
+		assertFpPointEquals(0, 0, r);
+
+		r = point.operator_minus(vector3);
+		assertFpPointEquals(0, 7, r);
+
+		r = point2.operator_minus(vector1);
+		assertFpPointEquals(3, 0, r);
+
+		r = point2.operator_minus(vector2);
+		assertFpPointEquals(2, -2, r);
+
+		r = point2.operator_minus(vector3);
+		assertFpPointEquals(2, 5, r);
+	}
+
+	@Test
+	public void operator_minusPoint2D_iffp() {
+		Assume.assumeFalse(isIntCoordinates());
+		Point2D point = createPoint(0, 0);
+		Point2D point2 = createPoint(1, 0);
+		Point2D vector = createPoint(-1.2, -1.2);
+		Point2D vector2 = createPoint(2.0, 1.5);
+		Vector2D newVector;
+
+		newVector = point.operator_minus(vector);
+		assertFpVectorEquals(1.2, 1.2, newVector);
+
+		newVector = point2.operator_minus(vector2);
+		assertFpVectorEquals(-1.0, -1.5, newVector); 
+	}
+
+	@Test
+	public void operator_minusPoint2D_ifi() {
+		Assume.assumeTrue(isIntCoordinates());
+		Point2D point = createPoint(0, 0);
+		Point2D point2 = createPoint(1, 0);
+		Point2D vector = createPoint(-1.2, -1.2);
+		Point2D vector2 = createPoint(2.0, 1.5);
+		Vector2D newVector;
+
+		newVector = point.operator_minus(vector);
+		assertFpVectorEquals(1, 1, newVector);
+
+		newVector = point2.operator_minus(vector2);
+		assertFpVectorEquals(-1, -2, newVector); 
+	}
+
+	@Test
+	public void operator_removeVector2D() {
+		Point2D point = createPoint(1, 2);
+		Point2D point2 = createPoint(3, 0);
+		Vector2D vector1 = createVector(0, 0);
+		Vector2D vector2 = createVector(1, 2);
+		Vector2D vector3 = createVector(1, -5);
+		
+		point.operator_remove(vector1);
+		assertFpPointEquals(1, 2, point);
+
+		point.operator_remove(vector2);
+		assertFpPointEquals(0, 0, point);
+
+		point.operator_remove(vector3);
+		assertFpPointEquals(-1, 5, point);
+
+		point.operator_remove(vector1);
+		assertFpPointEquals(-1, 5, point);
+
+		point.operator_remove(vector2);
+		assertFpPointEquals(-2, 3, point);
+
+		point.operator_remove(vector3);
+		assertFpPointEquals(-3, 8, point);
+	}
+
+	@Test
+	public void operator_equalsTuple2D() {
+		Point2D point = createPoint(49, -2);
+		assertFalse(point.operator_equals(null));
+		assertTrue(point.operator_equals(point));
+		assertFalse(point.operator_equals(createPoint(49, -3)));
+		assertFalse(point.operator_equals(createPoint(0, 0)));
+		assertTrue(point.operator_equals(createPoint(49, -2)));
+	}
+
+	@Test
+	public void operator_notEqualsTuple2D() {
+		Point2D point = createPoint(49, -2);
+		assertTrue(point.operator_notEquals(null));
+		assertFalse(point.operator_notEquals(point));
+		assertTrue(point.operator_notEquals(createPoint(49, -3)));
+		assertTrue(point.operator_notEquals(createPoint(0, 0)));
+		assertFalse(point.operator_notEquals(createPoint(49, -2)));
+	}
+
+	@Test
+	public void testEqualsObject() {
+		Point2D point = createPoint(49, -2);
+		assertFalse(point.equals((Object) null));
+		assertTrue(point.equals((Object) point));
+		assertFalse(point.equals((Object) createPoint(49, -3)));
+		assertFalse(point.equals((Object) createPoint(0, 0)));
+		assertTrue(point.equals((Object) createPoint(49, -2)));
+	}
+
+	@Test
+	public void operator_upToPoint2D() {
+		Point2D point = createPoint(0, 0);
+		Point2D point2 = createPoint(0, 0);
+		Point2D point3 = createPoint(1, 2);
+		Point2D point4 = createPoint(1, 1);
+		assertEpsilonEquals(0, point.operator_upTo(point2));
+		assertEpsilonEquals(Math.sqrt(5), point.operator_upTo(point3));
+		assertEpsilonEquals(Math.sqrt(2), point.operator_upTo(point4));
+	}
+
+	@Test
+	public void operator_elvisPoint2D() {
+		Point2D orig1 = createPoint(45, -78);
+		Point2D orig2 = createPoint(0, 0);
+		Point2D param = createPoint(-5, -1.4);
+		Point2D result;
+		
+		result = orig1.operator_elvis(null);
+		assertSame(orig1, result);
+
+		result = orig1.operator_elvis(orig1);
+		assertSame(orig1, result);
+
+		result = orig1.operator_elvis(param);
+		assertSame(orig1, result);
+
+		result = orig2.operator_elvis(null);
+		assertNull(result);
+
+		result = orig2.operator_elvis(orig2);
+		assertSame(orig2, result);
+
+		result = orig2.operator_elvis(param);
+		assertSame(param, result);
+	}
+
+	@Test
+	public abstract void operator_andShape2D();
+
+	@Test
+	public abstract void operator_upToShape2D();
 
 }

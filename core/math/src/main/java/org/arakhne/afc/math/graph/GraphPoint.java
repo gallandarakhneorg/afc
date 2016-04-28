@@ -20,6 +20,8 @@
  */
 package org.arakhne.afc.math.graph;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /** This interface representes a graph's point.
  * 
  * @param <PT> is the type of node in the graph
@@ -36,12 +38,14 @@ public interface GraphPoint<PT extends GraphPoint<PT,ST>, ST extends GraphSegmen
      * 
      * @return the count of segments connected to this point.
      */
+	@Pure
 	public int getConnectedSegmentCount();
 
 	/** Replies the list of segments connected to this point.
      * 
      * @return the list of segments connected to this point.
      */
+	@Pure
 	public Iterable<ST> getConnectedSegments();
 	
     /** Replies the list of segments connected to this point.
@@ -55,12 +59,14 @@ public interface GraphPoint<PT extends GraphPoint<PT,ST>, ST extends GraphSegmen
      * @param startingPoint
      * @return the list of segments connected to this point.
      */
+	@Pure
 	public Iterable<ST> getConnectedSegmentsStartingFrom(ST startingPoint);
 
     /** Replies the list of segment connections for this point.
      * 
      * @return the list of segments connected to this point.
      */
+	@Pure
 	public Iterable<? extends GraphPointConnection<PT,ST>> getConnections();
 
 	/** Replies the list of segment connections for this point.
@@ -74,6 +80,7 @@ public interface GraphPoint<PT extends GraphPoint<PT,ST>, ST extends GraphSegmen
      * @param startingPoint
      * @return the list of segments connected to this point.
      */
+	@Pure
 	public Iterable<? extends GraphPointConnection<PT,ST>> getConnectionsStartingFrom(ST startingPoint);
 
 	/** Replies if the specified segment was connected to
@@ -83,6 +90,7 @@ public interface GraphPoint<PT extends GraphPoint<PT,ST>, ST extends GraphSegmen
      * @return <code>true</code> if the given segment is connected to this node,
      * otherwise <code>false</code>
      */
+	@Pure
 	public boolean isConnectedSegment(ST segment);
 
     /** Replies if this point is a final connection point ie,
@@ -91,6 +99,7 @@ public interface GraphPoint<PT extends GraphPoint<PT,ST>, ST extends GraphSegmen
      * @return <code>true</code> if zero or one segment was connected
      * to this point, otherwhise <code>false</code>
      */
+	@Pure
 	public boolean isFinalConnectionPoint();
 
     /** Describes a connection pair composed of the graph point
@@ -116,12 +125,14 @@ public interface GraphPoint<PT extends GraphPoint<PT,ST>, ST extends GraphSegmen
 		 * 
 		 * @return the connected segment.
 		 */
+		@Pure
 		public ST getGraphSegment();
 		
 		/** Replies the connection point.
 		 * 
 		 * @return the connection point.
 		 */
+		@Pure
 		public PT getGraphPoint();
 		
 		/** Replies if the connected segment is connected
@@ -132,6 +143,7 @@ public interface GraphPoint<PT extends GraphPoint<PT,ST>, ST extends GraphSegmen
 		 * to the point replied by {@link #getGraphPoint()}
 		 * by its start end, otherwise <code>false</code>
 		 */
+		@Pure
 		public boolean isSegmentStartConnected();
 
 	}

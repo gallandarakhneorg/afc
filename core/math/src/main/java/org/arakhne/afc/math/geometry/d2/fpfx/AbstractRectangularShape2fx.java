@@ -40,7 +40,7 @@ import javafx.beans.property.SimpleDoubleProperty;
  */
 public abstract class AbstractRectangularShape2fx<IT extends AbstractRectangularShape2fx<?>>
 	extends AbstractShape2fx<IT>
-	implements RectangularShape2afp<Shape2fx<?>, IT, PathElement2fx, Point2fx, Rectangle2fx> {
+	implements RectangularShape2afp<Shape2fx<?>, IT, PathElement2fx, Point2fx, Vector2fx, Rectangle2fx> {
 
 	private static final long serialVersionUID = 562658629477723655L;
 
@@ -77,7 +77,7 @@ public abstract class AbstractRectangularShape2fx<IT extends AbstractRectangular
 	/**
 	 * @param r
 	 */
-	public AbstractRectangularShape2fx(RectangularShape2afp<?, ?, ?, ?, ?> r) {
+	public AbstractRectangularShape2fx(RectangularShape2afp<?, ?, ?, ?, ?, ?> r) {
 		assert (r != null) : "Shape must be not null"; //$NON-NLS-1$
 		setFromCorners(r.getMinX(), r.getMinY(), r.getMaxX(), r.getMaxY());
 	}

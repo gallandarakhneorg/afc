@@ -28,6 +28,7 @@ import java.util.List;
 
 import org.arakhne.afc.math.graph.GraphPoint;
 import org.arakhne.afc.references.WeakArrayList;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** This class provides a simple implementation of a graph's point
  * for a {@link SGraph}.
@@ -87,50 +88,43 @@ public class SGraphPoint implements GraphPoint<SGraphPoint,SGraphSegment> {
 	 * 
 	 * @return the graph in which this connection is.
 	 */
+	@Pure
 	public SGraph getGraph() {
 		return this.graph.get();
 	}
 
-	/** {@inheritDoc}
-     */
+	@Pure
 	@Override
 	public int getConnectedSegmentCount() {
 		return this.segments.size();
 	}
 
-    /** {@inheritDoc}
-     */
+	@Pure
 	@Override
 	public Iterable<SGraphSegment> getConnectedSegments() {
 		return Collections.unmodifiableList(this.segments);
 	}
 	
-	/** {@inheritDoc}
-     */
+	@Pure
 	@Override
 	public boolean isConnectedSegment(SGraphSegment segment) {
 		return this.segments.contains(segment);
 	}
 
-    /** {@inheritDoc}
-     */
+	@Pure
 	@Override
 	public boolean isFinalConnectionPoint() {
 		return this.segments.size()<=1;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public int compareTo(GraphPoint<SGraphPoint,SGraphSegment> o) {
 		if (o==null) return Integer.MAX_VALUE;
 		return hashCode() - o.hashCode();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public Iterable<SGraphSegment> getConnectedSegmentsStartingFrom(SGraphSegment startingPoint) {
 		List<SGraphSegment> l = new ArrayList<>(this.segments.size());
@@ -149,9 +143,7 @@ public class SGraphPoint implements GraphPoint<SGraphPoint,SGraphSegment> {
 		return l;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public Iterable<? extends GraphPointConnection<SGraphPoint, SGraphSegment>> getConnectionsStartingFrom(
 			SGraphSegment startingPoint) {
@@ -185,9 +177,7 @@ public class SGraphPoint implements GraphPoint<SGraphPoint,SGraphSegment> {
 		return l;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public Iterable<? extends GraphPointConnection<SGraphPoint, SGraphSegment>> getConnections() {
 		Collection<PointConnection> l = new ArrayList<>(this.segments.size());
@@ -229,6 +219,7 @@ public class SGraphPoint implements GraphPoint<SGraphPoint,SGraphSegment> {
 	 * 
 	 * @return the number of user data.
 	 */
+	@Pure
 	public int getUserDataCount() {
 		return (this.userData==null) ? 0 : this.userData.size();
 	}
@@ -239,6 +230,7 @@ public class SGraphPoint implements GraphPoint<SGraphPoint,SGraphSegment> {
 	 * @return the data
 	 * @throws IndexOutOfBoundsException
 	 */
+	@Pure
 	public Object getUserDataAt(int index) {
 		if (this.userData==null) throw new IndexOutOfBoundsException();
 		return this.userData.get(index);
@@ -259,6 +251,7 @@ public class SGraphPoint implements GraphPoint<SGraphPoint,SGraphSegment> {
 	 * 
 	 * @return an unmodifiable collection of user data.
 	 */
+	@Pure
 	public Collection<Object> getAllUserData() {
 		if (this.userData==null) return Collections.emptyList();
 		return Collections.unmodifiableCollection(this.userData);
@@ -286,25 +279,19 @@ public class SGraphPoint implements GraphPoint<SGraphPoint,SGraphSegment> {
 			this.connectedWithBeginPoint = connectedWithBeginPoint1;
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
+		@Pure
 		@Override
 		public SGraphSegment getGraphSegment() {
 			return this.segment.get();
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
+		@Pure
 		@Override
 		public SGraphPoint getGraphPoint() {
 			return SGraphPoint.this;
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
+		@Pure
 		@Override
 		public boolean isSegmentStartConnected() {
 			return this.connectedWithBeginPoint;

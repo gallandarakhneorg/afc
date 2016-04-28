@@ -35,7 +35,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @since 13.0
  */
 public class Segment2i extends AbstractShape2i<Segment2i>
-	implements Segment2ai<Shape2i<?>, Segment2i, PathElement2i, Point2i, Rectangle2i> {
+	implements Segment2ai<Shape2i<?>, Segment2i, PathElement2i, Point2i, Vector2i, Rectangle2i> {
 
 	private static final long serialVersionUID = 4069080422632034507L;
 
@@ -57,14 +57,14 @@ public class Segment2i extends AbstractShape2i<Segment2i>
 	 * @param a
 	 * @param b
 	 */
-	public Segment2i(Point2D a, Point2D b) {
+	public Segment2i(Point2D<?, ?> a, Point2D<?, ?> b) {
 		this(a.ix(), a.iy(), b.ix(), b.iy());
 	}
 
 	/**
 	 * @param s
 	 */
-	public Segment2i(Segment2ai<?, ?, ?, ?, ?> s) {
+	public Segment2i(Segment2ai<?, ?, ?, ?, ?, ?> s) {
 		this(s.getX1(), s.getY1(), s.getX2(), s.getY2());
 	}
 

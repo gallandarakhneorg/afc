@@ -29,6 +29,7 @@ import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
+import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.ai.Segment2ai.BresenhamLineIterator;
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -38,6 +39,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @param <IT> is the type of the implementation of this shape.
  * @param <IE> is the type of the path elements.
  * @param <P> is the type of the points.
+ * @param <V> is the type of the vectors.
  * @param <B> is the type of the bounding boxes.
  * @author $Author: sgalland$
  * @author $Author: hjaffali$
@@ -47,12 +49,13 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @since 13.0
  */
 public interface Rectangle2ai<
-		ST extends Shape2ai<?, ?, IE, P, B>,
-		IT extends Rectangle2ai<?, ?, IE, P, B>,
+		ST extends Shape2ai<?, ?, IE, P, V, B>,
+		IT extends Rectangle2ai<?, ?, IE, P, V, B>,
 		IE extends PathElement2ai,
-		P extends Point2D,
-		B extends Rectangle2ai<?, ?, IE, P, B>>
-		extends RectangularShape2ai<ST, IT, IE, P, B> {
+		P extends Point2D<? super P, ? super V>,
+		V extends Vector2D<? super V, ? super P>,
+		B extends Rectangle2ai<?, ?, IE, P, V, B>>
+		extends RectangularShape2ai<ST, IT, IE, P, V, B> {
 
 	/** Replies if two rectangles are intersecting.
 	 * 
@@ -121,8 +124,10 @@ public interface Rectangle2ai<
 		int sy2 = y4;
 
 		// Only for internal use
-		Point2D pts = new InnerComputationPoint2ai();
-		BresenhamLineIterator<Point2D> iterator = new BresenhamLineIterator<>(sx1, sy1, sx2, sy2);
+		Point2D<?, ?> pts = new InnerComputationPoint2ai();
+		BresenhamLineIterator<InnerComputationPoint2ai, InnerComputationVector2ai> iterator =
+				new BresenhamLineIterator<>(
+						InnerComputationGeomFactory.SINGLETON, sx1, sy1, sx2, sy2);
 		
 		while (iterator.hasNext() && c1 != MathConstants.COHEN_SUTHERLAND_INSIDE
 				&& c2 != MathConstants.COHEN_SUTHERLAND_INSIDE && (c1 & c2) == 0) {
@@ -179,7 +184,7 @@ public interface Rectangle2ai<
 	 * @param result the closest point.
 	 */
 	@Pure
-	public static void computeClosestPoint(int minx, int miny, int maxx, int maxy, int px, int py, Point2D result) {
+	public static void computeClosestPoint(int minx, int miny, int maxx, int maxy, int px, int py, Point2D<?, ?> result) {
 		assert (minx <= maxx) : "minx must be lower or equal to maxx"; //$NON-NLS-1$
 		assert (miny <= maxy) : "maxx must be lower or equal to maxy"; //$NON-NLS-1$
 		assert (result != null) : "Point must not be null"; //$NON-NLS-1$
@@ -225,7 +230,7 @@ public interface Rectangle2ai<
 	 * @param result the farthest point.
 	 */
 	@Pure
-	public static void computeFarthestPoint(int minx, int miny, int maxx, int maxy, int px, int py, Point2D result) {
+	public static void computeFarthestPoint(int minx, int miny, int maxx, int maxy, int px, int py, Point2D<?, ?> result) {
 		assert (minx <= maxx) : "minx must be lower or equal to maxx"; //$NON-NLS-1$
 		assert (miny <= maxy) : "maxx must be lower or equal to maxy"; //$NON-NLS-1$
 		assert (result != null) : "Point must not be null"; //$NON-NLS-1$
@@ -264,7 +269,7 @@ public interface Rectangle2ai<
 
 	@Pure
 	@Override
-	default boolean intersects(Rectangle2ai<?, ?, ?, ?, ?> s) {
+	default boolean intersects(Rectangle2ai<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Rectangle must not be null"; //$NON-NLS-1$
 		return intersectsRectangleRectangle(
 				getMinX(), getMinY(),
@@ -275,7 +280,7 @@ public interface Rectangle2ai<
 
 	@Pure
 	@Override
-	default boolean intersects(Circle2ai<?, ?, ?, ?, ?> s) {
+	default boolean intersects(Circle2ai<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Circle must not be null"; //$NON-NLS-1$
 		return Circle2ai.intersectsCircleRectangle(
 				s.getX(), s.getY(),
@@ -286,7 +291,7 @@ public interface Rectangle2ai<
 
 	@Pure
 	@Override
-	default boolean intersects(Segment2ai<?, ?, ?, ?, ?> s) {
+	default boolean intersects(Segment2ai<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Segment must not be null"; //$NON-NLS-1$
 		return intersectsRectangleSegment(
 				getMinX(), getMinY(),
@@ -315,7 +320,7 @@ public interface Rectangle2ai<
 
 	@Pure
 	@Override
-	default boolean contains(Rectangle2ai<?, ?, ?, ?, ?> box) {
+	default boolean contains(Rectangle2ai<?, ?, ?, ?, ?, ?> box) {
 		assert (box != null) : "Rectangle must not be null"; //$NON-NLS-1$
 		return box.getMinX() >= getMinX() && box.getMaxX() <= getMaxX()
 				&& box.getMinY() >= getMinY() && box.getMaxY() <= getMaxY();		
@@ -329,7 +334,7 @@ public interface Rectangle2ai<
 	
 	@Pure
 	@Override
-	default P getClosestPointTo(Point2D p) {
+	default P getClosestPointTo(Point2D<?, ?> p) {
 		assert (p != null) : "Point must not be null"; //$NON-NLS-1$
 		P point = getGeomFactory().newPoint();
 		computeClosestPoint(getMinX(), getMinY(), getMaxX(), getMaxY(), p.ix(), p.iy(), point);
@@ -338,7 +343,7 @@ public interface Rectangle2ai<
 	
 	@Pure
 	@Override
-	default P getFarthestPointTo(Point2D p) {
+	default P getFarthestPointTo(Point2D<?, ?> p) {
 		assert (p != null) : "Point must not be null"; //$NON-NLS-1$
 		P point = getGeomFactory().newPoint();
 		computeFarthestPoint(getMinX(), getMinY(), getMaxX(), getMaxY(), p.ix(), p.iy(), point);
@@ -347,7 +352,7 @@ public interface Rectangle2ai<
 
 	@Pure
 	@Override
-	default double getDistanceSquared(Point2D p) {
+	default double getDistanceSquared(Point2D<?, ?> p) {
 		assert (p != null) : "Point must not be null"; //$NON-NLS-1$
 		int dx;
 		if (p.ix()<getMinX()) {
@@ -374,7 +379,7 @@ public interface Rectangle2ai<
 
 	@Pure
 	@Override
-	default double getDistanceL1(Point2D p) {
+	default double getDistanceL1(Point2D<?, ?> p) {
 		assert (p != null) : "Point must not be null"; //$NON-NLS-1$
 		int dx;
 		if (p.ix()<getMinX()) {
@@ -401,7 +406,7 @@ public interface Rectangle2ai<
 	
 	@Pure
 	@Override
-	default double getDistanceLinf(Point2D p) {
+	default double getDistanceLinf(Point2D<?, ?> p) {
 		assert (p != null) : "Point must not be null"; //$NON-NLS-1$
 		int dx;
 		if (p.ix()<getMinX()) {
@@ -477,15 +482,17 @@ public interface Rectangle2ai<
 	/** Iterates on points on the sides of a rectangle.
 	 * 
 	 * @param <P> type of the points.
+	 * @param <V> type of the vectors.
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 * @since 13.0
 	 */
-	class RectangleSideIterator<P extends Point2D> implements Iterator<P> {
+	class RectangleSideIterator<P extends Point2D<? super P, ? super V>,
+			V extends Vector2D<? super V, ? super P>> implements Iterator<P> {
 
-		private final GeomFactory2ai<?, P, ?> factory;
+		private final GeomFactory2ai<?, P, V, ?> factory;
 		
 		private final int x0;
 
@@ -505,7 +512,7 @@ public interface Rectangle2ai<
 		 * @param rectangle is the rectangle to iterate.
 		 * @param firstSide the first side to iterate on.
 		 */
-		public RectangleSideIterator(Rectangle2ai<?, ?, ?, P, ?> rectangle, Side firstSide) {
+		public RectangleSideIterator(Rectangle2ai<?, ?, ?, P, V, ?> rectangle, Side firstSide) {
 			assert (rectangle != null) : "Rectangle must not be null"; //$NON-NLS-1$
 			assert (firstSide != null) : "First side must not be null"; //$NON-NLS-1$
 			this.factory = rectangle.getGeomFactory();
@@ -606,7 +613,7 @@ public interface Rectangle2ai<
 	 */
 	class RectanglePathIterator<E extends PathElement2ai> implements PathIterator2ai<E> {
 		
-		private final GeomFactory2ai<E, ?, ?> factory;
+		private final GeomFactory2ai<E, ?, ?, ?> factory;
 
 		private int x1;
 		
@@ -621,7 +628,7 @@ public interface Rectangle2ai<
 		/**
 		 * @param rectangle is the rectangle to iterate.
 		 */
-		public RectanglePathIterator(Rectangle2ai<?, ?, E, ?, ?> rectangle) {
+		public RectanglePathIterator(Rectangle2ai<?, ?, E, ?, ?, ?> rectangle) {
 			assert (rectangle != null) : "Rectangle must not be null"; //$NON-NLS-1$
 			this.factory = rectangle.getGeomFactory();
 			if (rectangle.isEmpty()) {
@@ -706,7 +713,7 @@ public interface Rectangle2ai<
 		}
 
 		@Override
-		public GeomFactory2ai<E, ?, ?> getGeomFactory() {
+		public GeomFactory2ai<E, ?, ?, ?> getGeomFactory() {
 			return this.factory;
 		}
 		
@@ -723,7 +730,7 @@ public interface Rectangle2ai<
 	 */
 	class TransformedRectanglePathIterator<E extends PathElement2ai> implements PathIterator2ai<E> {
 		
-		private final GeomFactory2ai<E, ?, ?> factory;
+		private final GeomFactory2ai<E, ?, ?, ?> factory;
 
 		private final Transform2D transform;
 		
@@ -737,15 +744,15 @@ public interface Rectangle2ai<
 		
 		private int index = 0;
 		
-		private Point2D p1;
+		private Point2D<?, ?> p1;
 		
-		private Point2D p2;
+		private Point2D<?, ?> p2;
 		
 		/**
 		 * @param rectangle is the rectangle to iterate.
 		 * @param transform the transformation to apply on the rectangle.
 		 */
-		public TransformedRectanglePathIterator(Rectangle2ai<?, ?, E, ?, ?> rectangle, Transform2D transform) {
+		public TransformedRectanglePathIterator(Rectangle2ai<?, ?, E, ?, ?, ?> rectangle, Transform2D transform) {
 			assert (rectangle != null) : "Rectangle must not be null"; //$NON-NLS-1$
 			assert (transform != null) : "Transformation must not be null"; //$NON-NLS-1$
 			this.factory = rectangle.getGeomFactory();
@@ -858,7 +865,7 @@ public interface Rectangle2ai<
 		}
 
 		@Override
-		public GeomFactory2ai<E, ?, ?> getGeomFactory() {
+		public GeomFactory2ai<E, ?, ?, ?> getGeomFactory() {
 			return this.factory;
 		}
 		

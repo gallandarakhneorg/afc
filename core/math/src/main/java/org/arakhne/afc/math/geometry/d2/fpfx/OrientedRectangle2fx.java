@@ -25,7 +25,6 @@ import java.util.Arrays;
 
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
-import org.arakhne.afc.math.geometry.d2.afp.InnerComputationVector2afp;
 import org.arakhne.afc.math.geometry.d2.afp.OrientedRectangle2afp;
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -44,7 +43,7 @@ import javafx.beans.property.SimpleDoubleProperty;
  * @since 13.0
  */
 public class OrientedRectangle2fx extends AbstractShape2fx<OrientedRectangle2fx>
-	implements OrientedRectangle2afp<Shape2fx<?>, OrientedRectangle2fx, PathElement2fx, Point2fx, Rectangle2fx> {
+	implements OrientedRectangle2afp<Shape2fx<?>, OrientedRectangle2fx, PathElement2fx, Point2fx, Vector2fx, Rectangle2fx> {
 
 	private static final long serialVersionUID = -7570709068803272507L;
 
@@ -88,7 +87,7 @@ public class OrientedRectangle2fx extends AbstractShape2fx<OrientedRectangle2fx>
 	 * 
 	 * @param obr
 	 */
-	public OrientedRectangle2fx(OrientedRectangle2afp<?, ?, ?, ?, ?> obr) {
+	public OrientedRectangle2fx(OrientedRectangle2afp<?, ?, ?, ?, ?, ?> obr) {
 		assert (obr != null) : "Oriented rectangle must be not null"; //$NON-NLS-1$
 		set(obr.getCenterX(), obr.getCenterY(),
 				obr.getFirstAxisX(), obr.getFirstAxisY(),
@@ -100,7 +99,7 @@ public class OrientedRectangle2fx extends AbstractShape2fx<OrientedRectangle2fx>
 	 *
 	 * @param pointCloud - the cloud of points.
 	 */
-	public OrientedRectangle2fx(Iterable<? extends Point2D> pointCloud) {
+	public OrientedRectangle2fx(Iterable<? extends Point2D<?, ?>> pointCloud) {
 		assert (pointCloud != null) : "Collection of points must be not null"; //$NON-NLS-1$
 		setFromPointCloud(pointCloud);
 	}
@@ -109,7 +108,7 @@ public class OrientedRectangle2fx extends AbstractShape2fx<OrientedRectangle2fx>
 	 *
 	 * @param pointCloud - the cloud of points.
 	 */
-	public OrientedRectangle2fx(Point2D... pointCloud) {
+	public OrientedRectangle2fx(Point2D<?, ?>... pointCloud) {
 		assert (pointCloud != null) : "Collection of points must be not null"; //$NON-NLS-1$
 		setFromPointCloud(Arrays.asList(pointCloud));
 	}
@@ -136,7 +135,7 @@ public class OrientedRectangle2fx extends AbstractShape2fx<OrientedRectangle2fx>
 	 * @param axis1Extent is the extent of the first axis.
 	 * @param axis2Extent is the extent of the second axis.
 	 */
-	public OrientedRectangle2fx(Point2D center, Vector2D axis1, double axis1Extent, double axis2Extent) {
+	public OrientedRectangle2fx(Point2D<?, ?> center, Vector2D<?, ?> axis1, double axis1Extent, double axis2Extent) {
 		set(center, axis1, axis1Extent, axis2Extent);
 	}
 	
@@ -209,7 +208,7 @@ public class OrientedRectangle2fx extends AbstractShape2fx<OrientedRectangle2fx>
 
 	@Pure
 	@Override
-	public Point2D getCenter() {
+	public Point2fx getCenter() {
 		return new Point2fx(centerXProperty(), centerYProperty());
 	}
 
@@ -267,7 +266,7 @@ public class OrientedRectangle2fx extends AbstractShape2fx<OrientedRectangle2fx>
 
 	@Pure
 	@Override
-	public Vector2D getFirstAxis() {
+	public Vector2fx getFirstAxis() {
 		return firstAxisProperty().get();
 	}
 
@@ -285,7 +284,7 @@ public class OrientedRectangle2fx extends AbstractShape2fx<OrientedRectangle2fx>
 
 	@Pure
 	@Override
-	public Vector2D getSecondAxis() {
+	public Vector2fx getSecondAxis() {
 		return secondAxisProperty().get();
 	}
 
@@ -308,7 +307,7 @@ public class OrientedRectangle2fx extends AbstractShape2fx<OrientedRectangle2fx>
 	@Pure
 	public UnitVectorProperty firstAxisProperty() {
 		if (this.rVector == null) {
-			this.rVector = new UnitVectorProperty(this, "firstAxis", new InnerComputationVector2afp()); //$NON-NLS-1$
+			this.rVector = new UnitVectorProperty(this, "firstAxis"); //$NON-NLS-1$
 		}
 		return this.rVector;
 	}
@@ -321,9 +320,10 @@ public class OrientedRectangle2fx extends AbstractShape2fx<OrientedRectangle2fx>
 	public ReadOnlyUnitVectorProperty secondAxisProperty() {
 		if (this.sVector == null) {
 			this.sVector = new ReadOnlyUnitVectorWrapper(this, "secondAxis"); //$NON-NLS-1$
-			this.sVector.bind(Bindings.<Vector2D>createObjectBinding(
+			this.sVector.bind(Bindings.createObjectBinding(
 					() -> {
-						return firstAxisProperty().get().toOrthogonalVector();
+						Vector2fx firstAxis = firstAxisProperty().get();
+						return firstAxis.toOrthogonalVector();
 					},
 					firstAxisProperty()));
 		}

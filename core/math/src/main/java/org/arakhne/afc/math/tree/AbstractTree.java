@@ -29,6 +29,7 @@ import org.arakhne.afc.math.tree.iterator.PostfixDataDepthFirstTreeIterator;
 import org.arakhne.afc.math.tree.iterator.PostfixDepthFirstTreeIterator;
 import org.arakhne.afc.math.tree.iterator.PrefixDataDepthFirstTreeIterator;
 import org.arakhne.afc.math.tree.iterator.PrefixDepthFirstTreeIterator;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 
 /**
@@ -50,9 +51,8 @@ public abstract class AbstractTree<D,N extends TreeNode<D,N>> implements DepthFi
 
 	private static final long serialVersionUID = 1192947956138993568L;
 
-	/** {@inheritDoc}
-	 */
 	@Override
+	@Pure
 	public final boolean isEmpty() {
 		return getUserDataCount()==0;
 	}
@@ -61,13 +61,13 @@ public abstract class AbstractTree<D,N extends TreeNode<D,N>> implements DepthFi
 	 * The default iterator is a depth first iterator.
 	 */
 	@Override
+	@Pure
 	public final Iterator<N> iterator() {
 		return depthFirstIterator();
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
+	@Pure
 	public final Iterator<N> depthFirstIterator(DepthFirstNodeOrder nodeOrder) {
 		switch(nodeOrder) {
 		case POSTFIX:
@@ -79,39 +79,34 @@ public abstract class AbstractTree<D,N extends TreeNode<D,N>> implements DepthFi
 		}
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
+	@Pure
 	public final Iterator<N> depthFirstIterator(int infixPosition) {
 		if (infixPosition<=0)
 			return new PrefixDepthFirstTreeIterator<>(this);
 		return new InfixDepthFirstTreeIterator<>(this,infixPosition);
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
+	@Pure
 	public final Iterator<N> depthFirstIterator() {
 		return new PrefixDepthFirstTreeIterator<>(this);
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
+	@Pure
 	public final Iterator<N> broadFirstIterator() {
 		return new BroadFirstTreeIterator<>(this);
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
+	@Pure
 	public final Iterator<D> dataDepthFirstIterator() {
 		return new PrefixDataDepthFirstTreeIterator<>(this);
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
+	@Pure
 	public final Iterator<D> dataDepthFirstIterator(DepthFirstNodeOrder nodeOrder) {
 		switch(nodeOrder) {
 		case POSTFIX:
@@ -123,8 +118,7 @@ public abstract class AbstractTree<D,N extends TreeNode<D,N>> implements DepthFi
 		}
 	}
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public final Iterator<D> dataDepthFirstIterator(int infixPosition) {
 		if (infixPosition<=0)
@@ -133,15 +127,13 @@ public abstract class AbstractTree<D,N extends TreeNode<D,N>> implements DepthFi
 	}
 
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public final Iterator<D> dataBroadFirstIterator() {
 		return new DataBroadFirstTreeIterator<>(this);
 	}
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public final Iterable<N> toDepthFirstIterable() {
 		return new Iterable<N>() {
@@ -152,8 +144,7 @@ public abstract class AbstractTree<D,N extends TreeNode<D,N>> implements DepthFi
 		};
 	}
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public final Iterable<N> toDepthFirstIterable(final DepthFirstNodeOrder nodeOrder) {
 		return new Iterable<N>() {
@@ -164,9 +155,8 @@ public abstract class AbstractTree<D,N extends TreeNode<D,N>> implements DepthFi
 		};
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
+	@Pure
 	public final Iterable<N> toDepthFirstIterable(final int infixPosition) {
 		return new Iterable<N>() {
 			@Override
@@ -176,8 +166,7 @@ public abstract class AbstractTree<D,N extends TreeNode<D,N>> implements DepthFi
 		};
 	}
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public final Iterable<N> toBroadFirstIterable() {
 		return new Iterable<N>() {
@@ -188,9 +177,8 @@ public abstract class AbstractTree<D,N extends TreeNode<D,N>> implements DepthFi
 		};
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
+	@Pure
 	public final Iterable<D> toDataDepthFirstIterable() {
 		return new Iterable<D>() {
 			@Override
@@ -200,9 +188,8 @@ public abstract class AbstractTree<D,N extends TreeNode<D,N>> implements DepthFi
 		};
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
+	@Pure
 	public final Iterable<D> toDataDepthFirstIterable(final DepthFirstNodeOrder nodeOrder) {
 		return new Iterable<D>() {
 			@Override
@@ -212,9 +199,8 @@ public abstract class AbstractTree<D,N extends TreeNode<D,N>> implements DepthFi
 		};
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
+	@Pure
 	public final Iterable<D> toDataDepthFirstIterable(final int infixPosition) {
 		return new Iterable<D>() {
 			@Override
@@ -224,8 +210,7 @@ public abstract class AbstractTree<D,N extends TreeNode<D,N>> implements DepthFi
 		};
 	}
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public final Iterable<D> toDataBroadFirstIterable() {
 		return new Iterable<D>() {

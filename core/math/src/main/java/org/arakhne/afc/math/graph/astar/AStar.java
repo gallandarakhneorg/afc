@@ -33,6 +33,7 @@ import org.arakhne.afc.math.graph.GraphPoint;
 import org.arakhne.afc.math.graph.GraphSegment;
 import org.arakhne.afc.math.graph.GraphPoint.GraphPointConnection;
 import org.arakhne.afc.util.ListUtil;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 
 /** This class provides an implementation of the 
@@ -152,7 +153,6 @@ public class AStar<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<ST,PT
 	 * 
 	 * @param enableClosedNodeReopening1 is <code>true</code> to enable the closed
 	 * A* nodes; <code>false</code> to never reopen the closed A* nodes.
-	 * @since 4.1
 	 */
 	public void setClosedNodeReopeningEnabled(boolean enableClosedNodeReopening1) {
 		this.enableClosedNodeReopening = enableClosedNodeReopening1;
@@ -163,8 +163,8 @@ public class AStar<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<ST,PT
 	 * @return <code>true</code> if the closed
 	 * A* nodes could be reopened; <code>false</code> if the closed A* nodes
 	 * will be never reopened.
-	 * @since 4.1
 	 */
+	@Pure
 	public boolean isClosedNodeReopeningEnabled() {
 		return this.enableClosedNodeReopening;
 	}
@@ -197,6 +197,7 @@ public class AStar<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<ST,PT
 	 * 
 	 * @return the factory
 	 */
+	@Pure
 	public AStarPathFactory<GP,ST,PT> getPathFactory() {
 		return this.pathFactory;
 	}
@@ -216,6 +217,7 @@ public class AStar<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<ST,PT
 	 * 
 	 * @return the heurisstic.
 	 */
+	@Pure
 	public AStarHeuristic<? super PT> getEvaluationHeuristic() {
 		return this.h;
 	}
@@ -235,6 +237,7 @@ public class AStar<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<ST,PT
 	 * 
 	 * @return the segment replacer, or <code>null</code> if none.
 	 */
+	@Pure
 	public AStarSegmentReplacer<ST> getSegmentReplacer() {
 		return this.segmentReplacer;
 	}
@@ -254,6 +257,7 @@ public class AStar<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<ST,PT
 	 * 
 	 * @return the tool.
 	 */
+	@Pure
 	public AStarSegmentOrientation<ST,PT> getSegmentOrientationTool() {
 		return this.segmentOrientation;
 	}
@@ -273,6 +277,7 @@ public class AStar<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<ST,PT
 	 * 
 	 * @return the cost computer
 	 */
+	@Pure
 	public AStarCostComputer<? super ST, ? super PT> getCostComputer() {
 		return this.costComputer;
 	}
@@ -286,6 +291,7 @@ public class AStar<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<ST,PT
 	 * @param p2
 	 * @return the evaluated distance between <var>p1</var> and <var>p2</var>.
 	 */
+	@Pure
 	protected double estimate(PT p1, PT p2) {
 		assert(p1!=null && p2!=null);
 		if (this.h==null) throw new IllegalStateException("no heuristic found"); //$NON-NLS-1$
@@ -297,6 +303,7 @@ public class AStar<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<ST,PT
 	 * @param p
 	 * @return the cost to traverse the point.
 	 */
+	@Pure
 	protected double computeCostFor(PT p) {
 		if (this.costComputer!=null)
 			return this.costComputer.computeCostFor(p);
@@ -308,6 +315,7 @@ public class AStar<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<ST,PT
 	 * @param s
 	 * @return the cost to traverse the segment.
 	 */
+	@Pure
 	protected double computeCostFor(ST s) {
 		if (this.costComputer!=null)
 			return this.costComputer.computeCostFor(s);
@@ -329,6 +337,7 @@ public class AStar<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<ST,PT
 	 * @return the translation of the node, or <code>null</code> if
 	 * the node corresponds to the endPoint.
 	 */
+	@Pure
 	protected AStarNode<ST,PT> translateCandidate(PT endPoint, AStarNode<ST,PT> node) {
 		if (endPoint.equals(node.getGraphPoint())) return null;
 		return node;
@@ -344,6 +353,7 @@ public class AStar<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<ST,PT
 	 * @return the path instance.
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Pure
 	protected GP newPath(PT startPoint, ST segment) {
 		if (this.pathFactory!=null) {
 			return this.pathFactory.newPath(startPoint, segment);
@@ -390,6 +400,7 @@ public class AStar<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<ST,PT
 	 * @param endPoint is the point to reach.
 	 * @return the found path, or <code>null</code> if none found.
 	 */
+	@Pure
 	public final GP solve(PT startPoint, PT endPoint) {
 		return solve(
 				node(startPoint,
@@ -456,6 +467,7 @@ public class AStar<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<ST,PT
 	 * @param arrival is the segment, which permits to arrive at the node.
 	 * @return the A* node.
 	 */
+	@Pure
 	protected AStarNode<ST,PT> newAStarNode(PT node, double cost, double estimatedCost, ST arrival) {
 		return new Candidate(arrival, node, cost, estimatedCost);
 	}
@@ -467,6 +479,7 @@ public class AStar<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<ST,PT
 	 * @param endPoint is the point to reach.
 	 * @return the close list of the A* algorithm.
 	 */
+	@Pure
 	List<AStarNode<ST,PT>> findPath(AStarNode<ST,PT> startPoint, PT endPoint) {
 		CloseComparator<ST,PT> cComparator = new CloseComparator<>();
 		OpenComparator<ST,PT> oComparatorWithoutRef = new OpenComparator<>();
@@ -497,7 +510,7 @@ public class AStar<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<ST,PT
 				for(ST segment : candidate.getGraphSegments()) {
 					reachableNode = segment.getOtherSidePoint(node);
 					if (reachableNode!=null && !reachableNode.equals(node)) {
-						g = candidate.cost()
+						g = candidate.getCost()
 							+ computeCostFor(node)
 							+ computeCostFor(segment);
 						h1 = estimate(reachableNode, endPoint);
@@ -509,7 +522,7 @@ public class AStar<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<ST,PT
 								: -1;
 						if (idx>=0) {
 							reachedCandidate = closeList.get(idx);
-							if (g < reachedCandidate.cost()) {
+							if (g < reachedCandidate.getCost()) {
 								closeList.remove(idx);
 								AStarNode<ST,PT> nn = node(
 										reachableNode,
@@ -529,7 +542,7 @@ public class AStar<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<ST,PT
 							if (idx>=0) {
 								// Rearrange open list if better cost
 								reachedCandidate = openList.get(idx);
-								if ((g+h1) < reachedCandidate.pathCost()) {
+								if ((g+h1) < reachedCandidate.getPathCost()) {
 									openList.remove(idx);
 									AStarNode<ST,PT> nn = node(
 											reachableNode,
@@ -577,6 +590,7 @@ public class AStar<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<ST,PT
 	 * @param closeList is the close list.
 	 * @return the path, or <code>null</code> if no path found.
 	 */
+	@Pure
 	GP createPath(AStarNode<ST,PT> startPoint, PT endPoint, List<AStarNode<ST,PT>> closeList) {
 		int idx;
 		ST segment;
@@ -644,6 +658,7 @@ public class AStar<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<ST,PT
 	 * @param segment is the segment to replace.
 	 * @return the replacement segment or the <var>segment</var> itself.
 	 */
+	@Pure
 	protected ST replaceSegment(int index, ST segment) {
 		ST rep = null;
 		if (this.segmentReplacer!=null) {
@@ -665,6 +680,7 @@ public class AStar<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<ST,PT
 	 * <code>false</code> if the path building should stop and
 	 * replies a <code>null</code> path.
 	 */
+	@Pure
 	protected boolean invalidPathSegmentFound(int index, ST segment, GP path) {
 		return false;
 	}
@@ -697,9 +713,7 @@ public class AStar<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<ST,PT
 			this.estimatedCost = estimatedCost1;
 		}
 		
-		/**
-		 * {@inheritDoc}
-		 */
+		@Pure
 		@Override
 		public String toString() {
 			StringBuilder b = new StringBuilder();
@@ -719,9 +733,7 @@ public class AStar<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<ST,PT
 			return b.toString();
 		}
 		
-		/**
-		 * {@inheritDoc}
-		 */
+		@Pure
 		@Override
 		public boolean equals(Object obj) {
 			if (this==obj) return true;
@@ -734,72 +746,58 @@ public class AStar<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<ST,PT
 			return super.equals(obj);
 		}
 		
-		/**
-		 * {@inheritDoc}
-		 */
+		@Pure
 		@Override
 		public int hashCode() {
 			return this.node.hashCode();
 		}
 
-		/** {@inheritDoc}
-		 */
+		@Pure
 		@Override
 		public PT getGraphPoint() {
 			return this.node;
 		}
 		
-		/** {@inheritDoc}
-		 */
+		@Pure
 		@Override
 		public ST getArrivalConnection() {
 			return this.entryConnection;
 		}
 		
-		/** {@inheritDoc}
-		 */
 		@Override
 		public ST setArrivalConnection(ST connection) {
 			return this.entryConnection = connection;
 		}
 
-		/** {@inheritDoc}
-		 */
+		@Pure
 		@Override
-		public double cost() {
+		public double getCost() {
 			return this.costToReach;
 		}
 		
-		/** {@inheritDoc}
-		 */
 		@Override
 		public double setCost(double cost) {
 			return this.costToReach = cost;
 		}
 
-		/** {@inheritDoc}
-		 */
+		@Pure
 		@Override
-		public double estimatedCost() {
+		public double getEstimatedCost() {
 			return this.estimatedCost;
 		}
 		
-		/** {@inheritDoc}
-		 */
 		@Override
 		public double setEstimatedCost(double cost) {
 			return this.estimatedCost = cost;
 		}
 
-		/** {@inheritDoc}
-		 */
+		@Pure
 		@Override
-		public double pathCost() {
+		public double getPathCost() {
 			return this.costToReach + this.estimatedCost;
 		}
 
-		/** {@inheritDoc}
-		 */
+		@Pure
 		@Override
 		public Iterable<ST> getGraphSegments() {
 			AStarSegmentOrientation<ST,PT> tool = getSegmentOrientationTool();
@@ -829,14 +827,13 @@ public class AStar<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<ST,PT
 			//
 		}
 
-		/** {@inheritDoc}
-		 */
+		@Pure
 		@Override
 		public int compare(AStarNode<ST,PT> o1, AStarNode<ST,PT> o2) {
 			if (o1==o2) return 0;
 			if (o1==null) return Integer.MIN_VALUE;
 			if (o2==null) return Integer.MAX_VALUE;
-			int cmp = Double.compare(o1.pathCost(), o2.pathCost());
+			int cmp = Double.compare(o1.getPathCost(), o2.getPathCost());
 			if (cmp!=0) return cmp;
 			return o1.getGraphPoint().compareTo(o2.getGraphPoint());
 		}
@@ -861,8 +858,7 @@ public class AStar<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<ST,PT
 			//
 		}
 
-		/** {@inheritDoc}
-		 */
+		@Pure
 		@Override
 		public int compare(AStarNode<ST,PT> o1, AStarNode<ST,PT> o2) {
 			if (o1==o2) return 0;
@@ -894,8 +890,7 @@ public class AStar<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<ST,PT
 			this.entry = entry1;
 		}
 
-		/** {@inheritDoc}
-		 */
+		@Pure
 		@Override
 		public Iterator<ST> iterator() {
 			return new OrientedConnectionIterator(this.entry, this.connections.iterator());
@@ -939,8 +934,7 @@ public class AStar<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<ST,PT
 			}
 		}
 
-		/** {@inheritDoc}
-		 */
+		@Pure
 		@Override
 		public boolean hasNext() {
 			return this.next!=null;
@@ -956,13 +950,6 @@ public class AStar<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<ST,PT
 			return n;
 		}
 
-		/** {@inheritDoc}
-		 */
-		@Override
-		public void remove() {
-			throw new UnsupportedOperationException();
-		}
-		
 	} // class OrientedConnectionIterator
 
 	/**
@@ -987,8 +974,7 @@ public class AStar<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<ST,PT
 			this.type = type1;
 		}
 
-		/** {@inheritDoc}
-		 */
+		@Pure
 		@Override
 		public GP newPath(PT startPoint, ST segment) {
 			try {
@@ -1005,8 +991,6 @@ public class AStar<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<ST,PT
 			}
 		}
 		
-		/** {@inheritDoc}
-		 */
 		@Override
 		public boolean addToPath(GP path, ST segment) {
 			assert(path!=null);

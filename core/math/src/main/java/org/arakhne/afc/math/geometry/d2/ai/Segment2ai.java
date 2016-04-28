@@ -27,8 +27,10 @@ import java.util.NoSuchElementException;
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.PathWindingRule;
+import org.arakhne.afc.math.geometry.d2.GeomFactory;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
+import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Fonctional interface that represented a 2D segment/line on a plane.
@@ -37,6 +39,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @param <IT> is the type of the implementation of this shape.
  * @param <IE> is the type of the path elements.
  * @param <P> is the type of the points.
+ * @param <V> is the type of the vectors.
  * @param <B> is the type of the bounding boxes.
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -45,12 +48,13 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @since 13.0
  */
 public interface Segment2ai<
-		ST extends Shape2ai<?, ?, IE, P, B>,
-		IT extends Segment2ai<?, ?, IE, P, B>,
+		ST extends Shape2ai<?, ?, IE, P, V, B>,
+		IT extends Segment2ai<?, ?, IE, P, V, B>,
 		IE extends PathElement2ai,
-		P extends Point2D,
-		B extends Rectangle2ai<?, ?, IE, P, B>>
-		extends Shape2ai<ST, IT, IE, P, B> {
+		P extends Point2D<? super P, ? super V>,
+		V extends Vector2D<? super V, ? super P>,
+		B extends Rectangle2ai<?, ?, IE, P, V, B>>
+		extends Shape2ai<ST, IT, IE, P, V, B> {
 
 	/** Replies the closest point in a circle to a point.
 	 * 
@@ -63,7 +67,7 @@ public interface Segment2ai<
 	 * @param result the closest point in the segment to the point.
 	 */
 	@Pure
-	public static void computeClosestPointTo(int ax, int ay, int bx, int by, int px, int py, Point2D result) {
+	public static void computeClosestPointTo(int ax, int ay, int bx, int by, int px, int py, Point2D<?, ?> result) {
 		assert (result != null) : "Result must be not be null"; //$NON-NLS-1$
 
 		// Special case
@@ -86,8 +90,10 @@ public interface Segment2ai<
 		boolean oneBestFound = false;
 		result.set(ax, ay);
 		// Only for internal use
-		Point2D cp = new InnerComputationPoint2ai();
-		BresenhamLineIterator<Point2D> iterator = new BresenhamLineIterator<>(ax, ay, bx, by);
+		InnerComputationPoint2ai cp = new InnerComputationPoint2ai();
+		BresenhamLineIterator<InnerComputationPoint2ai, InnerComputationVector2ai> iterator = 
+				new BresenhamLineIterator<>(
+						InnerComputationGeomFactory.SINGLETON, ax, ay, bx, by);
 		while (iterator.hasNext()) {
 			iterator.next(cp);
 			a = Math.abs(px-cp.ix());
@@ -135,7 +141,7 @@ public interface Segment2ai<
 	 * @param result the farthest point in the segment to the point.
 	 */
 	@Pure
-	public static void computeFarthestPointTo(int ax, int ay, int bx, int by, int px, int py, Point2D result) {
+	public static void computeFarthestPointTo(int ax, int ay, int bx, int by, int px, int py, Point2D<?, ?> result) {
 		assert (result != null) : "Result must be not be null"; //$NON-NLS-1$
 		int v1x = px - ax;
 		int v1y = py - ay;
@@ -439,17 +445,19 @@ public interface Segment2ai<
 
 			// Otherwise calculate the y intercepts and see where
 			// they fall with respect to the rectangle
-			BresenhamLineIterator<Point2D> iterator;
+			BresenhamLineIterator<InnerComputationPoint2ai, InnerComputationVector2ai> iterator;
 			int ymaxline;
 			if (y0<=y1) {
-				iterator = new BresenhamLineIterator<>(x0, y0, x1, y1);
+				iterator = new BresenhamLineIterator<>(
+						InnerComputationGeomFactory.SINGLETON, x0, y0, x1, y1);
 				ymaxline = y1;
 			}
 			else {
-				iterator = new BresenhamLineIterator<>(x1, y1, x0, y0);
+				iterator = new BresenhamLineIterator<>(
+						InnerComputationGeomFactory.SINGLETON, x1, y1, x0, y0);
 				ymaxline = y0;
 			}
-			Point2D p = new InnerComputationPoint2ai();
+			InnerComputationPoint2ai p = new InnerComputationPoint2ai();
 			Integer xintercept1 = null;
 			Integer xintercept2 = null;
 			boolean cont = true;
@@ -613,10 +621,12 @@ public interface Segment2ai<
 
 		// General case: try to detect crossing
 		
-		BresenhamLineIterator<Point2D> iterator = new BresenhamLineIterator<>(x0, y0, x1, y1);
+		BresenhamLineIterator<InnerComputationPoint2ai, InnerComputationVector2ai> iterator =
+				new BresenhamLineIterator<>(
+						InnerComputationGeomFactory.SINGLETON, x0, y0, x1, y1);
 		
 		// Only for internal use.
-		Point2D p = new InnerComputationPoint2ai();
+		Point2D<?, ?> p = new InnerComputationPoint2ai();
 		while (iterator.hasNext()) {
 			iterator.next(p);
 			if (p.iy()==py) {
@@ -688,7 +698,7 @@ public interface Segment2ai<
 	 * @return <code>true</code> if the two segments are intersecting; otherwise
 	 * <code>false</code>
 	 */
-	static boolean intersectsSegmentSegment(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4, boolean enableThirdPoint, boolean enableFourthPoint, Point2D intersectionPoint) {
+	static boolean intersectsSegmentSegment(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4, boolean enableThirdPoint, boolean enableFourthPoint, Point2D<?, ?> intersectionPoint) {
 		return computeIntersectionTypeSegmentSegment(x1, y1, x2, y2, x3, y3, x4, y4, enableThirdPoint, enableFourthPoint, intersectionPoint)!=0;
 	}
 	
@@ -714,27 +724,32 @@ public interface Segment2ai<
 	 * sides of the segment 1; <code>2</code> if the segments are intersecting and the segment 2
 	 * is only in one side of the segment 1.
 	 */
-	static int computeIntersectionTypeSegmentSegment(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4, boolean enableThirdPoint, boolean enableFourthPoint, Point2D intersectionPoint) {
-		BresenhamLineIterator<Point2D> it1;
+	static int computeIntersectionTypeSegmentSegment(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4,
+			boolean enableThirdPoint, boolean enableFourthPoint, Point2D<?, ?> intersectionPoint) {
+		BresenhamLineIterator<InnerComputationPoint2ai, InnerComputationVector2ai> it1;
 		if (x1<x2) {
-			it1 = new BresenhamLineIterator<>(x1, y1, x2, y2);
+			it1 = new BresenhamLineIterator<>(
+					InnerComputationGeomFactory.SINGLETON, x1, y1, x2, y2);
 		}
 		else {
-			it1 = new BresenhamLineIterator<>(x2, y2, x1, y1);
+			it1 = new BresenhamLineIterator<>(
+					InnerComputationGeomFactory.SINGLETON, x2, y2, x1, y1);
 		}
-		BresenhamLineIterator<Point2D> it2;
+		BresenhamLineIterator<InnerComputationPoint2ai, InnerComputationVector2ai> it2;
 		if (x3<x4) {
-			it2 = new BresenhamLineIterator<>(x3, y3, x4, y4);
+			it2 = new BresenhamLineIterator<>(
+					InnerComputationGeomFactory.SINGLETON, x3, y3, x4, y4);
 		}
 		else {
-			it2 = new BresenhamLineIterator<>(x4, y4, x3, y3);
+			it2 = new BresenhamLineIterator<>(
+					InnerComputationGeomFactory.SINGLETON, x4, y4, x3, y3);
 		}
 
 		if (it1.hasNext() && it2.hasNext()) {
 			// Only for internal use
-			Point2D p1 = new InnerComputationPoint2ai();
+			Point2D<?, ?> p1 = new InnerComputationPoint2ai();
 			// Only for internal use
-			Point2D p2 = new InnerComputationPoint2ai();
+			Point2D<?, ?> p2 = new InnerComputationPoint2ai();
 
 			boolean isFirstPointOfSecondSegment = true;
 
@@ -844,7 +859,7 @@ public interface Segment2ai<
 	 * @param a the first point.
 	 * @param b the second point.
 	 */
-	default void set(Point2D a, Point2D b) {
+	default void set(Point2D<?, ?> a, Point2D<?, ?> b) {
 		assert (a != null) : "First point must be not be null"; //$NON-NLS-1$
 		assert (b != null) : "Second point must be not be null"; //$NON-NLS-1$
 		set(a.ix(), a.iy(), b.ix(), b.iy());
@@ -935,7 +950,7 @@ public interface Segment2ai<
 	 * @param point the first point.
 	 */
 	@Pure
-	default void setP1(Point2D point) {
+	default void setP1(Point2D<?, ?> point) {
 		assert (point != null) : "Point must be not be null"; //$NON-NLS-1$
 		set(point.ix(), point.iy(), getX2(), getY2());
 	}
@@ -945,7 +960,7 @@ public interface Segment2ai<
 	 * @param point the second point.
 	 */
 	@Pure
-	default void setP2(Point2D point) {
+	default void setP2(Point2D<?, ?> point) {
 		assert (point != null) : "Point must be not be null"; //$NON-NLS-1$
 		set(getX1(), getY1(), point.ix(), point.iy());
 	}
@@ -979,7 +994,7 @@ public interface Segment2ai<
 
 	@Pure
 	@Override
-	default double getDistanceSquared(Point2D p) {
+	default double getDistanceSquared(Point2D<?, ?> p) {
 		assert (p != null) : "Point must be not be null"; //$NON-NLS-1$
 		P closestPoint = getClosestPointTo(p);
 		return closestPoint.getDistanceSquared(p);
@@ -987,7 +1002,7 @@ public interface Segment2ai<
 
 	@Pure
 	@Override
-	default double getDistanceL1(Point2D p) {
+	default double getDistanceL1(Point2D<?, ?> p) {
 		assert (p != null) : "Point must be not be null"; //$NON-NLS-1$
 		P closestPoint = getClosestPointTo(p);
 		return closestPoint.getDistanceL1(p);
@@ -995,7 +1010,7 @@ public interface Segment2ai<
 
 	@Pure
 	@Override
-	default double getDistanceLinf(Point2D p) {
+	default double getDistanceLinf(Point2D<?, ?> p) {
 		assert (p != null) : "Point must be not be null"; //$NON-NLS-1$
 		P closestPoint = getClosestPointTo(p);
 		return closestPoint.getDistanceLinf(p);
@@ -1016,8 +1031,9 @@ public interface Segment2ai<
 			int minDist = Integer.MAX_VALUE;
 			int d;
 			int a,b;
-			Point2D p = getGeomFactory().newPoint();
-			BresenhamLineIterator<P> iterator = new BresenhamLineIterator<>(ax, ay, bx, by);
+			Point2D<?, ?> p = getGeomFactory().newPoint();
+			BresenhamLineIterator<InnerComputationPoint2ai, InnerComputationVector2ai> iterator =
+					new BresenhamLineIterator<>(InnerComputationGeomFactory.SINGLETON, ax, ay, bx, by);
 			while (iterator.hasNext()) {
 				iterator.next(p);
 				a = Math.abs(x-p.ix());
@@ -1035,7 +1051,7 @@ public interface Segment2ai<
 
 	@Pure
 	@Override
-	default boolean contains(Rectangle2ai<?, ?, ?, ?, ?> r) {
+	default boolean contains(Rectangle2ai<?, ?, ?, ?, ?, ?> r) {
 		assert (r != null) : "Rectangle must be not be null"; //$NON-NLS-1$
 		if (r.isEmpty()) {
 			return contains(r.getMinX(), r.getMinY());
@@ -1051,7 +1067,7 @@ public interface Segment2ai<
 
 	@Pure
 	@Override
-	default P getClosestPointTo(Point2D p) {
+	default P getClosestPointTo(Point2D<?, ?> p) {
 		assert (p != null) : "Point must be not be null"; //$NON-NLS-1$
 		P point = getGeomFactory().newPoint();
 		computeClosestPointTo(getX1(), getY1(), getX2(), getY2(), p.ix(), p.iy(), point);
@@ -1060,7 +1076,7 @@ public interface Segment2ai<
 
 	@Pure
 	@Override
-	default P getFarthestPointTo(Point2D p) {
+	default P getFarthestPointTo(Point2D<?, ?> p) {
 		assert (p != null) : "Point must be not be null"; //$NON-NLS-1$
 		P point = getGeomFactory().newPoint();
 		computeFarthestPointTo(getX1(), getY1(), getX2(), getY2(), p.ix(), p.iy(), point);
@@ -1218,7 +1234,7 @@ public interface Segment2ai<
 
 	@Pure
 	@Override
-	default boolean intersects(Rectangle2ai<?, ?, ?, ?, ?> s) {
+	default boolean intersects(Rectangle2ai<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Rectangle must be not be null"; //$NON-NLS-1$
 		return Rectangle2ai.intersectsRectangleSegment(
 				s.getMinX(), s.getMinY(),
@@ -1229,7 +1245,7 @@ public interface Segment2ai<
 
 	@Pure
 	@Override
-	default boolean intersects(Circle2ai<?, ?, ?, ?, ?> s) {
+	default boolean intersects(Circle2ai<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Circle must be not be null"; //$NON-NLS-1$
 		return Circle2ai.intersectsCircleSegment(
 				s.getX(), s.getY(),
@@ -1240,7 +1256,7 @@ public interface Segment2ai<
 
 	@Pure
 	@Override
-	default boolean intersects(Segment2ai<?, ?, ?, ?, ?> s) {
+	default boolean intersects(Segment2ai<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Segment must be not be null"; //$NON-NLS-1$
 		return intersectsSegmentSegment(
 				getX1(), getY1(), getX2(), getY2(),
@@ -1280,15 +1296,17 @@ public interface Segment2ai<
 	 * implemented in either the firmware or the hardware of modern graphics cards.
 	 * 
 	 * @param <P> the type of the points.
+	 * @param <V> the type of the vectors.
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 * @since 13.0
 	 */
-	class BresenhamLineIterator<P extends Point2D> implements Iterator<P> {
+	class BresenhamLineIterator<P extends Point2D<? super P, ? super V>,
+			V extends Vector2D<? super V, ? super P>> implements Iterator<P> {
 
-		private final GeomFactory2ai<?, P, ?> factory;
+		private final GeomFactory<V, P> factory;
 		
 		private final boolean steep;
 
@@ -1307,24 +1325,13 @@ public interface Segment2ai<
 		private int error;
 
 		/**
-		 * @param x0 is the x-coordinate of the first point of the Bresenham line.
-		 * @param y0 is the y-coordinate of the first point of the Bresenham line.
-		 * @param x1 is the x-coordinate of the last point of the Bresenham line.
-		 * @param y1 is the y-coordinate of the last point of the Bresenham line.
-		 */
-		@SuppressWarnings("unchecked")
-		BresenhamLineIterator(int x0, int y0, int x1, int y1) {
-			this(InnerGeomFactory2ai.DEFAULT, x0, y0, x1, y1);
-		}
-
-		/**
 		 * @param factory the point factory.
 		 * @param x0 is the x-coordinate of the first point of the Bresenham line.
 		 * @param y0 is the y-coordinate of the first point of the Bresenham line.
 		 * @param x1 is the x-coordinate of the last point of the Bresenham line.
 		 * @param y1 is the y-coordinate of the last point of the Bresenham line.
 		 */
-		public BresenhamLineIterator(GeomFactory2ai<?, P, ?> factory, int x0, int y0, int x1, int y1) {
+		public BresenhamLineIterator(GeomFactory<V, P> factory, int x0, int y0, int x1, int y1) {
 			assert (factory != null) : "Factory must be not be null"; //$NON-NLS-1$
 			this.factory = factory;
 			int localx0 = x0;
@@ -1382,7 +1389,7 @@ public interface Segment2ai<
 		 * 
 		 * @param p
 		 */
-		public void next(Point2D p) {
+		public void next(Point2D<?, ?> p) {
 			if (this.steep) {
 				p.set(this.y, this.x);
 			}
@@ -1428,12 +1435,12 @@ public interface Segment2ai<
 
 		/** Element factory.
 		 */
-		protected final GeomFactory2ai<IE, ?, ?> factory;
+		protected final GeomFactory2ai<IE, ?, ?, ?> factory;
 
 		/**
 		 * @param factory the element factory.
 		 */
-		public AbstractSegmentPathIterator(GeomFactory2ai<IE, ?, ?> factory) {
+		public AbstractSegmentPathIterator(GeomFactory2ai<IE, ?, ?, ?> factory) {
 			assert (factory != null) : "Factory must be not be null"; //$NON-NLS-1$
 			this.factory = factory;
 		}
@@ -1470,7 +1477,7 @@ public interface Segment2ai<
 		}
 
 		@Override
-		public GeomFactory2ai<IE, ?, ?> getGeomFactory() {
+		public GeomFactory2ai<IE, ?, ?, ?> getGeomFactory() {
 			return this.factory;
 		}
 		
@@ -1489,9 +1496,9 @@ public interface Segment2ai<
 
 		private final Transform2D transform;
 
-		private Point2D p1;
+		private Point2D<?, ?> p1;
 		
-		private Point2D p2;
+		private Point2D<?, ?> p2;
 		
 		private int x1;
 		
@@ -1507,7 +1514,7 @@ public interface Segment2ai<
 		 * @param segment the segment to iterate on.
 		 * @param transform the transformation to apply.
 		 */
-		public TransformedSegmentPathIterator(Segment2ai<?, ?, IE, ?, ?> segment, Transform2D transform) {
+		public TransformedSegmentPathIterator(Segment2ai<?, ?, IE, ?, ?, ?> segment, Transform2D transform) {
 			super(segment.getGeomFactory());
 			assert (transform != null) : "Transformation must be not be null"; //$NON-NLS-1$
 			this.transform = transform;
@@ -1582,7 +1589,7 @@ public interface Segment2ai<
 		/**
 		 * @param segment the segment to iterate on.
 		 */
-		public SegmentPathIterator(Segment2ai<?, ?, IE, ?, ?> segment) {
+		public SegmentPathIterator(Segment2ai<?, ?, IE, ?, ?, ?> segment) {
 			super(segment.getGeomFactory());
 			if (segment.getX1() == segment.getX2() && segment.getY1() == segment.getY2()) {
 				this.index = 2;

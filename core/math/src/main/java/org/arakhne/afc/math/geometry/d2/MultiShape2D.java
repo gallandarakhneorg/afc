@@ -37,6 +37,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @param <CT> is the type of the shapes that are inside this multishape.
  * @param <I> is the type of the iterator used to obtain the elements of the path.
  * @param <P> is the type of the points.
+ * @param <V> is the type of the vectors.
  * @param <B> is the type of the bounding boxes.
  * @author $Author: tpiotrowski$
  * @author $Author: sgalland$
@@ -46,19 +47,21 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @since 13.0
  */
 public interface MultiShape2D<
-		ST extends Shape2D<?, ?, I, P, B>,
-		IT extends MultiShape2D<?, ?, CT, I, P, B>,
+		ST extends Shape2D<?, ?, I, P, V, B>,
+		IT extends MultiShape2D<?, ?, CT, I, P, V, B>,
 		CT extends ST,
 		I extends PathIterator2D<?>,
-		P extends Point2D,
-		B extends Shape2D<?, ?, I, P, B>> extends Shape2D<ST, IT, I, P, B>, List<CT> {
+		P extends Point2D<? super P, ? super V>,
+		V extends Vector2D<? super V, ? super P>,
+		B extends Shape2D<?, ?, I, P, V, B>> extends Shape2D<ST, IT, I, P, V, B>, List<CT> {
 	
 	/** * Get the first shape in this multishape that is containing the given point.
 	 *
 	 * @param point the point.
 	 * @return the shape, or <code>null</code> if no shape contains the given point.
 	 */
-	default CT getFirstShapeContaining(Point2D point) {
+	@Pure
+	default CT getFirstShapeContaining(Point2D<?, ?> point) {
 		assert (point != null) : "Point must be not null"; //$NON-NLS-1$
 		if (toBoundingBox().contains(point)) {
 			for (CT shape : getBackendDataList()) {
@@ -75,7 +78,8 @@ public interface MultiShape2D<
 	 * @param point the point.
 	 * @return the shapes, or an empty list.
 	 */
-	default List<CT> getShapesContaining(Point2D point) {
+	@Pure
+	default List<CT> getShapesContaining(Point2D<?, ?> point) {
 		assert (point != null) : "Point must be not null"; //$NON-NLS-1$
 		List<CT> list = new ArrayList<>();
 		if (toBoundingBox().contains(point)) {
@@ -93,6 +97,7 @@ public interface MultiShape2D<
 	 * @param shape the shape.
 	 * @return the shapes, or an empty list.
 	 */
+	@Pure
 	List<CT> getShapesIntersecting(ST shape);
 
 	/** Replies the list that contains the backend data.
@@ -102,6 +107,7 @@ public interface MultiShape2D<
 	 * 
 	 * @return the backend data list.
 	 */
+	@Pure
 	List<CT> getBackendDataList();
 	
 	/** Invoked each time the backend data has changed.
@@ -120,6 +126,7 @@ public interface MultiShape2D<
 	}
 
 	@Override
+	@Pure
 	default boolean equalsToShape(IT shape) {
 		if (shape == null) {
 			return false;
@@ -144,7 +151,7 @@ public interface MultiShape2D<
 
 	@Pure
 	@Override
-	default P getClosestPointTo(Point2D point) {
+	default P getClosestPointTo(Point2D<?, ?> point) {
 		P closestPoint = null;
 		double minDist = Double.POSITIVE_INFINITY;
 		for (CT shape : getBackendDataList()) {
@@ -160,7 +167,7 @@ public interface MultiShape2D<
 
 	@Pure
 	@Override
-	default P getFarthestPointTo(Point2D point) {
+	default P getFarthestPointTo(Point2D<?, ?> point) {
 		P farthestPoint = null;
 		double maxDist = Double.NEGATIVE_INFINITY;
 		for (CT shape : getBackendDataList()) {
@@ -176,7 +183,7 @@ public interface MultiShape2D<
 
 	@Pure
 	@Override
-	default double getDistanceSquared(Point2D point) {
+	default double getDistanceSquared(Point2D<?, ?> point) {
 		double minDist = Double.POSITIVE_INFINITY;
 		for (CT shape : getBackendDataList()) {
 			double dist = shape.getDistanceSquared(point);
@@ -189,7 +196,7 @@ public interface MultiShape2D<
 
 	@Pure
 	@Override
-	default double getDistanceL1(Point2D point) {
+	default double getDistanceL1(Point2D<?, ?> point) {
 		double minDist = Double.POSITIVE_INFINITY;
 		for (CT shape : getBackendDataList()) {
 			double dist = shape.getDistanceL1(point);
@@ -202,7 +209,7 @@ public interface MultiShape2D<
 
 	@Pure
 	@Override
-	default double getDistanceLinf(Point2D point) {
+	default double getDistanceLinf(Point2D<?, ?> point) {
 		double minDist = Double.POSITIVE_INFINITY;
 		for (CT shape : getBackendDataList()) {
 			double dist = shape.getDistanceLinf(point);
@@ -219,7 +226,6 @@ public interface MultiShape2D<
 		return getBackendDataList().toArray();
 	}
 
-	@Pure
 	@Override
 	default <T> T[] toArray(T[] a) {
 		return getBackendDataList().toArray(a);
@@ -367,16 +373,16 @@ public interface MultiShape2D<
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	class BackendIterator<CT extends Shape2D<?, ?, ?, ?, ?>> implements ListIterator<CT> {
+	class BackendIterator<CT extends Shape2D<?, ?, ?, ?, ?, ?>> implements ListIterator<CT> {
 
-		private final MultiShape2D<?, ?, CT, ?, ?, ?> backend;
+		private final MultiShape2D<?, ?, CT, ?, ?, ?, ?> backend;
 		private final ListIterator<CT> iterator;
 		
 		/**
 		 * @param backend the associated backend.
 		 * @param iterator the original iterator.
 		 */
-		public BackendIterator(MultiShape2D<?, ?, CT, ?, ?, ?> backend, ListIterator<CT> iterator) {
+		public BackendIterator(MultiShape2D<?, ?, CT, ?, ?, ?, ?> backend, ListIterator<CT> iterator) {
 			assert (backend != null) : "Backend must be not null"; //$NON-NLS-1$
 			assert (iterator != null) : "Iterator must be not null"; //$NON-NLS-1$
 			this.backend = backend;
@@ -446,9 +452,9 @@ public interface MultiShape2D<
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	class BackendList<CT extends Shape2D<?, ?, ?, ?, ?>> implements List<CT> {
+	class BackendList<CT extends Shape2D<?, ?, ?, ?, ?, ?>> implements List<CT> {
 
-		private final MultiShape2D<?, ?, CT, ?, ?, ?> backend;
+		private final MultiShape2D<?, ?, CT, ?, ?, ?, ?> backend;
 		
 		private final List<CT> list;
 		
@@ -456,7 +462,7 @@ public interface MultiShape2D<
 		 * @param backend the associated backend.
 		 * @param list the original list.
 		 */
-		public BackendList(MultiShape2D<?, ?, CT, ?, ?, ?> backend, List<CT> list) {
+		public BackendList(MultiShape2D<?, ?, CT, ?, ?, ?, ?> backend, List<CT> list) {
 			assert (backend != null) : "Backend must be not null"; //$NON-NLS-1$
 			assert (list != null) : "List must be not null"; //$NON-NLS-1$
 			this.backend = backend;
@@ -493,7 +499,6 @@ public interface MultiShape2D<
 			return this.list.toArray();
 		}
 
-		@Pure
 		@Override
 		public <T> T[] toArray(T[] a) {
 			return this.list.toArray(a);

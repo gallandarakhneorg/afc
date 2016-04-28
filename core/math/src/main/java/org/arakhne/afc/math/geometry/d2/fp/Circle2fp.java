@@ -36,7 +36,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  */
 public class Circle2fp
 		extends AbstractShape2fp<Circle2fp>
-		implements Circle2afp<Shape2fp<?>, Circle2fp, PathElement2fp, Point2fp, Rectangle2fp> {
+		implements Circle2afp<Shape2fp<?>, Circle2fp, PathElement2fp, Point2fp, Vector2fp, Rectangle2fp> {
 
 	private static final long serialVersionUID = -8532584773530573738L;
 
@@ -56,7 +56,7 @@ public class Circle2fp
 	 * @param center
 	 * @param radius
 	 */
-	public Circle2fp(Point2D center, double radius) {
+	public Circle2fp(Point2D<?, ?> center, double radius) {
 		set(center.getX(), center.getY(), radius);
 	}
 
@@ -72,7 +72,7 @@ public class Circle2fp
 	/** Construct a circle from a circle.
 	 * @param c
 	 */
-	public Circle2fp(Circle2afp<?, ?, ?, ?, ?> c) {
+	public Circle2fp(Circle2afp<?, ?, ?, ?, ?, ?> c) {
 		assert (c != null) : "Circle must be not null"; //$NON-NLS-1$
 		set(c.getX(), c.getY(), c.getRadius());
 	}

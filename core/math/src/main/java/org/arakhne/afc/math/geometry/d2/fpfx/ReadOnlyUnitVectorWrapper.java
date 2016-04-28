@@ -20,9 +20,6 @@
  */
 package org.arakhne.afc.math.geometry.d2.fpfx;
 
-import org.arakhne.afc.math.geometry.d2.Vector2D;
-import org.arakhne.afc.math.geometry.d2.afp.InnerComputationVector2afp;
-
 import javafx.beans.property.ReadOnlyObjectPropertyBase;
 
 /**
@@ -45,19 +42,9 @@ public class ReadOnlyUnitVectorWrapper extends UnitVectorProperty {
 	 *
 	 * @param bean the owner of the property.
 	 * @param name the name of the property.
-	 * @param initialValue the initial value.
-	 */
-	public ReadOnlyUnitVectorWrapper(Object bean, String name, Vector2D initialValue) {
-		super(bean, name, initialValue.toUnitVector());
-	}
-
-    /** Construct a property.
-	 *
-	 * @param bean the owner of the property.
-	 * @param name the name of the property.
 	 */
 	public ReadOnlyUnitVectorWrapper(Object bean, String name) {
-		super(bean, name, new InnerComputationVector2afp(1, 0));
+		super(bean, name);
 	}
 
 	/**
@@ -84,7 +71,7 @@ public class ReadOnlyUnitVectorWrapper extends UnitVectorProperty {
         }
     }
 
-    private class ReadOnlyPropertyImpl extends ReadOnlyObjectPropertyBase<Vector2D> implements ReadOnlyUnitVectorProperty {
+    private class ReadOnlyPropertyImpl extends ReadOnlyObjectPropertyBase<Vector2fx> implements ReadOnlyUnitVectorProperty {
 
     	public ReadOnlyPropertyImpl() {
     		//
@@ -96,7 +83,7 @@ public class ReadOnlyUnitVectorWrapper extends UnitVectorProperty {
     	}
     	
         @Override
-        public Vector2D get() {
+        public Vector2fx get() {
             return ReadOnlyUnitVectorWrapper.this.get();
         }
 

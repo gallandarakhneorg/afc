@@ -49,7 +49,7 @@ import javafx.beans.property.DoublePropertyBase;
 public class Circle2fxTest extends AbstractCircle2afpTest<Circle2fx, Rectangle2fx> {
 
 	@Override
-	protected TestShapeFactory<Point2fx, Rectangle2fx> createFactory() {
+	protected TestShapeFactory2fx createFactory() {
 		return TestShapeFactory2fx.SINGLETON;
 	}
 

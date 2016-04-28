@@ -22,6 +22,7 @@ import java.util.Iterator;
 
 import org.arakhne.afc.math.tree.iterator.DepthFirstNodeOrder;
 import org.arakhne.afc.math.tree.iterator.InfixDepthFirstTreeIterator;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * This is the generic definition of a
@@ -42,12 +43,14 @@ public interface Forest<D> extends Collection<Tree<D,?>> {
 	 * 
 	 * @return the height of the uppest leaf in the forest.
 	 */
+	@Pure
 	public int getMinHeight();
 
 	/** Replies the maximal height of the forest.
 	 * 
 	 * @return the height of the lowest leaf in the forest.
 	 */
+	@Pure
 	public int getMaxHeight();
 
 	/** Replies the heights of all the leaf nodes.
@@ -55,6 +58,7 @@ public interface Forest<D> extends Collection<Tree<D,?>> {
 	 * 
 	 * @return the heights of the leaf nodes
 	 */
+	@Pure
 	public int[] getHeights();
 
 	/** Replies a depth-first iterator on nodes.
@@ -62,24 +66,28 @@ public interface Forest<D> extends Collection<Tree<D,?>> {
 	 * @param nodeOrder indicates how the data are treated by the iterator. 
 	 * @return a depth first iterator on nodes
 	 */
+	@Pure
 	public Iterator<TreeNode<D,?>> depthFirstIterator(DepthFirstNodeOrder nodeOrder);
 
 	/** Replies a depth-first iterator on nodes.
 	 * 
 	 * @return a depth-first iterator.
 	 */
+	@Pure
 	public Iterator<TreeNode<D,?>> depthFirstIterator();
 
 	/** Replies a broad first iterator on nodes.
 	 * 
 	 * @return a broad first iterator.
 	 */
+	@Pure
 	public Iterator<TreeNode<D,?>> broadFirstIterator();
 
 	/** Replies a prefixed depth first iterator on the tree.
 	 * 
 	 * @return a prefixed depth first iterator on data.
 	 */
+	@Pure
 	public Iterator<D> dataDepthFirstIterator();
 
 	/** Replies a depth first iterator on the tree.
@@ -87,6 +95,7 @@ public interface Forest<D> extends Collection<Tree<D,?>> {
 	 * @param nodeOrder indicates how the data are treated by the iterator. 
 	 * @return an iterator on the data.
 	 */
+	@Pure
 	public Iterator<D> dataDepthFirstIterator(DepthFirstNodeOrder nodeOrder);
 
 	/** Replies the depth first iterator on the tree.
@@ -96,6 +105,7 @@ public interface Forest<D> extends Collection<Tree<D,?>> {
 	 * @return the iterator on user data
 	 * @see InfixDepthFirstTreeIterator
 	 */
+	@Pure
 	public Iterator<D> dataDepthFirstIterator(int infixPosition);
 
 
@@ -103,6 +113,7 @@ public interface Forest<D> extends Collection<Tree<D,?>> {
 	 * 
 	 * @return the iterator on user data.
 	 */
+	@Pure
 	public Iterator<D> dataBroadFirstIterator();
 
 }

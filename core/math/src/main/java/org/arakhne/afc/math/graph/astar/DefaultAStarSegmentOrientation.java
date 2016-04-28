@@ -23,6 +23,7 @@ package org.arakhne.afc.math.graph.astar;
 import org.arakhne.afc.math.graph.GraphPoint;
 import org.arakhne.afc.math.graph.GraphSegment;
 import org.arakhne.afc.math.graph.GraphPoint.GraphPointConnection;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** This class provides a default heuristic to the
  * orientation of the segments for a {@link AStar A* algorithm}.
@@ -41,8 +42,7 @@ import org.arakhne.afc.math.graph.GraphPoint.GraphPointConnection;
 public class DefaultAStarSegmentOrientation<ST extends GraphSegment<ST,PT>, PT extends GraphPoint<PT,ST>>
 implements AStarSegmentOrientation<ST, PT> {
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public boolean isTraversable(ST entry, GraphPointConnection<PT, ST> connection) {
 		return connection!=null && connection.isSegmentStartConnected();

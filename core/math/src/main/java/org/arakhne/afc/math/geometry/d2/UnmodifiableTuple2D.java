@@ -22,14 +22,14 @@ package org.arakhne.afc.math.geometry.d2;
 
 /** Unmodifiable 2D tuple.
  * 
- * @param <TT> is the type of data that can be added or substracted to this tuple.
+ * @param <RT> is the type of data that can be returned by this tuple.
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public interface UnmodifiableTuple2D<TT extends Tuple2D<? super TT>> extends Tuple2D<TT> {
+public interface UnmodifiableTuple2D<RT extends Tuple2D<? super RT>> extends Tuple2D<RT> {
 
 	@Override
 	default void absolute() {
@@ -37,7 +37,7 @@ public interface UnmodifiableTuple2D<TT extends Tuple2D<? super TT>> extends Tup
 	}
 
 	@Override
-	default void absolute(TT tuple)  {
+	default void absolute(Tuple2D<?> tuple)  {
 		throw new UnsupportedOperationException();
 	}
 
@@ -102,37 +102,37 @@ public interface UnmodifiableTuple2D<TT extends Tuple2D<? super TT>> extends Tup
 	}
 
 	@Override
-	default void clamp(int min, int max, TT tuple) {
+	default void clamp(int min, int max, Tuple2D<?> tuple) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	default void clamp(double min, double max, TT tuple) {
+	default void clamp(double min, double max, Tuple2D<?> tuple) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	default void clampMin(int min, TT tuple) {
+	default void clampMin(int min, Tuple2D<?> tuple) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	default void clampMin(double min, TT tuple) {
+	default void clampMin(double min, Tuple2D<?> tuple) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	default void clampMax(int max, TT tuple) {
+	default void clampMax(int max, Tuple2D<?> tuple) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	default void clampMax(double max, TT tuple) {
+	default void clampMax(double max, Tuple2D<?> tuple) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	default void negate(TT tuple) {
+	default void negate(Tuple2D<?> tuple) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -142,12 +142,12 @@ public interface UnmodifiableTuple2D<TT extends Tuple2D<? super TT>> extends Tup
 	}
 
 	@Override
-	default void scale(int scale, TT tuple) {
+	default void scale(int scale, Tuple2D<?> tuple) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	default void scale(double scale, TT tuple) {
+	default void scale(double scale, Tuple2D<?> tuple) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -237,12 +237,12 @@ public interface UnmodifiableTuple2D<TT extends Tuple2D<? super TT>> extends Tup
 	}
 
 	@Override
-	default void interpolate(TT tuple1, TT tuple2, double alpha) {
+	default void interpolate(Tuple2D<?> tuple1, Tuple2D<?> tuple2, double alpha) {
 		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	default void interpolate(TT tuple, double alpha) {
+	default void interpolate(Tuple2D<?> tuple, double alpha) {
 		throw new UnsupportedOperationException();
 	} 
 

@@ -41,6 +41,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @param <IT> is the type of the implementation of this shape.
  * @param <IE> is the type of the path elements.
  * @param <P> is the type of the points.
+ * @param <V> is the type of the vectors.
  * @param <B> is the type of the bounding boxes.
  * @author $Author: sgalland$
  * @author $Author: ngaud$
@@ -49,12 +50,13 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @mavenartifactid $ArtifactId$
  */
 public interface Parallelogram2afp<
-		ST extends Shape2afp<?, ?, IE, P, B>,
-		IT extends Parallelogram2afp<?, ?, IE, P, B>,
+		ST extends Shape2afp<?, ?, IE, P, V, B>,
+		IT extends Parallelogram2afp<?, ?, IE, P, V, B>,
 		IE extends PathElement2afp,
-		P extends Point2D,
-		B extends Rectangle2afp<?, ?, IE, P, B>>
-		extends Shape2afp<ST, IT, IE, P, B> {
+		P extends Point2D<? super P, ? super V>,
+		V extends Vector2D<? super V, ? super P>,
+		B extends Rectangle2afp<?, ?, IE, P, V, B>>
+		extends Shape2afp<ST, IT, IE, P, V, B> {
 
 	/**
 	 * Compute the axes of an oriented bounding rectangle that is enclosing the set of points.
@@ -64,7 +66,7 @@ public interface Parallelogram2afp<
 	 * @param S is the vector where the S axis of the OBR is put. If <code>null</code>, R must be not <code>null</code>. 
 	 * @see "MGPCG pages 219-221"
 	 */
-	static void computeOrthogonalAxes(Iterable<? extends Point2D> points, Vector2D R, Vector2D S) {
+	static void computeOrthogonalAxes(Iterable<? extends Point2D<?, ?>> points, Vector2D<?, ?> R, Vector2D<?, ?> S) {
 		assert (points != null) : "Collection of points must be not null"; //$NON-NLS-1$
 		assert (R != null || S != null) : "One axis vector must be not null"; //$NON-NLS-1$
 		// Determining the covariance matrix of the points
@@ -150,9 +152,9 @@ public interface Parallelogram2afp<
 	 * @see OrientedRectangle2afp#computeCenterExtents(Iterable, Vector2D, Point2D, Tuple2D)
 	 */
 	static void computeCenterExtents(
-			Iterable<? extends Point2D> points,
-			Vector2D R, Vector2D S,
-			Point2D center, Tuple2D<?> extents) {
+			Iterable<? extends Point2D<?, ?>> points,
+			Vector2D<?, ?> R, Vector2D<?, ?> S,
+			Point2D<?, ?> center, Tuple2D<?> extents) {
 		assert (points != null) : "Collection of points must be not null"; //$NON-NLS-1$
 		assert (R != null) : "First axis vector must be not null"; //$NON-NLS-1$
 		assert (R.isUnitVector()) : "First axis vector must be unit vector"; //$NON-NLS-1$
@@ -173,7 +175,7 @@ public interface Parallelogram2afp<
 		
 		double projR;
 		double projS;
-		for(Point2D tuple : points) {
+		for(Point2D<?, ?> tuple : points) {
 			projR = projectVectorOnParallelogramRAxis(ux, uy, vx, vy, tuple.getX(), tuple.getY());
 			projS = projectVectorOnParallelogramSAxis(ux, uy, vx, vy, tuple.getX(), tuple.getY());
 			if (projR < minR) minR = projR;			
@@ -233,7 +235,7 @@ public interface Parallelogram2afp<
 			double axis1Extent,
 			double axis2X, double axis2Y,
 			double axis2Extent,
-			Point2D closest, Point2D farthest) {
+			Point2D<?, ?> closest, Point2D<?, ?> farthest) {
 		assert (axis1Extent >= 0.) : "Extent of the first axis must be positive or zero"; //$NON-NLS-1$
 		assert (axis2Extent >= 0.) : "Extent of the second axis must be positive or zero"; //$NON-NLS-1$
 		assert (closest != null || farthest != null) : "Neither closest point nor farthest point has a result vector"; //$NON-NLS-1$
@@ -651,7 +653,7 @@ public interface Parallelogram2afp<
 		assert (Vector2D.isUnitVector(axis1X, axis1Y)) : "Axis 1 is not a unit vector"; //$NON-NLS-1$
 		assert (Vector2D.isUnitVector(axis2X, axis2Y)) : "Axis 2 is not a unit vector"; //$NON-NLS-1$
 		assert (circleRadius >= 0) : "Circle radius must be positive or zero"; //$NON-NLS-1$
-		Point2D closest = new InnerComputationPoint2afp();
+		Point2D<?, ?> closest = new InnerComputationPoint2afp();
 		computeClosestFarthestPoints(
 				circleX, circleY,
 				centerX, centerY,
@@ -1123,7 +1125,7 @@ public interface Parallelogram2afp<
 	 * @return the center.
 	 */
 	@Pure
-	Point2D getCenter();
+	P getCenter();
 
 	/** Replies the center x.
 	 *
@@ -1162,7 +1164,7 @@ public interface Parallelogram2afp<
 	 * 
 	 * @param center
 	 */
-	default void setCenter(Point2D center) {
+	default void setCenter(Point2D<?, ?> center) {
 		assert (center != null) : "Center point must be not null"; //$NON-NLS-1$
 		setCenter(center.getX(), center.getY());
 	}
@@ -1172,7 +1174,7 @@ public interface Parallelogram2afp<
 	 * @return the unit vector of the first axis. 
 	 */
 	@Pure
-	Vector2D getFirstAxis();
+	V getFirstAxis();
 
 	/** Replies coordinate x of the first axis of the oriented rectangle.
 	 *
@@ -1193,7 +1195,7 @@ public interface Parallelogram2afp<
 	 * @return the unit vector of the second axis. 
 	 */
 	@Pure
-	Vector2D getSecondAxis();
+	V getSecondAxis();
 
 	/** Replies coordinate x of the second axis of the oriented rectangle.
 	 *
@@ -1240,7 +1242,7 @@ public interface Parallelogram2afp<
 	 * 
 	 * @param axis - the new values for the first axis.
 	 */
-	default void setFirstAxis(Vector2D axis) {
+	default void setFirstAxis(Vector2D<?, ?> axis) {
 		assert (axis != null) : "Axis must be not null"; //$NON-NLS-1$
 		setFirstAxis(axis.getX(), axis.getY(), getFirstAxisExtent());
 	}
@@ -1251,7 +1253,7 @@ public interface Parallelogram2afp<
 	 * @param axis - the new values for the first axis.
 	 * @param extent - the extent of the axis.
 	 */
-	default void setFirstAxis(Vector2D axis, double extent) {
+	default void setFirstAxis(Vector2D<?, ?> axis, double extent) {
 		assert (axis != null) : "Axis must be not null"; //$NON-NLS-1$
 		setFirstAxis(axis.getX(), axis.getY(), extent);
 	}
@@ -1280,7 +1282,7 @@ public interface Parallelogram2afp<
 	 * 
 	 * @param axis - the new values for the first axis.
 	 */
-	default void setSecondAxis(Vector2D axis) {
+	default void setSecondAxis(Vector2D<?, ?> axis) {
 		assert (axis != null) : "Axis must be not null"; //$NON-NLS-1$
 		setSecondAxis(axis.getX(), axis.getY(), getSecondAxisExtent());
 	}
@@ -1291,7 +1293,7 @@ public interface Parallelogram2afp<
 	 * @param axis - the new values for the first axis.
 	 * @param extent - the extent of the axis.
 	 */
-	default void setSecondAxis(Vector2D axis, double extent) {
+	default void setSecondAxis(Vector2D<?, ?> axis, double extent) {
 		assert (axis != null) : "Axis must be not null"; //$NON-NLS-1$
 		setSecondAxis(axis.getX(), axis.getY(), extent);
 	}
@@ -1343,7 +1345,7 @@ public interface Parallelogram2afp<
 	 * @param axis2 is the second axis of the parallelogram.
 	 * @param axis2Extent is the extent of the second axis.
 	 */
-	default void set(Point2D center, Vector2D axis1, double axis1Extent, Vector2D axis2, double axis2Extent) {
+	default void set(Point2D<?, ?> center, Vector2D<?, ?> axis1, double axis1Extent, Vector2D<?, ?> axis2, double axis2Extent) {
 		assert (center != null) : "Center point must be not null"; //$NON-NLS-1$
 		assert (axis1 != null) : "First axis point must be not null"; //$NON-NLS-1$
 		assert (axis2 != null) : "Second axis point must be not null"; //$NON-NLS-1$
@@ -1372,13 +1374,13 @@ public interface Parallelogram2afp<
 	 *
 	 * @param pointCloud - the cloud of points.
 	 */
-	default void setFromPointCloud(Iterable<? extends Point2D> pointCloud) {
+	default void setFromPointCloud(Iterable<? extends Point2D<?, ?>> pointCloud) {
 		assert (pointCloud != null) : "The iterable on points must be not null"; //$NON-NLS-1$
-		Vector2D r = new InnerComputationVector2afp();
-		Vector2D s = new InnerComputationVector2afp();
+		Vector2D<?, ?> r = new InnerComputationVector2afp();
+		Vector2D<?, ?> s = new InnerComputationVector2afp();
 		computeOrthogonalAxes(pointCloud, r, s);
-		Point2D center = new InnerComputationPoint2afp();
-		Vector2D extents = new InnerComputationVector2afp();
+		Point2D<?, ?> center = new InnerComputationPoint2afp();
+		Vector2D<?, ?> extents = new InnerComputationVector2afp();
 		Parallelogram2afp.computeCenterExtents(pointCloud, r, s, center, extents);
 		set(center.getX(), center.getY(),
 				r.getX(), r.getY(), extents.getX(),
@@ -1389,17 +1391,17 @@ public interface Parallelogram2afp<
 	 *
 	 * @param pointCloud - the cloud of points.
 	 */
-	default void setFromPointCloud(Point2D... pointCloud) {
+	default void setFromPointCloud(Point2D<?, ?>... pointCloud) {
 		assert (pointCloud != null) : "The array of points must be not null"; //$NON-NLS-1$
 		setFromPointCloud(Arrays.asList(pointCloud));
 	}
 
 	@Pure
 	@Override
-	default double getDistanceSquared(Point2D p) {
+	default double getDistanceSquared(Point2D<?, ?> p) {
 		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
 		// Only for internal usage.
-		Point2D closest = new InnerComputationPoint2afp();
+		Point2D<?, ?> closest = new InnerComputationPoint2afp();
 		computeClosestFarthestPoints(
 				p.getX(), p.getY(),
 				getCenterX(), getCenterY(),
@@ -1412,10 +1414,10 @@ public interface Parallelogram2afp<
 
 	@Pure
 	@Override
-	default double getDistanceL1(Point2D p) {
+	default double getDistanceL1(Point2D<?, ?> p) {
 		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
 		// Only for internal usage.
-		Point2D closest = new InnerComputationPoint2afp();
+		Point2D<?, ?> closest = new InnerComputationPoint2afp();
 		computeClosestFarthestPoints(
 				p.getX(), p.getY(),
 				getCenterX(), getCenterY(),
@@ -1428,10 +1430,10 @@ public interface Parallelogram2afp<
 
 	@Pure
 	@Override
-	default double getDistanceLinf(Point2D p) {
+	default double getDistanceLinf(Point2D<?, ?> p) {
 		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
 		// Only for internal usage.
-		Point2D closest = new InnerComputationPoint2afp();
+		Point2D<?, ?> closest = new InnerComputationPoint2afp();
 		computeClosestFarthestPoints(
 				p.getX(), p.getY(),
 				getCenterX(), getCenterY(),
@@ -1451,12 +1453,12 @@ public interface Parallelogram2afp<
 	 * @param angle the angle of rotation.
 	 */
 	default void rotate(double angle) {
-		Vector2D axis1 = getFirstAxis();
-		Vector2D newAxis1 = getGeomFactory().newVector();
+		Vector2D<?, ?> axis1 = getFirstAxis();
+		Vector2D<?, ?> newAxis1 = getGeomFactory().newVector();
 		newAxis1.turn(angle, axis1);
 		setFirstAxis(newAxis1);
-		Vector2D axis2 = getSecondAxis();
-		Vector2D newAxis2 = getGeomFactory().newVector();
+		Vector2D<?, ?> axis2 = getSecondAxis();
+		Vector2D<?, ?> newAxis2 = getGeomFactory().newVector();
 		newAxis2.turn(angle, axis2);
 		setSecondAxis(newAxis2);
 	}
@@ -1473,7 +1475,7 @@ public interface Parallelogram2afp<
 	
 	@Pure
 	@Override
-	default boolean contains(Rectangle2afp<?, ?, ?, ?, ?> r) {
+	default boolean contains(Rectangle2afp<?, ?, ?, ?, ?, ?> r) {
 		assert (r != null) : "Rectangle must be not null"; //$NON-NLS-1$
 		return containsParallelogramRectangle(
 				getCenterX(), getCenterY(),
@@ -1485,7 +1487,7 @@ public interface Parallelogram2afp<
 	
 	@Pure
 	@Override
-	default boolean intersects(Circle2afp<?, ?, ?, ?, ?> s) {
+	default boolean intersects(Circle2afp<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Circle must be not null"; //$NON-NLS-1$
 		return intersectsParallelogramCircle(
 				getCenterX(), getCenterY(),
@@ -1496,7 +1498,7 @@ public interface Parallelogram2afp<
 	
 	@Pure
 	@Override
-	default boolean intersects(Ellipse2afp<?, ?, ?, ?, ?> s) {
+	default boolean intersects(Ellipse2afp<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Ellipse must be not null"; //$NON-NLS-1$
 		return intersectsParallelogramEllipse(
 				getCenterX(), getCenterY(),
@@ -1507,7 +1509,7 @@ public interface Parallelogram2afp<
 	
 	@Pure
 	@Override
-	default boolean intersects(OrientedRectangle2afp<?, ?, ?, ?, ?> s) {
+	default boolean intersects(OrientedRectangle2afp<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Oriented rectangle must be not null"; //$NON-NLS-1$
 		return intersectsParallelogramParallelogram(
 				getCenterX(), getCenterY(),
@@ -1520,7 +1522,7 @@ public interface Parallelogram2afp<
 	
 	@Pure
 	@Override
-	default boolean intersects(Parallelogram2afp<?, ?, ?, ?, ?> s) {
+	default boolean intersects(Parallelogram2afp<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Parallelogram must be not null"; //$NON-NLS-1$
 		return intersectsParallelogramParallelogram(
 				getCenterX(), getCenterY(),
@@ -1533,7 +1535,7 @@ public interface Parallelogram2afp<
 
 	@Pure
 	@Override
-	default boolean intersects(Rectangle2afp<?, ?, ?, ?, ?> s) {
+	default boolean intersects(Rectangle2afp<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Rectangle must be not null"; //$NON-NLS-1$
 		return intersectsParallelogramRectangle(
 				getCenterX(), getCenterY(),
@@ -1545,14 +1547,14 @@ public interface Parallelogram2afp<
 	
 	@Pure
 	@Override
-	default boolean intersects(RoundRectangle2afp<?, ?, ?, ?, ?> s) {
+	default boolean intersects(RoundRectangle2afp<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Round rectangle must be not null"; //$NON-NLS-1$
 		return s.intersects(this);
 	}
 	
 	@Pure
 	@Override
-	default boolean intersects(Segment2afp<?, ?, ?, ?, ?> s) {
+	default boolean intersects(Segment2afp<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Segment must be not null"; //$NON-NLS-1$
 		return intersectsParallelogramSegment(
 				getCenterX(), getCenterY(),
@@ -1563,7 +1565,7 @@ public interface Parallelogram2afp<
 
 	@Pure
 	@Override
-	default boolean intersects(Triangle2afp<?, ?, ?, ?, ?> s) {
+	default boolean intersects(Triangle2afp<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Triangle must be not null"; //$NON-NLS-1$
 		return intersectsParallelogramTriangle(
 				getCenterX(), getCenterY(),
@@ -1574,7 +1576,7 @@ public interface Parallelogram2afp<
 
 	@Pure
 	@Override
-	default boolean intersects(MultiShape2afp<?, ?, ?, ?, ?, ?> s) {
+	default boolean intersects(MultiShape2afp<?, ?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "MultiShape must be not null"; //$NON-NLS-1$
 		return s.intersects(this);
 	}
@@ -1603,8 +1605,8 @@ public interface Parallelogram2afp<
 	@Override
 	default void toBoundingBox(B box) {
 		assert (box != null) : "Rectangle must be not null"; //$NON-NLS-1$
-		Point2D minCorner;
-		Point2D maxCorner;
+		Point2D<?, ?> minCorner;
+		Point2D<?, ?> maxCorner;
 
 		minCorner = new InnerComputationPoint2afp(getCenterX(), getCenterY());
 		maxCorner = new InnerComputationPoint2afp(getCenterX(), getCenterY());
@@ -1636,7 +1638,7 @@ public interface Parallelogram2afp<
 
 	@Pure
 	@Override
-	default P getClosestPointTo(Point2D p) {
+	default P getClosestPointTo(Point2D<?, ?> p) {
 		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
 		P point = getGeomFactory().newPoint();
 		computeClosestFarthestPoints(
@@ -1650,7 +1652,7 @@ public interface Parallelogram2afp<
 
 	@Pure
 	@Override
-	default P getFarthestPointTo(Point2D p) {
+	default P getFarthestPointTo(Point2D<?, ?> p) {
 		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
 		P point = getGeomFactory().newPoint();
 		computeClosestFarthestPoints(
@@ -1678,17 +1680,17 @@ public interface Parallelogram2afp<
 		
 		/** The iterated shape.
 		 */
-		protected final Parallelogram2afp<?, ?, T, ?, ?> parallelogram;
+		protected final Parallelogram2afp<?, ?, T, ?, ?, ?> parallelogram;
 
 		/**
 		 * @param parallelogram the shape.
 		 */
-		public AbstractParallelogramPathIterator(Parallelogram2afp<?, ?, T, ?, ?> parallelogram) {
+		public AbstractParallelogramPathIterator(Parallelogram2afp<?, ?, T, ?, ?, ?> parallelogram) {
 			this.parallelogram = parallelogram;
 		}
 
 		@Override
-		public GeomFactory2afp<T, ?, ?> getGeomFactory() {
+		public GeomFactory2afp<T, ?, ?, ?> getGeomFactory() {
 			return this.parallelogram.getGeomFactory();
 		}
 
@@ -1753,16 +1755,16 @@ public interface Parallelogram2afp<
 
 		private double moveY;
 
-		private Vector2D r;
+		private Vector2D<?, ?> r;
 		
-		private Vector2D s;
+		private Vector2D<?, ?> s;
 		
 		private int index;
 
 		/**
 		 * @param parallelogram the parallelogram to iterate on.
 		 */
-		public ParallelogramPathIterator(Parallelogram2afp<?, ?, T, ?, ?> parallelogram) {
+		public ParallelogramPathIterator(Parallelogram2afp<?, ?, T, ?, ?, ?> parallelogram) {
 			super(parallelogram);
 			if (parallelogram.isEmpty()) {
 				this.index = ELEMENT_NUMBER;
@@ -1841,13 +1843,13 @@ public interface Parallelogram2afp<
 
 		private double y;
 		
-		private Point2D last;
+		private Point2D<?, ?> last;
 
-		private Point2D move;
+		private Point2D<?, ?> move;
 
-		private Vector2D r;
+		private Vector2D<?, ?> r;
 		
-		private Vector2D s;
+		private Vector2D<?, ?> s;
 		
 		private int index;
 
@@ -1855,7 +1857,7 @@ public interface Parallelogram2afp<
 		 * @param parallelogram the parallelogram to iterate on.
 		 * @param transform the transformaion to apply.
 		 */
-		public TransformedParallelogramPathIterator(Parallelogram2afp<?, ?, T, ?, ?> parallelogram,
+		public TransformedParallelogramPathIterator(Parallelogram2afp<?, ?, T, ?, ?, ?> parallelogram,
 				Transform2D transform) {
 			super(parallelogram);
 			assert (transform != null) : "Transformation must be not null"; //$NON-NLS-1$
@@ -2094,7 +2096,7 @@ public interface Parallelogram2afp<
 		}
 
 		@Override
-		public GeomFactory2afp<T, ?, ?> getGeomFactory() {
+		public GeomFactory2afp<T, ?, ?, ?> getGeomFactory() {
 			return this.iterator.getGeomFactory();
 		}
 

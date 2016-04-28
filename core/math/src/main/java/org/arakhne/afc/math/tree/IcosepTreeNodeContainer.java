@@ -17,6 +17,8 @@
  */
 package org.arakhne.afc.math.tree;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /**
  * This interfaces permits to define a tree node container
  * which is containing an icosep tree node.
@@ -41,6 +43,7 @@ public interface IcosepTreeNodeContainer<N extends TreeNode<?,N>> {
 	 * 
 	 * @return the node that is used as the icosep branch.
 	 */
+	@Pure
 	public N getIcosepChild();
 
 }

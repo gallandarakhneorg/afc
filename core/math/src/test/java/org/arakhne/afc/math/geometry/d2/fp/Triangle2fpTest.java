@@ -28,7 +28,7 @@ import org.arakhne.afc.math.geometry.d2.afp.TestShapeFactory;
 public class Triangle2fpTest extends AbstractTriangle2afpTest<Triangle2fp, Rectangle2fp> {
 
 	@Override
-	protected TestShapeFactory<Point2fp, Rectangle2fp> createFactory() {
+	protected TestShapeFactory2fp createFactory() {
 		return TestShapeFactory2fp.SINGLETON;
 	}
 

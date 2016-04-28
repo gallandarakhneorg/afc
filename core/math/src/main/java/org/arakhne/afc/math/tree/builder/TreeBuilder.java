@@ -20,6 +20,7 @@ package org.arakhne.afc.math.tree.builder;
 import java.util.List;
 
 import org.arakhne.afc.math.tree.Tree;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 
 /**
@@ -57,6 +58,7 @@ public interface TreeBuilder<D,T extends Tree<D,?>> {
 	 * 
 	 * @return the maximal count of elements per node.
 	 */
+	@Pure
 	public int getSplittingCount();
 
 }

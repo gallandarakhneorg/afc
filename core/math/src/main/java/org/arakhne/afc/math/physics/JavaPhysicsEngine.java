@@ -23,6 +23,7 @@ package org.arakhne.afc.math.physics;
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 
 /**
@@ -50,13 +51,8 @@ class JavaPhysicsEngine implements PhysicsEngine {
 	JavaPhysicsEngine() {
 		//
 	}
-	
-	private static int signum(double v) {
-		return (byte)((v<-0.) ? -1 : 1);
-	}
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public double motionNewtonLaw(
 			double speed,
@@ -65,8 +61,7 @@ class JavaPhysicsEngine implements PhysicsEngine {
 		return speed * dt + .5f * acceleration * dt * dt;
 	}
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public double motionNewtonLaw1D(
 			double velocity,
@@ -78,15 +73,14 @@ class JavaPhysicsEngine implements PhysicsEngine {
 			double dt) {
 		assert(minSpeed>=0.);
 		double acc = MathUtil.clamp(acceleration, minAcceleration, maxAcceleration);
-		int s = signum(velocity);
+		int s = MathUtil.sign(velocity);
 		double velocityNorm = Math.abs(velocity) + .5f * acc * dt;
 		if (velocityNorm<0) s = -s;
 		velocityNorm = MathUtil.clamp(Math.abs(velocityNorm), minSpeed, maxSpeed);
 		return s * velocityNorm * dt;
 	}
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public void motionNewtonLaw1D5(
 			Vector2D velocity,
@@ -139,8 +133,7 @@ class JavaPhysicsEngine implements PhysicsEngine {
 		}
 	}
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public void motionNewtonLaw2D(
 			Vector2D velocity,
@@ -193,8 +186,7 @@ class JavaPhysicsEngine implements PhysicsEngine {
 		}
 	}
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public void motionNewtonLaw2D5(
 			Vector3D velocity,
@@ -214,8 +206,7 @@ class JavaPhysicsEngine implements PhysicsEngine {
 				result);
 	}
 	
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public void motionNewtonLaw3D(
 			Vector3D velocity,
@@ -271,8 +262,7 @@ class JavaPhysicsEngine implements PhysicsEngine {
 		}
 	}
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public double motionNewtonEuler1Law(
 			double speed,
@@ -280,8 +270,7 @@ class JavaPhysicsEngine implements PhysicsEngine {
 		return speed * dt;
 	}
 	
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public double motionNewtonEuler1Law1D(
 			double speed,
@@ -289,11 +278,10 @@ class JavaPhysicsEngine implements PhysicsEngine {
 			double maxSpeed,
 			double dt) {
 		assert(minSpeed>=0.);
-		return signum(speed) * MathUtil.clamp(Math.abs(speed), minSpeed, maxSpeed) * dt;
+		return MathUtil.sign(speed) * MathUtil.clamp(Math.abs(speed), minSpeed, maxSpeed) * dt;
 	}
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public void motionNewtonEuler1Law1D5(
 			Vector2D velocity,
@@ -311,8 +299,7 @@ class JavaPhysicsEngine implements PhysicsEngine {
 		}
 	}
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public void motionNewtonEuler1Law2D(
 			Vector2D velocity,
@@ -330,8 +317,7 @@ class JavaPhysicsEngine implements PhysicsEngine {
 		}
 	}
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public void motionNewtonEuler1Law2D5(
 			Vector3D velocity,
@@ -346,8 +332,7 @@ class JavaPhysicsEngine implements PhysicsEngine {
 				result);
 	}
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public void motionNewtonEuler1Law3D(
 			Vector3D velocity,
@@ -365,16 +350,13 @@ class JavaPhysicsEngine implements PhysicsEngine {
 		}
 	}
 
-	/** {@inheritDoc}
-	 */
-
+	@Pure
 	@Override
 	public double speed(double movement, double dt) {
 		return movement / dt;
 	}
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public double acceleration(
 			double previousSpeed,

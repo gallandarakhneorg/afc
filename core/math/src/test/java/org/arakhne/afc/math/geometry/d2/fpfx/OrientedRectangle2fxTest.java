@@ -33,7 +33,7 @@ import javafx.beans.property.DoubleProperty;
 public class OrientedRectangle2fxTest extends AbstractOrientedRectangle2afpTest<OrientedRectangle2fx, Rectangle2fx> {
 
 	@Override
-	protected TestShapeFactory<Point2fx, Rectangle2fx> createFactory() {
+	protected TestShapeFactory2fx createFactory() {
 		return TestShapeFactory2fx.SINGLETON;
 	}
 
@@ -86,9 +86,15 @@ public class OrientedRectangle2fxTest extends AbstractOrientedRectangle2afpTest<
 		assertEpsilonEquals(ux, property.getX());
 		assertEpsilonEquals(uy, property.getY());
 		
-		property.set(456.159, 789.357);
+		property.set(0.500348, 0.865824);
 		assertEpsilonEquals(0.500348, property.getX());
 		assertEpsilonEquals(0.865824, property.getY());
+	}
+
+	@Test(expected = AssertionError.class)
+	public void firstAxisProperty_setProperty_notUnitVector() {
+		UnitVectorProperty property = this.shape.firstAxisProperty();
+		property.set(456.159, 789.357);
 	}
 
 	@Test

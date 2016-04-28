@@ -25,6 +25,7 @@ import java.util.NoSuchElementException;
 import java.util.Stack;
 
 import org.arakhne.afc.math.tree.IterableNode;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * This class is an infixed depth-first iterator on a tree.
@@ -101,6 +102,7 @@ implements Iterator<P> {
 	 * @param child is the child node to test.
 	 * @return the traversable node, or <code>null</code> if the node is not traversable.
 	 */
+	@Pure
 	protected abstract P toTraversableChild(P parent, C child);
 
 	/** Replies if an object to type N which is corresponding to 
@@ -110,6 +112,7 @@ implements Iterator<P> {
 	 * @return <code>true</code> if the given node is traversable, <code>false</code>
 	 * otherwise.
 	 */
+	@Pure
 	protected abstract boolean isTraversableParent(P parent);
 
 	private void startIterator() {
@@ -174,16 +177,13 @@ implements Iterator<P> {
 		}
 	}
 	
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public boolean hasNext() {
 		if (!this.isStarted) startIterator();
 		return !this.availableNodes.isEmpty();
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public P next() {
 		this.lastReplied = null;
@@ -204,8 +204,6 @@ implements Iterator<P> {
 		return current;
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public void remove() {
 		P lr = this.lastReplied;

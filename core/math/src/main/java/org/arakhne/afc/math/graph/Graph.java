@@ -20,6 +20,8 @@
  */
 package org.arakhne.afc.math.graph;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /** This interface representes a graph.
  * 
  * @param <PT> is the type of node in the graph
@@ -37,15 +39,15 @@ extends Iterable<ST> {
     /** Replies the count of segments in this graph.
      * 
      * @return the count of segments in this graph.
-     * @since 4.1
      */
+	@Pure
 	public int getSegmentCount();
 	
     /** Replies the count of points in this graph.
      * 
      * @return the count of points in this graph.
-     * @since 4.1
      */
+	@Pure
 	public int getPointCount();
 
 	/** Replies if this graph is empty or not.
@@ -53,6 +55,7 @@ extends Iterable<ST> {
      * @return <code>true</code> if the graph is empty,
      * otherwise <code>false</code>.
      */
+	@Pure
 	public boolean isEmpty();
 
     /** Replies is this graph contains the given segment.
@@ -62,6 +65,7 @@ extends Iterable<ST> {
      * @return <code>true</code> if the graph contains the segment,
      * otherwise <code>false</code>.
      */
+	@Pure
 	public boolean contains(Object obj);
 
 	/** Replies an iterator that permits to move along the road segment's graph
@@ -76,6 +80,7 @@ extends Iterable<ST> {
 	 * the end points of a segment are not distinguished.
      * @return the iterator.
      */
+	@Pure
     public GraphIterator<ST,PT> iterator(ST starting_segment, PT starting_point, boolean allowManyReplies, boolean assumeOrientedSegments);
     
     /** Replies an iterator that permits to move along the segment's graph
@@ -98,6 +103,7 @@ extends Iterable<ST> {
 	 * the end points of a segment are not distinguished.
      * @return the iterator.
 	 */
+	@Pure
 	public GraphIterator<ST,PT> depthIterator(ST startingSegment, double depth, double position_from_starting_point, PT startingPoint, boolean allowManyReplies, boolean assumeOrientedSegments);
 
 }

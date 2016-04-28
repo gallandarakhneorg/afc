@@ -21,6 +21,7 @@ import java.util.Iterator;
 
 import org.arakhne.afc.math.tree.iterator.DepthFirstNodeOrder;
 import org.arakhne.afc.math.tree.iterator.InfixDepthFirstTreeIterator;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * This is the generic implementation of a
@@ -43,6 +44,7 @@ public interface Tree<D,N extends TreeNode<D,?>> extends Iterable<N> {
 	 * 
 	 * @return the root of the tree.
 	 */
+	@Pure
 	public N getRoot();
 	
 	/** Set the root of the tree.
@@ -65,12 +67,14 @@ public interface Tree<D,N extends TreeNode<D,?>> extends Iterable<N> {
 	 * 
 	 * @return the count of nodes inside the whole tree.
 	 */
+	@Pure
 	public int getNodeCount();
 
 	/** Replies the count of data inside this tree.
 	 * 
 	 * @return the count of user objects inside the whole tree.
 	 */
+	@Pure
 	public int getUserDataCount();
 	
 	/** Replies if this tree contains user data.
@@ -78,18 +82,21 @@ public interface Tree<D,N extends TreeNode<D,?>> extends Iterable<N> {
 	 * @return <code>true</code> if the tree is empty (no user data),
 	 * otherwise <code>false</code>
 	 */
+	@Pure
 	public boolean isEmpty();
 
 	/** Replies the minimal height of the tree.
 	 * 
 	 * @return the height of the uppest leaf in the tree.
 	 */
+	@Pure
 	public int getMinHeight();
 
 	/** Replies the maximal height of the tree.
 	 * 
 	 * @return the height of the lowest leaf in the tree.
 	 */
+	@Pure
 	public int getMaxHeight();
 
 	/** Replies the heights of all the leaf nodes.
@@ -97,6 +104,7 @@ public interface Tree<D,N extends TreeNode<D,?>> extends Iterable<N> {
 	 * 
 	 * @return the heights of the leaf nodes
 	 */
+	@Pure
 	public int[] getHeights();
 
 	/** Replies a depth-first iterator on nodes.
@@ -104,24 +112,28 @@ public interface Tree<D,N extends TreeNode<D,?>> extends Iterable<N> {
 	 * @param nodeOrder indicates how the data are treated by the iterator. 
 	 * @return a depth first iterator on nodes
 	 */
+	@Pure
 	public Iterator<N> depthFirstIterator(DepthFirstNodeOrder nodeOrder);
 
 	/** Replies a depth-first iterator on nodes.
 	 * 
 	 * @return a depth-first iterator.
 	 */
+	@Pure
 	public Iterator<N> depthFirstIterator();
 
 	/** Replies a broad first iterator on nodes.
 	 * 
 	 * @return a broad first iterator.
 	 */
+	@Pure
 	public Iterator<N> broadFirstIterator();
 
 	/** Replies a prefixed depth first iterator on the tree.
 	 * 
 	 * @return a prefixed depth first iterator on data.
 	 */
+	@Pure
 	public Iterator<D> dataDepthFirstIterator();
 
 	/** Replies a depth first iterator on the tree.
@@ -129,6 +141,7 @@ public interface Tree<D,N extends TreeNode<D,?>> extends Iterable<N> {
 	 * @param nodeOrder indicates how the data are treated by the iterator. 
 	 * @return an iterator on the data.
 	 */
+	@Pure
 	public Iterator<D> dataDepthFirstIterator(DepthFirstNodeOrder nodeOrder);
 
 	/** Replies the depth first iterator on the tree.
@@ -138,6 +151,7 @@ public interface Tree<D,N extends TreeNode<D,?>> extends Iterable<N> {
 	 * @return the iterator on user data
 	 * @see InfixDepthFirstTreeIterator
 	 */
+	@Pure
 	public Iterator<D> dataDepthFirstIterator(int infixPosition);
 
 
@@ -145,6 +159,7 @@ public interface Tree<D,N extends TreeNode<D,?>> extends Iterable<N> {
 	 * 
 	 * @return the iterator on user data.
 	 */
+	@Pure
 	public Iterator<D> dataBroadFirstIterator();
 
 }

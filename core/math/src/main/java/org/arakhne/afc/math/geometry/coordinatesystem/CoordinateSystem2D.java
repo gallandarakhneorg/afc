@@ -20,10 +20,11 @@
  */
 package org.arakhne.afc.math.geometry.coordinatesystem;
 
-import org.arakhne.afc.math.geometry.d2.ImmutableVector2D;
+import org.arakhne.afc.math.geometry.d2.Vector2DStub;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
+import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
@@ -52,21 +53,19 @@ import org.eclipse.xtext.xbase.lib.Pure;
 public enum CoordinateSystem2D implements CoordinateSystem {
 
 	/** Right handed XY coordinate system.
-	 * <p>
-	 * <a href="doc-files/xy_right.png"><img border="0" src="doc-files/xy_right.png" width="200" alt="[Right Handed XY Coordinate System]"></a>
+	 *
+	 * <p><a href="doc-files/xy_right.png"><img border="0" src="doc-files/xy_right.png" width="200" alt="[Right Handed XY Coordinate System]"></a>
 	 */
 	XY_RIGHT_HAND,
 
 	/** Left handed XY coordinate system.
-	 * <p>
-         * <a href="doc-files/xy_left.png"><img border="0" src="doc-files/xy_left.png" width="200" alt="[Left Handed XY Coordinate System]"></a>
+	 *
+	 * <p><a href="doc-files/xy_left.png"><img border="0" src="doc-files/xy_left.png" width="200" alt="[Left Handed XY Coordinate System]"></a>
 	 */
 	XY_LEFT_HAND;
 	
 	private static CoordinateSystem2D defaultCoordinateSystem;
 	
-	/** {@inheritDoc}
-	 */
 	@Pure
 	@Override
 	public final int getDimensions() {
@@ -80,7 +79,7 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 	 * @param targetCoordinateSystem is the target coordinate system.
 	 */
 	public void toSystem(Point2D point, CoordinateSystem2D targetCoordinateSystem) {
-		if (this!=targetCoordinateSystem) {
+		if (this != targetCoordinateSystem) {
 			point.setY(-point.getY());
 		}
 	}
@@ -263,11 +262,10 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 	 */
 	@Pure
 	public static CoordinateSystem2D fromVectors(double ly) {
-		return fromVectors((int)ly);
+		assert(ly!=0.);
+		return (ly<0.) ? XY_LEFT_HAND : XY_RIGHT_HAND;
 	}
 	
-	/** {@inheritDoc}
-	 */
 	@Pure
 	@Override
 	public boolean isRightHanded() {
@@ -287,8 +285,9 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 	 * @return the front vector.
 	 */
 	@Pure
+	@Inline(value = "(new ImmutableVector2D(1,0))", imported = {Vector2DStub.class})
 	public static Vector2D getViewVector() {
-		return new ImmutableVector2D(1,0);
+		return new Vector2DStub(1,0);
 	}
 
 	/** Replies the front vector.
@@ -308,15 +307,15 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 	 * @return the back vector.
 	 */
 	@Pure
+	@Inline(value = "(new ImmutableVector2D(-1,0))", imported = {Vector2DStub.class})
 	public static Vector2D getBackVector() {
-		return new ImmutableVector2D(-1,0);
+		return new Vector2DStub(-1,0);
 	}
 
 	/** Replies the back vector.
 	 *
 	 * @param vectorToFill is the vector to set with the back vector values.
 	 * @return the back vector.
-	 * @since 4.0
 	 */
 	public static <T extends Vector2D> T getBackVector(T vectorToFill) {
 		assert(vectorToFill!=null);
@@ -332,9 +331,9 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 	public Vector2D getLeftVector() {
 		switch(this) {
 		case XY_LEFT_HAND:
-			return new ImmutableVector2D(0,-1);
+			return new Vector2DStub(0,-1);
 		case XY_RIGHT_HAND:
-			return new ImmutableVector2D(0,1);
+			return new Vector2DStub(0,1);
 		default:
 			throw new IllegalArgumentException("this"); //$NON-NLS-1$
 		}
@@ -369,9 +368,9 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 	public Vector2D getRightVector() {
 		switch(this) {
 		case XY_LEFT_HAND:
-			return new ImmutableVector2D(0,1);
+			return new Vector2DStub(0,1);
 		case XY_RIGHT_HAND:
-			return new ImmutableVector2D(0,-1);
+			return new Vector2DStub(0,-1);
 		default:
 			throw new IllegalArgumentException("this"); //$NON-NLS-1$
 		}

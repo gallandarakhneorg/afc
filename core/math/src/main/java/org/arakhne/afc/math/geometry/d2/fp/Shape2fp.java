@@ -32,6 +32,6 @@ import org.arakhne.afc.math.geometry.d2.afp.Shape2afp;
  * @since 13.0
  */
 public interface Shape2fp<IT extends Shape2fp<?>>
-		extends Shape2afp<Shape2fp<?>, IT, PathElement2fp, Point2fp, Rectangle2fp> {
+		extends Shape2afp<Shape2fp<?>, IT, PathElement2fp, Point2fp, Vector2fp, Rectangle2fp> {
 	// Provided for making easier the type tests.
 }

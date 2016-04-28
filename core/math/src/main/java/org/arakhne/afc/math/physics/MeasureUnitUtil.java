@@ -22,6 +22,8 @@ package org.arakhne.afc.math.physics;
 import java.util.concurrent.TimeUnit;
 
 import org.arakhne.afc.math.MathConstants;
+import org.eclipse.xtext.xbase.lib.Inline;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * This class permits to manipulate measure units.
@@ -59,6 +61,8 @@ public class MeasureUnitUtil {
 	 * @param ms
 	 * @return <var>ms</var> * 3.6
 	 */
+	@Pure
+	@Inline(value = "($1 * 3.6)")
 	public static double ms2kmh(double ms) {
 		//return ((ms/1000.0)*3600.0);
 		return ms*3.6;
@@ -69,6 +73,8 @@ public class MeasureUnitUtil {
 	 * @param kmh
 	 * @return <var>kmh</var> / 3.6
 	 */
+	@Pure
+	@Inline(value = "($1 / 3.6)")
 	public static double kmh2ms(double kmh) {
 		//return ((kmh/3600.0)*1000.0);
 		return kmh / 3.6;
@@ -79,6 +85,8 @@ public class MeasureUnitUtil {
 	 * @param m
 	 * @return <var>m</var> / 1000
 	 */
+	@Pure
+	@Inline(value = "($1 / 1000.0)")
 	public static double m2km(double m) {
 		return m / 1000.;
 	}
@@ -88,6 +96,8 @@ public class MeasureUnitUtil {
 	 * @param km
 	 * @return <var>km</var> * 1000
 	 */
+	@Pure
+	@Inline(value = "($1 * 1000)")
 	public static double km2m(double km) {
 		return km * 1000.;
 	}
@@ -97,6 +107,8 @@ public class MeasureUnitUtil {
 	 * @param pixel_coord is the pixel coordinate to translate.
 	 * @return the given value rounded to the nearest integer.
 	 */
+	@Pure
+	@Inline(value = "((int) Math.round($1))", imported = {Math.class})
 	public static int pix2pix(double pixel_coord) {
 		return (int)Math.round(pixel_coord);
 	}
@@ -106,6 +118,8 @@ public class MeasureUnitUtil {
 	 * @param pixel_coord is the pixel coordinate to translate.
 	 * @return the given value rounded to the nearest integer.
 	 */
+	@Pure
+	@Inline(value = "((int) ($1))")
 	public static int pix2pix(long pixel_coord) {
 		return (int)pixel_coord;
 	}
@@ -115,6 +129,8 @@ public class MeasureUnitUtil {
 	 * @param pixel_coord is the pixel coordinate to translate.
 	 * @return the given value rounded to the nearest integer.
 	 */
+	@Pure
+	@Inline(value = "(Math.round($1))", imported = {Math.class})
 	public static int pix2pix(float pixel_coord) {
 		return Math.round(pixel_coord);
 	}
@@ -124,6 +140,8 @@ public class MeasureUnitUtil {
 	 * @param unit
 	 * @return <var>unit</var> / 1e-9
 	 */
+	@Pure
+	@Inline(value = "($1 / 1e-9)")
 	public static double unit2nano(double unit) {
 		return unit / 1e-9;
 	}
@@ -133,6 +151,8 @@ public class MeasureUnitUtil {
 	 * @param nano
 	 * @return <var>nano</var> * 1e-9
 	 */
+	@Pure
+	@Inline(value = "($1 * 1e-9)")
 	public static double nano2unit(double nano) {
 		return nano * 1e-9;
 	}
@@ -142,6 +162,8 @@ public class MeasureUnitUtil {
 	 * @param unit
 	 * @return <var>unit</var> / 1e-6
 	 */
+	@Pure
+	@Inline(value = "($1 / 1e-6)")
 	public static double unit2micro(double unit) {
 		return unit / 1e-6;
 	}
@@ -151,6 +173,8 @@ public class MeasureUnitUtil {
 	 * @param micro
 	 * @return <var>micro</var> * 1e-6
 	 */
+	@Pure
+	@Inline(value = "($1 * 1e-6)")
 	public static double micro2unit(double micro) {
 		return micro * 1e-6;
 	}
@@ -160,6 +184,8 @@ public class MeasureUnitUtil {
 	 * @param unit
 	 * @return <var>unit</var> / 1e-3
 	 */
+	@Pure
+	@Inline(value = "($1 / 1e-3)")
 	public static double unit2milli(double unit) {
 		return unit / 1e-3;
 	}
@@ -169,6 +195,8 @@ public class MeasureUnitUtil {
 	 * @param milli
 	 * @return <var>milli</var> * 1e-3
 	 */
+	@Pure
+	@Inline(value = "($1 * 1e-3)")
 	public static double milli2unit(double milli) {
 		return milli * 1e-3;
 	}
@@ -178,6 +206,8 @@ public class MeasureUnitUtil {
 	 * @param milli
 	 * @return <var>milli</var> / 1e-3
 	 */
+	@Pure
+	@Inline(value = "($1 / 1e-3)")
 	public static double milli2micro(double milli) {
 		return milli / 1e-3;
 	}
@@ -187,6 +217,8 @@ public class MeasureUnitUtil {
 	 * @param milli
 	 * @return <var>milli</var> / 1e-6
 	 */
+	@Pure
+	@Inline(value = "($1 / 1e-6)")
 	public static double milli2nano(double milli) {
 		return milli / 1e-6;
 	}
@@ -196,6 +228,8 @@ public class MeasureUnitUtil {
 	 * @param milli
 	 * @return <var>milli</var> / 1e-3
 	 */
+	@Pure
+	@Inline(value = "($1 / 1e-3)")
 	public static double micro2nano(double milli) {
 		return milli / 1e-3;
 	}
@@ -205,6 +239,8 @@ public class MeasureUnitUtil {
 	 * @param micro
 	 * @return <var>micro</var> * 1e-3
 	 */
+	@Pure
+	@Inline(value = "($1 * 1e-3)")
 	public static double micro2milli(double micro) {
 		return micro * 1e-3;
 	}
@@ -214,6 +250,8 @@ public class MeasureUnitUtil {
 	 * @param nano
 	 * @return <var>nano</var> * 1e-3
 	 */
+	@Pure
+	@Inline(value = "($1 * 1e-3)")
 	public static double nano2micro(double nano) {
 		return nano * 1e-3;
 	}
@@ -223,6 +261,8 @@ public class MeasureUnitUtil {
 	 * @param nano
 	 * @return <var>nano</var> * 1e-6
 	 */
+	@Pure
+	@Inline(value = "($1 * 1e-6)")
 	public static double nano2milli(double nano) {
 		return nano * 1e-6;
 	}
@@ -232,6 +272,8 @@ public class MeasureUnitUtil {
 	 * @param m
 	 * @return <var>m</var> * 0.5468
 	 */
+	@Pure
+	@Inline(value = "($1 * 0.5468)")
 	public static double m2fh(double m) {
 		return m * 0.5468;
 	}
@@ -241,6 +283,8 @@ public class MeasureUnitUtil {
 	 * @param ft
 	 * @return <var>ft</var> * 0.1667
 	 */
+	@Pure
+	@Inline(value = "($1 * 0.1667)")
 	public static double ft2fh(double ft) {
 		return ft * 0.1667;
 	}
@@ -250,6 +294,8 @@ public class MeasureUnitUtil {
 	 * @param in
 	 * @return <var>in</var> / 72
 	 */
+	@Pure
+	@Inline(value = "($1 / 72)")
 	public static double in2fh(double in) {
 		return in / 72;
 	}
@@ -259,6 +305,8 @@ public class MeasureUnitUtil {
 	 * @param m
 	 * @return <var>m</var> * 0.3048
 	 */
+	@Pure
+	@Inline(value = "($1 * 0.3048)")
 	public static double m2ft(double m) {
 		return m * 0.3048;
 	}
@@ -268,6 +316,8 @@ public class MeasureUnitUtil {
 	 * @param in
 	 * @return <var>in</var> / 12
 	 */
+	@Pure
+	@Inline(value = "($1 / 12)")
 	public static double in2ft(double in) {
 		return in / 12;
 	}
@@ -277,6 +327,8 @@ public class MeasureUnitUtil {
 	 * @param fh
 	 * @return <var>fh</var> / 0.1667
 	 */
+	@Pure
+	@Inline(value = "($1 / 0.1667)")
 	public static double fh2ft(double fh) {
 		return fh / 0.1667;
 	}
@@ -286,6 +338,8 @@ public class MeasureUnitUtil {
 	 * @param m
 	 * @return <var>m</var> * 0.025
 	 */
+	@Pure
+	@Inline(value = "($1 * 0.025)")
 	public static double m2in(double m) {
 		return m * 0.025;
 	}
@@ -295,6 +349,8 @@ public class MeasureUnitUtil {
 	 * @param ft
 	 * @return <var>ft</var> * 12
 	 */
+	@Pure
+	@Inline(value = "($1 * 12)")
 	public static double ft2in(double ft) {
 		return ft * 12;
 	}
@@ -304,6 +360,8 @@ public class MeasureUnitUtil {
 	 * @param i the inch value
 	 * @return a value in centimeters
 	 */
+	@Pure
+	@Inline(value = "($1 / 0.3937)")
 	public static double inchToMetric( double i ) {
 		return i / 0.3937;
 	}
@@ -313,6 +371,8 @@ public class MeasureUnitUtil {
 	 * @param m the metric value
 	 * @return a value in inches
 	 */
+	@Pure
+	@Inline(value = "($1 * 0.3937)")
 	public static double metricToInch( double m ) {
 		return m * 0.3937;
 	}
@@ -323,6 +383,7 @@ public class MeasureUnitUtil {
 	 * @param inputUnit is the unit of the <var>value</var>
 	 * @return the result of the convertion.
 	 */
+	@Pure
 	public static double toSeconds(double value, TimeUnit inputUnit) {
 		switch(inputUnit) {
 		case DAYS:
@@ -351,6 +412,7 @@ public class MeasureUnitUtil {
 	 * @param inputUnit is the unit of the <var>value</var>
 	 * @return the result of the convertion.
 	 */
+	@Pure
 	public static double toMeters(double value, SpaceUnit inputUnit) {
 		switch(inputUnit) {
 		case TERAMETER:
@@ -393,6 +455,7 @@ public class MeasureUnitUtil {
 	 * @param outputUnit is the unit of the replied value.
 	 * @return the result of the convertion.
 	 */
+	@Pure
 	public static double fromMeters(double value, SpaceUnit outputUnit) {
 		switch(outputUnit) {
 		case TERAMETER:
@@ -435,6 +498,7 @@ public class MeasureUnitUtil {
 	 * @param outputUnit is the unit of result.
 	 * @return the result of the convertion.
 	 */
+	@Pure
 	public static double fromSeconds(double value, TimeUnit outputUnit) {
 		switch(outputUnit) {
 		case DAYS:
@@ -465,6 +529,8 @@ public class MeasureUnitUtil {
 	 * @param outputUnit is the unit for the replied value.
 	 * @return the result of the convertion.
 	 */
+	@Pure
+	@Inline(value = "(MeasureUnitUtil.fromSeconds(MeasureUnitUtil.toSeconds($1, $2), $3))", imported = {MeasureUnitUtil.class})
 	public static double convert(long value, TimeUnit inputUnit, TimeUnit outputUnit) {
 		double v = toSeconds(value, inputUnit);
 		return fromSeconds(v, outputUnit);
@@ -478,6 +544,8 @@ public class MeasureUnitUtil {
 	 * @param outputUnit is the unit for the replied value.
 	 * @return the result of the convertion.
 	 */
+	@Pure
+	@Inline(value = "(MeasureUnitUtil.fromSeconds(MeasureUnitUtil.toSeconds($1, $2), $3))", imported = {MeasureUnitUtil.class})
 	public static double convert(double value, TimeUnit inputUnit, TimeUnit outputUnit) {
 		double v = toSeconds(value, inputUnit);
 		return fromSeconds(v, outputUnit);
@@ -491,6 +559,9 @@ public class MeasureUnitUtil {
 	 * @param outputUnit is the unit for the replied value.
 	 * @return the result of the convertion.
 	 */
+	@Pure
+	@Inline(value = "(MeasureUnitUtil.fromMetersPerSecond(MeasureUnitUtil.toMetersPerSecond($1, $2), $3))",
+			imported = {MeasureUnitUtil.class})
 	public static double convert(double value, SpeedUnit inputUnit, SpeedUnit outputUnit) {
 		double v = toMetersPerSecond(value, inputUnit);
 		return fromMetersPerSecond(v, outputUnit);
@@ -504,6 +575,9 @@ public class MeasureUnitUtil {
 	 * @param outputUnit is the unit for the replied value.
 	 * @return the result of the convertion.
 	 */
+	@Pure
+	@Inline(value = "(MeasureUnitUtil.fromRadiansPerSecond(MeasureUnitUtil.toRadiansPerSecond($1, $2), $3))",
+			imported = {MeasureUnitUtil.class})
 	public static double convert(double value, AngularUnit inputUnit, AngularUnit outputUnit) {
 		double v = toRadiansPerSecond(value, inputUnit);
 		return fromRadiansPerSecond(v, outputUnit);
@@ -518,6 +592,9 @@ public class MeasureUnitUtil {
 	 * @param outputUnit is the unit for the replied value.
 	 * @return the result of the convertion.
 	 */
+	@Pure
+	@Inline(value = "(MeasureUnitUtil.fromMeters(MeasureUnitUtil.toMeters($1, $2), $3))",
+			imported = {MeasureUnitUtil.class})
 	public static double convert(double value, SpaceUnit inputUnit, SpaceUnit outputUnit) {
 		double v = toMeters(value, inputUnit);
 		return fromMeters(v, outputUnit);
@@ -529,6 +606,7 @@ public class MeasureUnitUtil {
 	 * @param inputUnit is the unit of the <var>value</var>
 	 * @return the result of the convertion.
 	 */
+	@Pure
 	public static double toMetersPerSecond(double value, SpeedUnit inputUnit) {
 		switch(inputUnit) {
 		case KILOMETERS_PER_HOUR:
@@ -546,6 +624,7 @@ public class MeasureUnitUtil {
 	 * @param inputUnit is the unit of the <var>value</var>
 	 * @return the result of the convertion.
 	 */
+	@Pure
 	public static double toRadiansPerSecond(double value, AngularUnit inputUnit) {
 		switch(inputUnit) {
 		case TURNS_PER_SECOND:
@@ -563,6 +642,7 @@ public class MeasureUnitUtil {
 	 * @param outputUnit is the unit of result.
 	 * @return the result of the convertion.
 	 */
+	@Pure
 	public static double fromMetersPerSecond(double value, SpeedUnit outputUnit) {
 		switch(outputUnit) {
 		case KILOMETERS_PER_HOUR:
@@ -580,6 +660,7 @@ public class MeasureUnitUtil {
 	 * @param outputUnit is the unit of result.
 	 * @return the result of the convertion.
 	 */
+	@Pure
 	public static double fromRadiansPerSecond(double value, AngularUnit outputUnit) {
 		switch(outputUnit) {
 		case TURNS_PER_SECOND:
@@ -601,6 +682,7 @@ public class MeasureUnitUtil {
 	 * part of the given amount after its convertion to the selected
 	 * unit.
 	 */
+	@Pure
 	public static SpaceUnit getSmallestUnit(double amount, SpaceUnit unit) {
 		double meters = toMeters(amount, unit);
 		double v;

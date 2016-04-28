@@ -28,6 +28,7 @@ import java.util.TreeSet;
 
 import org.arakhne.afc.references.ComparableWeakReference;
 import org.arakhne.afc.references.WeakArrayList;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * A subgraph.
@@ -106,6 +107,7 @@ implements Graph<ST,PT> {
 	 * 
 	 * @return the parent graph or <code>null</code>
 	 */
+	@Pure
 	protected final Graph<ST,PT> getParentGraph() {
 		return this.parentGraph==null ? null : this.parentGraph.get();
 	}
@@ -120,6 +122,7 @@ implements Graph<ST,PT> {
 	 * @return the internal data structure that contains all the
 	 * segments in this subgraph.
 	 */
+	@Pure
 	protected final Collection<ST> getGraphSegments() {
 		return this.segments;
 	}
@@ -199,6 +202,7 @@ implements Graph<ST,PT> {
 	 * @param point
 	 * @return <code>true</code> if the point is terminal otherwise <code>false</code>
 	 */
+	@Pure
 	protected final boolean isTerminalPoint(PT point) {
 		return this.terminalPoints.contains(new ComparableWeakReference<>(point));
 	}
@@ -208,6 +212,7 @@ implements Graph<ST,PT> {
 	 * @param segment
 	 * @return a wrapping segment or the <var>segment</var> itself.
 	 */
+	@Pure
 	protected ST wrapSegment(ST segment) {
 		return segment;
 	}
@@ -219,6 +224,7 @@ implements Graph<ST,PT> {
 	 * @param isTerminal indicates if this point should be a terminal point.
 	 * @return a wrapping point or the <var>point</var> itself.
 	 */
+	@Pure
 	protected PT wrapPoint(PT point, ST segment, boolean isTerminal) {
 		return point;
 	}
@@ -234,41 +240,31 @@ implements Graph<ST,PT> {
 	// Graph interface
 	//-----------------------------------------------------------
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
+	@Pure
 	public boolean isEmpty() {
 		return this.segments.isEmpty();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public boolean contains(Object obj) {
 		return this.segments.contains(obj);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public final int getSegmentCount() {
 		return this.segments.size();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public final int getPointCount() {
 		return this.pointNumber;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public GraphIterator<ST, PT> depthIterator(
 			ST startingSegment,
@@ -283,17 +279,13 @@ implements Graph<ST,PT> {
 				allowManyReplies, assumeOrientedSegments);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public final Iterator<ST> iterator() {
 		return new SubGraphSegmentIterator(this.segments.iterator());
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public GraphIterator<ST, PT> iterator(ST starting_segment,
 			PT starting_point, boolean allowManyReplies,

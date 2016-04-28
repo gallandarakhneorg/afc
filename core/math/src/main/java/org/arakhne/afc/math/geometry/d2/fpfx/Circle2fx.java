@@ -39,7 +39,7 @@ import javafx.beans.property.SimpleDoubleProperty;
  */
 public class Circle2fx
 		extends AbstractShape2fx<Circle2fx>
-		implements Circle2afp<Shape2fx<?>, Circle2fx, PathElement2fx, Point2fx, Rectangle2fx> {
+		implements Circle2afp<Shape2fx<?>, Circle2fx, PathElement2fx, Point2fx, Vector2fx, Rectangle2fx> {
 
 	private static final long serialVersionUID = 837592010117981823L;
 
@@ -59,7 +59,7 @@ public class Circle2fx
 	 * @param center
 	 * @param radius
 	 */
-	public Circle2fx(Point2D center, double radius) {
+	public Circle2fx(Point2D<?, ?> center, double radius) {
 		assert (center != null) : "Center must be not null"; //$NON-NLS-1$
 		set(center.getX(), center.getY(), radius);
 	}
@@ -76,7 +76,7 @@ public class Circle2fx
 	/** Construct a circle from a circle.
 	 * @param c
 	 */
-	public Circle2fx(Circle2afp<?, ?, ?, ?, ?> c) {
+	public Circle2fx(Circle2afp<?, ?, ?, ?, ?, ?> c) {
 		assert (c != null) : "Circle must be not null"; //$NON-NLS-1$
 		set(c.getX(), c.getY(), c.getRadius());
 	}

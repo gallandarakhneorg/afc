@@ -21,6 +21,7 @@
  */
 package org.arakhne.afc.math.geometry.d2.fp;
 
+import org.arakhne.afc.math.geometry.d2.GeomFactory;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.arakhne.afc.math.geometry.d2.UnmodifiableVector2D;
@@ -35,7 +36,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public class Vector2fp extends Tuple2fp<Vector2D, Vector2fp> implements Vector2D {
+public class Vector2fp extends Tuple2fp<Vector2fp> implements Vector2D<Vector2fp, Point2fp> {
 
 	private static final long serialVersionUID = 9183440606977893371L;
 
@@ -109,16 +110,21 @@ public class Vector2fp extends Tuple2fp<Vector2D, Vector2fp> implements Vector2D
 		super(x, y);
 	}
 
+	@Override
+	public GeomFactory2fp getGeomFactory() {
+		return GeomFactory2fp.SINGLETON;
+	}
+	
 	@Pure
 	@Override
-	public double dot(Vector2D vector) {
+	public double dot(Vector2D<?, ?> vector) {
 		assert (vector != null) : "Vector must be not null"; //$NON-NLS-1$
 		return (this.x * vector.getX() + this.y * vector.getY());
 	}
 
 	@Pure
 	@Override
-	public double perp(Vector2D vector) {
+	public double perp(Vector2D<?, ?> vector) {
 		assert (vector != null) : "Vector must be not null"; //$NON-NLS-1$
 		return this.x * vector.getY() - vector.getX() * this.y;
 	}
@@ -136,7 +142,7 @@ public class Vector2fp extends Tuple2fp<Vector2D, Vector2fp> implements Vector2D
 	}
 
 	@Override
-	public void add(Vector2D vector1, Vector2D vector2) {
+	public void add(Vector2D<?, ?> vector1, Vector2D<?, ?> vector2) {
 		assert (vector1 != null) : "First vector must be not null"; //$NON-NLS-1$
 		assert (vector2 != null) : "Second vector must be not null"; //$NON-NLS-1$
 		this.x = vector1.getX() + vector2.getX();
@@ -144,14 +150,14 @@ public class Vector2fp extends Tuple2fp<Vector2D, Vector2fp> implements Vector2D
 	}
 
 	@Override
-	public void add(Vector2D vector) {
+	public void add(Vector2D<?, ?> vector) {
 		assert (vector != null) : "Vector must be not null"; //$NON-NLS-1$
 		this.x = this.x + vector.getX();
 		this.y = this.y + vector.getY();
 	}
 
 	@Override
-	public void scaleAdd(int s, Vector2D vector1, Vector2D vector2) {
+	public void scaleAdd(int s, Vector2D<?, ?> vector1, Vector2D<?, ?> vector2) {
 		assert (vector1 != null) : "First vector must be not null"; //$NON-NLS-1$
 		assert (vector2 != null) : "Second vector must be not null"; //$NON-NLS-1$
 		this.x = s * vector1.getX() + vector2.getX();
@@ -159,7 +165,7 @@ public class Vector2fp extends Tuple2fp<Vector2D, Vector2fp> implements Vector2D
 	}
 
 	@Override
-	public void scaleAdd(double s, Vector2D vector1, Vector2D vector2) {
+	public void scaleAdd(double s, Vector2D<?, ?> vector1, Vector2D<?, ?> vector2) {
 		assert (vector1 != null) : "First vector must be not null"; //$NON-NLS-1$
 		assert (vector2 != null) : "Second vector must be not null"; //$NON-NLS-1$
 		this.x = s * vector1.getX() + vector2.getX();
@@ -167,21 +173,21 @@ public class Vector2fp extends Tuple2fp<Vector2D, Vector2fp> implements Vector2D
 	}
 
 	@Override
-	public void scaleAdd(int s, Vector2D vector) {
+	public void scaleAdd(int s, Vector2D<?, ?> vector) {
 		assert (vector != null) : "Vector must be not null"; //$NON-NLS-1$
 		this.x = s * this.x + vector.getX();
 		this.y = s * this.y + vector.getY();
 	}
 
 	@Override
-	public void scaleAdd(double s, Vector2D vector) {
+	public void scaleAdd(double s, Vector2D<?, ?> vector) {
 		assert (vector != null) : "Vector must be not null"; //$NON-NLS-1$
 		this.x = s * this.x + vector.getX();
 		this.y = s * this.y + vector.getY();
 	}
 
 	@Override
-	public void sub(Vector2D vector1, Vector2D vector2) {
+	public void sub(Vector2D<?, ?> vector1, Vector2D<?, ?> vector2) {
 		assert (vector1 != null) : "First vector must be not null"; //$NON-NLS-1$
 		assert (vector2 != null) : "Second vector must be not null"; //$NON-NLS-1$
 		this.x = vector1.getX() - vector2.getX();
@@ -189,7 +195,7 @@ public class Vector2fp extends Tuple2fp<Vector2D, Vector2fp> implements Vector2D
 	}
 
 	@Override
-	public void sub(Point2D point1, Point2D point2) {
+	public void sub(Point2D<?, ?> point1, Point2D<?, ?> point2) {
 		assert (point1 != null) : "First point must be not null"; //$NON-NLS-1$
 		assert (point2 != null) : "Second point must be not null"; //$NON-NLS-1$
 		this.x = point1.getX() - point2.getX();
@@ -197,7 +203,7 @@ public class Vector2fp extends Tuple2fp<Vector2D, Vector2fp> implements Vector2D
 	}
 
 	@Override
-	public void sub(Vector2D vector) {
+	public void sub(Vector2D<?, ?> vector) {
 		assert (vector != null) : "Vector must be not null"; //$NON-NLS-1$
 		this.x -= vector.getX();
 		this.y -= vector.getY();
@@ -218,7 +224,7 @@ public class Vector2fp extends Tuple2fp<Vector2D, Vector2fp> implements Vector2D
 	}
 	
 	@Override
-	public Vector2D toUnitVector() {
+	public Vector2fp toUnitVector() {
 		double length = getLength();
 		if (length == 0.) {
 			return new Vector2fp();
@@ -227,30 +233,35 @@ public class Vector2fp extends Tuple2fp<Vector2D, Vector2fp> implements Vector2D
 	}
 	
 	@Override
-	public Vector2D toOrthogonalVector() {
+	public Vector2fp toOrthogonalVector() {
 		return new Vector2fp(-getY(), getX());
 	}
 
 	@Pure
 	@Override
-	public Vector2D toUnmodifiable() {
-		return new UnmodifiableVector2D() {
+	public UnmodifiableVector2D<Vector2fp, Point2fp> toUnmodifiable() {
+		return new UnmodifiableVector2D<Vector2fp, Point2fp>() {
 
 			private static final long serialVersionUID = 6848610371671516804L;
 			
 			@Override
-			public Vector2D toUnitVector() {
+			public GeomFactory<Vector2fp, Point2fp> getGeomFactory() {
+				return Vector2fp.this.getGeomFactory();
+			}
+			
+			@Override
+			public Vector2fp toUnitVector() {
 				return Vector2fp.this.toUnitVector();
 			}
 			
 			@Override
-			public Vector2D toOrthogonalVector() {
+			public Vector2fp toOrthogonalVector() {
 				return Vector2fp.this.toOrthogonalVector();
 			}
 
 			@Override
-			public Vector2D clone() {
-				return Vector2fp.this.toUnmodifiable();
+			public Vector2fp clone() {
+				return new Vector2fp(Vector2fp.this);
 			}
 
 			@Override

@@ -22,6 +22,8 @@ package org.arakhne.afc.math.stochastic;
 
 import java.util.Random;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /**
  * Law that representes an uniform density with as its upper and lower bounds
  * equal.
@@ -47,16 +49,19 @@ public class ConstantStochasticLaw extends StochasticLaw {
 		this.value = value1;
 	}
 
+	@Pure
 	@Override
 	public double inverseF(double u) throws MathException {
 		return this.value;
 	}
 
+	@Pure
 	@Override
 	public double f(double x) throws MathException {
 		return (x!=this.value) ? 0 : 1.f; 
 	}
 
+	@Pure
 	@Override
 	public MathFunctionRange[] getRange() {
 		return new MathFunctionRange[] {

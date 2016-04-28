@@ -19,6 +19,7 @@ package org.arakhne.afc.math.tree.iterator;
 
 import org.arakhne.afc.math.tree.Tree;
 import org.arakhne.afc.math.tree.TreeNode;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 
 /**
@@ -75,11 +76,13 @@ implements NodeSelectionTreeIterator<N> {
 	}
 		
 	@Override
+	@Pure
 	protected boolean isTraversableParent(N parent) {
 		return (parent!=null && (this.selector==null || this.selector.nodeCouldBeTreatedByIterator(parent)));
 	}
 
 	@Override
+	@Pure
 	protected N toTraversableChild(N parent, N child) {
 		assert(child!=null & parent!=null);
 		if (this.selector==null || this.selector.nodeCouldBeTreatedByIterator(child)) {

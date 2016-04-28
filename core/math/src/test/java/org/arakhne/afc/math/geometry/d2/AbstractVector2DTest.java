@@ -19,16 +19,20 @@
 package org.arakhne.afc.math.geometry.d2;
 
 import static org.arakhne.afc.math.MathConstants.PI;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
 
 import org.arakhne.afc.math.AbstractMathTestCase;
 import org.arakhne.afc.math.MathConstants;
+import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2D;
 import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2DTestRule;
+import org.arakhne.afc.math.geometry.d2.Vector2D.PowerResult;
+import org.eclipse.xtext.xbase.lib.Pure;
 import org.junit.Assume;
+import org.junit.ComparisonFailure;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -240,40 +244,40 @@ public abstract class AbstractVector2DTest extends AbstractMathTestCase {
 	@Test
 	public void scaleAddDoubleVector2DVector2D_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
-		Vector2D point = createVector(1,0);
+		Vector2D vect = createVector(1,0);
 		Vector2D vector = createVector(-1,1);
 		Vector2D newPoint = createVector(0.0,0.0);
 
-		newPoint.scaleAdd(0.0, vector, point);
+		newPoint.scaleAdd(0.0, vector, vect);
 		assertFpVectorEquals(1, 0, newPoint);
 
-		newPoint.scaleAdd(1.5,vector,point);
+		newPoint.scaleAdd(1.5,vector, vect);
 		assertFpVectorEquals(-0.5, 1.5, newPoint);
 
-		newPoint.scaleAdd(-1.5,vector,point);
+		newPoint.scaleAdd(-1.5,vector, vect);
 		assertFpVectorEquals(2.5, -1.5, newPoint);
 
-		newPoint.scaleAdd(0.1,vector,point);
+		newPoint.scaleAdd(0.1,vector, vect);
 		assertFpVectorEquals(0.9, 0.1, newPoint);
 	}
 
 	@Test
 	public void scaleAddDoubleVector2DVector2D_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
-		Vector2D point = createVector(1,0);
+		Vector2D vect = createVector(1,0);
 		Vector2D vector = createVector(-1,1);
 		Vector2D newPoint = createVector(0.0,0.0);
 
-		newPoint.scaleAdd(0.0, vector, point);
+		newPoint.scaleAdd(0.0, vector, vect);
 		assertIntVectorEquals(1, 0, newPoint);
 
-		newPoint.scaleAdd(1.5,vector,point);
+		newPoint.scaleAdd(1.5,vector,vect);
 		assertIntVectorEquals(0, 2, newPoint);
 
-		newPoint.scaleAdd(-1.5,vector,point);
+		newPoint.scaleAdd(-1.5,vector,vect);
 		assertIntVectorEquals(3, -1, newPoint);
 
-		newPoint.scaleAdd(0.1,vector,point);
+		newPoint.scaleAdd(0.1,vector,vect);
 		assertIntVectorEquals(1, 0, newPoint);
 	}
 
@@ -327,32 +331,32 @@ public abstract class AbstractVector2DTest extends AbstractMathTestCase {
 	@Test
 	public void subVector2DVector2D_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
-		Vector2D point = createVector(0, 0);
-		Vector2D point2 = createVector(1, 0);
+		Vector2D vect = createVector(0, 0);
+		Vector2D vect2 = createVector(1, 0);
 		Vector2D vector = createVector(-1.2, -1.2);
 		Vector2D vector2 = createVector(2.0, 1.5);
 		Vector2D newPoint = createVector(0.0, 0.0);
 
-		newPoint.sub(point,vector);
+		newPoint.sub(vect,vector);
 		assertFpVectorEquals(1.2, 1.2, newPoint);
 
-		newPoint.sub(point2,vector2);
+		newPoint.sub(vect2,vector2);
 		assertFpVectorEquals(-1.0, -1.5, newPoint); 
 	}
 
 	@Test
 	public void subVector2DVector2D_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
-		Vector2D point = createVector(0, 0);
-		Vector2D point2 = createVector(1, 0);
+		Vector2D vect = createVector(0, 0);
+		Vector2D vect2 = createVector(1, 0);
 		Vector2D vector = createVector(-1.2, -1.2);
 		Vector2D vector2 = createVector(2.0, 1.5);
 		Vector2D newPoint = createVector(0.0, 0.0);
 
-		newPoint.sub(point,vector);
+		newPoint.sub(vect,vector);
 		assertIntVectorEquals(1, 1, newPoint);
 
-		newPoint.sub(point2,vector2);
+		newPoint.sub(vect2,vector2);
 		assertIntVectorEquals(-1, -2, newPoint); 
 	}
 
@@ -391,31 +395,31 @@ public abstract class AbstractVector2DTest extends AbstractMathTestCase {
 	@Test
 	public void subVector2D_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
-		Vector2D point = createVector(0, 0);
-		Vector2D point2 = createVector(-1, 0);
+		Vector2D vect = createVector(0, 0);
+		Vector2D vect2 = createVector(-1, 0);
 		Vector2D vector = createVector(-1.2, -1.2);
 		Vector2D vector2 = createVector(-2.0, -1.5);
 
-		point.sub(vector);
-		assertFpVectorEquals(1.2, 1.2, point);
+		vect.sub(vector);
+		assertFpVectorEquals(1.2, 1.2, vect);
 
-		point2.sub(vector2);
-		assertFpVectorEquals(1.0, 1.5, point2);
+		vect2.sub(vector2);
+		assertFpVectorEquals(1.0, 1.5, vect2);
 	}
 
 	@Test
 	public void subVector2D_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
-		Vector2D point = createVector(0, 0);
-		Vector2D point2 = createVector(-1, 0);
+		Vector2D vect = createVector(0, 0);
+		Vector2D vect2 = createVector(-1, 0);
 		Vector2D vector = createVector(-1.2, -1.2);
 		Vector2D vector2 = createVector(-2.0, -1.5);
 
-		point.sub(vector);
-		assertIntVectorEquals(1, 1, point);
+		vect.sub(vector);
+		assertIntVectorEquals(1, 1, vect);
 
-		point2.sub(vector2);
-		assertIntVectorEquals(1, 1, point2);
+		vect2.sub(vector2);
+		assertIntVectorEquals(1, 1, vect2);
 	}
 
 	@Test
@@ -1291,7 +1295,7 @@ public abstract class AbstractVector2DTest extends AbstractMathTestCase {
 		Assume.assumeFalse(isIntCoordinates());
 		Vector2D vector = createVector(this.random.nextDouble(), this.random.nextDouble());
 		Vector2D vector2 = createVector(0,0);
-		Vector2D oldVector = vector.clone();
+		Vector2D oldVector = (Vector2D) vector.clone();
 		
 		double newLength = this.random.nextDouble();
 		
@@ -1340,7 +1344,7 @@ public abstract class AbstractVector2DTest extends AbstractMathTestCase {
 	@Test
 	public void testClone() {
 		Vector2D origin = createVector(23, 45);
-		Vector2D clone = origin.clone();
+		Tuple2D clone = origin.clone();
 		assertNotNull(clone);
 		assertNotSame(origin, clone);
 		assertEpsilonEquals(origin.getX(), clone.getX());
@@ -1384,6 +1388,503 @@ public abstract class AbstractVector2DTest extends AbstractMathTestCase {
 		assertNotSame(origin, orthoVector);
 		assertEpsilonEquals(-45, orthoVector.getX());
 		assertEpsilonEquals(23, orthoVector.getY());
+	}
+	
+	private void assertEpsilonEquals(double expected, PowerResult<?> actual) {
+		if (actual == null) {
+			fail("Result is null");
+			return;
+		}
+		if (actual.isVectorial()) {
+			throw new ComparisonFailure("Not same result type", Double.toString(expected), actual.toString());
+		}
+		assertEpsilonEquals(expected, actual.getScalar());
+	}
+
+	private void assertEpsilonEquals(double expectedX, double expectedY, PowerResult<?> actual) {
+		if (actual == null) {
+			fail("Result is null");
+			return;
+		}
+		if (!actual.isVectorial()) {
+			throw new ComparisonFailure("Not same result type", "[" + expectedX + ";" + expectedY + "]",
+					actual.toString());
+		}
+		Vector2D<?, ?> vector = actual.getVector();
+		assert (vector != null);
+		if (!isEpsilonEquals(expectedX, vector.getX())
+			|| !isEpsilonEquals(expectedY, vector.getY())) {
+			throw new ComparisonFailure("Not same result type", "[" + expectedX + ";" + expectedY + "]",
+					actual.toString());
+		}
+	}
+
+	@Test
+	public void power_iffp() {
+		Assume.assumeFalse(isIntCoordinates());
+		Vector2D origin = createVector(23, 45);
+		assertEpsilonEquals(1.6659527464e10, origin.power(6));
+		assertEpsilonEquals(150027068, 293531220, origin.power(5));
+		assertEpsilonEquals(6522916, origin.power(4));
+		assertEpsilonEquals(58742, 114930, origin.power(3));
+		assertEpsilonEquals(2554, origin.power(2));
+		assertEpsilonEquals(23, 45, origin.power(1));
+		assertEpsilonEquals(1, origin.power(0));
+		assertEpsilonEquals(23, 45, origin.power(-1));
+		assertEpsilonEquals(1./2554, origin.power(-2));
+		assertEpsilonEquals(23./2554, 45./2554, origin.power(-3));
+		assertEpsilonEquals(1./6522916, origin.power(-4));
+		assertEpsilonEquals(23./6522916, 45./6522916, origin.power(-5));
+		assertEpsilonEquals(1./1.6659527464e10, origin.power(-6));
+	}
+
+	@Test
+	public void power_ifi() {
+		Assume.assumeTrue(isIntCoordinates());
+		Vector2D origin = createVector(23, 45);
+		assertEpsilonEquals(1.6659527464e10, origin.power(6));
+		assertEpsilonEquals(150027068, 293531220, origin.power(5));
+		assertEpsilonEquals(6522916, origin.power(4));
+		assertEpsilonEquals(58742, 114930, origin.power(3));
+		assertEpsilonEquals(2554, origin.power(2));
+		assertEpsilonEquals(23, 45, origin.power(1));
+		assertEpsilonEquals(1, origin.power(0));
+		assertEpsilonEquals(23, 45, origin.power(-1));
+		assertEpsilonEquals(1./2554, origin.power(-2));
+		assertEpsilonEquals(0, 0, origin.power(-3));
+		assertEpsilonEquals(1./6522916, origin.power(-4));
+		assertEpsilonEquals(0, 0, origin.power(-5));
+		assertEpsilonEquals(1./1.6659527464e10, origin.power(-6));
+	}
+
+	@Test
+	public void operator_addVector2D_iffp() {
+		Assume.assumeFalse(isIntCoordinates());
+		Vector2D vector = createVector(0,0);
+		Vector2D vector2 = createVector(-1,0);
+		Vector2D vector3 = createVector(1.2,1.2);
+		Vector2D vector4 = createVector(2.0,1.5);
+
+		vector.operator_add(vector3);
+		assertFpVectorEquals(1.2, 1.2, vector);
+
+		vector2.add(vector4);
+		assertFpVectorEquals(1., 1.5, vector2);
+	}
+
+	@Test
+	public void operator_addVector2D_ifi() {
+		Assume.assumeTrue(isIntCoordinates());
+		Vector2D vector = createVector(0,0);
+		Vector2D vector2 = createVector(-1,0);
+		Vector2D vector3 = createVector(1.2,1.2);
+		Vector2D vector4 = createVector(2.0,1.5);
+
+		vector.operator_add(vector3);
+		assertIntVectorEquals(1, 1, vector);
+
+		vector2.operator_add(vector4);
+		assertIntVectorEquals(1, 2, vector2);
+	}
+
+	@Test
+	public void operator_removeVector2D_iffp() {
+		Assume.assumeFalse(isIntCoordinates());
+		Vector2D vect = createVector(0, 0);
+		Vector2D vect2 = createVector(-1, 0);
+		Vector2D vector = createVector(-1.2, -1.2);
+		Vector2D vector2 = createVector(-2.0, -1.5);
+
+		vect.operator_remove(vector);
+		assertFpVectorEquals(1.2, 1.2, vect);
+
+		vect2.operator_remove(vector2);
+		assertFpVectorEquals(1.0, 1.5, vect2);
+	}
+
+	@Test
+	public void operator_removeVector2D_ifi() {
+		Assume.assumeTrue(isIntCoordinates());
+		Vector2D vect = createVector(0, 0);
+		Vector2D vect2 = createVector(-1, 0);
+		Vector2D vector = createVector(-1.2, -1.2);
+		Vector2D vector2 = createVector(-2.0, -1.5);
+
+		vect.operator_remove(vector);
+		assertIntVectorEquals(1, 1, vect);
+
+		vect2.operator_remove(vector2);
+		assertIntVectorEquals(1, 1, vect2);
+	}
+
+	@Test
+	public void operator_equalsVector2D() {
+		Vector2D vector = createVector(49, -2);
+		assertFalse(vector.operator_equals(null));
+		assertTrue(vector.operator_equals(vector));
+		assertFalse(vector.operator_equals(createVector(49, -3)));
+		assertFalse(vector.operator_equals(createVector(0, 0)));
+		assertTrue(vector.operator_equals(createVector(49, -2)));
+	}
+
+	@Test
+	public void operator_notEqualsVector2D() {
+		Vector2D vector = createVector(49, -2);
+		assertTrue(vector.operator_notEquals(null));
+		assertFalse(vector.operator_notEquals(vector));
+		assertTrue(vector.operator_notEquals(createVector(49, -3)));
+		assertTrue(vector.operator_notEquals(createVector(0, 0)));
+		assertFalse(vector.operator_notEquals(createVector(49, -2)));
+	}
+
+	@Test
+	public void testEqualsObject() {
+		Vector2D vector = createVector(49, -2);
+		assertFalse(vector.equals((Object) null));
+		assertTrue(vector.equals((Object) vector));
+		assertFalse(vector.equals((Object) createVector(49, -3)));
+		assertFalse(vector.equals((Object) createVector(0, 0)));
+		assertTrue(vector.equals((Object) createVector(49, -2)));
+	}
+
+	@Test
+	public void operator_upToVector2D() {
+		Vector2D vector = createVector(1, 2);
+		Vector2D vector2 = createVector(-2, 1);
+		Vector2D vector3 = createVector(1, 1);
+		Vector2D vector4 = createVector(1, 0);
+
+		assertEpsilonEquals(PI/2f,vector.operator_upTo(vector2));
+		assertEpsilonEquals(PI/4f,vector4.operator_upTo(vector3));
+		assertEpsilonEquals(Math.acos(1/Math.sqrt(5)),vector4.operator_upTo(vector));
+		assertEpsilonEquals(PI/2f+Math.acos(1/Math.sqrt(5)),vector4.operator_upTo(vector2));
+		assertEpsilonEquals(0,vector.operator_upTo(vector));
+	}
+
+	@Test
+	public void operator_greaterThanDoubleDotVector2D_iffp() {
+		Assume.assumeFalse(isIntCoordinates());
+		Vector2D v1 = createVector(this.random.nextDouble(), this.random.nextDouble());
+		Vector2D v2 = createVector(this.random.nextDouble(), this.random.nextDouble());
+
+		assertEpsilonEquals(
+				0.f,
+				v1.operator_greaterThanDoubleDot(v1));
+		assertEpsilonEquals(
+				0.f,
+				v2.operator_greaterThanDoubleDot(v2));
+
+		double sAngle1 = v1.operator_greaterThanDoubleDot(v2);
+		double sAngle2 = v2.operator_greaterThanDoubleDot(v1);
+
+		assertEpsilonEquals(-sAngle1, sAngle2);
+		assertEpsilonEquals(v1.angle(v2), Math.abs(sAngle1));
+		assertEpsilonEquals(v2.angle(v1), Math.abs(sAngle2));
+
+		double sin = v1.getX() * v2.getY() - v1.getY() * v2.getX();
+
+		if (sin < 0) {
+			assertTrue(sAngle1 <= 0);
+			assertTrue(sAngle2 >= 0);
+		} else {
+			assertTrue(sAngle1 >= 0);
+			assertTrue(sAngle2 <= 0);
+		}
+	}
+
+	@Test
+	public void operator_greaterThanDoubleDotVector2D_ifi() {
+		Assume.assumeTrue(isIntCoordinates());
+		Vector2D v1 = createVector(this.random.nextInt(48) + 2, this.random.nextInt(48) + 2);
+		Vector2D v2 = createVector(this.random.nextInt(48) + 2, this.random.nextInt(48) + 2);
+
+		assertEpsilonEquals(
+				0,
+				v1.operator_greaterThanDoubleDot(v1));
+		assertEpsilonEquals(
+				0,
+				v2.operator_greaterThanDoubleDot(v2));
+
+		double sAngle1 = v1.operator_greaterThanDoubleDot(v2);
+		double sAngle2 = v2.operator_greaterThanDoubleDot(v1);
+
+		assertEpsilonEquals(-sAngle1, sAngle2);
+		assertEpsilonEquals(v1.angle(v2), Math.abs(sAngle1));
+		assertEpsilonEquals(v2.angle(v1), Math.abs(sAngle2));
+
+		double sin = v1.getX() * v2.getY() - v1.getY() * v2.getX();
+
+		if (sin < 0) {
+			assertTrue(sAngle1 <= 0);
+			assertTrue(sAngle2 >= 0);
+		} else {
+			assertTrue(sAngle1 >= 0);
+			assertTrue(sAngle2 <= 0);
+		}
+	}
+
+	@Test
+	public void operator_operator_doubleDotLessThanVector2D_iffp() {
+		Assume.assumeFalse(isIntCoordinates());
+		Vector2D v1 = createVector(this.random.nextDouble(), this.random.nextDouble());
+		Vector2D v2 = createVector(this.random.nextDouble(), this.random.nextDouble());
+
+		assertEpsilonEquals(
+				0.f,
+				v1.operator_greaterThanDoubleDot(v1));
+		assertEpsilonEquals(
+				0.f,
+				v2.operator_greaterThanDoubleDot(v2));
+
+		double sAngle1 = v2.operator_greaterThanDoubleDot(v1);
+		double sAngle2 = v1.operator_greaterThanDoubleDot(v2);
+
+		assertEpsilonEquals(-sAngle1, sAngle2);
+		assertEpsilonEquals(v1.angle(v2), Math.abs(sAngle1));
+		assertEpsilonEquals(v2.angle(v1), Math.abs(sAngle2));
+
+		double sin = v1.getX() * v2.getY() - v1.getY() * v2.getX();
+
+		if (sin < 0) {
+			assertTrue(sAngle1 >= 0);
+			assertTrue(sAngle2 <= 0);
+		} else {
+			assertTrue(sAngle1 <= 0);
+			assertTrue(sAngle2 >= 0);
+		}
+	}
+
+	@Test
+	public void operator_operator_doubleDotLessThanVector2D_ifi() {
+		Assume.assumeTrue(isIntCoordinates());
+		Vector2D v1 = createVector(this.random.nextInt(48) + 2, this.random.nextInt(48) + 2);
+		Vector2D v2 = createVector(this.random.nextInt(48) + 2, this.random.nextInt(48) + 2);
+
+		assertEpsilonEquals(
+				0,
+				v1.operator_greaterThanDoubleDot(v1));
+		assertEpsilonEquals(
+				0,
+				v2.operator_greaterThanDoubleDot(v2));
+
+		double sAngle1 = v2.operator_greaterThanDoubleDot(v1);
+		double sAngle2 = v1.operator_greaterThanDoubleDot(v2);
+
+		assertEpsilonEquals(-sAngle1, sAngle2);
+		assertEpsilonEquals(v1.angle(v2), Math.abs(sAngle1));
+		assertEpsilonEquals(v2.angle(v1), Math.abs(sAngle2));
+
+		double sin = v1.getX() * v2.getY() - v1.getY() * v2.getX();
+
+		if (sin < 0) {
+			assertTrue(sAngle1 >= 0);
+			assertTrue(sAngle2 <= 0);
+		} else {
+			assertTrue(sAngle1 <= 0);
+			assertTrue(sAngle2 >= 0);
+		}
+	}
+
+	@Test
+	public void operator_minus() {
+		Vector2D vect = createVector(45, -78);
+		Vector2D result = vect.operator_minus();
+		assertNotSame(vect, result);
+		assertEpsilonEquals(-vect.getX(), result.getX());
+		assertEpsilonEquals(-vect.getY(), result.getY());
+	}
+
+	@Test
+	public void operator_multiplyDouble() {
+		Vector2D vect = createVector(45, -78);
+		Vector2D result = vect.operator_multiply(5);
+		assertNotSame(vect, result);
+		assertEpsilonEquals(225, result.getX());
+		assertEpsilonEquals(-390, result.getY());
+	}
+
+	@Test
+	public void operator_divideDouble_ifi() {
+		Assume.assumeTrue(isIntCoordinates());
+		Vector2D vect = createVector(45, -78);
+		Vector2D result = vect.operator_divide(5);
+		assertNotSame(vect, result);
+		assertEquals(9, result.ix());
+		assertEquals(-16, result.iy());
+	}
+
+	@Test
+	public void operator_divideDouble_iffp() {
+		Assume.assumeFalse(isIntCoordinates());
+		Vector2D vect = createVector(45, -78);
+		Vector2D result = vect.operator_divide(5);
+		assertNotSame(vect, result);
+		assertEpsilonEquals(9, result.getX());
+		assertEpsilonEquals(-15.6, result.getY());
+	}
+
+	@Test
+	public void operator_elvisVector2D() {
+		Vector2D orig1 = createVector(45, -78);
+		Vector2D orig2 = createVector(0, 0);
+		Vector2D param = createVector(-5, -1.4);
+		Vector2D result;
+		
+		result = orig1.operator_elvis(null);
+		assertSame(orig1, result);
+
+		result = orig1.operator_elvis(orig1);
+		assertSame(orig1, result);
+
+		result = orig1.operator_elvis(param);
+		assertSame(orig1, result);
+
+		result = orig2.operator_elvis(null);
+		assertNull(result);
+
+		result = orig2.operator_elvis(orig2);
+		assertSame(orig2, result);
+
+		result = orig2.operator_elvis(param);
+		assertSame(param, result);
+	}
+
+	@Test
+	public void operator_minusVector2D_iffp() {
+		Assume.assumeFalse(isIntCoordinates());
+		Vector2D vect = createVector(0, 0);
+		Vector2D vect2 = createVector(-1, 0);
+		Vector2D vector = createVector(-1.2, -1.2);
+		Vector2D vector2 = createVector(-2.0, -1.5);
+
+		Vector2D r = vect.operator_minus(vector);
+		assertFpVectorEquals(1.2, 1.2, r);
+
+		r = vect2.operator_minus(vector2);
+		assertFpVectorEquals(1.0, 1.5, r);
+	}
+
+	@Test
+	public void operator_minusVector2D_ifi() {
+		Assume.assumeTrue(isIntCoordinates());
+		Vector2D vect = createVector(0, 0);
+		Vector2D vect2 = createVector(-1, 0);
+		Vector2D vector = createVector(-1.2, -1.2);
+		Vector2D vector2 = createVector(-2.0, -1.5);
+		Vector2D r;
+
+		r = vect.operator_minus(vector);
+		assertIntVectorEquals(1, 1, r);
+
+		r = vect2.operator_minus(vector2);
+		assertIntVectorEquals(1, 1, r);
+	}
+
+	@Test
+	public void operator_plusVector2D_iffp() {
+		Assume.assumeFalse(isIntCoordinates());
+		Vector2D vector = createVector(0,0);
+		Vector2D vector2 = createVector(-1,0);
+		Vector2D vector3 = createVector(1.2,1.2);
+		Vector2D vector4 = createVector(2.0,1.5);
+
+		Vector2D r = vector.operator_plus(vector3);
+		assertFpVectorEquals(1.2, 1.2, r);
+
+		r = vector2.operator_plus(vector4);
+		assertFpVectorEquals(1., 1.5, r);
+	}
+
+	@Test
+	public void operator_plusVector2D_ifi() {
+		Assume.assumeTrue(isIntCoordinates());
+		Vector2D vector = createVector(0,0);
+		Vector2D vector2 = createVector(-1,0);
+		Vector2D vector3 = createVector(1.2,1.2);
+		Vector2D vector4 = createVector(2.0,1.5);
+
+		Vector2D r = vector.operator_plus(vector3);
+		assertIntVectorEquals(1, 1, r);
+
+		r = vector2.operator_plus(vector4);
+		assertIntVectorEquals(1, 2, r);
+	}
+
+	@Test
+	public void operator_powerVector2D() {
+		Vector2D vector = createVector(1,2);
+		Vector2D vector2 = createVector(3,4);
+		Vector2D vector3 = createVector(1,-2);
+
+		assertEpsilonEquals(0, vector.operator_power(vector));
+		assertEpsilonEquals(-2, vector.operator_power(vector2));
+		assertEpsilonEquals(-4, vector.operator_power(vector3));
+	}
+
+	@Test
+	public void operator_powerInteger_iffp() {
+		Assume.assumeFalse(isIntCoordinates());
+		Vector2D origin = createVector(23, 45);
+		assertEpsilonEquals(1.6659527464e10, origin.operator_power(6));
+		assertEpsilonEquals(150027068, 293531220, origin.operator_power(5));
+		assertEpsilonEquals(6522916, origin.operator_power(4));
+		assertEpsilonEquals(58742, 114930, origin.operator_power(3));
+		assertEpsilonEquals(2554, origin.operator_power(2));
+		assertEpsilonEquals(23, 45, origin.operator_power(1));
+		assertEpsilonEquals(1, origin.operator_power(0));
+		assertEpsilonEquals(23, 45, origin.operator_power(-1));
+		assertEpsilonEquals(1./2554, origin.operator_power(-2));
+		assertEpsilonEquals(23./2554, 45./2554, origin.operator_power(-3));
+		assertEpsilonEquals(1./6522916, origin.operator_power(-4));
+		assertEpsilonEquals(23./6522916, 45./6522916, origin.operator_power(-5));
+		assertEpsilonEquals(1./1.6659527464e10, origin.operator_power(-6));
+	}
+
+	@Test
+	public void operator_powerInteger_ifi() {
+		Assume.assumeTrue(isIntCoordinates());
+		Vector2D origin = createVector(23, 45);
+		assertEpsilonEquals(1.6659527464e10, origin.operator_power(6));
+		assertEpsilonEquals(150027068, 293531220, origin.operator_power(5));
+		assertEpsilonEquals(6522916, origin.operator_power(4));
+		assertEpsilonEquals(58742, 114930, origin.operator_power(3));
+		assertEpsilonEquals(2554, origin.operator_power(2));
+		assertEpsilonEquals(23, 45, origin.operator_power(1));
+		assertEpsilonEquals(1, origin.operator_power(0));
+		assertEpsilonEquals(23, 45, origin.operator_power(-1));
+		assertEpsilonEquals(1./2554, origin.operator_power(-2));
+		assertEpsilonEquals(0, 0, origin.operator_power(-3));
+		assertEpsilonEquals(1./6522916, origin.operator_power(-4));
+		assertEpsilonEquals(0, 0, origin.operator_power(-5));
+		assertEpsilonEquals(1./1.6659527464e10, origin.operator_power(-6));
+	}
+
+	@Test
+	public void operator_plusPoint2D() {
+		Point2D point = createPoint(1, 2);
+		Point2D point2 = createPoint(3, 0);
+		Vector2D vector1 = createVector(0, 0);
+		Vector2D vector2 = createVector(1, 2);
+		Vector2D vector3 = createVector(1, -5);
+		Point2D r;
+		
+		r = vector1.operator_plus(point);
+		assertFpPointEquals(1, 2, r);
+
+		r = vector2.operator_plus(point);
+		assertFpPointEquals(2, 4, r);
+
+		r = vector3.operator_plus(point);
+		assertFpPointEquals(2, -3, r);
+
+		r = vector1.operator_plus(point2);
+		assertFpPointEquals(3, 0, r);
+
+		r = vector2.operator_plus(point2);
+		assertFpPointEquals(4, 2, r);
+
+		r = vector3.operator_plus(point2);
+		assertFpPointEquals(4, -5, r);
 	}
 
 }

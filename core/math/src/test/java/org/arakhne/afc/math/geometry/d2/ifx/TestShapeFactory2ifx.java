@@ -33,7 +33,7 @@ public class TestShapeFactory2ifx implements TestShapeFactory<Rectangle2ifx> {
 	
 	public static final TestShapeFactory2ifx SINGLETON = new TestShapeFactory2ifx();
 	
-	public Segment2ai<?, ?, ?, ?, Rectangle2ifx> createSegment(int x1, int y1, int x2, int y2) {
+	public Segment2ai<?, ?, ?, ?, ?, Rectangle2ifx> createSegment(int x1, int y1, int x2, int y2) {
 		return new Segment2ifx(x1, y1, x2, y2);
 	}
 	
@@ -41,7 +41,7 @@ public class TestShapeFactory2ifx implements TestShapeFactory<Rectangle2ifx> {
 		return new Rectangle2ifx(x, y, width, height);
 	}
 
-	public Circle2ai<?, ?, ?, ?, Rectangle2ifx> createCircle(int x, int y, int radius) {
+	public Circle2ai<?, ?, ?, ?, ?, Rectangle2ifx> createCircle(int x, int y, int radius) {
 		return new Circle2ifx(x, y, radius);
 	}
 	
@@ -53,7 +53,7 @@ public class TestShapeFactory2ifx implements TestShapeFactory<Rectangle2ifx> {
 		return new Vector2ifx(x, y);
 	}
 
-	public Path2ai<?, ?, ?, ?, Rectangle2ifx> createPath() {
+	public Path2ai<?, ?, ?, ?, ?, Rectangle2ifx> createPath() {
 		return new Path2ifx();
 	}
 	

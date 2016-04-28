@@ -20,6 +20,8 @@
  */
 package org.arakhne.afc.math.graph;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /** This interface representes a graph's segment.
  * 
  * @param <PT> is the type of node in the graph
@@ -37,12 +39,14 @@ public interface GraphSegment<ST extends GraphSegment<ST,PT>,
      * 
      * @return the starting point of this segment.
      */
+	@Pure
 	public PT getBeginPoint();
 
     /** Replies the ending point of this segment.
      * 
      * @return the ending point of this segment.
      */
+	@Pure
 	public PT getEndPoint();
 
 	/** Replies the point at the other side of the segment.
@@ -50,12 +54,14 @@ public interface GraphSegment<ST extends GraphSegment<ST,PT>,
 	 * @param point
 	 * @return the point at the other side of the segment.
      */
+	@Pure
 	public PT getOtherSidePoint(PT point);
 	
     /** Replies the length of the segment.
      * 
      * @return the length of the segment.
      */
+	@Pure
 	public double getLength();
 
 }

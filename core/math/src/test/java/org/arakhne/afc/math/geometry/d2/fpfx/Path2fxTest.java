@@ -33,7 +33,7 @@ import javafx.beans.property.DoubleProperty;
 public class Path2fxTest extends AbstractPath2afpTest<Path2fx, Rectangle2fx> {
 
 	@Override
-	protected TestShapeFactory<Point2fx, Rectangle2fx> createFactory() {
+	protected TestShapeFactory2fx createFactory() {
 		return TestShapeFactory2fx.SINGLETON;
 	}
 

@@ -23,7 +23,6 @@ package org.arakhne.afc.math.geometry.d2.fpfx;
 
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
-import org.arakhne.afc.math.geometry.d2.afp.InnerComputationVector2afp;
 import org.arakhne.afc.math.geometry.d2.afp.Parallelogram2afp;
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -41,7 +40,7 @@ import javafx.beans.property.SimpleDoubleProperty;
  * @since 13.0
  */
 public class Parallelogram2fx extends AbstractShape2fx<Parallelogram2fx>
-	implements Parallelogram2afp<Shape2fx<?>, Parallelogram2fx, PathElement2fx, Point2fx, Rectangle2fx> {
+	implements Parallelogram2afp<Shape2fx<?>, Parallelogram2fx, PathElement2fx, Point2fx, Vector2fx, Rectangle2fx> {
 
 	private static final long serialVersionUID = -3880367245218796375L;
 
@@ -85,7 +84,7 @@ public class Parallelogram2fx extends AbstractShape2fx<Parallelogram2fx>
 	 * 
 	 * @param parallelogram
 	 */
-	public Parallelogram2fx(Parallelogram2afp<?, ?, ?, ?, ?> parallelogram) {
+	public Parallelogram2fx(Parallelogram2afp<?, ?, ?, ?, ?, ?> parallelogram) {
 		assert (parallelogram != null) : "Oriented Rectangle must be not null"; //$NON-NLS-1$
 		set(parallelogram.getCenterX(), parallelogram.getCenterY(),
 				parallelogram.getFirstAxisX(), parallelogram.getFirstAxisY(),
@@ -98,7 +97,7 @@ public class Parallelogram2fx extends AbstractShape2fx<Parallelogram2fx>
 	 *
 	 * @param pointCloud - the cloud of points.
 	 */
-	public Parallelogram2fx(Iterable<? extends Point2D> pointCloud) {
+	public Parallelogram2fx(Iterable<? extends Point2D<?, ?>> pointCloud) {
 		setFromPointCloud(pointCloud);
 	}
 
@@ -106,7 +105,7 @@ public class Parallelogram2fx extends AbstractShape2fx<Parallelogram2fx>
 	 *
 	 * @param pointCloud - the cloud of points.
 	 */
-	public Parallelogram2fx(Point2D... pointCloud) {
+	public Parallelogram2fx(Point2D<?, ?>... pointCloud) {
 		setFromPointCloud(pointCloud);
 	}
 
@@ -139,7 +138,7 @@ public class Parallelogram2fx extends AbstractShape2fx<Parallelogram2fx>
 	 * @param axis2 is the second axis of the parallelogram.
 	 * @param axis2Extent is the extent of the second axis.
 	 */
-	public Parallelogram2fx(Point2D center, Vector2D axis1, double axis1Extent, Vector2D axis2, double axis2Extent) {
+	public Parallelogram2fx(Point2D<?, ?> center, Vector2D<?, ?> axis1, double axis1Extent, Vector2D<?, ?> axis2, double axis2Extent) {
 		set(center, axis1, axis1Extent, axis2, axis2Extent);
 	}
 
@@ -237,7 +236,7 @@ public class Parallelogram2fx extends AbstractShape2fx<Parallelogram2fx>
 
 	@Pure
 	@Override
-	public Point2D getCenter() {
+	public Point2fx getCenter() {
 		return new Point2fx(this.cx, this.cy);
 	}
 
@@ -275,14 +274,14 @@ public class Parallelogram2fx extends AbstractShape2fx<Parallelogram2fx>
 	 */
 	public UnitVectorProperty firstAxisProperty() {
 		if (this.rVector == null) {
-			this.rVector = new UnitVectorProperty(this, "firstAxis", new InnerComputationVector2afp()); //$NON-NLS-1$
+			this.rVector = new UnitVectorProperty(this, "firstAxis"); //$NON-NLS-1$
 		}
 		return this.rVector;
 	}
 
 	@Pure
 	@Override
-	public Vector2D getFirstAxis() {
+	public Vector2fx getFirstAxis() {
 		return firstAxisProperty().get();
 	}
 
@@ -304,14 +303,14 @@ public class Parallelogram2fx extends AbstractShape2fx<Parallelogram2fx>
 	 */
 	public UnitVectorProperty secondAxisProperty() {
 		if (this.sVector == null) {
-			this.sVector = new UnitVectorProperty(this, "firstAxis", new InnerComputationVector2afp()); //$NON-NLS-1$
+			this.sVector = new UnitVectorProperty(this, "firstAxis"); //$NON-NLS-1$
 		}
 		return this.sVector;
 	}
 
 	@Pure
 	@Override
-	public Vector2D getSecondAxis() {
+	public Vector2fx getSecondAxis() {
 		return secondAxisProperty().get();
 	}
 

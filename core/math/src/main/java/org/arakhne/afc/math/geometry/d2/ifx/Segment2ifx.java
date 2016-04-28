@@ -38,7 +38,7 @@ import javafx.beans.property.SimpleIntegerProperty;
  * @since 13.0
  */
 public class Segment2ifx extends AbstractShape2ifx<Segment2ifx>
-	implements Segment2ai<Shape2ifx<?>, Segment2ifx, PathElement2ifx, Point2ifx, Rectangle2ifx> {
+	implements Segment2ai<Shape2ifx<?>, Segment2ifx, PathElement2ifx, Point2ifx, Vector2ifx, Rectangle2ifx> {
 
 	private static final long serialVersionUID = -1406743357357708790L;
 
@@ -60,14 +60,14 @@ public class Segment2ifx extends AbstractShape2ifx<Segment2ifx>
 	 * @param a
 	 * @param b
 	 */
-	public Segment2ifx(Point2D a, Point2D b) {
+	public Segment2ifx(Point2D<?, ?> a, Point2D<?, ?> b) {
 		this(a.ix(), a.iy(), b.ix(), b.iy());
 	}
 
 	/**
 	 * @param s
 	 */
-	public Segment2ifx(Segment2ai<?, ?, ?, ?, ?> s) {
+	public Segment2ifx(Segment2ai<?, ?, ?, ?, ?, ?> s) {
 		this(s.getX1(), s.getY1(), s.getX2(), s.getY2());
 	}
 

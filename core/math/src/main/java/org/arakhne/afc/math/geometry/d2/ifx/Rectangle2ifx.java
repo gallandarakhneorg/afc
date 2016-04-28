@@ -39,7 +39,7 @@ import javafx.beans.property.SimpleIntegerProperty;
  * @since 13.0
  */
 public class Rectangle2ifx extends AbstractShape2ifx<Rectangle2ifx>
-	implements Rectangle2ai<Shape2ifx<?>, Rectangle2ifx, PathElement2ifx, Point2ifx, Rectangle2ifx> {
+	implements Rectangle2ai<Shape2ifx<?>, Rectangle2ifx, PathElement2ifx, Point2ifx, Vector2ifx, Rectangle2ifx> {
 
 	private static final long serialVersionUID = -8092385681401129843L;
 
@@ -69,7 +69,7 @@ public class Rectangle2ifx extends AbstractShape2ifx<Rectangle2ifx>
 	 * @param min is the min corner of the rectangle.
 	 * @param max is the max corner of the rectangle.
 	 */
-	public Rectangle2ifx(Point2D min, Point2D max) {
+	public Rectangle2ifx(Point2D<?, ?> min, Point2D<?, ?> max) {
 		assert (min != null) : "Minimum point must be not null"; //$NON-NLS-1$
 		assert (max != null) : "Maximum point must be not null"; //$NON-NLS-1$
 		setFromCorners(min.ix(), min.iy(), max.ix(), max.iy());

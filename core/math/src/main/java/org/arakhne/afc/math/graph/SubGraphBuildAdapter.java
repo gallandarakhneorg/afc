@@ -29,26 +29,21 @@ package org.arakhne.afc.math.graph;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 13.0
+ * @deprecated
  */
+@Deprecated
 public class SubGraphBuildAdapter<ST extends GraphSegment<ST,PT>,PT extends GraphPoint<PT,ST>> implements SubGraphBuildListener<ST,PT> {
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public void segmentAdded(SubGraph<ST,PT,?> graph, GraphIterationElement<ST,PT> elementDescription) {
 		//
 	}
 	
-	/** {@inheritDoc}
-	 */
 	@Override
 	public void terminalPointReached(SubGraph<ST,PT,?> graph, PT point, ST arrivingSegment) {
 		//
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public void nonTerminalPointReached(SubGraph<ST,PT,?> graph, PT point, ST arrivingSegment) {
 		//

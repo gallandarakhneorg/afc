@@ -33,6 +33,7 @@ import org.arakhne.afc.math.graph.GraphPoint;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("all")
 class ConnectionStub implements GraphPoint<ConnectionStub,SegmentStub> {
 
 	/**
@@ -43,7 +44,7 @@ class ConnectionStub implements GraphPoint<ConnectionStub,SegmentStub> {
 	
 	/**
 	 */
-	final Point2D position = new Point2fp();
+	final Point2fp position = new Point2fp();
 	
 	/**
 	 * @param id1

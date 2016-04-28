@@ -20,6 +20,7 @@
 package org.arakhne.afc.math.physics;
 
 import org.arakhne.afc.vmutil.locale.Locale;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 
 /**
@@ -83,8 +84,8 @@ public enum SpaceUnit {
 	 * @return the space unit just lower than the
 	 * current space unit, or the space unit itself if
 	 * it is the smallest.
-	 * @since 4.0
 	 */
+	@Pure
 	public SpaceUnit lower() {
 		int o = ordinal();
 		if (o<=0) return this;
@@ -97,8 +98,8 @@ public enum SpaceUnit {
 	 * @return the space unit just upper than the
 	 * current space unit, or the space unit itself if
 	 * it is the uppest.
-	 * @since 4.0
 	 */
+	@Pure
 	public SpaceUnit upper() {
 		int o = ordinal();
 		SpaceUnit[] units = values();
@@ -109,8 +110,8 @@ public enum SpaceUnit {
 	/** Replies the localized symbol for this space unit.
 	 * 
 	 * @return the localized symbol for this space unit.
-	 * @since 4.0
 	 */
+	@Pure
 	public String getSymbol() {
 		return Locale.getString(name());
 	}

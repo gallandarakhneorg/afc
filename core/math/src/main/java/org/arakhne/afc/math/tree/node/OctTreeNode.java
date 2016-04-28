@@ -22,7 +22,9 @@ import java.io.ObjectInputStream;
 import java.util.Collection;
 import java.util.List;
 
+import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.tree.TreeNode;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 
 /**
@@ -139,8 +141,7 @@ public abstract class OctTreeNode<D,N extends OctTreeNode<D,N>> extends Abstract
 		this.child8 = null;
 	}
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public Class<? extends Enum<?>> getPartitionEnumeration() {
 		return OctTreeZone.class;
@@ -220,24 +221,19 @@ public abstract class OctTreeNode<D,N extends OctTreeNode<D,N>> extends Abstract
 		removeAllUserData();
 	}
 
-	/** {@inheritDoc}
-	 * 
-	 * @return always 8
-	 */
+	@Pure
 	@Override
 	public int getChildCount() {
 		return 8;
 	}
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public int getNotNullChildCount() {
 		return this.notNullChildCount;
 	}
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public int indexOf(N child) {
 		if (child==this.child1) return 0;
@@ -256,6 +252,7 @@ public abstract class OctTreeNode<D,N extends OctTreeNode<D,N>> extends Abstract
 	 * @param child
 	 * @return the zone or <code>null</code>.
 	 */
+	@Pure
 	public final OctTreeZone zoneOf(N child) {
 		int idx = indexOf(child);
 		OctTreeZone[] zones = OctTreeZone.values();
@@ -265,8 +262,7 @@ public abstract class OctTreeNode<D,N extends OctTreeNode<D,N>> extends Abstract
 		return null;
 	}
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public N getChildAt(int index) throws IndexOutOfBoundsException {
 		switch(index) {
@@ -296,21 +292,18 @@ public abstract class OctTreeNode<D,N extends OctTreeNode<D,N>> extends Abstract
 	 * @param zone is the position of the node to reply
 	 * @return the node at the given index
 	 */
+	@Pure
 	public final N getChildAt(OctTreeZone zone) {
 		if (zone!=null)
 			return getChildAt(zone.ordinal());
 		return null;
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public boolean moveTo(N newParent, int index) {
 		return moveTo(newParent, index, false);
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public boolean setChildAt(int index, N newChild) throws IndexOutOfBoundsException {
 		switch(index) {
@@ -335,8 +328,6 @@ public abstract class OctTreeNode<D,N extends OctTreeNode<D,N>> extends Abstract
 		throw new IndexOutOfBoundsException(index+">= 8"); //$NON-NLS-1$
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	protected void setChildAtWithoutEventFiring(int index, N newChild) throws IndexOutOfBoundsException {
 		switch(index) {
@@ -395,7 +386,6 @@ public abstract class OctTreeNode<D,N extends OctTreeNode<D,N>> extends Abstract
 	 * @param newParent is the new parent for this node.
 	 * @param zone is the position of this node in the new parent.
 	 * @return <code>true</code> on success, otherwise <code>false</code>.
-	 * @since 4.0
 	 */
 	public boolean moveTo(N newParent, OctTreeZone zone) {
 		if (zone!=null) {
@@ -404,8 +394,6 @@ public abstract class OctTreeNode<D,N extends OctTreeNode<D,N>> extends Abstract
 		return false;
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public boolean removeChild(N child) {
 		if (child!=null) {
@@ -711,17 +699,13 @@ public abstract class OctTreeNode<D,N extends OctTreeNode<D,N>> extends Abstract
 		return setChildAt(zone.ordinal(), newChild);
 	}
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public boolean isLeaf() {
 		return this.child1==null && this.child2==null && this.child3==null && this.child4==null
 		 && this.child5==null  && this.child6==null  && this.child7==null  && this.child8==null;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void getChildren(Object[] array) {
 		if (array!=null) {
@@ -752,11 +736,9 @@ public abstract class OctTreeNode<D,N extends OctTreeNode<D,N>> extends Abstract
 		}
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public int getMinHeight() {
-		return 1+minInteger(
+		return 1+MathUtil.min(
 				this.child1!=null ? this.child1.getMinHeight() : 0,
 				this.child2!=null ? this.child2.getMinHeight() : 0,
 				this.child3!=null ? this.child3.getMinHeight() : 0,
@@ -767,11 +749,10 @@ public abstract class OctTreeNode<D,N extends OctTreeNode<D,N>> extends Abstract
 				this.child8!=null ? this.child8.getMinHeight() : 0);
 	}
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public int getMaxHeight() {
-		return 1+maxInteger(
+		return 1+MathUtil.max(
 				this.child1!=null ? this.child1.getMaxHeight() : 0,
 				this.child2!=null ? this.child2.getMaxHeight() : 0,
 				this.child3!=null ? this.child3.getMaxHeight() : 0,
@@ -782,12 +763,6 @@ public abstract class OctTreeNode<D,N extends OctTreeNode<D,N>> extends Abstract
 				this.child8!=null ? this.child8.getMaxHeight() : 0);
 	}
 
-	/** Replies the heights of all the leaf nodes.
-	 * The order of the heights is given by a depth-first iteration.
-	 * 
-	 * @param currentHeight is the current height of this node.
-	 * @param heights is the list of heights to fill
-	 */
 	@Override
 	protected void getHeights(int currentHeight, List<Integer> heights) {
 		if (isLeaf()) {
@@ -864,6 +839,7 @@ public abstract class OctTreeNode<D,N extends OctTreeNode<D,N>> extends Abstract
 		 * @param index
 		 * @return the zone or <code>null</code>
 		 */
+		@Pure
 		public static OctTreeZone fromInteger(int index) {
 			if (index<0) return null;
 			OctTreeZone[] nodes = values();

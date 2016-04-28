@@ -37,7 +37,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  */
 public class Triangle2fp
 		extends AbstractShape2fp<Triangle2fp>
-		implements Triangle2afp<Shape2fp<?>, Triangle2fp, PathElement2fp, Point2fp, Rectangle2fp> {
+		implements Triangle2afp<Shape2fp<?>, Triangle2fp, PathElement2fp, Point2fp, Vector2fp, Rectangle2fp> {
 
 	private static final long serialVersionUID = 6181771392780117178L;
 
@@ -66,7 +66,7 @@ public class Triangle2fp
 	 * @param p2
 	 * @param p3
 	 */
-	public Triangle2fp(Point2D p1, Point2D p2, Point2D p3) {
+	public Triangle2fp(Point2D<?, ?> p1, Point2D<?, ?> p2, Point2D<?, ?> p3) {
 		assert (p1 != null) : "Point 1 must not be null"; //$NON-NLS-1$
 		assert (p2 != null) : "Point 1 must not be null"; //$NON-NLS-1$
 		assert (p3 != null) : "Point 1 must not be null"; //$NON-NLS-1$
@@ -88,7 +88,7 @@ public class Triangle2fp
 	/** Construct a triangle from a triangle.
 	 * @param t
 	 */
-	public Triangle2fp(Triangle2afp<?, ?, ?, ?, ?> t) {
+	public Triangle2fp(Triangle2afp<?, ?, ?, ?, ?, ?> t) {
 		assert (t != null) : "Triangle must be not null"; //$NON-NLS-1$
 		set(t.getX1(), t.getY1(), t.getX2(), t.getY2(), t.getX3(), t.getY3());
 	}

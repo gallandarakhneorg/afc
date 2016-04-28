@@ -59,6 +59,7 @@ public interface CoordinateSystem {
 	 * 
 	 * @return the name of the coordinate system.
 	 */
+	@Pure
 	public String name();
 
 	/** Replies the index of this coordinate in the enumeration of the available
@@ -67,6 +68,7 @@ public interface CoordinateSystem {
 	 * @return the index of this coordinate system in the enumeration of the
 	 * available coordinate systems of the same type. 
 	 */
+	@Pure
 	public int ordinal();
 
 }

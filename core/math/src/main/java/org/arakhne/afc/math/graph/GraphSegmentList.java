@@ -23,6 +23,8 @@ package org.arakhne.afc.math.graph;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /**
  * This class describes a path inside a graph.
  * 
@@ -41,6 +43,7 @@ public interface GraphSegmentList<ST extends GraphSegment<ST,PT>,PT extends Grap
 	 * 
 	 * @return an iterator on the path's points.
 	 */
+	@Pure
 	public Iterator<PT> pointIterator();
 
 	/**
@@ -48,6 +51,7 @@ public interface GraphSegmentList<ST extends GraphSegment<ST,PT>,PT extends Grap
 	 * 
 	 * @return an iterator on the path's points.
 	 */
+	@Pure
 	public Iterable<PT> points();
 
 	/**
@@ -63,36 +67,42 @@ public interface GraphSegmentList<ST extends GraphSegment<ST,PT>,PT extends Grap
 	 * 
 	 * @return the last point.
 	 */
+	@Pure
 	public PT getLastPoint();
 
 	/** Replies the first point.
 	 * 
 	 * @return the first point.
 	 */
+	@Pure
 	public PT getFirstPoint();
 
 	/** Replies the last segment.
 	 * 
 	 * @return the last segment or <code>null</code>.
 	 */
+	@Pure
 	public ST getLastSegment();
 
 	/** Replies the antepenulvian segment.
 	 * 
 	 * @return the antepenulvian segment or <code>null</code>.
 	 */
+	@Pure
 	public ST getAntepenulvianSegment();
 
 	/** Replies the second element of the path if it exists.
 	 * 
 	 * @return the second element of the path if it exists.
 	 */
+	@Pure
 	public ST getSecondSegment();
 	
 	/** Replies the first segment.
 	 * 
 	 * @return the first segment or <code>null</code>.
 	 */
+	@Pure
 	public ST getFirstSegment();
 
 	/** Remove the path's elements before the

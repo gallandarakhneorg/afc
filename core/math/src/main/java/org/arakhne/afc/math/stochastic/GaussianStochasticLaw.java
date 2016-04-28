@@ -23,6 +23,8 @@ package org.arakhne.afc.math.stochastic;
 import java.util.Map;
 import java.util.Random;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /**
  * Law that representes a gaussian density.
  * <p>
@@ -84,11 +86,7 @@ public class GaussianStochasticLaw extends StochasticLaw {
 		this.standardDeviation = standardDeviation1;
 	}
 	
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @return {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public String toString() {
 		StringBuilder b = new StringBuilder();
@@ -100,8 +98,7 @@ public class GaussianStochasticLaw extends StochasticLaw {
 		return b.toString();
 	}
 	
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public double f(double x)  throws MathException {
 		double xm = x - this.mean;
@@ -109,8 +106,7 @@ public class GaussianStochasticLaw extends StochasticLaw {
 		return (1.f/(this.standardDeviation*SQRT2PI)) * Math.exp((-xm)/(2.f*this.standardDeviation*this.standardDeviation)); 
 	}
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public MathFunctionRange[] getRange() {
 		return MathFunctionRange.createInfinitySet();
@@ -122,6 +118,7 @@ public class GaussianStochasticLaw extends StochasticLaw {
 	 * @return {@code F<sup>-1</sup>(u)}
 	 * @throws MathException in case {@code F<sup>-1</sup>(u)} could not be computed
 	 */
+	@Pure
 	@Override
 	public double inverseF(double u) throws MathException {
 		return this.standardDeviation*u + this.mean;

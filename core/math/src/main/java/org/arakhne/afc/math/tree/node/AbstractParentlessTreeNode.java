@@ -27,9 +27,11 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 
+import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.tree.TreeDataEvent;
 import org.arakhne.afc.math.tree.TreeNode;
 import org.arakhne.afc.math.tree.TreeNodeListener;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 
 /**
@@ -53,7 +55,9 @@ public abstract class AbstractParentlessTreeNode<D,N extends AbstractParentlessT
 	 * 
 	 * @param array
 	 * @return the minimum value.
+	 * @deprecated see {@link MathUtil#min(int...)}
 	 */
+	@Deprecated
 	protected static int minInteger(int... array) {
 		int min = array[0];
 		for(int i=0; i<array.length; ++i) {
@@ -66,7 +70,9 @@ public abstract class AbstractParentlessTreeNode<D,N extends AbstractParentlessT
 	 * 
 	 * @param array
 	 * @return the maximum value.
+	 * @deprecated see {@link MathUtil#max(int...)}
 	 */
+	@Deprecated
 	protected static int maxInteger(int... array) {
 		int max = array[0];
 		for(int i=0; i<array.length; ++i) {
@@ -191,22 +197,26 @@ public abstract class AbstractParentlessTreeNode<D,N extends AbstractParentlessT
 	 *  @return <code>this</code>
 	 */
 	@SuppressWarnings("unchecked")
+	@Pure
 	public N toN() {
 		return (N)this;
 	}
 
 	@Override
+	@Pure
 	public boolean isValid() {
 		return true;
 	}
 
 	@Override
+	@Pure
 	public boolean isEmpty() {
 		return isLeaf() && (getUserDataCount()==0);
 	}
 
 
 	@Override
+	@Pure
 	public String toString() {
 		StringBuilder buffer = new StringBuilder();
 		buffer.append('[');
@@ -222,8 +232,6 @@ public abstract class AbstractParentlessTreeNode<D,N extends AbstractParentlessT
 		return buffer.toString();
 	}
 	
-	/** {@inheritDoc}
-	 */
 	@Override
 	public D[] getAllUserData(D[] a) {
 		if (this.data==null) return null;
@@ -238,27 +246,32 @@ public abstract class AbstractParentlessTreeNode<D,N extends AbstractParentlessT
 	 * 
 	 * @return the internal data structure
 	 */
+	@Pure
 	protected final List<D> getInternalDataStructureForUserData() {
 		return this.data;
 	}
 	
 	@Override
+	@Pure
 	public List<D> getAllUserData() {
 		return new DataCollection();
 	}
 
 	@Override
+	@Pure
 	public D getUserData() {
 		if ((this.data==null)||(this.data.size()==0)) return null;
 		return this.data.get(0);
 	}
 
 	@Override
+	@Pure
 	public int getUserDataCount() {
 		return (this.data==null) ? 0 : this.data.size();
 	}
 
 	@Override
+	@Pure
 	public D getUserDataAt(int index) throws IndexOutOfBoundsException {
 		if ((this.data==null)|| (index<0)|| (index>=this.data.size())) {
 			throw new IndexOutOfBoundsException();
@@ -456,51 +469,14 @@ public abstract class AbstractParentlessTreeNode<D,N extends AbstractParentlessT
 		if (this.nodeListeners.isEmpty())
 			this.nodeListeners = null;
 	}
-
-	/**
-     * Compares this object with the specified object for order.  Returns a
-     * negative integer, zero, or a positive integer as this object is less
-     * than, equal to, or greater than the specified object.
-     *
-     * <p>The implementor must ensure <tt>sgn(x.compareTo(y)) ==
-     * -sgn(y.compareTo(x))</tt> for all <tt>x</tt> and <tt>y</tt>.  (This
-     * implies that <tt>x.compareTo(y)</tt> must throw an exception iff
-     * <tt>y.compareTo(x)</tt> throws an exception.)
-     *
-     * <p>The implementor must also ensure that the relation is transitive:
-     * <tt>(x.compareTo(y)&gt;0 &amp;&amp; y.compareTo(z)&gt;0)</tt> implies
-     * <tt>x.compareTo(z)&gt;0</tt>.
-     *
-     * <p>Finally, the implementor must ensure that <tt>x.compareTo(y)==0</tt>
-     * implies that <tt>sgn(x.compareTo(z)) == sgn(y.compareTo(z))</tt>, for
-     * all <tt>z</tt>.
-     *
-     * <p>It is strongly recommended, but <i>not</i> strictly required that
-     * <tt>(x.compareTo(y)==0) == (x.equals(y))</tt>.  Generally speaking, any
-     * class that implements the <tt>Comparable</tt> interface and violates
-     * this condition should clearly indicate this fact.  The recommended
-     * language is "Note: this class has a natural ordering that is
-     * inconsistent with equals."
-     *
-     * <p>In the foregoing description, the notation
-     * <tt>sgn(</tt><i>expression</i><tt>)</tt> designates the mathematical
-     * <i>signum</i> function, which is defined to return one of <tt>-1</tt>,
-     * <tt>0</tt>, or <tt>1</tt> according to whether the value of
-     * <i>expression</i> is negative, zero or positive.
-     *
-     * @param   o the object to be compared.
-     * @return  a negative integer, zero, or a positive integer as this object
-     *		is less than, equal to, or greater than the specified object.
-     *
-     * @throws ClassCastException if the specified object's type prevents it
-     *         from being compared to this object.
-     */
 	@Override
+	@Pure
     public int compareTo(N o) {
     	return o.hashCode() - hashCode(); 
     }
     
 	@Override
+	@Pure
 	public int getDeepNodeCount() {
 		int count = 1;
 		for(int index=0; index<getChildCount(); ++index) {
@@ -512,6 +488,7 @@ public abstract class AbstractParentlessTreeNode<D,N extends AbstractParentlessT
 	}
 	
 	@Override
+	@Pure
 	public int getDeepUserDataCount() {
 		int count = getUserDataCount();
 		for(int index=0; index<getChildCount(); ++index) {
@@ -523,6 +500,7 @@ public abstract class AbstractParentlessTreeNode<D,N extends AbstractParentlessT
 	}
 
 	@Override
+	@Pure
 	public final int[] getHeights() {
 		List<Integer> list = new ArrayList<>();
 		getHeights(1, list);

@@ -23,6 +23,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.arakhne.afc.math.tree.TreeNode;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 
 /**
@@ -122,8 +123,7 @@ public abstract class ConstantNaryTreeNode<D,N extends ConstantNaryTreeNode<D,N>
 		return (N[])new ConstantNaryTreeNode[size];
 	}
 	
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public Class<? extends Enum<?>> getPartitionEnumeration() {
 		return null;
@@ -168,22 +168,19 @@ public abstract class ConstantNaryTreeNode<D,N extends ConstantNaryTreeNode<D,N>
 		}
 	}
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public final int getChildCount() {
 		return this.children.length;
 	}
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public int getNotNullChildCount() {
 		return this.notNullChildCount;
 	}
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public final int indexOf(N child) {
 		int i=0;
@@ -196,15 +193,12 @@ public abstract class ConstantNaryTreeNode<D,N extends ConstantNaryTreeNode<D,N>
 		return -1;
 	}
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public final N getChildAt(int index) throws IndexOutOfBoundsException {
 		return this.children[index];
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public boolean moveTo(N newParent, int index) {
 		return moveTo(newParent, index, false);
@@ -246,8 +240,6 @@ public abstract class ConstantNaryTreeNode<D,N extends ConstantNaryTreeNode<D,N>
 		return true;
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	protected void setChildAtWithoutEventFiring(int index, N newChild) throws IndexOutOfBoundsException {
 		if (this.children[index]!=null) --this.notNullChildCount;
@@ -255,8 +247,6 @@ public abstract class ConstantNaryTreeNode<D,N extends ConstantNaryTreeNode<D,N>
 		if (this.children[index]!=null) ++this.notNullChildCount;
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public final boolean removeChild(N child) {
 		if (child!=null && this.children!=null) {
@@ -272,8 +262,7 @@ public abstract class ConstantNaryTreeNode<D,N extends ConstantNaryTreeNode<D,N>
 		return false;
 	}
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public final boolean isLeaf() {
 		for(N child : this.children) {
@@ -282,9 +271,6 @@ public abstract class ConstantNaryTreeNode<D,N extends ConstantNaryTreeNode<D,N>
 		return true;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void getChildren(Object[] array) {
 		if (array!=null) {
@@ -292,8 +278,7 @@ public abstract class ConstantNaryTreeNode<D,N extends ConstantNaryTreeNode<D,N>
 		}
 	}
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public int getMinHeight() {
 		int min = Integer.MAX_VALUE;
@@ -312,8 +297,7 @@ public abstract class ConstantNaryTreeNode<D,N extends ConstantNaryTreeNode<D,N>
 		return 1+(set ? min : 0);
 	}
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public int getMaxHeight() {
 		int max = Integer.MIN_VALUE;
@@ -332,12 +316,6 @@ public abstract class ConstantNaryTreeNode<D,N extends ConstantNaryTreeNode<D,N>
 		return 1+(set ? max : 0);
 	}
 
-	/** Replies the heights of all the leaf nodes.
-	 * The order of the heights is given by a depth-first iteration.
-	 * 
-	 * @param currentHeight is the current height of this node.
-	 * @param heights is the list of heights to fill
-	 */
 	@Override
 	protected void getHeights(int currentHeight, List<Integer> heights) {
 		if (isLeaf()) {
@@ -390,6 +368,6 @@ public abstract class ConstantNaryTreeNode<D,N extends ConstantNaryTreeNode<D,N>
 			super(childCount);
 		}
 
-	} /* class DefaultConstantNaryTreeNode */
+	}
 
 }

@@ -27,6 +27,7 @@ import org.arakhne.afc.math.graph.GraphPath;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("all")
 class GraphPathStub extends GraphPath<GraphPathStub,SegmentStub,ConnectionStub> {
 
 	/**

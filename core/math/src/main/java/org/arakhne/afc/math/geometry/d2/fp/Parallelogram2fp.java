@@ -37,7 +37,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @since 13.0
  */
 public class Parallelogram2fp extends AbstractShape2fp<Parallelogram2fp>
-	implements Parallelogram2afp<Shape2fp<?>, Parallelogram2fp, PathElement2fp, Point2fp, Rectangle2fp> {
+	implements Parallelogram2afp<Shape2fp<?>, Parallelogram2fp, PathElement2fp, Point2fp, Vector2fp, Rectangle2fp> {
 
 	private static final long serialVersionUID = 8945099277213684150L;
 
@@ -91,7 +91,7 @@ public class Parallelogram2fp extends AbstractShape2fp<Parallelogram2fp>
 	 * 
 	 * @param parallelogram
 	 */
-	public Parallelogram2fp(Parallelogram2afp<?, ?, ?, ?, ?> parallelogram) {
+	public Parallelogram2fp(Parallelogram2afp<?, ?, ?, ?, ?, ?> parallelogram) {
 		assert (parallelogram != null) : "Oriented Rectangle must be not null"; //$NON-NLS-1$
 		set(parallelogram.getCenterX(), parallelogram.getCenterY(),
 				parallelogram.getFirstAxisX(), parallelogram.getFirstAxisY(),
@@ -104,7 +104,7 @@ public class Parallelogram2fp extends AbstractShape2fp<Parallelogram2fp>
 	 *
 	 * @param pointCloud - the cloud of points.
 	 */
-	public Parallelogram2fp(Iterable<? extends Point2D> pointCloud) {
+	public Parallelogram2fp(Iterable<? extends Point2D<?, ?>> pointCloud) {
 		setFromPointCloud(pointCloud);
 	}
 
@@ -112,7 +112,7 @@ public class Parallelogram2fp extends AbstractShape2fp<Parallelogram2fp>
 	 *
 	 * @param pointCloud - the cloud of points.
 	 */
-	public Parallelogram2fp(Point2D... pointCloud) {
+	public Parallelogram2fp(Point2D<?, ?>... pointCloud) {
 		setFromPointCloud(pointCloud);
 	}
 
@@ -145,7 +145,7 @@ public class Parallelogram2fp extends AbstractShape2fp<Parallelogram2fp>
 	 * @param axis2 is the second axis of the parallelogram.
 	 * @param axis2Extent is the extent of the second axis.
 	 */
-	public Parallelogram2fp(Point2D center, Vector2D axis1, double axis1Extent, Vector2D axis2, double axis2Extent) {
+	public Parallelogram2fp(Point2D<?, ?> center, Vector2D<?, ?> axis1, double axis1Extent, Vector2D<?, ?> axis2, double axis2Extent) {
 		set(center, axis1, axis1Extent, axis2, axis2Extent);
 	}
 
@@ -191,7 +191,7 @@ public class Parallelogram2fp extends AbstractShape2fp<Parallelogram2fp>
 
 	@Pure
 	@Override
-	public Point2D getCenter() {
+	public Point2fp getCenter() {
 		return new Point2fp(this.cx, this.cy);
 	}
 
@@ -225,7 +225,7 @@ public class Parallelogram2fp extends AbstractShape2fp<Parallelogram2fp>
 
 	@Pure
 	@Override
-	public Vector2D getFirstAxis() {
+	public Vector2fp getFirstAxis() {
 		return new Vector2fp(this.rx, this.ry);
 	}
 
@@ -243,7 +243,7 @@ public class Parallelogram2fp extends AbstractShape2fp<Parallelogram2fp>
 
 	@Pure
 	@Override
-	public Vector2D getSecondAxis() {
+	public Vector2fp getSecondAxis() {
 		return new Vector2fp(this.sx, this.sy);
 	}
 

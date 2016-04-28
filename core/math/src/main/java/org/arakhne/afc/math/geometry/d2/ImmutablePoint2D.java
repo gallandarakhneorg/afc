@@ -31,7 +31,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public final class ImmutablePoint2D implements UnmodifiablePoint2D {
+public final class ImmutablePoint2D implements UnmodifiablePoint2D<ImmutablePoint2D, ImmutableVector2D> {
 
 	private static final long serialVersionUID = 2208831768117217178L;
 
@@ -55,6 +55,11 @@ public final class ImmutablePoint2D implements UnmodifiablePoint2D {
 	public ImmutablePoint2D(int x, int y) {
 		this.x = x;
 		this.y = y;
+	}
+
+	@Override
+	public ImmutableGeomFactory getGeomFactory() {
+		return ImmutableGeomFactory.SINGLETON;
 	}
 
 	@Pure
@@ -92,30 +97,35 @@ public final class ImmutablePoint2D implements UnmodifiablePoint2D {
 				+")"; //$NON-NLS-1$
 	}
 	
+	@Pure
 	@Override
-	public Point2D clone() {
+	public ImmutablePoint2D clone() {
 		try {
-			return (Point2D) super.clone();
+			return (ImmutablePoint2D) super.clone();
 		} catch (CloneNotSupportedException exception) {
 			throw new InternalError(exception);
 		}
 	}
 
+	@Pure
 	@Override
 	public double getX() {
 		return this.x;
 	}
 
+	@Pure
 	@Override
 	public int ix() {
 		return (int) this.x;
 	}
 
+	@Pure
 	@Override
 	public double getY() {
 		return this.y;
 	}
 
+	@Pure
 	@Override
 	public int iy() {
 		return (int) this.y;

@@ -21,6 +21,7 @@
  */
 package org.arakhne.afc.math.geometry.d2.ifx;
 
+import org.arakhne.afc.math.geometry.d2.GeomFactory;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.arakhne.afc.math.geometry.d2.UnmodifiableVector2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
@@ -39,7 +40,7 @@ import javafx.beans.property.ReadOnlyDoubleWrapper;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public class Vector2ifx extends Tuple2ifx<Vector2D, Vector2ifx> implements Vector2D {
+public class Vector2ifx extends Tuple2ifx<Vector2ifx> implements Vector2D<Vector2ifx, Point2ifx> {
 
 	private static final long serialVersionUID = 5782200591782721145L;
 
@@ -127,16 +128,16 @@ public class Vector2ifx extends Tuple2ifx<Vector2D, Vector2ifx> implements Vecto
 	}
 
 	@Override
-	public Vector2D toUnitVector() {
+	public Vector2ifx toUnitVector() {
 		double length = getLength();
 		if (length == 0.) {
 			return new Vector2ifx();
 		}
 		return new Vector2ifx(getX() / length, getY() / length);
 	}
-
+	
 	@Override
-	public Vector2D toOrthogonalVector() {
+	public Vector2ifx toOrthogonalVector() {
 		return new Vector2ifx(-iy(), ix());
 	}
 	
@@ -181,26 +182,36 @@ public class Vector2ifx extends Tuple2ifx<Vector2D, Vector2ifx> implements Vecto
 		return this.lengthSquareProperty;
 	}
 
+	@Override
+	public GeomFactory2ifx getGeomFactory() {
+		return GeomFactory2ifx.SINGLETON;
+	}
+	
 	@Pure
 	@Override
-	public Vector2D toUnmodifiable() {
-		return new UnmodifiableVector2D() {
+	public UnmodifiableVector2D<Vector2ifx, Point2ifx> toUnmodifiable() {
+		return new UnmodifiableVector2D<Vector2ifx, Point2ifx>() {
 
 			private static final long serialVersionUID = -3525974627723161583L;
 
 			@Override
-			public Vector2D toUnitVector() {
+			public GeomFactory<Vector2ifx, Point2ifx> getGeomFactory() {
+				return Vector2ifx.this.getGeomFactory();
+			}
+			
+			@Override
+			public Vector2ifx toUnitVector() {
 				return Vector2ifx.this.toUnitVector();
 			}
 			
 			@Override
-			public Vector2D toOrthogonalVector() {
+			public Vector2ifx toOrthogonalVector() {
 				return Vector2ifx.this.toOrthogonalVector();
 			}
 			
 			@Override
-			public Vector2D clone() {
-				return Vector2ifx.this.toUnmodifiable();
+			public Vector2ifx clone() {
+				return new Vector2ifx(Vector2ifx.this);
 			}
 
 			@Override

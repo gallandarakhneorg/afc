@@ -26,15 +26,14 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 /** 2D tuple with 2 double precision floating-point numbers.
  * 
- * @param <T> is the abstract type of the tuple.
- * @param <IT> is the implementation type of the tuple.
+ * @param <RT> is the type of the data returned by the tuple.
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public class Tuple2fp<T extends Tuple2D<? super T>, IT extends T> implements Tuple2D<T> {
+public class Tuple2fp<RT extends Tuple2fp<? super RT>> implements Tuple2D<RT> {
 
 	private static final long serialVersionUID = -1204612842037872952L;
 
@@ -51,15 +50,6 @@ public class Tuple2fp<T extends Tuple2D<? super T>, IT extends T> implements Tup
 	public Tuple2fp() {
 		this.x = 0;
 		this.y = 0;
-	}
-
-	/**
-	 * @param tuple is the tuple to copy.
-	 */
-	public Tuple2fp(Tuple2fp<?,?> tuple) {
-		assert (tuple != null) : "Tuple must be not null"; //$NON-NLS-1$
-		this.x = tuple.x;
-		this.y = tuple.y;
 	}
 
 	/**
@@ -112,9 +102,9 @@ public class Tuple2fp<T extends Tuple2D<? super T>, IT extends T> implements Tup
 	@SuppressWarnings("unchecked")
 	@Pure
 	@Override
-	public IT clone() {
+	public RT clone() {
 		try {
-			return (IT) super.clone();
+			return (RT) super.clone();
 		}
 		catch(CloneNotSupportedException e) {
 			throw new InternalError(e);
@@ -128,7 +118,7 @@ public class Tuple2fp<T extends Tuple2D<? super T>, IT extends T> implements Tup
 	}
 
 	@Override
-	public void absolute(T tuple) {
+	public void absolute(Tuple2D<?> tuple) {
 		assert (tuple != null) : "Tuple must be not null"; //$NON-NLS-1$
 		tuple.set(Math.abs(this.x), Math.abs(this.y));
 	}
@@ -166,7 +156,7 @@ public class Tuple2fp<T extends Tuple2D<? super T>, IT extends T> implements Tup
 	}
 
 	@Override
-	public void negate(T tuple) {
+	public void negate(Tuple2D<?> tuple) {
 		assert (tuple != null) : "Tuple must be not null"; //$NON-NLS-1$
 		this.x = -tuple.getX();
 		this.y = -tuple.getY();
@@ -179,14 +169,14 @@ public class Tuple2fp<T extends Tuple2D<? super T>, IT extends T> implements Tup
 	}
 
 	@Override
-	public void scale(int s, T tuple) {
+	public void scale(int s, Tuple2D<?> tuple) {
 		assert (tuple != null) : "Tuple must be not null"; //$NON-NLS-1$
 		this.x = s * tuple.getX();
 		this.y = s * tuple.getY();
 	}
 
 	@Override
-	public void scale(double s, T tuple) {
+	public void scale(double s, Tuple2D<?> tuple) {
 		assert (tuple != null) : "Tuple must be not null"; //$NON-NLS-1$
 		this.x = s * tuple.getX();
 		this.y = s * tuple.getY();
@@ -315,12 +305,11 @@ public class Tuple2fp<T extends Tuple2D<? super T>, IT extends T> implements Tup
 		this.y -= y;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Pure
 	@Override
 	public boolean equals(Object t1) {
 		try {
-			return equals((T) t1);
+			return equals((Tuple2D<?>) t1);
 		}
 		catch(AssertionError e) {
 			throw e;

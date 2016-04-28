@@ -21,6 +21,7 @@
  */
 package org.arakhne.afc.math.geometry.d2.fpfx;
 
+import org.arakhne.afc.math.geometry.d2.GeomFactory;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.arakhne.afc.math.geometry.d2.UnmodifiableVector2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
@@ -41,7 +42,7 @@ import javafx.beans.property.ReadOnlyDoubleWrapper;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public class Vector2fx extends Tuple2fx<Vector2D, Vector2fx> implements Vector2D {
+public class Vector2fx extends Tuple2fx<Vector2fx> implements Vector2D<Vector2fx, Point2fx> {
 
 	private static final long serialVersionUID = 8394433458442716159L;
 
@@ -130,7 +131,7 @@ public class Vector2fx extends Tuple2fx<Vector2D, Vector2fx> implements Vector2D
 	public Vector2fx(long x, long y) {
 		super(x,y);
 	}
-	
+		
 	@Override
 	public Vector2fx clone() {
 		Vector2fx clone = super.clone();
@@ -140,7 +141,7 @@ public class Vector2fx extends Tuple2fx<Vector2D, Vector2fx> implements Vector2D
 	}
 	
 	@Override
-	public Vector2D toUnitVector() {
+	public Vector2fx toUnitVector() {
 		double length = getLength();
 		if (length == 0.) {
 			return new Vector2fx();
@@ -149,7 +150,7 @@ public class Vector2fx extends Tuple2fx<Vector2D, Vector2fx> implements Vector2D
 	}
 	
 	@Override
-	public Vector2D toOrthogonalVector() {
+	public Vector2fx toOrthogonalVector() {
 		return new Vector2fx(-getY(), getX());
 	}
 	
@@ -193,26 +194,36 @@ public class Vector2fx extends Tuple2fx<Vector2D, Vector2fx> implements Vector2D
 		}
 		return this.lengthSquareProperty.getReadOnlyProperty();
 	}
+	
+	@Override
+	public GeomFactory2fx getGeomFactory() {
+		return GeomFactory2fx.SINGLETON;
+	}
 
 	@Override
-	public Vector2D toUnmodifiable() {
-		return new UnmodifiableVector2D() {
+	public UnmodifiableVector2D<Vector2fx, Point2fx> toUnmodifiable() {
+		return new UnmodifiableVector2D<Vector2fx, Point2fx>() {
 			
 			private static final long serialVersionUID = 1638306005394957111L;
 
 			@Override
-			public Vector2D toUnitVector() {
+			public GeomFactory<Vector2fx, Point2fx> getGeomFactory() {
+				return Vector2fx.this.getGeomFactory();
+			}
+			
+			@Override
+			public Vector2fx toUnitVector() {
 				return Vector2fx.this.toUnitVector();
 			}
 			
 			@Override
-			public Vector2D toOrthogonalVector() {
+			public Vector2fx toOrthogonalVector() {
 				return Vector2fx.this.toOrthogonalVector();
 			}
 
 			@Override
-			public Vector2D clone() {
-				return Vector2fx.this.toUnmodifiable();
+			public Vector2fx clone() {
+				return new Vector2fx(Vector2fx.this);
 			}
 			
 			@Override

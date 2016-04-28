@@ -19,6 +19,8 @@ package org.arakhne.afc.math.tree;
 
 import java.util.EventObject;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /**
  * Called each time an removal event occurs on a tree node.
  * 
@@ -50,6 +52,7 @@ public class TreeNodeRemovedEvent extends EventObject {
 	 * 
 	 * @return the parent nodeof the removed child
 	 */
+	@Pure
 	public TreeNode<?,?> getParentNode() {
 		return (TreeNode<?,?>)getSource();
 	}
@@ -58,6 +61,7 @@ public class TreeNodeRemovedEvent extends EventObject {
 	 * 
 	 * @return the index of the removed child
 	 */
+	@Pure
 	public int getChildIndex() {
 		return this.childIndex;
 	}
@@ -66,6 +70,7 @@ public class TreeNodeRemovedEvent extends EventObject {
 	 * 
 	 * @return the removed child itself
 	 */
+	@Pure
 	public TreeNode<?,?> getChild() {
 		return this.child;
 	}

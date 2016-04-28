@@ -28,13 +28,15 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 /** 2D Vector.
  * 
+ * @param <RV> is the type of vector that can be returned by this tuple.
+ * @param <RP> is the type of point that can be returned by this tuple.
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public interface Vector2D extends Tuple2D<Vector2D> {
+public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extends Point2D<? super RP, ? super RV>> extends Tuple2D<RV> {
 
 	/**
 	 * Replies if the vector is a unit vector.
@@ -53,6 +55,8 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	 * @see #isUnitVector(double, double, double)
 	 */
 	@Pure
+	@Inline(value = "(Vector2D.isUnitVector($1, $2, MathConstants.UNIT_VECTOR_EPSILON))",
+	imported = {Vector2D.class, MathConstants.class})
 	static boolean isUnitVector(double x, double y) {
 		return isUnitVector(x, y, MathConstants.UNIT_VECTOR_EPSILON);
 	}
@@ -74,10 +78,12 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	 * @see #isUnitVector(double, double)
 	 */
 	@Pure
+	@Inline(value = "(MathUtil.isEpsilonEqual($1 * $1 + $2 * $2, 1., epsilon))",
+	imported = {MathUtil.class})
 	static boolean isUnitVector(double x, double y, double epsilon) {
 		return MathUtil.isEpsilonEqual(x * x + y * y, 1., epsilon);
 	}
-	
+
 	/**
 	 * Replies if the vectors are orthogonal vectors.
 	 *
@@ -95,6 +101,8 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	 * @see #isUnitVector(double, double, double)
 	 */
 	@Pure
+	@Inline(value = "(Vector2D.isOrthogonal($1, $2, $3, $4, MathConstants.ORTHOGONAL_VECTOR_EPSILON))",
+	imported = {Vector2D.class, MathConstants.class})
 	static boolean isOrthogonal(double x1, double y1, double x2, double y2) {
 		return isOrthogonal(x1, y1, x2, y2, MathConstants.ORTHOGONAL_VECTOR_EPSILON);
 	}
@@ -112,6 +120,8 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	 * @see #isOrthogonal(double, double, double,  double)
 	 */
 	@Pure
+	@Inline(value = "(MathUtil.isEpsilonZero(Vector2D.dotProduct($1, $2, $3, $4), $5))",
+	imported = {Vector2D.class, MathUtil.class})
 	static boolean isOrthogonal(double x1, double y1, double x2, double y2, double epsilon) {
 		return MathUtil.isEpsilonZero(dotProduct(x1, y1, x2, y2), epsilon);
 	}
@@ -134,6 +144,8 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	 * @see MathUtil#isEpsilonZero(double)
 	 */
 	@Pure
+	@Inline(value = "(MathUtil.isEpsilonZero($1 * $4 - $3 * $2))",
+	imported = {MathUtil.class})
 	static boolean isCollinearVectors(double x1, double y1, double x2, double y2) {
 		// Test if three points are colinears
 		// iff det( [ x1 x2 ]
@@ -141,7 +153,7 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 		// Do not invoked MathUtil.determinant() to limit computation consumption.
 		return MathUtil.isEpsilonZero(x1 * y2 - x2 * y1);
 	}
-	
+
 	/** Compute the the perpendicular product of
 	 * the two vectors (aka. the determinant of two vectors).
 	 * <p>
@@ -157,10 +169,11 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	 * @return the determinant
 	 */
 	@Pure
+	@Inline(value = "($1 * $4 - $3 * $2)")
 	static double perpProduct(double x1, double y1, double x2, double y2) {
 		return x1 * y2 - x2 * y1;
 	}
-	
+
 	/** Compute the dot product of two vectors.
 	 * 
 	 * @param x1
@@ -170,6 +183,7 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	 * @return the dot product.
 	 */
 	@Pure
+	@Inline(value = "($1 * $3 + $2 * $4)")
 	static double dotProduct(double x1, double y1, double x2, double y2) {
 		return x1 * x2 + y1 * y2;
 	}
@@ -238,6 +252,8 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	 * @return the trigonometric angle in radians in [-PI;PI].
 	 */
 	@Pure
+	@Inline(value = "(Vector2D.signedAngle(1, 0, $3 - $1, $4 - $2))",
+	imported = {Vector2D.class})
 	static double angleOfVector(double x1, double y1, double x2, double y2) {
 		return signedAngle(
 				1, 0, 
@@ -256,23 +272,25 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	 * @return the trigonometric angle in radians in [-PI;PI].
 	 */
 	@Pure
+	@Inline(value = "(Vector2D.signedAngle(1, 0, $1, $2))",
+	imported = {Vector2D.class})
 	static double angleOfVector(double x, double y) {
 		return signedAngle(
 				1, 0, 
 				x, y);
 	}
-	
+
 	/**
 	 * Sets the value of this tuple to the sum of tuples vector1 and vector2.
 	 *
 	 * @param vector1 the first tuple
 	 * @param vector2 the second tuple
 	 */
-	default void add(Vector2D vector1, Vector2D vector2) {
+	default void add(Vector2D<?, ?> vector1, Vector2D<?, ?> vector2) {
 		assert (vector1 != null) : "First vector must be not be null"; //$NON-NLS-1$
 		assert (vector2 != null) : "Second vector must be not be null"; //$NON-NLS-1$
 		set(vector1.getX() + vector2.getX(),
-			vector1.getY() + vector2.getY());
+				vector1.getY() + vector2.getY());
 	}
 
 	/**
@@ -280,10 +298,10 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	 *
 	 * @param vector the other tuple
 	 */
-	default void add(Vector2D vector) {
+	default void add(Vector2D<?, ?> vector) {
 		assert (vector != null) : "Vector must be not be null"; //$NON-NLS-1$
 		set(vector.getX() + getX(),
-			vector.getY() + getY());
+				vector.getY() + getY());
 	}
 
 	/**
@@ -293,11 +311,11 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	 * @param t1 the tuple to be multipled
 	 * @param t2 the tuple to be added
 	 */
-	default void scaleAdd(int scale, Vector2D t1, Vector2D t2) {
+	default void scaleAdd(int scale, Vector2D<?, ?> t1, Vector2D<?, ?> t2) {
 		assert (t1 != null) : "First vector must be not be null"; //$NON-NLS-1$
 		assert (t2 != null) : "Second vector must be not be null"; //$NON-NLS-1$
 		set(scale * t1.getX() + t2.getX(),
-			scale * t1.getY() + t2.getY());
+				scale * t1.getY() + t2.getY());
 	}
 
 	/**
@@ -308,11 +326,11 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	 * @param vector1 the tuple to be multipled
 	 * @param vector2 the tuple to be added
 	 */
-	default void scaleAdd(double scale, Vector2D vector1, Vector2D vector2) {
+	default void scaleAdd(double scale, Vector2D<?, ?> vector1, Vector2D<?, ?> vector2) {
 		assert (vector1 != null) : "First vector must be not be null"; //$NON-NLS-1$
 		assert (vector2 != null) : "Second vector must be not be null"; //$NON-NLS-1$
 		set(scale * vector1.getX() + vector2.getX(),
-			scale * vector1.getY() + vector2.getY());
+				scale * vector1.getY() + vector2.getY());
 	}
 
 	/**
@@ -322,10 +340,10 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	 * @param scale the scalar value
 	 * @param vector the tuple to be added
 	 */
-	default void scaleAdd(int scale, Vector2D vector) {
+	default void scaleAdd(int scale, Vector2D<?, ?> vector) {
 		assert (vector != null) : "Vector must be not be null"; //$NON-NLS-1$
 		set(scale * getX() + vector.getX(),
-			scale * getY() + vector.getY());
+				scale * getY() + vector.getY());
 	}
 
 	/**
@@ -335,13 +353,13 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	 * @param scale the scalar value
 	 * @param vector the tuple to be added
 	 */
-	default void scaleAdd(double scale, Vector2D vector) {
+	default void scaleAdd(double scale, Vector2D<?, ?> vector) {
 		assert (vector != null) : "Vector must be not be null"; //$NON-NLS-1$
 		set(scale * getX() + vector.getX(),
-			scale * getY() + vector.getY());
+				scale * getY() + vector.getY());
 	}
 
-	
+
 	/**
 	 * Sets the value of this tuple to the difference
 	 * of tuples vector1 and vector2 (this = vector1 - vector2).
@@ -349,7 +367,7 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	 * @param vector1 the first tuple
 	 * @param vector2 the second tuple
 	 */
-	default void sub(Vector2D vector1, Vector2D vector2) {
+	default void sub(Vector2D<?, ?> vector1, Vector2D<?, ?> vector2) {
 		assert (vector1 != null) : "First vector must be not be null"; //$NON-NLS-1$
 		assert (vector2 != null) : "Second vector must be not be null"; //$NON-NLS-1$
 		set(vector1.getX() - vector2.getX(), vector1.getY() - vector2.getY());
@@ -362,7 +380,7 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	 * @param point1 the first tuple
 	 * @param point2 the second tuple
 	 */
-	default void sub(Point2D point1, Point2D point2) {
+	default void sub(Point2D<?, ?> point1, Point2D<?, ?> point2) {
 		assert (point1 != null) : "First point must be not be null"; //$NON-NLS-1$
 		assert (point2 != null) : "Second point must be not be null"; //$NON-NLS-1$
 		set(point1.getX() - point2.getX(), point1.getY() - point2.getY());
@@ -374,9 +392,40 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	 *
 	 * @param vector the other tuple
 	 */
-	default void sub(Vector2D vector) {
+	default void sub(Vector2D<?, ?> vector) {
 		assert (vector != null) : "Vector must be not be null"; //$NON-NLS-1$
 		set(getX() - vector.getX(), getY() - vector.getY());
+	}
+
+	/** Compute the power of this vector.
+	 * 
+	 * <p>If the power is even, the result is a scalar.
+	 * If the power is odd, the result is a vector.
+	 * 
+	 * @param power the power factor.
+	 * @return the power of this vector.
+	 * @see "http://www.euclideanspace.com/maths/algebra/vectors/vecAlgebra/powers/index.htm"
+	 */
+	@Pure
+	default PowerResult<RV> power(int power) {
+		boolean isEven = ((power % 2) == 0);
+		int evenPower;
+		if (isEven) {
+			evenPower = power / 2;
+		} else {
+			evenPower = MathUtil.sign(power) * (Math.abs(power) - 1) / 2;
+		}
+		double x = getX();
+		double y = getY();
+		double dot = dotProduct(x, y, x, y);
+		double resultForEven = Math.pow(dot, evenPower);
+		if (isEven) {
+			return new PowerResult<>(resultForEven);
+		}
+		RV r = getGeomFactory().newVector();
+		r.set(getX() * resultForEven, getY() * resultForEven);
+		return new PowerResult<>(r);
+
 	}
 
 	/**
@@ -386,11 +435,11 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	 * @return the dot product.
 	 */
 	@Pure
-	default double dot(Vector2D vector) {
+	default double dot(Vector2D<?, ?> vector) {
 		assert (vector != null) : "Vector must be not be null"; //$NON-NLS-1$
 		return dotProduct(getX(), getY(), vector.getX(), vector.getY());
 	}
-	
+
 	/** Compute the the perpendicular product of
 	 * the two vectors (aka. the determinant of two vectors).
 	 * <p>
@@ -403,7 +452,7 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	 * @return the determinant
 	 */
 	@Pure
-	default double perp(Vector2D vector) {
+	default double perp(Vector2D<?, ?> vector) {
 		assert (vector != null) : "Vector must be not be null"; //$NON-NLS-1$
 		return perpProduct(getX(), getY(), vector.getX(), vector.getY());
 	}
@@ -419,7 +468,8 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	 *
 	 * @return the orthogonal vector.
 	 */
-	Vector2D toOrthogonalVector();
+	@Pure
+	RV toOrthogonalVector();
 
 	/**  
 	 * Returns the length of this vector.
@@ -450,7 +500,7 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	 *
 	 * @param vector the un-normalized vector
 	 */  
-	default void normalize(Vector2D vector) {
+	default void normalize(Vector2D<?, ?> vector) {
 		assert (vector != null) : "Vector must be not be null"; //$NON-NLS-1$
 		double x = vector.getX();
 		double y = vector.getY();
@@ -472,11 +522,13 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 		double x = getX();
 		double y = getY();
 		double sqlength = x * x + y * y;
-		if(sqlength != 0.) {
-			sqlength = Math.sqrt(sqlength);
-			set(x / sqlength, y / sqlength);
-		} else {
-			set(0, 0);
+		if (sqlength != 1.) {
+			if(sqlength != 0.) {
+				sqlength = Math.sqrt(sqlength);
+				set(x / sqlength, y / sqlength);
+			} else {
+				set(0, 0);
+			}
 		}
 	}
 
@@ -489,7 +541,7 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	 * @return the angle in radians in the range [0,PI]
 	 */
 	@Pure
-	default double angle(Vector2D vector) {
+	default double angle(Vector2D<?, ?> vector) {
 		assert (vector != null) : "Vector must be not be null"; //$NON-NLS-1$
 		double vDot = dotProduct(getX(), getY(), vector.getX(), vector.getY()) / ( getLength()*vector.getLength() );
 		if( vDot < -1.) vDot = -1.;
@@ -516,7 +568,7 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	 * {@code v}.
 	 */
 	@Pure
-	default double signedAngle(Vector2D vector) {
+	default double signedAngle(Vector2D<?, ?> vector) {
 		assert (vector != null) : "Vector must be not be null"; //$NON-NLS-1$
 		return signedAngle(getX(), getY(), vector.getX(), vector.getY());
 	}
@@ -534,7 +586,7 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	default void turnVector(double angle) {
 		turn(angle);
 	}
-	
+
 	/** Turn this vector about the given rotation angle.
 	 *
 	 * <p>The rotation is done according to the trigonometric coordinate.
@@ -563,7 +615,7 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	 * @see #turnLeft(double)
 	 * @see #turnRight(double)
 	 */
-	default void turn(double angle, Vector2D vectorToTurn) {
+	default void turn(double angle, Vector2D<?, ?> vectorToTurn) {
 		assert (vectorToTurn != null) : "Vector must be not null"; //$NON-NLS-1$
 		double sin = Math.sin(angle);
 		double cos = Math.cos(angle);
@@ -600,7 +652,7 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	 * @see #turn(double)
 	 * @see #turnRight(double)
 	 */
-	default void turnLeft(double angle, Vector2D vectorToTurn) {
+	default void turnLeft(double angle, Vector2D<?, ?> vectorToTurn) {
 		double sin = Math.sin(angle);
 		double cos = Math.cos(angle);
 		double x, y;
@@ -624,7 +676,6 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	 * @see #turn(double)
 	 * @see #turnLeft(double)
 	 */
-	@Inline(value = "turnLeft(-($1))")
 	default void turnRight(double angle) {
 		turnLeft(-angle, this);
 	}
@@ -640,7 +691,7 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	 * @see #turn(double)
 	 * @see #turnLeft(double)
 	 */
-	default void turnRight(double angle, Vector2D vectorToTurn) {
+	default void turnRight(double angle, Vector2D<?, ?> vectorToTurn) {
 		turnLeft(-angle, vectorToTurn);
 	}
 
@@ -658,7 +709,7 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 		}
 		return angle;
 	}
-	
+
 	/** Replies if this vector is a unit vector.
 	 * A unit vector has a length equal to 1.
 	 *
@@ -669,7 +720,7 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	default boolean isUnitVector() {
 		return isUnitVector(getX(), getY());
 	}
-	
+
 	/** Replies if this vector is orthogonal to the given vector.
 	 *
 	 * @param vector the vector to compare to this vector.
@@ -677,7 +728,7 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	 * <code>false</code> otherwise.
 	 */
 	@Pure
-	default boolean isOrthogonal(Vector2D vector) {
+	default boolean isOrthogonal(Vector2D<?, ?> vector) {
 		assert (vector != null) : "Vector must be not null"; //$NON-NLS-1$
 		return isOrthogonal(getX(), getY(), vector.getX(), vector.getY());
 	}
@@ -702,13 +753,407 @@ public interface Vector2D extends Tuple2D<Vector2D> {
 	 *
 	 * @return the unit vector of this vector.
 	 */
-	Vector2D toUnitVector();
-	
+	@Pure
+	RV toUnitVector();
+
 	/** Replies an unmodifiable copy of this vector.
 	 *
 	 * @return an unmodifiable copy.
 	 */
 	@Pure
-	Vector2D toUnmodifiable();
+	UnmodifiableVector2D<RV, RP> toUnmodifiable();
 	
+	/** Replies the geometry factory associated to this point.
+	 * 
+	 * @return the factory.
+	 */
+	@Pure
+	GeomFactory<RV, RP> getGeomFactory();
+
+	/** Add a vector to this vector: {@code this += v}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param v the vector
+	 * @see #add(Vector2D)
+	 */
+	default void operator_add(Vector2D<?, ?> v) {
+		add(v);
+	}
+
+	/** Substract a vector to this vector: {@code this -= v}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param v the vector
+	 * @see #sub(Vector2D)
+	 */
+	default void operator_remove(Vector2D<?, ?> v) {
+		sub(v);
+	}
+
+	/** Dot product: {@code this * v}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param v the vector
+	 * @return the result.
+	 * @see #dot(Vector2D)
+	 */
+	@Pure
+	default double operator_multiply(Vector2D<?, ?> v) {
+		return dot(v);
+	}
+
+	/** Replies if this vector and the given vector are equal: {@code this == v}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param v the vector.
+	 * @return test result.
+	 * @see #equals(Tuple2D)
+	 */
+	@Pure
+	default boolean operator_equals(Tuple2D<?> v) {
+		return equals(v);
+	}
+
+	/** Replies if this vector and the given vector are different: {@code this != v}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param v the vector.
+	 * @return test result.
+	 * @see #equals(Tuple2D)
+	 */
+	@Pure
+	default boolean operator_notEquals(Tuple2D<?> v) {
+		return !equals(v);
+	}
+
+	/** Replies if the absolute angle between this and v: {@code this .. b}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param v the vector.
+	 * @return the signed angle.
+	 * @see #angle(Vector2D)
+	 */
+	@Pure
+	default double operator_upTo(Vector2D<?, ?> v) {
+		return angle(v);
+	}
+
+	/** Replies the signed angle from this to v: {@code this >.. v}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param v the vector.
+	 * @return the signed angle.
+	 * @see #signedAngle(Vector2D)
+	 */
+	@Pure
+	default double operator_greaterThanDoubleDot(Vector2D<?, ?> v) {
+		return signedAngle(v);
+	}
+
+	/** Replies the signed angle from v to this: {@code this ..< v}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param v the vector.
+	 * @return the signed angle.
+	 * @see #signedAngle(Vector2D)
+	 */
+	@Pure
+	default double operator_doubleDotLessThan(Vector2D<?, ?> v) {
+		return -signedAngle(v);
+	}
+
+	/** Negation of this vector: {@code -this}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @return the result.
+	 * @see #negate(Tuple2D)
+	 */
+	@Pure
+	default RV operator_minus() {
+		RV r = getGeomFactory().newVector();
+		r.negate(this);
+		return r;
+	}
+
+	/** Scale this vector: {@code this * f}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param f the scaling factor.
+	 * @return the scaled vector.
+	 * @see #scale(double)
+	 */
+	@Pure
+	default RV operator_multiply(double f) {
+		RV r = getGeomFactory().newVector();
+		r.set(getX() * f, getY() * f);
+		return r;
+	}
+
+	/** Scale this vector: {@code this / f}.
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param f the scaling factor
+	 * @return the scaled vector.
+	 */
+	@Pure
+	default RV operator_divide(double f) {
+		RV r = getGeomFactory().newVector();
+		r.set(getX() / f, getY() / f);
+		return r;
+	}
+
+	/** If this vector is epsilon equal to zero then reply v else reply this: {@code this ?: v}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param v the vector.
+	 * @return the vector.
+	 */
+	@Pure
+	default Vector2D<? extends RV, ? extends RP> operator_elvis(Vector2D<? extends RV, ? extends RP> v) {
+		if (MathUtil.isEpsilonZero(getX()) && MathUtil.isEpsilonZero(getY())) {
+			return v;
+		}
+		return this;
+	}
+
+	/** Subtract a vector to this vector: {@code this - v}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param v the vector
+	 * @return the result.
+	 * @see #sub(Vector2D)
+	 */
+	@Pure
+	default RV operator_minus(Vector2D<?, ?> v) {
+		RV r = getGeomFactory().newVector();
+		r.sub(this, v);
+		return r;
+	}
+
+	/** Sum of this vector and the given vector: {@code this + v}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param v the vector
+	 * @return the result.
+	 * @see #add(Vector2D, Vector2D)
+	 */
+	@Pure
+	default RV operator_plus(Vector2D<?, ?> v) {
+		RV r = getGeomFactory().newVector();
+		r.add(this, v);
+		return r;
+	}
+
+	/** Perp product of this vector and the given vector: {@code this ** v}.
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param v the other vector.
+	 * @return the result.
+	 * @see #perp(Vector2D)
+	 */
+	@Pure
+	default double operator_power(Vector2D<?, ?> v) {
+		return perp(v);
+	}
+
+	/** Compute the power of this vector: {@code this ** n}.
+	 * 
+	 * <p>If the power is even, the result is a scalar.
+	 * If the power is odd, the result is a vector.
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param n the power factor.
+	 * @return the power of this vector.
+	 * @see #power(int)
+	 * @see "http://www.euclideanspace.com/maths/algebra/vectors/vecAlgebra/powers/index.htm"
+	 */
+	@Pure
+	default PowerResult<RV> operator_power(int n) {
+		return power(n);
+	}
+
+	/** Add this vector to a point: {@code this + p}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param p the point.
+	 * @return the result.
+	 * @see Point2D#add(Vector2D, Point2D)
+	 */
+	@Pure
+	default RP operator_plus(Point2D<?, ?> p) {
+		RP result = getGeomFactory().newPoint();
+		result.add(this, p);
+		return result;
+	}
+
+	/** Result of the power of a Vector2D.
+	 * 
+	 * @param <T> the type of the vector.
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 13.0
+	 */
+	final class PowerResult<T extends Vector2D<? super T, ?>> {
+
+		private final double scalar;
+
+		private final T vector;
+
+		/** Construct a result for even power.
+		 *
+		 * @param scalar the scalar result.
+		 */
+		PowerResult(double scalar) {
+			this.scalar = scalar;
+			this.vector = null;
+		}
+
+		/** Construct a result for the odd power.
+		 *
+		 * @param vector the vector result.
+		 */
+		PowerResult(T vector) {
+			assert (vector != null) : "Vector must be not null"; //$NON-NLS-1$
+			this.scalar = Double.NaN;
+			this.vector = vector;
+		}
+		
+		@Pure
+		@Override
+		public String toString() {
+			if (this.vector != null) {
+				return this.vector.toString();
+			}
+			return Double.toString(this.scalar);
+		}
+		
+		private boolean isSameScalar(Number number) {
+			return number.equals(Double.valueOf(this.scalar));
+		}
+		
+		private boolean isSameVector(Vector2D<?, ?> vector) {
+			if (this.vector == vector) {
+				return true;
+			}
+			if (this.vector != null) {
+				return this.vector.equals((Vector2D<?, ?>) vector); 
+			}
+			return false;
+		}
+
+		@Override
+		@Pure
+		public boolean equals(Object obj) {
+			if (obj instanceof PowerResult<?>) {
+				if (this == obj) {
+					return true;
+				}
+				PowerResult<?> result = (PowerResult<?>) obj;
+				if (result.vector != null) {
+					return isSameVector(result.vector);
+				}
+				return isSameScalar(result.scalar);
+			}
+			if (obj instanceof Vector2D<?, ?>) {
+				return isSameVector((Vector2D<?, ?>) obj);
+			}
+			if (obj instanceof Number) {
+				return isSameScalar((Number) obj);
+			}
+			return false;
+		}
+		
+		@Pure
+		@Override
+		public int hashCode() {
+			long bits = 1;
+			bits = 31 * bits + Double.doubleToLongBits(this.scalar);
+			bits = 31 * bits + ((this.vector == null) ? 0 : this.vector.hashCode());
+			int b = (int) bits;
+			return b ^ (b >> 32);
+		}
+
+		/** Replies the scalar result.
+		 *
+		 * @return the scalar result.
+		 */
+		@Pure
+		public double getScalar() {
+			return this.scalar;
+		}
+
+		/** Replies the vector result.
+		 *
+		 * @return the vector result.
+		 */
+		@Pure
+		public T getVector() {
+			return this.vector;
+		}
+		
+		/** Replies if the result is vectorial.
+		 *
+		 * @return <code>true</code> if the result is vectorial. <code>false</code>
+		 * if the result if scalar.
+		 */
+		@Pure
+		public boolean isVectorial() {
+			return this.vector != null;
+		}
+
+	}
+
 }

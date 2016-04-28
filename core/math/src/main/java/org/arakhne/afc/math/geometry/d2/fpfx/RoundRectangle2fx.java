@@ -38,7 +38,7 @@ import javafx.beans.property.ReadOnlyDoubleProperty;
  * @since 13.0
  */
 public class RoundRectangle2fx extends AbstractRectangularShape2fx<RoundRectangle2fx>
-	implements RoundRectangle2afp<Shape2fx<?>, RoundRectangle2fx, PathElement2fx, Point2fx, Rectangle2fx> {
+	implements RoundRectangle2afp<Shape2fx<?>, RoundRectangle2fx, PathElement2fx, Point2fx, Vector2fx, Rectangle2fx> {
 
 	private static final long serialVersionUID = -2020546629513913417L;
 
@@ -58,21 +58,21 @@ public class RoundRectangle2fx extends AbstractRectangularShape2fx<RoundRectangl
 	 * @param arcWidth
 	 * @param arcHeight
 	 */
-	public RoundRectangle2fx(Point2D min, Point2D max, double arcWidth, double arcHeight) {
+	public RoundRectangle2fx(Point2D<?, ?> min, Point2D<?, ?> max, double arcWidth, double arcHeight) {
 		this(min.getX(), min.getY(), max.getX(), max.getY(), arcWidth, arcHeight);
 	}
 
 	/**
 	 * @param rr
 	 */
-	public RoundRectangle2fx(RoundRectangle2afp<?, ?, ?, ?, ?> rr) {
+	public RoundRectangle2fx(RoundRectangle2afp<?, ?, ?, ?, ?, ?> rr) {
 		this(rr.getMinX(), rr.getMinY(), rr.getMaxX(), rr.getMaxY(), rr.getArcWidth(), rr.getArcHeight());
 	}
 
 	/**
 	 * @param rr
 	 */
-	public RoundRectangle2fx(RectangularShape2afp<?, ?, ?, ?, ?> rr) {
+	public RoundRectangle2fx(RectangularShape2afp<?, ?, ?, ?, ?, ?> rr) {
 		this(rr.getMinX(), rr.getMinY(), rr.getMaxX(), rr.getMaxY(), 0, 0);
 	}
 

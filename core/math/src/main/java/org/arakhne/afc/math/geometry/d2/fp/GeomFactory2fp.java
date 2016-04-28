@@ -35,14 +35,14 @@ import org.arakhne.afc.math.geometry.d2.afp.Path2afp;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public class GeomFactory2fp implements GeomFactory2afp<PathElement2fp, Point2fp, Rectangle2fp> {
+public class GeomFactory2fp implements GeomFactory2afp<PathElement2fp, Point2fp, Vector2fp, Rectangle2fp> {
 
 	/** The singleton of the factory.
 	 */
 	public static final GeomFactory2fp SINGLETON = new GeomFactory2fp();
 	
 	@Override
-	public Point2fp convertToPoint(Point2D p) {
+	public Point2fp convertToPoint(Point2D<?, ?> p) {
 		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
 		try {
 			return (Point2fp) p;
@@ -51,22 +51,20 @@ public class GeomFactory2fp implements GeomFactory2afp<PathElement2fp, Point2fp,
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends Vector2D> T convertToVector(Point2D p) {
+	public Vector2fp convertToVector(Point2D<?, ?> p) {
 		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
-		return (T) new Vector2fp(p.getX(), p.getY());
+		return new Vector2fp(p.getX(), p.getY());
 	}
 
 	@Override
-	public Point2fp convertToPoint(Vector2D v) {
+	public Point2fp convertToPoint(Vector2D<?, ?> v) {
 		assert (v != null) : "Vector must be not null"; //$NON-NLS-1$
 		return new Point2fp(v.getX(), v.getY());
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends Vector2D> T convertToVector(Vector2D v) {
+	public Vector2fp convertToVector(Vector2D<?, ?> v) {
 		assert (v != null) : "Vector must be not null"; //$NON-NLS-1$
 		Vector2fp vv;
 		try {
@@ -74,7 +72,7 @@ public class GeomFactory2fp implements GeomFactory2afp<PathElement2fp, Point2fp,
 		} catch (Throwable exception) {
 			vv = new Vector2fp(v.getX(), v.getY());
 		}
-		return (T) vv;
+		return vv;
 	}
 
 	@Override
@@ -82,10 +80,9 @@ public class GeomFactory2fp implements GeomFactory2afp<PathElement2fp, Point2fp,
 		return new Point2fp(x, y);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends Vector2D> T newVector(double x, double y) {
-		return (T) new Vector2fp(x, y);
+	public Vector2fp newVector(double x, double y) {
+		return new Vector2fp(x, y);
 	}
 
 	@Override
@@ -93,14 +90,13 @@ public class GeomFactory2fp implements GeomFactory2afp<PathElement2fp, Point2fp,
 		return new Point2fp();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public <T extends Vector2D> T newVector() {
-		return (T) new Vector2fp();
+	public Vector2fp newVector() {
+		return new Vector2fp();
 	}
 
 	@Override
-	public Path2afp<?, ?, PathElement2fp, Point2fp, ?> newPath(PathWindingRule rule) {
+	public Path2afp<?, ?, PathElement2fp, Point2fp, Vector2fp, Rectangle2fp> newPath(PathWindingRule rule) {
 		assert (rule != null) : "Path winding rule must be not null"; //$NON-NLS-1$
 		return new Path2fp(rule);
 	}
@@ -147,7 +143,7 @@ public class GeomFactory2fp implements GeomFactory2afp<PathElement2fp, Point2fp,
 	}
 
 	@Override
-	public MultiShape2afp<?, ?, ?, PathElement2fp, Point2fp, Rectangle2fp> newMultiShape() {
+	public MultiShape2afp<?, ?, ?, PathElement2fp, Point2fp, Vector2fp, Rectangle2fp> newMultiShape() {
 		return new MultiShape2fp();
 	}
 

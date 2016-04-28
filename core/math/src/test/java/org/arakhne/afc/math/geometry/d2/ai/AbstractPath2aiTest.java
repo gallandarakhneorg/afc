@@ -40,8 +40,8 @@ import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.junit.Test;
 
 @SuppressWarnings("all")
-public abstract class AbstractPath2aiTest<T extends Path2ai<?, T, ?, ?, B>,
-		B extends Rectangle2ai<?, ?, ?, ?, B>> extends AbstractShape2aiTest<T, B> {
+public abstract class AbstractPath2aiTest<T extends Path2ai<?, T, ?, ?, ?, B>,
+		B extends Rectangle2ai<?, ?, ?, ?, ?, B>> extends AbstractShape2aiTest<T, B> {
 
 	@Override
 	protected final T createShape() {
@@ -1405,7 +1405,7 @@ public abstract class AbstractPath2aiTest<T extends Path2ai<?, T, ?, ?, B>,
 
 	@Test
 	public void moveToIntInt() {
-		Path2ai<?, ?, ?, ?, ?> tmpShape = createPath();
+		Path2ai<?, ?, ?, ?, ?, ?> tmpShape = createPath();
 		tmpShape.moveTo(15, 145);
 
 		PathIterator2ai<?> pi = tmpShape.getPathIterator();
@@ -1423,7 +1423,7 @@ public abstract class AbstractPath2aiTest<T extends Path2ai<?, T, ?, ?, B>,
 
 	@Test
 	public void moveToPoint2D() {
-		Path2ai<?, ?, ?, ?, ?> tmpShape = createPath();
+		Path2ai<?, ?, ?, ?, ?, ?> tmpShape = createPath();
 		tmpShape.moveTo(createPoint(15, 145));
 
 		PathIterator2ai<?> pi = tmpShape.getPathIterator();
@@ -1441,13 +1441,13 @@ public abstract class AbstractPath2aiTest<T extends Path2ai<?, T, ?, ?, B>,
 
 	@Test(expected = IllegalStateException.class)
 	public void lineToIntInt_noMoveTo() {
-		Path2ai<?, ?, ?, ?, ?> tmpShape = createPath();
+		Path2ai<?, ?, ?, ?, ?, ?> tmpShape = createPath();
 		tmpShape.lineTo(15, 145);
 	}
 
 	@Test
 	public void lineToIntInt_moveTo() {
-		Path2ai<?, ?, ?, ?, ?> tmpShape = createPath();
+		Path2ai<?, ?, ?, ?, ?, ?> tmpShape = createPath();
 		tmpShape.moveTo(15, 145);
 		tmpShape.lineTo(189, -45);
 
@@ -1470,13 +1470,13 @@ public abstract class AbstractPath2aiTest<T extends Path2ai<?, T, ?, ?, B>,
 
 	@Test(expected = IllegalStateException.class)
 	public void lineToPoint2D_noMoveTo() {
-		Path2ai<?, ?, ?, ?, ?> tmpShape = createPath();
+		Path2ai<?, ?, ?, ?, ?, ?> tmpShape = createPath();
 		tmpShape.lineTo(createPoint(15, 145));
 	}
 
 	@Test
 	public void lineToPoint2D_moveTo() {
-		Path2ai<?, ?, ?, ?, ?> tmpShape = createPath();
+		Path2ai<?, ?, ?, ?, ?, ?> tmpShape = createPath();
 		tmpShape.moveTo(15, 145);
 		tmpShape.lineTo(createPoint(189, -45));
 
@@ -1499,13 +1499,13 @@ public abstract class AbstractPath2aiTest<T extends Path2ai<?, T, ?, ?, B>,
 
 	@Test(expected = IllegalStateException.class)
 	public void quadToIntIntIntInt_noMoveTo() {
-		Path2ai<?, ?, ?, ?, ?> tmpShape = createPath();
+		Path2ai<?, ?, ?, ?, ?, ?> tmpShape = createPath();
 		tmpShape.quadTo(15, 145, 50, 20);
 	}
 
 	@Test
 	public void quadToIntIntIntInt_moveTo() {
-		Path2ai<?, ?, ?, ?, ?> tmpShape = createPath();
+		Path2ai<?, ?, ?, ?, ?, ?> tmpShape = createPath();
 		tmpShape.moveTo(4, 6);
 		tmpShape.quadTo(15, 145, 50, 20);
 
@@ -1528,13 +1528,13 @@ public abstract class AbstractPath2aiTest<T extends Path2ai<?, T, ?, ?, B>,
 
 	@Test(expected = IllegalStateException.class)
 	public void quadToPoint2DPoint2D_noMoveTo() {
-		Path2ai<?, ?, ?, ?, ?> tmpShape = createPath();
+		Path2ai<?, ?, ?, ?, ?, ?> tmpShape = createPath();
 		tmpShape.quadTo(createPoint(15, 145), createPoint(50, 20));
 	}
 
 	@Test
 	public void quadToPoint2DPoint2D_moveTo() {
-		Path2ai<?, ?, ?, ?, ?> tmpShape = createPath();
+		Path2ai<?, ?, ?, ?, ?, ?> tmpShape = createPath();
 		tmpShape.moveTo(4, 6);
 		tmpShape.quadTo(createPoint(15, 145), createPoint(50, 20));
 
@@ -1557,13 +1557,13 @@ public abstract class AbstractPath2aiTest<T extends Path2ai<?, T, ?, ?, B>,
 
 	@Test(expected = IllegalStateException.class)
 	public void curveToIntIntIntIntIntInt_noMoveTo() {
-		Path2ai<?, ?, ?, ?, ?> tmpShape = createPath();
+		Path2ai<?, ?, ?, ?, ?, ?> tmpShape = createPath();
 		tmpShape.curveTo(15, 145, 50, 20, 0, 0);
 	}
 
 	@Test
 	public void curveToIntIntIntIntIntInt_moveTo() {
-		Path2ai<?, ?, ?, ?, ?> tmpShape = createPath();
+		Path2ai<?, ?, ?, ?, ?, ?> tmpShape = createPath();
 		tmpShape.moveTo(4, 6);
 		tmpShape.curveTo(15, 145, 50, 20, 0, 0);
 
@@ -1586,13 +1586,13 @@ public abstract class AbstractPath2aiTest<T extends Path2ai<?, T, ?, ?, B>,
 
 	@Test(expected = IllegalStateException.class)
 	public void curveToPoint2DPoint2DPoint2D_noMoveTo() {
-		Path2ai<?, ?, ?, ?, ?> tmpShape = createPath();
+		Path2ai<?, ?, ?, ?, ?, ?> tmpShape = createPath();
 		tmpShape.curveTo(createPoint(15, 145), createPoint(50, 20), createPoint(0, 0));
 	}
 
 	@Test
 	public void curveToPoint2DPoint2DPoint2Dt_moveTo() {
-		Path2ai<?, ?, ?, ?, ?> tmpShape = createPath();
+		Path2ai<?, ?, ?, ?, ?, ?> tmpShape = createPath();
 		tmpShape.moveTo(4, 6);
 		tmpShape.curveTo(createPoint(15, 145), createPoint(50, 20), createPoint(0, 0));
 

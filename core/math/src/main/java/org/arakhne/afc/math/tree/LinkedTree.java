@@ -20,6 +20,8 @@ package org.arakhne.afc.math.tree;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /**
  * This is the generic implementation of a
  * tree based on linked lists.
@@ -89,15 +91,12 @@ public class LinkedTree<D,N extends TreeNode<D,N>> extends AbstractTree<D,N> {
 		}
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
+	@Pure
 	public N getRoot() {
 		return this.root;
 	}
 	
-	/** {@inheritDoc}
-	 */
 	@Override
 	public void setRoot(N newRoot) {
 		if (newRoot==this.root) return;
@@ -133,16 +132,14 @@ public class LinkedTree<D,N extends TreeNode<D,N>> extends AbstractTree<D,N> {
 		}
 	}
 	
-	/** {@inheritDoc}
-	 */
 	@Override
+	@Pure
 	public int getNodeCount() {
 		return this.nodeCount;
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
+	@Pure
 	public int getUserDataCount() {
 		return this.dataCount;
 	}
@@ -161,23 +158,20 @@ public class LinkedTree<D,N extends TreeNode<D,N>> extends AbstractTree<D,N> {
 		return this.dataCount;
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
+	@Pure
 	public int getMinHeight() {
 		return (this.root!=null) ? this.root.getMinHeight() : 0;
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
+	@Pure
 	public int getMaxHeight() {
 		return (this.root!=null) ? this.root.getMaxHeight() : 0;
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
+	@Pure
 	public int[] getHeights() {
 		return (this.root!=null) ? this.root.getHeights() : new int[] { 0 };
 	}
@@ -203,8 +197,6 @@ public class LinkedTree<D,N extends TreeNode<D,N>> extends AbstractTree<D,N> {
 			//
 		}
 
-		/** {@inheritDoc}
-		 */
 		@Override
 		@SuppressWarnings("synthetic-access")
 		public void treeNodeChildAdded(TreeNodeAddedEvent event) {
@@ -213,8 +205,6 @@ public class LinkedTree<D,N extends TreeNode<D,N>> extends AbstractTree<D,N> {
 			LinkedTree.this.dataCount += childNode.getDeepUserDataCount();
 		}
 
-		/** {@inheritDoc}
-		 */
 		@Override
 		@SuppressWarnings("synthetic-access")
 		public void treeNodeChildRemoved(TreeNodeRemovedEvent event) {
@@ -223,8 +213,6 @@ public class LinkedTree<D,N extends TreeNode<D,N>> extends AbstractTree<D,N> {
 			LinkedTree.this.dataCount -= childNode.getDeepUserDataCount();
 		}
 
-		/** {@inheritDoc}
-		 */
 		@Override
 		@SuppressWarnings("synthetic-access")
 		public void treeNodeDataChanged(TreeDataEvent event) {
@@ -238,8 +226,6 @@ public class LinkedTree<D,N extends TreeNode<D,N>> extends AbstractTree<D,N> {
 			}
 		}
 
-		/** {@inheritDoc}
-		 */
 		@Override
 		public void treeNodeParentChanged(TreeNodeParentChangedEvent event) {
 			//

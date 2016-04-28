@@ -21,6 +21,8 @@
  */
 package org.arakhne.afc.math.stochastic;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /** Define the range of a mathematic function.
  * 
  * @author $Author: sgalland$
@@ -37,6 +39,7 @@ public class MathFunctionRange {
 	 * @param values are put in there own bounds object
 	 * @return the set of bounds
 	 */
+	@Pure
 	public static MathFunctionRange[] createDiscreteSet(double... values) {
 		MathFunctionRange[] bounds = new MathFunctionRange[values.length];
 		for( int i=0; i<values.length; ++i) {
@@ -55,6 +58,7 @@ public class MathFunctionRange {
 	 * @param values are put in there own bounds object
 	 * @return the set of bounds
 	 */
+	@Pure
 	public static MathFunctionRange[] createSet(double... values) {
 		MathFunctionRange[] bounds = new MathFunctionRange[values.length/2];
 		for( int i=0, j=0; i<values.length; i+=2, ++j) {
@@ -67,6 +71,7 @@ public class MathFunctionRange {
 	 * 
 	 * @return the set of bounds
 	 */
+	@Pure
 	public static MathFunctionRange[] createInfinitySet() {
 		return new MathFunctionRange[] {
 				new MathFunctionRange(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY)
@@ -115,11 +120,7 @@ public class MathFunctionRange {
 		this.includeMax = (this.max!=Double.POSITIVE_INFINITY)&&(includeMax1);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 * 
-	 * @return {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public String toString() {
 		StringBuilder buffer = new StringBuilder();
@@ -135,6 +136,7 @@ public class MathFunctionRange {
 	 * 
 	 * @return the minimal value of the value set.
 	 */
+	@Pure
 	public double getMin() {
 		return this.min;
 	}
@@ -143,6 +145,7 @@ public class MathFunctionRange {
 	 * 
 	 * @return the maximal value of the value set.
 	 */
+	@Pure
 	public double getMax() {
 		return this.max;
 	}
@@ -152,6 +155,7 @@ public class MathFunctionRange {
 	 * @return <code>true</code> if the minimal value is inside the set,
 	 * otherwise <code>false</code>
 	 */
+	@Pure
 	public boolean isMinValueIncluded() {
 		return this.includeMin;
 	}
@@ -161,6 +165,7 @@ public class MathFunctionRange {
 	 * @return <code>true</code> if the maximal value is inside the set,
 	 * otherwise <code>false</code>
 	 */
+	@Pure
 	public boolean isMaxValueIncluded() {
 		return this.includeMax;
 	}

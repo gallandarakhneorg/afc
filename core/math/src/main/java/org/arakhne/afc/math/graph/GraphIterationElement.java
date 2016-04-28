@@ -20,6 +20,8 @@
  */
 package org.arakhne.afc.math.graph;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /** Describe an element of the graph during an iteration.
  * 
  * @param <PT> is the type of node in the graph
@@ -92,6 +94,7 @@ public class GraphIterationElement<ST extends GraphSegment<ST,PT>,PT extends Gra
 	 * 
 	 * @return the segment from which the iterator arrived on the current segment.
 	 */
+	@Pure
 	public ST getPreviousSegment() {
 		return this.previousSegment;
 	}
@@ -100,6 +103,7 @@ public class GraphIterationElement<ST extends GraphSegment<ST,PT>,PT extends Gra
 	 * 
 	 * @return the segment.
 	 */
+	@Pure
 	public ST getSegment() {
 		return this.currentSegment;
 	}
@@ -108,6 +112,7 @@ public class GraphIterationElement<ST extends GraphSegment<ST,PT>,PT extends Gra
 	 * 
 	 * @return the entry point on the segment.
 	 */
+	@Pure
 	public PT getPoint() {
 		return this.connectionPoint;
 	}
@@ -118,13 +123,12 @@ public class GraphIterationElement<ST extends GraphSegment<ST,PT>,PT extends Gra
 	 * The value could be negative in case the iterations start from
 	 * inside the segment.
 	 */
+	@Pure
 	public final double getDistanceToReachSegment() {
 		return this.distanceToReach;
 	}
 	
-	/**
-	 * {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public String toString() {
 		StringBuilder buffer = new StringBuilder();
@@ -144,25 +148,19 @@ public class GraphIterationElement<ST extends GraphSegment<ST,PT>,PT extends Gra
 		return buffer.toString();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public final boolean equals(Object obj) {
 		return compareTo(obj) == 0;
 	}
 	
-	/**
-	 * {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public int hashCode() {
 		return this.currentSegment==null ? 0 : this.currentSegment.hashCode();
 	}
 	
-	/**
-	 * {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public final int compareTo(Object o) {
 		if (o instanceof GraphIterationElement<?,?>) {
@@ -185,6 +183,7 @@ public class GraphIterationElement<ST extends GraphSegment<ST,PT>,PT extends Gra
 	 * <code>1</code> if <var>firstSegment</var> is greater than <var>secondSegment</var>,
 	 * or <code>0</code> if <var>firstSegment</var> is equal to <var>secondSegment</var>.
 	 */
+	@Pure
 	@SuppressWarnings({ "unchecked", "rawtypes", "static-method" })
 	protected int compareSegments(GraphSegment<?,?> firstSegment, GraphSegment<?,?> secondSegment) {
 		if (firstSegment instanceof Comparable) {
@@ -206,6 +205,7 @@ public class GraphIterationElement<ST extends GraphSegment<ST,PT>,PT extends Gra
 	 * 
 	 * @return <code>true</code> if this segment is a cul-de-sac, otherwise <code>false</code>
 	 */
+	@Pure
 	public final boolean isCulDeSac() {
 		return this.culDeSac;
 	}
@@ -218,6 +218,7 @@ public class GraphIterationElement<ST extends GraphSegment<ST,PT>,PT extends Gra
 	 * 
 	 * @return <code>true</code> if this segment is terminal, otherwise <code>false</code>
 	 */
+	@Pure
 	public final boolean isTerminalSegment() {
 		return this.culDeSac || this.lastReachableSegment;
 	}

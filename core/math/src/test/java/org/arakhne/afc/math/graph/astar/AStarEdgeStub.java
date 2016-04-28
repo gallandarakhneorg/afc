@@ -26,6 +26,7 @@ import org.arakhne.afc.math.graph.GraphSegment;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("all")
 class AStarEdgeStub implements GraphSegment<AStarEdgeStub,AStarNodeStub> {
 
 	/**

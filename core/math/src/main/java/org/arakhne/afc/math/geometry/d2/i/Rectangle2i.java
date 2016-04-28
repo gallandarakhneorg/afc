@@ -34,7 +34,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @since 13.0
  */
 public class Rectangle2i extends AbstractShape2i<Rectangle2i>
-	implements Rectangle2ai<Shape2i<?>, Rectangle2i, PathElement2i, Point2i, Rectangle2i> {
+	implements Rectangle2ai<Shape2i<?>, Rectangle2i, PathElement2i, Point2i, Vector2i, Rectangle2i> {
 
 	private static final long serialVersionUID = -527939826840504763L;
 
@@ -57,7 +57,7 @@ public class Rectangle2i extends AbstractShape2i<Rectangle2i>
 	 * @param min is the min corner of the rectangle.
 	 * @param max is the max corner of the rectangle.
 	 */
-	public Rectangle2i(Point2D min, Point2D max) {
+	public Rectangle2i(Point2D<?, ?> min, Point2D<?, ?> max) {
 		assert (min != null) : "Minimum corner must be not null"; //$NON-NLS-1$
 		assert (max != null) : "Maximum corner must be not null"; //$NON-NLS-1$
 		setFromCorners(min.ix(), min.iy(), max.ix(), max.iy());

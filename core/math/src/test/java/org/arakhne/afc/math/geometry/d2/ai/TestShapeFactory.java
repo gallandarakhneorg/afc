@@ -37,18 +37,18 @@ import org.junit.Rule;
 import org.junit.Test;
 
 @SuppressWarnings("all")
-public interface TestShapeFactory<B extends Rectangle2ai<?, ?, ?, ?, B>> {
+public interface TestShapeFactory<B extends Rectangle2ai<?, ?, ?, ?, ?, B>> {
 	
-	Segment2ai<?, ?, ?, ?, B> createSegment(int x1, int y1, int x2, int y2);
+	Segment2ai<?, ?, ?, ?, ?, B> createSegment(int x1, int y1, int x2, int y2);
 	
 	B createRectangle(int x, int y, int width, int height);
 
-	Circle2ai<?, ?, ?, ?, B> createCircle(int x, int y, int radius);
+	Circle2ai<?, ?, ?, ?, ?, B> createCircle(int x, int y, int radius);
 	
 	Point2D createPoint(int x, int y);
 
 	Vector2D createVector(int x, int y);
 
-	Path2ai<?, ?, ?, ?, B> createPath();
+	Path2ai<?, ?, ?, ?, ?, B> createPath();
 	
 }

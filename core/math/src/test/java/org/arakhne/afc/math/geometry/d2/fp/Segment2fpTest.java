@@ -28,7 +28,7 @@ import org.arakhne.afc.math.geometry.d2.afp.TestShapeFactory;
 public class Segment2fpTest extends AbstractSegment2afpTest<Segment2fp, Rectangle2fp> {
 
 	@Override
-	protected TestShapeFactory<Point2fp, Rectangle2fp> createFactory() {
+	protected TestShapeFactory2fp createFactory() {
 		return TestShapeFactory2fp.SINGLETON;
 	}
 

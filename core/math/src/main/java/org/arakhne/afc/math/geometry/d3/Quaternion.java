@@ -22,10 +22,7 @@ package org.arakhne.afc.math.geometry.d3;
 
 import java.io.Serializable;
 
-import org.arakhne.afc.math.MathConstants;
-import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem3D;
-import org.arakhne.afc.math.geometry.d3.Vector3D;
 import org.arakhne.afc.math.matrix.Matrix3f;
 import org.arakhne.afc.math.matrix.Matrix4f;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -269,7 +266,6 @@ public interface Quaternion extends Cloneable, Serializable {
 	 * @see #setAxisAngle(double, double, double, double)
 	 * @see #getAngle()
 	 */
-	@SuppressWarnings("synthetic-access")
 	@Pure
 	AxisAngle getAxisAngle();
 
@@ -297,7 +293,6 @@ public interface Quaternion extends Cloneable, Serializable {
 	 * @see <a href="http://en.wikipedia.org/wiki/Euler_angles">Euler Angles</a>
 	 * @see <a href="http://www.euclideanspace.com/maths/geometry/rotations/conversions/eulerToQuaternion/index.htm">Euler to Quaternion</a>
 	 */
-	@SuppressWarnings("synthetic-access")
 	void setEulerAngles(EulerAngles angles);
 
 	/** Set the quaternion with the Euler angles.

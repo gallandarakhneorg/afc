@@ -22,6 +22,7 @@ import java.util.NoSuchElementException;
 
 import org.arakhne.afc.math.tree.Tree;
 import org.arakhne.afc.math.tree.TreeNode;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * This class is an iterator on a forest nodes.
@@ -68,24 +69,17 @@ implements Iterator<TreeNode<D,?>> {
 		}
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public void remove() {
 		throw new UnsupportedOperationException();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public boolean hasNext() {
 		return this.nextNode!=null;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public TreeNode<D,?> next() {
 		TreeNode<D,?> d = this.nextNode;

@@ -21,6 +21,7 @@
 package org.arakhne.afc.math.graph.astar;
 
 import org.arakhne.afc.math.graph.GraphPoint;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** This interface provides an heuristic evaluation
  * of a path for the {@link AStar A* algorithm}.
@@ -41,6 +42,7 @@ public interface AStarHeuristic<PT extends GraphPoint<PT,?>> {
 	 * @param p2
 	 * @return the evaluated distance between <var>p1</var> and <var>p2</var>.
 	 */
+	@Pure
 	public double evaluate(PT p1, PT p2);
 
 }

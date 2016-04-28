@@ -17,6 +17,8 @@
  */
 package org.arakhne.afc.math.tree;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /**
  * This interface is used to specify the base functions
  * of a tree node which is usable by an tree iterator.
@@ -38,6 +40,7 @@ public interface IterableNode<N extends IterableNode<?>> {
 	 * @return the count of children.
 	 * @see #getNotNullChildCount()
 	 */
+	@Pure
 	public int getChildCount();
 
 	/** Replies count of not-null children in this node.
@@ -48,6 +51,7 @@ public interface IterableNode<N extends IterableNode<?>> {
 	 * @return the count of not-null children.
 	 * @see #getChildCount()
 	 */
+	@Pure
 	public int getNotNullChildCount();
 
 	/** Replies the n-th child in this node.
@@ -56,6 +60,7 @@ public interface IterableNode<N extends IterableNode<?>> {
 	 * @return the child node.
 	 * @throws IndexOutOfBoundsException if the given index was invalid
 	 */
+	@Pure
 	public N getChildAt(int index) throws IndexOutOfBoundsException;
 	
 	/** Replies if this node is a leaf.
@@ -63,6 +68,7 @@ public interface IterableNode<N extends IterableNode<?>> {
 	 * @return <code>true</code> is this node is a leaf,
 	 * otherwise <code>false</code>
 	 */
+	@Pure
 	public boolean isLeaf();
 
 	/** Remove this node from its parent.

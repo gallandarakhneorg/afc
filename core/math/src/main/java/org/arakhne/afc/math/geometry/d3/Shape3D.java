@@ -44,6 +44,7 @@ extends Cloneable, Serializable {
 	 * @return <code>true</code> if the shape is empty;
 	 * <code>false</code> otherwise.
 	 */
+	@Pure
 	public boolean isEmpty();
 
 	/** Clone this shape.

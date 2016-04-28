@@ -36,11 +36,11 @@ import org.arakhne.afc.math.geometry.d2.afp.TestShapeFactory;
 import org.arakhne.afc.math.geometry.d2.afp.Triangle2afp;
 
 @SuppressWarnings("all")
-public class TestShapeFactory2fx implements TestShapeFactory<Point2fx, Rectangle2fx> {
+public class TestShapeFactory2fx implements TestShapeFactory<Point2fx, Vector2fx, Rectangle2fx> {
 	
 	public static final TestShapeFactory2fx SINGLETON = new TestShapeFactory2fx();
 	
-	public Segment2afp<?, ?, ?, Point2fx, Rectangle2fx> createSegment(double x1, double y1, double x2, double y2) {
+	public Segment2afp<?, ?, ?, Point2fx, Vector2fx, Rectangle2fx> createSegment(double x1, double y1, double x2, double y2) {
 		return new Segment2fx(x1, y1, x2, y2);
 	}
 	
@@ -50,7 +50,7 @@ public class TestShapeFactory2fx implements TestShapeFactory<Point2fx, Rectangle
 		return new Rectangle2fx(x, y, width, height);
 	}
 
-	public Circle2afp<?, ?, ?, Point2fx, Rectangle2fx> createCircle(double x, double y, double radius) {
+	public Circle2afp<?, ?, ?, Point2fx, Vector2fx, Rectangle2fx> createCircle(double x, double y, double radius) {
 		assert (radius >= 0) : "Radius must be positive or zero";
 		return new Circle2fx(x, y, radius);
 	}
@@ -63,7 +63,7 @@ public class TestShapeFactory2fx implements TestShapeFactory<Point2fx, Rectangle
 		return new Vector2fx(x, y);
 	}
 
-	public Path2afp<?, ?, ?, Point2fx, Rectangle2fx> createPath(PathWindingRule rule) {
+	public Path2afp<?, ?, ?, Point2fx, Vector2fx, Rectangle2fx> createPath(PathWindingRule rule) {
 		if (rule == null) {
 			return new Path2fx();
 		}
@@ -71,7 +71,7 @@ public class TestShapeFactory2fx implements TestShapeFactory<Point2fx, Rectangle
 	}
 
 	@Override
-	public RoundRectangle2afp<?, ?, ?, Point2fx, Rectangle2fx> createRoundRectangle(double x, double y, double width,
+	public RoundRectangle2afp<?, ?, ?, Point2fx, Vector2fx, Rectangle2fx> createRoundRectangle(double x, double y, double width,
 			double height, double arcWidth, double arcHeight) {
 		assert (width >= 0) : "Width must be positive or zero";
 		assert (height >= 0) : "Height must be positive or zero";
@@ -81,7 +81,7 @@ public class TestShapeFactory2fx implements TestShapeFactory<Point2fx, Rectangle
 	}
 
 	@Override
-	public OrientedRectangle2afp<?, ?, ?, Point2fx, Rectangle2fx> createOrientedRectangle(
+	public OrientedRectangle2afp<?, ?, ?, Point2fx, Vector2fx, Rectangle2fx> createOrientedRectangle(
 			double centerX, double centerY, double axis1X, double axis1Y,
 			double extent1, double extent2) {
 		assert (Vector2D.isUnitVector(axis1X, axis1Y)) : "Axis1 must be a unit vector";
@@ -91,7 +91,7 @@ public class TestShapeFactory2fx implements TestShapeFactory<Point2fx, Rectangle
 	}
 
 	@Override
-	public Parallelogram2afp<?, ?, ?, Point2fx, Rectangle2fx> createParallelogram(
+	public Parallelogram2afp<?, ?, ?, Point2fx, Vector2fx, Rectangle2fx> createParallelogram(
 			double cx, double cy, double ux, double uy, double extent1, double vx, double vy, double extent2) {
 		assert (Vector2D.isUnitVector(ux, uy)) : "Axis1 must be a unit vector";
 		assert (Vector2D.isUnitVector(vx, vy)) : "Axis2 must be a unit vector";
@@ -101,20 +101,20 @@ public class TestShapeFactory2fx implements TestShapeFactory<Point2fx, Rectangle
 	}
 
 	@Override
-	public Ellipse2afp<?, ?, ?, Point2fx, Rectangle2fx> createEllipse(double x, double y, double width, double height) {
+	public Ellipse2afp<?, ?, ?, Point2fx, Vector2fx, Rectangle2fx> createEllipse(double x, double y, double width, double height) {
 		assert (width >= 0) : "Width must be positive or zero";
 		assert (height >= 0) : "Height must be positive or zero";
 		return new Ellipse2fx(x, y, width, height);
 	}
 
 	@Override
-	public Triangle2afp<?, ?, ?, Point2fx, Rectangle2fx> createTriangle(double x1, double y1, double x2, double y2, double x3,
+	public Triangle2afp<?, ?, ?, Point2fx, Vector2fx, Rectangle2fx> createTriangle(double x1, double y1, double x2, double y2, double x3,
 			double y3) {
 		return new Triangle2fx(x1, y1, x2, y2, x3, y3);
 	}
 
 	@Override
-	public MultiShape2afp<?, ?, ?, ?, Point2fx, Rectangle2fx> createMultiShape() {
+	public MultiShape2afp<?, ?, ?, ?, Point2fx, Vector2fx, Rectangle2fx> createMultiShape() {
 		return new MultiShape2fx();
 	}
 	

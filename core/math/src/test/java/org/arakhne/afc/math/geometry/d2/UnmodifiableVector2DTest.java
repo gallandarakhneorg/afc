@@ -33,6 +33,11 @@ public class UnmodifiableVector2DTest extends AbstractUnmodifiableVector2DTest {
 			public Vector2D clone() {
 				return createVector(this.x, this.y);
 			}
+			
+			@Override
+			public GeomFactory getGeomFactory() {
+				return ImmutableGeomFactory.SINGLETON;
+			}
 
 			@Override
 			public double getX() {
@@ -55,7 +60,7 @@ public class UnmodifiableVector2DTest extends AbstractUnmodifiableVector2DTest {
 			}
 
 			@Override
-			public Vector2D toUnmodifiable() {
+			public UnmodifiableVector2D toUnmodifiable() {
 				return this;
 			}
 
@@ -74,113 +79,7 @@ public class UnmodifiableVector2DTest extends AbstractUnmodifiableVector2DTest {
 
 	@Override
 	protected Point2D createPoint(final double tx, final double ty) {
-		return new Point2D() {
-			private double x = tx;
-			private double y = ty;
-			@Override
-			public Point2D clone() {
-				return createPoint(this.x, this.y);
-			}
-
-			@Override
-			public double getX() {
-				return this.x;
-			}
-
-			@Override
-			public int ix() {
-				return (int) this.x;
-			}
-
-			@Override
-			public void setX(int x) {
-				this.x = x;
-			}
-
-			@Override
-			public void setX(double x) {
-				this.x = x;
-			}
-
-			@Override
-			public double getY() {
-				return this.y;
-			}
-
-			@Override
-			public int iy() {
-				return (int) this.y;
-			}
-
-			@Override
-			public void setY(int y) {
-				this.y = y;
-			}
-
-			@Override
-			public void setY(double y) {
-				this.y = y;
-			}
-
-			@Override
-			public Point2D toUnmodifiable() {
-				return new ImPoint2D();
-			}
-
-			class ImPoint2D implements Point2D {
-
-				@Override
-				public Point2D clone() {
-					return new ImPoint2D();
-				}
-
-				@Override
-				public double getX() {
-					return x;
-				}
-
-				@Override
-				public int ix() {
-					return (int) x;
-				}
-
-				@Override
-				public void setX(int x) {
-					throw new UnsupportedOperationException();
-				}
-
-				@Override
-				public void setX(double x) {
-					throw new UnsupportedOperationException();
-				}
-
-				@Override
-				public double getY() {
-					return y;
-				}
-
-				@Override
-				public int iy() {
-					return (int) y;
-				}
-
-				@Override
-				public void setY(int y) {
-					throw new UnsupportedOperationException();
-				}
-
-				@Override
-				public void setY(double y) {
-					throw new UnsupportedOperationException();
-				}
-
-				@Override
-				public Point2D toUnmodifiable() {
-					return this;
-				}
-				
-			}
-		};
+		return new Point2DStub(tx, ty);
 	}
 
 }

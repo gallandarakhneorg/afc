@@ -34,7 +34,7 @@ import org.arakhne.afc.math.geometry.d2.afp.Ellipse2afp;
  * @since 13.0
  */
 public class Ellipse2fx extends AbstractRectangularShape2fx<Ellipse2fx>
-	implements Ellipse2afp<Shape2fx<?>, Ellipse2fx, PathElement2fx, Point2fx, Rectangle2fx> {
+	implements Ellipse2afp<Shape2fx<?>, Ellipse2fx, PathElement2fx, Point2fx, Vector2fx, Rectangle2fx> {
 
 	private static final long serialVersionUID = -4493000182971183282L;
 
@@ -47,7 +47,7 @@ public class Ellipse2fx extends AbstractRectangularShape2fx<Ellipse2fx>
 	 * @param min is the min corner of the ellipse.
 	 * @param max is the max corner of the ellipse.
 	 */
-	public Ellipse2fx(Point2D min, Point2D max) {
+	public Ellipse2fx(Point2D<?, ?> min, Point2D<?, ?> max) {
 		assert (min != null) : "Minimum point must be not null"; //$NON-NLS-1$
 		assert (max != null) : "Maximum point must be not null"; //$NON-NLS-1$
 		setFromCorners(min.getX(), min.getY(), max.getX(), max.getY());
@@ -68,7 +68,7 @@ public class Ellipse2fx extends AbstractRectangularShape2fx<Ellipse2fx>
 	/**
 	 * @param e
 	 */
-	public Ellipse2fx(Ellipse2afp<?, ?, ?, ?, ?> e) {
+	public Ellipse2fx(Ellipse2afp<?, ?, ?, ?, ?, ?> e) {
 		super(e);
 	}
 

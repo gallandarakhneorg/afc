@@ -27,6 +27,8 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /**
  * This class describes a path inside a graph.
  * 
@@ -97,8 +99,8 @@ public class GraphPath<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<S
 	 * 
 	 * @return <code>true</code> if the first segment
 	 * could be reversed; otherwise <code>false</code>.
-	 * @since 4.1
 	 */
+	@Pure
 	public boolean isFirstSegmentReversable() {
 		return this.isReversable;
 	}
@@ -132,84 +134,64 @@ public class GraphPath<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<S
 	 * 
 	 * @param isReversable1 is <code>true</code> if the first
 	 * segment could be reversed; otherwise <code>false</code>.
-	 * @since 4.1
 	 */
 	public void setFirstSegmentReversable(boolean isReversable1) {
 		this.isReversable = isReversable1;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public int size() {
 		return this.segmentList.size();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public boolean isEmpty() {
 		return this.segmentList.isEmpty();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public boolean contains(Object o) {
 		return this.segmentList.contains(o);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public Iterator<ST> iterator() {
 		return this.segmentList.iterator();
 	}
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public Iterator<PT> pointIterator() {
 		return new PointIterator<>(this.startingPoint,this.segmentList.iterator());
 	}
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public Iterable<PT> points() {
 		return new PointIterable();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public Object[] toArray() {
 		return this.segmentList.toArray();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public <T> T[] toArray(T[] a) {
 		return this.segmentList.toArray(a);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public boolean containsAll(Collection<?> c) {
 		return this.segmentList.containsAll(c);
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public boolean add(ST segment, PT point) {
 		assert(segment!=null);
@@ -310,9 +292,6 @@ public class GraphPath<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<S
 		throw new IllegalArgumentException();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public boolean add(ST segment) {
 		// The path is empty, so that the segment is the first one.
@@ -363,15 +342,13 @@ public class GraphPath<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<S
 		return false;
 	}
 	
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public PT getLastPoint() {
 		return this.endingPoint;
 	}
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public PT getFirstPoint() {
 		return this.startingPoint;
@@ -382,6 +359,7 @@ public class GraphPath<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<S
 	 * @param index is the index of the segment.
 	 * @return the starting point for the segment at the given index.
 	 */
+	@Pure
 	public PT getStartingPointFor(int index) {
 		if ((index<1)||(this.segmentList.size()<=1)) {
 			if (this.startingPoint!=null) {
@@ -443,8 +421,7 @@ public class GraphPath<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<S
 		return null;
 	}
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public ST getLastSegment() {
 		if (!this.segmentList.isEmpty()) {
@@ -453,8 +430,7 @@ public class GraphPath<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<S
 		return null;
 	}
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public ST getAntepenulvianSegment() {
 		if (this.segmentList.size()>=2) {
@@ -463,16 +439,14 @@ public class GraphPath<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<S
 		return null;
 	}
 
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public ST getSecondSegment() {
 		if (this.segmentList.size()>1) return this.segmentList.get(1);
 		return null;
 	}
 	
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public ST getFirstSegment() {
 		if (!this.segmentList.isEmpty()) {
@@ -481,8 +455,6 @@ public class GraphPath<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<S
 		return null;
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public boolean addAll(Collection<? extends ST> c) {
 		boolean listChanged = false;
@@ -501,9 +473,6 @@ public class GraphPath<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<S
 		return listChanged;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public boolean remove(Object o) {
 		if ((o!=null)&&(o instanceof GraphSegment<?,?>)) {
@@ -692,7 +661,6 @@ public class GraphPath<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<S
 	 *
 	 * @param o
 	 * @return <code>true</code> on success, otherwise <code>false</code>
-	 * @since 4.0
 	 */
 	public boolean removeAfter(ST o) {
 		return removeAfter(this.segmentList.indexOf(o), false);
@@ -707,7 +675,6 @@ public class GraphPath<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<S
 	 * 
 	 * @param o
 	 * @return <code>true</code> on success, otherwise <code>false</code>
-	 * @since 4.0
 	 */
 	public boolean removeAfterLast(ST o) {
 		return removeAfter(this.segmentList.lastIndexOf(o), false);
@@ -725,7 +692,6 @@ public class GraphPath<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<S
 	 * @param p is the point on which the segment was connected
 	 * as its first point.
 	 * @return <code>true</code> on success, otherwise <code>false</code>
-	 * @since 4.0
 	 */
 	public boolean removeAfterLast(ST o, PT p) {
 		return removeAfter(lastIndexOf(o,p), false);
@@ -743,7 +709,6 @@ public class GraphPath<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<S
 	 * @param p is the point on which the segment was connected
 	 * as its first point.
 	 * @return <code>true</code> on success, otherwise <code>false</code>
-	 * @since 4.0
 	 */
 	public boolean removeFromLast(ST o, PT p) {
 		return removeAfter(lastIndexOf(o,p), true);
@@ -876,9 +841,6 @@ public class GraphPath<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<S
 		return removeAfter(this.segmentList.lastIndexOf(o), true);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public boolean removeAll(Collection<?> c) {
 		return filterList(c, true);
@@ -935,17 +897,11 @@ public class GraphPath<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<S
 		return listChanged;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public boolean retainAll(Collection<?> c) {
 		return filterList(c, false);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void clear() {
 		this.segmentList.clear();
@@ -955,9 +911,6 @@ public class GraphPath<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<S
 		this.length = 0;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public boolean addAll(int index, Collection<? extends ST> c) {
 		boolean changed = false;
@@ -986,9 +939,6 @@ public class GraphPath<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<S
 		return this.segmentList.get(index);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public ST set(int index, ST element) {
 		if (index>=0 && index<this.segmentList.size()) {
@@ -1008,9 +958,6 @@ public class GraphPath<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<S
 		return null;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public ST remove(int index) {
 		if ((index>0)&&(index<this.segmentList.size())) {
@@ -1055,49 +1002,37 @@ public class GraphPath<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<S
 		return null;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public int indexOf(Object o) {
 		return this.segmentList.indexOf(o);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public int lastIndexOf(Object o) {
 		return this.segmentList.lastIndexOf(o);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public ListIterator<ST> listIterator() {
 		return this.segmentList.listIterator();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public ListIterator<ST> listIterator(int index) {
 		return this.segmentList.listIterator(index);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public List<ST> subList(int fromIndex, int toIndex) {
 		return this.segmentList.subList(fromIndex,toIndex);
 	}
 	
-	/**
-	 * {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public String toString() {
 		StringBuilder buffer = new StringBuilder();
@@ -1117,8 +1052,6 @@ public class GraphPath<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<S
 	}
 	
 	/** Revert the order of the graph segment in this path.
-	 * 
-	 * @since 4.0
 	 */
 	public void invert() {
 		PT p = this.startingPoint;
@@ -1134,8 +1067,7 @@ public class GraphPath<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<S
 	}
 
 	
-	/** {@inheritDoc}
-	 */
+	@Pure
 	@SuppressWarnings("unchecked")
 	@Override
 	public GP clone() {
@@ -1172,7 +1104,6 @@ public class GraphPath<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<S
 	 * 
 	 * @param o
 	 * @return the rest of the path after the last occurence of the given element.
-	 * @since 4.0
 	 */
 	public GP splitAfterLast(ST o) {
 		return splitAt(this.segmentList.lastIndexOf(o), false);
@@ -1188,7 +1119,6 @@ public class GraphPath<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<S
 	 * 
 	 * @param o
 	 * @return the rest of the path after the last occurence of the given element.
-	 * @since 4.0
 	 */
 	public GP splitAtLast(ST o) {
 		return splitAt(this.segmentList.lastIndexOf(o), true);
@@ -1220,7 +1150,6 @@ public class GraphPath<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<S
 	 * 
 	 * @param o
 	 * @return the rest of the path after the first occurence of the given element.
-	 * @since 4.0
 	 */
 	public GP splitAt(ST o) {
 		return splitAt(this.segmentList.indexOf(o), true);
@@ -1232,7 +1161,6 @@ public class GraphPath<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<S
 	 * 
 	 * @param position
 	 * @return the rest of the path after the element at the given position.
-	 * @since 4.0
 	 */
 	public GP splitAt(int position) {
 		return splitAt(position, true);
@@ -1249,7 +1177,6 @@ public class GraphPath<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<S
 	 * @param o is the segment to search for.
 	 * @param startPoint is the starting point of the searched segment.
 	 * @return the rest of the path after the last occurence of the given element.
-	 * @since 4.0
 	 */
 	public GP splitAfterLast(ST o, PT startPoint) {
 		return splitAt(lastIndexOf(o,startPoint), false);
@@ -1266,7 +1193,6 @@ public class GraphPath<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<S
 	 * @param o
 	 * @param startPoint is the starting point of the searched segment.
 	 * @return the rest of the path after the last occurence of the given element.
-	 * @since 4.0
 	 */
 	public GP splitAtLast(ST o, PT startPoint) {
 		return splitAt(lastIndexOf(o,startPoint), true);
@@ -1283,7 +1209,6 @@ public class GraphPath<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<S
 	 * @param o
 	 * @param startPoint is the starting point of the searched segment.
 	 * @return the rest of the path after the first occurence of the given element.
-	 * @since 4.0
 	 */
 	public GP splitAfter(ST o, PT startPoint) {
 		return splitAt(indexOf(o,startPoint), false);
@@ -1300,7 +1225,6 @@ public class GraphPath<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<S
 	 * @param o
 	 * @param startPoint is the starting point of the searched segment.
 	 * @return the rest of the path after the first occurence of the given element.
-	 * @since 4.0
 	 */
 	public GP splitAt(ST o, PT startPoint) {
 		return splitAt(indexOf(o,startPoint), true);
@@ -1309,8 +1233,8 @@ public class GraphPath<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<S
 	/** Replies the length of the path.
 	 * 
 	 * @return the length of the path.
-	 * @since 4.0
 	 */
+	@Pure
 	public double getLength() {
 		return this.length;
 	}
@@ -1332,6 +1256,7 @@ public class GraphPath<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<S
 			//
 		}
 
+		@Pure
 		@SuppressWarnings("synthetic-access")
 		@Override
 		public Iterator<PT> iterator() {
@@ -1362,17 +1287,12 @@ public class GraphPath<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<S
 			this.point = startPoint;
 		}
 		
-		/**
-		 * {@inheritDoc}
-		 */
+		@Pure
 		@Override
 		public boolean hasNext() {
 			return this.point!=null;
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public PT next() {
 			PT toReturn = this.point;
@@ -1387,14 +1307,6 @@ public class GraphPath<GP extends GraphPath<GP,ST,PT>, ST extends GraphSegment<S
 			}
 			
 			return toReturn;
-		}
-
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void remove() {
-			//
 		}
 
 	} // class PointIterator

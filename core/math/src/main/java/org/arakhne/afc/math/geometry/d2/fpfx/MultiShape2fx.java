@@ -49,7 +49,7 @@ import javafx.collections.ModifiableObservableListBase;
  * @since 13.0
  */
 public class MultiShape2fx extends AbstractShape2fx<MultiShape2fx> implements 
-MultiShape2afp<Shape2fx<?>, MultiShape2fx, Shape2fx<?>, PathElement2fx, Point2fx, Rectangle2fx> {
+MultiShape2afp<Shape2fx<?>, MultiShape2fx, Shape2fx<?>, PathElement2fx, Point2fx, Vector2fx, Rectangle2fx> {
 
 	private static final long serialVersionUID = -7124696554694835718L;
 

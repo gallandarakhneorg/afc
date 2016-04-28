@@ -21,6 +21,7 @@
 package org.arakhne.afc.math.geometry.d2.ai;
 
 import org.arakhne.afc.math.geometry.PathWindingRule;
+import org.arakhne.afc.math.geometry.d2.GeomFactory;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 
@@ -28,6 +29,7 @@ import org.arakhne.afc.math.geometry.d2.Vector2D;
  * 
  * @param <E> the types of the path elements.
  * @param <P> is the type of the points.
+ * @param <V> is the type of the vectors.
  * @param <B> is the type of the bounding boxes.
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -35,53 +37,9 @@ import org.arakhne.afc.math.geometry.d2.Vector2D;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public interface GeomFactory2ai<E extends PathElement2ai, P extends Point2D, B extends Rectangle2ai<?, ?, E, P, B>> {
-
-	/** Convert the given point if it is not of the right type.
-	 *
-	 * @param point the point to convert. 
-	 * @return <code>p</code> if it is of type <code>P</code>, or a copy of <code>p</code>.
-	 */
-	default P convertToPoint(Point2D point) {
-		throw new UnsupportedOperationException();
-	}
-	
-	/** Convert the given point.
-	 *
-	 * @param <T> the type of the vector.
-	 * @param point the point to convert. 
-	 * @return the vector.
-	 */
-	default <T extends Vector2D> T convertToVector(Point2D point) {
-		throw new UnsupportedOperationException();
-	}
-
-	/** Convert the given vector.
-	 *
-	 * @param vector the vector to convert. 
-	 * @return the point.
-	 */
-	default P convertToPoint(Vector2D vector) {
-		throw new UnsupportedOperationException();
-	}
-	
-	/** Convert the given vector.
-	 *
-	 * @param <T> the type of the vector.
-	 * @param vector the vector to convert. 
-	 * @return the vector.
-	 */
-	default <T extends Vector2D> T convertToVector(Vector2D vector) {
-		throw new UnsupportedOperationException();
-	}
-
-	/** Create a point.
-	 *
-	 * @return the point.
-	 */
-	default P newPoint() {
-		throw new UnsupportedOperationException();
-	}
+public interface GeomFactory2ai<E extends PathElement2ai, P extends Point2D<? super P, ? super V>,
+		V extends Vector2D<? super V, ? super P>, B extends Rectangle2ai<?, ?, E, P, V, B>>
+		extends GeomFactory<V, P> {
 
 	/** Create a point.
 	 *
@@ -89,38 +47,22 @@ public interface GeomFactory2ai<E extends PathElement2ai, P extends Point2D, B e
 	 * @param y 
 	 * @return the point.
 	 */
-	default P newPoint(int x, int y) {
-		throw new UnsupportedOperationException();
-	}
+	P newPoint(int x, int y);
 
 	/** Create a vector.
 	 *
-	 * @param <T> the type of the vector.
-	 * @return the vector.
-	 */
-	default <T extends Vector2D> T newVector() {
-		throw new UnsupportedOperationException();
-	}
-
-	/** Create a vector.
-	 *
-	 * @param <T> the type of the vector.
 	 * @param x
 	 * @param y 
 	 * @return the vector.
 	 */
-	default <T extends Vector2D> T newVector(int x, int y) {
-		throw new UnsupportedOperationException();
-	}
+	V newVector(int x, int y);
 
 	/** Create an empty path with the given winding rule.
 	 *
 	 * @param rule the rule.
 	 * @return the new path.
 	 */
-	default Path2ai<?, ?, E, P, ?> newPath(PathWindingRule rule) {
-		throw new UnsupportedOperationException();
-	}
+	Path2ai<?, ?, E, P, V, B> newPath(PathWindingRule rule);
 	
 	/** Create a segment.
 	 *
@@ -130,17 +72,13 @@ public interface GeomFactory2ai<E extends PathElement2ai, P extends Point2D, B e
 	 * @param y2 the y coordinate of the second point of the segment.
 	 * @return the new segment.
 	 */
-	default Segment2ai<?, ?, E, P, ?> newSegment(int x1, int y1, int x2, int y2) {
-		throw new UnsupportedOperationException();
-	}
+	Segment2ai<?, ?, E, P, V, B> newSegment(int x1, int y1, int x2, int y2);
 	
 	/** Create an empty bounding box.
 	 *
 	 * @return the box.
 	 */
-	default B newBox() {
-		throw new UnsupportedOperationException();
-	}
+	B newBox();
 
 	/** Create a bounding box.
 	 *
@@ -150,9 +88,7 @@ public interface GeomFactory2ai<E extends PathElement2ai, P extends Point2D, B e
 	 * @param height the height of the box.
 	 * @return the box.
 	 */
-	default B newBox(int x, int y, int width, int height) {
-		throw new UnsupportedOperationException();
-	}
+	B newBox(int x, int y, int width, int height);
 
 	/** Create a move-to path element to the given point.
 	 * 
@@ -160,9 +96,7 @@ public interface GeomFactory2ai<E extends PathElement2ai, P extends Point2D, B e
 	 * @param y y coordinate of the target point.
 	 * @return the path element.
 	 */
-	default E newMovePathElement(int x, int y) {
-		throw new UnsupportedOperationException();
-	}
+	E newMovePathElement(int x, int y);
 	
 	/** Create a line-to path element to the given point.
 	 * 
@@ -172,9 +106,7 @@ public interface GeomFactory2ai<E extends PathElement2ai, P extends Point2D, B e
 	 * @param targetY y coordinate of the target point.
 	 * @return the path element.
 	 */
-	default E newLinePathElement(int startX, int startY, int targetX, int targetY) {
-		throw new UnsupportedOperationException();
-	}
+	E newLinePathElement(int startX, int startY, int targetX, int targetY);
 
 	/** Create a close path element.
 	 * 
@@ -184,9 +116,7 @@ public interface GeomFactory2ai<E extends PathElement2ai, P extends Point2D, B e
 	 * @param firstPointY y coordinate of the first point on the path.
 	 * @return the path element.
 	 */
-	default E newClosePathElement(int lastPointX, int lastPointy, int firstPointX, int firstPointY) {
-		throw new UnsupportedOperationException();
-	}
+	E newClosePathElement(int lastPointX, int lastPointy, int firstPointX, int firstPointY);
 
 	/** Create a quadratic curve path element to the given point through the given control point.
 	 * 
@@ -198,9 +128,7 @@ public interface GeomFactory2ai<E extends PathElement2ai, P extends Point2D, B e
 	 * @param targetY y coordinate of the target point.
 	 * @return the path element.
 	 */
-	default E newCurvePathElement(int startX, int startY, int controlX, int controlY, int targetX, int targetY) {
-		throw new UnsupportedOperationException();
-	}
+	E newCurvePathElement(int startX, int startY, int controlX, int controlY, int targetX, int targetY);
 
 	/** Create a curve path element to the given point through the two given control points.
 	 * 
@@ -214,9 +142,7 @@ public interface GeomFactory2ai<E extends PathElement2ai, P extends Point2D, B e
 	 * @param targetY y coordinate of the target point.
 	 * @return the path element.
 	 */
-	default E newCurvePathElement(int startX, int startY, int controlX1, int controlY1,
-			int controlX2, int controlY2, int targetX, int targetY) {
-		throw new UnsupportedOperationException();
-	}
+	E newCurvePathElement(int startX, int startY, int controlX1, int controlY1,
+			int controlX2, int controlY2, int targetX, int targetY);
 
 }

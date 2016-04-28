@@ -28,9 +28,11 @@ import java.util.TreeSet;
 
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.geometry.PathWindingRule;
+import org.arakhne.afc.math.geometry.d2.GeomFactory;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.Tuple2iComparator;
+import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Fonctional interface that represented a 2D circle on a plane.
@@ -39,6 +41,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @param <IT> is the type of the implementation of this shape.
  * @param <IE> is the type of the path elements.
  * @param <P> is the type of the points.
+ * @param <V> is the type of the vectors.
  * @param <B> is the type of the bounding boxes.
  * @author $Author: sgalland$
  * @author $Author: hjaffali$
@@ -48,12 +51,13 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @since 13.0
  */
 public interface Circle2ai<
-		ST extends Shape2ai<?, ?, IE, P, B>,
-		IT extends Circle2ai<?, ?, IE, P, B>,
+		ST extends Shape2ai<?, ?, IE, P, V, B>,
+		IT extends Circle2ai<?, ?, IE, P, V, B>,
 		IE extends PathElement2ai,
-		P extends Point2D,
-		B extends Rectangle2ai<?, ?, IE, P, B>>
-		extends Shape2ai<ST, IT, IE, P, B> {
+		P extends Point2D<? super P, ? super V>,
+		V extends Vector2D<? super V, ? super P>,
+		B extends Rectangle2ai<?, ?, IE, P, V, B>>
+		extends Shape2ai<ST, IT, IE, P, V, B> {
 
 	/** Replies if the given point is inside the circle.
 	 * 
@@ -95,9 +99,11 @@ public interface Circle2ai<
 
 			int px, py, ccw, cpx, cpy;
 			boolean allNull = true;
-			Point2D p;
-			CirclePerimeterIterator<Point2D> iterator = new CirclePerimeterIterator<>(
-					cx, cy, cr, octant, octant+2, false);
+			Point2D<?, ?> p;
+			CirclePerimeterIterator<InnerComputationPoint2ai, InnerComputationVector2ai> iterator =
+					new CirclePerimeterIterator<>(
+							InnerComputationGeomFactory.SINGLETON, 
+							cx, cy, cr, octant, octant+2, false);
 
 			while (iterator.hasNext()) {
 				p = iterator.next();
@@ -173,9 +179,11 @@ public interface Circle2ai<
 			if (quadrant*2!=octant) return false;
 
 			int px, py, ccw, cpx, cpy;
-			Point2D p;
-			CirclePerimeterIterator<Point2D> iterator = new CirclePerimeterIterator<>(
-					cx, cy, cr, octant, octant+2, false);
+			Point2D<?, ?> p;
+			CirclePerimeterIterator<InnerComputationPoint2ai, InnerComputationVector2ai> iterator =
+					new CirclePerimeterIterator<>(
+							InnerComputationGeomFactory.SINGLETON, 
+							cx, cy, cr, octant, octant+2, false);
 
 			while (iterator.hasNext()) {
 				p = iterator.next();
@@ -207,7 +215,7 @@ public interface Circle2ai<
 	 * @param result the closest point in the circle to the point.
 	 */
 	@Pure
-	static void computeClosestPointTo(int cx, int cy, int cr, int x, int y, Point2D result) {
+	static void computeClosestPointTo(int cx, int cy, int cr, int x, int y, Point2D<?, ?> result) {
 		assert (cr >= 0) : "Circle radius must be positive or zero."; //$NON-NLS-1$
 		assert (result != null) : "Result point must be positive or zero."; //$NON-NLS-1$
 		
@@ -235,9 +243,11 @@ public interface Circle2ai<
 		}
 
 		int d, px, py, cpx, cpy, ccw;
-		Point2D p;
-		CirclePerimeterIterator<Point2D> iterator = new CirclePerimeterIterator<>(
-				cx, cy, cr, octant, octant+2, false);
+		Point2D<?, ?> p;
+		CirclePerimeterIterator<InnerComputationPoint2ai, InnerComputationVector2ai> iterator =
+				new CirclePerimeterIterator<>(
+						InnerComputationGeomFactory.SINGLETON, 
+						cx, cy, cr, octant, octant+2, false);
 
 		boolean isInside = true;
 		int minDist = Integer.MAX_VALUE;
@@ -279,7 +289,7 @@ public interface Circle2ai<
 	 * @param result the farthest point in the circle to the point.
 	 */
 	@Pure
-	static void computeFarthestPointTo(int cx, int cy, int cr, int x, int y, Point2D result) {
+	static void computeFarthestPointTo(int cx, int cy, int cr, int x, int y, Point2D<?, ?> result) {
 		assert (cr >= 0) : "Circle radius must be positive or zero."; //$NON-NLS-1$
 
 		int vx = x - cx;
@@ -306,9 +316,11 @@ public interface Circle2ai<
 		}
 
 		int l1, linfinv, cpx, cpy;
-		Point2D p;
-		CirclePerimeterIterator<Point2D> iterator = new CirclePerimeterIterator<>(
-				cx, cy, cr, octant, octant+2, false);
+		Point2D<?, ?> p;
+		CirclePerimeterIterator<InnerComputationPoint2ai, InnerComputationVector2ai> iterator =
+				new CirclePerimeterIterator<>(
+						InnerComputationGeomFactory.SINGLETON, 
+						cx, cy, cr, octant, octant+2, false);
 
 		int maxL1Dist = Integer.MIN_VALUE;
 		int maxLinfDist = Integer.MIN_VALUE;
@@ -344,7 +356,7 @@ public interface Circle2ai<
 	static boolean intersectsCircleCircle(int x1, int y1, int radius1, int x2, int y2, int radius2) {
 		assert (radius1 >= 0) : "Radius of the first circle must be positive or zero."; //$NON-NLS-1$
 		assert (radius2 >= 0) : "Radius of the second circle must be positive or zero."; //$NON-NLS-1$
-		Point2D point = new InnerComputationPoint2ai();
+		Point2D<?, ?> point = new InnerComputationPoint2ai();
 		computeClosestPointTo(x1, y1, radius1, x2, y2, point);
 		return contains(x2, y2, radius2, point.ix(), point.iy());
 	}
@@ -364,7 +376,7 @@ public interface Circle2ai<
 	@Pure
 	static boolean intersectsCircleRectangle(int x1, int y1, int radius, int x2, int y2, int x3, int y3) {
 		assert (radius >= 0) : "Circle radius must be positive or zero."; //$NON-NLS-1$
-		Point2D point = new InnerComputationPoint2ai();
+		Point2D<?, ?> point = new InnerComputationPoint2ai();
 		Rectangle2ai.computeClosestPoint(x2, y2, x3, y3, x1, y1, point);
 		return contains(x1, y1, radius, point.ix(), point.iy());
 	}
@@ -383,7 +395,7 @@ public interface Circle2ai<
 	 */
 	public static boolean intersectsCircleSegment(int x1, int y1, int radius, int x2, int y2, int x3, int y3) {
 		assert (radius >= 0) : "Circle radius must be positive or zero."; //$NON-NLS-1$
-		Point2D point = new InnerComputationPoint2ai();
+		Point2D<?, ?> point = new InnerComputationPoint2ai();
 		Segment2ai.computeClosestPointTo(x2, y2, x3, y3, x1, y1, point);
 		return contains(x1, y1, radius, point.ix(), point.iy());
 	}
@@ -391,6 +403,7 @@ public interface Circle2ai<
 	/** Replies the points of the circle perimeters starting by the first octant.
 	 * 
 	 * @param <P> the type of the points.
+	 * @param <V> the type of the vectors.
 	 * @param cx is the center of the radius.
 	 * @param cy is the center of the radius.
 	 * @param radius is the radius of the radius.
@@ -400,8 +413,9 @@ public interface Circle2ai<
 	 * @return the points on the perimeters.
 	 */
 	@Pure
-	static <P extends Point2D> Iterator<P> getPointIterator(int cx, int cy,  int radius, int firstOctantIndex, int nbOctants,
-			GeomFactory2ai<?, P, ?> factory) {
+	static <P extends Point2D<? super P, ? super V>, V extends Vector2D<? super V, ? super P>>
+	Iterator<P> getPointIterator(int cx, int cy,  int radius, int firstOctantIndex, int nbOctants,
+			GeomFactory2ai<?, P, V, ?> factory) {
 		assert (radius >= 0) : "Circle radius must be positive or zero."; //$NON-NLS-1$
 		assert (firstOctantIndex >= 0 && firstOctantIndex < 8) : "invalid quadrant value"; //$NON-NLS-1$
 		int maxOctant;
@@ -450,7 +464,7 @@ public interface Circle2ai<
 	 * @param center the center of the circle.
 	 * @param radius the radius of the circle.
 	 */
-	default void set(Point2D center, int radius) {
+	default void set(Point2D<?, ?> center, int radius) {
 		set(center.ix(), center.iy(), Math.abs(radius));
 	}
 
@@ -458,7 +472,7 @@ public interface Circle2ai<
 	 * 
 	 * @param center the center of the circle.
 	 */
-	default void setCenter(Point2D center) {
+	default void setCenter(Point2D<?, ?> center) {
 		set(center.ix(), center.iy(), getRadius());
 	}
 
@@ -546,7 +560,7 @@ public interface Circle2ai<
 
 	@Pure
 	@Override
-	default double getDistanceSquared(Point2D p) {
+	default double getDistanceSquared(Point2D<?, ?> p) {
 		assert (p != null) : "Point must be not null."; //$NON-NLS-1$
 		P c = getClosestPointTo(p);
 		return c.getDistanceSquared(p);
@@ -554,7 +568,7 @@ public interface Circle2ai<
 
 	@Pure
 	@Override
-	default double getDistanceL1(Point2D p) {
+	default double getDistanceL1(Point2D<?, ?> p) {
 		assert (p != null) : "Point must be not null."; //$NON-NLS-1$
 		P c = getClosestPointTo(p);
 		return c.getDistanceL1(p);
@@ -562,14 +576,14 @@ public interface Circle2ai<
 
 	@Pure
 	@Override
-	default double getDistanceLinf(Point2D p) {
+	default double getDistanceLinf(Point2D<?, ?> p) {
 		P c = getClosestPointTo(p);
 		return c.getDistanceLinf(p);
 	}
 
 	@Pure
 	@Override
-	default P getClosestPointTo(Point2D p) {
+	default P getClosestPointTo(Point2D<?, ?> p) {
 		assert (p != null) : "Point must be not null."; //$NON-NLS-1$
 		P point = getGeomFactory().newPoint();
 		computeClosestPointTo(getX(), getY(), getRadius(), p.ix(), p.iy(), point);
@@ -578,7 +592,7 @@ public interface Circle2ai<
 
 	@Pure
 	@Override
-	default P getFarthestPointTo(Point2D p) {
+	default P getFarthestPointTo(Point2D<?, ?> p) {
 		assert (p != null) : "Point must be not null."; //$NON-NLS-1$
 		P point = getGeomFactory().newPoint();
 		computeFarthestPointTo(getX(), getY(), getRadius(), p.ix(), p.iy(), point);
@@ -587,7 +601,7 @@ public interface Circle2ai<
 
 	@Pure
 	@Override
-	default boolean intersects(Rectangle2ai<?, ?, ?, ?, ?> s) {
+	default boolean intersects(Rectangle2ai<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Rectangle must be not null."; //$NON-NLS-1$
 		return intersectsCircleRectangle(
 				getX(), getY(), getRadius(),
@@ -597,7 +611,7 @@ public interface Circle2ai<
 
 	@Pure
 	@Override
-	default boolean intersects(Circle2ai<?, ?, ?, ?, ?> s) {
+	default boolean intersects(Circle2ai<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Circle must be not null."; //$NON-NLS-1$
 		return intersectsCircleCircle(
 				getX(), getY(), getRadius(),
@@ -606,7 +620,7 @@ public interface Circle2ai<
 
 	@Pure
 	@Override
-	default boolean intersects(Segment2ai<?, ?, ?, ?, ?> s) {
+	default boolean intersects(Segment2ai<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Segment must be not null."; //$NON-NLS-1$
 		return intersectsCircleSegment(
 				getX(), getY(), getRadius(),
@@ -642,7 +656,7 @@ public interface Circle2ai<
 
 	@Pure
 	@Override
-	default boolean contains(Rectangle2ai<?, ?, ?, ?, ?> box) {
+	default boolean contains(Rectangle2ai<?, ?, ?, ?, ?, ?> box) {
 		assert (box != null) : "Rectangle must be not null."; //$NON-NLS-1$
 		int cx = getX();
 		int cy = getY();
@@ -681,8 +695,8 @@ public interface Circle2ai<
 
 			for(int i=0; i<quadrants.length; ++i) {
 				if (quadrants[i]!=0) {
-					CirclePerimeterIterator<P> iterator = new CirclePerimeterIterator<>(
-							cx, cy, radius, i*2, i*2+2, false);
+					CirclePerimeterIterator<P, V> iterator = new CirclePerimeterIterator<>(
+							getGeomFactory(), cx, cy, radius, i*2, i*2+2, false);
 					int px, py, ccw, cpx, cpy;
 					P p;
 
@@ -782,12 +796,12 @@ public interface Circle2ai<
 		/**
 		 * The element factory.
 		 */
-		protected final GeomFactory2ai<IE, ?, ?> factory;
+		protected final GeomFactory2ai<IE, ?, ?, ?> factory;
 		
 		/**
 		 * @param factory the element factory.
 		 */
-		public AbstractCirclePathIterator(GeomFactory2ai<IE, ?, ?> factory) {
+		public AbstractCirclePathIterator(GeomFactory2ai<IE, ?, ?, ?> factory) {
 			assert (factory != null) : "Factory must be not null."; //$NON-NLS-1$
 			this.factory = factory;
 		}
@@ -810,7 +824,7 @@ public interface Circle2ai<
 		}
 
 		@Override
-		public GeomFactory2ai<IE, ?, ?> getGeomFactory() {
+		public GeomFactory2ai<IE, ?, ?, ?> getGeomFactory() {
 			return this.getGeomFactory();
 		}
 
@@ -861,7 +875,7 @@ public interface Circle2ai<
 		/**
 		 * @param circle the circle to iterate on.
 		 */
-		public CirclePathIterator(Circle2ai<?, ?, IE, ?, ?> circle) {
+		public CirclePathIterator(Circle2ai<?, ?, IE, ?, ?, ?> circle) {
 			super(circle.getGeomFactory());
 			if (circle.isEmpty()) {
 				this.index = 6;
@@ -946,19 +960,19 @@ public interface Circle2ai<
 		
 		private int movey;
 
-		private Point2D p1;
+		private Point2D<?, ?> p1;
 
-		private Point2D p2;
+		private Point2D<?, ?> p2;
 		
-		private Point2D ptmp1;
+		private Point2D<?, ?> ptmp1;
 		
-		private Point2D ptmp2;
+		private Point2D<?, ?> ptmp2;
 
 		/**
 		 * @param circle the circle to iterate on.
 		 * @param transform the transformation to apply.
 		 */
-		public TransformedCirclePathIterator(Circle2ai<?, ?, IE, ?, ?> circle, Transform2D transform) {
+		public TransformedCirclePathIterator(Circle2ai<?, ?, IE, ?, ?, ?> circle, Transform2D transform) {
 			super(circle.getGeomFactory());
 			assert(transform != null) : "Transformation must not be null."; //$NON-NLS-1$
 			this.transform = transform;
@@ -1033,15 +1047,17 @@ public interface Circle2ai<
 	 * The rastrerization is based on a Bresenham algorithm.
 	 * 
 	 * @param <P> the type of the points.
+	 * @param <V> the type of the vectors.
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 * @since 13.0
 	 */
-	class CirclePerimeterIterator<P extends Point2D> implements Iterator<P> {
+	class CirclePerimeterIterator<P extends Point2D<? super P, ? super V>,
+			V extends Vector2D<? super V, ? super P>> implements Iterator<P> {
 
-		private final GeomFactory2ai<?, P, ?> factory;
+		private final GeomFactory<V, P> factory;
 		
 		private final int cx;
 		private final int cy;
@@ -1059,21 +1075,6 @@ public interface Circle2ai<
 
 		/** Construct the iterator from the initialOctant (inclusive) to the lastOctant (exclusive).
 		 *
-		 * @param centerX the x coordinate of the center of the circle. 
-		 * @param centerY the y coordinate of the center of the circle. 
-		 * @param radius the radius of the circle. 
-		 * @param initialOctant the octant from which the iteration must start.
-		 * @param lastOctant the first octant that must not be iterated on.
-		 * @param skip indicates if the first point on an octant must be skip, because it is already replied when treating the
-		 *     previous octant.
-		 */
-		@SuppressWarnings("unchecked")
-		CirclePerimeterIterator(int centerX, int centerY, int radius, int initialOctant, int lastOctant, boolean skip) {
-			this(InnerGeomFactory2ai.DEFAULT, centerX, centerY, radius, initialOctant, lastOctant, skip);
-		}
-
-		/** Construct the iterator from the initialOctant (inclusive) to the lastOctant (exclusive).
-		 *
 		 * @param factory the point factory.
 		 * @param centerX the x coordinate of the center of the circle. 
 		 * @param centerY the y coordinate of the center of the circle. 
@@ -1083,7 +1084,7 @@ public interface Circle2ai<
 		 * @param skip indicates if the first point on an octant must be skip, because it is already replied when treating the
 		 *     previous octant.
 		 */
-		public CirclePerimeterIterator(GeomFactory2ai<?, P, ?> factory,
+		public CirclePerimeterIterator(GeomFactory<V, P> factory,
 				int centerX, int centerY, int radius, int initialOctant, int lastOctant, boolean skip) {
 			assert (factory != null) : "Factory must be not null."; //$NON-NLS-1$			
 			assert (radius >= 0) : "Circle radius must be positive or zero."; //$NON-NLS-1$
@@ -1175,7 +1176,11 @@ public interface Circle2ai<
 						// The octant is finished.
 						// Save the junction.
 						boolean cont = this.junctionPoint.contains(this.next);
-						if (!cont) this.junctionPoint.add(this.factory.newPoint(this.next.ix(), this.next.iy()));
+						if (!cont) {
+							P point = this.factory.newPoint();
+							point.set(this.next.ix(), this.next.iy());
+							this.junctionPoint.add(point);
+						}
 						// Goto next.
 						++this.currentOctant;
 						reset();

@@ -20,6 +20,8 @@
  */
 package org.arakhne.afc.math.graph;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /**
  * This class is an iterator on the segments
  * limited to a specified depth.
@@ -134,6 +136,7 @@ extends GraphIterator<ST,PT> {
 	/** Replies if the specified element could be added into the list of futher elements.
 	 */
 	@Override
+	@Pure
 	protected boolean canGotoIntoElement(GraphIterationElement<ST,PT> element) {
 		return (element.distanceToConsume>0.);
 	}

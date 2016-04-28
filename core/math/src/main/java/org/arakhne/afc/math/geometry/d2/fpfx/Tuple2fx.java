@@ -29,8 +29,7 @@ import javafx.beans.property.SimpleDoubleProperty;
 
 /** 2D tuple with 2 double precision floating-point FX properties.
  * 
- * @param <T> is the abstract type of the tuple.
- * @param <IT> is the implementation type of the tuple.
+ * @param <RT> is the type of the data returned by the tuple.
  * @author $Author: sgalland$
  * @author $Author: olamotte$
  * @author $Author: hjaffali$
@@ -39,7 +38,7 @@ import javafx.beans.property.SimpleDoubleProperty;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public class Tuple2fx<T extends Tuple2D<? super T>, IT extends T> implements Tuple2D<T> {
+public class Tuple2fx<RT extends Tuple2fx<? super RT>> implements Tuple2D<RT> {
 
 	private static final long serialVersionUID = 2510506877090400718L;
 
@@ -54,7 +53,7 @@ public class Tuple2fx<T extends Tuple2D<? super T>, IT extends T> implements Tup
 	/**
 	 */
 	public Tuple2fx() {
-		this(0., 0.);
+		//
 	}
 
 	/**
@@ -62,23 +61,21 @@ public class Tuple2fx<T extends Tuple2D<? super T>, IT extends T> implements Tup
 	 * @param y
 	 */
 	public Tuple2fx(DoubleProperty x, DoubleProperty y) {
-		this.x = x;
-		this.y = y;
+		set(x, y);
 	}
 
 	/**
 	 * @param tuple is the tuple to copy.
 	 */
 	public Tuple2fx(Tuple2D<?> tuple) {
-		this.x = new SimpleDoubleProperty(tuple.getX());
-		this.y = new SimpleDoubleProperty(tuple.getY());
+		this(tuple.getX(), tuple.getY());
 	}
 
 	/**
 	 * @param tuple is the tuple to copy.
 	 */
 	public Tuple2fx(int[] tuple) {
-		this(tuple[0], tuple[1]);
+		this((double) tuple[0], (double) tuple[1]);
 	}
 
 	/**
@@ -93,7 +90,7 @@ public class Tuple2fx<T extends Tuple2D<? super T>, IT extends T> implements Tup
 	 * @param y
 	 */
 	public Tuple2fx(int x, int y) {
-		this(new SimpleDoubleProperty(x), new SimpleDoubleProperty(y));
+		this((double) x, (double) y);
 	}
 
 	/**
@@ -101,15 +98,26 @@ public class Tuple2fx<T extends Tuple2D<? super T>, IT extends T> implements Tup
 	 * @param y
 	 */
 	public Tuple2fx(double x, double y) {
-		this(new SimpleDoubleProperty(x), new SimpleDoubleProperty(y));
+		xProperty().set(x);
+		yProperty().set(y);
+	}
+	
+	/** Change the x and y properties.
+	 *
+	 * @param x the new x property.
+	 * @param y the new y property.
+	 */
+	void set(DoubleProperty x, DoubleProperty y) {
+		this.x = x;
+		this.y = y;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Pure
 	@Override
-	public IT clone() {
+	public RT clone() {
 		try {
-			Tuple2fx<?, ?> clone = (Tuple2fx<?, ?>) super.clone();
+			RT clone = (RT) super.clone();
 			if (clone.x != null) {
 				clone.x = null;
 				clone.xProperty().set(getX());
@@ -118,7 +126,7 @@ public class Tuple2fx<T extends Tuple2D<? super T>, IT extends T> implements Tup
 				clone.y = null;
 				clone.yProperty().set(getY());
 			}
-			return (IT) clone;
+			return clone;
 		}
 		catch(CloneNotSupportedException e) {
 			throw new InternalError(e);

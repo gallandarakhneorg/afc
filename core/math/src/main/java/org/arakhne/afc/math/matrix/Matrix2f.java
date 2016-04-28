@@ -72,7 +72,7 @@ public class Matrix2f implements Serializable, Cloneable {
 	protected Boolean isIdentity;
 
 	/**
-	 * Constructs and initializes a Matrix2d from the specified nine values.
+	 * Constructs and initializes a Matrix2f from the specified nine values.
 	 * 
 	 * @param m00
 	 *            the [0][0] element
@@ -92,7 +92,7 @@ public class Matrix2f implements Serializable, Cloneable {
 	}
 
 	/**
-	 * Constructs and initializes a Matrix2d from the specified nine- element
+	 * Constructs and initializes a Matrix2f from the specified nine- element
 	 * array.
 	 * 
 	 * @param matrix
@@ -109,7 +109,7 @@ public class Matrix2f implements Serializable, Cloneable {
 	}
 
 	/**
-	 * Constructs a new matrix with the same values as the Matrix2d parameter.
+	 * Constructs a new matrix with the same values as the Matrix2f parameter.
 	 * 
 	 * @param matrix
 	 *            the source matrix
@@ -124,7 +124,7 @@ public class Matrix2f implements Serializable, Cloneable {
 	}
 
 	/**
-	 * Constructs and initializes a Matrix2d to all zeros.
+	 * Constructs and initializes a Matrix2f to all zeros.
 	 */
 	public Matrix2f() {
 		this.m00 = 0.;
@@ -135,7 +135,7 @@ public class Matrix2f implements Serializable, Cloneable {
 	}
 
 	/**
-	 * Returns a string that contains the values of this Matrix2d.
+	 * Returns a string that contains the values of this Matrix2f.
 	 * 
 	 * @return the String representation
 	 */
@@ -149,7 +149,7 @@ public class Matrix2f implements Serializable, Cloneable {
 	}
 
 	/**
-	 * Sets this Matrix2d to identity.
+	 * Sets this Matrix2f to identity.
 	 */
 	public final void setIdentity() {
 		this.m00 = 1.;
@@ -258,7 +258,7 @@ public class Matrix2f implements Serializable, Cloneable {
 	 * @param vector
 	 *            the vector into which the matrix row values will be copied
 	 */
-	public final void getRow(int row, Vector2D vector) {
+	public final void getRow(int row, Tuple2D<?> vector) {
 		assert (row >= 0 && row < 2) : "Row index must be in [0;1]"; //$NON-NLS-1$
 		assert (vector != null) : "Value vector must not be null"; //$NON-NLS-1$
 		if (row == 0) {
@@ -308,7 +308,7 @@ public class Matrix2f implements Serializable, Cloneable {
 	 * @param vector
 	 *            the vector into which the matrix row values will be copied
 	 */
-	public final void getColumn(int column, Vector2D vector) {
+	public final void getColumn(int column, Tuple2D<?> vector) {
 		assert (column >= 0 && column < 2) : "Column index must be in [0;1]"; //$NON-NLS-1$
 		assert (vector != null) : "Value vector must not be null"; //$NON-NLS-1$
 		if (column == 0) {
@@ -349,7 +349,7 @@ public class Matrix2f implements Serializable, Cloneable {
 	}
 
 	/**
-	 * Sets the specified row of this Matrix2d to the 4 values provided.
+	 * Sets the specified row of this Matrix2f to the 4 values provided.
 	 * 
 	 * @param row
 	 *            the row number to be modified (zero indexed)
@@ -378,14 +378,14 @@ public class Matrix2f implements Serializable, Cloneable {
 	}
 
 	/**
-	 * Sets the specified row of this Matrix2d to the Vector provided.
+	 * Sets the specified row of this Matrix2f to the Vector provided.
 	 * 
 	 * @param row
 	 *            the row number to be modified (zero indexed)
 	 * @param vector
 	 *            the replacement row
 	 */
-	public final void setRow(int row, Vector2D vector) {
+	public final void setRow(int row, Tuple2D<?> vector) {
 		assert (row >= 0 && row < 2) : "Row index must be in [0;1]"; //$NON-NLS-1$
 		assert (vector != null) : "Value vector must not be null"; //$NON-NLS-1$
 		switch (row) {
@@ -406,7 +406,7 @@ public class Matrix2f implements Serializable, Cloneable {
 	}
 
 	/**
-	 * Sets the specified row of this Matrix2d to the two values provided.
+	 * Sets the specified row of this Matrix2f to the two values provided.
 	 * 
 	 * @param row
 	 *            the row number to be modified (zero indexed)
@@ -435,7 +435,7 @@ public class Matrix2f implements Serializable, Cloneable {
 	}
 
 	/**
-	 * Sets the specified column of this Matrix2d to the two values provided.
+	 * Sets the specified column of this Matrix2f to the two values provided.
 	 * 
 	 * @param column
 	 *            the column number to be modified (zero indexed)
@@ -464,14 +464,14 @@ public class Matrix2f implements Serializable, Cloneable {
 	}
 
 	/**
-	 * Sets the specified column of this Matrix2d to the vector provided.
+	 * Sets the specified column of this Matrix2f to the vector provided.
 	 * 
 	 * @param column
 	 *            the column number to be modified (zero indexed)
 	 * @param vector
 	 *            the replacement column
 	 */
-	public final void setColumn(int column, Vector2D vector) {
+	public final void setColumn(int column, Tuple2D<?> vector) {
 		assert (column >= 0 && column < 2) : "Column index must be in [0;1]"; //$NON-NLS-1$
 		assert (vector != null) : "Value vector must not be null"; //$NON-NLS-1$
 		switch (column) {
@@ -492,7 +492,7 @@ public class Matrix2f implements Serializable, Cloneable {
 	}
 
 	/**
-	 * Sets the specified column of this Matrix2d to the two values provided.
+	 * Sets the specified column of this Matrix2f to the two values provided.
 	 * 
 	 * @param column
 	 *            the column number to be modified (zero indexed)
@@ -665,10 +665,10 @@ public class Matrix2f implements Serializable, Cloneable {
 	}
 
 	/**
-	 * Sets the value of this matrix to the value of the Matrix2d argument.
+	 * Sets the value of this matrix to the value of the Matrix2f argument.
 	 * 
 	 * @param matrix
-	 *            the source Matrix2d
+	 *            the source Matrix2f
 	 */
 	public final void set(Matrix2f matrix) {
 		assert (matrix != null) : "Matrix must not be null"; //$NON-NLS-1$
@@ -682,7 +682,7 @@ public class Matrix2f implements Serializable, Cloneable {
 	}
 
 	/**
-	 * Sets the values in this Matrix2d equal to the row-major array parameter
+	 * Sets the values in this Matrix2f equal to the row-major array parameter
 	 * (ie, the first two elements of the array will be copied into the first
 	 * row of this matrix, etc.).
 	 * 
@@ -801,7 +801,7 @@ public class Matrix2f implements Serializable, Cloneable {
 	 * @param result is set with (this * v).
 	 */
 	@Pure
-	public final void mul(Vector2D vector, Vector2D result) {
+	public final void mul(Tuple2D<?> vector, Tuple2D<?> result) {
 		assert (vector != null) : "Input vector must not be null"; //$NON-NLS-1$
 		assert (result != null) : "Result vector must be not null"; //$NON-NLS-1$
 		result.set(
@@ -993,8 +993,8 @@ public class Matrix2f implements Serializable, Cloneable {
 	}
 
 	/**
-	 * Returns true if all of the data members of Matrix2d m1 are equal to the
-	 * corresponding data members in this Matrix2d.
+	 * Returns true if all of the data members of Matrix2f m1 are equal to the
+	 * corresponding data members in this Matrix2f.
 	 * 
 	 * @param matrix
 	 *            the matrix with which the comparison is made
@@ -1013,9 +1013,9 @@ public class Matrix2f implements Serializable, Cloneable {
 	}
 
 	/**
-	 * Returns true if the Object t1 is of type Matrix2d and all of the data
+	 * Returns true if the Object t1 is of type Matrix2f and all of the data
 	 * members of t1 are equal to the corresponding data members in this
-	 * Matrix2d.
+	 * Matrix2f.
 	 * 
 	 * @param object
 	 *            the matrix with which the comparison is made
@@ -1037,8 +1037,8 @@ public class Matrix2f implements Serializable, Cloneable {
 
 	/**
 	 * Returns a hash code value based on the data values in this object. Two
-	 * different Matrix2d objects with identical data values (i.e.,
-	 * Matrix2d.equals returns true) will return the same hash code value. Two
+	 * different Matrix2f objects with identical data values (i.e.,
+	 * Matrix2f.equals returns true) will return the same hash code value. Two
 	 * objects with different data members may return the same hash value,
 	 * although this is not likely.
 	 * 
@@ -1108,7 +1108,7 @@ public class Matrix2f implements Serializable, Cloneable {
 	}
 
 	/**
-	 * Sets the value of this matrix equal to the negation of of the Matrix2d
+	 * Sets the value of this matrix equal to the negation of of the Matrix2f
 	 * parameter.
 	 * 
 	 * @param matrix
@@ -1237,7 +1237,7 @@ public class Matrix2f implements Serializable, Cloneable {
 	 * @param tuples
 	 * @return <code>true</code> if the covariance matrix could be computed.
 	 */
-	public final boolean cov(Vector2D result, Vector2D... tuples) {
+	public final boolean cov(Vector2D<?, ?> result, Vector2D<?, ?>... tuples) {
 		assert (result != null) : "Result vector must not be null"; //$NON-NLS-1$
 		assert (tuples != null) : "List of tuples must be not null"; //$NON-NLS-1$
 		return cov(result, Arrays.asList(tuples));
@@ -1250,7 +1250,7 @@ public class Matrix2f implements Serializable, Cloneable {
 	 * @param tuples
 	 * @return <code>true</code> if the covariance matrix could be computed.
 	 */
-	public final boolean cov(Vector2D result, Point2D... tuples) {
+	public final boolean cov(Vector2D<?, ?> result, Point2D<?, ?>... tuples) {
 		assert (result != null) : "Result vector must not be null"; //$NON-NLS-1$
 		assert (tuples != null) : "List of tuples must be not null"; //$NON-NLS-1$
 		return cov(result, Arrays.asList(tuples));
@@ -1263,7 +1263,7 @@ public class Matrix2f implements Serializable, Cloneable {
 	 * @param tuples
 	 * @return <code>true</code> if the covariance matrix could be computed.
 	 */
-	public boolean cov(Vector2D result, Iterable<? extends Tuple2D<?>> tuples) {
+	public boolean cov(Vector2D<?, ?> result, Iterable<? extends Tuple2D<?>> tuples) {
 		assert (result != null) : "Result vector must not be null"; //$NON-NLS-1$
 		assert (tuples != null) : "List of tuples must be not null"; //$NON-NLS-1$
 		setZero();
@@ -1400,4 +1400,230 @@ public class Matrix2f implements Serializable, Cloneable {
 		return this.isIdentity.booleanValue();
 	}
 
+	/** Add the given matrix to this matrix: {@code this += matrix}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param matrix the matrix.
+	 * @see #add(Matrix2f)
+	 */
+	public void operator_add(Matrix2f matrix) {
+		add(matrix);
+	}
+	
+	/** Add the given scalar to this matrix: {@code this += scalar}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param scalar the scalar.
+	 * @see #add(double)
+	 */
+	public void operator_add(double scalar) {
+		add(scalar);
+	}
+
+	/** Substract the given matrix to this matrix: {@code this -= matrix}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param matrix the matrix.
+	 * @see #sub(Matrix2f)
+	 */
+	public void operator_remove(Matrix2f matrix) {
+		sub(matrix);
+	}
+	
+	/** Substract the given scalar to this matrix: {@code this -= scalar}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param scalar the scalar.
+	 * @see #add(double)
+	 */
+	public void operator_remove(double scalar) {
+		add(-scalar);
+	}
+
+	/** Replies the addition of the given matrix to this matrix: {@code this + matrix}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param matrix the matrix.
+	 * @return the sum of the matrices.
+	 * @see #add(Matrix2f)
+	 */
+	@Pure
+	public Matrix2f operator_plus(Matrix2f matrix) {
+		Matrix2f result = new Matrix2f();
+		result.add(this, matrix);
+		return result;
+	}
+
+	/** Replies the addition of the given scalar to this matrix: {@code this + scalar}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param scalar the scalar.
+	 * @return the sum of the matrix and the scalar.
+	 * @see #add(double)
+	 */
+	@Pure
+	public Matrix2f operator_plus(double scalar) {
+		Matrix2f result = new Matrix2f();
+		result.add(scalar, this);
+		return result;
+	}
+
+	/** Replies the substraction of the given matrix to this matrix: {@code this - matrix}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param matrix the matrix.
+	 * @return the result of the substraction.
+	 * @see #sub(Matrix2f)
+	 */
+	@Pure
+	public Matrix2f operator_minus(Matrix2f matrix) {
+		Matrix2f result = new Matrix2f();
+		result.sub(this, matrix);
+		return result;
+	}
+
+	/** Replies the substraction of the given scalar to this matrix: {@code this - scalar}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param scalar the scalar.
+	 * @return the result of the substraction.
+	 * @see #add(double)
+	 */
+	@Pure
+	public Matrix2f operator_minus(double scalar) {
+		Matrix2f result = new Matrix2f();
+		result.add(-scalar, this);
+		return result;
+	}
+
+	/** Replies the negation of this matrix: {@code -this}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @return the negation of this matrix.
+	 * @see #negate()
+	 */
+	@Pure
+	public Matrix2f operator_minus() {
+		Matrix2f result = new Matrix2f();
+		result.negate(this);
+		return result;
+	}
+
+	/** Replies the multiplication of the given matrix and this matrix: {@code this * matrix}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param matrix the matrix.
+	 * @return the multiplication of the matrices.
+	 * @see #mul(Matrix2f)
+	 */
+	@Pure
+	public Matrix2f operator_multiply(Matrix2f matrix) {
+		Matrix2f result = new Matrix2f();
+		result.mul(this, matrix);
+		return result;
+	}
+
+	/** Replies the multiplication of the given scalar and this matrix: {@code this * scalar}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param scalar the scalar.
+	 * @return the multiplication of the scalar and the matrix.
+	 * @see #mul(Matrix2f)
+	 */
+	@Pure
+	public Matrix2f operator_multiply(double scalar) {
+		Matrix2f result = new Matrix2f();
+		result.mul(scalar, this);
+		return result;
+	}
+
+	/** Replies the division of this matrix by the given scalar: {@code this / scalar}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param scalar the scalar.
+	 * @return the division of the matrix by the scalar.
+	 * @see #mul(double)
+	 */
+	@Pure
+	public Matrix2f operator_divide(double scalar) {
+		Matrix2f result = new Matrix2f();
+		result.mul(1./scalar, this);
+		return result;
+	}
+
+	/** Increment this matrix: {@code this++}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @see #add(double)
+	 */
+	public void operator_plusPlus() {
+		add(1);
+	}
+
+	/** Increment this matrix: {@code this--}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @see #add(double)
+	 */
+	public void operator_moinsMoins() {
+		add(-1);
+	}
+
+	/** Replies the transposition of this matrix: {@code !this}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @return the transpose
+	 * @see #add(double)
+	 */
+	public Matrix2f operator_not() {
+		Matrix2f result = new Matrix2f();
+		result.transpose(this);
+		return result;
+	}
+	
 }

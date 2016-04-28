@@ -22,6 +22,7 @@ package org.arakhne.afc.math.graph.astar;
 
 import org.arakhne.afc.math.graph.GraphPoint;
 import org.arakhne.afc.math.graph.GraphSegment;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 
 /** This interface provides a way to the {@link AStar A* algorithm}
@@ -43,6 +44,7 @@ public interface AStarCostComputer<ST extends GraphSegment<ST,PT>, PT extends Gr
 	 * @param p
 	 * @return the cost to traverse the point.
 	 */
+	@Pure
 	public double computeCostFor(PT p);
 
 	/** Compute and replies the cost to traverse the given graph segment.
@@ -50,6 +52,7 @@ public interface AStarCostComputer<ST extends GraphSegment<ST,PT>, PT extends Gr
 	 * @param s
 	 * @return the cost to traverse the segment.
 	 */
+	@Pure
 	public double computeCostFor(ST s);
 
 }

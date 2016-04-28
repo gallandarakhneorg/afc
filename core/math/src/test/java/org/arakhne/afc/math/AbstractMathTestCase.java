@@ -478,7 +478,7 @@ public abstract class AbstractMathTestCase {
 	 *
 	 * @return the random point.
 	 */
-	protected Point2D randomPoint2f() {
+	protected Point2fp randomPoint2f() {
 		return new Point2fp(
 				this.random.nextDouble() * 1000 - 500,
 				this.random.nextDouble() * 1000 - 500);
@@ -488,7 +488,7 @@ public abstract class AbstractMathTestCase {
 	 *
 	 * @return the random vector.
 	 */
-	protected Vector2D randomVector2f() {
+	protected Vector2fp randomVector2f() {
 		return new Vector2fp(
 				this.random.nextDouble() * 1000 - 500,
 				this.random.nextDouble() * 1000 - 500);
@@ -715,7 +715,7 @@ public abstract class AbstractMathTestCase {
 	 * @param x
 	 * @param y
 	 */
-	protected void assertFpVectorEquals(double x, double y, Vector2D v) {
+	protected void assertFpVectorEquals(double x, double y, Vector2D<?, ?> v) {
 		double dx = x - v.getX();
 		double dy = y - v.getY();
 		double distSq = dx * dx + dy * dy;
@@ -732,7 +732,7 @@ public abstract class AbstractMathTestCase {
 	 * @param x
 	 * @param y
 	 */
-	protected void assertIntVectorEquals(int x, int y, Vector2D v) {
+	protected void assertIntVectorEquals(int x, int y, Vector2D<?, ?> v) {
 		if (x != v.getX() || y != v.iy()) {
 			throw new ComparisonFailure("Not same vector", //$NON-NLS-1$
 					"(" + x + "; " + y + ")", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -746,7 +746,7 @@ public abstract class AbstractMathTestCase {
 	 * @param x
 	 * @param y
 	 */
-	protected void assertFpVectorNotEquals(double x, double y, Vector2D v) {
+	protected void assertFpVectorNotEquals(double x, double y, Vector2D<?, ?> v) {
 		double dx = x - v.getX();
 		double dy = y - v.getY();
 		double distSq = dx * dx + dy * dy;
@@ -763,7 +763,7 @@ public abstract class AbstractMathTestCase {
 	 * @param x
 	 * @param y
 	 */
-	protected void assertIntVectorNotEquals(int x, int y, Vector2D v) {
+	protected void assertIntVectorNotEquals(int x, int y, Vector2D<?, ?> v) {
 		if (x == v.ix() && y == v.iy()) {
 			throw new ComparisonFailure("Same vector", //$NON-NLS-1$
 					"(" + x + "; " + y + ")", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -862,7 +862,7 @@ public abstract class AbstractMathTestCase {
 	 * @param x
 	 * @param y
 	 */
-	protected void assertIntPointEquals(int x, int y, Point2D v) {
+	protected void assertIntPointEquals(int x, int y, Point2D<?, ?> v) {
 		if (x != v.ix() || y != v.iy()) {
 			throw new ComparisonFailure("Not same point", //$NON-NLS-1$
 					"(" + x + "; " + y + ")", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -876,7 +876,7 @@ public abstract class AbstractMathTestCase {
 	 * @param x
 	 * @param y
 	 */
-	protected void assertFpPointNotEquals(double x, double y, Point2D v) {
+	protected void assertFpPointNotEquals(double x, double y, Point2D<?, ?> v) {
 		double dx = x - v.getX();
 		double dy = y - v.getY();
 		double distSq = dx * dx + dy * dy;
@@ -893,11 +893,135 @@ public abstract class AbstractMathTestCase {
 	 * @param x
 	 * @param y
 	 */
-	protected void assertIntPointNotEquals(int x, int y, Point2D v) {
+	protected void assertIntPointNotEquals(int x, int y, Point2D<?, ?> v) {
 		if (x == v.ix() && y == v.iy()) {
 			throw new ComparisonFailure("Same point", //$NON-NLS-1$
 					"(" + x + "; " + y + ")", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 					"(" + v.ix() + "; " + v.iy() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		}
+	}
+
+	/** Test if the actual matrix is equal to the expected values.
+	 * 
+	 * @param expected 
+	 * @param actual
+	 */
+	protected void assertEpsilonEquals(Matrix2f expected, Matrix2f actual) {
+		if ((!isEpsilonEquals(expected.getM00(), actual.getM00()))
+			||(!isEpsilonEquals(expected.getM01(), actual.getM01()))
+			||(!isEpsilonEquals(expected.getM10(), actual.getM10()))
+			||(!isEpsilonEquals(expected.getM11(), actual.getM11()))) {
+			throw new ComparisonFailure("Not same matrices", //$NON-NLS-1$
+					expected.toString(), actual.toString());
+		}
+	}
+
+	/** Test if the actual matrix is different from the expected values.
+	 * 
+	 * @param expected 
+	 * @param actual
+	 */
+	protected void assertNotEpsilonEquals(Matrix2f expected, Matrix2f actual) {
+		if ((isEpsilonEquals(expected.getM00(), actual.getM00()))
+			&&(isEpsilonEquals(expected.getM01(), actual.getM01()))
+			&&(isEpsilonEquals(expected.getM10(), actual.getM10()))
+			&&(isEpsilonEquals(expected.getM11(), actual.getM11()))) {
+			throw new ComparisonFailure("Not same matrices", //$NON-NLS-1$
+					expected.toString(), actual.toString());
+		}
+	}
+
+	/** Test if the actual matrix is equal to the expected values.
+	 * 
+	 * @param expected 
+	 * @param actual
+	 */
+	protected void assertEpsilonEquals(Matrix3f expected, Matrix3f actual) {
+		if ((!isEpsilonEquals(expected.getM00(), actual.getM00()))
+			||(!isEpsilonEquals(expected.getM01(), actual.getM01()))
+			||(!isEpsilonEquals(expected.getM02(), actual.getM02()))
+			||(!isEpsilonEquals(expected.getM10(), actual.getM10()))
+			||(!isEpsilonEquals(expected.getM11(), actual.getM11()))
+			||(!isEpsilonEquals(expected.getM12(), actual.getM12()))
+			||(!isEpsilonEquals(expected.getM20(), actual.getM20()))
+			||(!isEpsilonEquals(expected.getM21(), actual.getM21()))
+			||(!isEpsilonEquals(expected.getM22(), actual.getM22()))) {
+			throw new ComparisonFailure("Not same matrices", //$NON-NLS-1$
+					expected.toString(), actual.toString());
+		}
+	}
+
+	/** Test if the actual matrix is different from the expected values.
+	 * 
+	 * @param expected 
+	 * @param actual
+	 */
+	protected void assertNotEpsilonEquals(Matrix3f expected, Matrix3f actual) {
+		if ((isEpsilonEquals(expected.getM00(), actual.getM00()))
+			&&(isEpsilonEquals(expected.getM01(), actual.getM01()))
+			&&(isEpsilonEquals(expected.getM02(), actual.getM02()))
+			&&(isEpsilonEquals(expected.getM10(), actual.getM10()))
+			&&(isEpsilonEquals(expected.getM11(), actual.getM11()))
+			&&(isEpsilonEquals(expected.getM12(), actual.getM12()))
+			&&(isEpsilonEquals(expected.getM20(), actual.getM20()))
+			&&(isEpsilonEquals(expected.getM21(), actual.getM21()))
+			&&(isEpsilonEquals(expected.getM22(), actual.getM22()))) {
+			throw new ComparisonFailure("Not same matrices", //$NON-NLS-1$
+					expected.toString(), actual.toString());
+		}
+	}
+
+	/** Test if the actual matrix is equal to the expected values.
+	 * 
+	 * @param expected 
+	 * @param actual
+	 */
+	protected void assertEpsilonEquals(Matrix4f expected, Matrix4f actual) {
+		if ((!isEpsilonEquals(expected.getM00(), actual.getM00()))
+			||(!isEpsilonEquals(expected.getM01(), actual.getM01()))
+			||(!isEpsilonEquals(expected.getM02(), actual.getM02()))
+			||(!isEpsilonEquals(expected.getM03(), actual.getM03()))
+			||(!isEpsilonEquals(expected.getM10(), actual.getM10()))
+			||(!isEpsilonEquals(expected.getM11(), actual.getM11()))
+			||(!isEpsilonEquals(expected.getM12(), actual.getM12()))
+			||(!isEpsilonEquals(expected.getM13(), actual.getM13()))
+			||(!isEpsilonEquals(expected.getM20(), actual.getM20()))
+			||(!isEpsilonEquals(expected.getM21(), actual.getM21()))
+			||(!isEpsilonEquals(expected.getM22(), actual.getM22()))
+			||(!isEpsilonEquals(expected.getM23(), actual.getM23()))
+			||(!isEpsilonEquals(expected.getM30(), actual.getM30()))
+			||(!isEpsilonEquals(expected.getM31(), actual.getM31()))
+			||(!isEpsilonEquals(expected.getM32(), actual.getM32()))
+			||(!isEpsilonEquals(expected.getM33(), actual.getM33()))) {
+			throw new ComparisonFailure("Not same matrices", //$NON-NLS-1$
+					expected.toString(), actual.toString());
+		}
+	}
+
+	/** Test if the actual matrix is different from the expected values.
+	 * 
+	 * @param expected 
+	 * @param actual
+	 */
+	protected void assertNotEpsilonEquals(Matrix4f expected, Matrix4f actual) {
+		if ((isEpsilonEquals(expected.getM00(), actual.getM00()))
+			&&(isEpsilonEquals(expected.getM01(), actual.getM01()))
+			&&(isEpsilonEquals(expected.getM02(), actual.getM02()))
+			&&(isEpsilonEquals(expected.getM03(), actual.getM03()))
+			&&(isEpsilonEquals(expected.getM10(), actual.getM10()))
+			&&(isEpsilonEquals(expected.getM11(), actual.getM11()))
+			&&(isEpsilonEquals(expected.getM12(), actual.getM12()))
+			&&(isEpsilonEquals(expected.getM13(), actual.getM13()))
+			&&(isEpsilonEquals(expected.getM20(), actual.getM20()))
+			&&(isEpsilonEquals(expected.getM21(), actual.getM21()))
+			&&(isEpsilonEquals(expected.getM22(), actual.getM22()))
+			&&(isEpsilonEquals(expected.getM23(), actual.getM23()))
+			&&(isEpsilonEquals(expected.getM30(), actual.getM30()))
+			&&(isEpsilonEquals(expected.getM31(), actual.getM31()))
+			&&(isEpsilonEquals(expected.getM32(), actual.getM32()))
+			&&(isEpsilonEquals(expected.getM33(), actual.getM33()))) {
+			throw new ComparisonFailure("Not same matrices", //$NON-NLS-1$
+					expected.toString(), actual.toString());
 		}
 	}
 

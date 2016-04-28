@@ -33,6 +33,7 @@ import org.arakhne.afc.math.geometry.d2.Path2D;
 import org.arakhne.afc.math.geometry.d2.PathIterator2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
+import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Fonctional interface that represented a 2D path on a plane.
@@ -41,6 +42,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @param <IT> is the type of the implementation of this shape.
  * @param <IE> is the type of the path elements.
  * @param <P> is the type of the points.
+ * @param <V> is the type of the vectors.
  * @param <B> is the type of the bounding boxes.
  * @author $Author: sgalland$
  * @author $Author: hjaffali$
@@ -50,12 +52,13 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @since 13.0
  */
 public interface Path2afp<
-ST extends Shape2afp<?, ?, IE, P, B>,
-IT extends Path2afp<?, ?, IE, P, B>,
-IE extends PathElement2afp,
-P extends Point2D,
-B extends Rectangle2afp<?, ?, IE, P, B>>
-extends Shape2afp<ST, IT, IE, P, B>, Path2D<ST, IT, PathIterator2afp<IE>, P, B> {
+		ST extends Shape2afp<?, ?, IE, P, V, B>,
+		IT extends Path2afp<?, ?, IE, P, V, B>,
+		IE extends PathElement2afp,
+		P extends Point2D<? super P, ? super V>,
+		V extends Vector2D<? super V, ? super P>,
+		B extends Rectangle2afp<?, ?, IE, P, V, B>>
+		extends Shape2afp<ST, IT, IE, P, V, B>, Path2D<ST, IT, PathIterator2afp<IE>, P, V, B> {
 
 	/** Multiple of cubic & quad curve size.
 	 */
@@ -105,8 +108,8 @@ extends Shape2afp<ST, IT, IE, P, B>, Path2D<ST, IT, PathIterator2afp<IE>, P, B> 
 			throw new IllegalArgumentException("missing initial moveto in the first path definition"); //$NON-NLS-1$
 		}
 
-		GeomFactory2afp<?, ?, ?> factory = iterator.getGeomFactory();
-		Path2afp<?, ?, ?, ?, ?> subPath;
+		GeomFactory2afp<?, ?, ?, ?> factory = iterator.getGeomFactory();
+		Path2afp<?, ?, ?, ?, ?, ?> subPath;
 		double curx, cury, movx, movy, endx, endy;
 		curx = movx = pathElement1.getToX();
 		cury = movy = pathElement1.getToY();
@@ -229,7 +232,7 @@ extends Shape2afp<ST, IT, IE, P, B>, Path2D<ST, IT, PathIterator2afp<IE>, P, B> 
 	 * @param result the closest point on the shape; or the point itself
 	 * if it is inside the shape.
 	 */
-	static void getClosestPointTo(PathIterator2afp<? extends PathElement2afp> pi, double x, double y, Point2D result) {
+	static void getClosestPointTo(PathIterator2afp<? extends PathElement2afp> pi, double x, double y, Point2D<?, ?> result) {
 		assert (pi != null) : "Iterator must be not null"; //$NON-NLS-1$
 		assert (!pi.isCurved()) : "The path iterator is not iterating on a polyline path"; //$NON-NLS-1$
 		assert (result != null) : "Result point must be not null"; //$NON-NLS-1$
@@ -320,7 +323,7 @@ extends Shape2afp<ST, IT, IE, P, B>, Path2D<ST, IT, PathIterator2afp<IE>, P, B> 
 	 * @param y
 	 * @param result the farthest point on the shape.
 	 */
-	static void getFarthestPointTo(PathIterator2afp<? extends PathElement2afp> pi, double x, double y, Point2D result) {
+	static void getFarthestPointTo(PathIterator2afp<? extends PathElement2afp> pi, double x, double y, Point2D<?, ?> result) {
 		assert (pi != null) : "Iterator must be not null"; //$NON-NLS-1$
 		assert (!pi.isCurved()) : "The path iterator is not iterating on a polyline path"; //$NON-NLS-1$
 		assert (result != null) : "Result point must be not null"; //$NON-NLS-1$
@@ -328,7 +331,7 @@ extends Shape2afp<ST, IT, IE, P, B>, Path2D<ST, IT, PathIterator2afp<IE>, P, B> 
 		double bestDist = Double.NEGATIVE_INFINITY;
 		PathElement2afp pe;
 		// Only for internal use.
-		Point2D point = new InnerComputationPoint2afp();
+		Point2D<?, ?> point = new InnerComputationPoint2afp();
 
 		while (pi.hasNext()) {
 			pe = pi.next();
@@ -474,8 +477,8 @@ extends Shape2afp<ST, IT, IE, P, B>, Path2D<ST, IT, PathIterator2afp<IE>, P, B> 
 			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
 		}
 
-		GeomFactory2afp<?, ?, ?> factory = iterator.getGeomFactory();
-		Path2afp<?, ?, ?, ?, ?> subPath;
+		GeomFactory2afp<?, ?, ?, ?> factory = iterator.getGeomFactory();
+		Path2afp<?, ?, ?, ?, ?, ?> subPath;
 		double movx = element.getToX();
 		double movy = element.getToY();
 		double curx = movx;
@@ -623,8 +626,8 @@ extends Shape2afp<ST, IT, IE, P, B>, Path2D<ST, IT, PathIterator2afp<IE>, P, B> 
 			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
 		}
 
-		GeomFactory2afp<?, ?, ?> factory = iterator.getGeomFactory();
-		Path2afp<?, ?, ?, ?, ?> localPath;
+		GeomFactory2afp<?, ?, ?, ?> factory = iterator.getGeomFactory();
+		Path2afp<?, ?, ?, ?, ?, ?> localPath;
 		double movx = element.getToX();
 		double movy = element.getToY();
 		double curx = movx;
@@ -773,8 +776,8 @@ extends Shape2afp<ST, IT, IE, P, B>, Path2D<ST, IT, PathIterator2afp<IE>, P, B> 
 			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
 		}
 
-		GeomFactory2afp<?, ?, ?> factory = iterator.getGeomFactory();
-		Path2afp<?, ?, ?, ?, ?> localPath;
+		GeomFactory2afp<?, ?, ?, ?> factory = iterator.getGeomFactory();
+		Path2afp<?, ?, ?, ?, ?, ?> localPath;
 		double curx, cury, movx, movy, endx, endy;
 		curx = movx = pathElement.getToX();
 		cury = movy = pathElement.getToY();
@@ -915,8 +918,8 @@ extends Shape2afp<ST, IT, IE, P, B>, Path2D<ST, IT, PathIterator2afp<IE>, P, B> 
 			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
 		}
 
-		GeomFactory2afp<?, ?, ?> factory = iterator.getGeomFactory();
-		Path2afp<?, ?, ?, ?, ?> localPath;
+		GeomFactory2afp<?, ?, ?, ?> factory = iterator.getGeomFactory();
+		Path2afp<?, ?, ?, ?, ?, ?> localPath;
 		double movx = element.getToX();
 		double movy = element.getToY();
 		double curx = movx;
@@ -1060,8 +1063,8 @@ extends Shape2afp<ST, IT, IE, P, B>, Path2D<ST, IT, PathIterator2afp<IE>, P, B> 
 			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
 		}
 
-		GeomFactory2afp<?, ?, ?> factory = iterator.getGeomFactory();
-		Path2afp<?, ?, ?, ?, ?> localPath;
+		GeomFactory2afp<?, ?, ?, ?> factory = iterator.getGeomFactory();
+		Path2afp<?, ?, ?, ?, ?, ?> localPath;
 		double movx = element.getToX();
 		double movy = element.getToY();
 		double curx = movx;
@@ -1211,8 +1214,8 @@ extends Shape2afp<ST, IT, IE, P, B>, Path2D<ST, IT, PathIterator2afp<IE>, P, B> 
 			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
 		}
 
-		GeomFactory2afp<?, ?, ?> factory = iterator.getGeomFactory();
-		Path2afp<?, ?, ?, ?, ?> localPath;
+		GeomFactory2afp<?, ?, ?, ?> factory = iterator.getGeomFactory();
+		Path2afp<?, ?, ?, ?, ?, ?> localPath;
 		double curx, cury, movx, movy, endx, endy;
 		curx = movx = pathElement.getToX();
 		cury = movy = pathElement.getToY();
@@ -1375,8 +1378,8 @@ extends Shape2afp<ST, IT, IE, P, B>, Path2D<ST, IT, PathIterator2afp<IE>, P, B> 
 			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
 		}
 
-		GeomFactory2afp<?, ?, ?> factory = iterator.getGeomFactory();
-		Path2afp<?, ?, ?, ?, ?> localPath;
+		GeomFactory2afp<?, ?, ?, ?> factory = iterator.getGeomFactory();
+		Path2afp<?, ?, ?, ?, ?, ?> localPath;
 		double curx, cury, movx, movy, endx, endy;
 		curx = movx = pathElement.getToX();
 		cury = movy = pathElement.getToY();
@@ -1501,18 +1504,18 @@ extends Shape2afp<ST, IT, IE, P, B>, Path2D<ST, IT, PathIterator2afp<IE>, P, B> 
 	 * @see #computeControlPointBoundingBox(PathIterator2afp, Rectangle2afp)
 	 */
 	static boolean computeDrawableElementBoundingBox(PathIterator2afp<?> iterator,
-			Rectangle2afp<?, ?, ?, ?, ?> box) {
+			Rectangle2afp<?, ?, ?, ?, ?, ?> box) {
 		assert (iterator != null) : "Iterator must be not null"; //$NON-NLS-1$
 		assert (box != null) : "Rectangle must be not null"; //$NON-NLS-1$
-		GeomFactory2afp<?, ?, ?> factory = iterator.getGeomFactory();
+		GeomFactory2afp<?, ?, ?, ?> factory = iterator.getGeomFactory();
 		boolean foundOneLine = false;
 		double xmin = Double.POSITIVE_INFINITY;
 		double ymin = Double.POSITIVE_INFINITY;
 		double xmax = Double.NEGATIVE_INFINITY;
 		double ymax = Double.NEGATIVE_INFINITY;
 		PathElement2afp element;
-		Path2afp<?, ?, ?, ?, ?> subPath;
-		Rectangle2afp<?, ?, ?, ?, ?> subBox;
+		Path2afp<?, ?, ?, ?, ?, ?> subPath;
+		Rectangle2afp<?, ?, ?, ?, ?, ?> subBox;
 		while (iterator.hasNext()) {
 			element = iterator.next();
 			switch(element.getType()) {
@@ -1590,7 +1593,7 @@ extends Shape2afp<ST, IT, IE, P, B>, Path2D<ST, IT, PathIterator2afp<IE>, P, B> 
 	 * @see #computeDrawableElementBoundingBox(PathIterator2afp, Rectangle2afp)
 	 */
 	static boolean computeControlPointBoundingBox(PathIterator2afp<?> iterator,
-			Rectangle2afp<?, ?, ?, ?, ?> box) {
+			Rectangle2afp<?, ?, ?, ?, ?, ?> box) {
 		assert (iterator != null) : "Iterator must be not null"; //$NON-NLS-1$
 		assert (box != null) : "Rectangle must be not null"; //$NON-NLS-1$
 		boolean foundOneControlPoint = false;
@@ -1674,8 +1677,8 @@ extends Shape2afp<ST, IT, IE, P, B>, Path2D<ST, IT, PathIterator2afp<IE>, P, B> 
 		}
 
 		// only for internal use
-		GeomFactory2afp<?, ?, ?> factory = iterator.getGeomFactory();
-		Path2afp<?, ?, ?, ?, ?> subPath;
+		GeomFactory2afp<?, ?, ?, ?> factory = iterator.getGeomFactory();
+		Path2afp<?, ?, ?, ?, ?, ?> subPath;
 		double curx, cury, movx, movy, endx, endy;
 		curx = movx = pathElement.getToX();
 		cury = movy = pathElement.getToY();
@@ -1787,7 +1790,7 @@ extends Shape2afp<ST, IT, IE, P, B>, Path2D<ST, IT, PathIterator2afp<IE>, P, B> 
 	 *
 	 * @param s the path to copy.
 	 */
-	default void set(Path2afp<?, ?, ?, ?, ?> s) {
+	default void set(Path2afp<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Path must be not null"; //$NON-NLS-1$
 		clear();
 		add(s.getPathIterator());
@@ -1803,7 +1806,7 @@ extends Shape2afp<ST, IT, IE, P, B>, Path2D<ST, IT, PathIterator2afp<IE>, P, B> 
 	void moveTo(double x, double y);
 
 	@Override
-	default void moveTo(Point2D position) {
+	default void moveTo(Point2D<?, ?> position) {
 		assert (position != null) : "Point must be not null"; //$NON-NLS-1$
 		moveTo(position.getX(), position.getY());
 	}
@@ -1819,7 +1822,7 @@ extends Shape2afp<ST, IT, IE, P, B>, Path2D<ST, IT, PathIterator2afp<IE>, P, B> 
 	void lineTo(double x, double y);
 
 	@Override
-	default void lineTo(Point2D to) {
+	default void lineTo(Point2D<?, ?> to) {
 		assert (to != null) : "Point must be not null"; //$NON-NLS-1$
 		lineTo(to.getX(), to.getY());
 	}
@@ -1840,7 +1843,7 @@ extends Shape2afp<ST, IT, IE, P, B>, Path2D<ST, IT, PathIterator2afp<IE>, P, B> 
 	void quadTo(double x1, double y1, double x2, double y2);
 
 	@Override
-	default void quadTo(Point2D ctrl, Point2D to) {
+	default void quadTo(Point2D<?, ?> ctrl, Point2D<?, ?> to) {
 		assert (ctrl != null) : "Control point must be not null"; //$NON-NLS-1$
 		assert (to != null) : "Target point must be not null"; //$NON-NLS-1$
 		quadTo(ctrl.getX(), ctrl.getY(), to.getX(), to.getY());
@@ -1866,7 +1869,7 @@ extends Shape2afp<ST, IT, IE, P, B>, Path2D<ST, IT, PathIterator2afp<IE>, P, B> 
 			double x3, double y3);
 
 	@Override
-	default void curveTo(Point2D ctrl1, Point2D ctrl2, Point2D to) {
+	default void curveTo(Point2D<?, ?> ctrl1, Point2D<?, ?> ctrl2, Point2D<?, ?> to) {
 		assert (ctrl1 != null) : "First control point must be not null"; //$NON-NLS-1$
 		assert (ctrl2 != null) : "Second control point must be not null"; //$NON-NLS-1$
 		assert (to != null) : "Taarget point must be not null"; //$NON-NLS-1$
@@ -1876,25 +1879,25 @@ extends Shape2afp<ST, IT, IE, P, B>, Path2D<ST, IT, PathIterator2afp<IE>, P, B> 
 
 	@Pure
 	@Override
-	default double getDistanceSquared(Point2D p) {
+	default double getDistanceSquared(Point2D<?, ?> p) {
 		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
-		Point2D c = getClosestPointTo(p);
+		Point2D<?, ?> c = getClosestPointTo(p);
 		return c.getDistanceSquared(p);
 	}
 
 	@Pure
 	@Override
-	default double getDistanceL1(Point2D p) {
+	default double getDistanceL1(Point2D<?, ?> p) {
 		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
-		Point2D c = getClosestPointTo(p);
+		Point2D<?, ?> c = getClosestPointTo(p);
 		return c.getDistanceL1(p);
 	}
 
 	@Pure
 	@Override
-	default double getDistanceLinf(Point2D p) {
+	default double getDistanceLinf(Point2D<?, ?> p) {
 		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
-		Point2D c = getClosestPointTo(p);
+		Point2D<?, ?> c = getClosestPointTo(p);
 		return c.getDistanceLinf(p);
 	}
 
@@ -1905,7 +1908,7 @@ extends Shape2afp<ST, IT, IE, P, B>, Path2D<ST, IT, PathIterator2afp<IE>, P, B> 
 	}
 
 	@Override
-	default boolean contains(Rectangle2afp<?, ?, ?, ?, ?> r) {
+	default boolean contains(Rectangle2afp<?, ?, ?, ?, ?, ?> r) {
 		assert (r != null) : "Rectangle must be not null"; //$NON-NLS-1$
 		return containsRectangle(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
 				r.getMinX(), r.getMinY(), r.getWidth(), r.getHeight());
@@ -1913,7 +1916,7 @@ extends Shape2afp<ST, IT, IE, P, B>, Path2D<ST, IT, PathIterator2afp<IE>, P, B> 
 
 	@Pure
 	@Override
-	default boolean intersects(Rectangle2afp<?, ?, ?, ?, ?> s) {
+	default boolean intersects(Rectangle2afp<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Rectangle must be not null"; //$NON-NLS-1$
 		// Copied from AWT API
 		if (s.isEmpty()) return false;
@@ -1928,14 +1931,14 @@ extends Shape2afp<ST, IT, IE, P, B>, Path2D<ST, IT, PathIterator2afp<IE>, P, B> 
 
 	@Pure
 	@Override
-	default boolean intersects(RoundRectangle2afp<?, ?, ?, ?, ?> s) {
+	default boolean intersects(RoundRectangle2afp<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Rectangle must be not null"; //$NON-NLS-1$
 		return s.intersects(this);
 	}
 
 	@Pure
 	@Override
-	default boolean intersects(Ellipse2afp<?, ?, ?, ?, ?> s) {
+	default boolean intersects(Ellipse2afp<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Ellipse must be not null"; //$NON-NLS-1$
 		int mask = (getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2);
 		int crossings = computeCrossingsFromEllipse(
@@ -1949,7 +1952,7 @@ extends Shape2afp<ST, IT, IE, P, B>, Path2D<ST, IT, PathIterator2afp<IE>, P, B> 
 
 	@Pure
 	@Override
-	default boolean intersects(Circle2afp<?, ?, ?, ?, ?> s) {
+	default boolean intersects(Circle2afp<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Circle must be not null"; //$NON-NLS-1$
 		int mask = (getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2);
 		int crossings = computeCrossingsFromCircle(
@@ -1963,7 +1966,7 @@ extends Shape2afp<ST, IT, IE, P, B>, Path2D<ST, IT, PathIterator2afp<IE>, P, B> 
 
 	@Pure
 	@Override
-	default boolean intersects(Segment2afp<?, ?, ?, ?, ?> s) {
+	default boolean intersects(Segment2afp<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Segment must be not null"; //$NON-NLS-1$
 		int mask = (getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2);
 		int crossings = computeCrossingsFromSegment(
@@ -1977,7 +1980,7 @@ extends Shape2afp<ST, IT, IE, P, B>, Path2D<ST, IT, PathIterator2afp<IE>, P, B> 
 
 	@Pure
 	@Override
-	default boolean intersects(Triangle2afp<?, ?, ?, ?, ?> s) {
+	default boolean intersects(Triangle2afp<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Triangle must be not null"; //$NON-NLS-1$
 		int mask = (getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2);
 		int crossings = computeCrossingsFromTriangle(
@@ -1991,7 +1994,7 @@ extends Shape2afp<ST, IT, IE, P, B>, Path2D<ST, IT, PathIterator2afp<IE>, P, B> 
 
 	@Pure
 	@Override
-	default boolean intersects(OrientedRectangle2afp<?, ?, ?, ?, ?> s) {
+	default boolean intersects(OrientedRectangle2afp<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Oriented rectangle must be not null"; //$NON-NLS-1$
 		return OrientedRectangle2afp.intersectsOrientedRectanglePathIterator(
 				s.getCenterX(), s.getCenterY(),
@@ -2002,7 +2005,7 @@ extends Shape2afp<ST, IT, IE, P, B>, Path2D<ST, IT, PathIterator2afp<IE>, P, B> 
 
 	@Pure
 	@Override
-	default boolean intersects(Parallelogram2afp<?, ?, ?, ?, ?> s) {
+	default boolean intersects(Parallelogram2afp<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Parallelogram must be not null"; //$NON-NLS-1$
 		return Parallelogram2afp.intersectsParallelogramPathIterator(
 				s.getCenterX(), s.getCenterY(),
@@ -2013,7 +2016,7 @@ extends Shape2afp<ST, IT, IE, P, B>, Path2D<ST, IT, PathIterator2afp<IE>, P, B> 
 
 	@Pure
 	@Override
-	default boolean intersects(Path2afp<?, ?, ?, ?, ?> s) {
+	default boolean intersects(Path2afp<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Path must be not null"; //$NON-NLS-1$
 		int mask = (getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2);
 		int crossings = computeCrossingsFromPath(
@@ -2041,7 +2044,7 @@ extends Shape2afp<ST, IT, IE, P, B>, Path2D<ST, IT, PathIterator2afp<IE>, P, B> 
 
 	@Pure
 	@Override
-	default boolean intersects(MultiShape2afp<?, ?, ?, ?, ?, ?> s) {
+	default boolean intersects(MultiShape2afp<?, ?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "MultiShape must be not null"; //$NON-NLS-1$
 		return s.intersects(this);
 	}
@@ -2063,7 +2066,7 @@ extends Shape2afp<ST, IT, IE, P, B>, Path2D<ST, IT, PathIterator2afp<IE>, P, B> 
 	void setLastPoint(double x, double y);
 
 	@Override
-	default void setLastPoint(Point2D point) {
+	default void setLastPoint(Point2D<?, ?> point) {
 		assert (point != null) : "Point must be not null"; //$NON-NLS-1$
 		setLastPoint(point.getX(), point.getY());
 	}
@@ -2132,7 +2135,7 @@ extends Shape2afp<ST, IT, IE, P, B>, Path2D<ST, IT, PathIterator2afp<IE>, P, B> 
 
 	@Pure
 	@Override
-	default P getClosestPointTo(Point2D p) {
+	default P getClosestPointTo(Point2D<?, ?> p) {
 		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
 		P point = getGeomFactory().newPoint();
 		Path2afp.getClosestPointTo(
@@ -2144,7 +2147,7 @@ extends Shape2afp<ST, IT, IE, P, B>, Path2D<ST, IT, PathIterator2afp<IE>, P, B> 
 
 	@Pure
 	@Override
-	default P getFarthestPointTo(Point2D p) {
+	default P getFarthestPointTo(Point2D<?, ?> p) {
 		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
 		P point = getGeomFactory().newPoint();
 		Path2afp.getFarthestPointTo(
@@ -2187,18 +2190,18 @@ extends Shape2afp<ST, IT, IE, P, B>, Path2D<ST, IT, PathIterator2afp<IE>, P, B> 
 	 */
 	abstract class AbstractPathPathIterator<T extends PathElement2afp> implements PathIterator2afp<T> {
 
-		private final Path2afp<?, ?, T, ?, ?> path;
+		private final Path2afp<?, ?, T, ?, ?, ?> path;
 
 		/**
 		 * @param path the iterated path.
 		 */
-		public AbstractPathPathIterator(Path2afp<?, ?, T, ?, ?> path) {
+		public AbstractPathPathIterator(Path2afp<?, ?, T, ?, ?, ?> path) {
 			assert (path != null) : "Path must be not null"; //$NON-NLS-1$
 			this.path = path;
 		}
 
 		@Override
-		public GeomFactory2afp<T, ?, ?> getGeomFactory() {
+		public GeomFactory2afp<T, ?, ?, ?> getGeomFactory() {
 			return this.path.getGeomFactory();
 		}
 
@@ -2206,7 +2209,7 @@ extends Shape2afp<ST, IT, IE, P, B>, Path2D<ST, IT, PathIterator2afp<IE>, P, B> 
 		 *
 		 * @return the path.
 		 */
-		public Path2afp<?, ?, T, ?, ?> getPath() {
+		public Path2afp<?, ?, T, ?, ?, ?> getPath() {
 			return this.path;
 		}
 
@@ -2254,8 +2257,8 @@ extends Shape2afp<ST, IT, IE, P, B>, Path2D<ST, IT, PathIterator2afp<IE>, P, B> 
 	 */
 	class PathPathIterator<T extends PathElement2afp> extends AbstractPathPathIterator<T> {
 
-		private Point2D p1;
-		private Point2D p2;
+		private Point2D<?, ?> p1;
+		private Point2D<?, ?> p2;
 		private int iType = 0;
 		private int iCoord = 0;
 		private double movex, movey;
@@ -2263,7 +2266,7 @@ extends Shape2afp<ST, IT, IE, P, B>, Path2D<ST, IT, PathIterator2afp<IE>, P, B> 
 		/**
 		 * @param path the path to iterate on.
 		 */
-		public PathPathIterator(Path2afp<?, ?, T, ?, ?> path) {
+		public PathPathIterator(Path2afp<?, ?, T, ?, ?, ?> path) {
 			super(path);
 			this.p1 = new InnerComputationPoint2afp();
 			this.p2 = new InnerComputationPoint2afp();
@@ -2282,7 +2285,7 @@ extends Shape2afp<ST, IT, IE, P, B>, Path2D<ST, IT, PathIterator2afp<IE>, P, B> 
 
 		@Override
 		public T next() {
-			Path2afp<?, ?, T, ?, ?> path = getPath();
+			Path2afp<?, ?, T, ?, ?, ?> path = getPath();
 			int type = this.iType;
 			if (this.iType >= path.getPathElementCount()) {
 				throw new NoSuchElementException();
@@ -2379,10 +2382,10 @@ extends Shape2afp<ST, IT, IE, P, B>, Path2D<ST, IT, PathIterator2afp<IE>, P, B> 
 
 		private final Transform2D transform;
 
-		private final Point2D p1;
-		private final Point2D p2;
-		private final Point2D ptmp1;
-		private final Point2D ptmp2;
+		private final Point2D<?, ?> p1;
+		private final Point2D<?, ?> p2;
+		private final Point2D<?, ?> ptmp1;
+		private final Point2D<?, ?> ptmp2;
 
 		private int iType = 0;
 
@@ -2396,7 +2399,7 @@ extends Shape2afp<ST, IT, IE, P, B>, Path2D<ST, IT, PathIterator2afp<IE>, P, B> 
 		 * @param path the path to iterate on.
 		 * @param transform the transformation to apply on the path.
 		 */
-		public TransformedPathPathIterator(Path2afp<?, ?, T, ?, ?> path, Transform2D transform) {
+		public TransformedPathPathIterator(Path2afp<?, ?, T, ?, ?, ?> path, Transform2D transform) {
 			super(path);
 			assert (transform != null) : "Transformation must be not null"; //$NON-NLS-1$
 			this.transform = transform;
@@ -2419,7 +2422,7 @@ extends Shape2afp<ST, IT, IE, P, B>, Path2D<ST, IT, PathIterator2afp<IE>, P, B> 
 
 		@Override
 		public T next() {
-			Path2afp<?, ?, T, ?, ?> path = getPath();
+			Path2afp<?, ?, T, ?, ?, ?> path = getPath();
 			if (this.iType >= path.getPathElementCount()) {
 				throw new NoSuchElementException();
 			}
@@ -3034,7 +3037,7 @@ extends Shape2afp<ST, IT, IE, P, B>, Path2D<ST, IT, PathIterator2afp<IE>, P, B> 
 
 		@Pure
 		@Override
-		public GeomFactory2afp<T, ?, ?> getGeomFactory() {
+		public GeomFactory2afp<T, ?, ?, ?> getGeomFactory() {
 			return this.pathIterator.getGeomFactory();
 		}
 
@@ -3043,20 +3046,21 @@ extends Shape2afp<ST, IT, IE, P, B>, Path2D<ST, IT, PathIterator2afp<IE>, P, B> 
 	/** An collection of the points of the path.
 	 *
 	 * @param <P> the type of the points.
+	 * @param <V> the type of the vectors.
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 * @since 13.0
 	 */
-	class PointCollection<P extends Point2D> implements Collection<P> {
+	class PointCollection<P extends Point2D<? super P, ? super V>, V extends Vector2D<? super V, ? super P>> implements Collection<P> {
 
-		private final Path2afp<?, ?, ?, P, ?> path;
+		private final Path2afp<?, ?, ?, P, V, ?> path;
 
 		/**
 		 * @param path the path to iterate on.
 		 */
-		public PointCollection(Path2afp<?, ?, ?, P, ?> path) {
+		public PointCollection(Path2afp<?, ?, ?, P, V, ?> path) {
 			assert (path != null) : "Path must be not null"; //$NON-NLS-1$
 			this.path = path;
 		}
@@ -3077,7 +3081,7 @@ extends Shape2afp<ST, IT, IE, P, B>, Path2D<ST, IT, PathIterator2afp<IE>, P, B> 
 		@Override
 		public boolean contains(Object o) {
 			if (o instanceof Point2D) {
-				return this.path.containsControlPoint((Point2D)o);
+				return this.path.containsControlPoint((Point2D<?, ?>) o);
 			}
 			return false;
 		}
@@ -3122,7 +3126,7 @@ extends Shape2afp<ST, IT, IE, P, B>, Path2D<ST, IT, PathIterator2afp<IE>, P, B> 
 		@Override
 		public boolean remove(Object o) {
 			if (o instanceof Point2D) {
-				Point2D p = (Point2D)o;
+				Point2D<?, ?> p = (Point2D<?, ?>) o;
 				return this.path.remove(p.getX(), p.getY());
 			}
 			return false;
@@ -3134,7 +3138,7 @@ extends Shape2afp<ST, IT, IE, P, B>, Path2D<ST, IT, PathIterator2afp<IE>, P, B> 
 			assert (c != null) : "Collection must be not null"; //$NON-NLS-1$
 			for(Object obj : c) {
 				if ((!(obj instanceof Point2D))
-						||(!this.path.containsControlPoint((Point2D)obj))) {
+						||(!this.path.containsControlPoint((Point2D<?, ?>) obj))) {
 					return false;
 				}
 			}
@@ -3159,7 +3163,7 @@ extends Shape2afp<ST, IT, IE, P, B>, Path2D<ST, IT, PathIterator2afp<IE>, P, B> 
 			boolean changed = false;
 			for(Object obj : c) {
 				if (obj instanceof Point2D) {
-					Point2D pts = (Point2D)obj;
+					Point2D<?, ?> pts = (Point2D<?, ?>) obj;
 					if (this.path.remove(pts.getX(), pts.getY())) {
 						changed = true;
 					}
@@ -3183,15 +3187,16 @@ extends Shape2afp<ST, IT, IE, P, B>, Path2D<ST, IT, PathIterator2afp<IE>, P, B> 
 	/** Iterator on the points of the path.
 	 *
 	 * @param <P> the type of the points.
+	 * @param <V> the type of the vectors.
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 * @since 13.0
 	 */
-	class PointIterator<P extends Point2D> implements Iterator<P> {
+	class PointIterator<P extends Point2D<? super P, ? super V>, V extends Vector2D<? super V, ? super P>> implements Iterator<P> {
 
-		private final Path2afp<?, ?, ?, P, ?> path;
+		private final Path2afp<?, ?, ?, P, V, ?> path;
 
 		private int index = 0;
 
@@ -3200,7 +3205,7 @@ extends Shape2afp<ST, IT, IE, P, B>, Path2D<ST, IT, PathIterator2afp<IE>, P, B> 
 		/**
 		 * @param path the path to iterate on.
 		 */
-		public PointIterator(Path2afp<?, ?, ?, P, ?> path) {
+		public PointIterator(Path2afp<?, ?, ?, P, V, ?> path) {
 			assert (path != null) : "Path must be not null"; //$NON-NLS-1$
 			this.path = path;
 		}
@@ -3224,7 +3229,7 @@ extends Shape2afp<ST, IT, IE, P, B>, Path2D<ST, IT, PathIterator2afp<IE>, P, B> 
 
 		@Override
 		public void remove() {
-			Point2D p = this.lastReplied;
+			Point2D<?, ?> p = this.lastReplied;
 			this.lastReplied = null;
 			if (p==null)
 				throw new NoSuchElementException();

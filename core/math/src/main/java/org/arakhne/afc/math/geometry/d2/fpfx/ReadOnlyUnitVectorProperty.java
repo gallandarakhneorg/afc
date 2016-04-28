@@ -20,8 +20,6 @@
  */
 package org.arakhne.afc.math.geometry.d2.fpfx;
 
-import org.arakhne.afc.math.geometry.d2.Vector2D;
-
 import javafx.beans.property.ReadOnlyProperty;
 
 /**
@@ -33,14 +31,14 @@ import javafx.beans.property.ReadOnlyProperty;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public interface ReadOnlyUnitVectorProperty extends ReadOnlyProperty<Vector2D> {
+public interface ReadOnlyUnitVectorProperty extends ReadOnlyProperty<Vector2fx> {
 
     /**
      * Returns the current value of this property.
      * 
      * @return the current value.
      */
-    Vector2D get();
+    Vector2fx get();
 
     /** Replies the x coordinate of the vector.
 	 *

@@ -23,6 +23,7 @@ package org.arakhne.afc.math.geometry.d2;
 import java.io.Serializable;
 import java.util.Objects;
 
+import org.arakhne.afc.math.Unefficient;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** 2D shape.
@@ -31,6 +32,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @param <IT> is the type of the implementation of this shape.
  * @param <I> is the type of the iterator used to obtain the elements of the path.
  * @param <P> is the type of the points.
+ * @param <V> is the type of the vectors.
  * @param <B> is the type of the bounding boxes.
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -39,12 +41,20 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @since 13.0
  */
 public interface Shape2D<
-		ST extends Shape2D<?, ?, I, P, B>,
-		IT extends Shape2D<?, ?, I, P, B>,
+		ST extends Shape2D<?, ?, I, P, V, B>,
+		IT extends Shape2D<?, ?, I, P, V, B>,
 		I extends PathIterator2D<?>,
-		P extends Point2D,
-		B extends Shape2D<?, ?, I, P, B>>
+		P extends Point2D<? super P, ? super V>,
+		V extends Vector2D<? super V, ? super P>,
+		B extends Shape2D<?, ?, I, P, V, B>>
 		extends Cloneable, Serializable {
+
+	/** Replies the geometry factory associated to this point.
+	 * 
+	 * @return the factory.
+	 */
+	@Pure
+	GeomFactory<V, P> getGeomFactory();
 
 	/** Replies if this shape is empty.
 	 * The semantic associated to the state "empty"
@@ -119,7 +129,7 @@ public interface Shape2D<
 	 * shape, otherwise <code>false</code>.
 	 */
 	@Pure
-	boolean contains(Point2D point);
+	boolean contains(Point2D<?, ?> point);
 	
 	/** Replies the point on the shape that is closest to the given point.
 	 * 
@@ -128,7 +138,7 @@ public interface Shape2D<
 	 * if it is inside the shape.
 	 */
 	@Pure
-	P getClosestPointTo(Point2D point);
+	P getClosestPointTo(Point2D<?, ?> point);
 	
 	/** Replies the point on the shape that is farthest the given point.
 	 * 
@@ -136,7 +146,7 @@ public interface Shape2D<
 	 * @return the farthest point on the shape.
 	 */
 	@Pure
-	P getFarthestPointTo(Point2D point);
+	P getFarthestPointTo(Point2D<?, ?> point);
 
 	/** Replies the minimal distance from this shape to the given point.
 	 * 
@@ -144,7 +154,7 @@ public interface Shape2D<
 	 * @return the minimal distance between this shape and the point.
 	 */
 	@Pure
-	default double getDistance(Point2D point) {
+	default double getDistance(Point2D<?, ?> point) {
 		assert (point != null) : "Point must not be null"; //$NON-NLS-1$
 		return Math.sqrt(getDistanceSquared(point));
 	}
@@ -155,7 +165,7 @@ public interface Shape2D<
 	 * @return squared value of the minimal distance between this shape and the point.
 	 */
 	@Pure
-	double getDistanceSquared(Point2D point);
+	double getDistanceSquared(Point2D<?, ?> point);
 
 	/**
 	 * Computes the L-1 (Manhattan) distance between this shape and
@@ -164,7 +174,7 @@ public interface Shape2D<
 	 * @return the distance.
 	 */
 	@Pure
-	double getDistanceL1(Point2D point);
+	double getDistanceL1(Point2D<?, ?> point);
 
 	/**
 	 * Computes the L-infinite distance between this shape and
@@ -174,7 +184,7 @@ public interface Shape2D<
 	 * @return the distance.
 	 */
 	@Pure
-	double getDistanceLinf(Point2D point);
+	double getDistanceLinf(Point2D<?, ?> point);
 
 	/** Set this shape with the attributes of the given shape.
 	 * 
@@ -214,7 +224,7 @@ public interface Shape2D<
 	 * 
 	 * @param vector
 	 */
-	void translate(Vector2D vector); 
+	void translate(Vector2D<?, ?> vector); 
 
 	/** Replies the bounding box of this shape.
 	 * 
@@ -228,5 +238,148 @@ public interface Shape2D<
 	 * @param box is set with the bounds of the shape.
 	 */
 	void toBoundingBox(B box);
+
+	/** Replies if this shape is intersecting the given shape.
+	 * 
+	 * <p>You must use the intersection functions with a specific parameter type in place of
+	 * this general function. Indeed, the implementation of this function is unefficient due
+	 * to the tests against the types of the given shape, and the cast operators.
+	 * 
+	 * @param s
+	 * @return <code>true</code> if this shape is intersecting the given shape;
+	 * <code>false</code> if there is no intersection.
+	 */
+	@Pure
+	@Unefficient
+	boolean intersects(Shape2D<?, ?, ?, ?, ?, ?> s);
+
+	/** Translate this shape by adding the given vector: {@code this += v}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param v the vector
+	 * @see #translate(Vector2D)
+	 */
+	default void operator_add(Vector2D<?, ?> v) {
+		translate(v);
+	}
+
+	/** Create a new shape by translating this shape of the given vector: {@code this + v}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param v the vector
+	 * @return the transformed shape.
+	 * @see #translate(Vector2D)
+	 */
+	@Pure
+	default IT operator_plus(Vector2D<?, ?> v) {
+		IT clone = clone();
+		clone.translate(v);
+		return clone;
+	}
+
+	/** Translate this shape by substracting the given vector: {@code this -= v}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param v the vector
+	 * @see #translate(Vector2D)
+	 */
+	default void operator_remove(Vector2D<?, ?> v) {
+		Vector2D<?, ?> negate = getGeomFactory().newVector();
+		negate.negate(v);
+		translate(negate);
+	}
+
+	/** Create a new shape by translating this shape of the given vector: {@code this - v}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param v the vector
+	 * @return the transformed shape.
+	 * @see #translate(Vector2D)
+	 */
+	@Pure
+	default IT operator_minus(Vector2D<?, ?> v) {
+		IT clone = clone();
+		Vector2D<?, ?> negate = getGeomFactory().newVector();
+		negate.negate(v);
+		clone.translate(negate);
+		return clone;
+	}
+
+	/** Create a new shape by applying the given transformation: {@code this * t}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param t the transformation
+	 * @return the transformed shape.
+	 * @see #createTransformedShape(Transform2D)
+	 */
+	@Pure
+	default ST operator_multiply(Transform2D t) {
+		return createTransformedShape(t);
+	}
+
+	/** Replies if the given point is inside the shape: {@code this && b}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param point the point to test.
+	 * @return <code>true</code> if the point is inside the shape. Otherwise, <code>false</code>.
+	 * @see #createTransformedShape(Transform2D)
+	 */
+	@Pure
+	default boolean operator_and(Point2D<?, ?> point) {
+		return contains(point);
+	}
+
+	/** Replies if the given shape has an intersection with this shape: {@code this && b}
+	 * 
+	 * <p>You must use the intersection functions with a specific parameter type in place of
+	 * this general function. Indeed, the implementation of this function is unefficient due
+	 * to the tests against the types of the given shape, and the cast operators.
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param shape the shape to test.
+	 * @return <code>true</code> if the shapes are intersecting. Otherwise, <code>false</code>.
+	 * @see #intersects(Shape2D)
+	 */
+	@Pure
+	@Unefficient
+	default boolean operator_and(Shape2D<?, ?, ?, ?, ?, ?> shape) {
+		return intersects(shape);
+	}
+
+	/** Replies the distance between the given point and this shape: {@code this .. p}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param p the point to test.
+	 * @return the distance.
+	 * @see #getDistance(Point2D)
+	 */
+	@Pure
+	default double operator_upTo(Point2D<?, ?> p) {
+		return getDistance(p);
+	}
 
 }

@@ -28,6 +28,7 @@ import org.arakhne.afc.math.tree.iterator.DataBroadFirstForestIterator;
 import org.arakhne.afc.math.tree.iterator.DataDepthFirstForestIterator;
 import org.arakhne.afc.math.tree.iterator.DepthFirstForestIterator;
 import org.arakhne.afc.math.tree.iterator.DepthFirstNodeOrder;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 
 /**
@@ -77,9 +78,8 @@ implements Forest<D> {
 		this.trees.addAll(trees1);
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
+	@Pure
 	public final int getMinHeight() {
 		if (this.trees.isEmpty()) return 0;
 		int m, min = Integer.MAX_VALUE;
@@ -90,9 +90,8 @@ implements Forest<D> {
 		return min;
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
+	@Pure
 	public final int getMaxHeight() {
 		if (this.trees.isEmpty()) return 0;
 		int m, max = 0;
@@ -103,9 +102,8 @@ implements Forest<D> {
 		return max;
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
+	@Pure
 	public final int[] getHeights() {
 		int[] array = new int[0];
 		int[] a, b;
@@ -121,52 +119,46 @@ implements Forest<D> {
 		return array;
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
+	@Pure
 	public final Iterator<TreeNode<D,?>> depthFirstIterator(DepthFirstNodeOrder nodeOrder) {
 		return new DepthFirstForestIterator<>(
 				nodeOrder,
 				this.trees.iterator());
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
+	@Pure
 	public final Iterator<TreeNode<D,?>> depthFirstIterator() {
 		return new DepthFirstForestIterator<>(
 				DepthFirstNodeOrder.PREFIX,
 				this.trees.iterator());
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
+	@Pure
 	public final Iterator<TreeNode<D,?>> broadFirstIterator() {
 		return new BroadFirstForestIterator<>(this.trees.iterator());
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
+	@Pure
 	public final Iterator<D> dataDepthFirstIterator() {
 		return new DataDepthFirstForestIterator<>(
 				DepthFirstNodeOrder.PREFIX,
 				this.trees.iterator());
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
+	@Pure
 	public final Iterator<D> dataDepthFirstIterator(DepthFirstNodeOrder nodeOrder) {
 		return new DataDepthFirstForestIterator<>(
 				nodeOrder,
 				this.trees.iterator());
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
+	@Pure
 	public final Iterator<D> dataDepthFirstIterator(int infixPosition) {
 		if (infixPosition<=0)
 			return new DataDepthFirstForestIterator<>(
@@ -177,16 +169,12 @@ implements Forest<D> {
 				this.trees.iterator());
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
+	@Pure
 	public final Iterator<D> dataBroadFirstIterator() {
 		return new DataBroadFirstForestIterator<>(this.trees.iterator());
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public boolean add(Tree<D,?> tree) {
 		if (this.trees.add(tree)) {
@@ -196,9 +184,6 @@ implements Forest<D> {
 		return false;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public boolean addAll(Collection<? extends Tree<D,?>> newTrees) {
 		if (newTrees.isEmpty()) return false;
@@ -209,9 +194,6 @@ implements Forest<D> {
 		return allAdded;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void clear() {
 		for(Tree<D,?> tree : this.trees) {
@@ -220,26 +202,20 @@ implements Forest<D> {
 		this.trees.clear();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
+	@Pure
 	public boolean contains(Object tree) {
 		return this.trees.contains(tree);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
+	@Pure
 	public boolean containsAll(Collection<?> treeCollection) {
 		return this.trees.containsAll(treeCollection);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
+	@Pure
 	public boolean isEmpty() {
 		if (this.trees.isEmpty()) return true;
 		for(Tree<D,?> tree : this.trees) {
@@ -249,17 +225,12 @@ implements Forest<D> {
 		return true;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
+	@Pure
 	public Iterator<Tree<D,?>> iterator() {
 		return new ForestIterator(this.trees.iterator());
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public boolean remove(Object tree) {
@@ -280,9 +251,6 @@ implements Forest<D> {
 		return false;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public boolean removeAll(Collection<?> tree) {
 		if (tree.isEmpty()) return false;
@@ -293,9 +261,6 @@ implements Forest<D> {
 		return allRemoved;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public boolean retainAll(Collection<?> tree) {
@@ -316,25 +281,18 @@ implements Forest<D> {
 		return changed;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
+	@Pure
 	public int size() {
 		return this.trees.size();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
+	@Pure
 	public Object[] toArray() {
 		return this.trees.toArray();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public <TT> TT[] toArray(TT[] array) {
 		return this.trees.toArray(array);
@@ -412,17 +370,11 @@ implements Forest<D> {
 			this.iterator = iterator1;
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public boolean hasNext() {
 			return this.iterator.hasNext();
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public Tree<D,?> next() {
 			Tree<D,?> t = this.iterator.next();
@@ -430,9 +382,6 @@ implements Forest<D> {
 			return t;
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public void remove() {
 			this.iterator.remove();

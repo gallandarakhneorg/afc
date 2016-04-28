@@ -44,7 +44,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  */
 public class Path2i
 extends AbstractShape2i<Path2i>
-implements Path2ai<Shape2i<?>, Path2i, PathElement2i, Point2i, Rectangle2i> {
+implements Path2ai<Shape2i<?>, Path2i, PathElement2i, Point2i, Vector2i, Rectangle2i> {
 
 	private static final long serialVersionUID = 2542453596839860853L;
 
@@ -143,7 +143,7 @@ implements Path2ai<Shape2i<?>, Path2i, PathElement2i, Point2i, Rectangle2i> {
 	/**
 	 * @param p
 	 */
-	public Path2i(Path2ai<?, ?, ?, ?, ?> p) {
+	public Path2i(Path2ai<?, ?, ?, ?, ?, ?> p) {
 		set(p);
 	}
 
@@ -179,7 +179,7 @@ implements Path2ai<Shape2i<?>, Path2i, PathElement2i, Point2i, Rectangle2i> {
 
 	@Pure
 	@Override
-	public boolean containsControlPoint(Point2D p) {
+	public boolean containsControlPoint(Point2D<?, ?> p) {
 		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
 		int px = p.ix();
 		int py = p.iy();
@@ -263,7 +263,7 @@ implements Path2ai<Shape2i<?>, Path2i, PathElement2i, Point2i, Rectangle2i> {
 	@Override
 	public void transform(Transform2D transform) {
 		assert (transform != null) : "Transformation must be not null"; //$NON-NLS-1$
-		Point2D p = new Point2i();
+		Point2D<?, ?> p = new Point2i();
 		for(int i=0; i<this.numCoords;) {
 			p.set(this.coords[i], this.coords[i+1]);
 			transform.transform(p);
@@ -521,8 +521,8 @@ implements Path2ai<Shape2i<?>, Path2i, PathElement2i, Point2i, Rectangle2i> {
 	}
 
 	@Override
-	public Point2D[] toPointArray(Transform2D transform) {
-		Point2D[] clone = new Point2D[this.numCoords/2];
+	public Point2i[] toPointArray(Transform2D transform) {
+		Point2i[] clone = new Point2i[this.numCoords/2];
 		if (transform == null || transform.isIdentity()) {
 			for(int i=0, j=0; j<this.numCoords; ++i) {
 				clone[i] = new Point2i(

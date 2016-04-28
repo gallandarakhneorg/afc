@@ -32,6 +32,6 @@ import org.arakhne.afc.math.geometry.d2.ai.Shape2ai;
  * @since 13.0
  */
 public interface Shape2i<IT extends Shape2i<?>>
-		extends Shape2ai<Shape2i<?>, IT, PathElement2i, Point2i, Rectangle2i> {
+		extends Shape2ai<Shape2i<?>, IT, PathElement2i, Point2i, Vector2i, Rectangle2i> {
 	// Provided for making easier the type tests.
 }

@@ -28,6 +28,7 @@ import java.util.Iterator;
 import org.arakhne.afc.math.graph.DepthGraphIterator;
 import org.arakhne.afc.math.graph.Graph;
 import org.arakhne.afc.math.graph.GraphIterator;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 
 /** This class provides a simple implementation of a graph.
@@ -50,49 +51,37 @@ implements Graph<SGraphSegment,SGraphPoint> {
 		//
 	}
 	
-	/**
-	 * {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public Iterator<SGraphSegment> iterator() {
 		return Collections.unmodifiableCollection(this.segments).iterator();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public int getSegmentCount() {
 		return this.segments.size();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public int getPointCount() {
 		return this.pointCount;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public boolean isEmpty() {
 		return this.segments.isEmpty();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public boolean contains(Object obj) {
 		return this.segments.contains(obj);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public GraphIterator<SGraphSegment,SGraphPoint> iterator(
 			SGraphSegment starting_segment, SGraphPoint starting_point,
@@ -110,9 +99,7 @@ implements Graph<SGraphSegment,SGraphPoint> {
 				0);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	@Pure
 	@Override
 	public GraphIterator<SGraphSegment, SGraphPoint> depthIterator(
 			SGraphSegment startingSegment, double depth,

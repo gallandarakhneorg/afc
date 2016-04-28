@@ -3678,4 +3678,230 @@ public class Matrix3f implements Serializable, Cloneable {
 		return this.isIdentity.booleanValue();
 	}
 
+	/** Add the given matrix to this matrix: {@code this += matrix}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param matrix the matrix.
+	 * @see #add(Matrix3f)
+	 */
+	public void operator_add(Matrix3f matrix) {
+		add(matrix);
+	}
+	
+	/** Add the given scalar to this matrix: {@code this += scalar}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param scalar the scalar.
+	 * @see #add(double)
+	 */
+	public void operator_add(double scalar) {
+		add(scalar);
+	}
+
+	/** Substract the given matrix to this matrix: {@code this -= matrix}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param matrix the matrix.
+	 * @see #sub(Matrix3f)
+	 */
+	public void operator_remove(Matrix3f matrix) {
+		sub(matrix);
+	}
+	
+	/** Substract the given scalar to this matrix: {@code this -= scalar}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param scalar the scalar.
+	 * @see #add(double)
+	 */
+	public void operator_remove(double scalar) {
+		add(-scalar);
+	}
+
+	/** Replies the addition of the given matrix to this matrix: {@code this + matrix}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param matrix the matrix.
+	 * @return the sum of the matrices.
+	 * @see #add(Matrix3f)
+	 */
+	@Pure
+	public Matrix3f operator_plus(Matrix3f matrix) {
+		Matrix3f result = new Matrix3f();
+		result.add(this, matrix);
+		return result;
+	}
+
+	/** Replies the addition of the given scalar to this matrix: {@code this + scalar}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param scalar the scalar.
+	 * @return the sum of the matrix and the scalar.
+	 * @see #add(double)
+	 */
+	@Pure
+	public Matrix3f operator_plus(double scalar) {
+		Matrix3f result = new Matrix3f();
+		result.add(scalar, this);
+		return result;
+	}
+
+	/** Replies the substraction of the given matrix to this matrix: {@code this - matrix}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param matrix the matrix.
+	 * @return the result of the substraction.
+	 * @see #sub(Matrix3f)
+	 */
+	@Pure
+	public Matrix3f operator_minus(Matrix3f matrix) {
+		Matrix3f result = new Matrix3f();
+		result.sub(this, matrix);
+		return result;
+	}
+
+	/** Replies the substraction of the given scalar to this matrix: {@code this - scalar}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param scalar the scalar.
+	 * @return the result of the substraction.
+	 * @see #add(double)
+	 */
+	@Pure
+	public Matrix3f operator_minus(double scalar) {
+		Matrix3f result = new Matrix3f();
+		result.add(-scalar, this);
+		return result;
+	}
+
+	/** Replies the negation of this matrix: {@code -this}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @return the negation of this matrix.
+	 * @see #negate()
+	 */
+	@Pure
+	public Matrix3f operator_minus() {
+		Matrix3f result = new Matrix3f();
+		result.negate(this);
+		return result;
+	}
+
+	/** Replies the multiplication of the given matrix and this matrix: {@code this * matrix}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param matrix the matrix.
+	 * @return the multiplication of the matrices.
+	 * @see #mul(Matrix3f)
+	 */
+	@Pure
+	public Matrix3f operator_multiply(Matrix3f matrix) {
+		Matrix3f result = new Matrix3f();
+		result.mul(this, matrix);
+		return result;
+	}
+
+	/** Replies the multiplication of the given scalar and this matrix: {@code this * scalar}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param scalar the scalar.
+	 * @return the multiplication of the scalar and the matrix.
+	 * @see #mul(Matrix3f)
+	 */
+	@Pure
+	public Matrix3f operator_multiply(double scalar) {
+		Matrix3f result = new Matrix3f();
+		result.mul(scalar, this);
+		return result;
+	}
+
+	/** Replies the division of this matrix by the given scalar: {@code this / scalar}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param scalar the scalar.
+	 * @return the division of the matrix by the scalar.
+	 * @see #mul(double)
+	 */
+	@Pure
+	public Matrix3f operator_divide(double scalar) {
+		Matrix3f result = new Matrix3f();
+		result.mul(1./scalar, this);
+		return result;
+	}
+
+	/** Increment this matrix: {@code this++}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @see #add(double)
+	 */
+	public void operator_plusPlus() {
+		add(1);
+	}
+
+	/** Increment this matrix: {@code this--}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @see #add(double)
+	 */
+	public void operator_moinsMoins() {
+		add(-1);
+	}
+
+	/** Replies the transposition of this matrix: {@code !this}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @return the transpose
+	 * @see #add(double)
+	 */
+	public Matrix3f operator_not() {
+		Matrix3f result = new Matrix3f();
+		result.transpose(this);
+		return result;
+	}
+
 }

@@ -32,6 +32,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @param <IT> is the type of the implementation of this shape.
  * @param <I> is the type of the iterator used to obtain the elements of the path.
  * @param <P> is the type of the points.
+ * @param <V> is the type of the vectors.
  * @param <B> is the type of the bounding boxes.
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -40,12 +41,13 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @since 13.0
  */
 public interface Path2D<
-		ST extends Shape2D<?, ?, I, P, B>,
-		IT extends Path2D<?, ?, I, P, B>,
+		ST extends Shape2D<?, ?, I, P, V, B>,
+		IT extends Path2D<?, ?, I, P, V, B>,
 		I extends PathIterator2D<?>,
-		P extends Point2D,
-		B extends Shape2D<?, ?, I, P, B>>
-		extends Shape2D<ST, IT, I, P, B> {
+		P extends Point2D<? super P, ? super V>,
+		V extends Vector2D<? super V, ? super P>,
+		B extends Shape2D<?, ?, I, P, V, B>>
+		extends Shape2D<ST, IT, I, P, V, B> {
 
 	/** Replies the winding rule for the path.
 	 * 
@@ -130,7 +132,7 @@ public interface Path2D<
 	 *
 	 * @param position the new position.
 	 */
-	void moveTo(Point2D position);
+	void moveTo(Point2D<?, ?> position);
 
 	/**
 	 * Adds a point to the path by drawing a straight line from the
@@ -139,7 +141,7 @@ public interface Path2D<
 	 *
 	 * @param to the end point
 	 */
-	void lineTo(Point2D to);
+	void lineTo(Point2D<?, ?> to);
 
 	/**
 	 * Adds a curved segment, defined by two new points, to the path by
@@ -152,7 +154,7 @@ public interface Path2D<
 	 * @param ctrl the quadratic control point
 	 * @param to the final end point
 	 */
-	void quadTo(Point2D ctrl, Point2D to);
+	void quadTo(Point2D<?, ?> ctrl, Point2D<?, ?> to);
 
 	/**
 	 * Adds a curved segment, defined by three new points, to the path by
@@ -166,7 +168,7 @@ public interface Path2D<
 	 * @param ctrl2 the second B&eacute;zier control point
 	 * @param to the final end point
 	 */
-	void curveTo(Point2D ctrl1, Point2D ctrl2, Point2D to);
+	void curveTo(Point2D<?, ?> ctrl1, Point2D<?, ?> ctrl2, Point2D<?, ?> to);
 
 	/**
 	 * Closes the current subpath by drawing a straight line back to
@@ -256,7 +258,7 @@ public interface Path2D<
 	 * @return the points.
 	 */
 	@Pure
-	default Point2D[] toPointArray() {
+	default P[] toPointArray() {
 		return toPointArray(null);
 	}
 
@@ -266,7 +268,7 @@ public interface Path2D<
 	 * @return the points.
 	 */
 	@Pure
-	Point2D[] toPointArray(Transform2D transform);
+	P[] toPointArray(Transform2D transform);
 
 	/** Replies the collection that is contains all the points of the path.
 	 * 
@@ -339,7 +341,7 @@ public interface Path2D<
 	 * 
 	 * @param point
 	 */
-	void setLastPoint(Point2D point);
+	void setLastPoint(Point2D<?, ?> point);
 
 	/** Replies if the given points exists in the coordinates of this path.
 	 * 
@@ -347,6 +349,6 @@ public interface Path2D<
 	 * @return <code>true</code> if the point is a control point of the path.
 	 */
 	@Pure
-	boolean containsControlPoint(Point2D point);
+	boolean containsControlPoint(Point2D<?, ?> point);
 
 }

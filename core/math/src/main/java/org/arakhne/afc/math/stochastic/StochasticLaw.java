@@ -23,6 +23,8 @@ package org.arakhne.afc.math.stochastic;
 import java.util.Map;
 import java.util.Random;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /**
  * Abstract implementation of a stochastic law that
  * provides the bounds of a law.
@@ -42,6 +44,7 @@ public abstract class StochasticLaw implements MathInversableFunction {
 	 * @return the extract value
 	 * @throws LawParameterNotFoundException if the parameter was not found or the value is not a double.
 	 */
+	@Pure
 	protected static double paramFloat(String paramName, Map<String,String> parameters)
 	throws LawParameterNotFoundException {
 		String sValue = parameters.get(paramName);
@@ -66,6 +69,7 @@ public abstract class StochasticLaw implements MathInversableFunction {
 	 * @return the extract value
 	 * @throws LawParameterNotFoundException if the parameter was not found or the value is not a double.
 	 */
+	@Pure
 	protected static boolean paramBoolean(String paramName, Map<String,String> parameters)
 	throws LawParameterNotFoundException {
 		String sValue = parameters.get(paramName);
@@ -120,6 +124,7 @@ public abstract class StochasticLaw implements MathInversableFunction {
 	 * @return {@code F<sup>-1</sup>(u)}
 	 * @throws MathException in case {@code F<sup>-1</sup>(u)} could not be computed
 	 */
+	@Pure
 	@Override
 	public abstract double inverseF(double u) throws MathException;
 
