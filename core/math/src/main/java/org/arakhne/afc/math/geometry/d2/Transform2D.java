@@ -201,53 +201,11 @@ public class Transform2D extends Matrix3f {
 	/** Replies the translation.
 	 * 
 	 * @param translation the vector to set with the translation component.
-	 * @return the <code>translation</code> vector.
 	 */
 	@Pure
-	public <T extends Vector2D<?, ?>> T getTranslationVector(T translation) {
+	public void getTranslationVector(Tuple2D<?> translation) {
 		assert (translation != null) : "Output translation vector must not be null"; //$NON-NLS-1$
 		translation.set(this.m02, this.m12);
-		return translation;
-	}
-
-	/**
-	 * Replies the rotation for the object (theta).
-	 * 
-	 * @return the amount
-	 */
-	@Pure
-	public double getRotation() {
-		double cosAngle = Math.acos(this.m00);
-		// According to the documentation of Math.asin,
-		// Math.sign(Math.asin(this.m10)) == Math.sign(this.m10).
-		return (this.m10 < 0.) ? -cosAngle : cosAngle;
-	}
-
-	/**
-	 * Set the rotation for the object (theta).
-	 * <p>
-	 * This function changes only the elements of 
-	 * the matrix related to the rotation (m00,
-	 * m01, m10, m11). The translation is not changed. 
-	 * <p>
-	 * After a call to this function, the matrix will
-	 * contains (? means any value):
-	 * <pre>
-	 *          [   cos(theta)  -sin(theta)  ?   ]
-	 *          [   sin(theta)  cos(theta)   ?   ]
-	 *          [   ?           ?            ?   ]
-	 * </pre>
-	 * 
-	 * @param theta
-	 * @see #makeRotationMatrix(double)
-	 */
-	public void setRotation(double theta) {
-		double cosTheta = Math.cos(theta);
-		double sinTheta = Math.sin(theta);
-		this.m00 = cosTheta;
-		this.m01 = -sinTheta;
-		this.m10 = sinTheta;
-		this.m11 = cosTheta;
 	}
 
 	/**
@@ -320,52 +278,76 @@ public class Transform2D extends Matrix3f {
         this.m11 = M0;
     }
 
-	/** Set the scale.
-	 * <p>
-	 * This function changes only the elements of 
-	 * the matrix related to the scaling (m00,
-	 * m11). The shearing and the translation are not changed.
-	 * The rotation is lost.
-	 * <p>
-	 * After a call to this function, the matrix will
-	 * contains (? means any value):
-	 * <pre>
-	 *          [   sx  ?   ?   ]
-	 *          [   ?   sy  ?   ]
-	 *          [   ?   ?   ?   ]
-	 * </pre>
-	 * 
-	 * @param scaleX
-	 * @param scaleY
-	 * @see #makeScaleMatrix(double, double)
+	/**
+	 * Perform SVD on the 2x2 matrix containing the rotation and scaling factors.
+	 *
+	 * @param scales the scaling factors.
+	 * @param rots the rotation factors.
 	 */
-	public void setScale(double scaleX, double scaleY) {
-		this.m00 = scaleX;
-		this.m11 = scaleY;
+	protected void getScaleRotate2x2(double scales[], double rots[]) {
+		double[] tmp = new double[9]; // scratch matrix
+
+		tmp[0] = this.m00;
+		tmp[1] = this.m01;
+		tmp[2] = 0;
+
+		tmp[3] = this.m10;
+		tmp[4] = this.m11;
+		tmp[5] = 0;
+
+		tmp[6] = 0;
+		tmp[7] = 0;
+		tmp[8] = 0;
+
+		computeSVD(tmp, scales, rots);
 	}
 
-	/** Set the scale.
-	 * <p>
-	 * This function changes only the elements of 
-	 * the matrix related to the scaling (m00,
-	 * m11). The shearing and the translation are not changed. 
-	 * The rotation is lost.
-	 * <p>
-	 * After a call to this function, the matrix will
-	 * contains (? means any value):
-	 * <pre>
-	 *          [   t.x  ?    ?   ]
-	 *          [   ?    t.y  ?   ]
-	 *          [   ?    ?    ?   ]
-	 * </pre>
-	 * 
-	 * @param tuple
-	 * @see #makeScaleMatrix(double, double)
+	/**
+	 * Performs an SVD normalization of this matrix to calculate and return the
+	 * rotation angle.
+	 *
+	 * @return the rotation angle of this matrix. The value is in [-PI; PI]
 	 */
-	public void setScale(Tuple2D<?> tuple) {
-		assert (tuple != null) : "Tuple must not be null"; //$NON-NLS-1$
-		this.m00 = tuple.getX();
-		this.m11 = tuple.getY();
+	@Pure
+	public double getRotation() {
+		double[] tmp_scale = new double[3]; // scratch matrix
+		double[] tmp_rot = new double[9]; // scratch matrix
+		getScaleRotate2x2(tmp_scale, tmp_rot);
+		if (Math.signum(tmp_rot[0]) != Math.signum(tmp_rot[4])) {
+			// Sinuses are on the top-left to bottom-right diagonal
+			// -s   c   0
+			//  c   s   0
+			//  0   0   1
+			return Math.atan2(tmp_rot[4], tmp_rot[3]);
+		}
+		// Sinuses are on the top-right to bottom-left diagonal
+		//  c  -s  0
+		//  s   c  0
+		//  0   0  1
+		return Math.atan2(tmp_rot[3], tmp_rot[0]);
+	}
+
+	/** Change the rotation of this matrix.
+	 * Performs an SVD normalization of this matrix for determining and preserving the scaling.
+	 * 
+	 * @param angle
+	 */
+	public void setRotation(double angle) {
+		double[] tmp_scale = new double[3]; // scratch matrix
+		double[] tmp_rot = new double[9]; // scratch matrix
+		getScaleRotate2x2(tmp_scale, tmp_rot);
+		double cos = Math.cos(angle);
+		double sin = Math.sin(angle);
+		// R * S
+		this.m00 = tmp_scale[0] * cos;
+		this.m01 = tmp_scale[1] * -sin;
+		this.m10 = tmp_scale[0] * sin;
+		this.m11 = tmp_scale[1] * cos;
+		// S * R
+//		this.m00 = tmp_scale[0] * cos;
+//		this.m01 = tmp_scale[0] * -sin;
+//		this.m10 = tmp_scale[1] * sin;
+//		this.m11 = tmp_scale[1] * cos;
 	}
 
 	/** Concatenates this transform with a scaling transformation.
@@ -402,101 +384,118 @@ public class Transform2D extends Matrix3f {
 		assert (tuple != null) : "Tuple must not be null"; //$NON-NLS-1$
 		scale(tuple.getX(), tuple.getY());
 	}
-
-	/** Replies the X scaling.
+	
+	/** Concatenates this transform with a scaling transformation.
 	 * <p>
+	 * This function is equivalent to:
 	 * <pre>
-	 *          [   sx   0    0   ]
-	 *          [   0    sy   0   ]
-	 *          [   0    0    1   ]
+	 * this = this *  [   s    0    0   ]
+	 *                [   0    s    0   ]
+	 *                [   0    0    1   ]
 	 * </pre>
 	 * 
-	 * @return the amount
+	 * @param scale
+	 */
+	public void scale(double scale) {
+        this.m00 *= scale;
+        this.m11 *= scale;
+        this.m01 *= scale;
+        this.m10 *= scale;
+	}
+
+	/**
+	 * Performs an SVD normalization of this matrix to calculate and return the
+	 * uniform scale factor. If the matrix has non-uniform scale factors, the
+	 * largest of the x, y scale factors will be returned.
+	 *
+	 * @return the scale factor of this matrix.
+	 */
+	@Pure
+	public double getScale() {
+		double[] tmp_scale = new double[3]; // scratch matrix
+		double[] tmp_rot = new double[9]; // scratch matrix
+		getScaleRotate2x2(tmp_scale, tmp_rot);
+		return MathUtil.max(tmp_scale);
+	}
+
+	/** Performs an SVD normalization of this matrix to calculate and return the
+	 * scale factor for X axis.
+	 * 
+	 * @return the x scale factor.
 	 */
 	@Pure
 	public double getScaleX() {
-		return this.m00;
+		double[] tmp_scale = new double[3]; // scratch matrix
+		double[] tmp_rot = new double[9]; // scratch matrix
+		getScaleRotate2x2(tmp_scale, tmp_rot);
+		return tmp_scale[0];
 	}
 
-	/** Replies the Y scaling.
-	 * <p>
-	 * <pre>
-	 *          [   sx   0    0   ]
-	 *          [   0    sy   0   ]
-	 *          [   0    0    1   ]
-	 * </pre>
+	/** Performs an SVD normalization of this matrix to calculate and return the
+	 * scale factor for Y axis.
 	 * 
-	 * @return the amount
+	 * @return the y scale factor.
 	 */
 	@Pure
 	public double getScaleY() {
-		return this.m11;
+		double[] tmp_scale = new double[3]; // scratch matrix
+		double[] tmp_rot = new double[9]; // scratch matrix
+		getScaleRotate2x2(tmp_scale, tmp_rot);
+		return tmp_scale[1];
 	}
 
-	/** Replies the scaling vector.
-	 * <p>
-	 * <pre>
-	 *          [   sx   0    0   ]
-	 *          [   0    sy   0   ]
-	 *          [   0    0    1   ]
-	 * </pre>
+	/** Performs an SVD normalization of this matrix to calculate and return the
+	 * scale factors for X and Y axess.
 	 * 
-	 * @param scale the vector to set with the scaling component.
-	 * @return the <code>scale</code> vector.
+	 * @param scale the tuple to set.
 	 */
 	@Pure
-	public <T extends Vector2D<?, ?>> T getScaleVector(T scale) {
+	public void getScaleVector(Tuple2D<?> scale) {
 		assert (scale != null) : "The output scaling vector must not be null"; //$NON-NLS-1$
-		scale.set(this.m00, this.m11);
-		return scale;
+		double[] tmp_scale = new double[3]; // scratch matrix
+		double[] tmp_rot = new double[9]; // scratch matrix
+		getScaleRotate2x2(tmp_scale, tmp_rot);
+		scale.set(tmp_scale[0], tmp_scale[1]);
 	}
 
-	/** Set the shearing elements.
-	 * <p>
-	 * This function changes only the elements of 
-	 * the matrix related to the shearing (m01,
-	 * m10). The scaling and the translation are not changed. 
-	 * The rotation is lost.
-	 * <p>
-	 * After a call to this function, the matrix will
-	 * contains (? means any value):
-	 * <pre>
-	 *          [   ?    shx  ?   ]
-	 *          [   shy  ?    ?   ]
-	 *          [   ?    ?    ?   ]
-	 * </pre>
+	/** Change the scale of this matrix.
+	 * Performs an SVD normalization of this matrix for determining and preserving the rotation.
 	 * 
-	 * @param shearX
-	 * @param shearY
-	 * @see #makeShearMatrix(double, double)
+	 * @param scaleX
+	 * @param scaleY
+	 * @see #makeScaleMatrix(double, double)
 	 */
-	public void setShear(double shearX,  double shearY) {
-		this.m01 = shearX;
-		this.m10 = shearY;
+	public void setScale(double scaleX, double scaleY) {
+		double[] tmp_scale = new double[3]; // scratch matrix
+		double[] tmp_rot = new double[9]; // scratch matrix
+		getScaleRotate2x2(tmp_scale, tmp_rot);
+		this.m00 = tmp_rot[0] * scaleX;
+		this.m01 = tmp_rot[1] * scaleY;
+		this.m10 = tmp_rot[3] * scaleX;
+		this.m11 = tmp_rot[4] * scaleY;
 	}
 
-	/** Set the shearing elements.
+	/** Set the scale.
 	 * <p>
 	 * This function changes only the elements of 
-	 * the matrix related to the shearing (m01,
-	 * m10). The scaling and the translation are not changed. 
+	 * the matrix related to the scaling (m00,
+	 * m11). The shearing and the translation are not changed. 
 	 * The rotation is lost.
 	 * <p>
 	 * After a call to this function, the matrix will
 	 * contains (? means any value):
 	 * <pre>
-	 *          [   ?    t.x  ?   ]
-	 *          [   t.y  ?    ?   ]
+	 *          [   t.x  ?    ?   ]
+	 *          [   ?    t.y  ?   ]
 	 *          [   ?    ?    ?   ]
 	 * </pre>
 	 * 
 	 * @param tuple
-	 * @see #makeShearMatrix(double, double)
+	 * @see #makeScaleMatrix(double, double)
 	 */
-	public void setShear(Tuple2D<?> tuple) {
-		assert (tuple != null) : "The shearing vector must not be null"; //$NON-NLS-1$
-		this.m01 = tuple.getX();
-		this.m10 = tuple.getY();
+	public void setScale(Tuple2D<?> tuple) {
+		assert (tuple != null) : "Tuple must not be null"; //$NON-NLS-1$
+		setScale(tuple.getX(), tuple.getY());
 	}
 
 	/** Concatenates this transform with a shearing transformation.
@@ -529,64 +528,16 @@ public class Transform2D extends Matrix3f {
 	 * <p>
 	 * This function is equivalent to:
 	 * <pre>
-	 * this = this *  [   1    t.x  0   ]
-	 *                [   t.y  1    0   ]
+	 * this = this *  [   1    shx  0   ]
+	 *                [   shy  1    0   ]
 	 *                [   0    0    1   ]
 	 * </pre>
 	 * 
-	 * @param tuple
+	 * @param shear
 	 */
-	public void shear(Tuple2D<?> tuple) {
-		assert (tuple != null) : "The shearing vector must not be null"; //$NON-NLS-1$
-		shear(tuple.getX(), tuple.getY());
-	}
-
-	/** Replies the X shearing.
-	 * <p>
-	 * <pre>
-	 *          [   0    shx  0   ]
-	 *          [   shy  0    0   ]
-	 *          [   0    0    1   ]
-	 * </pre>
-	 * 
-	 * @return the amount
-	 */
-	@Pure
-	public double getShearX() {
-		return this.m01;
-	}
-
-	/** Replies the Y shearing.
-	 * <p>
-	 * <pre>
-	 *          [   0    shx  0   ]
-	 *          [   shy  0    0   ]
-	 *          [   0    0    1   ]
-	 * </pre>
-	 * 
-	 * @return the amount
-	 */
-	@Pure
-	public double getShearY() {
-		return this.m10;
-	}
-
-	/** Replies the shearing vector.
-	 * <p>
-	 * <pre>
-	 *          [   0    shx  0   ]
-	 *          [   shy  0    0   ]
-	 *          [   0    0    1   ]
-	 * </pre>
-	 * 
-	 * @param shear the vector to set with the shearing component.
-	 * @return the <code>shear</code> vector.
-	 */
-	@Pure
-	public <T extends Vector2D<?, ?>> T getShearVector(T shear) {
-		assert (shear != null) : "The output shearing vector must not be null"; //$NON-NLS-1$
-		shear.set(this.m01, this.m10);
-		return shear;
+	public void shear(Tuple2D<?> shear) {
+		assert (shear != null) : "Shear must be not null"; //$NON-NLS-1$
+		shear(shear.getX(), shear.getY());
 	}
 
 	/**
@@ -608,7 +559,7 @@ public class Transform2D extends Matrix3f {
 	 *            the angle to rotate about the X axis in radians
 	 * @see #setRotation(double)
 	 */
-	public final void makeRotationMatrix(double angle) {
+	public void makeRotationMatrix(double angle) {
 		double sinAngle, cosAngle;
 
 		sinAngle = Math.sin(angle);
@@ -646,7 +597,7 @@ public class Transform2D extends Matrix3f {
 	 * @see #setTranslation(double, double)
 	 * @see #setTranslation(Tuple2D)
 	 */
-	public final void makeTranslationMatrix(double dx, double dy) {
+	public void makeTranslationMatrix(double dx, double dy) {
 		this.m00 = 1.;
 		this.m01 = 0.;
 		this.m02 = dx;
@@ -680,47 +631,13 @@ public class Transform2D extends Matrix3f {
 	 * @see #setScale(double, double)
 	 * @see #setScale(Tuple2D)
 	 */
-	public final void makeScaleMatrix(double scaleX, double scaleY) {
+	public void makeScaleMatrix(double scaleX, double scaleY) {
 		this.m00 = scaleX;
 		this.m01 = 0.;
 		this.m02 = 0.;
 
 		this.m10 = 0.;
 		this.m11 = scaleY;
-		this.m12 = 0.;
-
-		this.m20 = 0.;
-		this.m21 = 0.;
-		this.m22 = 1.;
-	}
-
-	/**
-	 * Sets the value of this matrix to the given scaling, without rotation.
-	 * <p>
-	 * This function changes all the elements of 
-	 * the matrix incuding the scaling and the
-	 * translation. 
-	 * <p>
-	 * After a call to this function, the matrix will
-	 * contains (? means any value):
-	 * <pre>
-	 *          [   1    shx  0   ]
-	 *          [   shy  1    0   ]
-	 *          [   0    0    1   ]
-	 * </pre>
-	 * 
-	 * @param shearX is the shearing along X.
-	 * @param shearY is the shearing along Y.
-	 * @see #setShear(double, double)
-	 * @see #setShear(Tuple2D)
-	 */
-	public final void makeShearMatrix(double shearX, double shearY) {
-		this.m00 = 1.;
-		this.m01 = shearX;
-		this.m02 = 0.;
-
-		this.m10 = shearY;
-		this.m11 = 1.;
 		this.m12 = 0.;
 
 		this.m20 = 0.;

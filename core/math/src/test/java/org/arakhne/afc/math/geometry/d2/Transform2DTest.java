@@ -155,165 +155,9 @@ public class Transform2DTest extends AbstractMathTestCase {
 	@Test
 	public void getTranslationVector() {
 		Vector2D v = new Vector2fp();
-		assertSame(v, this.transform.getTranslationVector(v));
+		this.transform.getTranslationVector(v);
 		assertEpsilonEquals(TRANSX, v.getX());
 		assertEpsilonEquals(TRANSY, v.getY());
-	}
-
-	@Test
-	public void getRotation() {
-		assertEpsilonEquals(-MathConstants.DEMI_PI, this.transform.getRotation());
-	}
-
-	@Test
-	public void setRotation() {
-		// Values computed with GNU Octave
-		double angle = 9.87654321;
-		double cos = -0.89968;
-		double sin = -0.43655;
-		this.transform.setRotation(angle);
-		assertEpsilonEquals(cos, this.transform.getM00());
-		assertEpsilonEquals(-sin, this.transform.getM01());
-		assertEpsilonEquals(TRANSX, this.transform.getM02());
-		assertEpsilonEquals(sin, this.transform.getM10());
-		assertEpsilonEquals(cos, this.transform.getM11());
-		assertEpsilonEquals(TRANSY, this.transform.getM12());
-		assertEpsilonEquals(0, this.transform.getM20());
-		assertEpsilonEquals(0, this.transform.getM21());
-		assertEpsilonEquals(1, this.transform.getM22());
-	}
-
-	@Test
-	public void rotate() {
-		// Values computed with GNU Octave
-		double angle = 9.87654321;
-		double cos = -0.89968;
-		double sin = -0.43655;
-		this.transform.rotate(angle);
-		assertEpsilonEquals(sin, this.transform.getM00());
-		assertEpsilonEquals(cos, this.transform.getM01());
-		assertEpsilonEquals(TRANSX, this.transform.getM02());
-		assertEpsilonEquals(-cos, this.transform.getM10());
-		assertEpsilonEquals(sin, this.transform.getM11());
-		assertEpsilonEquals(TRANSY, this.transform.getM12());
-		assertEpsilonEquals(0, this.transform.getM20());
-		assertEpsilonEquals(0, this.transform.getM21());
-		assertEpsilonEquals(1, this.transform.getM22());
-	}
-
-	@Test
-	public void setScaleDoubleDouble() {
-		// Values computed with GNU Octave
-		this.transform.setScale(1.2, 3.4);
-		assertEpsilonEquals(1.2, this.transform.getM00());
-		assertEpsilonEquals(-SIN, this.transform.getM01());
-		assertEpsilonEquals(TRANSX, this.transform.getM02());
-		assertEpsilonEquals(SIN, this.transform.getM10());
-		assertEpsilonEquals(3.4, this.transform.getM11());
-		assertEpsilonEquals(TRANSY, this.transform.getM12());
-		assertEpsilonEquals(0, this.transform.getM20());
-		assertEpsilonEquals(0, this.transform.getM21());
-		assertEpsilonEquals(1, this.transform.getM22());
-	}
-
-	@Test
-	public void setScaleTuple2D() {
-		// Values computed with GNU Octave
-		this.transform.setScale(new Vector2fp(1.2, 3.4));
-		assertEpsilonEquals(1.2, this.transform.getM00());
-		assertEpsilonEquals(-SIN, this.transform.getM01());
-		assertEpsilonEquals(TRANSX, this.transform.getM02());
-		assertEpsilonEquals(SIN, this.transform.getM10());
-		assertEpsilonEquals(3.4, this.transform.getM11());
-		assertEpsilonEquals(TRANSY, this.transform.getM12());
-		assertEpsilonEquals(0, this.transform.getM20());
-		assertEpsilonEquals(0, this.transform.getM21());
-		assertEpsilonEquals(1, this.transform.getM22());
-	}
-
-	@Test
-	public void scaleDoubleDouble() {
-		// Values computed with GNU Octave
-		this.transform.scale(1.2, 3.4);
-		assertEpsilonEquals(0, this.transform.getM00());
-		assertEpsilonEquals(3.4, this.transform.getM01());
-		assertEpsilonEquals(TRANSX, this.transform.getM02());
-		assertEpsilonEquals(-1.2, this.transform.getM10());
-		assertEpsilonEquals(0, this.transform.getM11());
-		assertEpsilonEquals(TRANSY, this.transform.getM12());
-		assertEpsilonEquals(0, this.transform.getM20());
-		assertEpsilonEquals(0, this.transform.getM21());
-		assertEpsilonEquals(1, this.transform.getM22());
-	}
-
-	@Test
-	public void scaleTuple2D() {
-		// Values computed with GNU Octave
-		this.transform.scale(new Vector2fp(1.2, 3.4));
-		assertEpsilonEquals(0, this.transform.getM00());
-		assertEpsilonEquals(3.4, this.transform.getM01());
-		assertEpsilonEquals(TRANSX, this.transform.getM02());
-		assertEpsilonEquals(-1.2, this.transform.getM10());
-		assertEpsilonEquals(0, this.transform.getM11());
-		assertEpsilonEquals(TRANSY, this.transform.getM12());
-		assertEpsilonEquals(0, this.transform.getM20());
-		assertEpsilonEquals(0, this.transform.getM21());
-		assertEpsilonEquals(1, this.transform.getM22());
-	}
-
-	@Test
-	public void getScaleX() {
-		assertEpsilonEquals(0, this.transform.getScaleX());
-		this.transform.setScale(123.456, 789.123);
-		assertEpsilonEquals(123.456, this.transform.getScaleX());
-	}
-
-	@Test
-	public void getScaleY() {
-		assertEpsilonEquals(0, this.transform.getScaleY());
-		this.transform.setScale(123.456, 789.123);
-		assertEpsilonEquals(789.123, this.transform.getScaleY());
-	}
-
-	@Test
-	public void getScaleVector() {
-		Vector2D v = new Vector2fp();
-		this.transform.getScaleVector(v);
-		assertEpsilonEquals(0, v.getX());
-		assertEpsilonEquals(0, v.getY());
-
-		this.transform.setScale(123.456, 789.123);
-		this.transform.getScaleVector(v);
-		assertEpsilonEquals(123.456, v.getX());
-		assertEpsilonEquals(789.123, v.getY());
-	}
-
-	@Test
-	public void setShearDoubleDouble() {
-		this.transform.setShear(1.2, 3.4);
-		assertEpsilonEquals(COS, this.transform.getM00());
-		assertEpsilonEquals(1.2, this.transform.getM01());
-		assertEpsilonEquals(TRANSX, this.transform.getM02());
-		assertEpsilonEquals(3.4, this.transform.getM10());
-		assertEpsilonEquals(COS, this.transform.getM11());
-		assertEpsilonEquals(TRANSY, this.transform.getM12());
-		assertEpsilonEquals(0, this.transform.getM20());
-		assertEpsilonEquals(0, this.transform.getM21());
-		assertEpsilonEquals(1, this.transform.getM22());
-	}
-
-	@Test
-	public void setShearTuple2D() {
-		this.transform.setShear(new Vector2fp(1.2, 3.4));
-		assertEpsilonEquals(COS, this.transform.getM00());
-		assertEpsilonEquals(1.2, this.transform.getM01());
-		assertEpsilonEquals(TRANSX, this.transform.getM02());
-		assertEpsilonEquals(3.4, this.transform.getM10());
-		assertEpsilonEquals(COS, this.transform.getM11());
-		assertEpsilonEquals(TRANSY, this.transform.getM12());
-		assertEpsilonEquals(0, this.transform.getM20());
-		assertEpsilonEquals(0, this.transform.getM21());
-		assertEpsilonEquals(1, this.transform.getM22());
 	}
 
 	@Test
@@ -344,33 +188,6 @@ public class Transform2DTest extends AbstractMathTestCase {
 		assertEpsilonEquals(0, this.transform.getM20());
 		assertEpsilonEquals(0, this.transform.getM21());
 		assertEpsilonEquals(1, this.transform.getM22());
-	}
-
-	@Test
-	public void getShearX() {
-		assertEpsilonEquals(-SIN, this.transform.getShearX());
-		this.transform.setShear(123.456, 789.123);
-		assertEpsilonEquals(123.456, this.transform.getShearX());
-	}
-
-	@Test
-	public void getShearY() {
-		assertEpsilonEquals(SIN, this.transform.getShearY());
-		this.transform.setShear(123.456, 789.123);
-		assertEpsilonEquals(789.123, this.transform.getShearY());
-	}
-
-	@Test
-	public void getShearVector() {
-		Vector2D v = new Vector2fp();
-		this.transform.getShearVector(v);
-		assertEpsilonEquals(-SIN, v.getX());
-		assertEpsilonEquals(SIN, v.getY());
-
-		this.transform.setShear(123.456, 789.123);
-		this.transform.getShearVector(v);
-		assertEpsilonEquals(123.456, v.getX());
-		assertEpsilonEquals(789.123, v.getY());
 	}
 
 	@Test
@@ -424,22 +241,6 @@ public class Transform2DTest extends AbstractMathTestCase {
 	}
 
 	@Test
-	public void makeShearMatrix() {
-		double x = -0.59471;
-		double y = -0.80394;
-		this.transform.makeShearMatrix(x, y);
-		assertEpsilonEquals(1, this.transform.getM00());
-		assertEpsilonEquals(x, this.transform.getM01());
-		assertEpsilonEquals(0, this.transform.getM02());
-		assertEpsilonEquals(y, this.transform.getM10());
-		assertEpsilonEquals(1, this.transform.getM11());
-		assertEpsilonEquals(0, this.transform.getM12());
-		assertEpsilonEquals(0, this.transform.getM20());
-		assertEpsilonEquals(0, this.transform.getM21());
-		assertEpsilonEquals(1, this.transform.getM22());
-	}
-
-	@Test
 	public void transformTuple2D_translationOnly() {
 		this.transform.makeTranslationMatrix(123, 456);
 		Point2D p = new Point2fp(-584, 5647);
@@ -486,27 +287,6 @@ public class Transform2DTest extends AbstractMathTestCase {
 		this.transform.transform(p);
 		assertEpsilonEquals(61.728, p.getX());
 		assertEpsilonEquals(1578.246, p.getY());
-	}
-
-	@Test
-	public void transformTuple2D_shearOnly() {
-		this.transform.makeShearMatrix(123.456, 789.123);
-		Point2D p = new Point2fp(1, 0);
-		this.transform.transform(p);
-		assertEpsilonEquals(1, p.getX());
-		assertEpsilonEquals(789.123, p.getY());
-
-		this.transform.makeShearMatrix(123.456, 789.123);
-		p = new Point2fp(0, 1);
-		this.transform.transform(p);
-		assertEpsilonEquals(123.456, p.getX());
-		assertEpsilonEquals(1, p.getY());
-
-		this.transform.makeShearMatrix(123.456, 789.123);
-		p = new Point2fp(0.5, 2);
-		this.transform.transform(p);
-		assertEpsilonEquals(247.412, p.getX());
-		assertEpsilonEquals(396.5615, p.getY());
 	}
 
 	@Test
@@ -575,28 +355,6 @@ public class Transform2DTest extends AbstractMathTestCase {
 	}
 
 	@Test
-	public void transformTuple2DTuple2D_shearOnly() {
-		this.transform.makeShearMatrix(123.456, 789.123);
-		Point2D result = new Point2fp();
-		Point2D p = new Point2fp(1, 0);
-		this.transform.transform(p);
-		assertEpsilonEquals(1, p.getX());
-		assertEpsilonEquals(789.123, p.getY());
-
-		this.transform.makeShearMatrix(123.456, 789.123);
-		p = new Point2fp(0, 1);
-		this.transform.transform(p);
-		assertEpsilonEquals(123.456, p.getX());
-		assertEpsilonEquals(1, p.getY());
-
-		this.transform.makeShearMatrix(123.456, 789.123);
-		p = new Point2fp(0.5, 2);
-		this.transform.transform(p);
-		assertEpsilonEquals(247.412, p.getX());
-		assertEpsilonEquals(396.5615, p.getY());
-	}
-
-	@Test
 	public void invert() {
 		// Values computed with GNU octave
 		this.transform.invert();
@@ -659,6 +417,311 @@ public class Transform2DTest extends AbstractMathTestCase {
 		assertEpsilonEquals(0, inverse.getM20());
 		assertEpsilonEquals(0, inverse.getM21());
 		assertEpsilonEquals(1, inverse.getM22());
+	}
+
+	@Test
+	public void getScaleVector_alone() {
+		this.transform.setIdentity();
+		Vector2fp v = new Vector2fp();
+		
+		this.transform.getScaleVector(v);
+		assertFpVectorEquals(1, 1, v);
+
+		this.transform.scale(1.256, -25);
+		this.transform.getScaleVector(v);
+		assertFpVectorEquals(1.256, 25, v);
+
+		this.transform.scale(32, -47);
+		this.transform.getScaleVector(v);
+		assertFpVectorEquals(1.256 * 32, 25 * 47, v);
+	}
+
+	@Test
+	public void getScaleVector_withRotation() {
+		this.transform.setIdentity();
+		this.transform.rotate(2.214523);
+		Vector2fp v = new Vector2fp();
+		
+		this.transform.getScaleVector(v);
+		assertFpVectorEquals(1, 1, v);
+
+		this.transform.scale(1.256, -25);
+		this.transform.getScaleVector(v);
+		assertFpVectorEquals(1.256, 25, v);
+
+		this.transform.scale(32, -47);
+		this.transform.getScaleVector(v);
+		assertFpVectorEquals(1.256 * 32, 25 * 47, v);
+	}
+
+	@Test
+	public void getScaleX_alone() {
+		this.transform.setIdentity();
+		assertEpsilonEquals(1, this.transform.getScaleX());
+		this.transform.scale(1.256, -25);
+		assertEpsilonEquals(1.256, this.transform.getScaleX());
+		this.transform.scale(32, -47);
+		assertEpsilonEquals(1.256 * 32, this.transform.getScaleX());
+	}
+
+	@Test
+	public void getScaleX_withRotation() {
+		this.transform.setIdentity();
+		this.transform.rotate(2.214523);
+		assertEpsilonEquals(1, this.transform.getScaleX());
+		this.transform.scale(1.256, 1);
+		assertEpsilonEquals(1.256, this.transform.getScaleX());
+		this.transform.scale(32, 1);
+		assertEpsilonEquals(1.256 * 32, this.transform.getScaleX());
+	}
+
+	@Test
+	public void getScaleY_alone() {
+		this.transform.setIdentity();
+		assertEpsilonEquals(1, this.transform.getScaleY());
+		this.transform.scale(1.256, -25);
+		assertEpsilonEquals(25, this.transform.getScaleY());
+		this.transform.scale(32, 47);
+		assertEpsilonEquals(25 * 47, this.transform.getScaleY());
+	}
+
+	@Test
+	public void getScaleY_withrotation() {
+		this.transform.setIdentity();
+		this.transform.rotate(2.214523);
+		assertEpsilonEquals(1, this.transform.getScaleY());
+		this.transform.scale(1.256, -25);
+		assertEpsilonEquals(25, this.transform.getScaleY());
+		this.transform.scale(32, 47);
+		assertEpsilonEquals(25 * 47, this.transform.getScaleY());
+	}
+
+	@Test
+	public void scaleDoubleDouble_alone() {
+		this.transform.setIdentity();
+		this.transform.scale(5.2365, 4.586);
+		assertEpsilonEquals(5.2365, this.transform.getScaleX());
+		assertEpsilonEquals(4.586, this.transform.getScaleY());
+		this.transform.scale(0.123, 0.568);
+		assertEpsilonEquals(5.2365 * 0.123, this.transform.getScaleX());
+		assertEpsilonEquals(4.586 * 0.568, this.transform.getScaleY());
+	}
+
+	@Test
+	public void scaleDoubleDouble_withRotation() {
+		this.transform.setIdentity();
+		this.transform.rotate(2.214523);
+		this.transform.scale(5.2365, 4.586);
+		assertEpsilonEquals(5.2365, this.transform.getScaleX());
+		assertEpsilonEquals(4.586, this.transform.getScaleY());
+		this.transform.scale(0.123, 0.568);
+		assertEpsilonEquals(5.2365 * 0.123, this.transform.getScaleX());
+		assertEpsilonEquals(4.586 * 0.568, this.transform.getScaleY());
+	}
+
+	@Test
+	public void scaleTuple2D_alone() {
+		this.transform.setIdentity();
+		this.transform.scale(new Vector2fp(5.2365, 4.586));
+		assertEpsilonEquals(5.2365, this.transform.getScaleX());
+		assertEpsilonEquals(4.586, this.transform.getScaleY());
+		this.transform.scale(new Vector2fp(0.123, 0.568));
+		assertEpsilonEquals(5.2365 * 0.123, this.transform.getScaleX());
+		assertEpsilonEquals(4.586 * 0.568, this.transform.getScaleY());
+	}
+
+	@Test
+	public void scaleTuple2D_withRotation() {
+		this.transform.setIdentity();
+		this.transform.rotate(2.214523);
+		this.transform.scale(new Vector2fp(5.2365, 4.586));
+		assertEpsilonEquals(5.2365, this.transform.getScaleX());
+		assertEpsilonEquals(4.586, this.transform.getScaleY());
+		this.transform.scale(new Vector2fp(0.123, 0.568));
+		assertEpsilonEquals(5.2365 * 0.123, this.transform.getScaleX());
+		assertEpsilonEquals(4.586 * 0.568, this.transform.getScaleY());
+	}
+
+	@Test
+	public void scaleDouble_alone() {
+		this.transform.setIdentity();
+		this.transform.scale(5.2365);
+		assertEpsilonEquals(5.2365, this.transform.getScaleX());
+		assertEpsilonEquals(5.2365, this.transform.getScaleY());
+		this.transform.scale(0.123);
+		assertEpsilonEquals(5.2365 * 0.123, this.transform.getScaleX());
+		assertEpsilonEquals(5.2365 * 0.123, this.transform.getScaleY());
+	}
+
+	@Test
+	public void scaleDouble_withRotation() {
+		this.transform.setIdentity();
+		this.transform.rotate(2.214523);
+		this.transform.scale(5.2365);
+		assertEpsilonEquals(5.2365, this.transform.getScaleX());
+		assertEpsilonEquals(5.2365, this.transform.getScaleY());
+		this.transform.scale(0.123);
+		assertEpsilonEquals(5.2365 * 0.123, this.transform.getScaleX());
+		assertEpsilonEquals(5.2365 * 0.123, this.transform.getScaleY());
+	}
+
+	@Test
+	public void getScale_alone() {
+		this.transform.setIdentity();
+		assertEpsilonEquals(1, this.transform.getScale());
+		this.transform.scale(5.2365, 4.586);
+		assertEpsilonEquals(5.2365, this.transform.getScale());
+		this.transform.scale(0.123, 0.568);
+		assertEpsilonEquals(4.586 * 0.568, this.transform.getScale());
+	}
+
+	@Test
+	public void getScale_withRotation() {
+		this.transform.setIdentity();
+		this.transform.rotate(2.214523);
+		assertEpsilonEquals(1, this.transform.getScale());
+		this.transform.scale(5.2365, 4.586);
+		assertEpsilonEquals(5.2365, this.transform.getScale());
+		this.transform.scale(0.123, 0.568);
+		assertEpsilonEquals(4.586 * 0.568, this.transform.getScale());
+	}
+
+	@Test
+	public void setScaleDoubleDouble_alone() {
+		this.transform.setIdentity();
+		this.transform.setScale(5.2365, 4.586);
+		assertEpsilonEquals(5.2365, this.transform.getScaleX());
+		assertEpsilonEquals(4.586, this.transform.getScaleY());
+		this.transform.setScale(0.123, 0.568);
+		assertEpsilonEquals(0.123, this.transform.getScaleX());
+		assertEpsilonEquals(0.568, this.transform.getScaleY());
+	}
+
+	@Test
+	public void setScaleDoubleDouble_withRotation() {
+		this.transform.setIdentity();
+		this.transform.rotate(2.214523);
+		this.transform.setScale(5.2365, 4.586);
+		assertEpsilonEquals(5.2365, this.transform.getScaleX());
+		assertEpsilonEquals(4.586, this.transform.getScaleY());
+		this.transform.setScale(0.123, 0.568);
+		assertEpsilonEquals(0.123, this.transform.getScaleX());
+		assertEpsilonEquals(0.568, this.transform.getScaleY());
+	}
+
+	@Test
+	public void setScaleTuple2D_alone() {
+		this.transform.setIdentity();
+		this.transform.setScale(new Vector2fp(5.2365, 4.586));
+		assertEpsilonEquals(5.2365, this.transform.getScaleX());
+		assertEpsilonEquals(4.586, this.transform.getScaleY());
+		this.transform.setScale(new Vector2fp(0.123, 0.568));
+		assertEpsilonEquals(0.123, this.transform.getScaleX());
+		assertEpsilonEquals(0.568, this.transform.getScaleY());
+	}
+
+	@Test
+	public void setScaleTuple2D_withRotation() {
+		this.transform.setIdentity();
+		this.transform.rotate(2.214523);
+		this.transform.setScale(new Vector2fp(5.2365, 4.586));
+		assertEpsilonEquals(5.2365, this.transform.getScaleX());
+		assertEpsilonEquals(4.586, this.transform.getScaleY());
+		this.transform.setScale(new Vector2fp(0.123, 0.568));
+		assertEpsilonEquals(0.123, this.transform.getScaleX());
+		assertEpsilonEquals(0.568, this.transform.getScaleY());
+	}
+
+	@Test
+	public void getRotation_alone() {
+		this.transform.setIdentity();
+		assertEpsilonEquals(0, this.transform.getRotation());
+		this.transform.rotate(2.124548);
+		assertEpsilonEquals(2.124548, this.transform.getRotation());
+		this.transform.rotate(-2.124548);
+		assertEpsilonEquals(0, this.transform.getRotation());
+		this.transform.rotate(0.265);
+		assertEpsilonEquals(0.265, this.transform.getRotation());
+		this.transform.rotate(0.1);
+		assertEpsilonEquals(0.265 + 0.1, this.transform.getRotation());
+		this.transform.scale(2);
+		assertEpsilonEquals(0.265 + 0.1, this.transform.getRotation());
+	}
+	
+	@Test
+	public void getRotation_withScale() {
+		this.transform.setIdentity();
+		this.transform.scale(3.56);
+		assertEpsilonEquals(0, this.transform.getRotation());
+		this.transform.rotate(2.124548);
+		assertEpsilonEquals(2.124548, this.transform.getRotation());
+		this.transform.rotate(-2.124548);
+		assertEpsilonEquals(0, this.transform.getRotation());
+		this.transform.rotate(0.265);
+		assertEpsilonEquals(0.265, this.transform.getRotation());
+		this.transform.rotate(0.1);
+		assertEpsilonEquals(0.265 + 0.1, this.transform.getRotation());
+		this.transform.scale(2);
+		assertEpsilonEquals(0.265 + 0.1, this.transform.getRotation());
+	}
+
+	@Test
+	public void rotateDouble_alone() {
+		this.transform.setIdentity();
+		assertEpsilonEquals(0, this.transform.getRotation());
+		this.transform.rotate(2.124548);
+		assertEpsilonEquals(2.124548, this.transform.getRotation());
+		this.transform.rotate(-2.124548);
+		assertEpsilonEquals(0, this.transform.getRotation());
+		this.transform.rotate(0.265);
+		assertEpsilonEquals(0.265, this.transform.getRotation());
+		this.transform.rotate(0.1);
+		assertEpsilonEquals(0.265 + 0.1, this.transform.getRotation());
+		this.transform.scale(2);
+		assertEpsilonEquals(0.265 + 0.1, this.transform.getRotation());
+	}
+
+	@Test
+	public void setRotationDouble_alone() {
+		this.transform.setIdentity();
+		this.transform.setRotation(0.265);
+		assertEpsilonEquals(0.265, this.transform.getRotation());
+		this.transform.setRotation(0.1);
+		assertEpsilonEquals(0.1, this.transform.getRotation());
+	}
+	
+	@Test
+	public void setRotationDouble_withScale() {
+		this.transform.setIdentity();
+				
+		this.transform.scale(2.101, 4.52);
+		this.transform.setRotation(0.265);
+		assertEpsilonEquals(2.101, this.transform.getScaleX());
+		assertEpsilonEquals(4.52, this.transform.getScaleY());
+		assertEpsilonEquals(0.265, this.transform.getRotation());
+
+		this.transform.setRotation(0.1);
+		assertEpsilonEquals(2.101, this.transform.getScaleX());
+		assertEpsilonEquals(4.52, this.transform.getScaleY());
+		assertEpsilonEquals("CS: " + CoordinateSystem2D.getDefaultCoordinateSystem(),
+				0.1, this.transform.getRotation());
+	}
+
+	@Test
+	public void setRotationDouble_withScale2() {
+		this.transform.setIdentity();
+		
+		this.transform.setRotation(0.265);
+		this.transform.scale(2.101, 4.52);
+		assertEpsilonEquals(2.101, this.transform.getScaleX());
+		assertEpsilonEquals(4.52, this.transform.getScaleY());
+		assertEpsilonEquals(0.265, this.transform.getRotation());
+		
+		this.transform.setRotation(0.1);
+		assertEpsilonEquals(2.101, this.transform.getScaleX());
+		assertEpsilonEquals(4.52, this.transform.getScaleY());
+		assertEpsilonEquals("CS: " + CoordinateSystem2D.getDefaultCoordinateSystem(),
+				0.1, this.transform.getRotation());
 	}
 
 }

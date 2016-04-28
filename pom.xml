@@ -532,7 +532,10 @@
 					<target>${min.java.version}</target>
 					<source>${min.java.version}</source>
 					<encoding>UTF-8</encoding>
+					<showWarnings>false</showWarnings>
+					<showDeprecation>false</showDeprecation>
 					<optimize>true</optimize>
+					<debug>false</debug>
 				</configuration>
 			</plugin>
 			<plugin>

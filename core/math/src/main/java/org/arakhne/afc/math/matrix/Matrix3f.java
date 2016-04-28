@@ -215,7 +215,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	/**
 	 * Sets this Matrix3f to identity.
 	 */
-	public final void setIdentity() {
+	public void setIdentity() {
 		this.m00 = 1.;
 		this.m01 = 0.;
 		this.m02 = 0.;
@@ -241,7 +241,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * @param value
 	 *            the new value
 	 */
-	public final void setElement(int row, int column, double value) {
+	public void setElement(int row, int column, double value) {
 		assert (row >= 0 && row < 3) : "Row index must be in [0; 2]"; //$NON-NLS-1$
 		assert (column >= 0 && column < 3) : "Column index must be in [0; 2]"; //$NON-NLS-1$
 		switch (row) {
@@ -311,7 +311,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * @return the value at the indexed element.
 	 */
 	@Pure
-	public final double getElement(int row, int column) {
+	public double getElement(int row, int column) {
 		assert (row >= 0 && row < 3) : "Row index must be in [0; 2]"; //$NON-NLS-1$
 		assert (column >= 0 && column < 3) : "Column index must be in [0; 2]"; //$NON-NLS-1$
 		switch (row) {
@@ -368,7 +368,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * @param vector
 	 *            the vector into which the matrix row values will be copied
 	 */
-	public final void getRow(int row, Vector3D vector) {
+	public void getRow(int row, Vector3D vector) {
 		assert (row >= 0 && row < 3) : "Row index must be in [0; 2]"; //$NON-NLS-1$
 		assert (vector != null) : "Vector of values must not be null"; //$NON-NLS-1$
 		if (row == 0) {
@@ -391,7 +391,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * @param vector
 	 *            the array into which the matrix row values will be copied
 	 */
-	public final void getRow(int row, double vector[]) {
+	public void getRow(int row, double vector[]) {
 		assert (row >= 0 && row < 3) : "Row index must be in [0; 2]"; //$NON-NLS-1$
 		assert (vector != null) : "Vector of values must not be null"; //$NON-NLS-1$
 		assert (vector.length >= 3) : "Size of the vector is too small";  //$NON-NLS-1$
@@ -422,7 +422,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * @param vector
 	 *            the vector into which the matrix row values will be copied
 	 */
-	public final void getColumn(int column, Vector3D vector) {
+	public void getColumn(int column, Vector3D vector) {
 		assert (column >= 0 && column < 3) : "Column index must be in [0; 2]"; //$NON-NLS-1$
 		assert (vector != null) : "Vector of values must not be null"; //$NON-NLS-1$
 		if (column == 0) {
@@ -446,7 +446,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * @param vector
 	 *            the array into which the matrix row values will be copied
 	 */
-	public final void getColumn(int column, double vector[]) {
+	public void getColumn(int column, double vector[]) {
 		assert (column >= 0 && column < 3) : "Column index must be in [0; 2]"; //$NON-NLS-1$
 		assert (vector != null) : "Vector of values must not be null"; //$NON-NLS-1$
 		assert (vector.length >= 3) : "Size of the vector is too small";  //$NON-NLS-1$
@@ -480,7 +480,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * @param z
 	 *            the third column element
 	 */
-	public final void setRow(int row, double x, double y, double z) {
+	public void setRow(int row, double x, double y, double z) {
 		assert (row >= 0 && row < 3) : "Row index must be in [0; 2]"; //$NON-NLS-1$
 		switch (row) {
 		case 0:
@@ -516,7 +516,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * @param vector
 	 *            the replacement row
 	 */
-	public final void setRow(int row, Vector3D vector) {
+	public void setRow(int row, Vector3D vector) {
 		assert (row >= 0 && row < 3) : "Row index must be in [0; 2]"; //$NON-NLS-1$
 		assert (vector != null) : "Vector of values must not be null"; //$NON-NLS-1$
 		switch (row) {
@@ -553,7 +553,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * @param vector
 	 *            the replacement row
 	 */
-	public final void setRow(int row, double vector[]) {
+	public void setRow(int row, double vector[]) {
 		assert (row >= 0 && row < 3) : "Row index must be in [0; 2]"; //$NON-NLS-1$
 		assert (vector != null) : "Vector of values must not be null"; //$NON-NLS-1$
 		assert (vector.length >= 3) : "Size of the vector is too small";  //$NON-NLS-1$
@@ -595,7 +595,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * @param z
 	 *            the third row element
 	 */
-	public final void setColumn(int column, double x, double y, double z) {
+	public void setColumn(int column, double x, double y, double z) {
 		assert (column >= 0 && column < 3) : "Column index must be in [0; 2]"; //$NON-NLS-1$
 		switch (column) {
 		case 0:
@@ -631,7 +631,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * @param vector
 	 *            the replacement column
 	 */
-	public final void setColumn(int column, Vector3D vector) {
+	public void setColumn(int column, Vector3D vector) {
 		assert (column >= 0 && column < 3) : "Column index must be in [0; 2]"; //$NON-NLS-1$
 		assert (vector != null) : "Vector of values must not be null"; //$NON-NLS-1$
 		switch (column) {
@@ -668,7 +668,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * @param vector
 	 *            the replacement column
 	 */
-	public final void setColumn(int column, double vector[]) {
+	public void setColumn(int column, double vector[]) {
 		assert (column >= 0 && column < 3) : "Column index must be in [0; 2]"; //$NON-NLS-1$
 		assert (vector != null) : "Vector of values must not be null"; //$NON-NLS-1$
 		assert (vector.length >= 3) : "Size of the vector is too small";  //$NON-NLS-1$
@@ -704,7 +704,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * @param scalar
 	 *            the scalar adder
 	 */
-	public final void add(double scalar) {
+	public void add(double scalar) {
 		this.m00 += scalar;
 		this.m01 += scalar;
 		this.m02 += scalar;
@@ -729,7 +729,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * @param matrix
 	 *            the original matrix values
 	 */
-	public final void add(double scalar, Matrix3f matrix) {
+	public void add(double scalar, Matrix3f matrix) {
 		assert (matrix != null) : "Matrix must not be null"; //$NON-NLS-1$
 		this.m00 = matrix.m00 + scalar;
 		this.m01 = matrix.m01 + scalar;
@@ -754,7 +754,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * @param matrix2
 	 *            the second matrix
 	 */
-	public final void add(Matrix3f matrix1, Matrix3f matrix2) {
+	public void add(Matrix3f matrix1, Matrix3f matrix2) {
 		assert (matrix1 != null) : "First matrix must not be null"; //$NON-NLS-1$
 		assert (matrix2 != null) : "Second matrix must not be null"; //$NON-NLS-1$
 		this.m00 = matrix1.m00 + matrix2.m00;
@@ -778,7 +778,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * @param matrix
 	 *            the other matrix
 	 */
-	public final void add(Matrix3f matrix) {
+	public void add(Matrix3f matrix) {
 		assert (matrix != null) : "Matrix must not be null"; //$NON-NLS-1$
 		this.m00 += matrix.m00;
 		this.m01 += matrix.m01;
@@ -804,7 +804,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * @param matrix2
 	 *            the second matrix
 	 */
-	public final void sub(Matrix3f matrix1, Matrix3f matrix2) {
+	public void sub(Matrix3f matrix1, Matrix3f matrix2) {
 		assert (matrix1 != null) : "First matrix must not be null"; //$NON-NLS-1$
 		assert (matrix2 != null) : "Second matrix must not be null"; //$NON-NLS-1$
 		this.m00 = matrix1.m00 - matrix2.m00;
@@ -829,7 +829,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * @param matrix
 	 *            the other matrix
 	 */
-	public final void sub(Matrix3f matrix) {
+	public void sub(Matrix3f matrix) {
 		assert (matrix != null) : "Matrix must not be null"; //$NON-NLS-1$
 		this.m00 -= matrix.m00;
 		this.m01 -= matrix.m01;
@@ -849,7 +849,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	/**
 	 * Sets the value of this matrix to its transpose.
 	 */
-	public final void transpose() {
+	public void transpose() {
 		double temp;
 
 		temp = this.m10;
@@ -873,7 +873,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * @param matrix
 	 *            the matrix to be transposed
 	 */
-	public final void transpose(Matrix3f matrix) {
+	public void transpose(Matrix3f matrix) {
 		assert (matrix != null) : "Matrix must not be null"; //$NON-NLS-1$
 		if (this != matrix) {
 			this.m00 = matrix.m00;
@@ -900,7 +900,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * @param matrix
 	 *            the Matrix3f to be converted to double
 	 */
-	public final void set(Matrix3f matrix) {
+	public void set(Matrix3f matrix) {
 		assert (matrix != null) : "Matrix must not be null"; //$NON-NLS-1$
 		this.m00 = matrix.m00;
 		this.m01 = matrix.m01;
@@ -925,7 +925,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * @param matrix
 	 *            the double precision array of length 9
 	 */
-	public final void set(double[] matrix) {
+	public void set(double[] matrix) {
 		assert (matrix != null) : "Matrix must not be null"; //$NON-NLS-1$
 		assert (matrix.length >= 9) : "Size of the array is too small"; //$NON-NLS-1$
 		this.m00 = matrix[0];
@@ -1287,7 +1287,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * @return the determinant of the matrix
 	 */
 	@Pure
-	public final double determinant() {
+	public double determinant() {
 		/* det(A,B,C) = det( [ x1 x2 x3 ]
 		 *                   [ y1 y2 y3 ]
 		 *                   [ z1 z2 z3 ] )
@@ -1304,7 +1304,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * @param scalar
 	 *            The scalar multiplier.
 	 */
-	public final void mul(double scalar) {
+	public void mul(double scalar) {
 		this.m00 *= scalar;
 		this.m01 *= scalar;
 		this.m02 *= scalar;
@@ -1359,7 +1359,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * @param matrix
 	 *            the original matrix
 	 */
-	public final void mul(double scalar, Matrix3f matrix) {
+	public void mul(double scalar, Matrix3f matrix) {
 		assert (matrix != null) : "Matrix must not be null"; //$NON-NLS-1$
 		this.m00 = scalar * matrix.m00;
 		this.m01 = scalar * matrix.m01;
@@ -1383,7 +1383,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * @param matrix
 	 *            the other matrix
 	 */
-	public final void mul(Matrix3f matrix) {
+	public void mul(Matrix3f matrix) {
 		assert (matrix != null) : "Matrix must not be null"; //$NON-NLS-1$
 		double _m00, _m01, _m02, _m10, _m11, _m12, _m20, _m21, _m22;
 
@@ -1421,7 +1421,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * @param matrix2
 	 *            the second matrix
 	 */
-	public final void mul(Matrix3f matrix1, Matrix3f matrix2) {
+	public void mul(Matrix3f matrix1, Matrix3f matrix2) {
 		assert (matrix1 != null) : "First matrix must not be null"; //$NON-NLS-1$
 		assert (matrix2 != null) : "Second matrix must not be null"; //$NON-NLS-1$
 		if (this != matrix1 && this != matrix2) {
@@ -1474,7 +1474,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * @param matrix
 	 *            the matrix on the right hand side of the multiplication
 	 */
-	public final void mulNormalize(Matrix3f matrix) {
+	public void mulNormalize(Matrix3f matrix) {
 		assert (matrix != null) : "Matrix must not be null"; //$NON-NLS-1$
 
 		double[] tmp = new double[9]; // scratch matrix
@@ -1493,7 +1493,7 @@ public class Matrix3f implements Serializable, Cloneable {
 		tmp[7] = this.m20 * matrix.m01 + this.m21 * matrix.m11 + this.m22 * matrix.m21;
 		tmp[8] = this.m20 * matrix.m02 + this.m21 * matrix.m12 + this.m22 * matrix.m22;
 
-		compute_svd(tmp, tmp_scale, tmp_rot);
+		computeSVD(tmp, tmp_scale, tmp_rot);
 
 		this.m00 = tmp_rot[0];
 		this.m01 = tmp_rot[1];
@@ -1519,7 +1519,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * @param matrix2
 	 *            the matrix on the right hand side of the multiplication
 	 */
-	public final void mulNormalize(Matrix3f matrix1, Matrix3f matrix2) {
+	public void mulNormalize(Matrix3f matrix1, Matrix3f matrix2) {
 		assert (matrix1 != null) : "First matrix must not be null"; //$NON-NLS-1$
 		assert (matrix2 != null) : "Second matrix must not be null"; //$NON-NLS-1$
 
@@ -1539,7 +1539,7 @@ public class Matrix3f implements Serializable, Cloneable {
 		tmp[7] = matrix1.m20 * matrix2.m01 + matrix1.m21 * matrix2.m11 + matrix1.m22 * matrix2.m21;
 		tmp[8] = matrix1.m20 * matrix2.m02 + matrix1.m21 * matrix2.m12 + matrix1.m22 * matrix2.m22;
 
-		compute_svd(tmp, tmp_scale, tmp_rot);
+		computeSVD(tmp, tmp_scale, tmp_rot);
 
 		this.m00 = tmp_rot[0];
 		this.m01 = tmp_rot[1];
@@ -1565,7 +1565,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * @param matrix2
 	 *            the matrix on the right hand side of the multiplication
 	 */
-	public final void mulTransposeBoth(Matrix3f matrix1, Matrix3f matrix2) {
+	public void mulTransposeBoth(Matrix3f matrix1, Matrix3f matrix2) {
 		assert (matrix1 != null) : "First matrix must not be null"; //$NON-NLS-1$
 		assert (matrix2 != null) : "Second matrix must not be null"; //$NON-NLS-1$
 		if (this != matrix1 && this != matrix2) {
@@ -1619,7 +1619,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * @param matrix2
 	 *            the matrix on the right hand side of the multiplication
 	 */
-	public final void mulTransposeRight(Matrix3f matrix1, Matrix3f matrix2) {
+	public void mulTransposeRight(Matrix3f matrix1, Matrix3f matrix2) {
 		assert (matrix1 != null) : "First matrix must not be null"; //$NON-NLS-1$
 		assert (matrix2 != null) : "Second matrix must not be null"; //$NON-NLS-1$
 		if (this != matrix1 && this != matrix2) {
@@ -1673,7 +1673,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * @param matrix2
 	 *            the matrix on the right hand side of the multiplication
 	 */
-	public final void mulTransposeLeft(Matrix3f matrix1, Matrix3f matrix2) {
+	public void mulTransposeLeft(Matrix3f matrix1, Matrix3f matrix2) {
 		assert (matrix1 != null) : "First matrix must not be null"; //$NON-NLS-1$
 		assert (matrix2 != null) : "Second matrix must not be null"; //$NON-NLS-1$
 		if (this != matrix1 && this != matrix2) {
@@ -1725,7 +1725,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * @param matrix
 	 *            Provides the matrix values to be normalized
 	 */
-	public final void normalize(Matrix3f matrix) {
+	public void normalize(Matrix3f matrix) {
 		assert (matrix != null) : "Matrix must not be null"; //$NON-NLS-1$
 
 		double[] tmp = new double[9]; // scratch matrix
@@ -1744,7 +1744,7 @@ public class Matrix3f implements Serializable, Cloneable {
 		tmp[7] = matrix.m21;
 		tmp[8] = matrix.m22;
 
-		compute_svd(tmp, tmp_scale, tmp_rot);
+		computeSVD(tmp, tmp_scale, tmp_rot);
 
 		this.m00 = tmp_rot[0];
 		this.m01 = tmp_rot[1];
@@ -1765,7 +1765,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * Perform cross product normalization of this matrix.
 	 */
 
-	public final void normalizeCP() {
+	public void normalizeCP() {
 		double mag = 1. / Math.sqrt(this.m00 * this.m00 + this.m10 * this.m10 + this.m20 * this.m20);
 		this.m00 = this.m00 * mag;
 		this.m10 = this.m10 * mag;
@@ -1790,7 +1790,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * @param matrix
 	 *            Provides the matrix values to be normalized
 	 */
-	public final void normalizeCP(Matrix3f matrix) {
+	public void normalizeCP(Matrix3f matrix) {
 		assert (matrix != null) : "Matrix must not be null"; //$NON-NLS-1$
 		double mag = 1. / Math.sqrt(matrix.m00 * matrix.m00 + matrix.m10 * matrix.m10 + matrix.m20
 				* matrix.m20);
@@ -1953,7 +1953,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	/**
 	 * Sets this matrix to all zeros.
 	 */
-	public final void setZero() {
+	public void setZero() {
 		this.m00 = 0.;
 		this.m01 = 0.;
 		this.m02 = 0.;
@@ -1979,7 +1979,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * @param m22
 	 *            the third element of the diagonal
 	 */
-	public final void setDiagonal(double m00, double m11, double m22) {
+	public void setDiagonal(double m00, double m11, double m22) {
 		this.m00 = m00;
 		this.m01 = 0.;
 		this.m02 = 0.;
@@ -1996,7 +1996,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	/**
 	 * Negates the value of this matrix: this = -this.
 	 */
-	public final void negate() {
+	public void negate() {
 		this.m00 = -this.m00;
 		this.m01 = -this.m01;
 		this.m02 = -this.m02;
@@ -2019,7 +2019,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * @param matrix
 	 *            the source matrix
 	 */
-	public final void negate(Matrix3f matrix) {
+	public void negate(Matrix3f matrix) {
 		assert (matrix != null) : "Matrix must not be null"; //$NON-NLS-1$
 		this.m00 = -matrix.m00;
 		this.m01 = -matrix.m01;
@@ -2036,7 +2036,16 @@ public class Matrix3f implements Serializable, Cloneable {
 		this.isIdentity = null;
 	}
 
-	private static void compute_svd(double[] m, double[] outScale, double[] outRot) {
+	/** Compute the SVD of a matrix m.
+	 *
+	 * @param m the matrix.
+	 * @param outScale is set with the scaling factors.
+	 * @param outRot is set with the rotation factors.
+	 */
+	protected static void computeSVD(double[] m, double[] outScale, double[] outRot) {
+		assert (m != null && m.length == 9) : "Size of m must be 9"; //$NON-NLS-1$
+		assert (outScale != null && outScale.length == 3) : "Size of outScale must be 3"; //$NON-NLS-1$
+		assert (outRot != null && outRot.length == 9) : "Size of outRot must be 9"; //$NON-NLS-1$
 		int i;
 		double g;
 		double[] u1 = new double[9];
@@ -3047,7 +3056,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * @since vecmath 1.5
 	 */
 	@Pure
-	public final double getM00() {
+	public double getM00() {
 		return this.m00;
 	}
 
@@ -3059,7 +3068,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * 
 	 * @since vecmath 1.5
 	 */
-	public final void setM00(double m00) {
+	public void setM00(double m00) {
 		this.m00 = m00;
 		this.isIdentity = null;
 	}
@@ -3072,7 +3081,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * @since vecmath 1.5
 	 */
 	@Pure
-	public final double getM01() {
+	public double getM01() {
 		return this.m01;
 	}
 
@@ -3084,7 +3093,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * 
 	 * @since vecmath 1.5
 	 */
-	public final void setM01(double m01) {
+	public void setM01(double m01) {
 		this.m01 = m01;
 		this.isIdentity = null;
 	}
@@ -3097,7 +3106,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * @since vecmath 1.5
 	 */
 	@Pure
-	public final double getM02() {
+	public double getM02() {
 		return this.m02;
 	}
 
@@ -3109,7 +3118,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * 
 	 * @since vecmath 1.5
 	 */
-	public final void setM02(double m02) {
+	public void setM02(double m02) {
 		this.m02 = m02;
 		this.isIdentity = null;
 	}
@@ -3122,7 +3131,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * @since vecmath 1.5
 	 */
 	@Pure
-	public final double getM10() {
+	public double getM10() {
 		return this.m10;
 	}
 
@@ -3134,7 +3143,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * 
 	 * @since vecmath 1.5
 	 */
-	public final void setM10(double m10) {
+	public void setM10(double m10) {
 		this.m10 = m10;
 		this.isIdentity = null;
 	}
@@ -3147,7 +3156,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * @since vecmath 1.5
 	 */
 	@Pure
-	public final double getM11() {
+	public double getM11() {
 		return this.m11;
 	}
 
@@ -3159,7 +3168,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * 
 	 * @since vecmath 1.5
 	 */
-	public final void setM11(double m11) {
+	public void setM11(double m11) {
 		this.m11 = m11;
 		this.isIdentity = null;
 	}
@@ -3172,7 +3181,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * @since vecmath 1.5
 	 */
 	@Pure
-	public final double getM12() {
+	public double getM12() {
 		return this.m12;
 	}
 
@@ -3184,7 +3193,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * 
 	 * @since vecmath 1.5
 	 */
-	public final void setM12(double m11) {
+	public void setM12(double m11) {
 		this.m12 = m11;
 		this.isIdentity = null;
 	}
@@ -3197,7 +3206,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * @since vecmath 1.5
 	 */
 	@Pure
-	public final double getM20() {
+	public double getM20() {
 		return this.m20;
 	}
 
@@ -3209,7 +3218,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * 
 	 * @since vecmath 1.5
 	 */
-	public final void setM20(double m20) {
+	public void setM20(double m20) {
 		this.m20 = m20;
 		this.isIdentity = null;
 	}
@@ -3222,7 +3231,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * @since vecmath 1.5
 	 */
 	@Pure
-	public final double getM21() {
+	public double getM21() {
 		return this.m21;
 	}
 
@@ -3234,7 +3243,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * 
 	 * @since vecmath 1.5
 	 */
-	public final void setM21(double m21) {
+	public void setM21(double m21) {
 		this.m21 = m21;
 		this.isIdentity = null;
 	}
@@ -3247,7 +3256,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * @since vecmath 1.5
 	 */
 	@Pure
-	public final double getM22() {
+	public double getM22() {
 		return this.m22;
 	}
 
@@ -3259,64 +3268,18 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * 
 	 * @since vecmath 1.5
 	 */
-	public final void setM22(double m22) {
+	public void setM22(double m22) {
 		this.m22 = m22;
 		this.isIdentity = null;
 	}
 
 	/**
-	 * Sets the scale component of the current matrix by factoring out the
-	 * current scale (by doing an SVD) and multiplying by the new scale.
-	 * 
-	 * @param scale
-	 *            the new scale amount
+	 * Perform SVD on the 3x3 matrix.
+	 *
+	 * @param scales the scaling factors.
+	 * @param rots the rotation factors.
 	 */
-	public final void setScale(double scale) {
-
-		double[] tmp_rot = new double[9]; // scratch matrix
-		double[] tmp_scale = new double[3]; // scratch matrix
-
-		getScaleRotate(tmp_scale, tmp_rot);
-
-		this.m00 = tmp_rot[0] * scale;
-		this.m01 = tmp_rot[1] * scale;
-		this.m02 = tmp_rot[2] * scale;
-
-		this.m10 = tmp_rot[3] * scale;
-		this.m11 = tmp_rot[4] * scale;
-		this.m12 = tmp_rot[5] * scale;
-
-		this.m20 = tmp_rot[6] * scale;
-		this.m21 = tmp_rot[7] * scale;
-		this.m22 = tmp_rot[8] * scale;
-
-		this.isIdentity = null;
-	}
-	
-	/**
-	 * Performs an SVD normalization of this matrix to calculate and return the
-	 * uniform scale factor. If the matrix has non-uniform scale factors, the
-	 * largest of the x, y scale factors will be returned. This matrix is
-	 * not modified.
-	 * 
-	 * @return the scale factor of this matrix
-	 */
-	@Pure
-	public final double getScale() {
-
-		double[] tmp_scale = new double[3]; // scratch matrix
-		double[] tmp_rot = new double[9]; // scratch matrix
-		getScaleRotate(tmp_scale, tmp_rot);
-
-		return (MathUtil.max(tmp_scale));
-
-	}
-
-	/**
-	 * perform SVD (if necessary to get rotational component)
-	 */
-	private void getScaleRotate(double scales[], double rots[]) {
-
+	private void getScaleRotate3x3(double scales[], double rots[]) {
 		double[] tmp = new double[9]; // scratch matrix
 
 		tmp[0] = this.m00;
@@ -3331,17 +3294,17 @@ public class Matrix3f implements Serializable, Cloneable {
 		tmp[7] = this.m21;
 		tmp[8] = this.m22;
 
-		compute_svd(tmp, scales, rots);
+		computeSVD(tmp, scales, rots);
 	}
 	
 	/**
 	 * Performs singular value decomposition normalization of this matrix.
 	 */
-	public final void normalize() {
+	public void normalize() {
 		double[] tmp_rot = new double[9]; // scratch matrix
 		double[] tmp_scale = new double[3]; // scratch matrix
 
-		getScaleRotate(tmp_scale, tmp_rot);
+		getScaleRotate3x3(tmp_scale, tmp_rot);
 
 		this.m00 = tmp_rot[0];
 		this.m01 = tmp_rot[1];
@@ -3365,7 +3328,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * @param tuples
 	 * @return <code>true</code> if the cov matrix is computed.
 	 */
-	public final boolean cov(Vector3D result, Vector3D... tuples) {
+	public boolean cov(Vector3D result, Vector3D... tuples) {
 		assert (result != null) : "Result vector must not be null"; //$NON-NLS-1$
 		assert (tuples != null) : "List of tuples must not be null"; //$NON-NLS-1$
 		return cov(result, Arrays.asList(tuples));
@@ -3378,7 +3341,7 @@ public class Matrix3f implements Serializable, Cloneable {
 	 * @param tuples
 	 * @return <code>true</code> if the cov matrix is computed.
 	 */
-	public final boolean  cov(Vector3D result, Point3D... tuples) {
+	public boolean  cov(Vector3D result, Point3D... tuples) {
 		assert (result != null) : "Result vector must not be null"; //$NON-NLS-1$
 		assert (tuples != null) : "List of tuples must not be null"; //$NON-NLS-1$
 		return cov(result, Arrays.asList(tuples));

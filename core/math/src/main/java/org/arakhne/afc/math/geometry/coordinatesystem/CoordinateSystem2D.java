@@ -72,31 +72,33 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 		return 2;
 	}
 
-	/** Convert the specified point into from the current coordinate system
+	/** Convert the specified point from the current coordinate system
 	 * to the specified coordinate system.
 	 * 
 	 * @param point is the point to convert
 	 * @param targetCoordinateSystem is the target coordinate system.
 	 */
 	public void toSystem(Point2D<?, ?> point, CoordinateSystem2D targetCoordinateSystem) {
+		assert (targetCoordinateSystem != null) : "Target coordinate system must be not null"; //$NON-NLS-1$
 		if (this != targetCoordinateSystem) {
 			point.setY(-point.getY());
 		}
 	}
 
-	/** Convert the specified point into from the current coordinate system
+	/** Convert the specified point from the current coordinate system
 	 * to the specified coordinate system.
 	 * 
 	 * @param point is the point to convert
 	 * @param targetCoordinateSystem is the target coordinate system.
 	 */
 	public void toSystem(Vector2D<?, ?> point, CoordinateSystem2D targetCoordinateSystem) {
+		assert (targetCoordinateSystem != null) : "Target coordinate system must be not null"; //$NON-NLS-1$
 		if (this!=targetCoordinateSystem) {
 			point.setY(-point.getY());
 		}
 	}
 
-	/** Convert the specified rotation into from the current coordinate system
+	/** Convert the specified rotation from the current coordinate system
 	 * to the specified coordinate system.
 	 * 
 	 * @param rotation is the rotation to convert
@@ -105,6 +107,7 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 	 */
 	@Pure
 	public double toSystem(double rotation, CoordinateSystem2D targetCoordinateSystem) {
+		assert (targetCoordinateSystem != null) : "Target coordinate system must be not null"; //$NON-NLS-1$
 		if (this!=targetCoordinateSystem) {
 			return -rotation;
 		}
@@ -118,10 +121,11 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 	 * @param targetCoordinateSystem is the target coordinate system.
 	 */
 	public void toSystem(Transform2D matrix, CoordinateSystem2D targetCoordinateSystem) {
+		assert (targetCoordinateSystem != null) : "Target coordinate system must be not null"; //$NON-NLS-1$
 		if (this!=targetCoordinateSystem) {
 			double r = -matrix.getRotation();
 			matrix.setRotation(r);
-			matrix.setM21(-matrix.getM21());
+			matrix.setM12(-matrix.getM12());
 		}
 	}
 
@@ -168,7 +172,6 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 	/** Convert the specified transformation matrix from the default coordinate system.
 	 * 
 	 * @param matrix is the matrix to convert
-	 * @since 4.0
 	 */
 	public void fromDefault(Transform2D matrix) {
 		if (this!=getDefaultCoordinateSystem()) {
@@ -218,6 +221,9 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 
 	/** Replies the default coordinate system.
 	 * 
+	 * <p>If it is not changed, the default coordinate system is the one used for 2D simulation:
+	 * {@link CoordinateSystemConstants#SIMULATION_2D}.
+	 *
 	 * @return the default coordinate system.
 	 * @see #setDefaultCoordinateSystem(CoordinateSystem2D)
 	 */
@@ -253,17 +259,19 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 
 	/** Replies the coordinate system which is corresponding to the specified
 	 * orientation unit vectors.
-	 * <p>
-	 * The front vector is assumed to be always <code>(1,0)</code>,
+	 *
+	 * <p>The front vector is assumed to be always <code>(1,0)</code>,
 	 * and the left vector is <code>(0,ly)</code>.
+	 * If <code>ly</code> is negative, then the corrdinate system is left-handed, otherwise
+	 * it is right-handed.
 	 * 
 	 * @param ly
 	 * @return the coordinate system which is corresponding to the specified vector.
 	 */
 	@Pure
 	public static CoordinateSystem2D fromVectors(double ly) {
-		assert(ly!=0.);
-		return (ly<0.) ? XY_LEFT_HAND : XY_RIGHT_HAND;
+		assert(ly != 0.);
+		return (ly < 0.) ? XY_LEFT_HAND : XY_RIGHT_HAND;
 	}
 	
 	@Pure
@@ -293,8 +301,7 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 	/** Replies the front vector.
 	 *
 	 * @param vectorToFill is the vector to set with the front vector values.
-	 * @return the front vector.
-	 * @since 4.0
+	 * @return <code>vectorToFill</code>.
 	 */
 	public static <T extends Vector2D<?, ?>> T getViewVector(T vectorToFill) {
 		assert(vectorToFill!=null);
@@ -343,7 +350,6 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 	 *
 	 * @param vectorToFill is the vector to set with the left vector values.
 	 * @return the left vector.
-	 * @since 4.0
 	 */
 	public <T extends Vector2D<?, ?>> T getLeftVector(T vectorToFill) {
 		assert(vectorToFill!=null);
@@ -380,7 +386,6 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 	 *
 	 * @param vectorToFill is the vector to set with the right vector values.
 	 * @return the right vector.
-	 * @since 4.0
 	 */
 	public <T extends Vector2D<?, ?>> T getRightVector(T vectorToFill) {
 		assert(vectorToFill!=null);
@@ -400,7 +405,6 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 	 * this 2D coordinate system.
 	 * 
 	 * @return the 3D coordinate system
-	 * @since 4.0
 	 */
 	@Pure
 	public CoordinateSystem3D toCoordinateSystem3D() {

@@ -31,12 +31,26 @@ import org.junit.Test;
 @SuppressWarnings("all")
 public class CoordinateSystem2DInit {
 
-	/**
-	 */
 	@Test
-	public void init() {
-		assertNotNull(CoordinateSystem2D.getDefaultCoordinateSystem());
+	public void getDefaultSimulationCoordinateSystem() {
+		CoordinateSystem2D cs = CoordinateSystemConstants.SIMULATION_2D;
+		assertSame(CoordinateSystem2D.XY_RIGHT_HAND,cs);
+	}
+
+	@Test
+	public void getDefaultCoordinateSystem() {
+		CoordinateSystem2D cs = CoordinateSystem2D.getDefaultCoordinateSystem();
+		assertSame(CoordinateSystemConstants.SIMULATION_2D, cs);
+	}
+
+	@Test
+	public void setDefaultCoordinateSystem() {
+		CoordinateSystem2D.setDefaultCoordinateSystem(CoordinateSystem2D.XY_LEFT_HAND);
+		assertSame(CoordinateSystem2D.XY_LEFT_HAND, CoordinateSystem2D.getDefaultCoordinateSystem());
+		CoordinateSystem2D.setDefaultCoordinateSystem(CoordinateSystem2D.XY_RIGHT_HAND);
+		assertSame(CoordinateSystem2D.XY_RIGHT_HAND, CoordinateSystem2D.getDefaultCoordinateSystem());
+		CoordinateSystem2D.setDefaultCoordinateSystem(null);
 		assertSame(CoordinateSystem2D.XY_RIGHT_HAND, CoordinateSystem2D.getDefaultCoordinateSystem());
 	}
-	
+
 }

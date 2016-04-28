@@ -17,14 +17,17 @@
  */
 package org.arakhne.afc.math.geometry.coordinatesystem;
 
-import static org.junit.Assert.assertSame;
+import static org.junit.Assert.*;
 import static org.junit.Assert.fail;
 
 import org.arakhne.afc.math.AbstractMathTestCase;
+import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.geometry.d2.Point2D;
+import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.fp.Point2fp;
 import org.arakhne.afc.math.geometry.d2.fp.Vector2fp;
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -38,219 +41,913 @@ import org.junit.Test;
 @SuppressWarnings("all")
 public class CoordinateSystem2DTest extends AbstractMathTestCase {
 
-	/**
-	 */
+	@Before
+	public void setUp() {
+		// Reset the coordinate system to the system default.
+		CoordinateSystem2D.setDefaultCoordinateSystem(null);
+	}
+	
 	@Test
-	public void getDefaultSimulationCoordinateSystem() {
-		CoordinateSystem2D cs = CoordinateSystemConstants.SIMULATION_2D;
-		assertSame(CoordinateSystem2D.XY_RIGHT_HAND,cs);
+	public void getDimensions() {
+		assertEquals(2, CoordinateSystem2D.XY_RIGHT_HAND.getDimensions());
+		assertEquals(2, CoordinateSystem2D.XY_LEFT_HAND.getDimensions());
 	}
 
-	/**
-	 */
+	@Test
+	public void getViewVector() {
+		Vector2D v;
+		v = CoordinateSystem2D.XY_RIGHT_HAND.getViewVector();
+		assertFpVectorEquals(1, 0, v);
+		v = CoordinateSystem2D.XY_LEFT_HAND.getViewVector();
+		assertFpVectorEquals(1, 0, v);
+	}
+	
+	@Test
+	public void getViewVectorTuple2D() {
+		Vector2D t = new Vector2fp();
+		Vector2D v;
+		v = CoordinateSystem2D.XY_RIGHT_HAND.getViewVector(t);
+		assertSame(t, v);
+		assertFpVectorEquals(1, 0, t);
+		v = CoordinateSystem2D.XY_LEFT_HAND.getViewVector(t);
+		assertSame(t, v);
+		assertFpVectorEquals(1, 0, t);
+	}
+
+	@Test
+	public void getLeftVector() {
+		Vector2D v;
+		v = CoordinateSystem2D.XY_RIGHT_HAND.getLeftVector();
+		assertFpVectorEquals(0, 1, v);
+		v = CoordinateSystem2D.XY_LEFT_HAND.getLeftVector();
+		assertFpVectorEquals(0, -1, v);
+	}
+	
+	@Test
+	public void getLeftVectorTuple2D() {
+		Vector2D t = new Vector2fp();
+		Vector2D v;
+		v = CoordinateSystem2D.XY_RIGHT_HAND.getLeftVector(t);
+		assertSame(t, v);
+		assertFpVectorEquals(0, 1, t);
+		v = CoordinateSystem2D.XY_LEFT_HAND.getLeftVector(t);
+		assertSame(t, v);
+		assertFpVectorEquals(0, -1, t);
+	}
+
+	@Test
+	public void getRightVector() {
+		Vector2D v;
+		v = CoordinateSystem2D.XY_RIGHT_HAND.getRightVector();
+		assertFpVectorEquals(0, -1, v);
+		v = CoordinateSystem2D.XY_LEFT_HAND.getRightVector();
+		assertFpVectorEquals(0, 1, v);
+	}
+	
+	@Test
+	public void getRightVectorTuple2D() {
+		Vector2D t = new Vector2fp();
+		Vector2D v;
+		v = CoordinateSystem2D.XY_RIGHT_HAND.getRightVector(t);
+		assertSame(t, v);
+		assertFpVectorEquals(0, -1, t);
+		v = CoordinateSystem2D.XY_LEFT_HAND.getRightVector(t);
+		assertSame(t, v);
+		assertFpVectorEquals(0, 1, t);
+	}
+
+	@Test
+	public void isLeftHanded() {
+		assertFalse(CoordinateSystem2D.XY_RIGHT_HAND.isLeftHanded());
+		assertTrue(CoordinateSystem2D.XY_LEFT_HAND.isLeftHanded());
+	}
+	
+	@Test
+	public void isRightHanded() {
+		assertTrue(CoordinateSystem2D.XY_RIGHT_HAND.isRightHanded());
+		assertFalse(CoordinateSystem2D.XY_LEFT_HAND.isRightHanded());
+	}
+
+	@Test
+	public void toCoordinateSystem3D() {
+		assertSame(CoordinateSystem3D.XYZ_RIGHT_HAND, CoordinateSystem2D.XY_RIGHT_HAND.toCoordinateSystem3D());
+		assertSame(CoordinateSystem3D.XYZ_LEFT_HAND, CoordinateSystem2D.XY_LEFT_HAND.toCoordinateSystem3D());
+	}
+
+	@Test(expected = AssertionError.class)
+	public void fromVectorsDouble_invalidParameter() {
+		CoordinateSystem2D.fromVectors(0.);
+	}
+
 	@Test
 	public void fromVectorsDouble() {
-		try {
-			CoordinateSystem2D.fromVectors(0.);
-			fail("Expecting exception of type AssertionError");
-		} catch (AssertionError e) {
-			// Expected
-		}
-		assertSame(CoordinateSystem2D.XY_RIGHT_HAND, CoordinateSystem2D.fromVectors(
-				1. ));
-		assertSame(CoordinateSystem2D.XY_LEFT_HAND, CoordinateSystem2D.fromVectors(
-				-1. ));
+		assertSame(CoordinateSystem2D.XY_RIGHT_HAND, CoordinateSystem2D.fromVectors(1.));
+		assertSame(CoordinateSystem2D.XY_LEFT_HAND, CoordinateSystem2D.fromVectors(-1.));
 	}
 
-	/**
-	 */
+	@Test(expected = AssertionError.class)
+	public void fromVectorsInt_invalidParameter() {
+		CoordinateSystem2D.fromVectors(0);
+	}
+
 	@Test
 	public void fromVectorsInt() {
-		try {
-			CoordinateSystem2D.fromVectors(0);
-			fail("Expecting exception of type AssertionError");
-		} catch (AssertionError e) {
-			// Expected
-		}
-		assertSame(CoordinateSystem2D.XY_RIGHT_HAND, CoordinateSystem2D.fromVectors(
-				1 ));
-		assertSame(CoordinateSystem2D.XY_LEFT_HAND, CoordinateSystem2D.fromVectors(
-				-1 ));
+		assertSame(CoordinateSystem2D.XY_RIGHT_HAND, CoordinateSystem2D.fromVectors(1));
+		assertSame(CoordinateSystem2D.XY_LEFT_HAND, CoordinateSystem2D.fromVectors(-1));
 	}
 
-	/**
-	 */
 	@Test
-	public void toDefaultPoint2f() {
-		Point2fp pt, pt2, ptInv;
+	public void toDefaultPoint2D_systemDefault() {
+		Point2fp p1 = new Point2fp(-45, 78);
+		Point2fp p2 = new Point2fp(45, -78);
+		Point2fp p3 = new Point2fp(-45, -78);
+		Point2fp p4 = new Point2fp(45, 78);
+		Point2fp p;
+
+		p = p1.clone();
+		CoordinateSystem2D.XY_RIGHT_HAND.toDefault(p);
+		assertFpPointEquals(-45, 78, p);
 		
-		pt = randomPoint2f();
-		ptInv = new Point2fp(pt.getX(), -pt.getY());
+		p = p2.clone();
+		CoordinateSystem2D.XY_RIGHT_HAND.toDefault(p);
+		assertFpPointEquals(45, -78, p);
+
+		p = p3.clone();
+		CoordinateSystem2D.XY_RIGHT_HAND.toDefault(p);
+		assertFpPointEquals(-45, -78, p);
+
+		p = p4.clone();
+		CoordinateSystem2D.XY_RIGHT_HAND.toDefault(p);
+		assertFpPointEquals(45, 78, p);
+
+		p = p1.clone();
+		CoordinateSystem2D.XY_LEFT_HAND.toDefault(p);
+		assertFpPointEquals(-45, -78, p);
 		
-		pt2 = new Point2fp(pt);
-		CoordinateSystem2D.XY_RIGHT_HAND.toDefault(pt2);
-		assertEpsilonEquals(pt, pt2);
-		
-		pt2 = new Point2fp(pt);
-		CoordinateSystem2D.XY_LEFT_HAND.toDefault(pt2);
-		assertEpsilonEquals(ptInv, pt2);
+		p = p2.clone();
+		CoordinateSystem2D.XY_LEFT_HAND.toDefault(p);
+		assertFpPointEquals(45, 78, p);
+
+		p = p3.clone();
+		CoordinateSystem2D.XY_LEFT_HAND.toDefault(p);
+		assertFpPointEquals(-45, 78, p);
+
+		p = p4.clone();
+		CoordinateSystem2D.XY_LEFT_HAND.toDefault(p);
+		assertFpPointEquals(45, -78, p);
 	}
 
-	/**
-	 */
 	@Test
-	public void fromDefaultPoint2f() {
-		Point2fp pt, pt2, ptInv;
+	public void toDefaultPoint2D_rightHanded() {
+		CoordinateSystem2D.setDefaultCoordinateSystem(CoordinateSystem2D.XY_RIGHT_HAND);
+		Point2fp p1 = new Point2fp(-45, 78);
+		Point2fp p2 = new Point2fp(45, -78);
+		Point2fp p3 = new Point2fp(-45, -78);
+		Point2fp p4 = new Point2fp(45, 78);
+		Point2fp p;
+
+		p = p1.clone();
+		CoordinateSystem2D.XY_RIGHT_HAND.toDefault(p);
+		assertFpPointEquals(-45, 78, p);
 		
-		pt = randomPoint2f();
-		ptInv = new Point2fp(pt.getX(), -pt.getY());
+		p = p2.clone();
+		CoordinateSystem2D.XY_RIGHT_HAND.toDefault(p);
+		assertFpPointEquals(45, -78, p);
+
+		p = p3.clone();
+		CoordinateSystem2D.XY_RIGHT_HAND.toDefault(p);
+		assertFpPointEquals(-45, -78, p);
+
+		p = p4.clone();
+		CoordinateSystem2D.XY_RIGHT_HAND.toDefault(p);
+		assertFpPointEquals(45, 78, p);
+
+		p = p1.clone();
+		CoordinateSystem2D.XY_LEFT_HAND.toDefault(p);
+		assertFpPointEquals(-45, -78, p);
 		
-		pt2 = new Point2fp(pt);
-		CoordinateSystem2D.XY_RIGHT_HAND.fromDefault(pt2);
-		assertEpsilonEquals(pt, pt2);
-		
-		pt2 = new Point2fp(pt);
-		CoordinateSystem2D.XY_LEFT_HAND.fromDefault(pt2);
-		assertEpsilonEquals(ptInv, pt2);
+		p = p2.clone();
+		CoordinateSystem2D.XY_LEFT_HAND.toDefault(p);
+		assertFpPointEquals(45, 78, p);
+
+		p = p3.clone();
+		CoordinateSystem2D.XY_LEFT_HAND.toDefault(p);
+		assertFpPointEquals(-45, 78, p);
+
+		p = p4.clone();
+		CoordinateSystem2D.XY_LEFT_HAND.toDefault(p);
+		assertFpPointEquals(45, -78, p);
 	}
 
-	/**
-	 */
 	@Test
-	public void toDefaultVector2f() {
-		Vector2fp vt, vt2, vtInv;
+	public void toDefaultPoint2D_leftHanded() {
+		CoordinateSystem2D.setDefaultCoordinateSystem(CoordinateSystem2D.XY_LEFT_HAND);
+		Point2fp p1 = new Point2fp(-45, 78);
+		Point2fp p2 = new Point2fp(45, -78);
+		Point2fp p3 = new Point2fp(-45, -78);
+		Point2fp p4 = new Point2fp(45, 78);
+		Point2fp p;
+
+		p = p1.clone();
+		CoordinateSystem2D.XY_RIGHT_HAND.toDefault(p);
+		assertFpPointEquals(-45, -78, p);
 		
-		vt = randomVector2f();
-		vtInv = new Vector2fp(vt.getX(), -vt.getY());
+		p = p2.clone();
+		CoordinateSystem2D.XY_RIGHT_HAND.toDefault(p);
+		assertFpPointEquals(45, 78, p);
+
+		p = p3.clone();
+		CoordinateSystem2D.XY_RIGHT_HAND.toDefault(p);
+		assertFpPointEquals(-45, 78, p);
+
+		p = p4.clone();
+		CoordinateSystem2D.XY_RIGHT_HAND.toDefault(p);
+		assertFpPointEquals(45, -78, p);
+
+		p = p1.clone();
+		CoordinateSystem2D.XY_LEFT_HAND.toDefault(p);
+		assertFpPointEquals(-45, 78, p);
 		
-		vt2 = new Vector2fp(vt);
-		CoordinateSystem2D.XY_RIGHT_HAND.fromDefault(vt2);
-		assertEpsilonEquals(vt, vt2);
-		
-		vt2 = new Vector2fp(vt);
-		CoordinateSystem2D.XY_LEFT_HAND.fromDefault(vt2);
-		assertEpsilonEquals(vtInv, vt2);
+		p = p2.clone();
+		CoordinateSystem2D.XY_LEFT_HAND.toDefault(p);
+		assertFpPointEquals(45, -78, p);
+
+		p = p3.clone();
+		CoordinateSystem2D.XY_LEFT_HAND.toDefault(p);
+		assertFpPointEquals(-45, -78, p);
+
+		p = p4.clone();
+		CoordinateSystem2D.XY_LEFT_HAND.toDefault(p);
+		assertFpPointEquals(45, 78, p);
 	}
 
-	/**
-	 */
 	@Test
-	public void fromDefaultVector2f() {
-		Vector2fp vt, vt2, vtInv;
+	public void fromDefaultPoint2D_systemDefault() {
+		Point2fp p1 = new Point2fp(-45, 78);
+		Point2fp p2 = new Point2fp(45, -78);
+		Point2fp p3 = new Point2fp(-45, -78);
+		Point2fp p4 = new Point2fp(45, 78);
+		Point2fp p;
+
+		p = p1.clone();
+		CoordinateSystem2D.XY_RIGHT_HAND.fromDefault(p);
+		assertFpPointEquals(-45, 78, p);
 		
-		vt = randomVector2f();
-		vtInv = new Vector2fp(vt.getX(), -vt.getY());
+		p = p2.clone();
+		CoordinateSystem2D.XY_RIGHT_HAND.fromDefault(p);
+		assertFpPointEquals(45, -78, p);
+
+		p = p3.clone();
+		CoordinateSystem2D.XY_RIGHT_HAND.fromDefault(p);
+		assertFpPointEquals(-45, -78, p);
+
+		p = p4.clone();
+		CoordinateSystem2D.XY_RIGHT_HAND.fromDefault(p);
+		assertFpPointEquals(45, 78, p);
+
+		p = p1.clone();
+		CoordinateSystem2D.XY_LEFT_HAND.fromDefault(p);
+		assertFpPointEquals(-45, -78, p);
 		
-		vt2 = new Vector2fp(vt);
-		CoordinateSystem2D.XY_RIGHT_HAND.fromDefault(vt2);
-		assertEpsilonEquals(vt, vt2);
-		
-		vt2 = new Vector2fp(vt);
-		CoordinateSystem2D.XY_LEFT_HAND.fromDefault(vt2);
-		assertEpsilonEquals(vtInv, vt2);
+		p = p2.clone();
+		CoordinateSystem2D.XY_LEFT_HAND.fromDefault(p);
+		assertFpPointEquals(45, 78, p);
+
+		p = p3.clone();
+		CoordinateSystem2D.XY_LEFT_HAND.fromDefault(p);
+		assertFpPointEquals(-45, 78, p);
+
+		p = p4.clone();
+		CoordinateSystem2D.XY_LEFT_HAND.fromDefault(p);
+		assertFpPointEquals(45, -78, p);
 	}
 
-	/**
-	 */
 	@Test
-	public void toDefaultDouble() {
-		double rot, conv;
+	public void fromDefaultPoint2D_rightHanded() {
+		CoordinateSystem2D.setDefaultCoordinateSystem(CoordinateSystem2D.XY_RIGHT_HAND);
+		Point2fp p1 = new Point2fp(-45, 78);
+		Point2fp p2 = new Point2fp(45, -78);
+		Point2fp p3 = new Point2fp(-45, -78);
+		Point2fp p4 = new Point2fp(45, 78);
+		Point2fp p;
+
+		p = p1.clone();
+		CoordinateSystem2D.XY_RIGHT_HAND.fromDefault(p);
+		assertFpPointEquals(-45, 78, p);
 		
-		rot = this.random.nextDouble()*Math.PI*2.;
+		p = p2.clone();
+		CoordinateSystem2D.XY_RIGHT_HAND.fromDefault(p);
+		assertFpPointEquals(45, -78, p);
+
+		p = p3.clone();
+		CoordinateSystem2D.XY_RIGHT_HAND.fromDefault(p);
+		assertFpPointEquals(-45, -78, p);
+
+		p = p4.clone();
+		CoordinateSystem2D.XY_RIGHT_HAND.fromDefault(p);
+		assertFpPointEquals(45, 78, p);
+
+		p = p1.clone();
+		CoordinateSystem2D.XY_LEFT_HAND.fromDefault(p);
+		assertFpPointEquals(-45, -78, p);
 		
-		conv = CoordinateSystem2D.XY_RIGHT_HAND.fromDefault(rot);
-		assertEpsilonEquals(rot, conv);
-		
-		conv = CoordinateSystem2D.XY_LEFT_HAND.fromDefault(rot);
-		assertEpsilonEquals(-rot, conv);
+		p = p2.clone();
+		CoordinateSystem2D.XY_LEFT_HAND.fromDefault(p);
+		assertFpPointEquals(45, 78, p);
+
+		p = p3.clone();
+		CoordinateSystem2D.XY_LEFT_HAND.fromDefault(p);
+		assertFpPointEquals(-45, 78, p);
+
+		p = p4.clone();
+		CoordinateSystem2D.XY_LEFT_HAND.fromDefault(p);
+		assertFpPointEquals(45, -78, p);
 	}
 
-	/**
-	 */
 	@Test
-	public void fromDefaultDouble() {
-		double rot, conv;
+	public void fromDefaultPoint2D_leftHanded() {
+		CoordinateSystem2D.setDefaultCoordinateSystem(CoordinateSystem2D.XY_LEFT_HAND);
+		Point2fp p1 = new Point2fp(-45, 78);
+		Point2fp p2 = new Point2fp(45, -78);
+		Point2fp p3 = new Point2fp(-45, -78);
+		Point2fp p4 = new Point2fp(45, 78);
+		Point2fp p;
+
+		p = p1.clone();
+		CoordinateSystem2D.XY_RIGHT_HAND.fromDefault(p);
+		assertFpPointEquals(-45, -78, p);
 		
-		rot = this.random.nextDouble()*Math.PI*2.;
+		p = p2.clone();
+		CoordinateSystem2D.XY_RIGHT_HAND.fromDefault(p);
+		assertFpPointEquals(45, 78, p);
+
+		p = p3.clone();
+		CoordinateSystem2D.XY_RIGHT_HAND.fromDefault(p);
+		assertFpPointEquals(-45, 78, p);
+
+		p = p4.clone();
+		CoordinateSystem2D.XY_RIGHT_HAND.fromDefault(p);
+		assertFpPointEquals(45, -78, p);
+
+		p = p1.clone();
+		CoordinateSystem2D.XY_LEFT_HAND.fromDefault(p);
+		assertFpPointEquals(-45, 78, p);
 		
-		conv = CoordinateSystem2D.XY_RIGHT_HAND.fromDefault(rot);
-		assertEpsilonEquals(rot, conv);
-		
-		conv = CoordinateSystem2D.XY_LEFT_HAND.fromDefault(rot);
-		assertEpsilonEquals(-rot, conv);
+		p = p2.clone();
+		CoordinateSystem2D.XY_LEFT_HAND.fromDefault(p);
+		assertFpPointEquals(45, -78, p);
+
+		p = p3.clone();
+		CoordinateSystem2D.XY_LEFT_HAND.fromDefault(p);
+		assertFpPointEquals(-45, -78, p);
+
+		p = p4.clone();
+		CoordinateSystem2D.XY_LEFT_HAND.fromDefault(p);
+		assertFpPointEquals(45, 78, p);
 	}
 
-	/**
-	 */
 	@Test
-	public void toSystemPoint2fCoordinateSystem2D() {
-		Point2fp pt, pt2, ptInv;
-		
-		pt = randomPoint2f();
-		ptInv = new Point2fp(pt.getX(), -pt.getY());
-		
-		pt2 = new Point2fp(pt);
-		CoordinateSystem2D.XY_RIGHT_HAND.toSystem(pt2, CoordinateSystem2D.XY_RIGHT_HAND);
-		assertEpsilonEquals(pt, pt2);
-		
-		pt2 = new Point2fp(pt);
-		CoordinateSystem2D.XY_RIGHT_HAND.toSystem(pt2, CoordinateSystem2D.XY_LEFT_HAND);
-		assertEpsilonEquals(ptInv, pt2);
+	public void toDefaultVector2D_systemDefault() {
+		Vector2fp p1 = new Vector2fp(-45, 78);
+		Vector2fp p2 = new Vector2fp(45, -78);
+		Vector2fp p3 = new Vector2fp(-45, -78);
+		Vector2fp p4 = new Vector2fp(45, 78);
+		Vector2fp p;
 
-		pt2 = new Point2fp(pt);
-		CoordinateSystem2D.XY_LEFT_HAND.toSystem(pt2, CoordinateSystem2D.XY_LEFT_HAND);
-		assertEpsilonEquals(pt, pt2);
+		p = p1.clone();
+		CoordinateSystem2D.XY_RIGHT_HAND.toDefault(p);
+		assertFpVectorEquals(-45, 78, p);
 		
-		pt2 = new Point2fp(pt);
-		CoordinateSystem2D.XY_LEFT_HAND.toSystem(pt2, CoordinateSystem2D.XY_RIGHT_HAND);
-		assertEpsilonEquals(ptInv, pt2);
+		p = p2.clone();
+		CoordinateSystem2D.XY_RIGHT_HAND.toDefault(p);
+		assertFpVectorEquals(45, -78, p);
+
+		p = p3.clone();
+		CoordinateSystem2D.XY_RIGHT_HAND.toDefault(p);
+		assertFpVectorEquals(-45, -78, p);
+
+		p = p4.clone();
+		CoordinateSystem2D.XY_RIGHT_HAND.toDefault(p);
+		assertFpVectorEquals(45, 78, p);
+
+		p = p1.clone();
+		CoordinateSystem2D.XY_LEFT_HAND.toDefault(p);
+		assertFpVectorEquals(-45, -78, p);
+		
+		p = p2.clone();
+		CoordinateSystem2D.XY_LEFT_HAND.toDefault(p);
+		assertFpVectorEquals(45, 78, p);
+
+		p = p3.clone();
+		CoordinateSystem2D.XY_LEFT_HAND.toDefault(p);
+		assertFpVectorEquals(-45, 78, p);
+
+		p = p4.clone();
+		CoordinateSystem2D.XY_LEFT_HAND.toDefault(p);
+		assertFpVectorEquals(45, -78, p);
 	}
 
-	/**
-	 */
 	@Test
-	public void toSystemVector2fCoordinateSystem2D() {
-		Vector2fp vt, vt2, vtInv;
-		
-		vt = randomVector2f();
-		vtInv = new Vector2fp(vt.getX(), -vt.getY());
-		
-		vt2 = new Vector2fp(vt);
-		CoordinateSystem2D.XY_RIGHT_HAND.toSystem(vt2, CoordinateSystem2D.XY_RIGHT_HAND);
-		assertEpsilonEquals(vt, vt2);
-		
-		vt2 = new Vector2fp(vt);
-		CoordinateSystem2D.XY_RIGHT_HAND.toSystem(vt2, CoordinateSystem2D.XY_LEFT_HAND);
-		assertEpsilonEquals(vtInv, vt2);
+	public void toDefaultVector2D_rightHanded() {
+		CoordinateSystem2D.setDefaultCoordinateSystem(CoordinateSystem2D.XY_RIGHT_HAND);
+		Vector2fp p1 = new Vector2fp(-45, 78);
+		Vector2fp p2 = new Vector2fp(45, -78);
+		Vector2fp p3 = new Vector2fp(-45, -78);
+		Vector2fp p4 = new Vector2fp(45, 78);
+		Vector2fp p;
 
-		vt2 = new Vector2fp(vt);
-		CoordinateSystem2D.XY_LEFT_HAND.toSystem(vt2, CoordinateSystem2D.XY_LEFT_HAND);
-		assertEpsilonEquals(vt, vt2);
+		p = p1.clone();
+		CoordinateSystem2D.XY_RIGHT_HAND.toDefault(p);
+		assertFpVectorEquals(-45, 78, p);
 		
-		vt2 = new Vector2fp(vt);
-		CoordinateSystem2D.XY_LEFT_HAND.toSystem(vt2, CoordinateSystem2D.XY_RIGHT_HAND);
-		assertEpsilonEquals(vtInv, vt2);
+		p = p2.clone();
+		CoordinateSystem2D.XY_RIGHT_HAND.toDefault(p);
+		assertFpVectorEquals(45, -78, p);
+
+		p = p3.clone();
+		CoordinateSystem2D.XY_RIGHT_HAND.toDefault(p);
+		assertFpVectorEquals(-45, -78, p);
+
+		p = p4.clone();
+		CoordinateSystem2D.XY_RIGHT_HAND.toDefault(p);
+		assertFpVectorEquals(45, 78, p);
+
+		p = p1.clone();
+		CoordinateSystem2D.XY_LEFT_HAND.toDefault(p);
+		assertFpVectorEquals(-45, -78, p);
+		
+		p = p2.clone();
+		CoordinateSystem2D.XY_LEFT_HAND.toDefault(p);
+		assertFpVectorEquals(45, 78, p);
+
+		p = p3.clone();
+		CoordinateSystem2D.XY_LEFT_HAND.toDefault(p);
+		assertFpVectorEquals(-45, 78, p);
+
+		p = p4.clone();
+		CoordinateSystem2D.XY_LEFT_HAND.toDefault(p);
+		assertFpVectorEquals(45, -78, p);
 	}
 
-	/**
-	 */
 	@Test
-	public void toSystemDoubleCoordinateSystem2D() {
-		double rot, conv;
-		
-		rot = this.random.nextDouble()*Math.PI*2.;
-		
-		conv = CoordinateSystem2D.XY_RIGHT_HAND.toSystem(rot, CoordinateSystem2D.XY_RIGHT_HAND);
-		assertEpsilonEquals(rot, conv);
-		
-		conv = CoordinateSystem2D.XY_RIGHT_HAND.toSystem(rot, CoordinateSystem2D.XY_LEFT_HAND);
-		assertEpsilonEquals(-rot, conv);
+	public void toDefaultVector2D_leftHanded() {
+		CoordinateSystem2D.setDefaultCoordinateSystem(CoordinateSystem2D.XY_LEFT_HAND);
+		Vector2fp p1 = new Vector2fp(-45, 78);
+		Vector2fp p2 = new Vector2fp(45, -78);
+		Vector2fp p3 = new Vector2fp(-45, -78);
+		Vector2fp p4 = new Vector2fp(45, 78);
+		Vector2fp p;
 
-		conv = CoordinateSystem2D.XY_LEFT_HAND.toSystem(rot, CoordinateSystem2D.XY_LEFT_HAND);
-		assertEpsilonEquals(rot, conv);
+		p = p1.clone();
+		CoordinateSystem2D.XY_RIGHT_HAND.toDefault(p);
+		assertFpVectorEquals(-45, -78, p);
 		
-		conv = CoordinateSystem2D.XY_LEFT_HAND.toSystem(rot, CoordinateSystem2D.XY_RIGHT_HAND);
-		assertEpsilonEquals(-rot, conv);
+		p = p2.clone();
+		CoordinateSystem2D.XY_RIGHT_HAND.toDefault(p);
+		assertFpVectorEquals(45, 78, p);
+
+		p = p3.clone();
+		CoordinateSystem2D.XY_RIGHT_HAND.toDefault(p);
+		assertFpVectorEquals(-45, 78, p);
+
+		p = p4.clone();
+		CoordinateSystem2D.XY_RIGHT_HAND.toDefault(p);
+		assertFpVectorEquals(45, -78, p);
+
+		p = p1.clone();
+		CoordinateSystem2D.XY_LEFT_HAND.toDefault(p);
+		assertFpVectorEquals(-45, 78, p);
+		
+		p = p2.clone();
+		CoordinateSystem2D.XY_LEFT_HAND.toDefault(p);
+		assertFpVectorEquals(45, -78, p);
+
+		p = p3.clone();
+		CoordinateSystem2D.XY_LEFT_HAND.toDefault(p);
+		assertFpVectorEquals(-45, -78, p);
+
+		p = p4.clone();
+		CoordinateSystem2D.XY_LEFT_HAND.toDefault(p);
+		assertFpVectorEquals(45, 78, p);
+	}
+
+	@Test
+	public void fromDefaultVector2D_systemDefault() {
+		Vector2fp p1 = new Vector2fp(-45, 78);
+		Vector2fp p2 = new Vector2fp(45, -78);
+		Vector2fp p3 = new Vector2fp(-45, -78);
+		Vector2fp p4 = new Vector2fp(45, 78);
+		Vector2fp p;
+
+		p = p1.clone();
+		CoordinateSystem2D.XY_RIGHT_HAND.fromDefault(p);
+		assertFpVectorEquals(-45, 78, p);
+		
+		p = p2.clone();
+		CoordinateSystem2D.XY_RIGHT_HAND.fromDefault(p);
+		assertFpVectorEquals(45, -78, p);
+
+		p = p3.clone();
+		CoordinateSystem2D.XY_RIGHT_HAND.fromDefault(p);
+		assertFpVectorEquals(-45, -78, p);
+
+		p = p4.clone();
+		CoordinateSystem2D.XY_RIGHT_HAND.fromDefault(p);
+		assertFpVectorEquals(45, 78, p);
+
+		p = p1.clone();
+		CoordinateSystem2D.XY_LEFT_HAND.fromDefault(p);
+		assertFpVectorEquals(-45, -78, p);
+		
+		p = p2.clone();
+		CoordinateSystem2D.XY_LEFT_HAND.fromDefault(p);
+		assertFpVectorEquals(45, 78, p);
+
+		p = p3.clone();
+		CoordinateSystem2D.XY_LEFT_HAND.fromDefault(p);
+		assertFpVectorEquals(-45, 78, p);
+
+		p = p4.clone();
+		CoordinateSystem2D.XY_LEFT_HAND.fromDefault(p);
+		assertFpVectorEquals(45, -78, p);
+	}
+
+	@Test
+	public void fromDefaultVector2D_rightHanded() {
+		CoordinateSystem2D.setDefaultCoordinateSystem(CoordinateSystem2D.XY_RIGHT_HAND);
+		Vector2fp p1 = new Vector2fp(-45, 78);
+		Vector2fp p2 = new Vector2fp(45, -78);
+		Vector2fp p3 = new Vector2fp(-45, -78);
+		Vector2fp p4 = new Vector2fp(45, 78);
+		Vector2fp p;
+
+		p = p1.clone();
+		CoordinateSystem2D.XY_RIGHT_HAND.fromDefault(p);
+		assertFpVectorEquals(-45, 78, p);
+		
+		p = p2.clone();
+		CoordinateSystem2D.XY_RIGHT_HAND.fromDefault(p);
+		assertFpVectorEquals(45, -78, p);
+
+		p = p3.clone();
+		CoordinateSystem2D.XY_RIGHT_HAND.fromDefault(p);
+		assertFpVectorEquals(-45, -78, p);
+
+		p = p4.clone();
+		CoordinateSystem2D.XY_RIGHT_HAND.fromDefault(p);
+		assertFpVectorEquals(45, 78, p);
+
+		p = p1.clone();
+		CoordinateSystem2D.XY_LEFT_HAND.fromDefault(p);
+		assertFpVectorEquals(-45, -78, p);
+		
+		p = p2.clone();
+		CoordinateSystem2D.XY_LEFT_HAND.fromDefault(p);
+		assertFpVectorEquals(45, 78, p);
+
+		p = p3.clone();
+		CoordinateSystem2D.XY_LEFT_HAND.fromDefault(p);
+		assertFpVectorEquals(-45, 78, p);
+
+		p = p4.clone();
+		CoordinateSystem2D.XY_LEFT_HAND.fromDefault(p);
+		assertFpVectorEquals(45, -78, p);
+	}
+
+	@Test
+	public void fromDefaultVector2D_leftHanded() {
+		CoordinateSystem2D.setDefaultCoordinateSystem(CoordinateSystem2D.XY_LEFT_HAND);
+		Vector2fp p1 = new Vector2fp(-45, 78);
+		Vector2fp p2 = new Vector2fp(45, -78);
+		Vector2fp p3 = new Vector2fp(-45, -78);
+		Vector2fp p4 = new Vector2fp(45, 78);
+		Vector2fp p;
+
+		p = p1.clone();
+		CoordinateSystem2D.XY_RIGHT_HAND.fromDefault(p);
+		assertFpVectorEquals(-45, -78, p);
+		
+		p = p2.clone();
+		CoordinateSystem2D.XY_RIGHT_HAND.fromDefault(p);
+		assertFpVectorEquals(45, 78, p);
+
+		p = p3.clone();
+		CoordinateSystem2D.XY_RIGHT_HAND.fromDefault(p);
+		assertFpVectorEquals(-45, 78, p);
+
+		p = p4.clone();
+		CoordinateSystem2D.XY_RIGHT_HAND.fromDefault(p);
+		assertFpVectorEquals(45, -78, p);
+
+		p = p1.clone();
+		CoordinateSystem2D.XY_LEFT_HAND.fromDefault(p);
+		assertFpVectorEquals(-45, 78, p);
+		
+		p = p2.clone();
+		CoordinateSystem2D.XY_LEFT_HAND.fromDefault(p);
+		assertFpVectorEquals(45, -78, p);
+
+		p = p3.clone();
+		CoordinateSystem2D.XY_LEFT_HAND.fromDefault(p);
+		assertFpVectorEquals(-45, -78, p);
+
+		p = p4.clone();
+		CoordinateSystem2D.XY_LEFT_HAND.fromDefault(p);
+		assertFpVectorEquals(45, 78, p);
+	}
+
+	@Test
+	public void toDefaultDouble_systemDefault() {
+		assertEpsilonEquals(-45, CoordinateSystem2D.XY_RIGHT_HAND.toDefault(-45));
+		assertEpsilonEquals(45, CoordinateSystem2D.XY_RIGHT_HAND.toDefault(45));
+		assertEpsilonEquals(45, CoordinateSystem2D.XY_LEFT_HAND.toDefault(-45));
+		assertEpsilonEquals(-45, CoordinateSystem2D.XY_LEFT_HAND.toDefault(45));
+	}
+
+	@Test
+	public void toDefaultDouble_rightHanded() {
+		CoordinateSystem2D.setDefaultCoordinateSystem(CoordinateSystem2D.XY_RIGHT_HAND);
+		assertEpsilonEquals(-45, CoordinateSystem2D.XY_RIGHT_HAND.toDefault(-45));
+		assertEpsilonEquals(45, CoordinateSystem2D.XY_RIGHT_HAND.toDefault(45));
+		assertEpsilonEquals(45, CoordinateSystem2D.XY_LEFT_HAND.toDefault(-45));
+		assertEpsilonEquals(-45, CoordinateSystem2D.XY_LEFT_HAND.toDefault(45));
+	}
+
+	@Test
+	public void toDefaultDouble_leftHanded() {
+		CoordinateSystem2D.setDefaultCoordinateSystem(CoordinateSystem2D.XY_LEFT_HAND);
+		assertEpsilonEquals(45, CoordinateSystem2D.XY_RIGHT_HAND.toDefault(-45));
+		assertEpsilonEquals(-45, CoordinateSystem2D.XY_RIGHT_HAND.toDefault(45));
+		assertEpsilonEquals(-45, CoordinateSystem2D.XY_LEFT_HAND.toDefault(-45));
+		assertEpsilonEquals(45, CoordinateSystem2D.XY_LEFT_HAND.toDefault(45));
+	}
+	
+	@Test
+	public void fromDefaultDouble_systemDefault() {
+		assertEpsilonEquals(-45, CoordinateSystem2D.XY_RIGHT_HAND.fromDefault(-45));
+		assertEpsilonEquals(45, CoordinateSystem2D.XY_RIGHT_HAND.fromDefault(45));
+		assertEpsilonEquals(45, CoordinateSystem2D.XY_LEFT_HAND.fromDefault(-45));
+		assertEpsilonEquals(-45, CoordinateSystem2D.XY_LEFT_HAND.fromDefault(45));
+	}
+
+	@Test
+	public void fromDefaultDouble_rightHanded() {
+		CoordinateSystem2D.setDefaultCoordinateSystem(CoordinateSystem2D.XY_RIGHT_HAND);
+		assertEpsilonEquals(-45, CoordinateSystem2D.XY_RIGHT_HAND.fromDefault(-45));
+		assertEpsilonEquals(45, CoordinateSystem2D.XY_RIGHT_HAND.fromDefault(45));
+		assertEpsilonEquals(45, CoordinateSystem2D.XY_LEFT_HAND.fromDefault(-45));
+		assertEpsilonEquals(-45, CoordinateSystem2D.XY_LEFT_HAND.fromDefault(45));
+	}
+
+	@Test
+	public void fromDefaultDouble_leftHanded() {
+		CoordinateSystem2D.setDefaultCoordinateSystem(CoordinateSystem2D.XY_LEFT_HAND);
+		assertEpsilonEquals(45, CoordinateSystem2D.XY_RIGHT_HAND.fromDefault(-45));
+		assertEpsilonEquals(-45, CoordinateSystem2D.XY_RIGHT_HAND.fromDefault(45));
+		assertEpsilonEquals(-45, CoordinateSystem2D.XY_LEFT_HAND.fromDefault(-45));
+		assertEpsilonEquals(45, CoordinateSystem2D.XY_LEFT_HAND.fromDefault(45));
+	}
+
+	@Test
+	public void toSystemPoint2D_rightHanded() {
+		Point2fp p1 = new Point2fp(-45, 78);
+		Point2fp p2 = new Point2fp(45, -78);
+		Point2fp p3 = new Point2fp(-45, -78);
+		Point2fp p4 = new Point2fp(45, 78);
+		Point2fp p;
+
+		p = p1.clone();
+		CoordinateSystem2D.XY_RIGHT_HAND.toSystem(p, CoordinateSystem2D.XY_RIGHT_HAND);
+		assertFpPointEquals(-45, 78, p);
+		
+		p = p2.clone();
+		CoordinateSystem2D.XY_RIGHT_HAND.toSystem(p, CoordinateSystem2D.XY_RIGHT_HAND);
+		assertFpPointEquals(45, -78, p);
+
+		p = p3.clone();
+		CoordinateSystem2D.XY_RIGHT_HAND.toSystem(p, CoordinateSystem2D.XY_RIGHT_HAND);
+		assertFpPointEquals(-45, -78, p);
+
+		p = p4.clone();
+		CoordinateSystem2D.XY_RIGHT_HAND.toSystem(p, CoordinateSystem2D.XY_RIGHT_HAND);
+		assertFpPointEquals(45, 78, p);
+
+		p = p1.clone();
+		CoordinateSystem2D.XY_LEFT_HAND.toSystem(p, CoordinateSystem2D.XY_RIGHT_HAND);
+		assertFpPointEquals(-45, -78, p);
+		
+		p = p2.clone();
+		CoordinateSystem2D.XY_LEFT_HAND.toSystem(p, CoordinateSystem2D.XY_RIGHT_HAND);
+		assertFpPointEquals(45, 78, p);
+
+		p = p3.clone();
+		CoordinateSystem2D.XY_LEFT_HAND.toSystem(p, CoordinateSystem2D.XY_RIGHT_HAND);
+		assertFpPointEquals(-45, 78, p);
+
+		p = p4.clone();
+		CoordinateSystem2D.XY_LEFT_HAND.toSystem(p, CoordinateSystem2D.XY_RIGHT_HAND);
+		assertFpPointEquals(45, -78, p);
+	}
+
+	@Test
+	public void toSystemPoint2D_leftHanded() {
+		Point2fp p1 = new Point2fp(-45, 78);
+		Point2fp p2 = new Point2fp(45, -78);
+		Point2fp p3 = new Point2fp(-45, -78);
+		Point2fp p4 = new Point2fp(45, 78);
+		Point2fp p;
+
+		p = p1.clone();
+		CoordinateSystem2D.XY_RIGHT_HAND.toSystem(p, CoordinateSystem2D.XY_LEFT_HAND);
+		assertFpPointEquals(-45, -78, p);
+		
+		p = p2.clone();
+		CoordinateSystem2D.XY_RIGHT_HAND.toSystem(p, CoordinateSystem2D.XY_LEFT_HAND);
+		assertFpPointEquals(45, 78, p);
+
+		p = p3.clone();
+		CoordinateSystem2D.XY_RIGHT_HAND.toSystem(p, CoordinateSystem2D.XY_LEFT_HAND);
+		assertFpPointEquals(-45, 78, p);
+
+		p = p4.clone();
+		CoordinateSystem2D.XY_RIGHT_HAND.toSystem(p, CoordinateSystem2D.XY_LEFT_HAND);
+		assertFpPointEquals(45, -78, p);
+
+		p = p1.clone();
+		CoordinateSystem2D.XY_LEFT_HAND.toSystem(p, CoordinateSystem2D.XY_LEFT_HAND);
+		assertFpPointEquals(-45, 78, p);
+		
+		p = p2.clone();
+		CoordinateSystem2D.XY_LEFT_HAND.toSystem(p, CoordinateSystem2D.XY_LEFT_HAND);
+		assertFpPointEquals(45, -78, p);
+
+		p = p3.clone();
+		CoordinateSystem2D.XY_LEFT_HAND.toSystem(p, CoordinateSystem2D.XY_LEFT_HAND);
+		assertFpPointEquals(-45, -78, p);
+
+		p = p4.clone();
+		CoordinateSystem2D.XY_LEFT_HAND.toSystem(p, CoordinateSystem2D.XY_LEFT_HAND);
+		assertFpPointEquals(45, 78, p);
+	}
+
+	@Test
+	public void toSystemVector2D_rightHanded() {
+		Vector2fp p1 = new Vector2fp(-45, 78);
+		Vector2fp p2 = new Vector2fp(45, -78);
+		Vector2fp p3 = new Vector2fp(-45, -78);
+		Vector2fp p4 = new Vector2fp(45, 78);
+		Vector2fp p;
+
+		p = p1.clone();
+		CoordinateSystem2D.XY_RIGHT_HAND.toSystem(p, CoordinateSystem2D.XY_RIGHT_HAND);
+		assertFpVectorEquals(-45, 78, p);
+		
+		p = p2.clone();
+		CoordinateSystem2D.XY_RIGHT_HAND.toSystem(p, CoordinateSystem2D.XY_RIGHT_HAND);
+		assertFpVectorEquals(45, -78, p);
+
+		p = p3.clone();
+		CoordinateSystem2D.XY_RIGHT_HAND.toSystem(p, CoordinateSystem2D.XY_RIGHT_HAND);
+		assertFpVectorEquals(-45, -78, p);
+
+		p = p4.clone();
+		CoordinateSystem2D.XY_RIGHT_HAND.toSystem(p, CoordinateSystem2D.XY_RIGHT_HAND);
+		assertFpVectorEquals(45, 78, p);
+
+		p = p1.clone();
+		CoordinateSystem2D.XY_LEFT_HAND.toSystem(p, CoordinateSystem2D.XY_RIGHT_HAND);
+		assertFpVectorEquals(-45, -78, p);
+		
+		p = p2.clone();
+		CoordinateSystem2D.XY_LEFT_HAND.toSystem(p, CoordinateSystem2D.XY_RIGHT_HAND);
+		assertFpVectorEquals(45, 78, p);
+
+		p = p3.clone();
+		CoordinateSystem2D.XY_LEFT_HAND.toSystem(p, CoordinateSystem2D.XY_RIGHT_HAND);
+		assertFpVectorEquals(-45, 78, p);
+
+		p = p4.clone();
+		CoordinateSystem2D.XY_LEFT_HAND.toSystem(p, CoordinateSystem2D.XY_RIGHT_HAND);
+		assertFpVectorEquals(45, -78, p);
+	}
+
+	@Test
+	public void toSystemVector2D_leftHanded() {
+		Vector2fp p1 = new Vector2fp(-45, 78);
+		Vector2fp p2 = new Vector2fp(45, -78);
+		Vector2fp p3 = new Vector2fp(-45, -78);
+		Vector2fp p4 = new Vector2fp(45, 78);
+		Vector2fp p;
+
+		p = p1.clone();
+		CoordinateSystem2D.XY_RIGHT_HAND.toSystem(p, CoordinateSystem2D.XY_LEFT_HAND);
+		assertFpVectorEquals(-45, -78, p);
+		
+		p = p2.clone();
+		CoordinateSystem2D.XY_RIGHT_HAND.toSystem(p, CoordinateSystem2D.XY_LEFT_HAND);
+		assertFpVectorEquals(45, 78, p);
+
+		p = p3.clone();
+		CoordinateSystem2D.XY_RIGHT_HAND.toSystem(p, CoordinateSystem2D.XY_LEFT_HAND);
+		assertFpVectorEquals(-45, 78, p);
+
+		p = p4.clone();
+		CoordinateSystem2D.XY_RIGHT_HAND.toSystem(p, CoordinateSystem2D.XY_LEFT_HAND);
+		assertFpVectorEquals(45, -78, p);
+
+		p = p1.clone();
+		CoordinateSystem2D.XY_LEFT_HAND.toSystem(p, CoordinateSystem2D.XY_LEFT_HAND);
+		assertFpVectorEquals(-45, 78, p);
+		
+		p = p2.clone();
+		CoordinateSystem2D.XY_LEFT_HAND.toSystem(p, CoordinateSystem2D.XY_LEFT_HAND);
+		assertFpVectorEquals(45, -78, p);
+
+		p = p3.clone();
+		CoordinateSystem2D.XY_LEFT_HAND.toSystem(p, CoordinateSystem2D.XY_LEFT_HAND);
+		assertFpVectorEquals(-45, -78, p);
+
+		p = p4.clone();
+		CoordinateSystem2D.XY_LEFT_HAND.toSystem(p, CoordinateSystem2D.XY_LEFT_HAND);
+		assertFpVectorEquals(45, 78, p);
+	}
+
+	@Test
+	public void toSystemDouble_rightHanded() {
+		assertEpsilonEquals(-45, CoordinateSystem2D.XY_RIGHT_HAND.toSystem(-45, CoordinateSystem2D.XY_RIGHT_HAND));
+		assertEpsilonEquals(45, CoordinateSystem2D.XY_RIGHT_HAND.toSystem(45, CoordinateSystem2D.XY_RIGHT_HAND));
+		assertEpsilonEquals(45, CoordinateSystem2D.XY_LEFT_HAND.toSystem(-45, CoordinateSystem2D.XY_RIGHT_HAND));
+		assertEpsilonEquals(-45, CoordinateSystem2D.XY_LEFT_HAND.toSystem(45, CoordinateSystem2D.XY_RIGHT_HAND));
+	}
+
+	@Test
+	public void toSystemDouble_leftHanded() {
+		assertEpsilonEquals(45, CoordinateSystem2D.XY_RIGHT_HAND.toSystem(-45, CoordinateSystem2D.XY_LEFT_HAND));
+		assertEpsilonEquals(-45, CoordinateSystem2D.XY_RIGHT_HAND.toSystem(45, CoordinateSystem2D.XY_LEFT_HAND));
+		assertEpsilonEquals(-45, CoordinateSystem2D.XY_LEFT_HAND.toSystem(-45, CoordinateSystem2D.XY_LEFT_HAND));
+		assertEpsilonEquals(45, CoordinateSystem2D.XY_LEFT_HAND.toSystem(45, CoordinateSystem2D.XY_LEFT_HAND));
+	}
+
+	@Test
+	public void toSystemTransform2D_rightHanded() {
+		Transform2D p1 = new Transform2D();
+		Transform2D p2 = new Transform2D();
+		Transform2D p3 = new Transform2D();
+		Transform2D p4 = new Transform2D();
+		Transform2D t;
+		
+		p1.setIdentity();
+		p2.makeTranslationMatrix(-45, 89);
+		p3.makeRotationMatrix(-MathConstants.DEMI_PI);
+		p4.makeScaleMatrix(.5, 2);
+
+		t = p1.clone();
+		CoordinateSystem2D.XY_RIGHT_HAND.toSystem(t, CoordinateSystem2D.XY_RIGHT_HAND);
+		assertEpsilonEquals(new Transform2D(
+				1, 0, 0,
+				0, 1, 0), t);
+		
+		t = p2.clone();
+		CoordinateSystem2D.XY_RIGHT_HAND.toSystem(t, CoordinateSystem2D.XY_RIGHT_HAND);
+		assertEpsilonEquals(new Transform2D(
+				1, 0, -45,
+				0, 1, 89), t);
+
+		t = p3.clone();
+		CoordinateSystem2D.XY_RIGHT_HAND.toSystem(t, CoordinateSystem2D.XY_RIGHT_HAND);
+		assertEpsilonEquals(new Transform2D(
+				0, 1, 0,
+				-1, 0, 0), t);
+
+		t = p4.clone();
+		CoordinateSystem2D.XY_RIGHT_HAND.toSystem(t, CoordinateSystem2D.XY_RIGHT_HAND);
+		assertEpsilonEquals(new Transform2D(
+				.5, 0, 0,
+				0, 2, 0), t);
+
+		t = p1.clone();
+		CoordinateSystem2D.XY_LEFT_HAND.toSystem(t, CoordinateSystem2D.XY_RIGHT_HAND);
+		assertEpsilonEquals(new Transform2D(
+				1, 0, 0,
+				0, 1, 0), t);
+		
+		t = p2.clone();
+		CoordinateSystem2D.XY_LEFT_HAND.toSystem(t, CoordinateSystem2D.XY_RIGHT_HAND);
+		assertEpsilonEquals(new Transform2D(
+				1, 0, -45,
+				0, 1, -89), t);
+
+		t = p3.clone();
+		CoordinateSystem2D.XY_LEFT_HAND.toSystem(t, CoordinateSystem2D.XY_RIGHT_HAND);
+		assertEpsilonEquals(new Transform2D(
+				0, -1, 0,
+				1, 0, 0), t);
+
+		t = p4.clone();
+		CoordinateSystem2D.XY_LEFT_HAND.toSystem(t, CoordinateSystem2D.XY_RIGHT_HAND);
+		assertEpsilonEquals(new Transform2D(
+				.5, 0, 0,
+				0, 2, 0), t);
 	}
 
 }
