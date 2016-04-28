@@ -111,14 +111,14 @@ public class PropertyEditors {
 
 		// Initialize the alert dialog builder
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
-		builder.setTitle(R.string.property_dialog_title);
+		builder.setTitle(R.string.dialog_alert_title);
 		builder.setPositiveButton(
 				android.R.string.ok,
 				new OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						if (isEditable) {
-							Undo undo = new Undo(context.getString(R.string.undo_property_edition), editedObjects, fragment);
+							Undo undo = new Undo(context.getString(R.string.cancel), editedObjects, fragment);
 							undo.doEdit();
 							if (undoManager!=null) {
 								undoManager.add(undo);
@@ -203,7 +203,7 @@ public class PropertyEditors {
 		private static final long serialVersionUID = -7759672095147438168L;
 
 		private final String label;
-		private final Collection<Pair<PropertyOwner,Map<String,Object>>> originalProperties = new ArrayList<Pair<PropertyOwner,Map<String,Object>>>();
+		private final Collection<Pair<PropertyOwner,Map<String,Object>>> originalProperties = new ArrayList<>();
 		private final PropertyEditorView fragment;
 		private final Map<String,Object> newProperties;
 
@@ -217,7 +217,7 @@ public class PropertyEditors {
 			this.fragment = fragment;
 			this.newProperties = this.fragment.getEditedProperties();
 			for(PropertyOwner owner : editedObjects) {
-				this.originalProperties.add(new Pair<PropertyOwner,Map<String,Object>>(
+				this.originalProperties.add(new Pair<>(
 						owner,
 						owner.getProperties()));
 			}
