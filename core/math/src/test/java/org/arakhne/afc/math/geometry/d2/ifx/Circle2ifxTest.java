@@ -42,7 +42,7 @@ import javafx.beans.property.IntegerProperty;
 public class Circle2ifxTest extends AbstractCircle2aiTest<Circle2ifx, Rectangle2ifx> {
 
 	@Override
-	protected TestShapeFactory<Rectangle2ifx> createFactory() {
+	protected TestShapeFactory2ifx createFactory() {
 		return TestShapeFactory2ifx.SINGLETON;
 	}
 	

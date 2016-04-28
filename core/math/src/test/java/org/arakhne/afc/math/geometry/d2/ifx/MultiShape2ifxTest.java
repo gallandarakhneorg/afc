@@ -19,24 +19,16 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  * This program is free software; you can redistribute it and/or modify
  */
-package org.arakhne.afc.math.geometry.d2.i;
+package org.arakhne.afc.math.geometry.d2.ifx;
 
-import static org.junit.Assert.assertNotNull;
-
-import org.arakhne.afc.math.geometry.d2.ai.AbstractRectangle2aiTest;
-import org.arakhne.afc.math.geometry.d2.ai.TestShapeFactory;
-import org.junit.Test;
-
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.ReadOnlyDoubleProperty;
-import javafx.beans.property.ReadOnlyIntegerProperty;
+import org.arakhne.afc.math.geometry.d2.ai.AbstractMultiShape2aiTest;
 
 @SuppressWarnings("all")
-public class Rectangle2iTest extends AbstractRectangle2aiTest<Rectangle2i> {
+public class MultiShape2ifxTest extends AbstractMultiShape2aiTest<MultiShape2ifx, Shape2ifx<?>, Rectangle2ifx> {
 
 	@Override
-	protected TestShapeFactory2i createFactory() {
-		return TestShapeFactory2i.SINGLETON;
+	protected TestShapeFactory2ifx createFactory() {
+		return TestShapeFactory2ifx.SINGLETON;
 	}
 
 }

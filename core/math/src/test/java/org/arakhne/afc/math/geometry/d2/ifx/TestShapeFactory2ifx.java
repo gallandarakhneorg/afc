@@ -21,19 +21,23 @@
  */
 package org.arakhne.afc.math.geometry.d2.ifx;
 
+import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.ai.Circle2ai;
+import org.arakhne.afc.math.geometry.d2.ai.MultiShape2ai;
 import org.arakhne.afc.math.geometry.d2.ai.Path2ai;
 import org.arakhne.afc.math.geometry.d2.ai.Segment2ai;
 import org.arakhne.afc.math.geometry.d2.ai.TestShapeFactory;
+import org.arakhne.afc.math.geometry.d2.i.Point2i;
+import org.arakhne.afc.math.geometry.d2.i.Vector2i;
 
 @SuppressWarnings("all")
-public class TestShapeFactory2ifx implements TestShapeFactory<Rectangle2ifx> {
+public class TestShapeFactory2ifx implements TestShapeFactory<Point2ifx, Vector2ifx, Rectangle2ifx> {
 	
 	public static final TestShapeFactory2ifx SINGLETON = new TestShapeFactory2ifx();
 	
-	public Segment2ai<?, ?, ?, ?, ?, Rectangle2ifx> createSegment(int x1, int y1, int x2, int y2) {
+	public Segment2ai<?, ?, ?, Point2ifx, Vector2ifx, Rectangle2ifx> createSegment(int x1, int y1, int x2, int y2) {
 		return new Segment2ifx(x1, y1, x2, y2);
 	}
 	
@@ -41,7 +45,7 @@ public class TestShapeFactory2ifx implements TestShapeFactory<Rectangle2ifx> {
 		return new Rectangle2ifx(x, y, width, height);
 	}
 
-	public Circle2ai<?, ?, ?, ?, ?, Rectangle2ifx> createCircle(int x, int y, int radius) {
+	public Circle2ai<?, ?, ?, Point2ifx, Vector2ifx, Rectangle2ifx> createCircle(int x, int y, int radius) {
 		return new Circle2ifx(x, y, radius);
 	}
 	
@@ -53,8 +57,16 @@ public class TestShapeFactory2ifx implements TestShapeFactory<Rectangle2ifx> {
 		return new Vector2ifx(x, y);
 	}
 
-	public Path2ai<?, ?, ?, ?, ?, Rectangle2ifx> createPath() {
-		return new Path2ifx();
+	public Path2ai<?, ?, ?, Point2ifx, Vector2ifx, Rectangle2ifx> createPath(PathWindingRule rule) {
+		if (rule == null) {
+			return new Path2ifx();
+		}
+		return new Path2ifx(rule);
+
 	}
 	
+	public MultiShape2ai<?, ?, ?, ?, Point2ifx, Vector2ifx, Rectangle2ifx> createMultiShape() {
+		return new MultiShape2ifx();
+	}
+
 }

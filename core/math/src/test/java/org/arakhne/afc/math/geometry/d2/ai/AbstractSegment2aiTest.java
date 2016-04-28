@@ -33,6 +33,7 @@ import java.util.Iterator;
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.d2.Point2D;
+import org.arakhne.afc.math.geometry.d2.Shape2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.junit.Test;
 
@@ -981,6 +982,142 @@ public abstract class AbstractSegment2aiTest<T extends Segment2ai<?, T, ?, ?, ?,
 		assertFalse(createSegment(-4, -4, -3, -3).intersects(path));
 		assertFalse(createSegment(-1, 0, 2, 3).intersects(path));
 		assertFalse(createSegment(7, 1, 18, 14).intersects(path));
+	}
+
+
+	@Override
+	public void intersectsPathIterator2ai() {
+		Path2ai path = createPath();
+		path.moveTo(0, 0);
+		path.lineTo(2, 2);
+		path.quadTo(3, 0, 4, 3);
+		path.curveTo(5, -1, 6, 5, 7, -5);
+		path.closePath();
+		
+		assertTrue(createSegment(0, 0, 1, 1).intersects((PathIterator2ai) path.getPathIterator()));
+		assertTrue(createSegment(4, 3, 1, 1).intersects((PathIterator2ai) path.getPathIterator()));
+		assertTrue(createSegment(2, 2, 1, 1).intersects((PathIterator2ai) path.getPathIterator()));
+		assertTrue(createSegment(2, 1, 1, 1).intersects((PathIterator2ai) path.getPathIterator()));
+		assertTrue(createSegment(3, 0, 1, 1).intersects((PathIterator2ai) path.getPathIterator()));
+		assertTrue(createSegment(-1, -1, 1, 1).intersects((PathIterator2ai) path.getPathIterator()));
+		assertTrue(createSegment(4, -3, 1, 1).intersects((PathIterator2ai) path.getPathIterator()));
+		assertTrue(createSegment(-3, 4, 1, 1).intersects((PathIterator2ai) path.getPathIterator()));
+		assertTrue(createSegment(6, -5, 1, 1).intersects((PathIterator2ai) path.getPathIterator()));
+		assertTrue(createSegment(4, 0, 1, 1).intersects((PathIterator2ai) path.getPathIterator()));
+		assertTrue(createSegment(5, 0, 1, 1).intersects((PathIterator2ai) path.getPathIterator()));
+		assertFalse(createSegment(-4, -4, -3, -3).intersects((PathIterator2ai) path.getPathIterator()));
+		assertFalse(createSegment(-1, 0, 2, 3).intersects((PathIterator2ai) path.getPathIterator()));
+		assertFalse(createSegment(7, 1, 18, 14).intersects((PathIterator2ai) path.getPathIterator()));
+	}
+
+	@Override
+	public void intersectsShape2D() {
+		assertTrue(this.shape.intersects((Shape2D) createCircle(16,0,100)));
+		assertTrue(this.shape.intersects((Shape2D) createRectangle(0,0,100,100)));
+	}
+
+	@Override
+	public void operator_addVector2D() {
+		this.shape.operator_add(createVector(3, 4));
+		assertEquals(3, this.shape.getX1());
+		assertEquals(4, this.shape.getY1());
+		assertEquals(13, this.shape.getX2());
+		assertEquals(9, this.shape.getY2());
+	}
+
+	@Override
+	public void operator_plusVector2D() {
+		T r = this.shape.operator_plus(createVector(3, 4));
+		assertEquals(3, r.getX1());
+		assertEquals(4, r.getY1());
+		assertEquals(13, r.getX2());
+		assertEquals(9, r.getY2());
+	}
+
+	@Override
+	public void operator_removeVector2D() {
+		this.shape.operator_remove(createVector(3, 4));
+		assertEquals(-3, this.shape.getX1());
+		assertEquals(-4, this.shape.getY1());
+		assertEquals(7, this.shape.getX2());
+		assertEquals(1, this.shape.getY2());
+	}
+
+	@Override
+	public void operator_minusVector2D() {
+		T r = this.shape.operator_minus(createVector(3, 4));
+		assertEquals(-3, r.getX1());
+		assertEquals(-4, r.getY1());
+		assertEquals(7, r.getX2());
+		assertEquals(1, r.getY2());
+	}
+
+	@Override
+	public void operator_multiplyTransform2D() {
+    	T s;
+    	Transform2D tr;
+    	
+    	tr = new Transform2D();    	
+    	s = (T) this.shape.operator_multiply(tr);
+		assertEquals(0, s.getX1());
+		assertEquals(0, s.getY1());
+		assertEquals(10, s.getX2());
+		assertEquals(5, s.getY2());
+
+    	tr = new Transform2D();
+    	tr.setTranslation(3.4f, 4.5f);
+    	s = (T) this.shape.operator_multiply(tr);
+		assertEquals(3, s.getX1());
+		assertEquals(5, s.getY1());
+		assertEquals(13, s.getX2());
+		assertEquals(10, s.getY2());
+
+    	tr = new Transform2D();
+    	tr.setRotation(MathConstants.PI);
+    	s = (T) this.shape.operator_multiply(tr);
+		assertEquals(0, s.getX1());
+		assertEquals(0, s.getY1());
+		assertEquals(-10, s.getX2());
+		assertEquals(-5, s.getY2());
+
+    	tr = new Transform2D();
+    	tr.setRotation(MathConstants.QUARTER_PI);
+    	s = (T) this.shape.operator_multiply(tr);
+		assertEquals(0, s.getX1());
+		assertEquals(0, s.getY1());
+		assertEquals(4, s.getX2());
+		assertEquals(11, s.getY2());
+	}
+
+	@Override
+	public void operator_andPoint2D() {
+		assertTrue(this.shape.operator_and(createPoint(0, 0)));
+		assertTrue(this.shape.operator_and(createPoint(10, 5)));
+		
+		assertFalse(this.shape.operator_and(createPoint(1, 1)));
+		assertFalse(this.shape.operator_and(createPoint(2, 4)));
+
+		assertFalse(this.shape.operator_and(createPoint(2, 2)));
+
+		assertTrue(this.shape.operator_and(createPoint(1, 0)));
+
+		assertFalse(this.shape.operator_and(createPoint(5, 3)));
+		assertTrue(this.shape.operator_and(createPoint(5, 2)));
+	}
+
+	@Override
+	public void operator_andShape2D() {
+		assertTrue(this.shape.operator_and(createCircle(16,0,100)));
+		assertTrue(this.shape.operator_and(createRectangle(0,0,100,100)));
+	}
+
+	@Override
+	public void operator_upToPoint2D() {
+		assertEpsilonEquals(0f, this.shape.operator_upTo(createPoint(0, 0)));
+		assertEpsilonEquals(1f, this.shape.operator_upTo(createPoint(1, 1)));
+		assertEpsilonEquals(2.828427125f, this.shape.operator_upTo(createPoint(2, 4)));
+		assertEpsilonEquals(1f, this.shape.operator_upTo(createPoint(2, 2)));
+		assertEpsilonEquals(7.071067812f, this.shape.operator_upTo(createPoint(-5, 5)));
 	}
 
 }

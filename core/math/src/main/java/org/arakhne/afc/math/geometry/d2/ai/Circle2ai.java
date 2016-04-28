@@ -33,6 +33,7 @@ import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.Tuple2iComparator;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
+import org.arakhne.afc.math.geometry.d2.ai.Path2ai.CrossingComputationType;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Fonctional interface that represented a 2D circle on a plane.
@@ -637,10 +638,16 @@ public interface Circle2ai<
 				0,
 				iterator,
 				getX(), getY(), getRadius(),
-				false);
+				CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
 		return (crossings == MathConstants.SHAPE_INTERSECTS ||
 				(crossings & mask) != 0);
-
+	}
+	
+	@Pure
+	@Override
+	default boolean intersects(MultiShape2ai<?, ?, ?, ?, ?, ?, ?> s) {
+		assert (s != null) : "MultiShape must be not null"; //$NON-NLS-1$
+		return s.intersects(this);
 	}
 
 	@Override
@@ -796,14 +803,14 @@ public interface Circle2ai<
 		/**
 		 * The element factory.
 		 */
-		protected final GeomFactory2ai<IE, ?, ?, ?> factory;
+		protected final Circle2ai<?, ?, IE, ?, ?, ?> circle;
 		
 		/**
-		 * @param factory the element factory.
+		 * @param circle the circle.
 		 */
-		public AbstractCirclePathIterator(GeomFactory2ai<IE, ?, ?, ?> factory) {
-			assert (factory != null) : "Factory must be not null."; //$NON-NLS-1$
-			this.factory = factory;
+		public AbstractCirclePathIterator(Circle2ai<?, ?, IE, ?, ?, ?> circle) {
+			assert (circle != null) : "Circle must be not null."; //$NON-NLS-1$
+			this.circle = circle;
 		}
 		
 		@Override
@@ -825,7 +832,7 @@ public interface Circle2ai<
 
 		@Override
 		public GeomFactory2ai<IE, ?, ?, ?> getGeomFactory() {
-			return this.getGeomFactory();
+			return this.circle.getGeomFactory();
 		}
 
 		@Override
@@ -876,7 +883,7 @@ public interface Circle2ai<
 		 * @param circle the circle to iterate on.
 		 */
 		public CirclePathIterator(Circle2ai<?, ?, IE, ?, ?, ?> circle) {
-			super(circle.getGeomFactory());
+			super(circle);
 			if (circle.isEmpty()) {
 				this.index = 6;
 			} else {
@@ -884,6 +891,11 @@ public interface Circle2ai<
 				this.x = circle.getX() - this.r;
 				this.y = circle.getY() - this.r;
 			}
+		}
+		
+		@Override
+		public PathIterator2ai<IE> restartIterations() {
+			return new CirclePathIterator<>(this.circle);
 		}
 
 		@Pure
@@ -906,7 +918,7 @@ public interface Circle2ai<
 				this.movey = (int)(this.y + ctrls[5] * dr);
 				this.lastx = this.movex;
 				this.lasty = this.movey;
-				return this.factory.newMovePathElement(
+				return getGeomFactory().newMovePathElement(
 						this.lastx, this.lasty);
 			}
 			else if (idx<5) {
@@ -916,7 +928,7 @@ public interface Circle2ai<
 				int ppy = this.lasty;
 				this.lastx = (int)(this.x + ctrls[4] * dr);
 				this.lasty = (int)(this.y + ctrls[5] * dr);
-				return this.factory.newCurvePathElement(
+				return getGeomFactory().newCurvePathElement(
 						ppx, ppy,
 						(int)(this.x + ctrls[0] * dr),
 						(int)(this.y + ctrls[1] * dr),
@@ -928,7 +940,7 @@ public interface Circle2ai<
 			int ppy = this.lasty;
 			this.lastx = this.movex;
 			this.lasty = this.movey;
-			return this.factory.newClosePathElement(
+			return getGeomFactory().newClosePathElement(
 					ppx, ppy,
 					this.lastx, this.lasty);
 		}
@@ -973,7 +985,7 @@ public interface Circle2ai<
 		 * @param transform the transformation to apply.
 		 */
 		public TransformedCirclePathIterator(Circle2ai<?, ?, IE, ?, ?, ?> circle, Transform2D transform) {
-			super(circle.getGeomFactory());
+			super(circle);
 			assert(transform != null) : "Transformation must not be null."; //$NON-NLS-1$
 			this.transform = transform;
 			if (circle.isEmpty()) {
@@ -987,6 +999,11 @@ public interface Circle2ai<
 				this.x = circle.getX() - this.r;
 				this.y = circle.getY() - this.r;
 			}
+		}
+		
+		@Override
+		public PathIterator2ai<IE> restartIterations() {
+			return new TransformedCirclePathIterator<>(this.circle, this.transform);
 		}
 
 		@Pure
@@ -1007,7 +1024,7 @@ public interface Circle2ai<
 				this.movey = (int)(this.y + ctrls[5] * dr);
 				this.p2.set(this.movex, this.movey);
 				this.transform.transform(this.p2);
-				return this.factory.newMovePathElement(
+				return getGeomFactory().newMovePathElement(
 						this.p2.ix(), this.p2.iy());
 			}
 			else if (idx<5) {
@@ -1026,7 +1043,7 @@ public interface Circle2ai<
 						(this.x + ctrls[2] * dr),
 						(this.y + ctrls[3] * dr));
 				this.transform.transform(this.ptmp2);
-				return this.factory.newCurvePathElement(
+				return getGeomFactory().newCurvePathElement(
 						this.p1.ix(), this.p1.iy(),
 						this.ptmp1.ix(), this.ptmp1.iy(),
 						this.ptmp2.ix(), this.ptmp2.iy(),
@@ -1035,7 +1052,7 @@ public interface Circle2ai<
 			this.p1.set(this.p2);
 			this.p2.set(this.movex, this.movey);
 			this.transform.transform(this.p2);
-			return this.factory.newClosePathElement(
+			return getGeomFactory().newClosePathElement(
 					this.p1.ix(), this.p1.iy(),
 					this.p2.ix(), this.p2.iy());
 		}

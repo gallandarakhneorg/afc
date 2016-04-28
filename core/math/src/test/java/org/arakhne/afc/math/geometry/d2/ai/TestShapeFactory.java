@@ -21,34 +21,27 @@
  */
 package org.arakhne.afc.math.geometry.d2.ai;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
-
-import java.util.Arrays;
-
-import org.arakhne.afc.math.AbstractMathTestCase;
-import org.arakhne.afc.math.geometry.PathElementType;
-import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2DTestRule;
+import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
 
 @SuppressWarnings("all")
-public interface TestShapeFactory<B extends Rectangle2ai<?, ?, ?, ?, ?, B>> {
+public interface TestShapeFactory<P extends Point2D<? super P, ? super V>,
+		V extends Vector2D<? super V, ? super P>,
+		B extends Rectangle2ai<?, ?, ?, P, V, B>> {
 	
-	Segment2ai<?, ?, ?, ?, ?, B> createSegment(int x1, int y1, int x2, int y2);
+	Segment2ai<?, ?, ?, P, V, B> createSegment(int x1, int y1, int x2, int y2);
 	
 	B createRectangle(int x, int y, int width, int height);
 
-	Circle2ai<?, ?, ?, ?, ?, B> createCircle(int x, int y, int radius);
+	Circle2ai<?, ?, ?, P, V, B> createCircle(int x, int y, int radius);
 	
 	Point2D createPoint(int x, int y);
 
 	Vector2D createVector(int x, int y);
 
-	Path2ai<?, ?, ?, ?, ?, B> createPath();
+	Path2ai<?, ?, ?, P, V, B> createPath(PathWindingRule rile);
+	
+	MultiShape2ai<?, ?, ?, ?, P, V, B> createMultiShape();
 	
 }

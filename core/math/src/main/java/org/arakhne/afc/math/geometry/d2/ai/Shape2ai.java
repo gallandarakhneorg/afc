@@ -52,12 +52,12 @@ public interface Shape2ai<
 		B extends Rectangle2ai<?, ?, IE, P, V, B>>
 		extends Shape2D<ST, IT, PathIterator2ai<IE>, P, V, B> {
 
-	/** Replies an iterator on the points covered by this shape.
+	/** Replies an iterator on the points covered by the perimeter of this shape.
 	 * <p>
 	 * The implementation of the iterator depends on the shape type.
 	 * There is no warranty about the order of the points.
 	 * 
-	 * @return an iterator on the points.
+	 * @return an iterator on the points that are located at the perimeter of the shape.
 	 */
 	@Pure
 	Iterator<P> getPointIterator();
@@ -139,6 +139,15 @@ public interface Shape2ai<
 	 */
 	@Pure
 	public boolean intersects(Segment2ai<?, ?, ?, ?, ?, ?> s);
+	
+	/** Replies if this shape is intersecting the given multishape.
+	 * 
+	 * @param s
+	 * @return <code>true</code> if this shape is intersecting the given shape;
+	 * <code>false</code> if there is no intersection.
+	 */
+	@Pure
+	public boolean intersects(MultiShape2ai<?, ?, ?, ?, ?, ?, ?> s);
 		
 	/** Replies if this shape is intersecting the given path.
 	 * 

@@ -20,7 +20,7 @@
  */
 package org.arakhne.afc.math.geometry.coordinatesystem;
 
-import org.arakhne.afc.math.geometry.d2.Vector2DStub;
+import org.arakhne.afc.math.geometry.d2.ImmutableVector2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
@@ -78,7 +78,7 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 	 * @param point is the point to convert
 	 * @param targetCoordinateSystem is the target coordinate system.
 	 */
-	public void toSystem(Point2D point, CoordinateSystem2D targetCoordinateSystem) {
+	public void toSystem(Point2D<?, ?> point, CoordinateSystem2D targetCoordinateSystem) {
 		if (this != targetCoordinateSystem) {
 			point.setY(-point.getY());
 		}
@@ -90,7 +90,7 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 	 * @param point is the point to convert
 	 * @param targetCoordinateSystem is the target coordinate system.
 	 */
-	public void toSystem(Vector2D point, CoordinateSystem2D targetCoordinateSystem) {
+	public void toSystem(Vector2D<?, ?> point, CoordinateSystem2D targetCoordinateSystem) {
 		if (this!=targetCoordinateSystem) {
 			point.setY(-point.getY());
 		}
@@ -129,7 +129,7 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 	 * 
 	 * @param point is the point to convert
 	 */
-	public void toDefault(Point2D point) {
+	public void toDefault(Point2D<?, ?> point) {
 		if (this!=getDefaultCoordinateSystem()) {
 			point.setY(-point.getY());
 		}
@@ -139,7 +139,7 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 	 * 
 	 * @param point is the point to convert
 	 */
-	public void fromDefault(Point2D point) {
+	public void fromDefault(Point2D<?, ?> point) {
 		if (this!=getDefaultCoordinateSystem()) {
 			point.setY(-point.getY());
 		}
@@ -149,7 +149,7 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 	 * 
 	 * @param vector is the vector to convert
 	 */
-	public void toDefault(Vector2D vector) {
+	public void toDefault(Vector2D<?, ?> vector) {
 		if (this!=getDefaultCoordinateSystem()) {
 			vector.setY(-vector.getY());
 		}
@@ -159,7 +159,7 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 	 * 
 	 * @param vector is the vector to convert
 	 */
-	public void fromDefault(Vector2D vector) {
+	public void fromDefault(Vector2D<?, ?> vector) {
 		if (this!=getDefaultCoordinateSystem()) {
 			vector.setY(-vector.getY());
 		}
@@ -285,9 +285,9 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 	 * @return the front vector.
 	 */
 	@Pure
-	@Inline(value = "(new ImmutableVector2D(1,0))", imported = {Vector2DStub.class})
-	public static Vector2D getViewVector() {
-		return new Vector2DStub(1,0);
+	@Inline(value = "(new ImmutableVector2D(1,0))", imported = {ImmutableVector2D.class})
+	public static Vector2D<?, ?> getViewVector() {
+		return new ImmutableVector2D(1,0);
 	}
 
 	/** Replies the front vector.
@@ -296,7 +296,7 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 	 * @return the front vector.
 	 * @since 4.0
 	 */
-	public static <T extends Vector2D> T getViewVector(T vectorToFill) {
+	public static <T extends Vector2D<?, ?>> T getViewVector(T vectorToFill) {
 		assert(vectorToFill!=null);
 		vectorToFill.set(1,0);
 		return vectorToFill;
@@ -307,9 +307,9 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 	 * @return the back vector.
 	 */
 	@Pure
-	@Inline(value = "(new ImmutableVector2D(-1,0))", imported = {Vector2DStub.class})
-	public static Vector2D getBackVector() {
-		return new Vector2DStub(-1,0);
+	@Inline(value = "(new ImmutableVector2D(-1,0))", imported = {ImmutableVector2D.class})
+	public static Vector2D<?, ?> getBackVector() {
+		return new ImmutableVector2D(-1,0);
 	}
 
 	/** Replies the back vector.
@@ -317,7 +317,7 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 	 * @param vectorToFill is the vector to set with the back vector values.
 	 * @return the back vector.
 	 */
-	public static <T extends Vector2D> T getBackVector(T vectorToFill) {
+	public static <T extends Vector2D<?, ?>> T getBackVector(T vectorToFill) {
 		assert(vectorToFill!=null);
 		vectorToFill.set(-1,0);
 		return vectorToFill;
@@ -328,12 +328,12 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 	 * @return the left vector.
 	 */
 	@Pure
-	public Vector2D getLeftVector() {
+	public Vector2D<?, ?> getLeftVector() {
 		switch(this) {
 		case XY_LEFT_HAND:
-			return new Vector2DStub(0,-1);
+			return new ImmutableVector2D(0,-1);
 		case XY_RIGHT_HAND:
-			return new Vector2DStub(0,1);
+			return new ImmutableVector2D(0,1);
 		default:
 			throw new IllegalArgumentException("this"); //$NON-NLS-1$
 		}
@@ -345,7 +345,7 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 	 * @return the left vector.
 	 * @since 4.0
 	 */
-	public <T extends Vector2D> T getLeftVector(T vectorToFill) {
+	public <T extends Vector2D<?, ?>> T getLeftVector(T vectorToFill) {
 		assert(vectorToFill!=null);
 		switch(this) {
 		case XY_LEFT_HAND:
@@ -365,12 +365,12 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 	 * @return the right vector.
 	 */
 	@Pure
-	public Vector2D getRightVector() {
+	public Vector2D<?, ?> getRightVector() {
 		switch(this) {
 		case XY_LEFT_HAND:
-			return new Vector2DStub(0,1);
+			return new ImmutableVector2D(0,1);
 		case XY_RIGHT_HAND:
-			return new Vector2DStub(0,-1);
+			return new ImmutableVector2D(0,-1);
 		default:
 			throw new IllegalArgumentException("this"); //$NON-NLS-1$
 		}
@@ -382,7 +382,7 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 	 * @return the right vector.
 	 * @since 4.0
 	 */
-	public <T extends Vector2D> T getRightVector(T vectorToFill) {
+	public <T extends Vector2D<?, ?>> T getRightVector(T vectorToFill) {
 		assert(vectorToFill!=null);
 		switch(this) {
 		case XY_LEFT_HAND:

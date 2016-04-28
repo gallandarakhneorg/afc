@@ -90,6 +90,12 @@ public interface GeomFactory2ai<E extends PathElement2ai, P extends Point2D<? su
 	 */
 	B newBox(int x, int y, int width, int height);
 
+	/** Create an empty bounding box.
+	 *
+	 * @return the box.
+	 */
+	MultiShape2ai<?, ?, ?, E, P, V, B> newMultiShape();
+
 	/** Create a move-to path element to the given point.
 	 * 
 	 * @param x x coordinate of the target point.

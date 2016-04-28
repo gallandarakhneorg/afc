@@ -26,11 +26,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
 
-import org.arakhne.afc.math.geometry.d2.Point2D;
-import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.ai.AbstractSegment2aiTest;
-import org.arakhne.afc.math.geometry.d2.ai.Circle2ai;
-import org.arakhne.afc.math.geometry.d2.ai.Path2ai;
 import org.arakhne.afc.math.geometry.d2.ai.TestShapeFactory;
 import org.junit.Test;
 
@@ -40,7 +36,7 @@ import javafx.beans.property.IntegerProperty;
 public class Segment2ifxTest extends AbstractSegment2aiTest<Segment2ifx, Rectangle2ifx> {
 
 	@Override
-	protected TestShapeFactory<Rectangle2ifx> createFactory() {
+	protected TestShapeFactory2ifx createFactory() {
 		return TestShapeFactory2ifx.SINGLETON;
 	}
 

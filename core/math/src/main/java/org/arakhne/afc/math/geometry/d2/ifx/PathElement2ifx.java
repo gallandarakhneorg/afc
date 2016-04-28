@@ -1075,31 +1075,40 @@ public abstract class PathElement2ifx implements PathElement2ai {
 		@Pure
 		@Override
 		public boolean isDrawable() {
-			return false;
+			return !isEmpty();
 		}
 
 		@Pure
 		@Override
 		public void toArray(int[] array) {
-			//
+			assert (array != null) : "Array must be not null"; //$NON-NLS-1$
+			assert (array.length >= 2) : "Size of the array is too small"; //$NON-NLS-1$
+			array[0] = this.toX.get();
+			array[1] = this.toY.get();
 		}
 		
 		@Pure
 		@Override
 		public void toArray(double[] array) {
-			//
+			assert (array != null) : "Array must be not null"; //$NON-NLS-1$
+			assert (array.length >= 2) : "Size of the array is too small"; //$NON-NLS-1$
+			array[0] = this.toX.get();
+			array[1] = this.toY.get();
 		}
 
 		@Pure
 		@Override
 		public IntegerProperty[] toArray() {
-			return new IntegerProperty[0];
+			return new IntegerProperty[] {this.toX, this.toY};
 		}
 
 		@Pure
 		@Override
 		public void toArray(IntegerProperty[] array) {
-			//
+			assert (array != null) : "Array must be not null"; //$NON-NLS-1$
+			assert (array.length >= 2) : "Size of the array is too small"; //$NON-NLS-1$
+			array[0] = this.toX;
+			array[1] = this.toY;
 		}
 
 		@Pure

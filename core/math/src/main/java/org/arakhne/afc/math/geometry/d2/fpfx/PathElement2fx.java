@@ -1127,7 +1127,7 @@ public abstract class PathElement2fx implements PathElement2afp {
 		@Pure
 		@Override
 		public boolean isDrawable() {
-			return true;
+			return !isEmpty();
 		}
 
 		@Pure

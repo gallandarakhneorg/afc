@@ -86,4 +86,12 @@ public interface PathIterator2D<T extends PathElement2D> extends Iterator<T> {
 	@Pure
 	boolean isPolygon();
 
+	/** Replies a reset instance of this iterator.
+	 *
+	 * <p>The reset instance enables to restart iterations with the replied iterator.
+	 *
+	 * @return the reset iterator.
+	 */
+	PathIterator2D<T> restartIterations();
+
 }

@@ -21,18 +21,10 @@
  */
 package org.arakhne.afc.math.geometry.d2.i;
 
-import static org.junit.Assert.assertNotNull;
-
-import org.arakhne.afc.math.geometry.d2.ai.AbstractRectangle2aiTest;
-import org.arakhne.afc.math.geometry.d2.ai.TestShapeFactory;
-import org.junit.Test;
-
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.ReadOnlyDoubleProperty;
-import javafx.beans.property.ReadOnlyIntegerProperty;
+import org.arakhne.afc.math.geometry.d2.ai.AbstractMultiShape2aiTest;
 
 @SuppressWarnings("all")
-public class Rectangle2iTest extends AbstractRectangle2aiTest<Rectangle2i> {
+public class MultiShape2iTest extends AbstractMultiShape2aiTest<MultiShape2i, Shape2i<?>, Rectangle2i> {
 
 	@Override
 	protected TestShapeFactory2i createFactory() {

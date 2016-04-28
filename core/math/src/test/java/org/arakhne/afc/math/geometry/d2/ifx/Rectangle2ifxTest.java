@@ -41,7 +41,7 @@ import javafx.beans.property.ReadOnlyIntegerProperty;
 public class Rectangle2ifxTest extends AbstractRectangle2aiTest<Rectangle2ifx> {
 
 	@Override
-	protected TestShapeFactory<Rectangle2ifx> createFactory() {
+	protected TestShapeFactory2ifx createFactory() {
 		return TestShapeFactory2ifx.SINGLETON;
 	}
 

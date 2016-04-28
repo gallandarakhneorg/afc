@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  * This program is free software; you can redistribute it and/or modify
  */
-package org.arakhne.afc.math.geometry.d2.afp;
+package org.arakhne.afc.math.geometry.d2.ai;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -50,34 +50,20 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public interface MultiShape2afp<
-		ST extends Shape2afp<?, ?, IE, P, V, B>,
-		IT extends MultiShape2afp<?, ?, CT, IE, P, V, B>,
-		CT extends Shape2afp<?, ?, IE, P, V, B>,
-		IE extends PathElement2afp,
+public interface MultiShape2ai<
+		ST extends Shape2ai<?, ?, IE, P, V, B>,
+		IT extends MultiShape2ai<?, ?, CT, IE, P, V, B>,
+		CT extends Shape2ai<?, ?, IE, P, V, B>,
+		IE extends PathElement2ai,
 		P extends Point2D<? super P, ? super V>,
 		V extends Vector2D<? super V, ? super P>,
-		B extends Rectangle2afp<?, ?, IE, P, V, B>>
-		extends Shape2afp<ST, IT, IE, P, V, B>,
-		MultiShape2D<ST, IT, CT, PathIterator2afp<IE>, P, V, B> {
+		B extends Rectangle2ai<?, ?, IE, P, V, B>>
+		extends Shape2ai<ST, IT, IE, P, V, B>,
+		MultiShape2D<ST, IT, CT, PathIterator2ai<IE>, P, V, B> {
 
 	@Pure
 	@Override
-	default boolean intersects(Ellipse2afp<?, ?, ?, ?, ?, ?> s) {
-		assert (s != null) : "Ellipse must be not null"; //$NON-NLS-1$
-		if (s.intersects(toBoundingBox())) {
-			for (CT shape : getBackendDataList()) {
-				if (shape.intersects(s)) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	@Pure
-	@Override
-	default boolean intersects(Circle2afp<?, ?, ?, ?, ?, ?> s) {
+	default boolean intersects(Circle2ai<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Circle must be not null"; //$NON-NLS-1$
 		if (s.intersects(toBoundingBox())) {
 			for (CT shape : getBackendDataList()) {
@@ -91,7 +77,7 @@ public interface MultiShape2afp<
 
 	@Pure
 	@Override
-	default boolean intersects(Rectangle2afp<?, ?, ?, ?, ?, ?> s) {
+	default boolean intersects(Rectangle2ai<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Rectangle must be not null"; //$NON-NLS-1$
 		if (s.intersects(toBoundingBox())) {
 			for (CT shape : getBackendDataList()) {
@@ -105,7 +91,7 @@ public interface MultiShape2afp<
 
 	@Pure
 	@Override
-	default boolean intersects(Segment2afp<?, ?, ?, ?, ?, ?> s) {
+	default boolean intersects(Segment2ai<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Segment must be not null"; //$NON-NLS-1$
 		if (s.intersects(toBoundingBox())) {
 			for (CT shape : getBackendDataList()) {
@@ -119,21 +105,7 @@ public interface MultiShape2afp<
 
 	@Pure
 	@Override
-	default boolean intersects(Triangle2afp<?, ?, ?, ?, ?, ?> s) {
-		assert (s != null) : "Triangle must be not null"; //$NON-NLS-1$
-		if (s.intersects(toBoundingBox())) {
-			for (CT shape : getBackendDataList()) {
-				if (shape.intersects(s)) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	@Pure
-	@Override
-	default boolean intersects(PathIterator2afp<?> iterator) {
+	default boolean intersects(PathIterator2ai<?> iterator) {
 		if (toBoundingBox().intersects(iterator)) {
 			for (CT shape : getBackendDataList()) {
 				if (shape.intersects(iterator.restartIterations())) {
@@ -146,54 +118,12 @@ public interface MultiShape2afp<
 
 	@Pure
 	@Override
-	default boolean intersects(OrientedRectangle2afp<?, ?, ?, ?, ?, ?> s) {
-		assert (s != null) : "Oriented rectangle must be not null"; //$NON-NLS-1$
-		if (s.intersects(toBoundingBox())) {
-			for (CT shape : getBackendDataList()) {
-				if (shape.intersects(s)) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	@Pure
-	@Override
-	default boolean intersects(Parallelogram2afp<?, ?, ?, ?, ?, ?> s) {
-		assert (s != null) : "Parallelogram must be not null"; //$NON-NLS-1$
-		if (s.intersects(toBoundingBox())) {
-			for (CT shape : getBackendDataList()) {
-				if (shape.intersects(s)) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	@Pure
-	@Override
-	default boolean intersects(RoundRectangle2afp<?, ?, ?, ?, ?, ?> s) {
-		assert (s != null) : "Round rectangle must be not null"; //$NON-NLS-1$
-		if (s.intersects(toBoundingBox())) {
-			for (CT shape : getBackendDataList()) {
-				if (shape.intersects(s)) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	@Pure
-	@Override
 	@Unefficient
-	default boolean intersects(MultiShape2afp<?, ?, ?, ?, ?, ?, ?> s) {
+	default boolean intersects(MultiShape2ai<?, ?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "MultiShape must be not null"; //$NON-NLS-1$
 		if (s.toBoundingBox().intersects(toBoundingBox())) {
 			for (CT shape1 : getBackendDataList()) {
-				for (Shape2afp<?, ?, ?, ?, ?, ?> shape2 : s.getBackendDataList()) {
+				for (Shape2ai<?, ?, ?, ?, ?, ?> shape2 : s.getBackendDataList()) {
 					if (shape1.intersects(shape2)) {
 						return true;
 					}
@@ -205,7 +135,7 @@ public interface MultiShape2afp<
 
 	@Pure
 	@Override
-	default boolean contains(double x, double y) {
+	default boolean contains(int x, int y) {
 		if (toBoundingBox().contains(x, y)) {
 			for (CT shape : getBackendDataList()) {
 				if (shape.contains(x, y)) {
@@ -218,7 +148,7 @@ public interface MultiShape2afp<
 
 	@Pure
 	@Override
-	default boolean contains(Rectangle2afp<?, ?, ?, ?, ?, ?> r) {
+	default boolean contains(Rectangle2ai<?, ?, ?, ?, ?, ?> r) {
 		assert (r != null) : "Rectangle must be not null"; //$NON-NLS-1$
 		if (r.intersects(toBoundingBox())) {
 			for (CT shape : getBackendDataList()) {
@@ -231,7 +161,7 @@ public interface MultiShape2afp<
 	}
 
 	@Override
-	default void translate(double dx, double dy) {
+	default void translate(int dx, int dy) {
 		for (CT shape : getBackendDataList()) {
 			shape.translate(dx, dy);
 		}
@@ -242,7 +172,7 @@ public interface MultiShape2afp<
 	@Pure
 	@Override
 	default ST createTransformedShape(Transform2D transform) {
-		MultiShape2afp multishape = getGeomFactory().newMultiShape();
+		MultiShape2ai multishape = getGeomFactory().newMultiShape();
 		for (CT shape : getBackendDataList()) {
 			multishape.add(shape.createTransformedShape(transform));
 		}
@@ -297,13 +227,18 @@ public interface MultiShape2afp<
 	}
 
 	@Override
-	default PathIterator2afp<IE> getPathIterator(Transform2D transform) {
+	default PathIterator2ai<IE> getPathIterator(Transform2D transform) {
 		if (transform == null || transform.isIdentity()) {
 			return new MultiShapePathIterator<>(getBackendDataList(), getGeomFactory());
 		}
 		return new TransformedMultiShapePathIterator<>(getBackendDataList(), getGeomFactory(), transform);
 	}
 
+	@Override
+	default Iterator<P> getPointIterator() {
+		return new MultiShapePointIterator<>(getBackendDataList());
+	}
+	
 	/** Abstract iterator on the path elements of the multishape.
 	 * 
 	 * @param <IE> the type of the path elements.
@@ -312,13 +247,13 @@ public interface MultiShape2afp<
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	abstract class AbstractMultiShapePathIterator<IE extends PathElement2afp> implements PathIterator2afp<IE> {
+	abstract class AbstractMultiShapePathIterator<IE extends PathElement2ai> implements PathIterator2ai<IE> {
 		
-		private final GeomFactory2afp<IE, ?, ?, ?> factory;
+		private final GeomFactory2ai<IE, ?, ?, ?> factory;
 		
-		private Iterator<? extends Shape2afp<?, ?, IE, ?, ?, ?>> shapesIterator;
+		private Iterator<? extends Shape2ai<?, ?, IE, ?, ?, ?>> shapesIterator;
 		
-		private PathIterator2afp<IE> shapeIterator;
+		private PathIterator2ai<IE> shapeIterator;
 		
 		private IE next;
 				
@@ -332,14 +267,14 @@ public interface MultiShape2afp<
 
 		/** Iterated list.
 		 */
-		protected final List<? extends Shape2afp<?, ?, IE, ?, ?, ?>> list;
+		protected final List<? extends Shape2ai<?, ?, IE, ?, ?, ?>> list;
 		
 		/**
 		 * @param list the list of the shapes to iterate on.
 		 * @param factory the factory of path elements.
 		 */
-		public AbstractMultiShapePathIterator(List<? extends Shape2afp<?, ?, IE, ?, ?, ?>> list,
-				GeomFactory2afp<IE, ?, ?, ?> factory) {
+		public AbstractMultiShapePathIterator(List<? extends Shape2ai<?, ?, IE, ?, ?, ?>> list,
+				GeomFactory2ai<IE, ?, ?, ?> factory) {
 			assert (list != null) : "List of shapes must be not null"; //$NON-NLS-1$
 			assert (factory != null) : "Shape factory must be not null"; //$NON-NLS-1$
 			this.list = list;
@@ -351,7 +286,7 @@ public interface MultiShape2afp<
 		 * 
 		 * @param list the list to iterate on.
 		 */
-		protected void delayedInit(List<? extends Shape2afp<?, ?, IE, ?, ?, ?>> list) {
+		protected void delayedInit(List<? extends Shape2ai<?, ?, IE, ?, ?, ?>> list) {
 			if (this.shapesIterator.hasNext()) {
 				this.shapeIterator = getPathIteratorFrom(this.shapesIterator.next());
 				searchNext();
@@ -375,7 +310,7 @@ public interface MultiShape2afp<
 		 * @param shape the shape.
 		 * @return the path iterator.
 		 */
-		protected abstract PathIterator2afp<IE> getPathIteratorFrom(Shape2afp<?, ?, IE, ?, ?, ?> shape);
+		protected abstract PathIterator2ai<IE> getPathIteratorFrom(Shape2ai<?, ?, IE, ?, ?, ?> shape);
 		
 		@Override
 		public boolean hasNext() {
@@ -431,7 +366,7 @@ public interface MultiShape2afp<
 		}
 
 		@Override
-		public GeomFactory2afp<IE, ?, ?, ?> getGeomFactory() {
+		public GeomFactory2ai<IE, ?, ?, ?> getGeomFactory() {
 			return this.factory;
 		}
 	
@@ -445,25 +380,25 @@ public interface MultiShape2afp<
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	class MultiShapePathIterator<IE extends PathElement2afp> extends AbstractMultiShapePathIterator<IE> {
+	class MultiShapePathIterator<IE extends PathElement2ai> extends AbstractMultiShapePathIterator<IE> {
 		
 		/**
 		 * @param list the list of the shapes to iterate on.
 		 * @param factory the factory of path elements.
 		 */
-		public MultiShapePathIterator(List<? extends Shape2afp<?, ?, IE, ?, ?, ?>> list,
-				GeomFactory2afp<IE, ?, ?, ?> factory) {
+		public MultiShapePathIterator(List<? extends Shape2ai<?, ?, IE, ?, ?, ?>> list,
+				GeomFactory2ai<IE, ?, ?, ?> factory) {
 			super(list, factory);
 			delayedInit(list);
 		}
 		
 		@Override
-		public PathIterator2afp<IE> restartIterations() {
+		public PathIterator2ai<IE> restartIterations() {
 			return new MultiShapePathIterator<>(this.list, getGeomFactory());
 		}
 
 		@Override
-		protected PathIterator2afp<IE> getPathIteratorFrom(Shape2afp<?, ?, IE, ?, ?, ?> shape) {
+		protected PathIterator2ai<IE> getPathIteratorFrom(Shape2ai<?, ?, IE, ?, ?, ?> shape) {
 			return shape.getPathIterator();
 		}
 
@@ -477,7 +412,7 @@ public interface MultiShape2afp<
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	class TransformedMultiShapePathIterator<IE extends PathElement2afp> extends AbstractMultiShapePathIterator<IE> {
+	class TransformedMultiShapePathIterator<IE extends PathElement2ai> extends AbstractMultiShapePathIterator<IE> {
 
 		private final Transform2D transform;
 		
@@ -486,8 +421,8 @@ public interface MultiShape2afp<
 		 * @param factory the factory of path elements.
 		 * @param transform the transformation to apply.
 		 */
-		public TransformedMultiShapePathIterator(List<? extends Shape2afp<?, ?, IE, ?, ?, ?>> list,
-				GeomFactory2afp<IE, ?, ?, ?> factory, Transform2D transform) {
+		public TransformedMultiShapePathIterator(List<? extends Shape2ai<?, ?, IE, ?, ?, ?>> list,
+				GeomFactory2ai<IE, ?, ?, ?> factory, Transform2D transform) {
 			super(list, factory);
 			assert (transform != null) : "Transformation must be not null"; //$NON-NLS-1$
 			this.transform = transform;
@@ -495,13 +430,74 @@ public interface MultiShape2afp<
 		}
 
 		@Override
-		public PathIterator2afp<IE> restartIterations() {
+		public PathIterator2ai<IE> restartIterations() {
 			return new TransformedMultiShapePathIterator<>(this.list, getGeomFactory(), this.transform);
 		}
 
 		@Override
-		protected PathIterator2afp<IE> getPathIteratorFrom(Shape2afp<?, ?, IE, ?, ?, ?> shape) {
+		protected PathIterator2ai<IE> getPathIteratorFrom(Shape2ai<?, ?, IE, ?, ?, ?> shape) {
 			return shape.getPathIterator(this.transform);
+		}
+	
+	}
+
+	/** Iterator on the points of the multishape.
+	 * 
+	 * @param <P> the type of the points.
+	 * @param <V> the type of the vectors.
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	class MultiShapePointIterator<P extends Point2D<? super P, ? super V>,
+			V extends Vector2D<? super V, ? super P>>	 implements Iterator<P> {
+
+		private final Iterator<? extends Shape2ai<?, ?, ?, P, V, ?>> elements;
+		
+		private Iterator<P> currentIterator;
+		
+		private P next;
+		
+		/**
+		 * @param list the list of the shapes to iterate on.
+		 * 
+		 */
+		public MultiShapePointIterator(List<? extends Shape2ai<?, ?, ?, P, V, ?>> list) {
+			assert (list != null) : "List of elements must be not null"; //$NON-NLS-1$
+			this.elements = list.iterator();
+			if (this.elements.hasNext()) {
+				this.currentIterator = this.elements.next().getPointIterator();
+				searchNext();
+			}
+		}
+		
+		private void searchNext() {
+			this.next = null;
+			while (true) {
+				if (this.currentIterator.hasNext()) {
+					this.next = this.currentIterator.next();
+					return;
+				} else if (this.elements.hasNext()) {
+					this.currentIterator = this.elements.next().getPointIterator();
+				} else {
+					return;
+				}
+			}
+		}
+
+		@Pure
+		@Override
+		public boolean hasNext() {
+			return this.next != null;
+		}
+
+		@Override
+		public P next() {
+			assert (this.next != null) : "No such element"; //$NON-NLS-1$
+			P point = this.next;
+			searchNext();
+			return point;
 		}
 	
 	}

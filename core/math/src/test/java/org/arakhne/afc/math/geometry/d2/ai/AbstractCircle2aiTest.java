@@ -32,8 +32,8 @@ import java.util.Iterator;
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.d2.Point2D;
+import org.arakhne.afc.math.geometry.d2.Shape2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
-import org.junit.Ignore;
 import org.junit.Test;
 
 @SuppressWarnings("all")
@@ -56,7 +56,7 @@ public abstract class AbstractCircle2aiTest<T extends Circle2ai<?, T, ?, ?, ?, B
 		assertEpsilonEquals(8, clone.getY());
 		assertEpsilonEquals(5, clone.getRadius());
 	}
-
+	
 	@Test
 	@Override
 	public void equalsObject() {
@@ -372,7 +372,7 @@ public abstract class AbstractCircle2aiTest<T extends Circle2ai<?, T, ?, ?, ?, B
 		this.shape = (T) createCircle(-1, -1, 1);
 		assertFalse(this.shape.intersects(path));
 		this.shape = (T) createCircle(4, -3, 1);
-		assertTrue(this.shape.intersects(shape));
+		assertTrue(this.shape.intersects(path));
 		this.shape = (T) createCircle(-3, 4, 1);
 		assertFalse(this.shape.intersects(path));
 		this.shape = (T) createCircle(6, -5, 1);
@@ -405,7 +405,7 @@ public abstract class AbstractCircle2aiTest<T extends Circle2ai<?, T, ?, ?, ?, B
 		assertElement(pi, PathElementType.CURVE_TO, 2,13, 0,10, 0,8);
 		assertElement(pi, PathElementType.CURVE_TO, 0,5, 2,3, 5,3);
 		assertElement(pi, PathElementType.CURVE_TO, 7,3, 10,5, 10,8);
-		assertElement(pi, PathElementType.CLOSE);
+		assertElement(pi, PathElementType.CLOSE, 10, 8);
 		assertNoElement(pi);
 	}
 
@@ -421,7 +421,7 @@ public abstract class AbstractCircle2aiTest<T extends Circle2ai<?, T, ?, ?, ?, B
 		assertElement(pi, PathElementType.CURVE_TO, 2,13, 0,10, 0,8);
 		assertElement(pi, PathElementType.CURVE_TO, 0,5, 2,3, 5,3);
 		assertElement(pi, PathElementType.CURVE_TO, 7,3, 10,5, 10,8);
-		assertElement(pi, PathElementType.CLOSE);
+		assertElement(pi, PathElementType.CLOSE, 10,8);
 		assertNoElement(pi);
 
 		tr = new Transform2D();
@@ -432,7 +432,7 @@ public abstract class AbstractCircle2aiTest<T extends Circle2ai<?, T, ?, ?, ?, B
 		assertElement(pi, PathElementType.CURVE_TO, 5,18, 3,16, 3,13);
 		assertElement(pi, PathElementType.CURVE_TO, 3,10, 5,8, 8,8);
 		assertElement(pi, PathElementType.CURVE_TO, 11,8, 13,10, 13,13);
-		assertElement(pi, PathElementType.CLOSE);
+		assertElement(pi, PathElementType.CLOSE, 13,13);
 		assertNoElement(pi);
 
 		tr = new Transform2D();
@@ -444,7 +444,7 @@ public abstract class AbstractCircle2aiTest<T extends Circle2ai<?, T, ?, ?, ?, B
 		assertElement(pi, PathElementType.CURVE_TO, -8,11, -8,8, -6,6);
 		assertElement(pi, PathElementType.CURVE_TO, -4,4, -1,4, 1,6);
 		assertElement(pi, PathElementType.CURVE_TO, 4,8, 4,11, 1,13);
-		assertElement(pi, PathElementType.CLOSE);
+		assertElement(pi, PathElementType.CLOSE, 1,13);
 		assertNoElement(pi);
 	}
 
@@ -460,7 +460,7 @@ public abstract class AbstractCircle2aiTest<T extends Circle2ai<?, T, ?, ?, ?, B
 		assertElement(pi, PathElementType.CURVE_TO, 2,13, 0,10, 0,8);
 		assertElement(pi, PathElementType.CURVE_TO, 0,5, 2,3, 5,3);
 		assertElement(pi, PathElementType.CURVE_TO, 7,3, 10,5, 10,8);
-		assertElement(pi, PathElementType.CLOSE);
+		assertElement(pi, PathElementType.CLOSE, 10,8);
 		assertNoElement(pi);
 
 		tr = new Transform2D();
@@ -471,7 +471,7 @@ public abstract class AbstractCircle2aiTest<T extends Circle2ai<?, T, ?, ?, ?, B
 		assertElement(pi, PathElementType.CURVE_TO, 5,18, 3,16, 3,13);
 		assertElement(pi, PathElementType.CURVE_TO, 3,10, 5,8, 8,8);
 		assertElement(pi, PathElementType.CURVE_TO, 11,8, 13,10, 13,13);
-		assertElement(pi, PathElementType.CLOSE);
+		assertElement(pi, PathElementType.CLOSE, 13,13);
 		assertNoElement(pi);
 
 		tr = new Transform2D();
@@ -482,7 +482,7 @@ public abstract class AbstractCircle2aiTest<T extends Circle2ai<?, T, ?, ?, ?, B
 		assertElement(pi, PathElementType.CURVE_TO, -8,11, -8,8, -6,6);
 		assertElement(pi, PathElementType.CURVE_TO, -4,4, -1,4, 1,6);
 		assertElement(pi, PathElementType.CURVE_TO, 4,8, 4,11, 1,13);
-		assertElement(pi, PathElementType.CLOSE);
+		assertElement(pi, PathElementType.CLOSE, 1,13);
 		assertNoElement(pi);
 	}
 
@@ -680,7 +680,7 @@ public abstract class AbstractCircle2aiTest<T extends Circle2ai<?, T, ?, ?, ?, B
 	
 	@Test
 	public void staticGetPointIterator() {
-		Iterator<? extends Point2D> iterator = Circle2ai.getPointIterator(5, 8, 5, 0, 8, this.shape.getGeomFactory());
+		Iterator iterator = Circle2ai.getPointIterator(5, 8, 5, 0, 8, (GeomFactory2ai) this.shape.getGeomFactory());
 		Point2D p;
 		
 		int[] coords = new int[] {
@@ -718,7 +718,7 @@ public abstract class AbstractCircle2aiTest<T extends Circle2ai<?, T, ?, ?, ?, B
 			int x = coords[i];
 			int y = coords[i + 1];
 			assertTrue(iterator.hasNext());
-			p = iterator.next();
+			p = (Point2D) iterator.next();
 			assertNotNull(p);
 			assertEquals(x, p.ix());
 			assertEquals(y, p.iy());
@@ -756,6 +756,146 @@ public abstract class AbstractCircle2aiTest<T extends Circle2ai<?, T, ?, ?, ?, B
 		assertTrue(Circle2ai.intersectsCircleSegment(5, 8, 5, 7, 10, 1, 1));
 		assertFalse(Circle2ai.intersectsCircleSegment(5, 8, 5, 16, 0, 100, 100));
 		assertFalse(Circle2ai.intersectsCircleSegment(5, 8, 5, 8, 13, 10, 11));
+	}
+
+	@Override
+	public void intersectsPathIterator2ai() {
+		Path2ai path = createPath();
+		path.moveTo(0, 0);
+		path.lineTo(2, 2);
+		path.quadTo(3, 0, 4, 3);
+		path.curveTo(5, -1, 6, 5, 7, -5);
+		path.closePath();
+		this.shape = (T) createCircle(0, 0, 1);
+		assertTrue(this.shape.intersects((PathIterator2ai) path.getPathIterator()));
+		this.shape = (T) createCircle(4, 3, 1);
+		assertTrue(this.shape.intersects((PathIterator2ai) path.getPathIterator()));
+		this.shape = (T) createCircle(2, 2, 1);
+		assertTrue(this.shape.intersects((PathIterator2ai) path.getPathIterator()));
+		this.shape = (T) createCircle(2, 1, 1);
+		assertTrue(this.shape.intersects((PathIterator2ai) path.getPathIterator()));
+		this.shape = (T) createCircle(3, 0, 1);
+		assertTrue(this.shape.intersects((PathIterator2ai) path.getPathIterator()));
+		this.shape = (T) createCircle(-1, -1, 1);
+		assertFalse(this.shape.intersects((PathIterator2ai) path.getPathIterator()));
+		this.shape = (T) createCircle(4, -3, 1);
+		assertTrue(this.shape.intersects((PathIterator2ai) path.getPathIterator()));
+		this.shape = (T) createCircle(-3, 4, 1);
+		assertFalse(this.shape.intersects((PathIterator2ai) path.getPathIterator()));
+		this.shape = (T) createCircle(6, -5, 1);
+		assertTrue(this.shape.intersects((PathIterator2ai) path.getPathIterator()));
+		this.shape = (T) createCircle(4, 0, 1);
+		assertTrue(this.shape.intersects((PathIterator2ai) path.getPathIterator()));
+		this.shape = (T) createCircle(5, 0, 1);
+		assertTrue(this.shape.intersects((PathIterator2ai) path.getPathIterator()));
+		this.shape = (T) createCircle(6, 2, 1);
+		assertTrue(this.shape.intersects((PathIterator2ai) path.getPathIterator()));
+		this.shape = (T) createCircle(-5, 0, 3);
+		assertFalse(this.shape.intersects((PathIterator2ai) path.getPathIterator()));
+	}
+
+	@Override
+	public void intersectsShape2D() {
+		assertTrue(this.shape.intersects((Shape2D) createCircle(0,0,100)));
+		assertTrue(this.shape.intersects((Shape2D) createRectangle(0,0,100,100)));
+	}
+
+	@Override
+	public void operator_addVector2D() {
+		this.shape.operator_add(createVector(3, 4));
+		assertEquals(8, this.shape.getX());
+		assertEquals(12, this.shape.getY());
+		assertEquals(5, this.shape.getRadius());
+	}
+
+	@Override
+	public void operator_plusVector2D() {
+		T r = this.shape.operator_plus(createVector(3, 4));
+		assertEquals(8, r.getX());
+		assertEquals(12, r.getY());
+		assertEquals(5, r.getRadius());
+	}
+
+	@Override
+	public void operator_removeVector2D() {
+		this.shape.operator_remove(createVector(3, 4));
+		assertEquals(2, this.shape.getX());
+		assertEquals(4, this.shape.getY());
+		assertEquals(5, this.shape.getRadius());
+	}
+
+	@Override
+	public void operator_minusVector2D() {
+		T r = this.shape.operator_minus(createVector(3, 4));
+		assertEquals(2, r.getX());
+		assertEquals(4, r.getY());
+		assertEquals(5, r.getRadius());
+	}
+
+	@Override
+	public void operator_multiplyTransform2D() {
+		Transform2D tr;
+		PathIterator2ai<?> pi;
+		
+		tr = new Transform2D();
+		pi = this.shape.operator_multiply(tr).getPathIterator();
+		assertElement(pi, PathElementType.MOVE_TO, 10,8);
+		assertElement(pi, PathElementType.CURVE_TO, 10,10, 7,13, 5,13);
+		assertElement(pi, PathElementType.CURVE_TO, 2,13, 0,10, 0,8);
+		assertElement(pi, PathElementType.CURVE_TO, 0,5, 2,3, 5,3);
+		assertElement(pi, PathElementType.CURVE_TO, 7,3, 10,5, 10,8);
+		assertElement(pi, PathElementType.CLOSE, 10,8);
+		assertNoElement(pi);
+
+		tr = new Transform2D();
+		tr.makeTranslationMatrix(3.4f, 4.5f);
+		pi = this.shape.operator_multiply(tr).getPathIterator();
+		assertElement(pi, PathElementType.MOVE_TO, 13,13);
+		assertElement(pi, PathElementType.CURVE_TO, 13,16, 11,18, 8,18);
+		assertElement(pi, PathElementType.CURVE_TO, 5,18, 3,16, 3,13);
+		assertElement(pi, PathElementType.CURVE_TO, 3,10, 5,8, 8,8);
+		assertElement(pi, PathElementType.CURVE_TO, 11,8, 13,10, 13,13);
+		assertElement(pi, PathElementType.CLOSE, 13,13);
+		assertNoElement(pi);
+
+		tr = new Transform2D();
+		tr.makeRotationMatrix(MathConstants.QUARTER_PI);
+		pi = this.shape.operator_multiply(tr).getPathIterator();
+		assertElement(pi, PathElementType.MOVE_TO, 1,13);
+		assertElement(pi, PathElementType.CURVE_TO, -1,15, -4,15, -6,13);
+		assertElement(pi, PathElementType.CURVE_TO, -8,11, -8,8, -6,6);
+		assertElement(pi, PathElementType.CURVE_TO, -4,4, -1,4, 1,6);
+		assertElement(pi, PathElementType.CURVE_TO, 4,8, 4,11, 1,13);
+		assertElement(pi, PathElementType.CLOSE, 1,13);
+		assertNoElement(pi);
+	}
+
+	@Override
+	public void operator_andPoint2D() {
+		assertFalse(this.shape.operator_and(createPoint(0,0)));
+		assertFalse(this.shape.operator_and(createPoint(11,10)));
+		assertFalse(this.shape.operator_and(createPoint(11,50)));
+		assertFalse(this.shape.operator_and(createPoint(9,12)));
+		assertTrue(this.shape.operator_and(createPoint(9,11)));
+		assertTrue(this.shape.operator_and(createPoint(8,12)));
+		assertTrue(this.shape.operator_and(createPoint(3,7)));
+		assertFalse(this.shape.operator_and(createPoint(10,11)));
+		assertTrue(this.shape.operator_and(createPoint(9,10)));
+	}
+
+	@Override
+	public void operator_andShape2D() {
+		assertTrue(this.shape.operator_and(createCircle(0,0,100)));
+		assertTrue(this.shape.operator_and(createRectangle(0,0,100,100)));
+	}
+
+	@Override
+	public void operator_upToPoint2D() {
+		assertEpsilonEquals(0f, this.shape.operator_upTo(createPoint(5,8)));
+		assertEpsilonEquals(0f, this.shape.operator_upTo(createPoint(10,10)));
+		assertEpsilonEquals(0f, this.shape.operator_upTo(createPoint(4,8)));
+		assertEpsilonEquals(4.242640687f, this.shape.operator_upTo(createPoint(0,0)));
+		assertEpsilonEquals(1f, this.shape.operator_upTo(createPoint(5,14)));
 	}
 
 }

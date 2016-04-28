@@ -24,6 +24,7 @@ import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.ai.GeomFactory2ai;
+import org.arakhne.afc.math.geometry.d2.ai.MultiShape2ai;
 import org.arakhne.afc.math.geometry.d2.ai.Path2ai;
 import org.arakhne.afc.math.geometry.d2.ai.Segment2ai;
 
@@ -170,6 +171,11 @@ public class GeomFactory2ifx implements GeomFactory2ai<PathElement2ifx, Point2if
 	@Override
 	public Segment2ai<?, ?, PathElement2ifx, Point2ifx, Vector2ifx, Rectangle2ifx> newSegment(int x1, int y1, int x2, int y2) {
 		return new Segment2ifx(x1, y1, x2, y2);
+	}
+
+	@Override
+	public MultiShape2ai<?, ?, ?, PathElement2ifx, Point2ifx, Vector2ifx, Rectangle2ifx> newMultiShape() {
+		return new MultiShape2ifx();
 	}
 
 }

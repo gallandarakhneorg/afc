@@ -41,12 +41,7 @@ public interface PathIterator2afp<T extends PathElement2afp> extends PathIterato
 	 */
 	GeomFactory2afp<T, ?, ?, ?> getGeomFactory();
 	
-	/** Replies a reset instance of this iterator.
-	 *
-	 * <p>The reset instance enables to restart iterations with the replied iterator.
-	 *
-	 * @return the reset iterator.
-	 */
+	@Override
 	PathIterator2afp<T> restartIterations();
 
 }

@@ -28,6 +28,7 @@ import java.util.Arrays;
 
 import org.arakhne.afc.math.AbstractMathTestCase;
 import org.arakhne.afc.math.geometry.PathElementType;
+import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2DTestRule;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
@@ -38,7 +39,7 @@ import org.junit.Test;
 
 @SuppressWarnings("all")
 public abstract class AbstractShape2aiTest<T extends Shape2ai<?, ?, ?, ?, ?, B>,
-		B extends Rectangle2ai<?, ?, ?, ?, ?, B>> extends AbstractMathTestCase implements TestShapeFactory<B> {
+		B extends Rectangle2ai<?, ?, ?, ?, ?, B>> extends AbstractMathTestCase {
 	
 	@Rule
 	public CoordinateSystem2DTestRule csTestRule = new CoordinateSystem2DTestRule();
@@ -49,7 +50,7 @@ public abstract class AbstractShape2aiTest<T extends Shape2ai<?, ?, ?, ?, ?, B>,
 	
 	/** Factory of shapes.
 	 */
-	protected TestShapeFactory<B> factory;
+	protected TestShapeFactory<?, ?, B> factory;
 	
 	/**
 	 * @throws Exception
@@ -60,7 +61,7 @@ public abstract class AbstractShape2aiTest<T extends Shape2ai<?, ?, ?, ?, ?, B>,
 		this.shape = createShape();
 	}
 	
-	protected abstract TestShapeFactory<B> createFactory();
+	protected abstract TestShapeFactory<?, ? ,B> createFactory();
 	
 	/** Create the shape to test.
 	 * 
@@ -89,7 +90,15 @@ public abstract class AbstractShape2aiTest<T extends Shape2ai<?, ?, ?, ?, ?, B>,
 	}
 
 	public final Path2ai<?, ?, ?, ?, ?, B> createPath() {
-		return this.factory.createPath();
+		return this.factory.createPath(null);
+	}
+	
+	public final Path2ai<?, ?, ?, ?, ?, B> createPath(PathWindingRule rule) {
+		return this.factory.createPath(rule);
+	}
+	
+	public final MultiShape2ai<?, ?, ?, ?, ?, ?, B> createMultiShape() {
+		return this.factory.createMultiShape();
 	}
 
 	/**
@@ -252,6 +261,9 @@ public abstract class AbstractShape2aiTest<T extends Shape2ai<?, ?, ?, ?, ?, B>,
 	
 	@Test
 	public abstract void intersectsPath2ai();
+	
+	@Test
+	public abstract void intersectsPathIterator2ai();
 
 	@Test
 	public abstract void translateIntInt(); 
@@ -264,4 +276,31 @@ public abstract class AbstractShape2aiTest<T extends Shape2ai<?, ?, ?, ?, ?, B>,
 		assertNotNull(this.shape.getGeomFactory());
 	}
 	
+	@Test
+	public abstract void intersectsShape2D();
+
+	@Test
+	public abstract void operator_addVector2D();
+
+	@Test
+	public abstract void operator_plusVector2D();
+
+	@Test
+	public abstract void operator_removeVector2D();
+
+	@Test
+	public abstract void operator_minusVector2D();
+
+	@Test
+	public abstract void operator_multiplyTransform2D();
+
+	@Test
+	public abstract void operator_andPoint2D();
+
+	@Test
+	public abstract void operator_andShape2D();
+
+	@Test
+	public abstract void operator_upToPoint2D();
+
 }

@@ -31,7 +31,7 @@ import org.arakhne.afc.math.geometry.d2.ai.TestShapeFactory;
 public class Path2iTest extends AbstractPath2aiTest<Path2i, Rectangle2i> {
 
 	@Override
-	protected TestShapeFactory<Rectangle2i> createFactory() {
+	protected TestShapeFactory2i createFactory() {
 		return TestShapeFactory2i.SINGLETON;
 	}
 

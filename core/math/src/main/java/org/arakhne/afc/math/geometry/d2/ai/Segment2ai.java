@@ -31,6 +31,7 @@ import org.arakhne.afc.math.geometry.d2.GeomFactory;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
+import org.arakhne.afc.math.geometry.d2.ai.Path2ai.CrossingComputationType;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Fonctional interface that represented a 2D segment/line on a plane.
@@ -438,8 +439,8 @@ public interface Segment2ai<
 			// Both x and y ranges overlap by a non-empty amount
 			// First do trivial INTERSECTS rejection of the cases
 			// where one of the endpoints is inside the rectangle.
-			if ((x0 > rxmin && x0 < rxmax && y0 > rymin && y0 < rymax) ||
-				(x1 > rxmin && x1 < rxmax && y1 > rymin && y1 < rymax)) {
+			if ((x0 >= rxmin && x0 <= rxmax && y0 >= rymin && y0 <= rymax) ||
+				(x1 >= rxmin && x1 <= rxmax && y1 >= rymin && y1 <= rymax)) {
 				return MathConstants.SHAPE_INTERSECTS;
 			}
 
@@ -1272,12 +1273,19 @@ public interface Segment2ai<
 				0,
 				iterator,
 				getX1(), getY1(), getX2(), getY2(),
-				false);
+				CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
 		return (crossings == MathConstants.SHAPE_INTERSECTS ||
 				(crossings & mask) != 0);
 
 	}
 	
+	@Pure
+	@Override
+	default boolean intersects(MultiShape2ai<?, ?, ?, ?, ?, ?, ?> s) {
+		assert (s != null) : "MultiShape must be not null"; //$NON-NLS-1$
+		return s.intersects(this);
+	}
+
 	/** The Bresenham line algorithm is an algorithm which determines which points in 
 	 * an n-dimensional raster should be plotted in order to form a close 
 	 * approximation to a straight line between two given points. It is 
@@ -1433,16 +1441,16 @@ public interface Segment2ai<
 	 */
 	abstract class AbstractSegmentPathIterator<IE extends PathElement2ai> implements PathIterator2ai<IE> {
 
-		/** Element factory.
+		/** Element.
 		 */
-		protected final GeomFactory2ai<IE, ?, ?, ?> factory;
+		protected final Segment2ai<?, ?, IE, ?, ?, ?> segment;
 
 		/**
-		 * @param factory the element factory.
+		 * @param segment the element.
 		 */
-		public AbstractSegmentPathIterator(GeomFactory2ai<IE, ?, ?, ?> factory) {
-			assert (factory != null) : "Factory must be not be null"; //$NON-NLS-1$
-			this.factory = factory;
+		public AbstractSegmentPathIterator(Segment2ai<?, ?, IE, ?, ?, ?> segment) {
+			assert (segment != null) : "Factory must be not be null"; //$NON-NLS-1$
+			this.segment = segment;
 		}
 
 		@Override
@@ -1478,7 +1486,7 @@ public interface Segment2ai<
 
 		@Override
 		public GeomFactory2ai<IE, ?, ?, ?> getGeomFactory() {
-			return this.factory;
+			return this.segment.getGeomFactory();
 		}
 		
 	}
@@ -1515,7 +1523,7 @@ public interface Segment2ai<
 		 * @param transform the transformation to apply.
 		 */
 		public TransformedSegmentPathIterator(Segment2ai<?, ?, IE, ?, ?, ?> segment, Transform2D transform) {
-			super(segment.getGeomFactory());
+			super(segment);
 			assert (transform != null) : "Transformation must be not be null"; //$NON-NLS-1$
 			this.transform = transform;
 			if (segment.getX1() == segment.getX2() && segment.getY1() == segment.getY2()) {
@@ -1528,6 +1536,11 @@ public interface Segment2ai<
 				this.x2 = segment.getX2();
 				this.y2 = segment.getY2();
 			}
+		}
+		
+		@Override
+		public PathIterator2ai<IE> restartIterations() {
+			return new TransformedSegmentPathIterator<>(this.segment, this.transform);
 		}
 
 		@Pure
@@ -1547,7 +1560,7 @@ public interface Segment2ai<
 				if (this.transform!=null) {
 					this.transform.transform(this.p2);
 				}
-				return this.factory.newMovePathElement(
+				return getGeomFactory().newMovePathElement(
 						this.p2.ix(), this.p2.iy());
 			case 1:
 				this.p1.set(this.p2);
@@ -1555,7 +1568,7 @@ public interface Segment2ai<
 				if (this.transform!=null) {
 					this.transform.transform(this.p2);
 				}
-				return this.factory.newLinePathElement(
+				return getGeomFactory().newLinePathElement(
 						this.p1.ix(), this.p1.iy(),
 						this.p2.ix(), this.p2.iy());
 			default:
@@ -1590,7 +1603,7 @@ public interface Segment2ai<
 		 * @param segment the segment to iterate on.
 		 */
 		public SegmentPathIterator(Segment2ai<?, ?, IE, ?, ?, ?> segment) {
-			super(segment.getGeomFactory());
+			super(segment);
 			if (segment.getX1() == segment.getX2() && segment.getY1() == segment.getY2()) {
 				this.index = 2;
 			} else {
@@ -1599,6 +1612,11 @@ public interface Segment2ai<
 				this.x2 = segment.getX2();
 				this.y2 = segment.getY2();
 			}
+		}
+		
+		@Override
+		public PathIterator2ai<IE> restartIterations() {
+			return new SegmentPathIterator<>(this.segment);
 		}
 
 		@Pure
@@ -1614,9 +1632,9 @@ public interface Segment2ai<
 			++this.index;
 			switch(idx) {
 			case 0:
-				return this.factory.newMovePathElement(this.x1, this.y1);
+				return getGeomFactory().newMovePathElement(this.x1, this.y1);
 			case 1:
-				return this.factory.newLinePathElement(
+				return getGeomFactory().newLinePathElement(
 						this.x1, this.y1,
 						this.x2, this.y2);
 			default:

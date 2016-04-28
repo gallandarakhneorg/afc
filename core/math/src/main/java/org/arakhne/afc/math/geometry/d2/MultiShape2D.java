@@ -26,6 +26,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
+import org.arakhne.afc.math.Unefficient;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Container for grouping of shapes.
@@ -49,13 +50,13 @@ import org.eclipse.xtext.xbase.lib.Pure;
 public interface MultiShape2D<
 		ST extends Shape2D<?, ?, I, P, V, B>,
 		IT extends MultiShape2D<?, ?, CT, I, P, V, B>,
-		CT extends ST,
+		CT extends Shape2D<?, ?, I, P, V, B>,
 		I extends PathIterator2D<?>,
 		P extends Point2D<? super P, ? super V>,
 		V extends Vector2D<? super V, ? super P>,
 		B extends Shape2D<?, ?, I, P, V, B>> extends Shape2D<ST, IT, I, P, V, B>, List<CT> {
 	
-	/** * Get the first shape in this multishape that is containing the given point.
+	/** Get the first shape in this multishape that is containing the given point.
 	 *
 	 * @param point the point.
 	 * @return the shape, or <code>null</code> if no shape contains the given point.
@@ -79,6 +80,7 @@ public interface MultiShape2D<
 	 * @return the shapes, or an empty list.
 	 */
 	@Pure
+	@Unefficient
 	default List<CT> getShapesContaining(Point2D<?, ?> point) {
 		assert (point != null) : "Point must be not null"; //$NON-NLS-1$
 		List<CT> list = new ArrayList<>();
@@ -91,6 +93,14 @@ public interface MultiShape2D<
 		}
 		return list;
 	}
+
+	/** Get the first shape in this multishape that is intersecting the given shape.
+	 *
+	 * @param shape the shape.
+	 * @return the shape, or <code>null</code> if no shape intersecting the given shape.
+	 */
+	@Pure
+	CT getFirstShapeIntersecting(ST shape);
 
 	/** Get the shapes in this multishape that are intersecting the given shape.
 	 *

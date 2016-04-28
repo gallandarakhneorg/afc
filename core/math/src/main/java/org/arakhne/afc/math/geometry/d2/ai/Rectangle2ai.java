@@ -30,6 +30,7 @@ import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
+import org.arakhne.afc.math.geometry.d2.ai.Path2ai.CrossingComputationType;
 import org.arakhne.afc.math.geometry.d2.ai.Segment2ai.BresenhamLineIterator;
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -305,11 +306,20 @@ public interface Rectangle2ai<
 		assert (iterator != null) : "Iterator must not be null"; //$NON-NLS-1$
 		int mask = (iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2);
 		int crossings = Path2ai.computeCrossingsFromRect(
+				0, 
 				iterator,
-				getMinX(), getMinY(), getMaxX(), getMaxY());
+				getMinX(), getMinY(), getMaxX(), getMaxY(),
+				CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
 		return (crossings == MathConstants.SHAPE_INTERSECTS ||
 				(crossings & mask) != 0);
 
+	}
+
+	@Pure
+	@Override
+	default boolean intersects(MultiShape2ai<?, ?, ?, ?, ?, ?, ?> s) {
+		assert (s != null) : "MultiShape must be not null"; //$NON-NLS-1$
+		return s.intersects(this);
 	}
 
 	@Pure
@@ -454,6 +464,96 @@ public interface Rectangle2ai<
 			return new RectanglePathIterator<>(this);
 		}
 		return new TransformedRectanglePathIterator<>(this, transform);
+	}
+
+	/** Compute and replies the union of this rectangle and the given rectangle.
+	 * This function does not change this rectangle.
+	 * <p>
+	 * It is equivalent to (where <code>ur</code> is the union):
+	 * <pre><code>
+	 * Rectangle2f ur = new Rectangle2f(this);
+	 * ur.setUnion(r);
+	 * </code></pre>
+	 * 
+	 * @param r
+	 * @return the union of this rectangle and the given rectangle.
+	 * @see #setUnion(RectangularShape2ai)
+	 */
+	@Pure
+	default B createUnion(RectangularShape2ai<?, ?, ?, ?, ?, ?> r) {
+		assert (r != null) : "Shape must be not null"; //$NON-NLS-1$
+		B rr = getGeomFactory().newBox();
+		rr.setFromCorners(getMinX(), getMinY(), getMaxX(), getMaxY());
+		rr.setUnion(r);
+		return rr;
+	}
+
+	/** Compute and replies the intersection of this rectangle and the given rectangle.
+	 * This function does not change this rectangle.
+	 * 
+	 * <p>It is equivalent to (where <code>ir</code> is the intersection):
+	 * <pre><code>
+	 * Rectangle2f ir = new Rectangle2f(this);
+	 * ir.setIntersection(r);
+	 * </code></pre>
+	 * 
+	 * @param r
+	 * @return the union of this rectangle and the given rectangle.
+	 * @see #setIntersection(RectangularShape2ai)
+	 */
+	@Pure
+	default B createIntersection(RectangularShape2ai<?, ?, ?, ?, ?, ?> r) {
+		assert (r != null) : "Shape must be not null"; //$NON-NLS-1$
+		B rr = getGeomFactory().newBox();
+		int x1 = Math.max(getMinX(), r.getMinX());
+		int y1 = Math.max(getMinY(), r.getMinY());
+		int x2 = Math.min(getMaxX(), r.getMaxX());
+		int y2 = Math.min(getMaxY(), r.getMaxY());
+		if (x1<=x2 && y1<=y2) {
+			rr.setFromCorners(x1, y1, x2, y2);
+		}
+		else {
+			rr.clear();
+		}
+		return rr;
+	}
+
+	/** Compute the union of this rectangle and the given rectangle and
+	 * change this rectangle with the result of the union.
+	 * 
+	 * @param r
+	 * @see #createUnion(RectangularShape2ai)
+	 */
+	default void setUnion(RectangularShape2ai<?, ?, ?, ?, ?, ?> r) {
+		assert (r != null) : "Shape must be not null"; //$NON-NLS-1$
+		setFromCorners(
+				Math.min(getMinX(), r.getMinX()),
+				Math.min(getMinY(), r.getMinY()),
+				Math.max(getMaxX(), r.getMaxX()),
+				Math.max(getMaxY(), r.getMaxY()));
+	}
+
+	/** Compute the intersection of this rectangle and the given rectangle.
+	 * This function changes this rectangle.
+	 * 
+	 * <p>If there is no intersection, this rectangle is cleared.
+	 * 
+	 * @param r
+	 * @see #createIntersection(RectangularShape2ai)
+	 * @see #clear()
+	 */
+	default void setIntersection(RectangularShape2ai<?, ?, ?, ?, ?, ?> r) {
+		assert (r != null) : "Shape must be not null"; //$NON-NLS-1$
+		int x1 = Math.max(getMinX(), r.getMinX());
+		int y1 = Math.max(getMinY(), r.getMinY());
+		int x2 = Math.min(getMaxX(), r.getMaxX());
+		int y2 = Math.min(getMaxY(), r.getMaxY());
+		if (x1<=x2 && y1<=y2) {
+			setFromCorners(x1, y1, x2, y2);
+		}
+		else {
+			clear();
+		}
 	}
 
 	/** Sides of a rectangle.
@@ -613,7 +713,7 @@ public interface Rectangle2ai<
 	 */
 	class RectanglePathIterator<E extends PathElement2ai> implements PathIterator2ai<E> {
 		
-		private final GeomFactory2ai<E, ?, ?, ?> factory;
+		private final Rectangle2ai<?, ?, E, ?, ?, ?> rectangle;
 
 		private int x1;
 		
@@ -630,9 +730,9 @@ public interface Rectangle2ai<
 		 */
 		public RectanglePathIterator(Rectangle2ai<?, ?, E, ?, ?, ?> rectangle) {
 			assert (rectangle != null) : "Rectangle must not be null"; //$NON-NLS-1$
-			this.factory = rectangle.getGeomFactory();
+			this.rectangle = rectangle;
 			if (rectangle.isEmpty()) {
-				this.index = 6;
+				this.index = 5;
 			} else {
 				this.x1 = rectangle.getMinX();
 				this.y1 = rectangle.getMinY();
@@ -640,11 +740,16 @@ public interface Rectangle2ai<
 				this.y2 = rectangle.getMaxY();
 			}
 		}
+		
+		@Override
+		public PathIterator2ai<E> restartIterations() {
+			return new RectanglePathIterator<>(this.rectangle);
+		}
 
 		@Pure
 		@Override
 		public boolean hasNext() {
-			return this.index<=5;
+			return this.index <= 4;
 		}
 
 		@Override
@@ -653,27 +758,23 @@ public interface Rectangle2ai<
 			++this.index;
 			switch(idx) {
 			case 0:
-				return this.factory.newMovePathElement(
+				return this.rectangle.getGeomFactory().newMovePathElement(
 						this.x1, this.y1);
 			case 1:
-				return this.factory.newLinePathElement(
+				return this.rectangle.getGeomFactory().newLinePathElement(
 						this.x1, this.y1,
 						this.x2, this.y1);
 			case 2:
-				return this.factory.newLinePathElement(
+				return this.rectangle.getGeomFactory().newLinePathElement(
 						this.x2, this.y1,
 						this.x2, this.y2);
 			case 3:
-				return this.factory.newLinePathElement(
+				return this.rectangle.getGeomFactory().newLinePathElement(
 						this.x2, this.y2,
 						this.x1, this.y2);
 			case 4:
-				return this.factory.newLinePathElement(
+				return this.rectangle.getGeomFactory().newClosePathElement(
 						this.x1, this.y2,
-						this.x1, this.y1);
-			case 5:
-				return this.factory.newClosePathElement(
-						this.x1, this.y1,
 						this.x1, this.y1);
 			default:
 				throw new NoSuchElementException();
@@ -714,7 +815,7 @@ public interface Rectangle2ai<
 
 		@Override
 		public GeomFactory2ai<E, ?, ?, ?> getGeomFactory() {
-			return this.factory;
+			return this.rectangle.getGeomFactory();
 		}
 		
 	}
@@ -730,7 +831,7 @@ public interface Rectangle2ai<
 	 */
 	class TransformedRectanglePathIterator<E extends PathElement2ai> implements PathIterator2ai<E> {
 		
-		private final GeomFactory2ai<E, ?, ?, ?> factory;
+		private final Rectangle2ai<?, ?, E, ?, ?, ?> rectangle;
 
 		private final Transform2D transform;
 		
@@ -744,6 +845,8 @@ public interface Rectangle2ai<
 		
 		private int index = 0;
 		
+		private Point2D<?, ?> move;
+
 		private Point2D<?, ?> p1;
 		
 		private Point2D<?, ?> p2;
@@ -755,11 +858,12 @@ public interface Rectangle2ai<
 		public TransformedRectanglePathIterator(Rectangle2ai<?, ?, E, ?, ?, ?> rectangle, Transform2D transform) {
 			assert (rectangle != null) : "Rectangle must not be null"; //$NON-NLS-1$
 			assert (transform != null) : "Transformation must not be null"; //$NON-NLS-1$
-			this.factory = rectangle.getGeomFactory();
+			this.rectangle = rectangle;
 			this.transform = transform;
 			if (rectangle.isEmpty()) {
-				this.index = 6;
+				this.index = 5;
 			} else {
+				this.move = new InnerComputationPoint2ai();
 				this.p1 = new InnerComputationPoint2ai();
 				this.p2 = new InnerComputationPoint2ai();
 				this.x1 = rectangle.getMinX();
@@ -768,11 +872,16 @@ public interface Rectangle2ai<
 				this.y2 = rectangle.getMaxY();
 			}
 		}
+		
+		@Override
+		public PathIterator2ai<E> restartIterations() {
+			return new TransformedRectanglePathIterator<>(this.rectangle, this.transform);
+		}
 
 		@Pure
 		@Override
 		public boolean hasNext() {
-			return this.index <= 5;
+			return this.index <= 4;
 		}
 
 		@Override
@@ -785,7 +894,8 @@ public interface Rectangle2ai<
 				if (this.transform!=null) {
 					this.transform.transform(this.p2);
 				}
-				return this.factory.newMovePathElement(
+				this.move.set(this.p2);
+				return this.rectangle.getGeomFactory().newMovePathElement(
 						this.p2.ix(), this.p2.iy());
 			case 1:
 				this.p1.set(this.p2);
@@ -793,7 +903,7 @@ public interface Rectangle2ai<
 				if (this.transform!=null) {
 					this.transform.transform(this.p2);
 				}
-				return this.factory.newLinePathElement(
+				return this.rectangle.getGeomFactory().newLinePathElement(
 						this.p1.ix(), this.p1.iy(),
 						this.p2.ix(), this.p2.iy());
 			case 2:
@@ -802,7 +912,7 @@ public interface Rectangle2ai<
 				if (this.transform!=null) {
 					this.transform.transform(this.p2);
 				}
-				return this.factory.newLinePathElement(
+				return this.rectangle.getGeomFactory().newLinePathElement(
 						this.p1.ix(), this.p1.iy(),
 						this.p2.ix(), this.p2.iy());
 			case 3:
@@ -811,22 +921,13 @@ public interface Rectangle2ai<
 				if (this.transform!=null) {
 					this.transform.transform(this.p2);
 				}
-				return this.factory.newLinePathElement(
+				return this.rectangle.getGeomFactory().newLinePathElement(
 						this.p1.ix(), this.p1.iy(),
 						this.p2.ix(), this.p2.iy());
 			case 4:
-				this.p1.set(this.p2);
-				this.p2.set(this.x1, this.y1);
-				if (this.transform!=null) {
-					this.transform.transform(this.p2);
-				}
-				return this.factory.newLinePathElement(
-						this.p1.ix(), this.p1.iy(),
-						this.p2.ix(), this.p2.iy());
-			case 5:
-				return this.factory.newClosePathElement(
+				return this.rectangle.getGeomFactory().newClosePathElement(
 						this.p2.ix(), this.p2.iy(),
-						this.p2.ix(), this.p2.iy());
+						this.move.ix(), this.move.iy());
 			default:
 				throw new NoSuchElementException();
 			}
@@ -866,7 +967,7 @@ public interface Rectangle2ai<
 
 		@Override
 		public GeomFactory2ai<E, ?, ?, ?> getGeomFactory() {
-			return this.factory;
+			return this.rectangle.getGeomFactory();
 		}
 		
 	}

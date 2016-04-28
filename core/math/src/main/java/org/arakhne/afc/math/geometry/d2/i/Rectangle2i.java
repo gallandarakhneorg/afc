@@ -72,7 +72,7 @@ public class Rectangle2i extends AbstractShape2i<Rectangle2i>
 	public Rectangle2i(int x, int y, int width, int height) {
 		assert (width >= 0.) : "Width must be positive or zero"; //$NON-NLS-1$
 		assert (height >= 0.) : "Height must be positive or zero"; //$NON-NLS-1$
-		setFromCorners(x, y, x + width, y + height);
+		set(x, y, width, height);
 	}
 	
 	/**

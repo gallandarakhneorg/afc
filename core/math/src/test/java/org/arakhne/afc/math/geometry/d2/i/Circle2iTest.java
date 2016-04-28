@@ -45,7 +45,7 @@ import org.junit.Test;
 public class Circle2iTest extends AbstractCircle2aiTest<Circle2i, Rectangle2i> {
 
 	@Override
-	protected TestShapeFactory<Rectangle2i> createFactory() {
+	protected TestShapeFactory2i createFactory() {
 		return TestShapeFactory2i.SINGLETON;
 	}
 

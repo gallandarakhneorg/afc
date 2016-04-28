@@ -32,6 +32,7 @@ import java.util.Iterator;
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.d2.Point2D;
+import org.arakhne.afc.math.geometry.d2.Shape2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.ai.Rectangle2ai.Side;
 import org.junit.Test;
@@ -524,8 +525,7 @@ public abstract class AbstractRectangle2aiTest<T extends Rectangle2ai<?, T, ?, ?
 		assertElement(pi, PathElementType.LINE_TO, 15,8);
 		assertElement(pi, PathElementType.LINE_TO, 15,13);
 		assertElement(pi, PathElementType.LINE_TO, 5,13);
-		assertElement(pi, PathElementType.LINE_TO, 5,8);
-		assertElement(pi, PathElementType.CLOSE);
+		assertElement(pi, PathElementType.CLOSE, 5,8);
 		assertNoElement(pi);
 	}
 
@@ -541,8 +541,7 @@ public abstract class AbstractRectangle2aiTest<T extends Rectangle2ai<?, T, ?, ?
 		assertElement(pi, PathElementType.LINE_TO, 15,8);
 		assertElement(pi, PathElementType.LINE_TO, 15,13);
 		assertElement(pi, PathElementType.LINE_TO, 5,13);
-		assertElement(pi, PathElementType.LINE_TO, 5,8);
-		assertElement(pi, PathElementType.CLOSE);
+		assertElement(pi, PathElementType.CLOSE, 5,8);
 		assertNoElement(pi);
 
 		tr = new Transform2D();
@@ -552,8 +551,7 @@ public abstract class AbstractRectangle2aiTest<T extends Rectangle2ai<?, T, ?, ?
 		assertElement(pi, PathElementType.LINE_TO, 18,13);
 		assertElement(pi, PathElementType.LINE_TO, 18,18);
 		assertElement(pi, PathElementType.LINE_TO, 8,18);
-		assertElement(pi, PathElementType.LINE_TO, 8,13);
-		assertElement(pi, PathElementType.CLOSE);
+		assertElement(pi, PathElementType.CLOSE, 8,13);
 		assertNoElement(pi);
 
 		tr = new Transform2D();
@@ -564,8 +562,7 @@ public abstract class AbstractRectangle2aiTest<T extends Rectangle2ai<?, T, ?, ?
 		assertElement(pi, PathElementType.LINE_TO, 5,16);
 		assertElement(pi, PathElementType.LINE_TO, 1,20);
 		assertElement(pi, PathElementType.LINE_TO, -6,13);
-		assertElement(pi, PathElementType.LINE_TO, -2,9);
-		assertElement(pi, PathElementType.CLOSE);
+		assertElement(pi, PathElementType.CLOSE, -2,9);
 		assertNoElement(pi);
 	}
 
@@ -581,8 +578,7 @@ public abstract class AbstractRectangle2aiTest<T extends Rectangle2ai<?, T, ?, ?
 		assertElement(pi, PathElementType.LINE_TO, 15,8);
 		assertElement(pi, PathElementType.LINE_TO, 15,13);
 		assertElement(pi, PathElementType.LINE_TO, 5,13);
-		assertElement(pi, PathElementType.LINE_TO, 5,8);
-		assertElement(pi, PathElementType.CLOSE);
+		assertElement(pi, PathElementType.CLOSE, 5,8);
 		assertNoElement(pi);
 
 		tr = new Transform2D();
@@ -592,8 +588,7 @@ public abstract class AbstractRectangle2aiTest<T extends Rectangle2ai<?, T, ?, ?
 		assertElement(pi, PathElementType.LINE_TO, 18,13);
 		assertElement(pi, PathElementType.LINE_TO, 18,18);
 		assertElement(pi, PathElementType.LINE_TO, 8,18);
-		assertElement(pi, PathElementType.LINE_TO, 8,13);
-		assertElement(pi, PathElementType.CLOSE);
+		assertElement(pi, PathElementType.CLOSE, 8,13);
 		assertNoElement(pi);
 
 		tr = new Transform2D();
@@ -603,8 +598,7 @@ public abstract class AbstractRectangle2aiTest<T extends Rectangle2ai<?, T, ?, ?
 		assertElement(pi, PathElementType.LINE_TO, 5,16);
 		assertElement(pi, PathElementType.LINE_TO, 1,20);
 		assertElement(pi, PathElementType.LINE_TO, -6,13);
-		assertElement(pi, PathElementType.LINE_TO, -2,9);
-		assertElement(pi, PathElementType.CLOSE);
+		assertElement(pi, PathElementType.CLOSE, -2,9);
 		assertNoElement(pi);
 	}
 
@@ -733,6 +727,204 @@ public abstract class AbstractRectangle2aiTest<T extends Rectangle2ai<?, T, ?, ?
 		assertEquals(6, this.shape.getMinY());
 		assertEquals(18, this.shape.getMaxX());
 		assertEquals(17, this.shape.getMaxY());
+	}
+
+	@Test
+	public void setUnion() {
+		this.shape.setUnion(createRectangle(0, 0, 12, 1));
+		assertEquals(0, this.shape.getMinX());
+		assertEquals(0, this.shape.getMinY());
+		assertEquals(15, this.shape.getMaxX());
+		assertEquals(13, this.shape.getMaxY());
+	}
+
+	@Test
+	public void createUnion() {
+		T union = this.shape.createUnion(createRectangle(0, 0, 12, 1));
+		assertNotSame(this.shape, union);
+		assertEquals(0, union.getMinX());
+		assertEquals(0, union.getMinY());
+		assertEquals(15, union.getMaxX());
+		assertEquals(13, union.getMaxY());
+		assertEquals(5, this.shape.getMinX());
+		assertEquals(8, this.shape.getMinY());
+		assertEquals(15, this.shape.getMaxX());
+		assertEquals(13, this.shape.getMaxY());
+	}
+
+	@Test
+	public void setIntersection_noIntersection() {
+		this.shape.setIntersection(createRectangle(0, 0, 12, 1));
+		assertTrue(this.shape.isEmpty());
+	}
+
+	@Test
+	public void setIntersection_intersection() {
+		this.shape.setIntersection(createRectangle(0, 0, 7, 10));
+		assertEquals(5, this.shape.getMinX());
+		assertEquals(8, this.shape.getMinY());
+		assertEquals(7, this.shape.getMaxX());
+		assertEquals(10, this.shape.getMaxY());
+	}
+
+	@Test
+	public void createIntersection_noIntersection() {
+		T box = this.shape.createIntersection(createRectangle(0, 0, 12, 1));
+		assertNotSame(this.shape, box);
+		assertTrue(box.isEmpty());
+		assertEquals(5, this.shape.getMinX());
+		assertEquals(8, this.shape.getMinY());
+		assertEquals(15, this.shape.getMaxX());
+		assertEquals(13, this.shape.getMaxY());
+	}
+
+	@Test
+	public void createIntersection_intersection() {
+		//createRectangle(5, 8, 10, 5);
+		T box = this.shape.createIntersection(createRectangle(0, 0, 7, 10));
+		assertNotSame(this.shape, box);
+		assertEquals(5, box.getMinX());
+		assertEquals(8, box.getMinY());
+		assertEquals(7, box.getMaxX());
+		assertEquals(10, box.getMaxY());
+		assertEquals(5, this.shape.getMinX());
+		assertEquals(8, this.shape.getMinY());
+		assertEquals(15, this.shape.getMaxX());
+		assertEquals(13, this.shape.getMaxY());
+	}
+
+	@Override
+	public void intersectsPathIterator2ai() {
+		Path2ai path = createPath();
+		path.moveTo(0, 0);
+		path.lineTo(2, 2);
+		path.quadTo(3, 0, 4, 3);
+		path.curveTo(5, -1, 6, 5, 7, -5);
+		path.closePath();
+		this.shape = createRectangle(0, 0, 1, 1);
+		assertTrue(this.shape.intersects((PathIterator2ai) path.getPathIterator()));
+		this.shape = createRectangle(4, 3, 1, 1);
+		assertTrue(this.shape.intersects((PathIterator2ai) path.getPathIterator()));
+		this.shape = createRectangle(2, 2, 1, 1);
+		assertTrue(this.shape.intersects((PathIterator2ai) path.getPathIterator()));
+		this.shape = createRectangle(2, 1, 1, 1);
+		assertTrue(this.shape.intersects((PathIterator2ai) path.getPathIterator()));
+		this.shape = createRectangle(3, 0, 1, 1);
+		assertTrue(this.shape.intersects((PathIterator2ai) path.getPathIterator()));
+		this.shape = createRectangle(-1, -1, 1, 1);
+		assertTrue(this.shape.intersects((PathIterator2ai) path.getPathIterator()));
+		this.shape = createRectangle(4, -3, 1, 1);
+		assertTrue(this.shape.intersects((PathIterator2ai) path.getPathIterator()));
+		this.shape = createRectangle(-3, 4, 1, 1);
+		assertFalse(this.shape.intersects((PathIterator2ai) path.getPathIterator()));
+		this.shape = createRectangle(6, -5, 1, 1);
+		assertTrue(this.shape.intersects((PathIterator2ai) path.getPathIterator()));
+		this.shape = createRectangle(4, 0, 1, 1);
+		assertTrue(this.shape.intersects((PathIterator2ai) path.getPathIterator()));
+		this.shape = createRectangle(5, 0, 1, 1);
+		assertTrue(this.shape.intersects((PathIterator2ai) path.getPathIterator()));
+		this.shape = createRectangle(0, -3, 1, 1);
+		assertFalse(this.shape.intersects((PathIterator2ai) path.getPathIterator()));
+		this.shape = createRectangle(0, -3, 2, 1);
+		assertFalse(this.shape.intersects((PathIterator2ai) path.getPathIterator()));
+	}
+
+	@Override
+	public void intersectsShape2D() {
+		assertTrue(this.shape.intersects((Shape2D) createCircle(0,0,100)));
+		assertTrue(this.shape.intersects((Shape2D) createRectangle(7,10,1,1)));
+	}
+
+	@Override
+	public void operator_addVector2D() {
+		this.shape.operator_add(createVector(3, 4));
+		assertEquals(8, this.shape.getMinX());
+		assertEquals(12, this.shape.getMinY());
+		assertEquals(18, this.shape.getMaxX());
+		assertEquals(17, this.shape.getMaxY());
+	}
+
+	@Override
+	public void operator_plusVector2D() {
+		T r = this.shape.operator_plus(createVector(3, 4));
+		assertEquals(8, r.getMinX());
+		assertEquals(12, r.getMinY());
+		assertEquals(18, r.getMaxX());
+		assertEquals(17, r.getMaxY());
+	}
+
+	@Override
+	public void operator_removeVector2D() {
+		this.shape.operator_remove(createVector(3, 4));
+		assertEquals(2, this.shape.getMinX());
+		assertEquals(4, this.shape.getMinY());
+		assertEquals(12, this.shape.getMaxX());
+		assertEquals(9, this.shape.getMaxY());
+	}
+
+	@Override
+	public void operator_minusVector2D() {
+		T r = this.shape.operator_minus(createVector(3, 4));
+		assertEquals(2, r.getMinX());
+		assertEquals(4, r.getMinY());
+		assertEquals(12, r.getMaxX());
+		assertEquals(9, r.getMaxY());
+	}
+
+	@Override
+	public void operator_multiplyTransform2D() {
+		Transform2D tr;
+		PathIterator2ai pi;
+		
+		tr = new Transform2D();
+		pi = this.shape.operator_multiply(tr).getPathIterator();
+		assertElement(pi, PathElementType.MOVE_TO, 5,8);
+		assertElement(pi, PathElementType.LINE_TO, 15,8);
+		assertElement(pi, PathElementType.LINE_TO, 15,13);
+		assertElement(pi, PathElementType.LINE_TO, 5,13);
+		assertElement(pi, PathElementType.CLOSE, 5,8);
+		assertNoElement(pi);
+
+		tr = new Transform2D();
+		tr.makeTranslationMatrix(3.4f, 4.5f);
+		pi = this.shape.operator_multiply(tr).getPathIterator();
+		assertElement(pi, PathElementType.MOVE_TO, 8,13);
+		assertElement(pi, PathElementType.LINE_TO, 18,13);
+		assertElement(pi, PathElementType.LINE_TO, 18,18);
+		assertElement(pi, PathElementType.LINE_TO, 8,18);
+		assertElement(pi, PathElementType.CLOSE, 8,13);
+		assertNoElement(pi);
+
+		tr = new Transform2D();
+		tr.makeRotationMatrix(MathConstants.QUARTER_PI);		
+		pi = this.shape.operator_multiply(tr).getPathIterator();
+		assertElement(pi, PathElementType.MOVE_TO, -2,9);
+		assertElement(pi, PathElementType.LINE_TO, 5,16);
+		assertElement(pi, PathElementType.LINE_TO, 1,20);
+		assertElement(pi, PathElementType.LINE_TO, -6,13);
+		assertElement(pi, PathElementType.CLOSE, -2,9);
+		assertNoElement(pi);
+	}
+
+	@Override
+	public void operator_andPoint2D() {
+		assertFalse(this.shape.operator_and(createPoint(0,0)));
+		assertTrue(this.shape.operator_and(createPoint(11,10)));
+		assertFalse(this.shape.operator_and(createPoint(11,50)));
+	}
+
+	@Override
+	public void operator_andShape2D() {
+		assertTrue(this.shape.operator_and(createCircle(0,0,100)));
+		assertTrue(this.shape.operator_and(createRectangle(7,10,1,1)));
+	}
+
+	@Override
+	public void operator_upToPoint2D() {
+		assertEpsilonEquals(0f, this.shape.operator_upTo(createPoint(5,8)));
+		assertEpsilonEquals(0f, this.shape.operator_upTo(createPoint(10,10)));
+		assertEpsilonEquals(1f, this.shape.operator_upTo(createPoint(4,8)));
+		assertEpsilonEquals(9.433981132f, this.shape.operator_upTo(createPoint(0,0)));
 	}
 
 }

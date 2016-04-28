@@ -757,23 +757,29 @@ public abstract class PathElement2i implements PathElement2ai {
 		@Pure
 		@Override
 		public boolean isDrawable() {
-			return false;
+			return !isEmpty();
 		}
 
 		@Override
 		public void toArray(int[] array) {
-			//
+			assert (array != null) : "Array must be not null"; //$NON-NLS-1$
+			assert (array.length >= 2) : "Array size is too small"; //$NON-NLS-1$
+			array[0] = this.toX;
+			array[1] = this.toY;
 		}
 		
 		@Override
 		public void toArray(double[] array) {
-			//
+			assert (array != null) : "Array must be not null"; //$NON-NLS-1$
+			assert (array.length >= 2) : "Array size is too small"; //$NON-NLS-1$
+			array[0] = this.toX;
+			array[1] = this.toY;
 		}
 
 		@Pure
 		@Override
 		public int[] toArray() {
-			return new int[0];
+			return new int[] {this.toX, this.toY};
 		}
 
 		@Pure

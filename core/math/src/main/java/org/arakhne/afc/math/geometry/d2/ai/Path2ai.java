@@ -155,21 +155,6 @@ public interface Path2ai<
 
 	/**
 	 * Calculates the number of times the given path
-	 * crosses the given segment extending to the right.
-	 * 
-	 * @param pi is the description of the path.
-	 * @param x1 is the first point of the segment.
-	 * @param y1 is the first point of the segment.
-	 * @param x2 is the first point of the segment.
-	 * @param y2 is the first point of the segment.
-	 * @return the crossing or {@link MathConstants#SHAPE_INTERSECTS}.
-	 */
-	static int computeCrossingsFromSegment(PathIterator2ai<?> pi, int x1, int y1, int x2, int y2) {
-		return computeCrossingsFromSegment(0, pi, x1, y1, x2, y2, true);
-	}
-
-	/**
-	 * Calculates the number of times the given path
 	 * crosses the given circle extending to the right.
 	 * 
 	 * @param crossings is the initial value for crossing.
@@ -178,10 +163,12 @@ public interface Path2ai<
 	 * @param y1 is the first point of the segment.
 	 * @param x2 is the first point of the segment.
 	 * @param y2 is the first point of the segment.
-	 * @param closeable indicates if the shape is automatically closed or not.
+	 * @param type is the type of special computation to apply. If <code>null</code>, it 
+	 * is equivalent to {@link CrossingComputationType#STANDARD}.
 	 * @return the crossing
 	 */
-	static int computeCrossingsFromSegment(int crossings, PathIterator2ai<?> pi, int x1, int y1, int x2, int y2, boolean closeable) {	
+	static int computeCrossingsFromSegment(int crossings, PathIterator2ai<?> pi, int x1, int y1, int x2, int y2,
+			CrossingComputationType type) {	
 		assert (pi != null) : "Iterator must not be null"; //$NON-NLS-1$
 
 		// Copied from the AWT API
@@ -199,7 +186,7 @@ public interface Path2ai<
 		int cury = movy;
 		int endx, endy;
 		int numCrosses = crossings;
-		while (numCrosses!=MathConstants.SHAPE_INTERSECTS && pi.hasNext()) {
+		while (pi.hasNext()) {
 			element = pi.next();
 			switch (element.getType()) {
 			case MOVE_TO:
@@ -214,6 +201,8 @@ public interface Path2ai<
 						x1, y1, x2, y2,
 						curx, cury,
 						endx, endy);
+				if (numCrosses==MathConstants.SHAPE_INTERSECTS)
+					return numCrosses;
 				curx = endx;
 				cury = endy;
 				break;
@@ -230,7 +219,9 @@ public interface Path2ai<
 						numCrosses,
 						localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
 						x1, y1, x2, y2,
-						false);
+						CrossingComputationType.STANDARD);
+				if (numCrosses==MathConstants.SHAPE_INTERSECTS)
+					return numCrosses;
 				curx = endx;
 				cury = endy;
 				break;
@@ -248,7 +239,9 @@ public interface Path2ai<
 						numCrosses,
 						localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
 						x1, y1, x2, y2,
-						false);
+						CrossingComputationType.STANDARD);
+				if (numCrosses==MathConstants.SHAPE_INTERSECTS)
+					return numCrosses;
 				curx = endx;
 				cury = endy;
 				break;
@@ -259,6 +252,8 @@ public interface Path2ai<
 							x1, y1, x2, y2,
 							curx, cury,
 							movx, movy);
+					if (numCrosses==MathConstants.SHAPE_INTERSECTS)
+						return numCrosses;
 				}
 				curx = movx;
 				cury = movy;
@@ -267,29 +262,30 @@ public interface Path2ai<
 			}
 		}
 
-		if (numCrosses!=MathConstants.SHAPE_INTERSECTS && closeable && cury != movy) {
-			numCrosses = Segment2ai.computeCrossingsFromSegment(
-					numCrosses,
-					x1, y1, x2, y2,
-					curx, cury,
-					movx, movy);
+		assert(numCrosses!=MathConstants.SHAPE_INTERSECTS);
+
+		boolean isOpen = (curx != movx) || (cury != movy);
+
+		if (isOpen && type != null) {
+			switch (type) {
+			case AUTO_CLOSE:
+				numCrosses = Segment2ai.computeCrossingsFromSegment(
+						numCrosses,
+						x1, y1, x2, y2,
+						curx, cury,
+						movx, movy);
+				break;
+			case SIMPLE_INTERSECTION_WHEN_NOT_POLYGON:
+				// Assume that when is the path is open, only
+				// SHAPE_INTERSECTS may be return
+				numCrosses = 0;
+				break;
+			case STANDARD:
+			default:
+			}
 		}
 
 		return numCrosses;
-	}
-
-	/**
-	 * Calculates the number of times the given path
-	 * crosses the given ellipse extending to the right.
-	 * 
-	 * @param pi is the description of the path.
-	 * @param cx is the center of the circle.
-	 * @param cy is the center of the circle.
-	 * @param radius is the radius of the circle.
-	 * @return the crossing or {@link MathConstants#SHAPE_INTERSECTS}.
-	 */
-	static int computeCrossingsFromCircle(PathIterator2ai<?> pi, int cx, int cy, int radius) {
-		return computeCrossingsFromCircle(0, pi, cx, cy, radius, true);
 	}
 
 	/**
@@ -301,10 +297,12 @@ public interface Path2ai<
 	 * @param cx is the center of the circle.
 	 * @param cy is the center of the circle.
 	 * @param radius is the radius of the circle.
-	 * @param closeable indicates if the shape is automatically closed or not.
+	 * @param type is the type of special computation to apply. If <code>null</code>, it 
+	 * is equivalent to {@link CrossingComputationType#STANDARD}.
 	 * @return the crossing
 	 */
-	static int computeCrossingsFromCircle(int crossings, PathIterator2ai<?> pi, int cx, int cy, int radius, boolean closeable) {	
+	static int computeCrossingsFromCircle(int crossings, PathIterator2ai<?> pi, int cx, int cy, int radius,
+			CrossingComputationType type) {	
 		assert (pi != null) : "Iterator must not be null"; //$NON-NLS-1$
 		assert (radius >= 0) : "Circle radius must be positive or zero"; //$NON-NLS-1$
 
@@ -323,7 +321,7 @@ public interface Path2ai<
 		int cury = movy;
 		int endx, endy;
 		int numCrosses = crossings;
-		while (numCrosses!=MathConstants.SHAPE_INTERSECTS && pi.hasNext()) {
+		while (pi.hasNext()) {
 			element = pi.next();
 			switch (element.getType()) {
 			case MOVE_TO:
@@ -338,6 +336,9 @@ public interface Path2ai<
 						cx, cy, radius,
 						curx, cury,
 						endx, endy);
+				if (numCrosses==MathConstants.SHAPE_INTERSECTS) {
+					return numCrosses;
+				}
 				curx = endx;
 				cury = endy;
 				break;
@@ -354,7 +355,10 @@ public interface Path2ai<
 						numCrosses,
 						localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
 						cx, cy, radius,
-						false);
+						CrossingComputationType.STANDARD);
+				if (numCrosses==MathConstants.SHAPE_INTERSECTS) {
+					return numCrosses;
+				}
 				curx = endx;
 				cury = endy;
 				break;
@@ -372,7 +376,10 @@ public interface Path2ai<
 						numCrosses,
 						localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
 						cx, cy, radius,
-						false);
+						CrossingComputationType.STANDARD);
+				if (numCrosses==MathConstants.SHAPE_INTERSECTS) {
+					return numCrosses;
+				}
 				curx = endx;
 				cury = endy;
 				break;
@@ -383,6 +390,9 @@ public interface Path2ai<
 							cx, cy, radius,
 							curx, cury,
 							movx, movy);
+					if (numCrosses==MathConstants.SHAPE_INTERSECTS) {
+						return numCrosses;
+					}
 				}
 				curx = movx;
 				cury = movy;
@@ -391,12 +401,30 @@ public interface Path2ai<
 			}
 		}
 
-		if (numCrosses!=MathConstants.SHAPE_INTERSECTS && closeable && cury != movy) {
-			numCrosses = Segment2ai.computeCrossingsFromCircle(
-					numCrosses,
-					cx, cy, radius,
-					curx, cury,
-					movx, movy);
+		assert (numCrosses != MathConstants.SHAPE_INTERSECTS);
+
+		boolean isOpen = (curx != movx) || (cury != movy);
+
+		if (isOpen && type != null) {
+			switch(type) {
+			case AUTO_CLOSE:
+				// Auto close
+				numCrosses = Segment2ai.computeCrossingsFromCircle(
+						numCrosses,
+						cx, cy, radius,
+						curx, cury,
+						movx, movy);
+				break;
+			case SIMPLE_INTERSECTION_WHEN_NOT_POLYGON:
+				// Assume that when is the path is open, only
+				// SHAPE_INTERSECTS may be return
+				numCrosses = 0;
+				break;
+			case STANDARD:
+			default:
+				// Standard behavior
+				break;
+			}
 		}
 
 		return numCrosses;
@@ -414,34 +442,15 @@ public interface Path2ai<
 	 * The path must start with a MOVE_TO, otherwise an exception is
 	 * thrown.
 	 * 
+	 * @param crossings the initial crossing.
 	 * @param pi is the description of the path.
 	 * @param px is the reference point to test.
 	 * @param py is the reference point to test.
-	 * @return the crossing
-	 */
-	static int computeCrossingsFromPoint(PathIterator2ai<?> pi, int px, int py) {
-		return computeCrossingsFromPoint(pi, px, py, true);
-	}
-
-	/**
-	 * Calculates the number of times the given path
-	 * crosses the ray extending to the right from (px,py).
-	 * If the point lies on a part of the path,
-	 * then no crossings are counted for that intersection.
-	 * +1 is added for each crossing where the Y coordinate is increasing
-	 * -1 is added for each crossing where the Y coordinate is decreasing
-	 * The return value is the sum of all crossings for every segment in
-	 * the path.
-	 * The path must start with a MOVE_TO, otherwise an exception is
-	 * thrown.
-	 * 
-	 * @param pi is the description of the path.
-	 * @param px is the reference point to test.
-	 * @param py is the reference point to test.
-	 * @param autoClose indicates if the shape is automatically assumed as closed.
+	 * @param type is the type of special computation to apply. If <code>null</code>, it 
+	 * is equivalent to {@link CrossingComputationType#STANDARD}.
 	 * @return the crossing, or {@link MathConstants#SHAPE_INTERSECTS}
 	 */
-	static int computeCrossingsFromPoint(PathIterator2ai<?> pi, int px, int py, boolean autoClose) {
+	static int computeCrossingsFromPoint(int crossings, PathIterator2ai<?> pi, int px, int py, CrossingComputationType type) {
 		assert (pi != null) : "Iterator must not be null"; //$NON-NLS-1$
 
 		// Copied and adapted from the AWT API
@@ -458,7 +467,7 @@ public interface Path2ai<
 		int curx = movx;
 		int cury = movy;
 		int endx, endy;
-		int crossings = 0;
+		int numCrossings = crossings;
 
 		while (pi.hasNext()) {
 			element = pi.next();
@@ -470,13 +479,13 @@ public interface Path2ai<
 			case LINE_TO:
 				endx = element.getToX();
 				endy = element.getToY();
-				crossings = Segment2ai.computeCrossingsFromPoint(
-						crossings,
+				numCrossings = Segment2ai.computeCrossingsFromPoint(
+						numCrossings,
 						px, py,
 						curx, cury,
 						endx, endy);
-				if (crossings==MathConstants.SHAPE_INTERSECTS) {
-					return crossings;
+				if (numCrossings==MathConstants.SHAPE_INTERSECTS) {
+					return numCrossings;
 				}
 				curx = endx;
 				cury = endy;
@@ -487,13 +496,13 @@ public interface Path2ai<
 				Path2ai<?, ?, ?, ?, ?, ?> curve = pi.getGeomFactory().newPath(pi.getWindingRule());
 				curve.moveTo(element.getFromX(), element.getFromY());
 				curve.quadTo(element.getCtrlX1(), element.getCtrlY1(), endx, endy);
-				int numCrosses = computeCrossingsFromPoint(
+				numCrossings = computeCrossingsFromPoint(
+						numCrossings,
 						curve.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
-						px, py, false);
-				if (numCrosses==MathConstants.SHAPE_INTERSECTS) {
-					return numCrosses;
+						px, py, CrossingComputationType.STANDARD);
+				if (numCrossings==MathConstants.SHAPE_INTERSECTS) {
+					return numCrossings;
 				}
-				crossings += numCrosses;
 				curx = endx;
 				cury = endy;
 				break;
@@ -506,25 +515,25 @@ public interface Path2ai<
 						element.getCtrlX1(), element.getCtrlY1(),
 						element.getCtrlX2(), element.getCtrlY2(),
 						endx, endy);
-				numCrosses = computeCrossingsFromPoint(
+				numCrossings = computeCrossingsFromPoint(
+						numCrossings,
 						curve.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
-						px, py, false);
-				if (numCrosses==MathConstants.SHAPE_INTERSECTS) {
-					return numCrosses;
+						px, py, CrossingComputationType.STANDARD);
+				if (numCrossings==MathConstants.SHAPE_INTERSECTS) {
+					return numCrossings;
 				}
-				crossings += numCrosses;
 				curx = endx;
 				cury = endy;
 				break;
 			case CLOSE:
 				if (cury != movy || curx != movx) {
-					crossings = Segment2ai.computeCrossingsFromPoint(
-							crossings,
+					numCrossings = Segment2ai.computeCrossingsFromPoint(
+							numCrossings,
 							px, py,
 							curx, cury,
 							movx, movy);
-					if (crossings==MathConstants.SHAPE_INTERSECTS) {
-						return crossings;
+					if (numCrossings==MathConstants.SHAPE_INTERSECTS) {
+						return numCrossings;
 					}
 				}
 				curx = movx;
@@ -534,15 +543,34 @@ public interface Path2ai<
 			}
 		}
 
-		if (autoClose && cury != movy && curx != movx) {
-			crossings = Segment2ai.computeCrossingsFromPoint(
-					crossings,
-					px, py,
-					curx, cury,
-					movx, movy);
+		assert(numCrossings != MathConstants.SHAPE_INTERSECTS);
+
+		boolean isOpen = (curx != movx) || (cury != movy);
+
+		if (isOpen && type != null) {
+			switch (type) {
+			case AUTO_CLOSE:
+				// Not closed
+				if (movx==px && movy==py)
+					return MathConstants.SHAPE_INTERSECTS;
+				numCrossings = Segment2ai.computeCrossingsFromPoint(
+						numCrossings,
+						px, py,
+						curx, cury,
+						movx, movy);
+				break;
+			case SIMPLE_INTERSECTION_WHEN_NOT_POLYGON:
+				// Assume that when is the path is open, only
+				// SHAPE_INTERSECTS may be return
+				numCrossings = 0;
+				break;
+			case STANDARD:
+			default:
+				break;
+			}
 		}
 
-		return crossings;
+		return numCrossings;
 	}
 
 	/**
@@ -706,7 +734,7 @@ public interface Path2ai<
 		assert (pi != null) : "Iterator must not be null"; //$NON-NLS-1$
 		// Copied from the AWT API
 		int mask = (pi.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 1);
-		int cross = computeCrossingsFromPoint(pi, x, y);
+		int cross = computeCrossingsFromPoint(0, pi, x, y, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
 		return ((cross & mask) != 0);
 	}
 
@@ -722,22 +750,153 @@ public interface Path2ai<
 	 * thrown.
 	 * The caller must check r[xy]{min,max} for NaN values.
 	 * 
+	 * @param crossings the initial crossing.
 	 * @param pi is the iterator on the path elements.
 	 * @param rxmin is the first corner of the rectangle.
 	 * @param rymin is the first corner of the rectangle.
 	 * @param rxmax is the second corner of the rectangle.
 	 * @param rymax is the second corner of the rectangle.
+	 * @param type is the type of special computation to apply. If <code>null</code>, it 
+	 * is equivalent to {@link CrossingComputationType#STANDARD}.
 	 * @return the crossings.
 	 */
-	static int computeCrossingsFromRect(PathIterator2ai<?> pi,
+	static int computeCrossingsFromRect(
+			int crossings,
+			PathIterator2ai<?> pi,
 			int rxmin, int rymin,
-			int rxmax, int rymax) {
-		return PrivateAPI.computeCrossingsFromRect(pi, rxmin, rymin, rxmax, rymax, true, true);
+			int rxmax, int rymax,
+			CrossingComputationType type) {
+		assert (pi != null) : "Iterator must not be null"; //$NON-NLS-1$
+		// Copied from AWT API
+		if (!pi.hasNext()) return 0;
+
+		PathElement2ai pathElement = pi.next();
+
+		if (pathElement.getType() != PathElementType.MOVE_TO) {
+			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
+		}
+
+		int curx, cury, movx, movy, endx, endy;
+		curx = movx = pathElement.getToX();
+		cury = movy = pathElement.getToY();
+		int numCrossings = crossings;
+
+		while (pi.hasNext()) {
+			pathElement = pi.next();
+			switch (pathElement.getType()) {
+			case MOVE_TO:
+				// Count should always be a multiple of 2 here.
+				// assert((crossings & 1) != 0);
+				movx = curx = pathElement.getToX();
+				movy = cury = pathElement.getToY();
+				break;
+			case LINE_TO:
+				endx = pathElement.getToX();
+				endy = pathElement.getToY();
+				numCrossings = Segment2ai.computeCrossingsFromRect(
+						numCrossings,
+						rxmin, rymin,
+						rxmax, rymax,
+						curx, cury,
+						endx, endy);
+				if (numCrossings==MathConstants.SHAPE_INTERSECTS) {
+					return MathConstants.SHAPE_INTERSECTS;
+				}
+				curx = endx;
+				cury = endy;
+				break;
+			case QUAD_TO:
+				endx = pathElement.getToX();
+				endy = pathElement.getToY();
+				Path2ai<?, ?, ?, ?, ?, ?> curve = pi.getGeomFactory().newPath(pi.getWindingRule());
+				curve.moveTo(pathElement.getFromX(), pathElement.getFromY());
+				curve.quadTo(pathElement.getCtrlX1(), pathElement.getCtrlY1(), endx, endy);
+				numCrossings = computeCrossingsFromRect(
+						numCrossings,
+						curve.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						rxmin, rymin, rxmax, rymax,
+						CrossingComputationType.STANDARD);
+				if (numCrossings==MathConstants.SHAPE_INTERSECTS) {
+					return MathConstants.SHAPE_INTERSECTS;
+				}
+				curx = endx;
+				cury = endy;
+				break;
+			case CURVE_TO:
+				endx = pathElement.getToX();
+				endy = pathElement.getToY();
+				curve = pi.getGeomFactory().newPath(pi.getWindingRule());
+				curve.moveTo(pathElement.getFromX(), pathElement.getFromY());
+				curve.curveTo(pathElement.getCtrlX1(), pathElement.getCtrlY1(), pathElement.getCtrlX2(), pathElement.getCtrlY2(), endx, endy);
+				numCrossings = computeCrossingsFromRect(
+						numCrossings, 
+						curve.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						rxmin, rymin, rxmax, rymax,
+						CrossingComputationType.STANDARD);
+				if (numCrossings==MathConstants.SHAPE_INTERSECTS) {
+					return MathConstants.SHAPE_INTERSECTS;
+				}
+				curx = endx;
+				cury = endy;
+				break;
+			case CLOSE:
+				if (curx != movx || cury != movy) {
+					numCrossings = Segment2ai.computeCrossingsFromRect(
+							numCrossings,
+							rxmin, rymin,
+							rxmax, rymax,
+							curx, cury,
+							movx, movy);
+				}
+				// Stop as soon as possible
+				if (numCrossings != 0) {
+					return numCrossings;
+				}
+				curx = movx;
+				cury = movy;
+				// Count should always be a multiple of 2 here.
+				// assert((crossings & 1) != 0);
+				break;
+			default:
+			}
+		}
+
+		assert(numCrossings != MathConstants.SHAPE_INTERSECTS);
+
+		boolean isOpen = (curx != movx) || (cury != movy);
+
+		if (isOpen && type != null) {
+			switch (type) {
+			case AUTO_CLOSE:
+				// Not closed
+				numCrossings = Segment2ai.computeCrossingsFromRect(
+						numCrossings,
+						rxmin, rymin,
+						rxmax, rymax,
+						curx, cury,
+						movx, movy);
+				break;
+			case SIMPLE_INTERSECTION_WHEN_NOT_POLYGON:
+				// Assume that when is the path is open, only
+				// SHAPE_INTERSECTS may be return
+				numCrossings = 0;
+				break;
+			case STANDARD:
+			default:
+				break;
+			}
+		}
+
+		return numCrossings;
 	}
 
 	/**
 	 * Tests if the specified rectangle is inside the closed
 	 * boundary of the specified {@link PathIterator2ai}.
+	 *
+	 * <p>The points on the path are assumed to be outside the path area.
+	 * It means that is the rectangle is intersecting the path, this
+	 * function replies <code>false</code>.
 	 *
 	 * @param pi the specified {@code PathIterator2ai}
 	 * @param rx the lowest corner of the rectangle.
@@ -751,13 +910,13 @@ public interface Path2ai<
 		assert (pi != null) : "Iterator must not be null"; //$NON-NLS-1$
 		assert (rwidth >= 0) : "Rectangle width must be positive or zero."; //$NON-NLS-1$
 		assert (rheight >= 0) : "Rectangle height must be positive or zero"; //$NON-NLS-1$
-
-		// Copied and adapted from AWT API
-		if (rwidth == 0 || rheight == 0) {
-			return false;
-		}
+		// Copied from AWT API
 		int mask = (pi.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2);
-		int crossings = PrivateAPI.computeCrossingsFromRect(pi, rx, ry, rx+rwidth, ry+rheight, true, false);
+		int crossings = computeCrossingsFromRect(
+				0,
+				pi, 
+				rx, ry, rx+rwidth, ry+rheight,
+				CrossingComputationType.AUTO_CLOSE);
 		return (crossings != MathConstants.SHAPE_INTERSECTS &&
 				(crossings & mask) != 0);
 	}
@@ -802,7 +961,8 @@ public interface Path2ai<
 			return false;
 		}
 		int mask = (pi.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2);
-		int crossings = PrivateAPI.computeCrossingsFromRect(pi, x, y, x+w, y+h, true, true);
+		int crossings = computeCrossingsFromRect(0, pi, x, y, x+w, y+h,
+				CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
 		return (crossings == MathConstants.SHAPE_INTERSECTS ||
 				(crossings & mask) != 0);
 	}
@@ -1272,8 +1432,10 @@ public interface Path2ai<
 		assert (s != null) : "Circle must not be null"; //$NON-NLS-1$
 		int mask = (getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2);
 		int crossings = computeCrossingsFromCircle(
+				0,
 				getPathIterator(),
-				s.getX(), s.getY(), s.getRadius());
+				s.getX(), s.getY(), s.getRadius(),
+				CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
 		return (crossings == MathConstants.SHAPE_INTERSECTS ||
 				(crossings & mask) != 0);
 	}
@@ -1281,16 +1443,8 @@ public interface Path2ai<
 	@Pure
 	@Override
 	default boolean intersects(Rectangle2ai<?, ?, ?, ?, ?, ?> s) {
-		assert (s != null) : "Rectangle must not be null"; //$NON-NLS-1$
-		// Copied from AWT API
-		if (s.isEmpty()) return false;
-		int mask = (getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2);
-		int crossings = PrivateAPI.computeCrossingsFromRect(
-				getPathIterator(),
-				s.getMinX(), s.getMinY(), s.getMaxX(), s.getMaxY(),
-				true, true);
-		return (crossings == MathConstants.SHAPE_INTERSECTS ||
-				(crossings & mask) != 0);
+		assert (s != null) : "Rectangle must be not null"; //$NON-NLS-1$
+		return intersects(getPathIterator(), s.getMinX(), s.getMinY(), s.getWidth(), s.getHeight());
 	}
 
 	@Pure
@@ -1299,8 +1453,10 @@ public interface Path2ai<
 		assert (s != null) : "Segment must not be null"; //$NON-NLS-1$
 		int mask = (getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2);
 		int crossings = computeCrossingsFromSegment(
+				0,
 				getPathIterator(),
-				s.getX1(), s.getY1(), s.getX2(), s.getY2());
+				s.getX1(), s.getY1(), s.getX2(), s.getY2(),
+				CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
 		return (crossings == MathConstants.SHAPE_INTERSECTS ||
 				(crossings & mask) != 0);
 	}
@@ -1318,6 +1474,13 @@ public interface Path2ai<
 				(crossings & mask) != 0);
 	}
 	
+	@Pure
+	@Override
+	default boolean intersects(MultiShape2ai<?, ?, ?, ?, ?, ?, ?> s) {
+		assert (s != null) : "MultiShape must be not null"; //$NON-NLS-1$
+		return s.intersects(this);
+	}
+
 	@Pure
 	@Override
 	default Collection<P> toCollection() {
@@ -1379,140 +1542,6 @@ public interface Path2ai<
 			return crosses;
 		}
 
-		/**
-		 * Accumulate the number of times the path crosses the shadow
-		 * extending to the right of the rectangle.  See the comment
-		 * for the SHAPE_INTERSECTS constant for more complete details.
-		 * The return value is the sum of all crossings for both the
-		 * top and bottom of the shadow for every segment in the path,
-		 * or the special value SHAPE_INTERSECTS if the path ever enters
-		 * the interior of the rectangle.
-		 * The path must start with a SEG_MOVETO, otherwise an exception is
-		 * thrown.
-		 * The caller must check r[xy]{min,max} for NaN values.
-		 * 
-		 * @param pi is the iterator on the path elements.
-		 * @param rxmin is the first corner of the rectangle.
-		 * @param rymin is the first corner of the rectangle.
-		 * @param rxmax is the second corner of the rectangle.
-		 * @param rymax is the second corner of the rectangle.
-		 * @param autoClose indicates if the line from the last point to the last move
-		 * point must be include in the crossing computation.
-		 * @param intersectingBehavior indicates the function is called to determine if the rectangle
-		 * is inside the shape or not. This function determines
-		 * {@link MathConstants#SHAPE_INTERSECTS} in a different way if the
-		 * function is used for containing or intersecting tests.
-		 * @return the crossings count or {@link MathConstants#SHAPE_INTERSECTS}.
-		 */
-		public static int computeCrossingsFromRect(PathIterator2ai<?> pi,
-				int rxmin, int rymin,
-				int rxmax, int rymax,
-				boolean autoClose,
-				boolean intersectingBehavior) {
-			assert (pi != null) : "Iterator must not be null"; //$NON-NLS-1$
-			// Copied from AWT API
-			if (rxmax <= rxmin || rymax <= rymin) return 0;
-			if (!pi.hasNext()) return 0;
-
-			PathElement2ai pathElement = pi.next();
-
-			if (pathElement.getType() != PathElementType.MOVE_TO) {
-				throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
-			}
-
-			int curx, cury, movx, movy, endx, endy;
-			curx = movx = pathElement.getToX();
-			cury = movy = pathElement.getToY();
-			int crossings = 0;
-
-			while (crossings != MathConstants.SHAPE_INTERSECTS
-					&& pi.hasNext()) {
-				pathElement = pi.next();
-				switch (pathElement.getType()) {
-				case MOVE_TO:
-					// Count should always be a multiple of 2 here.
-					// assert((crossings & 1) != 0);
-					movx = curx = pathElement.getToX();
-					movy = cury = pathElement.getToY();
-					break;
-				case LINE_TO:
-					endx = pathElement.getToX();
-					endy = pathElement.getToY();
-					crossings = crossingHelper(crossings,
-							rxmin, rymin, rxmax, rymax,
-							curx, cury, endx, endy,
-							intersectingBehavior);
-					if (crossings==MathConstants.SHAPE_INTERSECTS) {
-						return MathConstants.SHAPE_INTERSECTS;
-					}
-					curx = endx;
-					cury = endy;
-					break;
-				case QUAD_TO:
-					endx = pathElement.getToX();
-					endy = pathElement.getToY();
-					Path2ai<?, ?, ?, ?, ?, ?> curve = pi.getGeomFactory().newPath(pi.getWindingRule());
-					curve.moveTo(pathElement.getFromX(), pathElement.getFromY());
-					curve.quadTo(pathElement.getCtrlX1(), pathElement.getCtrlY1(), endx, endy);
-					int numCrosses = computeCrossingsFromRect(
-							curve.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
-							rxmin, rymin, rxmax, rymax,
-							false, intersectingBehavior);
-					if (numCrosses==MathConstants.SHAPE_INTERSECTS) {
-						return MathConstants.SHAPE_INTERSECTS;
-					}
-					crossings += numCrosses;
-					curx = endx;
-					cury = endy;
-					break;
-				case CURVE_TO:
-					endx = pathElement.getToX();
-					endy = pathElement.getToY();
-					curve = pi.getGeomFactory().newPath(pi.getWindingRule());
-					curve.moveTo(pathElement.getFromX(), pathElement.getFromY());
-					curve.curveTo(pathElement.getCtrlX1(), pathElement.getCtrlY1(), pathElement.getCtrlX2(), pathElement.getCtrlY2(), endx, endy);
-					numCrosses = computeCrossingsFromRect(
-							curve.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
-							rxmin, rymin, rxmax, rymax,
-							false, intersectingBehavior);
-					if (numCrosses==MathConstants.SHAPE_INTERSECTS) {
-						return MathConstants.SHAPE_INTERSECTS;
-					}
-					crossings += numCrosses;
-					curx = endx;
-					cury = endy;
-					break;
-				case CLOSE:
-					if (curx != movx || cury != movy) {
-						crossings = crossingHelper(crossings,
-								rxmin, rymin, rxmax, rymax,
-								curx, cury, movx, movy,
-								intersectingBehavior);
-						if (crossings==MathConstants.SHAPE_INTERSECTS) {
-							return crossings;
-						}
-					}
-					curx = movx;
-					cury = movy;
-					// Count should always be a multiple of 2 here.
-					// assert((crossings & 1) != 0);
-					break;
-				default:
-				}
-			}
-
-			if (autoClose && crossings != MathConstants.SHAPE_INTERSECTS && (curx != movx || cury != movy)) {
-				crossings = crossingHelper(crossings,
-						rxmin, rymin, rxmax, rymax,
-						curx, cury, movx, movy,
-						intersectingBehavior);
-			}
-
-			// Count should always be a multiple of 2 here.
-			// assert((crossings & 1) != 0);
-			return crossings;
-		}
-
 	}
 
 	/** An abstract path iterator.
@@ -1526,10 +1555,6 @@ public interface Path2ai<
 	 */
 	abstract class AbstractPathIterator<E extends PathElement2ai> implements PathIterator2ai<E> {
 
-		/** Element factory.
-		 */
-		protected final GeomFactory2ai<E, ?, ?, ?> factory;
-
 		/** Path.
 		 */
 		protected final Path2ai<?, ?, E, ?, ?, ?> path;
@@ -1540,7 +1565,6 @@ public interface Path2ai<
 		public AbstractPathIterator(Path2ai<?, ?, E, ?, ?, ?> path) {
 			assert (path != null) : "Path must not be null"; //$NON-NLS-1$
 			this.path = path;
-			this.factory = path.getGeomFactory();
 		}
 
 		@Override
@@ -1575,7 +1599,7 @@ public interface Path2ai<
 
 		@Override
 		public GeomFactory2ai<E, ?, ?, ?> getGeomFactory() {
-			return this.factory;
+			return this.path.getGeomFactory();
 		}
 
 	}
@@ -1611,6 +1635,11 @@ public interface Path2ai<
 			this.p1 = new InnerComputationPoint2ai();
 			this.p2 = new InnerComputationPoint2ai();
 		}
+		
+		@Override
+		public PathIterator2ai<E> restartIterations() {
+			return new PathPathIterator<>(this.path);
+		}
 
 		@Override
 		public boolean hasNext() {
@@ -1632,7 +1661,7 @@ public interface Path2ai<
 				this.movex = this.path.getCoordAt(this.iCoord++);
 				this.movey = this.path.getCoordAt(this.iCoord++);
 				this.p2.set(this.movex, this.movey);
-				element = this.factory.newMovePathElement(
+				element = getGeomFactory().newMovePathElement(
 						this.p2.ix(), this.p2.iy());
 				break;
 			case LINE_TO:
@@ -1643,7 +1672,7 @@ public interface Path2ai<
 				this.p2.set(
 						this.path.getCoordAt(this.iCoord++),
 						this.path.getCoordAt(this.iCoord++));
-				element = this.factory.newLinePathElement(
+				element = getGeomFactory().newLinePathElement(
 						this.p1.ix(), this.p1.iy(),
 						this.p2.ix(), this.p2.iy());
 				break;
@@ -1658,7 +1687,7 @@ public interface Path2ai<
 				this.p2.set(
 						this.path.getCoordAt(this.iCoord++),
 						this.path.getCoordAt(this.iCoord++));
-				element = this.factory.newCurvePathElement(
+				element = getGeomFactory().newCurvePathElement(
 						this.p1.ix(), this.p1.iy(),
 						ctrlx, ctrly,
 						this.p2.ix(), this.p2.iy());
@@ -1677,7 +1706,7 @@ public interface Path2ai<
 				this.p2.set(
 						this.path.getCoordAt(this.iCoord++),
 						this.path.getCoordAt(this.iCoord++));
-				element = this.factory.newCurvePathElement(
+				element = getGeomFactory().newCurvePathElement(
 						this.p1.ix(), this.p1.iy(),
 						ctrlx1, ctrly1,
 						ctrlx2, ctrly2,
@@ -1687,7 +1716,7 @@ public interface Path2ai<
 			case CLOSE:
 				this.p1.set(this.p2);
 				this.p2.set(this.movex, this.movey);
-				element = this.factory.newClosePathElement(
+				element = getGeomFactory().newClosePathElement(
 						this.p1.ix(), this.p1.iy(),
 						this.p2.ix(), this.p2.iy());
 				break;
@@ -1743,6 +1772,11 @@ public interface Path2ai<
 			this.ptmp1 = new InnerComputationPoint2ai();
 			this.ptmp2 = new InnerComputationPoint2ai();
 		}
+		
+		@Override
+		public PathIterator2ai<E> restartIterations() {
+			return new TransformedPathIterator<>(this.path, this.transform);
+		}
 
 		@Override
 		public boolean hasNext() {
@@ -1761,7 +1795,7 @@ public interface Path2ai<
 				this.movey = this.path.getCoordAt(this.iCoord++);
 				this.p2.set(this.movex, this.movey);
 				this.transform.transform(this.p2);
-				element = this.factory.newMovePathElement(
+				element = getGeomFactory().newMovePathElement(
 						this.p2.ix(), this.p2.iy());
 				break;
 			case LINE_TO:
@@ -1770,7 +1804,7 @@ public interface Path2ai<
 						this.path.getCoordAt(this.iCoord++),
 						this.path.getCoordAt(this.iCoord++));
 				this.transform.transform(this.p2);
-				element = this.factory.newLinePathElement(
+				element = getGeomFactory().newLinePathElement(
 						this.p1.ix(), this.p1.iy(),
 						this.p2.ix(), this.p2.iy());
 				break;
@@ -1785,7 +1819,7 @@ public interface Path2ai<
 						this.path.getCoordAt(this.iCoord++),
 						this.path.getCoordAt(this.iCoord++));
 				this.transform.transform(this.p2);
-				element = this.factory.newCurvePathElement(
+				element = getGeomFactory().newCurvePathElement(
 						this.p1.ix(), this.p1.iy(),
 						this.ptmp1.ix(), this.ptmp1.iy(),
 						this.p2.ix(), this.p2.iy());
@@ -1806,7 +1840,7 @@ public interface Path2ai<
 						this.path.getCoordAt(this.iCoord++),
 						this.path.getCoordAt(this.iCoord++));
 				this.transform.transform(this.p2);
-				element = this.factory.newCurvePathElement(
+				element = getGeomFactory().newCurvePathElement(
 						this.p1.ix(), this.p1.iy(),
 						this.ptmp1.ix(), this.ptmp1.iy(),
 						this.ptmp2.ix(), this.ptmp2.iy(),
@@ -1817,7 +1851,7 @@ public interface Path2ai<
 				this.p1.set(this.p2);
 				this.p2.set(this.movex, this.movey);
 				this.transform.transform(this.p2);
-				element = this.factory.newClosePathElement(
+				element = getGeomFactory().newClosePathElement(
 						this.p1.ix(), this.p1.iy(),
 						this.p2.ix(), this.p2.iy());
 				break;
@@ -1872,13 +1906,13 @@ public interface Path2ai<
 				if (elt.isDrawable()) {
 					switch(elt.getType()) {
 					case LINE_TO:
+					case CLOSE:
 						Segment2ai<?, ?, ?, P, V, ?> segment = this.factory.newSegment(
 								elt.getFromX(), elt.getFromY(),
 								elt.getToX(), elt.getToY());
 						this.lineIterator = segment.getPointIterator();
 						break;
 					case MOVE_TO:
-					case CLOSE:
 					case CURVE_TO:
 					case QUAD_TO:
 					default:
@@ -2121,7 +2155,7 @@ public interface Path2ai<
 		
 		/** The source iterator.
 		 */
-		private final Iterator<? extends E> pathIterator;
+		private final PathIterator2ai<? extends E> pathIterator;
 
 		/**
 		 * Square of the flatness parameter for testing against squared lengths.
@@ -2206,7 +2240,7 @@ public interface Path2ai<
 		 * @param limit the maximum number of recursive subdivisions
 		 *     allowed for any curved segment
 		 */
-		public FlatteningPathIterator(Path2ai<?, ?, E, ?, ?, ?> path, Iterator<? extends E> pathIterator,
+		public FlatteningPathIterator(Path2ai<?, ?, E, ?, ?, ?> path, PathIterator2ai<? extends E> pathIterator,
 				double flatness, int limit) {
 			assert (path != null) : "Path must not be null"; //$NON-NLS-1$
 			assert (pathIterator != null) : "Iterator must not be null"; //$NON-NLS-1$
@@ -2220,6 +2254,12 @@ public interface Path2ai<
 			searchNext(true);
 		}
 
+		@Override
+		public PathIterator2ai<E> restartIterations() {
+			return new FlatteningPathIterator<>(this.path, this.pathIterator.restartIterations(),
+					Math.sqrt(this.squaredFlatness), this.limit);
+		}
+		
 		/**
 		 * Ensures that the hold array can hold up to (want) more values.
 		 * It is currently holding (hold.length - holdIndex) values.
@@ -2658,4 +2698,29 @@ public interface Path2ai<
 		}
 
 	}
+
+	/** Type of computation for the crossing of the path's shadow with a shape.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 13.0
+	 */
+	enum CrossingComputationType {
+		/** The crossing is computed with the default standard approach.
+		 */
+		STANDARD,
+
+		/** The path is automatically close by the crossing computation function.
+		 */
+		AUTO_CLOSE,
+
+		/** When the path is not a polygon, i.e. not closed,the crossings will
+		 * only consider the shape intersection only. The other crossing values
+		 * will be assumed to be always equal to zero. 
+		 */
+		SIMPLE_INTERSECTION_WHEN_NOT_POLYGON;
+	}
+
 }

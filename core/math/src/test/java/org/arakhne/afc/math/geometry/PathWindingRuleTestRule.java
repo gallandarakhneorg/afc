@@ -1,4 +1,4 @@
-package org.arakhne.afc.math.geometry.d2.afp;
+package org.arakhne.afc.math.geometry;
 
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.junit.AssumptionViolatedException;
@@ -15,7 +15,7 @@ import org.junit.runners.model.Statement;
  * @mavenartifactid $ArtifactId$
  */
 @SuppressWarnings("all")
-public class PathWindingRule2afpTestRule implements TestRule {
+public class PathWindingRuleTestRule implements TestRule {
 
 	/** Current path winding rule.
 	 *

@@ -409,7 +409,7 @@ public interface Path2afp<
 				0,
 				pi, 
 				rx, ry, rx+rwidth, ry+rheight,
-				CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
+				CrossingComputationType.AUTO_CLOSE);
 		return (crossings != MathConstants.SHAPE_INTERSECTS &&
 				(crossings & mask) != 0);
 	}
@@ -926,7 +926,7 @@ public interface Path2afp<
 		double cury = movy;
 		double endx, endy;
 		int numCrosses = crossings;
-		while (numCrosses!=MathConstants.SHAPE_INTERSECTS && iterator.hasNext()) {
+		while (iterator.hasNext()) {
 			element = iterator.next();
 			switch (element.getType()) {
 			case MOVE_TO:

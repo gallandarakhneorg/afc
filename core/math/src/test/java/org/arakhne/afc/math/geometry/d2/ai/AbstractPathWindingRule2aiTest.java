@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  * This program is free software; you can redistribute it and/or modify
  */
-package org.arakhne.afc.math.geometry.d2.afp;
+package org.arakhne.afc.math.geometry.d2.ai;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -35,16 +35,16 @@ import org.junit.Rule;
 import org.junit.Test;
 
 @SuppressWarnings("all")
-public abstract class AbstractPathWindingRule2afpTest<P extends Point2D<? super P, ? super V>,
+public abstract class AbstractPathWindingRule2aiTest<P extends Point2D<? super P, ? super V>,
 		V extends Vector2D<? super V, ? super P>,
-		B extends Rectangle2afp<?, ?, ?, P, V, B>> extends AbstractMathTestCase {
+		B extends Rectangle2ai<?, ?, ?, P, V, B>> extends AbstractMathTestCase {
 	
 	@Rule
 	public final PathWindingRuleTestRule csTestRule = new PathWindingRuleTestRule();
 	
 	/** Is the shape to test.
 	 */
-	protected Path2afp<?, ?, ?, P, V, B> shape;
+	protected Path2ai<?, ?, ?, P, V, B> shape;
 	
 	/** Shape factory.
 	 */
@@ -55,7 +55,7 @@ public abstract class AbstractPathWindingRule2afpTest<P extends Point2D<? super 
 	@Before
 	public void setUp() throws Exception {
 		this.factory = createFactory();
-		this.shape = (Path2afp<?, ?, ?, P, V, B>) this.factory.createPath(PathWindingRuleTestRule.CURRENT_RULE);
+		this.shape = this.factory.createPath(PathWindingRuleTestRule.CURRENT_RULE);
 		this.shape.moveTo(1, -3);
 		this.shape.lineTo(4, -4);
 		this.shape.lineTo(6, -2);
@@ -119,7 +119,7 @@ public abstract class AbstractPathWindingRule2afpTest<P extends Point2D<? super 
     public void containsPoint_inside_evenOdd() {
 		Assume.assumeTrue(this.shape.getWindingRule() == PathWindingRule.EVEN_ODD);
 		assertTrue(this.shape.contains(3, 2));
-		assertTrue(this.shape.contains(5, 4.1));
+		assertTrue(this.shape.contains(5, 4));
 		assertTrue(this.shape.contains(8, 3));
 		assertTrue(this.shape.contains(11, -3));
 		assertTrue(this.shape.contains(5, -4));
@@ -129,7 +129,7 @@ public abstract class AbstractPathWindingRule2afpTest<P extends Point2D<? super 
     public void containsPoint_inside_nonZero() {
 		Assume.assumeTrue(this.shape.getWindingRule() == PathWindingRule.NON_ZERO);
 		assertTrue(this.shape.contains(3, 2));
-		assertTrue(this.shape.contains(5, 4.1));
+		assertTrue(this.shape.contains(5, 4));
 		assertTrue(this.shape.contains(8, 3));
 		assertTrue(this.shape.contains(11, -3));
 		assertTrue(this.shape.contains(5, -4));
@@ -140,7 +140,7 @@ public abstract class AbstractPathWindingRule2afpTest<P extends Point2D<? super 
 		Assume.assumeTrue(this.shape.getWindingRule() == PathWindingRule.EVEN_ODD);
 		assertFalse(this.shape.contains(7, -1));
 		assertFalse(this.shape.contains(8, -2));
-		assertFalse(this.shape.contains(6, -2.5));
+		assertFalse(this.shape.contains(6, -2));
     }
 
 	@Test
@@ -148,7 +148,7 @@ public abstract class AbstractPathWindingRule2afpTest<P extends Point2D<? super 
 		Assume.assumeTrue(this.shape.getWindingRule() == PathWindingRule.NON_ZERO);
 		assertTrue(this.shape.contains(7, -1));
 		assertTrue(this.shape.contains(8, -2));
-		assertTrue(this.shape.contains(6, -2.5));
+		assertTrue(this.shape.contains(6, -2));
     }
 
 }

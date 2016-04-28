@@ -23,10 +23,7 @@ package org.arakhne.afc.math.geometry.d2.ifx;
 
 import static org.junit.Assert.assertNotSame;
 
-import org.arakhne.afc.math.geometry.d2.Point2D;
-import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.ai.AbstractPath2aiTest;
-import org.arakhne.afc.math.geometry.d2.ai.Circle2ai;
 import org.arakhne.afc.math.geometry.d2.ai.TestShapeFactory;
 import org.junit.Test;
 
@@ -34,7 +31,7 @@ import org.junit.Test;
 public class Path2ifxTest extends AbstractPath2aiTest<Path2ifx, Rectangle2ifx> {
 
 	@Override
-	protected TestShapeFactory<Rectangle2ifx> createFactory() {
+	protected TestShapeFactory2ifx createFactory() {
 		return TestShapeFactory2ifx.SINGLETON;
 	}
 
