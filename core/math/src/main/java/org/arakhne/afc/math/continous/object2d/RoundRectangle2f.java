@@ -27,8 +27,8 @@ import org.arakhne.afc.math.generic.PathElementType;
 import org.arakhne.afc.math.generic.PathWindingRule;
 import org.arakhne.afc.math.generic.Point2D;
 import org.arakhne.afc.math.geometry.d2.afp.Ellipse2afp;
-import org.arakhne.afc.math.geometry.d2.fp.Point2fp;
-import org.arakhne.afc.math.geometry.d2.fp.RoundRectangle2fp;
+import org.arakhne.afc.math.geometry.d2.d.Point2d;
+import org.arakhne.afc.math.geometry.d2.d.RoundRectangle2d;
 import org.arakhne.afc.math.matrix.Transform2D;
 
 
@@ -38,7 +38,7 @@ import org.arakhne.afc.math.matrix.Transform2D;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @deprecated see {@link RoundRectangle2fp}
+ * @deprecated see {@link RoundRectangle2d}
  */
 @Deprecated
 public class RoundRectangle2f extends AbstractRectangularShape2f<RoundRectangle2f> {
@@ -313,7 +313,7 @@ public class RoundRectangle2f extends AbstractRectangularShape2f<RoundRectangle2
 
 		if (px<rx1+aw) {
 			if (py<ry1+ah) {
-				Point2fp pts = new Point2fp();
+				Point2d pts = new Point2d();
 				Ellipse2afp.computeClosestPointToSolidEllipse(
 						px, py,
 						rx1, ry1,
@@ -322,7 +322,7 @@ public class RoundRectangle2f extends AbstractRectangularShape2f<RoundRectangle2
 				return new Point2f(pts.getX(), pts.getY());
 			}
 			if (py>ry2-ah) {
-				Point2fp pts = new Point2fp();
+				Point2d pts = new Point2d();
 				Ellipse2afp.computeClosestPointToSolidEllipse(
 						px, py,
 						rx1, ry2-ah,
@@ -333,7 +333,7 @@ public class RoundRectangle2f extends AbstractRectangularShape2f<RoundRectangle2
 		}
 		else if (px>rx2-aw) {
 			if (py<ry1+ah) {
-				Point2fp pts = new Point2fp();
+				Point2d pts = new Point2d();
 				Ellipse2afp.computeClosestPointToSolidEllipse(
 						px, py,
 						rx2-aw, ry1,
@@ -342,7 +342,7 @@ public class RoundRectangle2f extends AbstractRectangularShape2f<RoundRectangle2
 				return new Point2f(pts.getX(), pts.getY());
 			}
 			if (py>ry2-ah) {
-				Point2fp pts = new Point2fp();
+				Point2d pts = new Point2d();
 				Ellipse2afp.computeClosestPointToSolidEllipse(
 						px, py,
 						rx2-aw, ry2-ah,

@@ -27,7 +27,7 @@ import org.arakhne.afc.math.generic.PathWindingRule;
 import org.arakhne.afc.math.generic.Point2D;
 import org.arakhne.afc.math.generic.Vector2D;
 import org.arakhne.afc.math.geometry.d2.afp.Segment2afp;
-import org.arakhne.afc.math.geometry.d2.fp.Rectangle2fp;
+import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.math.matrix.Transform2D;
 
 
@@ -38,7 +38,7 @@ import org.arakhne.afc.math.matrix.Transform2D;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @deprecated see {@link Rectangle2fp}
+ * @deprecated see {@link Rectangle2d}
  */
 @Deprecated
 public class Rectangle2f extends AbstractRectangularShape2f<Rectangle2f> {

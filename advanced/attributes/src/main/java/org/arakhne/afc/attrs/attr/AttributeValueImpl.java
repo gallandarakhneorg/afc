@@ -42,7 +42,7 @@ import java.util.UUID;
 
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
-import org.arakhne.afc.math.geometry.d2.fp.Point2fp;
+import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Tuple3D;
 import org.arakhne.afc.ui.vector.Color;
@@ -465,7 +465,7 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 	 */
 	public AttributeValueImpl(float x, float y) {
 		this.type = AttributeType.POINT;
-		this.value = new Point2fp(x,y);
+		this.value = new Point2d(x,y);
 		this.assigned = true;
 	}
 
@@ -475,7 +475,7 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 	 */
 	public AttributeValueImpl(double x, double y) {
 		this.type = AttributeType.POINT;
-		this.value = new Point2fp(x,y);
+		this.value = new Point2d(x,y);
 		this.assigned = true;
 	}
 
@@ -1527,7 +1527,7 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 		float x=0,y=0;
 		if (comp.length>0) x = Float.parseFloat(comp[0]);
 		if (comp.length>1) y = Float.parseFloat(comp[1]);
-		return new Point2fp(x,y);
+		return new Point2d(x,y);
 		
 	}
 
@@ -1540,35 +1540,35 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 			switch(this.type) {
 			case COLOR:
 				Color col = (Color)this.value;
-				return new Point2fp(col.getRed(),col.getGreen()); 
+				return new Point2d(col.getRed(),col.getGreen()); 
 			case REAL:
 				Double flt = (Double)this.value;
-				return new Point2fp(flt.floatValue(),0f); 
+				return new Point2d(flt.floatValue(),0f); 
 			case INTEGER:
 				Long lg = (Long)this.value;
-				return new Point2fp(lg.floatValue(),0f); 
+				return new Point2d(lg.floatValue(),0f); 
 			case TIMESTAMP:
 				Timestamp ts = (Timestamp)this.value;
-				return new Point2fp(ts.floatValue(),0f); 
+				return new Point2d(ts.floatValue(),0f); 
 			case DATE:
 				Date dt = (Date)this.value;
-				return new Point2fp(dt.getTime(),0f); 
+				return new Point2d(dt.getTime(),0f); 
 			case POINT:
-				return new Point2fp(((Point2D)this.value).getX(),
+				return new Point2d(((Point2D)this.value).getX(),
 						((Point2D)this.value).getY());
 			case POINT3D:
 				Point3D pt3 = (Point3D)this.value;
-				return new Point2fp(pt3.getX(),pt3.getY()); 
+				return new Point2d(pt3.getX(),pt3.getY()); 
 			case STRING:
 				return parsePoint((String)this.value, false);
 			case OBJECT:
 				if (this.value instanceof Tuple3D<?>) {
 					Tuple3D<?> t3 = (Tuple3D<?>)this.value;
-					return new Point2fp(t3.getX(), t3.getY()); 
+					return new Point2d(t3.getX(), t3.getY()); 
 				}
 				if (this.value instanceof Tuple2D<?>) {
 					Tuple2D<?> t2 = (Tuple2D<?>)this.value;
-					return new Point2fp(t2.getX(), t2.getY()); 
+					return new Point2d(t2.getX(), t2.getY()); 
 				}
 				break;
 			case BOOLEAN:
@@ -1606,7 +1606,7 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 	 */
 	@Override
 	public void setPoint(float x, float y) {
-		this.value = new Point2fp(x,y);
+		this.value = new Point2d(x,y);
 		this.type = AttributeType.POINT;
 		this.assigned = true;
 	}
@@ -2299,13 +2299,13 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 			switch(this.type) {
 			case POINT:
 				return new Point2D[] {
-						new Point2fp(((Point2D)this.value).getX(),
+						new Point2d(((Point2D)this.value).getX(),
 								((Point2D)this.value).getY())
 				};
 			case POINT3D:
 				Point3D pt3 = (Point3D)this.value;
 				return new Point2D[] {
-					new Point2fp(pt3.getX(),pt3.getY()) 
+					new Point2d(pt3.getX(),pt3.getY()) 
 				};
 			case POLYLINE:
 				return (Point2D[])this.value;
@@ -2314,7 +2314,7 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 				Point3D[] current = (Point3D[])this.value;
 				Point2D[] tab = new Point2D[current.length];
 				for(int i=0; i<current.length; ++i) {
-					tab[i] = new Point2fp(
+					tab[i] = new Point2d(
 								current[i].getX(),
 								current[i].getY()); 
 				}
@@ -2325,14 +2325,14 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 			case OBJECT:
 				if (this.value instanceof Tuple2D) {
 					return new Point2D[] {
-							new Point2fp(((Tuple2D<?>)this.value).getX(),
+							new Point2d(((Tuple2D<?>)this.value).getX(),
 									((Tuple2D<?>)this.value).getY())
 					};
 				}
 				else if (this.value instanceof Tuple3D) {
 					Tuple3D<?> t3 = (Tuple3D<?>)this.value;
 					return new Point2D[] {
-						new Point2fp(t3.getX(),t3.getY()) 
+						new Point2d(t3.getX(),t3.getY()) 
 					};
 				}
 				else if (this.value instanceof Point2D[]) {
@@ -2341,12 +2341,12 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 				else if (this.value instanceof Tuple2D[]) {
 					Tuple2D<?>[] ta2 = (Tuple2D[])this.value;
 					Point2D[] pa2 = new Point2D[ta2.length];
-					for(int i=0; i<pa2.length; ++i) pa2[i] = new Point2fp(ta2[i]);
+					for(int i=0; i<pa2.length; ++i) pa2[i] = new Point2d(ta2[i]);
 				}
 				else if (this.value instanceof Tuple3D[]) {
 					Tuple3D<?>[] ta3 = (Tuple3D[])this.value;
 					Point2D[] pa2 = new Point2D[ta3.length];
-					for(int i=0; i<pa2.length; ++i) pa2[i] = new Point2fp(ta3[i].getX(), ta3[i].getY());
+					for(int i=0; i<pa2.length; ++i) pa2[i] = new Point2d(ta3[i].getX(), ta3[i].getY());
 				}
 				break;
 			case BOOLEAN:

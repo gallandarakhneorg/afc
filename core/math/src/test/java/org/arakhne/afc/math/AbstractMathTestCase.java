@@ -31,8 +31,8 @@ import java.util.Random;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
-import org.arakhne.afc.math.geometry.d2.fp.Point2fp;
-import org.arakhne.afc.math.geometry.d2.fp.Vector2fp;
+import org.arakhne.afc.math.geometry.d2.d.Point2d;
+import org.arakhne.afc.math.geometry.d2.d.Vector2d;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Quaternion;
 import org.arakhne.afc.math.geometry.d3.Tuple3D;
@@ -478,8 +478,8 @@ public abstract class AbstractMathTestCase {
 	 *
 	 * @return the random point.
 	 */
-	protected Point2fp randomPoint2f() {
-		return new Point2fp(
+	protected Point2d randomPoint2f() {
+		return new Point2d(
 				this.random.nextDouble() * 1000 - 500,
 				this.random.nextDouble() * 1000 - 500);
 	}
@@ -488,8 +488,8 @@ public abstract class AbstractMathTestCase {
 	 *
 	 * @return the random vector.
 	 */
-	protected Vector2fp randomVector2f() {
-		return new Vector2fp(
+	protected Vector2d randomVector2f() {
+		return new Vector2d(
 				this.random.nextDouble() * 1000 - 500,
 				this.random.nextDouble() * 1000 - 500);
 	}

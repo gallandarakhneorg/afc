@@ -34,7 +34,7 @@ import org.arakhne.afc.math.generic.PathElementType;
 import org.arakhne.afc.math.generic.PathWindingRule;
 import org.arakhne.afc.math.generic.Point2D;
 import org.arakhne.afc.math.geometry.d2.afp.Segment2afp;
-import org.arakhne.afc.math.geometry.d2.fp.Path2fp;
+import org.arakhne.afc.math.geometry.d2.d.Path2d;
 import org.arakhne.afc.math.matrix.Transform2D;
 
 
@@ -44,7 +44,7 @@ import org.arakhne.afc.math.matrix.Transform2D;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @deprecated see {@link Path2fp}
+ * @deprecated see {@link Path2d}
  */
 @Deprecated
 public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Shape2f,Rectangle2f,PathElement2f,PathIterator2f> {

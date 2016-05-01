@@ -25,8 +25,8 @@ import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
-import org.arakhne.afc.math.geometry.d2.fp.Point2fp;
-import org.arakhne.afc.math.geometry.d2.fp.Vector2fp;
+import org.arakhne.afc.math.geometry.d2.d.Point2d;
+import org.arakhne.afc.math.geometry.d2.d.Vector2d;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -64,7 +64,7 @@ public class CoordinateSystem2DTest extends AbstractMathTestCase {
 	
 	@Test
 	public void getViewVectorTuple2D() {
-		Vector2D t = new Vector2fp();
+		Vector2D t = new Vector2d();
 		Vector2D v;
 		v = CoordinateSystem2D.XY_RIGHT_HAND.getViewVector(t);
 		assertSame(t, v);
@@ -85,7 +85,7 @@ public class CoordinateSystem2DTest extends AbstractMathTestCase {
 	
 	@Test
 	public void getLeftVectorTuple2D() {
-		Vector2D t = new Vector2fp();
+		Vector2D t = new Vector2d();
 		Vector2D v;
 		v = CoordinateSystem2D.XY_RIGHT_HAND.getLeftVector(t);
 		assertSame(t, v);
@@ -106,7 +106,7 @@ public class CoordinateSystem2DTest extends AbstractMathTestCase {
 	
 	@Test
 	public void getRightVectorTuple2D() {
-		Vector2D t = new Vector2fp();
+		Vector2D t = new Vector2d();
 		Vector2D v;
 		v = CoordinateSystem2D.XY_RIGHT_HAND.getRightVector(t);
 		assertSame(t, v);
@@ -158,11 +158,11 @@ public class CoordinateSystem2DTest extends AbstractMathTestCase {
 
 	@Test
 	public void toDefaultPoint2D_systemDefault() {
-		Point2fp p1 = new Point2fp(-45, 78);
-		Point2fp p2 = new Point2fp(45, -78);
-		Point2fp p3 = new Point2fp(-45, -78);
-		Point2fp p4 = new Point2fp(45, 78);
-		Point2fp p;
+		Point2d p1 = new Point2d(-45, 78);
+		Point2d p2 = new Point2d(45, -78);
+		Point2d p3 = new Point2d(-45, -78);
+		Point2d p4 = new Point2d(45, 78);
+		Point2d p;
 
 		p = p1.clone();
 		CoordinateSystem2D.XY_RIGHT_HAND.toDefault(p);
@@ -200,11 +200,11 @@ public class CoordinateSystem2DTest extends AbstractMathTestCase {
 	@Test
 	public void toDefaultPoint2D_rightHanded() {
 		CoordinateSystem2D.setDefaultCoordinateSystem(CoordinateSystem2D.XY_RIGHT_HAND);
-		Point2fp p1 = new Point2fp(-45, 78);
-		Point2fp p2 = new Point2fp(45, -78);
-		Point2fp p3 = new Point2fp(-45, -78);
-		Point2fp p4 = new Point2fp(45, 78);
-		Point2fp p;
+		Point2d p1 = new Point2d(-45, 78);
+		Point2d p2 = new Point2d(45, -78);
+		Point2d p3 = new Point2d(-45, -78);
+		Point2d p4 = new Point2d(45, 78);
+		Point2d p;
 
 		p = p1.clone();
 		CoordinateSystem2D.XY_RIGHT_HAND.toDefault(p);
@@ -242,11 +242,11 @@ public class CoordinateSystem2DTest extends AbstractMathTestCase {
 	@Test
 	public void toDefaultPoint2D_leftHanded() {
 		CoordinateSystem2D.setDefaultCoordinateSystem(CoordinateSystem2D.XY_LEFT_HAND);
-		Point2fp p1 = new Point2fp(-45, 78);
-		Point2fp p2 = new Point2fp(45, -78);
-		Point2fp p3 = new Point2fp(-45, -78);
-		Point2fp p4 = new Point2fp(45, 78);
-		Point2fp p;
+		Point2d p1 = new Point2d(-45, 78);
+		Point2d p2 = new Point2d(45, -78);
+		Point2d p3 = new Point2d(-45, -78);
+		Point2d p4 = new Point2d(45, 78);
+		Point2d p;
 
 		p = p1.clone();
 		CoordinateSystem2D.XY_RIGHT_HAND.toDefault(p);
@@ -283,11 +283,11 @@ public class CoordinateSystem2DTest extends AbstractMathTestCase {
 
 	@Test
 	public void fromDefaultPoint2D_systemDefault() {
-		Point2fp p1 = new Point2fp(-45, 78);
-		Point2fp p2 = new Point2fp(45, -78);
-		Point2fp p3 = new Point2fp(-45, -78);
-		Point2fp p4 = new Point2fp(45, 78);
-		Point2fp p;
+		Point2d p1 = new Point2d(-45, 78);
+		Point2d p2 = new Point2d(45, -78);
+		Point2d p3 = new Point2d(-45, -78);
+		Point2d p4 = new Point2d(45, 78);
+		Point2d p;
 
 		p = p1.clone();
 		CoordinateSystem2D.XY_RIGHT_HAND.fromDefault(p);
@@ -325,11 +325,11 @@ public class CoordinateSystem2DTest extends AbstractMathTestCase {
 	@Test
 	public void fromDefaultPoint2D_rightHanded() {
 		CoordinateSystem2D.setDefaultCoordinateSystem(CoordinateSystem2D.XY_RIGHT_HAND);
-		Point2fp p1 = new Point2fp(-45, 78);
-		Point2fp p2 = new Point2fp(45, -78);
-		Point2fp p3 = new Point2fp(-45, -78);
-		Point2fp p4 = new Point2fp(45, 78);
-		Point2fp p;
+		Point2d p1 = new Point2d(-45, 78);
+		Point2d p2 = new Point2d(45, -78);
+		Point2d p3 = new Point2d(-45, -78);
+		Point2d p4 = new Point2d(45, 78);
+		Point2d p;
 
 		p = p1.clone();
 		CoordinateSystem2D.XY_RIGHT_HAND.fromDefault(p);
@@ -367,11 +367,11 @@ public class CoordinateSystem2DTest extends AbstractMathTestCase {
 	@Test
 	public void fromDefaultPoint2D_leftHanded() {
 		CoordinateSystem2D.setDefaultCoordinateSystem(CoordinateSystem2D.XY_LEFT_HAND);
-		Point2fp p1 = new Point2fp(-45, 78);
-		Point2fp p2 = new Point2fp(45, -78);
-		Point2fp p3 = new Point2fp(-45, -78);
-		Point2fp p4 = new Point2fp(45, 78);
-		Point2fp p;
+		Point2d p1 = new Point2d(-45, 78);
+		Point2d p2 = new Point2d(45, -78);
+		Point2d p3 = new Point2d(-45, -78);
+		Point2d p4 = new Point2d(45, 78);
+		Point2d p;
 
 		p = p1.clone();
 		CoordinateSystem2D.XY_RIGHT_HAND.fromDefault(p);
@@ -408,11 +408,11 @@ public class CoordinateSystem2DTest extends AbstractMathTestCase {
 
 	@Test
 	public void toDefaultVector2D_systemDefault() {
-		Vector2fp p1 = new Vector2fp(-45, 78);
-		Vector2fp p2 = new Vector2fp(45, -78);
-		Vector2fp p3 = new Vector2fp(-45, -78);
-		Vector2fp p4 = new Vector2fp(45, 78);
-		Vector2fp p;
+		Vector2d p1 = new Vector2d(-45, 78);
+		Vector2d p2 = new Vector2d(45, -78);
+		Vector2d p3 = new Vector2d(-45, -78);
+		Vector2d p4 = new Vector2d(45, 78);
+		Vector2d p;
 
 		p = p1.clone();
 		CoordinateSystem2D.XY_RIGHT_HAND.toDefault(p);
@@ -450,11 +450,11 @@ public class CoordinateSystem2DTest extends AbstractMathTestCase {
 	@Test
 	public void toDefaultVector2D_rightHanded() {
 		CoordinateSystem2D.setDefaultCoordinateSystem(CoordinateSystem2D.XY_RIGHT_HAND);
-		Vector2fp p1 = new Vector2fp(-45, 78);
-		Vector2fp p2 = new Vector2fp(45, -78);
-		Vector2fp p3 = new Vector2fp(-45, -78);
-		Vector2fp p4 = new Vector2fp(45, 78);
-		Vector2fp p;
+		Vector2d p1 = new Vector2d(-45, 78);
+		Vector2d p2 = new Vector2d(45, -78);
+		Vector2d p3 = new Vector2d(-45, -78);
+		Vector2d p4 = new Vector2d(45, 78);
+		Vector2d p;
 
 		p = p1.clone();
 		CoordinateSystem2D.XY_RIGHT_HAND.toDefault(p);
@@ -492,11 +492,11 @@ public class CoordinateSystem2DTest extends AbstractMathTestCase {
 	@Test
 	public void toDefaultVector2D_leftHanded() {
 		CoordinateSystem2D.setDefaultCoordinateSystem(CoordinateSystem2D.XY_LEFT_HAND);
-		Vector2fp p1 = new Vector2fp(-45, 78);
-		Vector2fp p2 = new Vector2fp(45, -78);
-		Vector2fp p3 = new Vector2fp(-45, -78);
-		Vector2fp p4 = new Vector2fp(45, 78);
-		Vector2fp p;
+		Vector2d p1 = new Vector2d(-45, 78);
+		Vector2d p2 = new Vector2d(45, -78);
+		Vector2d p3 = new Vector2d(-45, -78);
+		Vector2d p4 = new Vector2d(45, 78);
+		Vector2d p;
 
 		p = p1.clone();
 		CoordinateSystem2D.XY_RIGHT_HAND.toDefault(p);
@@ -533,11 +533,11 @@ public class CoordinateSystem2DTest extends AbstractMathTestCase {
 
 	@Test
 	public void fromDefaultVector2D_systemDefault() {
-		Vector2fp p1 = new Vector2fp(-45, 78);
-		Vector2fp p2 = new Vector2fp(45, -78);
-		Vector2fp p3 = new Vector2fp(-45, -78);
-		Vector2fp p4 = new Vector2fp(45, 78);
-		Vector2fp p;
+		Vector2d p1 = new Vector2d(-45, 78);
+		Vector2d p2 = new Vector2d(45, -78);
+		Vector2d p3 = new Vector2d(-45, -78);
+		Vector2d p4 = new Vector2d(45, 78);
+		Vector2d p;
 
 		p = p1.clone();
 		CoordinateSystem2D.XY_RIGHT_HAND.fromDefault(p);
@@ -575,11 +575,11 @@ public class CoordinateSystem2DTest extends AbstractMathTestCase {
 	@Test
 	public void fromDefaultVector2D_rightHanded() {
 		CoordinateSystem2D.setDefaultCoordinateSystem(CoordinateSystem2D.XY_RIGHT_HAND);
-		Vector2fp p1 = new Vector2fp(-45, 78);
-		Vector2fp p2 = new Vector2fp(45, -78);
-		Vector2fp p3 = new Vector2fp(-45, -78);
-		Vector2fp p4 = new Vector2fp(45, 78);
-		Vector2fp p;
+		Vector2d p1 = new Vector2d(-45, 78);
+		Vector2d p2 = new Vector2d(45, -78);
+		Vector2d p3 = new Vector2d(-45, -78);
+		Vector2d p4 = new Vector2d(45, 78);
+		Vector2d p;
 
 		p = p1.clone();
 		CoordinateSystem2D.XY_RIGHT_HAND.fromDefault(p);
@@ -617,11 +617,11 @@ public class CoordinateSystem2DTest extends AbstractMathTestCase {
 	@Test
 	public void fromDefaultVector2D_leftHanded() {
 		CoordinateSystem2D.setDefaultCoordinateSystem(CoordinateSystem2D.XY_LEFT_HAND);
-		Vector2fp p1 = new Vector2fp(-45, 78);
-		Vector2fp p2 = new Vector2fp(45, -78);
-		Vector2fp p3 = new Vector2fp(-45, -78);
-		Vector2fp p4 = new Vector2fp(45, 78);
-		Vector2fp p;
+		Vector2d p1 = new Vector2d(-45, 78);
+		Vector2d p2 = new Vector2d(45, -78);
+		Vector2d p3 = new Vector2d(-45, -78);
+		Vector2d p4 = new Vector2d(45, 78);
+		Vector2d p;
 
 		p = p1.clone();
 		CoordinateSystem2D.XY_RIGHT_HAND.fromDefault(p);
@@ -710,11 +710,11 @@ public class CoordinateSystem2DTest extends AbstractMathTestCase {
 
 	@Test
 	public void toSystemPoint2D_rightHanded() {
-		Point2fp p1 = new Point2fp(-45, 78);
-		Point2fp p2 = new Point2fp(45, -78);
-		Point2fp p3 = new Point2fp(-45, -78);
-		Point2fp p4 = new Point2fp(45, 78);
-		Point2fp p;
+		Point2d p1 = new Point2d(-45, 78);
+		Point2d p2 = new Point2d(45, -78);
+		Point2d p3 = new Point2d(-45, -78);
+		Point2d p4 = new Point2d(45, 78);
+		Point2d p;
 
 		p = p1.clone();
 		CoordinateSystem2D.XY_RIGHT_HAND.toSystem(p, CoordinateSystem2D.XY_RIGHT_HAND);
@@ -751,11 +751,11 @@ public class CoordinateSystem2DTest extends AbstractMathTestCase {
 
 	@Test
 	public void toSystemPoint2D_leftHanded() {
-		Point2fp p1 = new Point2fp(-45, 78);
-		Point2fp p2 = new Point2fp(45, -78);
-		Point2fp p3 = new Point2fp(-45, -78);
-		Point2fp p4 = new Point2fp(45, 78);
-		Point2fp p;
+		Point2d p1 = new Point2d(-45, 78);
+		Point2d p2 = new Point2d(45, -78);
+		Point2d p3 = new Point2d(-45, -78);
+		Point2d p4 = new Point2d(45, 78);
+		Point2d p;
 
 		p = p1.clone();
 		CoordinateSystem2D.XY_RIGHT_HAND.toSystem(p, CoordinateSystem2D.XY_LEFT_HAND);
@@ -792,11 +792,11 @@ public class CoordinateSystem2DTest extends AbstractMathTestCase {
 
 	@Test
 	public void toSystemVector2D_rightHanded() {
-		Vector2fp p1 = new Vector2fp(-45, 78);
-		Vector2fp p2 = new Vector2fp(45, -78);
-		Vector2fp p3 = new Vector2fp(-45, -78);
-		Vector2fp p4 = new Vector2fp(45, 78);
-		Vector2fp p;
+		Vector2d p1 = new Vector2d(-45, 78);
+		Vector2d p2 = new Vector2d(45, -78);
+		Vector2d p3 = new Vector2d(-45, -78);
+		Vector2d p4 = new Vector2d(45, 78);
+		Vector2d p;
 
 		p = p1.clone();
 		CoordinateSystem2D.XY_RIGHT_HAND.toSystem(p, CoordinateSystem2D.XY_RIGHT_HAND);
@@ -833,11 +833,11 @@ public class CoordinateSystem2DTest extends AbstractMathTestCase {
 
 	@Test
 	public void toSystemVector2D_leftHanded() {
-		Vector2fp p1 = new Vector2fp(-45, 78);
-		Vector2fp p2 = new Vector2fp(45, -78);
-		Vector2fp p3 = new Vector2fp(-45, -78);
-		Vector2fp p4 = new Vector2fp(45, 78);
-		Vector2fp p;
+		Vector2d p1 = new Vector2d(-45, 78);
+		Vector2d p2 = new Vector2d(45, -78);
+		Vector2d p3 = new Vector2d(-45, -78);
+		Vector2d p4 = new Vector2d(45, 78);
+		Vector2d p;
 
 		p = p1.clone();
 		CoordinateSystem2D.XY_RIGHT_HAND.toSystem(p, CoordinateSystem2D.XY_LEFT_HAND);

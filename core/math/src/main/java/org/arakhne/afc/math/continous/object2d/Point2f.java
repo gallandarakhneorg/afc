@@ -23,7 +23,7 @@ package org.arakhne.afc.math.continous.object2d;
 import org.arakhne.afc.math.generic.Point2D;
 import org.arakhne.afc.math.generic.Tuple2D;
 import org.arakhne.afc.math.generic.Vector2D;
-import org.arakhne.afc.math.geometry.d2.fp.Point2fp;
+import org.arakhne.afc.math.geometry.d2.d.Point2d;
 
 /** 2D Point with 2 floating-point numbers.
  * 
@@ -31,7 +31,7 @@ import org.arakhne.afc.math.geometry.d2.fp.Point2fp;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @deprecated see {@link Point2fp}
+ * @deprecated see {@link Point2d}
  */
 @Deprecated
 public class Point2f extends Tuple2f<Point2D> implements Point2D {

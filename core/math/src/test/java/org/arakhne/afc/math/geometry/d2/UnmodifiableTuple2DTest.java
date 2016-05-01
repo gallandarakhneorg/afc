@@ -23,7 +23,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.arakhne.afc.math.AbstractMathTestCase;
-import org.arakhne.afc.math.geometry.d2.fp.Tuple2fp;
+import org.arakhne.afc.math.geometry.d2.d.Tuple2d;
 import org.arakhne.afc.math.geometry.d2.i.Tuple2i;
 import org.junit.After;
 import org.junit.Before;

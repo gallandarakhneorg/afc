@@ -34,7 +34,7 @@ import java.util.UUID;
 import org.arakhne.afc.attrs.AbstractAttrTestCase;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
-import org.arakhne.afc.math.geometry.d2.fp.Point2fp;
+import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.geometry.d2.i.Point2i;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Tuple3D;
@@ -129,7 +129,7 @@ public class AttributeTypeTest extends AbstractAttrTestCase {
 		assertEquals(AttributeType.DATE, AttributeType.fromValue(new Date()));
 		assertEquals(AttributeType.COLOR, AttributeType.fromValue(Colors.RED));
 		assertEquals(AttributeType.UUID, AttributeType.fromValue(UUID.randomUUID()));
-		assertEquals(AttributeType.POINT, AttributeType.fromValue(new Point2fp(0,0)));
+		assertEquals(AttributeType.POINT, AttributeType.fromValue(new Point2d(0,0)));
 		assertEquals(AttributeType.POINT, AttributeType.fromValue(new Point2i(0,0)));
 		//TODO fix code:assertEquals(AttributeType.POINT3D, AttributeType.fromValue(new Point3fp(0,0,0)));
 		assertEquals(AttributeType.POLYLINE, AttributeType.fromValue(new Point2D[0]));
@@ -257,7 +257,7 @@ public class AttributeTypeTest extends AbstractAttrTestCase {
 		assertNotNull(AttributeType.DATE.getDefaultValue());
 		assertNull(AttributeType.IMAGE.getDefaultValue());
 		assertNull(AttributeType.OBJECT.getDefaultValue());
-		assertEquals(new Point2fp(), AttributeType.POINT.getDefaultValue());
+		assertEquals(new Point2d(), AttributeType.POINT.getDefaultValue());
 		//TODO: fixcode: assertEquals(new Point3f(), AttributeType.POINT3D.getDefaultValue());
 		assertTrue(Arrays.equals(new Point2D[0], (Point2D[])AttributeType.POLYLINE.getDefaultValue()));
 		assertTrue(Arrays.equals(new Point3D[0], (Point3D[])AttributeType.POLYLINE3D.getDefaultValue()));
@@ -285,7 +285,7 @@ public class AttributeTypeTest extends AbstractAttrTestCase {
 		StringBuilder vStrB = new StringBuilder("www.arakhne.org"); //$NON-NLS-1$
 		Calendar cal = Calendar.getInstance();
 		Date dt = new Date();
-		Point2fp pt2d1 = new Point2fp(0,0);
+		Point2d pt2d1 = new Point2d(0,0);
 		Image img = VectorToolkit.image(1,1,false);
 		Color col = Colors.RED;
 		UUID uuid = UUID.nameUUIDFromBytes("abcd".getBytes()); //$NON-NLS-1$

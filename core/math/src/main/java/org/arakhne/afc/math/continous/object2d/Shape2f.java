@@ -22,7 +22,7 @@ package org.arakhne.afc.math.continous.object2d;
 
 import org.arakhne.afc.math.generic.Point2D;
 import org.arakhne.afc.math.generic.Shape2D;
-import org.arakhne.afc.math.geometry.d2.fp.Shape2fp;
+import org.arakhne.afc.math.geometry.d2.d.Shape2d;
 import org.arakhne.afc.math.matrix.Transform2D;
 
 /** 2D shape with floating-point points.
@@ -31,7 +31,7 @@ import org.arakhne.afc.math.matrix.Transform2D;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @deprecated see {@link Shape2fp}
+ * @deprecated see {@link Shape2d}
  */
 @Deprecated
 public interface Shape2f extends Shape2D<Shape2f> {

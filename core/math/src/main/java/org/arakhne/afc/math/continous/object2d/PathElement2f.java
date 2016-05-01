@@ -23,7 +23,7 @@ package org.arakhne.afc.math.continous.object2d;
 
 import org.arakhne.afc.math.generic.PathElement2D;
 import org.arakhne.afc.math.generic.PathElementType;
-import org.arakhne.afc.math.geometry.d2.fp.PathElement2fp;
+import org.arakhne.afc.math.geometry.d2.d.PathElement2d;
 
 /** An element of the path.
  *
@@ -31,7 +31,7 @@ import org.arakhne.afc.math.geometry.d2.fp.PathElement2fp;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @deprecated see {@link PathElement2fp}
+ * @deprecated see {@link PathElement2d}
  */
 @Deprecated
 public abstract class PathElement2f implements PathElement2D {

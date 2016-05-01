@@ -26,8 +26,8 @@ import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.generic.PathWindingRule;
 import org.arakhne.afc.math.generic.Point2D;
 import org.arakhne.afc.math.geometry.d2.afp.Ellipse2afp;
-import org.arakhne.afc.math.geometry.d2.fp.Ellipse2fp;
-import org.arakhne.afc.math.geometry.d2.fp.Point2fp;
+import org.arakhne.afc.math.geometry.d2.d.Ellipse2d;
+import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.matrix.Transform2D;
 
 
@@ -37,7 +37,7 @@ import org.arakhne.afc.math.matrix.Transform2D;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @deprecated see {@link Ellipse2fp}
+ * @deprecated see {@link Ellipse2d}
  */
 @Deprecated
 public class Ellipse2f extends AbstractRectangularShape2f<Ellipse2f> {
@@ -400,7 +400,7 @@ public class Ellipse2f extends AbstractRectangularShape2f<Ellipse2f> {
 	 */
 	@Override
 	public Point2D getClosestPointTo(Point2D p) {
-		Point2fp pts = new Point2fp();
+		Point2d pts = new Point2d();
 		Ellipse2afp.computeClosestPointToSolidEllipse(
 				p.getX(), p.getY(),
 				getMinX(), getMinY(),

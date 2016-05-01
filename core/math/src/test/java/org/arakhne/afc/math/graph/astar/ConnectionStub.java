@@ -22,7 +22,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.arakhne.afc.math.geometry.d2.Point2D;
-import org.arakhne.afc.math.geometry.d2.fp.Point2fp;
+import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.graph.GraphPoint;
 
 /**
@@ -44,7 +44,7 @@ class ConnectionStub implements GraphPoint<ConnectionStub,SegmentStub> {
 	
 	/**
 	 */
-	final Point2fp position = new Point2fp();
+	final Point2d position = new Point2d();
 	
 	/**
 	 * @param id1

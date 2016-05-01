@@ -21,7 +21,7 @@
 package org.arakhne.afc.math.continous.object2d;
 
 import org.arakhne.afc.math.generic.Point2D;
-import org.arakhne.afc.math.geometry.d2.fp.AbstractShape2fp;
+import org.arakhne.afc.math.geometry.d2.d.AbstractShape2d;
 import org.arakhne.afc.math.matrix.Transform2D;
 
 
@@ -33,7 +33,7 @@ import org.arakhne.afc.math.matrix.Transform2D;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @deprecated see {@link AbstractShape2fp}
+ * @deprecated see {@link AbstractShape2d}
  */
 @Deprecated
 public abstract class AbstractShape2f<T extends Shape2f> implements Shape2f {

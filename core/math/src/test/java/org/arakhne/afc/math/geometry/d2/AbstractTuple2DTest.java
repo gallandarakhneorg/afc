@@ -26,7 +26,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.arakhne.afc.math.AbstractMathTestCase;
 import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2DTestRule;
-import org.arakhne.afc.math.geometry.d2.fp.Tuple2fp;
+import org.arakhne.afc.math.geometry.d2.d.Tuple2d;
 import org.junit.After;
 import org.junit.Assume;
 import org.junit.Before;
@@ -64,7 +64,7 @@ public abstract class AbstractTuple2DTest<T extends Tuple2D> extends AbstractMat
 
 	@Test
 	public void absoluteT() {
-		Tuple2D c = new Tuple2fp();
+		Tuple2D c = new Tuple2d();
 		this.t.absolute(c);
 		assertEpsilonEquals(1, this.t.getX());
 		assertEpsilonEquals(-2, this.t.getY());
@@ -143,12 +143,12 @@ public abstract class AbstractTuple2DTest<T extends Tuple2D> extends AbstractMat
 
 	@Test
 	public void negateT() {
-		Tuple2D c = new Tuple2fp();
+		Tuple2D c = new Tuple2d();
 		this.t.negate(c);
 		assertEpsilonEquals(0, this.t.getX());
 		assertEpsilonEquals(0, this.t.getY());
 
-		c = new Tuple2fp(25, -45);
+		c = new Tuple2d(25, -45);
 		this.t.negate(c);
 		assertEpsilonEquals(-25, this.t.getX());
 		assertEpsilonEquals(45, this.t.getY());
@@ -163,7 +163,7 @@ public abstract class AbstractTuple2DTest<T extends Tuple2D> extends AbstractMat
 
 	@Test
 	public void scaleIntT() {
-		Tuple2D c = new Tuple2fp(2, -1);
+		Tuple2D c = new Tuple2d(2, -1);
 		this.t.scale(4, c);
 		assertEpsilonEquals(8, this.t.getX());
 		assertEpsilonEquals(-4, this.t.getY());
@@ -172,7 +172,7 @@ public abstract class AbstractTuple2DTest<T extends Tuple2D> extends AbstractMat
 	@Test
 	public void scaleDoubleT_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
-		Tuple2D c = new Tuple2fp(2, -1);
+		Tuple2D c = new Tuple2d(2, -1);
 		this.t.scale(4.5, c);
 		assertEpsilonEquals(9, this.t.getX());
 		assertEpsilonEquals(-4.5, this.t.getY());
@@ -181,7 +181,7 @@ public abstract class AbstractTuple2DTest<T extends Tuple2D> extends AbstractMat
 	@Test
 	public void scaleDoubleT_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
-		Tuple2D c = new Tuple2fp(2, -1);
+		Tuple2D c = new Tuple2d(2, -1);
 		this.t.scale(4.5, c);
 		assertEquals(9, this.t.ix());
 		assertEquals(-4, this.t.iy());
@@ -212,7 +212,7 @@ public abstract class AbstractTuple2DTest<T extends Tuple2D> extends AbstractMat
 
 	@Test
 	public void setTuple2D() {
-		Tuple2D c = new Tuple2fp(-45, 78);
+		Tuple2D c = new Tuple2d(-45, 78);
 		this.t.set(c);
 		assertEpsilonEquals(-45, this.t.getX());
 		assertEpsilonEquals(78, this.t.getY());
@@ -401,13 +401,13 @@ public abstract class AbstractTuple2DTest<T extends Tuple2D> extends AbstractMat
 
 	@Test
 	public void equals_notEquals() {
-		Tuple2D c = new Tuple2fp();
+		Tuple2D c = new Tuple2d();
 		assertFalse(this.t.equals(c));
 	}
 		
 	@Test
 	public void equals_equals() {
-		Tuple2D c = new Tuple2fp(1, -2);
+		Tuple2D c = new Tuple2d(1, -2);
 		assertTrue(this.t.equals(c));
 	}
 

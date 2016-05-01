@@ -27,7 +27,7 @@ import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.generic.PathWindingRule;
 import org.arakhne.afc.math.generic.Point2D;
 import org.arakhne.afc.math.geometry.d2.afp.Segment2afp;
-import org.arakhne.afc.math.geometry.d2.fp.Segment2fp;
+import org.arakhne.afc.math.geometry.d2.d.Segment2d;
 import org.arakhne.afc.math.matrix.Transform2D;
 
 
@@ -38,7 +38,7 @@ import org.arakhne.afc.math.matrix.Transform2D;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @deprecated see {@link Segment2fp}
+ * @deprecated see {@link Segment2d}
  */
 @Deprecated
 public class Segment2f extends AbstractShape2f<Segment2f> {

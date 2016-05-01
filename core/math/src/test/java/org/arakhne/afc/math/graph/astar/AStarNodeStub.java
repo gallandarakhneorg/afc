@@ -23,7 +23,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.arakhne.afc.math.geometry.d2.Point2D;
-import org.arakhne.afc.math.geometry.d2.fp.Point2fp;
+import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.graph.GraphPoint;
 
 /**
@@ -45,7 +45,7 @@ class AStarNodeStub implements GraphPoint<AStarNodeStub,AStarEdgeStub>, AStarNod
 	
 	/** Position of the node.
 	 */
-	final Point2fp position;
+	final Point2d position;
 	
 	private double cost = Double.NaN;
 	private double eCost = Double.NaN;
@@ -58,7 +58,7 @@ class AStarNodeStub implements GraphPoint<AStarNodeStub,AStarEdgeStub>, AStarNod
 	 */
 	public AStarNodeStub(String id1, double x, double y) {
 		this.id = id1;
-		this.position = new Point2fp(x,y);
+		this.position = new Point2d(x,y);
 	}
 	
 	@Override

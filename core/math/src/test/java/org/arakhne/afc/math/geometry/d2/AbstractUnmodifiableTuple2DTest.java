@@ -24,7 +24,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.arakhne.afc.math.AbstractMathTestCase;
 import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2DTestRule;
-import org.arakhne.afc.math.geometry.d2.fp.Tuple2fp;
+import org.arakhne.afc.math.geometry.d2.d.Tuple2d;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -57,7 +57,7 @@ public abstract class AbstractUnmodifiableTuple2DTest extends AbstractMathTestCa
 
 	@Test(expected = UnsupportedOperationException.class)
 	public void absoluteT() {
-		Tuple2D c = new Tuple2fp();
+		Tuple2D c = new Tuple2d();
 		this.t.absolute(c);
 	}
 
@@ -93,7 +93,7 @@ public abstract class AbstractUnmodifiableTuple2DTest extends AbstractMathTestCa
 
 	@Test(expected = UnsupportedOperationException.class)
 	public void negateT() {
-		Tuple2D c = new Tuple2fp();
+		Tuple2D c = new Tuple2d();
 		this.t.negate(c);
 	}
 
@@ -104,13 +104,13 @@ public abstract class AbstractUnmodifiableTuple2DTest extends AbstractMathTestCa
 
 	@Test(expected = UnsupportedOperationException.class)
 	public void scaleIntT() {
-		Tuple2D c = new Tuple2fp(2, -1);
+		Tuple2D c = new Tuple2d(2, -1);
 		this.t.scale(4, c);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
 	public void scaleDoubleT() {
-		Tuple2D c = new Tuple2fp(2, -1);
+		Tuple2D c = new Tuple2d(2, -1);
 		this.t.scale(4.5, c);
 	}
 
@@ -126,7 +126,7 @@ public abstract class AbstractUnmodifiableTuple2DTest extends AbstractMathTestCa
 
 	@Test(expected = UnsupportedOperationException.class)
 	public void setTuple2D() {
-		Tuple2D c = new Tuple2fp(-45, 78);
+		Tuple2D c = new Tuple2d(-45, 78);
 		this.t.set(c);
 	}
 
@@ -222,13 +222,13 @@ public abstract class AbstractUnmodifiableTuple2DTest extends AbstractMathTestCa
 
 	@Test
 	public void equals_notEquals() {
-		Tuple2D c = new Tuple2fp();
+		Tuple2D c = new Tuple2d();
 		assertFalse(this.t.equals(c));
 	}
 		
 	@Test
 	public void equals_equals() {
-		Tuple2D c = new Tuple2fp(1, -2);
+		Tuple2D c = new Tuple2d(1, -2);
 		assertTrue(this.t.equals(c));
 	}
 

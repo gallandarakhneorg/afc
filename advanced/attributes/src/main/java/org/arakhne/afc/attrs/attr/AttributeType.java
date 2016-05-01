@@ -39,7 +39,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
-import org.arakhne.afc.math.geometry.d2.fp.Point2fp;
+import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Tuple3D;
 import org.arakhne.afc.ui.vector.Color;
@@ -341,7 +341,7 @@ public enum AttributeType {
 		case POINT3D:
 			return null; //TODO: Fix code: new Point3fp();
 		case POINT:
-			return new Point2fp();
+			return new Point2d();
 		case COLOR:
 			return Colors.BLACK;
 		case UUID:
@@ -538,7 +538,7 @@ public enum AttributeType {
 			// Possible ClassCastException
 			if (obj==null) throw new NullPointerException();
 			if (obj instanceof Tuple2D && !(obj instanceof Point2D)) {
-				return new Point2fp((Tuple2D)obj);
+				return new Point2d((Tuple2D)obj);
 			}
 			return Point2D.class.cast(obj);
 		case COLOR:
@@ -633,7 +633,7 @@ public enum AttributeType {
 					int length = Array.getLength(obj);
 					Point2D[] tab = new Point2D[length];
 					for(int i=0; i<length; ++i)
-						tab[i] = new Point2fp((Tuple2D)Array.get(obj, i));
+						tab[i] = new Point2d((Tuple2D)Array.get(obj, i));
 					return tab;
 				}
 			}

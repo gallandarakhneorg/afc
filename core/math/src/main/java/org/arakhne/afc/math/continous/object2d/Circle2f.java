@@ -27,7 +27,7 @@ import org.arakhne.afc.math.generic.PathWindingRule;
 import org.arakhne.afc.math.generic.Point2D;
 import org.arakhne.afc.math.geometry.d2.afp.Circle2afp;
 import org.arakhne.afc.math.geometry.d2.afp.Segment2afp;
-import org.arakhne.afc.math.geometry.d2.fp.Circle2fp;
+import org.arakhne.afc.math.geometry.d2.d.Circle2d;
 import org.arakhne.afc.math.matrix.Transform2D;
 
 
@@ -38,7 +38,7 @@ import org.arakhne.afc.math.matrix.Transform2D;
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @deprecated see {@link Circle2fp}
+ * @deprecated see {@link Circle2d}
  */
 @Deprecated
 public class Circle2f extends AbstractShape2f<Circle2f> {
