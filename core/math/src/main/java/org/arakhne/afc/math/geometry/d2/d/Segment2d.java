@@ -113,13 +113,13 @@ public class Segment2d extends AbstractShape2d<Segment2d>
 		if (transform == null || transform.isIdentity()) {
 			return clone();
 		}
-		Point2d point = new Point2d(getX1(), getY1());
+		Point2d point = getGeomFactory().newPoint(getX1(), getY1());
 		transform.transform(point);
 		double x1 = point.getX();
 		double y1 = point.getY();
 		point.set(getX2(), getY2());
 		transform.transform(point);
-		return new Segment2d(x1, y1, point.getX(), point.getY());
+		return getGeomFactory().newSegment(x1, y1, point.getX(), point.getY());
 	}
 	
 	@Override
@@ -191,12 +191,12 @@ public class Segment2d extends AbstractShape2d<Segment2d>
 
 	@Override
 	public Point2d getP1() {
-		return new Point2d(this.ax, this.ay);
+		return getGeomFactory().newPoint(this.ax, this.ay);
 	}
 
 	@Override
 	public Point2d getP2() {
-		return new Point2d(this.bx, this.by);
+		return getGeomFactory().newPoint(this.bx, this.by);
 	}
 
 }

@@ -24,10 +24,8 @@ import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.ai.GeomFactory2ai;
-import org.arakhne.afc.math.geometry.d2.ai.MultiShape2ai;
-import org.arakhne.afc.math.geometry.d2.ai.Path2ai;
-import org.arakhne.afc.math.geometry.d2.ai.Segment2ai;
 
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
 /** Factory of geometrical elements.
@@ -92,6 +90,17 @@ public class GeomFactory2ifx implements GeomFactory2ai<PathElement2ifx, Point2if
 	public Point2ifx newPoint() {
 		return new Point2ifx();
 	}
+	
+	/** Create a point with properties.
+	 *
+	 * @param x the x property.
+	 * @param y the y property.
+	 * @return the vector.
+	 */
+	@SuppressWarnings("static-method")
+	public Point2ifx newPoint(IntegerProperty x, IntegerProperty y) {
+		return new Point2ifx(x, y);
+	}
 
 	@Override
 	public Vector2ifx newVector() {
@@ -99,7 +108,7 @@ public class GeomFactory2ifx implements GeomFactory2ai<PathElement2ifx, Point2if
 	}
 
 	@Override
-	public Path2ai<?, ?, PathElement2ifx, Point2ifx, Vector2ifx, Rectangle2ifx> newPath(PathWindingRule rule) {
+	public Path2ifx newPath(PathWindingRule rule) {
 		assert (rule != null) : "Path winding rule must be not null"; //$NON-NLS-1$
 		return new Path2ifx(rule);
 	}
@@ -169,12 +178,12 @@ public class GeomFactory2ifx implements GeomFactory2ai<PathElement2ifx, Point2if
 	}
 
 	@Override
-	public Segment2ai<?, ?, PathElement2ifx, Point2ifx, Vector2ifx, Rectangle2ifx> newSegment(int x1, int y1, int x2, int y2) {
+	public Segment2ifx newSegment(int x1, int y1, int x2, int y2) {
 		return new Segment2ifx(x1, y1, x2, y2);
 	}
 
 	@Override
-	public MultiShape2ai<?, ?, ?, PathElement2ifx, Point2ifx, Vector2ifx, Rectangle2ifx> newMultiShape() {
+	public MultiShape2ifx<?> newMultiShape() {
 		return new MultiShape2ifx<>();
 	}
 

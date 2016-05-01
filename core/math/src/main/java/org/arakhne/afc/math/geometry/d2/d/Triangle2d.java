@@ -24,7 +24,6 @@ package org.arakhne.afc.math.geometry.d2.d;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.afp.Triangle2afp;
-import org.arakhne.afc.math.geometry.d2.fx.Point2fx;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** A triangle with 2 double precision floating-point numbers.
@@ -133,7 +132,7 @@ public class Triangle2d
 		if (transform == null || transform.isIdentity()) {
 			return clone();
 		}
-		Point2fx point = new Point2fx(getX1(), getY1());
+		Point2d point = getGeomFactory().newPoint(getX1(), getY1());
 		transform.transform(point);
 		double x1 = point.getX();
 		double y1 = point.getY();
@@ -143,7 +142,7 @@ public class Triangle2d
 		double y2 = point.getY();
 		point.set(getX3(), getY3());
 		transform.transform(point);
-		return new Triangle2d(x1, y1, x2, y2, point.getX(), point.getY());
+		return getGeomFactory().newTriangle(x1, y1, x2, y2, point.getX(), point.getY());
 	}
 
 	@Override

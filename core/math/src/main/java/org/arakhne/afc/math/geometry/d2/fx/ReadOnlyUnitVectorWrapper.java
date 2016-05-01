@@ -42,9 +42,10 @@ public class ReadOnlyUnitVectorWrapper extends UnitVectorProperty {
 	 *
 	 * @param bean the owner of the property.
 	 * @param name the name of the property.
+	 * @param factory the factory used by this wrapper.
 	 */
-	public ReadOnlyUnitVectorWrapper(Object bean, String name) {
-		super(bean, name);
+	public ReadOnlyUnitVectorWrapper(Object bean, String name, GeomFactory2fx factory) {
+		super(bean, name, factory);
 	}
 
 	/**

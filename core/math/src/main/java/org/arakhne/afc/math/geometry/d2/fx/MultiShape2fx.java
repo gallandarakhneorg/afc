@@ -111,8 +111,8 @@ MultiShape2afp<Shape2fx<?>, MultiShape2fx<T>, T, PathElement2fx, Point2fx, Vecto
 			this.boundingBox = new SimpleObjectProperty<>(this, "boundingBox"); //$NON-NLS-1$
 			this.boundingBox.bind(Bindings.createObjectBinding(
 					() -> {
-						Rectangle2fx box = new Rectangle2fx();
-						Rectangle2fx shapeBox = new Rectangle2fx();
+						Rectangle2fx box = getGeomFactory().newBox();
+						Rectangle2fx shapeBox = getGeomFactory().newBox();
 						Iterator<T> iterator = elementsProperty().iterator();
 						if (iterator.hasNext()) {
 							iterator.next().toBoundingBox(shapeBox);

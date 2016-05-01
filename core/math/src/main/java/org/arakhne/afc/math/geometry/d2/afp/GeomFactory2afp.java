@@ -141,4 +141,26 @@ public interface GeomFactory2afp<E extends PathElement2afp, P extends Point2D<? 
 	E newCurvePathElement(double startX, double startY, double controlX1, double controlY1,
 			double controlX2, double controlY2, double targetX, double targetY);
 
+	/** Create a triangle.
+	 *
+	 * @param x1 the x coordinate of the first point of the triangle.
+	 * @param y1 the y coordinate of the first point of the triangle.
+	 * @param x2 the x coordinate of the second point of the triangle.
+	 * @param y2 the y coordinate of the second point of the triangle.
+	 * @param x3 the x coordinate of the third point of the triangle.
+	 * @param y3 the y coordinate of the third point of the triangle.
+	 * @return the new triangle.
+	 */
+	Triangle2afp<?, ?, E, P, V, B> newTriangle(double x1, double y1, double x2, double y2, double x3, double y3);
+
+	/** Create a segment.
+	 *
+	 * @param x1 the x coordinate of the first point of the segment.
+	 * @param y1 the y coordinate of the first point of the segment.
+	 * @param x2 the x coordinate of the second point of the segment.
+	 * @param y2 the y coordinate of the second point of the segment.
+	 * @return the new segment.
+	 */
+	Segment2afp<?, ?, E, P, V, B> newSegment(double x1, double y1, double x2, double y2);
+
 }

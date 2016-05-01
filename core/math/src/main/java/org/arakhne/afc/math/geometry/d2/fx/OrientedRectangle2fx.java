@@ -211,7 +211,7 @@ public class OrientedRectangle2fx extends AbstractShape2fx<OrientedRectangle2fx>
 	@Pure
 	@Override
 	public Point2fx getCenter() {
-		return new Point2fx(centerXProperty(), centerYProperty());
+		return getGeomFactory().newPoint(centerXProperty(), centerYProperty());
 	}
 
 	@Pure
@@ -309,7 +309,7 @@ public class OrientedRectangle2fx extends AbstractShape2fx<OrientedRectangle2fx>
 	@Pure
 	public UnitVectorProperty firstAxisProperty() {
 		if (this.rVector == null) {
-			this.rVector = new UnitVectorProperty(this, "firstAxis"); //$NON-NLS-1$
+			this.rVector = new UnitVectorProperty(this, "firstAxis", getGeomFactory()); //$NON-NLS-1$
 		}
 		return this.rVector;
 	}
@@ -321,7 +321,7 @@ public class OrientedRectangle2fx extends AbstractShape2fx<OrientedRectangle2fx>
 	@Pure
 	public ReadOnlyUnitVectorProperty secondAxisProperty() {
 		if (this.sVector == null) {
-			this.sVector = new ReadOnlyUnitVectorWrapper(this, "secondAxis"); //$NON-NLS-1$
+			this.sVector = new ReadOnlyUnitVectorWrapper(this, "secondAxis", getGeomFactory()); //$NON-NLS-1$
 			this.sVector.bind(Bindings.createObjectBinding(
 					() -> {
 						Vector2fx firstAxis = firstAxisProperty().get();

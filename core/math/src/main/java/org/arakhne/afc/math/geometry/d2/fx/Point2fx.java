@@ -127,7 +127,9 @@ public class Point2fx extends Tuple2fx<Point2fx> implements Point2D<Point2fx, Ve
 			
 			@Override
 			public Point2fx clone() {
-				return new Point2fx(Point2fx.this);
+				return Point2fx.this.getGeomFactory().newPoint(
+						Point2fx.this.getX(),
+						Point2fx.this.getY());
 			}
 			
 			@Override

@@ -211,14 +211,14 @@ public class Vector2i extends Tuple2i<Vector2i> implements Vector2D<Vector2i, Po
 	public Vector2i toUnitVector() {
 		double length = getLength();
 		if (length == 0.) {
-			return new Vector2i(0, 0);
+			return getGeomFactory().newVector(0, 0);
 		}
-		return new Vector2i(getX() / length, getY() / length);
+		return getGeomFactory().newVector((int) Math.round(ix() / length), (int) Math.round(iy() / length));
 	}
 	
 	@Override
 	public Vector2i toOrthogonalVector() {
-		return new Vector2i(-iy(), ix());
+		return getGeomFactory().newVector(-iy(), ix());
 	}
 	
 	@Override
@@ -250,7 +250,9 @@ public class Vector2i extends Tuple2i<Vector2i> implements Vector2D<Vector2i, Po
 			
 			@Override
 			public Vector2i clone() {
-				return new Vector2i(Vector2i.this);
+				return Vector2i.this.getGeomFactory().newVector(
+						Vector2i.this.ix(),
+						Vector2i.this.iy());
 			}
 
 			@Override

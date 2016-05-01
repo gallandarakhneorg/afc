@@ -192,7 +192,7 @@ public class Parallelogram2d extends AbstractShape2d<Parallelogram2d>
 	@Pure
 	@Override
 	public Point2d getCenter() {
-		return new Point2d(this.cx, this.cy);
+		return getGeomFactory().newPoint(this.cx, this.cy);
 	}
 
 	@Pure
@@ -235,7 +235,7 @@ public class Parallelogram2d extends AbstractShape2d<Parallelogram2d>
 	@Pure
 	@Override
 	public Vector2d getFirstAxis() {
-		return new Vector2d(this.rx, this.ry);
+		return getGeomFactory().newVector(this.rx, this.ry);
 	}
 
 	@Pure
@@ -253,7 +253,7 @@ public class Parallelogram2d extends AbstractShape2d<Parallelogram2d>
 	@Pure
 	@Override
 	public Vector2d getSecondAxis() {
-		return new Vector2d(this.sx, this.sy);
+		return getGeomFactory().newVector(this.sx, this.sy);
 	}
 
 	@Pure

@@ -239,7 +239,7 @@ public class Path2ifx
 	@Override
 	public void transform(Transform2D transform) {
 		assert (transform != null) : "Transformation must be not null"; //$NON-NLS-1$
-		Point2D<?, ?> p = new Point2ifx();
+		Point2D<?, ?> p = getGeomFactory().newPoint();
 		if (this.coords != null && !this.coords.isEmpty()) {
 			ListIterator<Integer> li = this.coords.listIterator();
 			int i = 0;
@@ -287,7 +287,7 @@ public class Path2ifx
 			this.boundingBox = new ReadOnlyObjectWrapper<>(this, "boundingBox"); //$NON-NLS-1$
 			this.boundingBox.bind(Bindings.createObjectBinding(
 					() -> {
-						Rectangle2ifx bb = new Rectangle2ifx();
+						Rectangle2ifx bb = getGeomFactory().newBox();
 						Path2ai.computeDrawableElementBoundingBox(
 								getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
 								bb);
@@ -310,7 +310,7 @@ public class Path2ifx
 			this.logicalBounds = new ReadOnlyObjectWrapper<>(this, "controlPointBoundingBox"); //$NON-NLS-1$
 			this.logicalBounds.bind(Bindings.createObjectBinding(
 					() -> {
-						Rectangle2ifx bb = new Rectangle2ifx();
+						Rectangle2ifx bb = getGeomFactory().newBox();
 						Path2ai.computeControlPointBoundingBox(
 								getPathIterator(),
 								bb);
@@ -517,7 +517,7 @@ public class Path2ifx
 				}
 			}
 			else {
-				Point2ifx p = new Point2ifx();
+				Point2ifx p = getGeomFactory().newPoint();
 				Iterator<Integer> iterator = this.coords.iterator();
 				for(int i=0; i < n;) {
 					p.set(iterator.next(), iterator.next());
@@ -588,7 +588,7 @@ public class Path2ifx
 			if (transform == null || transform.isIdentity()) {
 				Iterator<Integer> iterator = this.coords.iterator();
 				for(int i=0; i < n; ++i) {
-					clone[i] = new Point2ifx(
+					clone[i] = getGeomFactory().newPoint(
 							iterator.next().intValue(),
 							iterator.next().intValue());
 				}
@@ -596,7 +596,7 @@ public class Path2ifx
 			else {
 				Iterator<Integer> iterator = this.coords.iterator();
 				for(int i=0; i < n; ++i) {
-					Point2ifx p = new Point2ifx(iterator.next(), iterator.next());
+					Point2ifx p = getGeomFactory().newPoint(iterator.next(), iterator.next());
 					transform.transform(p);
 					clone[i] = p;
 				}
@@ -611,7 +611,7 @@ public class Path2ifx
 			throw new IndexOutOfBoundsException();
 		}
 		int baseIdx = index * 2;
-		return new Point2ifx(
+		return getGeomFactory().newPoint(
 				this.coords.get(baseIdx),
 				this.coords.get(baseIdx + 1));
 	}
@@ -622,7 +622,7 @@ public class Path2ifx
 			throw new IndexOutOfBoundsException();
 		}
 		int baseIdx = this.coords.size() - 1;
-		return new Point2ifx(
+		return getGeomFactory().newPoint(
 				this.coords.get(baseIdx - 1),
 				this.coords.get(baseIdx));
 	}

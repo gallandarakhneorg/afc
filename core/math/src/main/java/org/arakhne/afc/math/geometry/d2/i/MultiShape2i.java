@@ -124,7 +124,7 @@ public class MultiShape2i<T extends Shape2i<?>> extends AbstractShape2i<MultiSha
 	@Override
 	public Rectangle2i toBoundingBox() {
 		if (this.bounds == null) {
-			this.bounds = new Rectangle2i();
+			this.bounds = getGeomFactory().newBox();
 			MultiShape2ai.super.toBoundingBox(this.bounds);
 		}
 		return this.bounds;
@@ -135,7 +135,7 @@ public class MultiShape2i<T extends Shape2i<?>> extends AbstractShape2i<MultiSha
 	public void toBoundingBox(Rectangle2i box) {
 		assert (box != null) : "Rectangle must be not null"; //$NON-NLS-1$
 		if (this.bounds == null) {
-			this.bounds = new Rectangle2i();
+			this.bounds = getGeomFactory().newBox();
 			MultiShape2ai.super.toBoundingBox(this.bounds);
 		}
 		box.set(this.bounds);

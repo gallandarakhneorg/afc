@@ -144,14 +144,14 @@ public class Vector2fx extends Tuple2fx<Vector2fx> implements Vector2D<Vector2fx
 	public Vector2fx toUnitVector() {
 		double length = getLength();
 		if (length == 0.) {
-			return new Vector2fx();
+			return getGeomFactory().newVector();
 		}
-		return new Vector2fx(getX() / length, getY() / length);
+		return getGeomFactory().newVector(getX() / length, getY() / length);
 	}
 	
 	@Override
 	public Vector2fx toOrthogonalVector() {
-		return new Vector2fx(-getY(), getX());
+		return getGeomFactory().newVector(-getY(), getX());
 	}
 	
 	@Override
@@ -223,7 +223,8 @@ public class Vector2fx extends Tuple2fx<Vector2fx> implements Vector2D<Vector2fx
 
 			@Override
 			public Vector2fx clone() {
-				return new Vector2fx(Vector2fx.this);
+				return Vector2fx.this.getGeomFactory().newVector(
+						Vector2fx.this.getX(), Vector2fx.this.getY());
 			}
 			
 			@Override

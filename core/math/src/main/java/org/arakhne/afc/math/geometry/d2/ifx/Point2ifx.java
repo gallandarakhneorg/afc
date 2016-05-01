@@ -127,7 +127,9 @@ public class Point2ifx extends Tuple2ifx<Point2ifx> implements Point2D<Point2ifx
 			
 			@Override
 			public Point2ifx clone() {
-				return new Point2ifx(Point2ifx.this);
+				return Point2ifx.this.getGeomFactory().newPoint(
+						Point2ifx.this.ix(),
+						Point2ifx.this.iy());
 			}
 
 			@Override

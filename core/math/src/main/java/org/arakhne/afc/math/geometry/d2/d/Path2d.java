@@ -251,7 +251,7 @@ public class Path2d
 	@Override
 	public void transform(Transform2D transform) {
 		assert (transform != null) : "Transformation must be not null"; //$NON-NLS-1$
-		Point2D<?, ?> p = new Point2d();
+		Point2D<?, ?> p = getGeomFactory().newPoint();
 		for(int i=0; i<this.numCoords;) {
 			p.set(this.coords[i], this.coords[i+1]);
 			transform.transform(p);
@@ -284,7 +284,7 @@ public class Path2d
 	public Rectangle2d toBoundingBox() {
 		Rectangle2d bb = this.graphicalBounds==null ? null : this.graphicalBounds.get();
 		if (bb==null) {
-			bb = new Rectangle2d();
+			bb = getGeomFactory().newBox();
 			Path2afp.computeDrawableElementBoundingBox(
 					getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
 					bb);
@@ -299,7 +299,7 @@ public class Path2d
 		assert (box != null) : "Rectangle must be not null"; //$NON-NLS-1$
 		Rectangle2d bb = this.graphicalBounds==null ? null : this.graphicalBounds.get();
 		if (bb==null) {
-			bb = new Rectangle2d();
+			bb = getGeomFactory().newBox();
 			Path2afp.computeDrawableElementBoundingBox(
 					getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
 					bb);
@@ -433,7 +433,7 @@ public class Path2d
 	public Rectangle2d toBoundingBoxWithCtrlPoints() {
 		Rectangle2d bb = this.logicalBounds==null ? null : this.logicalBounds.get();
 		if (bb==null) {
-			bb = new Rectangle2d();
+			bb = getGeomFactory().newBox();
 			Path2afp.computeControlPointBoundingBox(
 					getPathIterator(),
 					bb);
@@ -448,7 +448,7 @@ public class Path2d
 		assert (box != null) : "Rectangle must be not null"; //$NON-NLS-1$
 		Rectangle2d bb = this.logicalBounds==null ? null : this.logicalBounds.get();
 		if (bb==null) {
-			bb = new Rectangle2d();
+			bb = getGeomFactory().newBox();
 			Path2afp.computeControlPointBoundingBox(
 					getPathIterator(),
 					bb);
@@ -467,7 +467,7 @@ public class Path2d
 			}
 		}
 		else {
-			Point2d p = new Point2d();
+			Point2d p = getGeomFactory().newPoint();
 			for(int i=0; i<clone.length;) {
 				p.x = this.coords[i];
 				p.y = this.coords[i+1];
@@ -489,7 +489,7 @@ public class Path2d
 			}
 		}
 		else {
-			Point2d p = new Point2d();
+			Point2d p = getGeomFactory().newPoint();
 			for(int i=0; i<clone.length;) {
 				p.x = this.coords[i];
 				p.y = this.coords[i+1];
@@ -507,7 +507,7 @@ public class Path2d
 		if (transform == null || transform.isIdentity()) {
 			return Arrays.copyOf(this.coords, this.numCoords);
 		}
-		Point2d p = new Point2d();
+		Point2d p = getGeomFactory().newPoint();
 		double[] clone = new double[this.numCoords];
 		for(int i=0; i<clone.length;) {
 			p.x = this.coords[i];
@@ -525,14 +525,14 @@ public class Path2d
 		Point2d[] clone = new Point2d[this.numCoords/2];
 		if (transform == null || transform.isIdentity()) {
 			for(int i=0, j=0; j<this.numCoords; ++i) {
-				clone[i] = new Point2d(
+				clone[i] = getGeomFactory().newPoint(
 						this.coords[j++],
 						this.coords[j++]);
 			}
 		}
 		else {
 			for(int i=0, j=0; j<clone.length; ++i) {
-				clone[i] = new Point2d(
+				clone[i] = getGeomFactory().newPoint(
 						this.coords[j++],
 						this.coords[j++]);
 				transform.transform(clone[i]);
@@ -545,7 +545,7 @@ public class Path2d
 	@Pure
 	public Point2d getPointAt(int index) {
 		assert (index >=0 && index < size()) : "Index must be in [0;" + size() + ")";  //$NON-NLS-1$ //$NON-NLS-2$
-		return new Point2d(
+		return getGeomFactory().newPoint(
 				this.coords[index*2],
 				this.coords[index*2+1]);
 	}
@@ -553,7 +553,7 @@ public class Path2d
 	@Override
 	@Pure
 	public Point2d getCurrentPoint() {
-		return new Point2d(
+		return getGeomFactory().newPoint(
 				this.coords[this.numCoords-2],
 				this.coords[this.numCoords-1]);
 	}

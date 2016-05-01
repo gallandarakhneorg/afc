@@ -20,6 +20,8 @@
  */
 package org.arakhne.afc.math.geometry.d2.fx;
 
+import java.lang.ref.WeakReference;
+
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -40,6 +42,8 @@ import javafx.beans.property.SimpleObjectProperty;
  */
 public class UnitVectorProperty extends SimpleObjectProperty<Vector2fx> {
 
+	private final WeakReference<GeomFactory2fx> factory;
+	
 	private ReadOnlyDoubleWrapper x;
 	
 	private ReadOnlyDoubleWrapper y;
@@ -50,9 +54,19 @@ public class UnitVectorProperty extends SimpleObjectProperty<Vector2fx> {
 	 *
 	 * @param bean the owner of the property.
 	 * @param name the name of the property.
+	 * @param factory the factory to use.
 	 */
-	public UnitVectorProperty(Object bean, String name) {
+	public UnitVectorProperty(Object bean, String name, GeomFactory2fx factory) {
 		super(bean, name);
+		this.factory = new WeakReference<>(factory);
+	}
+	
+	/** Replies the geometry factory associated to this property.
+	 *
+	 * @return the geometry factory.
+	 */
+	public GeomFactory2fx getGeomFactory() {
+		return this.factory.get();
 	}
 	
 	private ReadOnlyDoubleWrapper internalXProperty() {
@@ -70,7 +84,7 @@ public class UnitVectorProperty extends SimpleObjectProperty<Vector2fx> {
 	}
 
 	private void init() {
-		Vector2fx v = new Vector2fx();
+		Vector2fx v = getGeomFactory().newVector();
 		this.x = new ReadOnlyDoubleWrapper(v, "x"); //$NON-NLS-1$
 		this.y = new ReadOnlyDoubleWrapper(v, "y"); //$NON-NLS-1$
 		v.set(this.x, this.y);
@@ -83,7 +97,7 @@ public class UnitVectorProperty extends SimpleObjectProperty<Vector2fx> {
 			return super.get();
 		}
 		if (this.fake == null) {
-			this.fake = new Vector2fx();
+			this.fake = getGeomFactory().newVector();
 			DoubleProperty x = new SimpleDoubleProperty(this.fake, "x"); //$NON-NLS-1$
 			x.bind(internalXProperty());
 			DoubleProperty y = new SimpleDoubleProperty(this.fake, "y"); //$NON-NLS-1$

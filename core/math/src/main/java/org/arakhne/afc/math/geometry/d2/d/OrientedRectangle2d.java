@@ -179,7 +179,7 @@ public class OrientedRectangle2d extends AbstractShape2d<OrientedRectangle2d>
 	@Pure
 	@Override
 	public Point2d getCenter() {
-		return new Point2d(this.cx, this.cy);
+		return getGeomFactory().newPoint(this.cx, this.cy);
 	}
 
 	@Pure
@@ -222,7 +222,7 @@ public class OrientedRectangle2d extends AbstractShape2d<OrientedRectangle2d>
 	@Pure
 	@Override
 	public Vector2d getFirstAxis() {
-		return new Vector2d(this.rx, this.ry);
+		return getGeomFactory().newVector(this.rx, this.ry);
 	}
 
 	@Pure
@@ -240,7 +240,7 @@ public class OrientedRectangle2d extends AbstractShape2d<OrientedRectangle2d>
 	@Pure
 	@Override
 	public Vector2d getSecondAxis() {
-		return new Vector2d(-this.ry, this.rx);
+		return getGeomFactory().newVector(-this.ry, this.rx);
 	}
 
 	@Pure

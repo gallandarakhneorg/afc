@@ -24,9 +24,9 @@ import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.afp.GeomFactory2afp;
-import org.arakhne.afc.math.geometry.d2.afp.MultiShape2afp;
 import org.arakhne.afc.math.geometry.d2.afp.Path2afp;
 
+import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 
 /** Factory of geometrical elements.
@@ -93,6 +93,17 @@ public class GeomFactory2fx implements GeomFactory2afp<PathElement2fx, Point2fx,
 
 	@Override
 	public Point2fx newPoint(double x, double y) {
+		return new Point2fx(x, y);
+	}
+
+	/** Create a point with properties.
+	 *
+	 * @param x the x property.
+	 * @param y the y property.
+	 * @return the vector.
+	 */
+	@SuppressWarnings("static-method")
+	public Point2fx newPoint(DoubleProperty x, DoubleProperty y) {
 		return new Point2fx(x, y);
 	}
 
@@ -182,8 +193,18 @@ public class GeomFactory2fx implements GeomFactory2afp<PathElement2fx, Point2fx,
 	}
 
 	@Override
-	public MultiShape2afp<?, ?, ?, PathElement2fx, Point2fx, Vector2fx, Rectangle2fx> newMultiShape() {
+	public MultiShape2fx<?> newMultiShape() {
 		return new MultiShape2fx<>();
+	}
+
+	@Override
+	public Triangle2fx newTriangle(double x1, double y1, double x2, double y2, double x3, double y3) {
+		return new Triangle2fx(x1, y1, x2, y2, x3, y3);
+	}
+
+	@Override
+	public Segment2fx newSegment(double x1, double y1, double x2, double y2) {
+		return new Segment2fx(x1, y1, x2, y2);
 	}
 
 }

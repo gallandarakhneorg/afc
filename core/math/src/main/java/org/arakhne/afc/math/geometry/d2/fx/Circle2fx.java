@@ -143,7 +143,7 @@ public class Circle2fx
 	@Pure
 	@Override
 	public Point2fx getCenter() {
-		return new Point2fx(xProperty(), yProperty());
+		return getGeomFactory().newPoint(xProperty(), yProperty());
 	}
 
 	@Override

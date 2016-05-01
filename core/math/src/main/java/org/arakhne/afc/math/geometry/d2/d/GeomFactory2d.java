@@ -24,8 +24,6 @@ import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.afp.GeomFactory2afp;
-import org.arakhne.afc.math.geometry.d2.afp.MultiShape2afp;
-import org.arakhne.afc.math.geometry.d2.afp.Path2afp;
 
 /** Factory of geometrical elements.
  * 
@@ -96,7 +94,7 @@ public class GeomFactory2d implements GeomFactory2afp<PathElement2d, Point2d, Ve
 	}
 
 	@Override
-	public Path2afp<?, ?, PathElement2d, Point2d, Vector2d, Rectangle2d> newPath(PathWindingRule rule) {
+	public Path2d newPath(PathWindingRule rule) {
 		assert (rule != null) : "Path winding rule must be not null"; //$NON-NLS-1$
 		return new Path2d(rule);
 	}
@@ -143,7 +141,17 @@ public class GeomFactory2d implements GeomFactory2afp<PathElement2d, Point2d, Ve
 	}
 
 	@Override
-	public MultiShape2afp<?, ?, ?, PathElement2d, Point2d, Vector2d, Rectangle2d> newMultiShape() {
+	public Triangle2d newTriangle(double x1, double y1, double x2, double y2, double x3, double y3) {
+		return new Triangle2d(x1, y1, x2, y2, x3, y3);
+	}
+
+	@Override
+	public Segment2d newSegment(double x1, double y1, double x2, double y2) {
+		return new Segment2d(x1, y1, x2, y2);
+	}
+
+	@Override
+	public MultiShape2d<?> newMultiShape() {
 		return new MultiShape2d<>();
 	}
 

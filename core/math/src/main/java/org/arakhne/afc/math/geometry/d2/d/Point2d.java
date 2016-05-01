@@ -246,7 +246,7 @@ public class Point2d extends Tuple2d<Point2d> implements Point2D<Point2d, Vector
 			
 			@Override
 			public Point2d clone() {
-				return new Point2d(this);
+				return Point2d.this.getGeomFactory().newPoint(Point2d.this.getX(), Point2d.this.getY());
 			}
 
 			@Override

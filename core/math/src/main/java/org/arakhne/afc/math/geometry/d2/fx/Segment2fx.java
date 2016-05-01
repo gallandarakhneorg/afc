@@ -140,13 +140,13 @@ public class Segment2fx extends AbstractShape2fx<Segment2fx>
 	@Override
 	public Segment2fx createTransformedShape(Transform2D transform) {
 		assert (transform != null) : "Transformation must be not null"; //$NON-NLS-1$
-		Point2fx point = new Point2fx(getX1(), getY1());
+		Point2fx point = getGeomFactory().newPoint(getX1(), getY1());
 		transform.transform(point);
 		double x1 = point.getX();
 		double y1 = point.getY();
 		point.set(getX2(), getY2());
 		transform.transform(point);
-		return new Segment2fx(x1, y1, point.getX(), point.getY());
+		return getGeomFactory().newSegment(x1, y1, point.getX(), point.getY());
 	}
 
 	@Override
@@ -251,12 +251,12 @@ public class Segment2fx extends AbstractShape2fx<Segment2fx>
 
 	@Override
 	public Point2fx getP1() {
-		return new Point2fx(this.ax, this.ay);
+		return getGeomFactory().newPoint(this.ax, this.ay);
 	}
 
 	@Override
 	public Point2fx getP2() {
-		return new Point2fx(this.bx, this.by);
+		return getGeomFactory().newPoint(this.bx, this.by);
 	}
 
 	@Override

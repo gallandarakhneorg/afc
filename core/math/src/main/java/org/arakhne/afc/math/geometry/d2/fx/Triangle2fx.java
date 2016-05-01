@@ -171,7 +171,7 @@ public class Triangle2fx
 		if (transform == null || transform.isIdentity()) {
 			return clone();
 		}
-		Point2fx point = new Point2fx(getX1(), getY1());
+		Point2fx point = getGeomFactory().newPoint(getX1(), getY1());
 		transform.transform(point);
 		double x1 = point.getX();
 		double y1 = point.getY();
@@ -181,7 +181,7 @@ public class Triangle2fx
 		double y2 = point.getY();
 		point.set(getX3(), getY3());
 		transform.transform(point);
-		return new Triangle2fx(x1, y1, x2, y2, point.getX(), point.getY());
+		return getGeomFactory().newTriangle(x1, y1, x2, y2, point.getX(), point.getY());
 	}
 
 	@Override

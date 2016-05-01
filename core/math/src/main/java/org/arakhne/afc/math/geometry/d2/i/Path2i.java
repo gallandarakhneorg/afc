@@ -265,7 +265,7 @@ implements Path2ai<Shape2i<?>, Path2i, PathElement2i, Point2i, Vector2i, Rectang
 	@Override
 	public void transform(Transform2D transform) {
 		assert (transform != null) : "Transformation must be not null"; //$NON-NLS-1$
-		Point2D<?, ?> p = new Point2i();
+		Point2D<?, ?> p = getGeomFactory().newPoint();
 		for(int i=0; i<this.numCoords;) {
 			p.set(this.coords[i], this.coords[i+1]);
 			transform.transform(p);
@@ -299,7 +299,7 @@ implements Path2ai<Shape2i<?>, Path2i, PathElement2i, Point2i, Vector2i, Rectang
 	public Rectangle2i toBoundingBox() {
 		Rectangle2i bb = this.graphicalBounds==null ? null : this.graphicalBounds.get();
 		if (bb==null) {
-			bb = new Rectangle2i();
+			bb = getGeomFactory().newBox();
 			Path2ai.computeDrawableElementBoundingBox(
 					getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
 					bb);
@@ -315,7 +315,7 @@ implements Path2ai<Shape2i<?>, Path2i, PathElement2i, Point2i, Vector2i, Rectang
 		assert (box != null) : "Rectangle must be not null"; //$NON-NLS-1$
 		Rectangle2i bb = this.graphicalBounds==null ? null : this.graphicalBounds.get();
 		if (bb==null) {
-			bb = new Rectangle2i();
+			bb = getGeomFactory().newBox();
 			Path2ai.computeDrawableElementBoundingBox(
 					getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
 					bb);
@@ -454,7 +454,7 @@ implements Path2ai<Shape2i<?>, Path2i, PathElement2i, Point2i, Vector2i, Rectang
 	public Rectangle2i toBoundingBoxWithCtrlPoints() {
 		Rectangle2i bb = this.logicalBounds==null ? null : this.logicalBounds.get();
 		if (bb==null) {
-			bb = new Rectangle2i();
+			bb = getGeomFactory().newBox();
 			buildLogicalBoundingBox(bb);
 			this.logicalBounds = new SoftReference<>(bb);
 		}
@@ -467,7 +467,7 @@ implements Path2ai<Shape2i<?>, Path2i, PathElement2i, Point2i, Vector2i, Rectang
 		assert (box != null) : "Rectangle must be not null"; //$NON-NLS-1$
 		Rectangle2i bb = this.logicalBounds==null ? null : this.logicalBounds.get();
 		if (bb==null) {
-			bb = new Rectangle2i();
+			bb = getGeomFactory().newBox();
 			buildLogicalBoundingBox(bb);
 			this.logicalBounds = new SoftReference<>(bb);
 		}
@@ -480,7 +480,7 @@ implements Path2ai<Shape2i<?>, Path2i, PathElement2i, Point2i, Vector2i, Rectang
 		if (transform == null || transform.isIdentity()) {
 			return Arrays.copyOf(this.coords, this.numCoords);
 		}
-		Point2i p = new Point2i();
+		Point2i p = getGeomFactory().newPoint();
 		int[] clone = new int[this.numCoords];
 		for(int i=0; i<clone.length;) {
 			p.x = this.coords[i];
@@ -502,7 +502,7 @@ implements Path2ai<Shape2i<?>, Path2i, PathElement2i, Point2i, Vector2i, Rectang
 			}
 		}
 		else {
-			Point2i p = new Point2i();
+			Point2i p = getGeomFactory().newPoint();
 			for(int i=0; i<clone.length;) {
 				p.x = this.coords[i];
 				p.y = this.coords[i+1];
@@ -524,7 +524,7 @@ implements Path2ai<Shape2i<?>, Path2i, PathElement2i, Point2i, Vector2i, Rectang
 			}
 		}
 		else {
-			Point2i p = new Point2i();
+			Point2i p = getGeomFactory().newPoint();
 			for(int i=0; i<clone.length;) {
 				p.x = this.coords[i];
 				p.y = this.coords[i+1];
@@ -542,14 +542,14 @@ implements Path2ai<Shape2i<?>, Path2i, PathElement2i, Point2i, Vector2i, Rectang
 		Point2i[] clone = new Point2i[this.numCoords/2];
 		if (transform == null || transform.isIdentity()) {
 			for(int i=0, j=0; j<this.numCoords; ++i) {
-				clone[i] = new Point2i(
+				clone[i] = getGeomFactory().newPoint(
 						this.coords[j++],
 						this.coords[j++]);
 			}
 		}
 		else {
 			for(int i=0, j=0; j<clone.length; ++i) {
-				clone[i] = new Point2i(
+				clone[i] = getGeomFactory().newPoint(
 						this.coords[j++],
 						this.coords[j++]);
 				transform.transform(clone[i]);
@@ -561,7 +561,7 @@ implements Path2ai<Shape2i<?>, Path2i, PathElement2i, Point2i, Vector2i, Rectang
 	@Override
 	@Pure
 	public Point2i getPointAt(int index) {
-		return new Point2i(
+		return getGeomFactory().newPoint(
 				this.coords[index*2],
 				this.coords[index*2+1]);
 	}
@@ -569,7 +569,7 @@ implements Path2ai<Shape2i<?>, Path2i, PathElement2i, Point2i, Vector2i, Rectang
 	@Override
 	@Pure
 	public Point2i getCurrentPoint() {
-		return new Point2i(
+		return getGeomFactory().newPoint(
 				this.coords[this.numCoords-2],
 				this.coords[this.numCoords-1]);
 	}

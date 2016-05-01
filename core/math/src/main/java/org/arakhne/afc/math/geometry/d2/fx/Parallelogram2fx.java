@@ -240,7 +240,7 @@ public class Parallelogram2fx extends AbstractShape2fx<Parallelogram2fx>
 	@Pure
 	@Override
 	public Point2fx getCenter() {
-		return new Point2fx(this.cx, this.cy);
+		return getGeomFactory().newPoint(this.cx, this.cy);
 	}
 
 	@Pure
@@ -277,7 +277,7 @@ public class Parallelogram2fx extends AbstractShape2fx<Parallelogram2fx>
 	 */
 	public UnitVectorProperty firstAxisProperty() {
 		if (this.rVector == null) {
-			this.rVector = new UnitVectorProperty(this, "firstAxis"); //$NON-NLS-1$
+			this.rVector = new UnitVectorProperty(this, "firstAxis", getGeomFactory()); //$NON-NLS-1$
 		}
 		return this.rVector;
 	}
@@ -306,7 +306,7 @@ public class Parallelogram2fx extends AbstractShape2fx<Parallelogram2fx>
 	 */
 	public UnitVectorProperty secondAxisProperty() {
 		if (this.sVector == null) {
-			this.sVector = new UnitVectorProperty(this, "firstAxis"); //$NON-NLS-1$
+			this.sVector = new UnitVectorProperty(this, "firstAxis", getGeomFactory()); //$NON-NLS-1$
 		}
 		return this.sVector;
 	}

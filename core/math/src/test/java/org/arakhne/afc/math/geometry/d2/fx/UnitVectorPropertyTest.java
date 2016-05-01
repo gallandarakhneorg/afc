@@ -45,7 +45,7 @@ public class UnitVectorPropertyTest extends AbstractMathTestCase {
 	
 	@Before
 	public void setUp() {
-		this.property = new UnitVectorProperty(this, "test");
+		this.property = new UnitVectorProperty(this, "test", new GeomFactory2fx());
 		double length = Math.hypot(ox, oy);
 		this.property.set(ox / length, oy / length);
 	}

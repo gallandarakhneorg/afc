@@ -109,8 +109,8 @@ public class MultiShape2ifx<T extends Shape2ifx<?>> extends AbstractShape2ifx<Mu
 			this.boundingBox = new SimpleObjectProperty<>(this, "boundingBox"); //$NON-NLS-1$
 			this.boundingBox.bind(Bindings.createObjectBinding(
 					() -> {
-						Rectangle2ifx box = new Rectangle2ifx();
-						Rectangle2ifx shapeBox = new Rectangle2ifx();
+						Rectangle2ifx box = getGeomFactory().newBox();
+						Rectangle2ifx shapeBox = getGeomFactory().newBox();
 						Iterator<T> iterator = elementsProperty().iterator();
 						if (iterator.hasNext()) {
 							iterator.next().toBoundingBox(shapeBox);
