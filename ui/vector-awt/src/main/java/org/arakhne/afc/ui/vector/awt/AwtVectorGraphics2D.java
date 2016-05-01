@@ -47,10 +47,13 @@ import org.arakhne.afc.ui.vector.VectorToolkit;
  *  some vector data with a level of details.
  *
  * @param <G> is the type of the graphics pointed by this VectorGraphics2D.
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$ */
+ * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
+ */
+@Deprecated
 public class AwtVectorGraphics2D<G extends Graphics2D> extends AbstractVectorGraphics2D {
 
 	/** Delegate.
@@ -217,14 +220,14 @@ public class AwtVectorGraphics2D<G extends Graphics2D> extends AbstractVectorGra
 
 	@Override
 	public void transform(Transform2D Tx) {
-		AffineTransform tr = new AffineTransform(Tx.m00, Tx.m10, Tx.m01, Tx.m11, Tx.m12, Tx.m12);
+		AffineTransform tr = new AffineTransform(Tx.getM00(), Tx.getM10(), Tx.getM01(), Tx.getM11(), Tx.getM12(), Tx.getM12());
 		this.delegate.transform(tr);
 	}
 
 	@Override
 	public Transform2D setTransform(Transform2D Tx) {
 		AffineTransform old = this.delegate.getTransform();
-		AffineTransform tr = new AffineTransform(Tx.m00, Tx.m10, Tx.m01, Tx.m11, Tx.m02, Tx.m12);
+		AffineTransform tr = new AffineTransform(Tx.getM00(), Tx.getM10(), Tx.getM01(), Tx.getM11(), Tx.getM02(), Tx.getM12());
 		this.delegate.setTransform(tr);
 		if (old==null) return null;
 		return new Transform2D(
@@ -320,7 +323,7 @@ public class AwtVectorGraphics2D<G extends Graphics2D> extends AbstractVectorGra
 	/**
 	 * This is the swing-based implementation of a VectorGraphics2D and a ZoomableContext.
 	 *  
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $Name$ $Revision$ $Date$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

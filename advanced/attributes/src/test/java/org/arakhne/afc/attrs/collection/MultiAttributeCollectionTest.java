@@ -47,6 +47,7 @@ import org.arakhne.afc.attrs.collection.MultiAttributeCollection;
  * @mavenartifactid $ArtifactId$
  * @since 4.0
  */
+@SuppressWarnings("all")
 public class MultiAttributeCollectionTest extends AbstractAttrTestCase {
 
 	private MultiAttributeCollection provider;

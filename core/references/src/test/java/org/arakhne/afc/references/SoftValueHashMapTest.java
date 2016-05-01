@@ -24,7 +24,7 @@ import java.util.Map;
 import org.arakhne.afc.references.SoftValueHashMap;
 
 /**
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -42,7 +42,7 @@ public class SoftValueHashMapTest extends AbstractReferencableValueMapTestCase {
 	 */
 	@Override
 	protected Map<String,String> createMap() {
-		return new SoftValueHashMap<String,String>();
+		return new SoftValueHashMap<>();
 	}
 
 }

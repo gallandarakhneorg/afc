@@ -25,11 +25,13 @@ import java.io.Serializable;
 /** 2D tuple.
  * 
  * @param <TT> is the type of data that can be added or substracted to this tuple.
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see {@link org.arakhne.afc.math.geometry.d2.Tuple2D}
  */
+@Deprecated
 public interface Tuple2D<TT extends Tuple2D<? super TT>>
 extends Cloneable, Serializable {
 

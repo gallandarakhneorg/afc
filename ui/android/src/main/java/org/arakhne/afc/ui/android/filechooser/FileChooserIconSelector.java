@@ -25,11 +25,13 @@ import java.io.File;
 /**
  * This selector permits to select an icon for a file in a file chooser.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public interface FileChooserIconSelector {
 
 	/** Replies the preferred icon for the given file.

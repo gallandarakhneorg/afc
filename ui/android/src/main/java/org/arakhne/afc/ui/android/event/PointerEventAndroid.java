@@ -31,11 +31,13 @@ import android.view.MotionEvent;
 
 /** Android implementation of a pointer event.
  *  
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public class PointerEventAndroid extends EventObject implements PointerEvent {
 
 	private static final long serialVersionUID = -1281311602355739859L;

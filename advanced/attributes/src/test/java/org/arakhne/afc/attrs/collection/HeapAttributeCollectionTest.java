@@ -33,6 +33,7 @@ import org.arakhne.afc.attrs.collection.HeapAttributeCollection;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("all")
 public class HeapAttributeCollectionTest extends AbstractAttributeCollectionTest<HeapAttributeCollection> {
 
 	/**

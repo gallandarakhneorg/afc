@@ -35,11 +35,13 @@ import org.arakhne.afc.ui.vector.VectorGraphics2D;
 
 /** AWT implementation of the generic Image.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 class AwtBufferedImage extends BufferedImage implements Image, NativeWrapper {
 
 	/**
@@ -75,7 +77,7 @@ class AwtBufferedImage extends BufferedImage implements Image, NativeWrapper {
 	@Override
 	public VectorGraphics2D getVectorGraphics() {
 		Graphics2D g2d = (Graphics2D)getGraphics();
-		return new AwtVectorGraphics2D<Graphics2D>(
+		return new AwtVectorGraphics2D<>(
 				g2d, Graphics2DLOD.NORMAL_LEVEL_OF_DETAIL,
 				StringAnchor.LEFT_BASELINE);
 	}

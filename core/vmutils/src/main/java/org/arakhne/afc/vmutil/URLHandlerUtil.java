@@ -31,7 +31,7 @@ import java.util.NoSuchElementException;
 
 /** Utilities around URLHandler.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -52,7 +52,7 @@ public class URLHandlerUtil {
 	}
 	
 	private static void install(String... packageNames) {
-		List<String> array = new LinkedList<String>();
+		List<String> array = new LinkedList<>();
 
 		String str = System.getProperty(HANDLER_PACKAGES);
 		if (str!=null && !"".equals(str)) { //$NON-NLS-1$
@@ -79,7 +79,7 @@ public class URLHandlerUtil {
 	}
 
 	private static void uninstall(String... packageNames) {
-		List<String> array = new LinkedList<String>();
+		List<String> array = new LinkedList<>();
 
 		String str = System.getProperty(HANDLER_PACKAGES);
 		if (str!=null && !"".equals(str)) { //$NON-NLS-1$
@@ -130,7 +130,7 @@ public class URLHandlerUtil {
 	}
 
 	/**
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -171,7 +171,7 @@ public class URLHandlerUtil {
 						this.next = (Class<? extends URLStreamHandler>)type;
 					}
 				}
-				catch(Throwable _) {
+				catch(Throwable exception) {
 					//
 				}
 			}

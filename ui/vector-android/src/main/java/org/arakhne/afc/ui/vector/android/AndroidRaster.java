@@ -27,11 +27,13 @@ import android.graphics.Bitmap;
 
 /** Android implementation of the generic raster.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 class AndroidRaster implements Raster, Cloneable {
 
 	private Bitmap image;

@@ -34,11 +34,13 @@ import org.arakhne.afc.math.continous.object2d.Shape2f;
 /** This interface describes a zooming context and
  * permits to make some operation in it.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public interface ZoomableContext {
 
 	/** Translates the specified workspace length

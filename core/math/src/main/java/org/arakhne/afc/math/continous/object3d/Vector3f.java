@@ -28,11 +28,13 @@ import org.arakhne.afc.math.matrix.Transform3D;
 
 /** 3D Vector with 3 floating-point values.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated Replacement will be provided in Version 14.0
  */
+@Deprecated
 public class Vector3f extends Tuple3f<Vector3D> implements Vector3D {
 
 	private static final long serialVersionUID = -1222875298451525734L;
@@ -134,9 +136,9 @@ public class Vector3f extends Tuple3f<Vector3D> implements Vector3D {
 	 */
 	public final Vector3f mul(Matrix3f m) {
 		Vector3f r = new Vector3f();
-		r.x = this.getX() * m.m00 + this.getY() * m.m01 + this.getZ() * m.m02;
-		r.y = this.getX() * m.m10 + this.getY() * m.m11 + this.getZ() * m.m12;
-		r.z = this.getX() * m.m20 + this.getY() * m.m21 + this.getZ() * m.m22;
+		r.x = (float)(this.getX() * m.getM00() + this.getY() * m.getM01() + this.getZ() * m.getM02());
+		r.y = (float)(this.getX() * m.getM10() + this.getY() * m.getM11() + this.getZ() * m.getM12());
+		r.z = (float)(this.getX() * m.getM20() + this.getY() * m.getM21() + this.getZ() * m.getM22());
 		return r;
 	}
 

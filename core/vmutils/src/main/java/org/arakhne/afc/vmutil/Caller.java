@@ -31,7 +31,7 @@ import org.arakhne.afc.vmutil.caller.StackTraceCaller;
  * <p>
  * It inspirated from the Sun's <code>sun.reflect.Reflection</code> class
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

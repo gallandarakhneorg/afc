@@ -29,7 +29,7 @@ import org.arakhne.afc.vmutil.Android.AndroidException;
 /**
  * This interface provides the Android implementation to load resources.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

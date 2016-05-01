@@ -25,11 +25,13 @@ import java.awt.geom.Dimension2D;
 /** This class implements a {@link Dimension2D} with
  * double precision floating point values. 
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public class DoubleDimension extends Dimension2D {
 
 	private double width;

@@ -27,11 +27,13 @@ import org.arakhne.afc.math.generic.Point2D;
 /** 2D rectangular shape with integer points.
  * 
  * @param <T> is the type of the shape implemented by the instance of this class.
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see {@link org.arakhne.afc.math.geometry.d2.i.AbstractRectangularShape2i}
  */
+@Deprecated
 public abstract class AbstractRectangularShape2i<T extends Shape2i> extends AbstractShape2i<T> {
 
 	private static final long serialVersionUID = -2716430612894131964L;

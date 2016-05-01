@@ -29,19 +29,21 @@ import javax.swing.filechooser.FileFilter;
 
 /** Implementation of swing file filter.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
-public class FileFilterSwing extends FileFilter implements org.arakhne.afc.io.filefilter.FileFilter  {
+@Deprecated
+public class FileFilterSwing extends FileFilter implements org.arakhne.afc.inputoutput.filefilter.FileFilter  {
 
-	private final org.arakhne.afc.io.filefilter.FileFilter fileFilter;
+	private final org.arakhne.afc.inputoutput.filefilter.FileFilter fileFilter;
 	
 	/**
 	 * @param filter
 	 */
-	public FileFilterSwing(org.arakhne.afc.io.filefilter.FileFilter filter) {
+	public FileFilterSwing(org.arakhne.afc.inputoutput.filefilter.FileFilter filter) {
 		this.fileFilter = filter;
 	}
 	
@@ -49,7 +51,7 @@ public class FileFilterSwing extends FileFilter implements org.arakhne.afc.io.fi
 	 * 
 	 * @return the file filter.
 	 */
-	public final org.arakhne.afc.io.filefilter.FileFilter getFileFilter() {
+	public final org.arakhne.afc.inputoutput.filefilter.FileFilter getFileFilter() {
 		return this.fileFilter;
 	}
 

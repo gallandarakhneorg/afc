@@ -28,11 +28,13 @@ import org.arakhne.afc.math.matrix.Transform2D;
 
 /** 2D shape with integer  points.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see {@link org.arakhne.afc.math.geometry.d2.i.Shape2i}
  */
+@Deprecated
 public interface Shape2i extends Shape2D<Shape2i> {
 
 	/** Replies the bounding box of this shape.

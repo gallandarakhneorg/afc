@@ -25,11 +25,13 @@ package org.arakhne.afc.ui;
 
 /** The anchor for all the strings.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public enum StringAnchor {
 	/** Anchor it at upper left.
 	 */

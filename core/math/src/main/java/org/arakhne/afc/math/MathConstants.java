@@ -23,66 +23,65 @@ package org.arakhne.afc.math;
 
 /** Several mathematical constants.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 13.0
  */
 public interface MathConstants {
 
 	/** Inside zone according to the Cohen-Sutherland algorithm.
 	 */
-	public static final int COHEN_SUTHERLAND_INSIDE = 0; // 0000
+	public static final int COHEN_SUTHERLAND_INSIDE = 0;
+	
 	/** Left zone according to the Cohen-Sutherland algorithm.
 	 */
-	public static final int COHEN_SUTHERLAND_LEFT = 1;   // 0001
+	public static final int COHEN_SUTHERLAND_LEFT = 1;
+	
 	/** Right zone according to the Cohen-Sutherland algorithm.
 	 */
-	public static final int COHEN_SUTHERLAND_RIGHT = 2;  // 0010
+	public static final int COHEN_SUTHERLAND_RIGHT = 2;
+	
 	/** Bottom zone according to the Cohen-Sutherland algorithm.
 	 */
-	public static final int COHEN_SUTHERLAND_BOTTOM = 4; // 0100
+	public static final int COHEN_SUTHERLAND_BOTTOM = 4;
+
 	/** Top zone according to the Cohen-Sutherland algorithm.
 	 */
-	public static final int COHEN_SUTHERLAND_TOP = 8;    // 1000
+	public static final int COHEN_SUTHERLAND_TOP = 8;
 	
-	/** PI
+	/** PI.
 	 */
-	public static final float PI = (float)Math.PI;
+	public static final double PI = Math.PI;
 
-	/** E
+	/** E.
 	 */
-	public static final float E = (float)Math.E;
+	public static final double E = Math.E;
 
-	/** Epsilon value, smallest such that 1.0+EPSILON != 1.0
-	 * <p>
-	 * Given by the Java3D's implementation of the Matrix3d class.
+	/** 2 * PI.
 	 */
-	public static final double EPSILON = 1.110223024E-16;
+	public static final double TWO_PI = 2. * PI;
 
-	/** 2 * PI
+	/** PI + PI/2.
 	 */
-	public static final float TWO_PI = 2f * PI;
+	public static final double ONE_HALF_PI = 1.5 * PI;
 
-	/** PI + PI/2
+	/** PI/2.
 	 */
-	public static final float ONE_HALF_PI = 1.5f * PI;
+	public static final double DEMI_PI = .5 * PI;
 
-	/** PI/2
+	/** PI/4.
 	 */
-	public static final float DEMI_PI = .5f * PI;
+	public static final double QUARTER_PI = .25 * PI;
 
-	/** PI/4
+	/** 3*PI/4.
 	 */
-	public static final float QUARTER_PI = .25f * PI;
+	public static final double THREE_QUARTER_PI = .75 * PI;
 
-	/** 3*PI/4
+	/** Square root of 2.
 	 */
-	public static final float THREE_QUARTER_PI = .75f * PI;
-
-	/** Square root of 2
-	 */
-	public static final float SQRT_2 = (float)Math.sqrt(2.);
+	public static final double SQRT_2 = Math.sqrt(2.);
 
 	/**
 	 * Max sweeps in the Jacoby's algorithms.
@@ -90,14 +89,27 @@ public interface MathConstants {
 	public static final int JACOBI_MAX_SWEEPS = 32;
 	
 	/**
-	 * Max sweeps in the Ellipse's algorithms.
+	 * Number precision for the Jacoby's algorithms.
+	 *
+	 * <p>Given by the Java3D's implementation of the Matrix3d class.
 	 */
+	public static final double JACOBI_EPSILON = 1.110223024E-16;
+
+	/**
+	 * Max sweeps in the Ellipse's algorithms.
+	 *
+	 * @deprecated
+	 */
+	@Deprecated
 	public static final int ELLIPSE_MAX_SWEEPS = 32;
 
 	/** This is the maximale distance that
-	 *  permits to detect hits.
+	 * permits to detect hits.
+	 *
+	 * @deprecated
 	 */
-	public static final float HIT_DISTANCE = 5f ;
+	@Deprecated
+	public static final double HIT_DISTANCE = 5 ;
 
 	/** The maximum distance that the line 
 	 *  segments used to approximate the 
@@ -108,7 +120,7 @@ public interface MathConstants {
 	 *  This attributes is used to parameter the approximation
 	 *  of the curve rendering.
 	 */
-	public static final float SPLINE_APPROXIMATION_RATIO = .1f;
+	public static final double SPLINE_APPROXIMATION_RATIO = .1;
 	
 	/**
      * The rectangle intersection test counts the number of times
@@ -141,5 +153,21 @@ public interface MathConstants {
      * further processing is ever needed if an intersection occurs.
      */
     public static final int SHAPE_INTERSECTS = 0x80000000;
+
+	/**
+	 * Number precision for testing is a vector is a unit vector.
+	 *
+	 * <p>The approximation introduced by the vector's length computation make this
+	 * epsilon still mandatory.
+	 */
+	public static final double UNIT_VECTOR_EPSILON = 1E-5;
+
+	/**
+	 * Number precision for testing is the orthogonality of two unit vectors.
+	 *
+	 * <p>The approximation introduced by the vector's length computation make this
+	 * epsilon still mandatory.
+	 */
+	public static final double ORTHOGONAL_VECTOR_EPSILON = 1E-5;
 
 }

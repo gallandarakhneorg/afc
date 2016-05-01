@@ -38,11 +38,13 @@ import org.arakhne.afc.ui.undo.Undoable;
  * @param <DRAW> is the type of the data supported by this container.
  * @param <CANVAS> is the type of the drawing canvas.
  * @param <COLOR> is the type that is representing a color.
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public interface ActionModeManagerOwner<DRAW extends Selectable, CANVAS, COLOR> {
 
 	/** Replies if the mode container want to remove the model

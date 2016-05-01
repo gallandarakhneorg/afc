@@ -21,25 +21,49 @@
  */
 package org.arakhne.afc.math;
 
+import static org.junit.Assert.fail;
+
 import java.math.BigDecimal;
+import java.util.Iterator;
+import java.util.Objects;
+import java.util.Random;
 
-import junit.framework.TestCase;
-
-import org.arakhne.afc.math.continous.object2d.Tuple2f;
+import org.arakhne.afc.math.geometry.d2.Point2D;
+import org.arakhne.afc.math.geometry.d2.Tuple2D;
+import org.arakhne.afc.math.geometry.d2.Vector2D;
+import org.arakhne.afc.math.geometry.d2.d.Point2d;
+import org.arakhne.afc.math.geometry.d2.d.Vector2d;
+import org.arakhne.afc.math.geometry.d3.Point3D;
+import org.arakhne.afc.math.geometry.d3.Quaternion;
+import org.arakhne.afc.math.geometry.d3.Tuple3D;
+import org.arakhne.afc.math.geometry.d3.Vector3D;
+import org.arakhne.afc.math.matrix.Matrix2f;
+import org.arakhne.afc.math.matrix.Matrix3f;
+import org.arakhne.afc.math.matrix.Matrix4f;
+import org.junit.ComparisonFailure;
 
 /**
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public abstract class AbstractMathTestCase extends TestCase {
+@SuppressWarnings("all")
+public abstract class AbstractMathTestCase {
 	
 	/** Precision of the floating point number epsilon-tests.
 	 */
 	protected final static int DEFAULT_DECIMAL_COUNT = 8;
 	
+	/** Precision of the floating point number epsilon-tests.
+	 */
+	protected final static double EPSILON = 10 * 1.110223024E-16;
+
 	private int decimalPrecision = DEFAULT_DECIMAL_COUNT;
+	
+	/** Random number sequence.
+	 */
+	protected final Random random = new Random();
 	
 	/** Set the epsilon used ben testing floating-point values.
 	 * 
@@ -62,7 +86,7 @@ public abstract class AbstractMathTestCase extends TestCase {
 	 * @param expected
 	 * @param actual
 	 */
-	protected void assertEpsilonEquals(float expected, float actual) {
+	protected void assertEpsilonEquals(double expected, double actual) {
 		assertEpsilonEquals(null, expected, actual);
 	}
 	
@@ -72,7 +96,7 @@ public abstract class AbstractMathTestCase extends TestCase {
 	 * @param expected
 	 * @param actual
 	 */
-	protected void assertNotEpsilonEquals(float expected, float actual) {
+	protected void assertNotEpsilonEquals(double expected, double actual) {
 		assertNotEpsilonEquals(null, expected, actual);
 	}
 
@@ -83,16 +107,16 @@ public abstract class AbstractMathTestCase extends TestCase {
 	 * @param isNaNEqual indicates if the NaN value is equals to itself.
 	 * @return <code>true</code> or <code>false</code>
 	 */
-	private boolean isEpsilonEquals(float a, float b, boolean isNaNEqual) {
+	protected boolean isEpsilonEquals(double a, double b, boolean isNaNEqual) {
 		if (a==b) return true;
-		boolean nanA = Float.isNaN(a);
-		boolean nanB = Float.isNaN(b);
+		boolean nanA = Double.isNaN(a);
+		boolean nanB = Double.isNaN(b);
 		if (nanA || nanB) {
 			if (isNaNEqual) return nanA==nanB;
 			return false;
 		}
-		if (!Float.isInfinite(a) && !Float.isInfinite(a)
-			&& !Float.isNaN(a) && !Float.isNaN(b)) {
+		if (!Double.isInfinite(a) && !Double.isInfinite(a)
+			&& !Double.isNaN(a) && !Double.isNaN(b)) {
 			return isEpsilonEquals(new BigDecimal(a), new BigDecimal(b), this.decimalPrecision/2);
 		}
 		return false;
@@ -104,7 +128,7 @@ public abstract class AbstractMathTestCase extends TestCase {
 	 * @param b
 	 * @return <code>true</code> or <code>false</code>
 	 */
-	protected boolean isEpsilonEquals(float a, float b) {
+	protected boolean isEpsilonEquals(double a, double b) {
 		return isEpsilonEquals(a, b, true);
 	}
 
@@ -143,12 +167,12 @@ public abstract class AbstractMathTestCase extends TestCase {
 	 * @param expected
 	 * @param actual
 	 */
-	protected void assertEpsilonEquals(String message, float expected, float actual) {
+	protected void assertEpsilonEquals(String message, double expected, double actual) {
 		if (isEpsilonEquals(expected,actual)) return;
-		fail((message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
-				+"not same float value, expected:"+ //$NON-NLS-1$
-				expected
-				+", actual:"+actual); //$NON-NLS-1$
+		throw new ComparisonFailure((message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
+				+"not same double value.", //$NON-NLS-1$
+				Double.toString(expected),
+				Double.toString(actual));
 	}
 
 	/** Test if the actual value is not equal to the expected value with
@@ -158,12 +182,12 @@ public abstract class AbstractMathTestCase extends TestCase {
 	 * @param expected
 	 * @param actual
 	 */
-	protected void assertNotEpsilonEquals(String message, float expected, float actual) {
+	protected void assertNotEpsilonEquals(String message, double expected, double actual) {
 		if (!isEpsilonEquals(expected,actual, false)) return;
-		fail((message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
-				+"same float value, unexpected:"+ //$NON-NLS-1$
-				expected
-				+", actual:"+actual); //$NON-NLS-1$
+		throw new ComparisonFailure((message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
+				+"same double value.", //$NON-NLS-1$
+				Double.toString(expected),
+				Double.toString(actual));
 	}
 
 	/** Test if the actual value is equal to the expected value with
@@ -172,7 +196,7 @@ public abstract class AbstractMathTestCase extends TestCase {
 	 * @param expected
 	 * @param actual
 	 */
-	protected void assertEpsilonEquals(Tuple2f<?> expected, Tuple2f<?> actual) {
+	protected void assertEpsilonEquals(Tuple2D<?> expected, Tuple2D<?> actual) {
 		assertEpsilonEquals(null, expected, actual);
 	}
 
@@ -182,7 +206,7 @@ public abstract class AbstractMathTestCase extends TestCase {
 	 * @param expected
 	 * @param actual
 	 */
-	protected void assertNotEpsilonEquals(Tuple2f<?> expected, Tuple2f<?> actual) {
+	protected void assertNotEpsilonEquals(Tuple2D<?> expected, Tuple2D<?> actual) {
 		assertNotEpsilonEquals(null, expected, actual);
 	}
 
@@ -193,20 +217,20 @@ public abstract class AbstractMathTestCase extends TestCase {
 	 * @param expected
 	 * @param actual
 	 */
-	protected void assertEpsilonEquals(String message, Tuple2f<?> expected, Tuple2f<?> actual) {
+	protected void assertEpsilonEquals(String message, Tuple2D<?> expected, Tuple2D<?> actual) {
 		if (!isEpsilonEquals(expected.getX(), actual.getX())) {
-			fail((message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
-					+"not same x value, expected:"+ //$NON-NLS-1$
-					expected.getX()
-					+", actual:"+actual.getX()); //$NON-NLS-1$
-			return;
+			throw new ComparisonFailure(
+					(message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
+					+"not same x value", //$NON-NLS-1$
+					expected.toString(),
+					actual.toString());
 		}
 		if (!isEpsilonEquals(expected.getY(), actual.getY())) {
-			fail((message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
-					+"not same y value, expected:"+ //$NON-NLS-1$
-					expected.getY()
-					+", actual:"+actual.getY()); //$NON-NLS-1$
-			return;
+			throw new ComparisonFailure(
+					(message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
+					+"not same y value", //$NON-NLS-1$
+					expected.toString(),
+					actual.toString());
 		}
 	}
 
@@ -217,20 +241,211 @@ public abstract class AbstractMathTestCase extends TestCase {
 	 * @param expected
 	 * @param actual
 	 */
-	protected void assertNotEpsilonEquals(String message, Tuple2f<?> expected, Tuple2f<?> actual) {
+	protected void assertNotEpsilonEquals(String message, Tuple2D<?> expected, Tuple2D<?> actual) {
 		if (isEpsilonEquals(expected.getX(), actual.getX(), false)) {
-			fail((message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
-					+"same x value, unexpected:"+ //$NON-NLS-1$
-					expected.getX()
-					+", actual:"+actual.getX()); //$NON-NLS-1$
-			return;
+			throw new ComparisonFailure(
+					(message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
+					+"not same x value", //$NON-NLS-1$
+					expected.toString(),
+					actual.toString());
 		}
 		if (isEpsilonEquals(expected.getY(), actual.getY(), false)) {
-			fail((message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
-					+"not same y value, expected:"+ //$NON-NLS-1$
-					expected.getY()
-					+", actual:"+actual.getY()); //$NON-NLS-1$
-			return;
+			throw new ComparisonFailure(
+					(message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
+					+"not same y value", //$NON-NLS-1$
+					expected.toString(),
+					actual.toString());
+		}
+	}
+
+	/** Test if the actual value is equal to the expected value with
+	 * a distance of epsilon.
+	 * 
+	 * @param expected
+	 * @param actual
+	 */
+	protected void assertEpsilonEquals(Tuple3D<?> expected, Tuple3D<?> actual) {
+		assertEpsilonEquals(null, expected, actual);
+	}
+
+	/** Test if the actual value is not equal to the expected value with
+	 * a distance of epsilon.
+	 * 
+	 * @param expected
+	 * @param actual
+	 */
+	protected void assertNotEpsilonEquals(Tuple3D<?> expected, Tuple3D<?> actual) {
+		assertNotEpsilonEquals(null, expected, actual);
+	}
+
+	/** Test if the actual value is equal to the expected value with
+	 * a distance of epsilon.
+	 * 
+	 * @param message
+	 * @param expected
+	 * @param actual
+	 */
+	protected void assertEpsilonEquals(String message, Tuple3D<?> expected, Tuple3D<?> actual) {
+		if (!isEpsilonEquals(expected.getX(), actual.getX())) {
+			throw new ComparisonFailure(
+					(message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
+					+"not same x value", //$NON-NLS-1$
+					expected.toString(),
+					actual.toString());
+		}
+		if (!isEpsilonEquals(expected.getY(), actual.getY())) {
+			throw new ComparisonFailure(
+					(message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
+					+"not same y value", //$NON-NLS-1$
+					expected.toString(),
+					actual.toString());
+		}
+		if (!isEpsilonEquals(expected.getZ(), actual.getZ())) {
+			throw new ComparisonFailure(
+					(message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
+					+"not same z value", //$NON-NLS-1$
+					expected.toString(),
+					actual.toString());
+		}
+	}
+
+	/** Replies if the actual value is equal to the expected value with
+	 * a distance of epsilon.
+	 * 
+	 * @param expected
+	 * @param actual
+	 * @return the test result.
+	 */
+	protected boolean isEpsilonEquals(Tuple3D<?> expected, Tuple3D<?> actual) {
+		return isEpsilonEquals(expected.getX(), actual.getX())
+				&& isEpsilonEquals(expected.getY(), actual.getY())
+				&& isEpsilonEquals(expected.getZ(), actual.getZ());
+	}
+
+	/** Test if the actual value is not equal to the expected value with
+	 * a distance of epsilon.
+	 * 
+	 * @param message
+	 * @param expected
+	 * @param actual
+	 */
+	protected void assertNotEpsilonEquals(String message, Tuple3D<?> expected, Tuple3D<?> actual) {
+		if (isEpsilonEquals(expected.getX(), actual.getX(), false)) {
+			throw new ComparisonFailure(
+					(message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
+					+"not same x value", //$NON-NLS-1$
+					expected.toString(),
+					actual.toString());
+		}
+		if (isEpsilonEquals(expected.getY(), actual.getY(), false)) {
+			throw new ComparisonFailure(
+					(message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
+					+"not same y value", //$NON-NLS-1$
+					expected.toString(),
+					actual.toString());
+		}
+		if (isEpsilonEquals(expected.getZ(), actual.getZ(), false)) {
+			throw new ComparisonFailure(
+					(message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
+					+"not same z value", //$NON-NLS-1$
+					expected.toString(),
+					actual.toString());
+		}
+	}
+
+	/** Test if the actual value is equal to the expected value with
+	 * a distance of epsilon.
+	 * 
+	 * @param expected
+	 * @param actual
+	 */
+	protected void assertEpsilonEquals(Quaternion expected, Quaternion actual) {
+		assertEpsilonEquals(null, expected, actual);
+	}
+
+	/** Test if the actual value is not equal to the expected value with
+	 * a distance of epsilon.
+	 * 
+	 * @param expected
+	 * @param actual
+	 */
+	protected void assertNotEpsilonEquals(Quaternion expected, Quaternion actual) {
+		assertNotEpsilonEquals(null, expected, actual);
+	}
+
+	/** Test if the actual value is equal to the expected value with
+	 * a distance of epsilon.
+	 * 
+	 * @param message
+	 * @param expected
+	 * @param actual
+	 */
+	protected void assertEpsilonEquals(String message, Quaternion expected, Quaternion actual) {
+		if (!isEpsilonEquals(expected.getX(), actual.getX())) {
+			throw new ComparisonFailure(
+					(message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
+					+"not same x value", //$NON-NLS-1$
+					expected.toString(),
+					actual.toString());
+		}
+		if (!isEpsilonEquals(expected.getY(), actual.getY())) {
+			throw new ComparisonFailure(
+					(message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
+					+"not same y value", //$NON-NLS-1$
+					expected.toString(),
+					actual.toString());
+		}
+		if (!isEpsilonEquals(expected.getZ(), actual.getZ())) {
+			throw new ComparisonFailure(
+					(message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
+					+"not same z value", //$NON-NLS-1$
+					expected.toString(),
+					actual.toString());
+		}
+		if (!isEpsilonEquals(expected.getW(), actual.getW())) {
+			throw new ComparisonFailure(
+					(message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
+					+"not same w value", //$NON-NLS-1$
+					expected.toString(),
+					actual.toString());
+		}
+	}
+
+	/** Test if the actual value is not equal to the expected value with
+	 * a distance of epsilon.
+	 * 
+	 * @param message
+	 * @param expected
+	 * @param actual
+	 */
+	protected void assertNotEpsilonEquals(String message, Quaternion expected, Quaternion actual) {
+		if (isEpsilonEquals(expected.getX(), actual.getX(), false)) {
+			throw new ComparisonFailure(
+					(message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
+					+"not same x value", //$NON-NLS-1$
+					expected.toString(),
+					actual.toString());
+		}
+		if (isEpsilonEquals(expected.getY(), actual.getY(), false)) {
+			throw new ComparisonFailure(
+					(message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
+					+"not same y value", //$NON-NLS-1$
+					expected.toString(),
+					actual.toString());
+		}
+		if (isEpsilonEquals(expected.getZ(), actual.getZ(), false)) {
+			throw new ComparisonFailure(
+					(message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
+					+"not same z value", //$NON-NLS-1$
+					expected.toString(),
+					actual.toString());
+		}
+		if (isEpsilonEquals(expected.getW(), actual.getW(), false)) {
+			throw new ComparisonFailure(
+					(message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
+					+"not same w value", //$NON-NLS-1$
+					expected.toString(),
+					actual.toString());
 		}
 	}
 
@@ -251,12 +466,562 @@ public abstract class AbstractMathTestCase extends TestCase {
 	 * @param expected
 	 * @param actual
 	 */
-	@SuppressWarnings("static-method")
 	protected void assertNotEquals(String message, int expected, int actual) {
 		if (expected==actual) {
 			fail((message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
 					+"same value, expecting not equal to:"+ //$NON-NLS-1$
 					expected);
+		}
+	}
+	
+	/** Create a random point.
+	 *
+	 * @return the random point.
+	 */
+	protected Point2d randomPoint2f() {
+		return new Point2d(
+				this.random.nextDouble() * 1000 - 500,
+				this.random.nextDouble() * 1000 - 500);
+	}
+	
+	/** Create a random vector.
+	 *
+	 * @return the random vector.
+	 */
+	protected Vector2d randomVector2f() {
+		return new Vector2d(
+				this.random.nextDouble() * 1000 - 500,
+				this.random.nextDouble() * 1000 - 500);
+	}
+
+	/** Create a random point.
+	 *
+	 * @return the random point.
+	 */
+	protected Point3D randomPoint3f() {
+		// TODO
+		throw new UnsupportedOperationException();
+//		return new Point3D(
+//				this.random.nextDouble() * 1000 - 500,
+//				this.random.nextDouble() * 1000 - 500,
+//				this.random.nextDouble() * 1000 - 500);
+	}
+	
+	/** Create a random vector.
+	 *
+	 * @return the random vector.
+	 */
+	protected Vector3D randomVector3f() {
+		// TODO
+		throw new UnsupportedOperationException();
+//		return new Vector3f(
+//				this.random.nextDouble() * 1000 - 500,
+//				this.random.nextDouble() * 1000 - 500,
+//				this.random.nextDouble() * 1000 - 500);
+	}
+
+	/** Create a random matrix.
+	 *
+	 * @return the random matrix.
+	 */
+	protected Matrix2f randomMatrix2f() {
+		return new Matrix2f(
+				this.random.nextDouble() * 1000 - 500,
+				this.random.nextDouble() * 1000 - 500,
+				this.random.nextDouble() * 1000 - 500,
+				this.random.nextDouble() * 1000 - 500);
+	}
+	
+	
+	/** Create a random matrix.
+	 *
+	 * @return the random matrix.
+	 */
+	protected Matrix3f randomMatrix3f() {
+		return new Matrix3f(
+				this.random.nextDouble() * 1000 - 500,
+				this.random.nextDouble() * 1000 - 500,
+				this.random.nextDouble() * 1000 - 500,
+				this.random.nextDouble() * 1000 - 500,
+				this.random.nextDouble() * 1000 - 500,
+				this.random.nextDouble() * 1000 - 500,
+				this.random.nextDouble() * 1000 - 500,
+				this.random.nextDouble() * 1000 - 500,
+				this.random.nextDouble() * 1000 - 500);
+	}
+	
+	
+	/** Create a random matrix.
+	 *
+	 * @return the random matrix.
+	 */
+	protected Matrix4f randomMatrix4f() {
+		return new Matrix4f(
+				this.random.nextDouble() * 1000 - 500,
+				this.random.nextDouble() * 1000 - 500,
+				this.random.nextDouble() * 1000 - 500,
+				this.random.nextDouble() * 1000 - 500,
+				this.random.nextDouble() * 1000 - 500,
+				this.random.nextDouble() * 1000 - 500,
+				this.random.nextDouble() * 1000 - 500,
+				this.random.nextDouble() * 1000 - 500,
+				this.random.nextDouble() * 1000 - 500,
+				this.random.nextDouble() * 1000 - 500,
+				this.random.nextDouble() * 1000 - 500,
+				this.random.nextDouble() * 1000 - 500,
+				this.random.nextDouble() * 1000 - 500,
+				this.random.nextDouble() * 1000 - 500,
+				this.random.nextDouble() * 1000 - 500,
+				this.random.nextDouble() * 1000 - 500);
+	}
+
+	
+	
+	/**
+	 * Replies if two arrays have the same values at epsilon.
+	 * 
+	 * @param a
+	 * @param b
+	 * @return <code>true</code> if the two arrays are equal, otherwise
+	 * <code>false</code>.
+	 */
+	protected boolean isEpsilonEquals(double[] a, double[] b) {
+		if (a==b) return true;
+		if (a==null && b!=null) return false;
+		if (a!=null && b==null) return false;
+		assert(a!=null && b!=null);
+		if (a.length!=b.length) return false;
+		for(int i=0; i<a.length; ++i) {
+			if (!isEpsilonEquals(a[i], b[i])) return false;
+		}
+		return true;
+	}
+
+	/** Test if the given value is not a number.
+	 *
+	 * @param value
+	 */
+	protected void assertNaN(double value) {
+		if (!Double.isNaN(value)) {
+			fail("Expected NaN, but has: " + value); //$NON-NLS-1$
+		}
+	}
+
+	/** Test if the given value is not a number.
+	 *
+	 * @param value
+	 */
+	protected void assertNaN(float value) {
+		if (!Float.isNaN(value)) {
+			fail("Expected NaN, but has: " + value); //$NON-NLS-1$
+		}
+	}
+	
+	/** Test if the given value is equal to zero.
+	 *
+	 * @param value
+	 */
+	protected void assertZero(byte value) {
+		if (value != 0) {
+			fail("Expected zero, but has: " + value); //$NON-NLS-1$
+		}
+	}
+
+	/** Test if the given value is equal to zero.
+	 *
+	 * @param value
+	 */
+	protected void assertZero(short value) {
+		if (value != 0) {
+			fail("Expected zero, but has: " + value); //$NON-NLS-1$
+		}
+	}
+
+	/** Test if the given value is equal to zero.
+	 *
+	 * @param value
+	 */
+	protected void assertZero(int value) {
+		if (value != 0) {
+			fail("Expected zero, but has: " + value); //$NON-NLS-1$
+		}
+	}
+
+	/** Test if the given value is equal to zero.
+	 *
+	 * @param value
+	 */
+	protected void assertZero(long value) {
+		if (value != 0) {
+			fail("Expected zero, but has: " + value); //$NON-NLS-1$
+		}
+	}
+
+	/** Test if the given value is equal to zero.
+	 *
+	 * @param value
+	 */
+	protected void assertZero(float value) {
+		if (value != 0f) {
+			fail("Expected zero, but has: " + value); //$NON-NLS-1$
+		}
+	}
+
+	/** Test if the given value is equal to zero.
+	 *
+	 * @param value
+	 */
+	protected void assertZero(double value) {
+		if (value != 0.) {
+			fail("Expected zero, but has: " + value); //$NON-NLS-1$
+		}
+	}
+
+	/** Assert two iterable objects have the same elements.
+	 * 
+	 * @param expected
+	 * @param actual
+	 */
+	protected <T> void assertCollectionEquals(Iterable<? extends T> expected, Iterable<? extends T> actual) {
+		Iterator<? extends T> it1 = expected.iterator();
+		Iterator<? extends T> it2 = actual.iterator();
+		while (it1.hasNext()) {
+			if (!it2.hasNext()) {
+				throw new ComparisonFailure("Element is missed", toString(expected), toString(actual)); //$NON-NLS-1$
+			}
+			T expect = it1.next();
+			T act = it2.next();
+			if (!Objects.equals(expect, act)) {
+				throw new ComparisonFailure("Not same element", toString(expected), toString(actual)); //$NON-NLS-1$
+			}
+		}
+		if (it2.hasNext()) {
+			throw new ComparisonFailure("Too many elements", toString(expected), toString(actual)); //$NON-NLS-1$
+		}
+	}
+
+	private String toString(Iterable<?> it) {
+		StringBuilder b = new StringBuilder();
+		for (Object o : it) {
+			b.append(o);
+			b.append(",\n"); //$NON-NLS-1$
+		}
+		return b.toString();
+	}
+
+	/** Test if the actual vector is equal to the expected values.
+	 * 
+	 * @param v
+	 * @param x
+	 * @param y
+	 */
+	protected void assertFpVectorEquals(double x, double y, Vector2D<?, ?> v) {
+		double dx = x - v.getX();
+		double dy = y - v.getY();
+		double distSq = dx * dx + dy * dy;
+		if (!isEpsilonEquals(distSq, 0.)) {
+			throw new ComparisonFailure("Not same vector", //$NON-NLS-1$
+					"(" + x + "; " + y + ")", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					"(" + v.getX() + "; " + v.getY() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		}
+	}
+
+	/** Test if the actual vector is equal to the expected values.
+	 * 
+	 * @param v
+	 * @param x
+	 * @param y
+	 */
+	protected void assertIntVectorEquals(int x, int y, Vector2D<?, ?> v) {
+		if (x != v.getX() || y != v.iy()) {
+			throw new ComparisonFailure("Not same vector", //$NON-NLS-1$
+					"(" + x + "; " + y + ")", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					"(" + v.ix() + "; " + v.iy() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		}
+	}
+
+	/** Test if the actual vector is not equal to the expected values.
+	 * 
+	 * @param v
+	 * @param x
+	 * @param y
+	 */
+	protected void assertFpVectorNotEquals(double x, double y, Vector2D<?, ?> v) {
+		double dx = x - v.getX();
+		double dy = y - v.getY();
+		double distSq = dx * dx + dy * dy;
+		if (isEpsilonEquals(distSq, 0.)) {
+			throw new ComparisonFailure("Same vector", //$NON-NLS-1$
+					"(" + x + "; " + y + ")", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					"(" + v.getX() + "; " + v.getY() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		}
+	}
+
+	/** Test if the actual vector is not equal to the expected values.
+	 * 
+	 * @param v
+	 * @param x
+	 * @param y
+	 */
+	protected void assertIntVectorNotEquals(int x, int y, Vector2D<?, ?> v) {
+		if (x == v.ix() && y == v.iy()) {
+			throw new ComparisonFailure("Same vector", //$NON-NLS-1$
+					"(" + x + "; " + y + ")", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					"(" + v.ix() + "; " + v.iy() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		}
+	}
+
+	/** Test if the actual vector is equal to the expected values.
+	 * 
+	 * @param v
+	 * @param x
+	 * @param y
+	 * @param z
+	 */
+	protected void assertFpVectorEquals(double x, double y, double z, Vector3D v) {
+		double dx = x - v.getX();
+		double dy = y - v.getY();
+		double dz = z - v.getZ();
+		double distSq = dx * dx + dy * dy + dz * dz;
+		if (!isEpsilonEquals(distSq, 0.)) {
+			throw new ComparisonFailure("Not same vector", //$NON-NLS-1$
+					"(" + x + "; " + y + "; " + z + ")", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+					"(" + v.getX() + "; " + v.getY() + "; " + v.getZ() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		}
+	}
+
+	/** Test if the actual vector is equal to the expected values.
+	 * 
+	 * @param v
+	 * @param x
+	 * @param y
+	 * @param z
+	 */
+	protected void assertIntVectorEquals(int x, int y, int z, Vector3D v) {
+		if (x != v.ix() || y != v.iy() || z != v.iz()) {
+			throw new ComparisonFailure("Not same vector", //$NON-NLS-1$
+					"(" + x + "; " + y + "; " + z + ")", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+					"(" + v.ix() + "; " + v.iy() + "; " + v.iz() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		}
+	}
+
+	/** Test if the actual vector is not equal to the expected values.
+	 * 
+	 * @param x
+	 * @param y
+	 * @param z
+	 * @param v
+	 */
+	protected void assertFpVectorNotEquals(double x, double y, double z, Vector3D v) {
+		double dx = x - v.getX();
+		double dy = y - v.getY();
+		double dz = z - v.getZ();
+		double distSq = dx * dx + dy * dy + dz * dz;
+		if (isEpsilonEquals(distSq, 0.)) {
+			throw new ComparisonFailure("Same vector", //$NON-NLS-1$
+					"(" + x + "; " + y + "; " + z + ")", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+					"(" + v.getX() + "; " + v.getY() + "; " +  ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		}
+	}
+
+	/** Test if the actual vector is not equal to the expected values.
+	 * 
+	 * @param v
+	 * @param x
+	 * @param y
+	 * @param z
+	 */
+	protected void assertIntVectorNotEquals(int x, int y, int z, Vector3D v) {
+		if (x == v.ix() && y == v.iy() && z == v.iz()) {
+			throw new ComparisonFailure("Same vector", //$NON-NLS-1$
+					"(" + x + "; " + y + "; " + z + ")", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+					"(" + v.ix() + "; " + v.iy() + "; " + v.iz() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		}
+	}
+
+	/** Test if the actual point is equal to the expected values.
+	 * 
+	 * @param v
+	 * @param x
+	 * @param y
+	 */
+	protected void assertFpPointEquals(double x, double y, Point2D v) {
+		double dx = x - v.getX();
+		double dy = y - v.getY();
+		double distSq = dx * dx + dy * dy;
+		if (!isEpsilonEquals(distSq, 0.)) {
+			throw new ComparisonFailure("Not same point", //$NON-NLS-1$
+					"(" + x + "; " + y + ")", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					"(" + v.getX() + "; " + v.getY() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		}
+	}
+
+	/** Test if the actual point is equal to the expected values.
+	 * 
+	 * @param v
+	 * @param x
+	 * @param y
+	 */
+	protected void assertIntPointEquals(int x, int y, Point2D<?, ?> v) {
+		if (x != v.ix() || y != v.iy()) {
+			throw new ComparisonFailure("Not same point", //$NON-NLS-1$
+					"(" + x + "; " + y + ")", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					"(" + v.ix() + "; " + v.iy() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		}
+	}
+
+	/** Test if the actual point is not equal to the expected values.
+	 * 
+	 * @param v
+	 * @param x
+	 * @param y
+	 */
+	protected void assertFpPointNotEquals(double x, double y, Point2D<?, ?> v) {
+		double dx = x - v.getX();
+		double dy = y - v.getY();
+		double distSq = dx * dx + dy * dy;
+		if (isEpsilonEquals(distSq, 0.)) {
+			throw new ComparisonFailure("Same point", //$NON-NLS-1$
+					"(" + x + "; " + y + ")", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					"(" + v.getX() + "; " + v.getY() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		}
+	}
+
+	/** Test if the actual point is not equal to the expected values.
+	 * 
+	 * @param v
+	 * @param x
+	 * @param y
+	 */
+	protected void assertIntPointNotEquals(int x, int y, Point2D<?, ?> v) {
+		if (x == v.ix() && y == v.iy()) {
+			throw new ComparisonFailure("Same point", //$NON-NLS-1$
+					"(" + x + "; " + y + ")", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					"(" + v.ix() + "; " + v.iy() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		}
+	}
+
+	/** Test if the actual matrix is equal to the expected values.
+	 * 
+	 * @param expected 
+	 * @param actual
+	 */
+	protected void assertEpsilonEquals(Matrix2f expected, Matrix2f actual) {
+		if ((!isEpsilonEquals(expected.getM00(), actual.getM00()))
+			||(!isEpsilonEquals(expected.getM01(), actual.getM01()))
+			||(!isEpsilonEquals(expected.getM10(), actual.getM10()))
+			||(!isEpsilonEquals(expected.getM11(), actual.getM11()))) {
+			throw new ComparisonFailure("Not same matrices", //$NON-NLS-1$
+					expected.toString(), actual.toString());
+		}
+	}
+
+	/** Test if the actual matrix is different from the expected values.
+	 * 
+	 * @param expected 
+	 * @param actual
+	 */
+	protected void assertNotEpsilonEquals(Matrix2f expected, Matrix2f actual) {
+		if ((isEpsilonEquals(expected.getM00(), actual.getM00()))
+			&&(isEpsilonEquals(expected.getM01(), actual.getM01()))
+			&&(isEpsilonEquals(expected.getM10(), actual.getM10()))
+			&&(isEpsilonEquals(expected.getM11(), actual.getM11()))) {
+			throw new ComparisonFailure("Not same matrices", //$NON-NLS-1$
+					expected.toString(), actual.toString());
+		}
+	}
+
+	/** Test if the actual matrix is equal to the expected values.
+	 * 
+	 * @param expected 
+	 * @param actual
+	 */
+	protected void assertEpsilonEquals(Matrix3f expected, Matrix3f actual) {
+		if ((!isEpsilonEquals(expected.getM00(), actual.getM00()))
+			||(!isEpsilonEquals(expected.getM01(), actual.getM01()))
+			||(!isEpsilonEquals(expected.getM02(), actual.getM02()))
+			||(!isEpsilonEquals(expected.getM10(), actual.getM10()))
+			||(!isEpsilonEquals(expected.getM11(), actual.getM11()))
+			||(!isEpsilonEquals(expected.getM12(), actual.getM12()))
+			||(!isEpsilonEquals(expected.getM20(), actual.getM20()))
+			||(!isEpsilonEquals(expected.getM21(), actual.getM21()))
+			||(!isEpsilonEquals(expected.getM22(), actual.getM22()))) {
+			throw new ComparisonFailure("Not same matrices", //$NON-NLS-1$
+					expected.toString(), actual.toString());
+		}
+	}
+
+	/** Test if the actual matrix is different from the expected values.
+	 * 
+	 * @param expected 
+	 * @param actual
+	 */
+	protected void assertNotEpsilonEquals(Matrix3f expected, Matrix3f actual) {
+		if ((isEpsilonEquals(expected.getM00(), actual.getM00()))
+			&&(isEpsilonEquals(expected.getM01(), actual.getM01()))
+			&&(isEpsilonEquals(expected.getM02(), actual.getM02()))
+			&&(isEpsilonEquals(expected.getM10(), actual.getM10()))
+			&&(isEpsilonEquals(expected.getM11(), actual.getM11()))
+			&&(isEpsilonEquals(expected.getM12(), actual.getM12()))
+			&&(isEpsilonEquals(expected.getM20(), actual.getM20()))
+			&&(isEpsilonEquals(expected.getM21(), actual.getM21()))
+			&&(isEpsilonEquals(expected.getM22(), actual.getM22()))) {
+			throw new ComparisonFailure("Not same matrices", //$NON-NLS-1$
+					expected.toString(), actual.toString());
+		}
+	}
+
+	/** Test if the actual matrix is equal to the expected values.
+	 * 
+	 * @param expected 
+	 * @param actual
+	 */
+	protected void assertEpsilonEquals(Matrix4f expected, Matrix4f actual) {
+		if ((!isEpsilonEquals(expected.getM00(), actual.getM00()))
+			||(!isEpsilonEquals(expected.getM01(), actual.getM01()))
+			||(!isEpsilonEquals(expected.getM02(), actual.getM02()))
+			||(!isEpsilonEquals(expected.getM03(), actual.getM03()))
+			||(!isEpsilonEquals(expected.getM10(), actual.getM10()))
+			||(!isEpsilonEquals(expected.getM11(), actual.getM11()))
+			||(!isEpsilonEquals(expected.getM12(), actual.getM12()))
+			||(!isEpsilonEquals(expected.getM13(), actual.getM13()))
+			||(!isEpsilonEquals(expected.getM20(), actual.getM20()))
+			||(!isEpsilonEquals(expected.getM21(), actual.getM21()))
+			||(!isEpsilonEquals(expected.getM22(), actual.getM22()))
+			||(!isEpsilonEquals(expected.getM23(), actual.getM23()))
+			||(!isEpsilonEquals(expected.getM30(), actual.getM30()))
+			||(!isEpsilonEquals(expected.getM31(), actual.getM31()))
+			||(!isEpsilonEquals(expected.getM32(), actual.getM32()))
+			||(!isEpsilonEquals(expected.getM33(), actual.getM33()))) {
+			throw new ComparisonFailure("Not same matrices", //$NON-NLS-1$
+					expected.toString(), actual.toString());
+		}
+	}
+
+	/** Test if the actual matrix is different from the expected values.
+	 * 
+	 * @param expected 
+	 * @param actual
+	 */
+	protected void assertNotEpsilonEquals(Matrix4f expected, Matrix4f actual) {
+		if ((isEpsilonEquals(expected.getM00(), actual.getM00()))
+			&&(isEpsilonEquals(expected.getM01(), actual.getM01()))
+			&&(isEpsilonEquals(expected.getM02(), actual.getM02()))
+			&&(isEpsilonEquals(expected.getM03(), actual.getM03()))
+			&&(isEpsilonEquals(expected.getM10(), actual.getM10()))
+			&&(isEpsilonEquals(expected.getM11(), actual.getM11()))
+			&&(isEpsilonEquals(expected.getM12(), actual.getM12()))
+			&&(isEpsilonEquals(expected.getM13(), actual.getM13()))
+			&&(isEpsilonEquals(expected.getM20(), actual.getM20()))
+			&&(isEpsilonEquals(expected.getM21(), actual.getM21()))
+			&&(isEpsilonEquals(expected.getM22(), actual.getM22()))
+			&&(isEpsilonEquals(expected.getM23(), actual.getM23()))
+			&&(isEpsilonEquals(expected.getM30(), actual.getM30()))
+			&&(isEpsilonEquals(expected.getM31(), actual.getM31()))
+			&&(isEpsilonEquals(expected.getM32(), actual.getM32()))
+			&&(isEpsilonEquals(expected.getM33(), actual.getM33()))) {
+			throw new ComparisonFailure("Not same matrices", //$NON-NLS-1$
+					expected.toString(), actual.toString());
 		}
 	}
 

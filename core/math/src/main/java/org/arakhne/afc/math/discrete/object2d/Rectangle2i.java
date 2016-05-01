@@ -32,11 +32,13 @@ import org.arakhne.afc.math.matrix.Transform2D;
 
 /** 2D rectangle with integer coordinates.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see {@link org.arakhne.afc.math.geometry.d2.i.Rectangle2i}
  */
+@Deprecated
 public class Rectangle2i extends AbstractRectangularShape2i<Rectangle2i> {
 
 	private static final long serialVersionUID = 9061018868216880896L;
@@ -395,7 +397,7 @@ public class Rectangle2i extends AbstractRectangularShape2i<Rectangle2i> {
 
 	/** Iterator on the path elements of the rectangle.
 	 * 
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -481,7 +483,7 @@ public class Rectangle2i extends AbstractRectangularShape2i<Rectangle2i> {
 
 	/** Iterator on the path elements of the rectangle.
 	 * 
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -597,7 +599,7 @@ public class Rectangle2i extends AbstractRectangularShape2i<Rectangle2i> {
 
 	/** Sides of a rectangle.
 	 * 
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -619,7 +621,7 @@ public class Rectangle2i extends AbstractRectangularShape2i<Rectangle2i> {
 
 	/** Iterates on points on the sides of a rectangle.
 	 * 
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

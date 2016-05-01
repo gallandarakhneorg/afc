@@ -25,11 +25,13 @@ import java.util.EventListener;
 
 /** Listener on the list of undoable actions.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public interface UndoListener extends EventListener {
 
 	/** Invoked when the list of the undo actions has changed.

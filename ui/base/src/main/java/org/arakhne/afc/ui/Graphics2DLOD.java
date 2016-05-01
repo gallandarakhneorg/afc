@@ -25,11 +25,13 @@ package org.arakhne.afc.ui;
 /** Express the different level of details supported
  * by a zoomable panel.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public enum Graphics2DLOD {
 
 	/** The graphical elements must be drawn as they are shadows.

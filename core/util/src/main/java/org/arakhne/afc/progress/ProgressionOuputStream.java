@@ -29,7 +29,7 @@ import java.io.OutputStream;
 /**
  * OutputStream that is able to notify about the writing progression.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

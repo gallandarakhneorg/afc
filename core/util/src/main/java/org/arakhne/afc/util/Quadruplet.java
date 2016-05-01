@@ -28,7 +28,7 @@ import java.io.Serializable;
  * @param <B> is the type of the second value.
  * @param <C> is the type of the third value.
  * @param <D> is the type of the fourth value.
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

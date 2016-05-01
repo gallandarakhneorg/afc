@@ -45,11 +45,13 @@ import org.arakhne.afc.ui.MouseCursor;
 
 /** Swing-oriented utilities. 
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public class AwtUtil {
 
 	private static FontRenderContext frc =  null;
@@ -107,7 +109,7 @@ public class AwtUtil {
 			try {
 				return Cursor.getSystemCustomCursor("Invalid.32x32"); //$NON-NLS-1$
 			}
-			catch (Throwable _) {
+			catch (Throwable exception) {
 				return Cursor.getDefaultCursor();
 			}
 		}
@@ -355,7 +357,7 @@ public class AwtUtil {
 
 	/** This class permits to filter the alpha component of an icon.
 	 * 
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

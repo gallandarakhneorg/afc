@@ -41,7 +41,7 @@ import org.arakhne.afc.util.UnmodifiableIterator;
  * {@link UnmodifiableIterator} for an utility class on a standard Iterator.
  * 
  * @param <M> is the type of element.
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

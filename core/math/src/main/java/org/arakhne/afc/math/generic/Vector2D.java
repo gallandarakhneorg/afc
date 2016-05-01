@@ -23,11 +23,13 @@ package org.arakhne.afc.math.generic;
 
 /** 2D Vector.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see {@link org.arakhne.afc.math.geometry.d2.Vector2D}
  */
+@Deprecated
 public interface Vector2D extends Tuple2D<Vector2D> {
 
 	/**

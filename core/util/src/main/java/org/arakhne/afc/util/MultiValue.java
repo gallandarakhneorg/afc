@@ -28,7 +28,7 @@ import org.arakhne.afc.vmutil.locale.Locale;
  * and indicating if they are all the same or not.
  *
  * @param <T> is the type of the value.
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

@@ -53,11 +53,13 @@ import android.graphics.drawable.Drawable;
 
 /** Android implementation of the generic Window toolkit.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public class AndroidVectorToolkit extends VectorToolkit {
 
 	/**

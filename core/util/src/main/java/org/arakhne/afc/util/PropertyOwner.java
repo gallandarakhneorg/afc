@@ -25,7 +25,7 @@ import java.util.Map;
 /** This interface defines the services for an objects
  * that is owning properties.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

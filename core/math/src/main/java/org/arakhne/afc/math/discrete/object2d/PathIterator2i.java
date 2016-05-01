@@ -28,11 +28,13 @@ import org.arakhne.afc.math.generic.PathWindingRule;
 
 /** This interface describes an interator on path elements.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see {@link org.arakhne.afc.math.geometry.d2.PathIterator2D}
  */
+@Deprecated
 public interface PathIterator2i extends Iterator<PathElement2i> {
 
 	/** Replies the winding rule for the path.

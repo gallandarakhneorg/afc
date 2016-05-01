@@ -35,11 +35,13 @@ import org.arakhne.afc.vmutil.ReflectionUtil;
 /** Implementation of an action that is creating and 
  * adding an UndoableEdit into the given undo manager.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public class UndoableAction extends StandardAction {
 
 	private static final long serialVersionUID = 7640859658516394571L;
@@ -151,6 +153,7 @@ public class UndoableAction extends StandardAction {
 	 * @return the edit instance, never <code>null</code>.
 	 * @throws Exception
 	 */
+	@SuppressWarnings("static-method")
 	protected AbstractCallableUndoableEdit newEditInstance(Class<? extends AbstractCallableUndoableEdit> type, Object[] constructorParameters) throws Exception {
 		for(Constructor<?> cons : type.getDeclaredConstructors()) {
 			if (matches(cons.getParameterTypes(), constructorParameters)) {

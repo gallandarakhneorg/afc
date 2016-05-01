@@ -38,11 +38,13 @@ import org.arakhne.afc.math.generic.Tuple3D;
  * | 0   | 0   | 0   | 1  |
  * </code></pre>
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated Replacement will be provided in Version 14.0
  */
+@Deprecated
 public class Transform3D extends Matrix4f {
 	
 	private static final long serialVersionUID = -8427812783666663224L;
@@ -205,7 +207,7 @@ public class Transform3D extends Matrix4f {
 	 * @return the amount
 	 */
 	public float getTranslationX() {
-		return this.m03;
+		return (float)this.m03;
 	}
 
 	/** Replies the Y translation.
@@ -213,7 +215,7 @@ public class Transform3D extends Matrix4f {
 	 * @return the amount
 	 */
 	public float getTranslationY() {
-		return this.m13;
+		return (float)this.m13;
 	}
 
 	/** Replies the Z translation.
@@ -221,7 +223,7 @@ public class Transform3D extends Matrix4f {
 	 * @return the amount
 	 */
 	public float getTranslationZ() {
-		return this.m23;
+		return (float)this.m23;
 	}
 
 	/** Replies the translation.
@@ -391,9 +393,9 @@ public class Transform3D extends Matrix4f {
 	 */
 	public void transform(Tuple3D<?> t) {
 		float x, y, z;
-		x = this.m00 * t.getX() + this.m01 * t.getY() + this.m02 * t.getZ() + this.m03;
-		y = this.m10 * t.getX() + this.m11 * t.getY() + this.m12 * t.getZ() + this.m13;
-		z = this.m20 * t.getX() + this.m21 * t.getY() + this.m22 * t.getZ() + this.m23;
+		x = (float)(this.m00 * t.getX() + this.m01 * t.getY() + this.m02 * t.getZ() + this.m03);
+		y = (float)(this.m10 * t.getX() + this.m11 * t.getY() + this.m12 * t.getZ() + this.m13);
+		z = (float)(this.m20 * t.getX() + this.m21 * t.getY() + this.m22 * t.getZ() + this.m23);
 		t.set(x, y, z);
 	}
 	
@@ -408,9 +410,9 @@ public class Transform3D extends Matrix4f {
 	 */
 	public void transform(Tuple3D<?> t, Tuple3D<?> result) {
 		result.set(
-				this.m00 * t.getX() + this.m01 * t.getY() + this.m02 * t.getZ() + this.m03,
-				this.m10 * t.getX() + this.m11 * t.getY() + this.m12 * t.getZ() + this.m13,
-				this.m20 * t.getX() + this.m21 * t.getY() + this.m22 * t.getZ() + this.m23);
+				(float)(this.m00 * t.getX() + this.m01 * t.getY() + this.m02 * t.getZ() + this.m03),
+				(float)(this.m10 * t.getX() + this.m11 * t.getY() + this.m12 * t.getZ() + this.m13),
+				(float)(this.m20 * t.getX() + this.m21 * t.getY() + this.m22 * t.getZ() + this.m23));
 	}
 
 	/**

@@ -25,7 +25,7 @@ import java.util.TreeSet;
 import java.util.UUID;
 
 /**
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -57,7 +57,7 @@ public abstract class AbstractReferencableValueMapTestCase extends AbstractMapTe
 	@Override
 	public void setUp() throws Exception {
 		super.setUp();
-		this.loosedKeys = new TreeSet<String>();
+		this.loosedKeys = new TreeSet<>();
 	}
 	
 	/**

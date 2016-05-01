@@ -26,11 +26,12 @@ import org.arakhne.afc.math.generic.Tuple2D;
 /** 2D tuple with 2 integers.
  * 
  * @param <T> is the implementation type of the tuple.
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
+ * @deprecated see {@link org.arakhne.afc.math.geometry.d2.i.Tuple2i}
  */
+@Deprecated
 public class Tuple2i<T extends Tuple2D<? super T>> implements Tuple2D<T> {
 
 	private static final long serialVersionUID = -7779997414431055683L;

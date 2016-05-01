@@ -27,7 +27,7 @@ import java.util.EventObject;
 /**
  * Task progression event.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -44,7 +44,7 @@ public class ProgressionEvent extends EventObject {
 
 	private final int value;
 	
-	private final float factor;
+	private final double factor;
 
 	private final String comment;
 
@@ -70,18 +70,6 @@ public class ProgressionEvent extends EventObject {
 	 * 
 	 * @return <code>true</code> if the task progression is a root,
 	 * otherwise <code>false</code>.
-	 * @deprecated see {@link #isRoot()}
-	 */
-	@Deprecated
-	public boolean isRootTaskProgression() {
-		return isRoot();
-	}
-
-	/** Replies if this event was fired by an task progression source
-	 * which is a root source.
-	 * 
-	 * @return <code>true</code> if the task progression is a root,
-	 * otherwise <code>false</code>.
 	 */
 	public boolean isRoot() {
 		return this.isRoot;
@@ -94,33 +82,9 @@ public class ProgressionEvent extends EventObject {
 	 * 
 	 * @return <code>true</code> if the task was finished,
 	 * otherwise <code>false</code>.
-	 * @deprecated see {@link #isFinished()}
-	 */
-	@Deprecated
-	public boolean isTaskFinished() {
-		return isFinished();
-	}
-
-	/** Replies if the associated task was marked as finished,
-	 * ie the current value is greater or equal to the maximum
-	 * value AND the associated task progression object is a root
-	 * task.
-	 * 
-	 * @return <code>true</code> if the task was finished,
-	 * otherwise <code>false</code>.
 	 */
 	public boolean isFinished() {
 		return this.isRoot && this.value>=this.max;
-	}
-
-	/** Replies the task progression which generate this event.
-	 * 
-	 * @return the model.
-	 * @deprecated see {@link #getProgression()}
-	 */
-	@Deprecated
-	public Progression getTaskProgression() {
-		return getProgression();
 	}
 
 	/** Replies the task progression which generate this event.
@@ -166,7 +130,7 @@ public class ProgressionEvent extends EventObject {
 	 * @see     #getValue()
 	 * @see     #getProgressionFactor()
 	 */
-	public float getPercent() {
+	public double getPercent() {
 		return this.factor * 100f;
 	}
 
@@ -177,7 +141,7 @@ public class ProgressionEvent extends EventObject {
 	 * @see     #getValue()
 	 * @see     #getPercent()
 	 */
-	public float getProgressionFactor() {
+	public double getProgressionFactor() {
 		return this.factor;
 	}
 

@@ -26,11 +26,13 @@ package org.arakhne.afc.ui.awt;
 
 /** Exception thrown when a shape is not supported.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public class UnsupportedShapeException extends RuntimeException {
 
 	private static final long serialVersionUID = 2572964388468280513L;

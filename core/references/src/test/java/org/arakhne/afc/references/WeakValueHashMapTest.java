@@ -24,7 +24,7 @@ import java.util.Map;
 import org.arakhne.afc.references.WeakValueHashMap;
 
 /**
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -42,7 +42,7 @@ public class WeakValueHashMapTest extends AbstractReferencableValueMapTestCase {
 	 */
 	@Override
 	protected Map<String,String> createMap() {
-		return new WeakValueHashMap<String,String>();
+		return new WeakValueHashMap<>();
 	}
 
 }

@@ -24,7 +24,7 @@ package org.arakhne.afc.util;
 /** Exception thrown when an object does not support any 
  * natural order.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

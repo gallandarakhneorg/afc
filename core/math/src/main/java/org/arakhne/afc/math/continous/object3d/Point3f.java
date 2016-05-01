@@ -26,11 +26,13 @@ import org.arakhne.afc.math.generic.Vector3D;
 
 /** 3D Point with 3 floating-point numbers.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated Replacement will be provided in Version 14.0
  */
+@Deprecated
 public class Point3f extends Tuple3f<Point3D> implements Point3D {
 
 	private static final long serialVersionUID = -4821663886493835147L;

@@ -45,11 +45,13 @@ import org.arakhne.afc.ui.vector.VectorGraphics2D;
  * delegating to another graphics context.
  *
  * @param <G> is the type of the delegate.
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public class DelegatedVectorGraphics2D<G extends VectorGraphics2D> extends AbstractVectorGraphics2D {
 
 	/** Delegate.

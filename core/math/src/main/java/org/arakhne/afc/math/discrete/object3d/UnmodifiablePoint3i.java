@@ -25,11 +25,13 @@ import org.arakhne.afc.math.generic.Tuple3D;
 /** This class implements a Point3i that cannot be modified by
  * the setters. 
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated Replacement will be provided in Version 14.0
  */
+@Deprecated
 public class UnmodifiablePoint3i extends Point3i {
 
 	private static final long serialVersionUID = -2749011435787339613L;

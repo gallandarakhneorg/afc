@@ -43,6 +43,7 @@ import junit.framework.TestCase;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("all")
 public class AbstractAttrTestCase extends TestCase {
 
 	/**
@@ -226,7 +227,7 @@ public class AbstractAttrTestCase extends TestCase {
 				return;
 			}
 		}
-		catch(Exception _) {
+		catch(Exception exception) {
 			fail((message!=null?(message+", ") //$NON-NLS-1$
 					:"") //$NON-NLS-1$
 					+"unable to find the method "+methodName); //$NON-NLS-1$

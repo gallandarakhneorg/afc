@@ -24,18 +24,21 @@ package org.arakhne.afc.math.continous.object2d;
 import java.util.Iterator;
 
 import org.arakhne.afc.math.MathConstants;
-import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.generic.Path2D;
 import org.arakhne.afc.math.generic.PathElementType;
 import org.arakhne.afc.math.generic.PathWindingRule;
+import org.arakhne.afc.math.geometry.d2.afp.PathShadow2afp;
+import org.arakhne.afc.math.geometry.d2.afp.Segment2afp;
 
 /** Shadow of a path.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see {@link PathShadow2afp}
  */
+@Deprecated
 public class PathShadow2f {
 
 	private final Path2D<?,Rectangle2f,PathElement2f,PathIterator2f> path;
@@ -83,7 +86,7 @@ public class PathShadow2f {
 					this.bounds.getMaxY());
 
 			computeCrossings1(
-					this.path.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+					this.path.getPathIterator((float) MathConstants.SPLINE_APPROXIMATION_RATIO),
 					x0, y0, x1, y1,
 					false,
 					data);
@@ -169,7 +172,7 @@ public class PathShadow2f {
 						element.ctrlX1, element.ctrlY1,
 						endx, endy);
 				computeCrossings1(
-						localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						localPath.getPathIterator((float) MathConstants.SPLINE_APPROXIMATION_RATIO),
 						x1, y1, x2, y2,
 						false,
 						data);
@@ -190,7 +193,7 @@ public class PathShadow2f {
 						element.ctrlX2, element.ctrlY2,
 						endx, endy);
 				computeCrossings1(
-						localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						localPath.getPathIterator((float) MathConstants.SPLINE_APPROXIMATION_RATIO),
 						x1, y1, x2, y2,
 						false,
 						data);
@@ -290,24 +293,24 @@ public class PathShadow2f {
 			int side1, side2;
 			boolean isUp = (shadow_y0<=shadow_y1);
 			if (isUp) {
-				side1 = MathUtil.sidePointLine(
+				side1 = Segment2afp.computeSideLinePoint(
 						shadow_x0, shadow_y0,
 						shadow_x1, shadow_y1,
-						sx0, sy0, false);
-				side2 = MathUtil.sidePointLine(
+						sx0, sy0, 0);
+				side2 = Segment2afp.computeSideLinePoint(
 						shadow_x0, shadow_y0,
 						shadow_x1, shadow_y1,
-						sx1, sy1, false);
+						sx1, sy1, 0);
 			}
 			else {
-				side1 = MathUtil.sidePointLine(
+				side1 = Segment2afp.computeSideLinePoint(
 						shadow_x1, shadow_y1,
 						shadow_x0, shadow_y0,
-						sx0, sy0, false);
-				side2 = MathUtil.sidePointLine(
+						sx0, sy0, 0);
+				side2 = Segment2afp.computeSideLinePoint(
 						shadow_x1, shadow_y1,
 						shadow_x0, shadow_y0,
-						sx1, sy1, false);
+						sx1, sy1, 0);
 			}
 			if (side1>0 || side2>0) {
 				computeCrossings3(
@@ -343,7 +346,7 @@ public class PathShadow2f {
 	}
 
 	/** 
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

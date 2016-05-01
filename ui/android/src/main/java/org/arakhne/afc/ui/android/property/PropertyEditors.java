@@ -27,38 +27,40 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.arakhne.afc.references.SoftValueHashMap;
-import org.arakhne.afc.ui.android.R;
 import org.arakhne.afc.ui.undo.AbstractUndoable;
 import org.arakhne.afc.ui.undo.UndoManager;
-import org.arakhne.afc.util.Pair;
 import org.arakhne.afc.util.PropertyOwner;
 import org.arakhne.afc.vmutil.ReflectionUtil;
 
+import android.R;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.DialogInterface.OnClickListener;
+import android.util.Pair;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.ScrollView;
 
 /** Editors of properties. 
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public class PropertyEditors {
 
 	/** Stored the mapping between type of object and type of property editor.
 	 */
-	private static final Map<Class<? extends PropertyOwner>,Class<? extends PropertyEditorView>> mapping = new HashMap<Class<? extends PropertyOwner>,Class<? extends PropertyEditorView>>();
+	private static final Map<Class<? extends PropertyOwner>,Class<? extends PropertyEditorView>> mapping = new HashMap<>();
 
 	/** Use to accelerate the queries.
 	 */
-	private static final Map<Class<? extends PropertyOwner>,Class<? extends PropertyEditorView>> buffer = new SoftValueHashMap<Class<? extends PropertyOwner>, Class<? extends PropertyEditorView>>();
+	private static final Map<Class<? extends PropertyOwner>,Class<? extends PropertyEditorView>> buffer = new SoftValueHashMap<>();
 
 
 	/** Display the dialog that permits to edit the properties.
@@ -109,14 +111,14 @@ public class PropertyEditors {
 
 		// Initialize the alert dialog builder
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
-		builder.setTitle(R.string.property_dialog_title);
+		builder.setTitle(R.string.dialog_alert_title);
 		builder.setPositiveButton(
 				android.R.string.ok,
 				new OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						if (isEditable) {
-							Undo undo = new Undo(context.getString(R.string.undo_property_edition), editedObjects, fragment);
+							Undo undo = new Undo(context.getString(R.string.cancel), editedObjects, fragment);
 							undo.doEdit();
 							if (undoManager!=null) {
 								undoManager.add(undo);
@@ -191,7 +193,7 @@ public class PropertyEditors {
 	}
 
 	/**
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $Name$ $Revision$ $Date$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -201,7 +203,7 @@ public class PropertyEditors {
 		private static final long serialVersionUID = -7759672095147438168L;
 
 		private final String label;
-		private final Collection<Pair<PropertyOwner,Map<String,Object>>> originalProperties = new ArrayList<Pair<PropertyOwner,Map<String,Object>>>();
+		private final Collection<Pair<PropertyOwner,Map<String,Object>>> originalProperties = new ArrayList<>();
 		private final PropertyEditorView fragment;
 		private final Map<String,Object> newProperties;
 
@@ -215,7 +217,7 @@ public class PropertyEditors {
 			this.fragment = fragment;
 			this.newProperties = this.fragment.getEditedProperties();
 			for(PropertyOwner owner : editedObjects) {
-				this.originalProperties.add(new Pair<PropertyOwner,Map<String,Object>>(
+				this.originalProperties.add(new Pair<>(
 						owner,
 						owner.getProperties()));
 			}
@@ -229,14 +231,14 @@ public class PropertyEditors {
 		@Override
 		protected void doEdit() {
 			for(Pair<PropertyOwner,Map<String,Object>> object : this.originalProperties) {
-				this.fragment.setPropertiesOf(object.getA(), this.newProperties);
+				this.fragment.setPropertiesOf(object.first, this.newProperties);
 			}
 		}
 
 		@Override
 		protected void undoEdit() {
 			for(Pair<PropertyOwner,Map<String,Object>> object : this.originalProperties) {
-				this.fragment.setPropertiesOf(object.getA(), object.getB());
+				this.fragment.setPropertiesOf(object.first, object.second);
 			}
 		}
 

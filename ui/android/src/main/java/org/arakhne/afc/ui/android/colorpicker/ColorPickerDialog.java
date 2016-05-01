@@ -42,11 +42,13 @@ import android.widget.RelativeLayout;
  * AFC compliance.
  * 
  * @author $Author: yukuku$
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public class ColorPickerDialog extends AlertDialog {
 
 	private final OnColorPickerListener listener;
@@ -379,7 +381,7 @@ public class ColorPickerDialog extends AlertDialog {
 	 * dialog.
 	 * 
 	 * @author $Author: yukuku$
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $Name$ $Revision$ $Date$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

@@ -24,11 +24,13 @@ import java.util.EventListener;
 
 /** Listener on change of color in a ColorButton.  
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public interface ColorChangeListener extends EventListener {
 
 	/** Invoked when the color selected in a ColorButton has changed.

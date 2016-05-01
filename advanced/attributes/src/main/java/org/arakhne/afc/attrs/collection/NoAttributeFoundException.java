@@ -28,7 +28,7 @@ import org.arakhne.afc.attrs.attr.AttributeException;
  * This exception is generated each time an attribute
  * was not found.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

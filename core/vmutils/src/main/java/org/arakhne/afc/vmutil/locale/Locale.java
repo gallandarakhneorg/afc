@@ -59,7 +59,7 @@ import org.arakhne.afc.vmutil.ClassLoaderFinder;
  * 
  * FIXME: Does java.text.Normalizer may replace decodeString functions?
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @author $Author: lamotte$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
@@ -576,7 +576,7 @@ public class Locale {
     		
     		return true;
     	}
-    	catch(CharacterCodingException _) {
+    	catch(CharacterCodingException exception) {
     		//
     	}
     	return false;

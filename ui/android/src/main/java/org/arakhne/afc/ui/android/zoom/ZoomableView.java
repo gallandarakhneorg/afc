@@ -70,12 +70,14 @@ import android.widget.Toast;
  * use an instance of the graphical context {@link DroidZoomableGraphics2D} to draw
  * the elements according to the zooming attributes.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @see DroidZoomableGraphics2D
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public abstract class ZoomableView extends View implements ZoomableContext {
 
 	/** Current position of the workspace.
@@ -991,7 +993,7 @@ public abstract class ZoomableView extends View implements ZoomableContext {
 	 * A toast message is a small notification message to put on the UI.
 	 * The location of this message depends on the Android API.
 	 * 
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $Name$ $Revision$ $Date$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

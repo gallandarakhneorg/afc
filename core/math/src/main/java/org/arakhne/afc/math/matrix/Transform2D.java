@@ -38,11 +38,13 @@ import org.arakhne.afc.math.generic.Tuple2D;
  * | 0          | 0           | 1  |
  * </code></pre>
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see {@link org.arakhne.afc.math.geometry.d2.Transform2D}
  */
+@Deprecated
 public class Transform2D extends Matrix3f {
 
 	private static final long serialVersionUID = -3437760883865605968L;
@@ -182,7 +184,7 @@ public class Transform2D extends Matrix3f {
 	 * @return the amount
 	 */
 	public float getTranslationX() {
-		return this.m02;
+		return (float) this.m02;
 	}
 
 	/** Replies the Y translation.
@@ -190,7 +192,7 @@ public class Transform2D extends Matrix3f {
 	 * @return the amount
 	 */
 	public float getTranslationY() {
-		return this.m12;
+		return (float) this.m12;
 	}
 
 	/** Replies the translation.
@@ -267,12 +269,12 @@ public class Transform2D extends Matrix3f {
 			}
 			else if (cos != 1f) {
 				float M0, M1;
-				M0 = this.m00;
-				M1 = this.m01;
+				M0 = (float)this.m00;
+				M1 = (float)this.m01;
 				this.m00 =  cos * M0 + sin * M1;
 				this.m01 = -sin * M0 + cos * M1;
-				M0 = this.m10;
-				M1 = this.m11;
+				M0 = (float)this.m10;
+				M1 = (float)this.m11;
 				this.m10 =  cos * M0 + sin * M1;
 				this.m11 = -sin * M0 + cos * M1;
 			}
@@ -281,10 +283,10 @@ public class Transform2D extends Matrix3f {
 	
 	private final void rotate90() {
 		// Copied from AWT API
-        float M0 = this.m00;
+        float M0 = (float)this.m00;
         this.m00 = this.m01;
         this.m01 = -M0;
-        M0 = this.m10;
+        M0 = (float)this.m10;
         this.m10 = this.m11;
         this.m11 = -M0;
     }
@@ -301,10 +303,10 @@ public class Transform2D extends Matrix3f {
     
     private final void rotate270() {
 		// Copied from AWT API
-        float M0 = this.m00;
+        float M0 = (float)this.m00;
         this.m00 = -this.m01;
         this.m01 = M0;
-        M0 = this.m10;
+        M0 = (float)this.m10;
         this.m10 = -this.m11;
         this.m11 = M0;
     }
@@ -399,7 +401,7 @@ public class Transform2D extends Matrix3f {
 	 * @return the amount
 	 */
 	public float getScaleX() {
-		return this.m00;
+		return (float)this.m00;
 	}
 
 	/** Replies the Y scaling.
@@ -413,7 +415,7 @@ public class Transform2D extends Matrix3f {
 	 * @return the amount
 	 */
 	public float getScaleY() {
-		return this.m11;
+		return (float)this.m11;
 	}
 
 	/** Replies the scaling vector.
@@ -489,14 +491,14 @@ public class Transform2D extends Matrix3f {
 	 */
 	public void shear(float shx, float shy) {
 		float M0, M1;
-		M0 = this.m00;
-		M1 = this.m01;
+		M0 = (float)this.m00;
+		M1 = (float)this.m01;
 		
 		this.m00 = M0 + M1 * shy;
 		this.m01 = M0 * shx + M1;
 
-		M0 = this.m10;
-		M1 = this.m11;
+		M0 = (float)this.m10;
+		M1 = (float)this.m11;
 		this.m10 = M0 + M1 * shy;
 		this.m11 = M0 * shx + M1;
 	}
@@ -527,7 +529,7 @@ public class Transform2D extends Matrix3f {
 	 * @return the amount
 	 */
 	public float getShearX() {
-		return this.m01;
+		return (float)this.m01;
 	}
 
 	/** Replies the Y shearing.
@@ -541,7 +543,7 @@ public class Transform2D extends Matrix3f {
 	 * @return the amount
 	 */
 	public float getShearY() {
-		return this.m10;
+		return (float)this.m10;
 	}
 
 	/** Replies the shearing vector.
@@ -706,8 +708,8 @@ public class Transform2D extends Matrix3f {
 	 */
 	public void transform(Tuple2D<?> t) {
 		float x, y;
-		x = this.m00 * t.getX() + this.m01 * t.getY() + this.m02;
-		y = this.m10 * t.getX() + this.m11 * t.getY() + this.m12;
+		x = (float)(this.m00 * t.getX() + this.m01 * t.getY() + this.m02);
+		y = (float)(this.m10 * t.getX() + this.m11 * t.getY() + this.m12);
 		t.set(x, y);
 	}
 
@@ -726,8 +728,8 @@ public class Transform2D extends Matrix3f {
 	 */
 	public Point2D transform(float x, float y) {
 		float rx, ry;
-		rx = this.m00 * x + this.m01 * y + this.m02;
-		ry = this.m10 * x + this.m11 * y + this.m12;
+		rx = (float)(this.m00 * x + this.m01 * y + this.m02);
+		ry = (float)(this.m10 * x + this.m11 * y + this.m12);
 		return new Point2f(rx, ry);
 	}
 
@@ -749,8 +751,8 @@ public class Transform2D extends Matrix3f {
 	 */
 	public void transform(Tuple2D<?> t, Tuple2D<?> result) {
 		result.set(
-				this.m00 * t.getX() + this.m01 * t.getY() + this.m02,
-				this.m10 * t.getX() + this.m11 * t.getY() + this.m12);
+				(float)(this.m00 * t.getX() + this.m01 * t.getY() + this.m02),
+				(float)(this.m10 * t.getX() + this.m11 * t.getY() + this.m12));
 	}
 
 	/**
@@ -774,17 +776,17 @@ public class Transform2D extends Matrix3f {
 	 * @throws SingularMatrixException if the matrix cannot be inverted.
 	 */
 	public Transform2D createInverse() {
-		float det = this.m00 * this.m11 - this.m01 * this.m10;
+		float det = (float)(this.m00 * this.m11 - this.m01 * this.m10);
 		if (Math.abs(det) <= Double.MIN_VALUE) {
 			throw new SingularMatrixException("Determinant is "+det); //$NON-NLS-1$
 		}
 		return new Transform2D(
-				this.m11 / det, 
-				-this.m01 / det, 
-				(this.m01 * this.m12 - this.m11 * this.m02) / det, 
-				-this.m10 / det, 
-				this.m00 / det, 
-				(this.m10 * this.m02 - this.m00 * this.m12) / det);
+				(float)(this.m11 / det), 
+				(float)(-this.m01 / det), 
+				(float)((this.m01 * this.m12 - this.m11 * this.m02) / det), 
+				(float)(-this.m10 / det), 
+				(float)(this.m00 / det), 
+				(float)((this.m10 * this.m02 - this.m00 * this.m12) / det));
 	}
 
 	/**
@@ -826,17 +828,17 @@ public class Transform2D extends Matrix3f {
 	 */
 	@Override
 	public void invert() {
-		float det = this.m00 * this.m11 - this.m01 * this.m10;
+		float det = (float)(this.m00 * this.m11 - this.m01 * this.m10);
 		if (Math.abs(det) <= Double.MIN_VALUE) {
 			throw new SingularMatrixException("Determinant is "+det); //$NON-NLS-1$
 		}
 		set(
-				this.m11 / det, 
-				-this.m01 / det, 
-				(this.m01 * this.m12 - this.m11 * this.m02) / det, 
-				-this.m10 / det, 
-				this.m00 / det, 
-				(this.m10 * this.m02 - this.m00 * this.m12) / det);
+				(float)(this.m11 / det), 
+				(float)(-this.m01 / det), 
+				(float)((this.m01 * this.m12 - this.m11 * this.m02) / det), 
+				(float)(-this.m10 / det), 
+				(float)(this.m00 / det), 
+				(float)((this.m10 * this.m02 - this.m00 * this.m12) / det));
 	}
 
 	/**
@@ -859,17 +861,17 @@ public class Transform2D extends Matrix3f {
 	 */
 	@Override
 	public void invert(Matrix3f m) {
-		float det = m.m00 * m.m11 - m.m01 * m.m10;
+		float det = (float)(m.m00 * m.m11 - m.m01 * m.m10);
 		if (Math.abs(det) <= Double.MIN_VALUE) {
 			throw new SingularMatrixException("Determinant is "+det); //$NON-NLS-1$
 		}
 		set(
-				m.m11 / det, 
-				-m.m01 / det, 
-				(m.m01 * m.m12 - m.m11 * m.m02) / det, 
-				-m.m10 / det, 
-				m.m00 / det, 
-				(m.m10 * m.m02 - m.m00 * m.m12) / det);
+				(float)(m.m11 / det), 
+				(float)(-m.m01 / det), 
+				(float)((m.m01 * m.m12 - m.m11 * m.m02) / det), 
+				(float)(-m.m10 / det), 
+				(float)(m.m00 / det), 
+				(float)((m.m10 * m.m02 - m.m00 * m.m12) / det));
 	}
 
 }

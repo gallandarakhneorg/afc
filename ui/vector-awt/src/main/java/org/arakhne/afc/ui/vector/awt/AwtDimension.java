@@ -26,11 +26,13 @@ import org.arakhne.afc.ui.vector.Dimension;
 
 /** AWT implementation of the generic dimension.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 class AwtDimension extends FloatDimension implements Dimension, NativeWrapper {
 
 	/**

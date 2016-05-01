@@ -29,14 +29,14 @@ import java.util.NoSuchElementException;
  * a collection of sized iterators.
  * 
  * @param <M> is the type of element.
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
 public class MultiSizedIterator<M> implements SizedIterator<M> {
 
-	private final LinkedList<SizedIterator<? extends M>> iterators = new LinkedList<SizedIterator<? extends M>>();
+	private final LinkedList<SizedIterator<? extends M>> iterators = new LinkedList<>();
 	private int total = 0;
 	private int returned = 0;
 	private SizedIterator<? extends M> iterator = null;

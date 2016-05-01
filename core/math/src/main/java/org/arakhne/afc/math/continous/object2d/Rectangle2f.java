@@ -23,21 +23,24 @@ package org.arakhne.afc.math.continous.object2d;
 import java.util.NoSuchElementException;
 
 import org.arakhne.afc.math.MathConstants;
-import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.generic.PathWindingRule;
 import org.arakhne.afc.math.generic.Point2D;
 import org.arakhne.afc.math.generic.Vector2D;
+import org.arakhne.afc.math.geometry.d2.afp.Segment2afp;
+import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
 import org.arakhne.afc.math.matrix.Transform2D;
 
 
 
 /** 2D rectangle with floating-point points.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see {@link Rectangle2d}
  */
+@Deprecated
 public class Rectangle2f extends AbstractRectangularShape2f<Rectangle2f> {
 
 	private static final long serialVersionUID = 8716296371653330467L;
@@ -84,12 +87,12 @@ public class Rectangle2f extends AbstractRectangularShape2f<Rectangle2f> {
 	 */
 	public static boolean intersectsRectangleLine(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4) {
 		int a, b;
-		a = MathUtil.ccw(x3, y3, x4, y4, x1, y1, false);
-		b = MathUtil.ccw(x3, y3, x4, y4, x2, y1, false);
+		a = Segment2afp.ccw(x3, y3, x4, y4, x1, y1, 0);
+		b = Segment2afp.ccw(x3, y3, x4, y4, x2, y1, 0);
 		if (a!=b && b!=0) return true;
-		b = MathUtil.ccw(x3, y3, x4, y4, x2, y2, false);
+		b = Segment2afp.ccw(x3, y3, x4, y4, x2, y2, 0);
 		if (a!=b && b!=0) return true;
-		b = MathUtil.ccw(x3, y3, x4, y4, x1, y2, false);
+		b = Segment2afp.ccw(x3, y3, x4, y4, x1, y2, 0);
 		return (a!=b && b!=0);
 	}
 
@@ -612,7 +615,7 @@ public class Rectangle2f extends AbstractRectangularShape2f<Rectangle2f> {
 
 	@Override
 	public boolean intersects(Path2f s) {
-		return intersects(s.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO));
+		return intersects(s.getPathIterator((float) MathConstants.SPLINE_APPROXIMATION_RATIO));
 	}
 
 	@Override
@@ -738,7 +741,7 @@ public class Rectangle2f extends AbstractRectangularShape2f<Rectangle2f> {
 
 	/** Iterator on the path elements of the rectangle.
 	 * 
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -824,7 +827,7 @@ public class Rectangle2f extends AbstractRectangularShape2f<Rectangle2f> {
 
 	/** Iterator on the path elements of the rectangle.
 	 * 
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

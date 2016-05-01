@@ -26,21 +26,23 @@
 
 package org.arakhne.afc.vmutil.locale;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.MessageFormat;
 
-import org.arakhne.afc.vmutil.locale.Locale;
-
-import junit.framework.TestCase;
+import org.junit.Test;
 
 /**
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class LocaleTest extends TestCase {
+@SuppressWarnings("static-method")
+public class LocaleTest {
 
 	private final LocaleStub tmp = new LocaleStub();
 	private static final String RESOURCE1 = "org/arakhne/afc/vmutil/locale/LocaleTest"; //$NON-NLS-1$
@@ -56,6 +58,7 @@ public class LocaleTest extends TestCase {
 	
     /**
      */
+	@Test
     public void testGetStringWithDefaultFromStringStringStringStringArray() {
     	assert(this.tmp!=null);
     	assertEquals(
@@ -81,7 +84,8 @@ public class LocaleTest extends TestCase {
 
     /**
      */
-    public static void testGetStringWithDefaultFromClassLoaderStringStringStringStringArray() {
+	@Test
+    public void testGetStringWithDefaultFromClassLoaderStringStringStringStringArray() {
     	ClassLoader l = LocaleTest.class.getClassLoader();
     	assertEquals(
     			DEFAULT,
@@ -106,7 +110,8 @@ public class LocaleTest extends TestCase {
 
     /**
      */
-    public static void testGetStringFromStringStringStringArray() {
+	@Test
+    public void testGetStringFromStringStringStringArray() {
     	assertEquals(NOKEY,
     			Locale.getStringFrom(RESOURCE1,NOKEY,P1,P2,P3));
     	assertEquals(
@@ -129,7 +134,8 @@ public class LocaleTest extends TestCase {
     
     /**
      */
-    public static void testGetStringFromClassLoaderStringStringStringArray() {
+	@Test
+    public void testGetStringFromClassLoaderStringStringStringArray() {
     	ClassLoader l = LocaleTest.class.getClassLoader();
     	
     	assertEquals(NOKEY,
@@ -154,7 +160,8 @@ public class LocaleTest extends TestCase {
 
     /**
      */
-    public static void testGetStringClassStringStringArray() {
+	@Test
+    public void testGetStringClassStringStringArray() {
     	assertEquals(NOKEY,
     			Locale.getString(LocaleTest.class,NOKEY,P1,P2,P3));
     	assertEquals(
@@ -177,7 +184,8 @@ public class LocaleTest extends TestCase {
     
     /**
      */
-    public static void testGetStringClassLoaderClassStringStringArray() {
+	@Test
+    public void testGetStringClassLoaderClassStringStringArray() {
     	ClassLoader l = LocaleTest.class.getClassLoader();
     	
     	assertEquals(NOKEY,
@@ -202,7 +210,8 @@ public class LocaleTest extends TestCase {
 
     /**
      */
-    public static void testGetStringWithDefaultClassStringStringStringArray() {
+	@Test
+    public void testGetStringWithDefaultClassStringStringStringArray() {
     	assertEquals(
     			DEFAULT,
     			Locale.getStringWithDefault(LocaleTest.class,NOKEY,DEFAULT,P1,P2,P3));
@@ -226,7 +235,8 @@ public class LocaleTest extends TestCase {
 
     /**
      */
-    public static void testGetStringWithDefaultClassLoaderClassStringStringStringArray() {
+	@Test
+    public void testGetStringWithDefaultClassLoaderClassStringStringStringArray() {
     	ClassLoader l = LocaleTest.class.getClassLoader();
     	
     	assertEquals(
@@ -252,7 +262,8 @@ public class LocaleTest extends TestCase {
 
     /**
      */
-    public static void testGetStringStringStringArray() {
+	@Test
+    public void testGetStringStringStringArray() {
     	assertEquals(
     			NOKEY,
     			Locale.getString(NOKEY,P1,P2,P3));
@@ -266,7 +277,7 @@ public class LocaleTest extends TestCase {
     		Locale.getString(KEY2);
     		fail("expecting IllegalArgumentException"); //$NON-NLS-1$
     	}
-    	catch(IllegalArgumentException _) {
+    	catch(IllegalArgumentException exception) {
     		// expected exception
     	}
     	assertEquals(
@@ -276,7 +287,8 @@ public class LocaleTest extends TestCase {
     
     /**
      */
-    public static void testGetStringClassLoaderStringStringArray() {
+	@Test
+    public void testGetStringClassLoaderStringStringArray() {
     	ClassLoader l = LocaleTest.class.getClassLoader();
     	
     	assertEquals(
@@ -292,7 +304,7 @@ public class LocaleTest extends TestCase {
     		Locale.getString(l, KEY2);
     		fail("expecting IllegalArgumentException"); //$NON-NLS-1$
     	}
-    	catch(IllegalArgumentException _) {
+    	catch(IllegalArgumentException exception) {
     		// expected exception
     	}
     	assertEquals(
@@ -302,7 +314,8 @@ public class LocaleTest extends TestCase {
 
     /**
      */
-    public static void testGetStringWithDefaultStringStringStringArray() {
+	@Test
+    public void testGetStringWithDefaultStringStringStringArray() {
     	assertEquals(
     			DEFAULT,
     			Locale.getStringWithDefault(NOKEY,DEFAULT,P1,P2,P3));
@@ -316,7 +329,7 @@ public class LocaleTest extends TestCase {
     		Locale.getStringWithDefault(KEY2,DEFAULT);
     		fail("expecting IllegalArgumentException"); //$NON-NLS-1$
     	}
-    	catch(IllegalArgumentException _) {
+    	catch(IllegalArgumentException exception) {
     		//expected exception
     	}
     	assertEquals(
@@ -326,7 +339,8 @@ public class LocaleTest extends TestCase {
 
     /**
      */
-    public static void testGetStringWithDefaultClassLoaderStringStringStringArray() {
+	@Test
+    public void testGetStringWithDefaultClassLoaderStringStringStringArray() {
     	ClassLoader l = LocaleTest.class.getClassLoader();
     	
     	assertEquals(
@@ -342,7 +356,7 @@ public class LocaleTest extends TestCase {
     		Locale.getStringWithDefault(l, KEY2, DEFAULT);
     		fail("expecting IllegalArgumentException"); //$NON-NLS-1$
     	}
-    	catch(IllegalArgumentException _) {
+    	catch(IllegalArgumentException exception) {
     		// expected exception
     	}
     	assertEquals(
@@ -352,7 +366,8 @@ public class LocaleTest extends TestCase {
     
     /**
      */
-    public static void testGetStringWithRawFormatStyle() {
+	@Test
+    public void testGetStringWithRawFormatStyle() {
     	Number data;
     	String raw, localized;
     	
@@ -429,7 +444,8 @@ public class LocaleTest extends TestCase {
     
     /**
      */
-    public static void testGetStringWithRawFormatStyleWithFormat1() {
+	@Test
+    public void testGetStringWithRawFormatStyleWithFormat1() {
     	Number data;
     	
     	data = Double.valueOf(123.456);
@@ -495,7 +511,8 @@ public class LocaleTest extends TestCase {
  
     /**
      */
-    public static void testGetStringWithRawFormatStyleWithFormat2() {
+	@Test
+    public void testGetStringWithRawFormatStyleWithFormat2() {
     	Number data;
     	
     	data = Double.valueOf(123.456);
@@ -561,7 +578,8 @@ public class LocaleTest extends TestCase {
    
     /**
      */
-    public static void testGetStringWithRawFormatStyleWithFormat3() {
+	@Test
+    public void testGetStringWithRawFormatStyleWithFormat3() {
     	Number data;
     	
     	data = Double.valueOf(123.456);
@@ -627,7 +645,8 @@ public class LocaleTest extends TestCase {
 
     /**
      */
-    public static void testGetStringWithRawFormatStyleWithFormat4() {
+	@Test
+    public void testGetStringWithRawFormatStyleWithFormat4() {
     	Number data;
     	
     	data = Double.valueOf(123.456);
@@ -693,7 +712,8 @@ public class LocaleTest extends TestCase {
     
     /**
      */
-    public static void testGetStringWithRawFormatStyleWithFormat5() {
+	@Test
+    public void testGetStringWithRawFormatStyleWithFormat5() {
     	Number data;
     	
     	data = Double.valueOf(123.456);
@@ -759,7 +779,8 @@ public class LocaleTest extends TestCase {
     
     /**
      */
-    public static void testGetStringWithRawFormatStyleWithFormat6() {
+	@Test
+    public void testGetStringWithRawFormatStyleWithFormat6() {
     	Number data;
     	
     	data = Double.valueOf(123.456);
@@ -825,7 +846,8 @@ public class LocaleTest extends TestCase {
     
     /**
      */
-    public static void testGetStringWithRawFormatStyleWithFormat7() {
+	@Test
+    public void testGetStringWithRawFormatStyleWithFormat7() {
     	Number data;
     	
     	data = Double.valueOf(123.456);
@@ -888,5 +910,5 @@ public class LocaleTest extends TestCase {
     			"-123456789123456789123456789123456789", //$NON-NLS-1$
     			Locale.getString("FORMAT_7", data)); //$NON-NLS-1$
     }
-    
+
 }

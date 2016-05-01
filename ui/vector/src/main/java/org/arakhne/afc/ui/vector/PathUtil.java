@@ -32,15 +32,17 @@ import org.arakhne.afc.math.continous.object2d.Point2f;
 import org.arakhne.afc.math.continous.object2d.Vector2f;
 import org.arakhne.afc.math.generic.Point2D;
 import org.arakhne.afc.math.generic.Vector2D;
-import org.arakhne.afc.util.Pair;
+import org.eclipse.xtext.xbase.lib.Pair;
 
 /** Vector-oriented utilities for splines. 
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public class PathUtil {
 
 	/** The ratio used to compute the length of the tangent vectors
@@ -337,7 +339,7 @@ public class PathUtil {
 	 */
 	public static void computeSegmentLengths(Path2f path, float[] lengths, List<? extends Point2D> controlPoints) {
 		assert(lengths.length==controlPoints.size());
-		Iterator<PathElement2f> pathIterator = path.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO);
+		Iterator<PathElement2f> pathIterator = path.getPathIterator((float) MathConstants.SPLINE_APPROXIMATION_RATIO);
 		int index = 0 ;
 		
 		PathElement2f pathElement;
@@ -394,14 +396,14 @@ public class PathUtil {
 	 * @return the point; never <code>null</code>
 	 */
 	public static Point2D interpolate(Path2f path, float factor, Vector2D normal) {
-		Iterator<PathElement2f> iterator = path.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO);
+		Iterator<PathElement2f> iterator = path.getPathIterator((float) MathConstants.SPLINE_APPROXIMATION_RATIO);
 		PathElement2f pathElement;
 
 		Point2D firstPoint = null;
 		Point2D lastPoint = null;
 		
 		float length = 0;
-		List<Pair<Float,Point2D>> points = new ArrayList<Pair<Float,Point2D>>();
+		List<Pair<Float,Point2D>> points = new ArrayList<>();
 		float d;
 		while (iterator.hasNext()) {
 			pathElement = iterator.next();
@@ -409,7 +411,7 @@ public class PathUtil {
 			case MOVE_TO:
 				lastPoint = new Point2f(pathElement.toX, pathElement.toY);
 				if (firstPoint==null) firstPoint = lastPoint;
-				points.add(new Pair<Float,Point2D>(length, lastPoint));
+				points.add(new Pair<>(length, lastPoint));
 				break;
 			case LINE_TO:
 			case CLOSE:
@@ -418,7 +420,7 @@ public class PathUtil {
 						pathElement.toX, pathElement.toY);
 				length += d;
 				lastPoint = new Point2f(pathElement.toX, pathElement.toY);
-				points.add(new Pair<Float,Point2D>(length, lastPoint));
+				points.add(new Pair<>(length, lastPoint));
 				break;
 			default:
 				throw new IllegalStateException();
@@ -434,10 +436,10 @@ public class PathUtil {
 		while (l<r) {
 			c = (l+r)/2;
 			pair = points.get(c);
-			if (distance==pair.getA()) {
-				return pair.getB();
+			if (distance==pair.getKey()) {
+				return pair.getValue();
 			}
-			if (distance<pair.getA()) {
+			if (distance<pair.getKey()) {
 				r = c-1;
 			}
 			else {
@@ -449,20 +451,20 @@ public class PathUtil {
 		if (l>=points.size()) return lastPoint;
 		
 		pair = points.get(l-1);
-		distance -= pair.getA();
-		lastPoint = points.get(l).getB();
+		distance -= pair.getKey();
+		lastPoint = points.get(l).getValue();
 		
-		distance /= pair.getB().distanceSquared(lastPoint);
+		distance /= pair.getValue().distanceSquared(lastPoint);
 		
 		if (normal!=null) {
 			normal.set(lastPoint.getX(), lastPoint.getY());
-			normal.sub(pair.getB().getX(), pair.getB().getY());
+			normal.sub(pair.getValue().getX(), pair.getValue().getY());
 			normal.perpendicularize();
 			normal.normalize();
 		}
 		org.arakhne.afc.math.generic.Point2D p = MathUtil.interpolate(
-				pair.getB().getX(),
-				pair.getB().getY(),
+				pair.getValue().getX(),
+				pair.getValue().getY(),
 				lastPoint.getX(),
 				lastPoint.getY(),
 				distance);

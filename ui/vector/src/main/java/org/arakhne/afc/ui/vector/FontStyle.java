@@ -24,11 +24,13 @@ package org.arakhne.afc.ui.vector;
 
 /** Style of the fonts. 
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public enum FontStyle {
 
 	/**

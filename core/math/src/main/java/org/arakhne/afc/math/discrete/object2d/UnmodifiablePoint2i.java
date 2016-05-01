@@ -25,11 +25,13 @@ import org.arakhne.afc.math.generic.Tuple2D;
 /** This class implements a Point2i that cannot be modified by
  * the setters. 
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see {@link org.arakhne.afc.math.geometry.d2.UnmodifiablePoint2D}
  */
+@Deprecated
 public class UnmodifiablePoint2i extends Point2i {
 
 	private static final long serialVersionUID = -6561225929333955341L;

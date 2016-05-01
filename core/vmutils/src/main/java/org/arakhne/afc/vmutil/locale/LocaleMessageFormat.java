@@ -50,7 +50,7 @@ import java.util.Locale;
  * to format the given data according to the locale. It simply put the 
  * not-formatted data in the result.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -128,7 +128,7 @@ public class LocaleMessageFormat extends MessageFormat {
 	}
 
 	/**
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

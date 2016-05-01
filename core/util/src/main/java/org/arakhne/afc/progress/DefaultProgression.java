@@ -28,7 +28,7 @@ import org.arakhne.afc.util.ListenerCollection;
  * An object that permits to indicates the progression of
  * a task. The progression of the value is always ascendent.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -36,7 +36,7 @@ import org.arakhne.afc.util.ListenerCollection;
 public class DefaultProgression implements Progression {
 	
 	private int min, max;
-	private float current; // use floating point value to allow finest subtask's progression.
+	private double current; // use floating point value to allow finest subtask's progression.
 	private boolean isIndeterminate;
 	private boolean isAdjusting;
 	private String comment;
@@ -44,7 +44,7 @@ public class DefaultProgression implements Progression {
 	
 	/** Collection of listeners.
 	 */
-	protected final ListenerCollection<ProgressionListener> listeners = new ListenerCollection<ProgressionListener>();
+	protected final ListenerCollection<ProgressionListener> listeners = new ListenerCollection<>();
 	
 	/** Create a progress model with the specified <i>determinate</i> state.
 	 * 
@@ -210,15 +210,15 @@ public class DefaultProgression implements Progression {
 	}
 
 	@Override
-	public float getPercent() {
-		float extent = this.max - this.min;
+	public double getPercent() {
+		double extent = this.max - this.min;
 		if (extent==0f) return 0f;
 		return (this.current - this.min) * 100f / extent;
 	}
 
 	@Override
-	public float getProgressionFactor() {
-		float extent = this.max - this.min;
+	public double getProgressionFactor() {
+		double extent = this.max - this.min;
 		if (extent==0f) return 0f;
 		return (this.current - this.min) / extent;
 	}
@@ -232,7 +232,7 @@ public class DefaultProgression implements Progression {
 	 * 
 	 * @return the floating-point precision value.
 	 */
-	protected float getFloatValue() {
+	protected double getFloatValue() {
 		return this.current;
 	}
 
@@ -289,7 +289,7 @@ public class DefaultProgression implements Progression {
 		setProperties(this.current, this.min, this.max, b, this.comment, false, false, false, null);
 	}
 
-	private void setProperties(float value, int min, int max, boolean adjusting, 
+	private void setProperties(double value, int min, int max, boolean adjusting, 
 			String comment, boolean writeLocalComment,
 			boolean forceDeterminate, boolean forceValue,
 			SubProgressionModel subTask) {
@@ -309,7 +309,7 @@ public class DefaultProgression implements Progression {
 			theMax = tmp;
 		}
 		
-		float theValue = value;
+		double theValue = value;
 		if (theValue<theMin) theValue = theMin;
 		if (theValue>theMax) theValue = theMax;
 		
@@ -379,7 +379,7 @@ public class DefaultProgression implements Progression {
 	 * @param overwriteComment indicates if the comment of this parent model may
 	 * be overwritten by the child's comment.
 	 */
-	void disconnectSubTask(SubProgressionModel subTask, float value, boolean overwriteComment) {
+	void disconnectSubTask(SubProgressionModel subTask, double value, boolean overwriteComment) {
 		if (this.child==subTask) {
 			if (overwriteComment) {
 				String cmt = subTask.getComment();
@@ -398,7 +398,7 @@ public class DefaultProgression implements Progression {
 	 * @param newValue
 	 * @param comment
 	 */
-	void setValue(SubProgressionModel subTask, float newValue, String comment) {
+	void setValue(SubProgressionModel subTask, double newValue, String comment) {
 		setProperties(newValue, this.min, this.max, this.isAdjusting, 
 				comment==null ? this.comment : comment, true, true, false,
 				subTask);

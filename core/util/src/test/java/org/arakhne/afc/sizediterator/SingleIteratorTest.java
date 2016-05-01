@@ -21,38 +21,51 @@
  */
 package org.arakhne.afc.sizediterator;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.util.NoSuchElementException;
 import java.util.UUID;
 
-import junit.framework.TestCase;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 /** 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class SingleIteratorTest extends TestCase {
+public class SingleIteratorTest {
 
 	private String s1;
 	private SingleIterator<String> iterator;
 	
-	@Override
+	/**
+	 * @throws Exception
+	 */
+	@Before
 	public void setUp() throws Exception {
-		super.setUp();
 		this.s1 = UUID.randomUUID().toString();
-		this.iterator = new SingleIterator<String>(this.s1);
+		this.iterator = new SingleIterator<>(this.s1);
 	}
 	
-	@Override
+	/**
+	 * @throws Exception
+	 */
+	@After
 	public void tearDown() throws Exception {
 		this.iterator = null;
 		this.s1 = null;
-		super.tearDown();
 	}
 
 	/**
 	 */
+	@Test
 	public void testHasNext() {
 		assertTrue(this.iterator.hasNext());
 		this.iterator.next();
@@ -61,31 +74,34 @@ public class SingleIteratorTest extends TestCase {
 
 	/**
 	 */
+	@Test
 	public void testNext() {
 		assertSame(this.s1, this.iterator.next());
 		try {
 			this.iterator.next();
 			fail("expecting NoSuchElementException"); //$NON-NLS-1$
 		}
-		catch(NoSuchElementException _) {
+		catch(NoSuchElementException exception) {
 			// expected exception
 		}
 	}
 
 	/**
 	 */
+	@Test
 	public void testRemove() {
 		try {
 			this.iterator.remove();
 			fail("expecting UnsupportedOperationException"); //$NON-NLS-1$
 		}
-		catch(UnsupportedOperationException _) {
+		catch(UnsupportedOperationException exception) {
 			// exepcted exception
 		}
 	}
 
 	/**
 	 */
+	@Test
 	public void testIndex() {
 		assertEquals(-1, this.iterator.index());
 		this.iterator.next();
@@ -94,6 +110,7 @@ public class SingleIteratorTest extends TestCase {
 
 	/**
 	 */
+	@Test
 	public void testRest() {
 		assertEquals(1, this.iterator.rest());
 		this.iterator.next();
@@ -102,6 +119,7 @@ public class SingleIteratorTest extends TestCase {
 
 	/**
 	 */
+	@Test
 	public void testTotalSize() {
 		assertEquals(1, this.iterator.totalSize());
 		this.iterator.next();

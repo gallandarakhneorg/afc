@@ -27,11 +27,13 @@ import org.arakhne.afc.ui.vector.Stroke;
 
 /** AWT implementation of the generic Stroke.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 class AwtStroke implements Stroke, NativeWrapper {
 
 	private static int toAwtLineJoin(LineJoin join) {

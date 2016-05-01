@@ -39,11 +39,13 @@ import org.arakhne.afc.ui.vector.VectorToolkit;
 
 /** AWT implementation of the generic font.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 class AwtFont implements Font, NativeWrapper {
 
 	private static int toAWT(FontStyle fs) {
@@ -220,7 +222,7 @@ class AwtFont implements Font, NativeWrapper {
 
 	/** Internal implementation of a GlyphList for AWT.
 	 * 
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $Name$ $Revision$ $Date$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

@@ -25,11 +25,13 @@ import java.util.EventListener;
 
 /** This interface represents a listener on the mode events.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public interface ActionModeListener extends EventListener {
 
 	/** Invoked when a mode is activated.

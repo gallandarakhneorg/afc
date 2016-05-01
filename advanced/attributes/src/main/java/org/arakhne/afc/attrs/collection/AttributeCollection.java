@@ -42,7 +42,7 @@ import org.arakhne.afc.ui.vector.Image;
  * collection of attributes with a reading and a
  * writing API.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -194,7 +194,9 @@ public interface AttributeCollection extends AttributeProvider {
 	 * @param name is the name of the attribute to set.
 	 * @param value is the value to store.
 	 * @return the changed attribute or <code>null</code>
+	 * @deprecated
 	 */
+	@Deprecated
 	public Attribute setAttribute(String name, Image value);
 
 	/** Set the value for the given attribute.
@@ -210,7 +212,9 @@ public interface AttributeCollection extends AttributeProvider {
 	 * @param name is the name of the attribute to set.
 	 * @param value is the value to store.
 	 * @return the changed attribute or <code>null</code>
+	 * @deprecated
 	 */
+	@Deprecated
 	public Attribute setAttribute(String name, Color value);
 
 	/** Set the value for the given attribute.
@@ -299,15 +303,6 @@ public interface AttributeCollection extends AttributeProvider {
 	 * @return <code>false</code> if something wrong appends
 	 */
 	public boolean renameAttribute(String oldname, String newname, boolean overwrite);
-
-	/** Copy the attributes from another container into this provider.
-	 * 
-	 * @param otherContainer is the container of attributes to copy.
-	 * @throws AttributeException on error.
-	 * @deprecated see {@link #addAttributes(AttributeProvider)}
-	 */
-	@Deprecated
-	public void copyFrom(AttributeProvider otherContainer) throws AttributeException;
 
 	/** Add a listener on the attribute value changes.
 	 * 

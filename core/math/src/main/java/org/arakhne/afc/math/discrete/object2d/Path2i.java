@@ -28,21 +28,23 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import org.arakhne.afc.math.MathConstants;
-import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.generic.Path2D;
 import org.arakhne.afc.math.generic.PathElementType;
 import org.arakhne.afc.math.generic.PathWindingRule;
 import org.arakhne.afc.math.generic.Point2D;
+import org.arakhne.afc.math.geometry.d2.afp.Segment2afp;
 import org.arakhne.afc.math.matrix.Transform2D;
 
 
 /** A generic path with integer coordinates.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see {@link org.arakhne.afc.math.geometry.d2.i.Path2i}
  */
+@Deprecated
 public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Rectangle2i,PathElement2i,PathIterator2i> {
 
 	private static final long serialVersionUID = -4229773257722403127L;
@@ -124,7 +126,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 						endx, endy);
 				numCrosses = computeCrossingsFromSegment(
 						numCrosses,
-						localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						localPath.getPathIterator((float)MathConstants.SPLINE_APPROXIMATION_RATIO),
 						x1, y1, x2, y2,
 						false);
 				curx = endx;
@@ -142,7 +144,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 						endx, endy);
 				numCrosses = computeCrossingsFromSegment(
 						numCrosses,
-						localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						localPath.getPathIterator((float)MathConstants.SPLINE_APPROXIMATION_RATIO),
 						x1, y1, x2, y2,
 						false);
 				curx = endx;
@@ -245,7 +247,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 						endx, endy);
 				numCrosses = computeCrossingsFromCircle(
 						numCrosses,
-						localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						localPath.getPathIterator((float)MathConstants.SPLINE_APPROXIMATION_RATIO),
 						cx, cy, radius,
 						false);
 				curx = endx;
@@ -263,7 +265,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 						endx, endy);
 				numCrosses = computeCrossingsFromCircle(
 						numCrosses,
-						localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						localPath.getPathIterator((float)MathConstants.SPLINE_APPROXIMATION_RATIO),
 						cx, cy, radius,
 						false);
 				curx = endx;
@@ -379,7 +381,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 				curve.moveTo(element.fromX, element.fromY);
 				curve.quadTo(element.ctrlX1, element.ctrlY1, endx, endy);
 				int numCrosses = computeCrossingsFromPoint(
-						curve.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						curve.getPathIterator((float)MathConstants.SPLINE_APPROXIMATION_RATIO),
 						px, py, false);
 				if (numCrosses==MathConstants.SHAPE_INTERSECTS) {
 					return numCrosses;
@@ -398,7 +400,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 						element.ctrlX2, element.ctrlY2,
 						endx, endy);
 				numCrosses = computeCrossingsFromPoint(
-						curve.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						curve.getPathIterator((float)MathConstants.SPLINE_APPROXIMATION_RATIO),
 						px, py, false);
 				if (numCrosses==MathConstants.SHAPE_INTERSECTS) {
 					return numCrosses;
@@ -583,7 +585,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 				curve.moveTo(pathElement.fromX, pathElement.fromY);
 				curve.quadTo(pathElement.ctrlX1, pathElement.ctrlY1, endx, endy);
 				int numCrosses = __computeCrossingsFromRect(
-						curve.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						curve.getPathIterator((float)MathConstants.SPLINE_APPROXIMATION_RATIO),
 						rxmin, rymin, rxmax, rymax,
 						false, intersectingBehavior);
 				if (numCrosses==MathConstants.SHAPE_INTERSECTS) {
@@ -600,7 +602,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 				curve.moveTo(pathElement.fromX, pathElement.fromY);
 				curve.curveTo(pathElement.ctrlX1, pathElement.ctrlY1, pathElement.ctrlX2, pathElement.ctrlY2, endx, endy);
 				numCrosses = __computeCrossingsFromRect(
-						curve.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						curve.getPathIterator((float)MathConstants.SPLINE_APPROXIMATION_RATIO),
 						rxmin, rymin, rxmax, rymax,
 						false, intersectingBehavior);
 				if (numCrosses==MathConstants.SHAPE_INTERSECTS) {
@@ -802,11 +804,11 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 		Rectangle2i box;
 		box = p.graphicalBounds==null ? null : p.graphicalBounds.get();
 		if (box!=null) {
-			this.graphicalBounds = new SoftReference<Rectangle2i>(box.clone());
+			this.graphicalBounds = new SoftReference<>(box.clone());
 		}
 		box = p.logicalBounds==null ? null : p.logicalBounds.get();
 		if (box!=null) {
-			this.logicalBounds = new SoftReference<Rectangle2i>(box.clone());
+			this.logicalBounds = new SoftReference<>(box.clone());
 		}
 	}
 
@@ -1232,7 +1234,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 						element.ctrlX2, element.ctrlY2,
 						element.toX, element.toY);
 				if (buildGraphicalBoundingBox(
-						subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						subPath.getPathIterator((float)MathConstants.SPLINE_APPROXIMATION_RATIO),
 						box)) {
 					if (box.getMinX()<xmin) xmin = box.getMinX();
 					if (box.getMinY()<ymin) ymin = box.getMinY();
@@ -1248,7 +1250,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 						element.ctrlX1, element.ctrlY1,
 						element.toX, element.toY);
 				if (buildGraphicalBoundingBox(
-						subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						subPath.getPathIterator((float)MathConstants.SPLINE_APPROXIMATION_RATIO),
 						box)) {
 					if (box.getMinX()<xmin) xmin = box.getMinX();
 					if (box.getMinY()<ymin) ymin = box.getMinY();
@@ -1303,9 +1305,9 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 		if (bb==null) {
 			bb = new Rectangle2i();
 			buildGraphicalBoundingBox(
-					getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+					getPathIterator((float)MathConstants.SPLINE_APPROXIMATION_RATIO),
 					bb);
-			this.graphicalBounds = new SoftReference<Rectangle2i>(bb);
+			this.graphicalBounds = new SoftReference<>(bb);
 		}
 		return bb;
 	}
@@ -1322,7 +1324,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 		if (bb==null) {
 			bb = new Rectangle2i();
 			buildLogicalBoundingBox(bb);
-			this.logicalBounds = new SoftReference<Rectangle2i>(bb);
+			this.logicalBounds = new SoftReference<>(bb);
 		}
 		return bb;
 	}
@@ -1341,9 +1343,9 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 		if (bb==null) {
 			bb = new Rectangle2i();
 			buildGraphicalBoundingBox(
-					getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+					getPathIterator((float)MathConstants.SPLINE_APPROXIMATION_RATIO),
 					bb);
-			this.graphicalBounds = new SoftReference<Rectangle2i>(bb);
+			this.graphicalBounds = new SoftReference<>(bb);
 		}
 		box.set(bb);
 	}
@@ -1360,7 +1362,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 		if (bb==null) {
 			bb = new Rectangle2i();
 			buildLogicalBoundingBox(bb);
-			this.logicalBounds = new SoftReference<Rectangle2i>(bb);
+			this.logicalBounds = new SoftReference<>(bb);
 		}
 		box.set(bb);
 	}
@@ -1370,7 +1372,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 		Point2D solution = new Point2i();
 		float bestDist = Float.POSITIVE_INFINITY;
 		Point2D candidate;
-		PathIterator2i pi = getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO);
+		PathIterator2i pi = getPathIterator((float)MathConstants.SPLINE_APPROXIMATION_RATIO);
 		PathElement2i pe;
 
 		Segment2i seg = new Segment2i();
@@ -1738,7 +1740,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 	 */
 	@Override
 	public Iterator<Point2i> getPointIterator() {
-		PathIterator2i pathIterator = getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO);
+		PathIterator2i pathIterator = getPathIterator((float)MathConstants.SPLINE_APPROXIMATION_RATIO);
 		return new PixelIterator(pathIterator);
 	}
 
@@ -1762,7 +1764,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 
 	/** A path iterator that does not transform the coordinates.
 	 *
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -1889,7 +1891,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 
 	/** A path iterator that transforms the coordinates.
 	 *
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -2016,7 +2018,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 
 	/** An collection of the points of the path.
 	 *
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -2140,7 +2142,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 
 	/** Iterator on the points of the path.
 	 *
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -2167,7 +2169,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 				this.lastReplied = Path2i.this.getPointAt(this.index++);
 				return this.lastReplied;
 			}
-			catch(Throwable _) {
+			catch(Throwable exception) {
 				throw new NoSuchElementException();
 			}
 		}
@@ -2185,7 +2187,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 
 	/** Iterator on the pixels of the path.
 	 *
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -2254,7 +2256,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 	/** A path iterator that is flattening the path.
 	 * This iterator was copied from AWT FlatteningPathIterator.
 	 *
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -2394,7 +2396,7 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 		 *          values in the specified array at the specified index.
 		 */
 		private static float getQuadSquaredFlatness(float coords[], int offset) {
-			return MathUtil.distanceSquaredPointToLine(
+			return (float) Segment2afp.computeDistanceSquaredLinePoint(
 					coords[offset + 2], coords[offset + 3],
 					coords[offset + 0], coords[offset + 1],
 					coords[offset + 4], coords[offset + 5]);
@@ -2478,14 +2480,14 @@ public class Path2i extends AbstractShape2i<Path2i> implements Path2D<Shape2i,Re
 		 */
 		private static float getCurveSquaredFlatness(float coords[], int offset) {
 			return Math.max(
-					MathUtil.distanceSquaredPointToSegment(
+					(float) Segment2afp.computeDistanceSquaredLinePoint(
 							coords[offset + 0],
 							coords[offset + 1],
 							coords[offset + 6],
 							coords[offset + 7],
 							coords[offset + 2],
 							coords[offset + 3]),
-							MathUtil.distanceSquaredPointToSegment(
+							(float) Segment2afp.computeDistanceSquaredLinePoint(
 									coords[offset + 0],
 									coords[offset + 1],
 									coords[offset + 6],

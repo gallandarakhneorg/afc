@@ -37,6 +37,7 @@ import org.arakhne.afc.attrs.attr.AttributeValueImpl;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("all")
 public class AttributeComparatorTest extends AbstractAttrTestCase {
 
 	/**

@@ -22,11 +22,13 @@ package org.arakhne.afc.math.generic;
 
 /** 2D Point.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see {@link org.arakhne.afc.math.geometry.d2.Point2D}
  */
+@Deprecated
 public interface Point2D extends Tuple2D<Point2D> {
 
 	/**

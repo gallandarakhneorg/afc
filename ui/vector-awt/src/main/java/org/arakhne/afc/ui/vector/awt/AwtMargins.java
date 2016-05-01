@@ -26,11 +26,13 @@ import org.arakhne.afc.ui.vector.Margins;
 
 /** AWT implementation of the generic dimension.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 class AwtMargins implements Margins, NativeWrapper {
 
 	private float top;

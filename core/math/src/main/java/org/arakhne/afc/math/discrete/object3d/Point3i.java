@@ -28,11 +28,13 @@ import org.arakhne.afc.math.generic.Vector3D;
 
 /** 3D Point with 3 integers.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated Replacement will be provided in Version 14.0
  */
+@Deprecated
 public class Point3i extends Tuple3i<Point3D> implements Point3D {
 
 	private static final long serialVersionUID = -1506750779625667216L;
@@ -172,7 +174,7 @@ public class Point3i extends Tuple3i<Point3D> implements Point3D {
 
 	@Override
 	public float getDistanceLinf(Point3D p1) {
-	      return (MathUtil.max( Math.abs(this.x-p1.getX()), Math.abs(this.y-p1.getY()), Math.abs(this.z-p1.getZ())));
+	      return (float) (MathUtil.max( Math.abs(this.x-p1.getX()), Math.abs(this.y-p1.getY()), Math.abs(this.z-p1.getZ())));
 	}
 
 	@Override

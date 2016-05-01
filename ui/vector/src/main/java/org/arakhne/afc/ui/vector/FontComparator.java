@@ -27,11 +27,13 @@ import java.util.Comparator;
 /** Comparator of fonts.
  * See {@link VectorToolkit} to create an instance.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public class FontComparator implements Comparator<Font> {
 
 	/**

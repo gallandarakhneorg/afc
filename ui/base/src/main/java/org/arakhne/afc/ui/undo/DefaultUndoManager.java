@@ -28,16 +28,18 @@ import org.arakhne.afc.vmutil.locale.Locale;
 
 /** Manager of undoable actions.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public class DefaultUndoManager implements UndoManager {
 
-	private final ListenerCollection<UndoListener> listeners = new ListenerCollection<UndoListener>();
-	private final LinkedList<Undoable> undoes = new LinkedList<Undoable>(); 
-	private final LinkedList<Undoable> redoes = new LinkedList<Undoable>(); 
+	private final ListenerCollection<UndoListener> listeners = new ListenerCollection<>();
+	private final LinkedList<Undoable> undoes = new LinkedList<>(); 
+	private final LinkedList<Undoable> redoes = new LinkedList<>(); 
 	private int limit = 100;
 	
 	/**

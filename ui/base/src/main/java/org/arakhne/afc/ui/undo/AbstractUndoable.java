@@ -27,11 +27,13 @@ package org.arakhne.afc.ui.undo ;
  * This class checks if the undoable action is not died
  * when undo() or redo() is invoked.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public abstract class AbstractUndoable implements Undoable {
 
 	private static final long serialVersionUID = -1576372782744665297L;

@@ -30,11 +30,13 @@ import javax.swing.event.ChangeListener;
 /** Abstract implementation of a DocumentWrapper
  * that is supporting only a single change listener.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public abstract class AbstractDocumentWrapper implements DocumentWrapper {
 	
 	private ChangeListener listener = null;

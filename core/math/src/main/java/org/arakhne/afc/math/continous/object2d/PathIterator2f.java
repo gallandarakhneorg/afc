@@ -24,15 +24,18 @@ package org.arakhne.afc.math.continous.object2d;
 import java.util.Iterator;
 
 import org.arakhne.afc.math.generic.PathWindingRule;
+import org.arakhne.afc.math.geometry.d2.afp.PathIterator2afp;
 
 
 /** This interface describes an interator on path elements.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see {@link PathIterator2afp}
  */
+@Deprecated
 public interface PathIterator2f extends Iterator<PathElement2f> {
 
 	/** Replies the winding rule for the path.

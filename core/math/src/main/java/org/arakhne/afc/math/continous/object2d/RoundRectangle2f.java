@@ -23,20 +23,24 @@ package org.arakhne.afc.math.continous.object2d;
 import java.util.NoSuchElementException;
 
 import org.arakhne.afc.math.MathConstants;
-import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.generic.PathElementType;
 import org.arakhne.afc.math.generic.PathWindingRule;
 import org.arakhne.afc.math.generic.Point2D;
+import org.arakhne.afc.math.geometry.d2.afp.Ellipse2afp;
+import org.arakhne.afc.math.geometry.d2.d.Point2d;
+import org.arakhne.afc.math.geometry.d2.d.RoundRectangle2d;
 import org.arakhne.afc.math.matrix.Transform2D;
 
 
 /** 2D round rectangle with floating-point points.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see {@link RoundRectangle2d}
  */
+@Deprecated
 public class RoundRectangle2f extends AbstractRectangularShape2f<RoundRectangle2f> {
 
 	private static final long serialVersionUID = 4681356809053380781L;
@@ -110,7 +114,7 @@ public class RoundRectangle2f extends AbstractRectangularShape2f<RoundRectangle2
 		return (xx * xx + yy * yy <= 1f);
 	}
 
-	private static final float ANGLE = MathConstants.PI / 4f;
+	private static final float ANGLE = (float) MathConstants.PI / 4f;
 	private static final float A = 1f - (float)Math.cos(ANGLE);
 	private static final float B = (float)Math.tan(ANGLE);
 	private static final float C = (float)Math.sqrt(1f + B * B) - 1f + A;
@@ -309,30 +313,42 @@ public class RoundRectangle2f extends AbstractRectangularShape2f<RoundRectangle2
 
 		if (px<rx1+aw) {
 			if (py<ry1+ah) {
-				return MathUtil.getClosestPointToSolidEllipse(
+				Point2d pts = new Point2d();
+				Ellipse2afp.computeClosestPointToSolidEllipse(
 						px, py,
 						rx1, ry1,
-						aw, ah);
+						aw, ah,
+						pts);
+				return new Point2f(pts.getX(), pts.getY());
 			}
 			if (py>ry2-ah) {
-				return MathUtil.getClosestPointToSolidEllipse(
+				Point2d pts = new Point2d();
+				Ellipse2afp.computeClosestPointToSolidEllipse(
 						px, py,
 						rx1, ry2-ah,
-						aw, ah);
+						aw, ah,
+						pts);
+				return new Point2f(pts.getX(), pts.getY());
 			}
 		}
 		else if (px>rx2-aw) {
 			if (py<ry1+ah) {
-				return MathUtil.getClosestPointToSolidEllipse(
+				Point2d pts = new Point2d();
+				Ellipse2afp.computeClosestPointToSolidEllipse(
 						px, py,
 						rx2-aw, ry1,
-						aw, ah);
+						aw, ah,
+						pts);
+				return new Point2f(pts.getX(), pts.getY());
 			}
 			if (py>ry2-ah) {
-				return MathUtil.getClosestPointToSolidEllipse(
+				Point2d pts = new Point2d();
+				Ellipse2afp.computeClosestPointToSolidEllipse(
 						px, py,
 						rx2-aw, ry2-ah,
-						aw, ah);
+						aw, ah,
+						pts);
+				return new Point2f(pts.getX(), pts.getY());
 			}
 		}
 
@@ -445,7 +461,7 @@ public class RoundRectangle2f extends AbstractRectangularShape2f<RoundRectangle2
 
 	@Override
 	public boolean intersects(Path2f s) {
-		return intersects(s.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO));
+		return intersects(s.getPathIterator((float) MathConstants.SPLINE_APPROXIMATION_RATIO));
 	}
 
 	@Override
@@ -482,7 +498,7 @@ public class RoundRectangle2f extends AbstractRectangularShape2f<RoundRectangle2
 
 	/** Iterator on the path elements of the rectangle.
 	 * 
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -606,7 +622,7 @@ public class RoundRectangle2f extends AbstractRectangularShape2f<RoundRectangle2
 
 	/** Iterator on the path elements of the rectangle.
 	 * 
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

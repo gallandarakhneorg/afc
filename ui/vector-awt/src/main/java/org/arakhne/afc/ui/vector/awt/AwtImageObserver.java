@@ -25,11 +25,13 @@ import java.awt.Image;
 
 /** AWT implementation of the generic Image.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 class AwtImageObserver implements java.awt.image.ImageObserver, NativeWrapper {
 
 	private final org.arakhne.afc.ui.vector.ImageObserver obs;

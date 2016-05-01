@@ -24,39 +24,20 @@ package org.arakhne.afc.vmutil;
 import java.io.File;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
  * Current classpath and associated utility functions.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 5.0
  */
 public class ClasspathUtil {
-
-	/** Replies the classpath at start of the virtual machine.
-	 * 
-	 * @return the startup classpath, never <code>null</code>.
-	 * @deprecated see {@link #getStartClasspath()}
-	 */
-	@Deprecated
-	public static URL[] getStartupClasspath() {
-		Iterator<URL> iterator = getStartClasspath();
-		List<URL> list = new ArrayList<URL>();
-		while (iterator.hasNext())
-			list.add(iterator.next());
-		URL[] tab = new URL[list.size()];
-		list.toArray(tab);
-		list.clear();
-		return tab;
-	}
 
 	/** Replies the classpath at start of the virtual machine.
 	 * 
@@ -70,25 +51,9 @@ public class ClasspathUtil {
 	/** Replies the current classpath.
 	 * 
 	 * @return the current classpath, never <code>null</code>.
-	 * @deprecated see {@link #getClasspath()}
-	 */
-	@Deprecated
-	public static URL[] getCurrentClasspath() {
-		Iterator<URL> iterator = getClasspath();
-		List<URL> list = new ArrayList<URL>();
-		while (iterator.hasNext())
-			list.add(iterator.next());
-		URL[] tab = new URL[list.size()];
-		list.toArray(tab);
-		list.clear();
-		return tab;
-	}
-	
-	/** Replies the current classpath.
-	 * 
-	 * @return the current classpath, never <code>null</code>.
 	 * @since 6.0
 	 */
+	@SuppressWarnings("resource")
 	public static Iterator<URL> getClasspath() {
 		Iterator<URL> iterator = getStartClasspath();
 		
@@ -110,7 +75,7 @@ public class ClasspathUtil {
 	}
 	
 	/**
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -160,7 +125,7 @@ public class ClasspathUtil {
 	}
 
 	/**
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -221,7 +186,7 @@ public class ClasspathUtil {
 	}
 
 	/**
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

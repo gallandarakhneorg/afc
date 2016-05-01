@@ -24,11 +24,13 @@ package org.arakhne.afc.math.generic;
 
 /** Type of a path element.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see {@link org.arakhne.afc.math.geometry.PathElementType}
  */
+@Deprecated
 public enum PathElementType {
 
 	/** Move to the next point.

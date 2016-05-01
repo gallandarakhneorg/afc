@@ -28,7 +28,7 @@ import java.lang.ref.WeakReference;
  * An object that permits to indicates the progression of
  * a task.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -36,9 +36,9 @@ import java.lang.ref.WeakReference;
 class SubProgressionModel extends DefaultProgression {
 	
 	private final int level;
-	private final float minValueInParent;
-	private final float maxValueInParent;
-	private final float extentInParent;
+	private final double minValueInParent;
+	private final double maxValueInParent;
+	private final double extentInParent;
 	private WeakReference<DefaultProgression> parent;
 	private final boolean overwriteCommentWhenDisconnect;
 	
@@ -56,14 +56,14 @@ class SubProgressionModel extends DefaultProgression {
 	 */
 	SubProgressionModel(
 			DefaultProgression parent,
-			float minPValue, float maxPValue,
+			double minPValue, double maxPValue,
 			int minValue, int maxValue,
 			boolean isIndeterminate, boolean adjusting,
 			boolean overwriteComment) {
 		super(minValue, minValue, maxValue, adjusting);
 		assert(parent!=null);
 		this.level = parent.getTaskDepth() + 1;
-		float uptMaxPValue = maxPValue;
+		double uptMaxPValue = maxPValue;
 		if (minPValue>uptMaxPValue) {
 			uptMaxPValue = minPValue;
 		}
@@ -71,7 +71,7 @@ class SubProgressionModel extends DefaultProgression {
     	this.maxValueInParent = uptMaxPValue;
     	this.extentInParent = uptMaxPValue - minPValue;
     	this.overwriteCommentWhenDisconnect = overwriteComment;
-    	this.parent = new WeakReference<DefaultProgression>(parent);
+    	this.parent = new WeakReference<>(parent);
 		setIndeterminate(isIndeterminate);
 	}
 	
@@ -85,12 +85,12 @@ class SubProgressionModel extends DefaultProgression {
 	 * @param overwriteComment indicates if the comment of this subtask may overwrite
 	 * the comment of its parent when it is disconnected.  
 	 */
-	SubProgressionModel(DefaultProgression parent, float minPValue, float maxPValue,
+	SubProgressionModel(DefaultProgression parent, double minPValue, double maxPValue,
 			boolean isIndeterminate, boolean adjusting, boolean overwriteComment) {
 		super((int)minPValue, (int)minPValue, (int)maxPValue);
 		assert(parent!=null);
 		this.level = parent.getTaskDepth() + 1;
-		float uptMaxPValue = maxPValue;
+		double uptMaxPValue = maxPValue;
 		if (minPValue>uptMaxPValue) {
 			uptMaxPValue = minPValue;
 		}
@@ -98,7 +98,7 @@ class SubProgressionModel extends DefaultProgression {
     	this.maxValueInParent = uptMaxPValue;
     	this.extentInParent = uptMaxPValue - minPValue;
     	this.overwriteCommentWhenDisconnect = overwriteComment;
-    	this.parent = new WeakReference<DefaultProgression>(parent);
+    	this.parent = new WeakReference<>(parent);
     	setAdjusting(adjusting);
 		setIndeterminate(isIndeterminate);
 	}
@@ -117,7 +117,7 @@ class SubProgressionModel extends DefaultProgression {
      * 
      * @return the value at which this model is supposed to start in its parent.
      */
-    public float getMinInParent() {
+    public double getMinInParent() {
     	return this.minValueInParent;
     }
 
@@ -125,7 +125,7 @@ class SubProgressionModel extends DefaultProgression {
      * 
      * @return the value at which this model is supposed to end in its parent.
      */
-    public float getMaxInParent() {
+    public double getMaxInParent() {
     	return this.maxValueInParent;
     }
 			
@@ -151,11 +151,11 @@ class SubProgressionModel extends DefaultProgression {
 		// Notify subtask listeners
 		super.fireValueChange();
 		// Notify parent
-		float factor = getProgressionFactor();
+		double factor = getProgressionFactor();
 		if (factor<1f) {
 			DefaultProgression parentInstance = getParent();
 			if (parentInstance!=null) {
-				float valueInParent = this.extentInParent * factor + this.minValueInParent;
+				double valueInParent = this.extentInParent * factor + this.minValueInParent;
 				if (valueInParent>this.maxValueInParent)
 					valueInParent = this.maxValueInParent;
 				parentInstance.setValue(this, valueInParent, getComment());

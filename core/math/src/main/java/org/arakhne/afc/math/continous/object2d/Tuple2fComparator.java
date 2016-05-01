@@ -25,11 +25,13 @@ import java.util.Comparator;
 /**
  * Comparator of Tuple2f.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see {@link org.arakhne.afc.math.geometry.d2.Tuple2fComparator}
  */
+@Deprecated
 public class Tuple2fComparator implements Comparator<Tuple2f<?>> {
 	
 	/**

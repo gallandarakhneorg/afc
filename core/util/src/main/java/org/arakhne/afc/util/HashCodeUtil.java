@@ -30,7 +30,7 @@ import java.util.Arrays;
  * The utility class {@link Arrays} privides several
  * functions to compute hash codes from arrays.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

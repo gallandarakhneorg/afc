@@ -41,11 +41,13 @@ import android.widget.ListView;
  * The path to open at startup should be stored in the
  * argument with the name "path".
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public class FileListFragment extends ListFragment implements LoaderManager.LoaderCallbacks<List<File>> {
 
 	private FileFilter fileFilter = null;

@@ -68,7 +68,7 @@ import org.arakhne.afc.ui.vector.Image;
  * If an attribute is set from this AttributeProviderContainer, all the containers inside it
  * are changed.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -111,7 +111,7 @@ public class MultiAttributeCollection extends MultiAttributeProvider implements 
 		MultiAttributeCollection clone = (MultiAttributeCollection)super.clone();
 		clone.runProviderEvents = new AtomicBoolean(true);
 		clone.eventHandler = new Handler();
-		clone.listeners = (this.listeners==null) ? null : new ArrayList<AttributeChangeListener>(this.listeners);
+		clone.listeners = (this.listeners==null) ? null : new ArrayList<>(this.listeners);
 		for(AttributeProvider c : clone.containers()) {
 			if (c instanceof AttributeCollection) {
 				((AttributeCollection)c).addAttributeChangeListener(clone.eventHandler);
@@ -152,7 +152,7 @@ public class MultiAttributeCollection extends MultiAttributeProvider implements 
 	@Override
 	public void addAttributeChangeListener(AttributeChangeListener listener) {
 		if (this.listeners==null)
-			this.listeners = new ArrayList<AttributeChangeListener>();
+			this.listeners = new ArrayList<>();
 		this.listeners.add(listener);
 	}
 
@@ -178,20 +178,6 @@ public class MultiAttributeCollection extends MultiAttributeProvider implements 
 			this.listeners.toArray(list);
 			for(AttributeChangeListener listener : list) {
 				listener.onAttributeChangeEvent(event);
-			}
-		}
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * @deprecated see {@link #addAttributes(AttributeProvider)}
-	 */
-	@Deprecated
-	@Override
-	public void copyFrom(AttributeProvider otherContainer) throws AttributeException {
-		if (otherContainer!=null) {
-			for(Attribute attr : otherContainer.attributes()) {
-				setAttribute(attr);
 			}
 		}
 	}
@@ -346,7 +332,7 @@ public class MultiAttributeCollection extends MultiAttributeProvider implements 
 			try {
 				setAttribute(entry.getKey(), new AttributeValueImpl(type, rawValue));
 			}
-			catch (AttributeException _) {
+			catch (AttributeException exception) {
 				// should never occur
 			}
 		}
@@ -433,7 +419,7 @@ public class MultiAttributeCollection extends MultiAttributeProvider implements 
 		try {
 			return setAttribute(name, new AttributeValueImpl(value));
 		}
-		catch (AttributeException _) {
+		catch (AttributeException exception) {
 			return null;
 		}
 	}
@@ -446,7 +432,7 @@ public class MultiAttributeCollection extends MultiAttributeProvider implements 
 		try {
 			return setAttribute(name, new AttributeValueImpl(value));
 		}
-		catch (AttributeException _) {
+		catch (AttributeException exception) {
 			return null;
 		}
 	}
@@ -459,7 +445,7 @@ public class MultiAttributeCollection extends MultiAttributeProvider implements 
 		try {
 			return setAttribute(name, new AttributeValueImpl(value));
 		}
-		catch (AttributeException _) {
+		catch (AttributeException exception) {
 			return null;
 		}
 	}
@@ -472,7 +458,7 @@ public class MultiAttributeCollection extends MultiAttributeProvider implements 
 		try {
 			return setAttribute(name, new AttributeValueImpl(value));
 		}
-		catch (AttributeException _) {
+		catch (AttributeException exception) {
 			return null;
 		}
 	}
@@ -485,7 +471,7 @@ public class MultiAttributeCollection extends MultiAttributeProvider implements 
 		try {
 			return setAttribute(name, new AttributeValueImpl(value));
 		}
-		catch (AttributeException _) {
+		catch (AttributeException exception) {
 			return null;
 		}
 	}
@@ -498,7 +484,7 @@ public class MultiAttributeCollection extends MultiAttributeProvider implements 
 		try {
 			return setAttribute(name, new AttributeValueImpl(value));
 		}
-		catch (AttributeException _) {
+		catch (AttributeException exception) {
 			return null;
 		}
 	}
@@ -511,7 +497,7 @@ public class MultiAttributeCollection extends MultiAttributeProvider implements 
 		try {
 			return setAttribute(name, new AttributeValueImpl(value));
 		}
-		catch (AttributeException _) {
+		catch (AttributeException exception) {
 			return null;
 		}
 	}
@@ -524,7 +510,7 @@ public class MultiAttributeCollection extends MultiAttributeProvider implements 
 		try {
 			return setAttribute(name, new AttributeValueImpl(value));
 		}
-		catch (AttributeException _) {
+		catch (AttributeException exception) {
 			return null;
 		}
 	}
@@ -537,7 +523,7 @@ public class MultiAttributeCollection extends MultiAttributeProvider implements 
 		try {
 			return setAttribute(name, new AttributeValueImpl(value));
 		}
-		catch (AttributeException _) {
+		catch (AttributeException exception) {
 			return null;
 		}
 	}
@@ -550,7 +536,7 @@ public class MultiAttributeCollection extends MultiAttributeProvider implements 
 		try {
 			return setAttribute(name, new AttributeValueImpl(value));
 		}
-		catch (AttributeException _) {
+		catch (AttributeException exception) {
 			return null;
 		}
 	}
@@ -563,7 +549,7 @@ public class MultiAttributeCollection extends MultiAttributeProvider implements 
 		try {
 			return setAttribute(name, new AttributeValueImpl(value));
 		}
-		catch (AttributeException _) {
+		catch (AttributeException exception) {
 			return null;
 		}
 	}
@@ -576,7 +562,7 @@ public class MultiAttributeCollection extends MultiAttributeProvider implements 
 		try {
 			return setAttribute(name, new AttributeValueImpl(value));
 		}
-		catch (AttributeException _) {
+		catch (AttributeException exception) {
 			return null;
 		}
 	}
@@ -589,7 +575,7 @@ public class MultiAttributeCollection extends MultiAttributeProvider implements 
 		try {
 			return setAttribute(name, new AttributeValueImpl(value));
 		}
-		catch (AttributeException _) {
+		catch (AttributeException exception) {
 			return null;
 		}
 	}
@@ -598,11 +584,12 @@ public class MultiAttributeCollection extends MultiAttributeProvider implements 
 	 * {@inheritDoc}
 	 */
 	@Override
+	@Deprecated
 	public Attribute setAttribute(String name, Image value) {
 		try {
 			return setAttribute(name, new AttributeValueImpl(value));
 		}
-		catch (AttributeException _) {
+		catch (AttributeException exception) {
 			return null;
 		}
 	}
@@ -615,7 +602,7 @@ public class MultiAttributeCollection extends MultiAttributeProvider implements 
 		try {
 			return setAttribute(name, new AttributeValueImpl(value));
 		}
-		catch (AttributeException _) {
+		catch (AttributeException exception) {
 			return null;
 		}
 	}
@@ -624,11 +611,12 @@ public class MultiAttributeCollection extends MultiAttributeProvider implements 
 	 * {@inheritDoc}
 	 */
 	@Override
+	@Deprecated
 	public Attribute setAttribute(String name, Color value) {
 		try {
 			return setAttribute(name, new AttributeValueImpl(value));
 		}
-		catch (AttributeException _) {
+		catch (AttributeException exception) {
 			return null;
 		}
 	}
@@ -642,7 +630,7 @@ public class MultiAttributeCollection extends MultiAttributeProvider implements 
 		try {
 			return setAttribute(value.getName(), value);
 		}
-		catch (AttributeException _) {
+		catch (AttributeException exception) {
 			return null;
 		}
 	}
@@ -680,7 +668,7 @@ public class MultiAttributeCollection extends MultiAttributeProvider implements 
 	}
 
 	/**
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

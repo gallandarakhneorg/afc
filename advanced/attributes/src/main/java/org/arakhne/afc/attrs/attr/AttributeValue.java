@@ -31,19 +31,20 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.UUID;
 
-import org.arakhne.afc.math.generic.Point2D;
-import org.arakhne.afc.math.generic.Point3D;
+import org.arakhne.afc.math.geometry.d2.Point2D;
+import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.ui.vector.Color;
 import org.arakhne.afc.ui.vector.Image;
 
 /**
  * This class contains a metadata value.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("deprecation")
 public interface AttributeValue extends Cloneable, Serializable {
 
 	/**
@@ -342,14 +343,18 @@ public interface AttributeValue extends Cloneable, Serializable {
 	 * @return a color
 	 * @throws AttributeNotInitializedException
 	 * @throws InvalidAttributeTypeException
+	 * @deprecated
 	 */
+	@Deprecated
 	public Color getColor() throws InvalidAttributeTypeException, AttributeNotInitializedException;
 
 	/**
 	 * Set the value of this metadata.
 	 * 
 	 * @param c
+	 * @deprecated
 	 */
+	@Deprecated
 	public void setColor(Color c);
 
 	/**
@@ -396,14 +401,18 @@ public interface AttributeValue extends Cloneable, Serializable {
 	 * @return an icon
 	 * @throws AttributeNotInitializedException
 	 * @throws InvalidAttributeTypeException
+	 * @deprecated
 	 */
+	@Deprecated
 	public Image getImage() throws InvalidAttributeTypeException, AttributeNotInitializedException;
 
 	/**
 	 * Set the value of this metadata.
 	 * 
 	 * @param c
+	 * @deprecated
 	 */
+	@Deprecated
 	public void setImage(Image c);
 	
 	/**

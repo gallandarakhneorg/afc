@@ -27,11 +27,13 @@ import org.arakhne.afc.math.generic.PathElementType;
 
 /** An element of the path.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see {@link org.arakhne.afc.math.geometry.d2.PathElement2D}
  */
+@Deprecated
 public interface PathElement2D extends Serializable {
 	
 	/** Replies the type of the element.

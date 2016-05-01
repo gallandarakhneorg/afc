@@ -40,12 +40,11 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.UUID;
 
-import org.arakhne.afc.math.continous.object2d.Point2f;
-import org.arakhne.afc.math.continous.object3d.Point3f;
-import org.arakhne.afc.math.generic.Point2D;
-import org.arakhne.afc.math.generic.Point3D;
-import org.arakhne.afc.math.generic.Tuple2D;
-import org.arakhne.afc.math.generic.Tuple3D;
+import org.arakhne.afc.math.geometry.d2.Point2D;
+import org.arakhne.afc.math.geometry.d2.Tuple2D;
+import org.arakhne.afc.math.geometry.d2.d.Point2d;
+import org.arakhne.afc.math.geometry.d3.Point3D;
+import org.arakhne.afc.math.geometry.d3.Tuple3D;
 import org.arakhne.afc.ui.vector.Color;
 import org.arakhne.afc.ui.vector.Image;
 import org.arakhne.afc.ui.vector.VectorToolkit;
@@ -53,11 +52,12 @@ import org.arakhne.afc.ui.vector.VectorToolkit;
 /**
  * This class contains an attribute value.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("deprecation")
 public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 
 	private static final long serialVersionUID = 4014368008512085546L;
@@ -140,7 +140,7 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 						return new AttributeValueImpl(type, binValue);
 					}
 				}
-				catch(Throwable _) {
+				catch(Throwable exception) {
 					//
 				}
 			}
@@ -167,14 +167,14 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 		try {
 			v0 = arg0.getValue();
 		}
-		catch (Exception _) {
+		catch (Exception exception) {
 			v0 = null;
 		}
 
 		try {
 			v1 = arg1.getValue();
 		}
-		catch (Exception _) {
+		catch (Exception exception) {
 			v1 = null;
 		}
 
@@ -202,7 +202,7 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 			if (arg0 instanceof Comparable<?>)
 				return ((Comparable)arg0).compareTo(arg1);
 		}
-		catch(RuntimeException _) {
+		catch(RuntimeException exception) {
 			//
 		}
 		
@@ -210,7 +210,7 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 			if (arg1 instanceof Comparable<?>)
 				return - ((Comparable)arg1).compareTo(arg0);
 		}
-		catch(RuntimeException _) {
+		catch(RuntimeException exception) {
 			//
 		}
 		
@@ -269,7 +269,7 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 				this.value = value.getValue();
 				this.assigned = isNullAllowed() || (this.value!=null);
 			}
-			catch (AttributeException _) {
+			catch (AttributeException exception) {
 				this.value = null;
 				this.assigned = false;
 			}
@@ -293,7 +293,7 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 			try {
 				this.value = type.cast(rawValue);
 			}
-			catch(Exception _) {
+			catch(Exception exception) {
 				this.value = null;
 			}
 		}
@@ -312,7 +312,9 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 
 	/**
 	 * @param value is the value.
+	 * @deprecated No replacement
 	 */
+	@Deprecated
 	public AttributeValueImpl(Color value) {
 		this.type = AttributeType.COLOR;
 		this.value = (value!=null) ? VectorToolkit.color(value.getRed(), value.getGreen(), value.getBlue(), value.getAlpha()) : null;
@@ -421,7 +423,9 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 
 	/**
 	 * @param value is the value.
+	 * @deprecated
 	 */
+	@Deprecated
 	public AttributeValueImpl(Image value) {
 		this.type = AttributeType.IMAGE;
 		this.value = value;
@@ -461,7 +465,7 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 	 */
 	public AttributeValueImpl(float x, float y) {
 		this.type = AttributeType.POINT;
-		this.value = new Point2f(x,y);
+		this.value = new Point2d(x,y);
 		this.assigned = true;
 	}
 
@@ -471,7 +475,7 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 	 */
 	public AttributeValueImpl(double x, double y) {
 		this.type = AttributeType.POINT;
-		this.value = new Point2f(x,y);
+		this.value = new Point2d(x,y);
 		this.assigned = true;
 	}
 
@@ -491,7 +495,7 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 	 */
 	public AttributeValueImpl(float x, float y, float z) {
 		this.type = AttributeType.POINT3D;
-		this.value = new Point3f(x,y,z);
+		this.value = //TODO: Fix code: new Point3fp(x,y,z);
 		this.assigned = true;
 	}
 
@@ -502,7 +506,7 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 	 */
 	public AttributeValueImpl(double x, double y, double z) {
 		this.type = AttributeType.POINT3D;
-		this.value = new Point3f(x,y,z);
+		this.value = // TODO: Fix code: new Point3fp(x,y,z);
 		this.assigned = true;
 	}
 
@@ -922,7 +926,7 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 				throw new InvalidAttributeTypeException();
 			}
 		}
-		catch(NumberFormatException _) {
+		catch(NumberFormatException exception) {
 			//
 		}
 		throw new InvalidAttributeTypeException();
@@ -989,10 +993,10 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 				throw new InvalidAttributeTypeException();
 			}
 		}
-		catch(ClassCastException _) {
+		catch(ClassCastException exception) {
 			//
 		}
-		catch(NumberFormatException _) {
+		catch(NumberFormatException exception) {
 			//
 		}
 		throw new InvalidAttributeTypeException();
@@ -1124,7 +1128,7 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 				throw new InvalidAttributeTypeException();
 			}
 		}
-		catch(ClassCastException _) {
+		catch(ClassCastException exception) {
 			//
 		}
 		throw new InvalidAttributeTypeException();
@@ -1150,7 +1154,7 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 				try {
 					return fmt.parse(text);
 				}
-				catch(ParseException _) {
+				catch(ParseException exception) {
 					//
 				}
 			}
@@ -1159,7 +1163,7 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 			try {
 				return fmt.parse(text);
 			}
-			catch(ParseException _) {
+			catch(ParseException exception) {
 				//
 			}
 			// Time only parsing
@@ -1167,7 +1171,7 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 			try {
 				return fmt.parse(text);
 			}
-			catch(ParseException _) {
+			catch(ParseException exception) {
 				//
 			}
 		}
@@ -1207,7 +1211,7 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 					fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); //$NON-NLS-1$
 					return fmt.parse(txt);
 				}
-				catch(ParseException _) {
+				catch(ParseException exception) {
 					//
 				}
 				fmt = new SimpleDateFormat("yyyy-MM-dd"); //$NON-NLS-1$
@@ -1314,7 +1318,7 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 			default:
 			}
 		}
-		catch(ClassCastException _) {
+		catch(ClassCastException exception) {
 			//
 		}			
 		throw new InvalidAttributeTypeException();
@@ -1347,7 +1351,7 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 		try {
 			return (T)this.value;
 		}
-		catch(ClassCastException _) {
+		catch(ClassCastException exception) {
 			throw new InvalidAttributeTypeException();
 		}			
 	}
@@ -1404,10 +1408,10 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 			default:
 			}
 		}
-		catch(ClassCastException _) {
+		catch(ClassCastException exception) {
 			//
 		}
-		catch(NumberFormatException _) {
+		catch(NumberFormatException exception) {
 			//
 		}
 		throw new InvalidAttributeTypeException();
@@ -1427,10 +1431,10 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 		if (isStrict && comp.length!=3) {
 			return null;
 		}
-		Point3f pt3 = new Point3f();
-		if (comp.length>0) pt3.setX(Float.parseFloat(comp[0]));
-		if (comp.length>1) pt3.setY(Float.parseFloat(comp[1]));
-		if (comp.length>2) pt3.setZ(Float.parseFloat(comp[2]));
+		Point3D pt3 = null; //FIXME: fix code. new Point3fp();
+//		if (comp.length>0) pt3.setX(Float.parseFloat(comp[0]));
+//		if (comp.length>1) pt3.setY(Float.parseFloat(comp[1]));
+//		if (comp.length>2) pt3.setZ(Float.parseFloat(comp[2]));
 		return pt3;
 	}
 
@@ -1438,61 +1442,63 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 	 */
 	@Override
 	public Point3D getPoint3D() throws InvalidAttributeTypeException, AttributeNotInitializedException {
-		try {
-			assertAssignedAndNotNull();
-			switch(this.type) {
-			case COLOR:
-				Color col = (Color)this.value;
-				return new Point3f(col.getRed(),col.getGreen(),col.getBlue()); 
-			case REAL:
-				Double flt = (Double)this.value;
-				return new Point3f(flt.floatValue(),0,0); 
-			case INTEGER:
-				Long lg = (Long)this.value;
-				return new Point3f(lg.floatValue(),0,0); 
-			case TIMESTAMP:
-				Timestamp ts = (Timestamp)this.value;
-				return new Point3f(ts.floatValue(),0,0); 
-			case DATE:
-				Date dt = (Date)this.value;
-				return new Point3f(dt.getTime(),0,0); 
-			case POINT:
-				Point2D pt2 = (Point2D)this.value;
-				return new Point3f(pt2.getX(), pt2.getY(),0); 
-			case POINT3D:
-				return ((Point3D)this.value).clone(); 
-			case STRING:
-				return parsePoint3D((String)this.value, false);
-			case OBJECT:
-				if (this.value instanceof Tuple3D) {
-					Tuple3D<?> t3 = (Tuple3D<?>)this.value;
-					return new Point3f(t3.getX(), t3.getY(), t3.getZ()); 
-				}
-				if (this.value instanceof Tuple2D) {
-					Tuple2D<?> t2 = (Tuple2D<?>)this.value;
-					return new Point3f(t2.getX(), t2.getY(), 0); 
-				}
-				break;
-			case BOOLEAN:
-			case IMAGE:
-			case POLYLINE:
-			case POLYLINE3D:
-			case URI:
-			case URL:
-			case UUID:
-			case INET_ADDRESS:
-			case ENUMERATION:
-			case TYPE:
-			default:
-			}
-		}
-		catch(ClassCastException _) {
-			//
-		}
-		catch(NumberFormatException _) {
-			//
-		}			
-		throw new InvalidAttributeTypeException();
+		//FIXME: fix code
+//		try {
+//			assertAssignedAndNotNull();
+//			switch(this.type) {
+//			case COLOR:
+//				Color col = (Color)this.value;
+//				return new Point3f(col.getRed(),col.getGreen(),col.getBlue()); 
+//			case REAL:
+//				Double flt = (Double)this.value;
+//				return new Point3f(flt.floatValue(),0,0); 
+//			case INTEGER:
+//				Long lg = (Long)this.value;
+//				return new Point3f(lg.floatValue(),0,0); 
+//			case TIMESTAMP:
+//				Timestamp ts = (Timestamp)this.value;
+//				return new Point3f(ts.floatValue(),0,0); 
+//			case DATE:
+//				Date dt = (Date)this.value;
+//				return new Point3f(dt.getTime(),0,0); 
+//			case POINT:
+//				Point2D pt2 = (Point2D)this.value;
+//				return new Point3f(pt2.getX(), pt2.getY(),0); 
+//			case POINT3D:
+//				return ((Point3D)this.value).clone(); 
+//			case STRING:
+//				return parsePoint3D((String)this.value, false);
+//			case OBJECT:
+//				if (this.value instanceof Tuple3D) {
+//					Tuple3D<?> t3 = (Tuple3D<?>)this.value;
+//					return new Point3f(t3.getX(), t3.getY(), t3.getZ()); 
+//				}
+//				if (this.value instanceof Tuple2D) {
+//					Tuple2D<?> t2 = (Tuple2D<?>)this.value;
+//					return new Point3f(t2.getX(), t2.getY(), 0); 
+//				}
+//				break;
+//			case BOOLEAN:
+//			case IMAGE:
+//			case POLYLINE:
+//			case POLYLINE3D:
+//			case URI:
+//			case URL:
+//			case UUID:
+//			case INET_ADDRESS:
+//			case ENUMERATION:
+//			case TYPE:
+//			default:
+//			}
+//		}
+//		catch(ClassCastException exception) {
+//			//
+//		}
+//		catch(NumberFormatException exception) {
+//			//
+//		}			
+//		throw new InvalidAttributeTypeException();
+		return null;
 	}
 
 	/** {@inheritDoc}
@@ -1508,7 +1514,7 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 	 */
 	@Override
 	public void setPoint3D(float x, float y, float z) {
-		this.value = new Point3f(x,y,z);
+		this.value = null; //FIXME: Fix code: new Point3f(x,y,z);
 		this.type = AttributeType.POINT3D;
 		this.assigned = true;
 	}
@@ -1521,7 +1527,7 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 		float x=0,y=0;
 		if (comp.length>0) x = Float.parseFloat(comp[0]);
 		if (comp.length>1) y = Float.parseFloat(comp[1]);
-		return new Point2f(x,y);
+		return new Point2d(x,y);
 		
 	}
 
@@ -1534,35 +1540,35 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 			switch(this.type) {
 			case COLOR:
 				Color col = (Color)this.value;
-				return new Point2f(col.getRed(),col.getGreen()); 
+				return new Point2d(col.getRed(),col.getGreen()); 
 			case REAL:
 				Double flt = (Double)this.value;
-				return new Point2f(flt.floatValue(),0f); 
+				return new Point2d(flt.floatValue(),0f); 
 			case INTEGER:
 				Long lg = (Long)this.value;
-				return new Point2f(lg.floatValue(),0f); 
+				return new Point2d(lg.floatValue(),0f); 
 			case TIMESTAMP:
 				Timestamp ts = (Timestamp)this.value;
-				return new Point2f(ts.floatValue(),0f); 
+				return new Point2d(ts.floatValue(),0f); 
 			case DATE:
 				Date dt = (Date)this.value;
-				return new Point2f(dt.getTime(),0f); 
+				return new Point2d(dt.getTime(),0f); 
 			case POINT:
-				return new Point2f(((Point2D)this.value).getX(),
+				return new Point2d(((Point2D)this.value).getX(),
 						((Point2D)this.value).getY());
 			case POINT3D:
 				Point3D pt3 = (Point3D)this.value;
-				return new Point2f(pt3.getX(),pt3.getY()); 
+				return new Point2d(pt3.getX(),pt3.getY()); 
 			case STRING:
 				return parsePoint((String)this.value, false);
 			case OBJECT:
-				if (this.value instanceof Tuple3D) {
+				if (this.value instanceof Tuple3D<?>) {
 					Tuple3D<?> t3 = (Tuple3D<?>)this.value;
-					return new Point2f(t3.getX(), t3.getY()); 
+					return new Point2d(t3.getX(), t3.getY()); 
 				}
-				if (this.value instanceof Tuple2D) {
+				if (this.value instanceof Tuple2D<?>) {
 					Tuple2D<?> t2 = (Tuple2D<?>)this.value;
-					return new Point2f(t2.getX(), t2.getY()); 
+					return new Point2d(t2.getX(), t2.getY()); 
 				}
 				break;
 			case BOOLEAN:
@@ -1578,10 +1584,10 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 			default:
 			}
 		}
-		catch(ClassCastException _) {
+		catch(ClassCastException exception) {
 			//
 		}			
-		catch(NumberFormatException _) {
+		catch(NumberFormatException exception) {
 			//
 		}			
 		throw new InvalidAttributeTypeException();
@@ -1600,7 +1606,7 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 	 */
 	@Override
 	public void setPoint(float x, float y) {
-		this.value = new Point2f(x,y);
+		this.value = new Point2d(x,y);
 		this.type = AttributeType.POINT;
 		this.assigned = true;
 	}
@@ -1633,10 +1639,10 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 				return VectorToolkit.color(col.getRed(),col.getGreen(),col.getBlue(),col.getAlpha());
 			case POINT:
 				Point2D pt2 = (Point2D)this.value;
-				return VectorToolkit.color(pt2.getX(),pt2.getY(),0f, 1f);
+				return VectorToolkit.color((float) pt2.getX(), (float) pt2.getY(),0f, 1f);
 			case POINT3D:
 				Point3D pt3 = (Point3D)this.value;
-				return VectorToolkit.color(pt3.getX(),pt3.getY(),pt3.getZ(), 1f);
+				return VectorToolkit.color((float) pt3.getX(), (float) pt3.getY(), (float) pt3.getZ(), 1f);
 			case STRING:
 				Color color = parseColor((String)this.value, false);
 				if (color!=null) return color;
@@ -1672,10 +1678,10 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 			default:
 			}
 		}
-		catch(ClassCastException _) {
+		catch(ClassCastException exception) {
 			//
 		}
-		catch(NumberFormatException _) {
+		catch(NumberFormatException exception) {
 			//
 		}
 		throw new InvalidAttributeTypeException();		
@@ -1733,13 +1739,13 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 				return UUID.fromString(uri.getHost());
 			}
 		}
-		catch(Throwable _) {
+		catch(Throwable exception) {
 			//
 		}
 		try {
 			return UUID.fromString(text);
 		}
-		catch(Throwable _) {
+		catch(Throwable exception) {
 			//
 		}
 		return null;
@@ -1764,7 +1770,7 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 					catch(AssertionError e) {
 						throw e;
 					}
-					catch(Throwable _) {
+					catch(Throwable exception) {
 						//
 					}
 				}
@@ -1781,7 +1787,7 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 					catch(AssertionError e) {
 						throw e;
 					}
-					catch(Throwable _) {
+					catch(Throwable exception) {
 						//
 					}
 				}
@@ -1806,10 +1812,10 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 				break; // see below, for the computation of an UUID from the value
 			}
 		}
-		catch(ClassCastException _) {
+		catch(ClassCastException exception) {
 			//
 		}
-		catch(NumberFormatException _) {
+		catch(NumberFormatException exception) {
 			//
 		}
 		if (this.value==null)
@@ -1823,7 +1829,7 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 		catch(AssertionError e) {
 			throw e;
 		}
-		catch(Throwable _) {
+		catch(Throwable exception) {
 			//
 		}
 		return UUID.nameUUIDFromBytes(s.getBytes());
@@ -1867,10 +1873,10 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 			default:
 			}
 		}
-		catch(ClassCastException _) {
+		catch(ClassCastException exception) {
 			//
 		}
-		catch(MalformedURLException _) {
+		catch(MalformedURLException exception) {
 			//
 		}
 		if (this.value==null)
@@ -1881,7 +1887,7 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 		try {
 			return new URL(s);
 		}
-		catch (MalformedURLException _) {
+		catch (MalformedURLException exception) {
 			throw new InvalidAttributeTypeException();
 		}
 	}
@@ -1892,7 +1898,7 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 			if (uri.getScheme()!=null && !uri.getScheme().isEmpty())
 				return uri;
 		}
-		catch(Throwable _) {
+		catch(Throwable exception) {
 			//
 		}
 		return null;
@@ -1939,10 +1945,10 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 			default:
 			}
 		}
-		catch(ClassCastException _) {
+		catch(ClassCastException exception) {
 			//
 		}
-		catch(URISyntaxException _) {
+		catch(URISyntaxException exception) {
 			//
 		}
 		if (this.value==null)
@@ -1953,7 +1959,7 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 		try {
 			return new URI(s);
 		}
-		catch (URISyntaxException _) {
+		catch (URISyntaxException exception) {
 			throw new InvalidAttributeTypeException();
 		}
 	}
@@ -1976,7 +1982,7 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 		try {
 			this.value = (id!=null) ? UUID.fromString(id) : null;
 		}
-		catch(Throwable _) {
+		catch(Throwable exception) {
 			assert(id!=null);
 			this.value = UUID.nameUUIDFromBytes(id.getBytes());
 		}
@@ -2002,7 +2008,7 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 		try {
 			this.value = (url!=null) ? new URL(url) : null;
 		}
-		catch(Throwable _) {
+		catch(Throwable exception) {
 			this.value = null;
 		}
 		this.type = AttributeType.URL;				
@@ -2027,7 +2033,7 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 		try {
 			this.value = (uri!=null) ? new URI(uri) : null;
 		}
-		catch(Throwable _) {
+		catch(Throwable exception) {
 			this.value = null;
 		}
 		this.type = AttributeType.URI;				
@@ -2067,7 +2073,7 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 			default:
 			}
 		}
-		catch(ClassCastException _) {
+		catch(ClassCastException exception) {
 			//
 		}
 		throw new InvalidAttributeTypeException();		
@@ -2091,16 +2097,16 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 		boolean addPt = (fullPoints*3!=comp.length); 
 		Point3D[] tab = new Point3D[addPt ? fullPoints+1 : fullPoints];
 		for(int i=2,j=0; (i<comp.length)&&(j<tab.length); i+=3,++j) {
-			tab[j] = new Point3f(
-					Float.parseFloat(comp[i-2]),
-					Float.parseFloat(comp[i-1]),
-					Float.parseFloat(comp[i]));
+			tab[j] = null; // FIXME: fix code: new Point3f(
+//					Float.parseFloat(comp[i-2]),
+//					Float.parseFloat(comp[i-1]),
+//					Float.parseFloat(comp[i]));
 		}
 		if (addPt) {
 			float x = Float.parseFloat(comp[fullPoints*3]);
 			int idx = fullPoints*3+1;
 			float y = idx<comp.length ? Float.parseFloat(comp[idx]) : 0;
-			tab[tab.length-1]  = new Point3f(x, y, 0);
+			tab[tab.length-1]  = null; // FIXME: Fix code new Point3f(x, y, 0);
 		}
 		return tab;
 	}
@@ -2115,7 +2121,7 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 			case POINT:
 				Point2D pt2 = (Point2D)this.value;
 				return new Point3D[] {
-						new Point3f(pt2.getX(),pt2.getY(),0f) 
+						//TODO: Fix code: new Point3fp(pt2.getX(),pt2.getY(),0f) 
 				};
 			case POINT3D:
 				return new Point3D[] {
@@ -2126,10 +2132,10 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 				Point2D[] current = (Point2D[])this.value;
 				Point3D[] tab = new Point3D[current.length];
 				for(int i=0; i<current.length; ++i) {
-					tab[i] = new Point3f(
-								current[i].getX(),
-								current[i].getY(),
-								0f); 
+//					TODO: Fix code tab[i] = new Point3f(
+//								current[i].getX(),
+//								current[i].getY(),
+//								0f); 
 				}
 				return tab;
 			}
@@ -2141,13 +2147,13 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 				if (this.value instanceof Tuple2D<?>) {
 					Tuple2D<?> t2 = (Tuple2D<?>)this.value;
 					return new Point3D[] {
-						new Point3f(t2.getX(),t2.getY(),0) 
+							// FIXME: Fixcode: new Point3f(t2.getX(),t2.getY(),0) 
 					};
 				}
 				else if (this.value instanceof Tuple3D<?>) {
 					Tuple3D<?> t2 = (Tuple3D<?>)this.value;
 					return new Point3D[] {
-							new Point3f(t2.getX(), t2.getY(), t2.getZ())
+							// FIXME: Fixcode: new Point3f(t2.getX(), t2.getY(), t2.getZ())
 					};
 				}
 				else if (this.value.getClass().isArray()) {
@@ -2160,7 +2166,7 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 						Point3D[] pa3 = new Point3D[size];
 						for(int i=0; i<pa3.length; ++i) {
 							Tuple3D<?> t = (Tuple3D<?>)Array.get(this.value, i);
-							pa3[i] = new Point3f(t);
+							pa3[i] = null; // FIXME: Fixcode: new Point3f(t);
 						}
 						return pa3;
 					}
@@ -2168,7 +2174,7 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 						Point3D[] pa3 = new Point3D[size];
 						for(int i=0; i<pa3.length; ++i) {
 							Tuple2D<?> t = (Tuple2D<?>)Array.get(this.value, i);
-							pa3[i] = new Point3f(t.getX(), t.getY(), 0);
+							pa3[i] = null;// FIXME: Fixcode: new Point3f(t.getX(), t.getY(), 0);
 						}
 						return pa3;
 					}
@@ -2190,10 +2196,10 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 			default:
 			}
 		}
-		catch(ClassCastException _) {
+		catch(ClassCastException exception) {
 			//
 		}
-		catch(NumberFormatException _) {
+		catch(NumberFormatException exception) {
 			//
 		}			
 		throw new InvalidAttributeTypeException();
@@ -2272,14 +2278,14 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 		boolean addPt = (fullPoints*2!=comp.length); 
 		Point2D[] tab = new Point2D[addPt ? fullPoints+1 : fullPoints];
 		for(int i=1,j=0; (i<comp.length)&&(j<fullPoints); i+=2,++j) {
-			tab[j] = new Point2f(
-					Float.parseFloat(comp[i-1]),
-					Float.parseFloat(comp[i]));
+			// FIXME: Fixcode: tab[j] = new Point2f(
+//					Float.parseFloat(comp[i-1]),
+//					Float.parseFloat(comp[i]));
 		}
 		if (addPt) {
-			tab[tab.length-1]  = new Point2f(
-					Float.parseFloat(comp[comp.length-1]),
-					0);
+			// FIXME: Fixcode: tab[tab.length-1]  = new Point2f(
+//					Float.parseFloat(comp[comp.length-1]),
+//					0);
 		}
 		return tab;
 	}
@@ -2293,13 +2299,13 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 			switch(this.type) {
 			case POINT:
 				return new Point2D[] {
-						new Point2f(((Point2D)this.value).getX(),
+						new Point2d(((Point2D)this.value).getX(),
 								((Point2D)this.value).getY())
 				};
 			case POINT3D:
 				Point3D pt3 = (Point3D)this.value;
 				return new Point2D[] {
-					new Point2f(pt3.getX(),pt3.getY()) 
+					new Point2d(pt3.getX(),pt3.getY()) 
 				};
 			case POLYLINE:
 				return (Point2D[])this.value;
@@ -2308,7 +2314,7 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 				Point3D[] current = (Point3D[])this.value;
 				Point2D[] tab = new Point2D[current.length];
 				for(int i=0; i<current.length; ++i) {
-					tab[i] = new Point2f(
+					tab[i] = new Point2d(
 								current[i].getX(),
 								current[i].getY()); 
 				}
@@ -2319,14 +2325,14 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 			case OBJECT:
 				if (this.value instanceof Tuple2D) {
 					return new Point2D[] {
-							new Point2f(((Tuple2D<?>)this.value).getX(),
+							new Point2d(((Tuple2D<?>)this.value).getX(),
 									((Tuple2D<?>)this.value).getY())
 					};
 				}
 				else if (this.value instanceof Tuple3D) {
 					Tuple3D<?> t3 = (Tuple3D<?>)this.value;
 					return new Point2D[] {
-						new Point2f(t3.getX(),t3.getY()) 
+						new Point2d(t3.getX(),t3.getY()) 
 					};
 				}
 				else if (this.value instanceof Point2D[]) {
@@ -2335,12 +2341,12 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 				else if (this.value instanceof Tuple2D[]) {
 					Tuple2D<?>[] ta2 = (Tuple2D[])this.value;
 					Point2D[] pa2 = new Point2D[ta2.length];
-					for(int i=0; i<pa2.length; ++i) pa2[i] = new Point2f(ta2[i]);
+					for(int i=0; i<pa2.length; ++i) pa2[i] = new Point2d(ta2[i]);
 				}
 				else if (this.value instanceof Tuple3D[]) {
 					Tuple3D<?>[] ta3 = (Tuple3D[])this.value;
 					Point2D[] pa2 = new Point2D[ta3.length];
-					for(int i=0; i<pa2.length; ++i) pa2[i] = new Point2f(ta3[i].getX(), ta3[i].getY());
+					for(int i=0; i<pa2.length; ++i) pa2[i] = new Point2d(ta3[i].getX(), ta3[i].getY());
 				}
 				break;
 			case BOOLEAN:
@@ -2359,10 +2365,10 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 			default:
 			}
 		}
-		catch(ClassCastException _) {
+		catch(ClassCastException exception) {
 			//
 		}
-		catch(NumberFormatException _) {
+		catch(NumberFormatException exception) {
 			//
 		}			
 		throw new InvalidAttributeTypeException();
@@ -2447,7 +2453,7 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 					InetAddress adr = InetAddress.getByName(this.value.toString());
 					if (adr!=null) return adr;
 				}
-				catch(Throwable _) {
+				catch(Throwable exception) {
 					//
 				}
 				break;
@@ -2462,7 +2468,7 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 						adr = InetAddress.getByName(this.value.toString());
 						if (adr!=null) return adr;
 					}
-					catch(Throwable _) {
+					catch(Throwable exception) {
 						//
 					}
 				}
@@ -2493,10 +2499,10 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 			default:
 			}
 		}
-		catch(ClassCastException _) {
+		catch(ClassCastException exception) {
 			//
 		}
-		catch(NumberFormatException _) {
+		catch(NumberFormatException exception) {
 			//
 		}
 		catch (UnknownHostException e) {
@@ -2535,7 +2541,7 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 		try {
 			this.value = InetAddress.getByName(hostname);
 		}
-		catch(Throwable _) {
+		catch(Throwable exception) {
 			this.value = null;
 		}
 		this.assigned = this.value!=null;
@@ -2588,7 +2594,7 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 			default:
 			}
 		}
-		catch(Throwable _) {
+		catch(Throwable exception) {
 			//
 		}
 		throw new InvalidAttributeTypeException();		
@@ -2639,7 +2645,7 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 			default:
 			}
 		}
-		catch(Throwable _) {
+		catch(Throwable exception) {
 			//
 		}
 		throw new InvalidAttributeTypeException();		
@@ -2687,7 +2693,7 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 			default:
 			}
 		}
-		catch(Throwable _) {
+		catch(Throwable exception) {
 			//
 		}
 		throw new InvalidAttributeTypeException();		

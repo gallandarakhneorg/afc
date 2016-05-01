@@ -24,7 +24,7 @@ import java.util.Map;
 import org.arakhne.afc.references.SoftValueTreeMap;
 
 /**
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -42,7 +42,7 @@ public class SoftValueTreeMapTest extends AbstractReferencableValueMapTestCase {
 	 */
 	@Override
 	protected Map<String,String> createMap() {
-		return new SoftValueTreeMap<String,String>();
+		return new SoftValueTreeMap<>();
 	}
 
 }

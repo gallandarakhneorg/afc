@@ -40,11 +40,13 @@ import javax.swing.event.EventListenerList;
 /**
  * This button permits to select a color.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public class JColorSelector extends JButton {
 
 	private static final long serialVersionUID = 3759677089992951265L;
@@ -154,7 +156,7 @@ public class JColorSelector extends JButton {
 	/**
 	 * Model for color buttons
 	 * 
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -237,7 +239,7 @@ public class JColorSelector extends JButton {
 	/**
 	 * Listeners on the color model for color buttons
 	 * 
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -257,7 +259,7 @@ public class JColorSelector extends JButton {
 	/**
 	 * Model for color buttons
 	 * 
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

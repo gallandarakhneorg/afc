@@ -26,16 +26,19 @@ import java.util.List;
 import java.util.Map;
 
 import org.arakhne.afc.vmutil.VMCommandLine;
+import org.junit.Before;
+import org.junit.Test;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
 /**
-* @author $Author: galland$
+* @author $Author: sgalland$
 * @version $Name$ $Revision$ $Date$
 * @mavengroupid org.arakhne.afc
 * @mavenartifactid arakhneVmutils
 */
-public class VMCommandLineTest extends TestCase {
+@SuppressWarnings("static-method")
+public class VMCommandLineTest {
 
 	private static final String[] commandLine = new String[] { 
 			"-D=true", "-v", "clean", "-v", //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$
@@ -48,15 +51,18 @@ public class VMCommandLineTest extends TestCase {
 	private static final String[] optionDefinitions = new String[] {
 			"D=b", "S=s", "F:f", "v+", "b!"}; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$
 
-	@Override
-	protected void setUp() throws Exception {
-		super.setUp();
+	/**
+	 * @throws Exception
+	 */
+	@Before
+	public void setUp() throws Exception {
 		VMCommandLine.saveVMParameters((Class<?>)null, new String[0]);
 	}
 	
 	/**
 	 */
-	public static final void testSaveVMParameters() {
+	@Test
+	public void testSaveVMParameters() {
 		assertTrue(Arrays.equals(new String[0], VMCommandLine.getCommandLineParameters()));
 		VMCommandLine.saveVMParameters(VMCommandLineTest.class, commandLine);
 		assertTrue(Arrays.equals(commandLine, VMCommandLine.getCommandLineParameters()));
@@ -66,7 +72,8 @@ public class VMCommandLineTest extends TestCase {
 
 	/**
 	 */
-	public static final void testSaveVMParametersIfNotSet() {
+	@Test
+	public void testSaveVMParametersIfNotSet() {
 		assertTrue(Arrays.equals(new String[0], VMCommandLine.getCommandLineParameters()));
 		VMCommandLine.saveVMParametersIfNotSet(VMCommandLineTest.class, commandLine);
 		assertTrue(Arrays.equals(commandLine, VMCommandLine.getCommandLineParameters()));
@@ -76,7 +83,8 @@ public class VMCommandLineTest extends TestCase {
 
 	/**
 	 */
-	public static final void testShiftCommandLineParameters() {
+	@Test
+	public void testShiftCommandLineParameters() {
 		VMCommandLine.saveVMParameters(VMCommandLineTest.class, commandLine);
 		assertEquals("-D=true", VMCommandLine.shiftCommandLineParameters()); //$NON-NLS-1$
 		assertTrue(Arrays.equals(new String[] { 
@@ -89,13 +97,15 @@ public class VMCommandLineTest extends TestCase {
 
 	/**
 	 */
-	public static final void testGetCommandLineOptions() {
+	@Test
+	public void testGetCommandLineOptions() {
 		assertEquals(Collections.emptyMap(), VMCommandLine.getCommandLineOptions());
 	}
 
 	/**
 	 */
-	public static final void testSplitOptionsAndParameters() {
+	@Test
+	public void testSplitOptionsAndParameters() {
 		VMCommandLine.saveVMParameters(VMCommandLineTest.class, commandLine);
 		VMCommandLine.splitOptionsAndParameters(optionDefinitions);
 
@@ -150,7 +160,8 @@ public class VMCommandLineTest extends TestCase {
 
 	/**
 	 */
-	public static final void testGetCommandLineOption() {
+	@Test
+	public void testGetCommandLineOption() {
 		assertNull(VMCommandLine.getCommandLineOption("S")); //$NON-NLS-1$
 		
 		VMCommandLine.saveVMParameters(VMCommandLineTest.class, commandLine);
@@ -167,7 +178,8 @@ public class VMCommandLineTest extends TestCase {
 
 	/**
 	 */
-	public static final void testHasCommandLineOption() {
+	@Test
+	public void testHasCommandLineOption() {
 		assertFalse(VMCommandLine.hasCommandLineOption("S")); //$NON-NLS-1$
 		
 		VMCommandLine.saveVMParameters(VMCommandLineTest.class, commandLine);
@@ -179,14 +191,16 @@ public class VMCommandLineTest extends TestCase {
 
 	/**
 	 */
-	public static final void testVMCommandLineClassOfQStringArray() {
+	@Test
+	public void testVMCommandLineClassOfQStringArray() {
 		VMCommandLine c = new VMCommandLine(VMCommandLineTest.class, commandLine);
 		assertTrue(Arrays.equals(commandLine, c.getParameters()));
 	}
 
 	/**
 	 */
-	public static final void testVMCommandLineClassOfQStringArrayStringArray() {
+	@Test
+	public void testVMCommandLineClassOfQStringArrayStringArray() {
 		VMCommandLine c = new VMCommandLine(VMCommandLineTest.class, optionDefinitions, commandLine);
 		assertTrue(Arrays.equals(new String[] {
 				"clean", "package", "installters", "-v" //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$
@@ -195,7 +209,8 @@ public class VMCommandLineTest extends TestCase {
 
 	/**
 	 */
-	public static final void testHasOption() {
+	@Test
+	public void testHasOption() {
 		VMCommandLine c = new VMCommandLine(VMCommandLineTest.class, optionDefinitions, commandLine);
 		assertTrue(c.hasOption("S")); //$NON-NLS-1$
 		assertTrue(c.hasOption("b")); //$NON-NLS-1$
@@ -204,7 +219,8 @@ public class VMCommandLineTest extends TestCase {
 
 	/**
 	 */
-	public static final void testGetFirstOptionValue() {
+	@Test
+	public void testGetFirstOptionValue() {
 		VMCommandLine c = new VMCommandLine(VMCommandLineTest.class, optionDefinitions, commandLine);
 		assertEquals("-b", c.getFirstOptionValue("S")); //$NON-NLS-1$ //$NON-NLS-2$
 		assertEquals(false, c.getFirstOptionValue("b")); //$NON-NLS-1$
@@ -214,7 +230,8 @@ public class VMCommandLineTest extends TestCase {
 
 	/**
 	 */
-	public static final void testGetOptionValues() {
+	@Test
+	public void testGetOptionValues() {
 		VMCommandLine c = new VMCommandLine(VMCommandLineTest.class, optionDefinitions, commandLine);
 		List<Object> values;
 		
@@ -249,7 +266,8 @@ public class VMCommandLineTest extends TestCase {
 
 	/**
 	 */
-	public static final void testGetParameters() {
+	@Test
+	public void testGetParameters() {
 		VMCommandLine c = new VMCommandLine(VMCommandLineTest.class, optionDefinitions, commandLine);
 		assertNotSame(commandLine, c.getParameters());
 		assertTrue(Arrays.equals(new String[] {
@@ -259,7 +277,8 @@ public class VMCommandLineTest extends TestCase {
 
 	/**
 	 */
-	public static final void testShiftParameters() {
+	@Test
+	public void testShiftParameters() {
 		VMCommandLine c = new VMCommandLine(VMCommandLineTest.class, optionDefinitions, commandLine);
 		assertEquals("clean", c.shiftParameters()); //$NON-NLS-1$
 		assertNotSame(commandLine, c.getParameters());
@@ -270,14 +289,16 @@ public class VMCommandLineTest extends TestCase {
 
 	/**
 	 */
-	public static final void testGetParameterCount() {
+	@Test
+	public void testGetParameterCount() {
 		VMCommandLine c = new VMCommandLine(VMCommandLineTest.class, optionDefinitions, commandLine);
 		assertEquals(4, c.getParameterCount());
 	}
 
 	/**
 	 */
-	public static final void testGetParameterAt() {
+	@Test
+	public void testGetParameterAt() {
 		VMCommandLine c = new VMCommandLine(VMCommandLineTest.class, optionDefinitions, commandLine);
 		assertEquals("clean", c.getParameterAt(0)); //$NON-NLS-1$
 		assertEquals("package", c.getParameterAt(1)); //$NON-NLS-1$
@@ -287,7 +308,8 @@ public class VMCommandLineTest extends TestCase {
 
 	/**
 	 */
-	public static final void testIsParameterExists() {
+	@Test
+	public void testIsParameterExists() {
 		VMCommandLine c = new VMCommandLine(VMCommandLineTest.class, optionDefinitions, commandLine);
 		assertTrue(c.isParameterExists(0));
 		assertTrue(c.isParameterExists(1));

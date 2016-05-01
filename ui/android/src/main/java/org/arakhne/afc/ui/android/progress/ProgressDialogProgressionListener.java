@@ -29,11 +29,13 @@ import android.app.ProgressDialog;
 /**
  * Task progression listener that is linked to a ProgressDialog.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public class ProgressDialogProgressionListener implements ProgressionListener {
 
 	private final Activity context;
@@ -80,7 +82,7 @@ public class ProgressDialogProgressionListener implements ProgressionListener {
 	/**
 	 * Task progression listener that is linked to a ProgressDialog.
 	 * 
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $Name$ $Revision$ $Date$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

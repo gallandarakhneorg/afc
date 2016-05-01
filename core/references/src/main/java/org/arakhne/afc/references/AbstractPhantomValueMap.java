@@ -35,7 +35,7 @@ import java.util.Map;
  *
  * @param <K> is the type of the keys.
  * @param <V> is the type of the values.
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -58,7 +58,7 @@ public abstract class AbstractPhantomValueMap<K,V> extends AbstractReferencedVal
 	 */
 	@Override
 	protected final ReferencableValue<K,V> makeValue(K k, V v, ReferenceQueue<V> queue) {
-		return new PhantomReferencedValue<K,V>(k, v, queue);
+		return new PhantomReferencedValue<>(k, v, queue);
 	}
 
 }

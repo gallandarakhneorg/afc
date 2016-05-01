@@ -23,19 +23,23 @@ package org.arakhne.afc.math.continous.object2d;
 import java.util.NoSuchElementException;
 
 import org.arakhne.afc.math.MathConstants;
-import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.generic.PathWindingRule;
 import org.arakhne.afc.math.generic.Point2D;
+import org.arakhne.afc.math.geometry.d2.afp.Ellipse2afp;
+import org.arakhne.afc.math.geometry.d2.d.Ellipse2d;
+import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.matrix.Transform2D;
 
 
 /** 2D ellipse with floating-point points.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see {@link Ellipse2d}
  */
+@Deprecated
 public class Ellipse2f extends AbstractRectangularShape2f<Ellipse2f> {
 
 	private static final long serialVersionUID = -2745313055404516167L;
@@ -91,7 +95,7 @@ public class Ellipse2f extends AbstractRectangularShape2f<Ellipse2f> {
 		float farY;
 		if (ecy<=rcy) farY = ry + rheight;
 		else farY = ry;
-		return MathUtil.isPointInEllipse(farX, farY, ex, ey, ewidth, eheight);
+		return Ellipse2afp.containsEllipsePoint(ex, ey, ewidth, eheight, farX, farY);
 	}
 
 	/** Replies if two ellipses are intersecting.
@@ -380,9 +384,9 @@ public class Ellipse2f extends AbstractRectangularShape2f<Ellipse2f> {
 	 */
 	@Override
 	public boolean contains(float x, float y) {
-		return MathUtil.isPointInEllipse(
-				x, y,
-				getMinX(), getMinY(), getWidth(), getHeight());
+		return Ellipse2afp.containsEllipsePoint(
+				getMinX(), getMinY(), getWidth(), getHeight(),
+				x, y);
 	}
 
 	@Override
@@ -396,10 +400,13 @@ public class Ellipse2f extends AbstractRectangularShape2f<Ellipse2f> {
 	 */
 	@Override
 	public Point2D getClosestPointTo(Point2D p) {
-		return MathUtil.getClosestPointToSolidEllipse(
+		Point2d pts = new Point2d();
+		Ellipse2afp.computeClosestPointToSolidEllipse(
 				p.getX(), p.getY(),
 				getMinX(), getMinY(),
-				getWidth(), getHeight());
+				getWidth(), getHeight(),
+				pts);
+		return new Point2f((float) pts.getX(), (float) pts.getY());
 	}
 
 	@Override
@@ -478,7 +485,7 @@ public class Ellipse2f extends AbstractRectangularShape2f<Ellipse2f> {
 
 	@Override
 	public boolean intersects(Path2f s) {
-		return intersects(s.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO));
+		return intersects(s.getPathIterator((float) MathConstants.SPLINE_APPROXIMATION_RATIO));
 	}
 
 	@Override
@@ -509,7 +516,7 @@ public class Ellipse2f extends AbstractRectangularShape2f<Ellipse2f> {
 	}
 
 	/**
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -596,7 +603,7 @@ public class Ellipse2f extends AbstractRectangularShape2f<Ellipse2f> {
 	}
 
 	/**
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

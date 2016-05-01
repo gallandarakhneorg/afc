@@ -27,11 +27,13 @@ import org.arakhne.afc.util.HashCodeUtil;
 /** This class implements a {@link Dimension2D} with
  * singgle precision floating point values. 
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public class FloatDimension extends Dimension2D {
 
 	private float width;

@@ -25,11 +25,13 @@ import org.arakhne.afc.ui.vector.Raster;
 
 /** AWT implementation of the generic raster.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 class AwtRaster implements Raster, NativeWrapper {
 
 	private final java.awt.image.Raster raster;

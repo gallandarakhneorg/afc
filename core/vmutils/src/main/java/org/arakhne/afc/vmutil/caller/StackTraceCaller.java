@@ -29,21 +29,14 @@ import org.arakhne.afc.vmutil.ClassLoaderFinder;
  * <p>
  * It inspirated from the Andriod API.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
 public class StackTraceCaller implements Caller {
 
-	/** Load a class but avoid any exception.
-     *
-     * @param name the class name.
-     * @return the class or {@code null}.
-     * @deprecated No replacement.
-     */
-	@Deprecated
-	public static Class<?> loadClass(String name) {
+	private static Class<?> loadClass(String name) {
 		try {
 			return ClassLoaderFinder.findClassLoader().loadClass(name);
 		}
@@ -99,7 +92,7 @@ public class StackTraceCaller implements Caller {
 		catch(AssertionError e) {
 			throw e;
 		}
-		catch(Throwable _) {
+		catch(Throwable exception) {
 			//
 		}
 		return null;

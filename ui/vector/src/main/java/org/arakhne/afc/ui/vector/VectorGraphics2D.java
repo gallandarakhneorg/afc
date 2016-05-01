@@ -36,11 +36,13 @@ import org.arakhne.afc.ui.TextAlignment;
 /** This graphic context permits to display
  *  something with a vectorial approach.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public interface VectorGraphics2D {
 	
 	/** Replies the native graphical context.

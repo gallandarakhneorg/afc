@@ -31,7 +31,7 @@ import org.arakhne.afc.attrs.attr.Attribute;
 /**
  * Iterator on attributes.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -39,7 +39,7 @@ import org.arakhne.afc.attrs.attr.Attribute;
 public class AttributeIterator implements Iterator<Attribute> {
 	
 	private AttributeProvider provider;
-	private final ArrayList<String> names = new ArrayList<String>();
+	private final ArrayList<String> names = new ArrayList<>();
 	private String lastName = null; 
 	
 	/**

@@ -60,7 +60,7 @@ import java.util.WeakHashMap;
  * released values (sometimes the queue is empty even if a value was released).
  *
  * @param <E> is the type of the values.
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -121,14 +121,14 @@ public class WeakTreeSet<E> extends AbstractReferencedSet<E,ComparableWeakRefere
      *        ordering} of the elements will be used.
      */
     public WeakTreeSet(Comparator<? super E> comparator) {
-    	super(new TreeSet<ComparableWeakReference<E>>(
+    	super(new TreeSet<>(
     				new ReferenceComparator<E,ComparableWeakReference<E>>(comparator)),
     			ComparableWeakReference.class);
     }
 
     @Override
     protected final ComparableWeakReference<E> createReference(E element) {
-    	return new ComparableWeakReference<E>(element);
+    	return new ComparableWeakReference<>(element);
     }
 
 }

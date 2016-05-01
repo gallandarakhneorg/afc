@@ -43,7 +43,7 @@ import org.arakhne.afc.ui.vector.Image;
 /**
  * This class implements an abstract attribute provider.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -86,7 +86,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 
 	@Override
 	public final Map<String, Object> toMap() {
-		Map<String,Object> map = new TreeMap<String,Object>();
+		Map<String,Object> map = new TreeMap<>();
 		toMap(map);
 		return map;
 	}
@@ -203,7 +203,9 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 	}
 
 	/** {@inheritDoc}
+	 * @deprecated
 	 */
+	@Deprecated
 	@Override
 	public Image getAttributeAsImage(String name) throws AttributeException {
 		AttributeValue value = getAttribute(name);
@@ -221,7 +223,9 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 	}
 
 	/** {@inheritDoc}
+	 * @deprecated
 	 */
+	@Deprecated
 	@Override
 	public Color getAttributeAsColor(String name) throws AttributeException {
 		AttributeValue value = getAttribute(name);
@@ -274,7 +278,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 			try {
 				return value.getBoolean();
 			}
-			catch(AttributeException _) {
+			catch(AttributeException exception) {
 				//
 			}
 		}
@@ -290,7 +294,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 			try {
 				return (int)value.getInteger();
 			}
-			catch(AttributeException _) {
+			catch(AttributeException exception) {
 				//
 			}
 		}
@@ -306,7 +310,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 			try {
 				return value.getInteger();
 			}
-			catch(AttributeException _) {
+			catch(AttributeException exception) {
 				//
 			}
 		}
@@ -322,7 +326,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 			try {
 				return (float)value.getReal();
 			}
-			catch(AttributeException _) {
+			catch(AttributeException exception) {
 				//
 			}
 		}
@@ -338,7 +342,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 			try {
 				return value.getReal();
 			}
-			catch(AttributeException _) {
+			catch(AttributeException exception) {
 				//
 			}
 		}
@@ -354,7 +358,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 			try {
 				return value.getString();
 			}
-			catch(AttributeException _) {
+			catch(AttributeException exception) {
 				//
 			}
 		}
@@ -370,7 +374,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 			try {
 				return value.getUUID();
 			}
-			catch(AttributeException _) {
+			catch(AttributeException exception) {
 				//
 			}
 		}
@@ -386,7 +390,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 			try {
 				return value.getURL();
 			}
-			catch(AttributeException _) {
+			catch(AttributeException exception) {
 				//
 			}
 		}
@@ -402,7 +406,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 			try {
 				return value.getURI();
 			}
-			catch(AttributeException _) {
+			catch(AttributeException exception) {
 				//
 			}
 		}
@@ -410,7 +414,9 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 	}
 
 	/** {@inheritDoc}
+	 * @deprecated
 	 */
+	@Deprecated
 	@Override
 	public Image getAttribute(String name, Image defaultValue) {
 		AttributeValue value = getAttribute(name);
@@ -418,7 +424,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 			try {
 				return value.getImage();
 			}
-			catch(AttributeException _) {
+			catch(AttributeException exception) {
 				//
 			}
 		}
@@ -434,7 +440,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 			try {
 				return value.getDate();
 			}
-			catch(AttributeException _) {
+			catch(AttributeException exception) {
 				//
 			}
 		}
@@ -442,7 +448,9 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 	}
 
 	/** {@inheritDoc}
+	 * @deprecated
 	 */
+	@Deprecated
 	@Override
 	public Color getAttribute(String name, Color defaultValue) {
 		AttributeValue value = getAttribute(name);
@@ -450,7 +458,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 			try {
 				return value.getColor();
 			}
-			catch(AttributeException _) {
+			catch(AttributeException exception) {
 				//
 			}
 		}
@@ -466,7 +474,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 			try {
 				return value.getInetAddress();
 			}
-			catch(AttributeException _) {
+			catch(AttributeException exception) {
 				//
 			}
 		}
@@ -482,7 +490,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 			try {
 				return value.getInetAddress();
 			}
-			catch(AttributeException _) {
+			catch(AttributeException exception) {
 				//
 			}
 		}
@@ -499,10 +507,10 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 			try {
 				return (T)value.getEnumeration();
 			}
-			catch(AttributeException _) {
+			catch(AttributeException exception) {
 				//
 			}
-			catch(ClassCastException _) {
+			catch(ClassCastException exception) {
 				//
 			}
 		}
@@ -518,10 +526,10 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 			try {
 				return value.getJavaClass();
 			}
-			catch(AttributeException _) {
+			catch(AttributeException exception) {
 				//
 			}
-			catch(ClassCastException _) {
+			catch(ClassCastException exception) {
 				//
 			}
 		}

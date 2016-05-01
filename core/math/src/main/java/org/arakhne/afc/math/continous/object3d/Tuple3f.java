@@ -25,11 +25,13 @@ import org.arakhne.afc.math.generic.Tuple3D;
 /** 3D tuple with 3 floating-point numbers.
  * 
  * @param <T> is the implementation type of the tuple.
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated Replacement will be provided in Version 14.0
  */
+@Deprecated
 public class Tuple3f<T extends Tuple3D<? super T>> implements Tuple3D<T> {
 
 	private static final long serialVersionUID = -2153633162767463917L;

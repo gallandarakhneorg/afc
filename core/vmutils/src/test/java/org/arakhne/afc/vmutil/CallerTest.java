@@ -20,36 +20,36 @@
  */
 package org.arakhne.afc.vmutil;
 
-import org.arakhne.afc.vmutil.Caller;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
-import junit.framework.TestCase;
+import org.junit.After;
+import org.junit.Before;
 
 /**
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid org.arakhne.afc
  * @mavenartifactid arakhneVmutils
  */
-public class CallerTest extends TestCase {
+public class CallerTest {
 
 	private InnerCallerTest caller;
 	
 	/**
-	 * {@inheritDoc}
+	 * @throws Exception
 	 */
-	@Override
+	@Before
 	public void setUp() throws Exception {
-		super.setUp();
 		this.caller = new InnerCallerTest();
 	}
 	
 	/**
-	 * {@inheritDoc}
+	 * @throws Exception
 	 */
-	@Override
+	@After
 	public void tearDown() throws Exception {
 		this.caller = null;
-		super.tearDown();
 	}
 	
 	/**

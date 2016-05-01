@@ -24,20 +24,22 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import org.arakhne.afc.math.MathConstants;
-import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.generic.PathWindingRule;
 import org.arakhne.afc.math.generic.Point2D;
+import org.arakhne.afc.math.geometry.d2.ai.Segment2ai;
 import org.arakhne.afc.math.matrix.Transform2D;
 
 
 
 /** 2D line segment with integer coordinates.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see {@link org.arakhne.afc.math.geometry.d2.i.Segment2i}
  */
+@Deprecated
 public class Segment2i extends AbstractShape2i<Segment2i> {
 
 	/**
@@ -184,12 +186,12 @@ public class Segment2i extends AbstractShape2i<Segment2i> {
 			int side1, side2;
 			boolean firstIsTop = (sy1<=sy2);
 			if (firstIsTop) {
-				side1 = MathUtil.sidePointLine(sx1, sy1, sx2, sy2, x0, y0, false);
-				side2 = MathUtil.sidePointLine(sx1, sy1, sx2, sy2, x1, y1, false);
+				side1 = Segment2ai.computeSideLinePoint(sx1, sy1, sx2, sy2, x0, y0);
+				side2 = Segment2ai.computeSideLinePoint(sx1, sy1, sx2, sy2, x1, y1);
 			}
 			else {
-				side1 = MathUtil.sidePointLine(sx2, sy2, sx1, sy1, x0, y0, false);
-				side2 = MathUtil.sidePointLine(sx2, sy2, sx1, sy1, x1, y1, false);
+				side1 = Segment2ai.computeSideLinePoint(sx2, sy2, sx1, sy1, x0, y0);
+				side2 = Segment2ai.computeSideLinePoint(sx2, sy2, sx1, sy1, x1, y1);
 			}
 			if (side1>=0 || side2>=0) {
 				// At least one point is on the side of the shadow.
@@ -506,8 +508,8 @@ public class Segment2i extends AbstractShape2i<Segment2i> {
 	 * <code>false</code>
 	 */
 	public static boolean intersectsSegmentSegment(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4) {
-		int side1 = MathUtil.sidePointLine(x1, y1, x2, y2, x3, y3, false);
-		int side2 = MathUtil.sidePointLine(x1, y1, x2, y2, x4, y4, false);
+		int side1 = Segment2ai.computeSideLinePoint(x1, y1, x2, y2, x3, y3);
+		int side2 = Segment2ai.computeSideLinePoint(x1, y1, x2, y2, x4, y4);
 		if ((side1*side2)<=0) {
 			return intersectsSegmentSegment1(x1, y1, x2, y2, x3, y3, x4, y4, true, true, null)!=0;
 		}
@@ -1077,7 +1079,7 @@ public class Segment2i extends AbstractShape2i<Segment2i> {
 
 	/** Iterator on the path elements of the segment.
 	 * 
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -1177,7 +1179,7 @@ public class Segment2i extends AbstractShape2i<Segment2i> {
 	 * graphics libraries. Because the algorithm is very simple, it is often 
 	 * implemented in either the firmware or the hardware of modern graphics cards.
 	 * 
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

@@ -24,7 +24,7 @@ import java.util.Set;
 import org.arakhne.afc.references.WeakTreeSet;
 
 /**
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -39,7 +39,7 @@ public class WeakTreeSetTest extends AbstractCollectionTestCase<Set<String>> {
 
 	@Override
 	protected Set<String> createCollection() {
-		return new WeakTreeSet<String>();
+		return new WeakTreeSet<>();
 	}
 
 }

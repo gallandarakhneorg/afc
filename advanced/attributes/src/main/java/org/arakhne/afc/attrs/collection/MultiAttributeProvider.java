@@ -58,7 +58,7 @@ import org.arakhne.afc.references.SoftValueTreeMap;
  * 		</ol></li>
  * </ol>
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -70,13 +70,13 @@ public class MultiAttributeProvider extends AbstractAttributeProvider {
 
 	/** Cache of the attribute values.
 	 */
-	transient Map<String,AttributeValue> cache = new SoftValueTreeMap<String,AttributeValue>();
+	transient Map<String,AttributeValue> cache = new SoftValueTreeMap<>();
 
 	/** Cache of the names of the attributes.
 	 */
 	Set<String> names = null;
 
-	private Collection<AttributeProvider> containers = new ArrayList<AttributeProvider>();
+	private Collection<AttributeProvider> containers = new ArrayList<>();
 	
 	@Override
 	public void toMap(Map<String, Object> mapToFill) {
@@ -203,13 +203,13 @@ public class MultiAttributeProvider extends AbstractAttributeProvider {
 	@Override
 	public MultiAttributeProvider clone() {
 		MultiAttributeProvider clone = (MultiAttributeProvider)super.clone();
-		clone.cache = new SoftValueTreeMap<String,AttributeValue>();
+		clone.cache = new SoftValueTreeMap<>();
 		for(Entry<String,AttributeValue> e : this.cache.entrySet()) {
 			clone.cache.put(e.getKey(), new AttributeValueImpl(e.getValue()));
 		}
-		clone.containers = new ArrayList<AttributeProvider>(this.containers);
+		clone.containers = new ArrayList<>(this.containers);
 		if (this.names!=null) {
-			clone.names = new TreeSet<String>(new AttributeNameStringComparator());
+			clone.names = new TreeSet<>(new AttributeNameStringComparator());
 			clone.names.addAll(this.names);
 		}
 		return clone;
@@ -230,7 +230,7 @@ public class MultiAttributeProvider extends AbstractAttributeProvider {
 	 */
 	@Override
 	public Collection<Attribute> getAllAttributes() {
-		ArrayList<Attribute> list = new ArrayList<Attribute>(getAttributeCount());
+		ArrayList<Attribute> list = new ArrayList<>(getAttributeCount());
 		Attribute newAttr;
 		for(String name : getAllAttributeNames()) {
 			if (name!=null) {
@@ -246,7 +246,7 @@ public class MultiAttributeProvider extends AbstractAttributeProvider {
 	 */
 	@Override
 	public Map<AttributeType, Collection<Attribute>> getAllAttributesByType() {
-		TreeMap<AttributeType,Collection<Attribute>> map = new TreeMap<AttributeType,Collection<Attribute>>();
+		TreeMap<AttributeType,Collection<Attribute>> map = new TreeMap<>();
 		Attribute newAttr;
 		for(String name : getAllAttributeNames()) {
 			if (name!=null) {
@@ -254,7 +254,7 @@ public class MultiAttributeProvider extends AbstractAttributeProvider {
 				if (newAttr!=null) {
 					Collection<Attribute> list = map.get(newAttr.getType());
 					if (list==null) {
-						list = new ArrayList<Attribute>();
+						list = new ArrayList<>();
 						map.put(newAttr.getType(), list);
 					}
 					list.add(newAttr);
@@ -296,7 +296,7 @@ public class MultiAttributeProvider extends AbstractAttributeProvider {
 	@Override
 	public Collection<String> getAllAttributeNames() {
 		if (this.names==null) {
-			Set<String> names = new TreeSet<String>(new AttributeNameStringComparator());
+			Set<String> names = new TreeSet<>(new AttributeNameStringComparator());
 			for(AttributeProvider c : this.containers) {
 				names.addAll(c.getAllAttributeNames());
 			}
@@ -329,7 +329,7 @@ public class MultiAttributeProvider extends AbstractAttributeProvider {
 	 * that may be marked with an indicators that many
 	 * values are possibles for the attribute.
 	 * 
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

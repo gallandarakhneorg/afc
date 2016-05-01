@@ -26,11 +26,13 @@ import org.arakhne.afc.math.matrix.Transform2D;
 /** 2D shape with integer  points.
  * 
  * @param <T> is the type of the shape implemented by the instance of this class.
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see {@link org.arakhne.afc.math.geometry.d2.i.AbstractShape2i}
  */
+@Deprecated
 public abstract class AbstractShape2i<T extends Shape2i> implements Shape2i {
 
 	private static final long serialVersionUID = -3663448743772835647L;

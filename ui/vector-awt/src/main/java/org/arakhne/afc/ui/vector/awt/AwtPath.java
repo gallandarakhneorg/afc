@@ -37,11 +37,13 @@ import org.arakhne.afc.ui.awt.ZoomableAwtContextUtil;
 
 /** Public implementation of a Path2D.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 class AwtPath implements VirtualizableShape, NativeWrapper {
 
 	private final Path2f path;
@@ -152,7 +154,7 @@ class AwtPath implements VirtualizableShape, NativeWrapper {
 	}
 
 	/**
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -278,7 +280,7 @@ class AwtPath implements VirtualizableShape, NativeWrapper {
 		}
 		
 		/**
-		 * @author $Author: galland$
+		 * @author $Author: sgalland$
 		 * @version $FullVersion$
 		 * @mavengroupid $GroupId$
 		 * @mavenartifactid $ArtifactId$

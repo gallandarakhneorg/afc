@@ -23,11 +23,13 @@ package org.arakhne.afc.math.generic;
 
 /** 3D Vector.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see {@link org.arakhne.afc.math.geometry.d3.Vector3D}
  */
+@Deprecated
 public interface Vector3D extends Tuple3D<Vector3D> {
 
 	/**

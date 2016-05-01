@@ -39,11 +39,13 @@ import org.arakhne.afc.progress.ProgressionListener;
  * JProgressBar pb = new JProgressBar(pbm);
  * </code></pre>
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 final class ProgressionProgressBarWrapper
 implements ProgressionWrapper {
 
@@ -175,7 +177,7 @@ implements ProgressionWrapper {
 	}
 
 	/**
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

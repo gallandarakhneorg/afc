@@ -24,7 +24,7 @@ import java.util.EventListener;
 /**
  * Listener on the release of a reference.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

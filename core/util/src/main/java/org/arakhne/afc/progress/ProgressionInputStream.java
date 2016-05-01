@@ -29,7 +29,7 @@ import java.io.InputStream;
 /**
  * InputStream that is able to notify about the reading progression.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -51,7 +51,7 @@ public class ProgressionInputStream extends FilterInputStream {
         try {
             size = this.in.available();
         }
-        catch(IOException _) {
+        catch(IOException exception) {
             size = 0;
         }
         this.totalSize = (size>=0) ? size : 0;

@@ -34,7 +34,7 @@ import java.util.regex.Pattern;
  * <li>search the resource in ./resources subdirectory in class paths.</li>
  * </ul>
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

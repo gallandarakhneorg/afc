@@ -56,7 +56,7 @@ import sun.security.util.SecurityConstants;
 /** This class loader permits to load classes from
  * a set of classpaths.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -139,7 +139,7 @@ public class DynamicURLClassLoader extends SecureClassLoader {
 	 * @param urls the URL to be added to the search path of URLs
 	 */
 	public void removeURLs(URL... urls) {
-		HashSet<URL> set = new HashSet<URL>();
+		HashSet<URL> set = new HashSet<>();
 		set.addAll(Arrays.asList(this._ucp.getURLs()));
 		set.removeAll(Arrays.asList(urls));
 		URL[] tab = new URL[set.size()];
@@ -546,7 +546,7 @@ public class DynamicURLClassLoader extends SecureClassLoader {
     		try {
 				u[i] = new File(parts[i]).toURI().toURL();
 			}
-    		catch (MalformedURLException _) {
+    		catch (MalformedURLException exception) {
 				// ignore exception
 			}
     	}
@@ -555,7 +555,7 @@ public class DynamicURLClassLoader extends SecureClassLoader {
     }
 
     /** 
-     * @author $Author: galland$
+     * @author $Author: sgalland$
      * @version $FullVersion$
      * @mavengroupid $GroupId$
      * @mavenartifactid $ArtifactId$

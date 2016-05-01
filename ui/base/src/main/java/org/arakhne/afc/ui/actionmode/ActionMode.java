@@ -47,13 +47,15 @@ import org.arakhne.afc.vmutil.locale.Locale;
  * @param <DRAW> is the type of the graphical object supported by this container.
  * @param <CANVAS> is the type of the drawing canvas.
  * @param <COLOR> is the type that is representing a color.
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @author $Author: hannoun$
  * @author $Author: baumgartner$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public abstract class ActionMode<DRAW extends Selectable, CANVAS, COLOR> {
 
 	private WeakReference<ActionModeManager<DRAW,CANVAS,COLOR>> modeManager ;
@@ -70,7 +72,7 @@ public abstract class ActionMode<DRAW extends Selectable, CANVAS, COLOR> {
 	 *                    contains this Mode.
 	 */
 	public ActionMode(ActionModeManager<DRAW,CANVAS,COLOR> modeManager) {
-		this.modeManager = new WeakReference<ActionModeManager<DRAW,CANVAS,COLOR>>(modeManager) ;
+		this.modeManager = new WeakReference<>(modeManager) ;
 	}
 
 	/** Construct a new Mode.
@@ -130,7 +132,7 @@ public abstract class ActionMode<DRAW extends Selectable, CANVAS, COLOR> {
 	 *                    contains this Mode.
 	 */
 	public void setModeManager(ActionModeManager<DRAW,CANVAS,COLOR> modeManager) {
-		this.modeManager = modeManager==null ? null : new WeakReference<ActionModeManager<DRAW,CANVAS,COLOR>>(modeManager);
+		this.modeManager = modeManager==null ? null : new WeakReference<>(modeManager);
 		setCursor(getInitialCursor());
 	}
 

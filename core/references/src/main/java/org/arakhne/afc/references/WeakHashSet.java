@@ -58,7 +58,7 @@ import java.util.WeakHashMap;
  * released values (sometimes the queue is empty even if a value was released).
  *
  * @param <E> is the type of the values.
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -114,7 +114,7 @@ public class WeakHashSet<E> extends AbstractReferencedSet<E,WeakReference<E>> {
 
     @Override
     protected final WeakReference<E> createReference(E element) {
-    	return new WeakReference<E>(element);
+    	return new WeakReference<>(element);
     }
 
 }

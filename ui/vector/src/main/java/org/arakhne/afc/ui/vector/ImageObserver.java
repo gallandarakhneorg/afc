@@ -23,11 +23,13 @@ package org.arakhne.afc.ui.vector;
 
 /** Interface that is an observer on image loading. 
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public interface ImageObserver {
 	
 	/**

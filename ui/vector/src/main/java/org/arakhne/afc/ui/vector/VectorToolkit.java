@@ -42,11 +42,13 @@ import org.arakhne.afc.vmutil.locale.Locale;
  * The <code>VectorToolkit</code> search for an implementation
  * in the classpath.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public abstract class VectorToolkit {
 	
 	private static VectorToolkit SINGLETON; 
@@ -70,7 +72,7 @@ public abstract class VectorToolkit {
 		if (toolkits!=null && !"WINDOW_TOOLKITS".equals(toolkits)) { //$NON-NLS-1$
 			String[] classes = toolkits.split("[ \t\n\f]*;[ \t\n\f]*"); //$NON-NLS-1$
 		
-			List<Class<? extends VectorToolkit>> types = new ArrayList<Class<? extends VectorToolkit>>();
+			List<Class<? extends VectorToolkit>> types = new ArrayList<>();
 			
 			for(String className : classes) {
 				try {
@@ -79,7 +81,7 @@ public abstract class VectorToolkit {
 						types.add((Class<? extends VectorToolkit>)type);
 					}
 				}
-				catch(Throwable _) {
+				catch(Throwable exception) {
 					//
 				}
 			}

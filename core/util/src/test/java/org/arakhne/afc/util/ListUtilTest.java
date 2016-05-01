@@ -21,25 +21,31 @@
  */
 package org.arakhne.afc.util;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-import junit.framework.TestCase;
+import org.junit.Test;
 
 /**
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class ListUtilTest extends TestCase {
+@SuppressWarnings("static-method")
+public class ListUtilTest {
 
 	/**
 	 */
-	public static void testContainsComparatorTList() {
-		List<Integer> list = new ArrayList<Integer>();
+	@Test
+	public void testContainsComparatorTList() {
+		List<Integer> list = new ArrayList<>();
 		list.addAll(Arrays.asList(1, 4, 6, 12, 30));
 		
 		assertFalse(ListUtil.contains(list, new NaturalOrderComparator<Integer>(), 0));
@@ -53,8 +59,9 @@ public class ListUtilTest extends TestCase {
 
 	/**
 	 */
-	public static void testAddComparatorTListBoolean_true_false() {
-		List<Integer> list = new ArrayList<Integer>();
+	@Test
+	public void testAddComparatorTListBoolean_true_false() {
+		List<Integer> list = new ArrayList<>();
 		list.addAll(Arrays.asList(1, 4, 6, 12, 30));
 		
 		assertEquals(0, ListUtil.add(list, new NaturalOrderComparator<Integer>(), -2, true, false));
@@ -75,8 +82,9 @@ public class ListUtilTest extends TestCase {
 
 	/**
 	 */
-	public static void testAddComparatorTListBoolean_false_false() {
-		List<Integer> list = new ArrayList<Integer>();
+	@Test
+	public void testAddComparatorTListBoolean_false_false() {
+		List<Integer> list = new ArrayList<>();
 		list.addAll(Arrays.asList(1, 4, 6, 12, 30));
 		
 		assertEquals(0, ListUtil.add(list, new NaturalOrderComparator<Integer>(), -2, false, false));
@@ -96,8 +104,9 @@ public class ListUtilTest extends TestCase {
 
 	/**
 	 */
-	public static void testAddComparatorTListBoolean_true_true() {
-		List<Integer> list = new ArrayList<Integer>();
+	@Test
+	public void testAddComparatorTListBoolean_true_true() {
+		List<Integer> list = new ArrayList<>();
 		list.addAll(Arrays.asList(1, 4, 6, 12, 30));
 		
 		assertEquals(0, ListUtil.add(list, new NaturalOrderComparator<Integer>(), -2, true, true));
@@ -118,8 +127,9 @@ public class ListUtilTest extends TestCase {
 
 	/**
 	 */
-	public static void testAddComparatorTListBoolean_false_true() {
-		List<Integer> list = new ArrayList<Integer>();
+	@Test
+	public void testAddComparatorTListBoolean_false_true() {
+		List<Integer> list = new ArrayList<>();
 		list.addAll(Arrays.asList(1, 4, 6, 12, 30));
 		
 		assertEquals(0, ListUtil.add(list, new NaturalOrderComparator<Integer>(), -2, false, true));
@@ -139,8 +149,9 @@ public class ListUtilTest extends TestCase {
 
 	/**
 	 */
-	public static void testGetInsertionIndexComparatorTList() {
-		List<Integer> list = new ArrayList<Integer>();
+	@Test
+	public void testGetInsertionIndexComparatorTList() {
+		List<Integer> list = new ArrayList<>();
 		list.addAll(Arrays.asList(1, 4, 6, 12, 30));
 
 		assertEquals(0, ListUtil.getInsertionIndex(list, new NaturalOrderComparator<Integer>(), -2));
@@ -158,8 +169,9 @@ public class ListUtilTest extends TestCase {
 	
 	/**
 	 */
-	public static void testGetInsertionIndexComparatorTListBoolean_true() {
-		List<Integer> list = new ArrayList<Integer>();
+	@Test
+	public void testGetInsertionIndexComparatorTListBoolean_true() {
+		List<Integer> list = new ArrayList<>();
 		list.addAll(Arrays.asList(1, 4, 6, 12, 30));
 
 		assertEquals(0, ListUtil.getInsertionIndex(list, new NaturalOrderComparator<Integer>(), -2, true));
@@ -177,8 +189,9 @@ public class ListUtilTest extends TestCase {
 
 	/**
 	 */
-	public static void testGetInsertionIndexComparatorTListBoolean_false() {
-		List<Integer> list = new ArrayList<Integer>();
+	@Test
+	public void testGetInsertionIndexComparatorTListBoolean_false() {
+		List<Integer> list = new ArrayList<>();
 		list.addAll(Arrays.asList(1, 4, 6, 12, 30));
 
 		assertEquals(0, ListUtil.getInsertionIndex(list, new NaturalOrderComparator<Integer>(), -2, false));
@@ -196,8 +209,9 @@ public class ListUtilTest extends TestCase {
 
 	/**
 	 */
-	public static void testRemoveComparatorTList() {
-		List<Integer> list = new ArrayList<Integer>();
+	@Test
+	public void testRemoveComparatorTList() {
+		List<Integer> list = new ArrayList<>();
 		list.addAll(Arrays.asList(1, 4, 6, 12, 30));
 
 		assertEquals(-1, ListUtil.remove(list, new NaturalOrderComparator<Integer>(), -2));
@@ -214,8 +228,9 @@ public class ListUtilTest extends TestCase {
 
 	/**
 	 */
-	public static void testIndexOfComparatorTList() {
-		List<Integer> list = new ArrayList<Integer>();
+	@Test
+	public void testIndexOfComparatorTList() {
+		List<Integer> list = new ArrayList<>();
 		list.addAll(Arrays.asList(1, 4, 6, 6, 6, 12, 30));
 
 		assertEquals(-1, ListUtil.indexOf(list, new NaturalOrderComparator<Integer>(), -2));
@@ -240,8 +255,9 @@ public class ListUtilTest extends TestCase {
 
 	/**
 	 */
-	public static void testLastIndexOfComparatorTList() {
-		List<Integer> list = new ArrayList<Integer>();
+	@Test
+	public void testLastIndexOfComparatorTList() {
+		List<Integer> list = new ArrayList<>();
 		list.addAll(Arrays.asList(1, 4, 6, 6, 6, 12, 30));
 
 		assertEquals(-1, ListUtil.lastIndexOf(list, new NaturalOrderComparator<Integer>(), -2));
@@ -266,8 +282,9 @@ public class ListUtilTest extends TestCase {
 
 	/**
 	 */
-	public static void testFloorIndexComparatorTList() {
-		List<Integer> list = new ArrayList<Integer>();
+	@Test
+	public void testFloorIndexComparatorTList() {
+		List<Integer> list = new ArrayList<>();
 		list.addAll(Arrays.asList(1, 4, 6, 6, 6, 12, 30));
 
 		assertEquals(-1, ListUtil.floorIndex(list, new NaturalOrderComparator<Integer>(), -2));
@@ -292,8 +309,9 @@ public class ListUtilTest extends TestCase {
 
 	/**
 	 */
-	public static void testHigherIndexComparatorTList() {
-		List<Integer> list = new ArrayList<Integer>();
+	@Test
+	public void testHigherIndexComparatorTList() {
+		List<Integer> list = new ArrayList<>();
 		list.addAll(Arrays.asList(1, 4, 6, 6, 6, 12, 30));
 
 		assertEquals(0, ListUtil.higherIndex(list, new NaturalOrderComparator<Integer>(), -2));
@@ -318,8 +336,9 @@ public class ListUtilTest extends TestCase {
 
 	/**
 	 */
-	public static void testLowerIndexComparatorTList() {
-		List<Integer> list = new ArrayList<Integer>();
+	@Test
+	public void testLowerIndexComparatorTList() {
+		List<Integer> list = new ArrayList<>();
 		list.addAll(Arrays.asList(1, 4, 6, 6, 6, 12, 30));
 
 		assertEquals(-1, ListUtil.lowerIndex(list, new NaturalOrderComparator<Integer>(), -2));
@@ -344,8 +363,9 @@ public class ListUtilTest extends TestCase {
 
 	/**
 	 */
-	public static void testCeilingIndexComparatorTList() {
-		List<Integer> list = new ArrayList<Integer>();
+	@Test
+	public void testCeilingIndexComparatorTList() {
+		List<Integer> list = new ArrayList<>();
 		list.addAll(Arrays.asList(1, 4, 6, 6, 6, 12, 30));
 
 		assertEquals(0, ListUtil.ceilingIndex(list, new NaturalOrderComparator<Integer>(), -2));

@@ -24,11 +24,13 @@ import java.util.EventListener;
 
 /** Listener on events in selection manager.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public interface SelectionListener extends EventListener {
 
 	/** Invoked when the selection has changed in a selection manager.

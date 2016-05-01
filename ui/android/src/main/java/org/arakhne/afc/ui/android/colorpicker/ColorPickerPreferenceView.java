@@ -33,12 +33,14 @@ import android.view.View;
  * AFC compliance.
  * 
  * @author $Author: yukuku$
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @see ColorPickerView for a view outside the preference UI.
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public class ColorPickerPreferenceView extends View {
 	
 	private final Paint paint;

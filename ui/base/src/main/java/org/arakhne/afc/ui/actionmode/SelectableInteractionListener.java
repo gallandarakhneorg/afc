@@ -27,11 +27,13 @@ import org.arakhne.afc.ui.selection.Selectable;
 
 /** This interface represents a listener on the figure interaction events.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public interface SelectableInteractionListener extends EventListener {
 
 	/** Invoked when the user performs an action on a figure.

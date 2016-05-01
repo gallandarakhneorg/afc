@@ -23,7 +23,7 @@ package org.arakhne.afc.math.matrix;
 
 /** Exception for all the singular matrices.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

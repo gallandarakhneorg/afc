@@ -23,20 +23,24 @@ package org.arakhne.afc.math.continous.object2d;
 import java.util.NoSuchElementException;
 
 import org.arakhne.afc.math.MathConstants;
-import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.generic.PathWindingRule;
 import org.arakhne.afc.math.generic.Point2D;
+import org.arakhne.afc.math.geometry.d2.afp.Circle2afp;
+import org.arakhne.afc.math.geometry.d2.afp.Segment2afp;
+import org.arakhne.afc.math.geometry.d2.d.Circle2d;
 import org.arakhne.afc.math.matrix.Transform2D;
 
 
 
 /** 2D circle with floating-point points.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see {@link Circle2d}
  */
+@Deprecated
 public class Circle2f extends AbstractShape2f<Circle2f> {
 
 	private static final long serialVersionUID = -5535463117356287850L;
@@ -91,7 +95,7 @@ public class Circle2f extends AbstractShape2f<Circle2f> {
 		float farY;
 		if (cy<=rcy) farY = ry + rheight;
 		else farY = ry;
-		return MathUtil.isPointInCircle(farX, farY, cx, cy, radius);
+		return Circle2afp.containsCirclePoint(cx, cy, radius, farX, farY);
 	}
 
 	/** Replies if two circles are intersecting.
@@ -107,7 +111,7 @@ public class Circle2f extends AbstractShape2f<Circle2f> {
 	 */
 	public static boolean intersectsCircleCircle(float x1, float y1, float radius1, float x2, float y2, float radius2) {
 		float r = radius1+radius2;
-		return MathUtil.distanceSquaredPointToPoint(x1, y1, x2, y2) < (r*r);
+		return org.arakhne.afc.math.geometry.d2.Point2D.getDistanceSquaredPointPoint(x1, y1, x2, y2) < (r*r);
 	}
 
 	/** Replies if a circle and a rectangle are intersecting.
@@ -159,7 +163,7 @@ public class Circle2f extends AbstractShape2f<Circle2f> {
 	 * <code>false</code>
 	 */
 	public static boolean intersectsCircleLine(float x1, float y1, float radius, float x2, float y2, float x3, float y3) {
-		float d = MathUtil.distanceSquaredPointToLine(x1, y1, x2, y2, x3, y3);
+		float d = (float) Segment2afp.computeDistanceLinePoint(x2, y2, x3, y3, x1, y1);
 		return d<(radius*radius);
 	}
 
@@ -176,7 +180,7 @@ public class Circle2f extends AbstractShape2f<Circle2f> {
 	 * <code>false</code>
 	 */
 	public static boolean intersectsCircleSegment(float x1, float y1, float radius, float x2, float y2, float x3, float y3) {
-		float d = MathUtil.distanceSquaredPointToSegment(x1, y1, x2, y2, x3, y3);
+		float d = (float) Segment2afp.computeDistanceSegmentPoint(x2, y2, x3, y3, x1, y1);
 		return d<(radius*radius);
 	}
 
@@ -353,7 +357,7 @@ public class Circle2f extends AbstractShape2f<Circle2f> {
 	 */
 	@Override
 	public float distance(Point2D p) {
-		float d = MathUtil.distancePointToPoint(getX(), getY(), p.getX(), p.getY()) - getRadius();
+		float d = (float) org.arakhne.afc.math.geometry.d2.Point2D.getDistancePointPoint(getX(), getY(), p.getX(), p.getY()) - getRadius();
 		return Math.max(0f, d);
 	}
 	
@@ -385,7 +389,7 @@ public class Circle2f extends AbstractShape2f<Circle2f> {
 	 */
 	@Override
 	public boolean contains(float x, float y) {
-		return MathUtil.isPointInCircle(x, y, getX(), getY(), getRadius());
+		return Circle2afp.containsCirclePoint(getX(), getY(), getRadius(), x, y);
 	}
 	
 	@Override
@@ -480,7 +484,7 @@ public class Circle2f extends AbstractShape2f<Circle2f> {
 	
 	@Override
 	public boolean intersects(Path2f s) {
-		return intersects(s.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO));
+		return intersects(s.getPathIterator((float) MathConstants.SPLINE_APPROXIMATION_RATIO));
 	}
 	
 	@Override
@@ -510,7 +514,7 @@ public class Circle2f extends AbstractShape2f<Circle2f> {
 
 	/** Iterator on the path elements of the circle.
 	 * 
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -601,7 +605,7 @@ public class Circle2f extends AbstractShape2f<Circle2f> {
 	
 	/** Iterator on the path elements of the circle.
 	 * 
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

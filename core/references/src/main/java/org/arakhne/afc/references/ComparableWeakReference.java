@@ -28,7 +28,7 @@ import java.lang.ref.WeakReference;
  * compared on its pointed value.
  * 
  * @param <T> is the type of the referenced object.
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -89,7 +89,7 @@ public class ComparableWeakReference<T> extends WeakReference<T> implements Comp
 			catch(AssertionError e) {
 				throw e;
 			}
-			catch(Throwable _) {
+			catch(Throwable exception) {
 				//
 			}
 		}
@@ -101,7 +101,7 @@ public class ComparableWeakReference<T> extends WeakReference<T> implements Comp
 			catch(AssertionError e) {
 				throw e;
 			}
-			catch(Throwable _) {
+			catch(Throwable exception) {
 				//
 			}
 		}

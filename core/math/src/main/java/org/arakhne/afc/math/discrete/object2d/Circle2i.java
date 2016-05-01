@@ -33,11 +33,13 @@ import org.arakhne.afc.math.matrix.Transform2D;
 
 /** 2D circle with integer coordinates.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see {@link org.arakhne.afc.math.geometry.d2.i.Circle2i}
  */
+@Deprecated
 public class Circle2i extends AbstractShape2i<Circle2i> {
 
 	private static final long serialVersionUID = -2396327310912728347L;
@@ -650,7 +652,7 @@ public class Circle2i extends AbstractShape2i<Circle2i> {
 	 * <p>
 	 * The rastrerization is based on a Bresenham algorithm.
 	 * 
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -669,7 +671,7 @@ public class Circle2i extends AbstractShape2i<Circle2i> {
 		
 		private Point2i next = null;
 		
-		private final Set<Point2i> junctionPoint = new TreeSet<Point2i>(new Tuple2iComparator());
+		private final Set<Point2i> junctionPoint = new TreeSet<>(new Tuple2iComparator());
 
 		/**
 		 * @param x
@@ -805,7 +807,7 @@ public class Circle2i extends AbstractShape2i<Circle2i> {
 
 	/** Iterator on the path elements of the circle.
 	 * 
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -896,7 +898,7 @@ public class Circle2i extends AbstractShape2i<Circle2i> {
 
 	/** Iterator on the path elements of the circle.
 	 * 
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

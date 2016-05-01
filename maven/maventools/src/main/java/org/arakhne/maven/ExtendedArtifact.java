@@ -21,7 +21,9 @@ package org.arakhne.maven;
 import java.io.File;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import org.apache.maven.artifact.Artifact;
@@ -43,7 +45,7 @@ import org.apache.maven.plugin.logging.Log;
  * Artifact implementation which also includes the artifact name,
  * contributors, authors, and website.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -64,6 +66,7 @@ public final class ExtendedArtifact implements Artifact {
 	private final Scm scm;
 	private final String scmRevision;
 	private final List<? extends License> licenses;
+	private Map<Object, ArtifactMetadata> metadataMap;
 
 	/**
 	 * @param a
@@ -254,16 +257,6 @@ public final class ExtendedArtifact implements Artifact {
 
 	/**
 	 * {@inheritDoc}
-	 * @deprecated
-	 */
-	@Override
-	@Deprecated
-	public void addMetadata(ArtifactMetadata metadata) {
-		this.original.addMetadata(metadata);
-	}
-
-	/**
-	 * {@inheritDoc}
 	 */
 	@Override
 	public ArtifactHandler getArtifactHandler() {
@@ -356,16 +349,6 @@ public final class ExtendedArtifact implements Artifact {
 	@Override
 	public String getId() {
 		return this.original.getId();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 * @deprecated
-	 */
-	@Override
-	@Deprecated
-	public Collection<ArtifactMetadata> getMetadataList() {
-		return this.original.getMetadataList();
 	}
 
 	/**
@@ -632,4 +615,26 @@ public final class ExtendedArtifact implements Artifact {
 		return this.scmRevision;
 	}
 
-} // class ExtendedArtifact
+	@Override
+	public void addMetadata(ArtifactMetadata metadata) {
+		if (this.metadataMap == null) {
+            this.metadataMap = new HashMap<>();
+        }
+
+        ArtifactMetadata m = this.metadataMap.get(metadata.getKey());
+        if (m != null) {
+            m.merge( metadata );
+        } else {
+            this.metadataMap.put( metadata.getKey(), metadata );
+        }
+	}
+
+	@Override
+	public Collection<ArtifactMetadata> getMetadataList() {
+		 if (this.metadataMap == null) {
+			 return Collections.emptyList();
+		 }
+		 return this.metadataMap.values();
+	}
+
+}

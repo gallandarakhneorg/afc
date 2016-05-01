@@ -26,7 +26,7 @@ import java.util.concurrent.ScheduledExecutorService;
 /**
  * This interface describes a provider of thread's service.. 
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

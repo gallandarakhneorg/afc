@@ -24,11 +24,13 @@ import java.util.EventObject;
 
 /** Event in selection manager.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public class SelectionEvent extends EventObject {
 
 	private static final long serialVersionUID = 2414246708227737737L;

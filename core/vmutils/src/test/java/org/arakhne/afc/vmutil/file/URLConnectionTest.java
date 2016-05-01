@@ -21,6 +21,10 @@
  */
 package org.arakhne.afc.vmutil.file;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -36,28 +40,27 @@ import java.util.Map;
 
 import org.arakhne.afc.vmutil.Resources;
 import org.arakhne.afc.vmutil.URLHandlerUtil;
-import org.arakhne.afc.vmutil.file.URLConnection;
-
-import junit.framework.TestCase;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid org.arakhne.afc
  * @mavenartifactid arakhneVmutils
  */
-public class URLConnectionTest extends TestCase {
+public class URLConnectionTest {
 
 	private static final String RESOURCE_URL = "org/arakhne/afc/vmutil/test.txt"; //$NON-NLS-1$
 
 	private URLConnection connection;
 
 	/**
-	 * {@inheritDoc}
+	 * @throws Exception
 	 */
-	@Override
+	@Before
 	public void setUp() throws Exception {
-		super.setUp();
 		URLHandlerUtil.installArakhneHandlers();
 		URL resourceUrl = Resources.getResource(RESOURCE_URL);
 		assertNotNull(resourceUrl);
@@ -65,17 +68,17 @@ public class URLConnectionTest extends TestCase {
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * @throws Exception
 	 */
-	@Override
+	@After
 	public void tearDown() throws Exception {
 		this.connection = null;
 		URLHandlerUtil.uninstallArakhneHandlers();
-		super.tearDown();
 	}
 
 	/**
 	 */
+	@Test
 	public void testGetHeaderFieldKeyInt() {
 		assertEquals("content-type", this.connection.getHeaderFieldKey(0)); //$NON-NLS-1$
 		assertEquals("content-length", this.connection.getHeaderFieldKey(1)); //$NON-NLS-1$
@@ -85,8 +88,9 @@ public class URLConnectionTest extends TestCase {
 
 	/**
 	 */
+	@Test
 	public void testGetHeaderFieldInt() {
-		assertEquals("application/octet-stream", this.connection.getHeaderField(0)); //$NON-NLS-1$
+		assertEquals("text/plain", this.connection.getHeaderField(0)); //$NON-NLS-1$
 		assertEquals("25", this.connection.getHeaderField(1)); //$NON-NLS-1$
 		assertNotNull(this.connection.getHeaderField(2));
 		assertNull(this.connection.getHeaderField(3));
@@ -94,8 +98,9 @@ public class URLConnectionTest extends TestCase {
 
 	/**
 	 */
+	@Test
 	public void testGetHeaderFieldString() {
-		assertEquals("application/octet-stream", this.connection.getHeaderField("content-type")); //$NON-NLS-1$ //$NON-NLS-2$
+		assertEquals("text/plain", this.connection.getHeaderField("content-type")); //$NON-NLS-1$ //$NON-NLS-2$
 		assertEquals("25", this.connection.getHeaderField("content-length")); //$NON-NLS-1$ //$NON-NLS-2$
 		assertNotNull(this.connection.getHeaderField("last-modified")); //$NON-NLS-1$
 		assertNull(this.connection.getHeaderField("expires")); //$NON-NLS-1$
@@ -103,11 +108,12 @@ public class URLConnectionTest extends TestCase {
 
 	/**
 	 */
+	@Test
 	public void testGetHeaderFields() {
 		Map<?,?> map = this.connection.getHeaderFields();
 		assertNotNull(map);
 		assertEquals(3, map.size());
-		assertEquals(Collections.singletonList("application/octet-stream"), map.get("content-type")); //$NON-NLS-1$ //$NON-NLS-2$
+		assertEquals(Collections.singletonList("text/plain"), map.get("content-type")); //$NON-NLS-1$ //$NON-NLS-2$
 		assertEquals(Collections.singletonList("25"), map.get("content-length")); //$NON-NLS-1$ //$NON-NLS-2$
 		assertNotNull(map.get("last-modified")); //$NON-NLS-1$
 		assertNull(map.get("expires")); //$NON-NLS-1$
@@ -116,16 +122,13 @@ public class URLConnectionTest extends TestCase {
 	/**
 	 * @throws IOException
 	 */
+	@Test
 	public void testGetInputStream() throws IOException {
 		String line;
-		InputStream is = this.connection.getInputStream();
-		BufferedReader br = new BufferedReader(new InputStreamReader(is));
-		try {
-			line = br.readLine();
-		}
-		finally {
-			br.close();
-			is.close();
+		try (InputStream is = this.connection.getInputStream()) {
+			try (BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
+				line = br.readLine();
+			}
 		}
 		assertEquals("TEST1: FOR UNIT TEST ONLY", line); //$NON-NLS-1$
 	}
@@ -133,34 +136,28 @@ public class URLConnectionTest extends TestCase {
 	/**
 	 * @throws IOException
 	 */
-	public static void testGetOutputStream() throws IOException {
+	@SuppressWarnings("static-method")
+	@Test
+	public void testGetOutputStream() throws IOException {
 		File tmpFile = File.createTempFile("unittest", ".txt"); //$NON-NLS-1$ //$NON-NLS-2$
 		tmpFile.deleteOnExit();
 
 		URLConnection con = new URLConnection(tmpFile.toURI().toURL());
 		con.setDoOutput(true);
 
-		OutputStream os = con.getOutputStream();
-		OutputStreamWriter osw = new OutputStreamWriter(os);
-		BufferedWriter bw = new BufferedWriter(osw);
-		try {
-			bw.write("HELLO WORLD!"); //$NON-NLS-1$
-		}
-		finally {
-			bw.close();
-			osw.close();
-			os.close();
+		try (OutputStream os = con.getOutputStream()) {
+			try (OutputStreamWriter osw = new OutputStreamWriter(os)) {
+				try (BufferedWriter bw = new BufferedWriter(osw)) {
+					bw.write("HELLO WORLD!"); //$NON-NLS-1$
+				}
+			}
 		}
 
 		assertEquals(12, tmpFile.length());
 
 		String line;
-		BufferedReader br = new BufferedReader(new FileReader(tmpFile));
-		try {
+		try (BufferedReader br = new BufferedReader(new FileReader(tmpFile))) {
 			line = br.readLine();
-		}
-		finally {
-			br.close();
 		}
 		assertEquals("HELLO WORLD!", line); //$NON-NLS-1$
 	}

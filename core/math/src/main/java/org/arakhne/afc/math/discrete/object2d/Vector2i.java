@@ -21,6 +21,7 @@
  */
 package org.arakhne.afc.math.discrete.object2d;
 
+import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.continous.object2d.Vector2f;
 import org.arakhne.afc.math.generic.Point2D;
@@ -29,11 +30,13 @@ import org.arakhne.afc.math.generic.Vector2D;
 
 /** 2D Vector with 2 integers.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see {@link org.arakhne.afc.math.geometry.d2.i.Vector2i}
  */
+@Deprecated
 public class Vector2i extends Tuple2i<Vector2D> implements Vector2D {
 
 	private static final long serialVersionUID = -4528846627184370639L;
@@ -265,7 +268,7 @@ public class Vector2i extends Tuple2i<Vector2D> implements Vector2D {
 	public float getOrientationAngle() {
 		float angle = (float)Math.acos(getX());
 		if (getY()<0f) angle = -angle;
-		return MathUtil.clampRadian(angle);
+		return (float) MathUtil.clampCyclic(angle, 0, MathConstants.TWO_PI);
 	}
 
 	@Override

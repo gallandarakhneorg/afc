@@ -23,11 +23,13 @@ package org.arakhne.afc.ui.vector.android;
 
 /** Interface for all the Android wrappers.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 interface NativeWrapper {
 
 	/** Return the native object.

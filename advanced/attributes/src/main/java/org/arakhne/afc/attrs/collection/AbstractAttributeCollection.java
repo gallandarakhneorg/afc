@@ -25,15 +25,13 @@ package org.arakhne.afc.attrs.collection;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.arakhne.afc.attrs.attr.Attribute;
-import org.arakhne.afc.attrs.attr.AttributeException;
 import org.arakhne.afc.attrs.attr.AttributeValue;
 import org.arakhne.afc.attrs.collection.AttributeChangeEvent.Type;
 
 /**
  * This class implements an abstract object with attributes.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -187,7 +185,7 @@ public abstract class AbstractAttributeCollection extends AbstractAttributeProvi
 	public synchronized void addAttributeChangeListener(AttributeChangeListener listener) {
 		if (listener!=null) {
 			if (this.listenerList==null)
-				this.listenerList = new LinkedList<AttributeChangeListener>();
+				this.listenerList = new LinkedList<>();
 			this.listenerList.add(listener);
 		}
 	}
@@ -210,17 +208,6 @@ public abstract class AbstractAttributeCollection extends AbstractAttributeProvi
 	@Override
 	public final boolean renameAttribute(String oldname, String newname) {
 		return renameAttribute(oldname, newname, false);
-	}
-
-	/** {@inheritDoc}
-	 * @deprecated see {@link #addAttributes(AttributeProvider)}
-	 */
-	@Deprecated
-	@Override
-	public final void copyFrom(AttributeProvider otherContainer) throws AttributeException {
-		for (Attribute attr : otherContainer.attributes()) {
-			setAttribute(attr);
-		}
 	}
 	
 }

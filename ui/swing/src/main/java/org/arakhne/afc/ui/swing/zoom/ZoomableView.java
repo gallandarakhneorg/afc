@@ -93,12 +93,14 @@ import org.arakhne.afc.ui.swing.zoom.ScrollingMethod.ScrollingMethodListener;
  * use an instance of the graphical context {@link ZoomableGraphics2D} to draw
  * the elements according to the zooming attributes.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @see ZoomableGraphics2D
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public abstract class ZoomableView extends JPanel implements ZoomableContext, Printable {
 
 	private static final long serialVersionUID = -5703191414584605699L;
@@ -1281,7 +1283,7 @@ public abstract class ZoomableView extends JPanel implements ZoomableContext, Pr
 	}
 
 	/**
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $Name$ $Revision$ $Date$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -1305,7 +1307,7 @@ public abstract class ZoomableView extends JPanel implements ZoomableContext, Pr
 	}
 
 	/**
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $Name$ $Revision$ $Date$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -1516,7 +1518,7 @@ public abstract class ZoomableView extends JPanel implements ZoomableContext, Pr
 
 		/** This class handles the events for a {@link ZoomablePanel}.
 		 * 
-		 * @author $Author: galland$
+		 * @author $Author: sgalland$
 		 * @version $FullVersion$
 		 * @mavengroupid $GroupId$
 		 * @mavenartifactid $ArtifactId$

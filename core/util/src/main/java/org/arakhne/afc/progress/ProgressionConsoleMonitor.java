@@ -31,7 +31,7 @@ import java.util.logging.Logger;
  * a task. This monitor display on the console the progression
  * of the task.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -130,7 +130,8 @@ public class ProgressionConsoleMonitor implements ProgressionListener {
 	 * @param numberFormat - instance of the number formatter.
 	 * @return the message.
 	 */
-	protected String buildMessage(float progress, String comment, boolean isRoot, boolean isFinished, NumberFormat numberFormat) {
+	@SuppressWarnings("static-method")
+	protected String buildMessage(double progress, String comment, boolean isRoot, boolean isFinished, NumberFormat numberFormat) {
 		StringBuilder txt = new StringBuilder();
 		txt.append('[');
 		txt.append(numberFormat.format(progress));
@@ -142,7 +143,7 @@ public class ProgressionConsoleMonitor implements ProgressionListener {
 	}
 
 	/**
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $Name$ $Revision$ $Date$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -157,8 +158,8 @@ public class ProgressionConsoleMonitor implements ProgressionListener {
 		 * @param model
 		 */
 		public WeakListener(ProgressionListener listener, Progression model) {
-			this.listener = new WeakReference<ProgressionListener>(listener);
-			this.model = new WeakReference<Progression>(model);
+			this.listener = new WeakReference<>(listener);
+			this.model = new WeakReference<>(model);
 		}
 
 		@Override

@@ -28,11 +28,13 @@ import java.util.Iterator;
  * @param <B> is the type of the bounding box.
  * @param <E> is the type of the elements of the path.
  * @param <I> is the type of the iterator used to obtain the elements of the path.
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see {@link org.arakhne.afc.math.geometry.d2.Path2D}
  */
+@Deprecated
 public interface Path2D<PT extends Shape2D<? super PT>, B extends Shape2D<?>, E extends PathElement2D, I extends Iterator<E>> extends Shape2D<PT> {
 
 	/**

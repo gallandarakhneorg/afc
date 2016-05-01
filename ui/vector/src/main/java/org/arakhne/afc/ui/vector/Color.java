@@ -28,11 +28,13 @@ import java.io.Serializable;
  * See {@link VectorToolkit} to create an instance.
  * For color constants, see {@link VectorToolkit}.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public interface Color extends Paint, Serializable {
 	
     /**

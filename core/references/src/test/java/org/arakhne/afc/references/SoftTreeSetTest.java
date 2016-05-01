@@ -24,7 +24,7 @@ import java.util.Set;
 import org.arakhne.afc.references.SoftTreeSet;
 
 /**
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -39,7 +39,7 @@ public class SoftTreeSetTest extends AbstractCollectionTestCase<Set<String>> {
 
 	@Override
 	protected Set<String> createCollection() {
-		return new SoftTreeSet<String>();
+		return new SoftTreeSet<>();
 	}
 
 }

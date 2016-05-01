@@ -27,7 +27,7 @@ package org.arakhne.afc.attrs.attr;
  * This exception is generated each time the an invalid type
  * was used for metadata.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

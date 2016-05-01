@@ -36,7 +36,7 @@ import org.arakhne.afc.vmutil.URISchemeType;
  * To use this factory, invoke the following code only ONCE time:
  * <code>URL.setURLStreamHandlerFactory(new ResourceURLStreamHandlerFactory());</code>.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

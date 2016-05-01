@@ -32,7 +32,7 @@ import java.util.regex.Pattern;
  * In this way, on operating system without the support
  * for the native libs is still able to be run. 
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -56,8 +56,7 @@ abstract class AbstractOperatingSystemWrapper implements OperatingSystemWrapper 
 			Process p = Runtime.getRuntime().exec(command);
 			if (p==null) return null;
 			StringBuilder bStr = new StringBuilder();
-			InputStream standardOutput = p.getInputStream();
-			try {
+			try (InputStream standardOutput = p.getInputStream()) {
 				byte[] buffer = new byte[4086];
 				int len;
 				while ((len=standardOutput.read(buffer))>0) {
@@ -65,9 +64,6 @@ abstract class AbstractOperatingSystemWrapper implements OperatingSystemWrapper 
 				}
 				p.waitFor();
 				return bStr.toString();
-			}
-			finally {
-				standardOutput.close();
 			}
 		}
 		catch (Exception e) {

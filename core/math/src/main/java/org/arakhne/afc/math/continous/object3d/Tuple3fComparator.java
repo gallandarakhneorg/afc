@@ -25,11 +25,13 @@ import java.util.Comparator;
 /**
  * Comparator of Tuple2f.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated Replacement will be provided in Version 14.0
  */
+@Deprecated
 public class Tuple3fComparator implements Comparator<Tuple3f<?>> {
 	
 	/**

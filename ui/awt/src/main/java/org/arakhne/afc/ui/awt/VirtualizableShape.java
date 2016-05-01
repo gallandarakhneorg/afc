@@ -31,11 +31,13 @@ import org.arakhne.afc.ui.CenteringTransform;
 /** Shape that may be transformed from screen to a logical
  * coordinate space.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public interface VirtualizableShape extends Shape {
 
 	/** Replies a shape that is the same of this shape

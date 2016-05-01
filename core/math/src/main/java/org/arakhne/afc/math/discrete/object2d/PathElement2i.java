@@ -26,11 +26,13 @@ import org.arakhne.afc.math.generic.PathElementType;
 
 /** An element of the path.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see {@link org.arakhne.afc.math.geometry.d2.i.PathElement2i}
  */
+@Deprecated
 public abstract class PathElement2i implements PathElement2D {
 	
 	private static final long serialVersionUID = 7757419973445894032L;
@@ -140,7 +142,7 @@ public abstract class PathElement2i implements PathElement2D {
 
 	/** An element of the path that represents a <code>MOVE_TO</code>.
 	 *
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -202,7 +204,7 @@ public abstract class PathElement2i implements PathElement2D {
 	
 	/** An element of the path that represents a <code>LINE_TO</code>.
 	 *
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -267,7 +269,7 @@ public abstract class PathElement2i implements PathElement2D {
 	
 	/** An element of the path that represents a <code>QUAD_TO</code>.
 	 *
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -342,7 +344,7 @@ public abstract class PathElement2i implements PathElement2D {
 
 	/** An element of the path that represents a <code>CURVE_TO</code>.
 	 *
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -426,7 +428,7 @@ public abstract class PathElement2i implements PathElement2D {
 
 	/** An element of the path that represents a <code>CLOSE</code>.
 	 *
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

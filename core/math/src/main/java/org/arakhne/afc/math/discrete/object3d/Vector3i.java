@@ -30,11 +30,13 @@ import org.arakhne.afc.math.matrix.Transform3D;
 
 /** 3D Vector with 3 integers.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated Replacement will be provided in Version 14.0
  */
+@Deprecated
 public class Vector3i extends Tuple3i<Vector3D> implements Vector3D {
 
 	private static final long serialVersionUID = 1997599488590527335L;

@@ -24,7 +24,7 @@ package org.arakhne.afc.vmutil;
 /**
  * Types of identification of the operating system.  
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

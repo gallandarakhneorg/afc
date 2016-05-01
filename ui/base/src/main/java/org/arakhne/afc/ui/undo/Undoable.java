@@ -26,11 +26,13 @@ import java.io.Serializable;
 
 /** Action that can be undoed.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public interface Undoable extends Serializable {
 
 	/** Redo the action.

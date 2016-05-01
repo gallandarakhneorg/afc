@@ -25,11 +25,13 @@ import java.io.Serializable;
 /** 2D shape.
  * 
  * @param <ST> is the type of the shape implementation.
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see {@link org.arakhne.afc.math.geometry.d2.Shape2D}
  */
+@Deprecated
 public interface Shape2D<ST extends Shape2D<? super ST>>
 extends Cloneable, Serializable {
 

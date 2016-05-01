@@ -41,7 +41,7 @@ import java.util.Map;
  * This iterator disables the use of the function {@link #remove()}.
  * 
  * @param <K> is the type of keys.
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

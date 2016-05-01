@@ -130,7 +130,7 @@ import org.sonatype.plexus.build.incremental.BuildContext;
  * </tbody>
  * </table>
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -259,7 +259,7 @@ public abstract class AbstractReplaceMojo extends AbstractArakhneMojo implements
 	 */
 	private List<RemoteRepository> remoteRepos;
 
-	private final Set<File> replacementTreatedFiles = new TreeSet<File>();
+	private final Set<File> replacementTreatedFiles = new TreeSet<>();
 	
 	private String ensureArtifactId(ExtendedArtifact artifact) {
 		if (artifact != null) {
@@ -329,6 +329,7 @@ public abstract class AbstractReplaceMojo extends AbstractArakhneMojo implements
 	 * @throws MojoExecutionException
 	 * @see #replaceInFileBuffered(File, File, ReplacementType, File[], boolean)
 	 */
+	@SuppressWarnings("resource")
 	protected synchronized void replaceInFile(File sourceFile, File targetFile, ReplacementType replacementType, File[] classpath, boolean detectEncoding) throws MojoExecutionException {
 		File outputFile, inputFile;
 		assert (targetFile != null);
@@ -929,7 +930,7 @@ public abstract class AbstractReplaceMojo extends AbstractArakhneMojo implements
 	/**
 	 * Types of replacement.
 	 * 
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

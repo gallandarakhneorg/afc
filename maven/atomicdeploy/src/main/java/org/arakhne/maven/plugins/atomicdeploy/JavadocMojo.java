@@ -40,7 +40,7 @@ import org.sonatype.plexus.build.incremental.BuildContext;
 /**
  * Deploy the generated javadoc directory into the site deployment location.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

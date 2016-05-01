@@ -25,11 +25,13 @@ package org.arakhne.afc.ui.vector;
 /** Interface that is representing a stroke. 
  * See {@link VectorToolkit} to create an instance.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public interface Stroke {
 
 	/** Default line join.
@@ -97,7 +99,7 @@ public interface Stroke {
 
 	/** Define the types of line joins for a stroke. 
 	 *
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -126,7 +128,7 @@ public interface Stroke {
 
 	/** Define the types of end caps for a stroke. 
 	 *
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

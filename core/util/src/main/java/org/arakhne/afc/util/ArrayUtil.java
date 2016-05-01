@@ -36,7 +36,7 @@ import org.arakhne.afc.sizediterator.SizedIterator;
 /**
  * Some utilities functions for arrays. 
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -95,7 +95,7 @@ public class ArrayUtil {
 	 * @param arrays are the arrays to merge.
 	 * @return the array.
 	 */
-	public static <T> T[] merge(Class<T> clazz, T[]... arrays) {
+	public static <T> T[] merge(Class<T> clazz, @SuppressWarnings("unchecked") T[]... arrays) {
 		int length = 0;
 		for (T[] tab : arrays) {
 			if (tab!=null)
@@ -121,7 +121,7 @@ public class ArrayUtil {
 	 * @param arrays are the arrays to merge.
 	 * @return the array.
 	 */
-	public static <T> T[] merge_without_null(Class<T> clazz, T[]... arrays) {
+	public static <T> T[] merge_without_null(Class<T> clazz, @SuppressWarnings("unchecked") T[]... arrays) {
 		int length = 0;
 		for (T[] tab : arrays) {
 			if (tab!=null) {
@@ -154,7 +154,7 @@ public class ArrayUtil {
 	 * @param elements are the elements to merge.
 	 * @return the array.
 	 */
-	public static <T> T[] merge(Class<T> clazz, T... elements) {
+	public static <T> T[] merge(Class<T> clazz, @SuppressWarnings("unchecked") T... elements) {
 		T[] result = newInstance(clazz,elements.length);
 		System.arraycopy(elements,0,result,0,elements.length);
 		return result;
@@ -169,7 +169,7 @@ public class ArrayUtil {
 	 * @param elements are the elements to merge.
 	 * @return the array.
 	 */
-	public static <T> T[] merge_without_null(Class<T> clazz, T... elements) {
+	public static <T> T[] merge_without_null(Class<T> clazz, @SuppressWarnings("unchecked") T... elements) {
 		int l = 0;
 		for (T t : elements) {
 			if (t!=null) ++l;
@@ -192,7 +192,7 @@ public class ArrayUtil {
 	 * @param elements are the elements to merge.
 	 * @return the array.
 	 */
-	public static <T> T[] merge(Class<T> clazz, T[] source, T... elements) {
+	public static <T> T[] merge(Class<T> clazz, T[] source, @SuppressWarnings("unchecked") T... elements) {
 		T[] result = newInstance(clazz,source.length+elements.length);
 		System.arraycopy(source,0,result,0,source.length);
 		System.arraycopy(elements,0,result,source.length,elements.length);
@@ -209,7 +209,7 @@ public class ArrayUtil {
 	 * @param elements are the elements to merge.
 	 * @return the array.
 	 */
-	public static <T> T[] merge_without_null(Class<T> clazz, T[] source, T... elements) {
+	public static <T> T[] merge_without_null(Class<T> clazz, T[] source, @SuppressWarnings("unchecked") T... elements) {
 		int l=0;
 		for (T t : source) {
 			if (t!=null) ++l;
@@ -236,8 +236,8 @@ public class ArrayUtil {
 	 * @param to_remove are the elements to remove.
 	 * @return the array without the removed elements.
 	 */
-	public static <T> T[] removeElements(Class<T> clazz, T[] source, T... to_remove) {
-		ArrayList<T> list = new ArrayList<T>();
+	public static <T> T[] removeElements(Class<T> clazz, T[] source, @SuppressWarnings("unchecked") T... to_remove) {
+		ArrayList<T> list = new ArrayList<>();
 		list.addAll(Arrays.asList(source));
 		for (T t : to_remove) {
 			list.remove(t);
@@ -303,7 +303,7 @@ public class ArrayUtil {
 	 */
 	public static <T> T[] restrictArray(T[] original_array, Class<T> clazz, Filter<T> comparator) {
 		int l = (original_array==null) ? 0 : original_array.length;
-		final ArrayList<T> result = new ArrayList<T>();
+		final ArrayList<T> result = new ArrayList<>();
 		if ((original_array!=null)&&(l>0)) {
 			for (T to : original_array) {
 				if (comparator.filter(to)) {
@@ -326,7 +326,7 @@ public class ArrayUtil {
 	@SuppressWarnings("unchecked")
 	public static <TO,TT> TT[] castRestrictedArray(TO[] original_array, Class<TT> clazz) {
 		int l = (original_array==null) ? 0 : original_array.length;
-		final ArrayList<TT> result = new ArrayList<TT>();
+		final ArrayList<TT> result = new ArrayList<>();
 		if ((original_array!=null)&&(l>0)) {
 			for (TO to : original_array) {
 				if (clazz.isInstance(to)) {
@@ -349,7 +349,7 @@ public class ArrayUtil {
 	@SuppressWarnings("unchecked")
 	public static <TO,TT> TT[] castRestrictedArray(Collection<TO> original_array, Class<TT> clazz) {
 		int l = (original_array==null) ? 0 : original_array.size();
-		final ArrayList<TT> result = new ArrayList<TT>();
+		final ArrayList<TT> result = new ArrayList<>();
 		if ((original_array!=null)&&(l>0)) {
 			for (TO to : original_array) {
 				if (clazz.isInstance(to)) {
@@ -411,7 +411,7 @@ public class ArrayUtil {
 	 * @param array is the array inside which the search must be done.
 	 * @return <code>true</code> if the element is inside the array, otherwise <code>false</code>
 	 */
-	public static <T> boolean contains(T elt, T... array) {
+	public static <T> boolean contains(T elt, @SuppressWarnings("unchecked") T... array) {
 		for (T t : array) {
 			if ((t==elt)||
 				((t!=null)&&
@@ -435,7 +435,7 @@ public class ArrayUtil {
 	 * @return <code>true</code> if the element is inside the array, otherwise <code>false</code>
 	 * @since 4.0
 	 */
-	public static <T> boolean contains(Comparator<T> comparator, T elt, T... array) {
+	public static <T> boolean contains(Comparator<T> comparator, T elt, @SuppressWarnings("unchecked") T... array) {
 		assert(comparator!=null);
 		assert(elt!=null);
 		assert(array!=null);
@@ -753,7 +753,7 @@ public class ArrayUtil {
 	 * @return an iterator
 	 */
 	public static <T> SizedIterator<T> sizedIterator(T[] array) {
-		return new ArraySizedIterator<T>(array);
+		return new ArraySizedIterator<>(array);
 	}
 
 	/** Replies a sized iterator on the objects.
@@ -764,7 +764,7 @@ public class ArrayUtil {
 	 * @since 4.1
 	 */
 	public static <T> Iterator<T> iterator(T[] array) {
-		return new ArraySizedIterator<T>(array);
+		return new ArraySizedIterator<>(array);
 	}
 
 	/** Replies a sized iterator on the objects.
@@ -931,7 +931,7 @@ public class ArrayUtil {
 	 * Some utilities functions for arrays. 
 	 *
 	 * @param <T> is the type of the value to pass to the filter.
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -947,7 +947,7 @@ public class ArrayUtil {
 	}	
 	
 	/**
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavenartifactid $ArtifactId$
 	 * @mavengroupid $GroupId$
@@ -1017,7 +1017,7 @@ public class ArrayUtil {
 	} // class NativeBooleanToObjectBooleanIterator
 
 	/**
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavenartifactid $ArtifactId$
 	 * @mavengroupid $GroupId$
@@ -1087,7 +1087,7 @@ public class ArrayUtil {
 	} // class NativeCharacterToObjectCharacterIterator
 
 	/**
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavenartifactid $ArtifactId$
 	 * @mavengroupid $GroupId$
@@ -1157,7 +1157,7 @@ public class ArrayUtil {
 	} // class NativeByteToObjectByteIterator
 
 	/**
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavenartifactid $ArtifactId$
 	 * @mavengroupid $GroupId$
@@ -1227,7 +1227,7 @@ public class ArrayUtil {
 	} // class NativeShortToObjectShortIterator
 	
 	/**
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavenartifactid $ArtifactId$
 	 * @mavengroupid $GroupId$
@@ -1297,7 +1297,7 @@ public class ArrayUtil {
 	} // class NativeIntegerToObjectIntegerIterator
 
 	/**
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavenartifactid $ArtifactId$
 	 * @mavengroupid $GroupId$
@@ -1367,7 +1367,7 @@ public class ArrayUtil {
 	} // class NativeLongToObjectLongIterator
 
 	/**
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavenartifactid $ArtifactId$
 	 * @mavengroupid $GroupId$
@@ -1437,7 +1437,7 @@ public class ArrayUtil {
 	} // class NativeFloatToObjectFloatIterator
 
 	/**
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavenartifactid $ArtifactId$
 	 * @mavengroupid $GroupId$

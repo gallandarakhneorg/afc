@@ -30,7 +30,7 @@ import org.arakhne.afc.attrs.attr.AttributeImpl;
 /**
  * Comparator for attribute names as strings.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

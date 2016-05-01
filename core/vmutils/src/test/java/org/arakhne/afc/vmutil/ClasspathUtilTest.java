@@ -20,6 +20,10 @@
  */
 package org.arakhne.afc.vmutil;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
@@ -28,38 +32,21 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import org.arakhne.afc.vmutil.ClasspathUtil;
-import org.arakhne.afc.vmutil.FileSystem;
-
-import junit.framework.TestCase;
+import org.junit.Test;
 
 /**
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid org.arakhne.afc
  * @mavenartifactid arakhneVmutils
  */
-public class ClasspathUtilTest extends TestCase {
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void setUp() throws Exception {
-		super.setUp();
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void tearDown() throws Exception {
-		super.tearDown();
-	}
+@SuppressWarnings("static-method")
+public class ClasspathUtilTest {
 
 	/**
 	 */
-	public static void testGetStartClasspath() {
+	@Test
+	public void testGetStartClasspath() {
 		Iterator<URL> urls = ClasspathUtil.getStartClasspath();
 		assertNotNull(urls);
 		
@@ -75,13 +62,14 @@ public class ClasspathUtilTest extends TestCase {
 	
 	/**
 	 */
-	public static void testGetCurrentClasspath_standardClassLoader() {
+	@Test
+	public void testGetCurrentClasspath_standardClassLoader() {
 		Iterator<URL> urls = ClasspathUtil.getClasspath();
 		assertNotNull(urls);
 		
 		String[] paths = System.getProperty("java.class.path").split( //$NON-NLS-1$
 				Pattern.quote(File.pathSeparator));
-		List<String> list = new ArrayList<String>(Arrays.asList(paths));
+		List<String> list = new ArrayList<>(Arrays.asList(paths));
 
 		while (urls.hasNext()) {
 			URL u2 = urls.next();

@@ -25,7 +25,7 @@ package org.arakhne.afc.sizediterator;
  * Owner of a {@link ModifiableCollectionSizedIterator}
  *  
  * @param <M> is the type of element.
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

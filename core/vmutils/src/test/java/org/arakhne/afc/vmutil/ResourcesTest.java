@@ -20,21 +20,24 @@
  */
 package org.arakhne.afc.vmutil;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
-import org.arakhne.afc.vmutil.Resources;
-
-import junit.framework.TestCase;
+import org.junit.Test;
 
 /**
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid org.arakhne.afc
  * @mavenartifactid arakhneVmutils
  */
-public class ResourcesTest extends TestCase {
+@SuppressWarnings("static-method")
+public class ResourcesTest {
 
 	private static final String TEST_NAME_1 = "/org/arakhne/afc/vmutil/test.txt"; //$NON-NLS-1$
 	private static final String TEST_NAME_2 = "org/arakhne/afc/vmutil/test.txt"; //$NON-NLS-1$
@@ -44,7 +47,8 @@ public class ResourcesTest extends TestCase {
 	
 	/**
 	 */
-	public static void testGetResourceString() {
+	@Test
+	public void testGetResourceString() {
 		assertNull(Resources.getResource(null));
 
 		URL u1 = Resources.getResource(TEST_NAME_1);
@@ -58,7 +62,8 @@ public class ResourcesTest extends TestCase {
 
 	/**
 	 */
-	public static void testGetResourceClassString() {
+	@Test
+	public void testGetResourceClassString() {
 		assertNull(Resources.getResource(ResourcesTest.class, null));
 
 		URL u1 = Resources.getResource(ResourcesTest.class, TEST_NAME_1);
@@ -84,7 +89,8 @@ public class ResourcesTest extends TestCase {
 
 	/**
 	 */
-	public static void testGetResourcePackageString() {
+	@Test
+	public void testGetResourcePackageString() {
 		ClassLoader l = ResourcesTest.class.getClassLoader();
 		Package p = Package.getPackage(PACKAGE_NAME);
 		assertNull(Resources.getResource(ResourcesTest.class, null));
@@ -114,7 +120,8 @@ public class ResourcesTest extends TestCase {
 
 	/**
 	 */
-	public static void testGetResourceClassLoaderString() {
+	@Test
+	public void testGetResourceClassLoaderString() {
 		assertNull(Resources.getResource(ResourcesTest.class.getClassLoader(), null));    	
 
 		URL u1 = Resources.getResource(ResourcesTest.class.getClassLoader(), TEST_NAME_1);
@@ -139,196 +146,120 @@ public class ResourcesTest extends TestCase {
 	/**
 	 * @throws IOException 
 	 */
-	public static void testGetResourceAsStreamString() throws IOException {
+	@Test
+	public void testGetResourceAsStreamString() throws IOException {
 		assertNull(Resources.getResourceAsStream(null));
 
-		InputStream is = Resources.getResourceAsStream(TEST_NAME_1);
-		try {
+		try (InputStream is = Resources.getResourceAsStream(TEST_NAME_1)) {
 			assertNotNull(is);
-		}
-		finally {
-			if (is!=null) is.close();
 		}
 
-		is = Resources.getResourceAsStream(TEST_NAME_2);
-		try {
+		try (InputStream is = Resources.getResourceAsStream(TEST_NAME_2)) {
 			assertNotNull(is);
-		}
-		finally {
-			if (is!=null) is.close();
 		}
 	}
 
 	/**
 	 * @throws IOException 
 	 */
-	public static void testGetResourceAsStreamClassString() throws IOException {
+	@Test
+	public void testGetResourceAsStreamClassString() throws IOException {
 		assertNull(Resources.getResourceAsStream(ResourcesTest.class, null));
 
-		InputStream is = Resources.getResourceAsStream(ResourcesTest.class, TEST_NAME_1);
-		try {
+		try (InputStream is = Resources.getResourceAsStream(ResourcesTest.class, TEST_NAME_1)) {
 			assertNotNull(is);
-		}
-		finally {
-			if (is!=null) is.close();
 		}
 
-		is = Resources.getResourceAsStream(ResourcesTest.class, TEST_NAME_2);
-		try {
+		try (InputStream is = Resources.getResourceAsStream(ResourcesTest.class, TEST_NAME_2)) {
 			assertNotNull(is);
-		}
-		finally {
-			if (is!=null) is.close();
 		}
 
-		is = Resources.getResourceAsStream(ResourcesTest.class, TEST_NAME_3);
-		try {
+		try (InputStream is = Resources.getResourceAsStream(ResourcesTest.class, TEST_NAME_3)) {
 			assertNotNull(is);
-		}
-		finally {
-			if (is!=null) is.close();
 		}
 
-		is = Resources.getResourceAsStream(ResourcesTest.class, TEST_NAME_4);
-		try {
+		try (InputStream is = Resources.getResourceAsStream(ResourcesTest.class, TEST_NAME_4)) {
 			assertNotNull(is);
-		}
-		finally {
-			if (is!=null) is.close();
 		}
 
 		assertNull(Resources.getResourceAsStream((Class<?>)null, null));
 
-		is = Resources.getResourceAsStream((Class<?>)null, TEST_NAME_1);
-		try {
+		try (InputStream is = Resources.getResourceAsStream((Class<?>)null, TEST_NAME_1)) {
 			assertNull(is);
-		}
-		finally {
-			if (is!=null) is.close();
 		}
 
-		is = Resources.getResourceAsStream((Class<?>)null, TEST_NAME_2);
-		try {
+		try (InputStream is = Resources.getResourceAsStream((Class<?>)null, TEST_NAME_2)) {
 			assertNull(is);
-		}
-		finally {
-			if (is!=null) is.close();
 		}
 
-		is = Resources.getResourceAsStream((Class<?>)null, TEST_NAME_3);
-		try {
+		try (InputStream is = Resources.getResourceAsStream((Class<?>)null, TEST_NAME_3)) {
 			assertNull(is);
-		}
-		finally {
-			if (is!=null) is.close();
 		}
 	}
 
 	/**
 	 * @throws IOException 
 	 */
-	public static void testGetResourceAsStreamPackageString() throws IOException {
+	@Test
+	public void testGetResourceAsStreamPackageString() throws IOException {
 		ClassLoader l = ResourcesTest.class.getClassLoader();
 		Package p = Package.getPackage(PACKAGE_NAME);
 		assertNull(Resources.getResourceAsStream(ResourcesTest.class, null));
 
-		InputStream is = Resources.getResourceAsStream(l, p, TEST_NAME_1);
-		try {
+		try (InputStream is = Resources.getResourceAsStream(l, p, TEST_NAME_1)) {
 			assertNull(is);
 		}
-		finally {
-			if (is!=null) is.close();
-		}
 
-		is = Resources.getResourceAsStream(l, p, TEST_NAME_2);
-		try {
+		try (InputStream is = Resources.getResourceAsStream(l, p, TEST_NAME_2)) {
 			assertNull(is);
 		}
-		finally {
-			if (is!=null) is.close();
-		}
 
-		is = Resources.getResourceAsStream(l, p, TEST_NAME_3);
-		try {
+		try (InputStream is = Resources.getResourceAsStream(l, p, TEST_NAME_3)) {
 			assertNotNull(is);
 		}
-		finally {
-			if (is!=null) is.close();
-		}
 
-		is = Resources.getResourceAsStream(l, p, TEST_NAME_4);
-		try {
+		try (InputStream is = Resources.getResourceAsStream(l, p, TEST_NAME_4)) {
 			assertNotNull(is);
-		}
-		finally {
-			if (is!=null) is.close();
 		}
 
 		assertNull(Resources.getResourceAsStream(l, (Package)null, null));
 
-		is = Resources.getResourceAsStream(l, (Package)null, TEST_NAME_1);
-		try {
+		try (InputStream is = Resources.getResourceAsStream(l, (Package)null, TEST_NAME_1)) {
 			assertNull(is);
-		}
-		finally {
-			if (is!=null) is.close();
 		}
 
-		is = Resources.getResourceAsStream(l, (Package)null, TEST_NAME_2);
-		try {
+		try (InputStream is = Resources.getResourceAsStream(l, (Package)null, TEST_NAME_2)) {
 			assertNull(is);
-		}
-		finally {
-			if (is!=null) is.close();
 		}
 
-		is = Resources.getResourceAsStream(l, (Package)null, TEST_NAME_3);
-		try {
+		try (InputStream is = Resources.getResourceAsStream(l, (Package)null, TEST_NAME_3)) {
 			assertNull(is);
-		}
-		finally {
-			if (is!=null) is.close();
 		}
 	}
 
 	/**
 	 * @throws IOException 
 	 */
-	public static void testGetResourceAsStreamClassLoaderString() throws IOException {
+	@Test
+	public void testGetResourceAsStreamClassLoaderString() throws IOException {
 		assertNull(Resources.getResourceAsStream(ResourcesTest.class.getClassLoader(), null));
 
-		InputStream is = Resources.getResourceAsStream(ResourcesTest.class.getClassLoader(), TEST_NAME_1);
-		try {
+		try (InputStream is = Resources.getResourceAsStream(ResourcesTest.class.getClassLoader(), TEST_NAME_1)) {
 			assertNotNull(is);
-		}
-		finally {
-			if (is!=null) is.close();
 		}
 
-		is = Resources.getResourceAsStream(ResourcesTest.class.getClassLoader(), TEST_NAME_2);
-		try {
+		try (InputStream is = Resources.getResourceAsStream(ResourcesTest.class.getClassLoader(), TEST_NAME_2)) {
 			assertNotNull(is);
-		}
-		finally {
-			if (is!=null) is.close();
 		}
 
 		assertNull(Resources.getResourceAsStream((ClassLoader)null, null));
 
-		is = Resources.getResourceAsStream((ClassLoader)null, TEST_NAME_1);
-		try {
+		try (InputStream is = Resources.getResourceAsStream((ClassLoader)null, TEST_NAME_1)) {
 			assertNotNull(is);
-		}
-		finally {
-			if (is!=null) is.close();
 		}
 
-		is = Resources.getResourceAsStream((ClassLoader)null, TEST_NAME_2);
-		try {
+		try (InputStream is = Resources.getResourceAsStream((ClassLoader)null, TEST_NAME_2)) {
 			assertNotNull(is);
-		}
-		finally {
-			if (is!=null) is.close();
 		}
 	}
 

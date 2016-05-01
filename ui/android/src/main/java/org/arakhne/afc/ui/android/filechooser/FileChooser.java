@@ -34,11 +34,13 @@ import android.util.Log;
 /**
  * Utilities about file choosers.  
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public class FileChooser {
 
 	/** Show the file chooser for opening a file.

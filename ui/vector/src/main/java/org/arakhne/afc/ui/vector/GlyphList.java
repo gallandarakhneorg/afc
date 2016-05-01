@@ -27,12 +27,14 @@ import org.arakhne.afc.math.continous.object2d.Shape2f;
 /** Interface that is representing a list of glyphs
  * associated to a font. 
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @see Font
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public interface GlyphList {
 
 	/** Replies the size of the list.

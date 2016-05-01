@@ -36,11 +36,13 @@ import org.arakhne.afc.vmutil.Resources;
 /** This graphic context permits to display
  *  something with a level of details.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public abstract class AbstractVectorGraphics2D implements VectorGraphics2D {
 
 	private boolean isInteriorPainted = true;
@@ -66,9 +68,9 @@ public abstract class AbstractVectorGraphics2D implements VectorGraphics2D {
 			if (url!=null) {
 				try {
 					noPictureImage = VectorToolkit.image(url);
-					noPictureBuffer = new SoftReference<Image>(noPictureImage);
+					noPictureBuffer = new SoftReference<>(noPictureImage);
 				}
-				catch(Throwable _) {
+				catch(Throwable exception) {
 					noPictureImage = null;
 					noPictureBuffer = null;
 				}
@@ -83,7 +85,7 @@ public abstract class AbstractVectorGraphics2D implements VectorGraphics2D {
 			Image originalImage = getNoPicture();
 			if (originalImage!=null) {
 				noPictureImage = VectorToolkit.image(originalImage, -.5f);
-				noTransparentPictureBuffer = new SoftReference<Image>(noPictureImage);
+				noTransparentPictureBuffer = new SoftReference<>(noPictureImage);
 			}
 		}
 		return noPictureImage;

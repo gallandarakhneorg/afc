@@ -39,7 +39,7 @@ import java.net.URL;
  * retreive and load native libraries. When it is
  * disable, it ignore all the loading queries. 
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -249,18 +249,14 @@ public class LibraryLoader {
     	  File f = File.createTempFile(prefix,suffix);
     	  
     	  // Copy the library code into the local file
-    	  FileOutputStream outs = new FileOutputStream(f);
-		  InputStream ins = filename.openStream();
-    	  try {
-	    	  byte[] buffer = new byte[2048];
-	    	  int lu;
-	    	  while ((lu=ins.read(buffer))>0) {
-	    		  outs.write(buffer,0,lu);
-	    	  }
-    	  }
-    	  finally {
-    		  ins.close();
-    		  outs.close();
+    	  try (FileOutputStream outs = new FileOutputStream(f)) {
+        	  try (InputStream ins = filename.openStream()) {
+    	    	  byte[] buffer = new byte[2048];
+    	    	  int lu;
+    	    	  while ((lu=ins.read(buffer))>0) {
+    	    		  outs.write(buffer,0,lu);
+    	    	  }
+        	  }
     	  }
 
     	  // Load the library from the local file
@@ -310,7 +306,7 @@ public class LibraryLoader {
 			catch(AssertionError e) {
 				throw e;
 			}
-			catch(Throwable _) {
+			catch(Throwable exception) {
 				//
 			}
 		}
@@ -401,8 +397,7 @@ public class LibraryLoader {
 				throw e;
 			}
 			catch(Throwable e) {
-				System.err.println("could not load "+url); //$NON-NLS-1$
-				e.printStackTrace();
+				//
 			}
     	}
     	// Eclipse version  (according to Maven module)
@@ -418,8 +413,7 @@ public class LibraryLoader {
 					throw e;
 				}
     			catch(Throwable e) {
-    				System.err.println("could not load "+url); //$NON-NLS-1$
-    				e.printStackTrace();
+    				//
     			}
         	}
     	}

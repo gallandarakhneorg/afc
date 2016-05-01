@@ -21,15 +21,18 @@
 package org.arakhne.afc.math.continous.object2d;
 
 import org.arakhne.afc.math.generic.Tuple2D;
+import org.arakhne.afc.math.geometry.d2.UnmodifiablePoint2D;
 
 /** This class implements a Point2f that cannot be modified by
  * the setters. 
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see {@link UnmodifiablePoint2D}
  */
+@Deprecated
 public class UnmodifiablePoint2f extends Point2f {
 
 	private static final long serialVersionUID = -8670105082548919880L;

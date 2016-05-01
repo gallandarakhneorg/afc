@@ -28,7 +28,7 @@ import java.util.NavigableSet;
 /**
  * Utilities on lists.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -36,22 +36,6 @@ import java.util.NavigableSet;
  */
 public class ListUtil {
 
-	/** Remove the given element from the list using a dichotomic algorithm.
-	 * <p>
-	 * This function ensure that the comparator is invoked as: <code>comparator(data, dataAlreadyInList)</code>.
-	 * 
-	 * @param <E> is the type of the elements in the list.
-	 * @param list is the list to change.
-	 * @param comparator is the comparator of elements.
-	 * @param data is the data to remove.
-	 * @return <code>true</code> if the data was removed, otherwise <code>false</code>
-	 * @deprecated see {@link #remove(List, Comparator, Object)}
-	 */
-	@Deprecated
-	public static <E> boolean dichotomicRemove(List<E> list, Comparator<? super E> comparator, E data) {
-		return remove(list, comparator, data)>=0;
-	}
-	
 	/** Remove the given element from the list using a dichotomic algorithm.
 	 * <p>
 	 * This function ensure that the comparator is invoked as: <code>comparator(data, dataAlreadyInList)</code>.
@@ -102,26 +86,6 @@ public class ListUtil {
 	 * @param data is the data to insert.
 	 * @param allowMultipleOccurencesOfSameValue indicates if multiple
 	 * occurrences of the same value are allowed in the list.
-	 * @return <code>true</code> if the data was added, otherwise <code>false</code>
-	 * @deprecated see {@link #add(List, Comparator, Object, boolean, boolean)}
-	 */
-	@Deprecated
-	public static <E> boolean dichotomicAdd(List<E> list, Comparator<? super E> comparator, E data, boolean allowMultipleOccurencesOfSameValue) {
-		return add(list, comparator, data, allowMultipleOccurencesOfSameValue, false)>=0;
-	}
-	
-	/** Add the given element in the main list using a dichotomic algorithm.
-	 * <p>
-	 * This function ensure that the comparator is invoked as: <code>comparator(data, dataAlreadyInList)</code>.
-	 * <p>
-	 * If the data is al
-	 * 
-	 * @param <E> is the type of the elements in the list.
-	 * @param list is the list to change.
-	 * @param comparator is the comparator of elements.
-	 * @param data is the data to insert.
-	 * @param allowMultipleOccurencesOfSameValue indicates if multiple
-	 * occurrences of the same value are allowed in the list.
 	 * @param allowReplacement indicates if the given <vaz>elt</var> may replace
 	 * the found element.
 	 * @return the index where the element was inserted, or <code>-1</code>
@@ -158,22 +122,6 @@ public class ListUtil {
 		return f;
 	}
 
-	/** Replies if the given element is inside the list, using a dichotomic algorithm.
-	 * <p>
-	 * This function ensure that the comparator is invoked as: <code>comparator(data, dataAlreadyInList)</code>.
-	 * 
-	 * @param <E> is the type of the elements in the list.
-	 * @param list is the list to explore.
-	 * @param comparator is the comparator of elements.
-	 * @param data is the data to search for.
-	 * @return <code>true</code> if the data is inside the list, otherwise <code>false</code>
-	 * @deprecated see {@link #contains(List, Comparator, Object)}
-	 */
-	@Deprecated
-	public static <E> boolean dichotomicContains(List<E> list, Comparator<? super E> comparator, E data) {
-		return contains(list, comparator, data);
-	}
-	
 	/** Replies if the given element is inside the list, using a dichotomic algorithm.
 	 * <p>
 	 * This function ensure that the comparator is invoked as: <code>comparator(data, dataAlreadyInList)</code>.
@@ -258,7 +206,7 @@ public class ListUtil {
 		catch(AssertionError e) {
 			throw e;
 		}
-		catch(Throwable _) {
+		catch(Throwable exception) {
 			//
 		}
 		return -1;
@@ -312,7 +260,7 @@ public class ListUtil {
 		catch(AssertionError e) {
 			throw e;
 		}
-		catch(Throwable _) {
+		catch(Throwable exception) {
 			//
 		}
 		return -1;
@@ -383,7 +331,7 @@ public class ListUtil {
 		catch(AssertionError e) {
 			throw e;
 		}
-		catch(Throwable _) {
+		catch(Throwable exception) {
 			return -1;
 		}
 	}
@@ -438,7 +386,7 @@ public class ListUtil {
 		catch(AssertionError e) {
 			throw e;
 		}
-		catch(Throwable _) {
+		catch(Throwable exception) {
 			return -1;
 		}
 	}
@@ -492,7 +440,7 @@ public class ListUtil {
 		catch(AssertionError e) {
 			throw e;
 		}
-		catch(Throwable _) {
+		catch(Throwable exception) {
 			return -1;
 		}
 	}
@@ -541,7 +489,7 @@ public class ListUtil {
 		catch(AssertionError e) {
 			throw e;
 		}
-		catch(Throwable _) {
+		catch(Throwable exception) {
 			return -1;
 		}
 	}
@@ -588,7 +536,7 @@ public class ListUtil {
 		catch(AssertionError e) {
 			throw e;
 		}
-		catch(Throwable _) {
+		catch(Throwable exception) {
 			return -1;
 		}
 	}

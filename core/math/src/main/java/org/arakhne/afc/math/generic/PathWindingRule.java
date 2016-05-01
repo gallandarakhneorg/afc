@@ -24,11 +24,13 @@ package org.arakhne.afc.math.generic;
 
 /** The winding rule to determine the interior of a path.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see {@link org.arakhne.afc.math.geometry.PathWindingRule}
  */
+@Deprecated
 public enum PathWindingRule {
 
 	/** The winding rule constant for specifying an even-odd rule

@@ -24,7 +24,7 @@ import java.util.Map;
 import org.arakhne.afc.references.WeakValueTreeMap;
 
 /**
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -42,7 +42,7 @@ public class WeakValueTreeMapTest extends AbstractReferencableValueMapTestCase {
 	 */
 	@Override
 	protected Map<String,String> createMap() {
-		return new WeakValueTreeMap<String,String>();
+		return new WeakValueTreeMap<>();
 	}
 
 }

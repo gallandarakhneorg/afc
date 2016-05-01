@@ -52,12 +52,14 @@ import javax.swing.text.Document;
  * This class provides a UI panel that permits to enter
  * the string in a popup text field.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 4.0
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public class JPopupTextField extends JPanel {
 
 	private static final long serialVersionUID = 374219507363847111L;
@@ -79,7 +81,7 @@ public class JPopupTextField extends JPanel {
 	 */
 	public JPopupTextField(JComponent owner, Color borderColor, Color backColor) {
 		setFocusable(true);
-		this.component = new WeakReference<JComponent>(owner);
+		this.component = new WeakReference<>(owner);
 		Font font = this.textField.getFont();
 		int size = font.getSize() - 2;
 		Font smallFont = font.deriveFont(size);
@@ -365,7 +367,7 @@ public class JPopupTextField extends JPanel {
 	}
 
 	/**
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

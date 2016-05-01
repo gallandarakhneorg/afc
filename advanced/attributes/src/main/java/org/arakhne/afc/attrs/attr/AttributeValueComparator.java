@@ -30,7 +30,7 @@ import java.util.Comparator;
 /**
  * This class permits to compare to {@link AttributeValue}.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

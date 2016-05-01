@@ -29,7 +29,7 @@ import java.io.File;
  * <p>
  * CAUTION: This Mojo override the value of the source directory.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

@@ -47,7 +47,7 @@ import org.arakhne.afc.vmutil.locale.Locale;
 /**
  * This class permits to manipulate texts.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -140,7 +140,7 @@ public class TextUtil {
             return null;
         }
         
-        map = new TreeMap<String,Integer>();
+        map = new TreeMap<>();
         
         String[] pairs = result.split("(\\}\\{)|\\{|\\}"); //$NON-NLS-1$
         Integer isoCode;
@@ -153,14 +153,14 @@ public class TextUtil {
         		isoCode = Integer.valueOf(code);
         		if (isoCode!=null) map.put(entity, isoCode);
         	}
-        	catch(Throwable _) {
+        	catch(Throwable exception) {
         		//
         	}
 		}
         
 		try {
 			lock.lock();
-			htmlToJavaTransTbl = new SoftReference<Map<String,Integer>>(map);
+			htmlToJavaTransTbl = new SoftReference<>(map);
 		}
 		finally {
 			lock.unlock();
@@ -212,7 +212,7 @@ public class TextUtil {
             return null;
         }
         
-        map = new TreeMap<Character,String>();
+        map = new TreeMap<>();
         
         String[] pairs = result.split("(\\}\\{)|\\{|\\}"); //$NON-NLS-1$
         Integer isoCode;
@@ -225,14 +225,14 @@ public class TextUtil {
         		isoCode = Integer.valueOf(code);
         		if (isoCode!=null) map.put((char)isoCode.intValue(), entity);
         	}
-        	catch(Throwable _) {
+        	catch(Throwable exception) {
         		//
         	}
 		}
         
 		try {
 			lock.lock();
-			javaToHtmlTransTbl = new SoftReference<Map<Character,String>>(map);
+			javaToHtmlTransTbl = new SoftReference<>(map);
 		}
 		finally {
 			lock.unlock();
@@ -270,7 +270,7 @@ public class TextUtil {
 				try {
 					isoCode = Integer.valueOf(entity.substring(2), 16);
 				}
-				catch(Throwable _) {
+				catch(Throwable exception) {
 					isoCode = null;
 				}
 			}
@@ -278,7 +278,7 @@ public class TextUtil {
 				try {
 					isoCode = Integer.valueOf(entity.substring(1));
 				}
-				catch(Throwable _) {
+				catch(Throwable exception) {
 					isoCode = null;
 				}
 			}
@@ -364,7 +364,7 @@ public class TextUtil {
 	 * @return the given <var>text</var> splitted in lines separated by <code>\n</code>.
 	 */
 	public static String[] cutStringAsArray(String text, int column) {
-		List<String> list = new ArrayList<String>();
+		List<String> list = new ArrayList<>();
 		cutStringAlgo(text, new CutStringColumnCritera(column), new CutStringToArray(list));
 		String[] result = new String[list.size()];
 		list.toArray(result);
@@ -501,7 +501,7 @@ public class TextUtil {
             return null;
         }
         
-        map = new TreeMap<Character,String>();
+        map = new TreeMap<>();
         
         String[] pairs = result.split("(\\}\\{)|\\{|\\}"); //$NON-NLS-1$
         for (String pair : pairs) {
@@ -512,7 +512,7 @@ public class TextUtil {
         
 		try {
 			lock.lock();
-			accentTransTbl = new SoftReference<Map<Character,String>>(map);
+			accentTransTbl = new SoftReference<>(map);
 		}
 		finally {
 			lock.unlock();
@@ -640,7 +640,7 @@ public class TextUtil {
 	 * @return the groups of strings
 	 */
 	public static List<String> splitAsList(char leftSeparator, char rightSeparator, String str) {
-		List<String> list = new ArrayList<String>();
+		List<String> list = new ArrayList<>();
 		splitSeparatorAlgorithm(
 				leftSeparator, rightSeparator, str,
 				new SplitSeparatorToListAlgorithm(list));
@@ -767,7 +767,7 @@ public class TextUtil {
 	 * @since 4.0
 	 */
 	public static List<UUID> splitAsUUIDs(char leftSeparator, char rightSeparator, String str) {
-		List<UUID> list = new ArrayList<UUID>();
+		List<UUID> list = new ArrayList<>();
 		splitSeparatorAlgorithm(leftSeparator, rightSeparator, str, new UUIDSplitSeparatorAlgorithm(list));
 		return list;
 	}
@@ -788,7 +788,7 @@ public class TextUtil {
 	 * @param strs is the array of strings.
 	 * @return the string with bracketed strings.
 	 */
-	public static <T> String mergeBrackets(T... strs) {
+	public static <T> String mergeBrackets(@SuppressWarnings("unchecked") T... strs) {
 		return join('{','}',strs);
 	}
 
@@ -811,7 +811,7 @@ public class TextUtil {
 	 * @return the string with merged strings.
 	 * @since 4.0
 	 */
-	public static <T> String join(char leftSeparator, char rightSeparator, T... strs) {
+	public static <T> String join(char leftSeparator, char rightSeparator, @SuppressWarnings("unchecked") T... strs) {
 		StringBuilder buffer = new StringBuilder();
 		for(Object s : strs) {
 			buffer.append(leftSeparator);
@@ -1164,7 +1164,7 @@ public class TextUtil {
 	 * @param elements
 	 * @return the joining text
 	 */
-	public static <T> String join(String joinText, T... elements) {
+	public static <T> String join(String joinText, @SuppressWarnings("unchecked") T... elements) {
 		return join(joinText, null, null, elements);
 	}
 
@@ -1269,7 +1269,7 @@ public class TextUtil {
 	 * @param elements
 	 * @return the joining text
 	 */
-	public static <T> String join(String joinText, String prefix, String postfix, T... elements) {
+	public static <T> String join(String joinText, String prefix, String postfix, @SuppressWarnings("unchecked") T... elements) {
 		return join(joinText, prefix, postfix, Arrays.asList(elements));
 	}
 
@@ -1472,7 +1472,7 @@ public class TextUtil {
 	 * Algorithm interface used by cut string functions to provide
 	 * a buffer filler.
 	 * 
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -1491,7 +1491,7 @@ public class TextUtil {
 	 * Algorithm interface used by split bracket functions to provide
 	 * a buffer filler.
 	 * 
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -1507,7 +1507,7 @@ public class TextUtil {
 	}
 
 	/**
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -1534,7 +1534,7 @@ public class TextUtil {
 	}
 	
 	/**
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -1563,7 +1563,7 @@ public class TextUtil {
 	}
 
 	/**
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -1589,7 +1589,7 @@ public class TextUtil {
 	}
 
 	/**
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -1638,7 +1638,7 @@ public class TextUtil {
 	}
 
 	/**
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -1666,7 +1666,7 @@ public class TextUtil {
 	/**
 	 * Define the cutting critera of the string.
 	 * 
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -1709,7 +1709,7 @@ public class TextUtil {
 	/**
 	 * Define the cutting critera of the string.
 	 * 
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

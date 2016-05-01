@@ -29,11 +29,13 @@ import org.arakhne.afc.math.matrix.Matrix4f;
 /** A 4 element unit quaternion represented by single precision floating 
  * point x,y,z,w coordinates.  The quaternion is always normalized.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated Replacement will be provided in Version 14.0
  */
+@Deprecated
 public class Quaternion implements Cloneable, Serializable {
 
 	private static final long serialVersionUID = 4494919776986180960L;
@@ -414,15 +416,15 @@ public class Quaternion implements Cloneable, Serializable {
 	 * @param m1 the Matrix4f
 	 */
 	public final void setFromMatrix(Matrix4f m1) {
-		float ww = 0.25f*(m1.m00 + m1.m11 + m1.m22 + m1.m33);
+		float ww = (float)(0.25f*(m1.getM00() + m1.getM11() + m1.getM22() + m1.getM33()));
 
 		if (ww >= 0) {
 			if (ww >= EPS2) {
 				this.w = (float) Math.sqrt(ww);
 				ww =  0.25f/this.w;
-				this.x = (m1.m21 - m1.m12)*ww;
-				this.y = (m1.m02 - m1.m20)*ww;
-				this.z = (m1.m10 - m1.m01)*ww;
+				this.x = (float)((m1.getM21() - m1.getM12())*ww);
+				this.y = (float)((m1.getM02() - m1.getM20())*ww);
+				this.z = (float)((m1.getM10() - m1.getM01())*ww);
 				return;
 			} 
 		}
@@ -435,14 +437,14 @@ public class Quaternion implements Cloneable, Serializable {
 		}
 
 		this.w = 0;
-		ww = -0.5f*(m1.m11 + m1.m22);
+		ww = (float)(-0.5f*(m1.getM11() + m1.getM22()));
 
 		if (ww >= 0) {
 			if (ww >= EPS2) {
 				this.x = (float) Math.sqrt(ww);
 				ww = 1.0f/(2.0f*this.x);
-				this.y = m1.m10*ww;
-				this.z = m1.m20*ww;
+				this.y = (float)(m1.getM10()*ww);
+				this.z = (float)(m1.getM20()*ww);
 				return;
 			}
 		} else {
@@ -453,11 +455,11 @@ public class Quaternion implements Cloneable, Serializable {
 		}
 
 		this.x = 0;
-		ww = 0.5f*(1.0f - m1.m22);
+		ww = (float)(0.5f*(1.0f - m1.getM22()));
 
 		if (ww >= EPS2) {
 			this.y = (float) Math.sqrt(ww);
-			this.z = m1.m21/(2.0f*this.y);
+			this.z = (float)(m1.getM21()/(2.0f*this.y));
 			return;
 		}
 
@@ -471,15 +473,15 @@ public class Quaternion implements Cloneable, Serializable {
 	 * @param m1 the Matrix3f
 	 */
 	public final void setFromMatrix(Matrix3f m1) {
-		float ww = 0.25f*(m1.m00 + m1.m11 + m1.m22 + 1.0f);
+		float ww = (float)(0.25f*(m1.getM00() + m1.getM11() + m1.getM22() + 1.0f));
 
 		if (ww >= 0) {
 			if (ww >= EPS2) {
 				this.w = (float) Math.sqrt(ww);
 				ww = 0.25f/this.w;
-				this.x = (m1.m21 - m1.m12)*ww;
-				this.y = (m1.m02 - m1.m20)*ww;
-				this.z = (m1.m10 - m1.m01)*ww;
+				this.x = (float)((m1.getM21() - m1.getM12())*ww);
+				this.y = (float)((m1.getM02() - m1.getM20())*ww);
+				this.z = (float)((m1.getM10() - m1.getM01())*ww);
 				return;
 			}
 		} else {
@@ -491,13 +493,13 @@ public class Quaternion implements Cloneable, Serializable {
 		}
 
 		this.w = 0;
-		ww = -0.5f*(m1.m11 + m1.m22);
+		ww = (float)(-0.5f*(m1.getM11() + m1.getM22()));
 		if (ww >= 0) {
 			if (ww >= EPS2) {
 				this.x = (float) Math.sqrt(ww);
 				ww = 0.5f/this.x;
-				this.y = m1.m10*ww;
-				this.z = m1.m20*ww;
+				this.y = (float)(m1.getM10()*ww);
+				this.z = (float)(m1.getM20()*ww);
 				return;
 			}
 		} else {
@@ -508,10 +510,10 @@ public class Quaternion implements Cloneable, Serializable {
 		}
 
 		this.x = 0;
-		ww =  0.5f*(1.0f - m1.m22);
+		ww =  (float)(0.5f*(1.0f - m1.getM22()));
 		if (ww >= EPS2) {
 			this.y = (float) Math.sqrt(ww);
-			this.z = m1.m21/(2.0f*this.y);
+			this.z = (float)(m1.getM21()/(2.0f*this.y));
 			return;
 		}
 

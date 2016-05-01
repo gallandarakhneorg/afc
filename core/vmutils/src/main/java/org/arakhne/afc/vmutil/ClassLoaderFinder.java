@@ -29,7 +29,7 @@ package org.arakhne.afc.vmutil;
  * {@link #setPreferredClassLoader(ClassLoader)}.
  * If none was found, the default class loader will be replied.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

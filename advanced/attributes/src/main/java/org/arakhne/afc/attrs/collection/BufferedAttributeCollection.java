@@ -49,7 +49,7 @@ import org.arakhne.afc.ui.vector.Image;
  * 
  * XXX: Make this provider to save asynchronously on the remote storage area.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -58,7 +58,7 @@ public abstract class BufferedAttributeCollection extends AbstractAttributeColle
 	
 	private static final long serialVersionUID = 1865614675044905721L;
 	
-	private transient Map<String,AttributeValue> cache = new SoftValueTreeMap<String,AttributeValue>();
+	private transient Map<String,AttributeValue> cache = new SoftValueTreeMap<>();
 	
 	/** Make a deep copy of this object and replies the copy.
 	 * 
@@ -67,7 +67,7 @@ public abstract class BufferedAttributeCollection extends AbstractAttributeColle
 	@Override
 	public BufferedAttributeCollection clone() {
 		BufferedAttributeCollection clone = (BufferedAttributeCollection)super.clone();
-		this.cache = new SoftValueTreeMap<String,AttributeValue>();
+		this.cache = new SoftValueTreeMap<>();
 		return clone;
 	}
 
@@ -136,7 +136,7 @@ public abstract class BufferedAttributeCollection extends AbstractAttributeColle
 	 */
 	@Override
 	public Collection<Attribute> getAllAttributes() {
-		ArrayList<Attribute> list = new ArrayList<Attribute>(getAttributeCount());
+		ArrayList<Attribute> list = new ArrayList<>(getAttributeCount());
 		Attribute newAttr;
 		for(String name : getAllAttributeNames()) {
 			if (name!=null) {
@@ -144,7 +144,7 @@ public abstract class BufferedAttributeCollection extends AbstractAttributeColle
 					newAttr = new AttributeImpl(name, extractValueFor(name));
 					list.add(newAttr);
 				}
-				catch(AttributeException _) {
+				catch(AttributeException exception) {
 					//
 				}
 			}
@@ -157,7 +157,7 @@ public abstract class BufferedAttributeCollection extends AbstractAttributeColle
 	 */
 	@Override
 	public Map<AttributeType,Collection<Attribute>> getAllAttributesByType() {
-		TreeMap<AttributeType,Collection<Attribute>> map = new TreeMap<AttributeType,Collection<Attribute>>();
+		TreeMap<AttributeType,Collection<Attribute>> map = new TreeMap<>();
 		Attribute newAttr;
 		for(String name : getAllAttributeNames()) {
 			if (name!=null) {
@@ -165,12 +165,12 @@ public abstract class BufferedAttributeCollection extends AbstractAttributeColle
 					newAttr = new AttributeImpl(name, extractValueFor(name));
 					Collection<Attribute> list = map.get(newAttr.getType());
 					if (list==null) {
-						list = new ArrayList<Attribute>();
+						list = new ArrayList<>();
 						map.put(newAttr.getType(), list);
 					}
 					list.add(newAttr);
 				}
-				catch(AttributeException _) {
+				catch(AttributeException exception) {
 					//
 				}
 			}
@@ -186,7 +186,7 @@ public abstract class BufferedAttributeCollection extends AbstractAttributeColle
 		try {
 			return new AttributeValueImpl(extractValueFor(name));
 		}
-		catch(AttributeException _) {
+		catch(AttributeException exception) {
 			//
 		}
 		return null;
@@ -201,7 +201,7 @@ public abstract class BufferedAttributeCollection extends AbstractAttributeColle
 		try {
 			value = new AttributeValueImpl(extractValueFor(name));
 		}
-		catch(AttributeException _) {
+		catch(AttributeException exception) {
 			value = default_value;
 		}
 		return value;
@@ -215,7 +215,7 @@ public abstract class BufferedAttributeCollection extends AbstractAttributeColle
 		try {
 			return new AttributeImpl(name,extractValueFor(name));
 		}
-		catch(AttributeException _) {
+		catch(AttributeException exception) {
 			//
 		}
 		return null;
@@ -253,7 +253,7 @@ public abstract class BufferedAttributeCollection extends AbstractAttributeColle
 		try {
 			oldValue = new AttributeValueImpl(extractValueFor(name));
 		}
-		catch(AttributeException _) {
+		catch(AttributeException exception) {
 			oldValue = null;
 		}
 				
@@ -283,7 +283,7 @@ public abstract class BufferedAttributeCollection extends AbstractAttributeColle
 		try {
 			oldValue = new AttributeValueImpl(extractValueFor(name));
 		}
-		catch(AttributeException _) {
+		catch(AttributeException exception) {
 			oldValue = null;
 		}
 		AttributeType oldType = (oldValue==null) ? null : oldValue.getType();
@@ -316,7 +316,7 @@ public abstract class BufferedAttributeCollection extends AbstractAttributeColle
 		try {
 			return setAttributeFromRawValue(name, AttributeType.BOOLEAN, Boolean.valueOf(value));
 		}
-		catch (AttributeException _) {
+		catch (AttributeException exception) {
 			return null;
 		}
 	}
@@ -329,7 +329,7 @@ public abstract class BufferedAttributeCollection extends AbstractAttributeColle
 		try {
 			return setAttributeFromRawValue(name, AttributeType.INTEGER, Long.valueOf(value));
 		}
-		catch (AttributeException _) {
+		catch (AttributeException exception) {
 			return null;
 		}
 	}
@@ -342,7 +342,7 @@ public abstract class BufferedAttributeCollection extends AbstractAttributeColle
 		try {
 			return setAttributeFromRawValue(name, AttributeType.INTEGER, Long.valueOf(value));
 		}
-		catch (AttributeException _) {
+		catch (AttributeException exception) {
 			return null;
 		}
 	}
@@ -355,7 +355,7 @@ public abstract class BufferedAttributeCollection extends AbstractAttributeColle
 		try {
 			return setAttributeFromRawValue(name, AttributeType.REAL, Double.valueOf(value));
 		}
-		catch (AttributeException _) {
+		catch (AttributeException exception) {
 			return null;
 		}
 	}
@@ -368,7 +368,7 @@ public abstract class BufferedAttributeCollection extends AbstractAttributeColle
 		try {
 			return setAttributeFromRawValue(name, AttributeType.REAL, Double.valueOf(value));
 		}
-		catch (AttributeException _) {
+		catch (AttributeException exception) {
 			return null;
 		}
 	}
@@ -381,7 +381,7 @@ public abstract class BufferedAttributeCollection extends AbstractAttributeColle
 		try {
 			return setAttributeFromRawValue(name, AttributeType.STRING, value);
 		}
-		catch (AttributeException _) {
+		catch (AttributeException exception) {
 			return null;
 		}
 	}
@@ -394,7 +394,7 @@ public abstract class BufferedAttributeCollection extends AbstractAttributeColle
 		try {
 			return setAttributeFromRawValue(name, AttributeType.UUID, value);
 		}
-		catch (AttributeException _) {
+		catch (AttributeException exception) {
 			return null;
 		}
 	}
@@ -407,7 +407,7 @@ public abstract class BufferedAttributeCollection extends AbstractAttributeColle
 		try {
 			return setAttributeFromRawValue(name, AttributeType.URL, value);
 		}
-		catch (AttributeException _) {
+		catch (AttributeException exception) {
 			return null;
 		}
 	}
@@ -420,7 +420,7 @@ public abstract class BufferedAttributeCollection extends AbstractAttributeColle
 		try {
 			return setAttributeFromRawValue(name, AttributeType.URI, value);
 		}
-		catch (AttributeException _) {
+		catch (AttributeException exception) {
 			return null;
 		}
 	}
@@ -429,11 +429,12 @@ public abstract class BufferedAttributeCollection extends AbstractAttributeColle
 	 * {@inheritDoc}
 	 */
 	@Override
+	@Deprecated
 	public Attribute setAttribute(String name, Image value) {
 		try {
 			return setAttributeFromRawValue(name, AttributeType.IMAGE, value);
 		}
-		catch (AttributeException _) {
+		catch (AttributeException exception) {
 			return null;
 		}
 	}
@@ -446,7 +447,7 @@ public abstract class BufferedAttributeCollection extends AbstractAttributeColle
 		try {
 			return setAttributeFromRawValue(name, AttributeType.DATE, value);
 		}
-		catch (AttributeException _) {
+		catch (AttributeException exception) {
 			return null;
 		}
 	}
@@ -455,11 +456,12 @@ public abstract class BufferedAttributeCollection extends AbstractAttributeColle
 	 * {@inheritDoc}
 	 */
 	@Override
+	@Deprecated
 	public Attribute setAttribute(String name, Color value) {
 		try {
 			return setAttributeFromRawValue(name, AttributeType.COLOR, value);
 		}
-		catch (AttributeException _) {
+		catch (AttributeException exception) {
 			return null;
 		}
 	}
@@ -472,7 +474,7 @@ public abstract class BufferedAttributeCollection extends AbstractAttributeColle
 		try {
 			return setAttributeFromRawValue(name, AttributeType.INET_ADDRESS, value);
 		}
-		catch (AttributeException _) {
+		catch (AttributeException exception) {
 			return null;
 		}
 	}
@@ -485,7 +487,7 @@ public abstract class BufferedAttributeCollection extends AbstractAttributeColle
 		try {
 			return setAttributeFromRawValue(name, AttributeType.INET_ADDRESS, value==null ? null : value.getAddress());
 		}
-		catch (AttributeException _) {
+		catch (AttributeException exception) {
 			return null;
 		}
 	}
@@ -498,7 +500,7 @@ public abstract class BufferedAttributeCollection extends AbstractAttributeColle
 		try {
 			return setAttributeFromRawValue(name, AttributeType.ENUMERATION, value);
 		}
-		catch (AttributeException _) {
+		catch (AttributeException exception) {
 			return null;
 		}
 	}
@@ -511,7 +513,7 @@ public abstract class BufferedAttributeCollection extends AbstractAttributeColle
 		try {
 			return setAttributeFromRawValue(name, AttributeType.TYPE, value);
 		}
-		catch (AttributeException _) {
+		catch (AttributeException exception) {
 			return null;
 		}
 	}
@@ -538,7 +540,7 @@ public abstract class BufferedAttributeCollection extends AbstractAttributeColle
 				return true;
 			}
 		}
-		catch(AttributeException _) {
+		catch(AttributeException exception) {
 			//
 		}
 		return false;
@@ -558,7 +560,7 @@ public abstract class BufferedAttributeCollection extends AbstractAttributeColle
 				}
 			}
 		}
-		catch(AttributeException _) {
+		catch(AttributeException exception) {
 			//
 		}
 		return false;
@@ -575,7 +577,7 @@ public abstract class BufferedAttributeCollection extends AbstractAttributeColle
 			try {
 				valueForOldName = extractValueFor(oldname);
 			}
-			catch(AttributeException _) {
+			catch(AttributeException exception) {
 				//
 			}
 
@@ -587,7 +589,7 @@ public abstract class BufferedAttributeCollection extends AbstractAttributeColle
 			try {
 				oldValueForNewName = extractValueFor(newname);
 			}
-			catch(AttributeException _) {
+			catch(AttributeException exception) {
 				//
 			}
 			
@@ -611,7 +613,7 @@ public abstract class BufferedAttributeCollection extends AbstractAttributeColle
 			
 			return true;
 		}
-		catch(AttributeException _) {
+		catch(AttributeException exception) {
 			//
 		}
 		return false;

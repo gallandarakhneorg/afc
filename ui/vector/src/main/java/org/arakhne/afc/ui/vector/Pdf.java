@@ -24,11 +24,13 @@ package org.arakhne.afc.ui.vector;
 
 /** Wrapper on a PDF API able to extract bitmaps from PDF documents.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public interface Pdf {
 	
 	/** Replies the image of the current page.

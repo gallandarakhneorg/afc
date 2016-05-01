@@ -27,7 +27,7 @@ import org.arakhne.afc.vmutil.URISchemeType;
 /**
  * This interface contains several constant names.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

@@ -38,14 +38,16 @@ import android.widget.TextView;
  * This class provides a drawing adapter for the elements
  * of the list in a file chooser.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 class FileListAdapter extends BaseAdapter {
 
-	private List<File> files = new ArrayList<File>();
+	private List<File> files = new ArrayList<>();
 
 	private final LayoutInflater layoutInflater;
 	private final FileChooserIconSelector iconSelector;
@@ -143,7 +145,7 @@ class FileListAdapter extends BaseAdapter {
 	 * This class provides a drawing adapter for the elements
 	 * of the list in a file chooser.
 	 * 
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $Name$ $Revision$ $Date$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

@@ -25,7 +25,7 @@ package org.arakhne.afc.vmutil;
 /**
  * This is a list of supported operating system.  
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

@@ -25,11 +25,13 @@ import org.arakhne.afc.math.continous.object2d.Rectangle2f;
 /** Interface that is representing a font metrics. 
  * See {@link VectorToolkit} to create an instance.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public interface FontMetrics {
 
     /**

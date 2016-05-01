@@ -40,6 +40,7 @@ import org.arakhne.afc.attrs.attr.AttributeValue;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings("all")
 class CacheProviderStub extends BufferedAttributeCollection {
 
 	private static final long serialVersionUID = -1506117010970624098L;

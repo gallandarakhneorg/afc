@@ -23,7 +23,7 @@ package org.arakhne.afc.progress;
 /**
  * Utilities around task progression.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -214,7 +214,7 @@ public class ProgressionUtil {
 	public static void advance(Progression model, int value) {
 		if (model!=null && value>0) {
 			SubProgressionModel sub = (SubProgressionModel)model.getSubTask();
-			float base;
+			double base;
 			if (sub==null) {
 				base = model.getValue();
 			}
@@ -289,14 +289,14 @@ public class ProgressionUtil {
 	 * if not <code>null</code>.
 	 * 
 	 * @param model is the progression to change
-	 * @return the percent of progress or {@link Float#NaN}
+	 * @return the percent of progress or {@link Double#NaN}
 	 * if there is no progession model.
 	 */
-	public static float getPercent(Progression model) {
+	public static double getPercent(Progression model) {
 		if (model!=null) {
 			return model.getPercent();
 		}
-		return Float.NaN;
+		return Double.NaN;
 	}
 
 	/** Set the value of the given task progression,

@@ -53,7 +53,7 @@ import java.util.zip.ZipOutputStream;
 
 /** An utility class that permits to deal with filenames.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -134,7 +134,7 @@ public class FileSystem {
 		try {
 			return URLDecoder.decode(s, Charset.defaultCharset().displayName());
 		}
-		catch (UnsupportedEncodingException _) {
+		catch (UnsupportedEncodingException exception) {
 			return s;
 		}
 	}
@@ -149,7 +149,7 @@ public class FileSystem {
 		try {
 			return URLEncoder.encode(s, Charset.defaultCharset().displayName());
 		}
-		catch (UnsupportedEncodingException _) {
+		catch (UnsupportedEncodingException exception) {
 			return s;
 		}
 	}
@@ -211,7 +211,7 @@ public class FileSystem {
 		try {
 			return new URL(path);
 		}
-		catch(MalformedURLException _) {
+		catch(MalformedURLException exception) {
 			return null;
 		}
 	}
@@ -340,7 +340,7 @@ public class FileSystem {
 			}
 			return new URL(URISchemeType.FILE.name(), "", parent); //$NON-NLS-1$
 		}
-		catch(MalformedURLException _) {
+		catch(MalformedURLException exception) {
 			return null;
 		}
 	}
@@ -396,7 +396,7 @@ public class FileSystem {
 					null);
 			return uri.toURL();
 		}
-		catch (Throwable _) {
+		catch (Throwable exception) {
 			//
 		}
 
@@ -406,7 +406,7 @@ public class FileSystem {
 					filename.getHost(), 
 					path);
 		}
-		catch (Throwable _) {
+		catch (Throwable exception) {
 			//
 		}
 		return null;
@@ -854,7 +854,7 @@ public class FileSystem {
 					urlBase.getRef());
 			return uri.toURL();
 		}
-		catch (Throwable _) {
+		catch (Throwable exception) {
 			//
 		}
 		try {
@@ -863,7 +863,7 @@ public class FileSystem {
 					urlBase.getHost(), 
 					buf.toString());
 		}
-		catch (Throwable _) {
+		catch (Throwable exception) {
 			return null;
 		}
 	}
@@ -903,7 +903,7 @@ public class FileSystem {
 					urlBase.getRef());
 			return uri.toURL();
 		}
-		catch (Throwable _) {
+		catch (Throwable exception) {
 			//
 		}
 		try {
@@ -912,7 +912,7 @@ public class FileSystem {
 					urlBase.getHost(), 
 					buf.toString());
 		}
-		catch (Throwable _) {
+		catch (Throwable exception) {
 			return null;
 		}
 	}
@@ -1033,7 +1033,7 @@ public class FileSystem {
 		catch(AssertionError e) {
 			throw e;
 		}
-		catch(Throwable _) {
+		catch(Throwable exception) {
 			//
 		}
 		try {
@@ -1045,7 +1045,7 @@ public class FileSystem {
 		catch(AssertionError e) {
 			throw e;
 		}
-		catch(Throwable _) {
+		catch(Throwable exception) {
 			return null;
 		}
 	}
@@ -1127,7 +1127,7 @@ public class FileSystem {
 		catch(AssertionError e) {
 			throw e;
 		}
-		catch(Throwable _) {
+		catch(Throwable exception) {
 			//
 		}
 		try {
@@ -1139,7 +1139,7 @@ public class FileSystem {
 		catch(AssertionError e) {
 			throw e;
 		}
-		catch(Throwable _) {
+		catch(Throwable exception) {
 			return null;
 		}
 	}
@@ -1197,7 +1197,7 @@ public class FileSystem {
 	 */
 	public static void delete(File file) throws IOException {
 		if (file!=null) {
-			LinkedList<File> candidates = new LinkedList<File>();
+			LinkedList<File> candidates = new LinkedList<>();
 			candidates.add(file);
 			File f;
 			File[] children;
@@ -1266,23 +1266,6 @@ public class FileSystem {
 	 * The content of the second file will be lost.
 	 * This copy function allows to do a copy between two different
 	 * partitions.
-	 * 
-	 * @param in is the file to copy.
-	 * @param out is the target file
-	 * @throws IOException in case of error.
-	 * @see #fileCopy(URL, File)
-	 * @deprecated {@link #copy(File, File)}
-	 */
-	@Deprecated
-	public static void fileCopy(File in, File out) throws IOException {
-		copy(in, out);
-	}
-
-	/** Copy the first file into the second file.
-	 * <p>
-	 * The content of the second file will be lost.
-	 * This copy function allows to do a copy between two different
-	 * partitions.
 	 * <p>
 	 * If the <var>out</var> parameter is a directory, the output file
 	 * is a file with the same basename as the input and inside
@@ -1303,32 +1286,11 @@ public class FileSystem {
 			outFile = new File(out, largeBasename(in));
 		}
 		
-		FileInputStream fis = new FileInputStream(in);
-		FileOutputStream fos = new FileOutputStream(outFile);
-		try {
-			copy(fis, (int)in.length(), fos);
+		try (FileInputStream fis = new FileInputStream(in)) {
+			try (FileOutputStream fos = new FileOutputStream(outFile)) {
+				copy(fis, (int)in.length(), fos);
+			}
 		}
-		finally {
-			fis.close();
-			fos.close();
-		}
-	}
-
-	/** Copy the first file into the second file.
-	 * <p>
-	 * The content of the second file will be lost.
-	 * This copy function allows to do a copy between two different
-	 * partitions.
-	 * 
-	 * @param in is the file to copy.
-	 * @param out is the target file
-	 * @throws IOException in case of error.
-	 * @see #fileCopy(File, File)
-	 * @deprecated {@link #copy(URL, File)}
-	 */
-	@Deprecated
-	public static void fileCopy(URL in, File out) throws IOException {
-		copy(in, out);
 	}
 
 	/** Copy the first file into the second file.
@@ -1353,15 +1315,11 @@ public class FileSystem {
 		}
 		
 		URLConnection connection = in.openConnection();
-		FileOutputStream fos = new FileOutputStream(outFile);
-		try {
+		try (FileOutputStream fos = new FileOutputStream(outFile)) {
 			copy(
 				connection.getInputStream(),
 				connection.getContentLength(),
 				fos);
-		}
-		finally {
-			fos.close();
 		}
 	}
 
@@ -1380,28 +1338,24 @@ public class FileSystem {
 	public static void copy(InputStream in, int inSize, FileOutputStream out) throws IOException {
 		assert(in!=null);
 		assert(out!=null);
-		ReadableByteChannel inChannel = Channels.newChannel(in);
-		FileChannel outChannel = out.getChannel();
-		try {
-			int size = inSize;
-			// apparently has trouble copying large files on Windows
-			if (size<0 || OperatingSystem.WIN.isCurrentOS()) {
-				// magic number for Windows, 64Mb - 32Kb
-				int maxCount = (64 * 1024 * 1024) - (32 * 1024);
-				long position = 0;
-				long copied = 1;
-				while ( (size>=0 && position<size) || (size<0 && copied>0)) {
-					copied = outChannel.transferFrom(inChannel, position, maxCount);
-					position += copied;
+		try (ReadableByteChannel inChannel = Channels.newChannel(in)) {
+			try (FileChannel outChannel = out.getChannel()) {
+				int size = inSize;
+				// apparently has trouble copying large files on Windows
+				if (size<0 || OperatingSystem.WIN.isCurrentOS()) {
+					// magic number for Windows, 64Mb - 32Kb
+					int maxCount = (64 * 1024 * 1024) - (32 * 1024);
+					long position = 0;
+					long copied = 1;
+					while ( (size>=0 && position<size) || (size<0 && copied>0)) {
+						copied = outChannel.transferFrom(inChannel, position, maxCount);
+						position += copied;
+					}
+				}
+				else {
+					outChannel.transferFrom(inChannel, 0, size);
 				}
 			}
-			else {
-				outChannel.transferFrom(inChannel, 0, size);
-			}
-		}
-		finally {
-			inChannel.close();
-			outChannel.close();
 		}
 	}
 	
@@ -1473,7 +1427,7 @@ public class FileSystem {
 			}
 			return new File(userHome,software);
 		}
-		catch(FileNotFoundException _) {
+		catch(FileNotFoundException exception) {
 			//
 		}
 		return null;
@@ -1606,18 +1560,6 @@ public class FileSystem {
 		return f.getAbsolutePath();
 	}
 
-	/** Convert an URL which represents a local file into a File.
-	 * 
-	 * @param url is the URL to convert.
-	 * @return the file.
-	 * @throws IllegalArgumentException is the URL was malformed.
-	 * @deprecated {@link #convertURLToFile(URL)}
-	 */
-	@Deprecated
-	public static File convertUrlToFile(URL url) {
-		return convertURLToFile(url);
-	}
-
 	/** Convert an URL which represents a local file or a resource into a File.
 	 * 
 	 * @param url is the URL to convert.
@@ -1701,71 +1643,9 @@ public class FileSystem {
 	 * @return the URL.
 	 * @throws IllegalArgumentException is the string could not be formatted to URL.
 	 * @see Resources#getResource(String)
-	 * @deprecated see {@link #convertStringToURL(String, boolean)}
-	 */
-	@Deprecated
-	public static URL convertStringToUrl(String urlDescription, boolean allowResourceSearch) {
-		return convertStringToURL(urlDescription, allowResourceSearch, true, true);
-	}
-
-	/** Convert a string to an URL according to several rules.
-	 * <p>
-	 * The rules are (the first succeeded is replied):
-	 * <ul>
-	 * <li>if <var>urlDescription</var> is <code>null</code> or empty, return <code>null</code>;</li>
-	 * <li>try to build an {@link URL} with <var>urlDescription</var> as parameter;</li>
-	 * <li>if <var>allowResourceSearch</var> is <code>true</code> and 
-	 * <var>urlDescription</var> starts with {@code "resource:"}, call
-	 * {@link Resources#getResource(String)} with the rest of the string as parameter;</li>
-	 * <li>if <var>allowResourceSearch</var> is <code>true</code>, call
-	 * {@link Resources#getResource(String)} with the <var>urlDescription</var> as
-	 * parameter;</li>
-	 * <li>assuming that the <var>urlDescription</var> is
-	 * a filename, call {@link File#toURI()} to retreive an URI and then
-	 * {@link URI#toURL()};</li>
-	 * <li>If everything else failed, return <code>null</code>.</li>
-	 * </ul>
-	 * 
-	 * @param urlDescription is a string which is describing an URL.
-	 * @param allowResourceSearch indicates if the convertion must take into account the Java resources.
-	 * @return the URL.
-	 * @throws IllegalArgumentException is the string could not be formatted to URL.
-	 * @see Resources#getResource(String)
 	 */
 	public static URL convertStringToURL(String urlDescription, boolean allowResourceSearch) {
 		return convertStringToURL(urlDescription, allowResourceSearch, true, true);
-	}
-
-	/** Convert a string to an URL according to several rules.
-	 * <p>
-	 * The rules are (the first succeeded is replied):
-	 * <ul>
-	 * <li>if <var>urlDescription</var> is <code>null</code> or empty, return <code>null</code>;</li>
-	 * <li>try to build an {@link URL} with <var>urlDescription</var> as parameter;</li>
-	 * <li>if <var>allowResourceSearch</var> is <code>true</code> and 
-	 * <var>urlDescription</var> starts with {@code "resource:"}, call
-	 * {@link Resources#getResource(String)} with the rest of the string as parameter;</li>
-	 * <li>if <var>allowResourceSearch</var> is <code>true</code>, call
-	 * {@link Resources#getResource(String)} with the <var>urlDescription</var> as
-	 * parameter;</li>
-	 * <li>if <var>repliesFileURL</var> is <code>true</code> and 
-	 * assuming that the <var>urlDescription</var> is
-	 * a filename, call {@link File#toURI()} to retreive an URI and then
-	 * {@link URI#toURL()};</li>
-	 * <li>If everything else failed, return <code>null</code>.</li>
-	 * </ul>
-	 * 
-	 * @param urlDescription is a string which is describing an URL.
-	 * @param allowResourceSearch indicates if the convertion must take into account the Java resources.
-	 * @param repliesFileURL indicates if urlDescription is allowed to be a filename.
-	 * @return the URL.
-	 * @throws IllegalArgumentException is the string could not be formatted to URL.
-	 * @see Resources#getResource(String)
-	 * @deprecated {@link #convertStringToURL(String, boolean, boolean)}
-	 */
-	@Deprecated
-	public static URL convertStringToUrl(String urlDescription, boolean allowResourceSearch, boolean repliesFileURL) {
-		return convertStringToURL(urlDescription, allowResourceSearch, repliesFileURL, true);
 	}
 
 	/** Convert a string to an URL according to several rules.
@@ -1855,7 +1735,7 @@ public class FileSystem {
 				try {
 					url = new URL(urlDescription);
 				}
-				catch (MalformedURLException _) {
+				catch (MalformedURLException exception) {
 					// ignore error
 				}
 			}
@@ -1881,7 +1761,7 @@ public class FileSystem {
 								try {
 									url = toJarURL(jarURL, urlPart.substring(idx+2));
 								}
-								catch (MalformedURLException _) {
+								catch (MalformedURLException exception) {
 									//
 								}
 							}
@@ -1957,42 +1837,11 @@ public class FileSystem {
 			try {
 				return new File(current.getCanonicalFile(), filename.getPath());
 			}
-			catch(IOException _) {
+			catch(IOException exception) {
 				return new File(current.getAbsoluteFile(), filename.getPath());
 			}
 		}
 		return filename;
-	}
-
-	/** Replies if the given URL is using a protocol which could be map to files.
-	 * 
-	 * @param url
-	 * @return <code>true</code> if the given url is a "file", "http", 
-	 * "https", "ftp", "ssh", "jar" or "resource", otherwise <code>false</code>.
-	 * @deprecated see {@link URISchemeType#isFileBasedScheme()} 
-	 */
-	@Deprecated
-	public static boolean isFileBasedURL(URL url) {
-		if (url!=null) {
-			return isFileBasedScheme(URISchemeType.getSchemeType(url));
-		}
-		return false;
-	}
-
-	/** Replies if the given URL scheme is using a protocol which could be map to files.
-	 * 
-	 * @param scheme
-	 * @return <code>true</code> if the given scheme is a "file", "http", 
-	 * "https", "ftp", "ssh", "jar" or "resource", otherwise <code>false</code>.
-	 * @since 5.0
-	 * @deprecated see {@link URISchemeType#isFileBasedScheme()}
-	 */
-	@Deprecated
-	public static boolean isFileBasedScheme(URISchemeType scheme) {
-		if (scheme!=null) {
-			return scheme.isFileBasedScheme();
-		}
-		return false;
 	}
 
 	/**
@@ -2078,7 +1927,7 @@ public class FileSystem {
 		try {
 			return makeAbsolute(filename, current==null ? null : current.toURI().toURL());
 		}
-		catch(MalformedURLException _) {
+		catch(MalformedURLException exception) {
 			//
 		}
 		return filename;
@@ -2189,7 +2038,7 @@ public class FileSystem {
 				File jarFile = getJarFile(filename);
 				return toJarURL(jarUrl, jarFile);
 			}
-			catch(MalformedURLException _) {
+			catch(MalformedURLException exception) {
 				// Ignore error
 			}
 			break;
@@ -2282,7 +2131,7 @@ public class FileSystem {
 				return new URL(URISchemeType.FILE.toString()+
 						getFilePath(filename));
 			}
-			catch (MalformedURLException _) {
+			catch (MalformedURLException exception) {
 				// ignore error
 			}
 		}
@@ -2614,7 +2463,7 @@ public class FileSystem {
 		if (url!=null) {
 			String[] pathComponents = url.getPath().split(Pattern.quote(URL_PATH_SEPARATOR));
 
-			List<String> canonicalPath = new LinkedList<String>();
+			List<String> canonicalPath = new LinkedList<>();
 			for(String component : pathComponents) {
 				if (!CURRENT_DIRECTORY.equals(component)) {
 					if (PARENT_DIRECTORY.equals(component)) {
@@ -2654,10 +2503,10 @@ public class FileSystem {
 						url.getRef());
 				return uri.toURL();
 			}
-			catch (MalformedURLException _) {
+			catch (MalformedURLException exception) {
 				//
 			}
-			catch (URISyntaxException _) {
+			catch (URISyntaxException exception) {
 				//
 			}
 
@@ -2667,7 +2516,7 @@ public class FileSystem {
 						url.getHost(), 
 						newPathBuffer.toString());
 			}
-			catch (Throwable _) {
+			catch (Throwable exception) {
 				//
 			}
 		}
@@ -2695,7 +2544,7 @@ public class FileSystem {
 
 			if (input==null) return;
 
-			LinkedList<File> candidates = new LinkedList<File>();
+			LinkedList<File> candidates = new LinkedList<>();
 			candidates.add(input);
 
 			byte[] buffer = new byte[2048];
@@ -2724,8 +2573,7 @@ public class FileSystem {
 					candidates.addAll(Arrays.asList(file.listFiles()));
 				}
 				else if (relativeFile!=null) {
-					FileInputStream fis = new FileInputStream(file);
-					try {
+					try (FileInputStream fis = new FileInputStream(file)) {
 						zipFilename = fileToURL(relativeFile);
 						ZipEntry zipEntry = new ZipEntry(zipFilename);
 						zos.putNextEntry(zipEntry);
@@ -2733,9 +2581,6 @@ public class FileSystem {
 							zos.write(buffer, 0, len);
 						}
 						zos.closeEntry();
-					}
-					finally {
-						fis.close();
 					}
 				}
 			}
@@ -2774,14 +2619,10 @@ public class FileSystem {
 				}
 				else {
 					outFile.getParentFile().mkdirs();
-					FileOutputStream fos = new FileOutputStream(outFile);
-					try {
+					try (FileOutputStream fos = new FileOutputStream(outFile)) {
 						while ((len=zis.read(buffer))>0) {
 							fos.write(buffer, 0, len);
 						}
-					}
-					finally {
-						fos.close();
 					}
 				}
 				zipEntry = zis.getNextEntry();
@@ -2801,12 +2642,8 @@ public class FileSystem {
 	 * @since 6.2
 	 */
 	public static void zipFile(File input, File output) throws IOException {
-		FileOutputStream fos = new FileOutputStream(output);
-		try {
+		try (FileOutputStream fos = new FileOutputStream(output)) {
 			zipFile(input, fos);
-		}
-		finally {
-			fos.close();
 		}
 	}
 
@@ -2819,12 +2656,8 @@ public class FileSystem {
 	 * @since 6.2
 	 */
 	public static void unzipFile(File input, File output) throws IOException {
-		FileInputStream fis = new FileInputStream(input);
-		try {
+		try (FileInputStream fis = new FileInputStream(input)) {
 			unzipFile(fis, output);
-		}
-		finally {
-			fis.close();
 		}
 	}
 
@@ -2949,7 +2782,7 @@ public class FileSystem {
 
     /** Hook to recursively delete files on JVM exit. 
 	 * 
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -2992,7 +2825,7 @@ public class FileSystem {
 			assert(file!=null);
 			synchronized(this) {
 				if (this.filesToDelete==null) {
-					this.filesToDelete = new LinkedList<File>();
+					this.filesToDelete = new LinkedList<>();
 					Runtime.getRuntime().addShutdownHook(this);
 				}
 				this.filesToDelete.add(file);

@@ -20,19 +20,23 @@
  */
 package org.arakhne.afc.math.continous.object2d;
 
+import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.generic.Point2D;
 import org.arakhne.afc.math.generic.Tuple2D;
 import org.arakhne.afc.math.generic.Vector2D;
+import org.arakhne.afc.math.geometry.d2.d.Vector2d;
 import org.arakhne.afc.math.matrix.Matrix2f;
 
 /** 2D Vector with 2 floating-point values.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see {@link Vector2d}
  */
+@Deprecated
 public class Vector2f extends Tuple2f<Vector2D> implements Vector2D {
 
 	private static final long serialVersionUID = -2062941509400877679L;
@@ -130,8 +134,8 @@ public class Vector2f extends Tuple2f<Vector2D> implements Vector2D {
 	 */
 	public final Vector2f mul(Matrix2f m) {
 		Vector2f r = new Vector2f();
-		r.x = this.getX() * m.m00 + this.getY() * m.m01;
-		r.y = this.getX() * m.m10 + this.getY() * m.m11;
+		r.x = (float) (this.getX() * m.getM00() + this.getY() * m.getM01());
+		r.y = (float) (this.getX() * m.getM10() + this.getY() * m.getM11());
 		return r;
 	}
 
@@ -189,7 +193,7 @@ public class Vector2f extends Tuple2f<Vector2D> implements Vector2D {
 	 */
 	@Override
 	public float signedAngle(Vector2D v) {
-		return MathUtil.signedAngle(getX(), getY(), v.getX(), v.getY());
+		return (float) org.arakhne.afc.math.geometry.d2.Vector2D.signedAngle(getX(), getY(), v.getX(), v.getY());
 	}
 
 	/**
@@ -222,7 +226,7 @@ public class Vector2f extends Tuple2f<Vector2D> implements Vector2D {
 	public float getOrientationAngle() {
 		float angle = (float)Math.acos(getX());
 		if (getY()<0f) angle = -angle;
-		return MathUtil.clampRadian(angle);
+		return (float) MathUtil.clampCyclic(angle, 0, MathConstants.TWO_PI);
 	}
 
 	/**

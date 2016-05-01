@@ -25,11 +25,13 @@ import org.arakhne.afc.util.HashCodeUtil;
 
 /** Android implementation of the generic dimension.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 class AndroidDimension implements Dimension, Cloneable {
 
 	private final float w;

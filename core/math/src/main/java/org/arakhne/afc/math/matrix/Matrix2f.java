@@ -21,51 +21,58 @@
  */
 package org.arakhne.afc.math.matrix;
 
+import static org.arakhne.afc.math.MathConstants.JACOBI_EPSILON;
+import static org.arakhne.afc.math.MathConstants.JACOBI_MAX_SWEEPS;
+
 import java.io.Serializable;
 import java.util.Arrays;
 
-import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
-import org.arakhne.afc.math.continous.object2d.Point2f;
-import org.arakhne.afc.math.continous.object2d.Tuple2f;
-import org.arakhne.afc.math.continous.object2d.Vector2f;
-import org.arakhne.afc.math.generic.Vector2D;
+import org.arakhne.afc.math.geometry.d2.Point2D;
+import org.arakhne.afc.math.geometry.d2.Tuple2D;
+import org.arakhne.afc.math.geometry.d2.Vector2D;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * Is represented internally as a 2x2 floating point matrix. The mathematical
  * representation is row major, as in traditional matrix mathematics.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class Matrix2f implements Serializable, Cloneable, MathConstants {
+public class Matrix2f implements Serializable, Cloneable {
 
 	private static final long serialVersionUID = -181335987517755500L;
 
 	/**
 	 * The first matrix element in the first row.
 	 */
-	public float m00;
+	protected double m00;
 
 	/**
 	 * The second matrix element in the first row.
 	 */
-	public float m01;
+	protected double m01;
 
 	/**
 	 * The first matrix element in the second row.
 	 */
-	public float m10;
+	protected double m10;
 
 	/**
 	 * The second matrix element in the second row.
 	 */
-	public float m11;
+	protected double m11;
+	
+	/** Indicates if the matrix is identity.
+	 * If <code>null</code> the identity flag must be determined.
+	 */
+	protected Boolean isIdentity;
 
 	/**
-	 * Constructs and initializes a Matrix2d from the specified nine values.
+	 * Constructs and initializes a Matrix2f from the specified nine values.
 	 * 
 	 * @param m00
 	 *            the [0][0] element
@@ -76,7 +83,7 @@ public class Matrix2f implements Serializable, Cloneable, MathConstants {
 	 * @param m11
 	 *            the [1][1] element
 	 */
-	public Matrix2f(float m00, float m01, float m10, float m11) {
+	public Matrix2f(double m00, double m01, double m10, double m11) {
 		this.m00 = m00;
 		this.m01 = m01;
 
@@ -85,50 +92,54 @@ public class Matrix2f implements Serializable, Cloneable, MathConstants {
 	}
 
 	/**
-	 * Constructs and initializes a Matrix2d from the specified nine- element
+	 * Constructs and initializes a Matrix2f from the specified nine- element
 	 * array.
 	 * 
-	 * @param v
+	 * @param matrix
 	 *            the array of length 4 containing in order
 	 */
-	public Matrix2f(float[] v) {
-		this.m00 = v[0];
-		this.m01 = v[1];
+	public Matrix2f(double[] matrix) {
+		assert (matrix != null) : "Matrix must not be null"; //$NON-NLS-1$
+		assert (matrix.length >= 4) : "Size of the array is too small"; //$NON-NLS-1$
+		this.m00 = matrix[0];
+		this.m01 = matrix[1];
 
-		this.m10 = v[2];
-		this.m11 = v[3];
+		this.m10 = matrix[2];
+		this.m11 = matrix[3];
 	}
 
 	/**
-	 * Constructs a new matrix with the same values as the Matrix2d parameter.
+	 * Constructs a new matrix with the same values as the Matrix2f parameter.
 	 * 
-	 * @param m1
+	 * @param matrix
 	 *            the source matrix
 	 */
-	public Matrix2f(Matrix2f m1) {
-		this.m00 = m1.m00;
-		this.m01 = m1.m01;
+	public Matrix2f(Matrix2f matrix) {
+		assert (matrix != null) : "Matrix must not be null"; //$NON-NLS-1$
+		this.m00 = matrix.m00;
+		this.m01 = matrix.m01;
 
-		this.m10 = m1.m10;
-		this.m11 = m1.m11;
+		this.m10 = matrix.m10;
+		this.m11 = matrix.m11;
 	}
 
 	/**
-	 * Constructs and initializes a Matrix2d to all zeros.
+	 * Constructs and initializes a Matrix2f to all zeros.
 	 */
 	public Matrix2f() {
-		this.m00 = 0f;
-		this.m01 = 0f;
+		this.m00 = 0.;
+		this.m01 = 0.;
 
-		this.m10 = 0f;
-		this.m11 = 0f;
+		this.m10 = 0.;
+		this.m11 = 0.;
 	}
 
 	/**
-	 * Returns a string that contains the values of this Matrix2d.
+	 * Returns a string that contains the values of this Matrix2f.
 	 * 
 	 * @return the String representation
 	 */
+	@Pure
 	@Override
 	public String toString() {
 		return this.m00 + ", " //$NON-NLS-1$
@@ -138,14 +149,16 @@ public class Matrix2f implements Serializable, Cloneable, MathConstants {
 	}
 
 	/**
-	 * Sets this Matrix2d to identity.
+	 * Sets this Matrix2f to identity.
 	 */
 	public final void setIdentity() {
-		this.m00 = 1f;
-		this.m01 = 0f;
+		this.m00 = 1.;
+		this.m01 = 0.;
 
-		this.m10 = 0f;
-		this.m11 = 1f;
+		this.m10 = 0.;
+		this.m11 = 1.;
+		
+		this.isIdentity = Boolean.TRUE;
 	}
 
 	/**
@@ -158,7 +171,9 @@ public class Matrix2f implements Serializable, Cloneable, MathConstants {
 	 * @param value
 	 *            the new value
 	 */
-	public final void setElement(int row, int column, float value) {
+	public final void setElement(int row, int column, double value) {
+		assert (row >= 0 && row < 2) : "Row index must be in [0;1]"; //$NON-NLS-1$
+		assert (column >= 0 && column < 2) : "Column index must be in [0;1]"; //$NON-NLS-1$
 		switch (row) {
 		case 0:
 			switch (column) {
@@ -189,6 +204,7 @@ public class Matrix2f implements Serializable, Cloneable, MathConstants {
 		default:
 			throw new ArrayIndexOutOfBoundsException();
 		}
+		this.isIdentity = null;
 	}
 
 	/**
@@ -201,7 +217,10 @@ public class Matrix2f implements Serializable, Cloneable, MathConstants {
 	 *            the column number to be retrieved (zero indexed)
 	 * @return the value at the indexed element.
 	 */
-	public final float getElement(int row, int column) {
+	@Pure
+	public final double getElement(int row, int column) {
+		assert (row >= 0 && row < 2) : "Row index must be in [0;1]"; //$NON-NLS-1$
+		assert (column >= 0 && column < 2) : "Column index must be in [0;1]"; //$NON-NLS-1$
 		switch (row) {
 		case 0:
 			switch (column) {
@@ -236,15 +255,17 @@ public class Matrix2f implements Serializable, Cloneable, MathConstants {
 	 * 
 	 * @param row
 	 *            the matrix row
-	 * @param v
+	 * @param vector
 	 *            the vector into which the matrix row values will be copied
 	 */
-	public final void getRow(int row, Vector2D v) {
+	public final void getRow(int row, Tuple2D<?> vector) {
+		assert (row >= 0 && row < 2) : "Row index must be in [0;1]"; //$NON-NLS-1$
+		assert (vector != null) : "Value vector must not be null"; //$NON-NLS-1$
 		if (row == 0) {
-			v.set(this.m00, this.m01);
+			vector.set(this.m00, this.m01);
 		}
 		else if (row == 1) {
-			v.set(this.m10, this.m11);
+			vector.set(this.m10, this.m11);
 		}
 		else {
 			throw new ArrayIndexOutOfBoundsException();
@@ -257,17 +278,20 @@ public class Matrix2f implements Serializable, Cloneable, MathConstants {
 	 * 
 	 * @param row
 	 *            the matrix row
-	 * @param v
+	 * @param vector
 	 *            the array into which the matrix row values will be copied
 	 */
-	public final void getRow(int row, float v[]) {
+	public final void getRow(int row, double vector[]) {
+		assert (row >= 0 && row < 2) : "Row index must be in [0;1]"; //$NON-NLS-1$
+		assert (vector != null) : "Value vector must not be null"; //$NON-NLS-1$
+		assert (vector.length >= 2) : "Size of the value vector is too small"; //$NON-NLS-1$
 		if (row == 0) {
-			v[0] = this.m00;
-			v[1] = this.m01;
+			vector[0] = this.m00;
+			vector[1] = this.m01;
 		}
 		else if (row == 1) {
-			v[0] = this.m10;
-			v[1] = this.m11;
+			vector[0] = this.m10;
+			vector[1] = this.m11;
 		}
 		else {
 			throw new ArrayIndexOutOfBoundsException();
@@ -281,15 +305,17 @@ public class Matrix2f implements Serializable, Cloneable, MathConstants {
 	 * 
 	 * @param column
 	 *            the matrix column
-	 * @param v
+	 * @param vector
 	 *            the vector into which the matrix row values will be copied
 	 */
-	public final void getColumn(int column, Vector2f v) {
+	public final void getColumn(int column, Tuple2D<?> vector) {
+		assert (column >= 0 && column < 2) : "Column index must be in [0;1]"; //$NON-NLS-1$
+		assert (vector != null) : "Value vector must not be null"; //$NON-NLS-1$
 		if (column == 0) {
-			v.set(this.m00, this.m10);
+			vector.set(this.m00, this.m10);
 		}
 		else if (column == 1) {
-			v.set(this.m01, this.m11);
+			vector.set(this.m01, this.m11);
 		}
 		else {
 			throw new ArrayIndexOutOfBoundsException();
@@ -302,17 +328,20 @@ public class Matrix2f implements Serializable, Cloneable, MathConstants {
 	 * 
 	 * @param column
 	 *            the matrix column
-	 * @param v
+	 * @param vector
 	 *            the array into which the matrix row values will be copied
 	 */
-	public final void getColumn(int column, float v[]) {
+	public final void getColumn(int column, double vector[]) {
+		assert (column >= 0 && column < 2) : "Column index must be in [0;1]"; //$NON-NLS-1$
+		assert (vector != null) : "Value vector must not be null"; //$NON-NLS-1$
+		assert (vector.length >= 2) : "Size of the value vector is too small"; //$NON-NLS-1$
 		if (column == 0) {
-			v[0] = this.m00;
-			v[1] = this.m10;
+			vector[0] = this.m00;
+			vector[1] = this.m10;
 		}
 		else if (column == 1) {
-			v[0] = this.m01;
-			v[1] = this.m11;
+			vector[0] = this.m01;
+			vector[1] = this.m11;
 		}
 		else {
 			throw new ArrayIndexOutOfBoundsException();
@@ -320,7 +349,7 @@ public class Matrix2f implements Serializable, Cloneable, MathConstants {
 	}
 
 	/**
-	 * Sets the specified row of this Matrix2d to the 4 values provided.
+	 * Sets the specified row of this Matrix2f to the 4 values provided.
 	 * 
 	 * @param row
 	 *            the row number to be modified (zero indexed)
@@ -329,7 +358,8 @@ public class Matrix2f implements Serializable, Cloneable, MathConstants {
 	 * @param y
 	 *            the second column element
 	 */
-	public final void setRow(int row, float x, float y) {
+	public final void setRow(int row, double x, double y) {
+		assert (row >= 0 && row < 2) : "Row index must be in [0;1]"; //$NON-NLS-1$
 		switch (row) {
 		case 0:
 			this.m00 = x;
@@ -344,60 +374,68 @@ public class Matrix2f implements Serializable, Cloneable, MathConstants {
 		default:
 			throw new ArrayIndexOutOfBoundsException();
 		}
+		this.isIdentity = null;
 	}
 
 	/**
-	 * Sets the specified row of this Matrix2d to the Vector provided.
+	 * Sets the specified row of this Matrix2f to the Vector provided.
 	 * 
 	 * @param row
 	 *            the row number to be modified (zero indexed)
-	 * @param v
+	 * @param vector
 	 *            the replacement row
 	 */
-	public final void setRow(int row, Vector2f v) {
+	public final void setRow(int row, Tuple2D<?> vector) {
+		assert (row >= 0 && row < 2) : "Row index must be in [0;1]"; //$NON-NLS-1$
+		assert (vector != null) : "Value vector must not be null"; //$NON-NLS-1$
 		switch (row) {
 		case 0:
-			this.m00 = v.getX();
-			this.m01 = v.getY();
+			this.m00 = vector.getX();
+			this.m01 = vector.getY();
 			break;
 
 		case 1:
-			this.m10 = v.getX();
-			this.m11 = v.getY();
+			this.m10 = vector.getX();
+			this.m11 = vector.getY();
 			break;
 
 		default:
 			throw new ArrayIndexOutOfBoundsException();
 		}
+		this.isIdentity = null;
 	}
 
 	/**
-	 * Sets the specified row of this Matrix2d to the two values provided.
+	 * Sets the specified row of this Matrix2f to the two values provided.
 	 * 
 	 * @param row
 	 *            the row number to be modified (zero indexed)
-	 * @param v
+	 * @param vector
 	 *            the replacement row
 	 */
-	public final void setRow(int row, float v[]) {
+	public final void setRow(int row, double vector[]) {
+		assert (row >= 0 && row < 2) : "Row index must be in [0;1]"; //$NON-NLS-1$
+		assert (vector != null) : "Value vector must not be null"; //$NON-NLS-1$
+		assert (vector.length >= 2) : "Size of the value vector is too small"; //$NON-NLS-1$
 		switch (row) {
 		case 0:
-			this.m00 = v[0];
-			this.m01 = v[1];
+			this.m00 = vector[0];
+			this.m01 = vector[1];
 			break;
 
 		case 1:
-			this.m10 = v[0];
-			this.m11 = v[1];
+			this.m10 = vector[0];
+			this.m11 = vector[1];
 			break;
 
 		default:
 			throw new ArrayIndexOutOfBoundsException();
 		}
+		this.isIdentity = null;
 	}
 
 	/**
-	 * Sets the specified column of this Matrix2d to the two values provided.
+	 * Sets the specified column of this Matrix2f to the two values provided.
 	 * 
 	 * @param column
 	 *            the column number to be modified (zero indexed)
@@ -406,7 +444,8 @@ public class Matrix2f implements Serializable, Cloneable, MathConstants {
 	 * @param y
 	 *            the second row element
 	 */
-	public final void setColumn(int column, float x, float y) {
+	public final void setColumn(int column, double x, double y) {
+		assert (column >= 0 && column < 2) : "Column index must be in [0;1]"; //$NON-NLS-1$
 		switch (column) {
 		case 0:
 			this.m00 = x;
@@ -421,56 +460,64 @@ public class Matrix2f implements Serializable, Cloneable, MathConstants {
 		default:
 			throw new ArrayIndexOutOfBoundsException();
 		}
+		this.isIdentity = null;
 	}
 
 	/**
-	 * Sets the specified column of this Matrix2d to the vector provided.
+	 * Sets the specified column of this Matrix2f to the vector provided.
 	 * 
 	 * @param column
 	 *            the column number to be modified (zero indexed)
-	 * @param v
+	 * @param vector
 	 *            the replacement column
 	 */
-	public final void setColumn(int column, Vector2f v) {
+	public final void setColumn(int column, Tuple2D<?> vector) {
+		assert (column >= 0 && column < 2) : "Column index must be in [0;1]"; //$NON-NLS-1$
+		assert (vector != null) : "Value vector must not be null"; //$NON-NLS-1$
 		switch (column) {
 		case 0:
-			this.m00 = v.getX();
-			this.m10 = v.getY();
+			this.m00 = vector.getX();
+			this.m10 = vector.getY();
 			break;
 
 		case 1:
-			this.m01 = v.getX();
-			this.m11 = v.getY();
+			this.m01 = vector.getX();
+			this.m11 = vector.getY();
 			break;
 
 		default:
 			throw new ArrayIndexOutOfBoundsException();
 		}
+		this.isIdentity = null;
 	}
 
 	/**
-	 * Sets the specified column of this Matrix2d to the two values provided.
+	 * Sets the specified column of this Matrix2f to the two values provided.
 	 * 
 	 * @param column
 	 *            the column number to be modified (zero indexed)
-	 * @param v
+	 * @param vector
 	 *            the replacement column
 	 */
-	public final void setColumn(int column, float v[]) {
+	public final void setColumn(int column, double vector[]) {
+		assert (column >= 0 && column < 2) : "Column index must be in [0;1]"; //$NON-NLS-1$
+		assert (vector != null) : "Value vector must not be null"; //$NON-NLS-1$
+		assert (vector.length >= 2) : "Size of the value vector is too small"; //$NON-NLS-1$
 		switch (column) {
 		case 0:
-			this.m00 = v[0];
-			this.m10 = v[1];
+			this.m00 = vector[0];
+			this.m10 = vector[1];
 			break;
 
 		case 1:
-			this.m01 = v[0];
-			this.m11 = v[1];
+			this.m01 = vector[0];
+			this.m11 = vector[1];
 			break;
 
 		default:
 			throw new ArrayIndexOutOfBoundsException();
 		}
+		this.isIdentity = null;
 	}
 
 	/**
@@ -479,12 +526,14 @@ public class Matrix2f implements Serializable, Cloneable, MathConstants {
 	 * @param scalar
 	 *            the scalar adder
 	 */
-	public final void add(float scalar) {
+	public final void add(double scalar) {
 		this.m00 += scalar;
 		this.m01 += scalar;
 
 		this.m10 += scalar;
 		this.m11 += scalar;
+
+		this.isIdentity = null;
 	}
 
 	/**
@@ -493,84 +542,101 @@ public class Matrix2f implements Serializable, Cloneable, MathConstants {
 	 * 
 	 * @param scalar
 	 *            the scalar adder
-	 * @param m1
+	 * @param matrix
 	 *            the original matrix values
 	 */
-	public final void add(float scalar, Matrix2f m1) {
-		this.m00 = m1.m00 + scalar;
-		this.m01 = m1.m01 + scalar;
+	public final void add(double scalar, Matrix2f matrix) {
+		assert (matrix != null) : "Matrix must not be null"; //$NON-NLS-1$
+		this.m00 = matrix.m00 + scalar;
+		this.m01 = matrix.m01 + scalar;
 
-		this.m10 = m1.m10 + scalar;
-		this.m11 = m1.m11 + scalar;
+		this.m10 = matrix.m10 + scalar;
+		this.m11 = matrix.m11 + scalar;
+	
+		this.isIdentity = null;
 	}
 
 	/**
 	 * Sets the value of this matrix to the matrix sum of matrices m1 and m2.
 	 * 
-	 * @param m1
+	 * @param matrix1
 	 *            the first matrix
-	 * @param m2
+	 * @param matrix2
 	 *            the second matrix
 	 */
-	public final void add(Matrix2f m1, Matrix2f m2) {
-		this.m00 = m1.m00 + m2.m00;
-		this.m01 = m1.m01 + m2.m01;
+	public final void add(Matrix2f matrix1, Matrix2f matrix2) {
+		assert (matrix1 != null) : "First matrix must not be null"; //$NON-NLS-1$
+		assert (matrix2 != null) : "Second matrix must not be null"; //$NON-NLS-1$
+		this.m00 = matrix1.m00 + matrix2.m00;
+		this.m01 = matrix1.m01 + matrix2.m01;
 
-		this.m10 = m1.m10 + m2.m10;
-		this.m11 = m1.m11 + m2.m11;
+		this.m10 = matrix1.m10 + matrix2.m10;
+		this.m11 = matrix1.m11 + matrix2.m11;
+
+		this.isIdentity = null;
 	}
 
 	/**
 	 * Sets the value of this matrix to the sum of itself and matrix m1.
 	 * 
-	 * @param m1
+	 * @param matrix
 	 *            the other matrix
 	 */
-	public final void add(Matrix2f m1) {
-		this.m00 += m1.m00;
-		this.m01 += m1.m01;
+	public final void add(Matrix2f matrix) {
+		assert (matrix != null) : "Matrix must not be null"; //$NON-NLS-1$
+		this.m00 += matrix.m00;
+		this.m01 += matrix.m01;
 
-		this.m10 += m1.m10;
-		this.m11 += m1.m11;
+		this.m10 += matrix.m10;
+		this.m11 += matrix.m11;
+
+		this.isIdentity = null;
 	}
 
 	/**
 	 * Sets the value of this matrix to the matrix difference of matrices m1 and
 	 * m2.
 	 * 
-	 * @param m1
+	 * @param matrix1
 	 *            the first matrix
-	 * @param m2
+	 * @param matrix2
 	 *            the second matrix
 	 */
-	public final void sub(Matrix2f m1, Matrix2f m2) {
-		this.m00 = m1.m00 - m2.m00;
-		this.m01 = m1.m01 - m2.m01;
+	public final void sub(Matrix2f matrix1, Matrix2f matrix2) {
+		assert (matrix1 != null) : "First matrix must not be null"; //$NON-NLS-1$
+		assert (matrix2 != null) : "Second matrix must not be null"; //$NON-NLS-1$
+		this.m00 = matrix1.m00 - matrix2.m00;
+		this.m01 = matrix1.m01 - matrix2.m01;
 
-		this.m10 = m1.m10 - m2.m10;
-		this.m11 = m1.m11 - m2.m11;
+		this.m10 = matrix1.m10 - matrix2.m10;
+		this.m11 = matrix1.m11 - matrix2.m11;
+
+		this.isIdentity = null;
 	}
 
 	/**
 	 * Sets the value of this matrix to the matrix difference of itself and
 	 * matrix m1 (this = this - m1).
 	 * 
-	 * @param m1
+	 * @param matrix
 	 *            the other matrix
 	 */
-	public final void sub(Matrix2f m1) {
-		this.m00 -= m1.m00;
-		this.m01 -= m1.m01;
+	public final void sub(Matrix2f matrix) {
+		assert (matrix != null) : "Matrix must not be null"; //$NON-NLS-1$
+		this.m00 -= matrix.m00;
+		this.m01 -= matrix.m01;
 
-		this.m10 -= m1.m10;
-		this.m11 -= m1.m11;
+		this.m10 -= matrix.m10;
+		this.m11 -= matrix.m11;
+
+		this.isIdentity = null;
 	}
 
 	/**
 	 * Sets the value of this matrix to its transpose.
 	 */
 	public final void transpose() {
-		float temp;
+		double temp;
 		temp = this.m10;
 		this.m10 = this.m01;
 		this.m01 = temp;
@@ -579,50 +645,60 @@ public class Matrix2f implements Serializable, Cloneable, MathConstants {
 	/**
 	 * Sets the value of this matrix to the transpose of the argument matrix.
 	 * 
-	 * @param m1
+	 * @param matrix
 	 *            the matrix to be transposed
 	 */
-	public final void transpose(Matrix2f m1) {
-		if (this != m1) {
-			this.m00 = m1.m00;
-			this.m01 = m1.m10;
+	public final void transpose(Matrix2f matrix) {
+		assert (matrix != null) : "Matrix must not be null"; //$NON-NLS-1$
+		if (this != matrix) {
+			this.m00 = matrix.m00;
+			this.m01 = matrix.m10;
 
-			this.m10 = m1.m01;
-			this.m11 = m1.m11;
-		}
+			this.m10 = matrix.m01;
+			this.m11 = matrix.m11;
+
+			this.isIdentity = matrix.isIdentity();
+	}
 		else {
 			transpose();
 		}
 	}
 
 	/**
-	 * Sets the value of this matrix to the value of the Matrix2d argument.
+	 * Sets the value of this matrix to the value of the Matrix2f argument.
 	 * 
-	 * @param m1
-	 *            the source Matrix2d
+	 * @param matrix
+	 *            the source Matrix2f
 	 */
-	public final void set(Matrix2f m1) {
-		this.m00 = m1.m00;
-		this.m01 = m1.m01;
+	public final void set(Matrix2f matrix) {
+		assert (matrix != null) : "Matrix must not be null"; //$NON-NLS-1$
+		this.m00 = matrix.m00;
+		this.m01 = matrix.m01;
 
-		this.m10 = m1.m10;
-		this.m11 = m1.m11;
+		this.m10 = matrix.m10;
+		this.m11 = matrix.m11;
+
+		this.isIdentity = matrix.isIdentity();
 	}
 
 	/**
-	 * Sets the values in this Matrix2d equal to the row-major array parameter
+	 * Sets the values in this Matrix2f equal to the row-major array parameter
 	 * (ie, the first two elements of the array will be copied into the first
 	 * row of this matrix, etc.).
 	 * 
-	 * @param m
+	 * @param matrix
 	 *            the double precision array of length 4
 	 */
-	public final void set(float[] m) {
-		this.m00 = m[0];
-		this.m01 = m[1];
+	public final void set(double[] matrix) {
+		assert (matrix != null) : "Matrix must not be null"; //$NON-NLS-1$
+		assert (matrix.length >= 2) : "Size of the matrix is too small"; //$NON-NLS-1$
+		this.m00 = matrix[0];
+		this.m01 = matrix[1];
 
-		this.m10 = m[2];
-		this.m11 = m[4];
+		this.m10 = matrix[2];
+		this.m11 = matrix[4];
+
+		this.isIdentity = null;
 	}
 
 	/**
@@ -637,12 +713,14 @@ public class Matrix2f implements Serializable, Cloneable, MathConstants {
 	 * @param m11
 	 *            the [1][1] element
 	 */
-	public void set(float m00, float m01, float m10, float m11) {
+	public void set(double m00, double m01, double m10, double m11) {
 		this.m00 = m00;
 		this.m01 = m01;
 
 		this.m10 = m10;
 		this.m11 = m11;
+
+		this.isIdentity = null;
 	}
 	
 	/**
@@ -650,7 +728,8 @@ public class Matrix2f implements Serializable, Cloneable, MathConstants {
 	 * 
 	 * @return the determinant of the matrix
 	 */
-	public final float determinant() {
+	@Pure
+	public final double determinant() {
 		return this.m00*this.m11 - this.m01*this.m10;
 	}
 
@@ -660,12 +739,14 @@ public class Matrix2f implements Serializable, Cloneable, MathConstants {
 	 * @param scalar
 	 *            The scalar multiplier.
 	 */
-	public final void mul(float scalar) {
+	public final void mul(double scalar) {
 		this.m00 *= scalar;
 		this.m01 *= scalar;
 
 		this.m10 *= scalar;
 		this.m11 *= scalar;
+
+		this.isIdentity = null;
 	}
 
 	/**
@@ -674,111 +755,124 @@ public class Matrix2f implements Serializable, Cloneable, MathConstants {
 	 * 
 	 * @param scalar
 	 *            the scalar multiplier
-	 * @param m1
+	 * @param matrix
 	 *            the original matrix
 	 */
-	public final void mul(float scalar, Matrix2f m1) {
-		this.m00 = scalar * m1.m00;
-		this.m01 = scalar * m1.m01;
+	public final void mul(double scalar, Matrix2f matrix) {
+		assert (matrix != null) : "Matrix must not be null"; //$NON-NLS-1$
+		this.m00 = scalar * matrix.m00;
+		this.m01 = scalar * matrix.m01;
 
-		this.m10 = scalar * m1.m10;
-		this.m11 = scalar * m1.m11;
+		this.m10 = scalar * matrix.m10;
+		this.m11 = scalar * matrix.m11;
+
+		this.isIdentity = null;
 	}
 
 	/**
 	 * Sets the value of this matrix to the result of multiplying itself with
 	 * matrix m1.
 	 * 
-	 * @param m1
+	 * @param matrix
 	 *            the other matrix
 	 */
-	public final void mul(Matrix2f m1) {
-		float _m00, _m01, _m10, _m11;
+	public final void mul(Matrix2f matrix) {
+		assert (matrix != null) : "Matrix must not be null"; //$NON-NLS-1$
+		double _m00, _m01, _m10, _m11;
 
-		_m00 = this.m00 * m1.m00 + this.m01 * m1.m10;
-		_m01 = this.m00 * m1.m01 + this.m01 * m1.m11;
+		_m00 = this.m00 * matrix.m00 + this.m01 * matrix.m10;
+		_m01 = this.m00 * matrix.m01 + this.m01 * matrix.m11;
 
-		_m10 = this.m10 * m1.m00 + this.m11 * m1.m10;
-		_m11 = this.m10 * m1.m01 + this.m11 * m1.m11;
+		_m10 = this.m10 * matrix.m00 + this.m11 * matrix.m10;
+		_m11 = this.m10 * matrix.m01 + this.m11 * matrix.m11;
 
 		this.m00 = _m00;
 		this.m01 = _m01;
 		this.m10 = _m10;
 		this.m11 = _m11;
+
+		this.isIdentity = null;
 	}
 
 	/**
-	 * Multiply this matrix by the given vector and replies the resulting vector.
+	 * Multiply this matrix by the given vector v and set the resulting vector.
 	 * 
-	 * @param v
-	 * @return this * v
+	 * @param vector the input vector
+	 * @param result is set with (this * v).
 	 */
-	public final Vector2f mul(Vector2D v) {
-		Vector2f r = new Vector2f();
-		r.set(
-				this.m00 * v.getX() + this.m01 * v.getY(),
-				this.m10 * v.getX() + this.m11 * v.getY());
-		return r;
+	@Pure
+	public final void mul(Tuple2D<?> vector, Tuple2D<?> result) {
+		assert (vector != null) : "Input vector must not be null"; //$NON-NLS-1$
+		assert (result != null) : "Result vector must be not null"; //$NON-NLS-1$
+		result.set(
+				this.m00 * vector.getX() + this.m01 * vector.getY(),
+				this.m10 * vector.getX() + this.m11 * vector.getY());
 	}
 
 	/**
 	 * Sets the value of this matrix to the result of multiplying the two
 	 * argument matrices together.
 	 * 
-	 * @param m1
+	 * @param matrix1
 	 *            the first matrix
-	 * @param m2
+	 * @param matrix2
 	 *            the second matrix
 	 */
-	public final void mul(Matrix2f m1, Matrix2f m2) {
-		if (this != m1 && this != m2) {
-			this.m00 = m1.m00 * m2.m00 + m1.m01 * m2.m10;
-			this.m01 = m1.m00 * m2.m01 + m1.m01 * m2.m11;
+	public final void mul(Matrix2f matrix1, Matrix2f matrix2) {
+		assert (matrix1 != null) : "First matrix must not be null"; //$NON-NLS-1$
+		assert (matrix2 != null) : "Second matrix must be not null"; //$NON-NLS-1$
+		if (this != matrix1 && this != matrix2) {
+			this.m00 = matrix1.m00 * matrix2.m00 + matrix1.m01 * matrix2.m10;
+			this.m01 = matrix1.m00 * matrix2.m01 + matrix1.m01 * matrix2.m11;
 
-			this.m10 = m1.m10 * m2.m00 + m1.m11 * m2.m10;
-			this.m11 = m1.m10 * m2.m01 + m1.m11 * m2.m11;
+			this.m10 = matrix1.m10 * matrix2.m00 + matrix1.m11 * matrix2.m10;
+			this.m11 = matrix1.m10 * matrix2.m01 + matrix1.m11 * matrix2.m11;
 		}
 		else {
-			float _m00, _m01, _m10, _m11; // vars for temp result matrix
+			double _m00, _m01, _m10, _m11; // vars for temp result matrix
 
-			_m00 = m1.m00 * m2.m00 + m1.m01 * m2.m10;
-			_m01 = m1.m00 * m2.m01 + m1.m01 * m2.m11;
+			_m00 = matrix1.m00 * matrix2.m00 + matrix1.m01 * matrix2.m10;
+			_m01 = matrix1.m00 * matrix2.m01 + matrix1.m01 * matrix2.m11;
 
-			_m10 = m1.m10 * m2.m00 + m1.m11 * m2.m10;
-			_m11 = m1.m10 * m2.m01 + m1.m11 * m2.m11;
+			_m10 = matrix1.m10 * matrix2.m00 + matrix1.m11 * matrix2.m10;
+			_m11 = matrix1.m10 * matrix2.m01 + matrix1.m11 * matrix2.m11;
 
 			this.m00 = _m00;
 			this.m01 = _m01;
 			this.m10 = _m10;
 			this.m11 = _m11;
 		}
+
+		this.isIdentity = null;
 	}
 
 	/**
 	 * Multiplies the transpose of matrix m1 times the transpose of matrix m2,
 	 * and places the result into this.
 	 * 
-	 * @param m1
+	 * @param matrix1
 	 *            the matrix on the left hand side of the multiplication
-	 * @param m2
+	 * @param matrix2
 	 *            the matrix on the right hand side of the multiplication
 	 */
-	public final void mulTransposeBoth(Matrix2f m1, Matrix2f m2) {
-		if (this != m1 && this != m2) {
-			this.m00 = m1.m00 * m2.m00 + m1.m10 * m2.m01;
-			this.m01 = m1.m00 * m2.m10 + m1.m10 * m2.m11;
+	public final void mulTransposeBoth(Matrix2f matrix1, Matrix2f matrix2) {
+		assert (matrix1 != null) : "First matrix must not be null"; //$NON-NLS-1$
+		assert (matrix2 != null) : "Second matrix must be not null"; //$NON-NLS-1$
+		if (this != matrix1 && this != matrix2) {
+			this.m00 = matrix1.m00 * matrix2.m00 + matrix1.m10 * matrix2.m01;
+			this.m01 = matrix1.m00 * matrix2.m10 + matrix1.m10 * matrix2.m11;
 
-			this.m10 = m1.m01 * m2.m00 + m1.m11 * m2.m01;
-			this.m11 = m1.m01 * m2.m10 + m1.m11 * m2.m11;
+			this.m10 = matrix1.m01 * matrix2.m00 + matrix1.m11 * matrix2.m01;
+			this.m11 = matrix1.m01 * matrix2.m10 + matrix1.m11 * matrix2.m11;
 		}
 		else {
-			float _m00, _m01, _m10, _m11; // vars for temp result matrix
+			double _m00, _m01, _m10, _m11; // vars for temp result matrix
 
-			_m00 = m1.m00 * m2.m00 + m1.m10 * m2.m01;
-			_m01 = m1.m00 * m2.m10 + m1.m10 * m2.m11;
+			_m00 = matrix1.m00 * matrix2.m00 + matrix1.m10 * matrix2.m01;
+			_m01 = matrix1.m00 * matrix2.m10 + matrix1.m10 * matrix2.m11;
 
-			_m10 = m1.m01 * m2.m00 + m1.m11 * m2.m01;
-			_m11 = m1.m01 * m2.m10 + m1.m11 * m2.m11;
+			_m10 = matrix1.m01 * matrix2.m00 + matrix1.m11 * matrix2.m01;
+			_m11 = matrix1.m01 * matrix2.m10 + matrix1.m11 * matrix2.m11;
 
 			this.m00 = _m00;
 			this.m01 = _m01;
@@ -786,72 +880,81 @@ public class Matrix2f implements Serializable, Cloneable, MathConstants {
 			this.m11 = _m11;
 		}
 
+		this.isIdentity = null;
 	}
 
 	/**
 	 * Multiplies matrix m1 times the transpose of matrix m2, and places the
 	 * result into this.
 	 * 
-	 * @param m1
+	 * @param matrix1
 	 *            the matrix on the left hand side of the multiplication
-	 * @param m2
+	 * @param matrix2
 	 *            the matrix on the right hand side of the multiplication
 	 */
-	public final void mulTransposeRight(Matrix2f m1, Matrix2f m2) {
-		if (this != m1 && this != m2) {
-			this.m00 = m1.m00 * m2.m00 + m1.m01 * m2.m01;
-			this.m01 = m1.m00 * m2.m10 + m1.m01 * m2.m11;
+	public final void mulTransposeRight(Matrix2f matrix1, Matrix2f matrix2) {
+		assert (matrix1 != null) : "First matrix must not be null"; //$NON-NLS-1$
+		assert (matrix2 != null) : "Second matrix must be not null"; //$NON-NLS-1$
+		if (this != matrix1 && this != matrix2) {
+			this.m00 = matrix1.m00 * matrix2.m00 + matrix1.m01 * matrix2.m01;
+			this.m01 = matrix1.m00 * matrix2.m10 + matrix1.m01 * matrix2.m11;
 
-			this.m10 = m1.m10 * m2.m00 + m1.m11 * m2.m01;
-			this.m11 = m1.m10 * m2.m10 + m1.m11 * m2.m11;
+			this.m10 = matrix1.m10 * matrix2.m00 + matrix1.m11 * matrix2.m01;
+			this.m11 = matrix1.m10 * matrix2.m10 + matrix1.m11 * matrix2.m11;
 		}
 		else {
-			float _m00, _m01, _m10, _m11; // vars for temp result matrix
+			double _m00, _m01, _m10, _m11; // vars for temp result matrix
 
-			_m00 = m1.m00 * m2.m00 + m1.m01 * m2.m01;
-			_m01 = m1.m00 * m2.m10 + m1.m01 * m2.m11;
+			_m00 = matrix1.m00 * matrix2.m00 + matrix1.m01 * matrix2.m01;
+			_m01 = matrix1.m00 * matrix2.m10 + matrix1.m01 * matrix2.m11;
 
-			_m10 = m1.m10 * m2.m00 + m1.m11 * m2.m01;
-			_m11 = m1.m10 * m2.m10 + m1.m11 * m2.m11;
+			_m10 = matrix1.m10 * matrix2.m00 + matrix1.m11 * matrix2.m01;
+			_m11 = matrix1.m10 * matrix2.m10 + matrix1.m11 * matrix2.m11;
 
 			this.m00 = _m00;
 			this.m01 = _m01;
 			this.m10 = _m10;
 			this.m11 = _m11;
 		}
+
+		this.isIdentity = null;
 	}
 
 	/**
 	 * Multiplies the transpose of matrix m1 times matrix m2, and places the
 	 * result into this.
 	 * 
-	 * @param m1
+	 * @param matrix1
 	 *            the matrix on the left hand side of the multiplication
-	 * @param m2
+	 * @param matrix2
 	 *            the matrix on the right hand side of the multiplication
 	 */
-	public final void mulTransposeLeft(Matrix2f m1, Matrix2f m2) {
-		if (this != m1 && this != m2) {
-			this.m00 = m1.m00 * m2.m00 + m1.m10 * m2.m10;
-			this.m01 = m1.m00 * m2.m01 + m1.m10 * m2.m11;
+	public final void mulTransposeLeft(Matrix2f matrix1, Matrix2f matrix2) {
+		assert (matrix1 != null) : "First matrix must not be null"; //$NON-NLS-1$
+		assert (matrix2 != null) : "Second matrix must be not null"; //$NON-NLS-1$
+		if (this != matrix1 && this != matrix2) {
+			this.m00 = matrix1.m00 * matrix2.m00 + matrix1.m10 * matrix2.m10;
+			this.m01 = matrix1.m00 * matrix2.m01 + matrix1.m10 * matrix2.m11;
 
-			this.m10 = m1.m01 * m2.m00 + m1.m11 * m2.m10;
-			this.m11 = m1.m01 * m2.m01 + m1.m11 * m2.m11;
+			this.m10 = matrix1.m01 * matrix2.m00 + matrix1.m11 * matrix2.m10;
+			this.m11 = matrix1.m01 * matrix2.m01 + matrix1.m11 * matrix2.m11;
 		}
 		else {
-			float _m00, _m01, _m10, _m11; // vars for temp result matrix
+			double _m00, _m01, _m10, _m11; // vars for temp result matrix
 
-			_m00 = m1.m00 * m2.m00 + m1.m10 * m2.m10;
-			_m01 = m1.m00 * m2.m01 + m1.m10 * m2.m11;
+			_m00 = matrix1.m00 * matrix2.m00 + matrix1.m10 * matrix2.m10;
+			_m01 = matrix1.m00 * matrix2.m01 + matrix1.m10 * matrix2.m11;
 
-			_m10 = m1.m01 * m2.m00 + m1.m11 * m2.m10;
-			_m11 = m1.m01 * m2.m01 + m1.m11 * m2.m11;
+			_m10 = matrix1.m01 * matrix2.m00 + matrix1.m11 * matrix2.m10;
+			_m11 = matrix1.m01 * matrix2.m01 + matrix1.m11 * matrix2.m11;
 
 			this.m00 = _m00;
 			this.m01 = _m01;
 			this.m10 = _m10;
 			this.m11 = _m11;
 		}
+
+		this.isIdentity = null;
 	}
 
 	/**
@@ -859,44 +962,50 @@ public class Matrix2f implements Serializable, Cloneable, MathConstants {
 	 */
 	public final void normalizeCP() {
 		double mag = 1.0 / Math.sqrt(this.m00 * this.m00 + this.m10 * this.m10);
-		this.m00 = (float)(this.m00 * mag);
-		this.m10 = (float)(this.m10 * mag);
+		this.m00 = this.m00 * mag;
+		this.m10 = this.m10 * mag;
 
 		mag = 1.0 / Math.sqrt(this.m01 * this.m01 + this.m11 * this.m11);
-		this.m01 = (float)(this.m01 * mag);
-		this.m11 = (float)(this.m11 * mag);
+		this.m01 = this.m01 * mag;
+		this.m11 = this.m11 * mag;
+
+		this.isIdentity = null;
 	}
 
 	/**
 	 * Perform cross product normalization of matrix m1 and place the normalized
 	 * values into this.
 	 * 
-	 * @param m1
+	 * @param matrix
 	 *            Provides the matrix values to be normalized
 	 */
-	public final void normalizeCP(Matrix2f m1) {
-		double mag = 1.0 / Math.sqrt(m1.m00 * m1.m00 + m1.m10 * m1.m10);
-		this.m00 = (float)(m1.m00 * mag);
-		this.m10 = (float)(m1.m10 * mag);
+	public final void normalizeCP(Matrix2f matrix) {
+		assert (matrix != null) : "Matrix must not be null"; //$NON-NLS-1$
+		double mag = 1.0 / Math.sqrt(matrix.m00 * matrix.m00 + matrix.m10 * matrix.m10);
+		this.m00 = matrix.m00 * mag;
+		this.m10 = matrix.m10 * mag;
 
-		mag = 1.0 / Math.sqrt(m1.m01 * m1.m01 + m1.m11 * m1.m11);
-		this.m01 = (float)(m1.m01 * mag);
-		this.m11 = (float)(m1.m11 * mag);
+		mag = 1.0 / Math.sqrt(matrix.m01 * matrix.m01 + matrix.m11 * matrix.m11);
+		this.m01 = matrix.m01 * mag;
+		this.m11 = matrix.m11 * mag;
+
+		this.isIdentity = null;
 	}
 
 	/**
-	 * Returns true if all of the data members of Matrix2d m1 are equal to the
-	 * corresponding data members in this Matrix2d.
+	 * Returns true if all of the data members of Matrix2f m1 are equal to the
+	 * corresponding data members in this Matrix2f.
 	 * 
-	 * @param m1
+	 * @param matrix
 	 *            the matrix with which the comparison is made
 	 * @return true or false
 	 */
-	public boolean equals(Matrix2f m1) {
+	@Pure
+	public boolean equals(Matrix2f matrix) {
 		try {
-			return (this.m00 == m1.m00 && this.m01 == m1.m01
-					&& this.m10 == m1.m10
-					&& this.m11 == m1.m11);
+			return (this.m00 == matrix.m00 && this.m01 == matrix.m01
+					&& this.m10 == matrix.m10
+					&& this.m11 == matrix.m11);
 		}
 		catch (NullPointerException e2) {
 			return false;
@@ -904,66 +1013,68 @@ public class Matrix2f implements Serializable, Cloneable, MathConstants {
 	}
 
 	/**
-	 * Returns true if the Object t1 is of type Matrix2d and all of the data
+	 * Returns true if the Object t1 is of type Matrix2f and all of the data
 	 * members of t1 are equal to the corresponding data members in this
-	 * Matrix2d.
+	 * Matrix2f.
 	 * 
-	 * @param t1
+	 * @param object
 	 *            the matrix with which the comparison is made
 	 * @return true or false
 	 */
+	@Pure
 	@Override
-	public boolean equals(Object t1) {
+	public boolean equals(Object object) {
 		try {
-			Matrix2f m2 = (Matrix2f) t1;
+			Matrix2f m2 = (Matrix2f) object;
 			return (this.m00 == m2.m00 && this.m01 == m2.m01
 					&& this.m10 == m2.m10
 					&& this.m11 == m2.m11);
 		}
-		catch (ClassCastException e1) {
-			return false;
-		}
-		catch (NullPointerException e2) {
+		catch (ClassCastException | NullPointerException e1) {
 			return false;
 		}
 	}
 
 	/**
 	 * Returns a hash code value based on the data values in this object. Two
-	 * different Matrix2d objects with identical data values (i.e.,
-	 * Matrix2d.equals returns true) will return the same hash code value. Two
+	 * different Matrix2f objects with identical data values (i.e.,
+	 * Matrix2f.equals returns true) will return the same hash code value. Two
 	 * objects with different data members may return the same hash value,
 	 * although this is not likely.
 	 * 
 	 * @return the integer hash code value
 	 */
+	@Pure
 	@Override
 	public int hashCode() {
 		long bits = 1L;
-		bits = 31L * bits + floatToIntBits(this.m00);
-		bits = 31L * bits + floatToIntBits(this.m01);
-		bits = 31L * bits + floatToIntBits(this.m10);
-		bits = 31L * bits + floatToIntBits(this.m11);
+		bits = 31L * bits + doubleToLongBits(this.m00);
+		bits = 31L * bits + doubleToLongBits(this.m01);
+		bits = 31L * bits + doubleToLongBits(this.m10);
+		bits = 31L * bits + doubleToLongBits(this.m11);
 		return (int) (bits ^ (bits >> 32));
 	}
 
-	private static int floatToIntBits(float d) {
+	@Pure
+	private static long doubleToLongBits(double d) {
 		// Check for +0 or -0
-		if (d == 0f) {
+		if (d == 0.) {
 			return 0;
 		}
-		return Float.floatToIntBits(d);
+		return Double.doubleToLongBits(d);
 	}
 	
 	/**
 	 * Sets this matrix to all zeros.
 	 */
 	public final void setZero() {
-		this.m00 = 0f;
-		this.m01 = 0f;
+		this.m00 = 0.;
+		this.m01 = 0.;
 
-		this.m10 = 0f;
-		this.m11 = 0f;
+		this.m10 = 0.;
+		this.m11 = 0.;
+
+		this.isIdentity = Boolean.FALSE;
 	}
 
 	/**
@@ -974,11 +1085,13 @@ public class Matrix2f implements Serializable, Cloneable, MathConstants {
 	 * @param m11
 	 *            the second element of the diagonal
 	 */
-	public final void setDiagonal(float m00, float m11) {
+	public final void setDiagonal(double m00, double m11) {
 		this.m00 = m00;
-		this.m01 = 0f;
-		this.m10 = 0f;
+		this.m01 = 0.;
+		this.m10 = 0.;
 		this.m11 = m11;
+
+		this.isIdentity = null;
 	}
 
 	/**
@@ -990,21 +1103,26 @@ public class Matrix2f implements Serializable, Cloneable, MathConstants {
 
 		this.m10 = -this.m10;
 		this.m11 = -this.m11;
+
+		this.isIdentity = null;
 	}
 
 	/**
-	 * Sets the value of this matrix equal to the negation of of the Matrix2d
+	 * Sets the value of this matrix equal to the negation of of the Matrix2f
 	 * parameter.
 	 * 
-	 * @param m1
+	 * @param matrix
 	 *            the source matrix
 	 */
-	public final void negate(Matrix2f m1) {
-		this.m00 = -m1.m00;
-		this.m01 = -m1.m01;
+	public final void negate(Matrix2f matrix) {
+		assert (matrix != null) : "Matrix must not be null"; //$NON-NLS-1$
+		this.m00 = -matrix.m00;
+		this.m01 = -matrix.m01;
 
-		this.m10 = -m1.m10;
-		this.m11 = -m1.m11;
+		this.m10 = -matrix.m10;
+		this.m11 = -matrix.m11;
+
+		this.isIdentity = null;
 	}
 
 	/**
@@ -1015,6 +1133,7 @@ public class Matrix2f implements Serializable, Cloneable, MathConstants {
 	 *                if there is not enough memory.
 	 * @see java.lang.Cloneable
 	 */
+	@Pure
 	@Override
 	public Matrix2f clone() {
 		Matrix2f m1 = null;
@@ -1023,7 +1142,7 @@ public class Matrix2f implements Serializable, Cloneable, MathConstants {
 		}
 		catch (CloneNotSupportedException e) {
 			// this shouldn't happen, since we are Cloneable
-			throw new InternalError();
+			throw new InternalError(e);
 		}
 
 		// Also need to create new tmp arrays (no need to actually clone them)
@@ -1035,7 +1154,8 @@ public class Matrix2f implements Serializable, Cloneable, MathConstants {
 	 * 
 	 * @return Returns the m00.
 	 */
-	public final float getM00() {
+	@Pure
+	public final double getM00() {
 		return this.m00;
 	}
 
@@ -1045,7 +1165,7 @@ public class Matrix2f implements Serializable, Cloneable, MathConstants {
 	 * @param m00
 	 *            The m00 to set.
 	 */
-	public final void setM00(float m00) {
+	public final void setM00(double m00) {
 		this.m00 = m00;
 	}
 
@@ -1054,7 +1174,8 @@ public class Matrix2f implements Serializable, Cloneable, MathConstants {
 	 * 
 	 * @return Returns the m01.
 	 */
-	public final float getM01() {
+	@Pure
+	public final double getM01() {
 		return this.m01;
 	}
 
@@ -1064,7 +1185,7 @@ public class Matrix2f implements Serializable, Cloneable, MathConstants {
 	 * @param m01
 	 *            The m01 to set.
 	 */
-	public final void setM01(float m01) {
+	public final void setM01(double m01) {
 		this.m01 = m01;
 	}
 
@@ -1073,7 +1194,8 @@ public class Matrix2f implements Serializable, Cloneable, MathConstants {
 	 * 
 	 * @return Returns the m10.
 	 */
-	public final float getM10() {
+	@Pure
+	public final double getM10() {
 		return this.m10;
 	}
 
@@ -1083,7 +1205,7 @@ public class Matrix2f implements Serializable, Cloneable, MathConstants {
 	 * @param m10
 	 *            The m10 to set.
 	 */
-	public final void setM10(float m10) {
+	public final void setM10(double m10) {
 		this.m10 = m10;
 	}
 
@@ -1092,7 +1214,8 @@ public class Matrix2f implements Serializable, Cloneable, MathConstants {
 	 * 
 	 * @return Returns the m11.
 	 */
-	public final float getM11() {
+	@Pure
+	public final double getM11() {
 		return this.m11;
 	}
 
@@ -1102,59 +1225,73 @@ public class Matrix2f implements Serializable, Cloneable, MathConstants {
 	 * @param m11
 	 *            The m11 to set.
 	 */
-	public final void setM11(float m11) {
+	public final void setM11(double m11) {
 		this.m11 = m11;
+		this.isIdentity = null;
 	}
 
 	/** Set this matrix with the covariance matrix's elements for the given
 	 * set of tuples.
 	 * 
+	 * @param result the mean of the tuples.
 	 * @param tuples
-	 * @return the mean of the tuples.
+	 * @return <code>true</code> if the covariance matrix could be computed.
 	 */
-	public final Vector2f cov(Vector2f... tuples) {
-		return cov(Arrays.asList(tuples));
+	public final boolean cov(Vector2D<?, ?> result, Vector2D<?, ?>... tuples) {
+		assert (result != null) : "Result vector must not be null"; //$NON-NLS-1$
+		assert (tuples != null) : "List of tuples must be not null"; //$NON-NLS-1$
+		return cov(result, Arrays.asList(tuples));
 	}
 
 	/** Set this matrix with the covariance matrix's elements for the given
 	 * set of tuples.
 	 * 
+	 * @param result the mean of the tuples.
 	 * @param tuples
-	 * @return the mean of the tuples.
+	 * @return <code>true</code> if the covariance matrix could be computed.
 	 */
-	public final Vector2f cov(Point2f... tuples) {
-		return cov(Arrays.asList(tuples));
+	public final boolean cov(Vector2D<?, ?> result, Point2D<?, ?>... tuples) {
+		assert (result != null) : "Result vector must not be null"; //$NON-NLS-1$
+		assert (tuples != null) : "List of tuples must be not null"; //$NON-NLS-1$
+		return cov(result, Arrays.asList(tuples));
 	}
 	
 	/** Set this matrix with the covariance matrix's elements for the given
 	 * set of tuples.
 	 * 
+	 * @param result the mean of the tuples.
 	 * @param tuples
-	 * @return the mean of the tuples.
+	 * @return <code>true</code> if the covariance matrix could be computed.
 	 */
-	public Vector2f cov(Iterable<? extends Tuple2f<?>> tuples) {
+	public boolean cov(Vector2D<?, ?> result, Iterable<? extends Tuple2D<?>> tuples) {
+		assert (result != null) : "Result vector must not be null"; //$NON-NLS-1$
+		assert (tuples != null) : "List of tuples must be not null"; //$NON-NLS-1$
 		setZero();
 
 		// Compute the mean m
-		Vector2f m = new Vector2f();
+		double mx = 0;
+		double my = 0;
 		int count = 0;
-		for(Tuple2f<?> p : tuples) {
-			m.add(p.getX(), p.getY());
+		for(Tuple2D<?> p : tuples) {
+			mx += p.getX();
+			my += p.getY();
 			++count;
 		}
 
-		if (count==0) return null;
+		if (count==0) return false;
 
-		m.scale(1f/count);
+		double scale = 1. / count;
+		mx *= scale;
+		my *= scale;
 
 		// Compute the covariance term [Gottshalk2000]
 		// c_ij = sum(p'_i * p'_j) / n
 		// c_ij = sum((p_i - m_i) * (p_j - m_j)) / n
-		for(Tuple2f<?> p : tuples) {
-			this.m00 += (p.getX() - m.getX()) * (p.getX() - m.getX());
-			this.m01 += (p.getX() - m.getX()) * (p.getY() - m.getY()); // same as m10
-			//cov.m10 += (p.getY() - m.getY()) * (p.getX() - m.getX()); // same as m01
-			this.m11 += (p.getY() - m.getY()) * (p.getY() - m.getY());
+		for(Tuple2D<?> p : tuples) {
+			this.m00 += (p.getX() - mx) * (p.getX() - mx);
+			this.m01 += (p.getX() - mx) * (p.getY() - my); // same as m10
+			//cov.m10 += (p.getY() - my) * (p.getX() - mx); // same as m01
+			this.m11 += (p.getY() - my) * (p.getY() - my);
 		}
 
 		this.m00 /= count;
@@ -1162,7 +1299,11 @@ public class Matrix2f implements Serializable, Cloneable, MathConstants {
 		this.m10 = this.m01;
 		this.m11 /= count;
 
-		return m;
+		result.set(mx, my);
+		
+		this.isIdentity = null;
+
+		return true;
 	}
 
 	/** Replies if the matrix is symmetric.
@@ -1170,6 +1311,7 @@ public class Matrix2f implements Serializable, Cloneable, MathConstants {
 	 * @return <code>true</code> if the matrix is symmetric, otherwise
 	 * <code>false</code>
 	 */
+	@Pure
 	public boolean isSymmetric() {
 		return	this.m01 == this.m10;
 	}
@@ -1183,44 +1325,46 @@ public class Matrix2f implements Serializable, Cloneable, MathConstants {
 	 * @return the eigenvalues which are corresponding to the <var>eigenVectors</var> columns.
 	 * @see #eigenVectorsOfSymmetricMatrix(Matrix2f) 
 	 */
-	public float[] eigenVectorsOfSymmetricMatrix(Matrix2f eigenVectors) {
-		assert(eigenVectors!=null);
+	public double[] eigenVectorsOfSymmetricMatrix(Matrix2f eigenVectors) {
+		assert (eigenVectors != null) : "Matrix of eigen vectors must be not null"; //$NON-NLS-1$
 
 		// Copy values up to the diagonal
-		float m11 = getElement(0,0);
-		float m12 = getElement(0,1);
-		float m22 = getElement(1,1);
+		double m11 = getM00();
+		double m12 = getM01();
+		double m22 = getM11();
+		
+		eigenVectors.setIdentity();
 		
 		boolean sweepsConsumed = true;
 		int i;
-		float u, u2, u2p1, t, c, s;
-		float ri0, ri1;
+		double u, u2, u2p1, t, c, s;
+		double ri0, ri1;
 		
 		for(int a=0; a<JACOBI_MAX_SWEEPS; ++a) {
 			
 			// Exit loop if off-diagonal entries are small enough
-			if ((Math.abs(m12) < MathConstants.EPSILON)) {
+			if ((Math.abs(m12) < JACOBI_EPSILON)) {
 				sweepsConsumed = false;
 				break;
 			}
 			
 			// Annihilate (1,2) entry
 			if (m12 != 0.) {
-				u = (m22 - m11) *.5f / m12;
+				u = (m22 - m11) *.5 / m12;
 				u2 = u*u;
-				u2p1 = u2 + 1f;
+				u2p1 = u2 + 1.;
 				
 				if (u2p1!=u2)
-					t = (float)(Math.signum(u) * (Math.sqrt(u2p1) - Math.abs(u)));
+					t = Math.signum(u) * (Math.sqrt(u2p1) - Math.abs(u));
 				else
-					t = .5f / u;
+					t = .5 / u;
 				
-				c = 1f / (float)Math.sqrt(t*t + 1);
+				c = 1. / Math.sqrt(t*t + 1);
 				s = c * t;
 				
 				m11 -= t * m12;
 				m22 += t * m12;
-				m12 = 0f;
+				m12 = 0.;
 				
 				for(i=0; i<2; ++i) {
 					ri0 = eigenVectors.getElement(i,0);
@@ -1234,22 +1378,252 @@ public class Matrix2f implements Serializable, Cloneable, MathConstants {
 		assert(!sweepsConsumed) : "Sweep count consumed during eigenvector computation"; //$NON-NLS-1$
 		
 		// eigenvalues are on the diagonal
-		return new float[] { m11, m22 };
+		return new double[] { m11, m22 };
 	}
 	
 	/** Replies if the matrix is identity.
 	 * <p>
-	 * This function uses the equal-to-zero test with the error {@link MathConstants#EPSILON}.
+	 * This function uses the equal-to-zero test with the error {@link Math#ulp(double)}.
 	 * 
 	 * @return <code>true</code> if the matrix is identity; <code>false</code> otherwise.
-	 * @see MathUtil#isEpsilonZero(float)
-	 * @see MathUtil#isEpsilonEqual(float, float)
+	 * @see MathUtil#isEpsilonZero(double)
+	 * @see MathUtil#isEpsilonEqual(double, double)
 	 */
+	@Pure
 	public boolean isIdentity() {
-		return MathUtil.isEpsilonEqual(this.m00, 1f)
+		if (this.isIdentity == null) {
+			this.isIdentity = MathUtil.isEpsilonEqual(this.m00, 1.)
 				&& MathUtil.isEpsilonZero(this.m01)
 				&& MathUtil.isEpsilonZero(this.m10)
-				&& MathUtil.isEpsilonEqual(this.m11, 1f);
+				&& MathUtil.isEpsilonEqual(this.m11, 1.);
+		}
+		return this.isIdentity.booleanValue();
 	}
 
+	/** Add the given matrix to this matrix: {@code this += matrix}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param matrix the matrix.
+	 * @see #add(Matrix2f)
+	 */
+	public void operator_add(Matrix2f matrix) {
+		add(matrix);
+	}
+	
+	/** Add the given scalar to this matrix: {@code this += scalar}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param scalar the scalar.
+	 * @see #add(double)
+	 */
+	public void operator_add(double scalar) {
+		add(scalar);
+	}
+
+	/** Substract the given matrix to this matrix: {@code this -= matrix}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param matrix the matrix.
+	 * @see #sub(Matrix2f)
+	 */
+	public void operator_remove(Matrix2f matrix) {
+		sub(matrix);
+	}
+	
+	/** Substract the given scalar to this matrix: {@code this -= scalar}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param scalar the scalar.
+	 * @see #add(double)
+	 */
+	public void operator_remove(double scalar) {
+		add(-scalar);
+	}
+
+	/** Replies the addition of the given matrix to this matrix: {@code this + matrix}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param matrix the matrix.
+	 * @return the sum of the matrices.
+	 * @see #add(Matrix2f)
+	 */
+	@Pure
+	public Matrix2f operator_plus(Matrix2f matrix) {
+		Matrix2f result = new Matrix2f();
+		result.add(this, matrix);
+		return result;
+	}
+
+	/** Replies the addition of the given scalar to this matrix: {@code this + scalar}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param scalar the scalar.
+	 * @return the sum of the matrix and the scalar.
+	 * @see #add(double)
+	 */
+	@Pure
+	public Matrix2f operator_plus(double scalar) {
+		Matrix2f result = new Matrix2f();
+		result.add(scalar, this);
+		return result;
+	}
+
+	/** Replies the substraction of the given matrix to this matrix: {@code this - matrix}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param matrix the matrix.
+	 * @return the result of the substraction.
+	 * @see #sub(Matrix2f)
+	 */
+	@Pure
+	public Matrix2f operator_minus(Matrix2f matrix) {
+		Matrix2f result = new Matrix2f();
+		result.sub(this, matrix);
+		return result;
+	}
+
+	/** Replies the substraction of the given scalar to this matrix: {@code this - scalar}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param scalar the scalar.
+	 * @return the result of the substraction.
+	 * @see #add(double)
+	 */
+	@Pure
+	public Matrix2f operator_minus(double scalar) {
+		Matrix2f result = new Matrix2f();
+		result.add(-scalar, this);
+		return result;
+	}
+
+	/** Replies the negation of this matrix: {@code -this}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @return the negation of this matrix.
+	 * @see #negate()
+	 */
+	@Pure
+	public Matrix2f operator_minus() {
+		Matrix2f result = new Matrix2f();
+		result.negate(this);
+		return result;
+	}
+
+	/** Replies the multiplication of the given matrix and this matrix: {@code this * matrix}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param matrix the matrix.
+	 * @return the multiplication of the matrices.
+	 * @see #mul(Matrix2f)
+	 */
+	@Pure
+	public Matrix2f operator_multiply(Matrix2f matrix) {
+		Matrix2f result = new Matrix2f();
+		result.mul(this, matrix);
+		return result;
+	}
+
+	/** Replies the multiplication of the given scalar and this matrix: {@code this * scalar}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param scalar the scalar.
+	 * @return the multiplication of the scalar and the matrix.
+	 * @see #mul(Matrix2f)
+	 */
+	@Pure
+	public Matrix2f operator_multiply(double scalar) {
+		Matrix2f result = new Matrix2f();
+		result.mul(scalar, this);
+		return result;
+	}
+
+	/** Replies the division of this matrix by the given scalar: {@code this / scalar}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param scalar the scalar.
+	 * @return the division of the matrix by the scalar.
+	 * @see #mul(double)
+	 */
+	@Pure
+	public Matrix2f operator_divide(double scalar) {
+		Matrix2f result = new Matrix2f();
+		result.mul(1./scalar, this);
+		return result;
+	}
+
+	/** Increment this matrix: {@code this++}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @see #add(double)
+	 */
+	public void operator_plusPlus() {
+		add(1);
+	}
+
+	/** Increment this matrix: {@code this--}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @see #add(double)
+	 */
+	public void operator_moinsMoins() {
+		add(-1);
+	}
+
+	/** Replies the transposition of this matrix: {@code !this}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @return the transpose
+	 * @see #add(double)
+	 */
+	public Matrix2f operator_not() {
+		Matrix2f result = new Matrix2f();
+		result.transpose(this);
+		return result;
+	}
+	
 }

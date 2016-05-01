@@ -21,6 +21,9 @@
  */
 package org.arakhne.afc.vmutil.resource;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,59 +31,54 @@ import java.io.InputStreamReader;
 import java.net.URL;
 
 import org.arakhne.afc.vmutil.URLHandlerUtil;
-import org.arakhne.afc.vmutil.resource.URLConnection;
-
-import junit.framework.TestCase;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $Name$ $Revision$ $Date$
  * @mavengroupid org.arakhne.afc
  * @mavenartifactid arakhneVmutils
  */
-public class URLConnectionTest extends TestCase {
+public class URLConnectionTest {
 
 	private static final String RESOURCE_URL = "resource:org/arakhne/afc/vmutil/test.txt"; //$NON-NLS-1$
-	
+
 	private URLConnection connection;
-	
+
 	/**
-	 * {@inheritDoc}
+	 * @throws Exception
 	 */
-	@Override
+	@Before
 	public void setUp() throws Exception {
-		super.setUp();
 		URLHandlerUtil.installArakhneHandlers();
 		URL resourceUrl = new URL(RESOURCE_URL);
 		assertNotNull(resourceUrl);
 		this.connection = new URLConnection(resourceUrl);
 	}
-	
+
 	/**
-	 * {@inheritDoc}
+	 * @throws Exception
 	 */
-	@Override
+	@After
 	public void tearDown() throws Exception {
 		this.connection = null;
 		URLHandlerUtil.uninstallArakhneHandlers();
-		super.tearDown();
 	}
-	
+
 	/**
 	 * @throws IOException
 	 */
+	@Test
 	public void testGetInputStream() throws IOException {
 		String line;
-		InputStream is = this.connection.getInputStream();
-		BufferedReader br = new BufferedReader(new InputStreamReader(is));
-		try {
-			line = br.readLine();
-		}
-		finally {
-			br.close();
-			is.close();
+		try (InputStream is = this.connection.getInputStream()) {
+			try (BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
+				line = br.readLine();
+			}
 		}
 		assertEquals("TEST1: FOR UNIT TEST ONLY", line); //$NON-NLS-1$
-    }
+	}
 
 }

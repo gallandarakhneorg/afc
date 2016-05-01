@@ -21,15 +21,18 @@
 package org.arakhne.afc.math.continous.object2d;
 
 import org.arakhne.afc.math.generic.Tuple2D;
+import org.arakhne.afc.math.geometry.d2.d.Tuple2d;
 
 /** 2D tuple with 2 floating-point numbers.
  * 
  * @param <T> is the implementation type of the tuple.
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see {@link Tuple2d}
  */
+@Deprecated
 public class Tuple2f<T extends Tuple2D<? super T>> implements Tuple2D<T> {
 
 	private static final long serialVersionUID = 6447733811545555778L;

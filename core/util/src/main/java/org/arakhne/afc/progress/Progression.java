@@ -26,7 +26,7 @@ package org.arakhne.afc.progress;
  * An object that permits to indicates the progression of
  * a task. The progression of the value is always ascendent.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -105,7 +105,7 @@ public interface Progression {
 	 * @see     #getValue()
 	 * @see     #getProgressionFactor()
 	 */
-	public float getPercent();
+	public double getPercent();
 
 	/**
 	 * Returns the model's current value in percent of pregression.
@@ -114,7 +114,7 @@ public interface Progression {
 	 * @see     #getValue()
 	 * @see     #getPercent()
 	 */
-	public float getProgressionFactor();
+	public double getProgressionFactor();
 
 	/**
 	 * Sets the model's current value to <code>newValue</code> if <code>newValue</code>

@@ -22,11 +22,13 @@ package org.arakhne.afc.math.generic;
 
 /** 3D Point.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see {@link org.arakhne.afc.math.geometry.d3.Point3D}
  */
+@Deprecated
 public interface Point3D extends Tuple3D<Point3D> {
 
 	/**

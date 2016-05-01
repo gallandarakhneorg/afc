@@ -23,11 +23,13 @@ package org.arakhne.afc.ui.selection ;
 
 /** An object that can be selected and put inside a {@link SelectionManager}.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public interface Selectable {
 
 	/** Set if this fig accept to be selected.

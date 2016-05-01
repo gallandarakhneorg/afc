@@ -44,11 +44,13 @@ import org.arakhne.afc.ui.CenteringTransform;
 /** Utilities for ZoomableContext with additional functions
  * dedicated to AWT objects.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public class ZoomableAwtContextUtil extends org.arakhne.afc.ui.ZoomableContextUtil {
 
 	private static void create(
@@ -541,7 +543,7 @@ public class ZoomableAwtContextUtil extends org.arakhne.afc.ui.ZoomableContextUt
 				throw new IllegalArgumentException();
 			}
 		}
-		catch(ClassCastException _) {
+		catch(ClassCastException exception) {
 			//
 		}
 
@@ -685,7 +687,7 @@ public class ZoomableAwtContextUtil extends org.arakhne.afc.ui.ZoomableContextUt
 				throw new IllegalArgumentException();
 			}
 		}
-		catch(ClassCastException _) {
+		catch(ClassCastException exception) {
 			//
 		}
 

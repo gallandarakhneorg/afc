@@ -23,14 +23,17 @@ package org.arakhne.afc.math.continous.object2d;
 
 import org.arakhne.afc.math.generic.PathElement2D;
 import org.arakhne.afc.math.generic.PathElementType;
+import org.arakhne.afc.math.geometry.d2.d.PathElement2d;
 
 /** An element of the path.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see {@link PathElement2d}
  */
+@Deprecated
 public abstract class PathElement2f implements PathElement2D {
 	
 	private static final long serialVersionUID = 8963281073370254033L;
@@ -134,7 +137,7 @@ public abstract class PathElement2f implements PathElement2D {
 
 	/** An element of the path that represents a <code>MOVE_TO</code>.
 	 *
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -192,7 +195,7 @@ public abstract class PathElement2f implements PathElement2D {
 	
 	/** An element of the path that represents a <code>LINE_TO</code>.
 	 *
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -252,7 +255,7 @@ public abstract class PathElement2f implements PathElement2D {
 	
 	/** An element of the path that represents a <code>QUAD_TO</code>.
 	 *
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -319,7 +322,7 @@ public abstract class PathElement2f implements PathElement2D {
 
 	/** An element of the path that represents a <code>CURVE_TO</code>.
 	 *
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -393,7 +396,7 @@ public abstract class PathElement2f implements PathElement2D {
 
 	/** An element of the path that represents a <code>CLOSE</code>.
 	 *
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$

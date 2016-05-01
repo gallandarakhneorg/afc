@@ -23,11 +23,13 @@ package org.arakhne.afc.ui.event ;
 
 /** Describe the event related to the keyboard.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public interface KeyEvent extends InputEvent {
 
 	/** Replies the key code.

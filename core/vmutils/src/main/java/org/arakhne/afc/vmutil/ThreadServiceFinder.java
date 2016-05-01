@@ -30,14 +30,14 @@ import java.util.concurrent.ScheduledExecutorService;
 /**
  * This class permits to centralize the identify of the thread service providers. 
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
 public class ThreadServiceFinder {
 
-	private static final Stack<ThreadServiceProvider> services = new Stack<ThreadServiceProvider>();
+	private static final Stack<ThreadServiceProvider> services = new Stack<>();
 	
 	static {
 		// Add the default provider
@@ -53,7 +53,7 @@ public class ThreadServiceFinder {
     	try {
     		return services.peek();
     	}
-    	catch(EmptyStackException _) {
+    	catch(EmptyStackException exception) {
     		return null;
     	}
     }
@@ -84,7 +84,7 @@ public class ThreadServiceFinder {
     }
 
     /**
-     * @author $Author: galland$
+     * @author $Author: sgalland$
      * @version $FullVersion$
      * @mavengroupid $GroupId$
      * @mavenartifactid $ArtifactId$

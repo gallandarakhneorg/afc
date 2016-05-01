@@ -26,11 +26,13 @@ import java.util.Comparator;
 /**
  * Comparator of Tuple2i.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see {@link org.arakhne.afc.math.geometry.d2.Tuple2iComparator}
  */
+@Deprecated
 public class Tuple2iComparator implements Comparator<Tuple2i<?>> {
 	
 	/**

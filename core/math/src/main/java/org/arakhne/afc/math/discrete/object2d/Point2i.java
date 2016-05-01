@@ -27,11 +27,13 @@ import org.arakhne.afc.math.generic.Vector2D;
 
 /** 2D Point with 2 integers.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see {@link org.arakhne.afc.math.geometry.d2.i.Point2i}
  */
+@Deprecated
 public class Point2i extends Tuple2i<Point2D> implements Point2D {
 
 	private static final long serialVersionUID = 6087683508168847436L;

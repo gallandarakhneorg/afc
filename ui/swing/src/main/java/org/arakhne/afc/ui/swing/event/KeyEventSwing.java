@@ -29,11 +29,13 @@ import org.arakhne.afc.ui.event.KeyEvent;
 
 /** Swing implementation of a key event.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public class KeyEventSwing extends EventObject implements KeyEvent {
 
 	private static final long serialVersionUID = 5413599206960834822L;

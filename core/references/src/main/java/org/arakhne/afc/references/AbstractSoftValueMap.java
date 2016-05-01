@@ -35,7 +35,7 @@ import java.util.Map;
  *
  * @param <K> is the type of the keys.
  * @param <V> is the type of the values.
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -58,7 +58,7 @@ public abstract class AbstractSoftValueMap<K,V> extends AbstractReferencedValueM
 	 */
 	@Override
 	protected final ReferencableValue<K,V> makeValue(K k, V v, ReferenceQueue<V> queue) {
-		return new SoftReferencedValue<K,V>(k, v, queue);
+		return new SoftReferencedValue<>(k, v, queue);
 	}
 
 }

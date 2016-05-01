@@ -32,12 +32,13 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 import java.util.SortedSet;
+import java.util.Spliterator;
 import java.util.TreeSet;
 
 /** This class represents a list of numbers.
  * The list is always sorted by number values.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -142,7 +143,7 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 	@Override
 	public Integer first() {
 		if (this.values==null) throw new NoSuchElementException();
-		return this.values[0];
+		return Integer.valueOf(this.values[0]);
 	}
 
 	/**
@@ -150,7 +151,7 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 	 */
 	@Override
 	public SortedSet<Integer> headSet(Integer toElement) {
-		TreeSet<Integer> theset = new TreeSet<Integer>();
+		TreeSet<Integer> theset = new TreeSet<>();
 		if (this.values!=null) {
 
 			for(int idxStart=0; idxStart<this.values.length-1; idxStart+=2) {
@@ -181,7 +182,7 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 	 */
 	@Override
 	public SortedSet<Integer> subSet(Integer fromElement, Integer toElement) {
-		TreeSet<Integer> theset = new TreeSet<Integer>();
+		TreeSet<Integer> theset = new TreeSet<>();
 		if (this.values!=null) {
 
 			// Search for the first matching segment
@@ -221,7 +222,7 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 	 */
 	@Override
 	public SortedSet<Integer> tailSet(Integer fromElement) {
-		TreeSet<Integer> theset = new TreeSet<Integer>();
+		TreeSet<Integer> theset = new TreeSet<>();
 		if (this.values!=null) {
 
 			for(int idxStart=0; idxStart<this.values.length-1; idxStart+=2) {
@@ -355,7 +356,7 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 	public boolean containsAll(Collection<?> c) {
 		if (this.values==null) return false;
 		
-		SortedSet<Integer> elements = new TreeSet<Integer>();
+		SortedSet<Integer> elements = new TreeSet<>();
 		for (Object o : c) {
 			if (o instanceof Number) {
 				elements.add(((Number)o).intValue());
@@ -755,7 +756,7 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 	 * @return the set of values.
 	 */
 	public SortedSet<Integer> toSortedSet() {
-		SortedSet<Integer> theset = new TreeSet<Integer>();
+		SortedSet<Integer> theset = new TreeSet<>();
 		if (this.values!=null) {
 			for(int idxStart=0; idxStart<this.values.length-1; idxStart+=2) {
 				for(int n=this.values[idxStart]; n<=this.values[idxStart+1]; ++n) {
@@ -909,7 +910,7 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 	 */
 	@Override
 	public List<Integer> subList(int fromIndex, int toIndex) {
-		List<Integer> theList = new ArrayList<Integer>();
+		List<Integer> theList = new ArrayList<>();
 		if (this.values!=null) {
 
 			// Search for the first matching segment
@@ -950,9 +951,14 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 		return theList;
 	}
 
+	@Override
+	public Spliterator<Integer> spliterator() {
+		return SortedSet.super.spliterator();
+	}
+
 	/** This class represents an iterator on lists of integers.
 	 *
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -1128,7 +1134,7 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 	
 	/** This class describes a integers' segment.
 	 *
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -1155,7 +1161,7 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 	
 	/** Iterator on segments.
 	 *
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -1197,7 +1203,7 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 				this.removable = true;
 				return new IntegerSegment(first,last);
 			}
-			catch(IndexOutOfBoundsException _) {
+			catch(IndexOutOfBoundsException exception) {
 				throw new NoSuchElementException();
 			}
 		}

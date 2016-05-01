@@ -23,7 +23,7 @@ package org.arakhne.maven.plugins.tagreplacer;
 /**
  * List of the macros strings.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

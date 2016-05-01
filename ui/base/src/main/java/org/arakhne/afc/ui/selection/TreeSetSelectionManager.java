@@ -29,16 +29,18 @@ import java.util.TreeSet;
 /** Implementation of a SelectionManager based on a Tree Set.
  *
  * @param <OBJ> is the type of the objects inside this manager.
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see JavaFX API
  */
+@Deprecated
 public class TreeSetSelectionManager<OBJ extends Selectable & Comparable<? super OBJ>> extends SelectionManager<OBJ> {
 
 	/** The collection of Selection instances.
 	 */
-	protected Set<OBJ> storage = new TreeSet<OBJ>();
+	protected Set<OBJ> storage = new TreeSet<>();
 
 	/** Create a new SelectionManager.
 	 * 
@@ -66,7 +68,7 @@ public class TreeSetSelectionManager<OBJ extends Selectable & Comparable<? super
 	@Override
 	protected synchronized Collection<OBJ> clearStorage() {
 		Set<OBJ> old = this.storage;
-		this.storage = new TreeSet<OBJ>();
+		this.storage = new TreeSet<>();
 		return old;
 	}
 

@@ -43,7 +43,7 @@ import org.arakhne.afc.ui.vector.Image;
  * This interface representes a provider of attributes
  * that provide a reading API only.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -189,7 +189,9 @@ public interface AttributeProvider  extends Cloneable, Serializable {
 	 * @param name
 	 * @return the value
 	 * @throws AttributeException if the attribute was never set.
+	 * @deprecated
 	 */
+	@Deprecated
 	public Image getAttributeAsImage(String name) throws AttributeException;
 
 	/** Replies the value for the given attribute.
@@ -205,7 +207,9 @@ public interface AttributeProvider  extends Cloneable, Serializable {
 	 * @param name
 	 * @return the value
 	 * @throws AttributeException if the attribute was never set.
+	 * @deprecated
 	 */
+	@Deprecated
 	public Color getAttributeAsColor(String name) throws AttributeException;
 
 	/** Replies the value for the given attribute.
@@ -329,7 +333,9 @@ public interface AttributeProvider  extends Cloneable, Serializable {
 	 * @param defaultValue is the default value replied if the attribute
 	 * has no value.
 	 * @return the value
+	 * @deprecated
 	 */
+	@Deprecated
 	public Image getAttribute(String name, Image defaultValue);
 
 	/** Replies the value for the given attribute.
@@ -347,7 +353,9 @@ public interface AttributeProvider  extends Cloneable, Serializable {
 	 * @param defaultValue is the default value replied if the attribute
 	 * has no value.
 	 * @return the value
+	 * @deprecated
 	 */
+	@Deprecated
 	public Color getAttribute(String name, Color defaultValue);
 
 	/** Replies the value for the given attribute.

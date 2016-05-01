@@ -25,11 +25,13 @@ import java.io.Serializable;
 /** 3D shape.
  * 
  * @param <ST> is the type of the shape implementation.
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see {@link org.arakhne.afc.math.geometry.d3.Shape3D}
  */
+@Deprecated
 public interface Shape3D<ST extends Shape3D<? super ST>>
 extends Cloneable, Serializable {
 

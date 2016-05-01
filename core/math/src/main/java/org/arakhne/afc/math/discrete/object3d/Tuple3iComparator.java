@@ -26,11 +26,13 @@ import java.util.Comparator;
 /**
  * Comparator of Tuple3i.
  * 
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated Replacement will be provided in Version 14.0
  */
+@Deprecated
 public class Tuple3iComparator implements Comparator<Tuple3i<?>> {
 	
 	/**

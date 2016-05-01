@@ -33,16 +33,20 @@ import org.arakhne.afc.math.generic.Path2D;
 import org.arakhne.afc.math.generic.PathElementType;
 import org.arakhne.afc.math.generic.PathWindingRule;
 import org.arakhne.afc.math.generic.Point2D;
+import org.arakhne.afc.math.geometry.d2.afp.Segment2afp;
+import org.arakhne.afc.math.geometry.d2.d.Path2d;
 import org.arakhne.afc.math.matrix.Transform2D;
 
 
 /** A generic path.
  *
- * @author $Author: galland$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @deprecated see {@link Path2d}
  */
+@Deprecated
 public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Shape2f,Rectangle2f,PathElement2f,PathIterator2f> {
 
 	private static final long serialVersionUID = -873231223923726975L;
@@ -85,10 +89,10 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Shape2f,Re
 				break;
 			case LINE_TO:
 			{
-				float factor =  MathUtil.projectsPointOnLine(
+				float factor = (float) Segment2afp.computeProjectedPointOnLine(
 						x, y,
 						pe.fromX, pe.fromY, pe.toX, pe.toY);
-				factor = MathUtil.clamp(factor, 0f, 1f);
+				factor = (float) MathUtil.clamp(factor, 0f, 1f);
 				Vector2f v = new Vector2f(pe.toX, pe.toY);
 				v.sub(pe.fromX, pe.fromY);
 				v.scale(factor);
@@ -107,10 +111,10 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Shape2f,Re
 				if ((crossings & mask) != 0) return new Point2f(x, y);
 
 				if (!pe.isEmpty()) {
-					float factor =  MathUtil.projectsPointOnLine(
+					float factor = (float) Segment2afp.computeProjectedPointOnLine(
 							x, y,
 							pe.fromX, pe.fromY, pe.toX, pe.toY);
-					factor = MathUtil.clamp(factor, 0f, 1f);
+					factor = (float) MathUtil.clamp(factor, 0f, 1f);
 					Vector2f v = new Vector2f(pe.toX, pe.toY);
 					v.sub(pe.fromX, pe.fromY);
 					v.scale(factor);
@@ -324,7 +328,7 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Shape2f,Re
 						element.ctrlX1, element.ctrlY1,
 						endx, endy);
 				r = computeCrossingsFromPoint(
-						subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						subPath.getPathIterator((float) MathConstants.SPLINE_APPROXIMATION_RATIO),
 						px, py,
 						false,
 						false);
@@ -346,7 +350,7 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Shape2f,Re
 						element.ctrlX2, element.ctrlY2,
 						endx, endy);
 				r = computeCrossingsFromPoint(
-						subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						subPath.getPathIterator((float) MathConstants.SPLINE_APPROXIMATION_RATIO),
 						px, py,
 						false,
 						false);
@@ -480,7 +484,7 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Shape2f,Re
 						endx, endy);
 				numCrosses = computeCrossingsFromEllipse(
 						numCrosses,
-						localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						localPath.getPathIterator((float) MathConstants.SPLINE_APPROXIMATION_RATIO),
 						ex, ey, ew, eh,
 						false,
 						false);
@@ -502,7 +506,7 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Shape2f,Re
 						endx, endy);
 				numCrosses = computeCrossingsFromEllipse(
 						numCrosses,
-						localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						localPath.getPathIterator((float) MathConstants.SPLINE_APPROXIMATION_RATIO),
 						ex, ey, ew, eh,
 						false,
 						false);
@@ -634,7 +638,7 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Shape2f,Re
 						endx, endy);
 				numCrosses = computeCrossingsFromCircle(
 						numCrosses,
-						localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						localPath.getPathIterator((float) MathConstants.SPLINE_APPROXIMATION_RATIO),
 						cx, cy, radius,
 						false,
 						false);
@@ -656,7 +660,7 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Shape2f,Re
 						endx, endy);
 				numCrosses = computeCrossingsFromCircle(
 						numCrosses,
-						localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						localPath.getPathIterator((float) MathConstants.SPLINE_APPROXIMATION_RATIO),
 						cx, cy, radius,
 						false,
 						false);
@@ -782,7 +786,7 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Shape2f,Re
 						endx, endy);
 				numCrosses = computeCrossingsFromSegment(
 						numCrosses,
-						localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						localPath.getPathIterator((float) MathConstants.SPLINE_APPROXIMATION_RATIO),
 						x1, y1, x2, y2,
 						false);
 				if (numCrosses==MathConstants.SHAPE_INTERSECTS)
@@ -802,7 +806,7 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Shape2f,Re
 						endx, endy);
 				numCrosses = computeCrossingsFromSegment(
 						numCrosses,
-						localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						localPath.getPathIterator((float) MathConstants.SPLINE_APPROXIMATION_RATIO),
 						x1, y1, x2, y2,
 						false);
 				if (numCrosses==MathConstants.SHAPE_INTERSECTS)
@@ -949,7 +953,7 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Shape2f,Re
 						pathElement.ctrlX1, pathElement.ctrlY1,
 						endx, endy);
 				n = computeCrossingsFromRect(
-						subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						subPath.getPathIterator((float) MathConstants.SPLINE_APPROXIMATION_RATIO),
 						rxmin, rymin,
 						rxmax, rymax,
 						false,
@@ -970,7 +974,7 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Shape2f,Re
 						pathElement.ctrlX2, pathElement.ctrlY2,
 						endx, endy);
 				n = computeCrossingsFromRect(
-						subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						subPath.getPathIterator((float) MathConstants.SPLINE_APPROXIMATION_RATIO),
 						rxmin, rymin,
 						rxmax, rymax,
 						false,
@@ -1114,11 +1118,11 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Shape2f,Re
 		Rectangle2f box;
 		box = p.graphicalBounds==null ? null : p.graphicalBounds.get();
 		if (box!=null) {
-			this.graphicalBounds = new SoftReference<Rectangle2f>(box.clone());
+			this.graphicalBounds = new SoftReference<>(box.clone());
 		}
 		box = p.logicalBounds==null ? null : p.logicalBounds.get();
 		if (box!=null) {
-			this.logicalBounds = new SoftReference<Rectangle2f>(box.clone());
+			this.logicalBounds = new SoftReference<>(box.clone());
 		}
 	}
 
@@ -1471,12 +1475,12 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Shape2f,Re
 
 	@Override
 	public boolean contains(float x, float y) {
-		return contains(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), x, y);
+		return contains(getPathIterator((float) MathConstants.SPLINE_APPROXIMATION_RATIO), x, y);
 	}
 
 	@Override
 	public boolean contains(Rectangle2f r) {
-		return contains(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+		return contains(getPathIterator((float) MathConstants.SPLINE_APPROXIMATION_RATIO),
 				r.getMinX(), r.getMinY(), r.getWidth(), r.getHeight());
 	}
 
@@ -1486,7 +1490,7 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Shape2f,Re
 		if (s.isEmpty()) return false;
 		int mask = (this.windingRule == PathWindingRule.NON_ZERO ? -1 : 2);
 		int crossings = computeCrossingsFromRect(
-				getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+				getPathIterator((float) MathConstants.SPLINE_APPROXIMATION_RATIO),
 				s.getMinX(), s.getMinY(), s.getMaxX(), s.getMaxY(),
 				false, true);
 		return (crossings == MathConstants.SHAPE_INTERSECTS ||
@@ -1498,7 +1502,7 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Shape2f,Re
 		int mask = (this.windingRule == PathWindingRule.NON_ZERO ? -1 : 2);
 		int crossings = computeCrossingsFromEllipse(
 				0,
-				getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+				getPathIterator((float) MathConstants.SPLINE_APPROXIMATION_RATIO),
 				s.getMinX(), s.getMinY(), s.getWidth(), s.getHeight(),
 				false, true);
 		return (crossings == MathConstants.SHAPE_INTERSECTS ||
@@ -1510,7 +1514,7 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Shape2f,Re
 		int mask = (this.windingRule == PathWindingRule.NON_ZERO ? -1 : 2);
 		int crossings = computeCrossingsFromCircle(
 				0,
-				getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+				getPathIterator((float) MathConstants.SPLINE_APPROXIMATION_RATIO),
 				s.getX(), s.getY(), s.getRadius(),
 				false,
 				true);
@@ -1523,7 +1527,7 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Shape2f,Re
 		int mask = (this.windingRule == PathWindingRule.NON_ZERO ? -1 : 2);
 		int crossings = computeCrossingsFromSegment(
 				0,
-				getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+				getPathIterator((float) MathConstants.SPLINE_APPROXIMATION_RATIO),
 				s.getX1(), s.getY1(), s.getX2(), s.getY2(),
 				false);
 		return (crossings == MathConstants.SHAPE_INTERSECTS ||
@@ -1534,7 +1538,7 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Shape2f,Re
 	public boolean intersects(Path2f s) {
 		int mask = (this.windingRule == PathWindingRule.NON_ZERO ? -1 : 2);
 		int crossings = computeCrossingsFromPath(
-				s.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+				s.getPathIterator((float) MathConstants.SPLINE_APPROXIMATION_RATIO),
 				new PathShadow2f(this),
 				false,
 				true);
@@ -1624,7 +1628,7 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Shape2f,Re
 						pathElement1.ctrlX1, pathElement1.ctrlY1,
 						endx, endy);
 				n = computeCrossingsFromPath(
-						subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						subPath.getPathIterator((float) MathConstants.SPLINE_APPROXIMATION_RATIO),
 						shadow,
 						false,
 						false);
@@ -1644,7 +1648,7 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Shape2f,Re
 						pathElement1.ctrlX2, pathElement1.ctrlY2,
 						endx, endy);
 				n = computeCrossingsFromPath(
-						subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						subPath.getPathIterator((float) MathConstants.SPLINE_APPROXIMATION_RATIO),
 						shadow,
 						false,
 						false);
@@ -1720,7 +1724,7 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Shape2f,Re
 						element.ctrlX2, element.ctrlY2,
 						element.toX, element.toY);
 				if (buildGraphicalBoundingBox(
-						subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						subPath.getPathIterator((float) MathConstants.SPLINE_APPROXIMATION_RATIO),
 						box)) {
 					if (box.getMinX()<xmin) xmin = box.getMinX();
 					if (box.getMinY()<ymin) ymin = box.getMinY();
@@ -1736,7 +1740,7 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Shape2f,Re
 						element.ctrlX1, element.ctrlY1,
 						element.toX, element.toY);
 				if (buildGraphicalBoundingBox(
-						subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						subPath.getPathIterator((float) MathConstants.SPLINE_APPROXIMATION_RATIO),
 						box)) {
 					if (box.getMinX()<xmin) xmin = box.getMinX();
 					if (box.getMinY()<ymin) ymin = box.getMinY();
@@ -1791,9 +1795,9 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Shape2f,Re
 		if (bb==null) {
 			bb = new Rectangle2f();
 			buildGraphicalBoundingBox(
-					getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+					getPathIterator((float) MathConstants.SPLINE_APPROXIMATION_RATIO),
 					bb);
-			this.graphicalBounds = new SoftReference<Rectangle2f>(bb);
+			this.graphicalBounds = new SoftReference<>(bb);
 		}
 		return bb;
 	}
@@ -1810,7 +1814,7 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Shape2f,Re
 		if (bb==null) {
 			bb = new Rectangle2f();
 			buildLogicalBoundingBox(bb);
-			this.logicalBounds = new SoftReference<Rectangle2f>(bb);
+			this.logicalBounds = new SoftReference<>(bb);
 		}
 		return bb;
 	}
@@ -1829,9 +1833,9 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Shape2f,Re
 		if (bb==null) {
 			bb = new Rectangle2f();
 			buildGraphicalBoundingBox(
-					getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+					getPathIterator((float) MathConstants.SPLINE_APPROXIMATION_RATIO),
 					bb);
-			this.graphicalBounds = new SoftReference<Rectangle2f>(bb);
+			this.graphicalBounds = new SoftReference<>(bb);
 		}
 		box.set(bb);
 	}
@@ -1848,7 +1852,7 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Shape2f,Re
 		if (bb==null) {
 			bb = new Rectangle2f();
 			buildLogicalBoundingBox(bb);
-			this.logicalBounds = new SoftReference<Rectangle2f>(bb);
+			this.logicalBounds = new SoftReference<>(bb);
 		}
 		box.set(bb);
 	}
@@ -1856,7 +1860,7 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Shape2f,Re
 	@Override
 	public Point2D getClosestPointTo(Point2D p) {
 		return getClosestPointTo(
-				getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+				getPathIterator((float) MathConstants.SPLINE_APPROXIMATION_RATIO),
 				p.getX(), p.getY());
 	}
 
@@ -2204,7 +2208,7 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Shape2f,Re
 
 	/** A path iterator that does not transform the coordinates.
 	 *
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -2331,7 +2335,7 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Shape2f,Re
 
 	/** A path iterator that transforms the coordinates.
 	 *
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -2459,7 +2463,7 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Shape2f,Re
 	/** A path iterator that is flattening the path.
 	 * This iterator was copied from AWT FlatteningPathIterator.
 	 *
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -2599,7 +2603,7 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Shape2f,Re
 		 *          values in the specified array at the specified index.
 		 */
 		private static float getQuadSquaredFlatness(float coords[], int offset) {
-			return MathUtil.distanceSquaredPointToLine(
+			return (float) Segment2afp.computeDistanceSquaredLinePoint(
 					coords[offset + 2], coords[offset + 3],
 					coords[offset + 0], coords[offset + 1],
 					coords[offset + 4], coords[offset + 5]);
@@ -2682,15 +2686,15 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Shape2f,Re
 		 *          the specified offset.
 		 */
 		private static float getCurveSquaredFlatness(float coords[], int offset) {
-			return Math.max(
-					MathUtil.distanceSquaredPointToSegment(
+			return (float) Math.max(
+					Segment2afp.computeDistanceSquaredSegmentPoint(
 							coords[offset + 0],
 							coords[offset + 1],
 							coords[offset + 6],
 							coords[offset + 7],
 							coords[offset + 2],
 							coords[offset + 3]),
-							MathUtil.distanceSquaredPointToSegment(
+							Segment2afp.computeDistanceSquaredSegmentPoint(
 									coords[offset + 0],
 									coords[offset + 1],
 									coords[offset + 6],
@@ -2965,7 +2969,7 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Shape2f,Re
 
 	/** An collection of the points of the path.
 	 *
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -3089,7 +3093,7 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Shape2f,Re
 
 	/** Iterator on the points of the path.
 	 *
-	 * @author $Author: galland$
+	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
@@ -3116,7 +3120,7 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Shape2f,Re
 				this.lastReplied = Path2f.this.getPointAt(this.index++);
 				return this.lastReplied;
 			}
-			catch(Throwable _) {
+			catch(Throwable esxception) {
 				throw new NoSuchElementException();
 			}
 		}
