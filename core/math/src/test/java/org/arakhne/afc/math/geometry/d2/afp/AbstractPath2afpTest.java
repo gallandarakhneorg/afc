@@ -35,6 +35,7 @@ import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Shape2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.afp.Path2afp.CrossingComputationType;
+import org.arakhne.afc.math.geometry.d2.ai.Path2ai;
 import org.arakhne.afc.math.geometry.d2.ai.PathIterator2ai;
 import org.junit.Test;
 
@@ -645,6 +646,12 @@ extends AbstractShape2afpTest<T, B> {
 		assertNoElement(pi);
 	}
 
+	@Test(expected = IllegalStateException.class)
+	public void curveToIntIntIntIntIntInt_noMoveTo() {
+		Path2afp<?, ?, ?, ?, ?, ?> tmpShape = createPath();
+		tmpShape.curveTo(15, 145, 50, 20, 0, 0);
+	}
+	
 	@Test
 	public void curveToDoubleDoubleDoubleDoubleDoubleDouble() {
 		this.shape.curveTo(123.456, 456.789, 789.123, 159.753, 456.852, 963.789);
@@ -655,6 +662,12 @@ extends AbstractShape2afpTest<T, B> {
 		assertElement(pi, PathElementType.CURVE_TO, 5, -1, 6, 5, 7, -5);
 		assertElement(pi, PathElementType.CURVE_TO, 123.456,  456.789, 789.123, 159.753, 456.852, 963.789);
 		assertNoElement(pi);
+	}
+	
+	@Test(expected = IllegalStateException.class)
+	public void curveToPoint2DPoint2DPoint2D_noMoveTo() {
+		Path2afp<?, ?, ?, ?, ?, ?> tmpShape = createPath();
+		tmpShape.curveTo(createPoint(15, 145), createPoint(50, 20), createPoint(0, 0));
 	}
 
 	@Test
@@ -1221,6 +1234,12 @@ extends AbstractShape2afpTest<T, B> {
 		assertEpsilonEquals(216.56892, this.shape.getLengthSquared());
 	}
 
+	@Test(expected = IllegalStateException.class)
+	public void lineToIntInt_noMoveTo() {
+		Path2afp<?, ?, ?, ?, ?, ?> tmpShape = createPath();
+		tmpShape.lineTo(15, 145);
+	}
+
 	@Test
 	public void lineToDoubleDouble() {
 		this.shape.lineTo(123.456, 456.789);
@@ -1231,6 +1250,12 @@ extends AbstractShape2afpTest<T, B> {
 		assertElement(pi, PathElementType.CURVE_TO, 5, -1, 6, 5, 7, -5);
 		assertElement(pi, PathElementType.LINE_TO, 123.456, 456.789);
 		assertNoElement(pi);
+	}
+
+	@Test(expected = IllegalStateException.class)
+	public void lineToPoint2D_noMoveTo() {
+		Path2afp<?, ?, ?, ?, ?, ?> tmpShape = createPath();
+		tmpShape.lineTo(createPoint(15, 145));
 	}
 
 	@Test
@@ -1269,6 +1294,12 @@ extends AbstractShape2afpTest<T, B> {
 		assertNoElement(pi);
 	}
 
+	@Test(expected = IllegalStateException.class)
+	public void quadToIntIntIntInt_noMoveTo() {
+		Path2afp<?, ?, ?, ?, ?, ?> tmpShape = createPath();
+		tmpShape.quadTo(15, 145, 50, 20);
+	}
+
 	@Test
 	public void quadToDoubleDoubleDoubleDouble() {
 		this.shape.quadTo(123.456, 456.789, 789.123, 159.753);
@@ -1279,6 +1310,12 @@ extends AbstractShape2afpTest<T, B> {
 		assertElement(pi, PathElementType.CURVE_TO, 5, -1, 6, 5, 7, -5);
 		assertElement(pi, PathElementType.QUAD_TO, 123.456,  456.789, 789.123, 159.753);
 		assertNoElement(pi);
+	}
+	
+	@Test(expected = IllegalStateException.class)
+	public void quadToPoint2DPoint2D_noMoveTo() {
+		Path2afp<?, ?, ?, ?, ?, ?> tmpShape = createPath();
+		tmpShape.quadTo(createPoint(15, 145), createPoint(50, 20));
 	}
 
 	@Test
@@ -2050,6 +2087,245 @@ extends AbstractShape2afpTest<T, B> {
 		assertEpsilonEquals(0, this.shape.operator_upTo(createPoint(1, 0)));
 		assertEpsilonEquals(0, this.shape.operator_upTo(createPoint(3, 0)));
 		assertEpsilonEquals(2.6737, this.shape.operator_upTo(createPoint(1, -4)));
+	}
+
+	@Test
+	public void isCurved() {
+		assertTrue(this.shape.isCurved());
+
+		this.shape.clear();
+		assertFalse(this.shape.isCurved());
+		
+		this.shape.moveTo(1, 2);
+		assertFalse(this.shape.isCurved());
+		this.shape.moveTo(3, 4);
+		assertFalse(this.shape.isCurved());
+		this.shape.lineTo(5, 6);
+		assertFalse(this.shape.isCurved());
+		this.shape.closePath();
+		assertFalse(this.shape.isCurved());
+
+		this.shape.clear();
+		assertFalse(this.shape.isCurved());
+
+		this.shape.moveTo(1, 2);
+		assertFalse(this.shape.isCurved());
+		this.shape.moveTo(3, 4);
+		assertFalse(this.shape.isCurved());
+		this.shape.lineTo(3, 4);
+		assertFalse(this.shape.isCurved());
+		this.shape.closePath();
+		assertFalse(this.shape.isCurved());
+
+		this.shape.clear();
+		assertFalse(this.shape.isCurved());
+
+		this.shape.moveTo(1, 2);
+		assertFalse(this.shape.isCurved());
+		this.shape.moveTo(3, 4);
+		assertFalse(this.shape.isCurved());
+		this.shape.lineTo(3, 4);
+		assertFalse(this.shape.isCurved());
+		this.shape.lineTo(5, 6);
+		assertFalse(this.shape.isCurved());
+		this.shape.curveTo(7, 8, 9, 10, 11, 12);
+		assertTrue(this.shape.isCurved());
+
+		this.shape.clear();
+		assertFalse(this.shape.isCurved());
+
+		this.shape.moveTo(1, 2);
+		assertFalse(this.shape.isCurved());
+		this.shape.moveTo(3, 4);
+		assertFalse(this.shape.isCurved());
+		this.shape.lineTo(3, 4);
+		assertFalse(this.shape.isCurved());
+		this.shape.lineTo(5, 6);
+		assertFalse(this.shape.isCurved());
+		this.shape.quadTo(7, 8, 9, 10);
+		assertTrue(this.shape.isCurved());
+	}
+	
+	@Test
+	public void isMultiParts() {
+		assertFalse(this.shape.isMultiParts());
+
+		this.shape.clear();
+		assertFalse(this.shape.isMultiParts());
+		
+		this.shape.moveTo(1, 2);
+		assertFalse(this.shape.isMultiParts());
+		this.shape.moveTo(3, 4);
+		assertFalse(this.shape.isMultiParts());
+		this.shape.lineTo(5, 6);
+		assertFalse(this.shape.isMultiParts());
+		this.shape.closePath();
+		assertFalse(this.shape.isMultiParts());
+
+		this.shape.clear();
+		assertFalse(this.shape.isMultiParts());
+
+		this.shape.moveTo(1, 2);
+		assertFalse(this.shape.isMultiParts());
+		this.shape.moveTo(3, 4);
+		assertFalse(this.shape.isMultiParts());
+		this.shape.lineTo(3, 4);
+		assertFalse(this.shape.isMultiParts());
+		this.shape.lineTo(5, 6);
+		assertFalse(this.shape.isMultiParts());
+		this.shape.curveTo(7, 8, 9, 10, 11, 12);
+		assertFalse(this.shape.isMultiParts());
+
+		this.shape.moveTo(1, 2);
+		assertTrue(this.shape.isMultiParts());
+		this.shape.moveTo(3, 4);
+		assertTrue(this.shape.isMultiParts());
+		this.shape.lineTo(3, 4);
+		assertTrue(this.shape.isMultiParts());
+		this.shape.lineTo(5, 6);
+		assertTrue(this.shape.isMultiParts());
+		this.shape.quadTo(7, 8, 9, 10);
+		assertTrue(this.shape.isMultiParts());
+	}
+	
+	@Test
+	public void isPolygon() {
+		assertFalse(this.shape.isPolygon());
+
+		this.shape.clear();
+		assertFalse(this.shape.isPolygon());
+		
+		this.shape.moveTo(1, 2);
+		assertFalse(this.shape.isPolygon());
+		this.shape.moveTo(3, 4);
+		assertFalse(this.shape.isPolygon());
+		this.shape.lineTo(5, 6);
+		assertFalse(this.shape.isPolygon());
+		this.shape.closePath();
+		assertTrue(this.shape.isPolygon());
+
+		this.shape.clear();
+		assertFalse(this.shape.isPolygon());
+
+		this.shape.moveTo(1, 2);
+		assertFalse(this.shape.isPolygon());
+		this.shape.moveTo(3, 4);
+		assertFalse(this.shape.isPolygon());
+		this.shape.lineTo(3, 4);
+		assertFalse(this.shape.isPolygon());
+		this.shape.closePath();
+		assertTrue(this.shape.isPolygon());
+
+		this.shape.clear();
+		assertFalse(this.shape.isPolygon());
+
+		this.shape.moveTo(1, 2);
+		assertFalse(this.shape.isPolygon());
+		this.shape.moveTo(3, 4);
+		assertFalse(this.shape.isPolygon());
+		this.shape.lineTo(3, 4);
+		assertFalse(this.shape.isPolygon());
+		this.shape.lineTo(5, 6);
+		assertFalse(this.shape.isPolygon());
+		this.shape.curveTo(7, 8, 9, 10, 11, 12);
+		assertFalse(this.shape.isPolygon());
+		this.shape.closePath();
+		assertTrue(this.shape.isPolygon());
+
+		this.shape.clear();
+		assertFalse(this.shape.isPolygon());
+
+		this.shape.moveTo(1, 2);
+		assertFalse(this.shape.isPolygon());
+		this.shape.moveTo(3, 4);
+		assertFalse(this.shape.isPolygon());
+		this.shape.lineTo(3, 4);
+		assertFalse(this.shape.isPolygon());
+		this.shape.lineTo(5, 6);
+		assertFalse(this.shape.isPolygon());
+		this.shape.quadTo(7, 8, 9, 10);
+		assertFalse(this.shape.isPolygon());
+		this.shape.closePath();
+		assertTrue(this.shape.isPolygon());
+		
+		this.shape.moveTo(1, 2);
+		assertFalse(this.shape.isPolygon());
+		this.shape.moveTo(3, 4);
+		assertFalse(this.shape.isPolygon());
+		this.shape.closePath();
+		assertFalse(this.shape.isPolygon());
+	}
+	
+	@Test
+	public void isPolyline() {
+		assertFalse(this.shape.isPolyline());
+
+		this.shape.clear();
+		assertFalse(this.shape.isPolyline());
+		
+		this.shape.moveTo(1, 2);
+		assertFalse(this.shape.isPolyline());
+		this.shape.moveTo(3, 4);
+		assertFalse(this.shape.isPolyline());
+		this.shape.lineTo(5, 6);
+		assertTrue(this.shape.isPolyline());
+		this.shape.closePath();
+		assertFalse(this.shape.isPolyline());
+
+		this.shape.clear();
+		assertFalse(this.shape.isPolyline());
+
+		this.shape.moveTo(1, 2);
+		assertFalse(this.shape.isPolyline());
+		this.shape.moveTo(3, 4);
+		assertFalse(this.shape.isPolyline());
+		this.shape.lineTo(3, 4);
+		assertTrue(this.shape.isPolyline());
+		this.shape.closePath();
+		assertFalse(this.shape.isPolyline());
+
+		this.shape.clear();
+		assertFalse(this.shape.isPolygon());
+
+		this.shape.moveTo(1, 2);
+		assertFalse(this.shape.isPolyline());
+		this.shape.moveTo(3, 4);
+		assertFalse(this.shape.isPolyline());
+		this.shape.lineTo(3, 4);
+		assertTrue(this.shape.isPolyline());
+		this.shape.lineTo(5, 6);
+		assertTrue(this.shape.isPolyline());
+		this.shape.curveTo(7, 8, 9, 10, 11, 12);
+		assertFalse(this.shape.isPolyline());
+		this.shape.closePath();
+		assertFalse(this.shape.isPolyline());
+
+		this.shape.clear();
+		assertFalse(this.shape.isPolyline());
+
+		this.shape.moveTo(1, 2);
+		assertFalse(this.shape.isPolyline());
+		this.shape.moveTo(3, 4);
+		assertFalse(this.shape.isPolyline());
+		this.shape.lineTo(3, 4);
+		assertTrue(this.shape.isPolyline());
+		this.shape.lineTo(5, 6);
+		assertTrue(this.shape.isPolyline());
+		this.shape.quadTo(7, 8, 9, 10);
+		assertFalse(this.shape.isPolyline());
+		this.shape.closePath();
+		assertFalse(this.shape.isPolyline());
+		
+		this.shape.clear();
+		assertFalse(this.shape.isPolyline());
+		this.shape.moveTo(1, 2);
+		assertFalse(this.shape.isPolyline());
+		this.shape.lineTo(3, 4);
+		assertTrue(this.shape.isPolyline());
+		this.shape.moveTo(5, 6);
+		assertFalse(this.shape.isPolyline());
+		this.shape.lineTo(7, 8);
+		assertFalse(this.shape.isPolyline());
 	}
 
 }

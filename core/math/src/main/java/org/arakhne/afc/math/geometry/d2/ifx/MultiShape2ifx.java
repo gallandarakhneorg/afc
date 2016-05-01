@@ -28,19 +28,23 @@ import java.util.List;
 import org.arakhne.afc.math.geometry.d2.ai.MultiShape2ai;
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import com.sun.javafx.collections.NonIterableChange.SimpleUpdateChange;
+
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ListProperty;
-import javafx.beans.property.ReadOnlyObjectProperty;
-import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.Property;
 import javafx.beans.property.SimpleListProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ModifiableObservableListBase;
 
 /** Container for grouping of shapes.
  * 
  * <p>The coordinates of the shapes inside the multishape are global. They are not relative to the multishape.
  *
- * <p>Caution: The multishape does not detect the bound change of the stored shapes.
- * 
+ * @param <T> the type of the shapes inside the multishape.
  * @author $Author: tpiotrowski$
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -48,14 +52,12 @@ import javafx.collections.ModifiableObservableListBase;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public class MultiShape2ifx extends AbstractShape2ifx<MultiShape2ifx> implements 
-	MultiShape2ai<Shape2ifx<?>, MultiShape2ifx, Shape2ifx<?>, PathElement2ifx, Point2ifx, Vector2ifx, Rectangle2ifx> {
+public class MultiShape2ifx<T extends Shape2ifx<?>> extends AbstractShape2ifx<MultiShape2ifx<T>> implements 
+	MultiShape2ai<Shape2ifx<?>, MultiShape2ifx<T>, T, PathElement2ifx, Point2ifx, Vector2ifx, Rectangle2ifx> {
 
 	private static final long serialVersionUID = -4727279807601027239L;
 
-	private ListProperty<Shape2ifx<?>> elements;
-
-	private ReadOnlyObjectWrapper<Rectangle2ifx> boundingBox;
+	private ListProperty<T> elements;
 	
 	/**
 	 * Construct an empty multishape.
@@ -68,7 +70,7 @@ public class MultiShape2ifx extends AbstractShape2ifx<MultiShape2ifx> implements
 	 *
 	 * @param shapes the shapes to add into the multishape.
 	 */
-	public MultiShape2ifx(Shape2ifx<?>... shapes) {
+	public MultiShape2ifx(@SuppressWarnings("unchecked") T... shapes) {
 		assert (shapes != null) : "Shape array must be not null"; //$NON-NLS-1$
 		addAll(Arrays.asList(shapes));
 	}
@@ -77,16 +79,16 @@ public class MultiShape2ifx extends AbstractShape2ifx<MultiShape2ifx> implements
 	 *
 	 * @param shapes the shapes to add into the multishape.
 	 */
-	public MultiShape2ifx(Iterable<? extends Shape2ifx<?>> shapes) {
+	public MultiShape2ifx(Iterable<? extends T> shapes) {
 		assert (shapes != null) : "Shape list must be not null"; //$NON-NLS-1$
-		for (Shape2ifx<?> element : shapes) {
+		for (T element : shapes) {
 			add(element);
 		}
 	}
 
 	@Pure
 	@Override
-	public List<Shape2ifx<?>> getBackendDataList() {
+	public List<T> getBackendDataList() {
 		return elementsProperty().get();
 	}
 
@@ -94,54 +96,22 @@ public class MultiShape2ifx extends AbstractShape2ifx<MultiShape2ifx> implements
 	 *
 	 * @return the elements property.
 	 */
-	public ListProperty<Shape2ifx<?>> elementsProperty() {
+	public ListProperty<T> elementsProperty() {
 		if (this.elements == null) {
-			ModifiableObservableListBase<Shape2ifx<?>> list = new ModifiableObservableListBase<Shape2ifx<?>>() {
-				private final List<Shape2ifx<?>> internalList = new ArrayList<>();
-				@Override
-				public Shape2ifx<?> get(int index) {
-					return this.internalList.get(index);
-				}
-
-				@Override
-				public int size() {
-					return this.internalList.size();
-				}
-
-				@Override
-				protected void doAdd(int index, Shape2ifx<?> element) {
-					assert (element != null) : "New element in the list of shapes must be not null"; //$NON-NLS-1$
-					this.internalList.add(index, element);
-				}
-
-				@Override
-				protected Shape2ifx<?> doSet(int index, Shape2ifx<?> element) {
-					assert (element != null) : "New element in the list of shapes must be not null"; //$NON-NLS-1$
-					return this.internalList.set(index, element);
-				}
-
-				@Override
-				protected Shape2ifx<?> doRemove(int index) {
-					return this.internalList.remove(index);
-				}
-			};
-			this.elements = new SimpleListProperty<>(this, "elements", list); //$NON-NLS-1$
+			this.elements = new SimpleListProperty<>(this, "elements", new InternalObservableList<>()); //$NON-NLS-1$
 		}
 		return this.elements;
 	}
 	
-	/** Replies the property that contains the bouding box for this multishape.
-	 *
-	 * @return the bounding box.
-	 */
-	public ReadOnlyObjectProperty<Rectangle2ifx> boundingBoxProperty() {
+	@Override
+	public ObjectProperty<Rectangle2ifx> boundingBoxProperty() {
 		if (this.boundingBox == null) {
-			this.boundingBox = new ReadOnlyObjectWrapper<>(this, "boundingBox"); //$NON-NLS-1$
+			this.boundingBox = new SimpleObjectProperty<>(this, "boundingBox"); //$NON-NLS-1$
 			this.boundingBox.bind(Bindings.createObjectBinding(
 					() -> {
 						Rectangle2ifx box = new Rectangle2ifx();
 						Rectangle2ifx shapeBox = new Rectangle2ifx();
-						Iterator<Shape2ifx<?>> iterator = elementsProperty().iterator();
+						Iterator<T> iterator = elementsProperty().iterator();
 						if (iterator.hasNext()) {
 							iterator.next().toBoundingBox(shapeBox);
 							box.set(shapeBox);
@@ -154,15 +124,18 @@ public class MultiShape2ifx extends AbstractShape2ifx<MultiShape2ifx> implements
 					},
 					elementsProperty()));
 		}
-		return this.boundingBox.getReadOnlyProperty();
+		return this.boundingBox;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public MultiShape2ifx clone() {
-		MultiShape2ifx clone = super.clone();
+	public MultiShape2ifx<T> clone() {
+		MultiShape2ifx<T> clone = super.clone();
 		clone.elements = null;
-		for (Shape2ifx<?> shape : this.elements) {
-			clone.elementsProperty().add(shape.clone());
+		if (this.elements != null) {
+			for (T shape : this.elements) {
+				clone.elementsProperty().add((T) shape.clone());
+			}
 		}
 		clone.boundingBox = null;
 		return clone;
@@ -187,6 +160,80 @@ public class MultiShape2ifx extends AbstractShape2ifx<MultiShape2ifx> implements
 	public void toBoundingBox(Rectangle2ifx box) {
 		assert (box != null) : "Rectangle must be not null"; //$NON-NLS-1$
 		box.set(boundingBoxProperty().get());
+	}
+
+	/** Internal list.
+	 * 
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 13.0
+	 */
+	private static class InternalObservableList<T extends Shape2ifx<?>> extends ModifiableObservableListBase<T>
+			implements InvalidationListener {
+
+		private final List<T> internalList = new ArrayList<>();
+
+		/** Construct the list.
+		 */
+		public InternalObservableList() {
+			//
+		}
+		
+		private void bind(Shape2ifx<?> shape) {
+			assert (shape != null);
+			ObjectProperty<Rectangle2ifx> property = shape.boundingBoxProperty();
+			property.addListener(this);
+		}
+		
+		private void unbind(Shape2ifx<?> shape) {
+			assert (shape != null);
+			ObjectProperty<Rectangle2ifx> property = shape.boundingBoxProperty();
+			property.removeListener(this);
+		}
+
+		@Override
+		public T get(int index) {
+			return this.internalList.get(index);
+		}
+
+		@Override
+		public int size() {
+			return this.internalList.size();
+		}
+
+		@Override
+		protected void doAdd(int index, T element) {
+			assert (element != null) : "New element in the list of shapes must be not null"; //$NON-NLS-1$
+			this.internalList.add(index, element);
+			bind(element);
+		}
+
+		@Override
+		protected T doSet(int index, T element) {
+			assert (element != null) : "New element in the list of shapes must be not null"; //$NON-NLS-1$
+			T old = this.internalList.set(index, element);
+			unbind(old);
+			bind(element);
+			return old;
+		}
+
+		@Override
+		protected T doRemove(int index) {
+			T old = this.internalList.remove(index);
+			unbind(old);
+			return old;
+		}
+
+		@Override
+		public void invalidated(Observable observable) {
+			int position = indexOf(((Property<?>) observable).getBean());
+			if (position >= 0) {
+				fireChange(new SimpleUpdateChange<>(position, this));
+			}
+		}
+
 	}
 
 }

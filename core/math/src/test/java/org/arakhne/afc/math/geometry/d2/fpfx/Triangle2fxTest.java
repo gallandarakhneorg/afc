@@ -28,6 +28,7 @@ import org.arakhne.afc.math.geometry.d2.afp.TestShapeFactory;
 import org.junit.Test;
 
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.ObjectProperty;
 
 @SuppressWarnings("all")
 public class Triangle2fxTest extends AbstractTriangle2afpTest<Triangle2fx, Rectangle2fx> {
@@ -119,6 +120,18 @@ public class Triangle2fxTest extends AbstractTriangle2afpTest<Triangle2fx, Recta
 		assertEpsilonEquals(456.159, property.get());
 		
 		assertEpsilonEquals(456.159, this.shape.getY3());
+	}
+
+	@Test
+	public void boundingBoxProperty() {
+		ObjectProperty<Rectangle2fx> property = this.shape.boundingBoxProperty();
+		assertNotNull(property);
+		Rectangle2fx box = property.get();
+		assertNotNull(box);
+		assertEpsilonEquals(-10, box.getMinX());
+		assertEpsilonEquals(-2, box.getMinY());
+		assertEpsilonEquals(5, box.getMaxX());
+		assertEpsilonEquals(8, box.getMaxY());
 	}
 
 }

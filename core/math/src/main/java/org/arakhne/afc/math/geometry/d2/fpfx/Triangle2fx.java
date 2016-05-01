@@ -28,9 +28,11 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.ReadOnlyBooleanWrapper;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleObjectProperty;
 
 /** A triangle with 2 double precision floating-point FX properties.
  *
@@ -348,6 +350,21 @@ public class Triangle2fx
 					x3Property(), y3Property()));
 		}
 		return this.ccw.getReadOnlyProperty();
+	}
+
+	@Override
+	public ObjectProperty<Rectangle2fx> boundingBoxProperty() {
+		if (this.boundingBox == null) {
+			this.boundingBox = new SimpleObjectProperty<>(this, "boundingBox"); //$NON-NLS-1$
+			this.boundingBox.bind(Bindings.createObjectBinding(
+					() -> {
+						return toBoundingBox();
+					},
+					x1Property(), y1Property(),
+					x2Property(), y2Property(),
+					x3Property(), y3Property()));
+		}
+		return this.boundingBox;
 	}
 
 }

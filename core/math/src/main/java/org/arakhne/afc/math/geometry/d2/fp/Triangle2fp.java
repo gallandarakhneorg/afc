@@ -178,49 +178,72 @@ public class Triangle2fp
 
 	@Override
 	public void setX1(double x) {
-		this.x1 = x;
-		this.isCCW = null;
+		if (this.x1 != x) {
+			this.x1 = x;
+			this.isCCW = null;
+			fireGeometryChange();
+		}
 	}
 
 	@Override
 	public void setY1(double y) {
-		this.y1 = y;
-		this.isCCW = null;
+		if (this.y1 != y) {
+			this.y1 = y;
+			this.isCCW = null;
+			fireGeometryChange();
+		}
 	}
 
 	@Override
 	public void setX2(double x) {
-		this.x2 = x;
-		this.isCCW = null;
+		if (this.x2 != x) {
+			this.x2 = x;
+			this.isCCW = null;
+			fireGeometryChange();
+		}
 	}
 
 	@Override
 	public void setY2(double y) {
-		this.y2 = y;
-		this.isCCW = null;
+		if (this.y2 != y) {
+			this.y2 = y;
+			this.isCCW = null;
+			fireGeometryChange();
+		}
 	}
 
 	@Override
 	public void setX3(double x) {
-		this.x3 = x;
-		this.isCCW = null;
+		if (this.x3 != x) {
+			this.x3 = x;
+			this.isCCW = null;
+			fireGeometryChange();
+		}
 	}
 
 	@Override
 	public void setY3(double y) {
-		this.y3 = y;
-		this.isCCW = null;
+		if (this.y3 != y) {
+			this.y3 = y;
+			this.isCCW = null;
+			fireGeometryChange();
+		}
 	}
 
 	@Override
 	public void set(double x1, double y1, double x2, double y2, double x3, double y3) {
-		this.x1 = x1;
-		this.y1 = y1;
-		this.x2 = x2;
-		this.y2 = y2;
-		this.x3 = x3;
-		this.y3 = y3;
-		this.isCCW = null;
+		if (this.x1 != x1 || this.y1 != y1
+			|| this.x2 != x2 || this.y2 != y2
+			|| this.x3 != x3 || this.y3 != y3) {
+			this.x1 = x1;
+			this.y1 = y1;
+			this.x2 = x2;
+			this.y2 = y2;
+			this.x3 = x3;
+			this.y3 = y3;
+			this.isCCW = null;
+			fireGeometryChange();
+		}
 	}
 	
 	@Override

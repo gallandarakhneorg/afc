@@ -41,9 +41,9 @@ public abstract class AbstractMultiShape2afpTest<T extends MultiShape2afp<?, T, 
 		C extends Shape2afp<?, ?, ?, ?, ?, B>,
 		B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
 
-	private C firstObject;
+	protected C firstObject;
 	
-	private C secondObject;
+	protected C secondObject;
 
 	@Override
 	protected final T createShape() {
@@ -912,6 +912,142 @@ public abstract class AbstractMultiShape2afpTest<T extends MultiShape2afp<?, T, 
 		assertEquals(2, this.shape.getBackendDataList().size());
 		assertSame(firstObject, this.shape.getBackendDataList().get(0));
 		assertSame(secondObject, this.shape.getBackendDataList().get(1));
+	}
+
+	@Test
+	public void onGeometryChange_changeFirstObject() {
+		B box = this.shape.toBoundingBox();
+		assertNotNull(box);
+		assertEpsilonEquals(-7, box.getMinX());
+		assertEpsilonEquals(8, box.getMinY());
+		assertEpsilonEquals(7, box.getMaxX());
+		assertEpsilonEquals(20, box.getMaxY());
+
+		firstObject.translate(12, -7);
+		
+		// C:  -7; 16; -3; 20
+		// R:   5;  8;  7;  9
+		
+		// R': 17;  1; 19;  2 
+		
+		box = this.shape.toBoundingBox();
+		assertNotNull(box);
+		assertEpsilonEquals(-7, box.getMinX());
+		assertEpsilonEquals(1, box.getMinY());
+		assertEpsilonEquals(19, box.getMaxX());
+		assertEpsilonEquals(20, box.getMaxY());
+	}
+	
+	@Test
+	public void onGeometryChange_changeSecondObject() {
+		B box = this.shape.toBoundingBox();
+		assertNotNull(box);
+		assertEpsilonEquals(-7, box.getMinX());
+		assertEpsilonEquals(8, box.getMinY());
+		assertEpsilonEquals(7, box.getMaxX());
+		assertEpsilonEquals(20, box.getMaxY());
+
+		secondObject.translate(12, -7);
+		
+		// C:  -7; 16; -3; 20
+		// R:   5;  8;  7;  9
+		
+		// C':  5;  9;  9; 13 
+
+		box = this.shape.toBoundingBox();
+		assertNotNull(box);
+		assertEpsilonEquals(5, box.getMinX());
+		assertEpsilonEquals(8, box.getMinY());
+		assertEpsilonEquals(9, box.getMaxX());
+		assertEpsilonEquals(13, box.getMaxY());
+	}
+
+	@Test
+	public void onBackendDataListChange_addition() {
+		B box = this.shape.toBoundingBox();
+		assertNotNull(box);
+		assertEpsilonEquals(-7, box.getMinX());
+		assertEpsilonEquals(8, box.getMinY());
+		assertEpsilonEquals(7, box.getMaxX());
+		assertEpsilonEquals(20, box.getMaxY());
+
+		this.shape.add((C) createCircle(10, 14, 1));
+		
+		// C:  -7; 16; -3; 20
+		// R:   5;  8;  7;  9
+		
+		// C':  9;  13;  11; 15 
+
+		box = this.shape.toBoundingBox();
+		assertNotNull(box);
+		assertEpsilonEquals(-7, box.getMinX());
+		assertEpsilonEquals(8, box.getMinY());
+		assertEpsilonEquals(11, box.getMaxX());
+		assertEpsilonEquals(20, box.getMaxY());
+	}
+
+	@Test
+	public void onBackendDataListChange_removalFirstObject() {
+		B box = this.shape.toBoundingBox();
+		assertNotNull(box);
+		assertEpsilonEquals(-7, box.getMinX());
+		assertEpsilonEquals(8, box.getMinY());
+		assertEpsilonEquals(7, box.getMaxX());
+		assertEpsilonEquals(20, box.getMaxY());
+
+		this.shape.remove(firstObject);
+		
+		// C:  -7; 16; -3; 20
+		// R:   5;  8;  7;  9
+		
+		box = this.shape.toBoundingBox();
+		assertNotNull(box);
+		assertEpsilonEquals(-7, box.getMinX());
+		assertEpsilonEquals(16, box.getMinY());
+		assertEpsilonEquals(-3, box.getMaxX());
+		assertEpsilonEquals(20, box.getMaxY());
+	}
+
+	@Test
+	public void onBackendDataListChange_removalSecondObject() {
+		B box = this.shape.toBoundingBox();
+		assertNotNull(box);
+		assertEpsilonEquals(-7, box.getMinX());
+		assertEpsilonEquals(8, box.getMinY());
+		assertEpsilonEquals(7, box.getMaxX());
+		assertEpsilonEquals(20, box.getMaxY());
+
+		this.shape.remove(secondObject);
+		
+		// C:  -7; 16; -3; 20
+		// R:   5;  8;  7;  9
+
+		box = this.shape.toBoundingBox();
+		assertNotNull(box);
+		assertEpsilonEquals(5, box.getMinX());
+		assertEpsilonEquals(8, box.getMinY());
+		assertEpsilonEquals(7, box.getMaxX());
+		assertEpsilonEquals(9, box.getMaxY());
+	}
+
+	@Test
+	public void noGeometryChangeAfterRemoval() {
+		B box = this.shape.toBoundingBox();
+		assertNotNull(box);
+		assertEpsilonEquals(-7, box.getMinX());
+		assertEpsilonEquals(8, box.getMinY());
+		assertEpsilonEquals(7, box.getMaxX());
+		assertEpsilonEquals(20, box.getMaxY());
+
+		this.shape.remove(secondObject);
+		secondObject.translate(1453,  -451);
+		
+		box = this.shape.toBoundingBox();
+		assertNotNull(box);
+		assertEpsilonEquals(5, box.getMinX());
+		assertEpsilonEquals(8, box.getMinY());
+		assertEpsilonEquals(7, box.getMaxX());
+		assertEpsilonEquals(9, box.getMaxY());
 	}
 
 }

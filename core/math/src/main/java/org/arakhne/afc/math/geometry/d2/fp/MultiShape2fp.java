@@ -20,6 +20,7 @@
  */
 package org.arakhne.afc.math.geometry.d2.fp;
 
+import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -33,6 +34,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  *
  * <p>Caution: The multishape does not detect the bound change of the stored shapes.
  * 
+ * @param <T> the type of the shapes inside the multishape.
  * @author $Author: tpiotrowski$
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -40,15 +42,15 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public class MultiShape2fp extends AbstractShape2fp<MultiShape2fp> implements 
-	MultiShape2afp<Shape2fp<?>, MultiShape2fp, Shape2fp<?>, PathElement2fp, Point2fp, Vector2fp, Rectangle2fp> {
+public class MultiShape2fp<T extends Shape2fp<?>> extends AbstractShape2fp<MultiShape2fp<T>> implements 
+MultiShape2afp<Shape2fp<?>, MultiShape2fp<T>, T, PathElement2fp, Point2fp, Vector2fp, Rectangle2fp> {
 
 	private static final long serialVersionUID = -4727279807601027239L;
 
-	private List<Shape2fp<?>> elements = new ArrayList<>();
+	private List<T> elements = new ListResponseModel();
 
 	private Rectangle2fp bounds = null;
-	
+
 	/**
 	 * Construct an empty multishape.
 	 */
@@ -60,7 +62,7 @@ public class MultiShape2fp extends AbstractShape2fp<MultiShape2fp> implements
 	 *
 	 * @param shapes the shapes to add into the multishape.
 	 */
-	public MultiShape2fp(Shape2fp<?>... shapes) {
+	public MultiShape2fp(@SuppressWarnings("unchecked") T... shapes) {
 		assert (shapes != null) : "Shape array must be not null"; //$NON-NLS-1$
 		addAll(Arrays.asList(shapes));
 	}
@@ -69,19 +71,21 @@ public class MultiShape2fp extends AbstractShape2fp<MultiShape2fp> implements
 	 *
 	 * @param shapes the shapes to add into the multishape.
 	 */
-	public MultiShape2fp(Iterable<? extends Shape2fp<?>> shapes) {
+	public MultiShape2fp(Iterable<? extends T> shapes) {
 		assert (shapes != null) : "Shape list must be not null"; //$NON-NLS-1$
-		for (Shape2fp<?> element : shapes) {
+		for (T element : shapes) {
 			add(element);
 		}
 	}
-	
+
+	@SuppressWarnings("unchecked")
 	@Override
-	public MultiShape2fp clone() {
-		MultiShape2fp clone = super.clone();
-		List<Shape2fp<?>> clonedList = new ArrayList<>();
-		for (Shape2fp<?> shape : this.elements) {
-			clonedList.add(shape.clone());
+	@Pure
+	public MultiShape2fp<T> clone() {
+		MultiShape2fp<T> clone = super.clone();
+		List<T> clonedList = new ArrayList<>();
+		for (T shape : this.elements) {
+			clonedList.add((T) shape.clone());
 		}
 		clone.elements = clonedList;
 		if (this.bounds != null) {
@@ -89,8 +93,9 @@ public class MultiShape2fp extends AbstractShape2fp<MultiShape2fp> implements
 		}
 		return clone;
 	}
-	
+
 	@Override
+	@Pure
 	public int hashCode() {
 		long bits = 1;
 		bits = 31 * bits + this.elements.hashCode();
@@ -99,22 +104,21 @@ public class MultiShape2fp extends AbstractShape2fp<MultiShape2fp> implements
 	}
 
 	@Override
-	public void set(MultiShape2fp s) {
-		Rectangle2fp box = this.bounds;
-		MultiShape2afp.super.set(s);
-		if (this.bounds == null) {
-			this.bounds = box;
-		}
-	}
-
-	@Override
 	public void onBackendDataChange() {
 		this.bounds = null;
+		fireGeometryChange();
+	}
+	
+	/** Invoked when the geometry of the content has changed.
+	 */
+	protected void onContentGeometryChange() {
+		this.bounds = null;
+		fireGeometryChange();
 	}
 
 	@Pure
 	@Override
-	public List<Shape2fp<?>> getBackendDataList() {
+	public List<T> getBackendDataList() {
 		return this.elements;
 	}
 
@@ -127,7 +131,7 @@ public class MultiShape2fp extends AbstractShape2fp<MultiShape2fp> implements
 		}
 		return this.bounds;
 	}
-	
+
 	@Pure
 	@Override
 	public void toBoundingBox(Rectangle2fp box) {
@@ -138,15 +142,84 @@ public class MultiShape2fp extends AbstractShape2fp<MultiShape2fp> implements
 		}
 		box.set(this.bounds);
 	}
-	
+
 	@Override
 	public void translate(double dx, double dy) {
-		Rectangle2fp box = this.bounds;
-		MultiShape2afp.super.translate(dx, dy);
-		if (box != null) {
-			box.translate(dx, dy);
-			this.bounds = box;
+		if (dx != 0 || dy != 0) {
+			Rectangle2fp box = this.bounds;
+			MultiShape2afp.super.translate(dx, dy);
+			if (box != null) {
+				box.translate(dx, dy);
+				this.bounds = box;
+			}
+			fireGeometryChange();
 		}
+	}
+
+	/** List responsive model.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 13.0
+	 */
+	private class ListResponseModel extends AbstractList<T> implements ShapeGeometryChangeListener {
+
+		private List<T> delegate = new ArrayList<>();
+
+		/** Construct an empty model.
+		 */
+		public ListResponseModel() {
+			//
+		}
+
+		@Override
+		public void add(int index, T element) {
+			assert (element != null);
+			this.delegate.add(index, element);
+			if (element instanceof AbstractShape2fp<?>) {
+				((AbstractShape2fp<?>) element).addShapeGeometryChangeListener(this);
+			}
+		}
+		
+		@Override
+		public T remove(int index) {
+			T element = this.delegate.remove(index);
+			if (element instanceof AbstractShape2fp<?>) {
+				((AbstractShape2fp<?>) element).removeShapeGeometryChangeListener(this);
+			}
+			return element;
+		}
+		
+		@Override
+		public T set(int index, T element) {
+			assert (element != null);
+			T oldElement = this.delegate.set(index, element);
+			if (oldElement instanceof AbstractShape2fp<?>) {
+				((AbstractShape2fp<?>) oldElement).removeShapeGeometryChangeListener(this);
+			}
+			if (element instanceof AbstractShape2fp<?>) {
+				((AbstractShape2fp<?>) element).addShapeGeometryChangeListener(this);
+			}
+			return oldElement;
+		}
+		
+		@Override
+		public T get(int index) {
+			return this.delegate.get(index);
+		}
+
+		@Override
+		public int size() {
+			return this.delegate.size();
+		}
+
+		@Override
+		public void shapeGeometryChange(Shape2fp<?> shape) {
+			onContentGeometryChange();
+		}
+
 	}
 
 }

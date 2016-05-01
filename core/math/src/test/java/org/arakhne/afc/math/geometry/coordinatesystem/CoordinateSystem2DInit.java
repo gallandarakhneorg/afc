@@ -17,9 +17,9 @@
  */
 package org.arakhne.afc.math.geometry.coordinatesystem;
 
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -31,6 +31,11 @@ import org.junit.Test;
 @SuppressWarnings("all")
 public class CoordinateSystem2DInit {
 
+	@Before
+	public void setUp() {
+		CoordinateSystem2D.setDefaultCoordinateSystem(null);
+	}
+	
 	@Test
 	public void getDefaultSimulationCoordinateSystem() {
 		CoordinateSystem2D cs = CoordinateSystemConstants.SIMULATION_2D;

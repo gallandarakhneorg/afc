@@ -20,6 +20,7 @@
  */
 package org.arakhne.afc.math.geometry.d2.i;
 
+import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -33,6 +34,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  *
  * <p>Caution: The multishape does not detect the bound change of the stored shapes.
  * 
+ * @param <T> the type of the shapes inside the multishape.
  * @author $Author: tpiotrowski$
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -40,12 +42,12 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public class MultiShape2i extends AbstractShape2i<MultiShape2i> implements 
-	MultiShape2ai<Shape2i<?>, MultiShape2i, Shape2i<?>, PathElement2i, Point2i, Vector2i, Rectangle2i> {
+public class MultiShape2i<T extends Shape2i<?>> extends AbstractShape2i<MultiShape2i<T>> implements 
+	MultiShape2ai<Shape2i<?>, MultiShape2i<T>, T, PathElement2i, Point2i, Vector2i, Rectangle2i> {
 
 	private static final long serialVersionUID = -4727279807601027239L;
 
-	private List<Shape2i<?>> elements = new ArrayList<>();
+	private List<T> elements = new ListResponseModel();
 
 	private Rectangle2i bounds = null;
 	
@@ -60,7 +62,7 @@ public class MultiShape2i extends AbstractShape2i<MultiShape2i> implements
 	 *
 	 * @param shapes the shapes to add into the multishape.
 	 */
-	public MultiShape2i(Shape2i<?>... shapes) {
+	public MultiShape2i(@SuppressWarnings("unchecked") T... shapes) {
 		assert (shapes != null) : "Shape array must be not null"; //$NON-NLS-1$
 		addAll(Arrays.asList(shapes));
 	}
@@ -69,19 +71,20 @@ public class MultiShape2i extends AbstractShape2i<MultiShape2i> implements
 	 *
 	 * @param shapes the shapes to add into the multishape.
 	 */
-	public MultiShape2i(Iterable<? extends Shape2i<?>> shapes) {
+	public MultiShape2i(Iterable<? extends T> shapes) {
 		assert (shapes != null) : "Shape list must be not null"; //$NON-NLS-1$
-		for (Shape2i<?> element : shapes) {
+		for (T element : shapes) {
 			add(element);
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
-	public MultiShape2i clone() {
-		MultiShape2i clone = super.clone();
-		List<Shape2i<?>> clonedList = new ArrayList<>();
-		for (Shape2i<?> shape : this.elements) {
-			clonedList.add(shape.clone());
+	public MultiShape2i<T> clone() {
+		MultiShape2i<T> clone = super.clone();
+		List<T> clonedList = new ArrayList<>();
+		for (T shape : this.elements) {
+			clonedList.add((T) shape.clone());
 		}
 		clone.elements = clonedList;
 		if (this.bounds != null) {
@@ -99,22 +102,21 @@ public class MultiShape2i extends AbstractShape2i<MultiShape2i> implements
 	}
 
 	@Override
-	public void set(MultiShape2i s) {
-		Rectangle2i box = this.bounds;
-		MultiShape2ai.super.set(s);
-		if (this.bounds == null) {
-			this.bounds = box;
-		}
-	}
-
-	@Override
 	public void onBackendDataChange() {
 		this.bounds = null;
+		fireGeometryChange();
+	}
+	
+	/** Invoked when the geometry of the content has changed.
+	 */
+	protected void onContentGeometryChange() {
+		this.bounds = null;
+		fireGeometryChange();
 	}
 
 	@Pure
 	@Override
-	public List<Shape2i<?>> getBackendDataList() {
+	public List<T> getBackendDataList() {
 		return this.elements;
 	}
 
@@ -141,12 +143,81 @@ public class MultiShape2i extends AbstractShape2i<MultiShape2i> implements
 	
 	@Override
 	public void translate(int dx, int dy) {
-		Rectangle2i box = this.bounds;
-		MultiShape2ai.super.translate(dx, dy);
-		if (box != null) {
-			box.translate(dx, dy);
-			this.bounds = box;
+		if (dx != 0 || dy != 0) {
+			Rectangle2i box = this.bounds;
+			MultiShape2ai.super.translate(dx, dy);
+			if (box != null) {
+				box.translate(dx, dy);
+				this.bounds = box;
+			}
+			fireGeometryChange();
 		}
+	}
+
+	/** List responsive model.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 13.0
+	 */
+	private class ListResponseModel extends AbstractList<T> implements ShapeGeometryChangeListener {
+
+		private List<T> delegate = new ArrayList<>();
+
+		/** Construct an empty model.
+		 */
+		public ListResponseModel() {
+			//
+		}
+
+		@Override
+		public void add(int index, T element) {
+			assert (element != null);
+			this.delegate.add(index, element);
+			if (element instanceof AbstractShape2i<?>) {
+				((AbstractShape2i<?>) element).addShapeGeometryChangeListener(this);
+			}
+		}
+		
+		@Override
+		public T remove(int index) {
+			T element = this.delegate.remove(index);
+			if (element instanceof AbstractShape2i<?>) {
+				((AbstractShape2i<?>) element).removeShapeGeometryChangeListener(this);
+			}
+			return element;
+		}
+		
+		@Override
+		public T set(int index, T element) {
+			assert (element != null);
+			T oldElement = this.delegate.set(index, element);
+			if (oldElement instanceof AbstractShape2i<?>) {
+				((AbstractShape2i<?>) oldElement).removeShapeGeometryChangeListener(this);
+			}
+			if (element instanceof AbstractShape2i<?>) {
+				((AbstractShape2i<?>) element).addShapeGeometryChangeListener(this);
+			}
+			return oldElement;
+		}
+		
+		@Override
+		public T get(int index) {
+			return this.delegate.get(index);
+		}
+
+		@Override
+		public int size() {
+			return this.delegate.size();
+		}
+
+		@Override
+		public void shapeGeometryChange(Shape2i<?> shape) {
+			onContentGeometryChange();
+		}
+
 	}
 
 }

@@ -26,8 +26,11 @@ import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.afp.Segment2afp;
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleObjectProperty;
 
 /** Segment with 2 double precision floating-point FX properties.
  *
@@ -254,6 +257,20 @@ public class Segment2fx extends AbstractShape2fx<Segment2fx>
 	@Override
 	public Point2fx getP2() {
 		return new Point2fx(this.bx, this.by);
+	}
+
+	@Override
+	public ObjectProperty<Rectangle2fx> boundingBoxProperty() {
+		if (this.boundingBox == null) {
+			this.boundingBox = new SimpleObjectProperty<>(this, "boundingBox"); //$NON-NLS-1$
+			this.boundingBox.bind(Bindings.createObjectBinding(
+					() -> {
+						return toBoundingBox();
+					},
+					x1Property(), y1Property(),
+					x2Property(), y2Property()));
+		}
+		return this.boundingBox;
 	}
 
 }

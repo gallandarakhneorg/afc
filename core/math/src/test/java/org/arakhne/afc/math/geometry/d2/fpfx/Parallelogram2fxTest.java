@@ -28,6 +28,7 @@ import org.arakhne.afc.math.geometry.d2.afp.TestShapeFactory;
 import org.junit.Test;
 
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.ObjectProperty;
 
 @SuppressWarnings("all")
 public class Parallelogram2fxTest extends AbstractParallelogram2afpTest<Parallelogram2fx, Rectangle2fx> {
@@ -155,6 +156,18 @@ public class Parallelogram2fxTest extends AbstractParallelogram2afpTest<Parallel
 		
 		this.shape.setSecondAxisExtent(456.159);
 		assertEpsilonEquals(456.159, property.get());
+	}
+
+	@Test
+	public void boundingBoxProperty() {
+		ObjectProperty<Rectangle2fx> property = this.shape.boundingBoxProperty();
+		assertNotNull(property);
+		Rectangle2fx box = property.get();
+		assertNotNull(box);
+		assertEpsilonEquals(pHx, box.getMinX());
+		assertEpsilonEquals(pEy, box.getMinY());
+		assertEpsilonEquals(pFx, box.getMaxX());
+		assertEpsilonEquals(pGy, box.getMaxY());
 	}
 
 }

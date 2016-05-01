@@ -190,12 +190,18 @@ public class OrientedRectangle2fp extends AbstractShape2fp<OrientedRectangle2fp>
 	
 	@Override
 	public void setCenterX(double cx) {
-		this.cx = cx;
+		if (this.cx != cx) {
+			this.cx = cx;
+			fireGeometryChange();
+		}
 	}
 
 	@Override
 	public void setCenterY(double cy) {
-		this.cy = cy;
+		if (this.cy != cy) {
+			this.cy = cy;
+			fireGeometryChange();
+		}
 	}
 
 	@Pure
@@ -206,8 +212,11 @@ public class OrientedRectangle2fp extends AbstractShape2fp<OrientedRectangle2fp>
 
 	@Override
 	public void setCenter(double cx, double cy) {
-		this.cx = cx;
-		this.cy = cy;
+		if (this.cx != cx || this.cy != cy) {
+			this.cx = cx;
+			this.cy = cy;
+			fireGeometryChange();
+		}
 	}
 
 	@Pure
@@ -255,7 +264,10 @@ public class OrientedRectangle2fp extends AbstractShape2fp<OrientedRectangle2fp>
 	@Override
 	public void setFirstAxisExtent(double extent) {
 		assert (extent >= 0.) : "Extent must be positive or zero"; //$NON-NLS-1$
-		this.extentR = extent;
+		if (this.extentR != extent) {
+			this.extentR = extent;
+			fireGeometryChange();
+		}
 	}
 
 	@Pure
@@ -267,25 +279,34 @@ public class OrientedRectangle2fp extends AbstractShape2fp<OrientedRectangle2fp>
 	@Override
 	public void setSecondAxisExtent(double extent) {
 		assert (extent >= 0.) : "Extent must be positive or zero"; //$NON-NLS-1$
-		this.extentS = extent;
+		if (this.extentS != extent) {
+			this.extentS = extent;
+			fireGeometryChange();
+		}
 	}
 
 	@Override
 	public void setFirstAxis(double x, double y, double extent) {
 		assert (Vector2D.isUnitVector(x, y)) : "Axis must be a unit vector"; //$NON-NLS-1$
 		assert (extent >= 0.) : "Extent must be positive or zero"; //$NON-NLS-1$
-		this.rx = x;
-		this.ry = y;
-		this.extentR = extent;
+		if (this.rx != x || this.ry != y || this.extentR != extent) {
+			this.rx = x;
+			this.ry = y;
+			this.extentR = extent;
+			fireGeometryChange();
+		}
 	}
 
 	@Override
 	public void setSecondAxis(double x, double y, double extent) {
 		assert (Vector2D.isUnitVector(x, y)) : "Axis must be a unit vector"; //$NON-NLS-1$
 		assert (extent >= 0.) : "Extent must be positive or zero"; //$NON-NLS-1$
-		this.extentS = extent;
-		this.rx = y;
-		this.ry = -x;
+		if (this.rx != y || this.ry != -x || this.extentS != extent) {
+			this.extentS = extent;
+			this.rx = y;
+			this.ry = -x;
+			fireGeometryChange();
+		}
 	}
 
 	@Override
@@ -293,12 +314,16 @@ public class OrientedRectangle2fp extends AbstractShape2fp<OrientedRectangle2fp>
 		assert (Vector2D.isUnitVector(axis1x, axis1y)) : "First axis must be a unit vector"; //$NON-NLS-1$
 		assert (axis1Extent >= 0.) : "First axis extent must be positive or zero"; //$NON-NLS-1$
 		assert (axis2Extent >= 0.) : "Second axis extent must be positive or zero"; //$NON-NLS-1$
-		this.cx = centerX;
-		this.cy = centerY;
-		this.rx = axis1x;
-		this.ry = axis1y;
-		this.extentR = axis1Extent;
-		this.extentS = axis2Extent;
+		if (this.cx != centerY || this.cy != centerY || this.rx != axis1x || this.ry != axis1y
+				|| this.extentR != axis1Extent || this.extentS != axis2Extent) {
+			this.cx = centerX;
+			this.cy = centerY;
+			this.rx = axis1x;
+			this.ry = axis1y;
+			this.extentR = axis1Extent;
+			this.extentS = axis2Extent;
+			fireGeometryChange();
+		}
 	}
 
 }

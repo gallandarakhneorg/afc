@@ -25,8 +25,11 @@ import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.ai.Circle2ai;
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
 
 /** A circle with 2 integer FX properties.
  *
@@ -204,6 +207,19 @@ public class Circle2ifx
 		xProperty().set(x);
 		yProperty().set(y);
 		radiusProperty().set(radius);
+	}
+
+	@Override
+	public ObjectProperty<Rectangle2ifx> boundingBoxProperty() {
+		if (this.boundingBox == null) {
+			this.boundingBox = new SimpleObjectProperty<>(this, "boundingBox"); //$NON-NLS-1$
+			this.boundingBox.bind(Bindings.createObjectBinding(
+					() -> {
+						return toBoundingBox();
+					},
+					xProperty(), yProperty(), radiusProperty()));
+		}
+		return this.boundingBox;
 	}
 
 }

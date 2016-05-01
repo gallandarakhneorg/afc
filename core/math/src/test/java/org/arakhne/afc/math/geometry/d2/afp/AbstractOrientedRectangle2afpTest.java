@@ -53,14 +53,14 @@ public abstract class AbstractOrientedRectangle2afpTest<T extends OrientedRectan
 	protected final double e2 = 12.999989999999997;
 	
 	// Points' names are in the ggb diagram
-	private double pEx = -12.33574;
-	private double pEy = 3.63344;
-	private double pFx = 12.7082;
-	private double pFy = -8.88853;
-	private double pGx = 24.33574;
-	private double pGy = 14.36656;
-	private double pHx = -0.7082;
-	private double pHy = 26.88853;
+	protected final double pEx = -12.33574;
+	protected final double pEy = 3.63344;
+	protected final double pFx = 12.7082;
+	protected final double pFy = -8.88853;
+	protected final double pGx = 24.33574;
+	protected final double pGy = 14.36656;
+	protected final double pHx = -0.7082;
+	protected final double pHy = 26.88853;
 
 	
 	// Natural major axis for the box corners

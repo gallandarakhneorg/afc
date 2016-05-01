@@ -153,6 +153,91 @@ public interface Path2ai<
 		return foundOneLine;
 	}
 
+	/** Compute the box that corresponds to the control points of the path.
+	 * 
+	 * <p>An element is drawable if it is a line, a curve, or a closing path element.
+	 * The box fits the drawn lines and the drawn curves. The control points of the
+	 * curves may be outside the output box. For obtaining the bounding box
+	 * of the drawn lines and cruves, use
+	 * {@link #computeDrawableElementBoundingBox(PathIterator2ai, Rectangle2ai)}.
+	 * 
+	 * @param iterator the iterator on the path elements.
+	 * @param box the box to set.
+	 * @return <code>true</code> if a control point was found.
+	 * @see #computeDrawableElementBoundingBox(PathIterator2ai, Rectangle2ai)
+	 */
+	static boolean computeControlPointBoundingBox(PathIterator2ai<?> iterator,
+			Rectangle2ai<?, ?, ?, ?, ?, ?> box) {
+		assert (iterator != null) : "Iterator must be not null"; //$NON-NLS-1$
+		assert (box != null) : "Rectangle must be not null"; //$NON-NLS-1$
+		boolean foundOneControlPoint = false;
+		int xmin = Integer.MAX_VALUE;
+		int ymin = Integer.MAX_VALUE;
+		int xmax = Integer.MIN_VALUE;
+		int ymax = Integer.MIN_VALUE;
+		PathElement2ai element;
+		while (iterator.hasNext()) {
+			element = iterator.next();
+			switch(element.getType()) {
+			case LINE_TO:
+				if (element.getFromX()<xmin) xmin = element.getFromX();
+				if (element.getFromY()<ymin) ymin = element.getFromY();
+				if (element.getFromX()>xmax) xmax = element.getFromX();
+				if (element.getFromY()>ymax) ymax = element.getFromY();
+				if (element.getToX()<xmin) xmin = element.getToX();
+				if (element.getToY()<ymin) ymin = element.getToY();
+				if (element.getToX()>xmax) xmax = element.getToX();
+				if (element.getToY()>ymax) ymax = element.getToY();
+				foundOneControlPoint = true;
+				break;
+			case CURVE_TO:
+				if (element.getFromX()<xmin) xmin = element.getFromX();
+				if (element.getFromY()<ymin) ymin = element.getFromY();
+				if (element.getFromX()>xmax) xmax = element.getFromX();
+				if (element.getFromY()>ymax) ymax = element.getFromY();
+				if (element.getCtrlX1()<xmin) xmin = element.getCtrlX1();
+				if (element.getCtrlY1()<ymin) ymin = element.getCtrlY1();
+				if (element.getCtrlX1()>xmax) xmax = element.getCtrlX1();
+				if (element.getCtrlY1()>ymax) ymax = element.getCtrlY1();
+				if (element.getCtrlX2()<xmin) xmin = element.getCtrlX2();
+				if (element.getCtrlY2()<ymin) ymin = element.getCtrlY2();
+				if (element.getCtrlX2()>xmax) xmax = element.getCtrlX2();
+				if (element.getCtrlY2()>ymax) ymax = element.getCtrlY2();
+				if (element.getToX()<xmin) xmin = element.getToX();
+				if (element.getToY()<ymin) ymin = element.getToY();
+				if (element.getToX()>xmax) xmax = element.getToX();
+				if (element.getToY()>ymax) ymax = element.getToY();
+				foundOneControlPoint = true;
+				break;
+			case QUAD_TO:
+				if (element.getFromX()<xmin) xmin = element.getFromX();
+				if (element.getFromY()<ymin) ymin = element.getFromY();
+				if (element.getFromX()>xmax) xmax = element.getFromX();
+				if (element.getFromY()>ymax) ymax = element.getFromY();
+				if (element.getCtrlX1()<xmin) xmin = element.getCtrlX1();
+				if (element.getCtrlY1()<ymin) ymin = element.getCtrlY1();
+				if (element.getCtrlX1()>xmax) xmax = element.getCtrlX1();
+				if (element.getCtrlY1()>ymax) ymax = element.getCtrlY1();
+				if (element.getToX()<xmin) xmin = element.getToX();
+				if (element.getToY()<ymin) ymin = element.getToY();
+				if (element.getToX()>xmax) xmax = element.getToX();
+				if (element.getToY()>ymax) ymax = element.getToY();
+				foundOneControlPoint = true;
+				break;
+			case MOVE_TO:
+			case CLOSE:
+			default:
+			}
+		}
+		if (foundOneControlPoint) {
+			box.setFromCorners(xmin, ymin, xmax, ymax);
+		}
+		else {
+			box.clear();
+		}
+		return foundOneControlPoint;
+	}
+	
 	/**
 	 * Calculates the number of times the given path
 	 * crosses the given circle extending to the right.

@@ -80,19 +80,27 @@ public class Rectangle2fp extends AbstractShape2fp<Rectangle2fp>
 
 	@Override
 	public void setFromCorners(double x1, double y1, double x2, double y2) {
+		double a, b, c, d;
 		if (x1 <= x2) {
-			this.minx = x1;
-			this.maxx = x2;
+			a = x1;
+			b = x2;
 		} else {
-			this.minx = x2;
-			this.maxx = x1;
+			a = x2;
+			b = x1;
 		}
 		if (y1 <= y2) {
-			this.miny = y1;
-			this.maxy = y2;
+			c = y1;
+			d = y2;
 		} else {
-			this.miny = y2;
-			this.maxy = y1;
+			c = y2;
+			d = y1;
+		}
+		if (this.minx != a || this.maxx != b || this.miny != c || this.maxy != d) {
+			this.minx = a;
+			this.maxx = b;
+			this.miny = c;
+			this.maxy = d;
+			fireGeometryChange();
 		}
 	}
 
@@ -104,9 +112,12 @@ public class Rectangle2fp extends AbstractShape2fp<Rectangle2fp>
 
 	@Override
 	public void setMinX(double x) {
-		this.minx = x;
-		if (this.maxx < x) {
-			this.maxx = x;
+		if (this.minx != x) {
+			this.minx = x;
+			if (this.maxx < x) {
+				this.maxx = x;
+			}
+			fireGeometryChange();
 		}
 	}
 
@@ -118,9 +129,12 @@ public class Rectangle2fp extends AbstractShape2fp<Rectangle2fp>
 
 	@Override
 	public void setMaxX(double x) {
-		this.maxx = x;
-		if (this.minx > x) {
-			this.minx = x;
+		if (this.maxx != x) {
+			this.maxx = x;
+			if (this.minx > x) {
+				this.minx = x;
+			}
+			fireGeometryChange();
 		}
 	}
 
@@ -132,9 +146,12 @@ public class Rectangle2fp extends AbstractShape2fp<Rectangle2fp>
 
 	@Override
 	public void setMinY(double y) {
-		this.miny = y;
-		if (this.maxy < y)  {
-			this.maxy = y;
+		if (this.miny != y) {
+			this.miny = y;
+			if (this.maxy < y)  {
+				this.maxy = y;
+			}
+			fireGeometryChange();
 		}
 	}
 
@@ -146,9 +163,12 @@ public class Rectangle2fp extends AbstractShape2fp<Rectangle2fp>
 
 	@Override
 	public void setMaxY(double y) {
-		this.maxy = y;
-		if (this.miny > y) {
-			this.miny = y;
+		if (this.maxy != y) {
+			this.maxy = y;
+			if (this.miny > y) {
+				this.miny = y;
+			}
+			fireGeometryChange();
 		}
 	}
 

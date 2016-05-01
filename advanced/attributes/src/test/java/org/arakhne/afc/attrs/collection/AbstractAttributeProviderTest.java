@@ -40,7 +40,7 @@ import org.arakhne.afc.attrs.attr.AttributeValueImpl;
 import org.arakhne.afc.attrs.attr.InvalidAttributeTypeException;
 import org.arakhne.afc.attrs.collection.AttributeCollection;
 import org.arakhne.afc.attrs.collection.AttributeProvider;
-import org.arakhne.afc.math.continous.object2d.Point2f;
+import org.arakhne.afc.math.geometry.d2.fp.Point2fp;
 
 /**
  * Test of AbstractAttributeContainer.
@@ -147,7 +147,7 @@ public abstract class AbstractAttributeProviderTest<T extends AttributeProvider>
 				new AttributeImpl("B",2.), //$NON-NLS-1$
 				new AttributeImpl("C",true), //$NON-NLS-1$
 				new AttributeImpl("D","Hello"), //$NON-NLS-1$ //$NON-NLS-2$
-				new AttributeImpl("E",new Point2f(1,2)), //$NON-NLS-1$
+				new AttributeImpl("E",new Point2fp(1,2)), //$NON-NLS-1$
 				new AttributeImpl("F","false"), //$NON-NLS-1$ //$NON-NLS-2$
 		};
 		this.testData = setUpTestCase();

@@ -193,6 +193,7 @@ public class Path2fp
 		this.graphicalBounds = null;
 		this.logicalBounds = null;
 		this.length = null;
+		fireGeometryChange();
 	}
 
 	@Pure
@@ -244,6 +245,7 @@ public class Path2fp
 		if (bb!=null) bb.translate(dx, dy);
 		bb = this.graphicalBounds==null ? null : this.graphicalBounds.get();
 		if (bb!=null) bb.translate(dx, dy);
+		fireGeometryChange();
 	}
 	
 	@Override
@@ -259,6 +261,7 @@ public class Path2fp
 		this.graphicalBounds = null;
 		this.logicalBounds = null;
 		this.length = null;
+		fireGeometryChange();
 	}
 
 	@Override
@@ -317,11 +320,10 @@ public class Path2fp
 			PathElement2fp pe;
 			PathElementType t;
 			boolean first = true;
-			boolean lastIsClose = false;
+			boolean hasOneLine = false;
 			while (this.isPolyline == null && pi.hasNext()) {
 				pe = pi.next();
 				t = pe.getType();
-				lastIsClose = false;
 				if (first) {
 					if (t != PathElementType.MOVE_TO) {
 						this.isPolyline = Boolean.FALSE;
@@ -330,12 +332,12 @@ public class Path2fp
 					}
 				} else if (t != PathElementType.LINE_TO) {
 					this.isPolyline = Boolean.FALSE;
-				} else if (t == PathElementType.CLOSE) {
-					lastIsClose = true;
+				} else {
+					hasOneLine = true;
 				}
 			}
 			if (this.isPolyline == null) {
-				this.isPolyline = Boolean.valueOf(!lastIsClose);
+				this.isPolyline = hasOneLine;
 			}
 		}
 		return this.isPolyline.booleanValue();
@@ -422,15 +424,17 @@ public class Path2fp
 			this.types[this.numTypes++] = PathElementType.CLOSE;
 			this.isPolyline = false;
 			this.isPolygon = null;
+			fireGeometryChange();
 		}
 	}
 
 	@Override
+	@Pure
 	public Rectangle2fp toBoundingBoxWithCtrlPoints() {
 		Rectangle2fp bb = this.logicalBounds==null ? null : this.logicalBounds.get();
 		if (bb==null) {
 			bb = new Rectangle2fp();
-			Path2afp.computeDrawableElementBoundingBox(
+			Path2afp.computeControlPointBoundingBox(
 					getPathIterator(),
 					bb);
 			this.logicalBounds = new SoftReference<>(bb);
@@ -439,12 +443,13 @@ public class Path2fp
 	}
 
 	@Override
+	@Pure
 	public void toBoundingBoxWithCtrlPoints(Rectangle2fp box) {
 		assert (box != null) : "Rectangle must be not null"; //$NON-NLS-1$
 		Rectangle2fp bb = this.logicalBounds==null ? null : this.logicalBounds.get();
 		if (bb==null) {
 			bb = new Rectangle2fp();
-			Path2afp.computeDrawableElementBoundingBox(
+			Path2afp.computeControlPointBoundingBox(
 					getPathIterator(),
 					bb);
 			this.logicalBounds = new SoftReference<>(bb);
@@ -453,6 +458,7 @@ public class Path2fp
 	}
 
 	@Override
+	@Pure
 	public int[] toIntArray(Transform2D transform) {
 		int[] clone = new int[this.numCoords];
 		if (transform == null || transform.isIdentity()) {
@@ -474,6 +480,7 @@ public class Path2fp
 	}
 
 	@Override
+	@Pure
 	public float[] toFloatArray(Transform2D transform) {
 		float[] clone = new float[this.numCoords];
 		if (transform == null || transform.isIdentity()) {
@@ -495,6 +502,7 @@ public class Path2fp
 	}
 
 	@Override
+	@Pure
 	public double[] toDoubleArray(Transform2D transform) {
 		if (transform == null || transform.isIdentity()) {
 			return Arrays.copyOf(this.coords, this.numCoords);
@@ -512,6 +520,7 @@ public class Path2fp
 	}
 
 	@Override
+	@Pure
 	public Point2fp[] toPointArray(Transform2D transform) {
 		Point2fp[] clone = new Point2fp[this.numCoords/2];
 		if (transform == null || transform.isIdentity()) {
@@ -533,6 +542,7 @@ public class Path2fp
 	}
 
 	@Override
+	@Pure
 	public Point2fp getPointAt(int index) {
 		assert (index >=0 && index < size()) : "Index must be in [0;" + size() + ")";  //$NON-NLS-1$ //$NON-NLS-2$
 		return new Point2fp(
@@ -541,6 +551,7 @@ public class Path2fp
 	}
 
 	@Override
+	@Pure
 	public Point2fp getCurrentPoint() {
 		return new Point2fp(
 				this.coords[this.numCoords-2],
@@ -548,6 +559,7 @@ public class Path2fp
 	}
 
 	@Override
+	@Pure
 	public int size() {
 		return this.numCoords/2;
 	}
@@ -588,6 +600,9 @@ public class Path2fp
 			this.graphicalBounds = null;
 			this.logicalBounds = null;
 			this.length = null;
+			fireGeometryChange();
+		} else {
+			throw new IllegalStateException();
 		}
 	}
 
@@ -597,7 +612,9 @@ public class Path2fp
 			this.isPolyline = Boolean.FALSE;
 			this.isPolygon = Boolean.FALSE;
 		}
-		this.isMultipart = Boolean.valueOf(this.isMultipart == Boolean.TRUE);
+		if (this.isMultipart != null && this.isMultipart != Boolean.TRUE) {
+			this.isMultipart = null;
+		}
 		if (this.numTypes>0 && this.types[this.numTypes-1] == PathElementType.MOVE_TO) {
 			this.coords[this.numCoords-2] = x;
 			this.coords[this.numCoords-1] = y;
@@ -611,6 +628,7 @@ public class Path2fp
 		this.graphicalBounds = null;
 		this.logicalBounds = null;
 		this.length = null;
+		fireGeometryChange();
 	}
 
 	@Override
@@ -620,9 +638,13 @@ public class Path2fp
 		this.coords[this.numCoords++] = x;
 		this.coords[this.numCoords++] = y;
 		this.isEmpty = null;
+		if (this.isPolyline != null && this.isPolyline == Boolean.FALSE) {
+			this.isPolyline = null;
+		}
 		this.graphicalBounds = null;
 		this.logicalBounds = null;
 		this.length = null;
+		fireGeometryChange();
 	}
 
 	@Override
@@ -639,6 +661,7 @@ public class Path2fp
 		this.graphicalBounds = null;
 		this.logicalBounds = null;
 		this.length = null;
+		fireGeometryChange();
 	}
 
 	@Override
@@ -657,9 +680,11 @@ public class Path2fp
 		this.graphicalBounds = null;
 		this.logicalBounds = null;
 		this.length = null;
+		fireGeometryChange();
 	}
 
 	@Override
+	@Pure
 	public double getCoordAt(int index) {
 		return this.coords[index];
 	}
@@ -672,6 +697,9 @@ public class Path2fp
 			this.graphicalBounds = null;
 			this.logicalBounds = null;
 			this.length = null;
+			fireGeometryChange();
+		} else {
+			throw new IllegalStateException();
 		}
 	}
 	
@@ -696,6 +724,9 @@ public class Path2fp
 					System.arraycopy(this.types, j+1, this.types, j, this.numTypes);
 					this.isEmpty = null;
 					this.length = null;
+					this.graphicalBounds = null;
+					this.logicalBounds = null;
+					fireGeometryChange();
 					return true;
 				}
 				i += 2;
@@ -712,6 +743,9 @@ public class Path2fp
 					this.isEmpty = null;
 					this.isPolyline = null;
 					this.length = null;
+					this.graphicalBounds = null;
+					this.logicalBounds = null;
+					fireGeometryChange();
 					return true;
 				}
 				i += 6;
@@ -727,6 +761,9 @@ public class Path2fp
 					this.isEmpty = null;
 					this.isPolyline = null;
 					this.length = null;
+					this.graphicalBounds = null;
+					this.logicalBounds = null;
+					fireGeometryChange();
 					return true;
 				}
 				i += 4;
@@ -750,16 +787,19 @@ public class Path2fp
 	}
 
 	@Override
+	@Pure
 	public int getPathElementCount() {
 		return this.numTypes;
 	}
 
 	@Override
+	@Pure
 	public PathElementType getPathElementTypeAt(int index) {
 		return this.types[index];
 	}
 
 	@Override
+	@Pure
 	public double getLength() {
 		if (this.length == null) {
 			this.length = Double.valueOf(Path2afp.computeLength(getPathIterator()));

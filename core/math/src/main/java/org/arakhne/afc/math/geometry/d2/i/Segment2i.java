@@ -120,30 +120,45 @@ public class Segment2i extends AbstractShape2i<Segment2i>
 	
 	@Override
 	public void set(int x1, int y1, int x2, int y2) {
-		this.ax = x1;
-		this.ay = y1;
-		this.bx = x2;
-		this.by = y2;
+		if (this.ax != x1 || this.ay != y1 || this.bx != x2 || this.by != y2) {
+			this.ax = x1;
+			this.ay = y1;
+			this.bx = x2;
+			this.by = y2;
+			fireGeometryChange();
+		}
 	}
 
 	@Override
 	public void setX1(int x) {
-		this.ax = x;
+		if (this.ax != x) {
+			this.ax = x;
+			fireGeometryChange();
+		}
 	}
 
 	@Override
 	public void setY1(int y) {
-		this.ay = y;
+		if (this.ay != y) {
+			this.ay = y;
+			fireGeometryChange();
+		}
 	}
 
 	@Override
 	public void setX2(int x) {
-		this.bx = x;
+		if (this.bx != x) {
+			this.bx = x;
+			fireGeometryChange();
+		}
 	}
 
 	@Override
 	public void setY2(int y) {
-		this.by = y;
+		if (this.by != y) {
+			this.by = y;
+			fireGeometryChange();
+		}
 	}
 
 	@Pure

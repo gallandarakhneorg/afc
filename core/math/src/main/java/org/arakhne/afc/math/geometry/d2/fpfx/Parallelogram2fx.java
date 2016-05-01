@@ -26,8 +26,11 @@ import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.afp.Parallelogram2afp;
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleObjectProperty;
 
 /** Parallelogram with 2 double precision floating-point FX properties.
  *
@@ -417,6 +420,21 @@ public class Parallelogram2fx extends AbstractShape2fx<Parallelogram2fx>
 		firstAxisExtentProperty().set(axis1Extent);
 		secondAxisProperty().set(axis2x, axis2y);
 		secondAxisExtentProperty().set(axis2Extent);
+	}
+
+	@Override
+	public ObjectProperty<Rectangle2fx> boundingBoxProperty() {
+		if (this.boundingBox == null) {
+			this.boundingBox = new SimpleObjectProperty<>(this, "boundingBox"); //$NON-NLS-1$
+			this.boundingBox.bind(Bindings.createObjectBinding(
+					() -> {
+						return toBoundingBox();
+					},
+					centerXProperty(), centerYProperty(),
+					firstAxisProperty(), firstAxisExtentProperty(),
+					secondAxisProperty(), secondAxisExtentProperty()));
+		}
+		return this.boundingBox;
 	}
 
 }

@@ -144,7 +144,7 @@ public class GeomFactory2fp implements GeomFactory2afp<PathElement2fp, Point2fp,
 
 	@Override
 	public MultiShape2afp<?, ?, ?, PathElement2fp, Point2fp, Vector2fp, Rectangle2fp> newMultiShape() {
-		return new MultiShape2fp();
+		return new MultiShape2fp<>();
 	}
 
 }

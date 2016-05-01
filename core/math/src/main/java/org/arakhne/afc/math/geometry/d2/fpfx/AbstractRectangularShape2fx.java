@@ -25,9 +25,9 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.ReadOnlyDoubleProperty;
-import javafx.beans.property.ReadOnlyDoubleWrapper;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleObjectProperty;
 
 /** Abstract rectangular shape with 2 double precision floating-point FX properties.
  * 
@@ -62,11 +62,11 @@ public abstract class AbstractRectangularShape2fx<IT extends AbstractRectangular
 	
 	/** width property.
 	 */
-	ReadOnlyDoubleWrapper width;
+	DoubleProperty width;
 	
 	/** height property.
 	 */
-	ReadOnlyDoubleWrapper height;
+	DoubleProperty height;
 
 	/**
 	 */
@@ -266,12 +266,12 @@ public abstract class AbstractRectangularShape2fx<IT extends AbstractRectangular
 	 * @return the width property.
 	 */
 	@Pure
-	public ReadOnlyDoubleProperty widthProperty() {
+	public DoubleProperty widthProperty() {
 		if (this.width == null) {
-			this.width = new ReadOnlyDoubleWrapper(this, "width"); //$NON-NLS-1$
+			this.width = new SimpleDoubleProperty(this, "width"); //$NON-NLS-1$
 			this.width.bind(Bindings.subtract(maxXProperty(), minXProperty()));
 		}
-		return this.width.getReadOnlyProperty();
+		return this.width;
 	}
 	
 	@Override
@@ -284,12 +284,12 @@ public abstract class AbstractRectangularShape2fx<IT extends AbstractRectangular
 	 * @return the height property.
 	 */
 	@Pure
-	public ReadOnlyDoubleProperty heightProperty() {
+	public DoubleProperty heightProperty() {
 		if (this.height == null) {
-			this.height = new ReadOnlyDoubleWrapper(this, "height"); //$NON-NLS-1$
+			this.height = new SimpleDoubleProperty(this, "height"); //$NON-NLS-1$
 			this.height.bind(Bindings.subtract(maxYProperty(), minYProperty()));
 		}
-		return this.height.getReadOnlyProperty();
+		return this.height;
 	}
 
 	@Pure
@@ -319,4 +319,18 @@ public abstract class AbstractRectangularShape2fx<IT extends AbstractRectangular
 		b.append("]"); //$NON-NLS-1$
 		return b.toString();
 	}
+	
+	@Override
+	public ObjectProperty<Rectangle2fx> boundingBoxProperty() {
+		if (this.boundingBox == null) {
+			this.boundingBox = new SimpleObjectProperty<>(this, "boundingBox"); //$NON-NLS-1$
+			this.boundingBox.bind(Bindings.createObjectBinding(
+					() -> {
+						return toBoundingBox();
+					},
+					minXProperty(), minYProperty(), widthProperty(), heightProperty()));
+		}
+		return this.boundingBox;
+	}
+
 }

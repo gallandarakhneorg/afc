@@ -28,6 +28,7 @@ import org.arakhne.afc.math.geometry.d2.afp.TestShapeFactory;
 import org.junit.Test;
 
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.ObjectProperty;
 
 @SuppressWarnings("all")
 public class OrientedRectangle2fxTest extends AbstractOrientedRectangle2afpTest<OrientedRectangle2fx, Rectangle2fx> {
@@ -130,6 +131,18 @@ public class OrientedRectangle2fxTest extends AbstractOrientedRectangle2afpTest<
 		
 		this.shape.setSecondAxisExtent(456.159);
 		assertEpsilonEquals(456.159, property.get());
+	}
+
+	@Test
+	public void boundingBoxProperty() {
+		ObjectProperty<Rectangle2fx> property = this.shape.boundingBoxProperty();
+		assertNotNull(property);
+		Rectangle2fx box = property.get();
+		assertNotNull(box);
+		assertEpsilonEquals(pEx, box.getMinX());
+		assertEpsilonEquals(pFy, box.getMinY());
+		assertEpsilonEquals(pGx, box.getMaxX());
+		assertEpsilonEquals(pHy, box.getMaxY());
 	}
 
 }

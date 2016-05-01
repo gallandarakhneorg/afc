@@ -26,8 +26,11 @@ import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.ai.Segment2ai;
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
 
 /** A 2D segment/line with 2 integer FX properties.
  *
@@ -251,6 +254,20 @@ public class Segment2ifx extends AbstractShape2ifx<Segment2ifx>
 	@Override
 	public Point2ifx getP2() {
 		return new Point2ifx(this.bx, this.by);
+	}
+
+	@Override
+	public ObjectProperty<Rectangle2ifx> boundingBoxProperty() {
+		if (this.boundingBox == null) {
+			this.boundingBox = new SimpleObjectProperty<>(this, "boundingBox"); //$NON-NLS-1$
+			this.boundingBox.bind(Bindings.createObjectBinding(
+					() -> {
+						return toBoundingBox();
+					},
+					x1Property(), y1Property(),
+					x2Property(), y2Property()));
+		}
+		return this.boundingBox;
 	}
 
 }

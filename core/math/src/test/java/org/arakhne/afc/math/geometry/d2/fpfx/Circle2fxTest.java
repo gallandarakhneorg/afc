@@ -21,29 +21,13 @@
  */
 package org.arakhne.afc.math.geometry.d2.fpfx;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
-import java.util.Iterator;
-
-import org.arakhne.afc.math.MathConstants;
-import org.arakhne.afc.math.geometry.PathElementType;
-import org.arakhne.afc.math.geometry.d2.Point2D;
-import org.arakhne.afc.math.geometry.d2.Transform2D;
-import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.afp.AbstractCircle2afpTest;
-import org.arakhne.afc.math.geometry.d2.afp.OrientedRectangle2afp;
-import org.arakhne.afc.math.geometry.d2.afp.Path2afp;
-import org.arakhne.afc.math.geometry.d2.afp.RoundRectangle2afp;
-import org.arakhne.afc.math.geometry.d2.afp.Segment2afp;
-import org.arakhne.afc.math.geometry.d2.afp.TestShapeFactory;
-import org.eclipse.xtext.xbase.lib.Pure;
 import org.junit.Test;
 
 import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.DoublePropertyBase;
+import javafx.beans.property.ObjectProperty;
 
 @SuppressWarnings("all")
 public class Circle2fxTest extends AbstractCircle2afpTest<Circle2fx, Rectangle2fx> {
@@ -87,6 +71,18 @@ public class Circle2fxTest extends AbstractCircle2afpTest<Circle2fx, Rectangle2f
 		
 		this.shape.setRadius(456.159);
 		assertEpsilonEquals(456.159, property.get());
+	}
+
+	@Test
+	public void boundingBoxProperty() {
+		ObjectProperty<Rectangle2fx> property = this.shape.boundingBoxProperty();
+		assertNotNull(property);
+		Rectangle2fx box = property.get();
+		assertNotNull(box);
+		assertEpsilonEquals(0, box.getMinX());
+		assertEpsilonEquals(3, box.getMinY());
+		assertEpsilonEquals(10, box.getMaxX());
+		assertEpsilonEquals(13, box.getMaxY());
 	}
 
 }

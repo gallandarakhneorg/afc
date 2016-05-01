@@ -25,8 +25,11 @@ import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.afp.Circle2afp;
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleObjectProperty;
 
 /** Circle with 2 double precision floating-point FX properties.
  *
@@ -214,6 +217,19 @@ public class Circle2fx
 		xProperty().set(x);
 		yProperty().set(y);
 		radiusProperty().set(radius);
+	}
+
+	@Override
+	public ObjectProperty<Rectangle2fx> boundingBoxProperty() {
+		if (this.boundingBox == null) {
+			this.boundingBox = new SimpleObjectProperty<>(this, "boundingBox"); //$NON-NLS-1$
+			this.boundingBox.bind(Bindings.createObjectBinding(
+					() -> {
+						return toBoundingBox();
+					},
+					xProperty(), yProperty(), radiusProperty()));
+		}
+		return this.boundingBox;
 	}
 
 }

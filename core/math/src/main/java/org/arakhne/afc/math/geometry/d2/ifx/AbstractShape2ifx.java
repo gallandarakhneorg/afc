@@ -23,6 +23,8 @@ package org.arakhne.afc.math.geometry.d2.ifx;
 import org.arakhne.afc.math.geometry.d2.PathIterator2D;
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import javafx.beans.property.ObjectProperty;
+
 /** Abstract shape with 2 integer FX properties.
  * 
  * @param <T> the type of the shape.
@@ -36,6 +38,10 @@ public abstract class AbstractShape2ifx<T extends AbstractShape2ifx<?>> implemen
 
 	private static final long serialVersionUID = -2142220243877033508L;
 
+	/** Bounding box property.
+	 */
+	protected ObjectProperty<Rectangle2ifx> boundingBox;
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public T clone() {

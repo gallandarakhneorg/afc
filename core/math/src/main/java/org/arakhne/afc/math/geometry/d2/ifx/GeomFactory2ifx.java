@@ -175,7 +175,7 @@ public class GeomFactory2ifx implements GeomFactory2ai<PathElement2ifx, Point2if
 
 	@Override
 	public MultiShape2ai<?, ?, ?, PathElement2ifx, Point2ifx, Vector2ifx, Rectangle2ifx> newMultiShape() {
-		return new MultiShape2ifx();
+		return new MultiShape2ifx<>();
 	}
 
 }

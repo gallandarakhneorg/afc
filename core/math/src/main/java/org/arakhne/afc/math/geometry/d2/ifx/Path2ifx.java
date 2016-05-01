@@ -21,22 +21,30 @@
 
 package org.arakhne.afc.math.geometry.d2.ifx;
 
-import java.lang.ref.SoftReference;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.ListIterator;
 
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
+import org.arakhne.afc.math.geometry.d2.afp.InnerComputationPoint2afp;
 import org.arakhne.afc.math.geometry.d2.ai.Path2ai;
 import org.arakhne.afc.math.geometry.d2.ai.PathIterator2ai;
-import org.arakhne.afc.math.geometry.d2.fp.Point2fp;
 import org.eclipse.xtext.xbase.lib.Pure;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.ReadOnlyBooleanWrapper;
+import javafx.beans.property.ReadOnlyListProperty;
+import javafx.beans.property.ReadOnlyListWrapper;
+import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.FXCollections;
 
 /** Path with 2 integer FX properties.
  *
@@ -54,23 +62,15 @@ public class Path2ifx
 
 	/** Array of types.
 	 */
-	private PathElementType[] types;
+	private ReadOnlyListWrapper<PathElementType> types;
 
 	/** Array of coords.
 	 */
-	private IntegerProperty[] coords;
-
-	/** Number of types in the array.
-	 */
-	private int numTypes = 0;
-
-	/** Number of coords in the array.
-	 */
-	private int numCoords = 0;
+	private ReadOnlyListWrapper<Integer> coords;
 
 	/** Winding rule for the path.
 	 */
-	private PathWindingRule windingRule;
+	private ObjectProperty<PathWindingRule> windingRule;
 
 	/** Indicates if the path is empty.
 	 * The path is empty when there is no point inside, or
@@ -78,35 +78,28 @@ public class Path2ifx
 	 * when the path does not represents a drawable path
 	 * (a path with a line or a curve).
 	 */
-	private Boolean isEmpty = Boolean.TRUE;
+	private BooleanProperty isEmpty;
 
 	/** Indicates if the path is a polyline.
 	 */
-	private Boolean isPolyline = Boolean.FALSE;
+	private BooleanProperty isPolyline;
 
 	/** Indicates if the path is curved.
 	 */
-	private Boolean isCurved = Boolean.FALSE;
+	private BooleanProperty isCurved;
 
 	/** Indicates if the path is a polygon
 	 */
-	private Boolean isPolygon = Boolean.FALSE;
+	private BooleanProperty isPolygon;
 
 	/** Indicates if the path is multipart
 	 */
-	private Boolean isMultipart = Boolean.FALSE;
-
-	/** Buffer for the bounds of the path that corresponds
-	 * to the points really on the path (eg, the pixels
-	 * drawn). The control points of the curves are
-	 * not considered in this bounds.
-	 */
-	private SoftReference<Rectangle2ifx> graphicalBounds = null;
+	private BooleanProperty isMultipart;
 
 	/** Buffer for the bounds of the path that corresponds
 	 * to all the points added in the path.
 	 */
-	private SoftReference<Rectangle2ifx> logicalBounds = null;
+	private ObjectProperty<Rectangle2ifx> logicalBounds;
 
 	/**
 	 */
@@ -126,9 +119,9 @@ public class Path2ifx
 	 */
 	public Path2ifx(PathWindingRule windingRule) {
 		assert (windingRule != null) : "Path winding rule must be not null"; //$NON-NLS-1$
-		this.types = new PathElementType[GROW_SIZE];
-		this.coords = new IntegerProperty[GROW_SIZE];
-		this.windingRule = windingRule;
+		if (windingRule != DEFAULT_WINDING_RULE) {
+			windingRuleProperty().set(windingRule);
+		}
 	}
 
 	/**
@@ -138,9 +131,9 @@ public class Path2ifx
 	public Path2ifx(PathWindingRule windingRule, Iterator<PathElement2ifx> iterator) {
 		assert (windingRule != null) : "Path winding rule must be not null"; //$NON-NLS-1$
 		assert (iterator != null) : "Iterator must be not null"; //$NON-NLS-1$
-		this.types = new PathElementType[GROW_SIZE];
-		this.coords = new IntegerProperty[GROW_SIZE];
-		this.windingRule = windingRule;
+		if (windingRule != DEFAULT_WINDING_RULE) {
+			windingRuleProperty().set(windingRule);
+		}
 		add(iterator);
 	}
 
@@ -151,50 +144,18 @@ public class Path2ifx
 		set(p);
 	}
 
-	private boolean buildLogicalBoundingBox(Rectangle2ifx box) {
-		assert (box != null) : "Rectangle must be not null"; //$NON-NLS-1$
-		if (this.numCoords>0) {
-			int xmin = getCoordAt(0);
-			int ymin = getCoordAt(1);
-			int xmax = xmin;
-			int ymax = ymin;
-			int x, y;
-			for(int i = 2; i < this.numCoords; i += 2) {
-				x = getCoordAt(i);
-				y = getCoordAt(i + 1);
-				if (x < xmin) xmin = x;
-				if (y < ymin) ymin = y;
-				if (x > xmax) xmax = x;
-				if (y > ymax) ymax = y;
-			}
-			box.setFromCorners(xmin,  ymin, xmax, ymax);
-			return true;
-		}
-		return false;
-	}
-	
-	private void ensureSlots(boolean needMove, int n) {
-		if (needMove && this.numTypes==0) {
-			throw new IllegalStateException("missing initial moveto in path definition"); //$NON-NLS-1$
-		}
-		if (this.types.length==this.numTypes) {
-			this.types = Arrays.copyOf(this.types, this.types.length+GROW_SIZE);
-		}
-		while ((this.numCoords+n)>=this.coords.length) {
-			this.coords = Arrays.copyOf(this.coords, this.coords.length+GROW_SIZE);
-		}
-	}
-	
 	@Pure
 	@Override
 	public boolean containsControlPoint(Point2D<?, ?> p) {
 		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
-		int x, y;
-		for(int i=0; i<this.numCoords;) {
-			x = getCoordAt(i++);
-			y = getCoordAt(i++);
-			if (x==p.ix() && y==p.iy()) {
-				return true;
+		if (this.coords != null && !this.coords.isEmpty()) {
+			int x, y;
+			for(int i=0; i<this.coords.size();) {
+				x = this.coords.get(i++);
+				y = this.coords.get(i++);
+				if (x==p.ix() && y==p.iy()) {
+					return true;
+				}
 			}
 		}
 		return false;
@@ -202,44 +163,49 @@ public class Path2ifx
 
 	@Override
 	public void clear() {
-		this.types = new PathElementType[GROW_SIZE];
-		this.coords = new IntegerProperty[GROW_SIZE];
-		this.windingRule = PathWindingRule.NON_ZERO;
-		this.numCoords = 0;
-		this.numTypes = 0;
-		this.isEmpty = Boolean.TRUE;
-		this.isPolyline = Boolean.FALSE;
-		this.isPolygon = Boolean.FALSE;
-		this.isCurved = Boolean.FALSE;
-		this.graphicalBounds = null;
-		this.logicalBounds = null;
+		if (this.types != null) {
+			this.types.clear();
+		}
+		if (this.coords != null) {
+			this.coords.clear();
+		}
 	}
 
 	@Pure
 	@Override
 	public Path2ifx clone() {
 		Path2ifx clone = super.clone();
-		clone.coords = new IntegerProperty[this.coords.length];
-		for (int i = 0; i < this.coords.length; i++) {
-			if (this.coords[i] != null) {
-				clone.coordPropertyAt(i).set(this.coords[i].get());
-			}
+		clone.coords = null;
+		if (this.coords != null && !this.coords.isEmpty()) {
+			clone.innerCoordinatesProperty().addAll(this.coords);
 		}
-		clone.types = this.types.clone();
-		clone.windingRule = this.windingRule;
+		clone.types = null;
+		if (this.types != null && !this.types.isEmpty()) {
+			clone.innerTypesProperty().addAll(this.types);
+		}
+		clone.windingRule = null;
+		if (this.windingRule != null) {
+			clone.windingRuleProperty().set(this.windingRule.get());
+		}
+		clone.boundingBox = null;
+		clone.logicalBounds = null;
+		clone.isCurved = null;
+		clone.isMultipart = null;
+		clone.isPolyline = null;
+		clone.isPolygon = null;
+		clone.isEmpty = null;
+		
 		return clone;
 	}
 
 	@Pure
 	@Override
 	public int hashCode() {
-		int bits = 1;
-		bits = 31 * bits + this.numCoords;
-		bits = 31 * bits + this.numTypes;
-		bits = 31 * bits + Arrays.hashCode(this.coords);
-		bits = 31 * bits + Arrays.hashCode(this.types);
-		bits = 31 * bits + this.windingRule.ordinal();
-		return (bits ^ (bits >> 32));
+		long bits = 1L;
+		bits = 31L * bits + ((this.coords == null) ? 0 : this.coords.hashCode());
+		bits = 31L * bits + ((this.types == null) ? 0 : this.types.hashCode());
+		bits = 31L * bits + ((this.windingRule == null) ? 0 : this.windingRule.hashCode());
+		return (int) (bits ^ (bits >> 32));
 	}
 
 	@Pure
@@ -247,11 +213,12 @@ public class Path2ifx
 	public String toString() {
 		StringBuilder b = new StringBuilder();
 		b.append("["); //$NON-NLS-1$
-		if (this.numCoords>0) {
-			b.append(getCoordAt(0));
-			for(int i=1; i<this.numCoords; ++i) {
+		if (this.coords != null && !this.coords.isEmpty()) {
+			Iterator<Integer> iterator = this.coords.iterator();
+			b.append(iterator.next());
+			while (iterator.hasNext()) {
 				b.append(", "); //$NON-NLS-1$
-				b.append(getCoordAt(i));
+				b.append(iterator.next());
 			}
 		}
 		b.append("]"); //$NON-NLS-1$
@@ -260,235 +227,304 @@ public class Path2ifx
 
 	@Override
 	public void translate(int dx, int dy) {
-		IntegerProperty prop;
-		for(int i=0; i<this.numCoords;) {
-			prop = coordPropertyAt(i++);
-			prop.set(prop.get() + dx);
-			prop = coordPropertyAt(i++);
-			prop.set(prop.get() + dy);
+		if (this.coords != null && !this.coords.isEmpty()) {
+			ListIterator<Integer> li = this.coords.listIterator();
+	        while (li.hasNext()) {
+	            li.set(li.next() + dx);
+	            li.set(li.next() + dy);
+	        }
 		}
-		Rectangle2ifx bb;
-		bb = this.logicalBounds==null ? null : this.logicalBounds.get();
-		if (bb!=null) bb.translate(dx, dy);
-		bb = this.graphicalBounds==null ? null : this.graphicalBounds.get();
-		if (bb!=null) bb.translate(dx, dy);
 	}
 	
 	@Override
 	public void transform(Transform2D transform) {
 		assert (transform != null) : "Transformation must be not null"; //$NON-NLS-1$
-		for(int i=0; i<this.numCoords;) {
-			Point2D<?, ?> p = new Point2ifx(coordPropertyAt(i++), coordPropertyAt(i++));
-			transform.transform(p);
+		Point2D<?, ?> p = new Point2ifx();
+		if (this.coords != null && !this.coords.isEmpty()) {
+			ListIterator<Integer> li = this.coords.listIterator();
+			int i = 0;
+	        while (li.hasNext()) {
+	        	p.set(li.next(), li.next());
+				transform.transform(p);
+				this.coords.set(i++, p.ix());
+				this.coords.set(i++, p.iy());
+	        }
 		}
-		this.graphicalBounds = null;
-		this.logicalBounds = null;
 	}
 
-	@Override
-	public boolean isEmpty() {
-		if (this.isEmpty==null) {
-			this.isEmpty = Boolean.TRUE;
-			PathIterator2ai<PathElement2ifx> pi = getPathIterator();
-			PathElement2ifx pe;
-			while (this.isEmpty==Boolean.TRUE && pi.hasNext()) {
-				pe = pi.next();
-				if (pe.isDrawable()) { 
-					this.isEmpty = Boolean.FALSE;
-				}
-			}
+	/** Replies the isEmpty property.
+	 *
+	 * @return the isEmpty property.
+	 */
+	public BooleanProperty isEmptyProperty() {
+		if (this.isEmpty == null) {
+			this.isEmpty = new SimpleBooleanProperty(this, "isEmpty"); //$NON-NLS-1$
+			this.isEmpty.bind(Bindings.createBooleanBinding(
+					() -> {
+						PathIterator2ai<PathElement2ifx> pi = getPathIterator();
+						PathElement2ifx pe;
+						while (pi.hasNext()) {
+							pe = pi.next();
+							if (pe.isDrawable()) { 
+								return false;
+							}
+						}
+						return true;
+					},
+					innerTypesProperty(), innerCoordinatesProperty()));
 		}
-		return this.isEmpty.booleanValue();
+		return this.isEmpty;
 	}
 	
 	@Override
-	public Rectangle2ifx toBoundingBox() {
-		Rectangle2ifx bb = this.graphicalBounds==null ? null : this.graphicalBounds.get();
-		if (bb==null) {
-			bb = new Rectangle2ifx();
-			Path2ai.computeDrawableElementBoundingBox(
-					getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
-					bb);
-			this.graphicalBounds = new SoftReference<>(bb);
+	public boolean isEmpty() {
+		return isEmptyProperty().get();
+	}
+	
+	@Override
+	public ObjectProperty<Rectangle2ifx> boundingBoxProperty() {
+		if (this.boundingBox == null) {
+			this.boundingBox = new ReadOnlyObjectWrapper<>(this, "boundingBox"); //$NON-NLS-1$
+			this.boundingBox.bind(Bindings.createObjectBinding(
+					() -> {
+						Rectangle2ifx bb = new Rectangle2ifx();
+						Path2ai.computeDrawableElementBoundingBox(
+								getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+								bb);
+						return bb;
+					},
+					innerCoordinatesProperty()));
 		}
-		return bb;
+		return this.boundingBox;
+	}
+	
+	/** Replies the property that corresponds to the bounding box of the control points.
+	 *
+	 * <p>The replied box is not the one corresponding to the drawable elements, as replied
+	 * by {@link #boundingBoxProperty()}.
+	 * 
+	 * @return the bounding box of the control points.
+	 */
+	public ObjectProperty<Rectangle2ifx> controlPointBoundingBoxProperty() {
+		if (this.logicalBounds == null) {
+			this.logicalBounds = new ReadOnlyObjectWrapper<>(this, "controlPointBoundingBox"); //$NON-NLS-1$
+			this.logicalBounds.bind(Bindings.createObjectBinding(
+					() -> {
+						Rectangle2ifx bb = new Rectangle2ifx();
+						Path2ai.computeControlPointBoundingBox(
+								getPathIterator(),
+								bb);
+						return bb;
+					},
+					innerCoordinatesProperty()));
+		}
+		return this.logicalBounds;
+	}
 
+	
+	@Override
+	public Rectangle2ifx toBoundingBox() {
+		return boundingBoxProperty().get().clone();
 	}
 
 	@Override
 	public void toBoundingBox(Rectangle2ifx box) {
 		assert (box != null) : "Rectangle must be not null"; //$NON-NLS-1$
-		Rectangle2ifx bb = this.graphicalBounds==null ? null : this.graphicalBounds.get();
-		if (bb==null) {
-			bb = new Rectangle2ifx();
-			Path2ai.computeDrawableElementBoundingBox(
-					getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
-					bb);
-			this.graphicalBounds = new SoftReference<>(bb);
-		}
-		box.set(bb);
+		box.set(boundingBoxProperty().get());
 	}
 
-	@Override
-	public PathWindingRule getWindingRule() {
+	/** Replies the windingRule property.
+	 *
+	 * @return the windingRule property.
+	 */
+	public ObjectProperty<PathWindingRule> windingRuleProperty() {
+		if (this.windingRule == null) {
+			this.windingRule = new SimpleObjectProperty<>(this, "windingRule", DEFAULT_WINDING_RULE); //$NON-NLS-1$
+		}
 		return this.windingRule;
 	}
 
 	@Override
-	public boolean isPolyline() {
-		if (this.isPolyline == null) {
-			PathIterator2ai<PathElement2ifx> pi = getPathIterator();
-			PathElement2ifx pe;
-			PathElementType t;
-			boolean first = true;
-			boolean lastIsClose = false;
-			while (this.isPolyline == null && pi.hasNext()) {
-				pe = pi.next();
-				t = pe.getType();
-				lastIsClose = false;
-				if (first) {
-					if (t != PathElementType.MOVE_TO) {
-						this.isPolyline = Boolean.FALSE;
-					} else {
-						first = false;
-					}
-				} else if (t != PathElementType.LINE_TO) {
-					this.isPolyline = Boolean.FALSE;
-				} else if (t == PathElementType.CLOSE) {
-					lastIsClose = true;
-				}
-			}
-			if (this.isPolyline == null) {
-				this.isPolyline = Boolean.valueOf(!lastIsClose);
-			}
+	public PathWindingRule getWindingRule() {
+		return this.windingRule == null ? DEFAULT_WINDING_RULE : this.windingRule.get();
+	}
+
+	@Override
+	public void setWindingRule(PathWindingRule r) {
+		assert (r != null) : "Path winding rule must be not null"; //$NON-NLS-1$
+		if (this.windingRule != null || r != DEFAULT_WINDING_RULE) {
+			windingRuleProperty().set(r);
 		}
-		return this.isPolyline.booleanValue();
+	}
+
+	/** Replies the isPolyline property.
+	 *
+	 * @return the isPolyline property.
+	 */
+	public BooleanProperty isPolylineProperty() {
+		if (this.isPolyline == null) {
+			this.isPolyline = new ReadOnlyBooleanWrapper(this, "isPolyline", false); //$NON-NLS-1$
+			this.isPolyline.bind(Bindings.createBooleanBinding(
+					() -> {
+						boolean first = true;
+						boolean hasOneLine = false;
+						for (PathElementType type : innerTypesProperty()) {
+							if (first) {
+								if (type != PathElementType.MOVE_TO) {
+									return false;
+								}
+								first = false;
+							} else if (type != PathElementType.LINE_TO) {
+								return false;
+							} else {
+								hasOneLine = true;
+							}
+						}
+						return hasOneLine;
+					},
+					innerTypesProperty()));
+		}
+		return this.isPolyline;
+	}
+
+	@Override
+	public boolean isPolyline() {
+		return isPolylineProperty().get();
+	}
+
+	/** Replies the isCurved property.
+	 *
+	 * @return the isCurved property.
+	 */
+	public  BooleanProperty isCurvedProperty() {
+		if (this.isCurved == null) {
+			this.isCurved = new ReadOnlyBooleanWrapper(this, "isCurved", false); //$NON-NLS-1$
+			this.isCurved.bind(Bindings.createBooleanBinding(
+					() -> {
+						for (PathElementType type : innerTypesProperty()) {
+							if (type == PathElementType.CURVE_TO || type == PathElementType.QUAD_TO) { 
+								return true;
+							}
+						}
+						return false;
+					},
+					innerTypesProperty()));
+		}
+		return this.isCurved;
 	}
 
 	@Override
 	public boolean isCurved() {
-		if (this.isCurved == null) {
-			this.isCurved = Boolean.FALSE;
-			PathIterator2ai<PathElement2ifx> pi = getPathIterator();
-			PathElement2ifx pe;
-			PathElementType t;
-			while (this.isCurved == Boolean.FALSE && pi.hasNext()) {
-				pe = pi.next();
-				t = pe.getType();
-				if (t==PathElementType.CURVE_TO || t==PathElementType.QUAD_TO) { 
-					this.isCurved = Boolean.TRUE;
-				}
-			}
+		return isCurvedProperty().get();
+	}
+
+	/** Replies the isMultiParts property.
+	 *
+	 * @return the isMultiParts property.
+	 */
+	public BooleanProperty isMultiPartsProperty() {
+		if (this.isMultipart == null) {
+			this.isMultipart = new ReadOnlyBooleanWrapper(this, "isMultiParts", false); //$NON-NLS-1$
+			this.isMultipart.bind(Bindings.createBooleanBinding(
+					() -> {
+						boolean foundOne = false;
+						for (PathElementType type : innerTypesProperty()) {
+							if (type == PathElementType.MOVE_TO) { 
+								if (foundOne) {
+									return true;
+								}
+								foundOne = true;
+							}
+						}
+						return false;
+					},
+					innerTypesProperty()));
 		}
-		return this.isCurved.booleanValue();
+		return this.isMultipart;
 	}
 
 	@Override
 	public boolean isMultiParts() {
-		if (this.isMultipart == null) {
-			this.isMultipart = Boolean.FALSE;
-			PathIterator2ai<PathElement2ifx> pi = getPathIterator();
-			PathElement2ifx pe;
-			PathElementType t;
-			boolean foundOne = false;
-			while (this.isMultipart == Boolean.FALSE && pi.hasNext()) {
-				pe = pi.next();
-				t = pe.getType();
-				if (t==PathElementType.MOVE_TO) {
-					if (foundOne) {
-						this.isMultipart = Boolean.TRUE;
-					} else {
-						foundOne = true;
-					}
-				}
-			}
+		return isMultiPartsProperty().get();
+	}
+
+	/** Replies the isPolygon property.
+	 *
+	 * @return the isPolygon property.
+	 */
+	public BooleanProperty isPolygonProperty() {
+		if (this.isPolygon == null) {
+			this.isPolygon = new ReadOnlyBooleanWrapper(this, "isPolygon", false); //$NON-NLS-1$
+			this.isPolygon.bind(Bindings.createBooleanBinding(
+					() -> {
+						boolean first = true;
+						boolean lastIsClose = false;
+						for (PathElementType type : innerTypesProperty()) {
+							lastIsClose = false;
+							if (first) {
+								if (type != PathElementType.MOVE_TO) {
+									return false;
+								}
+								first = false;
+							} else if (type == PathElementType.MOVE_TO) {
+								return false;
+							} else if (type == PathElementType.CLOSE) {
+								lastIsClose = true;
+							}
+						}
+						return lastIsClose;
+					},
+					innerTypesProperty()));
 		}
-		return this.isMultipart.booleanValue();
+		return this.isPolygon;
 	}
 
 	@Override
 	public boolean isPolygon() {
-		if (this.isPolygon == null) {
-			PathIterator2ai<PathElement2ifx> pi = getPathIterator();
-			PathElement2ifx pe;
-			PathElementType t;
-			boolean first = true;
-			boolean lastIsClose = false;
-			while (this.isPolygon == null && pi.hasNext()) {
-				pe = pi.next();
-				t = pe.getType();
-				lastIsClose = false;
-				if (first) {
-					if (t != PathElementType.MOVE_TO) {
-						this.isPolygon = Boolean.FALSE;
-					} else {
-						first = false;
-					}
-				} else if (t == PathElementType.MOVE_TO) {
-					this.isPolygon = Boolean.FALSE;
-				} else if (t == PathElementType.CLOSE) {
-					lastIsClose = true;
-				}
-			}
-			if (this.isPolygon == null) {
-				this.isPolygon = Boolean.valueOf(lastIsClose);
-			}
-		}
-		return this.isPolygon.booleanValue();
+		return isPolygonProperty().get();
 	}
 
 	@Override
 	public void closePath() {
-		if (this.numTypes<=0 ||
-				(this.types[this.numTypes-1]!=PathElementType.CLOSE
-				&&this.types[this.numTypes-1]!=PathElementType.MOVE_TO)) {
-			ensureSlots(true, 0);
-			this.types[this.numTypes++] = PathElementType.CLOSE;
-			this.isPolyline = false;
-			this.isPolygon = null;
+		if (this.types == null
+			|| this.types.isEmpty()
+			|| (this.types.get(this.types.size() - 1) != PathElementType.CLOSE
+				&& this.types.get(this.types.size() - 1) != PathElementType.MOVE_TO)) {
+			this.types.add(PathElementType.CLOSE);
 		}
 	}
 
 	@Override
 	public Rectangle2ifx toBoundingBoxWithCtrlPoints() {
-		Rectangle2ifx bb = this.logicalBounds==null ? null : this.logicalBounds.get();
-		if (bb==null) {
-			bb = new Rectangle2ifx();
-			buildLogicalBoundingBox(bb);
-			this.logicalBounds = new SoftReference<>(bb);
-		}
-		return bb;
+		return controlPointBoundingBoxProperty().get().clone();
 	}
 
 	@Override
 	public void toBoundingBoxWithCtrlPoints(Rectangle2ifx box) {
 		assert (box != null) : "Rectangle must be not null"; //$NON-NLS-1$
-		Rectangle2ifx bb = this.logicalBounds==null ? null : this.logicalBounds.get();
-		if (bb==null) {
-			bb = new Rectangle2ifx();
-			buildLogicalBoundingBox(bb);
-			this.logicalBounds = new SoftReference<>(bb);
-		}
-		box.set(bb);
+		box.set(controlPointBoundingBoxProperty().get());
 	}
 
 	@Override
 	public int[] toIntArray(Transform2D transform) {
-		int[] clone = new int[this.numCoords];
-		if (transform == null || transform.isIdentity()) {
-			for(int i=0; i<clone.length;) {
-				clone[i] = getCoordAt(i);
-				++i;
-				clone[i] = getCoordAt(i);
-				++i;
+		int n = (this.coords != null) ? this.coords.size() : 0;
+		int[] clone = new int[n];
+		if (n > 0) {
+			if (transform == null || transform.isIdentity()) {
+				Iterator<Integer> iterator = this.coords.iterator();
+				for(int i=0; i < n; ++i) {
+					clone[i] = iterator.next().intValue();
+				}
 			}
-		} else {
-			Point2fp p = new Point2fp();
-			for(int i=0; i<clone.length;) {
-				p.set(getCoordAt(i), getCoordAt(i + 1));
-				transform.transform(p);
-				clone[i++] = p.ix();
-				clone[i++] = p.ix();
+			else {
+				Point2ifx p = new Point2ifx();
+				Iterator<Integer> iterator = this.coords.iterator();
+				for(int i=0; i < n;) {
+					p.set(iterator.next(), iterator.next());
+					transform.transform(p);
+					clone[i++] = p.ix();
+					clone[i++] = p.iy();
+				}
 			}
 		}
 		return clone;
@@ -496,21 +532,24 @@ public class Path2ifx
 
 	@Override
 	public float[] toFloatArray(Transform2D transform) {
-		float[] clone = new float[this.numCoords];
-		if (transform == null || transform.isIdentity()) {
-			for(int i=0; i<clone.length;) {
-				clone[i] = getCoordAt(i);
-				++i;
-				clone[i] = getCoordAt(i);
-				++i;
+		int n = (this.coords != null) ? this.coords.size() : 0;
+		float[] clone = new float[n];
+		if (n > 0) {
+			if (transform == null || transform.isIdentity()) {
+				Iterator<Integer> iterator = this.coords.iterator();
+				for(int i=0; i < n; ++i) {
+					clone[i] = iterator.next().floatValue();
+				}
 			}
-		} else {
-			Point2fp p = new Point2fp();
-			for(int i=0; i<clone.length;) {
-				p.set(getCoordAt(i), getCoordAt(i + 1));
-				transform.transform(p);
-				clone[i++] = (float) p.getX();
-				clone[i++] = (float) p.getY();
+			else {
+				Point2D<?, ?> p = new InnerComputationPoint2afp(0, 0);
+				Iterator<Integer> iterator = this.coords.iterator();
+				for(int i=0; i < n;) {
+					p.set(iterator.next(), iterator.next());
+					transform.transform(p);
+					clone[i++] = (float) p.getX();
+					clone[i++] = (float) p.getY();
+				}
 			}
 		}
 		return clone;
@@ -518,21 +557,24 @@ public class Path2ifx
 
 	@Override
 	public double[] toDoubleArray(Transform2D transform) {
-		double[] clone = new double[this.numCoords];
-		if (transform == null || transform.isIdentity()) {
-			for(int i=0; i<clone.length;) {
-				clone[i] = getCoordAt(i);
-				++i;
-				clone[i] = getCoordAt(i);
-				++i;
+		int n = (this.coords != null) ? this.coords.size() : 0;
+		double[] clone = new double[n];
+		if (n > 0) {
+			if (transform == null || transform.isIdentity()) {
+				Iterator<Integer> iterator = this.coords.iterator();
+				for(int i=0; i < n; ++i) {
+					clone[i] = iterator.next().doubleValue();
+				}
 			}
-		} else {
-			Point2fp p = new Point2fp();
-			for(int i=0; i<clone.length;) {
-				p.set(getCoordAt(i), getCoordAt(i + 1));
-				transform.transform(p);
-				clone[i++] = p.getX();
-				clone[i++] = p.getY();
+			else {
+				Point2D<?, ?> p = new InnerComputationPoint2afp(0, 0);
+				Iterator<Integer> iterator = this.coords.iterator();
+				for(int i=0; i < n;) {
+					p.set(iterator.next(), iterator.next());
+					transform.transform(p);
+					clone[i++] = p.getX();
+					clone[i++] = p.getY();
+				}
 			}
 		}
 		return clone;
@@ -540,237 +582,225 @@ public class Path2ifx
 
 	@Override
 	public Point2ifx[] toPointArray(Transform2D transform) {
-		Point2ifx[] points = new Point2ifx[this.numCoords / 2];
-		if (transform == null || transform.isIdentity()) {
-			for(int i = 0, j = 0; i<points.length; ++i) {
-				int x = getCoordAt(j);
-				++j;
-				int y = getCoordAt(j);
-				++j;
-				points[i] = new Point2ifx(x, y);
+		int n = (this.coords != null) ? this.coords.size() / 2 : 0;
+		Point2ifx[] clone = new Point2ifx[n];
+		if (n > 0) {
+			if (transform == null || transform.isIdentity()) {
+				Iterator<Integer> iterator = this.coords.iterator();
+				for(int i=0; i < n; ++i) {
+					clone[i] = new Point2ifx(
+							iterator.next().intValue(),
+							iterator.next().intValue());
+				}
 			}
-		} else {
-			Point2fp p = new Point2fp();
-			for(int i = 0, j = 0; i<points.length; ++i) {
-				p.set(getCoordAt(j++), getCoordAt(j++));
-				transform.transform(p);
-				points[i] = new Point2ifx(p.getX(), p.getY());
+			else {
+				Iterator<Integer> iterator = this.coords.iterator();
+				for(int i=0; i < n; ++i) {
+					Point2ifx p = new Point2ifx(iterator.next(), iterator.next());
+					transform.transform(p);
+					clone[i] = p;
+				}
 			}
 		}
-		return points;
+		return clone;
 	}
 
 	@Override
 	public Point2ifx getPointAt(int index) {
-		assert (index >= 0 && index < (this.coords.length/2)) : "Index must be in [0;" + this.coords.length/2 + ")"; //$NON-NLS-1$ //$NON-NLS-2$
+		if (this.coords == null) {
+			throw new IndexOutOfBoundsException();
+		}
+		int baseIdx = index * 2;
 		return new Point2ifx(
-				this.coords[index*2],
-				this.coords[index*2+1]);
+				this.coords.get(baseIdx),
+				this.coords.get(baseIdx + 1));
 	}
 
 	@Override
 	public Point2ifx getCurrentPoint() {
+		if (this.coords == null) {
+			throw new IndexOutOfBoundsException();
+		}
+		int baseIdx = this.coords.size() - 1;
 		return new Point2ifx(
-				this.coords[this.numCoords-2],
-				this.coords[this.numCoords-1]);
+				this.coords.get(baseIdx - 1),
+				this.coords.get(baseIdx));
 	}
 
 	@Override
 	public int size() {
-		return this.numCoords/2;
+		return (this.coords == null) ? 0 : this.coords.size() / 2;
 	}
 
 	@Override
 	public void removeLast() {
-		if (this.numTypes>0) {
-			switch(this.types[this.numTypes-1]) {
+		if (this.types != null && !this.types.isEmpty() && this.coords != null && !this.coords.isEmpty()) {
+			int lastIndex = this.types.size() - 1;
+			int coordSize = this.coords.size();
+			int coordIndex = coordSize;
+			switch(this.types.get(lastIndex)) {
 			case CLOSE:
 				// no coord to remove
-				this.isPolygon = null;
-				this.isPolyline = null;
 				break;
 			case MOVE_TO:
-				this.numCoords -= 2;
-				this.isPolyline = null;
-				this.isMultipart = null;
+				coordIndex = coordSize - 2;
 				break;
 			case LINE_TO:
-				this.numCoords -= 2;
-				this.isPolyline = null;
+				coordIndex = coordSize - 2;
 				break;
 			case CURVE_TO:
-				this.numCoords -= 6;
-				this.isPolyline = null;
-				this.isCurved = null;
+				coordIndex = coordSize - 6;
 				break;
 			case QUAD_TO:
-				this.numCoords -= 4;
-				this.isPolyline = null;
-				this.isCurved = null;
+				coordIndex = coordSize - 4;
 				break;
 			default:
 				throw new IllegalStateException();
 			}
-			--this.numTypes;
-			this.isEmpty = null;
-			this.graphicalBounds = null;
-			this.logicalBounds = null;
+			this.coords.remove(coordIndex, coordSize);
+			this.types.remove(lastIndex);
+		} else {
+			throw new IllegalStateException();
 		}
 	}
 
 	@Override
 	public void moveTo(int x, int y) {
-		if (this.numTypes != 0) {
-			this.isPolyline = Boolean.FALSE;
-			this.isPolygon = Boolean.FALSE;
+		if (this.types != null && !this.types.isEmpty()
+				&& this.types.get(this.types.size() - 1) == PathElementType.MOVE_TO) {
+			assert (this.coords != null && this.coords.size() >= 2);
+			int idx = this.coords.size() - 1;
+			this.coords.set(idx - 1, x);
+			this.coords.set(idx, y);
+		} else {
+			innerTypesProperty().add(PathElementType.MOVE_TO);
+			ReadOnlyListWrapper<Integer> coords = innerCoordinatesProperty();
+			coords.add(x);
+			coords.add(y);
 		}
-		this.isMultipart = Boolean.valueOf(this.isMultipart == Boolean.TRUE);
-		if (this.numTypes>0 && this.types[this.numTypes-1]==PathElementType.MOVE_TO) {
-			coordPropertyAt(this.numCoords-2).set(x);
-			coordPropertyAt(this.numCoords-1).set(y);
+	}
+
+	private void ensureMoveTo() {
+		if (this.types == null || this.types.isEmpty()) {
+			throw new IllegalStateException("missing initial moveto in path definition"); //$NON-NLS-1$
 		}
-		else {
-			ensureSlots(false, 2);
-			this.types[this.numTypes++] = PathElementType.MOVE_TO;
-			coordPropertyAt(this.numCoords++).set(x);
-			coordPropertyAt(this.numCoords++).set(y);
-		}
-		this.graphicalBounds = null;
-		this.logicalBounds = null;
 	}
 
 	@Override
 	public void lineTo(int x, int y) {
-		ensureSlots(true, 2);
-		this.types[this.numTypes++] = PathElementType.LINE_TO;
-		coordPropertyAt(this.numCoords++).set(x);
-		coordPropertyAt(this.numCoords++).set(y);
-		this.isEmpty = null;
-		this.graphicalBounds = null;
-		this.logicalBounds = null;
+		ensureMoveTo();
+		innerTypesProperty().add(PathElementType.LINE_TO);
+		ReadOnlyListWrapper<Integer> coords = innerCoordinatesProperty();
+		coords.add(x);
+		coords.add(y);
 	}
 
 	@Override
 	public void quadTo(int x1, int y1, int x2, int y2) {
-		ensureSlots(true, 4);
-		this.types[this.numTypes++] = PathElementType.QUAD_TO;
-		coordPropertyAt(this.numCoords++).set(x1);
-		coordPropertyAt(this.numCoords++).set(y1);
-		coordPropertyAt(this.numCoords++).set(x2);
-		coordPropertyAt(this.numCoords++).set(y2);
-		this.isEmpty = null;
-		this.isPolyline = Boolean.FALSE;
-		this.isCurved = Boolean.TRUE;
-		this.graphicalBounds = null;
-		this.logicalBounds = null;
+		ensureMoveTo();
+		innerTypesProperty().add(PathElementType.QUAD_TO);
+		ReadOnlyListWrapper<Integer> coords = innerCoordinatesProperty();
+		coords.add(x1);
+		coords.add(y1);
+		coords.add(x2);
+		coords.add(y2);
 	}
 
 	@Override
 	public void curveTo(int x1, int y1, int x2, int y2, int x3, int y3) {
-		ensureSlots(true, 6);
-		this.types[this.numTypes++] = PathElementType.CURVE_TO;
-		coordPropertyAt(this.numCoords++).set(x1);
-		coordPropertyAt(this.numCoords++).set(y1);
-		coordPropertyAt(this.numCoords++).set(x2);
-		coordPropertyAt(this.numCoords++).set(y2);
-		coordPropertyAt(this.numCoords++).set(x3);
-		coordPropertyAt(this.numCoords++).set(y3);
-		this.isEmpty = null;
-		this.isPolyline = Boolean.FALSE;
-		this.isCurved = Boolean.TRUE;
-		this.graphicalBounds = null;
-		this.logicalBounds = null;
+		ensureMoveTo();
+		innerTypesProperty().add(PathElementType.CURVE_TO);
+		ReadOnlyListWrapper<Integer> coords = innerCoordinatesProperty();
+		coords.add(x1);
+		coords.add(y1);
+		coords.add(x2);
+		coords.add(y2);
+		coords.add(x3);
+		coords.add(y3);
+	}
+
+	/** Replies the private coordinates property.
+	 *
+	 * @return the private coordinates property.
+	 */
+	protected ReadOnlyListWrapper<Integer> innerCoordinatesProperty() {
+		if (this.coords == null) {
+			this.coords = new ReadOnlyListWrapper<>(this, "coordinates", //$NON-NLS-1$
+					FXCollections.observableList(new ArrayList<>()));
+		}
+		return this.coords;
+	}
+
+	/** Replies the coordinates property.
+	 *
+	 * @return the coordinates property.
+	 */
+	public ReadOnlyListProperty<Integer> coordinatesProperty() {
+		return innerCoordinatesProperty().getReadOnlyProperty();
 	}
 
 	@Override
 	public int getCoordAt(int index) {
-		return this.coords[index] == null ? 0 : this.coords[index].get();
-	}
-	
-	/** Replies the property that is the coordinate at the given index.
-	 *
-	 * @param index the position of the coordinate.
-	 * @return the coordinate property.
-	 */
-	@Pure
-	public IntegerProperty coordPropertyAt(int index) {
-		assert (index >= 0 && index < this.coords.length) : "Index must be in [0;" + this.coords.length + ")"; //$NON-NLS-1$ //$NON-NLS-2$
-		if (this.coords[index] == null) {
-			final String label = "coord[" + index + "]"; //$NON-NLS-1$ //$NON-NLS-2$
-			this.coords[index] = new SimpleIntegerProperty(this, label);
+		if (this.coords == null) {
+			throw new IndexOutOfBoundsException();
 		}
-		return this.coords[index];
+		return this.coords.get(index);
 	}
 
 	@Override
 	public void setLastPoint(int x, int y) {
-		if (this.numCoords>=2) {
-			coordPropertyAt(this.numCoords-2).set(x);
-			coordPropertyAt(this.numCoords-1).set(y);
-			this.graphicalBounds = null;
-			this.logicalBounds = null;
+		if (this.coords != null && this.coords.size() >= 2) {
+			int idx = this.coords.size() - 1;
+			this.coords.set(idx - 1, x);
+			this.coords.set(idx, y);
+		} else {
+			throw new IllegalStateException();
 		}
-	}
-	
-	@Override
-	public void setWindingRule(PathWindingRule r) {
-		assert (r != null) : "Path winding rule must be not null"; //$NON-NLS-1$
-		this.windingRule = r;
 	}
 
 	@Override
 	public boolean remove(int x, int y) {
-		for(int i=0, j=0; i<this.numCoords && j<this.numTypes;) {
-			switch(this.types[j]) {
-			case MOVE_TO:
-				this.isMultipart = null;
-				//$FALL-THROUGH$
-			case LINE_TO:
-				if (x==getCoordAt(i) && y==getCoordAt(i+1)) {
-					this.numCoords -= 2;
-					--this.numTypes;
-					System.arraycopy(this.coords, i+2, this.coords, i, this.numCoords);
-					System.arraycopy(this.types, j+1, this.types, j, this.numTypes);
-					this.isEmpty = null;
-					return true;
+		if (this.types != null && !this.types.isEmpty() && this.coords != null && !this.coords.isEmpty()) {
+			for(int i=0, j=0; i<this.coords.size() && j<this.types.size();) {
+				switch(this.types.get(j)) {
+				case MOVE_TO:
+					//$FALL-THROUGH$
+				case LINE_TO:
+					if (x==this.coords.get(i) && y==this.coords.get(i + 1)) {
+						this.coords.remove(i, i + 2);
+						this.types.remove(j);
+						return true;
+					}
+					i += 2;
+					++j;
+					break;
+				case CURVE_TO:
+					if ((x==this.coords.get(i) && y==this.coords.get(i+1))
+							||(x==this.coords.get(i+2) && y==this.coords.get(i+3))
+							||(x==this.coords.get(i+4) && y==this.coords.get(i+5))) {
+						this.coords.remove(i, i + 6);
+						this.types.remove(j);
+						return true;
+					}
+					i += 6;
+					++j;
+					break;
+				case QUAD_TO:
+					if ((x==this.coords.get(i) && y==this.coords.get(i+1))
+							||(x==this.coords.get(i+2) && y==this.coords.get(i+3))) {
+						this.coords.remove(i, i + 4);
+						this.types.remove(j);
+						return true;
+					}
+					i += 4;
+					++j;
+					break;
+				case CLOSE:
+					++j;
+					break;
+				default:
+					break;
 				}
-				i += 2;
-				++j;
-				break;
-			case CURVE_TO:
-				if ((x==getCoordAt(i) && y==getCoordAt(i+1))
-						||(x==getCoordAt(i+2) && y==getCoordAt(i+3))
-						||(x==getCoordAt(i+4) && y==getCoordAt(i+5))) {
-					this.numCoords -= 6;
-					--this.numTypes;
-					System.arraycopy(this.coords, i+6, this.coords, i, this.numCoords);
-					System.arraycopy(this.types, j+1, this.types, j, this.numTypes);
-					this.isEmpty = null;
-					this.isPolyline = null;
-					return true;
-				}
-				i += 6;
-				++j;
-				break;
-			case QUAD_TO:
-				if ((x==getCoordAt(i) && y==getCoordAt(i+1))
-						||(x==getCoordAt(i+2) && y==getCoordAt(i+3))) {
-					this.numCoords -= 4;
-					--this.numTypes;
-					System.arraycopy(this.coords, i+4, this.coords, i, this.numCoords);
-					System.arraycopy(this.types, j+1, this.types, j, this.numTypes);
-					this.isEmpty = null;
-					this.isPolyline = null;
-					return true;
-				}
-				i += 4;
-				++j;
-				break;
-			case CLOSE:
-				++j;
-				break;
-			default:
-				break;
 			}
 		}
 		return false;
@@ -783,15 +813,37 @@ public class Path2ifx
 		add(s.getPathIterator());
 	}
 
+	/** Replies the private types property.
+	 *
+	 * @return the private types property.
+	 */
+	protected ReadOnlyListWrapper<PathElementType> innerTypesProperty() {
+		if (this.types == null) {
+			this.types = new ReadOnlyListWrapper<>(this, "types", //$NON-NLS-1$
+					FXCollections.observableList(new ArrayList<>()));
+		}
+		return this.types;
+	}
+
+	/** Replies the types property.
+	 *
+	 * @return the types property.
+	 */
+	public ReadOnlyListProperty<PathElementType> typesProperty() {
+		return innerTypesProperty().getReadOnlyProperty();
+	}
+	
 	@Override
 	public int getPathElementCount() {
-		return this.numTypes;
+		return this.types == null ? 0 : innerTypesProperty().size();
 	}
 
 	@Override
 	public PathElementType getPathElementTypeAt(int index) {
-		assert (index >= 0 && index < this.types.length) : "Index must be in [0;" + this.types.length + ")"; //$NON-NLS-1$ //$NON-NLS-2$
-		return this.types[index];
+		if (this.types == null) {
+			throw new IndexOutOfBoundsException();
+		}
+		return this.types.get(index);
 	}
 
 }

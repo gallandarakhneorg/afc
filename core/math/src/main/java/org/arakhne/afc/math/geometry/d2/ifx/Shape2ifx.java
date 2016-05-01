@@ -22,6 +22,8 @@ package org.arakhne.afc.math.geometry.d2.ifx;
 
 import org.arakhne.afc.math.geometry.d2.ai.Shape2ai;
 
+import javafx.beans.property.ObjectProperty;
+
 /** 2D shape with 2 double precision floating-point FX properties.
  * 
  * @param <IT> is the type of the implementation of this shape.
@@ -33,5 +35,11 @@ import org.arakhne.afc.math.geometry.d2.ai.Shape2ai;
  */
 public interface Shape2ifx<IT extends Shape2ifx<?>>
 		extends Shape2ai<Shape2ifx<?>, IT, PathElement2ifx, Point2ifx, Vector2ifx, Rectangle2ifx> {
-	// Provided for making easier the type tests.
+	
+	/** Replies the property that contains the bounding box for this shape.
+	 *
+	 * @return the bounding box.
+	 */
+	ObjectProperty<Rectangle2ifx> boundingBoxProperty();
+	
 }

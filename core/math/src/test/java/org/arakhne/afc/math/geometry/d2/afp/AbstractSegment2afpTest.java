@@ -2623,4 +2623,16 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
 		assertEpsilonEquals(1.414213562, this.shape.operator_upTo(createPoint(2, 2)));
 	}
 
+	@Test
+	public void issue15() {
+		Segment2afp segment = createSegment(-20, -20, 20, 20);
+		Path2afp path = createPath();
+		path.moveTo(5, 5);
+		path.lineTo(5, -5);
+		path.lineTo(-5, -5);
+		path.lineTo(-5, 5);
+		path.lineTo(5, 5);
+		assertTrue(path.intersects(segment));
+	}
+
 }

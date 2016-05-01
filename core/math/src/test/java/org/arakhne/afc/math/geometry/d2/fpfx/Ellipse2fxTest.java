@@ -28,6 +28,7 @@ import org.arakhne.afc.math.geometry.d2.afp.TestShapeFactory;
 import org.junit.Test;
 
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 
 @SuppressWarnings("all")
@@ -128,6 +129,18 @@ public class Ellipse2fxTest extends AbstractEllipse2afpTest<Ellipse2fx, Rectangl
 
 		this.shape.setMaxY(0);
 		assertEpsilonEquals(5, property.get());
+	}
+
+	@Test
+	public void boundingBoxProperty() {
+		ObjectProperty<Rectangle2fx> property = this.shape.boundingBoxProperty();
+		assertNotNull(property);
+		Rectangle2fx box = property.get();
+		assertNotNull(box);
+		assertEpsilonEquals(5, box.getMinX());
+		assertEpsilonEquals(8, box.getMinY());
+		assertEpsilonEquals(10, box.getMaxX());
+		assertEpsilonEquals(18, box.getMaxY());
 	}
 
 }

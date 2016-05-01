@@ -1,8 +1,7 @@
 /* 
  * $Id$
  * 
- * Copyright (C) 2011 Janus Core Developers
- * Copyright (C) 2012-13 Stephane GALLAND.
+ * Copyright (C) 2010-2013 Stephane GALLAND.
  * 
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,20 +18,24 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  * This program is free software; you can redistribute it and/or modify
  */
-package org.arakhne.afc.math.geometry.d2.fp;
+package org.arakhne.afc.math.geometry.d2.i;
 
-import org.arakhne.afc.math.geometry.PathElementType;
-import org.arakhne.afc.math.geometry.d2.afp.AbstractMultiShape2afpTest;
-import org.arakhne.afc.math.geometry.d2.afp.MultiShape2afp;
-import org.arakhne.afc.math.geometry.d2.afp.PathIterator2afp;
-import org.arakhne.afc.math.geometry.d2.afp.TestShapeFactory;
+import java.util.EventListener;
 
-@SuppressWarnings("all")
-public class MultiShape2fpTest extends AbstractMultiShape2afpTest<MultiShape2fp<Shape2fp<?>>, Shape2fp<?>, Rectangle2fp> {
+/** A shape has change its geometry.
+ * 
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 13.0
+ */
+public interface ShapeGeometryChangeListener extends EventListener {
 
-	@Override
-	protected TestShapeFactory2fp createFactory() {
-		return TestShapeFactory2fp.SINGLETON;
-	}
-
+	/** Invoked when the given shape has change of geometry.
+	 *
+	 * @param shape the shape.
+	 */
+	void shapeGeometryChange(Shape2i<?> shape);
+	
 }

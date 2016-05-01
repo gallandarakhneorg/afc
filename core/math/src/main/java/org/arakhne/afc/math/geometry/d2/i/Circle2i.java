@@ -115,12 +115,18 @@ implements Circle2ai<Shape2i<?>, Circle2i, PathElement2i, Point2i, Vector2i, Rec
 
 	@Override
 	public void setX(int x) {
-		this.centerX = x;
+		if (this.centerX != x) {
+			this.centerX = x;
+			fireGeometryChange();
+		}
 	}
 
 	@Override
 	public void setY(int y) {
-		this.centerY = y;
+		if (this.centerY != y) {
+			this.centerY = y;
+			fireGeometryChange();
+		}
 	}
 
 	@Pure
@@ -132,15 +138,21 @@ implements Circle2ai<Shape2i<?>, Circle2i, PathElement2i, Point2i, Vector2i, Rec
 	@Override
 	public void setRadius(int radius) {
 		assert (radius >= 0) : "Radius must be positive or equal"; //$NON-NLS-1$
-		this.radius = radius;
+		if (this.radius != radius) {
+			this.radius = radius;
+			fireGeometryChange();
+		}
 	}
 
 	@Override
 	public void set(int x, int y, int radius) {
 		assert (radius >= 0) : "Radius must be positive or equal"; //$NON-NLS-1$
-		this.centerX = x;
-		this.centerY = y;
-		this.radius = radius;
+		if (this.centerX != x || this.centerY != y || this.radius != radius) {
+			this.centerX = x;
+			this.centerY = y;
+			this.radius = radius;
+			fireGeometryChange();
+		}
 	}
 
 }

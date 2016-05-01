@@ -28,6 +28,7 @@ import org.arakhne.afc.math.geometry.d2.afp.TestShapeFactory;
 import org.junit.Test;
 
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.ObjectProperty;
 
 @SuppressWarnings("all")
 public class Segment2fxTest extends AbstractSegment2afpTest<Segment2fx, Rectangle2fx> {
@@ -91,6 +92,18 @@ public class Segment2fxTest extends AbstractSegment2afpTest<Segment2fx, Rectangl
 		assertEpsilonEquals(456.159, property.get());
 		
 		assertEpsilonEquals(456.159, this.shape.getY2());
+	}
+
+	@Test
+	public void boundingBoxProperty() {
+		ObjectProperty<Rectangle2fx> property = this.shape.boundingBoxProperty();
+		assertNotNull(property);
+		Rectangle2fx box = property.get();
+		assertNotNull(box);
+		assertEpsilonEquals(0, box.getMinX());
+		assertEpsilonEquals(0, box.getMinY());
+		assertEpsilonEquals(1, box.getMaxX());
+		assertEpsilonEquals(1, box.getMaxY());
 	}
 
 }

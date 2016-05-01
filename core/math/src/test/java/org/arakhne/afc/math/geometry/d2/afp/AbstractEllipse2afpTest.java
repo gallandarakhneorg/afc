@@ -1772,5 +1772,5 @@ public abstract class AbstractEllipse2afpTest<T extends Ellipse2afp<?, T, ?, ?, 
 		assertEpsilonEquals(8, this.shape.operator_upTo(createPoint(7.5, 0)));
 		assertEpsilonEquals(0, this.shape.operator_upTo(createPoint(6, 11)));
 	}
-
+	
 }

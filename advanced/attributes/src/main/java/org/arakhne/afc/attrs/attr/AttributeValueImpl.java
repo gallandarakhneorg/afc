@@ -1497,7 +1497,8 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 //		catch(NumberFormatException exception) {
 //			//
 //		}			
-		throw new InvalidAttributeTypeException();
+//		throw new InvalidAttributeTypeException();
+		return null;
 	}
 
 	/** {@inheritDoc}

@@ -27,8 +27,10 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyIntegerWrapper;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleObjectProperty;
 
 /** A rectangle with 2 integer FX properties.
  *
@@ -327,6 +329,19 @@ public class Rectangle2ifx extends AbstractShape2ifx<Rectangle2ifx>
 			this.height.bind(Bindings.subtract(maxYProperty(), minYProperty()));
 		}
 		return this.height;
+	}
+	
+	@Override
+	public ObjectProperty<Rectangle2ifx> boundingBoxProperty() {
+		if (this.boundingBox == null) {
+			this.boundingBox = new SimpleObjectProperty<>(this, "boundingBox"); //$NON-NLS-1$
+			this.boundingBox.bind(Bindings.createObjectBinding(
+					() -> {
+						return toBoundingBox();
+					},
+					minXProperty(), minYProperty(), widthProperty(), heightProperty()));
+		}
+		return this.boundingBox;
 	}
 
 }

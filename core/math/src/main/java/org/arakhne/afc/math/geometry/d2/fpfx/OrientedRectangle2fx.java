@@ -30,7 +30,9 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleObjectProperty;
 
 /** Orineted rectangle with 2 double precision floating-point FX properties.
  *
@@ -419,6 +421,21 @@ public class OrientedRectangle2fx extends AbstractShape2fx<OrientedRectangle2fx>
 		firstAxisExtentProperty().set(axis1Extent);
 		// Do not need to the second axis coordinates since it will be automatically done by the properties of the first axis.
 		secondAxisExtentProperty().set(axis2Extent);
+	}
+
+	@Override
+	public ObjectProperty<Rectangle2fx> boundingBoxProperty() {
+		if (this.boundingBox == null) {
+			this.boundingBox = new SimpleObjectProperty<>(this, "boundingBox"); //$NON-NLS-1$
+			this.boundingBox.bind(Bindings.createObjectBinding(
+					() -> {
+						return toBoundingBox();
+					},
+					centerXProperty(), centerYProperty(),
+					firstAxisProperty(), firstAxisExtentProperty(),
+					secondAxisExtentProperty()));
+		}
+		return this.boundingBox;
 	}
 
 }

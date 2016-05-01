@@ -150,7 +150,7 @@ public class GeomFactory2i implements GeomFactory2ai<PathElement2i, Point2i, Vec
 
 	@Override
 	public MultiShape2ai<?, ?, ?, PathElement2i, Point2i, Vector2i, Rectangle2i> newMultiShape() {
-		return new MultiShape2i();
+		return new MultiShape2i<>();
 	}
 
 }

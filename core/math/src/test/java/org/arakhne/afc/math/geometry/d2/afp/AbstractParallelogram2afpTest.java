@@ -53,14 +53,14 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
 	protected final double e2 = 1.264911064067352e+01;
 
 	// Points' names are in the ggb diagram
-	private double pEx = 12.7082;
-	private double pEy = -8.88854;
-	private double pFx = 17.18034;
-	private double pFy = 9;
-	private double pGx = -0.7082;
-	private double pGy = 26.88854;
-	private double pHx = -5.18034;
-	private double pHy = 9;
+	protected final double pEx = 12.7082;
+	protected final double pEy = -8.88854;
+	protected final double pFx = 17.18034;
+	protected final double pFy = 9;
+	protected final double pGx = -0.7082;
+	protected final double pGy = 26.88854;
+	protected final double pHx = -5.18034;
+	protected final double pHy = 9;
 
 	@Override
 	protected final T createShape() {

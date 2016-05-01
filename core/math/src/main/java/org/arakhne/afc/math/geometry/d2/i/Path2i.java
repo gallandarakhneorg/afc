@@ -207,6 +207,7 @@ implements Path2ai<Shape2i<?>, Path2i, PathElement2i, Point2i, Vector2i, Rectang
 		this.isCurved = Boolean.FALSE;
 		this.graphicalBounds = null;
 		this.logicalBounds = null;
+		fireGeometryChange();
 	}
 
 	@Pure
@@ -258,6 +259,7 @@ implements Path2ai<Shape2i<?>, Path2i, PathElement2i, Point2i, Vector2i, Rectang
 		if (bb!=null) bb.translate(dx, dy);
 		bb = this.graphicalBounds==null ? null : this.graphicalBounds.get();
 		if (bb!=null) bb.translate(dx, dy);
+		fireGeometryChange();
 	}
 
 	@Override
@@ -272,9 +274,11 @@ implements Path2ai<Shape2i<?>, Path2i, PathElement2i, Point2i, Vector2i, Rectang
 		}
 		this.graphicalBounds = null;
 		this.logicalBounds = null;
+		fireGeometryChange();
 	}
 
 	@Override
+	@Pure
 	public boolean isEmpty() {
 		if (this.isEmpty==null) {
 			this.isEmpty = Boolean.TRUE;
@@ -291,6 +295,7 @@ implements Path2ai<Shape2i<?>, Path2i, PathElement2i, Point2i, Vector2i, Rectang
 	}
 
 	@Override
+	@Pure
 	public Rectangle2i toBoundingBox() {
 		Rectangle2i bb = this.graphicalBounds==null ? null : this.graphicalBounds.get();
 		if (bb==null) {
@@ -305,6 +310,7 @@ implements Path2ai<Shape2i<?>, Path2i, PathElement2i, Point2i, Vector2i, Rectang
 	}
 
 	@Override
+	@Pure
 	public void toBoundingBox(Rectangle2i box) {
 		assert (box != null) : "Rectangle must be not null"; //$NON-NLS-1$
 		Rectangle2i bb = this.graphicalBounds==null ? null : this.graphicalBounds.get();
@@ -319,22 +325,23 @@ implements Path2ai<Shape2i<?>, Path2i, PathElement2i, Point2i, Vector2i, Rectang
 	}
 
 	@Override
+	@Pure
 	public PathWindingRule getWindingRule() {
 		return this.windingRule;
 	}
 
 	@Override
+	@Pure
 	public boolean isPolyline() {
 		if (this.isPolyline == null) {
 			PathIterator2ai<PathElement2i> pi = getPathIterator();
 			PathElement2i pe;
 			PathElementType t;
 			boolean first = true;
-			boolean lastIsClose = false;
+			boolean hasOneLine = false;
 			while (this.isPolyline == null && pi.hasNext()) {
 				pe = pi.next();
 				t = pe.getType();
-				lastIsClose = false;
 				if (first) {
 					if (t != PathElementType.MOVE_TO) {
 						this.isPolyline = Boolean.FALSE;
@@ -343,18 +350,19 @@ implements Path2ai<Shape2i<?>, Path2i, PathElement2i, Point2i, Vector2i, Rectang
 					}
 				} else if (t != PathElementType.LINE_TO) {
 					this.isPolyline = Boolean.FALSE;
-				} else if (t == PathElementType.CLOSE) {
-					lastIsClose = true;
+				} else {
+					hasOneLine = true;
 				}
 			}
 			if (this.isPolyline == null) {
-				this.isPolyline = Boolean.valueOf(!lastIsClose);
+				this.isPolyline = hasOneLine;
 			}
 		}
 		return this.isPolyline.booleanValue();
 	}
 
 	@Override
+	@Pure
 	public boolean isCurved() {
 		if (this.isCurved == null) {
 			this.isCurved = Boolean.FALSE;
@@ -373,6 +381,7 @@ implements Path2ai<Shape2i<?>, Path2i, PathElement2i, Point2i, Vector2i, Rectang
 	}
 
 	@Override
+	@Pure
 	public boolean isMultiParts() {
 		if (this.isMultipart == null) {
 			this.isMultipart = Boolean.FALSE;
@@ -396,6 +405,7 @@ implements Path2ai<Shape2i<?>, Path2i, PathElement2i, Point2i, Vector2i, Rectang
 	}
 
 	@Override
+	@Pure
 	public boolean isPolygon() {
 		if (this.isPolygon == null) {
 			PathIterator2ai<PathElement2i> pi = getPathIterator();
@@ -435,10 +445,12 @@ implements Path2ai<Shape2i<?>, Path2i, PathElement2i, Point2i, Vector2i, Rectang
 			this.types[this.numTypes++] = PathElementType.CLOSE;
 			this.isPolyline = false;
 			this.isPolygon = null;
+			fireGeometryChange();
 		}
 	}
 
 	@Override
+	@Pure
 	public Rectangle2i toBoundingBoxWithCtrlPoints() {
 		Rectangle2i bb = this.logicalBounds==null ? null : this.logicalBounds.get();
 		if (bb==null) {
@@ -450,6 +462,7 @@ implements Path2ai<Shape2i<?>, Path2i, PathElement2i, Point2i, Vector2i, Rectang
 	}
 
 	@Override
+	@Pure
 	public void toBoundingBoxWithCtrlPoints(Rectangle2i box) {
 		assert (box != null) : "Rectangle must be not null"; //$NON-NLS-1$
 		Rectangle2i bb = this.logicalBounds==null ? null : this.logicalBounds.get();
@@ -462,6 +475,7 @@ implements Path2ai<Shape2i<?>, Path2i, PathElement2i, Point2i, Vector2i, Rectang
 	}
 
 	@Override
+	@Pure
 	public int[] toIntArray(Transform2D transform) {
 		if (transform == null || transform.isIdentity()) {
 			return Arrays.copyOf(this.coords, this.numCoords);
@@ -479,6 +493,7 @@ implements Path2ai<Shape2i<?>, Path2i, PathElement2i, Point2i, Vector2i, Rectang
 	}
 
 	@Override
+	@Pure
 	public float[] toFloatArray(Transform2D transform) {
 		float[] clone = new float[this.numCoords];
 		if (transform == null || transform.isIdentity()) {
@@ -500,6 +515,7 @@ implements Path2ai<Shape2i<?>, Path2i, PathElement2i, Point2i, Vector2i, Rectang
 	}
 
 	@Override
+	@Pure
 	public double[] toDoubleArray(Transform2D transform) {
 		double[] clone = new double[this.numCoords];
 		if (transform == null || transform.isIdentity()) {
@@ -521,6 +537,7 @@ implements Path2ai<Shape2i<?>, Path2i, PathElement2i, Point2i, Vector2i, Rectang
 	}
 
 	@Override
+	@Pure
 	public Point2i[] toPointArray(Transform2D transform) {
 		Point2i[] clone = new Point2i[this.numCoords/2];
 		if (transform == null || transform.isIdentity()) {
@@ -542,6 +559,7 @@ implements Path2ai<Shape2i<?>, Path2i, PathElement2i, Point2i, Vector2i, Rectang
 	}
 
 	@Override
+	@Pure
 	public Point2i getPointAt(int index) {
 		return new Point2i(
 				this.coords[index*2],
@@ -549,6 +567,7 @@ implements Path2ai<Shape2i<?>, Path2i, PathElement2i, Point2i, Vector2i, Rectang
 	}
 
 	@Override
+	@Pure
 	public Point2i getCurrentPoint() {
 		return new Point2i(
 				this.coords[this.numCoords-2],
@@ -556,6 +575,7 @@ implements Path2ai<Shape2i<?>, Path2i, PathElement2i, Point2i, Vector2i, Rectang
 	}
 
 	@Override
+	@Pure
 	public int size() {
 		return this.numCoords/2;
 	}
@@ -595,6 +615,9 @@ implements Path2ai<Shape2i<?>, Path2i, PathElement2i, Point2i, Vector2i, Rectang
 			this.isEmpty = null;
 			this.graphicalBounds = null;
 			this.logicalBounds = null;
+			fireGeometryChange();
+		} else {
+			throw new IllegalStateException();
 		}
 	}
 
@@ -604,7 +627,9 @@ implements Path2ai<Shape2i<?>, Path2i, PathElement2i, Point2i, Vector2i, Rectang
 			this.isPolyline = Boolean.FALSE;
 			this.isPolygon = Boolean.FALSE;
 		}
-		this.isMultipart = Boolean.valueOf(this.isMultipart == Boolean.TRUE);
+		if (this.isMultipart != null && this.isMultipart != Boolean.TRUE) {
+			this.isMultipart = null;
+		}
 		if (this.numTypes>0 && this.types[this.numTypes-1]==PathElementType.MOVE_TO) {
 			this.coords[this.numCoords-2] = x;
 			this.coords[this.numCoords-1] = y;
@@ -617,6 +642,7 @@ implements Path2ai<Shape2i<?>, Path2i, PathElement2i, Point2i, Vector2i, Rectang
 		}
 		this.graphicalBounds = null;
 		this.logicalBounds = null;
+		fireGeometryChange();
 	}
 
 	@Override
@@ -626,8 +652,12 @@ implements Path2ai<Shape2i<?>, Path2i, PathElement2i, Point2i, Vector2i, Rectang
 		this.coords[this.numCoords++] = x;
 		this.coords[this.numCoords++] = y;
 		this.isEmpty = null;
+		if (this.isPolyline != null && this.isPolyline == Boolean.FALSE) {
+			this.isPolyline = null;
+		}
 		this.graphicalBounds = null;
 		this.logicalBounds = null;
+		fireGeometryChange();
 	}
 
 	@Override
@@ -643,6 +673,7 @@ implements Path2ai<Shape2i<?>, Path2i, PathElement2i, Point2i, Vector2i, Rectang
 		this.isCurved = Boolean.TRUE;
 		this.graphicalBounds = null;
 		this.logicalBounds = null;
+		fireGeometryChange();
 	}
 
 	@Override
@@ -660,9 +691,11 @@ implements Path2ai<Shape2i<?>, Path2i, PathElement2i, Point2i, Vector2i, Rectang
 		this.isCurved = Boolean.TRUE;
 		this.graphicalBounds = null;
 		this.logicalBounds = null;
+		fireGeometryChange();
 	}
 
 	@Override
+	@Pure
 	public int getCoordAt(int index) {
 		return this.coords[index];
 	}
@@ -674,6 +707,9 @@ implements Path2ai<Shape2i<?>, Path2i, PathElement2i, Point2i, Vector2i, Rectang
 			this.coords[this.numCoords-1] = y;
 			this.graphicalBounds = null;
 			this.logicalBounds = null;
+			fireGeometryChange();
+		} else {
+			throw new IllegalStateException();
 		}
 	}
 
@@ -697,6 +733,7 @@ implements Path2ai<Shape2i<?>, Path2i, PathElement2i, Point2i, Vector2i, Rectang
 					System.arraycopy(this.coords, i+2, this.coords, i, this.numCoords);
 					System.arraycopy(this.types, j+1, this.types, j, this.numTypes);
 					this.isEmpty = null;
+					fireGeometryChange();
 					return true;
 				}
 				i += 2;
@@ -712,6 +749,7 @@ implements Path2ai<Shape2i<?>, Path2i, PathElement2i, Point2i, Vector2i, Rectang
 					System.arraycopy(this.types, j+1, this.types, j, this.numTypes);
 					this.isEmpty = null;
 					this.isPolyline = null;
+					fireGeometryChange();
 					return true;
 				}
 				i += 6;
@@ -726,6 +764,7 @@ implements Path2ai<Shape2i<?>, Path2i, PathElement2i, Point2i, Vector2i, Rectang
 					System.arraycopy(this.types, j+1, this.types, j, this.numTypes);
 					this.isEmpty = null;
 					this.isPolyline = null;
+					fireGeometryChange();
 					return true;
 				}
 				i += 4;
@@ -749,11 +788,13 @@ implements Path2ai<Shape2i<?>, Path2i, PathElement2i, Point2i, Vector2i, Rectang
 	}
 
 	@Override
+	@Pure
 	public int getPathElementCount() {
 		return this.numTypes;
 	}
 
 	@Override
+	@Pure
 	public PathElementType getPathElementTypeAt(int index) {
 		return this.types[index];
 	}

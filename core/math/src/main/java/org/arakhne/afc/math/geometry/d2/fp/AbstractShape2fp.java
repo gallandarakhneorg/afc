@@ -20,7 +20,10 @@
  */
 package org.arakhne.afc.math.geometry.d2.fp;
 
+import java.util.List;
+
 import org.arakhne.afc.math.geometry.d2.PathIterator2D;
+import org.arakhne.afc.references.WeakArrayList;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Abstract shape with 2 double precision floating-point numbers.
@@ -35,6 +38,47 @@ import org.eclipse.xtext.xbase.lib.Pure;
 public abstract class AbstractShape2fp<T extends AbstractShape2fp<?>> implements Shape2fp<T> {
 
 	private static final long serialVersionUID = 8998400951370579721L;
+
+	private List<ShapeGeometryChangeListener> geometryListeners;
+
+	/** Add listener on geometry changes.
+	 *
+	 * @param listener the listener.
+	 */
+	protected synchronized void addShapeGeometryChangeListener(ShapeGeometryChangeListener listener) {
+		assert (listener != null) : "Listener must be not null"; //$NON-NLS-1$
+		if (this.geometryListeners == null) {
+			this.geometryListeners = new WeakArrayList<>();
+		}
+		this.geometryListeners.add(listener);
+	}
+	
+	/** Remove listener on geometry changes.
+	 *
+	 * @param listener the listener.
+	 */
+	protected synchronized void removeShapeGeometryChangeListener(ShapeGeometryChangeListener listener) {
+		assert (listener != null) : "Listener must be not null"; //$NON-NLS-1$
+		if (this.geometryListeners != null) {
+			this.geometryListeners.remove(listener);
+			if (this.geometryListeners.isEmpty()) {
+				this.geometryListeners = null;
+			}
+		}
+	}
+	
+	/** Notify any listener of a geometry change.
+	 */
+	protected synchronized void fireGeometryChange() {
+		if (this.geometryListeners == null) {
+			return;
+		}
+		ShapeGeometryChangeListener[] array = new ShapeGeometryChangeListener[this.geometryListeners.size()];
+		this.geometryListeners.toArray(array);
+		for (ShapeGeometryChangeListener listener : array) {
+			listener.shapeGeometryChange(this);
+		}
+	}
 
 	@SuppressWarnings("unchecked")
 	@Override

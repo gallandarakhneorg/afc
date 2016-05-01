@@ -27,8 +27,10 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyDoubleWrapper;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleObjectProperty;
 
 /** Rectangle with 2 double precision floating-point FX properties.
  *
@@ -332,6 +334,19 @@ public class Rectangle2fx extends AbstractShape2fx<Rectangle2fx>
 			this.height.bind(Bindings.subtract(maxYProperty(), minYProperty()));
 		}
 		return this.height;
+	}
+
+	@Override
+	public ObjectProperty<Rectangle2fx> boundingBoxProperty() {
+		if (this.boundingBox == null) {
+			this.boundingBox = new SimpleObjectProperty<>(this, "boundingBox"); //$NON-NLS-1$
+			this.boundingBox.bind(Bindings.createObjectBinding(
+					() -> {
+						return toBoundingBox();
+					},
+					minXProperty(), minYProperty(), widthProperty(), heightProperty()));
+		}
+		return this.boundingBox;
 	}
 
 }

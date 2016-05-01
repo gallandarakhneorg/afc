@@ -21,18 +21,43 @@
  */
 package org.arakhne.afc.math.geometry.d2.fpfx;
 
-import org.arakhne.afc.math.geometry.PathElementType;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
+
 import org.arakhne.afc.math.geometry.d2.afp.AbstractMultiShape2afpTest;
-import org.arakhne.afc.math.geometry.d2.afp.MultiShape2afp;
-import org.arakhne.afc.math.geometry.d2.afp.PathIterator2afp;
-import org.arakhne.afc.math.geometry.d2.afp.TestShapeFactory;
+import org.junit.Test;
+
+import javafx.beans.property.ListProperty;
+import javafx.beans.property.ObjectProperty;
 
 @SuppressWarnings("all")
-public class MultiShape2fxTest extends AbstractMultiShape2afpTest<MultiShape2fx, Shape2fx<?>, Rectangle2fx> {
+public class MultiShape2fxTest extends AbstractMultiShape2afpTest<MultiShape2fx<Shape2fx<?>>, Shape2fx<?>, Rectangle2fx> {
 
 	@Override
 	protected TestShapeFactory2fx createFactory() {
 		return TestShapeFactory2fx.SINGLETON;
+	}
+
+	@Test
+	public void boundingBoxProperty() {
+		ObjectProperty<Rectangle2fx> property = this.shape.boundingBoxProperty();
+		assertNotNull(property);
+		Rectangle2fx box = property.get();
+		assertNotNull(box);
+		assertEpsilonEquals(-7, box.getMinX());
+		assertEpsilonEquals(8, box.getMinY());
+		assertEpsilonEquals(7, box.getMaxX());
+		assertEpsilonEquals(20, box.getMaxY());
+	}
+	
+	@Test
+	public void elementsProperty() {
+		ListProperty<Shape2fx<?>> property = this.shape.elementsProperty();
+		assertNotNull(property);
+		assertEquals(2, property.size());
+		assertSame(firstObject, property.get(0));
+		assertSame(secondObject, property.get(1));
 	}
 
 }

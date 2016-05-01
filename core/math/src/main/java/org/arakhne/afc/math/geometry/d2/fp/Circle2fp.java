@@ -116,12 +116,18 @@ public class Circle2fp
 
 	@Override
 	public void setX(double x) {
-		this.centerX = x;
+		if (this.centerX != x) {
+			this.centerX = x;
+			fireGeometryChange();
+		}
 	}
 
 	@Override
 	public void setY(double y) {
-		this.centerY = y;
+		if (this.centerY != y) {
+			this.centerY = y;
+			fireGeometryChange();
+		}
 	}
 
 	@Pure
@@ -132,15 +138,21 @@ public class Circle2fp
 
 	@Override
 	public void setRadius(double radius) {
-		this.radius = radius;
+		if (this.radius != radius) {
+			this.radius = radius;
+			fireGeometryChange();
+		}
 	}
 
 	@Override
 	public void set(double x, double y, double radius) {
 		assert (radius >= 0.) : "Radius must be positive or zero"; //$NON-NLS-1$
-		this.centerX = x;
-		this.centerY = y;
-		this.radius = radius;
+		if (this.centerX != x || this.centerY != y || this.radius != radius) {
+			this.centerX = x;
+			this.centerY = y;
+			this.radius = radius;
+			fireGeometryChange();
+		}
 	}
 
 }
