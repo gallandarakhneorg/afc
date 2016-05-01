@@ -1,14 +1,12 @@
-h1. Arakhnê Foundation Classes
+# Arakhnê Foundation Classes
 
-The Arakhnê Foundation Classes (AFC) is a collection of Java libraries that may be used to build applications.
+The Arakhnê Foundation Classes (AFC) is a collection of Java libraries that may be used to build applications. The Arakhnê Foundatation Classes provides tools that are not directly available in the standard Java API. The AFC libraries are distributed under the terms of the Apache License.
 
-The Arakhnê Foundatation Classes provides tools that are not directly available in the standard Java API.
+# Content of the AFC
 
-The AFC libraries are distributed under the terms of the Apache License.
+AFC contains (modules that are not deprecated):
 
-h1. Content of the AFC
 
-AFC contains:
 Name | Group Id | Artifact Id | Explanation
 -----|----------|-------------|------------
 VM Utilities | org.arakhne.afc.core | vmutils | Utilities related to the virtual machine, file systems, etc.
@@ -19,22 +17,24 @@ General Utilities | org.arakhne.afc.core | util | General utility classes that d
 Math Tools | org.arakhne.afc.core | math | Mathematic and Geometry tools and primitives
 Generic Attribute API | org.arakhne.afc.advanced | attributes | Library for creating generic attributes, aka. Variant attributes.
 
-h1. Requirements
+
+# Requirements
 
 * Java Development Toolkit (JDK) 1.8 or higher.
 
-h1. Using AFC in a Maven project
+# Using AFC in a Maven project
 
-h2. Recommendations
+## Recommendations
 
 For making your experience with AFC the best, we recommend you:
-# to enable the assertions at development time (with the `-ea` command line option).
+* **to enable the assertions at development time (with the `-ea` command line option).**
 
-h2. Use the stable version
+## Use the stable version
 
 The lastest stable version of AFC is available on "Maven Central.":http://search.maven.org/
 Consequently, you could directly include the AFC module that you want to use into the Maven dependencies of your project.
 For example, if you want to use the "vmutils" module:
+
 ```xml
 	<dependency>
 	  <groupId>org.arakhne.core</groupId>
@@ -43,7 +43,7 @@ For example, if you want to use the "vmutils" module:
 	</dependency>
 ```
 
-h2. Use of the development version
+## Use of the development version
 
 New features, enhancements and bug fixes are available in the SNAPSHOT (development) version of AFC.
 For using this version, you must add the Maven Repository Server of AFC in your pom file:
@@ -68,7 +68,7 @@ For using this version, you must add the Maven Repository Server of AFC in your 
 	</pluginRepositories>
 ```
 
-h1. Issues
+# Issues
 
 Issues related to the AFC are tracked on "GitHub":https://github.com/gallandarakhneorg/afc/issues
 You must use this issue tracker to report and follow your issues.
