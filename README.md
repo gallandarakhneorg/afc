@@ -31,19 +31,21 @@ For making your experience with AFC the best, we recommend you:
 
 ## Use the stable version
 
-The lastest stable version of AFC is available on "Maven Central.":http://search.maven.org/
+The lastest stable version of AFC is available on [Maven Central.](http://search.maven.org/)
 Consequently, you could directly include the AFC module that you want to use into the Maven dependencies of your project.
 For example, if you want to use the "vmutils" module:
 
 ```xml
+	...
 	<dependency>
 	  <groupId>org.arakhne.core</groupId>
 	  <artifactId>vmutils</artifactId>
 	  <version>12.0</version>
 	</dependency>
+	...
 ```
 
-Please replace Version `12.0` in the previous snipset by the number of the version you want to use (`12.0` is the first available on Maven Central).
+Please, replace Version `12.0` in the previous snipset by the number of the version you want to use (`12.0` is the first version that is available on Maven Central).
 
 ## Use of the development version
 
@@ -51,6 +53,7 @@ New features, enhancements and bug fixes are available in the SNAPSHOT (developm
 For using this version, you must add the Maven Repository Server of AFC in your pom file:
 
 ```xml
+	...
 	<dependencies>
 	  <dependency>
 	    <groupId>org.arakhne.core</groupId>
@@ -58,6 +61,7 @@ For using this version, you must add the Maven Repository Server of AFC in your 
 	    <version>13.0-SNAPSHOT</version>
 	  </dependency>
 	<dependencies>
+	...
 	<repositories>
 	  <repository>
 	    <id>org.arakhne-maven</id>
@@ -75,9 +79,10 @@ For using this version, you must add the Maven Repository Server of AFC in your 
 	    </snapshots>
 	  </pluginRepository>
 	</pluginRepositories>
+	...
 ```
 
 # Issues
 
-Issues related to the AFC are tracked on "GitHub":https://github.com/gallandarakhneorg/afc/issues
+Issues related to the AFC are tracked on [GitHub](https://github.com/gallandarakhneorg/afc/issues)
 You must use this issue tracker to report and follow your issues.
