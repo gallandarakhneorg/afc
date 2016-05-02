@@ -1503,4 +1503,18 @@ public abstract class AbstractOrientedRectangle2afpTest<T extends OrientedRectan
 		assertEpsilonEquals(2.99413, this.shape.operator_upTo(createPoint(-5, 25)));
 	}
 
+	@Test
+	public void setDoubleDoubleDoubleDoubleDoubleDoubleDoubleDouble() {
+		Vector2D newU = createVector(-456.789, 159.753).toUnitVector();
+		this.shape.set(-6, -4, newU.getX(), newU.getY(), 147.369, Math.random(), Math.random(), 159.753);
+		assertEpsilonEquals(-6, this.shape.getCenterX());
+		assertEpsilonEquals(-4, this.shape.getCenterY());
+		assertEpsilonEquals(newU.getX(), this.shape.getFirstAxisX());
+		assertEpsilonEquals(newU.getY(), this.shape.getFirstAxisY());
+		assertEpsilonEquals(147.369, this.shape.getFirstAxisExtent());
+		assertEpsilonEquals(-newU.getY(), this.shape.getSecondAxisX());
+		assertEpsilonEquals(newU.getX(), this.shape.getSecondAxisY());
+		assertEpsilonEquals(159.753, this.shape.getSecondAxisExtent());
+	}
+	
 }

@@ -21,7 +21,7 @@
  */
 package org.arakhne.afc.math.geometry.d2.afp;
 
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
 
@@ -31,6 +31,8 @@ import org.arakhne.afc.math.geometry.d2.Shape2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.ai.PathIterator2ai;
+import org.arakhne.afc.math.geometry.d2.d.Point2d;
+import org.arakhne.afc.math.geometry.d2.d.Vector2d;
 import org.junit.Test;
 
 @SuppressWarnings("all")
@@ -994,6 +996,151 @@ public abstract class AbstractRectangle2afpTest<T extends Rectangle2afp<?, T, ?,
 		assertEpsilonEquals(136, this.shape.operator_upTo(createPoint(9, 154)));
 		assertEpsilonEquals(0, this.shape.operator_upTo(createPoint(8, 18)));
 		assertEpsilonEquals(0, this.shape.operator_upTo(createPoint(7, 12)));
+	}
+
+	@Test
+	public void getCenter() {
+		Point2D p = this.shape.getCenter();
+		assertNotNull(p);
+		assertEpsilonEquals(7.5, p.getX());
+		assertEpsilonEquals(13, p.getY());
+	}
+
+	@Test
+	public void getCenterX() {
+		assertEpsilonEquals(7.5, this.shape.getCenterX());
+	}
+
+	@Test
+	public void getCenterY() {
+		assertEpsilonEquals(13, this.shape.getCenterY());
+	}
+
+	@Test
+	public void setCenterDoubleDouble() {
+		this.shape.setCenter(145,  -47);
+		assertEpsilonEquals(142.5, this.shape.getMinX());
+		assertEpsilonEquals(-52, this.shape.getMinY());
+		assertEpsilonEquals(147.5, this.shape.getMaxX());
+		assertEpsilonEquals(-42, this.shape.getMaxY());
+	}
+
+	@Test
+	public void setCenterXDouble() {
+		this.shape.setCenterX(145);
+		assertEpsilonEquals(142.5, this.shape.getMinX());
+		assertEpsilonEquals(8, this.shape.getMinY());
+		assertEpsilonEquals(147.5, this.shape.getMaxX());
+		assertEpsilonEquals(18, this.shape.getMaxY());
+	}
+
+	@Test
+	public void setCenterYDouble() {
+		this.shape.setCenterY(-47);
+		assertEpsilonEquals(5, this.shape.getMinX());
+		assertEpsilonEquals(-52, this.shape.getMinY());
+		assertEpsilonEquals(10, this.shape.getMaxX());
+		assertEpsilonEquals(-42, this.shape.getMaxY());
+	}
+
+	@Test
+	public void getFirstAxis() {
+		Vector2D v = this.shape.getFirstAxis();
+		assertNotNull(v);
+		assertEpsilonEquals(1, v.getX());
+		assertEpsilonEquals(0, v.getY());
+	}
+
+	@Test
+	public void getFirstAxisX() {
+		assertEpsilonEquals(1, this.shape.getFirstAxisX());
+	}
+
+	@Test
+	public void getFirstAxisY() {
+		assertEpsilonEquals(0, this.shape.getFirstAxisY());
+	}
+
+	@Test
+	public void getSecondAxis() {
+		Vector2D v = this.shape.getSecondAxis();
+		assertNotNull(v);
+		assertEpsilonEquals(0, v.getX());
+		assertEpsilonEquals(1, v.getY());
+	}
+
+	@Test
+	public void getSecondAxisX() {
+		assertEpsilonEquals(0, this.shape.getSecondAxisX());
+	}
+
+	@Test
+	public void getSecondAxisY() {
+		assertEpsilonEquals(1, this.shape.getSecondAxisY());
+	}
+
+	@Test
+	public void getFirstAxisExtent() {
+		assertEpsilonEquals(2.5, this.shape.getFirstAxisExtent());
+	}
+
+	@Test
+	public void setFirstAxisExtent() {
+		this.shape.setFirstAxisExtent(124);
+		assertEpsilonEquals(-116.5, this.shape.getMinX());
+		assertEpsilonEquals(8, this.shape.getMinY());
+		assertEpsilonEquals(131.5, this.shape.getMaxX());
+		assertEpsilonEquals(18, this.shape.getMaxY());
+	}
+
+	@Test
+	public void getSecondAxisExtent() {
+		assertEpsilonEquals(5, this.shape.getSecondAxisExtent());
+	}
+
+	@Test
+	public void setSecondAxisExtent() {
+		this.shape.setSecondAxisExtent(124);
+		assertEpsilonEquals(5, this.shape.getMinX());
+		assertEpsilonEquals(-111, this.shape.getMinY());
+		assertEpsilonEquals(10, this.shape.getMaxX());
+		assertEpsilonEquals(137, this.shape.getMaxY());
+	}
+
+	@Test
+	public void setFirstAxisDoubleDoubleDouble() {
+		Vector2D v = createVector(1,  1).toUnitVector();
+		this.shape.setFirstAxis(v.getX(), v.getY(), 5);
+		assertEpsilonEquals(3.96447, this.shape.getMinX());
+		assertEpsilonEquals(9.46446, this.shape.getMinY());
+		assertEpsilonEquals(11.03553, this.shape.getMaxX());
+		assertEpsilonEquals(16.53553, this.shape.getMaxY());
+	}
+
+	@Test
+	public void setSecondAxisDoubleDoubleDouble() {
+		Vector2D v = createVector(-1,  1).toUnitVector();
+		this.shape.setSecondAxis(v.getX(), v.getY(), 6);
+		assertEpsilonEquals(3.25736, this.shape.getMinX());
+		assertEpsilonEquals(8.75736, this.shape.getMinY());
+		assertEpsilonEquals(11.74264, this.shape.getMaxX());
+		assertEpsilonEquals(17.24264, this.shape.getMaxY());
+	}
+
+	@Test
+	public void setDoubleDoubleDoubleDoubleDoubleDouble() {
+		this.shape.set(1, 2, -1, 0, 5, 6);
+		assertEpsilonEquals(-4, this.shape.getMinX());
+		assertEpsilonEquals(-4, this.shape.getMinY());
+		assertEpsilonEquals(6, this.shape.getMaxX());
+		assertEpsilonEquals(8, this.shape.getMaxY());
+
+		Vector2D v = createVector(1,  1).toUnitVector();
+		this.shape.set(1, 2, v.getX(), v.getY(), 5, 6);
+		assertEpsilonEquals(-3.24264, this.shape.getMinX());
+		assertEpsilonEquals(-2.24264, this.shape.getMinY());
+		assertEpsilonEquals(5.24264, this.shape.getMaxX());
+		assertEpsilonEquals(6.24264, this.shape.getMaxY());
 	}
 
 }

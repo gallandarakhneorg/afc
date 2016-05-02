@@ -54,7 +54,7 @@ public interface Rectangle2afp<
 		P extends Point2D<? super P, ? super V>,
 		V extends Vector2D<? super V, ? super P>,
 		B extends Rectangle2afp<?, ?, IE, P, V, B>>
-		extends RectangularShape2afp<ST, IT, IE, P, V, B> {
+		extends RectangularShape2afp<ST, IT, IE, P, V, B>, OrientedRectangle2afp<ST, IT, IE, P, V, B> {
 
 	/** Replies if two rectangles are intersecting.
 	 * 
@@ -239,7 +239,7 @@ public interface Rectangle2afp<
 		assert (ry1 <= ry2) : "ry1 must be lower or equal to ry2"; //$NON-NLS-1$
 		return (px >= rx1 && px <= rx2) && (py >= ry1 && py <= ry2);
 	}
-
+	
 	@Pure
 	@Override
 	default boolean equalsToShape(IT shape) {
@@ -754,6 +754,165 @@ public interface Rectangle2afp<
 			return new RectanglePathIterator<>(this);
 		}
 		return new TransformedRectanglePathIterator<>(this, transform);
+	}
+
+	/** {@inheritDoc}
+	 *
+	 * <p>The rectangle is always aligned on the global axes.
+	 * It means that the rectangle is set to the enclosing box related to the given parameters.
+	 */
+	@Override
+	default void set(double centerX, double centerY, double axis1x, double axis1y, double axis1Extent,
+			double axis2Extent) {
+		assert (Vector2D.isUnitVector(axis1x, axis1y)) : "Axis must be unit vector"; //$NON-NLS-1$
+		assert (axis1Extent >= 0) : "First axis extent must be positive or zero"; //$NON-NLS-1$
+		assert (axis2Extent >= 0) : "Second axis extent must be positive or zero"; //$NON-NLS-1$
+		double mx = Math.max(Math.abs(axis1x * axis1Extent), Math.abs(-axis1y * axis2Extent));
+		double my = Math.max(Math.abs(axis1y * axis1Extent), Math.abs(axis1x * axis2Extent));
+		double vx = OrientedRectangle2afp.projectVectorOnOrientedRectangleRAxis(1, 0, mx, my);
+		double vy = OrientedRectangle2afp.projectVectorOnOrientedRectangleSAxis(1, 0, mx, my);
+		set(centerX - vx, centerY - vy, vx * 2, vy * 2);
+	}
+	
+	@Override
+	default P getCenter() {
+		return getGeomFactory().newPoint(getCenterX(), getCenterY());
+	}
+
+	@Override
+	default void setCenter(double cx, double cy) {
+		double demiWidth = getWidth() / 2.;
+		double demiHeight = getHeight() / 2.;
+		setMinX(cx - demiWidth);
+		setMinY(cy - demiHeight);
+		setMaxX(cx + demiWidth);
+		setMaxY(cy + demiHeight);
+	}
+	
+	@Override
+	default void setCenterX(double cx) {
+		double demiWidth = getWidth() / 2.;
+		setMinX(cx - demiWidth);
+		setMaxX(cx + demiWidth);
+	}
+	
+	@Override
+	default void setCenterY(double cy) {
+		double demiHeight = getHeight() / 2.;
+		setMinY(cy - demiHeight);
+		setMaxY(cy + demiHeight);
+	}
+	
+	@Override
+	default V getFirstAxis() {
+		return getGeomFactory().newVector(getFirstAxisX(), getFirstAxisY());
+	}
+
+	@Override
+	default double getFirstAxisX() {
+		return 1.;
+	}
+
+	@Override
+	default double getFirstAxisY() {
+		return 0.;
+	}
+
+	@Override
+	default V getSecondAxis() {
+		return getGeomFactory().newVector(getSecondAxisX(), getSecondAxisY());
+	}
+	
+	@Override
+	default double getSecondAxisX() {
+		return 0.;
+	}
+
+	@Override
+	default double getSecondAxisY() {
+		return 1.;
+	}
+
+	@Override
+	default double getFirstAxisExtent() {
+		return getWidth() / 2.;
+	}
+
+	@Override
+	default void setFirstAxisExtent(double extent) {
+		double x = getCenterX();
+		setMinX(x - extent);
+		setMaxX(x + extent);
+	}
+
+	@Override
+	default double getSecondAxisExtent() {
+		return getHeight() / 2.;
+	}
+
+	@Override
+	default void setSecondAxisExtent(double extent) {
+		double y = getCenterY();
+		setMinY(y - extent);
+		setMaxY(y + extent);
+	}
+
+	/** {@inheritDoc}
+	 *
+	 * <p>The rectangle is always aligned on the global axes.
+	 * It means that the rectangle is set to the enclosing box related to the given parameters.
+	 */
+	@Override
+	default void setFirstAxis(double x, double y, double extent) {
+		assert (Vector2D.isUnitVector(x, y)) : "Axis must be unit vector"; //$NON-NLS-1$
+		assert (extent >= 0.) : "Extent must be positive or zero"; //$NON-NLS-1$
+		set(getCenterX(), getCenterY(), x, y, extent, getSecondAxisExtent());
+	}
+
+	/** {@inheritDoc}
+	 *
+	 * <p>The rectangle is always aligned on the global axes.
+	 * It means that the rectangle is set to the enclosing box related to the given parameters.
+	 */
+	@Override
+	default void setSecondAxis(double x, double y, double extent) {
+		assert (Vector2D.isUnitVector(x, y)) : "Axis must be unit vector"; //$NON-NLS-1$
+		assert (extent >= 0.) : "Extent must be positive or zero"; //$NON-NLS-1$
+		set(getCenterX(), getCenterY(), y, -x, getFirstAxisExtent(), extent);
+	}
+
+	//
+	// Avoid multiple inheritance error
+	//
+	
+	@Override
+	default void clear() {
+		RectangularShape2afp.super.clear();
+	}
+
+	@Override
+	default double getCenterX() {
+		return RectangularShape2afp.super.getCenterX();
+	}
+
+	@Override
+	default double getCenterY() {
+		return RectangularShape2afp.super.getCenterY();
+	}
+
+	@Override
+	default void translate(double dx, double dy) {
+		RectangularShape2afp.super.translate(dx, dy);
+	}
+
+	@Override
+	default void toBoundingBox(B box) {
+		RectangularShape2afp.super.toBoundingBox(box);
+	}
+
+	@Override
+	default boolean isEmpty() {
+		return RectangularShape2afp.super.isEmpty();
 	}
 
 	/** Iterator on the path elements of the rectangle.

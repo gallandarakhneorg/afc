@@ -34,6 +34,7 @@ import org.arakhne.afc.math.geometry.d2.Shape2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.ai.PathIterator2ai;
+import org.eclipse.xtext.xbase.lib.Pure;
 import org.junit.Test;
 
 @SuppressWarnings("all")
@@ -1051,6 +1052,116 @@ public abstract class AbstractCircle2afpTest<T extends Circle2afp<?, T, ?, ?, ?,
 		assertEpsilonEquals(7.9769, this.shape.operator_upTo(createPoint(-1.2,-3.4)));
 		assertEpsilonEquals(1.6483, this.shape.operator_upTo(createPoint(-1.2,5.6)));
 		assertEpsilonEquals(0, this.shape.operator_upTo(createPoint(7.6,5.6)));
+	}
+
+	@Test
+	public void getHorizontalRadius() {
+		assertEpsilonEquals(5, this.shape.getRadius());
+	}
+	
+	@Test
+	public void getVerticalRadius() {
+		assertEpsilonEquals(5, this.shape.getRadius());
+	}
+
+	@Test
+	public void setFromCenterDoubleDoubleDoubleDouble() {
+		this.shape.setFromCenter(152, 148, 475, -254);
+		assertEpsilonEquals(152, this.shape.getX());
+		assertEpsilonEquals(148, this.shape.getY());
+		assertEpsilonEquals(323, this.shape.getRadius());
+	}
+
+	@Test
+	public void setFromCornersDoubleDoubleDoubleDouble() {
+		this.shape.setFromCorners(-171, 550, 475, -254);
+		assertEpsilonEquals(152, this.shape.getX());
+		assertEpsilonEquals(148, this.shape.getY());
+		assertEpsilonEquals(323, this.shape.getRadius());
+	}
+
+	@Test
+	public void getMinX() {
+		assertEpsilonEquals(0, this.shape.getMinX());
+	}
+
+	@Test
+	public void setMinX_noSwap() {
+		this.shape.setMinX(-41);
+		assertEpsilonEquals(-15.5, this.shape.getX());
+		assertEpsilonEquals(8, this.shape.getY());
+		assertEpsilonEquals(25.5, this.shape.getRadius());
+	}
+
+	@Test
+	public void setMinX_swap() {
+		this.shape.setMinX(41);
+		assertEpsilonEquals(25.5, this.shape.getX());
+		assertEpsilonEquals(8, this.shape.getY());
+		assertEpsilonEquals(15.5, this.shape.getRadius());
+	}
+
+	@Test
+	public void getMaxX() {
+		assertEpsilonEquals(10, this.shape.getMaxX());
+	}
+
+	@Test
+	public void setMaxX_noSwap() {
+		this.shape.setMaxX(41);
+		assertEpsilonEquals(20.5, this.shape.getX());
+		assertEpsilonEquals(8, this.shape.getY());
+		assertEpsilonEquals(20.5, this.shape.getRadius());
+	}
+
+	@Test
+	public void setMaxX_swap() {
+		this.shape.setMaxX(-41);
+		assertEpsilonEquals(-20.5, this.shape.getX());
+		assertEpsilonEquals(8, this.shape.getY());
+		assertEpsilonEquals(20.5, this.shape.getRadius());
+	}
+
+	@Test
+	public void getMinY() {
+		assertEpsilonEquals(3, this.shape.getMinY());
+	}
+
+	@Test
+	public void setMinY_noSwap() {
+		this.shape.setMinY(-41);
+		assertEpsilonEquals(5, this.shape.getX());
+		assertEpsilonEquals(-14, this.shape.getY());
+		assertEpsilonEquals(27, this.shape.getRadius());
+	}
+
+	@Test
+	public void setMinY_swap() {
+		this.shape.setMinY(41);
+		assertEpsilonEquals(5, this.shape.getX());
+		assertEpsilonEquals(27, this.shape.getY());
+		assertEpsilonEquals(14, this.shape.getRadius());
+	}
+
+	@Test
+	public void getMaxY() {
+		assertEpsilonEquals(13, this.shape.getMaxY());
+	}
+
+	@Test
+	public void setMaxY_noSwap() {
+		this.shape.setMaxY(41);
+		assertEpsilonEquals(5, this.shape.getX());
+		assertEpsilonEquals(22, this.shape.getY());
+		assertEpsilonEquals(19, this.shape.getRadius());
+	}
+
+	@Test
+	public void setMaxY_swap() {
+		this.shape.setMaxY(-41);
+		assertEpsilonEquals(5, this.shape.getX());
+		assertEpsilonEquals(-19, this.shape.getY());
+		assertEpsilonEquals(22, this.shape.getRadius());
 	}
 
 }

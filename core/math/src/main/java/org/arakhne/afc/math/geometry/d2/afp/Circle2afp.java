@@ -54,7 +54,7 @@ public interface Circle2afp<
 		P extends Point2D<? super P, ? super V>,
 		V extends Vector2D<? super V, ? super P>,
 		B extends Rectangle2afp<?, ?, IE, P, V, B>>
-		extends Shape2afp<ST, IT, IE, P, V, B> {
+		extends Ellipse2afp<ST, IT, IE, P, V, B> {
 
 	/**
 	 * Replies if the given point is inside the given ellipse.
@@ -535,6 +535,134 @@ public interface Circle2afp<
 			return new CirclePathIterator<>(this);
 		}
 		return new TransformedCirclePathIterator<>(this, transform);
+	}
+	
+	@Override
+	@Pure
+	default double getHorizontalRadius() {
+		return getRadius();
+	}
+	
+	@Override
+	@Pure
+	default double getVerticalRadius() {
+		return getRadius();
+	}
+
+	/** {@inheritDoc}
+	 *
+	 * <p>The circle is set in order to be enclosed inside the given box.
+	 * It means that the center of the circle is the center of the box, and the
+	 * radius of the circle is the minimum of the demi-width and demi-height.
+	 */
+	@Override
+	default void setFromCenter(double centerX, double centerY, double cornerX, double cornerY) {
+		double demiWidth = Math.abs(cornerX - centerX);
+		double demiHeight = Math.abs(cornerY- centerY);
+		if (demiWidth <= demiHeight) {
+			set(centerX, centerY, demiWidth);
+		} else {
+			set(centerX, centerY, demiHeight);
+		}
+	}
+	
+	/** {@inheritDoc}
+	 *
+	 * <p>The circle is set in order to be enclosed inside the given box.
+	 * It means that the center of the circle is the center of the box, and the
+	 * radius of the circle is the minimum of the demi-width and demi-height.
+	 */
+	@Override
+	default void setFromCorners(double x1, double y1, double x2, double y2) {
+		setFromCenter((x1 + x2) / 2., (y1 + y2) / 2., x2, y2);
+	}
+
+	@Override
+	default double getMinX() {
+		return getX() - getRadius();
+	}
+
+	/** {@inheritDoc}
+	 *
+	 * <p>Assuming that the maximum X coordinate should not change, the center of
+	 * the circle is the point between the new minimum and the current maximum coordinates,
+	 * and the radius of the circle is set to the difference between the new minimum and
+	 * center coordinates.
+	 *
+	 * <p>If the new minimum is greater than the current maximum, the coordinates are automatically
+	 * swapped.
+	 */
+	@Override
+	default void setMinX(double x) {
+		double cx = (x + getX() + getRadius()) / 2.;
+		double radius = Math.abs(cx - x);
+		set(cx, getY(), radius);
+	}
+
+	@Override
+	default double getMaxX() {
+		return getX() + getRadius();
+	}
+
+	/** {@inheritDoc}
+	 *
+	 * <p>Assuming that the minimum X coordinate should not change, the center of
+	 * the circle is the point between the new maximum and the current minimum coordinates,
+	 * and the radius of the circle is set to the difference between the new maximum and
+	 * center coordinates.
+	 *
+	 * <p>If the new maximum is lower than the current minimum, the coordinates are automatically
+	 * swapped.
+	 */
+	@Override
+	default void setMaxX(double x) {
+		double cx = (x + getX() - getRadius()) / 2.;
+		double radius = Math.abs(cx - x);
+		set(cx, getY(), radius);
+	}
+
+	@Override
+	default double getMinY() {
+		return getY() - getRadius();
+	}
+
+	/** {@inheritDoc}
+	 *
+	 * <p>Assuming that the maximum Y coordinate should not change, the center of
+	 * the circle is the point between the new minimum and the current maximum coordinates,
+	 * and the radius of the circle is set to the difference between the new minimum and
+	 * center coordinates.
+	 *
+	 * <p>If the new minimum is greater than the current maximum, the coordinates are automatically
+	 * swapped.
+	 */
+	@Override
+	default void setMinY(double y) {
+		double cy = (y + getY() + getRadius()) / 2.;
+		double radius = Math.abs(cy - y);
+		set(getX(), cy, radius);
+	}
+
+	@Override
+	default double getMaxY() {
+		return getY() + getRadius();
+	}
+
+	/** {@inheritDoc}
+	 *
+	 * <p>Assuming that the minimum Y coordinate should not change, the center of
+	 * the circle is the point between the new maximum and the current minimum coordinates,
+	 * and the radius of the circle is set to the difference between the new maximum and
+	 * center coordinates.
+	 *
+	 * <p>If the new maximum is lower than the current minimum, the coordinates are automatically
+	 * swapped.
+	 */
+	@Override
+	default void setMaxY(double y) {
+		double cy = (y + getY() - getRadius()) / 2.;
+		double radius = Math.abs(cy - y);
+		set(getX(), cy, radius);
 	}
 
 	/** Abstract iterator on the path elements of the circle.

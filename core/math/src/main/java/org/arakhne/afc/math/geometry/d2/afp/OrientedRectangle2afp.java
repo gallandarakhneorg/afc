@@ -21,7 +21,6 @@
 
 package org.arakhne.afc.math.geometry.d2.afp;
 
-import java.util.Arrays;
 import java.util.NoSuchElementException;
 
 import org.arakhne.afc.math.MathConstants;
@@ -57,7 +56,7 @@ public interface OrientedRectangle2afp<
 		P extends Point2D<? super P, ? super V>,
 		V extends Vector2D<? super V, ? super P>,
 		B extends Rectangle2afp<?, ?, IE, P, V, B>>
-		extends Shape2afp<ST, IT, IE, P, V, B> {
+		extends Parallelogram2afp<ST, IT, IE, P, V, B> {
 
 	/** Project the given vector on the R axis, assuming S axis is orthogonal.
 	 *
@@ -994,211 +993,6 @@ public interface OrientedRectangle2afp<
 				&& getSecondAxisExtent() == shape.getSecondAxisExtent();
 	}
 
-	/** Replies the center.
-	 *
-	 * @return the center.
-	 */
-	@Pure
-	P getCenter();
-
-	/** Replies the center x.
-	 *
-	 * @return the center x.
-	 */
-	@Pure
-	double getCenterX();
-
-	/** Replies the center y.
-	 *
-	 * @return the center y.
-	 */
-	@Pure
-	double getCenterY();
-
-	/** Set the center.
-	 * 
-	 * @param cx the center x.
-	 * @param cy the center y.
-	 */
-	void setCenter(double cx, double cy);
-
-	/** Set the center's x.
-	 * 
-	 * @param cx the center x.
-	 */
-	void setCenterX(double cx);
-
-	/** Set the center's y.
-	 * 
-	 * @param cy the center y.
-	 */
-	void setCenterY(double cy);
-
-	/** Set the center.
-	 * 
-	 * @param center
-	 */
-	default void setCenter(Point2D<?, ?> center) {
-		setCenter(center.getX(), center.getY());
-	}
-
-	/** Replies the first axis of the oriented rectangle.
-	 *
-	 * @return the unit vector of the first axis. 
-	 */
-	@Pure
-	V getFirstAxis();
-
-	/** Replies coordinate x of the first axis of the oriented rectangle.
-	 *
-	 * @return the coordinate x of the unit vector of the first axis. 
-	 */
-	@Pure
-	double getFirstAxisX();
-
-	/** Replies coordinate y of the first axis of the oriented rectangle.
-	 *
-	 * @return the coordinate y of the unit vector of the first axis. 
-	 */
-	@Pure
-	double getFirstAxisY();
-
-	/** Replies the second axis of the oriented rectangle.
-	 *
-	 * @return the unit vector of the second axis. 
-	 */
-	@Pure
-	V getSecondAxis();
-
-	/** Replies coordinate x of the second axis of the oriented rectangle.
-	 *
-	 * @return the coordinate x of the unit vector of the second axis. 
-	 */
-	@Pure
-	double getSecondAxisX();
-
-	/** Replies coordinate y of the second axis of the oriented rectangle.
-	 *
-	 * @return the coordinate y of the unit vector of the second axis. 
-	 */
-	@Pure
-	double getSecondAxisY();
-
-	/** Replies the demi-size of the rectangle along its first axis.
-	 * 
-	 * @return the extent along the first axis.
-	 */
-	@Pure
-	double getFirstAxisExtent();
-
-	/** Change the demi-size of the rectangle along its first axis.
-	 * 
-	 * @param extent - the extent along the first axis.
-	 */
-	void setFirstAxisExtent(double extent);
-
-	/** Replies the demi-size of the rectangle along its second axis.
-	 * 
-	 * @return the extent along the second axis.
-	 */
-	@Pure
-	double getSecondAxisExtent();
-
-	/** Change the demi-size of the rectangle along its second axis.
-	 * 
-	 * @param extent - the extent along the second axis.
-	 */
-	void setSecondAxisExtent(double extent);
-
-	/** Set the first axis of the rectangle.
-	 * The second axis is updated to be perpendicular to the new first axis.
-	 * 
-	 * @param axis - the new values for the first axis.
-	 */
-	default void setFirstAxis(Vector2D<?, ?> axis) {
-		assert (axis != null) : "Axis must be not null"; //$NON-NLS-1$
-		setFirstAxis(axis.getX(), axis.getY(), getFirstAxisExtent());
-	}
-
-	/** Set the first axis of the rectangle.
-	 * The second axis is updated to be perpendicular to the new first axis.
-	 * 
-	 * @param axis - the new values for the first axis.
-	 * @param extent - the extent of the axis.
-	 */
-	default void setFirstAxis(Vector2D<?, ?> axis, double extent) {
-		assert (axis != null) : "Axis must be not null"; //$NON-NLS-1$
-		setFirstAxis(axis.getX(), axis.getY(), extent);
-	}
-
-	/** Set the first axis of the rectangle.
-	 * The second axis is updated to be perpendicular to the new first axis.
-	 * 
-	 * @param x
-	 * @param y
-	 */
-	default void setFirstAxis(double x, double y) {
-		setFirstAxis(x, y, getFirstAxisExtent());
-	}
-
-	/** Set the first axis of the rectangle.
-	 * The second axis is updated to be perpendicular to the new first axis.
-	 * 
-	 * @param x
-	 * @param y
-	 * @param extent
-	 */
-	void setFirstAxis(double x, double y, double extent);
-
-	/** Set the second axis of the rectangle.
-	 * The first axis is updated to be perpendicular to the new second axis.
-	 * 
-	 * @param axis - the new values for the first axis.
-	 */
-	default void setSecondAxis(Vector2D<?, ?> axis) {
-		assert (axis != null) : "Axis must be not null"; //$NON-NLS-1$
-		setSecondAxis(axis.getX(), axis.getY(), getSecondAxisExtent());
-	}
-
-	/** Set the second axis of the rectangle.
-	 * The first axis is updated to be perpendicular to the new second axis.
-	 * 
-	 * @param axis - the new values for the first axis.
-	 * @param extent - the extent of the axis.
-	 */
-	default void setSecondAxis(Vector2D<?, ?> axis, double extent) {
-		assert (axis != null) : "Axis must be not null"; //$NON-NLS-1$
-		setSecondAxis(axis.getX(), axis.getY(), extent);
-	}
-
-	/** Set the second axis of the rectangle.
-	 * The first axis is updated to be perpendicular to the new second axis.
-	 * 
-	 * @param x - the new values for the first axis.
-	 * @param y - the new values for the first axis.
-	 */
-	default void setSecondAxis(double x, double y) {
-		setSecondAxis(x, y, getSecondAxisExtent());
-	}
-
-	/** Set the second axis of the rectangle.
-	 * The first axis is updated to be perpendicular to the new second axis.
-	 * 
-	 * @param x
-	 * @param y
-	 * @param extent
-	 */
-	void setSecondAxis(double x, double y, double extent);
-
-	@Pure
-	@Override
-	default boolean isEmpty() {
-		return(getFirstAxisExtent() == 0.
-				|| getSecondAxisExtent() == 0.
-				|| (getFirstAxisX() == 0. && getFirstAxisY() == 0.)
-				|| (getSecondAxisX() == 0. && getSecondAxisY() == 0.));
-	}
-
 	@Override
 	default public void clear() {
 		set(0, 0, 1, 0, 0, 0);
@@ -1240,10 +1034,7 @@ public interface OrientedRectangle2afp<
 			double axis1X, double axis1Y, double axis1Extent,
 			double axis2Extent);
 
-	/** Set the oriented rectangle from a could of points.
-	 *
-	 * @param pointCloud - the cloud of points.
-	 */
+	@Override
 	default void setFromPointCloud(Iterable<? extends Point2D<?, ?>> pointCloud) {
 		assert (pointCloud != null) : "Iterable of points must be not null"; //$NON-NLS-1$
 		Vector2D<?, ?> r = new InnerComputationVector2afp();
@@ -1254,15 +1045,6 @@ public interface OrientedRectangle2afp<
 		set(center.getX(), center.getY(),
 				r.getX(), r.getY(), extents.getX(),
 				extents.getY());
-	}
-
-	/** Set the oriented rectangle from a could of points.
-	 *
-	 * @param pointCloud - the cloud of points.
-	 */
-	default void setFromPointCloud(Point2D<?, ?>... pointCloud) {
-		assert (pointCloud != null) : "Array of points must be not null"; //$NON-NLS-1$
-		setFromPointCloud(Arrays.asList(pointCloud));
 	}
 
 	@Pure
@@ -1514,15 +1296,23 @@ public interface OrientedRectangle2afp<
 		return point;
 	}
 
-	/** Roate the oriented rectangle around its center.
-	 *
-	 * @param angle the angle of rotation.
-	 */
+	@Override
 	default void rotate(double angle) {
 		Vector2D<?, ?> axis1 = getFirstAxis();
 		Vector2D<?, ?> newAxis = getGeomFactory().newVector();
 		newAxis.turn(angle, axis1);
 		setFirstAxis(newAxis.getX(), newAxis.getY());
+	}
+
+	/** {@inheritDoc}
+	 *
+	 * <p>For an oriented rectangle, the coordinates of the second axis are ignored.
+	 * Indeed, they are automatically computed for being orthogonal to the first axis.
+	 */
+	@Override
+	default void set(double centerX, double centerY, double axis1x, double axis1y, double axis1Extent, double axis2x,
+			double axis2y, double axis2Extent) {
+		set(centerX, centerY, axis1x, axis1y, axis1Extent, axis2Extent);
 	}
 
 	/** Abstract iterator on the path elements of the oriented rectangle.
