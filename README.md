@@ -39,9 +39,11 @@ For example, if you want to use the "vmutils" module:
 	<dependency>
 	  <groupId>org.arakhne.core</groupId>
 	  <artifactId>vmutils</artifactId>
-	  <version>13.0</version>
+	  <version>12.0</version>
 	</dependency>
 ```
+
+Please replace Version `12.0` in the previous snipset by the number of the version you want to use (`12.0` is the first available on Maven Central).
 
 ## Use of the development version
 
@@ -49,6 +51,13 @@ New features, enhancements and bug fixes are available in the SNAPSHOT (developm
 For using this version, you must add the Maven Repository Server of AFC in your pom file:
 
 ```xml
+	<dependencies>
+	  <dependency>
+	    <groupId>org.arakhne.core</groupId>
+	    <artifactId>vmutils</artifactId>
+	    <version>13.0-SNAPSHOT</version>
+	  </dependency>
+	<dependencies>
 	<repositories>
 	  <repository>
 	    <id>org.arakhne-maven</id>
