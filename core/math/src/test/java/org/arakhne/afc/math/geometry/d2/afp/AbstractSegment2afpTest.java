@@ -1734,6 +1734,42 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
 	}
 
 	@Test
+	public void setP1DoubleDouble() {
+		this.shape.setP1(123.456, -789.159);
+		assertEpsilonEquals(123.456, this.shape.getX1());
+		assertEpsilonEquals(-789.159, this.shape.getY1());
+		assertEpsilonEquals(1, this.shape.getX2());
+		assertEpsilonEquals(1, this.shape.getY2());
+	}
+
+	@Test
+	public void setP1Point2D() {
+		this.shape.setP1(createPoint(123.456, -789.159));
+		assertEpsilonEquals(123.456, this.shape.getX1());
+		assertEpsilonEquals(-789.159, this.shape.getY1());
+		assertEpsilonEquals(1, this.shape.getX2());
+		assertEpsilonEquals(1, this.shape.getY2());
+	}
+
+	@Test
+	public void setP2DoubleDouble() {
+		this.shape.setP2(123.456, -789.159);
+		assertEpsilonEquals(0, this.shape.getX1());
+		assertEpsilonEquals(0, this.shape.getY1());
+		assertEpsilonEquals(123.456, this.shape.getX2());
+		assertEpsilonEquals(-789.159, this.shape.getY2());
+	}
+
+	@Test
+	public void setP2Point2D() {
+		this.shape.setP2(createPoint(123.456, -789.159));
+		assertEpsilonEquals(0, this.shape.getX1());
+		assertEpsilonEquals(0, this.shape.getY1());
+		assertEpsilonEquals(123.456, this.shape.getX2());
+		assertEpsilonEquals(-789.159, this.shape.getY2());
+	}
+
+	@Test
 	public void getX1() {
 		assertEpsilonEquals(0, this.shape.getX1());
 	}

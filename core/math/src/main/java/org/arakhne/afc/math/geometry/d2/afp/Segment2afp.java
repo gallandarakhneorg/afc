@@ -1670,14 +1670,54 @@ public interface Segment2afp<
 	 * @return the first point.
 	 */
 	@Pure
-	P getP1();
+	default P getP1() {
+		return getGeomFactory().newPoint(getX1(), getY1());
+	}
 
 	/** Replies the second point.
 	 * 
 	 * @return the second point.
 	 */
 	@Pure
-	P getP2();
+	default P getP2() {
+		return getGeomFactory().newPoint(getX2(), getY2());
+	}
+
+	/** Change the first point.
+	 * 
+	 * @param x
+	 * @param y
+	 */
+	default void setP1(double x, double y) {
+		set(x, y, getX2(), getY2());
+	}
+
+	/** Change the second point.
+	 * 
+	 * @param x
+	 * @param y
+	 */
+	default void setP2(double x, double y) {
+		set(getX1(), getY1(), x, y);
+	}
+
+	/** Change the first point.
+	 * 
+	 * @param p
+	 */
+	default void setP1(Point2D<?, ?> p) {
+		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
+		set(p.getX(), p.getY(), getX2(), getY2());
+	}
+
+	/** Change the second point.
+	 * 
+	 * @param p
+	 */
+	default void setP2(Point2D<?, ?> p) {
+		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
+		set(getX1(), getY1(), p.getX(), p.getY());
+	}
 
 	/** Replies the length of the segment.
 	 *
