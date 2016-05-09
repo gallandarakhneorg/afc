@@ -22,6 +22,8 @@ import static org.junit.Assert.*;
 
 import org.arakhne.afc.math.AbstractMathTestCase;
 import org.arakhne.afc.math.MathUtil;
+import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem;
+import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2D;
 import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2DTestRule;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.junit.Assume;
@@ -775,5 +777,1869 @@ public abstract class AbstractPoint2DTest extends AbstractMathTestCase {
 
 	@Test
 	public abstract void operator_upToShape2D();
+
+	@Test
+	public void turnDouble_iffp() {
+		Assume.assumeFalse(isIntCoordinates());
+		
+		Point2D p;
+		
+		p = createPoint(1, 0);
+		p.turn(Math.PI/2);
+		assertFpPointEquals(0, 1, p);
+
+		p = createPoint(0, 1);
+		p.turn(Math.PI/2);
+		assertFpPointEquals(-1, 0, p);
+
+		p = createPoint(-1, 0);
+		p.turn(Math.PI/2);
+		assertFpPointEquals(0, -1, p);
+
+		p = createPoint(0, -1);
+		p.turn(Math.PI/2);
+		assertFpPointEquals(1, 0, p);
+
+		p = createPoint(1, 0);
+		p.turn(-Math.PI/2);
+		assertFpPointEquals(0, -1, p);
+
+		p = createPoint(0, -1);
+		p.turn(-Math.PI/2);
+		assertFpPointEquals(-1, 0, p);
+
+		p = createPoint(-1, 0);
+		p.turn(-Math.PI/2);
+		assertFpPointEquals(0, 1, p);
+
+		p = createPoint(0, 1);
+		p.turn(-Math.PI/2);
+		assertFpPointEquals(1, 0, p);
+
+		p = createPoint(12, 0);
+		p.turn(Math.PI/6);
+		assertFpPointEquals(10.392304, 6, p);
+
+		p = createPoint(12, 0);
+		p.turn(-Math.PI/6);
+		assertFpPointEquals(10.39230, -6, p);
+
+		p = createPoint(-4, 18);
+		p.turn(Math.PI/11);
+		assertFpPointEquals(-8.90916, 16.14394, p);
+
+		p = createPoint(-4, 18);
+		p.turn(-Math.PI/11);
+		assertFpPointEquals(1.23321, 18.39780, p);
+	}
+
+	@Test
+	public void turnDoublePoint2D_iffp() {
+		Assume.assumeFalse(isIntCoordinates());
+		
+		Point2D p = createPoint(0, 0);
+		
+		p.turn(Math.PI/2, createPoint(1, 0));
+		assertFpPointEquals(0, 1, p);
+
+		p.turn(Math.PI/2, createPoint(0, 1));
+		assertFpPointEquals(-1, 0, p);
+
+		p.turn(Math.PI/2, createPoint(-1, 0));
+		assertFpPointEquals(0, -1, p);
+
+		p.turn(Math.PI/2, createPoint(0, -1));
+		assertFpPointEquals(1, 0, p);
+
+		p.turn(-Math.PI/2, createPoint(1, 0));
+		assertFpPointEquals(0, -1, p);
+
+		p.turn(-Math.PI/2, createPoint(0, -1));
+		assertFpPointEquals(-1, 0, p);
+
+		p.turn(-Math.PI/2, createPoint(-1, 0));
+		assertFpPointEquals(0, 1, p);
+
+		p.turn(-Math.PI/2, createPoint(0, 1));
+		assertFpPointEquals(1, 0, p);
+
+		p.turn(Math.PI/6, createPoint(12, 0));
+		assertFpPointEquals(10.392304, 6, p);
+
+		p.turn(-Math.PI/6, createPoint(12, 0));
+		assertFpPointEquals(10.39230, -6, p);
+
+		p.turn(Math.PI/11, createPoint(-4, 18));
+		assertFpPointEquals(-8.90916, 16.14394, p);
+
+		p.turn(-Math.PI/11, createPoint(-4, 18));
+		assertFpPointEquals(1.23321, 18.39780, p);
+	}
+
+	@Test
+	public void turnDoublePoint2DPoint2D_origin_iffp() {
+		Assume.assumeFalse(isIntCoordinates());
+		
+		Point2D origin = createPoint(0, 0);
+		Point2D p = createPoint(0, 0);
+		
+		p.turn(Math.PI/2, createPoint(1, 0), origin);
+		assertFpPointEquals(0, 1, p);
+
+		p.turn(Math.PI/2, createPoint(0, 1), origin);
+		assertFpPointEquals(-1, 0, p);
+
+		p.turn(Math.PI/2, createPoint(-1, 0), origin);
+		assertFpPointEquals(0, -1, p);
+
+		p.turn(Math.PI/2, createPoint(0, -1), origin);
+		assertFpPointEquals(1, 0, p);
+
+		p.turn(-Math.PI/2, createPoint(1, 0), origin);
+		assertFpPointEquals(0, -1, p);
+
+		p.turn(-Math.PI/2, createPoint(0, -1), origin);
+		assertFpPointEquals(-1, 0, p);
+
+		p.turn(-Math.PI/2, createPoint(-1, 0), origin);
+		assertFpPointEquals(0, 1, p);
+
+		p.turn(-Math.PI/2, createPoint(0, 1), origin);
+		assertFpPointEquals(1, 0, p);
+
+		p.turn(Math.PI/6, createPoint(12, 0), origin);
+		assertFpPointEquals(10.392304, 6, p);
+
+		p.turn(-Math.PI/6, createPoint(12, 0), origin);
+		assertFpPointEquals(10.39230, -6, p);
+
+		p.turn(Math.PI/11, createPoint(-4, 18), origin);
+		assertFpPointEquals(-8.90916, 16.14394, p);
+
+		p.turn(-Math.PI/11, createPoint(-4, 18), origin);
+		assertFpPointEquals(1.23321, 18.39780, p);
+	}
+
+	@Test
+	public void turnDoublePoint2DPoint2D_aroundP_iffp() {
+		Assume.assumeFalse(isIntCoordinates());
+		
+		Point2D origin = createPoint(-45, 12);
+		Point2D p = createPoint(0, 0);
+		
+		p.turn(Math.PI/2, createPoint(1, 0), origin);
+		assertFpPointEquals(-33, 58, p);
+
+		p.turn(Math.PI/2, createPoint(0, 1), origin);
+		assertFpPointEquals(-34, 57, p);
+
+		p.turn(Math.PI/2, createPoint(-1, 0), origin);
+		assertFpPointEquals(-33, 56, p);
+
+		p.turn(Math.PI/2, createPoint(0, -1), origin);
+		assertFpPointEquals(-32, 57, p);
+
+		p.turn(-Math.PI/2, createPoint(1, 0), origin);
+		assertFpPointEquals(-57, -34, p);
+
+		p.turn(-Math.PI/2, createPoint(0, -1), origin);
+		assertFpPointEquals(-58, -33, p);
+
+		p.turn(-Math.PI/2, createPoint(-1, 0), origin);
+		assertFpPointEquals(-57, -32, p);
+
+		p.turn(-Math.PI/2, createPoint(0, 1), origin);
+		assertFpPointEquals(-56, -33, p);
+
+		p.turn(Math.PI/6, createPoint(12, 0), origin);
+		assertFpPointEquals(10.36345, 30.1077, p);
+
+		p.turn(-Math.PI/6, createPoint(12, 0), origin);
+		assertFpPointEquals(-1.63655, -26.89230, p);
+
+		p.turn(Math.PI/11, createPoint(-4, 18), origin);
+		assertFpPointEquals(-7.35118, 29.30799, p);
+
+		p.turn(-Math.PI/11, createPoint(-4, 18), origin);
+		assertFpPointEquals(-3.97039, 6.20592, p);
+	}
+
+	@Test
+	public void turnLeftDouble_iffp_leftHanded() {
+		Assume.assumeFalse(isIntCoordinates());		
+		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());
+		Point2D p;
+		
+		p = createPoint(1, 0);
+		p.turnLeft(Math.PI/2);
+		assertFpPointEquals(0, -1, p);
+
+		p = createPoint(0, 1);
+		p.turnLeft(Math.PI/2);
+		assertFpPointEquals(1, 0, p);
+
+		p = createPoint(-1, 0);
+		p.turnLeft(Math.PI/2);
+		assertFpPointEquals(0, 1, p);
+
+		p = createPoint(0, -1);
+		p.turnLeft(Math.PI/2);
+		assertFpPointEquals(-1, 0, p);
+
+		p = createPoint(1, 0);
+		p.turnLeft(-Math.PI/2);
+		assertFpPointEquals(0, 1, p);
+
+		p = createPoint(0, -1);
+		p.turnLeft(-Math.PI/2);
+		assertFpPointEquals(1, 0, p);
+
+		p = createPoint(-1, 0);
+		p.turnLeft(-Math.PI/2);
+		assertFpPointEquals(0, -1, p);
+
+		p = createPoint(0, 1);
+		p.turnLeft(-Math.PI/2);
+		assertFpPointEquals(-1, 0, p);
+
+		p = createPoint(12, 0);
+		p.turnLeft(Math.PI/6);
+		assertFpPointEquals(10.392304, -6, p);
+
+		p = createPoint(12, 0);
+		p.turnLeft(-Math.PI/6);
+		assertFpPointEquals(10.39230, 6, p);
+
+		p = createPoint(-4, 18);
+		p.turnLeft(Math.PI/11);
+		assertFpPointEquals(1.23321, 18.39780, p);
+
+		p = createPoint(-4, 18);
+		p.turnLeft(-Math.PI/11);
+		assertFpPointEquals(-8.90916, 16.14394, p);
+	}
+
+	@Test
+	public void turnLeftDouble_iffp_rightHanded() {
+		Assume.assumeFalse(isIntCoordinates());		
+		Assume.assumeFalse(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
+		Point2D p;
+		
+		p = createPoint(1, 0);
+		p.turnLeft(Math.PI/2);
+		assertFpPointEquals(0, 1, p);
+
+		p = createPoint(0, 1);
+		p.turnLeft(Math.PI/2);
+		assertFpPointEquals(-1, 0, p);
+
+		p = createPoint(-1, 0);
+		p.turnLeft(Math.PI/2);
+		assertFpPointEquals(0, -1, p);
+
+		p = createPoint(0, -1);
+		p.turnLeft(Math.PI/2);
+		assertFpPointEquals(1, 0, p);
+
+		p = createPoint(1, 0);
+		p.turnLeft(-Math.PI/2);
+		assertFpPointEquals(0, -1, p);
+
+		p = createPoint(0, -1);
+		p.turnLeft(-Math.PI/2);
+		assertFpPointEquals(-1, 0, p);
+
+		p = createPoint(-1, 0);
+		p.turnLeft(-Math.PI/2);
+		assertFpPointEquals(0, 1, p);
+
+		p = createPoint(0, 1);
+		p.turnLeft(-Math.PI/2);
+		assertFpPointEquals(1, 0, p);
+
+		p = createPoint(12, 0);
+		p.turnLeft(Math.PI/6);
+		assertFpPointEquals(10.392304, 6, p);
+
+		p = createPoint(12, 0);
+		p.turnLeft(-Math.PI/6);
+		assertFpPointEquals(10.39230, -6, p);
+
+		p = createPoint(-4, 18);
+		p.turnLeft(Math.PI/11);
+		assertFpPointEquals(-8.90916, 16.14394, p);
+
+		p = createPoint(-4, 18);
+		p.turnLeft(-Math.PI/11);
+		assertFpPointEquals(1.23321, 18.39780, p);
+	}
+
+	@Test
+	public void turnLeftDoublePoint2D_iffp_leftHanded() {
+		Assume.assumeFalse(isIntCoordinates());		
+		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
+		Point2D p = createPoint(0, 0);
+		
+		p.turnLeft(Math.PI/2, createPoint(1, 0));
+		assertFpPointEquals(0, -1, p);
+
+		p.turnLeft(Math.PI/2, createPoint(0, 1));
+		assertFpPointEquals(1, 0, p);
+
+		p.turnLeft(Math.PI/2, createPoint(-1, 0));
+		assertFpPointEquals(0, 1, p);
+
+		p.turnLeft(Math.PI/2, createPoint(0, -1));
+		assertFpPointEquals(-1, 0, p);
+
+		p.turnLeft(-Math.PI/2, createPoint(1, 0));
+		assertFpPointEquals(0, 1, p);
+
+		p.turnLeft(-Math.PI/2, createPoint(0, -1));
+		assertFpPointEquals(1, 0, p);
+
+		p.turnLeft(-Math.PI/2, createPoint(-1, 0));
+		assertFpPointEquals(0, -1, p);
+
+		p.turnLeft(-Math.PI/2, createPoint(0, 1));
+		assertFpPointEquals(-1, 0, p);
+
+		p.turnLeft(Math.PI/6, createPoint(12, 0));
+		assertFpPointEquals(10.392304, -6, p);
+
+		p.turnLeft(-Math.PI/6, createPoint(12, 0));
+		assertFpPointEquals(10.39230, 6, p);
+
+		p.turnLeft(Math.PI/11, createPoint(-4, 18));
+		assertFpPointEquals(1.23321, 18.39780, p);
+
+		p.turnLeft(-Math.PI/11, createPoint(-4, 18));
+		assertFpPointEquals(-8.90916, 16.14394, p);
+	}
+
+	@Test
+	public void turnLeftDoublePoint2D_iffp_rightHanded() {
+		Assume.assumeFalse(isIntCoordinates());		
+		Assume.assumeFalse(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
+		Point2D p = createPoint(0, 0);
+		
+		p.turnLeft(Math.PI/2, createPoint(1, 0));
+		assertFpPointEquals(0, 1, p);
+
+		p.turnLeft(Math.PI/2, createPoint(0, 1));
+		assertFpPointEquals(-1, 0, p);
+
+		p.turnLeft(Math.PI/2, createPoint(-1, 0));
+		assertFpPointEquals(0, -1, p);
+
+		p.turnLeft(Math.PI/2, createPoint(0, -1));
+		assertFpPointEquals(1, 0, p);
+
+		p.turnLeft(-Math.PI/2, createPoint(1, 0));
+		assertFpPointEquals(0, -1, p);
+
+		p.turnLeft(-Math.PI/2, createPoint(0, -1));
+		assertFpPointEquals(-1, 0, p);
+
+		p.turnLeft(-Math.PI/2, createPoint(-1, 0));
+		assertFpPointEquals(0, 1, p);
+
+		p.turnLeft(-Math.PI/2, createPoint(0, 1));
+		assertFpPointEquals(1, 0, p);
+
+		p.turnLeft(Math.PI/6, createPoint(12, 0));
+		assertFpPointEquals(10.392304, 6, p);
+
+		p.turnLeft(-Math.PI/6, createPoint(12, 0));
+		assertFpPointEquals(10.39230, -6, p);
+
+		p.turnLeft(Math.PI/11, createPoint(-4, 18));
+		assertFpPointEquals(-8.90916, 16.14394, p);
+
+		p.turnLeft(-Math.PI/11, createPoint(-4, 18));
+		assertFpPointEquals(1.23321, 18.39780, p);
+	}
+
+	@Test
+	public void turnLeftDoublePoint2DPoint2D_origin_iffp_leftHanded() {
+		Assume.assumeFalse(isIntCoordinates());		
+		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
+		Point2D origin = createPoint(0, 0);
+		Point2D p = createPoint(0, 0);
+		
+		p.turnLeft(Math.PI/2, createPoint(1, 0), origin);
+		assertFpPointEquals(0, -1, p);
+
+		p.turnLeft(Math.PI/2, createPoint(0, 1), origin);
+		assertFpPointEquals(1, 0, p);
+
+		p.turnLeft(Math.PI/2, createPoint(-1, 0), origin);
+		assertFpPointEquals(0, 1, p);
+
+		p.turnLeft(Math.PI/2, createPoint(0, -1), origin);
+		assertFpPointEquals(-1, 0, p);
+
+		p.turnLeft(-Math.PI/2, createPoint(1, 0), origin);
+		assertFpPointEquals(0, 1, p);
+
+		p.turnLeft(-Math.PI/2, createPoint(0, -1), origin);
+		assertFpPointEquals(1, 0, p);
+
+		p.turnLeft(-Math.PI/2, createPoint(-1, 0), origin);
+		assertFpPointEquals(0, -1, p);
+
+		p.turnLeft(-Math.PI/2, createPoint(0, 1), origin);
+		assertFpPointEquals(-1, 0, p);
+
+		p.turnLeft(Math.PI/6, createPoint(12, 0), origin);
+		assertFpPointEquals(10.392304, -6, p);
+
+		p.turnLeft(-Math.PI/6, createPoint(12, 0), origin);
+		assertFpPointEquals(10.39230, 6, p);
+
+		p.turnLeft(Math.PI/11, createPoint(-4, 18), origin);
+		assertFpPointEquals(1.23321, 18.39780, p);
+
+		p.turnLeft(-Math.PI/11, createPoint(-4, 18), origin);
+		assertFpPointEquals(-8.90916, 16.14394, p);
+	}
+
+	@Test
+	public void turnLeftDoublePoint2DPoint2D_origin_iffp_rightHanded() {
+		Assume.assumeFalse(isIntCoordinates());		
+		Assume.assumeFalse(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
+		Point2D origin = createPoint(0, 0);
+		Point2D p = createPoint(0, 0);
+		
+		p.turnLeft(Math.PI/2, createPoint(1, 0), origin);
+		assertFpPointEquals(0, 1, p);
+
+		p.turnLeft(Math.PI/2, createPoint(0, 1), origin);
+		assertFpPointEquals(-1, 0, p);
+
+		p.turnLeft(Math.PI/2, createPoint(-1, 0), origin);
+		assertFpPointEquals(0, -1, p);
+
+		p.turnLeft(Math.PI/2, createPoint(0, -1), origin);
+		assertFpPointEquals(1, 0, p);
+
+		p.turnLeft(-Math.PI/2, createPoint(1, 0), origin);
+		assertFpPointEquals(0, -1, p);
+
+		p.turnLeft(-Math.PI/2, createPoint(0, -1), origin);
+		assertFpPointEquals(-1, 0, p);
+
+		p.turnLeft(-Math.PI/2, createPoint(-1, 0), origin);
+		assertFpPointEquals(0, 1, p);
+
+		p.turnLeft(-Math.PI/2, createPoint(0, 1), origin);
+		assertFpPointEquals(1, 0, p);
+
+		p.turnLeft(Math.PI/6, createPoint(12, 0), origin);
+		assertFpPointEquals(10.392304, 6, p);
+
+		p.turnLeft(-Math.PI/6, createPoint(12, 0), origin);
+		assertFpPointEquals(10.39230, -6, p);
+
+		p.turnLeft(Math.PI/11, createPoint(-4, 18), origin);
+		assertFpPointEquals(-8.90916, 16.14394, p);
+
+		p.turnLeft(-Math.PI/11, createPoint(-4, 18), origin);
+		assertFpPointEquals(1.23321, 18.39780, p);
+	}
+
+	@Test
+	public void turnLeftDoublePoint2DPoint2D_aroundP_iffp_leftHanded() {
+		Assume.assumeFalse(isIntCoordinates());		
+		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
+		Point2D origin = createPoint(-45, 12);
+		Point2D p = createPoint(0, 0);
+		
+		p.turnLeft(Math.PI/2, createPoint(1, 0), origin);
+		assertFpPointEquals(-57, -34, p);
+
+		p.turnLeft(Math.PI/2, createPoint(0, 1), origin);
+		assertFpPointEquals(-56, -33, p);
+
+		p.turnLeft(Math.PI/2, createPoint(-1, 0), origin);
+		assertFpPointEquals(-57, -32, p);
+
+		p.turnLeft(Math.PI/2, createPoint(0, -1), origin);
+		assertFpPointEquals(-58, -33, p);
+
+		p.turnLeft(-Math.PI/2, createPoint(1, 0), origin);
+		assertFpPointEquals(-33, 58, p);
+
+		p.turnLeft(-Math.PI/2, createPoint(0, -1), origin);
+		assertFpPointEquals(-32, 57, p);
+
+		p.turnLeft(-Math.PI/2, createPoint(-1, 0), origin);
+		assertFpPointEquals(-33, 56, p);
+
+		p.turnLeft(-Math.PI/2, createPoint(0, 1), origin);
+		assertFpPointEquals(-34, 57, p);
+
+		p.turnLeft(Math.PI/6, createPoint(12, 0), origin);
+		assertFpPointEquals(-1.63655, -26.89230, p);
+
+		p.turnLeft(-Math.PI/6, createPoint(12, 0), origin);
+		assertFpPointEquals(10.36345, 30.1077, p);
+
+		p.turnLeft(Math.PI/11, createPoint(-4, 18), origin);
+		assertFpPointEquals(-3.97039, 6.20592, p);
+
+		p.turnLeft(-Math.PI/11, createPoint(-4, 18), origin);
+		assertFpPointEquals(-7.35118, 29.30799, p);
+	}
+
+	@Test
+	public void turnLeftDoublePoint2DPoint2D_aroundP_iffp_rightHanded() {
+		Assume.assumeFalse(isIntCoordinates());		
+		Assume.assumeFalse(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
+		Point2D origin = createPoint(-45, 12);
+		Point2D p = createPoint(0, 0);
+		
+		p.turnLeft(Math.PI/2, createPoint(1, 0), origin);
+		assertFpPointEquals(-33, 58, p);
+
+		p.turnLeft(Math.PI/2, createPoint(0, 1), origin);
+		assertFpPointEquals(-34, 57, p);
+
+		p.turnLeft(Math.PI/2, createPoint(-1, 0), origin);
+		assertFpPointEquals(-33, 56, p);
+
+		p.turnLeft(Math.PI/2, createPoint(0, -1), origin);
+		assertFpPointEquals(-32, 57, p);
+
+		p.turnLeft(-Math.PI/2, createPoint(1, 0), origin);
+		assertFpPointEquals(-57, -34, p);
+
+		p.turnLeft(-Math.PI/2, createPoint(0, -1), origin);
+		assertFpPointEquals(-58, -33, p);
+
+		p.turnLeft(-Math.PI/2, createPoint(-1, 0), origin);
+		assertFpPointEquals(-57, -32, p);
+
+		p.turnLeft(-Math.PI/2, createPoint(0, 1), origin);
+		assertFpPointEquals(-56, -33, p);
+
+		p.turnLeft(Math.PI/6, createPoint(12, 0), origin);
+		assertFpPointEquals(10.36345, 30.1077, p);
+
+		p.turnLeft(-Math.PI/6, createPoint(12, 0), origin);
+		assertFpPointEquals(-1.63655, -26.89230, p);
+
+		p.turnLeft(Math.PI/11, createPoint(-4, 18), origin);
+		assertFpPointEquals(-7.35118, 29.30799, p);
+
+		p.turnLeft(-Math.PI/11, createPoint(-4, 18), origin);
+		assertFpPointEquals(-3.97039, 6.20592, p);
+	}
+
+	@Test
+	public void turnRightDouble_iffp_leftHanded() {
+		Assume.assumeFalse(isIntCoordinates());		
+		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());
+		Point2D p;
+		
+		p = createPoint(1, 0);
+		p.turnRight(Math.PI/2);
+		assertFpPointEquals(0, 1, p);
+
+		p = createPoint(0, 1);
+		p.turnRight(Math.PI/2);
+		assertFpPointEquals(-1, 0, p);
+
+		p = createPoint(-1, 0);
+		p.turnRight(Math.PI/2);
+		assertFpPointEquals(0, -1, p);
+
+		p = createPoint(0, -1);
+		p.turnRight(Math.PI/2);
+		assertFpPointEquals(1, 0, p);
+
+		p = createPoint(1, 0);
+		p.turnRight(-Math.PI/2);
+		assertFpPointEquals(0, -1, p);
+
+		p = createPoint(0, -1);
+		p.turnRight(-Math.PI/2);
+		assertFpPointEquals(-1, 0, p);
+
+		p = createPoint(-1, 0);
+		p.turnRight(-Math.PI/2);
+		assertFpPointEquals(0, 1, p);
+
+		p = createPoint(0, 1);
+		p.turnRight(-Math.PI/2);
+		assertFpPointEquals(1, 0, p);
+
+		p = createPoint(12, 0);
+		p.turnRight(Math.PI/6);
+		assertFpPointEquals(10.39230, 6, p);
+
+		p = createPoint(12, 0);
+		p.turnRight(-Math.PI/6);
+		assertFpPointEquals(10.392304, -6, p);
+
+		p = createPoint(-4, 18);
+		p.turnRight(Math.PI/11);
+		assertFpPointEquals(-8.90916, 16.14394, p);
+
+		p = createPoint(-4, 18);
+		p.turnRight(-Math.PI/11);
+		assertFpPointEquals(1.23321, 18.39780, p);
+	}
+
+	@Test
+	public void turnRightDouble_iffp_rightHanded() {
+		Assume.assumeFalse(isIntCoordinates());		
+		Assume.assumeFalse(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
+		Point2D p;
+		
+		p = createPoint(1, 0);
+		p.turnRight(Math.PI/2);
+		assertFpPointEquals(0, -1, p);
+
+		p = createPoint(0, 1);
+		p.turnRight(Math.PI/2);
+		assertFpPointEquals(1, 0, p);
+
+		p = createPoint(-1, 0);
+		p.turnRight(Math.PI/2);
+		assertFpPointEquals(0, 1, p);
+
+		p = createPoint(0, -1);
+		p.turnRight(Math.PI/2);
+		assertFpPointEquals(-1, 0, p);
+
+		p = createPoint(1, 0);
+		p.turnRight(-Math.PI/2);
+		assertFpPointEquals(0, 1, p);
+
+		p = createPoint(0, -1);
+		p.turnRight(-Math.PI/2);
+		assertFpPointEquals(1, 0, p);
+
+		p = createPoint(-1, 0);
+		p.turnRight(-Math.PI/2);
+		assertFpPointEquals(0, -1, p);
+
+		p = createPoint(0, 1);
+		p.turnRight(-Math.PI/2);
+		assertFpPointEquals(-1, 0, p);
+
+		p = createPoint(12, 0);
+		p.turnRight(Math.PI/6);
+		assertFpPointEquals(10.39230, -6, p);
+
+		p = createPoint(12, 0);
+		p.turnRight(-Math.PI/6);
+		assertFpPointEquals(10.392304, 6, p);
+
+		p = createPoint(-4, 18);
+		p.turnRight(Math.PI/11);
+		assertFpPointEquals(1.23321, 18.39780, p);
+
+		p = createPoint(-4, 18);
+		p.turnRight(-Math.PI/11);
+		assertFpPointEquals(-8.90916, 16.14394, p);
+	}
+
+	@Test
+	public void turnRightDoublePoint2D_iffp_leftHanded() {
+		Assume.assumeFalse(isIntCoordinates());		
+		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
+		Point2D p = createPoint(0, 0);
+		
+		p.turnRight(Math.PI/2, createPoint(1, 0));
+		assertFpPointEquals(0, 1, p);
+
+		p.turnRight(Math.PI/2, createPoint(0, 1));
+		assertFpPointEquals(-1, 0, p);
+
+		p.turnRight(Math.PI/2, createPoint(-1, 0));
+		assertFpPointEquals(0, -1, p);
+
+		p.turnRight(Math.PI/2, createPoint(0, -1));
+		assertFpPointEquals(1, 0, p);
+
+		p.turnRight(-Math.PI/2, createPoint(1, 0));
+		assertFpPointEquals(0, -1, p);
+
+		p.turnRight(-Math.PI/2, createPoint(0, -1));
+		assertFpPointEquals(-1, 0, p);
+
+		p.turnRight(-Math.PI/2, createPoint(-1, 0));
+		assertFpPointEquals(0, 1, p);
+
+		p.turnRight(-Math.PI/2, createPoint(0, 1));
+		assertFpPointEquals(1, 0, p);
+
+		p.turnRight(Math.PI/6, createPoint(12, 0));
+		assertFpPointEquals(10.392304, 6, p);
+
+		p.turnRight(-Math.PI/6, createPoint(12, 0));
+		assertFpPointEquals(10.39230, -6, p);
+
+		p.turnRight(Math.PI/11, createPoint(-4, 18));
+		assertFpPointEquals(-8.90916, 16.14394, p);
+
+		p.turnRight(-Math.PI/11, createPoint(-4, 18));
+		assertFpPointEquals(1.23321, 18.39780, p);
+	}
+
+	@Test
+	public void turnRightDoublePoint2D_iffp_rightHanded() {
+		Assume.assumeFalse(isIntCoordinates());		
+		Assume.assumeFalse(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
+		Assume.assumeFalse(isIntCoordinates());		
+		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
+		Point2D p = createPoint(0, 0);
+		
+		p.turnRight(Math.PI/2, createPoint(1, 0));
+		assertFpPointEquals(0, -1, p);
+
+		p.turnRight(Math.PI/2, createPoint(0, 1));
+		assertFpPointEquals(1, 0, p);
+
+		p.turnRight(Math.PI/2, createPoint(-1, 0));
+		assertFpPointEquals(0, 1, p);
+
+		p.turnRight(Math.PI/2, createPoint(0, -1));
+		assertFpPointEquals(-1, 0, p);
+
+		p.turnRight(-Math.PI/2, createPoint(1, 0));
+		assertFpPointEquals(0, 1, p);
+
+		p.turnRight(-Math.PI/2, createPoint(0, -1));
+		assertFpPointEquals(1, 0, p);
+
+		p.turnRight(-Math.PI/2, createPoint(-1, 0));
+		assertFpPointEquals(0, -1, p);
+
+		p.turnRight(-Math.PI/2, createPoint(0, 1));
+		assertFpPointEquals(-1, 0, p);
+
+		p.turnRight(Math.PI/6, createPoint(12, 0));
+		assertFpPointEquals(10.392304, -6, p);
+
+		p.turnRight(-Math.PI/6, createPoint(12, 0));
+		assertFpPointEquals(10.39230, 6, p);
+
+		p.turnRight(Math.PI/11, createPoint(-4, 18));
+		assertFpPointEquals(1.23321, 18.39780, p);
+
+		p.turnRight(-Math.PI/11, createPoint(-4, 18));
+		assertFpPointEquals(-8.90916, 16.14394, p);
+	}
+
+	@Test
+	public void turnRightDoublePoint2DPoint2D_origin_iffp_leftHanded() {
+		Assume.assumeFalse(isIntCoordinates());		
+		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
+		Point2D origin = createPoint(0, 0);
+		Point2D p = createPoint(0, 0);
+		
+		p.turnRight(Math.PI/2, createPoint(1, 0), origin);
+		assertFpPointEquals(0, 1, p);
+
+		p.turnRight(Math.PI/2, createPoint(0, 1), origin);
+		assertFpPointEquals(-1, 0, p);
+
+		p.turnRight(Math.PI/2, createPoint(-1, 0), origin);
+		assertFpPointEquals(0, -1, p);
+
+		p.turnRight(Math.PI/2, createPoint(0, -1), origin);
+		assertFpPointEquals(1, 0, p);
+
+		p.turnRight(-Math.PI/2, createPoint(1, 0), origin);
+		assertFpPointEquals(0, -1, p);
+
+		p.turnRight(-Math.PI/2, createPoint(0, -1), origin);
+		assertFpPointEquals(-1, 0, p);
+
+		p.turnRight(-Math.PI/2, createPoint(-1, 0), origin);
+		assertFpPointEquals(0, 1, p);
+
+		p.turnRight(-Math.PI/2, createPoint(0, 1), origin);
+		assertFpPointEquals(1, 0, p);
+
+		p.turnRight(Math.PI/6, createPoint(12, 0), origin);
+		assertFpPointEquals(10.39230, 6, p);
+
+		p.turnRight(-Math.PI/6, createPoint(12, 0), origin);
+		assertFpPointEquals(10.392304, -6, p);
+
+		p.turnRight(Math.PI/11, createPoint(-4, 18), origin);
+		assertFpPointEquals(-8.90916, 16.14394, p);
+
+		p.turnRight(-Math.PI/11, createPoint(-4, 18), origin);
+		assertFpPointEquals(1.23321, 18.39780, p);
+	}
+
+	@Test
+	public void turnRightDoublePoint2DPoint2D_origin_iffp_rightHanded() {
+		Assume.assumeFalse(isIntCoordinates());		
+		Assume.assumeFalse(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
+		Point2D origin = createPoint(0, 0);
+		Point2D p = createPoint(0, 0);
+		
+		p.turnRight(Math.PI/2, createPoint(1, 0), origin);
+		assertFpPointEquals(0, -1, p);
+
+		p.turnRight(Math.PI/2, createPoint(0, 1), origin);
+		assertFpPointEquals(1, 0, p);
+
+		p.turnRight(Math.PI/2, createPoint(-1, 0), origin);
+		assertFpPointEquals(0, 1, p);
+
+		p.turnRight(Math.PI/2, createPoint(0, -1), origin);
+		assertFpPointEquals(-1, 0, p);
+
+		p.turnRight(-Math.PI/2, createPoint(1, 0), origin);
+		assertFpPointEquals(0, 1, p);
+
+		p.turnRight(-Math.PI/2, createPoint(0, -1), origin);
+		assertFpPointEquals(1, 0, p);
+
+		p.turnRight(-Math.PI/2, createPoint(-1, 0), origin);
+		assertFpPointEquals(0, -1, p);
+
+		p.turnRight(-Math.PI/2, createPoint(0, 1), origin);
+		assertFpPointEquals(-1, 0, p);
+
+		p.turnRight(Math.PI/6, createPoint(12, 0), origin);
+		assertFpPointEquals(10.39230, -6, p);
+
+		p.turnRight(-Math.PI/6, createPoint(12, 0), origin);
+		assertFpPointEquals(10.392304, 6, p);
+
+		p.turnRight(Math.PI/11, createPoint(-4, 18), origin);
+		assertFpPointEquals(1.23321, 18.39780, p);
+
+		p.turnRight(-Math.PI/11, createPoint(-4, 18), origin);
+		assertFpPointEquals(-8.90916, 16.14394, p);
+	}
+
+	@Test
+	public void turnRightDoublePoint2DPoint2D_aroundP_iffp_leftHanded() {
+		Assume.assumeFalse(isIntCoordinates());		
+		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
+		Point2D origin = createPoint(-45, 12);
+		Point2D p = createPoint(0, 0);
+		
+		p.turnRight(Math.PI/2, createPoint(1, 0), origin);
+		assertFpPointEquals(-33, 58, p);
+
+		p.turnRight(Math.PI/2, createPoint(0, 1), origin);
+		assertFpPointEquals(-34, 57, p);
+
+		p.turnRight(Math.PI/2, createPoint(-1, 0), origin);
+		assertFpPointEquals(-33, 56, p);
+
+		p.turnRight(Math.PI/2, createPoint(0, -1), origin);
+		assertFpPointEquals(-32, 57, p);
+
+		p.turnRight(-Math.PI/2, createPoint(1, 0), origin);
+		assertFpPointEquals(-57, -34, p);
+
+		p.turnRight(-Math.PI/2, createPoint(0, -1), origin);
+		assertFpPointEquals(-58, -33, p);
+
+		p.turnRight(-Math.PI/2, createPoint(-1, 0), origin);
+		assertFpPointEquals(-57, -32, p);
+
+		p.turnRight(-Math.PI/2, createPoint(0, 1), origin);
+		assertFpPointEquals(-56, -33, p);
+
+		p.turnRight(Math.PI/6, createPoint(12, 0), origin);
+		assertFpPointEquals(10.36345, 30.1077, p);
+
+		p.turnRight(-Math.PI/6, createPoint(12, 0), origin);
+		assertFpPointEquals(-1.63655, -26.89230, p);
+
+		p.turnRight(Math.PI/11, createPoint(-4, 18), origin);
+		assertFpPointEquals(-7.35118, 29.30799, p);
+
+		p.turnRight(-Math.PI/11, createPoint(-4, 18), origin);
+		assertFpPointEquals(-3.97039, 6.20592, p);
+	}
+
+	@Test
+	public void turnRightDoublePoint2DPoint2D_aroundP_iffp_rightHanded() {
+		Assume.assumeFalse(isIntCoordinates());		
+		Assume.assumeFalse(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
+		Point2D origin = createPoint(-45, 12);
+		Point2D p = createPoint(0, 0);
+		
+		p.turnRight(Math.PI/2, createPoint(1, 0), origin);
+		assertFpPointEquals(-57, -34, p);
+
+		p.turnRight(Math.PI/2, createPoint(0, 1), origin);
+		assertFpPointEquals(-56, -33, p);
+
+		p.turnRight(Math.PI/2, createPoint(-1, 0), origin);
+		assertFpPointEquals(-57, -32, p);
+
+		p.turnRight(Math.PI/2, createPoint(0, -1), origin);
+		assertFpPointEquals(-58, -33, p);
+
+		p.turnRight(-Math.PI/2, createPoint(1, 0), origin);
+		assertFpPointEquals(-33, 58, p);
+
+		p.turnRight(-Math.PI/2, createPoint(0, -1), origin);
+		assertFpPointEquals(-32, 57, p);
+
+		p.turnRight(-Math.PI/2, createPoint(-1, 0), origin);
+		assertFpPointEquals(-33, 56, p);
+
+		p.turnRight(-Math.PI/2, createPoint(0, 1), origin);
+		assertFpPointEquals(-34, 57, p);
+
+		p.turnRight(Math.PI/6, createPoint(12, 0), origin);
+		assertFpPointEquals(-1.63655, -26.89230, p);
+
+		p.turnRight(-Math.PI/6, createPoint(12, 0), origin);
+		assertFpPointEquals(10.36345, 30.1077, p);
+
+		p.turnRight(Math.PI/11, createPoint(-4, 18), origin);
+		assertFpPointEquals(-3.97039, 6.20592, p);
+
+		p.turnRight(-Math.PI/11, createPoint(-4, 18), origin);
+		assertFpPointEquals(-7.35118, 29.30799, p);
+	}
+
+	@Test
+	public void turnDouble_ifi() {
+		Assume.assumeTrue(isIntCoordinates());
+		
+		Point2D p;
+		
+		p = createPoint(1, 0);
+		p.turn(Math.PI/2);
+		assertIntPointEquals(0, 1, p);
+
+		p = createPoint(0, 1);
+		p.turn(Math.PI/2);
+		assertIntPointEquals(-1, 0, p);
+
+		p = createPoint(-1, 0);
+		p.turn(Math.PI/2);
+		assertIntPointEquals(0, -1, p);
+
+		p = createPoint(0, -1);
+		p.turn(Math.PI/2);
+		assertIntPointEquals(1, 0, p);
+
+		p = createPoint(1, 0);
+		p.turn(-Math.PI/2);
+		assertIntPointEquals(0, -1, p);
+
+		p = createPoint(0, -1);
+		p.turn(-Math.PI/2);
+		assertIntPointEquals(-1, 0, p);
+
+		p = createPoint(-1, 0);
+		p.turn(-Math.PI/2);
+		assertIntPointEquals(0, 1, p);
+
+		p = createPoint(0, 1);
+		p.turn(-Math.PI/2);
+		assertIntPointEquals(1, 0, p);
+
+		p = createPoint(12, 0);
+		p.turn(Math.PI/6);
+		assertIntPointEquals(10, 6, p);
+
+		p = createPoint(12, 0);
+		p.turn(-Math.PI/6);
+		assertIntPointEquals(10, -6, p);
+
+		p = createPoint(-4, 18);
+		p.turn(Math.PI/11);
+		assertIntPointEquals(-9, 16, p);
+
+		p = createPoint(-4, 18);
+		p.turn(-Math.PI/11);
+		assertIntPointEquals(1, 18, p);
+	}
+
+	@Test
+	public void turnDoublePoint2D_ifi() {
+		Assume.assumeTrue(isIntCoordinates());
+		
+		Point2D p = createPoint(0, 0);
+		
+		p.turn(Math.PI/2, createPoint(1, 0));
+		assertIntPointEquals(0, 1, p);
+
+		p.turn(Math.PI/2, createPoint(0, 1));
+		assertIntPointEquals(-1, 0, p);
+
+		p.turn(Math.PI/2, createPoint(-1, 0));
+		assertIntPointEquals(0, -1, p);
+
+		p.turn(Math.PI/2, createPoint(0, -1));
+		assertIntPointEquals(1, 0, p);
+
+		p.turn(-Math.PI/2, createPoint(1, 0));
+		assertIntPointEquals(0, -1, p);
+
+		p.turn(-Math.PI/2, createPoint(0, -1));
+		assertIntPointEquals(-1, 0, p);
+
+		p.turn(-Math.PI/2, createPoint(-1, 0));
+		assertIntPointEquals(0, 1, p);
+
+		p.turn(-Math.PI/2, createPoint(0, 1));
+		assertIntPointEquals(1, 0, p);
+
+		p.turn(Math.PI/6, createPoint(12, 0));
+		assertIntPointEquals(10, 6, p);
+
+		p.turn(-Math.PI/6, createPoint(12, 0));
+		assertIntPointEquals(10, -6, p);
+
+		p.turn(Math.PI/11, createPoint(-4, 18));
+		assertIntPointEquals(-9, 16, p);
+
+		p.turn(-Math.PI/11, createPoint(-4, 18));
+		assertIntPointEquals(1, 18, p);
+	}
+
+	@Test
+	public void turnDoublePoint2DPoint2D_origin_ifi() {
+		Assume.assumeTrue(isIntCoordinates());
+		
+		Point2D origin = createPoint(0, 0);
+		Point2D p = createPoint(0, 0);
+		
+		p.turn(Math.PI/2, createPoint(1, 0), origin);
+		assertIntPointEquals(0, 1, p);
+
+		p.turn(Math.PI/2, createPoint(0, 1), origin);
+		assertIntPointEquals(-1, 0, p);
+
+		p.turn(Math.PI/2, createPoint(-1, 0), origin);
+		assertIntPointEquals(0, -1, p);
+
+		p.turn(Math.PI/2, createPoint(0, -1), origin);
+		assertIntPointEquals(1, 0, p);
+
+		p.turn(-Math.PI/2, createPoint(1, 0), origin);
+		assertIntPointEquals(0, -1, p);
+
+		p.turn(-Math.PI/2, createPoint(0, -1), origin);
+		assertIntPointEquals(-1, 0, p);
+
+		p.turn(-Math.PI/2, createPoint(-1, 0), origin);
+		assertIntPointEquals(0, 1, p);
+
+		p.turn(-Math.PI/2, createPoint(0, 1), origin);
+		assertIntPointEquals(1, 0, p);
+
+		p.turn(Math.PI/6, createPoint(12, 0), origin);
+		assertIntPointEquals(10, 6, p);
+
+		p.turn(-Math.PI/6, createPoint(12, 0), origin);
+		assertIntPointEquals(10, -6, p);
+
+		p.turn(Math.PI/11, createPoint(-4, 18), origin);
+		assertIntPointEquals(-9, 16, p);
+
+		p.turn(-Math.PI/11, createPoint(-4, 18), origin);
+		assertIntPointEquals(1, 18, p);
+	}
+
+	@Test
+	public void turnDoublePoint2DPoint2D_aroundP_ifi() {
+		Assume.assumeTrue(isIntCoordinates());
+		
+		Point2D origin = createPoint(-45, 12);
+		Point2D p = createPoint(0, 0);
+		
+		p.turn(Math.PI/2, createPoint(1, 0), origin);
+		assertIntPointEquals(-33, 58, p);
+
+		p.turn(Math.PI/2, createPoint(0, 1), origin);
+		assertIntPointEquals(-34, 57, p);
+
+		p.turn(Math.PI/2, createPoint(-1, 0), origin);
+		assertIntPointEquals(-33, 56, p);
+
+		p.turn(Math.PI/2, createPoint(0, -1), origin);
+		assertIntPointEquals(-32, 57, p);
+
+		p.turn(-Math.PI/2, createPoint(1, 0), origin);
+		assertIntPointEquals(-57, -34, p);
+
+		p.turn(-Math.PI/2, createPoint(0, -1), origin);
+		assertIntPointEquals(-58, -33, p);
+
+		p.turn(-Math.PI/2, createPoint(-1, 0), origin);
+		assertIntPointEquals(-57, -32, p);
+
+		p.turn(-Math.PI/2, createPoint(0, 1), origin);
+		assertIntPointEquals(-56, -33, p);
+
+		p.turn(Math.PI/6, createPoint(12, 0), origin);
+		assertIntPointEquals(10, 30, p);
+
+		p.turn(-Math.PI/6, createPoint(12, 0), origin);
+		assertIntPointEquals(-2, -27, p);
+
+		p.turn(Math.PI/11, createPoint(-4, 18), origin);
+		assertIntPointEquals(-7, 29, p);
+
+		p.turn(-Math.PI/11, createPoint(-4, 18), origin);
+		assertIntPointEquals(-4, 6, p);
+	}
+
+	@Test
+	public void turnLeftDouble_ifi_leftHanded() {
+		Assume.assumeTrue(isIntCoordinates());		
+		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());
+		Point2D p;
+		
+		p = createPoint(1, 0);
+		p.turnLeft(Math.PI/2);
+		assertIntPointEquals(0, -1, p);
+
+		p = createPoint(0, 1);
+		p.turnLeft(Math.PI/2);
+		assertIntPointEquals(1, 0, p);
+
+		p = createPoint(-1, 0);
+		p.turnLeft(Math.PI/2);
+		assertIntPointEquals(0, 1, p);
+
+		p = createPoint(0, -1);
+		p.turnLeft(Math.PI/2);
+		assertIntPointEquals(-1, 0, p);
+
+		p = createPoint(1, 0);
+		p.turnLeft(-Math.PI/2);
+		assertIntPointEquals(0, 1, p);
+
+		p = createPoint(0, -1);
+		p.turnLeft(-Math.PI/2);
+		assertIntPointEquals(1, 0, p);
+
+		p = createPoint(-1, 0);
+		p.turnLeft(-Math.PI/2);
+		assertIntPointEquals(0, -1, p);
+
+		p = createPoint(0, 1);
+		p.turnLeft(-Math.PI/2);
+		assertIntPointEquals(-1, 0, p);
+
+		p = createPoint(12, 0);
+		p.turnLeft(Math.PI/6);
+		assertIntPointEquals(10, -6, p);
+
+		p = createPoint(12, 0);
+		p.turnLeft(-Math.PI/6);
+		assertIntPointEquals(10, 6, p);
+
+		p = createPoint(-4, 18);
+		p.turnLeft(Math.PI/11);
+		assertIntPointEquals(1, 18, p);
+
+		p = createPoint(-4, 18);
+		p.turnLeft(-Math.PI/11);
+		assertIntPointEquals(-9, 16, p);
+	}
+
+	@Test
+	public void turnLeftDouble_ifi_rightHanded() {
+		Assume.assumeTrue(isIntCoordinates());		
+		Assume.assumeFalse(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
+		Point2D p;
+		
+		p = createPoint(1, 0);
+		p.turnLeft(Math.PI/2);
+		assertIntPointEquals(0, 1, p);
+
+		p = createPoint(0, 1);
+		p.turnLeft(Math.PI/2);
+		assertIntPointEquals(-1, 0, p);
+
+		p = createPoint(-1, 0);
+		p.turnLeft(Math.PI/2);
+		assertIntPointEquals(0, -1, p);
+
+		p = createPoint(0, -1);
+		p.turnLeft(Math.PI/2);
+		assertIntPointEquals(1, 0, p);
+
+		p = createPoint(1, 0);
+		p.turnLeft(-Math.PI/2);
+		assertIntPointEquals(0, -1, p);
+
+		p = createPoint(0, -1);
+		p.turnLeft(-Math.PI/2);
+		assertIntPointEquals(-1, 0, p);
+
+		p = createPoint(-1, 0);
+		p.turnLeft(-Math.PI/2);
+		assertIntPointEquals(0, 1, p);
+
+		p = createPoint(0, 1);
+		p.turnLeft(-Math.PI/2);
+		assertIntPointEquals(1, 0, p);
+
+		p = createPoint(12, 0);
+		p.turnLeft(Math.PI/6);
+		assertIntPointEquals(10, 6, p);
+
+		p = createPoint(12, 0);
+		p.turnLeft(-Math.PI/6);
+		assertIntPointEquals(10, -6, p);
+
+		p = createPoint(-4, 18);
+		p.turnLeft(Math.PI/11);
+		assertIntPointEquals(-9, 16, p);
+
+		p = createPoint(-4, 18);
+		p.turnLeft(-Math.PI/11);
+		assertIntPointEquals(1, 18, p);
+	}
+
+	@Test
+	public void turnLeftDoublePoint2D_ifi_leftHanded() {
+		Assume.assumeTrue(isIntCoordinates());		
+		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
+		Point2D p = createPoint(0, 0);
+		
+		p.turnLeft(Math.PI/2, createPoint(1, 0));
+		assertIntPointEquals(0, -1, p);
+
+		p.turnLeft(Math.PI/2, createPoint(0, 1));
+		assertIntPointEquals(1, 0, p);
+
+		p.turnLeft(Math.PI/2, createPoint(-1, 0));
+		assertIntPointEquals(0, 1, p);
+
+		p.turnLeft(Math.PI/2, createPoint(0, -1));
+		assertIntPointEquals(-1, 0, p);
+
+		p.turnLeft(-Math.PI/2, createPoint(1, 0));
+		assertIntPointEquals(0, 1, p);
+
+		p.turnLeft(-Math.PI/2, createPoint(0, -1));
+		assertIntPointEquals(1, 0, p);
+
+		p.turnLeft(-Math.PI/2, createPoint(-1, 0));
+		assertIntPointEquals(0, -1, p);
+
+		p.turnLeft(-Math.PI/2, createPoint(0, 1));
+		assertIntPointEquals(-1, 0, p);
+
+		p.turnLeft(Math.PI/6, createPoint(12, 0));
+		assertIntPointEquals(10, -6, p);
+
+		p.turnLeft(-Math.PI/6, createPoint(12, 0));
+		assertIntPointEquals(10, 6, p);
+
+		p.turnLeft(Math.PI/11, createPoint(-4, 18));
+		assertIntPointEquals(1, 18, p);
+
+		p.turnLeft(-Math.PI/11, createPoint(-4, 18));
+		assertIntPointEquals(-9, 16, p);
+	}
+
+	@Test
+	public void turnLeftDoublePoint2D_ifi_rightHanded() {
+		Assume.assumeTrue(isIntCoordinates());		
+		Assume.assumeFalse(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
+		Point2D p = createPoint(0, 0);
+		
+		p.turnLeft(Math.PI/2, createPoint(1, 0));
+		assertIntPointEquals(0, 1, p);
+
+		p.turnLeft(Math.PI/2, createPoint(0, 1));
+		assertIntPointEquals(-1, 0, p);
+
+		p.turnLeft(Math.PI/2, createPoint(-1, 0));
+		assertIntPointEquals(0, -1, p);
+
+		p.turnLeft(Math.PI/2, createPoint(0, -1));
+		assertIntPointEquals(1, 0, p);
+
+		p.turnLeft(-Math.PI/2, createPoint(1, 0));
+		assertIntPointEquals(0, -1, p);
+
+		p.turnLeft(-Math.PI/2, createPoint(0, -1));
+		assertIntPointEquals(-1, 0, p);
+
+		p.turnLeft(-Math.PI/2, createPoint(-1, 0));
+		assertIntPointEquals(0, 1, p);
+
+		p.turnLeft(-Math.PI/2, createPoint(0, 1));
+		assertIntPointEquals(1, 0, p);
+
+		p.turnLeft(Math.PI/6, createPoint(12, 0));
+		assertIntPointEquals(10, 6, p);
+
+		p.turnLeft(-Math.PI/6, createPoint(12, 0));
+		assertIntPointEquals(10, -6, p);
+
+		p.turnLeft(Math.PI/11, createPoint(-4, 18));
+		assertIntPointEquals(-9, 16, p);
+
+		p.turnLeft(-Math.PI/11, createPoint(-4, 18));
+		assertIntPointEquals(1, 18, p);
+	}
+
+	@Test
+	public void turnLeftDoublePoint2DPoint2D_origin_ifi_leftHanded() {
+		Assume.assumeTrue(isIntCoordinates());		
+		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
+		Point2D origin = createPoint(0, 0);
+		Point2D p = createPoint(0, 0);
+		
+		p.turnLeft(Math.PI/2, createPoint(1, 0), origin);
+		assertIntPointEquals(0, -1, p);
+
+		p.turnLeft(Math.PI/2, createPoint(0, 1), origin);
+		assertIntPointEquals(1, 0, p);
+
+		p.turnLeft(Math.PI/2, createPoint(-1, 0), origin);
+		assertIntPointEquals(0, 1, p);
+
+		p.turnLeft(Math.PI/2, createPoint(0, -1), origin);
+		assertIntPointEquals(-1, 0, p);
+
+		p.turnLeft(-Math.PI/2, createPoint(1, 0), origin);
+		assertIntPointEquals(0, 1, p);
+
+		p.turnLeft(-Math.PI/2, createPoint(0, -1), origin);
+		assertIntPointEquals(1, 0, p);
+
+		p.turnLeft(-Math.PI/2, createPoint(-1, 0), origin);
+		assertIntPointEquals(0, -1, p);
+
+		p.turnLeft(-Math.PI/2, createPoint(0, 1), origin);
+		assertIntPointEquals(-1, 0, p);
+
+		p.turnLeft(Math.PI/6, createPoint(12, 0), origin);
+		assertIntPointEquals(10, -6, p);
+
+		p.turnLeft(-Math.PI/6, createPoint(12, 0), origin);
+		assertIntPointEquals(10, 6, p);
+
+		p.turnLeft(Math.PI/11, createPoint(-4, 18), origin);
+		assertIntPointEquals(1, 18, p);
+
+		p.turnLeft(-Math.PI/11, createPoint(-4, 18), origin);
+		assertIntPointEquals(-9, 16, p);
+	}
+
+	@Test
+	public void turnLeftDoublePoint2DPoint2D_origin_ifi_rightHanded() {
+		Assume.assumeTrue(isIntCoordinates());		
+		Assume.assumeFalse(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
+		Point2D origin = createPoint(0, 0);
+		Point2D p = createPoint(0, 0);
+		
+		p.turnLeft(Math.PI/2, createPoint(1, 0), origin);
+		assertIntPointEquals(0, 1, p);
+
+		p.turnLeft(Math.PI/2, createPoint(0, 1), origin);
+		assertIntPointEquals(-1, 0, p);
+
+		p.turnLeft(Math.PI/2, createPoint(-1, 0), origin);
+		assertIntPointEquals(0, -1, p);
+
+		p.turnLeft(Math.PI/2, createPoint(0, -1), origin);
+		assertIntPointEquals(1, 0, p);
+
+		p.turnLeft(-Math.PI/2, createPoint(1, 0), origin);
+		assertIntPointEquals(0, -1, p);
+
+		p.turnLeft(-Math.PI/2, createPoint(0, -1), origin);
+		assertIntPointEquals(-1, 0, p);
+
+		p.turnLeft(-Math.PI/2, createPoint(-1, 0), origin);
+		assertIntPointEquals(0, 1, p);
+
+		p.turnLeft(-Math.PI/2, createPoint(0, 1), origin);
+		assertIntPointEquals(1, 0, p);
+
+		p.turnLeft(Math.PI/6, createPoint(12, 0), origin);
+		assertIntPointEquals(10, 6, p);
+
+		p.turnLeft(-Math.PI/6, createPoint(12, 0), origin);
+		assertIntPointEquals(10, -6, p);
+
+		p.turnLeft(Math.PI/11, createPoint(-4, 18), origin);
+		assertIntPointEquals(-9, 16, p);
+
+		p.turnLeft(-Math.PI/11, createPoint(-4, 18), origin);
+		assertIntPointEquals(1, 18, p);
+	}
+
+	@Test
+	public void turnLeftDoublePoint2DPoint2D_aroundP_ifi_leftHanded() {
+		Assume.assumeTrue(isIntCoordinates());		
+		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
+		Point2D origin = createPoint(-45, 12);
+		Point2D p = createPoint(0, 0);
+		
+		p.turnLeft(Math.PI/2, createPoint(1, 0), origin);
+		assertIntPointEquals(-57, -34, p);
+
+		p.turnLeft(Math.PI/2, createPoint(0, 1), origin);
+		assertIntPointEquals(-56, -33, p);
+
+		p.turnLeft(Math.PI/2, createPoint(-1, 0), origin);
+		assertIntPointEquals(-57, -32, p);
+
+		p.turnLeft(Math.PI/2, createPoint(0, -1), origin);
+		assertIntPointEquals(-58, -33, p);
+
+		p.turnLeft(-Math.PI/2, createPoint(1, 0), origin);
+		assertIntPointEquals(-33, 58, p);
+
+		p.turnLeft(-Math.PI/2, createPoint(0, -1), origin);
+		assertIntPointEquals(-32, 57, p);
+
+		p.turnLeft(-Math.PI/2, createPoint(-1, 0), origin);
+		assertIntPointEquals(-33, 56, p);
+
+		p.turnLeft(-Math.PI/2, createPoint(0, 1), origin);
+		assertIntPointEquals(-34, 57, p);
+
+		p.turnLeft(Math.PI/6, createPoint(12, 0), origin);
+		assertIntPointEquals(-2, -27, p);
+
+		p.turnLeft(-Math.PI/6, createPoint(12, 0), origin);
+		assertIntPointEquals(10, 30, p);
+
+		p.turnLeft(Math.PI/11, createPoint(-4, 18), origin);
+		assertIntPointEquals(-4, 6, p);
+
+		p.turnLeft(-Math.PI/11, createPoint(-4, 18), origin);
+		assertIntPointEquals(-7, 29, p);
+	}
+
+	@Test
+	public void turnLeftDoublePoint2DPoint2D_aroundP_ifi_rightHanded() {
+		Assume.assumeTrue(isIntCoordinates());		
+		Assume.assumeFalse(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
+		Point2D origin = createPoint(-45, 12);
+		Point2D p = createPoint(0, 0);
+		
+		p.turnLeft(Math.PI/2, createPoint(1, 0), origin);
+		assertIntPointEquals(-33, 58, p);
+
+		p.turnLeft(Math.PI/2, createPoint(0, 1), origin);
+		assertIntPointEquals(-34, 57, p);
+
+		p.turnLeft(Math.PI/2, createPoint(-1, 0), origin);
+		assertIntPointEquals(-33, 56, p);
+
+		p.turnLeft(Math.PI/2, createPoint(0, -1), origin);
+		assertIntPointEquals(-32, 57, p);
+
+		p.turnLeft(-Math.PI/2, createPoint(1, 0), origin);
+		assertIntPointEquals(-57, -34, p);
+
+		p.turnLeft(-Math.PI/2, createPoint(0, -1), origin);
+		assertIntPointEquals(-58, -33, p);
+
+		p.turnLeft(-Math.PI/2, createPoint(-1, 0), origin);
+		assertIntPointEquals(-57, -32, p);
+
+		p.turnLeft(-Math.PI/2, createPoint(0, 1), origin);
+		assertIntPointEquals(-56, -33, p);
+
+		p.turnLeft(Math.PI/6, createPoint(12, 0), origin);
+		assertIntPointEquals(10, 30, p);
+
+		p.turnLeft(-Math.PI/6, createPoint(12, 0), origin);
+		assertIntPointEquals(-2, -27, p);
+
+		p.turnLeft(Math.PI/11, createPoint(-4, 18), origin);
+		assertIntPointEquals(-7, 29, p);
+
+		p.turnLeft(-Math.PI/11, createPoint(-4, 18), origin);
+		assertIntPointEquals(-4, 6, p);
+	}
+
+	@Test
+	public void turnRightDouble_ifi_leftHanded() {
+		Assume.assumeTrue(isIntCoordinates());		
+		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());
+		Point2D p;
+		
+		p = createPoint(1, 0);
+		p.turnRight(Math.PI/2);
+		assertIntPointEquals(0, 1, p);
+
+		p = createPoint(0, 1);
+		p.turnRight(Math.PI/2);
+		assertIntPointEquals(-1, 0, p);
+
+		p = createPoint(-1, 0);
+		p.turnRight(Math.PI/2);
+		assertIntPointEquals(0, -1, p);
+
+		p = createPoint(0, -1);
+		p.turnRight(Math.PI/2);
+		assertIntPointEquals(1, 0, p);
+
+		p = createPoint(1, 0);
+		p.turnRight(-Math.PI/2);
+		assertIntPointEquals(0, -1, p);
+
+		p = createPoint(0, -1);
+		p.turnRight(-Math.PI/2);
+		assertIntPointEquals(-1, 0, p);
+
+		p = createPoint(-1, 0);
+		p.turnRight(-Math.PI/2);
+		assertIntPointEquals(0, 1, p);
+
+		p = createPoint(0, 1);
+		p.turnRight(-Math.PI/2);
+		assertIntPointEquals(1, 0, p);
+
+		p = createPoint(12, 0);
+		p.turnRight(Math.PI/6);
+		assertIntPointEquals(10, 6, p);
+
+		p = createPoint(12, 0);
+		p.turnRight(-Math.PI/6);
+		assertIntPointEquals(10, -6, p);
+
+		p = createPoint(-4, 18);
+		p.turnRight(Math.PI/11);
+		assertIntPointEquals(-9, 16, p);
+
+		p = createPoint(-4, 18);
+		p.turnRight(-Math.PI/11);
+		assertIntPointEquals(1, 18, p);
+	}
+
+	@Test
+	public void turnRightDouble_ifi_rightHanded() {
+		Assume.assumeTrue(isIntCoordinates());		
+		Assume.assumeFalse(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
+		Point2D p;
+		
+		p = createPoint(1, 0);
+		p.turnRight(Math.PI/2);
+		assertIntPointEquals(0, -1, p);
+
+		p = createPoint(0, 1);
+		p.turnRight(Math.PI/2);
+		assertIntPointEquals(1, 0, p);
+
+		p = createPoint(-1, 0);
+		p.turnRight(Math.PI/2);
+		assertIntPointEquals(0, 1, p);
+
+		p = createPoint(0, -1);
+		p.turnRight(Math.PI/2);
+		assertIntPointEquals(-1, 0, p);
+
+		p = createPoint(1, 0);
+		p.turnRight(-Math.PI/2);
+		assertIntPointEquals(0, 1, p);
+
+		p = createPoint(0, -1);
+		p.turnRight(-Math.PI/2);
+		assertIntPointEquals(1, 0, p);
+
+		p = createPoint(-1, 0);
+		p.turnRight(-Math.PI/2);
+		assertIntPointEquals(0, -1, p);
+
+		p = createPoint(0, 1);
+		p.turnRight(-Math.PI/2);
+		assertIntPointEquals(-1, 0, p);
+
+		p = createPoint(12, 0);
+		p.turnRight(Math.PI/6);
+		assertIntPointEquals(10, -6, p);
+
+		p = createPoint(12, 0);
+		p.turnRight(-Math.PI/6);
+		assertIntPointEquals(10, 6, p);
+
+		p = createPoint(-4, 18);
+		p.turnRight(Math.PI/11);
+		assertIntPointEquals(1, 18, p);
+
+		p = createPoint(-4, 18);
+		p.turnRight(-Math.PI/11);
+		assertIntPointEquals(-9, 16, p);
+	}
+
+	@Test
+	public void turnRightDoublePoint2D_ifi_leftHanded() {
+		Assume.assumeTrue(isIntCoordinates());		
+		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
+		Point2D p = createPoint(0, 0);
+		
+		p.turnRight(Math.PI/2, createPoint(1, 0));
+		assertIntPointEquals(0, 1, p);
+
+		p.turnRight(Math.PI/2, createPoint(0, 1));
+		assertIntPointEquals(-1, 0, p);
+
+		p.turnRight(Math.PI/2, createPoint(-1, 0));
+		assertIntPointEquals(0, -1, p);
+
+		p.turnRight(Math.PI/2, createPoint(0, -1));
+		assertIntPointEquals(1, 0, p);
+
+		p.turnRight(-Math.PI/2, createPoint(1, 0));
+		assertIntPointEquals(0, -1, p);
+
+		p.turnRight(-Math.PI/2, createPoint(0, -1));
+		assertIntPointEquals(-1, 0, p);
+
+		p.turnRight(-Math.PI/2, createPoint(-1, 0));
+		assertIntPointEquals(0, 1, p);
+
+		p.turnRight(-Math.PI/2, createPoint(0, 1));
+		assertIntPointEquals(1, 0, p);
+
+		p.turnRight(Math.PI/6, createPoint(12, 0));
+		assertIntPointEquals(10, 6, p);
+
+		p.turnRight(-Math.PI/6, createPoint(12, 0));
+		assertIntPointEquals(10, -6, p);
+
+		p.turnRight(Math.PI/11, createPoint(-4, 18));
+		assertIntPointEquals(-9, 16, p);
+
+		p.turnRight(-Math.PI/11, createPoint(-4, 18));
+		assertIntPointEquals(1, 18, p);
+	}
+
+	@Test
+	public void turnRightDoublePoint2D_ifi_rightHanded() {
+		Assume.assumeTrue(isIntCoordinates());		
+		Assume.assumeFalse(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
+		Assume.assumeFalse(isIntCoordinates());		
+		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
+		Point2D p = createPoint(0, 0);
+		
+		p.turnRight(Math.PI/2, createPoint(1, 0));
+		assertIntPointEquals(0, -1, p);
+
+		p.turnRight(Math.PI/2, createPoint(0, 1));
+		assertIntPointEquals(1, 0, p);
+
+		p.turnRight(Math.PI/2, createPoint(-1, 0));
+		assertIntPointEquals(0, 1, p);
+
+		p.turnRight(Math.PI/2, createPoint(0, -1));
+		assertIntPointEquals(-1, 0, p);
+
+		p.turnRight(-Math.PI/2, createPoint(1, 0));
+		assertIntPointEquals(0, 1, p);
+
+		p.turnRight(-Math.PI/2, createPoint(0, -1));
+		assertIntPointEquals(1, 0, p);
+
+		p.turnRight(-Math.PI/2, createPoint(-1, 0));
+		assertIntPointEquals(0, -1, p);
+
+		p.turnRight(-Math.PI/2, createPoint(0, 1));
+		assertIntPointEquals(-1, 0, p);
+
+		p.turnRight(Math.PI/6, createPoint(12, 0));
+		assertIntPointEquals(10, -6, p);
+
+		p.turnRight(-Math.PI/6, createPoint(12, 0));
+		assertIntPointEquals(10, 6, p);
+
+		p.turnRight(Math.PI/11, createPoint(-4, 18));
+		assertIntPointEquals(1, 18, p);
+
+		p.turnRight(-Math.PI/11, createPoint(-4, 18));
+		assertIntPointEquals(-9, 16, p);
+	}
+
+	@Test
+	public void turnRightDoublePoint2DPoint2D_origin_ifi_leftHanded() {
+		Assume.assumeTrue(isIntCoordinates());		
+		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
+		Point2D origin = createPoint(0, 0);
+		Point2D p = createPoint(0, 0);
+		
+		p.turnRight(Math.PI/2, createPoint(1, 0), origin);
+		assertIntPointEquals(0, 1, p);
+
+		p.turnRight(Math.PI/2, createPoint(0, 1), origin);
+		assertIntPointEquals(-1, 0, p);
+
+		p.turnRight(Math.PI/2, createPoint(-1, 0), origin);
+		assertIntPointEquals(0, -1, p);
+
+		p.turnRight(Math.PI/2, createPoint(0, -1), origin);
+		assertIntPointEquals(1, 0, p);
+
+		p.turnRight(-Math.PI/2, createPoint(1, 0), origin);
+		assertIntPointEquals(0, -1, p);
+
+		p.turnRight(-Math.PI/2, createPoint(0, -1), origin);
+		assertIntPointEquals(-1, 0, p);
+
+		p.turnRight(-Math.PI/2, createPoint(-1, 0), origin);
+		assertIntPointEquals(0, 1, p);
+
+		p.turnRight(-Math.PI/2, createPoint(0, 1), origin);
+		assertIntPointEquals(1, 0, p);
+
+		p.turnRight(Math.PI/6, createPoint(12, 0), origin);
+		assertIntPointEquals(10, 6, p);
+
+		p.turnRight(-Math.PI/6, createPoint(12, 0), origin);
+		assertIntPointEquals(10, -6, p);
+
+		p.turnRight(Math.PI/11, createPoint(-4, 18), origin);
+		assertIntPointEquals(-9, 16, p);
+
+		p.turnRight(-Math.PI/11, createPoint(-4, 18), origin);
+		assertIntPointEquals(1, 18, p);
+	}
+
+	@Test
+	public void turnRightDoublePoint2DPoint2D_origin_ifi_rightHanded() {
+		Assume.assumeTrue(isIntCoordinates());		
+		Assume.assumeFalse(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
+		Point2D origin = createPoint(0, 0);
+		Point2D p = createPoint(0, 0);
+		
+		p.turnRight(Math.PI/2, createPoint(1, 0), origin);
+		assertIntPointEquals(0, -1, p);
+
+		p.turnRight(Math.PI/2, createPoint(0, 1), origin);
+		assertIntPointEquals(1, 0, p);
+
+		p.turnRight(Math.PI/2, createPoint(-1, 0), origin);
+		assertIntPointEquals(0, 1, p);
+
+		p.turnRight(Math.PI/2, createPoint(0, -1), origin);
+		assertIntPointEquals(-1, 0, p);
+
+		p.turnRight(-Math.PI/2, createPoint(1, 0), origin);
+		assertIntPointEquals(0, 1, p);
+
+		p.turnRight(-Math.PI/2, createPoint(0, -1), origin);
+		assertIntPointEquals(1, 0, p);
+
+		p.turnRight(-Math.PI/2, createPoint(-1, 0), origin);
+		assertIntPointEquals(0, -1, p);
+
+		p.turnRight(-Math.PI/2, createPoint(0, 1), origin);
+		assertIntPointEquals(-1, 0, p);
+
+		p.turnRight(Math.PI/6, createPoint(12, 0), origin);
+		assertIntPointEquals(10, -6, p);
+
+		p.turnRight(-Math.PI/6, createPoint(12, 0), origin);
+		assertIntPointEquals(10, 6, p);
+
+		p.turnRight(Math.PI/11, createPoint(-4, 18), origin);
+		assertIntPointEquals(1, 18, p);
+
+		p.turnRight(-Math.PI/11, createPoint(-4, 18), origin);
+		assertIntPointEquals(-9, 16, p);
+	}
+
+	@Test
+	public void turnRightDoublePoint2DPoint2D_aroundP_ifi_leftHanded() {
+		Assume.assumeTrue(isIntCoordinates());		
+		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
+		Point2D origin = createPoint(-45, 12);
+		Point2D p = createPoint(0, 0);
+		
+		p.turnRight(Math.PI/2, createPoint(1, 0), origin);
+		assertIntPointEquals(-33, 58, p);
+
+		p.turnRight(Math.PI/2, createPoint(0, 1), origin);
+		assertIntPointEquals(-34, 57, p);
+
+		p.turnRight(Math.PI/2, createPoint(-1, 0), origin);
+		assertIntPointEquals(-33, 56, p);
+
+		p.turnRight(Math.PI/2, createPoint(0, -1), origin);
+		assertIntPointEquals(-32, 57, p);
+
+		p.turnRight(-Math.PI/2, createPoint(1, 0), origin);
+		assertIntPointEquals(-57, -34, p);
+
+		p.turnRight(-Math.PI/2, createPoint(0, -1), origin);
+		assertIntPointEquals(-58, -33, p);
+
+		p.turnRight(-Math.PI/2, createPoint(-1, 0), origin);
+		assertIntPointEquals(-57, -32, p);
+
+		p.turnRight(-Math.PI/2, createPoint(0, 1), origin);
+		assertIntPointEquals(-56, -33, p);
+
+		p.turnRight(Math.PI/6, createPoint(12, 0), origin);
+		assertIntPointEquals(10, 30, p);
+
+		p.turnRight(-Math.PI/6, createPoint(12, 0), origin);
+		assertIntPointEquals(-2, -27, p);
+
+		p.turnRight(Math.PI/11, createPoint(-4, 18), origin);
+		assertIntPointEquals(-7, 29, p);
+
+		p.turnRight(-Math.PI/11, createPoint(-4, 18), origin);
+		assertIntPointEquals(-4, 6, p);
+	}
+
+	@Test
+	public void turnRightDoublePoint2DPoint2D_aroundP_ifi_rightHanded() {
+		Assume.assumeTrue(isIntCoordinates());		
+		Assume.assumeFalse(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
+		Point2D origin = createPoint(-45, 12);
+		Point2D p = createPoint(0, 0);
+		
+		p.turnRight(Math.PI/2, createPoint(1, 0), origin);
+		assertIntPointEquals(-57, -34, p);
+
+		p.turnRight(Math.PI/2, createPoint(0, 1), origin);
+		assertIntPointEquals(-56, -33, p);
+
+		p.turnRight(Math.PI/2, createPoint(-1, 0), origin);
+		assertIntPointEquals(-57, -32, p);
+
+		p.turnRight(Math.PI/2, createPoint(0, -1), origin);
+		assertIntPointEquals(-58, -33, p);
+
+		p.turnRight(-Math.PI/2, createPoint(1, 0), origin);
+		assertIntPointEquals(-33, 58, p);
+
+		p.turnRight(-Math.PI/2, createPoint(0, -1), origin);
+		assertIntPointEquals(-32, 57, p);
+
+		p.turnRight(-Math.PI/2, createPoint(-1, 0), origin);
+		assertIntPointEquals(-33, 56, p);
+
+		p.turnRight(-Math.PI/2, createPoint(0, 1), origin);
+		assertIntPointEquals(-34, 57, p);
+
+		p.turnRight(Math.PI/6, createPoint(12, 0), origin);
+		assertIntPointEquals(-2, -27, p);
+
+		p.turnRight(-Math.PI/6, createPoint(12, 0), origin);
+		assertIntPointEquals(10, 30, p);
+
+		p.turnRight(Math.PI/11, createPoint(-4, 18), origin);
+		assertIntPointEquals(-4, 6, p);
+
+		p.turnRight(-Math.PI/11, createPoint(-4, 18), origin);
+		assertIntPointEquals(-7, 29, p);
+	}
 
 }

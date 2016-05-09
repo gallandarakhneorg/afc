@@ -21,6 +21,7 @@
 package org.arakhne.afc.math.geometry.d2;
 
 import org.arakhne.afc.math.MathUtil;
+import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2D;
 import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -535,6 +536,191 @@ public interface Point2D<RP extends Point2D<? super RP, ? super RV>, RV extends 
 	@Pure
 	default double operator_upTo(Shape2D<?, ?, ?, ?, ?, ?> s) {
 		return s.getDistance(this);
+	}
+
+	/** Turn this point about the given rotation angle around the origin point.
+	 *
+	 * <p>The rotation is done according to the trigonometric coordinate.
+	 * A positive rotation angle corresponds to a left or right rotation
+	 * according to the current {@link CoordinateSystem2D}.
+	 *
+	 * @param angle is the rotation angle in radians.
+	 * @see #turn(double, Point2D, Point2D)
+	 * @see #turnLeft(double)
+	 * @see #turnRight(double)
+	 */
+	default void turn(double angle) {
+		turn(angle, this);
+	}
+
+	/** Turn the given point about the given rotation angle around the origin point, and set this
+	 * point with the result.
+	 *
+	 * <p>The rotation is done according to the trigonometric coordinate.
+	 * A positive rotation angle corresponds to a left or right rotation
+	 * according to the current {@link CoordinateSystem2D}.
+	 *
+	 * @param angle is the rotation angle in radians.
+	 * @param pointToTurn the point to turn.
+	 * @see #turn(double, Point2D, Point2D)
+	 * @see #turn(double)
+	 * @see #turnLeft(double)
+	 * @see #turnRight(double)
+	 */
+	default void turn(double angle, Point2D<?, ?> pointToTurn) {
+		assert (pointToTurn != null) : "Point to turn must be not null"; //$NON-NLS-1$
+		double sin = Math.sin(angle);
+		double cos = Math.cos(angle);
+		double x =  cos * pointToTurn.getX() - sin * pointToTurn.getY(); 
+		double y =  sin * pointToTurn.getX() + cos * pointToTurn.getY();
+		set(x,y);
+	}
+
+	/** Turn the given point about the given rotation angle around the origin point, and set this
+	 * point with the result.
+	 *
+	 * <p>The rotation is done according to the trigonometric coordinate.
+	 * A positive rotation angle corresponds to a left or right rotation
+	 * according to the current {@link CoordinateSystem2D}.
+	 *
+	 * @param angle is the rotation angle in radians.
+	 * @param pointToTurn the point to turn.
+	 * @param origin the origin point.
+	 * @see #turn(double, Point2D)
+	 * @see #turn(double)
+	 * @see #turnLeft(double)
+	 * @see #turnRight(double)
+	 */
+	default void turn(double angle, Point2D<?, ?> pointToTurn, Point2D<?, ?> origin) {
+		assert (pointToTurn != null) : "Point to turn must be not null"; //$NON-NLS-1$
+		assert (origin != null) : "Origin point must be not null"; //$NON-NLS-1$
+		double sin = Math.sin(angle);
+		double cos = Math.cos(angle);
+		double vx = pointToTurn.getX() - origin.getX();
+		double vy = pointToTurn.getY() - origin.getY();
+		double x =  cos * vx - sin * vy; 
+		double y =  sin * vx + cos * vy;
+		set(x + origin.getX(), y + origin.getY());
+	}
+
+	/** Turn this vector on the left around the origin when the given rotation angle is positive.
+	 *
+	 * <p>A positive rotation angle corresponds to a left or right rotation
+	 * according to the current {@link CoordinateSystem2D}.
+	 *
+	 * @param angle is the rotation angle in radians.
+	 * @see CoordinateSystem2D
+	 * @see #turnLeft(double, Point2D, Point2D)
+	 * @see #turn(double)
+	 * @see #turnRight(double)
+	 */
+	default void turnLeft(double angle) {
+		turnLeft(angle, this);
+	}
+
+	/** Turn the given vector on the left, and set this
+	 * vector with the result.
+	 *
+	 * <p>A positive rotation angle corresponds to a left or right rotation
+	 * according to the current {@link CoordinateSystem2D}.
+	 *
+	 * @param angle is the rotation angle in radians.
+	 * @param pointToTurn the vector to turn.
+	 * @see CoordinateSystem2D
+	 * @see #turnLeft(double, Point2D, Point2D)
+	 * @see #turn(double)
+	 * @see #turnRight(double)
+	 */
+	default void turnLeft(double angle, Point2D<?, ?> pointToTurn) {
+		assert (pointToTurn != null) : "Point to turn must be not null"; //$NON-NLS-1$
+		double sin = Math.sin(angle);
+		double cos = Math.cos(angle);
+		double x, y;
+		if (CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded()) {
+			x =  cos * pointToTurn.getX() - sin * pointToTurn.getY(); 
+			y =  sin * pointToTurn.getX() + cos * pointToTurn.getY();
+		} else {
+			x =  cos * pointToTurn.getX() + sin * pointToTurn.getY(); 
+			y = -sin * pointToTurn.getX() + cos * pointToTurn.getY();
+		}
+		set(x,y);
+	}
+
+	/** Turn the given vector on the left, and set this
+	 * vector with the result.
+	 *
+	 * <p>A positive rotation angle corresponds to a left or right rotation
+	 * according to the current {@link CoordinateSystem2D}.
+	 *
+	 * @param angle is the rotation angle in radians.
+	 * @param pointToTurn the vector to turn.
+	 * @param origin the origin point.
+	 * @see CoordinateSystem2D
+	 * @see #turnLeft(double, Point2D)
+	 * @see #turn(double)
+	 * @see #turnRight(double)
+	 */
+	default void turnLeft(double angle, Point2D<?, ?> pointToTurn, Point2D<?, ?> origin) {
+		assert (pointToTurn != null) : "Point to turn must be not null"; //$NON-NLS-1$
+		assert (origin != null) : "Origin point must be not null"; //$NON-NLS-1$
+		double sin = Math.sin(angle);
+		double cos = Math.cos(angle);
+		double vx = pointToTurn.getX() - origin.getX();
+		double vy = pointToTurn.getY() - origin.getY();
+		double x, y;
+		if (CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded()) {
+			x =  cos * vx - sin * vy; 
+			y =  sin * vx + cos * vy;
+		} else {
+			x =  cos * vx + sin * vy; 
+			y = -sin * vx + cos * vy;
+		}
+		set(x + origin.getX(), y + origin.getY());
+	}
+
+	/** Turn this vector on the right around the origin when the given rotation angle is positive.
+	 *
+	 * <p>A positive rotation angle corresponds to a left or right rotation
+	 * according to the current {@link CoordinateSystem2D}.
+	 *
+	 * @param angle is the rotation angle in radians.
+	 * @see CoordinateSystem2D
+	 * @see #turn(double)
+	 * @see #turnLeft(double)
+	 */
+	default void turnRight(double angle) {
+		turnLeft(-angle, this);
+	}
+
+	/** Turn this vector on the right around the origin when the given rotation angle is positive.
+	 *
+	 * <p>A positive rotation angle corresponds to a left or right rotation
+	 * according to the current {@link CoordinateSystem2D}.
+	 *
+	 * @param angle is the rotation angle in radians.
+	 * @param pointToTurn the vector to turn.
+	 * @see CoordinateSystem2D
+	 * @see #turn(double)
+	 * @see #turnLeft(double)
+	 */
+	default void turnRight(double angle, Point2D<?, ?> pointToTurn) {
+		turnLeft(-angle, pointToTurn);
+	}
+
+	/** Turn this vector on the right around the origin when the given rotation angle is positive.
+	 *
+	 * <p>A positive rotation angle corresponds to a left or right rotation
+	 * according to the current {@link CoordinateSystem2D}.
+	 *
+	 * @param angle is the rotation angle in radians.
+	 * @param pointToTurn the vector to turn.
+	 * @param origin the origin point.
+	 * @see CoordinateSystem2D
+	 * @see #turn(double)
+	 * @see #turnLeft(double)
+	 */
+	default void turnRight(double angle, Point2D<?, ?> pointToTurn, Point2D<?, ?> origin) {
+		turnLeft(-angle, pointToTurn, origin);
 	}
 
 }
