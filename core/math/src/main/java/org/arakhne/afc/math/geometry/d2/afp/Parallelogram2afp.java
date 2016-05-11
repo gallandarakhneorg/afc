@@ -270,65 +270,85 @@ public interface Parallelogram2afp<
 		// H: (c, d)
 		
 		if (closest != null) {
-			double sideDiag1 = Vector2D.perpProduct(a, b, dx, dy);
-			double sideDiag2 = Vector2D.perpProduct(c, d, dx, dy);
-			if (sideDiag1 >= 0.) {
-				if (sideDiag2 >= 0.) {
-					// (H-E) in the ggb diagram
-					double baseX = centerX + c;
-					double baseY = centerY + d;
-					double baseX2 = centerX - a;
-					double baseY2 = centerY - b;
-					if (Vector2D.perpProduct(baseX2 - baseX, baseY2 - baseY, px - baseX, py - baseY) <= 0.) {
-						Segment2afp.computeClosestPointTo(
-								baseX, baseY, baseX2, baseY2,
-								px, py,
-								closest);
-					} else {
-						closest.set(px, py);
-					}
-				} else {
-					// (G-H) in the ggb diagram
-					double baseX = centerX + a;
-					double baseY = centerY + b;
-					double baseX2 = centerX + c;
-					double baseY2 = centerY + d;
-					if (Vector2D.perpProduct(baseX2 - baseX, baseY2 - baseY, px - baseX, py - baseY) <= 0.) {
-						Segment2afp.computeClosestPointTo(
-								baseX, baseY, baseX2, baseY2,
-								px, py,
-								closest);
-					} else {
-						closest.set(px, py);
-					}
-				}
-			} else if (sideDiag2 >= 0.) {
-				// (E-F) in the ggb diagram
-				double baseX = centerX - a;
-				double baseY = centerY - b;
-				double baseX2 = centerX - c;
-				double baseY2 = centerY - d;
-				if (Vector2D.perpProduct(baseX2 - baseX, baseY2 - baseY, px - baseX, py - baseY) <= 0.) {
-					Segment2afp.computeClosestPointTo(
-							baseX, baseY, baseX2, baseY2,
-							px, py,
-							closest);
-				} else {
-					closest.set(px, py);
-				}
+			double epx = dx + a;
+			double epy = dy + b;
+			
+			double dot1 = Vector2D.dotProduct(epx, epy, axis1X, axis1Y);
+			double dot2 = Vector2D.dotProduct(epx, epy, axis2X, axis2Y);
+			
+			if (dot1 <= 0. && dot2 <= 0.) {
+				// Closest is E
+				closest.set(centerX - a, centerY - b);
 			} else {
-				// (F-G) in the ggb diagram
-				double baseX = centerX - c;
-				double baseY = centerY - d;
-				double baseX2 = centerX + a;
-				double baseY2 = centerY + b;
-				if (Vector2D.perpProduct(baseX2 - baseX, baseY2 - baseY, px - baseX, py - baseY) <= 0.) {
-					Segment2afp.computeClosestPointTo(
-							baseX, baseY, baseX2, baseY2,
-							px, py,
-							closest);
+				double gpx = dx - a;
+				double gpy = dy - b;
+	
+				double dot3 = Vector2D.dotProduct(gpx, gpy, -axis2X, -axis2Y);
+				double dot4 = Vector2D.dotProduct(gpx, gpy, -axis1X, -axis1Y);
+	
+				if (dot3 <= 0. && dot4 <= 0.) {
+					// Closest is G
+					closest.set(a + centerX, b + centerY);
+				} else if (Vector2D.perpProduct(dx, dy, axis1X + axis2X, axis1Y + axis2Y) >= 0.) {
+					double width = axis1Extent * 2.;
+					double height = axis2Extent * 2.;
+					if (dot1 >= width && dot3 >= height) {
+						// Closest is F
+						closest.set(centerX - c, centerY - d);
+					} else if (dot3 <= height) {
+						if (Vector2D.perpProduct(gpx, gpy, -axis2X, -axis2Y) >= 0.) {
+							// Inside the parallelogram
+							closest.set(px, py);
+						} else {
+							// Closest is on GF
+							Segment2afp.computeClosestPointToPoint(
+									a + centerX, b + centerY, centerX - c, centerY - d,
+									px, py,
+									closest);
+						}
+					} else {
+						assert (dot1 <= width);
+						if (Vector2D.perpProduct(epx, epy, axis1X, axis1Y) <= 0.) {
+							// Inside the parallelogram
+							closest.set(px, py);
+						} else {
+							// Closest is EF
+							Segment2afp.computeClosestPointToPoint(
+									centerX - a, centerY - b, centerX - c, centerY - d,
+									px, py,
+									closest);
+						}
+					}
 				} else {
-					closest.set(px, py);
+					double width = axis1Extent * 2.;
+					double height = axis2Extent * 2.;
+					if (dot2 >= height && dot4 >= width) {
+						// Closest is H
+						closest.set(c + centerX, d + centerY);
+					} else if (dot4 <= width) {
+						if (Vector2D.perpProduct(gpx, gpy, -axis1X, -axis1Y) <= 0.) {
+							// Inside the parallelogram
+							closest.set(px, py);
+						} else {
+							// Closest is on GH
+							Segment2afp.computeClosestPointToPoint(
+									a + centerX, b + centerY, c + centerX, d + centerY,
+									px, py,
+									closest);
+						}
+					} else {
+						assert (dot2 <= height);
+						if (Vector2D.perpProduct(epx, epy, axis2X, axis2Y) >= 0.) {
+							// Inside the parallelogram
+							closest.set(px, py);
+						} else {
+							// Closest is EH
+							Segment2afp.computeClosestPointToPoint(
+									centerX - a, centerY - b, c + centerX, d + centerY,
+									px, py,
+									closest);
+						}
+					}
 				}
 			}
 		}
@@ -1663,7 +1683,7 @@ public interface Parallelogram2afp<
 				null, point);
 		return point;
 	}
-
+	
 	/** Abstract iterator on the path elements of the parallelogram.
 	 * 
 	 * @param <T> the type of the path elements.

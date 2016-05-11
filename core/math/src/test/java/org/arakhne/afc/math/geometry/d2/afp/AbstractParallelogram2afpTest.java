@@ -135,10 +135,8 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
 				-20, 9,
 				cx, cy, ux, uy, e1, vx, vy, e2,
 				closest, farthest);
-		assertEpsilonEquals(pHx, closest.getX());
-		assertEpsilonEquals(pHy, closest.getY());
-		assertEpsilonEquals(pEx, farthest.getX());
-		assertEpsilonEquals(pEy, farthest.getY());
+		assertFpPointEquals(pHx, pHy, closest);
+		assertFpPointEquals(pEx, pEy, farthest);
 
 		closest = createPoint(Double.NaN, Double.NaN);
 		farthest = createPoint(Double.NaN, Double.NaN);
@@ -146,10 +144,8 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
 				0, 0,
 				cx, cy, ux, uy, e1, vx, vy, e2,
 				closest, farthest);
-		assertEpsilonEquals(1.90983, closest.getX());
-		assertEpsilonEquals(1.90983, closest.getY());
-		assertEpsilonEquals(pGx, farthest.getX());
-		assertEpsilonEquals(pGy, farthest.getY());
+		assertFpPointEquals(1.90983, 1.90983, closest);
+		assertFpPointEquals(pGx, pGy, farthest);
 
 		closest = createPoint(Double.NaN, Double.NaN);
 		farthest = createPoint(Double.NaN, Double.NaN);
@@ -157,10 +153,8 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
 				5, -10,
 				cx, cy, ux, uy, e1, vx, vy, e2,
 				closest, farthest);
-		assertEpsilonEquals(9.40983, closest.getX());
-		assertEpsilonEquals(-5.59017, closest.getY());
-		assertEpsilonEquals(pGx, farthest.getX());
-		assertEpsilonEquals(pGy, farthest.getY());
+		assertFpPointEquals(9.40983, -5.59017, closest);
+		assertFpPointEquals(pGx, pGy, farthest);
 
 		closest = createPoint(Double.NaN, Double.NaN);
 		farthest = createPoint(Double.NaN, Double.NaN);
@@ -168,10 +162,8 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
 				14, -20,
 				cx, cy, ux, uy, e1, vx, vy, e2,
 				closest, farthest);
-		assertEpsilonEquals(pEx, closest.getX());
-		assertEpsilonEquals(pEy, closest.getY());
-		assertEpsilonEquals(pGx, farthest.getX());
-		assertEpsilonEquals(pGy, farthest.getY());
+		assertFpPointEquals(pEx, pEy, closest);
+		assertFpPointEquals(pGx, pGy, farthest);
 
 		closest = createPoint(Double.NaN, Double.NaN);
 		farthest = createPoint(Double.NaN, Double.NaN);
@@ -179,10 +171,8 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
 				-6, 15,
 				cx, cy, ux, uy, e1, vx, vy, e2,
 				closest, farthest);
-		assertEpsilonEquals(-3.81679, closest.getX());
-		assertEpsilonEquals(14.4542, closest.getY());
-		assertEpsilonEquals(pEx, farthest.getX());
-		assertEpsilonEquals(pEy, farthest.getY());
+		assertFpPointEquals(-3.81679, 14.4542, closest);
+		assertFpPointEquals(pEx, pEy, farthest);
 
 		closest = createPoint(Double.NaN, Double.NaN);
 		farthest = createPoint(Double.NaN, Double.NaN);
@@ -190,10 +180,8 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
 				0, 10,
 				cx, cy, ux, uy, e1, vx, vy, e2,
 				closest, farthest);
-		assertEpsilonEquals(0, closest.getX());
-		assertEpsilonEquals(10, closest.getY());
-		assertEpsilonEquals(pEx, farthest.getX());
-		assertEpsilonEquals(pEy, farthest.getY());
+		assertFpPointEquals(0, 10, closest);
+		assertFpPointEquals(pEx, pEy, farthest);
 
 		closest = createPoint(Double.NaN, Double.NaN);
 		farthest = createPoint(Double.NaN, Double.NaN);
@@ -201,10 +189,8 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
 				10, 0,
 				cx, cy, ux, uy, e1, vx, vy, e2,
 				closest, farthest);
-		assertEpsilonEquals(10, closest.getX());
-		assertEpsilonEquals(0, closest.getY());
-		assertEpsilonEquals(pGx, farthest.getX());
-		assertEpsilonEquals(pGy, farthest.getY());
+		assertFpPointEquals(10, 0, closest);
+		assertFpPointEquals(pGx, pGy, farthest);
 
 		closest = createPoint(Double.NaN, Double.NaN);
 		farthest = createPoint(Double.NaN, Double.NaN);
@@ -212,10 +198,8 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
 				15, -4,
 				cx, cy, ux, uy, e1, vx, vy, e2,
 				closest, farthest);
-		assertEpsilonEquals(13.99326, closest.getX());
-		assertEpsilonEquals(-3.74832, closest.getY());
-		assertEpsilonEquals(pGx, farthest.getX());
-		assertEpsilonEquals(pGy, farthest.getY());
+		assertFpPointEquals(13.99326, -3.74832, closest);
+		assertFpPointEquals(pGx, pGy, farthest);
 
 		closest = createPoint(Double.NaN, Double.NaN);
 		farthest = createPoint(Double.NaN, Double.NaN);
@@ -223,10 +207,8 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
 				-5, 25,
 				cx, cy, ux, uy, e1, vx, vy, e2,
 				closest, farthest);
-		assertEpsilonEquals(-1.40503, closest.getX());
-		assertEpsilonEquals(24.10126, closest.getY());
-		assertEpsilonEquals(pEx, farthest.getX());
-		assertEpsilonEquals(pEy, farthest.getY());
+		assertFpPointEquals(-1.40503, 24.10126, closest);
+		assertFpPointEquals(pEx, pEy, farthest);
 
 		closest = createPoint(Double.NaN, Double.NaN);
 		farthest = createPoint(Double.NaN, Double.NaN);
@@ -234,10 +216,8 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
 				0, 20,
 				cx, cy, ux, uy, e1, vx, vy, e2,
 				closest, farthest);
-		assertEpsilonEquals(0, closest.getX());
-		assertEpsilonEquals(20, closest.getY());
-		assertEpsilonEquals(pEx, farthest.getX());
-		assertEpsilonEquals(pEy, farthest.getY());
+		assertFpPointEquals(0, 20, closest);
+		assertFpPointEquals(pEx, pEy, farthest);
 
 		closest = createPoint(Double.NaN, Double.NaN);
 		farthest = createPoint(Double.NaN, Double.NaN);
@@ -245,10 +225,8 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
 				10, 10,
 				cx, cy, ux, uy, e1, vx, vy, e2,
 				closest, farthest);
-		assertEpsilonEquals(10, closest.getX());
-		assertEpsilonEquals(10, closest.getY());
-		assertEpsilonEquals(pGx, farthest.getX());
-		assertEpsilonEquals(pGy, farthest.getY());
+		assertFpPointEquals(10, 10, closest);
+		assertFpPointEquals(pGx, pGy, farthest);
 
 		closest = createPoint(Double.NaN, Double.NaN);
 		farthest = createPoint(Double.NaN, Double.NaN);
@@ -256,10 +234,8 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
 				20, 0,
 				cx, cy, ux, uy, e1, vx, vy, e2,
 				closest, farthest);
-		assertEpsilonEquals(15.22856, closest.getX());
-		assertEpsilonEquals(1.19286, closest.getY());
-		assertEpsilonEquals(pGx, farthest.getX());
-		assertEpsilonEquals(pGy, farthest.getY());
+		assertFpPointEquals(15.22856, 1.19286, closest);
+		assertFpPointEquals(pGx, pGy, farthest);
 
 		closest = createPoint(Double.NaN, Double.NaN);
 		farthest = createPoint(Double.NaN, Double.NaN);
@@ -267,10 +243,8 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
 				-3, 35,
 				cx, cy, ux, uy, e1, vx, vy, e2,
 				closest, farthest);
-		assertEpsilonEquals(pGx, closest.getX());
-		assertEpsilonEquals(pGy, closest.getY());
-		assertEpsilonEquals(pEx, farthest.getX());
-		assertEpsilonEquals(pEy, farthest.getY());
+		assertFpPointEquals(pGx, pGy, closest);
+		assertFpPointEquals(pEx, pEy, farthest);
 
 		closest = createPoint(Double.NaN, Double.NaN);
 		farthest = createPoint(Double.NaN, Double.NaN);
@@ -278,10 +252,8 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
 				5, 35,
 				cx, cy, ux, uy, e1, vx, vy, e2,
 				closest, farthest);
-		assertEpsilonEquals(pGx, closest.getX());
-		assertEpsilonEquals(pGy, closest.getY());
-		assertEpsilonEquals(pEx, farthest.getX());
-		assertEpsilonEquals(pEy, farthest.getY());
+		assertFpPointEquals(pGx, pGy, closest);
+		assertFpPointEquals(pEx, pEy, farthest);
 
 		closest = createPoint(Double.NaN, Double.NaN);
 		farthest = createPoint(Double.NaN, Double.NaN);
@@ -289,10 +261,8 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
 				20, 15,
 				cx, cy, ux, uy, e1, vx, vy, e2,
 				closest, farthest);
-		assertEpsilonEquals(15.59017, closest.getX());
-		assertEpsilonEquals(10.59017, closest.getY());
-		assertEpsilonEquals(pHx, farthest.getX());
-		assertEpsilonEquals(pHy, farthest.getY());
+		assertFpPointEquals(15.59017, 10.59017, closest);
+		assertFpPointEquals(pHx, pHy, farthest);
 
 		closest = createPoint(Double.NaN, Double.NaN);
 		farthest = createPoint(Double.NaN, Double.NaN);
@@ -300,10 +270,8 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
 				35, 10,
 				cx, cy, ux, uy, e1, vx, vy, e2,
 				closest, farthest);
-		assertEpsilonEquals(pFx, closest.getX());
-		assertEpsilonEquals(pFy, closest.getY());
-		assertEpsilonEquals(pHx, farthest.getX());
-		assertEpsilonEquals(pHy, farthest.getY());
+		assertFpPointEquals(pFx, pFy, closest);
+		assertFpPointEquals(pHx, pHy, farthest);
 
 		closest = createPoint(Double.NaN, Double.NaN);
 		farthest = createPoint(Double.NaN, Double.NaN);
@@ -311,10 +279,8 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
 				-8, 29,
 				cx, cy, ux, uy, e1, vx, vy, e2,
 				closest, farthest);
-		assertEpsilonEquals(pGx, closest.getX());
-		assertEpsilonEquals(pGy, closest.getY());
-		assertEpsilonEquals(pEx, farthest.getX());
-		assertEpsilonEquals(pEy, farthest.getY());
+		assertFpPointEquals(pGx, pGy, closest);
+		assertFpPointEquals(pEx, pEy, farthest);
 
 		closest = createPoint(Double.NaN, Double.NaN);
 		farthest = createPoint(Double.NaN, Double.NaN);
@@ -325,10 +291,18 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
 				-0.44721, 0.89443,
 				20,
 				closest, farthest);
-		assertEpsilonEquals(0.81573, closest.getX());
-		assertEpsilonEquals(0.40786, closest.getY());
-		assertEpsilonEquals(-2.0082, farthest.getX());
-		assertEpsilonEquals(50.77719, farthest.getY());
+		assertFpPointEquals(0.81573, 0.40786, closest);
+		assertFpPointEquals(-2.0082, 50.77719, farthest);
+
+		closest = createPoint(Double.NaN, Double.NaN);
+		Parallelogram2afp.computeClosestFarthestPoints(0, 0,
+				-10, -3,
+				-.8944271909999159, .4472135954999579,
+				2,
+				.5547001962252290, -.8320502943378436,
+				1,
+				closest, null);
+		assertFpPointEquals(-7.65645, -4.72648, closest);
 	}
 
 	@Test
