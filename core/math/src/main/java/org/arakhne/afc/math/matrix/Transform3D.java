@@ -45,7 +45,7 @@ import org.arakhne.afc.math.generic.Tuple3D;
  * @deprecated Replacement will be provided in Version 14.0
  */
 @Deprecated
-public class Transform3D extends Matrix4f {
+public class Transform3D extends Matrix4d {
 	
 	private static final long serialVersionUID = -8427812783666663224L;
 	
@@ -105,7 +105,7 @@ public class Transform3D extends Matrix4f {
 	/**
 	 * @param m
 	 */
-	public Transform3D(Matrix4f m) {
+	public Transform3D(Matrix4d m) {
 		super(m);
 	}
 

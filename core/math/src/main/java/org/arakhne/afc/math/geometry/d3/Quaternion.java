@@ -23,8 +23,8 @@ package org.arakhne.afc.math.geometry.d3;
 import java.io.Serializable;
 
 import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem3D;
-import org.arakhne.afc.math.matrix.Matrix3f;
-import org.arakhne.afc.math.matrix.Matrix4f;
+import org.arakhne.afc.math.matrix.Matrix3d;
+import org.arakhne.afc.math.matrix.Matrix4d;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** A 4 element unit quaternion represented by x,y,z,w coordinates. 
@@ -200,14 +200,14 @@ public interface Quaternion extends Cloneable, Serializable {
 	 * the passed matrix.
 	 * @param m1 the Matrix4f
 	 */
-	void setFromMatrix(Matrix4f m1);
+	void setFromMatrix(Matrix4d m1);
 
 	/**
 	 * Sets the value of this quaternion to the rotational component of
 	 * the passed matrix.
 	 * @param m1 the Matrix3f
 	 */
-	void setFromMatrix(Matrix3f m1);
+	void setFromMatrix(Matrix3d m1);
 
 	/** Set the quaternion coordinates.
 	 * 

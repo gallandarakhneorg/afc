@@ -30,7 +30,7 @@ import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2D;
 import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2DTestRule;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.geometry.d2.d.Vector2d;
-import org.arakhne.afc.math.matrix.Matrix3f;
+import org.arakhne.afc.math.matrix.Matrix3d;
 import org.arakhne.afc.math.matrix.SingularMatrixException;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.junit.After;

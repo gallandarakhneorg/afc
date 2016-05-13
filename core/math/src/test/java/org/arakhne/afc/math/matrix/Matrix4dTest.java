@@ -30,14 +30,14 @@ import org.junit.Rule;
 import org.junit.Test;
 
 @SuppressWarnings("all")
-public class Matrix4fTest extends AbstractMathTestCase{
+public class Matrix4dTest extends AbstractMathTestCase{
 	
 	@Rule
 	public CoordinateSystem2DTestRule csTestRule = new CoordinateSystem2DTestRule();
 
 	@Test
 	public void toStringTest() {
-		Matrix4f matrix = new Matrix4f(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15);
+		Matrix4d matrix = new Matrix4d(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15);
 		String s = "0.0, 1.0, 2.0, 3.0\n4.0, 5.0, 6.0, 7.0\n8.0, 9.0, 10.0, 11.0\n12.0, 13.0, 14.0, 15.0\n";
 				
 		assertEquals(s, matrix.toString());
@@ -45,16 +45,16 @@ public class Matrix4fTest extends AbstractMathTestCase{
 	
 	@Test
 	public void setIdentity() {
-		Matrix4f matrix = this.randomMatrix4f();
+		Matrix4d matrix = this.randomMatrix4f();
 		matrix.setIdentity();
 		
-		assertEpsilonEquals(new Matrix4f(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1), matrix);
+		assertEpsilonEquals(new Matrix4d(1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1), matrix);
 	}
 	
 	@Test
 	public void addDouble() {
-		Matrix4f m1 = this.randomMatrix4f();
-		Matrix4f m2 = m1.clone();
+		Matrix4d m1 = this.randomMatrix4f();
+		Matrix4d m2 = m1.clone();
 		double s = this.random.nextDouble();
 		
 		m2.set(m2.m00+s, m2.m01+s, m2.m02+s, m2.m03+s, m2.m10+s, m2.m11+s, m2.m12+s, m2.m13+s, m2.m20+s, m2.m21+s, m2.m22+s, m2.m23+s, m2.m30+s, m2.m31+s, m2.m32+s, m2.m33+s);
@@ -65,8 +65,8 @@ public class Matrix4fTest extends AbstractMathTestCase{
 	
 	@Test
 	public void addDoubleMatrix4D() {
-		Matrix4f m1 = this.randomMatrix4f();
-		Matrix4f m2 = m1.clone();
+		Matrix4d m1 = this.randomMatrix4f();
+		Matrix4d m2 = m1.clone();
 		double s = this.random.nextDouble();
 		
 		m2.set(m2.m00+s, m2.m01+s, m2.m02+s, m2.m03+s, m2.m10+s, m2.m11+s, m2.m12+s, m2.m13+s, m2.m20+s, m2.m21+s, m2.m22+s, m2.m23+s, m2.m30+s, m2.m31+s, m2.m32+s, m2.m33+s);
@@ -77,9 +77,9 @@ public class Matrix4fTest extends AbstractMathTestCase{
 	
 	@Test
 	public void addMatrix4DMatrix4D() {
-		Matrix4f m1 = this.randomMatrix4f();
-		Matrix4f m2 = this.randomMatrix4f();
-		Matrix4f m3 = m2.clone();
+		Matrix4d m1 = this.randomMatrix4f();
+		Matrix4d m2 = this.randomMatrix4f();
+		Matrix4d m3 = m2.clone();
 		
 		m2.set(m2.m00+m1.m00, m2.m01+m1.m01, m2.m02+m1.m02, m2.m03+m1.m03, m2.m10+m1.m10, m2.m11+m1.m11, m2.m12+m1.m12, m2.m13+m1.m13, m2.m20+m1.m20, m2.m21+m1.m21, m2.m22+m1.m22, m2.m23+m1.m23, m2.m30+m1.m30, m2.m31+m1.m31, m2.m32+m1.m32, m2.m33+m1.m33);
 		
@@ -90,9 +90,9 @@ public class Matrix4fTest extends AbstractMathTestCase{
 	
 	@Test
 	public void addMatrix4D() {
-		Matrix4f m1 = this.randomMatrix4f();
-		Matrix4f m2 = this.randomMatrix4f();
-		Matrix4f m3 = m2.clone();
+		Matrix4d m1 = this.randomMatrix4f();
+		Matrix4d m2 = this.randomMatrix4f();
+		Matrix4d m3 = m2.clone();
 		
 		m2.set(m2.m00+m1.m00, m2.m01+m1.m01, m2.m02+m1.m02, m2.m03+m1.m03, m2.m10+m1.m10, m2.m11+m1.m11, m2.m12+m1.m12, m2.m13+m1.m13, m2.m20+m1.m20, m2.m21+m1.m21, m2.m22+m1.m22, m2.m23+m1.m23, m2.m30+m1.m30, m2.m31+m1.m31, m2.m32+m1.m32, m2.m33+m1.m33);
 		
@@ -103,9 +103,9 @@ public class Matrix4fTest extends AbstractMathTestCase{
 	
 	@Test
 	public void subMatrix4DMatrix4D() {
-		Matrix4f m1 = this.randomMatrix4f();
-		Matrix4f m2 = this.randomMatrix4f();
-		Matrix4f m3 = m2.clone();
+		Matrix4d m1 = this.randomMatrix4f();
+		Matrix4d m2 = this.randomMatrix4f();
+		Matrix4d m3 = m2.clone();
 		
 		m2.set(m2.m00-m1.m00, m2.m01-m1.m01, m2.m02-m1.m02, m2.m03-m1.m03, m2.m10-m1.m10, m2.m11-m1.m11, m2.m12-m1.m12, m2.m13-m1.m13, m2.m20-m1.m20, m2.m21-m1.m21, m2.m22-m1.m22, m2.m23-m1.m23, m2.m30-m1.m30, m2.m31-m1.m31, m2.m32-m1.m32, m2.m33-m1.m33);
 		
@@ -116,9 +116,9 @@ public class Matrix4fTest extends AbstractMathTestCase{
 	
 	@Test
 	public void subMatrix4D() {
-		Matrix4f m1 = this.randomMatrix4f();
-		Matrix4f m2 = this.randomMatrix4f();
-		Matrix4f m3 = m2.clone();
+		Matrix4d m1 = this.randomMatrix4f();
+		Matrix4d m2 = this.randomMatrix4f();
+		Matrix4d m3 = m2.clone();
 		
 		m2.set(m2.m00-m1.m00, m2.m01-m1.m01, m2.m02-m1.m02, m2.m03-m1.m03, m2.m10-m1.m10, m2.m11-m1.m11, m2.m12-m1.m12, m2.m13-m1.m13, m2.m20-m1.m20, m2.m21-m1.m21, m2.m22-m1.m22, m2.m23-m1.m23, m2.m30-m1.m30, m2.m31-m1.m31, m2.m32-m1.m32, m2.m33-m1.m33);
 		
@@ -129,8 +129,8 @@ public class Matrix4fTest extends AbstractMathTestCase{
 	
 	@Test
 	public void transpose() {
-		Matrix4f m1 = this.randomMatrix4f();
-		Matrix4f transpose = new Matrix4f();
+		Matrix4d m1 = this.randomMatrix4f();
+		Matrix4d transpose = new Matrix4d();
 		
 		double [] v = new double[4];
 		
@@ -153,8 +153,8 @@ public class Matrix4fTest extends AbstractMathTestCase{
 	
 	@Test
 	public void transposeMatrix4D() {
-		Matrix4f m1 = this.randomMatrix4f();
-		Matrix4f transpose = new Matrix4f();
+		Matrix4d m1 = this.randomMatrix4f();
+		Matrix4d transpose = new Matrix4d();
 		
 		double [] v = new double[4];
 		
@@ -193,7 +193,7 @@ public class Matrix4fTest extends AbstractMathTestCase{
 		double n = this.random.nextDouble()*50;
 		double o = this.random.nextDouble()*50;
 		double p = this.random.nextDouble()*50;
-		Matrix4f m1 = new Matrix4f(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p);
+		Matrix4d m1 = new Matrix4d(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p);
 		
 		
 		double determinant = a *(l* (g* n-f* o)+k *(f* p-h* n)+j *(h* o-g* p))+i *(b *(g *p-h *o)+c *(h* n-f* p)+d *(f* o-g *n))+b *(l *(e *o-g* m)+k* (h* m-e* p))+j *(c* e *p-c *h *m+d *(g* m-e *o))+l *(c *f* m-c* e* n)+d* k* (e *n-f* m);
@@ -219,10 +219,10 @@ public class Matrix4fTest extends AbstractMathTestCase{
 		double n = this.random.nextDouble()*50;
 		double o = this.random.nextDouble()*50;
 		double p = this.random.nextDouble()*50;
-		Matrix4f m1 = new Matrix4f(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p);
+		Matrix4d m1 = new Matrix4d(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p);
 		
 		double s = this.random.nextDouble();
-		Matrix4f m2 = new Matrix4f(a*s,b*s,c*s,d*s,e*s,f*s,g*s,h*s,i*s,j*s,k*s,l*s,m*s,n*s,o*s,p*s);
+		Matrix4d m2 = new Matrix4d(a*s,b*s,c*s,d*s,e*s,f*s,g*s,h*s,i*s,j*s,k*s,l*s,m*s,n*s,o*s,p*s);
 		
 		m1.mul(s);
 		assertEpsilonEquals(m1, m2);
@@ -246,10 +246,10 @@ public class Matrix4fTest extends AbstractMathTestCase{
 		double n = this.random.nextDouble()*50;
 		double o = this.random.nextDouble()*50;
 		double p = this.random.nextDouble()*50;
-		Matrix4f m1 = new Matrix4f(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p);
+		Matrix4d m1 = new Matrix4d(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p);
 		
 		double s = this.random.nextDouble();
-		Matrix4f m2 = new Matrix4f(a*s,b*s,c*s,d*s,e*s,f*s,g*s,h*s,i*s,j*s,k*s,l*s,m*s,n*s,o*s,p*s);
+		Matrix4d m2 = new Matrix4d(a*s,b*s,c*s,d*s,e*s,f*s,g*s,h*s,i*s,j*s,k*s,l*s,m*s,n*s,o*s,p*s);
 		
 		m1.mul(s,m1);
 		assertEpsilonEquals(m1, m2);
@@ -273,7 +273,7 @@ public class Matrix4fTest extends AbstractMathTestCase{
 		double n = this.random.nextDouble()*50;
 		double o = this.random.nextDouble()*50;
 		double p = this.random.nextDouble()*50;
-		Matrix4f matrix1 = new Matrix4f(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p);
+		Matrix4d matrix1 = new Matrix4d(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p);
 		
 		double a1 = this.random.nextDouble()*50;
 		double b1 = this.random.nextDouble()*50;
@@ -291,10 +291,10 @@ public class Matrix4fTest extends AbstractMathTestCase{
 		double n1 = this.random.nextDouble()*50;
 		double o1 = this.random.nextDouble()*50;
 		double p1 = this.random.nextDouble()*50;
-		Matrix4f matrix2 = new Matrix4f(a1,b1,c1,d1,e1,f1,g1,h1,i1,j1,k1,l1,m1,n1,o1,p1);
+		Matrix4d matrix2 = new Matrix4d(a1,b1,c1,d1,e1,f1,g1,h1,i1,j1,k1,l1,m1,n1,o1,p1);
 		
 		
-		Matrix4f prod = new Matrix4f(
+		Matrix4d prod = new Matrix4d(
 				a*a1+b*e1+c*i1+d*m1,
 				a*b1+b*f1+c*j1+d*n1,
 				a*c1+b*g1+c*k1+d*o1,
@@ -338,7 +338,7 @@ public class Matrix4fTest extends AbstractMathTestCase{
 		double n = this.random.nextDouble()*50;
 		double o = this.random.nextDouble()*50;
 		double p = this.random.nextDouble()*50;
-		Matrix4f matrix1 = new Matrix4f(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p);
+		Matrix4d matrix1 = new Matrix4d(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p);
 		
 		double a1 = this.random.nextDouble()*50;
 		double b1 = this.random.nextDouble()*50;
@@ -356,10 +356,10 @@ public class Matrix4fTest extends AbstractMathTestCase{
 		double n1 = this.random.nextDouble()*50;
 		double o1 = this.random.nextDouble()*50;
 		double p1 = this.random.nextDouble()*50;
-		Matrix4f matrix2 = new Matrix4f(a1,b1,c1,d1,e1,f1,g1,h1,i1,j1,k1,l1,m1,n1,o1,p1);
+		Matrix4d matrix2 = new Matrix4d(a1,b1,c1,d1,e1,f1,g1,h1,i1,j1,k1,l1,m1,n1,o1,p1);
 		
 		
-		Matrix4f prod = new Matrix4f(
+		Matrix4d prod = new Matrix4d(
 				a*a1+b*e1+c*i1+d*m1,
 				a*b1+b*f1+c*j1+d*n1,
 				a*c1+b*g1+c*k1+d*o1,
@@ -387,23 +387,23 @@ public class Matrix4fTest extends AbstractMathTestCase{
 	
 	@Test
 	public void equals() {
-		Matrix4f m1 = this.randomMatrix4f();
-		Matrix4f m2 = new Matrix4f(m1);
+		Matrix4d m1 = this.randomMatrix4f();
+		Matrix4d m2 = new Matrix4d(m1);
 		
 		assertEpsilonEquals(m1, m2);
 	}
 	
 	@Test
 	public void setZero() {
-		Matrix4f m1 = this.randomMatrix4f();
+		Matrix4d m1 = this.randomMatrix4f();
 		m1.setZero();
 		
-		assertEpsilonEquals(new Matrix4f(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0), m1);
+		assertEpsilonEquals(new Matrix4d(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0), m1);
 	}
 	
 	@Test
 	public void setDiagonalDoubleDoubleDoubleDouble() {
-		Matrix4f m1 = this.randomMatrix4f();
+		Matrix4d m1 = this.randomMatrix4f();
 		double a = this.random.nextDouble();
 		double b = this.random.nextDouble();
 		double c = this.random.nextDouble();
@@ -411,13 +411,13 @@ public class Matrix4fTest extends AbstractMathTestCase{
 				
 		m1.setDiagonal(a,b,c,d);
 		
-		assertEpsilonEquals(new Matrix4f(a,0,0,0,0,b,0,0,0,0,c,0,0,0,0,d), m1);
+		assertEpsilonEquals(new Matrix4d(a,0,0,0,0,b,0,0,0,0,c,0,0,0,0,d), m1);
 	}
 	
 	@Test
 	public void negate() {
-		Matrix4f m1 = this.randomMatrix4f();
-		Matrix4f m2 = m1.clone();
+		Matrix4d m1 = this.randomMatrix4f();
+		Matrix4d m2 = m1.clone();
 		
 		m2.negate();
 		m2.add(m1, m2);
@@ -428,8 +428,8 @@ public class Matrix4fTest extends AbstractMathTestCase{
 	
 	@Test
 	public void negateMatrix4D() {
-		Matrix4f m1 = this.randomMatrix4f();
-		Matrix4f m2 = m1.clone();
+		Matrix4d m1 = this.randomMatrix4f();
+		Matrix4d m2 = m1.clone();
 		
 		m2.negate(m2);
 		m2.add(m1, m2);
@@ -440,9 +440,9 @@ public class Matrix4fTest extends AbstractMathTestCase{
 	
 	@Test
 	public void testClone() {
-		Matrix4f m1 = this.randomMatrix4f();
-		Matrix4f m2 = m1.clone();
-		Matrix4f m3 = new Matrix4f(m1);
+		Matrix4d m1 = this.randomMatrix4f();
+		Matrix4d m2 = m1.clone();
+		Matrix4d m3 = new Matrix4d(m1);
 		
 		assertEpsilonEquals(m2, m1);
 		assertEpsilonEquals(m3, m1);
@@ -462,7 +462,7 @@ public class Matrix4fTest extends AbstractMathTestCase{
 		double i = this.random.nextDouble();
 		double j = this.random.nextDouble();
 		
-		Matrix4f m1 = new Matrix4f(a,b,c,d,b,e,f,g,c,f,h,i,d,g,i,j);
+		Matrix4d m1 = new Matrix4d(a,b,c,d,b,e,f,g,c,f,h,i,d,g,i,j);
 		
 		assertTrue(m1.isSymmetric());
 		
@@ -473,7 +473,7 @@ public class Matrix4fTest extends AbstractMathTestCase{
 	
 	@Test
 	public void isIdentity() {
-		Matrix4f m1 = this.randomMatrix4f();
+		Matrix4d m1 = this.randomMatrix4f();
 		
 		m1.setIdentity();
 		assertTrue(m1.isIdentity());
@@ -484,9 +484,9 @@ public class Matrix4fTest extends AbstractMathTestCase{
 	
 	@Test
 	public void operator_addMatrix4f() {
-		Matrix4f m1 = this.randomMatrix4f();
-		Matrix4f m2 = this.randomMatrix4f();
-		Matrix4f m3 = m2.clone();
+		Matrix4d m1 = this.randomMatrix4f();
+		Matrix4d m2 = this.randomMatrix4f();
+		Matrix4d m3 = m2.clone();
 		
 		m2.set(m2.m00+m1.m00, m2.m01+m1.m01, m2.m02+m1.m02, m2.m03+m1.m03, m2.m10+m1.m10, m2.m11+m1.m11, m2.m12+m1.m12, m2.m13+m1.m13, m2.m20+m1.m20, m2.m21+m1.m21, m2.m22+m1.m22, m2.m23+m1.m23, m2.m30+m1.m30, m2.m31+m1.m31, m2.m32+m1.m32, m2.m33+m1.m33);
 		
@@ -497,8 +497,8 @@ public class Matrix4fTest extends AbstractMathTestCase{
 
 	@Test
 	public void operator_addDouble() {
-		Matrix4f m1 = this.randomMatrix4f();
-		Matrix4f m2 = m1.clone();
+		Matrix4d m1 = this.randomMatrix4f();
+		Matrix4d m2 = m1.clone();
 		double s = this.random.nextDouble();
 		
 		m2.set(m2.m00+s, m2.m01+s, m2.m02+s, m2.m03+s, m2.m10+s, m2.m11+s, m2.m12+s, m2.m13+s, m2.m20+s, m2.m21+s, m2.m22+s, m2.m23+s, m2.m30+s, m2.m31+s, m2.m32+s, m2.m33+s);
@@ -509,9 +509,9 @@ public class Matrix4fTest extends AbstractMathTestCase{
 
 	@Test
 	public void operator_removeMatrix4f() {
-		Matrix4f m1 = this.randomMatrix4f();
-		Matrix4f m2 = this.randomMatrix4f();
-		Matrix4f m3 = m2.clone();
+		Matrix4d m1 = this.randomMatrix4f();
+		Matrix4d m2 = this.randomMatrix4f();
+		Matrix4d m3 = m2.clone();
 		
 		m2.set(m2.m00-m1.m00, m2.m01-m1.m01, m2.m02-m1.m02, m2.m03-m1.m03, m2.m10-m1.m10, m2.m11-m1.m11, m2.m12-m1.m12, m2.m13-m1.m13, m2.m20-m1.m20, m2.m21-m1.m21, m2.m22-m1.m22, m2.m23-m1.m23, m2.m30-m1.m30, m2.m31-m1.m31, m2.m32-m1.m32, m2.m33-m1.m33);
 		
@@ -522,8 +522,8 @@ public class Matrix4fTest extends AbstractMathTestCase{
 
 	@Test
 	public void operator_removeDouble() {
-		Matrix4f m1 = this.randomMatrix4f();
-		Matrix4f m2 = m1.clone();
+		Matrix4d m1 = this.randomMatrix4f();
+		Matrix4d m2 = m1.clone();
 		double s = this.random.nextDouble();
 		
 		m2.set(m2.m00-s, m2.m01-s, m2.m02-s, m2.m03-s, m2.m10-s, m2.m11-s, m2.m12-s, m2.m13-s, m2.m20-s, m2.m21-s, m2.m22-s, m2.m23-s, m2.m30-s, m2.m31-s, m2.m32-s, m2.m33-s);
@@ -534,61 +534,61 @@ public class Matrix4fTest extends AbstractMathTestCase{
 
 	@Test
 	public void operator_plusMatrix4f() {
-		Matrix4f m1 = this.randomMatrix4f();
-		Matrix4f m2 = this.randomMatrix4f();
-		Matrix4f m3 = m2.clone();
+		Matrix4d m1 = this.randomMatrix4f();
+		Matrix4d m2 = this.randomMatrix4f();
+		Matrix4d m3 = m2.clone();
 		
 		m2.set(m2.m00+m1.m00, m2.m01+m1.m01, m2.m02+m1.m02, m2.m03+m1.m03, m2.m10+m1.m10, m2.m11+m1.m11, m2.m12+m1.m12, m2.m13+m1.m13, m2.m20+m1.m20, m2.m21+m1.m21, m2.m22+m1.m22, m2.m23+m1.m23, m2.m30+m1.m30, m2.m31+m1.m31, m2.m32+m1.m32, m2.m33+m1.m33);
 		
-		Matrix4f r = m3.operator_plus(m1);
+		Matrix4d r = m3.operator_plus(m1);
 		
 		assertEpsilonEquals(m2, r);
 	}
 
 	@Test
 	public void operator_plusDouble() {
-		Matrix4f m1 = this.randomMatrix4f();
-		Matrix4f m2 = m1.clone();
+		Matrix4d m1 = this.randomMatrix4f();
+		Matrix4d m2 = m1.clone();
 		double s = this.random.nextDouble();
 		
 		m2.set(m2.m00+s, m2.m01+s, m2.m02+s, m2.m03+s, m2.m10+s, m2.m11+s, m2.m12+s, m2.m13+s, m2.m20+s, m2.m21+s, m2.m22+s, m2.m23+s, m2.m30+s, m2.m31+s, m2.m32+s, m2.m33+s);
-		Matrix4f r = m1.operator_plus(s);
+		Matrix4d r = m1.operator_plus(s);
 		
 		assertEpsilonEquals(m2, r);
 	}
 
 	@Test
 	public void operator_minusMatrix4f() {
-		Matrix4f m1 = this.randomMatrix4f();
-		Matrix4f m2 = this.randomMatrix4f();
-		Matrix4f m3 = m2.clone();
+		Matrix4d m1 = this.randomMatrix4f();
+		Matrix4d m2 = this.randomMatrix4f();
+		Matrix4d m3 = m2.clone();
 		
 		m2.set(m2.m00-m1.m00, m2.m01-m1.m01, m2.m02-m1.m02, m2.m03-m1.m03, m2.m10-m1.m10, m2.m11-m1.m11, m2.m12-m1.m12, m2.m13-m1.m13, m2.m20-m1.m20, m2.m21-m1.m21, m2.m22-m1.m22, m2.m23-m1.m23, m2.m30-m1.m30, m2.m31-m1.m31, m2.m32-m1.m32, m2.m33-m1.m33);
 		
-		Matrix4f r = m3.operator_minus(m1);
+		Matrix4d r = m3.operator_minus(m1);
 		
 		assertEpsilonEquals(m2, r);
 	}
 
 	@Test
 	public void operator_minusDouble() {
-		Matrix4f m1 = this.randomMatrix4f();
-		Matrix4f m2 = m1.clone();
+		Matrix4d m1 = this.randomMatrix4f();
+		Matrix4d m2 = m1.clone();
 		double s = this.random.nextDouble();
 		
 		m2.set(m2.m00-s, m2.m01-s, m2.m02-s, m2.m03-s, m2.m10-s, m2.m11-s, m2.m12-s, m2.m13-s, m2.m20-s, m2.m21-s, m2.m22-s, m2.m23-s, m2.m30-s, m2.m31-s, m2.m32-s, m2.m33-s);
-		Matrix4f r = m1.operator_minus(s);
+		Matrix4d r = m1.operator_minus(s);
 		
 		assertEpsilonEquals(m2, r);
 	}
 
 	@Test
 	public void operator_minus() {
-		Matrix4f m1 = this.randomMatrix4f();
-		Matrix4f m2 = m1.clone();
+		Matrix4d m1 = this.randomMatrix4f();
+		Matrix4d m2 = m1.clone();
 		
 		m2.set(-m2.m00, -m2.m01, -m2.m02, -m2.m03, -m2.m10, -m2.m11, -m2.m12, -m2.m13, -m2.m20, -m2.m21, -m2.m22, -m2.m23, -m2.m30, -m2.m31, -m2.m32, -m2.m33);
-		Matrix4f r = m1.operator_minus();
+		Matrix4d r = m1.operator_minus();
 		
 		assertEpsilonEquals(m2, r);
 	}
@@ -611,7 +611,7 @@ public class Matrix4fTest extends AbstractMathTestCase{
 		double n = this.random.nextDouble()*50;
 		double o = this.random.nextDouble()*50;
 		double p = this.random.nextDouble()*50;
-		Matrix4f matrix1 = new Matrix4f(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p);
+		Matrix4d matrix1 = new Matrix4d(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p);
 		
 		double a1 = this.random.nextDouble()*50;
 		double b1 = this.random.nextDouble()*50;
@@ -629,10 +629,10 @@ public class Matrix4fTest extends AbstractMathTestCase{
 		double n1 = this.random.nextDouble()*50;
 		double o1 = this.random.nextDouble()*50;
 		double p1 = this.random.nextDouble()*50;
-		Matrix4f matrix2 = new Matrix4f(a1,b1,c1,d1,e1,f1,g1,h1,i1,j1,k1,l1,m1,n1,o1,p1);
+		Matrix4d matrix2 = new Matrix4d(a1,b1,c1,d1,e1,f1,g1,h1,i1,j1,k1,l1,m1,n1,o1,p1);
 		
 		
-		Matrix4f prod = new Matrix4f(
+		Matrix4d prod = new Matrix4d(
 				a*a1+b*e1+c*i1+d*m1,
 				a*b1+b*f1+c*j1+d*n1,
 				a*c1+b*g1+c*k1+d*o1,
@@ -653,7 +653,7 @@ public class Matrix4fTest extends AbstractMathTestCase{
 				m*c1+n*g1+o*k1+p*o1,
 				m*d1+n*h1+o*l1+p*p1);
 		
-		Matrix4f r = matrix1.operator_multiply(matrix2);
+		Matrix4d r = matrix1.operator_multiply(matrix2);
 		
 		assertEpsilonEquals(prod, r);
 	}
@@ -676,12 +676,12 @@ public class Matrix4fTest extends AbstractMathTestCase{
 		double n = this.random.nextDouble()*50;
 		double o = this.random.nextDouble()*50;
 		double p = this.random.nextDouble()*50;
-		Matrix4f m1 = new Matrix4f(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p);
+		Matrix4d m1 = new Matrix4d(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p);
 		
 		double s = this.random.nextDouble();
-		Matrix4f m2 = new Matrix4f(a*s,b*s,c*s,d*s,e*s,f*s,g*s,h*s,i*s,j*s,k*s,l*s,m*s,n*s,o*s,p*s);
+		Matrix4d m2 = new Matrix4d(a*s,b*s,c*s,d*s,e*s,f*s,g*s,h*s,i*s,j*s,k*s,l*s,m*s,n*s,o*s,p*s);
 		
-		Matrix4f result = m1.operator_multiply(s);
+		Matrix4d result = m1.operator_multiply(s);
 		assertEpsilonEquals(m2, result);
 	}
 
@@ -703,19 +703,19 @@ public class Matrix4fTest extends AbstractMathTestCase{
 		double n = this.random.nextDouble()*50;
 		double o = this.random.nextDouble()*50;
 		double p = this.random.nextDouble()*50;
-		Matrix4f m1 = new Matrix4f(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p);
+		Matrix4d m1 = new Matrix4d(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p);
 		
 		double s = this.random.nextDouble() * 50 + 2;
-		Matrix4f m2 = new Matrix4f(a/s,b/s,c/s,d/s,e/s,f/s,g/s,h/s,i/s,j/s,k/s,l/s,m/s,n/s,o/s,p/s);
+		Matrix4d m2 = new Matrix4d(a/s,b/s,c/s,d/s,e/s,f/s,g/s,h/s,i/s,j/s,k/s,l/s,m/s,n/s,o/s,p/s);
 		
-		Matrix4f result = m1.operator_divide(s);
+		Matrix4d result = m1.operator_divide(s);
 		assertEpsilonEquals(m2, result);
 	}
 
 	@Test
 	public void operator_plusPlus() {
-		Matrix4f m1 = this.randomMatrix4f();
-		Matrix4f m2 = m1.clone();
+		Matrix4d m1 = this.randomMatrix4f();
+		Matrix4d m2 = m1.clone();
 		
 		m2.set(m2.m00+1, m2.m01+1, m2.m02+1, m2.m03+1, m2.m10+1, m2.m11+1, m2.m12+1, m2.m13+1, m2.m20+1, m2.m21+1, m2.m22+1, m2.m23+1, m2.m30+1, m2.m31+1, m2.m32+1, m2.m33+1);
 		m1.operator_plusPlus();
@@ -725,8 +725,8 @@ public class Matrix4fTest extends AbstractMathTestCase{
 
 	@Test
 	public void operator_moinsMoins() {
-		Matrix4f m1 = this.randomMatrix4f();
-		Matrix4f m2 = m1.clone();
+		Matrix4d m1 = this.randomMatrix4f();
+		Matrix4d m2 = m1.clone();
 		
 		m2.set(m2.m00-1, m2.m01-1, m2.m02-1, m2.m03-1, m2.m10-1, m2.m11-1, m2.m12-1, m2.m13-1, m2.m20-1, m2.m21-1, m2.m22-1, m2.m23-1, m2.m30-1, m2.m31-1, m2.m32-1, m2.m33-1);
 		m1.operator_moinsMoins();
@@ -736,15 +736,15 @@ public class Matrix4fTest extends AbstractMathTestCase{
 
 	@Test
 	public void operator_not() {
-		Matrix4f m1 = this.randomMatrix4f();
-		Matrix4f m2 = m1.clone();
+		Matrix4d m1 = this.randomMatrix4f();
+		Matrix4d m2 = m1.clone();
 		
 		m2.set(
 				m2.m00, m2.m10, m2.m20, m2.m30,
 				m2.m01, m2.m11, m2.m21, m2.m31,
 				m2.m02, m2.m12, m2.m22, m2.m32,
 				m2.m03, m2.m13, m2.m23, m2.m33);
-		Matrix4f r = m1.operator_not();
+		Matrix4d r = m1.operator_not();
 		
 		assertEpsilonEquals(m2, r);
 	}

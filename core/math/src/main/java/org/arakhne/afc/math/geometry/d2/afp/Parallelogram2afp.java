@@ -32,7 +32,7 @@ import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.afp.Path2afp.CrossingComputationType;
-import org.arakhne.afc.math.matrix.Matrix2f;
+import org.arakhne.afc.math.matrix.Matrix2d;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Fonctional interface that represented a 2D parallelogram on a plane.
@@ -71,10 +71,10 @@ public interface Parallelogram2afp<
 		assert (R != null || S != null) : "One axis vector must be not null"; //$NON-NLS-1$
 		// Determining the covariance matrix of the points
 		// and set the center of the box
-		Matrix2f cov = new Matrix2f();
+		Matrix2d cov = new Matrix2d();
 		cov.cov(R, points);
 		//Determining eigenvectors of covariance matrix and defines RS axis
-		Matrix2f rs = new Matrix2f();//eigenvectors                         
+		Matrix2d rs = new Matrix2d();//eigenvectors                         
 		cov.eigenVectorsOfSymmetricMatrix(rs);
 		if (R != null) {
 			rs.getColumn(0, R);

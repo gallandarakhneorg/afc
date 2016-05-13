@@ -37,9 +37,9 @@ import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Quaternion;
 import org.arakhne.afc.math.geometry.d3.Tuple3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
-import org.arakhne.afc.math.matrix.Matrix2f;
-import org.arakhne.afc.math.matrix.Matrix3f;
-import org.arakhne.afc.math.matrix.Matrix4f;
+import org.arakhne.afc.math.matrix.Matrix2d;
+import org.arakhne.afc.math.matrix.Matrix3d;
+import org.arakhne.afc.math.matrix.Matrix4d;
 import org.junit.AssumptionViolatedException;
 import org.junit.ComparisonFailure;
 
@@ -529,8 +529,8 @@ public abstract class AbstractMathTestCase {
 	 *
 	 * @return the random matrix.
 	 */
-	public Matrix2f randomMatrix2f() {
-		return new Matrix2f(
+	public Matrix2d randomMatrix2f() {
+		return new Matrix2d(
 				this.random.nextDouble() * 1000 - 500,
 				this.random.nextDouble() * 1000 - 500,
 				this.random.nextDouble() * 1000 - 500,
@@ -542,8 +542,8 @@ public abstract class AbstractMathTestCase {
 	 *
 	 * @return the random matrix.
 	 */
-	public Matrix3f randomMatrix3f() {
-		return new Matrix3f(
+	public Matrix3d randomMatrix3f() {
+		return new Matrix3d(
 				this.random.nextDouble() * 1000 - 500,
 				this.random.nextDouble() * 1000 - 500,
 				this.random.nextDouble() * 1000 - 500,
@@ -560,8 +560,8 @@ public abstract class AbstractMathTestCase {
 	 *
 	 * @return the random matrix.
 	 */
-	public Matrix4f randomMatrix4f() {
-		return new Matrix4f(
+	public Matrix4d randomMatrix4f() {
+		return new Matrix4d(
 				this.random.nextDouble() * 1000 - 500,
 				this.random.nextDouble() * 1000 - 500,
 				this.random.nextDouble() * 1000 - 500,
@@ -911,7 +911,7 @@ public abstract class AbstractMathTestCase {
 	 * @param expected 
 	 * @param actual
 	 */
-	public void assertEpsilonEquals(Matrix2f expected, Matrix2f actual) {
+	public void assertEpsilonEquals(Matrix2d expected, Matrix2d actual) {
 		if ((!isEpsilonEquals(expected.getM00(), actual.getM00()))
 			||(!isEpsilonEquals(expected.getM01(), actual.getM01()))
 			||(!isEpsilonEquals(expected.getM10(), actual.getM10()))
@@ -926,7 +926,7 @@ public abstract class AbstractMathTestCase {
 	 * @param expected 
 	 * @param actual
 	 */
-	public void assertNotEpsilonEquals(Matrix2f expected, Matrix2f actual) {
+	public void assertNotEpsilonEquals(Matrix2d expected, Matrix2d actual) {
 		if ((isEpsilonEquals(expected.getM00(), actual.getM00()))
 			&&(isEpsilonEquals(expected.getM01(), actual.getM01()))
 			&&(isEpsilonEquals(expected.getM10(), actual.getM10()))
@@ -941,7 +941,7 @@ public abstract class AbstractMathTestCase {
 	 * @param expected 
 	 * @param actual
 	 */
-	public void assertEpsilonEquals(Matrix3f expected, Matrix3f actual) {
+	public void assertEpsilonEquals(Matrix3d expected, Matrix3d actual) {
 		if ((!isEpsilonEquals(expected.getM00(), actual.getM00()))
 			||(!isEpsilonEquals(expected.getM01(), actual.getM01()))
 			||(!isEpsilonEquals(expected.getM02(), actual.getM02()))
@@ -961,7 +961,7 @@ public abstract class AbstractMathTestCase {
 	 * @param expected 
 	 * @param actual
 	 */
-	public void assertNotEpsilonEquals(Matrix3f expected, Matrix3f actual) {
+	public void assertNotEpsilonEquals(Matrix3d expected, Matrix3d actual) {
 		if ((isEpsilonEquals(expected.getM00(), actual.getM00()))
 			&&(isEpsilonEquals(expected.getM01(), actual.getM01()))
 			&&(isEpsilonEquals(expected.getM02(), actual.getM02()))
@@ -981,7 +981,7 @@ public abstract class AbstractMathTestCase {
 	 * @param expected 
 	 * @param actual
 	 */
-	public void assertEpsilonEquals(Matrix4f expected, Matrix4f actual) {
+	public void assertEpsilonEquals(Matrix4d expected, Matrix4d actual) {
 		if ((!isEpsilonEquals(expected.getM00(), actual.getM00()))
 			||(!isEpsilonEquals(expected.getM01(), actual.getM01()))
 			||(!isEpsilonEquals(expected.getM02(), actual.getM02()))
@@ -1008,7 +1008,7 @@ public abstract class AbstractMathTestCase {
 	 * @param expected 
 	 * @param actual
 	 */
-	public void assertNotEpsilonEquals(Matrix4f expected, Matrix4f actual) {
+	public void assertNotEpsilonEquals(Matrix4d expected, Matrix4d actual) {
 		if ((isEpsilonEquals(expected.getM00(), actual.getM00()))
 			&&(isEpsilonEquals(expected.getM01(), actual.getM01()))
 			&&(isEpsilonEquals(expected.getM02(), actual.getM02()))

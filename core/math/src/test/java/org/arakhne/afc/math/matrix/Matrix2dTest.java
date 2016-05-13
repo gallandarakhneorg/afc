@@ -33,14 +33,14 @@ import org.junit.Rule;
 import org.junit.Test;
 
 @SuppressWarnings("all")
-public class Matrix2fTest extends AbstractMathTestCase {
+public class Matrix2dTest extends AbstractMathTestCase {
 	
 	@Rule
 	public CoordinateSystem2DTestRule csTestRule = new CoordinateSystem2DTestRule();
 
 	@Test
 	public void toStringTest() {
-		Matrix2f matrix = new Matrix2f(0,1,2,3);
+		Matrix2d matrix = new Matrix2d(0,1,2,3);
 		String s = "0.0, 1.0\n2.0, 3.0\n"; //$NON-NLS-1$
 				
 		assertEquals(s, matrix.toString());
@@ -48,16 +48,16 @@ public class Matrix2fTest extends AbstractMathTestCase {
 	
 	@Test
 	public void setIdentity() {
-		Matrix2f matrix = this.randomMatrix2f();
+		Matrix2d matrix = this.randomMatrix2f();
 		matrix.setIdentity();
 		
-		assertEpsilonEquals(new Matrix2f(1,0,0,1), matrix);
+		assertEpsilonEquals(new Matrix2d(1,0,0,1), matrix);
 	}
 	
 	@Test
 	public void addDouble() {
-		Matrix2f m1 = this.randomMatrix2f();
-		Matrix2f m2 = m1.clone();
+		Matrix2d m1 = this.randomMatrix2f();
+		Matrix2d m2 = m1.clone();
 		double s = this.random.nextDouble();
 		
 		m2.set(m2.m00+s, m2.m01+s, m2.m10+s, m2.m11+s);
@@ -68,8 +68,8 @@ public class Matrix2fTest extends AbstractMathTestCase {
 	
 	@Test
 	public void addDoubleMatrix2D() {
-		Matrix2f m1 = this.randomMatrix2f();
-		Matrix2f m2 = m1.clone();
+		Matrix2d m1 = this.randomMatrix2f();
+		Matrix2d m2 = m1.clone();
 		double s = this.random.nextDouble();
 		
 		m2.set(m2.m00+s, m2.m01+s, m2.m10+s, m2.m11+s);
@@ -80,9 +80,9 @@ public class Matrix2fTest extends AbstractMathTestCase {
 	
 	@Test
 	public void addMatrix2DMatrix2D() {
-		Matrix2f m1 = this.randomMatrix2f();
-		Matrix2f m2 = this.randomMatrix2f();
-		Matrix2f m3 = new Matrix2f();
+		Matrix2d m1 = this.randomMatrix2f();
+		Matrix2d m2 = this.randomMatrix2f();
+		Matrix2d m3 = new Matrix2d();
 		
 		m3.set(m1.m00+m2.m00, m1.m01+m2.m01, m1.m10+m2.m10, m1.m11+m2.m11);
 		m1.add(m1,m2);
@@ -92,9 +92,9 @@ public class Matrix2fTest extends AbstractMathTestCase {
 	
 	@Test
 	public void addMatrix2D() {
-		Matrix2f m1 = this.randomMatrix2f();
-		Matrix2f m2 = this.randomMatrix2f();
-		Matrix2f m3 = new Matrix2f();
+		Matrix2d m1 = this.randomMatrix2f();
+		Matrix2d m2 = this.randomMatrix2f();
+		Matrix2d m3 = new Matrix2d();
 		
 		m3.set(m1.m00+m2.m00, m1.m01+m2.m01, m1.m10+m2.m10, m1.m11+m2.m11);
 		m1.add(m2);
@@ -104,9 +104,9 @@ public class Matrix2fTest extends AbstractMathTestCase {
 	
 	@Test
 	public void subMatrix2DMatrix2D() {
-		Matrix2f m1 = this.randomMatrix2f();
-		Matrix2f m2 = this.randomMatrix2f();
-		Matrix2f m3 = new Matrix2f();
+		Matrix2d m1 = this.randomMatrix2f();
+		Matrix2d m2 = this.randomMatrix2f();
+		Matrix2d m3 = new Matrix2d();
 		
 		m3.set(m1.m00-m2.m00, m1.m01-m2.m01, m1.m10-m2.m10, m1.m11-m2.m11);
 		m1.sub(m1,m2);
@@ -116,9 +116,9 @@ public class Matrix2fTest extends AbstractMathTestCase {
 	
 	@Test
 	public void subMatrix2D() {
-		Matrix2f m1 = this.randomMatrix2f();
-		Matrix2f m2 = this.randomMatrix2f();
-		Matrix2f m3 = new Matrix2f();
+		Matrix2d m1 = this.randomMatrix2f();
+		Matrix2d m2 = this.randomMatrix2f();
+		Matrix2d m3 = new Matrix2d();
 		
 		m3.set(m1.m00-m2.m00, m1.m01-m2.m01, m1.m10-m2.m10, m1.m11-m2.m11);
 		m1.sub(m2);
@@ -128,8 +128,8 @@ public class Matrix2fTest extends AbstractMathTestCase {
 	
 	@Test
 	public void transpose() {
-		Matrix2f m1 = this.randomMatrix2f();
-		Matrix2f transpose = new Matrix2f();
+		Matrix2d m1 = this.randomMatrix2f();
+		Matrix2d transpose = new Matrix2d();
 		
 		double [] v = new double[3];
 		
@@ -146,8 +146,8 @@ public class Matrix2fTest extends AbstractMathTestCase {
 	
 	@Test
 	public void transposeMatrix2D() {
-		Matrix2f m1 = this.randomMatrix2f();
-		Matrix2f transpose = new Matrix2f();
+		Matrix2d m1 = this.randomMatrix2f();
+		Matrix2d transpose = new Matrix2d();
 		
 		double [] v = new double[3];
 		
@@ -169,7 +169,7 @@ public class Matrix2fTest extends AbstractMathTestCase {
 		double c = this.random.nextDouble();
 		double d = this.random.nextDouble();
 		
-		Matrix2f matrix = new Matrix2f(a,b,c,d);
+		Matrix2d matrix = new Matrix2d(a,b,c,d);
 		
 		double determinant = a*d-c*b;
 		
@@ -183,10 +183,10 @@ public class Matrix2fTest extends AbstractMathTestCase {
 		double c = this.random.nextDouble();
 		double d = this.random.nextDouble();
 		
-		Matrix2f matrix = new Matrix2f(a,b,c,d);
+		Matrix2d matrix = new Matrix2d(a,b,c,d);
 		
 		double s = this.random.nextDouble();
-		Matrix2f prodScal = new Matrix2f(a*s,b*s,c*s,d*s);
+		Matrix2d prodScal = new Matrix2d(a*s,b*s,c*s,d*s);
 		
 		matrix.mul(s);
 		assertEpsilonEquals(prodScal, matrix);
@@ -199,10 +199,10 @@ public class Matrix2fTest extends AbstractMathTestCase {
 		double c = this.random.nextDouble();
 		double d = this.random.nextDouble();
 		
-		Matrix2f matrix = new Matrix2f(a,b,c,d);
+		Matrix2d matrix = new Matrix2d(a,b,c,d);
 		
 		double s = this.random.nextDouble();
-		Matrix2f prodScal = new Matrix2f(a*s,b*s,c*s,d*s);
+		Matrix2d prodScal = new Matrix2d(a*s,b*s,c*s,d*s);
 		
 		matrix.mul(s,matrix);
 		assertEpsilonEquals(prodScal, matrix);
@@ -216,16 +216,16 @@ public class Matrix2fTest extends AbstractMathTestCase {
 		double d = this.random.nextDouble();
 		
 		//double i = this.random.nextDouble();
-		Matrix2f m1 = new Matrix2f(a,b,c,d);
+		Matrix2d m1 = new Matrix2d(a,b,c,d);
 		
 		double e = this.random.nextDouble();
 		double f = this.random.nextDouble();
 		double g = this.random.nextDouble();
 		double h = this.random.nextDouble();
 		
-		Matrix2f m2= new Matrix2f(e,f,g,h);
+		Matrix2d m2= new Matrix2d(e,f,g,h);
 		
-		Matrix2f prod = new Matrix2f(
+		Matrix2d prod = new Matrix2d(
 				a*e+b*g,
 				a*f+b*h,
 				c*e+d*g,
@@ -239,7 +239,7 @@ public class Matrix2fTest extends AbstractMathTestCase {
 	@Test
 	public void mulVector2D() {
 		Vector2d vector = this.randomVector2f();
-		Matrix2f matrix = new Matrix2f(1,2,4,-1);
+		Matrix2d matrix = new Matrix2d(1,2,4,-1);
 		
 		Vector2d product = new Vector2d(vector.getX()+2*vector.getY(),4*vector.getX()-vector.getY());
 		
@@ -257,16 +257,16 @@ public class Matrix2fTest extends AbstractMathTestCase {
 		double d = this.random.nextDouble();
 		
 		//double i = this.random.nextDouble();
-		Matrix2f m1 = new Matrix2f(a,b,c,d);
+		Matrix2d m1 = new Matrix2d(a,b,c,d);
 		
 		double e = this.random.nextDouble();
 		double f = this.random.nextDouble();
 		double g = this.random.nextDouble();
 		double h = this.random.nextDouble();
 		
-		Matrix2f m2= new Matrix2f(e,f,g,h);
+		Matrix2d m2= new Matrix2d(e,f,g,h);
 		
-		Matrix2f prod = new Matrix2f(
+		Matrix2d prod = new Matrix2d(
 				a*e+b*g,
 				a*f+b*h,
 				c*e+d*g,
@@ -279,9 +279,9 @@ public class Matrix2fTest extends AbstractMathTestCase {
 	
 	@Test
 	public void mulTransposeBoth() {
-		Matrix2f m1 = this.randomMatrix2f();
-		Matrix2f m2 = this.randomMatrix2f();
-		Matrix2f multrans = new Matrix2f();
+		Matrix2d m1 = this.randomMatrix2f();
+		Matrix2d m2 = this.randomMatrix2f();
+		Matrix2d multrans = new Matrix2d();
 		
 		multrans.mulTransposeBoth(m1, m2);
 		m1.transpose();
@@ -293,9 +293,9 @@ public class Matrix2fTest extends AbstractMathTestCase {
 	
 	@Test
 	public void mulTransposeRight() {
-		Matrix2f m1 = this.randomMatrix2f();
-		Matrix2f m2 = this.randomMatrix2f();
-		Matrix2f multrans = new Matrix2f();
+		Matrix2d m1 = this.randomMatrix2f();
+		Matrix2d m2 = this.randomMatrix2f();
+		Matrix2d multrans = new Matrix2d();
 		
 		multrans.mulTransposeRight(m1, m2);
 		//m1.transpose();
@@ -307,9 +307,9 @@ public class Matrix2fTest extends AbstractMathTestCase {
 	
 	@Test
 	public void mulTransposeLeft() {
-		Matrix2f m1 = this.randomMatrix2f();
-		Matrix2f m2 = this.randomMatrix2f();
-		Matrix2f multrans = new Matrix2f();
+		Matrix2d m1 = this.randomMatrix2f();
+		Matrix2d m2 = this.randomMatrix2f();
+		Matrix2d multrans = new Matrix2d();
 		
 		multrans.mulTransposeLeft(m1, m2);
 		m1.transpose();
@@ -321,7 +321,7 @@ public class Matrix2fTest extends AbstractMathTestCase {
 	
 	@Test
 	public void normalizeCP_zero() {
-		Matrix2f m = new Matrix2f();
+		Matrix2d m = new Matrix2d();
 		m.normalizeCP();
 		assertNaN(m.getM00());
 		assertNaN(m.getM01());
@@ -331,7 +331,7 @@ public class Matrix2fTest extends AbstractMathTestCase {
 	
 	@Test
 	public void normalizeCP_identity() {
-		Matrix2f m = new Matrix2f();
+		Matrix2d m = new Matrix2d();
 		m.setIdentity();
 		m.normalizeCP();
 		assertEpsilonEquals(1, m.getM00());
@@ -342,7 +342,7 @@ public class Matrix2fTest extends AbstractMathTestCase {
 
 	@Test
 	public void normalizeCP_std() {
-		Matrix2f m = new Matrix2f(1, 2, 3, 4);
+		Matrix2d m = new Matrix2d(1, 2, 3, 4);
 		m.normalizeCP();
 		assertEpsilonEquals(1/Math.sqrt(10), m.getM00());
 		assertEpsilonEquals(2/Math.sqrt(20), m.getM01());
@@ -352,8 +352,8 @@ public class Matrix2fTest extends AbstractMathTestCase {
 
 	@Test
 	public void normalizeCPMatrix2D_zero() {
-		Matrix2f m = new Matrix2f();
-		Matrix2f r = new Matrix2f();
+		Matrix2d m = new Matrix2d();
+		Matrix2d r = new Matrix2d();
 		r.normalizeCP(m);
 		assertNaN(r.getM00());
 		assertNaN(r.getM01());
@@ -363,9 +363,9 @@ public class Matrix2fTest extends AbstractMathTestCase {
 	
 	@Test
 	public void normalizeCPMatrix2D_identity() {
-		Matrix2f m = new Matrix2f();
+		Matrix2d m = new Matrix2d();
 		m.setIdentity();
-		Matrix2f r = new Matrix2f();
+		Matrix2d r = new Matrix2d();
 		r.normalizeCP(m);
 		assertEpsilonEquals(1, r.getM00());
 		assertEpsilonEquals(0, r.getM01());
@@ -375,8 +375,8 @@ public class Matrix2fTest extends AbstractMathTestCase {
 
 	@Test
 	public void normalizeCPMatrix2D_std() {
-		Matrix2f m = new Matrix2f(1, 2, 3, 4);
-		Matrix2f r = new Matrix2f();
+		Matrix2d m = new Matrix2d(1, 2, 3, 4);
+		Matrix2d r = new Matrix2d();
 		r.normalizeCP(m);
 		assertEpsilonEquals(1/Math.sqrt(10), r.getM00());
 		assertEpsilonEquals(2/Math.sqrt(20), r.getM01());
@@ -386,29 +386,29 @@ public class Matrix2fTest extends AbstractMathTestCase {
 
 	@Test
 	public void setZero() {
-		Matrix2f m = this.randomMatrix2f();
+		Matrix2d m = this.randomMatrix2f();
 		m.setZero();
-		assertEpsilonEquals(new Matrix2f(0,0,0,0), m);
+		assertEpsilonEquals(new Matrix2d(0,0,0,0), m);
 	}
 	
 	@Test
 	public void setDiagonal() {
-		Matrix2f m = this.randomMatrix2f();
+		Matrix2d m = this.randomMatrix2f();
 		double s = this.random.nextDouble();
 		m.setDiagonal(s,s);
-		assertEpsilonEquals(new Matrix2f(s,0,0,s), m);
+		assertEpsilonEquals(new Matrix2d(s,0,0,s), m);
 	}
 	
 	@Test
 	public void negate() {
-		Matrix2f m1 = this.randomMatrix2f();
-		Matrix2f m2 = m1.clone();
-		Matrix2f temp = new Matrix2f();
-		Matrix2f temp2 = new Matrix2f();
+		Matrix2d m1 = this.randomMatrix2f();
+		Matrix2d m2 = m1.clone();
+		Matrix2d temp = new Matrix2d();
+		Matrix2d temp2 = new Matrix2d();
 		
 		m1.negate();
 		temp.add(m1, m2);
-		assertEpsilonEquals(new Matrix2f(0,0,0,0), temp);
+		assertEpsilonEquals(new Matrix2d(0,0,0,0), temp);
 		temp.mul(m1, m2);
 		
 		m2.negate();
@@ -421,14 +421,14 @@ public class Matrix2fTest extends AbstractMathTestCase {
 	
 	@Test
 	public void negateMatrix2D() {
-		Matrix2f m1 = this.randomMatrix2f();
-		Matrix2f m2 = m1.clone();
-		Matrix2f temp = new Matrix2f();
-		Matrix2f temp2 = new Matrix2f();
+		Matrix2d m1 = this.randomMatrix2f();
+		Matrix2d m2 = m1.clone();
+		Matrix2d temp = new Matrix2d();
+		Matrix2d temp2 = new Matrix2d();
 		
 		m1.negate(m1);
 		temp.add(m1, m2);
-		assertEpsilonEquals(new Matrix2f(0,0,0,0), temp);
+		assertEpsilonEquals(new Matrix2d(0,0,0,0), temp);
 		temp.mul(m1, m2);
 		
 		m2.negate(m2);
@@ -441,14 +441,14 @@ public class Matrix2fTest extends AbstractMathTestCase {
 	
 	@Test
 	public void cloneTest() {
-		Matrix2f m = this.randomMatrix2f();
-		Matrix2f m2 = m.clone();
+		Matrix2d m = this.randomMatrix2f();
+		Matrix2d m2 = m.clone();
 		assertEpsilonEquals(m, m2);
 	}
 	
 	@Test
 	public void isSymmetric() {
-		Matrix2f m = this.randomMatrix2f();
+		Matrix2d m = this.randomMatrix2f();
 		boolean b = m.m01==m.m10;
 		assertEquals(b, m.isSymmetric());
 		
@@ -464,8 +464,8 @@ public class Matrix2fTest extends AbstractMathTestCase {
 	
 	@Test
 	public void eigenVectorsOfSymmetricMatrix_zero() {
-		Matrix2f m = new Matrix2f();
-		Matrix2f eigenVectors = new Matrix2f();
+		Matrix2d m = new Matrix2d();
+		Matrix2d eigenVectors = new Matrix2d();
 		double[] eigenValues = m.eigenVectorsOfSymmetricMatrix(eigenVectors);
 
 		assertEpsilonEquals(0, eigenValues[0]);
@@ -481,9 +481,9 @@ public class Matrix2fTest extends AbstractMathTestCase {
 	
 	@Test
 	public void eigenVectorsOfSymmetricMatrix_identity() {
-		Matrix2f m = new Matrix2f();
+		Matrix2d m = new Matrix2d();
 		m.setIdentity();
-		Matrix2f eigenVectors = new Matrix2f();
+		Matrix2d eigenVectors = new Matrix2d();
 		double[] eigenValues = m.eigenVectorsOfSymmetricMatrix(eigenVectors);
 
 		assertEpsilonEquals(1, eigenValues[0]);
@@ -499,8 +499,8 @@ public class Matrix2fTest extends AbstractMathTestCase {
 
 	@Test
 	public void eigenVectorsOfSymmetricMatrix_sym() {
-		Matrix2f m = new Matrix2f(1, 5, 5, 2);
-		Matrix2f eigenVectors = new Matrix2f();
+		Matrix2d m = new Matrix2d(1, 5, 5, 2);
+		Matrix2d eigenVectors = new Matrix2d();
 		double[] eigenValues = m.eigenVectorsOfSymmetricMatrix(eigenVectors);
 		
 		assertEpsilonEquals(-3.5249, eigenValues[0]);
@@ -517,7 +517,7 @@ public class Matrix2fTest extends AbstractMathTestCase {
 
 	@Test
 	public void isIdentity() {
-		Matrix2f m = this.randomMatrix2f();
+		Matrix2d m = this.randomMatrix2f();
 		boolean b = m.m00==1 && m.m01==0 && m.m10==0 && m.m11==1;
 		assertTrue(b==m.isIdentity());
 		
@@ -539,13 +539,13 @@ public class Matrix2fTest extends AbstractMathTestCase {
 		m.add(v1,v2);
 		m.scale(.5f);
 		
-		Matrix2f expected = new Matrix2f();
+		Matrix2d expected = new Matrix2d();
 		expected.m00 = ((v1.getX()-m.getX()) * (v1.getX()-m.getX()) + (v2.getX()-m.getX()) * (v2.getX()-m.getX())) / 2f;
 		expected.m01 = ((v1.getX()-m.getX()) * (v1.getY()-m.getY()) + (v2.getX()-m.getX()) * (v2.getY()-m.getY())) / 2f;
 		expected.m10 = ((v1.getY()-m.getY()) * (v1.getX()-m.getX()) + (v2.getY()-m.getY()) * (v2.getX()-m.getX())) / 2f;
 		expected.m11 = ((v1.getY()-m.getY()) * (v1.getY()-m.getY()) + (v2.getY()-m.getY()) * (v2.getY()-m.getY())) / 2f;
 		
-		Matrix2f mat = new Matrix2f();
+		Matrix2d mat = new Matrix2d();
 		Vector2d mean = new Vector2d(); 
 		mat.cov(mean, v1, v2);
 		
@@ -581,12 +581,12 @@ public class Matrix2fTest extends AbstractMathTestCase {
 		Point2d p3 = new Point2d(2, -1);
 		Point2d p4 = new Point2d(2, -1);
 		
-		Matrix2f cov = new Matrix2f();
+		Matrix2d cov = new Matrix2d();
 		Vector2d mean = new Vector2d();
 		cov.cov(mean, p1, p2, p3, p4);
 		
 		Point2d expectedMean = new Point2d(1, -1); 
-		Matrix2f expectedCov = new Matrix2f();
+		Matrix2d expectedCov = new Matrix2d();
 		expectedCov.m00 = 1.5f;
 		expectedCov.m01 = .5f;
 		expectedCov.m10 = .5f;
@@ -604,9 +604,9 @@ public class Matrix2fTest extends AbstractMathTestCase {
 	
 	@Test
 	public void operator_addMatrix2f() {
-		Matrix2f m1 = this.randomMatrix2f();
-		Matrix2f m2 = this.randomMatrix2f();
-		Matrix2f m3 = new Matrix2f();
+		Matrix2d m1 = this.randomMatrix2f();
+		Matrix2d m2 = this.randomMatrix2f();
+		Matrix2d m3 = new Matrix2d();
 		
 		m3.set(m1.m00+m2.m00, m1.m01+m2.m01, m1.m10+m2.m10, m1.m11+m2.m11);
 		m1.operator_add(m2);
@@ -616,8 +616,8 @@ public class Matrix2fTest extends AbstractMathTestCase {
 
 	@Test
 	public void operator_addDouble() {
-		Matrix2f m1 = this.randomMatrix2f();
-		Matrix2f m2 = m1.clone();
+		Matrix2d m1 = this.randomMatrix2f();
+		Matrix2d m2 = m1.clone();
 		double s = this.random.nextDouble() * 100;
 		
 		m2.set(m2.m00+s, m2.m01+s, m2.m10+s, m2.m11+s);
@@ -628,9 +628,9 @@ public class Matrix2fTest extends AbstractMathTestCase {
 
 	@Test
 	public void operator_removeMatrix2f() {
-		Matrix2f m1 = this.randomMatrix2f();
-		Matrix2f m2 = this.randomMatrix2f();
-		Matrix2f m3 = new Matrix2f();
+		Matrix2d m1 = this.randomMatrix2f();
+		Matrix2d m2 = this.randomMatrix2f();
+		Matrix2d m3 = new Matrix2d();
 		
 		m3.set(m1.m00-m2.m00, m1.m01-m2.m01, m1.m10-m2.m10, m1.m11-m2.m11);
 		m1.operator_remove(m2);
@@ -640,8 +640,8 @@ public class Matrix2fTest extends AbstractMathTestCase {
 
 	@Test
 	public void operator_removeDouble() {
-		Matrix2f m1 = this.randomMatrix2f();
-		Matrix2f m2 = m1.clone();
+		Matrix2d m1 = this.randomMatrix2f();
+		Matrix2d m2 = m1.clone();
 		double s = this.random.nextDouble() * 100;
 		
 		m2.set(m2.m00-s, m2.m01-s, m2.m10-s, m2.m11-s);
@@ -652,59 +652,59 @@ public class Matrix2fTest extends AbstractMathTestCase {
 
 	@Test
 	public void operator_plusMatrix2f() {
-		Matrix2f m1 = this.randomMatrix2f();
-		Matrix2f m2 = this.randomMatrix2f();
-		Matrix2f m3 = new Matrix2f();
+		Matrix2d m1 = this.randomMatrix2f();
+		Matrix2d m2 = this.randomMatrix2f();
+		Matrix2d m3 = new Matrix2d();
 		
 		m3.set(m1.m00+m2.m00, m1.m01+m2.m01, m1.m10+m2.m10, m1.m11+m2.m11);
-		Matrix2f r = m1.operator_plus(m2);
+		Matrix2d r = m1.operator_plus(m2);
 		
 		assertEpsilonEquals(m3, r);
 	}
 
 	@Test
 	public void operator_plusDouble() {
-		Matrix2f m1 = this.randomMatrix2f();
-		Matrix2f m2 = m1.clone();
+		Matrix2d m1 = this.randomMatrix2f();
+		Matrix2d m2 = m1.clone();
 		double s = this.random.nextDouble() * 100;
 		
 		m2.set(m2.m00+s, m2.m01+s, m2.m10+s, m2.m11+s);
-		Matrix2f r = m1.operator_plus(s);
+		Matrix2d r = m1.operator_plus(s);
 		
 		assertEpsilonEquals(m2, r);
 	}
 
 	@Test
 	public void operator_minusMatrix2f() {
-		Matrix2f m1 = this.randomMatrix2f();
-		Matrix2f m2 = this.randomMatrix2f();
-		Matrix2f m3 = new Matrix2f();
+		Matrix2d m1 = this.randomMatrix2f();
+		Matrix2d m2 = this.randomMatrix2f();
+		Matrix2d m3 = new Matrix2d();
 		
 		m3.set(m1.m00-m2.m00, m1.m01-m2.m01, m1.m10-m2.m10, m1.m11-m2.m11);
-		Matrix2f r = m1.operator_minus(m2);
+		Matrix2d r = m1.operator_minus(m2);
 		
 		assertEpsilonEquals(m3, r);
 	}
 
 	@Test
 	public void operator_minusDouble() {
-		Matrix2f m1 = this.randomMatrix2f();
-		Matrix2f m2 = m1.clone();
+		Matrix2d m1 = this.randomMatrix2f();
+		Matrix2d m2 = m1.clone();
 		double s = this.random.nextDouble() * 100;
 		
 		m2.set(m2.m00-s, m2.m01-s, m2.m10-s, m2.m11-s);
-		Matrix2f r = m1.operator_minus(s);
+		Matrix2d r = m1.operator_minus(s);
 		
 		assertEpsilonEquals(m2, r);
 	}
 
 	@Test
 	public void operator_minus() {
-		Matrix2f m1 = this.randomMatrix2f();
-		Matrix2f m2 = m1.clone();
+		Matrix2d m1 = this.randomMatrix2f();
+		Matrix2d m2 = m1.clone();
 		
 		m2.set(-m2.m00, -m2.m01, -m2.m10, -m2.m11);
-		Matrix2f r = m1.operator_minus();
+		Matrix2d r = m1.operator_minus();
 		assertEpsilonEquals(m2, r);
 	}
 
@@ -716,22 +716,22 @@ public class Matrix2fTest extends AbstractMathTestCase {
 		double d = this.random.nextDouble() * 100;
 		
 		//double i = this.random.nextDouble();
-		Matrix2f m1 = new Matrix2f(a,b,c,d);
+		Matrix2d m1 = new Matrix2d(a,b,c,d);
 		
 		double e = this.random.nextDouble() * 100;
 		double f = this.random.nextDouble() * 100;
 		double g = this.random.nextDouble() * 100;
 		double h = this.random.nextDouble() * 100;
 		
-		Matrix2f m2= new Matrix2f(e,f,g,h);
+		Matrix2d m2= new Matrix2d(e,f,g,h);
 		
-		Matrix2f prod = new Matrix2f(
+		Matrix2d prod = new Matrix2d(
 				a*e+b*g,
 				a*f+b*h,
 				c*e+d*g,
 				c*f+d*h);
 				
-		Matrix2f r = m1.operator_multiply(m2);
+		Matrix2d r = m1.operator_multiply(m2);
 		
 		assertEpsilonEquals(prod, r);
 	}
@@ -743,12 +743,12 @@ public class Matrix2fTest extends AbstractMathTestCase {
 		double c = this.random.nextDouble() * 100;
 		double d = this.random.nextDouble() * 100;
 		
-		Matrix2f matrix = new Matrix2f(a,b,c,d);
+		Matrix2d matrix = new Matrix2d(a,b,c,d);
 		
 		double s = this.random.nextDouble() * 100;
-		Matrix2f prodScal = new Matrix2f(a*s,b*s,c*s,d*s);
+		Matrix2d prodScal = new Matrix2d(a*s,b*s,c*s,d*s);
 		
-		Matrix2f r = matrix.operator_multiply(s);
+		Matrix2d r = matrix.operator_multiply(s);
 		assertEpsilonEquals(prodScal, r);
 	}
 
@@ -759,19 +759,19 @@ public class Matrix2fTest extends AbstractMathTestCase {
 		double c = this.random.nextDouble() * 100;
 		double d = this.random.nextDouble() * 100;
 		
-		Matrix2f matrix = new Matrix2f(a,b,c,d);
+		Matrix2d matrix = new Matrix2d(a,b,c,d);
 		
 		double s = this.random.nextDouble() * 100;
-		Matrix2f prodScal = new Matrix2f(a/s,b/s,c/s,d/s);
+		Matrix2d prodScal = new Matrix2d(a/s,b/s,c/s,d/s);
 		
-		Matrix2f r = matrix.operator_divide(s);
+		Matrix2d r = matrix.operator_divide(s);
 		assertEpsilonEquals(prodScal, r);
 	}
 
 	@Test
 	public void operator_plusPlus() {
-		Matrix2f m1 = this.randomMatrix2f();
-		Matrix2f m2 = m1.clone();
+		Matrix2d m1 = this.randomMatrix2f();
+		Matrix2d m2 = m1.clone();
 		
 		m2.set(m2.m00+1, m2.m01+1, m2.m10+1, m2.m11+1);
 		m1.operator_plusPlus();
@@ -781,8 +781,8 @@ public class Matrix2fTest extends AbstractMathTestCase {
 
 	@Test
 	public void operator_moinsMoins() {
-		Matrix2f m1 = this.randomMatrix2f();
-		Matrix2f m2 = m1.clone();
+		Matrix2d m1 = this.randomMatrix2f();
+		Matrix2d m2 = m1.clone();
 		
 		m2.set(m2.m00-1, m2.m01-1, m2.m10-1, m2.m11-1);
 		m1.operator_moinsMoins();
@@ -792,8 +792,8 @@ public class Matrix2fTest extends AbstractMathTestCase {
 
 	@Test
 	public void operator_not() {
-		Matrix2f m1 = this.randomMatrix2f();
-		Matrix2f transpose = new Matrix2f();
+		Matrix2d m1 = this.randomMatrix2f();
+		Matrix2d transpose = new Matrix2d();
 		
 		double [] v = new double[3];
 		
@@ -803,7 +803,7 @@ public class Matrix2fTest extends AbstractMathTestCase {
 		m1.getRow(1, v);
 		transpose.setColumn(1, v);
 		
-		Matrix2f r = m1.operator_not();
+		Matrix2d r = m1.operator_not();
 		
 		assertEpsilonEquals(transpose, r);
 	}

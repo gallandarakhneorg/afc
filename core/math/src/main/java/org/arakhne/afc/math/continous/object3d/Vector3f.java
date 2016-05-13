@@ -23,7 +23,7 @@ package org.arakhne.afc.math.continous.object3d;
 import org.arakhne.afc.math.generic.Point3D;
 import org.arakhne.afc.math.generic.Tuple3D;
 import org.arakhne.afc.math.generic.Vector3D;
-import org.arakhne.afc.math.matrix.Matrix3f;
+import org.arakhne.afc.math.matrix.Matrix3d;
 import org.arakhne.afc.math.matrix.Transform3D;
 
 /** 3D Vector with 3 floating-point values.
@@ -134,7 +134,7 @@ public class Vector3f extends Tuple3f<Vector3D> implements Vector3D {
 	 * @param m
 	 * @return transpose(this * m)
 	 */
-	public final Vector3f mul(Matrix3f m) {
+	public final Vector3f mul(Matrix3d m) {
 		Vector3f r = new Vector3f();
 		r.x = (float)(this.getX() * m.getM00() + this.getY() * m.getM01() + this.getZ() * m.getM02());
 		r.y = (float)(this.getX() * m.getM10() + this.getY() * m.getM11() + this.getZ() * m.getM12());

@@ -31,14 +31,14 @@ import org.junit.Rule;
 import org.junit.Test;
 
 @SuppressWarnings("all")
-public class Matrix3fTest extends AbstractMathTestCase {
+public class Matrix3dTest extends AbstractMathTestCase {
 
 	@Rule
 	public CoordinateSystem2DTestRule csTestRule = new CoordinateSystem2DTestRule();
 	
 	@Test
 	public void toStringTest() {
-		Matrix3f matrix = new Matrix3f(0,1,2,3,4,5,6,7,8);
+		Matrix3d matrix = new Matrix3d(0,1,2,3,4,5,6,7,8);
 		String s = "0.0, 1.0, 2.0\n3.0, 4.0, 5.0\n6.0, 7.0, 8.0\n"; //$NON-NLS-1$
 				
 		assertTrue(s.equals(matrix.toString()));
@@ -46,16 +46,16 @@ public class Matrix3fTest extends AbstractMathTestCase {
 	
 	@Test
 	public void setIdentity() {
-		Matrix3f matrix = new Matrix3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		Matrix3d matrix = new Matrix3d(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
 		matrix.setIdentity();
 		
-		assertEpsilonEquals(new Matrix3f(1,0,0,0,1,0,0,0,1), matrix);
+		assertEpsilonEquals(new Matrix3d(1,0,0,0,1,0,0,0,1), matrix);
 	}
 	
 	@Test
 	public void addDouble() {
-		Matrix3f m1 = new Matrix3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
-		Matrix3f m2 = m1.clone();
+		Matrix3d m1 = new Matrix3d(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		Matrix3d m2 = m1.clone();
 		double s = this.random.nextDouble() * 100;
 		
 		m2.set(m2.m00+s, m2.m01+s, m2.m02+s, m2.m10+s, m2.m11+s, m2.m12+s, m2.m20+s, m2.m21+s, m2.m22+s);
@@ -66,8 +66,8 @@ public class Matrix3fTest extends AbstractMathTestCase {
 	
 	@Test
 	public void addDoubleMatrix3D() {
-		Matrix3f m1 = new Matrix3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
-		Matrix3f m2 = new Matrix3f();
+		Matrix3d m1 = new Matrix3d(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		Matrix3d m2 = new Matrix3d();
 		double s = this.random.nextDouble() * 100;
 		
 		m2.set(m1.m00+s, m1.m01+s, m1.m02+s, m1.m10+s, m1.m11+s, m1.m12+s, m1.m20+s, m1.m21+s, m1.m22+s);
@@ -78,9 +78,9 @@ public class Matrix3fTest extends AbstractMathTestCase {
 	
 	@Test
 	public void addMatrix3DMatrix3D() {
-		Matrix3f m1 = new Matrix3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
-		Matrix3f m2 = new Matrix3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
-		Matrix3f m3 = new Matrix3f();
+		Matrix3d m1 = new Matrix3d(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		Matrix3d m2 = new Matrix3d(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		Matrix3d m3 = new Matrix3d();
 		
 		m3.set(m1.m00+m2.m00, m1.m01+m2.m01, m1.m02+m2.m02, m1.m10+m2.m10, m1.m11+m2.m11, m1.m12+m2.m12, m1.m20+m2.m20, m1.m21+m2.m21, m1.m22+m2.m22);
 		m1.add(m1,m2);
@@ -90,9 +90,9 @@ public class Matrix3fTest extends AbstractMathTestCase {
 	
 	@Test
 	public void addMatrix3D() {
-		Matrix3f m1 = new Matrix3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
-		Matrix3f m2 = new Matrix3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
-		Matrix3f m3 = new Matrix3f();
+		Matrix3d m1 = new Matrix3d(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		Matrix3d m2 = new Matrix3d(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		Matrix3d m3 = new Matrix3d();
 		
 		m3.set(m1.m00+m2.m00, m1.m01+m2.m01, m1.m02+m2.m02, m1.m10+m2.m10, m1.m11+m2.m11, m1.m12+m2.m12, m1.m20+m2.m20, m1.m21+m2.m21, m1.m22+m2.m22);
 		m1.add(m2);
@@ -102,9 +102,9 @@ public class Matrix3fTest extends AbstractMathTestCase {
 	
 	@Test
 	public void subMatrix3DMatrix3D() {
-		Matrix3f m1 = new Matrix3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
-		Matrix3f m2 = new Matrix3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
-		Matrix3f m3 = new Matrix3f();
+		Matrix3d m1 = new Matrix3d(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		Matrix3d m2 = new Matrix3d(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		Matrix3d m3 = new Matrix3d();
 		
 		m3.set(m1.m00-m2.m00, m1.m01-m2.m01, m1.m02-m2.m02, m1.m10-m2.m10, m1.m11-m2.m11, m1.m12-m2.m12, m1.m20-m2.m20, m1.m21-m2.m21, m1.m22-m2.m22);
 		m1.sub(m1,m2);
@@ -114,9 +114,9 @@ public class Matrix3fTest extends AbstractMathTestCase {
 	
 	@Test
 	public void subMatrix3D() {
-		Matrix3f m1 = new Matrix3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
-		Matrix3f m2 = new Matrix3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
-		Matrix3f m3 = new Matrix3f();
+		Matrix3d m1 = new Matrix3d(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		Matrix3d m2 = new Matrix3d(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		Matrix3d m3 = new Matrix3d();
 		
 		m3.set(m1.m00-m2.m00, m1.m01-m2.m01, m1.m02-m2.m02, m1.m10-m2.m10, m1.m11-m2.m11, m1.m12-m2.m12, m1.m20-m2.m20, m1.m21-m2.m21, m1.m22-m2.m22);
 		m1.sub(m2);
@@ -126,8 +126,8 @@ public class Matrix3fTest extends AbstractMathTestCase {
 	
 	@Test
 	public void transpose() {
-		Matrix3f m1 = new Matrix3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
-		Matrix3f transpose = new Matrix3f();
+		Matrix3d m1 = new Matrix3d(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		Matrix3d transpose = new Matrix3d();
 		
 		double [] v = new double[3];
 		
@@ -147,8 +147,8 @@ public class Matrix3fTest extends AbstractMathTestCase {
 	
 	@Test
 	public void transposeMatrix3D() {
-		Matrix3f m1 = new Matrix3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
-		Matrix3f transpose = new Matrix3f();
+		Matrix3d m1 = new Matrix3d(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		Matrix3d transpose = new Matrix3d();
 		
 		double [] v = new double[3];
 		
@@ -168,17 +168,17 @@ public class Matrix3fTest extends AbstractMathTestCase {
 	
 	@Test
 	public void invert() {
-		Matrix3f m1 = new Matrix3f(1,0,0,0,2,0,0,0,3);
-		Matrix3f i1 = new Matrix3f(6,0,0,0,3,0,0,0,2);
+		Matrix3d m1 = new Matrix3d(1,0,0,0,2,0,0,0,3);
+		Matrix3d i1 = new Matrix3d(6,0,0,0,3,0,0,0,2);
 		i1.mul(1/6.);
 		
-		Matrix3f m2 = new Matrix3f(1,-1,1,1,1,-1,-1,-1,-1);
-		Matrix3f i2 = new Matrix3f(1,1,0,-1,0,-1,0,-1,-1);
+		Matrix3d m2 = new Matrix3d(1,-1,1,1,1,-1,-1,-1,-1);
+		Matrix3d i2 = new Matrix3d(1,1,0,-1,0,-1,0,-1,-1);
 		i2.mul(1/2.);
 			
 		
-		Matrix3f m3 = new Matrix3f(1.5, 2.5, 1.5, -2.5, 1.5, -1.5, -1.5, -1, -1);
-		Matrix3f i3 = new Matrix3f(-1.5,0.5,-3,-0.125,0.375,-0.75,2.375,-1.125,4.25);
+		Matrix3d m3 = new Matrix3d(1.5, 2.5, 1.5, -2.5, 1.5, -1.5, -1.5, -1, -1);
+		Matrix3d i3 = new Matrix3d(-1.5,0.5,-3,-0.125,0.375,-0.75,2.375,-1.125,4.25);
 		
 		
 		m1.invert();
@@ -193,17 +193,17 @@ public class Matrix3fTest extends AbstractMathTestCase {
 	
 	@Test
 	public void invertMatrix3D() {
-		Matrix3f m1 = new Matrix3f(1,0,0,0,2,0,0,0,3);
-		Matrix3f i1 = new Matrix3f(6,0,0,0,3,0,0,0,2);
+		Matrix3d m1 = new Matrix3d(1,0,0,0,2,0,0,0,3);
+		Matrix3d i1 = new Matrix3d(6,0,0,0,3,0,0,0,2);
 		i1.mul(1/6.);
 		
-		Matrix3f m2 = new Matrix3f(1,-1,1,1,1,-1,-1,-1,-1);
-		Matrix3f i2 = new Matrix3f(1,1,0,-1,0,-1,0,-1,-1);
+		Matrix3d m2 = new Matrix3d(1,-1,1,1,1,-1,-1,-1,-1);
+		Matrix3d i2 = new Matrix3d(1,1,0,-1,0,-1,0,-1,-1);
 		i2.mul(1/2.);
 			
 		
-		Matrix3f m3 = new Matrix3f(1.5, 2.5, 1.5, -2.5, 1.5, -1.5, -1.5, -1, -1);
-		Matrix3f i3 = new Matrix3f(-1.5,0.5,-3,-0.125,0.375,-0.75,2.375,-1.125,4.25);
+		Matrix3d m3 = new Matrix3d(1.5, 2.5, 1.5, -2.5, 1.5, -1.5, -1.5, -1, -1);
+		Matrix3d i3 = new Matrix3d(-1.5,0.5,-3,-0.125,0.375,-0.75,2.375,-1.125,4.25);
 		
 		
 		m1.invert(m1);
@@ -228,7 +228,7 @@ public class Matrix3fTest extends AbstractMathTestCase {
 		double g = this.random.nextDouble() * 100;
 		double h = this.random.nextDouble() * 100;
 		double i = this.random.nextDouble() * 100;
-		Matrix3f matrix = new Matrix3f(a,b,c,d,e,f,g,h,i);
+		Matrix3d matrix = new Matrix3d(a,b,c,d,e,f,g,h,i);
 		
 		double determinant = a*e*i -a*f*h -b*d*i + b*f*g + c*d*h - c*e*g;
 		
@@ -246,10 +246,10 @@ public class Matrix3fTest extends AbstractMathTestCase {
 		double g = this.random.nextDouble() * 100;
 		double h = this.random.nextDouble() * 100;
 		double i = this.random.nextDouble() * 100;
-		Matrix3f matrix = new Matrix3f(a,b,c,d,e,f,g,h,i);
+		Matrix3d matrix = new Matrix3d(a,b,c,d,e,f,g,h,i);
 		
 		double s = this.random.nextDouble() * 100;
-		Matrix3f prodScal = new Matrix3f(a*s,b*s,c*s,d*s,e*s,f*s,g*s,h*s,i*s);
+		Matrix3d prodScal = new Matrix3d(a*s,b*s,c*s,d*s,e*s,f*s,g*s,h*s,i*s);
 		
 		matrix.mul(s);
 		assertEpsilonEquals(prodScal, matrix);
@@ -295,10 +295,10 @@ public class Matrix3fTest extends AbstractMathTestCase {
 		double g = this.random.nextDouble() * 100;
 		double h = this.random.nextDouble() * 100;
 		double i = this.random.nextDouble() * 100;
-		Matrix3f matrix = new Matrix3f(a,b,c,d,e,f,g,h,i);
+		Matrix3d matrix = new Matrix3d(a,b,c,d,e,f,g,h,i);
 		
 		double s = this.random.nextDouble() * 100;
-		Matrix3f prodScal = new Matrix3f(a*s,b*s,c*s,d*s,e*s,f*s,g*s,h*s,i*s);
+		Matrix3d prodScal = new Matrix3d(a*s,b*s,c*s,d*s,e*s,f*s,g*s,h*s,i*s);
 		
 		matrix.mul(s,matrix);
 		assertEpsilonEquals(prodScal, matrix);
@@ -315,7 +315,7 @@ public class Matrix3fTest extends AbstractMathTestCase {
 		double g = this.random.nextDouble() * 100;
 		double h = this.random.nextDouble() * 100;
 		double i = this.random.nextDouble() * 100;
-		Matrix3f m1 = new Matrix3f(a,b,c,d,e,f,g,h,i);
+		Matrix3d m1 = new Matrix3d(a,b,c,d,e,f,g,h,i);
 		
 		double j = this.random.nextDouble() * 100;
 		double k = this.random.nextDouble() * 100;
@@ -326,9 +326,9 @@ public class Matrix3fTest extends AbstractMathTestCase {
 		double p = this.random.nextDouble() * 100;
 		double q = this.random.nextDouble() * 100;
 		double r = this.random.nextDouble() * 100;
-		Matrix3f m2 = new Matrix3f(j,k,l,m,n,o,p,q,r);
+		Matrix3d m2 = new Matrix3d(j,k,l,m,n,o,p,q,r);
 		
-		Matrix3f prod = new Matrix3f(
+		Matrix3d prod = new Matrix3d(
 				a*j+b*m+c*p,
 				a*k+b*n+c*q,
 				a*l+b*o+c*r,
@@ -355,7 +355,7 @@ public class Matrix3fTest extends AbstractMathTestCase {
 		double g = this.random.nextDouble() * 100;
 		double h = this.random.nextDouble() * 100;
 		double i = this.random.nextDouble() * 100;
-		Matrix3f m1 = new Matrix3f(a,b,c,d,e,f,g,h,i);
+		Matrix3d m1 = new Matrix3d(a,b,c,d,e,f,g,h,i);
 		
 		double j = this.random.nextDouble() * 100;
 		double k = this.random.nextDouble() * 100;
@@ -366,9 +366,9 @@ public class Matrix3fTest extends AbstractMathTestCase {
 		double p = this.random.nextDouble() * 100;
 		double q = this.random.nextDouble() * 100;
 		double r = this.random.nextDouble() * 100;
-		Matrix3f m2 = new Matrix3f(j,k,l,m,n,o,p,q,r);
+		Matrix3d m2 = new Matrix3d(j,k,l,m,n,o,p,q,r);
 		
-		Matrix3f prod = new Matrix3f(
+		Matrix3d prod = new Matrix3d(
 				a*j+b*m+c*p,
 				a*k+b*n+c*q,
 				a*l+b*o+c*r,
@@ -386,11 +386,11 @@ public class Matrix3fTest extends AbstractMathTestCase {
 	
 	@Test
 	public void mulNormalizeMatrix3D() {
-		Matrix3f m = new Matrix3f(
+		Matrix3d m = new Matrix3d(
 				0.030612, 0.061224, 0.051020,
 				-0.061224, 1.377551, -0.102041,
 				-0.153061, 2.693878, -0.255102);
-		Matrix3f m2 = new Matrix3f(
+		Matrix3d m2 = new Matrix3d(
 				18, 45, 2,
 			    4, 6, 8,
 			    4, 5, 48);
@@ -408,12 +408,12 @@ public class Matrix3fTest extends AbstractMathTestCase {
 	
 	@Test
 	public void mulNormalizeMatrix3DMatrix3D() {
-		Matrix3f m = new Matrix3f();
-		Matrix3f m1 = new Matrix3f(
+		Matrix3d m = new Matrix3d();
+		Matrix3d m1 = new Matrix3d(
 				0.030612, 0.061224, 0.051020,
 				-0.061224, 1.377551, -0.102041,
 				-0.153061, 2.693878, -0.255102);
-		Matrix3f m2 = new Matrix3f(
+		Matrix3d m2 = new Matrix3d(
 				18, 45, 2,
 			    4, 6, 8,
 			    4, 5, 48);
@@ -431,9 +431,9 @@ public class Matrix3fTest extends AbstractMathTestCase {
 	
 	@Test
 	public void mulTransposeBothMatrix3DMatrix3D() {
-		Matrix3f m1 = new Matrix3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
-		Matrix3f m2 = new Matrix3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
-		Matrix3f mulTrans = new Matrix3f();
+		Matrix3d m1 = new Matrix3d(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		Matrix3d m2 = new Matrix3d(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		Matrix3d mulTrans = new Matrix3d();
 		
 		mulTrans.mulTransposeBoth(m1, m2);
 		m1.transpose();
@@ -445,9 +445,9 @@ public class Matrix3fTest extends AbstractMathTestCase {
 	
 	@Test
 	public void mulTransposeRightMatrix3DMatrix3D() {
-		Matrix3f m1 = new Matrix3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
-		Matrix3f m2 = new Matrix3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
-		Matrix3f mulTrans = new Matrix3f();
+		Matrix3d m1 = new Matrix3d(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		Matrix3d m2 = new Matrix3d(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		Matrix3d mulTrans = new Matrix3d();
 		
 		mulTrans.mulTransposeRight(m1, m2);
 		m2.transpose();
@@ -458,9 +458,9 @@ public class Matrix3fTest extends AbstractMathTestCase {
 	
 	@Test
 	public void mulTransposeLeftMatrix3DMatrix3D() {
-		Matrix3f m1 = new Matrix3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
-		Matrix3f m2 = new Matrix3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
-		Matrix3f mulTrans = new Matrix3f();
+		Matrix3d m1 = new Matrix3d(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		Matrix3d m2 = new Matrix3d(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		Matrix3d mulTrans = new Matrix3d();
 		
 		mulTrans.mulTransposeLeft(m1, m2);
 		m1.transpose();
@@ -471,7 +471,7 @@ public class Matrix3fTest extends AbstractMathTestCase {
 	
 	@Test
 	public void normalizeCP_zero() {
-		Matrix3f m = new Matrix3f();
+		Matrix3d m = new Matrix3d();
 		m.normalizeCP();
 		assertNaN(m.getM00());
 		assertNaN(m.getM01());
@@ -486,7 +486,7 @@ public class Matrix3fTest extends AbstractMathTestCase {
 	
 	@Test
 	public void normalizeCP_identity() {
-		Matrix3f m = new Matrix3f();
+		Matrix3d m = new Matrix3d();
 		m.setIdentity();
 		m.normalizeCP();
 		assertEpsilonEquals(1, m.getM00());
@@ -502,7 +502,7 @@ public class Matrix3fTest extends AbstractMathTestCase {
 
 	@Test
 	public void normalizeCP_std() {
-		Matrix3f m = new Matrix3f(
+		Matrix3d m = new Matrix3d(
 				1, 2, 3,
 				4, 5, 6,
 				7, 8, 9);
@@ -520,8 +520,8 @@ public class Matrix3fTest extends AbstractMathTestCase {
 	
 	@Test
 	public void normalizeCPMatrix3D_zero() {
-		Matrix3f m = new Matrix3f();
-		Matrix3f r = new Matrix3f();
+		Matrix3d m = new Matrix3d();
+		Matrix3d r = new Matrix3d();
 		r.normalizeCP(m);
 		assertNaN(r.getM00());
 		assertNaN(r.getM01());
@@ -536,9 +536,9 @@ public class Matrix3fTest extends AbstractMathTestCase {
 	
 	@Test
 	public void normalizeCPMatrix3D_identity() {
-		Matrix3f m = new Matrix3f();
+		Matrix3d m = new Matrix3d();
 		m.setIdentity();
-		Matrix3f r = new Matrix3f();
+		Matrix3d r = new Matrix3d();
 		r.normalizeCP(m);
 		assertEpsilonEquals(1, r.getM00());
 		assertEpsilonEquals(0, r.getM01());
@@ -553,11 +553,11 @@ public class Matrix3fTest extends AbstractMathTestCase {
 
 	@Test
 	public void normalizeCPMatrix3D_std() {
-		Matrix3f m = new Matrix3f(
+		Matrix3d m = new Matrix3d(
 				1, 2, 3,
 				4, 5, 6,
 				7, 8, 9);
-		Matrix3f r = new Matrix3f();
+		Matrix3d r = new Matrix3d();
 		r.normalizeCP(m);
 		assertEpsilonEquals(1/Math.sqrt(1*1+4*4+7*7), r.getM00());
 		assertEpsilonEquals(2/Math.sqrt(2*2+5*5+8*8), r.getM01());
@@ -572,42 +572,42 @@ public class Matrix3fTest extends AbstractMathTestCase {
 	
 	@Test
 	public void equalsMatrix3D() {
-		Matrix3f m1 = new Matrix3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
-		Matrix3f m2 = new Matrix3f(m1);
+		Matrix3d m1 = new Matrix3d(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		Matrix3d m2 = new Matrix3d(m1);
 		
 		assertEpsilonEquals(m1, m2);
 	}
 	
 	@Test
 	public void setZero() {
-		Matrix3f m1 = new Matrix3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		Matrix3d m1 = new Matrix3d(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
 		m1.setZero();
 		
-		assertEpsilonEquals(new Matrix3f(0,0,0,0,0,0,0,0,0), m1);
+		assertEpsilonEquals(new Matrix3d(0,0,0,0,0,0,0,0,0), m1);
 	}
 	
 	@Test
 	public void setDiagonalDoubleDoubleDouble() {
-		Matrix3f m1 = new Matrix3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		Matrix3d m1 = new Matrix3d(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
 		double a = this.random.nextDouble() * 100;
 		double b = this.random.nextDouble() * 100;
 		double c = this.random.nextDouble() * 100;
 				
 		m1.setDiagonal(a,b,c);
 		
-		assertEpsilonEquals(new Matrix3f(a,0,0,0,b,0,0,0,c), m1);
+		assertEpsilonEquals(new Matrix3d(a,0,0,0,b,0,0,0,c), m1);
 	}
 	
 	@Test
 	public void negate() {
-		Matrix3f m1 = new Matrix3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
-		Matrix3f m2 = m1.clone();
-		Matrix3f temp = new Matrix3f();
-		Matrix3f temp2 = new Matrix3f();
+		Matrix3d m1 = new Matrix3d(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		Matrix3d m2 = m1.clone();
+		Matrix3d temp = new Matrix3d();
+		Matrix3d temp2 = new Matrix3d();
 		
 		m1.negate();
 		temp.add(m1, m2);
-		assertEpsilonEquals(new Matrix3f(0,0,0,0,0,0,0,0,0), temp);
+		assertEpsilonEquals(new Matrix3d(0,0,0,0,0,0,0,0,0), temp);
 		temp.mul(m1, m2);
 		
 		m2.negate();
@@ -620,14 +620,14 @@ public class Matrix3fTest extends AbstractMathTestCase {
 	
 	@Test
 	public void negateMatrix3D() {
-		Matrix3f m1 = new Matrix3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
-		Matrix3f m2 = m1.clone();
-		Matrix3f temp = new Matrix3f();
-		Matrix3f temp2 = new Matrix3f();
+		Matrix3d m1 = new Matrix3d(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		Matrix3d m2 = m1.clone();
+		Matrix3d temp = new Matrix3d();
+		Matrix3d temp2 = new Matrix3d();
 		
 		m1.negate(m1);
 		temp.add(m1, m2);
-		assertEpsilonEquals(new Matrix3f(0,0,0,0,0,0,0,0,0), temp);
+		assertEpsilonEquals(new Matrix3d(0,0,0,0,0,0,0,0,0), temp);
 		temp.mul(m1, m2);
 		
 		m2.negate(m2);
@@ -641,8 +641,8 @@ public class Matrix3fTest extends AbstractMathTestCase {
 	@Test
 
 	public void cloneTest() {
-		Matrix3f m1 = new Matrix3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
-		Matrix3f m2 = m1.clone();
+		Matrix3d m1 = new Matrix3d(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		Matrix3d m2 = m1.clone();
 		
 		assertEpsilonEquals(m1, m2);
 		
@@ -653,7 +653,7 @@ public class Matrix3fTest extends AbstractMathTestCase {
 	
 	@Test
 	public void normalize_zero() {
-		Matrix3f m = new Matrix3f();
+		Matrix3d m = new Matrix3d();
 		m.normalize();
 		assertEpsilonEquals(1, m.getM00());
 		assertEpsilonEquals(0, m.getM01());
@@ -668,7 +668,7 @@ public class Matrix3fTest extends AbstractMathTestCase {
 	
 	@Test
 	public void normalize_identity() {
-		Matrix3f m = new Matrix3f();
+		Matrix3d m = new Matrix3d();
 		m.setIdentity();
 		m.normalize();
 		assertEpsilonEquals(1, m.getM00());
@@ -684,7 +684,7 @@ public class Matrix3fTest extends AbstractMathTestCase {
 
 	@Test
 	public void normalize_std() {
-		Matrix3f m = new Matrix3f(
+		Matrix3d m = new Matrix3d(
 				1, 2, 3,
 				4, 5, 6,
 				7, 8, 9);
@@ -702,8 +702,8 @@ public class Matrix3fTest extends AbstractMathTestCase {
 
 	@Test
 	public void normalizeMatrix3D_zero() {
-		Matrix3f m = new Matrix3f();
-		Matrix3f r = new Matrix3f();
+		Matrix3d m = new Matrix3d();
+		Matrix3d r = new Matrix3d();
 		r.normalize(m);
 		assertEpsilonEquals(1, r.getM00());
 		assertEpsilonEquals(0, r.getM01());
@@ -718,9 +718,9 @@ public class Matrix3fTest extends AbstractMathTestCase {
 	
 	@Test
 	public void normalizeMatrix3D_identity() {
-		Matrix3f m = new Matrix3f();
+		Matrix3d m = new Matrix3d();
 		m.setIdentity();
-		Matrix3f r = new Matrix3f();
+		Matrix3d r = new Matrix3d();
 		r.normalize(m);
 		assertEpsilonEquals(1, r.getM00());
 		assertEpsilonEquals(0, r.getM01());
@@ -735,11 +735,11 @@ public class Matrix3fTest extends AbstractMathTestCase {
 
 	@Test
 	public void normalizeMatrix3D_std() {
-		Matrix3f m = new Matrix3f(
+		Matrix3d m = new Matrix3d(
 				1, 2, 3,
 				4, 5, 6,
 				7, 8, 9);
-		Matrix3f r = new Matrix3f();
+		Matrix3d r = new Matrix3d();
 		r.normalize(m);
 		assertEpsilonEquals(-0.41938, r.getM00());
 		assertEpsilonEquals(-0.27752, r.getM01());
@@ -793,7 +793,7 @@ public class Matrix3fTest extends AbstractMathTestCase {
 		double d = this.random.nextDouble() * 100;
 		double e = this.random.nextDouble() * 100;
 		double f = this.random.nextDouble() * 100;
-		Matrix3f m1 = new Matrix3f(a,d,e,d,b,f,e,f,c);
+		Matrix3d m1 = new Matrix3d(a,d,e,d,b,f,e,f,c);
 		
 		assertTrue(m1.isSymmetric());
 		
@@ -876,7 +876,7 @@ public class Matrix3fTest extends AbstractMathTestCase {
 	
 	@Test
 	public void isIdentity() {
-		Matrix3f m1 = new Matrix3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		Matrix3d m1 = new Matrix3d(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
 		assertFalse(m1.isIdentity());
 		
 		m1.setIdentity();
@@ -888,9 +888,9 @@ public class Matrix3fTest extends AbstractMathTestCase {
 
 	@Test
 	public void operator_addMatrix3f() {
-		Matrix3f m1 = new Matrix3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
-		Matrix3f m2 = new Matrix3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
-		Matrix3f m3 = new Matrix3f();
+		Matrix3d m1 = new Matrix3d(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		Matrix3d m2 = new Matrix3d(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		Matrix3d m3 = new Matrix3d();
 		
 		m3.set(m1.m00+m2.m00, m1.m01+m2.m01, m1.m02+m2.m02, m1.m10+m2.m10, m1.m11+m2.m11, m1.m12+m2.m12, m1.m20+m2.m20, m1.m21+m2.m21, m1.m22+m2.m22);
 		m1.operator_add(m2);
@@ -900,8 +900,8 @@ public class Matrix3fTest extends AbstractMathTestCase {
 
 	@Test
 	public void operator_addDouble() {
-		Matrix3f m1 = new Matrix3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
-		Matrix3f m2 = m1.clone();
+		Matrix3d m1 = new Matrix3d(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		Matrix3d m2 = m1.clone();
 		double s = this.random.nextDouble() * 100;
 		
 		m2.set(m2.m00+s, m2.m01+s, m2.m02+s, m2.m10+s, m2.m11+s, m2.m12+s, m2.m20+s, m2.m21+s, m2.m22+s);
@@ -912,9 +912,9 @@ public class Matrix3fTest extends AbstractMathTestCase {
 
 	@Test
 	public void operator_removeMatrix3f() {
-		Matrix3f m1 = new Matrix3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
-		Matrix3f m2 = new Matrix3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
-		Matrix3f m3 = new Matrix3f();
+		Matrix3d m1 = new Matrix3d(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		Matrix3d m2 = new Matrix3d(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		Matrix3d m3 = new Matrix3d();
 		
 		m3.set(m1.m00-m2.m00, m1.m01-m2.m01, m1.m02-m2.m02, m1.m10-m2.m10, m1.m11-m2.m11, m1.m12-m2.m12, m1.m20-m2.m20, m1.m21-m2.m21, m1.m22-m2.m22);
 		m1.operator_remove(m2);
@@ -924,8 +924,8 @@ public class Matrix3fTest extends AbstractMathTestCase {
 
 	@Test
 	public void operator_removeDouble() {
-		Matrix3f m1 = new Matrix3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
-		Matrix3f m2 = m1.clone();
+		Matrix3d m1 = new Matrix3d(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		Matrix3d m2 = m1.clone();
 		double s = this.random.nextDouble() * 100;
 		
 		m2.set(m2.m00-s, m2.m01-s, m2.m02-s, m2.m10-s, m2.m11-s, m2.m12-s, m2.m20-s, m2.m21-s, m2.m22-s);
@@ -936,59 +936,59 @@ public class Matrix3fTest extends AbstractMathTestCase {
 
 	@Test
 	public void operator_plusMatrix3f() {
-		Matrix3f m1 = new Matrix3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
-		Matrix3f m2 = new Matrix3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
-		Matrix3f m3 = new Matrix3f();
+		Matrix3d m1 = new Matrix3d(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		Matrix3d m2 = new Matrix3d(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		Matrix3d m3 = new Matrix3d();
 		
 		m3.set(m1.m00+m2.m00, m1.m01+m2.m01, m1.m02+m2.m02, m1.m10+m2.m10, m1.m11+m2.m11, m1.m12+m2.m12, m1.m20+m2.m20, m1.m21+m2.m21, m1.m22+m2.m22);
-		Matrix3f r = m1.operator_plus(m2);
+		Matrix3d r = m1.operator_plus(m2);
 		
 		assertEpsilonEquals(m3, r);
 	}
 
 	@Test
 	public void operator_plusDouble() {
-		Matrix3f m1 = new Matrix3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
-		Matrix3f m2 = m1.clone();
+		Matrix3d m1 = new Matrix3d(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		Matrix3d m2 = m1.clone();
 		double s = this.random.nextDouble() * 100;
 		
 		m2.set(m2.m00+s, m2.m01+s, m2.m02+s, m2.m10+s, m2.m11+s, m2.m12+s, m2.m20+s, m2.m21+s, m2.m22+s);
-		Matrix3f r = m1.operator_plus(s);
+		Matrix3d r = m1.operator_plus(s);
 		
 		assertEpsilonEquals(m2, r);
 	}
 
 	@Test
 	public void operator_minusMatrix3f() {
-		Matrix3f m1 = new Matrix3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
-		Matrix3f m2 = m1.clone();
+		Matrix3d m1 = new Matrix3d(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		Matrix3d m2 = m1.clone();
 		double s = this.random.nextDouble() * 100;
 		
 		m2.set(m2.m00-s, m2.m01-s, m2.m02-s, m2.m10-s, m2.m11-s, m2.m12-s, m2.m20-s, m2.m21-s, m2.m22-s);
-		Matrix3f r = m1.operator_minus(s);
+		Matrix3d r = m1.operator_minus(s);
 		
 		assertEpsilonEquals(m2, r);
 	}
 
 	@Test
 	public void operator_minusDouble() {
-		Matrix3f m1 = new Matrix3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
-		Matrix3f m2 = m1.clone();
+		Matrix3d m1 = new Matrix3d(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		Matrix3d m2 = m1.clone();
 		double s = this.random.nextDouble() * 100;
 		
 		m2.set(m2.m00-s, m2.m01-s, m2.m02-s, m2.m10-s, m2.m11-s, m2.m12-s, m2.m20-s, m2.m21-s, m2.m22-s);
-		Matrix3f r = m1.operator_minus(s);
+		Matrix3d r = m1.operator_minus(s);
 		
 		assertEpsilonEquals(m2, r);
 	}
 
 	@Test
 	public void operator_minus() {
-		Matrix3f m1 = new Matrix3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
-		Matrix3f m2 = m1.clone();
+		Matrix3d m1 = new Matrix3d(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		Matrix3d m2 = m1.clone();
 		
 		m2.set(-m2.m00, -m2.m01, -m2.m02, -m2.m10, -m2.m11, -m2.m12, -m2.m20, -m2.m21, -m2.m22);
-		Matrix3f r = m1.operator_minus();
+		Matrix3d r = m1.operator_minus();
 		
 		assertEpsilonEquals(m2, r);
 	}
@@ -1004,7 +1004,7 @@ public class Matrix3fTest extends AbstractMathTestCase {
 		double g = this.random.nextDouble() * 100;
 		double h = this.random.nextDouble() * 100;
 		double i = this.random.nextDouble() * 100;
-		Matrix3f m1 = new Matrix3f(a,b,c,d,e,f,g,h,i);
+		Matrix3d m1 = new Matrix3d(a,b,c,d,e,f,g,h,i);
 		
 		double j = this.random.nextDouble() * 100;
 		double k = this.random.nextDouble() * 100;
@@ -1015,9 +1015,9 @@ public class Matrix3fTest extends AbstractMathTestCase {
 		double p = this.random.nextDouble() * 100;
 		double q = this.random.nextDouble() * 100;
 		double r = this.random.nextDouble() * 100;
-		Matrix3f m2 = new Matrix3f(j,k,l,m,n,o,p,q,r);
+		Matrix3d m2 = new Matrix3d(j,k,l,m,n,o,p,q,r);
 		
-		Matrix3f prod = new Matrix3f(
+		Matrix3d prod = new Matrix3d(
 				a*j+b*m+c*p,
 				a*k+b*n+c*q,
 				a*l+b*o+c*r,
@@ -1028,7 +1028,7 @@ public class Matrix3fTest extends AbstractMathTestCase {
 				g*k+h*n+i*q,
 				g*l+h*o+i*r);
 				
-		Matrix3f result = m1.operator_multiply(m2);
+		Matrix3d result = m1.operator_multiply(m2);
 		
 		assertEpsilonEquals(prod, result);
 	}
@@ -1044,12 +1044,12 @@ public class Matrix3fTest extends AbstractMathTestCase {
 		double g = this.random.nextDouble() * 100;
 		double h = this.random.nextDouble() * 100;
 		double i = this.random.nextDouble() * 100;
-		Matrix3f matrix = new Matrix3f(a,b,c,d,e,f,g,h,i);
+		Matrix3d matrix = new Matrix3d(a,b,c,d,e,f,g,h,i);
 		
 		double s = this.random.nextDouble() * 100;
-		Matrix3f prodScal = new Matrix3f(a*s,b*s,c*s,d*s,e*s,f*s,g*s,h*s,i*s);
+		Matrix3d prodScal = new Matrix3d(a*s,b*s,c*s,d*s,e*s,f*s,g*s,h*s,i*s);
 		
-		Matrix3f r = matrix.operator_multiply(s);
+		Matrix3d r = matrix.operator_multiply(s);
 		assertEpsilonEquals(prodScal, r);
 	}
 
@@ -1064,19 +1064,19 @@ public class Matrix3fTest extends AbstractMathTestCase {
 		double g = this.random.nextDouble() * 100;
 		double h = this.random.nextDouble() * 100;
 		double i = this.random.nextDouble() * 100;
-		Matrix3f matrix = new Matrix3f(a,b,c,d,e,f,g,h,i);
+		Matrix3d matrix = new Matrix3d(a,b,c,d,e,f,g,h,i);
 		
 		double s = this.random.nextDouble() * 100 + 2;
-		Matrix3f prodScal = new Matrix3f(a/s,b/s,c/s,d/s,e/s,f/s,g/s,h/s,i/s);
+		Matrix3d prodScal = new Matrix3d(a/s,b/s,c/s,d/s,e/s,f/s,g/s,h/s,i/s);
 		
-		Matrix3f r = matrix.operator_divide(s);
+		Matrix3d r = matrix.operator_divide(s);
 		assertEpsilonEquals(prodScal, r);
 	}
 
 	@Test
 	public void operator_plusPlus() {
-		Matrix3f m1 = new Matrix3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
-		Matrix3f m2 = m1.clone();
+		Matrix3d m1 = new Matrix3d(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		Matrix3d m2 = m1.clone();
 		
 		m2.set(m2.m00+1, m2.m01+1, m2.m02+1, m2.m10+1, m2.m11+1, m2.m12+1, m2.m20+1, m2.m21+1, m2.m22+1);
 		m1.operator_plusPlus();
@@ -1086,8 +1086,8 @@ public class Matrix3fTest extends AbstractMathTestCase {
 
 	@Test
 	public void operator_moinsMoins() {
-		Matrix3f m1 = new Matrix3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
-		Matrix3f m2 = m1.clone();
+		Matrix3d m1 = new Matrix3d(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		Matrix3d m2 = m1.clone();
 		
 		m2.set(m2.m00-1, m2.m01-1, m2.m02-1, m2.m10-1, m2.m11-1, m2.m12-1, m2.m20-1, m2.m21-1, m2.m22-1);
 		m1.operator_moinsMoins();
@@ -1097,8 +1097,8 @@ public class Matrix3fTest extends AbstractMathTestCase {
 
 	@Test
 	public void operator_not() {
-		Matrix3f m1 = new Matrix3f(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
-		Matrix3f transpose = new Matrix3f();
+		Matrix3d m1 = new Matrix3d(this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble(),this.random.nextDouble());
+		Matrix3d transpose = new Matrix3d();
 		
 		double [] v = new double[3];
 		
@@ -1111,7 +1111,7 @@ public class Matrix3fTest extends AbstractMathTestCase {
 		m1.getRow(2, v);
 		transpose.setColumn(2, v);
 		
-		Matrix3f r = m1.operator_not();
+		Matrix3d r = m1.operator_not();
 		
 		assertEpsilonEquals(transpose, r);
 	}

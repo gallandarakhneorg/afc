@@ -23,8 +23,8 @@ package org.arakhne.afc.math.continous.object3d;
 import java.io.Serializable;
 
 import org.arakhne.afc.math.generic.Vector3D;
-import org.arakhne.afc.math.matrix.Matrix3f;
-import org.arakhne.afc.math.matrix.Matrix4f;
+import org.arakhne.afc.math.matrix.Matrix3d;
+import org.arakhne.afc.math.matrix.Matrix4d;
 
 /** A 4 element unit quaternion represented by single precision floating 
  * point x,y,z,w coordinates.  The quaternion is always normalized.
@@ -415,7 +415,7 @@ public class Quaternion implements Cloneable, Serializable {
 	 * the passed matrix.
 	 * @param m1 the Matrix4f
 	 */
-	public final void setFromMatrix(Matrix4f m1) {
+	public final void setFromMatrix(Matrix4d m1) {
 		float ww = (float)(0.25f*(m1.getM00() + m1.getM11() + m1.getM22() + m1.getM33()));
 
 		if (ww >= 0) {
@@ -472,7 +472,7 @@ public class Quaternion implements Cloneable, Serializable {
 	 * the passed matrix.
 	 * @param m1 the Matrix3f
 	 */
-	public final void setFromMatrix(Matrix3f m1) {
+	public final void setFromMatrix(Matrix3d m1) {
 		float ww = (float)(0.25f*(m1.getM00() + m1.getM11() + m1.getM22() + 1.0f));
 
 		if (ww >= 0) {

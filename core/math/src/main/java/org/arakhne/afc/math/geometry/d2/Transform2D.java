@@ -21,7 +21,7 @@
 package org.arakhne.afc.math.geometry.d2;
 
 import org.arakhne.afc.math.MathUtil;
-import org.arakhne.afc.math.matrix.Matrix3f;
+import org.arakhne.afc.math.matrix.Matrix3d;
 import org.arakhne.afc.math.matrix.SingularMatrixException;
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -43,7 +43,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class Transform2D extends Matrix3f {
+public class Transform2D extends Matrix3d {
 
 	private static final long serialVersionUID = -2858647743636794878L;
 	
@@ -71,7 +71,7 @@ public class Transform2D extends Matrix3f {
 	/**
 	 * @param matrix
 	 */
-	public Transform2D(Matrix3f matrix) {
+	public Transform2D(Matrix3d matrix) {
 		super(matrix);
 	}
 
@@ -790,7 +790,7 @@ public class Transform2D extends Matrix3f {
 	 * @throws SingularMatrixException if the matrix cannot be inverted.
 	 */
 	@Override
-	public void invert(Matrix3f matrix) {
+	public void invert(Matrix3d matrix) {
 		assert (matrix != null) : "Matrix must not be null"; //$NON-NLS-1$
 		double det = matrix.getM00() * matrix.getM11() - matrix.getM01() * matrix.getM10();
 		if (MathUtil.isEpsilonZero(det)) {

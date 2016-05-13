@@ -45,7 +45,7 @@ import org.arakhne.afc.math.generic.Tuple2D;
  * @deprecated see {@link org.arakhne.afc.math.geometry.d2.Transform2D}
  */
 @Deprecated
-public class Transform2D extends Matrix3f {
+public class Transform2D extends Matrix3d {
 
 	private static final long serialVersionUID = -3437760883865605968L;
 
@@ -73,7 +73,7 @@ public class Transform2D extends Matrix3f {
 	/**
 	 * @param m
 	 */
-	public Transform2D(Matrix3f m) {
+	public Transform2D(Matrix3d m) {
 		super(m);
 	}
 
@@ -860,7 +860,7 @@ public class Transform2D extends Matrix3f {
 	 * @throws SingularMatrixException if the matrix cannot be inverted.
 	 */
 	@Override
-	public void invert(Matrix3f m) {
+	public void invert(Matrix3d m) {
 		float det = (float)(m.m00 * m.m11 - m.m01 * m.m10);
 		if (Math.abs(det) <= Double.MIN_VALUE) {
 			throw new SingularMatrixException("Determinant is "+det); //$NON-NLS-1$

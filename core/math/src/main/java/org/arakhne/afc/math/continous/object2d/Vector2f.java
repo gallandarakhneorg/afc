@@ -26,7 +26,7 @@ import org.arakhne.afc.math.generic.Point2D;
 import org.arakhne.afc.math.generic.Tuple2D;
 import org.arakhne.afc.math.generic.Vector2D;
 import org.arakhne.afc.math.geometry.d2.d.Vector2d;
-import org.arakhne.afc.math.matrix.Matrix2f;
+import org.arakhne.afc.math.matrix.Matrix2d;
 
 /** 2D Vector with 2 floating-point values.
  * 
@@ -132,7 +132,7 @@ public class Vector2f extends Tuple2f<Vector2D> implements Vector2D {
 	 * @param m
 	 * @return transpose(this * m)
 	 */
-	public final Vector2f mul(Matrix2f m) {
+	public final Vector2f mul(Matrix2d m) {
 		Vector2f r = new Vector2f();
 		r.x = (float) (this.getX() * m.getM00() + this.getY() * m.getM01());
 		r.y = (float) (this.getX() * m.getM10() + this.getY() * m.getM11());
