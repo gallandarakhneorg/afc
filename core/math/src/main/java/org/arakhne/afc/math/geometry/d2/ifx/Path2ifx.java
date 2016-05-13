@@ -31,6 +31,7 @@ import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.afp.InnerComputationPoint2afp;
+import org.arakhne.afc.math.geometry.d2.ai.InnerComputationPoint2ai;
 import org.arakhne.afc.math.geometry.d2.ai.Path2ai;
 import org.arakhne.afc.math.geometry.d2.ai.PathIterator2ai;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -239,7 +240,7 @@ public class Path2ifx
 	@Override
 	public void transform(Transform2D transform) {
 		assert (transform != null) : "Transformation must be not null"; //$NON-NLS-1$
-		Point2D<?, ?> p = getGeomFactory().newPoint();
+		Point2D<?, ?> p = new InnerComputationPoint2ai();
 		if (this.coords != null && !this.coords.isEmpty()) {
 			ListIterator<Integer> li = this.coords.listIterator();
 			int i = 0;
@@ -517,7 +518,7 @@ public class Path2ifx
 				}
 			}
 			else {
-				Point2ifx p = getGeomFactory().newPoint();
+				Point2D<?, ?> p = new InnerComputationPoint2ai();
 				Iterator<Integer> iterator = this.coords.iterator();
 				for(int i=0; i < n;) {
 					p.set(iterator.next(), iterator.next());

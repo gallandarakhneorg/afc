@@ -20,236 +20,701 @@ package org.arakhne.afc.math.geometry.d2;
 
 import static org.arakhne.afc.math.MathConstants.PI;
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
 
 import org.arakhne.afc.math.AbstractMathTestCase;
 import org.arakhne.afc.math.MathConstants;
+import org.arakhne.afc.math.MathUtil;
+import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2D;
+import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2DTestRule;
+import org.arakhne.afc.math.geometry.d2.Vector2D.PowerResult;
+import org.arakhne.afc.math.geometry.d2.d.Tuple2d;
+import org.eclipse.xtext.xbase.lib.Pure;
+import org.junit.Assume;
+import org.junit.ComparisonFailure;
+import org.junit.Rule;
 import org.junit.Test;
 
 @SuppressWarnings("all")
-public abstract class AbstractUnmodifiableVector2DTest extends AbstractUnmodifiableTuple2DTest {
+public abstract class AbstractUnmodifiableVector2DTest<V extends Vector2D<? super V, ? super P>, P extends Point2D<? super P, ? super V>>
+		extends AbstractVector2DTest<V, P, Vector2D> {
 
-	protected abstract Vector2D createVector(double x, double y);
-
-	protected abstract Point2D createPoint(double x, double y);
-
-	@Override
-	protected Tuple2D createTuple(int x, int y) {
-		return createVector(x, y);
+	@Test(expected = UnsupportedOperationException.class)
+	public final void absolute() {
+		getT().absolute();
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public void addVector2DVector2D() {
+	public final void absoluteT() {
+		Tuple2D c = new Tuple2d();
+		getT().absolute(c);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void addIntInt() {
+		getT().add(6, 7);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void addDoubleDouble() {
+		getT().add(6.5, 7.5);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void addXInt() {
+		getT().addX(6);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void addXDouble() {
+		getT().addX(6.5);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void addYInt() {
+		getT().addY(6);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void addYDouble() {
+		getT().addY(6.5);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void negateT() {
+		Tuple2D c = new Tuple2d();
+		getT().negate(c);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void negate() {
+		getT().negate();
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void scaleIntT() {
+		Tuple2D c = new Tuple2d(2, -1);
+		getT().scale(4, c);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void scaleDoubleT() {
+		Tuple2D c = new Tuple2d(2, -1);
+		getT().scale(4.5, c);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void scaleInt() {
+		getT().scale(4);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void scaleDouble() {
+		getT().scale(4.5);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void setTuple2D() {
+		Tuple2D c = new Tuple2d(-45, 78);
+		getT().set(c);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void setIntInt() {
+		getT().set(-45, 78);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void setDoubleDouble() {
+		getT().set(-45.5, 78.5);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void setIntArray() {
+		getT().set(new int[]{-45, 78});
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void setDoubleArray() {
+		getT().set(new double[]{-45.5, 78.5});
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void setXInt() {
+		getT().setX(45);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void setXDouble() {
+		getT().setX(45.5);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void setYInt() {
+		getT().setY(45);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void setYDouble() {
+		getT().setY(45.5);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void subIntInt() {
+		getT().sub(45, 78);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void subXInt() {
+		getT().subX(45);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void subYInt() {
+		getT().subY(78);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void subDoubleDouble() {
+		getT().sub(45.5, 78.5);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void subXDouble() {
+		getT().subX(45.5);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void subYDouble() {
+		getT().subY(78.5);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void addDoubleDouble_iffp() {
+		Assume.assumeFalse(isIntCoordinates());
+		getT().add(12.3, 4.56);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void addDoubleDouble_ifi() {
+		Assume.assumeTrue(isIntCoordinates());
+		getT().add(12.3, 4.56);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void addXDouble_iffp() {
+		Assume.assumeFalse(isIntCoordinates());
+		getT().addX(12.3);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void addXDouble_ifi() {
+		Assume.assumeTrue(isIntCoordinates());
+		getT().addX(12.3);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void addYDouble_iffp() {
+		Assume.assumeFalse(isIntCoordinates());
+		getT().addY(12.3);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void addYDouble_ifi() {
+		Assume.assumeTrue(isIntCoordinates());
+		getT().addY(12.3);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void scaleDoubleT_iffp() {
+		Assume.assumeFalse(isIntCoordinates());
+		getT().scale(12.3, createTuple(1,2));
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void scaleDoubleT_ifi() {
+		Assume.assumeTrue(isIntCoordinates());
+		getT().scale(12.3, createTuple(1,2));
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void scaleDouble_iffp() {
+		Assume.assumeFalse(isIntCoordinates());
+		getT().scale(12.3);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void scaleDouble_ifi() {
+		Assume.assumeTrue(isIntCoordinates());
+		getT().scale(12.3);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void setDoubleDouble_iffp() {
+		Assume.assumeFalse(isIntCoordinates());
+		getT().set(12.3, 4.56);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void setDoubleDouble_ifi() {
+		Assume.assumeTrue(isIntCoordinates());
+		getT().set(12.3, 4.56);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void setDoubleArray_iffp() {
+		Assume.assumeFalse(isIntCoordinates());
+		getT().set(new double[] {12.3, 4.56});
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void setDoubleArray_ifi() {
+		Assume.assumeTrue(isIntCoordinates());
+		getT().set(new double[] {12.3, 4.56});
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void setXDouble_iffp() {
+		Assume.assumeFalse(isIntCoordinates());
+		getT().setX(12.3);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void setXDouble_ifi() {
+		Assume.assumeTrue(isIntCoordinates());
+		getT().setX(12.3);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void setYDouble_ifi() {
+		Assume.assumeTrue(isIntCoordinates());
+		getT().setY(12.3);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void setYDouble_iffp() {
+		Assume.assumeFalse(isIntCoordinates());
+		getT().setY(12.3);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void subDoubleDouble_iffp() {
+		Assume.assumeFalse(isIntCoordinates());
+		getT().sub(12.3, 4.56);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void subDoubleDouble_ifi() {
+		Assume.assumeTrue(isIntCoordinates());
+		getT().sub(12.3, 4.56);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void subXDouble_iffp() {
+		Assume.assumeFalse(isIntCoordinates());
+		getT().subX(12.3);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void subXDouble_ifi() {
+		Assume.assumeTrue(isIntCoordinates());
+		getT().subX(12.3);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void subYDouble_iffp() {
+		Assume.assumeFalse(isIntCoordinates());
+		getT().subY(12.3);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void subYDouble_ifi() {
+		Assume.assumeTrue(isIntCoordinates());
+		getT().subY(12.3);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void addVector2DVector2D_iffp() {
+		Assume.assumeFalse(isIntCoordinates());
 		Vector2D vector = createVector(0, 0);
 		Vector2D vector3 = createVector(1.2, 1.2);
-		Vector2D vector5 = createVector(0.0, 0.0);
+		Vector2D vector5 = createTuple(0.0, 0.0);
 		vector5.add(vector3,vector);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public void addVector2D() {
-		Vector2D vector = createVector(0,0);
+	public final void addVector2DVector2D_ifi() {
+		Assume.assumeTrue(isIntCoordinates());
+		Vector2D vector = createVector(0, 0);
+		Vector2D vector3 = createVector(1.2, 1.2);
+		Vector2D vector5 = createTuple(0.0, 0.0);
+		vector5.add(vector3,vector);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void addVector2D_iffp() {
+		Assume.assumeFalse(isIntCoordinates());
+		Vector2D vector = createTuple(0,0);
 		Vector2D vector3 = createVector(1.2,1.2);
 		vector.add(vector3);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public void scaleAddIntVector2DVector2D() {
+	public final void addVector2D_ifi() {
+		Assume.assumeTrue(isIntCoordinates());
+		Vector2D vector = createTuple(0,0);
+		Vector2D vector3 = createVector(1.2,1.2);
+		vector.add(vector3);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void scaleAddIntVector2DVector2D_iffp() {
+		Assume.assumeFalse(isIntCoordinates());
 		Vector2D vector = createVector(-1,0);
 		Vector2D vector2 = createVector(1.0,1.2);
-		Vector2D vector3 = createVector(0.0,0.0);
+		Vector2D vector3 = createTuple(0.0,0.0);
 		vector3.scaleAdd(0,vector2,vector);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public void scaleAddDoubleVector2DVector2D() {
-		Vector2D point = createVector(1,0);
+	public final void scaleAddIntVector2DVector2D_ifi() {
+		Assume.assumeTrue(isIntCoordinates());
+		Vector2D vector = createVector(-1,0);
+		Vector2D vector2 = createVector(1.0,1.2);
+		Vector2D vector3 = createTuple(0.0,0.0);
+		vector3.scaleAdd(0,vector2,vector);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void scaleAddDoubleVector2DVector2D_iffp() {
+		Assume.assumeFalse(isIntCoordinates());
+		Vector2D vect = createVector(1,0);
 		Vector2D vector = createVector(-1,1);
-		Vector2D newPoint = createVector(0.0,0.0);
-		newPoint.scaleAdd(0.0, vector, point);
+		Vector2D newVector = createTuple(0.0,0.0);
+		newVector.scaleAdd(0.0, vector, vect);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public void scaleAddIntVector2D() {
+	public final void scaleAddDoubleVector2DVector2D_ifi() {
+		Assume.assumeTrue(isIntCoordinates());
+		Vector2D vect = createVector(1,0);
+		Vector2D vector = createVector(-1,1);
+		Vector2D newVector = createTuple(0.0,0.0);
+		newVector.scaleAdd(0.0, vector, vect);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void scaleAddIntVector2D() {
 		Vector2D vector = createVector(1,0);
-		Vector2D newPoint = createVector(0,0);
-		newPoint.scaleAdd(0,vector);
+		Vector2D newVector = createTuple(0,0);
+		newVector.scaleAdd(0,vector);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public void scaleAddDoubleVector2D() {
+	public final void scaleAddDoubleVector2D_iffp() {
+		Assume.assumeFalse(isIntCoordinates());
 		Vector2D vector = createVector(1,0);
-		Vector2D newPoint = createVector(0.0,0.0);
-		newPoint.scaleAdd(0.5,vector);
+		Vector2D newVector = createTuple(0.0,0.0);
+		newVector.scaleAdd(0.5,vector);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public void subVector2DVector2D() {
-		Vector2D point = createVector(0, 0);
+	public final void scaleAddDoubleVector2D_ifi() {
+		Assume.assumeTrue(isIntCoordinates());
+		Vector2D vector = createVector(1,0);
+		Vector2D newTuple = createTuple(0.0,0.0);
+		newTuple.scaleAdd(0.5,vector);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void subVector2DVector2D_iffp() {
+		Assume.assumeFalse(isIntCoordinates());
+		Vector2D vect = createVector(0, 0);
 		Vector2D vector = createVector(-1.2, -1.2);
-		Vector2D newPoint = createVector(0.0, 0.0);
-		newPoint.sub(point,vector);
+		Vector2D newVector = createTuple(0.0, 0.0);
+		newVector.sub(vect,vector);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public void subPoint2DPoint2D() {
+	public final void subVector2DVector2D_ifi() {
+		Assume.assumeTrue(isIntCoordinates());
+		Vector2D vect = createVector(0, 0);
+		Vector2D vector = createVector(-1.2, -1.2);
+		Vector2D newVector = createTuple(0.0, 0.0);
+		newVector.sub(vect,vector);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void subPoint2DPoint2D_iffp() {
+		Assume.assumeFalse(isIntCoordinates());
 		Point2D point = createPoint(0, 0);
 		Point2D vector = createPoint(-1.2, -1.2);
-		Vector2D newPoint = createVector(0.0, 0.0);
+		Vector2D newVector = createTuple(0.0, 0.0);
+		newVector.sub(point,vector);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void subPoint2DPoint2D_ifi() {
+		Assume.assumeTrue(isIntCoordinates());
+		Point2D point = createPoint(0, 0);
+		Point2D vector = createPoint(-1.2, -1.2);
+		Vector2D newPoint = createTuple(0.0, 0.0);
 		newPoint.sub(point,vector);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public void subVector2D() {
-		Vector2D point = createVector(0, 0);
+	public final void subVector2D_iffp() {
+		Assume.assumeFalse(isIntCoordinates());
+		Vector2D vect = createTuple(0, 0);
 		Vector2D vector = createVector(-1.2, -1.2);
-		point.sub(vector);
-	}
-
-	@Test
-	public void dotVector2D() {
-		Vector2D vector = createVector(1, 2);
-		Vector2D vector2 = createVector(3, 4);
-		Vector2D vector3 = createVector(1, -2);
-
-		assertEpsilonEquals(5,vector.dot(vector));
-		assertEpsilonEquals(11,vector.dot(vector2));
-		assertEpsilonEquals(-3,vector.dot(vector3));
-	}
-
-	@Test
-	public void perpVector2D() {
-		Vector2D vector = createVector(1,2);
-		Vector2D vector2 = createVector(3,4);
-		Vector2D vector3 = createVector(1,-2);
-
-		assertEpsilonEquals(0, vector.perp(vector));
-		assertEpsilonEquals(-2, vector.perp(vector2));
-		assertEpsilonEquals(-4, vector.perp(vector3));
+		vect.sub(vector);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public void makeOrthogonal() {
-		Vector2D vector = createVector(1,2);
+	public final void subVector2D_ifi() {
+		Assume.assumeTrue(isIntCoordinates());
+		Vector2D vect = createTuple(0, 0);
+		Vector2D vector = createVector(-1.2, -1.2);
+		vect.sub(vector);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void makeOrthogonal() {
+		Vector2D vector = createTuple(1,2);
 		vector.makeOrthogonal();
 	}
 
-	@Test
-	public void length() {
-		Vector2D vector = createVector(1, 2);
-		Vector2D vector2 = createVector(0, 0);
-		Vector2D vector3 = createVector(-1, 1);
-
-		assertEpsilonEquals(Math.sqrt(5),vector.getLength());
-		assertEpsilonEquals(0,vector2.getLength());
-		assertEpsilonEquals(Math.sqrt(2),vector3.getLength());
-	}
-
-	@Test
-	public void lengthSquared() {
-		Vector2D vector = createVector(1, 2);
-		Vector2D vector2 = createVector(0, 0);
-		Vector2D vector3 = createVector(Math.sqrt(2.) / 2., Math.sqrt(2.) / 2.);
-
-		assertEpsilonEquals(5,vector.getLengthSquared());
-		assertEpsilonEquals(0,vector2.getLengthSquared());
-		assertEpsilonEquals(1,vector3.getLengthSquared());
-	}
-
 	@Test(expected = UnsupportedOperationException.class)
-	public void normalizeVector2D() {
-		Vector2D vector = createVector(1, 2);
-		vector.normalize(vector);
-	}
-
-	@Test(expected = UnsupportedOperationException.class)
-	public void normalize() {
-		Vector2D vector = createVector(1,2);
+	public final void normalize_iffp() {
+		Assume.assumeFalse(isIntCoordinates());
+		Vector2D vector = createTuple(1,2);
 		vector.normalize();
 	}
 
-	@Test
-	public void angleVector2D() {
-		Vector2D vector = createVector(1, 2);
-		Vector2D vector2 = createVector(-2, 1);
-		Vector2D vector3 = createVector(1, 1);
-		Vector2D vector4 = createVector(1, 0);
-
-		assertEpsilonEquals(PI/2f,vector.angle(vector2));
-		assertEpsilonEquals(PI/4f,vector4.angle(vector3));
-		assertEpsilonEquals(Math.acos(1/Math.sqrt(5)),vector4.angle(vector));
-		assertEpsilonEquals(PI/2f+Math.acos(1/Math.sqrt(5)),vector4.angle(vector2));
-		assertEpsilonEquals(0,vector.angle(vector));
-	}
-
-	@Test
-	public void signedAngleVector2D() {
-		Vector2D v1 = createVector(this.random.nextDouble(), this.random.nextDouble());
-		Vector2D v2 = createVector(this.random.nextDouble(), this.random.nextDouble());
-
-		assertEpsilonEquals(
-				0.f,
-				v1.signedAngle(v1));
-		assertEpsilonEquals(
-				0.f,
-				v2.signedAngle(v2));
-
-		double sAngle1 = v1.signedAngle(v2);
-		double sAngle2 = v2.signedAngle(v1);
-
-		assertEpsilonEquals(-sAngle1, sAngle2);
-		assertEpsilonEquals(v1.angle(v2), Math.abs(sAngle1));
-		assertEpsilonEquals(v2.angle(v1), Math.abs(sAngle2));
-
-		double sin = v1.getX() * v2.getY() - v1.getY() * v2.getX();
-
-		if (sin < 0) {
-			assertTrue(sAngle1 <= 0);
-			assertTrue(sAngle2 >= 0);
-		} else {
-			assertTrue(sAngle1 >= 0);
-			assertTrue(sAngle2 <= 0);
-		}
+	@Test(expected = UnsupportedOperationException.class)  
+	public final void normalize_ifi() {
+		Assume.assumeTrue(isIntCoordinates());
+		Vector2D vector = createTuple(1,2);
+		vector.normalize();
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public void turn() {
-		Vector2D vector = createVector(this.random.nextDouble(), this.random.nextDouble());
-		double angle = this.random.nextDouble();
-		vector.turn(angle);
+	public final void normalizeVector3D_iffp() {
+		Assume.assumeFalse(isIntCoordinates());
+		Vector2D vector = createTuple(0,0);
+		vector.normalize(createVector(1,2));
+	}
+
+	@Test(expected = UnsupportedOperationException.class)  
+	public final void normalizeVector3D_ifi() {
+		Assume.assumeTrue(isIntCoordinates());
+		Vector2D vector = createTuple(0,0);
+		vector.normalize(createVector(1,2));
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public void turnLeft() {
-		Vector2D vector = createVector(this.random.nextDouble(), this.random.nextDouble());
-		double angle = this.random.nextDouble();
-		vector.turnLeft(angle);
+	public final void turn_iffp() {
+		Assume.assumeFalse(isIntCoordinates());
+		getT().turn(MathConstants.DEMI_PI);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public void turnRight() {
-		Vector2D vector = createVector(this.random.nextDouble(), this.random.nextDouble());
-		double angle = this.random.nextDouble();
-		vector.turnRight(angle);
-	}
-
-	@Test
-	public void isUnitVector() {
-		Vector2D vector = createVector(7.15161,6.7545);
-		assertFalse(vector.isUnitVector());
+	public final void turn_ifi() {
+		Assume.assumeTrue(isIntCoordinates());
+		getT().turn(MathConstants.DEMI_PI);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public void setLength() {
-		Vector2D vector = createVector(this.random.nextDouble(), this.random.nextDouble());
-		double newLength = this.random.nextDouble();
+	public final void turnVector_iffp() {
+		Assume.assumeFalse(isIntCoordinates());
+		Vector2D vector2;
+		vector2 = createVector(2, 0);
+		getT().turn(MathConstants.DEMI_PI, vector2);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void turnVector_ifi() {
+		Assume.assumeTrue(isIntCoordinates());
+		Vector2D vector2;
+		vector2 = createVector(2, 0);
+		getT().turn(MathConstants.DEMI_PI, vector2);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void turnLeft_iffp_rightHanded() {
+		Assume.assumeFalse(isIntCoordinates());
+		getT().turnLeft(MathConstants.DEMI_PI);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void turnLeft_iffp_leftHanded() {
+		Assume.assumeFalse(isIntCoordinates());
+		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());
+		getT().turnLeft(MathConstants.DEMI_PI);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void turnLeft_ifi_rightHanded() {
+		Assume.assumeTrue(isIntCoordinates());
+		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
+		getT().turnLeft(MathConstants.DEMI_PI);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void turnLeft_ifi_leftHanded() {
+		Assume.assumeTrue(isIntCoordinates());
+		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());
+		getT().turnLeft(MathConstants.DEMI_PI);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void turnRight_iffp_rightHanded() {
+		Assume.assumeFalse(isIntCoordinates());
+		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
+		getT().turnRight(MathConstants.DEMI_PI);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void turnRight_iffp_leftHanded() {
+		Assume.assumeFalse(isIntCoordinates());
+		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());
+		getT().turnRight(MathConstants.DEMI_PI);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void turnRight_ifi_rightHanded() {
+		Assume.assumeTrue(isIntCoordinates());
+		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
+		getT().turnRight(MathConstants.DEMI_PI);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void turnRight_ifi_leftHanded() {
+		Assume.assumeTrue(isIntCoordinates());
+		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());
+		getT().turnRight(MathConstants.DEMI_PI);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void turnLeftVector_iffp_rightHanded() {
+		Assume.assumeFalse(isIntCoordinates());
+		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
+		Vector2D vector2;
+		vector2 = createVector(2, 0);
+		getT().turnLeft(MathConstants.DEMI_PI, vector2);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void turnLeftVector_iffp_leftHanded() {
+		Assume.assumeFalse(isIntCoordinates());
+		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());
+		Vector2D vector2;
+		vector2 = createVector(2, 0);
+		getT().turnLeft(MathConstants.DEMI_PI, vector2);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void turnLeftVector_ifi_rightHanded() {
+		Assume.assumeTrue(isIntCoordinates());
+		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
+		Vector2D vector2;
+		vector2 = createVector(2, 0);
+		getT().turnLeft(MathConstants.DEMI_PI, vector2);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void turnLeftVector_ifi_leftHanded() {
+		Assume.assumeTrue(isIntCoordinates());
+		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());
+		Vector2D vector2;
+		vector2 = createVector(2, 0);
+		getT().turnLeft(MathConstants.DEMI_PI, vector2);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void turnRightVector_iffp_rightHanded() {
+		Assume.assumeFalse(isIntCoordinates());
+		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
+		Vector2D vector2;
+		vector2 = createVector(2, 0);
+		getT().turnRight(MathConstants.DEMI_PI, vector2);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void turnRightVector_iffp_leftHanded() {
+		Assume.assumeFalse(isIntCoordinates());
+		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());
+		Vector2D vector2;
+		vector2 = createVector(2, 0);
+		getT().turnRight(MathConstants.DEMI_PI, vector2);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void turnRightVector_ifi_rightHanded() {
+		Assume.assumeTrue(isIntCoordinates());
+		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isRightHanded());
+		Vector2D vector2;
+		vector2 = createVector(2, 0);
+		getT().turnRight(MathConstants.DEMI_PI, vector2);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void turnRightVector_ifi_leftHanded() {
+		Assume.assumeTrue(isIntCoordinates());
+		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());
+		Vector2D vector2;
+		vector2 = createVector(2, 0);
+		getT().turnRight(MathConstants.DEMI_PI, vector2);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void setLength_iffp() {
+		Assume.assumeFalse(isIntCoordinates());
+		Vector2D vector = createTuple(getRandom().nextDouble(), getRandom().nextDouble());
+		double newLength = getRandom().nextDouble();
 		vector.setLength(newLength);
 	}
 
-	public void toUnmodifiable() {
-		Vector2D origin = createVector(2, 3);
-		Vector2D immutable = origin.toUnmodifiable();
-		assertSame(origin, immutable);
+	@Test(expected = UnsupportedOperationException.class)
+	public final void setLength_ifi() {
+		Assume.assumeTrue(isIntCoordinates());
+		Vector2D vector = createTuple(0, 2);
+		int newLength = 5;
+		vector.setLength(newLength);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void operator_addVector2D_iffp() {
+		Assume.assumeFalse(isIntCoordinates());
+		Vector2D vector = createTuple(0,0);
+		Vector2D vector3 = createVector(1.2,1.2);
+		vector.operator_add(vector3);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void operator_addVector2D_ifi() {
+		Assume.assumeTrue(isIntCoordinates());
+		Vector2D vector = createTuple(0,0);
+		Vector2D vector3 = createVector(1.2,1.2);
+		vector.operator_add(vector3);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void operator_removeVector2D_iffp() {
+		Assume.assumeFalse(isIntCoordinates());
+		Vector2D vect = createTuple(0, 0);
+		Vector2D vector = createVector(-1.2, -1.2);
+		vect.operator_remove(vector);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void operator_removeVector2D_ifi() {
+		Assume.assumeTrue(isIntCoordinates());
+		Vector2D vect = createTuple(0, 0);
+		Vector2D vector = createVector(-1.2, -1.2);
+		vect.operator_remove(vector);
 	}
 
 }

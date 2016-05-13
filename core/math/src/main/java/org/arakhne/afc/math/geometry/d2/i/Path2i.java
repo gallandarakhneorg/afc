@@ -30,6 +30,7 @@ import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
+import org.arakhne.afc.math.geometry.d2.ai.InnerComputationPoint2ai;
 import org.arakhne.afc.math.geometry.d2.ai.Path2ai;
 import org.arakhne.afc.math.geometry.d2.ai.PathIterator2ai;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -265,7 +266,7 @@ implements Path2ai<Shape2i<?>, Path2i, PathElement2i, Point2i, Vector2i, Rectang
 	@Override
 	public void transform(Transform2D transform) {
 		assert (transform != null) : "Transformation must be not null"; //$NON-NLS-1$
-		Point2D<?, ?> p = getGeomFactory().newPoint();
+		Point2D<?, ?> p = new InnerComputationPoint2ai();
 		for(int i=0; i<this.numCoords;) {
 			p.set(this.coords[i], this.coords[i+1]);
 			transform.transform(p);
@@ -480,14 +481,13 @@ implements Path2ai<Shape2i<?>, Path2i, PathElement2i, Point2i, Vector2i, Rectang
 		if (transform == null || transform.isIdentity()) {
 			return Arrays.copyOf(this.coords, this.numCoords);
 		}
-		Point2i p = getGeomFactory().newPoint();
+		Point2D<?, ?> p = new InnerComputationPoint2ai();
 		int[] clone = new int[this.numCoords];
 		for(int i=0; i<clone.length;) {
-			p.x = this.coords[i];
-			p.y = this.coords[i+1];
+			p.set(this.coords[i], this.coords[i+1]);
 			transform.transform(p);
-			clone[i++] = p.x;
-			clone[i++] = p.y;
+			clone[i++] = p.ix();
+			clone[i++] = p.iy();
 		}
 		return clone;
 	}
@@ -502,13 +502,12 @@ implements Path2ai<Shape2i<?>, Path2i, PathElement2i, Point2i, Vector2i, Rectang
 			}
 		}
 		else {
-			Point2i p = getGeomFactory().newPoint();
+			Point2D<?, ?> p = new InnerComputationPoint2ai();
 			for(int i=0; i<clone.length;) {
-				p.x = this.coords[i];
-				p.y = this.coords[i+1];
+				p.set(this.coords[i], this.coords[i+1]);
 				transform.transform(p);
-				clone[i++] = p.x;
-				clone[i++] = p.y;
+				clone[i++] = p.ix();
+				clone[i++] = p.iy();
 			}
 		}
 		return clone;
@@ -524,13 +523,12 @@ implements Path2ai<Shape2i<?>, Path2i, PathElement2i, Point2i, Vector2i, Rectang
 			}
 		}
 		else {
-			Point2i p = getGeomFactory().newPoint();
+			Point2D<?, ?> p = new InnerComputationPoint2ai();
 			for(int i=0; i<clone.length;) {
-				p.x = this.coords[i];
-				p.y = this.coords[i+1];
+				p.set(this.coords[i], this.coords[i+1]);
 				transform.transform(p);
-				clone[i++] = p.x;
-				clone[i++] = p.y;
+				clone[i++] = p.ix();
+				clone[i++] = p.iy();
 			}
 		}
 		return clone;

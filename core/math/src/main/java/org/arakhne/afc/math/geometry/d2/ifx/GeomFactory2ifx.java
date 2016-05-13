@@ -87,6 +87,16 @@ public class GeomFactory2ifx implements GeomFactory2ai<PathElement2ifx, Point2if
 	}
 
 	@Override
+	public Point2ifx newPoint(double x, double y) {
+		return new Point2ifx(x, y);
+	}
+
+	@Override
+	public Vector2ifx newVector(double x, double y) {
+		return new Vector2ifx(x, y);
+	}
+
+	@Override
 	public Point2ifx newPoint() {
 		return new Point2ifx();
 	}

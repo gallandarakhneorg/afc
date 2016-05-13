@@ -30,6 +30,7 @@ import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
+import org.arakhne.afc.math.geometry.d2.afp.InnerComputationPoint2afp;
 import org.arakhne.afc.math.geometry.d2.afp.Path2afp;
 import org.arakhne.afc.math.geometry.d2.afp.PathIterator2afp;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -251,7 +252,7 @@ public class Path2d
 	@Override
 	public void transform(Transform2D transform) {
 		assert (transform != null) : "Transformation must be not null"; //$NON-NLS-1$
-		Point2D<?, ?> p = getGeomFactory().newPoint();
+		Point2D<?, ?> p = new InnerComputationPoint2afp();
 		for(int i=0; i<this.numCoords;) {
 			p.set(this.coords[i], this.coords[i+1]);
 			transform.transform(p);
@@ -467,13 +468,12 @@ public class Path2d
 			}
 		}
 		else {
-			Point2d p = getGeomFactory().newPoint();
+			Point2D<?, ?> p = new InnerComputationPoint2afp();
 			for(int i=0; i<clone.length;) {
-				p.x = this.coords[i];
-				p.y = this.coords[i+1];
+				p.set(this.coords[i], this.coords[i+1]);
 				transform.transform(p);
-				clone[i++] = (int) p.x;
-				clone[i++] = (int) p.y;
+				clone[i++] = p.ix();
+				clone[i++] = p.iy();
 			}
 		}
 		return clone;
@@ -489,13 +489,12 @@ public class Path2d
 			}
 		}
 		else {
-			Point2d p = getGeomFactory().newPoint();
+			Point2D<?, ?> p = new InnerComputationPoint2afp();
 			for(int i=0; i<clone.length;) {
-				p.x = this.coords[i];
-				p.y = this.coords[i+1];
+				p.set(this.coords[i], this.coords[i+1]);
 				transform.transform(p);
-				clone[i++] = (float) p.x;
-				clone[i++] = (float) p.y;
+				clone[i++] = (float) p.getX();
+				clone[i++] = (float) p.getY();
 			}
 		}
 		return clone;
@@ -507,14 +506,13 @@ public class Path2d
 		if (transform == null || transform.isIdentity()) {
 			return Arrays.copyOf(this.coords, this.numCoords);
 		}
-		Point2d p = getGeomFactory().newPoint();
+		Point2D<?, ?> p = new InnerComputationPoint2afp();
 		double[] clone = new double[this.numCoords];
 		for(int i=0; i<clone.length;) {
-			p.x = this.coords[i];
-			p.y = this.coords[i+1];
+			p.set(this.coords[i], this.coords[i+1]);
 			transform.transform(p);
-			clone[i++] = p.x;
-			clone[i++] = p.y;
+			clone[i++] = p.getX();
+			clone[i++] = p.getY();
 		}
 		return clone;
 	}

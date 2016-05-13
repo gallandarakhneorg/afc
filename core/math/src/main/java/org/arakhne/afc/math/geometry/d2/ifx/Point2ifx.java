@@ -149,7 +149,7 @@ public class Point2ifx extends Tuple2ifx<Point2ifx> implements Point2D<Point2ifx
 
 			@Override
 			public int iy() {
-				return Point2ifx.this.ix();
+				return Point2ifx.this.iy();
 			}
 			
 		};

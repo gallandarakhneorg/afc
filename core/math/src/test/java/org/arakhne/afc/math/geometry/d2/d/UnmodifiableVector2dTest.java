@@ -18,15 +18,28 @@
  */
 package org.arakhne.afc.math.geometry.d2.d;
 
-import org.arakhne.afc.math.geometry.d2.AbstractVector2DTest;
-import org.junit.Test;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import org.arakhne.afc.math.geometry.d2.AbstractUnmodifiableVector2DTest;
+import org.arakhne.afc.math.geometry.d2.Point2D;
+import org.arakhne.afc.math.geometry.d2.Shape2D;
+import org.arakhne.afc.math.geometry.d2.Vector2D;
+import org.arakhne.afc.math.geometry.d2.d.Circle2d;
+import org.arakhne.afc.math.geometry.d2.d.Point2d;
+import org.arakhne.afc.math.geometry.d2.d.Vector2d;
 
 @SuppressWarnings("all")
-public class Vector2dTest extends AbstractVector2DTest<Vector2d, Point2d, Vector2d> {
+public class UnmodifiableVector2dTest extends AbstractUnmodifiableVector2DTest<Vector2d, Point2d> {
 
 	@Override
 	public boolean isIntCoordinates() {
 		return false;
+	}
+	
+	@Override
+	public Vector2D createTuple(double x, double y) {
+		return new Vector2d(x, y).toUnmodifiable();
 	}
 	
 	@Override
@@ -37,19 +50,6 @@ public class Vector2dTest extends AbstractVector2DTest<Vector2d, Point2d, Vector
 	@Override
 	public Point2d createPoint(double x, double y) {
 		return new Point2d(x, y);
-	}
-
-	@Override
-	public Vector2d createTuple(double x, double y) {
-		return new Vector2d(x, y);
-	}
-
-	@Test
-	public void staticToOrientationVector() {
-		assertFpVectorEquals(1, 0, Vector2d.toOrientationVector(0));
-		assertFpVectorEquals(-1, 0, Vector2d.toOrientationVector(Math.PI));
-		assertFpVectorEquals(0, 1, Vector2d.toOrientationVector(Math.PI/2));
-		assertFpVectorEquals(0, -1, Vector2d.toOrientationVector(-Math.PI/2));
 	}
 
 }

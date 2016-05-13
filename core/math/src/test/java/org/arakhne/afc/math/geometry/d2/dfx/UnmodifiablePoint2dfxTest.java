@@ -16,16 +16,18 @@
  * Primary author : Olivier LAMOTTE (olivier.lamotte@utbm.fr) - 2015
  *
  */
-package org.arakhne.afc.math.geometry.d2.d;
+package org.arakhne.afc.math.geometry.d2.dfx;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import org.arakhne.afc.math.geometry.d2.AbstractPoint2DTest;
+import org.arakhne.afc.math.geometry.d2.AbstractUnmodifiablePoint2DTest;
+import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Shape2D;
+import org.arakhne.afc.math.geometry.d2.Vector2D;
 
 @SuppressWarnings("all")
-public class Point2dTest extends AbstractPoint2DTest<Point2d, Vector2d, Point2d> {
+public class UnmodifiablePoint2dfxTest extends AbstractUnmodifiablePoint2DTest<Point2dfx, Vector2dfx> {
 
 	@Override
 	public boolean isIntCoordinates() {
@@ -33,23 +35,23 @@ public class Point2dTest extends AbstractPoint2DTest<Point2d, Vector2d, Point2d>
 	}
 	
 	@Override
-	public Vector2d createVector(double x, double y) {
-		return new Vector2d(x, y);
+	public Point2D createTuple(double x, double y) {
+		return new Point2dfx(x, y).toUnmodifiable();
+	}
+	
+	@Override
+	public Vector2dfx createVector(double x, double y) {
+		return new Vector2dfx(x, y);
 	}
 
 	@Override
-	public Point2d createPoint(double x, double y) {
-		return new Point2d(x, y);
-	}
-
-	@Override
-	public Point2d createTuple(double x, double y) {
-		return new Point2d(x, y);
+	public Point2dfx createPoint(double x, double y) {
+		return new Point2dfx(x, y);
 	}
 
 	@Override
 	public void operator_andShape2D() {
-		Shape2D shape = new Circle2d(5, 8, 5);
+		Shape2D shape = new Circle2dfx(5, 8, 5);
 		assertFalse(createPoint(0,0).operator_and(shape));
 		assertFalse(createPoint(11,10).operator_and(shape));
 		assertFalse(createPoint(11,50).operator_and(shape));
@@ -63,7 +65,7 @@ public class Point2dTest extends AbstractPoint2DTest<Point2d, Vector2d, Point2d>
 	
 	@Override
 	public void operator_upToShape2D() {
-		Shape2D shape = new Circle2d(5, 8, 5);
+		Shape2D shape = new Circle2dfx(5, 8, 5);
 		assertEpsilonEquals(3.74643, createPoint(.5,.5).operator_upTo(shape));
 		assertEpsilonEquals(7.9769, createPoint(-1.2,-3.4).operator_upTo(shape));
 		assertEpsilonEquals(1.6483, createPoint(-1.2,5.6).operator_upTo(shape));

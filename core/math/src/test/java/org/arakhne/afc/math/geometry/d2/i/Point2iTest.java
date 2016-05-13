@@ -22,25 +22,28 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import org.arakhne.afc.math.geometry.d2.AbstractPoint2DTest;
-import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Shape2D;
-import org.arakhne.afc.math.geometry.d2.Vector2D;
 
 @SuppressWarnings("all")
-public class Point2iTest extends AbstractPoint2DTest {
+public class Point2iTest extends AbstractPoint2DTest<Point2i, Vector2i, Point2i> {
 
 	@Override
-	protected boolean isIntCoordinates() {
+	public boolean isIntCoordinates() {
 		return true;
 	}
 	
 	@Override
-	protected Vector2D createVector(double x, double y) {
+	public Point2i createTuple(double x, double y) {
+		return new Point2i(x, y);
+	}
+	
+	@Override
+	public Vector2i createVector(double x, double y) {
 		return new Vector2i(x, y);
 	}
 
 	@Override
-	protected Point2D createPoint(double x, double y) {
+	public Point2i createPoint(double x, double y) {
 		return new Point2i(x, y);
 	}
 

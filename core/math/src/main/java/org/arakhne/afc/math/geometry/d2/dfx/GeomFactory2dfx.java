@@ -96,6 +96,11 @@ public class GeomFactory2dfx implements GeomFactory2afp<PathElement2dfx, Point2d
 		return new Point2dfx(x, y);
 	}
 
+	@Override
+	public Point2dfx newPoint(int x, int y) {
+		return new Point2dfx(x, y);
+	}
+
 	/** Create a point with properties.
 	 *
 	 * @param x the x property.
@@ -109,6 +114,11 @@ public class GeomFactory2dfx implements GeomFactory2afp<PathElement2dfx, Point2d
 
 	@Override
 	public Vector2dfx newVector(double x, double y) {
+		return new Vector2dfx(x, y);
+	}
+
+	@Override
+	public Vector2dfx newVector(int x, int y) {
 		return new Vector2dfx(x, y);
 	}
 

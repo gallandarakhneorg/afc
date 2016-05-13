@@ -18,17 +18,39 @@
  */
 package org.arakhne.afc.math.geometry.d2;
 
+import org.junit.Ignore;
+
 @SuppressWarnings("all")
-public class ImmutablePoint2DTest extends AbstractUnmodifiablePoint2DTest {
+public class ImmutablePoint2DTest extends AbstractUnmodifiablePoint2DTest<ImmutablePoint2D, ImmutableVector2D> {
 	
 	@Override
-	protected Vector2D createVector(final double tx, final double ty) {
-		return new Vector2DStub(tx,  ty);
+	public ImmutableVector2D createVector(final double tx, final double ty) {
+		return new ImmutableVector2D(tx,  ty);
 	}
 
 	@Override
-	protected Point2D createPoint(final double tx, final double ty) {
+	public ImmutablePoint2D createPoint(final double tx, final double ty) {
 		return new ImmutablePoint2D(tx, ty);
+	}
+	
+	@Override
+	public Point2D createTuple(double x, double y) {
+		return new ImmutablePoint2D(x, y);
+	}
+
+	@Override
+	public boolean isIntCoordinates() {
+		return false;
+	}
+	
+	@Override
+	public void operator_upToShape2D() {
+		//
+	}
+	
+	@Override
+	public void operator_andShape2D() {
+		//
 	}
 
 }

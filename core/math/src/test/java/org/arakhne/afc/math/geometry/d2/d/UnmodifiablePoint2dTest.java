@@ -21,15 +21,22 @@ package org.arakhne.afc.math.geometry.d2.d;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import org.arakhne.afc.math.geometry.d2.AbstractPoint2DTest;
+import org.arakhne.afc.math.geometry.d2.AbstractUnmodifiablePoint2DTest;
+import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Shape2D;
+import org.arakhne.afc.math.geometry.d2.Vector2D;
 
 @SuppressWarnings("all")
-public class Point2dTest extends AbstractPoint2DTest<Point2d, Vector2d, Point2d> {
+public class UnmodifiablePoint2dTest extends AbstractUnmodifiablePoint2DTest<Point2d, Vector2d> {
 
 	@Override
 	public boolean isIntCoordinates() {
 		return false;
+	}
+	
+	@Override
+	public Point2D createTuple(double x, double y) {
+		return new Point2d(x, y).toUnmodifiable();
 	}
 	
 	@Override
@@ -39,11 +46,6 @@ public class Point2dTest extends AbstractPoint2DTest<Point2d, Vector2d, Point2d>
 
 	@Override
 	public Point2d createPoint(double x, double y) {
-		return new Point2d(x, y);
-	}
-
-	@Override
-	public Point2d createTuple(double x, double y) {
 		return new Point2d(x, y);
 	}
 

@@ -16,12 +16,13 @@
  * Primary author : Olivier LAMOTTE (olivier.lamotte@utbm.fr) - 2015
  *
  */
-package org.arakhne.afc.math.geometry.d2.i;
+package org.arakhne.afc.math.geometry.d2.ifx;
 
-import org.arakhne.afc.math.geometry.d2.AbstractTuple2DTest;
+import org.arakhne.afc.math.geometry.d2.AbstractUnmodifiableVector2DTest;
+import org.arakhne.afc.math.geometry.d2.Vector2D;
 
 @SuppressWarnings("all")
-public class Tuple2iTest extends AbstractTuple2DTest<Tuple2i, Tuple2i> {
+public class UnmodifiableVector2ifxTest extends AbstractUnmodifiableVector2DTest<Vector2ifx, Point2ifx> {
 
 	@Override
 	public boolean isIntCoordinates() {
@@ -29,8 +30,18 @@ public class Tuple2iTest extends AbstractTuple2DTest<Tuple2i, Tuple2i> {
 	}
 	
 	@Override
-	public Tuple2i createTuple(double x, double y) {
-		return new Tuple2i(x, y);
+	public Vector2D createTuple(double x, double y) {
+		return new Vector2ifx(x, y).toUnmodifiable();
+	}
+	
+	@Override
+	public Vector2ifx createVector(double x, double y) {
+		return new Vector2ifx(x, y);
+	}
+
+	@Override
+	public Point2ifx createPoint(double x, double y) {
+		return new Point2ifx(x, y);
 	}
 
 }

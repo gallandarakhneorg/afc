@@ -1299,7 +1299,7 @@ public interface OrientedRectangle2afp<
 	@Override
 	default void rotate(double angle) {
 		Vector2D<?, ?> axis1 = getFirstAxis();
-		Vector2D<?, ?> newAxis = getGeomFactory().newVector();
+		Vector2D<?, ?> newAxis = new InnerComputationVector2afp();
 		newAxis.turn(angle, axis1);
 		setFirstAxis(newAxis.getX(), newAxis.getY());
 	}

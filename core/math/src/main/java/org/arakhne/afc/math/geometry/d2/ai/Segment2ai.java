@@ -1032,7 +1032,7 @@ public interface Segment2ai<
 			int minDist = Integer.MAX_VALUE;
 			int d;
 			int a,b;
-			Point2D<?, ?> p = getGeomFactory().newPoint();
+			Point2D<?, ?> p = new InnerComputationPoint2ai();
 			BresenhamLineIterator<InnerComputationPoint2ai, InnerComputationVector2ai> iterator =
 					new BresenhamLineIterator<>(InnerComputationGeomFactory.SINGLETON, ax, ay, bx, by);
 			while (iterator.hasNext()) {

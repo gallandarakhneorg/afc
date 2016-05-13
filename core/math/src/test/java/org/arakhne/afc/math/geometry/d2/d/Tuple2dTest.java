@@ -23,15 +23,15 @@ import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.arakhne.afc.math.geometry.d2.d.Tuple2d;
 
 @SuppressWarnings("all")
-public class Tuple2dTest extends AbstractTuple2DTest<Tuple2d> {
+public class Tuple2dTest extends AbstractTuple2DTest<Tuple2d, Tuple2d> {
 
 	@Override
-	protected boolean isIntCoordinates() {
+	public boolean isIntCoordinates() {
 		return false;
 	}
 	
 	@Override
-	protected Tuple2d createTuple(double x, double y) {
+	public Tuple2d createTuple(double x, double y) {
 		return new Tuple2d(x, y);
 	}
 

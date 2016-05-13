@@ -112,8 +112,8 @@ public abstract class AbstractGeomFactory2afpTest extends AbstractMathTestCase {
 	public void newPoint() {
 		Point2D p = this.factory.newPoint();
 		assertNotNull(p);
-		assertEquals(0, p.ix());
-		assertEquals(0, p.iy());
+		assertEpsilonEquals(0, p.getX());
+		assertEpsilonEquals(0, p.getY());
 		Point2D ref = createPoint(0, 0);
 		assertEquals(ref.getClass(), p.getClass());
 	}
@@ -129,11 +129,21 @@ public abstract class AbstractGeomFactory2afpTest extends AbstractMathTestCase {
 	}
 
 	@Test
+	public void newPointDoubleDouble() {
+		Point2D p = this.factory.newPoint(15.34, 48.56);
+		assertNotNull(p);
+		assertEpsilonEquals(15.34, p.getX());
+		assertEpsilonEquals(48.56, p.getY());
+		Point2D ref = createPoint(0, 0);
+		assertEquals(ref.getClass(), p.getClass());
+	}
+
+	@Test
 	public void newVector() {
 		Vector2D p = this.factory.newVector();
 		assertNotNull(p);
-		assertEquals(0, p.ix());
-		assertEquals(0, p.iy());
+		assertEpsilonEquals(0, p.getX());
+		assertEpsilonEquals(0, p.getY());
 		Vector2D ref = createVector(0, 0);
 		assertEquals(ref.getClass(), p.getClass());
 	}
@@ -144,6 +154,16 @@ public abstract class AbstractGeomFactory2afpTest extends AbstractMathTestCase {
 		assertNotNull(p);
 		assertEquals(15, p.ix());
 		assertEquals(48, p.iy());
+		Vector2D ref = createVector(0, 0);
+		assertEquals(ref.getClass(), p.getClass());
+	}
+
+	@Test
+	public void newVectorDoubleDouble() {
+		Vector2D p = this.factory.newVector(15.45, 48.67);
+		assertNotNull(p);
+		assertEpsilonEquals(15.45, p.getX());
+		assertEpsilonEquals(48.67, p.getY());
 		Vector2D ref = createVector(0, 0);
 		assertEquals(ref.getClass(), p.getClass());
 	}

@@ -381,9 +381,8 @@ public interface Point2D<RP extends Point2D<? super RP, ? super RV>, RV extends 
 	 */
 	@Pure
 	default RP operator_plus(Vector2D<?, ?> v) {
-		RP r = getGeomFactory().newPoint();
-		r.add(this, v);
-		return r;
+		assert (v != null) : "Vector must be not null"; //$NON-NLS-1$
+		return getGeomFactory().newPoint(getX() + v.getX(), getY() + v.getY());
 	}
 
 	/** Increment this point with the given vector: {@code this += v}
@@ -411,9 +410,8 @@ public interface Point2D<RP extends Point2D<? super RP, ? super RV>, RV extends 
 	 */
 	@Pure
 	default RP operator_minus(Vector2D<?, ?> v) {
-		RP r = getGeomFactory().newPoint();
-		r.sub(this, v);
-		return r;
+		assert (v != null) : "Vector must be not null"; //$NON-NLS-1$
+		return getGeomFactory().newPoint(getX() - v.getX(), getY() - v.getY());
 	}
 
 	/** Subtract the p point to this point: {@code this - p}
@@ -428,9 +426,8 @@ public interface Point2D<RP extends Point2D<? super RP, ? super RV>, RV extends 
 	 */
 	@Pure
 	default RV operator_minus(Point2D<?, ?> p) {
-		RV r = getGeomFactory().newVector();
-		r.sub(this, p);
-		return r;
+		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
+		return getGeomFactory().newVector(getX() - p.getX(), getY() - p.getY());
 	}
 
 	/** Subtract the v vector to this: {@code this -= v}

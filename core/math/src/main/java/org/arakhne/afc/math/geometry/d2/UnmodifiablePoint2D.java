@@ -96,4 +96,59 @@ public interface UnmodifiablePoint2D<RP extends Point2D<? super RP, ? super RV>,
 		return this;
 	}
 
+	@Override
+	default void operator_add(Vector2D<?, ?> v) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	default void operator_remove(Vector2D<?, ?> v) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	default void turn(double angle) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	default void turn(double angle, Point2D<?, ?> pointToTurn) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	default void turn(double angle, Point2D<?, ?> pointToTurn, Point2D<?, ?> origin) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	default void turnLeft(double angle) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	default void turnLeft(double angle, Point2D<?, ?> pointToTurn) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	default void turnLeft(double angle, Point2D<?, ?> pointToTurn, Point2D<?, ?> origin) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	default void turnRight(double angle) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	default void turnRight(double angle, Point2D<?, ?> pointToTurn) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	default void turnRight(double angle, Point2D<?, ?> pointToTurn, Point2D<?, ?> origin) {
+		throw new UnsupportedOperationException();
+	}
+		
 }

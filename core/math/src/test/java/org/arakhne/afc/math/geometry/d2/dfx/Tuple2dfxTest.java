@@ -18,24 +18,24 @@
  */
 package org.arakhne.afc.math.geometry.d2.dfx;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
+
 import org.arakhne.afc.math.geometry.d2.AbstractTuple2DTest;
-import org.arakhne.afc.math.geometry.d2.Tuple2D;
-import org.arakhne.afc.math.geometry.d2.dfx.Tuple2dfx;
 import org.junit.Test;
 
 import javafx.beans.property.DoubleProperty;
 
 @SuppressWarnings("all")
-public class Tuple2dfxTest extends AbstractTuple2DTest<Tuple2dfx> {
+public class Tuple2dfxTest extends AbstractTuple2DTest<Tuple2dfx, Tuple2dfx> {
 
 	@Override
-	protected boolean isIntCoordinates() {
+	public boolean isIntCoordinates() {
 		return false;
 	}
 	
 	@Override
-	protected Tuple2dfx createTuple(double x, double y) {
+	public Tuple2dfx createTuple(double x, double y) {
 		return new Tuple2dfx(x, y);
 	}
 	
@@ -75,11 +75,6 @@ public class Tuple2dfxTest extends AbstractTuple2DTest<Tuple2dfx> {
 		property.set(345.);
 		assertEpsilonEquals(1, this.t.getX());
 		assertEpsilonEquals(345., this.t.getY());
-	}
-	
-	@Override
-	public void testClone() {
-		super.testClone();
 	}
 
 }

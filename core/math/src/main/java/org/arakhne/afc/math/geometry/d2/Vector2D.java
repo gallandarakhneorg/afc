@@ -422,8 +422,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 		if (isEven) {
 			return new PowerResult<>(resultForEven);
 		}
-		RV r = getGeomFactory().newVector();
-		r.set(getX() * resultForEven, getY() * resultForEven);
+		RV r = getGeomFactory().newVector(getX() * resultForEven, getY() * resultForEven);
 		return new PowerResult<>(r);
 
 	}
@@ -897,9 +896,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 */
 	@Pure
 	default RV operator_minus() {
-		RV r = getGeomFactory().newVector();
-		r.negate(this);
-		return r;
+		return getGeomFactory().newVector(-getX(), -getY());
 	}
 
 	/** Scale this vector: {@code this * f}
@@ -914,9 +911,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 */
 	@Pure
 	default RV operator_multiply(double f) {
-		RV r = getGeomFactory().newVector();
-		r.set(getX() * f, getY() * f);
-		return r;
+		return getGeomFactory().newVector(getX() * f, getY() * f);
 	}
 
 	/** Scale this vector: {@code this / f}.
@@ -930,9 +925,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 */
 	@Pure
 	default RV operator_divide(double f) {
-		RV r = getGeomFactory().newVector();
-		r.set(getX() / f, getY() / f);
-		return r;
+		return getGeomFactory().newVector(getX() / f, getY() / f);
 	}
 
 	/** If this vector is epsilon equal to zero then reply v else reply this: {@code this ?: v}
@@ -964,9 +957,8 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 */
 	@Pure
 	default RV operator_minus(Vector2D<?, ?> v) {
-		RV r = getGeomFactory().newVector();
-		r.sub(this, v);
-		return r;
+		assert (v != null) : "Vector must be not null"; //$NON-NLS-1$
+		return getGeomFactory().newVector(getX() - v.getX(), getY() - v.getY());
 	}
 
 	/** Sum of this vector and the given vector: {@code this + v}
@@ -981,9 +973,8 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 */
 	@Pure
 	default RV operator_plus(Vector2D<?, ?> v) {
-		RV r = getGeomFactory().newVector();
-		r.add(this, v);
-		return r;
+		assert (v != null) : "Vector must be not null"; //$NON-NLS-1$
+		return getGeomFactory().newVector(getX() + v.getX(), getY() + v.getY());
 	}
 
 	/** Perp product of this vector and the given vector: {@code this ** v}.
@@ -1032,9 +1023,8 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 */
 	@Pure
 	default RP operator_plus(Point2D<?, ?> p) {
-		RP result = getGeomFactory().newPoint();
-		result.add(this, p);
-		return result;
+		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
+		return getGeomFactory().newPoint(getX() + p.getX(), getY() + p.getY());
 	}
 
 	/** Result of the power of a Vector2D.

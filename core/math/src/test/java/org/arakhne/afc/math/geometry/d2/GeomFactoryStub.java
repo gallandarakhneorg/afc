@@ -94,6 +94,25 @@ public final class GeomFactoryStub implements GeomFactory<Vector2DStub, Point2DS
 	public Vector2DStub newVector() {
 		return new Vector2DStub(0, 0);
 	}
-	
+
+	@Override
+	public Point2DStub newPoint(double x, double y) {
+		return new Point2DStub(x, y);
+	}
+
+	@Override
+	public Vector2DStub newVector(double x, double y) {
+		return new Vector2DStub(x, y);
+	}
+
+	@Override
+	public Point2DStub newPoint(int x, int y) {
+		return new Point2DStub(x, y);
+	}
+
+	@Override
+	public Vector2DStub newVector(int x, int y) {
+		return new Vector2DStub(x, y);
+	}
 	
 }

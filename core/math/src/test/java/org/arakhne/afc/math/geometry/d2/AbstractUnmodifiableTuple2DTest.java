@@ -26,220 +26,306 @@ import org.arakhne.afc.math.AbstractMathTestCase;
 import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2DTestRule;
 import org.arakhne.afc.math.geometry.d2.d.Tuple2d;
 import org.junit.After;
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
 @SuppressWarnings("all")
-public abstract class AbstractUnmodifiableTuple2DTest extends AbstractMathTestCase {
-	
-	@Rule
-	public CoordinateSystem2DTestRule csTestRule = new CoordinateSystem2DTestRule();
-
-	private Tuple2D t;
-	
-	protected abstract Tuple2D createTuple(int x, int y);
-
-	@Before
-	public void setUp() {
-		this.t = createTuple(1, -2);
-	}
-	
-	@After
-	public void tearDown() {
-		this.t = null;
-	}
+public abstract class AbstractUnmodifiableTuple2DTest<T extends Tuple2D, TT extends Tuple2D> extends AbstractTuple2DTest<T, TT> {
 	
 	@Test(expected = UnsupportedOperationException.class)
-	public void absolute() {
-		this.t.absolute();
+	public final void absolute() {
+		getT().absolute();
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public void absoluteT() {
+	public final void absoluteT() {
 		Tuple2D c = new Tuple2d();
-		this.t.absolute(c);
+		getT().absolute(c);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public void addIntInt() {
-		this.t.add(6, 7);
+	public final void addIntInt() {
+		getT().add(6, 7);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public void addDoubleDouble() {
-		this.t.add(6.5, 7.5);
+	public final void addDoubleDouble() {
+		getT().add(6.5, 7.5);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public void addXInt() {
-		this.t.addX(6);
+	public final void addXInt() {
+		getT().addX(6);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public void addXDouble() {
-		this.t.addX(6.5);
+	public final void addXDouble() {
+		getT().addX(6.5);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public void addYInt() {
-		this.t.addY(6);
+	public final void addYInt() {
+		getT().addY(6);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public void addYDouble() {
-		this.t.addY(6.5);
+	public final void addYDouble() {
+		getT().addY(6.5);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public void negateT() {
+	public final void negateT() {
 		Tuple2D c = new Tuple2d();
-		this.t.negate(c);
+		getT().negate(c);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public void negate() {
-		this.t.negate();
+	public final void negate() {
+		getT().negate();
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public void scaleIntT() {
+	public final void scaleIntT() {
 		Tuple2D c = new Tuple2d(2, -1);
-		this.t.scale(4, c);
+		getT().scale(4, c);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public void scaleDoubleT() {
+	public final void scaleDoubleT() {
 		Tuple2D c = new Tuple2d(2, -1);
-		this.t.scale(4.5, c);
+		getT().scale(4.5, c);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public void scaleInt() {
-		this.t.scale(4);
+	public final void scaleInt() {
+		getT().scale(4);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public void scaleDouble() {
-		this.t.scale(4.5);
+	public final void scaleDouble() {
+		getT().scale(4.5);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public void setTuple2D() {
+	public final void setTuple2D() {
 		Tuple2D c = new Tuple2d(-45, 78);
-		this.t.set(c);
+		getT().set(c);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public void setIntInt() {
-		this.t.set(-45, 78);
+	public final void setIntInt() {
+		getT().set(-45, 78);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public void setDoubleDouble() {
-		this.t.set(-45.5, 78.5);
+	public final void setDoubleDouble() {
+		getT().set(-45.5, 78.5);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public void setIntArray() {
-		this.t.set(new int[]{-45, 78});
+	public final void setIntArray() {
+		getT().set(new int[]{-45, 78});
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public void setDoubleArray() {
-		this.t.set(new double[]{-45.5, 78.5});
-	}
-
-	@Test
-	public void getX() {
-		assertEquals(1., this.t.getX(), 0.);
-	}
-
-	@Test
-	public void ix() {
-		assertEquals(1, this.t.ix());
+	public final void setDoubleArray() {
+		getT().set(new double[]{-45.5, 78.5});
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public void setXInt() {
-		this.t.setX(45);
+	public final void setXInt() {
+		getT().setX(45);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public void setXDouble() {
-		this.t.setX(45.5);
-	}
-
-	@Test
-	public void getY() {
-		assertEquals(-2., this.t.getY(), 0.);
-	}
-
-	@Test
-	public void iy() {
-		assertEquals(-2, this.t.iy());
+	public final void setXDouble() {
+		getT().setX(45.5);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public void setYInt() {
-		this.t.setY(45);
+	public final void setYInt() {
+		getT().setY(45);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public void setYDouble() {
-		this.t.setY(45.5);
+	public final void setYDouble() {
+		getT().setY(45.5);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public void subIntInt() {
-		this.t.sub(45, 78);
+	public final void subIntInt() {
+		getT().sub(45, 78);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public void subXInt() {
-		this.t.subX(45);
+	public final void subXInt() {
+		getT().subX(45);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public void subYInt() {
-		this.t.subY(78);
+	public final void subYInt() {
+		getT().subY(78);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public void subDoubleDouble() {
-		this.t.sub(45.5, 78.5);
+	public final void subDoubleDouble() {
+		getT().sub(45.5, 78.5);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public void subXDouble() {
-		this.t.subX(45.5);
+	public final void subXDouble() {
+		getT().subX(45.5);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public void subYDouble() {
-		this.t.subY(78.5);
+	public final void subYDouble() {
+		getT().subY(78.5);
 	}
 
-	@Test
-	public void equals_notEquals() {
-		Tuple2D c = new Tuple2d();
-		assertFalse(this.t.equals(c));
-	}
-		
-	@Test
-	public void equals_equals() {
-		Tuple2D c = new Tuple2d(1, -2);
-		assertTrue(this.t.equals(c));
+	@Test(expected = UnsupportedOperationException.class)
+	public final void addDoubleDouble_iffp() {
+		Assume.assumeFalse(isIntCoordinates());
+		getT().add(12.3, 4.56);
 	}
 
-	@Test
-	public void equals_same() {
-		assertTrue(this.t.equals(this.t));
+	@Test(expected = UnsupportedOperationException.class)
+	public final void addDoubleDouble_ifi() {
+		Assume.assumeTrue(isIntCoordinates());
+		getT().add(12.3, 4.56);
 	}
 
-	@Test
-	public void equals_null() {
-		assertFalse(this.t.equals(null));
+	@Test(expected = UnsupportedOperationException.class)
+	public final void addXDouble_iffp() {
+		Assume.assumeFalse(isIntCoordinates());
+		getT().addX(12.3);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void addXDouble_ifi() {
+		Assume.assumeTrue(isIntCoordinates());
+		getT().addX(12.3);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void addYDouble_iffp() {
+		Assume.assumeFalse(isIntCoordinates());
+		getT().addY(12.3);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void addYDouble_ifi() {
+		Assume.assumeTrue(isIntCoordinates());
+		getT().addY(12.3);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void scaleDoubleT_iffp() {
+		Assume.assumeFalse(isIntCoordinates());
+		getT().scale(12.3, createTuple(1,2));
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void scaleDoubleT_ifi() {
+		Assume.assumeTrue(isIntCoordinates());
+		getT().scale(12.3, createTuple(1,2));
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void scaleDouble_iffp() {
+		Assume.assumeFalse(isIntCoordinates());
+		getT().scale(12.3);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void scaleDouble_ifi() {
+		Assume.assumeTrue(isIntCoordinates());
+		getT().scale(12.3);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void setDoubleDouble_iffp() {
+		Assume.assumeFalse(isIntCoordinates());
+		getT().set(12.3, 4.56);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void setDoubleDouble_ifi() {
+		Assume.assumeTrue(isIntCoordinates());
+		getT().set(12.3, 4.56);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void setDoubleArray_iffp() {
+		Assume.assumeFalse(isIntCoordinates());
+		getT().set(new double[] {12.3, 4.56});
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void setDoubleArray_ifi() {
+		Assume.assumeTrue(isIntCoordinates());
+		getT().set(new double[] {12.3, 4.56});
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void setXDouble_iffp() {
+		Assume.assumeFalse(isIntCoordinates());
+		getT().setX(12.3);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void setXDouble_ifi() {
+		Assume.assumeTrue(isIntCoordinates());
+		getT().setX(12.3);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void setYDouble_ifi() {
+		Assume.assumeTrue(isIntCoordinates());
+		getT().setY(12.3);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void setYDouble_iffp() {
+		Assume.assumeFalse(isIntCoordinates());
+		getT().setY(12.3);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void subDoubleDouble_iffp() {
+		Assume.assumeFalse(isIntCoordinates());
+		getT().sub(12.3, 4.56);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void subDoubleDouble_ifi() {
+		Assume.assumeTrue(isIntCoordinates());
+		getT().sub(12.3, 4.56);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void subXDouble_iffp() {
+		Assume.assumeFalse(isIntCoordinates());
+		getT().subX(12.3);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void subXDouble_ifi() {
+		Assume.assumeTrue(isIntCoordinates());
+		getT().subX(12.3);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void subYDouble_iffp() {
+		Assume.assumeFalse(isIntCoordinates());
+		getT().subY(12.3);
+	}
+
+	@Test(expected = UnsupportedOperationException.class)
+	public final void subYDouble_ifi() {
+		Assume.assumeTrue(isIntCoordinates());
+		getT().subY(12.3);
 	}
 
 }

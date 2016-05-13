@@ -72,4 +72,36 @@ public interface GeomFactory<V extends Vector2D<? super V, ? super P>, P extends
 	 */
 	V newVector();
 
+	/** Create a point.
+	 *
+	 * @param x
+	 * @param y 
+	 * @return the point.
+	 */
+	P newPoint(double x, double y);
+
+	/** Create a vector.
+	 *
+	 * @param x
+	 * @param y 
+	 * @return the vector.
+	 */
+	V newVector(double x, double y);
+
+	/** Create a point.
+	 *
+	 * @param x
+	 * @param y 
+	 * @return the point.
+	 */
+	P newPoint(int x, int y);
+
+	/** Create a vector.
+	 *
+	 * @param x
+	 * @param y 
+	 * @return the vector.
+	 */
+	V newVector(int x, int y);
+
 }

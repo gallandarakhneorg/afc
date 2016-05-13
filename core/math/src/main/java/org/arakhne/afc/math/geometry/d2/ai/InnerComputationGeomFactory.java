@@ -109,6 +109,25 @@ final class InnerComputationGeomFactory implements GeomFactory<InnerComputationV
 	public InnerComputationVector2ai newVector() {
 		return new InnerComputationVector2ai(0, 0);
 	}
-	
+
+	@Override
+	public InnerComputationPoint2ai newPoint(double x, double y) {
+		return new InnerComputationPoint2ai((int) Math.round(x), (int) Math.round(y));
+	}
+
+	@Override
+	public InnerComputationVector2ai newVector(double x, double y) {
+		return new InnerComputationVector2ai((int) Math.round(x), (int) Math.round(y));
+	}
+
+	@Override
+	public InnerComputationPoint2ai newPoint(int x, int y) {
+		return new InnerComputationPoint2ai(x, y);
+	}
+
+	@Override
+	public InnerComputationVector2ai newVector(int x, int y) {
+		return new InnerComputationVector2ai(x, y);
+	}
 	
 }

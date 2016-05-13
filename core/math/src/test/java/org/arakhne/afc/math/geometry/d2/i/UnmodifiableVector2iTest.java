@@ -18,10 +18,11 @@
  */
 package org.arakhne.afc.math.geometry.d2.i;
 
-import org.arakhne.afc.math.geometry.d2.AbstractTuple2DTest;
+import org.arakhne.afc.math.geometry.d2.AbstractUnmodifiableVector2DTest;
+import org.arakhne.afc.math.geometry.d2.Vector2D;
 
 @SuppressWarnings("all")
-public class Tuple2iTest extends AbstractTuple2DTest<Tuple2i, Tuple2i> {
+public class UnmodifiableVector2iTest extends AbstractUnmodifiableVector2DTest<Vector2i, Point2i> {
 
 	@Override
 	public boolean isIntCoordinates() {
@@ -29,8 +30,18 @@ public class Tuple2iTest extends AbstractTuple2DTest<Tuple2i, Tuple2i> {
 	}
 	
 	@Override
-	public Tuple2i createTuple(double x, double y) {
-		return new Tuple2i(x, y);
+	public Vector2D createTuple(double x, double y) {
+		return new Vector2i(x, y).toUnmodifiable();
+	}
+	
+	@Override
+	public Vector2i createVector(double x, double y) {
+		return new Vector2i(x, y);
+	}
+
+	@Override
+	public Point2i createPoint(double x, double y) {
+		return new Point2i(x, y);
 	}
 
 }

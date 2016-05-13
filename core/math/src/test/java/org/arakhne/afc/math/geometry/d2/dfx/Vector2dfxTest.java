@@ -21,38 +21,39 @@ package org.arakhne.afc.math.geometry.d2.dfx;
 import static org.junit.Assert.assertNotNull;
 
 import org.arakhne.afc.math.geometry.d2.AbstractVector2DTest;
-import org.arakhne.afc.math.geometry.d2.Point2D;
-import org.arakhne.afc.math.geometry.d2.Vector2D;
-import org.arakhne.afc.math.geometry.d2.dfx.Point2dfx;
-import org.arakhne.afc.math.geometry.d2.dfx.Vector2dfx;
-import org.junit.Ignore;
 import org.junit.Test;
 
-import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 
 @SuppressWarnings("all")
-public class Vector2dfxTest extends AbstractVector2DTest {
+public class Vector2dfxTest extends AbstractVector2DTest<Vector2dfx, Point2dfx, Vector2dfx> {
 
 	@Override
-	protected boolean isIntCoordinates() {
+	public boolean isIntCoordinates() {
 		return false;
 	}
 	
 	@Override
-	protected Vector2D createVector(double x, double y) {
+	public Vector2dfx createTuple(double x, double y) {
+		return new Vector2dfx(x, y);
+	}
+	
+	@Override
+	public Vector2dfx createVector(double x, double y) {
 		return new Vector2dfx(x, y);
 	}
 
 	@Override
-	protected Point2D createPoint(double x, double y) {
+	public Point2dfx createPoint(double x, double y) {
 		return new Point2dfx(x, y);
 	}
 
-	@Override
-	@Ignore
-	public void staticGetOrientationAngle() {
-		//
+	@Test
+	public void staticToOrientationVector() {
+		assertFpVectorEquals(1, 0, Vector2dfx.toOrientationVector(0));
+		assertFpVectorEquals(-1, 0, Vector2dfx.toOrientationVector(Math.PI));
+		assertFpVectorEquals(0, 1, Vector2dfx.toOrientationVector(Math.PI/2));
+		assertFpVectorEquals(0, -1, Vector2dfx.toOrientationVector(-Math.PI/2));
 	}
 
 	@Test

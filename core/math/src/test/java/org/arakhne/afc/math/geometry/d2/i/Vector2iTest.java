@@ -19,32 +19,28 @@
 package org.arakhne.afc.math.geometry.d2.i;
 
 import org.arakhne.afc.math.geometry.d2.AbstractVector2DTest;
-import org.arakhne.afc.math.geometry.d2.Point2D;
-import org.arakhne.afc.math.geometry.d2.Vector2D;
-import org.junit.Ignore;
 
 @SuppressWarnings("all")
-public class Vector2iTest extends AbstractVector2DTest {
+public class Vector2iTest extends AbstractVector2DTest<Vector2i, Point2i, Vector2i> {
 
 	@Override
-	protected boolean isIntCoordinates() {
+	public boolean isIntCoordinates() {
 		return true;
 	}
 	
 	@Override
-	protected Vector2D createVector(double x, double y) {
+	public Vector2i createTuple(double x, double y) {
+		return new Vector2i(x, y);
+	}
+	
+	@Override
+	public Vector2i createVector(double x, double y) {
 		return new Vector2i(x, y);
 	}
 
 	@Override
-	protected Point2D createPoint(double x, double y) {
+	public Point2i createPoint(double x, double y) {
 		return new Point2i(x, y);
-	}
-
-	@Override
-	@Ignore
-	public void staticGetOrientationAngle() {
-		//
 	}
 
 }

@@ -16,40 +16,42 @@
  * Primary author : Olivier LAMOTTE (olivier.lamotte@utbm.fr) - 2015
  *
  */
-package org.arakhne.afc.math.geometry.d2.d;
+package org.arakhne.afc.math.geometry.d2.i;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import org.arakhne.afc.math.geometry.d2.AbstractPoint2DTest;
+import org.arakhne.afc.math.geometry.d2.AbstractUnmodifiablePoint2DTest;
+import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Shape2D;
+import org.arakhne.afc.math.geometry.d2.Vector2D;
 
 @SuppressWarnings("all")
-public class Point2dTest extends AbstractPoint2DTest<Point2d, Vector2d, Point2d> {
+public class UnmodifiablePoint2iTest extends AbstractUnmodifiablePoint2DTest<Point2i, Vector2i> {
 
 	@Override
 	public boolean isIntCoordinates() {
-		return false;
+		return true;
 	}
 	
 	@Override
-	public Vector2d createVector(double x, double y) {
-		return new Vector2d(x, y);
+	public Point2D createTuple(double x, double y) {
+		return new Point2i(x, y).toUnmodifiable();
+	}
+	
+	@Override
+	public Vector2i createVector(double x, double y) {
+		return new Vector2i(x, y);
 	}
 
 	@Override
-	public Point2d createPoint(double x, double y) {
-		return new Point2d(x, y);
-	}
-
-	@Override
-	public Point2d createTuple(double x, double y) {
-		return new Point2d(x, y);
+	public Point2i createPoint(double x, double y) {
+		return new Point2i(x, y);
 	}
 
 	@Override
 	public void operator_andShape2D() {
-		Shape2D shape = new Circle2d(5, 8, 5);
+		Shape2D shape = new Circle2i(5, 8, 5);
 		assertFalse(createPoint(0,0).operator_and(shape));
 		assertFalse(createPoint(11,10).operator_and(shape));
 		assertFalse(createPoint(11,50).operator_and(shape));
@@ -63,11 +65,12 @@ public class Point2dTest extends AbstractPoint2DTest<Point2d, Vector2d, Point2d>
 	
 	@Override
 	public void operator_upToShape2D() {
-		Shape2D shape = new Circle2d(5, 8, 5);
-		assertEpsilonEquals(3.74643, createPoint(.5,.5).operator_upTo(shape));
-		assertEpsilonEquals(7.9769, createPoint(-1.2,-3.4).operator_upTo(shape));
-		assertEpsilonEquals(1.6483, createPoint(-1.2,5.6).operator_upTo(shape));
-		assertEpsilonEquals(0, createPoint(7.6,5.6).operator_upTo(shape));
+		Shape2D shape = new Circle2i(5, 8, 5);
+		assertEpsilonEquals(0f, createPoint(5,8).operator_upTo(shape));
+		assertEpsilonEquals(0f, createPoint(10,10).operator_upTo(shape));
+		assertEpsilonEquals(0f, createPoint(4,8).operator_upTo(shape));
+		assertEpsilonEquals(4.242640687f, createPoint(0,0).operator_upTo(shape));
+		assertEpsilonEquals(1f, createPoint(5,14).operator_upTo(shape));
 	}
 
 }

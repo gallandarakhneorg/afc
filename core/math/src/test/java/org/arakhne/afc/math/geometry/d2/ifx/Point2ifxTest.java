@@ -19,42 +19,34 @@
 package org.arakhne.afc.math.geometry.d2.ifx;
 
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
 
 import org.arakhne.afc.math.geometry.d2.AbstractPoint2DTest;
-import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Shape2D;
-import org.arakhne.afc.math.geometry.d2.Vector2D;
-import org.junit.Test;
 
 @SuppressWarnings("all")
-public class Point2ifxTest extends AbstractPoint2DTest {
+public class Point2ifxTest extends AbstractPoint2DTest<Point2ifx, Vector2ifx, Point2ifx> {
 
 	@Override
-	protected boolean isIntCoordinates() {
+	public boolean isIntCoordinates() {
 		return true;
 	}
 	
 	@Override
-	protected Vector2D createVector(double x, double y) {
+	public Point2ifx createTuple(double x, double y) {
+		return new Point2ifx(x, y);
+	}
+	
+	@Override
+	public Vector2ifx createVector(double x, double y) {
 		return new Vector2ifx(x, y);
 	}
 
 	@Override
-	protected Point2D createPoint(double x, double y) {
+	public Point2ifx createPoint(double x, double y) {
 		return new Point2ifx(x, y);
 	}
 
-	@Test
-	public void testClone() {
-		super.testClone();
-		Point2ifx origin = (Point2ifx) createPoint(23, 45);
-		Point2ifx clone = (Point2ifx) origin.clone();
-		assertNotSame(origin.xProperty(), clone.xProperty());
-		assertNotSame(origin.yProperty(), clone.yProperty());
-	}
-	
 	@Override
 	public void operator_andShape2D() {
 		Shape2D shape = new Circle2ifx(5, 8, 5);

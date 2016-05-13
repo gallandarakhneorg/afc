@@ -18,45 +18,29 @@
  */
 package org.arakhne.afc.math.geometry.d2.ifx;
 
-import static org.junit.Assert.assertNotSame;
-
 import org.arakhne.afc.math.geometry.d2.AbstractVector2DTest;
-import org.arakhne.afc.math.geometry.d2.Point2D;
-import org.arakhne.afc.math.geometry.d2.Vector2D;
-import org.junit.Ignore;
-import org.junit.Test;
 
 @SuppressWarnings("all")
-public class Vector2ifxTest extends AbstractVector2DTest {
+public class Vector2ifxTest extends AbstractVector2DTest<Vector2ifx, Point2ifx, Vector2ifx> {
 
 	@Override
-	protected boolean isIntCoordinates() {
+	public boolean isIntCoordinates() {
 		return true;
 	}
 	
 	@Override
-	protected Vector2D createVector(double x, double y) {
+	public Vector2ifx createTuple(double x, double y) {
+		return new Vector2ifx(x, y);
+	}
+	
+	@Override
+	public Vector2ifx createVector(double x, double y) {
 		return new Vector2ifx(x, y);
 	}
 
 	@Override
-	protected Point2D createPoint(double x, double y) {
+	public Point2ifx createPoint(double x, double y) {
 		return new Point2ifx(x, y);
-	}
-
-	@Override
-	@Ignore
-	public void staticGetOrientationAngle() {
-		//
-	}
-
-	@Test
-	public void testClone() {
-		super.testClone();
-		Vector2ifx origin = (Vector2ifx) createVector(23, 45);
-		Vector2ifx clone = (Vector2ifx) origin.clone();
-		assertNotSame(origin.xProperty(), clone.xProperty());
-		assertNotSame(origin.yProperty(), clone.yProperty());
 	}
 
 }

@@ -84,6 +84,16 @@ public class GeomFactory2i implements GeomFactory2ai<PathElement2i, Point2i, Vec
 	}
 
 	@Override
+	public Point2i newPoint(double x, double y) {
+		return new Point2i(x, y);
+	}
+
+	@Override
+	public Vector2i newVector(double x, double y) {
+		return new Vector2i(x, y);
+	}
+
+	@Override
 	public Point2i newPoint() {
 		return new Point2i();
 	}

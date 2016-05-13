@@ -84,6 +84,16 @@ public class GeomFactory2d implements GeomFactory2afp<PathElement2d, Point2d, Ve
 	}
 
 	@Override
+	public Point2d newPoint(int x, int y) {
+		return new Point2d(x, y);
+	}
+
+	@Override
+	public Vector2d newVector(int x, int y) {
+		return new Vector2d(x, y);
+	}
+
+	@Override
 	public Point2d newPoint() {
 		return new Point2d();
 	}

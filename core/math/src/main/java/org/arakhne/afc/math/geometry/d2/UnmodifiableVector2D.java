@@ -119,4 +119,35 @@ public interface UnmodifiableVector2D<RV extends Vector2D<? super RV, ? super RP
 		return this;
 	}
 
+	@Override
+	@Deprecated
+	default void turnVector(double angle) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	default void turn(double angle, Vector2D<?, ?> vectorToTurn) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	default void turnLeft(double angle, Vector2D<?, ?> vectorToTurn) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	default void turnRight(double angle, Vector2D<?, ?> vectorToTurn) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	default void operator_add(Vector2D<?, ?> v) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	default void operator_remove(Vector2D<?, ?> v) {
+		throw new UnsupportedOperationException();
+	}
+	
 }

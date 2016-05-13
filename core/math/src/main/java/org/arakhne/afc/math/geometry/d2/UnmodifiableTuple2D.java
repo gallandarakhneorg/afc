@@ -246,4 +246,5 @@ public interface UnmodifiableTuple2D<RT extends Tuple2D<? super RT>> extends Tup
 		throw new UnsupportedOperationException();
 	} 
 
+	
 }

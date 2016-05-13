@@ -18,25 +18,25 @@
  */
 package org.arakhne.afc.math.geometry.d2.ifx;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
 
 import org.arakhne.afc.math.geometry.d2.AbstractTuple2DTest;
-import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.junit.Test;
 
-import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
 
 @SuppressWarnings("all")
-public class Tuple2ifxTest extends AbstractTuple2DTest<Tuple2ifx> {
+public class Tuple2ifxTest extends AbstractTuple2DTest<Tuple2ifx, Tuple2ifx> {
 
 	@Override
-	protected boolean isIntCoordinates() {
+	public boolean isIntCoordinates() {
 		return true;
 	}
 	
 	@Override
-	protected Tuple2ifx createTuple(double x, double y) {
+	public Tuple2ifx createTuple(double x, double y) {
 		return new Tuple2ifx(x, y);
 	}
 
@@ -76,14 +76,6 @@ public class Tuple2ifxTest extends AbstractTuple2DTest<Tuple2ifx> {
 		property.set(345);
 		assertEquals(1, this.t.ix());
 		assertEquals(345, this.t.iy());
-	}
-
-	@Test
-	public void testClone() {
-		super.testClone();
-		Tuple2ifx clone = (Tuple2ifx) this.t.clone();
-		assertNotSame(this.t.xProperty(), clone.xProperty());
-		assertNotSame(this.t.yProperty(), clone.yProperty());
 	}
 
 }

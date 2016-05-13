@@ -41,22 +41,6 @@ public interface GeomFactory2ai<E extends PathElement2ai, P extends Point2D<? su
 		V extends Vector2D<? super V, ? super P>, B extends Rectangle2ai<?, ?, E, P, V, B>>
 		extends GeomFactory<V, P> {
 
-	/** Create a point.
-	 *
-	 * @param x
-	 * @param y 
-	 * @return the point.
-	 */
-	P newPoint(int x, int y);
-
-	/** Create a vector.
-	 *
-	 * @param x
-	 * @param y 
-	 * @return the vector.
-	 */
-	V newVector(int x, int y);
-
 	/** Create an empty path with the given winding rule.
 	 *
 	 * @param rule the rule.

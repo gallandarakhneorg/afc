@@ -109,6 +109,26 @@ final class InnerComputationGeomFactory implements GeomFactory<InnerComputationV
 	public InnerComputationVector2afp newVector() {
 		return new InnerComputationVector2afp(0, 0);
 	}
+
+	@Override
+	public InnerComputationPoint2afp newPoint(double x, double y) {
+		return new InnerComputationPoint2afp(x, y);
+	}
+
+	@Override
+	public InnerComputationVector2afp newVector(double x, double y) {
+		return new InnerComputationVector2afp(x, y);
+	}
+
+	@Override
+	public InnerComputationPoint2afp newPoint(int x, int y) {
+		return new InnerComputationPoint2afp(x, y);
+	}
+
+	@Override
+	public InnerComputationVector2afp newVector(int x, int y) {
+		return new InnerComputationVector2afp(x, y);
+	}
 	
 	
 }

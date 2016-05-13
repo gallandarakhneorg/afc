@@ -266,7 +266,7 @@ public class Point2d extends Tuple2d<Point2d> implements Point2D<Point2d, Vector
 
 			@Override
 			public int iy() {
-				return Point2d.this.ix();
+				return Point2d.this.iy();
 			}
 
 		};

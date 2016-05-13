@@ -105,6 +105,25 @@ final class ImmutableGeomFactory implements GeomFactory<ImmutableVector2D, Immut
 	public ImmutableVector2D newVector() {
 		return new ImmutableVector2D(0, 0);
 	}
-	
+
+	@Override
+	public ImmutablePoint2D newPoint(double x, double y) {
+		return new ImmutablePoint2D(x, y);
+	}
+
+	@Override
+	public ImmutableVector2D newVector(double x, double y) {
+		return new ImmutableVector2D(x, y);
+	}
+
+	@Override
+	public ImmutablePoint2D newPoint(int x, int y) {
+		return new ImmutablePoint2D(x, y);
+	}
+
+	@Override
+	public ImmutableVector2D newVector(int x, int y) {
+		return new ImmutableVector2D(x, y);
+	}
 	
 }

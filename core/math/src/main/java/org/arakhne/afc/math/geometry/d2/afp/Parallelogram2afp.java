@@ -301,7 +301,7 @@ public interface Parallelogram2afp<
 							closest.set(px, py);
 						} else {
 							// Closest is on GF
-							Segment2afp.computeClosestPointToPoint(
+							Segment2afp.computeClosestPointTo(
 									a + centerX, b + centerY, centerX - c, centerY - d,
 									px, py,
 									closest);
@@ -313,7 +313,7 @@ public interface Parallelogram2afp<
 							closest.set(px, py);
 						} else {
 							// Closest is EF
-							Segment2afp.computeClosestPointToPoint(
+							Segment2afp.computeClosestPointTo(
 									centerX - a, centerY - b, centerX - c, centerY - d,
 									px, py,
 									closest);
@@ -331,7 +331,7 @@ public interface Parallelogram2afp<
 							closest.set(px, py);
 						} else {
 							// Closest is on GH
-							Segment2afp.computeClosestPointToPoint(
+							Segment2afp.computeClosestPointTo(
 									a + centerX, b + centerY, c + centerX, d + centerY,
 									px, py,
 									closest);
@@ -343,7 +343,7 @@ public interface Parallelogram2afp<
 							closest.set(px, py);
 						} else {
 							// Closest is EH
-							Segment2afp.computeClosestPointToPoint(
+							Segment2afp.computeClosestPointTo(
 									centerX - a, centerY - b, c + centerX, d + centerY,
 									px, py,
 									closest);
@@ -1474,11 +1474,11 @@ public interface Parallelogram2afp<
 	 */
 	default void rotate(double angle) {
 		Vector2D<?, ?> axis1 = getFirstAxis();
-		Vector2D<?, ?> newAxis1 = getGeomFactory().newVector();
+		Vector2D<?, ?> newAxis1 = new InnerComputationVector2afp();
 		newAxis1.turn(angle, axis1);
 		setFirstAxis(newAxis1);
 		Vector2D<?, ?> axis2 = getSecondAxis();
-		Vector2D<?, ?> newAxis2 = getGeomFactory().newVector();
+		Vector2D<?, ?> newAxis2 = new InnerComputationVector2afp();
 		newAxis2.turn(angle, axis2);
 		setSecondAxis(newAxis2);
 	}

@@ -40,6 +40,7 @@ import org.arakhne.afc.math.geometry.d3.Vector3D;
 import org.arakhne.afc.math.matrix.Matrix2f;
 import org.arakhne.afc.math.matrix.Matrix3f;
 import org.arakhne.afc.math.matrix.Matrix4f;
+import org.junit.AssumptionViolatedException;
 import org.junit.ComparisonFailure;
 
 /**
@@ -53,30 +54,34 @@ public abstract class AbstractMathTestCase {
 	
 	/** Precision of the floating point number epsilon-tests.
 	 */
-	protected final static int DEFAULT_DECIMAL_COUNT = 8;
+	public final static int DEFAULT_DECIMAL_COUNT = 8;
 	
 	/** Precision of the floating point number epsilon-tests.
 	 */
-	protected final static double EPSILON = 10 * 1.110223024E-16;
+	public final static double EPSILON = 10 * 1.110223024E-16;
 
 	private int decimalPrecision = DEFAULT_DECIMAL_COUNT;
 	
 	/** Random number sequence.
 	 */
-	protected final Random random = new Random();
+	public final Random random = new Random();
 	
-	/** Set the epsilon used ben testing floating-point values.
+	public Random getRandom() {
+		return this.random;
+	}
+	
+	/** Set the epsilon used be testing floating-point values.
 	 * 
 	 * @param precision is the count of decimal digits to support
 	 */
-	protected void setDecimalPrecision(int precision) {
+	public void setDecimalPrecision(int precision) {
 		this.decimalPrecision = Math.max(0, precision);
 	}
 	
-	/** Set the epsilon used ben testing floating-point values to
+	/** Set the epsilon used be testing floating-point values to
 	 * its default value.
 	 */
-	protected void setDefaultDecimalPrecision() {
+	public void setDefaultDecimalPrecision() {
 		this.decimalPrecision = DEFAULT_DECIMAL_COUNT;
 	}
 	
@@ -86,7 +91,7 @@ public abstract class AbstractMathTestCase {
 	 * @param expected
 	 * @param actual
 	 */
-	protected void assertEpsilonEquals(double expected, double actual) {
+	public void assertEpsilonEquals(double expected, double actual) {
 		assertEpsilonEquals(null, expected, actual);
 	}
 	
@@ -96,7 +101,7 @@ public abstract class AbstractMathTestCase {
 	 * @param expected
 	 * @param actual
 	 */
-	protected void assertNotEpsilonEquals(double expected, double actual) {
+	public void assertNotEpsilonEquals(double expected, double actual) {
 		assertNotEpsilonEquals(null, expected, actual);
 	}
 
@@ -107,7 +112,7 @@ public abstract class AbstractMathTestCase {
 	 * @param isNaNEqual indicates if the NaN value is equals to itself.
 	 * @return <code>true</code> or <code>false</code>
 	 */
-	protected boolean isEpsilonEquals(double a, double b, boolean isNaNEqual) {
+	public boolean isEpsilonEquals(double a, double b, boolean isNaNEqual) {
 		if (a==b) return true;
 		boolean nanA = Double.isNaN(a);
 		boolean nanB = Double.isNaN(b);
@@ -128,7 +133,7 @@ public abstract class AbstractMathTestCase {
 	 * @param b
 	 * @return <code>true</code> or <code>false</code>
 	 */
-	protected boolean isEpsilonEquals(double a, double b) {
+	public boolean isEpsilonEquals(double a, double b) {
 		return isEpsilonEquals(a, b, true);
 	}
 
@@ -138,7 +143,7 @@ public abstract class AbstractMathTestCase {
 	 * @param b
 	 * @return <code>true</code> or <code>false</code>
 	 */
-	protected boolean isEpsilonEquals(BigDecimal a, BigDecimal b) {
+	public boolean isEpsilonEquals(BigDecimal a, BigDecimal b) {
 		return isEpsilonEquals(a, b, this.decimalPrecision);
 	}
 
@@ -149,7 +154,7 @@ public abstract class AbstractMathTestCase {
 	 * @param precision is the number of decimal digits to test.
 	 * @return <code>true</code> or <code>false</code>
 	 */
-	protected static boolean isEpsilonEquals(BigDecimal a, BigDecimal b, int precision) {
+	public static boolean isEpsilonEquals(BigDecimal a, BigDecimal b, int precision) {
 		BigDecimal ma = a.movePointRight(precision);
 		BigDecimal mb = b.movePointRight(precision);
 		BigDecimal aa = ma.setScale(0,BigDecimal.ROUND_HALF_UP);
@@ -167,7 +172,7 @@ public abstract class AbstractMathTestCase {
 	 * @param expected
 	 * @param actual
 	 */
-	protected void assertEpsilonEquals(String message, double expected, double actual) {
+	public void assertEpsilonEquals(String message, double expected, double actual) {
 		if (isEpsilonEquals(expected,actual)) return;
 		throw new ComparisonFailure((message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
 				+"not same double value.", //$NON-NLS-1$
@@ -182,7 +187,7 @@ public abstract class AbstractMathTestCase {
 	 * @param expected
 	 * @param actual
 	 */
-	protected void assertNotEpsilonEquals(String message, double expected, double actual) {
+	public void assertNotEpsilonEquals(String message, double expected, double actual) {
 		if (!isEpsilonEquals(expected,actual, false)) return;
 		throw new ComparisonFailure((message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
 				+"same double value.", //$NON-NLS-1$
@@ -196,7 +201,7 @@ public abstract class AbstractMathTestCase {
 	 * @param expected
 	 * @param actual
 	 */
-	protected void assertEpsilonEquals(Tuple2D<?> expected, Tuple2D<?> actual) {
+	public void assertEpsilonEquals(Tuple2D<?> expected, Tuple2D<?> actual) {
 		assertEpsilonEquals(null, expected, actual);
 	}
 
@@ -206,7 +211,7 @@ public abstract class AbstractMathTestCase {
 	 * @param expected
 	 * @param actual
 	 */
-	protected void assertNotEpsilonEquals(Tuple2D<?> expected, Tuple2D<?> actual) {
+	public void assertNotEpsilonEquals(Tuple2D<?> expected, Tuple2D<?> actual) {
 		assertNotEpsilonEquals(null, expected, actual);
 	}
 
@@ -217,7 +222,7 @@ public abstract class AbstractMathTestCase {
 	 * @param expected
 	 * @param actual
 	 */
-	protected void assertEpsilonEquals(String message, Tuple2D<?> expected, Tuple2D<?> actual) {
+	public void assertEpsilonEquals(String message, Tuple2D<?> expected, Tuple2D<?> actual) {
 		if (!isEpsilonEquals(expected.getX(), actual.getX())) {
 			throw new ComparisonFailure(
 					(message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
@@ -241,7 +246,7 @@ public abstract class AbstractMathTestCase {
 	 * @param expected
 	 * @param actual
 	 */
-	protected void assertNotEpsilonEquals(String message, Tuple2D<?> expected, Tuple2D<?> actual) {
+	public void assertNotEpsilonEquals(String message, Tuple2D<?> expected, Tuple2D<?> actual) {
 		if (isEpsilonEquals(expected.getX(), actual.getX(), false)) {
 			throw new ComparisonFailure(
 					(message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
@@ -264,7 +269,7 @@ public abstract class AbstractMathTestCase {
 	 * @param expected
 	 * @param actual
 	 */
-	protected void assertEpsilonEquals(Tuple3D<?> expected, Tuple3D<?> actual) {
+	public void assertEpsilonEquals(Tuple3D<?> expected, Tuple3D<?> actual) {
 		assertEpsilonEquals(null, expected, actual);
 	}
 
@@ -274,7 +279,7 @@ public abstract class AbstractMathTestCase {
 	 * @param expected
 	 * @param actual
 	 */
-	protected void assertNotEpsilonEquals(Tuple3D<?> expected, Tuple3D<?> actual) {
+	public void assertNotEpsilonEquals(Tuple3D<?> expected, Tuple3D<?> actual) {
 		assertNotEpsilonEquals(null, expected, actual);
 	}
 
@@ -285,7 +290,7 @@ public abstract class AbstractMathTestCase {
 	 * @param expected
 	 * @param actual
 	 */
-	protected void assertEpsilonEquals(String message, Tuple3D<?> expected, Tuple3D<?> actual) {
+	public void assertEpsilonEquals(String message, Tuple3D<?> expected, Tuple3D<?> actual) {
 		if (!isEpsilonEquals(expected.getX(), actual.getX())) {
 			throw new ComparisonFailure(
 					(message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
@@ -316,7 +321,7 @@ public abstract class AbstractMathTestCase {
 	 * @param actual
 	 * @return the test result.
 	 */
-	protected boolean isEpsilonEquals(Tuple3D<?> expected, Tuple3D<?> actual) {
+	public boolean isEpsilonEquals(Tuple3D<?> expected, Tuple3D<?> actual) {
 		return isEpsilonEquals(expected.getX(), actual.getX())
 				&& isEpsilonEquals(expected.getY(), actual.getY())
 				&& isEpsilonEquals(expected.getZ(), actual.getZ());
@@ -329,7 +334,7 @@ public abstract class AbstractMathTestCase {
 	 * @param expected
 	 * @param actual
 	 */
-	protected void assertNotEpsilonEquals(String message, Tuple3D<?> expected, Tuple3D<?> actual) {
+	public void assertNotEpsilonEquals(String message, Tuple3D<?> expected, Tuple3D<?> actual) {
 		if (isEpsilonEquals(expected.getX(), actual.getX(), false)) {
 			throw new ComparisonFailure(
 					(message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
@@ -359,7 +364,7 @@ public abstract class AbstractMathTestCase {
 	 * @param expected
 	 * @param actual
 	 */
-	protected void assertEpsilonEquals(Quaternion expected, Quaternion actual) {
+	public void assertEpsilonEquals(Quaternion expected, Quaternion actual) {
 		assertEpsilonEquals(null, expected, actual);
 	}
 
@@ -369,7 +374,7 @@ public abstract class AbstractMathTestCase {
 	 * @param expected
 	 * @param actual
 	 */
-	protected void assertNotEpsilonEquals(Quaternion expected, Quaternion actual) {
+	public void assertNotEpsilonEquals(Quaternion expected, Quaternion actual) {
 		assertNotEpsilonEquals(null, expected, actual);
 	}
 
@@ -380,7 +385,7 @@ public abstract class AbstractMathTestCase {
 	 * @param expected
 	 * @param actual
 	 */
-	protected void assertEpsilonEquals(String message, Quaternion expected, Quaternion actual) {
+	public void assertEpsilonEquals(String message, Quaternion expected, Quaternion actual) {
 		if (!isEpsilonEquals(expected.getX(), actual.getX())) {
 			throw new ComparisonFailure(
 					(message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
@@ -418,7 +423,7 @@ public abstract class AbstractMathTestCase {
 	 * @param expected
 	 * @param actual
 	 */
-	protected void assertNotEpsilonEquals(String message, Quaternion expected, Quaternion actual) {
+	public void assertNotEpsilonEquals(String message, Quaternion expected, Quaternion actual) {
 		if (isEpsilonEquals(expected.getX(), actual.getX(), false)) {
 			throw new ComparisonFailure(
 					(message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
@@ -455,7 +460,7 @@ public abstract class AbstractMathTestCase {
 	 * @param expected
 	 * @param actual
 	 */
-	protected void assertNotEquals(int expected, int actual) {
+	public void assertNotEquals(int expected, int actual) {
 		assertNotEquals(null, expected, actual);
 	}
 
@@ -466,7 +471,7 @@ public abstract class AbstractMathTestCase {
 	 * @param expected
 	 * @param actual
 	 */
-	protected void assertNotEquals(String message, int expected, int actual) {
+	public void assertNotEquals(String message, int expected, int actual) {
 		if (expected==actual) {
 			fail((message==null ? "" : (message+": "))  //$NON-NLS-1$//$NON-NLS-2$
 					+"same value, expecting not equal to:"+ //$NON-NLS-1$
@@ -478,7 +483,7 @@ public abstract class AbstractMathTestCase {
 	 *
 	 * @return the random point.
 	 */
-	protected Point2d randomPoint2f() {
+	public Point2d randomPoint2f() {
 		return new Point2d(
 				this.random.nextDouble() * 1000 - 500,
 				this.random.nextDouble() * 1000 - 500);
@@ -488,7 +493,7 @@ public abstract class AbstractMathTestCase {
 	 *
 	 * @return the random vector.
 	 */
-	protected Vector2d randomVector2f() {
+	public Vector2d randomVector2f() {
 		return new Vector2d(
 				this.random.nextDouble() * 1000 - 500,
 				this.random.nextDouble() * 1000 - 500);
@@ -498,7 +503,7 @@ public abstract class AbstractMathTestCase {
 	 *
 	 * @return the random point.
 	 */
-	protected Point3D randomPoint3f() {
+	public Point3D randomPoint3f() {
 		// TODO
 		throw new UnsupportedOperationException();
 //		return new Point3D(
@@ -511,7 +516,7 @@ public abstract class AbstractMathTestCase {
 	 *
 	 * @return the random vector.
 	 */
-	protected Vector3D randomVector3f() {
+	public Vector3D randomVector3f() {
 		// TODO
 		throw new UnsupportedOperationException();
 //		return new Vector3f(
@@ -524,7 +529,7 @@ public abstract class AbstractMathTestCase {
 	 *
 	 * @return the random matrix.
 	 */
-	protected Matrix2f randomMatrix2f() {
+	public Matrix2f randomMatrix2f() {
 		return new Matrix2f(
 				this.random.nextDouble() * 1000 - 500,
 				this.random.nextDouble() * 1000 - 500,
@@ -537,7 +542,7 @@ public abstract class AbstractMathTestCase {
 	 *
 	 * @return the random matrix.
 	 */
-	protected Matrix3f randomMatrix3f() {
+	public Matrix3f randomMatrix3f() {
 		return new Matrix3f(
 				this.random.nextDouble() * 1000 - 500,
 				this.random.nextDouble() * 1000 - 500,
@@ -555,7 +560,7 @@ public abstract class AbstractMathTestCase {
 	 *
 	 * @return the random matrix.
 	 */
-	protected Matrix4f randomMatrix4f() {
+	public Matrix4f randomMatrix4f() {
 		return new Matrix4f(
 				this.random.nextDouble() * 1000 - 500,
 				this.random.nextDouble() * 1000 - 500,
@@ -585,7 +590,7 @@ public abstract class AbstractMathTestCase {
 	 * @return <code>true</code> if the two arrays are equal, otherwise
 	 * <code>false</code>.
 	 */
-	protected boolean isEpsilonEquals(double[] a, double[] b) {
+	public boolean isEpsilonEquals(double[] a, double[] b) {
 		if (a==b) return true;
 		if (a==null && b!=null) return false;
 		if (a!=null && b==null) return false;
@@ -601,7 +606,7 @@ public abstract class AbstractMathTestCase {
 	 *
 	 * @param value
 	 */
-	protected void assertNaN(double value) {
+	public void assertNaN(double value) {
 		if (!Double.isNaN(value)) {
 			fail("Expected NaN, but has: " + value); //$NON-NLS-1$
 		}
@@ -611,7 +616,7 @@ public abstract class AbstractMathTestCase {
 	 *
 	 * @param value
 	 */
-	protected void assertNaN(float value) {
+	public void assertNaN(float value) {
 		if (!Float.isNaN(value)) {
 			fail("Expected NaN, but has: " + value); //$NON-NLS-1$
 		}
@@ -621,7 +626,7 @@ public abstract class AbstractMathTestCase {
 	 *
 	 * @param value
 	 */
-	protected void assertZero(byte value) {
+	public void assertZero(byte value) {
 		if (value != 0) {
 			fail("Expected zero, but has: " + value); //$NON-NLS-1$
 		}
@@ -631,7 +636,7 @@ public abstract class AbstractMathTestCase {
 	 *
 	 * @param value
 	 */
-	protected void assertZero(short value) {
+	public void assertZero(short value) {
 		if (value != 0) {
 			fail("Expected zero, but has: " + value); //$NON-NLS-1$
 		}
@@ -641,7 +646,7 @@ public abstract class AbstractMathTestCase {
 	 *
 	 * @param value
 	 */
-	protected void assertZero(int value) {
+	public void assertZero(int value) {
 		if (value != 0) {
 			fail("Expected zero, but has: " + value); //$NON-NLS-1$
 		}
@@ -651,7 +656,7 @@ public abstract class AbstractMathTestCase {
 	 *
 	 * @param value
 	 */
-	protected void assertZero(long value) {
+	public void assertZero(long value) {
 		if (value != 0) {
 			fail("Expected zero, but has: " + value); //$NON-NLS-1$
 		}
@@ -661,7 +666,7 @@ public abstract class AbstractMathTestCase {
 	 *
 	 * @param value
 	 */
-	protected void assertZero(float value) {
+	public void assertZero(float value) {
 		if (value != 0f) {
 			fail("Expected zero, but has: " + value); //$NON-NLS-1$
 		}
@@ -671,7 +676,7 @@ public abstract class AbstractMathTestCase {
 	 *
 	 * @param value
 	 */
-	protected void assertZero(double value) {
+	public void assertZero(double value) {
 		if (value != 0.) {
 			fail("Expected zero, but has: " + value); //$NON-NLS-1$
 		}
@@ -682,7 +687,7 @@ public abstract class AbstractMathTestCase {
 	 * @param expected
 	 * @param actual
 	 */
-	protected <T> void assertCollectionEquals(Iterable<? extends T> expected, Iterable<? extends T> actual) {
+	public <T> void assertCollectionEquals(Iterable<? extends T> expected, Iterable<? extends T> actual) {
 		Iterator<? extends T> it1 = expected.iterator();
 		Iterator<? extends T> it2 = actual.iterator();
 		while (it1.hasNext()) {
@@ -715,7 +720,7 @@ public abstract class AbstractMathTestCase {
 	 * @param x
 	 * @param y
 	 */
-	protected void assertFpVectorEquals(double x, double y, Vector2D<?, ?> v) {
+	public void assertFpVectorEquals(double x, double y, Vector2D<?, ?> v) {
 		double dx = x - v.getX();
 		double dy = y - v.getY();
 		double distSq = dx * dx + dy * dy;
@@ -732,7 +737,7 @@ public abstract class AbstractMathTestCase {
 	 * @param x
 	 * @param y
 	 */
-	protected void assertIntVectorEquals(int x, int y, Vector2D<?, ?> v) {
+	public void assertIntVectorEquals(int x, int y, Vector2D<?, ?> v) {
 		if (x != v.getX() || y != v.iy()) {
 			throw new ComparisonFailure("Not same vector", //$NON-NLS-1$
 					"(" + x + "; " + y + ")", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -746,7 +751,7 @@ public abstract class AbstractMathTestCase {
 	 * @param x
 	 * @param y
 	 */
-	protected void assertFpVectorNotEquals(double x, double y, Vector2D<?, ?> v) {
+	public void assertFpVectorNotEquals(double x, double y, Vector2D<?, ?> v) {
 		double dx = x - v.getX();
 		double dy = y - v.getY();
 		double distSq = dx * dx + dy * dy;
@@ -763,7 +768,7 @@ public abstract class AbstractMathTestCase {
 	 * @param x
 	 * @param y
 	 */
-	protected void assertIntVectorNotEquals(int x, int y, Vector2D<?, ?> v) {
+	public void assertIntVectorNotEquals(int x, int y, Vector2D<?, ?> v) {
 		if (x == v.ix() && y == v.iy()) {
 			throw new ComparisonFailure("Same vector", //$NON-NLS-1$
 					"(" + x + "; " + y + ")", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -778,7 +783,7 @@ public abstract class AbstractMathTestCase {
 	 * @param y
 	 * @param z
 	 */
-	protected void assertFpVectorEquals(double x, double y, double z, Vector3D v) {
+	public void assertFpVectorEquals(double x, double y, double z, Vector3D v) {
 		double dx = x - v.getX();
 		double dy = y - v.getY();
 		double dz = z - v.getZ();
@@ -797,7 +802,7 @@ public abstract class AbstractMathTestCase {
 	 * @param y
 	 * @param z
 	 */
-	protected void assertIntVectorEquals(int x, int y, int z, Vector3D v) {
+	public void assertIntVectorEquals(int x, int y, int z, Vector3D v) {
 		if (x != v.ix() || y != v.iy() || z != v.iz()) {
 			throw new ComparisonFailure("Not same vector", //$NON-NLS-1$
 					"(" + x + "; " + y + "; " + z + ")", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
@@ -812,7 +817,7 @@ public abstract class AbstractMathTestCase {
 	 * @param z
 	 * @param v
 	 */
-	protected void assertFpVectorNotEquals(double x, double y, double z, Vector3D v) {
+	public void assertFpVectorNotEquals(double x, double y, double z, Vector3D v) {
 		double dx = x - v.getX();
 		double dy = y - v.getY();
 		double dz = z - v.getZ();
@@ -831,7 +836,7 @@ public abstract class AbstractMathTestCase {
 	 * @param y
 	 * @param z
 	 */
-	protected void assertIntVectorNotEquals(int x, int y, int z, Vector3D v) {
+	public void assertIntVectorNotEquals(int x, int y, int z, Vector3D v) {
 		if (x == v.ix() && y == v.iy() && z == v.iz()) {
 			throw new ComparisonFailure("Same vector", //$NON-NLS-1$
 					"(" + x + "; " + y + "; " + z + ")", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
@@ -845,7 +850,7 @@ public abstract class AbstractMathTestCase {
 	 * @param x
 	 * @param y
 	 */
-	protected void assertFpPointEquals(double x, double y, Point2D v) {
+	public void assertFpPointEquals(double x, double y, Point2D v) {
 		double dx = x - v.getX();
 		double dy = y - v.getY();
 		double distSq = dx * dx + dy * dy;
@@ -862,7 +867,7 @@ public abstract class AbstractMathTestCase {
 	 * @param x
 	 * @param y
 	 */
-	protected void assertIntPointEquals(int x, int y, Point2D<?, ?> v) {
+	public void assertIntPointEquals(int x, int y, Point2D<?, ?> v) {
 		if (x != v.ix() || y != v.iy()) {
 			throw new ComparisonFailure("Not same point", //$NON-NLS-1$
 					"(" + x + "; " + y + ")", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -876,7 +881,7 @@ public abstract class AbstractMathTestCase {
 	 * @param x
 	 * @param y
 	 */
-	protected void assertFpPointNotEquals(double x, double y, Point2D<?, ?> v) {
+	public void assertFpPointNotEquals(double x, double y, Point2D<?, ?> v) {
 		double dx = x - v.getX();
 		double dy = y - v.getY();
 		double distSq = dx * dx + dy * dy;
@@ -893,7 +898,7 @@ public abstract class AbstractMathTestCase {
 	 * @param x
 	 * @param y
 	 */
-	protected void assertIntPointNotEquals(int x, int y, Point2D<?, ?> v) {
+	public void assertIntPointNotEquals(int x, int y, Point2D<?, ?> v) {
 		if (x == v.ix() && y == v.iy()) {
 			throw new ComparisonFailure("Same point", //$NON-NLS-1$
 					"(" + x + "; " + y + ")", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -906,7 +911,7 @@ public abstract class AbstractMathTestCase {
 	 * @param expected 
 	 * @param actual
 	 */
-	protected void assertEpsilonEquals(Matrix2f expected, Matrix2f actual) {
+	public void assertEpsilonEquals(Matrix2f expected, Matrix2f actual) {
 		if ((!isEpsilonEquals(expected.getM00(), actual.getM00()))
 			||(!isEpsilonEquals(expected.getM01(), actual.getM01()))
 			||(!isEpsilonEquals(expected.getM10(), actual.getM10()))
@@ -921,7 +926,7 @@ public abstract class AbstractMathTestCase {
 	 * @param expected 
 	 * @param actual
 	 */
-	protected void assertNotEpsilonEquals(Matrix2f expected, Matrix2f actual) {
+	public void assertNotEpsilonEquals(Matrix2f expected, Matrix2f actual) {
 		if ((isEpsilonEquals(expected.getM00(), actual.getM00()))
 			&&(isEpsilonEquals(expected.getM01(), actual.getM01()))
 			&&(isEpsilonEquals(expected.getM10(), actual.getM10()))
@@ -936,7 +941,7 @@ public abstract class AbstractMathTestCase {
 	 * @param expected 
 	 * @param actual
 	 */
-	protected void assertEpsilonEquals(Matrix3f expected, Matrix3f actual) {
+	public void assertEpsilonEquals(Matrix3f expected, Matrix3f actual) {
 		if ((!isEpsilonEquals(expected.getM00(), actual.getM00()))
 			||(!isEpsilonEquals(expected.getM01(), actual.getM01()))
 			||(!isEpsilonEquals(expected.getM02(), actual.getM02()))
@@ -956,7 +961,7 @@ public abstract class AbstractMathTestCase {
 	 * @param expected 
 	 * @param actual
 	 */
-	protected void assertNotEpsilonEquals(Matrix3f expected, Matrix3f actual) {
+	public void assertNotEpsilonEquals(Matrix3f expected, Matrix3f actual) {
 		if ((isEpsilonEquals(expected.getM00(), actual.getM00()))
 			&&(isEpsilonEquals(expected.getM01(), actual.getM01()))
 			&&(isEpsilonEquals(expected.getM02(), actual.getM02()))
@@ -976,7 +981,7 @@ public abstract class AbstractMathTestCase {
 	 * @param expected 
 	 * @param actual
 	 */
-	protected void assertEpsilonEquals(Matrix4f expected, Matrix4f actual) {
+	public void assertEpsilonEquals(Matrix4f expected, Matrix4f actual) {
 		if ((!isEpsilonEquals(expected.getM00(), actual.getM00()))
 			||(!isEpsilonEquals(expected.getM01(), actual.getM01()))
 			||(!isEpsilonEquals(expected.getM02(), actual.getM02()))
@@ -1003,7 +1008,7 @@ public abstract class AbstractMathTestCase {
 	 * @param expected 
 	 * @param actual
 	 */
-	protected void assertNotEpsilonEquals(Matrix4f expected, Matrix4f actual) {
+	public void assertNotEpsilonEquals(Matrix4f expected, Matrix4f actual) {
 		if ((isEpsilonEquals(expected.getM00(), actual.getM00()))
 			&&(isEpsilonEquals(expected.getM01(), actual.getM01()))
 			&&(isEpsilonEquals(expected.getM02(), actual.getM02()))
@@ -1023,6 +1028,31 @@ public abstract class AbstractMathTestCase {
 			throw new ComparisonFailure("Not same matrices", //$NON-NLS-1$
 					expected.toString(), actual.toString());
 		}
+	}
+
+	/** Assume that the given tuple is mutable.
+	 * 
+	 * @param tuple
+	 */
+	public void assumeMutable(Tuple2D<?> tuple) {
+		try {
+			tuple.add(0, 0);
+		} catch (UnsupportedOperationException exception) {
+			throw new AssumptionViolatedException("Object is immutable");
+		}
+	}
+	
+	/** Assume that the given tuple is mutable.
+	 * 
+	 * @param tuple
+	 */
+	public void assumeImmutable(Tuple2D<?> tuple) {
+		try {
+			tuple.add(0, 0);
+		} catch (UnsupportedOperationException exception) {
+			return;
+		}
+		throw new AssumptionViolatedException("Object is mutable");
 	}
 
 }
