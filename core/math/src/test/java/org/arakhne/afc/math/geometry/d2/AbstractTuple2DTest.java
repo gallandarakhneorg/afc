@@ -430,7 +430,7 @@ public abstract class AbstractTuple2DTest<T extends Tuple2D, TT extends Tuple2D>
 
 	@Test
 	public void subYDouble_ifi() {
-		Assume.assumeFalse(isIntCoordinates());
+		Assume.assumeTrue(isIntCoordinates());
 		getT().subY(78.5);
 		assertEquals(1, getT().ix());
 		assertEquals(-80, getT().iy());

@@ -311,7 +311,7 @@ public class Tuple2i<RT extends Tuple2i<? super RT>> implements Tuple2D<RT> {
 
 	@Override
 	public void subY(double y) {
-		this.y = (int) Math.round(this.y + y);
+		this.y = (int) Math.round(this.y - y);
 	}
 
 	@SuppressWarnings("unchecked")
