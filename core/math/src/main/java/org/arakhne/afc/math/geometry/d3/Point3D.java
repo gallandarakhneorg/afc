@@ -29,7 +29,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public interface Point3D extends Tuple3D<Point3D> {
+public interface Point3D<RP extends Point3D<? super RP, ? super RV>, RV extends Vector3D<? super RP, ? super RV>> extends Tuple3D<RP> {
 
 	/**
 	 * Computes the square of the distance between this point and point p1.

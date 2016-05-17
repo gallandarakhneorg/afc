@@ -33,7 +33,7 @@ import org.arakhne.afc.math.MathUtil;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public interface Vector3D extends Tuple3D<Vector3D> {
+public interface Vector3D<RP extends Point3D<? super RP, ? super RV>, RV extends Vector3D<? super RP, ? super RV>> extends Tuple3D<RV> {
 
 	/** Compute the dot product of two vectors.
 	 *
