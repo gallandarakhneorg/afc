@@ -30,7 +30,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.geometry.CrossingComputationType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
-import org.arakhne.afc.math.geometry.d2.GeomFactory;
+import org.arakhne.afc.math.geometry.d2.GeomFactory2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.Tuple2iComparator;
@@ -1211,7 +1211,7 @@ public interface Circle2ai<
     class CirclePerimeterIterator<P extends Point2D<? super P, ? super V>,
             V extends Vector2D<? super V, ? super P>> implements Iterator<P> {
 
-        private final GeomFactory<V, P> factory;
+        private final GeomFactory2D<V, P> factory;
 
         private final int cx;
 
@@ -1247,7 +1247,7 @@ public interface Circle2ai<
          *     previous octant.
          */
         @SuppressWarnings("checkstyle:magicnumber")
-        public CirclePerimeterIterator(GeomFactory<V, P> factory,
+        public CirclePerimeterIterator(GeomFactory2D<V, P> factory,
                 int centerX, int centerY, int radius, int initialOctant, int lastOctant, boolean skip) {
             assert factory != null : AssertMessages.notNullParameter(0);
             assert radius >= 0 : AssertMessages.positiveOrZeroParameter(3);

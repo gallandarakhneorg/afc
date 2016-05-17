@@ -22,7 +22,7 @@ package org.arakhne.afc.math.geometry.d2.i;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
-import org.arakhne.afc.math.geometry.d2.GeomFactory;
+import org.arakhne.afc.math.geometry.d2.GeomFactory2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.arakhne.afc.math.geometry.d2.UnmodifiablePoint2D;
@@ -243,7 +243,7 @@ public class Point2i extends Tuple2i<Point2i> implements Point2D<Point2i, Vector
 			private static final long serialVersionUID = -4844158582025788289L;
 
 			@Override
-			public GeomFactory<Vector2i, Point2i> getGeomFactory() {
+			public GeomFactory2D<Vector2i, Point2i> getGeomFactory() {
 				return Point2i.this.getGeomFactory();
 			}
 

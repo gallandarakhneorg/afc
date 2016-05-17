@@ -30,7 +30,7 @@ package org.arakhne.afc.math.geometry.d2;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public interface GeomFactory<V extends Vector2D<? super V, ? super P>, P extends Point2D<? super P, ? super V>> {
+public interface GeomFactory2D<V extends Vector2D<? super V, ? super P>, P extends Point2D<? super P, ? super V>> {
 
 	/** Convert the given point if it is not of the right type.
 	 *

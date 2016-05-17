@@ -20,7 +20,7 @@
 
 package org.arakhne.afc.math.geometry.d2.ai;
 
-import org.arakhne.afc.math.geometry.d2.GeomFactory;
+import org.arakhne.afc.math.geometry.d2.GeomFactory2D;
 import org.arakhne.afc.math.geometry.d2.UnmodifiableVector2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 

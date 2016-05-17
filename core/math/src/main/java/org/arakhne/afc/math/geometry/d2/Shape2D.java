@@ -26,7 +26,6 @@ import java.util.Objects;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.Unefficient;
-import org.arakhne.afc.vmutil.asserts.AssertMessages;
 
 /** 2D shape.
  *

@@ -21,7 +21,7 @@
 package org.arakhne.afc.math.geometry.d2;
 
 @SuppressWarnings("all")
-public final class GeomFactoryStub implements GeomFactory<Vector2DStub, Point2DStub> {
+public final class GeomFactoryStub implements GeomFactory2D<Vector2DStub, Point2DStub> {
 
 	public GeomFactoryStub() {
 		//
