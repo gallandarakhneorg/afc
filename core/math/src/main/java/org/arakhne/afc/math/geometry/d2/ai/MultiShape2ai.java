@@ -46,7 +46,7 @@ import org.arakhne.afc.vmutil.asserts.AssertMessages;
  * @param <P> is the type of the points.
  * @param <V> is the type of the vectors.
  * @param <B> is the type of the bounding boxes.
- * @author $Author: tpiotrowski$
+ * @author $Author: tpiotrow$
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
