@@ -73,8 +73,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-@SuppressWarnings("checkstyle:magicnumber")
-public enum CoordinateSystem3D {
+public enum CoordinateSystem3D implements CoordinateSystem {
 
 	/** Left handed XZY coordinate system.
 	 *
@@ -214,4 +213,37 @@ public enum CoordinateSystem3D {
 		return new double[] {c1, c2, c3, c4};
 	}
 
+	/** {@inheritDoc}
+	 */
+	@Pure
+	@Override
+	public boolean isRightHanded() {
+		return this==XYZ_RIGHT_HAND || this==XZY_RIGHT_HAND;
+	}
+
+	/** {@inheritDoc}
+	 */
+	@Pure
+	@Override
+	public boolean isLeftHanded() {
+		return this==XYZ_LEFT_HAND || this==XZY_LEFT_HAND;
+	}
+	
+	/** Replies the preferred coordinate system.
+	 * 
+	 * @return the preferred coordinate system.
+	 */
+	@Pure
+	public static CoordinateSystem3D getDefaultCoordinateSystem() {
+		if (userDefault!=null) return userDefault;
+		return CoordinateSystemConstants.SIMULATION_3D;
+	}
+
+	/** {@inheritDoc}
+	 */
+	@Pure
+	@Override
+	public final int getDimensions() {
+		return 3;
+	}
 }
