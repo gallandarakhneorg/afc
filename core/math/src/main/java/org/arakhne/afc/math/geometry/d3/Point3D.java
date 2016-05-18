@@ -35,7 +35,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public interface Point3D<RP extends Point3D<? super RP, ? super RV>, RV extends Vector3D<? super RP, ? super RV>> extends Tuple3D<RP> {
+public interface Point3D<RP extends Point3D<? super RP, ? super RV>, RV extends Vector3D<? super RV, ? super RP>> extends Tuple3D<RP> {
 
 	/**
 	 * Replies if three points are colinear, ie. one the same line.
@@ -220,96 +220,330 @@ public interface Point3D<RP extends Point3D<? super RP, ? super RV>, RV extends 
 
 	/**
 	 * Sets the value of this tuple to the sum of tuples t1 and t2.
-	 * @param t1 the first tuple
-	 * @param t2 the second tuple
+	 * @param point the first tuple
+	 * @param vector the second tuple
 	 */
-	public void add(Point3D<?, ?> t1, Vector3D<?, ?> t2);
+	default void add(Point3D<?, ?> point, Vector3D<?, ?> vector) {
+		assert (point != null) : "Point must not be null"; //$NON-NLS-1$
+		assert (vector != null) : "Vector must not be null"; //$NON-NLS-1$
+		set(point.getX() + vector.getX(),
+			point.getY() + vector.getY(),
+			point.getZ() + vector.getZ());
+	}
 
 	/**
 	 * Sets the value of this tuple to the sum of tuples t1 and t2.
-	 * @param t1 the first tuple
-	 * @param t2 the second tuple
+	 * @param vector the first tuple
+	 * @param point the second tuple
 	 */
-	public void add(Vector3D<?, ?> t1, Point3D<?, ?> t2);
+	default void add(Vector3D<?, ?> point, Point3D<?, ?> vector) {
+		assert (point != null) : "Point must not be null"; //$NON-NLS-1$
+		assert (vector != null) : "Vector must not be null"; //$NON-NLS-1$
+		set(point.getX() + vector.getX(),
+			point.getY() + vector.getY(),
+			point.getZ() + vector.getZ());
+	}
 	
 	/**
 	 * Sets the value of this tuple to the sum of itself and t1.
-	 * @param t1 the other tuple
+	 * @param vector the other tuple
 	 */
-	public void add(Vector3D<?, ?> t1);
+	default void add(Vector3D<?, ?> vector) {
+		assert (vector != null) : "Vector must not be null"; //$NON-NLS-1$
+		set(getX() + vector.getX(),
+			getY() + vector.getY(),
+			getZ() + vector.getZ());
+	}
 
 	/**
 	 * Sets the value of this tuple to the scalar multiplication
 	 * of tuple t1 plus tuple t2 (this = s*t1 + t2).
 	 * @param scale the scalar value
-	 * @param t1 the tuple to be multipled
-	 * @param t2 the tuple to be added
+	 * @param vector the tuple to be multipled
+	 * @param point the tuple to be added
 	 */
-	public void scaleAdd(int s, Vector3D<?, ?> t1, Point3D<?, ?> t2);
+	default void scaleAdd(int scale, Vector3D<?, ?> vector, Point3D<?, ?> point) {
+		assert (point != null) : "Point must not be null"; //$NON-NLS-1$
+		assert (vector != null) : "Vector must not be null"; //$NON-NLS-1$
+		set(scale * vector.getX() + point.getX(),
+			scale * vector.getY() + point.getY(), 
+			scale * vector.getZ() + point.getZ());
+	}
 
 	/**
 	 * Sets the value of this tuple to the scalar multiplication
 	 * of tuple t1 plus tuple t2 (this = s*t1 + t2).
 	 * @param scale the scalar value
-	 * @param t1 the tuple to be multipled
-	 * @param t2 the tuple to be added
+	 * @param vector the tuple to be multipled
+	 * @param point the tuple to be added
 	 */
-	public void scaleAdd(double s, Vector3D<?, ?> t1, Point3D<?, ?> t2);
+	default void scaleAdd(double scale, Vector3D<?, ?> vector, Point3D<?, ?> point) {
+		assert (point != null) : "Point must not be null"; //$NON-NLS-1$
+		assert (vector != null) : "Vector must not be null"; //$NON-NLS-1$
+		set(scale * vector.getX() + point.getX(),
+			scale * vector.getY() + point.getY(), 
+			scale * vector.getZ() + point.getZ());
+	}
 
 	/**
 	 * Sets the value of this tuple to the scalar multiplication
 	 * of tuple t1 plus tuple t2 (this = s*t1 + t2).
 	 * @param scale the scalar value
-	 * @param t1 the tuple to be multipled
-	 * @param t2 the tuple to be added
+	 * @param point the tuple to be multipled
+	 * @param vector the tuple to be added
 	 */
-	public void scaleAdd(int s, Point3D<?, ?> t1, Vector3D<?, ?> t2);
+	default void scaleAdd(int scale, Point3D<?, ?> point, Vector3D<?, ?> vector) {
+		assert (point != null) : "Point must not be null"; //$NON-NLS-1$
+		assert (vector != null) : "Vector must not be null"; //$NON-NLS-1$
+		set(scale * point.getX() + vector.getX(),
+			scale * point.getY() + vector.getY(), 
+			scale * point.getZ() + vector.getZ());
+	}
 
 	/**
 	 * Sets the value of this tuple to the scalar multiplication
 	 * of tuple t1 plus tuple t2 (this = s*t1 + t2).
 	 * @param scale the scalar value
-	 * @param t1 the tuple to be multipled
-	 * @param t2 the tuple to be added
+	 * @param point the tuple to be multipled
+	 * @param vector the tuple to be added
 	 */
-	public void scaleAdd(double s, Point3D<?, ?> t1, Vector3D<?, ?> t2);
+	default void scaleAdd(double scale, Point3D<?, ?> point, Vector3D<?, ?> vector) {
+		assert (point != null) : "Point must not be null"; //$NON-NLS-1$
+		assert (vector != null) : "Vector must not be null"; //$NON-NLS-1$
+		set(scale * point.getX() + vector.getX(),
+			scale * point.getY() + vector.getY(), 
+			scale * point.getZ() + vector.getZ());
+	}
 
 	/**
 	 * Sets the value of this tuple to the scalar multiplication
 	 * of itself and then adds tuple t1 (this = s*this + t1).
 	 * @param scale the scalar value
-	 * @param t1 the tuple to be added
+	 * @param vector the tuple to be added
 	 */
-	public void scaleAdd(int s, Vector3D<?, ?> t1);
+	default void scaleAdd(int scale, Vector3D<?, ?> vector) {
+		assert (vector != null) : "Vector must not be null"; //$NON-NLS-1$
+		set(scale * getX() + vector.getX(),
+			scale * getY() + vector.getY(), 
+			scale * getZ() + vector.getZ());
+	}
 
 	/**
 	 * Sets the value of this tuple to the scalar multiplication
 	 * of itself and then adds tuple t1 (this = s*this + t1).
 	 * @param scale the scalar value
-	 * @param t1 the tuple to be added
+	 * @param vector the tuple to be added
 	 */
-	public void scaleAdd(double s, Vector3D<?, ?> t1);
+	default void scaleAdd(double scale, Vector3D<?, ?> vector) {
+		assert (vector != null) : "Vector must not be null"; //$NON-NLS-1$
+		set(scale * getX() + vector.getX(),
+			scale * getY() + vector.getY(), 
+			scale * getZ() + vector.getZ());
+	}
 
 	/**
 	 * Sets the value of this tuple to the difference
 	 * of tuples t1 and t2 (this = t1 - t2).
-	 * @param t1 the first tuple
-	 * @param t2 the second tuple
+	 * @param point the first tuple
+	 * @param vector the second tuple
 	 */
-	public void sub(Point3D<?, ?> t1, Vector3D<?, ?> t2);
+	default void sub(Point3D<?, ?> point, Vector3D<?, ?> vector) {
+		assert (point != null) : "Point must not be null"; //$NON-NLS-1$
+		assert (vector != null) : "Vector must not be null"; //$NON-NLS-1$
+		set(point.getX() - vector.getX(),
+			point.getY() - vector.getY(),
+			point.getZ() - vector.getZ());
+	}
 
 	/**
 	 * Sets the value of this tuple to the difference
 	 * of itself and t1 (this = this - t1).
-	 * @param t1 the other tuple
+	 * @param vector the other tuple
 	 */
-	public void sub(Vector3D<?, ?> t1);
+	default void sub(Vector3D<?, ?> vector) {
+		assert (vector != null) : "Vector must not be null"; //$NON-NLS-1$
+		set(getX() - vector.getX(),
+			getY() - vector.getY(),
+			getZ() - vector.getZ());
+	}
 
 	/** Replies an unmodifiable copy of this vector.
 	 *
 	 * @return an unmodifiable copy.
 	 */
 	@Pure
-	public Point3D<?, ?> toUnmodifiable();
+	UnmodifiablePoint3D<?, ?> toUnmodifiable();
 
+	/** Replies the geometry factory associated to this point.
+	 * 
+	 * @return the factory.
+	 */
+	@Pure
+	GeomFactory3D<RV, RP> getGeomFactory();
+	
+	/** Sum of this point and a vector: {@code this + v}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param v the vector to add
+	 * @return the result.
+	 * @see #add(Point3D, Vector3D)
+	 */
+	@Pure
+	default RP operator_plus(Vector3D<?, ?> v) {
+		assert (v != null) : "Vector must be not null"; //$NON-NLS-1$
+		return getGeomFactory().newPoint(getX() + v.getX(), getY() + v.getY(), getZ() + v.getZ());
+	}
+
+	/** Increment this point with the given vector: {@code this += v}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param v the vector to add
+	 * @see #add(Vector3D)
+	 */
+	default void operator_add(Vector3D<?, ?> v) {
+		add(v);
+	}
+
+	/** Subtract the v vector to this point: {@code this - v}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param v the vector to substract.
+	 * @return the result.
+	 * @see #sub(Point3D, Vector3D)
+	 */
+	@Pure
+	default RP operator_minus(Vector3D<?, ?> v) {
+		assert (v != null) : "Vector must be not null"; //$NON-NLS-1$
+		return getGeomFactory().newPoint(getX() - v.getX(), getY() - v.getY(), getZ() - v.getZ());
+	}
+
+	/** Subtract the p point to this point: {@code this - p}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param p the point to substract
+	 * @return the vector from the p to this.
+	 * @see Vector3D#sub(Point3D, Point3D)
+	 */
+	@Pure
+	default RV operator_minus(Point3D<?, ?> p) {
+		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
+		return getGeomFactory().newVector(getX() - p.getX(), getY() - p.getY(), getZ() - p.getZ());
+	}
+
+	/** Subtract the v vector to this: {@code this -= v}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param v the vector to substract.
+	 * @see #sub(Vector3D)
+	 */
+	default void operator_remove(Vector3D<?, ?> v) {
+		sub(v);
+	}
+
+	/** Replies if the given vector is equal to this vector: {@code this == v}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param v the vector.
+	 * @return test result.
+	 * @see #equals(Tuple3D)
+	 */
+	@Pure
+	default boolean operator_equals(Tuple3D<?> v) {
+		return equals(v);
+	}
+
+	/** Replies if the given vector is different than this vector: {@code this != v}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param v the vector.
+	 * @return test result.
+	 * @see #equals(Tuple3D)
+	 */
+	@Pure
+	default boolean operator_notEquals(Tuple3D<?> v) {
+		return !equals(v);
+	}
+
+	/** Replies if the distance between this and the p point: {@code this .. p}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param p the point.
+	 * @return the distance.
+	 * @see #getDistance(Point3D)
+	 */
+	@Pure
+	default double operator_upTo(Point3D<?, ?> p) {
+		return getDistance(p);
+	}
+
+	/** If this point is epsilon equal to zero then reply p else reply this: {@code this ?: p}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param p the point.
+	 * @return the point.
+	 */
+	@Pure
+	default Point3D<? extends RP, ? extends RV> operator_elvis(Point3D<? extends RP, ? extends RV> p) {
+		if (MathUtil.isEpsilonZero(getX()) && MathUtil.isEpsilonZero(getY()) && MathUtil.isEpsilonZero(getZ())) {
+			return p;
+		}
+		return this;
+	}
+	
+	/** Replies if the this point is inside the given shape: {@code this && s}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param s the shape to test.
+	 * @return <code>true</code> if the point is inside the shape. Otherwise, <code>false</code>.
+	 * @see Shape3D#contains(Point3D)
+	 */
+	@Pure
+	default boolean operator_and(Shape3D<?, ?, ?, ?, ?, ?> s) {
+		return s.contains(this);
+	}
+
+	/** Replies the distance between this point and the given shape: {@code this .. s}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param s the shape to test.
+	 * @return the distance.
+	 * @see Shape3D#getDistance(Point3D)
+	 */
+	@Pure
+	default double operator_upTo(Shape3D<?, ?, ?, ?, ?, ?> s) {
+		return s.getDistance(this);
+	}
 }
