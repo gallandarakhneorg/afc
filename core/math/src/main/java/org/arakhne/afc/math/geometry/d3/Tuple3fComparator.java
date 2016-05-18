@@ -19,8 +19,6 @@ package org.arakhne.afc.math.geometry.d3;
 
 import java.util.Comparator;
 
-import org.arakhne.afc.math.discrete.object3d.Tuple3iComparator;
-
 /**
  * Comparator of Tuple3D on their floating-point coordinates.
  *
