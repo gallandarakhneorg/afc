@@ -27,7 +27,13 @@ import org.arakhne.afc.math.MathUtil;
 
 
 /** 3D Vector.
+<<<<<<< 64f1ab586e9c3bcde7d5b1e49b46b383accc8ad4
  *
+=======
+ * 
+ * @param <RV> is the type of vector that can be returned by this tuple.
+ * @param <RP> is the type of point that can be returned by this tuple.
+>>>>>>> [math] Addition of type parameter
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
@@ -56,14 +62,14 @@ public interface Vector3D<RP extends Point3D<? super RP, ? super RV>, RV extends
 	 * @param t1 the first tuple
 	 * @param t2 the second tuple
 	 */
-	void add(Vector3D t1, Vector3D t2);
+	public void add(Vector3D<?, ?> t1, Vector3D<?, ?> t2);
 
 
 	/**
 	 * Sets the value of this tuple to the sum of itself and t1.
 	 * @param t1 the other tuple
 	 */
-	void add(Vector3D t1);
+	public void add(Vector3D<?, ?> t1);
 
 	/**
 	 * Sets the value of this tuple to the scalar multiplication
@@ -72,7 +78,7 @@ public interface Vector3D<RP extends Point3D<? super RP, ? super RV>, RV extends
 	 * @param t1 the tuple to be multipled
 	 * @param t2 the tuple to be added
 	 */
-	void scaleAdd(int scale, Vector3D t1, Vector3D t2);
+	public void scaleAdd(int s, Vector3D<?, ?> t1, Vector3D<?, ?> t2);
 
 	/**
 	 * Sets the value of this tuple to the scalar multiplication
@@ -81,7 +87,7 @@ public interface Vector3D<RP extends Point3D<? super RP, ? super RV>, RV extends
 	 * @param t1 the tuple to be multipled
 	 * @param t2 the tuple to be added
 	 */
-	void scaleAdd(double scale, Vector3D t1, Vector3D t2);
+	public void scaleAdd(double s, Vector3D<?, ?> t1, Vector3D<?, ?> t2);
 
 	/**
 	 * Sets the value of this tuple to the scalar multiplication
@@ -89,7 +95,7 @@ public interface Vector3D<RP extends Point3D<? super RP, ? super RV>, RV extends
 	 * @param scale the scalar value
 	 * @param t1 the tuple to be added
 	 */
-	void scaleAdd(int scale, Vector3D t1);
+	public void scaleAdd(int s, Vector3D<?, ?> t1);
 
 	/**
 	 * Sets the value of this tuple to the scalar multiplication
@@ -97,16 +103,7 @@ public interface Vector3D<RP extends Point3D<? super RP, ? super RV>, RV extends
 	 * @param scale the scalar value
 	 * @param t1 the tuple to be added
 	 */
-	void scaleAdd(double scale, Vector3D t1);
-
-
-	/**
-	 * Sets the value of this tuple to the difference
-	 * of tuples t1 and t2 (this = t1 - t2).
-	 * @param t1 the first tuple
-	 * @param t2 the second tuple
-	 */
-	void sub(Vector3D t1, Vector3D t2);
+	public void scaleAdd(double s, Vector3D<?, ?> t1);
 
 	/**
 	 * Sets the value of this tuple to the difference
@@ -114,14 +111,22 @@ public interface Vector3D<RP extends Point3D<? super RP, ? super RV>, RV extends
 	 * @param t1 the first tuple
 	 * @param t2 the second tuple
 	 */
-	void sub(Point3D t1, Point3D t2);
+	public void sub(Vector3D<?, ?> t1, Vector3D<?, ?> t2);
+
+	/**
+	 * Sets the value of this tuple to the difference
+	 * of tuples t1 and t2 (this = t1 - t2).
+	 * @param t1 the first tuple
+	 * @param t2 the second tuple
+	 */
+	public void sub(Point3D<?, ?> t1, Point3D<?, ?> t2);
 
 	/**
 	 * Sets the value of this tuple to the difference
 	 * of itself and t1 (this = this - t1).
 	 * @param t1 the other tuple
 	 */
-	void sub(Vector3D t1);
+	public void sub(Vector3D<?, ?> t1);
 
 	/**
 	 * Computes the dot product of the this vector and vector v1.
@@ -129,7 +134,7 @@ public interface Vector3D<RP extends Point3D<? super RP, ? super RV>, RV extends
 	 * @return the dot product.
 	 */
 	@Pure
-	double dot(Vector3D v1);
+	public double dot(Vector3D<?, ?> v1);
 
 	/** Compute the determinant of two vectors.
 	 *
@@ -142,7 +147,7 @@ public interface Vector3D<RP extends Point3D<? super RP, ? super RV>, RV extends
 	 * @return the perp product.
 	 */
 	@Pure
-	double perp(Vector3D v);
+	public double perp(Vector3D<?, ?> v);
 
 	/**
 	 * Computes the cross product of the this vector and vector v1.
@@ -160,7 +165,7 @@ public interface Vector3D<RP extends Point3D<? super RP, ? super RV>, RV extends
 	 * @see #crossRightHand(Vector3D)
 	 */
 	@Pure
-	Vector3D cross(Vector3D v1);
+	public Vector3D<?, ?> cross(Vector3D<?, ?> v1);
 
 	/**
 	 * Computes the cross product of the vectors v1 and v2 and
@@ -179,7 +184,7 @@ public interface Vector3D<RP extends Point3D<? super RP, ? super RV>, RV extends
 	 * @see #crossLeftHand(Vector3D, Vector3D)
 	 * @see #crossRightHand(Vector3D, Vector3D)
 	 */
-	void cross(Vector3D v1, Vector3D v2);
+	public void cross(Vector3D<?, ?> v1, Vector3D<?, ?> v2);
 
 	/**
 	 * Computes the cross product of the this vector and vector v1
@@ -191,7 +196,7 @@ public interface Vector3D<RP extends Point3D<? super RP, ? super RV>, RV extends
 	 * @return the dot product.
 	 */
 	@Pure
-	Vector3D crossLeftHand(Vector3D v1);
+	public Vector3D<?, ?> crossLeftHand(Vector3D<?, ?> v1);
 
 	/**
 	 * Computes the cross product of the vectors v1 and v2
@@ -203,7 +208,7 @@ public interface Vector3D<RP extends Point3D<? super RP, ? super RV>, RV extends
 	 * @param v1 the left operand.
 	 * @param v2 the right operand.
 	 */
-	void crossLeftHand(Vector3D v1, Vector3D v2);
+	public void crossLeftHand(Vector3D<?, ?> v1, Vector3D<?, ?> v2);
 
 	/**
 	 * Computes the cross product of the this vector and vector v1
@@ -215,7 +220,7 @@ public interface Vector3D<RP extends Point3D<? super RP, ? super RV>, RV extends
 	 * @return the dot product.
 	 */
 	@Pure
-	Vector3D crossRightHand(Vector3D v1);
+	public Vector3D<?, ?> crossRightHand(Vector3D<?, ?> v1);
 
 	/**
 	 * Computes the cross product of the vectors v1 and v2
@@ -227,7 +232,7 @@ public interface Vector3D<RP extends Point3D<? super RP, ? super RV>, RV extends
 	 * @param v1 the left operand.
 	 * @param v2 the right operand.
 	 */
-	void crossRightHand(Vector3D v1, Vector3D v2);
+	public void crossRightHand(Vector3D<?, ?> v1, Vector3D<?, ?> v2);
 
 	/**
 	 * Returns the length of this vector.
@@ -246,8 +251,8 @@ public interface Vector3D<RP extends Point3D<? super RP, ? super RV>, RV extends
 	/**
 	 * Sets the value of this vector to the normalization of vector v1.
 	 * @param v1 the un-normalized vector
-	 */
-	void normalize(Vector3D v1);
+	 */  
+	public void normalize(Vector3D<?, ?> v1);
 
 	/**
 	 * Normalizes this vector in place.
@@ -262,15 +267,15 @@ public interface Vector3D<RP extends Point3D<? super RP, ? super RV>, RV extends
 	 *   @return   the angle in radians in the range [0, PI]
 	 */
 	@Pure
-	double angle(Vector3D v1);
+	public double angle(Vector3D<?, ?> v1);
 
 	/** Turn this vector about the given rotation angle.
 	 *
 	 * @param axis is the axis of rotation.
 	 * @param angle is the rotation angle in radians.
 	 */
-	void turnVector(Vector3D axis, double angle);
-
+	public void turnVector(Vector3D<?, ?> axis, double angle);
+	
 	/** Replies if this first is a unit vector.
 	 * A unit vector has a length equal to 1.
 	 *
@@ -289,7 +294,7 @@ public interface Vector3D<RP extends Point3D<? super RP, ? super RV>, RV extends
 	 * @return <code>true</code> if the vectors are colinear..
 	 */
 	@Pure
-	boolean isColinear(Vector3D v);
+	public boolean isColinear(Vector3D<?, ?> v);
 
 	/** Change the length of the vector.
 	 * The direction of the vector is unchanged.
@@ -303,6 +308,6 @@ public interface Vector3D<RP extends Point3D<? super RP, ? super RV>, RV extends
 	 * @return an unmodifiable copy.
 	 */
 	@Pure
-	Vector3D toUnmodifiable();
+	public Vector3D<?, ?> toUnmodifiable();
 
 }
