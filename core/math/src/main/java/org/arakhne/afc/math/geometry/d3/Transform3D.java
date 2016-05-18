@@ -23,7 +23,19 @@ package org.arakhne.afc.math.geometry.d3;
 import org.arakhne.afc.math.matrix.Matrix4d;
 import org.eclipse.xtext.xbase.lib.Pure;
 
-/** TODO
+/** A 3D transformation.
+ * Is represented internally as a 4x4 floating point matrix. The
+ * mathematical representation is row major, as in traditional
+ * matrix mathematics.
+ * <p>
+ * The transformation matrix is:
+ * <pre><code>
+ * | r11 | r12 | r13 | Tx |
+ * | r21 | r22 | r23 | Ty |
+ * | r31 | r32 | r33 | Tz |
+ * | 0   | 0   | 0   | 1  |
+ * </code></pre>
+ * 
  * @author $Author: tpiotrow$
  * @author $Author: sgalland$
  * @version $FullVersion$

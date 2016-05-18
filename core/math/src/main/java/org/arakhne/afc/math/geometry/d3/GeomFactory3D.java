@@ -20,15 +20,15 @@
  */
 package org.arakhne.afc.math.geometry.d3;
 
-/** TODO
+/** Factory of geometrical primitives.
+ * 
+ * @param <V> the types of the vectors.
+ * @param <P> is the type of the points.
  * @author $Author: tpiotrow$
  * @author $Author: sgalland$
  * @version $FullVersion$
- * @param <V> the types of the vectors.
- * @param <P> is the type of the points.
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 13.0
  */
 public interface GeomFactory3D<V extends Vector3D<? super V, ? super P>, P extends Point3D<? super P, ? super V>> {
 	

@@ -20,10 +20,11 @@
  */
 package org.arakhne.afc.math.geometry.d3;
 
-import org.arakhne.afc.math.geometry.d2.Tuple2D;
-
-/** TODO
+/** Unmodifiable 2D tuple.
+ * 
+ * @param <RT> is the type of data that can be returned by this tuple.
  * @author $Author: tpiotrow$
+ * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
