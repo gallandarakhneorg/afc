@@ -741,7 +741,7 @@ public interface Tuple3D<RT extends Tuple3D<? super RT>>
 		double dx = getX() - tuple.getX();
 		double dy = getY() - tuple.getY();
 		double dz = getZ() - tuple.getZ();
-		return (dx * dx + dy * dy + dz * dz) <= (epsilon * epsilon * epsilon);
+		return (dx * dx + dy * dy + dz * dz) <= (epsilon * epsilon);
 	}
 
 	/**
