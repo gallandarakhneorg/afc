@@ -71,8 +71,7 @@ public interface Point3D<RP extends Point3D<? super RP, ? super RV>, RV extends 
 	static boolean isCollinearPoints(
 			double x1, double y1, double z1,
 			double x2, double y2, double z2,
-			double x3, double y3, double z3,
-			double epsilon) {
+			double x3, double y3, double z3) {
 		double dx1 = x2 - x1;
 		double dy1 = y2 - y1;
 		double dz1 = z2 - z1;
@@ -84,7 +83,7 @@ public interface Point3D<RP extends Point3D<? super RP, ? super RV>, RV extends 
 		double cy = dx2 * dz1 - dx1 * dz2;
 		double cz = dx1 * dy2 - dx2 * dy1;
 
-		return MathUtil.isEpsilonZero(cx * cx + cy * cy + cz * cz, epsilon);
+		return MathUtil.isEpsilonZero(cx * cx + cy * cy + cz * cz);
 	}
 	
 	/** Compute the distance between 2 points.
