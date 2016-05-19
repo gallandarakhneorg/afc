@@ -20,7 +20,7 @@ package org.arakhne.afc.math.geometry.d3;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
- * Immutable point 3D.
+ * Immutable vector 3D.
  * 
  * @author $Author: tpiotrow$
  * @author $Author: sgalland$
@@ -28,34 +28,36 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-final class ImmutablePoint3D implements UnmodifiablePoint3D<ImmutablePoint3D, ImmutableVector3D> {
+final class ImmutableVector3D implements
+		UnmodifiableVector3D<ImmutableVector3D, ImmutablePoint3D> {
 
-	private static final long serialVersionUID = 407348048685709808L;
+	private static final long serialVersionUID = 5396213141906169741L;
+
 	
 	private final double x;
 	
 	private final double y;
-	
+
 	private final double z;
 	
 	
 	/**
-	 * @param x x coordinate
-	 * @param y y coordinate
-	 * @param z z coordinate
+	 * @param x x coordinate.
+	 * @param y y coordinate.
+	 * @param z z coordinate.
 	 */
-	public ImmutablePoint3D(int x, int y, int z) {
+	public ImmutableVector3D(double x, double y, double z) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
 	}
-
+	
 	/**
-	 * @param x x coordinate 
-	 * @param y y coordinate
-	 * @param z z coordinate
+	 * @param x x coordinate.
+	 * @param y y coordinate.
+	 * @param z z coordinate.
 	 */
-	public ImmutablePoint3D(double x, double y, double z) {
+	public ImmutableVector3D(int x, int y, int z) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -63,17 +65,24 @@ final class ImmutablePoint3D implements UnmodifiablePoint3D<ImmutablePoint3D, Im
 	
 	@Pure
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(Object object) {
 		try {
-			Tuple3D<?> tuple = (Tuple3D<?>) obj;
+			Tuple3D<?> tuple = (Tuple3D<?>) object;
 			return tuple.getX() == getX() && tuple.getY() == getY() && tuple.getZ() == getZ();
-		} catch (AssertionError e){
+		}
+		catch(AssertionError e) {
 			throw e;
-		} catch (Throwable e1){
+		}
+		catch (Throwable e2) {
 			return false;
 		}
 	}
 	
+	@Override
+	public GeomFactory3D<ImmutableVector3D, ImmutablePoint3D> getGeomFactory() {
+		return ImmutableGeomFactory3D.SINGLETON;
+	}
+
 	@Pure
 	@Override
 	public int hashCode() {
@@ -97,11 +106,11 @@ final class ImmutablePoint3D implements UnmodifiablePoint3D<ImmutablePoint3D, Im
 				+")"; //$NON-NLS-1$
 	}
 	
-	@Pure
+
 	@Override
-	public ImmutablePoint3D clone() {
+	public ImmutableVector3D clone() {
 		try {
-			return (ImmutablePoint3D) super.clone();
+			return (ImmutableVector3D) super.clone();
 		} catch (CloneNotSupportedException exception) {
 			throw new InternalError(exception);
 		}
@@ -138,7 +147,18 @@ final class ImmutablePoint3D implements UnmodifiablePoint3D<ImmutablePoint3D, Im
 	}
 
 	@Override
-	public GeomFactory3D<ImmutableVector3D, ImmutablePoint3D> getGeomFactory() {
-		return ImmutableGeomFactory3D.SINGLETON;
+	public ImmutableVector3D toUnitVector() {
+		double length = getLength();
+		if (length == 0.) {
+			return new ImmutableVector3D(0, 0, 0);
+		}
+		return new ImmutableVector3D(getX() / length, getY() / length, getZ() / length);
 	}
+
+	@Override
+	public UnmodifiableVector3D<ImmutableVector3D, ImmutablePoint3D> toUnmodifiable() {
+		return this;
+	}
+
+
 }
