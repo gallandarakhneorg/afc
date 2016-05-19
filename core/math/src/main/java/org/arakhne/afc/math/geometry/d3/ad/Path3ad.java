@@ -33,13 +33,9 @@ import org.arakhne.afc.math.geometry.d2.PathIterator2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
-import org.arakhne.afc.math.geometry.d2.afp.Circle2afp;
 import org.arakhne.afc.math.geometry.d2.afp.Ellipse2afp;
 import org.arakhne.afc.math.geometry.d2.afp.GeomFactory2afp;
 import org.arakhne.afc.math.geometry.d2.afp.InnerComputationPoint2afp;
-import org.arakhne.afc.math.geometry.d2.afp.MultiShape2afp;
-import org.arakhne.afc.math.geometry.d2.afp.OrientedRectangle2afp;
-import org.arakhne.afc.math.geometry.d2.afp.Parallelogram2afp;
 import org.arakhne.afc.math.geometry.d2.afp.PathElement2afp;
 import org.arakhne.afc.math.geometry.d2.afp.PathIterator2afp;
 import org.arakhne.afc.math.geometry.d2.afp.PathShadow2afp;
@@ -47,9 +43,9 @@ import org.arakhne.afc.math.geometry.d2.afp.Rectangle2afp;
 import org.arakhne.afc.math.geometry.d2.afp.RoundRectangle2afp;
 import org.arakhne.afc.math.geometry.d2.afp.Segment2afp;
 import org.arakhne.afc.math.geometry.d2.afp.Shape2afp;
-import org.arakhne.afc.math.geometry.d2.afp.Triangle2afp;
 import org.arakhne.afc.math.geometry.d3.Path3D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
+import org.arakhne.afc.math.geometry.d3.Transform3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -1819,13 +1815,14 @@ public interface Path3ad<
 	 *
 	 * @param x the specified X coordinate
 	 * @param y the specified Y coordinate
+	 * @param z the specified Y coordinate
 	 */
-	void moveTo(double x, double y);
+	void moveTo(double x, double y, double z);
 
 	@Override
-	default void moveTo(Point2D<?, ?> position) {
+	default void moveTo(Point3D<?, ?> position) {
 		assert (position != null) : "Point must be not null"; //$NON-NLS-1$
-		moveTo(position.getX(), position.getY());
+		moveTo(position.getX(), position.getY(), position.getZ());
 	}
 
 	/**
@@ -1835,13 +1832,14 @@ public interface Path3ad<
 	 *
 	 * @param x the specified X coordinate
 	 * @param y the specified Y coordinate
+	 * @param z the specified Y coordinate
 	 */
-	void lineTo(double x, double y);
+	void lineTo(double x, double y, double z);
 
 	@Override
-	default void lineTo(Point2D<?, ?> to) {
+	default void lineTo(Point3D<?, ?> to) {
 		assert (to != null) : "Point must be not null"; //$NON-NLS-1$
-		lineTo(to.getX(), to.getY());
+		lineTo(to.getX(), to.getY(), to.getZ());
 	}
 
 	/**
@@ -1854,16 +1852,18 @@ public interface Path3ad<
 	 *
 	 * @param x1 the X coordinate of the quadratic control point
 	 * @param y1 the Y coordinate of the quadratic control point
+	 * @param z1 the Z coordinate of the quadratic control point
 	 * @param x2 the X coordinate of the final end point
 	 * @param y2 the Y coordinate of the final end point
+	 * @param z2 the Y coordinate of the final end point
 	 */
-	void quadTo(double x1, double y1, double x2, double y2);
+	void quadTo(double x1, double y1, double z1, double x2, double y2, double z2);
 
 	@Override
-	default void quadTo(Point2D<?, ?> ctrl, Point2D<?, ?> to) {
+	default void quadTo(Point3D<?, ?> ctrl, Point3D<?, ?> to) {
 		assert (ctrl != null) : "Control point must be not null"; //$NON-NLS-1$
 		assert (to != null) : "Target point must be not null"; //$NON-NLS-1$
-		quadTo(ctrl.getX(), ctrl.getY(), to.getX(), to.getY());
+		quadTo(ctrl.getX(), ctrl.getY(), ctrl.getZ(), to.getX(), to.getY(), to.getZ());
 	}
 
 	/**
@@ -1881,51 +1881,51 @@ public interface Path3ad<
 	 * @param x3 the X coordinate of the final end point
 	 * @param y3 the Y coordinate of the final end point
 	 */
-	void curveTo(double x1, double y1,
-			double x2, double y2,
-			double x3, double y3);
+	void curveTo(double x1, double y1, double z1,
+			double x2, double y2, double z2,
+			double x3, double y3, double z3);
 
 	@Override
-	default void curveTo(Point2D<?, ?> ctrl1, Point2D<?, ?> ctrl2, Point2D<?, ?> to) {
+	default void curveTo(Point3D<?, ?> ctrl1, Point3D<?, ?> ctrl2, Point3D<?, ?> to) {
 		assert (ctrl1 != null) : "First control point must be not null"; //$NON-NLS-1$
 		assert (ctrl2 != null) : "Second control point must be not null"; //$NON-NLS-1$
 		assert (to != null) : "Taarget point must be not null"; //$NON-NLS-1$
-		curveTo(ctrl1.getX(), ctrl1.getY(), ctrl2.getX(), ctrl2.getY(), to.getX(), to.getY());
+		curveTo(ctrl1.getX(), ctrl1.getY(), ctrl1.getZ(), ctrl2.getX(), ctrl2.getY(), ctrl2.getZ(), to.getX(), to.getY(), to.getZ());
 
 	}
 
 	@Pure
 	@Override
-	default double getDistanceSquared(Point2D<?, ?> p) {
+	default double getDistanceSquared(Point3D<?, ?> p) {
 		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
-		Point2D<?, ?> c = getClosestPointTo(p);
+		Point3D<?, ?> c = getClosestPointTo(p);
 		return c.getDistanceSquared(p);
 	}
 
 	@Pure
 	@Override
-	default double getDistanceL1(Point2D<?, ?> p) {
+	default double getDistanceL1(Point3D<?, ?> p) {
 		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
-		Point2D<?, ?> c = getClosestPointTo(p);
+		Point3D<?, ?> c = getClosestPointTo(p);
 		return c.getDistanceL1(p);
 	}
 
 	@Pure
 	@Override
-	default double getDistanceLinf(Point2D<?, ?> p) {
+	default double getDistanceLinf(Point3D<?, ?> p) {
 		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
-		Point2D<?, ?> c = getClosestPointTo(p);
+		Point3D<?, ?> c = getClosestPointTo(p);
 		return c.getDistanceLinf(p);
 	}
 
 	@Pure
 	@Override
-	default boolean contains(double x, double y) {
-		return containsPoint(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), x, y);
+	default boolean contains(double x, double y, double z) {
+		return containsPoint(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), x, y, z);
 	}
 
 	@Override
-	default boolean contains(Rectangle2afp<?, ?, ?, ?, ?, ?> r) {
+	default boolean contains(RectangularPrism3ad<?, ?, ?, ?, ?, ?> r) {
 		assert (r != null) : "Rectangle must be not null"; //$NON-NLS-1$
 		return containsRectangle(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
 				r.getMinX(), r.getMinY(), r.getWidth(), r.getHeight());
@@ -1933,7 +1933,7 @@ public interface Path3ad<
 
 	@Pure
 	@Override
-	default boolean intersects(Rectangle2afp<?, ?, ?, ?, ?, ?> s) {
+	default boolean intersects(RectangularPrism3ad<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Rectangle must be not null"; //$NON-NLS-1$
 		// Copied from AWT API
 		if (s.isEmpty()) return false;
@@ -1969,13 +1969,13 @@ public interface Path3ad<
 
 	@Pure
 	@Override
-	default boolean intersects(Circle2afp<?, ?, ?, ?, ?, ?> s) {
+	default boolean intersects(Sphere3ad<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Circle must be not null"; //$NON-NLS-1$
 		int mask = (getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2);
 		int crossings = computeCrossingsFromCircle(
 				0,
 				getPathIterator(),
-				s.getX(), s.getY(), s.getRadius(),
+				s.getX(), s.getY(), s.getZ(), s.getRadius(),
 				CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
 		return (crossings == MathConstants.SHAPE_INTERSECTS ||
 				(crossings & mask) != 0);
@@ -1983,7 +1983,7 @@ public interface Path3ad<
 
 	@Pure
 	@Override
-	default boolean intersects(Segment2afp<?, ?, ?, ?, ?, ?> s) {
+	default boolean intersects(Segment3ad<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Segment must be not null"; //$NON-NLS-1$
 		int mask = (getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2);
 		int crossings = computeCrossingsFromSegment(
@@ -1995,41 +1995,6 @@ public interface Path3ad<
 				(crossings & mask) != 0);
 	}
 
-	@Pure
-	@Override
-	default boolean intersects(Triangle2afp<?, ?, ?, ?, ?, ?> s) {
-		assert (s != null) : "Triangle must be not null"; //$NON-NLS-1$
-		int mask = (getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2);
-		int crossings = computeCrossingsFromTriangle(
-				0, 
-				getPathIterator(),
-				s.getX1(), s.getY1(), s.getX2(), s.getY2(), s.getX3(), s.getY3(),
-				CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
-		return (crossings == MathConstants.SHAPE_INTERSECTS ||
-				(crossings & mask) != 0);
-	}
-
-	@Pure
-	@Override
-	default boolean intersects(OrientedRectangle2afp<?, ?, ?, ?, ?, ?> s) {
-		assert (s != null) : "Oriented rectangle must be not null"; //$NON-NLS-1$
-		return OrientedRectangle2afp.intersectsOrientedRectanglePathIterator(
-				s.getCenterX(), s.getCenterY(),
-				s.getFirstAxisX(), s.getFirstAxisY(),
-				s.getFirstAxisExtent(), s.getSecondAxisExtent(),
-				getPathIterator());
-	}
-
-	@Pure
-	@Override
-	default boolean intersects(Parallelogram2afp<?, ?, ?, ?, ?, ?> s) {
-		assert (s != null) : "Parallelogram must be not null"; //$NON-NLS-1$
-		return Parallelogram2afp.intersectsParallelogramPathIterator(
-				s.getCenterX(), s.getCenterY(),
-				s.getFirstAxisX(), s.getFirstAxisY(), s.getFirstAxisExtent(),
-				s.getSecondAxisX(), s.getSecondAxisY(), s.getSecondAxisExtent(),
-				getPathIterator());
-	}
 
 	@Pure
 	@Override
@@ -2039,7 +2004,7 @@ public interface Path3ad<
 		int crossings = computeCrossingsFromPath(
 				0,
 				s.getPathIterator(),
-				new PathShadow2afp<>(this),
+				new PathShadow3ad<>(this),
 				CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
 		return (crossings == MathConstants.SHAPE_INTERSECTS ||
 				(crossings & mask) != 0);
@@ -2047,13 +2012,13 @@ public interface Path3ad<
 
 	@Pure
 	@Override
-	default boolean intersects(PathIterator2afp<?> iterator) {
+	default boolean intersects(PathIterator3ad<?> iterator) {
 		assert (iterator != null) : "Iterator must be not null"; //$NON-NLS-1$
 		int mask = (getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2);
 		int crossings = computeCrossingsFromPath(
 				0,
 				iterator,
-				new PathShadow2afp<>(this),
+				new PathShadow3ad<>(this),
 				CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
 		return (crossings == MathConstants.SHAPE_INTERSECTS ||
 				(crossings & mask) != 0);
@@ -2061,7 +2026,7 @@ public interface Path3ad<
 
 	@Pure
 	@Override
-	default boolean intersects(MultiShape2afp<?, ?, ?, ?, ?, ?, ?> s) {
+	default boolean intersects(MultiShape3ad<?, ?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "MultiShape must be not null"; //$NON-NLS-1$
 		return s.intersects(this);
 	}
@@ -2079,13 +2044,14 @@ public interface Path3ad<
 	 * 
 	 * @param x
 	 * @param y
+	 * @param z
 	 */
-	void setLastPoint(double x, double y);
+	void setLastPoint(double x, double y, double z);
 
 	@Override
-	default void setLastPoint(Point2D<?, ?> point) {
+	default void setLastPoint(Point3D<?, ?> point) {
 		assert (point != null) : "Point must be not null"; //$NON-NLS-1$
-		setLastPoint(point.getX(), point.getY());
+		setLastPoint(point.getX(), point.getY(), point.getZ());
 	}
 
 	/** Transform the current path.
@@ -2094,7 +2060,7 @@ public interface Path3ad<
 	 * @param transform is the affine transformation to apply.
 	 * @see #createTransformedShape
 	 */
-	void transform(Transform2D transform);
+	void transform(Transform3D transform);
 
 	@Override
 	default double getLength() {
@@ -2109,7 +2075,7 @@ public interface Path3ad<
 
 	@Pure
 	@Override
-	default PathIterator2afp<IE> getPathIterator(Transform2D transform) {
+	default PathIterator3ad<IE> getPathIterator(Transform3D transform) {
 		if (transform == null) {
 			return new PathPathIterator<>(this);
 		}
@@ -2118,7 +2084,7 @@ public interface Path3ad<
 
 	@Pure
 	@Override
-	default PathIterator2afp<IE> getPathIterator(double flatness) {
+	default PathIterator3ad<IE> getPathIterator(double flatness) {
 		return new FlatteningPathIterator<>(getPathIterator(null), flatness, DEFAULT_FLATENING_LIMIT);
 	}
 
@@ -2146,30 +2112,30 @@ public interface Path3ad<
 	 * @return an iterator on the path elements.
 	 */
 	@Pure
-	default PathIterator2afp<IE> getPathIterator(Transform2D transform, double flatness) {
+	default PathIterator3ad<IE> getPathIterator(Transform3D transform, double flatness) {
 		return new FlatteningPathIterator<>(getPathIterator(transform), flatness, DEFAULT_FLATENING_LIMIT);
 	}
 
 	@Pure
 	@Override
-	default P getClosestPointTo(Point2D<?, ?> p) {
+	default P getClosestPointTo(Point3D<?, ?> p) {
 		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
 		P point = getGeomFactory().newPoint();
 		Path3ad.getClosestPointTo(
 				getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
-				p.getX(), p.getY(),
+				p.getX(), p.getY(), p.getZ(),
 				point);
 		return point;
 	}
 
 	@Pure
 	@Override
-	default P getFarthestPointTo(Point2D<?, ?> p) {
+	default P getFarthestPointTo(Point3D<?, ?> p) {
 		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
 		P point = getGeomFactory().newPoint();
 		Path3ad.getFarthestPointTo(
 				getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
-				p.getX(), p.getY(),
+				p.getX(), p.getY(), p.getZ(),
 				point);
 		return point;
 	}

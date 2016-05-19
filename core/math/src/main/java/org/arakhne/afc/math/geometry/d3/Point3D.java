@@ -191,6 +191,31 @@ public interface Point3D<RP extends Point3D<? super RP, ? super RV>, RV extends 
 		assert (point != null) : "Point must not be null"; //$NON-NLS-1$
 		return getDistancePointPoint(getX(), getY(), getZ(), point.getX(), point.getY(), point.getZ());
 	}
+	
+	/**
+	 * Computes the L-1 (Manhattan) distance between this point and
+	 * point p1.  The L-1 distance is equal to abs(x1-x2) + abs(y1-y2).
+	 * @param point the other point
+	 * @return the distance.
+	 */
+	@Pure
+	default double getDistanceL1(Point3D<?, ?> point) {
+		assert (point != null) : "Point must not be null"; //$NON-NLS-1$
+		return getDistanceL1PointPoint(getX(), getY(), getZ(), point.getX(), point.getY(), point.getZ());
+	}
+
+	/**
+	 * Computes the L-infinite distance between this point and
+	 * point p1.  The L-infinite distance is equal to 
+	 * MAX[abs(x1-x2), abs(y1-y2)]. 
+	 * @param point the other point
+	 * @return the distance.
+	 */
+	@Pure
+	default double getDistanceLinf(Point3D<?, ?> point) {
+		assert (point != null) : "Point must not be null"; //$NON-NLS-1$
+		return getDistanceLinfPointPoint(getX(), getY(), getZ(), point.getX(), point.getY(), point.getZ());
+	}
 
 	/**
 	 * Computes the L-1 (Manhattan) distance between this point and

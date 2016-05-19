@@ -196,16 +196,16 @@ public interface Shape3ad<
 			e = pi.next();
 			switch(e.getType()) {
 			case MOVE_TO:
-				newPath.moveTo(e.getToX(), e.getToY());
+				newPath.moveTo(e.getToX(), e.getToY(), e.getToZ());
 				break;
 			case LINE_TO:
-				newPath.lineTo(e.getToX(), e.getToY());
+				newPath.lineTo(e.getToX(), e.getToY(), e.getToZ());
 				break;
 			case QUAD_TO:
-				newPath.quadTo(e.getCtrlX1(), e.getCtrlY1(), e.getToX(), e.getToY());
+				newPath.quadTo(e.getCtrlX1(), e.getCtrlY1(), e.getCtrlZ1(), e.getToX(), e.getToY(), e.getToZ());
 				break;
 			case CURVE_TO:
-				newPath.curveTo(e.getCtrlX1(), e.getCtrlY1(), e.getCtrlX2(), e.getCtrlY2(), e.getToX(), e.getToY());
+				newPath.curveTo(e.getCtrlX1(), e.getCtrlY1(), e.getCtrlZ1(), e.getCtrlX2(), e.getCtrlY2(), e.getCtrlZ2(), e.getToX(), e.getToY(), e.getToZ());
 				break;
 			case CLOSE:
 				newPath.closePath();
