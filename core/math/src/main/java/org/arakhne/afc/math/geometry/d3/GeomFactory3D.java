@@ -107,4 +107,11 @@ public interface GeomFactory3D<V extends Vector3D<? super V, ? super P>, P exten
 	 * @return the vector.
 	 */
 	V newVector(int x, int y, int z);
+
+	/** 
+	 * @param axis
+	 * @param angle
+	 * @return the newly created Quaternion
+	 */
+	Quaternion newQuaternion(Vector3D<?, ?> axis, double angle);
 }
