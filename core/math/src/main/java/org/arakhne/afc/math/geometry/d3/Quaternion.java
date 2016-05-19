@@ -231,7 +231,7 @@ public interface Quaternion extends Cloneable, Serializable {
 	 * @param axis is the axis of rotation.
 	 * @param angle is the rotation around the axis.
 	 */
-	void setAxisAngle(Vector3D axis, double angle);
+	void setAxisAngle(Vector3D<?, ?> axis, double angle);
 
 	/**
 	 * Sets the value of this quaternion to the equivalent rotation
@@ -248,7 +248,7 @@ public interface Quaternion extends Cloneable, Serializable {
 	 * @return the rotation axis-angle.
 	 */
 	@Pure
-	Vector3D getAxis();
+	Vector3D<?, ?> getAxis();
 
 	/** Replies the rotation angle represented by this quaternion.
 	 *
@@ -463,7 +463,7 @@ public interface Quaternion extends Cloneable, Serializable {
 		 * @return the rotation axis.
 		 */
 		@Pure
-		public Vector3D getAxis() {
+		public Vector3D<?, ?> getAxis() {
 			return null;
 			//TODO:	return new Vector3f(this.x, this.y, this.z);
 		}
