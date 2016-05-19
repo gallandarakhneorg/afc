@@ -78,7 +78,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 * @see #isUnitVector(double, double)
 	 */
 	@Pure
-	@Inline(value = "(MathUtil.isEpsilonEqual($1 * $1 + $2 * $2, 1., epsilon))",
+	@Inline(value = "(MathUtil.isEpsilonEqual($1 * $1 + $2 * $2, 1., $3))",
 	imported = {MathUtil.class})
 	static boolean isUnitVector(double x, double y, double epsilon) {
 		return MathUtil.isEpsilonEqual(x * x + y * y, 1., epsilon);
