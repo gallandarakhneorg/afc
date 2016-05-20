@@ -563,13 +563,18 @@ implements Path2ai<Shape2i<?>, Path2i, PathElement2i, Point2i, Vector2i, Rectang
 				this.coords[index*2],
 				this.coords[index*2+1]);
 	}
-
+	
 	@Override
 	@Pure
-	public Point2i getCurrentPoint() {
-		return getGeomFactory().newPoint(
-				this.coords[this.numCoords-2],
-				this.coords[this.numCoords-1]);
+	public int getCurrentX() {
+		return this.coords[this.numCoords - 2];
+	}
+	
+	@Override
+	@Pure
+	public int getCurrentY() {
+		// TODO Auto-generated method stub
+		return this.coords[this.numCoords - 1];
 	}
 
 	@Override

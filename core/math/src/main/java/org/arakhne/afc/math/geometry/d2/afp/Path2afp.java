@@ -34,6 +34,7 @@ import org.arakhne.afc.math.geometry.d2.PathIterator2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
+import org.arakhne.afc.math.geometry.d2.afp.Circle2afp.AbstractCirclePathIterator;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Fonctional interface that represented a 2D path on a plane.
@@ -1872,12 +1873,297 @@ public interface Path2afp<
 	default void curveTo(Point2D<?, ?> ctrl1, Point2D<?, ?> ctrl2, Point2D<?, ?> to) {
 		assert (ctrl1 != null) : "First control point must be not null"; //$NON-NLS-1$
 		assert (ctrl2 != null) : "Second control point must be not null"; //$NON-NLS-1$
-		assert (to != null) : "Taarget point must be not null"; //$NON-NLS-1$
+		assert (to != null) : "Target point must be not null"; //$NON-NLS-1$
 		curveTo(ctrl1.getX(), ctrl1.getY(), ctrl2.getX(), ctrl2.getY(), to.getX(), to.getY());
-
 	}
+	
+    /**
+     * Adds a section of an shallow ellipse to the current path.
+     * The ellipse from which a quadrant is taken is the ellipse that would be
+     * inscribed in a parallelogram defined by 3 points,
+     * The current point which is considered to be the midpoint of the edge
+     * leading into the corner of the ellipse where the ellipse grazes it,
+     * {@code (ctrlx, ctrly)} which is considered to be the location of the
+     * corner of the parallelogram in which the ellipse is inscribed,
+     * and {@code (tox, toy)} which is considered to be the midpoint of the
+     * edge leading away from the corner of the oval where the oval grazes it.
+     * 
+     * <p><img src="../doc-files/arcto0.png"/>
+     *
+     * <p>Only the portion of the ellipse from {@code tfrom} to {@code tto}
+     * will be included where {@code 0f} represents the point where the
+     * ellipse grazes the leading edge, {@code 1f} represents the point where
+     * the oval grazes the trailing edge, and {@code 0.5f} represents the
+     * point on the oval closest to the control point.
+     * The two values must satisfy the relation
+     * {@code (0 <= tfrom <= tto <= 1)}.
+     * 
+     * <p>If {@code tfrom} is not {@code 0f} then the caller would most likely
+     * want to use one of the arc {@code type} values that inserts a segment
+     * leading to the initial point.
+     * An initial {@link #moveTo(double, double)} or {@link #lineTo(double, double)} can be added to direct
+     * the path to the starting point of the ellipse section if
+     * {@link ArcType#MOVE_THEN_ARC} or
+     * {@link ArcType#LINE_THEN_ARC} are
+     * specified by the type argument.
+     * The {@code lineTo} path segment will only be added if the current point
+     * is not already at the indicated location to avoid spurious empty line
+     * segments.
+     * The type can be specified as
+     * {@link ArcType.CORNER_ONLY} if the current point
+     * on the path is known to be at the starting point of the ellipse section.
+     *
+     * @param ctrlx the x coordinate of the control point, i.e. the corner of the parallelogram in which the ellipse is inscribed. 
+     * @param ctrlx the y coordinate of the control point, i.e. the corner of the parallelogram in which the ellipse is inscribed. 
+     * @param to the x coordinate of the target point.
+     * @param to the y coordinate of the target point.
+     * @param tfrom the fraction of the ellipse section where the curve should start.
+     * @param tto the fraction of the ellipse section where the curve should end
+     * @param type the specification of what additional path segments should
+     *               be appended to lead the current path to the starting point.
+     */
+    default void arcTo(double ctrlx, double ctrly, double tox, double toy, double tfrom, double tto,
+    		ArcType type) {
+    	// Copied from JavaFX Path2D
+    	assert (tfrom >= 0.) : "tfrom must be positive or zero"; //$NON-NLS-1$
+    	assert (tto >= tfrom) : "tto must be greater than or equal to tfrom"; //$NON-NLS-1$
+    	assert (tto <= 1.) : "tto must be lower than 1"; //$NON-NLS-1$
+    	double currentx = getCurrentX();
+    	double currenty = getCurrentY();
+    	final double ocurrentx = currentx;
+    	final double ocurrenty = currenty;
+        double cx0 = currentx + (ctrlx - currentx) * AbstractCirclePathIterator.CTRL_POINT_DISTANCE;
+        double cy0 = currenty + (ctrly - currenty) * AbstractCirclePathIterator.CTRL_POINT_DISTANCE;
+        double cx1 = tox + (ctrlx - tox) * AbstractCirclePathIterator.CTRL_POINT_DISTANCE;
+        double cy1 = toy + (ctrly - toy) * AbstractCirclePathIterator.CTRL_POINT_DISTANCE;
+        if (tto < 1.) {
+            double t = 1. - tto;
+            tox += (cx1 - tox) * t;
+            toy += (cy1 - toy) * t;
+            cx1 += (cx0 - cx1) * t;
+            cy1 += (cy0 - cy1) * t;
+            cx0 += (currentx - cx0) * t;
+            cy0 += (currenty - cy0) * t;
+            tox += (cx1 - tox) * t;
+            toy += (cy1 - toy) * t;
+            cx1 += (cx0 - cx1) * t;
+            cy1 += (cy0 - cy1) * t;
+            tox += (cx1 - tox) * t;
+            toy += (cy1 - toy) * t;
+        }
+        if (tfrom > 0.) {
+            if (tto < 1.) {
+                tfrom = tfrom / tto;
+            }
+            currentx += (cx0 - currentx) * tfrom;
+            currenty += (cy0 - currenty) * tfrom;
+            cx0 += (cx1 - cx0) * tfrom;
+            cy0 += (cy1 - cy0) * tfrom;
+            cx1 += (tox - cx1) * tfrom;
+            cy1 += (toy - cy1) * tfrom;
+            currentx += (cx0 - currentx) * tfrom;
+            currenty += (cy0 - currenty) * tfrom;
+            cx0 += (cx1 - cx0) * tfrom;
+            cy0 += (cy1 - cy0) * tfrom;
+            currentx += (cx0 - currentx) * tfrom;
+            currenty += (cy0 - currenty) * tfrom;
+        }
+        if (type == ArcType.MOVE_THEN_ARC) {
+            if (currentx != ocurrentx || currenty != ocurrenty) {
+            	moveTo(currentx, currenty);
+            }
+        } else if (type == ArcType.LINE_THEN_ARC) {
+            if (currentx != ocurrentx || currenty != ocurrenty) {
+            	lineTo(currentx, currenty);
+            }
+        }
+        if (tfrom == tto ||
+            (currentx == cx0 && cx0 == cx1 && cx1 == tox &&
+            currenty == cy0 && cy0 == cy1 && cy1 == toy)) {
+            if (type != ArcType.LINE_THEN_ARC) {
+                lineTo(tox, toy);
+            }
+        } else {
+            curveTo(cx0, cy0, cx1, cy1, tox, toy);
+        }
+    }
+    
+    @Override
+    default void arcTo(Point2D<?, ?> ctrl, Point2D<?, ?> to, double tfrom, double tto,
+    		org.arakhne.afc.math.geometry.d2.Path2D.ArcType type) {
+    	assert (ctrl != null) : "Control point must be not null"; //$NON-NLS-1$
+    	assert (to != null) : "Target point must be not null"; //$NON-NLS-1$
+    	arcTo(ctrl.getX(), ctrl.getY(), to.getX(), to.getY(), tfrom, tto, type);
+    }
+    
+    /**
+     * Adds a section of an shallow ellipse to the current path.
+     * 
+     * <p>This function is equivalent to:<pre><code>
+     * this.arcTo(ctrl, to, 0.0, 1.0, ArcType.ARCONLY);
+     * </code></pre>
+     *
+     * @param ctrlx the x coordinate of the control point, i.e. the corner of the parallelogram in which the ellipse is inscribed. 
+     * @param ctrlx the y coordinate of the control point, i.e. the corner of the parallelogram in which the ellipse is inscribed. 
+     * @param to the x coordinate of the target point.
+     * @param to the y coordinate of the target point.
+     */
+    default void arcTo(double ctrlx, double ctrly, double tox, double toy) {
+    	arcTo(ctrlx, ctrly, tox, toy, 0., 1., ArcType.ARC_ONLY);
+    }
 
-	@Pure
+    @Override
+    default void arcTo(Point2D<?, ?> to, Vector2D<?, ?> radii, double xAxisRotation, boolean largeArcFlag, boolean sweepFlag) {
+    	assert (radii != null) : "Radii vector must be not null"; //$NON-NLS-1$
+    	assert (to != null) : "Target point must be not null"; //$NON-NLS-1$
+    	arcTo(to.getX(), to.getY(), radii.getX(), radii.getY(), xAxisRotation, largeArcFlag, sweepFlag);
+    }
+
+    /**
+     * Adds a section of an shallow ellipse to the current path.
+     * The ellipse from which the portions are extracted follows the rules:
+     * <ul>
+     * <li>The ellipse will have its X axis tilted from horizontal by the
+     * angle {@code xAxisRotation} specified in radians.</li>
+     * <li>The ellipse will have the X and Y radii (viewed from its tilted
+     * coordinate system) specified by {@code radiusx} and {@code radiusy}
+     * unless that ellipse is too small to bridge the gap from the current
+     * point to the specified destination point in which case a larger
+     * ellipse with the same ratio of dimensions will be substituted instead.</li>
+     * <li>The ellipse may slide perpendicular to the direction from the
+     * current point to the specified destination point so that it just
+     * touches the two points.
+     * The direction it slides (to the "left" or to the "right") will be
+     * chosen to meet the criteria specified by the two boolean flags as
+     * described below.
+     * Only one direction will allow the method to meet both criteria.</li>
+     * <li>If the {@code largeArcFlag} is true, then the ellipse will sweep
+     * the longer way around the ellipse that meets these criteria.</li>
+     * <li>If the {@code sweepFlag} is true, then the ellipse will sweep
+     * clockwise around the ellipse that meets these criteria.</li>
+     * </ul>
+     * 
+     * <p><img src="../doc-files/arcto1.png" />
+     *
+     * <p>The method will do nothing if the destination point is the same as
+     * the current point.
+     * The method will draw a simple line segment to the destination point
+     * if either of the two radii are zero.
+     *
+     * @param tox the X coordinate of the target point.
+     * @param toy the Y coordinate of the target point.
+     * @param radiusx the X radius of the tilted ellipse.
+     * @param radiusy the Y radius of the tilted ellipse.
+     * @param xAxisRotation the angle of tilt of the ellipse.
+     * @param largeArcFlag <code>true</code> iff the path will sweep the long way around the ellipse.
+     * @param sweepFlag <code>true</code> iff the path will sweep clockwise around the ellipse.
+     * @see "http://www.w3.org/TR/SVG/paths.html#PathDataEllipticalArcCommands"
+     */
+    default void arcTo(double tox, double toy, double radiusx, double radiusy, double xAxisRotation, boolean largeArcFlag, boolean sweepFlag) {
+    	// Copied for JavaFX
+    	assert (radiusx >= 0.) : "X radius must be positive or zero."; //$NON-NLS-1$
+    	assert (radiusy >= 0.) : "Y radius must be positive or zero."; //$NON-NLS-1$
+        if (radiusx == 0. || radiusy == 0.) {
+            lineTo(tox, toy);
+            return;
+        }
+        double ocurrentx = getCurrentX();
+        double ocurrenty = getCurrentY();
+        double x1 = ocurrentx;
+        double y1 = ocurrenty;
+        double x2 = tox;
+        double y2 = toy;
+        if (x1 == x2 && y1 == y2) {
+            return;
+        }
+        double cosphi, sinphi;
+        if (xAxisRotation == 0.) {
+            cosphi = 1.;
+            sinphi = 0.;
+        } else {
+            cosphi = Math.cos(xAxisRotation);
+            sinphi = Math.sin(xAxisRotation);
+        }
+        double mx = (x1 + x2) / 2.;
+        double my = (y1 + y2) / 2.;
+        double relx1 = x1 - mx;
+        double rely1 = y1 - my;
+        double x1p = (cosphi * relx1 + sinphi * rely1) / radiusx;
+        double y1p = (cosphi * rely1 - sinphi * relx1) / radiusy;
+        double lenpsq = x1p * x1p + y1p * y1p;
+        if (lenpsq >= 1.) {
+            double xqpr = y1p * radiusx;
+            double yqpr = x1p * radiusy;
+            if (sweepFlag) {
+            	xqpr = -xqpr;
+            } else {
+            	yqpr = -yqpr;
+            }
+            double relxq = cosphi * xqpr - sinphi * yqpr;
+            double relyq = cosphi * yqpr + sinphi * xqpr;
+            double xq = mx + relxq;
+            double yq = my + relyq;
+            double xc = x1 + relxq;
+            double yc = y1 + relyq;
+            if (x1 != ocurrentx || y1 != ocurrenty) {
+            	lineTo(x1, y1);
+            }
+            arcTo(xc, yc, xq, yq, 0, 1, ArcType.ARC_ONLY);
+            xc = x2 + relxq;
+            yc = y2 + relyq;
+            arcTo(xc, yc, x2, y2, 0, 1, ArcType.ARC_ONLY);
+            return;
+        }
+        double scalef = Math.sqrt((1. - lenpsq) / lenpsq);
+        double cxp = scalef * y1p;
+        double cyp = scalef * x1p;
+        if (largeArcFlag == sweepFlag) {
+        	cxp = -cxp;
+        } else {
+        	cyp = -cyp;
+        }
+        mx += (cosphi * cxp * radiusx - sinphi * cyp * radiusy);
+        my += (cosphi * cyp * radiusy + sinphi * cxp * radiusx);
+        double ux = x1p - cxp;
+        double uy = y1p - cyp;
+        double vx = -(x1p + cxp);
+        double vy = -(y1p + cyp);
+        boolean done = false;
+        double quadlen = 1.;
+        boolean wasclose = false;
+        do {
+            double xqp = uy;
+            double yqp = ux;
+            if (sweepFlag) {
+            	xqp = -xqp;
+            } else {
+            	yqp = -yqp;
+            }
+            if (xqp * vx + yqp * vy > 0.) {
+                double dot = ux * vx + uy * vy;
+                if (dot >= 0) {
+                    quadlen = Math.acos(dot) / MathConstants.DEMI_PI;
+                    done = true;
+                }
+                wasclose = true;
+            } else if (wasclose) {
+                break;
+            }
+            double relxq = (cosphi * xqp * radiusx - sinphi * yqp * radiusy);
+            double relyq = (cosphi * yqp * radiusy + sinphi * xqp * radiusx);
+            double xq = mx + relxq;
+            double yq = my + relyq;
+            double xc = x1 + relxq;
+            double yc = y1 + relyq;
+            arcTo(xc, yc, xq, yq, 0, quadlen, ArcType.ARC_ONLY);
+            x1 = xq;
+            y1 = yq;
+            ux = xqp;
+            uy = yqp;
+        } while (!done);
+    }
+
+    @Pure
 	@Override
 	default double getDistanceSquared(Point2D<?, ?> p) {
 		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
@@ -2131,6 +2417,26 @@ public interface Path2afp<
 	@Pure
 	default PathIterator2afp<IE> getPathIterator(Transform2D transform, double flatness) {
 		return new FlatteningPathIterator<>(getPathIterator(transform), flatness, DEFAULT_FLATENING_LIMIT);
+	}
+	
+	/** Replies the x coordinate of the last point in the path.
+	 *
+	 * @return the x coordinate of the last point in the path.
+	 */
+	@Pure
+	double getCurrentX();
+	
+	/** Replies the y coordinate of the last point in the path.
+	 *
+	 * @return the y coordinate of the last point in the path.
+	 */
+	@Pure
+	double getCurrentY();
+
+	@Override
+	@Pure
+	default P getCurrentPoint() {
+		return getGeomFactory().newPoint(getCurrentX(), getCurrentY());
 	}
 
 	@Pure

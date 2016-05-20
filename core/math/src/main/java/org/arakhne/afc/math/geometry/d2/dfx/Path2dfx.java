@@ -593,7 +593,28 @@ public class Path2dfx
 				this.coords.get(baseIdx),
 				this.coords.get(baseIdx + 1));
 	}
+	
+	@Pure
+	@Override
+	public double getCurrentX() {
+		if (this.coords == null) {
+			throw new IndexOutOfBoundsException();
+		}
+		int baseIdx = this.coords.size() - 1;
+		return this.coords.get(baseIdx - 1);
+	}
 
+	@Pure
+	@Override
+	public double getCurrentY() {
+		if (this.coords == null) {
+			throw new IndexOutOfBoundsException();
+		}
+		int baseIdx = this.coords.size() - 1;
+		return this.coords.get(baseIdx);
+	}
+
+	@Pure
 	@Override
 	public Point2dfx getCurrentPoint() {
 		if (this.coords == null) {

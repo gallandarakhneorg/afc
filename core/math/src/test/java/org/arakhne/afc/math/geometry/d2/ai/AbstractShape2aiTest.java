@@ -24,7 +24,15 @@ package org.arakhne.afc.math.geometry.d2.ai;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.geom.Path2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
+
+import javax.imageio.ImageIO;
 
 import org.arakhne.afc.math.AbstractMathTestCase;
 import org.arakhne.afc.math.geometry.PathElementType;
@@ -32,6 +40,9 @@ import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2DTestRule;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
+import org.arakhne.afc.math.geometry.d2.afp.PathElement2afp;
+import org.arakhne.afc.math.geometry.d2.afp.Rectangle2afp;
+import org.arakhne.afc.math.geometry.d2.afp.Shape2afp;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -302,5 +313,59 @@ public abstract class AbstractShape2aiTest<T extends Shape2ai<?, ?, ?, ?, ?, B>,
 
 	@Test
 	public abstract void operator_upToPoint2D();
+
+	/** Generate a bitmap containing the given Shape2D.
+	 *
+	 * @param shape.
+	 * @return the filename
+	 * @throws IOException Input/output exception
+	 */
+	public static File generateTestPicture(Shape2ai<?, ?, ?, ?, ?, ?> shape) throws IOException {
+		File filename = File.createTempFile("testShape", ".png");
+		Rectangle2ai box = shape.toBoundingBox();
+		PathIterator2ai<?> iterator = shape.getPathIterator();
+		Path2D path = new Path2D.Double(
+				iterator.getWindingRule() == PathWindingRule.NON_ZERO ? Path2D.WIND_NON_ZERO : Path2D.WIND_EVEN_ODD);
+		while (iterator.hasNext()) {
+			PathElement2ai element = iterator.next();
+			int tox = (element.getToX() - box.getMinX()) * 2;
+			int toy = (box.getMaxY() - (element.getToY() - box.getMinY())) * 2;
+			switch (element.getType()) {
+			case LINE_TO:
+				path.lineTo(tox, toy);
+				break;
+			case MOVE_TO:
+				path.moveTo(tox, toy);
+				break;
+			case CLOSE:
+				path.closePath();
+				break;
+			case CURVE_TO:
+				path.curveTo(
+						(element.getCtrlX1() - box.getMinX()) * 2,
+						(box.getMaxY() - (element.getCtrlY1() - box.getMinY())) * 2,
+						(element.getCtrlX2() - box.getMinX()) * 2,
+						(box.getMaxY() - (element.getCtrlY2() - box.getMinY())) * 2,
+						tox, toy);
+				break;
+			case QUAD_TO:
+				path.quadTo(
+						(element.getCtrlX1() - box.getMinX()) * 2,
+						(box.getMaxY() - (element.getCtrlY1() - box.getMinY())) * 2,
+						tox, toy);
+				break;
+			default:
+			}
+		}
+		BufferedImage image = new BufferedImage(
+				box.getWidth() * 2,
+				box.getHeight(),
+				BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g2d = (Graphics2D) image.getGraphics();
+		g2d.setColor(Color.BLACK);
+		g2d.draw(path);
+		ImageIO.write(image, "png", filename);
+		return filename;
+	}	
 
 }

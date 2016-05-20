@@ -550,10 +550,14 @@ public class Path2d
 
 	@Override
 	@Pure
-	public Point2d getCurrentPoint() {
-		return getGeomFactory().newPoint(
-				this.coords[this.numCoords-2],
-				this.coords[this.numCoords-1]);
+	public double getCurrentX() {
+		return this.coords[this.numCoords - 2];
+	}
+	
+	@Override
+	@Pure
+	public double getCurrentY() {
+		return this.coords[this.numCoords - 1];
 	}
 
 	@Override

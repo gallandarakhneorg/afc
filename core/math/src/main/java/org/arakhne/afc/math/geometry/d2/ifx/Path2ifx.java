@@ -618,6 +618,27 @@ public class Path2ifx
 	}
 
 	@Override
+	@Pure
+	public int getCurrentX() {
+		if (this.coords == null) {
+			throw new IndexOutOfBoundsException();
+		}
+		int index = this.coords.size() - 2;
+		return this.coords.get(index);
+	}
+
+	@Override
+	@Pure
+	public int getCurrentY() {
+		if (this.coords == null) {
+			throw new IndexOutOfBoundsException();
+		}
+		int index = this.coords.size() - 1;
+		return this.coords.get(index);
+	}
+
+	@Override
+	@Pure
 	public Point2ifx getCurrentPoint() {
 		if (this.coords == null) {
 			throw new IndexOutOfBoundsException();

@@ -26,16 +26,18 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
 
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.geometry.PathElementType;
+import org.arakhne.afc.math.geometry.d2.Path2D.ArcType;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Shape2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.afp.Path2afp.CrossingComputationType;
-import org.arakhne.afc.math.geometry.d2.ai.Path2ai;
 import org.arakhne.afc.math.geometry.d2.ai.PathIterator2ai;
 import org.junit.Test;
 
@@ -647,7 +649,7 @@ extends AbstractShape2afpTest<T, B> {
 	}
 
 	@Test(expected = IllegalStateException.class)
-	public void curveToIntIntIntIntIntInt_noMoveTo() {
+	public void curveToDoubleDoubleDoubleDoubleDoubleDouble_noMoveTo() {
 		Path2afp<?, ?, ?, ?, ?, ?> tmpShape = createPath();
 		tmpShape.curveTo(15, 145, 50, 20, 0, 0);
 	}
@@ -679,6 +681,123 @@ extends AbstractShape2afpTest<T, B> {
 		assertElement(pi, PathElementType.QUAD_TO, 3, 0, 4, 3);
 		assertElement(pi, PathElementType.CURVE_TO, 5, -1, 6, 5, 7, -5);
 		assertElement(pi, PathElementType.CURVE_TO, 123.456,  456.789, 789.123, 159.753, 456.852, 963.789);
+		assertNoElement(pi);
+	}
+	
+//	@Test
+//	public void generateShapeBitmap() throws IOException {
+//		this.shape.arcTo(20, 10, 10, 10, 0, false, false);
+//		File filename = generateTestPicture(this.shape);
+//		System.out.println("Filename: " + filename);
+//	}
+
+	@Test
+	public void arcToDoubleDoubleDoubleDoubleDoubleDoubleArcType_01_arcOnly() {
+		this.shape.arcTo(5, 5, 20, 10, 0, 1, ArcType.ARC_ONLY);
+		PathIterator2afp pi = this.shape.getPathIterator();
+		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
+		assertElement(pi, PathElementType.LINE_TO, 1, 1);
+		assertElement(pi, PathElementType.QUAD_TO, 3, 0, 4, 3);
+		assertElement(pi, PathElementType.CURVE_TO, 5, -1, 6, 5, 7, -5);
+		assertElement(pi, PathElementType.CURVE_TO, 5.89543, 0.52285, 11.71573, 7.23858, 20, 10);
+		assertNoElement(pi);
+	}
+
+	@Test
+	public void arcToDoubleDoubleDoubleDoubleDoubleDoubleArcType_01_lineTo() {
+		this.shape.arcTo(5, 5, 20, 10, 0, 1, ArcType.LINE_THEN_ARC);
+		PathIterator2afp pi = this.shape.getPathIterator();
+		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
+		assertElement(pi, PathElementType.LINE_TO, 1, 1);
+		assertElement(pi, PathElementType.QUAD_TO, 3, 0, 4, 3);
+		assertElement(pi, PathElementType.CURVE_TO, 5, -1, 6, 5, 7, -5);
+		assertElement(pi, PathElementType.CURVE_TO, 5.89543, 0.52285, 11.71573, 7.23858, 20, 10);
+		assertNoElement(pi);
+	}
+
+	@Test
+	public void arcToDoubleDoubleDoubleDoubleDoubleDoubleArcType_01_moveTo() {
+		this.shape.arcTo(5, 5, 20, 10, 0, 1, ArcType.MOVE_THEN_ARC);
+		PathIterator2afp pi = this.shape.getPathIterator();
+		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
+		assertElement(pi, PathElementType.LINE_TO, 1, 1);
+		assertElement(pi, PathElementType.QUAD_TO, 3, 0, 4, 3);
+		assertElement(pi, PathElementType.CURVE_TO, 5, -1, 6, 5, 7, -5);
+		assertElement(pi, PathElementType.CURVE_TO, 5.89543, 0.52285, 11.71573, 7.23858, 20, 10);
+		assertNoElement(pi);
+	}
+
+	@Test
+	public void arcToDoubleDoubleDoubleDoubleDoubleDoubleArcType_0251_arcOnly() {
+		this.shape.arcTo(5, 5, 20, 10, .25, 1, ArcType.ARC_ONLY);
+		PathIterator2afp pi = this.shape.getPathIterator();
+		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
+		assertElement(pi, PathElementType.LINE_TO, 1, 1);
+		assertElement(pi, PathElementType.QUAD_TO, 3, 0, 4, 3);
+		assertElement(pi, PathElementType.CURVE_TO, 5, -1, 6, 5, 7, -5);
+		assertElement(pi, PathElementType.CURVE_TO, 8.95958, 3.63357, 13.7868, 7.92893, 20, 10);
+		assertNoElement(pi);
+	}
+
+	@Test
+	public void arcToDoubleDoubleDoubleDoubleDoubleDoubleArcType_0251_lineTo() {
+		this.shape.arcTo(5, 5, 20, 10, .25, 1, ArcType.LINE_THEN_ARC);
+		PathIterator2afp pi = this.shape.getPathIterator();
+		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
+		assertElement(pi, PathElementType.LINE_TO, 1, 1);
+		assertElement(pi, PathElementType.QUAD_TO, 3, 0, 4, 3);
+		assertElement(pi, PathElementType.CURVE_TO, 5, -1, 6, 5, 7, -5);
+		assertElement(pi, PathElementType.LINE_TO, 7.40028, -0.71462);
+		assertElement(pi, PathElementType.CURVE_TO, 8.95958, 3.63357, 13.7868, 7.92893, 20, 10);
+		assertNoElement(pi);
+	}
+
+	@Test
+	public void arcToDoubleDoubleDoubleDoubleDoubleDoubleArcType_0251_moveTo() {
+		this.shape.arcTo(5, 5, 20, 10, .25, 1, ArcType.MOVE_THEN_ARC);
+		PathIterator2afp pi = this.shape.getPathIterator();
+		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
+		assertElement(pi, PathElementType.LINE_TO, 1, 1);
+		assertElement(pi, PathElementType.QUAD_TO, 3, 0, 4, 3);
+		assertElement(pi, PathElementType.CURVE_TO, 5, -1, 6, 5, 7, -5);
+		assertElement(pi, PathElementType.MOVE_TO, 7.40028, -0.71462);
+		assertElement(pi, PathElementType.CURVE_TO, 8.95958, 3.63357, 13.7868, 7.92893, 20, 10);
+		assertNoElement(pi);
+	}
+
+	@Test
+	public void arcToPoint2DPoint2DDoubleDoubleArcType_01_arcOnly() {
+		this.shape.arcTo(createPoint(5, 5), createPoint(20, 10), 0, 1, ArcType.ARC_ONLY);
+		PathIterator2afp pi = this.shape.getPathIterator();
+		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
+		assertElement(pi, PathElementType.LINE_TO, 1, 1);
+		assertElement(pi, PathElementType.QUAD_TO, 3, 0, 4, 3);
+		assertElement(pi, PathElementType.CURVE_TO, 5, -1, 6, 5, 7, -5);
+		assertElement(pi, PathElementType.CURVE_TO, 5.89543, 0.52285, 11.71573, 7.23858, 20, 10);
+		assertNoElement(pi);
+	}
+
+	@Test
+	public void arcToDoubleDoubleDoubleDouble() {
+		this.shape.arcTo(5, 5, 20, 10);
+		PathIterator2afp pi = this.shape.getPathIterator();
+		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
+		assertElement(pi, PathElementType.LINE_TO, 1, 1);
+		assertElement(pi, PathElementType.QUAD_TO, 3, 0, 4, 3);
+		assertElement(pi, PathElementType.CURVE_TO, 5, -1, 6, 5, 7, -5);
+		assertElement(pi, PathElementType.CURVE_TO, 5.89543, 0.52285, 11.71573, 7.23858, 20, 10);
+		assertNoElement(pi);
+	}
+
+	@Test
+	public void arcToPoint2DPoint2D() {
+		this.shape.arcTo(createPoint(5, 5), createPoint(20, 10));
+		PathIterator2afp pi = this.shape.getPathIterator();
+		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
+		assertElement(pi, PathElementType.LINE_TO, 1, 1);
+		assertElement(pi, PathElementType.QUAD_TO, 3, 0, 4, 3);
+		assertElement(pi, PathElementType.CURVE_TO, 5, -1, 6, 5, 7, -5);
+		assertElement(pi, PathElementType.CURVE_TO, 5.89543, 0.52285, 11.71573, 7.23858, 20, 10);
 		assertNoElement(pi);
 	}
 
@@ -2326,6 +2445,27 @@ extends AbstractShape2afpTest<T, B> {
 		assertFalse(this.shape.isPolyline());
 		this.shape.lineTo(7, 8);
 		assertFalse(this.shape.isPolyline());
+	}
+	
+	@Test
+	public void getCurrentX() {
+		assertEpsilonEquals(7, this.shape.getCurrentX());
+		this.shape.lineTo(154, 485);
+		assertEpsilonEquals(154, this.shape.getCurrentX());
+	}
+
+	@Test
+	public void getCurrentY() {
+		assertEpsilonEquals(-5, this.shape.getCurrentY());
+		this.shape.lineTo(154, 485);
+		assertEpsilonEquals(485, this.shape.getCurrentY());
+	}
+
+	@Test
+	public void getCurrentPoint() {
+		assertFpPointEquals(7, -5, this.shape.getCurrentPoint());
+		this.shape.lineTo(154, 485);
+		assertFpPointEquals(154, 485, this.shape.getCurrentPoint());
 	}
 
 }
