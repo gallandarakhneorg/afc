@@ -13,6 +13,7 @@
 	<packaging>pom</packaging>
 
 	<modules>
+		<module>mathfx</module>
 		<module>attributes</module>
 	</modules>
 

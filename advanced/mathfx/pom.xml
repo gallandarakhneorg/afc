@@ -2,13 +2,13 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<artifactId>core</artifactId>
-		<groupId>org.arakhne.afc.core</groupId>
+		<artifactId>advanced</artifactId>
+		<groupId>org.arakhne.afc.advanced</groupId>
 		<version>13.0-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>math</artifactId>
-	<name>Math Tools</name>
+	<artifactId>mathfx</artifactId>
+	<name>Java FX Math Tools</name>
 	<inceptionYear>2013</inceptionYear>
 
 	<properties>
@@ -17,16 +17,12 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>org.eclipse.xtext</groupId>
-			<artifactId>org.eclipse.xtext.xbase.lib</artifactId>
+			<groupId>javafx</groupId>
+			<artifactId>jfxrt</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.arakhne.afc.core</groupId>
-			<artifactId>references</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.arakhne.afc.core</groupId>
-			<artifactId>util</artifactId>
+			<artifactId>math</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
