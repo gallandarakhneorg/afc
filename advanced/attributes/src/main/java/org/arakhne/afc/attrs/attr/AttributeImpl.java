@@ -47,46 +47,6 @@ public class AttributeImpl extends AttributeValueImpl implements Attribute {
 	
 	private static final long serialVersionUID = -3805997544158892016L;
 
-	/** Compare the two specified attributes.
-	 *
-	 * @param arg0
-	 * @param arg1
-	 * @return replies a negative value if <var>arg0</var> is lesser than
-	 * <var>arg1</var>, a positive value if <var>arg0</var> is greater than
-	 * <var>arg1</var>, or <code>0</code> if they are equal.
-	 * @see AttributeComparator
-	 */
-	public static int compareAttrs(Attribute arg0, Attribute arg1) {
-		if (arg0==arg1) return 0;
-		if (arg0==null) return 1;
-		if (arg1==null) return -1;
-		
-		String n0 = arg0.getName();
-		String n1 = arg1.getName();
-		int cmp = compareAttrNames(n0, n1);
-		
-		if (cmp==0)
-			return compareValues(arg0,arg1);
-		
-		return cmp;
-	}
-	
-	/** Compare the two specified attribute names.
-	 *
-	 * @param arg0
-	 * @param arg1
-	 * @return replies a negative value if <var>arg0</var> is lesser than
-	 * <var>arg1</var>, a positive value if <var>arg0</var> is greater than
-	 * <var>arg1</var>, or <code>0</code> if they are equal.
-	 * @see AttributeNameComparator
-	 */
-	public static int compareAttrNames(String arg0, String arg1) {
-		if (arg0==arg1) return 0;
-		if (arg0==null) return Integer.MAX_VALUE;
-		if (arg1==null) return Integer.MIN_VALUE;
-		return arg0.compareToIgnoreCase(arg1);
-	}
-
 	/**
 	 * Name of the metadata.
 	 */
@@ -392,6 +352,46 @@ public class AttributeImpl extends AttributeValueImpl implements Attribute {
 	public AttributeImpl(String name, Class<?> value) {
 		super(value);
 		this.name = name;
+	}
+
+	/** Compare the two specified attributes.
+	 *
+	 * @param arg0
+	 * @param arg1
+	 * @return replies a negative value if <var>arg0</var> is lesser than
+	 * <var>arg1</var>, a positive value if <var>arg0</var> is greater than
+	 * <var>arg1</var>, or <code>0</code> if they are equal.
+	 * @see AttributeComparator
+	 */
+	public static int compareAttrs(Attribute arg0, Attribute arg1) {
+		if (arg0==arg1) return 0;
+		if (arg0==null) return 1;
+		if (arg1==null) return -1;
+
+		String n0 = arg0.getName();
+		String n1 = arg1.getName();
+		int cmp = compareAttrNames(n0, n1);
+
+		if (cmp==0)
+			return compareValues(arg0,arg1);
+
+		return cmp;
+	}
+
+	/** Compare the two specified attribute names.
+	 *
+	 * @param arg0
+	 * @param arg1
+	 * @return replies a negative value if <var>arg0</var> is lesser than
+	 * <var>arg1</var>, a positive value if <var>arg0</var> is greater than
+	 * <var>arg1</var>, or <code>0</code> if they are equal.
+	 * @see AttributeNameComparator
+	 */
+	public static int compareAttrNames(String arg0, String arg1) {
+		if (arg0==arg1) return 0;
+		if (arg0==null) return Integer.MAX_VALUE;
+		if (arg1==null) return Integer.MIN_VALUE;
+		return arg0.compareToIgnoreCase(arg1);
 	}
 
 	/**
