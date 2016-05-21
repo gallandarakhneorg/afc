@@ -77,7 +77,7 @@ public final class MathUtil {
 	 */
 	@Pure
 	public static double clamp(double v, double min, double max) {
-		assert (min <= max) : "min must be lower or equal to max"; //$NON-NLS-1$
+		assert min <= max : "min must be lower or equal to max"; //$NON-NLS-1$
 		if (v < min) return min;
 		if (v > max) return max;
 		return v;
@@ -96,7 +96,7 @@ public final class MathUtil {
 	 */
 	@Pure
 	public static int clamp(int v, int min, int max) {
-		assert (min <= max) : "min must be lower or equal to max"; //$NON-NLS-1$
+		assert min <= max : "min must be lower or equal to max"; //$NON-NLS-1$
 		if (v < min) return min;
 		if (v > max) return max;
 		return v;
@@ -377,7 +377,7 @@ public final class MathUtil {
 	 */
 	@Pure
 	public static double clampCyclic(double value, double min, double max) {
-		assert (min <= max) : "min must be lower or equal to max"; //$NON-NLS-1$
+		assert min <= max : "min must be lower or equal to max"; //$NON-NLS-1$
 		if (Double.isNaN(max) || Double.isNaN(min) || Double.isNaN(max)) {
 			return Double.NaN;
 		}
@@ -393,7 +393,7 @@ public final class MathUtil {
 		else if (value >= max) {
 			double perimeter = max - min;
 			double nvalue = value - max;
-			double rest = (nvalue % perimeter);
+			double rest = nvalue % perimeter;
 			return min + rest;
 		}
 		return value;
@@ -413,7 +413,7 @@ public final class MathUtil {
 	 */
 	@Pure
 	public static double clampToNearestBounds(double value, double minBounds, double maxBounds) {
-		assert (minBounds <= maxBounds) : "min must be lower or equal to max"; //$NON-NLS-1$
+		assert minBounds <= maxBounds : "min must be lower or equal to max"; //$NON-NLS-1$
 		double center = (minBounds+maxBounds) / 2f;
 		if (value<=center) return minBounds;
 		return maxBounds;
@@ -432,8 +432,8 @@ public final class MathUtil {
 	 */
 	@Pure
 	public static int getCohenSutherlandCode(int px, int py, int rxmin, int rymin, int rxmax, int rymax) {
-		assert (rxmin <= rxmax) : "rxmin must be lower or equal to rxmax"; //$NON-NLS-1$
-		assert (rymin <= rymax) : "rymin must be lower or equal to rymax"; //$NON-NLS-1$
+		assert rxmin <= rxmax : "rxmin must be lower or equal to rxmax"; //$NON-NLS-1$
+		assert rymin <= rymax : "rymin must be lower or equal to rymax"; //$NON-NLS-1$
 		// initialised as being inside of clip window
 		int code = COHEN_SUTHERLAND_INSIDE;
 		if (px<rxmin) {
@@ -471,8 +471,8 @@ public final class MathUtil {
 	 */
 	@Pure
 	public static int getCohenSutherlandCode(double px, double py, double rxmin, double rymin, double rxmax, double rymax) {
-		assert (rxmin <= rxmax) : "rxmin must be lower or equal to rxmax"; //$NON-NLS-1$
-		assert (rymin <= rymax) : "rymin must be lower or equal to rymax"; //$NON-NLS-1$
+		assert rxmin <= rxmax : "rxmin must be lower or equal to rxmax"; //$NON-NLS-1$
+		assert rymin <= rymax : "rymin must be lower or equal to rymax"; //$NON-NLS-1$
 		// initialised as being inside of clip window
 		int code = COHEN_SUTHERLAND_INSIDE;
 		if (px < rxmin) {
@@ -1010,7 +1010,7 @@ public final class MathUtil {
 			if (value>max) return max - Float.MAX_VALUE + value;
 		}
 		else {
-			assert(min<=max);
+			assert min<=max;
 			if (min==max) return min; // special case: empty interval
 			if (value<min || value >max) {
 				float perimeter = max - min;
@@ -1150,7 +1150,7 @@ public final class MathUtil {
 	public static boolean isPointClosedToSegment( float x1, float y1, 
 			float x2, float y2, 
 			float x, float y, float hitDistance ) {
-		return ( distancePointToSegment(x, y, x1, y1, x2, y2) < hitDistance ) ;
+		return  distancePointToSegment(x, y, x1, y1, x2, y2) < hitDistance;
 	}
 
 	/** Replies if a point is closed to a line.
@@ -1170,7 +1170,7 @@ public final class MathUtil {
 	public static boolean isPointClosedToLine( float x1, float y1, 
 			float x2, float y2, 
 			float x, float y, float hitDistance ) {
-		return ( distancePointToLine(x, y, x1, y1, x2, y2) < hitDistance ) ;
+		return distancePointToLine(x, y, x1, y1, x2, y2) < hitDistance;
 	}
 
 	/** Replies the metrics from inches.
@@ -1207,7 +1207,7 @@ public final class MathUtil {
 	 */
 	@Deprecated
 	public static float clampAngle( float value, float min, float max ) {
-		assert(min<=max);
+		assert min<=max;
 		float v = value;
 		while (v>max) {
 			v -= 2*Math.PI;
@@ -1231,7 +1231,7 @@ public final class MathUtil {
 	 */
 	@Deprecated
 	public static float clampToNearestBounds( float value, float minBounds, float maxBounds ) {
-		assert(minBounds<=maxBounds);
+		assert minBounds<=maxBounds;
 		float center = (minBounds+maxBounds) / 2f;
 		if (value<=center) return minBounds;
 		return maxBounds;
@@ -1574,8 +1574,8 @@ public final class MathUtil {
 		float y4 = y3 + v2.getY();
 		float denom = (y4-y3)*(x2-x1) - (x4-x3)*(y2-y1);
 		if (denom==0.) return null;
-		float ua = ((x4-x3)*(y1-y3) - (y4-y3)*(x1-x3));
-		float ub = ((x2-x1)*(y1-y3) - (y2-y1)*(x1-x3));
+		float ua = (x4-x3)*(y1-y3) - (y4-y3)*(x1-x3);
+		float ub = (x2-x1)*(y1-y3) - (y2-y1)*(x1-x3);
 		if (ua==ub) return null;
 		ua = ua / denom;
 		return new Point2f(
@@ -1775,7 +1775,7 @@ public final class MathUtil {
 				float y0 = py - (ey + b);
 
 				float denom = a*a*y0*y0 + b*b*x0*x0;
-				assert(denom>0f); // because the "inside"-test should discard this case.
+				assert denom>0f; // because the "inside"-test should discard this case.
 
 				denom = (float)Math.sqrt(denom);
 				float factor = (a * b) / denom;
@@ -2076,7 +2076,7 @@ public final class MathUtil {
 	 */
 	@Deprecated
 	public static boolean isCollinearLines(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4) {
-		return (isParallelLines(x1, y1, x2, y2, x3, y3, x4, y4) && isCollinearPoints(x1, y1, x2, y2, x3, y3));
+		return isParallelLines(x1, y1, x2, y2, x3, y3, x4, y4) && isCollinearPoints(x1, y1, x2, y2, x3, y3);
 	}
 
 	/**
@@ -2117,7 +2117,7 @@ public final class MathUtil {
 	 */
 	@Deprecated
 	public static boolean isCollinearLines(float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3, float x4, float y4, float z4) {
-		return (isParallelLines(x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4) && isCollinearPoints(x1, y1, z1, x2, y2, z2, x3, y3, z3));
+		return isParallelLines(x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4) && isCollinearPoints(x1, y1, z1, x2, y2, z2, x3, y3, z3);
 	}
 
 	/** Compute the zone where the point is against the given rectangle
@@ -2134,8 +2134,8 @@ public final class MathUtil {
 	 */
 	@Deprecated
 	public static int getCohenSutherlandCode(float px, float py, float rxmin, float rymin, float rxmax, float rymax) {
-		assert(rxmin<=rxmax);
-		assert(rymin<=rymax);
+		assert rxmin<=rxmax;
+		assert rymin<=rymax;
 		// initialised as being inside of clip window
 		int code = COHEN_SUTHERLAND_INSIDE;
 		if (px<rxmin) {
