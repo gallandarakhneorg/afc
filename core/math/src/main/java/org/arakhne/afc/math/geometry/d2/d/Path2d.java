@@ -170,9 +170,9 @@ public class Path2d
 	public boolean containsControlPoint(Point2D<?, ?> p) {
 		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
 		double x, y;
-		for(int i=0; i<this.numCoords;) {
-			x = this.coords[i++];
-			y = this.coords[i++];
+		for(int i=0; i<this.numCoords;i+=2) {
+			x = this.coords[i];
+			y = this.coords[i+1];
 			if (x==p.getX() && y==p.getY()) {
 				return true;
 			}
@@ -237,9 +237,9 @@ public class Path2d
 
 	@Override
 	public void translate(double dx, double dy) {
-		for(int i=0; i<this.numCoords;) {
-			this.coords[i++] += dx;
-			this.coords[i++] += dy;
+		for(int i=0; i<this.numCoords;i+=2) {
+			this.coords[i] += dx;
+			this.coords[i+1] += dy;
 		}
 		Rectangle2d bb;
 		bb = this.logicalBounds==null ? null : this.logicalBounds.get();
@@ -253,11 +253,11 @@ public class Path2d
 	public void transform(Transform2D transform) {
 		assert (transform != null) : "Transformation must be not null"; //$NON-NLS-1$
 		Point2D<?, ?> p = new InnerComputationPoint2afp();
-		for(int i=0; i<this.numCoords;) {
+		for(int i=0; i<this.numCoords;i+=2) {
 			p.set(this.coords[i], this.coords[i+1]);
 			transform.transform(p);
-			this.coords[i++] = p.getX();
-			this.coords[i++] = p.getY();
+			this.coords[i] = p.getX();
+			this.coords[i+1] = p.getY();
 		}
 		this.graphicalBounds = null;
 		this.logicalBounds = null;
@@ -469,11 +469,11 @@ public class Path2d
 		}
 		else {
 			Point2D<?, ?> p = new InnerComputationPoint2afp();
-			for(int i=0; i<clone.length;) {
+			for(int i=0; i<clone.length;i+=2) {
 				p.set(this.coords[i], this.coords[i+1]);
 				transform.transform(p);
-				clone[i++] = p.ix();
-				clone[i++] = p.iy();
+				clone[i] = p.ix();
+				clone[i+1] = p.iy();
 			}
 		}
 		return clone;
@@ -490,11 +490,11 @@ public class Path2d
 		}
 		else {
 			Point2D<?, ?> p = new InnerComputationPoint2afp();
-			for(int i=0; i<clone.length;) {
+			for(int i=0; i<clone.length;i+=2) {
 				p.set(this.coords[i], this.coords[i+1]);
 				transform.transform(p);
-				clone[i++] = (float) p.getX();
-				clone[i++] = (float) p.getY();
+				clone[i] = (float) p.getX();
+				clone[i+1] = (float) p.getY();
 			}
 		}
 		return clone;
@@ -508,11 +508,11 @@ public class Path2d
 		}
 		Point2D<?, ?> p = new InnerComputationPoint2afp();
 		double[] clone = new double[this.numCoords];
-		for(int i=0; i<clone.length;) {
+		for(int i=0; i<clone.length;i+=2) {
 			p.set(this.coords[i], this.coords[i+1]);
 			transform.transform(p);
-			clone[i++] = p.getX();
-			clone[i++] = p.getY();
+			clone[i] = p.getX();
+			clone[i+1] = p.getY();
 		}
 		return clone;
 	}
@@ -522,17 +522,17 @@ public class Path2d
 	public Point2d[] toPointArray(Transform2D transform) {
 		Point2d[] clone = new Point2d[this.numCoords/2];
 		if (transform == null || transform.isIdentity()) {
-			for(int i=0, j=0; j<this.numCoords; ++i) {
+			for(int i=0, j=0; j<this.numCoords; ++i,j+=2) {
 				clone[i] = getGeomFactory().newPoint(
-						this.coords[j++],
-						this.coords[j++]);
+						this.coords[j],
+						this.coords[j+1]);
 			}
 		}
 		else {
-			for(int i=0, j=0; j<clone.length; ++i) {
+			for(int i=0, j=0; j<clone.length; ++i,j+=2) {
 				clone[i] = getGeomFactory().newPoint(
-						this.coords[j++],
-						this.coords[j++]);
+						this.coords[j],
+						this.coords[j+1]);
 				transform.transform(clone[i]);
 			}
 		}

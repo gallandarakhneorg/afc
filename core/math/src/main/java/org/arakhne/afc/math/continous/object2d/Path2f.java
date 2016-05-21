@@ -1381,11 +1381,11 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Shape2f,Re
 	public void transform(Transform2D transform) {
 		if (transform!=null) {
 			Point2D p = new Point2f();
-			for(int i=0; i<this.numCoords;) {
+			for(int i=0; i<this.numCoords;i+=2) {
 				p.set(this.coords[i], this.coords[i+1]);
 				transform.transform(p);
-				this.coords[i++] = p.getX();
-				this.coords[i++] = p.getY();
+				this.coords[i] = p.getX();
+				this.coords[i+1] = p.getY();
 			}
 			this.graphicalBounds = null;
 			this.logicalBounds = null;
@@ -1396,9 +1396,9 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Shape2f,Re
 	 */
 	@Override
 	public void translate(float dx, float dy) {
-		for(int i=0; i<this.numCoords;) {
-			this.coords[i++] += dx;
-			this.coords[i++] += dy;
+		for(int i=0; i<this.numCoords;i+=2) {
+			this.coords[i] += dx;
+			this.coords[i+1] += dy;
 		}
 		Rectangle2f bb;
 		bb = this.logicalBounds==null ? null : this.logicalBounds.get();
@@ -1909,12 +1909,12 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Shape2f,Re
 		}
 		Point2f p = new Point2f();
 		float[] clone = new float[this.numCoords];
-		for(int i=0; i<clone.length;) {
+		for(int i=0; i<clone.length;i+=2) {
 			p.x = this.coords[i];
 			p.y = this.coords[i+1];
 			transform.transform(p);
-			clone[i++] = p.x;
-			clone[i++] = p.y;
+			clone[i] = p.x;
+			clone[i+1] = p.y;
 		}
 		return clone;
 	}
@@ -1943,12 +1943,12 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Shape2f,Re
 		}
 		else {
 			Point2f p = new Point2f();
-			for(int i=0; i<clone.length;) {
+			for(int i=0; i<clone.length;i+=2) {
 				p.x = this.coords[i];
 				p.y = this.coords[i+1];
 				transform.transform(p);
-				clone[i++] = p.x;
-				clone[i++] = p.y;
+				clone[i] = p.x;
+				clone[i+1] = p.y;
 			}
 		}
 		return clone;
@@ -2084,9 +2084,9 @@ public class Path2f extends AbstractShape2f<Path2f> implements Path2D<Shape2f,Re
 	 */
 	boolean containsPoint(Point2D p) {
 		float x, y;
-		for(int i=0; i<this.numCoords;) {
-			x = this.coords[i++];
-			y = this.coords[i++];
+		for(int i=0; i<this.numCoords;i+=2) {
+			x = this.coords[i];
+			y = this.coords[i+1];
 			if (x==p.getX() && y==p.getY()) {
 				return true;
 			}

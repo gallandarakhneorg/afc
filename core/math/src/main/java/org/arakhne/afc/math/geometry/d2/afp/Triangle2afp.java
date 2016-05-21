@@ -328,11 +328,9 @@ public interface Triangle2afp<
 				tx1 - tx3, ty1 - ty3,
 				sx2 - sx1, sy2 - sy1
 		};
-		for (int i = 0; i < coordinates.length;) {
+		for (int i = 0; i < coordinates.length;i+=2) {
 			vx = coordinates[i];
-			++i;
-			vy = coordinates[i];
-			++i;
+			vy = coordinates[i+1];
 			min1 = Vector2D.perpProduct(vx, vy, tx1, ty1);
 			max1 = min1;
 			a = Vector2D.perpProduct(vx, vy, tx2, ty2);
@@ -398,28 +396,20 @@ public interface Triangle2afp<
 				t2x1 - t2x3, t2x3, t2y1 - t2y3, t2y3,
 		};
 		double a, b, c, d, ox, oy;
-		for (int i = 0; i < coordinates.length;) {
+		for (int i = 0; i < coordinates.length;i+=8) {
 			a = coordinates[i];
-			++i;
-			ox = coordinates[i];
-			++i;
-			b = coordinates[i];
-			++i;
-			oy = coordinates[i];
-			++i;
+			ox = coordinates[i+1];
+			b = coordinates[i+2];
+			oy = coordinates[i+3];
 			if ((Vector2D.perpProduct(a, b, t2x1 - ox, t2y1 - oy) <= 0.)
 				&& (Vector2D.perpProduct(a, b, t2x2 - ox, t2y2 - oy) <= 0.)
 				&& (Vector2D.perpProduct(a, b, t2x3 - ox, t2y3 - oy) <= 0.)) {
 				return false;
 			}
-			c = coordinates[i];
-			++i;
-			ox = coordinates[i];
-			++i;
-			d = coordinates[i];
-			++i;
-			oy = coordinates[i];
-			++i;
+			c = coordinates[i+4];
+			ox = coordinates[i+5];
+			d = coordinates[i+6];
+			oy = coordinates[i+7];
 			if ((Vector2D.perpProduct(c, d, t1x1 - ox, t1y1 - oy) <= 0.)
 				&& (Vector2D.perpProduct(c, d, t1x2 - ox, t1y2 - oy) <= 0.)
 				&& (Vector2D.perpProduct(c, d, t1x3 - ox, t1y3 - oy) <= 0.)) {
