@@ -39,6 +39,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  *
  * @author $Author: sgalland$
  * @author $Author: hjaffali$
+ * @author $Author: fozgul$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

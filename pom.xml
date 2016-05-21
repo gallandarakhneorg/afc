@@ -251,6 +251,14 @@
 			</roles>
 		</developer>
 		<developer>
+			<id>fozgul</id>
+			<name>Fevzi OZGUL</name>
+			<email>fevzi.ozgul@devfactory.com</email>
+			<roles>
+				<role>Contributor</role>
+			</roles>
+		</developer>
+		<developer>
 			<id>hjaffali</id>
 			<name>Hamza JAFFALI</name>
 			<email>hamza.jaffali@utbm.fr</email>
@@ -280,6 +288,7 @@
 			<email>mahdi.hannoun@emse.fr</email>
 			<roles>
 				<role>Founder</role>
+				<role>Original Author</role>
 				<role>Contributor</role>
 			</roles>
 		</developer>
@@ -308,6 +317,7 @@
 			<url>http://www.arakhne.org/homes/galland.html</url>
 			<roles>
 				<role>Founder</role>
+				<role>Original Author</role>
 				<role>Architect</role>
 				<role>Senior Developer</role>
 			</roles>

@@ -40,6 +40,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @param <V> is the type of the vectors.
  * @param <B> is the type of the bounding boxes.
  * @author $Author: sgalland$
+ * @author $Author: fozgul$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

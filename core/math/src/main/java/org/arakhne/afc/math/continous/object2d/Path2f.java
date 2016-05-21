@@ -41,6 +41,7 @@ import org.arakhne.afc.math.matrix.Transform2D;
 /** A generic path.
  *
  * @author $Author: sgalland$
+ * @author $Author: fozgul$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
