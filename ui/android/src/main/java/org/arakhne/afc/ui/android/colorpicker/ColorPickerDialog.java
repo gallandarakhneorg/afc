@@ -224,9 +224,9 @@ public class ColorPickerDialog extends AlertDialog {
 		float y = this.viewHue.getMeasuredHeight() - (getHue() * this.viewHue.getMeasuredHeight() / 360.f);
 		if (y == this.viewHue.getMeasuredHeight()) y = 0.f;
 		RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) this.viewCursor.getLayoutParams();
-		layoutParams.leftMargin = (int) (this.viewHue.getLeft() - Math.floor(this.viewCursor.getMeasuredWidth() / 2) - this.viewContainer.getPaddingLeft());
+		layoutParams.leftMargin = (int) (this.viewHue.getLeft() - this.viewCursor.getMeasuredWidth() / 2 - this.viewContainer.getPaddingLeft());
 
-		layoutParams.topMargin = (int) (this.viewHue.getTop() + y - Math.floor(this.viewCursor.getMeasuredHeight() / 2) - this.viewContainer.getPaddingTop());
+		layoutParams.topMargin = (int) (this.viewHue.getTop() + y -  this.viewCursor.getMeasuredHeight() / 2  - this.viewContainer.getPaddingTop());
 
 		this.viewCursor.setLayoutParams(layoutParams);
 	}
@@ -235,8 +235,8 @@ public class ColorPickerDialog extends AlertDialog {
 		float x = getSaturation() * this.viewSatVal.getMeasuredWidth();
 		float y = (1.f - getValue()) * this.viewSatVal.getMeasuredHeight();
 		RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) this.viewTarget.getLayoutParams();
-		layoutParams.leftMargin = (int) (this.viewSatVal.getLeft() + x - Math.floor(this.viewTarget.getMeasuredWidth() / 2) - this.viewContainer.getPaddingLeft());
-		layoutParams.topMargin = (int) (this.viewSatVal.getTop() + y - Math.floor(this.viewTarget.getMeasuredHeight() / 2) - this.viewContainer.getPaddingTop());
+		layoutParams.leftMargin = (int) (this.viewSatVal.getLeft() + x -  this.viewTarget.getMeasuredWidth() / 2 - this.viewContainer.getPaddingLeft());
+		layoutParams.topMargin = (int) (this.viewSatVal.getTop() + y -  this.viewTarget.getMeasuredHeight() / 2 - this.viewContainer.getPaddingTop());
 		this.viewTarget.setLayoutParams(layoutParams);
 	}
 
