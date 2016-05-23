@@ -77,7 +77,7 @@ public interface MultiShape3ad<
 
 	@Pure
 	@Override
-	default boolean intersects(RectangularPrism3ad<?, ?, ?, ?, ?, ?> s) {
+	default boolean intersects(Prism3ad<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Rectangle must be not null"; //$NON-NLS-1$
 		if (s.intersects(toBoundingBox())) {
 			for (CT shape : getBackendDataList()) {
@@ -225,7 +225,7 @@ public interface MultiShape3ad<
 			while (iterator.hasNext()) {
 				CT element = iterator.next();
 				element.toBoundingBox(subbounds);
-//				box.setUnion(subbounds);		// TODO
+				box.setUnion(subbounds);
 			}
 		}
 	}

@@ -110,14 +110,14 @@ public interface Shape3ad<
 	@Pure
 	boolean intersects(Sphere3ad<?, ?, ?, ?, ?, ?> s);
 
-	/** Replies if this shape is intersecting the given Rectangular Prism.
+	/** Replies if this shape is intersecting the given Prism.
 	 * 
 	 * @param s
 	 * @return <code>true</code> if this shape is intersecting the given shape;
 	 * <code>false</code> if there is no intersection.
 	 */
 	@Pure
-	boolean intersects(RectangularPrism3ad<?, ?, ?, ?, ?, ?> s);
+	boolean intersects(Prism3ad<?, ?, ?, ?, ?, ?> s);
 
 	/** Replies if this shape is intersecting the given line.
 	 * 
