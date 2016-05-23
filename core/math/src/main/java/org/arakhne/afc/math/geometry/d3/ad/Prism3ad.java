@@ -289,7 +289,11 @@ public interface Prism3ad<
 	 * @param cy the center y.
 	 * @param cz the center z.
 	 */
-	void setCenter(double cx, double cy, double cz);
+	default void setCenter(double cx, double cy, double cz) {
+		setCenterX(cx);
+		setCenterY(cy);
+		setCenterZ(cz);
+	}
 
 	/** Set the center's x.
 	 * 
