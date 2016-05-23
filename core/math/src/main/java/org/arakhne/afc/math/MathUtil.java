@@ -25,6 +25,8 @@ import static org.arakhne.afc.math.MathConstants.COHEN_SUTHERLAND_INSIDE;
 import static org.arakhne.afc.math.MathConstants.COHEN_SUTHERLAND_LEFT;
 import static org.arakhne.afc.math.MathConstants.COHEN_SUTHERLAND_RIGHT;
 import static org.arakhne.afc.math.MathConstants.COHEN_SUTHERLAND_TOP;
+import static org.arakhne.afc.math.MathConstants.COHEN_SUTHERLAND_FRONT;
+import static org.arakhne.afc.math.MathConstants.COHEN_SUTHERLAND_BACK;
 
 import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -488,7 +490,7 @@ public final class MathUtil {
 		}
 		return maxBounds;
 	}
-
+	
 	/** Compute the zone where the point is against the given rectangle
 	 * according to the <a href="http://en.wikipedia.org/wiki/Cohen%E2%80%93Sutherland_algorithm">Cohen-Sutherland algorithm</a>.
 	 *
@@ -529,7 +531,7 @@ public final class MathUtil {
 		}
 		return code;
 	}
-
+	
 	/** Compute the zone where the point is against the given rectangle
 	 * according to the <a href="http://en.wikipedia.org/wiki/Cohen%E2%80%93Sutherland_algorithm">Cohen-Sutherland algorithm</a>.
 	 *
@@ -570,6 +572,104 @@ public final class MathUtil {
 		if (py > rymax) {
 			// to the top of clip window
 			code |= COHEN_SUTHERLAND_TOP;
+		}
+		return code;
+	}
+
+	/** Compute the zone where the point is against the given rectangle
+	 * according to the <a href="http://en.wikipedia.org/wiki/Cohen%E2%80%93Sutherland_algorithm">Cohen-Sutherland algorithm</a>.
+	 * 
+	 * @param px is the coordinates of the point.
+	 * @param py is the coordinates of the point.
+	 * @param pz is the coordinates of the point.
+	 * @param rxmin is the min of the coordinates of the rectangle.
+	 * @param rymin is the min of the coordinates of the rectangle.
+	 * @param rzmin is the min of the coordinates of the rectangle.
+	 * @param rxmax is the max of the coordinates of the rectangle.
+	 * @param rymax is the max of the coordinates of the rectangle.
+	 * @param rzmax is the max of the coordinates of the rectangle.
+	 * @return the zone
+	 */
+	@Pure
+	public static int getCohenSutherlandCode3D(int px, int py, int pz, int rxmin, int rymin, int rzmin, int rxmax, int rymax, int rzmax) {
+		assert (rxmin <= rxmax) : "rxmin must be lower or equal to rxmax"; //$NON-NLS-1$
+		assert (rymin <= rymax) : "rymin must be lower or equal to rymax"; //$NON-NLS-1$
+		assert (rzmin <= rzmax) : "rzmin must be lower or equal to rzmax"; //$NON-NLS-1$
+		// initialised as being inside of clip window
+		int code = COHEN_SUTHERLAND_INSIDE;
+		if (px<rxmin) {
+			// to the left of clip window
+			code |= COHEN_SUTHERLAND_LEFT;
+		}
+		if (px>rxmax) {
+			// to the right of clip window
+			code |= COHEN_SUTHERLAND_RIGHT;
+		}
+		if (py<rymin) {
+			// to the bottom of clip window
+			code |= COHEN_SUTHERLAND_BOTTOM;
+		}
+		if (py>rymax) {
+			// to the top of clip window
+			code |= COHEN_SUTHERLAND_TOP;
+		}
+		if (pz<rzmin) {
+			// to the front of clip window
+			code |= COHEN_SUTHERLAND_FRONT;
+		}
+		if (pz>rzmax) {
+			// to the back of clip window
+			code |= COHEN_SUTHERLAND_BACK;
+		}
+		return code;
+	}
+
+	/** Compute the zone where the point is against the given rectangle
+	 * according to the <a href="http://en.wikipedia.org/wiki/Cohen%E2%80%93Sutherland_algorithm">Cohen-Sutherland algorithm</a>.
+	 * 
+	 * <p>This function considers that if a point coordinate is equal to the a border coordinate of the rectangle,
+	 * it is inside the rectangle. 
+	 * 
+	 * @param px is the coordinates of the point.
+	 * @param py is the coordinates of the point.
+	 * @param pz is the coordinates of the point.
+	 * @param rxmin is the min of the coordinates of the rectangle.
+	 * @param rymin is the min of the coordinates of the rectangle.
+	 * @param rzmin is the min of the coordinates of the rectangle.
+	 * @param rxmax is the max of the coordinates of the rectangle.
+	 * @param rymax is the max of the coordinates of the rectangle.
+	 * @param rzmax is the max of the coordinates of the rectangle.
+	 * @return the zone
+	 */
+	@Pure
+	public static int getCohenSutherlandCode3D(double px, double py, double pz, double rxmin, double rymin, double rzmin, double rxmax, double rymax, double rzmax) {
+		assert (rxmin <= rxmax) : "rxmin must be lower or equal to rxmax"; //$NON-NLS-1$
+		assert (rymin <= rymax) : "rymin must be lower or equal to rymax"; //$NON-NLS-1$
+		// initialised as being inside of clip window
+		int code = COHEN_SUTHERLAND_INSIDE;
+		if (px < rxmin) {
+			// to the left of clip window
+			code |= COHEN_SUTHERLAND_LEFT;
+		}
+		if (px > rxmax) {
+			// to the right of clip window
+			code |= COHEN_SUTHERLAND_RIGHT;
+		}
+		if (py < rymin) {
+			// to the bottom of clip window
+			code |= COHEN_SUTHERLAND_BOTTOM;
+		}
+		if (py > rymax) {
+			// to the top of clip window
+			code |= COHEN_SUTHERLAND_TOP;
+		}
+		if (pz<rzmin) {
+			// to the front of clip window
+			code |= COHEN_SUTHERLAND_FRONT;
+		}
+		if (pz>rzmax) {
+			// to the back of clip window
+			code |= COHEN_SUTHERLAND_BACK;
 		}
 		return code;
 	}
