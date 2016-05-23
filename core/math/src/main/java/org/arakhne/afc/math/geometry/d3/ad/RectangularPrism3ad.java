@@ -572,10 +572,10 @@ public interface RectangularPrism3ad<
 	default boolean intersects(Sphere3ad<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Circle must be not null"; //$NON-NLS-1$
 		return Sphere3ad.intersectsCircleRectangle(
-				s.getX(), s.getY(),
+				s.getX(), s.getY(), s.getZ(),
 				s.getRadius(),
-				getMinX(), getMinY(),
-				getMaxX(), getMaxY());
+				getMinX(), getMinY(), getMinZ(),
+				getMaxX(), getMaxY(), getMaxZ());
 	}
 	
 	@Pure
