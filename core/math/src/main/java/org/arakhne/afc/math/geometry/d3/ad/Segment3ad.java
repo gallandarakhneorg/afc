@@ -816,20 +816,24 @@ public interface Segment3ad<
 	 * 
 	 * @param p1x
 	 * @param p1y
+	 * @param p1z
 	 * @param p2x
 	 * @param p2y
+	 * @param p2z
 	 * @param factor is between 0 and 1; 0 for p1, and 1 for p2.
 	 * @param result the interpolate point.
 	 */
 	@Pure
-	static void interpolate(double p1x, double p1y, double p2x, double p2y, double factor, Point2D<?, ?> result) {
+	static void interpolate(double p1x, double p1y, double p1z, double p2x, double p2y, double p2z, double factor, Point3D<?, ?> result) {
 		assert (result != null) : "Result must be not null"; //$NON-NLS-1$
 		assert (factor >= 0. && factor <= 1.) : "Factor must be in [0;1]"; //$NON-NLS-1$
 		double vx = p2x - p1x;
 		double vy = p2y - p1y;
+		double vz = p2z - p1z;
 		result.set(
 				p1x + factor * vx,
-				p1y + factor * vy);
+				p1y + factor * vy,
+				p1z + factor * vz);
 	}
 
 	/** Replies the point on the segment that is farthest to the given point.
@@ -2138,12 +2142,14 @@ public interface Segment3ad<
 					if (code3 == code1) {
 						x0 = x;
 						y0 = y;
-						code1 = MathUtil.getCohenSutherlandCode(x0, y0, rxmin, rymin, rxmax, rymax);
+						z0 = z;
+						code1 = MathUtil.getCohenSutherlandCode3D(x0, y0, z0, rxmin, rymin, rzmin, rxmax, rymax, rzmax);
 					}
 					else {
 						x1 = x;
 						y1 = y;
-						code2 = MathUtil.getCohenSutherlandCode(x1, y1, rxmin, rymin, rxmax, rymax);
+						z1 = z;
+						code2 = MathUtil.getCohenSutherlandCode3D(x1, y1, z1, rxmin, rymin, rzmin, rxmax, rymax, rzmax);
 					}
 				}
 			}
