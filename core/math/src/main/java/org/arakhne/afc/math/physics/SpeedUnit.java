@@ -1,39 +1,41 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (C) 2010-2011 Janus Core Developers
- * Copyright (C) 2012 Stéphane GALLAND
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package org.arakhne.afc.math.physics;
 
 import java.util.concurrent.TimeUnit;
 
-import org.arakhne.afc.vmutil.locale.Locale;
 import org.eclipse.xtext.xbase.lib.Pure;
+
+import org.arakhne.afc.vmutil.locale.Locale;
 
 /**
  * A <tt>SpeedUnit</tt> represents speed at a given unit of
  * granularity.
  *
- * @see MeasureUnitUtil
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 13.0
+ * @see MeasureUnitUtil
  */
 public enum SpeedUnit {
 
@@ -48,12 +50,12 @@ public enum SpeedUnit {
 	KILOMETERS_PER_HOUR;
 
 	/** Replies the time unit that corresponds to this speed unit.
-	 * 
+	 *
 	 * @return the time unit.
 	 */
 	@Pure
 	public TimeUnit toTimeUnit() {
-		switch(this) {
+		switch (this) {
 		case KILOMETERS_PER_HOUR:
 			return TimeUnit.HOURS;
 		case METERS_PER_SECOND:
@@ -63,14 +65,14 @@ public enum SpeedUnit {
 			throw new IllegalArgumentException();
 		}
 	}
-	
+
 	/** Replies the space unit that corresponds to this speed unit.
-	 * 
+	 *
 	 * @return the space unit.
 	 */
 	@Pure
 	public SpaceUnit toSpaceUnit() {
-		switch(this) {
+		switch (this) {
 		case KILOMETERS_PER_HOUR:
 			return SpaceUnit.KILOMETER;
 		case METERS_PER_SECOND:
@@ -86,33 +88,37 @@ public enum SpeedUnit {
 	 * current speed unit, or the speed unit itself if
 	 * it is the smallest.
 	 * @return the speed unit just lower than the
-	 * current speed unit, or the speed unit itself if
-	 * it is the smallest.
+	 *     current speed unit, or the speed unit itself if
+	 *     it is the smallest.
 	 */
 	@Pure
 	public SpeedUnit lower() {
-		int o = ordinal();
-		if (o<=0) return this;
-		return values()[o-1];
+		final int o = ordinal();
+		if (o <= 0) {
+			return this;
+		}
+		return values()[o - 1];
 	}
 
 	/** Replies the speed unit just upper than the
 	 * current speed unit, or the speed unit itself if
 	 * it is the uppest.
 	 * @return the speed unit just upper than the
-	 * current speed unit, or the speed unit itself if
-	 * it is the uppest.
+	 *     current speed unit, or the speed unit itself if
+	 *     it is the uppest.
 	 */
 	@Pure
 	public SpeedUnit upper() {
-		int o = ordinal();
-		SpeedUnit[] units = values();
-		if (o>=units.length-1) return this;
-		return units[o+1];
+		final int o = ordinal();
+		final SpeedUnit[] units = values();
+		if (o >= units.length - 1) {
+			return this;
+		}
+		return units[o + 1];
 	}
 
 	/** Replies the localized symbol for this space unit.
-	 * 
+	 *
 	 * @return the localized symbol for this space unit.
 	 */
 	@Pure

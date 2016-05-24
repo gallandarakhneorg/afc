@@ -1,29 +1,29 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (C) 2010-2013 Stephane GALLAND.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.arakhne.afc.math.geometry.d2.i;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.ai.Rectangle2ai;
-import org.eclipse.xtext.xbase.lib.Pure;
 
 /** A rectangle with 2 integer numbers.
  *
@@ -34,7 +34,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @since 13.0
  */
 public class Rectangle2i extends AbstractShape2i<Rectangle2i>
-	implements Rectangle2ai<Shape2i<?>, Rectangle2i, PathElement2i, Point2i, Vector2i, Rectangle2i> {
+		implements Rectangle2ai<Shape2i<?>, Rectangle2i, PathElement2i, Point2i, Vector2i, Rectangle2i> {
 
 	private static final long serialVersionUID = -527939826840504763L;
 
@@ -45,46 +45,49 @@ public class Rectangle2i extends AbstractShape2i<Rectangle2i>
 	private int maxx;
 
 	private int maxy;
-	
 
-	/**
+
+	/** Construct an empty rectangle.
 	 */
 	public Rectangle2i() {
 		super();
 	}
 
-	/**
+	/** Construct a rectangle with the given minimum and maximum corners.
 	 * @param min is the min corner of the rectangle.
 	 * @param max is the max corner of the rectangle.
 	 */
 	public Rectangle2i(Point2D<?, ?> min, Point2D<?, ?> max) {
-		assert (min != null) : "Minimum corner must be not null"; //$NON-NLS-1$
-		assert (max != null) : "Maximum corner must be not null"; //$NON-NLS-1$
+		assert min != null : "Minimum corner must be not null"; //$NON-NLS-1$
+		assert max != null : "Maximum corner must be not null"; //$NON-NLS-1$
 		setFromCorners(min.ix(), min.iy(), max.ix(), max.iy());
 	}
 
-	/**
-	 * @param x
-	 * @param y
-	 * @param width
-	 * @param height
+	/** Construct a rectangle with the given minimum corner and sizes.
+	 * @param x x coordinate of the minimum corner.
+	 * @param y y coordinate of the minimum corner.
+	 * @param width width of the rectangle.
+	 * @param height height of the rectangle.
 	 */
 	public Rectangle2i(int x, int y, int width, int height) {
-		assert (width >= 0.) : "Width must be positive or zero"; //$NON-NLS-1$
-		assert (height >= 0.) : "Height must be positive or zero"; //$NON-NLS-1$
+		assert width >= 0. : "Width must be positive or zero"; //$NON-NLS-1$
+		assert height >= 0. : "Height must be positive or zero"; //$NON-NLS-1$
 		set(x, y, width, height);
 	}
-	
-	/**
-	 * @param r
+
+	/** Constructor by copy.
+	 * @param rectangle the rectangle to copy.
 	 */
-	public Rectangle2i(Rectangle2i r) {
-		set(r);
+	public Rectangle2i(Rectangle2i rectangle) {
+		set(rectangle);
 	}
 
 	@Override
 	public void setFromCorners(int x1, int y1, int x2, int y2) {
-		int a, b, c, d;
+		final int a;
+		final int b;
+		final int c;
+		final int d;
 		if (x1 <= x2) {
 			a = x1;
 			b = x2;
@@ -190,7 +193,7 @@ public class Rectangle2i extends AbstractShape2i<Rectangle2i>
 	@Pure
 	@Override
 	public String toString() {
-		StringBuilder b = new StringBuilder();
+		final StringBuilder b = new StringBuilder();
 		b.append("["); //$NON-NLS-1$
 		b.append(getMinX());
 		b.append(";"); //$NON-NLS-1$

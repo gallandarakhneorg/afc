@@ -1,25 +1,23 @@
-/* 
+/*
  * $Id$
- * 
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (C) 2012 Stephane GALLAND.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package org.arakhne.afc.progress;
 
 /**
@@ -32,29 +30,29 @@ package org.arakhne.afc.progress;
  * @mavenartifactid $ArtifactId$
  */
 public interface Progression {
-	
+
 	/** Add a listener on this model.
-	 * 
+	 *
 	 * @param listener is the listener to add.
 	 */
-	public void addProgressionListener(ProgressionListener listener);
+	void addProgressionListener(ProgressionListener listener);
 
 	/** Remove a listener on this model.
-	 * 
+	 *
 	 * @param listener is the listener to remove.
 	 */
-	public void removeProgressionListener(ProgressionListener listener);
+	void removeProgressionListener(ProgressionListener listener);
 
 	/** Returns the minimum acceptable value.
 	 *
 	 * @return the value of the minimum property
 	 * @see #setMinimum
 	 */
-	public int getMinimum();
+	int getMinimum();
 
 
-	/** Sets the model's minimum to <I>newMinimum</I>.   The 
-	 * other properties may be changed as well, to ensure 
+	/** Sets the model's minimum to <I>newMinimum</I>. The
+	 * other properties may be changed as well, to ensure
 	 * that:
 	 * <pre>
 	 * minimum &lt;= value &lt;= maximum
@@ -63,7 +61,7 @@ public interface Progression {
 	 * @param newMinimum the model's new minimum
 	 * @see #getMinimum
 	 */
-	public void setMinimum(int newMinimum);
+	void setMinimum(int newMinimum);
 
 
 	/**
@@ -72,11 +70,11 @@ public interface Progression {
 	 * @return the value of the maximum property.
 	 * @see #setMaximum
 	 */
-	public int getMaximum();
+	int getMaximum();
 
 
 	/**
-	 * Sets the model's maximum to <I>newMaximum</I>. The other 
+	 * Sets the model's maximum to <I>newMaximum</I>. The other
 	 * properties may be changed as well, to ensure that
 	 * <pre>
 	 * minimum &lt;= value &lt;= maximum
@@ -85,18 +83,18 @@ public interface Progression {
 	 * @param newMaximum the model's new maximum
 	 * @see #getMaximum
 	 */
-	public void setMaximum(int newMaximum);
+	void setMaximum(int newMaximum);
 
 
 	/**
 	 * Returns the model's current value.  Note that the upper
-	 * limit on the model's value is <code>maximum</code> 
+	 * limit on the model's value is <code>maximum</code>
 	 * and the lower limit is <code>minimum</code>.
 	 *
 	 * @return  the model's value
 	 * @see     #setValue
 	 */
-	public int getValue();
+	int getValue();
 
 	/**
 	 * Returns the model's current value in percent of pregression.
@@ -105,7 +103,7 @@ public interface Progression {
 	 * @see     #getValue()
 	 * @see     #getProgressionFactor()
 	 */
-	public double getPercent();
+	double getPercent();
 
 	/**
 	 * Returns the model's current value in percent of pregression.
@@ -114,7 +112,7 @@ public interface Progression {
 	 * @see     #getValue()
 	 * @see     #getPercent()
 	 */
-	public double getProgressionFactor();
+	double getProgressionFactor();
 
 	/**
 	 * Sets the model's current value to <code>newValue</code> if <code>newValue</code>
@@ -122,14 +120,14 @@ public interface Progression {
 	 * <pre>
 	 * minimum &lt;= value &lt;= maximum
 	 * </pre>
-	 * Otherwise, if <code>newValue</code> is less than <code>minimum</code> 
-	 * it's set to <code>minimum</code>, if its greater than 
+	 * Otherwise, if <code>newValue</code> is less than <code>minimum</code>
+	 * it's set to <code>minimum</code>, if its greater than
 	 * <code>maximum</code> then it's set to <code>maximum</code>.
 	 *
 	 * @param newValue the model's new value
 	 * @see #getValue
 	 */
-	public void setValue(int newValue);
+	void setValue(int newValue);
 
 	/**
 	 * Sets the model's current value to <code>newValue</code> if <code>newValue</code>
@@ -137,15 +135,15 @@ public interface Progression {
 	 * <pre>
 	 * minimum &lt;= value &lt;= maximum
 	 * </pre>
-	 * Otherwise, if <code>newValue</code> is less than <code>minimum</code> 
-	 * it's set to <code>minimum</code>, if its greater than 
+	 * Otherwise, if <code>newValue</code> is less than <code>minimum</code>
+	 * it's set to <code>minimum</code>, if its greater than
 	 * <code>maximum</code> then it's set to <code>maximum</code>.
 	 *
 	 * @param newValue the model's new value
 	 * @param comment is the comment to display.
 	 * @see #getValue
 	 */
-	public void setValue(int newValue, String comment);
+	void setValue(int newValue, String comment);
 
 	/**
 	 * This attribute indicates that any upcoming changes to the value
@@ -154,22 +152,21 @@ public interface Progression {
 	 * and will be set to false when the value has finished changing.  Normally
 	 * this allows a listener to only take action when the final value change in
 	 * committed, instead of having to do updates for all intermediate values.
-	 * 
-	 * @param b true if the upcoming changes to the value property are part of a series
+	 *
+	 * @param adjusting <code>true</code> if the upcoming changes to the value property are part of a series
 	 * @see #subTask(int)
 	 */
-	public void setAdjusting(boolean b);
+	void setAdjusting(boolean adjusting);
 
 
 	/**
-	 * Returns true if the current changes to the value property are part 
+	 * Returns true if the current changes to the value property are part
 	 * of a series of changes.
-	 * 
-	 * @return the valueIsAdjustingProperty.  
+	 *
+	 * @return the valueIsAdjustingProperty.
 	 * @see #setAdjusting(boolean)
 	 */
-	public boolean isAdjusting();
-
+	boolean isAdjusting();
 
 	/**
 	 * This method sets all of the model's data with a single method call.
@@ -177,20 +174,20 @@ public interface Progression {
 	 * convenient when you need to adjust all the model data simultaneously and
 	 * do not want individual change events to occur.
 	 *
-	 * @param value  an int giving the current value 
+	 * @param value  an int giving the current value
 	 * @param min    an int giving the minimum value
 	 * @param max    an int giving the maximum value
 	 * @param adjusting a boolean, true if a series of changes are in
 	 *                    progress
 	 * @param comment is the comment associated to the current task, or <code>null</code>
-	 * 
+	 *
 	 * @see #setValue
 	 * @see #setMinimum
 	 * @see #setMaximum
 	 * @see #setComment(String)
 	 * @see #setAdjusting(boolean)
 	 */
-	public void setProperties(int value, int min, int max, boolean adjusting, String comment);
+	void setProperties(int value, int min, int max, boolean adjusting, String comment);
 
 	/**
 	 * This method sets all of the model's data with a single method call.
@@ -198,19 +195,19 @@ public interface Progression {
 	 * convenient when you need to adjust all the model data simultaneously and
 	 * do not want individual change events to occur.
 	 *
-	 * @param value  an int giving the current value 
+	 * @param value  an int giving the current value
 	 * @param min    an int giving the minimum value
 	 * @param max    an int giving the maximum value
 	 * @param adjusting a boolean, true if a series of changes are in
-	 *                    progress
-	 * 
+	 *     progress
+	 *
 	 * @see #setValue
 	 * @see #setMinimum
 	 * @see #setMaximum
 	 * @see #setComment(String)
 	 * @see #setAdjusting(boolean)
 	 */
-	public void setProperties(int value, int min, int max, boolean adjusting);
+	void setProperties(int value, int min, int max, boolean adjusting);
 
 	/**
 	 * Sets the <code>indeterminate</code> property of the task progression,
@@ -220,11 +217,11 @@ public interface Progression {
 	 * indicating that an operation of unknown length is occurring.
 	 *
 	 * @param newValue	<code>true</code> if the progress bar
-	 * 			should change to indeterminate mode;
-	 * 			<code>false</code> if it should revert to normal.
+	 *     should change to indeterminate mode;
+	 * 	   <code>false</code> if it should revert to normal.
 	 * @see #isIndeterminate
 	 */
-	public void setIndeterminate(boolean newValue);
+	void setIndeterminate(boolean newValue);
 
 	/**
 	 * Returns the value of the <code>indeterminate</code> property.
@@ -232,205 +229,205 @@ public interface Progression {
 	 * @return the value of the <code>indeterminate</code> property
 	 * @see    #setIndeterminate
 	 */
-	public boolean isIndeterminate();
-	
+	boolean isIndeterminate();
+
 	/** Set the comment associated to the currect task.
-	 * <p>
-	 * If the given string is <code>null</code> or empty,
+	 *
+	 * <p>If the given string is <code>null</code> or empty,
 	 * the current task is assumed to not have a comment.
-	 * 
+	 *
 	 * @param comment is the comment for the current task.
 	 */
-	public void setComment(String comment);
+	void setComment(String comment);
 
 	/** Replies the comment associated to the currect task.
-	 * 
+	 *
 	 * @return the comment for the current task or <code>null</code>
-	 * if the current task has not any comment.
+	 *     if the current task has not any comment.
 	 */
-	public String getComment();
+	String getComment();
 
 	/** Enter into a subtask.
 	 * When a sub task is created, it will progress as a sub part of
 	 * the main task.
-	 * <p>
-	 * The minimum value of the subtask in its parent
+	 *
+	 * <p>The minimum value of the subtask in its parent
 	 * will correspond to the
 	 * current value of the main task. The maximum value of the
-	 * sub task in its parent 
+	 * sub task in its parent
 	 * will correspond to the current value of the main task
-	 * plus the given <var>extend</var>.
-	 * <p>
-	 * If the <var>extend</var> plus the current value is exceeding
+	 * plus the given {@code extend}.
+	 *
+	 * <p>If the {@code extend} plus the current value is exceeding
 	 * the maximum value, it will be bounded to the maximum.
-	 * 
+	 *
 	 * @param extent is the size of the sub task inside the main task.
 	 * @param min is the minimum value inside the subtask.
 	 * @param max is the maximum value inside the subtask.
 	 * @return the subtask progression
 	 */
-	public Progression subTask(int extent, int min, int max);
+	Progression subTask(int extent, int min, int max);
 
 	/** Enter into a subtask.
 	 * When a sub task is created, it will progress as a sub part of
 	 * the main task.
-	 * <p>
-	 * The minimum value of the subtask in its parent
+	 *
+	 * <p>The minimum value of the subtask in its parent
 	 * will correspond to the
 	 * current value of the main task. The maximum value of the
-	 * sub task in its parent 
+	 * sub task in its parent
 	 * will correspond to the current value of the main task
-	 * plus the given <var>extend</var>.
-	 * <p>
-	 * If the <var>extend</var> plus the current value is exceeding
+	 * plus the given {@code extend}.
+	 *
+	 * <p>If the {@code extend} plus the current value is exceeding
 	 * the maximum value, it will be bounded to the maximum.
-	 * <p>
-	 * The minimum and maximum values of the subtask should be manually
+	 *
+	 * <p>The minimum and maximum values of the subtask should be manually
 	 * set the the caller.
-	 * 
+	 *
 	 * @param extent is the size of the sub task inside the main task.
 	 * @return the subtask progression
 	 */
-	public Progression subTask(int extent);
+	Progression subTask(int extent);
 
 	/** Enter into a subtask.
 	 * When a sub task is created, it will progress as a sub part of
 	 * the main task.
-	 * <p>
-	 * The minimum value of the subtask in its parent
+	 *
+	 * <p>The minimum value of the subtask in its parent
 	 * will correspond to the
 	 * current value of the main task. The maximum value of the
-	 * sub task in its parent 
+	 * sub task in its parent
 	 * will correspond to the current value of the main task
-	 * plus the given <var>extend</var>.
-	 * <p>
-	 * If the <var>extend</var> plus the current value is exceeding
+	 * plus the given {@code extend}.
+	 *
+	 * <p>If the {@code extend} plus the current value is exceeding
 	 * the maximum value, it will be bounded to the maximum.
-	 * 
+	 *
 	 * @param extent is the size of the sub task inside the main task.
 	 * @param min is the minimum value inside the subtask.
 	 * @param max is the maximum value inside the subtask.
 	 * @param overwriteComment indicates if the comment of this task model may
-	 * be overwritten by the comment of the subtask when it is disconnected.
+	 *     be overwritten by the comment of the subtask when it is disconnected.
 	 * @return the subtask progression
 	 */
-	public Progression subTask(int extent, int min, int max, boolean overwriteComment);
+	Progression subTask(int extent, int min, int max, boolean overwriteComment);
 
 	/** Enter into a subtask.
 	 * When a sub task is created, it will progress as a sub part of
 	 * the main task.
-	 * <p>
-	 * The minimum value of the subtask in its parent
+	 *
+	 * <p>The minimum value of the subtask in its parent
 	 * will correspond to the
 	 * current value of the main task. The maximum value of the
-	 * sub task in its parent 
+	 * sub task in its parent
 	 * will correspond to the current value of the main task
-	 * plus the given <var>extend</var>.
-	 * <p>
-	 * If the <var>extend</var> plus the current value is exceeding
+	 * plus the given {@code extend}.
+	 *
+	 * <p>If the {@code extend} plus the current value is exceeding
 	 * the maximum value, it will be bounded to the maximum.
-	 * <p>
-	 * The minimum and maximum values of the subtask should be manually
+	 *
+	 * <p>The minimum and maximum values of the subtask should be manually
 	 * set the the caller.
-	 * 
+	 *
 	 * @param extent is the size of the sub task inside the main task.
 	 * @param overwriteComment indicates if the comment of this task model may
-	 * be overwritten by the comment of the subtask when it is disconnected.
+	 *     be overwritten by the comment of the subtask when it is disconnected.
 	 * @return the subtask progression
 	 */
-	public Progression subTask(int extent, boolean overwriteComment);
+	Progression subTask(int extent, boolean overwriteComment);
 
 	/** Replies the current subtask of this task model.
-	 * 
+	 *
 	 * @return the current subtask or <code>null</code> this task was
-	 * not decomposed.
+	 *     not decomposed.
 	 */
-	public Progression getSubTask();
+	Progression getSubTask();
 
 	/**
 	 * Ensure that there is no opened subtask.
 	 * If a subtask is existing, it is ended().
 	 */
-	public void ensureNoSubTask();
+	void ensureNoSubTask();
 
 	/** Replies the super task of this task model.
-	 * 
+	 *
 	 * @return the super task or <code>null</code> this task was
-	 * not a decomposition of a super task.
+	 *     not a decomposition of a super task.
 	 */
-	public Progression getSuperTask();
+	Progression getSuperTask();
 
 	/** Force this progression task to end its indicator.
 	 */
-	public void end();
+	void end();
 
 	/** Replies if is task model is a root model.
-	 * <p>
-	 * {@code isRootMode() == (getTaskDepth()==0)}
-	 * 
+	 *
+	 * <p>{@code isRootMode() == (getTaskDepth()==0)}
+	 *
 	 * @return <code>true</code> if this model is a root model,
-	 * otherwise <code>false</code>
+	 *     otherwise <code>false</code>
 	 */
-	public boolean isRootModel();
+	boolean isRootModel();
 
 	/** Replies the depth level of this task.
 	 * The root task (ie. a task without parent task)
 	 * has always a depth of {@code 0}. A subtask of the
 	 * root task has a depth of {@code 1}. A subtask
 	 * of this subtask has a depth of {@code 2}, etc.
-	 * <p>
-	 * {@code isRootMode() == (getTaskDepth()==0)}
-	 * 
+	 *
+	 * <p>{@code isRootMode() == (getTaskDepth()==0)}
+	 *
 	 * @return the depth of the task.
 	 */
-	public int getTaskDepth();
-	
+	int getTaskDepth();
+
 	/** Increment the current value by the given amount.
-	 * <p>
-	 * This function is equivalent to:
+	 *
+	 * <p>This function is equivalent to:
 	 * <pre><code>
 	 * this.setValue(this.getValue()+amount);
 	 * </code></pre>
-	 * 
+	 *
 	 * @param amount is the amount to add to the current value.
 	 * @since 11.0
 	 */
-	public void increment(int amount);
+	void increment(int amount);
 
 	/** Increment the current value by the given amount.
-	 * <p>
-	 * This function is equivalent to:
+	 *
+	 * <p>This function is equivalent to:
 	 * <pre><code>
 	 * this.setValue(this.getValue()+amount, comment);
 	 * </code></pre>
-	 * 
+	 *
 	 * @param amount is the amount to add to the current value.
 	 * @param comment is the comment to display.
 	 * @since 11.0
 	 */
-	public void increment(int amount, String comment);
+	void increment(int amount, String comment);
 
 	/** Increment the current value by 1.
-	 * <p>
-	 * This function is equivalent to:
+	 *
+	 * <p>This function is equivalent to:
 	 * <pre><code>
 	 * this.setValue(this.getValue()+1);
 	 * </code></pre>
-	 * 
+	 *
 	 * @since 11.0
 	 */
-	public void increment();
+	void increment();
 
 	/** Increment the current value by 1.
-	 * <p>
-	 * This function is equivalent to:
+	 *
+	 * <p>This function is equivalent to:
 	 * <pre><code>
 	 * this.setValue(this.getValue()+1, comment);
 	 * </code></pre>
-	 * 
+	 *
 	 * @param comment is the comment to display.
 	 * @since 11.0
 	 */
-	public void increment(String comment);
+	void increment(String comment);
 
 }

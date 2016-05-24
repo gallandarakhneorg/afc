@@ -1,25 +1,23 @@
-/* 
+/*
  * $Id$
- * 
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (C) 2013 Stephane GALLAND.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package org.arakhne.afc.attrs.collection;
 
 import java.net.InetAddress;
@@ -46,47 +44,44 @@ import org.arakhne.afc.ui.vector.Image;
 /**
  * This class implements an abstract attribute provider that use
  * a memory cache.
- * 
- * XXX: Make this provider to save asynchronously on the remote storage area.
- * 
+ *
+ * <p>XXX: Make this provider to save asynchronously on the remote storage area.
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
 public abstract class BufferedAttributeCollection extends AbstractAttributeCollection {
-	
+
 	private static final long serialVersionUID = 1865614675044905721L;
-	
-	private transient Map<String,AttributeValue> cache = new SoftValueTreeMap<>();
-	
+
+	private transient Map<String, AttributeValue> cache = new SoftValueTreeMap<>();
+
 	/** Make a deep copy of this object and replies the copy.
-	 * 
+	 *
 	 * @return the deep copy.
 	 */
 	@Override
 	public BufferedAttributeCollection clone() {
-		BufferedAttributeCollection clone = (BufferedAttributeCollection)super.clone();
+		final BufferedAttributeCollection clone = (BufferedAttributeCollection) super.clone();
 		this.cache = new SoftValueTreeMap<>();
 		return clone;
 	}
 
 	/** Load a value from the data source.
-	 * 
+	 *
 	 * @param name is the name of the attribute to load
 	 * @return the value of the attribute.
 	 * @throws AttributeException on error or when the attribute does not exist
 	 */
 	protected abstract AttributeValue loadValue(String name) throws AttributeException;
-	
-	/**
-	 * {@inheritDoc}
-	 */
+
 	@Override
 	public abstract Collection<String> getAllAttributeNames();
-	
+
 	/** Save a value into the data source.
-	 * 
+	 *
 	 * @param name is the name of the attribute to save
 	 * @param value is the value of the attribute.
 	 * @throws AttributeException on error.
@@ -94,7 +89,7 @@ public abstract class BufferedAttributeCollection extends AbstractAttributeColle
 	protected abstract void saveValue(String name, AttributeValue value) throws AttributeException;
 
 	/** Remove a value from the data source.
-	 * 
+	 *
 	 * @param name is the name of the attribute to remove
 	 * @return the removed value
 	 * @throws AttributeException on error
@@ -102,49 +97,40 @@ public abstract class BufferedAttributeCollection extends AbstractAttributeColle
 	protected abstract AttributeValue removeValue(String name) throws AttributeException;
 
 	/** Remove all the values from the data source.
-	 * 
+	 *
 	 * @return <code>true</code> on success, otherwhise <code>false</code>
 	 * @throws AttributeException on error
 	 */
 	protected abstract boolean removeAllValues() throws AttributeException;
 
 	/** Replies the value associated to the specified name.
-	 * @throws AttributeException 
+	 * @throws AttributeException on error.
 	 */
 	private AttributeValue extractValueFor(String name) throws AttributeException {
 		AttributeValue value = null;
 		if (this.cache.containsKey(name)) {
 			value = this.cache.get(name);
-		}
-		else {
+		} else {
 			value = loadValue(name);
 			this.cache.put(name, value);
 		}
 		return value;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public boolean hasAttribute(String name) {
 		return getAllAttributeNames().contains(name);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public Collection<Attribute> getAllAttributes() {
-		ArrayList<Attribute> list = new ArrayList<>(getAttributeCount());
-		Attribute newAttr;
-		for(String name : getAllAttributeNames()) {
-			if (name!=null) {
+		final ArrayList<Attribute> list = new ArrayList<>(getAttributeCount());
+		for (final String name : getAllAttributeNames()) {
+			if (name != null) {
 				try {
-					newAttr = new AttributeImpl(name, extractValueFor(name));
+					final  Attribute newAttr = new AttributeImpl(name, extractValueFor(name));
 					list.add(newAttr);
-				}
-				catch(AttributeException exception) {
+				} catch (AttributeException exception) {
 					//
 				}
 			}
@@ -152,25 +138,20 @@ public abstract class BufferedAttributeCollection extends AbstractAttributeColle
 		return list;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
-	public Map<AttributeType,Collection<Attribute>> getAllAttributesByType() {
-		TreeMap<AttributeType,Collection<Attribute>> map = new TreeMap<>();
-		Attribute newAttr;
-		for(String name : getAllAttributeNames()) {
-			if (name!=null) {
+	public Map<AttributeType, Collection<Attribute>> getAllAttributesByType() {
+		final Map<AttributeType, Collection<Attribute>> map = new TreeMap<>();
+		for (final String name : getAllAttributeNames()) {
+			if (name != null) {
 				try {
-					newAttr = new AttributeImpl(name, extractValueFor(name));
+					final Attribute newAttr = new AttributeImpl(name, extractValueFor(name));
 					Collection<Attribute> list = map.get(newAttr.getType());
-					if (list==null) {
+					if (list == null) {
 						list = new ArrayList<>();
 						map.put(newAttr.getType(), list);
 					}
 					list.add(newAttr);
-				}
-				catch(AttributeException exception) {
+				} catch (AttributeException exception) {
 					//
 				}
 			}
@@ -178,450 +159,361 @@ public abstract class BufferedAttributeCollection extends AbstractAttributeColle
 		return map;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public AttributeValue getAttribute(String name) {
 		try {
 			return new AttributeValueImpl(extractValueFor(name));
-		}
-		catch(AttributeException exception) {
+		} catch (AttributeException exception) {
 			//
 		}
 		return null;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public AttributeValue getAttribute(String name, AttributeValue default_value) {
 		AttributeValue value;
 		try {
 			value = new AttributeValueImpl(extractValueFor(name));
-		}
-		catch(AttributeException exception) {
+		} catch (AttributeException exception) {
 			value = default_value;
 		}
 		return value;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public Attribute getAttributeObject(String name) {
 		try {
-			return new AttributeImpl(name,extractValueFor(name));
-		}
-		catch(AttributeException exception) {
+			return new AttributeImpl(name, extractValueFor(name));
+		} catch (AttributeException exception) {
 			//
 		}
 		return null;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void freeMemory() {
 		this.cache.clear();
 	}
-	
+
 	/** Set the attribute value.
-	 * 
+	 *
 	 * @param name is the name of the attribute
 	 * @param value is the raw value to store.
 	 * @return the new created attribute
-	 * @throws AttributeException 
+	 * @throws AttributeException on error.
 	 */
 	protected Attribute setAttributeFromRawValue(String name, AttributeValue value) throws AttributeException {
 		return setAttributeFromRawValue(name, value.getType(), value.getValue());
 	}
 
 	/** Set the attribute value.
-	 * 
+	 *
 	 * @param name is the name of the attribute
 	 * @param type is the type of the attribute
 	 * @param value is the raw value to store.
 	 * @return the new created attribute
-	 * @throws AttributeException 
+	 * @throws AttributeException on error.
 	 */
 	protected Attribute setAttributeFromRawValue(String name, AttributeType type, Object value) throws AttributeException {
 		AttributeValue oldValue;
 		try {
 			oldValue = new AttributeValueImpl(extractValueFor(name));
-		}
-		catch(AttributeException exception) {
+		} catch (AttributeException exception) {
 			oldValue = null;
 		}
-				
-		if (oldValue!=null && oldValue.equals(value)) return null;
 
-		Attribute attr = new AttributeImpl(name,type);
+		if (oldValue != null && oldValue.equals(value)) {
+			return null;
+		}
+
+		final Attribute attr = new AttributeImpl(name, type);
 		attr.setValue(type.cast(value));
 
-		saveValue(name,attr);
-	
-		this.cache.put(name, attr);	
-		
-		if (oldValue!=null)
+		saveValue(name, attr);
+
+		this.cache.put(name, attr);
+
+		if (oldValue != null) {
 			fireAttributeChangedEvent(name, oldValue, attr);
-		else
+		} else {
 			fireAttributeAddedEvent(name, attr);
-		
+		}
+
 		return attr;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public Attribute setAttributeType(String name, AttributeType type) throws AttributeException {
 		AttributeValue oldValue;
 		try {
 			oldValue = new AttributeValueImpl(extractValueFor(name));
-		}
-		catch(AttributeException exception) {
+		} catch (AttributeException exception) {
 			oldValue = null;
 		}
-		AttributeType oldType = (oldValue==null) ? null : oldValue.getType();
+		final AttributeType oldType = (oldValue == null) ? null : oldValue.getType();
 
-		if (oldValue==null || oldType==null || type==null || type==oldType) return null;
-		
-		Attribute attr = new AttributeImpl(name,oldValue.getValue());
+		if (oldValue == null || oldType == null || type == null || type == oldType) {
+			return null;
+		}
+
+		final Attribute attr = new AttributeImpl(name, oldValue.getValue());
 		attr.cast(type);
-		
+
 		this.cache.put(name, attr);
-		
+
 		fireAttributeChangedEvent(name, oldValue, attr);
-		
+
 		return attr;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public Attribute setAttribute(String name, AttributeValue value) throws AttributeException {
 		return setAttributeFromRawValue(name, value);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public Attribute setAttribute(String name, boolean value) {
 		try {
 			return setAttributeFromRawValue(name, AttributeType.BOOLEAN, Boolean.valueOf(value));
-		}
-		catch (AttributeException exception) {
+		} catch (AttributeException exception) {
 			return null;
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public Attribute setAttribute(String name, int value) {
 		try {
 			return setAttributeFromRawValue(name, AttributeType.INTEGER, Long.valueOf(value));
-		}
-		catch (AttributeException exception) {
+		} catch (AttributeException exception) {
 			return null;
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public Attribute setAttribute(String name, long value) {
 		try {
 			return setAttributeFromRawValue(name, AttributeType.INTEGER, Long.valueOf(value));
-		}
-		catch (AttributeException exception) {
+		} catch (AttributeException exception) {
 			return null;
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public Attribute setAttribute(String name, float value) {
 		try {
 			return setAttributeFromRawValue(name, AttributeType.REAL, Double.valueOf(value));
-		}
-		catch (AttributeException exception) {
+		} catch (AttributeException exception) {
 			return null;
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public Attribute setAttribute(String name, double value) {
 		try {
 			return setAttributeFromRawValue(name, AttributeType.REAL, Double.valueOf(value));
-		}
-		catch (AttributeException exception) {
+		} catch (AttributeException exception) {
 			return null;
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public Attribute setAttribute(String name, String value) {
 		try {
 			return setAttributeFromRawValue(name, AttributeType.STRING, value);
-		}
-		catch (AttributeException exception) {
+		} catch (AttributeException exception) {
 			return null;
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public Attribute setAttribute(String name, UUID value) {
 		try {
 			return setAttributeFromRawValue(name, AttributeType.UUID, value);
-		}
-		catch (AttributeException exception) {
+		} catch (AttributeException exception) {
 			return null;
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public Attribute setAttribute(String name, URL value) {
 		try {
 			return setAttributeFromRawValue(name, AttributeType.URL, value);
-		}
-		catch (AttributeException exception) {
+		} catch (AttributeException exception) {
 			return null;
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public Attribute setAttribute(String name, URI value) {
 		try {
 			return setAttributeFromRawValue(name, AttributeType.URI, value);
-		}
-		catch (AttributeException exception) {
+		} catch (AttributeException exception) {
 			return null;
 		}
 	}
 
 	/**
 	 * {@inheritDoc}
+	 * @deprecated since 13.0
 	 */
 	@Override
 	@Deprecated
 	public Attribute setAttribute(String name, Image value) {
 		try {
 			return setAttributeFromRawValue(name, AttributeType.IMAGE, value);
-		}
-		catch (AttributeException exception) {
+		} catch (AttributeException exception) {
 			return null;
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public Attribute setAttribute(String name, Date value) {
 		try {
 			return setAttributeFromRawValue(name, AttributeType.DATE, value);
-		}
-		catch (AttributeException exception) {
+		} catch (AttributeException exception) {
 			return null;
 		}
 	}
 
 	/**
 	 * {@inheritDoc}
+	 * @deprecated since 13.0
 	 */
 	@Override
 	@Deprecated
 	public Attribute setAttribute(String name, Color value) {
 		try {
 			return setAttributeFromRawValue(name, AttributeType.COLOR, value);
-		}
-		catch (AttributeException exception) {
+		} catch (AttributeException exception) {
 			return null;
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public Attribute setAttribute(String name, InetAddress value) {
 		try {
 			return setAttributeFromRawValue(name, AttributeType.INET_ADDRESS, value);
-		}
-		catch (AttributeException exception) {
+		} catch (AttributeException exception) {
 			return null;
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public Attribute setAttribute(String name, InetSocketAddress value) {
 		try {
-			return setAttributeFromRawValue(name, AttributeType.INET_ADDRESS, value==null ? null : value.getAddress());
-		}
-		catch (AttributeException exception) {
+			return setAttributeFromRawValue(name, AttributeType.INET_ADDRESS, value == null ? null : value.getAddress());
+		} catch (AttributeException exception) {
 			return null;
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public Attribute setAttribute(String name, Enum<?> value) {
 		try {
 			return setAttributeFromRawValue(name, AttributeType.ENUMERATION, value);
-		}
-		catch (AttributeException exception) {
+		} catch (AttributeException exception) {
 			return null;
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public Attribute setAttribute(String name, Class<?> value) {
 		try {
 			return setAttributeFromRawValue(name, AttributeType.TYPE, value);
-		}
-		catch (AttributeException exception) {
+		} catch (AttributeException exception) {
 			return null;
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public Attribute setAttribute(Attribute value) throws AttributeException {
 		return setAttributeFromRawValue(value.getName(), value);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public boolean removeAttribute(String name) {
 		try {
 			if (hasAttribute(name)) {
-				AttributeValue currentValue = extractValueFor(name);
+				final AttributeValue currentValue = extractValueFor(name);
 				this.cache.remove(name);
 				removeValue(name);
-				fireAttributeRemovedEvent(name,currentValue);
+				fireAttributeRemovedEvent(name, currentValue);
 				return true;
 			}
-		}
-		catch(AttributeException exception) {
+		} catch (AttributeException exception) {
 			//
 		}
 		return false;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public boolean removeAllAttributes() {
 		try {
-			if (getAttributeCount()>0) {
+			if (getAttributeCount() > 0) {
 				this.cache.clear();
 				if (removeAllValues()) {
 					fireAttributeClearedEvent();
 					return true;
 				}
 			}
-		}
-		catch(AttributeException exception) {
+		} catch (AttributeException exception) {
 			//
 		}
 		return false;
 	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
+
 	@Override
 	public boolean renameAttribute(String oldname, String newname, boolean overwrite) {
 		try {
 			AttributeValue valueForOldName = null;
-			
+
 			try {
 				valueForOldName = extractValueFor(oldname);
-			}
-			catch(AttributeException exception) {
+			} catch (AttributeException exception) {
 				//
 			}
 
 			// The source attribute does not exist.
-			if (valueForOldName==null) return false;
-			
+			if (valueForOldName == null) {
+				return false;
+			}
+
 			AttributeValue oldValueForNewName = null;
-			
+
 			try {
 				oldValueForNewName = extractValueFor(newname);
-			}
-			catch(AttributeException exception) {
+			} catch (AttributeException exception) {
 				//
 			}
-			
+
 			// Target attribute is existing and overwrite was disabled.
-			if ((!overwrite)&&(oldValueForNewName!=null)) return false;
-			
-			AttributeValue oldValueCopyForNewName = new AttributeValueImpl(oldValueForNewName);
-			
+			if ((!overwrite) && (oldValueForNewName != null)) {
+				return false;
+			}
+
+			final AttributeValue oldValueCopyForNewName = new AttributeValueImpl(oldValueForNewName);
+
 			removeValue(oldname);
 			this.cache.remove(oldname);
 			if (valueForOldName instanceof Attribute) {
-				((Attribute)valueForOldName).setName(newname);
+				((Attribute) valueForOldName).setName(newname);
 			}
 			saveValue(newname, valueForOldName);
 			this.cache.put(newname, valueForOldName);
-			
-			if (oldValueForNewName!=null)
-				fireAttributeRemovedEvent(newname,oldValueCopyForNewName);
-			
-			fireAttributeRenamedEvent(oldname,newname,valueForOldName);
-			
+
+			if (oldValueForNewName != null) {
+				fireAttributeRemovedEvent(newname, oldValueCopyForNewName);
+			}
+
+			fireAttributeRenamedEvent(oldname, newname, valueForOldName);
+
 			return true;
-		}
-		catch(AttributeException exception) {
+		} catch (AttributeException exception) {
 			//
 		}
 		return false;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void flush() {
 		//

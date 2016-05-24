@@ -1,24 +1,29 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (c) 2005-11, Multiagent Team,
- * Laboratoire Systemes et Transports,
- * Universite de Technologie de Belfort-Montbeliard.
- * All rights reserved.
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
  *
- * This software is the confidential and proprietary information
- * of the Laboratoire Systemes et Transports
- * of the Universite de Technologie de Belfort-Montbeliard ("Confidential Information").
- * You shall not disclose such Confidential Information and shall use
- * it only in accordance with the terms of the license agreement
- * you entered into with the SeT.
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
  *
- * http://www.multiagent.fr/
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package org.arakhne.afc.math.tree;
 
 import java.io.Serializable;
 import java.util.Iterator;
+
+import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.tree.iterator.BroadFirstTreeIterator;
 import org.arakhne.afc.math.tree.iterator.DataBroadFirstTreeIterator;
@@ -29,16 +34,15 @@ import org.arakhne.afc.math.tree.iterator.PostfixDataDepthFirstTreeIterator;
 import org.arakhne.afc.math.tree.iterator.PostfixDepthFirstTreeIterator;
 import org.arakhne.afc.math.tree.iterator.PrefixDataDepthFirstTreeIterator;
 import org.arakhne.afc.math.tree.iterator.PrefixDepthFirstTreeIterator;
-import org.eclipse.xtext.xbase.lib.Pure;
 
 
 /**
  * This is the generic implementation of a
  * tree based on linked lists.
- * <p>
- * This tree assumes that the nodes are linked with there
+ *
+ * <p>This tree assumes that the nodes are linked with there
  * references.
- * 
+ *
  * @param <D> is the type of the data inside the tree
  * @param <N> is the type of the tree nodes.
  * @author $Author: sgalland$
@@ -47,14 +51,15 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public abstract class AbstractTree<D,N extends TreeNode<D,N>> implements DepthFirstIterableTree<D,N>, BroadFirstIterableTree<D,N>, Serializable {
+public abstract class AbstractTree<D, N extends TreeNode<D, N>>
+		implements DepthFirstIterableTree<D, N>, BroadFirstIterableTree<D, N>, Serializable {
 
 	private static final long serialVersionUID = 1192947956138993568L;
 
 	@Override
 	@Pure
 	public final boolean isEmpty() {
-		return getUserDataCount()==0;
+		return getUserDataCount() == 0;
 	}
 
 	/** {@inheritDoc}
@@ -69,7 +74,7 @@ public abstract class AbstractTree<D,N extends TreeNode<D,N>> implements DepthFi
 	@Override
 	@Pure
 	public final Iterator<N> depthFirstIterator(DepthFirstNodeOrder nodeOrder) {
-		switch(nodeOrder) {
+		switch (nodeOrder) {
 		case POSTFIX:
 			return new PostfixDepthFirstTreeIterator<>(this);
 		case INFIX:
@@ -82,9 +87,10 @@ public abstract class AbstractTree<D,N extends TreeNode<D,N>> implements DepthFi
 	@Override
 	@Pure
 	public final Iterator<N> depthFirstIterator(int infixPosition) {
-		if (infixPosition<=0)
+		if (infixPosition <= 0) {
 			return new PrefixDepthFirstTreeIterator<>(this);
-		return new InfixDepthFirstTreeIterator<>(this,infixPosition);
+		}
+		return new InfixDepthFirstTreeIterator<>(this, infixPosition);
 	}
 
 	@Override
@@ -108,7 +114,7 @@ public abstract class AbstractTree<D,N extends TreeNode<D,N>> implements DepthFi
 	@Override
 	@Pure
 	public final Iterator<D> dataDepthFirstIterator(DepthFirstNodeOrder nodeOrder) {
-		switch(nodeOrder) {
+		switch (nodeOrder) {
 		case POSTFIX:
 			return new PostfixDataDepthFirstTreeIterator<>(this);
 		case INFIX:
@@ -121,11 +127,11 @@ public abstract class AbstractTree<D,N extends TreeNode<D,N>> implements DepthFi
 	@Pure
 	@Override
 	public final Iterator<D> dataDepthFirstIterator(int infixPosition) {
-		if (infixPosition<=0)
+		if (infixPosition <= 0) {
 			return new PrefixDataDepthFirstTreeIterator<>(this);
-		return new InfixDataDepthFirstTreeIterator<>(this,infixPosition);
+		}
+		return new InfixDataDepthFirstTreeIterator<>(this, infixPosition);
 	}
-
 
 	@Pure
 	@Override
@@ -220,5 +226,5 @@ public abstract class AbstractTree<D,N extends TreeNode<D,N>> implements DepthFi
 			}
 		};
 	}
-	
+
 }

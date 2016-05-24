@@ -1,25 +1,23 @@
-/* 
+/*
  * $Id$
- * 
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (C) 2013 Stephane GALLAND.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package org.arakhne.afc.attrs.attr;
 
 import java.io.Serializable;
@@ -38,217 +36,217 @@ import org.arakhne.afc.ui.vector.Image;
 
 /**
  * This class contains a metadata value.
- * 
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@SuppressWarnings("deprecation")
+@SuppressWarnings({"deprecation", "checkstyle:methodcount"})
 public interface AttributeValue extends Cloneable, Serializable {
 
 	/**
 	 * Replies a comparator suitable for attribute values.
-	 * 
+	 *
 	 * @return a comparator, never <code>null</code>
 	 */
-	public Comparator<? extends AttributeValue> valueComparator();
+	Comparator<? extends AttributeValue> valueComparator();
 
 	/**
 	 * Replies if this attribute type is
 	 * a base type, ie. a number, a boolean
 	 * or a string.
-	 * <p>
-	 * The following code is always <code>true</code>:<br>
+	 *
+	 * <p>The following code is always <code>true</code>:<br>
 	 * <code>isObjectValue() == !isBaseValue()</code>
-	 * 
+	 *
 	 * @return <code>true</code> if this attribute is containing a base type value,
-	 * otherwise <code>false</code>
+	 *     otherwise <code>false</code>
 	 * @see #isNullAllowed()
 	 * @see #isObjectValue()
 	 */
-	public boolean isBaseType();
+	boolean isBaseType();
 
 	/**
 	 * Replies the type of this metadata.
-	 * 
+	 *
 	 * @return the type of the attribute
 	 */
-	public AttributeType getType() ; 
-	
-	/**
-	 * Change the type of this attribute.
-	 * <p>
-	 * The exception will be generated in case
-	 * the current value could not be casted
-	 * to the new type.
-	 * 
-	 * @param type is the new type of this attribute
-	 * @throws InvalidAttributeTypeException if the current value was incompatible with the given type. 
-	 */
-	public void setType(AttributeType type) throws InvalidAttributeTypeException; 
+	AttributeType getType();
 
 	/**
 	 * Change the type of this attribute.
-	 * <p>
-	 * The value could be lost in case the type was incompatible
+	 *
+	 * <p>The exception will be generated in case
+	 * the current value could not be casted
+	 * to the new type.
+	 *
+	 * @param type is the new type of this attribute
+	 * @throws InvalidAttributeTypeException if the current value was incompatible with the given type.
+	 */
+	void setType(AttributeType type) throws InvalidAttributeTypeException;
+
+	/**
+	 * Change the type of this attribute.
+	 *
+	 * <p>The value could be lost in case the type was incompatible
 	 * with the value.
-	 * 
+	 *
 	 * @param type is the new type of this attribute
 	 * @return <code>true</code> if the cast was sucessfully done,
 	 *         otherwhise, if the value was lost because of the
 	 *         cast operation.
 	 */
-	public boolean cast(AttributeType type); 
+	boolean cast(AttributeType type);
 
 	/**
 	 * Change the type of this attribute and set its value.
-	 * 
+	 *
 	 * @param type is the new type of this attribute
 	 * @param value is the new value.
 	 */
-	public void castAndSet(AttributeType type, Object value); 
+	void castAndSet(AttributeType type, Object value);
 
 	/** Replies the value attribute stored in the implementation of this interface.
 	 * In opposite than {@link #getJavaObject()}, this function replies
 	 * the value for all attribute type.
-	 * 
+	 *
 	 * @return the raw value of this attribute
-	 * @throws InvalidAttributeTypeException
-	 * @throws AttributeNotInitializedException
+	 * @throws InvalidAttributeTypeException when type is invalid.
+	 * @throws AttributeNotInitializedException when attribute is not initialized.
 	 */
-	public Object getValue() throws InvalidAttributeTypeException, AttributeNotInitializedException;
+	Object getValue() throws InvalidAttributeTypeException, AttributeNotInitializedException;
 
 	/** Replies the type of the internal value of this implementation of AttributeValue.
-	 * 
+	 *
 	 * @return the type of the value stored inside this attribute value implementation.
 	 * @since 4.0
 	 */
-	public Class<?> getInternalStorageType();
+	Class<?> getInternalStorageType();
 
-	/** The this value with the content of the specified one.
-	 * 
-	 * @param value
+	/** Set this value with the content of the specified one.
+	 *
+	 * @param value the value to copy.
 	 */
-	public void setValue(AttributeValue value);
-	
-	/** The this value with the content of the specified one.
-	 * <p>
-	 * The type of the attribute will be detected from the type
+	void setValue(AttributeValue value);
+
+	/** Set this value with the content of the specified one.
+	 *
+	 * <p>The type of the attribute will be detected from the type
 	 * of the object.
-	 * 
-	 * @param value
+	 *
+	 * @param value the value.
 	 */
-	public void setValue(Object value);
+	void setValue(Object value);
 
 	/** Set the value to its default.
 	 */
-	public void setToDefault() ;
-	
+	void setToDefault();
+
 	/** Set the value to its default if not init.
 	 */
-	public void setToDefaultIfUninitialized() ;
+	void setToDefaultIfUninitialized();
 
 	/**
 	 * Replies the value of this metadata.
 	 *
 	 * @return the value
-	 * @throws InvalidAttributeTypeException
-	 * @throws AttributeNotInitializedException
+	 * @throws InvalidAttributeTypeException when type is invalid.
+	 * @throws AttributeNotInitializedException when attribute is not initialized.
 	 */
-	public long getInteger() throws InvalidAttributeTypeException, AttributeNotInitializedException;
+	long getInteger() throws InvalidAttributeTypeException, AttributeNotInitializedException;
 
 	/**
 	 * Set the value of this metadata.
-	 * 
-	 * @param value
+	 *
+	 * @param value the value.
 	 */
-	public void setInteger(int value);
+	void setInteger(int value);
 
 	/**
 	 * Set the value of this metadata.
-	 * 
-	 * @param value
+	 *
+	 * @param value the value.
 	 */
-	public void setInteger(long value);
+	void setInteger(long value);
 
 	/**
 	 * Replies the value of this metadata.
-	 * 
+	 *
 	 * @return the value
-	 * @throws AttributeNotInitializedException
-	 * @throws InvalidAttributeTypeException
+	 * @throws InvalidAttributeTypeException when type is invalid.
+	 * @throws AttributeNotInitializedException when attribute is not initialized.
 	 */
-	public double getReal() throws InvalidAttributeTypeException, AttributeNotInitializedException;
+	double getReal() throws InvalidAttributeTypeException, AttributeNotInitializedException;
 
 	/**
 	 * Set the value of this metadata.
-	 * 
-	 * @param value
+	 *
+	 * @param value the value.
 	 */
-	public void setReal(double value);
+	void setReal(double value);
 
 	/**
 	 * Replies the value of this metadata.
-	 * 
+	 *
 	 * @return the value
-	 * @throws AttributeNotInitializedException
-	 * @throws InvalidAttributeTypeException
+	 * @throws InvalidAttributeTypeException when type is invalid.
+	 * @throws AttributeNotInitializedException when attribute is not initialized.
 	 */
-	public String getString() throws InvalidAttributeTypeException, AttributeNotInitializedException;
-	
+	String getString() throws InvalidAttributeTypeException, AttributeNotInitializedException;
+
 	/**
 	 * Set the value of this metadata.
-	 * 
-	 * @param value
+	 *
+	 * @param value the value.
 	 */
-	public void setString(String value);
+	void setString(String value);
 
 	/**
 	 * Replies the value of this metadata.
-	 * 
+	 *
 	 * @return the value
-	 * @throws AttributeNotInitializedException
-	 * @throws InvalidAttributeTypeException
+	 * @throws InvalidAttributeTypeException when type is invalid.
+	 * @throws AttributeNotInitializedException when attribute is not initialized.
 	 */
-	public Date getDate() throws InvalidAttributeTypeException, AttributeNotInitializedException;
+	Date getDate() throws InvalidAttributeTypeException, AttributeNotInitializedException;
 
 	/**
 	 * Set the value of this metadata.
-	 * 
-	 * @param value
+	 *
+	 * @param value the value.
 	 */
-	public void setDate(Date value);
+	void setDate(Date value);
 
 	/**
 	 * Replies the value of this metadata.
-	 * 
+	 *
 	 * @return the value
-	 * @throws InvalidAttributeTypeException
-	 * @throws AttributeNotInitializedException
+	 * @throws InvalidAttributeTypeException when type is invalid.
+	 * @throws AttributeNotInitializedException when attribute is not initialized.
 	 */
-	public boolean getBoolean() throws InvalidAttributeTypeException, AttributeNotInitializedException;
+	boolean getBoolean() throws InvalidAttributeTypeException, AttributeNotInitializedException;
 
 	/**
 	 * Set the value of this metadata.
-	 * 
-	 * @param value
+	 *
+	 * @param value the value.
 	 */
-	public void setBoolean(boolean value);
+	void setBoolean(boolean value);
 
 	/**
 	 * Replies of the value of this attribute is
 	 * a data object ie, java object or icon.
-	 * <p>
-	 * The following code is always <code>true</code>:<br>
+	 *
+	 * <p>The following code is always <code>true</code>:<br>
 	 * <code>isObjectValue() == !isBaseValue()</code>
-	 * 
+	 *
 	 * @return <code>true</code> if this attribute contains a object as value (ie, not a base type),
-	 * otherwise <code>false</code>
+	 *     otherwise <code>false</code>
 	 * @see #isBaseType()
 	 * @see #isNullAllowed()
 	 */
-	public boolean isObjectValue();
+	boolean isObjectValue();
 
 	/**
 	 * Replies the value of this metadata.
@@ -258,427 +256,427 @@ public interface AttributeValue extends Cloneable, Serializable {
 	 *
 	 * @param <T> is the type of the value to reply
 	 * @return the value
-	 * @throws AttributeNotInitializedException
-	 * @throws InvalidAttributeTypeException
+	 * @throws InvalidAttributeTypeException when type is invalid.
+	 * @throws AttributeNotInitializedException when attribute is not initialized.
 	 * @see #getValue()
 	 */
-	public <T extends Object> T getJavaObject() throws InvalidAttributeTypeException, AttributeNotInitializedException;
+	<T extends Object> T getJavaObject() throws InvalidAttributeTypeException, AttributeNotInitializedException;
 
 	/**
 	 * Set the value of this metadata.
-	 * 
+	 *
 	 * @param <T> is the type of the new value
-	 * @param value
+	 * @param value the value.
 	 */
-	public <T extends Object> void setJavaObject(T value);
+	<T extends Object> void setJavaObject(T value);
 
 	/**
 	 * Replies the value of this metadata.
-	 * 
+	 *
 	 * @return a timestamp with a precision in milliseconds
-	 * @throws AttributeNotInitializedException
-	 * @throws InvalidAttributeTypeException
+	 * @throws InvalidAttributeTypeException when type is invalid.
+	 * @throws AttributeNotInitializedException when attribute is not initialized.
 	 */
-	public long getTimestamp() throws InvalidAttributeTypeException, AttributeNotInitializedException;
+	long getTimestamp() throws InvalidAttributeTypeException, AttributeNotInitializedException;
 
 	/**
 	 * Set the value of this metadata.
-	 * 
-	 * @param value
+	 *
+	 * @param value the value.
 	 */
-	public void setTimestamp(long value);
+	void setTimestamp(long value);
 
 	/**
 	 * Replies the value of this metadata.
-	 * 
+	 *
 	 * @return a 3d point
-	 * @throws AttributeNotInitializedException
-	 * @throws InvalidAttributeTypeException
+	 * @throws InvalidAttributeTypeException when type is invalid.
+	 * @throws AttributeNotInitializedException when attribute is not initialized.
 	 */
-	public Point3D getPoint3D() throws InvalidAttributeTypeException, AttributeNotInitializedException;
+	Point3D getPoint3D() throws InvalidAttributeTypeException, AttributeNotInitializedException;
 
 	/**
 	 * Set the value of this metadata.
-	 * 
-	 * @param p
+	 *
+	 * @param pt the point.
 	 */
-	public void setPoint3D(Point3D p);
+	void setPoint3D(Point3D pt);
 
 	/**
 	 * Set the value of this metadata.
-	 * 
-	 * @param x
-	 * @param y
-	 * @param z
+	 *
+	 * @param x x coordinate.
+	 * @param y y coordinate.
+	 * @param z z coordinate.
 	 */
-	public void setPoint3D(float x, float y, float z);
+	void setPoint3D(float x, float y, float z);
 
 	/**
 	 * Replies the value of this metadata.
-	 * 
+	 *
 	 * @return a 2d point
-	 * @throws AttributeNotInitializedException
-	 * @throws InvalidAttributeTypeException
+	 * @throws InvalidAttributeTypeException when type is invalid.
+	 * @throws AttributeNotInitializedException when attribute is not initialized.
 	 */
-	public Point2D getPoint() throws InvalidAttributeTypeException, AttributeNotInitializedException;
+	Point2D<?, ?> getPoint() throws InvalidAttributeTypeException, AttributeNotInitializedException;
 
 	/**
 	 * Set the value of this metadata.
-	 * 
-	 * @param p
+	 *
+	 * @param pt the point.
 	 */
-	public void setPoint(Point2D p);
+	void setPoint(Point2D<?, ?> pt);
 
 	/**
 	 * Set the value of this metadata.
-	 * 
-	 * @param x
-	 * @param y
+	 *
+	 * @param x x coordinate.
+	 * @param y y coordinate.
 	 */
-	public void setPoint(float x, float y);
+	void setPoint(float x, float y);
 
 	/**
 	 * Replies the value of this metadata.
-	 * 
+	 *
 	 * @return a color
-	 * @throws AttributeNotInitializedException
-	 * @throws InvalidAttributeTypeException
-	 * @deprecated
+	 * @throws InvalidAttributeTypeException when type is invalid.
+	 * @throws AttributeNotInitializedException when attribute is not initialized.
+	 * @deprecated since 13.0
 	 */
 	@Deprecated
-	public Color getColor() throws InvalidAttributeTypeException, AttributeNotInitializedException;
+	Color getColor() throws InvalidAttributeTypeException, AttributeNotInitializedException;
 
 	/**
 	 * Set the value of this metadata.
-	 * 
-	 * @param c
-	 * @deprecated
+	 *
+	 * @param color th ecolor.
+	 * @deprecated since 13.0
 	 */
 	@Deprecated
-	public void setColor(Color c);
+	void setColor(Color color);
 
 	/**
 	 * Set the value of this metadata.
-	 * 
-	 * @param r
-	 * @param g
-	 * @param b
+	 *
+	 * @param red red component.
+	 * @param green green component.
+	 * @param blue blue component.
 	 */
-	public void setColor(float r, float g, float b);
+	void setColor(float red, float green, float blue);
 
 	/**
 	 * Set the value of this metadata.
-	 * 
-	 * @param r
-	 * @param g
-	 * @param b
-	 * @param a
+	 *
+	 * @param red red component.
+	 * @param green green component.
+	 * @param blue blue component.
+	 * @param alpha alpha component.
 	 */
-	public void setColor(float r, float g, float b, float a);
+	void setColor(float red, float green, float blue, float alpha);
 
 	/**
 	 * Set the value of this metadata.
-	 * 
-	 * @param r
-	 * @param g
-	 * @param b
+	 *
+	 * @param red red component.
+	 * @param green green component.
+	 * @param blue blue component.
 	 */
-	public void setColor(int r, int g, int b);
+	void setColor(int red, int green, int blue);
 
 	/**
 	 * Set the value of this metadata.
-	 * 
-	 * @param r
-	 * @param g
-	 * @param b
-	 * @param a
+	 *
+	 * @param red red component.
+	 * @param green green component.
+	 * @param blue blue component.
+	 * @param alpha alpha component.
 	 */
-	public void setColor(int r, int g, int b, int a);
+	void setColor(int red, int green, int blue, int alpha);
 
 	/**
 	 * Replies the value of this metadata.
-	 * 
+	 *
 	 * @return an icon
-	 * @throws AttributeNotInitializedException
-	 * @throws InvalidAttributeTypeException
-	 * @deprecated
+	 * @throws InvalidAttributeTypeException when type is invalid.
+	 * @throws AttributeNotInitializedException when attribute is not initialized.
+	 * @deprecated since 13.0
 	 */
 	@Deprecated
-	public Image getImage() throws InvalidAttributeTypeException, AttributeNotInitializedException;
+	Image getImage() throws InvalidAttributeTypeException, AttributeNotInitializedException;
 
 	/**
 	 * Set the value of this metadata.
-	 * 
-	 * @param c
-	 * @deprecated
+	 *
+	 * @param image the image.
+	 * @deprecated since 13.0
 	 */
 	@Deprecated
-	public void setImage(Image c);
-	
+	void setImage(Image image);
+
 	/**
 	 * Replies the value of this metadata.
-	 * 
+	 *
 	 * @return an uuid
-	 * @throws AttributeNotInitializedException
-	 * @throws InvalidAttributeTypeException
+	 * @throws InvalidAttributeTypeException when type is invalid.
+	 * @throws AttributeNotInitializedException when attribute is not initialized.
 	 * @since 4.0
 	 */
-	public UUID getUUID() throws InvalidAttributeTypeException, AttributeNotInitializedException;
+	UUID getUUID() throws InvalidAttributeTypeException, AttributeNotInitializedException;
 
 	/**
 	 * Set the value of this metadata.
-	 * 
-	 * @param u
+	 *
+	 * @param uuid the uuid.
 	 * @since 4.0
 	 */
-	public void setUUID(UUID u);
-	
+	void setUUID(UUID uuid);
+
 	/**
 	 * Replies the value of this metadata.
-	 * 
+	 *
 	 * @return an url
-	 * @throws AttributeNotInitializedException
-	 * @throws InvalidAttributeTypeException
+	 * @throws InvalidAttributeTypeException when type is invalid.
+	 * @throws AttributeNotInitializedException when attribute is not initialized.
 	 * @since 4.0
 	 */
-	public URL getURL() throws InvalidAttributeTypeException, AttributeNotInitializedException;
+	URL getURL() throws InvalidAttributeTypeException, AttributeNotInitializedException;
 
 	/**
 	 * Set the value of this metadata.
-	 * 
-	 * @param u
+	 *
+	 * @param url the url.
 	 * @since 4.0
 	 */
-	public void setURL(URL u);
+	void setURL(URL url);
 
 	/**
 	 * Replies the value of this metadata.
-	 * 
+	 *
 	 * @return an uri
-	 * @throws AttributeNotInitializedException
-	 * @throws InvalidAttributeTypeException
+	 * @throws InvalidAttributeTypeException when type is invalid.
+	 * @throws AttributeNotInitializedException when attribute is not initialized.
 	 * @since 4.0
 	 */
-	public URI getURI() throws InvalidAttributeTypeException, AttributeNotInitializedException;
+	URI getURI() throws InvalidAttributeTypeException, AttributeNotInitializedException;
 
 	/**
 	 * Set the value of this metadata.
-	 * 
-	 * @param u
+	 *
+	 * @param uri the uri.
 	 * @since 4.0
 	 */
-	public void setURI(URI u);
+	void setURI(URI uri);
 
 	/**
 	 * Replies the value of this metadata.
-	 * 
+	 *
 	 * @return a list of 3d points
-	 * @throws AttributeNotInitializedException
-	 * @throws InvalidAttributeTypeException
+	 * @throws InvalidAttributeTypeException when type is invalid.
+	 * @throws AttributeNotInitializedException when attribute is not initialized.
 	 */
-	public Point3D[] getPolyline3D() throws InvalidAttributeTypeException, AttributeNotInitializedException;
+	Point3D[] getPolyline3D() throws InvalidAttributeTypeException, AttributeNotInitializedException;
 
 	/**
 	 * Set the value of this metadata.
-	 * 
-	 * @param p
+	 *
+	 * @param pts the points.
 	 */
-	public void setPolyline3D(Point3D... p);
+	void setPolyline3D(Point3D... pts);
 
 	/**
 	 * Set the value of this metadata.
-	 * 
-	 * @param p
+	 *
+	 * @param pts the points.
 	 */
-	public void setPolyline3D(Collection<? extends Point3D> p);
+	void setPolyline3D(Collection<? extends Point3D> pts);
 
 	/**
-	 * Add a point to the end of the polyline
-	 * 
-	 * @param p
+	 * Add a point to the end of the polyline.
+	 *
+	 * @param pts the points
 	 */
-	public void addToPolyline3D(Point3D... p);
+	void addToPolyline3D(Point3D... pts);
 
 	/**
-	 * Add a point to the end of the polyline
-	 * 
-	 * @param p
+	 * Add a point to the end of the polyline.
+	 *
+	 * @param pts the points.
 	 */
-	public void addToPolyline3D(Collection<? extends Point3D> p);
+	void addToPolyline3D(Collection<? extends Point3D> pts);
 
 	/**
 	 * Replies the value of this metadata.
-	 * 
+	 *
 	 * @return a list of 2d points
-	 * @throws AttributeNotInitializedException
-	 * @throws InvalidAttributeTypeException
+	 * @throws InvalidAttributeTypeException when type is invalid.
+	 * @throws AttributeNotInitializedException when attribute is not initialized.
 	 */
-	public Point2D[] getPolyline() throws InvalidAttributeTypeException, AttributeNotInitializedException;
+	Point2D<?, ?>[] getPolyline() throws InvalidAttributeTypeException, AttributeNotInitializedException;
 
 	/**
 	 * Set the value of this metadata.
-	 * 
-	 * @param p
+	 *
+	 * @param pts the points.
 	 */
-	public void setPolyline(Point2D... p);
+	void setPolyline(Point2D<?, ?>... pts);
 
 	/**
 	 * Set the value of this metadata.
-	 * 
-	 * @param p
+	 *
+	 * @param pts the points.
 	 */
-	public void setPolyline(Collection<? extends Point2D> p);
+	void setPolyline(Collection<? extends Point2D<?, ?>> pts);
 
 	/**
-	 * Add a point to the end of the polyline
-	 * 
-	 * @param p
+	 * Add a point to the end of the polyline.
+	 *
+	 * @param pts the points
 	 */
-	public void addToPolyline(Point2D... p);
+	void addToPolyline(Point2D<?, ?>... pts);
 
 	/**
-	 * Add a point to the end of the polyline
-	 * 
-	 * @param p
+	 * Add a point to the end of the polyline.
+	 *
+	 * @param pts the points.
 	 */
-	public void addToPolyline(Collection<? extends Point2D> p);
+	void addToPolyline(Collection<? extends Point2D<?, ?>> pts);
 
 	/**
 	 * Replies the value of this metadata.
-	 * 
+	 *
 	 * @return an Internet address.
-	 * @throws AttributeNotInitializedException
-	 * @throws InvalidAttributeTypeException
+	 * @throws InvalidAttributeTypeException when type is invalid.
+	 * @throws AttributeNotInitializedException when attribute is not initialized.
 	 */
-	public InetAddress getInetAddress() throws InvalidAttributeTypeException, AttributeNotInitializedException;
+	InetAddress getInetAddress() throws InvalidAttributeTypeException, AttributeNotInitializedException;
 
 	/**
 	 * Set the value of this metadata.
-	 * 
-	 * @param a
+	 *
+	 * @param address the address.
 	 */
-	public void setInetAddress(InetAddress a);
+	void setInetAddress(InetAddress address);
 
 	/**
 	 * Replies the value of this metadata.
-	 * 
+	 *
 	 * @return an enumeration.
-	 * @throws AttributeNotInitializedException
-	 * @throws InvalidAttributeTypeException
+	 * @throws InvalidAttributeTypeException when type is invalid.
+	 * @throws AttributeNotInitializedException when attribute is not initialized.
 	 */
-	public Enum<?> getEnumeration() throws InvalidAttributeTypeException, AttributeNotInitializedException;
+	Enum<?> getEnumeration() throws InvalidAttributeTypeException, AttributeNotInitializedException;
 
 	/**
 	 * Replies the value of this metadata.
-	 * 
+	 *
 	 * @param <T> is the type of the enumeration to reply.
 	 * @param type is the type of the enumeration to reply.
 	 * @return an enumeration.
-	 * @throws AttributeNotInitializedException
-	 * @throws InvalidAttributeTypeException
+	 * @throws InvalidAttributeTypeException when type is invalid.
+	 * @throws AttributeNotInitializedException when attribute is not initialized.
 	 */
-	public <T extends Enum<T>> T getEnumeration(Class<T> type) throws InvalidAttributeTypeException, AttributeNotInitializedException;
+	<T extends Enum<T>> T getEnumeration(Class<T> type) throws InvalidAttributeTypeException, AttributeNotInitializedException;
 
 	/**
 	 * Set the value of this metadata.
-	 * 
-	 * @param e
+	 *
+	 * @param enumConstant the constant.
 	 */
-	public void setEnumeration(Enum<?> e);
+	void setEnumeration(Enum<?> enumConstant);
 
 	/**
 	 * Replies the value of this metadata.
-	 * 
+	 *
 	 * @return a Java type.
-	 * @throws AttributeNotInitializedException
-	 * @throws InvalidAttributeTypeException
+	 * @throws InvalidAttributeTypeException when type is invalid.
+	 * @throws AttributeNotInitializedException when attribute is not initialized.
 	 */
-	public Class<?> getJavaClass() throws InvalidAttributeTypeException, AttributeNotInitializedException;
+	Class<?> getJavaClass() throws InvalidAttributeTypeException, AttributeNotInitializedException;
 
 	/**
 	 * Set the value of this metadata.
-	 * 
-	 * @param e
+	 *
+	 * @param type the type.
 	 */
-	public void setJavaClass(Class<?> e);
+	void setJavaClass(Class<?> type);
 
 	/**
 	 * Replies if a value was affected to this attribute.
-	 * 
+	 *
 	 * @return <code>true</code> if this attribute is containing a value,
-	 * otherwise <code>false</code>
+	 *     otherwise <code>false</code>
 	 */
-	public boolean isAssigned();
+	boolean isAssigned();
 
 	/**
 	 * Replies if a null value is allowed for this attribute.
-	 * <p>
-	 * If {@link #isBaseType()} replies <code>true</code>,
+	 *
+	 * <p>If {@link #isBaseType()} replies <code>true</code>,
 	 * this function must always replies <code>false</code>.
-	 * 
+	 *
 	 * @return <code>true</code> if <code>null</code> is assigned to this attribute,
-	 * otherwise <code>false</code>
+	 *     otherwise <code>false</code>
 	 * @see #isBaseType()
 	 * @see #isObjectValue()
 	 */
-	public boolean isNullAllowed();
+	boolean isNullAllowed();
 
 	/**
 	 * Set this attribute value uninitialized.
 	 */
-	public void uninitializeValue();
+	void uninitializeValue();
 
 	/** Force this attribute to put its value into a storage system.
-	 * <p>
-	 * By default, this function does nothing. It is dependant of the application
+	 *
+	 * <p>By default, this function does nothing. It is dependant of the application
 	 * implementation.
-	 * 
+	 *
 	 * @return <code>true</code> if the value was written, otherwhise <code>false</code>
 	 */
-	public boolean flush();
+	boolean flush();
 
 	/** Replies if a value of the given attribute type may
 	 * be cast to a value of this attribute type.
-	 * <p>
-	 * Caution: even if isAssignableFrom is replying <code>true</code>,
+	 *
+	 * <p>Caution: even if isAssignableFrom is replying <code>true</code>,
 	 * the {@link AttributeValue#cast(AttributeType)} and
 	 * {@link AttributeValue#castAndSet(AttributeType, Object)} may fail
 	 * if the target type does not support a specifical value of the
 	 * source type. The isAssignableFrom function replies <code>true</code>
 	 * if a least one value of the source type is assignable to a value
 	 * of the target type.
-	 * <p>
-	 * This function is equivalent to:
+	 *
+	 * <p>This function is equivalent to:
 	 * <code>this.getType().isAssignableFrom(type)</code>
-	 * 
-	 * @param type
+	 *
+	 * @param type th etype.
 	 * @return <code>true</code> if a value of the given
-	 * <var>type</var> may be cast to a value of the same type as this;
-	 * otherwise <code>false</code>.
+	 * {@code type} may be cast to a value of the same type as this;
+	 *     otherwise <code>false</code>.
 	 * @since 4.0
 	 */
-	public boolean isAssignableFrom(AttributeType type);
-	
+	boolean isAssignableFrom(AttributeType type);
+
 	/** Replies if a value of the given attribute type may
 	 * be cast to a value of this attribute type.
-	 * <p>
-	 * Caution: even if isAssignableFrom is replying <code>true</code>,
+	 *
+	 * <p>Caution: even if isAssignableFrom is replying <code>true</code>,
 	 * the {@link AttributeValue#cast(AttributeType)} and
 	 * {@link AttributeValue#castAndSet(AttributeType, Object)} may fail
 	 * if the target type does not support a specifical value of the
 	 * source type. The isAssignableFrom function replies <code>true</code>
 	 * if a least one value of the source type is assignable to a value
 	 * of the target type.
-	 * <p>
-	 * This function is equivalent to:
+	 *
+	 * <p>This function is equivalent to:
 	 * <code>this.getType().isAssignableFrom(value.getType())</code>
-	 * 
-	 * @param value
+	 *
+	 * @param value the value.
 	 * @return <code>true</code> if the given value may be cast to
-	 * a value of the same type as this;
-	 * otherwise <code>false</code>.
+	 *     a value of the same type as this;
+	 *     otherwise <code>false</code>.
 	 * @since 4.0
 	 */
-	public boolean isAssignableFrom(AttributeValue value);
+	boolean isAssignableFrom(AttributeValue value);
 
 }

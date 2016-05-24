@@ -1,30 +1,30 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (C) 2010-2013 Stephane GALLAND.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.arakhne.afc.math.geometry.d2.d;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.afp.RectangularShape2afp;
 import org.arakhne.afc.math.geometry.d2.afp.RoundRectangle2afp;
-import org.eclipse.xtext.xbase.lib.Pure;
 
 /** A round rectangle with 2 double precision floating-point numbers.
  *
@@ -35,7 +35,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @since 13.0
  */
 public class RoundRectangle2d extends AbstractRectangularShape2d<RoundRectangle2d>
-	implements RoundRectangle2afp<Shape2d<?>, RoundRectangle2d, PathElement2d, Point2d, Vector2d, Rectangle2d> {
+		implements RoundRectangle2afp<Shape2d<?>, RoundRectangle2d, PathElement2d, Point2d, Vector2d, Rectangle2d> {
 
 	private static final long serialVersionUID = -6419985193487310000L;
 
@@ -43,46 +43,47 @@ public class RoundRectangle2d extends AbstractRectangularShape2d<RoundRectangle2
 
 	private double arcHeight;
 
-	/**
+	/** Construct an empty round rectangle.
 	 */
 	public RoundRectangle2d() {
 		super();
 	}
 
-	/**
+	/** Construct a round rectangle with the given corners and arcs.
 	 * @param min is the min corner of the rectangle.
 	 * @param max is the max corner of the rectangle.
-	 * @param arcWidth
-	 * @param arcHeight
+	 * @param arcWidth the width of the arcs.
+	 * @param arcHeight the height of the arcs.
 	 */
 	public RoundRectangle2d(Point2D<?, ?> min, Point2D<?, ?> max, double arcWidth, double arcHeight) {
 		this(min.getX(), min.getY(), max.getX(), max.getY(), arcWidth, arcHeight);
 	}
 
-	/**
-	 * @param rr
+	/** Constructor by copy.
+	 * @param roundRectangle the round rectangle to copy.
 	 */
-	public RoundRectangle2d(RoundRectangle2afp<?, ?, ?, ?, ?, ?> rr) {
-		this(rr.getMinX(), rr.getMinY(), rr.getMaxX(), rr.getMaxY(), rr.getArcWidth(), rr.getArcHeight());
+	public RoundRectangle2d(RoundRectangle2afp<?, ?, ?, ?, ?, ?> roundRectangle) {
+		this(roundRectangle.getMinX(), roundRectangle.getMinY(), roundRectangle.getMaxX(),
+				roundRectangle.getMaxY(), roundRectangle.getArcWidth(), roundRectangle.getArcHeight());
 	}
 
-	/**
-	 * @param rr
+	/** Construct a round rectangle with the corners of the given shape, and zero arcs.
+	 * @param shape the shape to copy.
 	 */
-	public RoundRectangle2d(RectangularShape2afp<?, ?, ?, ?, ?, ?> rr) {
-		this(rr.getMinX(), rr.getMinY(), rr.getMaxX(), rr.getMaxY(), 0, 0);
+	public RoundRectangle2d(RectangularShape2afp<?, ?, ?, ?, ?, ?> shape) {
+		this(shape.getMinX(), shape.getMinY(), shape.getMaxX(), shape.getMaxY(), 0, 0);
 	}
 
-	/**
-	 * @param x
-	 * @param y
-	 * @param width
-	 * @param height
-	 * @param arcWidth1
-	 * @param arcHeight1
+	/** Construct a round rectangle with the given corners and arcs.
+	 * @param x x coordinate of the minimum corner.
+	 * @param y y coordinate of the minimum corner.
+	 * @param width width of the rectangle.
+	 * @param height height of the rectangle.
+	 * @param arcWidth width of the arcs.
+	 * @param arcHeight height of the arcs.
 	 */
-	public RoundRectangle2d(double x, double y, double width, double height, double arcWidth1, double arcHeight1) {
-		set(x, y, width, height, arcWidth1, arcHeight1);
+	public RoundRectangle2d(double x, double y, double width, double height, double arcWidth, double arcHeight) {
+		set(x, y, width, height, arcWidth, arcHeight);
 	}
 
 	@Pure
@@ -91,14 +92,14 @@ public class RoundRectangle2d extends AbstractRectangularShape2d<RoundRectangle2
 		long bits = super.hashCode();
 		bits = 31 * bits + Double.doubleToLongBits(this.arcWidth);
 		bits = 31 * bits + Double.doubleToLongBits(this.arcHeight);
-		int b = (int) bits;
+		final int b = (int) bits;
 		return b ^ (b >> 32);
 	}
 
 	@Pure
 	@Override
 	public String toString() {
-		StringBuilder b = new StringBuilder();
+		final StringBuilder b = new StringBuilder();
 		b.append("["); //$NON-NLS-1$
 		b.append(getMinX());
 		b.append(";"); //$NON-NLS-1$
@@ -128,17 +129,17 @@ public class RoundRectangle2d extends AbstractRectangularShape2d<RoundRectangle2
 	}
 
 	@Override
-	public void setArcWidth(double a) {
-		assert (a >= 0) : "Arc width must be positive or zero"; //$NON-NLS-1$
-		this.arcWidth = Math.min(getWidth() / 2, a);
+	public void setArcWidth(double arcWidth) {
+		assert arcWidth >= 0 : "Arc width must be positive or zero"; //$NON-NLS-1$
+		this.arcWidth = Math.min(getWidth() / 2, arcWidth);
 	}
 
 	@Override
-	public void setArcHeight(double a) {
-		assert (a >= 0) : "Arc height must be positive or zero"; //$NON-NLS-1$
-		this.arcHeight = Math.min(getHeight() / 2, a);
+	public void setArcHeight(double arcHeight) {
+		assert arcHeight >= 0 : "Arc height must be positive or zero"; //$NON-NLS-1$
+		this.arcHeight = Math.min(getHeight() / 2, arcHeight);
 	}
-	
+
 	@Override
 	public void setFromCorners(double x1, double y1, double x2, double y2) {
 		super.setFromCorners(x1, y1, x2, y2);
@@ -152,20 +153,20 @@ public class RoundRectangle2d extends AbstractRectangularShape2d<RoundRectangle2
 		setArcWidth(arcWidth);
 		setArcHeight(arcHeight);
 	}
-	
+
 	/** Ensure that the size of the arc width is valid, i.e. not too big or too small.
 	 */
 	protected void ensureValidArcWidth() {
-		double halfWidth = getWidth() / 2;
+		final double halfWidth = getWidth() / 2;
 		if (this.arcWidth > halfWidth) {
 			this.arcWidth = halfWidth;
 		}
 	}
-	
+
 	/** Ensure that the size of the arc height is valid, i.e. not too big or too small.
 	 */
 	protected void ensureValidArcHeight() {
-		double halfHeight = getHeight() / 2;
+		final double halfHeight = getHeight() / 2;
 		if (this.arcHeight > halfHeight) {
 			this.arcHeight = halfHeight;
 		}
@@ -176,7 +177,7 @@ public class RoundRectangle2d extends AbstractRectangularShape2d<RoundRectangle2
 		super.setMinX(x);
 		ensureValidArcWidth();
 	}
-	
+
 	@Override
 	public void setMaxX(double x) {
 		super.setMaxX(x);
@@ -188,7 +189,7 @@ public class RoundRectangle2d extends AbstractRectangularShape2d<RoundRectangle2
 		super.setMinY(y);
 		ensureValidArcHeight();
 	}
-	
+
 	@Override
 	public void setMaxY(double y) {
 		super.setMaxY(y);

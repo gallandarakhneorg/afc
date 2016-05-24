@@ -1,29 +1,29 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (C) 2010-2013 Stephane GALLAND.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.arakhne.afc.math.geometry.d2.afp;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
-import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Fonctional interface that represented a rectangular shape on a plane.
  *
@@ -51,76 +51,82 @@ public interface RectangularShape2afp<
 
 	@Override
 	default void toBoundingBox(B box) {
-		assert (box != null) : "Rectangle must be not null"; //$NON-NLS-1$
+		assert box != null : "Rectangle must be not null"; //$NON-NLS-1$
 		box.setFromCorners(getMinX(), getMinY(), getMaxX(), getMaxY());
 	}
-	
+
 	@Override
 	default void clear() {
 		setFromCorners(0, 0, 0, 0);
 	}
 
 	/** Change the frame of the rectangle.
-	 * 
-	 * @param x
-	 * @param y
-	 * @param width
-	 * @param height
+	 *
+	 * @param x x coordinate of the lower corner of the rectangular shape.
+	 * @param y y coordinate of the lower corner of the rectangular shape.
+	 * @param width width of the rectangular shape.
+	 * @param height height of the rectangular shape.
 	 */
 	default void set(double x, double y, double width, double height) {
-		assert (width >= 0.) : "Width must be positive or zero"; //$NON-NLS-1$
-		assert (height >= 0.) : "Height must be positive or zero"; //$NON-NLS-1$
+		assert width >= 0. : "Width must be positive or zero"; //$NON-NLS-1$
+		assert height >= 0. : "Height must be positive or zero"; //$NON-NLS-1$
 		setFromCorners(x, y, x + width, y + height);
 	}
-	
+
+	@Override
+	default void set(IT shape) {
+		assert shape != null : "Shape must be not null"; //$NON-NLS-1$
+		setFromCorners(shape.getMinX(), shape.getMinY(), shape.getMaxX(), shape.getMaxY());
+	}
+
 	/** Change the frame of the rectangle.
-	 * 
+	 *
 	 * @param min is the min corner of the rectangle.
 	 * @param max is the max corner of the rectangle.
 	 */
 	default void set(Point2D<?, ?> min, Point2D<?, ?> max) {
-		assert (min != null) : "Minimum point must be not null"; //$NON-NLS-1$
-		assert (max != null) : "Maximum point must be not null"; //$NON-NLS-1$
+		assert min != null : "Minimum point must be not null"; //$NON-NLS-1$
+		assert max != null : "Maximum point must be not null"; //$NON-NLS-1$
 		setFromCorners(min.getX(), min.getY(), max.getX(), max.getY());
 	}
-	
+
 	/** Change the width of the rectangle, not the min corner.
-	 * 
-	 * @param width
+	 *
+	 * @param width width of the rectangular shape.
 	 */
 	default void setWidth(double width) {
-		assert (width >= 0.) : "Width must be positive or zero"; //$NON-NLS-1$
+		assert width >= 0. : "Width must be positive or zero"; //$NON-NLS-1$
 		setMaxX(getMinX() + width);
 	}
 
 	/** Change the height of the rectangle, not the min corner.
-	 * 
-	 * @param height
+	 *
+	 * @param height height of the rectangular shape.
 	 */
 	default void setHeight(double height) {
-		assert (height >= 0.) : "Height must be positive or zero"; //$NON-NLS-1$
+		assert height >= 0. : "Height must be positive or zero"; //$NON-NLS-1$
 		setMaxY(getMinY() + height);
 	}
-	
+
 	/** Change the frame of the rectangle conserving previous min and max if needed.
-	 * 
+	 *
 	 * @param x1 is the coordinate of the first corner.
 	 * @param y1 is the coordinate of the first corner.
 	 * @param x2 is the coordinate of the second corner.
 	 * @param y2 is the coordinate of the second corner.
 	 */
-	// This function has no default implementation for allowing implementation to be atomic. 
+	// This function has no default implementation for allowing implementation to be atomic.
 	void setFromCorners(double x1, double y1, double x2, double y2);
-	
+
 	/** Change the frame of the rectangle conserving previous min and max if needed.
-	 * 
+	 *
 	 * @param p1 the first corner.
 	 * @param p2 the second corner.
 	 */
-	// This function has no default implementation for allowing implementation to be atomic. 
+	// This function has no default implementation for allowing implementation to be atomic.
 	default void setFromCorners(Point2D<?, ?> p1, Point2D<?, ?> p2) {
-		assert (p1 != null) : "First corner point must be not null"; //$NON-NLS-1$
-		assert (p2 != null) : "Second corner point must be not null"; //$NON-NLS-1$
+		assert p1 != null : "First corner point must be not null"; //$NON-NLS-1$
+		assert p2 != null : "Second corner point must be not null"; //$NON-NLS-1$
 		setFromCorners(p1.getX(), p1.getY(), p2.getX(), p2.getY());
 	}
 
@@ -136,11 +142,11 @@ public interface RectangularShape2afp<
      * @param cornerY the Y coordinate of the specified corner point
      */
 	default void setFromCenter(double centerX, double centerY, double cornerX, double cornerY) {
-		double demiWidth = Math.abs(centerX - cornerX);
-		double demiHeight = Math.abs(centerY - cornerY);
+		final double demiWidth = Math.abs(centerX - cornerX);
+		final double demiHeight = Math.abs(centerY - cornerY);
 		setFromCorners(centerX - demiWidth, centerY - demiHeight, centerX + demiWidth, centerY + demiHeight);
 	}
-	
+
 	/**
      * Sets the framing rectangle of this <code>Shape</code>
      * based on the specified center point coordinates and corner point
@@ -151,26 +157,26 @@ public interface RectangularShape2afp<
      * @param corner the specified corner point
      */
 	default void setFromCenter(Point2D<?, ?> center, Point2D<?, ?> corner) {
-		assert (center != null) : "Center point must be not null"; //$NON-NLS-1$
-		assert (corner != null) : "Corner point must be not null"; //$NON-NLS-1$
+		assert center != null : "Center point must be not null"; //$NON-NLS-1$
+		assert corner != null : "Corner point must be not null"; //$NON-NLS-1$
 		setFromCenter(center.getX(), center.getY(), corner.getX(), corner.getY());
 	}
 
 	/** Replies the min X.
-	 * 
+	 *
 	 * @return the min x.
 	 */
 	@Pure
 	double getMinX();
 
 	/** Set the min X conserving previous min if needed.
-	 * 
+	 *
 	 * @param x the min x.
 	 */
 	void setMinX(double x);
 
 	/** Replies the center x.
-	 * 
+	 *
 	 * @return the center x.
 	 */
 	@Pure
@@ -179,33 +185,33 @@ public interface RectangularShape2afp<
 	}
 
 	/** Replies the max x.
-	 * 
+	 *
 	 * @return the max x.
 	 */
 	@Pure
 	double getMaxX();
 
 	/** Set the max X conserving previous max if needed.
-	 * 
+	 *
 	 * @param x the max x.
 	 */
 	void setMaxX(double x);
 
 	/** Replies the min y.
-	 * 
+	 *
 	 * @return the min y.
 	 */
 	@Pure
 	double getMinY();
 
 	/** Set the min Y conserving previous min if needed.
-	 * 
+	 *
 	 * @param y the min y.
 	 */
 	void setMinY(double y);
 
 	/** Replies the center y.
-	 * 
+	 *
 	 * @return the center y.
 	 */
 	@Pure
@@ -214,20 +220,20 @@ public interface RectangularShape2afp<
 	}
 
 	/** Replies the max y.
-	 * 
+	 *
 	 * @return the max y.
 	 */
 	@Pure
 	double getMaxY();
-	
+
 	/** Set the max Y conserving previous max if needed.
-	 * 
+	 *
 	 * @param y the max y.
 	 */
 	void setMaxY(double y);
 
 	/** Replies the width.
-	 * 
+	 *
 	 * @return the width.
 	 */
 	@Pure
@@ -236,14 +242,14 @@ public interface RectangularShape2afp<
 	}
 
 	/** Replies the height.
-	 * 
+	 *
 	 * @return the height.
 	 */
 	@Pure
 	default double getHeight() {
 		return getMaxY() - getMinY();
 	}
-	
+
 	@Override
 	default void translate(double dx, double dy) {
 		setFromCorners(getMinX() + dx, getMinY() + dy, getMaxX() + dx, getMaxY() + dy);
@@ -252,15 +258,19 @@ public interface RectangularShape2afp<
 	@Pure
 	@Override
 	default boolean isEmpty() {
-		return getMinX()==getMaxX() && getMinY()==getMaxY(); 
+		return getMinX() == getMaxX() && getMinY() == getMaxY();
 	}
-	
+
 	/** Inflate this rectangle with the given amounts.
-	 * 
-	 * @param minXBorder
-	 * @param minYBorder
-	 * @param maxXBorder
-	 * @param maxYBorder
+	 *
+	 * <p>The four borders may be inflated. If the value associated to a border
+	 * is positive, the border is moved outside the current rectangle.
+	 * If the value is negative, the border is moved inside the rectangle.
+	 *
+	 * @param minXBorder the value to substract to the minimum x.
+	 * @param minYBorder the value to substract to the minimum y.
+	 * @param maxXBorder the value to add to the maximum x.
+	 * @param maxYBorder the value to add to the maximum y.
 	 */
 	default void inflate(double minXBorder, double minYBorder, double maxXBorder, double maxYBorder) {
 		setFromCorners(
@@ -268,12 +278,6 @@ public interface RectangularShape2afp<
 				getMinY() - minYBorder,
 				getMaxX() + maxXBorder,
 				getMaxY() + maxYBorder);
-	}
-
-	@Override
-	default void set(IT s) {
-		assert (s != null) : "Shape must be not null"; //$NON-NLS-1$
-		setFromCorners(s.getMinX(), s.getMinY(), s.getMaxX(), s.getMaxY());
 	}
 
 }

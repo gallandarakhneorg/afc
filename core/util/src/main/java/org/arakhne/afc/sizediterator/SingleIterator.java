@@ -1,89 +1,70 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (C) 2010-2011 Janus Core Developers
- * Copyright (C) 2012-13 Stephane GALLAND.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package org.arakhne.afc.sizediterator;
 
 import java.util.NoSuchElementException;
 
 /** Single iterator.
- * 
- * @param <OBJ> is the type of the objects to iterator on.
+ *
+ * @param <OBJECT> is the type of the objects to iterator on.
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public class SingleIterator<OBJ> implements SizedIterator<OBJ> {
+public class SingleIterator<OBJECT> implements SizedIterator<OBJECT> {
 
-	private OBJ object;
-	
-	/**
-	 * @param obj
+	private OBJECT object;
+
+	/** Construct an iterator.
+	 *
+	 * @param obj the object to iterate on.
 	 */
-	public SingleIterator(OBJ obj) {
+	public SingleIterator(OBJECT obj) {
 		this.object = obj;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public boolean hasNext() {
-		return this.object!=null;
+		return this.object != null;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
-	public OBJ next() {
-		if (this.object!=null) {
-			OBJ obj = this.object;
+	public OBJECT next() {
+		if (this.object != null) {
+			final OBJECT obj = this.object;
 			this.object = null;
 			return obj;
 		}
 		throw new NoSuchElementException();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void remove() {
-		throw new UnsupportedOperationException();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public int index() {
-		if (this.object==null)
+		if (this.object == null) {
 			return 0;
+		}
 		return -1;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public int totalSize() {
 		return 1;
@@ -91,7 +72,9 @@ public class SingleIterator<OBJ> implements SizedIterator<OBJ> {
 
 	@Override
 	public int rest() {
-		if (this.object==null) return 0;
+		if (this.object == null) {
+			return 0;
+		}
 		return 1;
 	}
 

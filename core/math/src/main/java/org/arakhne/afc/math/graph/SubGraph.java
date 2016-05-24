@@ -1,23 +1,23 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (c) 2013 Christophe BOHRHAUER.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package org.arakhne.afc.math.graph;
 
 import java.lang.ref.WeakReference;
@@ -26,16 +26,17 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 import org.arakhne.afc.references.ComparableWeakReference;
 import org.arakhne.afc.references.WeakArrayList;
-import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * A subgraph.
- * <p>
- * The segments is the subgraph are weak references to the segments
+ *
+ * <p>The segments is the subgraph are weak references to the segments
  * to the complete graph.
- * 
+ *
  * @param <PT> is the type of node in the graph
  * @param <ST> is the type of edge in the graph
  * @param <GP> is the type of graph path
@@ -45,53 +46,54 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public class SubGraph<ST extends GraphSegment<ST,PT>,
-PT extends GraphPoint<PT,ST>,
-GP extends GraphPath<GP,ST,PT>>
-implements Graph<ST,PT> {
+public class SubGraph<ST extends GraphSegment<ST, PT>, PT extends GraphPoint<PT, ST>, GP extends GraphPath<GP, ST, PT>>
+		implements Graph<ST, PT> {
 
-	private final Set<ComparableWeakReference<PT>> terminalPoints = new TreeSet<>();
-	private final Collection<ST> segments;
-	private int pointNumber;
-	private WeakReference<Graph<ST,PT>> parentGraph = null;
-	
 	/** Comparator of graph iteration element on oriented segments.
 	 */
-	protected final GraphIterationElementComparator<ST,PT> iterationOrientedElementComparator;
+	protected final GraphIterationElementComparator<ST, PT> iterationOrientedElementComparator;
 
 	/** Comparator of graph iteration element on not-oriented segments.
 	 */
-	protected final GraphIterationElementComparator<ST,PT> iterationNotOrientedElementComparator;
+	protected final GraphIterationElementComparator<ST, PT> iterationNotOrientedElementComparator;
+
+	private final Set<ComparableWeakReference<PT>> terminalPoints = new TreeSet<>();
+
+	private final Collection<ST> segments;
+
+	private int pointNumber;
+
+	private WeakReference<Graph<ST, PT>> parentGraph;
 
 	/**
 	 * @param segments1 is the collection to use to store the segments.
-	 * @param pointNumber1 is the number of connection points in the subgraph described by the <var>segments</var>.
+	 * @param pointNumber1 is the number of connection points in the subgraph described by the {@code segments}.
 	 * @param orientedIterator is a comparator which may be used by this subgraph.
 	 * @param notOrientedIterator is a comparator which may be used by this subgraph.
 	 */
 	protected SubGraph(
 			Collection<ST> segments1,
 			int pointNumber1,
-			GraphIterationElementComparator<ST,PT> orientedIterator,
-			GraphIterationElementComparator<ST,PT> notOrientedIterator) {
+			GraphIterationElementComparator<ST, PT> orientedIterator,
+			GraphIterationElementComparator<ST, PT> notOrientedIterator) {
 		this.segments = segments1;
 		this.pointNumber = pointNumber1;
-		assert(orientedIterator!=null);
+		assert orientedIterator != null;
 		this.iterationOrientedElementComparator = orientedIterator;
-		assert(notOrientedIterator!=null);
+		assert notOrientedIterator != null;
 		this.iterationNotOrientedElementComparator = notOrientedIterator;
 	}
 
 	/**
 	 * Build a subgraph in which graph segments are stored inside
 	 * a {@link WeakArrayList} instance.
-	 * 
+	 *
 	 * @param orientedIterator is a comparator which may be used by this subgraph.
 	 * @param notOrientedIterator is a comparator which may be used by this subgraph.
 	 */
 	public SubGraph(
-			GraphIterationElementComparator<ST,PT> orientedIterator,
-			GraphIterationElementComparator<ST,PT> notOrientedIterator) {
+			GraphIterationElementComparator<ST, PT> orientedIterator,
+			GraphIterationElementComparator<ST, PT> notOrientedIterator) {
 		this(
 				new WeakArrayList<ST>(),
 				0,
@@ -104,23 +106,23 @@ implements Graph<ST,PT> {
 	//-----------------------------------------------------------
 
 	/** Replies the parent graph is this subgraph was built.
-	 * 
+	 *
 	 * @return the parent graph or <code>null</code>
 	 */
 	@Pure
-	protected final Graph<ST,PT> getParentGraph() {
-		return this.parentGraph==null ? null : this.parentGraph.get();
+	protected final Graph<ST, PT> getParentGraph() {
+		return this.parentGraph == null ? null : this.parentGraph.get();
 	}
 
 	/** Replies the segments in this subgraph.
-	 * <p>
-	 * Caution: the replied collection is the real reference
+	 *
+	 * <p>Caution: the replied collection is the real reference
 	 * to the internal collection. Any change in this collection
 	 * outside this {@link SubGraph} class may causes invalid
 	 * behaviour (no event...).
-	 * 
+	 *
 	 * @return the internal data structure that contains all the
-	 * segments in this subgraph.
+	 *     segments in this subgraph.
 	 */
 	@Pure
 	protected final Collection<ST> getGraphSegments() {
@@ -128,30 +130,31 @@ implements Graph<ST,PT> {
 	}
 
 	/** Build a subgraph from the specified graph.
-	 * 
+	 *
 	 * @param iterator is the iterator on the graph.
 	 */
-	public final void build(GraphIterator<ST,PT> iterator) {
+	public final void build(GraphIterator<ST, PT> iterator) {
 		build(iterator, null);
 	}
 
 	/** Build a subgraph from the specified graph.
-	 * 
+	 *
 	 * @param iterator is the iterator on the graph.
 	 * @param listener is the listener invoked each time a segment was added to the subgraph.
 	 */
-	public final void build(GraphIterator<ST,PT> iterator, SubGraphBuildListener<ST,PT> listener) {
-		assert(iterator!=null);
-		Set<ComparableWeakReference<PT>> reachedPoints = new TreeSet<>();		
-		GraphIterationElement<ST,PT> element;
+	public final void build(GraphIterator<ST, PT> iterator, SubGraphBuildListener<ST, PT> listener) {
+		assert iterator != null;
+		final Set<ComparableWeakReference<PT>> reachedPoints = new TreeSet<>();
+		GraphIterationElement<ST, PT> element;
 		ST segment;
-		PT point, firstPoint=null;
+		PT point;
+		PT firstPoint = null;
 
 		this.parentGraph = new WeakReference<>(iterator.getGraph());
 		this.segments.clear();
 		this.pointNumber = 0;
 		this.terminalPoints.clear();
-		
+
 		while (iterator.hasNext()) {
 			element = iterator.nextElement();
 			point = element.getPoint();
@@ -163,43 +166,44 @@ implements Graph<ST,PT> {
 			}
 
 			this.segments.add(segment);
-			if (listener!=null) {
+			if (listener != null) {
 				listener.segmentAdded(this, element);
 			}
 
 			// Register terminal points
 			point = segment.getOtherSidePoint(point);
-			ComparableWeakReference<PT> ref = new ComparableWeakReference<>(point);
+			final ComparableWeakReference<PT> ref = new ComparableWeakReference<>(point);
 			if (element.isTerminalSegment()) {
 				if (!reachedPoints.contains(ref)) {
 					this.terminalPoints.add(ref);
-					if (listener!=null) {
+					if (listener != null) {
 						listener.terminalPointReached(this, point, segment);
 					}
 				}
-			}
-			else {
+			} else {
 				this.terminalPoints.remove(ref);
 				reachedPoints.add(ref);
-				if (listener!=null) {
+				if (listener != null) {
 					listener.nonTerminalPointReached(this, point, segment);
 				}
 			}
 		}
 
-		if (firstPoint!=null) {
-			ComparableWeakReference<PT> ref = new ComparableWeakReference<>(firstPoint);
-			if (!reachedPoints.contains(ref)) this.terminalPoints.add(ref);
+		if (firstPoint != null) {
+			final ComparableWeakReference<PT> ref = new ComparableWeakReference<>(firstPoint);
+			if (!reachedPoints.contains(ref)) {
+				this.terminalPoints.add(ref);
+			}
 		}
-		
+
 		this.pointNumber = this.terminalPoints.size() + reachedPoints.size();
 
-		reachedPoints.clear();		
+		reachedPoints.clear();
 	}
 
 	/** Replies if the given point is a terminal point.
 	 *
-	 * @param point
+	 * @param point the point to test.
 	 * @return <code>true</code> if the point is terminal otherwise <code>false</code>
 	 */
 	@Pure
@@ -208,9 +212,9 @@ implements Graph<ST,PT> {
 	}
 
 	/** Create a wrapping segment for the given graph segment.
-	 * 
-	 * @param segment
-	 * @return a wrapping segment or the <var>segment</var> itself.
+	 *
+	 * @param segment the segment to wrap.
+	 * @return a wrapping segment or the {@code segment} itself.
 	 */
 	@Pure
 	protected ST wrapSegment(ST segment) {
@@ -218,11 +222,11 @@ implements Graph<ST,PT> {
 	}
 
 	/** Create a wrapping point for the given graph point.
-	 * 
-	 * @param point
+	 *
+	 * @param point the point to wrap.
 	 * @param segment is the segment connected to the point.
 	 * @param isTerminal indicates if this point should be a terminal point.
-	 * @return a wrapping point or the <var>point</var> itself.
+	 * @return a wrapping point or the {@code point} itself.
 	 */
 	@Pure
 	protected PT wrapPoint(PT point, ST segment, boolean isTerminal) {
@@ -296,115 +300,127 @@ implements Graph<ST,PT> {
 				allowManyReplies, assumeOrientedSegments);
 	}
 
-	/**
+	/** Iterator on subgraph segments, with exploration depth.
+	 *
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 * @since 13.0
 	 */
-	private class DepthSubGraphIterator extends DepthGraphIterator<ST,PT> {
+	private class DepthSubGraphIterator extends DepthGraphIterator<ST, PT> {
 
-		/**
-		 * @param startingSegment
-		 * @param depth
-		 * @param position_from_starting_point
-		 * @param startingPoint
-		 * @param allowManyReplies
-		 * @param assumedOrientedSegments
+		/** Construct the iterator.
+		 *
+		 * @param startingSegment the starting segment.
+		 * @param depth the exploration depth.
+		 * @param position_from_starting_point the position from the starting point.
+		 * @param startingPoint the starting point, attached to the starting segment.
+		 * @param allowManyReplies indicates if a segment could be reply many times.
+		 * @param assumedOrientedSegments indicates if the segments are assumed to be oriented,
+		 *     i.e. that are from their starting point to their ending points.
 		 */
-		public DepthSubGraphIterator(ST startingSegment,
+		DepthSubGraphIterator(ST startingSegment,
 				double depth, double position_from_starting_point, PT startingPoint,
 				boolean allowManyReplies,
 				boolean assumedOrientedSegments) {
 			super(SubGraph.this, depth, position_from_starting_point,
-					startingSegment, startingPoint, 
+					startingSegment, startingPoint,
 					allowManyReplies, assumedOrientedSegments);
 		}
 
 		@Override
-		protected GraphIterationElement<ST,PT> newIterationElement(
-				ST previous_segment, ST segment, 
-				PT point, 
+		protected GraphIterationElement<ST, PT> newIterationElement(
+				ST previous_segment, ST segment,
+				PT point,
 				double distanceToReach,
 				double distanceToConsume) {
 			return new SubGraphIterationElement(
-					previous_segment, segment, 
-					point, 
+					previous_segment, segment,
+					point,
 					distanceToReach,
 					distanceToConsume);
 		}
 
 	}
 
-	/**
+	/** Iterator on segments of a subgraph, without exploration depth.
+	 *
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 * @since 13.0
 	 */
-	private class SubGraphIterator extends GraphIterator<ST,PT> {
+	private class SubGraphIterator extends GraphIterator<ST, PT> {
 
-		/**
-		 * @param startingSegment
-		 * @param startingPoint
-		 * @param allowCycles
-		 * @param assumeOrientedSegments
+		/** Construct the iterator.
+		 *
+		 * @param startingSegment the starting segment.
+		 * @param startingPoint the starting point, attached to the starting segment.
+		 * @param allowCycles indicates if cycles in iteration are allowed.
+		 * @param assumeOrientedSegments indicates if the segments are assumed to be oriented,
+		 *     i.e. that are from their starting point to their ending points.
 		 */
-		public SubGraphIterator(ST startingSegment, PT startingPoint, boolean allowCycles, boolean assumeOrientedSegments) {
+		SubGraphIterator(ST startingSegment, PT startingPoint, boolean allowCycles, boolean assumeOrientedSegments) {
 			super(SubGraph.this, startingSegment, startingPoint, allowCycles, assumeOrientedSegments, 0.f);
 		}
 
-		/**
-		 * @param startingSegment
-		 * @param startingPoint
-		 * @param assumeOrientedSegments
+		/** Construct the iterator.
+		 *
+		 * @param startingSegment the starting segment.
+		 * @param startingPoint the starting point, attached to the starting segment.
+		 * @param assumeOrientedSegments indicates if the segments are assumed to be oriented,
+		 *     i.e. that are from their starting point to their ending points.
 		 */
-		public SubGraphIterator(ST startingSegment, PT startingPoint, boolean assumeOrientedSegments) {
+		SubGraphIterator(ST startingSegment, PT startingPoint, boolean assumeOrientedSegments) {
 			super(SubGraph.this, startingSegment, startingPoint, false, assumeOrientedSegments, 0.f);
 		}
 
 		@Override
-		protected GraphIterationElementComparator<ST,PT> createVisitedSegmentComparator(boolean assumeOrientedSegments) {
+		protected GraphIterationElementComparator<ST, PT> createVisitedSegmentComparator(boolean assumeOrientedSegments) {
 			if (assumeOrientedSegments) {
-				if (SubGraph.this.iterationOrientedElementComparator!=null)
+				if (SubGraph.this.iterationOrientedElementComparator != null) {
 					return SubGraph.this.iterationOrientedElementComparator;
-			}
-			else {
-				if (SubGraph.this.iterationNotOrientedElementComparator!=null)
+				}
+			} else {
+				if (SubGraph.this.iterationNotOrientedElementComparator != null) {
 					return SubGraph.this.iterationNotOrientedElementComparator;
+				}
 			}
 			return super.createVisitedSegmentComparator(assumeOrientedSegments);
 		}
 
 		@Override
-		protected GraphIterationElement<ST,PT> newIterationElement(
-				ST previous_segment, ST segment, 
-				PT point, 
+		protected GraphIterationElement<ST, PT> newIterationElement(
+				ST previous_segment, ST segment,
+				PT point,
 				double distanceToReach,
 				double distanceToConsume) {
 			return new SubGraphIterationElement(
-					previous_segment, segment, 
-					point, 
-					distanceToReach, 
+					previous_segment, segment,
+					point,
+					distanceToReach,
 					distanceToConsume);
 		}
 
 	}
 
-	/**
+	/** Element replied during the iration on a graph.
+	 *
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 * @since 13.0
 	 */
-	private final class SubGraphIterationElement extends GraphIterationElement<ST,PT> {
+	private final class SubGraphIterationElement extends GraphIterationElement<ST, PT> {
 
-		private ST wrappedPreviousSegment = null;
-		private ST wrappedSegment = null;
-		private PT wrappedPoint = null;
+		private ST wrappedPreviousSegment;
+
+		private ST wrappedSegment;
+
+		private PT wrappedPoint;
 
 		/**
 		 * @param previous_segment is the previous element that permits to reach this object during an iteration
@@ -413,43 +429,37 @@ implements Graph<ST,PT> {
 		 * @param distanceToReach1 is the distance that is already consumed.
 		 * @param distanceToConsume1 is the distance to consume including the segment.
 		 */
-		public SubGraphIterationElement(ST previous_segment, ST segment, PT point, double distanceToReach1, double distanceToConsume1) {
+		SubGraphIterationElement(ST previous_segment, ST segment, PT point, double distanceToReach1, double distanceToConsume1) {
 			super(previous_segment, segment, point, distanceToReach1, distanceToConsume1);
 		}
 
-		/** {@inheritDoc}
-		 */
 		@Override
 		public ST getPreviousSegment() {
-			if (this.wrappedPreviousSegment==null) {
+			if (this.wrappedPreviousSegment == null) {
 				this.wrappedPreviousSegment = wrapSegment(this.previousSegment);
 			}
 			return this.wrappedPreviousSegment;
 		}
 
-		/** {@inheritDoc}
-		 */
 		@Override
 		public ST getSegment() {
-			if (this.wrappedSegment==null) {
+			if (this.wrappedSegment == null) {
 				this.wrappedSegment = wrapSegment(this.currentSegment);
 			}
 			return this.wrappedSegment;
 		}
 
-		/** {@inheritDoc}
-		 */
 		@Override
 		public PT getPoint() {
-			if (this.wrappedPoint==null) {
+			if (this.wrappedPoint == null) {
 				boolean isTerminal = false;
 				ST sgmt = this.previousSegment;
-				if (sgmt==null) {
+				if (sgmt == null) {
 					sgmt = this.currentSegment;
 					isTerminal = true;
 				}
-				assert(this.connectionPoint!=null);
-				assert(sgmt!=null);
+				assert this.connectionPoint != null;
+				assert sgmt != null;
 				this.wrappedPoint = wrapPoint(
 						this.connectionPoint, sgmt, isTerminal || this.lastReachableSegment);
 			}
@@ -458,7 +468,8 @@ implements Graph<ST,PT> {
 
 	}
 
-	/**
+	/** Iterator on segments of a subgraph.
+	 *
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
@@ -469,7 +480,7 @@ implements Graph<ST,PT> {
 
 		private final Iterator<ST> iterator;
 
-		public SubGraphSegmentIterator(Iterator<ST> iter) {
+		SubGraphSegmentIterator(Iterator<ST> iter) {
 			this.iterator = iter;
 		}
 

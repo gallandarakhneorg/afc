@@ -1,23 +1,23 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (C) 2012 Stephane GALLAND.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package org.arakhne.afc.math.matrix;
 
 import org.arakhne.afc.math.continous.object3d.Quaternion;
@@ -29,8 +29,8 @@ import org.arakhne.afc.math.generic.Tuple3D;
  * Is represented internally as a 4x4 floating point matrix. The
  * mathematical representation is row major, as in traditional
  * matrix mathematics.
- * <p>
- * The transformation matrix is:
+ *
+ * <p>The transformation matrix is:
  * <pre><code>
  * | r11 | r12 | r13 | Tx |
  * | r21 | r22 | r23 | Ty |
@@ -45,10 +45,11 @@ import org.arakhne.afc.math.generic.Tuple3D;
  * @deprecated Replacement will be provided in Version 14.0
  */
 @Deprecated
+@SuppressWarnings("all")
 public class Transform3D extends Matrix4d {
-	
+
 	private static final long serialVersionUID = -8427812783666663224L;
-	
+
 	/** This is the identifity transformation.
 	 */
 	public static final Transform3D IDENTITY = new Transform3D();
@@ -59,10 +60,10 @@ public class Transform3D extends Matrix4d {
 	public Transform3D() {
 		setIdentity();
 	}
-	
+
 	/**
 	 * Constructs and initializes a Matrix4f from the specified nine values.
-	 * 
+	 *
 	 * @param m00
 	 *            the [0][0] element
 	 * @param m01
@@ -95,7 +96,7 @@ public class Transform3D extends Matrix4d {
 	/**
 	 * Constructs a new Transform3D object and initializes it from the
 	 * specified transform.
-	 * 
+	 *
 	 * @param t
 	 */
 	public Transform3D(Transform3D t) {
@@ -116,9 +117,9 @@ public class Transform3D extends Matrix4d {
 
 	/** Set the position.
 	 * <p>
-	 * This function changes only the elements of 
+	 * This function changes only the elements of
 	 * the matrix related to the translation.
-	 * The scaling and the shearing are not changed. 
+	 * The scaling and the shearing are not changed.
 	 * <p>
 	 * After a call to this function, the matrix will
 	 * contains (? means any value):
@@ -128,7 +129,7 @@ public class Transform3D extends Matrix4d {
 	 *          [   ?    ?    z   ]
 	 *          [   ?    ?    ?   ]
 	 * </pre>
-	 * 
+	 *
 	 * @param x
 	 * @param y
 	 * @param z
@@ -139,12 +140,12 @@ public class Transform3D extends Matrix4d {
 		this.m13 = y;
 		this.m23 = z;
 	}
-	
+
 	/** Set the position.
 	 * <p>
-	 * This function changes only the elements of 
+	 * This function changes only the elements of
 	 * the matrix related to the translation.
-	 * The scaling and the shearing are not changed. 
+	 * The scaling and the shearing are not changed.
 	 * <p>
 	 * After a call to this function, the matrix will
 	 * contains (? means any value):
@@ -154,7 +155,7 @@ public class Transform3D extends Matrix4d {
 	 *          [   ?    ?    t.z   ]
 	 *          [   ?    ?    ?     ]
 	 * </pre>
-	 * 
+	 *
 	 * @param t
 	 * @see #makeTranslationMatrix(float, float, float)
 	 */
@@ -173,7 +174,7 @@ public class Transform3D extends Matrix4d {
 	 *                [   0    0    0    dz   ]
 	 *                [   0    0    0    1    ]
 	 * </pre>
-	 * 
+	 *
 	 * @param dx
 	 * @param dy
 	 * @param dz
@@ -183,7 +184,7 @@ public class Transform3D extends Matrix4d {
 		this.m13 += dy;
 		this.m23 += dz;
 	}
-	
+
 	/** Translate the position.
 	 * <p>
 	 * This function is equivalent to:
@@ -193,7 +194,7 @@ public class Transform3D extends Matrix4d {
 	 *                [   0    0    0    t.z   ]
 	 *                [   0    0    0    1     ]
 	 * </pre>
-	 * 
+	 *
 	 * @param t
 	 */
 	public void translate(Vector3f t) {
@@ -203,7 +204,7 @@ public class Transform3D extends Matrix4d {
 	}
 
 	/** Replies the X translation.
-	 * 
+	 *
 	 * @return the amount
 	 */
 	public float getTranslationX() {
@@ -211,7 +212,7 @@ public class Transform3D extends Matrix4d {
 	}
 
 	/** Replies the Y translation.
-	 * 
+	 *
 	 * @return the amount
 	 */
 	public float getTranslationY() {
@@ -219,7 +220,7 @@ public class Transform3D extends Matrix4d {
 	}
 
 	/** Replies the Z translation.
-	 * 
+	 *
 	 * @return the amount
 	 */
 	public float getTranslationZ() {
@@ -227,7 +228,7 @@ public class Transform3D extends Matrix4d {
 	}
 
 	/** Replies the translation.
-	 * 
+	 *
 	 * @return the amount
 	 */
 	public Vector3f getTranslation() {
@@ -236,7 +237,7 @@ public class Transform3D extends Matrix4d {
 
 	/**
      * Replies the rotation for the object.
-	 * 
+	 *
 	 * @return the amount
      */
     public Quaternion getRotation() {
@@ -248,9 +249,9 @@ public class Transform3D extends Matrix4d {
     /**
      * Set the rotation for the object but do not change the translation.
 	 * <p>
-	 * This function changes only the elements of 
+	 * This function changes only the elements of
 	 * the matrix related to the rotation.
-	 * The translation is not changed. 
+	 * The translation is not changed.
 	 * <p>
 	 * After a call to this function, the matrix will
 	 * contains (? means any value, and r is the translation
@@ -261,7 +262,7 @@ public class Transform3D extends Matrix4d {
 	 *          [   r   r   r   ?   ]
 	 *          [   ?   ?   ?   ?   ]
 	 * </pre>
-     * 
+     *
      * @param rotation
      * @see #makeRotationMatrix(Quaternion)
      */
@@ -290,7 +291,7 @@ public class Transform3D extends Matrix4d {
 	 *                [   r    r     r     0   ]
 	 *                [   0    0     0     1   ]
 	 * </pre>
-     * 
+     *
      * @param rotation
      */
     public void rotate(Quaternion rotation) {
@@ -298,12 +299,12 @@ public class Transform3D extends Matrix4d {
     	m.makeRotationMatrix(rotation);
     	mul(m);
     }
-    
+
     /**
 	 * Sets the value of this matrix to a rotation matrix, and no translation.
 	 * <p>
-	 * This function changes all the elements of 
-	 * the matrix, including the translation. 
+	 * This function changes all the elements of
+	 * the matrix, including the translation.
 	 * <p>
 	 * After a call to this function, the matrix will
 	 * contains (? means any value, and r a value from
@@ -314,7 +315,7 @@ public class Transform3D extends Matrix4d {
 	 *          [   r  r  r  0   ]
 	 *          [   0  0  0  1   ]
 	 * </pre>
-	 * 
+	 *
 	 * @param rotation
 	 * @see #setRotation(Quaternion)
 	 */
@@ -340,12 +341,12 @@ public class Transform3D extends Matrix4d {
         this.m32 = (float) 0.0;
         this.m33 = (float) 1.0;
 	}
-	
+
     /**
 	 * Sets the value of this matrix to the given translation, without rotation.
 	 * <p>
-	 * This function changes all the elements of 
-	 * the matrix including the scaling and the shearing. 
+	 * This function changes all the elements of
+	 * the matrix including the scaling and the shearing.
 	 * <p>
 	 * After a call to this function, the matrix will
 	 * contains (? means any value):
@@ -355,7 +356,7 @@ public class Transform3D extends Matrix4d {
 	 *          [   0    0    1    dz   ]
 	 *          [   0    0    0    1    ]
 	 * </pre>
-	 * 
+	 *
 	 * @param dx is the position to put in the matrix.
 	 * @param dy is the position to put in the matrix.
 	 * @param dz is the position to put in the matrix.
@@ -387,7 +388,7 @@ public class Transform3D extends Matrix4d {
 	/**
 	 * Multiply this matrix by the tuple t and place the result back into the
 	 * tuple (t = this*t).
-	 * 
+	 *
 	 * @param t
 	 *            the tuple to be multiplied by this matrix and then replaced
 	 */
@@ -398,11 +399,11 @@ public class Transform3D extends Matrix4d {
 		z = (float)(this.m20 * t.getX() + this.m21 * t.getY() + this.m22 * t.getZ() + this.m23);
 		t.set(x, y, z);
 	}
-	
+
 	/**
 	 * Multiply this matrix by the tuple t and and place the result into the
 	 * tuple "result" (result = this*t).
-	 * 
+	 *
 	 * @param t
 	 *            the tuple to be multiplied by this matrix
 	 * @param result
@@ -417,7 +418,7 @@ public class Transform3D extends Matrix4d {
 
 	/**
 	 * Set the components of the transformation.
-	 * 
+	 *
 	 * @param m00
 	 *            the [0][0] element
 	 * @param m01

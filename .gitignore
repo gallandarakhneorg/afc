@@ -4,6 +4,9 @@
 .settings/
 .project
 
+# Checkstyle
+.checkstyle
+
 # IntelliJ
 *.iml
 *.ipr

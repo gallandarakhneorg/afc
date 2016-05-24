@@ -1,25 +1,28 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (c) 2005-10, Multiagent Team,
- * Laboratoire Systemes et Transports,
- * Universite de Technologie de Belfort-Montbeliard.
- * All rights reserved.
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
  *
- * This software is the confidential and proprietary information
- * of the Laboratoire Systemes et Transports
- * of the Universite de Technologie de Belfort-Montbeliard ("Confidential Information").
- * You shall not disclose such Confidential Information and shall use
- * it only in accordance with the terms of the license agreement
- * you entered into with the SeT.
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
  *
- * http://www.multiagent.fr/
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package org.arakhne.afc.math.tree;
 
 /**
  * Called each time an event occurs on a tree node.
- * 
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
@@ -27,29 +30,29 @@ package org.arakhne.afc.math.tree;
  * @since 13.0
  */
 public interface TreeNodeListener {
-	
+
 	/** A child of the specified node was added.
-	 * 
+	 *
 	 * @param event is the description of the addition event
 	 */
-	public void treeNodeChildAdded(TreeNodeAddedEvent event);
-	
+	void treeNodeChildAdded(TreeNodeAddedEvent event);
+
 	/** A child of the specified node was removed.
-	 * 
+	 *
 	 * @param event is the description of the removal event
 	 */
-	public void treeNodeChildRemoved(TreeNodeRemovedEvent event);
+	void treeNodeChildRemoved(TreeNodeRemovedEvent event);
 
 	/** The parent of the specified node has changed.
-	 * 
+	 *
 	 * @param event is the description of the event
 	 */
-	public void treeNodeParentChanged(TreeNodeParentChangedEvent event);
+	void treeNodeParentChanged(TreeNodeParentChangedEvent event);
 
 	/** The data associated to a node was changed.
-	 * 
+	 *
 	 * @param event is the description of the event
 	 */
-	public void treeNodeDataChanged(TreeDataEvent event);
+	void treeNodeDataChanged(TreeDataEvent event);
 
 }

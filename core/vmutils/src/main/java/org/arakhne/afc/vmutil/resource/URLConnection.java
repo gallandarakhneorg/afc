@@ -1,24 +1,23 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (C) 2010 Alexandre WILLAUME, Stephane GALLAND.
- * Copyright (C) 2013 Stephane GALLAND.
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package org.arakhne.afc.vmutil.resource;
 
 import java.io.IOException;
@@ -37,98 +36,84 @@ import org.arakhne.afc.vmutil.Resources;
  * Instances of this class can be used to
  * read from the resource referenced by the resource URL. Write
  * is allowed depending on where resource is located.
- * <p>
- * Supported header fields are the same as the real resource URL
+ *
+ * <p>Supported header fields are the same as the real resource URL
  * (basicaly, file or jar protocols).
- * 
+ *
  * @author $Author: sgalland$
  * @author $Author: willaume$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @see URLConnection
  * @since 6.0
+ * @see URLConnection
  */
 class URLConnection extends java.net.URLConnection {
 
-	private URL location = null;
-	private java.net.URLConnection connection = null;
-	
+	private URL location;
+
+	private java.net.URLConnection connection;
+
 	/**
 	 * @param url is the "file"-protocol url to use.
 	 */
 	protected URLConnection(URL url) {
 		super(url);
 	}
-	
-	/**
-     * {@inheritDoc}
-     */
+
 	@Override
-    public String getHeaderField(int n) {
+    public String getHeaderField(int index) {
+		assert index >= 0 : "Index must be positive or zero"; //$NON-NLS-1$
 		try {
 			connect();
-		}
-		catch(IOException e) {
+		} catch (IOException e) {
 			throw new IllegalStateException(e);
 		}
-    	return this.connection.getHeaderField(n);
+    	return this.connection.getHeaderField(index);
     }
-	
-    /**
-     * {@inheritDoc}
-     */
+
 	@Override
     public String getHeaderField(String name) {
 		try {
 			connect();
-		}
-		catch(IOException e) {
+		} catch (IOException e) {
 			throw new IllegalStateException(e);
 		}
     	return this.connection.getHeaderField(name);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-	@Override
-    public String getHeaderFieldKey(int n) {
+    @Override
+    public String getHeaderFieldKey(int index) {
+		assert index >= 0 : "Index must be positive or zero"; //$NON-NLS-1$
 		try {
 			connect();
-		}
-		catch(IOException e) {
+		} catch (IOException e) {
 			throw new IllegalStateException(e);
 		}
-    	return this.connection.getHeaderFieldKey(n);
+    	return this.connection.getHeaderFieldKey(index);
     }
-		
-    /**
-     * {@inheritDoc}
-     */
+
 	@Override
-    public Map<String,List<String>> getHeaderFields() {
+    public Map<String, List<String>> getHeaderFields() {
 		try {
 			connect();
-		}
-		catch(IOException e) {
+		} catch (IOException e) {
 			throw new IllegalStateException(e);
 		}
     	return this.connection.getHeaderFields();
     }
-	
-    /**
-	 * {@inheritDoc}
-	 */
+
 	@Override
 	public void connect() throws IOException {
 		if (!this.connected) {
 			this.location = Resources.getResource(this.url.getFile());
-			if (this.location==null)
+			if (this.location == null) {
 				throw new ResourceNotFoundException(this.url.toExternalForm());
+			}
 			this.connection = this.location.openConnection();
-			if (this.connection==null)
+			if (this.connection == null) {
 				throw new ResourceNotFoundException(this.url.toExternalForm());
+			}
 			this.connection.setDoInput(getDoInput());
 			this.connection.setDoOutput(getDoOutput());
 			this.connection.setAllowUserInteraction(getAllowUserInteraction());
@@ -139,23 +124,17 @@ class URLConnection extends java.net.URLConnection {
 			this.connected = true;
 		}
 	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
+
 	@Override
 	public OutputStream getOutputStream() throws IOException {
         connect();
         return this.connection.getOutputStream();
     }
-	
-	/**
-	 * {@inheritDoc}
-	 */
+
 	@Override
 	public InputStream getInputStream() throws IOException {
         connect();
         return this.connection.getInputStream();
     }
-	
+
 }

@@ -1,22 +1,21 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (C) 2004-2008, 2013 Stephane GALLAND.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.arakhne.afc.vmutil;
@@ -24,11 +23,11 @@ package org.arakhne.afc.vmutil;
 /**
  * This utility class permits to find the better class loader
  * for your application.
- * <p>
- * It tries to find the preferred class loader registered with
+ *
+ * <p>It tries to find the preferred class loader registered with
  * {@link #setPreferredClassLoader(ClassLoader)}.
  * If none was found, the default class loader will be replied.
- * 
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
@@ -36,68 +35,72 @@ package org.arakhne.afc.vmutil;
  */
 public final class ClassLoaderFinder {
 
-	private static volatile ClassLoader dynamicLoader = null;
-	
-    /**
-     * Replies the better class loader.
-	 * <p>
-	 * It tries to find the preferred class loader.
+	private static volatile ClassLoader dynamicLoader;
+
+	private ClassLoaderFinder() {
+		//
+	}
+
+	/** Replies the better class loader.
+	 *
+	 * <p>It tries to find the preferred class loader.
 	 * If none was found, the default class loader will be replied.
-	 * 
-     * @return the class loader, never <code>null</code>
-     */
-    public static ClassLoader findClassLoader() {
+	 *
+	 * @return the class loader, never <code>null</code>
+	 */
+	public static ClassLoader findClassLoader() {
+		if (dynamicLoader == null) {
+			return ClassLoaderFinder.class.getClassLoader();
+		}
+		return dynamicLoader;
+	}
 
-    	if (dynamicLoader==null)
-    		return ClassLoaderFinder.class.getClassLoader();
-    	return dynamicLoader;
-    }
+	/**
+	 * Set the preferred class loader.
+	 *
+	 * @param classLoader is the preferred class loader
+	 */
+	public static void setPreferredClassLoader(ClassLoader classLoader) {
+		if (classLoader != dynamicLoader) {
+			dynamicLoader = classLoader;
+			final Thread[] threads = new Thread[Thread.activeCount()];
+			Thread.enumerate(threads);
+			for (final Thread t : threads) {
+				if (t != null) {
+					t.setContextClassLoader(classLoader);
+				}
+			}
+		}
+	}
 
-    /**
-     * Set the preferred class loader.
-	 * 
-     * @param class_loader is the preferred class loader
-     */
-    public static void setPreferredClassLoader(ClassLoader class_loader) {
-    	if (class_loader!=dynamicLoader) {
-	    	dynamicLoader = class_loader;
-	    	Thread[] threads = new Thread[Thread.activeCount()];
-	    	Thread.enumerate(threads);
-	    	for(Thread t : threads) {
-	    		if (t!=null)
-	    			t.setContextClassLoader(class_loader);
-	    	}
-    	}
-    }
-    
-    /**
-     * Pop the preferred class loader.
-     */
-    public static void popPreferredClassLoader() {
-    	ClassLoader sysLoader = ClassLoaderFinder.class.getClassLoader();
-    	
-    	if ((dynamicLoader==null)||
-    		(dynamicLoader==sysLoader)) {
-    		dynamicLoader = null;
-	    	Thread[] threads = new Thread[Thread.activeCount()];
-	    	Thread.enumerate(threads);
-	    	for(Thread t : threads) {
-	    		if (t!=null)
-	    			t.setContextClassLoader(sysLoader);
-	    	}
-    		return;
-    	}
-    	
-    	ClassLoader parent = dynamicLoader.getParent();
-    	
-    	dynamicLoader = (parent==sysLoader) ? null : parent;    	
+	/** Pop the preferred class loader.
+	 */
+	public static void popPreferredClassLoader() {
+		final ClassLoader sysLoader = ClassLoaderFinder.class.getClassLoader();
 
-    	Thread[] threads = new Thread[Thread.activeCount()];
-    	Thread.enumerate(threads);
-    	for(Thread t : threads) {
-    		if (t!=null)
-    			t.setContextClassLoader(parent);
-    	}
-    }
+		if ((dynamicLoader == null) || (dynamicLoader == sysLoader)) {
+			dynamicLoader = null;
+			final Thread[] threads = new Thread[Thread.activeCount()];
+			Thread.enumerate(threads);
+			for (final Thread t : threads) {
+				if (t != null) {
+					t.setContextClassLoader(sysLoader);
+				}
+			}
+			return;
+		}
+
+		final ClassLoader parent = dynamicLoader.getParent();
+
+		dynamicLoader = (parent == sysLoader) ? null : parent;
+
+		final Thread[] threads = new Thread[Thread.activeCount()];
+		Thread.enumerate(threads);
+		for (final Thread t : threads) {
+			if (t != null) {
+				t.setContextClassLoader(parent);
+			}
+		}
+	}
 
 }

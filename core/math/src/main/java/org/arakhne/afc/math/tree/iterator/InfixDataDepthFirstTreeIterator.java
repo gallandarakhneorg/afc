@@ -1,20 +1,23 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (c) 2005-11, Multiagent Team,
- * Laboratoire Systemes et Transports,
- * Universite de Technologie de Belfort-Montbeliard.
- * All rights reserved.
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
  *
- * This software is the confidential and proprietary information
- * of the Laboratoire Systemes et Transports
- * of the Universite de Technologie de Belfort-Montbeliard ("Confidential Information").
- * You shall not disclose such Confidential Information and shall use
- * it only in accordance with the terms of the license agreement
- * you entered into with the SeT.
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
  *
- * http://www.multiagent.fr/
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package org.arakhne.afc.math.tree.iterator;
 
 import org.arakhne.afc.math.tree.Tree;
@@ -23,8 +26,8 @@ import org.arakhne.afc.math.tree.TreeNode;
 
 /**
  * This class is an infixed depth-first iterator on a tree data.
- * <p>
- * This iterator has an infix position which
+ *
+ * <p>This iterator has an infix position which
  * describes when to treat the parent node inside
  * the set of child treatments.
  * Significant values of this position are:
@@ -42,10 +45,10 @@ import org.arakhne.afc.math.tree.TreeNode;
  * We recommend to use {@link PostfixDepthFirstTreeIterator}
  * insteed of this iterator class.</td></tr>
  * </table>
- * <p>
- * By default this iterator assumes an infix index that corresponds
+ *
+ * <p>By default this iterator assumes an infix index that corresponds
  * to the middle of each child set (ie, <code>getChildCount()/2</code>).
- * 
+ *
  * @param <D> is the type of the data inside the tree
  * @param <N> is the type of the tree nodes.
  * @author $Author: sgalland$
@@ -54,30 +57,30 @@ import org.arakhne.afc.math.tree.TreeNode;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public class InfixDataDepthFirstTreeIterator<D,N extends TreeNode<D,N>>
-extends AbstractDataTreeIterator<D,N> {
+public class InfixDataDepthFirstTreeIterator<D, N extends TreeNode<D, N>>
+		extends AbstractDataTreeIterator<D, N> {
 
 	/**
 	 * @param tree is the tree to iterate.
 	 */
-	public InfixDataDepthFirstTreeIterator(Tree<D,N> tree) {
-		this(tree.getRoot(),null,null);
+	public InfixDataDepthFirstTreeIterator(Tree<D, N> tree) {
+		this(tree.getRoot(), null, null);
 	}
 
 	/**
 	 * @param tree is the tree to iterate.
 	 * @param nodeSelector permits to filter the nodes replied/traversed by this iterator.
 	 */
-	public InfixDataDepthFirstTreeIterator(Tree<D,N> tree, NodeSelector<N> nodeSelector) {
-		this(tree.getRoot(),nodeSelector,null);
+	public InfixDataDepthFirstTreeIterator(Tree<D, N> tree, NodeSelector<N> nodeSelector) {
+		this(tree.getRoot(), nodeSelector, null);
 	}
 
 	/**
 	 * @param tree is the tree to iterate.
 	 * @param dataSelector permits to filter the user data replied by this iterator.
 	 */
-	public InfixDataDepthFirstTreeIterator(Tree<D,N> tree, DataSelector<D> dataSelector) {
-		this(tree.getRoot(),null,dataSelector);
+	public InfixDataDepthFirstTreeIterator(Tree<D, N> tree, DataSelector<D> dataSelector) {
+		this(tree.getRoot(), null, dataSelector);
 	}
 
 	/**
@@ -85,16 +88,16 @@ extends AbstractDataTreeIterator<D,N> {
 	 * @param nodeSelector permits to filter the nodes replied/traversed by this iterator.
 	 * @param dataSelector permits to filter the user data replied by this iterator.
 	 */
-	public InfixDataDepthFirstTreeIterator(Tree<D,N> tree, NodeSelector<N> nodeSelector, DataSelector<D> dataSelector) {
+	public InfixDataDepthFirstTreeIterator(Tree<D, N> tree, NodeSelector<N> nodeSelector, DataSelector<D> dataSelector) {
 		this(tree.getRoot(), nodeSelector, dataSelector);
 	}
-	
+
 	/**
 	 * @param tree is the tree to iterate.
 	 * @param infixPosition is the index of the child which is assumed to be at the infixed position.
 	 */
-	public InfixDataDepthFirstTreeIterator(Tree<D,N> tree, int infixPosition) {
-		this(tree.getRoot(),infixPosition,null,null);
+	public InfixDataDepthFirstTreeIterator(Tree<D, N> tree, int infixPosition) {
+		this(tree.getRoot(), infixPosition, null, null);
 	}
 
 	/**
@@ -102,8 +105,8 @@ extends AbstractDataTreeIterator<D,N> {
 	 * @param infixPosition is the index of the child which is assumed to be at the infixed position.
 	 * @param nodeSelector permits to filter the nodes replied/traversed by this iterator.
 	 */
-	public InfixDataDepthFirstTreeIterator(Tree<D,N> tree, int infixPosition, NodeSelector<N> nodeSelector) {
-		this(tree.getRoot(),infixPosition,nodeSelector,null);
+	public InfixDataDepthFirstTreeIterator(Tree<D, N> tree, int infixPosition, NodeSelector<N> nodeSelector) {
+		this(tree.getRoot(), infixPosition, nodeSelector, null);
 	}
 
 	/**
@@ -111,8 +114,8 @@ extends AbstractDataTreeIterator<D,N> {
 	 * @param infixPosition is the index of the child which is assumed to be at the infixed position.
 	 * @param dataSelector permits to filter the user data replied by this iterator.
 	 */
-	public InfixDataDepthFirstTreeIterator(Tree<D,N> tree, int infixPosition, DataSelector<D> dataSelector) {
-		this(tree.getRoot(),infixPosition,null,dataSelector);
+	public InfixDataDepthFirstTreeIterator(Tree<D, N> tree, int infixPosition, DataSelector<D> dataSelector) {
+		this(tree.getRoot(), infixPosition, null, dataSelector);
 	}
 
 	/**
@@ -121,7 +124,8 @@ extends AbstractDataTreeIterator<D,N> {
 	 * @param nodeSelector permits to filter the nodes replied/traversed by this iterator.
 	 * @param dataSelector permits to filter the user data replied by this iterator.
 	 */
-	public InfixDataDepthFirstTreeIterator(Tree<D,N> tree, int infixPosition, NodeSelector<N> nodeSelector, DataSelector<D> dataSelector) {
+	public InfixDataDepthFirstTreeIterator(Tree<D, N> tree, int infixPosition, NodeSelector<N> nodeSelector,
+			DataSelector<D> dataSelector) {
 		this(tree.getRoot(), infixPosition, nodeSelector, dataSelector);
 	}
 
@@ -129,7 +133,7 @@ extends AbstractDataTreeIterator<D,N> {
 	 * @param node is the node to iterate.
 	 */
 	public InfixDataDepthFirstTreeIterator(N node) {
-		this(node,null,null);
+		this(node, null, null);
 	}
 
 	/**
@@ -137,7 +141,7 @@ extends AbstractDataTreeIterator<D,N> {
 	 * @param nodeSelector permits to filter the nodes replied/traversed by this iterator.
 	 */
 	public InfixDataDepthFirstTreeIterator(N node, NodeSelector<N> nodeSelector) {
-		this(node,nodeSelector,null);
+		this(node, nodeSelector, null);
 	}
 
 	/**
@@ -145,7 +149,7 @@ extends AbstractDataTreeIterator<D,N> {
 	 * @param dataSelector permits to filter the user data replied by this iterator.
 	 */
 	public InfixDataDepthFirstTreeIterator(N node, DataSelector<D> dataSelector) {
-		this(node,null,dataSelector);
+		this(node, null, dataSelector);
 	}
 
 	/**
@@ -156,13 +160,13 @@ extends AbstractDataTreeIterator<D,N> {
 	public InfixDataDepthFirstTreeIterator(N node, NodeSelector<N> nodeSelector, DataSelector<D> dataSelector) {
 		super(new InfixDepthFirstTreeIterator<>(node, nodeSelector), dataSelector);
 	}
-	
+
 	/**
 	 * @param node is the node to iterate.
 	 * @param infixPosition is the index of the child which is assumed to be at the infixed position.
 	 */
 	public InfixDataDepthFirstTreeIterator(N node, int infixPosition) {
-		this(node,infixPosition,null,null);
+		this(node, infixPosition, null, null);
 	}
 
 	/**
@@ -171,7 +175,7 @@ extends AbstractDataTreeIterator<D,N> {
 	 * @param nodeSelector permits to filter the nodes replied/traversed by this iterator.
 	 */
 	public InfixDataDepthFirstTreeIterator(N node, int infixPosition, NodeSelector<N> nodeSelector) {
-		this(node,infixPosition,nodeSelector,null);
+		this(node, infixPosition, nodeSelector, null);
 	}
 
 	/**
@@ -180,7 +184,7 @@ extends AbstractDataTreeIterator<D,N> {
 	 * @param dataSelector permits to filter the user data replied by this iterator.
 	 */
 	public InfixDataDepthFirstTreeIterator(N node, int infixPosition, DataSelector<D> dataSelector) {
-		this(node,infixPosition,null,dataSelector);
+		this(node, infixPosition, null, dataSelector);
 	}
 
 	/**
@@ -189,7 +193,8 @@ extends AbstractDataTreeIterator<D,N> {
 	 * @param nodeSelector permits to filter the nodes replied/traversed by this iterator.
 	 * @param dataSelector permits to filter the user data replied by this iterator.
 	 */
-	public InfixDataDepthFirstTreeIterator(N node, int infixPosition, NodeSelector<N> nodeSelector, DataSelector<D> dataSelector) {
+	public InfixDataDepthFirstTreeIterator(N node, int infixPosition, NodeSelector<N> nodeSelector,
+			DataSelector<D> dataSelector) {
 		super(new InfixDepthFirstTreeIterator<>(node, infixPosition, nodeSelector), dataSelector);
 	}
 

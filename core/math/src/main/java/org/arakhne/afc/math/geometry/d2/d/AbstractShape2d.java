@@ -1,33 +1,34 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (C) 2010-2013 Stephane GALLAND.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package org.arakhne.afc.math.geometry.d2.d;
 
 import java.util.List;
 
-import org.arakhne.afc.math.geometry.d2.PathIterator2D;
-import org.arakhne.afc.references.WeakArrayList;
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import org.arakhne.afc.math.geometry.d2.PathIterator2D;
+import org.arakhne.afc.references.WeakArrayList;
+
 /** Abstract shape with 2 double precision floating-point numbers.
- * 
+ *
  * @param <T> the type of the shape.
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -46,19 +47,19 @@ public abstract class AbstractShape2d<T extends AbstractShape2d<?>> implements S
 	 * @param listener the listener.
 	 */
 	protected synchronized void addShapeGeometryChangeListener(ShapeGeometryChangeListener listener) {
-		assert (listener != null) : "Listener must be not null"; //$NON-NLS-1$
+		assert listener != null : "Listener must be not null"; //$NON-NLS-1$
 		if (this.geometryListeners == null) {
 			this.geometryListeners = new WeakArrayList<>();
 		}
 		this.geometryListeners.add(listener);
 	}
-	
+
 	/** Remove listener on geometry changes.
 	 *
 	 * @param listener the listener.
 	 */
 	protected synchronized void removeShapeGeometryChangeListener(ShapeGeometryChangeListener listener) {
-		assert (listener != null) : "Listener must be not null"; //$NON-NLS-1$
+		assert listener != null : "Listener must be not null"; //$NON-NLS-1$
 		if (this.geometryListeners != null) {
 			this.geometryListeners.remove(listener);
 			if (this.geometryListeners.isEmpty()) {
@@ -66,16 +67,16 @@ public abstract class AbstractShape2d<T extends AbstractShape2d<?>> implements S
 			}
 		}
 	}
-	
+
 	/** Notify any listener of a geometry change.
 	 */
 	protected synchronized void fireGeometryChange() {
 		if (this.geometryListeners == null) {
 			return;
 		}
-		ShapeGeometryChangeListener[] array = new ShapeGeometryChangeListener[this.geometryListeners.size()];
+		final ShapeGeometryChangeListener[] array = new ShapeGeometryChangeListener[this.geometryListeners.size()];
 		this.geometryListeners.toArray(array);
-		for (ShapeGeometryChangeListener listener : array) {
+		for (final ShapeGeometryChangeListener listener : array) {
 			listener.shapeGeometryChange(this);
 		}
 	}
@@ -89,7 +90,7 @@ public abstract class AbstractShape2d<T extends AbstractShape2d<?>> implements S
 			throw new InternalError(exception);
 		}
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Pure
 	@Override
@@ -108,9 +109,9 @@ public abstract class AbstractShape2d<T extends AbstractShape2d<?>> implements S
 		}
 		return false;
 	}
-    
+
 	@Pure
-    @Override
+	@Override
     public abstract int hashCode();
 
 	@Override

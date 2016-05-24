@@ -1,29 +1,29 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (C) 2005-09 Stephane GALLAND.
- * Copyright (C) 2012 Stephane GALLAND.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package org.arakhne.afc.math.geometry.d2.i;
+
+import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.d2.ai.PathElement2ai;
-import org.eclipse.xtext.xbase.lib.Pure;
 
 /** An element of the path with 2 integer numbers.
  *
@@ -33,49 +33,19 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
+@SuppressWarnings("checkstyle:magicnumber")
 public abstract class PathElement2i implements PathElement2ai {
-	
+
 	private static final long serialVersionUID = -7762354100984227855L;
 
-	/** Create an instance of path element.
-	 * 
-	 * @param type is the type of the new element.
-	 * @param lastX is the coordinate of the last point.
-	 * @param lastY is the coordinate of the last point.
-	 * @param coords are the coordinates.
-	 * @return the instance of path element.
-	 */
-	@Pure
-	public static PathElement2i newInstance(PathElementType type, int lastX, int lastY, int[] coords) {
-		assert (type != null) : "Path element type must be not null"; //$NON-NLS-1$
-		assert (coords != null) : "Array of coordinates must be not null"; //$NON-NLS-1$
-		assert (coords.length >= 2) : "Size of the array of coordinates is too small"; //$NON-NLS-1$
-		switch(type) {
-		case MOVE_TO:
-			return new MovePathElement2i(coords[0], coords[1]);
-		case LINE_TO:
-			return new LinePathElement2i(lastX, lastY, coords[0], coords[1]);
-		case QUAD_TO:
-			assert (coords.length >= 4) : "Size of the array of coordinates is too small"; //$NON-NLS-1$
-			return new QuadPathElement2i(lastX, lastY, coords[0], coords[1], coords[2], coords[3]);
-		case CURVE_TO:
-			assert (coords.length >= 6) : "Size of the array of coordinates is too small"; //$NON-NLS-1$
-			return new CurvePathElement2i(lastX, lastY, coords[0], coords[1], coords[2], coords[3], coords[4], coords[5]);
-		case CLOSE:
-			return new ClosePathElement2i(lastX, lastY, coords[0], coords[1]);
-		default:
-		}
-		throw new IllegalArgumentException();
-	}
-	
 	/** Type of the element.
 	 */
 	protected final PathElementType type;
-	
+
 	/** Target point.
 	 */
 	protected final int toX;
-	
+
 	/** Target point.
 	 */
 	protected final int toY;
@@ -86,16 +56,47 @@ public abstract class PathElement2i implements PathElement2ai {
 	 * @param toy the x coordinate of the target point.
 	 */
 	PathElement2i(PathElementType type, int tox, int toy) {
-		assert (type != null) : "Path element type must be not null"; //$NON-NLS-1$
+		assert type != null : "Path element type must be not null"; //$NON-NLS-1$
 		this.type = type;
 		this.toX = tox;
 		this.toY = toy;
 	}
-	
+
+	/** Create an instance of path element.
+	 *
+	 * @param type is the type of the new element.
+	 * @param lastX is the coordinate of the last point.
+	 * @param lastY is the coordinate of the last point.
+	 * @param coords are the coordinates.
+	 * @return the instance of path element.
+	 */
+	@Pure
+	public static PathElement2i newInstance(PathElementType type, int lastX, int lastY, int[] coords) {
+		assert type != null : "Path element type must be not null"; //$NON-NLS-1$
+		assert coords != null : "Array of coordinates must be not null"; //$NON-NLS-1$
+		assert coords.length >= 2 : "Size of the array of coordinates is too small"; //$NON-NLS-1$
+		switch (type) {
+		case MOVE_TO:
+			return new MovePathElement2i(coords[0], coords[1]);
+		case LINE_TO:
+			return new LinePathElement2i(lastX, lastY, coords[0], coords[1]);
+		case QUAD_TO:
+			assert coords.length >= 4 : "Size of the array of coordinates is too small"; //$NON-NLS-1$
+			return new QuadPathElement2i(lastX, lastY, coords[0], coords[1], coords[2], coords[3]);
+		case CURVE_TO:
+			assert coords.length >= 6 : "Size of the array of coordinates is too small"; //$NON-NLS-1$
+			return new CurvePathElement2i(lastX, lastY, coords[0], coords[1], coords[2], coords[3], coords[4], coords[5]);
+		case CLOSE:
+			return new ClosePathElement2i(lastX, lastY, coords[0], coords[1]);
+		default:
+		}
+		throw new IllegalArgumentException();
+	}
+
 	@Pure
 	@Override
 	public abstract boolean equals(Object obj);
-	
+
 	@Pure
 	@Override
 	public abstract int hashCode();
@@ -120,7 +121,7 @@ public abstract class PathElement2i implements PathElement2ai {
 
 
 	/** Copy the coords into an array, except the source point.
-	 * 
+	 *
 	 * @return the array of the points, except the source point.
 	 */
 	@Pure
@@ -135,22 +136,22 @@ public abstract class PathElement2i implements PathElement2ai {
 	 * @since 13.0
 	 */
 	static class MovePathElement2i extends PathElement2i {
-		
+
 		private static final long serialVersionUID = -574266368740822686L;
 
 		/**
-		 * @param x
-		 * @param y
+		 * @param tox x coordinate of the target point.
+		 * @param toy y coordinate of the target point.
 		 */
-		public MovePathElement2i(int x, int y) {
-			super(PathElementType.MOVE_TO, x, y);
+		MovePathElement2i(int tox, int toy) {
+			super(PathElementType.MOVE_TO, tox, toy);
 		}
 
 		@Pure
 		@Override
 		public boolean equals(Object obj) {
 			try {
-				PathElement2ai elt = (PathElement2ai) obj;
+				final PathElement2ai elt = (PathElement2ai) obj;
 				return getType() == elt.getType()
 						&& getToX() == elt.getToX()
 						&& getToY() == elt.getToY();
@@ -167,7 +168,7 @@ public abstract class PathElement2i implements PathElement2ai {
 			bits = 31 * bits + this.type.ordinal();
 			bits = 31 * bits + getToX();
 			bits = 31 * bits + getToY();
-			return (bits ^ (bits >> 32));
+			return bits ^ (bits >> 32);
 		}
 
 		@Pure
@@ -181,19 +182,19 @@ public abstract class PathElement2i implements PathElement2ai {
 		public boolean isDrawable() {
 			return false;
 		}
-		
+
 		@Override
 		public void toArray(int[] array) {
-			assert (array != null) : "Array must be not null"; //$NON-NLS-1$
-			assert (array.length >= 2) : "Array size is too small"; //$NON-NLS-1$
+			assert array != null : "Array must be not null"; //$NON-NLS-1$
+			assert array.length >= 2 : "Array size is too small"; //$NON-NLS-1$
 			array[0] = this.toX;
 			array[1] = this.toY;
 		}
-		
+
 		@Override
 		public void toArray(double[] array) {
-			assert (array != null) : "Array must be not null"; //$NON-NLS-1$
-			assert (array.length >= 2) : "Array size is too small"; //$NON-NLS-1$
+			assert array != null : "Array must be not null"; //$NON-NLS-1$
+			assert array.length >= 2 : "Array size is too small"; //$NON-NLS-1$
 			array[0] = this.toX;
 			array[1] = this.toY;
 		}
@@ -207,9 +208,9 @@ public abstract class PathElement2i implements PathElement2ai {
 		@Pure
 		@Override
 		public String toString() {
-			return "MOVE("+ //$NON-NLS-1$
-					this.toX+"x"+ //$NON-NLS-1$
-					this.toY+")"; //$NON-NLS-1$
+			return "MOVE(" //$NON-NLS-1$
+					+ this.toX + "x" //$NON-NLS-1$
+					+ this.toY + ")"; //$NON-NLS-1$
 		}
 
 		@Override
@@ -243,7 +244,7 @@ public abstract class PathElement2i implements PathElement2ai {
 		}
 
 	}
-	
+
 	/** An element of the path that represents a <code>LINE_TO</code>.
 	 *
 	 * @author $Author: sgalland$
@@ -253,20 +254,20 @@ public abstract class PathElement2i implements PathElement2ai {
 	 * @since 13.0
 	 */
 	static class LinePathElement2i extends PathElement2i {
-		
+
 		private static final long serialVersionUID = 7733931118894880566L;
 
 		private final int fromX;
-		
+
 		private final int fromY;
-		
+
 		/**
-		 * @param fromx
-		 * @param fromy
-		 * @param tox
-		 * @param toy
+		 * @param fromx x coordinate of the origin point.
+		 * @param fromy y coordinate of the origin point.
+		 * @param tox x coordinate of the target point.
+		 * @param toy y coordinate of the target point.
 		 */
-		public LinePathElement2i(int fromx, int fromy, int tox, int toy) {
+		LinePathElement2i(int fromx, int fromy, int tox, int toy) {
 			super(PathElementType.LINE_TO, tox, toy);
 			this.fromX = fromx;
 			this.fromY = fromy;
@@ -276,7 +277,7 @@ public abstract class PathElement2i implements PathElement2ai {
 		@Override
 		public boolean equals(Object obj) {
 			try {
-				PathElement2ai elt = (PathElement2ai) obj;
+				final PathElement2ai elt = (PathElement2ai) obj;
 				return getType() == elt.getType()
 						&& getToX() == elt.getToX()
 						&& getToY() == elt.getToY()
@@ -297,13 +298,13 @@ public abstract class PathElement2i implements PathElement2ai {
 			bits = 31 * bits + getToY();
 			bits = 31 * bits + getFromX();
 			bits = 31 * bits + getFromY();
-			return (bits ^ (bits >> 32));
+			return bits ^ (bits >> 32);
 		}
 
 		@Pure
 		@Override
 		public boolean isEmpty() {
-			return (this.fromX==this.toX) && (this.fromY==this.toY);
+			return (this.fromX == this.toX) && (this.fromY == this.toY);
 		}
 
 		@Pure
@@ -314,16 +315,16 @@ public abstract class PathElement2i implements PathElement2ai {
 
 		@Override
 		public void toArray(int[] array) {
-			assert (array != null) : "Array must be not null"; //$NON-NLS-1$
-			assert (array.length >= 2) : "Array size is too small"; //$NON-NLS-1$
+			assert array != null : "Array must be not null"; //$NON-NLS-1$
+			assert array.length >= 2 : "Array size is too small"; //$NON-NLS-1$
 			array[0] = this.toX;
 			array[1] = this.toY;
 		}
-		
+
 		@Override
 		public void toArray(double[] array) {
-			assert (array != null) : "Array must be not null"; //$NON-NLS-1$
-			assert (array.length >= 2) : "Array size is too small"; //$NON-NLS-1$
+			assert array != null : "Array must be not null"; //$NON-NLS-1$
+			assert array.length >= 2 : "Array size is too small"; //$NON-NLS-1$
 			array[0] = this.toX;
 			array[1] = this.toY;
 		}
@@ -337,9 +338,9 @@ public abstract class PathElement2i implements PathElement2ai {
 		@Pure
 		@Override
 		public String toString() {
-			return "LINE("+ //$NON-NLS-1$
-					this.toX+"x"+ //$NON-NLS-1$
-					this.toY+")"; //$NON-NLS-1$
+			return "LINE(" //$NON-NLS-1$
+					+ this.toX + "x" //$NON-NLS-1$
+					+ this.toY + ")"; //$NON-NLS-1$
 		}
 
 		@Override
@@ -373,7 +374,7 @@ public abstract class PathElement2i implements PathElement2ai {
 		}
 
 	}
-	
+
 	/** An element of the path that represents a <code>QUAD_TO</code>.
 	 *
 	 * @author $Author: sgalland$
@@ -383,26 +384,26 @@ public abstract class PathElement2i implements PathElement2ai {
 	 * @since 13.0
 	 */
 	static class QuadPathElement2i extends PathElement2i {
-		
+
 		private static final long serialVersionUID = 3335394189817197203L;
 
 		private final int fromX;
-		
+
 		private final int fromY;
 
 		private final int ctrlX;
-		
+
 		private final int ctrlY;
 
 		/**
-		 * @param fromx
-		 * @param fromy
-		 * @param ctrlx
-		 * @param ctrly
-		 * @param tox
-		 * @param toy
+		 * @param fromx x coordinate of the origin point.
+		 * @param fromy y coordinate of the origin point.
+		 * @param ctrlx x coordinate of the control point.
+		 * @param ctrly y coordinate of the control point.
+		 * @param tox x coordinate of the target point.
+		 * @param toy y coordinate of the target point.
 		 */
-		public QuadPathElement2i(int fromx, int fromy, int ctrlx, int ctrly, int tox, int toy) {
+		QuadPathElement2i(int fromx, int fromy, int ctrlx, int ctrly, int tox, int toy) {
 			super(PathElementType.QUAD_TO, tox, toy);
 			this.fromX = fromx;
 			this.fromY = fromy;
@@ -414,7 +415,7 @@ public abstract class PathElement2i implements PathElement2ai {
 		@Override
 		public boolean equals(Object obj) {
 			try {
-				PathElement2ai elt = (PathElement2ai) obj;
+				final PathElement2ai elt = (PathElement2ai) obj;
 				return getType() == elt.getType()
 						&& getToX() == elt.getToX()
 						&& getToY() == elt.getToY()
@@ -439,14 +440,14 @@ public abstract class PathElement2i implements PathElement2ai {
 			bits = 31 * bits + getCtrlY1();
 			bits = 31 * bits + getFromX();
 			bits = 31 * bits + getFromY();
-			return (bits ^ (bits >> 32));
+			return bits ^ (bits >> 32);
 		}
 
 		@Pure
 		@Override
 		public boolean isEmpty() {
-			return (this.fromX==this.toX) && (this.fromY==this.toY) &&
-					(this.ctrlX==this.toX) && (this.ctrlY==this.toY);
+			return (this.fromX == this.toX) && (this.fromY == this.toY)
+					&& (this.ctrlX == this.toX) && (this.ctrlY == this.toY);
 		}
 
 		@Pure
@@ -457,18 +458,18 @@ public abstract class PathElement2i implements PathElement2ai {
 
 		@Override
 		public void toArray(int[] array) {
-			assert (array != null) : "Array must be not null"; //$NON-NLS-1$
-			assert (array.length >= 4) : "Array size is too small"; //$NON-NLS-1$
+			assert array != null : "Array must be not null"; //$NON-NLS-1$
+			assert array.length >= 4 : "Array size is too small"; //$NON-NLS-1$
 			array[0] = this.ctrlX;
 			array[1] = this.ctrlY;
 			array[2] = this.toX;
 			array[3] = this.toY;
 		}
-		
+
 		@Override
 		public void toArray(double[] array) {
-			assert (array != null) : "Array must be not null"; //$NON-NLS-1$
-			assert (array.length >= 4) : "Array size is too small"; //$NON-NLS-1$
+			assert array != null : "Array must be not null"; //$NON-NLS-1$
+			assert array.length >= 4 : "Array size is too small"; //$NON-NLS-1$
 			array[0] = this.ctrlX;
 			array[1] = this.ctrlY;
 			array[2] = this.toX;
@@ -484,11 +485,11 @@ public abstract class PathElement2i implements PathElement2ai {
 		@Pure
 		@Override
 		public String toString() {
-			return "QUAD("+ //$NON-NLS-1$
-					this.ctrlX+"x"+ //$NON-NLS-1$
-					this.ctrlY+"|"+ //$NON-NLS-1$
-					this.toX+"x"+ //$NON-NLS-1$
-					this.toY+")"; //$NON-NLS-1$
+			return "QUAD(" //$NON-NLS-1$
+					+ this.ctrlX + "x" //$NON-NLS-1$
+					+ this.ctrlY + "|" //$NON-NLS-1$
+					+ this.toX + "x" //$NON-NLS-1$
+					+ this.toY + ")"; //$NON-NLS-1$
 		}
 
 		@Override
@@ -532,32 +533,32 @@ public abstract class PathElement2i implements PathElement2ai {
 	 * @since 13.0
 	 */
 	static class CurvePathElement2i extends PathElement2i {
-		
+
 		private static final long serialVersionUID = 7009674542781709373L;
 
 		private final int fromX;
-		
+
 		private final int fromY;
 
 		private final int ctrlX1;
-		
+
 		private final int ctrlY1;
 
 		private final int ctrlX2;
-		
+
 		private final int ctrlY2;
 
 		/**
-		 * @param fromx
-		 * @param fromy
-		 * @param ctrlx1
-		 * @param ctrly1
-		 * @param ctrlx2
-		 * @param ctrly2
-		 * @param tox
-		 * @param toy
+		 * @param fromx x coordinate of the origin point.
+		 * @param fromy y coordinate of the origin point.
+		 * @param ctrlx1 x coordinate of the first control point.
+		 * @param ctrly1 y coordinate of the first control point.
+		 * @param ctrlx2 x coordinate of the second control point.
+		 * @param ctrly2 y coordinate of the second control point.
+		 * @param tox x coordinate of the target point.
+		 * @param toy y coordinate of the target point.
 		 */
-		public CurvePathElement2i(int fromx, int fromy, int ctrlx1, int ctrly1, int ctrlx2, int ctrly2, int tox, int toy) {
+		CurvePathElement2i(int fromx, int fromy, int ctrlx1, int ctrly1, int ctrlx2, int ctrly2, int tox, int toy) {
 			super(PathElementType.CURVE_TO, tox, toy);
 			this.fromX = fromx;
 			this.fromY = fromy;
@@ -571,7 +572,7 @@ public abstract class PathElement2i implements PathElement2ai {
 		@Override
 		public boolean equals(Object obj) {
 			try {
-				PathElement2ai elt = (PathElement2ai) obj;
+				final PathElement2ai elt = (PathElement2ai) obj;
 				return getType() == elt.getType()
 						&& getToX() == elt.getToX()
 						&& getToY() == elt.getToY()
@@ -600,15 +601,15 @@ public abstract class PathElement2i implements PathElement2ai {
 			bits = 31 * bits + getCtrlY2();
 			bits = 31 * bits + getFromX();
 			bits = 31 * bits + getFromY();
-			return (bits ^ (bits >> 32));
+			return bits ^ (bits >> 32);
 		}
 
 		@Pure
 		@Override
 		public boolean isEmpty() {
-			return (this.fromX==this.toX) && (this.fromY==this.toY) &&
-					(this.ctrlX1==this.toX) && (this.ctrlY1==this.toY) &&
-					(this.ctrlX2==this.toX) && (this.ctrlY2==this.toY);
+			return (this.fromX == this.toX) && (this.fromY == this.toY)
+					&& (this.ctrlX1 == this.toX) && (this.ctrlY1 == this.toY)
+					&& (this.ctrlX2 == this.toX) && (this.ctrlY2 == this.toY);
 		}
 
 		@Pure
@@ -619,8 +620,8 @@ public abstract class PathElement2i implements PathElement2ai {
 
 		@Override
 		public void toArray(int[] array) {
-			assert (array != null) : "Array must be not null"; //$NON-NLS-1$
-			assert (array.length >= 6) : "Array size is too small"; //$NON-NLS-1$
+			assert array != null : "Array must be not null"; //$NON-NLS-1$
+			assert array.length >= 6 : "Array size is too small"; //$NON-NLS-1$
 			array[0] = this.ctrlX1;
 			array[1] = this.ctrlY1;
 			array[2] = this.ctrlX2;
@@ -628,11 +629,11 @@ public abstract class PathElement2i implements PathElement2ai {
 			array[4] = this.toX;
 			array[5] = this.toY;
 		}
-		
+
 		@Override
 		public void toArray(double[] array) {
-			assert (array != null) : "Array must be not null"; //$NON-NLS-1$
-			assert (array.length >= 6) : "Array size is too small"; //$NON-NLS-1$
+			assert array != null : "Array must be not null"; //$NON-NLS-1$
+			assert array.length >= 6 : "Array size is too small"; //$NON-NLS-1$
 			array[0] = this.ctrlX1;
 			array[1] = this.ctrlY1;
 			array[2] = this.ctrlX2;
@@ -650,13 +651,13 @@ public abstract class PathElement2i implements PathElement2ai {
 		@Pure
 		@Override
 		public String toString() {
-			return "CURVE("+ //$NON-NLS-1$
-					this.ctrlX1+"x"+ //$NON-NLS-1$
-					this.ctrlY1+"|"+ //$NON-NLS-1$
-					this.ctrlX2+"x"+ //$NON-NLS-1$
-					this.ctrlY2+"|"+ //$NON-NLS-1$
-					this.toX+"x"+ //$NON-NLS-1$
-					this.toY+")"; //$NON-NLS-1$
+			return "CURVE(" //$NON-NLS-1$
+					+ this.ctrlX1 + "x" //$NON-NLS-1$
+					+ this.ctrlY1 + "|" //$NON-NLS-1$
+					+ this.ctrlX2 + "x" //$NON-NLS-1$
+					+ this.ctrlY2 + "|" //$NON-NLS-1$
+					+ this.toX + "x" //$NON-NLS-1$
+					+ this.toY + ")"; //$NON-NLS-1$
 		}
 
 		@Override
@@ -700,31 +701,31 @@ public abstract class PathElement2i implements PathElement2ai {
 	 * @since 13.0
 	 */
 	static class ClosePathElement2i extends PathElement2i {
-		
+
 		private static final long serialVersionUID = -8709004906872207794L;
 
 		private final int fromX;
-		
+
 		private final int fromY;
-		
+
 		/**
-		 * @param fromx
-		 * @param fromy
-		 * @param tox
-		 * @param toy
+		 * @param fromx x coordinate of the origin point.
+		 * @param fromy y coordinate of the origin point.
+		 * @param tox x coordinate of the target point.
+		 * @param toy y coordinate of the target point.
 		 */
-		public ClosePathElement2i(int fromx, int fromy, int tox, int toy) {
+		ClosePathElement2i(int fromx, int fromy, int tox, int toy) {
 			super(PathElementType.CLOSE, tox, toy);
 			this.fromX = fromx;
 			this.fromY = fromy;
-			
+
 		}
 
 		@Pure
 		@Override
 		public boolean equals(Object obj) {
 			try {
-				PathElement2ai elt = (PathElement2ai) obj;
+				final PathElement2ai elt = (PathElement2ai) obj;
 				return getType() == elt.getType()
 						&& getToX() == elt.getToX()
 						&& getToY() == elt.getToY()
@@ -745,13 +746,13 @@ public abstract class PathElement2i implements PathElement2ai {
 			bits = 31 * bits + getToY();
 			bits = 31 * bits + getFromX();
 			bits = 31 * bits + getFromY();
-			return (bits ^ (bits >> 32));
+			return bits ^ (bits >> 32);
 		}
 
 		@Pure
 		@Override
 		public boolean isEmpty() {
-			return (this.fromX==this.toX) && (this.fromY==this.toY);
+			return (this.fromX == this.toX) && (this.fromY == this.toY);
 		}
 
 		@Pure
@@ -762,16 +763,16 @@ public abstract class PathElement2i implements PathElement2ai {
 
 		@Override
 		public void toArray(int[] array) {
-			assert (array != null) : "Array must be not null"; //$NON-NLS-1$
-			assert (array.length >= 2) : "Array size is too small"; //$NON-NLS-1$
+			assert array != null : "Array must be not null"; //$NON-NLS-1$
+			assert array.length >= 2 : "Array size is too small"; //$NON-NLS-1$
 			array[0] = this.toX;
 			array[1] = this.toY;
 		}
-		
+
 		@Override
 		public void toArray(double[] array) {
-			assert (array != null) : "Array must be not null"; //$NON-NLS-1$
-			assert (array.length >= 2) : "Array size is too small"; //$NON-NLS-1$
+			assert array != null : "Array must be not null"; //$NON-NLS-1$
+			assert array.length >= 2 : "Array size is too small"; //$NON-NLS-1$
 			array[0] = this.toX;
 			array[1] = this.toY;
 		}

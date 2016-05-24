@@ -1,24 +1,27 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (C) 2010-2013 Stephane GALLAND.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package org.arakhne.afc.math.geometry.d2.dfx;
+
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Point2D;
@@ -26,11 +29,8 @@ import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.afp.GeomFactory2afp;
 import org.arakhne.afc.math.geometry.d2.afp.Path2afp;
 
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.SimpleDoubleProperty;
-
 /** Factory of geometrical elements.
- * 
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
@@ -42,46 +42,46 @@ public class GeomFactory2dfx implements GeomFactory2afp<PathElement2dfx, Point2d
 	/** The singleton of the factory.
 	 */
 	public static final GeomFactory2dfx SINGLETON = new GeomFactory2dfx();
-	
+
 	@Override
-	public Point2dfx convertToPoint(Point2D<?, ?> p) {
-		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
+	public Point2dfx convertToPoint(Point2D<?, ?> pt) {
+		assert pt != null : "Point must be not null"; //$NON-NLS-1$
 		try {
-			return (Point2dfx) p;
+			return (Point2dfx) pt;
 		} catch (Throwable exception) {
-			return new Point2dfx(p);
+			return new Point2dfx(pt);
 		}
 	}
-	
+
 	@Override
-	public Vector2dfx convertToVector(Point2D<?, ?> p) {
-		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
+	public Point2dfx convertToPoint(Vector2D<?, ?> v) {
+		assert v != null : "Vector must be not null"; //$NON-NLS-1$
+		Point2dfx pt;
+		try {
+			final Vector2dfx pp = (Vector2dfx) v;
+			pt = new Point2dfx(pp.xProperty(), pp.yProperty());
+		} catch (Throwable exception) {
+			pt = new Point2dfx(v.getX(), v.getY());
+		}
+		return pt;
+	}
+
+	@Override
+	public Vector2dfx convertToVector(Point2D<?, ?> pt) {
+		assert pt != null : "Point must be not null"; //$NON-NLS-1$
 		Vector2dfx v;
 		try {
-			Point2dfx pp = (Point2dfx) p;
+			final Point2dfx pp = (Point2dfx) pt;
 			v = new Vector2dfx(pp.xProperty(), pp.yProperty());
 		} catch (Throwable exception) {
-			v = new Vector2dfx(p.getX(), p.getY());
+			v = new Vector2dfx(pt.getX(), pt.getY());
 		}
 		return v;
 	}
 
 	@Override
-	public Point2dfx convertToPoint(Vector2D<?, ?> v) {
-		assert (v != null) : "Vector must be not null"; //$NON-NLS-1$
-		Point2dfx p;
-		try {
-			Vector2dfx pp = (Vector2dfx) v;
-			p = new Point2dfx(pp.xProperty(), pp.yProperty());
-		} catch (Throwable exception) {
-			p = new Point2dfx(v.getX(), v.getY());
-		}
-		return p;
-	}
-	
-	@Override
 	public Vector2dfx convertToVector(Vector2D<?, ?> v) {
-		assert (v != null) : "Vector must be not null"; //$NON-NLS-1$
+		assert v != null : "Vector must be not null"; //$NON-NLS-1$
 		Vector2dfx vv;
 		try {
 			vv = (Vector2dfx) v;
@@ -113,6 +113,11 @@ public class GeomFactory2dfx implements GeomFactory2afp<PathElement2dfx, Point2d
 	}
 
 	@Override
+	public Point2dfx newPoint() {
+		return new Point2dfx();
+	}
+
+	@Override
 	public Vector2dfx newVector(double x, double y) {
 		return new Vector2dfx(x, y);
 	}
@@ -120,11 +125,6 @@ public class GeomFactory2dfx implements GeomFactory2afp<PathElement2dfx, Point2d
 	@Override
 	public Vector2dfx newVector(int x, int y) {
 		return new Vector2dfx(x, y);
-	}
-
-	@Override
-	public Point2dfx newPoint() {
-		return new Point2dfx();
 	}
 
 	@Override
@@ -136,17 +136,17 @@ public class GeomFactory2dfx implements GeomFactory2afp<PathElement2dfx, Point2d
 	public Rectangle2dfx newBox() {
 		return new Rectangle2dfx();
 	}
-	
+
 	@Override
 	public Rectangle2dfx newBox(double x, double y, double width, double height) {
-		assert (width >= 0.) : "Width must be positive or zero"; //$NON-NLS-1$
-		assert (height >= 0.) : "Height must be positive or zero"; //$NON-NLS-1$
+		assert width >= 0. : "Width must be positive or zero"; //$NON-NLS-1$
+		assert height >= 0. : "Height must be positive or zero"; //$NON-NLS-1$
 		return new Rectangle2dfx(x,  y, width, height);
 	}
 
 	@Override
 	public Path2afp<?, ?, PathElement2dfx, Point2dfx, Vector2dfx, Rectangle2dfx> newPath(PathWindingRule rule) {
-		assert (rule != null) : "Path winding rule must be not null"; //$NON-NLS-1$
+		assert rule != null : "Path winding rule must be not null"; //$NON-NLS-1$
 		return new Path2dfx(rule);
 	}
 

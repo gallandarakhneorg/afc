@@ -1,36 +1,35 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (C) 2010-2013 Stephane GALLAND.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.arakhne.afc.math.geometry.d2.dfx;
-
-import org.arakhne.afc.math.geometry.d2.Point2D;
-import org.arakhne.afc.math.geometry.d2.Vector2D;
-import org.arakhne.afc.math.geometry.d2.afp.Parallelogram2afp;
-import org.eclipse.xtext.xbase.lib.Pure;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import org.eclipse.xtext.xbase.lib.Pure;
+
+import org.arakhne.afc.math.geometry.d2.Point2D;
+import org.arakhne.afc.math.geometry.d2.Vector2D;
+import org.arakhne.afc.math.geometry.d2.afp.Parallelogram2afp;
 
 /** Parallelogram with 2 double precision floating-point FX properties.
  *
@@ -43,7 +42,7 @@ import javafx.beans.property.SimpleObjectProperty;
  * @since 13.0
  */
 public class Parallelogram2dfx extends AbstractShape2dfx<Parallelogram2dfx>
-	implements Parallelogram2afp<Shape2dfx<?>, Parallelogram2dfx, PathElement2dfx, Point2dfx, Vector2dfx, Rectangle2dfx> {
+		implements Parallelogram2afp<Shape2dfx<?>, Parallelogram2dfx, PathElement2dfx, Point2dfx, Vector2dfx, Rectangle2dfx> {
 
 	private static final long serialVersionUID = -3880367245218796375L;
 
@@ -60,12 +59,12 @@ public class Parallelogram2dfx extends AbstractShape2dfx<Parallelogram2dfx>
 	/**
 	 * The first axis of the parallelogram.
 	 */
-	private UnitVectorProperty rVector;
+	private UnitVectorProperty raxis;
 
 	/**
 	 * The second axis of the parallelogram.
 	 */
-	private UnitVectorProperty sVector;
+	private UnitVectorProperty saxis;
 
 	/**
 	 * Half-size of the first axis of the parallelogram.
@@ -84,11 +83,11 @@ public class Parallelogram2dfx extends AbstractShape2dfx<Parallelogram2dfx>
 	}
 
 	/** Create an parallelogram from the given parallelogram.
-	 * 
-	 * @param parallelogram
+	 *
+	 * @param parallelogram the parallelogram to copy.
 	 */
 	public Parallelogram2dfx(Parallelogram2afp<?, ?, ?, ?, ?, ?> parallelogram) {
-		assert (parallelogram != null) : "Oriented Rectangle must be not null"; //$NON-NLS-1$
+		assert parallelogram != null : "Oriented Rectangle must be not null"; //$NON-NLS-1$
 		set(parallelogram.getCenterX(), parallelogram.getCenterY(),
 				parallelogram.getFirstAxisX(), parallelogram.getFirstAxisY(),
 				parallelogram.getFirstAxisExtent(),
@@ -126,10 +125,10 @@ public class Parallelogram2dfx extends AbstractShape2dfx<Parallelogram2dfx>
 	public Parallelogram2dfx(double centerX, double centerY,
 			double axis1X, double axis1Y, double axis1Extent,
 			double axis2X, double axis2Y, double axis2Extent) {
-		assert (Vector2D.isUnitVector(axis1X, axis1Y)) : "First axis must be a unit vector"; //$NON-NLS-1$
-		assert (Vector2D.isUnitVector(axis2X, axis2Y)) : "Second axis must be a unit vector"; //$NON-NLS-1$
-		assert (axis1Extent >= 0.) : "Extent for the first axis must be positive or zero"; //$NON-NLS-1$
-		assert (axis2Extent >= 0.) : "Extent for the first axis must be positive or zero"; //$NON-NLS-1$
+		assert Vector2D.isUnitVector(axis1X, axis1Y) : "First axis must be a unit vector"; //$NON-NLS-1$
+		assert Vector2D.isUnitVector(axis2X, axis2Y) : "Second axis must be a unit vector"; //$NON-NLS-1$
+		assert axis1Extent >= 0. : "Extent for the first axis must be positive or zero"; //$NON-NLS-1$
+		assert axis2Extent >= 0. : "Extent for the first axis must be positive or zero"; //$NON-NLS-1$
 		set(centerX, centerY, axis1X, axis1Y, axis1Extent, axis2X, axis2Y, axis2Extent);
 	}
 
@@ -141,13 +140,14 @@ public class Parallelogram2dfx extends AbstractShape2dfx<Parallelogram2dfx>
 	 * @param axis2 is the second axis of the parallelogram.
 	 * @param axis2Extent is the extent of the second axis.
 	 */
-	public Parallelogram2dfx(Point2D<?, ?> center, Vector2D<?, ?> axis1, double axis1Extent, Vector2D<?, ?> axis2, double axis2Extent) {
+	public Parallelogram2dfx(Point2D<?, ?> center, Vector2D<?, ?> axis1, double axis1Extent,
+			Vector2D<?, ?> axis2, double axis2Extent) {
 		set(center, axis1, axis1Extent, axis2, axis2Extent);
 	}
 
 	@Override
 	public Parallelogram2dfx clone() {
-		Parallelogram2dfx clone = super.clone();
+		final Parallelogram2dfx clone = super.clone();
 		if (clone.cx != null) {
 			clone.cx = null;
 			clone.centerXProperty().set(getCenterX());
@@ -156,16 +156,16 @@ public class Parallelogram2dfx extends AbstractShape2dfx<Parallelogram2dfx>
 			clone.cy = null;
 			clone.centerYProperty().set(getCenterY());
 		}
-		if (clone.rVector != null) {
-			clone.rVector = null;
+		if (clone.raxis != null) {
+			clone.raxis = null;
 			clone.firstAxisProperty().set(getFirstAxis());
 		}
 		if (clone.extentR != null) {
 			clone.extentR = null;
 			clone.firstAxisExtentProperty().set(getFirstAxisExtent());
 		}
-		if (clone.sVector != null) {
-			clone.sVector = null;
+		if (clone.saxis != null) {
+			clone.saxis = null;
 			clone.secondAxisProperty().set(getSecondAxis());
 		}
 		if (clone.extentS != null) {
@@ -187,14 +187,14 @@ public class Parallelogram2dfx extends AbstractShape2dfx<Parallelogram2dfx>
 		bits = 31 * bits + Double.doubleToLongBits(getSecondAxisX());
 		bits = 31 * bits + Double.doubleToLongBits(getSecondAxisY());
 		bits = 31 * bits + Double.doubleToLongBits(getSecondAxisExtent());
-		int b = (int) bits;
+		final int b = (int) bits;
 		return b ^ (b >> 32);
 	}
 
 	@Pure
 	@Override
 	public String toString() {
-		StringBuilder b = new StringBuilder();
+		final StringBuilder b = new StringBuilder();
 		b.append("["); //$NON-NLS-1$
 		b.append(getCenterX());
 		b.append(";"); //$NON-NLS-1$
@@ -248,7 +248,7 @@ public class Parallelogram2dfx extends AbstractShape2dfx<Parallelogram2dfx>
 	public double getCenterX() {
 		return this.cx == null ? 0 : this.cx.get();
 	}
-		
+
 	@Override
 	public void setCenterX(double cx) {
 		centerXProperty().set(cx);
@@ -276,10 +276,10 @@ public class Parallelogram2dfx extends AbstractShape2dfx<Parallelogram2dfx>
 	 * @return the property.
 	 */
 	public UnitVectorProperty firstAxisProperty() {
-		if (this.rVector == null) {
-			this.rVector = new UnitVectorProperty(this, "firstAxis", getGeomFactory()); //$NON-NLS-1$
+		if (this.raxis == null) {
+			this.raxis = new UnitVectorProperty(this, "firstAxis", getGeomFactory()); //$NON-NLS-1$
 		}
-		return this.rVector;
+		return this.raxis;
 	}
 
 	@Pure
@@ -291,13 +291,13 @@ public class Parallelogram2dfx extends AbstractShape2dfx<Parallelogram2dfx>
 	@Pure
 	@Override
 	public double getFirstAxisX() {
-		return this.rVector == null ? 1 : this.rVector.getX();
+		return this.raxis == null ? 1 : this.raxis.getX();
 	}
 
 	@Pure
 	@Override
 	public double getFirstAxisY() {
-		return this.rVector == null ? 0 : this.rVector.getY();
+		return this.raxis == null ? 0 : this.raxis.getY();
 	}
 
 	/** Replies the property for the second axis.
@@ -305,10 +305,10 @@ public class Parallelogram2dfx extends AbstractShape2dfx<Parallelogram2dfx>
 	 * @return the property.
 	 */
 	public UnitVectorProperty secondAxisProperty() {
-		if (this.sVector == null) {
-			this.sVector = new UnitVectorProperty(this, "firstAxis", getGeomFactory()); //$NON-NLS-1$
+		if (this.saxis == null) {
+			this.saxis = new UnitVectorProperty(this, "firstAxis", getGeomFactory()); //$NON-NLS-1$
 		}
-		return this.sVector;
+		return this.saxis;
 	}
 
 	@Pure
@@ -320,13 +320,13 @@ public class Parallelogram2dfx extends AbstractShape2dfx<Parallelogram2dfx>
 	@Pure
 	@Override
 	public double getSecondAxisX() {
-		return this.sVector == null ? 0 : this.sVector.getX();
+		return this.saxis == null ? 0 : this.saxis.getX();
 	}
 
 	@Pure
 	@Override
 	public double getSecondAxisY() {
-		return this.sVector == null ? 1 : this.sVector.getY();
+		return this.saxis == null ? 1 : this.saxis.getY();
 	}
 
 	/** Replies the property for the extent of the first axis.
@@ -356,7 +356,7 @@ public class Parallelogram2dfx extends AbstractShape2dfx<Parallelogram2dfx>
 
 	@Override
 	public void setFirstAxisExtent(double extent) {
-		assert (extent >= 0.) : "Extent must be positive or zero"; //$NON-NLS-1$
+		assert extent >= 0. : "Extent must be positive or zero"; //$NON-NLS-1$
 		firstAxisExtentProperty().set(extent);
 	}
 
@@ -387,22 +387,22 @@ public class Parallelogram2dfx extends AbstractShape2dfx<Parallelogram2dfx>
 
 	@Override
 	public void setSecondAxisExtent(double extent) {
-		assert (extent >= 0.) : "Extent must be positive or zero"; //$NON-NLS-1$
+		assert extent >= 0. : "Extent must be positive or zero"; //$NON-NLS-1$
 		secondAxisExtentProperty().set(extent);
 	}
 
 	@Override
 	public void setFirstAxis(double x, double y, double extent) {
-		assert (Vector2D.isUnitVector(x, y)) : "Axis must be a unit vector"; //$NON-NLS-1$
-		assert (extent >= 0.) : "Extent must be positive or zero"; //$NON-NLS-1$
+		assert Vector2D.isUnitVector(x, y) : "Axis must be a unit vector"; //$NON-NLS-1$
+		assert extent >= 0. : "Extent must be positive or zero"; //$NON-NLS-1$
 		firstAxisProperty().set(x, y);
 		firstAxisExtentProperty().set(extent);
 	}
 
 	@Override
 	public void setSecondAxis(double x, double y, double extent) {
-		assert (Vector2D.isUnitVector(x, y)) : "Axis must be a unit vector"; //$NON-NLS-1$
-		assert (extent >= 0.) : "Extent must be positive or zero"; //$NON-NLS-1$
+		assert Vector2D.isUnitVector(x, y) : "Axis must be a unit vector"; //$NON-NLS-1$
+		assert extent >= 0. : "Extent must be positive or zero"; //$NON-NLS-1$
 		secondAxisProperty().set(x, y);
 		secondAxisExtentProperty().set(extent);
 	}
@@ -410,10 +410,10 @@ public class Parallelogram2dfx extends AbstractShape2dfx<Parallelogram2dfx>
 	@Override
 	public void set(double centerX, double centerY, double axis1x, double axis1y, double axis1Extent, double axis2x,
 			double axis2y, double axis2Extent) {
-		assert (Vector2D.isUnitVector(axis1x, axis1y)) : "First axis must be a unit vector"; //$NON-NLS-1$
-		assert (Vector2D.isUnitVector(axis2x, axis2y)) : "First axis must be a unit vector"; //$NON-NLS-1$
-		assert (axis1Extent >= 0.) : "First axis extent must be positive or zero"; //$NON-NLS-1$
-		assert (axis2Extent >= 0.) : "Second axis extent must be positive or zero"; //$NON-NLS-1$
+		assert Vector2D.isUnitVector(axis1x, axis1y) : "First axis must be a unit vector"; //$NON-NLS-1$
+		assert Vector2D.isUnitVector(axis2x, axis2y) : "First axis must be a unit vector"; //$NON-NLS-1$
+		assert axis1Extent >= 0. : "First axis extent must be positive or zero"; //$NON-NLS-1$
+		assert axis2Extent >= 0. : "Second axis extent must be positive or zero"; //$NON-NLS-1$
 		centerXProperty().set(centerX);
 		centerYProperty().set(centerY);
 		firstAxisProperty().set(axis1x, axis1y);
@@ -426,10 +426,9 @@ public class Parallelogram2dfx extends AbstractShape2dfx<Parallelogram2dfx>
 	public ObjectProperty<Rectangle2dfx> boundingBoxProperty() {
 		if (this.boundingBox == null) {
 			this.boundingBox = new SimpleObjectProperty<>(this, "boundingBox"); //$NON-NLS-1$
-			this.boundingBox.bind(Bindings.createObjectBinding(
-					() -> {
-						return toBoundingBox();
-					},
+			this.boundingBox.bind(Bindings.createObjectBinding(() -> {
+				return toBoundingBox();
+			},
 					centerXProperty(), centerYProperty(),
 					firstAxisProperty(), firstAxisExtentProperty(),
 					secondAxisProperty(), secondAxisExtentProperty()));

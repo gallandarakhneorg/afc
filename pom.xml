@@ -19,6 +19,8 @@
 		<copyrighters>Arakhn&amp;ecirc;.org Members</copyrighters>
 		<sourceEncoding>UTF-8</sourceEncoding>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<bytecode.optimize>false</bytecode.optimize>
+		<bytecode.debug>true</bytecode.debug>
 		<!-- Path where your Android SDK is installed -->
 		<android.sdk.path>/opt/android-sdk</android.sdk.path>
 		<!-- Minimal version of the Android SDK -->
@@ -44,6 +46,17 @@
 				<groupId>org.arakhne.afc.core</groupId>
 				<artifactId>math</artifactId>
 				<version>${afc.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.arakhne.afc.core</groupId>
+				<artifactId>math</artifactId>
+				<version>${afc.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.arakhne.afc.core</groupId>
+				<artifactId>math</artifactId>
+				<version>${afc.version}</version>
+				<type>test-jar</type>
 			</dependency>
 			<dependency>
 				<groupId>org.arakhne.afc.core</groupId>
@@ -193,6 +206,7 @@
 	<!-- ======================================= -->
 
 	<modules>
+		<module>checkstyle</module>
 		<module>maven</module>
 		<module>core</module>
 		<module>ui</module>
@@ -446,6 +460,51 @@
 					<artifactId>tag-replacer</artifactId>
 					<version>${afc.plugins.version}</version>
 				</plugin>
+				<plugin>
+					<groupId>org.codehaus.gmavenplus</groupId>
+					<artifactId>gmavenplus-plugin</artifactId>
+					<version>1.5</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-checkstyle-plugin</artifactId>
+					<version>2.17</version>
+					<dependencies>
+						<dependency>
+							<groupId>org.arakhne.afc.checkstyle</groupId>
+							<artifactId>checkstyle</artifactId>
+							<version>${project.version}</version>
+						</dependency>
+						<dependency>
+							<groupId>com.puppycrawl.tools</groupId>
+							<artifactId>checkstyle</artifactId>
+							<version>6.18</version>
+						</dependency>
+					</dependencies>
+					<executions>
+						<execution>
+							<phase>process-classes</phase>
+							<goals>
+								<goal>check</goal>
+							</goals>
+						</execution>
+					</executions>
+					<configuration>
+						<configLocation>org/arakhne/afc/checkstyle/checks.xml</configLocation>
+						<headerLocation>org/arakhne/afc/checkstyle/class_header.txt</headerLocation>
+						<enableRSS>true</enableRSS>
+						<linkXRef>true</linkXRef>
+						<consoleOutput>true</consoleOutput>
+						<failsOnError>true</failsOnError>
+						<failOnViolation>true</failOnViolation>
+						<includeResources>false</includeResources>
+						<includeTestSourceDirectory>false</includeTestSourceDirectory>
+						<includeTestResources>false</includeTestResources>
+						<enableRulesSummary>true</enableRulesSummary>
+						<propertyExpansion>mainbasedir=${mainbasedir}</propertyExpansion>
+						<propertyExpansion>checkstyleheaderdir=${mainbasedir}/checkstyle/src/main/resources/org/arakhne/afc/checkstyle</propertyExpansion>
+					</configuration>
+				</plugin>
 				<!-- This plugin's configuration is used to store Eclipse m2e settings 
 					only. It has no influence on the Maven build itself. This plugin configuration 
 					may be removed if all the developpers are using m2e 1.1 or higher. -->
@@ -528,6 +587,23 @@
 										<ignore />
 									</action>
 								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.codehaus.gmavenplus</groupId>
+										<artifactId>gmavenplus-plugin</artifactId>
+										<versionRange>[1.5,)</versionRange>
+										<goals>
+											<goal>execute</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+								<!-- <pluginExecution> <pluginExecutionFilter> <groupId>org.apache.maven.plugins</groupId> 
+									<artifactId>maven-checkstyle-plugin</artifactId> <versionRange>[2.17,)</versionRange> 
+									<goals> <goal>check</goal> </goals> </pluginExecutionFilter> <action> <execute 
+									/> </action> </pluginExecution> -->
 							</pluginExecutions>
 						</lifecycleMappingMetadata>
 					</configuration>
@@ -544,8 +620,8 @@
 					<encoding>UTF-8</encoding>
 					<showWarnings>false</showWarnings>
 					<showDeprecation>false</showDeprecation>
-					<optimize>true</optimize>
-					<debug>false</debug>
+					<optimize>${bytecode.optimize}</optimize>
+					<debug>${bytecode.debug}</debug>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -594,6 +670,52 @@
 						</tag>
 					</tags>
 				</configuration>
+			</plugin>
+			<!-- Compute additional version numbers for the SARL (specification, release, 
+				buildId) -->
+			<plugin>
+				<groupId>org.codehaus.gmavenplus</groupId>
+				<artifactId>gmavenplus-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>compute-sarl-properties</id>
+						<phase>initialize</phase>
+						<goals>
+							<goal>execute</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<scripts>
+						<script><![CDATA[
+							def now = session.getStartTime();
+							//************************
+							// Detect root directory
+							//
+							def currentDirectory = project.basedir;
+							def previousDirectory = null;
+				            def fileObj = new File(currentDirectory, "pom.xml");
+							while (fileObj.isFile()) {
+								previousDirectory = currentDirectory;
+								currentDirectory = fileObj.getParent();
+								currentDirectory = new File(currentDirectory).getParent();
+					            fileObj = new File(currentDirectory, "pom.xml");
+						    }
+						    if (previousDirectory == null || !(new File(previousDirectory, "pom.xml").isFile())) {
+						    	throw new Exception("Unable to detect root directory");
+						    }
+						    project.properties.mainbasedir = previousDirectory;
+						    println("\tset mainbasedir to: " + project.properties.mainbasedir);
+						]]></script>
+					</scripts>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>org.codehaus.groovy</groupId>
+						<artifactId>groovy-all-minimal</artifactId>
+						<version>1.5.8</version>
+					</dependency>
+				</dependencies>
 			</plugin>
 		</plugins>
 	</build>

@@ -1,23 +1,21 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (C) 2004-2009 Stephane GALLAND.
- * Copyright (C) 2012-13 Stephane GALLAND.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.arakhne.afc.vmutil;
@@ -30,72 +28,78 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 /** Utilities around URLHandler.
- * 
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 6.0
  */
-public class URLHandlerUtil {
+public final class URLHandlerUtil {
 
 	private static final String HANDLER_PACKAGES = "java.protocol.handler.pkgs"; //$NON-NLS-1$
-	
+
+	private URLHandlerUtil() {
+		//
+	}
+
 	/** Replies an iterator on the handlers that are supporting the given protocol.
-	 * 
-	 * @param protocol
+	 *
+	 * @param protocol the protocol.
 	 * @return the iterator.
 	 * @since 7.2
 	 */
 	public static Iterator<Class<? extends URLStreamHandler>> getHandlersFor(String protocol) {
 		return new HandlerIterator(protocol);
 	}
-	
-	private static void install(String... packageNames) {
-		List<String> array = new LinkedList<>();
 
-		String str = System.getProperty(HANDLER_PACKAGES);
-		if (str!=null && !"".equals(str)) { //$NON-NLS-1$
+	private static void install(String... packageNames) {
+		final List<String> array = new LinkedList<>();
+
+		final String str = System.getProperty(HANDLER_PACKAGES);
+		if (str != null && !"".equals(str)) { //$NON-NLS-1$
 			array.addAll(Arrays.asList(str.split("\\|"))); //$NON-NLS-1$
 		}
-		
-		for(String packageName : packageNames) {
+
+		for (final String packageName : packageNames) {
 			if (!array.contains(packageName)) {
 				array.add(0, packageName);
 			}
 		}
 
-		StringBuilder buffer = new StringBuilder();
-		for(String s : array) {
-			if (buffer.length()>0)
+		final StringBuilder buffer = new StringBuilder();
+		for (final String s : array) {
+			if (buffer.length() > 0) {
 				buffer.append('|');
+			}
 			buffer.append(s);
 		}
 
-		String nstr = buffer.toString();
+		final String nstr = buffer.toString();
 		if (!nstr.equals(str)) {
 			System.setProperty(HANDLER_PACKAGES, nstr);
 		}
 	}
 
 	private static void uninstall(String... packageNames) {
-		List<String> array = new LinkedList<>();
+		final List<String> array = new LinkedList<>();
 
-		String str = System.getProperty(HANDLER_PACKAGES);
-		if (str!=null && !"".equals(str)) { //$NON-NLS-1$
+		final String str = System.getProperty(HANDLER_PACKAGES);
+		if (str != null && !"".equals(str)) { //$NON-NLS-1$
 			array.addAll(Arrays.asList(str.split("\\|"))); //$NON-NLS-1$
 		}
-			
+
 		array.removeAll(Arrays.asList(packageNames));
 
-		StringBuilder buffer = new StringBuilder();
-		for(String s : array) {
-			if (buffer.length()>0)
+		final StringBuilder buffer = new StringBuilder();
+		for (final String s : array) {
+			if (buffer.length() > 0) {
 				buffer.append('|');
+			}
 			buffer.append(s);
 		}
 
-		String nstr = buffer.toString();
+		final String nstr = buffer.toString();
 		if (!nstr.equals(str)) {
 			System.setProperty(HANDLER_PACKAGES, nstr);
 		}
@@ -103,12 +107,12 @@ public class URLHandlerUtil {
 
 	/** Install the URL handlers provided by Arakhn&ecirc;
 	 * libraries.
-	 * <p>
-	 * Handlers are provided for:<ul>
+	 *
+	 * <p>Handlers are provided for:<ul>
 	 * <li><code>file</code>: handler for files which is supported input and output.</li>
 	 * <li><code>resource</code>: handler for resource URL.</li>
 	 * </ul>
-	 * 
+	 *
 	 * @see #uninstallArakhneHandlers()
 	 */
 	public static void installArakhneHandlers() {
@@ -117,19 +121,20 @@ public class URLHandlerUtil {
 
 	/** Uninstall the URL handlers provided by Arakhn&ecirc;
 	 * libraries.
-	 * <p>
-	 * Handlers are provided for:<ul>
+	 *
+	 * <p>Handlers are provided for:<ul>
 	 * <li><code>file</code>: handler for files which is supported input and output.</li>
 	 * <li><code>resource</code>: handler for resource URL.</li>
 	 * </ul>
-	 * 
+	 *
 	 * @see #installArakhneHandlers()
 	 */
 	public static void uninstallArakhneHandlers() {
 		uninstall(URLHandlerUtil.class.getPackage().getName());
 	}
 
-	/**
+	/** Iterator on protocol handlers.
+	 *
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
@@ -139,39 +144,43 @@ public class URLHandlerUtil {
 	private static class HandlerIterator implements Iterator<Class<? extends URLStreamHandler>> {
 
 		private final String protocol;
+
 		private final String[] packages;
-		private int position = 0;
-		
+
+		private int position;
+
 		private Class<? extends URLStreamHandler> next;
-		
-		/**
-		 * @param protocol
+
+		/** Construct the iterator.
+		 *
+		 * @param protocol the protocol.
 		 */
-		public HandlerIterator(String protocol) {
+		HandlerIterator(String protocol) {
 			this.protocol = protocol;
-			String str = System.getProperty(HANDLER_PACKAGES);
-			if (str==null)
+			final String str = System.getProperty(HANDLER_PACKAGES);
+			if (str == null) {
 				this.packages = new String[0];
-			else
+			} else {
 				this.packages = str.split("\\|"); //$NON-NLS-1$
-			
+			}
+
 			searchNext();
 		}
-		
+
 		@SuppressWarnings("unchecked")
 		private void searchNext() {
 			this.next = null;
-			ClassLoader clsLoader = getClass().getClassLoader();
-			while (this.next==null && this.position<this.packages.length) {
-				String typename = this.packages[this.position++];
+			final ClassLoader clsLoader = getClass().getClassLoader();
+			while (this.next == null && this.position < this.packages.length) {
+				final String typename = this.packages[this.position++];
 
 				try {
-					Class<?> type = clsLoader.loadClass(typename+"."+this.protocol+".Handler"); //$NON-NLS-1$ //$NON-NLS-2$
-					if (type!=null && URLStreamHandler.class.isAssignableFrom(type)) {
-						this.next = (Class<? extends URLStreamHandler>)type;
+					final Class<?> type = clsLoader.loadClass(typename + "." //$NON-NLS-1$
+							+ this.protocol + ".Handler"); //$NON-NLS-1$
+					if (type != null && URLStreamHandler.class.isAssignableFrom(type)) {
+						this.next = (Class<? extends URLStreamHandler>) type;
 					}
-				}
-				catch(Throwable exception) {
+				} catch (Throwable exception) {
 					//
 				}
 			}
@@ -179,23 +188,20 @@ public class URLHandlerUtil {
 
 		@Override
 		public boolean hasNext() {
-			return this.next!=null;
+			return this.next != null;
 		}
 
 		@Override
 		public Class<? extends URLStreamHandler> next() {
-			Class<? extends URLStreamHandler> n = this.next;
-			if (n==null) throw new NoSuchElementException();
+			final Class<? extends URLStreamHandler> n = this.next;
+			if (n == null) {
+				throw new NoSuchElementException();
+			}
 			searchNext();
 			return n;
 		}
 
-		@Override
-		public void remove() {
-			throw new UnsupportedOperationException();
-		}
-		
 	}
-	
+
 }
 

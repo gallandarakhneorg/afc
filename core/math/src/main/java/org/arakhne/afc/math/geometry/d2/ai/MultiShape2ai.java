@@ -1,28 +1,30 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (C) 2013 Christophe BOHRHAUER.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package org.arakhne.afc.math.geometry.d2.ai;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.Unefficient;
 import org.arakhne.afc.math.geometry.PathWindingRule;
@@ -30,12 +32,11 @@ import org.arakhne.afc.math.geometry.d2.MultiShape2D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
-import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Container for grouping of shapes.
- * 
+ *
  * <p>The coordinates of the shapes inside the multishape are global. They are not relative to the multishape.
- * 
+ *
  * @param <ST> is the type of the general implementation.
  * @param <IT> is the type of the implementation of this multishape.
  * @param <CT> is the type of the shapes that are inside this multishape.
@@ -63,11 +64,11 @@ public interface MultiShape2ai<
 
 	@Pure
 	@Override
-	default boolean intersects(Circle2ai<?, ?, ?, ?, ?, ?> s) {
-		assert (s != null) : "Circle must be not null"; //$NON-NLS-1$
-		if (s.intersects(toBoundingBox())) {
-			for (CT shape : getBackendDataList()) {
-				if (shape.intersects(s)) {
+	default boolean intersects(Circle2ai<?, ?, ?, ?, ?, ?> circle) {
+		assert circle != null : "Circle must be not null"; //$NON-NLS-1$
+		if (circle.intersects(toBoundingBox())) {
+			for (final CT shape : getBackendDataList()) {
+				if (shape.intersects(circle)) {
 					return true;
 				}
 			}
@@ -77,11 +78,11 @@ public interface MultiShape2ai<
 
 	@Pure
 	@Override
-	default boolean intersects(Rectangle2ai<?, ?, ?, ?, ?, ?> s) {
-		assert (s != null) : "Rectangle must be not null"; //$NON-NLS-1$
-		if (s.intersects(toBoundingBox())) {
-			for (CT shape : getBackendDataList()) {
-				if (shape.intersects(s)) {
+	default boolean intersects(Rectangle2ai<?, ?, ?, ?, ?, ?> rectangle) {
+		assert rectangle != null : "Rectangle must be not null"; //$NON-NLS-1$
+		if (rectangle.intersects(toBoundingBox())) {
+			for (final CT shape : getBackendDataList()) {
+				if (shape.intersects(rectangle)) {
 					return true;
 				}
 			}
@@ -91,11 +92,11 @@ public interface MultiShape2ai<
 
 	@Pure
 	@Override
-	default boolean intersects(Segment2ai<?, ?, ?, ?, ?, ?> s) {
-		assert (s != null) : "Segment must be not null"; //$NON-NLS-1$
-		if (s.intersects(toBoundingBox())) {
-			for (CT shape : getBackendDataList()) {
-				if (shape.intersects(s)) {
+	default boolean intersects(Segment2ai<?, ?, ?, ?, ?, ?> segment) {
+		assert segment != null : "Segment must be not null"; //$NON-NLS-1$
+		if (segment.intersects(toBoundingBox())) {
+			for (final CT shape : getBackendDataList()) {
+				if (shape.intersects(segment)) {
 					return true;
 				}
 			}
@@ -107,7 +108,7 @@ public interface MultiShape2ai<
 	@Override
 	default boolean intersects(PathIterator2ai<?> iterator) {
 		if (toBoundingBox().intersects(iterator)) {
-			for (CT shape : getBackendDataList()) {
+			for (final CT shape : getBackendDataList()) {
 				if (shape.intersects(iterator.restartIterations())) {
 					return true;
 				}
@@ -119,11 +120,11 @@ public interface MultiShape2ai<
 	@Pure
 	@Override
 	@Unefficient
-	default boolean intersects(MultiShape2ai<?, ?, ?, ?, ?, ?, ?> s) {
-		assert (s != null) : "MultiShape must be not null"; //$NON-NLS-1$
-		if (s.toBoundingBox().intersects(toBoundingBox())) {
-			for (CT shape1 : getBackendDataList()) {
-				for (Shape2ai<?, ?, ?, ?, ?, ?> shape2 : s.getBackendDataList()) {
+	default boolean intersects(MultiShape2ai<?, ?, ?, ?, ?, ?, ?> multishape) {
+		assert multishape != null : "MultiShape must be not null"; //$NON-NLS-1$
+		if (multishape.toBoundingBox().intersects(toBoundingBox())) {
+			for (final CT shape1 : getBackendDataList()) {
+				for (final Shape2ai<?, ?, ?, ?, ?, ?> shape2 : multishape.getBackendDataList()) {
 					if (shape1.intersects(shape2)) {
 						return true;
 					}
@@ -137,7 +138,7 @@ public interface MultiShape2ai<
 	@Override
 	default boolean contains(int x, int y) {
 		if (toBoundingBox().contains(x, y)) {
-			for (CT shape : getBackendDataList()) {
+			for (final CT shape : getBackendDataList()) {
 				if (shape.contains(x, y)) {
 					return true;
 				}
@@ -148,11 +149,11 @@ public interface MultiShape2ai<
 
 	@Pure
 	@Override
-	default boolean contains(Rectangle2ai<?, ?, ?, ?, ?, ?> r) {
-		assert (r != null) : "Rectangle must be not null"; //$NON-NLS-1$
-		if (r.intersects(toBoundingBox())) {
-			for (CT shape : getBackendDataList()) {
-				if (shape.contains(r)) {
+	default boolean contains(Rectangle2ai<?, ?, ?, ?, ?, ?> rectangle) {
+		assert rectangle != null : "Rectangle must be not null"; //$NON-NLS-1$
+		if (rectangle.intersects(toBoundingBox())) {
+			for (final CT shape : getBackendDataList()) {
+				if (shape.contains(rectangle)) {
 					return true;
 				}
 			}
@@ -162,7 +163,7 @@ public interface MultiShape2ai<
 
 	@Override
 	default void translate(int dx, int dy) {
-		for (CT shape : getBackendDataList()) {
+		for (final CT shape : getBackendDataList()) {
 			shape.translate(dx, dy);
 		}
 		onBackendDataChange();
@@ -172,8 +173,8 @@ public interface MultiShape2ai<
 	@Pure
 	@Override
 	default ST createTransformedShape(Transform2D transform) {
-		MultiShape2ai multishape = getGeomFactory().newMultiShape();
-		for (CT shape : getBackendDataList()) {
+		final MultiShape2ai multishape = getGeomFactory().newMultiShape();
+		for (final CT shape : getBackendDataList()) {
 			multishape.add(shape.createTransformedShape(transform));
 		}
 		return (ST) multishape;
@@ -183,9 +184,9 @@ public interface MultiShape2ai<
 	@Pure
 	@Override
 	default CT getFirstShapeIntersecting(ST shape) {
-		assert (shape != null) : "Input shape must be not null"; //$NON-NLS-1$
+		assert shape != null : "Input shape must be not null"; //$NON-NLS-1$
 		if (shape.intersects(toBoundingBox())) {
-			for (CT innerShape : getBackendDataList()) {
+			for (final CT innerShape : getBackendDataList()) {
 				if (innerShape.intersects(shape)) {
 					return innerShape;
 				}
@@ -198,10 +199,10 @@ public interface MultiShape2ai<
 	@Override
 	@Pure
 	default List<CT> getShapesIntersecting(ST shape) {
-		assert (shape != null) : "Shape must be not null"; //$NON-NLS-1$
-		List<CT> list = new ArrayList<>();
+		assert shape != null : "Shape must be not null"; //$NON-NLS-1$
+		final List<CT> list = new ArrayList<>();
 		if (shape.intersects(toBoundingBox())) {
-			for (CT subshape : getBackendDataList()) {
+			for (final CT subshape : getBackendDataList()) {
 				if (subshape.intersects(shape)) {
 					list.add(subshape);
 				}
@@ -213,13 +214,13 @@ public interface MultiShape2ai<
 	@Pure
 	@Override
 	default void toBoundingBox(B box) {
-		assert (box != null) : "Rectangle must be not null"; //$NON-NLS-1$
-		Iterator<CT> iterator = getBackendDataList().iterator();
+		assert box != null : "Rectangle must be not null"; //$NON-NLS-1$
+		final Iterator<CT> iterator = getBackendDataList().iterator();
 		if (iterator.hasNext()) {
 			iterator.next().toBoundingBox(box);
-			B subbounds = getGeomFactory().newBox();
+			final B subbounds = getGeomFactory().newBox();
 			while (iterator.hasNext()) {
-				CT element = iterator.next();
+				final CT element = iterator.next();
 				element.toBoundingBox(subbounds);
 				box.setUnion(subbounds);
 			}
@@ -238,9 +239,9 @@ public interface MultiShape2ai<
 	default Iterator<P> getPointIterator() {
 		return new MultiShapePointIterator<>(getBackendDataList());
 	}
-	
+
 	/** Abstract iterator on the path elements of the multishape.
-	 * 
+	 *
 	 * @param <IE> the type of the path elements.
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
@@ -248,15 +249,19 @@ public interface MultiShape2ai<
 	 * @mavenartifactid $ArtifactId$
 	 */
 	abstract class AbstractMultiShapePathIterator<IE extends PathElement2ai> implements PathIterator2ai<IE> {
-		
+
+		/** Iterated list.
+		 */
+		protected final List<? extends Shape2ai<?, ?, IE, ?, ?, ?>> list;
+
 		private final GeomFactory2ai<IE, ?, ?, ?> factory;
-		
+
 		private Iterator<? extends Shape2ai<?, ?, IE, ?, ?, ?>> shapesIterator;
-		
+
 		private PathIterator2ai<IE> shapeIterator;
-		
+
 		private IE next;
-				
+
 		private boolean isCurved;
 
 		private boolean isPolyline;
@@ -265,25 +270,21 @@ public interface MultiShape2ai<
 
 		private boolean isMultiParts;
 
-		/** Iterated list.
-		 */
-		protected final List<? extends Shape2ai<?, ?, IE, ?, ?, ?>> list;
-		
 		/**
 		 * @param list the list of the shapes to iterate on.
 		 * @param factory the factory of path elements.
 		 */
 		public AbstractMultiShapePathIterator(List<? extends Shape2ai<?, ?, IE, ?, ?, ?>> list,
 				GeomFactory2ai<IE, ?, ?, ?> factory) {
-			assert (list != null) : "List of shapes must be not null"; //$NON-NLS-1$
-			assert (factory != null) : "Shape factory must be not null"; //$NON-NLS-1$
+			assert list != null : "List of shapes must be not null"; //$NON-NLS-1$
+			assert factory != null : "Shape factory must be not null"; //$NON-NLS-1$
 			this.list = list;
 			this.factory = factory;
 			this.shapesIterator = list.iterator();
 		}
-		
+
 		/** Initialization.
-		 * 
+		 *
 		 * @param list the list to iterate on.
 		 */
 		protected void delayedInit(List<? extends Shape2ai<?, ?, IE, ?, ?, ?>> list) {
@@ -311,7 +312,7 @@ public interface MultiShape2ai<
 		 * @return the path iterator.
 		 */
 		protected abstract PathIterator2ai<IE> getPathIteratorFrom(Shape2ai<?, ?, IE, ?, ?, ?> shape);
-		
+
 		@Override
 		public boolean hasNext() {
 			return this.next != null;
@@ -319,12 +320,12 @@ public interface MultiShape2ai<
 
 		@Override
 		public IE next() {
-			assert (this.next != null) : "No such element"; //$NON-NLS-1$
-			IE elementToReturn = this.next;
+			assert this.next != null : "No such element"; //$NON-NLS-1$
+			final IE elementToReturn = this.next;
 			searchNext();
 			return elementToReturn;
 		}
-		
+
 		private void searchNext() {
 			this.next = null;
 			while (!this.shapeIterator.hasNext()) {
@@ -335,8 +336,8 @@ public interface MultiShape2ai<
 					return;
 				}
 			}
-			assert (this.shapeIterator != null);
-			assert (this.shapeIterator.hasNext());
+			assert this.shapeIterator != null;
+			assert this.shapeIterator.hasNext();
 			this.next = this.shapeIterator.next();
 		}
 
@@ -369,11 +370,11 @@ public interface MultiShape2ai<
 		public GeomFactory2ai<IE, ?, ?, ?> getGeomFactory() {
 			return this.factory;
 		}
-	
+
 	}
 
 	/** Iterator on the path elements of the multishape.
-	 * 
+	 *
 	 * @param <IE> the type of the path elements.
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
@@ -381,7 +382,7 @@ public interface MultiShape2ai<
 	 * @mavenartifactid $ArtifactId$
 	 */
 	class MultiShapePathIterator<IE extends PathElement2ai> extends AbstractMultiShapePathIterator<IE> {
-		
+
 		/**
 		 * @param list the list of the shapes to iterate on.
 		 * @param factory the factory of path elements.
@@ -391,7 +392,7 @@ public interface MultiShape2ai<
 			super(list, factory);
 			delayedInit(list);
 		}
-		
+
 		@Override
 		public PathIterator2ai<IE> restartIterations() {
 			return new MultiShapePathIterator<>(this.list, getGeomFactory());
@@ -405,7 +406,7 @@ public interface MultiShape2ai<
 	}
 
 	/** Iterator on the path elements of the multishape.
-	 * 
+	 *
 	 * @param <IE> the type of the path elements.
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
@@ -415,7 +416,7 @@ public interface MultiShape2ai<
 	class TransformedMultiShapePathIterator<IE extends PathElement2ai> extends AbstractMultiShapePathIterator<IE> {
 
 		private final Transform2D transform;
-		
+
 		/**
 		 * @param list the list of the shapes to iterate on.
 		 * @param factory the factory of path elements.
@@ -424,7 +425,7 @@ public interface MultiShape2ai<
 		public TransformedMultiShapePathIterator(List<? extends Shape2ai<?, ?, IE, ?, ?, ?>> list,
 				GeomFactory2ai<IE, ?, ?, ?> factory, Transform2D transform) {
 			super(list, factory);
-			assert (transform != null) : "Transformation must be not null"; //$NON-NLS-1$
+			assert transform != null : "Transformation must be not null"; //$NON-NLS-1$
 			this.transform = transform;
 			delayedInit(list);
 		}
@@ -438,11 +439,11 @@ public interface MultiShape2ai<
 		protected PathIterator2ai<IE> getPathIteratorFrom(Shape2ai<?, ?, IE, ?, ?, ?> shape) {
 			return shape.getPathIterator(this.transform);
 		}
-	
+
 	}
 
 	/** Iterator on the points of the multishape.
-	 * 
+	 *
 	 * @param <P> the type of the points.
 	 * @param <V> the type of the vectors.
 	 * @author $Author: sgalland$
@@ -454,24 +455,24 @@ public interface MultiShape2ai<
 			V extends Vector2D<? super V, ? super P>>	 implements Iterator<P> {
 
 		private final Iterator<? extends Shape2ai<?, ?, ?, P, V, ?>> elements;
-		
+
 		private Iterator<P> currentIterator;
-		
+
 		private P next;
-		
+
 		/**
 		 * @param list the list of the shapes to iterate on.
-		 * 
+		 *
 		 */
 		public MultiShapePointIterator(List<? extends Shape2ai<?, ?, ?, P, V, ?>> list) {
-			assert (list != null) : "List of elements must be not null"; //$NON-NLS-1$
+			assert list != null : "List of elements must be not null"; //$NON-NLS-1$
 			this.elements = list.iterator();
 			if (this.elements.hasNext()) {
 				this.currentIterator = this.elements.next().getPointIterator();
 				searchNext();
 			}
 		}
-		
+
 		private void searchNext() {
 			this.next = null;
 			while (true) {
@@ -494,12 +495,12 @@ public interface MultiShape2ai<
 
 		@Override
 		public P next() {
-			assert (this.next != null) : "No such element"; //$NON-NLS-1$
-			P point = this.next;
+			assert this.next != null : "No such element"; //$NON-NLS-1$
+			final P point = this.next;
 			searchNext();
 			return point;
 		}
-	
+
 	}
 
 }

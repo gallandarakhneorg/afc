@@ -1,30 +1,24 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (C) 2010-2013 Stephane GALLAND.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.arakhne.afc.math.geometry.d2.dfx;
-
-import org.arakhne.afc.math.geometry.d2.Point2D;
-import org.arakhne.afc.math.geometry.d2.Transform2D;
-import org.arakhne.afc.math.geometry.d2.afp.Triangle2afp;
-import org.eclipse.xtext.xbase.lib.Pure;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
@@ -33,6 +27,11 @@ import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.ReadOnlyBooleanWrapper;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import org.eclipse.xtext.xbase.lib.Pure;
+
+import org.arakhne.afc.math.geometry.d2.Point2D;
+import org.arakhne.afc.math.geometry.d2.Transform2D;
+import org.arakhne.afc.math.geometry.d2.afp.Triangle2afp;
 
 /** A triangle with 2 double precision floating-point FX properties.
  *
@@ -49,60 +48,60 @@ public class Triangle2dfx
 	private static final long serialVersionUID = -1872758222696617883L;
 
 	private DoubleProperty x1;
-	
+
 	private DoubleProperty y1;
 
 	private DoubleProperty x2;
-	
+
 	private DoubleProperty y2;
 
 	private DoubleProperty x3;
-	
+
 	private DoubleProperty y3;
-	
+
 	private ReadOnlyBooleanWrapper ccw;
 
-	/**
+	/** Construct an empty triangle.
 	 */
 	public Triangle2dfx() {
 		//
 	}
 
-	/**
-	 * @param p1
-	 * @param p2
-	 * @param p3
+	/** Construct a triangle with the three given points.
+	 * @param p1 first point.
+	 * @param p2 second point.
+	 * @param p3 third point.
 	 */
 	public Triangle2dfx(Point2D<?, ?> p1, Point2D<?, ?> p2, Point2D<?, ?> p3) {
-		assert (p1 != null) : "Point 1 must not be null"; //$NON-NLS-1$
-		assert (p2 != null) : "Point 1 must not be null"; //$NON-NLS-1$
-		assert (p3 != null) : "Point 1 must not be null"; //$NON-NLS-1$
+		assert p1 != null : "Point 1 must not be null"; //$NON-NLS-1$
+		assert p2 != null : "Point 1 must not be null"; //$NON-NLS-1$
+		assert p3 != null : "Point 1 must not be null"; //$NON-NLS-1$
 		set(p1.getX(), p1.getY(), p2.getX(), p2.getY(), p3.getX(), p3.getY());
 	}
 
-	/**
-	 * @param x1
-	 * @param y1
-	 * @param x2
-	 * @param y2
-	 * @param x3
-	 * @param y3
+	/** Construct a triangle with the three given points.
+	 * @param x1 x coordinate of the first point.
+	 * @param y1 y coordinate of the first point.
+	 * @param x2 x coordinate of the second point.
+	 * @param y2 y coordinate of the second point.
+	 * @param x3 x coordinate of the third point.
+	 * @param y3 y coordinate of the third point.
 	 */
 	public Triangle2dfx(double x1, double y1, double x2, double y2, double x3, double y3) {
 		set(x1, y1, x2, y2, x3, y3);
 	}
-	
+
 	/** Construct a triangle from a triangle.
-	 * @param t
+	 * @param triangle the triangle to copy.
 	 */
-	public Triangle2dfx(Triangle2afp<?, ?, ?, ?, ?, ?> t) {
-		assert (t != null) : "Triangle must be not null"; //$NON-NLS-1$
-		set(t.getX1(), t.getY1(), t.getX2(), t.getY2(), t.getX3(), t.getY3());
+	public Triangle2dfx(Triangle2afp<?, ?, ?, ?, ?, ?> triangle) {
+		assert triangle != null : "Triangle must be not null"; //$NON-NLS-1$
+		set(triangle.getX1(), triangle.getY1(), triangle.getX2(), triangle.getY2(), triangle.getX3(), triangle.getY3());
 	}
-	
+
 	@Override
 	public Triangle2dfx clone() {
-		Triangle2dfx clone = super.clone();
+		final Triangle2dfx clone = super.clone();
 		if (clone.x1 != null) {
 			clone.x1 = null;
 			clone.x1Property().set(getX1());
@@ -130,7 +129,7 @@ public class Triangle2dfx
 		clone.ccw = null;
 		return clone;
 	}
-	
+
 	@Pure
 	@Override
 	public int hashCode() {
@@ -141,14 +140,14 @@ public class Triangle2dfx
 		bits = 31 * bits + Double.doubleToLongBits(getY2());
 		bits = 31 * bits + Double.doubleToLongBits(getX3());
 		bits = 31 * bits + Double.doubleToLongBits(getY3());
-		int b = (int) bits;
+		final int b = (int) bits;
 		return b ^ (b >> 32);
 	}
 
 	@Pure
 	@Override
 	public String toString() {
-		StringBuilder b = new StringBuilder();
+		final StringBuilder b = new StringBuilder();
 		b.append("["); //$NON-NLS-1$
 		b.append(getX1());
 		b.append(";"); //$NON-NLS-1$
@@ -171,14 +170,14 @@ public class Triangle2dfx
 		if (transform == null || transform.isIdentity()) {
 			return clone();
 		}
-		Point2dfx point = getGeomFactory().newPoint(getX1(), getY1());
+		final Point2dfx point = getGeomFactory().newPoint(getX1(), getY1());
 		transform.transform(point);
-		double x1 = point.getX();
-		double y1 = point.getY();
+		final double x1 = point.getX();
+		final double y1 = point.getY();
 		point.set(getX2(), getY2());
 		transform.transform(point);
-		double x2 = point.getX();
-		double y2 = point.getY();
+		final double x2 = point.getX();
+		final double y2 = point.getY();
 		point.set(getX3(), getY3());
 		transform.transform(point);
 		return getGeomFactory().newTriangle(x1, y1, x2, y2, point.getX(), point.getY());
@@ -325,7 +324,7 @@ public class Triangle2dfx
 		x3Property().set(x3);
 		y3Property().set(y3);
 	}
-	
+
 	@Override
 	public boolean isCCW() {
 		return ccwProperty().get();
@@ -339,12 +338,11 @@ public class Triangle2dfx
 	public ReadOnlyBooleanProperty ccwProperty() {
 		if (this.ccw == null) {
 			this.ccw = new ReadOnlyBooleanWrapper(this, "ccw"); //$NON-NLS-1$
-			this.ccw.bind(Bindings.createBooleanBinding(
-					() -> {
-						return Triangle2afp.isCCWOrderDefinition(
-								getX1(), getY1(), getX2(), getY2(),
-								getX3(), getY3());
-					},
+			this.ccw.bind(Bindings.createBooleanBinding(() -> {
+				return Triangle2afp.isCCWOrderDefinition(
+						getX1(), getY1(), getX2(), getY2(),
+						getX3(), getY3());
+			},
 					x1Property(), y1Property(),
 					x2Property(), y2Property(),
 					x3Property(), y3Property()));
@@ -356,10 +354,9 @@ public class Triangle2dfx
 	public ObjectProperty<Rectangle2dfx> boundingBoxProperty() {
 		if (this.boundingBox == null) {
 			this.boundingBox = new SimpleObjectProperty<>(this, "boundingBox"); //$NON-NLS-1$
-			this.boundingBox.bind(Bindings.createObjectBinding(
-					() -> {
-						return toBoundingBox();
-					},
+			this.boundingBox.bind(Bindings.createObjectBinding(() -> {
+				return toBoundingBox();
+			},
 					x1Property(), y1Property(),
 					x2Property(), y2Property(),
 					x3Property(), y3Property()));

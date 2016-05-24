@@ -1,20 +1,23 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (c) 2005-10, Multiagent Team,
- * Laboratoire Systemes et Transports,
- * Universite de Technologie de Belfort-Montbeliard.
- * All rights reserved.
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
  *
- * This software is the confidential and proprietary information
- * of the Laboratoire Systemes et Transports
- * of the Universite de Technologie de Belfort-Montbeliard ("Confidential Information").
- * You shall not disclose such Confidential Information and shall use
- * it only in accordance with the terms of the license agreement
- * you entered into with the SeT.
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
  *
- * http://www.multiagent.fr/
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package org.arakhne.afc.math.tree.node;
 
 import java.io.IOException;
@@ -23,8 +26,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.arakhne.afc.math.tree.TreeNode;
 import org.eclipse.xtext.xbase.lib.Pure;
+
+import org.arakhne.afc.math.tree.TreeNode;
 
 
 /**
@@ -35,16 +39,15 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * <code>null</code>. If you want a generic implementation
  * of a tree node which has always the same count of children,
  * please see {@link ConstantNaryTreeNode}.
- * <p>
- * <h3>moveTo</h3>
- * According to its definition in 
+ *
+ * <p><h3>moveTo</h3>
+ * According to its definition in
  * {@link TreeNode#moveTo(TreeNode, int)}, the binary
  * tree node implementation of <code>moveTo</code>
  * does not replace any existing node at the position given as
  * parameter of <code>moveTo</code>. In place <code>moveTo</code>
  * insert the moving node in the new parent.
- * 
- * @see ConstantNaryTreeNode
+ *
  * @param <D> is the type of the data inside the tree
  * @param <N> is the type of the tree nodes.
  * @author $Author: sgalland$
@@ -52,11 +55,12 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 13.0
+ * @see ConstantNaryTreeNode
  */
-public abstract class NaryTreeNode<D,N extends NaryTreeNode<D,N>> extends AbstractTreeNode<D,N> {
+public abstract class NaryTreeNode<D, N extends NaryTreeNode<D, N>> extends AbstractTreeNode<D, N> {
 
 	private static final long serialVersionUID = -1313340976961548532L;
-	
+
 	private List<N> children;
 
 	/**
@@ -65,7 +69,7 @@ public abstract class NaryTreeNode<D,N extends NaryTreeNode<D,N>> extends Abstra
 	public NaryTreeNode() {
 		this(DEFAULT_LINK_LIST_USE);
 	}
-	
+
 	/**
 	 * @param data are the initial user data.
 	 */
@@ -73,7 +77,7 @@ public abstract class NaryTreeNode<D,N extends NaryTreeNode<D,N>> extends Abstra
 		super(DEFAULT_LINK_LIST_USE, data);
 		this.children = null;
 	}
-	
+
 	/**
 	 * @param data are the initial user data.
 	 */
@@ -83,19 +87,19 @@ public abstract class NaryTreeNode<D,N extends NaryTreeNode<D,N>> extends Abstra
 
 	/**
 	 * @param useLinkedList indicates if a linked list must be used to store the data.
-	 * If <code>false</code>, an ArrayList will be used.
+	 *     If <code>false</code>, an ArrayList will be used.
 	 */
 	public NaryTreeNode(boolean useLinkedList) {
 		super(useLinkedList);
 		this.children = null;
 	}
-	
+
 	/**
 	 * @param useLinkedList indicates if a linked list must be used to store the data.
-	 * If <code>false</code>, an ArrayList will be used.
+	 *     If <code>false</code>, an ArrayList will be used.
 	 * @param copyDataCollection indicates if the given data collection is copied
-	 * if <code>true</code> or the inner data collection will be the given
-	 * collection itself if <code>false</code>.
+	 *     if <code>true</code> or the inner data collection will be the given
+	 *     collection itself if <code>false</code>.
 	 * @param data are the initial user data
 	 */
 	public NaryTreeNode(boolean useLinkedList, boolean copyDataCollection, List<D> data) {
@@ -105,14 +109,14 @@ public abstract class NaryTreeNode<D,N extends NaryTreeNode<D,N>> extends Abstra
 
 	/**
 	 * @param useLinkedList indicates if a linked list must be used to store the data.
-	 * If <code>false</code>, an ArrayList will be used.
+	 *     If <code>false</code>, an ArrayList will be used.
 	 * @param data are the initial user data
 	 */
 	public NaryTreeNode(boolean useLinkedList, D data) {
 		super(useLinkedList, data);
 		this.children = null;
 	}
-	
+
 	@Pure
 	@Override
 	public Class<? extends Enum<?>> getPartitionEnumeration() {
@@ -124,24 +128,26 @@ public abstract class NaryTreeNode<D,N extends NaryTreeNode<D,N>> extends Abstra
 	}
 
 	/** Invoked when this object must be deserialized.
-	 * 
+	 *
 	 * @param in is the input stream.
 	 * @throws IOException in case of input stream access error.
 	 * @throws ClassNotFoundException if some class was not found.
 	 */
 	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
 		in.defaultReadObject();
-		if (this.children!=null) {
-			N me = toN();
-			for(NaryTreeNode<D,N> child : this.children) {
-				if (child!=null) child.setParentNodeReference(me, false);
+		if (this.children != null) {
+			final N me = toN();
+			for (final NaryTreeNode<D, N> child : this.children) {
+				if (child != null) {
+					child.setParentNodeReference(me, false);
+				}
 			}
 		}
 	}
 
 	/** Clear the tree.
-	 * <p>
-	 * Caution: this method also destroyes the
+	 *
+	 * <p>Caution: this method also destroyes the
 	 * links between the child nodes inside the tree.
 	 * If you want to unlink the first-level
 	 * child node with
@@ -151,12 +157,12 @@ public abstract class NaryTreeNode<D,N extends NaryTreeNode<D,N>> extends Abstra
 	@Override
 	public void clear() {
 		removeAllUserData();
-		if (this.children!=null) {
-			List<N> nodes = new ArrayList<>(this.children);
+		if (this.children != null) {
+			final List<N> nodes = new ArrayList<>(this.children);
 			while (!this.children.isEmpty()) {
 				setChildAt(0, null);
 			}
-			for(N child : nodes) {
+			for (final N child : nodes) {
 				child.clear();
 			}
 			nodes.clear();
@@ -166,7 +172,7 @@ public abstract class NaryTreeNode<D,N extends NaryTreeNode<D,N>> extends Abstra
 	@Pure
 	@Override
 	public final int getChildCount() {
-		return (this.children==null) ? 0 : this.children.size();
+		return (this.children == null) ? 0 : this.children.size();
 	}
 
 	@Pure
@@ -178,10 +184,10 @@ public abstract class NaryTreeNode<D,N extends NaryTreeNode<D,N>> extends Abstra
 	@Pure
 	@Override
 	public final int indexOf(N child) {
-		int i=0;
-		if (this.children!=null) {
-			for(N cchild : this.children) {
-				if (cchild==child) {
+		int i = 0;
+		if (this.children != null) {
+			for (final N cchild : this.children) {
+				if (cchild == child) {
 					return i;
 				}
 				++i;
@@ -193,25 +199,29 @@ public abstract class NaryTreeNode<D,N extends NaryTreeNode<D,N>> extends Abstra
 	@Pure
 	@Override
 	public final N getChildAt(int index) throws IndexOutOfBoundsException {
-		if (this.children!=null) return this.children.get(index);
-		throw new IndexOutOfBoundsException(index+">= 3"); //$NON-NLS-1$
+		if (this.children != null) {
+			return this.children.get(index);
+		}
+		throw new IndexOutOfBoundsException(index + ">= 3"); //$NON-NLS-1$
 	}
 
 	/** Move this node in the given new parent node.
-	 * <p>
-	 * This function adds this node at the end of the list
+	 *
+	 * <p>This function adds this node at the end of the list
 	 * of the children of the new parent node.
-	 * <p>
-	 * This function is preferred to a sequence of calls
+	 *
+	 * <p>This function is preferred to a sequence of calls
 	 * to {@link #removeFromParent()} and {@link #setChildAt(int, NaryTreeNode)}
 	 * because it fires a limited set of events dedicated to the move
 	 * the node.
-	 * 
+	 *
 	 * @param newParent is the new parent for this node.
 	 * @return <code>true</code> on success, otherwise <code>false</code>.
 	 */
 	public boolean moveTo(N newParent) {
-		if (newParent==null) return false;
+		if (newParent == null) {
+			return false;
+		}
 		return moveTo(newParent, newParent.getChildCount());
 	}
 
@@ -221,73 +231,93 @@ public abstract class NaryTreeNode<D,N extends NaryTreeNode<D,N>> extends Abstra
 	}
 
 	@Override
+	@SuppressWarnings("checkstyle:npathcomplexity")
 	public boolean setChildAt(int index, N newChild) throws IndexOutOfBoundsException {
-		int count = (this.children==null) ? 0 : this.children.size();
-		
-		if (index<0 || index>=count) throw new IndexOutOfBoundsException();
-		
-		N oldChild = (index<count) ? this.children.get(index) : null;
-		if (oldChild==newChild) return false;
+		final int count = (this.children == null) ? 0 : this.children.size();
 
-		if (oldChild!=null) {
+		if (index < 0 || index >= count) {
+			throw new IndexOutOfBoundsException();
+		}
+
+		final N oldChild = (index < count) ? this.children.get(index) : null;
+		if (oldChild == newChild) {
+			return false;
+		}
+
+		if (oldChild != null) {
 			oldChild.setParentNodeReference(null, true);
 			--this.notNullChildCount;
 			firePropertyChildRemoved(index, oldChild);
 		}
 
-		if (newChild!=null) {
-			N oldParent = newChild.getParentNode();
-			if (oldParent!=this) {
+		if (newChild != null) {
+			final N oldParent = newChild.getParentNode();
+			if (oldParent != this) {
 				newChild.removeFromParent();
 			}
 		}
 
-		if (index<count) {
+		if (index < count) {
 			// set the element
-			if (newChild!=null) this.children.set(index, newChild);
-			else this.children.remove(index);
-		}
-		else if (newChild!=null) {
+			if (newChild != null) {
+				this.children.set(index, newChild);
+			} else {
+				this.children.remove(index);
+			}
+		} else if (newChild != null) {
 			// Resize the array
-			if (this.children==null) this.children = newInternalList(index+1);
+			if (this.children == null) {
+				this.children = newInternalList(index + 1);
+			}
 			this.children.add(newChild);
 		}
-				
-		if (newChild!=null) {
-			newChild.setParentNodeReference(toN(), true);		
+
+		if (newChild != null) {
+			newChild.setParentNodeReference(toN(), true);
 			++this.notNullChildCount;
 			firePropertyChildAdded(index, newChild);
 		}
-		
+
 		return true;
 	}
 
 	@Override
 	protected void setChildAtWithoutEventFiring(int index, N newChild) throws IndexOutOfBoundsException {
-		int count = (this.children==null) ? 0 : this.children.size();
+		final int count = (this.children == null) ? 0 : this.children.size();
 		int insertionIndex = index;
-		if (insertionIndex<0) insertionIndex = 0;
+		if (insertionIndex < 0) {
+			insertionIndex = 0;
+		}
 
-		if (newChild!=null) {
-			if (insertionIndex>count) insertionIndex = count;
-			
-			if (this.children==null) this.children = newInternalList(count+1);
+		if (newChild != null) {
+			if (insertionIndex > count) {
+				insertionIndex = count;
+			}
+
+			if (this.children == null) {
+				this.children = newInternalList(count + 1);
+			}
 			this.children.add(insertionIndex, newChild);
 			++this.notNullChildCount;
-		}
-		else {
-			if (insertionIndex>=count) insertionIndex = count-1;
-			N oldValue = this.children.remove(insertionIndex);
-			if (this.children.isEmpty()) this.children = null;
-			if (oldValue!=null) --this.notNullChildCount;
+		} else {
+			if (insertionIndex >= count) {
+				insertionIndex = count - 1;
+			}
+			final N oldValue = this.children.remove(insertionIndex);
+			if (this.children.isEmpty()) {
+				this.children = null;
+			}
+			if (oldValue != null) {
+				--this.notNullChildCount;
+			}
 		}
 	}
-	
+
 	@Override
 	public final boolean removeChild(N child) {
-		if (child!=null && this.children!=null) {
-			int index = this.children.indexOf(child);
-			if (index>=0 && index<this.children.size()) {
+		if (child != null && this.children != null) {
+			final int index = this.children.indexOf(child);
+			if (index >= 0 && index < this.children.size()) {
 				this.children.remove(index);
 				--this.notNullChildCount;
 				child.setParentNodeReference(null, true);
@@ -299,65 +329,68 @@ public abstract class NaryTreeNode<D,N extends NaryTreeNode<D,N>> extends Abstra
 	}
 
 	/** Add a child node at the end of the children list.
-	 * 
+	 *
 	 * @param child is the new child to insert.
 	 * @return <code>true</code> on success, otherwise <code>false</code>
 	 */
 	public final boolean addChild(N child) {
-		if (child!=null) {
+		if (child != null) {
 			return addChild(getChildCount(), child);
 		}
 		return false;
 	}
 
 	/** Add a child node at the specified index.
-	 * 
+	 *
 	 * @param index is the insertion index.
 	 * @param newChild is the new child to insert.
 	 * @return <code>true</code> on success, otherwise <code>false</code>
 	 */
 	public final boolean addChild(int index, N newChild) {
-		if (newChild==null) return false;
-		
-		int count = (this.children==null) ? 0 : this.children.size();
-		
-		N oldParent = newChild.getParentNode();
-		if (oldParent!=this && oldParent!=null) {
+		if (newChild == null) {
+			return false;
+		}
+
+		final int count = (this.children == null) ? 0 : this.children.size();
+
+		final N oldParent = newChild.getParentNode();
+		if (oldParent != this && oldParent != null) {
 			newChild.removeFromParent();
 		}
-		
-		int insertionIndex;
 
-		if (this.children==null) this.children = newInternalList(index+1);
+		final int insertionIndex;
 
-		if (index<count) {
+		if (this.children == null) {
+			this.children = newInternalList(index + 1);
+		}
+
+		if (index < count) {
 			// set the element
 			insertionIndex = Math.max(index, 0);
 			this.children.add(insertionIndex, newChild);
-		}
-		else {
+		} else {
 			// Resize the array
 			insertionIndex = this.children.size();
 			this.children.add(newChild);
 		}
-		
+
 		++this.notNullChildCount;
-		
-		newChild.setParentNodeReference(toN(), true);		
+
+		newChild.setParentNodeReference(toN(), true);
 		firePropertyChildAdded(insertionIndex, newChild);
-		
+
 		return true;
 	}
 
 	@Pure
 	@Override
 	public final boolean isLeaf() {
-		return ((this.children==null)||(this.children.isEmpty()));
+		return (this.children == null) || this.children.isEmpty();
 	}
 
 	@Override
 	public void getChildren(Object[] array) {
-		if (array!=null && this.children!=null) {
+		if (array != null && this.children != null) {
 			this.children.toArray(array);
 		}
 	}
@@ -367,20 +400,19 @@ public abstract class NaryTreeNode<D,N extends NaryTreeNode<D,N>> extends Abstra
 	public int getMinHeight() {
 		int min = Integer.MAX_VALUE;
 		boolean set = false;
-		if (this.children!=null) {
-			for(N child : this.children) {
-				if (child!=null) {
+		if (this.children != null) {
+			for (final N child : this.children) {
+				if (child != null) {
 					if (set) {
 						min = Math.min(min, child.getMinHeight());
-					}
-					else {
+					} else {
 						min = child.getMinHeight();
 						set = true;
 					}
 				}
 			}
 		}
-		return 1+(set ? min : 0);
+		return 1 + (set ? min : 0);
 	}
 
 	@Pure
@@ -388,30 +420,30 @@ public abstract class NaryTreeNode<D,N extends NaryTreeNode<D,N>> extends Abstra
 	public int getMaxHeight() {
 		int max = Integer.MIN_VALUE;
 		boolean set = false;
-		if (this.children!=null) {
-			for(N child : this.children) {
-				if (child!=null) {
+		if (this.children != null) {
+			for (final N child : this.children) {
+				if (child != null) {
 					if (set) {
 						max = Math.max(max, child.getMaxHeight());
-					}
-					else {
+					} else {
 						max = child.getMaxHeight();
 						set = true;
 					}
 				}
 			}
 		}
-		return 1+(set ? max : 0);
+		return 1 + (set ? max : 0);
 	}
 
 	@Override
 	protected void getHeights(int currentHeight, List<Integer> heights) {
 		if (isLeaf()) {
 			heights.add(new Integer(currentHeight));
-		}
-		else {
-			for(N child : this.children) {
-				if (child!=null) child.getHeights(currentHeight+1, heights);
+		} else {
+			for (final N child : this.children) {
+				if (child != null) {
+					child.getHeights(currentHeight + 1, heights);
+				}
 			}
 		}
 	}
@@ -419,7 +451,7 @@ public abstract class NaryTreeNode<D,N extends NaryTreeNode<D,N>> extends Abstra
 	/**
 	 * This is the generic implementation of a n-ary
 	 * tree.
-	 * 
+	 *
 	 * @param <D> is the type of the data inside the tree
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
@@ -427,8 +459,8 @@ public abstract class NaryTreeNode<D,N extends NaryTreeNode<D,N>> extends Abstra
 	 * @mavenartifactid $ArtifactId$
 	 * @since 13.0
 	 */
-	public static class DefaultNaryTreeNode<D> extends NaryTreeNode<D,DefaultNaryTreeNode<D>> {
-		
+	public static class DefaultNaryTreeNode<D> extends NaryTreeNode<D, DefaultNaryTreeNode<D>> {
+
 		private static final long serialVersionUID = -6775932201459338929L;
 
 		/**
@@ -437,21 +469,21 @@ public abstract class NaryTreeNode<D,N extends NaryTreeNode<D,N>> extends Abstra
 		public DefaultNaryTreeNode() {
 			super();
 		}
-		
-		/**
+
+		/** Construct a node.
 		 * @param data are the initial user data
 		 */
 		public DefaultNaryTreeNode(Collection<D> data) {
 			super(data);
 		}
-		
-		/**
+
+		/** Construct a node.
 		 * @param data are the initial user data
 		 */
 		public DefaultNaryTreeNode(D data) {
 			super(data);
 		}
 
-	} /* class SimpleTreeNode */
+	}
 
 }

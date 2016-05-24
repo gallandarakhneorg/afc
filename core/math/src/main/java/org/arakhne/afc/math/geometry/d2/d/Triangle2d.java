@@ -1,30 +1,30 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (C) 2010-2013 Stephane GALLAND.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.arakhne.afc.math.geometry.d2.d;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.afp.Triangle2afp;
-import org.eclipse.xtext.xbase.lib.Pure;
 
 /** A triangle with 2 double precision floating-point numbers.
  *
@@ -41,57 +41,57 @@ public class Triangle2d
 	private static final long serialVersionUID = 6181771392780117178L;
 
 	private double x1;
-	
+
 	private double y1;
 
 	private double x2;
-	
+
 	private double y2;
 
 	private double x3;
-	
+
 	private double y3;
-	
+
 	private Boolean isCCW;
 
-	/**
+	/** Construct an empty triangle.
 	 */
 	public Triangle2d() {
 		//
 	}
 
-	/**
-	 * @param p1
-	 * @param p2
-	 * @param p3
+	/** Construct a triangle with the given 3 points.
+	 * @param p1 first point.
+	 * @param p2 second point.
+	 * @param p3 third point.
 	 */
 	public Triangle2d(Point2D<?, ?> p1, Point2D<?, ?> p2, Point2D<?, ?> p3) {
-		assert (p1 != null) : "Point 1 must not be null"; //$NON-NLS-1$
-		assert (p2 != null) : "Point 1 must not be null"; //$NON-NLS-1$
-		assert (p3 != null) : "Point 1 must not be null"; //$NON-NLS-1$
+		assert p1 != null : "Point 1 must not be null"; //$NON-NLS-1$
+		assert p2 != null : "Point 1 must not be null"; //$NON-NLS-1$
+		assert p3 != null : "Point 1 must not be null"; //$NON-NLS-1$
 		set(p1.getX(), p1.getY(), p2.getX(), p2.getY(), p3.getX(), p3.getY());
 	}
 
-	/**
-	 * @param x1
-	 * @param y1
-	 * @param x2
-	 * @param y2
-	 * @param x3
-	 * @param y3
+	/** Construct a triangle with the given 3 points.
+	 * @param x1 x coordinate of the first point.
+	 * @param y1 y coordinate of the first point.
+	 * @param x2 x coordinate of the second point.
+	 * @param y2 y coordinate of the second point.
+	 * @param x3 x coordinate of the third point.
+	 * @param y3 y coordinate of the third point.
 	 */
 	public Triangle2d(double x1, double y1, double x2, double y2, double x3, double y3) {
 		set(x1, y1, x2, y2, x3, y3);
 	}
-	
+
 	/** Construct a triangle from a triangle.
-	 * @param t
+	 * @param t the triangle to copy.
 	 */
 	public Triangle2d(Triangle2afp<?, ?, ?, ?, ?, ?> t) {
-		assert (t != null) : "Triangle must be not null"; //$NON-NLS-1$
+		assert t != null : "Triangle must be not null"; //$NON-NLS-1$
 		set(t.getX1(), t.getY1(), t.getX2(), t.getY2(), t.getX3(), t.getY3());
 	}
-	
+
 	@Pure
 	@Override
 	public int hashCode() {
@@ -102,14 +102,14 @@ public class Triangle2d
 		bits = 31 * bits + Double.doubleToLongBits(this.y2);
 		bits = 31 * bits + Double.doubleToLongBits(this.x3);
 		bits = 31 * bits + Double.doubleToLongBits(this.y3);
-		int b = (int) bits;
+		final int b = (int) bits;
 		return b ^ (b >> 32);
 	}
 
 	@Pure
 	@Override
 	public String toString() {
-		StringBuilder b = new StringBuilder();
+		final StringBuilder b = new StringBuilder();
 		b.append("["); //$NON-NLS-1$
 		b.append(getX1());
 		b.append(";"); //$NON-NLS-1$
@@ -132,14 +132,14 @@ public class Triangle2d
 		if (transform == null || transform.isIdentity()) {
 			return clone();
 		}
-		Point2d point = getGeomFactory().newPoint(getX1(), getY1());
+		final Point2d point = getGeomFactory().newPoint(getX1(), getY1());
 		transform.transform(point);
-		double x1 = point.getX();
-		double y1 = point.getY();
+		final double x1 = point.getX();
+		final double y1 = point.getY();
 		point.set(getX2(), getY2());
 		transform.transform(point);
-		double x2 = point.getX();
-		double y2 = point.getY();
+		final double x2 = point.getX();
+		final double y2 = point.getY();
 		point.set(getX3(), getY3());
 		transform.transform(point);
 		return getGeomFactory().newTriangle(x1, y1, x2, y2, point.getX(), point.getY());
@@ -232,8 +232,8 @@ public class Triangle2d
 	@Override
 	public void set(double x1, double y1, double x2, double y2, double x3, double y3) {
 		if (this.x1 != x1 || this.y1 != y1
-			|| this.x2 != x2 || this.y2 != y2
-			|| this.x3 != x3 || this.y3 != y3) {
+				|| this.x2 != x2 || this.y2 != y2
+				|| this.x3 != x3 || this.y3 != y3) {
 			this.x1 = x1;
 			this.y1 = y1;
 			this.x2 = x2;
@@ -244,7 +244,7 @@ public class Triangle2d
 			fireGeometryChange();
 		}
 	}
-	
+
 	@Override
 	public boolean isCCW() {
 		if (this.isCCW == null) {

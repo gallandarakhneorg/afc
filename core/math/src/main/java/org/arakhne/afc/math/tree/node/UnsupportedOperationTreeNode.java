@@ -1,29 +1,33 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (c) 2005-11, Multiagent Team,
- * Laboratoire Systemes et Transports,
- * Universite de Technologie de Belfort-Montbeliard.
- * All rights reserved.
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
  *
- * This software is the confidential and proprietary information
- * of the Laboratoire Systemes et Transports
- * of the Universite de Technologie de Belfort-Montbeliard ("Confidential Information").
- * You shall not disclose such Confidential Information and shall use
- * it only in accordance with the terms of the license agreement
- * you entered into with the SeT.
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
  *
- * http://www.multiagent.fr/
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package org.arakhne.afc.math.tree.node;
 
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 import org.arakhne.afc.math.tree.TreeNode;
 import org.arakhne.afc.math.tree.TreeNodeListener;
-import org.eclipse.xtext.xbase.lib.Pure;
 
 
 /**
@@ -31,7 +35,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * {@link UnsupportedOperationException} for all
  * its operation. The sub classes must override the operations
  * to provide a different behaviors.
- * 
+ *
  * @param <D> is the type of the data inside the tree
  * @param <N> is the type of the tree nodes.
  * @author $Author: sgalland$
@@ -40,15 +44,16 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public class UnsupportedOperationTreeNode<D,N extends TreeNode<D,N>>
-implements TreeNode<D,N> {
-	
+@SuppressWarnings("checkstyle:methodcount")
+public class UnsupportedOperationTreeNode<D, N extends TreeNode<D, N>>
+		implements TreeNode<D, N> {
+
 	@Override
 	@Pure
 	public N getParentNode() {
 		throw new UnsupportedOperationException();
 	}
-	
+
 	@Override
 	public boolean setChildAt(int index, N child) throws IndexOutOfBoundsException {
 		throw new UnsupportedOperationException();
@@ -67,10 +72,10 @@ implements TreeNode<D,N> {
 	}
 
 	@Override
-	public D[] getAllUserData(D[] a) {
+	public D[] getAllUserData(D[] array) {
 		throw new UnsupportedOperationException();
 	}
-	
+
 	@Override
 	@Pure
 	public List<D> getAllUserData() {
@@ -182,7 +187,7 @@ implements TreeNode<D,N> {
 	public void removeAllUserData() {
 		throw new UnsupportedOperationException();
 	}
-	
+
 	@Override
 	public boolean removeChild(N child) {
 		throw new UnsupportedOperationException();
@@ -198,7 +203,7 @@ implements TreeNode<D,N> {
 	public int getDeepNodeCount() {
 		throw new UnsupportedOperationException();
 	}
-	
+
 	@Override
 	@Pure
 	public int getDeepUserDataCount() {
@@ -210,7 +215,7 @@ implements TreeNode<D,N> {
 	public Iterator<N> children() {
 		throw new UnsupportedOperationException();
 	}
-	
+
 	@Override
 	@Pure
 	public N[] getChildren(Class<N> type) {
@@ -282,7 +287,7 @@ implements TreeNode<D,N> {
 
 	@Pure
 	@Override
-	public int compareTo(N o) {
+	public int compareTo(N obj) {
 		throw new UnsupportedOperationException();
 	}
 

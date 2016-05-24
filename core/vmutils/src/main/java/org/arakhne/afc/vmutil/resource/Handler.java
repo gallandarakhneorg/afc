@@ -1,24 +1,23 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (C) 2010 Alexandre WILLAUME, Stephane GALLAND.
- * Copyright (C) 2013 Stephane GALLAND.
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package org.arakhne.afc.vmutil.resource;
 
 import java.io.IOException;
@@ -31,36 +30,33 @@ import org.arakhne.afc.vmutil.URISchemeType;
  * The class <code>Handler</code> is supporting resource protocol
  * for URL streams. This stream protocol
  * handler knows how to make a connection for "resource" protocol.
- * <p>
- * In most cases, an instance of a <code>URLStreamHandler</code>
+ *
+ * <p>In most cases, an instance of a <code>URLStreamHandler</code>
  * subclass is not created directly by an application. Rather, the
  * first time a protocol name is encountered when constructing a
  * <code>URL</code>, the appropriate stream protocol handler is
  * automatically loaded.
- * <p>
- * To use this factory, invoke the following code only ONCE time:
+ *
+ * <p>To use this factory, invoke the following code only ONCE time:
  * <code>URL.setURLStreamHandlerFactory(new ResourceURLStreamHandlerFactory());</code>.
- * 
+ *
  * @author $Author: sgalland$
  * @author $Author: willaume$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
+ * @since 6.0
  * @see URLStreamHandler
  * @see HandlerFactory
- * @since 6.0
  */
 public class Handler extends URLStreamHandler {
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	protected URLConnection openConnection(URL url) throws IOException {
 		if (URISchemeType.RESOURCE.isURL(url)) {
 			return new URLConnection(url);
 		}
-		throw new UnsupportedOperationException("Unsupported protocol: "+url); //$NON-NLS-1$
+		throw new UnsupportedOperationException("Unsupported protocol: " + url); //$NON-NLS-1$
 	}
 
 }

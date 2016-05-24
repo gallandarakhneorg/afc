@@ -1,30 +1,30 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (C) 2013 Christophe BOHRHAUER.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package org.arakhne.afc.math.geometry.d2;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * Immutable point 2D.
- * 
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
@@ -36,9 +36,9 @@ public final class ImmutablePoint2D implements UnmodifiablePoint2D<ImmutablePoin
 	private static final long serialVersionUID = 2208831768117217178L;
 
 	private final double x;
-	
+
 	private final double y;
-	
+
 	/**
 	 * @param x x coordinate.
 	 * @param y y coordinate.
@@ -47,7 +47,7 @@ public final class ImmutablePoint2D implements UnmodifiablePoint2D<ImmutablePoin
 		this.x = x;
 		this.y = y;
 	}
-	
+
 	/**
 	 * @param x x coordinate.
 	 * @param y y coordinate.
@@ -66,13 +66,11 @@ public final class ImmutablePoint2D implements UnmodifiablePoint2D<ImmutablePoin
 	@Override
 	public boolean equals(Object object) {
 		try {
-			Tuple2D<?> tuple = (Tuple2D<?>) object;
+			final Tuple2D<?> tuple = (Tuple2D<?>) object;
 			return tuple.getX() == getX() && tuple.getY() == getY();
-		}
-		catch(AssertionError e) {
+		} catch (AssertionError e) {
 			throw e;
-		}
-		catch (Throwable e2) {
+		} catch (Throwable e2) {
 			return false;
 		}
 	}
@@ -83,20 +81,20 @@ public final class ImmutablePoint2D implements UnmodifiablePoint2D<ImmutablePoin
 		long bits = 1;
 		bits = 31 * bits + Double.doubleToLongBits(this.x);
 		bits = 31 * bits + Double.doubleToLongBits(this.y);
-		int b = (int) bits;
+		final int b = (int) bits;
 		return b ^ (b >> 32);
 	}
-	
+
 	@Pure
 	@Override
 	public String toString() {
 		return "(" //$NON-NLS-1$
-				+this.x
-				+";" //$NON-NLS-1$
-				+this.y
-				+")"; //$NON-NLS-1$
+				+ this.x
+				+ ";" //$NON-NLS-1$
+				+ this.y
+				+ ")"; //$NON-NLS-1$
 	}
-	
+
 	@Pure
 	@Override
 	public ImmutablePoint2D clone() {

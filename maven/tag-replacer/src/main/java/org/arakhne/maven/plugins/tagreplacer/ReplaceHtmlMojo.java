@@ -1,31 +1,34 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (C) 2011-12 Stephane GALLAND This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-package org.arakhne.maven.plugins.tagreplacer;
 
-import org.apache.maven.plugin.MojoExecutionException;
-import org.arakhne.maven.PropertyFileFilter;
+package org.arakhne.maven.plugins.tagreplacer;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 import java.util.TreeMap;
+
+import org.apache.maven.plugin.MojoExecutionException;
+
+import org.arakhne.maven.PropertyFileFilter;
 
 /**
  * Replace the macros by the corresponding values
@@ -37,7 +40,7 @@ import java.util.TreeMap;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 2.3
- * 
+ *
  * @goal replacehtml
  * @phase process-resources
  * @requireProject true
@@ -47,43 +50,39 @@ public class ReplaceHtmlMojo extends AbstractReplaceMojo {
 
 	/** Are the directories where the HTML files are located.
 	 * By default, the directory "target/site/javadoc" is used.
-	 * 
+	 *
 	 * @parameter
 	 */
 	private File[] htmls;
 
 	/** Set of the files inside the file system.
 	 */
-	private final Map<File,Collection<File>> bufferedFiles = new TreeMap<>();
+	private final Map<File, Collection<File>> bufferedFiles = new TreeMap<>();
 
-	/**
-     * {@inheritDoc}
-     */
 	@Override
     protected synchronized void executeMojo() throws MojoExecutionException {
-		File[] htmlDirs;
-		if (this.htmls==null || this.htmls.length==0) {
+		final File[] htmlDirs;
+		if (this.htmls == null || this.htmls.length == 0) {
 			htmlDirs = new File[] {
-					new File(getSiteDirectory(), "javadoc"), //$NON-NLS-1$
+				new File(getSiteDirectory(), "javadoc"), //$NON-NLS-1$
 			};
-		}
-		else {
+		} else {
 			htmlDirs = this.htmls;
 		}
-		
+
 		clearInternalBuffers();
 
-		for(File htmlDir : htmlDirs) {
+		for (final File htmlDir : htmlDirs) {
 			Collection<File> textBasedFiles = this.bufferedFiles.get(htmlDir);
-			if (textBasedFiles==null) {
+			if (textBasedFiles == null) {
 				textBasedFiles = new ArrayList<>();
-	    		if ( htmlDir.isDirectory() ) {
+	    		if (htmlDir.isDirectory()) {
 	    			// Search for .html files
 	    			findFiles(htmlDir, new PropertyFileFilter(), textBasedFiles);
 	    		}
 	    		this.bufferedFiles.put(htmlDir, textBasedFiles);
 			}
-			for(File file : textBasedFiles) {
+			for (final File file : textBasedFiles) {
 				replaceInFileBuffered(
 						null,
 						file,
@@ -93,5 +92,5 @@ public class ReplaceHtmlMojo extends AbstractReplaceMojo {
 			}
     	}
 	}
-    
+
 }

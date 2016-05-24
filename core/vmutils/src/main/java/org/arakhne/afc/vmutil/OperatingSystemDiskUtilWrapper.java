@@ -1,22 +1,21 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (C) 2011, 2013 Stephane GALLAND.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.arakhne.afc.vmutil;
@@ -28,7 +27,7 @@ import java.io.File;
  * This class was introduced to avoid to kill the current
  * JVM even if the native functions are unloadable.
  * In this way, on operating system without the support
- * for the native libs is still able to be run. 
+ * for the native libs is still able to be run.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -38,47 +37,38 @@ import java.io.File;
  */
 class OperatingSystemDiskUtilWrapper extends AbstractOperatingSystemWrapper {
 
-	/**
+	/** Construct the wrapper.
 	 */
-	public OperatingSystemDiskUtilWrapper() {
+	OperatingSystemDiskUtilWrapper() {
 		//
 	}
 
-	private static String runDiskUtil(File f, String key) {
-		String r = runCommand(
+	private static String runDiskUtil(File file, String key) {
+		final String result = runCommand(
 				"diskutil", //$NON-NLS-1$
 				"info", //$NON-NLS-1$
-				f.toString());
-		return cut(":", 1, grep(key+":", r));  //$NON-NLS-1$//$NON-NLS-2$
+				file.toString());
+		return cut(":", 1, grep(key + ":", result));  //$NON-NLS-1$//$NON-NLS-2$
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public String getOSSerialNumber(boolean enableSuperUser, boolean enableGUI) {
-		File f;
-		f = new File("/dev/disk0s1"); //$NON-NLS-1$
-		if (f.exists()) {
-			return runDiskUtil(f, "Volume UUID"); //$NON-NLS-1$
+		final File file = new File("/dev/disk0s1"); //$NON-NLS-1$
+		if (file.exists()) {
+			return runDiskUtil(file, "Volume UUID"); //$NON-NLS-1$
 		}
 		return null;
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public String getOSUUID(boolean enableSuperUser, boolean enableGUI) {
-		File f;
-		f = new File("/dev/disk0s1"); //$NON-NLS-1$
-		if (f.exists()) {
-			return runDiskUtil(f, "Volume UUID"); //$NON-NLS-1$
+		final File file = new File("/dev/disk0s1"); //$NON-NLS-1$
+		if (file.exists()) {
+			return runDiskUtil(file, "Volume UUID"); //$NON-NLS-1$
 		}
 		return null;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public OperatingSystemIdentificationType getIdentificationType() {
 		return OperatingSystemIdentificationType.HARD_DISK;

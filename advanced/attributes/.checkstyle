@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<fileset-config file-format-version="1.2.0" simple-config="false" sync-formatter="false">
+  <local-check-config name="maven-checkstyle-plugin default" location="jar:file:/home/sgalland/.m2/repository/org/arakhne/afc/checkstyle/checkstyle/13.0-SNAPSHOT/checkstyle-13.0-SNAPSHOT.jar!/org/arakhne/afc/checkstyle/checks.xml" type="remote" description="maven-checkstyle-plugin configuration default">
+    <property name="checkstyle.cache.file" value="${project_loc}/target/checkstyle-cachefile"/>
+    <property name="checkstyleheaderdir" value="${mainbasedir}/checkstyle/src/main/resources/org/arakhne/afc/checkstyle"/>
+    <property name="checkstyle.header.file" value="/home/sgalland/tmp/ws/.metadata/.plugins/org.eclipse.core.resources/.projects/attributes/com.basistech.m2e.code.quality.checkstyleConfigurator/checkstyle-header-default.txt"/>
+  </local-check-config>
+  <fileset name="java-sources-default" enabled="true" check-config-name="maven-checkstyle-plugin default" local="true">
+    <file-match-pattern match-pattern="/home/sgalland/src/main/java.*\.java" include-pattern="true"/>
+    <file-match-pattern match-pattern="src/main/java/.*\.java" include-pattern="true"/>
+  </fileset>
+</fileset-config>

@@ -1,32 +1,32 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (C) 2010-2013 Stephane GALLAND.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.arakhne.afc.math.geometry.d2.d;
 
 import java.util.Arrays;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.afp.OrientedRectangle2afp;
-import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Oriented rectangle with 2 double precision floating-point numbers.
  *
@@ -39,37 +39,37 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @since 13.0
  */
 public class OrientedRectangle2d extends AbstractShape2d<OrientedRectangle2d>
-	implements OrientedRectangle2afp<Shape2d<?>, OrientedRectangle2d, PathElement2d, Point2d, Vector2d, Rectangle2d> {
+		implements OrientedRectangle2afp<Shape2d<?>, OrientedRectangle2d, PathElement2d, Point2d, Vector2d, Rectangle2d> {
 
 	private static final long serialVersionUID = 7619908159953423088L;
 
 	/**
-	 * Center of the OBR
+	 * Center of the OBR.
 	 */
 	private double cx;
 
 	/**
-	 * Center of the OBR
+	 * Center of the OBR.
 	 */
 	private double cy;
 
 	/**
-	 * X coordinate of the first axis of the OBR
+	 * X coordinate of the first axis of the OBR.
 	 */
 	private double rx;
 
 	/**
-	 * Y coordinate of the first axis of the OBR
+	 * Y coordinate of the first axis of the OBR.
 	 */
 	private double ry;
 
 	/**
-	 * Half-size of the first axis of the OBR
+	 * Half-size of the first axis of the OBR.
 	 */
 	private double extentR;
 
 	/**
-	 * Half-size of the second axis of the OBR
+	 * Half-size of the second axis of the OBR.
 	 */
 	private double extentS;
 
@@ -80,11 +80,11 @@ public class OrientedRectangle2d extends AbstractShape2d<OrientedRectangle2d>
 	}
 
 	/** Create an oriented rectangle from the given OBR.
-	 * 
-	 * @param obr
+	 *
+	 * @param obr the oriented rectangle to copy.
 	 */
 	public OrientedRectangle2d(OrientedRectangle2afp<?, ?, ?, ?, ?, ?> obr) {
-		assert (obr != null) : "Oriented Rectangle must be not null"; //$NON-NLS-1$
+		assert obr != null : "Oriented Rectangle must be not null"; //$NON-NLS-1$
 		set(obr.getCenterX(), obr.getCenterY(),
 				obr.getFirstAxisX(), obr.getFirstAxisY(),
 				obr.getFirstAxisExtent(),
@@ -96,7 +96,7 @@ public class OrientedRectangle2d extends AbstractShape2d<OrientedRectangle2d>
 	 * @param pointCloud - the cloud of points.
 	 */
 	public OrientedRectangle2d(Iterable<? extends Point2D<?, ?>> pointCloud) {
-		assert (pointCloud != null) : "List of points must be not null"; //$NON-NLS-1$
+		assert pointCloud != null : "List of points must be not null"; //$NON-NLS-1$
 		setFromPointCloud(pointCloud);
 	}
 
@@ -105,7 +105,7 @@ public class OrientedRectangle2d extends AbstractShape2d<OrientedRectangle2d>
 	 * @param pointCloud - the cloud of points.
 	 */
 	public OrientedRectangle2d(Point2D<?, ?>... pointCloud) {
-		assert (pointCloud != null) : "List of points must be not null"; //$NON-NLS-1$
+		assert pointCloud != null : "List of points must be not null"; //$NON-NLS-1$
 		setFromPointCloud(Arrays.asList(pointCloud));
 	}
 
@@ -121,9 +121,9 @@ public class OrientedRectangle2d extends AbstractShape2d<OrientedRectangle2d>
 	public OrientedRectangle2d(double centerX, double centerY,
 			double axis1X, double axis1Y, double axis1Extent,
 			double axis2Extent) {
-		assert (Vector2D.isUnitVector(axis1X, axis1Y)) : "Axis must be a unit vector"; //$NON-NLS-1$
-		assert (axis1Extent >= 0.) : "Extent for the first axis must be positive or zero"; //$NON-NLS-1$
-		assert (axis2Extent >= 0.) : "Extent for the first axis must be positive or zero"; //$NON-NLS-1$
+		assert Vector2D.isUnitVector(axis1X, axis1Y) : "Axis must be a unit vector"; //$NON-NLS-1$
+		assert axis1Extent >= 0. : "Extent for the first axis must be positive or zero"; //$NON-NLS-1$
+		assert axis2Extent >= 0. : "Extent for the first axis must be positive or zero"; //$NON-NLS-1$
 		set(centerX, centerY, axis1X, axis1Y, axis1Extent, axis2Extent);
 	}
 
@@ -148,14 +148,14 @@ public class OrientedRectangle2d extends AbstractShape2d<OrientedRectangle2d>
 		bits = 31 * bits + Double.doubleToLongBits(this.ry);
 		bits = 31 * bits + Double.doubleToLongBits(this.extentR);
 		bits = 31 * bits + Double.doubleToLongBits(this.extentS);
-		int b = (int) bits;
+		final int b = (int) bits;
 		return b ^ (b >> 32);
 	}
 
 	@Pure
 	@Override
 	public String toString() {
-		StringBuilder b = new StringBuilder();
+		final StringBuilder b = new StringBuilder();
 		b.append("["); //$NON-NLS-1$
 		b.append(getCenterX());
 		b.append(";"); //$NON-NLS-1$
@@ -187,7 +187,7 @@ public class OrientedRectangle2d extends AbstractShape2d<OrientedRectangle2d>
 	public double getCenterX() {
 		return this.cx;
 	}
-	
+
 	@Override
 	public void setCenterX(double cx) {
 		if (this.cx != cx) {
@@ -263,7 +263,7 @@ public class OrientedRectangle2d extends AbstractShape2d<OrientedRectangle2d>
 
 	@Override
 	public void setFirstAxisExtent(double extent) {
-		assert (extent >= 0.) : "Extent must be positive or zero"; //$NON-NLS-1$
+		assert extent >= 0. : "Extent must be positive or zero"; //$NON-NLS-1$
 		if (this.extentR != extent) {
 			this.extentR = extent;
 			fireGeometryChange();
@@ -278,7 +278,7 @@ public class OrientedRectangle2d extends AbstractShape2d<OrientedRectangle2d>
 
 	@Override
 	public void setSecondAxisExtent(double extent) {
-		assert (extent >= 0.) : "Extent must be positive or zero"; //$NON-NLS-1$
+		assert extent >= 0. : "Extent must be positive or zero"; //$NON-NLS-1$
 		if (this.extentS != extent) {
 			this.extentS = extent;
 			fireGeometryChange();
@@ -287,8 +287,8 @@ public class OrientedRectangle2d extends AbstractShape2d<OrientedRectangle2d>
 
 	@Override
 	public void setFirstAxis(double x, double y, double extent) {
-		assert (Vector2D.isUnitVector(x, y)) : "Axis must be a unit vector"; //$NON-NLS-1$
-		assert (extent >= 0.) : "Extent must be positive or zero"; //$NON-NLS-1$
+		assert Vector2D.isUnitVector(x, y) : "Axis must be a unit vector"; //$NON-NLS-1$
+		assert extent >= 0. : "Extent must be positive or zero"; //$NON-NLS-1$
 		if (this.rx != x || this.ry != y || this.extentR != extent) {
 			this.rx = x;
 			this.ry = y;
@@ -299,8 +299,8 @@ public class OrientedRectangle2d extends AbstractShape2d<OrientedRectangle2d>
 
 	@Override
 	public void setSecondAxis(double x, double y, double extent) {
-		assert (Vector2D.isUnitVector(x, y)) : "Axis must be a unit vector"; //$NON-NLS-1$
-		assert (extent >= 0.) : "Extent must be positive or zero"; //$NON-NLS-1$
+		assert Vector2D.isUnitVector(x, y) : "Axis must be a unit vector"; //$NON-NLS-1$
+		assert extent >= 0. : "Extent must be positive or zero"; //$NON-NLS-1$
 		if (this.rx != y || this.ry != -x || this.extentS != extent) {
 			this.extentS = extent;
 			this.rx = y;
@@ -311,9 +311,9 @@ public class OrientedRectangle2d extends AbstractShape2d<OrientedRectangle2d>
 
 	@Override
 	public void set(double centerX, double centerY, double axis1x, double axis1y, double axis1Extent, double axis2Extent) {
-		assert (Vector2D.isUnitVector(axis1x, axis1y)) : "First axis must be a unit vector"; //$NON-NLS-1$
-		assert (axis1Extent >= 0.) : "First axis extent must be positive or zero"; //$NON-NLS-1$
-		assert (axis2Extent >= 0.) : "Second axis extent must be positive or zero"; //$NON-NLS-1$
+		assert Vector2D.isUnitVector(axis1x, axis1y) : "First axis must be a unit vector"; //$NON-NLS-1$
+		assert axis1Extent >= 0. : "First axis extent must be positive or zero"; //$NON-NLS-1$
+		assert axis2Extent >= 0. : "Second axis extent must be positive or zero"; //$NON-NLS-1$
 		if (this.cx != centerY || this.cy != centerY || this.rx != axis1x || this.ry != axis1y
 				|| this.extentR != axis1Extent || this.extentS != axis2Extent) {
 			this.cx = centerX;

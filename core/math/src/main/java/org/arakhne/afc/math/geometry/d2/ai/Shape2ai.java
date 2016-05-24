@@ -1,36 +1,37 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (C) 2010-2013 Stephane GALLAND.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package org.arakhne.afc.math.geometry.d2.ai;
 
 import java.util.Iterator;
+
+import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.Unefficient;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Shape2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
-import org.eclipse.xtext.xbase.lib.Pure;
 
 /** 2D shape with 2d floating coordinates.
- * 
+ *
  * @param <ST> is the type of the general implementation.
  * @param <IT> is the type of the implementation of this shape.
  * @param <IE> is the type of the path elements.
@@ -53,10 +54,10 @@ public interface Shape2ai<
 		extends Shape2D<ST, IT, PathIterator2ai<IE>, P, V, B> {
 
 	/** Replies an iterator on the points covered by the perimeter of this shape.
-	 * <p>
-	 * The implementation of the iterator depends on the shape type.
+	 *
+	 * <p>The implementation of the iterator depends on the shape type.
 	 * There is no warranty about the order of the points.
-	 * 
+	 *
 	 * @return an iterator on the points that are located at the perimeter of the shape.
 	 */
 	@Pure
@@ -64,10 +65,20 @@ public interface Shape2ai<
 
 	@Pure
 	@Override
-	default boolean contains(Point2D<?, ?> p) {
-		return contains(p.ix(), p.iy());
+	default boolean contains(Point2D<?, ?> pt) {
+		return contains(pt.ix(), pt.iy());
 	}
-	
+
+	/** Replies if the given point is inside this shape.
+	 *
+	 * @param x x coordinate of the point to test.
+	 * @param y y coordinate of the point to test.
+	 * @return <code>true</code> if the given point is inside this
+	 *     shape, otherwise <code>false</code>.
+	 */
+	@Pure
+	boolean contains(int x, int y);
+
 	/** Replies if the given rectangle is inside this shape.
 	 *
 	 * @param box the rectangle to test.
@@ -82,109 +93,98 @@ public interface Shape2ai<
 		translate(vector.ix(), vector.iy());
 	}
 
-	
+	/** Translate the shape.
+	 *
+	 * @param dx x translation.
+	 * @param dy y translation.
+	 */
+	void translate(int dx, int dy);
+
 	@Pure
 	@Override
 	default B toBoundingBox() {
-		B box = getGeomFactory().newBox();
+		final B box = getGeomFactory().newBox();
 		toBoundingBox(box);
 		return box;
 	}
-	
+
 	@Pure
 	@Unefficient
 	@Override
-	default boolean intersects(Shape2D<?, ?, ?, ?, ?, ?> s) {
-		if (s instanceof Circle2ai) {
-			return intersects((Circle2ai<?, ?, ?, ?, ?, ?>) s);
+	default boolean intersects(Shape2D<?, ?, ?, ?, ?, ?> shape) {
+		if (shape instanceof Circle2ai) {
+			return intersects((Circle2ai<?, ?, ?, ?, ?, ?>) shape);
 		}
-		if (s instanceof Path2ai) {
-			return intersects((Path2ai<?, ?, ?, ?, ?, ?>) s);
+		if (shape instanceof Path2ai) {
+			return intersects((Path2ai<?, ?, ?, ?, ?, ?>) shape);
 		}
-		if (s instanceof PathIterator2ai) {
-			return intersects((PathIterator2ai<?>) s);
+		if (shape instanceof PathIterator2ai) {
+			return intersects((PathIterator2ai<?>) shape);
 		}
-		if (s instanceof Rectangle2ai) {
-			return intersects((Rectangle2ai<?, ?, ?, ?, ?, ?>) s);
+		if (shape instanceof Rectangle2ai) {
+			return intersects((Rectangle2ai<?, ?, ?, ?, ?, ?>) shape);
 		}
-		if (s instanceof Segment2ai) {
-			return intersects((Segment2ai<?, ?, ?, ?, ?, ?>) s);
+		if (shape instanceof Segment2ai) {
+			return intersects((Segment2ai<?, ?, ?, ?, ?, ?>) shape);
 		}
 		return intersects(getPathIterator());
 	}
 
 	/** Replies if this shape is intersecting the given rectangle.
-	 * 
-	 * @param s
+	 *
+	 * @param rectangle the rectangle.
 	 * @return <code>true</code> if this shape is intersecting the given shape;
 	 * <code>false</code> if there is no intersection.
 	 */
 	@Pure
-	public boolean intersects(Rectangle2ai<?, ?, ?, ?, ?, ?> s);
+	boolean intersects(Rectangle2ai<?, ?, ?, ?, ?, ?> rectangle);
 
 	/** Replies if this shape is intersecting the given circle.
-	 * 
-	 * @param s
+	 *
+	 * @param circle the circle.
 	 * @return <code>true</code> if this shape is intersecting the given shape;
 	 * <code>false</code> if there is no intersection.
 	 */
 	@Pure
-	public boolean intersects(Circle2ai<?, ?, ?, ?, ?, ?> s);
+	boolean intersects(Circle2ai<?, ?, ?, ?, ?, ?> circle);
 
 	/** Replies if this shape is intersecting the given segment.
-	 * 
-	 * @param s
+	 *
+	 * @param segment the segment.
 	 * @return <code>true</code> if this shape is intersecting the given shape;
 	 * <code>false</code> if there is no intersection.
 	 */
 	@Pure
-	public boolean intersects(Segment2ai<?, ?, ?, ?, ?, ?> s);
-	
+	boolean intersects(Segment2ai<?, ?, ?, ?, ?, ?> segment);
+
 	/** Replies if this shape is intersecting the given multishape.
-	 * 
-	 * @param s
+	 *
+	 * @param multishape the multishape.
 	 * @return <code>true</code> if this shape is intersecting the given shape;
 	 * <code>false</code> if there is no intersection.
 	 */
 	@Pure
-	public boolean intersects(MultiShape2ai<?, ?, ?, ?, ?, ?, ?> s);
-		
+	boolean intersects(MultiShape2ai<?, ?, ?, ?, ?, ?, ?> multishape);
+
 	/** Replies if this shape is intersecting the given path.
-	 * 
-	 * @param s
+	 *
+	 * @param path the path.
 	 * @return <code>true</code> if this shape is intersecting the given shape;
 	 * <code>false</code> if there is no intersection.
 	 */
 	@Pure
-	default boolean intersects(Path2ai<?, ?, ?, ?, ?, ?> s) {
-		return intersects(s.getPathIterator(/*MathConstants.SPLINE_APPROXIMATION_RATIO*/));
+	default boolean intersects(Path2ai<?, ?, ?, ?, ?, ?> path) {
+		return intersects(path.getPathIterator());
 	}
 
 	/** Replies if this shape is intersecting the path described by the given iterator.
-	 * 
-	 * @param s
+	 *
+	 * @param iterator the path iterator.
 	 * @return <code>true</code> if this shape is intersecting the given shape;
 	 * <code>false</code> if there is no intersection.
 	 */
 	@Pure
-	public boolean intersects(PathIterator2ai<?> s);
-
-	/** Translate the shape.
-	 * 
-	 * @param dx
-	 * @param dy
-	 */
-	public void translate(int dx, int dy); 
-
-	/** Replies if the given point is inside this shape.
-	 * 
-	 * @param x
-	 * @param y
-	 * @return <code>true</code> if the given point is inside this
-	 * shape, otherwise <code>false</code>.
-	 */
-	@Pure
-	public boolean contains(int x, int y);
+	boolean intersects(PathIterator2ai<?> iterator);
 
 	@Override
 	GeomFactory2ai<IE, P, V, B> getGeomFactory();
@@ -196,13 +196,12 @@ public interface Shape2ai<
 		if (transform == null || transform.isIdentity()) {
 			return (ST) clone();
 		}
-		PathIterator2ai<?> pi = getPathIterator(transform);
-		GeomFactory2ai<IE, P, V, B> factory = getGeomFactory();
-		Path2ai<?, ?, ?, P, V, ?> newPath = factory.newPath(pi.getWindingRule());
-		PathElement2ai e;
+		final PathIterator2ai<?> pi = getPathIterator(transform);
+		final GeomFactory2ai<IE, P, V, B> factory = getGeomFactory();
+		final Path2ai<?, ?, ?, P, V, ?> newPath = factory.newPath(pi.getWindingRule());
 		while (pi.hasNext()) {
-			e = pi.next();
-			switch(e.getType()) {
+			final PathElement2ai e = pi.next();
+			switch (e.getType()) {
 			case MOVE_TO:
 				newPath.moveTo(e.getToX(), e.getToY());
 				break;

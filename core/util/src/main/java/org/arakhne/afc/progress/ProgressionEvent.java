@@ -1,25 +1,23 @@
-/* 
+/*
  * $Id$
- * 
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (C) 2012 Stephane GALLAND.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package org.arakhne.afc.progress;
 
 import java.util.EventObject;
@@ -37,13 +35,13 @@ public class ProgressionEvent extends EventObject {
 	private static final long serialVersionUID = 4840275907048148943L;
 
 	private final boolean isRoot;
-	
+
 	private final int min;
 
 	private final int max;
 
 	private final int value;
-	
+
 	private final double factor;
 
 	private final String comment;
@@ -67,9 +65,9 @@ public class ProgressionEvent extends EventObject {
 
 	/** Replies if this event was fired by an task progression source
 	 * which is a root source.
-	 * 
+	 *
 	 * @return <code>true</code> if the task progression is a root,
-	 * otherwise <code>false</code>.
+	 *     otherwise <code>false</code>.
 	 */
 	public boolean isRoot() {
 		return this.isRoot;
@@ -79,16 +77,16 @@ public class ProgressionEvent extends EventObject {
 	 * ie the current value is greater or equal to the maximum
 	 * value AND the associated task progression object is a root
 	 * task.
-	 * 
+	 *
 	 * @return <code>true</code> if the task was finished,
-	 * otherwise <code>false</code>.
+	 *     otherwise <code>false</code>.
 	 */
 	public boolean isFinished() {
-		return this.isRoot && this.value>=this.max;
+		return this.isRoot && this.value >= this.max;
 	}
 
 	/** Replies the task progression which generate this event.
-	 * 
+	 *
 	 * @return the model.
 	 */
 	public Progression getProgression() {
@@ -96,7 +94,7 @@ public class ProgressionEvent extends EventObject {
 	}
 
 	/** Returns the minimum acceptable value.
-	 * 
+	 *
 	 * @return the minimal value.
 	 */
 	public int getMinimum() {
@@ -105,7 +103,7 @@ public class ProgressionEvent extends EventObject {
 
 	/**
 	 * Returns the model's maximum.
-	 * 
+	 *
 	 * @return the maximal value.
 	 */
 	public int getMaximum() {
@@ -114,9 +112,9 @@ public class ProgressionEvent extends EventObject {
 
 	/**
 	 * Returns the model's current value.  Note that the upper
-	 * limit on the model's value is <code>maximum</code> 
+	 * limit on the model's value is <code>maximum</code>
 	 * and the lower limit is <code>minimum</code>.
-	 * 
+	 *
 	 * @return the current value.
 	 */
 	public int getValue() {
@@ -130,8 +128,9 @@ public class ProgressionEvent extends EventObject {
 	 * @see     #getValue()
 	 * @see     #getProgressionFactor()
 	 */
+	@SuppressWarnings("checkstyle:magicnumber")
 	public double getPercent() {
-		return this.factor * 100f;
+		return this.factor * 100.;
 	}
 
 	/**
@@ -147,7 +146,7 @@ public class ProgressionEvent extends EventObject {
 
 	/**
 	 * Returns the model's current comment.
-	 * 
+	 *
 	 * @return the current comment or <code>null</code>.
 	 */
 	public String getComment() {
@@ -162,5 +161,5 @@ public class ProgressionEvent extends EventObject {
 	public boolean isIndeterminate() {
 		return this.isIndeterminate;
 	}
-	
+
 }

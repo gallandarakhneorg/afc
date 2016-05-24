@@ -1,27 +1,30 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (c) 2006-10, Multiagent Team,
- * Laboratoire Systemes et Transports,
- * Universite de Technologie de Belfort-Montbeliard.
- * All rights reserved.
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
  *
- * This software is the confidential and proprietary information
- * of the Laboratoire Systemes et Transports
- * of the Universite de Technologie de Belfort-Montbeliard ("Confidential Information").
- * You shall not disclose such Confidential Information and shall use
- * it only in accordance with the terms of the license agreement
- * you entered into with the SeT.
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
  *
- * http://www.multiagent.fr/
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package org.arakhne.afc.math.stochastic;
 
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * Define a mathematic function.
- * 
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
@@ -29,21 +32,21 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @since 13.0
  */
 public interface MathFunction {
-	
+
 	/** Replies the value of the function.
-	 * 
-	 * @param x
+	 *
+	 * @param x the x.
 	 * @return the value of {@code f(x)}.
 	 * @throws MathException in case {@code f(x)} could not be computed
 	 */
 	@Pure
-	public double f(double x)  throws MathException;
-	
+	double f(double x)  throws MathException;
+
 	/** Replies the range of the function.
-	 * 
+	 *
 	 * @return a array of ranges. It corresponds to a list of couples that defined the set of valid values.
 	 */
 	@Pure
-	public MathFunctionRange[] getRange();
+	MathFunctionRange[] getRange();
 
 }

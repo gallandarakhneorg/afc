@@ -1,34 +1,35 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (C) 2010-2013 Stephane GALLAND.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package org.arakhne.afc.math.geometry.d2.afp;
+
+import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.Unefficient;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Shape2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
-import org.eclipse.xtext.xbase.lib.Pure;
 
 /** 2D shape with 2D floating coordinates.
- * 
+ *
  * @param <ST> is the type of the general implementation.
  * @param <IT> is the type of the implementation of this shape.
  * @param <IE> is the type of the path elements.
@@ -50,193 +51,192 @@ public interface Shape2afp<
 		B extends Rectangle2afp<?, ?, IE, P, V, B>>
 		extends Shape2D<ST, IT, PathIterator2afp<IE>, P, V, B> {
 
-	
-	
 	@Pure
 	@Override
-	default boolean contains(Point2D<?, ?> p) {
-		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
-		return contains(p.getX(), p.getY());
+	default boolean contains(Point2D<?, ?> pt) {
+		assert pt != null : "Point must be not null"; //$NON-NLS-1$
+		return contains(pt.getX(), pt.getY());
 	}
 
 	/** Replies if the given rectangle is inside this shape.
-	 * 
-	 * @param r
+	 *
+	 * @param rectangle the rectangle.
 	 * @return <code>true</code> if the given rectangle is inside this
-	 * shape, otherwise <code>false</code>.
+	 *     shape, otherwise <code>false</code>.
 	 */
 	@Pure
-	boolean contains(Rectangle2afp<?, ?, ?, ?, ?, ?> r);
+	boolean contains(Rectangle2afp<?, ?, ?, ?, ?, ?> rectangle);
+
+	/** Replies if the given point is inside this shape.
+	 *
+	 * @param x x coordinate of the point to test.
+	 * @param y y coordinate of the point to test.
+	 * @return <code>true</code> if the given point is inside this
+	 *     shape, otherwise <code>false</code>.
+	 */
+	@Pure
+	boolean contains(double x, double y);
+
+	/** Translate the shape.
+	 *
+	 * @param dx x translation.
+	 * @param dy y translation.
+	 */
+	void translate(double dx, double dy);
 
 	@Pure
 	@Override
 	default void translate(Vector2D<?, ?> vector) {
-		assert (vector != null) : "Vector must be not null"; //$NON-NLS-1$
+		assert vector != null : "Vector must be not null"; //$NON-NLS-1$
 		translate(vector.getX(), vector.getY());
 	}
-	
+
 	@Pure
 	@Unefficient
 	@Override
-	default boolean intersects(Shape2D<?, ?, ?, ?, ?, ?> s) {
-		if (s instanceof Circle2afp) {
-			return intersects((Circle2afp<?, ?, ?, ?, ?, ?>) s);
+	@SuppressWarnings({"checkstyle:returncount", "checkstyle:npathcomplexity"})
+	default boolean intersects(Shape2D<?, ?, ?, ?, ?, ?> shape) {
+		if (shape instanceof Circle2afp) {
+			return intersects((Circle2afp<?, ?, ?, ?, ?, ?>) shape);
 		}
-		if (s instanceof Ellipse2afp) {
-			return intersects((Ellipse2afp<?, ?, ?, ?, ?, ?>) s);
+		if (shape instanceof Ellipse2afp) {
+			return intersects((Ellipse2afp<?, ?, ?, ?, ?, ?>) shape);
 		}
-		if (s instanceof MultiShape2afp) {
-			return intersects((MultiShape2afp<?, ?, ?, ?, ?, ?, ?>) s);
+		if (shape instanceof MultiShape2afp) {
+			return intersects((MultiShape2afp<?, ?, ?, ?, ?, ?, ?>) shape);
 		}
-		if (s instanceof OrientedRectangle2afp) {
-			return intersects((OrientedRectangle2afp<?, ?, ?, ?, ?, ?>) s);
+		if (shape instanceof OrientedRectangle2afp) {
+			return intersects((OrientedRectangle2afp<?, ?, ?, ?, ?, ?>) shape);
 		}
-		if (s instanceof Parallelogram2afp) {
-			return intersects((Parallelogram2afp<?, ?, ?, ?, ?, ?>) s);
+		if (shape instanceof Parallelogram2afp) {
+			return intersects((Parallelogram2afp<?, ?, ?, ?, ?, ?>) shape);
 		}
-		if (s instanceof Path2afp) {
-			return intersects((Path2afp<?, ?, ?, ?, ?, ?>) s);
+		if (shape instanceof Path2afp) {
+			return intersects((Path2afp<?, ?, ?, ?, ?, ?>) shape);
 		}
-		if (s instanceof PathIterator2afp) {
-			return intersects((PathIterator2afp<?>) s);
+		if (shape instanceof PathIterator2afp) {
+			return intersects((PathIterator2afp<?>) shape);
 		}
-		if (s instanceof Rectangle2afp) {
-			return intersects((Rectangle2afp<?, ?, ?, ?, ?, ?>) s);
+		if (shape instanceof Rectangle2afp) {
+			return intersects((Rectangle2afp<?, ?, ?, ?, ?, ?>) shape);
 		}
-		if (s instanceof RoundRectangle2afp) {
-			return intersects((RoundRectangle2afp<?, ?, ?, ?, ?, ?>) s);
+		if (shape instanceof RoundRectangle2afp) {
+			return intersects((RoundRectangle2afp<?, ?, ?, ?, ?, ?>) shape);
 		}
-		if (s instanceof Segment2afp) {
-			return intersects((Segment2afp<?, ?, ?, ?, ?, ?>) s);
+		if (shape instanceof Segment2afp) {
+			return intersects((Segment2afp<?, ?, ?, ?, ?, ?>) shape);
 		}
-		if (s instanceof Triangle2afp) {
-			return intersects((Triangle2afp<?, ?, ?, ?, ?, ?>) s);
+		if (shape instanceof Triangle2afp) {
+			return intersects((Triangle2afp<?, ?, ?, ?, ?, ?>) shape);
 		}
 		return intersects(getPathIterator());
 	}
 
 	/** Replies if this shape is intersecting the given ellipse.
-	 * 
-	 * @param s
+	 *
+	 * @param ellipse the ellipse.
 	 * @return <code>true</code> if this shape is intersecting the given shape;
 	 * <code>false</code> if there is no intersection.
 	 */
 	@Pure
-	boolean intersects(Ellipse2afp<?, ?, ?, ?, ?, ?> s);
+	boolean intersects(Ellipse2afp<?, ?, ?, ?, ?, ?> ellipse);
 
 	/** Replies if this shape is intersecting the given circle.
-	 * 
-	 * @param s
+	 *
+	 * @param circle the circle.
 	 * @return <code>true</code> if this shape is intersecting the given shape;
 	 * <code>false</code> if there is no intersection.
 	 */
 	@Pure
-	boolean intersects(Circle2afp<?, ?, ?, ?, ?, ?> s);
+	boolean intersects(Circle2afp<?, ?, ?, ?, ?, ?> circle);
 
 	/** Replies if this shape is intersecting the given rectangle.
-	 * 
-	 * @param s
+	 *
+	 * @param rectangle the rectangle.
 	 * @return <code>true</code> if this shape is intersecting the given shape;
 	 * <code>false</code> if there is no intersection.
 	 */
 	@Pure
-	boolean intersects(Rectangle2afp<?, ?, ?, ?, ?, ?> s);
+	boolean intersects(Rectangle2afp<?, ?, ?, ?, ?, ?> rectangle);
 
 	/** Replies if this shape is intersecting the given line.
-	 * 
-	 * @param s
+	 *
+	 * @param segment the segment.
 	 * @return <code>true</code> if this shape is intersecting the given shape;
 	 * <code>false</code> if there is no intersection.
 	 */
 	@Pure
-	boolean intersects(Segment2afp<?, ?, ?, ?, ?, ?> s);
+	boolean intersects(Segment2afp<?, ?, ?, ?, ?, ?> segment);
 
 	/** Replies if this shape is intersecting the given triangle.
-	 * 
-	 * @param s
+	 *
+	 * @param triangle the triangle.
 	 * @return <code>true</code> if this shape is intersecting the given shape;
 	 * <code>false</code> if there is no intersection.
 	 */
 	@Pure
-	boolean intersects(Triangle2afp<?, ?, ?, ?, ?, ?> s);
+	boolean intersects(Triangle2afp<?, ?, ?, ?, ?, ?> triangle);
 
 	/** Replies if this shape is intersecting the given path.
-	 * 
-	 * @param s
+	 *
+	 * @param path the other path.
 	 * @return <code>true</code> if this shape is intersecting the given path;
 	 * <code>false</code> if there is no intersection.
 	 */
 	@Pure
-	default boolean intersects(Path2afp<?, ?, ?, ?, ?, ?> s) {
-		assert (s != null) : "Path must be not null"; //$NON-NLS-1$
-		return intersects(s.getPathIterator());
+	default boolean intersects(Path2afp<?, ?, ?, ?, ?, ?> path) {
+		assert path != null : "Path must be not null"; //$NON-NLS-1$
+		return intersects(path.getPathIterator());
 	}
 
 	/** Replies if this shape is intersecting the shape representing the given path iterator.
-	 * 
-	 * @param iterator
+	 *
+	 * @param iterator the path iterator.
 	 * @return <code>true</code> if this shape is intersecting the given shape;
 	 * <code>false</code> if there is no intersection.
 	 */
 	@Pure
 	boolean intersects(PathIterator2afp<?> iterator);
-	
-	/** Replies if this shape is intersecting the given rectangle.
-	 * 
-	 * @param s
-	 * @return <code>true</code> if this shape is intersecting the given shape;
-	 * <code>false</code> if there is no intersection.
-	 */
-	@Pure
-	boolean intersects(OrientedRectangle2afp<?, ?, ?, ?, ?, ?> s);
-		
-	/** Replies if this shape is intersecting the given parallelogram.
-	 * 
-	 * @param s
-	 * @return <code>true</code> if this shape is intersecting the given shape;
-	 * <code>false</code> if there is no intersection.
-	 */
-	@Pure
-	boolean intersects(Parallelogram2afp<?, ?, ?, ?, ?, ?> s);
 
 	/** Replies if this shape is intersecting the given rectangle.
-	 * 
-	 * @param s
+	 *
+	 * @param orientedRectangle the oriented rectangle.
 	 * @return <code>true</code> if this shape is intersecting the given shape;
 	 * <code>false</code> if there is no intersection.
 	 */
 	@Pure
-	boolean intersects(RoundRectangle2afp<?, ?, ?, ?, ?, ?> s);
+	boolean intersects(OrientedRectangle2afp<?, ?, ?, ?, ?, ?> orientedRectangle);
+
+	/** Replies if this shape is intersecting the given parallelogram.
+	 *
+	 * @param parallelogram the parallelogram.
+	 * @return <code>true</code> if this shape is intersecting the given shape;
+	 * <code>false</code> if there is no intersection.
+	 */
+	@Pure
+	boolean intersects(Parallelogram2afp<?, ?, ?, ?, ?, ?> parallelogram);
+
+	/** Replies if this shape is intersecting the given rectangle.
+	 *
+	 * @param roundRectangle the round rectangle.
+	 * @return <code>true</code> if this shape is intersecting the given shape;
+	 * <code>false</code> if there is no intersection.
+	 */
+	@Pure
+	boolean intersects(RoundRectangle2afp<?, ?, ?, ?, ?, ?> roundRectangle);
 
 	/** Replies if this shape is intersecting the given multishape.
-	 * 
-	 * @param s
+	 *
+	 * @param multishape the multishape.
 	 * @return <code>true</code> if this shape is intersecting the given shape;
 	 * <code>false</code> if there is no intersection.
 	 */
 	@Pure
-	boolean intersects(MultiShape2afp<?, ?, ?, ?, ?, ?, ?> s);
-
-	/** Translate the shape.
-	 * 
-	 * @param dx
-	 * @param dy
-	 */
-	void translate(double dx, double dy); 
-
-	/** Replies if the given point is inside this shape.
-	 * 
-	 * @param x
-	 * @param y
-	 * @return <code>true</code> if the given point is inside this
-	 * shape, otherwise <code>false</code>.
-	 */
-	@Pure
-	boolean contains(double x, double y);
+	boolean intersects(MultiShape2afp<?, ?, ?, ?, ?, ?, ?> multishape);
 
 	@Override
 	GeomFactory2afp<IE, P, V, B> getGeomFactory();
-	
+
 	@Pure
 	@SuppressWarnings("unchecked")
 	@Override
@@ -244,13 +244,12 @@ public interface Shape2afp<
 		if (transform == null || transform.isIdentity()) {
 			return (ST) clone();
 		}
-		PathIterator2afp<?> pi = getPathIterator(transform);
-		GeomFactory2afp<IE, P, V, B> factory = getGeomFactory();
-		Path2afp<?, ?, ?, P, V, ?> newPath = factory.newPath(pi.getWindingRule());
-		PathElement2afp e;
+		final PathIterator2afp<?> pi = getPathIterator(transform);
+		final GeomFactory2afp<IE, P, V, B> factory = getGeomFactory();
+		final Path2afp<?, ?, ?, P, V, ?> newPath = factory.newPath(pi.getWindingRule());
 		while (pi.hasNext()) {
-			e = pi.next();
-			switch(e.getType()) {
+			final PathElement2afp e = pi.next();
+			switch (e.getType()) {
 			case MOVE_TO:
 				newPath.moveTo(e.getToX(), e.getToY());
 				break;
@@ -274,7 +273,7 @@ public interface Shape2afp<
 
 	@Override
 	default B toBoundingBox() {
-		B box = getGeomFactory().newBox();
+		final B box = getGeomFactory().newBox();
 		toBoundingBox(box);
 		return box;
 	}

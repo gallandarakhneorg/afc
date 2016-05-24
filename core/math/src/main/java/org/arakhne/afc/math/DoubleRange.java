@@ -1,24 +1,23 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (c) 2006-10, Multiagent Team, Laboratoire Systemes et Transports, Universite de Technologie de Belfort-Montbeliard.
- * Copyright (C) 2012 Stephane GALLAND.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package org.arakhne.afc.math;
 
 import java.io.Serializable;
@@ -26,7 +25,7 @@ import java.io.Serializable;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** A range of double floating-point numbers.
- * 
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
@@ -38,19 +37,20 @@ public class DoubleRange implements Cloneable, Serializable, Comparable<DoubleRa
 	private static final long serialVersionUID = -6358924548037498965L;
 
 	private final double min;
-	
+
 	private final double max;
-	
-	/**
-	 * @param min
-	 * @param max
+
+	/** Construct a range.
+	 *
+	 * @param min the min value.
+	 * @param max the max value.
 	 */
 	public DoubleRange(double min, double max) {
-		assert (min <= max) : "min must be lower or equal to max"; //$NON-NLS-1$
+		assert min <= max : "min must be lower or equal to max"; //$NON-NLS-1$
 		this.min = min;
 		this.max = max;
 	}
-	
+
 	@Override
 	public DoubleRange clone() {
 		try {
@@ -59,27 +59,27 @@ public class DoubleRange implements Cloneable, Serializable, Comparable<DoubleRa
 			throw new Error(exception);
 		}
 	}
-	
+
 	@Override
 	@Pure
 	public boolean equals(Object obj) {
 		if (obj instanceof DoubleRange) {
-			DoubleRange range = (DoubleRange) obj;
+			final DoubleRange range = (DoubleRange) obj;
 			return this.min == range.getMin() && this.max == range.getMax();
 		}
 		return false;
 	}
-	
+
 	@Override
 	@Pure
 	public int hashCode() {
 		long bits = 1;
 		bits = 31 * bits + Double.doubleToLongBits(this.min);
 		bits = 31 * bits + Double.doubleToLongBits(this.max);
-		int b = (int) bits;
+		final int b = (int) bits;
 		return b ^ (b >> 32);
 	}
-	
+
 	/** Replies the minimum value.
 	 *
 	 * @return the minimum value.
@@ -97,7 +97,7 @@ public class DoubleRange implements Cloneable, Serializable, Comparable<DoubleRa
 	public double getMax() {
 		return this.max;
 	}
-	
+
 	/** Replies if the value is inside the range.
 	 *
 	 * @param value the value.
@@ -110,17 +110,17 @@ public class DoubleRange implements Cloneable, Serializable, Comparable<DoubleRa
 
 	@Override
 	@Pure
-	public int compareTo(DoubleRange o) {
-		if (o == null) {
+	public int compareTo(DoubleRange range) {
+		if (range == null) {
 			return Integer.MAX_VALUE;
 		}
-		int cmp = Double.compare(this.min, o.min);
+		final int cmp = Double.compare(this.min, range.min);
 		if (cmp != 0) {
 			return cmp;
 		}
-		return Double.compare(this.max, o.max);
+		return Double.compare(this.max, range.max);
 	}
-	
+
 	@Override
 	@Pure
 	public String toString() {

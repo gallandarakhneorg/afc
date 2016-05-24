@@ -1,37 +1,38 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (C) 2012 Stephane GALLAND.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package org.arakhne.afc.math.geometry.d2;
+
+import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.matrix.Matrix3d;
 import org.arakhne.afc.math.matrix.SingularMatrixException;
-import org.eclipse.xtext.xbase.lib.Pure;
 
 
 /** A 2D transformation.
  * Is represented internally as a 3x3 floating point matrix. The
  * mathematical representation is row major, as in traditional
  * matrix mathematics.
- * <p>
- * The transformation matrix is:
+ *
+ * <p>The transformation matrix is:
  * <pre><code>
  * | cos(theta)   | -+sin(theta) | Tx |
  * | -+sin(theta) |   cos(theta) | Ty |
@@ -45,11 +46,11 @@ import org.eclipse.xtext.xbase.lib.Pure;
  */
 public class Transform2D extends Matrix3d {
 
-	private static final long serialVersionUID = -2858647743636794878L;
-	
 	/** This is the identifity transformation.
 	 */
 	public static final Transform2D IDENTITY = new Transform2D();
+
+	private static final long serialVersionUID = -2858647743636794878L;
 
 	/**
 	 * Constructs a new Transform2D object and sets it to the identity transformation.
@@ -61,15 +62,16 @@ public class Transform2D extends Matrix3d {
 	/**
 	 * Constructs a new Transform2D object and initializes it from the
 	 * specified transform.
-	 * 
-	 * @param tranform
+	 *
+	 * @param tranform the transformation to copy.
 	 */
 	public Transform2D(Transform2D tranform) {
 		super(tranform);
 	}
 
-	/**
-	 * @param matrix
+	/** Constructor by copy.
+	 *
+	 * @param matrix the matrix to copy.
 	 */
 	public Transform2D(Matrix3d matrix) {
 		super(matrix);
@@ -77,7 +79,7 @@ public class Transform2D extends Matrix3d {
 
 	/**
 	 * Constructs and initializes a Matrix3f from the specified nine values.
-	 * 
+	 *
 	 * @param m00
 	 *            the [0][0] element
 	 * @param m01
@@ -102,21 +104,21 @@ public class Transform2D extends Matrix3d {
 	}
 
 	/** Set the position.
-	 * <p>
-	 * This function changes only the elements of 
+	 *
+	 * <p>This function changes only the elements of
 	 * the matrix related to the translation (m02,
-	 * m12). The scaling and the shearing are not changed. 
-	 * <p>
-	 * After a call to this function, the matrix will
+	 * m12). The scaling and the shearing are not changed.
+	 *
+	 * <p>After a call to this function, the matrix will
 	 * contains (? means any value):
 	 * <pre>
 	 *          [   ?    ?    x   ]
 	 *          [   ?    ?    y   ]
 	 *          [   ?    ?    ?   ]
 	 * </pre>
-	 * 
-	 * @param x
-	 * @param y
+	 *
+	 * @param x x translation.
+	 * @param y y translation.
 	 * @see #makeTranslationMatrix(double, double)
 	 */
 	public void setTranslation(double x, double y) {
@@ -125,39 +127,39 @@ public class Transform2D extends Matrix3d {
 	}
 
 	/** Set the position.
-	 * <p>
-	 * This function changes only the elements of 
+	 *
+	 * <p>This function changes only the elements of
 	 * the matrix related to the translation (m02,
-	 * m12). The scaling and the shearing are not changed. 
-	 * <p>
-	 * After a call to this function, the matrix will
+	 * m12). The scaling and the shearing are not changed.
+	 *
+	 * <p>After a call to this function, the matrix will
 	 * contains (? means any value):
 	 * <pre>
 	 *          [   ?    ?    t.x   ]
 	 *          [   ?    ?    t.y   ]
 	 *          [   ?    ?    ?     ]
 	 * </pre>
-	 * 
-	 * @param translation
+	 *
+	 * @param translation the translation.
 	 * @see #makeTranslationMatrix(double, double)
 	 */
 	public void setTranslation(Tuple2D<?> translation) {
-		assert (translation != null) : "Translation must not be null"; //$NON-NLS-1$
+		assert translation != null : "Translation must not be null"; //$NON-NLS-1$
 		this.m02 = translation.getX();
 		this.m12 = translation.getY();
 	}
 
 	/** Translate the position.
-	 * <p>
-	 * This function is equivalent to:
+	 *
+	 * <p>This function is equivalent to:
 	 * <pre>
 	 * this = this *  [   1    0    dx   ]
 	 *                [   0    1    dy   ]
 	 *                [   0    0    1    ]
 	 * </pre>
-	 * 
-	 * @param dx
-	 * @param dy
+	 *
+	 * @param dx the x translation
+	 * @param dy the y translation
 	 */
 	public void translate(double dx, double dy) {
 		this.m02 = this.m00 * dx + this.m01 * dy + this.m02;
@@ -165,23 +167,23 @@ public class Transform2D extends Matrix3d {
 	}
 
 	/** Translate the position.
-	 * <p>
-	 * This function is equivalent to:
+	 *
+	 * <p>This function is equivalent to:
 	 * <pre>
 	 * this = this *  [   1    0    t.x   ]
 	 *                [   0    1    t.y   ]
 	 *                [   0    0    1     ]
 	 * </pre>
-	 * 
-	 * @param translation
+	 *
+	 * @param translation the translation.
 	 */
 	public void translate(Vector2D<?, ?> translation) {
-		assert (translation != null) : "Translation must not be null"; //$NON-NLS-1$
+		assert translation != null : "Translation must not be null"; //$NON-NLS-1$
 		translate(translation.getX(), translation.getY());
 	}
 
 	/** Replies the X translation.
-	 * 
+	 *
 	 * @return the amount
 	 */
 	@Pure
@@ -190,7 +192,7 @@ public class Transform2D extends Matrix3d {
 	}
 
 	/** Replies the Y translation.
-	 * 
+	 *
 	 * @return the amount
 	 */
 	@Pure
@@ -199,84 +201,80 @@ public class Transform2D extends Matrix3d {
 	}
 
 	/** Replies the translation.
-	 * 
+	 *
 	 * @param translation the vector to set with the translation component.
 	 */
 	@Pure
 	public void getTranslationVector(Tuple2D<?> translation) {
-		assert (translation != null) : "Output translation vector must not be null"; //$NON-NLS-1$
+		assert translation != null : "Output translation vector must not be null"; //$NON-NLS-1$
 		translation.set(this.m02, this.m12);
 	}
 
 	/**
 	 * Rotate the object (theta).
-	 * <p>
-	 * This function is equivalent to:
+	 *
+	 * <p>This function is equivalent to:
 	 * <pre>
 	 * this = this *  [   cos(theta)    -sin(theta)    0   ]
 	 *                [   sin(theta)    cos(theta)     0   ]
 	 *                [   0             0              1   ]
 	 * </pre>
-	 * 
-	 * @param theta
+	 *
+	 * @param theta the rotation angle, in radians.
 	 */
 	public void rotate(double theta) {
 		// Copied from AWT API
-		double sin = Math.sin(theta);
+		final double sin = Math.sin(theta);
 		if (sin == 1.) {
 			rotate90();
-		}
-		else if (sin == -1.) {
+		} else if (sin == -1.) {
 			rotate270();
-		}
-		else {
-			double cos = Math.cos(theta);
+		} else {
+			final double cos = Math.cos(theta);
 			if (cos == -1.) {
 				rotate180();
-			}
-			else if (cos != 1.) {
-				double M0, M1;
-				M0 = this.m00;
-				M1 = this.m01;
-				this.m00 =  cos * M0 + sin * M1;
-				this.m01 = -sin * M0 + cos * M1;
-				M0 = this.m10;
-				M1 = this.m11;
-				this.m10 =  cos * M0 + sin * M1;
-				this.m11 = -sin * M0 + cos * M1;
+			} else if (cos != 1.) {
+				double m0 = this.m00;
+				double m1 = this.m01;
+				this.m00 =  cos * m0 + sin * m1;
+				this.m01 = -sin * m0 + cos * m1;
+				m0 = this.m10;
+				m1 = this.m11;
+				this.m10 =  cos * m0 + sin * m1;
+				this.m11 = -sin * m0 + cos * m1;
 			}
 		}
 	}
-	
-	private final void rotate90() {
+
+	private void rotate90() {
 		// Copied from AWT API
-        double M0 = this.m00;
-        this.m00 = this.m01;
-        this.m01 = -M0;
-        M0 = this.m10;
-        this.m10 = this.m11;
-        this.m11 = -M0;
-    }
-	
-    private final void rotate180() {
+		double m0 = this.m00;
+		this.m00 = this.m01;
+		this.m01 = -m0;
+		m0 = this.m10;
+		this.m10 = this.m11;
+		this.m11 = -m0;
+	}
+
+	private void rotate180() {
 		// Copied from AWT API
-    	this.m00 = -this.m00;
-    	this.m11 = -this.m11;
-    	// If there was a shear, then this rotation has no
-    	// effect on the state.
-    	this.m01 = -this.m01;
-    	this.m10 = -this.m10;
-    }
-    
-    private final void rotate270() {
+		this.m00 = -this.m00;
+		this.m11 = -this.m11;
+		// If there was a shear, then this rotation has no
+		// effect on the state.
+		this.m01 = -this.m01;
+		this.m10 = -this.m10;
+	}
+
+	private void rotate270() {
 		// Copied from AWT API
-        double M0 = this.m00;
-        this.m00 = -this.m01;
-        this.m01 = M0;
-        M0 = this.m10;
-        this.m10 = -this.m11;
-        this.m11 = M0;
-    }
+		double m0 = this.m00;
+		this.m00 = -this.m01;
+		this.m01 = m0;
+		m0 = this.m10;
+		this.m10 = -this.m11;
+		this.m11 = m0;
+	}
 
 	/**
 	 * Perform SVD on the 2x2 matrix containing the rotation and scaling factors.
@@ -284,8 +282,9 @@ public class Transform2D extends Matrix3d {
 	 * @param scales the scaling factors.
 	 * @param rots the rotation factors.
 	 */
-	protected void getScaleRotate2x2(double scales[], double rots[]) {
-		double[] tmp = new double[9]; // scratch matrix
+	@SuppressWarnings("checkstyle:magicnumber")
+	protected void getScaleRotate2x2(double[] scales, double[] rots) {
+		final double[] tmp = new double[9];
 
 		tmp[0] = this.m00;
 		tmp[1] = this.m01;
@@ -309,98 +308,100 @@ public class Transform2D extends Matrix3d {
 	 * @return the rotation angle of this matrix. The value is in [-PI; PI]
 	 */
 	@Pure
+	@SuppressWarnings("checkstyle:magicnumber")
 	public double getRotation() {
-		double[] tmp_scale = new double[3]; // scratch matrix
-		double[] tmp_rot = new double[9]; // scratch matrix
-		getScaleRotate2x2(tmp_scale, tmp_rot);
-		if (Math.signum(tmp_rot[0]) != Math.signum(tmp_rot[4])) {
+		final double[] tmpScale = new double[3];
+		final double[] tmpRot = new double[9];
+		getScaleRotate2x2(tmpScale, tmpRot);
+		if (Math.signum(tmpRot[0]) != Math.signum(tmpRot[4])) {
 			// Sinuses are on the top-left to bottom-right diagonal
 			// -s   c   0
 			//  c   s   0
 			//  0   0   1
-			return Math.atan2(tmp_rot[4], tmp_rot[3]);
+			return Math.atan2(tmpRot[4], tmpRot[3]);
 		}
 		// Sinuses are on the top-right to bottom-left diagonal
 		//  c  -s  0
 		//  s   c  0
 		//  0   0  1
-		return Math.atan2(tmp_rot[3], tmp_rot[0]);
+		return Math.atan2(tmpRot[3], tmpRot[0]);
 	}
 
 	/** Change the rotation of this matrix.
 	 * Performs an SVD normalization of this matrix for determining and preserving the scaling.
-	 * 
-	 * @param angle
+	 *
+	 * @param angle the rotation angle.
 	 */
+	@SuppressWarnings("checkstyle:magicnumber")
 	public void setRotation(double angle) {
-		double[] tmp_scale = new double[3]; // scratch matrix
-		double[] tmp_rot = new double[9]; // scratch matrix
-		getScaleRotate2x2(tmp_scale, tmp_rot);
-		double cos = Math.cos(angle);
-		double sin = Math.sin(angle);
+		final double[] tmpScale = new double[3];
+		final double[] tmpRot = new double[9];
+		getScaleRotate2x2(tmpScale, tmpRot);
+		final double cos = Math.cos(angle);
+		final double sin = Math.sin(angle);
 		// R * S
-		this.m00 = tmp_scale[0] * cos;
-		this.m01 = tmp_scale[1] * -sin;
-		this.m10 = tmp_scale[0] * sin;
-		this.m11 = tmp_scale[1] * cos;
+		this.m00 = tmpScale[0] * cos;
+		this.m01 = tmpScale[1] * -sin;
+		this.m10 = tmpScale[0] * sin;
+		this.m11 = tmpScale[1] * cos;
 		// S * R
-//		this.m00 = tmp_scale[0] * cos;
-//		this.m01 = tmp_scale[0] * -sin;
-//		this.m10 = tmp_scale[1] * sin;
-//		this.m11 = tmp_scale[1] * cos;
+		//		this.m00 = tmp_scale[0] * cos;
+		//		this.m01 = tmp_scale[0] * -sin;
+		//		this.m10 = tmp_scale[1] * sin;
+		//		this.m11 = tmp_scale[1] * cos;
 	}
 
 	/** Concatenates this transform with a scaling transformation.
-	 * <p>
-	 * This function is equivalent to:
+	 *
+	 * <p>This function is equivalent to:
 	 * <pre>
 	 * this = this *  [   sx   0    0   ]
 	 *                [   0    sy   0   ]
 	 *                [   0    0    1   ]
 	 * </pre>
-	 * 
-	 * @param scaleX
-	 * @param scaleY
+	 *
+	 * @param scaleX scaling along x axis.
+	 * @param scaleY scaling along y axis.
 	 */
 	public void scale(double scaleX, double scaleY) {
-        this.m00 *= scaleX;
-        this.m11 *= scaleY;
-        this.m01 *= scaleY;
-        this.m10 *= scaleX;
+		this.m00 *= scaleX;
+		this.m11 *= scaleY;
+		this.m01 *= scaleY;
+		this.m10 *= scaleX;
 	}
 
 	/** Concatenates this transform with a scaling transformation.
-	 * <p>
-	 * This function is equivalent to:
+	 *
+	 * <p>This function is equivalent to:
 	 * <pre>
 	 * this = this *  [   t.x   0     0   ]
 	 *                [   0     t.y   0   ]
 	 *                [   0     0     1   ]
 	 * </pre>
-	 * 
-	 * @param tuple
+	 *
+	 * @param tuple the scaling factors.
 	 */
 	public void scale(Tuple2D<?> tuple) {
-		assert (tuple != null) : "Tuple must not be null"; //$NON-NLS-1$
+		assert tuple != null : "Tuple must not be null"; //$NON-NLS-1$
 		scale(tuple.getX(), tuple.getY());
 	}
-	
+
 	/** Concatenates this transform with a scaling transformation.
-	 * <p>
-	 * This function is equivalent to:
+	 *
+	 * <p>This function is equivalent to:
 	 * <pre>
 	 * this = this *  [   s    0    0   ]
 	 *                [   0    s    0   ]
 	 *                [   0    0    1   ]
 	 * </pre>
-	 * 
-	 * @param scale
+	 *
+	 * @param scale the scaling factor.
 	 */
 	public void scale(double scale) {
-        this.m00 *= scale;
-        this.m11 *= scale;
-        this.m01 *= scale;
-        this.m10 *= scale;
+		this.m00 *= scale;
+		this.m11 *= scale;
+		this.m01 *= scale;
+		this.m10 *= scale;
 	}
 
 	/**
@@ -411,159 +412,161 @@ public class Transform2D extends Matrix3d {
 	 * @return the scale factor of this matrix.
 	 */
 	@Pure
+	@SuppressWarnings("checkstyle:magicnumber")
 	public double getScale() {
-		double[] tmp_scale = new double[3]; // scratch matrix
-		double[] tmp_rot = new double[9]; // scratch matrix
-		getScaleRotate2x2(tmp_scale, tmp_rot);
-		return MathUtil.max(tmp_scale);
+		final double[] tmpScale = new double[3];
+		final double[] tmpRot = new double[9];
+		getScaleRotate2x2(tmpScale, tmpRot);
+		return MathUtil.max(tmpScale);
 	}
 
 	/** Performs an SVD normalization of this matrix to calculate and return the
 	 * scale factor for X axis.
-	 * 
+	 *
 	 * @return the x scale factor.
 	 */
 	@Pure
+	@SuppressWarnings("checkstyle:magicnumber")
 	public double getScaleX() {
-		double[] tmp_scale = new double[3]; // scratch matrix
-		double[] tmp_rot = new double[9]; // scratch matrix
-		getScaleRotate2x2(tmp_scale, tmp_rot);
-		return tmp_scale[0];
+		final double[] tmpScale = new double[3];
+		final double[] tmpRot = new double[9];
+		getScaleRotate2x2(tmpScale, tmpRot);
+		return tmpScale[0];
 	}
 
 	/** Performs an SVD normalization of this matrix to calculate and return the
 	 * scale factor for Y axis.
-	 * 
+	 *
 	 * @return the y scale factor.
 	 */
 	@Pure
+	@SuppressWarnings("checkstyle:magicnumber")
 	public double getScaleY() {
-		double[] tmp_scale = new double[3]; // scratch matrix
-		double[] tmp_rot = new double[9]; // scratch matrix
-		getScaleRotate2x2(tmp_scale, tmp_rot);
-		return tmp_scale[1];
+		final double[] tmpScale = new double[3];
+		final double[] tmpRot = new double[9];
+		getScaleRotate2x2(tmpScale, tmpRot);
+		return tmpScale[1];
 	}
 
 	/** Performs an SVD normalization of this matrix to calculate and return the
 	 * scale factors for X and Y axess.
-	 * 
+	 *
 	 * @param scale the tuple to set.
 	 */
 	@Pure
+	@SuppressWarnings("checkstyle:magicnumber")
 	public void getScaleVector(Tuple2D<?> scale) {
-		assert (scale != null) : "The output scaling vector must not be null"; //$NON-NLS-1$
-		double[] tmp_scale = new double[3]; // scratch matrix
-		double[] tmp_rot = new double[9]; // scratch matrix
-		getScaleRotate2x2(tmp_scale, tmp_rot);
-		scale.set(tmp_scale[0], tmp_scale[1]);
+		assert scale != null : "The output scaling vector must not be null"; //$NON-NLS-1$
+		final double[] tmpScale = new double[3];
+		final double[] tmpRot = new double[9];
+		getScaleRotate2x2(tmpScale, tmpRot);
+		scale.set(tmpScale[0], tmpScale[1]);
 	}
 
 	/** Change the scale of this matrix.
 	 * Performs an SVD normalization of this matrix for determining and preserving the rotation.
-	 * 
-	 * @param scaleX
-	 * @param scaleY
+	 *
+	 * @param scaleX the scaling factor along x axis.
+	 * @param scaleY the scaling factor along y axis.
 	 * @see #makeScaleMatrix(double, double)
 	 */
+	@SuppressWarnings("checkstyle:magicnumber")
 	public void setScale(double scaleX, double scaleY) {
-		double[] tmp_scale = new double[3]; // scratch matrix
-		double[] tmp_rot = new double[9]; // scratch matrix
-		getScaleRotate2x2(tmp_scale, tmp_rot);
-		this.m00 = tmp_rot[0] * scaleX;
-		this.m01 = tmp_rot[1] * scaleY;
-		this.m10 = tmp_rot[3] * scaleX;
-		this.m11 = tmp_rot[4] * scaleY;
+		final double[] tmpScale = new double[3];
+		final double[] tmpRot = new double[9];
+		getScaleRotate2x2(tmpScale, tmpRot);
+		this.m00 = tmpRot[0] * scaleX;
+		this.m01 = tmpRot[1] * scaleY;
+		this.m10 = tmpRot[3] * scaleX;
+		this.m11 = tmpRot[4] * scaleY;
 	}
 
 	/** Set the scale.
-	 * <p>
-	 * This function changes only the elements of 
+	 *
+	 * <p>This function changes only the elements of
 	 * the matrix related to the scaling (m00,
-	 * m11). The shearing and the translation are not changed. 
+	 * m11). The shearing and the translation are not changed.
 	 * The rotation is lost.
-	 * <p>
-	 * After a call to this function, the matrix will
+	 *
+	 * <p>After a call to this function, the matrix will
 	 * contains (? means any value):
 	 * <pre>
 	 *          [   t.x  ?    ?   ]
 	 *          [   ?    t.y  ?   ]
 	 *          [   ?    ?    ?   ]
 	 * </pre>
-	 * 
-	 * @param tuple
+	 *
+	 * @param tuple the scaling factors.
 	 * @see #makeScaleMatrix(double, double)
 	 */
 	public void setScale(Tuple2D<?> tuple) {
-		assert (tuple != null) : "Tuple must not be null"; //$NON-NLS-1$
+		assert tuple != null : "Tuple must not be null"; //$NON-NLS-1$
 		setScale(tuple.getX(), tuple.getY());
 	}
 
 	/** Concatenates this transform with a shearing transformation.
-	 * <p>
-	 * This function is equivalent to:
+	 *
+	 * <p>This function is equivalent to:
 	 * <pre>
 	 * this = this *  [   1    shx  0   ]
 	 *                [   shy  1    0   ]
 	 *                [   0    0    1   ]
 	 * </pre>
-	 * 
-	 * @param shearX
-	 * @param shearY
+	 *
+	 * @param shearX the shearing factory along x axis.
+	 * @param shearY the shearing factory along y axis.
 	 */
 	public void shear(double shearX, double shearY) {
-		double M0, M1;
-		M0 = this.m00;
-		M1 = this.m01;
-		
-		this.m00 = M0 + M1 * shearY;
-		this.m01 = M0 * shearX + M1;
+		double m0 = this.m00;
+		double m1 = this.m01;
 
-		M0 = this.m10;
-		M1 = this.m11;
-		this.m10 = M0 + M1 * shearY;
-		this.m11 = M0 * shearX + M1;
+		this.m00 = m0 + m1 * shearY;
+		this.m01 = m0 * shearX + m1;
+
+		m0 = this.m10;
+		m1 = this.m11;
+		this.m10 = m0 + m1 * shearY;
+		this.m11 = m0 * shearX + m1;
 	}
 
 	/** Concatenates this transform with a shearing transformation.
-	 * <p>
-	 * This function is equivalent to:
+	 *
+	 * <p>This function is equivalent to:
 	 * <pre>
 	 * this = this *  [   1    shx  0   ]
 	 *                [   shy  1    0   ]
 	 *                [   0    0    1   ]
 	 * </pre>
-	 * 
-	 * @param shear
+	 *
+	 * @param shear the shear factors.
 	 */
 	public void shear(Tuple2D<?> shear) {
-		assert (shear != null) : "Shear must be not null"; //$NON-NLS-1$
+		assert shear != null : "Shear must be not null"; //$NON-NLS-1$
 		shear(shear.getX(), shear.getY());
 	}
 
 	/**
 	 * Sets the value of this matrix to a counter clockwise rotation about the x
 	 * axis, and no translation
-	 * <p>
-	 * This function changes all the elements of 
-	 * the matrix, icluding the translation. 
-	 * <p>
-	 * After a call to this function, the matrix will
+	 *
+	 * <p>This function changes all the elements of
+	 * the matrix, icluding the translation.
+	 *
+	 * <p>After a call to this function, the matrix will
 	 * contains (? means any value):
 	 * <pre>
 	 *          [   cos(theta)  -sin(theta)  0   ]
 	 *          [   sin(theta)  cos(theta)   0   ]
 	 *          [   0           0            1   ]
 	 * </pre>
-	 * 
+	 *
 	 * @param angle
 	 *            the angle to rotate about the X axis in radians
 	 * @see #setRotation(double)
 	 */
 	public void makeRotationMatrix(double angle) {
-		double sinAngle, cosAngle;
-
-		sinAngle = Math.sin(angle);
-		cosAngle = Math.cos(angle);
+		final double sinAngle = Math.sin(angle);
+		final double cosAngle = Math.cos(angle);
 
 		this.m00 = cosAngle;
 		this.m01 = -sinAngle;
@@ -580,18 +583,18 @@ public class Transform2D extends Matrix3d {
 
 	/**
 	 * Sets the value of this matrix to the given translation, without rotation.
-	 * <p>
-	 * This function changes all the elements of 
-	 * the matrix including the scaling and the shearing. 
-	 * <p>
-	 * After a call to this function, the matrix will
+	 *
+	 * <p>This function changes all the elements of
+	 * the matrix including the scaling and the shearing.
+	 *
+	 * <p>After a call to this function, the matrix will
 	 * contains (? means any value):
 	 * <pre>
 	 *          [   1    0    x   ]
 	 *          [   0    1    y   ]
 	 *          [   0    0    1   ]
 	 * </pre>
-	 * 
+	 *
 	 * @param dx is the translation along X.
 	 * @param dy is the translation along Y.
 	 * @see #setTranslation(double, double)
@@ -613,19 +616,19 @@ public class Transform2D extends Matrix3d {
 
 	/**
 	 * Sets the value of this matrix to the given scaling, without rotation.
-	 * <p>
-	 * This function changes all the elements of 
+	 *
+	 * <p>This function changes all the elements of
 	 * the matrix, including the shearing and the
-	 * translation. 
-	 * <p>
-	 * After a call to this function, the matrix will
+	 * translation.
+	 *
+	 * <p>After a call to this function, the matrix will
 	 * contains (? means any value):
 	 * <pre>
 	 *          [   sx  0   0   ]
 	 *          [   0   sy  0   ]
 	 *          [   0   0   1   ]
 	 * </pre>
-	 * 
+	 *
 	 * @param scaleX is the scaling along X.
 	 * @param scaleY is the scaling along Y.
 	 * @see #setScale(double, double)
@@ -648,37 +651,36 @@ public class Transform2D extends Matrix3d {
 	/**
 	 * Multiply this matrix by the tuple t and place the result back into the
 	 * tuple (t = this*t).
-	 * 
+	 *
 	 * @param tuple
 	 *            the tuple to be multiplied by this matrix and then replaced
 	 */
 	public void transform(Tuple2D<?> tuple) {
-		assert (tuple != null) : "Tuple to transform must not be null"; //$NON-NLS-1$
-		double x, y;
-		x = this.m00 * tuple.getX() + this.m01 * tuple.getY() + this.m02;
-		y = this.m10 * tuple.getX() + this.m11 * tuple.getY() + this.m12;
+		assert tuple != null : "Tuple to transform must not be null"; //$NON-NLS-1$
+		final double x = this.m00 * tuple.getX() + this.m01 * tuple.getY() + this.m02;
+		final double y = this.m10 * tuple.getX() + this.m11 * tuple.getY() + this.m12;
 		tuple.set(x, y);
 	}
-	
+
 	/**
 	 * Multiply this matrix by the tuple t and and place the result into the
 	 * tuple "result".
-	 * <p>
-	 * This function is equivalent to:
+	 *
+	 * <p>This function is equivalent to:
 	 * <pre>
 	 * result = this *  [   t.x   ]
 	 *                  [   t.y   ]
 	 *                  [   1     ]
 	 * </pre>
-	 * 
+	 *
 	 * @param tuple
 	 *            the tuple to be multiplied by this matrix
 	 * @param result
 	 *            the tuple into which the product is placed
 	 */
 	public void transform(Tuple2D<?> tuple, Tuple2D<?> result) {
-		assert (tuple != null) : "Tuple to transform must not be null"; //$NON-NLS-1$
-		assert (result != null) : "Output tuple must not be null"; //$NON-NLS-1$
+		assert tuple != null : "Tuple to transform must not be null"; //$NON-NLS-1$
+		assert result != null : "Output tuple must not be null"; //$NON-NLS-1$
 		result.set(
 				this.m00 * tuple.getX() + this.m01 * tuple.getY() + this.m02,
 				this.m10 * tuple.getX() + this.m11 * tuple.getY() + this.m12);
@@ -691,8 +693,8 @@ public class Transform2D extends Matrix3d {
 	 * maps coordinates transformed by Tx back
 	 * to their original coordinates.
 	 * In other words, Tx'(Tx(p)) = p = Tx(Tx'(p)).
-	 * <p>
-	 * If this transform maps all coordinates onto a point or a line
+	 *
+	 * <p>If this transform maps all coordinates onto a point or a line
 	 * then it will not have an inverse, since coordinates that do
 	 * not lie on the destination point or line will not have an inverse
 	 * mapping.
@@ -700,28 +702,28 @@ public class Transform2D extends Matrix3d {
 	 * transform has no inverse, in which case an exception will be
 	 * thrown if the <code>createInverse</code> method is called.
 	 * @return a new <code>Transform2D</code> object representing the
-	 * inverse transformation.
+	 *     inverse transformation.
 	 * @see #determinant()
 	 * @throws SingularMatrixException if the matrix cannot be inverted.
 	 */
 	@Pure
 	public Transform2D createInverse() {
-		double det = this.m00 * this.m11 - this.m01 * this.m10;
+		final double det = this.m00 * this.m11 - this.m01 * this.m10;
 		if (Math.abs(det) <= Double.MIN_VALUE) {
-			throw new SingularMatrixException("Determinant is "+det); //$NON-NLS-1$
+			throw new SingularMatrixException("Determinant is " + det); //$NON-NLS-1$
 		}
 		return new Transform2D(
-				this.m11 / det, 
-				-this.m01 / det, 
-				(this.m01 * this.m12 - this.m11 * this.m02) / det, 
-				-this.m10 / det, 
-				this.m00 / det, 
+				this.m11 / det,
+				-this.m01 / det,
+				(this.m01 * this.m12 - this.m11 * this.m02) / det,
+				-this.m10 / det,
+				this.m00 / det,
 				(this.m10 * this.m02 - this.m00 * this.m12) / det);
 	}
 
 	/**
 	 * Set the components of the transformation.
-	 * 
+	 *
 	 * @param m00
 	 *            the [0][0] element
 	 * @param m01
@@ -745,8 +747,8 @@ public class Transform2D extends Matrix3d {
 	 * maps coordinates transformed by Tx back
 	 * to their original coordinates.
 	 * In other words, Tx'(Tx(p)) = p = Tx(Tx'(p)).
-	 * <p>
-	 * If this transform maps all coordinates onto a point or a line
+	 *
+	 * <p>If this transform maps all coordinates onto a point or a line
 	 * then it will not have an inverse, since coordinates that do
 	 * not lie on the destination point or line will not have an inverse
 	 * mapping.
@@ -758,16 +760,16 @@ public class Transform2D extends Matrix3d {
 	 */
 	@Override
 	public void invert() {
-		double det = this.m00 * this.m11 - this.m01 * this.m10;
+		final double det = this.m00 * this.m11 - this.m01 * this.m10;
 		if (Math.abs(det) <= Double.MIN_VALUE) {
-			throw new SingularMatrixException("Determinant is "+det); //$NON-NLS-1$
+			throw new SingularMatrixException("Determinant is " + det); //$NON-NLS-1$
 		}
 		set(
-				this.m11 / det, 
-				-this.m01 / det, 
-				(this.m01 * this.m12 - this.m11 * this.m02) / det, 
-				-this.m10 / det, 
-				this.m00 / det, 
+				this.m11 / det,
+				-this.m01 / det,
+				(this.m01 * this.m12 - this.m11 * this.m02) / det,
+				-this.m10 / det,
+				this.m00 / det,
 				(this.m10 * this.m02 - this.m00 * this.m12) / det);
 	}
 
@@ -777,8 +779,8 @@ public class Transform2D extends Matrix3d {
 	 * maps coordinates transformed by Tx back
 	 * to their original coordinates.
 	 * In other words, Tx'(Tx(p)) = p = Tx(Tx'(p)).
-	 * <p>
-	 * If this transform maps all coordinates onto a point or a line
+	 *
+	 * <p>If this transform maps all coordinates onto a point or a line
 	 * then it will not have an inverse, since coordinates that do
 	 * not lie on the destination point or line will not have an inverse
 	 * mapping.
@@ -791,17 +793,17 @@ public class Transform2D extends Matrix3d {
 	 */
 	@Override
 	public void invert(Matrix3d matrix) {
-		assert (matrix != null) : "Matrix must not be null"; //$NON-NLS-1$
-		double det = matrix.getM00() * matrix.getM11() - matrix.getM01() * matrix.getM10();
+		assert matrix != null : "Matrix must not be null"; //$NON-NLS-1$
+		final double det = matrix.getM00() * matrix.getM11() - matrix.getM01() * matrix.getM10();
 		if (MathUtil.isEpsilonZero(det)) {
-			throw new SingularMatrixException("Determinant is too small: "+det); //$NON-NLS-1$
+			throw new SingularMatrixException("Determinant is too small: " + det); //$NON-NLS-1$
 		}
 		set(
-				matrix.getM11() / det, 
-				-matrix.getM01() / det, 
-				(matrix.getM01() * matrix.getM12() - matrix.getM11() * matrix.getM02()) / det, 
-				-matrix.getM10() / det, 
-				matrix.getM00() / det, 
+				matrix.getM11() / det,
+				-matrix.getM01() / det,
+				(matrix.getM01() * matrix.getM12() - matrix.getM11() * matrix.getM02()) / det,
+				-matrix.getM10() / det,
+				matrix.getM00() / det,
 				(matrix.getM10() * matrix.getM02() - matrix.getM00() * matrix.getM12()) / det);
 	}
 

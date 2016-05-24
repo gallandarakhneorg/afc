@@ -1,30 +1,30 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (C) 2010-2013 Stephane GALLAND.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.arakhne.afc.math.geometry.d2.i;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.ai.Segment2ai;
-import org.eclipse.xtext.xbase.lib.Pure;
 
 /** A 2D segment/line with 2 integer numbers.
  *
@@ -35,7 +35,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @since 13.0
  */
 public class Segment2i extends AbstractShape2i<Segment2i>
-	implements Segment2ai<Shape2i<?>, Segment2i, PathElement2i, Point2i, Vector2i, Rectangle2i> {
+		implements Segment2ai<Shape2i<?>, Segment2i, PathElement2i, Point2i, Vector2i, Rectangle2i> {
 
 	private static final long serialVersionUID = 4069080422632034507L;
 
@@ -46,33 +46,33 @@ public class Segment2i extends AbstractShape2i<Segment2i>
 	private int bx;
 
 	private int by;
-	
-	/**
+
+	/** Construct an empty segment.
 	 */
 	public Segment2i() {
 		//
 	}
 
-	/**
-	 * @param a
-	 * @param b
+	/** Construct a segment with the two given points.
+	 * @param p1 first point.
+	 * @param p2 second point.
 	 */
-	public Segment2i(Point2D<?, ?> a, Point2D<?, ?> b) {
-		this(a.ix(), a.iy(), b.ix(), b.iy());
+	public Segment2i(Point2D<?, ?> p1, Point2D<?, ?> p2) {
+		this(p1.ix(), p1.iy(), p2.ix(), p2.iy());
 	}
 
-	/**
-	 * @param s
+	/** Constructor by copy.
+	 * @param segment the segment to copy.
 	 */
-	public Segment2i(Segment2ai<?, ?, ?, ?, ?, ?> s) {
-		this(s.getX1(), s.getY1(), s.getX2(), s.getY2());
+	public Segment2i(Segment2ai<?, ?, ?, ?, ?, ?> segment) {
+		this(segment.getX1(), segment.getY1(), segment.getX2(), segment.getY2());
 	}
 
-	/**
-	 * @param x1
-	 * @param y1
-	 * @param x2
-	 * @param y2
+	/** Construct a segment with the two given points.
+	 * @param x1 x coordinate of the first point.
+	 * @param y1 y coordinate of the first point.
+	 * @param x2 x coordinate of the second point.
+	 * @param y2 y coordinate of the second point.
 	 */
 	public Segment2i(int x1, int y1, int x2, int y2) {
 		set(x1, y1, x2, y2);
@@ -92,7 +92,7 @@ public class Segment2i extends AbstractShape2i<Segment2i>
 	@Pure
 	@Override
 	public String toString() {
-		StringBuilder b = new StringBuilder();
+		final StringBuilder b = new StringBuilder();
 		b.append("["); //$NON-NLS-1$
 		b.append(getX1());
 		b.append(";"); //$NON-NLS-1$
@@ -108,16 +108,16 @@ public class Segment2i extends AbstractShape2i<Segment2i>
 	@Pure
 	@Override
 	public Shape2i<?> createTransformedShape(Transform2D transform) {
-		assert (transform != null) : "Transformation must be not null"; //$NON-NLS-1$
-		Point2i point = getGeomFactory().newPoint(getX1(), getY1());
+		assert transform != null : "Transformation must be not null"; //$NON-NLS-1$
+		final Point2i point = getGeomFactory().newPoint(getX1(), getY1());
 		transform.transform(point);
-		int x1 = point.ix();
-		int y1 = point.iy();
+		final int x1 = point.ix();
+		final int y1 = point.iy();
 		point.set(getX2(), getY2());
 		transform.transform(point);
 		return getGeomFactory().newSegment(x1, y1, point.ix(), point.iy());
 	}
-	
+
 	@Override
 	public void set(int x1, int y1, int x2, int y2) {
 		if (this.ax != x1 || this.ay != y1 || this.bx != x2 || this.by != y2) {

@@ -1,23 +1,23 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (c) 2013 Christophe BOHRHAUER
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package org.arakhne.afc.math.stochastic;
 
 import java.util.Map;
@@ -28,7 +28,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 /**
  * Abstract implementation of a stochastic law that
  * provides the bounds of a law.
- * 
+ *
  * @author $Author: cbohrhauer$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
@@ -37,90 +37,85 @@ import org.eclipse.xtext.xbase.lib.Pure;
  */
 public abstract class StochasticLaw implements MathInversableFunction {
 
-	/** Extract a parameter value from a map of parameters.
-	 * 
-	 * @param paramName is the nameof the parameter to extract.
-	 * @param parameters is the map of available parameters
-	 * @return the extract value
-	 * @throws LawParameterNotFoundException if the parameter was not found or the value is not a double.
-	 */
-	@Pure
-	protected static double paramFloat(String paramName, Map<String,String> parameters)
-	throws LawParameterNotFoundException {
-		String sValue = parameters.get(paramName);
-		if (sValue!=null && !"".equals(sValue)) { //$NON-NLS-1$
-			try {
-				return Float.parseFloat(sValue);
-			}
-			catch(AssertionError e) {
-				throw e;
-			}
-			catch(Throwable e) {
-				//
-			}
-		}
-		throw new LawParameterNotFoundException(paramName);
-	}
-	
-	/** Extract a parameter value from a map of parameters.
-	 * 
-	 * @param paramName is the nameof the parameter to extract.
-	 * @param parameters is the map of available parameters
-	 * @return the extract value
-	 * @throws LawParameterNotFoundException if the parameter was not found or the value is not a double.
-	 */
-	@Pure
-	protected static boolean paramBoolean(String paramName, Map<String,String> parameters)
-	throws LawParameterNotFoundException {
-		String sValue = parameters.get(paramName);
-		if (sValue!=null && !"".equals(sValue)) { //$NON-NLS-1$
-			try {
-				return Boolean.parseBoolean(sValue);
-			}
-			catch(AssertionError e) {
-				throw e;
-			}
-			catch(Throwable e) {
-				//
-			}
-		}
-		throw new LawParameterNotFoundException(paramName);
-	}
-
-	/**
-	 * 
+	/** Construct a stochastic law.
 	 */
 	public StochasticLaw() {
 		//
 	}
-	
+
+	/** Extract a parameter value from a map of parameters.
+	 *
+	 * @param paramName is the nameof the parameter to extract.
+	 * @param parameters is the map of available parameters
+	 * @return the extract value
+	 * @throws LawParameterNotFoundException if the parameter was not found or the value is not a double.
+	 */
+	@Pure
+	protected static double paramFloat(String paramName, Map<String, String> parameters)
+	throws LawParameterNotFoundException {
+		final String svalue = parameters.get(paramName);
+		if (svalue != null && !"".equals(svalue)) { //$NON-NLS-1$
+			try {
+				return Float.parseFloat(svalue);
+			} catch (AssertionError e) {
+				throw e;
+			} catch (Throwable e) {
+				//
+			}
+		}
+		throw new LawParameterNotFoundException(paramName);
+	}
+
+	/** Extract a parameter value from a map of parameters.
+	 *
+	 * @param paramName is the nameof the parameter to extract.
+	 * @param parameters is the map of available parameters
+	 * @return the extract value
+	 * @throws LawParameterNotFoundException if the parameter was not found or the value is not a double.
+	 */
+	@Pure
+	protected static boolean paramBoolean(String paramName, Map<String, String> parameters)
+	throws LawParameterNotFoundException {
+		final String svalue = parameters.get(paramName);
+		if (svalue != null && !"".equals(svalue)) { //$NON-NLS-1$
+			try {
+				return Boolean.parseBoolean(svalue);
+			} catch (AssertionError e) {
+				throw e;
+			} catch (Throwable e) {
+				//
+			}
+		}
+		throw new LawParameterNotFoundException(paramName);
+	}
+
 	/** Replies a random value that respect
 	 * the current stochastic law.
-	 * 
+	 *
 	 * @return a value depending of the stochastic law parameters
-	 * @throws MathException 
+	 * @throws MathException when error in math definition.
 	 */
 	public double generateRandomValue() throws MathException {
 		return StochasticGenerator.generateRandomValue(this);
 	}
-	
-	/** Replies the x according to the value of the inverted 
+
+	/** Replies the x according to the value of the inverted
 	 * cummulative distribution function {@code F<sup>-1</sup>(u)}
-	 * where {@code u = U(0,1)}.
-	 * 
-	 * @param U is the uniform random variable generator {@code U(0,1)}.
+	 * where {@code u = U(0, 1)}.
+	 *
+	 * @param u is the uniform random variable generator {@code U(0, 1)}.
 	 * @return {@code F<sup>-1</sup>(u)}
 	 * @throws MathException in case {@code F<sup>-1</sup>(u)} could not be computed
 	 */
-	protected double inverseF(Random U) throws MathException {
-		return inverseF(1.f-U.nextFloat());
+	protected double inverseF(Random u) throws MathException {
+		return inverseF(1. - u.nextFloat());
 	}
 
-	/** Replies the x according to the value of the inverted 
+	/** Replies the x according to the value of the inverted
 	 * cummulative distribution function {@code F<sup>-1</sup>(u)}
-	 * where {@code u = U(0,1)}.
-	 * 
-	 * @param u is a value given by the uniform random variable generator {@code U(0,1)}.
+	 * where {@code u = U(0, 1)}.
+	 *
+	 * @param u is a value given by the uniform random variable generator {@code U(0, 1)}.
 	 * @return {@code F<sup>-1</sup>(u)}
 	 * @throws MathException in case {@code F<sup>-1</sup>(u)} could not be computed
 	 */

@@ -1,23 +1,23 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (C) 2010-2013 Stephane GALLAND.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package org.arakhne.afc.math.geometry.d2.afp;
 
 import org.arakhne.afc.math.geometry.PathWindingRule;
@@ -26,7 +26,7 @@ import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 
 /** Factory of geometrical elements.
- * 
+ *
  * @param <E> the types of the path elements.
  * @param <P> is the type of the points.
  * @param <V> is the type of the vectors.
@@ -37,7 +37,7 @@ import org.arakhne.afc.math.geometry.d2.Vector2D;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public interface GeomFactory2afp<E extends PathElement2afp, P extends Point2D<? super P, ? super V>, 
+public interface GeomFactory2afp<E extends PathElement2afp, P extends Point2D<? super P, ? super V>,
 		V extends Vector2D<? super V, ? super P>, B extends Rectangle2afp<?, ?, E, P, V, B>>
 		extends GeomFactory<V, P> {
 
@@ -47,7 +47,7 @@ public interface GeomFactory2afp<E extends PathElement2afp, P extends Point2D<? 
 	 * @return the new path.
 	 */
 	Path2afp<?, ?, E, P, V, B> newPath(PathWindingRule rule);
-	
+
 	/** Create an empty multishape.
 	 *
 	 * @return the new multishape.
@@ -71,15 +71,15 @@ public interface GeomFactory2afp<E extends PathElement2afp, P extends Point2D<? 
 	B newBox(double x, double y, double width, double height);
 
 	/** Create a move-to path element to the given point.
-	 * 
+	 *
 	 * @param x x coordinate of the target point.
 	 * @param y y coordinate of the target point.
 	 * @return the path element.
 	 */
 	E newMovePathElement(double x, double y);
-	
+
 	/** Create a line-to path element to the given point.
-	 * 
+	 *
 	 * @param startX x coordinate of the start point.
 	 * @param startY y coordinate of the start point.
 	 * @param targetX x coordinate of the target point.
@@ -89,7 +89,7 @@ public interface GeomFactory2afp<E extends PathElement2afp, P extends Point2D<? 
 	E newLinePathElement(double startX, double startY, double targetX, double targetY);
 
 	/** Create a close path element.
-	 * 
+	 *
 	 * @param lastPointX x coordinate of the last point on the path
 	 * @param lastPointy y coordinate of the last point on the path
 	 * @param firstPointX x coordinate of the first point on the path.
@@ -99,7 +99,7 @@ public interface GeomFactory2afp<E extends PathElement2afp, P extends Point2D<? 
 	E newClosePathElement(double lastPointX, double lastPointy, double firstPointX, double firstPointY);
 
 	/** Create a quadratic curve path element to the given point through the given control point.
-	 * 
+	 *
 	 * @param startX x coordinate of the start point.
 	 * @param startY y coordinate of the start point.
 	 * @param controlX x coordinate of the control point.
@@ -111,7 +111,7 @@ public interface GeomFactory2afp<E extends PathElement2afp, P extends Point2D<? 
 	E newCurvePathElement(double startX, double startY, double controlX, double controlY, double targetX, double targetY);
 
 	/** Create a curve path element to the given point through the two given control points.
-	 * 
+	 *
 	 * @param startX x coordinate of the start point.
 	 * @param startY y coordinate of the start point.
 	 * @param controlX1 x coordinate of the control point.

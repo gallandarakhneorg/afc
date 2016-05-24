@@ -536,18 +536,18 @@ public class IntegerListTest {
 		
 		assertTrue(i.hasNext());
 		s = i.next();
-		assertEquals(1, s.first);
-		assertEquals(3, s.last);
+		assertEquals(1, s.getFirst());
+		assertEquals(3, s.getLast());
 
 		assertTrue(i.hasNext());
 		s = i.next();
-		assertEquals(10, s.first);
-		assertEquals(10, s.last);
+		assertEquals(10, s.getFirst());
+		assertEquals(10, s.getLast());
 
 		assertTrue(i.hasNext());
 		s = i.next();
-		assertEquals(20, s.first);
-		assertEquals(25, s.last);
+		assertEquals(20, s.getFirst());
+		assertEquals(25, s.getLast());
 
 		assertFalse(i.hasNext());
 	}
@@ -562,18 +562,18 @@ public class IntegerListTest {
 		
 		assertTrue(i.hasNext());
 		s = i.next();
-		assertEquals(1, s.first);
-		assertEquals(3, s.last);
+		assertEquals(1, s.getFirst());
+		assertEquals(3, s.getLast());
 
 		assertTrue(i.hasNext());
 		s = i.next();
-		assertEquals(10, s.first);
-		assertEquals(10, s.last);
+		assertEquals(10, s.getFirst());
+		assertEquals(10, s.getLast());
 
 		assertTrue(i.hasNext());
 		s = i.next();
-		assertEquals(20, s.first);
-		assertEquals(25, s.last);
+		assertEquals(20, s.getFirst());
+		assertEquals(25, s.getLast());
 
 		assertFalse(i.hasNext());
 	}

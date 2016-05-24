@@ -1,25 +1,23 @@
-/* 
+/*
  * $Id$
- * 
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (C) 2013 Stephane GALLAND.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package org.arakhne.afc.attrs.collection;
 
 import java.util.LinkedList;
@@ -30,86 +28,81 @@ import org.arakhne.afc.attrs.collection.AttributeChangeEvent.Type;
 
 /**
  * This class implements an abstract object with attributes.
- * 
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
 public abstract class AbstractAttributeCollection extends AbstractAttributeProvider implements AttributeCollection {
-	
+
 	private static final long serialVersionUID = 8103647267018484556L;
-	
-	private List<AttributeChangeListener> listenerList = null;
+
+	private List<AttributeChangeListener> listenerList;
+
 	private boolean isEventFirable = true;
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public synchronized boolean isEventFirable() {
 		return this.isEventFirable;
 	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
+
 	@Override
 	public synchronized void setEventFirable(boolean isFirable) {
 		this.isEventFirable = isFirable;
 	}
-	
+
 	/** Make a deep copy of this object and replies the copy.
-	 * 
+	 *
 	 * @return the deep copy.
 	 */
 	@Override
 	public AttributeCollection clone() {
-		AbstractAttributeCollection clone = (AbstractAttributeCollection)super.clone();
+		final AbstractAttributeCollection clone = (AbstractAttributeCollection) super.clone();
 		clone.listenerList = null;
 		return clone;
 	}
 
 	/** Fire the addition event.
-	 * 
+	 *
 	 * @param name is the name of the attribute for which the event occured.
 	 * @param attr is the value of the attribute.
 	 */
 	protected synchronized void fireAttributeAddedEvent(String name, AttributeValue attr) {
-		if (this.listenerList!=null && isEventFirable()) {
-			AttributeChangeListener[] list = new AttributeChangeListener[this.listenerList.size()];
+		if (this.listenerList != null && isEventFirable()) {
+			final AttributeChangeListener[] list = new AttributeChangeListener[this.listenerList.size()];
 			this.listenerList.toArray(list);
-			AttributeChangeEvent event = new AttributeChangeEvent(
-					this, 				//source
-					Type.ADDITION,		//type
-					null,				//old name
-					null,				//old value
-					name,				//current name
-					attr);				//current value
-			for(AttributeChangeListener listener : list) {
+			final AttributeChangeEvent event = new AttributeChangeEvent(
+					this,
+					Type.ADDITION,
+					null,
+					null,
+					name,
+					attr);
+			for (final AttributeChangeListener listener : list) {
 				listener.onAttributeChangeEvent(event);
 			}
 		}
 	}
 
 	/** Fire the attribute change event.
-	 * 
+	 *
 	 * @param name is the name of the attribute for which the event occured.
 	 * @param oldValue is the previous value of the attribute
 	 * @param currentValue is the current value of the attribute
 	 */
 	protected synchronized void fireAttributeChangedEvent(String name, AttributeValue oldValue, AttributeValue currentValue) {
-		if (this.listenerList!=null && isEventFirable()) {
-			AttributeChangeListener[] list = new AttributeChangeListener[this.listenerList.size()];
+		if (this.listenerList != null && isEventFirable()) {
+			final AttributeChangeListener[] list = new AttributeChangeListener[this.listenerList.size()];
 			this.listenerList.toArray(list);
-			AttributeChangeEvent event = new AttributeChangeEvent(
-					this, 				//source
-					Type.VALUE_UPDATE,	//type
-					name,				//old name
-					oldValue,			//old value
-					name,				//current name
-					currentValue);		//current value
-			for(AttributeChangeListener listener : list) {
+			final AttributeChangeEvent event = new AttributeChangeEvent(
+					this,
+					Type.VALUE_UPDATE,
+					name,
+					oldValue,
+					name,
+					currentValue);
+			for (final AttributeChangeListener listener : list) {
 				listener.onAttributeChangeEvent(event);
 			}
 		}
@@ -118,97 +111,93 @@ public abstract class AbstractAttributeCollection extends AbstractAttributeProvi
 	/** Fire the all attribute removal event.
 	 */
 	protected synchronized void fireAttributeClearedEvent() {
-		if (this.listenerList!=null && isEventFirable()) {
-			AttributeChangeListener[] list = new AttributeChangeListener[this.listenerList.size()];
+		if (this.listenerList != null && isEventFirable()) {
+			final AttributeChangeListener[] list = new AttributeChangeListener[this.listenerList.size()];
 			this.listenerList.toArray(list);
-			AttributeChangeEvent event = new AttributeChangeEvent(
-					this, 				//source
-					Type.REMOVE_ALL,	//type
-					null,				//old name
-					null,				//old value
-					null,				//current name
-					null);				//current value
-			for(AttributeChangeListener listener : list) {
+			final AttributeChangeEvent event = new AttributeChangeEvent(
+					this,
+					Type.REMOVE_ALL,
+					null,
+					null,
+					null,
+					null);
+			for (final AttributeChangeListener listener : list) {
 				listener.onAttributeChangeEvent(event);
 			}
 		}
 	}
 
 	/** Fire the an attribute removal event.
-	 * 
+	 *
 	 * @param name is the name of the attribute for which the event occured.
 	 * @param oldValue is the previous value of the attribute
 	 */
 	protected synchronized void fireAttributeRemovedEvent(String name, AttributeValue oldValue) {
-		if (this.listenerList!=null && isEventFirable()) {
-			AttributeChangeListener[] list = new AttributeChangeListener[this.listenerList.size()];
+		if (this.listenerList != null && isEventFirable()) {
+			final AttributeChangeListener[] list = new AttributeChangeListener[this.listenerList.size()];
 			this.listenerList.toArray(list);
-			AttributeChangeEvent event = new AttributeChangeEvent(
-					this, 				//source
-					Type.REMOVAL,		//type
-					name,				//old name
-					oldValue,			//old value
-					name,				//current name
-					oldValue);			//current value
-			for(AttributeChangeListener listener : list) {
+			final AttributeChangeEvent event = new AttributeChangeEvent(
+					this,
+					Type.REMOVAL,
+					name,
+					oldValue,
+					name,
+					oldValue);
+			for (final AttributeChangeListener listener : list) {
 				listener.onAttributeChangeEvent(event);
 			}
 		}
 	}
 
 	/** Fire the renaming event.
-	 * 
+	 *
 	 * @param oldName is the previous name of the attribute (before renaming)
 	 * @param newName is the new name of the attribute (after renaming)
 	 * @param attr is the value of the attribute.
 	 */
 	protected synchronized void fireAttributeRenamedEvent(String oldName, String newName, AttributeValue attr) {
-		if (this.listenerList!=null && isEventFirable()) {
-			AttributeChangeListener[] list = new AttributeChangeListener[this.listenerList.size()];
+		if (this.listenerList != null && isEventFirable()) {
+			final AttributeChangeListener[] list = new AttributeChangeListener[this.listenerList.size()];
 			this.listenerList.toArray(list);
-			AttributeChangeEvent event = new AttributeChangeEvent(
-					this, 				//source
-					Type.RENAME,		//type
-					oldName,			//old name
-					attr,				//old value
-					newName,			//current name
-					attr);				//current value
-			for(AttributeChangeListener listener : list) {
+			final AttributeChangeEvent event = new AttributeChangeEvent(
+					this,
+					Type.RENAME,
+					oldName,
+					attr,
+					newName,
+					attr);
+			for (final AttributeChangeListener listener : list) {
 				listener.onAttributeChangeEvent(event);
 			}
 		}
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public synchronized void addAttributeChangeListener(AttributeChangeListener listener) {
-		if (listener!=null) {
-			if (this.listenerList==null)
+		if (listener != null) {
+			if (this.listenerList == null) {
 				this.listenerList = new LinkedList<>();
+			}
 			this.listenerList.add(listener);
 		}
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public synchronized void removeAttributeChangeListener(AttributeChangeListener listener) {
-		if (listener!=null) {
-			if (this.listenerList!=null) {
+		if (listener != null) {
+			if (this.listenerList != null) {
 				this.listenerList.remove(listener);
-				if (this.listenerList.isEmpty())
+				if (this.listenerList.isEmpty()) {
 					this.listenerList = null;
+				}
 			}
 		}
 	}
-	
-	/** {@inheritDoc}
-	 */
+
 	@Override
 	public final boolean renameAttribute(String oldname, String newname) {
 		return renameAttribute(oldname, newname, false);
 	}
-	
+
 }
 

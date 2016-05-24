@@ -1,23 +1,21 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (C) 2004-2008 Stephane GALLAND.
- * Copyright (C) 2012-13 Stephane GALLAND.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.arakhne.afc.vmutil;
@@ -43,37 +41,32 @@ import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.NoSuchElementException;
+import java.util.Set;
 import java.util.jar.Attributes;
-import java.util.jar.Manifest;
 import java.util.jar.Attributes.Name;
+import java.util.jar.Manifest;
 import java.util.regex.Pattern;
-
-import sun.misc.Resource;
-import sun.misc.URLClassPath;
-import sun.net.www.ParseUtil;
-import sun.security.util.SecurityConstants;
 
 /** This class loader permits to load classes from
  * a set of classpaths.
- * 
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-@SuppressWarnings("restriction")
+@SuppressWarnings({"restriction", "checkstyle:illegalimport"})
 public class DynamicURLClassLoader extends SecureClassLoader {
 
 	/**
 	 * The search path for classes and resources.
 	 */
-	protected URLClassPath _ucp;
-	
-	/**
-	 * The context to be used when loading classes and resources
+	protected sun.misc.URLClassPath ucp;
+
+	/** The context to be used when loading classes and resources.
 	 */
-	protected AccessControlContext _acc;
-	
+	protected AccessControlContext acc;
+
 	/**
 	 * Constructs a new ClassPathClassLoader for the given URLs. The URLs will be
 	 * searched in the order specified for classes and resources after first
@@ -84,26 +77,26 @@ public class DynamicURLClassLoader extends SecureClassLoader {
 	 * <p>If there is a security manager, this method first
 	 * calls the security manager's <code>checkCreateClassLoader</code> method
 	 * to ensure creation of a class loader is allowed.
-	 * 
+	 *
 	 * @param parent the parent class loader for delegation
 	 * @param acc is the current access context
 	 * @param urls the URLs from which to load classes and resources
-	 * @exception  SecurityException  if a security manager exists and its  
-	 *             <code>checkCreateClassLoader</code> method doesn't allow 
-	 *             creation of a class loader.
+	 * @throws  SecurityException  if a security manager exists and its
+	 *     <code>checkCreateClassLoader</code> method doesn't allow
+	 *     creation of a class loader.
 	 * @see SecurityManager#checkCreateClassLoader
 	 */
 	protected DynamicURLClassLoader(ClassLoader parent, AccessControlContext acc, URL... urls) {
 		super(parent);
 		// this is to make the stack depth consistent with 1.1
-		SecurityManager security = System.getSecurityManager();
+		final SecurityManager security = System.getSecurityManager();
 		if (security != null) {
 			security.checkCreateClassLoader();
 		}
-		this._ucp = new URLClassPath(mergeClassPath(urls));
-		this._acc = acc;
+		this.ucp = new sun.misc.URLClassPath(mergeClassPath(urls));
+		this.acc = acc;
 	}
-	
+
 	/**
 	 * Appends the specified URL to the list of URLs to search for
 	 * classes and resources.
@@ -114,12 +107,12 @@ public class DynamicURLClassLoader extends SecureClassLoader {
 		AccessController.doPrivileged(new PrivilegedAction<Object>() {
 			@Override
 			public Object run() {
-				DynamicURLClassLoader.this._ucp.addURL(url);
+				DynamicURLClassLoader.this.ucp.addURL(url);
 				return null;
 			}
-		}, this._acc);
+		}, this.acc);
 	}
-	
+
 	/**
 	 * Appends the specified URL to the list of URLs to search for
 	 * classes and resources.
@@ -127,7 +120,7 @@ public class DynamicURLClassLoader extends SecureClassLoader {
 	 * @param urls the URLs to be added to the search path of URLs
 	 */
 	public void addURLs(URL... urls) {
-		for (URL url : urls) {
+		for (final URL url : urls) {
 			addURL(url);
 		}
 	}
@@ -139,12 +132,12 @@ public class DynamicURLClassLoader extends SecureClassLoader {
 	 * @param urls the URL to be added to the search path of URLs
 	 */
 	public void removeURLs(URL... urls) {
-		HashSet<URL> set = new HashSet<>();
-		set.addAll(Arrays.asList(this._ucp.getURLs()));
+		final Set<URL> set = new HashSet<>();
+		set.addAll(Arrays.asList(this.ucp.getURLs()));
 		set.removeAll(Arrays.asList(urls));
 		URL[] tab = new URL[set.size()];
 		set.toArray(tab);
-		this._ucp = new URLClassPath(tab);
+		this.ucp = new sun.misc.URLClassPath(tab);
 		tab = null;
 	}
 
@@ -165,9 +158,9 @@ public class DynamicURLClassLoader extends SecureClassLoader {
 	 * @return the search path of URLs for loading classes and resources.
 	 */
 	public URL[] getURLs() {
-		return this._ucp.getURLs();
+		return this.ucp.getURLs();
 	}
-	
+
 	/**
 	 * Finds and loads the class with the specified name from the URL search
 	 * path. Any URLs referring to JAR files are loaded and opened as needed
@@ -183,43 +176,41 @@ public class DynamicURLClassLoader extends SecureClassLoader {
 			return AccessController.doPrivileged(new PrivilegedExceptionAction<Class<?>>() {
 				@Override
 				public Class<?> run() throws ClassNotFoundException {
-					String path = name.replace('.', '/').concat(".class"); //$NON-NLS-1$
-					Resource res = DynamicURLClassLoader.this._ucp.getResource(path, false);
+					final String path = name.replace('.', '/').concat(".class"); //$NON-NLS-1$
+					final sun.misc.Resource res = DynamicURLClassLoader.this.ucp.getResource(path, false);
 					if (res != null) {
 						try {
 							return defineClass(name, res);
-						}
-						catch (IOException e) {
+						} catch (IOException e) {
 							throw new ClassNotFoundException(name, e);
 						}
 					}
 					throw new ClassNotFoundException(name);
 				}
-			}, this._acc);
-		}
-		catch (java.security.PrivilegedActionException pae) {
+			}, this.acc);
+		} catch (java.security.PrivilegedActionException pae) {
 			throw (ClassNotFoundException) pae.getException();
 		}
 	}
-	
+
 	/**
 	 * Defines a Class using the class bytes obtained from the specified
 	 * Resource. The resulting Class must be resolved before it can be
 	 * used.
-	 * 
+	 *
 	 * @param name is the name of the class to define
 	 * @param res is the resource from which the class byte-code could be obtained
 	 * @return the loaded class.
 	 * @throws IOException in case the byte-code was unavailable.
 	 */
-	protected Class<?> defineClass(String name, Resource res) throws IOException {
-		int i = name.lastIndexOf('.');
-		URL url = res.getCodeSourceURL();
+	protected Class<?> defineClass(String name, sun.misc.Resource res) throws IOException {
+		final int i = name.lastIndexOf('.');
+		final URL url = res.getCodeSourceURL();
 		if (i != -1) {
-			String pkgname = name.substring(0, i);
+			final String pkgname = name.substring(0, i);
 			// Check if package already loaded.
-			Package pkg = getPackage(pkgname);
-			Manifest man = res.getManifest();
+			final Package pkg = getPackage(pkgname);
+			final Manifest man = res.getManifest();
 			if (pkg != null) {
 				// Package found, so check package sealing.
 				if (pkg.isSealed()) {
@@ -228,7 +219,6 @@ public class DynamicURLClassLoader extends SecureClassLoader {
 						throw new SecurityException(
 								"sealing violation: package " + pkgname + " is sealed"); //$NON-NLS-1$ //$NON-NLS-2$
 					}
-					
 				} else {
 					// Make sure we are not attempting to seal the package
 					// at this code source URL.
@@ -247,22 +237,22 @@ public class DynamicURLClassLoader extends SecureClassLoader {
 			}
 		}
 		// Now read the class bytes and define the class
-		java.nio.ByteBuffer bb = res.getByteBuffer();
+		final java.nio.ByteBuffer bb = res.getByteBuffer();
 		if (bb != null) {
 			// Use (direct) ByteBuffer:
-			CodeSigner[] signers = res.getCodeSigners();
-			CodeSource cs = new CodeSource(url, signers);
+			final CodeSigner[] signers = res.getCodeSigners();
+			final CodeSource cs = new CodeSource(url, signers);
 			return defineClass(name, bb, cs);
 		}
 
-		byte[] b = res.getBytes();
+		final byte[] b = res.getBytes();
 		// must read certificates AFTER reading bytes.
-		CodeSigner[] signers = res.getCodeSigners();
-		CodeSource cs = new CodeSource(url, signers);
+		final CodeSigner[] signers = res.getCodeSigners();
+		final CodeSource cs = new CodeSource(url, signers);
 		return defineClass(name, b, 0, b.length, cs);
 
 	}
-	
+
 	/**
 	 * Defines a new package by name in this ClassLoader. The attributes
 	 * contained in the specified Manifest will be used to obtain package
@@ -278,15 +268,18 @@ public class DynamicURLClassLoader extends SecureClassLoader {
 	 *              of its ancestors
 	 * @return the newly defined Package object
 	 */
-	protected Package definePackage(String name, Manifest man, URL url)
-	throws IllegalArgumentException
-	{
-		String path = name.replace('.', '/').concat("/"); //$NON-NLS-1$
-		String specTitle = null, specVersion = null, specVendor = null;
-		String implTitle = null, implVersion = null, implVendor = null;
+	@SuppressWarnings("checkstyle:npathcomplexity")
+	protected Package definePackage(String name, Manifest man, URL url) throws IllegalArgumentException {
+		final String path = name.replace('.', '/').concat("/"); //$NON-NLS-1$
+		String specTitle = null;
+		String specVersion = null;
+		String specVendor = null;
+		String implTitle = null;
+		String implVersion = null;
+		String implVendor = null;
 		String sealed = null;
 		URL sealBase = null;
-		
+
 		Attributes attr = man.getAttributes(path);
 		if (attr != null) {
 			specTitle   = attr.getValue(Name.SPECIFICATION_TITLE);
@@ -327,49 +320,49 @@ public class DynamicURLClassLoader extends SecureClassLoader {
 		return definePackage(name, specTitle, specVersion, specVendor,
 				implTitle, implVersion, implVendor, sealBase);
 	}
-	
+
 	/*
 	 * Returns true if the specified package name is sealed according to the
 	 * given manifest.
 	 */
 	private static boolean isSealed(String name, Manifest man) {
-		String path = name.replace('.', '/').concat("/"); //$NON-NLS-1$
+		final String path = name.replace('.', '/').concat("/"); //$NON-NLS-1$
 		Attributes attr = man.getAttributes(path);
 		String sealed = null;
 		if (attr != null) {
 			sealed = attr.getValue(Name.SEALED);
 		}
 		if (sealed == null) {
-			if ((attr = man.getMainAttributes()) != null) {
+			attr = man.getMainAttributes();
+			if (attr != null) {
 				sealed = attr.getValue(Name.SEALED);
 			}
 		}
 		return "true".equalsIgnoreCase(sealed); //$NON-NLS-1$
 	}
-	
+
 	/**
 	 * Finds the resource with the specified name on the URL search path.
 	 *
 	 * @param name the name of the resource
-	 * @return a <code>URL</code> for the resource, or <code>null</code> 
-	 * if the resource could not be found.
+	 * @return a <code>URL</code> for the resource, or <code>null</code>
+	 *     if the resource could not be found.
 	 */
 	@Override
 	public URL findResource(final String name) {
 		/*
 		 * The same restriction to finding classes applies to resources
 		 */
-		URL url = 
-			AccessController.doPrivileged(new PrivilegedAction<URL>() {
+		final URL url = AccessController.doPrivileged(new PrivilegedAction<URL>() {
 				@Override
 				public URL run() {
-					return DynamicURLClassLoader.this._ucp.findResource(name, true);
+					return DynamicURLClassLoader.this.ucp.findResource(name, true);
 				}
-			}, this._acc);
-		
-		return url != null ? this._ucp.checkURL(url) : null;
+			}, this.acc);
+
+		return url != null ? this.ucp.checkURL(url) : null;
 	}
-	
+
 	/**
 	 * Returns an Enumeration of URLs representing all of the resources
 	 * on the URL search path having the specified name.
@@ -380,132 +373,133 @@ public class DynamicURLClassLoader extends SecureClassLoader {
 	 */
 	@Override
 	public Enumeration<URL> findResources(final String name) throws IOException {
-		final Enumeration<?> e = this._ucp.findResources(name, true);
-		
+		final Enumeration<?> e = this.ucp.findResources(name, true);
+
 		return new Enumeration<URL>() {
-			private URL url = null;
-			
+			private URL url;
+
 			private boolean next() {
 				if (this.url != null) {
 					return true;
 				}
 				do {
-					URL u = AccessController.doPrivileged(new PrivilegedAction<URL>() {
+					final URL u = AccessController.doPrivileged(new PrivilegedAction<URL>() {
 						@Override
 						public URL run() {
-							if (!e.hasMoreElements())
+							if (!e.hasMoreElements()) {
 								return null;
-							return (URL)e.nextElement();
+							}
+							return (URL) e.nextElement();
 						}
-					}, DynamicURLClassLoader.this._acc);
-					if (u == null) break;
-					this.url = DynamicURLClassLoader.this._ucp.checkURL(u);
+					}, DynamicURLClassLoader.this.acc);
+					if (u == null) {
+						break;
+					}
+					this.url = DynamicURLClassLoader.this.ucp.checkURL(u);
 				}
 				while (this.url == null);
-				
-				return (this.url != null);
+
+				return this.url != null;
 			}
-			
+
 			@Override
 			public URL nextElement() {
 				if (!next()) {
 					throw new NoSuchElementException();
 				}
-				URL u = this.url;
+				final URL u = this.url;
 				this.url = null;
 				return u;
 			}
-			
+
 			@Override
 			public boolean hasMoreElements() {
 				return next();
 			}
 		};
 	}
-	
+
 	/**
 	 * Returns the permissions for the given codesource object.
 	 * The implementation of this method first calls super.getPermissions
 	 * and then adds permissions based on the URL of the codesource.
-	 * <p>
-	 * If the protocol is "file"
+	 *
+	 * <p>If the protocol is "file"
 	 * and the path specifies a file, then permission to read that
 	 * file is granted. If protocol is "file" and the path is
 	 * a directory, permission is granted to read all files
 	 * and (recursively) all files and subdirectories contained in
 	 * that directory.
-	 * <p>
-	 * If the protocol is not "file", then
+	 *
+	 * <p>If the protocol is not "file", then
 	 * to connect to and accept connections from the URL's host is granted.
 	 * @param codesource the codesource
 	 * @return the permissions granted to the codesource
 	 */
 	@Override
 	protected PermissionCollection getPermissions(CodeSource codesource) {
-		PermissionCollection perms = super.getPermissions(codesource);
-		
-		URL url = codesource.getLocation();
-		
-		Permission p;
+		final PermissionCollection perms = super.getPermissions(codesource);
+
+		final URL url = codesource.getLocation();
+
+		Permission permission;
 		URLConnection urlConnection;
-		
+
 		try {
 			urlConnection = url.openConnection();
-			p = urlConnection.getPermission();
-		}
-		catch (java.io.IOException ioe) {
-			p = null;
+			permission = urlConnection.getPermission();
+		} catch (IOException ioe) {
+			permission = null;
 			urlConnection = null;
 		}
-		
-		if ((p!=null)&&(p instanceof FilePermission)) {
+
+		if ((permission != null) && (permission instanceof FilePermission)) {
 			// if the permission has a separator char on the end,
 			// it means the codebase is a directory, and we need
 			// to add an additional permission to read recursively
-			String path = p.getName();
+			String path = permission.getName();
 			if (path.endsWith(File.separator)) {
 				path += "-"; //$NON-NLS-1$
-				p = new FilePermission(path, SecurityConstants.FILE_READ_ACTION);
+				permission = new FilePermission(path, sun.security.util.SecurityConstants.FILE_READ_ACTION);
 			}
-		}
-		else if ((p == null) && (URISchemeType.FILE.isURL(url))) {
+		} else if ((permission == null) && (URISchemeType.FILE.isURL(url))) {
 			String path = url.getFile().replace('/', File.separatorChar);
-			path = ParseUtil.decode(path);
-			if (path.endsWith(File.separator))
+			path = sun.net.www.ParseUtil.decode(path);
+			if (path.endsWith(File.separator)) {
 				path += "-"; //$NON-NLS-1$
-			p =  new FilePermission(path, SecurityConstants.FILE_READ_ACTION);
-		}
-		else {
+			}
+			permission =  new FilePermission(path, sun.security.util.SecurityConstants.FILE_READ_ACTION);
+		} else {
 			URL locUrl = url;
 			if (urlConnection instanceof JarURLConnection) {
-				locUrl = ((JarURLConnection)urlConnection).getJarFileURL();
+				locUrl = ((JarURLConnection) urlConnection).getJarFileURL();
 			}
 			String host = locUrl.getHost();
-			if (host == null)
+			if (host == null) {
 				host = "localhost"; //$NON-NLS-1$
-			p = new SocketPermission(host,
-					SecurityConstants.SOCKET_CONNECT_ACCEPT_ACTION);
+			}
+			permission = new SocketPermission(host,
+					sun.security.util.SecurityConstants.SOCKET_CONNECT_ACCEPT_ACTION);
 		}
-		
+
 		// make sure the person that created this class loader
 		// would have this permission
-		
 		final SecurityManager sm = System.getSecurityManager();
 		if (sm != null) {
-			final Permission fp = p;
+			final Permission fp = permission;
 			AccessController.doPrivileged(new PrivilegedAction<Object>() {
 				@Override
 				public Object run() throws SecurityException {
 					sm.checkPermission(fp);
 					return null;
 				}
-			}, this._acc);
+			}, this.acc);
 		}
-		perms.add(p);
+		perms.add(permission);
 
 		return perms;
 	}
-	
+
 	/**
 	 * Creates a new instance of DynamicURLClassLoader for the specified
 	 * URLs and parent class loader. If a security manager is
@@ -522,8 +516,7 @@ public class DynamicURLClassLoader extends SecureClassLoader {
 		// Save the caller's context
 		final AccessControlContext acc = AccessController.getContext();
 		// Need a privileged block to create the class loader
-		DynamicURLClassLoader ucl =
-			AccessController.doPrivileged(new PrivilegedAction<DynamicURLClassLoader>() {
+		return AccessController.doPrivileged(new PrivilegedAction<DynamicURLClassLoader>() {
 				@Override
 				public DynamicURLClassLoader run() {
 					// Now set the context on the loader using the one we saved,
@@ -531,36 +524,34 @@ public class DynamicURLClassLoader extends SecureClassLoader {
 					return new FactoryDynamicURLClassLoader(parent, acc, urls);
 				}
 			});
-		return ucl;
 	}
-	
+
     /**
      * Merge the specified URLs to the current classpath.
      */
     private static URL[] mergeClassPath(URL... urls) {
-    	String path = System.getProperty("java.class.path"); //$NON-NLS-1$
-    	String separator = System.getProperty("path.separator"); //$NON-NLS-1$
-    	String[] parts = path.split(Pattern.quote(separator));
-    	URL[] u = new URL[parts.length+urls.length];
-    	for(int i=0; i<parts.length; i++) {
+    	final String path = System.getProperty("java.class.path"); //$NON-NLS-1$
+    	final String separator = System.getProperty("path.separator"); //$NON-NLS-1$
+    	final String[] parts = path.split(Pattern.quote(separator));
+    	final URL[] u = new URL[parts.length + urls.length];
+    	for (int i = 0; i < parts.length; ++i) {
     		try {
 				u[i] = new File(parts[i]).toURI().toURL();
-			}
-    		catch (MalformedURLException exception) {
+			} catch (MalformedURLException exception) {
 				// ignore exception
 			}
     	}
-    	System.arraycopy(urls,0,u,parts.length,urls.length);
+    	System.arraycopy(urls, 0, u, parts.length, urls.length);
     	return u;
     }
 
-    /** 
+    /** This class loader permits to load classes from a set of classpaths.
      * @author $Author: sgalland$
      * @version $FullVersion$
      * @mavengroupid $GroupId$
      * @mavenartifactid $ArtifactId$
      */
-    protected final static class FactoryDynamicURLClassLoader extends DynamicURLClassLoader {
+    protected static final class FactoryDynamicURLClassLoader extends DynamicURLClassLoader {
 
     	/**
     	 * @param parent is the parent class loader.
@@ -568,30 +559,23 @@ public class DynamicURLClassLoader extends SecureClassLoader {
     	 * @param urls is the list of urls to insert inside the class loading path.
     	 */
     	protected FactoryDynamicURLClassLoader(ClassLoader parent, AccessControlContext acc, URL... urls) {
-    		super(parent,acc,urls);
+    		super(parent, acc, urls);
     	}
-    	
-    	/** {@inheritDoc}
-    	 * 
-    	 * @param name {@inheritDoc}
-    	 * @param resolve {@inheritDoc}
-    	 * @return {@inheritDoc}
-    	 * @throws ClassNotFoundException {@inheritDoc}
-    	 */
+
     	@Override
-    	public final synchronized Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
+    	public synchronized Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
     		// First check if we have permission to access the package. This
     		// should go away once we've added support for exported packages.
-    		SecurityManager sm = System.getSecurityManager();
+    		final SecurityManager sm = System.getSecurityManager();
     		if (sm != null) {
-    			int i = name.lastIndexOf('.');
+    			final int i = name.lastIndexOf('.');
     			if (i != -1) {
     				sm.checkPackageAccess(name.substring(0, i));
     			}
     		}
     		return super.loadClass(name, resolve);
     	}
-    	
+
     }
 
 }

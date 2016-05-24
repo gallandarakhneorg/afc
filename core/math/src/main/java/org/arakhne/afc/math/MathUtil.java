@@ -1,22 +1,23 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (C) 2010-2011 Janus Core Developers
- * Copyright (C) 2012 Stéphane GALLAND
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package org.arakhne.afc.math;
 
 import static org.arakhne.afc.math.MathConstants.COHEN_SUTHERLAND_BOTTOM;
@@ -25,38 +26,40 @@ import static org.arakhne.afc.math.MathConstants.COHEN_SUTHERLAND_LEFT;
 import static org.arakhne.afc.math.MathConstants.COHEN_SUTHERLAND_RIGHT;
 import static org.arakhne.afc.math.MathConstants.COHEN_SUTHERLAND_TOP;
 
+import org.eclipse.xtext.xbase.lib.Inline;
+import org.eclipse.xtext.xbase.lib.Pure;
+
 import org.arakhne.afc.math.continous.object2d.Point2f;
 import org.arakhne.afc.math.generic.Point2D;
 import org.arakhne.afc.math.generic.Vector2D;
 import org.arakhne.afc.math.physics.MeasureUnitUtil;
-import org.eclipse.xtext.xbase.lib.Inline;
-import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Mathematic and geometric utilities.
- * 
+ *
  * @author $Author: sgalland$
  * @author $Author: hjaffali$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
+@SuppressWarnings({"checkstyle:methodcount", "checkstyle:magicnumber"})
 public final class MathUtil {
 
 	private MathUtil() {
 		//
 	}
-	
+
 	/**
-     * Returns the sign of the argument; zero if the argument
-     * is zero, 1 if the argument is greater than zero, -1 if the
-     * argument is less than zero.
-     *
-     * <p>This function differs from {@link Math#signum(double)} because it
-     * is returning a integer value.
-     *
-     * @param value the floating-point value whose sign is to be returned
-     * @return the sign of the argument
-     */
+	 * Returns the sign of the argument; zero if the argument
+	 * is zero, 1 if the argument is greater than zero, -1 if the
+	 * argument is less than zero.
+	 *
+	 * <p>This function differs from {@link Math#signum(double)} because it
+	 * is returning a integer value.
+	 *
+	 * @param value the floating-point value whose sign is to be returned
+	 * @return the sign of the argument
+	 */
 	@Pure
 	@Inline(value = "(($1 == 0.) ? 0 : (($1 < -0.) ? -1 : 1))")
 	public static int sign(double value) {
@@ -64,12 +67,12 @@ public final class MathUtil {
 	}
 
 
-    /** Clamp the given value to the given range.
-	 * <p>
-	 * If the value is outside the {@code [min;max]}
+	/** Clamp the given value to the given range.
+	 *
+	 * <p>If the value is outside the {@code [min;max]}
 	 * range, it is clamp to the nearest bounding value
-	 * <var>min</var> or <var>max</var>.
-	 * 
+	 * {@code min} or {@code max}.
+	 *
 	 * @param v is the value to clamp.
 	 * @param min is the min value of the range.
 	 * @param max is the max value of the range.
@@ -77,18 +80,22 @@ public final class MathUtil {
 	 */
 	@Pure
 	public static double clamp(double v, double min, double max) {
-		assert (min <= max) : "min must be lower or equal to max"; //$NON-NLS-1$
-		if (v < min) return min;
-		if (v > max) return max;
+		assert min <= max : "min must be lower or equal to max"; //$NON-NLS-1$
+		if (v < min) {
+			return min;
+		}
+		if (v > max) {
+			return max;
+		}
 		return v;
-	}	
+	}
 
 	/** Clamp the given value to the given range.
-	 * <p>
-	 * If the value is outside the {@code [min;max]}
+	 *
+	 * <p>If the value is outside the {@code [min;max]}
 	 * range, it is clamp to the nearest bounding value
-	 * <var>min</var> or <var>max</var>.
-	 * 
+	 * {@code min} or {@code max}.
+	 *
 	 * @param v is the value to clamp.
 	 * @param min is the min value of the range.
 	 * @param max is the max value of the range.
@@ -96,17 +103,38 @@ public final class MathUtil {
 	 */
 	@Pure
 	public static int clamp(int v, int min, int max) {
-		assert (min <= max) : "min must be lower or equal to max"; //$NON-NLS-1$
-		if (v < min) return min;
-		if (v > max) return max;
+		assert min <= max : "min must be lower or equal to max"; //$NON-NLS-1$
+		if (v < min) {
+			return min;
+		}
+		if (v > max) {
+			return max;
+		}
 		return v;
-	}	
+	}
+
+	/** Clamp the given value to the given range.
+	 *
+	 * <p>If the value is outside the {@code [min;max]}
+	 * range, it is clamp to the nearest bounding value
+	 * {@code min} or {@code max}.
+	 *
+	 * @param v is the value to clamp.
+	 * @param min is the min value of the range.
+	 * @param max is the max value of the range.
+	 * @return the value in {@code [min;max]} range.
+	 * @deprecated since 13.0, see {@link #clamp(double, double, double)}
+	 */
+	@Deprecated
+	public static float clamp(float v, float min, float max) {
+		return (float) clamp((double) v, min, max);
+	}
 
 	/** Replies if the given value is near zero.
-	 * 
+	 *
 	 * @param value is the value to test.
-	 * @return <code>true</code> if the given <var>value</var>
-	 * is near zero, otherwise <code>false</code>.
+	 * @return <code>true</code> if the given {@code value}
+	 *     is near zero, otherwise <code>false</code>.
 	 * @see Math#ulp(double)
 	 */
 	@Pure
@@ -116,26 +144,26 @@ public final class MathUtil {
 	}
 
 	/** Replies if the given value is near zero.
-	 * 
+	 *
 	 * @param value is the value to test.
 	 * @param epsilon the approximation epsilon. If {@link Double#NaN}, the function {@link Math#ulp(double)} is
 	 *     used for evaluating the epsilon.
-	 * @return <code>true</code> if the given <var>value</var>
-	 * is near zero, otherwise <code>false</code>.
+	 * @return <code>true</code> if the given {@code value}
+	 *     is near zero, otherwise <code>false</code>.
 	 */
 	@Pure
 	@Inline(value = "(Math.abs($1) < (Double.isNaN($2) ? Math.ulp($1) : $2))", imported = Math.class)
 	public static boolean isEpsilonZero(double value, double epsilon) {
-		double eps = Double.isNaN(epsilon) ? Math.ulp(value) : epsilon;
+		final double eps = Double.isNaN(epsilon) ? Math.ulp(value) : epsilon;
 		return Math.abs(value) <= eps;
 	}
 
 	/** Replies if the given values are near.
-	 * 
-	 * @param v1
-	 * @param v2
-	 * @return <code>true</code> if the given <var>v1</var>
-	 * is near <var>v2</var>, otherwise <code>false</code>.
+	 *
+	 * @param v1 first value.
+	 * @param v2 second value.
+	 * @return <code>true</code> if the given {@code v1}
+	 *     is near {@code v2}, otherwise <code>false</code>.
 	 * @see Math#ulp(double)
 	 */
 	@Pure
@@ -145,13 +173,13 @@ public final class MathUtil {
 	}
 
 	/** Replies if the given values are near.
-	 * 
-	 * @param v1
-	 * @param v2
+	 *
+	 * @param v1 first value.
+	 * @param v2 second value.
 	 * @param epsilon the approximation epsilon. If {@link Double#NaN}, the function {@link Math#ulp(double)} is
 	 *     used for evaluating the epsilon.
-	 * @return <code>true</code> if the given <var>v1</var>
-	 * is near <var>v2</var>, otherwise <code>false</code>.
+	 * @return <code>true</code> if the given {@code v1}
+	 *     is near {@code v2}, otherwise <code>false</code>.
 	 */
 	@Pure
 	public static boolean isEpsilonEqual(double v1, double v2, double epsilon) {
@@ -160,25 +188,25 @@ public final class MathUtil {
 		} else if (Double.isNaN(v1)) {
 			return false;
 		}
-		double value = Math.abs(v1 - v2);
-		double eps = Double.isNaN(epsilon) ? Math.ulp(value) : epsilon;
+		final double value = Math.abs(v1 - v2);
+		final double eps = Double.isNaN(epsilon) ? Math.ulp(value) : epsilon;
 		return value <= eps;
 	}
 
 	/** Compares its two arguments for order.
 	 * Returns a negative integer,
-     * zero, or a positive integer as the first argument is less than, equal
-     * to, or greater than the second.<p>
-	 * 
-	 * @param v1
-	 * @param v2
+	 * zero, or a positive integer as the first argument is less than, equal
+	 * to, or greater than the second.
+	 *
+	 * @param v1 first value.
+	 * @param v2 second value.
 	 * @return a negative integer, zero, or a positive integer as the
-     *         first argument is less than, equal to, or greater than the
-     *         second.
+	 *         first argument is less than, equal to, or greater than the
+	 *         second.
 	 */
 	@Pure
 	public static int compareEpsilon(double v1, double v2) {
-		double v = v1 - v2;
+		final double v = v1 - v2;
 		if (Math.abs(v) < Math.ulp(v)) {
 			return 0;
 		}
@@ -190,21 +218,21 @@ public final class MathUtil {
 
 	/** Compares its two arguments for order.
 	 * Returns a negative integer,
-     * zero, or a positive integer as the first argument is less than, equal
-     * to, or greater than the second.<p>
-	 * 
-	 * @param v1
-	 * @param v2
+	 * zero, or a positive integer as the first argument is less than, equal
+	 * to, or greater than the second.
+	 *
+	 * @param v1 first value.
+	 * @param v2 second value.
 	 * @param epsilon approximation epsilon. If {@link Double#NaN}, the function {@link Math#ulp(double)} is
 	 *     used for evaluating the epsilon.
 	 * @return a negative integer, zero, or a positive integer as the
-     *         first argument is less than, equal to, or greater than the
-     *         second.
+	 *         first argument is less than, equal to, or greater than the
+	 *         second.
 	 */
 	@Pure
 	public static int compareEpsilon(double v1, double v2, double epsilon) {
-		double v = v1 - v2;
-		double eps = Double.isNaN(epsilon) ? Math.ulp(v) : epsilon;
+		final double v = v1 - v2;
+		final double eps = Double.isNaN(epsilon) ? Math.ulp(v) : epsilon;
 		if (Math.abs(v) <= eps) {
 			return 0;
 		}
@@ -215,153 +243,193 @@ public final class MathUtil {
 	}
 
 	/** Replies the max value.
-	 * 
+	 *
 	 * @param values are the values to scan.
 	 * @return the max value.
 	 */
 	@Pure
 	public static double max(double... values) {
-		if (values==null || values.length==0) return Double.NaN;
-		double m = values[0];
-		for(double v : values) {
-			if (v>m) m = v;
+		if (values == null || values.length == 0) {
+			return Double.NaN;
 		}
-		return m;
+		double max = values[0];
+		for (final double v : values) {
+			if (v > max) {
+				max = v;
+			}
+		}
+		return max;
 	}
 
 	/** Replies the max value.
-	 * 
+	 *
 	 * @param values are the values to scan.
 	 * @return the max value.
 	 */
 	@Pure
-	public static double max(float... values) {
-		if (values==null || values.length==0) return Float.NaN;
-		float m = values[0];
-		for(float v : values) {
-			if (v>m) m = v;
+	public static float max(float... values) {
+		if (values == null || values.length == 0) {
+			return Float.NaN;
 		}
-		return m;
+		float max = values[0];
+		for (final float v : values) {
+			if (v > max) {
+				max = v;
+			}
+		}
+		return max;
 	}
 
 	/** Replies the max value.
-	 * 
+	 *
 	 * @param values are the values to scan.
 	 * @return the max value.
 	 */
 	@Pure
 	public static int max(int... values) {
-		if (values==null || values.length==0) return 0;
-		int m = values[0];
-		for(int v : values) {
-			if (v>m) m = v;
+		if (values == null || values.length == 0) {
+			return 0;
 		}
-		return m;
+		int max = values[0];
+		for (final int v : values) {
+			if (v > max) {
+				max = v;
+			}
+		}
+		return max;
 	}
 
 	/** Replies the max value.
-	 * 
+	 *
 	 * @param values are the values to scan.
 	 * @return the max value.
 	 */
 	@Pure
 	public static long max(long... values) {
-		if (values==null || values.length==0) return 0;
-		long m = values[0];
-		for(long v : values) {
-			if (v>m) m = v;
+		if (values == null || values.length == 0) {
+			return 0;
 		}
-		return m;
+		long max = values[0];
+		for (final long v : values) {
+			if (v > max) {
+				max = v;
+			}
+		}
+		return max;
 	}
 
 	/** Replies the max value.
-	 * 
+	 *
 	 * @param values are the values to scan.
 	 * @return the max value.
 	 */
 	@Pure
 	public static short max(short... values) {
-		if (values==null || values.length==0) return 0;
-		short m = values[0];
-		for(short v : values) {
-			if (v>m) m = v;
+		if (values == null || values.length == 0) {
+			return 0;
 		}
-		return m;
+		short max = values[0];
+		for (final short v : values) {
+			if (v > max) {
+				max = v;
+			}
+		}
+		return max;
 	}
 
 	/** Replies the min value.
-	 * 
+	 *
 	 * @param values are the values to scan.
 	 * @return the min value.
 	 */
 	@Pure
 	public static double min(double... values) {
-		if (values==null || values.length==0) return Double.NaN;
-		double m = values[0];
-		for(double v : values) {
-			if (v<m) m = v;
+		if (values == null || values.length == 0) {
+			return Double.NaN;
 		}
-		return m;
+		double min = values[0];
+		for (final double v : values) {
+			if (v < min) {
+				min = v;
+			}
+		}
+		return min;
 	}
 
 	/** Replies the min value.
-	 * 
+	 *
 	 * @param values are the values to scan.
 	 * @return the min value.
 	 */
 	@Pure
 	public static float min(float... values) {
-		if (values==null || values.length==0) return Float.NaN;
-		float m = values[0];
-		for(float v : values) {
-			if (v<m) m = v;
+		if (values == null || values.length == 0) {
+			return Float.NaN;
 		}
-		return m;
+		float min = values[0];
+		for (final float v : values) {
+			if (v < min) {
+				min = v;
+			}
+		}
+		return min;
 	}
 
 	/** Replies the min value.
-	 * 
+	 *
 	 * @param values are the values to scan.
 	 * @return the min value.
 	 */
 	@Pure
 	public static int min(int... values) {
-		if (values==null || values.length==0) return 0;
-		int m = values[0];
-		for(int v : values) {
-			if (v<m) m = v;
+		if (values == null || values.length == 0) {
+			return 0;
 		}
-		return m;
+		int min = values[0];
+		for (final int v : values) {
+			if (v < min) {
+				min = v;
+			}
+		}
+		return min;
 	}
 
 	/** Replies the min value.
-	 * 
+	 *
 	 * @param values are the values to scan.
 	 * @return the min value.
 	 */
 	@Pure
 	public static long min(long... values) {
-		if (values==null || values.length==0) return 0;
-		long m = values[0];
-		for(long v : values) {
-			if (v<m) m = v;
+		if (values == null || values.length == 0) {
+			return 0;
 		}
-		return m;
+		long min = values[0];
+		for (final long v : values) {
+			if (v < min) {
+				min = v;
+			}
+		}
+		return min;
 	}
 
 	/** Replies the min value.
-	 * 
+	 *
 	 * @param values are the values to scan.
 	 * @return the min value.
 	 */
 	@Pure
 	public static short min(short... values) {
-		if (values==null || values.length==0) return 0;
-		short m = values[0];
-		for(short v : values) {
-			if (v<m) m = v;
+		if (values == null || values.length == 0) {
+			return 0;
 		}
-		return m;
+		short min = values[0];
+		for (final short v : values) {
+			if (v < min) {
+				min = v;
+			}
+		}
+		return min;
 	}
 
 	/** Clamp the given value to fit between the min and max values
@@ -369,59 +437,60 @@ public final class MathUtil {
 	 * If the given value is not between the minimum and maximum
 	 * values, the replied value
 	 * is modulo the min-max range.
-	 * 
-	 * @param value
+	 *
+	 * @param value the value to clamp.
 	 * @param min the minimum value inclusive.
 	 * @param max the maximum value exclusive.
 	 * @return the clamped value
 	 */
 	@Pure
 	public static double clampCyclic(double value, double min, double max) {
-		assert (min <= max) : "min must be lower or equal to max"; //$NON-NLS-1$
+		assert min <= max : "min must be lower or equal to max"; //$NON-NLS-1$
 		if (Double.isNaN(max) || Double.isNaN(min) || Double.isNaN(max)) {
 			return Double.NaN;
 		}
 		if (value < min) {
-			double perimeter = max - min;
-			double nvalue = min - value;
+			final double perimeter = max - min;
+			final double nvalue = min - value;
 			double rest = perimeter - (nvalue % perimeter);
 			if (rest >= perimeter) {
 				rest -= perimeter;
 			}
 			return min + rest;
-		}
-		else if (value >= max) {
-			double perimeter = max - min;
-			double nvalue = value - max;
-			double rest = (nvalue % perimeter);
+		} else if (value >= max) {
+			final double perimeter = max - min;
+			final double nvalue = value - max;
+			final double rest = nvalue % perimeter;
 			return min + rest;
 		}
 		return value;
 	}
 
-	/** Replies the <var>value</var> clamped to
+	/** Replies the {@code value} clamped to
 	 * the nearest bounds.
-	 * If |<var>value</var>-<var>minBounds</var>| &gt;
-	 * |<var>value</var>-<var>maxBounds</var>| then the
-	 * returned value is <var>maxBounds</var>; otherwise
-	 * it is <var>minBounds</var>.
+	 * If |{@code value}-{@code minBounds}| &gt;
+	 * |{@code value}-{@code maxBounds}| then the
+	 * returned value is {@code maxBounds}; otherwise
+	 * it is {@code minBounds}.
 	 *
 	 * @param value is the value to clamp.
 	 * @param minBounds is the minimal allowed value.
 	 * @param maxBounds is the maximal allowed value.
-	 * @return <var>minBounds</var> or <var>maxBounds</var>.
+	 * @return {@code minBounds} or {@code maxBounds}.
 	 */
 	@Pure
 	public static double clampToNearestBounds(double value, double minBounds, double maxBounds) {
-		assert (minBounds <= maxBounds) : "min must be lower or equal to max"; //$NON-NLS-1$
-		double center = (minBounds+maxBounds) / 2f;
-		if (value<=center) return minBounds;
+		assert minBounds <= maxBounds : "min must be lower or equal to max"; //$NON-NLS-1$
+		final double center = (minBounds + maxBounds) / 2;
+		if (value <= center) {
+			return minBounds;
+		}
 		return maxBounds;
 	}
 
 	/** Compute the zone where the point is against the given rectangle
 	 * according to the <a href="http://en.wikipedia.org/wiki/Cohen%E2%80%93Sutherland_algorithm">Cohen-Sutherland algorithm</a>.
-	 * 
+	 *
 	 * @param px is the coordinates of the points.
 	 * @param py is the coordinates of the points.
 	 * @param rxmin is the min of the coordinates of the rectangle.
@@ -432,23 +501,23 @@ public final class MathUtil {
 	 */
 	@Pure
 	public static int getCohenSutherlandCode(int px, int py, int rxmin, int rymin, int rxmax, int rymax) {
-		assert (rxmin <= rxmax) : "rxmin must be lower or equal to rxmax"; //$NON-NLS-1$
-		assert (rymin <= rymax) : "rymin must be lower or equal to rymax"; //$NON-NLS-1$
+		assert rxmin <= rxmax : "rxmin must be lower or equal to rxmax"; //$NON-NLS-1$
+		assert rymin <= rymax : "rymin must be lower or equal to rymax"; //$NON-NLS-1$
 		// initialised as being inside of clip window
 		int code = COHEN_SUTHERLAND_INSIDE;
-		if (px<rxmin) {
+		if (px < rxmin) {
 			// to the left of clip window
 			code |= COHEN_SUTHERLAND_LEFT;
 		}
-		if (px>rxmax) {
+		if (px > rxmax) {
 			// to the right of clip window
 			code |= COHEN_SUTHERLAND_RIGHT;
 		}
-		if (py<rymin) {
+		if (py < rymin) {
 			// to the bottom of clip window
 			code |= COHEN_SUTHERLAND_BOTTOM;
 		}
-		if (py>rymax) {
+		if (py > rymax) {
 			// to the top of clip window
 			code |= COHEN_SUTHERLAND_TOP;
 		}
@@ -457,10 +526,10 @@ public final class MathUtil {
 
 	/** Compute the zone where the point is against the given rectangle
 	 * according to the <a href="http://en.wikipedia.org/wiki/Cohen%E2%80%93Sutherland_algorithm">Cohen-Sutherland algorithm</a>.
-	 * 
+	 *
 	 * <p>This function considers that if a point coordinate is equal to the a border coordinate of the rectangle,
-	 * it is inside the rectangle. 
-	 * 
+	 * it is inside the rectangle.
+	 *
 	 * @param px is the coordinates of the points.
 	 * @param py is the coordinates of the points.
 	 * @param rxmin is the min of the coordinates of the rectangle.
@@ -471,8 +540,8 @@ public final class MathUtil {
 	 */
 	@Pure
 	public static int getCohenSutherlandCode(double px, double py, double rxmin, double rymin, double rxmax, double rymax) {
-		assert (rxmin <= rxmax) : "rxmin must be lower or equal to rxmax"; //$NON-NLS-1$
-		assert (rymin <= rymax) : "rymin must be lower or equal to rymax"; //$NON-NLS-1$
+		assert rxmin <= rxmax : "rxmin must be lower or equal to rxmax"; //$NON-NLS-1$
+		assert rymin <= rymax : "rymin must be lower or equal to rymax"; //$NON-NLS-1$
 		// initialised as being inside of clip window
 		int code = COHEN_SUTHERLAND_INSIDE;
 		if (px < rxmin) {
@@ -502,16 +571,17 @@ public final class MathUtil {
 	 * If all the values are {@link Double#NaN}, the function replies
 	 * <code>null</code>.
 	 *
-	 * @param a the first value.
-	 * @param b the second value.
-	 * @param c the third value.
+	 * @param value1 the first value.
+	 * @param value2 the second value.
+	 * @param value3 the third value.
 	 * @return the min max range; or <code>null</code>.
 	 * @since 13.0
 	 */
-	public static DoubleRange getMinMax(double a, double b, double c) {
+	public static DoubleRange getMinMax(double value1, double value2, double value3) {
 		// Efficient implementation of the min/max determination
-		double min, max;
-		
+		final double min;
+		final double max;
+
 		// ---------------------------------
 		// Table of cases
 		// ---------------------------------
@@ -525,71 +595,74 @@ public final class MathUtil {
 		//  >   >   <  b c a     b   a   5
 		//  >   >   >  c b a     c   a   6
 		// ---------------------------------
-		
-		if (a <= b) {
+
+		if (value1 <= value2) {
 			// A and B are not NaN
 			// case candidates: 123
-			if (a <= c) {
+			if (value1 <= value3) {
 				// case candidates: 12
-				min = a;
-				if (b <= c) {
+				min = value1;
+				if (value2 <= value3) {
 					// case: 1
-					max = c;
+					max = value3;
 				} else {
 					// case: 2
-					max = b;
+					max = value2;
 				}
 			} else {
 				// 3
-				max = b;
-				if (Double.isNaN(c)) {
-					min = a;
+				max = value2;
+				if (Double.isNaN(value3)) {
+					min = value1;
 				} else {
-					min = c;
+					min = value3;
 				}
 			}
 		} else {
 			// case candidates: 456
-			if (a <= c) {
-				max = c;
-				if (Double.isNaN(b)) {
-					min = a;
+			if (value1 <= value3) {
+				max = value3;
+				if (Double.isNaN(value2)) {
+					min = value1;
 				} else {
 					// case: 4
-					min = b;
+					min = value2;
 				}
-			} else if (Double.isNaN(a)) {
-				if (b <= c) {
-					min = b;
-					max = c;
-				} else if (Double.isNaN(b)) {
-					if (Double.isNaN(c)) {
+			} else if (Double.isNaN(value1)) {
+				if (value2 <= value3) {
+					min = value2;
+					max = value3;
+				} else if (Double.isNaN(value2)) {
+					if (Double.isNaN(value3)) {
 						return null;
 					}
-					min = max = c;
-				} else if (Double.isNaN(c)) {
-					min = max = b;
+					min = value3;
+					max = min;
+				} else if (Double.isNaN(value3)) {
+					min = value2;
+					max = min;
 				} else {
-					min = c;
-					max = b;
+					min = value3;
+					max = value2;
 				}
-			} else if (Double.isNaN(c)) {
-				if (Double.isNaN(b)) {
-					min = max = a;
+			} else if (Double.isNaN(value3)) {
+				if (Double.isNaN(value2)) {
+					min = value1;
+					max = min;
 				} else {
-					min = b;
-					max = a;
+					min = value2;
+					max = value1;
 				}
 			} else {
 				// B may NaN
 				// case candidates: 56
-				max = a;
-				if (b <= c) {
+				max = value1;
+				if (value2 <= value3) {
 					// case: 5
-					min = b;
+					min = value2;
 				} else {
 					// case: 6
-					min = c;
+					min = value3;
 				}
 			}
 		}
@@ -597,61 +670,61 @@ public final class MathUtil {
 	}
 
 	/** Replies the cosecant of the specified angle.
-	 * <p>
-	 * <code>csc(a) = 1/sin(a)</code>
-	 * <p>
-	 * <img src="./doc-files/trigo1.png" alt="[Cosecant function]">
+	 *
+	 * <p><code>csc(a) = 1/sin(a)</code>
+	 *
+	 * <p><img src="./doc-files/trigo1.png" alt="[Cosecant function]">
 	 * <img src="./doc-files/trigo3.png" alt="[Cosecant function]">
-	 * 
-	 * @param angle
-	 * @return the cosecant.
+	 *
+	 * @param angle the angle.
+	 * @return the cosecant of the angle.
 	 */
 	@Pure
 	@Inline(value = "(1./Math.sin($1))", imported = {Math.class})
 	public static double csc(double angle) {
-		return 1./Math.sin(angle);
+		return 1. / Math.sin(angle);
 	}
 
 	/** Replies the secant of the specified angle.
-	 * <p>
-	 * <code>csc(a) = 1/cos(a)</code>
-	 * <p>
-	 * <img src="./doc-files/trigo1.png" alt="[Secant function]">
+	 *
+	 * <p><code>csc(a) = 1/cos(a)</code>
+	 *
+	 * <p><img src="./doc-files/trigo1.png" alt="[Secant function]">
 	 * <img src="./doc-files/trigo2.png" alt="[Secant function]">
-	 * 
-	 * @param angle
-	 * @return the secant.
+	 *
+	 * @param angle the angle.
+	 * @return the secant of the angle.
 	 */
 	@Pure
 	@Inline(value = "(1./Math.cos($1))", imported = {Math.class})
 	public static double sec(double angle) {
-		return 1./Math.cos(angle);
+		return 1. / Math.cos(angle);
 	}
 
 	/** Replies the cotangent of the specified angle.
-	 * <p>
-	 * <code>csc(a) = 1/tan(a)</code>
-	 * <p>
-	 * <img src="./doc-files/trigo1.png" alt="[Cotangent function]">
+	 *
+	 * <p><code>csc(a) = 1/tan(a)</code>
+	 *
+	 * <p><img src="./doc-files/trigo1.png" alt="[Cotangent function]">
 	 * <img src="./doc-files/trigo3.png" alt="[Cotangent function]">
-	 * 
-	 * @param angle
-	 * @return the cotangent.
+	 *
+	 * @param angle the angle.
+	 * @return the cotangent of the angle.
 	 */
 	@Pure
 	@Inline(value = "(1./Math.tan($1))", imported = {Math.class})
 	public static double cot(double angle) {
-		return 1./Math.tan(angle);
+		return 1. / Math.tan(angle);
 	}
 
 	/** Replies the versine of the specified angle.
-	 * <p>
-	 * <code>versin(a) = 1 - cos(a)</code>
-	 * <p>
-	 * <img src="./doc-files/trigo1.png" alt="[Versine function]">
-	 * 
-	 * @param angle
-	 * @return the cotangent.
+	 *
+	 * <p><code>versin(a) = 1 - cos(a)</code>
+	 *
+	 * <p><img src="./doc-files/trigo1.png" alt="[Versine function]">
+	 *
+	 * @param angle the angle.
+	 * @return the versine of the angle.
 	 */
 	@Pure
 	@Inline(value = "(1.-Math.cos($1))", imported = {Math.class})
@@ -660,13 +733,13 @@ public final class MathUtil {
 	}
 
 	/** Replies the exsecant of the specified angle.
-	 * <p>
-	 * <code>exsec(a) = sec(a) - 1</code>
-	 * <p>
-	 * <img src="./doc-files/trigo1.png" alt="[Exsecant function]">
-	 * 
-	 * @param angle
-	 * @return the cotangent.
+	 *
+	 * <p><code>exsec(a) = sec(a) - 1</code>
+	 *
+	 * <p><img src="./doc-files/trigo1.png" alt="[Exsecant function]">
+	 *
+	 * @param angle the angle.
+	 * @return the exsecant of the angle..
 	 */
 	@Pure
 	@Inline(value = "(MathUtil.sec($1)-1.)", imported = {MathUtil.class})
@@ -675,65 +748,52 @@ public final class MathUtil {
 	}
 
 	/** Replies the chord of the specified angle.
-	 * <p>
-	 * <code>crd(a) = 2 sin(a/2)</code>
-	 * <p>
-	 * <img src="./doc-files/chord.png" alt="[Chord function]">
-	 * 
-	 * @param angle
-	 * @return the chord.
+	 *
+	 * <p><code>crd(a) = 2 sin(a/2)</code>
+	 *
+	 * <p><img src="./doc-files/chord.png" alt="[Chord function]">
+	 *
+	 * @param angle the angle.
+	 * @return the chord of the angle.
 	 */
 	@Pure
 	@Inline(value = "(2.*Math.sin(($1)/2.)", imported = {Math.class})
 	public static double crd(double angle) {
-		return 2. * Math.sin(angle/2.);
+		return 2. * Math.sin(angle / 2.);
 	}
 
 	/** Replies the half of the versine (aka, haversine) of the specified angle.
-	 * <p>
-	 * <code>haversine(a) = sin<sup>2</sup>(a/2) = (1-cos(a)) / 2</code>
-	 * <p>
-	 * <img src="./doc-files/trigo1.png" alt="[Excosecant function]">
-	 * 
-	 * @param angle
-	 * @return the chord.
+	 *
+	 * <p><code>haversine(a) = sin<sup>2</sup>(a/2) = (1-cos(a)) / 2</code>
+	 *
+	 * <p><img src="./doc-files/trigo1.png" alt="[Excosecant function]">
+	 *
+	 * @param angle the angle.
+	 * @return the half of the versine of the angle.
 	 */
 	@Pure
 	public static double haversine(double angle) {
-		double sin2 = Math.sin(angle/2.);
-		return sin2*sin2;
+		final double sin2 = Math.sin(angle / 2.);
+		return sin2 * sin2;
 	}
 
 	/** Clamp the given angle in radians to {@code [0;2PI)}.
-	 * 
+	 *
 	 * @param radians is the angle to clamp
 	 * @return the angle in {@code [0;2PI)} range.
-	 * @deprecated {@link #clampCyclic(double, double, double)}
+	 * @deprecated since 13.0, {@link #clampCyclic(double, double, double)}
 	 */
 	@Deprecated
 	public static float clampRadian(float radians) {
-		float r = radians;
-		while (r<0f) r += MathConstants.TWO_PI;
-		while (r>=MathConstants.TWO_PI) r -= MathConstants.TWO_PI;
-		return r;
+		float rad = radians;
+		while (rad < 0f) {
+			rad += MathConstants.TWO_PI;
+		}
+		while (rad >= MathConstants.TWO_PI) {
+			rad -= MathConstants.TWO_PI;
+		}
+		return rad;
 	}
-
-	/** Clamp the given value to the given range.
-	 * <p>
-	 * If the value is outside the {@code [min;max]}
-	 * range, it is clamp to the nearest bounding value
-	 * <var>min</var> or <var>max</var>.
-	 * 
-	 * @param v is the value to clamp.
-	 * @param min is the min value of the range.
-	 * @param max is the max value of the range.
-	 * @return the value in {@code [min;max]} range.
-	 * @deprecated see {@link #clamp(double, double, double)}
-	 */
-	@Deprecated
-	public static float clamp(float v, float min, float max) {
-		return (float) clamp((double) v, min, max);
-	}	
 
 	/** Compute the distance between a point and a segment.
 	 *
@@ -744,27 +804,11 @@ public final class MathUtil {
 	 * @param x2 horizontal position of the second point of the segment.
 	 * @param y2 vertical position of the second point of the segment.
 	 * @return the distance beetween the point and the segment.
-	 * @deprecated
+	 * @deprecated since 13.0, see {@code Segment2afp}
 	 */
 	@Deprecated
-	public static final float distancePointToSegment(float px, float py, float x1, float y1, float x2, float y2) {
+	public static float distancePointToSegment(float px, float py, float x1, float y1, float x2, float y2) {
 		return distancePointToSegment(px, py, x1, y1, x2, y2, null);
-	}
-
-	/** Compute the square distance between a point and a segment.
-	 *
-	 * @param px horizontal position of the point.
-	 * @param py vertical position of the point.
-	 * @param x1 horizontal position of the first point of the segment.
-	 * @param y1 vertical position of the first point of the segment.
-	 * @param x2 horizontal position of the second point of the segment.
-	 * @param y2 vertical position of the second point of the segment.
-	 * @return the distance beetween the point and the segment.
-	 * @deprecated
-	 */
-	@Deprecated
-	public static final float distanceSquaredPointToSegment(float px, float py, float x1, float y1, float x2, float y2) {
-		return distanceSquaredPointToSegment(px, py, x1, y1, x2, y2, null);
 	}
 
 	/** Compute the distance between a point and a segment.
@@ -776,20 +820,25 @@ public final class MathUtil {
 	 * @param x2 horizontal position of the second point of the segment.
 	 * @param y2 vertical position of the second point of the segment.
 	 * @param pts is the point that will be set with the coordinates of the nearest point,
-	 * if not <code>null</code>.
+	 *     if not <code>null</code>.
 	 * @return the distance beetween the point and the segment.
-	 * @deprecated
+	 * @deprecated since 13.0, see {@code Segment2afp}
 	 */
 	@Deprecated
-	public static final float distancePointToSegment(float px, float py, float x1, float y1, float x2, float y2, Point2D pts) {
-		float r_denomenator = (x2-x1)*(x2-x1) + (y2-y1)*(y2-y1);
-		if (r_denomenator==0.) return distancePointToPoint(px, py, x1, y1);
-		float r_numerator = (px-x1)*(x2-x1) + (py-y1)*(y2-y1);
-		float ratio = r_numerator / r_denomenator;
+	@SuppressWarnings("checkstyle:all")
+	public static float distancePointToSegment(float px, float py, float x1, float y1, float x2, float y2, Point2D pts) {
+		final float rdenomenator = (x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1);
+		if (rdenomenator == 0.) {
+			return distancePointToPoint(px, py, x1, y1);
+		}
+		final float rnumerator = (px - x1) * (x2 - x1) + (py - y1) * (y2 - y1);
+		final float ratio = rnumerator / rdenomenator;
 
-		if (ratio<=0.) {
-			if (pts!=null) pts.set(x1, y1);
-			return (float)Math.sqrt((px-x1)*(px-x1) + (py-y1)*(py-y1));
+		if (ratio <= 0.) {
+			if (pts != null) {
+				pts.set(x1, y1);
+			}
+			return (float) Math.sqrt((px - x1) * (px - x1) + (py - y1) * (py - y1));
 		}
 
 		if (ratio>=1.) {
@@ -801,8 +850,24 @@ public final class MathUtil {
 				ratio * (x2-x1),
 				ratio * (y2-y1));
 
-		float s =  ((y1-py)*(x2-x1)-(x1-px)*(y2-y1) ) / r_denomenator;
-		return (float)(Math.abs(s) * Math.sqrt(r_denomenator));
+		float s =  ((y1-py)*(x2-x1)-(x1-px)*(y2-y1) ) / rdenomenator;
+		return (float)(Math.abs(s) * Math.sqrt(rdenomenator));
+	}
+
+	/** Compute the square distance between a point and a segment.
+	 *
+	 * @param px horizontal position of the point.
+	 * @param py vertical position of the point.
+	 * @param x1 horizontal position of the first point of the segment.
+	 * @param y1 vertical position of the first point of the segment.
+	 * @param x2 horizontal position of the second point of the segment.
+	 * @param y2 vertical position of the second point of the segment.
+	 * @return the distance beetween the point and the segment.
+	 * @deprecated since 13.0, see {@code Segment2afp}
+	 */
+	@Deprecated
+	public static float distanceSquaredPointToSegment(float px, float py, float x1, float y1, float x2, float y2) {
+		return distanceSquaredPointToSegment(px, py, x1, y1, x2, y2, null);
 	}
 
 	/** Compute the square distance between a point and a segment.
@@ -814,33 +879,41 @@ public final class MathUtil {
 	 * @param x2 horizontal position of the second point of the segment.
 	 * @param y2 vertical position of the second point of the segment.
 	 * @param pts is the point that will be set with the coordinates of the nearest point,
-	 * if not <code>null</code>.
+	 *     if not <code>null</code>.
 	 * @return the distance beetween the point and the segment.
-	 * @deprecated
+	 * @deprecated since 13.0, see {@code Segment2afp}
 	 */
 	@Deprecated
-	public static final float distanceSquaredPointToSegment(float px, float py, float x1, float y1, float x2, float y2, Point2D pts) {
-		float r_denomenator = (x2-x1)*(x2-x1) + (y2-y1)*(y2-y1);
-		if (r_denomenator==0f) return distanceSquaredPointToPoint(px, py, x1, y1);
-		float r_numerator = (px-x1)*(x2-x1) + (py-y1)*(y2-y1);
-		float ratio = r_numerator / r_denomenator;
+	public static float distanceSquaredPointToSegment(float px, float py, float x1, float y1, float x2, float y2, Point2D pts) {
+		final float rdenomenator = (x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1);
+		if (rdenomenator == 0f) {
+			return distanceSquaredPointToPoint(px, py, x1, y1);
+		}
+		final float rnumerator = (px - x1) * (x2 - x1) + (py - y1) * (y2 - y1);
+		final float ratio = rnumerator / rdenomenator;
 
-		if (ratio<=0f) {
-			if (pts!=null) pts.set(x1, y1);
-			return Math.abs((px-x1)*(px-x1) + (py-y1)*(py-y1));
+		if (ratio <= 0f) {
+			if (pts != null) {
+				pts.set(x1, y1);
+			}
+			return Math.abs((px - x1) * (px - x1) + (py - y1) * (py - y1));
 		}
 
-		if (ratio>=1f) {
-			if (pts!=null) pts.set(x2, y2);
-			return Math.abs((px-x2)*(px-x2) + (py-y2)*(py-y2));
+		if (ratio >= 1f) {
+			if (pts != null) {
+				pts.set(x2, y2);
+			}
+			return Math.abs((px - x2) * (px - x2) + (py - y2) * (py - y2));
 		}
 
-		if (pts!=null) pts.set(
-				ratio * (x2-x1),
-				ratio * (y2-y1));
+		if (pts != null) {
+			pts.set(
+					ratio * (x2 - x1),
+					ratio * (y2 - y1));
+		}
 
-		float s =  ((y1-py)*(x2-x1)-(x1-px)*(y2-y1) ) / r_denomenator;
-		return (s * s) * Math.abs(r_denomenator);
+		final float result =  ((y1 - py) * (x2 - x1) - (x1 - px) * (y2 - y1)) / rdenomenator;
+		return (result * result) * Math.abs(rdenomenator);
 	}
 
 	/** Compute the distance between a point and a line.
@@ -854,14 +927,16 @@ public final class MathUtil {
 	 * @return the distance beetween the point and the line.
 	 * @see #distanceSquaredPointToLine(float, float, float, float, float, float)
 	 * @see #relativeDistancePointToLine(float, float, float, float, float, float)
-	 * @deprecated
+	 * @deprecated since 13.0, see {@code Segment2afp}
 	 */
 	@Deprecated
-	public static final float distancePointToLine(float px, float py, float x1, float y1, float x2, float y2) {
-		float r_denomenator = (x2-x1)*(x2-x1) + (y2-y1)*(y2-y1);
-		if (r_denomenator==0.) return distancePointToPoint(px, py, x1, y1);
-		float s = ((y1-py)*(x2-x1)-(x1-px)*(y2-y1) ) / r_denomenator;
-		return (float)(Math.abs(s) * Math.sqrt(r_denomenator));
+	public static float distancePointToLine(float px, float py, float x1, float y1, float x2, float y2) {
+		final float rdenomenator = (x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1);
+		if (rdenomenator == 0.) {
+			return distancePointToPoint(px, py, x1, y1);
+		}
+		final float result = ((y1 - py) * (x2 - x1) - (x1 - px) * (y2 - y1)) / rdenomenator;
+		return (float) (Math.abs(result) * Math.sqrt(rdenomenator));
 	}
 
 	/** Compute the distance between a point and a line.
@@ -874,28 +949,30 @@ public final class MathUtil {
 	 * @param y2 vertical position of the second point of the line.
 	 * @return the distance beetween the point and the line.
 	 * @see #distancePointToLine(float, float, float, float, float, float)
-	 * @deprecated
+	 * @deprecated since 13.0, see {@code Segment2afp}
 	 */
 	@Deprecated
-	public static final float distanceSquaredPointToLine(float px, float py, float x1, float y1, float x2, float y2) {
-		float r_denomenator = (x2-x1)*(x2-x1) + (y2-y1)*(y2-y1);
-		if (r_denomenator==0.) return distanceSquaredPointToPoint(px, py, x1, y1);
-		float s = ((y1-py)*(x2-x1)-(x1-px)*(y2-y1) ) / r_denomenator;
-		return (s * s) * Math.abs(r_denomenator);
+	public static float distanceSquaredPointToLine(float px, float py, float x1, float y1, float x2, float y2) {
+		final float rdenomenator = (x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1);
+		if (rdenomenator == 0.) {
+			return distanceSquaredPointToPoint(px, py, x1, y1);
+		}
+		final float result = ((y1 - py) * (x2 - x1) - (x1 - px) * (y2 - y1)) / rdenomenator;
+		return (result * result) * Math.abs(rdenomenator);
 	}
 
-	/** Compute the distance between 2 points.
+	/** Compute the distance between two points.
 	 *
-	 * @param x1 horizontal position of the first point.
-	 * @param y1 vertical position of the first point.
-	 * @param x2 horizontal position of the second point.
-	 * @param y2 vertical position of the second point.
-	 * @return the distance between given points.
-	 * @see #distanceSquaredPointToPoint(float, float, float, float)
-	 * @deprecated
+	 * @param x1 x1
+	 * @param y1 y1
+	 * @param x2 x2
+	 * @param y2 y2
+	 * @return the distance.
+	 * @deprecated since 13.0
 	 */
 	@Deprecated
-	public static final float distancePointToPoint(float x1, float y1, float x2, float y2) {
+	@SuppressWarnings("checkstyle:all")
+	public static float distancePointToPoint(float x1, float y1, float x2, float y2) {
 		float dx, dy;
 		dx = x1 - x2;
 		dy = y1 - y2;
@@ -913,6 +990,7 @@ public final class MathUtil {
 	 * @deprecated
 	 */
 	@Deprecated
+	@SuppressWarnings("checkstyle:all")
 	public static final float distanceSquaredPointToPoint(float x1, float y1, float x2, float y2) {
 		float dx, dy;
 		dx = x1 - x2;
@@ -922,13 +1000,14 @@ public final class MathUtil {
 
 	/**
 	 * Replies the specified angle translated between 0 and 2PI.
-	 * 
+	 *
 	 * @param radian
 	 *            is an angle
 	 * @return normalized angle
-	 * @deprecated see {@link #clampCyclic(double, double, double)}
+	 * @deprecated since 13.0, see {@link #clampCyclic(double, double, double)}
 	 */
 	@Deprecated
+	@SuppressWarnings("checkstyle:all")
 	public static float clampRadian0To2PI(float radian) {
 		if ((!Float.isNaN(radian)) && (!Float.isInfinite(radian))) {
 			return (float) clampCyclic(radian, 0, 2f*MathConstants.PI);
@@ -942,9 +1021,10 @@ public final class MathUtil {
 	 * @param radian
 	 *            is an angle
 	 * @return normalized angle
-	 * @deprecated see {@link #clampCyclic(double, double, double)}
+	 * @deprecated since 13.0, see {@link #clampCyclic(double, double, double)}
 	 */
 	@Deprecated
+	@SuppressWarnings("checkstyle:all")
 	public static float clampRadianMinusPIToPI(float radian) {
 		if ((!Float.isNaN(radian)) && (!Float.isInfinite(radian))) {
 			return clampTrigo(radian, (float)-MathConstants.PI, (float)MathConstants.PI);
@@ -958,9 +1038,10 @@ public final class MathUtil {
 	 * @param degree
 	 *            is an angle
 	 * @return normalized angle
-	 * @deprecated see {@link #clampCyclic(double, double, double)}
+	 * @deprecated since 13.0, see {@link #clampCyclic(double, double, double)}
 	 */
 	@Deprecated
+	@SuppressWarnings("checkstyle:all")
 	public static float clampDegree0To360(float degree) {
 		if ((!Float.isNaN(degree)) && (!Float.isInfinite(degree))) {
 			return clampTrigo(degree, 0, 360);
@@ -974,9 +1055,10 @@ public final class MathUtil {
 	 * @param degree
 	 *            is an angle
 	 * @return normalized angle
-	 * @deprecated see {@link #clampCyclic(double, double, double)}
+	 * @deprecated since 13.0, see {@link #clampCyclic(double, double, double)}
 	 */
 	@Deprecated
+	@SuppressWarnings("checkstyle:all")
 	public static float clampDegreeMinus180To180(float degree) {
 		if ((!Float.isNaN(degree)) && (!Float.isInfinite(degree))) {
 			return clampTrigo(degree, -180, 180);
@@ -992,15 +1074,16 @@ public final class MathUtil {
 	 * If the given value is not between the minimum and maximum
 	 * values and the value is negative, the value is modulo the perimeter
 	 * of the clockwise circle.
-	 * The perimeter is the distance between <var>min</var> and <var>max</var>.
+	 * The perimeter is the distance between {@code min} and {@code max}.
 	 * 
 	 * @param value
 	 * @param min
 	 * @param max
 	 * @return the clamped value
-	 * @deprecated see {@link #clampCyclic(double, double, double)}
+	 * @deprecated since 13.0, see {@link #clampCyclic(double, double, double)}
 	 */
 	@Deprecated
+	@SuppressWarnings("checkstyle:all")
 	public static float clampTrigo(float value, float min, float max) {
 		if (Float.isNaN(max)) { // NaN is lower than all the number according to float.compareTo()
 			return Float.NaN;
@@ -1033,6 +1116,7 @@ public final class MathUtil {
 	 * @deprecated
 	 */
 	@Deprecated
+	@SuppressWarnings("checkstyle:all")
 	public static float signedAngle(float x1, float y1, float x2, float y2) {
 		float length1 = (float)Math.sqrt(x1 * x1 + y1 * y1);
 		float length2 = (float)Math.sqrt(x2 * x2 + y2 * y2);
@@ -1086,6 +1170,7 @@ public final class MathUtil {
 	 * @deprecated
 	 */
 	@Deprecated
+	@SuppressWarnings("checkstyle:all")
 	public static final float angleOfVector( Point2D p1, Point2D p2 ) {
 		return signedAngle(
 				1, 0, 
@@ -1108,6 +1193,7 @@ public final class MathUtil {
 	 * @deprecated
 	 */
 	@Deprecated
+	@SuppressWarnings("checkstyle:all")
 	public static final float angleOfVector(float x1, float y1, float x2, float y2) {
 		return signedAngle(
 				1, 0, 
@@ -1127,6 +1213,7 @@ public final class MathUtil {
 	 * @deprecated
 	 */
 	@Deprecated
+	@SuppressWarnings("checkstyle:all")
 	public static final float angleOfVector(float x, float y) {
 		return signedAngle(
 				1, 0, 
@@ -1147,6 +1234,7 @@ public final class MathUtil {
 	 * @deprecated
 	 */
 	@Deprecated
+	@SuppressWarnings("checkstyle:all")
 	public static boolean isPointClosedToSegment( float x1, float y1, 
 			float x2, float y2, 
 			float x, float y, float hitDistance ) {
@@ -1167,6 +1255,7 @@ public final class MathUtil {
 	 * @deprecated
 	 */
 	@Deprecated
+	@SuppressWarnings("checkstyle:all")
 	public static boolean isPointClosedToLine( float x1, float y1, 
 			float x2, float y2, 
 			float x, float y, float hitDistance ) {
@@ -1177,9 +1266,10 @@ public final class MathUtil {
 	 *
 	 * @param i the inch value
 	 * @return a value in centimeters
-	 * @deprecated see {@link MeasureUnitUtil}
+	 * @deprecated since 13.0, see {@link MeasureUnitUtil}
 	 */
 	@Deprecated
+	@SuppressWarnings("checkstyle:all")
 	public static float inchToMetric( float i ) {
 		return i / 0.3937f ;
 	}
@@ -1188,14 +1278,15 @@ public final class MathUtil {
 	 *
 	 * @param m the metric value
 	 * @return a value in inches
-	 * @deprecated see {@link MeasureUnitUtil}
+	 * @deprecated since 13.0, see {@link MeasureUnitUtil}
 	 */
 	@Deprecated
+	@SuppressWarnings("checkstyle:all")
 	public static float metricToInch( float m ) {
 		return m * 0.3937f ;
 	}
 
-	/** Replies the <var>value</var> clamped in
+	/** Replies the {@code value} clamped in
 	 * the specified interval assuming the
 	 * it is a angle in radians.
 	 *
@@ -1203,9 +1294,10 @@ public final class MathUtil {
 	 * @param min is the minimal allowed value.
 	 * @param max is the maximal allowed value.
 	 * @return the clamped value.
-	 * @deprecated see {@link #clampCyclic(double, double, double)}
+	 * @deprecated since 13.0, see {@link #clampCyclic(double, double, double)}
 	 */
 	@Deprecated
+	@SuppressWarnings("checkstyle:all")
 	public static float clampAngle( float value, float min, float max ) {
 		assert(min<=max);
 		float v = value;
@@ -1216,20 +1308,21 @@ public final class MathUtil {
 		return v;
 	}
 
-	/** Replies the <var>value</var> clamped to
+	/** Replies the {@code value} clamped to
 	 * the nearest bounds.
-	 * If |<var>value</var>-<var>minBounds</var>| &gt;
-	 * |<var>value</var>-<var>maxBounds</var>| then the
-	 * returned value is <var>maxBounds</var>; otherwise
-	 * it is <var>minBounds</var>.
+	 * If |{@code value}-{@code minBounds}| &gt;
+	 * |{@code value}-{@code maxBounds}| then the
+	 * returned value is {@code maxBounds}; otherwise
+	 * it is {@code minBounds}.
 	 *
 	 * @param value is the value to clamp.
 	 * @param minBounds is the minimal allowed value.
 	 * @param maxBounds is the maximal allowed value.
-	 * @return <var>minBounds</var> or <var>maxBounds</var>.
-	 * @deprecated see {@link #clampToNearestBounds(double, double, double)}
+	 * @return {@code minBounds} or {@code maxBounds}.
+	 * @deprecated since 13.0, see {@link #clampToNearestBounds(double, double, double)}
 	 */
 	@Deprecated
+	@SuppressWarnings("checkstyle:all")
 	public static float clampToNearestBounds( float value, float minBounds, float maxBounds ) {
 		assert(minBounds<=maxBounds);
 		float center = (minBounds+maxBounds) / 2f;
@@ -1268,6 +1361,7 @@ public final class MathUtil {
 	 * @deprecated
 	 */
 	@Deprecated
+	@SuppressWarnings("checkstyle:all")
 	public static float getSegmentSegmentIntersectionFactor(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4) {
 		float X1 = x2 - x1;
 		float Y1 = y2 - y1;
@@ -1309,6 +1403,7 @@ public final class MathUtil {
 	 * @deprecated
 	 */
 	@Deprecated
+	@SuppressWarnings("checkstyle:all")
 	public static float determinant(float x1, float y1, float x2, float y2) {
 		return x1*y2 - x2*y1;
 	}
@@ -1336,6 +1431,7 @@ public final class MathUtil {
 	 * @deprecated
 	 */
 	@Deprecated
+	@SuppressWarnings("checkstyle:all")
 	public static Point2D getSegmentSegmentIntersectionPoint(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4) {
 		float m = getSegmentSegmentIntersectionFactor(x1, y1, x2, y2, x3, y3, x4, y4);
 		if (Float.isNaN(m))
@@ -1352,6 +1448,7 @@ public final class MathUtil {
 	 * @deprecated
 	 */
 	@Deprecated
+	@SuppressWarnings("checkstyle:all")
 	public static Point2D interpolate(Point2D p1, Point2D p2, float factor) {
 		return interpolate(p1.getX(), p1.getY(), p2.getX(), p2.getY(), factor);
 	}
@@ -1367,6 +1464,7 @@ public final class MathUtil {
 	 * @deprecated
 	 */
 	@Deprecated
+	@SuppressWarnings("checkstyle:all")
 	public static Point2D interpolate(float p1x, float p1y, float p2x, float p2y, float factor) {
 		float f = (factor<0f) ? 0f : factor;
 		if (f>1f) f = 1f;
@@ -1387,6 +1485,7 @@ public final class MathUtil {
 	 * @deprecated
 	 */
 	@Deprecated
+	@SuppressWarnings("checkstyle:all")
 	public static float dotProduct(float x1, float y1, float x2, float y2) {
 		return x1*x2 + y1*y2;
 	}
@@ -1438,6 +1537,7 @@ public final class MathUtil {
 	 * @deprecated
 	 */
 	@Deprecated
+	@SuppressWarnings("checkstyle:all")
 	public static int ccw(float x1, float y1, float x2, float y2, float px, float py, boolean approximateZero) {
 		float cx2 = x2 - x1;
 		float cy2 = y2 - y1;
@@ -1509,6 +1609,7 @@ public final class MathUtil {
 	 * @deprecated
 	 */
 	@Deprecated
+	@SuppressWarnings("checkstyle:all")
 	public static int sidePointLine(float x1, float y1, float x2, float y2, float px, float py, boolean approximateZero) {
 		float cx2 = x2 - x1;
 		float cy2 = y2 - y1;
@@ -1545,6 +1646,7 @@ public final class MathUtil {
 	 * @deprecated
 	 */
 	@Deprecated
+	@SuppressWarnings("checkstyle:all")
 	public static float relativeDistancePointToLine(float x1, float y1, float x2, float y2, float px, float py) {
 		float r_denomenator = (x2-x1)*(x2-x1) + (y2-y1)*(y2-y1);
 		if (r_denomenator==0.) return distancePointToPoint(px, py, x1, y1);
@@ -1563,6 +1665,7 @@ public final class MathUtil {
 	 * @deprecated
 	 */
 	@Deprecated
+	@SuppressWarnings("checkstyle:all")
 	public static Point2D computeLineIntersection(Point2D p1, Vector2D v1, Point2D p2, Vector2D v2) {
 		float x1 = p1.getX();
 		float y1 = p1.getY();
@@ -1608,6 +1711,7 @@ public final class MathUtil {
 	 * @deprecated
 	 */
 	@Deprecated
+	@SuppressWarnings("checkstyle:all")
 	public static float projectsPointOnLine(float px, float py, float s1x, float s1y, float s2x, float s2y) {
 		float r_numerator = (px-s1x)*(s2x-s1x) + (py-s1y)*(s2y-s1y);
 		float r_denomenator = (s2x-s1x)*(s2x-s1x) + (s2y-s1y)*(s2y-s1y);
@@ -1645,6 +1749,7 @@ public final class MathUtil {
 	 * @deprecated
 	 */
 	@Deprecated
+	@SuppressWarnings("checkstyle:all")
 	public static float getLineLineIntersectionFactor(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4) {
 		float X1 = x2 - x1;
 		float Y1 = y2 - y1;
@@ -1681,6 +1786,7 @@ public final class MathUtil {
 	 * @deprecated
 	 */
 	@Deprecated
+	@SuppressWarnings("checkstyle:all")
 	public static boolean isPointInEllipse(float px, float py, float ellx, float elly, float ellw, float ellh) {
 		// Copied from AWT Ellipse2D
 
@@ -1707,6 +1813,7 @@ public final class MathUtil {
 	 * @deprecated
 	 */
 	@Deprecated
+	@SuppressWarnings("checkstyle:all")
 	public static boolean isPointInCircle(float px, float py, float cx, float cy, float radius) {
 		return distanceSquaredPointToPoint(
 				px, py,
@@ -1734,7 +1841,7 @@ public final class MathUtil {
 
 	/** Replies the closest point from the given point in the solid ellipse.
 	 * A solid ellipse is an ellipse with a border and an interior area.
-	 * 
+	 *
 	 * @param px is the coordinate of the point.
 	 * @param py is the coordinate of the point.
 	 * @param ex is the coordinate of the min corner of the ellipse
@@ -1742,13 +1849,14 @@ public final class MathUtil {
 	 * @param ew is the width of the ellipse
 	 * @param eh is the height of the ellipse
 	 * @param returnNullWhenInside indicates if a <code>null</code> value
-	 * may be returned when the point is inside the ellipse, if
-	 * <code>true</code>; or a point all the time if <code>false</code>.
+	 *     may be returned when the point is inside the ellipse, if
+	 *     <code>true</code>; or a point all the time if <code>false</code>.
 	 * @return the closest point in the ellipse
 	 * @see #getClosestPointToShallowEllipse(float, float, float, float, float, float)
-	 * @deprecated
+	 * @deprecated since 13.0
 	 */
 	@Deprecated
+	@SuppressWarnings("checkstyle:all")
 	public static Point2D getClosestPointToSolidEllipse(float px, float py, float ex, float ey, float ew, float eh, boolean returnNullWhenInside) {
 		float x, y;
 		if (ew<=0f || eh<=0f) {
@@ -1804,6 +1912,7 @@ public final class MathUtil {
 	 * @deprecated
 	 */
 	@Deprecated
+	@SuppressWarnings("checkstyle:all")
 	public static Point2D getClosestPointToShallowEllipse(float px, float py, float ex, float ey, float ew, float eh) {
 		float x, y;
 		if (ew<=0f || eh<=0f) {
@@ -1865,6 +1974,7 @@ public final class MathUtil {
 	 * @deprecated
 	 */
 	@Deprecated
+	@SuppressWarnings("checkstyle:all")
 	public static boolean isParallelLines(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4) {
 		return isCollinearVectors(x2 - x1, y2 - y1, x4 - x3, y4 - y3);
 	}
@@ -1906,6 +2016,7 @@ public final class MathUtil {
 	 * @deprecated
 	 */
 	@Deprecated
+	@SuppressWarnings("checkstyle:all")
 	public static boolean isParallelLines(float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3, float x4, float y4, float z4) {
 		return isCollinearVectors(x2 - x1, y2 - y1, z2 - z1, x4 - x3, y4 - y3, z4 - z3);
 	}
@@ -1933,6 +2044,7 @@ public final class MathUtil {
 	 * @deprecated
 	 */
 	@Deprecated
+	@SuppressWarnings("checkstyle:all")
 	public static boolean isCollinearPoints(float x1, float y1, float x2, float y2, float x3, float y3) {
 		// Test if three points are colinears
 		// iff det( [ x1 x2 x3 ]
@@ -1971,6 +2083,7 @@ public final class MathUtil {
 	 * @deprecated
 	 */
 	@Deprecated
+	@SuppressWarnings("checkstyle:all")
 	public static boolean isCollinearPoints(float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3) {
 		float dx1 = x2 - x1;
 		float dy1 = y2 - y1;
@@ -2005,6 +2118,7 @@ public final class MathUtil {
 	 * @deprecated
 	 */
 	@Deprecated
+	@SuppressWarnings("checkstyle:all")
 	public static boolean isCollinearVectors(float x1, float y1, float x2, float y2) {
 		// Test if three points are colinears
 		// iff det( [ x1 x2 x3 ]
@@ -2035,6 +2149,7 @@ public final class MathUtil {
 	 * @deprecated
 	 */
 	@Deprecated
+	@SuppressWarnings("checkstyle:all")
 	public static boolean isCollinearVectors(float x1, float y1, float z1, float x2, float y2, float z2) {
 		// Cross product
 		float cx = y1 * z2 - z1 * y2;
@@ -2075,6 +2190,7 @@ public final class MathUtil {
 	 * @deprecated
 	 */
 	@Deprecated
+	@SuppressWarnings("checkstyle:all")
 	public static boolean isCollinearLines(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4) {
 		return (isParallelLines(x1, y1, x2, y2, x3, y3, x4, y4) && isCollinearPoints(x1, y1, x2, y2, x3, y3));
 	}
@@ -2116,6 +2232,7 @@ public final class MathUtil {
 	 * @deprecated
 	 */
 	@Deprecated
+	@SuppressWarnings("checkstyle:all")
 	public static boolean isCollinearLines(float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3, float x4, float y4, float z4) {
 		return (isParallelLines(x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4) && isCollinearPoints(x1, y1, z1, x2, y2, z2, x3, y3, z3));
 	}
@@ -2130,9 +2247,10 @@ public final class MathUtil {
 	 * @param rxmax is the max of the coordinates of the rectangle.
 	 * @param rymax is the max of the coordinates of the rectangle.
 	 * @return the zone
-	 * @deprecated see {@link #getCohenSutherlandCode(double, double, double, double, double, double)}
+	 * @deprecated since 13.0, see {@link #getCohenSutherlandCode(double, double, double, double, double, double)}
 	 */
 	@Deprecated
+	@SuppressWarnings("checkstyle:all")
 	public static int getCohenSutherlandCode(float px, float py, float rxmin, float rymin, float rxmax, float rymax) {
 		assert(rxmin<=rxmax);
 		assert(rymin<=rymax);
@@ -2169,9 +2287,10 @@ public final class MathUtil {
 	 * @return <code>true</code> if the segment has an intersection with the
 	 * rectangle and the segment was clipped; <code>false</code> if the segment
 	 * does not intersect the rectangle.
-	 * @deprecated see {@link #getCohenSutherlandCode(double, double, double, double, double, double)}
+	 * @deprecated since 13.0, see {@link #getCohenSutherlandCode(double, double, double, double, double, double)}
 	 */
 	@Deprecated
+	@SuppressWarnings("checkstyle:all")
 	public static boolean clipSegmentToRectangle(Point2D p1, Point2D p2, float rxmin, float rymin, float rxmax, float rymax) {
 		float x0 = p1.getX();
 		float y0 = p1.getY();
@@ -2183,7 +2302,7 @@ public final class MathUtil {
 		boolean cont = true;
 		float x, y;
 		x = y = 0;
-		
+
 		while (cont) {
 			if ((code1 | code2)==0) {
 				// Bitwise OR is 0. Trivially accept and get out of loop
@@ -2262,9 +2381,10 @@ public final class MathUtil {
 	 * @return <code>true</code> if the segment has an intersection with the
 	 * rectangle and the segment was clipped; <code>false</code> if the segment
 	 * does not intersect the rectangle.
-	 * @deprecated see {@link #getCohenSutherlandCode(double, double, double, double, double, double)}
+	 * @deprecated since 13.0, see {@link #getCohenSutherlandCode(double, double, double, double, double, double)}
 	 */
 	@Deprecated
+	@SuppressWarnings("checkstyle:all")
 	public static boolean clipSegmentToRectangle(Point2D p1, Point2D p2, int rxmin, int rymin, int rxmax, int rymax) {
 		int x0 = p1.x();
 		int y0 = p1.y();

@@ -1,30 +1,30 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (C) 2005-09 Stephane GALLAND.
- * Copyright (C) 2012 Stephane GALLAND.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package org.arakhne.afc.math.geometry.d2;
 
 import java.util.Iterator;
 
-import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.eclipse.xtext.xbase.lib.Pure;
+
+import org.arakhne.afc.math.geometry.PathWindingRule;
 
 
 /** This interface describes an interator on path elements.
@@ -39,7 +39,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 public interface PathIterator2D<T extends PathElement2D> extends Iterator<T> {
 
 	/** Replies the winding rule for the path.
-	 * 
+	 *
 	 * @return the winding rule for the path.
 	 */
 	@Pure
@@ -48,28 +48,28 @@ public interface PathIterator2D<T extends PathElement2D> extends Iterator<T> {
 	/** Replies the path is composed only by
 	 * one <code>MOVE_TO</code>, and a sequence of <code>LINE_TO</code>
 	 * primitives.
-	 * 
+	 *
 	 * @return <code>true</code> if the path does not
-	 * contain curve primitives, <code>false</code>
-	 * otherwise.
+	 *     contain curve primitives, <code>false</code>
+	 *     otherwise.
 	 */
 	@Pure
 	boolean isPolyline();
 
 	/** Replies the path contains a curve.
-	 * 
+	 *
 	 * @return <code>true</code> if the path contains
-	 * curve primitives, <code>false</code>
-	 * otherwise.
+	 *     curve primitives, <code>false</code>
+	 *     otherwise.
 	 */
 	@Pure
 	boolean isCurved();
 
 	/** Replies the path has multiple parts, i.e. multiple <code>MOVE_TO</code> are inside.
 	 * primitives.
-	 * 
+	 *
 	 * @return <code>true</code> if the path has multiple move-to primitive, <code>false</code>
-	 * otherwise.
+	 *     otherwise.
 	 */
 	@Pure
 	boolean isMultiParts();
@@ -78,10 +78,10 @@ public interface PathIterator2D<T extends PathElement2D> extends Iterator<T> {
 	 * one <code>MOVE_TO</code>, a sequence of <code>LINE_TO</code>
 	 * or <code>QUAD_TO</code> or <code>CURVE_TO</code>, and a
 	 * single <code>CLOSE</code> primitives.
-	 * 
+	 *
 	 * @return <code>true</code> if the path does not
-	 * contain curve primitives, <code>false</code>
-	 * otherwise.
+	 *     contain curve primitives, <code>false</code>
+	 *     otherwise.
 	 */
 	@Pure
 	boolean isPolygon();

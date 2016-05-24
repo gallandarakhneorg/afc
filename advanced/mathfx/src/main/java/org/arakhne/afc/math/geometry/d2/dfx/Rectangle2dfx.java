@@ -1,29 +1,24 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (C) 2010-2013 Stephane GALLAND.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.arakhne.afc.math.geometry.d2.dfx;
-
-import org.arakhne.afc.math.geometry.d2.Point2D;
-import org.arakhne.afc.math.geometry.d2.afp.Rectangle2afp;
-import org.eclipse.xtext.xbase.lib.Pure;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
@@ -31,6 +26,10 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyDoubleWrapper;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import org.eclipse.xtext.xbase.lib.Pure;
+
+import org.arakhne.afc.math.geometry.d2.Point2D;
+import org.arakhne.afc.math.geometry.d2.afp.Rectangle2afp;
 
 /** Rectangle with 2 double precision floating-point FX properties.
  *
@@ -43,7 +42,7 @@ import javafx.beans.property.SimpleObjectProperty;
  * @since 13.0
  */
 public class Rectangle2dfx extends AbstractShape2dfx<Rectangle2dfx>
-	implements Rectangle2afp<Shape2dfx<?>, Rectangle2dfx, PathElement2dfx, Point2dfx, Vector2dfx, Rectangle2dfx> {
+		implements Rectangle2afp<Shape2dfx<?>, Rectangle2dfx, PathElement2dfx, Point2dfx, Vector2dfx, Rectangle2dfx> {
 
 	private static final long serialVersionUID = -1393290109630714626L;
 
@@ -54,16 +53,16 @@ public class Rectangle2dfx extends AbstractShape2dfx<Rectangle2dfx>
 	private DoubleProperty maxX;
 
 	private DoubleProperty maxY;
-		
+
 	/** width property.
 	 */
 	private ReadOnlyDoubleWrapper width;
-	
+
 	/** height property.
 	 */
 	private ReadOnlyDoubleWrapper height;
 
-	/**
+	/** Construct an empty rectangle.
 	 */
 	public Rectangle2dfx() {
 		//
@@ -74,33 +73,33 @@ public class Rectangle2dfx extends AbstractShape2dfx<Rectangle2dfx>
 	 * @param max is the max corner of the rectangle.
 	 */
 	public Rectangle2dfx(Point2D<?, ?> min, Point2D<?, ?> max) {
-		assert (min != null) : "Minimum corner must be not null"; //$NON-NLS-1$
-		assert (max != null) : "Maximum corner must be not null"; //$NON-NLS-1$
+		assert min != null : "Minimum corner must be not null"; //$NON-NLS-1$
+		assert max != null : "Maximum corner must be not null"; //$NON-NLS-1$
 		setFromCorners(min.getX(), min.getY(), max.getX(), max.getY());
 	}
 
-	/**
-	 * @param x
-	 * @param y
-	 * @param width
-	 * @param height
+	/** Construct a rectangle.
+	 * @param x x coordinate of the minimum corner.
+	 * @param y y coordinate of the minimum corner.
+	 * @param width width of the rectangle.
+	 * @param height height of the rectangle.
 	 */
 	public Rectangle2dfx(double x, double y, double width, double height) {
-		assert (width >= 0.) : "Width must be positive or zero"; //$NON-NLS-1$
-		assert (height >= 0.) : "HeightWidth must be positive or zero"; //$NON-NLS-1$
+		assert width >= 0. : "Width must be positive or zero"; //$NON-NLS-1$
+		assert height >= 0. : "HeightWidth must be positive or zero"; //$NON-NLS-1$
 		setFromCorners(x, y, x + width, y + height);
 	}
-	
-	/**
-	 * @param r
+
+	/** Constructor by copy.
+	 * @param rectangle the shape to copy.
 	 */
-	public Rectangle2dfx(Rectangle2dfx r) {
-		set(r);
+	public Rectangle2dfx(Rectangle2dfx rectangle) {
+		set(rectangle);
 	}
-	
+
 	@Override
 	public Rectangle2dfx clone() {
-		Rectangle2dfx clone = super.clone();
+		final Rectangle2dfx clone = super.clone();
 		if (clone.minX != null) {
 			clone.minX = null;
 			clone.minXProperty().set(getMinX());
@@ -130,14 +129,14 @@ public class Rectangle2dfx extends AbstractShape2dfx<Rectangle2dfx>
 		bits = 31 * bits + Double.doubleToLongBits(getMinY());
 		bits = 31 * bits + Double.doubleToLongBits(getMaxX());
 		bits = 31 * bits + Double.doubleToLongBits(getMaxY());
-		int b = (int) bits;
+		final int b = (int) bits;
 		return b ^ (b >> 32);
 	}
 
 	@Pure
 	@Override
 	public String toString() {
-		StringBuilder b = new StringBuilder();
+		final StringBuilder b = new StringBuilder();
 		b.append("["); //$NON-NLS-1$
 		b.append(getMinX());
 		b.append(";"); //$NON-NLS-1$
@@ -173,7 +172,7 @@ public class Rectangle2dfx extends AbstractShape2dfx<Rectangle2dfx>
 	public double getMinX() {
 		return this.minX == null ? 0 : this.minX.get();
 	}
-	
+
 	@Override
 	public void setMinX(double x) {
 		minXProperty().set(x);
@@ -189,8 +188,8 @@ public class Rectangle2dfx extends AbstractShape2dfx<Rectangle2dfx>
 			this.minX = new SimpleDoubleProperty(this, "minX") { //$NON-NLS-1$
 				@Override
 				protected void invalidated() {
-					double currentMin = get();
-					double currentMax = getMaxX();
+					final double currentMin = get();
+					final double currentMax = getMaxX();
 					if (currentMax < currentMin) {
 						// min-max constrain is broken
 						maxXProperty().set(currentMin);
@@ -206,7 +205,7 @@ public class Rectangle2dfx extends AbstractShape2dfx<Rectangle2dfx>
 	public double getMaxX() {
 		return this.maxX == null ? 0 : this.maxX.get();
 	}
-	
+
 	@Override
 	public void setMaxX(double x) {
 		maxXProperty().set(x);
@@ -222,8 +221,8 @@ public class Rectangle2dfx extends AbstractShape2dfx<Rectangle2dfx>
 			this.maxX = new SimpleDoubleProperty(this, "maxX") { //$NON-NLS-1$
 				@Override
 				protected void invalidated() {
-					double currentMax = get();
-					double currentMin = getMinX();
+					final double currentMax = get();
+					final double currentMin = getMinX();
 					if (currentMax < currentMin) {
 						// min-max constrain is broken
 						minXProperty().set(currentMax);
@@ -239,7 +238,7 @@ public class Rectangle2dfx extends AbstractShape2dfx<Rectangle2dfx>
 	public double getMinY() {
 		return this.minY == null ? 0 : this.minY.get();
 	}
-	
+
 	@Override
 	public void setMinY(double y) {
 		minYProperty().set(y);
@@ -255,8 +254,8 @@ public class Rectangle2dfx extends AbstractShape2dfx<Rectangle2dfx>
 			this.minY = new SimpleDoubleProperty(this, "minY") { //$NON-NLS-1$
 				@Override
 				protected void invalidated() {
-					double currentMin = get();
-					double currentMax = getMaxY();
+					final double currentMin = get();
+					final double currentMax = getMaxY();
 					if (currentMax < currentMin) {
 						// min-max constrain is broken
 						maxYProperty().set(currentMin);
@@ -272,7 +271,7 @@ public class Rectangle2dfx extends AbstractShape2dfx<Rectangle2dfx>
 	public double getMaxY() {
 		return this.maxY == null ? 0 : this.maxY.get();
 	}
-	
+
 	@Override
 	public void setMaxY(double y) {
 		maxYProperty().set(y);
@@ -288,8 +287,8 @@ public class Rectangle2dfx extends AbstractShape2dfx<Rectangle2dfx>
 			this.maxY = new SimpleDoubleProperty(this, "maxY") { //$NON-NLS-1$
 				@Override
 				protected void invalidated() {
-					double currentMax = get();
-					double currentMin = getMinY();
+					final double currentMax = get();
+					final double currentMin = getMinY();
 					if (currentMax < currentMin) {
 						// min-max constrain is broken
 						minYProperty().set(currentMax);
@@ -304,7 +303,7 @@ public class Rectangle2dfx extends AbstractShape2dfx<Rectangle2dfx>
 	public double getWidth() {
 		return widthProperty().get();
 	}
-	
+
 	/** Replies the property that is the width of the box.
 	 *
 	 * @return the width property.
@@ -317,7 +316,7 @@ public class Rectangle2dfx extends AbstractShape2dfx<Rectangle2dfx>
 		}
 		return this.width;
 	}
-	
+
 	@Override
 	public double getHeight() {
 		return heightProperty().get();
@@ -340,10 +339,9 @@ public class Rectangle2dfx extends AbstractShape2dfx<Rectangle2dfx>
 	public ObjectProperty<Rectangle2dfx> boundingBoxProperty() {
 		if (this.boundingBox == null) {
 			this.boundingBox = new SimpleObjectProperty<>(this, "boundingBox"); //$NON-NLS-1$
-			this.boundingBox.bind(Bindings.createObjectBinding(
-					() -> {
-						return toBoundingBox();
-					},
+			this.boundingBox.bind(Bindings.createObjectBinding(() -> {
+				return toBoundingBox();
+			},
 					minXProperty(), minYProperty(), widthProperty(), heightProperty()));
 		}
 		return this.boundingBox;

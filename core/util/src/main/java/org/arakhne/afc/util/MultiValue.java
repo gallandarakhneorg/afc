@@ -1,25 +1,23 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (c) 2005-10 Multiagent Team, Laboratoire Systemes et Transports,
- *                       Universite de Technologie de Belfort-Montbeliard.
- * Copyright (C) 2012 Stephane GALLAND.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package org.arakhne.afc.util;
 
 import org.arakhne.afc.vmutil.locale.Locale;
@@ -35,10 +33,12 @@ import org.arakhne.afc.vmutil.locale.Locale;
  */
 public class MultiValue<T> {
 
-	private boolean isSet =  false;
-	private boolean isMultiple = false;
+	private boolean isSet;
+
+	private boolean isMultiple;
+
 	private T object;
-	
+
 	/**
 	 * @param initialValue is the initial value of the output parameter.
 	 */
@@ -53,10 +53,7 @@ public class MultiValue<T> {
 	public MultiValue() {
 		this.object = null;
 	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
+
 	@Override
 	public String toString() {
 		return toString(Locale.getString("MULTIPLE_VALUES")); //$NON-NLS-1$
@@ -65,57 +62,58 @@ public class MultiValue<T> {
 	/**
 	 * Replies a string representation of the value in this object.
 	 * If this object is set and has multiple different values, the
-	 * parameter <var>multiValueLabel</var> is replied.
+	 * parameter {@code multiValueLabel} is replied.
 	 * If this object is not set or equals to <code>null</code>,
 	 * the empty string is replied.
-	 * Otherwise the value is replied. 
-	 * 
+	 * Otherwise the value is replied.
+	 *
 	 * @param multiValueLabel is the label to reply if this object is containing many different values.
 	 * @return the string representation of this object.
 	 */
 	public String toString(String multiValueLabel) {
 		if (this.isSet) {
-			 if (this.isMultiple) {
-				 return multiValueLabel;
-			 }
-			 if (this.object!=null) {
-				 return this.object.toString();
-			 }
+			if (this.isMultiple) {
+				return multiValueLabel;
+			}
+			if (this.object != null) {
+				return this.object.toString();
+			}
 		}
 		return ""; //$NON-NLS-1$
 	}
 
 	/** Replies the value.
-	 * 
+	 *
 	 * @return the value embedded inside this object.
 	 */
 	public T get() {
 		return this.object;
 	}
-	
+
 	/** Replies the type of the value.
-	 * 
+	 *
 	 * @return the type or <code>null</code> if there is no value.
 	 */
 	@SuppressWarnings("unchecked")
 	public Class<? extends T> getValueType() {
-		if (this.object==null) return null;
-		return (Class<? extends T>)this.object.getClass();
+		if (this.object == null) {
+			return null;
+		}
+		return (Class<? extends T>) this.object.getClass();
 	}
 
 	/** Add the given value to the styored value.
-	 * 
-	 * @param newValue
+	 *
+	 * @param newValue the new value.
 	 */
 	public void add(T newValue) {
 		if (this.isSet) {
 			if (!this.isMultiple
-				&& newValue!=this.object && (newValue==null || !newValue.equals(this.object))) {
+					&& newValue != this.object && (newValue == null || !newValue.equals(this.object))) {
 				this.isMultiple = true;
 				this.object = null;
 			}
-		}
-		else {
+		} else {
 			this.object = newValue;
 			this.isSet = true;
 			this.isMultiple = false;
@@ -131,7 +129,7 @@ public class MultiValue<T> {
 	}
 
 	/** Replies if the value was set.
-	 * 
+	 *
 	 * @return <code>true</code> is the value was set, otherwise <code>false</code>
 	 */
 	public boolean isSet() {
@@ -139,7 +137,7 @@ public class MultiValue<T> {
 	}
 
 	/** Replies if this MultiValue contains different values.
-	 * 
+	 *
 	 * @return <code>true</code> is values are different, otherwise <code>false</code>
 	 */
 	public boolean isMultipleDifferentValues() {
@@ -147,7 +145,7 @@ public class MultiValue<T> {
 	}
 
 	/** Set if this MultiValue contains different values.
-	 * 
+	 *
 	 * @param multiple is <code>true</code> is values are different, otherwise <code>false</code>
 	 */
 	public void setMultipleDifferentValues(boolean multiple) {
@@ -155,30 +153,26 @@ public class MultiValue<T> {
 		this.isSet = true;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
-	public boolean equals(Object o) {
-		if (o instanceof MultiValue<?>) {
-			MultiValue<?> v = (MultiValue<?>)o;
-			if (this.isSet!=v.isSet || this.isMultiple!=v.isMultiple)
+	public boolean equals(Object obj) {
+		if (obj instanceof MultiValue<?>) {
+			final MultiValue<?> v = (MultiValue<?>) obj;
+			if (this.isSet != v.isSet || this.isMultiple != v.isMultiple) {
 				return false;
+			}
 		}
-		return (this.object==o)
-				||
-				(this.object!=null && this.object.equals(o));
+		return (this.object == obj)
+				|| (this.object != null && this.object.equals(obj));
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public int hashCode() {
-		int h = HashCodeUtil.hash(this.isSet);
-		h = HashCodeUtil.hash(h, this.isMultiple);
-		if (this.object!=null) h = HashCodeUtil.hash(h, this.object);
-		return h;
+		int hash = HashCodeUtil.hash(this.isSet);
+		hash = HashCodeUtil.hash(hash, this.isMultiple);
+		if (this.object != null) {
+			hash = HashCodeUtil.hash(hash, this.object);
+		}
+		return hash;
 	}
 
 }

@@ -1,23 +1,23 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (c) 2013 Christophe BOHRHAUER.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package org.arakhne.afc.math.physics.kinematic.angular;
 
 import org.arakhne.afc.math.geometry.d3.Quaternion;
@@ -26,9 +26,9 @@ import org.arakhne.afc.math.physics.AngularUnit;
 /**
  * This interface describes an object that is able to
  * provide angular instant speed and velocity.
- * 
+ *
  * @author $Author: sgalland$
- * @version $Name$ $Revision$ $Date$
+ * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 13.0
@@ -37,64 +37,64 @@ public interface AngularInstantVelocityKinematic {
 
 	/**
 	 * Returns the angular speed of this object in r/s.
-	 * <p>
-	 * The sign of the angular speed indicates if the object is
-	 * going forward (positive) or backward (negative). 
-	 * 
+	 *
+	 * <p>The sign of the angular speed indicates if the object is
+	 * going forward (positive) or backward (negative).
+	 *
 	 * @return the angular speed of this object in r/s.
 	 */
-	public double getAngularSpeed();
-	
+	double getAngularSpeed();
+
 	/**
 	 * Returns the angular speed of this object.
-	 * <p>
-	 * The sign of the angular speed indicates if the object is
+	 *
+	 * <p>The sign of the angular speed indicates if the object is
 	 * going forward (positive) or backward (negative).
-	 *  
+	 *
 	 * @param unit the unit in which the speed will be given.
 	 * @return the angular speed of this object in the given unit.
 	 */
-	public double getAngularSpeed(AngularUnit unit);
+	double getAngularSpeed(AngularUnit unit);
 
-	
-	/** Replies the instant velocity of the object.
-	 * The velocity is the motion vector with a length
-	 * equal to the speed replied by {@link #getAngularSpeed()}.
-	 * <p>
-	 * This function replies the velocity in 3D if possible.
-	 * 
-	 * @return the velocity of the object. 
-	 */
-	public Quaternion getAngularVelocity3D();
-	
-	/** Replies the instant velocity of the object.
-	 * The velocity is the motion vector with a length
-	 * equal to the speed replied by {@link #getAngularSpeed()}.
-	 * <p>
-	 * This function replies the velocity in 2D if possible.
-	 * 
-	 * @return the velocity of the object. 
-	 */
-	public double getAngularVelocity2D();
 
 	/** Replies the instant velocity of the object.
 	 * The velocity is the motion vector with a length
 	 * equal to the speed replied by {@link #getAngularSpeed()}.
-	 * <p>
-	 * This function replies the velocity in 1.5D if possible.
-	 * 
-	 * @return the velocity of the object. 
+	 *
+	 * <p>This function replies the velocity in 3D if possible.
+	 *
+	 * @return the velocity of the object.
 	 */
-	public double getAngularVelocity1D5();
+	Quaternion getAngularVelocity3D();
 
 	/** Replies the instant velocity of the object.
 	 * The velocity is the motion vector with a length
 	 * equal to the speed replied by {@link #getAngularSpeed()}.
-	 * <p>
-	 * This function replies the velocity in 1D if possible.
-	 * 
-	 * @return the velocity of the object. 
+	 *
+	 * <p>This function replies the velocity in 2D if possible.
+	 *
+	 * @return the velocity of the object.
 	 */
-	public double getAngularVelocity1D();
+	double getAngularVelocity2D();
+
+	/** Replies the instant velocity of the object.
+	 * The velocity is the motion vector with a length
+	 * equal to the speed replied by {@link #getAngularSpeed()}.
+	 *
+	 * <p>This function replies the velocity in 1.5D if possible.
+	 *
+	 * @return the velocity of the object.
+	 */
+	double getAngularVelocity1D5();
+
+	/** Replies the instant velocity of the object.
+	 * The velocity is the motion vector with a length
+	 * equal to the speed replied by {@link #getAngularSpeed()}.
+	 *
+	 * <p>This function replies the velocity in 1D if possible.
+	 *
+	 * @return the velocity of the object.
+	 */
+	double getAngularVelocity1D();
 
 }

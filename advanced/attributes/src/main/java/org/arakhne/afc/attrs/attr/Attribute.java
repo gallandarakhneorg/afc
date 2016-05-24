@@ -1,25 +1,23 @@
-/* 
+/*
  * $Id$
- * 
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (C) 2013 Stephane GALLAND.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package org.arakhne.afc.attrs.attr;
 
 import java.util.Comparator;
@@ -27,53 +25,53 @@ import java.util.Comparator;
 
 /**
  * This interface contains a metadata with a name.
- * 
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public interface Attribute extends AttributeValue, AttributeConstants {
+public interface Attribute extends AttributeValue {
 
 	/**
 	 * Replies a comparator suitable for attribute based on the names
 	 * of the attributes only.
-	 * 
+	 *
 	 * @return a comparator, never <code>null</code>
 	 * @see #valueComparator()
 	 * @see #comparator()
 	 */
-	public Comparator<? extends Attribute> nameComparator();
+	Comparator<? extends Attribute> nameComparator();
 
 	/**
 	 * Replies a comparator suitable for attribute based on the names
 	 * of the attributes only.
-	 * 
+	 *
 	 * @return a comparator, never <code>null</code>
 	 * @see #nameComparator()
 	 * @see #valueComparator()
 	 */
-	public Comparator<? extends Attribute> comparator();
+	Comparator<? extends Attribute> comparator();
 
 	/** The this value with the content of the specified one.
-	 * 
-	 * @param value
-	 * @throws InvalidAttributeTypeException
+	 *
+	 * @param value the value.
+	 * @throws InvalidAttributeTypeException when the type is incompatible.
 	 */
-	public void setAttribute(Attribute value) throws InvalidAttributeTypeException;
+	void setAttribute(Attribute value) throws InvalidAttributeTypeException;
 
 	/**
 	 * Replies the name of the metadata.
-	 * 
+	 *
 	 * @return the name of the attribute.
 	 */
-	public String getName() ;
+	String getName();
 
 	/**
 	 * Set the name of this metadata.
-	 * 
-	 * @param name
+	 *
+	 * @param name the name of the attribute.
 	 */
-	public void setName(String name) ;
-	
+	void setName(String name);
+
 }

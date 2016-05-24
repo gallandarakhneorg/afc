@@ -1,33 +1,34 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (c) 2013 Christophe BOHRHAUER.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package org.arakhne.afc.math.physics;
+
+import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
-import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * Some physic utility functions implementing in Java.
- * <p>
- * Definitions:
+ *
+ * <p>Definitions:
  * <ul>
  * <li><a href="http://en.wikipedia.org/wiki/Acceleration">Acceleration</a></li>
  * <li><a href="http://en.wikipedia.org/wiki/Velocity">Velocity</a></li>
@@ -35,7 +36,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * <li><a href="http://en.wikipedia.org/wiki/Equations_of_Motion">Equations of Motion</a></li>
  * <li><a href="http://en.wikipedia.org/wiki/Newton%E2%80%93Euler_equations">Newton-Euler Equations</a></li>
  * </ul>
- * 
+ *
  * @author $Author: cbohrhauer$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
@@ -46,185 +47,189 @@ public interface PhysicsEngine {
 
 	/** Compute and replies a motion according
 	 * to high school physics Newton's equations for motion.
-	 * <p>
-	 * From Equation 2 of the SUVAT form:<br>
+	 *
+	 * <p>From Equation 2 of the SUVAT form:<br>
 	 * <code>movement = speed * dt + 0.5 * acceleration * dt * dt</code>
-	 * 
+	 *
 	 * @param speed is the current speed of the object.
 	 * @param acceleration is the current acceleration of the object.
 	 * @param dt is the time
 	 * @return a motion
 	 */
 	@Pure
-	public double motionNewtonLaw(
+	double motionNewtonLaw(
 			double speed,
-			double acceleration, 
+			double acceleration,
 			double dt);
 
 	/** Compute and replies a motion according
 	 * to high school physics Newton's equations for motion.
-	 * <p>
-	 * This function allows to clamp acceleration and velocity.
-	 * <p>
-	 * From Equation 2 of the SUVAT form:<br>
+	 *
+	 * <p>This function allows to clamp acceleration and velocity.
+	 *
+	 * <p>From Equation 2 of the SUVAT form:<br>
 	 * <code>clamped_acceleration = clamp(acceleration, minAcceleration, maxAcceleration)</code><br>
 	 * <code>new_velocity = velocity + 0.5 * clamped_acceleration * dt</code><br>
 	 * <code>clamped_velocity = clamp(new_velocity, minSpeed, maxSpeed)</code><br>
 	 * <code>motion = clamped_velocity * dt</code><br>
-	 * 
+	 *
 	 * @param velocity is the current velocity of the object.
 	 * @param minSpeed is the minimal speed allowed.
 	 * @param maxSpeed is the maximal speed allowed.
 	 * @param acceleration is the current acceleration of the object.
 	 * @param minAcceleration is the minimal acceleration allowed.
 	 * @param maxAcceleration is the maximal  acceleration allowed.
-	 * Length of this vector is the acceleration amount. Direction of this
-	 * vector becomes movement direction.
+	 *     Length of this vector is the acceleration amount. Direction of this
+	 *     vector becomes movement direction.
 	 * @param dt is the time.
 	 * @return the motion
 	 * @see "http://en.wikibooks.org/wiki/High_School_Physics/Velocity"
 	 */
 	@Pure
-	public double motionNewtonLaw1D(
+	double motionNewtonLaw1D(
 			double velocity,
 			double minSpeed,
 			double maxSpeed,
-			double acceleration, 
+			double acceleration,
 			double minAcceleration,
 			double maxAcceleration,
 			double dt);
 
 	/** Compute and replies a motion according
 	 * to high school physics Newton's equations for motion.
-	 * <p>
-	 * This function allows to clamp acceleration and velocity.
-	 * <p>
-	 * From Equation 2 of the SUVAT form:<br>
+	 *
+	 * <p>This function allows to clamp acceleration and velocity.
+	 *
+	 * <p>From Equation 2 of the SUVAT form:<br>
 	 * <code>clamped_acceleration = clamp(acceleration, minAcceleration, maxAcceleration)</code><br>
 	 * <code>new_velocity = velocity + 0.5 * clamped_acceleration * dt</code><br>
 	 * <code>clamped_velocity = clamp(new_velocity, minSpeed, maxSpeed)</code><br>
 	 * <code>motion = clamped_velocity * dt</code><br>
-	 * 
+	 *
 	 * @param velocity is the current velocity of the object. Norm of vector is speed in m/s for example.
 	 * @param minSpeed is the minimal speed allowed.
 	 * @param maxSpeed is the maximal speed allowed.
-	 * @param acceleration is the current acceleration of the object. Norm of vector is acceleration amount in m/s<sup>2</sup> for example.
+	 * @param acceleration is the current acceleration of the object. Norm of vector is acceleration
+	 *     amount in m/s<sup>2</sup> for example.
 	 * @param minAcceleration is the minimal acceleration allowed.
 	 * @param maxAcceleration is the maximal  acceleration allowed.
-	 * Length of this vector is the acceleration amount. Direction of this
-	 * vector becomes movement direction.
+	 *     Length of this vector is the acceleration amount. Direction of this
+	 *     vector becomes movement direction.
 	 * @param dt is the time.
 	 * @param result the motion.
 	 * @see "http://en.wikibooks.org/wiki/High_School_Physics/Velocity"
 	 */
 	@Pure
-	public void motionNewtonLaw1D5(
-			Vector2D velocity,
+	void motionNewtonLaw1D5(
+			Vector2D<?, ?> velocity,
 			double minSpeed,
 			double maxSpeed,
-			Vector2D acceleration, 
+			Vector2D<?, ?> acceleration,
 			double minAcceleration,
 			double maxAcceleration,
 			double dt,
-			Vector2D result);
+			Vector2D<?, ?> result);
 
 	/** Compute and replies a motion according
 	 * to high school physics Newton's equations for motion.
-	 * <p>
-	 * This function allows to clamp acceleration and velocity.
-	 * <p>
-	 * From Equation 2 of the SUVAT form:<br>
+	 *
+	 * <p>This function allows to clamp acceleration and velocity.
+	 *
+	 * <p>From Equation 2 of the SUVAT form:<br>
 	 * <code>clamped_acceleration = clamp(acceleration, minAcceleration, maxAcceleration)</code><br>
 	 * <code>new_velocity = velocity + 0.5 * clamped_acceleration * dt</code><br>
 	 * <code>clamped_velocity = clamp(new_velocity, minSpeed, maxSpeed)</code><br>
 	 * <code>motion = clamped_velocity * dt</code><br>
-	 * 
+	 *
 	 * @param velocity is the current velocity of the object. Norm of vector is speed in m/s for example.
 	 * @param minSpeed is the minimal speed allowed.
 	 * @param maxSpeed is the maximal speed allowed.
-	 * @param acceleration is the current acceleration of the object. Norm of vector is acceleration amount in m/s<sup>2</sup> for example.
+	 * @param acceleration is the current acceleration of the object. Norm of vector is acceleration
+	 *     amount in m/s<sup>2</sup> for example.
 	 * @param minAcceleration is the minimal acceleration allowed.
 	 * @param maxAcceleration is the maximal  acceleration allowed.
-	 * Length of this vector is the acceleration amount. Direction of this
-	 * vector becomes movement direction.
+	 *     Length of this vector is the acceleration amount. Direction of this
+	 *     vector becomes movement direction.
 	 * @param dt is the time.
 	 * @param result the motion.
 	 * @see "http://en.wikibooks.org/wiki/High_School_Physics/Velocity"
 	 */
 	@Pure
-	public void motionNewtonLaw2D(
-			Vector2D velocity,
+	void motionNewtonLaw2D(
+			Vector2D<?, ?> velocity,
 			double minSpeed,
 			double maxSpeed,
-			Vector2D acceleration, 
+			Vector2D<?, ?> acceleration,
 			double minAcceleration,
 			double maxAcceleration,
 			double dt,
-			Vector2D result);
-	
+			Vector2D<?, ?> result);
+
 	/** Compute and replies a motion according
 	 * to high school physics Newton's equations for motion.
-	 * <p>
-	 * This function allows to clamp acceleration and velocity.
-	 * <p>
-	 * From Equation 2 of the SUVAT form:<br>
+	 *
+	 * <p>This function allows to clamp acceleration and velocity.
+	 *
+	 * <p>From Equation 2 of the SUVAT form:<br>
 	 * <code>clamped_acceleration = clamp(acceleration, minAcceleration, maxAcceleration)</code><br>
 	 * <code>new_velocity = velocity + 0.5 * clamped_acceleration * dt</code><br>
 	 * <code>clamped_velocity = clamp(new_velocity, minSpeed, maxSpeed)</code><br>
 	 * <code>motion = clamped_velocity * dt</code><br>
-	 * 
+	 *
 	 * @param velocity is the current velocity of the object. Norm of vector is speed in m/s for example.
 	 * @param minSpeed is the minimal speed allowed.
 	 * @param maxSpeed is the maximal speed allowed.
-	 * @param acceleration is the current acceleration of the object. Norm of vector is acceleration amount in m/s<sup>2</sup> for example.
+	 * @param acceleration is the current acceleration of the object. Norm of vector is acceleration
+	 *     amount in m/s<sup>2</sup> for example.
 	 * @param minAcceleration is the minimal acceleration allowed.
 	 * @param maxAcceleration is the maximal  acceleration allowed.
-	 * Length of this vector is the acceleration amount. Direction of this
-	 * vector becomes movement direction.
+	 *     Length of this vector is the acceleration amount. Direction of this
+	 *     vector becomes movement direction.
 	 * @param dt is the time.
 	 * @param result the motion.
 	 * @see "http://en.wikibooks.org/wiki/High_School_Physics/Velocity"
 	 */
 	@Pure
-	public void motionNewtonLaw2D5(
+	void motionNewtonLaw2D5(
 			Vector3D velocity,
 			double minSpeed,
 			double maxSpeed,
-			Vector3D acceleration, 
+			Vector3D acceleration,
 			double minAcceleration,
 			double maxAcceleration,
 			double dt,
 			Vector3D result);
-	
+
 	/** Compute and replies a motion according
 	 * to high school physics Newton's equations for motion.
-	 * <p>
-	 * This function allows to clamp acceleration and velocity.
-	 * <p>
-	 * From Equation 2 of the SUVAT form:<br>
+	 *
+	 * <p>This function allows to clamp acceleration and velocity.
+	 *
+	 * <p>From Equation 2 of the SUVAT form:<br>
 	 * <code>clamped_acceleration = clamp(acceleration, minAcceleration, maxAcceleration)</code><br>
 	 * <code>new_velocity = velocity + 0.5 * clamped_acceleration * dt</code><br>
 	 * <code>clamped_velocity = clamp(new_velocity, minSpeed, maxSpeed)</code><br>
 	 * <code>motion = clamped_velocity * dt</code><br>
-	 * 
+	 *
 	 * @param velocity is the current velocity of the object. Norm of vector is speed in m/s for example.
 	 * @param minSpeed is the minimal speed allowed.
 	 * @param maxSpeed is the maximal speed allowed.
-	 * @param acceleration is the current acceleration of the object. Norm of vector is acceleration amount in m/s<sup>2</sup> for example.
+	 * @param acceleration is the current acceleration of the object. Norm of vector is acceleration
+	 *     amount in m/s<sup>2</sup> for example.
 	 * @param minAcceleration is the minimal acceleration allowed.
 	 * @param maxAcceleration is the maximal  acceleration allowed.
-	 * Length of this vector is the acceleration amount. Direction of this
-	 * vector becomes movement direction.
+	 *     Length of this vector is the acceleration amount. Direction of this
+	 *     vector becomes movement direction.
 	 * @param dt is the time.
 	 * @param result the motion.
 	 * @see "http://en.wikibooks.org/wiki/High_School_Physics/Velocity"
 	 */
 	@Pure
-	public void motionNewtonLaw3D(
+	void motionNewtonLaw3D(
 			Vector3D velocity,
 			double minSpeed,
 			double maxSpeed,
-			Vector3D acceleration, 
+			Vector3D acceleration,
 			double minAcceleration,
 			double maxAcceleration,
 			double dt,
@@ -233,27 +238,26 @@ public interface PhysicsEngine {
 	/** Compute and replies a motion according
 	 * to Newton-Euler-1 equations for motion
 	 * (where acceleration is not significant).
-	 * <p>
-	 * <p>
-	 * From the first-order Newton-Euler method:
+	 *
+	 * <p>From the first-order Newton-Euler method:
 	 * <code>movement = speed * dt</code>
-	 * 
+	 *
 	 * @param speed is the current  speed of the object.
 	 * @param dt is the time
 	 * @return a motion
 	 */
 	@Pure
-	public double motionNewtonEuler1Law(
+	double motionNewtonEuler1Law(
 			double speed,
 			double dt);
-	
+
 	/** Compute and replies a motion according
 	 * to Newton-Euler-1 equations for motion
 	 * (where acceleration is not significant).
-	 * <p>
-	 * From the first-order Newton-Euler method:
+	 *
+	 * <p>From the first-order Newton-Euler method:
 	 * <code>movement = clamp(velocity) * dt</code>
-	 * 
+	 *
 	 * @param velocity is the current  velocity of the object.
 	 * @param minSpeed is the minimal speed allowed.
 	 * @param maxSpeed is the maximal speed allowed.
@@ -261,7 +265,7 @@ public interface PhysicsEngine {
 	 * @return a motion
 	 */
 	@Pure
-	public double motionNewtonEuler1Law1D(
+	double motionNewtonEuler1Law1D(
 			double velocity,
 			double minSpeed,
 			double maxSpeed,
@@ -270,10 +274,10 @@ public interface PhysicsEngine {
 	/** Compute and replies a motion according
 	 * to Newton-Euler-1 equations for motion
 	 * (where acceleration is not significant).
-	 * <p>
-	 * From the first-order Newton-Euler method:
+	 *
+	 * <p>From the first-order Newton-Euler method:
 	 * <code>movement = clamp(velocity) * dt</code>
-	 * 
+	 *
 	 * @param velocity is the current  velocity of the object.
 	 * @param minSpeed is the minimal speed allowed (clamped to 0 if negative).
 	 * @param maxSpeed is the maximal speed allowed.
@@ -281,20 +285,20 @@ public interface PhysicsEngine {
 	 * @param result a motion
 	 */
 	@Pure
-	public void motionNewtonEuler1Law1D5(
-			Vector2D velocity,
+	void motionNewtonEuler1Law1D5(
+			Vector2D<?, ?> velocity,
 			double minSpeed,
 			double maxSpeed,
 			double dt,
-			Vector2D result);
+			Vector2D<?, ?> result);
 
 	/** Compute and replies a motion according
 	 * to Newton-Euler-1 equations for motion
 	 * (where acceleration is not significant).
-	 * <p>
-	 * From the first-order Newton-Euler method:
+	 *
+	 * <p>From the first-order Newton-Euler method:
 	 * <code>movement = clamp(velocity) * dt</code>
-	 * 
+	 *
 	 * @param velocity is the current  velocity of the object.
 	 * @param minSpeed is the minimal speed allowed (clamped to 0 if negative).
 	 * @param maxSpeed is the maximal speed allowed.
@@ -302,20 +306,20 @@ public interface PhysicsEngine {
 	 * @param result a motion
 	 */
 	@Pure
-	public void motionNewtonEuler1Law2D(
-			Vector2D velocity,
+	void motionNewtonEuler1Law2D(
+			Vector2D<?, ?> velocity,
 			double minSpeed,
 			double maxSpeed,
 			double dt,
-			Vector2D result);
+			Vector2D<?, ?> result);
 
 	/** Compute and replies a motion according
 	 * to Newton-Euler-1 equations for motion
 	 * (where acceleration is not significant).
-	 * <p>
-	 * From the first-order Newton-Euler method:
+	 *
+	 * <p>From the first-order Newton-Euler method:
 	 * <code>movement = clamp(velocity) * dt</code>
-	 * 
+	 *
 	 * @param velocity is the current  velocity of the object.
 	 * @param minSpeed is the minimal speed allowed (clamped to 0 if negative).
 	 * @param maxSpeed is the maximal speed allowed.
@@ -323,7 +327,7 @@ public interface PhysicsEngine {
 	 * @param result a motion
 	 */
 	@Pure
-	public void motionNewtonEuler1Law2D5(
+	void motionNewtonEuler1Law2D5(
 			Vector3D velocity,
 			double minSpeed,
 			double maxSpeed,
@@ -333,10 +337,10 @@ public interface PhysicsEngine {
 	/** Compute and replies a motion according
 	 * to Newton-Euler-1 equations for motion
 	 * (where acceleration is not significant).
-	 * <p>
-	 * From the first-order Newton-Euler method:
+	 *
+	 * <p>From the first-order Newton-Euler method:
 	 * <code>movement = clamp(velocity) * dt</code>
-	 * 
+	 *
 	 * @param velocity is the current  velocity of the object.
 	 * @param minSpeed is the minimal speed allowed (clamped to 0 if negative).
 	 * @param maxSpeed is the maximal speed allowed.
@@ -344,7 +348,7 @@ public interface PhysicsEngine {
 	 * @param result a motion
 	 */
 	@Pure
-	public void motionNewtonEuler1Law3D(
+	void motionNewtonEuler1Law3D(
 			Vector3D velocity,
 			double minSpeed,
 			double maxSpeed,
@@ -353,33 +357,33 @@ public interface PhysicsEngine {
 
 	/** Replies the new speed according to a previous speed and
 	 * a mouvement during a given time.
-	 * <p>
-	 * From the first-order Newton-Euler method:
+	 *
+	 * <p>From the first-order Newton-Euler method:
 	 * <code>speed = movement / dt</code>
-	 * 
+	 *
 	 * @param movement is the movement distance.
 	 * @param dt is the time
 	 * @return a new speed
 	 * @since 4.1
 	 */
 	@Pure
-	public double speed(double movement, double dt);
+	double speed(double movement, double dt);
 
-	/** Replies the new  acceleration according to a previous 
+	/** Replies the new  acceleration according to a previous
 	 * speed and a current speed, and given time.
-	 * <p>
-	 * From the second-order Newton-Euler method:
+	 *
+	 * <p>From the second-order Newton-Euler method:
 	 * <code>(currentSpeed - previousSpeed) / dt</code>
-	 * 
+	 *
 	 * @param previousSpeed is the previous  speed of the object.
 	 * @param currentSpeed is the current  speed of the object.
 	 * @param dt is the time
 	 * @return a new acceleration
 	 */
 	@Pure
-	public double acceleration(
+	double acceleration(
 			double previousSpeed,
-			double currentSpeed, 
+			double currentSpeed,
 			double dt);
 
 }

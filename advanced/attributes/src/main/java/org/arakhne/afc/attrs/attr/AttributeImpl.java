@@ -1,25 +1,23 @@
-/* 
+/*
  * $Id$
- * 
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (C) 2013 Stephane GALLAND.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package org.arakhne.afc.attrs.attr;
 
 import java.net.InetAddress;
@@ -37,60 +35,20 @@ import org.arakhne.afc.ui.vector.Image;
 
 /**
  * This class contains an attribute value.
- * 
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
 public class AttributeImpl extends AttributeValueImpl implements Attribute {
-	
-	private static final long serialVersionUID = -3805997544158892016L;
 
-	/** Compare the two specified attributes.
-	 *
-	 * @param arg0
-	 * @param arg1
-	 * @return replies a negative value if <var>arg0</var> is lesser than
-	 * <var>arg1</var>, a positive value if <var>arg0</var> is greater than
-	 * <var>arg1</var>, or <code>0</code> if they are equal.
-	 * @see AttributeComparator
-	 */
-	public static int compareAttrs(Attribute arg0, Attribute arg1) {
-		if (arg0==arg1) return 0;
-		if (arg0==null) return 1;
-		if (arg1==null) return -1;
-		
-		String n0 = arg0.getName();
-		String n1 = arg1.getName();
-		int cmp = compareAttrNames(n0, n1);
-		
-		if (cmp==0)
-			return compareValues(arg0,arg1);
-		
-		return cmp;
-	}
-	
-	/** Compare the two specified attribute names.
-	 *
-	 * @param arg0
-	 * @param arg1
-	 * @return replies a negative value if <var>arg0</var> is lesser than
-	 * <var>arg1</var>, a positive value if <var>arg0</var> is greater than
-	 * <var>arg1</var>, or <code>0</code> if they are equal.
-	 * @see AttributeNameComparator
-	 */
-	public static int compareAttrNames(String arg0, String arg1) {
-		if (arg0==arg1) return 0;
-		if (arg0==null) return Integer.MAX_VALUE;
-		if (arg1==null) return Integer.MIN_VALUE;
-		return arg0.compareToIgnoreCase(arg1);
-	}
+	private static final long serialVersionUID = -3805997544158892016L;
 
 	/**
 	 * Name of the metadata.
 	 */
-	private String name = null;
+	private String name;
 
 	/**
 	 * Uninitialized attribute.
@@ -101,16 +59,16 @@ public class AttributeImpl extends AttributeValueImpl implements Attribute {
 
 	/**
 	 * Uninitialized attribute.
-	 * 
+	 *
 	 * @param type is the type of the attribute.
 	 */
 	public AttributeImpl(AttributeType type) {
 		super(type);
 	}
-	
+
 	/**
 	 * Uninitialized attribute.
-	 * 
+	 *
 	 * @param name is the name of the attribute
 	 */
 	public AttributeImpl(String name) {
@@ -119,7 +77,7 @@ public class AttributeImpl extends AttributeValueImpl implements Attribute {
 
 	/**
 	 * Uninitialized attribute.
-	 * 
+	 *
 	 * @param name is the name of the attribute
 	 * @param type is the type of the attribute.
 	 */
@@ -132,7 +90,7 @@ public class AttributeImpl extends AttributeValueImpl implements Attribute {
 	 * Initialized attribute with the given raw value.
 	 * The raw value must be compatible with the internal
 	 * representation of the value.
-	 * 
+	 *
 	 * @param name is the name of the attribute
 	 * @param type is the type of the attribute.
 	 * @param rawValue is the rawValue.
@@ -248,7 +206,7 @@ public class AttributeImpl extends AttributeValueImpl implements Attribute {
 	 * @param name is the name of the attribute
 	 * @param value is the vaule of this new attribute.
 	 */
-	public AttributeImpl(String name, Point2D value) {
+	public AttributeImpl(String name, Point2D<?, ?> value) {
 		super(value);
 		this.name = name;
 	}
@@ -259,7 +217,7 @@ public class AttributeImpl extends AttributeValueImpl implements Attribute {
 	 * @param y is the value of this new attribute.
 	 */
 	public AttributeImpl(String name, float x, float y) {
-		super(x,y);
+		super(x, y);
 		this.name = name;
 	}
 
@@ -269,7 +227,7 @@ public class AttributeImpl extends AttributeValueImpl implements Attribute {
 	 * @param y is the value of this new attribute.
 	 */
 	public AttributeImpl(String name, double x, double y) {
-		super(x,y);
+		super(x, y);
 		this.name = name;
 	}
 
@@ -289,7 +247,7 @@ public class AttributeImpl extends AttributeValueImpl implements Attribute {
 	 * @param z is the value of this new attribute.
 	 */
 	public AttributeImpl(String name, float x, float y, float z) {
-		super(x,y,z);
+		super(x, y, z);
 		this.name = name;
 	}
 
@@ -300,7 +258,7 @@ public class AttributeImpl extends AttributeValueImpl implements Attribute {
 	 * @param z is the value of this new attribute.
 	 */
 	public AttributeImpl(String name, double x, double y, double z) {
-		super(x,y,z);
+		super(x, y, z);
 		this.name = name;
 	}
 
@@ -317,7 +275,7 @@ public class AttributeImpl extends AttributeValueImpl implements Attribute {
 	 * @param name is the name of the attribute
 	 * @param value is the value of this new attribute.
 	 */
-	public AttributeImpl(String name, Point2D[] value) {
+	public AttributeImpl(String name, Point2D<?, ?>[] value) {
 		super(value);
 		this.name = name;
 	}
@@ -394,51 +352,89 @@ public class AttributeImpl extends AttributeValueImpl implements Attribute {
 		this.name = name;
 	}
 
-	/**
-	 * {@inheritDoc}
+	/** Compare the two specified attributes.
 	 *
-	 * @param o {@inheritDoc}
-	 * @return {@inheritDoc}
+	 * @param arg0 first attribute
+	 * @param arg1 second attribute.
+	 * @return replies a negative value if {@code arg0} is lesser than
+	 *     {@code arg1}, a positive value if {@code arg0} is greater than
+	 *     {@code arg1}, or <code>0</code> if they are equal.
+	 * @see AttributeComparator
 	 */
-	@Override
-	public boolean equals(Object o) {
-		if (o instanceof Attribute) {
-			return compareAttrs(this, (Attribute)o)==0;
+	public static int compareAttrs(Attribute arg0, Attribute arg1) {
+		if (arg0 == arg1) {
+			return 0;
 		}
-		return super.equals(o);
+		if (arg0 == null) {
+			return 1;
+		}
+		if (arg1 == null) {
+			return -1;
+		}
+
+		final String n0 = arg0.getName();
+		final String n1 = arg1.getName();
+		final int cmp = compareAttrNames(n0, n1);
+
+		if (cmp == 0) {
+			return compareValues(arg0, arg1);
+		}
+
+		return cmp;
 	}
-	
-	/**
-	 * {@inheritDoc}
+
+	/** Compare the two specified attribute names.
+	 *
+	 * @param arg0 first attribute.
+	 * @param arg1 second attribute.
+	 * @return replies a negative value if {@code arg0} is lesser than
+	 * {@code arg1}, a positive value if {@code arg0} is greater than
+	 * {@code arg1}, or <code>0</code> if they are equal.
+	 * @see AttributeNameComparator
 	 */
+	public static int compareAttrNames(String arg0, String arg1) {
+		if (arg0 == arg1) {
+			return 0;
+		}
+		if (arg0 == null) {
+			return Integer.MAX_VALUE;
+		}
+		if (arg1 == null) {
+			return Integer.MIN_VALUE;
+		}
+		return arg0.compareToIgnoreCase(arg1);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof Attribute) {
+			return compareAttrs(this, (Attribute) obj) == 0;
+		}
+		return super.equals(obj);
+	}
+
 	@Override
 	public int hashCode() {
-        final int PRIME = 31;
+        final int prime = 31;
         int result = 1;
-        result = PRIME * result + (this.name!=null ? this.name.hashCode() : 0);
-        result = PRIME * result + super.hashCode();
+        result = prime * result + (this.name != null ? this.name.hashCode() : 0);
+        result = prime * result + super.hashCode();
         return result;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @return {@inheritDoc}
-	 */
 	@Override
 	public String toString() {
-		StringBuilder str = new StringBuilder();
+		final StringBuilder str = new StringBuilder();
 		str.append('[');
-		str.append((this.name==null)
+		str.append((this.name == null)
 				? "???" //$NON-NLS-1$
 				: this.name);
 		str.append('=');
 		try {
-			str.append((getValue()==null)
+			str.append((getValue() == null)
 					? "???" //$NON-NLS-1$
 					: getValue().toString());
-		}
-		catch (AttributeException e) {
+		} catch (AttributeException e) {
 			str.append("???"); //$NON-NLS-1$
 		}
 		str.append(':');
@@ -446,50 +442,39 @@ public class AttributeImpl extends AttributeValueImpl implements Attribute {
 		str.append(']');
 		return str.toString();
 	}
-	
+
 	/** Assert that the attribute value was assigned and not <code>null</code>.
 	 */
 	@Override
 	protected void assertAssignedAndNotNull() throws AttributeNotInitializedException {
 		try {
 			super.assertAssignedAndNotNull();
-		}
-		catch(AttributeNotInitializedException _) {
+		} catch (AttributeNotInitializedException exception) {
 			throw new AttributeNotInitializedException(this.name);
 		}
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public String getName() {
 		return this.name;
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	/** {@inheritDoc}
-	 */
+
 	@Override
 	public void setAttribute(Attribute value) throws InvalidAttributeTypeException {
 		setValue(value);
 		this.name = value.getName();
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public Comparator<? extends Attribute> nameComparator() {
 		return new AttributeNameComparator();
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public Comparator<? extends Attribute> comparator() {
 		return new AttributeComparator();

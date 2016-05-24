@@ -1,22 +1,21 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (C) 2012-13 Stephane GALLAND.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.arakhne.afc.vmutil;
@@ -30,7 +29,7 @@ import java.util.UUID;
  * This class was introduced to avoid to kill the current
  * JVM even if the native functions are unloadable.
  * In this way, on operating system without the support
- * for the native libs is still able to be run. 
+ * for the native libs is still able to be run.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -41,55 +40,55 @@ import java.util.UUID;
 class OperatingSystemAndroidWrapper extends AbstractOperatingSystemWrapper {
 
 	private static final String PREFS_FILE = "device_id.xml"; //$NON-NLS-1$
+
 	private static final String PREFS_DEVICE_ID = "device_id"; //$NON-NLS-1$
 
-	/**
+	/** Construct a wrapper.
 	 */
-	public OperatingSystemAndroidWrapper() {
+	OperatingSystemAndroidWrapper() {
 		//
 	}
 
-	/** {@inheritDoc}
-	 */
+	@SuppressWarnings("checkstyle:npathcomplexity")
 	@Override
 	public String getOSSerialNumber(boolean enableSuperUser, boolean enableGUI) {
 		String serial = null;
 		try {
-			Object androidContext = Android.getContext();
-			if (androidContext!=null) {
-				Class<?> contextClass = androidContext.getClass();
-				Method m;
+			final Object androidContext = Android.getContext();
+			if (androidContext != null) {
+				final Class<?> contextClass = androidContext.getClass();
+				Method method;
 				Object v;
 
 				// Read the prefs
 				try {
-					m = contextClass.getMethod("getSharedPreferences", String.class, int.class); //$NON-NLS-1$
-					Object prefs = m.invoke(androidContext, PREFS_FILE, 0);
-					assert(prefs!=null);
+					method = contextClass.getMethod("getSharedPreferences", String.class, int.class); //$NON-NLS-1$
+					final Object prefs = method.invoke(androidContext, PREFS_FILE, 0);
+					assert prefs != null;
 
 					try {
 
-						m = prefs.getClass().getMethod("getString", String.class, String .class); //$NON-NLS-1$
-						v = m.invoke(prefs, PREFS_DEVICE_ID, null);
-						if (v!=null) {
+						method = prefs.getClass().getMethod("getString", String.class, String .class); //$NON-NLS-1$
+						v = method.invoke(prefs, PREFS_DEVICE_ID, null);
+						if (v != null) {
 							serial = v.toString();
 						}
-					}
-					catch (Throwable exception) {
+					} catch (Throwable exception) {
 						serial = null;
 					}
 
 					// Get the id from the Android constant.
 					try {
-						if (serial==null) {
-							Class<?> secureClass = Android.getSecureSettingsClass();
+						if (serial == null) {
+							final Class<?> secureClass = Android.getSecureSettingsClass();
 
-							Method getStringMethod = secureClass.getMethod("getString", Android.getContextResolverClass(), String.class); //$NON-NLS-1$
+							final Method getStringMethod = secureClass.getMethod("getString", //$NON-NLS-1$
+									Android.getContextResolverClass(), String.class);
 
-							Field androidIdField = secureClass.getField("ANDROID_ID"); //$NON-NLS-1$
-							Object androidId = androidIdField.get(null);
+							final Field androidIdField = secureClass.getField("ANDROID_ID"); //$NON-NLS-1$
+							final Object androidId = androidIdField.get(null);
 
-							serial = (String)getStringMethod.invoke(null, Android.getContextResolver(), androidId);
+							serial = (String) getStringMethod.invoke(null, Android.getContextResolver(), androidId);
 
 							// Use the Android ID unless it's broken, in which case fallback on deviceId,
 							// unless it's not available, then fallback on the phone id.
@@ -98,79 +97,68 @@ class OperatingSystemAndroidWrapper extends AbstractOperatingSystemWrapper {
 								serial = null;
 							}
 						}
-					}
-					catch (Throwable exception) {
+					} catch (Throwable exception) {
 						serial = null;
 					}
 
 					// Read the phone id
 					try {
-						if (serial==null) {
-							m = contextClass.getMethod("getSystemService", String.class); //$NON-NLS-1$
-							Field field = contextClass.getField("TELEPHONY_SERVICE"); //$NON-NLS-1$
-							Object telephonyManager = m.invoke(androidContext, field.get(null));
-							if (telephonyManager!=null) {
-								m = telephonyManager.getClass().getMethod("getDeviceId"); //$NON-NLS-1$
-								Object rawSerial = m.invoke(telephonyManager);
-								if (rawSerial!=null) {
+						if (serial == null) {
+							method = contextClass.getMethod("getSystemService", String.class); //$NON-NLS-1$
+							final Field field = contextClass.getField("TELEPHONY_SERVICE"); //$NON-NLS-1$
+							final Object telephonyManager = method.invoke(androidContext, field.get(null));
+							if (telephonyManager != null) {
+								method = telephonyManager.getClass().getMethod("getDeviceId"); //$NON-NLS-1$
+								final Object rawSerial = method.invoke(telephonyManager);
+								if (rawSerial != null) {
 									serial = rawSerial.toString();
 								}
 							}
 						}
-					}
-					catch (Throwable exception) {
+					} catch (Throwable exception) {
 						serial = null;
 					}
 
 					// Compute a random id and put it in  the prefs.
-					if (serial==null) {
+					if (serial == null) {
 						serial = UUID.randomUUID().toString();
-						m = prefs.getClass().getMethod("edit"); //$NON-NLS-1$
-						v = m.invoke(prefs);
-						m = v.getClass().getMethod("putString", String.class, String.class); //$NON-NLS-1$
-						v = m.invoke(v, PREFS_DEVICE_ID, serial);
-						m = v.getClass().getMethod("commit"); //$NON-NLS-1$
-						m.invoke(v);
+						method = prefs.getClass().getMethod("edit"); //$NON-NLS-1$
+						v = method.invoke(prefs);
+						method = v.getClass().getMethod("putString", String.class, String.class); //$NON-NLS-1$
+						v = method.invoke(v, PREFS_DEVICE_ID, serial);
+						method = v.getClass().getMethod("commit"); //$NON-NLS-1$
+						method.invoke(v);
 					}
-				}
-				catch (Throwable exception) {
+				} catch (Throwable exception) {
 					serial = null;
 				}
 			}
-		}
-		catch (Throwable exception) {
+		} catch (Throwable exception) {
 			serial = null;
 		}
 
 		return serial;
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public String getOSUUID(boolean enableSuperUser, boolean enableGUI) {
-		String serial = getOSSerialNumber(enableSuperUser, enableGUI);
-		if (serial!=null) {
+		final String serial = getOSSerialNumber(enableSuperUser, enableGUI);
+		if (serial != null) {
 			try {
 				return UUID.fromString(serial).toString();
-			}
-			catch(Throwable exception) {
+			} catch (Throwable exception) {
 				//
 			}
 
 			try {
 				return UUID.nameUUIDFromBytes(serial.getBytes()).toString();
-			}
-			catch(Throwable exception) {
+			} catch (Throwable exception) {
 				//
 			}
 		}
 		return null;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public OperatingSystemIdentificationType getIdentificationType() {
 		return OperatingSystemIdentificationType.OPERATING_SYSTEM;

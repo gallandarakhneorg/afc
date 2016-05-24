@@ -1,24 +1,23 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (C) 2005-2010 Stephane GALLAND.
- * Copyright (C) 2012-13 Stephane GALLAND.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package org.arakhne.afc.vmutil;
 
 import java.io.File;
@@ -30,17 +29,21 @@ import java.util.NoSuchElementException;
 
 /**
  * Current classpath and associated utility functions.
- * 
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 5.0
  */
-public class ClasspathUtil {
+public final class ClasspathUtil {
+
+	private ClasspathUtil() {
+		//
+	}
 
 	/** Replies the classpath at start of the virtual machine.
-	 * 
+	 *
 	 * @return the startup classpath, never <code>null</code>.
 	 * @since 6.0
 	 */
@@ -49,32 +52,36 @@ public class ClasspathUtil {
 	}
 
 	/** Replies the current classpath.
-	 * 
+	 *
 	 * @return the current classpath, never <code>null</code>.
 	 * @since 6.0
 	 */
 	@SuppressWarnings("resource")
 	public static Iterator<URL> getClasspath() {
 		Iterator<URL> iterator = getStartClasspath();
-		
-		ClassLoader loader = ClassLoaderFinder.findClassLoader();
-		if (loader instanceof DynamicURLClassLoader) {
-			DynamicURLClassLoader dLoader = (DynamicURLClassLoader)loader;
+
+		final ClassLoader loader = ClassLoaderFinder.findClassLoader();
+		try {
+			final DynamicURLClassLoader dLoader = (DynamicURLClassLoader) loader;
 			iterator = new IteratorIterator(
 					new FilteringIterator(Arrays.asList(dLoader.getURLs()).iterator()),
 					iterator);
+		} catch (ClassCastException exception1) {
+			try {
+				final URLClassLoader dLoader = (URLClassLoader) loader;
+				iterator = new IteratorIterator(
+						new FilteringIterator(Arrays.asList(dLoader.getURLs()).iterator()),
+						iterator);
+			} catch (ClassCastException exception2) {
+				//
+			}
 		}
-		else if (loader instanceof URLClassLoader) {
-			URLClassLoader dLoader = (URLClassLoader)loader;
-			iterator = new IteratorIterator(
-					new FilteringIterator(Arrays.asList(dLoader.getURLs()).iterator()),
-					iterator);
-		}
-		
+
 		return iterator;
 	}
-	
-	/**
+
+	/** Merging Iterator on URLs in a classpath.
+	 *
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
@@ -82,49 +89,39 @@ public class ClasspathUtil {
 	 * @since 6.0
 	 */
 	private static class IteratorIterator implements Iterator<URL> {
-		
+
 		private final Iterator<URL> i1;
+
 		private final Iterator<URL> i2;
-		
-		/**
-		 * @param i1
-		 * @param i2
+
+		/** Construct the iterator.
+		 *
+		 * @param i1 the first iterator.
+		 * @param i2 the second iterator.
 		 */
-		public IteratorIterator(Iterator<URL> i1, Iterator<URL> i2) {
-			assert(i1!=null && i2!=null);
+		IteratorIterator(Iterator<URL> i1, Iterator<URL> i2) {
+			assert i1 != null && i2 != null;
 			this.i1 = i1;
 			this.i2 = i2;
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public boolean hasNext() {
-			return (this.i1.hasNext() || this.i2.hasNext());
+			return this.i1.hasNext() || this.i2.hasNext();
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public URL next() {
-			if (this.i1.hasNext())
+			if (this.i1.hasNext()) {
 				return this.i1.next();
+			}
 			return this.i2.next();
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void remove() {
-			throw new UnsupportedOperationException();
-		}
-		
 	}
 
-	/**
+	/** Filtering Iterator on URLs in a classpath.
+	 *
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
@@ -132,60 +129,51 @@ public class ClasspathUtil {
 	 * @since 6.0
 	 */
 	private static class FilteringIterator implements Iterator<URL> {
-		
+
 		private final Iterator<URL> iterator;
+
 		private URL next;
-		
-		/**
-		 * @param iterator
+
+		/** Construct the iterator.
+		 *
+		 * @param iterator the iterator to filter.
 		 */
-		public FilteringIterator(Iterator<URL> iterator) {
-			assert(iterator!=null);
+		FilteringIterator(Iterator<URL> iterator) {
+			assert iterator != null;
 			this.iterator = iterator;
 			searchNext();
 		}
-		
+
 		private void searchNext() {
 			this.next = null;
 			URL u;
-			while (this.next==null && this.iterator.hasNext()) {
+			while (this.next == null && this.iterator.hasNext()) {
 				u = this.iterator.next();
-				if (u!=null) {
+				if (u != null) {
 					this.next = u;
 				}
 			}
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public boolean hasNext() {
-			return this.next!=null;
+			return this.next != null;
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public URL next() {
-			URL n = this.next;
-			if (n==null) throw new NoSuchElementException();
+			final URL n = this.next;
+			if (n == null) {
+				throw new NoSuchElementException();
+			}
 			searchNext();
 			return n;
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void remove() {
-			throw new UnsupportedOperationException();
-		}
-		
 	}
 
-	/**
+	/** Iterator on paths in a classpath.
+	 *
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
@@ -193,84 +181,73 @@ public class ClasspathUtil {
 	 * @since 6.0
 	 */
 	private static class PathIterator implements Iterator<URL> {
-		
+
 		private String path;
+
 		private URL next;
+
 		private int nextIndex;
-		
-		/**
-		 * @param path
+
+		/** Construct the iterator.
+		 *
+		 * @param path the classpath.
 		 */
-		public PathIterator(String path) {
+		PathIterator(String path) {
 			this.path = path;
 			this.nextIndex = -1;
 			searchNext();
 		}
-		
+
 		private void searchNext() {
-			String p;
+			String path;
 			int index;
 			URL url;
-			
+
 			this.next = null;
-			
-			while (this.next==null && this.path!=null && this.nextIndex<this.path.length()) {
+
+			while (this.next == null && this.path != null && this.nextIndex < this.path.length()) {
 				index = this.path.indexOf(File.pathSeparatorChar, this.nextIndex + 1);
-				
-				if (index>this.nextIndex+1) {
-					p = this.path.substring(this.nextIndex+1, index);
-				}
-				else {
-					p = this.path.substring(this.nextIndex+1);
-					this.path = null; // no more element
+
+				if (index > this.nextIndex + 1) {
+					path = this.path.substring(this.nextIndex + 1, index);
+				} else {
+					path = this.path.substring(this.nextIndex + 1);
+					// no more element
+					this.path = null;
 				}
 
 				this.nextIndex = index;
 
-				if (p!=null && !"".equals(p)) { //$NON-NLS-1$
+				if (path != null && !"".equals(path)) { //$NON-NLS-1$
 					try {
-						url = FileSystem.convertStringToURL(p, false, true, false);
-						if (url!=null) {
+						url = FileSystem.convertStringToURL(path, false, true, false);
+						if (url != null) {
 							this.next = url;
 						}
-					}
-					catch(AssertionError e) {
+					} catch (AssertionError e) {
 						throw e;
-					}
-					catch(Throwable e) {
+					} catch (Throwable e) {
 						//
 					}
 				}
 			}
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public boolean hasNext() {
-			return this.next!=null;
+			return this.next != null;
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public URL next() {
-			URL n = this.next;
-			if (n==null) throw new NoSuchElementException();
+			final URL n = this.next;
+			if (n == null) {
+				throw new NoSuchElementException();
+			}
 			searchNext();
 			return n;
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
-		@Override
-		public void remove() {
-			throw new UnsupportedOperationException();
-		}
-		
 	}
-	
+
 }

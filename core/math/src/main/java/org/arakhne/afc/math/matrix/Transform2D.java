@@ -1,23 +1,23 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (C) 2012 Stephane GALLAND.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package org.arakhne.afc.math.matrix;
 
 import org.arakhne.afc.math.continous.object2d.Point2f;
@@ -30,8 +30,8 @@ import org.arakhne.afc.math.generic.Tuple2D;
  * Is represented internally as a 3x3 floating point matrix. The
  * mathematical representation is row major, as in traditional
  * matrix mathematics.
- * <p>
- * The transformation matrix is:
+ *
+ * <p>The transformation matrix is:
  * <pre><code>
  * | cos(theta) | -sin(theta) | Tx |
  * | sin(theta) | cos(theta)  | Ty |
@@ -45,13 +45,10 @@ import org.arakhne.afc.math.generic.Tuple2D;
  * @deprecated see {@link org.arakhne.afc.math.geometry.d2.Transform2D}
  */
 @Deprecated
+@SuppressWarnings("checkstyle:all")
 public class Transform2D extends Matrix3d {
 
 	private static final long serialVersionUID = -3437760883865605968L;
-
-	/** This is the identifity transformation.
-	 */
-	public static final Transform2D IDENTITY = new Transform2D();
 
 	/**
 	 * Constructs a new Transform2D object and sets it to the identity transformation.
@@ -63,7 +60,7 @@ public class Transform2D extends Matrix3d {
 	/**
 	 * Constructs a new Transform2D object and initializes it from the
 	 * specified transform.
-	 * 
+	 *
 	 * @param t
 	 */
 	public Transform2D(Transform2D t) {
@@ -79,7 +76,7 @@ public class Transform2D extends Matrix3d {
 
 	/**
 	 * Constructs and initializes a Matrix3f from the specified nine values.
-	 * 
+	 *
 	 * @param m00
 	 *            the [0][0] element
 	 * @param m01
@@ -104,9 +101,9 @@ public class Transform2D extends Matrix3d {
 
 	/** Set the position.
 	 * <p>
-	 * This function changes only the elements of 
+	 * This function changes only the elements of
 	 * the matrix related to the translation (m02,
-	 * m12). The scaling and the shearing are not changed. 
+	 * m12). The scaling and the shearing are not changed.
 	 * <p>
 	 * After a call to this function, the matrix will
 	 * contains (? means any value):
@@ -115,7 +112,7 @@ public class Transform2D extends Matrix3d {
 	 *          [   ?    ?    y   ]
 	 *          [   ?    ?    ?   ]
 	 * </pre>
-	 * 
+	 *
 	 * @param x
 	 * @param y
 	 * @see #makeTranslationMatrix(float, float)
@@ -127,9 +124,9 @@ public class Transform2D extends Matrix3d {
 
 	/** Set the position.
 	 * <p>
-	 * This function changes only the elements of 
+	 * This function changes only the elements of
 	 * the matrix related to the translation (m02,
-	 * m12). The scaling and the shearing are not changed. 
+	 * m12). The scaling and the shearing are not changed.
 	 * <p>
 	 * After a call to this function, the matrix will
 	 * contains (? means any value):
@@ -138,7 +135,7 @@ public class Transform2D extends Matrix3d {
 	 *          [   ?    ?    t.y   ]
 	 *          [   ?    ?    ?     ]
 	 * </pre>
-	 * 
+	 *
 	 * @param t
 	 * @see #makeTranslationMatrix(float, float)
 	 */
@@ -155,7 +152,7 @@ public class Transform2D extends Matrix3d {
 	 *                [   0    0    dy   ]
 	 *                [   0    0    1    ]
 	 * </pre>
-	 * 
+	 *
 	 * @param dx
 	 * @param dy
 	 */
@@ -172,7 +169,7 @@ public class Transform2D extends Matrix3d {
 	 *                [   0    0    t.y   ]
 	 *                [   0    0    1     ]
 	 * </pre>
-	 * 
+	 *
 	 * @param t
 	 */
 	public void translate(Vector2f t) {
@@ -180,7 +177,7 @@ public class Transform2D extends Matrix3d {
 	}
 
 	/** Replies the X translation.
-	 * 
+	 *
 	 * @return the amount
 	 */
 	public float getTranslationX() {
@@ -188,7 +185,7 @@ public class Transform2D extends Matrix3d {
 	}
 
 	/** Replies the Y translation.
-	 * 
+	 *
 	 * @return the amount
 	 */
 	public float getTranslationY() {
@@ -196,7 +193,7 @@ public class Transform2D extends Matrix3d {
 	}
 
 	/** Replies the translation.
-	 * 
+	 *
 	 * @return the amount
 	 */
 	public Vector2f getTranslationVector() {
@@ -205,7 +202,7 @@ public class Transform2D extends Matrix3d {
 
 	/**
 	 * Replies the rotation for the object (theta).
-	 * 
+	 *
 	 * @return the amount
 	 */
 	public float getRotation() {
@@ -217,9 +214,9 @@ public class Transform2D extends Matrix3d {
 	/**
 	 * Set the rotation for the object (theta).
 	 * <p>
-	 * This function changes only the elements of 
+	 * This function changes only the elements of
 	 * the matrix related to the rotation (m00,
-	 * m01, m10, m11). The translation is not changed. 
+	 * m01, m10, m11). The translation is not changed.
 	 * <p>
 	 * After a call to this function, the matrix will
 	 * contains (? means any value):
@@ -228,7 +225,7 @@ public class Transform2D extends Matrix3d {
 	 *          [   sin(theta)  cos(theta)   ?   ]
 	 *          [   ?           ?            ?   ]
 	 * </pre>
-	 * 
+	 *
 	 * @param theta
 	 * @see #makeRotationMatrix(float)
 	 */
@@ -250,7 +247,7 @@ public class Transform2D extends Matrix3d {
 	 *                [   sin(theta)    cos(theta)     0   ]
 	 *                [   0             0              1   ]
 	 * </pre>
-	 * 
+	 *
 	 * @param theta
 	 */
 	public void rotate(float theta) {
@@ -280,7 +277,7 @@ public class Transform2D extends Matrix3d {
 			}
 		}
 	}
-	
+
 	private final void rotate90() {
 		// Copied from AWT API
         float M0 = (float)this.m00;
@@ -290,7 +287,7 @@ public class Transform2D extends Matrix3d {
         this.m10 = this.m11;
         this.m11 = -M0;
     }
-	
+
     private final void rotate180() {
 		// Copied from AWT API
     	this.m00 = -this.m00;
@@ -300,7 +297,7 @@ public class Transform2D extends Matrix3d {
     	this.m01 = -this.m01;
     	this.m10 = -this.m10;
     }
-    
+
     private final void rotate270() {
 		// Copied from AWT API
         float M0 = (float)this.m00;
@@ -313,9 +310,9 @@ public class Transform2D extends Matrix3d {
 
 	/** Set the scale.
 	 * <p>
-	 * This function changes only the elements of 
+	 * This function changes only the elements of
 	 * the matrix related to the scaling (m00,
-	 * m11). The shearing and the translation are not changed. 
+	 * m11). The shearing and the translation are not changed.
 	 * <p>
 	 * After a call to this function, the matrix will
 	 * contains (? means any value):
@@ -324,7 +321,7 @@ public class Transform2D extends Matrix3d {
 	 *          [   ?   sy  ?   ]
 	 *          [   ?   ?   ?   ]
 	 * </pre>
-	 * 
+	 *
 	 * @param sx
 	 * @param sy
 	 * @see #makeScaleMatrix(float, float)
@@ -336,9 +333,9 @@ public class Transform2D extends Matrix3d {
 
 	/** Set the scale.
 	 * <p>
-	 * This function changes only the elements of 
+	 * This function changes only the elements of
 	 * the matrix related to the scaling (m00,
-	 * m11). The shearing and the translation are not changed. 
+	 * m11). The shearing and the translation are not changed.
 	 * <p>
 	 * After a call to this function, the matrix will
 	 * contains (? means any value):
@@ -347,7 +344,7 @@ public class Transform2D extends Matrix3d {
 	 *          [   ?    t.y  ?   ]
 	 *          [   ?    ?    ?   ]
 	 * </pre>
-	 * 
+	 *
 	 * @param t
 	 * @see #makeScaleMatrix(float, float)
 	 */
@@ -364,7 +361,7 @@ public class Transform2D extends Matrix3d {
 	 *                [   0    sy   0   ]
 	 *                [   0    0    1   ]
 	 * </pre>
-	 * 
+	 *
 	 * @param sx
 	 * @param sy
 	 */
@@ -383,7 +380,7 @@ public class Transform2D extends Matrix3d {
 	 *                [   0     t.y   0   ]
 	 *                [   0     0     1   ]
 	 * </pre>
-	 * 
+	 *
 	 * @param t
 	 */
 	public void scale(Tuple2D<?> t) {
@@ -397,7 +394,7 @@ public class Transform2D extends Matrix3d {
 	 *          [   0    sy   0   ]
 	 *          [   0    0    1   ]
 	 * </pre>
-	 * 
+	 *
 	 * @return the amount
 	 */
 	public float getScaleX() {
@@ -411,7 +408,7 @@ public class Transform2D extends Matrix3d {
 	 *          [   0    sy   0   ]
 	 *          [   0    0    1   ]
 	 * </pre>
-	 * 
+	 *
 	 * @return the amount
 	 */
 	public float getScaleY() {
@@ -425,7 +422,7 @@ public class Transform2D extends Matrix3d {
 	 *          [   0    sy   0   ]
 	 *          [   0    0    1   ]
 	 * </pre>
-	 * 
+	 *
 	 * @return the amount
 	 */
 	public Vector2f getScaleVector() {
@@ -434,9 +431,9 @@ public class Transform2D extends Matrix3d {
 
 	/** Set the shearing elements.
 	 * <p>
-	 * This function changes only the elements of 
+	 * This function changes only the elements of
 	 * the matrix related to the shearing (m01,
-	 * m10). The scaling and the translation are not changed. 
+	 * m10). The scaling and the translation are not changed.
 	 * <p>
 	 * After a call to this function, the matrix will
 	 * contains (? means any value):
@@ -445,7 +442,7 @@ public class Transform2D extends Matrix3d {
 	 *          [   shy  ?    ?   ]
 	 *          [   ?    ?    ?   ]
 	 * </pre>
-	 * 
+	 *
 	 * @param shx
 	 * @param shy
 	 * @see #makeShearMatrix(float, float)
@@ -457,9 +454,9 @@ public class Transform2D extends Matrix3d {
 
 	/** Set the shearing elements.
 	 * <p>
-	 * This function changes only the elements of 
+	 * This function changes only the elements of
 	 * the matrix related to the shearing (m01,
-	 * m10). The scaling and the translation are not changed. 
+	 * m10). The scaling and the translation are not changed.
 	 * <p>
 	 * After a call to this function, the matrix will
 	 * contains (? means any value):
@@ -468,7 +465,7 @@ public class Transform2D extends Matrix3d {
 	 *          [   t.y  ?    ?   ]
 	 *          [   ?    ?    ?   ]
 	 * </pre>
-	 * 
+	 *
 	 * @param t
 	 * @see #makeShearMatrix(float, float)
 	 */
@@ -485,7 +482,7 @@ public class Transform2D extends Matrix3d {
 	 *                [   shy  1    0   ]
 	 *                [   0    0    1   ]
 	 * </pre>
-	 * 
+	 *
 	 * @param shx
 	 * @param shy
 	 */
@@ -493,7 +490,7 @@ public class Transform2D extends Matrix3d {
 		float M0, M1;
 		M0 = (float)this.m00;
 		M1 = (float)this.m01;
-		
+
 		this.m00 = M0 + M1 * shy;
 		this.m01 = M0 * shx + M1;
 
@@ -511,7 +508,7 @@ public class Transform2D extends Matrix3d {
 	 *                [   t.y  1    0   ]
 	 *                [   0    0    1   ]
 	 * </pre>
-	 * 
+	 *
 	 * @param t
 	 */
 	public void shear(Tuple2D<?> t) {
@@ -525,7 +522,7 @@ public class Transform2D extends Matrix3d {
 	 *          [   shy  0    0   ]
 	 *          [   0    0    1   ]
 	 * </pre>
-	 * 
+	 *
 	 * @return the amount
 	 */
 	public float getShearX() {
@@ -539,7 +536,7 @@ public class Transform2D extends Matrix3d {
 	 *          [   shy  0    0   ]
 	 *          [   0    0    1   ]
 	 * </pre>
-	 * 
+	 *
 	 * @return the amount
 	 */
 	public float getShearY() {
@@ -553,7 +550,7 @@ public class Transform2D extends Matrix3d {
 	 *          [   shy  0    0   ]
 	 *          [   0    0    1   ]
 	 * </pre>
-	 * 
+	 *
 	 * @return the amount
 	 */
 	public Vector2f getShearVector() {
@@ -564,8 +561,8 @@ public class Transform2D extends Matrix3d {
 	 * Sets the value of this matrix to a counter clockwise rotation about the x
 	 * axis, and no translation
 	 * <p>
-	 * This function changes all the elements of 
-	 * the matrix, icluding the translation. 
+	 * This function changes all the elements of
+	 * the matrix, icluding the translation.
 	 * <p>
 	 * After a call to this function, the matrix will
 	 * contains (? means any value):
@@ -574,7 +571,7 @@ public class Transform2D extends Matrix3d {
 	 *          [   sin(theta)  cos(theta)   0   ]
 	 *          [   0           0            1   ]
 	 * </pre>
-	 * 
+	 *
 	 * @param angle
 	 *            the angle to rotate about the X axis in radians
 	 * @see #setRotation(float)
@@ -601,8 +598,8 @@ public class Transform2D extends Matrix3d {
 	/**
 	 * Sets the value of this matrix to the given translation, without rotation.
 	 * <p>
-	 * This function changes all the elements of 
-	 * the matrix including the scaling and the shearing. 
+	 * This function changes all the elements of
+	 * the matrix including the scaling and the shearing.
 	 * <p>
 	 * After a call to this function, the matrix will
 	 * contains (? means any value):
@@ -611,7 +608,7 @@ public class Transform2D extends Matrix3d {
 	 *          [   0    1    y   ]
 	 *          [   0    0    1   ]
 	 * </pre>
-	 * 
+	 *
 	 * @param dx is the translation along X.
 	 * @param dy is the translation along Y.
 	 * @see #setTranslation(float, float)
@@ -634,9 +631,9 @@ public class Transform2D extends Matrix3d {
 	/**
 	 * Sets the value of this matrix to the given scaling, without rotation.
 	 * <p>
-	 * This function changes all the elements of 
+	 * This function changes all the elements of
 	 * the matrix, including the shearing and the
-	 * translation. 
+	 * translation.
 	 * <p>
 	 * After a call to this function, the matrix will
 	 * contains (? means any value):
@@ -645,7 +642,7 @@ public class Transform2D extends Matrix3d {
 	 *          [   0   sy  0   ]
 	 *          [   0   0   1   ]
 	 * </pre>
-	 * 
+	 *
 	 * @param sx is the scaling along X.
 	 * @param sy is the scaling along Y.
 	 * @see #setScale(float, float)
@@ -668,9 +665,9 @@ public class Transform2D extends Matrix3d {
 	/**
 	 * Sets the value of this matrix to the given scaling, without rotation.
 	 * <p>
-	 * This function changes all the elements of 
+	 * This function changes all the elements of
 	 * the matrix incuding the scaling and the
-	 * translation. 
+	 * translation.
 	 * <p>
 	 * After a call to this function, the matrix will
 	 * contains (? means any value):
@@ -679,7 +676,7 @@ public class Transform2D extends Matrix3d {
 	 *          [   shy  1    0   ]
 	 *          [   0    0    1   ]
 	 * </pre>
-	 * 
+	 *
 	 * @param shx is the shearing along X.
 	 * @param shy is the shearing along Y.
 	 * @see #setShear(float, float)
@@ -702,7 +699,7 @@ public class Transform2D extends Matrix3d {
 	/**
 	 * Multiply this matrix by the tuple t and place the result back into the
 	 * tuple (t = this*t).
-	 * 
+	 *
 	 * @param t
 	 *            the tuple to be multiplied by this matrix and then replaced
 	 */
@@ -713,7 +710,7 @@ public class Transform2D extends Matrix3d {
 		t.set(x, y);
 	}
 
-	/** Multiply this matrix by the tuple <x,y> and return the result.
+	/** Multiply this matrix by the tuple <x, y> and return the result.
 	 * <p>
 	 * This function is equivalent to:
 	 * <pre>
@@ -721,7 +718,7 @@ public class Transform2D extends Matrix3d {
 	 *                  [   y   ]
 	 *                  [   1   ]
 	 * </pre>
-	 * 
+	 *
 	 * @param x
 	 * @param y
 	 * @return the transformation result
@@ -743,7 +740,7 @@ public class Transform2D extends Matrix3d {
 	 *                  [   t.y   ]
 	 *                  [   1     ]
 	 * </pre>
-	 * 
+	 *
 	 * @param t
 	 *            the tuple to be multiplied by this matrix
 	 * @param result
@@ -781,17 +778,17 @@ public class Transform2D extends Matrix3d {
 			throw new SingularMatrixException("Determinant is "+det); //$NON-NLS-1$
 		}
 		return new Transform2D(
-				(float)(this.m11 / det), 
-				(float)(-this.m01 / det), 
-				(float)((this.m01 * this.m12 - this.m11 * this.m02) / det), 
-				(float)(-this.m10 / det), 
-				(float)(this.m00 / det), 
+				(float)(this.m11 / det),
+				(float)(-this.m01 / det),
+				(float)((this.m01 * this.m12 - this.m11 * this.m02) / det),
+				(float)(-this.m10 / det),
+				(float)(this.m00 / det),
 				(float)((this.m10 * this.m02 - this.m00 * this.m12) / det));
 	}
 
 	/**
 	 * Set the components of the transformation.
-	 * 
+	 *
 	 * @param m00
 	 *            the [0][0] element
 	 * @param m01
@@ -833,11 +830,11 @@ public class Transform2D extends Matrix3d {
 			throw new SingularMatrixException("Determinant is "+det); //$NON-NLS-1$
 		}
 		set(
-				(float)(this.m11 / det), 
-				(float)(-this.m01 / det), 
-				(float)((this.m01 * this.m12 - this.m11 * this.m02) / det), 
-				(float)(-this.m10 / det), 
-				(float)(this.m00 / det), 
+				(float)(this.m11 / det),
+				(float)(-this.m01 / det),
+				(float)((this.m01 * this.m12 - this.m11 * this.m02) / det),
+				(float)(-this.m10 / det),
+				(float)(this.m00 / det),
 				(float)((this.m10 * this.m02 - this.m00 * this.m12) / det));
 	}
 
@@ -866,11 +863,11 @@ public class Transform2D extends Matrix3d {
 			throw new SingularMatrixException("Determinant is "+det); //$NON-NLS-1$
 		}
 		set(
-				(float)(m.m11 / det), 
-				(float)(-m.m01 / det), 
-				(float)((m.m01 * m.m12 - m.m11 * m.m02) / det), 
-				(float)(-m.m10 / det), 
-				(float)(m.m00 / det), 
+				(float)(m.m11 / det),
+				(float)(-m.m01 / det),
+				(float)((m.m01 * m.m12 - m.m11 * m.m02) / det),
+				(float)(-m.m10 / det),
+				(float)(m.m00 / det),
 				(float)((m.m10 * m.m02 - m.m00 * m.m12) / det));
 	}
 

@@ -1,22 +1,21 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (C) 2012-13 Stephane GALLAND.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.arakhne.afc.vmutil;
@@ -28,7 +27,7 @@ import org.arakhne.afc.vmutil.Android.AndroidException;
 
 /**
  * This interface provides the Android implementation to load resources.
- * 
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
@@ -37,33 +36,31 @@ import org.arakhne.afc.vmutil.Android.AndroidException;
  */
 class AndroidResourceWrapper implements ResourceWrapper {
 
+	/** Construct the wrapper.
+	 */
+	AndroidResourceWrapper() {
+		//
+	}
+
 	private static String decodeResourceName(String resourceName) {
 		if (resourceName.startsWith("/")) { //$NON-NLS-1$
 			return resourceName.substring(1);
 		}
 		return resourceName;
 	}
-	
-	/**
-	 */
-	public AndroidResourceWrapper() {
-		//
-	}
-	
-    /**
-     * {@inheritDoc}
-     */
+
 	@Override
     public URL getResource(ClassLoader classLoader, String path) {
-		String resourceName = decodeResourceName(path);
-		ClassLoader androidClassLoader;
+		final String resourceName = decodeResourceName(path);
+		final ClassLoader androidClassLoader;
 		try {
 			androidClassLoader = Android.getContextClassLoader();
-			assert(androidClassLoader!=null);
-			URL url = androidClassLoader.getResource(resourceName);
-			if (url!=null) return url;
-		}
-		catch (AndroidException e) {
+			assert androidClassLoader != null;
+			final URL url = androidClassLoader.getResource(resourceName);
+			if (url != null) {
+				return url;
+			}
+		} catch (AndroidException e) {
 			//
 		}
 		if (classLoader != null) {
@@ -72,20 +69,18 @@ class AndroidResourceWrapper implements ResourceWrapper {
 		return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
 	@Override
     public InputStream getResourceAsStream(ClassLoader classLoader, String path) {
-		String resourceName = decodeResourceName(path);
-		ClassLoader androidClassLoader;
+		final String resourceName = decodeResourceName(path);
+		final ClassLoader androidClassLoader;
 		try {
 			androidClassLoader = Android.getContextClassLoader();
-			assert(androidClassLoader!=null);
-			InputStream stream = androidClassLoader.getResourceAsStream(resourceName);
-			if (stream!=null) return stream;
-		}
-		catch (AndroidException e) {
+			assert androidClassLoader != null;
+			final InputStream stream = androidClassLoader.getResourceAsStream(resourceName);
+			if (stream != null) {
+				return stream;
+			}
+		} catch (AndroidException e) {
 			//
 		}
 		if (classLoader != null) {
@@ -93,10 +88,7 @@ class AndroidResourceWrapper implements ResourceWrapper {
 		}
 		return null;
     }
-    
-	/**
-	 * {@inheritDoc}
-	 */
+
 	@Override
     public String translateResourceName(String resourceName) {
 		return resourceName.replaceAll("[.]", "/");  //$NON-NLS-1$//$NON-NLS-2$

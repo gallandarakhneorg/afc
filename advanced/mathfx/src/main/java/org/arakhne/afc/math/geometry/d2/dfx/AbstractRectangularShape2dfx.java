@@ -1,36 +1,36 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (C) 2010-2013 Stephane GALLAND.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-package org.arakhne.afc.math.geometry.d2.dfx;
 
-import org.arakhne.afc.math.geometry.d2.afp.RectangularShape2afp;
-import org.eclipse.xtext.xbase.lib.Pure;
+package org.arakhne.afc.math.geometry.d2.dfx;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import org.eclipse.xtext.xbase.lib.Pure;
+
+import org.arakhne.afc.math.geometry.d2.afp.RectangularShape2afp;
 
 /** Abstract rectangular shape with 2 double precision floating-point FX properties.
- * 
+ *
  * @param <IT> is the type of the implementation of this shape.
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -39,8 +39,8 @@ import javafx.beans.property.SimpleObjectProperty;
  * @since 13.0
  */
 public abstract class AbstractRectangularShape2dfx<IT extends AbstractRectangularShape2dfx<?>>
-	extends AbstractShape2dfx<IT>
-	implements RectangularShape2afp<Shape2dfx<?>, IT, PathElement2dfx, Point2dfx, Vector2dfx, Rectangle2dfx> {
+		extends AbstractShape2dfx<IT>
+		implements RectangularShape2afp<Shape2dfx<?>, IT, PathElement2dfx, Point2dfx, Vector2dfx, Rectangle2dfx> {
 
 	private static final long serialVersionUID = 562658629477723655L;
 
@@ -59,32 +59,32 @@ public abstract class AbstractRectangularShape2dfx<IT extends AbstractRectangula
 	/** maxY property.
 	 */
 	DoubleProperty maxY;
-	
+
 	/** width property.
 	 */
 	DoubleProperty width;
-	
+
 	/** height property.
 	 */
 	DoubleProperty height;
 
-	/**
+	/** Construct an empty rectangular shape.
 	 */
 	public AbstractRectangularShape2dfx() {
 		//
 	}
-	
-	/**
-	 * @param r
+
+	/** Constructor by copy.
+	 * @param shape the shape to copy.
 	 */
-	public AbstractRectangularShape2dfx(RectangularShape2afp<?, ?, ?, ?, ?, ?> r) {
-		assert (r != null) : "Shape must be not null"; //$NON-NLS-1$
-		setFromCorners(r.getMinX(), r.getMinY(), r.getMaxX(), r.getMaxY());
+	public AbstractRectangularShape2dfx(RectangularShape2afp<?, ?, ?, ?, ?, ?> shape) {
+		assert shape != null : "Shape must be not null"; //$NON-NLS-1$
+		setFromCorners(shape.getMinX(), shape.getMinY(), shape.getMaxX(), shape.getMaxY());
 	}
 
 	@Override
 	public IT clone() {
-		IT clone = super.clone();
+		final IT clone = super.clone();
 		if (clone.minX != null) {
 			clone.minX = null;
 			clone.minXProperty().set(getMinX());
@@ -129,7 +129,7 @@ public abstract class AbstractRectangularShape2dfx<IT extends AbstractRectangula
 	public double getMinX() {
 		return this.minX == null ? 0 : this.minX.get();
 	}
-	
+
 	@Override
 	public void setMinX(double x) {
 		minXProperty().set(x);
@@ -145,8 +145,8 @@ public abstract class AbstractRectangularShape2dfx<IT extends AbstractRectangula
 			this.minX = new SimpleDoubleProperty(this, "minX") { //$NON-NLS-1$
 				@Override
 				protected void invalidated() {
-					double currentMin = get();
-					double currentMax = getMaxX();
+					final double currentMin = get();
+					final double currentMax = getMaxX();
 					if (currentMin > currentMax) {
 						// min-max constrain is broken
 						maxXProperty().set(currentMin);
@@ -162,7 +162,7 @@ public abstract class AbstractRectangularShape2dfx<IT extends AbstractRectangula
 	public double getMaxX() {
 		return this.maxX == null ? 0 : this.maxX.get();
 	}
-	
+
 	@Override
 	public void setMaxX(double x) {
 		maxXProperty().set(x);
@@ -178,8 +178,8 @@ public abstract class AbstractRectangularShape2dfx<IT extends AbstractRectangula
 			this.maxX = new SimpleDoubleProperty(this, "maxX") { //$NON-NLS-1$
 				@Override
 				protected void invalidated() {
-					double currentMax = get();
-					double currentMin = getMinX();
+					final double currentMax = get();
+					final double currentMin = getMinX();
 					if (currentMin > currentMax) {
 						// min-max constrain is broken
 						minXProperty().set(currentMax);
@@ -195,7 +195,7 @@ public abstract class AbstractRectangularShape2dfx<IT extends AbstractRectangula
 	public double getMinY() {
 		return this.minY == null ? 0 : this.minY.get();
 	}
-	
+
 	@Override
 	public void setMinY(double y) {
 		minYProperty().set(y);
@@ -211,8 +211,8 @@ public abstract class AbstractRectangularShape2dfx<IT extends AbstractRectangula
 			this.minY = new SimpleDoubleProperty(this, "minY") { //$NON-NLS-1$
 				@Override
 				protected void invalidated() {
-					double currentMin = get();
-					double currentMax = getMaxY();
+					final double currentMin = get();
+					final double currentMax = getMaxY();
 					if (currentMin > currentMax) {
 						// min-max constrain is broken
 						maxYProperty().set(currentMin);
@@ -228,7 +228,7 @@ public abstract class AbstractRectangularShape2dfx<IT extends AbstractRectangula
 	public double getMaxY() {
 		return this.maxY == null ? 0 : this.maxY.get();
 	}
-	
+
 	@Override
 	public void setMaxY(double y) {
 		maxYProperty().set(y);
@@ -244,8 +244,8 @@ public abstract class AbstractRectangularShape2dfx<IT extends AbstractRectangula
 			this.maxY = new SimpleDoubleProperty(this, "maxY") { //$NON-NLS-1$
 				@Override
 				protected void invalidated() {
-					double currentMax = get();
-					double currentMin = getMinY();
+					final double currentMax = get();
+					final double currentMin = getMinY();
 					if (currentMin > currentMax) {
 						// min-max constrain is broken
 						minYProperty().set(currentMax);
@@ -255,12 +255,12 @@ public abstract class AbstractRectangularShape2dfx<IT extends AbstractRectangula
 		}
 		return this.maxY;
 	}
-	
+
 	@Override
 	public double getWidth() {
 		return widthProperty().get();
 	}
-	
+
 	/** Replies the property that is the width of the box.
 	 *
 	 * @return the width property.
@@ -273,7 +273,7 @@ public abstract class AbstractRectangularShape2dfx<IT extends AbstractRectangula
 		}
 		return this.width;
 	}
-	
+
 	@Override
 	public double getHeight() {
 		return heightProperty().get();
@@ -300,14 +300,14 @@ public abstract class AbstractRectangularShape2dfx<IT extends AbstractRectangula
 		bits = 31 * bits + Double.doubleToLongBits(getMinY());
 		bits = 31 * bits + Double.doubleToLongBits(getMaxX());
 		bits = 31 * bits + Double.doubleToLongBits(getMaxY());
-		int b = (int) bits;
+		final int b = (int) bits;
 		return b ^ (b >> 32);
 	}
 
 	@Pure
 	@Override
 	public String toString() {
-		StringBuilder b = new StringBuilder();
+		final StringBuilder b = new StringBuilder();
 		b.append("["); //$NON-NLS-1$
 		b.append(getMinX());
 		b.append(";"); //$NON-NLS-1$
@@ -319,16 +319,15 @@ public abstract class AbstractRectangularShape2dfx<IT extends AbstractRectangula
 		b.append("]"); //$NON-NLS-1$
 		return b.toString();
 	}
-	
+
 	@Override
 	public ObjectProperty<Rectangle2dfx> boundingBoxProperty() {
 		if (this.boundingBox == null) {
 			this.boundingBox = new SimpleObjectProperty<>(this, "boundingBox"); //$NON-NLS-1$
-			this.boundingBox.bind(Bindings.createObjectBinding(
-					() -> {
-						return toBoundingBox();
-					},
-					minXProperty(), minYProperty(), widthProperty(), heightProperty()));
+			this.boundingBox.bind(Bindings.createObjectBinding(() -> {
+				return toBoundingBox();
+			},
+				minXProperty(), minYProperty(), widthProperty(), heightProperty()));
 		}
 		return this.boundingBox;
 	}

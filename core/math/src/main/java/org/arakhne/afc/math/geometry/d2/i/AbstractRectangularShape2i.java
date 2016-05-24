@@ -1,28 +1,28 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (C) 2010-2013 Stephane GALLAND.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.arakhne.afc.math.geometry.d2.i;
 
-import org.arakhne.afc.math.geometry.d2.ai.RectangularShape2ai;
 import org.eclipse.xtext.xbase.lib.Pure;
+
+import org.arakhne.afc.math.geometry.d2.ai.RectangularShape2ai;
 
 /** A rectangular shape with 2 integer numbers.
  *
@@ -34,8 +34,8 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @since 13.0
  */
 public abstract class AbstractRectangularShape2i<IT extends AbstractRectangularShape2i<?>>
-	extends AbstractShape2i<IT>
-	implements RectangularShape2ai<Shape2i<?>, IT, PathElement2i, Point2i, Vector2i, Rectangle2i> {
+		extends AbstractShape2i<IT>
+		implements RectangularShape2ai<Shape2i<?>, IT, PathElement2i, Point2i, Vector2i, Rectangle2i> {
 
 	private static final long serialVersionUID = -6441506445885829836L;
 
@@ -47,26 +47,29 @@ public abstract class AbstractRectangularShape2i<IT extends AbstractRectangularS
 
 	private int maxy;
 
-	/**
+	/** Construct an empty rectangular shape.
 	 */
 	public AbstractRectangularShape2i() {
 		//
 	}
-	
-	/**
-	 * @param r
+
+	/** Constructor by copy.
+	 * @param shape the shape to copy.
 	 */
-	public AbstractRectangularShape2i(RectangularShape2ai<?, ?, ?, ?, ?, ?> r) {
-		assert (r != null) : "Shape must be not null"; //$NON-NLS-1$
-		this.minx = r.getMinX();
-		this.miny = r.getMinY();
-		this.maxx = r.getMaxX();
-		this.maxy = r.getMaxY();
+	public AbstractRectangularShape2i(RectangularShape2ai<?, ?, ?, ?, ?, ?> shape) {
+		assert shape != null : "Shape must be not null"; //$NON-NLS-1$
+		this.minx = shape.getMinX();
+		this.miny = shape.getMinY();
+		this.maxx = shape.getMaxX();
+		this.maxy = shape.getMaxY();
 	}
 
 	@Override
 	public void setFromCorners(int x1, int y1, int x2, int y2) {
-		int a, b, c, d;
+		final int a;
+		final int b;
+		final int c;
+		final int d;
 		if (x1 <= x2) {
 			a = x1;
 			b = x2;
@@ -172,7 +175,7 @@ public abstract class AbstractRectangularShape2i<IT extends AbstractRectangularS
 	@Pure
 	@Override
 	public String toString() {
-		StringBuilder b = new StringBuilder();
+		final StringBuilder b = new StringBuilder();
 		b.append("["); //$NON-NLS-1$
 		b.append(getMinX());
 		b.append(";"); //$NON-NLS-1$

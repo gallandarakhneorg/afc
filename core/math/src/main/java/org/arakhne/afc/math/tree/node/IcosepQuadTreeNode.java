@@ -1,20 +1,23 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (c) 2005-10, Multiagent Team,
- * Laboratoire Systemes et Transports,
- * Universite de Technologie de Belfort-Montbeliard.
- * All rights reserved.
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
  *
- * This software is the confidential and proprietary information
- * of the Laboratoire Systemes et Transports
- * of the Universite de Technologie de Belfort-Montbeliard ("Confidential Information").
- * You shall not disclose such Confidential Information and shall use
- * it only in accordance with the terms of the license agreement
- * you entered into with the SeT.
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
  *
- * http://www.multiagent.fr/
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package org.arakhne.afc.math.tree.node;
 
 import java.io.IOException;
@@ -22,20 +25,21 @@ import java.io.ObjectInputStream;
 import java.util.Collection;
 import java.util.List;
 
-import org.arakhne.afc.math.tree.IcosepTreeNodeContainer;
 import org.eclipse.xtext.xbase.lib.Pure;
+
+import org.arakhne.afc.math.tree.IcosepTreeNodeContainer;
 
 
 /**
  * This is the generic implementation of a
  * tree for which each node has four children and
  * that implements the Icosep heuristic.
- * <p>
- * The icosep heuristic implies that all objects
+ *
+ * <p>The icosep heuristic implies that all objects
  * that intersect the split lines will be stored inside
  * an addition child that contains only the corresponding
  * objects.
- * 
+ *
  * @param <D> is the type of the data inside the tree
  * @param <N> is the type of the tree nodes.
  * @author $Author: sgalland$
@@ -44,68 +48,67 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public abstract class IcosepQuadTreeNode<D,N extends IcosepQuadTreeNode<D,N>>
-extends QuadTreeNode<D,N> 
-implements IcosepTreeNodeContainer<N> {
+public abstract class IcosepQuadTreeNode<D, N extends IcosepQuadTreeNode<D, N>>
+		extends QuadTreeNode<D, N> implements IcosepTreeNodeContainer<N> {
 
 	private static final long serialVersionUID = -5009670937278314109L;
-	
-	private N nIcosep;
 
-	/** 
+	private N nicosep;
+
+	/**
 	 * Empty node.
 	 */
 	public IcosepQuadTreeNode() {
 		super();
-		this.nIcosep = null;
+		this.nicosep = null;
 	}
-	
-	/**
+
+	/** Construct a node.
 	 * @param data are the initial user data
 	 */
 	public IcosepQuadTreeNode(Collection<D> data) {
 		super(data);
-		this.nIcosep = null;
+		this.nicosep = null;
 	}
-	
-	/**
+
+	/** Construct a node.
 	 * @param data are the initial user data
 	 */
 	public IcosepQuadTreeNode(D data) {
 		super(data);
-		this.nIcosep = null;
+		this.nicosep = null;
 	}
 
-	/**
+	/** Construct a node.
 	 * @param useLinkedList indicates if a linked list must be used to store the data.
-	 * If <code>false</code>, an ArrayList will be used.
+	 *     If <code>false</code>, an ArrayList will be used.
 	 */
 	public IcosepQuadTreeNode(boolean useLinkedList) {
 		super(useLinkedList);
-		this.nIcosep = null;
+		this.nicosep = null;
 	}
 
-	/**
+	/** Construct a node.
 	 * @param useLinkedList indicates if a linked list must be used to store the data.
-	 * If <code>false</code>, an ArrayList will be used.
+	 *     If <code>false</code>, an ArrayList will be used.
 	 * @param copyDataCollection indicates if the given data collection is copied
-	 * if <code>true</code> or the inner data collection will be the given
-	 * collection itself if <code>false</code>.
+	 *     if <code>true</code> or the inner data collection will be the given
+	 *     collection itself if <code>false</code>.
 	 * @param data are the initial user data
 	 */
 	public IcosepQuadTreeNode(boolean useLinkedList, boolean copyDataCollection, List<D> data) {
 		super(useLinkedList, copyDataCollection, data);
-		this.nIcosep = null;
+		this.nicosep = null;
 	}
 
-	/**
+	/** Construct a node.
 	 * @param useLinkedList indicates if a linked list must be used to store the data.
-	 * If <code>false</code>, an ArrayList will be used.
+	 *     If <code>false</code>, an ArrayList will be used.
 	 * @param data are the initial user data
 	 */
 	public IcosepQuadTreeNode(boolean useLinkedList, D data) {
 		super(useLinkedList, data);
-		this.nIcosep = null;
+		this.nicosep = null;
 	}
 
 	@Pure
@@ -115,19 +118,21 @@ implements IcosepTreeNodeContainer<N> {
 	}
 
 	/** Invoked when this object must be deserialized.
-	 * 
+	 *
 	 * @param in is the input stream.
 	 * @throws IOException in case of input stream access error.
 	 * @throws ClassNotFoundException if some class was not found.
 	 */
 	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
 		in.defaultReadObject();
-		if (this.nIcosep!=null) this.nIcosep.setParentNodeReference(toN(), false);
+		if (this.nicosep != null) {
+			this.nicosep.setParentNodeReference(toN(), false);
+		}
 	}
-	
+
 	/** Clear the tree.
-	 * <p>
-	 * Caution: this method also destroyes the
+	 *
+	 * <p>Caution: this method also destroyes the
 	 * links between the child nodes inside the tree.
 	 * If you want to unlink the first-level
 	 * child node with
@@ -137,8 +142,8 @@ implements IcosepTreeNodeContainer<N> {
 	@Override
 	public void clear() {
 		super.clear();
-		if (this.nIcosep!=null) {
-			N child = this.nIcosep;
+		if (this.nicosep != null) {
+			final N child = this.nicosep;
 			setIcosepChild(null);
 			child.clear();
 		}
@@ -147,94 +152,101 @@ implements IcosepTreeNodeContainer<N> {
 	@Pure
 	@Override
 	public int getChildCount() {
-		return super.getChildCount()+1;
+		return super.getChildCount() + 1;
 	}
 
 	@Pure
 	@Override
 	public N getChildAt(int index) throws IndexOutOfBoundsException {
-		if (index==IcosepQuadTreeZone.ICOSEP.ordinal())
-			return this.nIcosep;
+		if (index == IcosepQuadTreeZone.ICOSEP.ordinal()) {
+			return this.nicosep;
+		}
 		return super.getChildAt(index);
 	}
 
-	/** Replies the node that is corresponding to the given zone
-	 * 
-	 * @param zone
-	 * @return the child node for the given zone, or <code>null</code> 
+	/** Replies the node that is corresponding to the given zone.
+	 *
+	 * @param zone the zone.
+	 * @return the child node for the given zone, or <code>null</code>
 	 */
 	@Pure
 	public N getChildAt(IcosepQuadTreeZone zone) {
-		if (zone==IcosepQuadTreeZone.ICOSEP) {
-			return this.nIcosep;
+		if (zone == IcosepQuadTreeZone.ICOSEP) {
+			return this.nicosep;
 		}
 		return getChildAt(zone.toQuadTreeZone());
 	}
 
 	@Override
 	public boolean setIcosepChild(N newChild) {
-		N oldChild = this.nIcosep;
-		if (oldChild==newChild) return false;
-		
-		if (oldChild!=null) {
+		final N oldChild = this.nicosep;
+		if (oldChild == newChild) {
+			return false;
+		}
+
+		if (oldChild != null) {
 			oldChild.setParentNodeReference(null, true);
 			--this.notNullChildCount;
 			firePropertyChildRemoved(IcosepQuadTreeZone.ICOSEP.ordinal(), oldChild);
 		}
 
-		if (newChild!=null) {
-			N oldParent = newChild.getParentNode();
-			if (oldParent!=this) {
+		if (newChild != null) {
+			final N oldParent = newChild.getParentNode();
+			if (oldParent != this) {
 				newChild.removeFromParent();
 			}
 		}
 
-		this.nIcosep = newChild;
-		
-		if (newChild!=null) {
+		this.nicosep = newChild;
+
+		if (newChild != null) {
 			newChild.setParentNodeReference(toN(), true);
 			++this.notNullChildCount;
 			firePropertyChildAdded(IcosepQuadTreeZone.ICOSEP.ordinal(), newChild);
 		}
-		
+
 		return true;
 	}
 
 	@Pure
 	@Override
 	public N getIcosepChild() {
-		return this.nIcosep;
+		return this.nicosep;
 	}
 
 	@Pure
 	@Override
 	public boolean isLeaf() {
-		return super.isLeaf() && this.nIcosep==null;
+		return super.isLeaf() && this.nicosep == null;
 	}
 
 	@Override
 	public boolean setChildAt(int index, N newChild) throws IndexOutOfBoundsException {
-		if (index==IcosepQuadTreeZone.ICOSEP.ordinal())
+		if (index == IcosepQuadTreeZone.ICOSEP.ordinal()) {
 			return setIcosepChild(newChild);
+		}
 		return super.setChildAt(index, newChild);
 	}
 
 	@Override
 	protected void setChildAtWithoutEventFiring(int index, N newChild) throws IndexOutOfBoundsException {
-		if (index==IcosepQuadTreeZone.ICOSEP.ordinal()) {
-			if (this.nIcosep!=null) --this.notNullChildCount;
-			this.nIcosep = newChild;
-			if (this.nIcosep!=null) ++this.notNullChildCount;
-		}
-		else {
+		if (index == IcosepQuadTreeZone.ICOSEP.ordinal()) {
+			if (this.nicosep != null) {
+				--this.notNullChildCount;
+			}
+			this.nicosep = newChild;
+			if (this.nicosep != null) {
+				++this.notNullChildCount;
+			}
+		} else {
 			super.setChildAtWithoutEventFiring(index, newChild);
 		}
 	}
 
 	@Override
 	public boolean removeChild(N child) {
-		if (child!=null) {
-			if (child==this.nIcosep) {
+		if (child != null) {
+			if (child == this.nicosep) {
 				return setIcosepChild(null);
 			}
 			return super.removeChild(child);
@@ -245,15 +257,17 @@ implements IcosepTreeNodeContainer<N> {
 	@Pure
 	@Override
 	public int indexOf(N child) {
-		if (child==this.nIcosep) return IcosepQuadTreeZone.ICOSEP.ordinal();
+		if (child == this.nicosep) {
+			return IcosepQuadTreeZone.ICOSEP.ordinal();
+		}
 		return super.indexOf(child);
 	}
 
 	@Override
 	public void getChildren(Object[] array) {
-		if (array!=null) {
-			IcosepQuadTreeZone[] zones = IcosepQuadTreeZone.values();
-			for(int i=0; i<zones.length && i<array.length; ++i) {
+		if (array != null) {
+			final IcosepQuadTreeZone[] zones = IcosepQuadTreeZone.values();
+			for (int i = 0; i < zones.length && i < array.length; ++i) {
 				array[i] = getChildAt(zones[i]);
 			}
 		}
@@ -264,7 +278,7 @@ implements IcosepTreeNodeContainer<N> {
 	public int getMinHeight() {
 		return Math.min(
 				super.getMinHeight(),
-				1+(this.nIcosep!=null ? this.nIcosep.getMinHeight() : 0));
+				1 + (this.nicosep != null ? this.nicosep.getMinHeight() : 0));
 	}
 
 	@Pure
@@ -272,25 +286,27 @@ implements IcosepTreeNodeContainer<N> {
 	public int getMaxHeight() {
 		return Math.max(
 				super.getMaxHeight(),
-				1+(this.nIcosep!=null ? this.nIcosep.getMaxHeight() : 0));
+				1 + (this.nicosep != null ? this.nicosep.getMaxHeight() : 0));
 	}
 
 	@Override
 	protected void getHeights(int currentHeight, List<Integer> heights) {
 		super.getHeights(currentHeight, heights);
-		if (this.nIcosep!=null) this.nIcosep.getHeights(currentHeight+1, heights);
+		if (this.nicosep != null) {
+			this.nicosep.getHeights(currentHeight + 1, heights);
+		}
 	}
 
 	/**
 	 * Available zones of a quad tree.
-	 * 
+	 *
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 * @since 13.0
 	 */
-	public static enum IcosepQuadTreeZone {
+	public enum IcosepQuadTreeZone {
 		/** upper left zone.
 		 */
 		NORTH_WEST,
@@ -303,31 +319,35 @@ implements IcosepTreeNodeContainer<N> {
 		/** lower right zone.
 		 */
 		SOUTH_EAST,
-		/** intersection zone
+		/** intersection zone.
 		 */
 		ICOSEP;
-		
+
 		/** Replies the quadtree zone that is corresponding to this zone.
-		 * 
+		 *
 		 * @return a quadtree zone
 		 */
 		public QuadTreeZone toQuadTreeZone() {
 			return QuadTreeZone.values()[ordinal()];
 		}
-		
+
 		/** Replies the zone corresponding to the given index.
 		 * The index is the same as the ordinal value of the
 		 * enumeration. If the given index does not correspond
 		 * to an ordinal value, <code>null</code> is replied.
-		 * 
-		 * @param index
+		 *
+		 * @param index the index.
 		 * @return the zone or <code>null</code>
 		 */
 		@Pure
 		public static IcosepQuadTreeZone fromInteger(int index) {
-			if (index<0) return null;
-			IcosepQuadTreeZone[] nodes = values();
-			if (index>=nodes.length) return null;
+			if (index < 0) {
+				return null;
+			}
+			final IcosepQuadTreeZone[] nodes = values();
+			if (index >= nodes.length) {
+				return null;
+			}
 			return nodes[index];
 		}
 
@@ -336,7 +356,7 @@ implements IcosepTreeNodeContainer<N> {
 	/**
 	 * This is the generic implementation of a quad
 	 * tree with icosep heuristic.
-	 * 
+	 *
 	 * @param <D> is the type of the data inside the tree
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
@@ -344,7 +364,7 @@ implements IcosepTreeNodeContainer<N> {
 	 * @mavenartifactid $ArtifactId$
 	 * @since 13.0
 	 */
-	public static class DefaultIcosepQuadTreeNode<D> extends IcosepQuadTreeNode<D,DefaultIcosepQuadTreeNode<D>> {
+	public static class DefaultIcosepQuadTreeNode<D> extends IcosepQuadTreeNode<D, DefaultIcosepQuadTreeNode<D>> {
 
 		private static final long serialVersionUID = -8047453795982146718L;
 
@@ -354,21 +374,21 @@ implements IcosepTreeNodeContainer<N> {
 		public DefaultIcosepQuadTreeNode() {
 			super();
 		}
-		
-		/**
+
+		/** Construct a node.
 		 * @param data are the initial user data
 		 */
 		public DefaultIcosepQuadTreeNode(Collection<D> data) {
 			super(data);
 		}
-		
-		/**
+
+		/** Construct a node.
 		 * @param data are the initial user data
 		 */
 		public DefaultIcosepQuadTreeNode(D data) {
 			super(data);
 		}
 
-	} /* class DefaultIcosepQuadTreeNode */
+	}
 
 }

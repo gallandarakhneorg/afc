@@ -1,31 +1,32 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (C) 2012 Stephane GALLAND.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-package org.arakhne.afc.inputoutput.filefilter ;
+
+package org.arakhne.afc.inputoutput.filefilter;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-/**
+/** Multi file filter.
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
@@ -34,67 +35,65 @@ import java.util.List;
 public class MultiFileFilter implements FileFilter {
 
 	private final boolean acceptDirectories;
+
 	private final FileFilter[] filters;
+
 	private final String description;
-	
-	/**
-	 * @param description1
-	 * @param filters1
+
+	/** Construct.
+	 * @param description description.
+	 * @param filters filters.
 	 */
-	public MultiFileFilter(String description1, FileFilter... filters1) {
-		this(true, description1, filters1);
+	public MultiFileFilter(String description, FileFilter... filters) {
+		this(true, description, filters);
 	}
 
 	/**
 	 * @param acceptDirectories1 is <code>true</code> to
-	 * permit to this file filter to accept directories;
-	 * <code>false</code> if the directories should not
-	 * match.
-	 * @param description1
-	 * @param filters1
+	 *     permit to this file filter to accept directories;
+	 *     <code>false</code> if the directories should not
+	 *     match.
+	 * @param description description.
+	 * @param filters filters.
 	 */
-	public MultiFileFilter(boolean acceptDirectories1, String description1, FileFilter... filters1) {
+	public MultiFileFilter(boolean acceptDirectories1, String description, FileFilter... filters) {
 		this.acceptDirectories = acceptDirectories1;
-		this.filters = filters1;
-		this.description = description1;
+		this.filters = filters;
+		this.description = description;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
-	public boolean accept(File f) {
-		if (f.isDirectory()) return  this.acceptDirectories;
-		for(FileFilter ff : this.filters) {
-			if (ff.accept(f)) return true;
+	public boolean accept(File file) {
+		if (file.isDirectory()) {
+			return this.acceptDirectories;
+		}
+		for (final FileFilter ff : this.filters) {
+			if (ff.accept(file)) {
+				return true;
+			}
 		}
 		return false;
 	}
 
-	/** {@inheritDoc}
-	 */
-	@Override
-	public String getDescription() {
-		return this.description;
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public final boolean accept(File dir, String name) {
 		return accept(new File(dir, name));
 	}
 
 	@Override
+	public String getDescription() {
+		return this.description;
+	}
+
+	@Override
 	public String[] getExtensions() {
-		List<String> extensions = new ArrayList<>();
-		for(FileFilter ff : this.filters) {
+		final List<String> extensions = new ArrayList<>();
+		for (final FileFilter ff : this.filters) {
 			extensions.addAll(Arrays.asList(ff.getExtensions()));
 		}
-		String[] tab = new String[extensions.size()];
+		final String[] tab = new String[extensions.size()];
 		extensions.toArray(tab);
 		return tab;
 	}
-	
+
 }

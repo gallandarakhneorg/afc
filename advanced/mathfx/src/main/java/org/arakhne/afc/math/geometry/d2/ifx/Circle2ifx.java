@@ -1,35 +1,34 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (C) 2010-2013 Stephane GALLAND.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.arakhne.afc.math.geometry.d2.ifx;
-
-import org.arakhne.afc.math.geometry.d2.Point2D;
-import org.arakhne.afc.math.geometry.d2.ai.Circle2ai;
-import org.eclipse.xtext.xbase.lib.Pure;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import org.eclipse.xtext.xbase.lib.Pure;
+
+import org.arakhne.afc.math.geometry.d2.Point2D;
+import org.arakhne.afc.math.geometry.d2.ai.Circle2ai;
 
 /** A circle with 2 integer FX properties.
  *
@@ -46,45 +45,45 @@ public class Circle2ifx
 	private static final long serialVersionUID = 3750916959512063017L;
 
 	private IntegerProperty centerX;
-	
+
 	private IntegerProperty centerY;
 
 	private IntegerProperty radius;
 
-	/**
+	/** Construct an empty circle.
 	 */
 	public Circle2ifx() {
 		//
 	}
 
-	/**
-	 * @param center
-	 * @param radius
+	/** Construct a circle at the given position and with the given radius.
+	 * @param center the center of the circle.
+	 * @param radius the radius of the circle.
 	 */
 	public Circle2ifx(Point2D<?, ?> center, int radius) {
 		set(center.ix(), center.iy(), radius);
 	}
 
-	/**
-	 * @param x
-	 * @param y
-	 * @param radius
+	/** Construct a circle at the given position and with the given radius.
+	 * @param x x coordinate of the center of the circle.
+	 * @param y y coordinate of the center of the circle.
+	 * @param radius the radius of the circle.
 	 */
 	public Circle2ifx(int x, int y, int radius) {
 		set(x, y, radius);
 	}
-	
+
 	/** Construct a circle from a circle.
-	 * @param c
+	 * @param circle the circle to copy.
 	 */
-	public Circle2ifx(Circle2ai<?, ?, ?, ?, ?, ?> c) {
-		assert (c != null) : "Circle must be not null"; //$NON-NLS-1$
-		set(c.getX(), c.getY(), c.getRadius());
+	public Circle2ifx(Circle2ai<?, ?, ?, ?, ?, ?> circle) {
+		assert circle != null : "Circle must be not null"; //$NON-NLS-1$
+		set(circle.getX(), circle.getY(), circle.getRadius());
 	}
-	
+
 	@Override
 	public Circle2ifx clone() {
-		Circle2ifx clone = super.clone();
+		final Circle2ifx clone = super.clone();
 		if (clone.centerX != null) {
 			clone.centerX = null;
 			clone.xProperty().set(getX());
@@ -99,7 +98,7 @@ public class Circle2ifx
 		}
 		return clone;
 	}
-	
+
 	@Pure
 	@Override
 	public int hashCode() {
@@ -113,7 +112,7 @@ public class Circle2ifx
 	@Pure
 	@Override
 	public String toString() {
-		StringBuilder b = new StringBuilder();
+		final StringBuilder b = new StringBuilder();
 		b.append("["); //$NON-NLS-1$
 		b.append(getX());
 		b.append(";"); //$NON-NLS-1$
@@ -141,7 +140,7 @@ public class Circle2ifx
 		}
 		return this.centerX;
 	}
-	
+
 	@Pure
 	@Override
 	public int getY() {
@@ -159,7 +158,7 @@ public class Circle2ifx
 		}
 		return this.centerY;
 	}
-	
+
 	@Override
 	public void setX(int x) {
 		xProperty().set(x);
@@ -178,7 +177,7 @@ public class Circle2ifx
 
 	@Override
 	public void setRadius(int radius) {
-		assert (radius >= 0) : "Radius must be positive or zero"; //$NON-NLS-1$
+		assert radius >= 0 : "Radius must be positive or zero"; //$NON-NLS-1$
 		radiusProperty().set(radius);
 	}
 
@@ -203,7 +202,7 @@ public class Circle2ifx
 
 	@Override
 	public void set(int x, int y, int radius) {
-		assert (radius >= 0) : "Radius must be positive or zero"; //$NON-NLS-1$
+		assert radius >= 0 : "Radius must be positive or zero"; //$NON-NLS-1$
 		xProperty().set(x);
 		yProperty().set(y);
 		radiusProperty().set(radius);
@@ -213,11 +212,9 @@ public class Circle2ifx
 	public ObjectProperty<Rectangle2ifx> boundingBoxProperty() {
 		if (this.boundingBox == null) {
 			this.boundingBox = new SimpleObjectProperty<>(this, "boundingBox"); //$NON-NLS-1$
-			this.boundingBox.bind(Bindings.createObjectBinding(
-					() -> {
-						return toBoundingBox();
-					},
-					xProperty(), yProperty(), radiusProperty()));
+			this.boundingBox.bind(Bindings.createObjectBinding(() -> {
+				return toBoundingBox();
+			}, xProperty(), yProperty(), radiusProperty()));
 		}
 		return this.boundingBox;
 	}

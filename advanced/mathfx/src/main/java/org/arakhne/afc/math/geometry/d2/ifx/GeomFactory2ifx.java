@@ -1,35 +1,35 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (C) 2010-2013 Stephane GALLAND.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package org.arakhne.afc.math.geometry.d2.ifx;
+
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.ai.GeomFactory2ai;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-
 /** Factory of geometrical elements.
- * 
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
@@ -41,32 +41,32 @@ public class GeomFactory2ifx implements GeomFactory2ai<PathElement2ifx, Point2if
 	/** The singleton of the factory.
 	 */
 	public static final GeomFactory2ifx SINGLETON = new GeomFactory2ifx();
-	
+
 	@Override
 	public Point2ifx convertToPoint(Point2D<?, ?> point) {
-		assert (point != null) : "Point must be not null"; //$NON-NLS-1$
+		assert point != null : "Point must be not null"; //$NON-NLS-1$
 		try {
 			return (Point2ifx) point;
 		} catch (Throwable exception) {
 			return new Point2ifx(point);
 		}
 	}
-	
+
+	@Override
+	public Point2ifx convertToPoint(Vector2D<?, ?> vector) {
+		assert vector != null : "Vector must be not null"; //$NON-NLS-1$
+		return new Point2ifx(vector.ix(), vector.iy());
+	}
+
 	@Override
 	public Vector2ifx convertToVector(Point2D<?, ?> point) {
-		assert (point != null) : "Point must be not null"; //$NON-NLS-1$
+		assert point != null : "Point must be not null"; //$NON-NLS-1$
 		return new Vector2ifx(point.ix(), point.iy());
 	}
 
 	@Override
-	public Point2ifx convertToPoint(Vector2D<?, ?> vector) {
-		assert (vector != null) : "Vector must be not null"; //$NON-NLS-1$
-		return new Point2ifx(vector.ix(), vector.iy());
-	}
-	
-	@Override
 	public Vector2ifx convertToVector(Vector2D<?, ?> vector) {
-		assert (vector != null) : "Vector must be not null"; //$NON-NLS-1$
+		assert vector != null : "Vector must be not null"; //$NON-NLS-1$
 		Vector2ifx vv;
 		try {
 			vv = (Vector2ifx) vector;
@@ -82,25 +82,15 @@ public class GeomFactory2ifx implements GeomFactory2ai<PathElement2ifx, Point2if
 	}
 
 	@Override
-	public Vector2ifx newVector(int x, int y) {
-		return new Vector2ifx(x, y);
-	}
-
-	@Override
 	public Point2ifx newPoint(double x, double y) {
 		return new Point2ifx(x, y);
-	}
-
-	@Override
-	public Vector2ifx newVector(double x, double y) {
-		return new Vector2ifx(x, y);
 	}
 
 	@Override
 	public Point2ifx newPoint() {
 		return new Point2ifx();
 	}
-	
+
 	/** Create a point with properties.
 	 *
 	 * @param x the x property.
@@ -113,25 +103,35 @@ public class GeomFactory2ifx implements GeomFactory2ai<PathElement2ifx, Point2if
 	}
 
 	@Override
+	public Vector2ifx newVector(int x, int y) {
+		return new Vector2ifx(x, y);
+	}
+
+	@Override
+	public Vector2ifx newVector(double x, double y) {
+		return new Vector2ifx(x, y);
+	}
+
+	@Override
 	public Vector2ifx newVector() {
 		return new Vector2ifx();
 	}
 
 	@Override
 	public Path2ifx newPath(PathWindingRule rule) {
-		assert (rule != null) : "Path winding rule must be not null"; //$NON-NLS-1$
+		assert rule != null : "Path winding rule must be not null"; //$NON-NLS-1$
 		return new Path2ifx(rule);
 	}
-	
+
 	@Override
 	public Rectangle2ifx newBox() {
 		return new Rectangle2ifx();
 	}
-	
+
 	@Override
 	public Rectangle2ifx newBox(int x, int y, int width, int height) {
-		assert (width >= 0) : "Width must be positive or zero"; //$NON-NLS-1$
-		assert (height >= 0) : "Height must be positive or zero"; //$NON-NLS-1$
+		assert width >= 0 : "Width must be positive or zero"; //$NON-NLS-1$
+		assert height >= 0 : "Height must be positive or zero"; //$NON-NLS-1$
 		return new Rectangle2ifx(x, y, width, height);
 	}
 

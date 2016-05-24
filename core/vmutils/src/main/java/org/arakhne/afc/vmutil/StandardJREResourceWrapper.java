@@ -1,22 +1,21 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (C) 2008-2013 Stephane GALLAND.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.arakhne.afc.vmutil;
@@ -30,7 +29,7 @@ import java.net.URL;
  * <li>search the resource in class paths;</li>
  * <li>search the resource in ./resources subdirectory in class paths.</li>
  * </ul>
- * 
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
@@ -43,70 +42,65 @@ class StandardJREResourceWrapper implements ResourceWrapper {
 	 */
 	public static final String RESOURCE_PREFIX = "resources/"; //$NON-NLS-1$
 
-	/**
+	/** Construct a wrapper.
 	 */
-	public StandardJREResourceWrapper() {
+	StandardJREResourceWrapper() {
 		//
 	}
-	
-    /**
-     * {@inheritDoc}
-     */
-	@Override
-    public URL getResource(ClassLoader classLoader, String path) {
-    	if (path==null) return null;
-    	String resourcePath = path;
-    	if (path.startsWith("/")) { //$NON-NLS-1$
-    		resourcePath = path.substring(1);
-    	}
-    	
-    	ClassLoader loader = (classLoader==null)
-    			? ClassLoaderFinder.findClassLoader() //Resources.class.getClassLoader()
-    			: classLoader;
-    	assert(loader!=null);
-    			
-    	URL url = loader.getResource(resourcePath);
-    	
-    	if (url==null) {
-    		// Try to find in ./resources sub directory
-    		url = loader.getResource(RESOURCE_PREFIX+resourcePath);
-    	}
-    	return url;
-    }
 
-    /**
-     * {@inheritDoc}
-     */
+	@Override
+	public URL getResource(ClassLoader classLoader, String path) {
+		if (path == null) {
+			return null;
+		}
+		String resourcePath = path;
+		if (path.startsWith("/")) { //$NON-NLS-1$
+			resourcePath = path.substring(1);
+		}
+
+		final ClassLoader loader = (classLoader == null)
+				? ClassLoaderFinder.findClassLoader()
+				: classLoader;
+		assert loader != null;
+
+		URL url = loader.getResource(resourcePath);
+
+		if (url == null) {
+			// Try to find in ./resources sub directory
+			url = loader.getResource(RESOURCE_PREFIX + resourcePath);
+		}
+		return url;
+	}
+
 	@SuppressWarnings("resource")
 	@Override
-    public InputStream getResourceAsStream(ClassLoader classLoader, String path) {
-    	if (path==null) return null;
-    	String resourcePath = path;
-    	if (path.startsWith("/")) { //$NON-NLS-1$
-    		resourcePath = path.substring(1);
-    	}
-    	ClassLoader loader = classLoader;
-    	if (loader==null) {
-    		loader = ClassLoaderFinder.findClassLoader();
-    	}
-    	if (loader==null) {
-    		loader = Resources.class.getClassLoader();
-    	}
-    	
-    	assert(loader!=null);
-    	InputStream is = loader.getResourceAsStream(resourcePath);
-    	if (is==null) {
-    		// Try to find in ./resources sub directory
-    		is = loader.getResourceAsStream(RESOURCE_PREFIX+resourcePath);
-    	}
-    	return is;
-    }
+	public InputStream getResourceAsStream(ClassLoader classLoader, String path) {
+		if (path == null) {
+			return null;
+		}
+		String resourcePath = path;
+		if (path.startsWith("/")) { //$NON-NLS-1$
+			resourcePath = path.substring(1);
+		}
+		ClassLoader loader = classLoader;
+		if (loader == null) {
+			loader = ClassLoaderFinder.findClassLoader();
+		}
+		if (loader == null) {
+			loader = Resources.class.getClassLoader();
+		}
 
-	/**
-	 * {@inheritDoc}
-	 */
+		assert loader != null;
+		InputStream is = loader.getResourceAsStream(resourcePath);
+		if (is == null) {
+			// Try to find in ./resources sub directory
+			is = loader.getResourceAsStream(RESOURCE_PREFIX + resourcePath);
+		}
+		return is;
+	}
+
 	@Override
-    public String translateResourceName(String resourceName) {
+	public String translateResourceName(String resourceName) {
 		return resourceName;
 	}
 

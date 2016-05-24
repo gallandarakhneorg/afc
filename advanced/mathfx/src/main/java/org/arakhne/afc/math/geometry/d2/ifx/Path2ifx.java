@@ -1,22 +1,21 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (C) 2010-2013 Stephane GALLAND.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.arakhne.afc.math.geometry.d2.ifx;
@@ -24,17 +23,6 @@ package org.arakhne.afc.math.geometry.d2.ifx;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.ListIterator;
-
-import org.arakhne.afc.math.MathConstants;
-import org.arakhne.afc.math.geometry.PathElementType;
-import org.arakhne.afc.math.geometry.PathWindingRule;
-import org.arakhne.afc.math.geometry.d2.Point2D;
-import org.arakhne.afc.math.geometry.d2.Transform2D;
-import org.arakhne.afc.math.geometry.d2.afp.InnerComputationPoint2afp;
-import org.arakhne.afc.math.geometry.d2.ai.InnerComputationPoint2ai;
-import org.arakhne.afc.math.geometry.d2.ai.Path2ai;
-import org.arakhne.afc.math.geometry.d2.ai.PathIterator2ai;
-import org.eclipse.xtext.xbase.lib.Pure;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
@@ -46,6 +34,17 @@ import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
+import org.eclipse.xtext.xbase.lib.Pure;
+
+import org.arakhne.afc.math.MathConstants;
+import org.arakhne.afc.math.geometry.PathElementType;
+import org.arakhne.afc.math.geometry.PathWindingRule;
+import org.arakhne.afc.math.geometry.d2.Point2D;
+import org.arakhne.afc.math.geometry.d2.Transform2D;
+import org.arakhne.afc.math.geometry.d2.afp.InnerComputationPoint2afp;
+import org.arakhne.afc.math.geometry.d2.ai.InnerComputationPoint2ai;
+import org.arakhne.afc.math.geometry.d2.ai.Path2ai;
+import org.arakhne.afc.math.geometry.d2.ai.PathIterator2ai;
 
 /** Path with 2 integer FX properties.
  *
@@ -55,9 +54,8 @@ import javafx.collections.FXCollections;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public class Path2ifx
-	extends AbstractShape2ifx<Path2ifx>
-	implements Path2ai<Shape2ifx<?>, Path2ifx, PathElement2ifx, Point2ifx, Vector2ifx, Rectangle2ifx> {
+public class Path2ifx extends AbstractShape2ifx<Path2ifx>
+		implements Path2ai<Shape2ifx<?>, Path2ifx, PathElement2ifx, Point2ifx, Vector2ifx, Rectangle2ifx> {
 
 	private static final long serialVersionUID = -5410743023218999966L;
 
@@ -89,11 +87,11 @@ public class Path2ifx
 	 */
 	private BooleanProperty isCurved;
 
-	/** Indicates if the path is a polygon
+	/** Indicates if the path is a polygon.
 	 */
 	private BooleanProperty isPolygon;
 
-	/** Indicates if the path is multipart
+	/** Indicates if the path is multipart.
 	 */
 	private BooleanProperty isMultipart;
 
@@ -102,59 +100,59 @@ public class Path2ifx
 	 */
 	private ObjectProperty<Rectangle2ifx> logicalBounds;
 
-	/**
+	/** Construct an empty path.
 	 */
 	public Path2ifx() {
 		this(DEFAULT_WINDING_RULE);
 	}
 
-	/**
-	 * @param iterator
+	/** Construct a path by copying the given elements.
+	 * @param iterator the iterator that provides the elements to copy.
 	 */
 	public Path2ifx(Iterator<PathElement2ifx> iterator) {
 		this(DEFAULT_WINDING_RULE, iterator);
 	}
 
-	/**
-	 * @param windingRule
+	/** Construct an empty path with the given path winding rule.
+	 * @param windingRule the path winding rule.
 	 */
 	public Path2ifx(PathWindingRule windingRule) {
-		assert (windingRule != null) : "Path winding rule must be not null"; //$NON-NLS-1$
+		assert windingRule != null : "Path winding rule must be not null"; //$NON-NLS-1$
 		if (windingRule != DEFAULT_WINDING_RULE) {
 			windingRuleProperty().set(windingRule);
 		}
 	}
 
-	/**
-	 * @param windingRule
-	 * @param iterator
+	/** Construct a path by copying the given elements, and the given path winding rule.
+	 * @param windingRule the path winding rule.
+	 * @param iterator the iterator that provides the elements to copy.
 	 */
 	public Path2ifx(PathWindingRule windingRule, Iterator<PathElement2ifx> iterator) {
-		assert (windingRule != null) : "Path winding rule must be not null"; //$NON-NLS-1$
-		assert (iterator != null) : "Iterator must be not null"; //$NON-NLS-1$
+		assert windingRule != null : "Path winding rule must be not null"; //$NON-NLS-1$
+		assert iterator != null : "Iterator must be not null"; //$NON-NLS-1$
 		if (windingRule != DEFAULT_WINDING_RULE) {
 			windingRuleProperty().set(windingRule);
 		}
 		add(iterator);
 	}
 
-	/**
-	 * @param p
+	/** Constructor by copy.
+	 * @param path the path to copy.
 	 */
-	public Path2ifx(Path2ai<?, ?, ?, ?, ?, ?> p) {
-		set(p);
+	public Path2ifx(Path2ai<?, ?, ?, ?, ?, ?> path) {
+		set(path);
 	}
 
 	@Pure
 	@Override
-	public boolean containsControlPoint(Point2D<?, ?> p) {
-		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
+	public boolean containsControlPoint(Point2D<?, ?> pt) {
+		assert pt != null : "Point must be not null"; //$NON-NLS-1$
 		if (this.coords != null && !this.coords.isEmpty()) {
-			int x, y;
-			for(int i=0; i<this.coords.size();) {
-				x = this.coords.get(i++);
-				y = this.coords.get(i++);
-				if (x==p.ix() && y==p.iy()) {
+			final int size = this.coords.size();
+			for (int i = 0; i < size;) {
+				final int x = this.coords.get(i++);
+				final int y = this.coords.get(i++);
+				if (x == pt.ix() && y == pt.iy()) {
 					return true;
 				}
 			}
@@ -175,7 +173,7 @@ public class Path2ifx
 	@Pure
 	@Override
 	public Path2ifx clone() {
-		Path2ifx clone = super.clone();
+		final Path2ifx clone = super.clone();
 		clone.coords = null;
 		if (this.coords != null && !this.coords.isEmpty()) {
 			clone.innerCoordinatesProperty().addAll(this.coords);
@@ -195,7 +193,7 @@ public class Path2ifx
 		clone.isPolyline = null;
 		clone.isPolygon = null;
 		clone.isEmpty = null;
-		
+
 		return clone;
 	}
 
@@ -212,10 +210,10 @@ public class Path2ifx
 	@Pure
 	@Override
 	public String toString() {
-		StringBuilder b = new StringBuilder();
+		final StringBuilder b = new StringBuilder();
 		b.append("["); //$NON-NLS-1$
 		if (this.coords != null && !this.coords.isEmpty()) {
-			Iterator<Integer> iterator = this.coords.iterator();
+			final Iterator<Integer> iterator = this.coords.iterator();
 			b.append(iterator.next());
 			while (iterator.hasNext()) {
 				b.append(", "); //$NON-NLS-1$
@@ -229,20 +227,20 @@ public class Path2ifx
 	@Override
 	public void translate(int dx, int dy) {
 		if (this.coords != null && !this.coords.isEmpty()) {
-			ListIterator<Integer> li = this.coords.listIterator();
+			final ListIterator<Integer> li = this.coords.listIterator();
 	        while (li.hasNext()) {
 	            li.set(li.next() + dx);
 	            li.set(li.next() + dy);
 	        }
 		}
 	}
-	
+
 	@Override
 	public void transform(Transform2D transform) {
-		assert (transform != null) : "Transformation must be not null"; //$NON-NLS-1$
-		Point2D<?, ?> p = new InnerComputationPoint2ai();
+		assert transform != null : "Transformation must be not null"; //$NON-NLS-1$
+		final Point2D<?, ?> p = new InnerComputationPoint2ai();
 		if (this.coords != null && !this.coords.isEmpty()) {
-			ListIterator<Integer> li = this.coords.listIterator();
+			final ListIterator<Integer> li = this.coords.listIterator();
 			int i = 0;
 	        while (li.hasNext()) {
 	        	p.set(li.next(), li.next());
@@ -260,69 +258,61 @@ public class Path2ifx
 	public BooleanProperty isEmptyProperty() {
 		if (this.isEmpty == null) {
 			this.isEmpty = new SimpleBooleanProperty(this, "isEmpty"); //$NON-NLS-1$
-			this.isEmpty.bind(Bindings.createBooleanBinding(
-					() -> {
-						PathIterator2ai<PathElement2ifx> pi = getPathIterator();
-						PathElement2ifx pe;
-						while (pi.hasNext()) {
-							pe = pi.next();
-							if (pe.isDrawable()) { 
-								return false;
-							}
-						}
-						return true;
-					},
-					innerTypesProperty(), innerCoordinatesProperty()));
+			this.isEmpty.bind(Bindings.createBooleanBinding(() -> {
+				final PathIterator2ai<PathElement2ifx> pi = getPathIterator();
+				while (pi.hasNext()) {
+					final PathElement2ifx pe = pi.next();
+					if (pe.isDrawable()) {
+						return false;
+					}
+				}
+				return true;
+			}, innerTypesProperty(), innerCoordinatesProperty()));
 		}
 		return this.isEmpty;
 	}
-	
+
 	@Override
 	public boolean isEmpty() {
 		return isEmptyProperty().get();
 	}
-	
+
 	@Override
 	public ObjectProperty<Rectangle2ifx> boundingBoxProperty() {
 		if (this.boundingBox == null) {
 			this.boundingBox = new ReadOnlyObjectWrapper<>(this, "boundingBox"); //$NON-NLS-1$
-			this.boundingBox.bind(Bindings.createObjectBinding(
-					() -> {
-						Rectangle2ifx bb = getGeomFactory().newBox();
-						Path2ai.computeDrawableElementBoundingBox(
-								getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
-								bb);
-						return bb;
-					},
-					innerCoordinatesProperty()));
+			this.boundingBox.bind(Bindings.createObjectBinding(() -> {
+				final Rectangle2ifx bb = getGeomFactory().newBox();
+				Path2ai.computeDrawableElementBoundingBox(
+						getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						bb);
+				return bb;
+			}, innerCoordinatesProperty()));
 		}
 		return this.boundingBox;
 	}
-	
+
 	/** Replies the property that corresponds to the bounding box of the control points.
 	 *
 	 * <p>The replied box is not the one corresponding to the drawable elements, as replied
 	 * by {@link #boundingBoxProperty()}.
-	 * 
+	 *
 	 * @return the bounding box of the control points.
 	 */
 	public ObjectProperty<Rectangle2ifx> controlPointBoundingBoxProperty() {
 		if (this.logicalBounds == null) {
 			this.logicalBounds = new ReadOnlyObjectWrapper<>(this, "controlPointBoundingBox"); //$NON-NLS-1$
-			this.logicalBounds.bind(Bindings.createObjectBinding(
-					() -> {
-						Rectangle2ifx bb = getGeomFactory().newBox();
-						Path2ai.computeControlPointBoundingBox(
-								getPathIterator(),
-								bb);
-						return bb;
-					},
-					innerCoordinatesProperty()));
+			this.logicalBounds.bind(Bindings.createObjectBinding(() -> {
+				final Rectangle2ifx bb = getGeomFactory().newBox();
+				Path2ai.computeControlPointBoundingBox(
+						getPathIterator(),
+						bb);
+				return bb;
+			}, innerCoordinatesProperty()));
 		}
 		return this.logicalBounds;
 	}
 
-	
 	@Override
 	public Rectangle2ifx toBoundingBox() {
 		return boundingBoxProperty().get().clone();
@@ -330,7 +320,7 @@ public class Path2ifx
 
 	@Override
 	public void toBoundingBox(Rectangle2ifx box) {
-		assert (box != null) : "Rectangle must be not null"; //$NON-NLS-1$
+		assert box != null : "Rectangle must be not null"; //$NON-NLS-1$
 		box.set(boundingBoxProperty().get());
 	}
 
@@ -351,10 +341,10 @@ public class Path2ifx
 	}
 
 	@Override
-	public void setWindingRule(PathWindingRule r) {
-		assert (r != null) : "Path winding rule must be not null"; //$NON-NLS-1$
-		if (this.windingRule != null || r != DEFAULT_WINDING_RULE) {
-			windingRuleProperty().set(r);
+	public void setWindingRule(PathWindingRule rule) {
+		assert rule != null : "Path winding rule must be not null"; //$NON-NLS-1$
+		if (this.windingRule != null || rule != DEFAULT_WINDING_RULE) {
+			windingRuleProperty().set(rule);
 		}
 	}
 
@@ -365,25 +355,23 @@ public class Path2ifx
 	public BooleanProperty isPolylineProperty() {
 		if (this.isPolyline == null) {
 			this.isPolyline = new ReadOnlyBooleanWrapper(this, "isPolyline", false); //$NON-NLS-1$
-			this.isPolyline.bind(Bindings.createBooleanBinding(
-					() -> {
-						boolean first = true;
-						boolean hasOneLine = false;
-						for (PathElementType type : innerTypesProperty()) {
-							if (first) {
-								if (type != PathElementType.MOVE_TO) {
-									return false;
-								}
-								first = false;
-							} else if (type != PathElementType.LINE_TO) {
-								return false;
-							} else {
-								hasOneLine = true;
-							}
+			this.isPolyline.bind(Bindings.createBooleanBinding(() -> {
+				boolean first = true;
+				boolean hasOneLine = false;
+				for (final PathElementType type : innerTypesProperty()) {
+					if (first) {
+						if (type != PathElementType.MOVE_TO) {
+							return false;
 						}
-						return hasOneLine;
-					},
-					innerTypesProperty()));
+						first = false;
+					} else if (type != PathElementType.LINE_TO) {
+						return false;
+					} else {
+						hasOneLine = true;
+					}
+				}
+				return hasOneLine;
+			}, innerTypesProperty()));
 		}
 		return this.isPolyline;
 	}
@@ -400,16 +388,14 @@ public class Path2ifx
 	public  BooleanProperty isCurvedProperty() {
 		if (this.isCurved == null) {
 			this.isCurved = new ReadOnlyBooleanWrapper(this, "isCurved", false); //$NON-NLS-1$
-			this.isCurved.bind(Bindings.createBooleanBinding(
-					() -> {
-						for (PathElementType type : innerTypesProperty()) {
-							if (type == PathElementType.CURVE_TO || type == PathElementType.QUAD_TO) { 
-								return true;
-							}
-						}
-						return false;
-					},
-					innerTypesProperty()));
+			this.isCurved.bind(Bindings.createBooleanBinding(() -> {
+				for (final PathElementType type : innerTypesProperty()) {
+					if (type == PathElementType.CURVE_TO || type == PathElementType.QUAD_TO) {
+						return true;
+					}
+				}
+				return false;
+			}, innerTypesProperty()));
 		}
 		return this.isCurved;
 	}
@@ -426,20 +412,18 @@ public class Path2ifx
 	public BooleanProperty isMultiPartsProperty() {
 		if (this.isMultipart == null) {
 			this.isMultipart = new ReadOnlyBooleanWrapper(this, "isMultiParts", false); //$NON-NLS-1$
-			this.isMultipart.bind(Bindings.createBooleanBinding(
-					() -> {
-						boolean foundOne = false;
-						for (PathElementType type : innerTypesProperty()) {
-							if (type == PathElementType.MOVE_TO) { 
-								if (foundOne) {
-									return true;
-								}
-								foundOne = true;
-							}
+			this.isMultipart.bind(Bindings.createBooleanBinding(() -> {
+				boolean foundOne = false;
+				for (final PathElementType type : innerTypesProperty()) {
+					if (type == PathElementType.MOVE_TO) {
+						if (foundOne) {
+							return true;
 						}
-						return false;
-					},
-					innerTypesProperty()));
+						foundOne = true;
+					}
+				}
+				return false;
+			}, innerTypesProperty()));
 		}
 		return this.isMultipart;
 	}
@@ -456,26 +440,24 @@ public class Path2ifx
 	public BooleanProperty isPolygonProperty() {
 		if (this.isPolygon == null) {
 			this.isPolygon = new ReadOnlyBooleanWrapper(this, "isPolygon", false); //$NON-NLS-1$
-			this.isPolygon.bind(Bindings.createBooleanBinding(
-					() -> {
-						boolean first = true;
-						boolean lastIsClose = false;
-						for (PathElementType type : innerTypesProperty()) {
-							lastIsClose = false;
-							if (first) {
-								if (type != PathElementType.MOVE_TO) {
-									return false;
-								}
-								first = false;
-							} else if (type == PathElementType.MOVE_TO) {
-								return false;
-							} else if (type == PathElementType.CLOSE) {
-								lastIsClose = true;
-							}
+			this.isPolygon.bind(Bindings.createBooleanBinding(() -> {
+				boolean first = true;
+				boolean lastIsClose = false;
+				for (final PathElementType type : innerTypesProperty()) {
+					lastIsClose = false;
+					if (first) {
+						if (type != PathElementType.MOVE_TO) {
+							return false;
 						}
-						return lastIsClose;
-					},
-					innerTypesProperty()));
+						first = false;
+					} else if (type == PathElementType.MOVE_TO) {
+						return false;
+					} else if (type == PathElementType.CLOSE) {
+						lastIsClose = true;
+					}
+				}
+				return lastIsClose;
+			}, innerTypesProperty()));
 		}
 		return this.isPolygon;
 	}
@@ -488,8 +470,8 @@ public class Path2ifx
 	@Override
 	public void closePath() {
 		if (this.types == null
-			|| this.types.isEmpty()
-			|| (this.types.get(this.types.size() - 1) != PathElementType.CLOSE
+				|| this.types.isEmpty()
+				|| (this.types.get(this.types.size() - 1) != PathElementType.CLOSE
 				&& this.types.get(this.types.size() - 1) != PathElementType.MOVE_TO)) {
 			this.types.add(PathElementType.CLOSE);
 		}
@@ -502,25 +484,24 @@ public class Path2ifx
 
 	@Override
 	public void toBoundingBoxWithCtrlPoints(Rectangle2ifx box) {
-		assert (box != null) : "Rectangle must be not null"; //$NON-NLS-1$
+		assert box != null : "Rectangle must be not null"; //$NON-NLS-1$
 		box.set(controlPointBoundingBoxProperty().get());
 	}
 
 	@Override
 	public int[] toIntArray(Transform2D transform) {
-		int n = (this.coords != null) ? this.coords.size() : 0;
-		int[] clone = new int[n];
+		final int n = (this.coords != null) ? this.coords.size() : 0;
+		final int[] clone = new int[n];
 		if (n > 0) {
 			if (transform == null || transform.isIdentity()) {
-				Iterator<Integer> iterator = this.coords.iterator();
-				for(int i=0; i < n; ++i) {
+				final Iterator<Integer> iterator = this.coords.iterator();
+				for (int i = 0; i < n; ++i) {
 					clone[i] = iterator.next().intValue();
 				}
-			}
-			else {
-				Point2D<?, ?> p = new InnerComputationPoint2ai();
-				Iterator<Integer> iterator = this.coords.iterator();
-				for(int i=0; i < n;) {
+			} else {
+				final Point2D<?, ?> p = new InnerComputationPoint2ai();
+				final Iterator<Integer> iterator = this.coords.iterator();
+				for (int i = 0; i < n;) {
 					p.set(iterator.next(), iterator.next());
 					transform.transform(p);
 					clone[i++] = p.ix();
@@ -533,19 +514,18 @@ public class Path2ifx
 
 	@Override
 	public float[] toFloatArray(Transform2D transform) {
-		int n = (this.coords != null) ? this.coords.size() : 0;
-		float[] clone = new float[n];
+		final int n = (this.coords != null) ? this.coords.size() : 0;
+		final float[] clone = new float[n];
 		if (n > 0) {
 			if (transform == null || transform.isIdentity()) {
-				Iterator<Integer> iterator = this.coords.iterator();
-				for(int i=0; i < n; ++i) {
+				final Iterator<Integer> iterator = this.coords.iterator();
+				for (int i = 0; i < n; ++i) {
 					clone[i] = iterator.next().floatValue();
 				}
-			}
-			else {
-				Point2D<?, ?> p = new InnerComputationPoint2afp(0, 0);
-				Iterator<Integer> iterator = this.coords.iterator();
-				for(int i=0; i < n;) {
+			} else {
+				final Point2D<?, ?> p = new InnerComputationPoint2afp(0, 0);
+				final Iterator<Integer> iterator = this.coords.iterator();
+				for (int i = 0; i < n;) {
 					p.set(iterator.next(), iterator.next());
 					transform.transform(p);
 					clone[i++] = (float) p.getX();
@@ -558,19 +538,18 @@ public class Path2ifx
 
 	@Override
 	public double[] toDoubleArray(Transform2D transform) {
-		int n = (this.coords != null) ? this.coords.size() : 0;
-		double[] clone = new double[n];
+		final int n = (this.coords != null) ? this.coords.size() : 0;
+		final double[] clone = new double[n];
 		if (n > 0) {
 			if (transform == null || transform.isIdentity()) {
-				Iterator<Integer> iterator = this.coords.iterator();
-				for(int i=0; i < n; ++i) {
+				final Iterator<Integer> iterator = this.coords.iterator();
+				for (int i = 0; i < n; ++i) {
 					clone[i] = iterator.next().doubleValue();
 				}
-			}
-			else {
-				Point2D<?, ?> p = new InnerComputationPoint2afp(0, 0);
-				Iterator<Integer> iterator = this.coords.iterator();
-				for(int i=0; i < n;) {
+			} else {
+				final Point2D<?, ?> p = new InnerComputationPoint2afp(0, 0);
+				final Iterator<Integer> iterator = this.coords.iterator();
+				for (int i = 0; i < n;) {
 					p.set(iterator.next(), iterator.next());
 					transform.transform(p);
 					clone[i++] = p.getX();
@@ -583,21 +562,20 @@ public class Path2ifx
 
 	@Override
 	public Point2ifx[] toPointArray(Transform2D transform) {
-		int n = (this.coords != null) ? this.coords.size() / 2 : 0;
-		Point2ifx[] clone = new Point2ifx[n];
+		final int n = (this.coords != null) ? this.coords.size() / 2 : 0;
+		final Point2ifx[] clone = new Point2ifx[n];
 		if (n > 0) {
 			if (transform == null || transform.isIdentity()) {
-				Iterator<Integer> iterator = this.coords.iterator();
-				for(int i=0; i < n; ++i) {
+				final Iterator<Integer> iterator = this.coords.iterator();
+				for (int i = 0; i < n; ++i) {
 					clone[i] = getGeomFactory().newPoint(
 							iterator.next().intValue(),
 							iterator.next().intValue());
 				}
-			}
-			else {
-				Iterator<Integer> iterator = this.coords.iterator();
-				for(int i=0; i < n; ++i) {
-					Point2ifx p = getGeomFactory().newPoint(iterator.next(), iterator.next());
+			} else {
+				final Iterator<Integer> iterator = this.coords.iterator();
+				for (int i = 0; i < n; ++i) {
+					final Point2ifx p = getGeomFactory().newPoint(iterator.next(), iterator.next());
 					transform.transform(p);
 					clone[i] = p;
 				}
@@ -611,7 +589,7 @@ public class Path2ifx
 		if (this.coords == null) {
 			throw new IndexOutOfBoundsException();
 		}
-		int baseIdx = index * 2;
+		final int baseIdx = index * 2;
 		return getGeomFactory().newPoint(
 				this.coords.get(baseIdx),
 				this.coords.get(baseIdx + 1));
@@ -623,7 +601,7 @@ public class Path2ifx
 		if (this.coords == null) {
 			throw new IndexOutOfBoundsException();
 		}
-		int index = this.coords.size() - 2;
+		final int index = this.coords.size() - 2;
 		return this.coords.get(index);
 	}
 
@@ -633,7 +611,7 @@ public class Path2ifx
 		if (this.coords == null) {
 			throw new IndexOutOfBoundsException();
 		}
-		int index = this.coords.size() - 1;
+		final int index = this.coords.size() - 1;
 		return this.coords.get(index);
 	}
 
@@ -643,7 +621,7 @@ public class Path2ifx
 		if (this.coords == null) {
 			throw new IndexOutOfBoundsException();
 		}
-		int baseIdx = this.coords.size() - 1;
+		final int baseIdx = this.coords.size() - 1;
 		return getGeomFactory().newPoint(
 				this.coords.get(baseIdx - 1),
 				this.coords.get(baseIdx));
@@ -655,14 +633,16 @@ public class Path2ifx
 	}
 
 	@Override
+	@SuppressWarnings("checkstyle:magicnumber")
 	public void removeLast() {
 		if (this.types != null && !this.types.isEmpty() && this.coords != null && !this.coords.isEmpty()) {
-			int lastIndex = this.types.size() - 1;
-			int coordSize = this.coords.size();
-			int coordIndex = coordSize;
-			switch(this.types.get(lastIndex)) {
+			final int lastIndex = this.types.size() - 1;
+			final int coordSize = this.coords.size();
+			final int coordIndex;
+			switch (this.types.get(lastIndex)) {
 			case CLOSE:
 				// no coord to remove
+				coordIndex = coordSize;
 				break;
 			case MOVE_TO:
 				coordIndex = coordSize - 2;
@@ -690,13 +670,13 @@ public class Path2ifx
 	public void moveTo(int x, int y) {
 		if (this.types != null && !this.types.isEmpty()
 				&& this.types.get(this.types.size() - 1) == PathElementType.MOVE_TO) {
-			assert (this.coords != null && this.coords.size() >= 2);
-			int idx = this.coords.size() - 1;
+			assert this.coords != null && this.coords.size() >= 2;
+			final int idx = this.coords.size() - 1;
 			this.coords.set(idx - 1, x);
 			this.coords.set(idx, y);
 		} else {
 			innerTypesProperty().add(PathElementType.MOVE_TO);
-			ReadOnlyListWrapper<Integer> coords = innerCoordinatesProperty();
+			final ReadOnlyListWrapper<Integer> coords = innerCoordinatesProperty();
 			coords.add(x);
 			coords.add(y);
 		}
@@ -712,7 +692,7 @@ public class Path2ifx
 	public void lineTo(int x, int y) {
 		ensureMoveTo();
 		innerTypesProperty().add(PathElementType.LINE_TO);
-		ReadOnlyListWrapper<Integer> coords = innerCoordinatesProperty();
+		final ReadOnlyListWrapper<Integer> coords = innerCoordinatesProperty();
 		coords.add(x);
 		coords.add(y);
 	}
@@ -721,7 +701,7 @@ public class Path2ifx
 	public void quadTo(int x1, int y1, int x2, int y2) {
 		ensureMoveTo();
 		innerTypesProperty().add(PathElementType.QUAD_TO);
-		ReadOnlyListWrapper<Integer> coords = innerCoordinatesProperty();
+		final ReadOnlyListWrapper<Integer> coords = innerCoordinatesProperty();
 		coords.add(x1);
 		coords.add(y1);
 		coords.add(x2);
@@ -732,7 +712,7 @@ public class Path2ifx
 	public void curveTo(int x1, int y1, int x2, int y2, int x3, int y3) {
 		ensureMoveTo();
 		innerTypesProperty().add(PathElementType.CURVE_TO);
-		ReadOnlyListWrapper<Integer> coords = innerCoordinatesProperty();
+		final ReadOnlyListWrapper<Integer> coords = innerCoordinatesProperty();
 		coords.add(x1);
 		coords.add(y1);
 		coords.add(x2);
@@ -772,7 +752,7 @@ public class Path2ifx
 	@Override
 	public void setLastPoint(int x, int y) {
 		if (this.coords != null && this.coords.size() >= 2) {
-			int idx = this.coords.size() - 1;
+			final int idx = this.coords.size() - 1;
 			this.coords.set(idx - 1, x);
 			this.coords.set(idx, y);
 		} else {
@@ -781,14 +761,15 @@ public class Path2ifx
 	}
 
 	@Override
+	@SuppressWarnings({"checkstyle:magicnumber", "checkstyle:cyclomaticcomplexity"})
 	public boolean remove(int x, int y) {
 		if (this.types != null && !this.types.isEmpty() && this.coords != null && !this.coords.isEmpty()) {
-			for(int i=0, j=0; i<this.coords.size() && j<this.types.size();) {
-				switch(this.types.get(j)) {
+			for (int i = 0, j = 0; i < this.coords.size() && j < this.types.size();) {
+				switch (this.types.get(j)) {
 				case MOVE_TO:
 					//$FALL-THROUGH$
 				case LINE_TO:
-					if (x==this.coords.get(i) && y==this.coords.get(i + 1)) {
+					if (x == this.coords.get(i) && y == this.coords.get(i + 1)) {
 						this.coords.remove(i, i + 2);
 						this.types.remove(j);
 						return true;
@@ -797,9 +778,9 @@ public class Path2ifx
 					++j;
 					break;
 				case CURVE_TO:
-					if ((x==this.coords.get(i) && y==this.coords.get(i+1))
-							||(x==this.coords.get(i+2) && y==this.coords.get(i+3))
-							||(x==this.coords.get(i+4) && y==this.coords.get(i+5))) {
+					if ((x == this.coords.get(i) && y == this.coords.get(i + 1))
+							|| (x == this.coords.get(i + 2) && y == this.coords.get(i + 3))
+							|| (x == this.coords.get(i + 4) && y == this.coords.get(i + 5))) {
 						this.coords.remove(i, i + 6);
 						this.types.remove(j);
 						return true;
@@ -808,8 +789,8 @@ public class Path2ifx
 					++j;
 					break;
 				case QUAD_TO:
-					if ((x==this.coords.get(i) && y==this.coords.get(i+1))
-							||(x==this.coords.get(i+2) && y==this.coords.get(i+3))) {
+					if ((x == this.coords.get(i) && y == this.coords.get(i + 1))
+							|| (x == this.coords.get(i + 2) && y == this.coords.get(i + 3))) {
 						this.coords.remove(i, i + 4);
 						this.types.remove(j);
 						return true;
@@ -829,10 +810,10 @@ public class Path2ifx
 	}
 
 	@Override
-	public void set(Path2ifx s) {
-		assert (s != null) : "Path must be not null"; //$NON-NLS-1$
+	public void set(Path2ifx path) {
+		assert path != null : "Path must be not null"; //$NON-NLS-1$
 		clear();
-		add(s.getPathIterator());
+		add(path.getPathIterator());
 	}
 
 	/** Replies the private types property.
@@ -854,7 +835,7 @@ public class Path2ifx
 	public ReadOnlyListProperty<PathElementType> typesProperty() {
 		return innerTypesProperty().getReadOnlyProperty();
 	}
-	
+
 	@Override
 	public int getPathElementCount() {
 		return this.types == null ? 0 : innerTypesProperty().size();

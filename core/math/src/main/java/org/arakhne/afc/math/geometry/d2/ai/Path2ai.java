@@ -1,22 +1,21 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (C) 2010-2013 Stephane GALLAND.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.arakhne.afc.math.geometry.d2.ai;
@@ -24,6 +23,8 @@ package org.arakhne.afc.math.geometry.d2.ai;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+
+import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.geometry.PathElementType;
@@ -35,7 +36,6 @@ import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.afp.Circle2afp.AbstractCirclePathIterator;
 import org.arakhne.afc.math.geometry.d2.afp.Segment2afp;
-import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Fonctional interface that represented a 2D path on a plane.
  *
@@ -63,29 +63,30 @@ public interface Path2ai<
 
 	/** Multiple of cubic & quad curve size.
 	 */
-	static final int GROW_SIZE = 24;
+	int GROW_SIZE = 24;
 
 	/** Default depth for the flattening of the path.
 	 */
-	static final int DEFAULT_FLATTENING_LIMIT = 10;
+	int DEFAULT_FLATTENING_LIMIT = 10;
 
 	/** The default winding rule: {@link PathWindingRule#NON_ZERO}.
 	 */
-	static final PathWindingRule DEFAULT_WINDING_RULE = PathWindingRule.NON_ZERO;
+	PathWindingRule DEFAULT_WINDING_RULE = PathWindingRule.NON_ZERO;
 
 	/** Compute the box that corresponds to the drawable elements of the path.
-	 * 
+	 *
 	 * <p>An element is drawable if it is a line, a curve, or a closing path element.
-	 * 
+	 *
 	 * @param iterator the iterator on the path elements.
 	 * @param box the box to set.
 	 * @return <code>true</code> if a drawable element was found.
 	 */
+	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	static boolean computeDrawableElementBoundingBox(PathIterator2ai<?> iterator,
 			Rectangle2ai<?, ?, ?, ?, ?, ?> box) {
-		assert (iterator != null) : "Iterator must not be null"; //$NON-NLS-1$
-		assert (box != null) : "Rectangle must not be null"; //$NON-NLS-1$
-		GeomFactory2ai<?, ?, ?, ?> factory = iterator.getGeomFactory();
+		assert iterator != null : "Iterator must not be null"; //$NON-NLS-1$
+		assert box != null : "Rectangle must not be null"; //$NON-NLS-1$
+		final GeomFactory2ai<?, ?, ?, ?> factory = iterator.getGeomFactory();
 		boolean foundOneLine = false;
 		int xmin = Integer.MAX_VALUE;
 		int ymin = Integer.MAX_VALUE;
@@ -95,16 +96,32 @@ public interface Path2ai<
 		Path2ai<?, ?, ?, ?, ?, ?> subPath;
 		while (iterator.hasNext()) {
 			element = iterator.next();
-			switch(element.getType()) {
+			switch (element.getType()) {
 			case LINE_TO:
-				if (element.getFromX()<xmin) xmin = element.getFromX();
-				if (element.getFromY()<ymin) ymin = element.getFromY();
-				if (element.getFromX()>xmax) xmax = element.getFromX();
-				if (element.getFromY()>ymax) ymax = element.getFromY();
-				if (element.getToX()<xmin) xmin = element.getToX();
-				if (element.getToY()<ymin) ymin = element.getToY();
-				if (element.getToX()>xmax) xmax = element.getToX();
-				if (element.getToY()>ymax) ymax = element.getToY();
+				if (element.getFromX() < xmin) {
+					xmin = element.getFromX();
+				}
+				if (element.getFromY() < ymin) {
+					ymin = element.getFromY();
+				}
+				if (element.getFromX() > xmax) {
+					xmax = element.getFromX();
+				}
+				if (element.getFromY() > ymax) {
+					ymax = element.getFromY();
+				}
+				if (element.getToX() < xmin) {
+					xmin = element.getToX();
+				}
+				if (element.getToY() < ymin) {
+					ymin = element.getToY();
+				}
+				if (element.getToX() > xmax) {
+					xmax = element.getToX();
+				}
+				if (element.getToY() > ymax) {
+					ymax = element.getToY();
+				}
 				foundOneLine = true;
 				break;
 			case CURVE_TO:
@@ -117,10 +134,18 @@ public interface Path2ai<
 				if (computeDrawableElementBoundingBox(
 						subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
 						box)) {
-					if (box.getMinX()<xmin) xmin = box.getMinX();
-					if (box.getMinY()<ymin) ymin = box.getMinY();
-					if (box.getMaxX()>xmax) xmax = box.getMaxX();
-					if (box.getMaxY()>ymax) ymax = box.getMaxY();
+					if (box.getMinX() < xmin) {
+						xmin = box.getMinX();
+					}
+					if (box.getMinY() < ymin) {
+						ymin = box.getMinY();
+					}
+					if (box.getMaxX() > xmax) {
+						xmax = box.getMaxX();
+					}
+					if (box.getMaxY() > ymax) {
+						ymax = box.getMaxY();
+					}
 					foundOneLine = true;
 				}
 				break;
@@ -133,10 +158,18 @@ public interface Path2ai<
 				if (computeDrawableElementBoundingBox(
 						subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
 						box)) {
-					if (box.getMinX()<xmin) xmin = box.getMinX();
-					if (box.getMinY()<ymin) ymin = box.getMinY();
-					if (box.getMaxX()>xmax) xmax = box.getMaxX();
-					if (box.getMaxY()>ymax) ymax = box.getMaxY();
+					if (box.getMinX() < xmin) {
+						xmin = box.getMinX();
+					}
+					if (box.getMinY() < ymin) {
+						ymin = box.getMinY();
+					}
+					if (box.getMaxX() > xmax) {
+						xmax = box.getMaxX();
+					}
+					if (box.getMaxY() > ymax) {
+						ymax = box.getMaxY();
+					}
 					foundOneLine = true;
 				}
 				break;
@@ -147,30 +180,30 @@ public interface Path2ai<
 		}
 		if (foundOneLine) {
 			box.setFromCorners(xmin, ymin, xmax, ymax);
-		}
-		else {
+		} else {
 			box.clear();
 		}
 		return foundOneLine;
 	}
 
 	/** Compute the box that corresponds to the control points of the path.
-	 * 
+	 *
 	 * <p>An element is drawable if it is a line, a curve, or a closing path element.
 	 * The box fits the drawn lines and the drawn curves. The control points of the
 	 * curves may be outside the output box. For obtaining the bounding box
 	 * of the drawn lines and cruves, use
 	 * {@link #computeDrawableElementBoundingBox(PathIterator2ai, Rectangle2ai)}.
-	 * 
+	 *
 	 * @param iterator the iterator on the path elements.
 	 * @param box the box to set.
 	 * @return <code>true</code> if a control point was found.
 	 * @see #computeDrawableElementBoundingBox(PathIterator2ai, Rectangle2ai)
 	 */
+	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	static boolean computeControlPointBoundingBox(PathIterator2ai<?> iterator,
 			Rectangle2ai<?, ?, ?, ?, ?, ?> box) {
-		assert (iterator != null) : "Iterator must be not null"; //$NON-NLS-1$
-		assert (box != null) : "Rectangle must be not null"; //$NON-NLS-1$
+		assert iterator != null : "Iterator must be not null"; //$NON-NLS-1$
+		assert box != null : "Rectangle must be not null"; //$NON-NLS-1$
 		boolean foundOneControlPoint = false;
 		int xmin = Integer.MAX_VALUE;
 		int ymin = Integer.MAX_VALUE;
@@ -179,50 +212,122 @@ public interface Path2ai<
 		PathElement2ai element;
 		while (iterator.hasNext()) {
 			element = iterator.next();
-			switch(element.getType()) {
+			switch (element.getType()) {
 			case LINE_TO:
-				if (element.getFromX()<xmin) xmin = element.getFromX();
-				if (element.getFromY()<ymin) ymin = element.getFromY();
-				if (element.getFromX()>xmax) xmax = element.getFromX();
-				if (element.getFromY()>ymax) ymax = element.getFromY();
-				if (element.getToX()<xmin) xmin = element.getToX();
-				if (element.getToY()<ymin) ymin = element.getToY();
-				if (element.getToX()>xmax) xmax = element.getToX();
-				if (element.getToY()>ymax) ymax = element.getToY();
+				if (element.getFromX() < xmin) {
+					xmin = element.getFromX();
+				}
+				if (element.getFromY() < ymin) {
+					ymin = element.getFromY();
+				}
+				if (element.getFromX() > xmax) {
+					xmax = element.getFromX();
+				}
+				if (element.getFromY() > ymax) {
+					ymax = element.getFromY();
+				}
+				if (element.getToX() < xmin) {
+					xmin = element.getToX();
+				}
+				if (element.getToY() < ymin) {
+					ymin = element.getToY();
+				}
+				if (element.getToX() > xmax) {
+					xmax = element.getToX();
+				}
+				if (element.getToY() > ymax) {
+					ymax = element.getToY();
+				}
 				foundOneControlPoint = true;
 				break;
 			case CURVE_TO:
-				if (element.getFromX()<xmin) xmin = element.getFromX();
-				if (element.getFromY()<ymin) ymin = element.getFromY();
-				if (element.getFromX()>xmax) xmax = element.getFromX();
-				if (element.getFromY()>ymax) ymax = element.getFromY();
-				if (element.getCtrlX1()<xmin) xmin = element.getCtrlX1();
-				if (element.getCtrlY1()<ymin) ymin = element.getCtrlY1();
-				if (element.getCtrlX1()>xmax) xmax = element.getCtrlX1();
-				if (element.getCtrlY1()>ymax) ymax = element.getCtrlY1();
-				if (element.getCtrlX2()<xmin) xmin = element.getCtrlX2();
-				if (element.getCtrlY2()<ymin) ymin = element.getCtrlY2();
-				if (element.getCtrlX2()>xmax) xmax = element.getCtrlX2();
-				if (element.getCtrlY2()>ymax) ymax = element.getCtrlY2();
-				if (element.getToX()<xmin) xmin = element.getToX();
-				if (element.getToY()<ymin) ymin = element.getToY();
-				if (element.getToX()>xmax) xmax = element.getToX();
-				if (element.getToY()>ymax) ymax = element.getToY();
+				if (element.getFromX() < xmin) {
+					xmin = element.getFromX();
+				}
+				if (element.getFromY() < ymin) {
+					ymin = element.getFromY();
+				}
+				if (element.getFromX() > xmax) {
+					xmax = element.getFromX();
+				}
+				if (element.getFromY() > ymax) {
+					ymax = element.getFromY();
+				}
+				if (element.getCtrlX1() < xmin) {
+					xmin = element.getCtrlX1();
+				}
+				if (element.getCtrlY1() < ymin) {
+					ymin = element.getCtrlY1();
+				}
+				if (element.getCtrlX1() > xmax) {
+					xmax = element.getCtrlX1();
+				}
+				if (element.getCtrlY1() > ymax) {
+					ymax = element.getCtrlY1();
+				}
+				if (element.getCtrlX2() < xmin) {
+					xmin = element.getCtrlX2();
+				}
+				if (element.getCtrlY2() < ymin) {
+					ymin = element.getCtrlY2();
+				}
+				if (element.getCtrlX2() > xmax) {
+					xmax = element.getCtrlX2();
+				}
+				if (element.getCtrlY2() > ymax) {
+					ymax = element.getCtrlY2();
+				}
+				if (element.getToX() < xmin) {
+					xmin = element.getToX();
+				}
+				if (element.getToY() < ymin) {
+					ymin = element.getToY();
+				}
+				if (element.getToX() > xmax) {
+					xmax = element.getToX();
+				}
+				if (element.getToY() > ymax) {
+					ymax = element.getToY();
+				}
 				foundOneControlPoint = true;
 				break;
 			case QUAD_TO:
-				if (element.getFromX()<xmin) xmin = element.getFromX();
-				if (element.getFromY()<ymin) ymin = element.getFromY();
-				if (element.getFromX()>xmax) xmax = element.getFromX();
-				if (element.getFromY()>ymax) ymax = element.getFromY();
-				if (element.getCtrlX1()<xmin) xmin = element.getCtrlX1();
-				if (element.getCtrlY1()<ymin) ymin = element.getCtrlY1();
-				if (element.getCtrlX1()>xmax) xmax = element.getCtrlX1();
-				if (element.getCtrlY1()>ymax) ymax = element.getCtrlY1();
-				if (element.getToX()<xmin) xmin = element.getToX();
-				if (element.getToY()<ymin) ymin = element.getToY();
-				if (element.getToX()>xmax) xmax = element.getToX();
-				if (element.getToY()>ymax) ymax = element.getToY();
+				if (element.getFromX() < xmin) {
+					xmin = element.getFromX();
+				}
+				if (element.getFromY() < ymin) {
+					ymin = element.getFromY();
+				}
+				if (element.getFromX() > xmax) {
+					xmax = element.getFromX();
+				}
+				if (element.getFromY() > ymax) {
+					ymax = element.getFromY();
+				}
+				if (element.getCtrlX1() < xmin) {
+					xmin = element.getCtrlX1();
+				}
+				if (element.getCtrlY1() < ymin) {
+					ymin = element.getCtrlY1();
+				}
+				if (element.getCtrlX1() > xmax) {
+					xmax = element.getCtrlX1();
+				}
+				if (element.getCtrlY1() > ymax) {
+					ymax = element.getCtrlY1();
+				}
+				if (element.getToX() < xmin) {
+					xmin = element.getToX();
+				}
+				if (element.getToY() < ymin) {
+					ymin = element.getToY();
+				}
+				if (element.getToX() > xmax) {
+					xmax = element.getToX();
+				}
+				if (element.getToY() > ymax) {
+					ymax = element.getToY();
+				}
 				foundOneControlPoint = true;
 				break;
 			case MOVE_TO:
@@ -232,33 +337,35 @@ public interface Path2ai<
 		}
 		if (foundOneControlPoint) {
 			box.setFromCorners(xmin, ymin, xmax, ymax);
-		}
-		else {
+		} else {
 			box.clear();
 		}
 		return foundOneControlPoint;
 	}
-	
+
 	/**
 	 * Calculates the number of times the given path
 	 * crosses the given circle extending to the right.
-	 * 
+	 *
 	 * @param crossings is the initial value for crossing.
 	 * @param pi is the description of the path.
 	 * @param x1 is the first point of the segment.
 	 * @param y1 is the first point of the segment.
 	 * @param x2 is the first point of the segment.
 	 * @param y2 is the first point of the segment.
-	 * @param type is the type of special computation to apply. If <code>null</code>, it 
-	 * is equivalent to {@link CrossingComputationType#STANDARD}.
+	 * @param type is the type of special computation to apply. If <code>null</code>, it
+	 *     is equivalent to {@link CrossingComputationType#STANDARD}.
 	 * @return the crossing
 	 */
+	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	static int computeCrossingsFromSegment(int crossings, PathIterator2ai<?> pi, int x1, int y1, int x2, int y2,
-			CrossingComputationType type) {	
-		assert (pi != null) : "Iterator must not be null"; //$NON-NLS-1$
+			CrossingComputationType type) {
+		assert pi != null : "Iterator must not be null"; //$NON-NLS-1$
 
 		// Copied from the AWT API
-		if (!pi.hasNext()) return 0;
+		if (!pi.hasNext()) {
+			return 0;
+		}
 		PathElement2ai element;
 
 		element = pi.next();
@@ -270,14 +377,17 @@ public interface Path2ai<
 		int movy = element.getToY();
 		int curx = movx;
 		int cury = movy;
-		int endx, endy;
+		int endx;
+		int endy;
 		int numCrosses = crossings;
 		while (pi.hasNext()) {
 			element = pi.next();
 			switch (element.getType()) {
 			case MOVE_TO:
-				movx = curx = element.getToX();
-				movy = cury = element.getToY();
+				movx = element.getToX();
+				curx = movx;
+				movy = element.getToY();
+				cury = movy;
 				break;
 			case LINE_TO:
 				endx = element.getToX();
@@ -287,13 +397,13 @@ public interface Path2ai<
 						x1, y1, x2, y2,
 						curx, cury,
 						endx, endy);
-				if (numCrosses==MathConstants.SHAPE_INTERSECTS)
+				if (numCrosses == MathConstants.SHAPE_INTERSECTS) {
 					return numCrosses;
+				}
 				curx = endx;
 				cury = endy;
 				break;
 			case QUAD_TO:
-			{
 				endx = element.getToX();
 				endy = element.getToY();
 				Path2ai<?, ?, ?, ?, ?, ?> localPath = pi.getGeomFactory().newPath(pi.getWindingRule());
@@ -306,16 +416,16 @@ public interface Path2ai<
 						localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
 						x1, y1, x2, y2,
 						CrossingComputationType.STANDARD);
-				if (numCrosses==MathConstants.SHAPE_INTERSECTS)
+				if (numCrosses == MathConstants.SHAPE_INTERSECTS) {
 					return numCrosses;
+				}
 				curx = endx;
 				cury = endy;
 				break;
-			}
 			case CURVE_TO:
 				endx = element.getToX();
 				endy = element.getToY();
-				Path2ai<?, ?, ?, ?, ?, ?> localPath = pi.getGeomFactory().newPath(pi.getWindingRule());
+				localPath = pi.getGeomFactory().newPath(pi.getWindingRule());
 				localPath.moveTo(element.getFromX(), element.getFromY());
 				localPath.curveTo(
 						element.getCtrlX1(), element.getCtrlY1(),
@@ -326,8 +436,9 @@ public interface Path2ai<
 						localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
 						x1, y1, x2, y2,
 						CrossingComputationType.STANDARD);
-				if (numCrosses==MathConstants.SHAPE_INTERSECTS)
+				if (numCrosses == MathConstants.SHAPE_INTERSECTS) {
 					return numCrosses;
+				}
 				curx = endx;
 				cury = endy;
 				break;
@@ -338,8 +449,9 @@ public interface Path2ai<
 							x1, y1, x2, y2,
 							curx, cury,
 							movx, movy);
-					if (numCrosses==MathConstants.SHAPE_INTERSECTS)
+					if (numCrosses == MathConstants.SHAPE_INTERSECTS) {
 						return numCrosses;
+					}
 				}
 				curx = movx;
 				cury = movy;
@@ -348,9 +460,9 @@ public interface Path2ai<
 			}
 		}
 
-		assert(numCrosses!=MathConstants.SHAPE_INTERSECTS);
+		assert numCrosses != MathConstants.SHAPE_INTERSECTS;
 
-		boolean isOpen = (curx != movx) || (cury != movy);
+		final boolean isOpen = (curx != movx) || (cury != movy);
 
 		if (isOpen && type != null) {
 			switch (type) {
@@ -377,23 +489,26 @@ public interface Path2ai<
 	/**
 	 * Calculates the number of times the given path
 	 * crosses the given circle extending to the right.
-	 * 
+	 *
 	 * @param crossings is the initial value for crossing.
 	 * @param pi is the description of the path.
 	 * @param cx is the center of the circle.
 	 * @param cy is the center of the circle.
 	 * @param radius is the radius of the circle.
-	 * @param type is the type of special computation to apply. If <code>null</code>, it 
-	 * is equivalent to {@link CrossingComputationType#STANDARD}.
+	 * @param type is the type of special computation to apply. If <code>null</code>, it
+	 *     is equivalent to {@link CrossingComputationType#STANDARD}.
 	 * @return the crossing
 	 */
+	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	static int computeCrossingsFromCircle(int crossings, PathIterator2ai<?> pi, int cx, int cy, int radius,
-			CrossingComputationType type) {	
-		assert (pi != null) : "Iterator must not be null"; //$NON-NLS-1$
-		assert (radius >= 0) : "Circle radius must be positive or zero"; //$NON-NLS-1$
+			CrossingComputationType type) {
+		assert pi != null : "Iterator must not be null"; //$NON-NLS-1$
+		assert radius >= 0 : "Circle radius must be positive or zero"; //$NON-NLS-1$
 
 		// Copied from the AWT API
-		if (!pi.hasNext()) return 0;
+		if (!pi.hasNext()) {
+			return 0;
+		}
 		PathElement2ai element;
 
 		element = pi.next();
@@ -405,14 +520,17 @@ public interface Path2ai<
 		int movy = element.getToY();
 		int curx = movx;
 		int cury = movy;
-		int endx, endy;
+		int endx;
+		int endy;
 		int numCrosses = crossings;
 		while (pi.hasNext()) {
 			element = pi.next();
 			switch (element.getType()) {
 			case MOVE_TO:
-				movx = curx = element.getToX();
-				movy = cury = element.getToY();
+				movx = element.getToX();
+				curx = movx;
+				movy = element.getToY();
+				cury = movy;
 				break;
 			case LINE_TO:
 				endx = element.getToX();
@@ -422,14 +540,13 @@ public interface Path2ai<
 						cx, cy, radius,
 						curx, cury,
 						endx, endy);
-				if (numCrosses==MathConstants.SHAPE_INTERSECTS) {
+				if (numCrosses == MathConstants.SHAPE_INTERSECTS) {
 					return numCrosses;
 				}
 				curx = endx;
 				cury = endy;
 				break;
 			case QUAD_TO:
-			{
 				endx = element.getToX();
 				endy = element.getToY();
 				Path2ai<?, ?, ?, ?, ?, ?> localPath = pi.getGeomFactory().newPath(pi.getWindingRule());
@@ -442,17 +559,16 @@ public interface Path2ai<
 						localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
 						cx, cy, radius,
 						CrossingComputationType.STANDARD);
-				if (numCrosses==MathConstants.SHAPE_INTERSECTS) {
+				if (numCrosses == MathConstants.SHAPE_INTERSECTS) {
 					return numCrosses;
 				}
 				curx = endx;
 				cury = endy;
 				break;
-			}
 			case CURVE_TO:
 				endx = element.getToX();
 				endy = element.getToY();
-				Path2ai<?, ?, ?, ?, ?, ?> localPath = pi.getGeomFactory().newPath(pi.getWindingRule());
+				localPath = pi.getGeomFactory().newPath(pi.getWindingRule());
 				localPath.moveTo(element.getFromX(), element.getFromY());
 				localPath.curveTo(
 						element.getCtrlX1(), element.getCtrlY1(),
@@ -463,7 +579,7 @@ public interface Path2ai<
 						localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
 						cx, cy, radius,
 						CrossingComputationType.STANDARD);
-				if (numCrosses==MathConstants.SHAPE_INTERSECTS) {
+				if (numCrosses == MathConstants.SHAPE_INTERSECTS) {
 					return numCrosses;
 				}
 				curx = endx;
@@ -476,7 +592,7 @@ public interface Path2ai<
 							cx, cy, radius,
 							curx, cury,
 							movx, movy);
-					if (numCrosses==MathConstants.SHAPE_INTERSECTS) {
+					if (numCrosses == MathConstants.SHAPE_INTERSECTS) {
 						return numCrosses;
 					}
 				}
@@ -487,12 +603,12 @@ public interface Path2ai<
 			}
 		}
 
-		assert (numCrosses != MathConstants.SHAPE_INTERSECTS);
+		assert numCrosses != MathConstants.SHAPE_INTERSECTS;
 
-		boolean isOpen = (curx != movx) || (cury != movy);
+		final boolean isOpen = (curx != movx) || (cury != movy);
 
 		if (isOpen && type != null) {
-			switch(type) {
+			switch (type) {
 			case AUTO_CLOSE:
 				// Auto close
 				numCrosses = Segment2ai.computeCrossingsFromCircle(
@@ -518,7 +634,7 @@ public interface Path2ai<
 
 	/**
 	 * Calculates the number of times the given path
-	 * crosses the ray extending to the right from (px,py).
+	 * crosses the ray extending to the right from (px, py).
 	 * If the point lies on a part of the path,
 	 * then no crossings are counted for that intersection.
 	 * +1 is added for each crossing where the Y coordinate is increasing
@@ -527,20 +643,23 @@ public interface Path2ai<
 	 * the path.
 	 * The path must start with a MOVE_TO, otherwise an exception is
 	 * thrown.
-	 * 
+	 *
 	 * @param crossings the initial crossing.
 	 * @param pi is the description of the path.
 	 * @param px is the reference point to test.
 	 * @param py is the reference point to test.
-	 * @param type is the type of special computation to apply. If <code>null</code>, it 
-	 * is equivalent to {@link CrossingComputationType#STANDARD}.
+	 * @param type is the type of special computation to apply. If <code>null</code>, it
+	 *     is equivalent to {@link CrossingComputationType#STANDARD}.
 	 * @return the crossing, or {@link MathConstants#SHAPE_INTERSECTS}
 	 */
+	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	static int computeCrossingsFromPoint(int crossings, PathIterator2ai<?> pi, int px, int py, CrossingComputationType type) {
-		assert (pi != null) : "Iterator must not be null"; //$NON-NLS-1$
+		assert pi != null : "Iterator must not be null"; //$NON-NLS-1$
 
 		// Copied and adapted from the AWT API
-		if (!pi.hasNext()) return 0;
+		if (!pi.hasNext()) {
+			return 0;
+		}
 		PathElement2ai element;
 
 		element = pi.next();
@@ -552,15 +671,18 @@ public interface Path2ai<
 		int movy = element.getToY();
 		int curx = movx;
 		int cury = movy;
-		int endx, endy;
+		int endx;
+		int endy;
 		int numCrossings = crossings;
 
 		while (pi.hasNext()) {
 			element = pi.next();
 			switch (element.getType()) {
 			case MOVE_TO:
-				movx = curx = element.getToX();
-				movy = cury = element.getToY();
+				movx = element.getToX();
+				curx = movx;
+				movy = element.getToY();
+				cury = movy;
 				break;
 			case LINE_TO:
 				endx = element.getToX();
@@ -570,7 +692,7 @@ public interface Path2ai<
 						px, py,
 						curx, cury,
 						endx, endy);
-				if (numCrossings==MathConstants.SHAPE_INTERSECTS) {
+				if (numCrossings == MathConstants.SHAPE_INTERSECTS) {
 					return numCrossings;
 				}
 				curx = endx;
@@ -586,7 +708,7 @@ public interface Path2ai<
 						numCrossings,
 						curve.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
 						px, py, CrossingComputationType.STANDARD);
-				if (numCrossings==MathConstants.SHAPE_INTERSECTS) {
+				if (numCrossings == MathConstants.SHAPE_INTERSECTS) {
 					return numCrossings;
 				}
 				curx = endx;
@@ -605,7 +727,7 @@ public interface Path2ai<
 						numCrossings,
 						curve.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
 						px, py, CrossingComputationType.STANDARD);
-				if (numCrossings==MathConstants.SHAPE_INTERSECTS) {
+				if (numCrossings == MathConstants.SHAPE_INTERSECTS) {
 					return numCrossings;
 				}
 				curx = endx;
@@ -618,7 +740,7 @@ public interface Path2ai<
 							px, py,
 							curx, cury,
 							movx, movy);
-					if (numCrossings==MathConstants.SHAPE_INTERSECTS) {
+					if (numCrossings == MathConstants.SHAPE_INTERSECTS) {
 						return numCrossings;
 					}
 				}
@@ -629,16 +751,17 @@ public interface Path2ai<
 			}
 		}
 
-		assert(numCrossings != MathConstants.SHAPE_INTERSECTS);
+		assert numCrossings != MathConstants.SHAPE_INTERSECTS;
 
-		boolean isOpen = (curx != movx) || (cury != movy);
+		final boolean isOpen = (curx != movx) || (cury != movy);
 
 		if (isOpen && type != null) {
 			switch (type) {
 			case AUTO_CLOSE:
 				// Not closed
-				if (movx==px && movy==py)
+				if (movx == px && movy == py) {
 					return MathConstants.SHAPE_INTERSECTS;
+				}
 				numCrossings = Segment2ai.computeCrossingsFromPoint(
 						numCrossings,
 						px, py,
@@ -669,26 +792,29 @@ public interface Path2ai<
 	 * the interior of the rectangle.
 	 * The path must start with a SEG_MOVETO, otherwise an exception is
 	 * thrown.
-	 * The caller must check r[xy]{min,max} for NaN values.
-	 * 
+	 * The caller must check r[xy]{min, max} for NaN values.
+	 *
 	 * @param iterator is the iterator on the path elements.
 	 * @param shadow is the description of the shape to project to the right.
 	 * @param closeable indicates if the shape is automatically closed or not.
 	 * @param onlyIntersectWhenOpen indicates if the crossings is set to 0 when
-	 * the path is open and there is not SHAPE_INTERSECT. If <code>true</code> assumes that
-	 * the function can only reply <code>0</code> or {@link MathConstants#SHAPE_INTERSECTS}.
+	 *     the path is open and there is not SHAPE_INTERSECT. If <code>true</code> assumes that
+	 *     the function can only reply <code>0</code> or {@link MathConstants#SHAPE_INTERSECTS}.
 	 * @return the crossings.
 	 * @see "Weiler–Atherton clipping algorithm"
 	 */
+	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	static int computeCrossingsFromPath(
-			PathIterator2ai<?> iterator, 
+			PathIterator2ai<?> iterator,
 			PathShadow2ai<?> shadow,
 			boolean closeable,
 			boolean onlyIntersectWhenOpen) {
-		assert (iterator != null) : "Iterator must not be null"; //$NON-NLS-1$
-		assert (shadow != null) : "The shadow projected on the right must not be null"; //$NON-NLS-1$
+		assert iterator != null : "Iterator must not be null"; //$NON-NLS-1$
+		assert shadow != null : "The shadow projected on the right must not be null"; //$NON-NLS-1$
 
-		if (!iterator.hasNext()) return 0;
+		if (!iterator.hasNext()) {
+			return 0;
+		}
 
 		PathElement2ai pathElement1 = iterator.next();
 
@@ -696,13 +822,15 @@ public interface Path2ai<
 			throw new IllegalArgumentException("missing initial moveto in the first path definition"); //$NON-NLS-1$
 		}
 
-		GeomFactory2ai<?, ?, ?, ?> factory = iterator.getGeomFactory();
+		final GeomFactory2ai<?, ?, ?, ?> factory = iterator.getGeomFactory();
 		Path2ai<?, ?, ?, ?, ?, ?> subPath;
-		int curx, cury, movx, movy, endx, endy;
-		curx = movx = pathElement1.getToX();
-		cury = movy = pathElement1.getToY();
+		int curx = pathElement1.getToX();
+		int movx = curx;
+		int cury = pathElement1.getToY();
+		int movy = cury;
 		int crossings = 0;
-		int n;
+		int endx;
+		int endy;
 
 		while (crossings != MathConstants.SHAPE_INTERSECTS
 				&& iterator.hasNext()) {
@@ -710,9 +838,11 @@ public interface Path2ai<
 			switch (pathElement1.getType()) {
 			case MOVE_TO:
 				// Count should always be a multiple of 2 here.
-				// assert((crossings & 1) != 0);
-				movx = curx = pathElement1.getToX();
-				movy = cury = pathElement1.getToY();
+				// assert (crossings & 1 != 0);
+				movx = pathElement1.getToX();
+				curx = movx;
+				movy = pathElement1.getToY();
+				cury = movy;
 				break;
 			case LINE_TO:
 				endx = pathElement1.getToX();
@@ -720,8 +850,9 @@ public interface Path2ai<
 				crossings = shadow.computeCrossings(crossings,
 						curx, cury,
 						endx, endy);
-				if (crossings==MathConstants.SHAPE_INTERSECTS)
+				if (crossings == MathConstants.SHAPE_INTERSECTS) {
 					return crossings;
+				}
 				curx = endx;
 				cury = endy;
 				break;
@@ -734,14 +865,15 @@ public interface Path2ai<
 				subPath.quadTo(
 						pathElement1.getCtrlX1(), pathElement1.getCtrlY1(),
 						endx, endy);
-				n = computeCrossingsFromPath(
+				final int n1 = computeCrossingsFromPath(
 						subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
 						shadow,
 						false,
 						false);
-				if (n==MathConstants.SHAPE_INTERSECTS)
-					return n;
-				crossings += n;
+				if (n1 == MathConstants.SHAPE_INTERSECTS) {
+					return n1;
+				}
+				crossings += n1;
 				curx = endx;
 				cury = endy;
 				break;
@@ -755,14 +887,15 @@ public interface Path2ai<
 						pathElement1.getCtrlX1(), pathElement1.getCtrlY1(),
 						pathElement1.getCtrlX2(), pathElement1.getCtrlY2(),
 						endx, endy);
-				n = computeCrossingsFromPath(
+				final int n2 = computeCrossingsFromPath(
 						subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
 						shadow,
 						false,
 						false);
-				if (n==MathConstants.SHAPE_INTERSECTS)
-					return n;
-				crossings += n;
+				if (n2 == MathConstants.SHAPE_INTERSECTS) {
+					return n2;
+				}
+				crossings += n2;
 				curx = endx;
 				cury = endy;
 				break;
@@ -773,7 +906,9 @@ public interface Path2ai<
 							movx, movy);
 				}
 				// Stop as soon as possible
-				if (crossings!=0) return crossings;
+				if (crossings != 0) {
+					return crossings;
+				}
 				curx = movx;
 				cury = movy;
 				break;
@@ -781,9 +916,9 @@ public interface Path2ai<
 			}
 		}
 
-		assert(crossings != MathConstants.SHAPE_INTERSECTS);
+		assert crossings != MathConstants.SHAPE_INTERSECTS;
 
-		boolean isOpen = (curx != movx) || (cury != movy);
+		final boolean isOpen = (curx != movx) || (cury != movy);
 
 		if (isOpen) {
 			if (closeable) {
@@ -791,8 +926,7 @@ public interface Path2ai<
 				crossings = shadow.computeCrossings(crossings,
 						curx, cury,
 						movx, movy);
-			}
-			else if (onlyIntersectWhenOpen) {
+			} else if (onlyIntersectWhenOpen) {
 				// Assume that when is the path is open, only
 				// SHAPE_INTERSECTS may be return
 				crossings = 0;
@@ -805,8 +939,8 @@ public interface Path2ai<
 	/**
 	 * Tests if the specified coordinates are inside the closed
 	 * boundary of the specified {@link PathIterator2ai}.
-	 * <p>
-	 * This method provides a basic facility for implementors of
+	 *
+	 * <p>This method provides a basic facility for implementors of
 	 * the {@link Shape2ai} interface to implement support for the
 	 * {@link Shape2ai#contains(int, int)} method.
 	 *
@@ -817,11 +951,55 @@ public interface Path2ai<
 	 *         specified {@code PathIterator2f}; {@code false} otherwise
 	 */
 	static boolean contains(PathIterator2ai<?> pi, int x, int y) {
-		assert (pi != null) : "Iterator must not be null"; //$NON-NLS-1$
+		assert pi != null : "Iterator must not be null"; //$NON-NLS-1$
 		// Copied from the AWT API
-		int mask = (pi.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 1);
-		int cross = computeCrossingsFromPoint(0, pi, x, y, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
-		return ((cross & mask) != 0);
+		final int mask = pi.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 1;
+		final int cross = computeCrossingsFromPoint(0, pi, x, y, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
+		return (cross & mask) != 0;
+	}
+
+	/**
+	 * Tests if the specified rectangle is inside the closed
+	 * boundary of the specified {@link PathIterator2ai}.
+	 *
+	 * <p>The points on the path are assumed to be outside the path area.
+	 * It means that is the rectangle is intersecting the path, this
+	 * function replies <code>false</code>.
+	 *
+	 * @param pi the specified {@code PathIterator2ai}
+	 * @param rx the lowest corner of the rectangle.
+	 * @param ry the lowest corner of the rectangle.
+	 * @param rwidth is the width of the rectangle.
+	 * @param rheight is the width of the rectangle.
+	 * @return {@code true} if the specified rectangle is inside the
+	 *         specified {@code PathIterator2f}; {@code false} otherwise.
+	 */
+	static boolean contains(PathIterator2ai<?> pi, int rx, int ry, int rwidth, int rheight) {
+		assert pi != null : "Iterator must not be null"; //$NON-NLS-1$
+		assert rwidth >= 0 : "Rectangle width must be positive or zero."; //$NON-NLS-1$
+		assert rheight >= 0 : "Rectangle height must be positive or zero"; //$NON-NLS-1$
+		// Copied from AWT API
+		final int mask = pi.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
+		final int crossings = computeCrossingsFromRect(
+				0,
+				pi,
+				rx, ry, rx + rwidth, ry + rheight,
+				CrossingComputationType.AUTO_CLOSE);
+		return crossings != MathConstants.SHAPE_INTERSECTS
+				&& (crossings & mask) != 0;
+	}
+
+	@Pure
+	@Override
+	default boolean contains(Rectangle2ai<?, ?, ?, ?, ?, ?> box) {
+		assert box != null : "Rectangle must not be null"; //$NON-NLS-1$
+		return contains(getPathIterator(),
+				box.getMinX(), box.getMinY(), box.getWidth(), box.getHeight());
+	}
+
+	@Override
+	default boolean contains(int x, int y) {
+		return contains(getPathIterator(), x, y);
 	}
 
 	/**
@@ -834,27 +1012,30 @@ public interface Path2ai<
 	 * the interior of the rectangle.
 	 * The path must start with a SEG_MOVETO, otherwise an exception is
 	 * thrown.
-	 * The caller must check r[xy]{min,max} for NaN values.
-	 * 
+	 * The caller must check r[xy]{min, max} for NaN values.
+	 *
 	 * @param crossings the initial crossing.
 	 * @param pi is the iterator on the path elements.
 	 * @param rxmin is the first corner of the rectangle.
 	 * @param rymin is the first corner of the rectangle.
 	 * @param rxmax is the second corner of the rectangle.
 	 * @param rymax is the second corner of the rectangle.
-	 * @param type is the type of special computation to apply. If <code>null</code>, it 
-	 * is equivalent to {@link CrossingComputationType#STANDARD}.
+	 * @param type is the type of special computation to apply. If <code>null</code>, it
+	 *     is equivalent to {@link CrossingComputationType#STANDARD}.
 	 * @return the crossings.
 	 */
+	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	static int computeCrossingsFromRect(
 			int crossings,
 			PathIterator2ai<?> pi,
 			int rxmin, int rymin,
 			int rxmax, int rymax,
 			CrossingComputationType type) {
-		assert (pi != null) : "Iterator must not be null"; //$NON-NLS-1$
+		assert pi != null : "Iterator must not be null"; //$NON-NLS-1$
 		// Copied from AWT API
-		if (!pi.hasNext()) return 0;
+		if (!pi.hasNext()) {
+			return 0;
+		}
 
 		PathElement2ai pathElement = pi.next();
 
@@ -862,19 +1043,24 @@ public interface Path2ai<
 			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
 		}
 
-		int curx, cury, movx, movy, endx, endy;
-		curx = movx = pathElement.getToX();
-		cury = movy = pathElement.getToY();
+		int curx = pathElement.getToX();
+		int movx = curx;
+		int cury = pathElement.getToY();
+		int movy = cury;
 		int numCrossings = crossings;
+		int endx;
+		int endy;
 
 		while (pi.hasNext()) {
 			pathElement = pi.next();
 			switch (pathElement.getType()) {
 			case MOVE_TO:
 				// Count should always be a multiple of 2 here.
-				// assert((crossings & 1) != 0);
-				movx = curx = pathElement.getToX();
-				movy = cury = pathElement.getToY();
+				// assert (crossings & 1 != 0);
+				movx = pathElement.getToX();
+				curx = movx;
+				movy = pathElement.getToY();
+				cury = movy;
 				break;
 			case LINE_TO:
 				endx = pathElement.getToX();
@@ -885,7 +1071,7 @@ public interface Path2ai<
 						rxmax, rymax,
 						curx, cury,
 						endx, endy);
-				if (numCrossings==MathConstants.SHAPE_INTERSECTS) {
+				if (numCrossings == MathConstants.SHAPE_INTERSECTS) {
 					return MathConstants.SHAPE_INTERSECTS;
 				}
 				curx = endx;
@@ -902,7 +1088,7 @@ public interface Path2ai<
 						curve.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
 						rxmin, rymin, rxmax, rymax,
 						CrossingComputationType.STANDARD);
-				if (numCrossings==MathConstants.SHAPE_INTERSECTS) {
+				if (numCrossings == MathConstants.SHAPE_INTERSECTS) {
 					return MathConstants.SHAPE_INTERSECTS;
 				}
 				curx = endx;
@@ -913,13 +1099,14 @@ public interface Path2ai<
 				endy = pathElement.getToY();
 				curve = pi.getGeomFactory().newPath(pi.getWindingRule());
 				curve.moveTo(pathElement.getFromX(), pathElement.getFromY());
-				curve.curveTo(pathElement.getCtrlX1(), pathElement.getCtrlY1(), pathElement.getCtrlX2(), pathElement.getCtrlY2(), endx, endy);
+				curve.curveTo(pathElement.getCtrlX1(), pathElement.getCtrlY1(), pathElement.getCtrlX2(),
+						pathElement.getCtrlY2(), endx, endy);
 				numCrossings = computeCrossingsFromRect(
-						numCrossings, 
+						numCrossings,
 						curve.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
 						rxmin, rymin, rxmax, rymax,
 						CrossingComputationType.STANDARD);
-				if (numCrossings==MathConstants.SHAPE_INTERSECTS) {
+				if (numCrossings == MathConstants.SHAPE_INTERSECTS) {
 					return MathConstants.SHAPE_INTERSECTS;
 				}
 				curx = endx;
@@ -941,15 +1128,15 @@ public interface Path2ai<
 				curx = movx;
 				cury = movy;
 				// Count should always be a multiple of 2 here.
-				// assert((crossings & 1) != 0);
+				// assert (crossings & 1 != 0);
 				break;
 			default:
 			}
 		}
 
-		assert(numCrossings != MathConstants.SHAPE_INTERSECTS);
+		assert numCrossings != MathConstants.SHAPE_INTERSECTS;
 
-		boolean isOpen = (curx != movx) || (cury != movy);
+		final boolean isOpen = (curx != movx) || (cury != movy);
 
 		if (isOpen && type != null) {
 			switch (type) {
@@ -977,46 +1164,15 @@ public interface Path2ai<
 	}
 
 	/**
-	 * Tests if the specified rectangle is inside the closed
-	 * boundary of the specified {@link PathIterator2ai}.
-	 *
-	 * <p>The points on the path are assumed to be outside the path area.
-	 * It means that is the rectangle is intersecting the path, this
-	 * function replies <code>false</code>.
-	 *
-	 * @param pi the specified {@code PathIterator2ai}
-	 * @param rx the lowest corner of the rectangle.
-	 * @param ry the lowest corner of the rectangle.
-	 * @param rwidth is the width of the rectangle.
-	 * @param rheight is the width of the rectangle.
-	 * @return {@code true} if the specified rectangle is inside the
-	 *         specified {@code PathIterator2f}; {@code false} otherwise.
-	 */
-	static boolean contains(PathIterator2ai<?> pi, int rx, int ry, int rwidth, int rheight) {
-		assert (pi != null) : "Iterator must not be null"; //$NON-NLS-1$
-		assert (rwidth >= 0) : "Rectangle width must be positive or zero."; //$NON-NLS-1$
-		assert (rheight >= 0) : "Rectangle height must be positive or zero"; //$NON-NLS-1$
-		// Copied from AWT API
-		int mask = (pi.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2);
-		int crossings = computeCrossingsFromRect(
-				0,
-				pi, 
-				rx, ry, rx+rwidth, ry+rheight,
-				CrossingComputationType.AUTO_CLOSE);
-		return (crossings != MathConstants.SHAPE_INTERSECTS &&
-				(crossings & mask) != 0);
-	}
-
-	/**
 	 * Tests if the interior of the specified {@link PathIterator2ai}
 	 * intersects the interior of a specified set of rectangular
 	 * coordinates.
-	 * <p>
-	 * This method provides a basic facility for implementors of
+	 *
+	 * <p>This method provides a basic facility for implementors of
 	 * the {@link Shape2ai} interface to implement support for the
 	 * {@code intersects()} method.
-	 * <p>
-	 * This method object may conservatively return true in
+	 *
+	 * <p>This method object may conservatively return true in
 	 * cases where the specified rectangular area intersects a
 	 * segment of the path, but that segment does not represent a
 	 * boundary between the interior and exterior of the path.
@@ -1032,54 +1188,113 @@ public interface Path2ai<
 	 * @param pi the specified {@code PathIterator}
 	 * @param x the specified X coordinate
 	 * @param y the specified Y coordinate
-	 * @param w the width of the specified rectangular coordinates
-	 * @param h the height of the specified rectangular coordinates
+	 * @param width the width of the specified rectangular coordinates
+	 * @param height the height of the specified rectangular coordinates
 	 * @return {@code true} if the specified {@code PathIterator} and
 	 *         the interior of the specified set of rectangular
 	 *         coordinates intersect each other; {@code false} otherwise.
 	 */
-	static boolean intersects(PathIterator2ai<?> pi, int x, int y, int w, int h) {
-		assert (pi != null) : "Iterator must not be null"; //$NON-NLS-1$
-		assert (w >= 0) : "Rectangle width must be positive or zero."; //$NON-NLS-1$
-		assert (h >= 0) : "Rectangle height must be positive or zero"; //$NON-NLS-1$
+	static boolean intersects(PathIterator2ai<?> pi, int x, int y, int width, int height) {
+		assert pi != null : "Iterator must not be null"; //$NON-NLS-1$
+		assert width >= 0 : "Rectangle width must be positive or zero."; //$NON-NLS-1$
+		assert height >= 0 : "Rectangle height must be positive or zero"; //$NON-NLS-1$
 
-		if (w == 0 || h == 0) {
+		if (width == 0 || height == 0) {
 			return false;
 		}
-		int mask = (pi.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2);
-		int crossings = computeCrossingsFromRect(0, pi, x, y, x+w, y+h,
+		final int mask = pi.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
+		final int crossings = computeCrossingsFromRect(0, pi, x, y, x + width, y + height,
 				CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
-		return (crossings == MathConstants.SHAPE_INTERSECTS ||
-				(crossings & mask) != 0);
+		return crossings == MathConstants.SHAPE_INTERSECTS
+				|| (crossings & mask) != 0;
+	}
+
+	@Pure
+	@Override
+	default boolean intersects(Circle2ai<?, ?, ?, ?, ?, ?> circle) {
+		assert circle != null : "Circle must not be null"; //$NON-NLS-1$
+		final int mask = getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
+		final int crossings = computeCrossingsFromCircle(
+				0,
+				getPathIterator(),
+				circle.getX(), circle.getY(), circle.getRadius(),
+				CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
+		return crossings == MathConstants.SHAPE_INTERSECTS
+				|| (crossings & mask) != 0;
+	}
+
+	@Pure
+	@Override
+	default boolean intersects(Rectangle2ai<?, ?, ?, ?, ?, ?> rectangle) {
+		assert rectangle != null : "Rectangle must be not null"; //$NON-NLS-1$
+		return intersects(getPathIterator(), rectangle.getMinX(), rectangle.getMinY(),
+				rectangle.getWidth(), rectangle.getHeight());
+	}
+
+	@Pure
+	@Override
+	default boolean intersects(Segment2ai<?, ?, ?, ?, ?, ?> segment) {
+		assert segment != null : "Segment must not be null"; //$NON-NLS-1$
+		final int mask = getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
+		final int crossings = computeCrossingsFromSegment(
+				0,
+				getPathIterator(),
+				segment.getX1(), segment.getY1(), segment.getX2(), segment.getY2(),
+				CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
+		return crossings == MathConstants.SHAPE_INTERSECTS
+				|| (crossings & mask) != 0;
+	}
+
+	@Override
+	default boolean intersects(PathIterator2ai<?> iterator) {
+		assert iterator != null : "Iterator must not be null"; //$NON-NLS-1$
+		final int mask = getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
+		final int crossings = computeCrossingsFromPath(
+				iterator,
+				new PathShadow2ai<>(this),
+				false,
+				true);
+		return crossings == MathConstants.SHAPE_INTERSECTS
+				|| (crossings & mask) != 0;
+	}
+
+	@Pure
+	@Override
+	default boolean intersects(MultiShape2ai<?, ?, ?, ?, ?, ?, ?> multishape) {
+		assert multishape != null : "MultiShape must be not null"; //$NON-NLS-1$
+		return multishape.intersects(this);
 	}
 
 	/** Replies the point on the path that is closest to the given point.
-	 * <p>
-	 * <strong>CAUTION:</strong> This function works only on path iterators
+	 *
+	 * <p><strong>CAUTION:</strong> This function works only on path iterators
 	 * that are replying polyline primitives, ie. if the
-	 * {@link PathIterator2D#isPolyline()} of <var>pi</var> is replying
+	 * {@link PathIterator2D#isPolyline()} of {@code pi} is replying
 	 * <code>true</code>.
 	 * {@link #getClosestPointTo(Point2D)} avoids this restriction.
-	 * 
+	 *
 	 * @param pi is the iterator on the elements of the path.
-	 * @param x
-	 * @param y
+	 * @param x x coordinate of the point.
+	 * @param y y coordinate of the point.
 	 * @param result the closest point on the shape; or the point itself
-	 * if it is inside the shape.
+	 *     if it is inside the shape.
 	 */
+	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	static void getClosestPointTo(PathIterator2ai<? extends PathElement2ai> pi, int x, int y, Point2D<?, ?> result) {
-		assert (pi != null) : "Iterator must not be null"; //$NON-NLS-1$
+		assert pi != null : "Iterator must not be null"; //$NON-NLS-1$
 
 		int bestManhantanDist = Integer.MAX_VALUE;
 		int bestLinfinvDist = Integer.MAX_VALUE;
 		Point2D<?, ?> candidate;
 		PathElement2ai pe;
 
-		int mask = (pi.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 1);
+		final int mask = pi.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 1;
 		int crossings = 0;
 		boolean isClosed = false;
-		int moveX, moveY, currentX, currentY;
-		moveX = moveY = currentX = currentY = 0;
+		int moveX = 0;
+		int moveY = 0;
+		int currentX = 0;
+		int currentY = 0;
 
 		while (pi.hasNext()) {
 			pe = pi.next();
@@ -1089,31 +1304,29 @@ public interface Path2ai<
 			currentX = pe.getToX();
 			currentY = pe.getToY();
 
-			switch(pe.getType()) {
+			switch (pe.getType()) {
 			case MOVE_TO:
 				moveX = pe.getToX();
 				moveY = pe.getToY();
 				isClosed = false;
 				break;
 			case LINE_TO:
-			{
 				isClosed = false;
 				candidate = new InnerComputationPoint2ai();
-				Segment2ai.computeClosestPointTo(pe.getFromX(), pe.getFromY(), pe.getToX(), pe.getToY(), x,y, candidate);
-				if (crossings!=MathConstants.SHAPE_INTERSECTS) {
+				Segment2ai.computeClosestPointTo(pe.getFromX(), pe.getFromY(), pe.getToX(), pe.getToY(), x, y, candidate);
+				if (crossings != MathConstants.SHAPE_INTERSECTS) {
 					crossings = Segment2ai.computeCrossingsFromPoint(
 							crossings,
 							x, y,
 							pe.getFromX(), pe.getFromY(), pe.getToX(), pe.getToY());
 				}
 				break;
-			}
 			case CLOSE:
 				isClosed = true;
 				if (!pe.isEmpty()) {
 					candidate = new InnerComputationPoint2ai();
 					Segment2ai.computeClosestPointTo(pe.getFromX(), pe.getFromY(), pe.getToX(), pe.getToY(), x, y, candidate);
-					if (crossings!=MathConstants.SHAPE_INTERSECTS) {
+					if (crossings != MathConstants.SHAPE_INTERSECTS) {
 						crossings = Segment2ai.computeCrossingsFromPoint(
 								crossings,
 								x, y,
@@ -1127,15 +1340,15 @@ public interface Path2ai<
 				throw new IllegalStateException();
 			}
 
-			if (candidate!=null) {
-				int dx = Math.abs(x - candidate.ix());
-				int dy = Math.abs(y - candidate.iy());
-				int manhatanDist = dx + dy;
+			if (candidate != null) {
+				final int dx = Math.abs(x - candidate.ix());
+				final int dy = Math.abs(y - candidate.iy());
+				final int manhatanDist = dx + dy;
 				if (manhatanDist <= 0) {
 					result.set(candidate);
 					return;
 				}
-				int linfinvDist = Math.min(dx, dy);
+				final int linfinvDist = Math.min(dx, dy);
 				if (manhatanDist < bestManhantanDist || (manhatanDist == bestManhantanDist && linfinvDist < bestLinfinvDist)) {
 					bestManhantanDist = manhatanDist;
 					bestLinfinvDist = linfinvDist;
@@ -1144,7 +1357,7 @@ public interface Path2ai<
 			}
 		}
 
-		if (!isClosed && crossings!=MathConstants.SHAPE_INTERSECTS) {
+		if (!isClosed && crossings != MathConstants.SHAPE_INTERSECTS) {
 			crossings = Segment2ai.computeCrossingsFromPoint(
 					crossings,
 					x, y,
@@ -1152,41 +1365,50 @@ public interface Path2ai<
 					moveX, moveY);
 		}
 
-		if (crossings==MathConstants.SHAPE_INTERSECTS || (crossings & mask) != 0) {
+		if (crossings == MathConstants.SHAPE_INTERSECTS || (crossings & mask) != 0) {
 			result.set(x, y);
 		}
 	}
 
+	@Override
+	default P getClosestPointTo(Point2D<?, ?> pt) {
+		assert pt != null : "Point must not be null"; //$NON-NLS-1$
+		final P point = getGeomFactory().newPoint();
+		getClosestPointTo(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), pt.ix(), pt.iy(), point);
+		return point;
+	}
+
 	/** Replies the point on the path that is farthest to the given point.
-	 * <p>
-	 * <strong>CAUTION:</strong> This function works only on path iterators
+	 *
+	 * <p><strong>CAUTION:</strong> This function works only on path iterators
 	 * that are replying polyline primitives, ie. if the
-	 * {@link PathIterator2D#isPolyline()} of <var>pi</var> is replying
+	 * {@link PathIterator2D#isPolyline()} of {@code pi} is replying
 	 * <code>true</code>.
 	 * {@link #getFarthestPointTo(Point2D)} avoids this restriction.
-	 * 
+	 *
 	 * @param pi is the iterator on the elements of the path.
-	 * @param x
-	 * @param y
+	 * @param x x coordinate of the point.
+	 * @param y y coordinate of the point.
 	 * @param result the farthest point on the shape.
 	 */
 	static void getFarthestPointTo(PathIterator2ai<? extends PathElement2ai> pi, int x, int y, Point2D<?, ?> result) {
-		assert (pi != null) : "Iterator must not be null"; //$NON-NLS-1$
+		assert pi != null : "Iterator must not be null"; //$NON-NLS-1$
 
 		int bestX = x;
 		int bestY = y;
 		int bestManhatanDist = Integer.MIN_VALUE;
 		int bestLinfinvDist = Integer.MIN_VALUE;
 		PathElement2ai pe;
-		Point2D<?, ?> point = new InnerComputationPoint2ai();
+		final Point2D<?, ?> point = new InnerComputationPoint2ai();
 
 		while (pi.hasNext()) {
 			pe = pi.next();
 
 			boolean foundCandidate = false;
-			int candidateX, candidateY;
+			final int candidateX;
+			final int candidateY;
 
-			switch(pe.getType()) {
+			switch (pe.getType()) {
 			case MOVE_TO:
 				foundCandidate = true;
 				candidateX = pe.getToX();
@@ -1209,10 +1431,10 @@ public interface Path2ai<
 			}
 
 			if (foundCandidate) {
-				int dx = Math.abs(x - candidateX);
-				int dy = Math.abs(y - candidateY);
-				int manhatanDist = dx + dy;
-				int linfinvDist = Math.min(dx, dy);
+				final int dx = Math.abs(x - candidateX);
+				final int dy = Math.abs(y - candidateY);
+				final int manhatanDist = dx + dy;
+				final int linfinvDist = Math.min(dx, dy);
 				if ((manhatanDist > bestManhatanDist) || (manhatanDist == bestManhatanDist && linfinvDist < bestLinfinvDist)) {
 					bestManhatanDist = manhatanDist;
 					bestLinfinvDist = linfinvDist;
@@ -1223,6 +1445,14 @@ public interface Path2ai<
 		}
 
 		result.set(bestX, bestY);
+	}
+
+	@Override
+	default P getFarthestPointTo(Point2D<?, ?> pt) {
+		assert pt != null : "Point must not be null"; //$NON-NLS-1$
+		final P point = getGeomFactory().newPoint();
+		getFarthestPointTo(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), pt.ix(), pt.iy(), point);
+		return point;
 	}
 
 	@Pure
@@ -1238,15 +1468,15 @@ public interface Path2ai<
 	}
 
 	/** Add the elements replied by the iterator into this path.
-	 * 
-	 * @param iterator
+	 *
+	 * @param iterator the iterator on the elements to add.
 	 */
 	default void add(Iterator<? extends PathElement2ai> iterator) {
-		assert (iterator != null) : "Iterator must not be null"; //$NON-NLS-1$
+		assert iterator != null : "Iterator must not be null"; //$NON-NLS-1$
 		PathElement2ai element;
 		while (iterator.hasNext()) {
 			element = iterator.next();
-			switch(element.getType()) {
+			switch (element.getType()) {
 			case MOVE_TO:
 				moveTo(element.getToX(), element.getToY());
 				break;
@@ -1257,7 +1487,8 @@ public interface Path2ai<
 				quadTo(element.getCtrlX1(), element.getCtrlY1(), element.getToX(), element.getToY());
 				break;
 			case CURVE_TO:
-				curveTo(element.getCtrlX1(), element.getCtrlY1(), element.getCtrlX2(), element.getCtrlY2(), element.getToX(), element.getToY());
+				curveTo(element.getCtrlX1(), element.getCtrlY1(), element.getCtrlX2(),
+						element.getCtrlY2(), element.getToX(), element.getToY());
 				break;
 			case CLOSE:
 				closePath();
@@ -1269,12 +1500,12 @@ public interface Path2ai<
 
 	/** Set the path.
 	 *
-	 * @param s the path to copy.
+	 * @param path the path to copy.
 	 */
-	default void set(Path2ai<?, ?, ?, ?, ?, ?> s) {
-		assert (s != null) : "Path must not be null"; //$NON-NLS-1$
+	default void set(Path2ai<?, ?, ?, ?, ?, ?> path) {
+		assert path != null : "Path must not be null"; //$NON-NLS-1$
 		clear();
-		add(s.getPathIterator());
+		add(path.getPathIterator());
 	}
 
 	/**
@@ -1288,7 +1519,7 @@ public interface Path2ai<
 
 	@Override
 	default void moveTo(Point2D<?, ?> position) {
-		assert (position != null) : "Position must not be null"; //$NON-NLS-1$
+		assert position != null : "Position must not be null"; //$NON-NLS-1$
 		moveTo(position.ix(), position.iy());
 	}
 
@@ -1304,15 +1535,15 @@ public interface Path2ai<
 
 	@Override
 	default void lineTo(Point2D<?, ?> to) {
-		assert (to != null) : "Position must not be null"; //$NON-NLS-1$
+		assert to != null : "Position must not be null"; //$NON-NLS-1$
 		lineTo(to.ix(), to.iy());
 	}
 
 	/**
 	 * Adds a curved segment, defined by two new points, to the path by
 	 * drawing a Quadratic curve that intersects both the current
-	 * coordinates and the specified coordinates {@code (x2,y2)},
-	 * using the specified point {@code (x1,y1)} as a quadratic
+	 * coordinates and the specified coordinates {@code (x2, y2)},
+	 * using the specified point {@code (x1, y1)} as a quadratic
 	 * parametric control point.
 	 * All coordinates are specified in double precision.
 	 *
@@ -1325,16 +1556,16 @@ public interface Path2ai<
 
 	@Override
 	default void quadTo(Point2D<?, ?> ctrl, Point2D<?, ?> to) {
-		assert (ctrl != null) : "Control point must not be null"; //$NON-NLS-1$
-		assert (to != null) : "Destination point must not be null"; //$NON-NLS-1$
+		assert ctrl != null : "Control point must not be null"; //$NON-NLS-1$
+		assert to != null : "Destination point must not be null"; //$NON-NLS-1$
 		quadTo(ctrl.ix(), ctrl.iy(), to.ix(), to.iy());
 	}
 
 	/**
 	 * Adds a curved segment, defined by three new points, to the path by
 	 * drawing a B&eacute;zier curve that intersects both the current
-	 * coordinates and the specified coordinates {@code (x3,y3)},
-	 * using the specified points {@code (x1,y1)} and {@code (x2,y2)} as
+	 * coordinates and the specified coordinates {@code (x3, y3)},
+	 * using the specified points {@code (x1, y1)} and {@code (x2, y2)} as
 	 * B&eacute;zier control points.
 	 * All coordinates are specified in double precision.
 	 *
@@ -1351,344 +1582,338 @@ public interface Path2ai<
 
 	@Override
 	default void curveTo(Point2D<?, ?> ctrl1, Point2D<?, ?> ctrl2, Point2D<?, ?> to) {
-		assert (ctrl1 != null) : "First control point must not be null"; //$NON-NLS-1$
-		assert (ctrl2 != null) : "Second control point must not be null"; //$NON-NLS-1$
-		assert (to != null) : "Destination point must not be null"; //$NON-NLS-1$
+		assert ctrl1 != null : "First control point must not be null"; //$NON-NLS-1$
+		assert ctrl2 != null : "Second control point must not be null"; //$NON-NLS-1$
+		assert to != null : "Destination point must not be null"; //$NON-NLS-1$
 		curveTo(ctrl1.ix(), ctrl1.iy(), ctrl2.ix(), ctrl2.iy(), to.ix(), to.iy());
 	}
 
-    /**
-     * Adds a section of an shallow ellipse to the current path.
-     * The ellipse from which a quadrant is taken is the ellipse that would be
-     * inscribed in a parallelogram defined by 3 points,
-     * The current point which is considered to be the midpoint of the edge
-     * leading into the corner of the ellipse where the ellipse grazes it,
-     * {@code (ctrlx, ctrly)} which is considered to be the location of the
-     * corner of the parallelogram in which the ellipse is inscribed,
-     * and {@code (tox, toy)} which is considered to be the midpoint of the
-     * edge leading away from the corner of the oval where the oval grazes it.
-     * 
-     * <p><img src="../doc-files/arcto0.png"/>
-     *
-     * <p>Only the portion of the ellipse from {@code tfrom} to {@code tto}
-     * will be included where {@code 0f} represents the point where the
-     * ellipse grazes the leading edge, {@code 1f} represents the point where
-     * the oval grazes the trailing edge, and {@code 0.5f} represents the
-     * point on the oval closest to the control point.
-     * The two values must satisfy the relation
-     * {@code (0 <= tfrom <= tto <= 1)}.
-     * 
-     * <p>If {@code tfrom} is not {@code 0f} then the caller would most likely
-     * want to use one of the arc {@code type} values that inserts a segment
-     * leading to the initial point.
-     * An initial {@link #moveTo(double, double)} or {@link #lineTo(double, double)} can be added to direct
-     * the path to the starting point of the ellipse section if
-     * {@link ArcType#MOVE_THEN_ARC} or
-     * {@link ArcType#LINE_THEN_ARC} are
-     * specified by the type argument.
-     * The {@code lineTo} path segment will only be added if the current point
-     * is not already at the indicated location to avoid spurious empty line
-     * segments.
-     * The type can be specified as
-     * {@link ArcType.CORNER_ONLY} if the current point
-     * on the path is known to be at the starting point of the ellipse section.
-     *
-     * @param ctrlx the x coordinate of the control point, i.e. the corner of the parallelogram in which the ellipse is inscribed. 
-     * @param ctrlx the y coordinate of the control point, i.e. the corner of the parallelogram in which the ellipse is inscribed. 
-     * @param to the x coordinate of the target point.
-     * @param to the y coordinate of the target point.
-     * @param tfrom the fraction of the ellipse section where the curve should start.
-     * @param tto the fraction of the ellipse section where the curve should end
-     * @param type the specification of what additional path segments should
-     *               be appended to lead the current path to the starting point.
-     */
-    default void arcTo(int ctrlx, int ctrly, int tox, int toy, double tfrom, double tto, ArcType type) {
-    	// Copied from JavaFX Path2D
-    	assert (tfrom >= 0.) : "tfrom must be positive or zero"; //$NON-NLS-1$
-    	assert (tto >= tfrom) : "tto must be greater than or equal to tfrom"; //$NON-NLS-1$
-    	assert (tto <= 1.) : "tto must be lower than 1"; //$NON-NLS-1$
-    	int currentx = getCurrentX();
-    	int currenty = getCurrentY();
-    	final int ocurrentx = currentx;
-    	final int ocurrenty = currenty;
-        double cx0 = currentx + (ctrlx - currentx) * AbstractCirclePathIterator.CTRL_POINT_DISTANCE;
-        double cy0 = currenty + (ctrly - currenty) * AbstractCirclePathIterator.CTRL_POINT_DISTANCE;
-        double cx1 = tox + (ctrlx - tox) * AbstractCirclePathIterator.CTRL_POINT_DISTANCE;
-        double cy1 = toy + (ctrly - toy) * AbstractCirclePathIterator.CTRL_POINT_DISTANCE;
-        if (tto < 1.) {
-            double t = 1. - tto;
-            tox += (cx1 - tox) * t;
-            toy += (cy1 - toy) * t;
-            cx1 += (cx0 - cx1) * t;
-            cy1 += (cy0 - cy1) * t;
-            cx0 += (currentx - cx0) * t;
-            cy0 += (currenty - cy0) * t;
-            tox += (cx1 - tox) * t;
-            toy += (cy1 - toy) * t;
-            cx1 += (cx0 - cx1) * t;
-            cy1 += (cy0 - cy1) * t;
-            tox += (cx1 - tox) * t;
-            toy += (cy1 - toy) * t;
-        }
-        if (tfrom > 0.) {
-            if (tto < 1.) {
-                tfrom = tfrom / tto;
-            }
-            currentx += (cx0 - currentx) * tfrom;
-            currenty += (cy0 - currenty) * tfrom;
-            cx0 += (cx1 - cx0) * tfrom;
-            cy0 += (cy1 - cy0) * tfrom;
-            cx1 += (tox - cx1) * tfrom;
-            cy1 += (toy - cy1) * tfrom;
-            currentx += (cx0 - currentx) * tfrom;
-            currenty += (cy0 - currenty) * tfrom;
-            cx0 += (cx1 - cx0) * tfrom;
-            cy0 += (cy1 - cy0) * tfrom;
-            currentx += (cx0 - currentx) * tfrom;
-            currenty += (cy0 - currenty) * tfrom;
-        }
-        if (type == ArcType.MOVE_THEN_ARC) {
-            if (currentx != ocurrentx || currenty != ocurrenty) {
-            	moveTo(currentx, currenty);
-            }
-        } else if (type == ArcType.LINE_THEN_ARC) {
-            if (currentx != ocurrentx || currenty != ocurrenty) {
-            	lineTo(currentx, currenty);
-            }
-        }
-        if (tfrom == tto ||
-            (currentx == cx0 && cx0 == cx1 && cx1 == tox &&
-            currenty == cy0 && cy0 == cy1 && cy1 == toy)) {
-            if (type != ArcType.LINE_THEN_ARC) {
-                lineTo(tox, toy);
-            }
-        } else {
-            curveTo((int) Math.round(cx0), (int) Math.round(cy0), (int) Math.round(cx1), (int) Math.round(cy1), tox, toy);
-        }
-    }
-    
-    @Override
-    default void arcTo(Point2D<?, ?> ctrl, Point2D<?, ?> to, double tfrom, double tto,
-    		org.arakhne.afc.math.geometry.d2.Path2D.ArcType type) {
-    	assert (ctrl != null) : "Control point must be not null"; //$NON-NLS-1$
-    	assert (to != null) : "Target point must be not null"; //$NON-NLS-1$
-    	arcTo(ctrl.ix(), ctrl.iy(), to.ix(), to.iy(), tfrom, tto, type);
-    }
-    
-    /**
-     * Adds a section of an shallow ellipse to the current path.
-     * 
-     * <p>This function is equivalent to:<pre><code>
-     * this.arcTo(ctrlx, ctrly, tox, toy, 0.0, 1.0, ArcType.ARCONLY);
-     * </code></pre>
-     *
-     * @param ctrlx the x coordinate of the control point, i.e. the corner of the parallelogram in which the ellipse is inscribed. 
-     * @param ctrlx the y coordinate of the control point, i.e. the corner of the parallelogram in which the ellipse is inscribed. 
-     * @param to the x coordinate of the target point.
-     * @param to the y coordinate of the target point.
-     */
-    default void arcTo(int ctrlx, int ctrly, int tox, int toy) {
-    	arcTo(ctrlx, ctrly, tox, toy, 0., 1., ArcType.ARC_ONLY);
-    }
+	/**
+	 * Adds a section of an shallow ellipse to the current path.
+	 * The ellipse from which a quadrant is taken is the ellipse that would be
+	 * inscribed in a parallelogram defined by 3 points,
+	 * The current point which is considered to be the midpoint of the edge
+	 * leading into the corner of the ellipse where the ellipse grazes it,
+	 * {@code (ctrlx, ctrly)} which is considered to be the location of the
+	 * corner of the parallelogram in which the ellipse is inscribed,
+	 * and {@code (tox, toy)} which is considered to be the midpoint of the
+	 * edge leading away from the corner of the oval where the oval grazes it.
+	 *
+	 * <p><img src="../doc-files/arcto0.png"/>
+	 *
+	 * <p>Only the portion of the ellipse from {@code tfrom} to {@code tto}
+	 * will be included where {@code 0f} represents the point where the
+	 * ellipse grazes the leading edge, {@code 1f} represents the point where
+	 * the oval grazes the trailing edge, and {@code 0.5f} represents the
+	 * point on the oval closest to the control point.
+	 * The two values must satisfy the relation
+	 * {@code (0 <= tfrom <= tto <= 1)}.
+	 *
+	 * <p>If {@code tfrom} is not {@code 0f} then the caller would most likely
+	 * want to use one of the arc {@code type} values that inserts a segment
+	 * leading to the initial point.
+	 * An initial {@link #moveTo(int, int)} or {@link #lineTo(int, int)} can be added to direct
+	 * the path to the starting point of the ellipse section if
+	 * {@link org.arakhne.afc.math.geometry.d2.Path2D.ArcType#MOVE_THEN_ARC} or
+	 * {@link org.arakhne.afc.math.geometry.d2.Path2D.ArcType#LINE_THEN_ARC} are
+	 * specified by the type argument.
+	 * The {@code lineTo} path segment will only be added if the current point
+	 * is not already at the indicated location to avoid spurious empty line
+	 * segments.
+	 * The type can be specified as
+	 * {@link org.arakhne.afc.math.geometry.d2.Path2D.ArcType#ARC_ONLY} if the current point
+	 * on the path is known to be at the starting point of the ellipse section.
+	 *
+	 * @param ctrlx the x coordinate of the control point, i.e. the corner of the parallelogram in which the ellipse is inscribed.
+	 * @param ctrly the y coordinate of the control point, i.e. the corner of the parallelogram in which the ellipse is inscribed.
+	 * @param tox the x coordinate of the target point.
+	 * @param toy the y coordinate of the target point.
+	 * @param tfrom the fraction of the ellipse section where the curve should start.
+	 * @param tto the fraction of the ellipse section where the curve should end
+	 * @param type the specification of what additional path segments should
+	 *               be appended to lead the current path to the starting point.
+	 */
+	@SuppressWarnings("checkstyle:cyclomaticcomplexity")
+	default void arcTo(int ctrlx, int ctrly, int tox, int toy, double tfrom, double tto, ArcType type) {
+		// Copied from JavaFX Path2D
+		assert tfrom >= 0. : "tfrom must be positive or zero"; //$NON-NLS-1$
+		assert tto >= tfrom : "tto must be greater than or equal to tfrom"; //$NON-NLS-1$
+		assert tto <= 1. : "tto must be lower than 1"; //$NON-NLS-1$
+		int currentx = getCurrentX();
+		int currenty = getCurrentY();
+		final int ocurrentx = currentx;
+		final int ocurrenty = currenty;
+		int targetx = tox;
+		int targety = toy;
+		double realtfrom = tfrom;
+		double cx0 = currentx + (ctrlx - currentx) * AbstractCirclePathIterator.CTRL_POINT_DISTANCE;
+		double cy0 = currenty + (ctrly - currenty) * AbstractCirclePathIterator.CTRL_POINT_DISTANCE;
+		double cx1 = targetx + (ctrlx - targetx) * AbstractCirclePathIterator.CTRL_POINT_DISTANCE;
+		double cy1 = targety + (ctrly - targety) * AbstractCirclePathIterator.CTRL_POINT_DISTANCE;
+		if (tto < 1.) {
+			final double t = 1. - tto;
+			targetx += (cx1 - targetx) * t;
+			targety += (cy1 - targety) * t;
+			cx1 += (cx0 - cx1) * t;
+			cy1 += (cy0 - cy1) * t;
+			cx0 += (currentx - cx0) * t;
+			cy0 += (currenty - cy0) * t;
+			targetx += (cx1 - targetx) * t;
+			targety += (cy1 - targety) * t;
+			cx1 += (cx0 - cx1) * t;
+			cy1 += (cy0 - cy1) * t;
+			targetx += (cx1 - targetx) * t;
+			targety += (cy1 - targety) * t;
+		}
+		if (realtfrom > 0.) {
+			if (tto < 1.) {
+				realtfrom = realtfrom / tto;
+			}
+			currentx += (cx0 - currentx) * realtfrom;
+			currenty += (cy0 - currenty) * realtfrom;
+			cx0 += (cx1 - cx0) * realtfrom;
+			cy0 += (cy1 - cy0) * realtfrom;
+			cx1 += (targetx - cx1) * realtfrom;
+			cy1 += (targety - cy1) * realtfrom;
+			currentx += (cx0 - currentx) * realtfrom;
+			currenty += (cy0 - currenty) * realtfrom;
+			cx0 += (cx1 - cx0) * realtfrom;
+			cy0 += (cy1 - cy0) * realtfrom;
+			currentx += (cx0 - currentx) * realtfrom;
+			currenty += (cy0 - currenty) * realtfrom;
+		}
+		if (type == ArcType.MOVE_THEN_ARC) {
+			if (currentx != ocurrentx || currenty != ocurrenty) {
+				moveTo(currentx, currenty);
+			}
+		} else if (type == ArcType.LINE_THEN_ARC) {
+			if (currentx != ocurrentx || currenty != ocurrenty) {
+				lineTo(currentx, currenty);
+			}
+		}
+		if (realtfrom == tto
+				|| (currentx == cx0 && cx0 == cx1 && cx1 == targetx
+				&& currenty == cy0 && cy0 == cy1 && cy1 == targety)) {
+			if (type != ArcType.LINE_THEN_ARC) {
+				lineTo(targetx, targety);
+			}
+		} else {
+			curveTo((int) Math.round(cx0), (int) Math.round(cy0), (int) Math.round(cx1), (int) Math.round(cy1), targetx, targety);
+		}
+	}
 
-    @Override
-    default void arcTo(Point2D<?, ?> to, Vector2D<?, ?> radii, double xAxisRotation, boolean largeArcFlag, boolean sweepFlag) {
-    	assert (radii != null) : "Radii vector must be not null"; //$NON-NLS-1$
-    	assert (to != null) : "Target point must be not null"; //$NON-NLS-1$
-    	arcTo(to.ix(), to.iy(), radii.ix(), radii.iy(), xAxisRotation, largeArcFlag, sweepFlag);
-    }
-
-    /**
-     * Adds a section of an shallow ellipse to the current path.
-     * The ellipse from which the portions are extracted follows the rules:
-     * <ul>
-     * <li>The ellipse will have its X axis tilted from horizontal by the
-     * angle {@code xAxisRotation} specified in radians.</li>
-     * <li>The ellipse will have the X and Y radii (viewed from its tilted
-     * coordinate system) specified by {@code radiusx} and {@code radiusy}
-     * unless that ellipse is too small to bridge the gap from the current
-     * point to the specified destination point in which case a larger
-     * ellipse with the same ratio of dimensions will be substituted instead.</li>
-     * <li>The ellipse may slide perpendicular to the direction from the
-     * current point to the specified destination point so that it just
-     * touches the two points.
-     * The direction it slides (to the "left" or to the "right") will be
-     * chosen to meet the criteria specified by the two boolean flags as
-     * described below.
-     * Only one direction will allow the method to meet both criteria.</li>
-     * <li>If the {@code largeArcFlag} is true, then the ellipse will sweep
-     * the longer way around the ellipse that meets these criteria.</li>
-     * <li>If the {@code sweepFlag} is true, then the ellipse will sweep
-     * clockwise around the ellipse that meets these criteria.</li>
-     * </ul>
-     * 
-     * <p><img src="../doc-files/arcto1.png" />
-     *
-     * <p>The method will do nothing if the destination point is the same as
-     * the current point.
-     * The method will draw a simple line segment to the destination point
-     * if either of the two radii are zero.
-     *
-     * @param tox the X coordinate of the target point.
-     * @param toy the Y coordinate of the target point.
-     * @param radiusx the X radius of the tilted ellipse.
-     * @param radiusy the Y radius of the tilted ellipse.
-     * @param xAxisRotation the angle of tilt of the ellipse.
-     * @param largeArcFlag <code>true</code> iff the path will sweep the long way around the ellipse.
-     * @param sweepFlag <code>true</code> iff the path will sweep clockwise around the ellipse.
-     * @see "http://www.w3.org/TR/SVG/paths.html#PathDataEllipticalArcCommands"
-     */
-    default void arcTo(int tox, int toy, int radiusx, int radiusy, double xAxisRotation, boolean largeArcFlag, boolean sweepFlag) {
-    	// Copied for JavaFX
-    	assert (radiusx >= 0.) : "X radius must be positive or zero."; //$NON-NLS-1$
-    	assert (radiusy >= 0.) : "Y radius must be positive or zero."; //$NON-NLS-1$
-        if (radiusx == 0. || radiusy == 0.) {
-            lineTo(tox, toy);
-            return;
-        }
-        int ocurrentx = getCurrentX();
-        int ocurrenty = getCurrentY();
-        int x1 = ocurrentx;
-        int y1 = ocurrenty;
-        int x2 = tox;
-        int y2 = toy;
-        if (x1 == x2 && y1 == y2) {
-            return;
-        }
-        double cosphi, sinphi;
-        if (xAxisRotation == 0.) {
-            cosphi = 1.;
-            sinphi = 0.;
-        } else {
-            cosphi = Math.cos(xAxisRotation);
-            sinphi = Math.sin(xAxisRotation);
-        }
-        double mx = (x1 + x2) / 2.;
-        double my = (y1 + y2) / 2.;
-        double relx1 = x1 - mx;
-        double rely1 = y1 - my;
-        double x1p = (cosphi * relx1 + sinphi * rely1) / radiusx;
-        double y1p = (cosphi * rely1 - sinphi * relx1) / radiusy;
-        double lenpsq = x1p * x1p + y1p * y1p;
-        if (lenpsq >= 1.) {
-            double xqpr = y1p * radiusx;
-            double yqpr = x1p * radiusy;
-            if (sweepFlag) {
-            	xqpr = -xqpr;
-            } else {
-            	yqpr = -yqpr;
-            }
-            double relxq = cosphi * xqpr - sinphi * yqpr;
-            double relyq = cosphi * yqpr + sinphi * xqpr;
-            int xq = (int) Math.round(mx + relxq);
-            int yq = (int) Math.round(my + relyq);
-            double xc = x1 + relxq;
-            double yc = y1 + relyq;
-            if (x1 != ocurrentx || y1 != ocurrenty) {
-            	lineTo(x1, y1);
-            }
-            arcTo((int) Math.round(xc), (int) Math.round(yc), xq, yq, 0, 1, ArcType.ARC_ONLY);
-            xc = x2 + relxq;
-            yc = y2 + relyq;
-            arcTo((int) Math.round(xc), (int) Math.round(yc), x2, y2, 0, 1, ArcType.ARC_ONLY);
-            return;
-        }
-        double scalef = Math.sqrt((1. - lenpsq) / lenpsq);
-        double cxp = scalef * y1p;
-        double cyp = scalef * x1p;
-        if (largeArcFlag == sweepFlag) {
-        	cxp = -cxp;
-        } else {
-        	cyp = -cyp;
-        }
-        mx += (cosphi * cxp * radiusx - sinphi * cyp * radiusy);
-        my += (cosphi * cyp * radiusy + sinphi * cxp * radiusx);
-        double ux = x1p - cxp;
-        double uy = y1p - cyp;
-        double vx = -(x1p + cxp);
-        double vy = -(y1p + cyp);
-        boolean done = false;
-        double quadlen = 1.;
-        boolean wasclose = false;
-        do {
-            double xqp = uy;
-            double yqp = ux;
-            if (sweepFlag) {
-            	xqp = -xqp;
-            } else {
-            	yqp = -yqp;
-            }
-            if (xqp * vx + yqp * vy > 0.) {
-                double dot = ux * vx + uy * vy;
-                if (dot >= 0) {
-                    quadlen = Math.acos(dot) / MathConstants.DEMI_PI;
-                    done = true;
-                }
-                wasclose = true;
-            } else if (wasclose) {
-                break;
-            }
-            double relxq = (cosphi * xqp * radiusx - sinphi * yqp * radiusy);
-            double relyq = (cosphi * yqp * radiusy + sinphi * xqp * radiusx);
-            int xq = (int) Math.round(mx + relxq);
-            int yq = (int) Math.round(my + relyq);
-            double xc = x1 + relxq;
-            double yc = y1 + relyq;
-            arcTo((int) Math.round(xc), (int) Math.round(yc), xq, yq, 0, quadlen, ArcType.ARC_ONLY);
-            x1 = xq;
-            y1 = yq;
-            ux = xqp;
-            uy = yqp;
-        } while (!done);
-    }
-
-    @Pure
 	@Override
-	default double getDistanceSquared(Point2D<?, ?> p) {
-		assert (p != null) : "Point must not be null"; //$NON-NLS-1$
-		Point2D<?, ?> c = getClosestPointTo(p);
-		return c.getDistanceSquared(p);
+	default void arcTo(Point2D<?, ?> ctrl, Point2D<?, ?> to, double tfrom, double tto,
+			org.arakhne.afc.math.geometry.d2.Path2D.ArcType type) {
+		assert ctrl != null : "Control point must be not null"; //$NON-NLS-1$
+		assert to != null : "Target point must be not null"; //$NON-NLS-1$
+		arcTo(ctrl.ix(), ctrl.iy(), to.ix(), to.iy(), tfrom, tto, type);
+	}
+
+	/**
+	 * Adds a section of an shallow ellipse to the current path.
+	 *
+	 * <p>This function is equivalent to:<pre><code>
+	 * this.arcTo(ctrlx, ctrly, tox, toy, 0.0, 1.0, ArcType.ARCONLY);
+	 * </code></pre>
+	 *
+	 * @param ctrlx the x coordinate of the control point, i.e. the corner of the parallelogram in which the ellipse is inscribed.
+	 * @param ctrly the y coordinate of the control point, i.e. the corner of the parallelogram in which the ellipse is inscribed.
+	 * @param tox the x coordinate of the target point.
+	 * @param toy the y coordinate of the target point.
+	 */
+	default void arcTo(int ctrlx, int ctrly, int tox, int toy) {
+		arcTo(ctrlx, ctrly, tox, toy, 0., 1., ArcType.ARC_ONLY);
+	}
+
+	@Override
+	default void arcTo(Point2D<?, ?> to, Vector2D<?, ?> radii, double xAxisRotation, boolean largeArcFlag, boolean sweepFlag) {
+		assert radii != null : "Radii vector must be not null"; //$NON-NLS-1$
+		assert to != null : "Target point must be not null"; //$NON-NLS-1$
+		arcTo(to.ix(), to.iy(), radii.ix(), radii.iy(), xAxisRotation, largeArcFlag, sweepFlag);
+	}
+
+	/**
+	 * Adds a section of an shallow ellipse to the current path.
+	 * The ellipse from which the portions are extracted follows the rules:
+	 * <ul>
+	 * <li>The ellipse will have its X axis tilted from horizontal by the
+	 * angle {@code xAxisRotation} specified in radians.</li>
+	 * <li>The ellipse will have the X and Y radii (viewed from its tilted
+	 * coordinate system) specified by {@code radiusx} and {@code radiusy}
+	 * unless that ellipse is too small to bridge the gap from the current
+	 * point to the specified destination point in which case a larger
+	 * ellipse with the same ratio of dimensions will be substituted instead.</li>
+	 * <li>The ellipse may slide perpendicular to the direction from the
+	 * current point to the specified destination point so that it just
+	 * touches the two points.
+	 * The direction it slides (to the "left" or to the "right") will be
+	 * chosen to meet the criteria specified by the two boolean flags as
+	 * described below.
+	 * Only one direction will allow the method to meet both criteria.</li>
+	 * <li>If the {@code largeArcFlag} is true, then the ellipse will sweep
+	 * the longer way around the ellipse that meets these criteria.</li>
+	 * <li>If the {@code sweepFlag} is true, then the ellipse will sweep
+	 * clockwise around the ellipse that meets these criteria.</li>
+	 * </ul>
+	 *
+	 * <p><img src="../doc-files/arcto1.png" />
+	 *
+	 * <p>The method will do nothing if the destination point is the same as
+	 * the current point.
+	 * The method will draw a simple line segment to the destination point
+	 * if either of the two radii are zero.
+	 *
+	 * @param tox the X coordinate of the target point.
+	 * @param toy the Y coordinate of the target point.
+	 * @param radiusx the X radius of the tilted ellipse.
+	 * @param radiusy the Y radius of the tilted ellipse.
+	 * @param xAxisRotation the angle of tilt of the ellipse.
+	 * @param largeArcFlag <code>true</code> iff the path will sweep the long way around the ellipse.
+	 * @param sweepFlag <code>true</code> iff the path will sweep clockwise around the ellipse.
+	 * @see "http://www.w3.org/TR/SVG/paths.html#PathDataEllipticalArcCommands"
+	 */
+	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity",
+			"checkstyle:parameternumber"})
+	default void arcTo(int tox, int toy, int radiusx, int radiusy, double xAxisRotation,
+			boolean largeArcFlag, boolean sweepFlag) {
+		// Copied for JavaFX
+		assert radiusx >= 0. : "X radius must be positive or zero."; //$NON-NLS-1$
+		assert radiusy >= 0. : "Y radius must be positive or zero."; //$NON-NLS-1$
+		if (radiusx == 0. || radiusy == 0.) {
+			lineTo(tox, toy);
+			return;
+		}
+		final int ocurrentx = getCurrentX();
+		final int ocurrenty = getCurrentY();
+		int x1 = ocurrentx;
+		int y1 = ocurrenty;
+		final  int x2 = tox;
+		final int y2 = toy;
+		if (x1 == x2 && y1 == y2) {
+			return;
+		}
+		final  double cosphi;
+		final double sinphi;
+		if (xAxisRotation == 0.) {
+			cosphi = 1.;
+			sinphi = 0.;
+		} else {
+			cosphi = Math.cos(xAxisRotation);
+			sinphi = Math.sin(xAxisRotation);
+		}
+		double mx = (x1 + x2) / 2.;
+		double my = (y1 + y2) / 2.;
+		final double relx1 = x1 - mx;
+		final double rely1 = y1 - my;
+		final double x1p = (cosphi * relx1 + sinphi * rely1) / radiusx;
+		final double y1p = (cosphi * rely1 - sinphi * relx1) / radiusy;
+		final double lenpsq = x1p * x1p + y1p * y1p;
+		if (lenpsq >= 1.) {
+			double xqpr = y1p * radiusx;
+			double yqpr = x1p * radiusy;
+			if (sweepFlag) {
+				xqpr = -xqpr;
+			} else {
+				yqpr = -yqpr;
+			}
+			final double relxq = cosphi * xqpr - sinphi * yqpr;
+			final double relyq = cosphi * yqpr + sinphi * xqpr;
+			final int xq = (int) Math.round(mx + relxq);
+			final int yq = (int) Math.round(my + relyq);
+			double xc = x1 + relxq;
+			double yc = y1 + relyq;
+			if (x1 != ocurrentx || y1 != ocurrenty) {
+				lineTo(x1, y1);
+			}
+			arcTo((int) Math.round(xc), (int) Math.round(yc), xq, yq, 0, 1, ArcType.ARC_ONLY);
+			xc = x2 + relxq;
+			yc = y2 + relyq;
+			arcTo((int) Math.round(xc), (int) Math.round(yc), x2, y2, 0, 1, ArcType.ARC_ONLY);
+			return;
+		}
+		final double scalef = Math.sqrt((1. - lenpsq) / lenpsq);
+		double cxp = scalef * y1p;
+		double cyp = scalef * x1p;
+		if (largeArcFlag == sweepFlag) {
+			cxp = -cxp;
+		} else {
+			cyp = -cyp;
+		}
+		mx += cosphi * cxp * radiusx - sinphi * cyp * radiusy;
+		my += cosphi * cyp * radiusy + sinphi * cxp * radiusx;
+		double ux = x1p - cxp;
+		double uy = y1p - cyp;
+		final double vx = -(x1p + cxp);
+		final double vy = -(y1p + cyp);
+		boolean done = false;
+		double quadlen = 1.;
+		boolean wasclose = false;
+		do {
+			double xqp = uy;
+			double yqp = ux;
+			if (sweepFlag) {
+				xqp = -xqp;
+			} else {
+				yqp = -yqp;
+			}
+			if (xqp * vx + yqp * vy > 0.) {
+				final double dot = ux * vx + uy * vy;
+				if (dot >= 0) {
+					quadlen = Math.acos(dot) / MathConstants.DEMI_PI;
+					done = true;
+				}
+				wasclose = true;
+			} else if (wasclose) {
+				break;
+			}
+			final double relxq = cosphi * xqp * radiusx - sinphi * yqp * radiusy;
+			final  double relyq = cosphi * yqp * radiusy + sinphi * xqp * radiusx;
+			final  int xq = (int) Math.round(mx + relxq);
+			final int yq = (int) Math.round(my + relyq);
+			final double xc = x1 + relxq;
+			final double yc = y1 + relyq;
+			arcTo((int) Math.round(xc), (int) Math.round(yc), xq, yq, 0, quadlen, ArcType.ARC_ONLY);
+			x1 = xq;
+			y1 = yq;
+			ux = xqp;
+			uy = yqp;
+		} while (!done);
 	}
 
 	@Pure
 	@Override
-	default double getDistanceL1(Point2D<?, ?> p) {
-		assert (p != null) : "Point must not be null"; //$NON-NLS-1$
-		Point2D<?, ?> c = getClosestPointTo(p);
-		return c.getDistanceL1(p);
+	default double getDistanceSquared(Point2D<?, ?> pt) {
+		assert pt != null : "Point must not be null"; //$NON-NLS-1$
+		final Point2D<?, ?> c = getClosestPointTo(pt);
+		return c.getDistanceSquared(pt);
 	}
 
 	@Pure
 	@Override
-	default double getDistanceLinf(Point2D<?, ?> p) {
-		assert (p != null) : "Point must not be null"; //$NON-NLS-1$
-		Point2D<?, ?> c = getClosestPointTo(p);
-		return c.getDistanceLinf(p);
+	default double getDistanceL1(Point2D<?, ?> pt) {
+		assert pt != null : "Point must not be null"; //$NON-NLS-1$
+		final Point2D<?, ?> c = getClosestPointTo(pt);
+		return c.getDistanceL1(pt);
 	}
 
+	@Pure
 	@Override
-	default P getClosestPointTo(Point2D<?, ?> p) {
-		assert (p != null) : "Point must not be null"; //$NON-NLS-1$
-		P point = getGeomFactory().newPoint();
-		getClosestPointTo(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), p.ix(), p.iy(), point);
-		return point;
-	}
-
-	@Override
-	default P getFarthestPointTo(Point2D<?, ?> p) {
-		assert (p != null) : "Point must not be null"; //$NON-NLS-1$
-		P point = getGeomFactory().newPoint();
-		getFarthestPointTo(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), p.ix(), p.iy(), point);
-		return point;
+	default double getDistanceLinf(Point2D<?, ?> pt) {
+		assert pt != null : "Point must not be null"; //$NON-NLS-1$
+		final Point2D<?, ?> c = getClosestPointTo(pt);
+		return c.getDistanceLinf(pt);
 	}
 
 	@Override
 	default double getLengthSquared() {
-		if (isEmpty()) return 0;
+		if (isEmpty()) {
+			return 0;
+		}
 
 		double length = 0;
 
-		PathIterator2ai<?> pi = getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO);
+		final PathIterator2ai<?> pi = getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO);
 
 		PathElement2ai pathElement = pi.next();
 
@@ -1702,18 +1927,18 @@ public interface Path2ai<
 			switch (pathElement.getType()) {
 			case LINE_TO:
 				length += Point2D.getDistanceSquaredPointPoint(
-						pathElement.getFromX(), pathElement.getFromY(),  
+						pathElement.getFromX(), pathElement.getFromY(),
 						pathElement.getToX(), pathElement.getToY());
 				break;
 			case CLOSE:
 				length += Point2D.getDistanceSquaredPointPoint(
-						pathElement.getFromX(), pathElement.getFromY(), 
+						pathElement.getFromX(), pathElement.getFromY(),
 						pathElement.getToX(), pathElement.getToY());
 				break;
 			case QUAD_TO:
 			case CURVE_TO:
 				throw new IllegalStateException("Curve in path is not supported"); //$NON-NLS-1$
-			case MOVE_TO: 
+			case MOVE_TO:
 			default:
 			}
 
@@ -1721,13 +1946,13 @@ public interface Path2ai<
 
 		return length;
 	}
-	
+
 	@Pure
 	@Override
 	default P getCurrentPoint() {
 		return getGeomFactory().newPoint(getCurrentX(), getCurrentY());
 	}
-	
+
 	/** Replies the x coordinate of the last point in the path.
 	 *
 	 * @return the x coordinate of the last point in the path.
@@ -1745,50 +1970,37 @@ public interface Path2ai<
 	/** Replies the coordinate at the given index.
 	 * The index is in [0;{@link #size()}*2).
 	 *
-	 * @param index
+	 * @param index the index.
 	 * @return the coordinate at the given index.
 	 */
 	@Pure
 	int getCoordAt(int index);
 
 	/** Change the coordinates of the last inserted point.
-	 * 
-	 * @param x
-	 * @param y
+	 *
+	 * @param x the new x coordinate of the last point.
+	 * @param y the new y coordinate of the last point.
 	 */
 	void setLastPoint(int x, int y);
 
 	@Override
 	default void setLastPoint(Point2D<?, ?> point) {
-		assert (point != null) : "Point must not be null"; //$NON-NLS-1$
+		assert point != null : "Point must not be null"; //$NON-NLS-1$
 		setLastPoint(point.ix(), point.iy());
 	}
 
 	/** Transform the current path.
 	 * This function changes the current path.
-	 * 
+	 *
 	 * @param transform is the affine transformation to apply.
 	 * @see #createTransformedShape
 	 */
 	void transform(Transform2D transform);
 
-	@Pure
-	@Override
-	default boolean contains(Rectangle2ai<?, ?, ?, ?, ?, ?> box) {
-		assert (box != null) : "Rectangle must not be null"; //$NON-NLS-1$
-		return contains(getPathIterator(),
-				box.getMinX(), box.getMinY(), box.getWidth(), box.getHeight());
-	}
-
-	@Override
-	default boolean contains(int x, int y) {
-		return contains(getPathIterator(), x, y);
-	}
-
 	/** Remove the point with the given coordinates.
-	 * 
+	 *
 	 * <p>If the given coordinates do not match exactly a point in the path, nothing is removed.
-	 * 
+	 *
 	 * @param x the x coordinate of the point to remove.
 	 * @param y the y coordinate of the point to remove.
 	 * @return <code>true</code> if the point was removed; <code>false</code> otherwise.
@@ -1813,63 +2025,8 @@ public interface Path2ai<
 	@Pure
 	@Override
 	default Iterator<P> getPointIterator() {
-		PathIterator2ai<IE> pathIterator = getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO);
+		final PathIterator2ai<IE> pathIterator = getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO);
 		return new PixelIterator<>(pathIterator, getGeomFactory());
-	}
-
-	@Pure
-	@Override
-	default boolean intersects(Circle2ai<?, ?, ?, ?, ?, ?> s) {
-		assert (s != null) : "Circle must not be null"; //$NON-NLS-1$
-		int mask = (getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2);
-		int crossings = computeCrossingsFromCircle(
-				0,
-				getPathIterator(),
-				s.getX(), s.getY(), s.getRadius(),
-				CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
-		return (crossings == MathConstants.SHAPE_INTERSECTS ||
-				(crossings & mask) != 0);
-	}
-
-	@Pure
-	@Override
-	default boolean intersects(Rectangle2ai<?, ?, ?, ?, ?, ?> s) {
-		assert (s != null) : "Rectangle must be not null"; //$NON-NLS-1$
-		return intersects(getPathIterator(), s.getMinX(), s.getMinY(), s.getWidth(), s.getHeight());
-	}
-
-	@Pure
-	@Override
-	default boolean intersects(Segment2ai<?, ?, ?, ?, ?, ?> s) {
-		assert (s != null) : "Segment must not be null"; //$NON-NLS-1$
-		int mask = (getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2);
-		int crossings = computeCrossingsFromSegment(
-				0,
-				getPathIterator(),
-				s.getX1(), s.getY1(), s.getX2(), s.getY2(),
-				CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
-		return (crossings == MathConstants.SHAPE_INTERSECTS ||
-				(crossings & mask) != 0);
-	}
-
-	@Override
-	default boolean intersects(PathIterator2ai<?> iterator) {
-		assert (iterator != null) : "Iterator must not be null"; //$NON-NLS-1$
-		int mask = (getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2);
-		int crossings = computeCrossingsFromPath(
-				iterator,
-				new PathShadow2ai<>(this),
-				false,
-				true);
-		return (crossings == MathConstants.SHAPE_INTERSECTS ||
-				(crossings & mask) != 0);
-	}
-	
-	@Pure
-	@Override
-	default boolean intersects(MultiShape2ai<?, ?, ?, ?, ?, ?, ?> s) {
-		assert (s != null) : "MultiShape must be not null"; //$NON-NLS-1$
-		return s.intersects(this);
 	}
 
 	@Pure
@@ -1877,9 +2034,9 @@ public interface Path2ai<
 	default Collection<P> toCollection() {
 		return new PointCollection<>(this);
 	}
-	
+
 	/** Private API for Path2ai.
-	 * 
+	 *
 	 * @author $Author: sgalland$
 	 * @version $Name$ $Revision$ $Date$
 	 * @mavengroupid $GroupId$
@@ -1895,18 +2052,20 @@ public interface Path2ai<
 		/** Not documented.
 		 *
 		 * @param crossings the previous value of the crossing.
-		 * @param rxmin not documented.
-		 * @param rymin not documented.
-		 * @param rxmax not documented.
-		 * @param rymax not documented.
-		 * @param curx not documented.
-		 * @param cury not documented.
-		 * @param movx not documented.
-		 * @param movy not documented.
-		 * @param intersectingBehavior
+		 * @param rxmin x coordinate of the minimum corner.
+		 * @param rymin y coordinate of the minimum corner.
+		 * @param rxmax x coordinate of the maximum corner.
+		 * @param rymax y coordinate of the maximum corner.
+		 * @param curx x coordinate of the current point.
+		 * @param cury y coordinate of the current point.
+		 * @param movx x coordinate of the last move.
+		 * @param movy y coordinate of the last mobe.
+		 * @param intersectingBehavior <code>true</code> if the expected behavior is intersection,
+		 *     <code>false</code> for simple crossing computation.
 		 * @return thr crossing.
 		 */
 		@Pure
+		@SuppressWarnings("checkstyle:parameternumber")
 		private static int crossingHelper(
 				int crossings,
 				int rxmin, int rymin,
@@ -1919,11 +2078,11 @@ public interface Path2ai<
 					rxmax, rymax,
 					curx, cury,
 					movx, movy);
-			if (!intersectingBehavior && crosses==MathConstants.SHAPE_INTERSECTS) {
-				int x1 = rxmin+1;
-				int x2 = rxmax-1;
-				int y1 = rymin+1;
-				int y2 = rymax-1;
+			if (!intersectingBehavior && crosses == MathConstants.SHAPE_INTERSECTS) {
+				final int x1 = rxmin + 1;
+				final int x2 = rxmax - 1;
+				final int y1 = rymin + 1;
+				final int y2 = rymax - 1;
 				crosses = Segment2ai.computeCrossingsFromRect(crossings,
 						x1, y1,
 						x2, y2,
@@ -1954,7 +2113,7 @@ public interface Path2ai<
 		 * @param path the path.
 		 */
 		public AbstractPathIterator(Path2ai<?, ?, E, ?, ?, ?> path) {
-			assert (path != null) : "Path must not be null"; //$NON-NLS-1$
+			assert path != null : "Path must not be null"; //$NON-NLS-1$
 			this.path = path;
 		}
 
@@ -2004,15 +2163,16 @@ public interface Path2ai<
 	 * @mavenartifactid $ArtifactId$
 	 * @since 13.0
 	 */
+	@SuppressWarnings("checkstyle:magicnumber")
 	class PathPathIterator<E extends PathElement2ai> extends AbstractPathIterator<E> {
 
 		private final Point2D<?, ?> p1;
 
 		private final Point2D<?, ?> p2;
 
-		private int iType = 0;
+		private int typeIndex;
 
-		private int iCoord = 0;
+		private int coordIndex;
 
 		private int movex;
 
@@ -2026,7 +2186,7 @@ public interface Path2ai<
 			this.p1 = new InnerComputationPoint2ai();
 			this.p2 = new InnerComputationPoint2ai();
 		}
-		
+
 		@Override
 		public PathIterator2ai<E> restartIterations() {
 			return new PathPathIterator<>(this.path);
@@ -2034,76 +2194,72 @@ public interface Path2ai<
 
 		@Override
 		public boolean hasNext() {
-			return this.iType < this.path.getPathElementCount();
+			return this.typeIndex < this.path.getPathElementCount();
 		}
 
 		@Override
 		public E next() {
-			int type = this.iType;
-			if (this.iType>=this.path.getPathElementCount()) {
+			final int type = this.typeIndex;
+			if (this.typeIndex >= this.path.getPathElementCount()) {
 				throw new NoSuchElementException();
 			}
 			E element = null;
-			switch(this.path.getPathElementTypeAt(type)) {
+			switch (this.path.getPathElementTypeAt(type)) {
 			case MOVE_TO:
-				if (this.iCoord+2>(this.path.size() * 2)) {
+				if ((this.coordIndex + 2) > (this.path.size() * 2)) {
 					throw new NoSuchElementException();
 				}
-				this.movex = this.path.getCoordAt(this.iCoord++);
-				this.movey = this.path.getCoordAt(this.iCoord++);
+				this.movex = this.path.getCoordAt(this.coordIndex++);
+				this.movey = this.path.getCoordAt(this.coordIndex++);
 				this.p2.set(this.movex, this.movey);
 				element = getGeomFactory().newMovePathElement(
 						this.p2.ix(), this.p2.iy());
 				break;
 			case LINE_TO:
-				if (this.iCoord+2>(this.path.size() * 2)) {
+				if ((this.coordIndex + 2) > (this.path.size() * 2)) {
 					throw new NoSuchElementException();
 				}
 				this.p1.set(this.p2);
 				this.p2.set(
-						this.path.getCoordAt(this.iCoord++),
-						this.path.getCoordAt(this.iCoord++));
+						this.path.getCoordAt(this.coordIndex++),
+						this.path.getCoordAt(this.coordIndex++));
 				element = getGeomFactory().newLinePathElement(
 						this.p1.ix(), this.p1.iy(),
 						this.p2.ix(), this.p2.iy());
 				break;
 			case QUAD_TO:
-			{
-				if (this.iCoord+4>(this.path.size() * 2)) {
+				if ((this.coordIndex + 4) > (this.path.size() * 2)) {
 					throw new NoSuchElementException();
 				}
 				this.p1.set(this.p2);
-				int ctrlx = this.path.getCoordAt(this.iCoord++);
-				int ctrly = this.path.getCoordAt(this.iCoord++);
+				final int ctrlx = this.path.getCoordAt(this.coordIndex++);
+				final int ctrly = this.path.getCoordAt(this.coordIndex++);
 				this.p2.set(
-						this.path.getCoordAt(this.iCoord++),
-						this.path.getCoordAt(this.iCoord++));
+						this.path.getCoordAt(this.coordIndex++),
+						this.path.getCoordAt(this.coordIndex++));
 				element = getGeomFactory().newCurvePathElement(
 						this.p1.ix(), this.p1.iy(),
 						ctrlx, ctrly,
 						this.p2.ix(), this.p2.iy());
-			}
-			break;
+				break;
 			case CURVE_TO:
-			{
-				if (this.iCoord+6>(this.path.size() * 2)) {
+				if (this.coordIndex + 6 > (this.path.size() * 2)) {
 					throw new NoSuchElementException();
 				}
 				this.p1.set(this.p2);
-				int ctrlx1 = this.path.getCoordAt(this.iCoord++);
-				int ctrly1 = this.path.getCoordAt(this.iCoord++);
-				int ctrlx2 = this.path.getCoordAt(this.iCoord++);
-				int ctrly2 = this.path.getCoordAt(this.iCoord++);
+				final int ctrlx1 = this.path.getCoordAt(this.coordIndex++);
+				final int ctrly1 = this.path.getCoordAt(this.coordIndex++);
+				final int ctrlx2 = this.path.getCoordAt(this.coordIndex++);
+				final int ctrly2 = this.path.getCoordAt(this.coordIndex++);
 				this.p2.set(
-						this.path.getCoordAt(this.iCoord++),
-						this.path.getCoordAt(this.iCoord++));
+						this.path.getCoordAt(this.coordIndex++),
+						this.path.getCoordAt(this.coordIndex++));
 				element = getGeomFactory().newCurvePathElement(
 						this.p1.ix(), this.p1.iy(),
 						ctrlx1, ctrly1,
 						ctrlx2, ctrly2,
 						this.p2.ix(), this.p2.iy());
-			}
-			break;
+				break;
 			case CLOSE:
 				this.p1.set(this.p2);
 				this.p2.set(this.movex, this.movey);
@@ -2113,10 +2269,11 @@ public interface Path2ai<
 				break;
 			default:
 			}
-			if (element==null)
+			if (element == null) {
 				throw new NoSuchElementException();
+			}
 
-			++this.iType;
+			++this.typeIndex;
 
 			return element;
 		}
@@ -2144,11 +2301,13 @@ public interface Path2ai<
 
 		private final Point2D<?, ?> ptmp2;
 
-		private int iType = 0;
+		private int typeIndex;
 
-		private int iCoord = 0;
+		private int coordIndex;
 
-		private int movex, movey;
+		private int movex;
+
+		private int movey;
 
 		/**
 		 * @param path the path.
@@ -2156,14 +2315,14 @@ public interface Path2ai<
 		 */
 		public TransformedPathIterator(Path2ai<?, ?, E, ?, ?, ?> path, Transform2D transform) {
 			super(path);
-			assert(transform != null) : "Transformation must not be null"; //$NON-NLS-1$
+			assert transform != null : "Transformation must not be null"; //$NON-NLS-1$
 			this.transform = transform;
 			this.p1 = new InnerComputationPoint2ai();
 			this.p2 = new InnerComputationPoint2ai();
 			this.ptmp1 = new InnerComputationPoint2ai();
 			this.ptmp2 = new InnerComputationPoint2ai();
 		}
-		
+
 		@Override
 		public PathIterator2ai<E> restartIterations() {
 			return new TransformedPathIterator<>(this.path, this.transform);
@@ -2171,19 +2330,19 @@ public interface Path2ai<
 
 		@Override
 		public boolean hasNext() {
-			return this.iType < this.path.getPathElementCount();
+			return this.typeIndex < this.path.getPathElementCount();
 		}
 
 		@Override
 		public E next() {
-			if (this.iType>=this.path.getPathElementCount()) {
+			if (this.typeIndex >= this.path.getPathElementCount()) {
 				throw new NoSuchElementException();
 			}
 			E element = null;
-			switch(this.path.getPathElementTypeAt(this.iType++)) {
+			switch (this.path.getPathElementTypeAt(this.typeIndex++)) {
 			case MOVE_TO:
-				this.movex = this.path.getCoordAt(this.iCoord++);
-				this.movey = this.path.getCoordAt(this.iCoord++);
+				this.movex = this.path.getCoordAt(this.coordIndex++);
+				this.movey = this.path.getCoordAt(this.coordIndex++);
 				this.p2.set(this.movex, this.movey);
 				this.transform.transform(this.p2);
 				element = getGeomFactory().newMovePathElement(
@@ -2192,52 +2351,48 @@ public interface Path2ai<
 			case LINE_TO:
 				this.p1.set(this.p2);
 				this.p2.set(
-						this.path.getCoordAt(this.iCoord++),
-						this.path.getCoordAt(this.iCoord++));
+						this.path.getCoordAt(this.coordIndex++),
+						this.path.getCoordAt(this.coordIndex++));
 				this.transform.transform(this.p2);
 				element = getGeomFactory().newLinePathElement(
 						this.p1.ix(), this.p1.iy(),
 						this.p2.ix(), this.p2.iy());
 				break;
 			case QUAD_TO:
-			{
 				this.p1.set(this.p2);
 				this.ptmp1.set(
-						this.path.getCoordAt(this.iCoord++),
-						this.path.getCoordAt(this.iCoord++));
+						this.path.getCoordAt(this.coordIndex++),
+						this.path.getCoordAt(this.coordIndex++));
 				this.transform.transform(this.ptmp1);
 				this.p2.set(
-						this.path.getCoordAt(this.iCoord++),
-						this.path.getCoordAt(this.iCoord++));
+						this.path.getCoordAt(this.coordIndex++),
+						this.path.getCoordAt(this.coordIndex++));
 				this.transform.transform(this.p2);
 				element = getGeomFactory().newCurvePathElement(
 						this.p1.ix(), this.p1.iy(),
 						this.ptmp1.ix(), this.ptmp1.iy(),
 						this.p2.ix(), this.p2.iy());
-			}
-			break;
+				break;
 			case CURVE_TO:
-			{
 				this.p1.set(this.p2);
 				this.ptmp1.set(
-						this.path.getCoordAt(this.iCoord++),
-						this.path.getCoordAt(this.iCoord++));
+						this.path.getCoordAt(this.coordIndex++),
+						this.path.getCoordAt(this.coordIndex++));
 				this.transform.transform(this.ptmp1);
 				this.ptmp2.set(
-						this.path.getCoordAt(this.iCoord++),
-						this.path.getCoordAt(this.iCoord++));
+						this.path.getCoordAt(this.coordIndex++),
+						this.path.getCoordAt(this.coordIndex++));
 				this.transform.transform(this.ptmp2);
 				this.p2.set(
-						this.path.getCoordAt(this.iCoord++),
-						this.path.getCoordAt(this.iCoord++));
+						this.path.getCoordAt(this.coordIndex++),
+						this.path.getCoordAt(this.coordIndex++));
 				this.transform.transform(this.p2);
 				element = getGeomFactory().newCurvePathElement(
 						this.p1.ix(), this.p1.iy(),
 						this.ptmp1.ix(), this.ptmp1.iy(),
 						this.ptmp2.ix(), this.ptmp2.iy(),
 						this.p2.ix(), this.p2.iy());
-			}
-			break;
+				break;
 			case CLOSE:
 				this.p1.set(this.p2);
 				this.p2.set(this.movex, this.movey);
@@ -2248,8 +2403,9 @@ public interface Path2ai<
 				break;
 			default:
 			}
-			if (element==null)
+			if (element == null) {
 				throw new NoSuchElementException();
+			}
 			return element;
 		}
 
@@ -2272,33 +2428,33 @@ public interface Path2ai<
 
 		private final GeomFactory2ai<?, P, V, ?> factory;
 
-		private Iterator<P> lineIterator = null;
+		private Iterator<P> lineIterator;
 
-		private P next = null;
+		private P next;
 
 		/**
 		 * @param pi the iterator.
 		 * @param factory the element factory.
 		 */
 		public PixelIterator(PathIterator2ai<?> pi, GeomFactory2ai<?, P, V, ?> factory) {
-			assert (pi != null) : "Iterator must not be null"; //$NON-NLS-1$
-			assert (factory != null) : "Factory must not be null"; //$NON-NLS-1$
+			assert pi != null : "Iterator must not be null"; //$NON-NLS-1$
+			assert factory != null : "Factory must not be null"; //$NON-NLS-1$
 			this.pathIterator = pi;
 			this.factory = factory;
 			searchNext();
 		}
 
 		private void searchNext() {
-			P old = this.next;
+			final P old = this.next;
 			this.next = null;
-			while (this.pathIterator.hasNext() && (this.lineIterator==null || !this.lineIterator.hasNext())) {
+			while (this.pathIterator.hasNext() && (this.lineIterator == null || !this.lineIterator.hasNext())) {
 				this.lineIterator = null;
-				PathElement2ai elt = this.pathIterator.next();
+				final PathElement2ai elt = this.pathIterator.next();
 				if (elt.isDrawable()) {
-					switch(elt.getType()) {
+					switch (elt.getType()) {
 					case LINE_TO:
 					case CLOSE:
-						Segment2ai<?, ?, ?, P, V, ?> segment = this.factory.newSegment(
+						final Segment2ai<?, ?, ?, P, V, ?> segment = this.factory.newSegment(
 								elt.getFromX(), elt.getFromY(),
 								elt.getToX(), elt.getToY());
 						this.lineIterator = segment.getPointIterator();
@@ -2311,7 +2467,7 @@ public interface Path2ai<
 					}
 				}
 			}
-			if (this.lineIterator!=null && this.lineIterator.hasNext()) {
+			if (this.lineIterator != null && this.lineIterator.hasNext()) {
 				this.next = this.lineIterator.next();
 				while (this.next.equals(old)) {
 					this.next = this.lineIterator.next();
@@ -2321,13 +2477,15 @@ public interface Path2ai<
 
 		@Override
 		public boolean hasNext() {
-			return this.next!=null;
+			return this.next != null;
 		}
 
 		@Override
 		public P next() {
-			P n = this.next;
-			if (n==null) throw new NoSuchElementException();
+			final P n = this.next;
+			if (n == null) {
+				throw new NoSuchElementException();
+			}
 			searchNext();
 			return n;
 		}
@@ -2353,12 +2511,12 @@ public interface Path2ai<
 			V extends Vector2D<? super V, ? super P>> implements Collection<P> {
 
 		private final Path2ai<?, ?, ?, P, V, ?> path;
-		
+
 		/**
 		 * @param path the path from which the points are extracted.
 		 */
 		public PointCollection(Path2ai<?, ?, ?, P, V, ?> path) {
-			assert (path != null) : "Path must not be null"; //$NON-NLS-1$
+			assert path != null : "Path must not be null"; //$NON-NLS-1$
 			this.path = path;
 		}
 
@@ -2369,13 +2527,13 @@ public interface Path2ai<
 
 		@Override
 		public boolean isEmpty() {
-			return this.path.size()<=0;
+			return this.path.size() <= 0;
 		}
 
 		@Override
-		public boolean contains(Object o) {
-			if (o instanceof Point2D) {
-				return this.path.contains((Point2D<?, ?>) o);
+		public boolean contains(Object obj) {
+			if (obj instanceof Point2D) {
+				return this.path.contains((Point2D<?, ?>) obj);
 			}
 			return false;
 		}
@@ -2392,23 +2550,22 @@ public interface Path2ai<
 
 		@SuppressWarnings("unchecked")
 		@Override
-		public <T> T[] toArray(T[] a) {
-			assert (a != null) : "Array must not be null"; //$NON-NLS-1$
-			Iterator<P> iterator = new PointIterator<>(this.path);
-			for(int i=0; i<a.length && iterator.hasNext(); ++i) {
-				a[i] = (T)iterator.next();
+		public <T> T[] toArray(T[] array) {
+			assert array != null : "Array must not be null"; //$NON-NLS-1$
+			final Iterator<P> iterator = new PointIterator<>(this.path);
+			for (int i = 0; i < array.length && iterator.hasNext(); ++i) {
+				array[i] = (T) iterator.next();
 			}
-			return a;
+			return array;
 		}
 
 		@Override
-		public boolean add(P e) {
-			if (e != null) {
-				if (this.path.size()==0) {
-					this.path.moveTo(e.ix(), e.iy());
-				}
-				else {
-					this.path.lineTo(e.ix(), e.iy());
+		public boolean add(P element) {
+			if (element != null) {
+				if (this.path.size() == 0) {
+					this.path.moveTo(element.ix(), element.iy());
+				} else {
+					this.path.lineTo(element.ix(), element.iy());
 				}
 				return true;
 			}
@@ -2416,20 +2573,20 @@ public interface Path2ai<
 		}
 
 		@Override
-		public boolean remove(Object o) {
-			if (o instanceof Point2D) {
-				Point2D<?, ?> p = (Point2D<?, ?>) o;
+		public boolean remove(Object obj) {
+			if (obj instanceof Point2D) {
+				final Point2D<?, ?> p = (Point2D<?, ?>) obj;
 				return this.path.remove(p.ix(), p.iy());
 			}
 			return false;
 		}
 
 		@Override
-		public boolean containsAll(Collection<?> c) {
-			assert (c != null) : "Collection must not be null"; //$NON-NLS-1$
-			for(Object obj : c) {
+		public boolean containsAll(Collection<?> collection) {
+			assert collection != null : "Collection must not be null"; //$NON-NLS-1$
+			for (final Object obj : collection) {
 				if ((!(obj instanceof Point2D))
-						||(!this.path.contains((Point2D<?, ?>) obj))) {
+						|| (!this.path.contains((Point2D<?, ?>) obj))) {
 					return false;
 				}
 			}
@@ -2437,10 +2594,10 @@ public interface Path2ai<
 		}
 
 		@Override
-		public boolean addAll(Collection<? extends P> c) {
-			assert (c != null) : "Collection must not be null"; //$NON-NLS-1$
+		public boolean addAll(Collection<? extends P> collection) {
+			assert collection != null : "Collection must not be null"; //$NON-NLS-1$
 			boolean changed = false;
-			for(P pts : c) {
+			for (final P pts : collection) {
 				if (add(pts)) {
 					changed = true;
 				}
@@ -2449,12 +2606,12 @@ public interface Path2ai<
 		}
 
 		@Override
-		public boolean removeAll(Collection<?> c) {
-			assert (c != null) : "Collection must not be null"; //$NON-NLS-1$
+		public boolean removeAll(Collection<?> collection) {
+			assert collection != null : "Collection must not be null"; //$NON-NLS-1$
 			boolean changed = false;
-			for(Object obj : c) {
+			for (final Object obj : collection) {
 				if (obj instanceof Point2D) {
-					Point2D<?, ?> pts = (Point2D<?, ?>) obj;
+					final Point2D<?, ?> pts = (Point2D<?, ?>) obj;
 					if (this.path.remove(pts.ix(), pts.iy())) {
 						changed = true;
 					}
@@ -2464,7 +2621,7 @@ public interface Path2ai<
 		}
 
 		@Override
-		public boolean retainAll(Collection<?> c) {
+		public boolean retainAll(Collection<?> collection) {
 			throw new UnsupportedOperationException();
 		}
 
@@ -2489,16 +2646,16 @@ public interface Path2ai<
 			V extends Vector2D<? super V, ? super P>> implements Iterator<P> {
 
 		private final Path2ai<?, ?, ?, P, V, ?> path;
-		
-		private int index = 0;
-		
-		private P lastReplied = null;
+
+		private int index;
+
+		private P lastReplied;
 
 		/**
 		 * @param path the path to iterate on.
 		 */
 		public PointIterator(Path2ai<?, ?, ?, P, V, ?> path) {
-			assert (path != null) : "Path must not be null"; //$NON-NLS-1$
+			assert path != null : "Path must not be null"; //$NON-NLS-1$
 			this.path = path;
 		}
 
@@ -2512,17 +2669,18 @@ public interface Path2ai<
 			try {
 				this.lastReplied = this.path.getPointAt(this.index++);
 				return this.lastReplied;
-			} catch(Throwable exception) {
+			} catch (Throwable exception) {
 				throw new NoSuchElementException();
 			}
 		}
 
 		@Override
 		public void remove() {
-			Point2D<?, ?> p = this.lastReplied;
+			final Point2D<?, ?> p = this.lastReplied;
 			this.lastReplied = null;
-			if (p==null)
+			if (p == null) {
 				throw new NoSuchElementException();
+			}
 			this.path.remove(p.ix(), p.iy());
 		}
 
@@ -2538,12 +2696,13 @@ public interface Path2ai<
 	 * @mavenartifactid $ArtifactId$
 	 * @since 13.0
 	 */
+	@SuppressWarnings("checkstyle:magicnumber")
 	class FlatteningPathIterator<E extends PathElement2ai> implements PathIterator2ai<E> {
 
 		/** Path.
 		 */
 		private final Path2ai<?, ?, E, ?, ?, ?> path;
-		
+
 		/** The source iterator.
 		 */
 		private final PathIterator2ai<? extends E> pathIterator;
@@ -2556,11 +2715,11 @@ public interface Path2ai<
 		/**
 		 * Maximum number of recursion levels.
 		 */
-		private final int limit; 
+		private final int limit;
 
 		/** The recursion level at which each curve being held in storage was generated.
 		 */
-		private int levels[];
+		private int[] levels;
 
 		/** The cache of interpolated coords.
 		 * Note that this must be long enough
@@ -2572,7 +2731,7 @@ public interface Path2ai<
 		 * to the size of a full quad segment
 		 * and 2 relative quad segments.
 		 */
-		private double hold[] = new double[14];
+		private double[] hold = new double[14];
 
 		/** The index of the last curve segment being held for interpolation.
 		 */
@@ -2603,7 +2762,7 @@ public interface Path2ai<
 
 		/** The index of the entry in the
 		 * levels array of the curve segment
-		 * at the holdIndex
+		 * at the holdIndex.
 		 */
 		private int levelIndex;
 
@@ -2633,10 +2792,10 @@ public interface Path2ai<
 		 */
 		public FlatteningPathIterator(Path2ai<?, ?, E, ?, ?, ?> path, PathIterator2ai<? extends E> pathIterator,
 				double flatness, int limit) {
-			assert (path != null) : "Path must not be null"; //$NON-NLS-1$
-			assert (pathIterator != null) : "Iterator must not be null"; //$NON-NLS-1$
-			assert (flatness > 0f) : "Flatness factor must be positive."; //$NON-NLS-1$
-			assert (limit >= 0) : "Number of recursive subdivisions must be positive or zero."; //$NON-NLS-1$
+			assert path != null : "Path must not be null"; //$NON-NLS-1$
+			assert pathIterator != null : "Iterator must not be null"; //$NON-NLS-1$
+			assert flatness > 0f : "Flatness factor must be positive."; //$NON-NLS-1$
+			assert limit >= 0 : "Number of recursive subdivisions must be positive or zero."; //$NON-NLS-1$
 			this.path = path;
 			this.pathIterator = pathIterator;
 			this.squaredFlatness = flatness * flatness;
@@ -2650,16 +2809,16 @@ public interface Path2ai<
 			return new FlatteningPathIterator<>(this.path, this.pathIterator.restartIterations(),
 					Math.sqrt(this.squaredFlatness), this.limit);
 		}
-		
+
 		/**
 		 * Ensures that the hold array can hold up to (want) more values.
 		 * It is currently holding (hold.length - holdIndex) values.
 		 */
 		private void ensureHoldCapacity(int want) {
 			if (this.holdIndex - want < 0) {
-				int have = this.hold.length - this.holdIndex;
-				int newsize = this.hold.length + GROW_SIZE;
-				double newhold[] = new double[newsize];
+				final int have = this.hold.length - this.holdIndex;
+				final int newsize = this.hold.length + GROW_SIZE;
+				final double[] newhold = new double[newsize];
 				System.arraycopy(this.hold, this.holdIndex,
 						newhold, this.holdIndex + GROW_SIZE,
 						have);
@@ -2680,7 +2839,7 @@ public interface Path2ai<
 		 * @return the flatness of the quadratic curve that is defined by the
 		 *          values in the specified array at the specified index.
 		 */
-		private static double getQuadSquaredFlatness(double coords[], int offset) {
+		private static double getQuadSquaredFlatness(double[] coords, int offset) {
 			return Segment2afp.computeDistanceSquaredLinePoint(
 					coords[offset + 0], coords[offset + 1],
 					coords[offset + 4], coords[offset + 5],
@@ -2704,23 +2863,21 @@ public interface Path2ai<
 		 * to avoid allocating extra storage for this common point.
 		 * @param src the array holding the coordinates for the source curve
 		 * @param srcoff the offset into the array of the beginning of the
-		 * the 6 source coordinates
+		 *     the 6 source coordinates
 		 * @param left the array for storing the coordinates for the first
-		 * half of the subdivided curve
+		 *     half of the subdivided curve
 		 * @param leftoff the offset into the array of the beginning of the
-		 * the 6 left coordinates
+		 *     the 6 left coordinates
 		 * @param right the array for storing the coordinates for the second
-		 * half of the subdivided curve
+		 *     half of the subdivided curve
 		 * @param rightoff the offset into the array of the beginning of the
-		 * the 6 right coordinates
+		 *     the 6 right coordinates
 		 */
-		private static void subdivideQuad(double src[], int srcoff,
-				double left[], int leftoff,
-				double right[], int rightoff) {
+		private static void subdivideQuad(double[] src, int srcoff,
+				double[] left, int leftoff,
+				double[] right, int rightoff) {
 			double x1 = src[srcoff + 0];
 			double y1 = src[srcoff + 1];
-			double ctrlx = src[srcoff + 2];
-			double ctrly = src[srcoff + 3];
 			double x2 = src[srcoff + 4];
 			double y2 = src[srcoff + 5];
 			if (left != null) {
@@ -2731,6 +2888,8 @@ public interface Path2ai<
 				right[rightoff + 4] = x2;
 				right[rightoff + 5] = y2;
 			}
+			double ctrlx = src[srcoff + 2];
+			double ctrly = src[srcoff + 3];
 			x1 = (x1 + ctrlx) / 2;
 			y1 = (y1 + ctrly) / 2;
 			x2 = (x2 + ctrlx) / 2;
@@ -2763,7 +2922,7 @@ public interface Path2ai<
 		 *          specified by the coordinates in <code>coords</code> at
 		 *          the specified offset.
 		 */
-		private static double getCurveSquaredFlatness(double coords[], int offset) {
+		private static double getCurveSquaredFlatness(double[] coords, int offset) {
 			return Math.max(
 					Segment2afp.computeDistanceSquaredSegmentPoint(
 							coords[offset + 6],
@@ -2771,7 +2930,7 @@ public interface Path2ai<
 							coords[offset + 2],
 							coords[offset + 3],
 							coords[offset + 0],
-							coords[offset + 1]),							
+							coords[offset + 1]),
 					Segment2afp.computeDistanceSquaredSegmentPoint(
 							coords[offset + 6],
 							coords[offset + 7],
@@ -2798,26 +2957,22 @@ public interface Path2ai<
 		 * to avoid allocating extra storage for this common point.
 		 * @param src the array holding the coordinates for the source curve
 		 * @param srcoff the offset into the array of the beginning of the
-		 * the 6 source coordinates
+		 *     the 6 source coordinates
 		 * @param left the array for storing the coordinates for the first
-		 * half of the subdivided curve
+		 *     half of the subdivided curve
 		 * @param leftoff the offset into the array of the beginning of the
-		 * the 6 left coordinates
+		 *     the 6 left coordinates
 		 * @param right the array for storing the coordinates for the second
-		 * half of the subdivided curve
+		 *     half of the subdivided curve
 		 * @param rightoff the offset into the array of the beginning of the
-		 * the 6 right coordinates
+		 *     the 6 right coordinates
 		 */
 		private static void subdivideCurve(
-				double src[], int srcoff,
-				double left[], int leftoff,
-				double right[], int rightoff) {
+				double[] src, int srcoff,
+				double[] left, int leftoff,
+				double[] right, int rightoff) {
 			double x1 = src[srcoff + 0];
 			double y1 = src[srcoff + 1];
-			double ctrlx1 = src[srcoff + 2];
-			double ctrly1 = src[srcoff + 3];
-			double ctrlx2 = src[srcoff + 4];
-			double ctrly2 = src[srcoff + 5];
 			double x2 = src[srcoff + 6];
 			double y2 = src[srcoff + 7];
 			if (left != null) {
@@ -2828,8 +2983,12 @@ public interface Path2ai<
 				right[rightoff + 6] = x2;
 				right[rightoff + 7] = y2;
 			}
+			double ctrlx1 = src[srcoff + 2];
+			double ctrly1 = src[srcoff + 3];
 			x1 = (x1 + ctrlx1) / 2f;
 			y1 = (y1 + ctrly1) / 2f;
+			double ctrlx2 = src[srcoff + 4];
+			double ctrly2 = src[srcoff + 5];
 			x2 = (x2 + ctrlx2) / 2f;
 			y2 = (y2 + ctrly2) / 2f;
 			double centerx = (ctrlx1 + ctrlx2) / 2f;
@@ -2857,28 +3016,29 @@ public interface Path2ai<
 				right[rightoff + 5] = y2;
 			}
 		}
-		
+
 		private void searchNext(boolean isFirst) {
 			do {
 				flattening();
 			}
 			while (!this.done && !isFirst && isSame());
 		}
-		
+
 		private boolean isSame() {
-			PathElementType type = this.holdType;
-			int x, y;
-			if (type==PathElementType.CLOSE) {
+			final PathElementType type = this.holdType;
+			final int x;
+			final int y;
+			if (type == PathElementType.CLOSE) {
 				x = (int) Math.round(this.moveX);
 				y = (int) Math.round(this.moveY);
-			}
-			else {
+			} else {
 				x = (int) Math.round(this.hold[this.holdIndex + 0]);
 				y = (int) Math.round(this.hold[this.holdIndex + 1]);
 			}
-			return x==this.lastNextX && y==this.lastNextY;
+			return x == this.lastNextX && y == this.lastNextY;
 		}
 
+		@SuppressWarnings("checkstyle:npathcomplexity")
 		private void flattening() {
 			int level;
 
@@ -2887,7 +3047,7 @@ public interface Path2ai<
 					this.done = true;
 					return;
 				}
-				PathElement2ai pathElement = this.pathIterator.next();
+				final PathElement2ai pathElement = this.pathIterator.next();
 				this.holdType = pathElement.getType();
 				pathElement.toArray(this.hold);
 				this.levelIndex = 0;
@@ -2921,8 +3081,10 @@ public interface Path2ai<
 					this.hold[this.holdIndex + 1] = this.currentY;
 					this.hold[this.holdIndex + 2] = this.hold[0];
 					this.hold[this.holdIndex + 3] = this.hold[1];
-					this.hold[this.holdIndex + 4] = this.currentX = this.hold[2];
-					this.hold[this.holdIndex + 5] = this.currentY = this.hold[3];
+					this.hold[this.holdIndex + 4] = this.hold[2];
+					this.currentX = this.hold[2];
+					this.hold[this.holdIndex + 5] = this.hold[3];
+					this.currentY = this.hold[3];
 				}
 
 				level = this.levels[this.levelIndex];
@@ -2969,13 +3131,15 @@ public interface Path2ai<
 					this.hold[this.holdIndex + 3] = this.hold[1];
 					this.hold[this.holdIndex + 4] = this.hold[2];
 					this.hold[this.holdIndex + 5] = this.hold[3];
-					this.hold[this.holdIndex + 6] = this.currentX = this.hold[4];
-					this.hold[this.holdIndex + 7] = this.currentY = this.hold[5];
+					this.hold[this.holdIndex + 6] = this.hold[4];
+					this.currentX = this.hold[4];
+					this.hold[this.holdIndex + 7] = this.hold[5];
+					this.currentY = this.hold[5];
 				}
 
 				level = this.levels[this.levelIndex];
 				while (level < this.limit) {
-					if (getCurveSquaredFlatness(this.hold,this. holdIndex) < this.squaredFlatness) {
+					if (getCurveSquaredFlatness(this.hold, this.holdIndex) < this.squaredFlatness) {
 						break;
 					}
 
@@ -3021,25 +3185,23 @@ public interface Path2ai<
 				throw new NoSuchElementException("flattening iterator out of bounds"); //$NON-NLS-1$
 			}
 
-			E element;
-			PathElementType type = this.holdType;
-			if (type!=PathElementType.CLOSE) {
-				int x = (int) Math.round(this.hold[this.holdIndex + 0]);
-				int y = (int) Math.round(this.hold[this.holdIndex + 1]);
+			final E element;
+			final PathElementType type = this.holdType;
+			if (type != PathElementType.CLOSE) {
+				final int x = (int) Math.round(this.hold[this.holdIndex + 0]);
+				final int y = (int) Math.round(this.hold[this.holdIndex + 1]);
 				if (type == PathElementType.MOVE_TO) {
 					element = this.path.getGeomFactory().newMovePathElement(x, y);
-				}
-				else {
+				} else {
 					element = this.path.getGeomFactory().newLinePathElement(
 							this.lastNextX, this.lastNextY,
 							x, y);
 				}
 				this.lastNextX = x;
 				this.lastNextY = y;
-			}
-			else {
-				int x = (int) Math.round(this.moveX);
-				int y = (int) Math.round(this.moveY);
+			} else {
+				final int x = (int) Math.round(this.moveX);
+				final int y = (int) Math.round(this.moveY);
 				element = this.path.getGeomFactory().newClosePathElement(
 						this.lastNextX, this.lastNextY,
 						x, y);
@@ -3061,7 +3223,7 @@ public interface Path2ai<
 		public PathWindingRule getWindingRule() {
 			return this.path.getWindingRule();
 		}
-		
+
 		@Override
 		public boolean isPolyline() {
 			return !isMultiParts() && !isPolygon();
@@ -3107,9 +3269,9 @@ public interface Path2ai<
 		 */
 		AUTO_CLOSE,
 
-		/** When the path is not a polygon, i.e. not closed,the crossings will
+		/** When the path is not a polygon, i.e. not closed, the crossings will
 		 * only consider the shape intersection only. The other crossing values
-		 * will be assumed to be always equal to zero. 
+		 * will be assumed to be always equal to zero.
 		 */
 		SIMPLE_INTERSECTION_WHEN_NOT_POLYGON;
 	}

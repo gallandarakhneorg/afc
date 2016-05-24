@@ -1,25 +1,23 @@
-/* 
+/*
  * $Id$
- * 
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (C) 2013 Stephane GALLAND.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package org.arakhne.afc.attrs.collection;
 
 import java.net.InetAddress;
@@ -64,10 +62,10 @@ import org.arakhne.afc.ui.vector.Image;
  * 			then replies an attribute value with a "undefined" value and of the type OBJECT.</li>
  * 		</ol></li>
  * </ol>
- * <p>
- * If an attribute is set from this AttributeProviderContainer, all the containers inside it
+ *
+ * <p>If an attribute is set from this AttributeProviderContainer, all the containers inside it
  * are changed.
- * 
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
@@ -84,585 +82,486 @@ public class MultiAttributeCollection extends MultiAttributeProvider implements 
 	AtomicBoolean runProviderEvents = new AtomicBoolean(true);
 
 	private Handler eventHandler = new Handler();
-	private Collection<AttributeChangeListener> listeners = null;
+
+	private Collection<AttributeChangeListener> listeners;
+
 	private boolean isEventFirable = true;
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public synchronized boolean isEventFirable() {
 		return this.isEventFirable;
 	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
+
 	@Override
 	public synchronized void setEventFirable(boolean isFirable) {
 		this.isEventFirable = isFirable;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public MultiAttributeCollection clone() {
-		MultiAttributeCollection clone = (MultiAttributeCollection)super.clone();
+		final MultiAttributeCollection clone = (MultiAttributeCollection) super.clone();
 		clone.runProviderEvents = new AtomicBoolean(true);
 		clone.eventHandler = new Handler();
-		clone.listeners = (this.listeners==null) ? null : new ArrayList<>(this.listeners);
-		for(AttributeProvider c : clone.containers()) {
+		clone.listeners = (this.listeners == null) ? null : new ArrayList<>(this.listeners);
+		for (final AttributeProvider c : clone.containers()) {
 			if (c instanceof AttributeCollection) {
-				((AttributeCollection)c).addAttributeChangeListener(clone.eventHandler);
+				((AttributeCollection) c).addAttributeChangeListener(clone.eventHandler);
 			}
 		}
 		return clone;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public boolean addAttributeContainer(AttributeProvider container) {
 		if (super.addAttributeContainer(container)) {
-			if (container instanceof AttributeCollection)
-				((AttributeCollection)container).addAttributeChangeListener(this.eventHandler);
+			if (container instanceof AttributeCollection) {
+				((AttributeCollection) container).addAttributeChangeListener(this.eventHandler);
+			}
 			return true;
 		}
 		return false;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public boolean removeAttributeContainer(AttributeProvider container) {
 		if (super.removeAttributeContainer(container)) {
-			if (container instanceof AttributeCollection)
-				((AttributeCollection)container).removeAttributeChangeListener(this.eventHandler);
+			if (container instanceof AttributeCollection) {
+				((AttributeCollection) container).removeAttributeChangeListener(this.eventHandler);
+			}
 			return true;
 		}
 		return false;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void addAttributeChangeListener(AttributeChangeListener listener) {
-		if (this.listeners==null)
+		if (this.listeners == null) {
 			this.listeners = new ArrayList<>();
+		}
 		this.listeners.add(listener);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void removeAttributeChangeListener(AttributeChangeListener listener) {
-		if (this.listeners!=null) {
+		if (this.listeners != null) {
 			this.listeners.add(listener);
-			if (this.listeners.isEmpty())
+			if (this.listeners.isEmpty()) {
 				this.listeners = null;
+			}
 		}
 	}
 
 	/** Notifies the listeners about the change of an attribute.
-	 * 
-	 * @param event
+	 *
+	 * @param event the event.
 	 */
 	protected void fireAttributeChange(AttributeChangeEvent event) {
-		if (this.listeners!=null && isEventFirable()) {
-			AttributeChangeListener[] list = new AttributeChangeListener[this.listeners.size()];
+		if (this.listeners != null && isEventFirable()) {
+			final AttributeChangeListener[] list = new AttributeChangeListener[this.listeners.size()];
 			this.listeners.toArray(list);
-			for(AttributeChangeListener listener : list) {
+			for (final AttributeChangeListener listener : list) {
 				listener.onAttributeChangeEvent(event);
 			}
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void flush() {
-		for(AttributeProvider c : containers()) {
+		for (final AttributeProvider c : containers()) {
 			if (c instanceof AttributeCollection) {
-				((AttributeCollection)c).flush();
+				((AttributeCollection) c).flush();
 			}
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public boolean removeAllAttributes() {
-		boolean b = this.runProviderEvents.getAndSet(false);
+		final boolean b = this.runProviderEvents.getAndSet(false);
 		try {
 			boolean changed = false;
-			for(AttributeProvider c : containers()) {
+			for (final AttributeProvider c : containers()) {
 				if (c instanceof AttributeCollection) {
-					changed = ((AttributeCollection)c).removeAllAttributes() | changed;
+					changed = ((AttributeCollection) c).removeAllAttributes() | changed;
 				}
 			}
 			if (changed) {
 				this.cache.clear();
 				this.names = null;
 				fireAttributeChange(new AttributeChangeEvent(this, Type.REMOVE_ALL, null, null, null, null));
-			}		
+			}
 			return changed;
-		}
-		finally {
+		} finally {
 			this.runProviderEvents.set(b);
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public boolean removeAttribute(String name) {
-		boolean b = this.runProviderEvents.getAndSet(false);
+		final boolean b = this.runProviderEvents.getAndSet(false);
 		try {
 			boolean changed = false;
-			ManyValueAttributeValue oldValue = new ManyValueAttributeValue();
-			for(AttributeProvider c : containers()) {
+			final ManyValueAttributeValue oldValue = new ManyValueAttributeValue();
+			for (final AttributeProvider c : containers()) {
 				assign(oldValue, c.getAttribute(name));
 				if (c instanceof AttributeCollection) {
-					changed = ((AttributeCollection)c).removeAttribute(name) | changed;
+					changed = ((AttributeCollection) c).removeAttribute(name) | changed;
 				}
 			}
 			if (changed) {
-				AttributeValue value = canonize(oldValue);
+				final AttributeValue value = canonize(oldValue);
 				this.cache.remove(name);
-				if (this.names!=null) {
+				if (this.names != null) {
 					this.names.remove(name);
-					if (this.names.isEmpty()) this.names = null;
+					if (this.names.isEmpty()) {
+						this.names = null;
+					}
 				}
 				fireAttributeChange(new AttributeChangeEvent(this, Type.REMOVAL, name, value, null, null));
 			}
 			return changed;
-		}
-		finally {
+		} finally {
 			this.runProviderEvents.set(b);
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public boolean renameAttribute(String oldname, String newname) {
-		boolean b = this.runProviderEvents.getAndSet(false);
+		final boolean b = this.runProviderEvents.getAndSet(false);
 		try {
 			boolean changed = false;
-			ManyValueAttributeValue currentValue = new ManyValueAttributeValue();
-			for(AttributeProvider c : containers()) {
+			final ManyValueAttributeValue currentValue = new ManyValueAttributeValue();
+			for (final AttributeProvider c : containers()) {
 				assign(currentValue, c.getAttribute(oldname));
 				if (c instanceof AttributeCollection) {
-					changed = ((AttributeCollection)c).renameAttribute(oldname, newname) | changed;
+					changed = ((AttributeCollection) c).renameAttribute(oldname, newname) | changed;
 				}
 			}
 			if (changed) {
-				AttributeValue cValue = canonize(currentValue);
+				final AttributeValue cValue = canonize(currentValue);
 				this.cache.remove(oldname);
 				this.cache.remove(newname);
-				if (this.names!=null) {
+				if (this.names != null) {
 					this.names.remove(oldname);
 					this.names.add(newname);
 				}
 				fireAttributeChange(new AttributeChangeEvent(this, Type.RENAME, oldname, cValue, newname, cValue));
 			}
 			return changed;
-		}
-		finally {
+		} finally {
 			this.runProviderEvents.set(b);
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public boolean renameAttribute(String oldname, String newname, boolean overwrite) {
-		boolean b = this.runProviderEvents.getAndSet(false);
+		final boolean b = this.runProviderEvents.getAndSet(false);
 		try {
 			boolean changed = false;
-			ManyValueAttributeValue currentValue = new ManyValueAttributeValue();
-			for(AttributeProvider c : containers()) {
+			final ManyValueAttributeValue currentValue = new ManyValueAttributeValue();
+			for (final AttributeProvider c : containers()) {
 				assign(currentValue, c.getAttribute(oldname));
 				if (c instanceof AttributeCollection) {
-					changed = ((AttributeCollection)c).renameAttribute(oldname, newname, overwrite) | changed;
+					changed = ((AttributeCollection) c).renameAttribute(oldname, newname, overwrite) | changed;
 				}
 			}
 			if (changed) {
-				AttributeValue cValue = canonize(currentValue);
+				final AttributeValue cValue = canonize(currentValue);
 				this.cache.remove(oldname);
-				if (this.names!=null) {
+				if (this.names != null) {
 					this.names.remove(oldname);
 					this.names.add(newname);
 				}
 				fireAttributeChange(new AttributeChangeEvent(this, Type.RENAME, oldname, cValue, newname, cValue));
 			}
 			return changed;
-		}
-		finally {
+		} finally {
 			this.runProviderEvents.set(b);
 		}
 	}
-	
+
 	@Override
 	public void addAttributes(AttributeProvider content)
 			throws AttributeException {
-		for(Attribute attr : content.attributes()) {
+		for (final Attribute attr : content.attributes()) {
 			setAttribute(attr);
 		}
 	}
-	
+
 	@Override
 	public void addAttributes(Map<String, Object> content) {
 		AttributeType type;
 		Object rawValue;
-		for(Entry<String,Object> entry : content.entrySet()) {
+		for (final Entry<String, Object> entry : content.entrySet()) {
 			rawValue = entry.getValue();
 			type = AttributeType.fromValue(rawValue);
 			rawValue = type.cast(rawValue);
 			try {
 				setAttribute(entry.getKey(), new AttributeValueImpl(type, rawValue));
-			}
-			catch (AttributeException exception) {
+			} catch (AttributeException exception) {
 				// should never occur
 			}
 		}
 	}
-	
+
 	@Override
 	public void setAttributes(AttributeProvider content)
 			throws AttributeException {
 		removeAllAttributes();
-		for(Attribute attr : content.attributes()) {
+		for (final Attribute attr : content.attributes()) {
 			setAttribute(attr);
 		}
 	}
-	
+
 	@Override
 	public void setAttributes(Map<String, Object> content) {
 		removeAllAttributes();
 		AttributeType type;
 		Object value;
-		for(Entry<String,Object> entry : content.entrySet()) {
+		for (final Entry<String, Object> entry : content.entrySet()) {
 			value = entry.getValue();
 			type = AttributeType.fromValue(value);
 			value = type.cast(value);
 			try {
 				setAttribute(entry.getKey(), new AttributeValueImpl(type, value));
-			}
-			catch (AttributeException e) {
+			} catch (AttributeException e) {
 				throw new AttributeError(e);
 			}
 		}
 	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
+
 	@Override
 	public Attribute setAttribute(String name, AttributeValue value) throws AttributeException {
-		boolean b = this.runProviderEvents.getAndSet(false);
+		final boolean b = this.runProviderEvents.getAndSet(false);
 		try {
 			boolean changed = false;
 			Attribute attr;
-			ManyValueAttributeValue oldValue = new ManyValueAttributeValue();
-			ManyValueAttributeValue newValue = new ManyValueAttributeValue();
-			for(AttributeProvider c : containers()) {
+			final ManyValueAttributeValue oldValue = new ManyValueAttributeValue();
+			final ManyValueAttributeValue newValue = new ManyValueAttributeValue();
+			for (final AttributeProvider c : containers()) {
 				assign(oldValue, c.getAttribute(name));
 				if (c instanceof AttributeCollection) {
-					attr = ((AttributeCollection)c).setAttribute(name, value);
+					attr = ((AttributeCollection) c).setAttribute(name, value);
 					assign(newValue, attr);
-					if (attr!=null) changed = true;
-				}
-				else {
+					if (attr != null) {
+						changed = true;
+					}
+				} else {
 					assign(newValue, null);
 				}
 			}
 			if (changed) {
-				AttributeValue oValue = canonize(oldValue);
-				AttributeValue nValue = canonize(newValue);
+				final AttributeValue oValue = canonize(oldValue);
+				final AttributeValue nValue = canonize(newValue);
 				this.cache.put(name, nValue);
-				AttributeChangeEvent event;
-				if (nValue==null) {
+				final AttributeChangeEvent event;
+				if (nValue == null) {
 					event = new AttributeChangeEvent(this, Type.REMOVAL, name, oValue, null, null);
-				}
-				else if (oValue!=null && oValue.isAssigned()) {
+				} else if (oValue != null && oValue.isAssigned()) {
 					event = new AttributeChangeEvent(this, Type.VALUE_UPDATE, name, oValue, name, nValue);
-				}
-				else {
+				} else {
 					event = new AttributeChangeEvent(this, Type.ADDITION, null, null, name, nValue);
 				}
 				fireAttributeChange(event);
 				return new AttributeImpl(name, value);
 			}
 			return null;
-		}
-		finally {
+		} finally {
 			this.runProviderEvents.set(b);
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public Attribute setAttribute(String name, boolean value) {
 		try {
 			return setAttribute(name, new AttributeValueImpl(value));
-		}
-		catch (AttributeException exception) {
+		} catch (AttributeException exception) {
 			return null;
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public Attribute setAttribute(String name, int value) {
 		try {
 			return setAttribute(name, new AttributeValueImpl(value));
-		}
-		catch (AttributeException exception) {
+		} catch (AttributeException exception) {
 			return null;
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public Attribute setAttribute(String name, long value) {
 		try {
 			return setAttribute(name, new AttributeValueImpl(value));
-		}
-		catch (AttributeException exception) {
+		} catch (AttributeException exception) {
 			return null;
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public Attribute setAttribute(String name, float value) {
 		try {
 			return setAttribute(name, new AttributeValueImpl(value));
-		}
-		catch (AttributeException exception) {
+		} catch (AttributeException exception) {
 			return null;
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public Attribute setAttribute(String name, double value) {
 		try {
 			return setAttribute(name, new AttributeValueImpl(value));
-		}
-		catch (AttributeException exception) {
+		} catch (AttributeException exception) {
 			return null;
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public Attribute setAttribute(String name, String value) {
 		try {
 			return setAttribute(name, new AttributeValueImpl(value));
-		}
-		catch (AttributeException exception) {
+		} catch (AttributeException exception) {
 			return null;
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public Attribute setAttribute(String name, InetAddress value) {
 		try {
 			return setAttribute(name, new AttributeValueImpl(value));
-		}
-		catch (AttributeException exception) {
+		} catch (AttributeException exception) {
 			return null;
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public Attribute setAttribute(String name, InetSocketAddress value) {
 		try {
 			return setAttribute(name, new AttributeValueImpl(value));
-		}
-		catch (AttributeException exception) {
+		} catch (AttributeException exception) {
 			return null;
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public Attribute setAttribute(String name, Enum<?> value) {
 		try {
 			return setAttribute(name, new AttributeValueImpl(value));
-		}
-		catch (AttributeException exception) {
+		} catch (AttributeException exception) {
 			return null;
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public Attribute setAttribute(String name, Class<?> value) {
 		try {
 			return setAttribute(name, new AttributeValueImpl(value));
-		}
-		catch (AttributeException exception) {
+		} catch (AttributeException exception) {
 			return null;
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public Attribute setAttribute(String name, UUID value) {
 		try {
 			return setAttribute(name, new AttributeValueImpl(value));
-		}
-		catch (AttributeException exception) {
+		} catch (AttributeException exception) {
 			return null;
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public Attribute setAttribute(String name, URL value) {
 		try {
 			return setAttribute(name, new AttributeValueImpl(value));
-		}
-		catch (AttributeException exception) {
+		} catch (AttributeException exception) {
 			return null;
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public Attribute setAttribute(String name, URI value) {
 		try {
 			return setAttribute(name, new AttributeValueImpl(value));
-		}
-		catch (AttributeException exception) {
+		} catch (AttributeException exception) {
 			return null;
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
+	/** {@inheritDoc}
+	 *
+	 * @deprecated since 13.0
 	 */
 	@Override
 	@Deprecated
 	public Attribute setAttribute(String name, Image value) {
 		try {
 			return setAttribute(name, new AttributeValueImpl(value));
-		}
-		catch (AttributeException exception) {
+		} catch (AttributeException exception) {
 			return null;
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public Attribute setAttribute(String name, Date value) {
 		try {
 			return setAttribute(name, new AttributeValueImpl(value));
-		}
-		catch (AttributeException exception) {
+		} catch (AttributeException exception) {
 			return null;
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
+	/** {@inheritDoc}
+	 *
+	 * @deprecated since 13.0
 	 */
 	@Override
 	@Deprecated
 	public Attribute setAttribute(String name, Color value) {
 		try {
 			return setAttribute(name, new AttributeValueImpl(value));
-		}
-		catch (AttributeException exception) {
+		} catch (AttributeException exception) {
 			return null;
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public Attribute setAttribute(Attribute value) throws AttributeException {
-		if (value==null) return null;
+		if (value == null) {
+			return null;
+		}
 		try {
 			return setAttribute(value.getName(), value);
-		}
-		catch (AttributeException exception) {
+		} catch (AttributeException exception) {
 			return null;
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public Attribute setAttributeType(String name, AttributeType type) throws AttributeException {
-		boolean b = this.runProviderEvents.getAndSet(false);
+		final boolean b = this.runProviderEvents.getAndSet(false);
 		try {
-			ManyValueAttributeValue oldValue = new ManyValueAttributeValue();
-			ManyValueAttributeValue attr = new ManyValueAttributeValue();
+			final ManyValueAttributeValue oldValue = new ManyValueAttributeValue();
+			final ManyValueAttributeValue attr = new ManyValueAttributeValue();
 			Attribute a;
 			boolean changed = false;
-			for(AttributeProvider c : containers()) {
+			for (final AttributeProvider c : containers()) {
 				assign(oldValue, c.getAttribute(name));
 				if (c instanceof AttributeCollection) {
-					a = ((AttributeCollection)c).setAttributeType(name, type);
+					a = ((AttributeCollection) c).setAttributeType(name, type);
 					assign(attr, a);
-					if (a!=null) changed = true;
+					if (a != null) {
+						changed = true;
+					}
 				}
 			}
-			AttributeValue cValue = canonize(attr);
+			final AttributeValue cValue = canonize(attr);
 			if (changed) {
-				AttributeValue oValue = canonize(oldValue);
+				final AttributeValue oValue = canonize(oldValue);
 				this.cache.put(name, cValue);
 				fireAttributeChange(new AttributeChangeEvent(this, Type.VALUE_UPDATE, name, oValue, name, cValue));
 			}
 			return new AttributeImpl(name, cValue);
-		}
-		finally {
+		} finally {
 			this.runProviderEvents.set(b);
 		}
 	}
@@ -676,28 +575,25 @@ public class MultiAttributeCollection extends MultiAttributeProvider implements 
 	 */
 	private class Handler implements AttributeChangeListener {
 
-		/**
-		 */
-		public Handler() {
+		Handler() {
 			//
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public void onAttributeChangeEvent(AttributeChangeEvent event) {
 			if (MultiAttributeCollection.this.runProviderEvents.get()) {
-				switch(event.getType()) {
+				switch (event.getType()) {
 				case ADDITION:
 					MultiAttributeCollection.this.cache.remove(event.getName());
-					if (MultiAttributeCollection.this.names!=null)
+					if (MultiAttributeCollection.this.names != null) {
 						MultiAttributeCollection.this.names.add(event.getName());
+					}
 					break;
 				case REMOVAL:
 					MultiAttributeCollection.this.cache.remove(event.getOldName());
-					if (MultiAttributeCollection.this.names!=null)
+					if (MultiAttributeCollection.this.names != null) {
 						MultiAttributeCollection.this.names.remove(event.getOldName());
+					}
 					break;
 				case REMOVE_ALL:
 					freeMemory();
@@ -705,7 +601,7 @@ public class MultiAttributeCollection extends MultiAttributeProvider implements 
 				case RENAME:
 					MultiAttributeCollection.this.cache.remove(event.getOldName());
 					MultiAttributeCollection.this.cache.remove(event.getName());
-					if (MultiAttributeCollection.this.names!=null) {
+					if (MultiAttributeCollection.this.names != null) {
 						MultiAttributeCollection.this.names.remove(event.getOldName());
 						MultiAttributeCollection.this.names.remove(event.getName());
 					}

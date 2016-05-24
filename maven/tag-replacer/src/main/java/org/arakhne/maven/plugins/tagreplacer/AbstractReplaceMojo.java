@@ -1,23 +1,23 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (C) 2010-12 Stephane GALLAND
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package org.arakhne.maven.plugins.tagreplacer;
 
 import java.io.BufferedReader;
@@ -50,12 +50,13 @@ import org.apache.maven.model.Organization;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.project.MavenProjectBuilder;
-import org.arakhne.maven.AbstractArakhneMojo;
-import org.arakhne.maven.ExtendedArtifact;
 import org.eclipse.aether.RepositorySystem;
 import org.eclipse.aether.RepositorySystemSession;
 import org.eclipse.aether.repository.RemoteRepository;
 import org.sonatype.plexus.build.incremental.BuildContext;
+
+import org.arakhne.maven.AbstractArakhneMojo;
+import org.arakhne.maven.ExtendedArtifact;
 
 /**
  * Replace all the tags variables by the corresponding values. Supported variables are:
@@ -72,7 +73,8 @@ import org.sonatype.plexus.build.incremental.BuildContext;
  * </tr>
  * <tr>
  * <td>&dollar;Author: id&dollar;</td>
- * <td>The name and link to the author with the given id. The id is the identifier of the author or contributor defined the <code>pom.xml</code> file; or it is the email address of the author.</td>
+ * <td>The name and link to the author with the given id. The id is the identifier of the author or
+ * contributor defined the <code>pom.xml</code> file; or it is the email address of the author.</td>
  * </tr>
  * <tr>
  * <td>&dollar;Date&dollar;</td>
@@ -129,52 +131,52 @@ import org.sonatype.plexus.build.incremental.BuildContext;
  * </tr>
  * </tbody>
  * </table>
- * 
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public abstract class AbstractReplaceMojo extends AbstractArakhneMojo implements Macros {
+public abstract class AbstractReplaceMojo extends AbstractArakhneMojo {
 
-	/**
+	/** artifactHandlerManager.
 	 * @component
 	 */
 	private ArtifactHandlerManager artifactHandlerManager;
 
-	/**
+	/** mavenProjectBuilder.
 	 * @component role="org.apache.maven.project.MavenProjectBuilder"
 	 * @required
 	 * @readonly
 	 */
 	private MavenProjectBuilder mavenProjectBuilder;
-	
-	/**
+
+	/** baseDirectory.
 	 * @parameter property="project.basedir"
 	 */
 	private File baseDirectory;
 
-	/**
+	/** outputDirectory.
 	 * @parameter property="project.build.directory"
 	 */
 	private File outputDirectory;
 
-	/**
+	/** classDirectory.
 	 * @parameter property="project.build.outputDirectory"
 	 */
 	private File classDirectory;
 
-	/**
+	/** sourceDirectory.
 	 * @parameter default-value="${project.basedir}/src"
 	 */
 	private File sourceDirectory;
 
-	/**
+	/** generatedSourceDirectory.
 	 * @parameter default-value="${project.build.directory}/generated-sources"
 	 */
 	private File generatedSourceDirectory;
 
-	/**
+	/** siteDirectory.
 	 * @parameter default-value="${project.build.directory}/site"
 	 * @since 2.3
 	 */
@@ -182,35 +184,36 @@ public abstract class AbstractReplaceMojo extends AbstractArakhneMojo implements
 
 	/**
 	 * Is the artifact id that should replace the project's artifact id.
-	 * 
+	 *
 	 * @parameter default-value="${project.artifactId}"
 	 */
 	private String projectArtifactId;
 
 	/**
 	 * Is the group id that should replace the project's group id.
-	 * 
+	 *
 	 * @parameter default-value="${project.groupId}"
 	 */
 	private String projectGroupId;
 
 	/**
 	 * Is the file encoding.
-	 * 
+	 *
 	 * @parameter default-value="${project.build.sourceEncoding}"
 	 */
 	private String encoding;
 
 	/**
-	 * Indicates if the group id and artifact id of the current project should be replaced by <var>userArtifactId</var> and <var>artifactId</var>
-	 * 
+	 * Indicates if the group id and artifact id of the current project should be replaced by
+	 * {@code userArtifactId} and {@code artifactId}.
+	 *
 	 * @parameter default-value="true"
 	 */
 	private boolean overrideArtifactGroup;
 
 	/**
 	 * Reference to the current maven project.
-	 * 
+	 *
 	 * @parameter property="project"
 	 * @required
 	 */
@@ -218,7 +221,7 @@ public abstract class AbstractReplaceMojo extends AbstractArakhneMojo implements
 
 	/**
 	 * Reference to the current session.
-	 * 
+	 *
 	 * @parameter property="session"
 	 * @required
 	 */
@@ -231,40 +234,40 @@ public abstract class AbstractReplaceMojo extends AbstractArakhneMojo implements
 
 	/**
 	 * The entry point to Aether, i.e. the component doing all the work.
-	 * 
+	 *
 	 * @component
 	 */
 	private RepositorySystem repoSystem;
 
 	/**
 	 * The current repository/network configuration of Maven.
-	 * 
+	 *
 	 * @parameter default-value="${repositorySystemSession}"
 	 * @readonly
 	 */
 	private RepositorySystemSession repoSession;
 
 	/**
-	 * The directory where Maven may found the sources. 
-	 * 
+	 * The directory where Maven may found the sources.
+	 *
 	 * @parameter default-value="${project.basedir}/src/main/java"
 	 */
 	private File javaSourceRoot;
 
 	/**
 	 * The project's remote repositories to use for the resolution of plugins and their dependencies.
-	 * 
+	 *
 	 * @parameter default-value="${project.remoteProjectRepositories}"
 	 * @readonly
 	 */
 	private List<RemoteRepository> remoteRepos;
 
 	private final Set<File> replacementTreatedFiles = new TreeSet<>();
-	
+
 	private String ensureArtifactId(ExtendedArtifact artifact) {
 		if (artifact != null) {
 			if (this.overrideArtifactGroup && this.mavenProject.getArtifact().equals(artifact)) {
-				String a = this.projectArtifactId;
+				final String a = this.projectArtifactId;
 				if (a != null && !EMPTY_STRING.equals(a)) {
 					return this.projectArtifactId;
 				}
@@ -277,7 +280,7 @@ public abstract class AbstractReplaceMojo extends AbstractArakhneMojo implements
 	private String ensureGroupId(ExtendedArtifact artifact) {
 		if (artifact != null) {
 			if (this.overrideArtifactGroup && this.mavenProject.getArtifact().equals(artifact)) {
-				String g = this.projectGroupId;
+				final String g = this.projectGroupId;
 				if (g != null && !EMPTY_STRING.equals(g)) {
 					return this.projectGroupId;
 				}
@@ -290,7 +293,7 @@ public abstract class AbstractReplaceMojo extends AbstractArakhneMojo implements
 	/**
 	 * Replace the Javadoc tags in the given file only if the file was never
 	 * treated before.
-	 * 
+	 *
 	 * @param sourceFile
 	 *            is the name of the file to read out. It may be <code>null</code>
 	 * @param targetFile
@@ -300,14 +303,17 @@ public abstract class AbstractReplaceMojo extends AbstractArakhneMojo implements
 	 * @param classpath
 	 *            are the directories from which the file is extracted.
 	 * @param detectEncoding
-	 *            when <code>true</code> the encoding of the file will be detected and preserved. When <code>false</code> the encoding may be loose.
-	 * @throws MojoExecutionException
+	 *            when <code>true</code> the encoding of the file will be detected and preserved.
+	 *            When <code>false</code> the encoding may be loose.
+	 * @throws MojoExecutionException on error.
 	 * @see #replaceInFile(File, File, ReplacementType, File[], boolean)
 	 */
-	protected synchronized void replaceInFileBuffered(File sourceFile, File targetFile, ReplacementType replacementType, File[] classpath, boolean detectEncoding) throws MojoExecutionException {
+	protected synchronized void replaceInFileBuffered(File sourceFile, File targetFile, ReplacementType replacementType,
+			File[] classpath, boolean detectEncoding) throws MojoExecutionException {
 		if (this.replacementTreatedFiles.contains(targetFile)
-			&& targetFile.exists()) {
-			getLog().debug("Skiping "+targetFile+" because is was already treated for replacements");  //$NON-NLS-1$//$NON-NLS-2$
+				&& targetFile.exists()) {
+			getLog().debug("Skiping " + targetFile //$NON-NLS-1$
+					+ " because is was already treated for replacements"); //$NON-NLS-1$
 			return;
 		}
 		replaceInFile(sourceFile, targetFile, replacementType, classpath, detectEncoding);
@@ -315,7 +321,7 @@ public abstract class AbstractReplaceMojo extends AbstractArakhneMojo implements
 
 	/**
 	 * Replace the Javadoc tags in the given file.
-	 * 
+	 *
 	 * @param sourceFile
 	 *            is the name of the file to read out. It may be <code>null</code>
 	 * @param targetFile
@@ -325,14 +331,17 @@ public abstract class AbstractReplaceMojo extends AbstractArakhneMojo implements
 	 * @param classpath
 	 *            are the directories from which the file is extracted.
 	 * @param detectEncoding
-	 *            when <code>true</code> the encoding of the file will be detected and preserved. When <code>false</code> the encoding may be loose.
-	 * @throws MojoExecutionException
+	 *            when <code>true</code> the encoding of the file will be detected and preserved.
+	 *            When <code>false</code> the encoding may be loose.
+	 * @throws MojoExecutionException on error.
 	 * @see #replaceInFileBuffered(File, File, ReplacementType, File[], boolean)
 	 */
-	@SuppressWarnings("resource")
-	protected synchronized void replaceInFile(File sourceFile, File targetFile, ReplacementType replacementType, File[] classpath, boolean detectEncoding) throws MojoExecutionException {
-		File outputFile, inputFile;
-		assert (targetFile != null);
+	@SuppressWarnings({"resource", "checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
+	protected synchronized void replaceInFile(File sourceFile, File targetFile, ReplacementType replacementType,
+			File[] classpath, boolean detectEncoding) throws MojoExecutionException {
+		final File outputFile;
+		final File inputFile;
+		assert targetFile != null;
 
 		if (sourceFile == null) {
 			inputFile = targetFile;
@@ -342,13 +351,13 @@ public abstract class AbstractReplaceMojo extends AbstractArakhneMojo implements
 			outputFile = targetFile;
 		}
 
-		BuildContext buildContext = getBuildContext();
+		final BuildContext buildContext = getBuildContext();
 		buildContext.removeMessages(sourceFile);
 		buildContext.removeMessages(targetFile);
-		
-		ExtendedArtifact artifact = searchArtifact(inputFile);
 
-		String filename = removePathPrefix(getBaseDirectory(), inputFile);
+		final ExtendedArtifact artifact = searchArtifact(inputFile);
+
+		final String filename = removePathPrefix(getBaseDirectory(), inputFile);
 
 		String shortFilename = null;
 		for (int i = 0; shortFilename == null && i < classpath.length; ++i) {
@@ -366,7 +375,7 @@ public abstract class AbstractReplaceMojo extends AbstractArakhneMojo implements
 
 		try {
 			outputFile.getParentFile().mkdirs();
-			Reader r = null;
+			Reader reader = null;
 
 			Charset charset = null;
 
@@ -374,51 +383,40 @@ public abstract class AbstractReplaceMojo extends AbstractArakhneMojo implements
 				charset = detectEncoding(inputFile);
 			}
 
-			if (charset == null)
+			if (charset == null) {
 				charset = Charset.defaultCharset();
+			}
 
 			getLog().debug("Copying file '" //$NON-NLS-1$
 					+ inputFile.getName() + "' with '" //$NON-NLS-1$
 					+ charset.displayName() + "' encoding"); //$NON-NLS-1$
 
-			FileInputStream fis = new FileInputStream(inputFile);
-			ReadableByteChannel channel = Channels.newChannel(fis);
-			try {
-				r = Channels.newReader(channel, charset.newDecoder(), -1);
+			try (FileInputStream fis = new FileInputStream(inputFile)) {
+				try (ReadableByteChannel channel = Channels.newChannel(fis)) {
+					reader = Channels.newReader(channel, charset.newDecoder(), -1);
 
-				if (r == null) {
-					r = new FileReader(inputFile);
-				}
-
-				BufferedReader br = new BufferedReader(r);
-				FileOutputStream fos = new FileOutputStream(outputFile);
-				WritableByteChannel wChannel = Channels.newChannel(fos);
-				Writer w = Channels.newWriter(wChannel, charset.newEncoder(), -1);
-				try {
-					String line;
-					int nLine = 1;
-		
-					while ((line = br.readLine()) != null) {
-						line = replaceInString(inputFile, nLine, shortFilename, artifact, line, replacementType);
-						w.write(line);
-						w.write("\n"); //$NON-NLS-1$
-						++nLine;
+					if (reader == null) {
+						reader = new FileReader(inputFile);
 					}
-					w.flush();
-				}
-				finally {
-					w.close();
-					wChannel.close();
-					fos.close();
-					br.close();
+
+					final BufferedReader br = new BufferedReader(reader);
+					try (FileOutputStream fos = new FileOutputStream(outputFile)) {
+						final WritableByteChannel wChannel = Channels.newChannel(fos);
+						final Writer writer = Channels.newWriter(wChannel, charset.newEncoder(), -1);
+						String line;
+						int nline = 1;
+
+						while ((line = br.readLine()) != null) {
+							line = replaceInString(inputFile, nline, shortFilename, artifact, line, replacementType);
+							writer.write(line);
+							writer.write("\n"); //$NON-NLS-1$
+							++nline;
+						}
+						writer.flush();
+					}
 				}
 			}
-			finally {
-				if (r!=null) r.close();
-				channel.close();
-				fis.close();
-			}
-			
+
 			if (sourceFile == null) {
 				fileCopy(outputFile, targetFile);
 				outputFile.delete();
@@ -430,15 +428,14 @@ public abstract class AbstractReplaceMojo extends AbstractArakhneMojo implements
 			if (sourceFile == null && outputFile.exists()) {
 				outputFile.delete();
 				buildContext.refresh(outputFile.getParentFile());
-			}
-			else if (outputFile.exists()) {
+			} else if (outputFile.exists()) {
 				buildContext.refresh(outputFile);
 			}
 		}
 	}
 
 	private static Pattern buildMacroPattern(String macroName) {
-		StringBuilder b = new StringBuilder();
+		final StringBuilder b = new StringBuilder();
 		b.append(Pattern.quote("$")); //$NON-NLS-1$
 		b.append(macroName);
 		b.append("(?:"); //$NON-NLS-1$
@@ -449,7 +446,7 @@ public abstract class AbstractReplaceMojo extends AbstractArakhneMojo implements
 	}
 
 	private static Pattern buildMacroPatternWithGroup(String macroName) {
-		StringBuilder b = new StringBuilder();
+		final StringBuilder b = new StringBuilder();
 		b.append(Pattern.quote("$")); //$NON-NLS-1$
 		b.append(macroName);
 		b.append("(?:"); //$NON-NLS-1$
@@ -461,7 +458,7 @@ public abstract class AbstractReplaceMojo extends AbstractArakhneMojo implements
 
 	/**
 	 * Utility function that replace the macros by the replacement text in the given text.
-	 * 
+	 *
 	 * @param macroName
 	 *            is the name of the macro to replace.
 	 * @param text
@@ -473,16 +470,17 @@ public abstract class AbstractReplaceMojo extends AbstractArakhneMojo implements
 	 * @param sourceFile
 	 *            is the filename in which the replacement is done.
 	 * @param sourceLine
-	 *            is the line at which the replacement is done. 
+	 *            is the line at which the replacement is done.
 	 * @return the result of the replacement
 	 */
-	protected final String replaceMacro(String macroName, String text, String replacement, ReplacementType type, File sourceFile, int sourceLine) {
+	protected final String replaceMacro(String macroName, String text, String replacement, ReplacementType type,
+			File sourceFile, int sourceLine) {
 		return replaceMacro(macroName, text, replacement, type, false, sourceFile, sourceLine);
 	}
 
 	/**
 	 * Utility function that replace the macros by the replacement text in the given text.
-	 * 
+	 *
 	 * @param macroName
 	 *            is the name of the macro to replace.
 	 * @param text
@@ -496,13 +494,14 @@ public abstract class AbstractReplaceMojo extends AbstractArakhneMojo implements
 	 * @param sourceFile
 	 *            is the filename in which the replacement is done.
 	 * @param sourceLine
-	 *            is the line at which the replacement is done. 
+	 *            is the line at which the replacement is done.
 	 * @return the result of the replacement
 	 */
-	protected synchronized final String replaceMacro(String macroName, String text, String replacement, ReplacementType type, boolean enableWarning, File sourceFile, int sourceLine) {
+	protected final synchronized String replaceMacro(String macroName, String text, String replacement,
+			ReplacementType type, boolean enableWarning, File sourceFile, int sourceLine) {
 		if (replacement != null && !EMPTY_STRING.equals(replacement)) {
-			Pattern p = buildMacroPattern(macroName);
-			Matcher m = p.matcher(text);
+			final Pattern p = buildMacroPattern(macroName);
+			final Matcher m = p.matcher(text);
 			return m.replaceAll(Matcher.quoteReplacement(replacement));
 		}
 		if (enableWarning) {
@@ -517,28 +516,30 @@ public abstract class AbstractReplaceMojo extends AbstractArakhneMojo implements
 
 	/**
 	 * Replace the author information tags in the given text.
-	 * 
+	 *
 	 * @param sourceFile
 	 *            is the filename in which the replacement is done.
 	 * @param sourceLine
-	 *            is the line at which the replacement is done. 
+	 *            is the line at which the replacement is done.
 	 * @param text
 	 *            is the text in which the author tags should be replaced
-	 * @param artifact
+	 * @param artifact the artifact.
 	 * @param replacementType
 	 *            is the type of replacement.
 	 * @return the result of the replacement.
-	 * @throws MojoExecutionException
+	 * @throws MojoExecutionException on error.
 	 */
-	protected synchronized String replaceAuthor(File sourceFile, int sourceLine, String text, ExtendedArtifact artifact, ReplacementType replacementType) throws MojoExecutionException {
+	@SuppressWarnings("checkstyle:nestedifdepth")
+	protected synchronized String replaceAuthor(File sourceFile, int sourceLine, String text,
+			ExtendedArtifact artifact, ReplacementType replacementType) throws MojoExecutionException {
 		String result = text;
-		Pattern p = buildMacroPatternWithGroup(MACRO_AUTHOR);
-		Matcher m = p.matcher(text);
+		final Pattern p = buildMacroPatternWithGroup(Macros.MACRO_AUTHOR);
+		final Matcher m = p.matcher(text);
 		boolean hasResult = m.find();
 
 		if (hasResult) {
-			StringBuffer sb = new StringBuffer();
-			StringBuilder replacement = new StringBuilder();
+			final StringBuffer sb = new StringBuffer();
+			final StringBuilder replacement = new StringBuilder();
 			String login;
 			URL url;
 			Contributor contributor;
@@ -554,42 +555,39 @@ public abstract class AbstractReplaceMojo extends AbstractArakhneMojo implements
 								url = getContributorURL(contributor, getLog());
 								if (url == null) {
 									replacement.append(contributor.getName());
-								}
-								else if (replacementType == ReplacementType.HTML) {
+								} else if (replacementType == ReplacementType.HTML) {
 									replacement.append("<a target=\"_blank\" href=\""); //$NON-NLS-1$
 									replacement.append(url.toExternalForm());
 									replacement.append("\">"); //$NON-NLS-1$
 									replacement.append(contributor.getName());
 									replacement.append("</a>"); //$NON-NLS-1$
-								}								
-								else {
+								} else {
 									replacement.append(contributor.getName());
 									replacement.append(" ["); //$NON-NLS-1$
 									replacement.append(url.toExternalForm());
 									replacement.append("]"); //$NON-NLS-1$
 								}
-							}
-							else {
+							} else {
 								getBuildContext().addMessage(
 										sourceFile,
 										sourceLine, 1,
-										"unable to find a developer or a contributor with an id, a name or an email equal to: " + login, //$NON-NLS-1$
+										"unable to find a developer or a contributor " //$NON-NLS-1$
+										+ "with an id, a name or an email equal to: " //$NON-NLS-1$
+										+ login,
 										BuildContext.SEVERITY_WARNING, null);
 							}
 						}
 						if (replacement.length() != 0) {
 							m.appendReplacement(sb, Matcher.quoteReplacement(replacement.toString()));
 						}
-					}
-					else {
+					} else {
 						getBuildContext().addMessage(
 								sourceFile,
 								sourceLine, 1,
 								"no login for Author tag: " + m.group(0), //$NON-NLS-1$
 								BuildContext.SEVERITY_WARNING, null);
 					}
-				}
-				else {
+				} else {
 					getBuildContext().addMessage(
 							sourceFile,
 							sourceLine, 1,
@@ -608,33 +606,35 @@ public abstract class AbstractReplaceMojo extends AbstractArakhneMojo implements
 
 	/**
 	 * Replace the property information tags in the given text.
-	 * 
+	 *
 	 * @param sourceFile
 	 *            is the filename in which the replacement is done.
 	 * @param sourceLine
-	 *            is the line at which the replacement is done. 
+	 *            is the line at which the replacement is done.
 	 * @param text
 	 *            is the text in which the author tags should be replaced
-	 * @param project
+	 * @param project the project.
 	 * @param replacementType
 	 *            is the type of replacement.
 	 * @return the result of the replacement.
-	 * @throws MojoExecutionException
+	 * @throws MojoExecutionException on error.
 	 */
-	protected synchronized String replaceProp(File sourceFile, int sourceLine, String text, MavenProject project, ReplacementType replacementType) throws MojoExecutionException {
+	@SuppressWarnings("checkstyle:nestedifdepth")
+	protected synchronized String replaceProp(File sourceFile, int sourceLine, String text,
+			MavenProject project, ReplacementType replacementType) throws MojoExecutionException {
 		String result = text;
-		Pattern p = buildMacroPatternWithGroup(MACRO_PROP);
-		Matcher m = p.matcher(text);
+		final Pattern p = buildMacroPatternWithGroup(Macros.MACRO_PROP);
+		final Matcher m = p.matcher(text);
 		boolean hasResult = m.find();
-		
+
 		Properties props = null;
 		if (project != null) {
 			props = project.getProperties();
 		}
 
 		if (hasResult) {
-			StringBuffer sb = new StringBuffer();
-			StringBuilder replacement = new StringBuilder();
+			final StringBuffer sb = new StringBuffer();
+			final StringBuilder replacement = new StringBuilder();
 			String propName;
 			do {
 				propName = m.group(1);
@@ -642,25 +642,23 @@ public abstract class AbstractReplaceMojo extends AbstractArakhneMojo implements
 					propName = propName.trim();
 					if (propName.length() > 0) {
 						replacement.setLength(0);
-						if (props!=null) {
-							String value = props.getProperty(propName);
-							if (value!=null && !value.isEmpty()) {
+						if (props != null) {
+							final String value = props.getProperty(propName);
+							if (value != null && !value.isEmpty()) {
 								replacement.append(value);
 							}
 						}
 						if (replacement.length() != 0) {
 							m.appendReplacement(sb, Matcher.quoteReplacement(replacement.toString()));
 						}
-					}
-					else {
+					} else {
 						getBuildContext().addMessage(
 								sourceFile,
 								sourceLine, 1,
 								"no property name for Prop tag: " + m.group(0), //$NON-NLS-1$
 								BuildContext.SEVERITY_WARNING, null);
 					}
-				}
-				else {
+				} else {
 					getBuildContext().addMessage(
 							sourceFile,
 							sourceLine, 1,
@@ -680,91 +678,95 @@ public abstract class AbstractReplaceMojo extends AbstractArakhneMojo implements
 
 	/**
 	 * Replace Javadoc tags in a string.
-	 * 
+	 *
 	 * @param sourceFile
 	 *            is the filename in which the replacement is done.
 	 * @param sourceLine
-	 *            is the line at which the replacement is done. 
+	 *            is the line at which the replacement is done.
 	 * @param file
 	 *            is the name of the file in the hierarchy from which the string was extracted.
 	 * @param artifact
-	 *            is the artifact in which the file is located. If <code>null</code> the tags dedicated to the artifact will be replaced by the empty string.
+	 *            is the artifact in which the file is located. If <code>null</code> the tags dedicated
+	 *            to the artifact will be replaced by the empty string.
 	 * @param line
 	 *            is the line in which the tags should be replaced.
 	 * @param replacementType
 	 *            is the type of replacement to be done.
 	 * @return the result of the replacement.
-	 * @throws MojoExecutionException
+	 * @throws MojoExecutionException on error.
 	 */
-	protected synchronized String replaceInString(File sourceFile, int sourceLine, String file, ExtendedArtifact artifact, String line, ReplacementType replacementType) throws MojoExecutionException {
+	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
+	protected synchronized String replaceInString(File sourceFile, int sourceLine, String file,
+			ExtendedArtifact artifact, String line, ReplacementType replacementType) throws MojoExecutionException {
 		// No possibility of replacement
-		if (!line.contains("$")) return line; //$NON-NLS-1$
-		
-		String nline = line;
+		if (!line.contains("$")) { //$NON-NLS-1$
+			return line;
+		}
 
-		String replacementName = (artifact == null) ? null : artifact.getName();
-		String replacementVersion = (artifact == null) ? null : artifact.getVersion();
-		String replacementRevision = (artifact == null) ? null : artifact.getScmRevision();
-		String replacementArtifactId = ensureArtifactId(artifact);
-		String replacementGroupId = ensureGroupId(artifact);
-		String replacementWebsite = (artifact == null) ? null : artifact.getWebsite();
-		String replacementFilename = (artifact == null) ? null : file;
+		final String replacementName = (artifact == null) ? null : artifact.getName();
+		final String replacementVersion = (artifact == null) ? null : artifact.getVersion();
+		final String replacementRevision = (artifact == null) ? null : artifact.getScmRevision();
+		final String replacementArtifactId = ensureArtifactId(artifact);
+		final String replacementGroupId = ensureGroupId(artifact);
+		final String replacementWebsite = (artifact == null) ? null : artifact.getWebsite();
+		final String replacementFilename = (artifact == null) ? null : file;
 
 		String replacementOrganization = null;
 
 		if (artifact != null) {
-			Organization orga = artifact.getOrganization();
+			final Organization orga = artifact.getOrganization();
 			if (orga != null) {
 				replacementOrganization = orga.getName();
 			}
 		}
 
 		SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); //$NON-NLS-1$
-		String currentDate = fmt.format(this.invocationDate);
-		
+		final String currentDate = fmt.format(this.invocationDate);
+
 		fmt = new SimpleDateFormat("yyyy"); //$NON-NLS-1$
-		String year = fmt.format(this.invocationDate);
-		
+		final String year = fmt.format(this.invocationDate);
+
 		String inceptionYear = null;
-		MavenProject project = getMavenProject(artifact);
-		if (project!=null) {
+		final MavenProject project = getMavenProject(artifact);
+		if (project != null) {
 			inceptionYear = project.getInceptionYear();
 		}
-		if (inceptionYear==null || inceptionYear.isEmpty()) {
+		if (inceptionYear == null || inceptionYear.isEmpty()) {
 			inceptionYear = year;
 		}
-		
-		String replacementFullVersion;
+
+		final String replacementFullVersion;
 		if (artifact == null) {
 			replacementFullVersion = null;
 		} else {
 			String rev = null;
 			if (replacementRevision != null) {
 				rev = "(rev:" + //$NON-NLS-1$
-						replacementRevision +
-						")"; //$NON-NLS-1$
+						replacementRevision
+						+ ")"; //$NON-NLS-1$
 			}
 			replacementFullVersion = join(" ", //$NON-NLS-1$
 					replacementVersion, rev, currentDate);
 		}
 
-		nline = replaceMacro(MACRO_NAME, nline, replacementName, replacementType, sourceFile, sourceLine);
-		nline = replaceMacro(MACRO_REVISION, nline, replacementRevision, replacementType, sourceFile, sourceLine);
-		nline = replaceMacro(MACRO_VERSION, nline, replacementVersion, replacementType, sourceFile, sourceLine);
-		nline = replaceMacro(MACRO_ARTIFACTID, nline, replacementArtifactId, replacementType, sourceFile, sourceLine);
-		nline = replaceMacro(MACRO_GROUPID, nline, replacementGroupId, replacementType, sourceFile, sourceLine);
-		nline = replaceMacro(MACRO_WEBSITE, nline, replacementWebsite, replacementType, sourceFile, sourceLine);
-		nline = replaceMacro(MACRO_ORGANIZATION, nline, replacementOrganization, replacementType, sourceFile, sourceLine);
-		nline = replaceMacro(MACRO_DATE, nline, currentDate, replacementType, sourceFile, sourceLine);
-		nline = replaceMacro(MACRO_YEAR, nline, year, replacementType, sourceFile, sourceLine);
-		nline = replaceMacro(MACRO_INCEPTIONYEAR, nline, inceptionYear, replacementType, sourceFile, sourceLine);
-		nline = replaceMacro(MACRO_FULLVERSION, nline, replacementFullVersion, replacementType, sourceFile, sourceLine);
-		nline = replaceMacro(MACRO_FILENAME, nline, replacementFilename, replacementType, sourceFile, sourceLine);
+		String nline = line;
+		nline = replaceMacro(Macros.MACRO_NAME, nline, replacementName, replacementType, sourceFile, sourceLine);
+		nline = replaceMacro(Macros.MACRO_REVISION, nline, replacementRevision, replacementType, sourceFile, sourceLine);
+		nline = replaceMacro(Macros.MACRO_VERSION, nline, replacementVersion, replacementType, sourceFile, sourceLine);
+		nline = replaceMacro(Macros.MACRO_ARTIFACTID, nline, replacementArtifactId, replacementType, sourceFile, sourceLine);
+		nline = replaceMacro(Macros.MACRO_GROUPID, nline, replacementGroupId, replacementType, sourceFile, sourceLine);
+		nline = replaceMacro(Macros.MACRO_WEBSITE, nline, replacementWebsite, replacementType, sourceFile, sourceLine);
+		nline = replaceMacro(Macros.MACRO_ORGANIZATION, nline, replacementOrganization, replacementType, sourceFile, sourceLine);
+		nline = replaceMacro(Macros.MACRO_DATE, nline, currentDate, replacementType, sourceFile, sourceLine);
+		nline = replaceMacro(Macros.MACRO_YEAR, nline, year, replacementType, sourceFile, sourceLine);
+		nline = replaceMacro(Macros.MACRO_INCEPTIONYEAR, nline, inceptionYear, replacementType, sourceFile, sourceLine);
+		nline = replaceMacro(Macros.MACRO_FULLVERSION, nline, replacementFullVersion, replacementType, sourceFile, sourceLine);
+		nline = replaceMacro(Macros.MACRO_FILENAME, nline, replacementFilename, replacementType, sourceFile, sourceLine);
 
-		StringBuilder buffer = new StringBuilder();
+		final StringBuilder buffer = new StringBuilder();
 		buffer.setLength(0);
 		// Split the string int "$" and "Id" to avoid the plugin to replace the tag in its own source fole
-		buffer.append("$"+"Id: "); //$NON-NLS-1$ //$NON-NLS-2$
+		buffer.append("$" + "Id: "); //$NON-NLS-1$ //$NON-NLS-2$
 		buffer.append(file);
 		buffer.append(' ');
 		if (replacementRevision != null) {
@@ -779,7 +781,7 @@ public abstract class AbstractReplaceMojo extends AbstractArakhneMojo implements
 		}
 		buffer.append(currentDate);
 		buffer.append("$"); //$NON-NLS-1$
-		nline = replaceMacro(MACRO_ID, nline, buffer.toString(), ReplacementType.TEXT, sourceFile, sourceLine);
+		nline = replaceMacro(Macros.MACRO_ID, nline, buffer.toString(), ReplacementType.TEXT, sourceFile, sourceLine);
 
 		nline = replaceAuthor(sourceFile, sourceLine, nline, artifact, replacementType);
 		nline = replaceProp(sourceFile, sourceLine, nline, project, replacementType);
@@ -787,9 +789,6 @@ public abstract class AbstractReplaceMojo extends AbstractArakhneMojo implements
 		return nline;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public synchronized void checkMojoAttributes() throws MojoExecutionException {
 		assertNotNull("outputDirectory", this.outputDirectory); //$NON-NLS-1$
@@ -804,80 +803,66 @@ public abstract class AbstractReplaceMojo extends AbstractArakhneMojo implements
 		assertNotNull("artifactId", this.projectArtifactId); //$NON-NLS-1$
 		assertNotNull("groupId", this.projectGroupId); //$NON-NLS-1$
 		assertNotNull("buildContext", this.buildContext); //$NON-NLS-1$
-		if (this.encoding == null)
+		if (this.encoding == null) {
 			this.encoding = System.getProperty("file.encoding"); //$NON-NLS-1$
+		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public MavenProjectBuilder getMavenProjectBuilder() {
 		return this.mavenProjectBuilder;
 	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
+
 	@Override
 	public BuildContext getBuildContext() {
 		return this.buildContext;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public MavenSession getMavenSession() {
 		return this.mavenSession;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public File getBaseDirectory() {
 		return this.baseDirectory;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public File getOutputDirectory() {
 		return this.outputDirectory;
 	}
-	
+
 	/** Replace the current source directory by the given directory.
-	 * <p>
-	 * CAUTION: this function override the source directory for all
+	 *
+	 * <p>CAUTION: this function override the source directory for all
 	 * the Maven plugins. Invoking this function may cause failures
 	 * in other maven plugins.
-	 * 
-	 * @param newSourceDirectory
+	 *
+	 * @param newSourceDirectory the directory.
 	 */
 	protected void setSourceDirectoryForAllMojo(File newSourceDirectory) {
-		List<String> sourceRoots = this.mavenProject.getCompileSourceRoots();
-		getLog().debug("Old source roots: "+sourceRoots.toString()); //$NON-NLS-1$
-		Iterator<String> iterator = sourceRoots.iterator();
-		String removableSourcePath = this.javaSourceRoot.getAbsolutePath();
-		getLog().debug("Removable source root: "+removableSourcePath); //$NON-NLS-1$
+		final List<String> sourceRoots = this.mavenProject.getCompileSourceRoots();
+		getLog().debug("Old source roots: " + sourceRoots.toString()); //$NON-NLS-1$
+		final Iterator<String> iterator = sourceRoots.iterator();
+		final String removableSourcePath = this.javaSourceRoot.getAbsolutePath();
+		getLog().debug("Removable source root: " + removableSourcePath); //$NON-NLS-1$
 		String path;
 		while (iterator.hasNext()) {
 			path = iterator.next();
-			if (path!=null && path.equals(removableSourcePath)) {
-				getLog().debug("Removing source root: "+path); //$NON-NLS-1$
+			if (path != null && path.equals(removableSourcePath)) {
+				getLog().debug("Removing source root: " + path); //$NON-NLS-1$
 				iterator.remove();
 			}
 		}
-		getLog().debug("Adding source root: "+newSourceDirectory.getAbsolutePath()); //$NON-NLS-1$
+		getLog().debug("Adding source root: " + newSourceDirectory.getAbsolutePath()); //$NON-NLS-1$
 		this.mavenProject.addCompileSourceRoot(newSourceDirectory.toString());
 		this.sourceDirectory = newSourceDirectory;
 	}
 
 	/**
 	 * Replies the directory where original source are located.
-	 * 
+	 *
 	 * @return the directory where original source are located.
 	 * @see #getGeneratedSourceDirectory()
 	 * @see #getClassDirectory()
@@ -888,7 +873,7 @@ public abstract class AbstractReplaceMojo extends AbstractArakhneMojo implements
 
 	/**
 	 * Replies the directory where generated source are located.
-	 * 
+	 *
 	 * @return the directory where generated source are located.
 	 * @see #getSourceDirectory()
 	 * @see #getClassDirectory()
@@ -899,7 +884,7 @@ public abstract class AbstractReplaceMojo extends AbstractArakhneMojo implements
 
 	/**
 	 * Replies the directory where generated site are located.
-	 * 
+	 *
 	 * @return the directory where generated site are located.
 	 * @see #getSourceDirectory()
 	 * @see #getClassDirectory()
@@ -910,7 +895,7 @@ public abstract class AbstractReplaceMojo extends AbstractArakhneMojo implements
 
 	/**
 	 * Replies the directory where generated classes are located.
-	 * 
+	 *
 	 * @return the directory where generated classes are located.
 	 * @see #getSourceDirectory()
 	 * @see #getOutputDirectory()
@@ -919,9 +904,6 @@ public abstract class AbstractReplaceMojo extends AbstractArakhneMojo implements
 		return this.classDirectory;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public ArtifactHandlerManager getArtifactHandlerManager() {
 		return this.artifactHandlerManager;
@@ -929,7 +911,7 @@ public abstract class AbstractReplaceMojo extends AbstractArakhneMojo implements
 
 	/**
 	 * Types of replacement.
-	 * 
+	 *
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
@@ -948,25 +930,16 @@ public abstract class AbstractReplaceMojo extends AbstractArakhneMojo implements
 
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public RepositorySystemSession getRepositorySystemSession() {
 		return this.repoSession;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public List<RemoteRepository> getRemoteRepositoryList() {
 		return this.remoteRepos;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public RepositorySystem getRepositorySystem() {
 		return this.repoSystem;

@@ -1,29 +1,29 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (C) 2010-2013 Stephane GALLAND.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.arakhne.afc.math.geometry.d2.d;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.afp.Rectangle2afp;
-import org.eclipse.xtext.xbase.lib.Pure;
 
 /** A rectangle with 2 double precision floating-point numbers.
  *
@@ -34,7 +34,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @since 13.0
  */
 public class Rectangle2d extends AbstractShape2d<Rectangle2d>
-	implements Rectangle2afp<Shape2d<?>, Rectangle2d, PathElement2d, Point2d, Vector2d, Rectangle2d> {
+		implements Rectangle2afp<Shape2d<?>, Rectangle2d, PathElement2d, Point2d, Vector2d, Rectangle2d> {
 
 	private static final long serialVersionUID = -2138921378214589458L;
 
@@ -45,15 +45,16 @@ public class Rectangle2d extends AbstractShape2d<Rectangle2d>
 	private double maxx;
 
 	private double maxy;
-	
 
-	/**
+
+	/** Construct an empty rectangle.
 	 */
 	public Rectangle2d() {
 		super();
 	}
 
-	/**
+	/** Construct a rectangle with  the given minimum and maxium corners.
+	 *
 	 * @param min is the min corner of the rectangle.
 	 * @param max is the max corner of the rectangle.
 	 */
@@ -61,26 +62,29 @@ public class Rectangle2d extends AbstractShape2d<Rectangle2d>
 		setFromCorners(min.getX(), min.getY(), max.getX(), max.getY());
 	}
 
-	/**
-	 * @param x
-	 * @param y
-	 * @param width
-	 * @param height
+	/** Construct a rectangle with the given minimum corner and sizes.
+	 * @param x x coordinate of the minimum corner.
+	 * @param y y coordinate of the minimum corner.
+	 * @param width width of the rectangle.
+	 * @param height height of the rectangle.
 	 */
 	public Rectangle2d(double x, double y, double width, double height) {
 		setFromCorners(x, y, x + width, y + height);
 	}
-	
-	/**
-	 * @param r
+
+	/** Constructor by copy.
+	 * @param rectangle the rectangle to copy.
 	 */
-	public Rectangle2d(Rectangle2d r) {
-		set(r);
+	public Rectangle2d(Rectangle2d rectangle) {
+		set(rectangle);
 	}
 
 	@Override
 	public void setFromCorners(double x1, double y1, double x2, double y2) {
-		double a, b, c, d;
+		final double a;
+		final double b;
+		final double c;
+		final double d;
 		if (x1 <= x2) {
 			a = x1;
 			b = x2;
@@ -180,14 +184,14 @@ public class Rectangle2d extends AbstractShape2d<Rectangle2d>
 		bits = 31 * bits + Double.doubleToLongBits(this.miny);
 		bits = 31 * bits + Double.doubleToLongBits(this.maxx);
 		bits = 31 * bits + Double.doubleToLongBits(this.maxy);
-		int b = (int) bits;
+		final int b = (int) bits;
 		return b ^ (b >> 32);
 	}
 
 	@Pure
 	@Override
 	public String toString() {
-		StringBuilder b = new StringBuilder();
+		final StringBuilder b = new StringBuilder();
 		b.append("["); //$NON-NLS-1$
 		b.append(getMinX());
 		b.append(";"); //$NON-NLS-1$

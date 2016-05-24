@@ -17,12 +17,12 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>javafx</groupId>
-			<artifactId>jfxrt</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>org.arakhne.afc.core</groupId>
 			<artifactId>math</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>javafx</groupId>
+			<artifactId>jfxrt</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
@@ -34,10 +34,24 @@
 			<artifactId>mockito-all</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.arakhne.afc.core</groupId>
+			<artifactId>math</artifactId>
+			<version>13.0-SNAPSHOT</version>
+			<type>test-jar</type>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<configuration>
+					<sourceDirectory>src/main/java</sourceDirectory>
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>

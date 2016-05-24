@@ -1,22 +1,21 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (C) 2012-13 Stephane GALLAND.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.arakhne.afc.vmutil.caller;
@@ -24,17 +23,17 @@ package org.arakhne.afc.vmutil.caller;
 /**
  * This utility class provides a way to determine which class
  * call a function.
- * 
+ *
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
 public interface Caller {
-	
+
 	/** Replies the class from the stack according to its level.
-     * <p>
-     * The given <var>level</var> permits to specify which class to reply:
+	 *
+     * <p>The given {@code level} permits to specify which class to reply:
      * <ul>
      * <li>{@code 0}: the class where is defined the function ({@code f<sub>0</sub>})
      * that has called {@code getCallerClass()}</li>
@@ -51,8 +50,8 @@ public interface Caller {
 	Class<?> getCallerClass(int level);
 
 	/** Replies the method from the stack according to its level.
-     * <p>
-     * The given <var>level</var> permits to specify which method to reply:
+	 *
+     * <p>The given {@code level} permits to specify which method to reply:
      * <ul>
      * <li>{@code 0}: the method where is defined the function ({@code f<sub>0</sub>})
      * that has called {@code getCallerClass()}</li>
@@ -62,8 +61,8 @@ public interface Caller {
      * that has called {@code f<sub>1</sub>}</li>
      * <li>etc.</li>
      * </ul>
-     * <p>
-     * The returned value is the name of the method instead of a
+     *
+     * <p>The returned value is the name of the method instead of a
      * {@code Method} instance. It is due to JRE that does not
      * store in the stack trace the complete prototype of the
      * methods. So the following code failed: the stack contains
@@ -99,8 +98,8 @@ public interface Caller {
 	String getCallerMethod(int level);
 
 	/** Replies the line number of the caller from the stack according to its level.
-     * <p>
-     * The given <var>level</var> permits to specify which method to reply:
+	 *
+     * <p>The given {@code level} permits to specify which method to reply:
      * <ul>
      * <li>{@code 0}: the method where is defined the function ({@code f<sub>0</sub>})
      * that has called {@code getCallerClass()}</li>
@@ -110,18 +109,18 @@ public interface Caller {
      * that has called {@code f<sub>1</sub>}</li>
      * <li>etc.</li>
      * </ul>
-     * <p>
-     * The returned value is the line number of the calling method.
+     *
+     * <p>The returned value is the line number of the calling method.
      *
      * @param level is the desired level of the class
      * @return the line number of method from the call stack
-     * according to the given level.
+     *     according to the given level.
      */
 	long getCallerLine(int level);
 
 	/** Replies the filename of the method of the caller from the stack according to its level.
-     * <p>
-     * The given <var>level</var> permits to specify which method to reply:
+	 *
+     * <p>The given {@code level} permits to specify which method to reply:
      * <ul>
      * <li>{@code 0}: the method where is defined the function ({@code f<sub>0</sub>})
      * that has called {@code getCallerClass()}</li>
@@ -131,11 +130,10 @@ public interface Caller {
      * that has called {@code f<sub>1</sub>}</li>
      * <li>etc.</li>
      * </ul>
-     * <p>
      *
      * @param level is the desired level of the class
      * @return the filename of the method from the call
-     * stack according to the given level.
+     *     stack according to the given level.
      */
 	String getCallerFilename(int level);
 
