@@ -59,10 +59,10 @@ public abstract class PathElement3d implements PathElement3ad {
 		case LINE_TO:
 			return new LinePathElement3d(lastX, lastY, lastZ, coords[0], coords[1], coords[2]);
 		case QUAD_TO:
-			assert (coords.length >= 4) : "Size of the coordinate array type is too small"; //$NON-NLS-1$
+			assert (coords.length >= 6) : "Size of the coordinate array type is too small"; //$NON-NLS-1$
 			return new QuadPathElement3d(lastX, lastY, lastZ, coords[0], coords[1], coords[2], coords[3], coords[4], coords[5]);
 		case CURVE_TO:
-			assert (coords.length >= 6) : "Size of the coordinate array type is too small"; //$NON-NLS-1$
+			assert (coords.length >= 9) : "Size of the coordinate array type is too small"; //$NON-NLS-1$
 			return new CurvePathElement3d(lastX, lastY, lastZ, coords[0], coords[1], coords[2], coords[3], coords[4], coords[5], coords[6], coords[7], coords[8]);
 		case CLOSE:
 			return new ClosePathElement3d(lastX, lastY, lastZ, coords[0], coords[1], coords[2]);
