@@ -25,7 +25,7 @@ import org.arakhne.afc.math.geometry.d2.d.Segment2d;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Quaternion;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
-import org.arakhne.afc.math.geometry.d3.ad.GeomFactory3ad;
+import org.arakhne.afc.math.geometry.d3.afp.GeomFactory3afp;
 
 /** Factory of geometrical elements.
  * 
@@ -35,7 +35,7 @@ import org.arakhne.afc.math.geometry.d3.ad.GeomFactory3ad;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public class GeomFactory3d implements GeomFactory3ad<PathElement3d, Point3d, Vector3d, RectangularPrism3d> {
+public class GeomFactory3d implements GeomFactory3afp<PathElement3d, Point3d, Vector3d, RectangularPrism3d> {
 
 	/** The singleton of the factory.
 	 */

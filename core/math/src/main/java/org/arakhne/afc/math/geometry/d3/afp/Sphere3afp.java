@@ -19,7 +19,7 @@
  * This program is free software; you can redistribute it and/or modify
  */
 
-package org.arakhne.afc.math.geometry.d3.ad;
+package org.arakhne.afc.math.geometry.d3.afp;
 
 import java.util.NoSuchElementException;
 
@@ -29,7 +29,7 @@ import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Transform3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
-import org.arakhne.afc.math.geometry.d3.ad.Path3ad.CrossingComputationType;
+import org.arakhne.afc.math.geometry.d3.afp.Path3afp.CrossingComputationType;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Fonctional interface that represented a 2D sphere on a plane.
@@ -47,14 +47,14 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public interface Sphere3ad<
-		ST extends Shape3ad<?, ?, IE, P, V, B>,
-		IT extends Sphere3ad<?, ?, IE, P, V, B>,
-		IE extends PathElement3ad,
+public interface Sphere3afp<
+		ST extends Shape3afp<?, ?, IE, P, V, B>,
+		IT extends Sphere3afp<?, ?, IE, P, V, B>,
+		IE extends PathElement3afp,
 		P extends Point3D<? super P, ? super V>,
 		V extends Vector3D<? super V, ? super P>,
-		B extends RectangularPrism3ad<?, ?, IE, P, V, B>>
-		extends Prism3ad<ST, IT, IE, P, V, B> {
+		B extends RectangularPrism3afp<?, ?, IE, P, V, B>>
+		extends Prism3afp<ST, IT, IE, P, V, B> {
 
 	/**
 	 * Replies if the given point is inside the given ellipse.
@@ -208,7 +208,7 @@ public interface Sphere3ad<
 	@Pure
 	static boolean intersectsSphereLine(double x1, double y1, double z1, double radius, double x2, double y2, double z2, double x3, double y3, double z3) {
 		assert (radius >= 0) : "sphere radius must be positive or zero"; //$NON-NLS-1$
-		double d = Segment3ad.computeDistanceSquaredLinePoint(x2, y2, z2, x3, y3, z3, x1, y1, z1);
+		double d = Segment3afp.computeDistanceSquaredLinePoint(x2, y2, z2, x3, y3, z3, x1, y1, z1);
 		return d < (radius * radius);
 	}
 
@@ -230,7 +230,7 @@ public interface Sphere3ad<
 	@Pure
 	static boolean intersectsSphereSegment(double x1, double y1, double z1, double radius, double x2, double y2, double z2, double x3, double y3, double z3) {
 		assert (radius >= 0) : "sphere radius must be positive or zero"; //$NON-NLS-1$
-		double d = Segment3ad.computeDistanceSquaredSegmentPoint(x2, y2, z2, x3, y3, z3, x1, y1, z1);
+		double d = Segment3afp.computeDistanceSquaredSegmentPoint(x2, y2, z2, x3, y3, z3, x1, y1, z1);
 		return d < (radius * radius);
 	}
 	
@@ -433,7 +433,7 @@ public interface Sphere3ad<
 	}
 	
 	@Override
-	default boolean contains(RectangularPrism3ad<?, ?, ?, ?, ?, ?> r) {
+	default boolean contains(RectangularPrism3afp<?, ?, ?, ?, ?, ?> r) {
 		assert (r != null) : "Rectangle must be not null"; //$NON-NLS-1$
 		return containsCircleRectangularPrism(getX(), getY(), getZ(), getRadius(),
 				r.getMinX(), r.getMinY(), r.getMinZ(), r.getMaxX(), r.getMaxY(), r.getMaxZ());
@@ -446,7 +446,7 @@ public interface Sphere3ad<
 
 	@Pure
 	@Override
-	default boolean intersects(Prism3ad<?, ?, ?, ?, ?, ?> r) {
+	default boolean intersects(Prism3afp<?, ?, ?, ?, ?, ?> r) {
 		assert (r != null) : "Rectangle must be not null"; //$NON-NLS-1$
 		return intersectsCircleRectangle(
 				getX(), getY(), getZ(), getRadius(),
@@ -455,7 +455,7 @@ public interface Sphere3ad<
 	
 	@Pure
 	@Override
-	default boolean intersects(Sphere3ad<?, ?, ?, ?, ?, ?> s) {
+	default boolean intersects(Sphere3afp<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "sphere must be not null"; //$NON-NLS-1$
 		return intersectsSphereSphere(
 				getX(), getY(), getZ(), getRadius(),
@@ -464,7 +464,7 @@ public interface Sphere3ad<
 
 	@Pure
 	@Override
-	default boolean intersects(Segment3ad<?, ?, ?, ?, ?, ?> s) {
+	default boolean intersects(Segment3afp<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Segment must be not null"; //$NON-NLS-1$
 		return intersectsSphereSegment(
 				getX(), getY(), getZ(), getRadius(),
@@ -475,10 +475,10 @@ public interface Sphere3ad<
 
 	@Pure
 	@Override
-	default boolean intersects(PathIterator3ad<?> iterator) {
+	default boolean intersects(PathIterator3afp<?> iterator) {
 		assert (iterator != null) : "Iterator must be not null"; //$NON-NLS-1$
 		int mask = (iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2);
-		int crossings = Path3ad.computeCrossingsFromSphere(
+		int crossings = Path3afp.computeCrossingsFromSphere(
 				0,
 				iterator,
 				getX(), getY(), getZ(), getRadius(),
@@ -501,7 +501,7 @@ public interface Sphere3ad<
 		
 	@Pure
 	@Override
-	default boolean intersects(MultiShape3ad<?, ?, ?, ?, ?, ?, ?> s) {
+	default boolean intersects(MultiShape3afp<?, ?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "MultiShape must be not null"; //$NON-NLS-1$
 		return s.intersects(this);
 	}
@@ -546,7 +546,7 @@ public interface Sphere3ad<
 
 	@Pure
 	@Override
-	default PathIterator3ad<IE> getPathIterator(Transform3D transform) {
+	default PathIterator3afp<IE> getPathIterator(Transform3D transform) {
 		if (transform==null || transform.isIdentity()) {
 			return new SpherePathIterator<>(this);
 		}
@@ -742,7 +742,7 @@ public interface Sphere3ad<
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	abstract class AbstractSpherePathIterator<T extends PathElement3ad> implements PathIterator3ad<T> {
+	abstract class AbstractSpherePathIterator<T extends PathElement3afp> implements PathIterator3afp<T> {
 		
 		/**
 		 * Distance from a Bezier curve control point on the sphere to the other control point.
@@ -774,18 +774,18 @@ public interface Sphere3ad<
 
 		/** The iterated shape.
 		 */
-		protected final Sphere3ad<?, ?, T, ?, ?, ?> sphere;
+		protected final Sphere3afp<?, ?, T, ?, ?, ?> sphere;
 
 		/**
 		 * @param sphere the sphere.
 		 */
-		public AbstractSpherePathIterator(Sphere3ad<?, ?, T, ?, ?, ?> sphere) {
+		public AbstractSpherePathIterator(Sphere3afp<?, ?, T, ?, ?, ?> sphere) {
 			assert (sphere != null) : "sphere must be not null"; //$NON-NLS-1$
 			this.sphere = sphere;
 		}
 
 		@Override
-		public GeomFactory3ad<T, ?, ?, ?> getGeomFactory() {
+		public GeomFactory3afp<T, ?, ?, ?> getGeomFactory() {
 			return this.sphere.getGeomFactory();
 		}
 
@@ -827,7 +827,7 @@ public interface Sphere3ad<
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	class SpherePathIterator<T extends PathElement3ad> extends AbstractSpherePathIterator<T> {
+	class SpherePathIterator<T extends PathElement3afp> extends AbstractSpherePathIterator<T> {
 
 		private double x;
 		
@@ -854,7 +854,7 @@ public interface Sphere3ad<
 		/**
 		 * @param sphere the sphere to iterate on.
 		 */
-		public SpherePathIterator(Sphere3ad<?, ?, T, ?, ?, ?> sphere) {
+		public SpherePathIterator(Sphere3afp<?, ?, T, ?, ?, ?> sphere) {
 			super(sphere);
 			if (sphere.isEmpty()) {
 				this.index = NUMBER_ELEMENTS;
@@ -868,7 +868,7 @@ public interface Sphere3ad<
 		}
 		
 		@Override
-		public PathIterator3ad<T> restartIterations() {
+		public PathIterator3afp<T> restartIterations() {
 			return new SpherePathIterator<>(this.sphere);
 		}
 		
@@ -929,7 +929,7 @@ public interface Sphere3ad<
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	class TransformedCirclePathIterator<T extends PathElement3ad> extends AbstractSpherePathIterator<T> {
+	class TransformedCirclePathIterator<T extends PathElement3afp> extends AbstractSpherePathIterator<T> {
 			
 		private final Transform3D transform;
 
@@ -961,7 +961,7 @@ public interface Sphere3ad<
 		 * @param sphere the iterated sphere.
 		 * @param transform the transformation to apply.
 		 */
-		public TransformedCirclePathIterator(Sphere3ad<?, ?, T, ?, ?, ?> sphere, Transform3D transform) {
+		public TransformedCirclePathIterator(Sphere3afp<?, ?, T, ?, ?, ?> sphere, Transform3D transform) {
 			super(sphere);
 			assert(transform != null) : "Transformation must be not null"; //$NON-NLS-1$
 			this.transform = transform;
@@ -969,7 +969,7 @@ public interface Sphere3ad<
 				this.index = NUMBER_ELEMENTS;
 				this.tmpPoint = null;
 			} else {
-				this.tmpPoint = new InnerComputationPoint3ad();
+				this.tmpPoint = new InnerComputationPoint3afp();
 				this.r = sphere.getRadius();
 				this.x = sphere.getX();
 				this.y = sphere.getY();
@@ -979,7 +979,7 @@ public interface Sphere3ad<
 		}
 
 		@Override
-		public PathIterator3ad<T> restartIterations() {
+		public PathIterator3afp<T> restartIterations() {
 			return new TransformedCirclePathIterator<>(this.sphere, this.transform);
 		}
 		

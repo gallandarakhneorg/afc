@@ -19,12 +19,13 @@
  * This program is free software; you can redistribute it and/or modify
  */
 
-package org.arakhne.afc.math.geometry.d3.ad;
+package org.arakhne.afc.math.geometry.d3.afp;
 
-import org.arakhne.afc.math.geometry.d3.UnmodifiableVector3D;
-import org.arakhne.afc.math.geometry.d3.Vector3D;
+import org.arakhne.afc.math.geometry.d2.afp.InnerComputationVector2afp;
+import org.arakhne.afc.math.geometry.d3.Point3D;
+import org.arakhne.afc.math.geometry.d3.UnmodifiablePoint3D;
 
-/** A vector that is used for internal computations.
+/** A point that is used for internal computations.
  *
  * @author $Author: sgalland$
  * @version $FullVersion$
@@ -32,7 +33,7 @@ import org.arakhne.afc.math.geometry.d3.Vector3D;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public class InnerComputationVector3ad implements Vector3D<InnerComputationVector3ad, InnerComputationPoint3ad> {
+public class InnerComputationPoint3afp implements Point3D<InnerComputationPoint3afp, InnerComputationVector3afp> {
 
 	private static final long serialVersionUID = 8578192819251519051L;
 	
@@ -42,7 +43,7 @@ public class InnerComputationVector3ad implements Vector3D<InnerComputationVecto
 
 	/**
 	 */
-	public InnerComputationVector3ad() {
+	public InnerComputationPoint3afp() {
 		//
 	}
 
@@ -51,15 +52,15 @@ public class InnerComputationVector3ad implements Vector3D<InnerComputationVecto
 	 * @param y y coordinate
 	 * @param z z coordinate
 	 */
-	public InnerComputationVector3ad(double x, double y, double z) {
+	public InnerComputationPoint3afp(double x, double y, double z) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
 	}
-
+	
 	@Override
-	public InnerComputationGeomFactory getGeomFactory() {
-		return InnerComputationGeomFactory.SINGLETON;
+	public InnerComputationGeomFactory3afp getGeomFactory() {
+		return InnerComputationGeomFactory3afp.SINGLETON;
 	}
 
 	@Override
@@ -68,7 +69,7 @@ public class InnerComputationVector3ad implements Vector3D<InnerComputationVecto
 	}
 
 	@Override
-	public InnerComputationVector3ad clone() {
+	public InnerComputationPoint3afp clone() {
 		throw new UnsupportedOperationException();
 	}
 
@@ -133,22 +134,8 @@ public class InnerComputationVector3ad implements Vector3D<InnerComputationVecto
 	}
 
 	@Override
-	public UnmodifiableVector3D<InnerComputationVector3ad, InnerComputationPoint3ad> toUnmodifiable() {
+	public UnmodifiablePoint3D<InnerComputationPoint3afp, InnerComputationVector3afp> toUnmodifiable() {
 		throw new UnsupportedOperationException();
 	}
-
-	@Override
-	public InnerComputationVector3ad toUnitVector() {
-		double length = getLength();
-		if (length == 0) {
-			return new InnerComputationVector3ad();
-		}
-		return new InnerComputationVector3ad(getX() / length, getY() / length, getZ() / length);
-	}
 	
-//	@Override
-//	public InnerComputationVector3ad toOrthogonalVector() {
-//		return new InnerComputationVector3ad(-getY(), getX());
-//	}
-
 }

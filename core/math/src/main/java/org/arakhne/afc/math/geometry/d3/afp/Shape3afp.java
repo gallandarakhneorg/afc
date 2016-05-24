@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  * This program is free software; you can redistribute it and/or modify
  */
-package org.arakhne.afc.math.geometry.d3.ad;
+package org.arakhne.afc.math.geometry.d3.afp;
 
 import org.arakhne.afc.math.Unefficient;
 import org.arakhne.afc.math.geometry.d3.Point3D;
@@ -41,14 +41,14 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public interface Shape3ad<
-		ST extends Shape3ad<?, ?, IE, P, V, B>,
-		IT extends Shape3ad<?, ?, IE, P, V, B>,
-		IE extends PathElement3ad,
+public interface Shape3afp<
+		ST extends Shape3afp<?, ?, IE, P, V, B>,
+		IT extends Shape3afp<?, ?, IE, P, V, B>,
+		IE extends PathElement3afp,
 		P extends Point3D<? super P, ? super V>,
 		V extends Vector3D<? super V, ? super P>,
-		B extends RectangularPrism3ad<?, ?, IE, P, V, B>>
-		extends Shape3D<ST, IT, PathIterator3ad<IE>, P, V, B> {
+		B extends RectangularPrism3afp<?, ?, IE, P, V, B>>
+		extends Shape3D<ST, IT, PathIterator3afp<IE>, P, V, B> {
 
 	
 	
@@ -66,7 +66,7 @@ public interface Shape3ad<
 	 * shape, otherwise <code>false</code>.
 	 */
 	@Pure
-	boolean contains(RectangularPrism3ad<?, ?, ?, ?, ?, ?> r);
+	boolean contains(RectangularPrism3afp<?, ?, ?, ?, ?, ?> r);
 
 	@Pure
 	@Override
@@ -79,23 +79,23 @@ public interface Shape3ad<
 	@Unefficient
 	@Override
 	default boolean intersects(Shape3D<?, ?, ?, ?, ?, ?> s) {
-		if (s instanceof MultiShape3ad) {
-			return intersects((MultiShape3ad<?, ?, ?, ?, ?, ?, ?>) s);
+		if (s instanceof MultiShape3afp) {
+			return intersects((MultiShape3afp<?, ?, ?, ?, ?, ?, ?>) s);
 		}
-		if(s instanceof Sphere3ad){
-			return intersects((Sphere3ad<?, ?, ?, ?, ?, ?>) s);
+		if(s instanceof Sphere3afp){
+			return intersects((Sphere3afp<?, ?, ?, ?, ?, ?>) s);
 		}
-		if (s instanceof Path3ad) {
-			return intersects((Path3ad<?, ?, ?, ?, ?, ?>) s);
+		if (s instanceof Path3afp) {
+			return intersects((Path3afp<?, ?, ?, ?, ?, ?>) s);
 		}
-		if (s instanceof PathIterator3ad) {
-			return intersects((PathIterator3ad<?>) s);
+		if (s instanceof PathIterator3afp) {
+			return intersects((PathIterator3afp<?>) s);
 		}
-		if (s instanceof RectangularPrism3ad) {
-			return intersects((RectangularPrism3ad<?, ?, ?, ?, ?, ?>) s);
+		if (s instanceof RectangularPrism3afp) {
+			return intersects((RectangularPrism3afp<?, ?, ?, ?, ?, ?>) s);
 		}
-		if (s instanceof Segment3ad) {
-			return intersects((Segment3ad<?, ?, ?, ?, ?, ?>) s);
+		if (s instanceof Segment3afp) {
+			return intersects((Segment3afp<?, ?, ?, ?, ?, ?>) s);
 		}
 		return intersects(getPathIterator());
 	}
@@ -108,7 +108,7 @@ public interface Shape3ad<
 	 * <code>false</code> if there is no intersection.
 	 */
 	@Pure
-	boolean intersects(Sphere3ad<?, ?, ?, ?, ?, ?> s);
+	boolean intersects(Sphere3afp<?, ?, ?, ?, ?, ?> s);
 
 	/** Replies if this shape is intersecting the given Prism.
 	 * 
@@ -117,7 +117,7 @@ public interface Shape3ad<
 	 * <code>false</code> if there is no intersection.
 	 */
 	@Pure
-	boolean intersects(Prism3ad<?, ?, ?, ?, ?, ?> s);
+	boolean intersects(Prism3afp<?, ?, ?, ?, ?, ?> s);
 
 	/** Replies if this shape is intersecting the given line.
 	 * 
@@ -126,7 +126,7 @@ public interface Shape3ad<
 	 * <code>false</code> if there is no intersection.
 	 */
 	@Pure
-	boolean intersects(Segment3ad<?, ?, ?, ?, ?, ?> s);
+	boolean intersects(Segment3afp<?, ?, ?, ?, ?, ?> s);
 
 
 	/** Replies if this shape is intersecting the given path.
@@ -136,7 +136,7 @@ public interface Shape3ad<
 	 * <code>false</code> if there is no intersection.
 	 */
 	@Pure
-	default boolean intersects(Path3ad<?, ?, ?, ?, ?, ?> s) {
+	default boolean intersects(Path3afp<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Path must be not null"; //$NON-NLS-1$
 		return intersects(s.getPathIterator());
 	}
@@ -148,7 +148,7 @@ public interface Shape3ad<
 	 * <code>false</code> if there is no intersection.
 	 */
 	@Pure
-	boolean intersects(PathIterator3ad<?> iterator);
+	boolean intersects(PathIterator3afp<?> iterator);
 
 	/** Replies if this shape is intersecting the given multishape.
 	 * 
@@ -157,7 +157,7 @@ public interface Shape3ad<
 	 * <code>false</code> if there is no intersection.
 	 */
 	@Pure
-	boolean intersects(MultiShape3ad<?, ?, ?, ?, ?, ?, ?> s);
+	boolean intersects(MultiShape3afp<?, ?, ?, ?, ?, ?, ?> s);
 
 	/** Translate the shape.
 	 * 
@@ -179,7 +179,7 @@ public interface Shape3ad<
 	boolean contains(double x, double y, double z);
 
 	@Override
-	GeomFactory3ad<IE, P, V, B> getGeomFactory();
+	GeomFactory3afp<IE, P, V, B> getGeomFactory();
 	
 	@Pure
 	@SuppressWarnings("unchecked")
@@ -188,10 +188,10 @@ public interface Shape3ad<
 		if (transform == null || transform.isIdentity()) {
 			return (ST) clone();
 		}
-		PathIterator3ad<?> pi = getPathIterator(transform);
-		GeomFactory3ad<IE, P, V, B> factory = getGeomFactory();
-		Path3ad<?, ?, ?, P, V, ?> newPath = factory.newPath(pi.getWindingRule());
-		PathElement3ad e;
+		PathIterator3afp<?> pi = getPathIterator(transform);
+		GeomFactory3afp<IE, P, V, B> factory = getGeomFactory();
+		Path3afp<?, ?, ?, P, V, ?> newPath = factory.newPath(pi.getWindingRule());
+		PathElement3afp e;
 		while (pi.hasNext()) {
 			e = pi.next();
 			switch(e.getType()) {

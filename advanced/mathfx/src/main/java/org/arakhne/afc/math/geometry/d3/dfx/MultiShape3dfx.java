@@ -25,7 +25,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-import org.arakhne.afc.math.geometry.d3.ad.MultiShape3ad;
+import org.arakhne.afc.math.geometry.d3.afp.MultiShape3afp;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import com.sun.javafx.collections.NonIterableChange.SimpleUpdateChange;
@@ -55,7 +55,7 @@ import javafx.collections.ModifiableObservableListBase;
  * @since 13.0
  */
 public class MultiShape3dfx<T extends Shape3dfx<?>> extends AbstractShape3dfx<MultiShape3dfx<T>> implements 
-MultiShape3ad<Shape3dfx<?>, MultiShape3dfx<T>, T, PathElement3dfx, Point3dfx, Vector3dfx, RectangularPrism3dfx> {
+MultiShape3afp<Shape3dfx<?>, MultiShape3dfx<T>, T, PathElement3dfx, Point3dfx, Vector3dfx, RectangularPrism3dfx> {
 
 	private static final long serialVersionUID = -7124696554694835718L;
 

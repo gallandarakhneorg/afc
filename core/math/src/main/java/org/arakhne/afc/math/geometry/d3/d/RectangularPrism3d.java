@@ -22,7 +22,7 @@
 package org.arakhne.afc.math.geometry.d3.d;
 
 import org.arakhne.afc.math.geometry.d3.Point3D;
-import org.arakhne.afc.math.geometry.d3.ad.RectangularPrism3ad;
+import org.arakhne.afc.math.geometry.d3.afp.RectangularPrism3afp;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** A rectangle with 2 double precision floating-point numbers.
@@ -34,7 +34,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @since 13.0
  */
 public class RectangularPrism3d extends AbstractShape3d<RectangularPrism3d>
-	implements RectangularPrism3ad<Shape3d<?>, RectangularPrism3d, PathElement3d, Point3d, Vector3d, RectangularPrism3d> {
+	implements RectangularPrism3afp<Shape3d<?>, RectangularPrism3d, PathElement3d, Point3d, Vector3d, RectangularPrism3d> {
 
 	private static final long serialVersionUID = -2138921378214589458L;
 

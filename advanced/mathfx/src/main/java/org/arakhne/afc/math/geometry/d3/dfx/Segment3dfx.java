@@ -23,7 +23,7 @@ package org.arakhne.afc.math.geometry.d3.dfx;
 
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Transform3D;
-import org.arakhne.afc.math.geometry.d3.ad.Segment3ad;
+import org.arakhne.afc.math.geometry.d3.afp.Segment3afp;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import javafx.beans.binding.Bindings;
@@ -42,7 +42,7 @@ import javafx.beans.property.SimpleObjectProperty;
  * @since 13.0
  */
 public class Segment3dfx extends AbstractShape3dfx<Segment3dfx>
-	implements Segment3ad<Shape3dfx<?>, Segment3dfx, PathElement3dfx, Point3dfx, Vector3dfx, RectangularPrism3dfx> {
+	implements Segment3afp<Shape3dfx<?>, Segment3dfx, PathElement3dfx, Point3dfx, Vector3dfx, RectangularPrism3dfx> {
 
 	private static final long serialVersionUID = -5603953934276693947L;
 
@@ -75,7 +75,7 @@ public class Segment3dfx extends AbstractShape3dfx<Segment3dfx>
 	/**
 	 * @param s
 	 */
-	public Segment3dfx(Segment3ad<?, ?, ?, ?, ?, ?> s) {
+	public Segment3dfx(Segment3afp<?, ?, ?, ?, ?, ?> s) {
 		this(s.getX1(), s.getY1(), s.getZ1(), s.getX2(), s.getY2(), s.getZ2());
 	}
 

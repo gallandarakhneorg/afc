@@ -19,7 +19,7 @@
  * This program is free software; you can redistribute it and/or modify
  */
 
-package org.arakhne.afc.math.geometry.d3.ad;
+package org.arakhne.afc.math.geometry.d3.afp;
 
 import java.util.NoSuchElementException;
 
@@ -31,7 +31,7 @@ import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Transform3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
-import org.arakhne.afc.math.geometry.d3.ad.Path3ad.CrossingComputationType;
+import org.arakhne.afc.math.geometry.d3.afp.Path3afp.CrossingComputationType;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import javafx.util.Pair;
@@ -51,14 +51,14 @@ import javafx.util.Pair;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public interface Segment3ad<
-		ST extends Shape3ad<?, ?, IE, P, V, B>,
-		IT extends Segment3ad<?, ?, IE, P, V, B>,
-		IE extends PathElement3ad,
+public interface Segment3afp<
+		ST extends Shape3afp<?, ?, IE, P, V, B>,
+		IT extends Segment3afp<?, ?, IE, P, V, B>,
+		IE extends PathElement3afp,
 		P extends Point3D<? super P, ? super V>,
 		V extends Vector3D<? super V, ? super P>,
-		B extends RectangularPrism3ad<?, ?, IE, P, V, B>>
-		extends Shape3ad<ST, IT, IE, P, V, B> {
+		B extends RectangularPrism3afp<?, ?, IE, P, V, B>>
+		extends Shape3afp<ST, IT, IE, P, V, B> {
 
 	/**
 	 * Replies if two lines are colinear.
@@ -233,7 +233,7 @@ public interface Segment3ad<
 		double y31 = y3 - y1;
 		double z31 = z3 - z1;
 		
-		Vector3D<?, ?> v = InnerComputationGeomFactory.SINGLETON.newVector();
+		Vector3D<?, ?> v = InnerComputationGeomFactory3afp.SINGLETON.newVector();
 		
 		Vector3D.crossProduct(x21, y21, z21, x43, y43, z43, v);
 		
@@ -306,7 +306,7 @@ public interface Segment3ad<
 		double y31 = y3 - y1;
 		double z31 = z3 - z1;
 		
-		Vector3D<?, ?> v = InnerComputationGeomFactory.SINGLETON.newVector();
+		Vector3D<?, ?> v = InnerComputationGeomFactory3afp.SINGLETON.newVector();
 		
 		Vector3D.crossProduct(x21, y21, z21, x43, y43, z43, v);
 		
@@ -884,7 +884,7 @@ public interface Segment3ad<
 			double ax, double ay, double az, double bx, double by, double bz, double px, double py, double pz,
 			Point3D<?, ?> result) {
 		assert (result != null) : "Result must be not null"; //$NON-NLS-1$
-		double ratio = Segment3ad.computeProjectedPointOnLine(px, py, pz, ax, ay, az, bx, by, bz);
+		double ratio = Segment3afp.computeProjectedPointOnLine(px, py, pz, ax, ay, az, bx, by, bz);
 		if (ratio <= 0.) {
 			result.set(ax, ay, az);
 		} else if (ratio >= 1.) {
@@ -1186,7 +1186,7 @@ public interface Segment3ad<
 //				if (y0>=ymax) --numCrosses;
 //			}
 //		}
-//		else if (Sphere3ad.intersectsCircleSegment(
+//		else if (Sphere3afp.intersectsCircleSegment(
 //				cx, cy, radius,
 //				x0, y0, x1, y1)) {
 //			return MathConstants.SHAPE_INTERSECTS;
@@ -2024,7 +2024,7 @@ public interface Segment3ad<
 	}
 	
 	@Override
-	default boolean contains(RectangularPrism3ad<?, ?, ?, ?, ?, ?> r) {
+	default boolean contains(RectangularPrism3afp<?, ?, ?, ?, ?, ?> r) {
 		assert (r != null) : "Rectangle must be not null"; //$NON-NLS-1$
 		return (getX1() == getX2() || getY1() == getY2() || getZ1() == getZ2())
 				&& contains(r.getMinX(), r.getMinY(), r.getMinZ())
@@ -2044,7 +2044,7 @@ public interface Segment3ad<
 	 */
 	default void transform(Transform3D transform) {
 		assert (transform != null) : "Transformation must be not null"; //$NON-NLS-1$
-		Point3D<?, ?> p = new InnerComputationPoint3ad(getX1(),  getY1(), getZ1());
+		Point3D<?, ?> p = new InnerComputationPoint3afp(getX1(),  getY1(), getZ1());
 		transform.transform(p);
 		double x1 = p.getX();
 		double y1 = p.getY();
@@ -2162,9 +2162,9 @@ public interface Segment3ad<
 	
 	@Pure
 	@Override
-	default boolean intersects(Sphere3ad<?, ?, ?, ?, ?, ?> s) {
+	default boolean intersects(Sphere3afp<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Circle must be not null"; //$NON-NLS-1$
-		return Sphere3ad.intersectsSphereSegment(
+		return Sphere3afp.intersectsSphereSegment(
 				s.getX(), s.getY(), s.getZ(),
 				s.getRadius(),
 				getX1(), getY1(), getZ1(),
@@ -2173,9 +2173,9 @@ public interface Segment3ad<
 
 	@Pure
 	@Override
-	default boolean intersects(Prism3ad<?, ?, ?, ?, ?, ?> s) {
+	default boolean intersects(Prism3afp<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Rectangle must be not null"; //$NON-NLS-1$
-		return RectangularPrism3ad.intersectsRectangleSegment(
+		return RectangularPrism3afp.intersectsRectangleSegment(
 				s.getMinX(), s.getMinY(),
 				s.getMaxX(), s.getMaxY(),
 				getX1(), getY1(),
@@ -2185,7 +2185,7 @@ public interface Segment3ad<
 	
 	@Pure
 	@Override
-	default boolean intersects(Segment3ad<?, ?, ?, ?, ?, ?> s) {
+	default boolean intersects(Segment3afp<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Segment must be not null"; //$NON-NLS-1$
 		return intersectsSegmentSegmentWithEnds(
 				getX1(), getY1(), getZ1(),
@@ -2197,10 +2197,10 @@ public interface Segment3ad<
 
 	@Pure
 	@Override
-	default boolean intersects(PathIterator3ad<?> iterator) {
+	default boolean intersects(PathIterator3afp<?> iterator) {
 		assert (iterator != null) : "Iterator must be not null"; //$NON-NLS-1$
 		int mask = (iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2);
-		int crossings = Path3ad.computeCrossingsFromSegment(
+		int crossings = Path3afp.computeCrossingsFromSegment(
 				0,
 				iterator,
 				getX1(), getY1(), getZ1(), getX2(), getY2(), getZ2(),
@@ -2212,7 +2212,7 @@ public interface Segment3ad<
 
 	@Pure
 	@Override
-	default boolean intersects(MultiShape3ad<?, ?, ?, ?, ?, ?, ?> s) {
+	default boolean intersects(MultiShape3afp<?, ?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "MultiShape must be not null"; //$NON-NLS-1$
 		return s.intersects(this);
 	}
@@ -2225,8 +2225,8 @@ public interface Segment3ad<
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 * @since 13.0
-	 * @see Segment3ad#getNoSegmentSegmentWithEndsIntersection(double, double, double, double, double, double, double, double)
-	 * @see Segment3ad#getNoSegmentSegmentWithoutEndsIntersection(double, double, double, double, double, double, double, double)
+	 * @see Segment3afp#getNoSegmentSegmentWithEndsIntersection(double, double, double, double, double, double, double, double)
+	 * @see Segment3afp#getNoSegmentSegmentWithoutEndsIntersection(double, double, double, double, double, double, double, double)
 	 */
 	enum UncertainIntersection {
 		/** Intersection, uncertainly.
@@ -2268,7 +2268,7 @@ public interface Segment3ad<
 
 	@Pure
 	@Override
-	default PathIterator3ad<IE> getPathIterator(Transform3D transform) {
+	default PathIterator3afp<IE> getPathIterator(Transform3D transform) {
 		return new SegmentPathIterator<>(this, transform);
 	}
 
@@ -2277,7 +2277,7 @@ public interface Segment3ad<
 	default P getClosestPointTo(Point3D<?, ?> p) {
 		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
 		P point = getGeomFactory().newPoint();
-		Segment3ad.computeClosestPointTo(
+		Segment3afp.computeClosestPointTo(
 				getX1(), getY1(), getZ1(),
 				getX2(), getY2(), getZ2(),
 				p.getX(), p.getY(), p.getZ(),
@@ -2290,7 +2290,7 @@ public interface Segment3ad<
 	default P getFarthestPointTo(Point3D<?, ?> p) {
 		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
 		P point = getGeomFactory().newPoint();
-		Segment3ad.computeFarthestPointTo(
+		Segment3afp.computeFarthestPointTo(
 				getX1(), getY1(), getZ1(),
 				getX2(), getY2(), getZ2(),
 				p.getX(), p.getY(), p.getZ(),
@@ -2307,9 +2307,9 @@ public interface Segment3ad<
 	 * @mavenartifactid $ArtifactId$
 	 * @since 13.0
 	 */
-	static class SegmentPathIterator<T extends PathElement3ad> implements PathIterator3ad<T> {
+	static class SegmentPathIterator<T extends PathElement3afp> implements PathIterator3afp<T> {
 
-		private final Segment3ad<?, ?, T, ?, ?, ?> segment;
+		private final Segment3afp<?, ?, T, ?, ?, ?> segment;
 
 		private final Point3D<?, ?> p1;
 
@@ -2335,11 +2335,11 @@ public interface Segment3ad<
 		 * @param segment the iterated segment.
 		 * @param transform the transformation, or <code>null</code>.
 		 */
-		public SegmentPathIterator(Segment3ad<?, ?, T, ?, ?, ?> segment, Transform3D transform) {
+		public SegmentPathIterator(Segment3afp<?, ?, T, ?, ?, ?> segment, Transform3D transform) {
 			assert (segment != null) : "Segment must be not null"; //$NON-NLS-1$
 			this.segment = segment;
-			this.p1 = new InnerComputationPoint3ad();
-			this.p2 = new InnerComputationPoint3ad();
+			this.p1 = new InnerComputationPoint3afp();
+			this.p2 = new InnerComputationPoint3afp();
 			this.transform = (transform == null || transform.isIdentity()) ? null : transform;
 			this.x1 = segment.getX1();
 			this.y1 = segment.getY1();
@@ -2353,7 +2353,7 @@ public interface Segment3ad<
 		}
 		
 		@Override
-		public PathIterator3ad<T> restartIterations() {
+		public PathIterator3afp<T> restartIterations() {
 			return new SegmentPathIterator<>(this.segment, this.transform);
 		}
 
@@ -2426,7 +2426,7 @@ public interface Segment3ad<
 		}
 
 		@Override
-		public GeomFactory3ad<T, ?, ?, ?> getGeomFactory() {
+		public GeomFactory3afp<T, ?, ?, ?> getGeomFactory() {
 			return this.segment.getGeomFactory();
 		}
 

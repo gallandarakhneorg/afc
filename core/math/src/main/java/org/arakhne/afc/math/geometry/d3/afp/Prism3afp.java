@@ -15,7 +15,7 @@
  *
  * http://www.multiagent.fr/
  */
-package org.arakhne.afc.math.geometry.d3.ad;
+package org.arakhne.afc.math.geometry.d3.afp;
 
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
@@ -37,14 +37,14 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public interface Prism3ad<
-			ST extends Shape3ad<?, ?, IE, P, V, B>,
-			IT extends Prism3ad<?, ?, IE, P, V, B>,
-			IE extends PathElement3ad,
+public interface Prism3afp<
+			ST extends Shape3afp<?, ?, IE, P, V, B>,
+			IT extends Prism3afp<?, ?, IE, P, V, B>,
+			IE extends PathElement3afp,
 			P extends Point3D<? super P, ? super V>,
 			V extends Vector3D<? super V, ? super P>,
-			B extends RectangularPrism3ad<?, ?, IE, P, V, B>> 
-			extends Shape3ad<ST, IT, IE, P, V, B> {
+			B extends RectangularPrism3afp<?, ?, IE, P, V, B>> 
+			extends Shape3afp<ST, IT, IE, P, V, B> {
 
 	@Override
 	default void toBoundingBox(B box) {

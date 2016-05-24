@@ -23,7 +23,7 @@ package org.arakhne.afc.math.geometry.d3.d;
 
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.PathElementType;
-import org.arakhne.afc.math.geometry.d3.ad.PathElement3ad;
+import org.arakhne.afc.math.geometry.d3.afp.PathElement3afp;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** An element of the path with 2 double precision floating-point numbers.
@@ -35,7 +35,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public abstract class PathElement3d implements PathElement3ad {
+public abstract class PathElement3d implements PathElement3afp {
 	
 	private static final long serialVersionUID = -9217295344283468162L;
 
@@ -166,7 +166,7 @@ public abstract class PathElement3d implements PathElement3ad {
 		@Override
 		public boolean equals(Object obj) {
 			try {
-				PathElement3ad elt = (PathElement3ad) obj;
+				PathElement3afp elt = (PathElement3afp) obj;
 				return getType() == elt.getType()
 						&& getToX() == elt.getToX()
 						&& getToY() == elt.getToY()
@@ -319,7 +319,7 @@ public abstract class PathElement3d implements PathElement3ad {
 		@Override
 		public boolean equals(Object obj) {
 			try {
-				PathElement3ad elt = (PathElement3ad) obj;
+				PathElement3afp elt = (PathElement3afp) obj;
 				return getType() == elt.getType()
 						&& getToX() == elt.getToX()
 						&& getToY() == elt.getToY()
@@ -495,7 +495,7 @@ public abstract class PathElement3d implements PathElement3ad {
 		@Override
 		public boolean equals(Object obj) {
 			try {
-				PathElement3ad elt = (PathElement3ad) obj;
+				PathElement3afp elt = (PathElement3afp) obj;
 				return getType() == elt.getType()
 						&& getToX() == elt.getToX()
 						&& getToY() == elt.getToY()
@@ -701,7 +701,7 @@ public abstract class PathElement3d implements PathElement3ad {
 		@Override
 		public boolean equals(Object obj) {
 			try {
-				PathElement3ad elt = (PathElement3ad) obj;
+				PathElement3afp elt = (PathElement3afp) obj;
 				return getType() == elt.getType()
 						&& getToX() == elt.getToX()
 						&& getToY() == elt.getToY()
@@ -901,7 +901,7 @@ public abstract class PathElement3d implements PathElement3ad {
 		@Override
 		public boolean equals(Object obj) {
 			try {
-				PathElement3ad elt = (PathElement3ad) obj;
+				PathElement3afp elt = (PathElement3afp) obj;
 				return getType() == elt.getType()
 						&& getToX() == elt.getToX()
 						&& getToY() == elt.getToY()

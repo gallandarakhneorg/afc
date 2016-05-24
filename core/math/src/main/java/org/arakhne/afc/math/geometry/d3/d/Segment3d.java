@@ -23,7 +23,7 @@ package org.arakhne.afc.math.geometry.d3.d;
 
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Transform3D;
-import org.arakhne.afc.math.geometry.d3.ad.Segment3ad;
+import org.arakhne.afc.math.geometry.d3.afp.Segment3afp;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** A 2D segment/line with 2 double precision floating-point numbers.
@@ -36,7 +36,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @since 13.0
  */
 public class Segment3d extends AbstractShape3d<Segment3d>
-	implements Segment3ad<Shape3d<?>, Segment3d, PathElement3d, Point3d, Vector3d, RectangularPrism3d> {
+	implements Segment3afp<Shape3d<?>, Segment3d, PathElement3d, Point3d, Vector3d, RectangularPrism3d> {
 
 	private static final long serialVersionUID = -5667213589442134247L;
 
@@ -69,7 +69,7 @@ public class Segment3d extends AbstractShape3d<Segment3d>
 	/**
 	 * @param s
 	 */
-	public Segment3d(Segment3ad<?, ?, ?, ?, ?, ?> s) {
+	public Segment3d(Segment3afp<?, ?, ?, ?, ?, ?> s) {
 		this(s.getX1(), s.getY1(), s.getZ1(), s.getX2(), s.getY2(), s.getZ2());
 	}
 

@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  * This program is free software; you can redistribute it and/or modify
  */
-package org.arakhne.afc.math.geometry.d3.ad;
+package org.arakhne.afc.math.geometry.d3.afp;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -50,20 +50,20 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public interface MultiShape3ad<
-		ST extends Shape3ad<?, ?, IE, P, V, B>,
-		IT extends MultiShape3ad<?, ?, CT, IE, P, V, B>,
-		CT extends Shape3ad<?, ?, IE, P, V, B>,
-		IE extends PathElement3ad,
+public interface MultiShape3afp<
+		ST extends Shape3afp<?, ?, IE, P, V, B>,
+		IT extends MultiShape3afp<?, ?, CT, IE, P, V, B>,
+		CT extends Shape3afp<?, ?, IE, P, V, B>,
+		IE extends PathElement3afp,
 		P extends Point3D<? super P, ? super V>,
 		V extends Vector3D<? super V, ? super P>,
-		B extends RectangularPrism3ad<?, ?, IE, P, V, B>>
-		extends Shape3ad<ST, IT, IE, P, V, B>,
-		MultiShape3D<ST, IT, CT, PathIterator3ad<IE>, P, V, B> {
+		B extends RectangularPrism3afp<?, ?, IE, P, V, B>>
+		extends Shape3afp<ST, IT, IE, P, V, B>,
+		MultiShape3D<ST, IT, CT, PathIterator3afp<IE>, P, V, B> {
 
 	@Pure
 	@Override
-	default boolean intersects(Sphere3ad<?, ?, ?, ?, ?, ?> s) {
+	default boolean intersects(Sphere3afp<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Circle must be not null"; //$NON-NLS-1$
 		if (s.intersects(toBoundingBox())) {
 			for (CT shape : getBackendDataList()) {
@@ -77,7 +77,7 @@ public interface MultiShape3ad<
 
 	@Pure
 	@Override
-	default boolean intersects(Prism3ad<?, ?, ?, ?, ?, ?> s) {
+	default boolean intersects(Prism3afp<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Rectangle must be not null"; //$NON-NLS-1$
 		if (s.intersects(toBoundingBox())) {
 			for (CT shape : getBackendDataList()) {
@@ -91,7 +91,7 @@ public interface MultiShape3ad<
 
 	@Pure
 	@Override
-	default boolean intersects(Segment3ad<?, ?, ?, ?, ?, ?> s) {
+	default boolean intersects(Segment3afp<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Segment must be not null"; //$NON-NLS-1$
 		if (s.intersects(toBoundingBox())) {
 			for (CT shape : getBackendDataList()) {
@@ -107,7 +107,7 @@ public interface MultiShape3ad<
 
 	@Pure
 	@Override
-	default boolean intersects(PathIterator3ad<?> iterator) {
+	default boolean intersects(PathIterator3afp<?> iterator) {
 		if (toBoundingBox().intersects(iterator)) {
 			for (CT shape : getBackendDataList()) {
 				if (shape.intersects(iterator.restartIterations())) {
@@ -123,11 +123,11 @@ public interface MultiShape3ad<
 	@Pure
 	@Override
 	@Unefficient
-	default boolean intersects(MultiShape3ad<?, ?, ?, ?, ?, ?, ?> s) {
+	default boolean intersects(MultiShape3afp<?, ?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "MultiShape must be not null"; //$NON-NLS-1$
 		if (s.toBoundingBox().intersects(toBoundingBox())) {
 			for (CT shape1 : getBackendDataList()) {
-				for (Shape3ad<?, ?, ?, ?, ?, ?> shape2 : s.getBackendDataList()) {
+				for (Shape3afp<?, ?, ?, ?, ?, ?> shape2 : s.getBackendDataList()) {
 					if (shape1.intersects(shape2)) {
 						return true;
 					}
@@ -152,7 +152,7 @@ public interface MultiShape3ad<
 
 	@Pure
 	@Override
-	default boolean contains(RectangularPrism3ad<?, ?, ?, ?, ?, ?> r) {
+	default boolean contains(RectangularPrism3afp<?, ?, ?, ?, ?, ?> r) {
 		assert (r != null) : "Rectangle must be not null"; //$NON-NLS-1$
 		if (r.intersects(toBoundingBox())) {
 			for (CT shape : getBackendDataList()) {
@@ -176,7 +176,7 @@ public interface MultiShape3ad<
 	@Pure
 	@Override
 	default ST createTransformedShape(Transform3D transform) {
-		MultiShape3ad multishape = getGeomFactory().newMultiShape();
+		MultiShape3afp multishape = getGeomFactory().newMultiShape();
 		for (CT shape : getBackendDataList()) {
 			multishape.add(shape.createTransformedShape(transform));
 		}
@@ -231,7 +231,7 @@ public interface MultiShape3ad<
 	}
 
 	@Override
-	default PathIterator3ad<IE> getPathIterator(Transform3D transform) {
+	default PathIterator3afp<IE> getPathIterator(Transform3D transform) {
 		if (transform == null || transform.isIdentity()) {
 			return new MultiShapePathIterator<>(getBackendDataList(), getGeomFactory());
 		}
@@ -246,13 +246,13 @@ public interface MultiShape3ad<
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	abstract class AbstractMultiShapePathIterator<IE extends PathElement3ad> implements PathIterator3ad<IE> {
+	abstract class AbstractMultiShapePathIterator<IE extends PathElement3afp> implements PathIterator3afp<IE> {
 		
-		private final GeomFactory3ad<IE, ?, ?, ?> factory;
+		private final GeomFactory3afp<IE, ?, ?, ?> factory;
 		
-		private Iterator<? extends Shape3ad<?, ?, IE, ?, ?, ?>> shapesIterator;
+		private Iterator<? extends Shape3afp<?, ?, IE, ?, ?, ?>> shapesIterator;
 		
-		private PathIterator3ad<IE> shapeIterator;
+		private PathIterator3afp<IE> shapeIterator;
 		
 		private IE next;
 				
@@ -266,14 +266,14 @@ public interface MultiShape3ad<
 
 		/** Iterated list.
 		 */
-		protected final List<? extends Shape3ad<?, ?, IE, ?, ?, ?>> list;
+		protected final List<? extends Shape3afp<?, ?, IE, ?, ?, ?>> list;
 		
 		/**
 		 * @param list the list of the shapes to iterate on.
 		 * @param factory the factory of path elements.
 		 */
-		public AbstractMultiShapePathIterator(List<? extends Shape3ad<?, ?, IE, ?, ?, ?>> list,
-				GeomFactory3ad<IE, ?, ?, ?> factory) {
+		public AbstractMultiShapePathIterator(List<? extends Shape3afp<?, ?, IE, ?, ?, ?>> list,
+				GeomFactory3afp<IE, ?, ?, ?> factory) {
 			assert (list != null) : "List of shapes must be not null"; //$NON-NLS-1$
 			assert (factory != null) : "Shape factory must be not null"; //$NON-NLS-1$
 			this.list = list;
@@ -285,7 +285,7 @@ public interface MultiShape3ad<
 		 * 
 		 * @param list the list to iterate on.
 		 */
-		protected void delayedInit(List<? extends Shape3ad<?, ?, IE, ?, ?, ?>> list) {
+		protected void delayedInit(List<? extends Shape3afp<?, ?, IE, ?, ?, ?>> list) {
 			if (this.shapesIterator.hasNext()) {
 				this.shapeIterator = getPathIteratorFrom(this.shapesIterator.next());
 				searchNext();
@@ -309,7 +309,7 @@ public interface MultiShape3ad<
 		 * @param shape the shape.
 		 * @return the path iterator.
 		 */
-		protected abstract PathIterator3ad<IE> getPathIteratorFrom(Shape3ad<?, ?, IE, ?, ?, ?> shape);
+		protected abstract PathIterator3afp<IE> getPathIteratorFrom(Shape3afp<?, ?, IE, ?, ?, ?> shape);
 		
 		@Override
 		public boolean hasNext() {
@@ -365,7 +365,7 @@ public interface MultiShape3ad<
 		}
 
 		@Override
-		public GeomFactory3ad<IE, ?, ?, ?> getGeomFactory() {
+		public GeomFactory3afp<IE, ?, ?, ?> getGeomFactory() {
 			return this.factory;
 		}
 	
@@ -379,25 +379,25 @@ public interface MultiShape3ad<
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	class MultiShapePathIterator<IE extends PathElement3ad> extends AbstractMultiShapePathIterator<IE> {
+	class MultiShapePathIterator<IE extends PathElement3afp> extends AbstractMultiShapePathIterator<IE> {
 		
 		/**
 		 * @param list the list of the shapes to iterate on.
 		 * @param factory the factory of path elements.
 		 */
-		public MultiShapePathIterator(List<? extends Shape3ad<?, ?, IE, ?, ?, ?>> list,
-				GeomFactory3ad<IE, ?, ?, ?> factory) {
+		public MultiShapePathIterator(List<? extends Shape3afp<?, ?, IE, ?, ?, ?>> list,
+				GeomFactory3afp<IE, ?, ?, ?> factory) {
 			super(list, factory);
 			delayedInit(list);
 		}
 		
 		@Override
-		public PathIterator3ad<IE> restartIterations() {
+		public PathIterator3afp<IE> restartIterations() {
 			return new MultiShapePathIterator<>(this.list, getGeomFactory());
 		}
 
 		@Override
-		protected PathIterator3ad<IE> getPathIteratorFrom(Shape3ad<?, ?, IE, ?, ?, ?> shape) {
+		protected PathIterator3afp<IE> getPathIteratorFrom(Shape3afp<?, ?, IE, ?, ?, ?> shape) {
 			return shape.getPathIterator();
 		}
 
@@ -411,7 +411,7 @@ public interface MultiShape3ad<
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	class TransformedMultiShapePathIterator<IE extends PathElement3ad> extends AbstractMultiShapePathIterator<IE> {
+	class TransformedMultiShapePathIterator<IE extends PathElement3afp> extends AbstractMultiShapePathIterator<IE> {
 
 		private final Transform3D transform;
 		
@@ -420,8 +420,8 @@ public interface MultiShape3ad<
 		 * @param factory the factory of path elements.
 		 * @param transform the transformation to apply.
 		 */
-		public TransformedMultiShapePathIterator(List<? extends Shape3ad<?, ?, IE, ?, ?, ?>> list,
-				GeomFactory3ad<IE, ?, ?, ?> factory, Transform3D transform) {
+		public TransformedMultiShapePathIterator(List<? extends Shape3afp<?, ?, IE, ?, ?, ?>> list,
+				GeomFactory3afp<IE, ?, ?, ?> factory, Transform3D transform) {
 			super(list, factory);
 			assert (transform != null) : "Transformation must be not null"; //$NON-NLS-1$
 			this.transform = transform;
@@ -429,12 +429,12 @@ public interface MultiShape3ad<
 		}
 
 		@Override
-		public PathIterator3ad<IE> restartIterations() {
+		public PathIterator3afp<IE> restartIterations() {
 			return new TransformedMultiShapePathIterator<>(this.list, getGeomFactory(), this.transform);
 		}
 
 		@Override
-		protected PathIterator3ad<IE> getPathIteratorFrom(Shape3ad<?, ?, IE, ?, ?, ?> shape) {
+		protected PathIterator3afp<IE> getPathIteratorFrom(Shape3afp<?, ?, IE, ?, ?, ?> shape) {
 			return shape.getPathIterator(this.transform);
 		}
 	

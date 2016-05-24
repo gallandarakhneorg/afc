@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.arakhne.afc.math.geometry.d3.ad.MultiShape3ad;
+import org.arakhne.afc.math.geometry.d3.afp.MultiShape3afp;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Container for grouping of shapes.
@@ -43,7 +43,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @since 13.0
  */
 public class MultiShape3d<T extends Shape3d<?>> extends AbstractShape3d<MultiShape3d<T>> implements 
-	MultiShape3ad<Shape3d<?>, MultiShape3d<T>, T, PathElement3d, Point3d, Vector3d, RectangularPrism3d> {
+	MultiShape3afp<Shape3d<?>, MultiShape3d<T>, T, PathElement3d, Point3d, Vector3d, RectangularPrism3d> {
 
 	private static final long serialVersionUID = -4727279807601027239L;
 
@@ -127,7 +127,7 @@ public class MultiShape3d<T extends Shape3d<?>> extends AbstractShape3d<MultiSha
 	public RectangularPrism3d toBoundingBox() {
 		if (this.bounds == null) {
 			this.bounds = getGeomFactory().newBox();
-			MultiShape3ad.super.toBoundingBox(this.bounds);
+			MultiShape3afp.super.toBoundingBox(this.bounds);
 		}
 		return this.bounds;
 	}
@@ -138,7 +138,7 @@ public class MultiShape3d<T extends Shape3d<?>> extends AbstractShape3d<MultiSha
 		assert (box != null) : "Rectangle must be not null"; //$NON-NLS-1$
 		if (this.bounds == null) {
 			this.bounds = getGeomFactory().newBox();
-			MultiShape3ad.super.toBoundingBox(this.bounds);
+			MultiShape3afp.super.toBoundingBox(this.bounds);
 		}
 		box.set(this.bounds);
 	}
@@ -147,7 +147,7 @@ public class MultiShape3d<T extends Shape3d<?>> extends AbstractShape3d<MultiSha
 	public void translate(double dx, double dy, double dz) {
 		if (dx != 0 || dy != 0 || dz != 0) {
 			RectangularPrism3d box = this.bounds;
-			MultiShape3ad.super.translate(dx, dy, dz);
+			MultiShape3afp.super.translate(dx, dy, dz);
 			if (box != null) {
 				box.translate(dx, dy, dz);
 				this.bounds = box;

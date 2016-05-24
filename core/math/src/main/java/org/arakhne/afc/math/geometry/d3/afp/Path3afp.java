@@ -19,7 +19,7 @@
  * This program is free software; you can redistribute it and/or modify
  */
 
-package org.arakhne.afc.math.geometry.d3.ad;
+package org.arakhne.afc.math.geometry.d3.afp;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -52,14 +52,14 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public interface Path3ad<
-		ST extends Shape3ad<?, ?, IE, P, V, B>,
-		IT extends Path3ad<?, ?, IE, P, V, B>,
-		IE extends PathElement3ad,
+public interface Path3afp<
+		ST extends Shape3afp<?, ?, IE, P, V, B>,
+		IT extends Path3afp<?, ?, IE, P, V, B>,
+		IE extends PathElement3afp,
 		P extends Point3D<? super P, ? super V>,
 		V extends Vector3D<? super V, ? super P>,
-		B extends RectangularPrism3ad<?, ?, IE, P, V, B>>
-		extends Shape3ad<ST, IT, IE, P, V, B>, Path3D<ST, IT, PathIterator3ad<IE>, P, V, B> {
+		B extends RectangularPrism3afp<?, ?, IE, P, V, B>>
+		extends Shape3afp<ST, IT, IE, P, V, B>, Path3D<ST, IT, PathIterator3afp<IE>, P, V, B> {
 
 	/** Multiple of cubic & quad curve size.
 	 */
@@ -95,22 +95,22 @@ public interface Path3ad<
 	 */
 	static int computeCrossingsFromPath(
 			int crossings,
-			PathIterator3ad<?> iterator, 
-			PathShadow3ad<?> shadow,
+			PathIterator3afp<?> iterator, 
+			PathShadow3afp<?> shadow,
 			CrossingComputationType type) {
 		assert (iterator != null) : "Iterator must be not null"; //$NON-NLS-1$
 		assert (shadow != null) : "Shadow to the right must be not null"; //$NON-NLS-1$
 
 		if (!iterator.hasNext()) return 0;
 
-		PathElement3ad pathElement1 = iterator.next();
+		PathElement3afp pathElement1 = iterator.next();
 
 		if (pathElement1.getType() != PathElementType.MOVE_TO) {
 			throw new IllegalArgumentException("missing initial moveto in the first path definition"); //$NON-NLS-1$
 		}
 
-		GeomFactory3ad<?, ?, ?, ?> factory = iterator.getGeomFactory();
-		Path3ad<?, ?, ?, ?, ?, ?> subPath;
+		GeomFactory3afp<?, ?, ?, ?> factory = iterator.getGeomFactory();
+		Path3afp<?, ?, ?, ?, ?, ?> subPath;
 		double curx, cury, curz, movx, movy, movz, endx, endy, endz;
 		curx = movx = pathElement1.getToX();
 		cury = movy = pathElement1.getToY();
@@ -243,13 +243,13 @@ public interface Path3ad<
 	 * @param result the closest point on the shape; or the point itself
 	 * if it is inside the shape.
 	 */
-	static void getClosestPointTo(PathIterator3ad<? extends PathElement3ad> pi, double x, double y, double z, Point3D<?, ?> result) {
+	static void getClosestPointTo(PathIterator3afp<? extends PathElement3afp> pi, double x, double y, double z, Point3D<?, ?> result) {
 		assert (pi != null) : "Iterator must be not null"; //$NON-NLS-1$
 		assert (!pi.isCurved()) : "The path iterator is not iterating on a polyline path"; //$NON-NLS-1$
 		assert (result != null) : "Result point must be not null"; //$NON-NLS-1$
 
 		double bestDist = Double.POSITIVE_INFINITY;
-		PathElement3ad pe;
+		PathElement3afp pe;
 
 		int mask = (pi.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 1);
 		int crossings = 0;
@@ -271,7 +271,7 @@ public interface Path3ad<
 				break;
 			case LINE_TO:
 			{
-				double factor =  Segment3ad.computeProjectedPointOnLine(
+				double factor =  Segment3afp.computeProjectedPointOnLine(
 						x, y, z,
 						pe.getFromX(), pe.getFromY(), pe.getFromZ(), pe.getToX(), pe.getToY(), pe.getToZ());
 				factor = MathUtil.clamp(factor, 0, 1);
@@ -282,13 +282,13 @@ public interface Path3ad<
 				candidateX = pe.getFromX() + vx;
 				candidateY = pe.getFromY() + vy;
 				candidateZ = pe.getFromZ() + vz;
-				crossings += Segment3ad.computeCrossingsFromPoint(
+				crossings += Segment3afp.computeCrossingsFromPoint(
 						x, y, z,
 						pe.getFromX(), pe.getFromY(), pe.getFromZ(), pe.getToX(), pe.getToY(), pe.getToZ());
 				break;
 			}
 			case CLOSE:
-				crossings += Segment3ad.computeCrossingsFromPoint(
+				crossings += Segment3afp.computeCrossingsFromPoint(
 						x, y, z,
 						pe.getFromX(), pe.getFromY(), pe.getFromZ(), pe.getToX(), pe.getToY(), pe.getToZ());
 				if ((crossings & mask) != 0) {
@@ -297,7 +297,7 @@ public interface Path3ad<
 				}
 
 				if (!pe.isEmpty()) {
-					double factor =  Segment3ad.computeProjectedPointOnLine(
+					double factor =  Segment3afp.computeProjectedPointOnLine(
 							x, y, z,
 							pe.getFromX(), pe.getFromY(), pe.getFromZ(), pe.getToX(), pe.getToY(), pe.getToZ());
 					factor = MathUtil.clamp(factor, 0, 1);
@@ -341,15 +341,15 @@ public interface Path3ad<
 	 * @param z
 	 * @param result the farthest point on the shape.
 	 */
-	static void getFarthestPointTo(PathIterator3ad<? extends PathElement3ad> pi, double x, double y, double z, Point3D<?, ?> result) {
+	static void getFarthestPointTo(PathIterator3afp<? extends PathElement3afp> pi, double x, double y, double z, Point3D<?, ?> result) {
 		assert (pi != null) : "Iterator must be not null"; //$NON-NLS-1$
 		assert (!pi.isCurved()) : "The path iterator is not iterating on a polyline path"; //$NON-NLS-1$
 		assert (result != null) : "Result point must be not null"; //$NON-NLS-1$
 
 		double bestDist = Double.NEGATIVE_INFINITY;
-		PathElement3ad pe;
+		PathElement3afp pe;
 		// Only for internal use.
-		Point3D<?, ?> point = new InnerComputationPoint3ad();
+		Point3D<?, ?> point = new InnerComputationPoint3afp();
 
 		while (pi.hasNext()) {
 			pe = pi.next();
@@ -359,7 +359,7 @@ public interface Path3ad<
 				break;
 			case LINE_TO:
 			case CLOSE:
-				Segment3ad.computeFarthestPointTo(
+				Segment3afp.computeFarthestPointTo(
 						pe.getFromX(), pe.getFromY(), pe.getFromZ(), pe.getToX(), pe.getToY(), pe.getToZ(),
 						x, y, z, point);
 				double d = Point3D.getDistanceSquaredPointPoint(x, y, z, point.getX(), point.getY(), point.getZ());
@@ -378,11 +378,11 @@ public interface Path3ad<
 
 	/**
 	 * Tests if the specified coordinates are inside the closed
-	 * boundary of the specified {@link PathIterator3ad}.
+	 * boundary of the specified {@link PathIterator3afp}.
 	 * <p>
 	 * This method provides a basic facility for implementors of
-	 * the {@link Shape3ad} interface to implement support for the
-	 * {@link Shape3ad#contains(double, double)} method.
+	 * the {@link Shape3afp} interface to implement support for the
+	 * {@link Shape3afp#contains(double, double)} method.
 	 *
 	 * @param pi the specified {@code PathIterator2f}
 	 * @param x the specified X coordinate
@@ -391,7 +391,7 @@ public interface Path3ad<
 	 * @return {@code true} if the specified coordinates are inside the
 	 *         specified {@code PathIterator2f}; {@code false} otherwise
 	 */
-	static boolean containsPoint(PathIterator3ad<? extends PathElement3ad> pi, double x, double y, double  z) {
+	static boolean containsPoint(PathIterator3afp<? extends PathElement3afp> pi, double x, double y, double  z) {
 		assert (pi != null) : "Iterator must be not null"; //$NON-NLS-1$
 		// Copied from the AWT API
 		int mask = (pi.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 1);
@@ -401,11 +401,11 @@ public interface Path3ad<
 
 	/**
 	 * Tests if the specified rectangle is inside the closed
-	 * boundary of the specified {@link PathIterator3ad}.
+	 * boundary of the specified {@link PathIterator3afp}.
 	 * <p>
 	 * This method provides a basic facility for implementors of
-	 * the {@link Shape3ad} interface to implement support for the
-	 * {@link Shape3ad#contains(RectangularPrism3ad)} method.
+	 * the {@link Shape3afp} interface to implement support for the
+	 * {@link Shape3afp#contains(RectangularPrism3afp)} method.
 	 *
 	 * @param pi the specified {@code PathIterator2f}
 	 * @param rx the lowest corner of the rectangle.
@@ -417,7 +417,7 @@ public interface Path3ad<
 	 * @return {@code true} if the specified rectangle is inside the
 	 *         specified {@code PathIterator2f}; {@code false} otherwise.
 	 */
-	static boolean containsRectangle(PathIterator3ad<? extends PathElement3ad> pi, double rx, double ry, double rz, double rwidth, double rheight, double rdepth) {
+	static boolean containsRectangle(PathIterator3afp<? extends PathElement3afp> pi, double rx, double ry, double rz, double rwidth, double rheight, double rdepth) {
 		assert (pi != null) : "Iterator must be not null"; //$NON-NLS-1$
 		assert (rwidth >= 0.) : "Rectangle width must be positive or zero"; //$NON-NLS-1$
 		assert (rheight >= 0.) : "Rectangle height must be positive or zero"; //$NON-NLS-1$
@@ -437,22 +437,22 @@ public interface Path3ad<
 	}
 
 	/**
-	 * Tests if the interior of the specified {@link PathIterator3ad}
+	 * Tests if the interior of the specified {@link PathIterator3afp}
 	 * intersects the interior of a specified set of rectangular
 	 * coordinates.
 	 *
-	 * @param pi the specified {@link PathIterator3ad}.
+	 * @param pi the specified {@link PathIterator3afp}.
 	 * @param x the specified X coordinate of the rectangle.
 	 * @param y the specified Y coordinate of the rectangle.
 	 * @param z the specified Y coordinate of the rectangle.
 	 * @param w the width of the specified rectangular coordinates.
 	 * @param h the height of the specified rectangular coordinates.
 	 * @param d the depth of the specified rectangular coordinates.
-	 * @return <code>true</code> if the specified {@link PathIterator3ad} and
+	 * @return <code>true</code> if the specified {@link PathIterator3afp} and
 	 *         the interior of the specified set of rectangular
 	 *         coordinates intersect each other; <code>false</code> otherwise.
 	 */
-	static boolean intersectsPathIteratorRectangle(PathIterator3ad<? extends PathElement3ad> pi, double x, double y, double z, double w, double h, double d) {
+	static boolean intersectsPathIteratorRectangle(PathIterator3afp<? extends PathElement3afp> pi, double x, double y, double z, double w, double h, double d) {
 		assert (pi != null) : "Iterator must be not null"; //$NON-NLS-1$
 		assert (w >= 0.) : "Rectangle width must be positive or zero"; //$NON-NLS-1$
 		assert (h >= 0.) : "Rectangle height must be positive or zero"; //$NON-NLS-1$
@@ -490,21 +490,21 @@ public interface Path3ad<
 	 */
 	static int computeCrossingsFromPoint(
 			int crossings,
-			PathIterator3ad<? extends PathElement3ad> iterator,
+			PathIterator3afp<? extends PathElement3afp> iterator,
 			double px, double py, double pz,
 			CrossingComputationType type) {	
 		assert (iterator != null) : "Iterator must be not null"; //$NON-NLS-1$
 		// Copied from the AWT API
 		if (!iterator.hasNext()) return 0;
-		PathElement3ad element;
+		PathElement3afp element;
 
 		element = iterator.next();
 		if (element.getType() != PathElementType.MOVE_TO) {
 			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
 		}
 
-		GeomFactory3ad<?, ?, ?, ?> factory = iterator.getGeomFactory();
-		Path3ad<?, ?, ?, ?, ?, ?> subPath;
+		GeomFactory3afp<?, ?, ?, ?> factory = iterator.getGeomFactory();
+		Path3afp<?, ?, ?, ?, ?, ?> subPath;
 		double movx = element.getToX();
 		double movy = element.getToY();
 		double movz = element.getToZ();
@@ -527,7 +527,7 @@ public interface Path3ad<
 				endz = element.getToZ();
 				if (endx==px && endy==py && endz==pz)
 					return MathConstants.SHAPE_INTERSECTS;
-				numCrossings += Segment3ad.computeCrossingsFromPoint(
+				numCrossings += Segment3afp.computeCrossingsFromPoint(
 						px, py, pz,
 						curx, cury, curz,
 						endx, endy, endz);
@@ -589,7 +589,7 @@ public interface Path3ad<
 				if (cury != movy || curx != movx || curz != movz) {
 					if (movx==px && movy==py && movz==pz)
 						return MathConstants.SHAPE_INTERSECTS;
-					numCrossings += Segment3ad.computeCrossingsFromPoint(
+					numCrossings += Segment3afp.computeCrossingsFromPoint(
 							px, py, pz,
 							curx, cury, curz,
 							movx, movy, movz);
@@ -612,7 +612,7 @@ public interface Path3ad<
 				// Not closed
 				if (movx==px && movy==py && movz==pz)
 					return MathConstants.SHAPE_INTERSECTS;
-				numCrossings += Segment3ad.computeCrossingsFromPoint(
+				numCrossings += Segment3afp.computeCrossingsFromPoint(
 						px, py, pz,
 						curx, cury, curz,
 						movx, movy, movz);
@@ -649,7 +649,7 @@ public interface Path3ad<
 //	 */
 //	static int computeCrossingsFromEllipse(
 //			int crossings, 
-//			PathIterator3ad<? extends PathElement3ad> iterator, 
+//			PathIterator3afp<? extends PathElement3afp> iterator, 
 //			double ex, double ey, double ez, double ew, double eh, double ed, 
 //			CrossingComputationType type) {	
 //		assert (iterator != null) : "Iterator must be not null"; //$NON-NLS-1$
@@ -658,15 +658,15 @@ public interface Path3ad<
 //		assert (ed >= 0.) : "Ellipse depth must be positive or zero"; //$NON-NLS-1$
 //		// Copied from the AWT API
 //		if (!iterator.hasNext()) return 0;
-//		PathElement3ad element;
+//		PathElement3afp element;
 //
 //		element = iterator.next();
 //		if (element.getType() != PathElementType.MOVE_TO) {
 //			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
 //		}
 //
-//		GeomFactory3ad<?, ?, ?, ?> factory = iterator.getGeomFactory();
-//		Path3ad<?, ?, ?, ?, ?, ?> localPath;
+//		GeomFactory3afp<?, ?, ?, ?> factory = iterator.getGeomFactory();
+//		Path3afp<?, ?, ?, ?, ?, ?> localPath;
 //		double movx = element.getToX();
 //		double movy = element.getToY();
 //		double movz = element.getToZ();
@@ -687,7 +687,7 @@ public interface Path3ad<
 //				endx = element.getToX();
 //				endy = element.getToY();
 //				endz = element.getToZ();
-//				numCrosses = Segment3ad.computeCrossingsFromEllipse(
+//				numCrosses = Segment3afp.computeCrossingsFromEllipse(
 //						numCrosses,
 //						ex, ey, ez, ew, eh, ed,
 //						curx, cury, curz,
@@ -747,7 +747,7 @@ public interface Path3ad<
 //				break;
 //			case CLOSE:
 //				if (cury != movy || curx != movx || curz != movz) {
-//					numCrosses = Segment3ad.computeCrossingsFromEllipse(
+//					numCrosses = Segment3afp.computeCrossingsFromEllipse(
 //							numCrosses,
 //							ex, ey, ez, ew, eh, ed,
 //							curx, cury, curz,
@@ -771,7 +771,7 @@ public interface Path3ad<
 //		if (isOpen && type != null) {
 //			switch (type) {
 //			case AUTO_CLOSE:
-//				numCrosses = Segment3ad.computeCrossingsFromEllipse(
+//				numCrosses = Segment3afp.computeCrossingsFromEllipse(
 //						numCrosses,
 //						ex, ey, ez, ew, eh, ed,
 //						curx, cury, curz,
@@ -809,7 +809,7 @@ public interface Path3ad<
 //	 */
 //	static int computeCrossingsFromRoundRect(
 //			int crossings, 
-//			PathIterator3ad<? extends PathElement3ad> iterator, 
+//			PathIterator3afp<? extends PathElement3afp> iterator, 
 //			double x1, double y1, double x2, double y2,
 //			double arcWidth, double arcHeight,
 //			CrossingComputationType type) {	
@@ -819,14 +819,14 @@ public interface Path3ad<
 //
 //		if (!iterator.hasNext()) return 0;
 //
-//		PathElement3ad pathElement = iterator.next();
+//		PathElement3afp pathElement = iterator.next();
 //
 //		if (pathElement.getType() != PathElementType.MOVE_TO) {
 //			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
 //		}
 //
-//		GeomFactory3ad<?, ?, ?, ?> factory = iterator.getGeomFactory();
-//		Path3ad<?, ?, ?, ?, ?, ?> localPath;
+//		GeomFactory3afp<?, ?, ?, ?> factory = iterator.getGeomFactory();
+//		Path3afp<?, ?, ?, ?, ?, ?> localPath;
 //		double curx, cury, movx, movy, endx, endy;
 //		curx = movx = pathElement.getToX();
 //		cury = movy = pathElement.getToY();
@@ -845,7 +845,7 @@ public interface Path3ad<
 //			case LINE_TO:
 //				endx = pathElement.getToX();
 //				endy = pathElement.getToY();
-//				numCrossings = Segment3ad.computeCrossingsFromRoundRect(numCrossings,
+//				numCrossings = Segment3afp.computeCrossingsFromRoundRect(numCrossings,
 //						x1, y1, x2, y2, arcWidth, arcHeight,
 //						curx, cury,
 //						endx, endy);
@@ -897,7 +897,7 @@ public interface Path3ad<
 //				break;
 //			case CLOSE:
 //				if (curx != movx || cury != movy) {
-//					numCrossings = Segment3ad.computeCrossingsFromRoundRect(numCrossings,
+//					numCrossings = Segment3afp.computeCrossingsFromRoundRect(numCrossings,
 //							x1, y1, x2, y2, arcWidth, arcHeight,
 //							curx, cury,
 //							movx, movy);
@@ -919,7 +919,7 @@ public interface Path3ad<
 //			switch (type) {
 //			case AUTO_CLOSE:
 //				// Not closed
-//				numCrossings = Segment3ad.computeCrossingsFromRoundRect(numCrossings,
+//				numCrossings = Segment3afp.computeCrossingsFromRoundRect(numCrossings,
 //						x1, y1, x2, y2, arcWidth, arcHeight,
 //						curx, cury,
 //						movx, movy);
@@ -954,22 +954,22 @@ public interface Path3ad<
 	 */
 	static int computeCrossingsFromSphere(
 			int crossings, 
-			PathIterator3ad<? extends PathElement3ad> iterator,
+			PathIterator3afp<? extends PathElement3afp> iterator,
 			double cx, double cy, double cz, double radius,
 			CrossingComputationType type) {	
 		assert (iterator != null) : "Iterator must be not null"; //$NON-NLS-1$
 		assert (radius >= 0.) : "Circle radius must be positive or zero"; //$NON-NLS-1$
 		// Copied from the AWT API
 		if (!iterator.hasNext()) return 0;
-		PathElement3ad element;
+		PathElement3afp element;
 
 		element = iterator.next();
 		if (element.getType() != PathElementType.MOVE_TO) {
 			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
 		}
 
-		GeomFactory3ad<?, ?, ?, ?> factory = iterator.getGeomFactory();
-		Path3ad<?, ?, ?, ?, ?, ?> localPath;
+		GeomFactory3afp<?, ?, ?, ?> factory = iterator.getGeomFactory();
+		Path3afp<?, ?, ?, ?, ?, ?> localPath;
 		double movx = element.getToX();
 		double movy = element.getToY();
 		double movz = element.getToZ();
@@ -990,7 +990,7 @@ public interface Path3ad<
 				endx = element.getToX();
 				endy = element.getToY();
 				endz = element.getToZ();
-				numCrosses = Segment3ad.computeCrossingsFromCircle(
+				numCrosses = Segment3afp.computeCrossingsFromCircle(
 						numCrosses,
 						cx, cy, cz, radius,
 						curx, cury, curz,
@@ -1051,7 +1051,7 @@ public interface Path3ad<
 				break;
 			case CLOSE:
 				if (cury != movy || curx != movx || curz != movz) {
-					numCrosses = Segment3ad.computeCrossingsFromCircle(
+					numCrosses = Segment3afp.computeCrossingsFromCircle(
 							numCrosses,
 							cx, cy, cz, radius,
 							curx, cury, curz,
@@ -1076,7 +1076,7 @@ public interface Path3ad<
 			switch(type) {
 			case AUTO_CLOSE:
 				// Auto close
-				numCrosses = Segment3ad.computeCrossingsFromCircle(
+				numCrosses = Segment3afp.computeCrossingsFromCircle(
 						numCrosses,
 						cx, cy, cz, radius,
 						curx, cury, curz,
@@ -1113,20 +1113,20 @@ public interface Path3ad<
 	 * is equivalent to {@link CrossingComputationType#STANDARD}.
 	 * @return the crossing
 	 */
-	static int computeCrossingsFromSegment(int crossings, PathIterator3ad<? extends PathElement3ad> iterator,
+	static int computeCrossingsFromSegment(int crossings, PathIterator3afp<? extends PathElement3afp> iterator,
 			double x1, double y1, double z1, double x2, double y2, double z2, CrossingComputationType type) {	
 		assert (iterator != null) : "Iterator must be not null"; //$NON-NLS-1$
 		// Copied from the AWT API
 		if (!iterator.hasNext() || crossings==MathConstants.SHAPE_INTERSECTS) return crossings;
-		PathElement3ad element;
+		PathElement3afp element;
 
 		element = iterator.next();
 		if (element.getType() != PathElementType.MOVE_TO) {
 			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
 		}
 
-		GeomFactory3ad<?, ?, ?, ?> factory = iterator.getGeomFactory();
-		Path3ad<?, ?, ?, ?, ?, ?> localPath;
+		GeomFactory3afp<?, ?, ?, ?> factory = iterator.getGeomFactory();
+		Path3afp<?, ?, ?, ?, ?, ?> localPath;
 		double movx = element.getToX();
 		double movy = element.getToY();
 		double movz = element.getToZ();
@@ -1147,7 +1147,7 @@ public interface Path3ad<
 				endx = element.getToX();
 				endy = element.getToY();
 				endz = element.getToZ();
-				numCrosses = Segment3ad.computeCrossingsFromSegment(
+				numCrosses = Segment3afp.computeCrossingsFromSegment(
 						numCrosses,
 						x1, y1, z1, x2, y2, z2,
 						curx, cury, curz,
@@ -1205,7 +1205,7 @@ public interface Path3ad<
 				break;
 			case CLOSE:
 				if (cury != movy || curx != movx || curz != movz) {
-					numCrosses = Segment3ad.computeCrossingsFromSegment(
+					numCrosses = Segment3afp.computeCrossingsFromSegment(
 							numCrosses,
 							x1, y1, z1, x2, y2, z2,
 							curx, cury, curz,
@@ -1227,7 +1227,7 @@ public interface Path3ad<
 		if (isOpen && type != null) {
 			switch (type) {
 			case AUTO_CLOSE:
-				numCrosses = Segment3ad.computeCrossingsFromSegment(
+				numCrosses = Segment3afp.computeCrossingsFromSegment(
 						numCrosses,
 						x1, y1, z1, x2, y2, z2,
 						curx, cury, curz,
@@ -1272,7 +1272,7 @@ public interface Path3ad<
 	 */
 	static int computeCrossingsFromRect(
 			int crossings,
-			PathIterator3ad<? extends PathElement3ad> iterator,
+			PathIterator3afp<? extends PathElement3afp> iterator,
 			double rxmin, double rymin, double rzmin,
 			double rxmax, double rymax, double rzmax,
 			CrossingComputationType type) {
@@ -1283,14 +1283,14 @@ public interface Path3ad<
 		// Copied from AWT API
 		if (!iterator.hasNext()) return 0;
 
-		PathElement3ad pathElement = iterator.next();
+		PathElement3afp pathElement = iterator.next();
 
 		if (pathElement.getType() != PathElementType.MOVE_TO) {
 			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
 		}
 
-		GeomFactory3ad<?, ?, ?, ?> factory = iterator.getGeomFactory();
-		Path3ad<?, ?, ?, ?, ?, ?> localPath;
+		GeomFactory3afp<?, ?, ?, ?> factory = iterator.getGeomFactory();
+		Path3afp<?, ?, ?, ?, ?, ?> localPath;
 		double curx, cury, curz, movx, movy, movz, endx, endy, endz;
 		curx = movx = pathElement.getToX();
 		cury = movy = pathElement.getToY();
@@ -1312,7 +1312,7 @@ public interface Path3ad<
 				endx = pathElement.getToX();
 				endy = pathElement.getToY();
 				endz = pathElement.getToZ();
-				numCrossings = Segment3ad.computeCrossingsFromRect(
+				numCrossings = Segment3afp.computeCrossingsFromRect(
 						numCrossings,
 						rxmin, rymin, rzmin,
 						rxmax, rymax, rzmax,
@@ -1374,7 +1374,7 @@ public interface Path3ad<
 				break;
 			case CLOSE:
 				if (curx != movx || cury != movy || curz != movz) {
-					numCrossings = Segment3ad.computeCrossingsFromRect(
+					numCrossings = Segment3afp.computeCrossingsFromRect(
 							numCrossings,
 							rxmin, rymin, rzmin,
 							rxmax, rymax, rzmax,
@@ -1401,7 +1401,7 @@ public interface Path3ad<
 			switch (type) {
 			case AUTO_CLOSE:
 				// Not closed
-				numCrossings = Segment3ad.computeCrossingsFromRect(
+				numCrossings = Segment3afp.computeCrossingsFromRect(
 						numCrossings,
 						rxmin, rymin, rzmin,
 						rxmax, rymax, rzmax,
@@ -1448,7 +1448,7 @@ public interface Path3ad<
 //	 */
 //	static int computeCrossingsFromTriangle(
 //			int crossings,
-//			PathIterator3ad<? extends PathElement3ad> iterator,
+//			PathIterator3afp<? extends PathElement3afp> iterator,
 //			double x1, double y1,
 //			double x2, double y2,
 //			double x3, double y3,
@@ -1456,14 +1456,14 @@ public interface Path3ad<
 //		assert (iterator != null) : "Iterator must be not null"; //$NON-NLS-1$
 //		if (!iterator.hasNext()) return 0;
 //
-//		PathElement3ad pathElement = iterator.next();
+//		PathElement3afp pathElement = iterator.next();
 //
 //		if (pathElement.getType() != PathElementType.MOVE_TO) {
 //			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
 //		}
 //
-//		GeomFactory3ad<?, ?, ?, ?> factory = iterator.getGeomFactory();
-//		Path3ad<?, ?, ?, ?, ?, ?> localPath;
+//		GeomFactory3afp<?, ?, ?, ?> factory = iterator.getGeomFactory();
+//		Path3afp<?, ?, ?, ?, ?, ?> localPath;
 //		double curx, cury, movx, movy, endx, endy;
 //		curx = movx = pathElement.getToX();
 //		cury = movy = pathElement.getToY();
@@ -1482,7 +1482,7 @@ public interface Path3ad<
 //			case LINE_TO:
 //				endx = pathElement.getToX();
 //				endy = pathElement.getToY();
-//				numCrossings = Segment3ad.computeCrossingsFromTriangle(numCrossings,
+//				numCrossings = Segment3afp.computeCrossingsFromTriangle(numCrossings,
 //						x1, y1, x2, y2, x3, y3,
 //						curx, cury,
 //						endx, endy);
@@ -1534,7 +1534,7 @@ public interface Path3ad<
 //				break;
 //			case CLOSE:
 //				if (curx != movx || cury != movy) {
-//					numCrossings = Segment3ad.computeCrossingsFromTriangle(numCrossings,
+//					numCrossings = Segment3afp.computeCrossingsFromTriangle(numCrossings,
 //							x1, y1, x2, y2, x3, y3,
 //							curx, cury,
 //							movx, movy);
@@ -1556,7 +1556,7 @@ public interface Path3ad<
 //			switch (type) {
 //			case AUTO_CLOSE:
 //				// Not closed
-//				numCrossings = Segment3ad.computeCrossingsFromTriangle(numCrossings,
+//				numCrossings = Segment3afp.computeCrossingsFromTriangle(numCrossings,
 //						x1, y1, x2, y2, x3, y3,
 //						curx, cury,
 //						movx, movy);
@@ -1580,18 +1580,18 @@ public interface Path3ad<
 	 * <p>An element is drawable if it is a line, a curve, or a closing path element.
 	 * The box fits the drawn lines and the drawn curves. The control points of the
 	 * curves may be outside the output box. For obtaining the bounding box
-	 * of the path's points, use {@link #computeControlPointBoundingBox(PathIterator3ad, RectangularPrism3ad)}.
+	 * of the path's points, use {@link #computeControlPointBoundingBox(PathIterator3afp, RectangularPrism3afp)}.
 	 * 
 	 * @param iterator the iterator on the path elements.
 	 * @param box the box to set.
 	 * @return <code>true</code> if a drawable element was found.
-	 * @see #computeControlPointBoundingBox(PathIterator3ad, RectangularPrism3ad)
+	 * @see #computeControlPointBoundingBox(PathIterator3afp, RectangularPrism3afp)
 	 */
-	static boolean computeDrawableElementBoundingBox(PathIterator3ad<?> iterator,
-			RectangularPrism3ad<?, ?, ?, ?, ?, ?> box) {
+	static boolean computeDrawableElementBoundingBox(PathIterator3afp<?> iterator,
+			RectangularPrism3afp<?, ?, ?, ?, ?, ?> box) {
 		assert (iterator != null) : "Iterator must be not null"; //$NON-NLS-1$
 		assert (box != null) : "Rectangle must be not null"; //$NON-NLS-1$
-		GeomFactory3ad<?, ?, ?, ?> factory = iterator.getGeomFactory();
+		GeomFactory3afp<?, ?, ?, ?> factory = iterator.getGeomFactory();
 		boolean foundOneLine = false;
 		double xmin = Double.POSITIVE_INFINITY;
 		double ymin = Double.POSITIVE_INFINITY;
@@ -1599,9 +1599,9 @@ public interface Path3ad<
 		double xmax = Double.NEGATIVE_INFINITY;
 		double ymax = Double.NEGATIVE_INFINITY;
 		double zmax = Double.NEGATIVE_INFINITY;
-		PathElement3ad element;
-		Path3ad<?, ?, ?, ?, ?, ?> subPath;
-		RectangularPrism3ad<?, ?, ?, ?, ?, ?> subBox;
+		PathElement3afp element;
+		Path3afp<?, ?, ?, ?, ?, ?> subPath;
+		RectangularPrism3afp<?, ?, ?, ?, ?, ?> subBox;
 		while (iterator.hasNext()) {
 			element = iterator.next();
 			switch(element.getType()) {
@@ -1679,15 +1679,15 @@ public interface Path3ad<
 	 * The box fits the drawn lines and the drawn curves. The control points of the
 	 * curves may be outside the output box. For obtaining the bounding box
 	 * of the drawn lines and cruves, use
-	 * {@link #computeDrawableElementBoundingBox(PathIterator3ad, RectangularPrism3ad)}.
+	 * {@link #computeDrawableElementBoundingBox(PathIterator3afp, RectangularPrism3afp)}.
 	 * 
 	 * @param iterator the iterator on the path elements.
 	 * @param box the box to set.
 	 * @return <code>true</code> if a control point was found.
-	 * @see #computeDrawableElementBoundingBox(PathIterator3ad, RectangularPrism3ad)
+	 * @see #computeDrawableElementBoundingBox(PathIterator3afp, RectangularPrism3afp)
 	 */
-	static boolean computeControlPointBoundingBox(PathIterator3ad<?> iterator,
-			RectangularPrism3ad<?, ?, ?, ?, ?, ?> box) {
+	static boolean computeControlPointBoundingBox(PathIterator3afp<?> iterator,
+			RectangularPrism3afp<?, ?, ?, ?, ?, ?> box) {
 		assert (iterator != null) : "Iterator must be not null"; //$NON-NLS-1$
 		assert (box != null) : "Rectangle must be not null"; //$NON-NLS-1$
 		boolean foundOneControlPoint = false;
@@ -1697,7 +1697,7 @@ public interface Path3ad<
 		double xmax = Double.NEGATIVE_INFINITY;
 		double ymax = Double.NEGATIVE_INFINITY;
 		double zmax = Double.NEGATIVE_INFINITY;
-		PathElement3ad element;
+		PathElement3afp element;
 		while (iterator.hasNext()) {
 			element = iterator.next();
 			switch(element.getType()) {
@@ -1782,17 +1782,17 @@ public interface Path3ad<
 	 * @param iterator the iterator on the path elements.
 	 * @return the squared length of the path.
 	 */
-	static double computeLength(PathIterator3ad<?> iterator) {
+	static double computeLength(PathIterator3afp<?> iterator) {
 		assert (iterator != null) : "Iterator must be not null"; //$NON-NLS-1$
-		PathElement3ad pathElement = iterator.next();
+		PathElement3afp pathElement = iterator.next();
 
 		if (pathElement.getType() != PathElementType.MOVE_TO) {
 			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
 		}
 
 		// only for internal use
-		GeomFactory3ad<?, ?, ?, ?> factory = iterator.getGeomFactory();
-		Path3ad<?, ?, ?, ?, ?, ?> subPath;
+		GeomFactory3afp<?, ?, ?, ?> factory = iterator.getGeomFactory();
+		Path3afp<?, ?, ?, ?, ?, ?> subPath;
 		double curx, cury, curz, movx, movy, movz, endx, endy, endz;
 		curx = movx = pathElement.getToX();
 		cury = movy = pathElement.getToY();
@@ -1883,9 +1883,9 @@ public interface Path3ad<
 	 * 
 	 * @param iterator
 	 */
-	default void add(Iterator<? extends PathElement3ad> iterator) {
+	default void add(Iterator<? extends PathElement3afp> iterator) {
 		assert (iterator != null) : "Iterator must be not null"; //$NON-NLS-1$
-		PathElement3ad element;
+		PathElement3afp element;
 		while (iterator.hasNext()) {
 			element = iterator.next();
 			switch(element.getType()) {
@@ -1913,7 +1913,7 @@ public interface Path3ad<
 	 *
 	 * @param s the path to copy.
 	 */
-	default void set(Path3ad<?, ?, ?, ?, ?, ?> s) {
+	default void set(Path3afp<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Path must be not null"; //$NON-NLS-1$
 		clear();
 		add(s.getPathIterator());
@@ -2038,7 +2038,7 @@ public interface Path3ad<
 	}
 
 	@Override
-	default boolean contains(RectangularPrism3ad<?, ?, ?, ?, ?, ?> r) {
+	default boolean contains(RectangularPrism3afp<?, ?, ?, ?, ?, ?> r) {
 		assert (r != null) : "Rectangle must be not null"; //$NON-NLS-1$
 		return containsRectangle(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
 				r.getMinX(), r.getMinY(), r.getMinZ(), r.getWidth(), r.getHeight(), r.getDepth());
@@ -2046,7 +2046,7 @@ public interface Path3ad<
 
 	@Pure
 	@Override
-	default boolean intersects(Prism3ad<?, ?, ?, ?, ?, ?> s) {
+	default boolean intersects(Prism3afp<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Rectangle must be not null"; //$NON-NLS-1$
 		// Copied from AWT API
 		if (s.isEmpty()) return false;
@@ -2061,7 +2061,7 @@ public interface Path3ad<
 
 	@Pure
 	@Override
-	default boolean intersects(Sphere3ad<?, ?, ?, ?, ?, ?> s) {
+	default boolean intersects(Sphere3afp<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Circle must be not null"; //$NON-NLS-1$
 		int mask = (getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2);
 		int crossings = computeCrossingsFromSphere(
@@ -2075,7 +2075,7 @@ public interface Path3ad<
 
 	@Pure
 	@Override
-	default boolean intersects(Segment3ad<?, ?, ?, ?, ?, ?> s) {
+	default boolean intersects(Segment3afp<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Segment must be not null"; //$NON-NLS-1$
 		int mask = (getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2);
 		int crossings = computeCrossingsFromSegment(
@@ -2090,13 +2090,13 @@ public interface Path3ad<
 
 	@Pure
 	@Override
-	default boolean intersects(Path3ad<?, ?, ?, ?, ?, ?> s) {
+	default boolean intersects(Path3afp<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Path must be not null"; //$NON-NLS-1$
 		int mask = (getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2);
 		int crossings = computeCrossingsFromPath(
 				0,
 				s.getPathIterator(),
-				new PathShadow3ad<>(this),
+				new PathShadow3afp<>(this),
 				CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
 		return (crossings == MathConstants.SHAPE_INTERSECTS ||
 				(crossings & mask) != 0);
@@ -2104,13 +2104,13 @@ public interface Path3ad<
 
 	@Pure
 	@Override
-	default boolean intersects(PathIterator3ad<?> iterator) {
+	default boolean intersects(PathIterator3afp<?> iterator) {
 		assert (iterator != null) : "Iterator must be not null"; //$NON-NLS-1$
 		int mask = (getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2);
 		int crossings = computeCrossingsFromPath(
 				0,
 				iterator,
-				new PathShadow3ad<>(this),
+				new PathShadow3afp<>(this),
 				CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
 		return (crossings == MathConstants.SHAPE_INTERSECTS ||
 				(crossings & mask) != 0);
@@ -2118,7 +2118,7 @@ public interface Path3ad<
 
 	@Pure
 	@Override
-	default boolean intersects(MultiShape3ad<?, ?, ?, ?, ?, ?, ?> s) {
+	default boolean intersects(MultiShape3afp<?, ?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "MultiShape must be not null"; //$NON-NLS-1$
 		return s.intersects(this);
 	}
@@ -2167,7 +2167,7 @@ public interface Path3ad<
 
 	@Pure
 	@Override
-	default PathIterator3ad<IE> getPathIterator(Transform3D transform) {
+	default PathIterator3afp<IE> getPathIterator(Transform3D transform) {
 		if (transform == null) {
 			return new PathPathIterator<>(this);
 		}
@@ -2176,7 +2176,7 @@ public interface Path3ad<
 
 	@Pure
 	@Override
-	default PathIterator3ad<IE> getPathIterator(double flatness) {
+	default PathIterator3afp<IE> getPathIterator(double flatness) {
 		return new FlatteningPathIterator<>(getPathIterator(null), flatness, DEFAULT_FLATENING_LIMIT);
 	}
 
@@ -2204,7 +2204,7 @@ public interface Path3ad<
 	 * @return an iterator on the path elements.
 	 */
 	@Pure
-	default PathIterator3ad<IE> getPathIterator(Transform3D transform, double flatness) {
+	default PathIterator3afp<IE> getPathIterator(Transform3D transform, double flatness) {
 		return new FlatteningPathIterator<>(getPathIterator(transform), flatness, DEFAULT_FLATENING_LIMIT);
 	}
 	
@@ -2241,7 +2241,7 @@ public interface Path3ad<
 	default P getClosestPointTo(Point3D<?, ?> p) {
 		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
 		P point = getGeomFactory().newPoint();
-		Path3ad.getClosestPointTo(
+		Path3afp.getClosestPointTo(
 				getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
 				p.getX(), p.getY(), p.getZ(),
 				point);
@@ -2253,7 +2253,7 @@ public interface Path3ad<
 	default P getFarthestPointTo(Point3D<?, ?> p) {
 		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
 		P point = getGeomFactory().newPoint();
-		Path3ad.getFarthestPointTo(
+		Path3afp.getFarthestPointTo(
 				getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
 				p.getX(), p.getY(), p.getZ(),
 				point);
@@ -2279,7 +2279,7 @@ public interface Path3ad<
 	@Override
 	default void toBoundingBox(B box) {
 		assert (box != null) : "Rectangle must be not null"; //$NON-NLS-1$
-		Path3ad.computeDrawableElementBoundingBox(
+		Path3afp.computeDrawableElementBoundingBox(
 				getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
 				box);
 	}
@@ -2292,20 +2292,20 @@ public interface Path3ad<
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	abstract class AbstractPathPathIterator<T extends PathElement3ad> implements PathIterator3ad<T> {
+	abstract class AbstractPathPathIterator<T extends PathElement3afp> implements PathIterator3afp<T> {
 
-		private final Path3ad<?, ?, T, ?, ?, ?> path;
+		private final Path3afp<?, ?, T, ?, ?, ?> path;
 
 		/**
 		 * @param path the iterated path.
 		 */
-		public AbstractPathPathIterator(Path3ad<?, ?, T, ?, ?, ?> path) {
+		public AbstractPathPathIterator(Path3afp<?, ?, T, ?, ?, ?> path) {
 			assert (path != null) : "Path must be not null"; //$NON-NLS-1$
 			this.path = path;
 		}
 
 		@Override
-		public GeomFactory3ad<T, ?, ?, ?> getGeomFactory() {
+		public GeomFactory3afp<T, ?, ?, ?> getGeomFactory() {
 			return this.path.getGeomFactory();
 		}
 
@@ -2313,7 +2313,7 @@ public interface Path3ad<
 		 *
 		 * @return the path.
 		 */
-		public Path3ad<?, ?, T, ?, ?, ?> getPath() {
+		public Path3afp<?, ?, T, ?, ?, ?> getPath() {
 			return this.path;
 		}
 
@@ -2359,7 +2359,7 @@ public interface Path3ad<
 	 * @mavenartifactid $ArtifactId$
 	 * @since 13.0
 	 */
-	class PathPathIterator<T extends PathElement3ad> extends AbstractPathPathIterator<T> {
+	class PathPathIterator<T extends PathElement3afp> extends AbstractPathPathIterator<T> {
 
 		private Point3D<?, ?> p1;
 		private Point3D<?, ?> p2;
@@ -2370,14 +2370,14 @@ public interface Path3ad<
 		/**
 		 * @param path the path to iterate on.
 		 */
-		public PathPathIterator(Path3ad<?, ?, T, ?, ?, ?> path) {
+		public PathPathIterator(Path3afp<?, ?, T, ?, ?, ?> path) {
 			super(path);
-			this.p1 = new InnerComputationPoint3ad();
-			this.p2 = new InnerComputationPoint3ad();
+			this.p1 = new InnerComputationPoint3afp();
+			this.p2 = new InnerComputationPoint3afp();
 		}
 		
 		@Override
-		public PathIterator3ad<T> restartIterations() {
+		public PathIterator3afp<T> restartIterations() {
 			return new PathPathIterator<>(getPath());
 		}
 
@@ -2389,7 +2389,7 @@ public interface Path3ad<
 
 		@Override
 		public T next() {
-			Path3ad<?, ?, T, ?, ?, ?> path = getPath();
+			Path3afp<?, ?, T, ?, ?, ?> path = getPath();
 			int type = this.iType;
 			if (this.iType >= path.getPathElementCount()) {
 				throw new NoSuchElementException();
@@ -2489,7 +2489,7 @@ public interface Path3ad<
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	class TransformedPathPathIterator<T extends PathElement3ad> extends AbstractPathPathIterator<T> {
+	class TransformedPathPathIterator<T extends PathElement3afp> extends AbstractPathPathIterator<T> {
 
 		private final Transform3D transform;
 
@@ -2512,18 +2512,18 @@ public interface Path3ad<
 		 * @param path the path to iterate on.
 		 * @param transform the transformation to apply on the path.
 		 */
-		public TransformedPathPathIterator(Path3ad<?, ?, T, ?, ?, ?> path, Transform3D transform) {
+		public TransformedPathPathIterator(Path3afp<?, ?, T, ?, ?, ?> path, Transform3D transform) {
 			super(path);
 			assert (transform != null) : "Transformation must be not null"; //$NON-NLS-1$
 			this.transform = transform;
-			this.p1 = new InnerComputationPoint3ad();
-			this.p2 = new InnerComputationPoint3ad();
-			this.ptmp1 = new InnerComputationPoint3ad();
-			this.ptmp2 = new InnerComputationPoint3ad();
+			this.p1 = new InnerComputationPoint3afp();
+			this.p2 = new InnerComputationPoint3afp();
+			this.ptmp1 = new InnerComputationPoint3afp();
+			this.ptmp2 = new InnerComputationPoint3afp();
 		}
 
 		@Override
-		public PathIterator3ad<T> restartIterations() {
+		public PathIterator3afp<T> restartIterations() {
 			return new TransformedPathPathIterator<>(getPath(), this.transform);
 		}
 
@@ -2535,7 +2535,7 @@ public interface Path3ad<
 
 		@Override
 		public T next() {
-			Path3ad<?, ?, T, ?, ?, ?> path = getPath();
+			Path3afp<?, ?, T, ?, ?, ?> path = getPath();
 			if (this.iType >= path.getPathElementCount()) {
 				throw new NoSuchElementException();
 			}
@@ -2634,11 +2634,11 @@ public interface Path3ad<
 	 * @since 13.0
 	 */
 	// TODO integrate Z coordinate
-	class FlatteningPathIterator<T extends PathElement3ad> implements PathIterator3ad<T> {
+	class FlatteningPathIterator<T extends PathElement3afp> implements PathIterator3afp<T> {
 
 		/** The source iterator.
 		 */
-		private final PathIterator3ad<T> pathIterator;
+		private final PathIterator3afp<T> pathIterator;
 
 		/**
 		 * Square of the flatness parameter for testing against squared lengths.
@@ -2734,7 +2734,7 @@ public interface Path3ad<
 		 * @param limit the maximum number of recursive subdivisions
 		 * allowed for any curved segment
 		 */
-		public FlatteningPathIterator(PathIterator3ad<T> pathIterator, double flatness, int limit) {
+		public FlatteningPathIterator(PathIterator3afp<T> pathIterator, double flatness, int limit) {
 			assert (pathIterator != null) : "Iterator must be not null"; //$NON-NLS-1$
 			assert (flatness >= 0.) : "Flatness must be positive or zero"; //$NON-NLS-1$
 			assert (limit >= 0) : "Recursive subdivisions number must be positive or zero"; //$NON-NLS-1$
@@ -2746,7 +2746,7 @@ public interface Path3ad<
 		}
 		
 		@Override
-		public PathIterator3ad<T> restartIterations() {
+		public PathIterator3afp<T> restartIterations() {
 			return new FlatteningPathIterator<>(
 					this.pathIterator.restartIterations(),
 					Math.sqrt(this.squaredFlatness),
@@ -2783,7 +2783,7 @@ public interface Path3ad<
 		 *          values in the specified array at the specified index.
 		 */
 		private static double getQuadSquaredFlatness(double coords[], int offset) {
-//			return Segment3ad.computeDistanceSquaredLinePoint(
+//			return Segment3afp.computeDistanceSquaredLinePoint(
 //					coords[offset + 0], coords[offset + 1],
 //					coords[offset + 4], coords[offset + 5],
 //					coords[offset + 2], coords[offset + 3]);
@@ -2875,14 +2875,14 @@ public interface Path3ad<
 		 */
 		private static double getCurveSquaredFlatness(double coords[], int offset) {
 //			return Math.max(
-//					Segment3ad.computeDistanceSquaredSegmentPoint(
+//					Segment3afp.computeDistanceSquaredSegmentPoint(
 //							coords[offset + 6],
 //							coords[offset + 7],
 //							coords[offset + 2],
 //							coords[offset + 3],
 //							coords[offset + 0],
 //							coords[offset + 1]),
-//					Segment3ad.computeDistanceSquaredSegmentPoint(
+//					Segment3afp.computeDistanceSquaredSegmentPoint(
 //							coords[offset + 6],
 //							coords[offset + 7],
 //							coords[offset + 4],
@@ -3190,7 +3190,7 @@ public interface Path3ad<
 
 		@Pure
 		@Override
-		public GeomFactory3ad<T, ?, ?, ?> getGeomFactory() {
+		public GeomFactory3afp<T, ?, ?, ?> getGeomFactory() {
 			return this.pathIterator.getGeomFactory();
 		}
 
@@ -3208,12 +3208,12 @@ public interface Path3ad<
 	 */
 	class PointCollection<P extends Point3D<? super P, ? super V>, V extends Vector3D<? super V, ? super P>> implements Collection<P> {
 
-		private final Path3ad<?, ?, ?, P, V, ?> path;
+		private final Path3afp<?, ?, ?, P, V, ?> path;
 
 		/**
 		 * @param path the path to iterate on.
 		 */
-		public PointCollection(Path3ad<?, ?, ?, P, V, ?> path) {
+		public PointCollection(Path3afp<?, ?, ?, P, V, ?> path) {
 			assert (path != null) : "Path must be not null"; //$NON-NLS-1$
 			this.path = path;
 		}
@@ -3349,7 +3349,7 @@ public interface Path3ad<
 	 */
 	class PointIterator<P extends Point3D<? super P, ? super V>, V extends Vector3D<? super V, ? super P>> implements Iterator<P> {
 
-		private final Path3ad<?, ?, ?, P, V, ?> path;
+		private final Path3afp<?, ?, ?, P, V, ?> path;
 
 		private int index = 0;
 
@@ -3358,7 +3358,7 @@ public interface Path3ad<
 		/**
 		 * @param path the path to iterate on.
 		 */
-		public PointIterator(Path3ad<?, ?, ?, P, V, ?> path) {
+		public PointIterator(Path3afp<?, ?, ?, P, V, ?> path) {
 			assert (path != null) : "Path must be not null"; //$NON-NLS-1$
 			this.path = path;
 		}

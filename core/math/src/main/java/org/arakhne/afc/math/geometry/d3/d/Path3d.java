@@ -30,9 +30,9 @@ import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Transform3D;
-import org.arakhne.afc.math.geometry.d3.ad.InnerComputationPoint3ad;
-import org.arakhne.afc.math.geometry.d3.ad.Path3ad;
-import org.arakhne.afc.math.geometry.d3.ad.PathIterator3ad;
+import org.arakhne.afc.math.geometry.d3.afp.InnerComputationPoint3afp;
+import org.arakhne.afc.math.geometry.d3.afp.Path3afp;
+import org.arakhne.afc.math.geometry.d3.afp.PathIterator3afp;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Path with 2 double precision floating-point numbers.
@@ -46,7 +46,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  */
 public class Path3d
 	extends AbstractShape3d<Path3d>
-	implements Path3ad<Shape3d<?>, Path3d, PathElement3d, Point3d, Vector3d, RectangularPrism3d> {
+	implements Path3afp<Shape3d<?>, Path3d, PathElement3d, Point3d, Vector3d, RectangularPrism3d> {
 
 	private static final long serialVersionUID = 4567950736238157802L;
 
@@ -149,7 +149,7 @@ public class Path3d
 	/**
 	 * @param p
 	 */
-	public Path3d(Path3ad<?, ?, ?, ?, ?, ?> p) {
+	public Path3d(Path3afp<?, ?, ?, ?, ?, ?> p) {
 		set(p);
 	}
 	
@@ -254,7 +254,7 @@ public class Path3d
 	@Override
 	public void transform(Transform3D transform) {
 		assert (transform != null) : "Transformation must be not null"; //$NON-NLS-1$
-		Point3D<?, ?> p = new InnerComputationPoint3ad();
+		Point3D<?, ?> p = new InnerComputationPoint3afp();
 		for(int i=0; i<this.numCoords;) {
 			p.set(this.coords[i], this.coords[i+1], this.coords[i+2]);
 			transform.transform(p);
@@ -272,7 +272,7 @@ public class Path3d
 	public boolean isEmpty() {
 		if (this.isEmpty==null) {
 			this.isEmpty = Boolean.TRUE;
-			PathIterator3ad<PathElement3d> pi = getPathIterator();
+			PathIterator3afp<PathElement3d> pi = getPathIterator();
 			PathElement3d pe;
 			while (this.isEmpty==Boolean.TRUE && pi.hasNext()) {
 				pe = pi.next();
@@ -289,7 +289,7 @@ public class Path3d
 		RectangularPrism3d bb = this.graphicalBounds==null ? null : this.graphicalBounds.get();
 		if (bb==null) {
 			bb = getGeomFactory().newBox();
-			Path3ad.computeDrawableElementBoundingBox(
+			Path3afp.computeDrawableElementBoundingBox(
 					getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
 					bb);
 			this.graphicalBounds = new SoftReference<>(bb);
@@ -304,7 +304,7 @@ public class Path3d
 		RectangularPrism3d bb = this.graphicalBounds==null ? null : this.graphicalBounds.get();
 		if (bb==null) {
 			bb = getGeomFactory().newBox();
-			Path3ad.computeDrawableElementBoundingBox(
+			Path3afp.computeDrawableElementBoundingBox(
 					getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
 					bb);
 			this.graphicalBounds = new SoftReference<>(bb);
@@ -320,7 +320,7 @@ public class Path3d
 	@Override
 	public boolean isPolyline() {
 		if (this.isPolyline == null) {
-			PathIterator3ad<PathElement3d> pi = getPathIterator();
+			PathIterator3afp<PathElement3d> pi = getPathIterator();
 			PathElement3d pe;
 			PathElementType t;
 			boolean first = true;
@@ -351,7 +351,7 @@ public class Path3d
 	public boolean isCurved() {
 		if (this.isCurved == null) {
 			this.isCurved = Boolean.FALSE;
-			PathIterator3ad<PathElement3d> pi = getPathIterator();
+			PathIterator3afp<PathElement3d> pi = getPathIterator();
 			PathElement3d pe;
 			PathElementType t;
 			while (this.isCurved == Boolean.FALSE && pi.hasNext()) {
@@ -369,7 +369,7 @@ public class Path3d
 	public boolean isMultiParts() {
 		if (this.isMultipart == null) {
 			this.isMultipart = Boolean.FALSE;
-			PathIterator3ad<PathElement3d> pi = getPathIterator();
+			PathIterator3afp<PathElement3d> pi = getPathIterator();
 			PathElement3d pe;
 			PathElementType t;
 			boolean foundOne = false;
@@ -391,7 +391,7 @@ public class Path3d
 	@Override
 	public boolean isPolygon() {
 		if (this.isPolygon == null) {
-			PathIterator3ad<PathElement3d> pi = getPathIterator();
+			PathIterator3afp<PathElement3d> pi = getPathIterator();
 			PathElement3d pe;
 			PathElementType t;
 			boolean first = true;
@@ -438,7 +438,7 @@ public class Path3d
 		RectangularPrism3d bb = this.logicalBounds==null ? null : this.logicalBounds.get();
 		if (bb==null) {
 			bb = getGeomFactory().newBox();
-			Path3ad.computeControlPointBoundingBox(
+			Path3afp.computeControlPointBoundingBox(
 					getPathIterator(),
 					bb);
 			this.logicalBounds = new SoftReference<>(bb);
@@ -453,7 +453,7 @@ public class Path3d
 		RectangularPrism3d bb = this.logicalBounds==null ? null : this.logicalBounds.get();
 		if (bb==null) {
 			bb = getGeomFactory().newBox();
-			Path3ad.computeControlPointBoundingBox(
+			Path3afp.computeControlPointBoundingBox(
 					getPathIterator(),
 					bb);
 			this.logicalBounds = new SoftReference<>(bb);
@@ -471,7 +471,7 @@ public class Path3d
 			}
 		}
 		else {
-			Point3D<?, ?> p = new InnerComputationPoint3ad();
+			Point3D<?, ?> p = new InnerComputationPoint3afp();
 			for(int i=0; i<clone.length;) {
 				p.set(this.coords[i], this.coords[i+1], this.coords[i+2]);
 				transform.transform(p);
@@ -493,7 +493,7 @@ public class Path3d
 			}
 		}
 		else {
-			Point3D<?, ?> p = new InnerComputationPoint3ad();
+			Point3D<?, ?> p = new InnerComputationPoint3afp();
 			for(int i=0; i<clone.length;) {
 				p.set(this.coords[i], this.coords[i+1], this.coords[i+2]);
 				transform.transform(p);
@@ -511,7 +511,7 @@ public class Path3d
 		if (transform == null || transform.isIdentity()) {
 			return Arrays.copyOf(this.coords, this.numCoords);
 		}
-		Point3D<?, ?> p = new InnerComputationPoint3ad();
+		Point3D<?, ?> p = new InnerComputationPoint3afp();
 		double[] clone = new double[this.numCoords];
 		for(int i=0; i<clone.length;) {
 			p.set(this.coords[i], this.coords[i+1], this.coords[i+2]);
@@ -834,7 +834,7 @@ public class Path3d
 	@Pure
 	public double getLength() {
 		if (this.length == null) {
-			this.length = Double.valueOf(Path3ad.computeLength(getPathIterator()));
+			this.length = Double.valueOf(Path3afp.computeLength(getPathIterator()));
 		}
 		return this.length.doubleValue();
 	}

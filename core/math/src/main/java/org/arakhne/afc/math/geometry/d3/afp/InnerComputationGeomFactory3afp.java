@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  * This program is free software; you can redistribute it and/or modify
  */
-package org.arakhne.afc.math.geometry.d3.ad;
+package org.arakhne.afc.math.geometry.d3.afp;
 
 import org.arakhne.afc.math.geometry.d3.GeomFactory3D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
@@ -33,20 +33,20 @@ import org.arakhne.afc.math.geometry.d3.Vector3D;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-final class InnerComputationGeomFactory implements GeomFactory3D<InnerComputationVector3ad, InnerComputationPoint3ad> {
+final class InnerComputationGeomFactory3afp implements GeomFactory3D<InnerComputationVector3afp, InnerComputationPoint3afp> {
 
 	/** Singleton of the factory.
 	 */
-	public static final InnerComputationGeomFactory SINGLETON = new InnerComputationGeomFactory();
+	public static final InnerComputationGeomFactory3afp SINGLETON = new InnerComputationGeomFactory3afp();
 	
-	private InnerComputationGeomFactory() {
+	private InnerComputationGeomFactory3afp() {
 		//
 	}
 
 	@Override
-	public InnerComputationPoint3ad convertToPoint(Point3D<?, ?> p) {
-		if (p instanceof InnerComputationPoint3ad) {
-			return (InnerComputationPoint3ad) p;
+	public InnerComputationPoint3afp convertToPoint(Point3D<?, ?> p) {
+		if (p instanceof InnerComputationPoint3afp) {
+			return (InnerComputationPoint3afp) p;
 		}
 		double x, y, z;
 		if (p == null) {
@@ -58,11 +58,11 @@ final class InnerComputationGeomFactory implements GeomFactory3D<InnerComputatio
 			y = p.getY();
 			z = p.getZ();
 		}
-		return new InnerComputationPoint3ad(x, y, z);
+		return new InnerComputationPoint3afp(x, y, z);
 	}
 
 	@Override
-	public InnerComputationVector3ad convertToVector(Point3D<?, ?> p) {
+	public InnerComputationVector3afp convertToVector(Point3D<?, ?> p) {
 		double x, y, z;
 		if (p == null) {
 			x = 0;
@@ -73,11 +73,11 @@ final class InnerComputationGeomFactory implements GeomFactory3D<InnerComputatio
 			y = p.getY();
 			z = p.getZ();
 		}
-		return new InnerComputationVector3ad(x, y, z);
+		return new InnerComputationVector3afp(x, y, z);
 	}
 
 	@Override
-	public InnerComputationPoint3ad convertToPoint(Vector3D<?, ?> v) {
+	public InnerComputationPoint3afp convertToPoint(Vector3D<?, ?> v) {
 		double x, y, z;
 		if (v == null) {
 			x = 0;
@@ -88,13 +88,13 @@ final class InnerComputationGeomFactory implements GeomFactory3D<InnerComputatio
 			y = v.getY();
 			z = v.getZ();
 		}
-		return new InnerComputationPoint3ad(x, y, z);
+		return new InnerComputationPoint3afp(x, y, z);
 	}
 
 	@Override
-	public InnerComputationVector3ad convertToVector(Vector3D<?, ?> v) {
-		if (v instanceof InnerComputationVector3ad) {
-			return (InnerComputationVector3ad) v;
+	public InnerComputationVector3afp convertToVector(Vector3D<?, ?> v) {
+		if (v instanceof InnerComputationVector3afp) {
+			return (InnerComputationVector3afp) v;
 		}
 		double x, y, z;
 		if (v == null) {
@@ -106,37 +106,37 @@ final class InnerComputationGeomFactory implements GeomFactory3D<InnerComputatio
 			y = v.getY();
 			z = v.getZ();
 		}
-		return new InnerComputationVector3ad(x, y, z);
+		return new InnerComputationVector3afp(x, y, z);
 	}
 
 	@Override
-	public InnerComputationPoint3ad newPoint() {
-		return new InnerComputationPoint3ad(0, 0, 0);
+	public InnerComputationPoint3afp newPoint() {
+		return new InnerComputationPoint3afp(0, 0, 0);
 	}
 
 	@Override
-	public InnerComputationVector3ad newVector() {
-		return new InnerComputationVector3ad(0, 0, 0);
+	public InnerComputationVector3afp newVector() {
+		return new InnerComputationVector3afp(0, 0, 0);
 	}
 
 	@Override
-	public InnerComputationPoint3ad newPoint(double x, double y, double z) {
-		return new InnerComputationPoint3ad(x, y, z);
+	public InnerComputationPoint3afp newPoint(double x, double y, double z) {
+		return new InnerComputationPoint3afp(x, y, z);
 	}
 
 	@Override
-	public InnerComputationVector3ad newVector(double x, double y, double z) {
-		return new InnerComputationVector3ad(x, y, z);
+	public InnerComputationVector3afp newVector(double x, double y, double z) {
+		return new InnerComputationVector3afp(x, y, z);
 	}
 
 	@Override
-	public InnerComputationPoint3ad newPoint(int x, int y, int z) {
-		return new InnerComputationPoint3ad(x, y, z);
+	public InnerComputationPoint3afp newPoint(int x, int y, int z) {
+		return new InnerComputationPoint3afp(x, y, z);
 	}
 
 	@Override
-	public InnerComputationVector3ad newVector(int x, int y, int z) {
-		return new InnerComputationVector3ad(x, y, z);
+	public InnerComputationVector3afp newVector(int x, int y, int z) {
+		return new InnerComputationVector3afp(x, y, z);
 	}
 
 	/* (non-Javadoc)

@@ -20,7 +20,7 @@
  */
 package org.arakhne.afc.math.geometry.d3.d;
 
-import org.arakhne.afc.math.geometry.d3.ad.Shape3ad;
+import org.arakhne.afc.math.geometry.d3.afp.Shape3afp;
 
 /** 3D shape with 3 integer numbers.
  * 
@@ -32,6 +32,6 @@ import org.arakhne.afc.math.geometry.d3.ad.Shape3ad;
  * @since 13.0
  */
 public interface Shape3d<IT extends Shape3d<?>>
-		extends Shape3ad<Shape3d<?>, IT, PathElement3d, Point3d, Vector3d, RectangularPrism3d> {
+		extends Shape3afp<Shape3d<?>, IT, PathElement3d, Point3d, Vector3d, RectangularPrism3d> {
 	// Provided for making easier the type tests.
 }

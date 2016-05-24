@@ -30,9 +30,9 @@ import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Transform3D;
-import org.arakhne.afc.math.geometry.d3.ad.InnerComputationPoint3ad;
-import org.arakhne.afc.math.geometry.d3.ad.Path3ad;
-import org.arakhne.afc.math.geometry.d3.ad.PathIterator3ad;
+import org.arakhne.afc.math.geometry.d3.afp.InnerComputationPoint3afp;
+import org.arakhne.afc.math.geometry.d3.afp.Path3afp;
+import org.arakhne.afc.math.geometry.d3.afp.PathIterator3afp;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import javafx.beans.binding.Bindings;
@@ -59,7 +59,7 @@ import javafx.collections.FXCollections;
  */
 public class Path3dfx
 	extends AbstractShape3dfx<Path3dfx>
-	implements Path3ad<Shape3dfx<?>, Path3dfx, PathElement3dfx, Point3dfx, Vector3dfx, RectangularPrism3dfx> {
+	implements Path3afp<Shape3dfx<?>, Path3dfx, PathElement3dfx, Point3dfx, Vector3dfx, RectangularPrism3dfx> {
 
 	private static final long serialVersionUID = 6051061640155091109L;
 
@@ -147,7 +147,7 @@ public class Path3dfx
 	/**
 	 * @param p
 	 */
-	public Path3dfx(Path3ad<?, ?, ?, ?, ?, ?> p) {
+	public Path3dfx(Path3afp<?, ?, ?, ?, ?, ?> p) {
 		set(p);
 	}
 	
@@ -249,7 +249,7 @@ public class Path3dfx
 	@Override
 	public void transform(Transform3D transform) {
 		assert (transform != null) : "Transformation must be not null"; //$NON-NLS-1$
-		Point3D<?, ?> p = new InnerComputationPoint3ad();
+		Point3D<?, ?> p = new InnerComputationPoint3afp();
 		if (this.coords != null && !this.coords.isEmpty()) {
 			ListIterator<Double> li = this.coords.listIterator();
 			int i = 0;
@@ -272,7 +272,7 @@ public class Path3dfx
 			this.isEmpty = new SimpleBooleanProperty(this, "isEmpty"); //$NON-NLS-1$
 			this.isEmpty.bind(Bindings.createBooleanBinding(
 					() -> {
-						PathIterator3ad<PathElement3dfx> pi = getPathIterator();
+						PathIterator3afp<PathElement3dfx> pi = getPathIterator();
 						PathElement3dfx pe;
 						while (pi.hasNext()) {
 							pe = pi.next();
@@ -498,7 +498,7 @@ public class Path3dfx
 				}
 			}
 			else {
-				Point3D<?, ?> p = new InnerComputationPoint3ad();
+				Point3D<?, ?> p = new InnerComputationPoint3afp();
 				Iterator<Double> iterator = this.coords.iterator();
 				for(int i=0; i < n;) {
 					p.set(iterator.next(), iterator.next(), iterator.next());
@@ -524,7 +524,7 @@ public class Path3dfx
 				}
 			}
 			else {
-				Point3D<?, ?> p = new InnerComputationPoint3ad();
+				Point3D<?, ?> p = new InnerComputationPoint3afp();
 				Iterator<Double> iterator = this.coords.iterator();
 				for(int i=0; i < n;) {
 					p.set(iterator.next(), iterator.next(), iterator.next());
@@ -550,7 +550,7 @@ public class Path3dfx
 				}
 			}
 			else {
-				Point3D<?, ?> p = new InnerComputationPoint3ad();
+				Point3D<?, ?> p = new InnerComputationPoint3afp();
 				Iterator<Double> iterator = this.coords.iterator();
 				for(int i=0; i < n;) {
 					p.set(iterator.next(), iterator.next(), iterator.next());
@@ -888,7 +888,7 @@ public class Path3dfx
 			this.length = new ReadOnlyDoubleWrapper();
 			this.length.bind(Bindings.createDoubleBinding(
 					() -> {
-						return Path3ad.computeLength(getPathIterator());
+						return Path3afp.computeLength(getPathIterator());
 					},
 					innerTypesProperty(), innerCoordinatesProperty()));
 		}
@@ -902,7 +902,7 @@ public class Path3dfx
 			this.boundingBox.bind(Bindings.createObjectBinding(
 					() -> {
 						RectangularPrism3dfx bb = getGeomFactory().newBox();
-						Path3ad.computeDrawableElementBoundingBox(
+						Path3afp.computeDrawableElementBoundingBox(
 								getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
 								bb);
 						return bb;
@@ -925,7 +925,7 @@ public class Path3dfx
 			this.logicalBounds.bind(Bindings.createObjectBinding(
 					() -> {
 						RectangularPrism3dfx bb = getGeomFactory().newBox();
-						Path3ad.computeControlPointBoundingBox(
+						Path3afp.computeControlPointBoundingBox(
 								getPathIterator(),
 								bb);
 						return bb;

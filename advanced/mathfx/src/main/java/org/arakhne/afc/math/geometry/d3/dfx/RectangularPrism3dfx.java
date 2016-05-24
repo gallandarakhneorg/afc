@@ -22,7 +22,7 @@
 package org.arakhne.afc.math.geometry.d3.dfx;
 
 import org.arakhne.afc.math.geometry.d3.Point3D;
-import org.arakhne.afc.math.geometry.d3.ad.RectangularPrism3ad;
+import org.arakhne.afc.math.geometry.d3.afp.RectangularPrism3afp;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import javafx.beans.binding.Bindings;
@@ -44,7 +44,7 @@ import javafx.beans.property.SimpleObjectProperty;
  * @since 13.0
  */
 public class RectangularPrism3dfx extends AbstractShape3dfx<RectangularPrism3dfx>
-	implements RectangularPrism3ad<Shape3dfx<?>, RectangularPrism3dfx, PathElement3dfx, Point3dfx, Vector3dfx, RectangularPrism3dfx> {
+	implements RectangularPrism3afp<Shape3dfx<?>, RectangularPrism3dfx, PathElement3dfx, Point3dfx, Vector3dfx, RectangularPrism3dfx> {
 
 	private static final long serialVersionUID = -1393290109630714626L;
 

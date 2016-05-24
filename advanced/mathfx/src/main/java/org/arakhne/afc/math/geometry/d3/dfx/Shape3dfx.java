@@ -20,7 +20,7 @@
  */
 package org.arakhne.afc.math.geometry.d3.dfx;
 
-import org.arakhne.afc.math.geometry.d3.ad.Shape3ad;
+import org.arakhne.afc.math.geometry.d3.afp.Shape3afp;
 
 import javafx.beans.property.ObjectProperty;
 
@@ -36,7 +36,7 @@ import javafx.beans.property.ObjectProperty;
  * @since 13.0
  */
 public interface Shape3dfx<IT extends Shape3dfx<?>>
-		extends Shape3ad<Shape3dfx<?>, IT, PathElement3dfx, Point3dfx, Vector3dfx, RectangularPrism3dfx> {
+		extends Shape3afp<Shape3dfx<?>, IT, PathElement3dfx, Point3dfx, Vector3dfx, RectangularPrism3dfx> {
 	
 	/** Replies the property that contains the bounding box for this shape.
 	 *

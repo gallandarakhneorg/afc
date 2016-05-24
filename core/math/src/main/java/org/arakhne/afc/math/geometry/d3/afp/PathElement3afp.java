@@ -19,7 +19,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  * This program is free software; you can redistribute it and/or modify
  */
-package org.arakhne.afc.math.geometry.d3.ad;
+package org.arakhne.afc.math.geometry.d3.afp;
 
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.d3.PathElement3D;
@@ -33,7 +33,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public interface PathElement3ad extends PathElement3D {
+public interface PathElement3afp extends PathElement3D {
 	
 	/** Replies the x coordinate of the starting point.
 	 *

@@ -19,7 +19,7 @@
  * This program is free software; you can redistribute it and/or modify
  */
 
-package org.arakhne.afc.math.geometry.d3.ad;
+package org.arakhne.afc.math.geometry.d3.afp;
 
 import java.util.NoSuchElementException;
 
@@ -29,7 +29,7 @@ import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Transform3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
-import org.arakhne.afc.math.geometry.d3.ad.Path3ad.CrossingComputationType;
+import org.arakhne.afc.math.geometry.d3.afp.Path3afp.CrossingComputationType;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Fonctional interface that represented a 2D rectangle on a plane.
@@ -47,14 +47,14 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public interface RectangularPrism3ad<
-		ST extends Shape3ad<?, ?, IE, P, V, B>,
-		IT extends RectangularPrism3ad<?, ?, IE, P, V, B>,
-		IE extends PathElement3ad,
+public interface RectangularPrism3afp<
+		ST extends Shape3afp<?, ?, IE, P, V, B>,
+		IT extends RectangularPrism3afp<?, ?, IE, P, V, B>,
+		IE extends PathElement3afp,
 		P extends Point3D<? super P, ? super V>,
 		V extends Vector3D<? super V, ? super P>,
-		B extends RectangularPrism3ad<?, ?, IE, P, V, B>>
-		extends Prism3ad<ST, IT, IE, P, V, B>{
+		B extends RectangularPrism3afp<?, ?, IE, P, V, B>>
+		extends Prism3afp<ST, IT, IE, P, V, B>{
 
 	/** Replies if two rectangles are intersecting.
 	 * 
@@ -412,7 +412,7 @@ public interface RectangularPrism3ad<
 
 	@Pure
 	@Override
-	default boolean contains(RectangularPrism3ad<?, ?, ?, ?, ?, ?> r) {
+	default boolean contains(RectangularPrism3afp<?, ?, ?, ?, ?, ?> r) {
 		assert (r != null) : "Rectangle must be not null"; //$NON-NLS-1$
 		return containsRectangleRectangle(
 				getMinX(), getMinY(), getMinZ(), getMaxX(), getMaxY(), getMaxZ(),
@@ -469,10 +469,10 @@ public interface RectangularPrism3ad<
 	 * 
 	 * @param r
 	 * @return the union of this rectangle and the given rectangle.
-	 * @see #setUnion(Prism3ad)
+	 * @see #setUnion(Prism3afp)
 	 */
 	@Pure
-	default B createUnion(Prism3ad<?, ?, ?, ?, ?, ?> r) {
+	default B createUnion(Prism3afp<?, ?, ?, ?, ?, ?> r) {
 		assert (r != null) : "Shape must be not null"; //$NON-NLS-1$
 		B rr = getGeomFactory().newBox();
 		rr.setFromCorners(getMinX(), getMinY(), getMinZ(), getMaxX(), getMaxY(), getMaxZ());
@@ -491,10 +491,10 @@ public interface RectangularPrism3ad<
 	 * 
 	 * @param r
 	 * @return the union of this rectangle and the given rectangle.
-	 * @see #setIntersection(Prism3ad)
+	 * @see #setIntersection(Prism3afp)
 	 */
 	@Pure
-	default B createIntersection(Prism3ad<?, ?, ?, ?, ?, ?> r) {
+	default B createIntersection(Prism3afp<?, ?, ?, ?, ?, ?> r) {
 		assert (r != null) : "Shape must be not null"; //$NON-NLS-1$
 		B rr = getGeomFactory().newBox();
 		double x1 = Math.max(getMinX(), r.getMinX());
@@ -516,9 +516,9 @@ public interface RectangularPrism3ad<
 	 * change this rectangle with the result of the union.
 	 * 
 	 * @param r
-	 * @see #createUnion(Prism3ad)
+	 * @see #createUnion(Prism3afp)
 	 */
-	default void setUnion(Prism3ad<?, ?, ?, ?, ?, ?> r) {
+	default void setUnion(Prism3afp<?, ?, ?, ?, ?, ?> r) {
 		assert (r != null) : "Shape must be not null"; //$NON-NLS-1$
 		setFromCorners(
 				Math.min(getMinX(), r.getMinX()),
@@ -535,10 +535,10 @@ public interface RectangularPrism3ad<
 	 * <p>If there is no intersection, this rectangle is cleared.
 	 * 
 	 * @param r
-	 * @see #createIntersection(Prism3ad)
+	 * @see #createIntersection(Prism3afp)
 	 * @see #clear()
 	 */
-	default void setIntersection(RectangularPrism3ad<?, ?, ?, ?, ?, ?> r) {
+	default void setIntersection(RectangularPrism3afp<?, ?, ?, ?, ?, ?> r) {
 		assert (r != null) : "Shape must be not null"; //$NON-NLS-1$
 		double x1 = Math.max(getMinX(), r.getMinX());
 		double y1 = Math.max(getMinY(), r.getMinY());
@@ -556,7 +556,7 @@ public interface RectangularPrism3ad<
 
 	@Pure
 	@Override
-	default boolean intersects(Prism3ad<?, ?, ?, ?, ?, ?> s) {
+	default boolean intersects(Prism3afp<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Rectangle must be not null"; //$NON-NLS-1$
 		return intersectsRectangleRectangle(
 				getMinX(), getMinY(), getMinZ(),
@@ -569,9 +569,9 @@ public interface RectangularPrism3ad<
 	
 	@Pure
 	@Override
-	default boolean intersects(Sphere3ad<?, ?, ?, ?, ?, ?> s) {
+	default boolean intersects(Sphere3afp<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Circle must be not null"; //$NON-NLS-1$
-		return Sphere3ad.intersectsCircleRectangle(
+		return Sphere3afp.intersectsCircleRectangle(
 				s.getX(), s.getY(), s.getZ(),
 				s.getRadius(),
 				getMinX(), getMinY(), getMinZ(),
@@ -580,7 +580,7 @@ public interface RectangularPrism3ad<
 	
 	@Pure
 	@Override
-	default boolean intersects(Segment3ad<?, ?, ?, ?, ?, ?> s) {
+	default boolean intersects(Segment3afp<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Segment must be not null"; //$NON-NLS-1$
 		return intersectsRectangleSegment(
 				getMinX(), getMinY(),
@@ -591,10 +591,10 @@ public interface RectangularPrism3ad<
 
 	@Pure
 	@Override
-	default boolean intersects(PathIterator3ad<?> iterator) {
+	default boolean intersects(PathIterator3afp<?> iterator) {
 		assert (iterator != null) : "Iterator must be not null"; //$NON-NLS-1$
 		int mask = (iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2);
-		int crossings = Path3ad.computeCrossingsFromRect(
+		int crossings = Path3afp.computeCrossingsFromRect(
 				0,
 				iterator,
 				getMinX(), getMinY(), getMinZ(), getMaxX(), getMaxY(), getMaxZ(),
@@ -606,7 +606,7 @@ public interface RectangularPrism3ad<
 	
 	@Pure
 	@Override
-	default boolean intersects(MultiShape3ad<?, ?, ?, ?, ?, ?, ?> s) {
+	default boolean intersects(MultiShape3afp<?, ?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "MultiShape must be not null"; //$NON-NLS-1$
 		return s.intersects(this);
 	}
@@ -618,7 +618,7 @@ public interface RectangularPrism3ad<
 	 * @param result the displacement vector.
 	 */
 	// TODO
-	default void avoidCollisionWith(RectangularPrism3ad<?, ?, ?, ?, ?, ?> reference, Vector3D<?, ?> result) {
+	default void avoidCollisionWith(RectangularPrism3afp<?, ?, ?, ?, ?, ?> reference, Vector3D<?, ?> result) {
 		assert (reference != null) : "Reference rectangle must be not null"; //$NON-NLS-1$
 		assert (result != null) : "Result vector must be not null"; //$NON-NLS-1$
 		double dx1 = reference.getMaxX() - getMinX();
@@ -675,7 +675,7 @@ public interface RectangularPrism3ad<
 	 *     This vector is set according to the result before returning.
 	 * @param result the displacement vector.
 	 */
-	default void avoidCollisionWith(RectangularPrism3ad<?, ?, ?, ?, ?, ?> reference, Vector3D<?, ?> displacementDirection, Vector3D<?, ?> result) {
+	default void avoidCollisionWith(RectangularPrism3afp<?, ?, ?, ?, ?, ?> reference, Vector3D<?, ?> displacementDirection, Vector3D<?, ?> result) {
 		assert (reference != null) : "Reference rectangle must be not null"; //$NON-NLS-1$
 		assert (result != null) : "Result vector must be not null"; //$NON-NLS-1$
 		if (displacementDirection == null || displacementDirection.getLengthSquared() == 0) {
@@ -806,7 +806,7 @@ public interface RectangularPrism3ad<
 
 	@Pure
 	@Override
-	default PathIterator3ad<IE> getPathIterator(Transform3D transform) {
+	default PathIterator3afp<IE> getPathIterator(Transform3D transform) {
 		if (transform == null || transform.isIdentity()) {
 			return new RectanglePathIterator<>(this);
 		}
@@ -823,10 +823,10 @@ public interface RectangularPrism3ad<
 	 * @mavenartifactid $ArtifactId$
 	 * @since 13.0
 	 */
-	class RectanglePathIterator<T extends PathElement3ad>
-			implements PathIterator3ad<T> {
+	class RectanglePathIterator<T extends PathElement3afp>
+			implements PathIterator3afp<T> {
 
-		private final RectangularPrism3ad<?, ?, T, ?, ?, ?> rectangle;
+		private final RectangularPrism3afp<?, ?, T, ?, ?, ?> rectangle;
 
 		private double x1;
 		
@@ -845,7 +845,7 @@ public interface RectangularPrism3ad<
 		/**
 		 * @param rectangle the iterated rectangle.
 		 */
-		public RectanglePathIterator(RectangularPrism3ad<?, ?, T, ?, ?, ?> rectangle) {
+		public RectanglePathIterator(RectangularPrism3afp<?, ?, T, ?, ?, ?> rectangle) {
 			assert (rectangle != null) : "Rectangle must be not null"; //$NON-NLS-1$
 			this.rectangle = rectangle;
 			if (rectangle.isEmpty()) {
@@ -861,7 +861,7 @@ public interface RectangularPrism3ad<
 		}
 		
 		@Override
-		public PathIterator3ad<T> restartIterations() {
+		public PathIterator3afp<T> restartIterations() {
 			return new RectanglePathIterator<>(this.rectangle);
 		}
 		
@@ -948,7 +948,7 @@ public interface RectangularPrism3ad<
 		}
 
 		@Override
-		public GeomFactory3ad<T, ?, ?, ?> getGeomFactory() {
+		public GeomFactory3afp<T, ?, ?, ?> getGeomFactory() {
 			return this.rectangle.getGeomFactory();
 		}
 
@@ -962,11 +962,11 @@ public interface RectangularPrism3ad<
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	class TransformedRectanglePathIterator<T extends PathElement3ad> implements PathIterator3ad<T> {
+	class TransformedRectanglePathIterator<T extends PathElement3afp> implements PathIterator3afp<T> {
 
 		private final Transform3D transform;
 
-		private final RectangularPrism3ad<?, ?, T, ?, ?, ?> rectangle;
+		private final RectangularPrism3afp<?, ?, T, ?, ?, ?> rectangle;
 
 		private Point3D<?, ?> p1;
 
@@ -990,7 +990,7 @@ public interface RectangularPrism3ad<
 		 * @param rectangle the iterated rectangle.
 		 * @param transform the transformation.
 		 */
-		public TransformedRectanglePathIterator(RectangularPrism3ad<?, ?, T, ?, ?, ?> rectangle, Transform3D transform) {
+		public TransformedRectanglePathIterator(RectangularPrism3afp<?, ?, T, ?, ?, ?> rectangle, Transform3D transform) {
 			assert (rectangle != null) : "Rectangle must be not null"; //$NON-NLS-1$
 			assert (transform != null) : "Transformation must be not null"; //$NON-NLS-1$
 			this.rectangle = rectangle;
@@ -999,8 +999,8 @@ public interface RectangularPrism3ad<
 				this.index = 5;
 			} else {
 				this.index = 0;
-				this.p1 = new InnerComputationPoint3ad();
-				this.p2 = new InnerComputationPoint3ad();
+				this.p1 = new InnerComputationPoint3afp();
+				this.p2 = new InnerComputationPoint3afp();
 				this.x1 = rectangle.getMinX();
 				this.x2 = rectangle.getMaxX();
 				this.y1 = rectangle.getMinY();
@@ -1011,7 +1011,7 @@ public interface RectangularPrism3ad<
 		}
 		
 		@Override
-		public PathIterator3ad<T> restartIterations() {
+		public PathIterator3afp<T> restartIterations() {
 			return new TransformedRectanglePathIterator<>(this.rectangle, this.transform);
 		}
 
@@ -1121,7 +1121,7 @@ public interface RectangularPrism3ad<
 		}
 
 		@Override
-		public GeomFactory3ad<T, ?, ?, ?> getGeomFactory() {
+		public GeomFactory3afp<T, ?, ?, ?> getGeomFactory() {
 			return this.rectangle.getGeomFactory();
 		}
 

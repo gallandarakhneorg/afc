@@ -18,7 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  * This program is free software; you can redistribute it and/or modify
  */
-package org.arakhne.afc.math.geometry.d3.ad;
+package org.arakhne.afc.math.geometry.d3.afp;
 
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d3.GeomFactory3D;
@@ -36,8 +36,8 @@ import org.arakhne.afc.math.geometry.d3.Vector3D;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public interface GeomFactory3ad<E extends PathElement3ad, P extends Point3D<? super P, ? super V>, 
-		V extends Vector3D<? super V, ? super P>, B extends RectangularPrism3ad<?, ?, E, P, V, B>>
+public interface GeomFactory3afp<E extends PathElement3afp, P extends Point3D<? super P, ? super V>, 
+		V extends Vector3D<? super V, ? super P>, B extends RectangularPrism3afp<?, ?, E, P, V, B>>
 		extends GeomFactory3D<V, P> {
 
 	/** Create an empty path with the given winding rule.
@@ -45,13 +45,13 @@ public interface GeomFactory3ad<E extends PathElement3ad, P extends Point3D<? su
 	 * @param rule the rule.
 	 * @return the new path.
 	 */
-	Path3ad<?, ?, E, P, V, B> newPath(PathWindingRule rule);
+	Path3afp<?, ?, E, P, V, B> newPath(PathWindingRule rule);
 	
 	/** Create an empty multishape.
 	 *
 	 * @return the new multishape.
 	 */
-	MultiShape3ad<?, ?, ?, E, P, V, B> newMultiShape();
+	MultiShape3afp<?, ?, ?, E, P, V, B> newMultiShape();
 
 	/** Create an empty bounding box.
 	 *
@@ -149,6 +149,6 @@ public interface GeomFactory3ad<E extends PathElement3ad, P extends Point3D<? su
 	 * @param z2 the z coordinate of the second point of the segment.
 	 * @return the new segment.
 	 */
-	Segment3ad<?, ?, E, P, V, B> newSegment(double x1, double y1, double z1, double x2, double y2, double z2);
+	Segment3afp<?, ?, E, P, V, B> newSegment(double x1, double y1, double z1, double x2, double y2, double z2);
 
 }

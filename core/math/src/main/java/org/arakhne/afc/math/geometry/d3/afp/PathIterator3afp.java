@@ -19,7 +19,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  * This program is free software; you can redistribute it and/or modify
  */
-package org.arakhne.afc.math.geometry.d3.ad;
+package org.arakhne.afc.math.geometry.d3.afp;
 
 import org.arakhne.afc.math.geometry.d3.PathIterator3D;
 
@@ -33,15 +33,15 @@ import org.arakhne.afc.math.geometry.d3.PathIterator3D;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public interface PathIterator3ad<T extends PathElement3ad> extends PathIterator3D<T>, Cloneable {
+public interface PathIterator3afp<T extends PathElement3afp> extends PathIterator3D<T>, Cloneable {
 
 	/** Replies the factory of geometrical elements.
 	 *
 	 * @return the factory.
 	 */
-	GeomFactory3ad<T, ?, ?, ?> getGeomFactory();
+	GeomFactory3afp<T, ?, ?, ?> getGeomFactory();
 	
 	@Override
-	PathIterator3ad<T> restartIterations();
+	PathIterator3afp<T> restartIterations();
 
 }

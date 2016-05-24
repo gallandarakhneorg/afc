@@ -24,8 +24,8 @@ import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Quaternion;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
-import org.arakhne.afc.math.geometry.d3.ad.GeomFactory3ad;
-import org.arakhne.afc.math.geometry.d3.ad.Path3ad;
+import org.arakhne.afc.math.geometry.d3.afp.GeomFactory3afp;
+import org.arakhne.afc.math.geometry.d3.afp.Path3afp;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -39,7 +39,7 @@ import javafx.beans.property.SimpleDoubleProperty;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public class GeomFactory3dfx implements GeomFactory3ad<PathElement3dfx, Point3dfx, Vector3dfx, RectangularPrism3dfx> {
+public class GeomFactory3dfx implements GeomFactory3afp<PathElement3dfx, Point3dfx, Vector3dfx, RectangularPrism3dfx> {
 
 	/** The singleton of the factory.
 	 */
@@ -149,7 +149,7 @@ public class GeomFactory3dfx implements GeomFactory3ad<PathElement3dfx, Point3df
 	}
 
 	@Override
-	public Path3ad<?, ?, PathElement3dfx, Point3dfx, Vector3dfx, RectangularPrism3dfx> newPath(PathWindingRule rule) {
+	public Path3afp<?, ?, PathElement3dfx, Point3dfx, Vector3dfx, RectangularPrism3dfx> newPath(PathWindingRule rule) {
 		assert (rule != null) : "Path winding rule must be not null"; //$NON-NLS-1$
 		return new Path3dfx(rule);
 	}

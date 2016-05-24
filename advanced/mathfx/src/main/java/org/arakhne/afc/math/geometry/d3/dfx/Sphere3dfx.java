@@ -22,7 +22,7 @@
 package org.arakhne.afc.math.geometry.d3.dfx;
 
 import org.arakhne.afc.math.geometry.d3.Point3D;
-import org.arakhne.afc.math.geometry.d3.ad.Sphere3ad;
+import org.arakhne.afc.math.geometry.d3.afp.Sphere3afp;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import javafx.beans.binding.Bindings;
@@ -43,7 +43,7 @@ import javafx.beans.property.SimpleObjectProperty;
  */
 public class Sphere3dfx
 		extends AbstractShape3dfx<Sphere3dfx>
-		implements Sphere3ad<Shape3dfx<?>, Sphere3dfx, PathElement3dfx, Point3dfx, Vector3dfx, RectangularPrism3dfx> {
+		implements Sphere3afp<Shape3dfx<?>, Sphere3dfx, PathElement3dfx, Point3dfx, Vector3dfx, RectangularPrism3dfx> {
 
 	private static final long serialVersionUID = 837592010117981823L;
 
@@ -83,7 +83,7 @@ public class Sphere3dfx
 	/** Construct a circle from a circle.
 	 * @param c
 	 */
-	public Sphere3dfx(Sphere3ad<?, ?, ?, ?, ?, ?> c) {
+	public Sphere3dfx(Sphere3afp<?, ?, ?, ?, ?, ?> c) {
 		assert (c != null) : "Circle must be not null"; //$NON-NLS-1$
 		set(c.getX(), c.getY(), c.getZ(), c.getRadius());
 	}

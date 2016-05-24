@@ -19,7 +19,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  * This program is free software; you can redistribute it and/or modify
  */
-package org.arakhne.afc.math.geometry.d3.ad;
+package org.arakhne.afc.math.geometry.d3.afp;
 
 import java.util.Iterator;
 
@@ -38,15 +38,15 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public class PathShadow3ad<B extends RectangularPrism3ad<?, ?, ?, ?, ?, B>> {
+public class PathShadow3afp<B extends RectangularPrism3afp<?, ?, ?, ?, ?, B>> {
 
-	private final Path3ad<?, ?, ?, ?, ?, B> path;
+	private final Path3afp<?, ?, ?, ?, ?, B> path;
 	private final B bounds;
 
 	/**
 	 * @param path
 	 */
-	public PathShadow3ad(Path3ad<?, ?, ?, ?, ?, B> path) {
+	public PathShadow3afp(Path3afp<?, ?, ?, ?, ?, B> path) {
 		assert (path != null) : "Path must be not null"; //$NON-NLS-1$
 		this.path = path;
 		this.bounds = this.path.toBoundingBox();
@@ -72,7 +72,7 @@ public class PathShadow3ad<B extends RectangularPrism3ad<?, ?, ?, ?, ?, B>> {
 		if (this.bounds==null) return crossings;
 
 		int numCrosses = 
-				Segment3ad.computeCrossingsFromRect(crossings,
+				Segment3afp.computeCrossingsFromRect(crossings,
 						this.bounds.getMinX(),
 						this.bounds.getMinY(),
 						this.bounds.getMinZ(),
@@ -131,22 +131,22 @@ public class PathShadow3ad<B extends RectangularPrism3ad<?, ?, ?, ?, ?, B>> {
 		return numCrosses;
 	}
 
-	private static <E extends PathElement3ad> void computeCrossings1(
-			Iterator<? extends PathElement3ad> pi, 
+	private static <E extends PathElement3afp> void computeCrossings1(
+			Iterator<? extends PathElement3afp> pi, 
 			double x1, double y1, double z1, double x2, double y2, double z2, 
 			boolean closeable,
 			PathWindingRule rule,
-			GeomFactory3ad<E, ?, ?, ?> factory,
+			GeomFactory3afp<E, ?, ?, ?> factory,
 			PathShadowData data) {	
 		if (!pi.hasNext() || data.crossings==MathConstants.SHAPE_INTERSECTS) return;
-		PathElement3ad element;
+		PathElement3afp element;
 
 		element = pi.next();
 		if (element.getType() != PathElementType.MOVE_TO) {
 			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
 		}
 
-		Path3ad<?, ?, E, ?, ?, ?> localPath;
+		Path3afp<?, ?, E, ?, ?, ?> localPath;
 		double movx = element.getToX();
 		double movy = element.getToY();
 		double movz = element.getToZ();
@@ -313,7 +313,7 @@ public class PathShadow3ad<B extends RectangularPrism3ad<?, ?, ?, ?, ?, B>> {
 				}
 			}
 		}
-		else if (Segment3ad.intersectsSegmentSegmentWithoutEnds(
+		else if (Segment3afp.intersectsSegmentSegmentWithoutEnds(
 				shadow_x0, shadow_y0, shadow_x1, shadow_y1,
 				sx0, sy0, sx1, sy1)) {
 			data.crossings = MathConstants.SHAPE_INTERSECTS;
@@ -322,21 +322,21 @@ public class PathShadow3ad<B extends RectangularPrism3ad<?, ?, ?, ?, ?, B>> {
 			int side1, side2;
 			boolean isUp = (shadow_y0<=shadow_y1);
 			if (isUp) {
-				side1 = Segment3ad.computeSideLinePoint(
+				side1 = Segment3afp.computeSideLinePoint(
 						shadow_x0, shadow_y0,
 						shadow_x1, shadow_y1,
 						sx0, sy0, 0.);
-				side2 = Segment3ad.computeSideLinePoint(
+				side2 = Segment3afp.computeSideLinePoint(
 						shadow_x0, shadow_y0,
 						shadow_x1, shadow_y1,
 						sx1, sy1, 0.);
 			}
 			else {
-				side1 = Segment3ad.computeSideLinePoint(
+				side1 = Segment3afp.computeSideLinePoint(
 						shadow_x1, shadow_y1,
 						shadow_x0, shadow_y0,
 						sx0, sy0, 0.);
-				side2 = Segment3ad.computeSideLinePoint(
+				side2 = Segment3afp.computeSideLinePoint(
 						shadow_x1, shadow_y1,
 						shadow_x0, shadow_y0,
 						sx1, sy1, 0.);
