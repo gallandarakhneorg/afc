@@ -26,6 +26,7 @@ import java.util.NoSuchElementException;
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.PathWindingRule;
+import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem3D;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
@@ -221,7 +222,7 @@ public interface Segment3afp<
 	 * @return <code>factor1</code> or {@link Double#NaN} if no intersection.
 	 */
 	@Pure
-	public static double computeSegmentSegmentIntersectionFactor(double x1, double y1, double z1, double x2, double y2, double z2,
+	static double computeSegmentSegmentIntersectionFactor(double x1, double y1, double z1, double x2, double y2, double z2,
 			double x3, double y3, double z3, double x4, double y4, double z4) {
 		double x21 = x2 - x1;
 		double y21 = y2 - y1;
@@ -232,21 +233,22 @@ public interface Segment3afp<
 		double x31 = x3 - x1;
 		double y31 = y3 - y1;
 		double z31 = z3 - z1;
+		double x,y,z;
 		
-		Vector3D<?, ?> v = InnerComputationGeomFactory3afp.SINGLETON.newVector();
+		if(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded()){
+			x = y43*z21 - z43*y21;
+			y = z43*x21 - x43*z21;
+			z = x43*y21 - y43*x21;
+		} else {
+			x = y21*z43 - z21*y43;
+			y = z21*x43 - x21*z43;
+			z = x21*y43 - y21*x43;
+		}
 		
-		Vector3D.crossProduct(x21, y21, z21, x43, y43, z43, v);
-		
-		double x = v.getX();
-		double y = v.getY();
-		double z = v.getZ();
-		
-		//If the cross product is zero then the two segments are parallels
 		if(MathUtil.isEpsilonZero(x*x + y*y + z*z)){
 			return Double.NaN;
 		}
 		
-		//If the determinant det(c,a,b)=c.(a x b)!=0 then the two segment are not colinears
 		if(MathUtil.isEpsilonZero(Vector3D.dotProduct(x31, y31, z31, x, y, z))){
 			return Double.NaN;
 		}
@@ -305,21 +307,22 @@ public interface Segment3afp<
 		double x31 = x3 - x1;
 		double y31 = y3 - y1;
 		double z31 = z3 - z1;
+		double x,y,z;
 		
-		Vector3D<?, ?> v = InnerComputationGeomFactory3afp.SINGLETON.newVector();
+		if(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded()){
+			x = y43*z21 - z43*y21;
+			y = z43*x21 - x43*z21;
+			z = x43*y21 - y43*x21;
+		} else {
+			x = y21*z43 - z21*y43;
+			y = z21*x43 - x21*z43;
+			z = x21*y43 - y21*x43;
+		}
 		
-		Vector3D.crossProduct(x21, y21, z21, x43, y43, z43, v);
-		
-		double x = v.getX();
-		double y = v.getY();
-		double z = v.getZ();
-		
-		//If the cross product is zero then the two segments are parallels
 		if(MathUtil.isEpsilonZero(x*x + y*y + z*z)){
 			return null;
 		}
 		
-		//If the determinant det(c,a,b)=c.(a x b)!=0 then the two segment are not colinears
 		if(MathUtil.isEpsilonZero(Vector3D.dotProduct(x31, y31, z31, x, y, z))){
 			return null;
 		}
@@ -456,17 +459,9 @@ public interface Segment3afp<
 	 * @see #computeDistanceLinePoint(double, double, double, double, double, double)
 	 */
 	@Pure
-	// TODO : correct formula
-	public static double computeDistanceSquaredLinePoint(double x1, double y1, double z1, double x2, double y2, double z2, double px, double py, double pz) {
-		double x21 = x2 - x1;
-		double y21 = y2 - y1;
-		double z21 = z2 - z1;
-		double denomenator = x21 * x21 + y21 * y21 + z21 * z21;
-		if (denomenator == 0.) {
-			return Point3D.getDistanceSquaredPointPoint(px, py, pz, x1, y1, z1);
-		}
-		double s = ((y1 - py) * x21 - (x1 - px) * y21 ) / denomenator;
-		return (s * s) * Math.abs(denomenator);
+	static double computeDistanceSquaredLinePoint(double x1, double y1, double z1, double x2, double y2, double z2, double px, double py, double pz) {
+		double d = computeDistanceLinePoint(x1, y1, z1, x2, y2, z2, px, py, pz);
+		return d * d;
 	}
 
 	/** Compute the square distance between a point and a segment.
@@ -483,135 +478,133 @@ public interface Segment3afp<
 	 * @return the distance beetween the point and the segment.
 	 */
 	static double computeDistanceSquaredSegmentPoint(double x1, double y1, double z1, double x2, double y2, double z2, double px, double py, double pz) {
-		double x21 = x2 - x1;
-		double y21 = y2 - y1;
-		double z21 = z2 - z1;
-		double denomenator = x21 * x21 + y21 * y21 + z21 * z21;
-		if (denomenator == 0.) {
+		double ratio = computeProjectedPointOnLine(px, py, pz, x1, y1, z1, x2, y2, z2);
+
+		if (ratio <= 0.)
 			return Point3D.getDistanceSquaredPointPoint(px, py, pz, x1, y1, z1);
-		}
-		
-		double xp1 = px - x1;
-		double yp1 = py - y1;
-		double zp1 = pz - z1;
-		double numerator = xp1 * x21 + yp1 * y21 + zp1 * z21;
-		double ratio = numerator / denomenator;
 
-		if (ratio <= 0.) {
-			return Math.abs(xp1 * xp1 + yp1 * yp1 + zp1 * zp1);
-		}
+		if (ratio >= 1.)
+			return Point3D.getDistanceSquaredPointPoint(px, py, pz, x2, y2, z2);
 
-		if (ratio >= 1.) {
-			double xp2 = px - x2;
-			double yp2 = py - y2;
-			double zp2 = pz - z2;
-			return Math.abs(xp2 * xp2 + yp2 * yp2 + zp2 *zp2);
-		}
-
-		double factor =  (xp1 * y21 - yp1 * x21 ) / denomenator;		// TODO : check formula
-		return (factor * factor) * Math.abs(denomenator);
+		return Point3D.getDistancePointPoint(
+				px, py, pz,
+				(1. - ratio) * x1 + ratio * x2,
+				(1. - ratio) * y1 + ratio * y2,
+				(1. - ratio) * z1 + ratio * z2);
 	}
 
 	/** Compute the distance between a point and a segment.
 	 *
-	 * @param x1 horizontal position of the first point of the segment.
-	 * @param y1 vertical position of the first point of the segment.
-	 * @param x2 horizontal position of the second point of the segment.
-	 * @param y2 vertical position of the second point of the segment.
-	 * @param px horizontal position of the point.
-	 * @param py vertical position of the point.
+	 * @param x1 x position of the first point of the segment.
+	 * @param y1 y position of the first point of the segment.
+	 * @param z1 z position of the first point of the segment.
+	 * @param x2 x position of the second point of the segment.
+	 * @param y2 y position of the second point of the segment.
+	 * @param z2 z position of the second point of the segment.
+	 * @param px x position of the point.
+	 * @param py y position of the point.
+	 * @param pz z position of the point.
 	 * @return the distance beetween the point and the segment.
 	 */
-	static double computeDistanceSegmentPoint(double x1, double y1, double x2, double y2, double px, double py) {
-		double x21 = x2 - x1;
-		double y21 = y2 - y1;
+	static double computeDistanceSegmentPoint(double x1, double y1, double z1, double x2, double y2, double z2, double px, double py, double pz) {
+		double ratio = computeProjectedPointOnLine(px, py, pz, x1, y1, z1, x2, y2, z2);
 
-		double denomenator = x21 * x21 + y21 * y21;
-		if (denomenator == 0.) {
-			return Point2D.getDistancePointPoint(px, py, x1, y1);
-		}
+		if (ratio <= 0.)
+			return Point3D.getDistancePointPoint(px, py, pz, x1, y1, z1);
 
-		double xp1 = px - x1;
-		double yp1 = py - y1;
-		double numerator = (xp1) * x21 + (yp1) * y21;
-		double ratio = numerator / denomenator;
-		
-		if (ratio <= 0.) {
-			return Math.sqrt(xp1 * xp1 + yp1 * yp1);
-		}
+		if (ratio >= 1.)
+			return Point3D.getDistancePointPoint(px, py, pz, x2, y2, z2);
 
-		if (ratio >= 1.) {
-			double xp2 = px - x2;
-			double yp2 = py - y2;
-			return Math.sqrt(xp2 * xp2 + yp2 * yp2);
-		}
-
-		double factor = (xp1 * y21 - yp1 * x21 ) / denomenator;
-		return Math.abs(factor) * Math.sqrt(denomenator);
+		return Point3D.getDistancePointPoint(
+				px, py, pz,
+				(1. - ratio) * x1 + ratio * x2,
+				(1. - ratio) * y1 + ratio * y2,
+				(1. - ratio) * z1 + ratio * z2);
 	}
 
 	/** Compute the distance between a point and a line.
 	 *
-	 * @param x1 horizontal position of the first point of the line.
-	 * @param y1 vertical position of the first point of the line.
-	 * @param x2 horizontal position of the second point of the line.
-	 * @param y2 vertical position of the second point of the line.
-	 * @param px horizontal position of the point.
-	 * @param py vertical position of the point.
+	 * @param x1 x position of the first point of the line.
+	 * @param y1 y position of the first point of the line.
+	 * @param z1 z position of the first point of the line.
+	 * @param x2 x position of the second point of the line.
+	 * @param y2 y position of the second point of the line.
+	 * @param z2 z position of the second point of the line.
+	 * @param px x position of the point.
+	 * @param py y position of the point.
+	 * @param pz z position of the point.
 	 * @return the distance beetween the point and the line.
 	 * @see #computeDistanceSquaredLinePoint(double, double, double, double, double, double)
 	 * @see #computeRelativeDistanceLinePoint(double, double, double, double, double, double)
 	 */
 	@Pure
-	static double computeDistanceLinePoint(double x1, double y1, double x2, double y2, double px, double py) {
-		double x21 = x2 - x1;
-		double y21 = y2 - y1;
-		double denomenator = x21 * x21 + y21 * y21;
-		if (denomenator == 0.) {
-			return Point2D.getDistancePointPoint(px, py, x1, y1);
+	static double computeDistanceLinePoint(double x1, double y1, double z1, double x2, double y2, double z2, double px, double py, double pz) {
+		double vx1 = x2 - x1;
+		double vy1 = y2 - y1;
+		double vz1 = z2 - z1;
+
+		double vx2 = px - x1;
+		double vy2 = py - y1;
+		double vz2 = pz - z1;
+
+		double x, y, z;
+		if(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded()){
+			x = vy2*vz1 - vz2*vy1;
+			y = vz2*vx1 - vx2*vz1;
+			z = vx2*vy1 - vy2*vx1;
+		} else {
+			x = vy1*vz2 - vz1*vy2;
+			y = vz1*vx2 - vx1*vz2;
+			z = vx1*vy2 - vy1*vx2;
 		}
-		double factor = ((y1 - py)* x21 - (x1 - px) * y21 ) / denomenator;
-		return Math.abs(factor) * Math.sqrt(denomenator);
+
+		return Math.sqrt(x * x + y * y + z * z) / Math.sqrt(vx1 * vx1 + vy1 * vy1 + vz1 * vz1);
 	}
 
 	/** Replies if a point is closed to a segment.
 	 *
-	 * @param x1 horizontal location of the first-segment begining.
-	 * @param y1 vertical location of the first-segment ending.
-	 * @param x2 horizontal location of the second-segment begining.
-	 * @param y2 vertical location of the second-segment ending.
-	 * @param x horizontal location of the point.
-	 * @param y vertical location of the point.
+	 * @param x1 x location of the segment begining.
+	 * @param y1 y location of the segment begining.
+	 * @param z1 z location of the segment begining.
+	 * @param x2 x location of the second-segment ending.
+	 * @param y2 y location of the second-segment ending.
+	 * @param z2 z location of the second-segment ending.
+	 * @param x x location of the point.
+	 * @param y y location of the point.
+	 * @param z z location of the point.
 	 * @param hitDistance is the maximal hitting distance.
 	 * @return <code>true</code> if the point and the
 	 *         line have closed locations.
 	 */
 	@Pure
-	static boolean isPointClosedToSegment( double x1, double y1, 
-			double x2, double y2, 
-			double x, double y, double hitDistance ) {
+	static boolean isPointClosedToSegment(double x1, double y1, double z1,
+			double x2, double y2, double z2,
+			double x, double y, double z, double hitDistance) {
 		assert (hitDistance >= 0.) : "Hit distance must be positive or zero"; //$NON-NLS-1$
-		return ( computeDistanceSegmentPoint(x1, y1, x2, y2, x, y) < hitDistance );
+		return (computeDistanceSegmentPoint(x1, y1, z1, x2, y2, z2, x, y, z) < hitDistance );
 	}
 
 	/** Replies if a point is closed to a line.
 	 *
-	 * @param x1 horizontal location of the first-line begining.
-	 * @param y1 vertical location of the first-line ending.
-	 * @param x2 horizontal location of the second-line begining.
-	 * @param y2 vertical location of the second-line ending.
-	 * @param x horizontal location of the point.
-	 * @param y vertical location of the point.
+	 * @param x1 x location of the line begining.
+	 * @param y1 y location of the line begining.
+	 * @param z1 z location of the line begining.
+	 * @param x2 x location of the line ending.
+	 * @param y2 y location of the line ending.
+	 * @param z2 z location of the line ending.
+	 * @param x x location of the point.
+	 * @param y y location of the point.
+	 * @param z z location of the point.
 	 * @param hitDistance is the maximal hitting distance.
 	 * @return <code>true</code> if the point and the
 	 *         line have closed locations.
 	 */
 	@Pure
-	static boolean isPointClosedToLine( double x1, double y1, 
-			double x2, double y2, 
-			double x, double y, double hitDistance ) {
+	static boolean isPointClosedToLine( double x1, double y1, double z1,
+			double x2, double y2, double z2,
+			double x, double y, double z, double hitDistance ) {
 		assert (hitDistance >= 0.) : "Hit distance must be positive or zero"; //$NON-NLS-1$
-		return ( computeDistanceLinePoint(x1, y1, x2, y2, x, y) < hitDistance );
+		return ( computeDistanceLinePoint(x1, y1, z1, x2, y2, z2, x, y, z) < hitDistance );
 	}
 
 	/**
