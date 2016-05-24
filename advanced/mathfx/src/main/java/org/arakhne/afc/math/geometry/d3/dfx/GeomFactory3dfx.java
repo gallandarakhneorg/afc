@@ -33,6 +33,7 @@ import javafx.beans.property.SimpleDoubleProperty;
 /** Factory of geometrical elements.
  * 
  * @author $Author: sgalland$
+ * @author $Author: tpiotrow$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -226,9 +227,14 @@ public class GeomFactory3dfx implements GeomFactory3ad<PathElement3dfx, Point3df
 	public Segment3dfx newSegment(double x1, double y1, double z1, double x2, double y2, double z2) {
 		return new Segment3dfx(x1, y1, z1, x2, y2, z2);
 	}
-
+	
 	@Override
 	public Quaternion newQuaternion(Vector3D<?, ?> axis, double angle) {
+		throw new UnsupportedOperationException("Not yet implemented");  //$NON-NLS-1$ // TODO
+	}
+
+	@Override
+	public Quaternion newQuaternion(double attitude, double bank, double heading) {
 		throw new UnsupportedOperationException("Not yet implemented");  //$NON-NLS-1$ // TODO
 	}
 

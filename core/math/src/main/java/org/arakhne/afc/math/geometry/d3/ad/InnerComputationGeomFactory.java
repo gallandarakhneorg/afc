@@ -146,6 +146,14 @@ final class InnerComputationGeomFactory implements GeomFactory3D<InnerComputatio
 	public Quaternion newQuaternion(Vector3D<?, ?> axis, double angle) {
 		throw new UnsupportedOperationException("Not yet implemented"); //$NON-NLS-1$ // TODO
 	}
+
+	/* (non-Javadoc)
+	 * @see org.arakhne.afc.math.geometry.d3.GeomFactory3D#newQuaternion(double, double, double)
+	 */
+	@Override
+	public Quaternion newQuaternion(double attitude, double bank, double heading) {
+		throw new UnsupportedOperationException("Not yet implemented"); //$NON-NLS-1$ // TODO
+	}
 	
 	
 }

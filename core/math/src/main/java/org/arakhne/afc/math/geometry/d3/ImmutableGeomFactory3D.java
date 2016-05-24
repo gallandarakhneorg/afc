@@ -157,9 +157,15 @@ final class ImmutableGeomFactory3D implements GeomFactory3D<ImmutableVector3D, I
 	 */
 	@Override
 	public Quaternion newQuaternion(Vector3D<?, ?> axis, double angle) {
-		// TODO Auto-generated method stub
-		// return new QuaternionImpl(axis, angle);
-		return null;
+		throw new UnsupportedOperationException("Not yet implemented"); //$NON-NLS-1$ // TODO
+	}
+
+	/* (non-Javadoc)
+	 * @see org.arakhne.afc.math.geometry.d3.GeomFactory3D#newQuaternion(double, double, double)
+	 */
+	@Override
+	public Quaternion newQuaternion(double attitude, double bank, double heading) {
+		throw new UnsupportedOperationException("Not yet implemented"); //$NON-NLS-1$ // TODO
 	}
 
 }

@@ -167,4 +167,12 @@ public class GeomFactory3d implements GeomFactory3ad<PathElement3d, Point3d, Vec
 	public Quaternion newQuaternion(Vector3D<?, ?> axis, double angle) {
 		throw new UnsupportedOperationException("Not yet implemented"); //$NON-NLS-1$ //TODO
 	}
+
+	/* (non-Javadoc)
+	 * @see org.arakhne.afc.math.geometry.d3.GeomFactory3D#newQuaternion(double, double, double)
+	 */
+	@Override
+	public Quaternion newQuaternion(double attitude, double bank, double heading) {
+		throw new UnsupportedOperationException("Not yet implemented"); //$NON-NLS-1$ // TODO
+	}
 }
