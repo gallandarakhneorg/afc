@@ -327,7 +327,7 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 	public AttributeValueImpl(UUID value) {
 		this.type = AttributeType.UUID;
 		this.value = (value!=null) ? new UUID(value.getMostSignificantBits(), value.getLeastSignificantBits()) : null;
-		this.assigned = (this.value!=null);
+		this.assigned = this.value!=null;
 	}
 
 	/**
@@ -341,7 +341,7 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 		catch (MalformedURLException e) {
 			this.value = null;
 		}
-		this.assigned = (this.value!=null);
+		this.assigned = this.value!=null;
 	}
 
 	/**
@@ -355,7 +355,7 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 		catch (URISyntaxException e) {
 			this.value = null;
 		}
-		this.assigned = (this.value!=null);
+		this.assigned = this.value!=null;
 	}
 
 	/**
@@ -364,7 +364,7 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 	public AttributeValueImpl(InetAddress value) {
 		this.type = AttributeType.INET_ADDRESS;
 		this.value = (value!=null) ? value : null;
-		this.assigned = (this.value!=null);
+		this.assigned = this.value!=null;
 	}
 
 	/**
@@ -373,7 +373,7 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 	public AttributeValueImpl(InetSocketAddress value) {
 		this.type = AttributeType.INET_ADDRESS;
 		this.value = (value!=null) ? value.getAddress() : null;
-		this.assigned = (this.value!=null);
+		this.assigned = this.value!=null;
 	}
 
 	/**
@@ -382,7 +382,7 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 	public AttributeValueImpl(Enum<?> value) {
 		this.type = AttributeType.ENUMERATION;
 		this.value = (value!=null) ? value : null;
-		this.assigned = (this.value!=null);
+		this.assigned = this.value!=null;
 	}
 
 	/**
@@ -391,7 +391,7 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 	public AttributeValueImpl(Class<?> value) {
 		this.type = AttributeType.TYPE;
 		this.value = (value!=null) ? value : null;
-		this.assigned = (this.value!=null);
+		this.assigned = this.value!=null;
 	}
 
 	/**
@@ -400,7 +400,7 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 	public AttributeValueImpl(Date value) {
 		this.type = AttributeType.DATE;
 		this.value = (value!=null) ? new Date(value.getTime()) : null;
-		this.assigned = (this.value!=null);
+		this.assigned = this.value!=null;
 	}
 
 	/**
@@ -456,7 +456,7 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 	public AttributeValueImpl(Point2D value) {
 		this.type = AttributeType.POINT;
 		this.value = value;
-		this.assigned = (this.value!=null);
+		this.assigned = this.value!=null;
 	}
 
 	/**
@@ -516,7 +516,7 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 	public AttributeValueImpl(String value) {
 		this.type = AttributeType.STRING;
 		this.value = value;
-		this.assigned = (value!=null);
+		this.assigned = value!=null;
 	}
 
 	/**
@@ -525,7 +525,7 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 	public AttributeValueImpl(Point2D[] value) {
 		this.type = AttributeType.POLYLINE;
 		this.value = value;
-		this.assigned = (this.value!=null);
+		this.assigned = this.value!=null;
 	}
 
 	/**
@@ -534,7 +534,7 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 	public AttributeValueImpl(Point3D[] value) {
 		this.type = AttributeType.POLYLINE3D;
 		this.value = value;
-		this.assigned = (this.value!=null);
+		this.assigned = this.value!=null;
 	}
 
 	/**
@@ -611,7 +611,7 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 	 * @return <code>true</code> if the value is not assigned or equals to <code>null</code>.
 	 */
 	private boolean isNotAssignedOrNull() {
-		return ((!this.assigned)||(this.value==null));
+		return (!this.assigned)||(this.value==null);
 	}
 	
 	/** Assert that the attribute value was assigned.
@@ -833,7 +833,7 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 	public void setValue(Object value) {
 		AttributeType detectedType = AttributeType.fromValue(value);
 		this.value = detectedType.cast(value);
-		this.assigned = (this.value!=null);
+		this.assigned = this.value!=null;
 	}
 
 	/** Set this value with the content of the specified one.
@@ -847,7 +847,7 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 	 */
 	protected void setInternalValue(Object value) {
 		this.value = value;
-		this.assigned = (this.value!=null);
+		this.assigned = this.value!=null;
 	}
 
 	/** Set this value with the content of the specified one.
@@ -863,7 +863,7 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 	 */
 	protected void setInternalValue(Object value, AttributeType type) {
 		this.value = value;
-		this.assigned = (this.value!=null);
+		this.assigned = this.value!=null;
 		this.type = type;
 	}
 
@@ -1024,7 +1024,7 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 				return ((Boolean)this.value).toString();
 			case COLOR:
 			{
-				Color col = ((Color)this.value);
+				Color col = (Color)this.value;
 				return Integer.toString(col.getRed())
 					+';'+col.getGreen()
 					+';'+col.getBlue()
@@ -1032,17 +1032,17 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 			}
 			case UUID:
 			{
-				UUID uuid = ((UUID)this.value);
+				UUID uuid = (UUID)this.value;
 				return uuid.toString();
 			}
 			case URL:
 			{
-				URL url = ((URL)this.value);
+				URL url = (URL)this.value;
 				return url.toExternalForm();
 			}
 			case URI:
 			{
-				URI uri = ((URI)this.value);
+				URI uri = (URI)this.value;
 				return uri.toASCIIString();
 			}
 			case TIMESTAMP:
@@ -1055,14 +1055,14 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 			case REAL:
 				return ((Double)this.value).toString();
 			case POINT:
-				Point2D pt2 = ((Point2D)this.value);
+				Point2D pt2 = (Point2D)this.value;
 				StringBuilder buffer = new StringBuilder();
 				buffer.append(pt2.getX());
 				buffer.append(";"); //$NON-NLS-1$
 				buffer.append(pt2.getY());
 				return buffer.toString();
 			case POINT3D:
-				Point3D pt3 = ((Point3D)this.value);
+				Point3D pt3 = (Point3D)this.value;
 				buffer = new StringBuilder();
 				buffer.append(pt3.getX());
 				buffer.append(";"); //$NON-NLS-1$
@@ -1078,7 +1078,7 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 			case POLYLINE:
 			{ 
 				buffer = new StringBuilder();
-				Point2D[] lstpt2 = ((Point2D[])this.value);
+				Point2D[] lstpt2 = (Point2D[])this.value;
 				for(int i=0; i<lstpt2.length; ++i) {
 					if (lstpt2[i]!=null) {
 						if (buffer.length()>0) buffer.append(";"); //$NON-NLS-1$
@@ -1092,7 +1092,7 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 			case POLYLINE3D:
 			{ 
 				buffer = new StringBuilder();
-				Point3D[] lstpt3 = ((Point3D[])this.value);
+				Point3D[] lstpt3 = (Point3D[])this.value;
 				for(int i=0; i<lstpt3.length; ++i) {
 					if (lstpt3[i]!=null) {
 						if (buffer.length()>0) buffer.append(";"); //$NON-NLS-1$
@@ -1983,7 +1983,7 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 			this.value = (id!=null) ? UUID.fromString(id) : null;
 		}
 		catch(Throwable exception) {
-			assert(id!=null);
+			assert id!=null;
 			this.value = UUID.nameUUIDFromBytes(id.getBytes());
 		}
 		this.type = AttributeType.UUID;				
@@ -2094,7 +2094,7 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 			return null;
 		}
 		int fullPoints = comp.length/3;
-		boolean addPt = (fullPoints*3!=comp.length); 
+		boolean addPt = fullPoints*3!=comp.length;
 		Point3D[] tab = new Point3D[addPt ? fullPoints+1 : fullPoints];
 		for(int i=2,j=0; (i<comp.length)&&(j<tab.length); i+=3,++j) {
 			tab[j] = null; // FIXME: fix code: new Point3f(
@@ -2275,7 +2275,7 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 			return null;
 		}
 		int fullPoints = comp.length/2;
-		boolean addPt = (fullPoints*2!=comp.length); 
+		boolean addPt = fullPoints*2!=comp.length;
 		Point2D[] tab = new Point2D[addPt ? fullPoints+1 : fullPoints];
 		for(int i=1,j=0; (i<comp.length)&&(j<fullPoints); i+=2,++j) {
 			// FIXME: Fixcode: tab[j] = new Point2f(
@@ -2616,7 +2616,7 @@ public class AttributeValueImpl implements AttributeValue, AttributeConstants {
 					String classname = ((String)this.value).substring(0, index);
 					String enumName = ((String)this.value).substring(index+1);
 					Class<?> classType = Class.forName(classname);
-					assert(type.equals(classType));
+					assert type.equals(classType);
 					return Enum.valueOf(type, enumName);
 				}
 				break;

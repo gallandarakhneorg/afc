@@ -119,7 +119,7 @@ public class MultiAttributeProvider extends AbstractAttributeProvider {
 			v1.setMultipleValues(true);
 		}
 		else {
-			assert(v2.isAssigned());
+			assert v2.isAssigned();
 			if (!v1.isAssigned()) {
 				v1.setValue(v2);
 			}

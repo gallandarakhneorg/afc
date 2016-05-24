@@ -337,7 +337,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 	 */
 	@Override
 	public Attribute setAttributeType(String name, AttributeType type) throws AttributeException {
-		assert(name!=null);
+		assert name!=null;
 
 		AttributeValue oldValue = copyValue(name);
 		AttributeType oldType = (oldValue==null) ? null : oldValue.getType();
@@ -359,7 +359,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 	 */
 	@Override
 	public Attribute setAttribute(String name, AttributeValue value) throws AttributeException {
-		assert(name!=null && value!=null);
+		assert name!=null && value!=null;
 		AttributeValue oldValue = copyValue(name);
 		
 		if (oldValue!=null && oldValue.equals(value)) return null;
@@ -381,7 +381,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 	 */
 	@Override
 	public Attribute setAttribute(String name, boolean value) {
-		assert(name!=null);
+		assert name!=null;
 
 		AttributeValue oldValue = copyValue(name);
 		
@@ -404,7 +404,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 	 */
 	@Override
 	public Attribute setAttribute(String name, int value) {
-		assert(name!=null);
+		assert name!=null ;
 
 		AttributeValue oldValue = copyValue(name);
 		
@@ -427,7 +427,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 	 */
 	@Override
 	public Attribute setAttribute(String name, long value) {
-		assert(name!=null);
+		assert name!=null ;
 
 		AttributeValue oldValue = copyValue(name);
 		
@@ -450,7 +450,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 	 */
 	@Override
 	public Attribute setAttribute(String name, float value) {
-		assert(name!=null);
+		assert name!=null;
 
 		AttributeValue oldValue;
 		Object currentValue = this.heap.get(name);
@@ -481,7 +481,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 	 */
 	@Override
 	public Attribute setAttribute(String name, double value) {
-		assert(name!=null);
+		assert name!=null;
 
 		AttributeValue oldValue = copyValue(name);
 		
@@ -504,7 +504,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 	 */
 	@Override
 	public Attribute setAttribute(String name, String value) {
-		assert(name!=null);
+		assert name!=null;
 
 		AttributeValue oldValue = copyValue(name);
 		
@@ -530,7 +530,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 	 */
 	@Override
 	public Attribute setAttribute(String name, UUID value) {
-		assert(name!=null);
+		assert name!=null;
 
 		AttributeValue oldValue = copyValue(name);
 		
@@ -556,7 +556,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 	 */
 	@Override
 	public Attribute setAttribute(String name, URL value) {
-		assert(name!=null);
+		assert name!=null;
 
 		AttributeValue oldValue = copyValue(name);
 		
@@ -581,7 +581,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 	 */
 	@Override
 	public Attribute setAttribute(String name, URI value) {
-		assert(name!=null);
+		assert name!=null;
 
 		AttributeValue oldValue = copyValue(name);
 		
@@ -607,7 +607,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 	@Override
 	@Deprecated
 	public Attribute setAttribute(String name, Image value) {
-		assert(name!=null);
+		assert name!=null;
 
 		AttributeValue oldValue = copyValue(name);
 		
@@ -632,7 +632,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 	 */
 	@Override
 	public Attribute setAttribute(String name, Date value) {
-		assert(name!=null);
+		assert name!=null;
 
 		AttributeValue oldValue = copyValue(name);
 		
@@ -659,7 +659,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 	@Override
 	@Deprecated
 	public Attribute setAttribute(String name, Color value) {
-		assert(name!=null);
+		assert name!=null;
 
 		AttributeValue oldValue = copyValue(name);
 		
@@ -685,7 +685,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 	 */
 	@Override
 	public Attribute setAttribute(Attribute value) throws AttributeException {
-		assert(value!=null);
+		assert value!=null;
 		String name = value.getName();
 		AttributeValue oldValue = copyValue(name);
 		
@@ -706,7 +706,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 	 */
 	@Override
 	public Attribute setAttribute(String name, InetAddress value) {
-		assert(name!=null);
+		assert name!=null;
 
 		AttributeValue oldValue = copyValue(name);
 		
@@ -737,7 +737,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 	 */
 	@Override
 	public Attribute setAttribute(String name, Enum<?> value) {
-		assert(name!=null);
+		assert name!=null;
 
 		AttributeValue oldValue = copyValue(name);
 		
@@ -760,7 +760,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 	 */
 	@Override
 	public Attribute setAttribute(String name, Class<?> value) {
-		assert(name!=null);
+		assert name!=null;
 
 		AttributeValue oldValue = copyValue(name);
 		
@@ -783,7 +783,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 	 */
 	@Override
 	public boolean removeAttribute(String name) {
-		assert(name!=null);
+		assert name!=null;
 
 		AttributeValue oldValue;
 		Object currentValue = this.heap.remove(name);
