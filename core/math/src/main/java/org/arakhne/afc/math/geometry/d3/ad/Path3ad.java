@@ -2207,6 +2207,34 @@ public interface Path3ad<
 	default PathIterator3ad<IE> getPathIterator(Transform3D transform, double flatness) {
 		return new FlatteningPathIterator<>(getPathIterator(transform), flatness, DEFAULT_FLATENING_LIMIT);
 	}
+	
+
+	/** Replies the x coordinate of the last point in the path.
+	 *
+	 * @return the x coordinate of the last point in the path.
+	 */
+	@Pure
+	double getCurrentX();
+	
+	/** Replies the y coordinate of the last point in the path.
+	 *
+	 * @return the y coordinate of the last point in the path.
+	 */
+	@Pure
+	double getCurrentY();
+	
+	/** Replies the z coordinate of the last point in the path.
+	 *
+	 * @return the z coordinate of the last point in the path.
+	 */
+	@Pure
+	double getCurrentZ();
+
+	@Override
+	@Pure
+	default P getCurrentPoint() {
+		return getGeomFactory().newPoint(getCurrentX(), getCurrentY(), getCurrentZ());
+	}
 
 	@Pure
 	@Override
