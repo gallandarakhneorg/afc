@@ -565,6 +565,21 @@ public class Path3d
 				this.coords[this.numCoords-2],
 				this.coords[this.numCoords-1]);
 	}
+	
+	@Override
+	public double getCurrentX() {
+		return this.coords[this.numCoords - 3];
+	}
+	
+	@Override
+	public double getCurrentY() {
+		return this.coords[this.numCoords - 2];
+	}
+	
+	@Override
+	public double getCurrentZ() {
+		return this.coords[this.numCoords - 1];
+	}
 
 	@Override
 	@Pure
