@@ -488,17 +488,6 @@ public interface Sphere3afp<
 
 	}
 
-//	@Pure
-//	@Override
-//	default boolean intersects(RoundRectangle2afp<?, ?, ?, ?, ?, ?> s) {
-//		assert (s!= null) : "Round rectangle must be not null"; //$NON-NLS-1$
-//		return RoundRectangle2afp.intersectsRoundRectangleCircle(
-//				s.getMinX(), s.getMinY(),
-//				s.getMaxX(), s.getMaxY(),
-//				s.getArcWidth(), s.getArcHeight(),
-//				getX(), getY(), getRadius());
-//	}
-		
 	@Pure
 	@Override
 	default boolean intersects(MultiShape3afp<?, ?, ?, ?, ?, ?, ?> s) {
@@ -553,17 +542,23 @@ public interface Sphere3afp<
 		return new TransformedCirclePathIterator<>(this, transform);
 	}
 	
-//	@Override
-//	@Pure
-//	default double getHorizontalRadius() {
-//		return getRadius();
-//	}
-//	
-//	@Override
-//	@Pure
-//	default double getVerticalRadius() {
-//		return getRadius();
-//	}
+	@Override
+	@Pure
+	default double getHeight() {
+		return getRadius();
+	}
+	
+	@Override
+	@Pure
+	default double getDepth() {
+		return getRadius();
+	}
+	
+	@Override
+	@Pure
+	default double getWidth() {
+		return getRadius();
+	}
 
 	/** {@inheritDoc}
 	 *
