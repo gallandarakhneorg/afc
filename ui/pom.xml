@@ -20,9 +20,20 @@
 		<module>swing</module>
 		<module>vector</module>
 		<module>vector-awt</module>
-		<module>vector-android</module>
-		<module>android</module>
 	</modules>
+
+	<profiles>
+		<profile>
+			<id>generate-android-libraries</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<modules>
+				<module>vector-android</module>
+				<module>android</module>
+			</modules>
+		</profile>
+	</profiles>
 
 	<build>
 		<plugins>

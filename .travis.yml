@@ -7,6 +7,10 @@ sudo: false
 jdk:
   - oraclejdk8
 
+install: true
+
+script: mvn -q -P use-jdt-compiler install
+
 cache:
   directories:
   - $HOME/.m2

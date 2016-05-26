@@ -11,7 +11,7 @@ A.1) Remove "-SNAPSHOT" in all the poms.
 A.2) Compiling locally without error.
 
      $> rm -rf $HOME/.m2/repository
-     $> mvn clean install
+     $> mvn clean install -P generate-android-libraries
 
 A.3) Prepare the bundles for Maven Central:
 
