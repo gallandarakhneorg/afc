@@ -8,7 +8,7 @@
 	</parent>
 
 	<artifactId>mathfx</artifactId>
-	<name>Java FX Math Tools</name>
+	<name>JavaFX Math Tools</name>
 	<inceptionYear>2013</inceptionYear>
 
 	<properties>

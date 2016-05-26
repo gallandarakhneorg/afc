@@ -15,6 +15,7 @@ Text Utilities | org.arakhne.afc.core | text | Utilities for string of character
 Input-Output Utilities | org.arakhne.afc.core | inputoutput | General utilities related to IO
 General Utilities | org.arakhne.afc.core | util | General utility classes that do not fit in the other AFC modules
 Math Tools | org.arakhne.afc.core | math | Mathematic and Geometry tools and primitives
+JavaFX Math Tools | org.arakhne.afc.advanced | mathfx | JavaFX implementation of the mathematic and geometry tools
 Generic Attribute API | org.arakhne.afc.advanced | attributes | Library for creating generic attributes, aka. Variant attributes.
 
 
