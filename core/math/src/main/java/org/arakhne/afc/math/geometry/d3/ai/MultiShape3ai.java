@@ -26,11 +26,9 @@ import java.util.List;
 
 import org.arakhne.afc.math.Unefficient;
 import org.arakhne.afc.math.geometry.PathWindingRule;
-import org.arakhne.afc.math.geometry.d2.Point2D;
-import org.arakhne.afc.math.geometry.d2.Transform2D;
-import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d3.MultiShape3D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
+import org.arakhne.afc.math.geometry.d3.Transform3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -137,10 +135,10 @@ public interface MultiShape3ai<
 
 	@Pure
 	@Override
-	default boolean contains(int x, int y) {
-		if (toBoundingBox().contains(x, y)) {
+	default boolean contains(int x, int y, int z) {
+		if (toBoundingBox().contains(x, y, z)) {
 			for (CT shape : getBackendDataList()) {
-				if (shape.contains(x, y)) {
+				if (shape.contains(x, y, z)) {
 					return true;
 				}
 			}
@@ -163,9 +161,9 @@ public interface MultiShape3ai<
 	}
 
 	@Override
-	default void translate(int dx, int dy) {
+	default void translate(int dx, int dy, int dz) {
 		for (CT shape : getBackendDataList()) {
-			shape.translate(dx, dy);
+			shape.translate(dx, dy, dz);
 		}
 		onBackendDataChange();
 	}
@@ -173,7 +171,7 @@ public interface MultiShape3ai<
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Pure
 	@Override
-	default ST createTransformedShape(Transform2D transform) {
+	default ST createTransformedShape(Transform3D transform) {
 		MultiShape3ai multishape = getGeomFactory().newMultiShape();
 		for (CT shape : getBackendDataList()) {
 			multishape.add(shape.createTransformedShape(transform));
@@ -229,7 +227,7 @@ public interface MultiShape3ai<
 	}
 
 	@Override
-	default PathIterator3ai<IE> getPathIterator(Transform2D transform) {
+	default PathIterator3ai<IE> getPathIterator(Transform3D transform) {
 		if (transform == null || transform.isIdentity()) {
 			return new MultiShapePathIterator<>(getBackendDataList(), getGeomFactory());
 		}
@@ -416,7 +414,7 @@ public interface MultiShape3ai<
 	 */
 	class TransformedMultiShapePathIterator<IE extends PathElement3ai> extends AbstractMultiShapePathIterator<IE> {
 
-		private final Transform2D transform;
+		private final Transform3D transform;
 		
 		/**
 		 * @param list the list of the shapes to iterate on.
@@ -424,7 +422,7 @@ public interface MultiShape3ai<
 		 * @param transform the transformation to apply.
 		 */
 		public TransformedMultiShapePathIterator(List<? extends Shape3ai<?, ?, IE, ?, ?, ?>> list,
-				GeomFactory3ai<IE, ?, ?, ?> factory, Transform2D transform) {
+				GeomFactory3ai<IE, ?, ?, ?> factory, Transform3D transform) {
 			super(list, factory);
 			assert (transform != null) : "Transformation must be not null"; //$NON-NLS-1$
 			this.transform = transform;
@@ -452,8 +450,8 @@ public interface MultiShape3ai<
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
-	class MultiShapePointIterator<P extends Point2D<? super P, ? super V>,
-			V extends Vector2D<? super V, ? super P>>	 implements Iterator<P> {
+	class MultiShapePointIterator<P extends Point3D<? super P, ? super V>,
+			V extends Vector3D<? super V, ? super P>>	 implements Iterator<P> {
 
 		private final Iterator<? extends Shape3ai<?, ?, ?, P, V, ?>> elements;
 		

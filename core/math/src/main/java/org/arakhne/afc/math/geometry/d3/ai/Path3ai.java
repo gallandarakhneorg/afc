@@ -26,20 +26,17 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import org.arakhne.afc.math.MathConstants;
+import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.PathIterator2D;
-import org.arakhne.afc.math.geometry.d2.Point2D;
-import org.arakhne.afc.math.geometry.d2.Transform2D;
-import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.afp.Circle2afp.AbstractCirclePathIterator;
-import org.arakhne.afc.math.geometry.d2.afp.Segment2afp;
 import org.arakhne.afc.math.geometry.d3.Path3D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
+import org.arakhne.afc.math.geometry.d3.Transform3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
+import org.arakhne.afc.math.geometry.d3.afp.Segment3afp;
 import org.eclipse.xtext.xbase.lib.Pure;
-
-import javafx.scene.shape.ArcType;
 
 /** Fonctional interface that represented a 2D path on a plane.
  *
@@ -93,8 +90,10 @@ public interface Path3ai<
 		boolean foundOneLine = false;
 		int xmin = Integer.MAX_VALUE;
 		int ymin = Integer.MAX_VALUE;
+		int zmin = Integer.MAX_VALUE;
 		int xmax = Integer.MIN_VALUE;
 		int ymax = Integer.MIN_VALUE;
+		int zmax = Integer.MIN_VALUE;
 		PathElement3ai element;
 		Path3ai<?, ?, ?, ?, ?, ?> subPath;
 		while (iterator.hasNext()) {
@@ -103,44 +102,52 @@ public interface Path3ai<
 			case LINE_TO:
 				if (element.getFromX()<xmin) xmin = element.getFromX();
 				if (element.getFromY()<ymin) ymin = element.getFromY();
+				if (element.getFromZ()<zmin) zmin = element.getFromZ();
 				if (element.getFromX()>xmax) xmax = element.getFromX();
 				if (element.getFromY()>ymax) ymax = element.getFromY();
+				if (element.getFromZ()>zmax) zmax = element.getFromZ();
 				if (element.getToX()<xmin) xmin = element.getToX();
 				if (element.getToY()<ymin) ymin = element.getToY();
+				if (element.getToZ()<zmin) zmin = element.getToZ();
 				if (element.getToX()>xmax) xmax = element.getToX();
 				if (element.getToY()>ymax) ymax = element.getToY();
+				if (element.getToZ()>zmax) zmax = element.getToZ();
 				foundOneLine = true;
 				break;
 			case CURVE_TO:
 				subPath = factory.newPath(iterator.getWindingRule());
-				subPath.moveTo(element.getFromX(), element.getFromY());
+				subPath.moveTo(element.getFromX(), element.getFromY(), element.getFromZ());
 				subPath.curveTo(
-						element.getCtrlX1(), element.getCtrlY1(),
-						element.getCtrlX2(), element.getCtrlY2(),
-						element.getToX(), element.getToY());
+						element.getCtrlX1(), element.getCtrlY1(), element.getCtrlZ1(),
+						element.getCtrlX2(), element.getCtrlY2(), element.getCtrlZ2(),
+						element.getToX(), element.getToY(), element.getToZ());
 				if (computeDrawableElementBoundingBox(
 						subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
 						box)) {
 					if (box.getMinX()<xmin) xmin = box.getMinX();
 					if (box.getMinY()<ymin) ymin = box.getMinY();
+					if (box.getMinZ()<zmin) zmin = box.getMinZ();
 					if (box.getMaxX()>xmax) xmax = box.getMaxX();
 					if (box.getMaxY()>ymax) ymax = box.getMaxY();
+					if (box.getMaxZ()>zmax) zmax = box.getMaxZ();
 					foundOneLine = true;
 				}
 				break;
 			case QUAD_TO:
 				subPath = factory.newPath(iterator.getWindingRule());
-				subPath.moveTo(element.getFromX(), element.getFromY());
+				subPath.moveTo(element.getFromX(), element.getFromY(), element.getFromZ());
 				subPath.quadTo(
-						element.getCtrlX1(), element.getCtrlY1(),
-						element.getToX(), element.getToY());
+						element.getCtrlX1(), element.getCtrlY1(), element.getCtrlZ1(),
+						element.getToX(), element.getToY(), element.getToZ());
 				if (computeDrawableElementBoundingBox(
 						subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
 						box)) {
 					if (box.getMinX()<xmin) xmin = box.getMinX();
 					if (box.getMinY()<ymin) ymin = box.getMinY();
+					if (box.getMinZ()<zmin) zmin = box.getMinZ();
 					if (box.getMaxX()>xmax) xmax = box.getMaxX();
 					if (box.getMaxY()>ymax) ymax = box.getMaxY();
+					if (box.getMaxZ()>zmax) zmax = box.getMaxZ();
 					foundOneLine = true;
 				}
 				break;
@@ -150,7 +157,7 @@ public interface Path3ai<
 			}
 		}
 		if (foundOneLine) {
-			box.setFromCorners(xmin, ymin, xmax, ymax);
+			box.setFromCorners(xmin, ymin, zmin, xmax, ymax, zmax);
 		}
 		else {
 			box.clear();
@@ -178,8 +185,10 @@ public interface Path3ai<
 		boolean foundOneControlPoint = false;
 		int xmin = Integer.MAX_VALUE;
 		int ymin = Integer.MAX_VALUE;
+		int zmin = Integer.MAX_VALUE;
 		int xmax = Integer.MIN_VALUE;
 		int ymax = Integer.MIN_VALUE;
+		int zmax = Integer.MIN_VALUE;
 		PathElement3ai element;
 		while (iterator.hasNext()) {
 			element = iterator.next();
@@ -187,46 +196,64 @@ public interface Path3ai<
 			case LINE_TO:
 				if (element.getFromX()<xmin) xmin = element.getFromX();
 				if (element.getFromY()<ymin) ymin = element.getFromY();
+				if (element.getFromZ()<zmin) zmin = element.getFromZ();
 				if (element.getFromX()>xmax) xmax = element.getFromX();
 				if (element.getFromY()>ymax) ymax = element.getFromY();
+				if (element.getFromZ()>zmax) zmax = element.getFromZ();
 				if (element.getToX()<xmin) xmin = element.getToX();
 				if (element.getToY()<ymin) ymin = element.getToY();
+				if (element.getToZ()<zmin) zmin = element.getToZ();
 				if (element.getToX()>xmax) xmax = element.getToX();
 				if (element.getToY()>ymax) ymax = element.getToY();
+				if (element.getToZ()>zmax) zmax = element.getToZ();
 				foundOneControlPoint = true;
 				break;
 			case CURVE_TO:
 				if (element.getFromX()<xmin) xmin = element.getFromX();
 				if (element.getFromY()<ymin) ymin = element.getFromY();
+				if (element.getFromZ()<zmin) zmin = element.getFromZ();
 				if (element.getFromX()>xmax) xmax = element.getFromX();
 				if (element.getFromY()>ymax) ymax = element.getFromY();
+				if (element.getFromZ()>zmax) zmax = element.getFromZ();
 				if (element.getCtrlX1()<xmin) xmin = element.getCtrlX1();
 				if (element.getCtrlY1()<ymin) ymin = element.getCtrlY1();
+				if (element.getCtrlZ1()<zmin) zmin = element.getCtrlZ1();
 				if (element.getCtrlX1()>xmax) xmax = element.getCtrlX1();
 				if (element.getCtrlY1()>ymax) ymax = element.getCtrlY1();
+				if (element.getCtrlZ1()>zmax) zmax = element.getCtrlZ1();
 				if (element.getCtrlX2()<xmin) xmin = element.getCtrlX2();
 				if (element.getCtrlY2()<ymin) ymin = element.getCtrlY2();
+				if (element.getCtrlZ2()<zmin) zmin = element.getCtrlZ2();
 				if (element.getCtrlX2()>xmax) xmax = element.getCtrlX2();
 				if (element.getCtrlY2()>ymax) ymax = element.getCtrlY2();
+				if (element.getCtrlZ2()>zmax) zmax = element.getCtrlZ2();
 				if (element.getToX()<xmin) xmin = element.getToX();
 				if (element.getToY()<ymin) ymin = element.getToY();
+				if (element.getToZ()<zmin) zmin = element.getToZ();
 				if (element.getToX()>xmax) xmax = element.getToX();
 				if (element.getToY()>ymax) ymax = element.getToY();
+				if (element.getToZ()>zmax) zmax = element.getToZ();
 				foundOneControlPoint = true;
 				break;
 			case QUAD_TO:
 				if (element.getFromX()<xmin) xmin = element.getFromX();
 				if (element.getFromY()<ymin) ymin = element.getFromY();
+				if (element.getFromZ()<zmin) zmin = element.getFromZ();
 				if (element.getFromX()>xmax) xmax = element.getFromX();
 				if (element.getFromY()>ymax) ymax = element.getFromY();
+				if (element.getFromZ()>zmax) zmax = element.getFromZ();
 				if (element.getCtrlX1()<xmin) xmin = element.getCtrlX1();
 				if (element.getCtrlY1()<ymin) ymin = element.getCtrlY1();
+				if (element.getCtrlZ1()<zmin) zmin = element.getCtrlZ1();
 				if (element.getCtrlX1()>xmax) xmax = element.getCtrlX1();
 				if (element.getCtrlY1()>ymax) ymax = element.getCtrlY1();
+				if (element.getCtrlZ1()>zmax) zmax = element.getCtrlZ1();
 				if (element.getToX()<xmin) xmin = element.getToX();
 				if (element.getToY()<ymin) ymin = element.getToY();
+				if (element.getToZ()<zmin) zmin = element.getToZ();
 				if (element.getToX()>xmax) xmax = element.getToX();
 				if (element.getToY()>ymax) ymax = element.getToY();
+				if (element.getToZ()>zmax) zmax = element.getToZ();
 				foundOneControlPoint = true;
 				break;
 			case MOVE_TO:
@@ -235,7 +262,7 @@ public interface Path3ai<
 			}
 		}
 		if (foundOneControlPoint) {
-			box.setFromCorners(xmin, ymin, xmax, ymax);
+			box.setFromCorners(xmin, ymin, zmin, xmax, ymax, zmax);
 		}
 		else {
 			box.clear();
@@ -251,13 +278,15 @@ public interface Path3ai<
 	 * @param pi is the description of the path.
 	 * @param x1 is the first point of the segment.
 	 * @param y1 is the first point of the segment.
+	 * @param z1 is the first point of the segment.
 	 * @param x2 is the first point of the segment.
 	 * @param y2 is the first point of the segment.
+	 * @param z2 is the first point of the segment.
 	 * @param type is the type of special computation to apply. If <code>null</code>, it 
 	 * is equivalent to {@link CrossingComputationType#STANDARD}.
 	 * @return the crossing
 	 */
-	static int computeCrossingsFromSegment(int crossings, PathIterator3ai<?> pi, int x1, int y1, int x2, int y2,
+	static int computeCrossingsFromSegment(int crossings, PathIterator3ai<?> pi, int x1, int y1, int z1, int x2, int y2, int z2,
 			CrossingComputationType type) {	
 		assert (pi != null) : "Iterator must not be null"; //$NON-NLS-1$
 
@@ -272,9 +301,11 @@ public interface Path3ai<
 
 		int movx = element.getToX();
 		int movy = element.getToY();
+		int movz = element.getToZ();
 		int curx = movx;
 		int cury = movy;
-		int endx, endy;
+		int curz = movz;
+		int endx, endy, endz;
 		int numCrosses = crossings;
 		while (pi.hasNext()) {
 			element = pi.next();
@@ -282,71 +313,79 @@ public interface Path3ai<
 			case MOVE_TO:
 				movx = curx = element.getToX();
 				movy = cury = element.getToY();
+				movz = curz = element.getToZ();
 				break;
 			case LINE_TO:
 				endx = element.getToX();
 				endy = element.getToY();
+				endz = element.getToZ();
 				numCrosses = Segment3ai.computeCrossingsFromSegment(
 						numCrosses,
-						x1, y1, x2, y2,
-						curx, cury,
-						endx, endy);
+						x1, y1, z1, x2, y2, z2,
+						curx, cury, curz,
+						endx, endy, endz);
 				if (numCrosses==MathConstants.SHAPE_INTERSECTS)
 					return numCrosses;
 				curx = endx;
 				cury = endy;
+				curz = endz;
 				break;
 			case QUAD_TO:
 			{
 				endx = element.getToX();
 				endy = element.getToY();
+				endz = element.getToZ();
 				Path3ai<?, ?, ?, ?, ?, ?> localPath = pi.getGeomFactory().newPath(pi.getWindingRule());
-				localPath.moveTo(element.getFromX(), element.getFromY());
+				localPath.moveTo(element.getFromX(), element.getFromY(), element.getFromZ());
 				localPath.quadTo(
-						element.getCtrlX1(), element.getCtrlY1(),
-						endx, endy);
+						element.getCtrlX1(), element.getCtrlY1(), element.getCtrlZ1(),
+						endx, endy, endz);
 				numCrosses = computeCrossingsFromSegment(
 						numCrosses,
 						localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
-						x1, y1, x2, y2,
+						x1, y1, z1, x2, y2, z2,
 						CrossingComputationType.STANDARD);
 				if (numCrosses==MathConstants.SHAPE_INTERSECTS)
 					return numCrosses;
 				curx = endx;
 				cury = endy;
+				curz = endz;
 				break;
 			}
 			case CURVE_TO:
 				endx = element.getToX();
 				endy = element.getToY();
+				endz = element.getToZ();
 				Path3ai<?, ?, ?, ?, ?, ?> localPath = pi.getGeomFactory().newPath(pi.getWindingRule());
-				localPath.moveTo(element.getFromX(), element.getFromY());
+				localPath.moveTo(element.getFromX(), element.getFromY(), element.getFromZ());
 				localPath.curveTo(
-						element.getCtrlX1(), element.getCtrlY1(),
-						element.getCtrlX2(), element.getCtrlY2(),
-						endx, endy);
+						element.getCtrlX1(), element.getCtrlY1(), element.getCtrlZ1(),
+						element.getCtrlX2(), element.getCtrlY2(), element.getCtrlZ2(),
+						endx, endy, endz);
 				numCrosses = computeCrossingsFromSegment(
 						numCrosses,
 						localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
-						x1, y1, x2, y2,
+						x1, y1, z1, x2, y2, z2,
 						CrossingComputationType.STANDARD);
 				if (numCrosses==MathConstants.SHAPE_INTERSECTS)
 					return numCrosses;
 				curx = endx;
 				cury = endy;
+				curz = endz;
 				break;
 			case CLOSE:
-				if (cury != movy || curx != movx) {
+				if (cury != movy || curx != movx || curz != movz) {
 					numCrosses = Segment3ai.computeCrossingsFromSegment(
 							numCrosses,
-							x1, y1, x2, y2,
-							curx, cury,
-							movx, movy);
+							x1, y1, z1, x2, y2, z2,
+							curx, cury, curz,
+							movx, movy, movz);
 					if (numCrosses==MathConstants.SHAPE_INTERSECTS)
 						return numCrosses;
 				}
 				curx = movx;
 				cury = movy;
+				curz = movz;
 				break;
 			default:
 			}
@@ -354,16 +393,16 @@ public interface Path3ai<
 
 		assert(numCrosses!=MathConstants.SHAPE_INTERSECTS);
 
-		boolean isOpen = (curx != movx) || (cury != movy);
+		boolean isOpen = (curx != movx) || (cury != movy) || (curz != movz);
 
 		if (isOpen && type != null) {
 			switch (type) {
 			case AUTO_CLOSE:
 				numCrosses = Segment3ai.computeCrossingsFromSegment(
 						numCrosses,
-						x1, y1, x2, y2,
-						curx, cury,
-						movx, movy);
+						x1, y1, z1, x2, y2, z2,
+						curx, cury, curz,
+						movx, movy, movz);
 				break;
 			case SIMPLE_INTERSECTION_WHEN_NOT_POLYGON:
 				// Assume that when is the path is open, only
@@ -386,12 +425,13 @@ public interface Path3ai<
 	 * @param pi is the description of the path.
 	 * @param cx is the center of the circle.
 	 * @param cy is the center of the circle.
+	 * @param cz is the center of the circle.
 	 * @param radius is the radius of the circle.
 	 * @param type is the type of special computation to apply. If <code>null</code>, it 
 	 * is equivalent to {@link CrossingComputationType#STANDARD}.
 	 * @return the crossing
 	 */
-	static int computeCrossingsFromCircle(int crossings, PathIterator3ai<?> pi, int cx, int cy, int radius,
+	static int computeCrossingsFromSphere(int crossings, PathIterator3ai<?> pi, int cx, int cy, int cz, int radius,
 			CrossingComputationType type) {	
 		assert (pi != null) : "Iterator must not be null"; //$NON-NLS-1$
 		assert (radius >= 0) : "Circle radius must be positive or zero"; //$NON-NLS-1$
@@ -407,9 +447,11 @@ public interface Path3ai<
 
 		int movx = element.getToX();
 		int movy = element.getToY();
+		int movz = element.getToZ();
 		int curx = movx;
 		int cury = movy;
-		int endx, endy;
+		int curz = movz;
+		int endx, endy, endz;
 		int numCrosses = crossings;
 		while (pi.hasNext()) {
 			element = pi.next();
@@ -417,75 +459,83 @@ public interface Path3ai<
 			case MOVE_TO:
 				movx = curx = element.getToX();
 				movy = cury = element.getToY();
+				movz = curz = element.getToZ();
 				break;
 			case LINE_TO:
 				endx = element.getToX();
 				endy = element.getToY();
+				endz = element.getToZ();
 				numCrosses = Segment3ai.computeCrossingsFromCircle(
 						numCrosses,
-						cx, cy, radius,
-						curx, cury,
-						endx, endy);
+						cx, cy, cz, radius,
+						curx, cury, curz,
+						endx, endy, endz);
 				if (numCrosses==MathConstants.SHAPE_INTERSECTS) {
 					return numCrosses;
 				}
 				curx = endx;
 				cury = endy;
+				curz = endz;
 				break;
 			case QUAD_TO:
 			{
 				endx = element.getToX();
 				endy = element.getToY();
+				endz = element.getToZ();
 				Path3ai<?, ?, ?, ?, ?, ?> localPath = pi.getGeomFactory().newPath(pi.getWindingRule());
-				localPath.moveTo(element.getFromX(), element.getFromY());
+				localPath.moveTo(element.getFromX(), element.getFromY(), element.getFromZ());
 				localPath.quadTo(
-						element.getCtrlX1(), element.getCtrlY1(),
-						endx, endy);
-				numCrosses = computeCrossingsFromCircle(
+						element.getCtrlX1(), element.getCtrlY1(), element.getCtrlZ1(),
+						endx, endy, endz);
+				numCrosses = computeCrossingsFromSphere(
 						numCrosses,
 						localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
-						cx, cy, radius,
+						cx, cy, cz, radius,
 						CrossingComputationType.STANDARD);
 				if (numCrosses==MathConstants.SHAPE_INTERSECTS) {
 					return numCrosses;
 				}
 				curx = endx;
 				cury = endy;
+				curz = endz;
 				break;
 			}
 			case CURVE_TO:
 				endx = element.getToX();
 				endy = element.getToY();
+				endz = element.getToZ();
 				Path3ai<?, ?, ?, ?, ?, ?> localPath = pi.getGeomFactory().newPath(pi.getWindingRule());
-				localPath.moveTo(element.getFromX(), element.getFromY());
+				localPath.moveTo(element.getFromX(), element.getFromY(), element.getFromZ());
 				localPath.curveTo(
-						element.getCtrlX1(), element.getCtrlY1(),
-						element.getCtrlX2(), element.getCtrlY2(),
-						endx, endy);
-				numCrosses = computeCrossingsFromCircle(
+						element.getCtrlX1(), element.getCtrlY1(), element.getCtrlZ1(),
+						element.getCtrlX2(), element.getCtrlY2(), element.getCtrlZ2(),
+						endx, endy, endz);
+				numCrosses = computeCrossingsFromSphere(
 						numCrosses,
 						localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
-						cx, cy, radius,
+						cx, cy, cz, radius,
 						CrossingComputationType.STANDARD);
 				if (numCrosses==MathConstants.SHAPE_INTERSECTS) {
 					return numCrosses;
 				}
 				curx = endx;
 				cury = endy;
+				curz = endz;
 				break;
 			case CLOSE:
-				if (cury != movy || curx != movx) {
+				if (cury != movy || curx != movx || curz != movz) {
 					numCrosses = Segment3ai.computeCrossingsFromCircle(
 							numCrosses,
-							cx, cy, radius,
-							curx, cury,
-							movx, movy);
+							cx, cy, cz, radius,
+							curx, cury, curz,
+							movx, movy, movz);
 					if (numCrosses==MathConstants.SHAPE_INTERSECTS) {
 						return numCrosses;
 					}
 				}
 				curx = movx;
 				cury = movy;
+				curz = movz;
 				break;
 			default:
 			}
@@ -493,7 +543,7 @@ public interface Path3ai<
 
 		assert (numCrosses != MathConstants.SHAPE_INTERSECTS);
 
-		boolean isOpen = (curx != movx) || (cury != movy);
+		boolean isOpen = (curx != movx) || (cury != movy) || (curz != movz);
 
 		if (isOpen && type != null) {
 			switch(type) {
@@ -501,9 +551,9 @@ public interface Path3ai<
 				// Auto close
 				numCrosses = Segment3ai.computeCrossingsFromCircle(
 						numCrosses,
-						cx, cy, radius,
-						curx, cury,
-						movx, movy);
+						cx, cy, cz, radius,
+						curx, cury, curz,
+						movx, movy, movz);
 				break;
 			case SIMPLE_INTERSECTION_WHEN_NOT_POLYGON:
 				// Assume that when is the path is open, only
@@ -536,11 +586,12 @@ public interface Path3ai<
 	 * @param pi is the description of the path.
 	 * @param px is the reference point to test.
 	 * @param py is the reference point to test.
+	 * @param pz is the reference point to test.
 	 * @param type is the type of special computation to apply. If <code>null</code>, it 
 	 * is equivalent to {@link CrossingComputationType#STANDARD}.
 	 * @return the crossing, or {@link MathConstants#SHAPE_INTERSECTS}
 	 */
-	static int computeCrossingsFromPoint(int crossings, PathIterator3ai<?> pi, int px, int py, CrossingComputationType type) {
+	static int computeCrossingsFromPoint(int crossings, PathIterator3ai<?> pi, int px, int py, int pz, CrossingComputationType type) {
 		assert (pi != null) : "Iterator must not be null"; //$NON-NLS-1$
 
 		// Copied and adapted from the AWT API
@@ -554,9 +605,11 @@ public interface Path3ai<
 
 		int movx = element.getToX();
 		int movy = element.getToY();
+		int movz = element.getToZ();
 		int curx = movx;
 		int cury = movy;
-		int endx, endy;
+		int curz = movz;
+		int endx, endy, endz;
 		int numCrossings = crossings;
 
 		while (pi.hasNext()) {
@@ -565,69 +618,77 @@ public interface Path3ai<
 			case MOVE_TO:
 				movx = curx = element.getToX();
 				movy = cury = element.getToY();
+				movz = curz = element.getToZ();
 				break;
 			case LINE_TO:
 				endx = element.getToX();
 				endy = element.getToY();
+				endz = element.getToZ();
 				numCrossings = Segment3ai.computeCrossingsFromPoint(
 						numCrossings,
-						px, py,
-						curx, cury,
-						endx, endy);
+						px, py, pz,
+						curx, cury, curz,
+						endx, endy, endz);
 				if (numCrossings==MathConstants.SHAPE_INTERSECTS) {
 					return numCrossings;
 				}
 				curx = endx;
 				cury = endy;
+				curz = endz;
 				break;
 			case QUAD_TO:
 				endx = element.getToX();
 				endy = element.getToY();
+				endz = element.getToZ();
 				Path3ai<?, ?, ?, ?, ?, ?> curve = pi.getGeomFactory().newPath(pi.getWindingRule());
-				curve.moveTo(element.getFromX(), element.getFromY());
-				curve.quadTo(element.getCtrlX1(), element.getCtrlY1(), endx, endy);
+				curve.moveTo(element.getFromX(), element.getFromY(), element.getFromZ());
+				curve.quadTo(element.getCtrlX1(), element.getCtrlY1(), element.getCtrlZ1(), endx, endy, endz);
 				numCrossings = computeCrossingsFromPoint(
 						numCrossings,
 						curve.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
-						px, py, CrossingComputationType.STANDARD);
+						px, py, pz, CrossingComputationType.STANDARD);
 				if (numCrossings==MathConstants.SHAPE_INTERSECTS) {
 					return numCrossings;
 				}
 				curx = endx;
 				cury = endy;
+				curz = endz;
 				break;
 			case CURVE_TO:
 				endx = element.getToX();
 				endy = element.getToY();
+				endz = element.getToZ();
 				curve = pi.getGeomFactory().newPath(pi.getWindingRule());
-				curve.moveTo(element.getFromX(), element.getFromY());
+				curve.moveTo(element.getFromX(), element.getFromY(), element.getFromZ());
 				curve.curveTo(
-						element.getCtrlX1(), element.getCtrlY1(),
-						element.getCtrlX2(), element.getCtrlY2(),
-						endx, endy);
+						element.getCtrlX1(), element.getCtrlY1(), element.getCtrlZ1(),
+						element.getCtrlX2(), element.getCtrlY2(), element.getCtrlZ2(),
+						endx, endy, endz);
 				numCrossings = computeCrossingsFromPoint(
 						numCrossings,
 						curve.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
-						px, py, CrossingComputationType.STANDARD);
+						px, py, pz, CrossingComputationType.STANDARD);
 				if (numCrossings==MathConstants.SHAPE_INTERSECTS) {
 					return numCrossings;
 				}
 				curx = endx;
 				cury = endy;
+				curz = endz;
 				break;
 			case CLOSE:
-				if (cury != movy || curx != movx) {
+				if (cury != movy || curx != movx || curz != movz) {
 					numCrossings = Segment3ai.computeCrossingsFromPoint(
 							numCrossings,
-							px, py,
-							curx, cury,
-							movx, movy);
+							px, py, pz,
+							curx, cury, curz,
+							movx, movy, movz);
 					if (numCrossings==MathConstants.SHAPE_INTERSECTS) {
 						return numCrossings;
 					}
 				}
 				curx = movx;
 				cury = movy;
+				curz = movz;
 				break;
 			default:
 			}
@@ -635,19 +696,19 @@ public interface Path3ai<
 
 		assert(numCrossings != MathConstants.SHAPE_INTERSECTS);
 
-		boolean isOpen = (curx != movx) || (cury != movy);
+		boolean isOpen = (curx != movx) || (cury != movy) || (curz != movz);
 
 		if (isOpen && type != null) {
 			switch (type) {
 			case AUTO_CLOSE:
 				// Not closed
-				if (movx==px && movy==py)
+				if (movx==px && movy==py && movz==pz)
 					return MathConstants.SHAPE_INTERSECTS;
 				numCrossings = Segment3ai.computeCrossingsFromPoint(
 						numCrossings,
-						px, py,
-						curx, cury,
-						movx, movy);
+						px, py, pz,
+						curx, cury, curz,
+						movx, movy, movz);
 				break;
 			case SIMPLE_INTERSECTION_WHEN_NOT_POLYGON:
 				// Assume that when is the path is open, only
@@ -702,9 +763,10 @@ public interface Path3ai<
 
 		GeomFactory3ai<?, ?, ?, ?> factory = iterator.getGeomFactory();
 		Path3ai<?, ?, ?, ?, ?, ?> subPath;
-		int curx, cury, movx, movy, endx, endy;
+		int curx, cury, curz, movx, movy, movz, endx, endy, endz;
 		curx = movx = pathElement1.getToX();
 		cury = movy = pathElement1.getToY();
+		curz = movz = pathElement1.getToZ();
 		int crossings = 0;
 		int n;
 
@@ -717,27 +779,31 @@ public interface Path3ai<
 				// assert((crossings & 1) != 0);
 				movx = curx = pathElement1.getToX();
 				movy = cury = pathElement1.getToY();
+				movz = curz = pathElement1.getToZ();
 				break;
 			case LINE_TO:
 				endx = pathElement1.getToX();
 				endy = pathElement1.getToY();
+				endz = pathElement1.getToZ();
 				crossings = shadow.computeCrossings(crossings,
-						curx, cury,
-						endx, endy);
+						curx, cury, curz,
+						endx, endy, endz);
 				if (crossings==MathConstants.SHAPE_INTERSECTS)
 					return crossings;
 				curx = endx;
 				cury = endy;
+				curz = endz;
 				break;
 			case QUAD_TO:
 				endx = pathElement1.getToX();
 				endy = pathElement1.getToY();
+				endz = pathElement1.getToZ();
 				// only for local use.
 				subPath = factory.newPath(iterator.getWindingRule());
-				subPath.moveTo(curx, cury);
+				subPath.moveTo(curx, cury, curz);
 				subPath.quadTo(
-						pathElement1.getCtrlX1(), pathElement1.getCtrlY1(),
-						endx, endy);
+						pathElement1.getCtrlX1(), pathElement1.getCtrlY1(), pathElement1.getCtrlZ1(),
+						endx, endy, endz);
 				n = computeCrossingsFromPath(
 						subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
 						shadow,
@@ -748,17 +814,19 @@ public interface Path3ai<
 				crossings += n;
 				curx = endx;
 				cury = endy;
+				curz = endz;
 				break;
 			case CURVE_TO:
 				endx = pathElement1.getToX();
 				endy = pathElement1.getToY();
+				endz = pathElement1.getToZ();
 				// only for local use
 				subPath = factory.newPath(iterator.getWindingRule());
-				subPath.moveTo(curx, cury);
+				subPath.moveTo(curx, cury, curz);
 				subPath.curveTo(
-						pathElement1.getCtrlX1(), pathElement1.getCtrlY1(),
-						pathElement1.getCtrlX2(), pathElement1.getCtrlY2(),
-						endx, endy);
+						pathElement1.getCtrlX1(), pathElement1.getCtrlY1(), pathElement1.getCtrlZ1(),
+						pathElement1.getCtrlX2(), pathElement1.getCtrlY2(), pathElement1.getCtrlZ2(),
+						endx, endy, endz);
 				n = computeCrossingsFromPath(
 						subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
 						shadow,
@@ -769,17 +837,19 @@ public interface Path3ai<
 				crossings += n;
 				curx = endx;
 				cury = endy;
+				curz = endz;
 				break;
 			case CLOSE:
-				if (curx != movx || cury != movy) {
+				if (curx != movx || cury != movy || curz != movz) {
 					crossings = shadow.computeCrossings(crossings,
-							curx, cury,
-							movx, movy);
+							curx, cury, curz,
+							movx, movy, movz);
 				}
 				// Stop as soon as possible
 				if (crossings!=0) return crossings;
 				curx = movx;
 				cury = movy;
+				curz = movz;
 				break;
 			default:
 			}
@@ -787,14 +857,14 @@ public interface Path3ai<
 
 		assert(crossings != MathConstants.SHAPE_INTERSECTS);
 
-		boolean isOpen = (curx != movx) || (cury != movy);
+		boolean isOpen = (curx != movx) || (cury != movy) || (curz != movz);
 
 		if (isOpen) {
 			if (closeable) {
 				// Not closed
 				crossings = shadow.computeCrossings(crossings,
-						curx, cury,
-						movx, movy);
+						curx, cury, curz,
+						movx, movy, movz);
 			}
 			else if (onlyIntersectWhenOpen) {
 				// Assume that when is the path is open, only
@@ -817,14 +887,15 @@ public interface Path3ai<
 	 * @param pi the specified {@code PathIterator2f}
 	 * @param x the specified X coordinate
 	 * @param y the specified Y coordinate
+	 * @param z the specified Z coordinate
 	 * @return {@code true} if the specified coordinates are inside the
 	 *         specified {@code PathIterator2f}; {@code false} otherwise
 	 */
-	static boolean contains(PathIterator3ai<?> pi, int x, int y) {
+	static boolean contains(PathIterator3ai<?> pi, int x, int y, int z) {
 		assert (pi != null) : "Iterator must not be null"; //$NON-NLS-1$
 		// Copied from the AWT API
 		int mask = (pi.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 1);
-		int cross = computeCrossingsFromPoint(0, pi, x, y, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
+		int cross = computeCrossingsFromPoint(0, pi, x, y, z, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
 		return ((cross & mask) != 0);
 	}
 
@@ -844,8 +915,10 @@ public interface Path3ai<
 	 * @param pi is the iterator on the path elements.
 	 * @param rxmin is the first corner of the rectangle.
 	 * @param rymin is the first corner of the rectangle.
+	 * @param rzmin is the first corner of the rectangle.
 	 * @param rxmax is the second corner of the rectangle.
 	 * @param rymax is the second corner of the rectangle.
+	 * @param rzmax is the second corner of the rectangle.
 	 * @param type is the type of special computation to apply. If <code>null</code>, it 
 	 * is equivalent to {@link CrossingComputationType#STANDARD}.
 	 * @return the crossings.
@@ -853,8 +926,8 @@ public interface Path3ai<
 	static int computeCrossingsFromRect(
 			int crossings,
 			PathIterator3ai<?> pi,
-			int rxmin, int rymin,
-			int rxmax, int rymax,
+			int rxmin, int rymin, int rzmin,
+			int rxmax, int rymax, int rzmax,
 			CrossingComputationType type) {
 		assert (pi != null) : "Iterator must not be null"; //$NON-NLS-1$
 		// Copied from AWT API
@@ -866,9 +939,10 @@ public interface Path3ai<
 			throw new IllegalArgumentException("missing initial moveto in path definition"); //$NON-NLS-1$
 		}
 
-		int curx, cury, movx, movy, endx, endy;
+		int curx, cury, curz, movx, movy, movz, endx, endy, endz;
 		curx = movx = pathElement.getToX();
 		cury = movy = pathElement.getToY();
+		curz = movz = pathElement.getToZ();
 		int numCrossings = crossings;
 
 		while (pi.hasNext()) {
@@ -879,64 +953,71 @@ public interface Path3ai<
 				// assert((crossings & 1) != 0);
 				movx = curx = pathElement.getToX();
 				movy = cury = pathElement.getToY();
+				movz = curz = pathElement.getToZ();
 				break;
 			case LINE_TO:
 				endx = pathElement.getToX();
 				endy = pathElement.getToY();
+				endz = pathElement.getToZ();
 				numCrossings = Segment3ai.computeCrossingsFromRect(
 						numCrossings,
-						rxmin, rymin,
-						rxmax, rymax,
-						curx, cury,
-						endx, endy);
+						rxmin, rymin, rzmin,
+						rxmax, rymax, rzmax,
+						curx, cury, curz,
+						endx, endy, endz);
 				if (numCrossings==MathConstants.SHAPE_INTERSECTS) {
 					return MathConstants.SHAPE_INTERSECTS;
 				}
 				curx = endx;
 				cury = endy;
+				curz = endz;
 				break;
 			case QUAD_TO:
 				endx = pathElement.getToX();
 				endy = pathElement.getToY();
+				endz = pathElement.getToZ();
 				Path3ai<?, ?, ?, ?, ?, ?> curve = pi.getGeomFactory().newPath(pi.getWindingRule());
-				curve.moveTo(pathElement.getFromX(), pathElement.getFromY());
-				curve.quadTo(pathElement.getCtrlX1(), pathElement.getCtrlY1(), endx, endy);
+				curve.moveTo(pathElement.getFromX(), pathElement.getFromY(), pathElement.getFromZ());
+				curve.quadTo(pathElement.getCtrlX1(), pathElement.getCtrlY1(), pathElement.getCtrlZ1(), endx, endy, endz);
 				numCrossings = computeCrossingsFromRect(
 						numCrossings,
 						curve.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
-						rxmin, rymin, rxmax, rymax,
+						rxmin, rymin, rzmin, rxmax, rymax, rzmax,
 						CrossingComputationType.STANDARD);
 				if (numCrossings==MathConstants.SHAPE_INTERSECTS) {
 					return MathConstants.SHAPE_INTERSECTS;
 				}
 				curx = endx;
 				cury = endy;
+				curz = endz;
 				break;
 			case CURVE_TO:
 				endx = pathElement.getToX();
 				endy = pathElement.getToY();
+				endz = pathElement.getToZ();
 				curve = pi.getGeomFactory().newPath(pi.getWindingRule());
-				curve.moveTo(pathElement.getFromX(), pathElement.getFromY());
-				curve.curveTo(pathElement.getCtrlX1(), pathElement.getCtrlY1(), pathElement.getCtrlX2(), pathElement.getCtrlY2(), endx, endy);
+				curve.moveTo(pathElement.getFromX(), pathElement.getFromY(), pathElement.getFromZ());
+				curve.curveTo(pathElement.getCtrlX1(), pathElement.getCtrlY1(), pathElement.getCtrlZ1(), pathElement.getCtrlX2(), pathElement.getCtrlY2(), pathElement.getCtrlZ2(), endx, endy, endz);
 				numCrossings = computeCrossingsFromRect(
 						numCrossings, 
 						curve.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
-						rxmin, rymin, rxmax, rymax,
+						rxmin, rymin, rzmin, rxmax, rymax, rzmax,
 						CrossingComputationType.STANDARD);
 				if (numCrossings==MathConstants.SHAPE_INTERSECTS) {
 					return MathConstants.SHAPE_INTERSECTS;
 				}
 				curx = endx;
 				cury = endy;
+				curz = endz;
 				break;
 			case CLOSE:
-				if (curx != movx || cury != movy) {
+				if (curx != movx || cury != movy || curz != movz) {
 					numCrossings = Segment3ai.computeCrossingsFromRect(
 							numCrossings,
-							rxmin, rymin,
-							rxmax, rymax,
-							curx, cury,
-							movx, movy);
+							rxmin, rymin, rzmin,
+							rxmax, rymax, rzmax,
+							curx, cury, curz,
+							movx, movy, movz);
 				}
 				// Stop as soon as possible
 				if (numCrossings != 0) {
@@ -944,6 +1025,7 @@ public interface Path3ai<
 				}
 				curx = movx;
 				cury = movy;
+				curz = movz;
 				// Count should always be a multiple of 2 here.
 				// assert((crossings & 1) != 0);
 				break;
@@ -953,7 +1035,7 @@ public interface Path3ai<
 
 		assert(numCrossings != MathConstants.SHAPE_INTERSECTS);
 
-		boolean isOpen = (curx != movx) || (cury != movy);
+		boolean isOpen = (curx != movx) || (cury != movy) || (curz != movz);
 
 		if (isOpen && type != null) {
 			switch (type) {
@@ -961,10 +1043,10 @@ public interface Path3ai<
 				// Not closed
 				numCrossings = Segment3ai.computeCrossingsFromRect(
 						numCrossings,
-						rxmin, rymin,
-						rxmax, rymax,
-						curx, cury,
-						movx, movy);
+						rxmin, rymin, rzmin,
+						rxmax, rymax, rzmax,
+						curx, cury, curz,
+						movx, movy, movz);
 				break;
 			case SIMPLE_INTERSECTION_WHEN_NOT_POLYGON:
 				// Assume that when is the path is open, only
@@ -991,21 +1073,24 @@ public interface Path3ai<
 	 * @param pi the specified {@code PathIterator3ai}
 	 * @param rx the lowest corner of the rectangle.
 	 * @param ry the lowest corner of the rectangle.
+	 * @param rz the lowest corner of the rectangle.
 	 * @param rwidth is the width of the rectangle.
 	 * @param rheight is the width of the rectangle.
+	 * @param rdepth is the width of the rectangle.
 	 * @return {@code true} if the specified rectangle is inside the
 	 *         specified {@code PathIterator2f}; {@code false} otherwise.
 	 */
-	static boolean contains(PathIterator3ai<?> pi, int rx, int ry, int rwidth, int rheight) {
+	static boolean contains(PathIterator3ai<?> pi, int rx, int ry, int rz, int rwidth, int rheight, int rdepth) {
 		assert (pi != null) : "Iterator must not be null"; //$NON-NLS-1$
 		assert (rwidth >= 0) : "Rectangle width must be positive or zero."; //$NON-NLS-1$
 		assert (rheight >= 0) : "Rectangle height must be positive or zero"; //$NON-NLS-1$
+		assert (rdepth >= 0) : "Rectangle height must be positive or zero"; //$NON-NLS-1$
 		// Copied from AWT API
 		int mask = (pi.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2);
 		int crossings = computeCrossingsFromRect(
 				0,
 				pi, 
-				rx, ry, rx+rwidth, ry+rheight,
+				rx, ry, rz, rx+rwidth, ry+rheight, rz+rdepth,
 				CrossingComputationType.AUTO_CLOSE);
 		return (crossings != MathConstants.SHAPE_INTERSECTS &&
 				(crossings & mask) != 0);
@@ -1036,22 +1121,25 @@ public interface Path3ai<
 	 * @param pi the specified {@code PathIterator}
 	 * @param x the specified X coordinate
 	 * @param y the specified Y coordinate
+	 * @param z the specified Z coordinate
 	 * @param w the width of the specified rectangular coordinates
 	 * @param h the height of the specified rectangular coordinates
+	 * @param d the depth of the specified rectangular coordinates
 	 * @return {@code true} if the specified {@code PathIterator} and
 	 *         the interior of the specified set of rectangular
 	 *         coordinates intersect each other; {@code false} otherwise.
 	 */
-	static boolean intersects(PathIterator3ai<?> pi, int x, int y, int w, int h) {
+	static boolean intersects(PathIterator3ai<?> pi, int x, int y, int z, int w, int h, int d) {
 		assert (pi != null) : "Iterator must not be null"; //$NON-NLS-1$
 		assert (w >= 0) : "Rectangle width must be positive or zero."; //$NON-NLS-1$
 		assert (h >= 0) : "Rectangle height must be positive or zero"; //$NON-NLS-1$
+		assert (d >= 0) : "Rectangle height must be positive or zero"; //$NON-NLS-1$
 
-		if (w == 0 || h == 0) {
+		if (w == 0 || h == 0 || d == 0) {
 			return false;
 		}
 		int mask = (pi.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2);
-		int crossings = computeCrossingsFromRect(0, pi, x, y, x+w, y+h,
+		int crossings = computeCrossingsFromRect(0, pi, x, y, z, x+w, y+h, z+d,
 				CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
 		return (crossings == MathConstants.SHAPE_INTERSECTS ||
 				(crossings & mask) != 0);
@@ -1063,27 +1151,28 @@ public interface Path3ai<
 	 * that are replying polyline primitives, ie. if the
 	 * {@link PathIterator2D#isPolyline()} of <var>pi</var> is replying
 	 * <code>true</code>.
-	 * {@link #getClosestPointTo(Point2D)} avoids this restriction.
+	 * {@link #getClosestPointTo(Point3D)} avoids this restriction.
 	 * 
 	 * @param pi is the iterator on the elements of the path.
 	 * @param x
 	 * @param y
+	 * @param z
 	 * @param result the closest point on the shape; or the point itself
 	 * if it is inside the shape.
 	 */
-	static void getClosestPointTo(PathIterator3ai<? extends PathElement3ai> pi, int x, int y, Point2D<?, ?> result) {
+	static void getClosestPointTo(PathIterator3ai<? extends PathElement3ai> pi, int x, int y, int z, Point3D<?, ?> result) {
 		assert (pi != null) : "Iterator must not be null"; //$NON-NLS-1$
 
 		int bestManhantanDist = Integer.MAX_VALUE;
 		int bestLinfinvDist = Integer.MAX_VALUE;
-		Point2D<?, ?> candidate;
+		Point3D<?, ?> candidate;
 		PathElement3ai pe;
 
 		int mask = (pi.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 1);
 		int crossings = 0;
 		boolean isClosed = false;
-		int moveX, moveY, currentX, currentY;
-		moveX = moveY = currentX = currentY = 0;
+		int moveX, moveY, moveZ, currentX, currentY, currentZ;
+		moveX = moveY = moveZ = currentX = currentY = currentZ = 0;
 
 		while (pi.hasNext()) {
 			pe = pi.next();
@@ -1092,23 +1181,25 @@ public interface Path3ai<
 
 			currentX = pe.getToX();
 			currentY = pe.getToY();
+			currentZ = pe.getToZ();
 
 			switch(pe.getType()) {
 			case MOVE_TO:
 				moveX = pe.getToX();
 				moveY = pe.getToY();
+				moveZ = pe.getToZ();
 				isClosed = false;
 				break;
 			case LINE_TO:
 			{
 				isClosed = false;
 				candidate = new InnerComputationPoint3ai();
-				Segment3ai.computeClosestPointTo(pe.getFromX(), pe.getFromY(), pe.getToX(), pe.getToY(), x,y, candidate);
+				Segment3ai.computeClosestPointTo(pe.getFromX(), pe.getFromY(), pe.getFromZ(), pe.getToX(), pe.getToY(), pe.getToZ(), x, y, z, candidate);
 				if (crossings!=MathConstants.SHAPE_INTERSECTS) {
 					crossings = Segment3ai.computeCrossingsFromPoint(
 							crossings,
-							x, y,
-							pe.getFromX(), pe.getFromY(), pe.getToX(), pe.getToY());
+							x, y, z,
+							pe.getFromX(), pe.getFromY(), pe.getFromZ(), pe.getToX(), pe.getToY(), pe.getToZ());
 				}
 				break;
 			}
@@ -1116,12 +1207,12 @@ public interface Path3ai<
 				isClosed = true;
 				if (!pe.isEmpty()) {
 					candidate = new InnerComputationPoint3ai();
-					Segment3ai.computeClosestPointTo(pe.getFromX(), pe.getFromY(), pe.getToX(), pe.getToY(), x, y, candidate);
+					Segment3ai.computeClosestPointTo(pe.getFromX(), pe.getFromY(), pe.getFromZ(), pe.getToX(), pe.getToY(), pe.getToZ(), x, y, z, candidate);
 					if (crossings!=MathConstants.SHAPE_INTERSECTS) {
 						crossings = Segment3ai.computeCrossingsFromPoint(
 								crossings,
-								x, y,
-								pe.getFromX(), pe.getFromY(), pe.getToX(), pe.getToY());
+								x, y, z,
+								pe.getFromX(), pe.getFromY(), pe.getFromZ(), pe.getToX(), pe.getToY(), pe.getToZ());
 					}
 				}
 				break;
@@ -1134,12 +1225,13 @@ public interface Path3ai<
 			if (candidate!=null) {
 				int dx = Math.abs(x - candidate.ix());
 				int dy = Math.abs(y - candidate.iy());
-				int manhatanDist = dx + dy;
+				int dz = Math.abs(z - candidate.iz());
+				int manhatanDist = dx + dy + dz;
 				if (manhatanDist <= 0) {
 					result.set(candidate);
 					return;
 				}
-				int linfinvDist = Math.min(dx, dy);
+				int linfinvDist = MathUtil.min(dx, dy, dz);
 				if (manhatanDist < bestManhantanDist || (manhatanDist == bestManhantanDist && linfinvDist < bestLinfinvDist)) {
 					bestManhantanDist = manhatanDist;
 					bestLinfinvDist = linfinvDist;
@@ -1151,13 +1243,13 @@ public interface Path3ai<
 		if (!isClosed && crossings!=MathConstants.SHAPE_INTERSECTS) {
 			crossings = Segment3ai.computeCrossingsFromPoint(
 					crossings,
-					x, y,
-					currentX, currentY,
-					moveX, moveY);
+					x, y, z,
+					currentX, currentY, currentZ,
+					moveX, moveY, moveZ);
 		}
 
 		if (crossings==MathConstants.SHAPE_INTERSECTS || (crossings & mask) != 0) {
-			result.set(x, y);
+			result.set(x, y, z);
 		}
 	}
 
@@ -1167,43 +1259,47 @@ public interface Path3ai<
 	 * that are replying polyline primitives, ie. if the
 	 * {@link PathIterator2D#isPolyline()} of <var>pi</var> is replying
 	 * <code>true</code>.
-	 * {@link #getFarthestPointTo(Point2D)} avoids this restriction.
+	 * {@link #getFarthestPointTo(Point3D)} avoids this restriction.
 	 * 
 	 * @param pi is the iterator on the elements of the path.
 	 * @param x
 	 * @param y
+	 * @param z
 	 * @param result the farthest point on the shape.
 	 */
-	static void getFarthestPointTo(PathIterator3ai<? extends PathElement3ai> pi, int x, int y, Point2D<?, ?> result) {
+	static void getFarthestPointTo(PathIterator3ai<? extends PathElement3ai> pi, int x, int y, int z, Point3D<?, ?> result) {
 		assert (pi != null) : "Iterator must not be null"; //$NON-NLS-1$
 
 		int bestX = x;
 		int bestY = y;
+		int bestZ = y;
 		int bestManhatanDist = Integer.MIN_VALUE;
 		int bestLinfinvDist = Integer.MIN_VALUE;
 		PathElement3ai pe;
-		Point2D<?, ?> point = new InnerComputationPoint3ai();
+		Point3D<?, ?> point = new InnerComputationPoint3ai();
 
 		while (pi.hasNext()) {
 			pe = pi.next();
 
 			boolean foundCandidate = false;
-			int candidateX, candidateY;
+			int candidateX, candidateY, candidateZ;
 
 			switch(pe.getType()) {
 			case MOVE_TO:
 				foundCandidate = true;
 				candidateX = pe.getToX();
 				candidateY = pe.getToY();
+				candidateZ = pe.getToZ();
 				break;
 			case LINE_TO:
 			case CLOSE:
 				Segment3ai.computeFarthestPointTo(
-						pe.getFromX(), pe.getFromY(), pe.getToX(), pe.getToY(),
-						x, y, point);
+						pe.getFromX(), pe.getFromY(), pe.getFromZ(), pe.getToX(), pe.getToY(), pe.getToZ(),
+						x, y, z, point);
 				foundCandidate = true;
 				candidateX = point.ix();
 				candidateY = point.iy();
+				candidateZ = point.iz();
 				break;
 			case QUAD_TO:
 			case CURVE_TO:
@@ -1215,18 +1311,20 @@ public interface Path3ai<
 			if (foundCandidate) {
 				int dx = Math.abs(x - candidateX);
 				int dy = Math.abs(y - candidateY);
-				int manhatanDist = dx + dy;
-				int linfinvDist = Math.min(dx, dy);
+				int dz = Math.abs(y - candidateY);
+				int manhatanDist = dx + dy + dz;
+				int linfinvDist = MathUtil.min(dx, dy, dz);
 				if ((manhatanDist > bestManhatanDist) || (manhatanDist == bestManhatanDist && linfinvDist < bestLinfinvDist)) {
 					bestManhatanDist = manhatanDist;
 					bestLinfinvDist = linfinvDist;
 					bestX = candidateX;
 					bestY = candidateY;
+					bestZ = candidateZ;
 				}
 			}
 		}
 
-		result.set(bestX, bestY);
+		result.set(bestX, bestY, bestZ);
 	}
 
 	@Pure
@@ -1252,16 +1350,16 @@ public interface Path3ai<
 			element = iterator.next();
 			switch(element.getType()) {
 			case MOVE_TO:
-				moveTo(element.getToX(), element.getToY());
+				moveTo(element.getToX(), element.getToY(), element.getToZ());
 				break;
 			case LINE_TO:
-				lineTo(element.getToX(), element.getToY());
+				lineTo(element.getToX(), element.getToY(), element.getToZ());
 				break;
 			case QUAD_TO:
-				quadTo(element.getCtrlX1(), element.getCtrlY1(), element.getToX(), element.getToY());
+				quadTo(element.getCtrlX1(), element.getCtrlY1(), element.getCtrlZ1(), element.getToX(), element.getToY(), element.getToZ());
 				break;
 			case CURVE_TO:
-				curveTo(element.getCtrlX1(), element.getCtrlY1(), element.getCtrlX2(), element.getCtrlY2(), element.getToX(), element.getToY());
+				curveTo(element.getCtrlX1(), element.getCtrlY1(), element.getCtrlZ1(), element.getCtrlX2(), element.getCtrlY2(), element.getCtrlZ2(), element.getToX(), element.getToY(), element.getToZ());
 				break;
 			case CLOSE:
 				closePath();
@@ -1287,13 +1385,14 @@ public interface Path3ai<
 	 *
 	 * @param x the specified X coordinate
 	 * @param y the specified Y coordinate
+	 * @param z the specified Y coordinate
 	 */
-	void moveTo(int x, int y);
+	void moveTo(int x, int y, int z);
 
 	@Override
-	default void moveTo(Point2D<?, ?> position) {
+	default void moveTo(Point3D<?, ?> position) {
 		assert (position != null) : "Position must not be null"; //$NON-NLS-1$
-		moveTo(position.ix(), position.iy());
+		moveTo(position.ix(), position.iy(), position.iz());
 	}
 
 	/**
@@ -1303,13 +1402,14 @@ public interface Path3ai<
 	 *
 	 * @param x the specified X coordinate
 	 * @param y the specified Y coordinate
+	 * @param z the specified Y coordinate
 	 */
-	void lineTo(int x, int y);
+	void lineTo(int x, int y, int z);
 
 	@Override
-	default void lineTo(Point2D<?, ?> to) {
+	default void lineTo(Point3D<?, ?> to) {
 		assert (to != null) : "Position must not be null"; //$NON-NLS-1$
-		lineTo(to.ix(), to.iy());
+		lineTo(to.ix(), to.iy(), to.iz());
 	}
 
 	/**
@@ -1322,16 +1422,18 @@ public interface Path3ai<
 	 *
 	 * @param x1 the X coordinate of the quadratic control point
 	 * @param y1 the Y coordinate of the quadratic control point
+	 * @param z1 the Z coordinate of the quadratic control point
 	 * @param x2 the X coordinate of the final end point
 	 * @param y2 the Y coordinate of the final end point
+	 * @param z2 the Z coordinate of the final end point
 	 */
-	void quadTo(int x1, int y1, int x2, int y2);
+	void quadTo(int x1, int y1, int z1, int x2, int y2, int z2);
 
 	@Override
-	default void quadTo(Point2D<?, ?> ctrl, Point2D<?, ?> to) {
+	default void quadTo(Point3D<?, ?> ctrl, Point3D<?, ?> to) {
 		assert (ctrl != null) : "Control point must not be null"; //$NON-NLS-1$
 		assert (to != null) : "Destination point must not be null"; //$NON-NLS-1$
-		quadTo(ctrl.ix(), ctrl.iy(), to.ix(), to.iy());
+		quadTo(ctrl.ix(), ctrl.iy(), ctrl.iz(), to.ix(), to.iy(), to.iz());
 	}
 
 	/**
@@ -1344,21 +1446,24 @@ public interface Path3ai<
 	 *
 	 * @param x1 the X coordinate of the first B&eacute;zier control point
 	 * @param y1 the Y coordinate of the first B&eacute;zier control point
+	 * @param z1 the Z coordinate of the first B&eacute;zier control point
 	 * @param x2 the X coordinate of the second B&eacute;zier control point
 	 * @param y2 the Y coordinate of the second B&eacute;zier control point
+	 * @param z2 the Z coordinate of the second B&eacute;zier control point
 	 * @param x3 the X coordinate of the final end point
 	 * @param y3 the Y coordinate of the final end point
+	 * @param z3 the Z coordinate of the final end point
 	 */
-	void curveTo(int x1, int y1,
-			int x2, int y2,
-			int x3, int y3);
+	void curveTo(int x1, int y1, int z1,
+			int x2, int y2, int z2,
+			int x3, int y3, int z3);
 
 	@Override
-	default void curveTo(Point2D<?, ?> ctrl1, Point2D<?, ?> ctrl2, Point2D<?, ?> to) {
+	default void curveTo(Point3D<?, ?> ctrl1, Point3D<?, ?> ctrl2, Point3D<?, ?> to) {
 		assert (ctrl1 != null) : "First control point must not be null"; //$NON-NLS-1$
 		assert (ctrl2 != null) : "Second control point must not be null"; //$NON-NLS-1$
 		assert (to != null) : "Destination point must not be null"; //$NON-NLS-1$
-		curveTo(ctrl1.ix(), ctrl1.iy(), ctrl2.ix(), ctrl2.iy(), to.ix(), to.iy());
+		curveTo(ctrl1.ix(), ctrl1.iy(), ctrl1.iz(), ctrl2.ix(), ctrl2.iy(), ctrl2.iz(), to.ix(), to.iy(), to.iz());
 	}
 
     /**
@@ -1385,40 +1490,46 @@ public interface Path3ai<
      * <p>If {@code tfrom} is not {@code 0f} then the caller would most likely
      * want to use one of the arc {@code type} values that inserts a segment
      * leading to the initial point.
-     * An initial {@link #moveTo(double, double)} or {@link #lineTo(double, double)} can be added to direct
+     * An initial {@link #moveTo(int, int, int)} or {@link #lineTo(int, int, int)} can be added to direct
      * the path to the starting point of the ellipse section if
-     * {@link ArcType#MOVE_THEN_ARC} or
-     * {@link ArcType#LINE_THEN_ARC} are
+     * {@link org.arakhne.afc.math.geometry.d3.Path3D.ArcType#MOVE_THEN_ARC} or
+     * {@link org.arakhne.afc.math.geometry.d3.Path3D.ArcType#LINE_THEN_ARC} are
      * specified by the type argument.
      * The {@code lineTo} path segment will only be added if the current point
      * is not already at the indicated location to avoid spurious empty line
      * segments.
      * The type can be specified as
-     * {@link ArcType.CORNER_ONLY} if the current point
+     * {@link ArcType#CORNER_ONLY} if the current point
      * on the path is known to be at the starting point of the ellipse section.
      *
      * @param ctrlx the x coordinate of the control point, i.e. the corner of the parallelogram in which the ellipse is inscribed. 
-     * @param ctrlx the y coordinate of the control point, i.e. the corner of the parallelogram in which the ellipse is inscribed. 
-     * @param to the x coordinate of the target point.
-     * @param to the y coordinate of the target point.
+     * @param ctrly the y coordinate of the control point, i.e. the corner of the parallelogram in which the ellipse is inscribed. 
+     * @param ctrlz the z coordinate of the control point, i.e. the corner of the parallelogram in which the ellipse is inscribed. 
+     * @param tox the x coordinate of the target point.
+     * @param toy the y coordinate of the target point.
+     * @param toz the z coordinate of the target point.
      * @param tfrom the fraction of the ellipse section where the curve should start.
      * @param tto the fraction of the ellipse section where the curve should end
      * @param type the specification of what additional path segments should
      *               be appended to lead the current path to the starting point.
      */
-    default void arcTo(int ctrlx, int ctrly, int tox, int toy, double tfrom, double tto, ArcType type) {
+    default void arcTo(int ctrlx, int ctrly, int ctrlz, int tox, int toy, int toz, double tfrom, double tto, ArcType type) {
     	// Copied from JavaFX Path2D
     	assert (tfrom >= 0.) : "tfrom must be positive or zero"; //$NON-NLS-1$
     	assert (tto >= tfrom) : "tto must be greater than or equal to tfrom"; //$NON-NLS-1$
     	assert (tto <= 1.) : "tto must be lower than 1"; //$NON-NLS-1$
     	int currentx = getCurrentX();
     	int currenty = getCurrentY();
+    	int currentz = getCurrentZ();
     	final int ocurrentx = currentx;
     	final int ocurrenty = currenty;
+    	final int ocurrentz = currenty;
         double cx0 = currentx + (ctrlx - currentx) * AbstractCirclePathIterator.CTRL_POINT_DISTANCE;
         double cy0 = currenty + (ctrly - currenty) * AbstractCirclePathIterator.CTRL_POINT_DISTANCE;
+        double cz0 = currentz + (ctrlz - currentz) * AbstractCirclePathIterator.CTRL_POINT_DISTANCE;
         double cx1 = tox + (ctrlx - tox) * AbstractCirclePathIterator.CTRL_POINT_DISTANCE;
         double cy1 = toy + (ctrly - toy) * AbstractCirclePathIterator.CTRL_POINT_DISTANCE;
+        double cz1 = toz + (ctrlz - toz) * AbstractCirclePathIterator.CTRL_POINT_DISTANCE;
         if (tto < 1.) {
             double t = 1. - tto;
             tox += (cx1 - tox) * t;
@@ -1453,30 +1564,30 @@ public interface Path3ai<
         }
         if (type == ArcType.MOVE_THEN_ARC) {
             if (currentx != ocurrentx || currenty != ocurrenty) {
-            	moveTo(currentx, currenty);
+            	moveTo(currentx, currenty, currentz);
             }
         } else if (type == ArcType.LINE_THEN_ARC) {
             if (currentx != ocurrentx || currenty != ocurrenty) {
-            	lineTo(currentx, currenty);
+            	lineTo(currentx, currenty, currentz);
             }
         }
         if (tfrom == tto ||
             (currentx == cx0 && cx0 == cx1 && cx1 == tox &&
             currenty == cy0 && cy0 == cy1 && cy1 == toy)) {
             if (type != ArcType.LINE_THEN_ARC) {
-                lineTo(tox, toy);
+                lineTo(tox, toy, toz);
             }
         } else {
-            curveTo((int) Math.round(cx0), (int) Math.round(cy0), (int) Math.round(cx1), (int) Math.round(cy1), tox, toy);
+            curveTo((int) Math.round(cx0), (int) Math.round(cy0), (int) Math.round(cz0), (int) Math.round(cx1), (int) Math.round(cy1), (int) Math.round(cz1), tox, toy, toz);
         }
     }
     
     @Override
-    default void arcTo(Point2D<?, ?> ctrl, Point2D<?, ?> to, double tfrom, double tto,
-    		org.arakhne.afc.math.geometry.d2.Path2D.ArcType type) {
+    default void arcTo(Point3D<?, ?> ctrl, Point3D<?, ?> to, double tfrom, double tto,
+    		org.arakhne.afc.math.geometry.d3.Path3D.ArcType type) {
     	assert (ctrl != null) : "Control point must be not null"; //$NON-NLS-1$
     	assert (to != null) : "Target point must be not null"; //$NON-NLS-1$
-    	arcTo(ctrl.ix(), ctrl.iy(), to.ix(), to.iy(), tfrom, tto, type);
+    	arcTo(ctrl.ix(), ctrl.iy(), ctrl.iz(), to.ix(), to.iy(), to.iz(), tfrom, tto, type);
     }
     
     /**
@@ -1487,19 +1598,21 @@ public interface Path3ai<
      * </code></pre>
      *
      * @param ctrlx the x coordinate of the control point, i.e. the corner of the parallelogram in which the ellipse is inscribed. 
-     * @param ctrlx the y coordinate of the control point, i.e. the corner of the parallelogram in which the ellipse is inscribed. 
+     * @param ctrly the y coordinate of the control point, i.e. the corner of the parallelogram in which the ellipse is inscribed. 
+     * @param ctrlz the z coordinate of the control point, i.e. the corner of the parallelogram in which the ellipse is inscribed. 
      * @param to the x coordinate of the target point.
      * @param to the y coordinate of the target point.
+     * @param to the y coordinate of the target point.
      */
-    default void arcTo(int ctrlx, int ctrly, int tox, int toy) {
-    	arcTo(ctrlx, ctrly, tox, toy, 0., 1., ArcType.ARC_ONLY);
+    default void arcTo(int ctrlx, int ctrly, int ctrlz, int tox, int toy, int toz) {
+    	arcTo(ctrlx, ctrly, ctrlz, tox, toy, toz, 0., 1., ArcType.ARC_ONLY);
     }
 
     @Override
-    default void arcTo(Point2D<?, ?> to, Vector2D<?, ?> radii, double xAxisRotation, boolean largeArcFlag, boolean sweepFlag) {
+    default void arcTo(Point3D<?, ?> to, Vector3D<?, ?> radii, double xAxisRotation, boolean largeArcFlag, boolean sweepFlag) {
     	assert (radii != null) : "Radii vector must be not null"; //$NON-NLS-1$
     	assert (to != null) : "Target point must be not null"; //$NON-NLS-1$
-    	arcTo(to.ix(), to.iy(), radii.ix(), radii.iy(), xAxisRotation, largeArcFlag, sweepFlag);
+    	arcTo(to.ix(), to.iy(), to.iz(), radii.ix(), radii.iy(), radii.iz(), xAxisRotation, largeArcFlag, sweepFlag);
     }
 
     /**
@@ -1535,27 +1648,32 @@ public interface Path3ai<
      *
      * @param tox the X coordinate of the target point.
      * @param toy the Y coordinate of the target point.
+     * @param toz the Z coordinate of the target point.
      * @param radiusx the X radius of the tilted ellipse.
      * @param radiusy the Y radius of the tilted ellipse.
+     * @param radiusz the Z radius of the tilted ellipse.
      * @param xAxisRotation the angle of tilt of the ellipse.
      * @param largeArcFlag <code>true</code> iff the path will sweep the long way around the ellipse.
      * @param sweepFlag <code>true</code> iff the path will sweep clockwise around the ellipse.
      * @see "http://www.w3.org/TR/SVG/paths.html#PathDataEllipticalArcCommands"
      */
-    default void arcTo(int tox, int toy, int radiusx, int radiusy, double xAxisRotation, boolean largeArcFlag, boolean sweepFlag) {
+    default void arcTo(int tox, int toy, int toz, int radiusx, int radiusy, int radiusz, double xAxisRotation, boolean largeArcFlag, boolean sweepFlag) {
     	// Copied for JavaFX
     	assert (radiusx >= 0.) : "X radius must be positive or zero."; //$NON-NLS-1$
     	assert (radiusy >= 0.) : "Y radius must be positive or zero."; //$NON-NLS-1$
         if (radiusx == 0. || radiusy == 0.) {
-            lineTo(tox, toy);
+            lineTo(tox, toy, toz);
             return;
         }
         int ocurrentx = getCurrentX();
         int ocurrenty = getCurrentY();
+        int ocurrentz = getCurrentZ();
         int x1 = ocurrentx;
         int y1 = ocurrenty;
+        int z1 = ocurrentz;
         int x2 = tox;
         int y2 = toy;
+        int z2 = toz;
         if (x1 == x2 && y1 == y2) {
             return;
         }
@@ -1569,6 +1687,7 @@ public interface Path3ai<
         }
         double mx = (x1 + x2) / 2.;
         double my = (y1 + y2) / 2.;
+        double mz = (z1 + z2) / 2.;
         double relx1 = x1 - mx;
         double rely1 = y1 - my;
         double x1p = (cosphi * relx1 + sinphi * rely1) / radiusx;
@@ -1584,17 +1703,20 @@ public interface Path3ai<
             }
             double relxq = cosphi * xqpr - sinphi * yqpr;
             double relyq = cosphi * yqpr + sinphi * xqpr;
+            double relzq = 0;								// FIXME : incorrect value
             int xq = (int) Math.round(mx + relxq);
             int yq = (int) Math.round(my + relyq);
+            int zq = (int) Math.round(mz + relzq);
             double xc = x1 + relxq;
             double yc = y1 + relyq;
+            double zc = z1 + relzq;
             if (x1 != ocurrentx || y1 != ocurrenty) {
-            	lineTo(x1, y1);
+            	lineTo(x1, y1, z1);
             }
-            arcTo((int) Math.round(xc), (int) Math.round(yc), xq, yq, 0, 1, ArcType.ARC_ONLY);
+            arcTo((int) Math.round(xc), (int) Math.round(yc), (int) Math.round(zc), xq, yq, zq, 0, 1, ArcType.ARC_ONLY);
             xc = x2 + relxq;
             yc = y2 + relyq;
-            arcTo((int) Math.round(xc), (int) Math.round(yc), x2, y2, 0, 1, ArcType.ARC_ONLY);
+            arcTo((int) Math.round(xc), (int) Math.round(yc), (int) Math.round(zc), x2, y2, z2, 0, 1, ArcType.ARC_ONLY);
             return;
         }
         double scalef = Math.sqrt((1. - lenpsq) / lenpsq);
@@ -1634,11 +1756,14 @@ public interface Path3ai<
             }
             double relxq = (cosphi * xqp * radiusx - sinphi * yqp * radiusy);
             double relyq = (cosphi * yqp * radiusy + sinphi * xqp * radiusx);
+            double relzq = 0;				// FIXME : incorrect value
             int xq = (int) Math.round(mx + relxq);
             int yq = (int) Math.round(my + relyq);
+            int zq = (int) Math.round(mz + relzq);
             double xc = x1 + relxq;
             double yc = y1 + relyq;
-            arcTo((int) Math.round(xc), (int) Math.round(yc), xq, yq, 0, quadlen, ArcType.ARC_ONLY);
+            double zc = z1 + relzq;
+            arcTo((int) Math.round(xc), (int) Math.round(yc), (int) Math.round(zc), xq, yq, zq, 0, quadlen, ArcType.ARC_ONLY);
             x1 = xq;
             y1 = yq;
             ux = xqp;
@@ -1648,41 +1773,41 @@ public interface Path3ai<
 
     @Pure
 	@Override
-	default double getDistanceSquared(Point2D<?, ?> p) {
+	default double getDistanceSquared(Point3D<?, ?> p) {
 		assert (p != null) : "Point must not be null"; //$NON-NLS-1$
-		Point2D<?, ?> c = getClosestPointTo(p);
+		Point3D<?, ?> c = getClosestPointTo(p);
 		return c.getDistanceSquared(p);
 	}
 
 	@Pure
 	@Override
-	default double getDistanceL1(Point2D<?, ?> p) {
+	default double getDistanceL1(Point3D<?, ?> p) {
 		assert (p != null) : "Point must not be null"; //$NON-NLS-1$
-		Point2D<?, ?> c = getClosestPointTo(p);
+		Point3D<?, ?> c = getClosestPointTo(p);
 		return c.getDistanceL1(p);
 	}
 
 	@Pure
 	@Override
-	default double getDistanceLinf(Point2D<?, ?> p) {
+	default double getDistanceLinf(Point3D<?, ?> p) {
 		assert (p != null) : "Point must not be null"; //$NON-NLS-1$
-		Point2D<?, ?> c = getClosestPointTo(p);
+		Point3D<?, ?> c = getClosestPointTo(p);
 		return c.getDistanceLinf(p);
 	}
 
 	@Override
-	default P getClosestPointTo(Point2D<?, ?> p) {
+	default P getClosestPointTo(Point3D<?, ?> p) {
 		assert (p != null) : "Point must not be null"; //$NON-NLS-1$
 		P point = getGeomFactory().newPoint();
-		getClosestPointTo(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), p.ix(), p.iy(), point);
+		getClosestPointTo(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), p.ix(), p.iy(), p.iz(), point);
 		return point;
 	}
 
 	@Override
-	default P getFarthestPointTo(Point2D<?, ?> p) {
+	default P getFarthestPointTo(Point3D<?, ?> p) {
 		assert (p != null) : "Point must not be null"; //$NON-NLS-1$
 		P point = getGeomFactory().newPoint();
-		getFarthestPointTo(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), p.ix(), p.iy(), point);
+		getFarthestPointTo(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), p.ix(), p.iy(), p.iz(), point);
 		return point;
 	}
 
@@ -1705,14 +1830,14 @@ public interface Path3ai<
 
 			switch (pathElement.getType()) {
 			case LINE_TO:
-				length += Point2D.getDistanceSquaredPointPoint(
-						pathElement.getFromX(), pathElement.getFromY(),  
-						pathElement.getToX(), pathElement.getToY());
+				length += Point3D.getDistanceSquaredPointPoint(
+						pathElement.getFromX(), pathElement.getFromY(), pathElement.getFromZ(), 
+						pathElement.getToX(), pathElement.getToY(), pathElement.getToZ());
 				break;
 			case CLOSE:
-				length += Point2D.getDistanceSquaredPointPoint(
-						pathElement.getFromX(), pathElement.getFromY(), 
-						pathElement.getToX(), pathElement.getToY());
+				length += Point3D.getDistanceSquaredPointPoint(
+						pathElement.getFromX(), pathElement.getFromY(), pathElement.getFromZ(),
+						pathElement.getToX(), pathElement.getToY(), pathElement.getToZ());
 				break;
 			case QUAD_TO:
 			case CURVE_TO:
@@ -1729,7 +1854,7 @@ public interface Path3ai<
 	@Pure
 	@Override
 	default P getCurrentPoint() {
-		return getGeomFactory().newPoint(getCurrentX(), getCurrentY());
+		return getGeomFactory().newPoint(getCurrentX(), getCurrentY(), getCurrentZ());
 	}
 	
 	/** Replies the x coordinate of the last point in the path.
@@ -1738,13 +1863,20 @@ public interface Path3ai<
 	 */
 	@Pure
 	int getCurrentX();
-
+	
 	/** Replies the x coordinate of the last point in the path.
 	 *
 	 * @return the x coordinate of the last point in the path.
 	 */
 	@Pure
 	int getCurrentY();
+
+	/** Replies the z coordinate of the last point in the path.
+	 *
+	 * @return the z coordinate of the last point in the path.
+	 */
+	@Pure
+	int getCurrentZ();
 
 	/** Replies the coordinate at the given index.
 	 * The index is in [0;{@link #size()}*2).
@@ -1760,12 +1892,12 @@ public interface Path3ai<
 	 * @param x
 	 * @param y
 	 */
-	void setLastPoint(int x, int y);
+	void setLastPoint(int x, int y, int z);
 
 	@Override
-	default void setLastPoint(Point2D<?, ?> point) {
+	default void setLastPoint(Point3D<?, ?> point) {
 		assert (point != null) : "Point must not be null"; //$NON-NLS-1$
-		setLastPoint(point.ix(), point.iy());
+		setLastPoint(point.ix(), point.iy(), point.iz());
 	}
 
 	/** Transform the current path.
@@ -1774,19 +1906,19 @@ public interface Path3ai<
 	 * @param transform is the affine transformation to apply.
 	 * @see #createTransformedShape
 	 */
-	void transform(Transform2D transform);
+	void transform(Transform3D transform);
 
 	@Pure
 	@Override
 	default boolean contains(RectangularPrism3ai<?, ?, ?, ?, ?, ?> box) {
 		assert (box != null) : "Rectangle must not be null"; //$NON-NLS-1$
 		return contains(getPathIterator(),
-				box.getMinX(), box.getMinY(), box.getWidth(), box.getHeight());
+				box.getMinX(), box.getMinY(), box.getMinZ(), box.getWidth(), box.getHeight(), box.getHeight());
 	}
 
 	@Override
-	default boolean contains(int x, int y) {
-		return contains(getPathIterator(), x, y);
+	default boolean contains(int x, int y, int z) {
+		return contains(getPathIterator(), x, y, z);
 	}
 
 	/** Remove the point with the given coordinates.
@@ -1795,9 +1927,10 @@ public interface Path3ai<
 	 * 
 	 * @param x the x coordinate of the point to remove.
 	 * @param y the y coordinate of the point to remove.
+	 * @param z the z coordinate of the point to remove.
 	 * @return <code>true</code> if the point was removed; <code>false</code> otherwise.
 	 */
-	boolean remove(int x, int y);
+	boolean remove(int x, int y, int z);
 
 	@Pure
 	@Override
@@ -1807,7 +1940,7 @@ public interface Path3ai<
 
 	@Pure
 	@Override
-	default PathIterator3ai<IE> getPathIterator(Transform2D transform) {
+	default PathIterator3ai<IE> getPathIterator(Transform3D transform) {
 		if (transform == null || transform.isIdentity()) {
 			return new PathPathIterator<>(this);
 		}
@@ -1826,10 +1959,10 @@ public interface Path3ai<
 	default boolean intersects(Sphere3ai<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Circle must not be null"; //$NON-NLS-1$
 		int mask = (getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2);
-		int crossings = computeCrossingsFromCircle(
+		int crossings = computeCrossingsFromSphere(
 				0,
 				getPathIterator(),
-				s.getX(), s.getY(), s.getRadius(),
+				s.getX(), s.getY(), s.getZ(), s.getRadius(),
 				CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
 		return (crossings == MathConstants.SHAPE_INTERSECTS ||
 				(crossings & mask) != 0);
@@ -1839,7 +1972,7 @@ public interface Path3ai<
 	@Override
 	default boolean intersects(RectangularPrism3ai<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Rectangle must be not null"; //$NON-NLS-1$
-		return intersects(getPathIterator(), s.getMinX(), s.getMinY(), s.getWidth(), s.getHeight());
+		return intersects(getPathIterator(), s.getMinX(), s.getMinY(), s.getMinZ(), s.getWidth(), s.getHeight(), s.getDepth());
 	}
 
 	@Pure
@@ -1850,7 +1983,7 @@ public interface Path3ai<
 		int crossings = computeCrossingsFromSegment(
 				0,
 				getPathIterator(),
-				s.getX1(), s.getY1(), s.getX2(), s.getY2(),
+				s.getX1(), s.getY1(), s.getZ1(), s.getX2(), s.getY2(), s.getZ2(),
 				CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
 		return (crossings == MathConstants.SHAPE_INTERSECTS ||
 				(crossings & mask) != 0);
@@ -1913,26 +2046,28 @@ public interface Path3ai<
 		@Pure
 		private static int crossingHelper(
 				int crossings,
-				int rxmin, int rymin,
-				int rxmax, int rymax,
-				int curx, int cury,
-				int movx, int movy,
+				int rxmin, int rymin, int rzmin,
+				int rxmax, int rymax, int rzmax,
+				int curx, int cury, int curz,
+				int movx, int movy, int movz,
 				boolean intersectingBehavior) {
 			int crosses = Segment3ai.computeCrossingsFromRect(crossings,
-					rxmin, rymin,
-					rxmax, rymax,
-					curx, cury,
-					movx, movy);
+					rxmin, rymin, rzmin,
+					rxmax, rymax, rzmax,
+					curx, cury, curz,
+					movx, movy, movz);
 			if (!intersectingBehavior && crosses==MathConstants.SHAPE_INTERSECTS) {
 				int x1 = rxmin+1;
 				int x2 = rxmax-1;
 				int y1 = rymin+1;
 				int y2 = rymax-1;
+				int z1 = rzmin+1;
+				int z2 = rzmax-1;
 				crosses = Segment3ai.computeCrossingsFromRect(crossings,
-						x1, y1,
-						x2, y2,
-						curx, cury,
-						movx, movy);
+						x1, y1, z1,
+						x2, y2, z2,
+						curx, cury, curz,
+						movx, movy, movz);
 			}
 			return crosses;
 		}
@@ -2010,9 +2145,9 @@ public interface Path3ai<
 	 */
 	class PathPathIterator<E extends PathElement3ai> extends AbstractPathIterator<E> {
 
-		private final Point2D<?, ?> p1;
+		private final Point3D<?, ?> p1;
 
-		private final Point2D<?, ?> p2;
+		private final Point3D<?, ?> p2;
 
 		private int iType = 0;
 
@@ -2021,6 +2156,8 @@ public interface Path3ai<
 		private int movex;
 
 		private int movey;
+
+		private int movez;
 
 		/**
 		 * @param path the path.
@@ -2055,9 +2192,10 @@ public interface Path3ai<
 				}
 				this.movex = this.path.getCoordAt(this.iCoord++);
 				this.movey = this.path.getCoordAt(this.iCoord++);
-				this.p2.set(this.movex, this.movey);
+				this.movez = this.path.getCoordAt(this.iCoord++);
+				this.p2.set(this.movex, this.movey, this.movez);
 				element = getGeomFactory().newMovePathElement(
-						this.p2.ix(), this.p2.iy());
+						this.p2.ix(), this.p2.iy(), this.p2.iz());
 				break;
 			case LINE_TO:
 				if (this.iCoord+2>(this.path.size() * 2)) {
@@ -2066,10 +2204,11 @@ public interface Path3ai<
 				this.p1.set(this.p2);
 				this.p2.set(
 						this.path.getCoordAt(this.iCoord++),
+						this.path.getCoordAt(this.iCoord++),
 						this.path.getCoordAt(this.iCoord++));
 				element = getGeomFactory().newLinePathElement(
-						this.p1.ix(), this.p1.iy(),
-						this.p2.ix(), this.p2.iy());
+						this.p1.ix(), this.p1.iy(), this.p1.iz(),
+						this.p2.ix(), this.p2.iy(), this.p2.iz());
 				break;
 			case QUAD_TO:
 			{
@@ -2079,13 +2218,15 @@ public interface Path3ai<
 				this.p1.set(this.p2);
 				int ctrlx = this.path.getCoordAt(this.iCoord++);
 				int ctrly = this.path.getCoordAt(this.iCoord++);
+				int ctrlz = this.path.getCoordAt(this.iCoord++);
 				this.p2.set(
+						this.path.getCoordAt(this.iCoord++),
 						this.path.getCoordAt(this.iCoord++),
 						this.path.getCoordAt(this.iCoord++));
 				element = getGeomFactory().newCurvePathElement(
-						this.p1.ix(), this.p1.iy(),
-						ctrlx, ctrly,
-						this.p2.ix(), this.p2.iy());
+						this.p1.ix(), this.p1.iy(), this.p1.iz(),
+						ctrlx, ctrly, ctrlz,
+						this.p2.ix(), this.p2.iy(), this.p2.iz());
 			}
 			break;
 			case CURVE_TO:
@@ -2096,24 +2237,27 @@ public interface Path3ai<
 				this.p1.set(this.p2);
 				int ctrlx1 = this.path.getCoordAt(this.iCoord++);
 				int ctrly1 = this.path.getCoordAt(this.iCoord++);
+				int ctrlz1 = this.path.getCoordAt(this.iCoord++);
 				int ctrlx2 = this.path.getCoordAt(this.iCoord++);
 				int ctrly2 = this.path.getCoordAt(this.iCoord++);
+				int ctrlz2 = this.path.getCoordAt(this.iCoord++);
 				this.p2.set(
+						this.path.getCoordAt(this.iCoord++),
 						this.path.getCoordAt(this.iCoord++),
 						this.path.getCoordAt(this.iCoord++));
 				element = getGeomFactory().newCurvePathElement(
-						this.p1.ix(), this.p1.iy(),
-						ctrlx1, ctrly1,
-						ctrlx2, ctrly2,
-						this.p2.ix(), this.p2.iy());
+						this.p1.ix(), this.p1.iy(), this.p1.iz(),
+						ctrlx1, ctrly1, ctrlz1,
+						ctrlx2, ctrly2, ctrlz2,
+						this.p2.ix(), this.p2.iy(), this.p2.iz());
 			}
 			break;
 			case CLOSE:
 				this.p1.set(this.p2);
-				this.p2.set(this.movex, this.movey);
+				this.p2.set(this.movex, this.movey, this.movez);
 				element = getGeomFactory().newClosePathElement(
-						this.p1.ix(), this.p1.iy(),
-						this.p2.ix(), this.p2.iy());
+						this.p1.ix(), this.p1.iy(), this.p1.iz(),
+						this.p2.ix(), this.p2.iy(), this.p2.iz());
 				break;
 			default:
 			}
@@ -2138,27 +2282,27 @@ public interface Path3ai<
 	 */
 	class TransformedPathIterator<E extends PathElement3ai> extends AbstractPathIterator<E> {
 
-		private final Transform2D transform;
+		private final Transform3D transform;
 
-		private final Point2D<?, ?> p1;
+		private final Point3D<?, ?> p1;
 
-		private final Point2D<?, ?> p2;
+		private final Point3D<?, ?> p2;
 
-		private final Point2D<?, ?> ptmp1;
+		private final Point3D<?, ?> ptmp1;
 
-		private final Point2D<?, ?> ptmp2;
+		private final Point3D<?, ?> ptmp2;
 
 		private int iType = 0;
 
 		private int iCoord = 0;
 
-		private int movex, movey;
+		private int movex, movey, movez;
 
 		/**
 		 * @param path the path.
 		 * @param transform the transformation.
 		 */
-		public TransformedPathIterator(Path3ai<?, ?, E, ?, ?, ?> path, Transform2D transform) {
+		public TransformedPathIterator(Path3ai<?, ?, E, ?, ?, ?> path, Transform3D transform) {
 			super(path);
 			assert(transform != null) : "Transformation must not be null"; //$NON-NLS-1$
 			this.transform = transform;
@@ -2188,36 +2332,40 @@ public interface Path3ai<
 			case MOVE_TO:
 				this.movex = this.path.getCoordAt(this.iCoord++);
 				this.movey = this.path.getCoordAt(this.iCoord++);
-				this.p2.set(this.movex, this.movey);
+				this.movez = this.path.getCoordAt(this.iCoord++);
+				this.p2.set(this.movex, this.movey, this.movez);
 				this.transform.transform(this.p2);
 				element = getGeomFactory().newMovePathElement(
-						this.p2.ix(), this.p2.iy());
+						this.p2.ix(), this.p2.iy(), this.p2.iz());
 				break;
 			case LINE_TO:
 				this.p1.set(this.p2);
 				this.p2.set(
 						this.path.getCoordAt(this.iCoord++),
+						this.path.getCoordAt(this.iCoord++),
 						this.path.getCoordAt(this.iCoord++));
 				this.transform.transform(this.p2);
 				element = getGeomFactory().newLinePathElement(
-						this.p1.ix(), this.p1.iy(),
-						this.p2.ix(), this.p2.iy());
+						this.p1.ix(), this.p1.iy(), this.p1.iz(),
+						this.p2.ix(), this.p2.iy(), this.p2.iz());
 				break;
 			case QUAD_TO:
 			{
 				this.p1.set(this.p2);
 				this.ptmp1.set(
 						this.path.getCoordAt(this.iCoord++),
+						this.path.getCoordAt(this.iCoord++),
 						this.path.getCoordAt(this.iCoord++));
 				this.transform.transform(this.ptmp1);
 				this.p2.set(
 						this.path.getCoordAt(this.iCoord++),
+						this.path.getCoordAt(this.iCoord++),
 						this.path.getCoordAt(this.iCoord++));
 				this.transform.transform(this.p2);
 				element = getGeomFactory().newCurvePathElement(
-						this.p1.ix(), this.p1.iy(),
-						this.ptmp1.ix(), this.ptmp1.iy(),
-						this.p2.ix(), this.p2.iy());
+						this.p1.ix(), this.p1.iy(), this.p1.iz(),
+						this.ptmp1.ix(), this.ptmp1.iy(), this.ptmp1.iz(),
+						this.p2.ix(), this.p2.iy(), this.p2.iz());
 			}
 			break;
 			case CURVE_TO:
@@ -2225,30 +2373,33 @@ public interface Path3ai<
 				this.p1.set(this.p2);
 				this.ptmp1.set(
 						this.path.getCoordAt(this.iCoord++),
+						this.path.getCoordAt(this.iCoord++),
 						this.path.getCoordAt(this.iCoord++));
 				this.transform.transform(this.ptmp1);
 				this.ptmp2.set(
+						this.path.getCoordAt(this.iCoord++),
 						this.path.getCoordAt(this.iCoord++),
 						this.path.getCoordAt(this.iCoord++));
 				this.transform.transform(this.ptmp2);
 				this.p2.set(
 						this.path.getCoordAt(this.iCoord++),
+						this.path.getCoordAt(this.iCoord++),
 						this.path.getCoordAt(this.iCoord++));
 				this.transform.transform(this.p2);
 				element = getGeomFactory().newCurvePathElement(
-						this.p1.ix(), this.p1.iy(),
-						this.ptmp1.ix(), this.ptmp1.iy(),
-						this.ptmp2.ix(), this.ptmp2.iy(),
-						this.p2.ix(), this.p2.iy());
+						this.p1.ix(), this.p1.iy(), this.p1.iz(),
+						this.ptmp1.ix(), this.ptmp1.iy(), this.ptmp1.iz(),
+						this.ptmp2.ix(), this.ptmp2.iy(), this.ptmp2.iz(),
+						this.p2.ix(), this.p2.iy(), this.p2.iz());
 			}
 			break;
 			case CLOSE:
 				this.p1.set(this.p2);
-				this.p2.set(this.movex, this.movey);
+				this.p2.set(this.movex, this.movey, this.movez);
 				this.transform.transform(this.p2);
 				element = getGeomFactory().newClosePathElement(
-						this.p1.ix(), this.p1.iy(),
-						this.p2.ix(), this.p2.iy());
+						this.p1.ix(), this.p1.iy(), this.p1.iz(),
+						this.p2.ix(), this.p2.iy(), this.p1.iz());
 				break;
 			default:
 			}
@@ -2264,13 +2415,14 @@ public interface Path3ai<
 	 * @param <P> the type of the points.
 	 * @param <V> the type of the vectors.
 	 * @author $Author: sgalland$
+	 * @author $Author: tpiotrow$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 * @since 13.0
 	 */
-	class PixelIterator<P extends Point2D<? super P, ? super V>,
-			V extends Vector2D<? super V, ? super P>> implements Iterator<P> {
+	class PixelIterator<P extends Point3D<? super P, ? super V>,
+			V extends Vector3D<? super V, ? super P>> implements Iterator<P> {
 
 		private final PathIterator3ai<?> pathIterator;
 
@@ -2303,8 +2455,8 @@ public interface Path3ai<
 					case LINE_TO:
 					case CLOSE:
 						Segment3ai<?, ?, ?, P, V, ?> segment = this.factory.newSegment(
-								elt.getFromX(), elt.getFromY(),
-								elt.getToX(), elt.getToY());
+								elt.getFromX(), elt.getFromY(), elt.getFromZ(),
+								elt.getToX(), elt.getToY(), elt.getToZ());
 						this.lineIterator = segment.getPointIterator();
 						break;
 					case MOVE_TO:
@@ -2353,8 +2505,8 @@ public interface Path3ai<
 	 * @mavenartifactid $ArtifactId$
 	 * @since 13.0
 	 */
-	class PointCollection<P extends Point2D<? super P, ? super V>,
-			V extends Vector2D<? super V, ? super P>> implements Collection<P> {
+	class PointCollection<P extends Point3D<? super P, ? super V>,
+			V extends Vector3D<? super V, ? super P>> implements Collection<P> {
 
 		private final Path3ai<?, ?, ?, P, V, ?> path;
 		
@@ -2378,8 +2530,8 @@ public interface Path3ai<
 
 		@Override
 		public boolean contains(Object o) {
-			if (o instanceof Point2D) {
-				return this.path.contains((Point2D<?, ?>) o);
+			if (o instanceof Point3D) {
+				return this.path.contains((Point3D<?, ?>) o);
 			}
 			return false;
 		}
@@ -2409,10 +2561,10 @@ public interface Path3ai<
 		public boolean add(P e) {
 			if (e != null) {
 				if (this.path.size()==0) {
-					this.path.moveTo(e.ix(), e.iy());
+					this.path.moveTo(e.ix(), e.iy(), e.iz());
 				}
 				else {
-					this.path.lineTo(e.ix(), e.iy());
+					this.path.lineTo(e.ix(), e.iy(), e.iz());
 				}
 				return true;
 			}
@@ -2421,9 +2573,9 @@ public interface Path3ai<
 
 		@Override
 		public boolean remove(Object o) {
-			if (o instanceof Point2D) {
-				Point2D<?, ?> p = (Point2D<?, ?>) o;
-				return this.path.remove(p.ix(), p.iy());
+			if (o instanceof Point3D) {
+				Point3D<?, ?> p = (Point3D<?, ?>) o;
+				return this.path.remove(p.ix(), p.iy(), p.iz());
 			}
 			return false;
 		}
@@ -2432,8 +2584,8 @@ public interface Path3ai<
 		public boolean containsAll(Collection<?> c) {
 			assert (c != null) : "Collection must not be null"; //$NON-NLS-1$
 			for(Object obj : c) {
-				if ((!(obj instanceof Point2D))
-						||(!this.path.contains((Point2D<?, ?>) obj))) {
+				if ((!(obj instanceof Point3D))
+						||(!this.path.contains((Point3D<?, ?>) obj))) {
 					return false;
 				}
 			}
@@ -2457,9 +2609,9 @@ public interface Path3ai<
 			assert (c != null) : "Collection must not be null"; //$NON-NLS-1$
 			boolean changed = false;
 			for(Object obj : c) {
-				if (obj instanceof Point2D) {
-					Point2D<?, ?> pts = (Point2D<?, ?>) obj;
-					if (this.path.remove(pts.ix(), pts.iy())) {
+				if (obj instanceof Point3D) {
+					Point3D<?, ?> pts = (Point3D<?, ?>) obj;
+					if (this.path.remove(pts.ix(), pts.iy(), pts.iz())) {
 						changed = true;
 					}
 				}
@@ -2489,8 +2641,8 @@ public interface Path3ai<
 	 * @mavenartifactid $ArtifactId$
 	 * @since 13.0
 	 */
-	class PointIterator<P extends Point2D<? super P, ? super V>,
-			V extends Vector2D<? super V, ? super P>> implements Iterator<P> {
+	class PointIterator<P extends Point3D<? super P, ? super V>,
+			V extends Vector3D<? super V, ? super P>> implements Iterator<P> {
 
 		private final Path3ai<?, ?, ?, P, V, ?> path;
 		
@@ -2523,11 +2675,11 @@ public interface Path3ai<
 
 		@Override
 		public void remove() {
-			Point2D<?, ?> p = this.lastReplied;
+			Point3D<?, ?> p = this.lastReplied;
 			this.lastReplied = null;
 			if (p==null)
 				throw new NoSuchElementException();
-			this.path.remove(p.ix(), p.iy());
+			this.path.remove(p.ix(), p.iy(), p.iz());
 		}
 
 	}
@@ -2542,6 +2694,7 @@ public interface Path3ai<
 	 * @mavenartifactid $ArtifactId$
 	 * @since 13.0
 	 */
+	// TODO : integrate z coordinate
 	class FlatteningPathIterator<E extends PathElement3ai> implements PathIterator3ai<E> {
 
 		/** Path.
@@ -2596,6 +2749,10 @@ public interface Path3ai<
 		/** The ending y of the last segment.
 		 */
 		private double currentY;
+		
+		/** The ending y of the last segment.
+		 */
+		private double currentZ;
 
 		/** The x of the last move segment.
 		 */
@@ -2604,6 +2761,10 @@ public interface Path3ai<
 		/** The y of the last move segment.
 		 */
 		private double moveY;
+
+		/** The y of the last move segment.
+		 */
+		private double moveZ;
 
 		/** The index of the entry in the
 		 * levels array of the curve segment
@@ -2622,10 +2783,14 @@ public interface Path3ai<
 		/** The x of the last move segment replied by next.
 		 */
 		private int lastNextX;
-
+		
 		/** The y of the last move segment replied by next.
 		 */
 		private int lastNextY;
+
+		/** The z of the last move segment replied by next.
+		 */
+		private int lastNextZ;
 
 		/**
 		 * @param path is the path.
@@ -2684,11 +2849,12 @@ public interface Path3ai<
 		 * @return the flatness of the quadratic curve that is defined by the
 		 *          values in the specified array at the specified index.
 		 */
+		// TODO : validate indexes
 		private static double getQuadSquaredFlatness(double coords[], int offset) {
-			return Segment2afp.computeDistanceSquaredLinePoint(
-					coords[offset + 0], coords[offset + 1],
-					coords[offset + 4], coords[offset + 5],
-					coords[offset + 2], coords[offset + 3]);
+			return Segment3afp.computeDistanceSquaredLinePoint(
+					coords[offset + 0], coords[offset + 1], coords[offset + 2],
+					coords[offset + 6], coords[offset + 7], coords[offset + 8],
+					coords[offset + 3], coords[offset + 4], coords[offset + 5]);
 		}
 
 		/**
@@ -2718,6 +2884,7 @@ public interface Path3ai<
 		 * @param rightoff the offset into the array of the beginning of the
 		 * the 6 right coordinates
 		 */
+		// TODO : integrate z coordinate
 		private static void subdivideQuad(double src[], int srcoff,
 				double left[], int leftoff,
 				double right[], int rightoff) {
@@ -2767,22 +2934,29 @@ public interface Path3ai<
 		 *          specified by the coordinates in <code>coords</code> at
 		 *          the specified offset.
 		 */
+		// TODO : validate indexes
 		private static double getCurveSquaredFlatness(double coords[], int offset) {
 			return Math.max(
-					Segment2afp.computeDistanceSquaredSegmentPoint(
-							coords[offset + 6],
-							coords[offset + 7],
-							coords[offset + 2],
+					Segment3afp.computeDistanceSquaredSegmentPoint(
+							coords[offset + 9],
+							coords[offset + 10],
+							coords[offset + 11],
 							coords[offset + 3],
-							coords[offset + 0],
-							coords[offset + 1]),							
-					Segment2afp.computeDistanceSquaredSegmentPoint(
-							coords[offset + 6],
-							coords[offset + 7],
 							coords[offset + 4],
 							coords[offset + 5],
 							coords[offset + 0],
-							coords[offset + 1]));
+							coords[offset + 1],
+							coords[offset + 2]),							
+					Segment3afp.computeDistanceSquaredSegmentPoint(
+							coords[offset + 9],
+							coords[offset + 10],
+							coords[offset + 11],
+							coords[offset + 6],
+							coords[offset + 7],
+							coords[offset + 8],
+							coords[offset + 0],
+							coords[offset + 1],
+							coords[offset + 2]));
 		}
 
 		/**
@@ -2812,6 +2986,7 @@ public interface Path3ai<
 		 * @param rightoff the offset into the array of the beginning of the
 		 * the 6 right coordinates
 		 */
+		// TODO : integrate z coordinate
 		private static void subdivideCurve(
 				double src[], int srcoff,
 				double left[], int leftoff,
@@ -2871,18 +3046,21 @@ public interface Path3ai<
 		
 		private boolean isSame() {
 			PathElementType type = this.holdType;
-			int x, y;
+			int x, y, z;
 			if (type==PathElementType.CLOSE) {
 				x = (int) Math.round(this.moveX);
 				y = (int) Math.round(this.moveY);
+				z = (int) Math.round(this.moveZ);
 			}
 			else {
 				x = (int) Math.round(this.hold[this.holdIndex + 0]);
 				y = (int) Math.round(this.hold[this.holdIndex + 1]);
+				z = (int) Math.round(this.hold[this.holdIndex + 2]);
 			}
-			return x==this.lastNextX && y==this.lastNextY;
+			return x==this.lastNextX && y==this.lastNextY && z==this.lastNextZ;
 		}
 
+		// TODO : integrate z coordinate
 		private void flattening() {
 			int level;
 
@@ -3030,25 +3208,29 @@ public interface Path3ai<
 			if (type!=PathElementType.CLOSE) {
 				int x = (int) Math.round(this.hold[this.holdIndex + 0]);
 				int y = (int) Math.round(this.hold[this.holdIndex + 1]);
+				int z = (int) Math.round(this.hold[this.holdIndex + 2]);
 				if (type == PathElementType.MOVE_TO) {
-					element = this.path.getGeomFactory().newMovePathElement(x, y);
+					element = this.path.getGeomFactory().newMovePathElement(x, y, z);
 				}
 				else {
 					element = this.path.getGeomFactory().newLinePathElement(
-							this.lastNextX, this.lastNextY,
-							x, y);
+							this.lastNextX, this.lastNextY, this.lastNextZ,
+							x, y, z);
 				}
 				this.lastNextX = x;
 				this.lastNextY = y;
+				this.lastNextY = z;
 			}
 			else {
 				int x = (int) Math.round(this.moveX);
 				int y = (int) Math.round(this.moveY);
+				int z = (int) Math.round(this.moveZ);
 				element = this.path.getGeomFactory().newClosePathElement(
-						this.lastNextX, this.lastNextY,
-						x, y);
+						this.lastNextX, this.lastNextY, this.lastNextZ,
+						x, y, z);
 				this.lastNextX = x;
 				this.lastNextY = y;
+				this.lastNextZ = z;
 			}
 
 			searchNext(false);

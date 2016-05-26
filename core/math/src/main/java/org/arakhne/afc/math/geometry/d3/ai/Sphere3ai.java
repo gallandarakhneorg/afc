@@ -28,14 +28,12 @@ import java.util.TreeSet;
 
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.geometry.PathWindingRule;
-import org.arakhne.afc.math.geometry.d2.GeomFactory2D;
-import org.arakhne.afc.math.geometry.d2.Point2D;
-import org.arakhne.afc.math.geometry.d2.Transform2D;
-import org.arakhne.afc.math.geometry.d2.Tuple2iComparator;
-import org.arakhne.afc.math.geometry.d2.Vector2D;
-import org.arakhne.afc.math.geometry.d2.ai.Path2ai.CrossingComputationType;
+import org.arakhne.afc.math.geometry.d3.GeomFactory3D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
+import org.arakhne.afc.math.geometry.d3.Transform3D;
+import org.arakhne.afc.math.geometry.d3.Tuple3iComparator;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
+import org.arakhne.afc.math.geometry.d3.ai.Path3ai.CrossingComputationType;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Fonctional interface that represented a 2D circle on a plane.
@@ -66,13 +64,15 @@ public interface Sphere3ai<
 	 * 
 	 * @param cx is the x-coordinate of the circle center
 	 * @param cy is the y-coordinate of the circle center
+	 * @param cz is the z-coordinate of the circle center
 	 * @param cr is the radius of the circle center
 	 * @param x is the x-coordinate of the point
 	 * @param y is the y-coordinate of the point
+	 * @param z is the z-coordinate of the point
 	 * @return <code>true</code> if the point is inside the circle.
 	 */
 	@Pure
-	static boolean contains(int cx, int cy, int cr, int x, int y) {
+	static boolean contains(int cx, int cy, int cz, int cr, int x, int y, int z) {
 		assert (cr >= 0) : "Circle radius must be positive or zero."; //$NON-NLS-1$
 		
 		int vx = x - cx;
@@ -102,11 +102,11 @@ public interface Sphere3ai<
 
 			int px, py, ccw, cpx, cpy;
 			boolean allNull = true;
-			Point2D<?, ?> p;
+			Point3D<?, ?> p;
 			CirclePerimeterIterator<InnerComputationPoint3ai, InnerComputationVector3ai> iterator =
 					new CirclePerimeterIterator<>(
 							InnerComputationGeomFactory.SINGLETON, 
-							cx, cy, cr, octant, octant+2, false);
+							cx, cy, cz, cr, octant, octant+2, false);
 
 			while (iterator.hasNext()) {
 				p = iterator.next();
@@ -134,6 +134,7 @@ public interface Sphere3ai<
 	 * 
 	 * @param cx is the x-coordinate of the circle center
 	 * @param cy is the y-coordinate of the circle center
+	 * @param cz is the z-coordinate of the circle center
 	 * @param cr is the radius of the circle center
 	 * @param quadrant is the quadrant: <table>
 	 * <thead>
@@ -148,10 +149,11 @@ public interface Sphere3ai<
 	 * </table>
 	 * @param x is the x-coordinate of the point
 	 * @param y is the y-coordinate of the point
+	 * @param z is the z-coordinate of the point
 	 * @return <code>true</code> if the point is inside the circle.
 	 */
 	@Pure
-	static boolean contains(int cx, int cy, int cr, int quadrant, int x, int y) {
+	static boolean contains(int cx, int cy, int cz, int cr, int quadrant, int x, int y, int z) {
 		assert (cr >= 0) : "Circle radius must be positive or zero."; //$NON-NLS-1$
 		assert (quadrant >= 0 && quadrant <= 3) : "invalid quadrant value"; //$NON-NLS-1$
 
@@ -182,11 +184,11 @@ public interface Sphere3ai<
 			if (quadrant*2!=octant) return false;
 
 			int px, py, ccw, cpx, cpy;
-			Point2D<?, ?> p;
+			Point3D<?, ?> p;
 			CirclePerimeterIterator<InnerComputationPoint3ai, InnerComputationVector3ai> iterator =
 					new CirclePerimeterIterator<>(
 							InnerComputationGeomFactory.SINGLETON, 
-							cx, cy, cr, octant, octant+2, false);
+							cx, cy, cz, cr, octant, octant+2, false);
 
 			while (iterator.hasNext()) {
 				p = iterator.next();
@@ -212,13 +214,15 @@ public interface Sphere3ai<
 	 * 
 	 * @param cx is the center of the circle
 	 * @param cy is the center of the circle
+	 * @param cz is the center of the circle
 	 * @param cr is the radius of the circle
 	 * @param x is the point
 	 * @param y is the point
+	 * @param z is the point
 	 * @param result the closest point in the circle to the point.
 	 */
 	@Pure
-	static void computeClosestPointTo(int cx, int cy, int cr, int x, int y, Point2D<?, ?> result) {
+	static void computeClosestPointTo(int cx, int cy, int cz, int cr, int x, int y, int z, Point3D<?, ?> result) {
 		assert (cr >= 0) : "Circle radius must be positive or zero."; //$NON-NLS-1$
 		assert (result != null) : "Result point must be positive or zero."; //$NON-NLS-1$
 		
@@ -246,11 +250,11 @@ public interface Sphere3ai<
 		}
 
 		int d, px, py, cpx, cpy, ccw;
-		Point2D<?, ?> p;
+		Point3D<?, ?> p;
 		CirclePerimeterIterator<InnerComputationPoint3ai, InnerComputationVector3ai> iterator =
 				new CirclePerimeterIterator<>(
 						InnerComputationGeomFactory.SINGLETON, 
-						cx, cy, cr, octant, octant+2, false);
+						cx, cy, cz, cr, octant, octant+2, false);
 
 		boolean isInside = true;
 		int minDist = Integer.MAX_VALUE;
@@ -275,7 +279,7 @@ public interface Sphere3ai<
 
 		// inside the circle
 		if (isInside) {
-			result.set(x,y);
+			result.set(x,y,z);
 		}
 	}
 
@@ -286,13 +290,15 @@ public interface Sphere3ai<
 	 * 
 	 * @param cx is the center of the circle
 	 * @param cy is the center of the circle
+	 * @param cz is the center of the circle
 	 * @param cr is the radius of the circle
 	 * @param x is the point
 	 * @param y is the point
+	 * @param z is the point
 	 * @param result the farthest point in the circle to the point.
 	 */
 	@Pure
-	static void computeFarthestPointTo(int cx, int cy, int cr, int x, int y, Point2D<?, ?> result) {
+	static void computeFarthestPointTo(int cx, int cy, int cz, int cr, int x, int y, int z, Point3D<?, ?> result) {
 		assert (cr >= 0) : "Circle radius must be positive or zero."; //$NON-NLS-1$
 
 		int vx = x - cx;
@@ -319,15 +325,15 @@ public interface Sphere3ai<
 		}
 
 		int l1, linfinv, cpx, cpy;
-		Point2D<?, ?> p;
+		Point3D<?, ?> p;
 		CirclePerimeterIterator<InnerComputationPoint3ai, InnerComputationVector3ai> iterator =
 				new CirclePerimeterIterator<>(
 						InnerComputationGeomFactory.SINGLETON, 
-						cx, cy, cr, octant, octant+2, false);
+						cx, cy, cz, cr, octant, octant+2, false);
 
 		int maxL1Dist = Integer.MIN_VALUE;
 		int maxLinfDist = Integer.MIN_VALUE;
-		result.set(x, y);
+		result.set(x, y, z);
 		
 		while (iterator.hasNext()) {
 			p = iterator.next();
@@ -348,59 +354,67 @@ public interface Sphere3ai<
 	 * 
 	 * @param x1 is the center of the first circle
 	 * @param y1 is the center of the first circle
+	 * @param z1 is the center of the first circle
 	 * @param radius1 is the radius of the first circle
 	 * @param x2 is the center of the second circle
 	 * @param y2 is the center of the second circle
+	 * @param z2 is the center of the second circle
 	 * @param radius2 is the radius of the second circle
 	 * @return <code>true</code> if the two shapes are intersecting; otherwise
 	 * <code>false</code>
 	 */
 	@Pure
-	static boolean intersectsCircleCircle(int x1, int y1, int radius1, int x2, int y2, int radius2) {
+	static boolean intersectsCircleCircle(int x1, int y1, int z1, int radius1, int x2, int y2, int z2, int radius2) {
 		assert (radius1 >= 0) : "Radius of the first circle must be positive or zero."; //$NON-NLS-1$
 		assert (radius2 >= 0) : "Radius of the second circle must be positive or zero."; //$NON-NLS-1$
-		Point2D<?, ?> point = new InnerComputationPoint3ai();
-		computeClosestPointTo(x1, y1, radius1, x2, y2, point);
-		return contains(x2, y2, radius2, point.ix(), point.iy());
+		Point3D<?, ?> point = new InnerComputationPoint3ai();
+		computeClosestPointTo(x1, y1, z1, radius1, x2, y2, z2, point);
+		return contains(x2, y2, z2, radius2, point.ix(), point.iy(), point.iz());
 	}
 
 	/** Replies if a circle and a rectangle are intersecting.
 	 * 
 	 * @param x1 is the center of the circle
 	 * @param y1 is the center of the circle
+	 * @param z1 is the center of the circle
 	 * @param radius is the radius of the circle
 	 * @param x2 is the first corner of the rectangle.
 	 * @param y2 is the first corner of the rectangle.
+	 * @param z2 is the first corner of the rectangle.
 	 * @param x3 is the second corner of the rectangle.
 	 * @param y3 is the second corner of the rectangle.
+	 * @param z3 is the second corner of the rectangle.
 	 * @return <code>true</code> if the two shapes are intersecting; otherwise
 	 * <code>false</code>
 	 */
 	@Pure
-	static boolean intersectsCircleRectangle(int x1, int y1, int radius, int x2, int y2, int x3, int y3) {
+	static boolean intersectsCircleRectangle(int x1, int y1, int z1, int radius, int x2, int y2, int z2, int x3, int y3, int z3) {
 		assert (radius >= 0) : "Circle radius must be positive or zero."; //$NON-NLS-1$
-		Point2D<?, ?> point = new InnerComputationPoint3ai();
-		RectangularPrism3ai.computeClosestPoint(x2, y2, x3, y3, x1, y1, point);
-		return contains(x1, y1, radius, point.ix(), point.iy());
+		Point3D<?, ?> point = new InnerComputationPoint3ai();
+		RectangularPrism3ai.computeClosestPoint(x2, y2, z2, x3, y3, z3, x1, y1, z1, point);
+		return contains(x1, y1, z1, radius, point.ix(), point.iy(), point.iz());
 	}
 
 	/** Replies if a circle and a segment are intersecting.
 	 * 
 	 * @param x1 is the center of the circle
 	 * @param y1 is the center of the circle
+	 * @param z1 is the center of the circle
 	 * @param radius is the radius of the circle
 	 * @param x2 is the first point of the segment.
 	 * @param y2 is the first point of the segment.
+	 * @param z2 is the first point of the segment.
 	 * @param x3 is the second point of the segment.
 	 * @param y3 is the second point of the segment.
+	 * @param z3 is the second point of the segment.
 	 * @return <code>true</code> if the two shapes are intersecting; otherwise
 	 * <code>false</code>
 	 */
-	public static boolean intersectsCircleSegment(int x1, int y1, int radius, int x2, int y2, int x3, int y3) {
+	public static boolean intersectsCircleSegment(int x1, int y1, int z1, int radius, int x2, int y2, int z2, int x3, int y3, int z3) {
 		assert (radius >= 0) : "Circle radius must be positive or zero."; //$NON-NLS-1$
-		Point2D<?, ?> point = new InnerComputationPoint3ai();
-		Segment3ai.computeClosestPointTo(x2, y2, x3, y3, x1, y1, point);
-		return contains(x1, y1, radius, point.ix(), point.iy());
+		Point3D<?, ?> point = new InnerComputationPoint3ai();
+		Segment3ai.computeClosestPointTo(x2, y2, z1, x3, y3, z3, x1, y1, z1, point);
+		return contains(x1, y1, z1, radius, point.ix(), point.iy(), point.iz());
 	}
 
 	/** Replies the points of the circle perimeters starting by the first octant.
@@ -416,8 +430,8 @@ public interface Sphere3ai<
 	 * @return the points on the perimeters.
 	 */
 	@Pure
-	static <P extends Point2D<? super P, ? super V>, V extends Vector2D<? super V, ? super P>>
-	Iterator<P> getPointIterator(int cx, int cy,  int radius, int firstOctantIndex, int nbOctants,
+	static <P extends Point3D<? super P, ? super V>, V extends Vector3D<? super V, ? super P>>
+	Iterator<P> getPointIterator(int cx, int cy, int cz, int radius, int firstOctantIndex, int nbOctants,
 			GeomFactory3ai<?, P, V, ?> factory) {
 		assert (radius >= 0) : "Circle radius must be positive or zero."; //$NON-NLS-1$
 		assert (firstOctantIndex >= 0 && firstOctantIndex < 8) : "invalid quadrant value"; //$NON-NLS-1$
@@ -428,7 +442,7 @@ public interface Sphere3ai<
 		}
 		return new CirclePerimeterIterator<>(
 				factory,
-				cx, cy, radius,
+				cx, cy, cz, radius,
 				firstOctantIndex, maxOctant, true);
 	}
 
@@ -443,12 +457,13 @@ public interface Sphere3ai<
 		}
 		return getX() == shape.getX()
 			&& getY() == shape.getY()
+			&& getZ() == shape.getZ()
 			&& getRadius() == shape.getRadius();
 	}
 	
 	@Override
 	default void clear() {
-		set(0, 0, 0);
+		set(0, 0, 0, 0);
 	}
 
 	@Pure
@@ -459,7 +474,7 @@ public interface Sphere3ai<
 
 	@Override
 	default void set(IT s) {
-		set(s.getX(), s.getY(), s.getRadius());
+		set(s.getX(), s.getY(), s.getZ(), s.getRadius());
 	}
 
 	/** Change the circle.
@@ -467,34 +482,36 @@ public interface Sphere3ai<
 	 * @param center the center of the circle.
 	 * @param radius the radius of the circle.
 	 */
-	default void set(Point2D<?, ?> center, int radius) {
-		set(center.ix(), center.iy(), Math.abs(radius));
+	default void set(Point3D<?, ?> center, int radius) {
+		set(center.ix(), center.iy(), center.iz(), Math.abs(radius));
 	}
 
 	/** Change the circle's center.
 	 * 
 	 * @param center the center of the circle.
 	 */
-	default void setCenter(Point2D<?, ?> center) {
-		set(center.ix(), center.iy(), getRadius());
+	default void setCenter(Point3D<?, ?> center) {
+		set(center.ix(), center.iy(), center.iz(), getRadius());
 	}
 
 	/** Change the circle's center.
 	 * 
 	 * @param x x coordinate of the center of the circle.
 	 * @param y y coordinate of the center of the circle.
+	 * @param z z coordinate of the center of the circle.
 	 */
-	default void setCenter(int x, int y) {
-		set(x, y, getRadius());
+	default void setCenter(int x, int y, int z) {
+		set(x, y, z, getRadius());
 	}
 
 	/** Change the circle.
 	 * 
 	 * @param x the x coordinate of the center.
 	 * @param y the y coordinate of the center.
-	 * @param radius  the radiusof the center.
+	 * @param z the z coordinate of the center.
+	 * @param radius the radius of the center.
 	 */
-	void set(int x, int y, int radius);
+	void set(int x, int y, int z, int radius);
 
 	/** Replies the center X.
 	 * 
@@ -509,14 +526,14 @@ public interface Sphere3ai<
 	 */
 	@Pure
 	void setX(int x);
-
+	
 	/** Replies the center y.
 	 * 
 	 * @return the center y.
 	 */
 	@Pure
 	int getY();
-
+	
 	/** Change the center Y.
 	 * 
 	 * @param y the center y.
@@ -524,13 +541,27 @@ public interface Sphere3ai<
 	@Pure
 	void setY(int y);
 
+	/** Replies the center z.
+	 * 
+	 * @return the center z.
+	 */
+	@Pure
+	int getZ();
+
+	/** Change the center Z.
+	 * 
+	 * @param z the center z.
+	 */
+	@Pure
+	void setZ(int z);
+
 	/** Replies the center.
 	 * 
 	 * @return a copy of the center.
 	 */
 	@Pure
 	default P getCenter() {
-		return getGeomFactory().newPoint(getX(), getY());
+		return getGeomFactory().newPoint(getX(), getY(), getZ());
 	}
 
 	/** Replies the radius.
@@ -553,17 +584,20 @@ public interface Sphere3ai<
 		assert (box != null) : "Box must be not null."; //$NON-NLS-1$
 		int centerX = getX();
 		int centerY = getY();
+		int centerZ = getZ();
 		int radius = getRadius();
 		box.setFromCorners(
 				centerX - radius,
 				centerY - radius,
+				centerZ - radius,
 				centerX + radius,
-				centerY + radius);
+				centerY + radius,
+				centerZ + radius);
 	}
 
 	@Pure
 	@Override
-	default double getDistanceSquared(Point2D<?, ?> p) {
+	default double getDistanceSquared(Point3D<?, ?> p) {
 		assert (p != null) : "Point must be not null."; //$NON-NLS-1$
 		P c = getClosestPointTo(p);
 		return c.getDistanceSquared(p);
@@ -571,7 +605,7 @@ public interface Sphere3ai<
 
 	@Pure
 	@Override
-	default double getDistanceL1(Point2D<?, ?> p) {
+	default double getDistanceL1(Point3D<?, ?> p) {
 		assert (p != null) : "Point must be not null."; //$NON-NLS-1$
 		P c = getClosestPointTo(p);
 		return c.getDistanceL1(p);
@@ -579,26 +613,26 @@ public interface Sphere3ai<
 
 	@Pure
 	@Override
-	default double getDistanceLinf(Point2D<?, ?> p) {
+	default double getDistanceLinf(Point3D<?, ?> p) {
 		P c = getClosestPointTo(p);
 		return c.getDistanceLinf(p);
 	}
 
 	@Pure
 	@Override
-	default P getClosestPointTo(Point2D<?, ?> p) {
+	default P getClosestPointTo(Point3D<?, ?> p) {
 		assert (p != null) : "Point must be not null."; //$NON-NLS-1$
 		P point = getGeomFactory().newPoint();
-		computeClosestPointTo(getX(), getY(), getRadius(), p.ix(), p.iy(), point);
+		computeClosestPointTo(getX(), getY(), getZ(), getRadius(), p.ix(), p.iy(), p.iz(), point);
 		return point;
 	}
 
 	@Pure
 	@Override
-	default P getFarthestPointTo(Point2D<?, ?> p) {
+	default P getFarthestPointTo(Point3D<?, ?> p) {
 		assert (p != null) : "Point must be not null."; //$NON-NLS-1$
 		P point = getGeomFactory().newPoint();
-		computeFarthestPointTo(getX(), getY(), getRadius(), p.ix(), p.iy(), point);
+		computeFarthestPointTo(getX(), getY(), getZ(), getRadius(), p.ix(), p.iy(), p.iz(), point);
 		return point;
 	}
 
@@ -607,9 +641,9 @@ public interface Sphere3ai<
 	default boolean intersects(RectangularPrism3ai<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Rectangle must be not null."; //$NON-NLS-1$
 		return intersectsCircleRectangle(
-				getX(), getY(), getRadius(),
-				s.getMinX(), s.getMinY(),
-				s.getMaxX(), s.getMaxY());
+				getX(), getY(), getZ(), getRadius(),
+				s.getMinX(), s.getMinY(), s.getMinZ(),
+				s.getMaxX(), s.getMaxY(), s.getMaxZ());
 	}
 
 	@Pure
@@ -617,8 +651,8 @@ public interface Sphere3ai<
 	default boolean intersects(Sphere3ai<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Circle must be not null."; //$NON-NLS-1$
 		return intersectsCircleCircle(
-				getX(), getY(), getRadius(),
-				s.getX(), s.getY(), s.getRadius());
+				getX(), getY(), getZ(), getRadius(),
+				s.getX(), s.getY(), s.getZ(), s.getRadius());
 	}
 
 	@Pure
@@ -626,9 +660,9 @@ public interface Sphere3ai<
 	default boolean intersects(Segment3ai<?, ?, ?, ?, ?, ?> s) {
 		assert (s != null) : "Segment must be not null."; //$NON-NLS-1$
 		return intersectsCircleSegment(
-				getX(), getY(), getRadius(),
-				s.getX1(), s.getY1(),
-				s.getX2(), s.getY2());
+				getX(), getY(), getZ(), getRadius(),
+				s.getX1(), s.getY1(), s.getZ1(),
+				s.getX2(), s.getY2(), s.getZ2());
 	}
 
 	@Pure
@@ -636,10 +670,10 @@ public interface Sphere3ai<
 	default boolean intersects(PathIterator3ai<?> iterator) {
 		assert (iterator != null) : "Iterator must be not null."; //$NON-NLS-1$
 		int mask = (iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2);
-		int crossings = Path3ai.computeCrossingsFromCircle(
+		int crossings = Path3ai.computeCrossingsFromSphere(
 				0,
 				iterator,
-				getX(), getY(), getRadius(),
+				getX(), getY(), getZ(), getRadius(),
 				CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
 		return (crossings == MathConstants.SHAPE_INTERSECTS ||
 				(crossings & mask) != 0);
@@ -653,27 +687,31 @@ public interface Sphere3ai<
 	}
 
 	@Override
-	default void translate(int dx, int dy) {
-		setCenter(getX() + dx, getY() + dy);
+	default void translate(int dx, int dy, int dz) {
+		setCenter(getX() + dx, getY() + dy, getZ() + dz);
 	}
 
 	@Pure
 	@Override
-	default boolean contains(int x, int y) {
-		return contains(getX(), getY(), getRadius(), x, y);
+	default boolean contains(int x, int y, int z) {
+		return contains(getX(), getY(), getZ(), getRadius(), x, y, z);
 	}
 
 	@Pure
 	@Override
+	// TODO : integrate z coordinate
 	default boolean contains(RectangularPrism3ai<?, ?, ?, ?, ?, ?> box) {
 		assert (box != null) : "Rectangle must be not null."; //$NON-NLS-1$
 		int cx = getX();
 		int cy = getY();
+		int cz = getZ();
 		int radius = getRadius();
 		int vx1 = box.getMinX() - cx;
 		int vy1 = box.getMinY() - cy;
+		int vz1 = box.getMinZ() - cz;
 		int vx2 = box.getMaxX() - cx;
 		int vy2 = box.getMaxY() - cy;
+		int vz2 = box.getMaxZ() - cz;
 
 		if (vx1>=-radius && vx1<=radius && vy1>=-radius && vy1<=radius &&
 				vx2>=-radius && vx2<=radius && vy2>=-radius && vy2<=radius) {
@@ -705,7 +743,7 @@ public interface Sphere3ai<
 			for(int i=0; i<quadrants.length; ++i) {
 				if (quadrants[i]!=0) {
 					CirclePerimeterIterator<P, V> iterator = new CirclePerimeterIterator<>(
-							getGeomFactory(), cx, cy, radius, i*2, i*2+2, false);
+							getGeomFactory(), cx, cy, cz, radius, i*2, i*2+2, false);
 					int px, py, ccw, cpx, cpy;
 					P p;
 
@@ -739,7 +777,7 @@ public interface Sphere3ai<
 	@Pure
 	@Override
 	default Iterator<P> getPointIterator() {
-		return new CirclePerimeterIterator<>(getGeomFactory(), getX(), getY(), getRadius(), 0, 8, true);
+		return new CirclePerimeterIterator<>(getGeomFactory(), getX(), getY(), getZ(), getRadius(), 0, 8, true);
 	}
 
 	/** Replies the points of the circle perimeters starting by the first octant.
@@ -750,12 +788,12 @@ public interface Sphere3ai<
 	 */
 	@Pure
 	default Iterator<P> getPointIterator(int firstOctantIndex, int nbOctants) {
-		return getPointIterator(getX(), getY(),  getRadius(), firstOctantIndex, nbOctants, getGeomFactory());
+		return getPointIterator(getX(), getY(), getZ(), getRadius(), firstOctantIndex, nbOctants, getGeomFactory());
 	}
 
 	@Pure
 	@Override
-	default PathIterator3ai<IE> getPathIterator(Transform2D transform) {
+	default PathIterator3ai<IE> getPathIterator(Transform3D transform) {
 		if (transform == null || transform.isIdentity()) {
 			return new CirclePathIterator<>(this);
 		}
@@ -771,6 +809,7 @@ public interface Sphere3ai<
 	 * @mavenartifactid $ArtifactId$
 	 * @since 13.0
 	 */
+	// TODO integrate z coordinate
 	abstract class AbstractCirclePathIterator<IE extends PathElement3ai> implements PathIterator3ai<IE> {
 		
 		/**
@@ -868,6 +907,8 @@ public interface Sphere3ai<
 		private int x;
 
 		private int y;
+
+		private int z;
 		
 		private int r;
 		
@@ -877,9 +918,13 @@ public interface Sphere3ai<
 		
 		private int movey;
 
+		private int movez;
+
 		private int lastx;
 
 		private int lasty;
+
+		private int lastz;
 
 		/**
 		 * @param circle the circle to iterate on.
@@ -892,6 +937,7 @@ public interface Sphere3ai<
 				this.r = circle.getRadius();
 				this.x = circle.getX() - this.r;
 				this.y = circle.getY() - this.r;
+				this.z = circle.getZ() - this.r;
 			}
 		}
 		
@@ -906,6 +952,7 @@ public interface Sphere3ai<
 			return this.index <= 5;
 		}
 
+		// TODO : check indexes
 		@Override
 		public IE next() {
 			if (this.index > 5) {
@@ -916,35 +963,43 @@ public interface Sphere3ai<
 			if (idx==0) {
 				int dr = 2 * this.r;
 				double ctrls[] = CTRL_PTS[3];
-				this.movex = (int)(this.x + ctrls[4] * dr);
-				this.movey = (int)(this.y + ctrls[5] * dr);
+				this.movex = (int)(this.x + ctrls[6] * dr);
+				this.movey = (int)(this.y + ctrls[7] * dr);
+				this.movez = (int)(this.z + ctrls[8] * dr);
 				this.lastx = this.movex;
 				this.lasty = this.movey;
+				this.lastz = this.movez;
 				return getGeomFactory().newMovePathElement(
-						this.lastx, this.lasty);
+						this.lastx, this.lasty, this.lastz);
 			}
 			else if (idx<5) {
 				int dr = 2 * this.r;
 				double ctrls[] = CTRL_PTS[idx - 1];
 				int ppx = this.lastx;
 				int ppy = this.lasty;
-				this.lastx = (int)(this.x + ctrls[4] * dr);
-				this.lasty = (int)(this.y + ctrls[5] * dr);
+				int ppz = this.lastz;
+				this.lastx = (int)(this.x + ctrls[6] * dr);
+				this.lasty = (int)(this.y + ctrls[7] * dr);
+				this.lastz = (int)(this.z + ctrls[8] * dr);
 				return getGeomFactory().newCurvePathElement(
-						ppx, ppy,
+						ppx, ppy, ppz,
 						(int)(this.x + ctrls[0] * dr),
 						(int)(this.y + ctrls[1] * dr),
-						(int)(this.x + ctrls[2] * dr),
-						(int)(this.y + ctrls[3] * dr),
-						this.lastx, this.lasty);
+						(int)(this.z + ctrls[2] * dr),
+						(int)(this.x + ctrls[3] * dr),
+						(int)(this.y + ctrls[4] * dr),
+						(int)(this.z + ctrls[5] * dr),
+						this.lastx, this.lasty, this.lastz);
 			}
 			int ppx = this.lastx;
 			int ppy = this.lasty;
+			int ppz = this.lastz;
 			this.lastx = this.movex;
 			this.lasty = this.movey;
+			this.lastz = this.movez;
 			return getGeomFactory().newClosePathElement(
-					ppx, ppy,
-					this.lastx, this.lasty);
+					ppx, ppy, ppz,
+					this.lastx, this.lasty, this.lastz);
 		}
 		
 	}
@@ -960,11 +1015,13 @@ public interface Sphere3ai<
 	 */
 	class TransformedCirclePathIterator<IE extends PathElement3ai> extends AbstractCirclePathIterator<IE> {
 
-		private final Transform2D transform;
+		private final Transform3D transform;
 
 		private int x;
 		
 		private int y;
+
+		private int z;
 		
 		private int r;
 		
@@ -974,19 +1031,21 @@ public interface Sphere3ai<
 		
 		private int movey;
 
-		private Point2D<?, ?> p1;
+		private int movez;
 
-		private Point2D<?, ?> p2;
+		private Point3D<?, ?> p1;
+
+		private Point3D<?, ?> p2;
 		
-		private Point2D<?, ?> ptmp1;
+		private Point3D<?, ?> ptmp1;
 		
-		private Point2D<?, ?> ptmp2;
+		private Point3D<?, ?> ptmp2;
 
 		/**
 		 * @param circle the circle to iterate on.
 		 * @param transform the transformation to apply.
 		 */
-		public TransformedCirclePathIterator(Sphere3ai<?, ?, IE, ?, ?, ?> circle, Transform2D transform) {
+		public TransformedCirclePathIterator(Sphere3ai<?, ?, IE, ?, ?, ?> circle, Transform3D transform) {
 			super(circle);
 			assert(transform != null) : "Transformation must not be null."; //$NON-NLS-1$
 			this.transform = transform;
@@ -1000,6 +1059,7 @@ public interface Sphere3ai<
 				this.r = circle.getRadius();
 				this.x = circle.getX() - this.r;
 				this.y = circle.getY() - this.r;
+				this.z = circle.getZ() - this.r;
 			}
 		}
 		
@@ -1022,41 +1082,45 @@ public interface Sphere3ai<
 			if (idx==0) {
 				int dr = 2 * this.r;
 				double ctrls[] = CTRL_PTS[3];
-				this.movex = (int)(this.x + ctrls[4] * dr);
-				this.movey = (int)(this.y + ctrls[5] * dr);
-				this.p2.set(this.movex, this.movey);
+				this.movex = (int)(this.x + ctrls[6] * dr);
+				this.movey = (int)(this.y + ctrls[7] * dr);
+				this.movez = (int)(this.z + ctrls[8] * dr);
+				this.p2.set(this.movex, this.movey, this.movez);
 				this.transform.transform(this.p2);
 				return getGeomFactory().newMovePathElement(
-						this.p2.ix(), this.p2.iy());
+						this.p2.ix(), this.p2.iy(), this.p2.iz());
 			}
 			else if (idx<5) {
 				int dr = 2 * this.r;
 				double ctrls[] = CTRL_PTS[idx - 1];
 				this.p1.set(this.p2);
 				this.p2.set(
-						(this.x + ctrls[4] * dr),
-						(this.y + ctrls[5] * dr));
+						(this.x + ctrls[6] * dr),
+						(this.y + ctrls[7] * dr),
+						(this.z + ctrls[8] * dr));
 				this.transform.transform(this.p2);
 				this.ptmp1.set(
 						(this.x + ctrls[0] * dr),
-						(this.y + ctrls[1] * dr));
+						(this.x + ctrls[1] * dr),
+						(this.y + ctrls[2] * dr));
 				this.transform.transform(this.ptmp1);
 				this.ptmp2.set(
-						(this.x + ctrls[2] * dr),
-						(this.y + ctrls[3] * dr));
+						(this.x + ctrls[3] * dr),
+						(this.y + ctrls[4] * dr),
+						(this.y + ctrls[5] * dr));
 				this.transform.transform(this.ptmp2);
 				return getGeomFactory().newCurvePathElement(
-						this.p1.ix(), this.p1.iy(),
-						this.ptmp1.ix(), this.ptmp1.iy(),
-						this.ptmp2.ix(), this.ptmp2.iy(),
-						this.p2.ix(), this.p2.iy());
+						this.p1.ix(), this.p1.iy(), this.p1.iz(),
+						this.ptmp1.ix(), this.ptmp1.iy(), this.ptmp1.iz(),
+						this.ptmp2.ix(), this.ptmp2.iy(), this.ptmp2.iz(),
+						this.p2.ix(), this.p2.iy(), this.p2.iz());
 			}
 			this.p1.set(this.p2);
-			this.p2.set(this.movex, this.movey);
+			this.p2.set(this.movex, this.movey, this.movez);
 			this.transform.transform(this.p2);
 			return getGeomFactory().newClosePathElement(
-					this.p1.ix(), this.p1.iy(),
-					this.p2.ix(), this.p2.iy());
+					this.p1.ix(), this.p1.iy(), this.p1.iz(),
+					this.p2.ix(), this.p2.iy(), this.p2.iz());
 		}
 
 	}
@@ -1073,24 +1137,25 @@ public interface Sphere3ai<
 	 * @mavenartifactid $ArtifactId$
 	 * @since 13.0
 	 */
-	class CirclePerimeterIterator<P extends Point2D<? super P, ? super V>,
-			V extends Vector2D<? super V, ? super P>> implements Iterator<P> {
+	class CirclePerimeterIterator<P extends Point3D<? super P, ? super V>,
+			V extends Vector3D<? super V, ? super P>> implements Iterator<P> {
 
-		private final GeomFactory2D<V, P> factory;
+		private final GeomFactory3D<V, P> factory;
 		
 		private final int cx;
 		private final int cy;
+		private final int cz;
 		private final int cr;
 
 		private final boolean skip;
 		private final int maxOctant;
 
 		private int currentOctant;
-		private int x, y, d;
+		private int x, y, z, d;
 		
 		private P next = null;
 		
-		private final Set<P> junctionPoint = new TreeSet<>(new Tuple2iComparator());
+		private final Set<P> junctionPoint = new TreeSet<>(new Tuple3iComparator());
 
 		/** Construct the iterator from the initialOctant (inclusive) to the lastOctant (exclusive).
 		 *
@@ -1103,8 +1168,8 @@ public interface Sphere3ai<
 		 * @param skip indicates if the first point on an octant must be skip, because it is already replied when treating the
 		 *     previous octant.
 		 */
-		public CirclePerimeterIterator(GeomFactory2D<V, P> factory,
-				int centerX, int centerY, int radius, int initialOctant, int lastOctant, boolean skip) {
+		public CirclePerimeterIterator(GeomFactory3D<V, P> factory,
+				int centerX, int centerY, int centerZ, int radius, int initialOctant, int lastOctant, boolean skip) {
 			assert (factory != null) : "Factory must be not null."; //$NON-NLS-1$			
 			assert (radius >= 0) : "Circle radius must be positive or zero."; //$NON-NLS-1$
 			assert (initialOctant >= 0 && initialOctant < 8) : "Initial octant must be in [0; 7]"; //$NON-NLS-1$
@@ -1112,6 +1177,7 @@ public interface Sphere3ai<
 			this.factory = factory;
 			this.cx = centerX;
 			this.cy = centerY;
+			this.cz = centerZ;
 			this.cr = radius;
 			this.skip = skip;
 			this.maxOctant = lastOctant;
@@ -1146,6 +1212,7 @@ public interface Sphere3ai<
 			return this.next!=null;
 		}
 		
+		// TODO : integrate z coordinate
 		private void searchNext() {
 			if (this.currentOctant>=this.maxOctant) {
 				this.next = null;
@@ -1155,28 +1222,28 @@ public interface Sphere3ai<
 				while (true) {
 					switch(this.currentOctant) {
 					case 0:
-						this.next.set(this.cx + this.x, this.cy + this.y);
+						this.next.set(this.cx + this.x, this.cy + this.y, 0);
 						break;
 					case 1:
-						this.next.set(this.cx + this.y, this.cy + this.x);
+						this.next.set(this.cx + this.y, this.cy + this.x, 0);
 						break;
 					case 2:
-						this.next.set(this.cx + this.x, this.cy - this.y);
+						this.next.set(this.cx + this.x, this.cy - this.y, 0);
 						break;
 					case 3:
-						this.next.set(this.cx + this.y, this.cy - this.x);
+						this.next.set(this.cx + this.y, this.cy - this.x, 0);
 						break;
 					case 4:
-						this.next.set(this.cx - this.x, this.cy - this.y);
+						this.next.set(this.cx - this.x, this.cy - this.y, 0);
 						break;
 					case 5:
-						this.next.set(this.cx - this.y, this.cy - this.x);
+						this.next.set(this.cx - this.y, this.cy - this.x, 0);
 						break;
 					case 6:
-						this.next.set(this.cx - this.x, this.cy + this.y);
+						this.next.set(this.cx - this.x, this.cy + this.y, 0);
 						break;
 					case 7:
-						this.next.set(this.cx - this.y, this.cy + this.x);
+						this.next.set(this.cx - this.y, this.cy + this.x, 0);
 						break;
 					default:
 						throw new NoSuchElementException();
@@ -1197,7 +1264,7 @@ public interface Sphere3ai<
 						boolean cont = this.junctionPoint.contains(this.next);
 						if (!cont) {
 							P point = this.factory.newPoint();
-							point.set(this.next.ix(), this.next.iy());
+							point.set(this.next.ix(), this.next.iy(), this.next.iz());
 							this.junctionPoint.add(point);
 						}
 						// Goto next.

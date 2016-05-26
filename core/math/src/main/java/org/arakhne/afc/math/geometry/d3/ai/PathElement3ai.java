@@ -41,13 +41,20 @@ public interface PathElement3ai extends PathElement3D {
 	 */
 	@Pure
 	int getFromX();
-
+	
 	/** Replies the y coordinate of the starting point.
 	 *
 	 * @return the y coordinate, or {@link Double#NaN} if the type is {@link PathElementType#MOVE_TO}.
 	 */
 	@Pure
 	int getFromY();
+
+	/** Replies the z coordinate of the starting point.
+	 *
+	 * @return the z coordinate, or {@link Double#NaN} if the type is {@link PathElementType#MOVE_TO}.
+	 */
+	@Pure
+	int getFromZ();
 
 	/** Replies the x coordinate of the first control point.
 	 *
@@ -56,7 +63,7 @@ public interface PathElement3ai extends PathElement3D {
 	 */
 	@Pure
 	int getCtrlX1();
-
+	
 	/** Replies the y coordinate of the first control point.
 	 *
 	 * @return the y coordinate, or {@link Double#NaN} if the type is {@link PathElementType#MOVE_TO},
@@ -65,6 +72,14 @@ public interface PathElement3ai extends PathElement3D {
 	@Pure
 	int getCtrlY1();
 
+	/** Replies the z coordinate of the first control point.
+	 *
+	 * @return the z coordinate, or {@link Double#NaN} if the type is {@link PathElementType#MOVE_TO},
+	 * {@link PathElementType#LINE_TO}, or {@link PathElementType#CLOSE}.
+	 */
+	@Pure
+	int getCtrlZ1();
+
 	/** Replies the x coordinate of the second control point.
 	 *
 	 * @return the x coordinate, or {@link Double#NaN} if the type is {@link PathElementType#MOVE_TO},
@@ -72,7 +87,7 @@ public interface PathElement3ai extends PathElement3D {
 	 */
 	@Pure
 	int getCtrlX2();
-
+	
 	/** Replies the y coordinate of the second  control point.
 	 *
 	 * @return the y coordinate, or {@link Double#NaN} if the type is {@link PathElementType#MOVE_TO},
@@ -81,19 +96,34 @@ public interface PathElement3ai extends PathElement3D {
 	@Pure
 	int getCtrlY2();
 
+	/** Replies the z coordinate of the second  control point.
+	 *
+	 * @return the z coordinate, or {@link Double#NaN} if the type is {@link PathElementType#MOVE_TO},
+	 * {@link PathElementType#LINE_TO}, {@link PathElementType#QUAD_TO}, or {@link PathElementType#CLOSE}.
+	 */
+	@Pure
+	int getCtrlZ2();
+
 	/** Replies the x coordinate of the target point.
 	 *
 	 * @return the x coordinate.
 	 */
 	@Pure
 	int getToX();
-
+	
 	/** Replies the y coordinate of the target point.
 	 *
 	 * @return the y coordinate.
 	 */
 	@Pure
 	int getToY();
+
+	/** Replies the z coordinate of the target point.
+	 *
+	 * @return the z coordinate.
+	 */
+	@Pure
+	int getToZ();
 
 	@Pure
 	@Override

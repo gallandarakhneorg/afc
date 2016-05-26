@@ -59,23 +59,27 @@ public class PathShadow3ai<B extends RectangularPrism3ai<?, ?, ?, ?, ?, B>> {
 	 * @param crossings is the initial value of the crossings.
 	 * @param x0 is the first point of the segment.
 	 * @param y0 is the first point of the segment.
+	 * @param z0 is the first point of the segment.
 	 * @param x1 is the second point of the segment.
 	 * @param y1 is the second point of the segment.
+	 * @param z1 is the second point of the segment.
 	 * @return the crossings or {@link MathConstants#SHAPE_INTERSECTS}.
 	 */
 	@Pure
 	public int computeCrossings(
 			int crossings,
-			int x0, int y0,
-			int x1, int y1) {
+			int x0, int y0, int z0,
+			int x1, int y1, int z1) {
 		int numCrosses = 
 				Segment3ai.computeCrossingsFromRect(crossings,
 						this.bounds.getMinX(),
 						this.bounds.getMinY(),
+						this.bounds.getMinZ(),
 						this.bounds.getMaxX(),
 						this.bounds.getMaxY(),
-						x0, y0, 
-						x1, y1);
+						this.bounds.getMaxZ(),
+						x0, y0, z0,
+						x1, y1, z1);
 
 		if (numCrosses==MathConstants.SHAPE_INTERSECTS) {
 			// The segment is intersecting the bounds of the shadow path.
@@ -87,7 +91,7 @@ public class PathShadow3ai<B extends RectangularPrism3ai<?, ?, ?, ?, ?, B>> {
 
 			computeCrossings1(
 					this.path.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
-					x0, y0, x1, y1,
+					x0, y0, z0, x1, y1, z1,
 					false,
 					this.path.getWindingRule(),
 					this.path.getGeomFactory(),
@@ -128,7 +132,7 @@ public class PathShadow3ai<B extends RectangularPrism3ai<?, ?, ?, ?, ?, B>> {
 
 	private static <E extends PathElement3ai> void computeCrossings1(
 			Iterator<? extends PathElement3ai> pi, 
-			int x1, int y1, int x2, int y2, 
+			int x1, int y1, int z1, int x2, int y2, int z2, 
 			boolean closeable,
 			PathWindingRule rule,
 			GeomFactory3ai<E, ?, ?, ?> factory,
@@ -144,43 +148,49 @@ public class PathShadow3ai<B extends RectangularPrism3ai<?, ?, ?, ?, ?, B>> {
 		Path3ai<?, ?, E, ?, ?, ?> localPath;
 		int movx = element.getToX();
 		int movy = element.getToY();
+		int movz = element.getToZ();
 		int curx = movx;
 		int cury = movy;
-		int endx, endy;
+		int curz = movz;
+		int endx, endy, endz;
 		while (data.crossings!=MathConstants.SHAPE_INTERSECTS && pi.hasNext()) {
 			element = pi.next();
 			switch (element.getType()) {
 			case MOVE_TO:
 				movx = curx = element.getToX();
 				movy = cury = element.getToY();
+				movz = curz = element.getToZ();
 				break;
 			case LINE_TO:
 				endx = element.getToX();
 				endy = element.getToY();
+				endz = element.getToZ();
 				computeCrossings2(
-						curx, cury,
-						endx, endy,
-						x1, y1, x2, y2,
+						curx, cury, curz,
+						endx, endy, endz,
+						x1, y1, z1, x2, y2, z2,
 						data);
 				if (data.crossings==MathConstants.SHAPE_INTERSECTS) {
 					return;
 				}
 				curx = endx;
 				cury = endy;
+				curz = endz;
 				break;
 			case QUAD_TO:
 			{
 				endx = element.getToX();
 				endy = element.getToY();
+				endz = element.getToZ();
 				// only for local use.
 				localPath = factory.newPath(rule);
-				localPath.moveTo(curx, cury);
+				localPath.moveTo(curx, cury, curz);
 				localPath.quadTo(
-						element.getCtrlX1(), element.getCtrlY1(),
-						endx, endy);
+						element.getCtrlX1(), element.getCtrlY1(), element.getCtrlZ1(),
+						endx, endy, endz);
 				computeCrossings1(
 						localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
-						x1, y1, x2, y2,
+						x1, y1, z1, x2, y2, z2,
 						false,
 						rule,
 						factory,
@@ -190,21 +200,23 @@ public class PathShadow3ai<B extends RectangularPrism3ai<?, ?, ?, ?, ?, B>> {
 				}
 				curx = endx;
 				cury = endy;
+				curz = endz;
 				break;
 			}
 			case CURVE_TO:
 				endx = element.getToX();
 				endy = element.getToY();
+				endz = element.getToZ();
 				// only for local use.
 				localPath = factory.newPath(rule);
-				localPath.moveTo(curx, cury);
+				localPath.moveTo(curx, cury, curz);
 				localPath.curveTo(
-						element.getCtrlX1(), element.getCtrlY1(),
-						element.getCtrlX2(), element.getCtrlY2(),
-						endx, endy);
+						element.getCtrlX1(), element.getCtrlY1(), element.getCtrlZ1(),
+						element.getCtrlX2(), element.getCtrlY2(), element.getCtrlZ2(),
+						endx, endy, endz);
 				computeCrossings1(
 						localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
-						x1, y1, x2, y2,
+						x1, y1, z1, x2, y2, z2,
 						false,
 						rule,
 						factory,
@@ -214,18 +226,20 @@ public class PathShadow3ai<B extends RectangularPrism3ai<?, ?, ?, ?, ?, B>> {
 				}
 				curx = endx;
 				cury = endy;
+				curz = endz;
 				break;
 			case CLOSE:
-				if (cury != movy || curx != movx) {
+				if (cury != movy || curx != movx || curz != movz) {
 					computeCrossings2(
-							curx, cury,
-							movx, movy,
-							x1, y1, x2, y2,
+							curx, cury, curz,
+							movx, movy, movz,
+							x1, y1, z1, x2, y2, z2,
 							data);
 				}
 				if (data.crossings!=0)	return;
 				curx = movx;
 				cury = movy;
+				curz = movz;
 				break;
 			default:
 			}
@@ -233,14 +247,14 @@ public class PathShadow3ai<B extends RectangularPrism3ai<?, ?, ?, ?, ?, B>> {
 
 		assert(data.crossings!=MathConstants.SHAPE_INTERSECTS);
 
-		boolean isOpen = (curx != movx) || (cury != movy);
+		boolean isOpen = (curx != movx) || (cury != movy) || (curz != movz);
 
 		if (isOpen) {
 			if (closeable) {
 				computeCrossings2(
-						curx, cury,
-						movx, movy,
-						x1, y1, x2, y2,
+						curx, cury, curz,
+						movx, movy, movz,
+						x1, y1, z1, x2, y2, z2,
 						data);
 			}
 			else {
@@ -252,17 +266,19 @@ public class PathShadow3ai<B extends RectangularPrism3ai<?, ?, ?, ?, ?, B>> {
 	}
 
 	private static void computeCrossings2(
-			int shadow_x0, int shadow_y0,
-			int shadow_x1, int shadow_y1,
-			int sx0, int sy0,
-			int sx1, int sy1,
+			int shadow_x0, int shadow_y0, int shadow_z0,
+			int shadow_x1, int shadow_y1, int shadow_z1,
+			int sx0, int sy0, int sz0,
+			int sx1, int sy1, int sz1,
 			PathShadowData data) {
 		int shadow_xmin = Math.min(shadow_x0, shadow_x1);
 		int shadow_xmax = Math.max(shadow_x0, shadow_x1);
 		int shadow_ymin = Math.min(shadow_y0, shadow_y1);
 		int shadow_ymax = Math.max(shadow_y0, shadow_y1);
+		int shadow_zmin = Math.min(shadow_z0, shadow_z1);
+		int shadow_zmax = Math.max(shadow_z0, shadow_z1);
 
-		data.updateShadowLimits(shadow_x0, shadow_y0, shadow_x1, shadow_y1);
+		data.updateShadowLimits(shadow_x0, shadow_y0, shadow_z0, shadow_x1, shadow_y1, shadow_z1);
 
 		if (sy0<shadow_ymin && sy1<shadow_ymin) return;
 		if (sy0>shadow_ymax && sy1>shadow_ymax) return;
@@ -298,8 +314,8 @@ public class PathShadow3ai<B extends RectangularPrism3ai<?, ?, ?, ?, ?, B>> {
 			}
 		}
 		else if (Segment3ai.intersectsSegmentSegment(
-				shadow_x0, shadow_y0, shadow_x1, shadow_y1,
-				sx0, sy0, sx1, sy1)) {
+				shadow_x0, shadow_y0, shadow_z0, shadow_x1, shadow_y1, shadow_z1,
+				sx0, sy0, sz0, sx1, sy1, sz1)) {
 			data.crossings = MathConstants.SHAPE_INTERSECTS;
 		}
 		else {
@@ -307,44 +323,44 @@ public class PathShadow3ai<B extends RectangularPrism3ai<?, ?, ?, ?, ?, B>> {
 			boolean isUp = (shadow_y0<=shadow_y1);
 			if (isUp) {
 				side1 = Segment3ai.computeSideLinePoint(
-						shadow_x0, shadow_y0,
-						shadow_x1, shadow_y1,
-						sx0, sy0);
+						shadow_x0, shadow_y0, shadow_z0,
+						shadow_x1, shadow_y1, shadow_z1,
+						sx0, sy0, sz0);
 				side2 = Segment3ai.computeSideLinePoint(
-						shadow_x0, shadow_y0,
-						shadow_x1, shadow_y1,
-						sx1, sy1);
+						shadow_x0, shadow_y0, shadow_z0,
+						shadow_x1, shadow_y1, shadow_z1,
+						sx1, sy1, sz1);
 			}
 			else {
 				side1 = Segment3ai.computeSideLinePoint(
-						shadow_x1, shadow_y1,
-						shadow_x0, shadow_y0,
-						sx0, sy0);
+						shadow_x1, shadow_y1, shadow_z1,
+						shadow_x0, shadow_y0, shadow_z0,
+						sx0, sy0, sz0);
 				side2 = Segment3ai.computeSideLinePoint(
-						shadow_x1, shadow_y1,
-						shadow_x0, shadow_y0,
-						sx1, sy1);
+						shadow_x1, shadow_y1, shadow_z1,
+						shadow_x0, shadow_y0, shadow_z0,
+						sx1, sy1, sz1);
 			}
 			if (side1>0 || side2>0) {
 				computeCrossings3(
-						shadow_x0, shadow_y0,
-						sx0, sy0, sx1, sy1,
+						shadow_x0, shadow_y0, shadow_z0,
+						sx0, sy0, sz0, sx1, sy1, sz1,
 						data, isUp);
 				computeCrossings3(
-						shadow_x1, shadow_y1,
-						sx0, sy0, sx1, sy1,
+						shadow_x1, shadow_y1, shadow_z1,
+						sx0, sy0, sz0, sx1, sy1, sz1,
 						data, !isUp);
 			}
 		}
 	}
 
 	private static void computeCrossings3(
-			int shadowx, int shadowy,
-			int sx0, int sy0,
-			int sx1, int sy1,
+			int shadowx, int shadowy, int shadowz,
+			int sx0, int sy0, int sz0,
+			int sx1, int sy1, int sz1,
 			PathShadowData data,
 			boolean isUp) {
-		if (shadowy <  sy0 && shadowy <  sy1) return;
+		if (shadowy < sy0 && shadowy < sy1) return;
 		if (shadowy > sy0 && shadowy > sy1) return;
 		if (shadowx > sx0 && shadowx > sx1) return;
 		int xintercept = (int) Math.round((double) sx0 + (shadowy - sy0) * (sx1 - sx0) / (sy1 - sy0));
@@ -441,9 +457,9 @@ public class PathShadow3ai<B extends RectangularPrism3ai<?, ?, ?, ?, ?, B>> {
 			}
 		}
 
-		public void updateShadowLimits(int shadow_x0, int shadow_y0, int shadow_x1, int shadow_y1) {
-			int xl, yl;
-			int xh, yh;
+		public void updateShadowLimits(int shadow_x0, int shadow_y0, int shadow_z0, int shadow_x1, int shadow_y1, int shadow_z1) {
+			int xl, yl, zl;
+			int xh, yh, zh;
 			if (shadow_y0<shadow_y1) {
 				xl = shadow_x0;
 				yl = shadow_y0;

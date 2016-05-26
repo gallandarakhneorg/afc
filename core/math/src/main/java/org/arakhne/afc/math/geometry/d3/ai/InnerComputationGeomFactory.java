@@ -20,9 +20,10 @@
  */
 package org.arakhne.afc.math.geometry.d3.ai;
 
-import org.arakhne.afc.math.geometry.d2.GeomFactory2D;
-import org.arakhne.afc.math.geometry.d2.Point2D;
-import org.arakhne.afc.math.geometry.d2.Vector2D;
+import org.arakhne.afc.math.geometry.d3.GeomFactory3D;
+import org.arakhne.afc.math.geometry.d3.Point3D;
+import org.arakhne.afc.math.geometry.d3.Quaternion;
+import org.arakhne.afc.math.geometry.d3.Vector3D;
 
 /** Factory of immutable geometrical primitives.
  * 
@@ -32,7 +33,7 @@ import org.arakhne.afc.math.geometry.d2.Vector2D;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-final class InnerComputationGeomFactory implements GeomFactory2D<InnerComputationVector3ai, InnerComputationPoint3ai> {
+final class InnerComputationGeomFactory implements GeomFactory3D<InnerComputationVector3ai, InnerComputationPoint3ai> {
 
 	/** Singleton of the factory.
 	 */
@@ -43,91 +44,115 @@ final class InnerComputationGeomFactory implements GeomFactory2D<InnerComputatio
 	}
 
 	@Override
-	public InnerComputationPoint3ai convertToPoint(Point2D<?, ?> p) {
+	public InnerComputationPoint3ai convertToPoint(Point3D<?, ?> p) {
 		if (p instanceof InnerComputationPoint3ai) {
 			return (InnerComputationPoint3ai) p;
 		}
-		int x, y;
+		int x, y, z;
 		if (p == null) {
 			x = 0;
 			y = 0;
+			z = 0;
 		} else {
 			x = p.ix();
 			y = p.iy();
+			z = p.iz();
 		}
-		return new InnerComputationPoint3ai(x, y);
+		return new InnerComputationPoint3ai(x, y, z);
 	}
 
 	@Override
-	public InnerComputationVector3ai convertToVector(Point2D<?, ?> p) {
-		int x, y;
+	public InnerComputationVector3ai convertToVector(Point3D<?, ?> p) {
+		int x, y, z;
 		if (p == null) {
 			x = 0;
 			y = 0;
+			z = 0;
 		} else {
 			x = p.ix();
 			y = p.iy();
+			z = p.iz();
 		}
-		return new InnerComputationVector3ai(x, y);
+		return new InnerComputationVector3ai(x, y, z);
 	}
 
 	@Override
-	public InnerComputationPoint3ai convertToPoint(Vector2D<?, ?> v) {
-		int x, y;
+	public InnerComputationPoint3ai convertToPoint(Vector3D<?, ?> v) {
+		int x, y, z;
 		if (v == null) {
 			x = 0;
 			y = 0;
+			z = 0;
 		} else {
 			x = v.ix();
 			y = v.iy();
+			z = v.iz();
 		}
-		return new InnerComputationPoint3ai(x, y);
+		return new InnerComputationPoint3ai(x, y, z);
 	}
 
 	@Override
-	public InnerComputationVector3ai convertToVector(Vector2D<?, ?> v) {
+	public InnerComputationVector3ai convertToVector(Vector3D<?, ?> v) {
 		if (v instanceof InnerComputationVector3ai) {
 			return (InnerComputationVector3ai) v;
 		}
-		int x, y;
+		int x, y, z;
 		if (v == null) {
 			x = 0;
 			y = 0;
+			z = 0;
 		} else {
 			x = v.ix();
 			y = v.iy();
+			z = v.iz();
 		}
-		return new InnerComputationVector3ai(x, y);
+		return new InnerComputationVector3ai(x, y, z);
 	}
 
 	@Override
 	public InnerComputationPoint3ai newPoint() {
-		return new InnerComputationPoint3ai(0, 0);
+		return new InnerComputationPoint3ai(0, 0, 0);
 	}
 
 	@Override
 	public InnerComputationVector3ai newVector() {
-		return new InnerComputationVector3ai(0, 0);
+		return new InnerComputationVector3ai(0, 0, 0);
 	}
 
 	@Override
-	public InnerComputationPoint3ai newPoint(double x, double y) {
-		return new InnerComputationPoint3ai((int) Math.round(x), (int) Math.round(y));
+	public InnerComputationPoint3ai newPoint(double x, double y, double z) {
+		return new InnerComputationPoint3ai((int) Math.round(x), (int) Math.round(y), (int) Math.round(z));
 	}
 
 	@Override
-	public InnerComputationVector3ai newVector(double x, double y) {
-		return new InnerComputationVector3ai((int) Math.round(x), (int) Math.round(y));
+	public InnerComputationVector3ai newVector(double x, double y, double z) {
+		return new InnerComputationVector3ai((int) Math.round(x), (int) Math.round(y), (int) Math.round(z));
 	}
 
 	@Override
-	public InnerComputationPoint3ai newPoint(int x, int y) {
-		return new InnerComputationPoint3ai(x, y);
+	public InnerComputationPoint3ai newPoint(int x, int y, int z) {
+		return new InnerComputationPoint3ai(x, y, z);
 	}
 
 	@Override
-	public InnerComputationVector3ai newVector(int x, int y) {
-		return new InnerComputationVector3ai(x, y);
+	public InnerComputationVector3ai newVector(int x, int y, int z) {
+		return new InnerComputationVector3ai(x, y, z);
+	}
+
+	/* (non-Javadoc)
+	 * @see org.arakhne.afc.math.geometry.d3.GeomFactory3D#newQuaternion(org.arakhne.afc.math.geometry.d3.Vector3D, double)
+	 */
+	@Override
+	public Quaternion newQuaternion(Vector3D<?, ?> axis, double angle) {
+		throw new UnsupportedOperationException("Not yet implemented"); //$NON-NLS-1$ // TODO
+	}
+
+	/* (non-Javadoc)
+	 * @see org.arakhne.afc.math.geometry.d3.GeomFactory3D#newQuaternion(double, double, double)
+	 */
+	@Override
+	public Quaternion newQuaternion(double attitude, double bank, double heading) {
+		throw new UnsupportedOperationException("Not yet implemented"); //$NON-NLS-1$ // TODO
 	}
 	
 }

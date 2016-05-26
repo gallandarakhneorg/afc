@@ -21,9 +21,9 @@
 
 package org.arakhne.afc.math.geometry.d3.ai;
 
-import org.arakhne.afc.math.geometry.d2.GeomFactory2D;
-import org.arakhne.afc.math.geometry.d2.Point2D;
-import org.arakhne.afc.math.geometry.d2.UnmodifiablePoint2D;
+import org.arakhne.afc.math.geometry.d3.GeomFactory3D;
+import org.arakhne.afc.math.geometry.d3.Point3D;
+import org.arakhne.afc.math.geometry.d3.UnmodifiablePoint3D;
 
 /** A point that is used for internal computations.
  *
@@ -33,12 +33,13 @@ import org.arakhne.afc.math.geometry.d2.UnmodifiablePoint2D;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public class InnerComputationPoint3ai implements Point2D<InnerComputationPoint3ai, InnerComputationVector3ai> {
+public class InnerComputationPoint3ai implements Point3D<InnerComputationPoint3ai, InnerComputationVector3ai> {
 
 	private static final long serialVersionUID = 8578192819251519051L;
 	
 	private int x;
 	private int y;
+	private int z;
 
 	/**
 	 */
@@ -49,10 +50,12 @@ public class InnerComputationPoint3ai implements Point2D<InnerComputationPoint3a
 	/**
 	 * @param x
 	 * @param y
+	 * @param z
 	 */
-	public InnerComputationPoint3ai(int x, int y) {
+	public InnerComputationPoint3ai(int x, int y, int z) {
 		this.x = x;
 		this.y = y;
+		this.z = z;
 	}
 
 	@Override
@@ -79,34 +82,54 @@ public class InnerComputationPoint3ai implements Point2D<InnerComputationPoint3a
 	public void setX(double x) {
 		this.x = (int) Math.round(x);
 	}
-
+	
 	@Override
 	public double getY() {
 		return this.y;
 	}
-
+	
 	@Override
 	public int iy() {
 		return this.y;
 	}
-
+	
 	@Override
 	public void setY(int y) {
 		this.y = y;
 	}
-
+	
 	@Override
 	public void setY(double y) {
 		this.y = (int) Math.round(y);
 	}
 
 	@Override
-	public GeomFactory2D<InnerComputationVector3ai, InnerComputationPoint3ai> getGeomFactory() {
+	public double getZ() {
+		return this.z;
+	}
+
+	@Override
+	public int iz() {
+		return this.z;
+	}
+
+	@Override
+	public void setZ(int z) {
+		this.z = z;
+	}
+
+	@Override
+	public void setZ(double z) {
+		this.z = (int) Math.round(z);
+	}
+
+	@Override
+	public GeomFactory3D<InnerComputationVector3ai, InnerComputationPoint3ai> getGeomFactory() {
 		return InnerComputationGeomFactory.SINGLETON;
 	}
 
 	@Override
-	public UnmodifiablePoint2D<InnerComputationPoint3ai, InnerComputationVector3ai> toUnmodifiable() {
+	public UnmodifiablePoint3D<InnerComputationPoint3ai, InnerComputationVector3ai> toUnmodifiable() {
 		throw new UnsupportedOperationException();
 	}
 	

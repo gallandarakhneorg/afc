@@ -52,11 +52,13 @@ public interface GeomFactory3ai<E extends PathElement3ai, P extends Point3D<? su
 	 *
 	 * @param x1 the x coordinate of the first point of the segment.
 	 * @param y1 the y coordinate of the first point of the segment.
+	 * @param z1 the y coordinate of the first point of the segment.
 	 * @param x2 the x coordinate of the second point of the segment.
 	 * @param y2 the y coordinate of the second point of the segment.
+	 * @param z2 the y coordinate of the second point of the segment.
 	 * @return the new segment.
 	 */
-	Segment3ai<?, ?, E, P, V, B> newSegment(int x1, int y1, int x2, int y2);
+	Segment3ai<?, ?, E, P, V, B> newSegment(int x1, int y1, int z1, int x2, int y2, int z2);
 	
 	/** Create an empty bounding box.
 	 *
@@ -68,11 +70,13 @@ public interface GeomFactory3ai<E extends PathElement3ai, P extends Point3D<? su
 	 *
 	 * @param x the x coordinate of the lower corner.
 	 * @param y the y coordinate of the lower corner.
+	 * @param z the z coordinate of the lower corner.
 	 * @param width the width of the box.
 	 * @param height the height of the box.
+	 * @param depth the depth of the box.
 	 * @return the box.
 	 */
-	B newBox(int x, int y, int width, int height);
+	B newBox(int x, int y, int z, int width, int height, int depth);
 
 	/** Create an empty bounding box.
 	 *
@@ -84,55 +88,67 @@ public interface GeomFactory3ai<E extends PathElement3ai, P extends Point3D<? su
 	 * 
 	 * @param x x coordinate of the target point.
 	 * @param y y coordinate of the target point.
+	 * @param z z coordinate of the target point.
 	 * @return the path element.
 	 */
-	E newMovePathElement(int x, int y);
+	E newMovePathElement(int x, int y, int z);
 	
 	/** Create a line-to path element to the given point.
 	 * 
 	 * @param startX x coordinate of the start point.
 	 * @param startY y coordinate of the start point.
+	 * @param startZ z coordinate of the start point.
 	 * @param targetX x coordinate of the target point.
 	 * @param targetY y coordinate of the target point.
+	 * @param targetZ z coordinate of the target point.
 	 * @return the path element.
 	 */
-	E newLinePathElement(int startX, int startY, int targetX, int targetY);
+	E newLinePathElement(int startX, int startY, int startZ, int targetX, int targetY, int targetZ);
 
 	/** Create a close path element.
 	 * 
 	 * @param lastPointX x coordinate of the last point on the path
-	 * @param lastPointy y coordinate of the last point on the path
+	 * @param lastPointY y coordinate of the last point on the path
+	 * @param lastPointZ z coordinate of the last point on the path
 	 * @param firstPointX x coordinate of the first point on the path.
 	 * @param firstPointY y coordinate of the first point on the path.
+	 * @param firstPointZ z coordinate of the first point on the path.
 	 * @return the path element.
 	 */
-	E newClosePathElement(int lastPointX, int lastPointy, int firstPointX, int firstPointY);
+	E newClosePathElement(int lastPointX, int lastPointY, int lastPointZ, int firstPointX, int firstPointY, int firstPointZ);
 
 	/** Create a quadratic curve path element to the given point through the given control point.
 	 * 
 	 * @param startX x coordinate of the start point.
 	 * @param startY y coordinate of the start point.
+	 * @param startZ z coordinate of the start point.
 	 * @param controlX x coordinate of the control point.
 	 * @param controlY y coordinate of the control  point.
+	 * @param controlZ z coordinate of the control  point.
 	 * @param targetX x coordinate of the target point.
 	 * @param targetY y coordinate of the target point.
+	 * @param targetZ z coordinate of the target point.
 	 * @return the path element.
 	 */
-	E newCurvePathElement(int startX, int startY, int controlX, int controlY, int targetX, int targetY);
+	E newCurvePathElement(int startX, int startY, int startZ, int controlX, int controlY, int controlZ, int targetX, int targetY, int targetZ);
 
 	/** Create a curve path element to the given point through the two given control points.
 	 * 
 	 * @param startX x coordinate of the start point.
 	 * @param startY y coordinate of the start point.
+	 * @param startZ z coordinate of the start point.
 	 * @param controlX1 x coordinate of the control point.
-	 * @param controlY1 y coordinate of the control  point.
+	 * @param controlY1 y coordinate of the control point.
+	 * @param controlZ1 z coordinate of the control point.
 	 * @param controlX2 x coordinate of the control point.
-	 * @param controlY2 y coordinate of the control  point.
+	 * @param controlY2 y coordinate of the control point.
+	 * @param controlZ2 z coordinate of the control point.
 	 * @param targetX x coordinate of the target point.
 	 * @param targetY y coordinate of the target point.
+	 * @param targetZ z coordinate of the target point.
 	 * @return the path element.
 	 */
-	E newCurvePathElement(int startX, int startY, int controlX1, int controlY1,
-			int controlX2, int controlY2, int targetX, int targetY);
+	E newCurvePathElement(int startX, int startY, int startZ, int controlX1, int controlY1, int controlZ1,
+			int controlX2, int controlY2, int controlZ2, int targetX, int targetY, int targetZ);
 
 }
