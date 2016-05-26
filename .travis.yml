@@ -7,3 +7,11 @@ sudo: false
 jdk:
   - oraclejdk8
 
+env:
+  global:
+    - secure: "akKEf27hEycPBpOjfQQ6O3Gt92IlgQCl+fRnmN2kZxBE7Gnm/BqDHQbM/IbixzfWWthvaIgI85BTljNRH2qNq5W/GSPixUd9bfqKI9WL8b1uvv00OxOXsPOcqbEjxBVP0zivxpPDWNX1Fefu7W4Lb/Yaa2ju5uCMBxTl1r2ug5U="
+    - secure: "RE+Lasgu9mUS78kjPRMrx35UpO/AQ1kuUUSd0lrBXwajZjpHSTRwVx0cudjSet2hEjAwRyerbKZ4zLxm+HxeMQBzjws4nhHozar/2XeY6mgvHYQ6G3kRFhNMr5WZn1CAu5Gu2OxqE6az/J6mQUDnMF1/XNL/bPhKEZsUI8o24eA="
+
+after_success:
+  - "[[ ${TRAVIS_PULL_REQUEST} == 'false' ]] && [[ ${TRAVIS_TAG} == '' ]] && mvn deploy -DskipTests --settings deploy-settings.xml"
+

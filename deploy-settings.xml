@@ -1,0 +1,9 @@
+<settings>
+    <servers>
+        <server>
+            <id>org.arakhne-ftp</id>
+            <username>${env.ARAKHNEORG_USER}</username>
+            <password>${env.ARAKHNEORG_PWD}</password>
+        </server>
+    </servers>
+</settings>

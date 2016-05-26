@@ -360,6 +360,10 @@
 
 	<distributionManagement>
 		<repository>
+			<id>org.arakhne-ftp</id>
+			<url>ftp://ftp.tuxfamily.org/arakhne/arakhne-repository/maven</url>
+		</repository>
+		<!-- <repository>
 			<id>repository.arakhne.org</id>
 			<name>Arakhn&amp;ecirc; Repository</name>
 			<url>file:///srv/arakhne.org/repository/maven/</url>
@@ -368,7 +372,7 @@
 			<id>afc.site.arakhne.org</id>
 			<name>AFC Project Websites Repository</name>
 			<url>file:///srv/arakhne.org/web/maven-sites/</url>
-		</site>
+		</site>-->
 	</distributionManagement>
 
 	<scm>
@@ -378,6 +382,14 @@
 	</scm>
 
 	<build>
+		<extensions>
+			<!-- Enabling the use of FTP -->
+			<extension>
+				<groupId>org.apache.maven.wagon</groupId>
+				<artifactId>wagon-ftp</artifactId>
+				<version>2.10</version>
+			</extension>
+		</extensions>
 		<pluginManagement>
 			<plugins>
 				<plugin>
