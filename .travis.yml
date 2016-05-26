@@ -1,0 +1,9 @@
+# Configuration for Travis.CI
+
+language: java
+
+sudo: false
+
+jdk:
+  - oraclejdk8
+
