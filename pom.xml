@@ -51,11 +51,6 @@
 				<groupId>org.arakhne.afc.core</groupId>
 				<artifactId>math</artifactId>
 				<version>${afc.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.arakhne.afc.core</groupId>
-				<artifactId>math</artifactId>
-				<version>${afc.version}</version>
 				<type>test-jar</type>
 			</dependency>
 			<dependency>
@@ -363,16 +358,10 @@
 			<id>org.arakhne-ftp</id>
 			<url>ftp://ftp.tuxfamily.org/arakhne/arakhne-repository/maven</url>
 		</repository>
-		<!-- <repository>
-			<id>repository.arakhne.org</id>
-			<name>Arakhn&amp;ecirc; Repository</name>
-			<url>file:///srv/arakhne.org/repository/maven/</url>
-		</repository>
-		<site>
-			<id>afc.site.arakhne.org</id>
-			<name>AFC Project Websites Repository</name>
-			<url>file:///srv/arakhne.org/web/maven-sites/</url>
-		</site>-->
+		<!-- <repository> <id>repository.arakhne.org</id> <name>Arakhn&amp;ecirc; 
+			Repository</name> <url>file:///srv/arakhne.org/repository/maven/</url> </repository> 
+			<site> <id>afc.site.arakhne.org</id> <name>AFC Project Websites Repository</name> 
+			<url>file:///srv/arakhne.org/web/maven-sites/</url> </site> -->
 	</distributionManagement>
 
 	<scm>
@@ -627,6 +616,7 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
+					<compilerId>jdt</compilerId>
 					<target>${min.java.version}</target>
 					<source>${min.java.version}</source>
 					<encoding>UTF-8</encoding>
@@ -635,6 +625,13 @@
 					<optimize>${bytecode.optimize}</optimize>
 					<debug>${bytecode.debug}</debug>
 				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>org.eclipse.tycho</groupId>
+						<artifactId>tycho-compiler-jdt</artifactId>
+						<version>0.25.0</version>
+					</dependency>
+				</dependencies>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
