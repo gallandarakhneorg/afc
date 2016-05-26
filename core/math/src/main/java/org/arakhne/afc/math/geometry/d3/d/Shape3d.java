@@ -26,6 +26,7 @@ import org.arakhne.afc.math.geometry.d3.afp.Shape3afp;
  * 
  * @param <IT> is the type of the implementation of this shape.
  * @author $Author: sgalland$
+ * @author $Author: tpiotrow$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

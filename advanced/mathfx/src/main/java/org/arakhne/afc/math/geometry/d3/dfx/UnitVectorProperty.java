@@ -35,6 +35,7 @@ import javafx.beans.property.SimpleObjectProperty;
  * A JavaFX property that is representing a unit vector.
  * 
  * @author $Author: sgalland$
+ * @author $Author: tpiotrow$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

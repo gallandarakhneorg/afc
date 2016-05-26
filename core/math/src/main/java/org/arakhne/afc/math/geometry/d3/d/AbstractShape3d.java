@@ -30,6 +30,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * 
  * @param <T> the type of the shape.
  * @author $Author: sgalland$
+ * @author $Author: tpiotrow$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

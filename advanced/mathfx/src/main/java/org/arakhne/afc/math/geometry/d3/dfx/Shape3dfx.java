@@ -29,6 +29,7 @@ import javafx.beans.property.ObjectProperty;
  * @param <IT> is the type of the implementation of this shape.
  * @author $Author: sgalland$
  * @author $Author: olamotte$
+ * @author $Author: tpiotrow$
  * @author $Author: hjaffali$
  * @version $FullVersion$
  * @mavengroupid $GroupId$

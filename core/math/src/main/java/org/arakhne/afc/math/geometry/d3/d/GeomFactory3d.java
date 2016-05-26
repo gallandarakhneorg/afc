@@ -30,6 +30,7 @@ import org.arakhne.afc.math.geometry.d3.afp.GeomFactory3afp;
 /** Factory of geometrical elements.
  * 
  * @author $Author: sgalland$
+ * @author $Author: tpiotrow$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

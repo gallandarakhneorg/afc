@@ -36,6 +36,7 @@ import javafx.beans.property.SimpleObjectProperty;
  *
  * @author $Author: sgalland$
  * @author $Author: hjaffali$
+ * @author $Author: tpiotrow$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

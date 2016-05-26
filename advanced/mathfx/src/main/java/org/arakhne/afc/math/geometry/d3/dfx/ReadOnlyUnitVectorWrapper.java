@@ -29,6 +29,7 @@ import javafx.beans.property.ReadOnlyObjectPropertyBase;
  * writable and should be used internally only.
  * 
  * @author $Author: sgalland$
+ * @author $Author: tpiotrow$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

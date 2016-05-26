@@ -32,6 +32,7 @@ import javafx.beans.property.SimpleDoubleProperty;
  * @param <RT> is the type of the data returned by the tuple.
  * @author $Author: sgalland$
  * @author $Author: olamotte$
+ * @author $Author: tpiotrow$
  * @author $Author: hjaffali$
  * @version $FullVersion$
  * @mavengroupid $GroupId$

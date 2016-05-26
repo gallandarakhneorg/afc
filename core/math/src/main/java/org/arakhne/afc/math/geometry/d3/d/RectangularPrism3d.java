@@ -28,6 +28,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
 /** A rectangle with 2 double precision floating-point numbers.
  *
  * @author $Author: sgalland$
+ * @author $Author: tpiotrow$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

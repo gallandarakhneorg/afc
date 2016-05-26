@@ -31,6 +31,7 @@ import javafx.beans.property.ObjectProperty;
  * @author $Author: sgalland$
  * @author $Author: olamotte$
  * @author $Author: hjaffali$
+ * @author $Author: tpiotrow$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

@@ -35,6 +35,7 @@ import javafx.beans.property.ReadOnlyBooleanWrapper;
  *
  * @author $Author: sgalland$
  * @author $Author: hjaffali$
+ * @author $Author: tpiotrow$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$

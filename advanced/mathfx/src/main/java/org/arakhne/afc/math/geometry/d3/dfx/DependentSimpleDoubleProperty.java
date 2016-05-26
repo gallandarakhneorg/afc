@@ -31,6 +31,7 @@ import javafx.beans.value.ObservableValue;
  * 
  * @param <T> type of the dependency
  * @author $Author: sgalland$
+ * @author $Author: tpiotrow$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
