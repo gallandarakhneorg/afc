@@ -714,7 +714,7 @@
 						    	throw new Exception("Unable to detect root directory");
 						    }
 						    project.properties.mainbasedir = previousDirectory;
-						    println("\tset mainbasedir to: " + project.properties.mainbasedir);
+						    log.info("set mainbasedir to: " + project.properties.mainbasedir);
 						]]></script>
 					</scripts>
 				</configuration>
