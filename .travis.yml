@@ -7,6 +7,10 @@ sudo: false
 jdk:
   - oraclejdk8
 
+cache:
+  directories:
+  - $HOME/.m2
+
 env:
   global:
     - secure: "akKEf27hEycPBpOjfQQ6O3Gt92IlgQCl+fRnmN2kZxBE7Gnm/BqDHQbM/IbixzfWWthvaIgI85BTljNRH2qNq5W/GSPixUd9bfqKI9WL8b1uvv00OxOXsPOcqbEjxBVP0zivxpPDWNX1Fefu7W4Lb/Yaa2ju5uCMBxTl1r2ug5U="
