@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/advanced/advanced.iml" filepath="$PROJECT_DIR$/advanced/advanced.iml" />
+      <module fileurl="file://$PROJECT_DIR$/afc.iml" filepath="$PROJECT_DIR$/afc.iml" />
+      <module fileurl="file://$PROJECT_DIR$/maven/atomicdeploy/atomicdeploy.iml" filepath="$PROJECT_DIR$/maven/atomicdeploy/atomicdeploy.iml" />
+      <module fileurl="file://$PROJECT_DIR$/advanced/attributes/attributes.iml" filepath="$PROJECT_DIR$/advanced/attributes/attributes.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ui/awt/awt.iml" filepath="$PROJECT_DIR$/ui/awt/awt.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ui/base/base.iml" filepath="$PROJECT_DIR$/ui/base/base.iml" />
+      <module fileurl="file://$PROJECT_DIR$/checkstyle/checkstyle.iml" filepath="$PROJECT_DIR$/checkstyle/checkstyle.iml" />
+      <module fileurl="file://$PROJECT_DIR$/core/core.iml" filepath="$PROJECT_DIR$/core/core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/core/inputoutput/inputoutput.iml" filepath="$PROJECT_DIR$/core/inputoutput/inputoutput.iml" />
+      <module fileurl="file://$PROJECT_DIR$/core/math/math.iml" filepath="$PROJECT_DIR$/core/math/math.iml" />
+      <module fileurl="file://$PROJECT_DIR$/advanced/mathfx/mathfx.iml" filepath="$PROJECT_DIR$/advanced/mathfx/mathfx.iml" />
+      <module fileurl="file://$PROJECT_DIR$/maven/maven.iml" filepath="$PROJECT_DIR$/maven/maven.iml" />
+      <module fileurl="file://$PROJECT_DIR$/maven/maventools/maventools.iml" filepath="$PROJECT_DIR$/maven/maventools/maventools.iml" />
+      <module fileurl="file://$PROJECT_DIR$/core/references/references.iml" filepath="$PROJECT_DIR$/core/references/references.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ui/swing/swing.iml" filepath="$PROJECT_DIR$/ui/swing/swing.iml" />
+      <module fileurl="file://$PROJECT_DIR$/maven/tag-replacer/tag-replacer.iml" filepath="$PROJECT_DIR$/maven/tag-replacer/tag-replacer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/core/text/text.iml" filepath="$PROJECT_DIR$/core/text/text.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ui/ui.iml" filepath="$PROJECT_DIR$/ui/ui.iml" />
+      <module fileurl="file://$PROJECT_DIR$/core/util/util.iml" filepath="$PROJECT_DIR$/core/util/util.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ui/vector/vector.iml" filepath="$PROJECT_DIR$/ui/vector/vector.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ui/vector-awt/vector-awt.iml" filepath="$PROJECT_DIR$/ui/vector-awt/vector-awt.iml" />
+      <module fileurl="file://$PROJECT_DIR$/core/vmutils/vmutils.iml" filepath="$PROJECT_DIR$/core/vmutils/vmutils.iml" />
+    </modules>
+  </component>
+</project>
