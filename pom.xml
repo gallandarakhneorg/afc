@@ -623,15 +623,7 @@
 					<showDeprecation>false</showDeprecation>
 					<optimize>${bytecode.optimize}</optimize>
 					<debug>${bytecode.debug}</debug>
-					<compilerId>jdt</compilerId>
 				</configuration>
-				<dependencies>
-					<dependency>
-						<groupId>org.eclipse.tycho</groupId>
-						<artifactId>tycho-compiler-jdt</artifactId>
-						<version>0.25.0</version>
-					</dependency>
-				</dependencies>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
