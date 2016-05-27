@@ -980,13 +980,16 @@ public class Matrix2d implements Serializable, Cloneable {
 	 */
 	@Pure
 	public boolean equals(Matrix2d matrix) {
-		try {
-			return this.m00 == matrix.m00 && this.m01 == matrix.m01
-					&& this.m10 == matrix.m10
-					&& this.m11 == matrix.m11;
-		} catch (NullPointerException e2) {
-			return false;
-		}
+		if (matrix != null){
+            try {
+                return this.m00 == matrix.m00 && this.m01 == matrix.m01
+                        && this.m10 == matrix.m10
+                        && this.m11 == matrix.m11;
+            } catch (NullPointerException e2) {
+                return false;
+            }
+        }
+		return false;
 	}
 
 	/**
@@ -1001,14 +1004,17 @@ public class Matrix2d implements Serializable, Cloneable {
 	@Pure
 	@Override
 	public boolean equals(Object object) {
-		try {
-			final Matrix2d m2 = (Matrix2d) object;
-			return this.m00 == m2.m00 && this.m01 == m2.m01
-					&& this.m10 == m2.m10
-					&& this.m11 == m2.m11;
-		} catch (ClassCastException | NullPointerException e1) {
-			return false;
-		}
+        if (object != null) {
+            try {
+                final Matrix2d m2 = (Matrix2d) object;
+                return this.m00 == m2.m00 && this.m01 == m2.m01
+                        && this.m10 == m2.m10
+                        && this.m11 == m2.m11;
+            } catch (ClassCastException | NullPointerException e1) {
+                return false;
+            }
+        }
+		return false;
 	}
 
 	/**
