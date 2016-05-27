@@ -348,6 +348,8 @@ public abstract class AbstractShape2aiTest<T extends Shape2ai<?, ?, ?, ?, ?, B>,
 						(box.getMaxY() - (element.getCtrlY2() - box.getMinY())) * 2,
 						tox, toy);
 				break;
+			case ARC_TO:
+				throw new IllegalStateException();
 			case QUAD_TO:
 				path.quadTo(
 						(element.getCtrlX1() - box.getMinX()) * 2,

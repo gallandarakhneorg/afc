@@ -749,6 +749,8 @@ public class VMCommandLine {
 						valueOptionName = base;
 					}
 					break;
+				case AUTO_INCREMENTED:
+				case SIMPLE:
 				default:
 					registerOptionValue(options, base, val, type);
 				}

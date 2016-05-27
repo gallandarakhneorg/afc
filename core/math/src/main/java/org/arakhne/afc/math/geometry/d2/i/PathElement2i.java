@@ -62,37 +62,6 @@ public abstract class PathElement2i implements PathElement2ai {
 		this.toY = toy;
 	}
 
-	/** Create an instance of path element.
-	 *
-	 * @param type is the type of the new element.
-	 * @param lastX is the coordinate of the last point.
-	 * @param lastY is the coordinate of the last point.
-	 * @param coords are the coordinates.
-	 * @return the instance of path element.
-	 */
-	@Pure
-	public static PathElement2i newInstance(PathElementType type, int lastX, int lastY, int[] coords) {
-		assert type != null : "Path element type must be not null"; //$NON-NLS-1$
-		assert coords != null : "Array of coordinates must be not null"; //$NON-NLS-1$
-		assert coords.length >= 2 : "Size of the array of coordinates is too small"; //$NON-NLS-1$
-		switch (type) {
-		case MOVE_TO:
-			return new MovePathElement2i(coords[0], coords[1]);
-		case LINE_TO:
-			return new LinePathElement2i(lastX, lastY, coords[0], coords[1]);
-		case QUAD_TO:
-			assert coords.length >= 4 : "Size of the array of coordinates is too small"; //$NON-NLS-1$
-			return new QuadPathElement2i(lastX, lastY, coords[0], coords[1], coords[2], coords[3]);
-		case CURVE_TO:
-			assert coords.length >= 6 : "Size of the array of coordinates is too small"; //$NON-NLS-1$
-			return new CurvePathElement2i(lastX, lastY, coords[0], coords[1], coords[2], coords[3], coords[4], coords[5]);
-		case CLOSE:
-			return new ClosePathElement2i(lastX, lastY, coords[0], coords[1]);
-		default:
-		}
-		throw new IllegalArgumentException();
-	}
-
 	@Pure
 	@Override
 	public abstract boolean equals(Object obj);
@@ -126,6 +95,51 @@ public abstract class PathElement2i implements PathElement2ai {
 	 */
 	@Pure
 	public abstract int[] toArray();
+
+	@Override
+	public int getCtrlX1() {
+		return 0;
+	}
+
+	@Override
+	public int getCtrlY1() {
+		return 0;
+	}
+
+	@Override
+	public int getCtrlX2() {
+		return 0;
+	}
+
+	@Override
+	public int getCtrlY2() {
+		return 0;
+	}
+
+	@Override
+	public int getRadiusX() {
+		return 0;
+	}
+
+	@Override
+	public int getRadiusY() {
+		return 0;
+	}
+
+	@Override
+	public double getRotationX() {
+		return 0;
+	}
+
+	@Override
+	public boolean getSweepFlag() {
+		return false;
+	}
+
+	@Override
+	public boolean getLargeArcFlag() {
+		return false;
+	}
 
 	/** An element of the path that represents a <code>MOVE_TO</code>.
 	 *
@@ -220,26 +234,6 @@ public abstract class PathElement2i implements PathElement2ai {
 
 		@Override
 		public int getFromY() {
-			return 0;
-		}
-
-		@Override
-		public int getCtrlX1() {
-			return 0;
-		}
-
-		@Override
-		public int getCtrlY1() {
-			return 0;
-		}
-
-		@Override
-		public int getCtrlX2() {
-			return 0;
-		}
-
-		@Override
-		public int getCtrlY2() {
 			return 0;
 		}
 
@@ -351,26 +345,6 @@ public abstract class PathElement2i implements PathElement2ai {
 		@Override
 		public int getFromY() {
 			return this.fromY;
-		}
-
-		@Override
-		public int getCtrlX1() {
-			return 0;
-		}
-
-		@Override
-		public int getCtrlY1() {
-			return 0;
-		}
-
-		@Override
-		public int getCtrlX2() {
-			return 0;
-		}
-
-		@Override
-		public int getCtrlY2() {
-			return 0;
 		}
 
 	}
@@ -510,16 +484,6 @@ public abstract class PathElement2i implements PathElement2ai {
 		@Override
 		public int getCtrlY1() {
 			return this.ctrlY;
-		}
-
-		@Override
-		public int getCtrlX2() {
-			return 0;
-		}
-
-		@Override
-		public int getCtrlY2() {
-			return 0;
 		}
 
 	}
@@ -799,24 +763,178 @@ public abstract class PathElement2i implements PathElement2ai {
 			return this.fromY;
 		}
 
+	}
+
+	/** An element of the path that represents a <code>Arc_TO</code>.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 13.0
+	 */
+	@SuppressWarnings("checkstyle:magicnumber")
+	static class ArcPathElement2i extends PathElement2i {
+
+		private static final long serialVersionUID = 8586418464458281967L;
+
+		private final int fromX;
+
+		private final int fromY;
+
+		private final int xradius;
+
+		private final int yradius;
+
+		private final double xrotation;
+
+		private final boolean largeArcFlag;
+
+		private boolean sweepFlag;
+
+		private Boolean isEmpty;
+
+		/**
+		 * @param fromx x coordinate of the origin point.
+		 * @param fromy y coordinate of the origin point.
+		 * @param tox x coordinate of the target point.
+		 * @param toy y coordinate of the target point.
+		 * @param xradius radius of the ellipse along its x axis.
+		 * @param yradius radius of the ellipse along its y axis.
+		 * @param xrotation rotation (in radians) of the ellipse's x axis.
+		 * @param largeArcFlag <code>true</code> iff the path will sweep the long way around the ellipse.
+		 * @param sweepFlag <code>true</code> iff the path will sweep clockwise around the ellipse.
+		 */
+		ArcPathElement2i(int fromx, int fromy, int tox, int toy, int xradius,
+				int yradius, double xrotation, boolean largeArcFlag, boolean sweepFlag) {
+			super(PathElementType.ARC_TO, tox, toy);
+			this.fromX = fromx;
+			this.fromY = fromy;
+			this.xradius = xradius;
+			this.yradius = yradius;
+			this.xrotation = xrotation;
+			this.largeArcFlag = largeArcFlag;
+			this.sweepFlag = sweepFlag;
+		}
+
+		@Pure
 		@Override
-		public int getCtrlX1() {
-			return 0;
+		public boolean equals(Object obj) {
+			try {
+				final PathElement2ai elt = (PathElement2ai) obj;
+				return getType() == elt.getType()
+						&& getToX() == elt.getToX()
+						&& getToY() == elt.getToY()
+						&& getRadiusX() == elt.getRadiusX()
+						&& getRadiusY() == elt.getRadiusY()
+						&& getRotationX() == elt.getRotationX()
+						&& getLargeArcFlag() == elt.getLargeArcFlag()
+						&& getSweepFlag() == elt.getSweepFlag();
+			} catch (Throwable exception) {
+				//
+			}
+			return false;
+		}
+
+		@Pure
+		@Override
+		public int hashCode() {
+			long bits = 1L;
+			bits = 31L * bits + this.type.ordinal();
+			bits = 31L * bits + getToX();
+			bits = 31L * bits + getToY();
+			bits = 31L * bits + getRadiusX();
+			bits = 31L * bits + getRadiusY();
+			bits = 31L * bits + Double.doubleToLongBits(getRotationX());
+			bits = 31L * bits + Boolean.hashCode(getLargeArcFlag());
+			bits = 31L * bits + Boolean.hashCode(getSweepFlag());
+			return (int) (bits ^ (bits >> 32));
+		}
+
+		@Pure
+		@Override
+		public boolean isEmpty() {
+			if (this.isEmpty == null) {
+				this.isEmpty = this.fromX == this.toX
+						&& this.fromY == this.toY;
+			}
+			return this.isEmpty.booleanValue();
+		}
+
+		@Pure
+		@Override
+		public boolean isDrawable() {
+			return !isEmpty();
 		}
 
 		@Override
-		public int getCtrlY1() {
-			return 0;
+		public void toArray(int[] array) {
+			assert array != null : "Array must be not null"; //$NON-NLS-1$
+			assert array.length >= 2 : "Array size is too small"; //$NON-NLS-1$
+			array[0] = this.toX;
+			array[1] = this.toY;
 		}
 
 		@Override
-		public int getCtrlX2() {
-			return 0;
+		public void toArray(double[] array) {
+			assert array != null : "Array must be not null"; //$NON-NLS-1$
+			assert array.length >= 2 : "Array size is too small"; //$NON-NLS-1$
+			array[0] = this.toX;
+			array[1] = this.toY;
+		}
+
+		@Pure
+		@Override
+		public int[] toArray() {
+			return new int[] {this.toX, this.toY};
+		}
+
+		@Pure
+		@Override
+		public String toString() {
+			return "ARC(" //$NON-NLS-1$
+					+ getRadiusX() + "x" //$NON-NLS-1$
+					+ getRadiusY() + "|" //$NON-NLS-1$
+					+ getRotationX() + "x" //$NON-NLS-1$
+					+ getLargeArcFlag() + "x" //$NON-NLS-1$
+					+ getSweepFlag() + "|" //$NON-NLS-1$
+					+ getToX() + "x" //$NON-NLS-1$
+					+ getToY() + ")"; //$NON-NLS-1$
 		}
 
 		@Override
-		public int getCtrlY2() {
-			return 0;
+		public int getFromX() {
+			return this.fromX;
+		}
+
+		@Override
+		public int getFromY() {
+			return this.fromY;
+		}
+
+		@Override
+		public int getRadiusX() {
+			return this.xradius;
+		}
+
+		@Override
+		public int getRadiusY() {
+			return this.yradius;
+		}
+
+		@Override
+		public double getRotationX() {
+			return this.xrotation;
+		}
+
+		@Override
+		public boolean getSweepFlag() {
+			return this.sweepFlag;
+		}
+
+		@Override
+		public boolean getLargeArcFlag() {
+			return this.largeArcFlag;
 		}
 
 	}

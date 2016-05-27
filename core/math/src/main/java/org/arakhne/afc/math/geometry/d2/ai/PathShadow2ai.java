@@ -218,6 +218,30 @@ public class PathShadow2ai<B extends Rectangle2ai<?, ?, ?, ?, ?, B>> {
 				curx = endx;
 				cury = endy;
 				break;
+			case ARC_TO:
+				endx = element.getToX();
+				endy = element.getToY();
+				// only for local use.
+				localPath = factory.newPath(rule);
+				localPath.moveTo(curx, cury);
+				localPath.arcTo(
+						endx, endy,
+						element.getRadiusX(), element.getRadiusY(),
+						element.getRotationX(), element.getLargeArcFlag(),
+						element.getSweepFlag());
+				computeCrossings1(
+						localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						x1, y1, x2, y2,
+						false,
+						rule,
+						factory,
+						data);
+				if (data.getCrossings() == MathConstants.SHAPE_INTERSECTS) {
+					return;
+				}
+				curx = endx;
+				cury = endy;
+				break;
 			case CLOSE:
 				if (cury != movy || curx != movx) {
 					computeCrossings2(

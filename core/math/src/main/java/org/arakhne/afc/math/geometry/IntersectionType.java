@@ -94,6 +94,7 @@ public enum IntersectionType {
 			return SPANNING;
 		case ENCLOSING:
 			return INSIDE;
+		case SAME:
 		default:
 			return t;
 		}

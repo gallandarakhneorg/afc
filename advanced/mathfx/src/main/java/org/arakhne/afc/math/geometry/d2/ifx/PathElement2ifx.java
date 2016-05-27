@@ -20,11 +20,15 @@
 
 package org.arakhne.afc.math.geometry.d2.ifx;
 
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.ReadOnlyBooleanWrapper;
 import org.eclipse.xtext.xbase.lib.Pure;
 
-import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.PathElementType;
+import org.arakhne.afc.math.geometry.d2.afp.PathElement2afp;
 import org.arakhne.afc.math.geometry.d2.ai.PathElement2ai;
 
 /** An element of the path with 2 integer FX properties.
@@ -35,7 +39,7 @@ import org.arakhne.afc.math.geometry.d2.ai.PathElement2ai;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-@SuppressWarnings("checkstyle:magicnumber")
+@SuppressWarnings({"checkstyle:magicnumber", "static-method"})
 public abstract class PathElement2ifx implements PathElement2ai {
 
 	private static final long serialVersionUID = -5532787413347691238L;
@@ -52,6 +56,10 @@ public abstract class PathElement2ifx implements PathElement2ai {
 	 */
 	protected final IntegerProperty toY;
 
+	/** Is Empty property.
+	 */
+	protected ReadOnlyBooleanWrapper isEmpty;
+
 	/**
 	 * @param type is the type of the element.
 	 * @param tox the x coordinate of the target point.
@@ -66,38 +74,6 @@ public abstract class PathElement2ifx implements PathElement2ai {
 		this.toY = toy;
 	}
 
-	/** Create an instance of path element.
-	 *
-	 * @param type is the type of the new element.
-	 * @param lastX is the coordinate of the last point.
-	 * @param lastY is the coordinate of the last point.
-	 * @param coords are the coordinates.
-	 * @return the instance of path element.
-	 */
-	@Pure
-	public static PathElement2ifx newInstance(PathElementType type, IntegerProperty lastX,
-			IntegerProperty lastY, IntegerProperty[] coords) {
-		assert type != null : "Path winding rule must be not null"; //$NON-NLS-1$
-		assert coords != null : "Coordinate array must be not null"; //$NON-NLS-1$
-		assert coords.length >= 2 : "Size of the oordinate array is too small"; //$NON-NLS-1$
-		switch (type) {
-		case MOVE_TO:
-			return new MovePathElement2ifx(coords[0], coords[1]);
-		case LINE_TO:
-			return new LinePathElement2ifx(lastX, lastY, coords[0], coords[1]);
-		case QUAD_TO:
-			assert coords.length >= 4 : "Size of the oordinate array is too small"; //$NON-NLS-1$
-			return new QuadPathElement2ifx(lastX, lastY, coords[0], coords[1], coords[2], coords[3]);
-		case CURVE_TO:
-			assert coords.length >= 6 : "Size of the oordinate array is too small"; //$NON-NLS-1$
-			return new CurvePathElement2ifx(lastX, lastY, coords[0], coords[1], coords[2], coords[3], coords[4], coords[5]);
-		case CLOSE:
-			return new ClosePathElement2ifx(lastX, lastY, coords[0], coords[1]);
-		default:
-		}
-		throw new IllegalArgumentException();
-	}
-
 	@Pure
 	@Override
 	public abstract boolean equals(Object obj);
@@ -105,6 +81,17 @@ public abstract class PathElement2ifx implements PathElement2ai {
 	@Pure
 	@Override
 	public abstract int hashCode();
+
+	/** Replies the property that indicates if this patth element is empty.
+	 *
+	 * @return the isEmpty property.
+	 */
+	public abstract BooleanProperty isEmptyProperty();
+
+	@Override
+	public boolean isEmpty() {
+		return isEmptyProperty().get();
+	}
 
 	/** Replies the x coordinate of the target point property.
 	 *
@@ -171,37 +158,135 @@ public abstract class PathElement2ifx implements PathElement2ai {
 	@Pure
 	public abstract IntegerProperty fromYProperty();
 
-	/** Replies the x coordinate of the first control point property.
+	@Override
+	public int getCtrlX1() {
+		return 0;
+	}
+
+	@Override
+	public int getCtrlY1() {
+		return 0;
+	}
+
+	@Override
+	public int getCtrlX2() {
+		return 0;
+	}
+
+	@Override
+	public int getCtrlY2() {
+		return 0;
+	}
+
+	@Override
+	public int getRadiusX() {
+		return 0;
+	}
+
+	@Override
+	public int getRadiusY() {
+		return 0;
+	}
+
+	@Override
+	public double getRotationX() {
+		return 0;
+	}
+
+	@Override
+	public boolean getSweepFlag() {
+		return false;
+	}
+
+	@Override
+	public boolean getLargeArcFlag() {
+		return false;
+	}
+
+	/** Replies the property for the x coordinate of the first control point.
 	 *
 	 * @return the x coordinate, or <code>null</code> if the type is {@link PathElementType#MOVE_TO},
 	 * {@link PathElementType#LINE_TO}, or {@link PathElementType#CLOSE}.
 	 */
 	@Pure
-	public abstract IntegerProperty ctrlX1Property();
+	public IntegerProperty ctrlX1Property() {
+		return null;
+	}
 
-	/** Replies the y coordinate of the first control point property.
+	/** Replies the property for the y coordinate of the first control point.
 	 *
 	 * @return the y coordinate, or {@link Double#NaN} if the type is {@link PathElementType#MOVE_TO},
 	 * {@link PathElementType#LINE_TO}, or {@link PathElementType#CLOSE}.
 	 */
 	@Pure
-	public abstract IntegerProperty ctrlY1Property();
+	public IntegerProperty ctrlY1Property() {
+		return null;
+	}
 
-	/** Replies the x coordinate of the second control point property.
+	/** Replies the property for the x coordinate of the second control point.
 	 *
 	 * @return the x coordinate, or <code>null</code> if the type is {@link PathElementType#MOVE_TO},
 	 * {@link PathElementType#LINE_TO}, {@link PathElementType#QUAD_TO}, or {@link PathElementType#CLOSE}.
 	 */
 	@Pure
-	public abstract IntegerProperty ctrlX2Property();
+	public IntegerProperty ctrlX2Property() {
+		return null;
+	}
 
-	/** Replies the y coordinate of the second  control point property.
+	/** Replies the property for the y coordinate of the second control point.
 	 *
 	 * @return the y coordinate, or <code>null</code> if the type is {@link PathElementType#MOVE_TO},
 	 * {@link PathElementType#LINE_TO}, {@link PathElementType#QUAD_TO}, or {@link PathElementType#CLOSE}.
 	 */
 	@Pure
-	public abstract IntegerProperty ctrlY2Property();
+	public IntegerProperty ctrlY2Property() {
+		return null;
+	}
+
+	/** Replies the property for the radius along the x axis.
+	 *
+	 * @return the x radius, or <code>null</code> if the type is not {@link PathElementType#ARC_TO}.
+	 */
+	@Pure
+	public IntegerProperty radiusXProperty() {
+		return null;
+	}
+
+	/** Replies the property for the radius along the y axis.
+	 *
+	 * @return the y radius, or <code>null</code> if the type is not {@link PathElementType#ARC_TO}.
+	 */
+	@Pure
+	public IntegerProperty radiusYProperty() {
+		return null;
+	}
+
+	/** Replies the property for the rotation of the x axis.
+	 *
+	 * @return the x-axis rotation, or <code>null</code> if the type is not {@link PathElementType#ARC_TO}.
+	 */
+	@Pure
+	public DoubleProperty rotationXProperty() {
+		return null;
+	}
+
+	/** Replies the property for the large ellipse arc flag.
+	 *
+	 * @return the flag, or <code>null</code> if the type is not {@link PathElementType#ARC_TO}.
+	 */
+	@Pure
+	public BooleanProperty largeArcFlagProperty() {
+		return null;
+	}
+
+	/** Replies the property for the sweep ellipse arc flag.
+	 *
+	 * @return the flag, or <code>null</code> if the type is not {@link PathElementType#ARC_TO}.
+	 */
+	@Pure
+	public BooleanProperty sweepFlagProperty() {
+		return null;
+	}
 
 	/** An element of the path that represents a <code>MOVE_TO</code>.
 	 *
@@ -249,8 +334,11 @@ public abstract class PathElement2ifx implements PathElement2ai {
 
 		@Pure
 		@Override
-		public boolean isEmpty() {
-			return true;
+		public BooleanProperty isEmptyProperty() {
+			if (this.isEmpty == null) {
+				this.isEmpty = new ReadOnlyBooleanWrapper(this, "isEmpty", true); //$NON-NLS-1$
+			}
+			return this.isEmpty;
 		}
 
 		@Pure
@@ -314,30 +402,6 @@ public abstract class PathElement2ifx implements PathElement2ai {
 
 		@Pure
 		@Override
-		public int getCtrlX1() {
-			return 0;
-		}
-
-		@Pure
-		@Override
-		public int getCtrlY1() {
-			return 0;
-		}
-
-		@Pure
-		@Override
-		public int getCtrlX2() {
-			return 0;
-		}
-
-		@Pure
-		@Override
-		public int getCtrlY2() {
-			return 0;
-		}
-
-		@Pure
-		@Override
 		public IntegerProperty fromXProperty() {
 			return null;
 		}
@@ -345,30 +409,6 @@ public abstract class PathElement2ifx implements PathElement2ai {
 		@Pure
 		@Override
 		public IntegerProperty fromYProperty() {
-			return null;
-		}
-
-		@Pure
-		@Override
-		public IntegerProperty ctrlX1Property() {
-			return null;
-		}
-
-		@Pure
-		@Override
-		public IntegerProperty ctrlY1Property() {
-			return null;
-		}
-
-		@Pure
-		@Override
-		public IntegerProperty ctrlX2Property() {
-			return null;
-		}
-
-		@Pure
-		@Override
-		public IntegerProperty ctrlY2Property() {
 			return null;
 		}
 
@@ -434,9 +474,15 @@ public abstract class PathElement2ifx implements PathElement2ai {
 
 		@Pure
 		@Override
-		public boolean isEmpty() {
-			return MathUtil.isEpsilonEqual(this.fromX.get(), this.toX.get())
-					&& MathUtil.isEpsilonEqual(this.fromY.get(), this.toY.get());
+		public BooleanProperty isEmptyProperty() {
+			if (this.isEmpty == null) {
+				this.isEmpty = new ReadOnlyBooleanWrapper(this, "isEmpty"); //$NON-NLS-1$
+				this.isEmpty.bind(Bindings.createBooleanBinding(() -> {
+					return fromXProperty().get() == toXProperty().get()
+							&& fromYProperty().get() == toYProperty().get();
+				}, fromXProperty(), toXProperty(), fromYProperty(), toYProperty()));
+			}
+			return this.isEmpty;
 		}
 
 		@Pure
@@ -500,30 +546,6 @@ public abstract class PathElement2ifx implements PathElement2ai {
 
 		@Pure
 		@Override
-		public int getCtrlX1() {
-			return 0;
-		}
-
-		@Pure
-		@Override
-		public int getCtrlY1() {
-			return 0;
-		}
-
-		@Pure
-		@Override
-		public int getCtrlX2() {
-			return 0;
-		}
-
-		@Pure
-		@Override
-		public int getCtrlY2() {
-			return 0;
-		}
-
-		@Pure
-		@Override
 		public IntegerProperty fromXProperty() {
 			return this.fromX;
 		}
@@ -532,30 +554,6 @@ public abstract class PathElement2ifx implements PathElement2ai {
 		@Override
 		public IntegerProperty fromYProperty() {
 			return this.fromY;
-		}
-
-		@Pure
-		@Override
-		public IntegerProperty ctrlX1Property() {
-			return null;
-		}
-
-		@Pure
-		@Override
-		public IntegerProperty ctrlY1Property() {
-			return null;
-		}
-
-		@Pure
-		@Override
-		public IntegerProperty ctrlX2Property() {
-			return null;
-		}
-
-		@Pure
-		@Override
-		public IntegerProperty ctrlY2Property() {
-			return null;
 		}
 
 	}
@@ -635,12 +633,17 @@ public abstract class PathElement2ifx implements PathElement2ai {
 
 		@Pure
 		@Override
-		public boolean isEmpty() {
-			return MathUtil.isEpsilonEqual(this.fromX.get(), this.toX.get())
-					&& MathUtil.isEpsilonEqual(this.fromY.get(), this.toY.get())
-					&& MathUtil.isEpsilonEqual(this.ctrlX.get(), this.toX.get())
-					&& MathUtil.isEpsilonEqual(this.ctrlY.get(), this.toY.get());
-
+		public BooleanProperty isEmptyProperty() {
+			if (this.isEmpty == null) {
+				this.isEmpty = new ReadOnlyBooleanWrapper(this, "isEmpty"); //$NON-NLS-1$
+				this.isEmpty.bind(Bindings.createBooleanBinding(() -> {
+					return fromXProperty().get() == toXProperty().get()
+							&& fromYProperty().get() == toYProperty().get()
+							&& ctrlX1Property().get() == toXProperty().get()
+							&& ctrlY1Property().get() == toYProperty().get();
+				}, fromXProperty(), toXProperty(), fromYProperty(), toYProperty()));
+			}
+			return this.isEmpty;
 		}
 
 		@Pure
@@ -724,18 +727,6 @@ public abstract class PathElement2ifx implements PathElement2ai {
 
 		@Pure
 		@Override
-		public int getCtrlX2() {
-			return 0;
-		}
-
-		@Pure
-		@Override
-		public int getCtrlY2() {
-			return 0;
-		}
-
-		@Pure
-		@Override
 		public IntegerProperty fromXProperty() {
 			return this.fromX;
 		}
@@ -756,18 +747,6 @@ public abstract class PathElement2ifx implements PathElement2ai {
 		@Override
 		public IntegerProperty ctrlY1Property() {
 			return this.ctrlY;
-		}
-
-		@Pure
-		@Override
-		public IntegerProperty ctrlX2Property() {
-			return null;
-		}
-
-		@Pure
-		@Override
-		public IntegerProperty ctrlY2Property() {
-			return null;
 		}
 
 	}
@@ -861,14 +840,19 @@ public abstract class PathElement2ifx implements PathElement2ai {
 
 		@Pure
 		@Override
-		public boolean isEmpty() {
-			return MathUtil.isEpsilonEqual(this.fromX.get(), this.toX.get())
-					&& MathUtil.isEpsilonEqual(this.fromY.get(), this.toY.get())
-					&& MathUtil.isEpsilonEqual(this.ctrlX1.get(), this.toX.get())
-					&& MathUtil.isEpsilonEqual(this.ctrlY1.get(), this.toY.get())
-					&& MathUtil.isEpsilonEqual(this.ctrlX2.get(), this.toX.get())
-					&& MathUtil.isEpsilonEqual(this.ctrlY2.get(), this.toY.get());
-
+		public BooleanProperty isEmptyProperty() {
+			if (this.isEmpty == null) {
+				this.isEmpty = new ReadOnlyBooleanWrapper(this, "isEmpty"); //$NON-NLS-1$
+				this.isEmpty.bind(Bindings.createBooleanBinding(() -> {
+					return fromXProperty().get() == toXProperty().get()
+							&& fromYProperty().get() == toYProperty().get()
+							&& ctrlX1Property().get() == toXProperty().get()
+							&& ctrlY1Property().get() == toYProperty().get()
+							&& ctrlX2Property().get() == toXProperty().get()
+							&& ctrlY2Property().get() == toYProperty().get();
+				}, fromXProperty(), toXProperty(), fromYProperty(), toYProperty()));
+			}
+			return this.isEmpty;
 		}
 
 		@Pure
@@ -1069,9 +1053,15 @@ public abstract class PathElement2ifx implements PathElement2ai {
 
 		@Pure
 		@Override
-		public boolean isEmpty() {
-			return MathUtil.isEpsilonEqual(this.fromX.get(), this.toX.get())
-					&& MathUtil.isEpsilonEqual(this.fromY.get(), this.toY.get());
+		public BooleanProperty isEmptyProperty() {
+			if (this.isEmpty == null) {
+				this.isEmpty = new ReadOnlyBooleanWrapper(this, "isEmpty"); //$NON-NLS-1$
+				this.isEmpty.bind(Bindings.createBooleanBinding(() -> {
+					return fromXProperty().get() == toXProperty().get()
+							&& fromYProperty().get() == toYProperty().get();
+				}, fromXProperty(), toXProperty(), fromYProperty(), toYProperty()));
+			}
+			return this.isEmpty;
 		}
 
 		@Pure
@@ -1133,26 +1123,184 @@ public abstract class PathElement2ifx implements PathElement2ai {
 
 		@Pure
 		@Override
-		public int getCtrlX1() {
-			return 0;
+		public IntegerProperty fromXProperty() {
+			return this.fromX;
 		}
 
 		@Pure
 		@Override
-		public int getCtrlY1() {
-			return 0;
+		public IntegerProperty fromYProperty() {
+			return this.fromY;
+		}
+
+	}
+
+	/** An element of the path that represents a <code>ARC_TO</code>.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 13.0
+	 */
+	static class ArcPathElement2ifx extends PathElement2ifx {
+
+		private static final long serialVersionUID = 1191891479706357600L;
+
+		private final IntegerProperty fromX;
+
+		private final IntegerProperty fromY;
+
+		private final IntegerProperty radiusX;
+
+		private final IntegerProperty radiusY;
+
+		private final DoubleProperty rotationX;
+
+		private final BooleanProperty largeArcFlag;
+
+		private final BooleanProperty sweepFlag;
+
+		/**
+		 * @param fromx x coordinate of the origin point.
+		 * @param fromy y coordinate of the origin point.
+		 * @param tox x coordinate of the target point.
+		 * @param toy y coordinate of the target point.
+		 * @param xradius radius of the ellipse along its x axis.
+		 * @param yradius radius of the ellipse along its y axis.
+		 * @param xrotation rotation (in radians) of the ellipse's x axis.
+		 * @param largeArcFlag <code>true</code> iff the path will sweep the long way around the ellipse.
+		 * @param sweepFlag <code>true</code> iff the path will sweep clockwise around the ellipse.
+		 */
+		ArcPathElement2ifx(IntegerProperty fromx, IntegerProperty fromy, IntegerProperty tox, IntegerProperty toy,
+				IntegerProperty xradius, IntegerProperty yradius, DoubleProperty xrotation,
+				BooleanProperty largeArcFlag, BooleanProperty sweepFlag) {
+			super(PathElementType.ARC_TO, tox, toy);
+			assert fromx != null : "fromx must be not null"; //$NON-NLS-1$
+			assert fromy != null : "fromy must be not null"; //$NON-NLS-1$
+			assert xradius != null : "xradius must be not null"; //$NON-NLS-1$
+			assert yradius != null : "yradius must be not null"; //$NON-NLS-1$
+			assert xrotation != null : "xrotation must be not null"; //$NON-NLS-1$
+			assert largeArcFlag != null : "largeArcFlag must be not null"; //$NON-NLS-1$
+			assert sweepFlag != null : "sweepFlag must be not null"; //$NON-NLS-1$
+			this.fromX = fromx;
+			this.fromY = fromy;
+			this.radiusX = xradius;
+			this.radiusY = yradius;
+			this.rotationX = xrotation;
+			this.largeArcFlag = largeArcFlag;
+			this.sweepFlag = sweepFlag;
 		}
 
 		@Pure
 		@Override
-		public int getCtrlX2() {
-			return 0;
+		public boolean equals(Object obj) {
+			try {
+				final PathElement2afp elt = (PathElement2afp) obj;
+				return getType() == elt.getType()
+						&& getToX() == elt.getToX()
+						&& getToY() == elt.getToY()
+						&& getRadiusX() == elt.getRadiusX()
+						&& getRadiusY() == elt.getRadiusY()
+						&& getRotationX() == elt.getRotationX()
+						&& getLargeArcFlag() == elt.getLargeArcFlag()
+						&& getSweepFlag() == elt.getSweepFlag();
+			} catch (Throwable exception) {
+				//
+			}
+			return false;
 		}
 
 		@Pure
 		@Override
-		public int getCtrlY2() {
-			return 0;
+		public int hashCode() {
+			long bits = 1L;
+			bits = 31L * bits + this.type.ordinal();
+			bits = 31L * bits + getToX();
+			bits = 31L * bits + getToY();
+			bits = 31L * bits + getRadiusX();
+			bits = 31L * bits + getRadiusY();
+			bits = 31L * bits + Double.doubleToLongBits(getRotationX());
+			bits = 31L * bits + Boolean.hashCode(getLargeArcFlag());
+			bits = 31L * bits + Boolean.hashCode(getSweepFlag());
+			return (int) (bits ^ (bits >> 32));
+		}
+
+		@Pure
+		@Override
+		public BooleanProperty isEmptyProperty() {
+			if (this.isEmpty == null) {
+				this.isEmpty = new ReadOnlyBooleanWrapper(this, "isEmpty"); //$NON-NLS-1$
+				this.isEmpty.bind(Bindings.createBooleanBinding(() -> {
+					return fromXProperty().get() == toXProperty().get()
+							&& fromYProperty().get() == toYProperty().get();
+				}, fromXProperty(), toXProperty(), fromYProperty(), toYProperty()));
+			}
+			return this.isEmpty;
+		}
+
+		@Pure
+		@Override
+		public boolean isDrawable() {
+			return !isEmpty();
+		}
+
+		@Pure
+		@Override
+		public void toArray(int[] array) {
+			assert array != null : "Array must be not null"; //$NON-NLS-1$
+			assert array.length >= 2 : "Array size is too small"; //$NON-NLS-1$
+			array[0] = this.toX.intValue();
+			array[1] = this.toY.intValue();
+		}
+
+		@Pure
+		@Override
+		public void toArray(IntegerProperty[] array) {
+			assert array != null : "Array must be not null"; //$NON-NLS-1$
+			assert array.length >= 2 : "Array size is too small"; //$NON-NLS-1$
+			array[0] = this.toX;
+			array[1] = this.toY;
+		}
+
+		@Pure
+		@Override
+		public void toArray(double[] array) {
+			assert array != null : "Array must be not null"; //$NON-NLS-1$
+			assert array.length >= 2 : "Array size is too small"; //$NON-NLS-1$
+			array[0] = this.toX.doubleValue();
+			array[1] = this.toY.doubleValue();
+		}
+
+		@Pure
+		@Override
+		public IntegerProperty[] toArray() {
+			return new IntegerProperty[] {this.toX, this.toY};
+		}
+
+		@Pure
+		@Override
+		public String toString() {
+			return "ARC(" //$NON-NLS-1$
+					+ getRadiusX() + "x" //$NON-NLS-1$
+					+ getRadiusY() + "|" //$NON-NLS-1$
+					+ getRotationX() + "x" //$NON-NLS-1$
+					+ getLargeArcFlag() + "x" //$NON-NLS-1$
+					+ getSweepFlag() + "|" //$NON-NLS-1$
+					+ getToX() + "x" //$NON-NLS-1$
+					+ getToY() + ")"; //$NON-NLS-1$
+		}
+
+		@Pure
+		@Override
+		public int getFromX() {
+			return this.fromX.get();
+		}
+
+		@Pure
+		@Override
+		public int getFromY() {
+			return this.fromY.get();
 		}
 
 		@Pure
@@ -1167,28 +1315,54 @@ public abstract class PathElement2ifx implements PathElement2ai {
 			return this.fromY;
 		}
 
-		@Pure
 		@Override
-		public IntegerProperty ctrlX1Property() {
-			return null;
+		public int getRadiusX() {
+			return this.radiusX.get();
 		}
 
-		@Pure
 		@Override
-		public IntegerProperty ctrlY1Property() {
-			return null;
+		public int getRadiusY() {
+			return this.radiusY.get();
 		}
 
-		@Pure
 		@Override
-		public IntegerProperty ctrlX2Property() {
-			return null;
+		public double getRotationX() {
+			return this.rotationX.get();
 		}
 
-		@Pure
 		@Override
-		public IntegerProperty ctrlY2Property() {
-			return null;
+		public boolean getSweepFlag() {
+			return this.sweepFlag.get();
+		}
+
+		@Override
+		public boolean getLargeArcFlag() {
+			return this.largeArcFlag.get();
+		}
+
+		@Override
+		public IntegerProperty radiusXProperty() {
+			return this.radiusX;
+		}
+
+		@Override
+		public IntegerProperty radiusYProperty() {
+			return this.radiusY;
+		}
+
+		@Override
+		public DoubleProperty rotationXProperty() {
+			return this.rotationX;
+		}
+
+		@Override
+		public BooleanProperty largeArcFlagProperty() {
+			return this.largeArcFlag;
+		}
+
+		@Override
+		public BooleanProperty sweepFlagProperty() {
+			return this.sweepFlag;
 		}
 
 	}

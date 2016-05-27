@@ -573,7 +573,6 @@ public class Path2i extends AbstractShape2i<Path2i>
 	@Override
 	@Pure
 	public int getCurrentY() {
-		// TODO Auto-generated method stub
 		return this.coords[this.numCoords - 1];
 	}
 
@@ -611,6 +610,7 @@ public class Path2i extends AbstractShape2i<Path2i>
 				this.isPolyline = null;
 				this.isCurved = null;
 				break;
+			case ARC_TO:
 			default:
 				throw new IllegalStateException();
 			}
@@ -776,6 +776,8 @@ public class Path2i extends AbstractShape2i<Path2i>
 			case CLOSE:
 				++j;
 				break;
+			case ARC_TO:
+				throw new IllegalStateException();
 			default:
 				break;
 			}

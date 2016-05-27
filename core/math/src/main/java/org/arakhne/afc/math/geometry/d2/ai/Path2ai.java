@@ -173,6 +173,32 @@ public interface Path2ai<
 					foundOneLine = true;
 				}
 				break;
+			case ARC_TO:
+				subPath = factory.newPath(iterator.getWindingRule());
+				subPath.moveTo(element.getFromX(), element.getFromY());
+				subPath.arcTo(
+						element.getToX(), element.getToY(),
+						element.getRadiusX(), element.getRadiusY(),
+						element.getRotationX(), element.getLargeArcFlag(),
+						element.getSweepFlag());
+				if (computeDrawableElementBoundingBox(
+						subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						box)) {
+					if (box.getMinX() < xmin) {
+						xmin = box.getMinX();
+					}
+					if (box.getMinY() < ymin) {
+						ymin = box.getMinY();
+					}
+					if (box.getMaxX() > xmax) {
+						xmax = box.getMaxX();
+					}
+					if (box.getMaxY() > ymax) {
+						ymax = box.getMaxY();
+					}
+					foundOneLine = true;
+				}
+				break;
 			case MOVE_TO:
 			case CLOSE:
 			default:
@@ -330,6 +356,33 @@ public interface Path2ai<
 				}
 				foundOneControlPoint = true;
 				break;
+			case ARC_TO:
+				if (element.getFromX() < xmin) {
+					xmin = element.getFromX();
+				}
+				if (element.getFromY() < ymin) {
+					ymin = element.getFromY();
+				}
+				if (element.getFromX() > xmax) {
+					xmax = element.getFromX();
+				}
+				if (element.getFromY() > ymax) {
+					ymax = element.getFromY();
+				}
+				if (element.getToX() < xmin) {
+					xmin = element.getToX();
+				}
+				if (element.getToY() < ymin) {
+					ymin = element.getToY();
+				}
+				if (element.getToX() > xmax) {
+					xmax = element.getToX();
+				}
+				if (element.getToY() > ymax) {
+					ymax = element.getToY();
+				}
+				foundOneControlPoint = true;
+				break;
 			case MOVE_TO:
 			case CLOSE:
 			default:
@@ -431,6 +484,27 @@ public interface Path2ai<
 						element.getCtrlX1(), element.getCtrlY1(),
 						element.getCtrlX2(), element.getCtrlY2(),
 						endx, endy);
+				numCrosses = computeCrossingsFromSegment(
+						numCrosses,
+						localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						x1, y1, x2, y2,
+						CrossingComputationType.STANDARD);
+				if (numCrosses == MathConstants.SHAPE_INTERSECTS) {
+					return numCrosses;
+				}
+				curx = endx;
+				cury = endy;
+				break;
+			case ARC_TO:
+				endx = element.getToX();
+				endy = element.getToY();
+				localPath = pi.getGeomFactory().newPath(pi.getWindingRule());
+				localPath.moveTo(element.getFromX(), element.getFromY());
+				localPath.arcTo(
+						endx, endy,
+						element.getRadiusX(), element.getRadiusY(),
+						element.getRotationX(), element.getLargeArcFlag(),
+						element.getSweepFlag());
 				numCrosses = computeCrossingsFromSegment(
 						numCrosses,
 						localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
@@ -585,6 +659,27 @@ public interface Path2ai<
 				curx = endx;
 				cury = endy;
 				break;
+			case ARC_TO:
+				endx = element.getToX();
+				endy = element.getToY();
+				localPath = pi.getGeomFactory().newPath(pi.getWindingRule());
+				localPath.moveTo(element.getFromX(), element.getFromY());
+				localPath.arcTo(
+						endx, endy,
+						element.getRadiusX(), element.getRadiusY(),
+						element.getRotationX(), element.getLargeArcFlag(),
+						element.getSweepFlag());
+				numCrosses = computeCrossingsFromCircle(
+						numCrosses,
+						localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						cx, cy, radius,
+						CrossingComputationType.STANDARD);
+				if (numCrosses == MathConstants.SHAPE_INTERSECTS) {
+					return numCrosses;
+				}
+				curx = endx;
+				cury = endy;
+				break;
 			case CLOSE:
 				if (cury != movy || curx != movx) {
 					numCrosses = Segment2ai.computeCrossingsFromCircle(
@@ -652,7 +747,8 @@ public interface Path2ai<
 	 *     is equivalent to {@link CrossingComputationType#STANDARD}.
 	 * @return the crossing, or {@link MathConstants#SHAPE_INTERSECTS}
 	 */
-	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
+	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity",
+			"checkstyle:returncount"})
 	static int computeCrossingsFromPoint(int crossings, PathIterator2ai<?> pi, int px, int py, CrossingComputationType type) {
 		assert pi != null : "Iterator must not be null"; //$NON-NLS-1$
 
@@ -723,6 +819,26 @@ public interface Path2ai<
 						element.getCtrlX1(), element.getCtrlY1(),
 						element.getCtrlX2(), element.getCtrlY2(),
 						endx, endy);
+				numCrossings = computeCrossingsFromPoint(
+						numCrossings,
+						curve.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						px, py, CrossingComputationType.STANDARD);
+				if (numCrossings == MathConstants.SHAPE_INTERSECTS) {
+					return numCrossings;
+				}
+				curx = endx;
+				cury = endy;
+				break;
+			case ARC_TO:
+				endx = element.getToX();
+				endy = element.getToY();
+				curve = pi.getGeomFactory().newPath(pi.getWindingRule());
+				curve.moveTo(element.getFromX(), element.getFromY());
+				curve.arcTo(
+						endx, endy,
+						element.getRadiusX(), element.getRadiusY(),
+						element.getRotationX(), element.getLargeArcFlag(),
+						element.getSweepFlag());
 				numCrossings = computeCrossingsFromPoint(
 						numCrossings,
 						curve.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
@@ -896,6 +1012,29 @@ public interface Path2ai<
 					return n2;
 				}
 				crossings += n2;
+				curx = endx;
+				cury = endy;
+				break;
+			case ARC_TO:
+				endx = pathElement1.getToX();
+				endy = pathElement1.getToY();
+				// only for local use
+				subPath = factory.newPath(iterator.getWindingRule());
+				subPath.moveTo(curx, cury);
+				subPath.arcTo(
+						endx, endy,
+						pathElement1.getRadiusX(), pathElement1.getRadiusY(),
+						pathElement1.getRotationX(), pathElement1.getLargeArcFlag(),
+						pathElement1.getSweepFlag());
+				final int n3 = computeCrossingsFromPath(
+						subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						shadow,
+						false,
+						false);
+				if (n3 == MathConstants.SHAPE_INTERSECTS) {
+					return n3;
+				}
+				crossings += n3;
 				curx = endx;
 				cury = endy;
 				break;
@@ -1101,6 +1240,24 @@ public interface Path2ai<
 				curve.moveTo(pathElement.getFromX(), pathElement.getFromY());
 				curve.curveTo(pathElement.getCtrlX1(), pathElement.getCtrlY1(), pathElement.getCtrlX2(),
 						pathElement.getCtrlY2(), endx, endy);
+				numCrossings = computeCrossingsFromRect(
+						numCrossings,
+						curve.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						rxmin, rymin, rxmax, rymax,
+						CrossingComputationType.STANDARD);
+				if (numCrossings == MathConstants.SHAPE_INTERSECTS) {
+					return MathConstants.SHAPE_INTERSECTS;
+				}
+				curx = endx;
+				cury = endy;
+				break;
+			case ARC_TO:
+				endx = pathElement.getToX();
+				endy = pathElement.getToY();
+				curve = pi.getGeomFactory().newPath(pi.getWindingRule());
+				curve.moveTo(pathElement.getFromX(), pathElement.getFromY());
+				curve.arcTo(endx, endy, pathElement.getRadiusX(), pathElement.getRadiusY(),
+						pathElement.getRotationX(), pathElement.getLargeArcFlag(), pathElement.getSweepFlag());
 				numCrossings = computeCrossingsFromRect(
 						numCrossings,
 						curve.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
@@ -1336,6 +1493,7 @@ public interface Path2ai<
 				break;
 			case QUAD_TO:
 			case CURVE_TO:
+			case ARC_TO:
 			default:
 				throw new IllegalStateException();
 			}
@@ -1425,6 +1583,7 @@ public interface Path2ai<
 				break;
 			case QUAD_TO:
 			case CURVE_TO:
+			case ARC_TO:
 			default:
 				throw new IllegalStateException(
 						pe.getType() == null ? null : pe.getType().toString());
@@ -1489,6 +1648,10 @@ public interface Path2ai<
 			case CURVE_TO:
 				curveTo(element.getCtrlX1(), element.getCtrlY1(), element.getCtrlX2(),
 						element.getCtrlY2(), element.getToX(), element.getToY());
+				break;
+			case ARC_TO:
+				arcTo(element.getToX(), element.getToY(), element.getRadiusX(), element.getRadiusY(),
+						element.getRotationX(), element.getLargeArcFlag(), element.getSweepFlag());
 				break;
 			case CLOSE:
 				closePath();
@@ -1937,6 +2100,7 @@ public interface Path2ai<
 				break;
 			case QUAD_TO:
 			case CURVE_TO:
+			case ARC_TO:
 				throw new IllegalStateException("Curve in path is not supported"); //$NON-NLS-1$
 			case MOVE_TO:
 			default:
@@ -2267,7 +2431,9 @@ public interface Path2ai<
 						this.p1.ix(), this.p1.iy(),
 						this.p2.ix(), this.p2.iy());
 				break;
+			case ARC_TO:
 			default:
+				throw new IllegalStateException();
 			}
 			if (element == null) {
 				throw new NoSuchElementException();
@@ -2401,7 +2567,9 @@ public interface Path2ai<
 						this.p1.ix(), this.p1.iy(),
 						this.p2.ix(), this.p2.iy());
 				break;
+			case ARC_TO:
 			default:
+				throw new IllegalStateException();
 			}
 			if (element == null) {
 				throw new NoSuchElementException();
@@ -2462,6 +2630,7 @@ public interface Path2ai<
 					case MOVE_TO:
 					case CURVE_TO:
 					case QUAD_TO:
+					case ARC_TO:
 					default:
 						throw new IllegalStateException();
 					}
@@ -3038,7 +3207,7 @@ public interface Path2ai<
 			return x == this.lastNextX && y == this.lastNextY;
 		}
 
-		@SuppressWarnings("checkstyle:npathcomplexity")
+		@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
 		private void flattening() {
 			int level;
 
@@ -3170,7 +3339,9 @@ public interface Path2ai<
 				this.holdIndex += 6;
 				this.levelIndex--;
 				break;
+			case ARC_TO:
 			default:
+				throw new IllegalStateException();
 			}
 		}
 

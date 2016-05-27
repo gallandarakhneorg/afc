@@ -278,6 +278,21 @@ public abstract class AbstractGeomFactory2afpTest extends AbstractMathTestCase {
 		assertEpsilonEquals(7, element.getToX());
 		assertEpsilonEquals(8, element.getToY());
 	}
-
 	
+	@Test
+	public void newArcPathElement() {
+		PathElement2afp element = this.factory.newArcPathElement(1, 2, 3, 4, 5, 6, 7, true, false);
+		assertNotNull(element);
+		assertSame(PathElementType.ARC_TO, element.getType());
+		assertEpsilonEquals(1, element.getFromX());
+		assertEpsilonEquals(2, element.getFromY());
+		assertEpsilonEquals(3, element.getToX());
+		assertEpsilonEquals(4, element.getToY());
+		assertEpsilonEquals(5, element.getRadiusX());
+		assertEpsilonEquals(6, element.getRadiusY());
+		assertEpsilonEquals(7, element.getRotationX());
+		assertTrue(element.getLargeArcFlag());
+		assertFalse(element.getSweepFlag());
+	}
+
 }

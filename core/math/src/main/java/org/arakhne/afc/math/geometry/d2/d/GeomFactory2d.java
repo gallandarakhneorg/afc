@@ -123,31 +123,39 @@ public class GeomFactory2d implements GeomFactory2afp<PathElement2d, Point2d, Ve
 
 	@Override
 	public PathElement2d newMovePathElement(double x, double y) {
-		return new PathElement2d.MovePathElement2fp(x, y);
+		return new PathElement2d.MovePathElement2d(x, y);
 	}
 
 	@Override
 	public PathElement2d newLinePathElement(double startX, double startY, double targetX, double targetY) {
-		return new PathElement2d.LinePathElement2fp(startX, startY, targetX, targetY);
+		return new PathElement2d.LinePathElement2d(startX, startY, targetX, targetY);
 	}
 
 	@Override
 	public PathElement2d newClosePathElement(double lastPointX, double lastPointy, double firstPointX,
 			double firstPointY) {
-		return new PathElement2d.ClosePathElement2fp(lastPointX, lastPointy, firstPointX, firstPointY);
+		return new PathElement2d.ClosePathElement2d(lastPointX, lastPointy, firstPointX, firstPointY);
 	}
 
 	@Override
 	public PathElement2d newCurvePathElement(double startX, double startY, double controlX, double controlY,
 			double targetX, double targetY) {
-		return new PathElement2d.QuadPathElement2fp(startX, startY, controlX, controlY, targetX, targetY);
+		return new PathElement2d.QuadPathElement2d(startX, startY, controlX, controlY, targetX, targetY);
 	}
 
 	@Override
 	public PathElement2d newCurvePathElement(double startX, double startY, double controlX1, double controlY1,
 			double controlX2, double controlY2, double targetX, double targetY) {
-		return new PathElement2d.CurvePathElement2fp(startX, startY, controlX1, controlY1,
+		return new PathElement2d.CurvePathElement2d(startX, startY, controlX1, controlY1,
 				controlX2, controlY2, targetX, targetY);
+	}
+
+	@Override
+	@SuppressWarnings("checkstyle:parameternumber")
+	public PathElement2d newArcPathElement(double startX, double startY, double targetX, double targetY, double radiusX,
+			double radiusY, double xAxisRotation, boolean largeArcFlag, boolean sweepFlag) {
+		return new PathElement2d.ArcPathElement2d(startX, startY, targetX, targetY,
+				radiusX, radiusY, xAxisRotation, largeArcFlag, sweepFlag);
 	}
 
 	@Override

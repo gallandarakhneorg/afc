@@ -62,38 +62,6 @@ public abstract class PathElement2d implements PathElement2afp {
 		this.toY = toy;
 	}
 
-	/** Create an instance of path element.
-	 *
-	 * @param type is the type of the new element.
-	 * @param lastX is the coordinate of the last point.
-	 * @param lastY is the coordinate of the last point.
-	 * @param coords are the coordinates.
-	 * @return the instance of path element.
-	 */
-	@Pure
-	@SuppressWarnings("checkstyle:magicnumber")
-	public static PathElement2d newInstance(PathElementType type, double lastX, double lastY, double[] coords) {
-		assert type != null : "Path element type must be not null"; //$NON-NLS-1$
-		assert coords != null : "Coordinate array type must be not null"; //$NON-NLS-1$
-		assert coords.length >= 2 : "Size of the coordinate array type is too small"; //$NON-NLS-1$
-		switch (type) {
-		case MOVE_TO:
-			return new MovePathElement2fp(coords[0], coords[1]);
-		case LINE_TO:
-			return new LinePathElement2fp(lastX, lastY, coords[0], coords[1]);
-		case QUAD_TO:
-			assert coords.length >= 4 : "Size of the coordinate array type is too small"; //$NON-NLS-1$
-			return new QuadPathElement2fp(lastX, lastY, coords[0], coords[1], coords[2], coords[3]);
-		case CURVE_TO:
-			assert coords.length >= 6 : "Size of the coordinate array type is too small"; //$NON-NLS-1$
-			return new CurvePathElement2fp(lastX, lastY, coords[0], coords[1], coords[2], coords[3], coords[4], coords[5]);
-		case CLOSE:
-			return new ClosePathElement2fp(lastX, lastY, coords[0], coords[1]);
-		default:
-		}
-		throw new IllegalArgumentException();
-	}
-
 	@Pure
 	@Override
 	public abstract boolean equals(Object obj);
@@ -120,6 +88,50 @@ public abstract class PathElement2d implements PathElement2afp {
 		return this.type;
 	}
 
+	@Override
+	public double getCtrlX1() {
+		return 0;
+	}
+
+	@Override
+	public double getCtrlY1() {
+		return 0;
+	}
+
+	@Override
+	public double getCtrlX2() {
+		return 0;
+	}
+
+	@Override
+	public double getCtrlY2() {
+		return 0;
+	}
+
+	@Override
+	public double getRadiusX() {
+		return 0;
+	}
+
+	@Override
+	public double getRadiusY() {
+		return 0;
+	}
+
+	@Override
+	public double getRotationX() {
+		return 0;
+	}
+
+	@Override
+	public boolean getSweepFlag() {
+		return false;
+	}
+
+	@Override
+	public boolean getLargeArcFlag() {
+		return false;
+	}
 
 	/** Copy the coords into an array, except the source point.
 	 *
@@ -136,7 +148,7 @@ public abstract class PathElement2d implements PathElement2afp {
 	 * @mavenartifactid $ArtifactId$
 	 * @since 13.0
 	 */
-	static class MovePathElement2fp extends PathElement2d {
+	static class MovePathElement2d extends PathElement2d {
 
 		private static final long serialVersionUID = -399575136145167775L;
 
@@ -144,7 +156,7 @@ public abstract class PathElement2d implements PathElement2afp {
 		 * @param tox x coordinate of the target point.
 		 * @param toy y coordinate of the target point.
 		 */
-		MovePathElement2fp(double tox, double toy) {
+		MovePathElement2d(double tox, double toy) {
 			super(PathElementType.MOVE_TO, tox, toy);
 		}
 
@@ -224,26 +236,6 @@ public abstract class PathElement2d implements PathElement2afp {
 			return 0.;
 		}
 
-		@Override
-		public double getCtrlX1() {
-			return 0.;
-		}
-
-		@Override
-		public double getCtrlY1() {
-			return 0.;
-		}
-
-		@Override
-		public double getCtrlX2() {
-			return 0.;
-		}
-
-		@Override
-		public double getCtrlY2() {
-			return 0.;
-		}
-
 	}
 
 	/** An element of the path that represents a <code>LINE_TO</code>.
@@ -254,7 +246,7 @@ public abstract class PathElement2d implements PathElement2afp {
 	 * @mavenartifactid $ArtifactId$
 	 * @since 13.0
 	 */
-	static class LinePathElement2fp extends PathElement2d {
+	static class LinePathElement2d extends PathElement2d {
 
 		private static final long serialVersionUID = 8423845888008307447L;
 
@@ -270,7 +262,7 @@ public abstract class PathElement2d implements PathElement2afp {
 		 * @param tox x coordinate of the target point.
 		 * @param toy y coordinate of the target point.
 		 */
-		LinePathElement2fp(double fromx, double fromy, double tox, double toy) {
+		LinePathElement2d(double fromx, double fromy, double tox, double toy) {
 			super(PathElementType.LINE_TO, tox, toy);
 			this.fromX = fromx;
 			this.fromY = fromy;
@@ -360,26 +352,6 @@ public abstract class PathElement2d implements PathElement2afp {
 			return this.fromY;
 		}
 
-		@Override
-		public double getCtrlX1() {
-			return 0.;
-		}
-
-		@Override
-		public double getCtrlY1() {
-			return 0.;
-		}
-
-		@Override
-		public double getCtrlX2() {
-			return 0.;
-		}
-
-		@Override
-		public double getCtrlY2() {
-			return 0.;
-		}
-
 	}
 
 	/** An element of the path that represents a <code>QUAD_TO</code>.
@@ -391,7 +363,7 @@ public abstract class PathElement2d implements PathElement2afp {
 	 * @since 13.0
 	 */
 	@SuppressWarnings("checkstyle:magicnumber")
-	static class QuadPathElement2fp extends PathElement2d {
+	static class QuadPathElement2d extends PathElement2d {
 
 		private static final long serialVersionUID = 6092391345111872481L;
 
@@ -413,7 +385,7 @@ public abstract class PathElement2d implements PathElement2afp {
 		 * @param tox x coordinate of the target point.
 		 * @param toy y coordinate of the target point.
 		 */
-		QuadPathElement2fp(double fromx, double fromy, double ctrlx, double ctrly, double tox, double toy) {
+		QuadPathElement2d(double fromx, double fromy, double ctrlx, double ctrly, double tox, double toy) {
 			super(PathElementType.QUAD_TO, tox, toy);
 			this.fromX = fromx;
 			this.fromY = fromy;
@@ -527,16 +499,6 @@ public abstract class PathElement2d implements PathElement2afp {
 			return this.ctrlY;
 		}
 
-		@Override
-		public double getCtrlX2() {
-			return 0.;
-		}
-
-		@Override
-		public double getCtrlY2() {
-			return 0.;
-		}
-
 	}
 
 	/** An element of the path that represents a <code>CURVE_TO</code>.
@@ -548,7 +510,7 @@ public abstract class PathElement2d implements PathElement2afp {
 	 * @since 13.0
 	 */
 	@SuppressWarnings("checkstyle:magicnumber")
-	static class CurvePathElement2fp extends PathElement2d {
+	static class CurvePathElement2d extends PathElement2d {
 
 		private static final long serialVersionUID = -2831895270995173092L;
 
@@ -576,7 +538,7 @@ public abstract class PathElement2d implements PathElement2afp {
 		 * @param tox x coordinate of the target point.
 		 * @param toy y coordinate of the target point.
 		 */
-		CurvePathElement2fp(double fromx, double fromy, double ctrlx1, double ctrly1, double ctrlx2,
+		CurvePathElement2d(double fromx, double fromy, double ctrlx1, double ctrly1, double ctrlx2,
 				double ctrly2, double tox, double toy) {
 			super(PathElementType.CURVE_TO, tox, toy);
 			this.fromX = fromx;
@@ -725,7 +687,7 @@ public abstract class PathElement2d implements PathElement2afp {
 	 * @mavenartifactid $ArtifactId$
 	 * @since 13.0
 	 */
-	static class ClosePathElement2fp extends PathElement2d {
+	static class ClosePathElement2d extends PathElement2d {
 
 		private static final long serialVersionUID = 5324688417590599323L;
 
@@ -741,7 +703,7 @@ public abstract class PathElement2d implements PathElement2afp {
 		 * @param tox x coordinate of the target point.
 		 * @param toy y coordinate of the target point.
 		 */
-		ClosePathElement2fp(double fromx, double fromy, double tox, double toy) {
+		ClosePathElement2d(double fromx, double fromy, double tox, double toy) {
 			super(PathElementType.CLOSE, tox, toy);
 			this.fromX = fromx;
 			this.fromY = fromy;
@@ -829,24 +791,178 @@ public abstract class PathElement2d implements PathElement2afp {
 			return this.fromY;
 		}
 
+	}
+
+	/** An element of the path that represents a <code>Arc_TO</code>.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 13.0
+	 */
+	@SuppressWarnings("checkstyle:magicnumber")
+	static class ArcPathElement2d extends PathElement2d {
+
+		private static final long serialVersionUID = -2831895270995173092L;
+
+		private final double fromX;
+
+		private final double fromY;
+
+		private final double xradius;
+
+		private final double yradius;
+
+		private final double xrotation;
+
+		private final boolean largeArcFlag;
+
+		private boolean sweepFlag;
+
+		private Boolean isEmpty;
+
+		/**
+		 * @param fromx x coordinate of the origin point.
+		 * @param fromy y coordinate of the origin point.
+		 * @param tox x coordinate of the target point.
+		 * @param toy y coordinate of the target point.
+		 * @param xradius radius of the ellipse along its x axis.
+		 * @param yradius radius of the ellipse along its y axis.
+		 * @param xrotation rotation (in radians) of the ellipse's x axis.
+		 * @param largeArcFlag <code>true</code> iff the path will sweep the long way around the ellipse.
+		 * @param sweepFlag <code>true</code> iff the path will sweep clockwise around the ellipse.
+		 */
+		ArcPathElement2d(double fromx, double fromy, double tox, double toy, double xradius,
+				double yradius, double xrotation, boolean largeArcFlag, boolean sweepFlag) {
+			super(PathElementType.ARC_TO, tox, toy);
+			this.fromX = fromx;
+			this.fromY = fromy;
+			this.xradius = xradius;
+			this.yradius = yradius;
+			this.xrotation = xrotation;
+			this.largeArcFlag = largeArcFlag;
+			this.sweepFlag = sweepFlag;
+		}
+
+		@Pure
 		@Override
-		public double getCtrlX1() {
-			return 0.;
+		public boolean equals(Object obj) {
+			try {
+				final PathElement2afp elt = (PathElement2afp) obj;
+				return getType() == elt.getType()
+						&& getToX() == elt.getToX()
+						&& getToY() == elt.getToY()
+						&& getRadiusX() == elt.getRadiusX()
+						&& getRadiusY() == elt.getRadiusY()
+						&& getRotationX() == elt.getRotationX()
+						&& getLargeArcFlag() == elt.getLargeArcFlag()
+						&& getSweepFlag() == elt.getSweepFlag();
+			} catch (Throwable exception) {
+				//
+			}
+			return false;
+		}
+
+		@Pure
+		@Override
+		public int hashCode() {
+			long bits = 1L;
+			bits = 31L * bits + this.type.ordinal();
+			bits = 31L * bits + Double.doubleToLongBits(getToX());
+			bits = 31L * bits + Double.doubleToLongBits(getToY());
+			bits = 31L * bits + Double.doubleToLongBits(getRadiusX());
+			bits = 31L * bits + Double.doubleToLongBits(getRadiusY());
+			bits = 31L * bits + Double.doubleToLongBits(getRotationX());
+			bits = 31L * bits + Boolean.hashCode(getLargeArcFlag());
+			bits = 31L * bits + Boolean.hashCode(getSweepFlag());
+			return (int) (bits ^ (bits >> 32));
+		}
+
+		@Pure
+		@Override
+		public boolean isEmpty() {
+			if (this.isEmpty == null) {
+				this.isEmpty = MathUtil.isEpsilonEqual(this.fromX, this.toX)
+						&& MathUtil.isEpsilonEqual(this.fromY, this.toY);
+			}
+			return this.isEmpty.booleanValue();
+		}
+
+		@Pure
+		@Override
+		public boolean isDrawable() {
+			return !isEmpty();
 		}
 
 		@Override
-		public double getCtrlY1() {
-			return 0.;
+		public void toArray(int[] array) {
+			assert array != null : "Array must be not null"; //$NON-NLS-1$
+			assert array.length >= 2 : "Array size is too small"; //$NON-NLS-1$
+			array[0] = (int) this.toX;
+			array[1] = (int) this.toY;
 		}
 
 		@Override
-		public double getCtrlX2() {
-			return 0.;
+		public void toArray(double[] array) {
+			assert array != null : "Array must be not null"; //$NON-NLS-1$
+			assert array.length >= 2 : "Array size is too small"; //$NON-NLS-1$
+			array[0] = this.toX;
+			array[1] = this.toY;
+		}
+
+		@Pure
+		@Override
+		public double[] toArray() {
+			return new double[] {this.toX, this.toY};
+		}
+
+		@Pure
+		@Override
+		public String toString() {
+			return "ARC(" //$NON-NLS-1$
+					+ getRadiusX() + "x" //$NON-NLS-1$
+					+ getRadiusY() + "|" //$NON-NLS-1$
+					+ getRotationX() + "x" //$NON-NLS-1$
+					+ getLargeArcFlag() + "x" //$NON-NLS-1$
+					+ getSweepFlag() + "|" //$NON-NLS-1$
+					+ getToX() + "x" //$NON-NLS-1$
+					+ getToY() + ")"; //$NON-NLS-1$
 		}
 
 		@Override
-		public double getCtrlY2() {
-			return 0.;
+		public double getFromX() {
+			return this.fromX;
+		}
+
+		@Override
+		public double getFromY() {
+			return this.fromY;
+		}
+
+		@Override
+		public double getRadiusX() {
+			return this.xradius;
+		}
+
+		@Override
+		public double getRadiusY() {
+			return this.yradius;
+		}
+
+		@Override
+		public double getRotationX() {
+			return this.xrotation;
+		}
+
+		@Override
+		public boolean getSweepFlag() {
+			return this.sweepFlag;
+		}
+
+		@Override
+		public boolean getLargeArcFlag() {
+			return this.largeArcFlag;
 		}
 
 	}

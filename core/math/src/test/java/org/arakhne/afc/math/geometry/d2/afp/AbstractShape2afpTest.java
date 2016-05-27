@@ -420,6 +420,8 @@ public abstract class AbstractShape2afpTest<T extends Shape2afp<?, ?, ?, ?, ?, ?
 						(box.getMaxY() - (element.getCtrlY1() - box.getMinY())) * 2.,
 						tox, toy);
 				break;
+			case ARC_TO:
+				throw new IllegalArgumentException();
 			default:
 			}
 		}

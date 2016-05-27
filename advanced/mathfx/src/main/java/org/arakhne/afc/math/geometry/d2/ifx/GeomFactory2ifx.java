@@ -21,6 +21,8 @@
 package org.arakhne.afc.math.geometry.d2.ifx;
 
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
 import org.arakhne.afc.math.geometry.PathWindingRule;
@@ -185,6 +187,22 @@ public class GeomFactory2ifx implements GeomFactory2ai<PathElement2ifx, Point2if
 				new SimpleIntegerProperty(controlY2),
 				new SimpleIntegerProperty(targetX),
 				new SimpleIntegerProperty(targetY));
+	}
+
+	@Override
+	@SuppressWarnings("checkstyle:parameternumber")
+	public PathElement2ifx newArcPathElement(int startX, int startY, int targetX, int targetY, int radiusX, int radiusY,
+			double xAxisRotation, boolean largeArcFlag, boolean sweepFlag) {
+		return new PathElement2ifx.ArcPathElement2ifx(
+				new SimpleIntegerProperty(startX),
+				new SimpleIntegerProperty(startY),
+				new SimpleIntegerProperty(targetX),
+				new SimpleIntegerProperty(targetY),
+				new SimpleIntegerProperty(radiusX),
+				new SimpleIntegerProperty(radiusY),
+				new SimpleDoubleProperty(xAxisRotation),
+				new SimpleBooleanProperty(largeArcFlag),
+				new SimpleBooleanProperty(sweepFlag));
 	}
 
 	@Override

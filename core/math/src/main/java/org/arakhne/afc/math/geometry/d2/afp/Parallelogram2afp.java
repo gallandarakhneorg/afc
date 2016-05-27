@@ -2038,6 +2038,18 @@ public interface Parallelogram2afp<
 								elem.getToX() - this.centerX, elem.getToY() - this.centerY),
 						projectVectorOnParallelogramSAxis(this.axisX1, this.axisY1, this.axisX2, this.axisY2,
 								elem.getToX() - this.centerX, elem.getToY() - this.centerY));
+			case ARC_TO:
+				return getGeomFactory().newArcPathElement(
+						projectVectorOnParallelogramRAxis(this.axisX1, this.axisY1, this.axisX2, this.axisY2,
+								elem.getFromX() - this.centerX, elem.getFromY() - this.centerY),
+						projectVectorOnParallelogramSAxis(this.axisX1, this.axisY1, this.axisX2, this.axisY2,
+								elem.getFromX() - this.centerX, elem.getFromY() - this.centerY),
+						projectVectorOnParallelogramRAxis(this.axisX1, this.axisY1, this.axisX2, this.axisY2,
+								elem.getToX() - this.centerX, elem.getToY() - this.centerY),
+						projectVectorOnParallelogramSAxis(this.axisX1, this.axisY1, this.axisX2, this.axisY2,
+								elem.getToX() - this.centerX, elem.getToY() - this.centerY),
+						elem.getRadiusX(), elem.getRadiusX(), elem.getRotationX(),
+						elem.getLargeArcFlag(), elem.getSweepFlag());
 			case LINE_TO:
 				return getGeomFactory().newLinePathElement(
 						projectVectorOnParallelogramRAxis(this.axisX1, this.axisY1, this.axisX2, this.axisY2,

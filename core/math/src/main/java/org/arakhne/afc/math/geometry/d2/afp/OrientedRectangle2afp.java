@@ -1659,6 +1659,18 @@ public interface OrientedRectangle2afp<
 								elem.getToX() - this.centerX, elem.getToY() - this.centerY),
 						projectVectorOnOrientedRectangleSAxis(this.axisX1, this.axisY1,
 								elem.getToX() - this.centerX, elem.getToY() - this.centerY));
+			case ARC_TO:
+				return getGeomFactory().newArcPathElement(
+						projectVectorOnOrientedRectangleRAxis(this.axisX1, this.axisY1,
+								elem.getFromX() - this.centerX, elem.getFromY() - this.centerY),
+						projectVectorOnOrientedRectangleSAxis(this.axisX1, this.axisY1,
+								elem.getFromX() - this.centerX, elem.getFromY() - this.centerY),
+						projectVectorOnOrientedRectangleRAxis(this.axisX1, this.axisY1,
+								elem.getToX() - this.centerX, elem.getToY() - this.centerY),
+						projectVectorOnOrientedRectangleSAxis(this.axisX1, this.axisY1,
+								elem.getToX() - this.centerX, elem.getToY() - this.centerY),
+						elem.getRadiusX(), elem.getRadiusY(), elem.getRotationX(),
+						elem.getLargeArcFlag(), elem.getSweepFlag());
 			case LINE_TO:
 				return getGeomFactory().newLinePathElement(
 						projectVectorOnOrientedRectangleRAxis(this.axisX1, this.axisY1,

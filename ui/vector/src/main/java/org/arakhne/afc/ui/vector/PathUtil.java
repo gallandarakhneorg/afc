@@ -370,6 +370,8 @@ public class PathUtil {
 						pathElement.fromX, pathElement.fromY,
 						pathElement.toX, pathElement.toY);
 				break;
+			case CURVE_TO:
+			case QUAD_TO:
 			default:
 				throw new IllegalStateException();
 			}		
@@ -422,6 +424,8 @@ public class PathUtil {
 				lastPoint = new Point2f(pathElement.toX, pathElement.toY);
 				points.add(new Pair<>(length, lastPoint));
 				break;
+			case CURVE_TO:
+			case QUAD_TO:
 			default:
 				throw new IllegalStateException();
 			}

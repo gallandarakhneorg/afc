@@ -622,6 +622,7 @@ public final class MeasureUnitUtil {
 			return 3.6 * value;
 		case MILLIMETERS_PER_SECOND:
 			return value / 1000.;
+		case METERS_PER_SECOND:
 		default:
 		}
 		return value;
@@ -640,6 +641,7 @@ public final class MeasureUnitUtil {
 			return value * (2. * MathConstants.PI);
 		case DEGREES_PER_SECOND:
 			return Math.toRadians(value);
+		case RADIANS_PER_SECOND:
 		default:
 		}
 		return value;
@@ -658,6 +660,7 @@ public final class MeasureUnitUtil {
 			return value / 3.6;
 		case MILLIMETERS_PER_SECOND:
 			return value * 1000.;
+		case METERS_PER_SECOND:
 		default:
 		}
 		return value;
@@ -676,6 +679,7 @@ public final class MeasureUnitUtil {
 			return value / (2. * MathConstants.PI);
 		case DEGREES_PER_SECOND:
 			return Math.toDegrees(value);
+		case RADIANS_PER_SECOND:
 		default:
 		}
 		return value;

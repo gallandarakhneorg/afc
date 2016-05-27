@@ -214,6 +214,10 @@ public interface Shape2ai<
 			case CURVE_TO:
 				newPath.curveTo(e.getCtrlX1(), e.getCtrlY1(), e.getCtrlX2(), e.getCtrlY2(), e.getToX(), e.getToY());
 				break;
+			case ARC_TO:
+				newPath.arcTo(e.getToX(), e.getToY(), e.getRadiusX(), e.getRadiusY(), e.getRotationX(),
+						e.getLargeArcFlag(), e.getSweepFlag());
+				break;
 			case CLOSE:
 				newPath.closePath();
 				break;

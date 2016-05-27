@@ -22,9 +22,11 @@
 package org.arakhne.afc.math.geometry.d2.ai;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import org.arakhne.afc.math.AbstractMathTestCase;
 import org.arakhne.afc.math.geometry.PathElementType;
@@ -290,5 +292,20 @@ public abstract class AbstractGeomFactory2aiTest extends AbstractMathTestCase {
 		assertEquals(8, element.getToY());
 	}
 
+	@Test
+	public void newArcPathElement() {
+		PathElement2ai element = this.factory.newArcPathElement(1, 2, 3, 4, 5, 6, 7, true, false);
+		assertNotNull(element);
+		assertSame(PathElementType.ARC_TO, element.getType());
+		assertEquals(1, element.getFromX());
+		assertEquals(2, element.getFromY());
+		assertEquals(3, element.getToX());
+		assertEquals(4, element.getToY());
+		assertEquals(5, element.getRadiusX());
+		assertEquals(6, element.getRadiusY());
+		assertEpsilonEquals(7, element.getRotationX());
+		assertTrue(element.getLargeArcFlag());
+		assertFalse(element.getSweepFlag());
+	}
 	
 }

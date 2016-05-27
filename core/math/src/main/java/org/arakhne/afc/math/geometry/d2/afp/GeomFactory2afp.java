@@ -125,6 +125,24 @@ public interface GeomFactory2afp<E extends PathElement2afp, P extends Point2D<? 
 	E newCurvePathElement(double startX, double startY, double controlX1, double controlY1,
 			double controlX2, double controlY2, double targetX, double targetY);
 
+	/** Create an arc-to path element to the given point by following an ellipse arc.
+	 *
+	 * @param startX x coordinate of the start point.
+	 * @param startY y coordinate of the start point.
+	 * @param targetX x coordinate of the target point.
+	 * @param targetY y coordinate of the target point.
+	 * @param radiusX the X radius of the tilted ellipse.
+	 * @param radiusY the Y radius of the tilted ellipse.
+	 * @param xAxisRotation the angle of tilt of the ellipse.
+	 * @param largeArcFlag <code>true</code> iff the path will sweep the long way around the ellipse.
+	 * @param sweepFlag <code>true</code> iff the path will sweep clockwise around the ellipse.
+	 * @return the path element.
+	 */
+	@SuppressWarnings("checkstyle:parameternumber")
+	E newArcPathElement(double startX, double startY, double targetX, double targetY,
+			double radiusX, double radiusY, double xAxisRotation,
+			boolean largeArcFlag, boolean sweepFlag);
+
 	/** Create a triangle.
 	 *
 	 * @param x1 the x coordinate of the first point of the triangle.

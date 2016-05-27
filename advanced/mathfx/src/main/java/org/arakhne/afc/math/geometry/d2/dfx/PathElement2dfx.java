@@ -39,7 +39,7 @@ import org.arakhne.afc.math.geometry.d2.afp.PathElement2afp;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-@SuppressWarnings("checkstyle:magicnumber")
+@SuppressWarnings({"checkstyle:magicnumber", "static-method"})
 public abstract class PathElement2dfx implements PathElement2afp {
 
 	private static final long serialVersionUID = 1724746568685625149L;
@@ -74,40 +74,6 @@ public abstract class PathElement2dfx implements PathElement2afp {
 		this.toY = toy;
 	}
 
-	/** Create an instance of path element.
-	 *
-	 * @param type is the type of the new element.
-	 * @param lastX is the coordinate of the last point.
-	 * @param lastY is the coordinate of the last point.
-	 * @param coords are the coordinates.
-	 * @return the instance of path element.
-	 */
-	@Pure
-	public static PathElement2dfx newInstance(PathElementType type, DoubleProperty lastX,
-			DoubleProperty lastY, DoubleProperty[] coords) {
-		assert type != null : "Path element type must be not null"; //$NON-NLS-1$
-		assert lastX != null : "lastX must be not null"; //$NON-NLS-1$
-		assert lastY != null : "lastY must be not null"; //$NON-NLS-1$
-		assert coords != null : "Coordinates must be not null"; //$NON-NLS-1$
-		assert coords.length >= 2 : "Coordinates size is too small"; //$NON-NLS-1$
-		switch (type) {
-		case MOVE_TO:
-			return new MovePathElement2fx(coords[0], coords[1]);
-		case LINE_TO:
-			return new LinePathElement2fx(lastX, lastY, coords[0], coords[1]);
-		case QUAD_TO:
-			assert coords.length >= 4 : "Coordinates size is too small"; //$NON-NLS-1$
-			return new QuadPathElement2fx(lastX, lastY, coords[0], coords[1], coords[2], coords[3]);
-		case CURVE_TO:
-			assert coords.length >= 6 : "Coordinates size is too small"; //$NON-NLS-1$
-			return new CurvePathElement2fx(lastX, lastY, coords[0], coords[1], coords[2], coords[3], coords[4], coords[5]);
-		case CLOSE:
-			return new ClosePathElement2fx(lastX, lastY, coords[0], coords[1]);
-		default:
-		}
-		throw new IllegalArgumentException();
-	}
-
 	@Pure
 	@Override
 	public abstract boolean equals(Object obj);
@@ -139,53 +105,21 @@ public abstract class PathElement2dfx implements PathElement2afp {
 		return this.toY.get();
 	}
 
-	/** Replies the x coordinate of the starting point property.
+	/** Replies the property for the x coordinate of the starting point.
 	 *
 	 * @return the x coordinate, or <code>null</code> if the type is {@link PathElementType#MOVE_TO}.
 	 */
 	@Pure
 	public abstract DoubleProperty fromXProperty();
 
-	/** Replies the y coordinate of the starting point property.
+	/** Replies the property for the y coordinate of the starting point.
 	 *
 	 * @return the y coordinate, or <code>null</code> if the type is {@link PathElementType#MOVE_TO}.
 	 */
 	@Pure
 	public abstract DoubleProperty fromYProperty();
 
-	/** Replies the x coordinate of the first control point property.
-	 *
-	 * @return the x coordinate, or <code>null</code> if the type is {@link PathElementType#MOVE_TO},
-	 * {@link PathElementType#LINE_TO}, or {@link PathElementType#CLOSE}.
-	 */
-	@Pure
-	public abstract DoubleProperty ctrlX1Property();
-
-	/** Replies the y coordinate of the first control point property.
-	 *
-	 * @return the y coordinate, or {@link Double#NaN} if the type is {@link PathElementType#MOVE_TO},
-	 * {@link PathElementType#LINE_TO}, or {@link PathElementType#CLOSE}.
-	 */
-	@Pure
-	public abstract DoubleProperty ctrlY1Property();
-
-	/** Replies the x coordinate of the second control point property.
-	 *
-	 * @return the x coordinate, or <code>null</code> if the type is {@link PathElementType#MOVE_TO},
-	 * {@link PathElementType#LINE_TO}, {@link PathElementType#QUAD_TO}, or {@link PathElementType#CLOSE}.
-	 */
-	@Pure
-	public abstract DoubleProperty ctrlX2Property();
-
-	/** Replies the y coordinate of the second  control point property.
-	 *
-	 * @return the y coordinate, or <code>null</code> if the type is {@link PathElementType#MOVE_TO},
-	 * {@link PathElementType#LINE_TO}, {@link PathElementType#QUAD_TO}, or {@link PathElementType#CLOSE}.
-	 */
-	@Pure
-	public abstract DoubleProperty ctrlY2Property();
-
-	/** Replies the x coordinate of the target point property.
+	/** Replies the property for the x coordinate of the target point.
 	 *
 	 * @return the x coordinate.
 	 */
@@ -194,7 +128,7 @@ public abstract class PathElement2dfx implements PathElement2afp {
 		return this.toX;
 	}
 
-	/** Replies the y coordinate of the target point property.
+	/** Replies the property for the y coordinate of the target point.
 	 *
 	 * @return the y coordinate.
 	 */
@@ -223,6 +157,136 @@ public abstract class PathElement2dfx implements PathElement2afp {
 	@Pure
 	public abstract DoubleProperty[] toArray();
 
+	@Override
+	public double getCtrlX1() {
+		return 0;
+	}
+
+	@Override
+	public double getCtrlY1() {
+		return 0;
+	}
+
+	@Override
+	public double getCtrlX2() {
+		return 0;
+	}
+
+	@Override
+	public double getCtrlY2() {
+		return 0;
+	}
+
+	@Override
+	public double getRadiusX() {
+		return 0;
+	}
+
+	@Override
+	public double getRadiusY() {
+		return 0;
+	}
+
+	@Override
+	public double getRotationX() {
+		return 0;
+	}
+
+	@Override
+	public boolean getSweepFlag() {
+		return false;
+	}
+
+	@Override
+	public boolean getLargeArcFlag() {
+		return false;
+	}
+
+	/** Replies the property for the x coordinate of the first control point.
+	 *
+	 * @return the x coordinate, or <code>null</code> if the type is {@link PathElementType#MOVE_TO},
+	 * {@link PathElementType#LINE_TO}, or {@link PathElementType#CLOSE}.
+	 */
+	@Pure
+	public DoubleProperty ctrlX1Property() {
+		return null;
+	}
+
+	/** Replies the property for the y coordinate of the first control point.
+	 *
+	 * @return the y coordinate, or {@link Double#NaN} if the type is {@link PathElementType#MOVE_TO},
+	 * {@link PathElementType#LINE_TO}, or {@link PathElementType#CLOSE}.
+	 */
+	@Pure
+	public DoubleProperty ctrlY1Property() {
+		return null;
+	}
+
+	/** Replies the property for the x coordinate of the second control point.
+	 *
+	 * @return the x coordinate, or <code>null</code> if the type is {@link PathElementType#MOVE_TO},
+	 * {@link PathElementType#LINE_TO}, {@link PathElementType#QUAD_TO}, or {@link PathElementType#CLOSE}.
+	 */
+	@Pure
+	public DoubleProperty ctrlX2Property() {
+		return null;
+	}
+
+	/** Replies the property for the y coordinate of the second control point.
+	 *
+	 * @return the y coordinate, or <code>null</code> if the type is {@link PathElementType#MOVE_TO},
+	 * {@link PathElementType#LINE_TO}, {@link PathElementType#QUAD_TO}, or {@link PathElementType#CLOSE}.
+	 */
+	@Pure
+	public DoubleProperty ctrlY2Property() {
+		return null;
+	}
+
+	/** Replies the property for the radius along the x axis.
+	 *
+	 * @return the x radius, or <code>null</code> if the type is not {@link PathElementType#ARC_TO}.
+	 */
+	@Pure
+	public DoubleProperty radiusXProperty() {
+		return null;
+	}
+
+	/** Replies the property for the radius along the y axis.
+	 *
+	 * @return the y radius, or <code>null</code> if the type is not {@link PathElementType#ARC_TO}.
+	 */
+	@Pure
+	public DoubleProperty radiusYProperty() {
+		return null;
+	}
+
+	/** Replies the property for the rotation of the x axis.
+	 *
+	 * @return the x-axis rotation, or <code>null</code> if the type is not {@link PathElementType#ARC_TO}.
+	 */
+	@Pure
+	public DoubleProperty rotationXProperty() {
+		return null;
+	}
+
+	/** Replies the property for the large ellipse arc flag.
+	 *
+	 * @return the flag, or <code>null</code> if the type is not {@link PathElementType#ARC_TO}.
+	 */
+	@Pure
+	public BooleanProperty largeArcFlagProperty() {
+		return null;
+	}
+
+	/** Replies the property for the sweep ellipse arc flag.
+	 *
+	 * @return the flag, or <code>null</code> if the type is not {@link PathElementType#ARC_TO}.
+	 */
+	@Pure
+	public BooleanProperty sweepFlagProperty() {
+		return null;
+	}
+
 	/** An element of the path that represents a <code>MOVE_TO</code>.
 	 *
 	 * @author $Author: sgalland$
@@ -232,7 +296,7 @@ public abstract class PathElement2dfx implements PathElement2afp {
 	 * @mavenartifactid $ArtifactId$
 	 * @since 13.0
 	 */
-	static class MovePathElement2fx extends PathElement2dfx {
+	static class MovePathElement2dfx extends PathElement2dfx {
 
 		private static final long serialVersionUID = 4465791748559255427L;
 
@@ -240,7 +304,7 @@ public abstract class PathElement2dfx implements PathElement2afp {
 		 * @param tox x coordinate of the target point.
 		 * @param toy y coordinate of the target point.
 		 */
-		MovePathElement2fx(DoubleProperty tox, DoubleProperty toy) {
+		MovePathElement2dfx(DoubleProperty tox, DoubleProperty toy) {
 			super(PathElementType.MOVE_TO, tox, toy);
 		}
 
@@ -336,63 +400,13 @@ public abstract class PathElement2dfx implements PathElement2afp {
 			return 0.;
 		}
 
-		@Pure
-		@Override
-		public double getCtrlX1() {
-			return 0.;
-		}
-
-		@Pure
-		@Override
-		public double getCtrlY1() {
-			return 0.;
-		}
-
-		@Pure
-		@Override
-		public double getCtrlX2() {
-			return 0.;
-		}
-
-		@Pure
-		@Override
-		public double getCtrlY2() {
-			return 0.;
-		}
-
-		@Pure
 		@Override
 		public DoubleProperty fromXProperty() {
 			return null;
 		}
 
-		@Pure
 		@Override
 		public DoubleProperty fromYProperty() {
-			return null;
-		}
-
-		@Pure
-		@Override
-		public DoubleProperty ctrlX1Property() {
-			return null;
-		}
-
-		@Pure
-		@Override
-		public DoubleProperty ctrlY1Property() {
-			return null;
-		}
-
-		@Pure
-		@Override
-		public DoubleProperty ctrlX2Property() {
-			return null;
-		}
-
-		@Pure
-		@Override
-		public DoubleProperty ctrlY2Property() {
 			return null;
 		}
 
@@ -407,7 +421,7 @@ public abstract class PathElement2dfx implements PathElement2afp {
 	 * @mavenartifactid $ArtifactId$
 	 * @since 13.0
 	 */
-	static class LinePathElement2fx extends PathElement2dfx {
+	static class LinePathElement2dfx extends PathElement2dfx {
 
 		private static final long serialVersionUID = -8828290765080530997L;
 
@@ -421,7 +435,7 @@ public abstract class PathElement2dfx implements PathElement2afp {
 		 * @param tox x coordinate of the target point.
 		 * @param toy y coordinate of the target point.
 		 */
-		LinePathElement2fx(DoubleProperty fromx, DoubleProperty fromy, DoubleProperty tox, DoubleProperty toy) {
+		LinePathElement2dfx(DoubleProperty fromx, DoubleProperty fromy, DoubleProperty tox, DoubleProperty toy) {
 			super(PathElementType.LINE_TO, tox, toy);
 			assert fromx != null : "fromX must be not null"; //$NON-NLS-1$
 			assert fromy != null : "fromY must be not null"; //$NON-NLS-1$
@@ -533,30 +547,6 @@ public abstract class PathElement2dfx implements PathElement2afp {
 
 		@Pure
 		@Override
-		public double getCtrlX1() {
-			return 0.;
-		}
-
-		@Pure
-		@Override
-		public double getCtrlY1() {
-			return 0.;
-		}
-
-		@Pure
-		@Override
-		public double getCtrlX2() {
-			return 0.;
-		}
-
-		@Pure
-		@Override
-		public double getCtrlY2() {
-			return 0.;
-		}
-
-		@Pure
-		@Override
 		public DoubleProperty fromXProperty() {
 			return this.fromX;
 		}
@@ -565,30 +555,6 @@ public abstract class PathElement2dfx implements PathElement2afp {
 		@Override
 		public DoubleProperty fromYProperty() {
 			return this.fromY;
-		}
-
-		@Pure
-		@Override
-		public DoubleProperty ctrlX1Property() {
-			return null;
-		}
-
-		@Pure
-		@Override
-		public DoubleProperty ctrlY1Property() {
-			return null;
-		}
-
-		@Pure
-		@Override
-		public DoubleProperty ctrlX2Property() {
-			return null;
-		}
-
-		@Pure
-		@Override
-		public DoubleProperty ctrlY2Property() {
-			return null;
 		}
 
 	}
@@ -602,7 +568,7 @@ public abstract class PathElement2dfx implements PathElement2afp {
 	 * @mavenartifactid $ArtifactId$
 	 * @since 13.0
 	 */
-	static class QuadPathElement2fx extends PathElement2dfx {
+	static class QuadPathElement2dfx extends PathElement2dfx {
 
 		private static final long serialVersionUID = 4782822639304211439L;
 
@@ -622,7 +588,7 @@ public abstract class PathElement2dfx implements PathElement2afp {
 		 * @param tox x coordinate of the target point.
 		 * @param toy y coordinate of the target point.
 		 */
-		QuadPathElement2fx(DoubleProperty fromx, DoubleProperty fromy, DoubleProperty ctrlx,
+		QuadPathElement2dfx(DoubleProperty fromx, DoubleProperty fromy, DoubleProperty ctrlx,
 				DoubleProperty ctrly, DoubleProperty tox, DoubleProperty toy) {
 			super(PathElementType.QUAD_TO, tox, toy);
 			assert fromx != null : "fromX must be not null"; //$NON-NLS-1$
@@ -765,18 +731,6 @@ public abstract class PathElement2dfx implements PathElement2afp {
 
 		@Pure
 		@Override
-		public double getCtrlX2() {
-			return 0.;
-		}
-
-		@Pure
-		@Override
-		public double getCtrlY2() {
-			return 0.;
-		}
-
-		@Pure
-		@Override
 		public DoubleProperty fromXProperty() {
 			return this.fromX;
 		}
@@ -799,18 +753,6 @@ public abstract class PathElement2dfx implements PathElement2afp {
 			return this.ctrlY;
 		}
 
-		@Pure
-		@Override
-		public DoubleProperty ctrlX2Property() {
-			return null;
-		}
-
-		@Pure
-		@Override
-		public DoubleProperty ctrlY2Property() {
-			return null;
-		}
-
 	}
 
 	/** An element of the path that represents a <code>CURVE_TO</code>.
@@ -822,7 +764,7 @@ public abstract class PathElement2dfx implements PathElement2afp {
 	 * @mavenartifactid $ArtifactId$
 	 * @since 13.0
 	 */
-	static class CurvePathElement2fx extends PathElement2dfx {
+	static class CurvePathElement2dfx extends PathElement2dfx {
 
 		private static final long serialVersionUID = -2831895270995173092L;
 
@@ -848,7 +790,7 @@ public abstract class PathElement2dfx implements PathElement2afp {
 		 * @param tox x coordinate of the target point.
 		 * @param toy y coordinate of the target point.
 		 */
-		CurvePathElement2fx(DoubleProperty fromx, DoubleProperty fromy, DoubleProperty ctrlx1,
+		CurvePathElement2dfx(DoubleProperty fromx, DoubleProperty fromy, DoubleProperty ctrlx1,
 				DoubleProperty ctrly1, DoubleProperty ctrlx2, DoubleProperty ctrly2,
 				DoubleProperty tox, DoubleProperty toy) {
 			super(PathElementType.CURVE_TO, tox, toy);
@@ -1067,7 +1009,7 @@ public abstract class PathElement2dfx implements PathElement2afp {
 	 * @mavenartifactid $ArtifactId$
 	 * @since 13.0
 	 */
-	static class ClosePathElement2fx extends PathElement2dfx {
+	static class ClosePathElement2dfx extends PathElement2dfx {
 
 		private static final long serialVersionUID = 5324688417590599323L;
 
@@ -1081,7 +1023,7 @@ public abstract class PathElement2dfx implements PathElement2afp {
 		 * @param tox x coordinate of the target point.
 		 * @param toy y coordinate of the target point.
 		 */
-		ClosePathElement2fx(DoubleProperty fromx, DoubleProperty fromy, DoubleProperty tox, DoubleProperty toy) {
+		ClosePathElement2dfx(DoubleProperty fromx, DoubleProperty fromy, DoubleProperty tox, DoubleProperty toy) {
 			super(PathElementType.CLOSE, tox, toy);
 			assert fromx != null : "fromX must be not null"; //$NON-NLS-1$
 			assert fromy != null : "fromY must be not null"; //$NON-NLS-1$
@@ -1193,26 +1135,184 @@ public abstract class PathElement2dfx implements PathElement2afp {
 
 		@Pure
 		@Override
-		public double getCtrlX1() {
-			return 0.;
+		public DoubleProperty fromXProperty() {
+			return this.fromX;
 		}
 
 		@Pure
 		@Override
-		public double getCtrlY1() {
-			return 0.;
+		public DoubleProperty fromYProperty() {
+			return this.fromY;
+		}
+
+	}
+
+	/** An element of the path that represents a <code>ARC_TO</code>.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 * @since 13.0
+	 */
+	static class ArcPathElement2dfx extends PathElement2dfx {
+
+		private static final long serialVersionUID = 1191891479706357600L;
+
+		private final DoubleProperty fromX;
+
+		private final DoubleProperty fromY;
+
+		private final DoubleProperty radiusX;
+
+		private final DoubleProperty radiusY;
+
+		private final DoubleProperty rotationX;
+
+		private final BooleanProperty largeArcFlag;
+
+		private final BooleanProperty sweepFlag;
+
+		/**
+		 * @param fromx x coordinate of the origin point.
+		 * @param fromy y coordinate of the origin point.
+		 * @param tox x coordinate of the target point.
+		 * @param toy y coordinate of the target point.
+		 * @param xradius radius of the ellipse along its x axis.
+		 * @param yradius radius of the ellipse along its y axis.
+		 * @param xrotation rotation (in radians) of the ellipse's x axis.
+		 * @param largeArcFlag <code>true</code> iff the path will sweep the long way around the ellipse.
+		 * @param sweepFlag <code>true</code> iff the path will sweep clockwise around the ellipse.
+		 */
+		ArcPathElement2dfx(DoubleProperty fromx, DoubleProperty fromy, DoubleProperty tox, DoubleProperty toy,
+				DoubleProperty xradius, DoubleProperty yradius, DoubleProperty xrotation,
+				BooleanProperty largeArcFlag, BooleanProperty sweepFlag) {
+			super(PathElementType.ARC_TO, tox, toy);
+			assert fromx != null : "fromx must be not null"; //$NON-NLS-1$
+			assert fromy != null : "fromy must be not null"; //$NON-NLS-1$
+			assert xradius != null : "xradius must be not null"; //$NON-NLS-1$
+			assert yradius != null : "yradius must be not null"; //$NON-NLS-1$
+			assert xrotation != null : "xrotation must be not null"; //$NON-NLS-1$
+			assert largeArcFlag != null : "largeArcFlag must be not null"; //$NON-NLS-1$
+			assert sweepFlag != null : "sweepFlag must be not null"; //$NON-NLS-1$
+			this.fromX = fromx;
+			this.fromY = fromy;
+			this.radiusX = xradius;
+			this.radiusY = yradius;
+			this.rotationX = xrotation;
+			this.largeArcFlag = largeArcFlag;
+			this.sweepFlag = sweepFlag;
 		}
 
 		@Pure
 		@Override
-		public double getCtrlX2() {
-			return 0.;
+		public boolean equals(Object obj) {
+			try {
+				final PathElement2afp elt = (PathElement2afp) obj;
+				return getType() == elt.getType()
+						&& getToX() == elt.getToX()
+						&& getToY() == elt.getToY()
+						&& getRadiusX() == elt.getRadiusX()
+						&& getRadiusY() == elt.getRadiusY()
+						&& getRotationX() == elt.getRotationX()
+						&& getLargeArcFlag() == elt.getLargeArcFlag()
+						&& getSweepFlag() == elt.getSweepFlag();
+			} catch (Throwable exception) {
+				//
+			}
+			return false;
 		}
 
 		@Pure
 		@Override
-		public double getCtrlY2() {
-			return 0.;
+		public int hashCode() {
+			long bits = 1L;
+			bits = 31L * bits + this.type.ordinal();
+			bits = 31L * bits + Double.doubleToLongBits(getToX());
+			bits = 31L * bits + Double.doubleToLongBits(getToY());
+			bits = 31L * bits + Double.doubleToLongBits(getRadiusX());
+			bits = 31L * bits + Double.doubleToLongBits(getRadiusY());
+			bits = 31L * bits + Double.doubleToLongBits(getRotationX());
+			bits = 31L * bits + Boolean.hashCode(getLargeArcFlag());
+			bits = 31L * bits + Boolean.hashCode(getSweepFlag());
+			return (int) (bits ^ (bits >> 32));
+		}
+
+		@Pure
+		@Override
+		public BooleanProperty isEmptyProperty() {
+			if (this.isEmpty == null) {
+				this.isEmpty = new ReadOnlyBooleanWrapper(this, "isEmpty"); //$NON-NLS-1$
+				this.isEmpty.bind(Bindings.createBooleanBinding(() -> {
+					return MathUtil.isEpsilonEqual(fromXProperty().get(), toXProperty().get())
+							&& MathUtil.isEpsilonEqual(fromYProperty().get(), toYProperty().get());
+				}, fromXProperty(), toXProperty(), fromYProperty(), toYProperty()));
+			}
+			return this.isEmpty;
+		}
+
+		@Pure
+		@Override
+		public boolean isDrawable() {
+			return !isEmpty();
+		}
+
+		@Pure
+		@Override
+		public void toArray(int[] array) {
+			assert array != null : "Array must be not null"; //$NON-NLS-1$
+			assert array.length >= 2 : "Array size is too small"; //$NON-NLS-1$
+			array[0] = this.toX.intValue();
+			array[1] = this.toY.intValue();
+		}
+
+		@Pure
+		@Override
+		public void toArray(DoubleProperty[] array) {
+			assert array != null : "Array must be not null"; //$NON-NLS-1$
+			assert array.length >= 2 : "Array size is too small"; //$NON-NLS-1$
+			array[0] = this.toX;
+			array[1] = this.toY;
+		}
+
+		@Pure
+		@Override
+		public void toArray(double[] array) {
+			assert array != null : "Array must be not null"; //$NON-NLS-1$
+			assert array.length >= 2 : "Array size is too small"; //$NON-NLS-1$
+			array[0] = this.toX.doubleValue();
+			array[1] = this.toY.doubleValue();
+		}
+
+		@Pure
+		@Override
+		public DoubleProperty[] toArray() {
+			return new DoubleProperty[] {this.toX, this.toY};
+		}
+
+		@Pure
+		@Override
+		public String toString() {
+			return "ARC(" //$NON-NLS-1$
+					+ getRadiusX() + "x" //$NON-NLS-1$
+					+ getRadiusY() + "|" //$NON-NLS-1$
+					+ getRotationX() + "x" //$NON-NLS-1$
+					+ getLargeArcFlag() + "x" //$NON-NLS-1$
+					+ getSweepFlag() + "|" //$NON-NLS-1$
+					+ getToX() + "x" //$NON-NLS-1$
+					+ getToY() + ")"; //$NON-NLS-1$
+		}
+
+		@Pure
+		@Override
+		public double getFromX() {
+			return this.fromX.get();
+		}
+
+		@Pure
+		@Override
+		public double getFromY() {
+			return this.fromY.get();
 		}
 
 		@Pure
@@ -1227,28 +1327,54 @@ public abstract class PathElement2dfx implements PathElement2afp {
 			return this.fromY;
 		}
 
-		@Pure
 		@Override
-		public DoubleProperty ctrlX1Property() {
-			return null;
+		public double getRadiusX() {
+			return this.radiusX.get();
 		}
 
-		@Pure
 		@Override
-		public DoubleProperty ctrlY1Property() {
-			return null;
+		public double getRadiusY() {
+			return this.radiusY.get();
 		}
 
-		@Pure
 		@Override
-		public DoubleProperty ctrlX2Property() {
-			return null;
+		public double getRotationX() {
+			return this.rotationX.get();
 		}
 
-		@Pure
 		@Override
-		public DoubleProperty ctrlY2Property() {
-			return null;
+		public boolean getSweepFlag() {
+			return this.sweepFlag.get();
+		}
+
+		@Override
+		public boolean getLargeArcFlag() {
+			return this.largeArcFlag.get();
+		}
+
+		@Override
+		public DoubleProperty radiusXProperty() {
+			return this.radiusX;
+		}
+
+		@Override
+		public DoubleProperty radiusYProperty() {
+			return this.radiusY;
+		}
+
+		@Override
+		public DoubleProperty rotationXProperty() {
+			return this.rotationX;
+		}
+
+		@Override
+		public BooleanProperty largeArcFlagProperty() {
+			return this.largeArcFlag;
+		}
+
+		@Override
+		public BooleanProperty sweepFlagProperty() {
+			return this.sweepFlag;
 		}
 
 	}

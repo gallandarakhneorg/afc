@@ -151,6 +151,14 @@ public class GeomFactory2i implements GeomFactory2ai<PathElement2i, Point2i, Vec
 	}
 
 	@Override
+	@SuppressWarnings("checkstyle:parameternumber")
+	public PathElement2i newArcPathElement(int startX, int startY, int targetX, int targetY, int radiusX, int radiusY,
+			double xAxisRotation, boolean largeArcFlag, boolean sweepFlag) {
+		return new PathElement2i.ArcPathElement2i(startX, startY, targetX, targetY,
+				radiusX, radiusY, xAxisRotation, largeArcFlag, sweepFlag);
+	}
+
+	@Override
 	public Segment2i newSegment(int x1, int y1, int x2, int y2) {
 		return new Segment2i(x1, y1, x2, y2);
 	}

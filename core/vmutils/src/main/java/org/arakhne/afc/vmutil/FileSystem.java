@@ -323,6 +323,7 @@ public final class FileSystem {
 	public static boolean isCaseSensitiveFilenameSystem() {
 		switch (OperatingSystem.getCurrentOS()) {
 		case AIX:
+		case ANDROID:
 		case BSD:
 		case FREEBSD:
 		case NETBSD:
@@ -2155,6 +2156,7 @@ public final class FileSystem {
 	 * @param current is the current directory which permits to make absolute.
 	 * @return an absolute filename.
 	 */
+	@SuppressWarnings("checkstyle:cyclomaticcomplexity")
 	public static URL makeAbsolute(URL filename, URL current) {
 		if (filename == null) {
 			return null;
@@ -2179,6 +2181,15 @@ public final class FileSystem {
 				}
 			}
 			break;
+		case UNSUPPORTED:
+		case TELNET:
+		case FTP:
+		case HTTP:
+		case HTTPS:
+		case MAILTO:
+		case NEWS:
+		case RESOURCE:
+		case SSH:
 		default:
 			// do not change the URL
 		}
@@ -2266,6 +2277,7 @@ public final class FileSystem {
 	 * @return the parent URL
 	 * @throws MalformedURLException if the parent URL cannot be built.
 	 */
+	@SuppressWarnings("checkstyle:cyclomaticcomplexity")
 	public static URL getParentURL(URL url) throws MalformedURLException {
 		if (url == null) {
 			return url;
@@ -2286,6 +2298,15 @@ public final class FileSystem {
 			prefix = null;
 			parentStr = ".." + URL_PATH_SEPARATOR; //$NON-NLS-1$
 			break;
+		case FTP:
+		case HTTP:
+		case HTTPS:
+		case MAILTO:
+		case NEWS:
+		case RESOURCE:
+		case SSH:
+		case TELNET:
+		case UNSUPPORTED:
 		default:
 			prefix = null;
 			parentStr = URL_PATH_SEPARATOR;

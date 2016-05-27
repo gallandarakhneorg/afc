@@ -21,6 +21,7 @@
 package org.arakhne.afc.math.geometry.d2.dfx;
 
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 
 import org.arakhne.afc.math.geometry.PathWindingRule;
@@ -152,14 +153,14 @@ public class GeomFactory2dfx implements GeomFactory2afp<PathElement2dfx, Point2d
 
 	@Override
 	public PathElement2dfx newMovePathElement(double x, double y) {
-		return new PathElement2dfx.MovePathElement2fx(
+		return new PathElement2dfx.MovePathElement2dfx(
 				new SimpleDoubleProperty(x),
 				new SimpleDoubleProperty(y));
 	}
 
 	@Override
 	public PathElement2dfx newLinePathElement(double startX, double startY, double targetX, double targetY) {
-		return new PathElement2dfx.LinePathElement2fx(
+		return new PathElement2dfx.LinePathElement2dfx(
 				new SimpleDoubleProperty(startX),
 				new SimpleDoubleProperty(startY),
 				new SimpleDoubleProperty(targetX),
@@ -169,7 +170,7 @@ public class GeomFactory2dfx implements GeomFactory2afp<PathElement2dfx, Point2d
 	@Override
 	public PathElement2dfx newClosePathElement(double lastPointX, double lastPointY, double firstPointX,
 			double firstPointY) {
-		return new PathElement2dfx.ClosePathElement2fx(
+		return new PathElement2dfx.ClosePathElement2dfx(
 				new SimpleDoubleProperty(lastPointX),
 				new SimpleDoubleProperty(lastPointY),
 				new SimpleDoubleProperty(firstPointX),
@@ -179,7 +180,7 @@ public class GeomFactory2dfx implements GeomFactory2afp<PathElement2dfx, Point2d
 	@Override
 	public PathElement2dfx newCurvePathElement(double startX, double startY, double controlX, double controlY,
 			double targetX, double targetY) {
-		return new PathElement2dfx.QuadPathElement2fx(
+		return new PathElement2dfx.QuadPathElement2dfx(
 				new SimpleDoubleProperty(startX),
 				new SimpleDoubleProperty(startY),
 				new SimpleDoubleProperty(controlX),
@@ -191,7 +192,7 @@ public class GeomFactory2dfx implements GeomFactory2afp<PathElement2dfx, Point2d
 	@Override
 	public PathElement2dfx newCurvePathElement(double startX, double startY, double controlX1, double controlY1,
 			double controlX2, double controlY2, double targetX, double targetY) {
-		return new PathElement2dfx.CurvePathElement2fx(
+		return new PathElement2dfx.CurvePathElement2dfx(
 				new SimpleDoubleProperty(startX),
 				new SimpleDoubleProperty(startY),
 				new SimpleDoubleProperty(controlX1),
@@ -200,6 +201,22 @@ public class GeomFactory2dfx implements GeomFactory2afp<PathElement2dfx, Point2d
 				new SimpleDoubleProperty(controlY2),
 				new SimpleDoubleProperty(targetX),
 				new SimpleDoubleProperty(targetY));
+	}
+
+	@Override
+	@SuppressWarnings("checkstyle:parameternumber")
+	public PathElement2dfx newArcPathElement(double startX, double startY, double targetX, double targetY,
+			double radiusX, double radiusY, double xAxisRotation, boolean largeArcFlag, boolean sweepFlag) {
+		return new PathElement2dfx.ArcPathElement2dfx(
+				new SimpleDoubleProperty(startX),
+				new SimpleDoubleProperty(startY),
+				new SimpleDoubleProperty(targetX),
+				new SimpleDoubleProperty(targetY),
+				new SimpleDoubleProperty(radiusX),
+				new SimpleDoubleProperty(radiusY),
+				new SimpleDoubleProperty(xAxisRotation),
+				new SimpleBooleanProperty(largeArcFlag),
+				new SimpleBooleanProperty(sweepFlag));
 	}
 
 	@Override

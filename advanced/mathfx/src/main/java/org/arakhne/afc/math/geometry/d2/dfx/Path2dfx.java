@@ -642,6 +642,7 @@ public class Path2dfx extends AbstractShape2dfx<Path2dfx>
 			case QUAD_TO:
 				coordIndex = coordSize - 4;
 				break;
+			case ARC_TO:
 			default:
 				throw new IllegalStateException();
 			}
@@ -787,6 +788,8 @@ public class Path2dfx extends AbstractShape2dfx<Path2dfx>
 				case CLOSE:
 					++j;
 					break;
+				case ARC_TO:
+					throw new IllegalStateException();
 				default:
 					break;
 				}

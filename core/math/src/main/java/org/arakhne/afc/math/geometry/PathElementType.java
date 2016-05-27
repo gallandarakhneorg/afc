@@ -46,6 +46,12 @@ public enum PathElementType {
 	 */
 	CURVE_TO,
 
+	/** Arc to the next point.
+	 *
+	 * <p>Arc-to is a sub-type of {@link #CURVE_TO}
+	 */
+	ARC_TO,
+
 	/** Close the path.
 	 */
 	CLOSE;

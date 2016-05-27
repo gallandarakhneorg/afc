@@ -114,4 +114,41 @@ public interface PathElement2afp extends PathElement2D {
 	@Pure
 	void toArray(double[] array);
 
+	/** Replies the x radius of the arc-to ellipse.
+	 *
+	 * @return the x radius, or <code>0</code> if the type is not {@link PathElementType#ARC_TO}.
+	 */
+	@Pure
+	double getRadiusX();
+
+	/** Replies the y radius of the arc-to ellipse.
+	 *
+	 * @return the y radius, or <code>0</code> if the type is not {@link PathElementType#ARC_TO}.
+	 */
+	@Pure
+	double getRadiusY();
+
+	/** Replies the rotation of the x axis of the arc-to ellipse.
+	 *
+	 * @return the x axis rotation, or <code>0</code> if the type is not {@link PathElementType#ARC_TO}.
+	 */
+	@Pure
+	double getRotationX();
+
+	/** Replies if the arc-to will sweep the long way around the ellipse.
+	 *
+	 * @return <code>true</code> iff the element will sweep clockwise around the ellipse,
+	 *     or <code>0</code> if the type is not {@link PathElementType#ARC_TO}.
+	 */
+	@Pure
+	boolean getSweepFlag();
+
+	/** Replies if the arc-to will sweep clockwise around the ellipse.
+	 *
+	 * @return <code>true</code> iff the element will sweep clockwise around the ellipse,
+	 *     or <code>0</code> if the type is not {@link PathElementType#ARC_TO}.
+	 */
+	@Pure
+	boolean getLargeArcFlag();
+
 }
