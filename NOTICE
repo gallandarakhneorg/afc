@@ -1,0 +1,7 @@
+Arakhnê Foundation Classes
+Copyright (c) 2013-2016 The original authors, and other authors.
+
+The original authors, other authors and contributors are listed in the root Maven file "pom.xml".
+
+This library does not include third-party sofware.
+This library depends on libraries that are available on the Maven Central Server (see the Maven dependencies of this library for a complete list).
