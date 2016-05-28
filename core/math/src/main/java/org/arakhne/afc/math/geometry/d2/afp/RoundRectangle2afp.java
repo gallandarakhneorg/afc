@@ -57,11 +57,6 @@ public interface RoundRectangle2afp<
 		B extends Rectangle2afp<?, ?, IE, P, V, B>>
 		extends RectangularShape2afp<ST, IT, IE, P, V, B> {
 
-	final String ROUND_RECTANGLE_ARC_HEIGHT = "Round rectangle arc height must be positive or zero";
-    final String ROUND_RECTANGLE_ARC_WIDTH = "Round rectangle arc width must be positive or zero";
-    final String RY1_LOWER_EQUAL_RY2 = "ry1 must be lower or equal ry2";
-    final String RX1_LOWER_EQUAL_RX2 = "rx1 must be lower or equal rx2";
-
 	/** Replies if a rectangle is inside in the round rectangle.
 	 *
 	 * @param rx1 is the lowest corner of the round rectangle.
@@ -83,8 +78,8 @@ public interface RoundRectangle2afp<
 			double awidth, double aheight, double rx2, double ry2, double rwidth2, double rheight2) {
 		assert rwidth1 >= 0. : "Round rectangle width must be positive or zero"; //$NON-NLS-1$
 		assert rheight1 >= 0. : "Round rectangle height must be positive or zero"; //$NON-NLS-1$
-		assert awidth >= 0. : ROUND_RECTANGLE_ARC_WIDTH; //$NON-NLS-1$
-		assert aheight >= 0. : ROUND_RECTANGLE_ARC_HEIGHT; //$NON-NLS-1$
+		assert awidth >= 0. : "Round rectangle arc width must be positive or zero"; //$NON-NLS-1$
+		assert aheight >= 0. : "Round rectangle arc height must be positive or zero"; //$NON-NLS-1$
 		assert rwidth2 >= 0. : "Rectangle width must be positive or zero"; //$NON-NLS-1$
 		assert rheight2 >= 0. : "Rectangle height must be positive or zero"; //$NON-NLS-1$
 		final double rcx1 = rx1 + rwidth1 / 2;
@@ -124,8 +119,8 @@ public interface RoundRectangle2afp<
 			double awidth, double aheight, double px, double py) {
 		assert rwidth >= 0. : "Round rectangle width must be positive or zero"; //$NON-NLS-1$
 		assert rheight >= 0. : "Round rectangle height must be positive or zero"; //$NON-NLS-1$
-		assert awidth >= 0. : ROUND_RECTANGLE_ARC_WIDTH; //$NON-NLS-1$
-		assert aheight >= 0. : ROUND_RECTANGLE_ARC_HEIGHT; //$NON-NLS-1$
+		assert awidth >= 0. : "Round rectangle arc width must be positive or zero"; //$NON-NLS-1$
+		assert aheight >= 0. : "Round rectangle arc height must be positive or zero"; //$NON-NLS-1$
 		if (rwidth <= 0 && rheight <= 0) {
 			return rx == px && ry == py;
 		}
@@ -188,10 +183,10 @@ public interface RoundRectangle2afp<
 		"checkstyle:npathcomplexity", "checkstyle:nestedifdepth"})
 	static boolean intersectsRoundRectangleSegment(double rx1, double ry1, double rx2, double ry2,
 			double aw, double ah, double sx1, double sy1, double sx2, double sy2) {
-		assert rx1 <= rx2 : RX1_LOWER_EQUAL_RX2; //$NON-NLS-1$
-		assert ry1 <= ry2 : RY1_LOWER_EQUAL_RY2; //$NON-NLS-1$
-		assert aw >= 0. : ROUND_RECTANGLE_ARC_WIDTH; //$NON-NLS-1$
-		assert ah >= 0. : ROUND_RECTANGLE_ARC_HEIGHT; //$NON-NLS-1$
+		assert rx1 <= rx2 : "rx1 must be lower or equal rx2"; //$NON-NLS-1$
+		assert ry1 <= ry2 : "ry1 must be lower or equal ry2"; //$NON-NLS-1$
+		assert aw >= 0. : "Round rectangle arc width must be positive or zero"; //$NON-NLS-1$
+		assert ah >= 0. : "Round rectangle arc height must be positive or zero"; //$NON-NLS-1$
 		double segmentX1 = sx1;
 		double segmentY1 = sy1;
 		double segmentX2 = sx2;
@@ -402,10 +397,10 @@ public interface RoundRectangle2afp<
 	static boolean intersectsRoundRectangleCircle(double rx1, double ry1, double rx2,
 			double ry2, double aw, double ah,
 			double cx, double cy, double radius) {
-		assert rx1 <= rx2 : RX1_LOWER_EQUAL_RX2; //$NON-NLS-1$
-		assert ry1 <= ry2 : RY1_LOWER_EQUAL_RY2; //$NON-NLS-1$
-		assert aw >= 0. : ROUND_RECTANGLE_ARC_WIDTH; //$NON-NLS-1$
-		assert ah >= 0. : ROUND_RECTANGLE_ARC_HEIGHT; //$NON-NLS-1$
+		assert rx1 <= rx2 : "rx1 must be lower or equal rx2"; //$NON-NLS-1$
+		assert ry1 <= ry2 : "ry1 must be lower or equal ry2"; //$NON-NLS-1$
+		assert aw >= 0. : "Round rectangle arc width must be positive or zero"; //$NON-NLS-1$
+		assert ah >= 0. : "Round rectangle arc height must be positive or zero"; //$NON-NLS-1$
 		assert radius >= 0. : "Circle radius must be positive or zero"; //$NON-NLS-1$
 
 		final double rInnerMinX = rx1 + aw;
@@ -457,8 +452,8 @@ public interface RoundRectangle2afp<
 			double r2x1, double r2y1, double r2x2, double r2y2) {
 		assert r1x1 <= r1x2 : "r1x1 must be lower or equal r1x2"; //$NON-NLS-1$
 		assert r1y1 <= r1y2 : "r1y1 must be lower or equal r1y2"; //$NON-NLS-1$
-		assert r1aw >= 0. : ROUND_RECTANGLE_ARC_WIDTH; //$NON-NLS-1$
-		assert r1ah >= 0. : ROUND_RECTANGLE_ARC_HEIGHT; //$NON-NLS-1$
+		assert r1aw >= 0. : "Round rectangle arc width must be positive or zero"; //$NON-NLS-1$
+		assert r1ah >= 0. : "Round rectangle arc height must be positive or zero"; //$NON-NLS-1$
 		assert r2x1 <= r2x2 : "r2x1 must be lower or equal r2x2"; //$NON-NLS-1$
 		assert r2y1 <= r2y2 : "r2y1 must be lower or equal r2y2"; //$NON-NLS-1$
 		if (Rectangle2afp.intersectsRectangleRectangle(r1x1, r1y1, r1x2, r1y2, r2x1, r2y1, r2x2, r2y2)) {
@@ -522,10 +517,10 @@ public interface RoundRectangle2afp<
 	static boolean intersectsRoundRectangleEllipse(double rx1, double ry1, double rx2,
 			double ry2, double aw, double ah,
 			double ex, double ey, double ew, double eh) {
-		assert rx1 <= rx2 : RX1_LOWER_EQUAL_RX2; //$NON-NLS-1$
-		assert ry1 <= ry2 : RY1_LOWER_EQUAL_RY2; //$NON-NLS-1$
-		assert aw >= 0. : ROUND_RECTANGLE_ARC_WIDTH; //$NON-NLS-1$
-		assert ah >= 0. : ROUND_RECTANGLE_ARC_HEIGHT; //$NON-NLS-1$
+		assert rx1 <= rx2 : "rx1 must be lower or equal rx2"; //$NON-NLS-1$
+		assert ry1 <= ry2 : "ry1 must be lower or equal ry2"; //$NON-NLS-1$
+		assert aw >= 0. : "Round rectangle arc width must be positive or zero"; //$NON-NLS-1$
+		assert ah >= 0. : "Round rectangle arc height must be positive or zero"; //$NON-NLS-1$
 		assert ew >= 0. : "Ellipse width must be positive or zero"; //$NON-NLS-1$
 		assert eh >= 0. : "Ellipse height must be positive or zero"; //$NON-NLS-1$
 

@@ -58,11 +58,6 @@ public interface OrientedRectangle2afp<
 		B extends Rectangle2afp<?, ?, IE, P, V, B>>
 		extends Parallelogram2afp<ST, IT, IE, P, V, B> {
 
-	final String EXTENT_AXIS_1 = "Extent of axis 1 must be positive or zero";
-	final String EXTENT_AXIS_2 = "Extent of axis 2 must be positive or zero";
-    final String AXIS_1 = "Axis 1 is not a unit vector";
-    final String RECTANGLE_HEIGHT = "Height of the rectangle must be positive or zero";
-
 	/** Project the given vector on the R axis, assuming S axis is orthogonal.
 	 *
 	 * <p>This function assumes that axes are orthogonal. For a general projection on the R axis,
@@ -196,9 +191,9 @@ public interface OrientedRectangle2afp<
 			double axis1Extent,
 			double axis2Extent,
 			double px, double py) {
-		assert axis1Extent >= 0 : EXTENT_AXIS_1; //$NON-NLS-1$
-		assert axis2Extent >= 0 : EXTENT_AXIS_2; //$NON-NLS-1$
-		assert Vector2D.isUnitVector(axis1X, axis1Y) : AXIS_1; //$NON-NLS-1$
+		assert axis1Extent >= 0 : "Extent of axis 1 must be positive or zero"; //$NON-NLS-1$
+		assert axis2Extent >= 0 : "Extent of axis 2 must be positive or zero"; //$NON-NLS-1$
+		assert Vector2D.isUnitVector(axis1X, axis1Y) : "Axis 1 is not a unit vector"; //$NON-NLS-1$
 		final double x = px - centerX;
 		final double y = py - centerY;
 		double coordinate = projectVectorOnOrientedRectangleRAxis(axis1X, axis1Y, x, y);
@@ -245,11 +240,11 @@ public interface OrientedRectangle2afp<
 			double axis2Extent,
 			double rx, double ry,
 			double rwidth, double rheight) {
-		assert axis1Extent >= 0 : EXTENT_AXIS_1; //$NON-NLS-1$
-		assert axis2Extent >= 0 : EXTENT_AXIS_2; //$NON-NLS-1$
-		assert Vector2D.isUnitVector(axis1X, axis1Y) : AXIS_1; //$NON-NLS-1$
+		assert axis1Extent >= 0 : "Extent of axis 1 must be positive or zero"; //$NON-NLS-1$
+		assert axis2Extent >= 0 : "Extent of axis 2 must be positive or zero"; //$NON-NLS-1$
+		assert Vector2D.isUnitVector(axis1X, axis1Y) : "Axis 1 is not a unit vector"; //$NON-NLS-1$
 		assert rwidth >= 0 : "Width of the rectangle must be positive or zero"; //$NON-NLS-1$
-		assert rheight >= 0 : RECTANGLE_HEIGHT; //$NON-NLS-1$
+		assert rheight >= 0 : "Height of the rectangle must be positive or zero"; //$NON-NLS-1$
 
 		final double basex = rx - centerX;
 		final double basey = ry - centerY;
@@ -329,7 +324,7 @@ public interface OrientedRectangle2afp<
 			Point2D<?, ?> closest, Point2D<?, ?> farthest) {
 		assert axis1Extent >= 0. : "Extent of the first axis must be positive or zero"; //$NON-NLS-1$
 		assert axis2Extent >= 0. : "Extent of the second axis must be positive or zero"; //$NON-NLS-1$
-		assert Vector2D.isUnitVector(axis1X, axis1Y) : AXIS_1; //$NON-NLS-1$
+		assert Vector2D.isUnitVector(axis1X, axis1Y) : "Axis 1 is not a unit vector"; //$NON-NLS-1$
 		assert closest != null || farthest != null
 			: "Neither closest point nor farthest point has a result vector"; //$NON-NLS-1$
 
@@ -502,11 +497,11 @@ public interface OrientedRectangle2afp<
 			double axis1Extent,
 			double axis2Extent,
 			double ex, double ey, double ewidth, double eheight) {
-		assert axis1Extent >= 0 : EXTENT_AXIS_1; //$NON-NLS-1$
-		assert axis2Extent >= 0 : EXTENT_AXIS_2; //$NON-NLS-1$
-		assert Vector2D.isUnitVector(axis1X, axis1Y) : AXIS_1; //$NON-NLS-1$
+		assert axis1Extent >= 0 : "Extent of axis 1 must be positive or zero"; //$NON-NLS-1$
+		assert axis2Extent >= 0 : "Extent of axis 2 must be positive or zero"; //$NON-NLS-1$
+		assert Vector2D.isUnitVector(axis1X, axis1Y) : "Axis 1 is not a unit vector"; //$NON-NLS-1$
 		assert ewidth >= 0 : "Width of the rectangle must be positive or zero"; //$NON-NLS-1$
-		assert eheight >= 0 : RECTANGLE_HEIGHT; //$NON-NLS-1$
+		assert eheight >= 0 : "Height of the rectangle must be positive or zero"; //$NON-NLS-1$
 
 		if (ewidth <= 0 || eheight <= 0) {
 			return false;
@@ -568,9 +563,9 @@ public interface OrientedRectangle2afp<
 			double axis1Extent,
 			double axis2Extent,
 			double circleX, double circleY, double circleRadius) {
-		assert axis1Extent >= 0 : EXTENT_AXIS_1; //$NON-NLS-1$
-		assert axis2Extent >= 0 : EXTENT_AXIS_2; //$NON-NLS-1$
-		assert Vector2D.isUnitVector(axis1X, axis1Y) : AXIS_1; //$NON-NLS-1$
+		assert axis1Extent >= 0 : "Extent of axis 1 must be positive or zero"; //$NON-NLS-1$
+		assert axis2Extent >= 0 : "Extent of axis 2 must be positive or zero"; //$NON-NLS-1$
+		assert Vector2D.isUnitVector(axis1X, axis1Y) : "Axis 1 is not a unit vector"; //$NON-NLS-1$
 		assert circleRadius >= 0 : "Circle radius must be positive or zero"; //$NON-NLS-1$
 		final Point2D<?, ?> closest = new InnerComputationPoint2afp();
 		computeClosestFarthestPoints(
@@ -853,11 +848,11 @@ public interface OrientedRectangle2afp<
 			double rx, double ry,
 			double rwidth, double rheight,
 			double rArcWidth, double rArcHeight) {
-		assert axis1Extent >= 0 : EXTENT_AXIS_1; //$NON-NLS-1$
-		assert axis2Extent >= 0 : EXTENT_AXIS_2; //$NON-NLS-1$
-		assert Vector2D.isUnitVector(axis1X, axis1Y) : AXIS_1; //$NON-NLS-1$
+		assert axis1Extent >= 0 : "Extent of axis 1 must be positive or zero"; //$NON-NLS-1$
+		assert axis2Extent >= 0 : "Extent of axis 2 must be positive or zero"; //$NON-NLS-1$
+		assert Vector2D.isUnitVector(axis1X, axis1Y) : "Axis 1 is not a unit vector"; //$NON-NLS-1$
 		assert rwidth >= 0 : "Width of the rectangle must be positive or zero"; //$NON-NLS-1$
-		assert rheight >= 0 : RECTANGLE_HEIGHT; //$NON-NLS-1$
+		assert rheight >= 0 : "Height of the rectangle must be positive or zero"; //$NON-NLS-1$
 		assert rArcWidth >= 0 : "Arc width of the rectangle must be positive or zero"; //$NON-NLS-1$
 		assert rArcHeight >= 0 : "Arc height of the rectangle must be positive or zero"; //$NON-NLS-1$
 
