@@ -55,10 +55,21 @@ public interface Ellipse2afp<
 		V extends Vector2D<? super V, ? super P>,
 		B extends Rectangle2afp<?, ?, IE, P, V, B>>
 		extends RectangularShape2afp<ST, IT, IE, P, V, B> {
-
+    /**+
+     * literal constant
+     */
     String ELLIPSE_HEIGHT_POSITIVE_OR_ZERO = "Ellipse height must be positive or zero";
+    /**+
+     * literal constant
+     */
     String ELLIPSE_WIDTH_POSITIVE_OR_ZERO = "Ellipse width must be positive or zero";
+    /**+
+     * literal constant
+     */
     String VERTICAL_RADIUS_POSITIVE_OR_ZERO = "Vertical radius must be positive or zero";
+    /**+
+     * literal constant
+     */
     String HORIZONTAL_RADIUS_GREATER_OR_EQUAL_TO_VERTICAL_RADIUS = "Horizontal radius must be positive or zero";
 
 	/**
