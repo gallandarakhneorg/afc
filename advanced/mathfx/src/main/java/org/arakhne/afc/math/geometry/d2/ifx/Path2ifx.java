@@ -149,9 +149,9 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 		assert pt != null : "Point must be not null"; //$NON-NLS-1$
 		if (this.coords != null && !this.coords.isEmpty()) {
 			final int size = this.coords.size();
-			for (int i = 0; i < size;) {
-				final int x = this.coords.get(i++);
-				final int y = this.coords.get(i++);
+			for (int i = 0; i < size; i =+ 2) {
+				final int x = this.coords.get(i);
+				final int y = this.coords.get(i + 1);
 				if (x == pt.ix() && y == pt.iy()) {
 					return true;
 				}
@@ -501,11 +501,11 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 			} else {
 				final Point2D<?, ?> p = new InnerComputationPoint2ai();
 				final Iterator<Integer> iterator = this.coords.iterator();
-				for (int i = 0; i < n;) {
+				for (int i = 0; i < n; i += 2) {
 					p.set(iterator.next(), iterator.next());
 					transform.transform(p);
-					clone[i++] = p.ix();
-					clone[i++] = p.iy();
+					clone[i] = p.ix();
+					clone[i + 1] = p.iy();
 				}
 			}
 		}
@@ -525,11 +525,11 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 			} else {
 				final Point2D<?, ?> p = new InnerComputationPoint2afp(0, 0);
 				final Iterator<Integer> iterator = this.coords.iterator();
-				for (int i = 0; i < n;) {
+				for (int i = 0; i < n; i =+ 2) {
 					p.set(iterator.next(), iterator.next());
 					transform.transform(p);
-					clone[i++] = (float) p.getX();
-					clone[i++] = (float) p.getY();
+					clone[i] = (float) p.getX();
+					clone[i + 1] = (float) p.getY();
 				}
 			}
 		}
@@ -549,11 +549,11 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 			} else {
 				final Point2D<?, ?> p = new InnerComputationPoint2afp(0, 0);
 				final Iterator<Integer> iterator = this.coords.iterator();
-				for (int i = 0; i < n;) {
+				for (int i = 0; i < n; i =+ 2) {
 					p.set(iterator.next(), iterator.next());
 					transform.transform(p);
-					clone[i++] = p.getX();
-					clone[i++] = p.getY();
+					clone[i] = p.getX();
+					clone[i + 1] = p.getY();
 				}
 			}
 		}
