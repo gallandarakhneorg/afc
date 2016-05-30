@@ -45,7 +45,14 @@ public class Parallelogram2dfx extends AbstractShape2dfx<Parallelogram2dfx>
 		implements Parallelogram2afp<Shape2dfx<?>, Parallelogram2dfx, PathElement2dfx, Point2dfx, Vector2dfx, Rectangle2dfx> {
 
 	private static final long serialVersionUID = -3880367245218796375L;
-
+    /**+
+     * Literal constant.
+     */
+	private static final String FIRST_AXIS_UNIT_VECTOR = "First axis must be a unit vector";
+    /**+
+     * Literal constant.
+     */
+    private static final String EXTENT_POSITIVE_OR_ZERO = "Extent must be positive or zero";
 	/**
 	 * Center of the parallelogram.
 	 */
@@ -125,7 +132,7 @@ public class Parallelogram2dfx extends AbstractShape2dfx<Parallelogram2dfx>
 	public Parallelogram2dfx(double centerX, double centerY,
 			double axis1X, double axis1Y, double axis1Extent,
 			double axis2X, double axis2Y, double axis2Extent) {
-		assert Vector2D.isUnitVector(axis1X, axis1Y) : "First axis must be a unit vector"; //$NON-NLS-1$
+		assert Vector2D.isUnitVector(axis1X, axis1Y) : FIRST_AXIS_UNIT_VECTOR; //$NON-NLS-1$
 		assert Vector2D.isUnitVector(axis2X, axis2Y) : "Second axis must be a unit vector"; //$NON-NLS-1$
 		assert axis1Extent >= 0. : "Extent for the first axis must be positive or zero"; //$NON-NLS-1$
 		assert axis2Extent >= 0. : "Extent for the first axis must be positive or zero"; //$NON-NLS-1$
@@ -356,7 +363,7 @@ public class Parallelogram2dfx extends AbstractShape2dfx<Parallelogram2dfx>
 
 	@Override
 	public void setFirstAxisExtent(double extent) {
-		assert extent >= 0. : "Extent must be positive or zero"; //$NON-NLS-1$
+		assert extent >= 0. :  EXTENT_POSITIVE_OR_ZERO; //$NON-NLS-1$
 		firstAxisExtentProperty().set(extent);
 	}
 
@@ -387,14 +394,14 @@ public class Parallelogram2dfx extends AbstractShape2dfx<Parallelogram2dfx>
 
 	@Override
 	public void setSecondAxisExtent(double extent) {
-		assert extent >= 0. : "Extent must be positive or zero"; //$NON-NLS-1$
+		assert extent >= 0. :  EXTENT_POSITIVE_OR_ZERO; //$NON-NLS-1$
 		secondAxisExtentProperty().set(extent);
 	}
 
 	@Override
 	public void setFirstAxis(double x, double y, double extent) {
 		assert Vector2D.isUnitVector(x, y) : "Axis must be a unit vector"; //$NON-NLS-1$
-		assert extent >= 0. : "Extent must be positive or zero"; //$NON-NLS-1$
+		assert extent >= 0. :  EXTENT_POSITIVE_OR_ZERO; //$NON-NLS-1$
 		firstAxisProperty().set(x, y);
 		firstAxisExtentProperty().set(extent);
 	}
@@ -402,7 +409,7 @@ public class Parallelogram2dfx extends AbstractShape2dfx<Parallelogram2dfx>
 	@Override
 	public void setSecondAxis(double x, double y, double extent) {
 		assert Vector2D.isUnitVector(x, y) : "Axis must be a unit vector"; //$NON-NLS-1$
-		assert extent >= 0. : "Extent must be positive or zero"; //$NON-NLS-1$
+		assert extent >= 0. :  EXTENT_POSITIVE_OR_ZERO; //$NON-NLS-1$
 		secondAxisProperty().set(x, y);
 		secondAxisExtentProperty().set(extent);
 	}
@@ -410,8 +417,8 @@ public class Parallelogram2dfx extends AbstractShape2dfx<Parallelogram2dfx>
 	@Override
 	public void set(double centerX, double centerY, double axis1x, double axis1y, double axis1Extent, double axis2x,
 			double axis2y, double axis2Extent) {
-		assert Vector2D.isUnitVector(axis1x, axis1y) : "First axis must be a unit vector"; //$NON-NLS-1$
-		assert Vector2D.isUnitVector(axis2x, axis2y) : "First axis must be a unit vector"; //$NON-NLS-1$
+		assert Vector2D.isUnitVector(axis1x, axis1y) : FIRST_AXIS_UNIT_VECTOR; //$NON-NLS-1$
+		assert Vector2D.isUnitVector(axis2x, axis2y) : FIRST_AXIS_UNIT_VECTOR; //$NON-NLS-1$
 		assert axis1Extent >= 0. : "First axis extent must be positive or zero"; //$NON-NLS-1$
 		assert axis2Extent >= 0. : "Second axis extent must be positive or zero"; //$NON-NLS-1$
 		centerXProperty().set(centerX);

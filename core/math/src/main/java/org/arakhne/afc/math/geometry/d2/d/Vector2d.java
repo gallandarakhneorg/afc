@@ -39,6 +39,14 @@ import org.arakhne.afc.math.geometry.d2.Vector2D;
 public class Vector2d extends Tuple2d<Vector2d> implements Vector2D<Vector2d, Point2d> {
 
 	private static final long serialVersionUID = 9183440606977893371L;
+    /**+
+     * Literal constant.
+     */
+	private static final String SECOND_VECTOR_NOT_NULL = "Second vector must be not null";
+    /**+
+     * Literal constant.
+     */
+    private static final String FIRST_VECTOR_NOT_NULL = "First vector must be not null";
 
 	/** Construct a zero vector.
 	 */
@@ -144,8 +152,8 @@ public class Vector2d extends Tuple2d<Vector2d> implements Vector2D<Vector2d, Po
 
 	@Override
 	public void add(Vector2D<?, ?> vector1, Vector2D<?, ?> vector2) {
-		assert vector1 != null : "First vector must be not null"; //$NON-NLS-1$
-		assert vector2 != null : "Second vector must be not null"; //$NON-NLS-1$
+		assert vector1 != null : FIRST_VECTOR_NOT_NULL; //$NON-NLS-1$
+		assert vector2 != null : SECOND_VECTOR_NOT_NULL; //$NON-NLS-1$
 		this.x = vector1.getX() + vector2.getX();
 		this.y = vector1.getY() + vector2.getY();
 	}
@@ -159,16 +167,16 @@ public class Vector2d extends Tuple2d<Vector2d> implements Vector2D<Vector2d, Po
 
 	@Override
 	public void scaleAdd(int scale, Vector2D<?, ?> vector1, Vector2D<?, ?> vector2) {
-		assert vector1 != null : "First vector must be not null"; //$NON-NLS-1$
-		assert vector2 != null : "Second vector must be not null"; //$NON-NLS-1$
+		assert vector1 != null : FIRST_VECTOR_NOT_NULL; //$NON-NLS-1$
+		assert vector2 != null : SECOND_VECTOR_NOT_NULL; //$NON-NLS-1$
 		this.x = scale * vector1.getX() + vector2.getX();
 		this.y = scale * vector1.getY() + vector2.getY();
 	}
 
 	@Override
 	public void scaleAdd(double scale, Vector2D<?, ?> vector1, Vector2D<?, ?> vector2) {
-		assert vector1 != null : "First vector must be not null"; //$NON-NLS-1$
-		assert vector2 != null : "Second vector must be not null"; //$NON-NLS-1$
+		assert vector1 != null : FIRST_VECTOR_NOT_NULL; //$NON-NLS-1$
+		assert vector2 != null : SECOND_VECTOR_NOT_NULL; //$NON-NLS-1$
 		this.x = scale * vector1.getX() + vector2.getX();
 		this.y = scale * vector1.getY() + vector2.getY();
 	}
@@ -189,8 +197,8 @@ public class Vector2d extends Tuple2d<Vector2d> implements Vector2D<Vector2d, Po
 
 	@Override
 	public void sub(Vector2D<?, ?> vector1, Vector2D<?, ?> vector2) {
-		assert vector1 != null : "First vector must be not null"; //$NON-NLS-1$
-		assert vector2 != null : "Second vector must be not null"; //$NON-NLS-1$
+		assert vector1 != null : FIRST_VECTOR_NOT_NULL; //$NON-NLS-1$
+		assert vector2 != null : SECOND_VECTOR_NOT_NULL; //$NON-NLS-1$
 		this.x = vector1.getX() - vector2.getX();
 		this.y = vector1.getY() - vector2.getY();
 	}

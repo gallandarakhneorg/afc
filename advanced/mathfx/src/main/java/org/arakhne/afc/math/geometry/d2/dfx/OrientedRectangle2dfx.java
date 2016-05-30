@@ -48,6 +48,10 @@ public class OrientedRectangle2dfx extends AbstractShape2dfx<OrientedRectangle2d
 		Point2dfx, Vector2dfx, Rectangle2dfx> {
 
 	private static final long serialVersionUID = -7570709068803272507L;
+	/**+
+	 * Literal constant.
+	 */
+    private static final String EXTENT_POSITIVE_OR_ZERO = "Extent must be positive or zero";
 
 	/**
 	 * Center of the OBR.
@@ -339,7 +343,7 @@ public class OrientedRectangle2dfx extends AbstractShape2dfx<OrientedRectangle2d
 
 	@Override
 	public void setFirstAxisExtent(double extent) {
-		assert extent >= 0 : "Extent must be positive or zero"; //$NON-NLS-1$
+		assert extent >= 0 : EXTENT_POSITIVE_OR_ZERO; //$NON-NLS-1$
 		firstAxisExtentProperty().set(extent);
 	}
 
@@ -370,7 +374,7 @@ public class OrientedRectangle2dfx extends AbstractShape2dfx<OrientedRectangle2d
 
 	@Override
 	public void setSecondAxisExtent(double extent) {
-		assert extent >= 0 : "Extent must be positive or zero"; //$NON-NLS-1$
+		assert extent >= 0 : EXTENT_POSITIVE_OR_ZERO; //$NON-NLS-1$
 		secondAxisExtentProperty().set(extent);
 	}
 
@@ -396,7 +400,7 @@ public class OrientedRectangle2dfx extends AbstractShape2dfx<OrientedRectangle2d
 	@Override
 	public void setFirstAxis(double x, double y, double extent) {
 		assert Vector2D.isUnitVector(x, y) : "Axis must be unit vector"; //$NON-NLS-1$
-		assert extent >= 0 : "Extent must be positive or zero"; //$NON-NLS-1$
+		assert extent >= 0 : EXTENT_POSITIVE_OR_ZERO; //$NON-NLS-1$
 		firstAxisProperty().set(x, y);
 		firstAxisExtentProperty().set(extent);
 	}
@@ -404,7 +408,7 @@ public class OrientedRectangle2dfx extends AbstractShape2dfx<OrientedRectangle2d
 	@Override
 	public void setSecondAxis(double x, double y, double extent) {
 		assert Vector2D.isUnitVector(x, y) : "Axis must be unit vector"; //$NON-NLS-1$
-		assert extent >= 0 : "Extent must be positive or zero"; //$NON-NLS-1$
+		assert extent >= 0 : EXTENT_POSITIVE_OR_ZERO; //$NON-NLS-1$
 		firstAxisProperty().set(y, -x);
 		secondAxisExtentProperty().set(extent);
 	}
