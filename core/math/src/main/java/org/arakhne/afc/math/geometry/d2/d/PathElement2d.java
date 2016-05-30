@@ -37,6 +37,10 @@ import org.arakhne.afc.math.geometry.d2.afp.PathElement2afp;
 public abstract class PathElement2d implements PathElement2afp {
 
 	private static final long serialVersionUID = -9217295344283468162L;
+    /**+
+     * Literal constant.
+     */
+    private static final String ARRAY_SIZE_SMALL = "Array size is too small";
 
 	/** Type of the element.
 	 */
@@ -199,7 +203,7 @@ public abstract class PathElement2d implements PathElement2afp {
 		@Override
 		public void toArray(int[] array) {
 			assert array != null : "Array must be not null"; //$NON-NLS-1$
-			assert array.length >= 2 : "Array size is too small"; //$NON-NLS-1$
+			assert array.length >= 2 : ARRAY_SIZE_SMALL; //$NON-NLS-1$
 			array[0] = (int) this.toX;
 			array[1] = (int) this.toY;
 		}
@@ -207,7 +211,7 @@ public abstract class PathElement2d implements PathElement2afp {
 		@Override
 		public void toArray(double[] array) {
 			assert array != null : "Array must be not null"; //$NON-NLS-1$
-			assert array.length >= 2 : "Array size is too small"; //$NON-NLS-1$
+			assert array.length >= 2 : ARRAY_SIZE_SMALL; //$NON-NLS-1$
 			array[0] = this.toX;
 			array[1] = this.toY;
 		}
@@ -315,7 +319,7 @@ public abstract class PathElement2d implements PathElement2afp {
 		@Override
 		public void toArray(int[] array) {
 			assert array != null : "Array must be not null"; //$NON-NLS-1$
-			assert array.length >= 2 : "Array size is too small"; //$NON-NLS-1$
+			assert array.length >= 2 : ARRAY_SIZE_SMALL; //$NON-NLS-1$
 			array[0] = (int) this.toX;
 			array[1] = (int) this.toY;
 		}
@@ -323,7 +327,7 @@ public abstract class PathElement2d implements PathElement2afp {
 		@Override
 		public void toArray(double[] array) {
 			assert array != null : "Array must be not null"; //$NON-NLS-1$
-			assert array.length >= 2 : "Array size is too small"; //$NON-NLS-1$
+			assert array.length >= 2 : ARRAY_SIZE_SMALL; //$NON-NLS-1$
 			array[0] = this.toX;
 			array[1] = this.toY;
 		}
@@ -446,7 +450,7 @@ public abstract class PathElement2d implements PathElement2afp {
 		@Override
 		public void toArray(int[] array) {
 			assert array != null : "Array must be not null"; //$NON-NLS-1$
-			assert array.length >= 4 : "Array size is too small"; //$NON-NLS-1$
+			assert array.length >= 4 : ARRAY_SIZE_SMALL; //$NON-NLS-1$
 			array[0] = (int) this.ctrlX;
 			array[1] = (int) this.ctrlY;
 			array[2] = (int) this.toX;
@@ -456,7 +460,7 @@ public abstract class PathElement2d implements PathElement2afp {
 		@Override
 		public void toArray(double[] array) {
 			assert array != null : "Array must be not null"; //$NON-NLS-1$
-			assert array.length >= 4 : "Array size is too small"; //$NON-NLS-1$
+			assert array.length >= 4 : ARRAY_SIZE_SMALL; //$NON-NLS-1$
 			array[0] = this.ctrlX;
 			array[1] = this.ctrlY;
 			array[2] = this.toX;
@@ -608,7 +612,7 @@ public abstract class PathElement2d implements PathElement2afp {
 		@Override
 		public void toArray(int[] array) {
 			assert array != null : "Array must be not null"; //$NON-NLS-1$
-			assert array.length >= 6 : "Array size is too small"; //$NON-NLS-1$
+			assert array.length >= 6 : ARRAY_SIZE_SMALL; //$NON-NLS-1$
 			array[0] = (int) this.ctrlX1;
 			array[1] = (int) this.ctrlY1;
 			array[2] = (int) this.ctrlX2;
@@ -620,7 +624,7 @@ public abstract class PathElement2d implements PathElement2afp {
 		@Override
 		public void toArray(double[] array) {
 			assert array != null : "Array must be not null"; //$NON-NLS-1$
-			assert array.length >= 6 : "Array size is too small"; //$NON-NLS-1$
+			assert array.length >= 6 : ARRAY_SIZE_SMALL; //$NON-NLS-1$
 			array[0] = this.ctrlX1;
 			array[1] = this.ctrlY1;
 			array[2] = this.ctrlX2;
@@ -756,7 +760,7 @@ public abstract class PathElement2d implements PathElement2afp {
 		@Override
 		public void toArray(int[] array) {
 			assert array != null : "Array must be not null"; //$NON-NLS-1$
-			assert array.length >= 2 : "Array size is too small"; //$NON-NLS-1$
+			assert array.length >= 2 : ARRAY_SIZE_SMALL; //$NON-NLS-1$
 			array[0] = (int) this.toX;
 			array[1] = (int) this.toY;
 		}
@@ -764,7 +768,7 @@ public abstract class PathElement2d implements PathElement2afp {
 		@Override
 		public void toArray(double[] array) {
 			assert array != null : "Array must be not null"; //$NON-NLS-1$
-			assert array.length >= 2 : "Array size is too small"; //$NON-NLS-1$
+			assert array.length >= 2 : ARRAY_SIZE_SMALL; //$NON-NLS-1$
 			array[0] = this.toX;
 			array[1] = this.toY;
 		}
@@ -898,7 +902,7 @@ public abstract class PathElement2d implements PathElement2afp {
 		@Override
 		public void toArray(int[] array) {
 			assert array != null : "Array must be not null"; //$NON-NLS-1$
-			assert array.length >= 2 : "Array size is too small"; //$NON-NLS-1$
+			assert array.length >= 2 : ARRAY_SIZE_SMALL; //$NON-NLS-1$
 			array[0] = (int) this.toX;
 			array[1] = (int) this.toY;
 		}
@@ -906,7 +910,7 @@ public abstract class PathElement2d implements PathElement2afp {
 		@Override
 		public void toArray(double[] array) {
 			assert array != null : "Array must be not null"; //$NON-NLS-1$
-			assert array.length >= 2 : "Array size is too small"; //$NON-NLS-1$
+			assert array.length >= 2 : ARRAY_SIZE_SMALL; //$NON-NLS-1$
 			array[0] = this.toX;
 			array[1] = this.toY;
 		}

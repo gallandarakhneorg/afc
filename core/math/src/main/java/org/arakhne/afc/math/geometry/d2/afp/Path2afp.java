@@ -61,6 +61,11 @@ public interface Path2afp<
 		B extends Rectangle2afp<?, ?, IE, P, V, B>>
 		extends Shape2afp<ST, IT, IE, P, V, B>, Path2D<ST, IT, PathIterator2afp<IE>, P, V, B> {
 
+    /**+
+     * Literal constant.
+     */
+    String COLL_NOT_NULL = "Collection must be not null";
+
 	/** Multiple of cubic & quad curve size.
 	 */
 	int GROW_SIZE = 24;
@@ -2062,7 +2067,8 @@ public interface Path2afp<
 			default:
 			}
 		}
-		if (foundOneControlPoint) {			box.setFromCorners(xmin, ymin, xmax, ymax);
+		if (foundOneControlPoint) {
+			box.setFromCorners(xmin, ymin, xmax, ymax);
 		} else {
 			box.clear();
 		}
@@ -3868,7 +3874,7 @@ public interface Path2afp<
 		@Pure
 		@Override
 		public boolean containsAll(Collection<?> collection) {
-			assert collection != null : "Collection must be not null"; //$NON-NLS-1$
+			assert collection != null : COLL_NOT_NULL; //$NON-NLS-1$
 			for (final Object obj : collection) {
 				if ((!(obj instanceof Point2D))
 						|| (!this.path.containsControlPoint((Point2D<?, ?>) obj))) {
@@ -3880,7 +3886,7 @@ public interface Path2afp<
 
 		@Override
 		public boolean addAll(Collection<? extends P> collection) {
-			assert collection != null : "Collection must be not null"; //$NON-NLS-1$
+			assert collection != null : COLL_NOT_NULL; //$NON-NLS-1$
 			boolean changed = false;
 			for (final P pts : collection) {
 				if (add(pts)) {
@@ -3892,7 +3898,7 @@ public interface Path2afp<
 
 		@Override
 		public boolean removeAll(Collection<?> collection) {
-			assert collection != null : "Collection must be not null"; //$NON-NLS-1$
+			assert collection != null : COLL_NOT_NULL; //$NON-NLS-1$
 			boolean changed = false;
 			for (final Object obj : collection) {
 				if (obj instanceof Point2D) {

@@ -61,6 +61,11 @@ public interface Path2ai<
 		B extends Rectangle2ai<?, ?, IE, P, V, B>>
 		extends Shape2ai<ST, IT, IE, P, V, B>, Path2D<ST, IT, PathIterator2ai<IE>, P, V, B> {
 
+    /**+
+     * Literal constant.
+     */
+	String COLL_NOT_NULL = "Collection must not be  null";
+
 	/** Multiple of cubic & quad curve size.
 	 */
 	int GROW_SIZE = 24;
@@ -2752,7 +2757,7 @@ public interface Path2ai<
 
 		@Override
 		public boolean containsAll(Collection<?> collection) {
-			assert collection != null : "Collection must not be null"; //$NON-NLS-1$
+			assert collection != null : COLL_NOT_NULL; //$NON-NLS-1$
 			for (final Object obj : collection) {
 				if ((!(obj instanceof Point2D))
 						|| (!this.path.contains((Point2D<?, ?>) obj))) {
@@ -2764,7 +2769,7 @@ public interface Path2ai<
 
 		@Override
 		public boolean addAll(Collection<? extends P> collection) {
-			assert collection != null : "Collection must not be null"; //$NON-NLS-1$
+			assert collection != null : COLL_NOT_NULL; //$NON-NLS-1$
 			boolean changed = false;
 			for (final P pts : collection) {
 				if (add(pts)) {
@@ -2776,7 +2781,7 @@ public interface Path2ai<
 
 		@Override
 		public boolean removeAll(Collection<?> collection) {
-			assert collection != null : "Collection must not be null"; //$NON-NLS-1$
+			assert collection != null : COLL_NOT_NULL; //$NON-NLS-1$
 			boolean changed = false;
 			for (final Object obj : collection) {
 				if (obj instanceof Point2D) {
