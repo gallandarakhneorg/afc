@@ -26,10 +26,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
-import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2D;
-import org.arakhne.afc.math.geometry.d2.Point2D;
-import org.arakhne.afc.math.geometry.d2.Tuple2D;
-import org.arakhne.afc.math.geometry.d2.Vector2D;
+import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem3D;
 import org.junit.Assume;
 import org.junit.Test;
 
@@ -44,69 +41,69 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	
 	@Test
 	public final void staticIsCollinearPoints() {
-		assertTrue(Point2D.isCollinearPoints(0, 0, 0, 0, 0, 0));
-		assertTrue(Point2D.isCollinearPoints(-6, -4, -1, 3, 4, 10));
-		assertFalse(Point2D.isCollinearPoints(0, 0, 1, 1, 1, -5));
+		assertTrue(Point3D.isCollinearPoints(0, 0, 0, 0, 0, 0));
+		assertTrue(Point3D.isCollinearPoints(-6, -4, -1, 3, 4, 10));
+		assertFalse(Point3D.isCollinearPoints(0, 0, 1, 1, 1, -5));
 	}
 
 	@Test
 	public final void staticGetDistancePointPoint() {
-		assertEpsilonEquals(0, Point2D.getDistancePointPoint(0, 0, 0, 0));
-		assertEpsilonEquals(Math.sqrt(5), Point2D.getDistancePointPoint(0, 0, 1, 2));
-		assertEpsilonEquals(Math.sqrt(2), Point2D.getDistancePointPoint(0, 0, 1, 1));
+		assertEpsilonEquals(0, Point3D.getDistancePointPoint(0, 0, 0, 0));
+		assertEpsilonEquals(Math.sqrt(5), Point3D.getDistancePointPoint(0, 0, 1, 2));
+		assertEpsilonEquals(Math.sqrt(2), Point3D.getDistancePointPoint(0, 0, 1, 1));
 	}
 
 	@Test
 	public final void staticGetDistanceSquaredPointPoint() {
-		assertEpsilonEquals(0, Point2D.getDistanceSquaredPointPoint(0, 0, 0, 0));
-		assertEpsilonEquals(5, Point2D.getDistanceSquaredPointPoint(0, 0, 1, 2));
-		assertEpsilonEquals(2, Point2D.getDistanceSquaredPointPoint(0, 0, 1, 1));
+		assertEpsilonEquals(0, Point3D.getDistanceSquaredPointPoint(0, 0, 0, 0));
+		assertEpsilonEquals(5, Point3D.getDistanceSquaredPointPoint(0, 0, 1, 2));
+		assertEpsilonEquals(2, Point3D.getDistanceSquaredPointPoint(0, 0, 1, 1));
 	}
 
 	@Test
 	public final void staticGetDistanceL1PointPoint() {
-		assertEpsilonEquals(4, Point2D.getDistanceL1PointPoint(1.0, 2.0, 3.0, 0));
-		assertEpsilonEquals(0, Point2D.getDistanceL1PointPoint(1.0, 2.0, 1 ,2));
-		assertEpsilonEquals(0, Point2D.getDistanceL1PointPoint(1, 2, 1.0, 2.0));
-		assertEpsilonEquals(4, Point2D.getDistanceL1PointPoint(1.0, 2.0, -1, 0));
+		assertEpsilonEquals(4, Point3D.getDistanceL1PointPoint(1.0, 2.0, 3.0, 0));
+		assertEpsilonEquals(0, Point3D.getDistanceL1PointPoint(1.0, 2.0, 1 ,2));
+		assertEpsilonEquals(0, Point3D.getDistanceL1PointPoint(1, 2, 1.0, 2.0));
+		assertEpsilonEquals(4, Point3D.getDistanceL1PointPoint(1.0, 2.0, -1, 0));
 	}
 
 	@Test
 	public final void staticGetDistanceLinfPointPoint() {
-		assertEpsilonEquals(2, Point2D.getDistanceLinfPointPoint(1.0,2.0,3.0,0));
-		assertEpsilonEquals(0, Point2D.getDistanceLinfPointPoint(1.0,2.0,1,2));
-		assertEpsilonEquals(0, Point2D.getDistanceLinfPointPoint(1,2,1.0,2.0));
-		assertEpsilonEquals(2, Point2D.getDistanceLinfPointPoint(1.0,2.0,-1,0));
+		assertEpsilonEquals(2, Point3D.getDistanceLinfPointPoint(1.0,2.0,3.0,0));
+		assertEpsilonEquals(0, Point3D.getDistanceLinfPointPoint(1.0,2.0,1,2));
+		assertEpsilonEquals(0, Point3D.getDistanceLinfPointPoint(1,2,1.0,2.0));
+		assertEpsilonEquals(2, Point3D.getDistanceLinfPointPoint(1.0,2.0,-1,0));
 	}
 
 	@Test
-	public final void getDistanceSquaredPoint2D() {
-		Point2D point = createPoint(0, 0);
-		Point2D point2 = createPoint(0, 0);
-		Point2D point3 = createPoint(1, 2);
-		Point2D point4 = createPoint(1, 1);
+	public final void getDistanceSquaredPoint3D() {
+		Point3D point = createPoint(0, 0);
+		Point3D point2 = createPoint(0, 0);
+		Point3D point3 = createPoint(1, 2);
+		Point3D point4 = createPoint(1, 1);
 		assertEpsilonEquals(0, point.getDistanceSquared(point2));
 		assertEpsilonEquals(5, point.getDistanceSquared(point3));
 		assertEpsilonEquals(2, point.getDistanceSquared(point4));
 	}
 	
 	@Test
-	public final void getDistancePoint2D() {
-		Point2D point = createPoint(0, 0);
-		Point2D point2 = createPoint(0, 0);
-		Point2D point3 = createPoint(1, 2);
-		Point2D point4 = createPoint(1, 1);
+	public final void getDistancePoint3D() {
+		Point3D point = createPoint(0, 0);
+		Point3D point2 = createPoint(0, 0);
+		Point3D point3 = createPoint(1, 2);
+		Point3D point4 = createPoint(1, 1);
 		assertEpsilonEquals(0, point.getDistance(point2));
 		assertEpsilonEquals(Math.sqrt(5), point.getDistance(point3));
 		assertEpsilonEquals(Math.sqrt(2), point.getDistance(point4));
 	}
 
 	@Test
-	public final void getDistanceL1Point2D() {
-		Point2D point = createPoint(1, 2);
-		Point2D point2 = createPoint(3, 0);
-		Point2D point3 = createPoint(1, 2);
-		Point2D point4 = createPoint(-1, 0);
+	public final void getDistanceL1Point3D() {
+		Point3D point = createPoint(1, 2);
+		Point3D point2 = createPoint(3, 0);
+		Point3D point3 = createPoint(1, 2);
+		Point3D point4 = createPoint(-1, 0);
 		assertEpsilonEquals(4, point.getDistanceL1(point2));
 		assertEpsilonEquals(0, point.getDistanceL1(point));
 		assertEpsilonEquals(0, point.getDistanceL1(point3));
@@ -114,11 +111,11 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	}
 
 	@Test
-	public final void getDistanceLinfPoint2D() {
-		Point2D point = createPoint(1, 2);
-		Point2D point2 = createPoint(3, 0);
-		Point2D point3 = createPoint(1, 2);
-		Point2D point4 = createPoint(-1, 0);
+	public final void getDistanceLinfPoint3D() {
+		Point3D point = createPoint(1, 2);
+		Point3D point2 = createPoint(3, 0);
+		Point3D point3 = createPoint(1, 2);
+		Point3D point4 = createPoint(-1, 0);
 		assertEpsilonEquals(2, point.getDistanceLinf(point2));
 		assertEpsilonEquals(0, point.getDistanceLinf(point));
 		assertEpsilonEquals(0, point.getDistanceLinf(point3));
@@ -126,11 +123,11 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	}
 
 	@Test
-	public final void getIdistanceL1Point2D() {
-		Point2D point = createPoint(1, 2);
-		Point2D point2 = createPoint(3, 0);
-		Point2D point3 = createPoint(1, 2);
-		Point2D point4 = createPoint(-1, 0);
+	public final void getIdistanceL1Point3D() {
+		Point3D point = createPoint(1, 2);
+		Point3D point2 = createPoint(3, 0);
+		Point3D point3 = createPoint(1, 2);
+		Point3D point4 = createPoint(-1, 0);
 		assertEquals(4, point.getIdistanceL1(point2));
 		assertEquals(0, point.getIdistanceL1(point));
 		assertEquals(0, point.getIdistanceL1(point3));
@@ -138,11 +135,11 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	}
 
 	@Test
-	public final void getIdistanceLinfPoint2D() {
-		Point2D point = createPoint(1, 2);
-		Point2D point2 = createPoint(3, 0);
-		Point2D point3 = createPoint(1, 2);
-		Point2D point4 = createPoint(-1, 0);
+	public final void getIdistanceLinfPoint3D() {
+		Point3D point = createPoint(1, 2);
+		Point3D point2 = createPoint(3, 0);
+		Point3D point3 = createPoint(1, 2);
+		Point3D point4 = createPoint(-1, 0);
 		assertEquals(2, point.getIdistanceLinf(point2));
 		assertEquals(0, point.getIdistanceLinf(point));
 		assertEquals(0, point.getIdistanceLinf(point3));
@@ -151,25 +148,25 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 
 	@Test(expected = UnsupportedOperationException.class)
 	public final void toUnmodifiable_exception() {
-		Point2D origin = createPoint(2, 3);
-		Point2D immutable = origin.toUnmodifiable();
+		Point3D origin = createPoint(2, 3);
+		Point3D immutable = origin.toUnmodifiable();
 		assertEpsilonEquals(origin, immutable);
 		immutable.add(1, 2);
 	}
 
 	@Test
 	public final void toUnmodifiable_changeInOrigin() {
-		Point2D origin = createPoint(2, 3);
+		Point3D origin = createPoint(2, 3);
 		assumeMutable(origin);
-		Point2D immutable = origin.toUnmodifiable();
+		Point3D immutable = origin.toUnmodifiable();
 		assertEpsilonEquals(origin, immutable);
 		assertEpsilonEquals(origin, immutable);
 	}
 
 	@Test
 	public final void testClonePoint() {
-		Point2D origin = createPoint(23, 45);
-		Tuple2D clone = origin.clone();
+		Point3D origin = createPoint(23, 45);
+		Tuple3D clone = origin.clone();
 		assertNotNull(clone);
 		assertNotSame(origin, clone);
 		assertEpsilonEquals(origin.getX(), clone.getX());
@@ -177,13 +174,13 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	}
 
 	@Test
-	public final void operator_plusVector2D() {
-		Point2D point = createPoint(1, 2);
-		Point2D point2 = createPoint(3, 0);
-		Vector2D vector1 = createVector(0, 0);
-		Vector2D vector2 = createVector(1, 2);
-		Vector2D vector3 = createVector(1, -5);
-		Point2D r;
+	public final void operator_plusVector3D() {
+		Point3D point = createPoint(1, 2);
+		Point3D point2 = createPoint(3, 0);
+		Vector3D vector1 = createVector(0, 0);
+		Vector3D vector2 = createVector(1, 2);
+		Vector3D vector3 = createVector(1, -5);
+		Point3D r;
 		
 		r = point.operator_plus(vector1);
 		assertFpPointEquals(1, 2, r);
@@ -205,13 +202,13 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	}
 
 	@Test
-	public final void operator_minusVector2D() {
-		Point2D point = createPoint(1, 2);
-		Point2D point2 = createPoint(3, 0);
-		Vector2D vector1 = createVector(0, 0);
-		Vector2D vector2 = createVector(1, 2);
-		Vector2D vector3 = createVector(1, -5);
-		Point2D r;
+	public final void operator_minusVector3D() {
+		Point3D point = createPoint(1, 2);
+		Point3D point2 = createPoint(3, 0);
+		Vector3D vector1 = createVector(0, 0);
+		Vector3D vector2 = createVector(1, 2);
+		Vector3D vector3 = createVector(1, -5);
+		Point3D r;
 		
 		r = point.operator_minus(vector1);
 		assertFpPointEquals(1, 2, r);
@@ -233,13 +230,13 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	}
 
 	@Test
-	public final void operator_minusPoint2D_iffp() {
+	public final void operator_minusPoint3D_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
-		Point2D point = createPoint(0, 0);
-		Point2D point2 = createPoint(1, 0);
-		Point2D vector = createPoint(-1.2, -1.2);
-		Point2D vector2 = createPoint(2.0, 1.5);
-		Vector2D newVector;
+		Point3D point = createPoint(0, 0);
+		Point3D point2 = createPoint(1, 0);
+		Point3D vector = createPoint(-1.2, -1.2);
+		Point3D vector2 = createPoint(2.0, 1.5);
+		Vector3D newVector;
 
 		newVector = point.operator_minus(vector);
 		assertFpVectorEquals(1.2, 1.2, newVector);
@@ -249,13 +246,13 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	}
 
 	@Test
-	public final void operator_minusPoint2D_ifi() {
+	public final void operator_minusPoint3D_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
-		Point2D point = createPoint(0, 0);
-		Point2D point2 = createPoint(1, 0);
-		Point2D vector = createPoint(-1.2, -1.2);
-		Point2D vector2 = createPoint(2.0, 1.5);
-		Vector2D newVector;
+		Point3D point = createPoint(0, 0);
+		Point3D point2 = createPoint(1, 0);
+		Point3D vector = createPoint(-1.2, -1.2);
+		Point3D vector2 = createPoint(2.0, 1.5);
+		Vector3D newVector;
 
 		newVector = point.operator_minus(vector);
 		assertFpVectorEquals(1, 1, newVector);
@@ -265,8 +262,8 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	}
 
 	@Test
-	public final void operator_equalsTuple2D() {
-		Point2D point = createPoint(49, -2);
+	public final void operator_equalsTuple3D() {
+		Point3D point = createPoint(49, -2);
 		assertFalse(point.operator_equals(null));
 		assertTrue(point.operator_equals(point));
 		assertFalse(point.operator_equals(createPoint(49, -3)));
@@ -275,8 +272,8 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	}
 
 	@Test
-	public final void operator_notEqualsTuple2D() {
-		Point2D point = createPoint(49, -2);
+	public final void operator_notEqualsTuple3D() {
+		Point3D point = createPoint(49, -2);
 		assertTrue(point.operator_notEquals(null));
 		assertFalse(point.operator_notEquals(point));
 		assertTrue(point.operator_notEquals(createPoint(49, -3)));
@@ -286,7 +283,7 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 
 	@Test
 	public final void testEqualsObject() {
-		Point2D point = createPoint(49, -2);
+		Point3D point = createPoint(49, -2);
 		assertFalse(point.equals((Object) null));
 		assertTrue(point.equals((Object) point));
 		assertFalse(point.equals((Object) createPoint(49, -3)));
@@ -295,22 +292,22 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	}
 
 	@Test
-	public final void operator_upToPoint2D() {
-		Point2D point = createPoint(0, 0);
-		Point2D point2 = createPoint(0, 0);
-		Point2D point3 = createPoint(1, 2);
-		Point2D point4 = createPoint(1, 1);
+	public final void operator_upToPoint3D() {
+		Point3D point = createPoint(0, 0);
+		Point3D point2 = createPoint(0, 0);
+		Point3D point3 = createPoint(1, 2);
+		Point3D point4 = createPoint(1, 1);
 		assertEpsilonEquals(0, point.operator_upTo(point2));
 		assertEpsilonEquals(Math.sqrt(5), point.operator_upTo(point3));
 		assertEpsilonEquals(Math.sqrt(2), point.operator_upTo(point4));
 	}
 
 	@Test
-	public final void operator_elvisPoint2D() {
-		Point2D orig1 = createPoint(45, -78);
-		Point2D orig2 = createPoint(0, 0);
-		Point2D param = createPoint(-5, -1.4);
-		Point2D result;
+	public final void operator_elvisPoint3D() {
+		Point3D orig1 = createPoint(45, -78);
+		Point3D orig2 = createPoint(0, 0);
+		Point3D param = createPoint(-5, -1.4);
+		Point3D result;
 		
 		result = orig1.operator_elvis(null);
 		assertSame(orig1, result);
@@ -338,12 +335,12 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	public abstract void operator_upToShape2D();
 
 	@Test
-	public void addPoint2DVector2D() {
-		Point2D point = createPoint(1, 2);
-		Point2D point2 = createPoint(3, 0);
-		Vector2D vector1 = createVector(0, 0);
-		Vector2D vector2 = createVector(1, 2);
-		Vector2D vector3 = createVector(1, -5);
+	public void addPoint3DVector3D() {
+		Point3D point = createPoint(1, 2);
+		Point3D point2 = createPoint(3, 0);
+		Vector3D vector1 = createVector(0, 0);
+		Vector3D vector2 = createVector(1, 2);
+		Vector3D vector3 = createVector(1, -5);
 		
 		point.add(point, vector1);
 		assertFpPointEquals(1, 2, point);
@@ -365,12 +362,12 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	}
 
 	@Test
-	public void addVector2DPoint2D() {
-		Point2D point = createPoint(1, 2);
-		Point2D point2 = createPoint(3, 0);
-		Vector2D vector1 = createVector(0, 0);
-		Vector2D vector2 = createVector(1, 2);
-		Vector2D vector3 = createVector(1, -5);
+	public void addVector3DPoint3D() {
+		Point3D point = createPoint(1, 2);
+		Point3D point2 = createPoint(3, 0);
+		Vector3D vector1 = createVector(0, 0);
+		Vector3D vector2 = createVector(1, 2);
+		Vector3D vector3 = createVector(1, -5);
 		
 		point.add(vector1, point);
 		assertFpPointEquals(1, 2, point);
@@ -392,12 +389,12 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	}
 
 	@Test
-	public void addVector2D() {
-		Point2D point = createPoint(1, 2);
-		Point2D point2 = createPoint(3, 0);
-		Vector2D vector1 = createVector(0, 0);
-		Vector2D vector2 = createVector(1, 2);
-		Vector2D vector3 = createVector(1, -5);
+	public void addVector3D() {
+		Point3D point = createPoint(1, 2);
+		Point3D point2 = createPoint(3, 0);
+		Vector3D vector1 = createVector(0, 0);
+		Vector3D vector2 = createVector(1, 2);
+		Vector3D vector3 = createVector(1, -5);
 		
 		point.add(vector1);
 		assertFpPointEquals(1, 2, point);
@@ -419,13 +416,13 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	}
 
 	@Test
-	public void scaleAddDoubleVector2DPoint2D_iffp() {
+	public void scaleAddDoubleVector3DPoint3D_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
-		Point2D point = createPoint(1, 2);
-		Point2D point2 = createPoint(3, 0);
-		Vector2D vector1 = createVector(0, 0);
-		Vector2D vector2 = createVector(1, 2);
-		Vector2D vector3 = createVector(1, -5);
+		Point3D point = createPoint(1, 2);
+		Point3D point2 = createPoint(3, 0);
+		Vector3D vector1 = createVector(0, 0);
+		Vector3D vector2 = createVector(1, 2);
+		Vector3D vector3 = createVector(1, -5);
 		
 		point.scaleAdd(2.5, vector1, point);
 		assertFpPointEquals(1, 2, point);
@@ -447,13 +444,13 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	}
 
 	@Test
-	public void scaleAddDoubleVector2DPoint2D_ifi() {
+	public void scaleAddDoubleVector3DPoint3D_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
-		Point2D point = createPoint(1, 2);
-		Point2D point2 = createPoint(3, 0);
-		Vector2D vector1 = createVector(0, 0);
-		Vector2D vector2 = createVector(1, 2);
-		Vector2D vector3 = createVector(1, -5);
+		Point3D point = createPoint(1, 2);
+		Point3D point2 = createPoint(3, 0);
+		Vector3D vector1 = createVector(0, 0);
+		Vector3D vector2 = createVector(1, 2);
+		Vector3D vector3 = createVector(1, -5);
 		
 		point.scaleAdd(2.5, vector1, point);
 		assertIntPointEquals(1, 2, point);
@@ -475,12 +472,12 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	}
 
 	@Test
-	public void scaleAddIntVector2DPoint2D() {
-		Point2D point = createPoint(1, 2);
-		Point2D point2 = createPoint(3, 0);
-		Vector2D vector1 = createVector(0, 0);
-		Vector2D vector2 = createVector(1, 2);
-		Vector2D vector3 = createVector(1, -5);
+	public void scaleAddIntVector3DPoint3D() {
+		Point3D point = createPoint(1, 2);
+		Point3D point2 = createPoint(3, 0);
+		Vector3D vector1 = createVector(0, 0);
+		Vector3D vector2 = createVector(1, 2);
+		Vector3D vector3 = createVector(1, -5);
 		
 		point.scaleAdd(2, vector1, point);
 		assertFpPointEquals(1, 2, point);
@@ -502,12 +499,12 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	}
 
 	@Test
-	public void scaleAddIntPoint2DVector2D() {
-		Point2D point = createPoint(1, 2);
-		Point2D point2 = createPoint(3, 0);
-		Vector2D vector1 = createVector(0, 0);
-		Vector2D vector2 = createVector(1, 2);
-		Vector2D vector3 = createVector(1, -5);
+	public void scaleAddIntPoint3DVector3D() {
+		Point3D point = createPoint(1, 2);
+		Point3D point2 = createPoint(3, 0);
+		Vector3D vector1 = createVector(0, 0);
+		Vector3D vector2 = createVector(1, 2);
+		Vector3D vector3 = createVector(1, -5);
 		
 		point.scaleAdd(2, point, vector1);
 		assertFpPointEquals(2, 4, point);
@@ -529,13 +526,13 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	}
 
 	@Test
-	public void scaleAddDoublePoint2DVector2D_iffp() {
+	public void scaleAddDoublePoint3DVector3D_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
-		Point2D point = createPoint(1, 2);
-		Point2D point2 = createPoint(3, 0);
-		Vector2D vector1 = createVector(0, 0);
-		Vector2D vector2 = createVector(1, 2);
-		Vector2D vector3 = createVector(1, -5);
+		Point3D point = createPoint(1, 2);
+		Point3D point2 = createPoint(3, 0);
+		Vector3D vector1 = createVector(0, 0);
+		Vector3D vector2 = createVector(1, 2);
+		Vector3D vector3 = createVector(1, -5);
 		
 		point.scaleAdd(2.5, point, vector1);
 		assertFpPointEquals(2.5, 5, point);
@@ -557,13 +554,13 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	}
 
 	@Test
-	public void scaleAddDoublePoint2DVector2D_ifi() {
+	public void scaleAddDoublePoint3DVector3D_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
-		Point2D point = createPoint(1, 2);
-		Point2D point2 = createPoint(3, 0);
-		Vector2D vector1 = createVector(0, 0);
-		Vector2D vector2 = createVector(1, 2);
-		Vector2D vector3 = createVector(1, -5);
+		Point3D point = createPoint(1, 2);
+		Point3D point2 = createPoint(3, 0);
+		Vector3D vector1 = createVector(0, 0);
+		Vector3D vector2 = createVector(1, 2);
+		Vector3D vector3 = createVector(1, -5);
 		
 		point.scaleAdd(2.5, point, vector1);
 		assertIntPointEquals(3, 5, point);
@@ -585,12 +582,12 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	}
 
 	@Test
-	public void scaleAddIntVector2D() {
-		Point2D point = createPoint(1, 2);
-		Point2D point2 = createPoint(3, 0);
-		Vector2D vector1 = createVector(0, 0);
-		Vector2D vector2 = createVector(1, 2);
-		Vector2D vector3 = createVector(1, -5);
+	public void scaleAddIntVector3D() {
+		Point3D point = createPoint(1, 2);
+		Point3D point2 = createPoint(3, 0);
+		Vector3D vector1 = createVector(0, 0);
+		Vector3D vector2 = createVector(1, 2);
+		Vector3D vector3 = createVector(1, -5);
 		
 		point.scaleAdd(2, vector1);
 		assertFpPointEquals(2, 4, point);
@@ -612,13 +609,13 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	}
 
 	@Test
-	public void scaleAddDoubleVector2D_iffp() {
+	public void scaleAddDoubleVector3D_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
-		Point2D point = createPoint(1, 2);
-		Point2D point2 = createPoint(3, 0);
-		Vector2D vector1 = createVector(0, 0);
-		Vector2D vector2 = createVector(1, 2);
-		Vector2D vector3 = createVector(1, -5);
+		Point3D point = createPoint(1, 2);
+		Point3D point2 = createPoint(3, 0);
+		Vector3D vector1 = createVector(0, 0);
+		Vector3D vector2 = createVector(1, 2);
+		Vector3D vector3 = createVector(1, -5);
 		
 		point.scaleAdd(2.5, vector1);
 		assertFpPointEquals(2.5, 5, point);
@@ -640,13 +637,13 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	}
 
 	@Test
-	public void scaleAddDoubleVector2D_ifi() {
+	public void scaleAddDoubleVector3D_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
-		Point2D point = createPoint(1, 2);
-		Point2D point2 = createPoint(3, 0);
-		Vector2D vector1 = createVector(0, 0);
-		Vector2D vector2 = createVector(1, 2);
-		Vector2D vector3 = createVector(1, -5);
+		Point3D point = createPoint(1, 2);
+		Point3D point2 = createPoint(3, 0);
+		Vector3D vector1 = createVector(0, 0);
+		Vector3D vector2 = createVector(1, 2);
+		Vector3D vector3 = createVector(1, -5);
 		
 		point.scaleAdd(2.5, vector1);
 		assertIntPointEquals(3, 5, point);
@@ -668,12 +665,12 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	}
 
 	@Test
-	public void subPoint2DVector2D() {
-		Point2D point = createPoint(1, 2);
-		Point2D point2 = createPoint(3, 0);
-		Vector2D vector1 = createVector(0, 0);
-		Vector2D vector2 = createVector(1, 2);
-		Vector2D vector3 = createVector(1, -5);
+	public void subPoint3DVector3D() {
+		Point3D point = createPoint(1, 2);
+		Point3D point2 = createPoint(3, 0);
+		Vector3D vector1 = createVector(0, 0);
+		Vector3D vector2 = createVector(1, 2);
+		Vector3D vector3 = createVector(1, -5);
 		
 		point.sub(point, vector1);
 		assertFpPointEquals(1, 2, point);
@@ -695,12 +692,12 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	}
 
 	@Test
-	public void subVector2D() {
-		Point2D point = createPoint(1, 2);
-		Point2D point2 = createPoint(3, 0);
-		Vector2D vector1 = createVector(0, 0);
-		Vector2D vector2 = createVector(1, 2);
-		Vector2D vector3 = createVector(1, -5);
+	public void subVector3D() {
+		Point3D point = createPoint(1, 2);
+		Point3D point2 = createPoint(3, 0);
+		Vector3D vector1 = createVector(0, 0);
+		Vector3D vector2 = createVector(1, 2);
+		Vector3D vector3 = createVector(1, -5);
 		
 		point.sub(vector1);
 		assertFpPointEquals(1, 2, point);
@@ -722,13 +719,13 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	}
 
 	@Test
-	public void operator_addVector2D() {
-		Point2D point = createPoint(1, 2);
-		Point2D point2 = createPoint(3, 0);
-		Vector2D vector1 = createVector(0, 0);
-		Vector2D vector2 = createVector(1, 2);
-		Vector2D vector3 = createVector(1, -5);
-		Point2D r;
+	public void operator_addVector3D() {
+		Point3D point = createPoint(1, 2);
+		Point3D point2 = createPoint(3, 0);
+		Vector3D vector1 = createVector(0, 0);
+		Vector3D vector2 = createVector(1, 2);
+		Vector3D vector3 = createVector(1, -5);
+		Point3D r;
 		
 		point.operator_add(vector1);
 		assertFpPointEquals(1, 2, point);
@@ -750,12 +747,12 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	}
 
 	@Test
-	public void operator_removeVector2D() {
-		Point2D point = createPoint(1, 2);
-		Point2D point2 = createPoint(3, 0);
-		Vector2D vector1 = createVector(0, 0);
-		Vector2D vector2 = createVector(1, 2);
-		Vector2D vector3 = createVector(1, -5);
+	public void operator_removeVector3D() {
+		Point3D point = createPoint(1, 2);
+		Point3D point2 = createPoint(3, 0);
+		Vector3D vector1 = createVector(0, 0);
+		Vector3D vector2 = createVector(1, 2);
+		Vector3D vector3 = createVector(1, -5);
 		
 		point.operator_remove(vector1);
 		assertFpPointEquals(1, 2, point);
@@ -780,7 +777,7 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	public void turnDouble_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
 		
-		Point2D p;
+		Point3D p;
 		
 		p = createPoint(1, 0);
 		p.turn(Math.PI/2);
@@ -832,10 +829,10 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	}
 
 	@Test
-	public void turnDoublePoint2D_iffp() {
+	public void turnDoublePoint3D_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
 		
-		Point2D p = createPoint(0, 0);
+		Point3D p = createPoint(0, 0);
 		
 		p.turn(Math.PI/2, createPoint(1, 0));
 		assertFpPointEquals(0, 1, p);
@@ -875,11 +872,11 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	}
 
 	@Test
-	public void turnDoublePoint2DPoint2D_origin_iffp() {
+	public void turnDoublePoint3DPoint3D_origin_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
 		
-		Point2D origin = createPoint(0, 0);
-		Point2D p = createPoint(0, 0);
+		Point3D origin = createPoint(0, 0);
+		Point3D p = createPoint(0, 0);
 		
 		p.turn(Math.PI/2, createPoint(1, 0), origin);
 		assertFpPointEquals(0, 1, p);
@@ -919,11 +916,11 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	}
 
 	@Test
-	public void turnDoublePoint2DPoint2D_aroundP_iffp() {
+	public void turnDoublePoint3DPoint3D_aroundP_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
 		
-		Point2D origin = createPoint(-45, 12);
-		Point2D p = createPoint(0, 0);
+		Point3D origin = createPoint(-45, 12);
+		Point3D p = createPoint(0, 0);
 		
 		p.turn(Math.PI/2, createPoint(1, 0), origin);
 		assertFpPointEquals(-33, 58, p);
@@ -965,8 +962,8 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	@Test
 	public void turnLeftDouble_iffp_leftHanded() {
 		Assume.assumeFalse(isIntCoordinates());		
-		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());
-		Point2D p;
+		Assume.assumeTrue(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());
+		Point3D p;
 		
 		p = createPoint(1, 0);
 		p.turnLeft(Math.PI/2);
@@ -1020,8 +1017,8 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	@Test
 	public void turnLeftDouble_iffp_rightHanded() {
 		Assume.assumeFalse(isIntCoordinates());		
-		Assume.assumeFalse(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
-		Point2D p;
+		Assume.assumeFalse(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
+		Point3D p;
 		
 		p = createPoint(1, 0);
 		p.turnLeft(Math.PI/2);
@@ -1073,10 +1070,10 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	}
 
 	@Test
-	public void turnLeftDoublePoint2D_iffp_leftHanded() {
+	public void turnLeftDoublePoint3D_iffp_leftHanded() {
 		Assume.assumeFalse(isIntCoordinates());		
-		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
-		Point2D p = createPoint(0, 0);
+		Assume.assumeTrue(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
+		Point3D p = createPoint(0, 0);
 		
 		p.turnLeft(Math.PI/2, createPoint(1, 0));
 		assertFpPointEquals(0, -1, p);
@@ -1116,10 +1113,10 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	}
 
 	@Test
-	public void turnLeftDoublePoint2D_iffp_rightHanded() {
+	public void turnLeftDoublePoint3D_iffp_rightHanded() {
 		Assume.assumeFalse(isIntCoordinates());		
-		Assume.assumeFalse(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
-		Point2D p = createPoint(0, 0);
+		Assume.assumeFalse(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
+		Point3D p = createPoint(0, 0);
 		
 		p.turnLeft(Math.PI/2, createPoint(1, 0));
 		assertFpPointEquals(0, 1, p);
@@ -1159,11 +1156,11 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	}
 
 	@Test
-	public void turnLeftDoublePoint2DPoint2D_origin_iffp_leftHanded() {
+	public void turnLeftDoublePoint3DPoint3D_origin_iffp_leftHanded() {
 		Assume.assumeFalse(isIntCoordinates());		
-		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
-		Point2D origin = createPoint(0, 0);
-		Point2D p = createPoint(0, 0);
+		Assume.assumeTrue(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
+		Point3D origin = createPoint(0, 0);
+		Point3D p = createPoint(0, 0);
 		
 		p.turnLeft(Math.PI/2, createPoint(1, 0), origin);
 		assertFpPointEquals(0, -1, p);
@@ -1203,11 +1200,11 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	}
 
 	@Test
-	public void turnLeftDoublePoint2DPoint2D_origin_iffp_rightHanded() {
+	public void turnLeftDoublePoint3DPoint3D_origin_iffp_rightHanded() {
 		Assume.assumeFalse(isIntCoordinates());		
-		Assume.assumeFalse(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
-		Point2D origin = createPoint(0, 0);
-		Point2D p = createPoint(0, 0);
+		Assume.assumeFalse(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
+		Point3D origin = createPoint(0, 0);
+		Point3D p = createPoint(0, 0);
 		
 		p.turnLeft(Math.PI/2, createPoint(1, 0), origin);
 		assertFpPointEquals(0, 1, p);
@@ -1247,11 +1244,11 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	}
 
 	@Test
-	public void turnLeftDoublePoint2DPoint2D_aroundP_iffp_leftHanded() {
+	public void turnLeftDoublePoint3DPoint3D_aroundP_iffp_leftHanded() {
 		Assume.assumeFalse(isIntCoordinates());		
-		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
-		Point2D origin = createPoint(-45, 12);
-		Point2D p = createPoint(0, 0);
+		Assume.assumeTrue(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
+		Point3D origin = createPoint(-45, 12);
+		Point3D p = createPoint(0, 0);
 		
 		p.turnLeft(Math.PI/2, createPoint(1, 0), origin);
 		assertFpPointEquals(-57, -34, p);
@@ -1291,11 +1288,11 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	}
 
 	@Test
-	public void turnLeftDoublePoint2DPoint2D_aroundP_iffp_rightHanded() {
+	public void turnLeftDoublePoint3DPoint3D_aroundP_iffp_rightHanded() {
 		Assume.assumeFalse(isIntCoordinates());		
-		Assume.assumeFalse(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
-		Point2D origin = createPoint(-45, 12);
-		Point2D p = createPoint(0, 0);
+		Assume.assumeFalse(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
+		Point3D origin = createPoint(-45, 12);
+		Point3D p = createPoint(0, 0);
 		
 		p.turnLeft(Math.PI/2, createPoint(1, 0), origin);
 		assertFpPointEquals(-33, 58, p);
@@ -1337,8 +1334,8 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	@Test
 	public void turnRightDouble_iffp_leftHanded() {
 		Assume.assumeFalse(isIntCoordinates());		
-		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());
-		Point2D p;
+		Assume.assumeTrue(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());
+		Point3D p;
 		
 		p = createPoint(1, 0);
 		p.turnRight(Math.PI/2);
@@ -1392,8 +1389,8 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	@Test
 	public void turnRightDouble_iffp_rightHanded() {
 		Assume.assumeFalse(isIntCoordinates());		
-		Assume.assumeFalse(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
-		Point2D p;
+		Assume.assumeFalse(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
+		Point3D p;
 		
 		p = createPoint(1, 0);
 		p.turnRight(Math.PI/2);
@@ -1445,10 +1442,10 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	}
 
 	@Test
-	public void turnRightDoublePoint2D_iffp_leftHanded() {
+	public void turnRightDoublePoint3D_iffp_leftHanded() {
 		Assume.assumeFalse(isIntCoordinates());		
-		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
-		Point2D p = createPoint(0, 0);
+		Assume.assumeTrue(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
+		Point3D p = createPoint(0, 0);
 		
 		p.turnRight(Math.PI/2, createPoint(1, 0));
 		assertFpPointEquals(0, 1, p);
@@ -1488,12 +1485,12 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	}
 
 	@Test
-	public void turnRightDoublePoint2D_iffp_rightHanded() {
+	public void turnRightDoublePoint3D_iffp_rightHanded() {
 		Assume.assumeFalse(isIntCoordinates());		
-		Assume.assumeFalse(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
+		Assume.assumeFalse(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
 		Assume.assumeFalse(isIntCoordinates());		
-		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
-		Point2D p = createPoint(0, 0);
+		Assume.assumeTrue(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
+		Point3D p = createPoint(0, 0);
 		
 		p.turnRight(Math.PI/2, createPoint(1, 0));
 		assertFpPointEquals(0, -1, p);
@@ -1533,11 +1530,11 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	}
 
 	@Test
-	public void turnRightDoublePoint2DPoint2D_origin_iffp_leftHanded() {
+	public void turnRightDoublePoint3DPoint3D_origin_iffp_leftHanded() {
 		Assume.assumeFalse(isIntCoordinates());		
-		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
-		Point2D origin = createPoint(0, 0);
-		Point2D p = createPoint(0, 0);
+		Assume.assumeTrue(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
+		Point3D origin = createPoint(0, 0);
+		Point3D p = createPoint(0, 0);
 		
 		p.turnRight(Math.PI/2, createPoint(1, 0), origin);
 		assertFpPointEquals(0, 1, p);
@@ -1577,11 +1574,11 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	}
 
 	@Test
-	public void turnRightDoublePoint2DPoint2D_origin_iffp_rightHanded() {
+	public void turnRightDoublePoint3DPoint3D_origin_iffp_rightHanded() {
 		Assume.assumeFalse(isIntCoordinates());		
-		Assume.assumeFalse(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
-		Point2D origin = createPoint(0, 0);
-		Point2D p = createPoint(0, 0);
+		Assume.assumeFalse(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
+		Point3D origin = createPoint(0, 0);
+		Point3D p = createPoint(0, 0);
 		
 		p.turnRight(Math.PI/2, createPoint(1, 0), origin);
 		assertFpPointEquals(0, -1, p);
@@ -1621,11 +1618,11 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	}
 
 	@Test
-	public void turnRightDoublePoint2DPoint2D_aroundP_iffp_leftHanded() {
+	public void turnRightDoublePoint3DPoint3D_aroundP_iffp_leftHanded() {
 		Assume.assumeFalse(isIntCoordinates());		
-		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
-		Point2D origin = createPoint(-45, 12);
-		Point2D p = createPoint(0, 0);
+		Assume.assumeTrue(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
+		Point3D origin = createPoint(-45, 12);
+		Point3D p = createPoint(0, 0);
 		
 		p.turnRight(Math.PI/2, createPoint(1, 0), origin);
 		assertFpPointEquals(-33, 58, p);
@@ -1665,11 +1662,11 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	}
 
 	@Test
-	public void turnRightDoublePoint2DPoint2D_aroundP_iffp_rightHanded() {
+	public void turnRightDoublePoint3DPoint3D_aroundP_iffp_rightHanded() {
 		Assume.assumeFalse(isIntCoordinates());		
-		Assume.assumeFalse(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
-		Point2D origin = createPoint(-45, 12);
-		Point2D p = createPoint(0, 0);
+		Assume.assumeFalse(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
+		Point3D origin = createPoint(-45, 12);
+		Point3D p = createPoint(0, 0);
 		
 		p.turnRight(Math.PI/2, createPoint(1, 0), origin);
 		assertFpPointEquals(-57, -34, p);
@@ -1712,7 +1709,7 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	public void turnDouble_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
 		
-		Point2D p;
+		Point3D p;
 		
 		p = createPoint(1, 0);
 		p.turn(Math.PI/2);
@@ -1764,10 +1761,10 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	}
 
 	@Test
-	public void turnDoublePoint2D_ifi() {
+	public void turnDoublePoint3D_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
 		
-		Point2D p = createPoint(0, 0);
+		Point3D p = createPoint(0, 0);
 		
 		p.turn(Math.PI/2, createPoint(1, 0));
 		assertIntPointEquals(0, 1, p);
@@ -1807,11 +1804,11 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	}
 
 	@Test
-	public void turnDoublePoint2DPoint2D_origin_ifi() {
+	public void turnDoublePoint3DPoint3D_origin_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
 		
-		Point2D origin = createPoint(0, 0);
-		Point2D p = createPoint(0, 0);
+		Point3D origin = createPoint(0, 0);
+		Point3D p = createPoint(0, 0);
 		
 		p.turn(Math.PI/2, createPoint(1, 0), origin);
 		assertIntPointEquals(0, 1, p);
@@ -1851,11 +1848,11 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	}
 
 	@Test
-	public void turnDoublePoint2DPoint2D_aroundP_ifi() {
+	public void turnDoublePoint3DPoint3D_aroundP_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
 		
-		Point2D origin = createPoint(-45, 12);
-		Point2D p = createPoint(0, 0);
+		Point3D origin = createPoint(-45, 12);
+		Point3D p = createPoint(0, 0);
 		
 		p.turn(Math.PI/2, createPoint(1, 0), origin);
 		assertIntPointEquals(-33, 58, p);
@@ -1897,8 +1894,8 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	@Test
 	public void turnLeftDouble_ifi_leftHanded() {
 		Assume.assumeTrue(isIntCoordinates());		
-		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());
-		Point2D p;
+		Assume.assumeTrue(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());
+		Point3D p;
 		
 		p = createPoint(1, 0);
 		p.turnLeft(Math.PI/2);
@@ -1952,8 +1949,8 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	@Test
 	public void turnLeftDouble_ifi_rightHanded() {
 		Assume.assumeTrue(isIntCoordinates());		
-		Assume.assumeFalse(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
-		Point2D p;
+		Assume.assumeFalse(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
+		Point3D p;
 		
 		p = createPoint(1, 0);
 		p.turnLeft(Math.PI/2);
@@ -2005,10 +2002,10 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	}
 
 	@Test
-	public void turnLeftDoublePoint2D_ifi_leftHanded() {
+	public void turnLeftDoublePoint3D_ifi_leftHanded() {
 		Assume.assumeTrue(isIntCoordinates());		
-		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
-		Point2D p = createPoint(0, 0);
+		Assume.assumeTrue(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
+		Point3D p = createPoint(0, 0);
 		
 		p.turnLeft(Math.PI/2, createPoint(1, 0));
 		assertIntPointEquals(0, -1, p);
@@ -2048,10 +2045,10 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	}
 
 	@Test
-	public void turnLeftDoublePoint2D_ifi_rightHanded() {
+	public void turnLeftDoublePoint3D_ifi_rightHanded() {
 		Assume.assumeTrue(isIntCoordinates());		
-		Assume.assumeFalse(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
-		Point2D p = createPoint(0, 0);
+		Assume.assumeFalse(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
+		Point3D p = createPoint(0, 0);
 		
 		p.turnLeft(Math.PI/2, createPoint(1, 0));
 		assertIntPointEquals(0, 1, p);
@@ -2091,11 +2088,11 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	}
 
 	@Test
-	public void turnLeftDoublePoint2DPoint2D_origin_ifi_leftHanded() {
+	public void turnLeftDoublePoint3DPoint3D_origin_ifi_leftHanded() {
 		Assume.assumeTrue(isIntCoordinates());		
-		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
-		Point2D origin = createPoint(0, 0);
-		Point2D p = createPoint(0, 0);
+		Assume.assumeTrue(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
+		Point3D origin = createPoint(0, 0);
+		Point3D p = createPoint(0, 0);
 		
 		p.turnLeft(Math.PI/2, createPoint(1, 0), origin);
 		assertIntPointEquals(0, -1, p);
@@ -2135,11 +2132,11 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	}
 
 	@Test
-	public void turnLeftDoublePoint2DPoint2D_origin_ifi_rightHanded() {
+	public void turnLeftDoublePoint3DPoint3D_origin_ifi_rightHanded() {
 		Assume.assumeTrue(isIntCoordinates());		
-		Assume.assumeFalse(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
-		Point2D origin = createPoint(0, 0);
-		Point2D p = createPoint(0, 0);
+		Assume.assumeFalse(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
+		Point3D origin = createPoint(0, 0);
+		Point3D p = createPoint(0, 0);
 		
 		p.turnLeft(Math.PI/2, createPoint(1, 0), origin);
 		assertIntPointEquals(0, 1, p);
@@ -2179,11 +2176,11 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	}
 
 	@Test
-	public void turnLeftDoublePoint2DPoint2D_aroundP_ifi_leftHanded() {
+	public void turnLeftDoublePoint3DPoint3D_aroundP_ifi_leftHanded() {
 		Assume.assumeTrue(isIntCoordinates());		
-		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
-		Point2D origin = createPoint(-45, 12);
-		Point2D p = createPoint(0, 0);
+		Assume.assumeTrue(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
+		Point3D origin = createPoint(-45, 12);
+		Point3D p = createPoint(0, 0);
 		
 		p.turnLeft(Math.PI/2, createPoint(1, 0), origin);
 		assertIntPointEquals(-57, -34, p);
@@ -2223,11 +2220,11 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	}
 
 	@Test
-	public void turnLeftDoublePoint2DPoint2D_aroundP_ifi_rightHanded() {
+	public void turnLeftDoublePoint3DPoint3D_aroundP_ifi_rightHanded() {
 		Assume.assumeTrue(isIntCoordinates());		
-		Assume.assumeFalse(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
-		Point2D origin = createPoint(-45, 12);
-		Point2D p = createPoint(0, 0);
+		Assume.assumeFalse(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
+		Point3D origin = createPoint(-45, 12);
+		Point3D p = createPoint(0, 0);
 		
 		p.turnLeft(Math.PI/2, createPoint(1, 0), origin);
 		assertIntPointEquals(-33, 58, p);
@@ -2269,8 +2266,8 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	@Test
 	public void turnRightDouble_ifi_leftHanded() {
 		Assume.assumeTrue(isIntCoordinates());		
-		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());
-		Point2D p;
+		Assume.assumeTrue(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());
+		Point3D p;
 		
 		p = createPoint(1, 0);
 		p.turnRight(Math.PI/2);
@@ -2324,8 +2321,8 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	@Test
 	public void turnRightDouble_ifi_rightHanded() {
 		Assume.assumeTrue(isIntCoordinates());		
-		Assume.assumeFalse(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
-		Point2D p;
+		Assume.assumeFalse(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
+		Point3D p;
 		
 		p = createPoint(1, 0);
 		p.turnRight(Math.PI/2);
@@ -2377,10 +2374,10 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	}
 
 	@Test
-	public void turnRightDoublePoint2D_ifi_leftHanded() {
+	public void turnRightDoublePoint3D_ifi_leftHanded() {
 		Assume.assumeTrue(isIntCoordinates());		
-		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
-		Point2D p = createPoint(0, 0);
+		Assume.assumeTrue(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
+		Point3D p = createPoint(0, 0);
 		
 		p.turnRight(Math.PI/2, createPoint(1, 0));
 		assertIntPointEquals(0, 1, p);
@@ -2420,12 +2417,12 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	}
 
 	@Test
-	public void turnRightDoublePoint2D_ifi_rightHanded() {
+	public void turnRightDoublePoint3D_ifi_rightHanded() {
 		Assume.assumeTrue(isIntCoordinates());		
-		Assume.assumeFalse(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
+		Assume.assumeFalse(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
 		Assume.assumeFalse(isIntCoordinates());		
-		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
-		Point2D p = createPoint(0, 0);
+		Assume.assumeTrue(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
+		Point3D p = createPoint(0, 0);
 		
 		p.turnRight(Math.PI/2, createPoint(1, 0));
 		assertIntPointEquals(0, -1, p);
@@ -2465,11 +2462,11 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	}
 
 	@Test
-	public void turnRightDoublePoint2DPoint2D_origin_ifi_leftHanded() {
+	public void turnRightDoublePoint3DPoint3D_origin_ifi_leftHanded() {
 		Assume.assumeTrue(isIntCoordinates());		
-		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
-		Point2D origin = createPoint(0, 0);
-		Point2D p = createPoint(0, 0);
+		Assume.assumeTrue(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
+		Point3D origin = createPoint(0, 0);
+		Point3D p = createPoint(0, 0);
 		
 		p.turnRight(Math.PI/2, createPoint(1, 0), origin);
 		assertIntPointEquals(0, 1, p);
@@ -2509,11 +2506,11 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	}
 
 	@Test
-	public void turnRightDoublePoint2DPoint2D_origin_ifi_rightHanded() {
+	public void turnRightDoublePoint3DPoint3D_origin_ifi_rightHanded() {
 		Assume.assumeTrue(isIntCoordinates());		
-		Assume.assumeFalse(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
-		Point2D origin = createPoint(0, 0);
-		Point2D p = createPoint(0, 0);
+		Assume.assumeFalse(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
+		Point3D origin = createPoint(0, 0);
+		Point3D p = createPoint(0, 0);
 		
 		p.turnRight(Math.PI/2, createPoint(1, 0), origin);
 		assertIntPointEquals(0, -1, p);
@@ -2553,11 +2550,11 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	}
 
 	@Test
-	public void turnRightDoublePoint2DPoint2D_aroundP_ifi_leftHanded() {
+	public void turnRightDoublePoint3DPoint3D_aroundP_ifi_leftHanded() {
 		Assume.assumeTrue(isIntCoordinates());		
-		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
-		Point2D origin = createPoint(-45, 12);
-		Point2D p = createPoint(0, 0);
+		Assume.assumeTrue(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
+		Point3D origin = createPoint(-45, 12);
+		Point3D p = createPoint(0, 0);
 		
 		p.turnRight(Math.PI/2, createPoint(1, 0), origin);
 		assertIntPointEquals(-33, 58, p);
@@ -2572,7 +2569,7 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 		assertIntPointEquals(-32, 57, p);
 
 		p.turnRight(-Math.PI/2, createPoint(1, 0), origin);
-		assertIntPointEquals(-57, -34, p);
+		assertIntPointEquals(-57, -34, p);S
 
 		p.turnRight(-Math.PI/2, createPoint(0, -1), origin);
 		assertIntPointEquals(-58, -33, p);
@@ -2597,11 +2594,11 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	}
 
 	@Test
-	public void turnRightDoublePoint2DPoint2D_aroundP_ifi_rightHanded() {
+	public void turnRightDoublePoint3DPoint3D_aroundP_ifi_rightHanded() {
 		Assume.assumeTrue(isIntCoordinates());		
-		Assume.assumeFalse(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
-		Point2D origin = createPoint(-45, 12);
-		Point2D p = createPoint(0, 0);
+		Assume.assumeFalse(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
+		Point3D origin = createPoint(-45, 12);
+		Point3D p = createPoint(0, 0);
 		
 		p.turnRight(Math.PI/2, createPoint(1, 0), origin);
 		assertIntPointEquals(-57, -34, p);

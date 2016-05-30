@@ -21,15 +21,10 @@
  */
 package org.arakhne.afc.math.geometry.d3.d;
 
-import org.arakhne.afc.math.geometry.d2.afp.AbstractParallelogram2afpTest;
-import org.arakhne.afc.math.geometry.d2.afp.AbstractPath2afpPointCollectionTest;
-import org.arakhne.afc.math.geometry.d2.afp.TestShapeFactory;
-import org.arakhne.afc.math.geometry.d2.d.Point2d;
-import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
-import org.arakhne.afc.math.geometry.d2.d.Vector2d;
+import org.arakhne.afc.math.geometry.d3.afp.AbstractPath3afpPointCollectionTest;
 
 @SuppressWarnings("all")
-public class Path3dPointCollectionTest extends AbstractPath2afpPointCollectionTest<Point2d, Vector2d, Rectangle2d> {
+public class Path3dPointCollectionTest extends AbstractPath3afpPointCollectionTest<Point3d, Vector3d, RectangularPrism3d> {
 
 	@Override
 	protected TestShapeFactory3d createFactory() {

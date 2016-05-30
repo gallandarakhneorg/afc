@@ -21,6 +21,8 @@
  */
 package org.arakhne.afc.math.geometry.d3.d;
 
+import org.arakhne.afc.math.geometry.d3.afp.AbstractSphere3afpTest;
+
 @SuppressWarnings("all")
 public class Sphere3dTest extends AbstractSphere3afpTest<Sphere3d, RectangularPrism3d> {
 

@@ -21,7 +21,6 @@ package org.arakhne.afc.math.geometry.d3.i;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import org.arakhne.afc.math.geometry.d2.i.Circle2i;
 import org.arakhne.afc.math.geometry.d3.AbstractPoint3DTest;
 import org.arakhne.afc.math.geometry.d3.Shape3D;
 
@@ -50,7 +49,7 @@ public class Point3iTest extends AbstractPoint3DTest<Point3i, Vector3i, Point3i>
 
 	@Override
 	public void operator_andShape2D() {
-		Shape3D shape = new Circle2i(5, 8, 5);
+		Shape3D shape = new Sphere3i(5, 8, 5);
 		assertFalse(createPoint(0,0).operator_and(shape));
 		assertFalse(createPoint(11,10).operator_and(shape));
 		assertFalse(createPoint(11,50).operator_and(shape));
@@ -64,7 +63,7 @@ public class Point3iTest extends AbstractPoint3DTest<Point3i, Vector3i, Point3i>
 	
 	@Override
 	public void operator_upToShape2D() {
-		Shape3D shape = new Circle2i(5, 8, 5);
+		Shape3D shape = new Sphere3i(5, 8, 5);
 		assertEpsilonEquals(0f, createPoint(5,8).operator_upTo(shape));
 		assertEpsilonEquals(0f, createPoint(10,10).operator_upTo(shape));
 		assertEpsilonEquals(0f, createPoint(4,8).operator_upTo(shape));

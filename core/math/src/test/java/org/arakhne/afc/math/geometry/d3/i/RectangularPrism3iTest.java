@@ -19,19 +19,16 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  * This program is free software; you can redistribute it and/or modify
  */
-package org.arakhne.afc.math.geometry.d3.d;
+package org.arakhne.afc.math.geometry.d3.i;
 
-import org.arakhne.afc.math.geometry.d2.afp.AbstractEllipse2afpTest;
-import org.arakhne.afc.math.geometry.d2.afp.TestShapeFactory;
-import org.arakhne.afc.math.geometry.d2.d.Ellipse2d;
-import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
+import org.arakhne.afc.math.geometry.d3.ai.AbstractRectangularPrism3aiTest;
 
 @SuppressWarnings("all")
-public class Ellipse3dTest extends AbstractEllipse2afpTest<Ellipse2d, Rectangle2d> {
+public class RectangularPrism3iTest extends AbstractRectangularPrism3aiTest<RectangularPrism3i> {
 
 	@Override
-	protected TestShapeFactory3d createFactory() {
-		return TestShapeFactory3d.SINGLETON;
+	protected TestShapeFactory3i createFactory() {
+		return TestShapeFactory3i.SINGLETON;
 	}
 
 }

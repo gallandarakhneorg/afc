@@ -18,17 +18,8 @@
  */
 package org.arakhne.afc.math.geometry.d3;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-import org.arakhne.afc.math.AbstractMathTestCase;
-import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2DTestRule;
-import org.arakhne.afc.math.geometry.d2.d.Tuple3d;
-import org.junit.After;
+import org.arakhne.afc.math.geometry.d3.d.Tuple3d;
 import org.junit.Assume;
-import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 
 @SuppressWarnings("all")

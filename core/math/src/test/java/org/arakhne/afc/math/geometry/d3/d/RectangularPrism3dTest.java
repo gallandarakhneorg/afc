@@ -21,13 +21,10 @@
  */
 package org.arakhne.afc.math.geometry.d3.d;
 
-import org.arakhne.afc.math.geometry.d2.afp.AbstractParallelogram2afpTest;
-import org.arakhne.afc.math.geometry.d2.afp.TestShapeFactory;
-import org.arakhne.afc.math.geometry.d2.d.Parallelogram2d;
-import org.arakhne.afc.math.geometry.d2.d.Rectangle2d;
+import org.arakhne.afc.math.geometry.d3.afp.AbstractRectangularPrism3afpTest;
 
 @SuppressWarnings("all")
-public class Parallelogram3dTest extends AbstractParallelogram2afpTest<Parallelogram2d, Rectangle2d> {
+public class RectangularPrism3dTest extends AbstractRectangularPrism3afpTest<RectangularPrism3d, RectangularPrism3d> {
 
 	@Override
 	protected TestShapeFactory3d createFactory() {

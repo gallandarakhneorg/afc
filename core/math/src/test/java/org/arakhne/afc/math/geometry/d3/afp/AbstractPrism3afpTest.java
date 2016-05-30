@@ -37,8 +37,8 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.junit.Test;
 
 @SuppressWarnings("all")
-public abstract class AbstractRectangularShape3afpTest<T extends RectangularShape2afp<?, T, ?, ?, ?, B>,
-		B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape3afpTest<T, B> {
+public abstract class AbstractPrism3afpTest<T extends Prism3afp<?, T, ?, ?, ?, B>,
+		B extends RectangularPrism3afp<?, ?, ?, ?, ?, B>> extends AbstractShape3afpTest<T, B> {
 
 	@Test
 	public abstract void inflate();
@@ -232,7 +232,7 @@ public abstract class AbstractRectangularShape3afpTest<T extends RectangularShap
 	}
 
 	@Override
-	public void translateVector2D() {
+	public void translateVector3D() {
 		this.shape.translate(createVector(123.456, 456.789));
 		assertEpsilonEquals(128.456, this.shape.getMinX());
 		assertEpsilonEquals(464.789, this.shape.getMinY());

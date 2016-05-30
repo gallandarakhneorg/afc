@@ -22,26 +22,21 @@
 package org.arakhne.afc.math.geometry.d3.ai;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
 
 import org.arakhne.afc.math.AbstractMathTestCase;
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem3DTestRule;
-import org.arakhne.afc.math.geometry.d2.Point2D;
-import org.arakhne.afc.math.geometry.d2.Point2DStub;
-import org.arakhne.afc.math.geometry.d2.Vector2D;
-import org.arakhne.afc.math.geometry.d2.Vector2DStub;
-import org.arakhne.afc.math.geometry.d2.ai.Path2ai;
-import org.arakhne.afc.math.geometry.d2.ai.PathElement2ai;
-import org.arakhne.afc.math.geometry.d2.ai.Rectangle2ai;
-import org.arakhne.afc.math.geometry.d2.ai.Segment2ai;
+import org.arakhne.afc.math.geometry.d2.Point3D;
+import org.arakhne.afc.math.geometry.d2.Point3DStub;
+import org.arakhne.afc.math.geometry.d2.ai.PathElement3ai;
 import org.arakhne.afc.math.geometry.d3.Point3D;
+import org.arakhne.afc.math.geometry.d3.Point3DStub;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
+import org.arakhne.afc.math.geometry.d3.Vector3DStub;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -72,114 +67,120 @@ public abstract class AbstractGeomFactory3aiTest extends AbstractMathTestCase {
 	}
 	
 	@Test
-	public void convertToPointPoint2D_expectedPointType() {
-		Point2D p = createPoint(45, 56);
-		Point2D p2 = this.factory.convertToPoint(p);
+	public void convertToPointPoint3D_expectedPointType() {
+		Point3D p = createPoint(45, 56, 72);
+		Point3D p2 = this.factory.convertToPoint(p);
 		assertSame(p, p2);
 	}
 	
 	@Test
-	public void convertToPointPoint2D_notExpectedPointType() {
-		Point2D p = new Point2DStub(45, 56);
-		Point2D p2 = this.factory.convertToPoint(p);
+	public void convertToPointPoint3D_notExpectedPointType() {
+		Point3D p = new Point3DStub(45, 56, 72);
+		Point3D p2 = this.factory.convertToPoint(p);
 		assertNotSame(p, p2);
 		assertEquals(p, p2);
 	}
 
 	@Test
-	public void convertToVectorPoint2D() {
-		Point2D p = new Point2DStub(45, 56);
-		Vector2D v = this.factory.convertToVector(p);
+	public void convertToVectorPoint3D() {
+		Point3D p = new Point3DStub(45, 56, 72);
+		Vector3D v = this.factory.convertToVector(p);
 		assertNotSame(p, v);
 		assertEquals(p, v);
 	}
 
 	@Test
 	public void convertToPointVector2D() {
-		Vector2D v = new Vector2DStub(45, 56);
-		Point2D p = this.factory.convertToPoint(v);
+		Vector3D v = new Vector3DStub(45, 56, 72);
+		Point3D p = this.factory.convertToPoint(v);
 		assertNotSame(v, p);
 		assertEquals(v, p);
 	}
 
 	@Test
 	public void convertToVectorVector2D_expectedVectorType() {
-		Vector2D v = createVector(45, 56);
-		Vector2D v2 = this.factory.convertToVector(v);
+		Vector3D v = createVector(45, 56, 72);
+		Vector3D v2 = this.factory.convertToVector(v);
 		assertSame(v, v2);
 	}
 	
 	@Test
 	public void convertToVectorVector2D_notExpectedVectorType() {
-		Vector2D v = new Vector2DStub(45, 56);
-		Vector2D v2 = this.factory.convertToVector(v);
+		Vector3D v = new Vector3DStub(45, 56, 72);
+		Vector3D v2 = this.factory.convertToVector(v);
 		assertNotSame(v, v2);
 		assertEquals(v, v2);
 	}
 
 	@Test
 	public void newPoint() {
-		Point2D p = this.factory.newPoint();
+		Point3D p = this.factory.newPoint();
 		assertNotNull(p);
 		assertEquals(0, p.ix());
 		assertEquals(0, p.iy());
-		Point2D ref = createPoint(0, 0);
+		assertEquals(0, p.iz());
+		Point3D ref = createPoint(0, 0, 0);
 		assertEquals(ref.getClass(), p.getClass());
 	}
 
 	@Test
 	public void newPointIntInt() {
-		Point2D p = this.factory.newPoint(15, 48);
+		Point3D p = this.factory.newPoint(15, 48, 6);
 		assertNotNull(p);
 		assertEquals(15, p.ix());
 		assertEquals(48, p.iy());
-		Point2D ref = createPoint(0, 0);
+		assertEquals(6, p.iy());
+		Point3D ref = createPoint(0, 0, 0);
 		assertEquals(ref.getClass(), p.getClass());
 	}
 
 	@Test
 	public void newPointDoubleDouble() {
-		Point2D p = this.factory.newPoint(15.56, 48.32);
+		Point3D p = this.factory.newPoint(15.56, 48.32, 6.42);
 		assertNotNull(p);
 		assertEpsilonEquals(16, p.getX());
 		assertEpsilonEquals(48, p.getY());
-		Point2D ref = createPoint(0, 0);
+		assertEpsilonEquals(6, p.getZ());
+		Point3D ref = createPoint(0, 0, 0);
 		assertEquals(ref.getClass(), p.getClass());
 	}
 
 	@Test
 	public void newVector() {
-		Vector2D p = this.factory.newVector();
+		Vector3D p = this.factory.newVector();
 		assertNotNull(p);
 		assertEquals(0, p.ix());
 		assertEquals(0, p.iy());
-		Vector2D ref = createVector(0, 0);
+		assertEquals(0, p.iz());
+		Vector3D ref = createVector(0, 0, 0);
 		assertEquals(ref.getClass(), p.getClass());
 	}
 
 	@Test
-	public void newVectorIntInt() {
-		Vector2D p = this.factory.newVector(15, 48);
+	public void newVectorIntIntInt() {
+		Vector3D p = this.factory.newVector(15, 48, 6);
 		assertNotNull(p);
 		assertEquals(15, p.ix());
 		assertEquals(48, p.iy());
-		Vector2D ref = createVector(0, 0);
+		assertEquals(6, p.iz());
+		Vector3D ref = createVector(0, 0, 0);
 		assertEquals(ref.getClass(), p.getClass());
 	}
 
 	@Test
-	public void newVectorDoubleDouble() {
-		Vector2D p = this.factory.newVector(15.45, 48.87);
+	public void newVectorDoubleDoubleDouble() {
+		Vector3D p = this.factory.newVector(15.45, 48.87, 6.42);
 		assertNotNull(p);
 		assertEpsilonEquals(15, p.getX());
 		assertEpsilonEquals(49, p.getY());
-		Vector2D ref = createVector(0, 0);
+		assertEpsilonEquals(6, p.getZ());
+		Vector3D ref = createVector(0, 0, 0);
 		assertEquals(ref.getClass(), p.getClass());
 	}
 
 	@Test
 	public void newPath_NONZERO() {
-		Path2ai<?, ?, ?, ?, ?, ?> path = this.factory.newPath(PathWindingRule.NON_ZERO);
+		Path3ai<?, ?, ?, ?, ?, ?> path = this.factory.newPath(PathWindingRule.NON_ZERO);
 		assertNotNull(path);
 		assertSame(PathWindingRule.NON_ZERO, path.getWindingRule());
 		assertEquals(0, path.size());
@@ -187,7 +188,7 @@ public abstract class AbstractGeomFactory3aiTest extends AbstractMathTestCase {
 	
 	@Test
 	public void newPath_EVENODD() {
-		Path2ai<?, ?, ?, ?, ?, ?> path = this.factory.newPath(PathWindingRule.EVEN_ODD);
+		Path3ai<?, ?, ?, ?, ?, ?> path = this.factory.newPath(PathWindingRule.EVEN_ODD);
 		assertNotNull(path);
 		assertSame(PathWindingRule.EVEN_ODD, path.getWindingRule());
 		assertEquals(0, path.size());
@@ -195,123 +196,133 @@ public abstract class AbstractGeomFactory3aiTest extends AbstractMathTestCase {
 
 	@Test
 	public void newSegment() {
-		Segment2ai<?, ?, ?, ?, ?, ?> s = this.factory.newSegment(1,  2,  3,  4);
+		Segment3ai<?, ?, ?, ?, ?, ?> s = this.factory.newSegment(1, 2, 3, 4, 5, 6);
 		assertNotNull(s);
 		assertEquals(1, s.getX1());
 		assertEquals(2, s.getY1());
-		assertEquals(3, s.getX2());
-		assertEquals(4, s.getY2());
+		assertEquals(3, s.getZ1());
+		assertEquals(4, s.getX2());
+		assertEquals(5, s.getY2());
+		assertEquals(6, s.getZ2());
 	}
 	
 	@Test
 	public void newBox() {
-		Rectangle2ai<?, ?, ?, ?, ?, ?> r = this.factory.newBox();
+		RectangularPrism3ai<?, ?, ?, ?, ?, ?> r = this.factory.newBox();
 		assertNotNull(r);
 		assertEquals(0, r.getMinX());
 		assertEquals(0, r.getMinY());
+		assertEquals(0, r.getMinZ());
 		assertEquals(0, r.getMaxX());
 		assertEquals(0, r.getMaxY());
+		assertEquals(0, r.getMaxZ());
 	}
 
 	@Test
-	public void newBoxIntIntIntInt() {
-		Rectangle2ai<?, ?, ?, ?, ?, ?> r = this.factory.newBox(1, 2, 3, 4);
+	public void newBoxIntIntIntIntIntInt() {
+		RectangularPrism3ai<?, ?, ?, ?, ?, ?> r = this.factory.newBox(1, 2, 3, 4, 5, 6);
 		assertNotNull(r);
 		assertEquals(1, r.getMinX());
 		assertEquals(2, r.getMinY());
-		assertEquals(4, r.getMaxX());
-		assertEquals(6, r.getMaxY());
+		assertEquals(3, r.getMinZ());
+		assertEquals(5, r.getMaxX());
+		assertEquals(7, r.getMaxY());
+		assertEquals(9, r.getMaxZ());
 	}
 
 	@Test
 	public void newMovePathElement() {
-		PathElement2ai element = this.factory.newMovePathElement(1, 2);
+		PathElement3ai element = this.factory.newMovePathElement(1, 2, 3);
 		assertNotNull(element);
 		assertSame(PathElementType.MOVE_TO, element.getType());
 		assertEquals(0, element.getFromX());
 		assertEquals(0, element.getFromY());
+		assertEquals(0, element.getFromZ());
 		assertEquals(0, element.getCtrlX1());
 		assertEquals(0, element.getCtrlY1());
+		assertEquals(0, element.getCtrlZ1());
 		assertEquals(0, element.getCtrlX2());
 		assertEquals(0, element.getCtrlY2());
+		assertEquals(0, element.getCtrlZ2());
 		assertEquals(1, element.getToX());
 		assertEquals(2, element.getToY());
+		assertEquals(3, element.getToZ());
 	}
 	
 	@Test
 	public void newLinePathElement() {
-		PathElement2ai element = this.factory.newLinePathElement(1, 2, 3, 4);
+		PathElement3ai element = this.factory.newLinePathElement(1, 2, 3, 4, 5, 6);
 		assertNotNull(element);
 		assertSame(PathElementType.LINE_TO, element.getType());
 		assertEquals(1, element.getFromX());
 		assertEquals(2, element.getFromY());
+		assertEquals(3, element.getFromZ());
 		assertEquals(0, element.getCtrlX1());
 		assertEquals(0, element.getCtrlY1());
+		assertEquals(0, element.getCtrlZ1());
 		assertEquals(0, element.getCtrlX2());
 		assertEquals(0, element.getCtrlY2());
-		assertEquals(3, element.getToX());
-		assertEquals(4, element.getToY());
+		assertEquals(0, element.getCtrlZ2());
+		assertEquals(4, element.getToX());
+		assertEquals(5, element.getToY());
+		assertEquals(6, element.getToZ());
 	}
 
 	@Test
 	public void newClosePathElement() {
-		PathElement2ai element = this.factory.newClosePathElement(1, 2, 3, 4);
+		PathElement3ai element = this.factory.newClosePathElement(1, 2, 3, 4, 5, 6);
 		assertNotNull(element);
 		assertSame(PathElementType.CLOSE, element.getType());
 		assertEquals(1, element.getFromX());
 		assertEquals(2, element.getFromY());
+		assertEquals(3, element.getFromZ());
 		assertEquals(0, element.getCtrlX1());
 		assertEquals(0, element.getCtrlY1());
+		assertEquals(0, element.getCtrlZ1());
 		assertEquals(0, element.getCtrlX2());
 		assertEquals(0, element.getCtrlY2());
-		assertEquals(3, element.getToX());
-		assertEquals(4, element.getToY());
+		assertEquals(0, element.getCtrlZ2());
+		assertEquals(4, element.getToX());
+		assertEquals(5, element.getToY());
+		assertEquals(6, element.getToZ());
 	}
 
 	@Test
 	public void newCurvePathElement_quad() {
-		PathElement2ai element = this.factory.newCurvePathElement(1, 2, 3, 4, 5, 6);
+		PathElement3ai element = this.factory.newCurvePathElement(1, 2, 3, 4, 5, 6, 7, 8, 9);
 		assertNotNull(element);
 		assertSame(PathElementType.QUAD_TO, element.getType());
 		assertEquals(1, element.getFromX());
 		assertEquals(2, element.getFromY());
-		assertEquals(3, element.getCtrlX1());
-		assertEquals(4, element.getCtrlY1());
+		assertEquals(3, element.getFromZ());
+		assertEquals(4, element.getCtrlX1());
+		assertEquals(5, element.getCtrlY1());
+		assertEquals(6, element.getCtrlZ1());
 		assertEquals(0, element.getCtrlX2());
 		assertEquals(0, element.getCtrlY2());
-		assertEquals(5, element.getToX());
-		assertEquals(6, element.getToY());
+		assertEquals(0, element.getCtrlZ2());
+		assertEquals(7, element.getToX());
+		assertEquals(8, element.getToY());
+		assertEquals(9, element.getToY());
 	}
 
 	@Test
 	public void newCurvePathElement_curve() {
-		PathElement2ai element = this.factory.newCurvePathElement(1, 2, 3, 4, 5, 6, 7, 8);
+		PathElement3ai element = this.factory.newCurvePathElement(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12);
 		assertNotNull(element);
 		assertSame(PathElementType.CURVE_TO, element.getType());
 		assertEquals(1, element.getFromX());
 		assertEquals(2, element.getFromY());
-		assertEquals(3, element.getCtrlX1());
-		assertEquals(4, element.getCtrlY1());
-		assertEquals(5, element.getCtrlX2());
-		assertEquals(6, element.getCtrlY2());
-		assertEquals(7, element.getToX());
-		assertEquals(8, element.getToY());
-	}
-
-	@Test
-	public void newArcPathElement() {
-		PathElement2ai element = this.factory.newArcPathElement(1, 2, 3, 4, 5, 6, 7, true, false);
-		assertNotNull(element);
-		assertSame(PathElementType.ARC_TO, element.getType());
-		assertEquals(1, element.getFromX());
-		assertEquals(2, element.getFromY());
-		assertEquals(3, element.getToX());
-		assertEquals(4, element.getToY());
-		assertEquals(5, element.getRadiusX());
-		assertEquals(6, element.getRadiusY());
-		assertEpsilonEquals(7, element.getRotationX());
-		assertTrue(element.getLargeArcFlag());
-		assertFalse(element.getSweepFlag());
+		assertEquals(3, element.getFromZ());
+		assertEquals(4, element.getCtrlX1());
+		assertEquals(5, element.getCtrlY1());
+		assertEquals(6, element.getCtrlZ1());
+		assertEquals(7, element.getCtrlX2());
+		assertEquals(8, element.getCtrlY2());
+		assertEquals(9, element.getCtrlZ2());
+		assertEquals(10, element.getToX());
+		assertEquals(11, element.getToY());
+		assertEquals(12, element.getToZ());
 	}
 	
 }

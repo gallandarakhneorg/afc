@@ -26,14 +26,10 @@ import static org.junit.Assert.assertNotSame;
 
 import org.arakhne.afc.math.AbstractMathTestCase;
 import org.arakhne.afc.math.MathConstants;
-import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2D;
-import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2DTestRule;
+import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem3D;
 import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem3DTestRule;
-import org.arakhne.afc.math.geometry.d2.Point2D;
-import org.arakhne.afc.math.geometry.d2.Transform2D;
-import org.arakhne.afc.math.geometry.d2.Vector2D;
-import org.arakhne.afc.math.geometry.d2.d.Point2d;
-import org.arakhne.afc.math.geometry.d2.d.Vector2d;
+import org.arakhne.afc.math.geometry.d3.d.Point3d;
+import org.arakhne.afc.math.geometry.d3.d.Vector3d;
 import org.arakhne.afc.math.matrix.SingularMatrixException;
 import org.junit.After;
 import org.junit.Before;
@@ -60,7 +56,7 @@ public class Transform3DTest extends AbstractMathTestCase {
 
 	@Before
 	public void setUp() throws Exception {
-		this.transform = new Transform2D(
+		this.transform = new Transform3D(
 				COS, -SIN, TRANSX,
 				SIN,  COS, TRANSY);
 	}
@@ -102,7 +98,7 @@ public class Transform3DTest extends AbstractMathTestCase {
 	@Test
 	public void setTranslationTuple2D() {
 		// Values computed with GNU Octave
-		this.transform.setTranslation(new Vector2d(123.456, 789.123));
+		this.transform.setTranslation(new Vector3d(123.456, 789.123));
 		assertEpsilonEquals(COS, this.transform.getM00());
 		assertEpsilonEquals(-SIN, this.transform.getM01());
 		assertEpsilonEquals(123.456, this.transform.getM02());
@@ -130,9 +126,9 @@ public class Transform3DTest extends AbstractMathTestCase {
 	}
 
 	@Test
-	public void translateVector2D() {
+	public void translateVector3D() {
 		// Values computed with GNU Octave
-		this.transform.translate(new Vector2d(120, 780));
+		this.transform.translate(new Vector3d(120, 780));
 		assertEpsilonEquals(COS, this.transform.getM00());
 		assertEpsilonEquals(-SIN, this.transform.getM01());
 		assertEpsilonEquals(784, this.transform.getM02());
@@ -156,7 +152,7 @@ public class Transform3DTest extends AbstractMathTestCase {
 
 	@Test
 	public void getTranslationVector() {
-		Vector2D v = new Vector2d();
+		Vector3D v = new Vector3d();
 		this.transform.getTranslationVector(v);
 		assertEpsilonEquals(TRANSX, v.getX());
 		assertEpsilonEquals(TRANSY, v.getY());
@@ -180,7 +176,7 @@ public class Transform3DTest extends AbstractMathTestCase {
 	@Test
 	public void shearTuple2D() {
 		// Values computed with GNU Octave
-		this.transform.shear(new Vector2d(1.2, 3.4));
+		this.transform.shear(new Vector3d(1.2, 3.4));
 		assertEpsilonEquals(3.4, this.transform.getM00());
 		assertEpsilonEquals(1, this.transform.getM01());
 		assertEpsilonEquals(TRANSX, this.transform.getM02());
@@ -245,7 +241,7 @@ public class Transform3DTest extends AbstractMathTestCase {
 	@Test
 	public void transformTuple2D_translationOnly() {
 		this.transform.makeTranslationMatrix(123, 456);
-		Point2D p = new Point2d(-584, 5647);
+		Point3D p = new Point3d(-584, 5647);
 		this.transform.transform(p);
 		assertEpsilonEquals(-461, p.getX());
 		assertEpsilonEquals(6103, p.getY());
@@ -254,7 +250,7 @@ public class Transform3DTest extends AbstractMathTestCase {
 	@Test
 	public void transformTuple2D_rotationOnly() {
 		this.transform.makeRotationMatrix(ANGLE);
-		Point2D p = new Point2d(1, 0);
+		Point3D p = new Point3d(1, 0);
 		this.transform.transform(p);
 		assertEpsilonEquals(0, p.getX());
 		assertEpsilonEquals(-1, p.getY());
@@ -264,7 +260,7 @@ public class Transform3DTest extends AbstractMathTestCase {
 	public void transformTuple2D_translationRotation() {
 		this.transform.makeTranslationMatrix(123, 456);
 		this.transform.setRotation(ANGLE);
-		Point2D p = new Point2d(1, 0);
+		Point3D p = new Point3d(1, 0);
 		this.transform.transform(p);
 		assertEpsilonEquals(123, p.getX());
 		assertEpsilonEquals(455, p.getY());
@@ -273,19 +269,19 @@ public class Transform3DTest extends AbstractMathTestCase {
 	@Test
 	public void transformTuple2D_scaleOnly() {
 		this.transform.makeScaleMatrix(123.456, 789.123);
-		Point2D p = new Point2d(1, 0);
+		Point3D p = new Point3d(1, 0);
 		this.transform.transform(p);
 		assertEpsilonEquals(123.456, p.getX());
 		assertEpsilonEquals(0, p.getY());
 
 		this.transform.makeScaleMatrix(123.456, 789.123);
-		p = new Point2d(0, 1);
+		p = new Point3d(0, 1);
 		this.transform.transform(p);
 		assertEpsilonEquals(0, p.getX());
 		assertEpsilonEquals(789.123, p.getY());
 
 		this.transform.makeScaleMatrix(123.456, 789.123);
-		p = new Point2d(0.5, 2);
+		p = new Point3d(0.5, 2);
 		this.transform.transform(p);
 		assertEpsilonEquals(61.728, p.getX());
 		assertEpsilonEquals(1578.246, p.getY());
@@ -294,8 +290,8 @@ public class Transform3DTest extends AbstractMathTestCase {
 	@Test
 	public void transformTuple2DTuple2D_translationOnly() {
 		this.transform.makeTranslationMatrix(123, 456);
-		Point2D result = new Point2d();
-		Point2D p = new Point2d(-584, 5647);
+		Point3D result = new Point3d();
+		Point3D p = new Point3d(-584, 5647);
 		this.transform.transform(p, result);
 		assertEpsilonEquals(-584, p.getX());
 		assertEpsilonEquals(5647, p.getY());
@@ -306,8 +302,8 @@ public class Transform3DTest extends AbstractMathTestCase {
 	@Test
 	public void transformTuple2DTuple2D_rotationOnly() {
 		this.transform.makeRotationMatrix(ANGLE);
-		Point2D result = new Point2d();
-		Point2D p = new Point2d(1, 0);
+		Point3D result = new Point3d();
+		Point3D p = new Point3d(1, 0);
 		this.transform.transform(p, result);
 		assertEpsilonEquals(1, p.getX());
 		assertEpsilonEquals(0, p.getY());
@@ -319,8 +315,8 @@ public class Transform3DTest extends AbstractMathTestCase {
 	public void transformTuple2DTuple2D_translationRotation() {
 		this.transform.makeTranslationMatrix(123, 456);
 		this.transform.setRotation(ANGLE);
-		Point2D result = new Point2d();
-		Point2D p = new Point2d(1, 0);
+		Point3D result = new Point3d();
+		Point3D p = new Point3d(1, 0);
 		this.transform.transform(p, result);
 		assertEpsilonEquals(1, p.getX());
 		assertEpsilonEquals(0, p.getY());
@@ -331,8 +327,8 @@ public class Transform3DTest extends AbstractMathTestCase {
 	@Test
 	public void transformTuple2DTuple2D_scaleOnly() {
 		this.transform.makeScaleMatrix(123.456, 789.123);
-		Point2D result = new Point2d();
-		Point2D p = new Point2d(1, 0);
+		Point3D result = new Point3d();
+		Point3D p = new Point3d(1, 0);
 		this.transform.transform(p, result);
 		assertEpsilonEquals(1, p.getX());
 		assertEpsilonEquals(0, p.getY());
@@ -340,7 +336,7 @@ public class Transform3DTest extends AbstractMathTestCase {
 		assertEpsilonEquals(0, result.getY());
 
 		this.transform.makeScaleMatrix(123.456, 789.123);
-		p = new Point2d(0, 1);
+		p = new Point3d(0, 1);
 		this.transform.transform(p, result);
 		assertEpsilonEquals(0, p.getX());
 		assertEpsilonEquals(1, p.getY());
@@ -348,7 +344,7 @@ public class Transform3DTest extends AbstractMathTestCase {
 		assertEpsilonEquals(789.123, result.getY());
 
 		this.transform.makeScaleMatrix(123.456, 789.123);
-		p = new Point2d(0.5, 2);
+		p = new Point3d(0.5, 2);
 		this.transform.transform(p, result);
 		assertEpsilonEquals(0.5, p.getX());
 		assertEpsilonEquals(2, p.getY());
@@ -374,7 +370,7 @@ public class Transform3DTest extends AbstractMathTestCase {
 	@Test
 	public void createInverse() {
 		// Values computed with GNU octave
-		Transform2D inverse = this.transform.createInverse();
+		Transform3D inverse = this.transform.createInverse();
 		assertNotNull(inverse);
 		assertNotSame(this.transform, inverse);
 		assertEpsilonEquals(COS, inverse.getM00());
@@ -408,7 +404,7 @@ public class Transform3DTest extends AbstractMathTestCase {
 	 */
 	@Test
 	public void invertMatrix3f() {
-		Transform2D inverse = new Transform2D();
+		Transform3D inverse = new Transform3D();
 		inverse.invert(this.transform);
 		assertEpsilonEquals(COS, inverse.getM00());
 		assertEpsilonEquals(SIN, inverse.getM01());
@@ -424,7 +420,7 @@ public class Transform3DTest extends AbstractMathTestCase {
 	@Test
 	public void getScaleVector_alone() {
 		this.transform.setIdentity();
-		Vector2d v = new Vector2d();
+		Vector3d v = new Vector3d();
 		
 		this.transform.getScaleVector(v);
 		assertFpVectorEquals(1, 1, v);
@@ -442,7 +438,7 @@ public class Transform3DTest extends AbstractMathTestCase {
 	public void getScaleVector_withRotation() {
 		this.transform.setIdentity();
 		this.transform.rotate(2.214523);
-		Vector2d v = new Vector2d();
+		Vector3d v = new Vector3d();
 		
 		this.transform.getScaleVector(v);
 		assertFpVectorEquals(1, 1, v);
@@ -524,10 +520,10 @@ public class Transform3DTest extends AbstractMathTestCase {
 	@Test
 	public void scaleTuple2D_alone() {
 		this.transform.setIdentity();
-		this.transform.scale(new Vector2d(5.2365, 4.586));
+		this.transform.scale(new Vector3d(5.2365, 4.586));
 		assertEpsilonEquals(5.2365, this.transform.getScaleX());
 		assertEpsilonEquals(4.586, this.transform.getScaleY());
-		this.transform.scale(new Vector2d(0.123, 0.568));
+		this.transform.scale(new Vector3d(0.123, 0.568));
 		assertEpsilonEquals(5.2365 * 0.123, this.transform.getScaleX());
 		assertEpsilonEquals(4.586 * 0.568, this.transform.getScaleY());
 	}
@@ -536,10 +532,10 @@ public class Transform3DTest extends AbstractMathTestCase {
 	public void scaleTuple2D_withRotation() {
 		this.transform.setIdentity();
 		this.transform.rotate(2.214523);
-		this.transform.scale(new Vector2d(5.2365, 4.586));
+		this.transform.scale(new Vector3d(5.2365, 4.586));
 		assertEpsilonEquals(5.2365, this.transform.getScaleX());
 		assertEpsilonEquals(4.586, this.transform.getScaleY());
-		this.transform.scale(new Vector2d(0.123, 0.568));
+		this.transform.scale(new Vector3d(0.123, 0.568));
 		assertEpsilonEquals(5.2365 * 0.123, this.transform.getScaleX());
 		assertEpsilonEquals(4.586 * 0.568, this.transform.getScaleY());
 	}
@@ -614,10 +610,10 @@ public class Transform3DTest extends AbstractMathTestCase {
 	@Test
 	public void setScaleTuple2D_alone() {
 		this.transform.setIdentity();
-		this.transform.setScale(new Vector2d(5.2365, 4.586));
+		this.transform.setScale(new Vector3d(5.2365, 4.586));
 		assertEpsilonEquals(5.2365, this.transform.getScaleX());
 		assertEpsilonEquals(4.586, this.transform.getScaleY());
-		this.transform.setScale(new Vector2d(0.123, 0.568));
+		this.transform.setScale(new Vector3d(0.123, 0.568));
 		assertEpsilonEquals(0.123, this.transform.getScaleX());
 		assertEpsilonEquals(0.568, this.transform.getScaleY());
 	}
@@ -626,10 +622,10 @@ public class Transform3DTest extends AbstractMathTestCase {
 	public void setScaleTuple2D_withRotation() {
 		this.transform.setIdentity();
 		this.transform.rotate(2.214523);
-		this.transform.setScale(new Vector2d(5.2365, 4.586));
+		this.transform.setScale(new Vector3d(5.2365, 4.586));
 		assertEpsilonEquals(5.2365, this.transform.getScaleX());
 		assertEpsilonEquals(4.586, this.transform.getScaleY());
-		this.transform.setScale(new Vector2d(0.123, 0.568));
+		this.transform.setScale(new Vector3d(0.123, 0.568));
 		assertEpsilonEquals(0.123, this.transform.getScaleX());
 		assertEpsilonEquals(0.568, this.transform.getScaleY());
 	}
@@ -705,7 +701,7 @@ public class Transform3DTest extends AbstractMathTestCase {
 		this.transform.setRotation(0.1);
 		assertEpsilonEquals(2.101, this.transform.getScaleX());
 		assertEpsilonEquals(4.52, this.transform.getScaleY());
-		assertEpsilonEquals("CS: " + CoordinateSystem2D.getDefaultCoordinateSystem(),
+		assertEpsilonEquals("CS: " + CoordinateSystem3D.getDefaultCoordinateSystem(),
 				0.1, this.transform.getRotation());
 	}
 
@@ -722,7 +718,7 @@ public class Transform3DTest extends AbstractMathTestCase {
 		this.transform.setRotation(0.1);
 		assertEpsilonEquals(2.101, this.transform.getScaleX());
 		assertEpsilonEquals(4.52, this.transform.getScaleY());
-		assertEpsilonEquals("CS: " + CoordinateSystem2D.getDefaultCoordinateSystem(),
+		assertEpsilonEquals("CS: " + CoordinateSystem3D.getDefaultCoordinateSystem(),
 				0.1, this.transform.getRotation());
 	}
 

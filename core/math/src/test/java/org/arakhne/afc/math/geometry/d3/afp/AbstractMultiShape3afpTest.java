@@ -31,15 +31,12 @@ import static org.junit.Assert.assertTrue;
 import java.util.Arrays;
 
 import org.arakhne.afc.math.geometry.PathElementType;
-import org.arakhne.afc.math.geometry.d2.MultiShape2D;
-import org.arakhne.afc.math.geometry.d2.Point2D;
-import org.arakhne.afc.math.geometry.d2.Shape2D;
-import org.arakhne.afc.math.geometry.d2.Transform2D;
-import org.arakhne.afc.math.geometry.d2.afp.MultiShape2afp;
-import org.arakhne.afc.math.geometry.d2.afp.Path2afp;
 import org.arakhne.afc.math.geometry.d2.afp.PathIterator2afp;
-import org.arakhne.afc.math.geometry.d2.afp.Shape2afp;
-import org.arakhne.afc.math.geometry.d2.ai.PathIterator2ai;
+import org.arakhne.afc.math.geometry.d3.MultiShape3D;
+import org.arakhne.afc.math.geometry.d3.Point3D;
+import org.arakhne.afc.math.geometry.d3.Shape3D;
+import org.arakhne.afc.math.geometry.d3.Transform3D;
+import org.arakhne.afc.math.geometry.d3.ai.PathIterator3ai;
 import org.junit.Test;
 
 @SuppressWarnings("all")
@@ -55,7 +52,7 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 	protected final T createShape() {
 		T shape = (T) createMultiShape();
 		firstObject = (C) createRectangle(5, 8, 2, 1);
-		secondObject = (C) createCircle(-5, 18, 2);
+		secondObject = (C) createSphere(-5, 18, 2);
 		shape.add(firstObject);
 		shape.add(secondObject);
 		return shape;
@@ -63,8 +60,8 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 
 	@Override
 	public void testClone() {
-		MultiShape2afp clone = this.shape.clone();
-		PathIterator2afp pi = (PathIterator2afp) clone.getPathIterator();
+		MultiShape3afp clone = this.shape.clone();
+		PathIterator3afp pi = (PathIterator3afp) clone.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 5, 8);
 		assertElement(pi, PathElementType.LINE_TO, 7, 8);
 		assertElement(pi, PathElementType.LINE_TO, 7, 9);
@@ -99,7 +96,7 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 
 	@Override
 	public void equalsToPathIterator() {
-		assertFalse(this.shape.equalsToPathIterator((PathIterator2ai) null));
+		assertFalse(this.shape.equalsToPathIterator((PathIterator3ai) null));
 		assertFalse(this.shape.equalsToPathIterator(createMultiShape().getPathIterator()));
 		assertFalse(this.shape.equalsToPathIterator(createSegment(5, 8, 5, 10).getPathIterator()));
 		assertTrue(this.shape.equalsToPathIterator(this.shape.getPathIterator()));
@@ -124,7 +121,7 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 	@Override
 	public void clear() {
 		this.shape.clear();
-		PathIterator2afp pi = this.shape.getPathIterator();
+		PathIterator3afp pi = this.shape.getPathIterator();
 		assertNoElement(pi);
 	}
 
@@ -149,7 +146,7 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 	}
 
 	@Override
-	public void containsPoint2D() {
+	public void containsPoint3D() {
 		// Outside bounding box
 		assertFalse(this.shape.contains(createPoint(-10, 2)));
 		assertFalse(this.shape.contains(createPoint(-10, 14)));
@@ -169,7 +166,7 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 	}
 
 	@Override
-	public void containsRectangle2afp() {
+	public void containsRectangularPrism3afp() {
 		// Outside
 		assertFalse(this.shape.contains(createRectangle(-20, 14, .5, .5)));
 		assertFalse(this.shape.contains(createRectangle(-2,-10, .5, .5)));
@@ -183,7 +180,7 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 
 	@Override
 	public void getClosestPointTo() {
-		Point2D result;
+		Point3D result;
 		// Outside bounding box
 		result = this.shape.getClosestPointTo(createPoint(-10, 2));
 		assertEpsilonEquals(-5.59655, result.getX());
@@ -228,7 +225,7 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 
 	@Override
 	public void getFarthestPointTo() {
-		Point2D result;
+		Point3D result;
 		// Outside bounding box
 		result = this.shape.getFarthestPointTo(createPoint(-10, 2));
 		assertEpsilonEquals(-4.40345, result.getX());
@@ -354,9 +351,9 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 	@Override
 	public void setIT() {
 		this.shape.set((T) createMultiShape());
-		PathIterator2afp pi = this.shape.getPathIterator();
+		PathIterator3afp pi = this.shape.getPathIterator();
 		assertNoElement(pi);
-		MultiShape2afp newShape = createMultiShape();
+		MultiShape3afp newShape = createMultiShape();
 		newShape.add(createRectangle(-6, 48, 5, 7));
 		this.shape.set((T) newShape);
 		pi = this.shape.getPathIterator();
@@ -371,7 +368,7 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 	@Override
 	public void translateDoubleDouble() {
 		this.shape.translate(10, -2);
-		PathIterator2afp pi = this.shape.getPathIterator();
+		PathIterator3afp pi = this.shape.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 15, 6);
 		assertElement(pi, PathElementType.LINE_TO, 17, 6);
 		assertElement(pi, PathElementType.LINE_TO, 17, 7);
@@ -387,9 +384,9 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 	}
 
 	@Override
-	public void translateVector2D() {
+	public void translateVector3D() {
 		this.shape.translate(createVector(10, -2));
-		PathIterator2afp pi = this.shape.getPathIterator();
+		PathIterator3afp pi = this.shape.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 15, 6);
 		assertElement(pi, PathElementType.LINE_TO, 17, 6);
 		assertElement(pi, PathElementType.LINE_TO, 17, 7);
@@ -426,7 +423,7 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 
 	@Override
 	public void getPathIterator() {
-		PathIterator2afp pi = (PathIterator2afp) this.shape.getPathIterator();
+		PathIterator3afp pi = (PathIterator3afp) this.shape.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 5, 8);
 		assertElement(pi, PathElementType.LINE_TO, 7, 8);
 		assertElement(pi, PathElementType.LINE_TO, 7, 9);
@@ -442,8 +439,8 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 	}
 
 	@Override
-	public void getPathIteratorTransform2D() {
-		PathIterator2afp pi = this.shape.getPathIterator(null);
+	public void getPathIteratorTransform3D() {
+		PathIterator3afp pi = this.shape.getPathIterator(null);
 		assertElement(pi, PathElementType.MOVE_TO, 5, 8);
 		assertElement(pi, PathElementType.LINE_TO, 7, 8);
 		assertElement(pi, PathElementType.LINE_TO, 7, 9);
@@ -457,7 +454,7 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 		assertElement(pi, PathElementType.CLOSE, -3, 18);
 		assertNoElement(pi);
 
-		pi = this.shape.getPathIterator(new Transform2D());
+		pi = this.shape.getPathIterator(new Transform3D());
 		assertElement(pi, PathElementType.MOVE_TO, 5, 8);
 		assertElement(pi, PathElementType.LINE_TO, 7, 8);
 		assertElement(pi, PathElementType.LINE_TO, 7, 9);
@@ -471,7 +468,7 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 		assertElement(pi, PathElementType.CLOSE, -3, 18);
 		assertNoElement(pi);
 
-		Transform2D transform = new Transform2D();
+		Transform3D transform = new Transform3D();
 		transform.setTranslation(10, -2);
 		pi = this.shape.getPathIterator(transform);
 		assertElement(pi, PathElementType.MOVE_TO, 15, 6);
@@ -490,10 +487,10 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 
 	@Override
 	public void createTransformedShape() {
-		Transform2D transform = new Transform2D();
+		Transform3D transform = new Transform3D();
 		transform.setTranslation(10, -2);
-		Shape2afp newShape = this.shape.createTransformedShape(transform);
-		PathIterator2afp pi = (PathIterator2afp) newShape.getPathIterator();
+		Shape3afp newShape = this.shape.createTransformedShape(transform);
+		PathIterator3afp pi = (PathIterator3afp) newShape.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 15, 6);
 		assertElement(pi, PathElementType.LINE_TO, 17, 6);
 		assertElement(pi, PathElementType.LINE_TO, 17, 7);
@@ -509,7 +506,7 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 	}
 
 	@Override
-	public void intersectsRectangle2afp() {
+	public void intersectsRectangularPrism3afp() {
 		// Outside
 		assertFalse(this.shape.intersects(createRectangle(-20, 14, .5, .5)));
 		assertFalse(this.shape.intersects(createRectangle(-2, -10, .5, .5)));
@@ -522,16 +519,16 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 	}
 
 	@Override
-	public void intersectsCircle2afp() {
+	public void intersectsSphere3afp() {
 		// Outside
-		assertFalse(this.shape.intersects(createCircle(-20, 14, .5)));
-		assertFalse(this.shape.intersects(createCircle(-2,- 10, .5)));
+		assertFalse(this.shape.intersects(createSphere(-20, 14, .5)));
+		assertFalse(this.shape.intersects(createSphere(-2,- 10, .5)));
 		// Intersecting
-		assertTrue(this.shape.intersects(createCircle(-6, 16, .5)));
-		assertTrue(this.shape.intersects(createCircle(4.75, 8, .5)));
+		assertTrue(this.shape.intersects(createSphere(-6, 16, .5)));
+		assertTrue(this.shape.intersects(createSphere(4.75, 8, .5)));
 		// Inside
-		assertTrue(this.shape.intersects(createCircle(-4, 18, .5)));
-		assertTrue(this.shape.intersects(createCircle(5.5, 8.5, .5)));
+		assertTrue(this.shape.intersects(createSphere(-4, 18, .5)));
+		assertTrue(this.shape.intersects(createSphere(5.5, 8.5, .5)));
 	}
 
 	@Override
@@ -561,7 +558,7 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 	}
 
 	@Override
-	public void intersectsSegment2afp() {
+	public void intersectsSegment3afp() {
 		// Outside
 		assertFalse(this.shape.intersects(createSegment(-20, 14, -19.5, 14)));
 		assertFalse(this.shape.intersects(createSegment(-2, -10, -1.5, -10)));
@@ -574,8 +571,8 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 	}
 
 	@Override
-	public void intersectsPath2afp() {
-		Path2afp path = createPath();
+	public void intersectsPath3afp() {
+		Path3afp path = createPath();
 		path.moveTo(-6, 2);
 		path.lineTo(10, 6);
 		path.lineTo(8, 14);
@@ -608,8 +605,8 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 	}
 
 	@Override
-	public void intersectsPathIterator2afp() {
-		Path2afp path = createPath();
+	public void intersectsPathIterator3afp() {
+		Path3afp path = createPath();
 		path.moveTo(-6, 2);
 		path.lineTo(10, 6);
 		path.lineTo(8, 14);
@@ -642,61 +639,22 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 	}
 
 	@Override
-	public void intersectsOrientedRectangle2afp() {
-		// Outside
-		assertFalse(this.shape.intersects(createOrientedRectangle(-20, 14, 1, 0, .5, .5)));
-		assertFalse(this.shape.intersects(createOrientedRectangle(-2, -10, 1, 0, .5, .5)));
-		// Intersecting
-		assertTrue(this.shape.intersects(createOrientedRectangle(-6, 16, 1, 0, .5, .5)));
-		assertTrue(this.shape.intersects(createOrientedRectangle(4.75, 8, 1, 0, .5, .5)));
-		// Inside
-		assertTrue(this.shape.intersects(createOrientedRectangle(-4, 18, 1, 0, .5, .5)));
-		assertTrue(this.shape.intersects(createOrientedRectangle(5.5, 8.5, 1, 0, .5, .5)));
-	}
-
-	@Override
-	public void intersectsParallelogram2afp() {
-		// Outside
-		assertFalse(this.shape.intersects(createParallelogram(-20, 14, 1, 0, .5, 0, 1, .5)));
-		assertFalse(this.shape.intersects(createParallelogram(-2, -10, 1, 0, .5, 0, 1, .5)));
-		// Intersecting
-		assertTrue(this.shape.intersects(createParallelogram(-6, 16, 1, 0, .5, 0, 1, .5)));
-		assertTrue(this.shape.intersects(createParallelogram(4.75, 8, 1, 0, .5, 0, 1, .5)));
-		// Inside
-		assertTrue(this.shape.intersects(createParallelogram(-4, 18, 1, 0, .5, 0, 1, .5)));
-		assertTrue(this.shape.intersects(createParallelogram(5.5, 8.5, 1, 0, .5, 0, 1, .5)));
-	}
-
-	@Override
-	public void intersectsRoundRectangle2afp() {
-		// Outside
-		assertFalse(this.shape.intersects(createRoundRectangle(-20, 14, .5, .5, .1, .1)));
-		assertFalse(this.shape.intersects(createRoundRectangle(-2, -10, .5, .5, .1, .1)));
-		// Intersecting
-		assertTrue(this.shape.intersects(createRoundRectangle(-6, 16, .5, .5, .1, .1)));
-		assertTrue(this.shape.intersects(createRoundRectangle(4.75, 8, .5, .5, .1, .1)));
-		// Inside
-		assertTrue(this.shape.intersects(createRoundRectangle(-4, 18, .5, .5, .1, .1)));
-		assertTrue(this.shape.intersects(createRoundRectangle(5.5, 8.5, .5, .5, .1, .1)));
-	}
-
-	@Override
-	public void intersectsShape2D() {
-		assertTrue(this.shape.intersects((Shape2D) createCircle(4.75, 8, .5)));
-		Path2afp path = createPath();
+	public void intersectsShape3D() {
+		assertTrue(this.shape.intersects((Shape3D) createSphere(4.75, 8, .5)));
+		Path3afp path = createPath();
 		path.moveTo(-6, 2);
 		path.lineTo(10, 6);
 		path.lineTo(8, 14);
 		path.lineTo(-4, 12);
 		path.lineTo(-12, 22);
 		path.lineTo(6, 20);
-		assertFalse(this.shape.intersects((Shape2D) path));
+		assertFalse(this.shape.intersects((Shape3D) path));
 		path.closePath();
-		assertTrue(this.shape.intersects((Shape2D) path));
+		assertTrue(this.shape.intersects((Shape3D) path));
 	}
 
 	@Override
-	public void operator_addVector2D() {
+	public void operator_addVector3D() {
 		this.shape.operator_add(createVector(10, -2));
 		PathIterator2afp pi = this.shape.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 15, 6);
@@ -714,7 +672,7 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 	}
 
 	@Override
-	public void operator_plusVector2D() {
+	public void operator_plusVector3D() {
 		T shape = this.shape.operator_plus(createVector(10, -2));
 		PathIterator2afp pi = shape.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 15, 6);
@@ -732,7 +690,7 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 	}
 
 	@Override
-	public void operator_removeVector2D() {
+	public void operator_removeVector3D() {
 		this.shape.operator_remove(createVector(10, -2));
 		PathIterator2afp pi = this.shape.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, -5, 10);
@@ -750,7 +708,7 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 	}
 
 	@Override
-	public void operator_minusVector2D() {
+	public void operator_minusVector3D() {
 		T shape = this.shape.operator_minus(createVector(10, -2));
 		PathIterator2afp pi = shape.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, -5, 10);
@@ -768,11 +726,11 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 	}
 
 	@Override
-	public void operator_multiplyTransform2D() {
-		Transform2D transform = new Transform2D();
+	public void operator_multiplyTransform3D() {
+		Transform3D transform = new Transform3D();
 		transform.setTranslation(10, -2);
-		Shape2afp newShape = this.shape.operator_multiply(transform);
-		PathIterator2afp pi = (PathIterator2afp) newShape.getPathIterator();
+		Shape3afp newShape = this.shape.operator_multiply(transform);
+		PathIterator3afp pi = (PathIterator3afp) newShape.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 15, 6);
 		assertElement(pi, PathElementType.LINE_TO, 17, 6);
 		assertElement(pi, PathElementType.LINE_TO, 17, 7);
@@ -788,7 +746,7 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 	}
 
 	@Override
-	public void operator_andPoint2D() {
+	public void operator_andPoint3D() {
 		assertFalse(this.shape.operator_and(createPoint(-10, 2)));
 		assertFalse(this.shape.operator_and(createPoint(-10, 14)));
 		assertFalse(this.shape.operator_and(createPoint(-10, 25)));
@@ -804,9 +762,9 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 	}
 
 	@Override
-	public void operator_andShape2D() {
-		assertTrue(this.shape.operator_and(createCircle(4.75, 8, .5)));
-		Path2afp path = createPath();
+	public void operator_andShape3D() {
+		assertTrue(this.shape.operator_and(createSphere(4.75, 8, .5)));
+		Path3afp path = createPath();
 		path.moveTo(-6, 2);
 		path.lineTo(10, 6);
 		path.lineTo(8, 14);
@@ -819,7 +777,7 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 	}
 
 	@Override
-	public void operator_upToPoint2D() {
+	public void operator_upToPoint3D() {
 		assertEpsilonEquals(14.76305, this.shape.operator_upTo(createPoint(-10, 2)));
 		assertEpsilonEquals(4.40312, this.shape.operator_upTo(createPoint(-10, 14)));
 		assertEpsilonEquals(6.60233, this.shape.operator_upTo(createPoint(-10, 25)));
@@ -875,12 +833,12 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 	}
 
 	@Test
-	public void getFirstShapeIntersectingShape2D() {
-		MultiShape2D shape2d = this.shape;
+	public void getFirstShapeIntersectingShape3D() {
+		MultiShape3D shape2d = this.shape;
 		
-		assertSame(firstObject, shape2d.getFirstShapeIntersecting(createCircle(4.75, 8, .5)));
+		assertSame(firstObject, shape2d.getFirstShapeIntersecting(createSphere(4.75, 8, .5)));
 		
-		Path2afp path = createPath();
+		Path3afp path = createPath();
 		path.moveTo(-6, 2);
 		path.lineTo(10, 6);
 		path.lineTo(8, 14);
@@ -894,12 +852,12 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 	}
 	
 	@Test
-	public void getShapesIntersectingShape2D() {
-		MultiShape2D shape2d = this.shape;
+	public void getShapesIntersectingShape3D() {
+		MultiShape3D shape2d = this.shape;
 		
-		assertEquals(Arrays.asList(firstObject), shape2d.getShapesIntersecting(createCircle(4.75, 8, .5)));
+		assertEquals(Arrays.asList(firstObject), shape2d.getShapesIntersecting(createSphere(4.75, 8, .5)));
 		
-		Path2afp path = createPath();
+		Path3afp path = createPath();
 		path.moveTo(-6, 2);
 		path.lineTo(10, 6);
 		path.lineTo(8, 14);
@@ -977,7 +935,7 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 		assertEpsilonEquals(7, box.getMaxX());
 		assertEpsilonEquals(20, box.getMaxY());
 
-		this.shape.add((C) createCircle(10, 14, 1));
+		this.shape.add((C) createSphere(10, 14, 1));
 		
 		// C:  -7; 16; -3; 20
 		// R:   5;  8;  7;  9

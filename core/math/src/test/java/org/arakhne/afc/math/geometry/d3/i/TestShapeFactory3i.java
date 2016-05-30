@@ -39,11 +39,11 @@ public class TestShapeFactory3i implements TestShapeFactory3ai<Point3i, Vector3i
 		return new Segment3i(x1, y1, z1, x2, y2, z2);
 	}
 	
-	public RectangularPrism3i createRectangle(int x, int y, int z, int width, int height, int depth) {
+	public RectangularPrism3i createRectangularPrism(int x, int y, int z, int width, int height, int depth) {
 		return new RectangularPrism3i(x, y, z, width, height, depth);
 	}
 
-	public Sphere3ai<?, ?, ?, Point3i, Vector3i, RectangularPrism3i> createCircle(int x, int y, int z, int radius) {
+	public Sphere3ai<?, ?, ?, Point3i, Vector3i, RectangularPrism3i> createSphere(int x, int y, int z, int radius) {
 		return new Sphere3i(x, y, z, radius);
 	}
 	

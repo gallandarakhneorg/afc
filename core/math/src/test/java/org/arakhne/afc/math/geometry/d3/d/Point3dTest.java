@@ -21,7 +21,6 @@ package org.arakhne.afc.math.geometry.d3.d;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.geometry.d3.AbstractPoint3DTest;
 import org.arakhne.afc.math.geometry.d3.Shape3D;
 
@@ -40,7 +39,7 @@ public class Point3dTest extends AbstractPoint3DTest<Point3d, Vector3d, Point3d>
 
 	@Override
 	public Point3d createPoint(double x, double y, double z) {
-		return new Point2d(x, y, z);
+		return new Point3d(x, y, z);
 	}
 
 	@Override

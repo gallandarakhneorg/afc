@@ -26,7 +26,6 @@ import static org.junit.Assert.assertTrue;
 import org.arakhne.afc.math.AbstractMathTestCase;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.PathWindingRuleTestRule;
-import org.arakhne.afc.math.geometry.d2.afp.Path2afp;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
 import org.junit.After;
@@ -56,7 +55,7 @@ public abstract class AbstractPathWindingRule3afpTest<P extends Point3D<? super 
 	@Before
 	public void setUp() throws Exception {
 		this.factory = createFactory();
-		this.shape = (Path2afp<?, ?, ?, P, V, B>) this.factory.createPath(PathWindingRuleTestRule.CURRENT_RULE);
+		this.shape = (Path3afp<?, ?, ?, P, V, B>) this.factory.createPath(PathWindingRuleTestRule.CURRENT_RULE);
 		this.shape.moveTo(1, -3);
 		this.shape.lineTo(4, -4);
 		this.shape.lineTo(6, -2);

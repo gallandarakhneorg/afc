@@ -24,7 +24,7 @@ package org.arakhne.afc.math.geometry.d3.i;
 import org.arakhne.afc.math.geometry.d3.ai.AbstractSegment3aiTest;
 
 @SuppressWarnings("all")
-public class Segment3iTest extends AbstractSegment3aiTest<Segment3i, Rectangle3i> {
+public class Segment3iTest extends AbstractSegment3aiTest<Segment3i, RectangularPrism3i> {
 
 	@Override
 	protected TestShapeFactory3i createFactory() {

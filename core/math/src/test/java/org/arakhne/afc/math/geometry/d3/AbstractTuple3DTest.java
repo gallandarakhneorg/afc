@@ -1,10 +1,9 @@
 /**
  * 
- * fr.utbm.v3g.core.math.Tuple2dTest.java
+ * fr.utbm.v3g.core.math.Tuple3dTest.java
  *
  * Copyright (c) 2008-10, Multiagent Team - Systems and Transportation Laboratory (SeT)
  * All rights reserved.
- *
  * This software is the confidential and proprietary information
  * of the Systems and Transportation Laboratory ("Confidential Information").
  * You shall not disclose such Confidential Information and shall use
@@ -26,8 +25,6 @@ import static org.junit.Assert.assertTrue;
 
 import org.arakhne.afc.math.AbstractMathTestCase;
 import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem3DTestRule;
-import org.arakhne.afc.math.geometry.d2.Tuple2D;
-import org.arakhne.afc.math.geometry.d2.d.Tuple2d;
 import org.arakhne.afc.math.geometry.d3.d.Tuple3d;
 import org.junit.After;
 import org.junit.Assume;
@@ -281,7 +278,7 @@ public abstract class AbstractTuple3DTest<T extends Tuple3D, TT extends Tuple3D>
 	@Test
 	public void scaleDoubleT_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
-		Tuple2D c = new Tuple2d(2, -1);
+		Tuple3D c = new Tuple3d(2, -1);
 		getT().scale(4.5, c);
 		assertEpsilonEquals(9, getT().getX());
 		assertEpsilonEquals(-4.5, getT().getY());
@@ -290,7 +287,7 @@ public abstract class AbstractTuple3DTest<T extends Tuple3D, TT extends Tuple3D>
 	@Test
 	public void scaleDoubleT_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
-		Tuple2D c = new Tuple2d(2, -1);
+		Tuple3D c = new Tuple3d(2, -1);
 		getT().scale(4.5, c);
 		assertEquals(9, getT().ix());
 		assertEquals(-4, getT().iy());
@@ -320,8 +317,8 @@ public abstract class AbstractTuple3DTest<T extends Tuple3D, TT extends Tuple3D>
 	}
 
 	@Test
-	public void setTuple2D() {
-		Tuple2D c = new Tuple2d(-45, 78);
+	public void setTuple3D() {
+		Tuple3D c = new Tuple3d(-45, 78);
 		getT().set(c);
 		assertEpsilonEquals(-45, getT().getX());
 		assertEpsilonEquals(78, getT().getY());

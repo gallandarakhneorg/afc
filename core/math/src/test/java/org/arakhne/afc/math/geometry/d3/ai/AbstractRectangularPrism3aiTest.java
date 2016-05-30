@@ -31,15 +31,15 @@ import java.util.Iterator;
 
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.geometry.PathElementType;
-import org.arakhne.afc.math.geometry.d2.Point2D;
-import org.arakhne.afc.math.geometry.d2.Shape2D;
-import org.arakhne.afc.math.geometry.d2.Transform2D;
-import org.arakhne.afc.math.geometry.d2.ai.Rectangle2ai.Side;
+import org.arakhne.afc.math.geometry.d3.Point3D;
+import org.arakhne.afc.math.geometry.d3.Shape3D;
+import org.arakhne.afc.math.geometry.d3.Transform3D;
+import org.arakhne.afc.math.geometry.d3.ai.RectangularPrism3ai.Side;
 import org.junit.Test;
 
 @SuppressWarnings("all")
-public abstract class AbstractRectangle3aiTest<T extends RectangularPrism3ai<?, T, ?, ?, ?, T>>
-		extends AbstractRectangularShape3aiTest<T, T> {
+public abstract class AbstractRectangularPrism3aiTest<T extends RectangularPrism3ai<?, T, ?, ?, ?, T>>
+		extends AbstractPrism3aiTest<T, T> {
 
 	@Override
 	protected final T createShape() {
@@ -94,7 +94,7 @@ public abstract class AbstractRectangle3aiTest<T extends RectangularPrism3ai<?, 
 	@Test
 	@Override
 	public void equalsToPathIterator() {
-		assertFalse(this.shape.equalsToPathIterator((PathIterator2ai) null));
+		assertFalse(this.shape.equalsToPathIterator((PathIterator3ai) null));
 		assertFalse(this.shape.equalsToPathIterator(createRectangle(0, 0, 5, 5).getPathIterator()));
 		assertFalse(this.shape.equalsToPathIterator(createRectangle(5, 8, 10, 6).getPathIterator()));
 		assertFalse(this.shape.equalsToPathIterator(createSegment(5, 8, 10, 5).getPathIterator()));
@@ -104,8 +104,8 @@ public abstract class AbstractRectangle3aiTest<T extends RectangularPrism3ai<?, 
 
 	@Test
 	public void getPointIterator() {
-		Iterator<? extends Point2D> iterator = this.shape.getPointIterator();
-		Point2D p;
+		Iterator<? extends Point3D> iterator = this.shape.getPointIterator();
+		Point3D p;
 		
 		int[] coords;
 		
@@ -150,8 +150,8 @@ public abstract class AbstractRectangle3aiTest<T extends RectangularPrism3ai<?, 
 
 	@Test
 	public void getPointIteratorSide_Top() {
-		Iterator<? extends Point2D> iterator = this.shape.getPointIterator(Side.TOP);
-		Point2D p;
+		Iterator<? extends Point3D> iterator = this.shape.getPointIterator(Side.TOP);
+		Point3D p;
 		
 		int[] coords;
 		
@@ -196,8 +196,8 @@ public abstract class AbstractRectangle3aiTest<T extends RectangularPrism3ai<?, 
 
 	@Test
 	public void getPointIteratorSide_Right() {
-		Iterator<? extends Point2D> iterator = this.shape.getPointIterator(Side.RIGHT);
-		Point2D p;
+		Iterator<? extends Point3D> iterator = this.shape.getPointIterator(Side.RIGHT);
+		Point3D p;
 		
 		int[] coords;
 		
@@ -242,8 +242,8 @@ public abstract class AbstractRectangle3aiTest<T extends RectangularPrism3ai<?, 
 
 	@Test
 	public void getPointIteratorSide_Bottom() {
-		Iterator<? extends Point2D> iterator = this.shape.getPointIterator(Side.BOTTOM);
-		Point2D p;
+		Iterator<? extends Point3D> iterator = this.shape.getPointIterator(Side.BOTTOM);
+		Point3D p;
 		
 		int[] coords;
 		
@@ -288,8 +288,8 @@ public abstract class AbstractRectangle3aiTest<T extends RectangularPrism3ai<?, 
 
 	@Test
 	public void getPointIteratorSide_Left() {
-		Iterator<? extends Point2D> iterator = this.shape.getPointIterator(Side.LEFT);
-		Point2D p;
+		Iterator<? extends Point3D> iterator = this.shape.getPointIterator(Side.LEFT);
+		Point3D p;
 		
 		int[] coords;
 		
@@ -371,7 +371,7 @@ public abstract class AbstractRectangle3aiTest<T extends RectangularPrism3ai<?, 
 	@Test
 	@Override
 	public void getClosestPointTo() {
-		Point2D p;
+		Point3D p;
 		
 		p = this.shape.getClosestPointTo(createPoint(5,8));
 		assertNotNull(p);
@@ -397,7 +397,7 @@ public abstract class AbstractRectangle3aiTest<T extends RectangularPrism3ai<?, 
 	@Test
 	@Override
 	public void getFarthestPointTo() {
-		Point2D p;
+		Point3D p;
 		
 		p = this.shape.getFarthestPointTo(createPoint(5,8));
 		assertNotNull(p);
@@ -440,7 +440,7 @@ public abstract class AbstractRectangle3aiTest<T extends RectangularPrism3ai<?, 
 
 	@Test
 	@Override
-	public void containsRectangle2ai() {
+	public void containsRectangularPrism3ai() {
 		assertFalse(this.shape.contains(createRectangle(0,0,1,1)));
 		assertFalse(this.shape.contains(createRectangle(0,0,8,1)));
 		assertFalse(this.shape.contains(createRectangle(0,0,8,6)));
@@ -451,7 +451,7 @@ public abstract class AbstractRectangle3aiTest<T extends RectangularPrism3ai<?, 
 
 	@Test
 	@Override
-	public void intersectsRectangle2ai() {
+	public void intersectsRectangularPrism3ai() {
 		assertFalse(this.shape.intersects(createRectangle(0,0,1,1)));
 		assertFalse(this.shape.intersects(createRectangle(0,0,8,1)));
 		assertFalse(this.shape.intersects(createRectangle(0,0,8,6)));
@@ -461,7 +461,7 @@ public abstract class AbstractRectangle3aiTest<T extends RectangularPrism3ai<?, 
 	}
 
 	@Override
-	public void intersectsCircle2ai() {
+	public void intersectsSphere3ai() {
 		assertFalse(this.shape.intersects(createCircle(0,0,1)));
 		assertFalse(this.shape.intersects(createCircle(0,0,8)));
 		assertTrue(this.shape.intersects(createCircle(0,0,100)));
@@ -472,7 +472,7 @@ public abstract class AbstractRectangle3aiTest<T extends RectangularPrism3ai<?, 
 
 	@Test
 	@Override
-	public void intersectsSegment2ai() {
+	public void intersectsSegment3ai() {
 		assertFalse(this.shape.intersects(createSegment(0,0,1,1)));
 		assertFalse(this.shape.intersects(createSegment(0,0,8,1)));
 		assertFalse(this.shape.intersects(createSegment(0,0,8,6)));
@@ -482,8 +482,8 @@ public abstract class AbstractRectangle3aiTest<T extends RectangularPrism3ai<?, 
 	}
 
 	@Test
-	public void intersectsPath2ai() {
-		Path2ai path = createPath();
+	public void intersectsPath3ai() {
+		Path3ai path = createPath();
 		path.moveTo(0, 0);
 		path.lineTo(2, 2);
 		path.quadTo(3, 0, 4, 3);
@@ -520,7 +520,7 @@ public abstract class AbstractRectangle3aiTest<T extends RectangularPrism3ai<?, 
 	@Test
 	@Override
 	public void getPathIterator() {
-		PathIterator2ai pi = this.shape.getPathIterator();
+		PathIterator3ai pi = this.shape.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 5,8);
 		assertElement(pi, PathElementType.LINE_TO, 15,8);
 		assertElement(pi, PathElementType.LINE_TO, 15,13);
@@ -531,11 +531,11 @@ public abstract class AbstractRectangle3aiTest<T extends RectangularPrism3ai<?, 
 
 	@Test
 	@Override
-	public void getPathIteratorTransform2D() {
-		Transform2D tr;
-		PathIterator2ai pi;
+	public void getPathIteratorTransform3D() {
+		Transform3D tr;
+		PathIterator3ai pi;
 		
-		tr = new Transform2D();
+		tr = new Transform3D();
 		pi = this.shape.getPathIterator(tr);
 		assertElement(pi, PathElementType.MOVE_TO, 5,8);
 		assertElement(pi, PathElementType.LINE_TO, 15,8);
@@ -544,7 +544,7 @@ public abstract class AbstractRectangle3aiTest<T extends RectangularPrism3ai<?, 
 		assertElement(pi, PathElementType.CLOSE, 5,8);
 		assertNoElement(pi);
 
-		tr = new Transform2D();
+		tr = new Transform3D();
 		tr.makeTranslationMatrix(3.4f, 4.5f);
 		pi = this.shape.getPathIterator(tr);
 		assertElement(pi, PathElementType.MOVE_TO, 8,13);
@@ -554,7 +554,7 @@ public abstract class AbstractRectangle3aiTest<T extends RectangularPrism3ai<?, 
 		assertElement(pi, PathElementType.CLOSE, 8,13);
 		assertNoElement(pi);
 
-		tr = new Transform2D();
+		tr = new Transform3D();
 		tr.makeRotationMatrix(MathConstants.QUARTER_PI);
 		
 		pi = this.shape.getPathIterator(tr);
@@ -569,10 +569,10 @@ public abstract class AbstractRectangle3aiTest<T extends RectangularPrism3ai<?, 
 	@Test
 	@Override
 	public void createTransformedShape() {
-		Transform2D tr;
-		PathIterator2ai pi;
+		Transform3D tr;
+		PathIterator3ai pi;
 		
-		tr = new Transform2D();
+		tr = new Transform3D();
 		pi = this.shape.createTransformedShape(tr).getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 5,8);
 		assertElement(pi, PathElementType.LINE_TO, 15,8);
@@ -581,7 +581,7 @@ public abstract class AbstractRectangle3aiTest<T extends RectangularPrism3ai<?, 
 		assertElement(pi, PathElementType.CLOSE, 5,8);
 		assertNoElement(pi);
 
-		tr = new Transform2D();
+		tr = new Transform3D();
 		tr.makeTranslationMatrix(3.4f, 4.5f);
 		pi = this.shape.createTransformedShape(tr).getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 8,13);
@@ -591,7 +591,7 @@ public abstract class AbstractRectangle3aiTest<T extends RectangularPrism3ai<?, 
 		assertElement(pi, PathElementType.CLOSE, 8,13);
 		assertNoElement(pi);
 
-		tr = new Transform2D();
+		tr = new Transform3D();
 		tr.makeRotationMatrix(MathConstants.QUARTER_PI);		
 		pi = this.shape.createTransformedShape(tr).getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, -2,9);
@@ -614,7 +614,7 @@ public abstract class AbstractRectangle3aiTest<T extends RectangularPrism3ai<?, 
 
 	@Test
 	@Override
-	public void containsPoint2D() {
+	public void containsPoint3D() {
 		assertFalse(this.shape.contains(createPoint(0,0)));
 		assertTrue(this.shape.contains(createPoint(11,10)));
 		assertFalse(this.shape.contains(createPoint(11,50)));
@@ -622,7 +622,7 @@ public abstract class AbstractRectangle3aiTest<T extends RectangularPrism3ai<?, 
 
 	@Test
 	@Override
-	public void translateVector2D() {
+	public void translateVector3D() {
 		this.shape.translate(createVector(3, 4));
 		assertEquals(8, this.shape.getMinX());
 		assertEquals(12, this.shape.getMinY());
@@ -632,28 +632,28 @@ public abstract class AbstractRectangle3aiTest<T extends RectangularPrism3ai<?, 
 
 	@Test
 	public void staticComputeClosestPoint() {
-		Point2D p;
+		Point3D p;
 		
 		p = createPoint(0, 0);
-		Rectangle2ai.computeClosestPoint(5, 8, 15, 13, 5, 8, p);
+		RectangularPrism3ai.computeClosestPoint(5, 8, 15, 13, 5, 8, p);
 		assertNotNull(p);
 		assertEquals(5, p.ix());
 		assertEquals(8, p.iy());
 		
 		p = createPoint(0, 0);
-		Rectangle2ai.computeClosestPoint(5, 8, 15, 13, 10, 10, p);
+		RectangularPrism3ai.computeClosestPoint(5, 8, 15, 13, 10, 10, p);
 		assertNotNull(p);
 		assertEquals(10, p.ix());
 		assertEquals(10, p.iy());
 		
 		p = createPoint(0, 0);
-		Rectangle2ai.computeClosestPoint(5, 8, 15, 13, 4, 8, p);
+		RectangularPrism3ai.computeClosestPoint(5, 8, 15, 13, 4, 8, p);
 		assertNotNull(p);
 		assertEquals(5, p.ix());
 		assertEquals(8, p.iy());
 		
 		p = createPoint(0, 0);
-		Rectangle2ai.computeClosestPoint(5, 8, 15, 13, 0, 0, p);
+		RectangularPrism3ai.computeClosestPoint(5, 8, 15, 13, 0, 0, p);
 		assertNotNull(p);
 		assertEquals(5, p.ix());
 		assertEquals(8, p.iy());
@@ -661,40 +661,40 @@ public abstract class AbstractRectangle3aiTest<T extends RectangularPrism3ai<?, 
 
 	@Test
 	public void staticComputeFarthestPoint() {
-		Point2D p;
+		Point3D p;
 		
 		p = createPoint(0, 0);
-		Rectangle2ai.computeFarthestPoint(5, 8, 15, 13, 5, 8, p);
+		RectangularPrism3ai.computeFarthestPoint(5, 8, 15, 13, 5, 8, p);
 		assertNotNull(p);
 		assertEquals(15, p.ix());
 		assertEquals(13, p.iy());
 		
 		p = createPoint(0, 0);
-		Rectangle2ai.computeFarthestPoint(5, 8, 15, 13, 10, 10, p);
+		RectangularPrism3ai.computeFarthestPoint(5, 8, 15, 13, 10, 10, p);
 		assertNotNull(p);
 		assertEquals(15, p.ix());
 		assertEquals(13, p.iy());
 		
 		p = createPoint(0, 0);
-		Rectangle2ai.computeFarthestPoint(5, 8, 15, 13, 4, 8, p);
+		RectangularPrism3ai.computeFarthestPoint(5, 8, 15, 13, 4, 8, p);
 		assertNotNull(p);
 		assertEquals(15, p.ix());
 		assertEquals(13, p.iy());
 		
 		p = createPoint(0, 0);
-		Rectangle2ai.computeFarthestPoint(5, 8, 15, 13, 0, 0, p);
+		RectangularPrism3ai.computeFarthestPoint(5, 8, 15, 13, 0, 0, p);
 		assertNotNull(p);
 		assertEquals(15, p.ix());
 		assertEquals(13, p.iy());
 
 		p = createPoint(0, 0);
-		Rectangle2ai.computeFarthestPoint(5, 8, 15, 13, 24, 0, p);
+		RectangularPrism3ai.computeFarthestPoint(5, 8, 15, 13, 24, 0, p);
 		assertNotNull(p);
 		assertEquals(5, p.ix());
 		assertEquals(13, p.iy());
 
 		p = createPoint(0, 0);
-		Rectangle2ai.computeFarthestPoint(5, 8, 15, 13, 0, 32, p);
+		RectangularPrism3ai.computeFarthestPoint(5, 8, 15, 13, 0, 32, p);
 		assertNotNull(p);
 		assertEquals(15, p.ix());
 		assertEquals(8, p.iy());
@@ -702,22 +702,22 @@ public abstract class AbstractRectangle3aiTest<T extends RectangularPrism3ai<?, 
 	
 	@Test
 	public void staticIntersectsRectangleRectangle() {
-		assertFalse(Rectangle2ai.intersectsRectangleRectangle(5, 8, 15, 13, 0, 0, 1, 1));
-		assertFalse(Rectangle2ai.intersectsRectangleRectangle(5, 8, 15, 13, 0, 0, 8, 1));
-		assertFalse(Rectangle2ai.intersectsRectangleRectangle(5, 8, 15, 13, 0, 0, 8, 6));
-		assertTrue(Rectangle2ai.intersectsRectangleRectangle(5, 8, 15, 13, 0, 0, 100, 100));
-		assertTrue(Rectangle2ai.intersectsRectangleRectangle(5, 8, 15, 13, 7, 10, 8, 11));
-		assertFalse(Rectangle2ai.intersectsRectangleRectangle(5, 8, 15, 13, 16, 0,116, 100));
+		assertFalse(RectangularPrism3ai.intersectsRectangleRectangle(5, 8, 15, 13, 0, 0, 1, 1));
+		assertFalse(RectangularPrism3ai.intersectsRectangleRectangle(5, 8, 15, 13, 0, 0, 8, 1));
+		assertFalse(RectangularPrism3ai.intersectsRectangleRectangle(5, 8, 15, 13, 0, 0, 8, 6));
+		assertTrue(RectangularPrism3ai.intersectsRectangleRectangle(5, 8, 15, 13, 0, 0, 100, 100));
+		assertTrue(RectangularPrism3ai.intersectsRectangleRectangle(5, 8, 15, 13, 7, 10, 8, 11));
+		assertFalse(RectangularPrism3ai.intersectsRectangleRectangle(5, 8, 15, 13, 16, 0,116, 100));
 	}
 	
 	@Test
 	public void staticIntersectsRectangleSegment() {
-		assertFalse(Rectangle2ai.intersectsRectangleSegment(5, 8, 15, 13, 0, 0, 1, 1));
-		assertFalse(Rectangle2ai.intersectsRectangleSegment(5, 8, 15, 13, 0, 0, 8, 1));
-		assertFalse(Rectangle2ai.intersectsRectangleSegment(5, 8, 15, 13, 0, 0, 8, 6));
-		assertTrue(Rectangle2ai.intersectsRectangleSegment(5, 8, 15, 13, 0, 0, 100, 100));
-		assertTrue(Rectangle2ai.intersectsRectangleSegment(5, 8, 15, 13, 7, 10, 8, 11));
-		assertFalse(Rectangle2ai.intersectsRectangleSegment(5, 8, 15, 13, 16, 0, 116, 100));
+		assertFalse(RectangularPrism3ai.intersectsRectangleSegment(5, 8, 15, 13, 0, 0, 1, 1));
+		assertFalse(RectangularPrism3ai.intersectsRectangleSegment(5, 8, 15, 13, 0, 0, 8, 1));
+		assertFalse(RectangularPrism3ai.intersectsRectangleSegment(5, 8, 15, 13, 0, 0, 8, 6));
+		assertTrue(RectangularPrism3ai.intersectsRectangleSegment(5, 8, 15, 13, 0, 0, 100, 100));
+		assertTrue(RectangularPrism3ai.intersectsRectangleSegment(5, 8, 15, 13, 7, 10, 8, 11));
+		assertFalse(RectangularPrism3ai.intersectsRectangleSegment(5, 8, 15, 13, 16, 0, 116, 100));
 	}
 
 	@Test
@@ -794,49 +794,49 @@ public abstract class AbstractRectangle3aiTest<T extends RectangularPrism3ai<?, 
 	}
 
 	@Override
-	public void intersectsPathIterator2ai() {
-		Path2ai path = createPath();
+	public void intersectsPathIterator3ai() {
+		Path3ai path = createPath();
 		path.moveTo(0, 0);
 		path.lineTo(2, 2);
 		path.quadTo(3, 0, 4, 3);
 		path.curveTo(5, -1, 6, 5, 7, -5);
 		path.closePath();
 		this.shape = createRectangle(0, 0, 1, 1);
-		assertTrue(this.shape.intersects((PathIterator2ai) path.getPathIterator()));
+		assertTrue(this.shape.intersects((PathIterator3ai) path.getPathIterator()));
 		this.shape = createRectangle(4, 3, 1, 1);
-		assertTrue(this.shape.intersects((PathIterator2ai) path.getPathIterator()));
+		assertTrue(this.shape.intersects((PathIterator3ai) path.getPathIterator()));
 		this.shape = createRectangle(2, 2, 1, 1);
-		assertTrue(this.shape.intersects((PathIterator2ai) path.getPathIterator()));
+		assertTrue(this.shape.intersects((PathIterator3ai) path.getPathIterator()));
 		this.shape = createRectangle(2, 1, 1, 1);
-		assertTrue(this.shape.intersects((PathIterator2ai) path.getPathIterator()));
+		assertTrue(this.shape.intersects((PathIterator3ai) path.getPathIterator()));
 		this.shape = createRectangle(3, 0, 1, 1);
-		assertTrue(this.shape.intersects((PathIterator2ai) path.getPathIterator()));
+		assertTrue(this.shape.intersects((PathIterator3ai) path.getPathIterator()));
 		this.shape = createRectangle(-1, -1, 1, 1);
-		assertTrue(this.shape.intersects((PathIterator2ai) path.getPathIterator()));
+		assertTrue(this.shape.intersects((PathIterator3ai) path.getPathIterator()));
 		this.shape = createRectangle(4, -3, 1, 1);
-		assertTrue(this.shape.intersects((PathIterator2ai) path.getPathIterator()));
+		assertTrue(this.shape.intersects((PathIterator3ai) path.getPathIterator()));
 		this.shape = createRectangle(-3, 4, 1, 1);
-		assertFalse(this.shape.intersects((PathIterator2ai) path.getPathIterator()));
+		assertFalse(this.shape.intersects((PathIterator3ai) path.getPathIterator()));
 		this.shape = createRectangle(6, -5, 1, 1);
-		assertTrue(this.shape.intersects((PathIterator2ai) path.getPathIterator()));
+		assertTrue(this.shape.intersects((PathIterator3ai) path.getPathIterator()));
 		this.shape = createRectangle(4, 0, 1, 1);
-		assertTrue(this.shape.intersects((PathIterator2ai) path.getPathIterator()));
+		assertTrue(this.shape.intersects((PathIterator3ai) path.getPathIterator()));
 		this.shape = createRectangle(5, 0, 1, 1);
-		assertTrue(this.shape.intersects((PathIterator2ai) path.getPathIterator()));
+		assertTrue(this.shape.intersects((PathIterator3ai) path.getPathIterator()));
 		this.shape = createRectangle(0, -3, 1, 1);
-		assertFalse(this.shape.intersects((PathIterator2ai) path.getPathIterator()));
+		assertFalse(this.shape.intersects((PathIterator3ai) path.getPathIterator()));
 		this.shape = createRectangle(0, -3, 2, 1);
-		assertFalse(this.shape.intersects((PathIterator2ai) path.getPathIterator()));
+		assertFalse(this.shape.intersects((PathIterator3ai) path.getPathIterator()));
 	}
 
 	@Override
-	public void intersectsShape2D() {
-		assertTrue(this.shape.intersects((Shape2D) createCircle(0,0,100)));
-		assertTrue(this.shape.intersects((Shape2D) createRectangle(7,10,1,1)));
+	public void intersectsShape3D() {
+		assertTrue(this.shape.intersects((Shape3D) createCircle(0,0,100)));
+		assertTrue(this.shape.intersects((Shape3D) createRectangle(7,10,1,1)));
 	}
 
 	@Override
-	public void operator_addVector2D() {
+	public void operator_addVector3D() {
 		this.shape.operator_add(createVector(3, 4));
 		assertEquals(8, this.shape.getMinX());
 		assertEquals(12, this.shape.getMinY());
@@ -845,7 +845,7 @@ public abstract class AbstractRectangle3aiTest<T extends RectangularPrism3ai<?, 
 	}
 
 	@Override
-	public void operator_plusVector2D() {
+	public void operator_plusVector3D() {
 		T r = this.shape.operator_plus(createVector(3, 4));
 		assertEquals(8, r.getMinX());
 		assertEquals(12, r.getMinY());
@@ -854,7 +854,7 @@ public abstract class AbstractRectangle3aiTest<T extends RectangularPrism3ai<?, 
 	}
 
 	@Override
-	public void operator_removeVector2D() {
+	public void operator_removeVector3D() {
 		this.shape.operator_remove(createVector(3, 4));
 		assertEquals(2, this.shape.getMinX());
 		assertEquals(4, this.shape.getMinY());
@@ -863,7 +863,7 @@ public abstract class AbstractRectangle3aiTest<T extends RectangularPrism3ai<?, 
 	}
 
 	@Override
-	public void operator_minusVector2D() {
+	public void operator_minusVector3D() {
 		T r = this.shape.operator_minus(createVector(3, 4));
 		assertEquals(2, r.getMinX());
 		assertEquals(4, r.getMinY());
@@ -872,11 +872,11 @@ public abstract class AbstractRectangle3aiTest<T extends RectangularPrism3ai<?, 
 	}
 
 	@Override
-	public void operator_multiplyTransform2D() {
-		Transform2D tr;
-		PathIterator2ai pi;
+	public void operator_multiplyTransform3D() {
+		Transform3D tr;
+		PathIterator3ai pi;
 		
-		tr = new Transform2D();
+		tr = new Transform3D();
 		pi = this.shape.operator_multiply(tr).getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 5,8);
 		assertElement(pi, PathElementType.LINE_TO, 15,8);
@@ -885,7 +885,7 @@ public abstract class AbstractRectangle3aiTest<T extends RectangularPrism3ai<?, 
 		assertElement(pi, PathElementType.CLOSE, 5,8);
 		assertNoElement(pi);
 
-		tr = new Transform2D();
+		tr = new Transform3D();
 		tr.makeTranslationMatrix(3.4f, 4.5f);
 		pi = this.shape.operator_multiply(tr).getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 8,13);
@@ -895,7 +895,7 @@ public abstract class AbstractRectangle3aiTest<T extends RectangularPrism3ai<?, 
 		assertElement(pi, PathElementType.CLOSE, 8,13);
 		assertNoElement(pi);
 
-		tr = new Transform2D();
+		tr = new Transform3D();
 		tr.makeRotationMatrix(MathConstants.QUARTER_PI);		
 		pi = this.shape.operator_multiply(tr).getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, -2,9);
@@ -907,20 +907,20 @@ public abstract class AbstractRectangle3aiTest<T extends RectangularPrism3ai<?, 
 	}
 
 	@Override
-	public void operator_andPoint2D() {
+	public void operator_andPoint3D() {
 		assertFalse(this.shape.operator_and(createPoint(0,0)));
 		assertTrue(this.shape.operator_and(createPoint(11,10)));
 		assertFalse(this.shape.operator_and(createPoint(11,50)));
 	}
 
 	@Override
-	public void operator_andShape2D() {
+	public void operator_andShape3D() {
 		assertTrue(this.shape.operator_and(createCircle(0,0,100)));
 		assertTrue(this.shape.operator_and(createRectangle(7,10,1,1)));
 	}
 
 	@Override
-	public void operator_upToPoint2D() {
+	public void operator_upToPoint3D() {
 		assertEpsilonEquals(0f, this.shape.operator_upTo(createPoint(5,8)));
 		assertEpsilonEquals(0f, this.shape.operator_upTo(createPoint(10,10)));
 		assertEpsilonEquals(1f, this.shape.operator_upTo(createPoint(4,8)));

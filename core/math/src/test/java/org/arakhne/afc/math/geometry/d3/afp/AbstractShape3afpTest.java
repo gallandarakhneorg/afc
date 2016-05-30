@@ -38,9 +38,6 @@ import org.arakhne.afc.math.AbstractMathTestCase;
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem3DTestRule;
-import org.arakhne.afc.math.geometry.d2.afp.PathElement2afp;
-import org.arakhne.afc.math.geometry.d2.afp.PathIterator2afp;
-import org.arakhne.afc.math.geometry.d2.afp.Rectangle2afp;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
 import org.junit.After;
@@ -86,7 +83,7 @@ public abstract class AbstractShape3afpTest<T extends Shape3afp<?, ?, ?, ?, ?, ?
 	}
 	
 	public final B createRectangle(double x, double y, double z, double width, double height, double depth) {
-		return this.factory.createRectangle(x, y, z, width, height, depth);
+		return this.factory.createRectangularPrism(x, y, z, width, height, depth);
 	}
 
 	
@@ -199,7 +196,7 @@ public abstract class AbstractShape3afpTest<T extends Shape3afp<?, ?, ?, ?, ?, ?
 	 * 
 	 * @param pi
 	 */
-	protected void assertNoElement(PathIterator2afp<?> pi) {
+	protected void assertNoElement(PathIterator3afp<?> pi) {
 		if (pi.hasNext()) {
 			fail("expected no path element but the iterator is not empty: " //$NON-NLS-1$
 					+ pi.next());
@@ -228,7 +225,7 @@ public abstract class AbstractShape3afpTest<T extends Shape3afp<?, ?, ?, ?, ?, ?
 	public abstract void clear();
 
 	@Test
-	public abstract void containsPoint2D();
+	public abstract void containsPoint3D();
 	
 	@Test
 	public abstract void getClosestPointTo();
@@ -255,13 +252,13 @@ public abstract class AbstractShape3afpTest<T extends Shape3afp<?, ?, ?, ?, ?, ?
 	public abstract void getPathIterator();
 
 	@Test
-	public abstract void getPathIteratorTransform2D();
+	public abstract void getPathIteratorTransform3D();
 
 	@Test
 	public abstract void createTransformedShape();
 
 	@Test
-	public abstract void translateVector2D(); 
+	public abstract void translateVector3D(); 
 
 	@Test
 	public abstract void toBoundingBox();
@@ -270,37 +267,22 @@ public abstract class AbstractShape3afpTest<T extends Shape3afp<?, ?, ?, ?, ?, ?
 	public abstract void toBoundingBoxB();
 
 	@Test
-	public abstract void containsRectangle2afp();
+	public abstract void containsRectangularPrism3afp();
 
 	@Test
-	public abstract void intersectsRectangle2afp();
+	public abstract void intersectsRectangularPrism3afp();
 
 	@Test
-	public abstract void intersectsCircle2afp();
+	public abstract void intersectsSphere3afp();
 
 	@Test
-	public abstract void intersectsTriangle2afp();
-
-	@Test
-	public abstract void intersectsEllipse2afp();
-
-	@Test
-	public abstract void intersectsSegment2afp();
+	public abstract void intersectsSegment3afp();
 	
 	@Test
-	public abstract void intersectsPath2afp();
+	public abstract void intersectsPath3afp();
 
 	@Test
-	public abstract void intersectsPathIterator2afp();
-
-	@Test
-	public abstract void intersectsOrientedRectangle2afp();
-
-	@Test
-	public abstract void intersectsParallelogram2afp();
-
-	@Test
-	public abstract void intersectsRoundRectangle2afp();
+	public abstract void intersectsPathIterator3afp();
 
 	@Test
 	public abstract void translateDoubleDouble(); 
@@ -314,31 +296,31 @@ public abstract class AbstractShape3afpTest<T extends Shape3afp<?, ?, ?, ?, ?, ?
 	}
 	
 	@Test
-	public abstract void intersectsShape2D();
+	public abstract void intersectsShape3D();
 
 	@Test
-	public abstract void operator_addVector2D();
+	public abstract void operator_addVector3D();
 
 	@Test
-	public abstract void operator_plusVector2D();
+	public abstract void operator_plusVector3D();
 
 	@Test
-	public abstract void operator_removeVector2D();
+	public abstract void operator_removeVector3D();
 
 	@Test
-	public abstract void operator_minusVector2D();
+	public abstract void operator_minusVector3D();
 
 	@Test
-	public abstract void operator_multiplyTransform2D();
+	public abstract void operator_multiplyTransform3D();
 
 	@Test
-	public abstract void operator_andPoint2D();
+	public abstract void operator_andPoint3D();
 
 	@Test
-	public abstract void operator_andShape2D();
+	public abstract void operator_andShape3D();
 
 	@Test
-	public abstract void operator_upToPoint2D();
+	public abstract void operator_upToPoint3D();
 
 	/** Generate a bitmap containing the given Shape2D.
 	 *

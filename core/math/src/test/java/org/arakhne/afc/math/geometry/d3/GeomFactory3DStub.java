@@ -20,9 +20,6 @@
  */
 package org.arakhne.afc.math.geometry.d3;
 
-import org.arakhne.afc.math.geometry.d2.Point2D;
-import org.arakhne.afc.math.geometry.d2.Vector2D;
-
 @SuppressWarnings("all")
 public final class GeomFactory3DStub implements GeomFactory3D<Vector3DStub, Point3DStub> {
 
@@ -124,6 +121,16 @@ public final class GeomFactory3DStub implements GeomFactory3D<Vector3DStub, Poin
 	@Override
 	public Vector3DStub newVector(int x, int y, int z) {
 		return new Vector3DStub(x, y, z);
+	}
+
+	@Override
+	public Quaternion newQuaternion(Vector3D<?, ?> axis, double angle) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public Quaternion newQuaternion(double attitude, double bank, double heading) {
+		throw new UnsupportedOperationException();
 	}
 	
 }

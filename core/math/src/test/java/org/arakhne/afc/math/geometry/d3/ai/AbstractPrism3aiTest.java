@@ -28,7 +28,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 @SuppressWarnings("all")
-public abstract class AbstractRectangularShape3aiTest<T extends RectangularPrism3ai<?, T, ?, ?, ?, B>,
+public abstract class AbstractPrism3aiTest<T extends RectangularPrism3ai<?, T, ?, ?, ?, B>,
 		B extends RectangularPrism3ai<?, ?, ?, ?, ?, B>> extends AbstractShape3aiTest<T, B> {
 
 	protected static final int MINX = 5;
@@ -46,12 +46,14 @@ public abstract class AbstractRectangularShape3aiTest<T extends RectangularPrism
 	@Test
 	@Override
 	public void toBoundingBoxB() {
-		B box = (B) createRectangle(0, 0, 0, 0);
+		B box = (B) createRectangle(0, 0, 0, 0, 0, 0);
 		this.shape.toBoundingBox(box);
 		assertEquals(this.shape.getMinX(), box.getMinX());
 		assertEquals(this.shape.getMinY(), box.getMinY());
+		assertEquals(this.shape.getMinZ(), box.getMinZ());
 		assertEquals(this.shape.getMaxX(), box.getMaxX());
 		assertEquals(this.shape.getMaxY(), box.getMaxY());
+		assertEquals(this.shape.getMaxZ(), box.getMaxZ());
 	}
 	
 	@Test
@@ -60,8 +62,10 @@ public abstract class AbstractRectangularShape3aiTest<T extends RectangularPrism
 		B box = this.shape.toBoundingBox();
 		assertEquals(this.shape.getMinX(), box.getMinX());
 		assertEquals(this.shape.getMinY(), box.getMinY());
+		assertEquals(this.shape.getMinZ(), box.getMinZ());
 		assertEquals(this.shape.getMaxX(), box.getMaxX());
 		assertEquals(this.shape.getMaxY(), box.getMaxY());
+		assertEquals(this.shape.getMaxZ(), box.getMaxZ());
 	}
 	
 	@Test
@@ -70,8 +74,10 @@ public abstract class AbstractRectangularShape3aiTest<T extends RectangularPrism
 		this.shape.clear();
 		assertEquals(0, this.shape.getMinX());
 		assertEquals(0, this.shape.getMinY());
+		assertEquals(0, this.shape.getMinZ());
 		assertEquals(0, this.shape.getMaxX());
 		assertEquals(0, this.shape.getMaxY());
+		assertEquals(0, this.shape.getMaxZ());
 	}
 
 	@Test

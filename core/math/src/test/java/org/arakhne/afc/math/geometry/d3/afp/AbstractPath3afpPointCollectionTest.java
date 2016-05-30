@@ -33,8 +33,6 @@ import java.util.Iterator;
 
 import org.arakhne.afc.math.AbstractMathTestCase;
 import org.arakhne.afc.math.geometry.PathWindingRule;
-import org.arakhne.afc.math.geometry.d2.Point2D;
-import org.arakhne.afc.math.geometry.d2.afp.Path2afp;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
 import org.junit.After;
@@ -85,9 +83,10 @@ public abstract class AbstractPath3afpPointCollectionTest<P extends Point3D<? su
 	private void assertCoords(double... coords) {
 		assertEquals(coords.length/2, this.shape.size());
 		for(int i=0, j=0; i<this.shape.size(); ++i) {
-			Point2D p = this.shape.getPointAt(i);
+			Point3D p = this.shape.getPointAt(i);
 			assertEpsilonEquals(coords[j++], p.getX());
 			assertEpsilonEquals(coords[j++], p.getY());
+			assertEpsilonEquals(coords[j++], p.getZ());
 		}
 	}
 	
@@ -131,7 +130,7 @@ public abstract class AbstractPath3afpPointCollectionTest<P extends Point3D<? su
      */
 	@Test
     public void iterator() {
-    	Point2D p;
+    	Point3D p;
     	Iterator<P> iterator = this.collection.iterator();
     	assertTrue(iterator.hasNext());
     	p = iterator.next();
@@ -170,35 +169,35 @@ public abstract class AbstractPath3afpPointCollectionTest<P extends Point3D<? su
     public void toArray() {
     	Object[] tab = this.collection.toArray();
     	assertEquals(7, tab.length);
-    	assertTrue(tab[0] instanceof Point2D);
-    	assertEpsilonEquals(1, ((Point2D) tab[0]).getX());
-    	assertEpsilonEquals(1, ((Point2D) tab[0]).getY());
-    	assertTrue(tab[1] instanceof Point2D);
-    	assertEpsilonEquals(2, ((Point2D) tab[1]).getX());
-    	assertEpsilonEquals(2, ((Point2D) tab[1]).getY());
-    	assertTrue(tab[2] instanceof Point2D);
-    	assertEpsilonEquals(3, ((Point2D) tab[2]).getX());
-    	assertEpsilonEquals(0, ((Point2D) tab[2]).getY());
-    	assertTrue(tab[3] instanceof Point2D);
-    	assertEpsilonEquals(4, ((Point2D) tab[3]).getX());
-    	assertEpsilonEquals(3, ((Point2D) tab[3]).getY());
-    	assertTrue(tab[4] instanceof Point2D);
-    	assertEpsilonEquals(5, ((Point2D) tab[4]).getX());
-    	assertEpsilonEquals(-1, ((Point2D) tab[4]).getY());
-    	assertTrue(tab[5] instanceof Point2D);
-    	assertEpsilonEquals(6, ((Point2D) tab[5]).getX());
-    	assertEpsilonEquals(5, ((Point2D) tab[5]).getY());
-    	assertTrue(tab[6] instanceof Point2D);
-    	assertEpsilonEquals(7, ((Point2D) tab[6]).getX());
-    	assertEpsilonEquals(-5, ((Point2D) tab[6]).getY());
+    	assertTrue(tab[0] instanceof Point3D);
+    	assertEpsilonEquals(1, ((Point3D) tab[0]).getX());
+    	assertEpsilonEquals(1, ((Point3D) tab[0]).getY());
+    	assertTrue(tab[1] instanceof Point3D);
+    	assertEpsilonEquals(2, ((Point3D) tab[1]).getX());
+    	assertEpsilonEquals(2, ((Point3D) tab[1]).getY());
+    	assertTrue(tab[2] instanceof Point3D);
+    	assertEpsilonEquals(3, ((Point3D) tab[2]).getX());
+    	assertEpsilonEquals(0, ((Point3D) tab[2]).getY());
+    	assertTrue(tab[3] instanceof Point3D);
+    	assertEpsilonEquals(4, ((Point3D) tab[3]).getX());
+    	assertEpsilonEquals(3, ((Point3D) tab[3]).getY());
+    	assertTrue(tab[4] instanceof Point3D);
+    	assertEpsilonEquals(5, ((Point3D) tab[4]).getX());
+    	assertEpsilonEquals(-1, ((Point3D) tab[4]).getY());
+    	assertTrue(tab[5] instanceof Point3D);
+    	assertEpsilonEquals(6, ((Point3D) tab[5]).getX());
+    	assertEpsilonEquals(5, ((Point3D) tab[5]).getY());
+    	assertTrue(tab[6] instanceof Point3D);
+    	assertEpsilonEquals(7, ((Point3D) tab[6]).getX());
+    	assertEpsilonEquals(-5, ((Point3D) tab[6]).getY());
     }
 
     /**
      */
 	@Test
     public void toArrayArray() {
-    	Point2D[] tab = new Point2D[5];
-    	Point2D[] tab2 = this.collection.toArray(tab);
+    	Point3D[] tab = new Point3D[5];
+    	Point3D[] tab2 = this.collection.toArray(tab);
     	assertSame(tab, tab2);
     	assertEquals(5, tab.length);
     	assertEpsilonEquals(1, tab[0].getX());

@@ -31,16 +31,11 @@ import java.util.Iterator;
 
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.geometry.PathElementType;
-import org.arakhne.afc.math.geometry.d2.Path2D.ArcType;
-import org.arakhne.afc.math.geometry.d2.Point2D;
-import org.arakhne.afc.math.geometry.d2.Shape2D;
-import org.arakhne.afc.math.geometry.d2.Transform2D;
-import org.arakhne.afc.math.geometry.d2.afp.Path2afp;
-import org.arakhne.afc.math.geometry.d2.afp.Path2afp.CrossingComputationType;
-import org.arakhne.afc.math.geometry.d2.afp.PathElement2afp;
-import org.arakhne.afc.math.geometry.d2.afp.PathIterator2afp;
-import org.arakhne.afc.math.geometry.d2.afp.PathShadow2afp;
-import org.arakhne.afc.math.geometry.d2.ai.PathIterator2ai;
+import org.arakhne.afc.math.geometry.d3.Point3D;
+import org.arakhne.afc.math.geometry.d3.Shape3D;
+import org.arakhne.afc.math.geometry.d3.Transform3D;
+import org.arakhne.afc.math.geometry.d3.afp.Path3afp.CrossingComputationType;
+import org.arakhne.afc.math.geometry.d3.ai.PathIterator3ai;
 import org.junit.Test;
 
 @SuppressWarnings("all")
@@ -57,337 +52,337 @@ extends AbstractShape3afpTest<T, B> {
 		return path;
 	}
 
-	protected PathShadow3afp<B> createShadow(int x1, int y1, int x2, int y2) {
+	protected PathShadow3afp<B> createShadow(int x1, int y1, int z1, int x2, int y2, int z2) {
 		T path = (T) createPath();
-		path.moveTo(x1, y1);
-		path.lineTo(x2, y2);
-		return new PathShadow2afp<>(path);
+		path.moveTo(x1, y1, z1);
+		path.lineTo(x2, y2, z2);
+		return new PathShadow3afp<>(path);
 	}
 
 	@Test
 	public void staticComputeCrossingsFromCircle_null() {
-		assertEquals(-2, Path2afp.computeCrossingsFromCircle(0, this.shape.getPathIterator(), -2, -2, 2, null));
-		assertEquals(-2, Path2afp.computeCrossingsFromCircle(0, this.shape.getPathIterator(), 2, -2, 2, null));
-		assertEquals(-2, Path2afp.computeCrossingsFromCircle(0, this.shape.getPathIterator(), 2.5, -1.5, 2, null));
-		assertEquals(0, Path2afp.computeCrossingsFromCircle(0, this.shape.getPathIterator(), 10, 0, 2, null));
-		assertEquals(-2, Path2afp.computeCrossingsFromCircle(0, this.shape.getPathIterator(), 4, 0, 0.5, null));
-		assertEquals(SHAPE_INTERSECTS, Path2afp.computeCrossingsFromCircle(0, this.shape.getPathIterator(), 2.5, 1, 0.5, null));
+		assertEquals(-2, Path3afp.computeCrossingsFromCircle(0, this.shape.getPathIterator(), -2, -2, 2, null));
+		assertEquals(-2, Path3afp.computeCrossingsFromCircle(0, this.shape.getPathIterator(), 2, -2, 2, null));
+		assertEquals(-2, Path3afp.computeCrossingsFromCircle(0, this.shape.getPathIterator(), 2.5, -1.5, 2, null));
+		assertEquals(0, Path3afp.computeCrossingsFromCircle(0, this.shape.getPathIterator(), 10, 0, 2, null));
+		assertEquals(-2, Path3afp.computeCrossingsFromCircle(0, this.shape.getPathIterator(), 4, 0, 0.5, null));
+		assertEquals(SHAPE_INTERSECTS, Path3afp.computeCrossingsFromCircle(0, this.shape.getPathIterator(), 2.5, 1, 0.5, null));
 	}
 
 	@Test
 	public void staticComputeCrossingsFromCircle_standard() {
-		assertEquals(-2, Path2afp.computeCrossingsFromCircle(0, this.shape.getPathIterator(), -2, -2, 2, CrossingComputationType.STANDARD));
-		assertEquals(-2, Path2afp.computeCrossingsFromCircle(0, this.shape.getPathIterator(), 2, -2, 2, CrossingComputationType.STANDARD));
-		assertEquals(-2, Path2afp.computeCrossingsFromCircle(0, this.shape.getPathIterator(), 2.5, -1.5, 2, CrossingComputationType.STANDARD));
-		assertEquals(0, Path2afp.computeCrossingsFromCircle(0, this.shape.getPathIterator(), 10, 0, 2, CrossingComputationType.STANDARD));
-		assertEquals(-2, Path2afp.computeCrossingsFromCircle(0, this.shape.getPathIterator(), 4, 0, 0.5, CrossingComputationType.STANDARD));
-		assertEquals(SHAPE_INTERSECTS, Path2afp.computeCrossingsFromCircle(0, this.shape.getPathIterator(), 2.5, 1, 0.5, CrossingComputationType.STANDARD));
+		assertEquals(-2, Path3afp.computeCrossingsFromCircle(0, this.shape.getPathIterator(), -2, -2, 2, CrossingComputationType.STANDARD));
+		assertEquals(-2, Path3afp.computeCrossingsFromCircle(0, this.shape.getPathIterator(), 2, -2, 2, CrossingComputationType.STANDARD));
+		assertEquals(-2, Path3afp.computeCrossingsFromCircle(0, this.shape.getPathIterator(), 2.5, -1.5, 2, CrossingComputationType.STANDARD));
+		assertEquals(0, Path3afp.computeCrossingsFromCircle(0, this.shape.getPathIterator(), 10, 0, 2, CrossingComputationType.STANDARD));
+		assertEquals(-2, Path3afp.computeCrossingsFromCircle(0, this.shape.getPathIterator(), 4, 0, 0.5, CrossingComputationType.STANDARD));
+		assertEquals(SHAPE_INTERSECTS, Path3afp.computeCrossingsFromCircle(0, this.shape.getPathIterator(), 2.5, 1, 0.5, CrossingComputationType.STANDARD));
 	}
 
 	@Test
 	public void staticComputeCrossingsFromCircle_autoClose() {
-		assertEquals(0, Path2afp.computeCrossingsFromCircle(0, this.shape.getPathIterator(), -2, -2, 2, CrossingComputationType.AUTO_CLOSE));
-		assertEquals(SHAPE_INTERSECTS, Path2afp.computeCrossingsFromCircle(0, this.shape.getPathIterator(), 2, -2, 2, CrossingComputationType.AUTO_CLOSE));
-		assertEquals(SHAPE_INTERSECTS, Path2afp.computeCrossingsFromCircle(0, this.shape.getPathIterator(), 2.5, -1.5, 2, CrossingComputationType.AUTO_CLOSE));
-		assertEquals(0, Path2afp.computeCrossingsFromCircle(0, this.shape.getPathIterator(), 10, 0, 2, CrossingComputationType.AUTO_CLOSE));
-		assertEquals(-2, Path2afp.computeCrossingsFromCircle(0, this.shape.getPathIterator(), 4, 0, 0.5, CrossingComputationType.AUTO_CLOSE));
-		assertEquals(SHAPE_INTERSECTS, Path2afp.computeCrossingsFromCircle(0, this.shape.getPathIterator(), 2.5, 1, 0.5, CrossingComputationType.AUTO_CLOSE));
+		assertEquals(0, Path3afp.computeCrossingsFromCircle(0, this.shape.getPathIterator(), -2, -2, 2, CrossingComputationType.AUTO_CLOSE));
+		assertEquals(SHAPE_INTERSECTS, Path3afp.computeCrossingsFromCircle(0, this.shape.getPathIterator(), 2, -2, 2, CrossingComputationType.AUTO_CLOSE));
+		assertEquals(SHAPE_INTERSECTS, Path3afp.computeCrossingsFromCircle(0, this.shape.getPathIterator(), 2.5, -1.5, 2, CrossingComputationType.AUTO_CLOSE));
+		assertEquals(0, Path3afp.computeCrossingsFromCircle(0, this.shape.getPathIterator(), 10, 0, 2, CrossingComputationType.AUTO_CLOSE));
+		assertEquals(-2, Path3afp.computeCrossingsFromCircle(0, this.shape.getPathIterator(), 4, 0, 0.5, CrossingComputationType.AUTO_CLOSE));
+		assertEquals(SHAPE_INTERSECTS, Path3afp.computeCrossingsFromCircle(0, this.shape.getPathIterator(), 2.5, 1, 0.5, CrossingComputationType.AUTO_CLOSE));
 	}
 
 	@Test
 	public void staticComputeCrossingsFromCircle_simpleIntersectionWhenNotPolygon() {
-		assertEquals(0, Path2afp.computeCrossingsFromCircle(0, this.shape.getPathIterator(), -2, -2, 2, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
-		assertEquals(0, Path2afp.computeCrossingsFromCircle(0, this.shape.getPathIterator(), 2, -2, 2, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
-		assertEquals(0, Path2afp.computeCrossingsFromCircle(0, this.shape.getPathIterator(), 2.5, -1.5, 2, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
-		assertEquals(0, Path2afp.computeCrossingsFromCircle(0, this.shape.getPathIterator(), 10, 0, 2, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
-		assertEquals(0, Path2afp.computeCrossingsFromCircle(0, this.shape.getPathIterator(), 4, 0, 0.5, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
-		assertEquals(SHAPE_INTERSECTS, Path2afp.computeCrossingsFromCircle(0, this.shape.getPathIterator(), 2.5, 1, 0.5, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
+		assertEquals(0, Path3afp.computeCrossingsFromCircle(0, this.shape.getPathIterator(), -2, -2, 2, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
+		assertEquals(0, Path3afp.computeCrossingsFromCircle(0, this.shape.getPathIterator(), 2, -2, 2, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
+		assertEquals(0, Path3afp.computeCrossingsFromCircle(0, this.shape.getPathIterator(), 2.5, -1.5, 2, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
+		assertEquals(0, Path3afp.computeCrossingsFromCircle(0, this.shape.getPathIterator(), 10, 0, 2, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
+		assertEquals(0, Path3afp.computeCrossingsFromCircle(0, this.shape.getPathIterator(), 4, 0, 0.5, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
+		assertEquals(SHAPE_INTERSECTS, Path3afp.computeCrossingsFromCircle(0, this.shape.getPathIterator(), 2.5, 1, 0.5, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
 	}
 
 	@Test
 	public void staticComputeCrossingsFromEllipse_null() {
-		assertEquals(-2, Path2afp.computeCrossingsFromEllipse(0, this.shape.getPathIterator(), 1, -1.5, 2, 1, null));
-		assertEquals(0, Path2afp.computeCrossingsFromEllipse(0, this.shape.getPathIterator(), 1, 1, 2, 1, null));
-		assertEquals(SHAPE_INTERSECTS, Path2afp.computeCrossingsFromEllipse(0, this.shape.getPathIterator(), 4.5, -1, 2, 1, null));
-		assertEquals(-1, Path2afp.computeCrossingsFromEllipse(0, this.shape.getPathIterator(), 0, -5.5, 2, 1, null));
+		assertEquals(-2, Path3afp.computeCrossingsFromEllipse(0, this.shape.getPathIterator(), 1, -1.5, 2, 1, null));
+		assertEquals(0, Path3afp.computeCrossingsFromEllipse(0, this.shape.getPathIterator(), 1, 1, 2, 1, null));
+		assertEquals(SHAPE_INTERSECTS, Path3afp.computeCrossingsFromEllipse(0, this.shape.getPathIterator(), 4.5, -1, 2, 1, null));
+		assertEquals(-1, Path3afp.computeCrossingsFromEllipse(0, this.shape.getPathIterator(), 0, -5.5, 2, 1, null));
 	}
 
 	@Test
 	public void staticComputeCrossingsFromEllipse_standard() {
-		assertEquals(-2, Path2afp.computeCrossingsFromEllipse(0, this.shape.getPathIterator(), 1, -1.5, 2, 1, CrossingComputationType.STANDARD));
-		assertEquals(0, Path2afp.computeCrossingsFromEllipse(0, this.shape.getPathIterator(), 1, 1, 2, 1, CrossingComputationType.STANDARD));
-		assertEquals(SHAPE_INTERSECTS, Path2afp.computeCrossingsFromEllipse(0, this.shape.getPathIterator(), 4.5, -1, 2, 1, CrossingComputationType.STANDARD));
-		assertEquals(-1, Path2afp.computeCrossingsFromEllipse(0, this.shape.getPathIterator(), 0, -5.5, 2, 1, CrossingComputationType.STANDARD));
+		assertEquals(-2, Path3afp.computeCrossingsFromEllipse(0, this.shape.getPathIterator(), 1, -1.5, 2, 1, CrossingComputationType.STANDARD));
+		assertEquals(0, Path3afp.computeCrossingsFromEllipse(0, this.shape.getPathIterator(), 1, 1, 2, 1, CrossingComputationType.STANDARD));
+		assertEquals(SHAPE_INTERSECTS, Path3afp.computeCrossingsFromEllipse(0, this.shape.getPathIterator(), 4.5, -1, 2, 1, CrossingComputationType.STANDARD));
+		assertEquals(-1, Path3afp.computeCrossingsFromEllipse(0, this.shape.getPathIterator(), 0, -5.5, 2, 1, CrossingComputationType.STANDARD));
 	}
 
 	@Test
 	public void staticComputeCrossingsFromEllipse_autoClose() {
-		assertEquals(SHAPE_INTERSECTS, Path2afp.computeCrossingsFromEllipse(0, this.shape.getPathIterator(), 1, -1.5, 2, 1, CrossingComputationType.AUTO_CLOSE));
-		assertEquals(0, Path2afp.computeCrossingsFromEllipse(0, this.shape.getPathIterator(), 1, 1, 2, 1, CrossingComputationType.AUTO_CLOSE));
-		assertEquals(SHAPE_INTERSECTS, Path2afp.computeCrossingsFromEllipse(0, this.shape.getPathIterator(), 4.5, -1, 2, 1, CrossingComputationType.AUTO_CLOSE));
-		assertEquals(0, Path2afp.computeCrossingsFromEllipse(0, this.shape.getPathIterator(), 0, -5.5, 2, 1, CrossingComputationType.AUTO_CLOSE));
+		assertEquals(SHAPE_INTERSECTS, Path3afp.computeCrossingsFromEllipse(0, this.shape.getPathIterator(), 1, -1.5, 2, 1, CrossingComputationType.AUTO_CLOSE));
+		assertEquals(0, Path3afp.computeCrossingsFromEllipse(0, this.shape.getPathIterator(), 1, 1, 2, 1, CrossingComputationType.AUTO_CLOSE));
+		assertEquals(SHAPE_INTERSECTS, Path3afp.computeCrossingsFromEllipse(0, this.shape.getPathIterator(), 4.5, -1, 2, 1, CrossingComputationType.AUTO_CLOSE));
+		assertEquals(0, Path3afp.computeCrossingsFromEllipse(0, this.shape.getPathIterator(), 0, -5.5, 2, 1, CrossingComputationType.AUTO_CLOSE));
 	}
 
 	@Test
 	public void staticComputeCrossingsFromEllipse_simpleIntersectionWhenNotPolygon() {
-		assertEquals(0, Path2afp.computeCrossingsFromEllipse(0, this.shape.getPathIterator(), 1, -1.5, 2, 1, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
-		assertEquals(0, Path2afp.computeCrossingsFromEllipse(0, this.shape.getPathIterator(), 1, 1, 2, 1, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
-		assertEquals(SHAPE_INTERSECTS, Path2afp.computeCrossingsFromEllipse(0, this.shape.getPathIterator(), 4.5, -1, 2, 1, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
-		assertEquals(0, Path2afp.computeCrossingsFromEllipse(0, this.shape.getPathIterator(), 0, -5.5, 2, 1, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
+		assertEquals(0, Path3afp.computeCrossingsFromEllipse(0, this.shape.getPathIterator(), 1, -1.5, 2, 1, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
+		assertEquals(0, Path3afp.computeCrossingsFromEllipse(0, this.shape.getPathIterator(), 1, 1, 2, 1, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
+		assertEquals(SHAPE_INTERSECTS, Path3afp.computeCrossingsFromEllipse(0, this.shape.getPathIterator(), 4.5, -1, 2, 1, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
+		assertEquals(0, Path3afp.computeCrossingsFromEllipse(0, this.shape.getPathIterator(), 0, -5.5, 2, 1, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
 	}
 
 	@Test
 	public void staticComputeCrossingsFromPath_null() {
-		assertEquals(-2, Path2afp.computeCrossingsFromPath(0, this.shape.getPathIterator(),
+		assertEquals(-2, Path3afp.computeCrossingsFromPath(0, this.shape.getPathIterator(),
 				createShadow(1, -1, 4, -3), null));
-		assertEquals(-2, Path2afp.computeCrossingsFromPath(0, this.shape.getPathIterator(),
+		assertEquals(-2, Path3afp.computeCrossingsFromPath(0, this.shape.getPathIterator(),
 				createShadow(1, -1, 5, -3), null));
-		assertEquals(-2, Path2afp.computeCrossingsFromPath(0, this.shape.getPathIterator(),
+		assertEquals(-2, Path3afp.computeCrossingsFromPath(0, this.shape.getPathIterator(),
 				createShadow(1, -1, 4, 1), null));
-		assertEquals(SHAPE_INTERSECTS, Path2afp.computeCrossingsFromPath(0, this.shape.getPathIterator(),
+		assertEquals(SHAPE_INTERSECTS, Path3afp.computeCrossingsFromPath(0, this.shape.getPathIterator(),
 				createShadow(5, 2, 4, 1), null));
 	}
 
 	@Test
 	public void staticComputeCrossingsFromPath_standard() {
-		assertEquals(-2, Path2afp.computeCrossingsFromPath(0, this.shape.getPathIterator(),
+		assertEquals(-2, Path3afp.computeCrossingsFromPath(0, this.shape.getPathIterator(),
 				createShadow(1, -1, 4, -3), CrossingComputationType.STANDARD));
-		assertEquals(-2, Path2afp.computeCrossingsFromPath(0, this.shape.getPathIterator(),
+		assertEquals(-2, Path3afp.computeCrossingsFromPath(0, this.shape.getPathIterator(),
 				createShadow(1, -1, 5, -3), CrossingComputationType.STANDARD));
-		assertEquals(-2, Path2afp.computeCrossingsFromPath(0, this.shape.getPathIterator(),
+		assertEquals(-2, Path3afp.computeCrossingsFromPath(0, this.shape.getPathIterator(),
 				createShadow(1, -1, 4, 1), CrossingComputationType.STANDARD));
-		assertEquals(SHAPE_INTERSECTS, Path2afp.computeCrossingsFromPath(0, this.shape.getPathIterator(),
+		assertEquals(SHAPE_INTERSECTS, Path3afp.computeCrossingsFromPath(0, this.shape.getPathIterator(),
 				createShadow(5, 2, 4, 1), CrossingComputationType.STANDARD));
 	}
 
 	@Test
 	public void staticComputeCrossingsFromPath_autoClose() {
-		assertEquals(-2, Path2afp.computeCrossingsFromPath(0, this.shape.getPathIterator(),
+		assertEquals(-2, Path3afp.computeCrossingsFromPath(0, this.shape.getPathIterator(),
 				createShadow(1, -1, 4, -3), CrossingComputationType.AUTO_CLOSE));
-		assertEquals(SHAPE_INTERSECTS, Path2afp.computeCrossingsFromPath(0, this.shape.getPathIterator(),
+		assertEquals(SHAPE_INTERSECTS, Path3afp.computeCrossingsFromPath(0, this.shape.getPathIterator(),
 				createShadow(1, -1, 5, -3), CrossingComputationType.AUTO_CLOSE));
-		assertEquals(SHAPE_INTERSECTS, Path2afp.computeCrossingsFromPath(0, this.shape.getPathIterator(),
+		assertEquals(SHAPE_INTERSECTS, Path3afp.computeCrossingsFromPath(0, this.shape.getPathIterator(),
 				createShadow(1, -1, 4, 1), CrossingComputationType.AUTO_CLOSE));
-		assertEquals(SHAPE_INTERSECTS, Path2afp.computeCrossingsFromPath(0, this.shape.getPathIterator(),
+		assertEquals(SHAPE_INTERSECTS, Path3afp.computeCrossingsFromPath(0, this.shape.getPathIterator(),
 				createShadow(5, 2, 4, 1), CrossingComputationType.AUTO_CLOSE));
 	}
 
 	@Test
 	public void staticComputeCrossingsFromPath_simpleIntersectionWhenNotPolygon() {
-		assertEquals(0, Path2afp.computeCrossingsFromPath(0, this.shape.getPathIterator(),
+		assertEquals(0, Path3afp.computeCrossingsFromPath(0, this.shape.getPathIterator(),
 				createShadow(1, -1, 4, -3), CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
-		assertEquals(0, Path2afp.computeCrossingsFromPath(0, this.shape.getPathIterator(),
+		assertEquals(0, Path3afp.computeCrossingsFromPath(0, this.shape.getPathIterator(),
 				createShadow(1, -1, 5, -3), CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
-		assertEquals(0, Path2afp.computeCrossingsFromPath(0, this.shape.getPathIterator(),
+		assertEquals(0, Path3afp.computeCrossingsFromPath(0, this.shape.getPathIterator(),
 				createShadow(1, -1, 4, 1), CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
-		assertEquals(SHAPE_INTERSECTS, Path2afp.computeCrossingsFromPath(0, this.shape.getPathIterator(),
+		assertEquals(SHAPE_INTERSECTS, Path3afp.computeCrossingsFromPath(0, this.shape.getPathIterator(),
 				createShadow(5, 2, 4, 1), CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
 	}
 
 	@Test
 	public void staticComputeCrossingsFromPoint_null() {
-		assertEquals(-1, Path2afp.computeCrossingsFromPoint(0, this.shape.getPathIterator(), 1, -0.5, null));
-		assertEquals(-1, Path2afp.computeCrossingsFromPoint(0, this.shape.getPathIterator(), 0, -0.5, null));
-		assertEquals(0, Path2afp.computeCrossingsFromPoint(0, this.shape.getPathIterator(), 7, 1, null));
-		assertEquals(0, Path2afp.computeCrossingsFromPoint(0, this.shape.getPathIterator(), 2, 2, null));
-		assertEquals(0, Path2afp.computeCrossingsFromPoint(0, this.shape.getPathIterator(), 5, 2, null));
-		assertEquals(0, Path2afp.computeCrossingsFromPoint(0, this.shape.getPathIterator(), 0, 4, null));
-		assertEquals(-1, Path2afp.computeCrossingsFromPoint(0, this.shape.getPathIterator(), 3, 0, null));
-		assertEquals(SHAPE_INTERSECTS, Path2afp.computeCrossingsFromPoint(0, this.shape.getPathIterator(), 1, 1, null));
+		assertEquals(-1, Path3afp.computeCrossingsFromPoint(0, this.shape.getPathIterator(), 1, -0.5, null));
+		assertEquals(-1, Path3afp.computeCrossingsFromPoint(0, this.shape.getPathIterator(), 0, -0.5, null));
+		assertEquals(0, Path3afp.computeCrossingsFromPoint(0, this.shape.getPathIterator(), 7, 1, null));
+		assertEquals(0, Path3afp.computeCrossingsFromPoint(0, this.shape.getPathIterator(), 2, 2, null));
+		assertEquals(0, Path3afp.computeCrossingsFromPoint(0, this.shape.getPathIterator(), 5, 2, null));
+		assertEquals(0, Path3afp.computeCrossingsFromPoint(0, this.shape.getPathIterator(), 0, 4, null));
+		assertEquals(-1, Path3afp.computeCrossingsFromPoint(0, this.shape.getPathIterator(), 3, 0, null));
+		assertEquals(SHAPE_INTERSECTS, Path3afp.computeCrossingsFromPoint(0, this.shape.getPathIterator(), 1, 1, null));
 	}
 
 	@Test
 	public void staticComputeCrossingsFromPoint_standard() {
-		assertEquals(-1, Path2afp.computeCrossingsFromPoint(0, this.shape.getPathIterator(), 1, -0.5, CrossingComputationType.STANDARD));
-		assertEquals(-1, Path2afp.computeCrossingsFromPoint(0, this.shape.getPathIterator(), 0, -0.5, CrossingComputationType.STANDARD));
-		assertEquals(0, Path2afp.computeCrossingsFromPoint(0, this.shape.getPathIterator(), 7, 1, CrossingComputationType.STANDARD));
-		assertEquals(0, Path2afp.computeCrossingsFromPoint(0, this.shape.getPathIterator(), 2, 2, CrossingComputationType.STANDARD));
-		assertEquals(0, Path2afp.computeCrossingsFromPoint(0, this.shape.getPathIterator(), 5, 2, CrossingComputationType.STANDARD));
-		assertEquals(0, Path2afp.computeCrossingsFromPoint(0, this.shape.getPathIterator(), 0, 4, CrossingComputationType.STANDARD));
-		assertEquals(-1, Path2afp.computeCrossingsFromPoint(0, this.shape.getPathIterator(), 3, 0, CrossingComputationType.STANDARD));
-		assertEquals(SHAPE_INTERSECTS, Path2afp.computeCrossingsFromPoint(0, this.shape.getPathIterator(), 1, 1, CrossingComputationType.STANDARD));
+		assertEquals(-1, Path3afp.computeCrossingsFromPoint(0, this.shape.getPathIterator(), 1, -0.5, CrossingComputationType.STANDARD));
+		assertEquals(-1, Path3afp.computeCrossingsFromPoint(0, this.shape.getPathIterator(), 0, -0.5, CrossingComputationType.STANDARD));
+		assertEquals(0, Path3afp.computeCrossingsFromPoint(0, this.shape.getPathIterator(), 7, 1, CrossingComputationType.STANDARD));
+		assertEquals(0, Path3afp.computeCrossingsFromPoint(0, this.shape.getPathIterator(), 2, 2, CrossingComputationType.STANDARD));
+		assertEquals(0, Path3afp.computeCrossingsFromPoint(0, this.shape.getPathIterator(), 5, 2, CrossingComputationType.STANDARD));
+		assertEquals(0, Path3afp.computeCrossingsFromPoint(0, this.shape.getPathIterator(), 0, 4, CrossingComputationType.STANDARD));
+		assertEquals(-1, Path3afp.computeCrossingsFromPoint(0, this.shape.getPathIterator(), 3, 0, CrossingComputationType.STANDARD));
+		assertEquals(SHAPE_INTERSECTS, Path3afp.computeCrossingsFromPoint(0, this.shape.getPathIterator(), 1, 1, CrossingComputationType.STANDARD));
 	}
 
 	@Test
 	public void staticComputeCrossingsFromPoint_autoClose() {
-		assertEquals(-1, Path2afp.computeCrossingsFromPoint(0, this.shape.getPathIterator(), 1, -0.5, CrossingComputationType.AUTO_CLOSE));
-		assertEquals(0, Path2afp.computeCrossingsFromPoint(0, this.shape.getPathIterator(), 0, -0.5, CrossingComputationType.AUTO_CLOSE));
-		assertEquals(0, Path2afp.computeCrossingsFromPoint(0, this.shape.getPathIterator(), 7, 1, CrossingComputationType.AUTO_CLOSE));
-		assertEquals(0, Path2afp.computeCrossingsFromPoint(0, this.shape.getPathIterator(), 2, 2, CrossingComputationType.AUTO_CLOSE));
-		assertEquals(0, Path2afp.computeCrossingsFromPoint(0, this.shape.getPathIterator(), 5, 2, CrossingComputationType.AUTO_CLOSE));
-		assertEquals(0, Path2afp.computeCrossingsFromPoint(0, this.shape.getPathIterator(), 0, 4, CrossingComputationType.AUTO_CLOSE));
-		assertEquals(-1, Path2afp.computeCrossingsFromPoint(0, this.shape.getPathIterator(), 3, 0, CrossingComputationType.AUTO_CLOSE));
-		assertEquals(SHAPE_INTERSECTS, Path2afp.computeCrossingsFromPoint(0, this.shape.getPathIterator(), 1, 1, CrossingComputationType.AUTO_CLOSE));
+		assertEquals(-1, Path3afp.computeCrossingsFromPoint(0, this.shape.getPathIterator(), 1, -0.5, CrossingComputationType.AUTO_CLOSE));
+		assertEquals(0, Path3afp.computeCrossingsFromPoint(0, this.shape.getPathIterator(), 0, -0.5, CrossingComputationType.AUTO_CLOSE));
+		assertEquals(0, Path3afp.computeCrossingsFromPoint(0, this.shape.getPathIterator(), 7, 1, CrossingComputationType.AUTO_CLOSE));
+		assertEquals(0, Path3afp.computeCrossingsFromPoint(0, this.shape.getPathIterator(), 2, 2, CrossingComputationType.AUTO_CLOSE));
+		assertEquals(0, Path3afp.computeCrossingsFromPoint(0, this.shape.getPathIterator(), 5, 2, CrossingComputationType.AUTO_CLOSE));
+		assertEquals(0, Path3afp.computeCrossingsFromPoint(0, this.shape.getPathIterator(), 0, 4, CrossingComputationType.AUTO_CLOSE));
+		assertEquals(-1, Path3afp.computeCrossingsFromPoint(0, this.shape.getPathIterator(), 3, 0, CrossingComputationType.AUTO_CLOSE));
+		assertEquals(SHAPE_INTERSECTS, Path3afp.computeCrossingsFromPoint(0, this.shape.getPathIterator(), 1, 1, CrossingComputationType.AUTO_CLOSE));
 	}
 
 	@Test
 	public void staticComputeCrossingsFromPoint_simpleIntersectionWhenNotPolygon() {
-		assertEquals(0, Path2afp.computeCrossingsFromPoint(0, this.shape.getPathIterator(), 1, -0.5, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
-		assertEquals(0, Path2afp.computeCrossingsFromPoint(0, this.shape.getPathIterator(), 0, -0.5, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
-		assertEquals(0, Path2afp.computeCrossingsFromPoint(0, this.shape.getPathIterator(), 7, 1, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
-		assertEquals(0, Path2afp.computeCrossingsFromPoint(0, this.shape.getPathIterator(), 2, 2, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
-		assertEquals(0, Path2afp.computeCrossingsFromPoint(0, this.shape.getPathIterator(), 5, 2, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
-		assertEquals(0, Path2afp.computeCrossingsFromPoint(0, this.shape.getPathIterator(), 0, 4, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
-		assertEquals(0, Path2afp.computeCrossingsFromPoint(0, this.shape.getPathIterator(), 3, 0, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
-		assertEquals(SHAPE_INTERSECTS, Path2afp.computeCrossingsFromPoint(0, this.shape.getPathIterator(), 1, 1, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
+		assertEquals(0, Path3afp.computeCrossingsFromPoint(0, this.shape.getPathIterator(), 1, -0.5, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
+		assertEquals(0, Path3afp.computeCrossingsFromPoint(0, this.shape.getPathIterator(), 0, -0.5, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
+		assertEquals(0, Path3afp.computeCrossingsFromPoint(0, this.shape.getPathIterator(), 7, 1, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
+		assertEquals(0, Path3afp.computeCrossingsFromPoint(0, this.shape.getPathIterator(), 2, 2, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
+		assertEquals(0, Path3afp.computeCrossingsFromPoint(0, this.shape.getPathIterator(), 5, 2, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
+		assertEquals(0, Path3afp.computeCrossingsFromPoint(0, this.shape.getPathIterator(), 0, 4, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
+		assertEquals(0, Path3afp.computeCrossingsFromPoint(0, this.shape.getPathIterator(), 3, 0, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
+		assertEquals(SHAPE_INTERSECTS, Path3afp.computeCrossingsFromPoint(0, this.shape.getPathIterator(), 1, 1, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
 	}
 
 	@Test
 	public void staticComputeCrossingsFromRect_null() {
-		assertEquals(-2, Path2afp.computeCrossingsFromRect(0, this.shape.getPathIterator(), 1, -2, 3, -1, null));
-		assertEquals(SHAPE_INTERSECTS, Path2afp.computeCrossingsFromRect(0, this.shape.getPathIterator(), 1.5, 1.5, 3.5, 2.5, null));
-		assertEquals(0, Path2afp.computeCrossingsFromRect(0, this.shape.getPathIterator(), 7, 3, 9, 4, null));
-		assertEquals(-1, Path2afp.computeCrossingsFromRect(0, this.shape.getPathIterator(), -4, -0.5, -2, 0.5, null));
+		assertEquals(-2, Path3afp.computeCrossingsFromRect(0, this.shape.getPathIterator(), 1, -2, 3, -1, null));
+		assertEquals(SHAPE_INTERSECTS, Path3afp.computeCrossingsFromRect(0, this.shape.getPathIterator(), 1.5, 1.5, 3.5, 2.5, null));
+		assertEquals(0, Path3afp.computeCrossingsFromRect(0, this.shape.getPathIterator(), 7, 3, 9, 4, null));
+		assertEquals(-1, Path3afp.computeCrossingsFromRect(0, this.shape.getPathIterator(), -4, -0.5, -2, 0.5, null));
 	}
 
 	@Test
 	public void staticComputeCrossingsFromRect_standard() {
-		assertEquals(-2, Path2afp.computeCrossingsFromRect(0, this.shape.getPathIterator(), 1, -2, 3, -1, CrossingComputationType.STANDARD));
-		assertEquals(SHAPE_INTERSECTS, Path2afp.computeCrossingsFromRect(0, this.shape.getPathIterator(), 1.5, 1.5, 3.5, 2.5, CrossingComputationType.STANDARD));
-		assertEquals(0, Path2afp.computeCrossingsFromRect(0, this.shape.getPathIterator(), 7, 3, 9, 4, CrossingComputationType.STANDARD));
-		assertEquals(-1, Path2afp.computeCrossingsFromRect(0, this.shape.getPathIterator(), -4, -0.5, -2, 0.5, CrossingComputationType.STANDARD));
+		assertEquals(-2, Path3afp.computeCrossingsFromRect(0, this.shape.getPathIterator(), 1, -2, 3, -1, CrossingComputationType.STANDARD));
+		assertEquals(SHAPE_INTERSECTS, Path3afp.computeCrossingsFromRect(0, this.shape.getPathIterator(), 1.5, 1.5, 3.5, 2.5, CrossingComputationType.STANDARD));
+		assertEquals(0, Path3afp.computeCrossingsFromRect(0, this.shape.getPathIterator(), 7, 3, 9, 4, CrossingComputationType.STANDARD));
+		assertEquals(-1, Path3afp.computeCrossingsFromRect(0, this.shape.getPathIterator(), -4, -0.5, -2, 0.5, CrossingComputationType.STANDARD));
 	}
 
 	@Test
 	public void staticComputeCrossingsFromRect_autoClose() {
-		assertEquals(SHAPE_INTERSECTS, Path2afp.computeCrossingsFromRect(0, this.shape.getPathIterator(), 1, -2, 3, -1, CrossingComputationType.AUTO_CLOSE));
-		assertEquals(SHAPE_INTERSECTS, Path2afp.computeCrossingsFromRect(0, this.shape.getPathIterator(), 1.5, 1.5, 3.5, 2.5, CrossingComputationType.AUTO_CLOSE));
-		assertEquals(0, Path2afp.computeCrossingsFromRect(0, this.shape.getPathIterator(), 7, 3, 9, 4, CrossingComputationType.AUTO_CLOSE));
-		assertEquals(0, Path2afp.computeCrossingsFromRect(0, this.shape.getPathIterator(), -4, -0.5, -2, 0.5, CrossingComputationType.AUTO_CLOSE));
+		assertEquals(SHAPE_INTERSECTS, Path3afp.computeCrossingsFromRect(0, this.shape.getPathIterator(), 1, -2, 3, -1, CrossingComputationType.AUTO_CLOSE));
+		assertEquals(SHAPE_INTERSECTS, Path3afp.computeCrossingsFromRect(0, this.shape.getPathIterator(), 1.5, 1.5, 3.5, 2.5, CrossingComputationType.AUTO_CLOSE));
+		assertEquals(0, Path3afp.computeCrossingsFromRect(0, this.shape.getPathIterator(), 7, 3, 9, 4, CrossingComputationType.AUTO_CLOSE));
+		assertEquals(0, Path3afp.computeCrossingsFromRect(0, this.shape.getPathIterator(), -4, -0.5, -2, 0.5, CrossingComputationType.AUTO_CLOSE));
 	}
 
 	@Test
 	public void staticComputeCrossingsFromRect_simpleIntersectionWhenNotPolygon() {
-		assertEquals(0, Path2afp.computeCrossingsFromRect(0, this.shape.getPathIterator(), 1, -2, 3, -1, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
-		assertEquals(SHAPE_INTERSECTS, Path2afp.computeCrossingsFromRect(0, this.shape.getPathIterator(), 1.5, 1.5, 3.5, 2.5, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
-		assertEquals(0, Path2afp.computeCrossingsFromRect(0, this.shape.getPathIterator(), 7, 3, 9, 4, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
-		assertEquals(0, Path2afp.computeCrossingsFromRect(0, this.shape.getPathIterator(), -4, -0.5, -2, 0.5, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
+		assertEquals(0, Path3afp.computeCrossingsFromRect(0, this.shape.getPathIterator(), 1, -2, 3, -1, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
+		assertEquals(SHAPE_INTERSECTS, Path3afp.computeCrossingsFromRect(0, this.shape.getPathIterator(), 1.5, 1.5, 3.5, 2.5, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
+		assertEquals(0, Path3afp.computeCrossingsFromRect(0, this.shape.getPathIterator(), 7, 3, 9, 4, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
+		assertEquals(0, Path3afp.computeCrossingsFromRect(0, this.shape.getPathIterator(), -4, -0.5, -2, 0.5, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
 	}
 
 	@Test
 	public void staticComputeCrossingsFromRoundRect_null() {
-		assertEquals(-2, Path2afp.computeCrossingsFromRoundRect(0, this.shape.getPathIterator(), 1, -2, 3, -1, .2, .1, null));
-		assertEquals(SHAPE_INTERSECTS, Path2afp.computeCrossingsFromRoundRect(0, this.shape.getPathIterator(), 1.5, 1.5, 3.5, 2.5, .2, .1, null));
-		assertEquals(0, Path2afp.computeCrossingsFromRoundRect(0, this.shape.getPathIterator(), 7, 3, 9, 4, .2, .1, null));
-		assertEquals(-1, Path2afp.computeCrossingsFromRoundRect(0, this.shape.getPathIterator(), -4, -0.5, -2, 0.5, .1, .2, null));
+		assertEquals(-2, Path3afp.computeCrossingsFromRoundRect(0, this.shape.getPathIterator(), 1, -2, 3, -1, .2, .1, null));
+		assertEquals(SHAPE_INTERSECTS, Path3afp.computeCrossingsFromRoundRect(0, this.shape.getPathIterator(), 1.5, 1.5, 3.5, 2.5, .2, .1, null));
+		assertEquals(0, Path3afp.computeCrossingsFromRoundRect(0, this.shape.getPathIterator(), 7, 3, 9, 4, .2, .1, null));
+		assertEquals(-1, Path3afp.computeCrossingsFromRoundRect(0, this.shape.getPathIterator(), -4, -0.5, -2, 0.5, .1, .2, null));
 	}
 
 	@Test
 	public void staticComputeCrossingsFromRoundRect_standard() {
-		assertEquals(-2, Path2afp.computeCrossingsFromRoundRect(0, this.shape.getPathIterator(), 1, -2, 3, -1, .2, .1, CrossingComputationType.STANDARD));
-		assertEquals(SHAPE_INTERSECTS, Path2afp.computeCrossingsFromRoundRect(0, this.shape.getPathIterator(), 1.5, 1.5, 3.5, 2.5, .2, .1, CrossingComputationType.STANDARD));
-		assertEquals(0, Path2afp.computeCrossingsFromRoundRect(0, this.shape.getPathIterator(), 7, 3, 9, 4, .2, .1, CrossingComputationType.STANDARD));
-		assertEquals(-1, Path2afp.computeCrossingsFromRoundRect(0, this.shape.getPathIterator(), -4, -0.5, -2, 0.5, .2, .1, CrossingComputationType.STANDARD));
+		assertEquals(-2, Path3afp.computeCrossingsFromRoundRect(0, this.shape.getPathIterator(), 1, -2, 3, -1, .2, .1, CrossingComputationType.STANDARD));
+		assertEquals(SHAPE_INTERSECTS, Path3afp.computeCrossingsFromRoundRect(0, this.shape.getPathIterator(), 1.5, 1.5, 3.5, 2.5, .2, .1, CrossingComputationType.STANDARD));
+		assertEquals(0, Path3afp.computeCrossingsFromRoundRect(0, this.shape.getPathIterator(), 7, 3, 9, 4, .2, .1, CrossingComputationType.STANDARD));
+		assertEquals(-1, Path3afp.computeCrossingsFromRoundRect(0, this.shape.getPathIterator(), -4, -0.5, -2, 0.5, .2, .1, CrossingComputationType.STANDARD));
 	}
 
 	@Test
 	public void staticComputeCrossingsFromRoundRect_autoClose() {
-		assertEquals(SHAPE_INTERSECTS, Path2afp.computeCrossingsFromRoundRect(0, this.shape.getPathIterator(), 1, -2, 3, -1, .2, .1, CrossingComputationType.AUTO_CLOSE));
-		assertEquals(SHAPE_INTERSECTS, Path2afp.computeCrossingsFromRoundRect(0, this.shape.getPathIterator(), 1.5, 1.5, 3.5, 2.5, .2, .1, CrossingComputationType.AUTO_CLOSE));
-		assertEquals(0, Path2afp.computeCrossingsFromRoundRect(0, this.shape.getPathIterator(), 7, 3, 9, 4, .2, .1, CrossingComputationType.AUTO_CLOSE));
-		assertEquals(0, Path2afp.computeCrossingsFromRoundRect(0, this.shape.getPathIterator(), -4, -0.5, -2, 0.5, .2, .1, CrossingComputationType.AUTO_CLOSE));
+		assertEquals(SHAPE_INTERSECTS, Path3afp.computeCrossingsFromRoundRect(0, this.shape.getPathIterator(), 1, -2, 3, -1, .2, .1, CrossingComputationType.AUTO_CLOSE));
+		assertEquals(SHAPE_INTERSECTS, Path3afp.computeCrossingsFromRoundRect(0, this.shape.getPathIterator(), 1.5, 1.5, 3.5, 2.5, .2, .1, CrossingComputationType.AUTO_CLOSE));
+		assertEquals(0, Path3afp.computeCrossingsFromRoundRect(0, this.shape.getPathIterator(), 7, 3, 9, 4, .2, .1, CrossingComputationType.AUTO_CLOSE));
+		assertEquals(0, Path3afp.computeCrossingsFromRoundRect(0, this.shape.getPathIterator(), -4, -0.5, -2, 0.5, .2, .1, CrossingComputationType.AUTO_CLOSE));
 	}
 
 	@Test
 	public void staticComputeCrossingsFromRoundRect_simpleIntersectionWhenNotPolygon() {
-		assertEquals(0, Path2afp.computeCrossingsFromRoundRect(0, this.shape.getPathIterator(), 1, -2, 3, -1, .2, .1, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
-		assertEquals(SHAPE_INTERSECTS, Path2afp.computeCrossingsFromRoundRect(0, this.shape.getPathIterator(), 1.5, 1.5, 3.5, 2.5, .2, .1, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
-		assertEquals(0, Path2afp.computeCrossingsFromRoundRect(0, this.shape.getPathIterator(), 7, 3, 9, 4, .2, .1, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
-		assertEquals(0, Path2afp.computeCrossingsFromRoundRect(0, this.shape.getPathIterator(), -4, -0.5, -2, 0.5, .2, .1, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
+		assertEquals(0, Path3afp.computeCrossingsFromRoundRect(0, this.shape.getPathIterator(), 1, -2, 3, -1, .2, .1, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
+		assertEquals(SHAPE_INTERSECTS, Path3afp.computeCrossingsFromRoundRect(0, this.shape.getPathIterator(), 1.5, 1.5, 3.5, 2.5, .2, .1, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
+		assertEquals(0, Path3afp.computeCrossingsFromRoundRect(0, this.shape.getPathIterator(), 7, 3, 9, 4, .2, .1, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
+		assertEquals(0, Path3afp.computeCrossingsFromRoundRect(0, this.shape.getPathIterator(), -4, -0.5, -2, 0.5, .2, .1, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
 	}
 
 	@Test
 	public void staticComputeCrossingsFromSegment_null() {
-		assertEquals(-2, Path2afp.computeCrossingsFromSegment(0, this.shape.getPathIterator(), 1, -1, 2, -3, null));
-		assertEquals(-1, Path2afp.computeCrossingsFromSegment(0, this.shape.getPathIterator(), 1, -6, 2, -3, null));
-		assertEquals(-2, Path2afp.computeCrossingsFromSegment(0, this.shape.getPathIterator(), 4, 0, 2, -3, null));
-		assertEquals(SHAPE_INTERSECTS, Path2afp.computeCrossingsFromSegment(0, this.shape.getPathIterator(), 4, 0, 5, 3, null));
+		assertEquals(-2, Path3afp.computeCrossingsFromSegment(0, this.shape.getPathIterator(), 1, -1, 2, -3, null));
+		assertEquals(-1, Path3afp.computeCrossingsFromSegment(0, this.shape.getPathIterator(), 1, -6, 2, -3, null));
+		assertEquals(-2, Path3afp.computeCrossingsFromSegment(0, this.shape.getPathIterator(), 4, 0, 2, -3, null));
+		assertEquals(SHAPE_INTERSECTS, Path3afp.computeCrossingsFromSegment(0, this.shape.getPathIterator(), 4, 0, 5, 3, null));
 	}
 
 	@Test
 	public void staticComputeCrossingsFromSegment_standard() {
-		assertEquals(-2, Path2afp.computeCrossingsFromSegment(0, this.shape.getPathIterator(), 1, -1, 2, -3, CrossingComputationType.STANDARD));
-		assertEquals(-1, Path2afp.computeCrossingsFromSegment(0, this.shape.getPathIterator(), 1, -6, 2, -3, CrossingComputationType.STANDARD));
-		assertEquals(-2, Path2afp.computeCrossingsFromSegment(0, this.shape.getPathIterator(), 4, 0, 2, -3, CrossingComputationType.STANDARD));
-		assertEquals(SHAPE_INTERSECTS, Path2afp.computeCrossingsFromSegment(0, this.shape.getPathIterator(), 4, 0, 5, 3, CrossingComputationType.STANDARD));
+		assertEquals(-2, Path3afp.computeCrossingsFromSegment(0, this.shape.getPathIterator(), 1, -1, 2, -3, CrossingComputationType.STANDARD));
+		assertEquals(-1, Path3afp.computeCrossingsFromSegment(0, this.shape.getPathIterator(), 1, -6, 2, -3, CrossingComputationType.STANDARD));
+		assertEquals(-2, Path3afp.computeCrossingsFromSegment(0, this.shape.getPathIterator(), 4, 0, 2, -3, CrossingComputationType.STANDARD));
+		assertEquals(SHAPE_INTERSECTS, Path3afp.computeCrossingsFromSegment(0, this.shape.getPathIterator(), 4, 0, 5, 3, CrossingComputationType.STANDARD));
 	}
 
 	@Test
 	public void staticComputeCrossingsFromSegment_autoClose() {
-		assertEquals(0, Path2afp.computeCrossingsFromSegment(0, this.shape.getPathIterator(), 1, -1, 2, -3, CrossingComputationType.AUTO_CLOSE));
-		assertEquals(0, Path2afp.computeCrossingsFromSegment(0, this.shape.getPathIterator(), 1, -6, 2, -3, CrossingComputationType.AUTO_CLOSE));
-		assertEquals(SHAPE_INTERSECTS, Path2afp.computeCrossingsFromSegment(0, this.shape.getPathIterator(), 4, 0, 2, -3, CrossingComputationType.AUTO_CLOSE));
-		assertEquals(SHAPE_INTERSECTS, Path2afp.computeCrossingsFromSegment(0, this.shape.getPathIterator(), 4, 0, 5, 3, CrossingComputationType.AUTO_CLOSE));
+		assertEquals(0, Path3afp.computeCrossingsFromSegment(0, this.shape.getPathIterator(), 1, -1, 2, -3, CrossingComputationType.AUTO_CLOSE));
+		assertEquals(0, Path3afp.computeCrossingsFromSegment(0, this.shape.getPathIterator(), 1, -6, 2, -3, CrossingComputationType.AUTO_CLOSE));
+		assertEquals(SHAPE_INTERSECTS, Path3afp.computeCrossingsFromSegment(0, this.shape.getPathIterator(), 4, 0, 2, -3, CrossingComputationType.AUTO_CLOSE));
+		assertEquals(SHAPE_INTERSECTS, Path3afp.computeCrossingsFromSegment(0, this.shape.getPathIterator(), 4, 0, 5, 3, CrossingComputationType.AUTO_CLOSE));
 	}
 
 	@Test
 	public void staticComputeCrossingsFromSegment_simpleIntersectionWhenNotPolygon() {
-		assertEquals(0, Path2afp.computeCrossingsFromSegment(0, this.shape.getPathIterator(), 1, -1, 2, -3, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
-		assertEquals(0, Path2afp.computeCrossingsFromSegment(0, this.shape.getPathIterator(), 1, -6, 2, -3, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
-		assertEquals(0, Path2afp.computeCrossingsFromSegment(0, this.shape.getPathIterator(), 4, 0, 2, -3, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
-		assertEquals(SHAPE_INTERSECTS, Path2afp.computeCrossingsFromSegment(0, this.shape.getPathIterator(), 4, 0, 5, 3, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
+		assertEquals(0, Path3afp.computeCrossingsFromSegment(0, this.shape.getPathIterator(), 1, -1, 2, -3, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
+		assertEquals(0, Path3afp.computeCrossingsFromSegment(0, this.shape.getPathIterator(), 1, -6, 2, -3, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
+		assertEquals(0, Path3afp.computeCrossingsFromSegment(0, this.shape.getPathIterator(), 4, 0, 2, -3, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
+		assertEquals(SHAPE_INTERSECTS, Path3afp.computeCrossingsFromSegment(0, this.shape.getPathIterator(), 4, 0, 5, 3, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
 	}
 
 	@Test
 	public void staticComputeCrossingsFromTriangle_null() {
-		assertEquals(-2, Path2afp.computeCrossingsFromTriangle(0, this.shape.getPathIterator(),
+		assertEquals(-2, Path3afp.computeCrossingsFromTriangle(0, this.shape.getPathIterator(),
 				1, -1, 4, 0, 2, .5, null));
-		assertEquals(0, Path2afp.computeCrossingsFromTriangle(0, this.shape.getPathIterator(),
+		assertEquals(0, Path3afp.computeCrossingsFromTriangle(0, this.shape.getPathIterator(),
 				9, 1, 12, 2, 10, 1.5, null));
-		assertEquals(SHAPE_INTERSECTS, Path2afp.computeCrossingsFromTriangle(0, this.shape.getPathIterator(),
+		assertEquals(SHAPE_INTERSECTS, Path3afp.computeCrossingsFromTriangle(0, this.shape.getPathIterator(),
 				5, 0, 8, 1, 6, .5, null));
-		assertEquals(-2, Path2afp.computeCrossingsFromTriangle(0, this.shape.getPathIterator(),
+		assertEquals(-2, Path3afp.computeCrossingsFromTriangle(0, this.shape.getPathIterator(),
 				-1, -4, 2, -3, 0, -2.5, null));
-		assertEquals(-1, Path2afp.computeCrossingsFromTriangle(0, this.shape.getPathIterator(),
+		assertEquals(-1, Path3afp.computeCrossingsFromTriangle(0, this.shape.getPathIterator(),
 				3, -6, 6, -5, 4, -4.5, null));
 	}
 
 	@Test
 	public void staticComputeCrossingsFromTriangle_standard() {
-		assertEquals(-2, Path2afp.computeCrossingsFromTriangle(0, this.shape.getPathIterator(),
+		assertEquals(-2, Path3afp.computeCrossingsFromTriangle(0, this.shape.getPathIterator(),
 				1, -1, 4, 0, 2, .5, CrossingComputationType.STANDARD));
-		assertEquals(0, Path2afp.computeCrossingsFromTriangle(0, this.shape.getPathIterator(),
+		assertEquals(0, Path3afp.computeCrossingsFromTriangle(0, this.shape.getPathIterator(),
 				9, 1, 12, 2, 10, 1.5, CrossingComputationType.STANDARD));
-		assertEquals(SHAPE_INTERSECTS, Path2afp.computeCrossingsFromTriangle(0, this.shape.getPathIterator(),
+		assertEquals(SHAPE_INTERSECTS, Path3afp.computeCrossingsFromTriangle(0, this.shape.getPathIterator(),
 				5, 0, 8, 1, 6, .5, CrossingComputationType.STANDARD));
-		assertEquals(-2, Path2afp.computeCrossingsFromTriangle(0, this.shape.getPathIterator(),
+		assertEquals(-2, Path3afp.computeCrossingsFromTriangle(0, this.shape.getPathIterator(),
 				-1, -4, 2, -3, 0, -2.5, CrossingComputationType.STANDARD));
-		assertEquals(-1, Path2afp.computeCrossingsFromTriangle(0, this.shape.getPathIterator(),
+		assertEquals(-1, Path3afp.computeCrossingsFromTriangle(0, this.shape.getPathIterator(),
 				3, -6, 6, -5, 4, -4.5, CrossingComputationType.STANDARD));
 	}
 
 	@Test
 	public void staticComputeCrossingsFromTriangle_autoClose() {
-		assertEquals(SHAPE_INTERSECTS, Path2afp.computeCrossingsFromTriangle(0, this.shape.getPathIterator(),
+		assertEquals(SHAPE_INTERSECTS, Path3afp.computeCrossingsFromTriangle(0, this.shape.getPathIterator(),
 				1, -1, 4, 0, 2, .5, CrossingComputationType.AUTO_CLOSE));
-		assertEquals(0, Path2afp.computeCrossingsFromTriangle(0, this.shape.getPathIterator(),
+		assertEquals(0, Path3afp.computeCrossingsFromTriangle(0, this.shape.getPathIterator(),
 				9, 1, 12, 2, 10, 1.5, CrossingComputationType.AUTO_CLOSE));
-		assertEquals(SHAPE_INTERSECTS, Path2afp.computeCrossingsFromTriangle(0, this.shape.getPathIterator(),
+		assertEquals(SHAPE_INTERSECTS, Path3afp.computeCrossingsFromTriangle(0, this.shape.getPathIterator(),
 				5, 0, 8, 1, 6, .5, CrossingComputationType.AUTO_CLOSE));
-		assertEquals(0, Path2afp.computeCrossingsFromTriangle(0, this.shape.getPathIterator(),
+		assertEquals(0, Path3afp.computeCrossingsFromTriangle(0, this.shape.getPathIterator(),
 				-1, -4, 2, -3, 0, -2.5, CrossingComputationType.AUTO_CLOSE));
-		assertEquals(0, Path2afp.computeCrossingsFromTriangle(0, this.shape.getPathIterator(),
+		assertEquals(0, Path3afp.computeCrossingsFromTriangle(0, this.shape.getPathIterator(),
 				3, -6, 6, -5, 4, -4.5, CrossingComputationType.AUTO_CLOSE));
 	}
 
 	@Test
 	public void staticComputeCrossingsFromTriangle_simpleIntersectionWhenNotPolygo() {
-		assertEquals(0, Path2afp.computeCrossingsFromTriangle(0, this.shape.getPathIterator(),
+		assertEquals(0, Path3afp.computeCrossingsFromTriangle(0, this.shape.getPathIterator(),
 				1, -1, 4, 0, 2, .5, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
-		assertEquals(0, Path2afp.computeCrossingsFromTriangle(0, this.shape.getPathIterator(),
+		assertEquals(0, Path3afp.computeCrossingsFromTriangle(0, this.shape.getPathIterator(),
 				9, 1, 12, 2, 10, 1.5, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
-		assertEquals(SHAPE_INTERSECTS, Path2afp.computeCrossingsFromTriangle(0, this.shape.getPathIterator(),
+		assertEquals(SHAPE_INTERSECTS, Path3afp.computeCrossingsFromTriangle(0, this.shape.getPathIterator(),
 				5, 0, 8, 1, 6, .5, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
-		assertEquals(0, Path2afp.computeCrossingsFromTriangle(0, this.shape.getPathIterator(),
+		assertEquals(0, Path3afp.computeCrossingsFromTriangle(0, this.shape.getPathIterator(),
 				-1, -4, 2, -3, 0, -2.5, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
-		assertEquals(0, Path2afp.computeCrossingsFromTriangle(0, this.shape.getPathIterator(),
+		assertEquals(0, Path3afp.computeCrossingsFromTriangle(0, this.shape.getPathIterator(),
 				3, -6, 6, -5, 4, -4.5, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
 	}
 
 	@Test
 	public void staticComputeControlPointBoundingBox() {
 		B box = createRectangle(0, 0, 0, 0);
-		Path2afp.computeControlPointBoundingBox(this.shape.getPathIterator(), box);
+		Path3afp.computeControlPointBoundingBox(this.shape.getPathIterator(), box);
 		assertEpsilonEquals(0, box.getMinX());
 		assertEpsilonEquals(-5, box.getMinY());
 		assertEpsilonEquals(7, box.getMaxX());
@@ -397,7 +392,7 @@ extends AbstractShape3afpTest<T, B> {
 	@Test
 	public void staticComputeDrawableElementBoundingBox() {
 		B box = createRectangle(0, 0, 0, 0);
-		Path2afp.computeDrawableElementBoundingBox(this.shape.getPathIterator(), box);
+		Path3afp.computeDrawableElementBoundingBox(this.shape.getPathIterator(), box);
 		assertEpsilonEquals(0, box.getMinX());
 		assertEpsilonEquals(-5, box.getMinY());
 		assertEpsilonEquals(7, box.getMaxX());
@@ -406,59 +401,59 @@ extends AbstractShape3afpTest<T, B> {
 
 	@Test
 	public void staticContainsPoint() {
-		assertFalse(Path2afp.containsPoint(this.shape.getPathIterator(), -5, 1));
-		assertFalse(Path2afp.containsPoint(this.shape.getPathIterator(), 3, 6));
-		assertFalse(Path2afp.containsPoint(this.shape.getPathIterator(), 3, -10));
-		assertFalse(Path2afp.containsPoint(this.shape.getPathIterator(), 11, 1));
-		assertFalse(Path2afp.containsPoint(this.shape.getPathIterator(), 4, 1));
-		assertTrue(Path2afp.containsPoint(this.shape.getPathIterator(), 4, 3));
+		assertFalse(Path3afp.containsPoint(this.shape.getPathIterator(), -5, 1));
+		assertFalse(Path3afp.containsPoint(this.shape.getPathIterator(), 3, 6));
+		assertFalse(Path3afp.containsPoint(this.shape.getPathIterator(), 3, -10));
+		assertFalse(Path3afp.containsPoint(this.shape.getPathIterator(), 11, 1));
+		assertFalse(Path3afp.containsPoint(this.shape.getPathIterator(), 4, 1));
+		assertTrue(Path3afp.containsPoint(this.shape.getPathIterator(), 4, 3));
 		this.shape.closePath();
-		assertFalse(Path2afp.containsPoint(this.shape.getPathIterator(), -5, 1));
-		assertFalse(Path2afp.containsPoint(this.shape.getPathIterator(), 3, 6));
-		assertFalse(Path2afp.containsPoint(this.shape.getPathIterator(), 3, -10));
-		assertFalse(Path2afp.containsPoint(this.shape.getPathIterator(), 11, 1));
-		assertTrue(Path2afp.containsPoint(this.shape.getPathIterator(), 4, 1));
-		assertTrue(Path2afp.containsPoint(this.shape.getPathIterator(), 4, 3));
+		assertFalse(Path3afp.containsPoint(this.shape.getPathIterator(), -5, 1));
+		assertFalse(Path3afp.containsPoint(this.shape.getPathIterator(), 3, 6));
+		assertFalse(Path3afp.containsPoint(this.shape.getPathIterator(), 3, -10));
+		assertFalse(Path3afp.containsPoint(this.shape.getPathIterator(), 11, 1));
+		assertTrue(Path3afp.containsPoint(this.shape.getPathIterator(), 4, 1));
+		assertTrue(Path3afp.containsPoint(this.shape.getPathIterator(), 4, 3));
 	}
 
 	@Test
 	public void staticContainsRectangle() {
-		assertFalse(Path2afp.containsRectangle(this.shape.getPathIterator(), -5, 1, 2, 1));
-		assertFalse(Path2afp.containsRectangle(this.shape.getPathIterator(), 3, 6, 2, 1));
-		assertFalse(Path2afp.containsRectangle(this.shape.getPathIterator(), 3, -10, 2, 1));
-		assertFalse(Path2afp.containsRectangle(this.shape.getPathIterator(), 11, 1, 2, 1));
-		assertFalse(Path2afp.containsRectangle(this.shape.getPathIterator(), 3, 1, 2, 1));
-		assertFalse(Path2afp.containsRectangle(this.shape.getPathIterator(), 4, 3, 2, 1));
+		assertFalse(Path3afp.containsRectangle(this.shape.getPathIterator(), -5, 1, 2, 1));
+		assertFalse(Path3afp.containsRectangle(this.shape.getPathIterator(), 3, 6, 2, 1));
+		assertFalse(Path3afp.containsRectangle(this.shape.getPathIterator(), 3, -10, 2, 1));
+		assertFalse(Path3afp.containsRectangle(this.shape.getPathIterator(), 11, 1, 2, 1));
+		assertFalse(Path3afp.containsRectangle(this.shape.getPathIterator(), 3, 1, 2, 1));
+		assertFalse(Path3afp.containsRectangle(this.shape.getPathIterator(), 4, 3, 2, 1));
 		this.shape.closePath();
-		assertFalse(Path2afp.containsRectangle(this.shape.getPathIterator(), -5, 1, 2, 1));
-		assertFalse(Path2afp.containsRectangle(this.shape.getPathIterator(), 3, 6, 2, 1));
-		assertFalse(Path2afp.containsRectangle(this.shape.getPathIterator(), 3, -10, 2, 1));
-		assertFalse(Path2afp.containsRectangle(this.shape.getPathIterator(), 11, 1, 2, 1));
-		assertTrue(Path2afp.containsRectangle(this.shape.getPathIterator(), 3, 0, 2, 1));
-		assertFalse(Path2afp.containsRectangle(this.shape.getPathIterator(), 4, 3, 2, 1));
+		assertFalse(Path3afp.containsRectangle(this.shape.getPathIterator(), -5, 1, 2, 1));
+		assertFalse(Path3afp.containsRectangle(this.shape.getPathIterator(), 3, 6, 2, 1));
+		assertFalse(Path3afp.containsRectangle(this.shape.getPathIterator(), 3, -10, 2, 1));
+		assertFalse(Path3afp.containsRectangle(this.shape.getPathIterator(), 11, 1, 2, 1));
+		assertTrue(Path3afp.containsRectangle(this.shape.getPathIterator(), 3, 0, 2, 1));
+		assertFalse(Path3afp.containsRectangle(this.shape.getPathIterator(), 4, 3, 2, 1));
 	}
 
 	@Test
 	public void staticGetClosestPointTo_open() {
-		Point2D result;
+		Point3D result;
 
 		result = createPoint(Double.NaN, Double.NaN);
-		Path2afp.getClosestPointTo(this.shape.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), -2, 1, result);
+		Path3afp.getClosestPointTo(this.shape.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), -2, 1, result);
 		assertEpsilonEquals(0, result.getX());
 		assertEpsilonEquals(0, result.getY());
 
 		result = createPoint(Double.NaN, Double.NaN);
-		Path2afp.getClosestPointTo(this.shape.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), 1, 0, result);
+		Path3afp.getClosestPointTo(this.shape.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), 1, 0, result);
 		assertEpsilonEquals(.5, result.getX());
 		assertEpsilonEquals(.5, result.getY());
 
 		result = createPoint(Double.NaN, Double.NaN);
-		Path2afp.getClosestPointTo(this.shape.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), 3, 0, result);
+		Path3afp.getClosestPointTo(this.shape.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), 3, 0, result);
 		assertEpsilonEquals(2.56307, result.getX());
 		assertEpsilonEquals(0.91027, result.getY());
 
 		result = createPoint(Double.NaN, Double.NaN);
-		Path2afp.getClosestPointTo(this.shape.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), 1, -4, result);
+		Path3afp.getClosestPointTo(this.shape.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), 1, -4, result);
 		assertEpsilonEquals(0, result.getX());
 		assertEpsilonEquals(0, result.getY());
 	}
@@ -467,50 +462,50 @@ extends AbstractShape3afpTest<T, B> {
 	public void staticGetClosestPointTo_close() {
 		this.shape.closePath();
 
-		Point2D result;
+		Point3D result;
 
 		result = createPoint(Double.NaN, Double.NaN);
-		Path2afp.getClosestPointTo(this.shape.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), -2, 1, result);
+		Path3afp.getClosestPointTo(this.shape.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), -2, 1, result);
 		assertEpsilonEquals(0, result.getX());
 		assertEpsilonEquals(0, result.getY());
 
 		result = createPoint(Double.NaN, Double.NaN);
-		Path2afp.getClosestPointTo(this.shape.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), 1, 0, result);
+		Path3afp.getClosestPointTo(this.shape.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), 1, 0, result);
 		assertEpsilonEquals(1, result.getX());
 		assertEpsilonEquals(0, result.getY());
 
 		result = createPoint(Double.NaN, Double.NaN);
-		Path2afp.getClosestPointTo(this.shape.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), 3, 0, result);
+		Path3afp.getClosestPointTo(this.shape.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), 3, 0, result);
 		assertEpsilonEquals(3, result.getX());
 		assertEpsilonEquals(0, result.getY());
 
 		result = createPoint(Double.NaN, Double.NaN);
-		Path2afp.getClosestPointTo(this.shape.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), 1, -4, result);
+		Path3afp.getClosestPointTo(this.shape.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), 1, -4, result);
 		assertEpsilonEquals(2.55405, result.getX());
 		assertEpsilonEquals(-1.82432, result.getY());
 	}
 
 	@Test
 	public void staticGetFarthestPointTo_open() {
-		Point2D result;
+		Point3D result;
 
 		result = createPoint(Double.NaN, Double.NaN);
-		Path2afp.getFarthestPointTo(this.shape.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), -2, 1, result);
+		Path3afp.getFarthestPointTo(this.shape.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), -2, 1, result);
 		assertEpsilonEquals(7, result.getX());
 		assertEpsilonEquals(-5, result.getY());
 
 		result = createPoint(Double.NaN, Double.NaN);
-		Path2afp.getFarthestPointTo(this.shape.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), 1, 0, result);
+		Path3afp.getFarthestPointTo(this.shape.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), 1, 0, result);
 		assertEpsilonEquals(7, result.getX());
 		assertEpsilonEquals(-5, result.getY());
 
 		result = createPoint(Double.NaN, Double.NaN);
-		Path2afp.getFarthestPointTo(this.shape.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), 3, 0, result);
+		Path3afp.getFarthestPointTo(this.shape.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), 3, 0, result);
 		assertEpsilonEquals(7, result.getX());
 		assertEpsilonEquals(-5, result.getY());
 
 		result = createPoint(Double.NaN, Double.NaN);
-		Path2afp.getFarthestPointTo(this.shape.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), 1, -4, result);
+		Path3afp.getFarthestPointTo(this.shape.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), 1, -4, result);
 		assertEpsilonEquals(4, result.getX());
 		assertEpsilonEquals(3, result.getY());
 	}
@@ -519,71 +514,71 @@ extends AbstractShape3afpTest<T, B> {
 	public void staticGetFarthestPointTo_close() {
 		this.shape.closePath();
 
-		Point2D result;
+		Point3D result;
 
 		result = createPoint(Double.NaN, Double.NaN);
-		Path2afp.getFarthestPointTo(this.shape.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), -2, 1, result);
+		Path3afp.getFarthestPointTo(this.shape.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), -2, 1, result);
 		assertEpsilonEquals(7, result.getX());
 		assertEpsilonEquals(-5, result.getY());
 
 		result = createPoint(Double.NaN, Double.NaN);
-		Path2afp.getFarthestPointTo(this.shape.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), 1, 0, result);
+		Path3afp.getFarthestPointTo(this.shape.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), 1, 0, result);
 		assertEpsilonEquals(7, result.getX());
 		assertEpsilonEquals(-5, result.getY());
 
 		result = createPoint(Double.NaN, Double.NaN);
-		Path2afp.getFarthestPointTo(this.shape.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), 3, 0, result);
+		Path3afp.getFarthestPointTo(this.shape.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), 3, 0, result);
 		assertEpsilonEquals(7, result.getX());
 		assertEpsilonEquals(-5, result.getY());
 
 		result = createPoint(Double.NaN, Double.NaN);
-		Path2afp.getFarthestPointTo(this.shape.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), 1, -4, result);
+		Path3afp.getFarthestPointTo(this.shape.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), 1, -4, result);
 		assertEpsilonEquals(4, result.getX());
 		assertEpsilonEquals(3, result.getY());
 	}
 
 	@Test
 	public void staticIntersectsPathIteratorRectangle_open() {
-		assertFalse(Path2afp.intersectsPathIteratorRectangle(this.shape.getPathIterator(), 1, -2, 2, 1));
-		assertTrue(Path2afp.intersectsPathIteratorRectangle(this.shape.getPathIterator(), 1.5, 1.5, 2, 1));
-		assertFalse(Path2afp.intersectsPathIteratorRectangle(this.shape.getPathIterator(), 7, 3, 2, 1));
-		assertFalse(Path2afp.intersectsPathIteratorRectangle(this.shape.getPathIterator(), -4, -0.5, 2, 1));
+		assertFalse(Path3afp.intersectsPathIteratorRectangle(this.shape.getPathIterator(), 1, -2, 2, 1));
+		assertTrue(Path3afp.intersectsPathIteratorRectangle(this.shape.getPathIterator(), 1.5, 1.5, 2, 1));
+		assertFalse(Path3afp.intersectsPathIteratorRectangle(this.shape.getPathIterator(), 7, 3, 2, 1));
+		assertFalse(Path3afp.intersectsPathIteratorRectangle(this.shape.getPathIterator(), -4, -0.5, 2, 1));
 	}
 
 	@Test
 	public void staticIntersectsPathIteratorRectangle_close() {
 		this.shape.closePath();
-		assertTrue(Path2afp.intersectsPathIteratorRectangle(this.shape.getPathIterator(), 1, -2, 2, 1));
-		assertTrue(Path2afp.intersectsPathIteratorRectangle(this.shape.getPathIterator(), 1.5, 1.5, 2, 1));
-		assertFalse(Path2afp.intersectsPathIteratorRectangle(this.shape.getPathIterator(), 7, 3, 2, 1));
-		assertFalse(Path2afp.intersectsPathIteratorRectangle(this.shape.getPathIterator(), -4, -0.5, 2, 1));
+		assertTrue(Path3afp.intersectsPathIteratorRectangle(this.shape.getPathIterator(), 1, -2, 2, 1));
+		assertTrue(Path3afp.intersectsPathIteratorRectangle(this.shape.getPathIterator(), 1.5, 1.5, 2, 1));
+		assertFalse(Path3afp.intersectsPathIteratorRectangle(this.shape.getPathIterator(), 7, 3, 2, 1));
+		assertFalse(Path3afp.intersectsPathIteratorRectangle(this.shape.getPathIterator(), -4, -0.5, 2, 1));
 	}
 
 	@Test
 	public void staticComputeLength_open() {
-		assertEpsilonEquals(14.71628, Path2afp.computeLength(this.shape.getPathIterator()));
+		assertEpsilonEquals(14.71628, Path3afp.computeLength(this.shape.getPathIterator()));
 	}
 
 	@Test
 	public void staticComputeLength_close() {
 		this.shape.closePath();
-		assertEpsilonEquals(23.31861, Path2afp.computeLength(this.shape.getPathIterator()));
+		assertEpsilonEquals(23.31861, Path3afp.computeLength(this.shape.getPathIterator()));
 	}
 
 	@Test
 	public void addIterator_open() {
-		Path2afp<?, ?, ?, ?, ?, B> p2 = createPath();
+		Path3afp<?, ?, ?, ?, ?, B> p2 = createPath();
 		p2.moveTo(7, -5);
 		p2.lineTo(4, 6);
 		p2.lineTo(0, 8);
 		p2.lineTo(5, -3);
 		p2.closePath();
 
-		Iterator<? extends PathElement2afp> iterator = p2.getPathIterator();
+		Iterator<? extends PathElement3afp> iterator = p2.getPathIterator();
 		iterator.next();
 		this.shape.add(iterator);
 
-		PathIterator2afp pi = this.shape.getPathIterator();
+		PathIterator3afp pi = this.shape.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
 		assertElement(pi, PathElementType.LINE_TO, 1, 1);
 		assertElement(pi, PathElementType.QUAD_TO, 3, 0, 4, 3);
@@ -597,20 +592,20 @@ extends AbstractShape3afpTest<T, B> {
 
 	@Test
 	public void addIterator_closeAfter() {
-		Path2afp<?, ?, ?, ?, ?, B> p2 = createPath();
+		Path3afp<?, ?, ?, ?, ?, B> p2 = createPath();
 		p2.moveTo(7, -5);
 		p2.lineTo(4, 6);
 		p2.lineTo(0, 8);
 		p2.lineTo(5, -3);
 		p2.closePath();
 
-		Iterator<? extends PathElement2afp> iterator = p2.getPathIterator();
+		Iterator<? extends PathElement3afp> iterator = p2.getPathIterator();
 		iterator.next();
 		this.shape.add(iterator);
 
 		this.shape.closePath();
 
-		PathIterator2afp pi = this.shape.getPathIterator();
+		PathIterator3afp pi = this.shape.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
 		assertElement(pi, PathElementType.LINE_TO, 1, 1);
 		assertElement(pi, PathElementType.QUAD_TO, 3, 0, 4, 3);
@@ -626,18 +621,18 @@ extends AbstractShape3afpTest<T, B> {
 	public void addIterator_closeBefore() {
 		this.shape.closePath();
 
-		Path2afp<?, ?, ?, ?, ?, B> p2 = createPath();
+		Path3afp<?, ?, ?, ?, ?, B> p2 = createPath();
 		p2.moveTo(7, -5);
 		p2.lineTo(4, 6);
 		p2.lineTo(0, 8);
 		p2.lineTo(5, -3);
 		p2.closePath();
 
-		Iterator<? extends PathElement2afp> iterator = p2.getPathIterator();
+		Iterator<? extends PathElement3afp> iterator = p2.getPathIterator();
 		iterator.next();
 		this.shape.add(iterator);
 
-		PathIterator2afp pi = this.shape.getPathIterator();
+		PathIterator3afp pi = this.shape.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
 		assertElement(pi, PathElementType.LINE_TO, 1, 1);
 		assertElement(pi, PathElementType.QUAD_TO, 3, 0, 4, 3);
@@ -652,14 +647,14 @@ extends AbstractShape3afpTest<T, B> {
 
 	@Test(expected = IllegalStateException.class)
 	public void curveToDoubleDoubleDoubleDoubleDoubleDouble_noMoveTo() {
-		Path2afp<?, ?, ?, ?, ?, ?> tmpShape = createPath();
+		Path3afp<?, ?, ?, ?, ?, ?> tmpShape = createPath();
 		tmpShape.curveTo(15, 145, 50, 20, 0, 0);
 	}
 	
 	@Test
 	public void curveToDoubleDoubleDoubleDoubleDoubleDouble() {
 		this.shape.curveTo(123.456, 456.789, 789.123, 159.753, 456.852, 963.789);
-		PathIterator2afp pi = this.shape.getPathIterator();
+		PathIterator3afp pi = this.shape.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
 		assertElement(pi, PathElementType.LINE_TO, 1, 1);
 		assertElement(pi, PathElementType.QUAD_TO, 3, 0, 4, 3);
@@ -669,15 +664,15 @@ extends AbstractShape3afpTest<T, B> {
 	}
 	
 	@Test(expected = IllegalStateException.class)
-	public void curveToPoint2DPoint2DPoint2D_noMoveTo() {
-		Path2afp<?, ?, ?, ?, ?, ?> tmpShape = createPath();
+	public void curveToPoint3DPoint3DPoint3D_noMoveTo() {
+		Path3afp<?, ?, ?, ?, ?, ?> tmpShape = createPath();
 		tmpShape.curveTo(createPoint(15, 145), createPoint(50, 20), createPoint(0, 0));
 	}
 
 	@Test
-	public void curveToPoint2DPoint2DPoint2D() {
+	public void curveToPoint3DPoint3DPoint3D() {
 		this.shape.curveTo(createPoint(123.456, 456.789), createPoint(789.123, 159.753), createPoint(456.852, 963.789));
-		PathIterator2afp pi = this.shape.getPathIterator();
+		PathIterator3afp pi = this.shape.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
 		assertElement(pi, PathElementType.LINE_TO, 1, 1);
 		assertElement(pi, PathElementType.QUAD_TO, 3, 0, 4, 3);
@@ -693,10 +688,10 @@ extends AbstractShape3afpTest<T, B> {
 //		System.out.println("Filename: " + filename);
 //	}
 
-	@Test
+/*	@Test
 	public void arcToDoubleDoubleDoubleDoubleDoubleDoubleArcType_01_arcOnly() {
 		this.shape.arcTo(5, 5, 20, 10, 0, 1, ArcType.ARC_ONLY);
-		PathIterator2afp pi = this.shape.getPathIterator();
+		PathIterator3afp pi = this.shape.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
 		assertElement(pi, PathElementType.LINE_TO, 1, 1);
 		assertElement(pi, PathElementType.QUAD_TO, 3, 0, 4, 3);
@@ -708,7 +703,7 @@ extends AbstractShape3afpTest<T, B> {
 	@Test
 	public void arcToDoubleDoubleDoubleDoubleDoubleDoubleArcType_01_lineTo() {
 		this.shape.arcTo(5, 5, 20, 10, 0, 1, ArcType.LINE_THEN_ARC);
-		PathIterator2afp pi = this.shape.getPathIterator();
+		PathIterator3afp pi = this.shape.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
 		assertElement(pi, PathElementType.LINE_TO, 1, 1);
 		assertElement(pi, PathElementType.QUAD_TO, 3, 0, 4, 3);
@@ -720,7 +715,7 @@ extends AbstractShape3afpTest<T, B> {
 	@Test
 	public void arcToDoubleDoubleDoubleDoubleDoubleDoubleArcType_01_moveTo() {
 		this.shape.arcTo(5, 5, 20, 10, 0, 1, ArcType.MOVE_THEN_ARC);
-		PathIterator2afp pi = this.shape.getPathIterator();
+		PathIterator3afp pi = this.shape.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
 		assertElement(pi, PathElementType.LINE_TO, 1, 1);
 		assertElement(pi, PathElementType.QUAD_TO, 3, 0, 4, 3);
@@ -732,7 +727,7 @@ extends AbstractShape3afpTest<T, B> {
 	@Test
 	public void arcToDoubleDoubleDoubleDoubleDoubleDoubleArcType_0251_arcOnly() {
 		this.shape.arcTo(5, 5, 20, 10, .25, 1, ArcType.ARC_ONLY);
-		PathIterator2afp pi = this.shape.getPathIterator();
+		PathIterator3afp pi = this.shape.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
 		assertElement(pi, PathElementType.LINE_TO, 1, 1);
 		assertElement(pi, PathElementType.QUAD_TO, 3, 0, 4, 3);
@@ -744,7 +739,7 @@ extends AbstractShape3afpTest<T, B> {
 	@Test
 	public void arcToDoubleDoubleDoubleDoubleDoubleDoubleArcType_0251_lineTo() {
 		this.shape.arcTo(5, 5, 20, 10, .25, 1, ArcType.LINE_THEN_ARC);
-		PathIterator2afp pi = this.shape.getPathIterator();
+		PathIterator3afp pi = this.shape.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
 		assertElement(pi, PathElementType.LINE_TO, 1, 1);
 		assertElement(pi, PathElementType.QUAD_TO, 3, 0, 4, 3);
@@ -757,7 +752,7 @@ extends AbstractShape3afpTest<T, B> {
 	@Test
 	public void arcToDoubleDoubleDoubleDoubleDoubleDoubleArcType_0251_moveTo() {
 		this.shape.arcTo(5, 5, 20, 10, .25, 1, ArcType.MOVE_THEN_ARC);
-		PathIterator2afp pi = this.shape.getPathIterator();
+		PathIterator3afp pi = this.shape.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
 		assertElement(pi, PathElementType.LINE_TO, 1, 1);
 		assertElement(pi, PathElementType.QUAD_TO, 3, 0, 4, 3);
@@ -768,9 +763,9 @@ extends AbstractShape3afpTest<T, B> {
 	}
 
 	@Test
-	public void arcToPoint2DPoint2DDoubleDoubleArcType_01_arcOnly() {
+	public void arcToPoint3DPoint3DDoubleDoubleArcType_01_arcOnly() {
 		this.shape.arcTo(createPoint(5, 5), createPoint(20, 10), 0, 1, ArcType.ARC_ONLY);
-		PathIterator2afp pi = this.shape.getPathIterator();
+		PathIterator3afp pi = this.shape.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
 		assertElement(pi, PathElementType.LINE_TO, 1, 1);
 		assertElement(pi, PathElementType.QUAD_TO, 3, 0, 4, 3);
@@ -782,7 +777,7 @@ extends AbstractShape3afpTest<T, B> {
 	@Test
 	public void arcToDoubleDoubleDoubleDouble() {
 		this.shape.arcTo(5, 5, 20, 10);
-		PathIterator2afp pi = this.shape.getPathIterator();
+		PathIterator3afp pi = this.shape.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
 		assertElement(pi, PathElementType.LINE_TO, 1, 1);
 		assertElement(pi, PathElementType.QUAD_TO, 3, 0, 4, 3);
@@ -792,16 +787,16 @@ extends AbstractShape3afpTest<T, B> {
 	}
 
 	@Test
-	public void arcToPoint2DPoint2D() {
+	public void arcToPoint3DPoint3D() {
 		this.shape.arcTo(createPoint(5, 5), createPoint(20, 10));
-		PathIterator2afp pi = this.shape.getPathIterator();
+		PathIterator3afp pi = this.shape.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
 		assertElement(pi, PathElementType.LINE_TO, 1, 1);
 		assertElement(pi, PathElementType.QUAD_TO, 3, 0, 4, 3);
 		assertElement(pi, PathElementType.CURVE_TO, 5, -1, 6, 5, 7, -5);
 		assertElement(pi, PathElementType.CURVE_TO, 5.89543, 0.52285, 11.71573, 7.23858, 20, 10);
 		assertNoElement(pi);
-	}
+	}*/
 
 	@Test
 	public void getCoordAt() {
@@ -823,7 +818,7 @@ extends AbstractShape3afpTest<T, B> {
 
 	@Test
 	public void getPathIteratorDouble_open() {
-		PathIterator2afp pi = this.shape.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO);
+		PathIterator3afp pi = this.shape.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO);
 		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
 		assertElement(pi, PathElementType.LINE_TO, 1, 1);
 		assertElement(pi, PathElementType.LINE_TO, 1.484375, 0.8125);
@@ -928,7 +923,7 @@ extends AbstractShape3afpTest<T, B> {
 	@Test
 	public void getPathIteratorDouble_close() {
 		this.shape.closePath();
-		PathIterator2afp pi = this.shape.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO);
+		PathIterator3afp pi = this.shape.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO);
 		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
 		assertElement(pi, PathElementType.LINE_TO, 1, 1);
 		assertElement(pi, PathElementType.LINE_TO, 1.484375, 0.8125);
@@ -1032,8 +1027,8 @@ extends AbstractShape3afpTest<T, B> {
 	}
 
 	@Test
-	public void getPathIteratorTransform2DDouble_null() {
-		PathIterator2afp pi = this.shape.getPathIterator(null, MathConstants.SPLINE_APPROXIMATION_RATIO);
+	public void getPathIteratorTransform3DDouble_null() {
+		PathIterator3afp pi = this.shape.getPathIterator(null, MathConstants.SPLINE_APPROXIMATION_RATIO);
 		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
 		assertElement(pi, PathElementType.LINE_TO, 1, 1);
 		assertElement(pi, PathElementType.LINE_TO, 1.484375, 0.8125);
@@ -1136,8 +1131,8 @@ extends AbstractShape3afpTest<T, B> {
 	}
 
 	@Test
-	public void getPathIteratorTransform2DDouble_identity() {
-		PathIterator2afp pi = this.shape.getPathIterator(new Transform2D(), MathConstants.SPLINE_APPROXIMATION_RATIO);
+	public void getPathIteratorTransform3DDouble_identity() {
+		PathIterator3afp pi = this.shape.getPathIterator(new Transform3D(), MathConstants.SPLINE_APPROXIMATION_RATIO);
 		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
 		assertElement(pi, PathElementType.LINE_TO, 1, 1);
 		assertElement(pi, PathElementType.LINE_TO, 1.484375, 0.8125);
@@ -1240,10 +1235,10 @@ extends AbstractShape3afpTest<T, B> {
 	}
 
 	@Test
-	public void getPathIteratorTransform2DDouble_translation() {
-		Transform2D transform = new Transform2D();
+	public void getPathIteratorTransform3DDouble_translation() {
+		Transform3D transform = new Transform3D();
 		transform.setTranslation(10, 10);
-		PathIterator2afp pi = this.shape.getPathIterator(transform, MathConstants.SPLINE_APPROXIMATION_RATIO);
+		PathIterator3afp pi = this.shape.getPathIterator(transform, MathConstants.SPLINE_APPROXIMATION_RATIO);
 		assertElement(pi, PathElementType.MOVE_TO, 10, 10);
 		assertElement(pi, PathElementType.LINE_TO, 11, 11);
 		assertElement(pi, PathElementType.LINE_TO, 11.484375, 10.8125);
@@ -1357,14 +1352,14 @@ extends AbstractShape3afpTest<T, B> {
 
 	@Test(expected = IllegalStateException.class)
 	public void lineToIntInt_noMoveTo() {
-		Path2afp<?, ?, ?, ?, ?, ?> tmpShape = createPath();
+		Path3afp<?, ?, ?, ?, ?, ?> tmpShape = createPath();
 		tmpShape.lineTo(15, 145);
 	}
 
 	@Test
 	public void lineToDoubleDouble() {
 		this.shape.lineTo(123.456, 456.789);
-		PathIterator2afp pi = this.shape.getPathIterator();
+		PathIterator3afp pi = this.shape.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
 		assertElement(pi, PathElementType.LINE_TO, 1, 1);
 		assertElement(pi, PathElementType.QUAD_TO, 3, 0, 4, 3);
@@ -1374,15 +1369,15 @@ extends AbstractShape3afpTest<T, B> {
 	}
 
 	@Test(expected = IllegalStateException.class)
-	public void lineToPoint2D_noMoveTo() {
-		Path2afp<?, ?, ?, ?, ?, ?> tmpShape = createPath();
+	public void lineToPoint3D_noMoveTo() {
+		Path3afp<?, ?, ?, ?, ?, ?> tmpShape = createPath();
 		tmpShape.lineTo(createPoint(15, 145));
 	}
 
 	@Test
-	public void lineToPoint2D() {
+	public void lineToPoint3D() {
 		this.shape.lineTo(createPoint(123.456, 456.789));
-		PathIterator2afp pi = this.shape.getPathIterator();
+		PathIterator3afp pi = this.shape.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
 		assertElement(pi, PathElementType.LINE_TO, 1, 1);
 		assertElement(pi, PathElementType.QUAD_TO, 3, 0, 4, 3);
@@ -1394,7 +1389,7 @@ extends AbstractShape3afpTest<T, B> {
 	@Test
 	public void moveToDoubleDouble() {
 		this.shape.moveTo(123.456, 456.789);
-		PathIterator2afp pi = this.shape.getPathIterator();
+		PathIterator3afp pi = this.shape.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
 		assertElement(pi, PathElementType.LINE_TO, 1, 1);
 		assertElement(pi, PathElementType.QUAD_TO, 3, 0, 4, 3);
@@ -1404,9 +1399,9 @@ extends AbstractShape3afpTest<T, B> {
 	}
 
 	@Test
-	public void moveToPoint2D() {
+	public void moveToPoint3D() {
 		this.shape.moveTo(createPoint(123.456, 456.789));
-		PathIterator2afp pi = this.shape.getPathIterator();
+		PathIterator3afp pi = this.shape.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
 		assertElement(pi, PathElementType.LINE_TO, 1, 1);
 		assertElement(pi, PathElementType.QUAD_TO, 3, 0, 4, 3);
@@ -1417,14 +1412,14 @@ extends AbstractShape3afpTest<T, B> {
 
 	@Test(expected = IllegalStateException.class)
 	public void quadToIntIntIntInt_noMoveTo() {
-		Path2afp<?, ?, ?, ?, ?, ?> tmpShape = createPath();
+		Path3afp<?, ?, ?, ?, ?, ?> tmpShape = createPath();
 		tmpShape.quadTo(15, 145, 50, 20);
 	}
 
 	@Test
 	public void quadToDoubleDoubleDoubleDouble() {
 		this.shape.quadTo(123.456, 456.789, 789.123, 159.753);
-		PathIterator2afp pi = this.shape.getPathIterator();
+		PathIterator3afp pi = this.shape.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
 		assertElement(pi, PathElementType.LINE_TO, 1, 1);
 		assertElement(pi, PathElementType.QUAD_TO, 3, 0, 4, 3);
@@ -1434,15 +1429,15 @@ extends AbstractShape3afpTest<T, B> {
 	}
 	
 	@Test(expected = IllegalStateException.class)
-	public void quadToPoint2DPoint2D_noMoveTo() {
-		Path2afp<?, ?, ?, ?, ?, ?> tmpShape = createPath();
+	public void quadToPoint3DPoint3D_noMoveTo() {
+		Path3afp<?, ?, ?, ?, ?, ?> tmpShape = createPath();
 		tmpShape.quadTo(createPoint(15, 145), createPoint(50, 20));
 	}
 
 	@Test
-	public void quadToPoint2DPoint2D() {
+	public void quadToPoint3DPoint3D() {
 		this.shape.quadTo(createPoint(123.456, 456.789), createPoint(789.123, 159.753));
-		PathIterator2afp pi = this.shape.getPathIterator();
+		PathIterator3afp pi = this.shape.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
 		assertElement(pi, PathElementType.LINE_TO, 1, 1);
 		assertElement(pi, PathElementType.QUAD_TO, 3, 0, 4, 3);
@@ -1465,7 +1460,7 @@ extends AbstractShape3afpTest<T, B> {
 		assertTrue(this.shape.getCurrentPoint().equals(createPoint(7, -5)));
 		this.shape.setLastPoint(2, 2);
 		assertTrue(this.shape.getCurrentPoint().equals(createPoint(2, 2)));
-		PathIterator2afp pi = this.shape.getPathIterator();
+		PathIterator3afp pi = this.shape.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
 		assertElement(pi, PathElementType.LINE_TO, 1, 1);
 		assertElement(pi, PathElementType.QUAD_TO, 3, 0, 4, 3);
@@ -1474,11 +1469,11 @@ extends AbstractShape3afpTest<T, B> {
 	}
 
 	@Test
-	public void setLastPointPoint2D() {
+	public void setLastPointPoint3D() {
 		assertTrue(this.shape.getCurrentPoint().equals(createPoint(7, -5)));
 		this.shape.setLastPoint(createPoint(2, 2));
 		assertTrue(this.shape.getCurrentPoint().equals(createPoint(2, 2)));
-		PathIterator2afp pi = this.shape.getPathIterator();
+		PathIterator3afp pi = this.shape.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
 		assertElement(pi, PathElementType.LINE_TO, 1, 1);
 		assertElement(pi, PathElementType.QUAD_TO, 3, 0, 4, 3);
@@ -1488,9 +1483,9 @@ extends AbstractShape3afpTest<T, B> {
 
 	@Test
 	public void toCollection() {
-		Collection<? extends Point2D> collection = this.shape.toCollection();
+		Collection<? extends Point3D> collection = this.shape.toCollection();
 		assertEquals(7, collection.size());
-		Iterator<? extends Point2D> iterator = collection.iterator();
+		Iterator<? extends Point3D> iterator = collection.iterator();
 		assertEpsilonEquals(createPoint(0, 0), iterator.next());
 		assertEpsilonEquals(createPoint(1, 1), iterator.next());
 		assertEpsilonEquals(createPoint(3, 0), iterator.next());
@@ -1502,23 +1497,23 @@ extends AbstractShape3afpTest<T, B> {
 	}
 
 	@Test
-	public void transformTransform2D() {
-		Point2D p1 = randomPoint2f();
-		Point2D p2 = randomPoint2f();
-		Point2D p3 = randomPoint2f();
-		Point2D p4 = randomPoint2f();
-		Point2D p5 = randomPoint2f();
-		Point2D p6 = randomPoint2f();
-		Point2D p7 = randomPoint2f();
+	public void transformTransform3D() {
+		Point3D p1 = randomPoint2f();
+		Point3D p2 = randomPoint2f();
+		Point3D p3 = randomPoint2f();
+		Point3D p4 = randomPoint2f();
+		Point3D p5 = randomPoint2f();
+		Point3D p6 = randomPoint2f();
+		Point3D p7 = randomPoint2f();
 		
-		Path2afp path = createPath();
+		Path3afp path = createPath();
 		path.moveTo(p1.getX(),p1.getY());
 		path.lineTo(p2.getX(),p2.getY());
 		path.quadTo(p3.getX(),p3.getY(),p4.getX(),p4.getY());
 		path.curveTo(p5.getX(),p5.getY(), p6.getX(),p6.getY(), p7.getX(),p7.getY());
 		path.closePath();
 		
-		Transform2D trans = new Transform2D(this.randomMatrix3f());
+		Transform3D trans = new Transform3D(this.randomMatrix3f());
 		
 		trans.transform(p1);
 		trans.transform(p2);
@@ -1528,7 +1523,7 @@ extends AbstractShape3afpTest<T, B> {
 		trans.transform(p6);
 		trans.transform(p7);
 		
-		Path2afp pathTrans = createPath();
+		Path3afp pathTrans = createPath();
 		pathTrans.moveTo(p1.getX(),p1.getY());
 		pathTrans.lineTo(p2.getX(),p2.getY());
 		pathTrans.quadTo(p3.getX(),p3.getY(),p4.getX(),p4.getY());
@@ -1542,8 +1537,8 @@ extends AbstractShape3afpTest<T, B> {
 
 	@Override
 	public void testClone() {
-		Path2afp clone = this.shape.clone();
-		PathIterator2afp pi = (PathIterator2afp) clone.getPathIterator();
+		Path3afp clone = this.shape.clone();
+		PathIterator3afp pi = (PathIterator3afp) clone.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
 		assertElement(pi, PathElementType.LINE_TO, 1, 1);
 		assertElement(pi, PathElementType.QUAD_TO, 3, 0, 4, 3);
@@ -1574,7 +1569,7 @@ extends AbstractShape3afpTest<T, B> {
 	@Test
 	@Override
 	public void equalsToPathIterator() {
-		assertFalse(this.shape.equalsToPathIterator((PathIterator2ai) null));
+		assertFalse(this.shape.equalsToPathIterator((PathIterator3ai) null));
 		assertFalse(this.shape.equalsToPathIterator(createPath().getPathIterator()));
 		assertFalse(this.shape.equalsToPathIterator(createSegment(5, 8, 5, 10).getPathIterator()));
 		assertTrue(this.shape.equalsToPathIterator(this.shape.getPathIterator()));
@@ -1600,7 +1595,7 @@ extends AbstractShape3afpTest<T, B> {
 	@Override
 	public void clear() {
 		this.shape.clear();
-		PathIterator2afp pi = this.shape.getPathIterator();
+		PathIterator3afp pi = this.shape.getPathIterator();
 		assertNoElement(pi);
 	}
 
@@ -1622,7 +1617,7 @@ extends AbstractShape3afpTest<T, B> {
 	}
 
 	@Override
-	public void containsPoint2D() {
+	public void containsPoint3D() {
 		assertFalse(this.shape.contains(createPoint(-5, 1)));
 		assertFalse(this.shape.contains(createPoint(3, 6)));
 		assertFalse(this.shape.contains(createPoint(3, -10)));
@@ -1640,7 +1635,7 @@ extends AbstractShape3afpTest<T, B> {
 
 	@Override
 	public void getClosestPointTo() {
-		Point2D result;
+		Point3D result;
 
 		result = this.shape.getClosestPointTo(createPoint(-2, 1));
 		assertEpsilonEquals(0, result.getX());
@@ -1661,7 +1656,7 @@ extends AbstractShape3afpTest<T, B> {
 
 	@Override
 	public void getFarthestPointTo() {
-		Point2D result;
+		Point3D result;
 
 		result = this.shape.getFarthestPointTo(createPoint(-2, 1));
 		assertEpsilonEquals(7, result.getX());
@@ -1744,9 +1739,9 @@ extends AbstractShape3afpTest<T, B> {
 	@Override
 	public void setIT() {
 		this.shape.set((T) createPath());
-		PathIterator2afp pi = this.shape.getPathIterator();
+		PathIterator3afp pi = this.shape.getPathIterator();
 		assertNoElement(pi);
-		Path2afp path = createPath();
+		Path3afp path = createPath();
 		path.moveTo(123.456, 456.789);
 		path.lineTo(789.123, 159.753);
 		this.shape.set(path);
@@ -1758,7 +1753,7 @@ extends AbstractShape3afpTest<T, B> {
 
 	@Override
 	public void getPathIterator() {
-		PathIterator2afp pi = this.shape.getPathIterator();
+		PathIterator3afp pi = this.shape.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
 		assertElement(pi, PathElementType.LINE_TO, 1, 1);
 		assertElement(pi, PathElementType.QUAD_TO, 3, 0, 4, 3);
@@ -1775,9 +1770,9 @@ extends AbstractShape3afpTest<T, B> {
 	}
 
 	@Override
-	public void getPathIteratorTransform2D() {
-		PathIterator2afp pi;
-		Transform2D transform = new Transform2D();
+	public void getPathIteratorTransform3D() {
+		PathIterator3afp pi;
+		Transform3D transform = new Transform3D();
 		
 		pi = this.shape.getPathIterator(null);
 		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
@@ -1833,23 +1828,23 @@ extends AbstractShape3afpTest<T, B> {
 
 	@Override
 	public void createTransformedShape() {
-		Point2D p1 = randomPoint2f();
-		Point2D p2 = randomPoint2f();
-		Point2D p3 = randomPoint2f();
-		Point2D p4 = randomPoint2f();
-		Point2D p5 = randomPoint2f();
-		Point2D p6 = randomPoint2f();
-		Point2D p7 = randomPoint2f();
+		Point3D p1 = randomPoint2f();
+		Point3D p2 = randomPoint2f();
+		Point3D p3 = randomPoint2f();
+		Point3D p4 = randomPoint2f();
+		Point3D p5 = randomPoint2f();
+		Point3D p6 = randomPoint2f();
+		Point3D p7 = randomPoint2f();
 		
-		Path2afp path = createPath();
+		Path3afp path = createPath();
 		path.moveTo(p1.getX(),p1.getY());
 		path.lineTo(p2.getX(),p2.getY());
 		path.quadTo(p3.getX(),p3.getY(),p4.getX(),p4.getY());
 		path.curveTo(p5.getX(),p5.getY(), p6.getX(),p6.getY(), p7.getX(),p7.getY());
 		path.closePath();
 
-		Transform2D trans = new Transform2D(randomMatrix3f());
-		Path2afp transformedShape = (Path2afp) path.createTransformedShape(trans);
+		Transform3D trans = new Transform3D(randomMatrix3f());
+		Path3afp transformedShape = (Path3afp) path.createTransformedShape(trans);
 		path.transform(trans);		
 	
 		assertTrue(path.equalsToShape(transformedShape));
@@ -1860,7 +1855,7 @@ extends AbstractShape3afpTest<T, B> {
 		double dx = this.random.nextDouble()*20;
 		double dy = this.random.nextDouble()*20;
 		
-		Path2afp p2 = createPath();
+		Path3afp p2 = createPath();
 		p2.moveTo(dx, dy);
 		p2.lineTo(1 + dx, 1 + dy);
 		p2.quadTo(3 + dx, 0 + dy, 4 + dx, 3 + dy);
@@ -1872,13 +1867,13 @@ extends AbstractShape3afpTest<T, B> {
 	}
 
 	@Override
-	public void translateVector2D() {
+	public void translateVector3D() {
 		double dx = this.random.nextDouble()*20;
 		double dy = this.random.nextDouble()*20;
 		
 		this.shape.translate(dx, dy);
 		
-		PathIterator2afp pi = this.shape.getPathIterator();
+		PathIterator3afp pi = this.shape.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, dx, dy);
 		assertElement(pi, PathElementType.LINE_TO, dx + 1, dy + 1);
 		assertElement(pi, PathElementType.QUAD_TO, dx + 3, dy, dx + 4, dy + 3);
@@ -1906,7 +1901,7 @@ extends AbstractShape3afpTest<T, B> {
 	}
 
 	@Override
-	public void containsRectangle2afp() {
+	public void containsRectangularPrism3afp() {
 		assertFalse(this.shape.contains(createRectangle(-5, 1, 2, 1)));
 		assertFalse(this.shape.contains(createRectangle(3, 6, 2, 1)));
 		assertFalse(this.shape.contains(createRectangle(3, -10, 2, 1)));
@@ -1923,7 +1918,7 @@ extends AbstractShape3afpTest<T, B> {
 	}
 
 	@Override
-	public void intersectsRectangle2afp() {
+	public void intersectsRectangularPrism3afp() {
 		assertFalse(this.shape.intersects(createRectangle(1, -2, 2, 1)));
 		assertTrue(this.shape.intersects(createRectangle(1.5, 1.5, 2, 1)));
 		assertFalse(this.shape.intersects(createRectangle(7, 3, 2, 1)));
@@ -1931,7 +1926,7 @@ extends AbstractShape3afpTest<T, B> {
 	}
 
 	@Test
-	public void intersectsRectangle2afp_close() {
+	public void intersectsRectangularPrism3afp_close() {
 		this.shape.closePath();
 		assertTrue(this.shape.intersects(createRectangle(1, -2, 2, 1)));
 		assertTrue(this.shape.intersects(createRectangle(1.5, 1.5, 2, 1)));
@@ -1940,7 +1935,7 @@ extends AbstractShape3afpTest<T, B> {
 	}
 
 	@Override
-	public void intersectsCircle2afp() {
+	public void intersectsSphere3afp() {
 		assertFalse(this.shape.intersects(createCircle(-2, -2, 2)));
 		assertFalse(this.shape.intersects(createCircle(2, -2, 2)));
 		assertFalse(this.shape.intersects(createCircle(2.5, -1.5, 2)));
@@ -1950,7 +1945,7 @@ extends AbstractShape3afpTest<T, B> {
 	}
 
 	@Test
-	public void intersectsCircle2afp_close() {
+	public void intersectsSphere3afp_close() {
 		this.shape.closePath();
 		assertFalse(this.shape.intersects(createCircle(-2, -2, 2)));
 		assertTrue(this.shape.intersects(createCircle(2, -2, 2)));
@@ -1959,45 +1954,10 @@ extends AbstractShape3afpTest<T, B> {
 		assertTrue(this.shape.intersects(createCircle(4, 0, 0.5)));
 		assertTrue(this.shape.intersects(createCircle(2.5, 1, 0.5)));
 	}
+d
 
 	@Override
-	public void intersectsTriangle2afp() {
-		assertFalse(this.shape.intersects(createTriangle(1, -1, 4, 0, 2, .5)));
-		assertFalse(this.shape.intersects(createTriangle(9, 1, 12, 2, 10, 1.5)));
-		assertTrue(this.shape.intersects(createTriangle(5, 0, 8, 1, 6, .5)));
-		assertFalse(this.shape.intersects(createTriangle(-1, -4, 2, -3, 0, -2.5)));
-		assertFalse(this.shape.intersects(createTriangle(3, -6, 6, -5, 4, -4.5)));
-	}
-
-	@Test
-	public void intersectsTriangle2afp_close() {
-		this.shape.closePath();
-		assertTrue(this.shape.intersects(createTriangle(1, -1, 4, 0, 2, .5)));
-		assertFalse(this.shape.intersects(createTriangle(9, 1, 12, 2, 10, 1.5)));
-		assertTrue(this.shape.intersects(createTriangle(5, 0, 8, 1, 6, .5)));
-		assertFalse(this.shape.intersects(createTriangle(-1, -4, 2, -3, 0, -2.5)));
-		assertFalse(this.shape.intersects(createTriangle(3, -6, 6, -5, 4, -4.5)));
-	}
-
-	@Override
-	public void intersectsEllipse2afp() {
-		assertFalse(this.shape.intersects(createEllipse(1, -1.5, 2, 1)));
-		assertFalse(this.shape.intersects(createEllipse(1, 1, 2, 1)));
-		assertTrue(this.shape.intersects(createEllipse(4.5, -1, 2, 1)));
-		assertFalse(this.shape.intersects(createEllipse(0, -5.5, 2, 1)));
-	}
-
-	@Test
-	public void intersectsEllipse2afp_close() {
-		this.shape.closePath();
-		assertTrue(this.shape.intersects(createEllipse(1, -1.5, 2, 1)));
-		assertFalse(this.shape.intersects(createEllipse(1, 1, 2, 1)));
-		assertTrue(this.shape.intersects(createEllipse(4.5, -1, 2, 1)));
-		assertFalse(this.shape.intersects(createEllipse(0, -5.5, 2, 1)));
-	}
-
-	@Override
-	public void intersectsSegment2afp() {
+	public void intersectsSegment3afp() {
 		assertFalse(this.shape.intersects(createSegment(1, -1, 2, -3)));
 		assertFalse(this.shape.intersects(createSegment(1, -6, 2, -3)));
 		assertFalse(this.shape.intersects(createSegment(4, 0, 2, -3)));
@@ -2005,7 +1965,7 @@ extends AbstractShape3afpTest<T, B> {
 	}
 
 	@Test
-	public void intersectsSegment2afp_close() {
+	public void intersectsSegment3afp_close() {
 		this.shape.closePath();
 		assertFalse(this.shape.intersects(createSegment(1, -1, 2, -3)));
 		assertFalse(this.shape.intersects(createSegment(1, -6, 2, -3)));
@@ -2014,7 +1974,7 @@ extends AbstractShape3afpTest<T, B> {
 	}
 
 	@Override
-	public void intersectsPath2afp() {
+	public void intersectsPath3afp() {
 		assertFalse(this.shape.intersects(createPolyline(1, -1, 4, -3)));
 		assertFalse(this.shape.intersects(createPolyline(1, -1, 5, -3)));
 		assertFalse(this.shape.intersects(createPolyline(1, -1, 4, 1)));
@@ -2022,7 +1982,7 @@ extends AbstractShape3afpTest<T, B> {
 	}
 
 	@Test
-	public void intersectsPath2afp_close() {
+	public void intersectsPath3afp_close() {
 		this.shape.closePath();
 		assertFalse(this.shape.intersects(createPolyline(1, -1, 4, -3)));
 		assertTrue(this.shape.intersects(createPolyline(1, -1, 5, -3)));
@@ -2031,7 +1991,7 @@ extends AbstractShape3afpTest<T, B> {
 	}
 
 	@Override
-	public void intersectsPathIterator2afp() {
+	public void intersectsPathIterator3afp() {
 		assertFalse(this.shape.intersects(createPolyline(1, -1, 4, -3).getPathIterator()));
 		assertFalse(this.shape.intersects(createPolyline(1, -1, 5, -3).getPathIterator()));
 		assertFalse(this.shape.intersects(createPolyline(1, -1, 4, 1).getPathIterator()));
@@ -2039,7 +1999,7 @@ extends AbstractShape3afpTest<T, B> {
 	}
 
 	@Test
-	public void intersectsPathIterator2afp_close() {
+	public void intersectsPathIterator3afp_close() {
 		this.shape.closePath();
 		assertFalse(this.shape.intersects(createPolyline(1, -1, 4, -3).getPathIterator()));
 		assertTrue(this.shape.intersects(createPolyline(1, -1, 5, -3).getPathIterator()));
@@ -2048,54 +2008,19 @@ extends AbstractShape3afpTest<T, B> {
 	}
 
 	@Override
-	public void intersectsOrientedRectangle2afp() {
-		assertFalse(this.shape.intersects(createOrientedRectangle(0, -5, 0.5547, 0.83205, 2, 1)));
-		assertFalse(this.shape.intersects(createOrientedRectangle(4, -1, 0.5547, 0.83205, 2, 1)));
-		assertFalse(this.shape.intersects(createOrientedRectangle(6, 5, 0.5547, 0.83205, 2, 1)));
-		assertTrue(this.shape.intersects(createOrientedRectangle(7, 2, 0.5547, 0.83205, 2, 1)));
-		assertTrue(this.shape.intersects(createOrientedRectangle(-1, -1, 0.5547, 0.83205, 2, 1)));
+	public void intersectsShape3D() {
+		assertTrue(this.shape.intersects((Shape3D) createSegment(4, 0, 5, 3)));
+		assertTrue(this.shape.intersects((Shape3D)createRectangle(1.5, 1.5, 2, 1)));
 	}
 
 	@Override
-	public void intersectsParallelogram2afp() {
-		assertFalse(this.shape.intersects(createParallelogram(0, -5, 0.5547, 0.83205, 2, -0.83205, 0.5547, 1)));
-		assertFalse(this.shape.intersects(createParallelogram(4, -1, 0.5547, 0.83205, 2, -0.83205, 0.5547, 1)));
-		assertFalse(this.shape.intersects(createParallelogram(6, 5, 0.5547, 0.83205, 2, -0.83205, 0.5547, 1)));
-		assertTrue(this.shape.intersects(createParallelogram(7, 2, 0.5547, 0.83205, 2, -0.83205, 0.5547, 1)));
-		assertTrue(this.shape.intersects(createParallelogram(-1, -1, 0.5547, 0.83205, 2, -0.83205, 0.5547, 1)));
-	}
-
-	@Override
-	public void intersectsRoundRectangle2afp() {
-		assertFalse(this.shape.intersects(createRoundRectangle(1, -2, 2, 1, .2, .1)));
-		assertTrue(this.shape.intersects(createRoundRectangle(1.5, 1.5, 2, 1, .2, .1)));
-		assertFalse(this.shape.intersects(createRoundRectangle(7, 3, 2, 1, .2, .1)));
-		assertFalse(this.shape.intersects(createRoundRectangle(-4, -0.5, 2, 1, .2, .1)));
-	}
-
-	@Test
-	public void intersectsRoundRectangle2afp_close() {
-		this.shape.closePath();
-		assertTrue(this.shape.intersects(createRoundRectangle(1, -2, 2, 1, .2, .1)));
-		assertTrue(this.shape.intersects(createRoundRectangle(1.5, 1.5, 2, 1, .2, .1)));
-		assertFalse(this.shape.intersects(createRoundRectangle(7, 3, 2, 1, .2, .1)));
-		assertFalse(this.shape.intersects(createRoundRectangle(-4, -0.5, 2, 1, .2, .1)));
-	}
-	
-	@Override
-	public void intersectsShape2D() {
-		assertTrue(this.shape.intersects((Shape2D) createSegment(4, 0, 5, 3)));
-		assertTrue(this.shape.intersects((Shape2D)createRectangle(1.5, 1.5, 2, 1)));
-	}
-
-	@Override
-	public void operator_addVector2D() {
+	public void operator_addVector3D() {
 		double dx = this.random.nextDouble()*20;
 		double dy = this.random.nextDouble()*20;
 		
 		this.shape.operator_add(createVector(dx, dy));
 		
-		PathIterator2afp pi = this.shape.getPathIterator();
+		PathIterator3afp pi = this.shape.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, dx, dy);
 		assertElement(pi, PathElementType.LINE_TO, dx + 1, dy + 1);
 		assertElement(pi, PathElementType.QUAD_TO, dx + 3, dy, dx + 4, dy + 3);
@@ -2104,13 +2029,13 @@ extends AbstractShape3afpTest<T, B> {
 	}
 
 	@Override
-	public void operator_plusVector2D() {
+	public void operator_plusVector3D() {
 		double dx = this.random.nextDouble()*20;
 		double dy = this.random.nextDouble()*20;
 		
 		T shape = this.shape.operator_plus(createVector(dx, dy));
 		
-		PathIterator2afp pi = shape.getPathIterator();
+		PathIterator3afp pi = shape.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, dx, dy);
 		assertElement(pi, PathElementType.LINE_TO, dx + 1, dy + 1);
 		assertElement(pi, PathElementType.QUAD_TO, dx + 3, dy, dx + 4, dy + 3);
@@ -2119,13 +2044,13 @@ extends AbstractShape3afpTest<T, B> {
 	}
 
 	@Override
-	public void operator_removeVector2D() {
+	public void operator_removeVector3D() {
 		double dx = this.random.nextDouble()*20;
 		double dy = this.random.nextDouble()*20;
 		
 		this.shape.operator_remove(createVector(dx, dy));
 		
-		PathIterator2afp pi = this.shape.getPathIterator();
+		PathIterator3afp pi = this.shape.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, -dx, -dy);
 		assertElement(pi, PathElementType.LINE_TO, -dx + 1, -dy + 1);
 		assertElement(pi, PathElementType.QUAD_TO, -dx + 3, -dy, -dx + 4, -dy + 3);
@@ -2134,13 +2059,13 @@ extends AbstractShape3afpTest<T, B> {
 	}
 
 	@Override
-	public void operator_minusVector2D() {
+	public void operator_minusVector3D() {
 		double dx = this.random.nextDouble()*20;
 		double dy = this.random.nextDouble()*20;
 		
 		T shape = this.shape.operator_minus(createVector(dx, dy));
 		
-		PathIterator2afp pi = shape.getPathIterator();
+		PathIterator3afp pi = shape.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, -dx, -dy);
 		assertElement(pi, PathElementType.LINE_TO, -dx + 1, -dy + 1);
 		assertElement(pi, PathElementType.QUAD_TO, -dx + 3, -dy, -dx + 4, -dy + 3);
@@ -2149,31 +2074,31 @@ extends AbstractShape3afpTest<T, B> {
 	}
 
 	@Override
-	public void operator_multiplyTransform2D() {
-		Point2D p1 = randomPoint2f();
-		Point2D p2 = randomPoint2f();
-		Point2D p3 = randomPoint2f();
-		Point2D p4 = randomPoint2f();
-		Point2D p5 = randomPoint2f();
-		Point2D p6 = randomPoint2f();
-		Point2D p7 = randomPoint2f();
+	public void operator_multiplyTransform3D() {
+		Point3D p1 = randomPoint2f();
+		Point3D p2 = randomPoint2f();
+		Point3D p3 = randomPoint2f();
+		Point3D p4 = randomPoint2f();
+		Point3D p5 = randomPoint2f();
+		Point3D p6 = randomPoint2f();
+		Point3D p7 = randomPoint2f();
 		
-		Path2afp path = createPath();
+		Path3afp path = createPath();
 		path.moveTo(p1.getX(),p1.getY());
 		path.lineTo(p2.getX(),p2.getY());
 		path.quadTo(p3.getX(),p3.getY(),p4.getX(),p4.getY());
 		path.curveTo(p5.getX(),p5.getY(), p6.getX(),p6.getY(), p7.getX(),p7.getY());
 		path.closePath();
 
-		Transform2D trans = new Transform2D(randomMatrix3f());
-		Path2afp transformedShape = (Path2afp) path.operator_multiply(trans);
+		Transform3D trans = new Transform3D(randomMatrix3f());
+		Path3afp transformedShape = (Path3afp) path.operator_multiply(trans);
 		path.transform(trans);		
 	
 		assertTrue(path.equalsToShape(transformedShape));
 	}
 
 	@Override
-	public void operator_andPoint2D() {
+	public void operator_andPoint3D() {
 		assertFalse(this.shape.operator_and(createPoint(-5, 1)));
 		assertFalse(this.shape.operator_and(createPoint(3, 6)));
 		assertFalse(this.shape.operator_and(createPoint(3, -10)));
@@ -2190,13 +2115,13 @@ extends AbstractShape3afpTest<T, B> {
 	}
 
 	@Override
-	public void operator_andShape2D() {
+	public void operator_andShape3D() {
 		assertTrue(this.shape.operator_and(createSegment(4, 0, 5, 3)));
 		assertTrue(this.shape.operator_and(createRectangle(1.5, 1.5, 2, 1)));
 	}
 
 	@Override
-	public void operator_upToPoint2D() {
+	public void operator_upToPoint3D() {
 		assertEpsilonEquals(2.23607, this.shape.operator_upTo(createPoint(-2, 1)));
 		assertEpsilonEquals(.70711, this.shape.operator_upTo(createPoint(1, 0)));
 		assertEpsilonEquals(1.00970, this.shape.operator_upTo(createPoint(3, 0)));

@@ -29,16 +29,10 @@ import static org.junit.Assert.assertTrue;
 
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
-import org.arakhne.afc.math.geometry.d2.Point2D;
-import org.arakhne.afc.math.geometry.d2.Shape2D;
-import org.arakhne.afc.math.geometry.d2.Transform2D;
-import org.arakhne.afc.math.geometry.d2.afp.Circle2afp;
-import org.arakhne.afc.math.geometry.d2.afp.Parallelogram2afp;
-import org.arakhne.afc.math.geometry.d2.afp.Path2afp;
-import org.arakhne.afc.math.geometry.d2.afp.PathIterator2afp;
-import org.arakhne.afc.math.geometry.d2.afp.Shape2afp;
-import org.arakhne.afc.math.geometry.d2.afp.Triangle2afp;
-import org.arakhne.afc.math.geometry.d2.ai.PathIterator2ai;
+import org.arakhne.afc.math.geometry.d3.Point3D;
+import org.arakhne.afc.math.geometry.d3.Shape3D;
+import org.arakhne.afc.math.geometry.d3.Transform3D;
+import org.arakhne.afc.math.geometry.d3.ai.PathIterator3ai;
 import org.junit.Test;
 
 @SuppressWarnings("all")
@@ -47,7 +41,7 @@ public abstract class AbstractSphere3afpTest<T extends Sphere3afp<?, T, ?, ?, ?,
 
 	@Override
 	protected final T createShape() {
-		return (T) createCircle(5, 8, 5);
+		return (T) createSphere(5, 8, 5);
 	}
 	
 	@Test
@@ -67,42 +61,42 @@ public abstract class AbstractSphere3afpTest<T extends Sphere3afp<?, T, ?, ?, ?,
 	public void equalsObject() {
 		assertFalse(this.shape.equals(null));
 		assertFalse(this.shape.equals(new Object()));
-		assertFalse(this.shape.equals(createCircle(0, 0, 5)));
-		assertFalse(this.shape.equals(createCircle(5, 8, 6)));
+		assertFalse(this.shape.equals(createSphere(0, 0, 5)));
+		assertFalse(this.shape.equals(createSphere(5, 8, 6)));
 		assertFalse(this.shape.equals(createSegment(5, 8, 6, 10)));
 		assertTrue(this.shape.equals(this.shape));
-		assertTrue(this.shape.equals(createCircle(5, 8, 5)));
+		assertTrue(this.shape.equals(createSphere(5, 8, 5)));
 	}
 
 	@Test
 	@Override
 	public void equalsObject_withPathIterator() {
-		assertFalse(this.shape.equals(createCircle(0, 0, 5).getPathIterator()));
-		assertFalse(this.shape.equals(createCircle(5, 8, 6).getPathIterator()));
+		assertFalse(this.shape.equals(createSphere(0, 0, 5).getPathIterator()));
+		assertFalse(this.shape.equals(createSphere(5, 8, 6).getPathIterator()));
 		assertFalse(this.shape.equals(createSegment(5, 8, 6, 10).getPathIterator()));
 		assertTrue(this.shape.equals(this.shape.getPathIterator()));
-		assertTrue(this.shape.equals(createCircle(5, 8, 5).getPathIterator()));
+		assertTrue(this.shape.equals(createSphere(5, 8, 5).getPathIterator()));
 	}
 
 	@Test
 	@Override
 	public void equalsToPathIterator() {
-		assertFalse(this.shape.equalsToPathIterator((PathIterator2ai) null));
-		assertFalse(this.shape.equalsToPathIterator(createCircle(0, 0, 5).getPathIterator()));
-		assertFalse(this.shape.equalsToPathIterator(createCircle(5, 8, 6).getPathIterator()));
+		assertFalse(this.shape.equalsToPathIterator((PathIterator3ai) null));
+		assertFalse(this.shape.equalsToPathIterator(createSphere(0, 0, 5).getPathIterator()));
+		assertFalse(this.shape.equalsToPathIterator(createSphere(5, 8, 6).getPathIterator()));
 		assertFalse(this.shape.equalsToPathIterator(createSegment(5, 8, 6, 10).getPathIterator()));
 		assertTrue(this.shape.equalsToPathIterator(this.shape.getPathIterator()));
-		assertTrue(this.shape.equalsToPathIterator(createCircle(5, 8, 5).getPathIterator()));
+		assertTrue(this.shape.equalsToPathIterator(createSphere(5, 8, 5).getPathIterator()));
 	}
 
 	@Test
 	@Override
 	public void equalsToShape() {
 		assertFalse(this.shape.equalsToShape(null));
-		assertFalse(this.shape.equalsToShape((T) createCircle(0, 0, 5)));
-		assertFalse(this.shape.equalsToShape((T) createCircle(5, 8, 6)));
+		assertFalse(this.shape.equalsToShape((T) createSphere(0, 0, 5)));
+		assertFalse(this.shape.equalsToShape((T) createSphere(5, 8, 6)));
 		assertTrue(this.shape.equalsToShape(this.shape));
-		assertTrue(this.shape.equalsToShape((T) createCircle(5, 8, 5)));
+		assertTrue(this.shape.equalsToShape((T) createSphere(5, 8, 5)));
 	}
 
 	@Test
@@ -135,13 +129,13 @@ public abstract class AbstractSphere3afpTest<T extends Sphere3afp<?, T, ?, ?, ?,
 		assertFalse(this.shape.contains(10,11));
 		assertTrue(this.shape.contains(9,10));
 		
-		this.shape = (T) createCircle(-1,-1,1);
+		this.shape = (T) createSphere(-1,-1,1);
 		assertFalse(this.shape.contains(0,0));
 	}
 
 	@Test
 	@Override
-	public void containsPoint2D() {
+	public void containsPoint3D() {
 		assertFalse(this.shape.contains(createPoint(0,0)));
 		assertFalse(this.shape.contains(createPoint(11,10)));
 		assertFalse(this.shape.contains(createPoint(11,50)));
@@ -152,14 +146,14 @@ public abstract class AbstractSphere3afpTest<T extends Sphere3afp<?, T, ?, ?, ?,
 		assertFalse(this.shape.contains(createPoint(10,11)));
 		assertTrue(this.shape.contains(createPoint(9,10)));
 		
-		this.shape = (T) createCircle(-1,-1,1);
+		this.shape = (T) createSphere(-1,-1,1);
 		assertFalse(this.shape.contains(createPoint(0,0)));
 	}
 
 	@Test
 	@Override
 	public void getClosestPointTo() {
-		Point2D p;
+		Point3D p;
 		
 		p = this.shape.getClosestPointTo(createPoint(5,8));
 		assertNotNull(p);
@@ -189,7 +183,7 @@ public abstract class AbstractSphere3afpTest<T extends Sphere3afp<?, T, ?, ?, ?,
 
 	@Override
 	public void getFarthestPointTo() {
-		Point2D p;
+		Point3D p;
 		
 		p = this.shape.getFarthestPointTo(createPoint(0, 0));
 		assertEpsilonEquals(7.65, p.getX());
@@ -278,7 +272,7 @@ public abstract class AbstractSphere3afpTest<T extends Sphere3afp<?, T, ?, ?, ?,
 
 	@Override
 	public void setIT() {
-		this.shape.set((T) createCircle(17, 20, 7));
+		this.shape.set((T) createSphere(17, 20, 7));
 		assertEpsilonEquals(17, this.shape.getX());
 		assertEpsilonEquals(20, this.shape.getY());
 		assertEpsilonEquals(7, this.shape.getRadius());
@@ -293,7 +287,7 @@ public abstract class AbstractSphere3afpTest<T extends Sphere3afp<?, T, ?, ?, ?,
 	}
 
 	@Override
-	public void translateVector2D() {
+	public void translateVector3D() {
 		this.shape.translate(createVector(123.456, -789.123));
 		assertEpsilonEquals(128.456, this.shape.getX());
 		assertEpsilonEquals(-781.123, this.shape.getY());
@@ -320,8 +314,8 @@ public abstract class AbstractSphere3afpTest<T extends Sphere3afp<?, T, ?, ?, ?,
 	}
 
 	@Override
-	public void getPathIteratorTransform2D() {
-		PathIterator2afp pi = this.shape.getPathIterator(null);
+	public void getPathIteratorTransform3D() {
+		PathIterator3afp pi = this.shape.getPathIterator(null);
 		assertElement(pi, PathElementType.MOVE_TO, 10, 8);
 		assertElement(pi, PathElementType.CURVE_TO, 10, 10.76142374915397, 7.761423749153966, 13, 5, 13);
 		assertElement(pi, PathElementType.CURVE_TO, 2.238576250846033, 13, 0, 10.76142374915397, 0, 8);
@@ -330,9 +324,9 @@ public abstract class AbstractSphere3afpTest<T extends Sphere3afp<?, T, ?, ?, ?,
 		assertElement(pi, PathElementType.CLOSE, 10, 8);
 		assertNoElement(pi);
 
-		Transform2D tr;
+		Transform3D tr;
 		
-		tr = new Transform2D();
+		tr = new Transform3D();
 		pi = this.shape.getPathIterator(tr);
 		assertElement(pi, PathElementType.MOVE_TO, 10, 8);
 		assertElement(pi, PathElementType.CURVE_TO, 10, 10.76142374915397, 7.761423749153966, 13, 5, 13);
@@ -342,7 +336,7 @@ public abstract class AbstractSphere3afpTest<T extends Sphere3afp<?, T, ?, ?, ?,
 		assertElement(pi, PathElementType.CLOSE, 10, 8);
 		assertNoElement(pi);
 
-		tr = new Transform2D();
+		tr = new Transform3D();
 		tr.makeTranslationMatrix(10, -10);
 		pi = this.shape.getPathIterator(tr);
 		assertElement(pi, PathElementType.MOVE_TO, 20, -2);
@@ -356,7 +350,7 @@ public abstract class AbstractSphere3afpTest<T extends Sphere3afp<?, T, ?, ?, ?,
 
 	@Override
 	public void getPathIterator() {
-		PathIterator2afp pi = this.shape.getPathIterator();
+		PathIterator3afp pi = this.shape.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 10, 8);
 		assertElement(pi, PathElementType.CURVE_TO, 10, 10.76142374915397, 7.761423749153966, 13, 5, 13);
 		assertElement(pi, PathElementType.CURVE_TO, 2.238576250846033, 13, 0, 10.76142374915397, 0, 8);
@@ -368,27 +362,27 @@ public abstract class AbstractSphere3afpTest<T extends Sphere3afp<?, T, ?, ?, ?,
 
 	@Override
 	public void createTransformedShape() {
-		Transform2D tr;
-		Shape2afp newShape;
+		Transform3D tr;
+		Shape3afp newShape;
 		
 		newShape = this.shape.createTransformedShape(null);
 		assertNotNull(newShape);
 		assertNotSame(this.shape, newShape);
 		assertEquals(this.shape, newShape);
 
-		tr = new Transform2D();
+		tr = new Transform3D();
 		newShape = this.shape.createTransformedShape(tr);
 		assertNotNull(newShape);
 		assertNotSame(this.shape, newShape);
 		assertEquals(this.shape, newShape);
 
-		tr = new Transform2D();
+		tr = new Transform3D();
 		tr.makeTranslationMatrix(10, -10);
 		newShape = this.shape.createTransformedShape(tr);
 		assertNotNull(newShape);
 		assertNotSame(this.shape, newShape);
-		assertTrue(newShape instanceof Path2afp);
-		PathIterator2afp pi = this.shape.getPathIterator(tr);
+		assertTrue(newShape instanceof Path3afp);
+		PathIterator3afp pi = this.shape.getPathIterator(tr);
 		assertElement(pi, PathElementType.MOVE_TO, 20, -2);
 		assertElement(pi, PathElementType.CURVE_TO, 20, 0.76142374915397, 17.761423749153966, 3, 15, 3);
 		assertElement(pi, PathElementType.CURVE_TO, 12.238576250846033, 3, 10, 0.76142374915397, 10, -2);
@@ -399,7 +393,7 @@ public abstract class AbstractSphere3afpTest<T extends Sphere3afp<?, T, ?, ?, ?,
 	}
 
 	@Override
-	public void containsRectangle2afp() {
+	public void containsRectangularPrism3afp() {
 		assertFalse(this.shape.contains(createRectangle(-4, -4, 1, 1)));
 		assertFalse(this.shape.contains(createRectangle(-5, -5, 10, 10)));
 		assertFalse(this.shape.contains(createRectangle(-5, -5, 5.5, 5.5)));
@@ -413,7 +407,7 @@ public abstract class AbstractSphere3afpTest<T extends Sphere3afp<?, T, ?, ?, ?,
 	}
 
 	@Override
-	public void intersectsRectangle2afp() {
+	public void intersectsRectangularPrism3afp() {
 		assertFalse(this.shape.intersects(createRectangle(-4, -4, 1, 1)));
 		assertTrue(this.shape.intersects(createRectangle(-5, -5, 10, 10)));
 		assertFalse(this.shape.intersects(createRectangle(-5, -5, 5.5, 5.5)));
@@ -426,126 +420,19 @@ public abstract class AbstractSphere3afpTest<T extends Sphere3afp<?, T, ?, ?, ?,
 	}
 
 	@Override
-	public void intersectsTriangle2afp() {
-		Triangle2afp triangle = createTriangle(5, 8, -10, 1, -1, -2);
-		assertTrue(createCircle(5, 8, 1).intersects(triangle));
-		assertTrue(createCircle(-10, 1, 1).intersects(triangle));
-		assertTrue(createCircle(-1, -2, 1).intersects(triangle));
-		
-		assertFalse(createCircle(2, 0, 1).intersects(triangle));
-		assertFalse(createCircle(1.9, 0, 1).intersects(triangle));
-		assertFalse(createCircle(1.8, 0, 1).intersects(triangle));
-		assertFalse(createCircle(1.7, 0, 1).intersects(triangle));
-		assertFalse(createCircle(1.6, 0, 1).intersects(triangle));
-		assertFalse(createCircle(1.5, 0, 1).intersects(triangle));
-		assertFalse(createCircle(1.4, 0, 1).intersects(triangle));
-		assertTrue(createCircle(1.3, 0, 1).intersects(triangle));
-
-		assertFalse(createCircle(5, 9, 1).intersects(triangle));
-		assertTrue(createCircle(5, 8.9, 1).intersects(triangle));
-
-		assertTrue(createCircle(-4, 1, 1).intersects(triangle));
-	}
-
-	@Test
-	@Override
-	public void intersectsOrientedRectangle2afp() {
-		assertTrue(this.shape.intersects(createOrientedRectangle(
-				// Center
-				4.518, 7.166,
-				// Axis 1
-				0.89669, 0.44267,
-				// Extent 1
-				1.93825,
-				// Extent 2
-				1.35546)));
-		assertFalse(this.shape.intersects(createOrientedRectangle(
-				// Center
-				9.886, 3.316,
-				// Axis 1
-				0.79028, 0.61275,
-				// Extent 1
-				3.84169,
-				// Extent 2
-				1.43961)));
-		assertTrue(this.shape.intersects(createOrientedRectangle(
-				// Center
-				4.518, 7.166,
-				// Axis 1
-				0.89669, 0.44267,
-				// Extent 1
-				1.93825,
-				// Extent 2
-				1.35546)));
-		assertTrue(this.shape.intersects(createOrientedRectangle(
-				// Center
-				10.216, 5.23,
-				// Axis 1
-				0.27204, 0.96229,
-				// Extent 1
-				5.41835,
-				// Extent 2
-				1.76987)));
-	}
-
-	@Test
-	@Override
-	public void intersectsParallelogram2afp() {
-		Parallelogram2afp para = createParallelogram(
-				6, 9,
-				2.425356250363330e-01, 9.701425001453320e-01, 9.219544457292887,
-				-7.071067811865475e-01, 7.071067811865475e-01, 1.264911064067352e+01);
-		assertFalse(createCircle(.5, .5, .5).intersects(para));
-		assertFalse(createCircle(.5, 1.5, .5).intersects(para));
-		assertFalse(createCircle(.5, 2.5, .5).intersects(para));
-		assertTrue(createCircle(.5, 3.5, .5).intersects(para));
-		assertTrue(createCircle(4.5, 3.5, .5).intersects(para));
-		assertFalse(createCircle(10, -7, .5).intersects(para));
-		assertFalse(createCircle(10.1, -7, .5).intersects(para));
-		assertTrue(createCircle(10.2, -7, .5).intersects(para));
-		assertTrue(createCircle(10, -1, 5).intersects(para));
-	}
-	
-	@Test
-	@Override
-	public void intersectsRoundRectangle2afp() {
-		assertFalse(this.shape.intersects(createRoundRectangle(0, 0, 1, 1, .2, .4)));
-		assertFalse(this.shape.intersects(createRoundRectangle(0, 2, 1, 1, .2, .4)));
-		assertFalse(this.shape.intersects(createRoundRectangle(0, 3, 1, 1, .2, .4)));
-		assertFalse(this.shape.intersects(createRoundRectangle(0, 4, 1, 1, .2, .4)));
-		assertFalse(this.shape.intersects(createRoundRectangle(0.1, 4, 1, 1, .2, .4)));
-		assertTrue(this.shape.intersects(createRoundRectangle(0.2, 4, 1, 1, .2, .4)));
-		assertTrue(this.shape.intersects(createRoundRectangle(0.3, 4, 1, 1, .2, .4)));
-		assertTrue(this.shape.intersects(createRoundRectangle(0.4, 4, 1, 1, .2, .4)));
-		assertTrue(this.shape.intersects(createRoundRectangle(0.5, 4, 1, 1, .2, .4)));
+	public void intersectsSphere3afp() {
+		assertTrue(this.shape.intersects(createSphere(10, 10, 1)));
+		assertFalse(this.shape.intersects(createSphere(0, 0, 1)));
+		assertFalse(this.shape.intersects(createSphere(0, .5, 1)));
+		assertFalse(this.shape.intersects(createSphere(.5, 0, 1)));
+		assertFalse(this.shape.intersects(createSphere(.5, .5, 1)));
+		assertFalse(this.shape.intersects(createSphere(2, 0, 1)));
+		assertFalse(this.shape.intersects(createSphere(12, 8, 2)));
+		assertTrue(this.shape.intersects(createSphere(12, 8, 2.1)));
 	}
 
 	@Override
-	public void intersectsCircle2afp() {
-		assertTrue(this.shape.intersects(createCircle(10, 10, 1)));
-		assertFalse(this.shape.intersects(createCircle(0, 0, 1)));
-		assertFalse(this.shape.intersects(createCircle(0, .5, 1)));
-		assertFalse(this.shape.intersects(createCircle(.5, 0, 1)));
-		assertFalse(this.shape.intersects(createCircle(.5, .5, 1)));
-		assertFalse(this.shape.intersects(createCircle(2, 0, 1)));
-		assertFalse(this.shape.intersects(createCircle(12, 8, 2)));
-		assertTrue(this.shape.intersects(createCircle(12, 8, 2.1)));
-	}
-
-	@Override
-	public void intersectsEllipse2afp() {
-		assertTrue(this.shape.intersects(createEllipse(9, 9, 2, 2)));
-		assertFalse(this.shape.intersects(createEllipse(-1, -1, 2, 2)));
-		assertFalse(this.shape.intersects(createEllipse(-1, -.5, 2, 2)));
-		assertFalse(this.shape.intersects(createEllipse(-.5, -1, 2, 2)));
-		assertFalse(this.shape.intersects(createEllipse(-.5, -.5, 2, 2)));
-		assertFalse(this.shape.intersects(createEllipse(1, -1, 2, 2)));
-		assertFalse(this.shape.intersects(createEllipse(10, 6, 4, 4)));
-		assertTrue(this.shape.intersects(createEllipse(9.9, 5.9, 4.2, 4.2)));
-	}
-
-	@Override
-	public void intersectsSegment2afp() {
+	public void intersectsSegment3afp() {
 		assertTrue(this.shape.intersects(createSegment(2, 10, 6, 5)));
 		assertTrue(this.shape.intersects(createSegment(2, 10, 8, 14)));
 		assertTrue(this.shape.intersects(createSegment(0, 4, 8, 14)));
@@ -555,8 +442,8 @@ public abstract class AbstractSphere3afpTest<T extends Sphere3afp<?, T, ?, ?, ?,
 	}
 
 	@Override
-	public void intersectsPath2afp() {
-		Path2afp path = createPath(PathWindingRule.NON_ZERO);
+	public void intersectsPath3afp() {
+		Path3afp path = createPath(PathWindingRule.NON_ZERO);
 		path.moveTo(-2, -2);
 		path.lineTo(-2, 2);
 		path.lineTo(2, 2);
@@ -668,50 +555,50 @@ public abstract class AbstractSphere3afpTest<T extends Sphere3afp<?, T, ?, ?, ?,
 	}
 
 	@Override
-	public void intersectsPathIterator2afp() {
-		Path2afp path = createPath(PathWindingRule.NON_ZERO);
+	public void intersectsPathIterator3afp() {
+		Path3afp path = createPath(PathWindingRule.NON_ZERO);
 		path.moveTo(-2, -2);
 		path.lineTo(-2, 2);
 		path.lineTo(2, 2);
 		path.lineTo(2, -2);
-		assertFalse(this.shape.intersects((PathIterator2afp) path.getPathIterator()));
+		assertFalse(this.shape.intersects((PathIterator3afp) path.getPathIterator()));
 		path.closePath();
-		assertFalse(this.shape.intersects((PathIterator2afp) path.getPathIterator()));
+		assertFalse(this.shape.intersects((PathIterator3afp) path.getPathIterator()));
 		
 		path = createPath(PathWindingRule.NON_ZERO);
 		path.moveTo(0, 8);
 		path.lineTo(0, 14);
 		path.lineTo(10, 14);
 		path.lineTo(10, 8);
-		assertFalse(this.shape.intersects((PathIterator2afp) path.getPathIterator()));
+		assertFalse(this.shape.intersects((PathIterator3afp) path.getPathIterator()));
 		path.closePath();
-		assertTrue(this.shape.intersects((PathIterator2afp) path.getPathIterator()));
+		assertTrue(this.shape.intersects((PathIterator3afp) path.getPathIterator()));
 
 		path = createPath(PathWindingRule.NON_ZERO);
 		path.moveTo(0, 2);
 		path.lineTo(12, 14);
 		path.lineTo(0, 14);
-		assertTrue(this.shape.intersects((PathIterator2afp) path.getPathIterator()));
+		assertTrue(this.shape.intersects((PathIterator3afp) path.getPathIterator()));
 		path.closePath();
-		assertTrue(this.shape.intersects((PathIterator2afp) path.getPathIterator()));
+		assertTrue(this.shape.intersects((PathIterator3afp) path.getPathIterator()));
 
 		path = createPath(PathWindingRule.NON_ZERO);
 		path.moveTo(-2, 2);
 		path.lineTo(-2, 14);
 		path.lineTo(12, 14);
 		path.lineTo(12, 2);
-		assertFalse(this.shape.intersects((PathIterator2afp) path.getPathIterator()));
+		assertFalse(this.shape.intersects((PathIterator3afp) path.getPathIterator()));
 		path.closePath();
-		assertTrue(this.shape.intersects((PathIterator2afp) path.getPathIterator()));
+		assertTrue(this.shape.intersects((PathIterator3afp) path.getPathIterator()));
 
 		path = createPath(PathWindingRule.NON_ZERO);
 		path.moveTo(0, 0);
 		path.lineTo(0, 4);
 		path.lineTo(14, 0);
 		path.lineTo(14, 4);
-		assertFalse(this.shape.intersects((PathIterator2afp) path.getPathIterator()));
+		assertFalse(this.shape.intersects((PathIterator3afp) path.getPathIterator()));
 		path.closePath();
-		assertFalse(this.shape.intersects((PathIterator2afp) path.getPathIterator()));
+		assertFalse(this.shape.intersects((PathIterator3afp) path.getPathIterator()));
 
 		path = createPath(PathWindingRule.NON_ZERO);
 		path.moveTo(-8, -7);
@@ -719,9 +606,9 @@ public abstract class AbstractSphere3afpTest<T extends Sphere3afp<?, T, ?, ?, ?,
 		path.lineTo(-16, 14);
 		path.lineTo(20, -7);
 		path.lineTo(5, 21);
-		assertFalse(this.shape.intersects((PathIterator2afp) path.getPathIterator()));
+		assertFalse(this.shape.intersects((PathIterator3afp) path.getPathIterator()));
 		path.closePath();
-		assertTrue(this.shape.intersects((PathIterator2afp) path.getPathIterator()));
+		assertTrue(this.shape.intersects((PathIterator3afp) path.getPathIterator()));
 
 		// EVENB ODD
 		
@@ -730,44 +617,44 @@ public abstract class AbstractSphere3afpTest<T extends Sphere3afp<?, T, ?, ?, ?,
 		path.lineTo(-2, 2);
 		path.lineTo(2, 2);
 		path.lineTo(2, -2);
-		assertFalse(this.shape.intersects((PathIterator2afp) path.getPathIterator()));
+		assertFalse(this.shape.intersects((PathIterator3afp) path.getPathIterator()));
 		path.closePath();
-		assertFalse(this.shape.intersects((PathIterator2afp) path.getPathIterator()));
+		assertFalse(this.shape.intersects((PathIterator3afp) path.getPathIterator()));
 		
 		path = createPath(PathWindingRule.EVEN_ODD);
 		path.moveTo(0, 8);
 		path.lineTo(0, 14);
 		path.lineTo(10, 14);
 		path.lineTo(10, 8);
-		assertFalse(this.shape.intersects((PathIterator2afp) path.getPathIterator()));
+		assertFalse(this.shape.intersects((PathIterator3afp) path.getPathIterator()));
 		path.closePath();
-		assertTrue(this.shape.intersects((PathIterator2afp) path.getPathIterator()));
+		assertTrue(this.shape.intersects((PathIterator3afp) path.getPathIterator()));
 
 		path = createPath(PathWindingRule.EVEN_ODD);
 		path.moveTo(0, 2);
 		path.lineTo(12, 14);
 		path.lineTo(0, 14);
-		assertTrue(this.shape.intersects((PathIterator2afp) path.getPathIterator()));
+		assertTrue(this.shape.intersects((PathIterator3afp) path.getPathIterator()));
 		path.closePath();
-		assertTrue(this.shape.intersects((PathIterator2afp) path.getPathIterator()));
+		assertTrue(this.shape.intersects((PathIterator3afp) path.getPathIterator()));
 
 		path = createPath(PathWindingRule.EVEN_ODD);
 		path.moveTo(-2, 2);
 		path.lineTo(-2, 14);
 		path.lineTo(12, 14);
 		path.lineTo(12, 2);
-		assertFalse(this.shape.intersects((PathIterator2afp) path.getPathIterator()));
+		assertFalse(this.shape.intersects((PathIterator3afp) path.getPathIterator()));
 		path.closePath();
-		assertTrue(this.shape.intersects((PathIterator2afp) path.getPathIterator()));
+		assertTrue(this.shape.intersects((PathIterator3afp) path.getPathIterator()));
 
 		path = createPath(PathWindingRule.EVEN_ODD);
 		path.moveTo(0, 0);
 		path.lineTo(0, 4);
 		path.lineTo(14, 0);
 		path.lineTo(14, 4);
-		assertFalse(this.shape.intersects((PathIterator2afp) path.getPathIterator()));
+		assertFalse(this.shape.intersects((PathIterator3afp) path.getPathIterator()));
 		path.closePath();
-		assertFalse(this.shape.intersects((PathIterator2afp) path.getPathIterator()));
+		assertFalse(this.shape.intersects((PathIterator3afp) path.getPathIterator()));
 
 		path = createPath(PathWindingRule.EVEN_ODD);
 		path.moveTo(-8, -7);
@@ -775,110 +662,110 @@ public abstract class AbstractSphere3afpTest<T extends Sphere3afp<?, T, ?, ?, ?,
 		path.lineTo(-16, 14);
 		path.lineTo(20, -7);
 		path.lineTo(5, 21);
-		assertFalse(this.shape.intersects((PathIterator2afp) path.getPathIterator()));
+		assertFalse(this.shape.intersects((PathIterator3afp) path.getPathIterator()));
 		path.closePath();
-		assertFalse(this.shape.intersects((PathIterator2afp) path.getPathIterator()));
+		assertFalse(this.shape.intersects((PathIterator3afp) path.getPathIterator()));
 	}
 
 	@Test
 	public void staticContainsCirclePoint() {
-		assertTrue(Circle2afp.containsCirclePoint(0, 0, 1, 0, 0));
-		assertTrue(Circle2afp.containsCirclePoint(0, 0, 1, 1, 0));
-		assertTrue(Circle2afp.containsCirclePoint(0, 0, 1, 0, 1));
-		assertFalse(Circle2afp.containsCirclePoint(0, 0, 1, 1, 1));
-		assertFalse(Circle2afp.containsCirclePoint(0, 0, 1, 1.1, 0));
-		assertTrue(Circle2afp.containsCirclePoint(5, 8, 1, 5, 8));
-		assertTrue(Circle2afp.containsCirclePoint(5, 8, 1, 6, 8));
-		assertTrue(Circle2afp.containsCirclePoint(5, 8, 1, 5, 9));
-		assertFalse(Circle2afp.containsCirclePoint(5, 8, 1, 6, 9));
-		assertFalse(Circle2afp.containsCirclePoint(5, 8, 1, 6.1, 8));
+		assertTrue(Sphere3afp.containsCirclePoint(0, 0, 1, 0, 0));
+		assertTrue(Sphere3afp.containsCirclePoint(0, 0, 1, 1, 0));
+		assertTrue(Sphere3afp.containsCirclePoint(0, 0, 1, 0, 1));
+		assertFalse(Sphere3afp.containsCirclePoint(0, 0, 1, 1, 1));
+		assertFalse(Sphere3afp.containsCirclePoint(0, 0, 1, 1.1, 0));
+		assertTrue(Sphere3afp.containsCirclePoint(5, 8, 1, 5, 8));
+		assertTrue(Sphere3afp.containsCirclePoint(5, 8, 1, 6, 8));
+		assertTrue(Sphere3afp.containsCirclePoint(5, 8, 1, 5, 9));
+		assertFalse(Sphere3afp.containsCirclePoint(5, 8, 1, 6, 9));
+		assertFalse(Sphere3afp.containsCirclePoint(5, 8, 1, 6.1, 8));
 	}
 
 	@Test
 	public void staticContainsCircleRectangle() {
-		assertTrue(Circle2afp.containsCircleRectangle(0, 0, 1, 0, 0, .5, .5));
-		assertFalse(Circle2afp.containsCircleRectangle(0, 0, 1, 0, 0, 1, 1));
-		assertFalse(Circle2afp.containsCircleRectangle(0, 0, 1, 0, 0, .5, 1));
+		assertTrue(Sphere3afp.containsCircleRectangle(0, 0, 1, 0, 0, .5, .5));
+		assertFalse(Sphere3afp.containsCircleRectangle(0, 0, 1, 0, 0, 1, 1));
+		assertFalse(Sphere3afp.containsCircleRectangle(0, 0, 1, 0, 0, .5, 1));
 	}
 	
 	@Test
 	public void staticIntersectsCircleCircle() {
-		assertFalse(Circle2afp.intersectsCircleCircle(
+		assertFalse(Sphere3afp.intersectsCircleCircle(
 				0, 0, 1,
 				10, 10, 1));
-		assertTrue(Circle2afp.intersectsCircleCircle(
+		assertTrue(Sphere3afp.intersectsCircleCircle(
 				0, 0, 1,
 				0, 0, 1));
-		assertTrue(Circle2afp.intersectsCircleCircle(
+		assertTrue(Sphere3afp.intersectsCircleCircle(
 				0, 0, 1,
 				0, .5, 1));
-		assertTrue(Circle2afp.intersectsCircleCircle(
+		assertTrue(Sphere3afp.intersectsCircleCircle(
 				0, 0, 1,
 				.5, 0, 1));
-		assertTrue(Circle2afp.intersectsCircleCircle(
+		assertTrue(Sphere3afp.intersectsCircleCircle(
 				0, 0, 1,
 				.5, .5, 1));
-		assertFalse(Circle2afp.intersectsCircleCircle(
+		assertFalse(Sphere3afp.intersectsCircleCircle(
 				0, 0, 1,
 				2, 0, 1));
 	}
 	
 	@Test
 	public void staticIntersectsCircleLine() {
-		assertTrue(Circle2afp.intersectsCircleLine(
+		assertTrue(Sphere3afp.intersectsCircleLine(
 				0, 0, 1,
 				-5, -5, -4, -4));
-		assertTrue(Circle2afp.intersectsCircleLine(
+		assertTrue(Sphere3afp.intersectsCircleLine(
 				0, 0, 1,
 				-5, -5, 5, 5));
-		assertTrue(Circle2afp.intersectsCircleLine(
+		assertTrue(Sphere3afp.intersectsCircleLine(
 				0, 0, 1,
 				-5, -5, .5, .5));
-		assertFalse(Circle2afp.intersectsCircleLine(
+		assertFalse(Sphere3afp.intersectsCircleLine(
 				0, 0, 1,
 				-5, -5, .5, -4));
-		assertFalse(Circle2afp.intersectsCircleLine(
+		assertFalse(Sphere3afp.intersectsCircleLine(
 				0, 0, 1,
 				20, .5, 21, 1.5));
 	}
 	
 	@Test
 	public void staticIntersectsCircleRectangle() {
-		assertFalse(Circle2afp.intersectsCircleRectangle(
+		assertFalse(Sphere3afp.intersectsCircleRectangle(
 				0, 0, 1,
 				-5, -5, -4, -4));
-		assertTrue(Circle2afp.intersectsCircleRectangle(
+		assertTrue(Sphere3afp.intersectsCircleRectangle(
 				0, 0, 1,
 				-5, -5, 5, 5));
-		assertTrue(Circle2afp.intersectsCircleRectangle(
+		assertTrue(Sphere3afp.intersectsCircleRectangle(
 				0, 0, 1,
 				-5, -5, .5, .5));
-		assertFalse(Circle2afp.intersectsCircleRectangle(
+		assertFalse(Sphere3afp.intersectsCircleRectangle(
 				0, 0, 1,
 				-5, -5, .5, -4));
-		assertFalse(Circle2afp.intersectsCircleRectangle(
+		assertFalse(Sphere3afp.intersectsCircleRectangle(
 				0, 0, 1,
 				20, .5, 21, 1.5));
 	}
 	
 	@Test
 	public void staticIntersectsCircleSegment() {
-		assertFalse(Circle2afp.intersectsCircleSegment(
+		assertFalse(Sphere3afp.intersectsCircleSegment(
 				0, 0, 1,
 				-5, -5, -4, -4));
-		assertTrue(Circle2afp.intersectsCircleSegment(
+		assertTrue(Sphere3afp.intersectsCircleSegment(
 				0, 0, 1,
 				-5, -5, 5, 5));
-		assertTrue(Circle2afp.intersectsCircleSegment(
+		assertTrue(Sphere3afp.intersectsCircleSegment(
 				0, 0, 1,
 				-5, -5, .5, .5));
-		assertFalse(Circle2afp.intersectsCircleSegment(
+		assertFalse(Sphere3afp.intersectsCircleSegment(
 				0, 0, 1,
 				-5, -5, .5, -4));
-		assertFalse(Circle2afp.intersectsCircleSegment(
+		assertFalse(Sphere3afp.intersectsCircleSegment(
 				0, 0, 1,
 				20, .5, 21, 1.5));
-		assertTrue(Circle2afp.intersectsCircleSegment(
+		assertTrue(Sphere3afp.intersectsCircleSegment(
 				1, 1, 1,
 				.5, -1, .5, 4));
 	}
@@ -895,13 +782,13 @@ public abstract class AbstractSphere3afpTest<T extends Sphere3afp<?, T, ?, ?, ?,
 
 	@Test
 	public void getCenter() {
-		Point2D center = this.shape.getCenter();
+		Point3D center = this.shape.getCenter();
 		assertEpsilonEquals(5, center.getX());
 		assertEpsilonEquals(8, center.getY());
 	}
 
 	@Test
-	public void setCenterPoint2D() {
+	public void setCenterPoint3D() {
 		this.shape.setCenter(createPoint(123.456, 789.123));
 		assertEpsilonEquals(123.456, this.shape.getX());
 		assertEpsilonEquals(789.123, this.shape.getY());
@@ -954,7 +841,7 @@ public abstract class AbstractSphere3afpTest<T extends Sphere3afp<?, T, ?, ?, ?,
 	}
 
 	@Test
-	public void setPoint2DDouble() {
+	public void setPoint3DDouble() {
 		this.shape.set(createPoint(123.456, 789.123), 456.789);
 		assertEpsilonEquals(123.456, this.shape.getX());
 		assertEpsilonEquals(789.123, this.shape.getY());
@@ -962,13 +849,13 @@ public abstract class AbstractSphere3afpTest<T extends Sphere3afp<?, T, ?, ?, ?,
 	}
 
 	@Override
-	public void intersectsShape2D() {
-		assertTrue(this.shape.intersects((Shape2D) createCircle(10, 10, 1)));
-		assertTrue(this.shape.intersects((Shape2D) createEllipse(9, 9, 2, 2)));
+	public void intersectsShape3D() {
+		assertTrue(this.shape.intersects((Shape3D) createSphere(10, 10, 1)));
+		assertTrue(this.shape.intersects((Shape3D) createEllipse(9, 9, 2, 2)));
 	}
 
 	@Override
-	public void operator_addVector2D() {
+	public void operator_addVector3D() {
 		this.shape.operator_add(createVector(123.456, -789.123));
 		assertEpsilonEquals(128.456, this.shape.getX());
 		assertEpsilonEquals(-781.123, this.shape.getY());
@@ -976,7 +863,7 @@ public abstract class AbstractSphere3afpTest<T extends Sphere3afp<?, T, ?, ?, ?,
 	}
 
 	@Override
-	public void operator_plusVector2D() {
+	public void operator_plusVector3D() {
 		T shape = this.shape.operator_plus(createVector(123.456, -789.123));
 		assertEpsilonEquals(128.456, shape.getX());
 		assertEpsilonEquals(-781.123, shape.getY());
@@ -984,7 +871,7 @@ public abstract class AbstractSphere3afpTest<T extends Sphere3afp<?, T, ?, ?, ?,
 	}
 
 	@Override
-	public void operator_removeVector2D() {
+	public void operator_removeVector3D() {
 		this.shape.operator_remove(createVector(123.456, -789.123));
 		assertEpsilonEquals(-118.456, this.shape.getX());
 		assertEpsilonEquals(797.123, this.shape.getY());
@@ -992,7 +879,7 @@ public abstract class AbstractSphere3afpTest<T extends Sphere3afp<?, T, ?, ?, ?,
 	}
 
 	@Override
-	public void operator_minusVector2D() {
+	public void operator_minusVector3D() {
 		T shape = this.shape.operator_minus(createVector(123.456, -789.123));
 		assertEpsilonEquals(-118.456, shape.getX());
 		assertEpsilonEquals(797.123, shape.getY());
@@ -1000,28 +887,28 @@ public abstract class AbstractSphere3afpTest<T extends Sphere3afp<?, T, ?, ?, ?,
 	}
 
 	@Override
-	public void operator_multiplyTransform2D() {
-		Transform2D tr;
-		Shape2afp newShape;
+	public void operator_multiplyTransform3D() {
+		Transform3D tr;
+		Shape3afp newShape;
 		
 		newShape = this.shape.operator_multiply(null);
 		assertNotNull(newShape);
 		assertNotSame(this.shape, newShape);
 		assertEquals(this.shape, newShape);
 
-		tr = new Transform2D();
+		tr = new Transform3D();
 		newShape = this.shape.operator_multiply(tr);
 		assertNotNull(newShape);
 		assertNotSame(this.shape, newShape);
 		assertEquals(this.shape, newShape);
 
-		tr = new Transform2D();
+		tr = new Transform3D();
 		tr.makeTranslationMatrix(10, -10);
 		newShape = this.shape.operator_multiply(tr);
 		assertNotNull(newShape);
 		assertNotSame(this.shape, newShape);
-		assertTrue(newShape instanceof Path2afp);
-		PathIterator2afp pi = this.shape.getPathIterator(tr);
+		assertTrue(newShape instanceof Path3afp);
+		PathIterator3afp pi = this.shape.getPathIterator(tr);
 		assertElement(pi, PathElementType.MOVE_TO, 20, -2);
 		assertElement(pi, PathElementType.CURVE_TO, 20, 0.76142374915397, 17.761423749153966, 3, 15, 3);
 		assertElement(pi, PathElementType.CURVE_TO, 12.238576250846033, 3, 10, 0.76142374915397, 10, -2);
@@ -1032,7 +919,7 @@ public abstract class AbstractSphere3afpTest<T extends Sphere3afp<?, T, ?, ?, ?,
 	}
 
 	@Override
-	public void operator_andPoint2D() {
+	public void operator_andPoint3D() {
 		assertFalse(this.shape.operator_and(createPoint(0,0)));
 		assertFalse(this.shape.operator_and(createPoint(11,10)));
 		assertFalse(this.shape.operator_and(createPoint(11,50)));
@@ -1045,13 +932,13 @@ public abstract class AbstractSphere3afpTest<T extends Sphere3afp<?, T, ?, ?, ?,
 	}
 
 	@Override
-	public void operator_andShape2D() {
-		assertTrue(this.shape.operator_and(createCircle(10, 10, 1)));
+	public void operator_andShape3D() {
+		assertTrue(this.shape.operator_and(createSphere(10, 10, 1)));
 		assertTrue(this.shape.operator_and(createEllipse(9, 9, 2, 2)));
 	}
 
 	@Override
-	public void operator_upToPoint2D() {
+	public void operator_upToPoint3D() {
 		assertEpsilonEquals(3.74643, this.shape.operator_upTo(createPoint(.5,.5)));
 		assertEpsilonEquals(7.9769, this.shape.operator_upTo(createPoint(-1.2,-3.4)));
 		assertEpsilonEquals(1.6483, this.shape.operator_upTo(createPoint(-1.2,5.6)));

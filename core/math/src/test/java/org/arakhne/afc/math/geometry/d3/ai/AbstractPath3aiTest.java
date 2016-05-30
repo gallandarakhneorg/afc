@@ -37,11 +37,12 @@ import java.util.Iterator;
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
-import org.arakhne.afc.math.geometry.d2.Path2D.ArcType;
-import org.arakhne.afc.math.geometry.d2.Point2D;
-import org.arakhne.afc.math.geometry.d2.Shape2D;
-import org.arakhne.afc.math.geometry.d2.Transform2D;
+import org.arakhne.afc.math.geometry.d3.Point3D;
+import org.arakhne.afc.math.geometry.d3.Shape3D;
+import org.arakhne.afc.math.geometry.d3.Transform3D;
 import org.junit.Test;
+
+import javafx.scene.shape.ArcType;
 
 @SuppressWarnings("all")
 public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
@@ -65,7 +66,7 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 		assertNotNull(clone);
 		assertNotSame(this.shape, clone);
 		assertEquals(this.shape.getClass(), clone.getClass());
-		PathIterator2ai pi = clone.getPathIterator();
+		PathIterator3ai pi = clone.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
 		assertElement(pi, PathElementType.LINE_TO, 2, 2);
 		assertElement(pi, PathElementType.QUAD_TO, 3, 0, 4, 3);
@@ -82,7 +83,7 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 		assertFalse(this.shape.equals(createPath()));
 		assertFalse(this.shape.equals(createRectangle(5, 8, 10, 6)));
 		assertTrue(this.shape.equals(this.shape));
-		Path2ai path = createPath();
+		Path3ai path = createPath();
 		path.moveTo(0, 0);
 		path.lineTo(2, 2);
 		path.quadTo(3, 0, 4, 3);
@@ -97,7 +98,7 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 		assertFalse(this.shape.equals(createPath().getPathIterator()));
 		assertFalse(this.shape.equals(createRectangle(5, 8, 10, 6).getPathIterator()));
 		assertTrue(this.shape.equals(this.shape.getPathIterator()));
-		Path2ai path = createPath();
+		Path3ai path = createPath();
 		path.moveTo(0, 0);
 		path.lineTo(2, 2);
 		path.quadTo(3, 0, 4, 3);
@@ -124,11 +125,11 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 	@Test
 	@Override
 	public void equalsToPathIterator() {
-		assertFalse(this.shape.equalsToPathIterator((PathIterator2ai) null));
+		assertFalse(this.shape.equalsToPathIterator((PathIterator3ai) null));
 		assertFalse(this.shape.equalsToPathIterator(createPath().getPathIterator()));
 		assertFalse(this.shape.equalsToPathIterator(createRectangle(5, 8, 10, 6).getPathIterator()));
 		assertTrue(this.shape.equalsToPathIterator(this.shape.getPathIterator()));
-		Path2ai path = createPath();
+		Path3ai path = createPath();
 		path.moveTo(0, 0);
 		path.lineTo(2, 2);
 		path.quadTo(3, 0, 4, 3);
@@ -189,8 +190,8 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 	@Test
 	@Override
 	public void getPointIterator() {
-		Point2D p;
-		Iterator<? extends Point2D> it = this.shape.getPointIterator();
+		Point3D p;
+		Iterator<? extends Point3D> it = this.shape.getPointIterator();
 		
 		assertTrue(it.hasNext());
 		p = it.next();
@@ -341,51 +342,51 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 	
 	@Test
 	public void staticComputeCrossingsFromPoint() {
-		assertEquals(0, Path2ai.computeCrossingsFromPoint(0, this.shape.getPathIterator(), -2, 1, null));
-		assertEquals(0, Path2ai.computeCrossingsFromPoint(0, this.shape.getPathIterator(), 0, -3, null));
+		assertEquals(0, Path3ai.computeCrossingsFromPoint(0, this.shape.getPathIterator(), -2, 1, null));
+		assertEquals(0, Path3ai.computeCrossingsFromPoint(0, this.shape.getPathIterator(), 0, -3, null));
 		assertEquals(SHAPE_INTERSECTS,
-				Path2ai.computeCrossingsFromPoint(0, this.shape.getPathIterator(), 4, 3, null));
-		assertEquals(-2, Path2ai.computeCrossingsFromPoint(0, this.shape.getPathIterator(), 3, 0, null));
+				Path3ai.computeCrossingsFromPoint(0, this.shape.getPathIterator(), 4, 3, null));
+		assertEquals(-2, Path3ai.computeCrossingsFromPoint(0, this.shape.getPathIterator(), 3, 0, null));
 	}
 
 	@Test
 	public void staticComputeCrossingsFromRect() {
-		assertEquals(0, Path2ai.computeCrossingsFromRect(
+		assertEquals(0, Path3ai.computeCrossingsFromRect(
 				0,
 				this.shape.getPathIterator(),
 				-2, 1, -1, 2,
 				null));
-		assertEquals(SHAPE_INTERSECTS, Path2ai.computeCrossingsFromRect(
+		assertEquals(SHAPE_INTERSECTS, Path3ai.computeCrossingsFromRect(
 				0,
 				this.shape.getPathIterator(),
 				0, 1, 3, 6,
 				null));
-		assertEquals(SHAPE_INTERSECTS, Path2ai.computeCrossingsFromRect(
+		assertEquals(SHAPE_INTERSECTS, Path3ai.computeCrossingsFromRect(
 				0,
 				this.shape.getPathIterator(),
 				3, -1, 8, 0,
 				null));
-		assertEquals(-2, Path2ai.computeCrossingsFromRect(
+		assertEquals(-2, Path3ai.computeCrossingsFromRect(
 				0,
 				this.shape.getPathIterator(),
 				3, -1, 4, 0,
 				null));
-		assertEquals(-2, Path2ai.computeCrossingsFromRect(
+		assertEquals(-2, Path3ai.computeCrossingsFromRect(
 				0,
 				this.shape.getPathIterator(),
 				3, -1, 5, 0,
 				null));
-		assertEquals(0, Path2ai.computeCrossingsFromRect(
+		assertEquals(0, Path3ai.computeCrossingsFromRect(
 				0,
 				this.shape.getPathIterator(),
 				0, -4, 3, -3,
 				null));
-		assertEquals(SHAPE_INTERSECTS, Path2ai.computeCrossingsFromRect(
+		assertEquals(SHAPE_INTERSECTS, Path3ai.computeCrossingsFromRect(
 				0,
 				this.shape.getPathIterator(),
 				0, -4, 4, -3,
 				null));
-		assertEquals(SHAPE_INTERSECTS, Path2ai.computeCrossingsFromRect(
+		assertEquals(SHAPE_INTERSECTS, Path3ai.computeCrossingsFromRect(
 				0,
 				this.shape.getPathIterator(),
 				0, -4, 3, -2,
@@ -394,42 +395,42 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 
 	@Test
 	public void staticComputeCrossingsFromSegment() {
-		assertEquals(0, Path2ai.computeCrossingsFromSegment(
+		assertEquals(0, Path3ai.computeCrossingsFromSegment(
 				0,
 				this.shape.getPathIterator(),
 				-2, 1, -1, 2,
 				null));
-		assertEquals(0, Path2ai.computeCrossingsFromSegment(
+		assertEquals(0, Path3ai.computeCrossingsFromSegment(
 				0,
 				this.shape.getPathIterator(),
 				0, 1, 3, 6,
 				null));
-		assertEquals(SHAPE_INTERSECTS, Path2ai.computeCrossingsFromSegment(
+		assertEquals(SHAPE_INTERSECTS, Path3ai.computeCrossingsFromSegment(
 				0,
 				this.shape.getPathIterator(),
 				3, -1, 8, 0,
 				null));
-		assertEquals(-2, Path2ai.computeCrossingsFromSegment(
+		assertEquals(-2, Path3ai.computeCrossingsFromSegment(
 				0,
 				this.shape.getPathIterator(),
 				3, -1, 4, 0,
 				null));
-		assertEquals(-2, Path2ai.computeCrossingsFromSegment(
+		assertEquals(-2, Path3ai.computeCrossingsFromSegment(
 				0,
 				this.shape.getPathIterator(),
 				3, -1, 5, 0,
 				null));
-		assertEquals(0, Path2ai.computeCrossingsFromSegment(
+		assertEquals(0, Path3ai.computeCrossingsFromSegment(
 				0,
 				this.shape.getPathIterator(),
 				0, -4, 3, -3,
 				null));
-		assertEquals(SHAPE_INTERSECTS, Path2ai.computeCrossingsFromSegment(
+		assertEquals(SHAPE_INTERSECTS, Path3ai.computeCrossingsFromSegment(
 				0,
 				this.shape.getPathIterator(),
 				0, -4, 4, -3,
 				null));
-		assertEquals(SHAPE_INTERSECTS, Path2ai.computeCrossingsFromSegment(
+		assertEquals(SHAPE_INTERSECTS, Path3ai.computeCrossingsFromSegment(
 				0,
 				this.shape.getPathIterator(),
 				0, -4, 3, -2,
@@ -438,37 +439,37 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 	
 	@Test
 	public void staticComputeCrossingsFromCircle() {
-		assertEquals(0, Path2ai.computeCrossingsFromCircle(
+		assertEquals(0, Path3ai.computeCrossingsFromCircle(
 				0,
 				this.shape.getPathIterator(),
 				-2, 1, 1,
 				null));
-		assertEquals(SHAPE_INTERSECTS, Path2ai.computeCrossingsFromCircle(
+		assertEquals(SHAPE_INTERSECTS, Path3ai.computeCrossingsFromCircle(
 				0,
 				this.shape.getPathIterator(),
 				-2, 1, 2,
 				null));
-		assertEquals(SHAPE_INTERSECTS, Path2ai.computeCrossingsFromCircle(
+		assertEquals(SHAPE_INTERSECTS, Path3ai.computeCrossingsFromCircle(
 				0,
 				this.shape.getPathIterator(),
 				0, 1, 3,
 				null));
-		assertEquals(SHAPE_INTERSECTS, Path2ai.computeCrossingsFromCircle(
+		assertEquals(SHAPE_INTERSECTS, Path3ai.computeCrossingsFromCircle(
 				0,
 				this.shape.getPathIterator(),
 				3, -1, 8,
 				null));
-		assertEquals(SHAPE_INTERSECTS, Path2ai.computeCrossingsFromCircle(
+		assertEquals(SHAPE_INTERSECTS, Path3ai.computeCrossingsFromCircle(
 				0,
 				this.shape.getPathIterator(),
 				3, -1, 1,
 				null));
-		assertEquals(-2, Path2ai.computeCrossingsFromCircle(
+		assertEquals(-2, Path3ai.computeCrossingsFromCircle(
 				0,
 				this.shape.getPathIterator(),
 				4, -1, 0,
 				null));
-		assertEquals(0, Path2ai.computeCrossingsFromCircle(
+		assertEquals(0, Path3ai.computeCrossingsFromCircle(
 				0,
 				this.shape.getPathIterator(),
 				20, 0, 2,
@@ -477,8 +478,8 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 
 	@Test
 	public void staticComputeCrossingsFromPath_notCloseable_noOnlyIntersectWhenOpen() {
-		Path2ai path1;
-		Path2ai path2;
+		Path3ai path1;
+		Path3ai path2;
 		
 		path1 = createPath();
 		path1.moveTo(-33, 98);
@@ -490,9 +491,9 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 		path2.lineTo(-31, 99);
 		path2.lineTo(-31, 103);
 		path2.lineTo(-34, 103);
-		assertEquals(1, Path2ai.computeCrossingsFromPath(
-				(PathIterator2ai) path2.getPathIterator(),
-				new PathShadow2ai(path1),
+		assertEquals(1, Path3ai.computeCrossingsFromPath(
+				(PathIterator3ai) path2.getPathIterator(),
+				new PathShadow3ai(path1),
 				false, false));
 
 		path1 = createPath();
@@ -506,9 +507,9 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 		path2.lineTo(-31, 99);
 		path2.lineTo(-31, 103);
 		path2.lineTo(-34, 103);
-		assertEquals(MathConstants.SHAPE_INTERSECTS, Path2ai.computeCrossingsFromPath(
-				(PathIterator2ai) path2.getPathIterator(),
-				new PathShadow2ai(path1),
+		assertEquals(MathConstants.SHAPE_INTERSECTS, Path3ai.computeCrossingsFromPath(
+				(PathIterator3ai) path2.getPathIterator(),
+				new PathShadow3ai(path1),
 				false, false));
 
 		path1 = createPath();
@@ -522,9 +523,9 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 		path2.lineTo(-31, 103);
 		path2.lineTo(-34, 103);
 		path2.closePath();
-		assertEquals(MathConstants.SHAPE_INTERSECTS, Path2ai.computeCrossingsFromPath(
-				(PathIterator2ai) path2.getPathIterator(),
-				new PathShadow2ai(path1),
+		assertEquals(MathConstants.SHAPE_INTERSECTS, Path3ai.computeCrossingsFromPath(
+				(PathIterator3ai) path2.getPathIterator(),
+				new PathShadow3ai(path1),
 				false, false));
 
 		path1 = createPath();
@@ -539,16 +540,16 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 		path2.lineTo(-31, 103);
 		path2.lineTo(-34, 103);
 		path2.closePath();
-		assertEquals(MathConstants.SHAPE_INTERSECTS, Path2ai.computeCrossingsFromPath(
-				(PathIterator2ai) path2.getPathIterator(),
-				new PathShadow2ai(path1),
+		assertEquals(MathConstants.SHAPE_INTERSECTS, Path3ai.computeCrossingsFromPath(
+				(PathIterator3ai) path2.getPathIterator(),
+				new PathShadow3ai(path1),
 				false, false));
 	}
 	
 	@Test
 	public void staticComputeCrossingsFromPath_closeable_noOnlyIntersectWhenOpen() {
-		Path2ai path1;
-		Path2ai path2;
+		Path3ai path1;
+		Path3ai path2;
 		
 		path1 = createPath();
 		path1.moveTo(-33, 98);
@@ -560,9 +561,9 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 		path2.lineTo(-31, 99);
 		path2.lineTo(-31, 103);
 		path2.lineTo(-34, 103);
-		assertEquals(MathConstants.SHAPE_INTERSECTS, Path2ai.computeCrossingsFromPath(
-				(PathIterator2ai) path2.getPathIterator(),
-				new PathShadow2ai(path1),
+		assertEquals(MathConstants.SHAPE_INTERSECTS, Path3ai.computeCrossingsFromPath(
+				(PathIterator3ai) path2.getPathIterator(),
+				new PathShadow3ai(path1),
 				true, false));
 
 		path1 = createPath();
@@ -576,9 +577,9 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 		path2.lineTo(-31, 99);
 		path2.lineTo(-31, 103);
 		path2.lineTo(-34, 103);
-		assertEquals(MathConstants.SHAPE_INTERSECTS, Path2ai.computeCrossingsFromPath(
-				(PathIterator2ai) path2.getPathIterator(),
-				new PathShadow2ai(path1),
+		assertEquals(MathConstants.SHAPE_INTERSECTS, Path3ai.computeCrossingsFromPath(
+				(PathIterator3ai) path2.getPathIterator(),
+				new PathShadow3ai(path1),
 				true, false));
 
 		path1 = createPath();
@@ -592,9 +593,9 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 		path2.lineTo(-31, 103);
 		path2.lineTo(-34, 103);
 		path2.closePath();
-		assertEquals(MathConstants.SHAPE_INTERSECTS, Path2ai.computeCrossingsFromPath(
-				(PathIterator2ai) path2.getPathIterator(),
-				new PathShadow2ai(path1),
+		assertEquals(MathConstants.SHAPE_INTERSECTS, Path3ai.computeCrossingsFromPath(
+				(PathIterator3ai) path2.getPathIterator(),
+				new PathShadow3ai(path1),
 				true, false));
 
 		path1 = createPath();
@@ -609,16 +610,16 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 		path2.lineTo(-31, 103);
 		path2.lineTo(-34, 103);
 		path2.closePath();
-		assertEquals(MathConstants.SHAPE_INTERSECTS, Path2ai.computeCrossingsFromPath(
-				(PathIterator2ai) path2.getPathIterator(),
-				new PathShadow2ai(path1),
+		assertEquals(MathConstants.SHAPE_INTERSECTS, Path3ai.computeCrossingsFromPath(
+				(PathIterator3ai) path2.getPathIterator(),
+				new PathShadow3ai(path1),
 				true, false));
 	}
 		
 	@Test
 	public void staticComputeCrossingsFromPath_closeable_onlyIntersectWhenOpen() {
-		Path2ai path1;
-		Path2ai path2;
+		Path3ai path1;
+		Path3ai path2;
 		
 		path1 = createPath();
 		path1.moveTo(-33, 98);
@@ -630,9 +631,9 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 		path2.lineTo(-31, 99);
 		path2.lineTo(-31, 103);
 		path2.lineTo(-34, 103);
-		assertEquals(MathConstants.SHAPE_INTERSECTS, Path2ai.computeCrossingsFromPath(
-				(PathIterator2ai) path2.getPathIterator(),
-				new PathShadow2ai(path1),
+		assertEquals(MathConstants.SHAPE_INTERSECTS, Path3ai.computeCrossingsFromPath(
+				(PathIterator3ai) path2.getPathIterator(),
+				new PathShadow3ai(path1),
 				true, true));
 
 		path1 = createPath();
@@ -646,9 +647,9 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 		path2.lineTo(-31, 99);
 		path2.lineTo(-31, 103);
 		path2.lineTo(-34, 103);
-		assertEquals(MathConstants.SHAPE_INTERSECTS, Path2ai.computeCrossingsFromPath(
-				(PathIterator2ai) path2.getPathIterator(),
-				new PathShadow2ai(path1),
+		assertEquals(MathConstants.SHAPE_INTERSECTS, Path3ai.computeCrossingsFromPath(
+				(PathIterator3ai) path2.getPathIterator(),
+				new PathShadow3ai(path1),
 				true, true));
 
 		path1 = createPath();
@@ -662,9 +663,9 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 		path2.lineTo(-31, 103);
 		path2.lineTo(-34, 103);
 		path2.closePath();
-		assertEquals(MathConstants.SHAPE_INTERSECTS, Path2ai.computeCrossingsFromPath(
-				(PathIterator2ai) path2.getPathIterator(),
-				new PathShadow2ai(path1),
+		assertEquals(MathConstants.SHAPE_INTERSECTS, Path3ai.computeCrossingsFromPath(
+				(PathIterator3ai) path2.getPathIterator(),
+				new PathShadow3ai(path1),
 				true, true));
 
 		path1 = createPath();
@@ -679,16 +680,16 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 		path2.lineTo(-31, 103);
 		path2.lineTo(-34, 103);
 		path2.closePath();
-		assertEquals(MathConstants.SHAPE_INTERSECTS, Path2ai.computeCrossingsFromPath(
-				(PathIterator2ai) path2.getPathIterator(),
-				new PathShadow2ai(path1),
+		assertEquals(MathConstants.SHAPE_INTERSECTS, Path3ai.computeCrossingsFromPath(
+				(PathIterator3ai) path2.getPathIterator(),
+				new PathShadow3ai(path1),
 				true, true));
 	}
 
 	@Test
 	public void staticComputeCrossingsFromPath_noCloseable_onlyIntersectWhenOpen() {
-		Path2ai path1;
-		Path2ai path2;
+		Path3ai path1;
+		Path3ai path2;
 		
 		path1 = createPath();
 		path1.moveTo(-33, 98);
@@ -700,9 +701,9 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 		path2.lineTo(-31, 99);
 		path2.lineTo(-31, 103);
 		path2.lineTo(-34, 103);
-		assertEquals(0, Path2ai.computeCrossingsFromPath(
-				(PathIterator2ai) path2.getPathIterator(),
-				new PathShadow2ai(path1),
+		assertEquals(0, Path3ai.computeCrossingsFromPath(
+				(PathIterator3ai) path2.getPathIterator(),
+				new PathShadow3ai(path1),
 				false, true));
 
 		path1 = createPath();
@@ -716,9 +717,9 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 		path2.lineTo(-31, 99);
 		path2.lineTo(-31, 103);
 		path2.lineTo(-34, 103);
-		assertEquals(MathConstants.SHAPE_INTERSECTS, Path2ai.computeCrossingsFromPath(
-				(PathIterator2ai) path2.getPathIterator(),
-				new PathShadow2ai(path1),
+		assertEquals(MathConstants.SHAPE_INTERSECTS, Path3ai.computeCrossingsFromPath(
+				(PathIterator3ai) path2.getPathIterator(),
+				new PathShadow3ai(path1),
 				false, true));
 
 		path1 = createPath();
@@ -732,9 +733,9 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 		path2.lineTo(-31, 103);
 		path2.lineTo(-34, 103);
 		path2.closePath();
-		assertEquals(MathConstants.SHAPE_INTERSECTS, Path2ai.computeCrossingsFromPath(
-				(PathIterator2ai) path2.getPathIterator(),
-				new PathShadow2ai(path1),
+		assertEquals(MathConstants.SHAPE_INTERSECTS, Path3ai.computeCrossingsFromPath(
+				(PathIterator3ai) path2.getPathIterator(),
+				new PathShadow3ai(path1),
 				false, true));
 
 		path1 = createPath();
@@ -749,48 +750,48 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 		path2.lineTo(-31, 103);
 		path2.lineTo(-34, 103);
 		path2.closePath();
-		assertEquals(MathConstants.SHAPE_INTERSECTS, Path2ai.computeCrossingsFromPath(
-				(PathIterator2ai) path2.getPathIterator(),
-				new PathShadow2ai(path1),
+		assertEquals(MathConstants.SHAPE_INTERSECTS, Path3ai.computeCrossingsFromPath(
+				(PathIterator3ai) path2.getPathIterator(),
+				new 	(path1),
 				false, true));
 	}
 
 	@Test
 	public void staticContainsPathIterator2iIntInt() {
-		assertTrue(Path2ai.contains(this.shape.getPathIterator(), 0, 0));
-		assertTrue(Path2ai.contains(this.shape.getPathIterator(), 4, 3));
-		assertTrue(Path2ai.contains(this.shape.getPathIterator(), 2, 2));
-		assertTrue(Path2ai.contains(this.shape.getPathIterator(), 2, 1));
-		assertTrue(Path2ai.contains(this.shape.getPathIterator(), 4, 2));
-		assertTrue(Path2ai.contains(this.shape.getPathIterator(), 4, 3));
-		assertFalse(Path2ai.contains(this.shape.getPathIterator(), -1, -1));
-		assertFalse(Path2ai.contains(this.shape.getPathIterator(), 6, 2));
-		assertTrue(Path2ai.contains(this.shape.getPathIterator(), 3, -2));
-		assertFalse(Path2ai.contains(this.shape.getPathIterator(), 2, -2));
+		assertTrue(Path3ai.contains(this.shape.getPathIterator(), 0, 0));
+		assertTrue(Path3ai.contains(this.shape.getPathIterator(), 4, 3));
+		assertTrue(Path3ai.contains(this.shape.getPathIterator(), 2, 2));
+		assertTrue(Path3ai.contains(this.shape.getPathIterator(), 2, 1));
+		assertTrue(Path3ai.contains(this.shape.getPathIterator(), 4, 2));
+		assertTrue(Path3ai.contains(this.shape.getPathIterator(), 4, 3));
+		assertFalse(Path3ai.contains(this.shape.getPathIterator(), -1, -1));
+		assertFalse(Path3ai.contains(this.shape.getPathIterator(), 6, 2));
+		assertTrue(Path3ai.contains(this.shape.getPathIterator(), 3, -2));
+		assertFalse(Path3ai.contains(this.shape.getPathIterator(), 2, -2));
 	}
 
 	@Test
 	public void staticIntersectsPathIterator2iIntIntIntInt() {
-		assertTrue(Path2ai.intersects(this.shape.getPathIterator(), 0, 0, 1, 1));
-		assertTrue(Path2ai.intersects(this.shape.getPathIterator(), 4, 3, 1, 1));
-		assertTrue(Path2ai.intersects(this.shape.getPathIterator(), 2, 2, 1, 1));
-		assertTrue(Path2ai.intersects(this.shape.getPathIterator(), 2, 1, 1, 1));
-		assertTrue(Path2ai.intersects(this.shape.getPathIterator(), 3, 0, 1, 1));
-		assertTrue(Path2ai.intersects(this.shape.getPathIterator(), -1, -1, 1, 1));
-		assertTrue(Path2ai.intersects(this.shape.getPathIterator(), 4, -3, 1, 1));
-		assertFalse(Path2ai.intersects(this.shape.getPathIterator(), -3, 4, 1, 1));
-		assertTrue(Path2ai.intersects(this.shape.getPathIterator(), 6, -5, 1, 1));
-		assertTrue(Path2ai.intersects(this.shape.getPathIterator(), 4, 0, 1, 1));
-		assertTrue(Path2ai.intersects(this.shape.getPathIterator(), 5, 0, 1, 1));
-		assertFalse(Path2ai.intersects(this.shape.getPathIterator(), 0, -3, 1, 1));
-		assertFalse(Path2ai.intersects(this.shape.getPathIterator(), 0, -3, 2, 1));
-		assertTrue(Path2ai.intersects(this.shape.getPathIterator(), 0, -3, 3, 1));
+		assertTrue(Path3ai.intersects(this.shape.getPathIterator(), 0, 0, 1, 1));
+		assertTrue(Path3ai.intersects(this.shape.getPathIterator(), 4, 3, 1, 1));
+		assertTrue(Path3ai.intersects(this.shape.getPathIterator(), 2, 2, 1, 1));
+		assertTrue(Path3ai.intersects(this.shape.getPathIterator(), 2, 1, 1, 1));
+		assertTrue(Path3ai.intersects(this.shape.getPathIterator(), 3, 0, 1, 1));
+		assertTrue(Path3ai.intersects(this.shape.getPathIterator(), -1, -1, 1, 1));
+		assertTrue(Path3ai.intersects(this.shape.getPathIterator(), 4, -3, 1, 1));
+		assertFalse(Path3ai.intersects(this.shape.getPathIterator(), -3, 4, 1, 1));
+		assertTrue(Path3ai.intersects(this.shape.getPathIterator(), 6, -5, 1, 1));
+		assertTrue(Path3ai.intersects(this.shape.getPathIterator(), 4, 0, 1, 1));
+		assertTrue(Path3ai.intersects(this.shape.getPathIterator(), 5, 0, 1, 1));
+		assertFalse(Path3ai.intersects(this.shape.getPathIterator(), 0, -3, 1, 1));
+		assertFalse(Path3ai.intersects(this.shape.getPathIterator(), 0, -3, 2, 1));
+		assertTrue(Path3ai.intersects(this.shape.getPathIterator(), 0, -3, 3, 1));
 	}
 	
 	@Test
 	@Override
 	public void getClosestPointTo() {
-		Point2D p;
+		Point3D p;
 		
 		p = this.shape.getClosestPointTo(createPoint(0, 0));
 		assertEquals(p.toString(), 0, p.ix());
@@ -842,7 +843,7 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 	@Test
 	@Override
 	public void getFarthestPointTo() {
-		Point2D p;
+		Point3D p;
 		
 		p = this.shape.getFarthestPointTo(createPoint(0, 0));
 		assertEquals(p.toString(), 7, p.ix());
@@ -909,7 +910,7 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 	@Override
 	public void translateIntInt() {
 		this.shape.translate(3, 4);
-		PathIterator2ai pi = this.shape.getPathIterator();
+		PathIterator3ai pi = this.shape.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 3, 4);
 		assertElement(pi, PathElementType.LINE_TO, 5, 6);
 		assertElement(pi, PathElementType.QUAD_TO, 6, 4, 7, 7);
@@ -920,9 +921,9 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 
 	@Test
 	@Override
-	public void translateVector2D() {
+	public void translateVector3D() {
 		this.shape.translate(createVector(3, 4));
-		PathIterator2ai pi = this.shape.getPathIterator();
+		PathIterator3ai pi = this.shape.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 3, 4);
 		assertElement(pi, PathElementType.LINE_TO, 5, 6);
 		assertElement(pi, PathElementType.QUAD_TO, 6, 4, 7, 7);
@@ -942,13 +943,13 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 
 	@Test
 	public void addIterator() {
-		Path2ai p2 = createPath();
+		Path3ai p2 = createPath();
 		p2.moveTo(3, 4);
 		p2.lineTo(5, 6);
 		
 		this.shape.add(p2.getPathIterator());
 		
-		PathIterator2ai pi = this.shape.getPathIterator();
+		PathIterator3ai pi = this.shape.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
 		assertElement(pi, PathElementType.LINE_TO, 2, 2);
 		assertElement(pi, PathElementType.QUAD_TO, 3, 0, 4, 3);
@@ -962,7 +963,7 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 	@Test
 	@Override
 	public void getPathIterator() {
-		PathIterator2ai pi = this.shape.getPathIterator();
+		PathIterator3ai pi = this.shape.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
 		assertElement(pi, PathElementType.LINE_TO, 2, 2);
 		assertElement(pi, PathElementType.QUAD_TO, 3, 0, 4, 3);
@@ -973,11 +974,11 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 
 	@Test
 	@Override
-	public void getPathIteratorTransform2D() {
-		Transform2D tr;
-		PathIterator2ai pi;
+	public void getPathIteratorTransform3D() {
+		Transform3D tr;
+		PathIterator3ai pi;
 		
-		tr = new Transform2D();
+		tr = new Transform3D();
 		pi = this.shape.getPathIterator(tr);
 		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
 		assertElement(pi, PathElementType.LINE_TO, 2, 2);
@@ -986,7 +987,7 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 		assertElement(pi, PathElementType.CLOSE, 0, 0);
 		assertNoElement(pi);
 
-		tr = new Transform2D();
+		tr = new Transform3D();
 		tr.makeTranslationMatrix(3, 4);
 		pi = this.shape.getPathIterator(tr);
 		assertElement(pi, PathElementType.MOVE_TO, 3, 4);
@@ -999,7 +1000,7 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 	
 	@Test
 	public void getPathIteratorDouble() {
-		PathIterator2ai pi = this.shape.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO);
+		PathIterator3ai pi = this.shape.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO);
 		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
 		assertElement(pi, PathElementType.LINE_TO, 2, 2);
 		assertElement(pi, PathElementType.LINE_TO, 3, 1);
@@ -1021,14 +1022,14 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 	}
 
 	@Test
-	public void transformTransform2D_translation() {
-		Transform2D tr = new Transform2D();
+	public void transformTransform3D_translation() {
+		Transform3D tr = new Transform3D();
 		tr.makeTranslationMatrix(3, 4);
 		
-		Path2ai clone = this.shape.clone();
+		Path3ai clone = this.shape.clone();
 		clone.transform(tr);
 
-		PathIterator2ai pi = (PathIterator2ai) clone.getPathIterator();
+		PathIterator3ai pi = (PathIterator3ai) clone.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 3, 4);
 		assertElement(pi, PathElementType.LINE_TO, 5, 6);
 		assertElement(pi, PathElementType.QUAD_TO, 6, 4, 7, 7);
@@ -1039,14 +1040,14 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 
 	@Test
 	public void createTransformedShape_translation() {
-		Transform2D tr = new Transform2D();
+		Transform3D tr = new Transform3D();
 		tr.makeTranslationMatrix(3, 4);
 		
-		Shape2ai clone = this.shape.createTransformedShape(tr);
+		Shape3ai clone = this.shape.createTransformedShape(tr);
 		
-		assertTrue(clone instanceof Path2ai);
+		assertTrue(clone instanceof Path3ai);
 
-		PathIterator2ai pi = (PathIterator2ai) clone.getPathIterator();
+		PathIterator3ai pi = (PathIterator3ai) clone.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 3, 4);
 		assertElement(pi, PathElementType.LINE_TO, 5, 6);
 		assertElement(pi, PathElementType.QUAD_TO, 6, 4, 7, 7);
@@ -1056,14 +1057,14 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 	}
 
 	@Test
-	public void transformTransform2D_rotation() {
-		Transform2D tr2 = new Transform2D();
+	public void transformTransform3D_rotation() {
+		Transform3D tr2 = new Transform3D();
 		tr2.makeRotationMatrix(-MathConstants.DEMI_PI);
 		
-		Path2ai clone = this.shape.clone();
+		Path3ai clone = this.shape.clone();
 		clone.transform(tr2);
 
-		PathIterator2ai pi = (PathIterator2ai) clone.getPathIterator();
+		PathIterator3ai pi = (PathIterator3ai) clone.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
 		assertElement(pi, PathElementType.LINE_TO, 2, -2);
 		assertElement(pi, PathElementType.QUAD_TO, 0, -3, 3, -4);
@@ -1074,12 +1075,12 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 
 	@Test
 	public void createTransformedShape_rotation() {
-		Transform2D tr2 = new Transform2D();
+		Transform3D tr2 = new Transform3D();
 		tr2.makeRotationMatrix(-MathConstants.DEMI_PI);
 		
-		Path2ai clone = (Path2ai) this.shape.createTransformedShape(tr2);
+		Path3ai clone = (Path3ai) this.shape.createTransformedShape(tr2);
 
-		PathIterator2ai pi = (PathIterator2ai) clone.getPathIterator();
+		PathIterator3ai pi = (PathIterator3ai) clone.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
 		assertElement(pi, PathElementType.LINE_TO, 2, -2);
 		assertElement(pi, PathElementType.QUAD_TO, 0, -3, 3, -4);
@@ -1089,18 +1090,18 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 	}
 
 	@Test
-	public void transformTransform2D_translationRotation() {
-		Transform2D tr = new Transform2D();
+	public void transformTransform3D_translationRotation() {
+		Transform3D tr = new Transform3D();
 		tr.makeTranslationMatrix(3, 4);
-		Transform2D tr2 = new Transform2D();
+		Transform3D tr2 = new Transform3D();
 		tr2.makeRotationMatrix(-MathConstants.DEMI_PI);
-		Transform2D tr3 = new Transform2D();
+		Transform3D tr3 = new Transform3D();
 		tr3.mul(tr, tr2);
 
-		Path2ai clone = this.shape.clone();
+		Path3ai clone = this.shape.clone();
 		clone.transform(tr3);
 
-		PathIterator2ai pi = (PathIterator2ai) clone.getPathIterator();
+		PathIterator3ai pi = (PathIterator3ai) clone.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 3, 4);
 		assertElement(pi, PathElementType.LINE_TO, 5, 2);
 		assertElement(pi, PathElementType.QUAD_TO, 3, 1, 6, 0);
@@ -1112,16 +1113,16 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 	@Test
 	@Override
 	public void createTransformedShape() {
-		Transform2D tr = new Transform2D();
+		Transform3D tr = new Transform3D();
 		tr.makeTranslationMatrix(3, 4);
-		Transform2D tr2 = new Transform2D();
+		Transform3D tr2 = new Transform3D();
 		tr2.makeRotationMatrix(-MathConstants.DEMI_PI);
-		Transform2D tr3 = new Transform2D();
+		Transform3D tr3 = new Transform3D();
 		tr3.mul(tr, tr2);
 
-		Path2ai clone = (Path2ai) this.shape.createTransformedShape(tr3);
+		Path3ai clone = (Path3ai) this.shape.createTransformedShape(tr3);
 
-		PathIterator2ai pi = (PathIterator2ai) clone.getPathIterator();
+		PathIterator3ai pi = (PathIterator3ai) clone.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 3, 4);
 		assertElement(pi, PathElementType.LINE_TO, 5, 2);
 		assertElement(pi, PathElementType.QUAD_TO, 3, 1, 6, 0);
@@ -1146,7 +1147,7 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 
 	@Test
 	@Override
-	public void containsRectangle2ai() {
+	public void containsRectangularPrism3ai() {
 		assertFalse(this.shape.contains(createRectangle(0, 0, 1, 1)));
 		assertFalse(this.shape.contains(createRectangle(4, 3, 1, 1)));
 		assertFalse(this.shape.contains(createRectangle(2, 2, 1, 1)));
@@ -1172,7 +1173,7 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 
 	@Test
 	@Override
-	public void intersectsRectangle2ai() {
+	public void intersectsRectangularPrism3ai() {
 		assertTrue(this.shape.intersects(createRectangle(0, 0, 1, 1)));
 		assertTrue(this.shape.intersects(createRectangle(4, 3, 1, 1)));
 		assertTrue(this.shape.intersects(createRectangle(2, 2, 1, 1)));
@@ -1190,7 +1191,7 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 
 	@Test
 	@Override
-	public void intersectsCircle2ai() {
+	public void intersectsSphere3ai() {
 		assertTrue(this.shape.intersects(createCircle(0, 0, 1)));
 		assertTrue(this.shape.intersects(createCircle(4, 3, 1)));
 		assertTrue(this.shape.intersects(createCircle(2, 2, 1)));
@@ -1208,7 +1209,7 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 
 	@Test
 	@Override
-	public void intersectsSegment2ai() {
+	public void intersectsSegment3ai() {
 		assertTrue(this.shape.intersects(createSegment(0, 0, 1, 1)));
 		assertTrue(this.shape.intersects(createSegment(4, 3, 1, 1)));
 		assertTrue(this.shape.intersects(createSegment(2, 2, 1, 1)));
@@ -1227,9 +1228,9 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 
 	@Test
 	@Override
-	public void intersectsPath2ai() {
-		Path2ai path1;
-		Path2ai path2;
+	public void intersectsPath3ai() {
+		Path3ai path1;
+		Path3ai path2;
 		
 		path1 = createPath();
 		path1.moveTo(-33, 98);
@@ -1320,7 +1321,7 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 
 	@Test
 	public void removeLast() {
-		PathIterator2ai pi = this.shape.getPathIterator();
+		PathIterator3ai pi = this.shape.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
 		assertElement(pi, PathElementType.LINE_TO, 2, 2);
 		assertElement(pi, PathElementType.QUAD_TO, 3, 0, 4, 3);
@@ -1366,7 +1367,7 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 
 	@Test
 	public void setLastPointIntInt() {
-		PathIterator2ai pi = this.shape.getPathIterator();
+		PathIterator3ai pi = this.shape.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
 		assertElement(pi, PathElementType.LINE_TO, 2, 2);
 		assertElement(pi, PathElementType.QUAD_TO, 3, 0, 4, 3);
@@ -1387,7 +1388,7 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 	
 	@Test
 	public void removeIntInt() {
-		PathIterator2ai pi = this.shape.getPathIterator();
+		PathIterator3ai pi = this.shape.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
 		assertElement(pi, PathElementType.LINE_TO, 2, 2);
 		assertElement(pi, PathElementType.QUAD_TO, 3, 0, 4, 3);
@@ -1429,7 +1430,7 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 
 	@Test
 	@Override
-	public void containsPoint2D() {
+	public void containsPoint3D() {
 		assertTrue(this.shape.contains(createPoint(0, 0)));
 		assertTrue(this.shape.contains(createPoint(4, 3)));
 		assertTrue(this.shape.contains(createPoint(2, 2)));
@@ -1443,21 +1444,21 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 
 	@Test
 	public void staticContainsPathIteratorIntInt() {
-		assertTrue(Path2ai.contains(this.shape.getPathIterator(), 0, 0));
-		assertTrue(Path2ai.contains(this.shape.getPathIterator(), 4, 3));
-		assertTrue(Path2ai.contains(this.shape.getPathIterator(), 2, 2));
-		assertTrue(Path2ai.contains(this.shape.getPathIterator(), 2, 1));
-		assertTrue(Path2ai.contains(this.shape.getPathIterator(), 4, 2));
-		assertFalse(Path2ai.contains(this.shape.getPathIterator(), -1, -1));
-		assertFalse(Path2ai.contains(this.shape.getPathIterator(), 6, 2));
-		assertTrue(Path2ai.contains(this.shape.getPathIterator(), 3, -2));
-		assertFalse(Path2ai.contains(this.shape.getPathIterator(), 2, -2));
+		assertTrue(Path3ai.contains(this.shape.getPathIterator(), 0, 0));
+		assertTrue(Path3ai.contains(this.shape.getPathIterator(), 4, 3));
+		assertTrue(Path3ai.contains(this.shape.getPathIterator(), 2, 2));
+		assertTrue(Path3ai.contains(this.shape.getPathIterator(), 2, 1));
+		assertTrue(Path3ai.contains(this.shape.getPathIterator(), 4, 2));
+		assertFalse(Path3ai.contains(this.shape.getPathIterator(), -1, -1));
+		assertFalse(Path3ai.contains(this.shape.getPathIterator(), 6, 2));
+		assertTrue(Path3ai.contains(this.shape.getPathIterator(), 3, -2));
+		assertFalse(Path3ai.contains(this.shape.getPathIterator(), 2, -2));
 	}
 
 	@Test
 	public void staticComputeDrawableElementBoundingBox() {
 		B box = (B) createRectangle(0, 0, 0, 0);
-		assertTrue(Path2ai.computeDrawableElementBoundingBox(this.shape.getPathIterator(), box));
+		assertTrue(Path3ai.computeDrawableElementBoundingBox(this.shape.getPathIterator(), box));
 		assertEquals(0, box.getMinX());
 		assertEquals(-5, box.getMinY());
 		assertEquals(7, box.getMaxX());
@@ -1466,77 +1467,77 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 
 	@Test
 	public void staticGetClosestPointTo() {
-		Point2D p;
+		Point3D p;
 		
 		p = createPoint(0, 0);
-		Path2ai.getClosestPointTo(this.shape.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), 0, 0, p);
+		Path3ai.getClosestPointTo(this.shape.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), 0, 0, p);
 		assertEquals(p.toString(), 0, p.ix());
 		assertEquals(p.toString(), 0, p.iy());
 
 		p = createPoint(0, 0);
 		// remember: path is closed
-		Path2ai.getClosestPointTo(this.shape.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), -1, -4, p);
+		Path3ai.getClosestPointTo(this.shape.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), -1, -4, p);
 		assertEquals(p.toString(), 0, p.ix());
 		assertEquals(p.toString(), 0, p.iy());
 
 		p = createPoint(0, 0);
-		Path2ai.getClosestPointTo(this.shape.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), 4, 0, p);
+		Path3ai.getClosestPointTo(this.shape.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), 4, 0, p);
 		assertEquals(p.toString(), 4, p.ix());
 		assertEquals(p.toString(), 0, p.iy());
 
 		p = createPoint(0, 0);
-		Path2ai.getClosestPointTo(this.shape.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), 4, 2, p);
+		Path3ai.getClosestPointTo(this.shape.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), 4, 2, p);
 		assertEquals(p.toString(), 4, p.ix());
 		assertEquals(p.toString(), 2, p.iy());
 
 		p = createPoint(0, 0);
-		Path2ai.getClosestPointTo(this.shape.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), 4, -1, p);
+		Path3ai.getClosestPointTo(this.shape.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), 4, -1, p);
 		assertEquals(p.toString(), 4, p.ix());
 		assertEquals(p.toString(), -1, p.iy());
 
 		p = createPoint(0, 0);
-		Path2ai.getClosestPointTo(this.shape.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), 2, -3, p);
+		Path3ai.getClosestPointTo(this.shape.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), 2, -3, p);
 		assertEquals(p.toString(), 3, p.ix());
 		assertEquals(p.toString(), -2, p.iy());
 	}
 
 	@Test
 	public void staticGetFarthestPointTo() {
-		Point2D p;
+		Point3D p;
 		
 		p = createPoint(0, 0);
-		Path2ai.getFarthestPointTo(this.shape.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), 0, 0, p);
+		Path3ai.getFarthestPointTo(this.shape.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), 0, 0, p);
 		assertEquals(p.toString(), 7, p.ix());
 		assertEquals(p.toString(), -5, p.iy());
 
 		p = createPoint(0, 0);
 		// remember: path is closed
-		Path2ai.getFarthestPointTo(this.shape.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), -1, -4, p);
+		Path3ai.getFarthestPointTo(this.shape.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), -1, -4, p);
 		assertEquals(p.toString(), 4, p.ix());
 		assertEquals(p.toString(), 3, p.iy());
 
 		p = createPoint(0, 0);
-		Path2ai.getFarthestPointTo(this.shape.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), 4, 0, p);
+		Path3ai.getFarthestPointTo(this.shape.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), 4, 0, p);
 		assertEquals(p.toString(), 7, p.ix());
 		assertEquals(p.toString(), -5, p.iy());
 
 		p = createPoint(0, 0);
-		Path2ai.getFarthestPointTo(this.shape.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), 4, 2, p);
+		Path3ai.getFarthestPointTo(this.shape.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), 4, 2, p);
 		assertEquals(p.toString(), 7, p.ix());
 		assertEquals(p.toString(), -5, p.iy());
 
 		p = createPoint(0, 0);
-		Path2ai.getFarthestPointTo(this.shape.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), 4, -1, p);
+		Path3ai.getFarthestPointTo(this.shape.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), 4, -1, p);
 		assertEquals(p.toString(), 7, p.ix());
 		assertEquals(p.toString(), -5, p.iy());
 	}
 
 	@Test
 	public void moveToIntInt() {
-		Path2ai<?, ?, ?, ?, ?, ?> tmpShape = createPath();
+		Path3ai<?, ?, ?, ?, ?, ?> tmpShape = createPath();
 		tmpShape.moveTo(15, 145);
 
-		PathIterator2ai<?> pi = tmpShape.getPathIterator();
+		PathIterator3ai<?> pi = tmpShape.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 15, 145);
 		assertNoElement(pi);
 
@@ -1550,11 +1551,11 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 	}
 
 	@Test
-	public void moveToPoint2D() {
-		Path2ai<?, ?, ?, ?, ?, ?> tmpShape = createPath();
+	public void moveToPoint3D() {
+		Path3ai<?, ?, ?, ?, ?, ?> tmpShape = createPath();
 		tmpShape.moveTo(createPoint(15, 145));
 
-		PathIterator2ai<?> pi = tmpShape.getPathIterator();
+		PathIterator3ai<?> pi = tmpShape.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 15, 145);
 		assertNoElement(pi);
 
@@ -1569,17 +1570,17 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 
 	@Test(expected = IllegalStateException.class)
 	public void lineToIntInt_noMoveTo() {
-		Path2ai<?, ?, ?, ?, ?, ?> tmpShape = createPath();
+		Path3ai<?, ?, ?, ?, ?, ?> tmpShape = createPath();
 		tmpShape.lineTo(15, 145);
 	}
 
 	@Test
 	public void lineToIntInt_moveTo() {
-		Path2ai<?, ?, ?, ?, ?, ?> tmpShape = createPath();
+		Path3ai<?, ?, ?, ?, ?, ?> tmpShape = createPath();
 		tmpShape.moveTo(15, 145);
 		tmpShape.lineTo(189, -45);
 
-		PathIterator2ai<?> pi = tmpShape.getPathIterator();
+		PathIterator3ai<?> pi = tmpShape.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 15, 145);
 		assertElement(pi, PathElementType.LINE_TO, 189, -45);
 		assertNoElement(pi);
@@ -1597,18 +1598,18 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 	}
 
 	@Test(expected = IllegalStateException.class)
-	public void lineToPoint2D_noMoveTo() {
-		Path2ai<?, ?, ?, ?, ?, ?> tmpShape = createPath();
+	public void lineToPoint3D_noMoveTo() {
+		Path3ai<?, ?, ?, ?, ?, ?> tmpShape = createPath();
 		tmpShape.lineTo(createPoint(15, 145));
 	}
 
 	@Test
-	public void lineToPoint2D_moveTo() {
-		Path2ai<?, ?, ?, ?, ?, ?> tmpShape = createPath();
+	public void lineToPoint3D_moveTo() {
+		Path3ai<?, ?, ?, ?, ?, ?> tmpShape = createPath();
 		tmpShape.moveTo(15, 145);
 		tmpShape.lineTo(createPoint(189, -45));
 
-		PathIterator2ai<?> pi = tmpShape.getPathIterator();
+		PathIterator3ai<?> pi = tmpShape.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 15, 145);
 		assertElement(pi, PathElementType.LINE_TO, 189, -45);
 		assertNoElement(pi);
@@ -1627,17 +1628,17 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 
 	@Test(expected = IllegalStateException.class)
 	public void quadToIntIntIntInt_noMoveTo() {
-		Path2ai<?, ?, ?, ?, ?, ?> tmpShape = createPath();
+		Path3ai<?, ?, ?, ?, ?, ?> tmpShape = createPath();
 		tmpShape.quadTo(15, 145, 50, 20);
 	}
 
 	@Test
 	public void quadToIntIntIntInt_moveTo() {
-		Path2ai<?, ?, ?, ?, ?, ?> tmpShape = createPath();
+		Path3ai<?, ?, ?, ?, ?, ?> tmpShape = createPath();
 		tmpShape.moveTo(4, 6);
 		tmpShape.quadTo(15, 145, 50, 20);
 
-		PathIterator2ai<?> pi = tmpShape.getPathIterator();
+		PathIterator3ai<?> pi = tmpShape.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 4, 6);
 		assertElement(pi, PathElementType.QUAD_TO, 15, 145, 50, 20);
 		assertNoElement(pi);
@@ -1655,18 +1656,18 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 	}
 
 	@Test(expected = IllegalStateException.class)
-	public void quadToPoint2DPoint2D_noMoveTo() {
-		Path2ai<?, ?, ?, ?, ?, ?> tmpShape = createPath();
+	public void quadToPoint3DPoint3D_noMoveTo() {
+		Path3ai<?, ?, ?, ?, ?, ?> tmpShape = createPath();
 		tmpShape.quadTo(createPoint(15, 145), createPoint(50, 20));
 	}
 
 	@Test
-	public void quadToPoint2DPoint2D_moveTo() {
-		Path2ai<?, ?, ?, ?, ?, ?> tmpShape = createPath();
+	public void quadToPoint3DPoint3D_moveTo() {
+		Path3ai<?, ?, ?, ?, ?, ?> tmpShape = createPath();
 		tmpShape.moveTo(4, 6);
 		tmpShape.quadTo(createPoint(15, 145), createPoint(50, 20));
 
-		PathIterator2ai<?> pi = tmpShape.getPathIterator();
+		PathIterator3ai<?> pi = tmpShape.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 4, 6);
 		assertElement(pi, PathElementType.QUAD_TO, 15, 145, 50, 20);
 		assertNoElement(pi);
@@ -1685,17 +1686,17 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 
 	@Test(expected = IllegalStateException.class)
 	public void curveToIntIntIntIntIntInt_noMoveTo() {
-		Path2ai<?, ?, ?, ?, ?, ?> tmpShape = createPath();
+		Path3ai<?, ?, ?, ?, ?, ?> tmpShape = createPath();
 		tmpShape.curveTo(15, 145, 50, 20, 0, 0);
 	}
 
 	@Test
 	public void curveToIntIntIntIntIntInt_moveTo() {
-		Path2ai<?, ?, ?, ?, ?, ?> tmpShape = createPath();
+		Path3ai<?, ?, ?, ?, ?, ?> tmpShape = createPath();
 		tmpShape.moveTo(4, 6);
 		tmpShape.curveTo(15, 145, 50, 20, 0, 0);
 
-		PathIterator2ai<?> pi = tmpShape.getPathIterator();
+		PathIterator3ai<?> pi = tmpShape.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 4, 6);
 		assertElement(pi, PathElementType.CURVE_TO, 15, 145, 50, 20, 0, 0);
 		assertNoElement(pi);
@@ -1713,18 +1714,18 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 	}
 
 	@Test(expected = IllegalStateException.class)
-	public void curveToPoint2DPoint2DPoint2D_noMoveTo() {
-		Path2ai<?, ?, ?, ?, ?, ?> tmpShape = createPath();
+	public void curveToPoint3DPoint3DPoint3D_noMoveTo() {
+		Path3ai<?, ?, ?, ?, ?, ?> tmpShape = createPath();
 		tmpShape.curveTo(createPoint(15, 145), createPoint(50, 20), createPoint(0, 0));
 	}
 
 	@Test
-	public void curveToPoint2DPoint2DPoint2Dt_moveTo() {
-		Path2ai<?, ?, ?, ?, ?, ?> tmpShape = createPath();
+	public void curveToPoint3DPoint3DPoint3Dt_moveTo() {
+		Path3ai<?, ?, ?, ?, ?, ?> tmpShape = createPath();
 		tmpShape.moveTo(4, 6);
 		tmpShape.curveTo(createPoint(15, 145), createPoint(50, 20), createPoint(0, 0));
 
-		PathIterator2ai<?> pi = tmpShape.getPathIterator();
+		PathIterator3ai<?> pi = tmpShape.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 4, 6);
 		assertElement(pi, PathElementType.CURVE_TO, 15, 145, 50, 20, 0, 0);
 		assertNoElement(pi);
@@ -1771,8 +1772,8 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 	}
 
 	@Test
-	public void setLastPointPoint2D() {
-		PathIterator2ai pi = this.shape.getPathIterator();
+	public void setLastPointPoint3D() {
+		PathIterator3ai pi = this.shape.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
 		assertElement(pi, PathElementType.LINE_TO, 2, 2);
 		assertElement(pi, PathElementType.QUAD_TO, 3, 0, 4, 3);
@@ -1793,7 +1794,7 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 
 	@Test
 	public void toCollection() {
-		Collection<Point2D> expected = Arrays.asList(
+		Collection<Point3D> expected = Arrays.asList(
 				createPoint(0, 0),
 				createPoint(2, 2),
 				createPoint(3, 0),
@@ -1816,7 +1817,7 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 
 		this.shape.set(newPath);
 
-		PathIterator2ai pi = this.shape.getPathIterator();
+		PathIterator3ai pi = this.shape.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 14, -5);
 		assertElement(pi, PathElementType.LINE_TO, 1, 6);
 		assertElement(pi, PathElementType.QUAD_TO, -5, 1, 10, -1);
@@ -1825,9 +1826,9 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 	}
 
 	@Override
-	public void intersectsPathIterator2ai() {
-		Path2ai path1;
-		Path2ai path2;
+	public void intersectsPathIterator3ai() {
+		Path3ai path1;
+		Path3ai path2;
 		
 		path1 = createPath();
 		path1.moveTo(-33, 98);
@@ -1839,8 +1840,8 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 		path2.lineTo(-31, 99);
 		path2.lineTo(-31, 103);
 		path2.lineTo(-34, 103);
-		assertFalse(path1.intersects((PathIterator2ai) path2.getPathIterator()));
-		assertFalse(path2.intersects((PathIterator2ai) path1.getPathIterator()));
+		assertFalse(path1.intersects((PathIterator3ai) path2.getPathIterator()));
+		assertFalse(path2.intersects((PathIterator3ai) path1.getPathIterator()));
 
 		path1 = createPath();
 		path1.moveTo(-33, 98);
@@ -1853,8 +1854,8 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 		path2.lineTo(-31, 99);
 		path2.lineTo(-31, 103);
 		path2.lineTo(-34, 103);
-		assertTrue(path1.intersects((PathIterator2ai) path2.getPathIterator()));
-		assertTrue(path2.intersects((PathIterator2ai) path1.getPathIterator()));
+		assertTrue(path1.intersects((PathIterator3ai) path2.getPathIterator()));
+		assertTrue(path2.intersects((PathIterator3ai) path1.getPathIterator()));
 
 		path1 = createPath();
 		path1.moveTo(-33, 98);
@@ -1867,8 +1868,8 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 		path2.lineTo(-31, 103);
 		path2.lineTo(-34, 103);
 		path2.closePath();
-		assertTrue(path1.intersects((PathIterator2ai) path2.getPathIterator()));
-		assertTrue(path2.intersects((PathIterator2ai) path1.getPathIterator()));
+		assertTrue(path1.intersects((PathIterator3ai) path2.getPathIterator()));
+		assertTrue(path2.intersects((PathIterator3ai) path1.getPathIterator()));
 
 		path1 = createPath();
 		path1.moveTo(-33, 98);
@@ -1882,20 +1883,20 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 		path2.lineTo(-31, 103);
 		path2.lineTo(-34, 103);
 		path2.closePath();
-		assertTrue(path1.intersects((PathIterator2ai) path2.getPathIterator()));
-		assertTrue(path2.intersects((PathIterator2ai) path1.getPathIterator()));
+		assertTrue(path1.intersects((PathIterator3ai) path2.getPathIterator()));
+		assertTrue(path2.intersects((PathIterator3ai) path1.getPathIterator()));
 	}
 
 	@Override
-	public void intersectsShape2D() {
-		assertTrue(this.shape.intersects((Shape2D) createCircle(3, 0, 1)));
-		assertTrue(this.shape.intersects((Shape2D) createRectangle(-1, -1, 1, 1)));
+	public void intersectsShape3D() {
+		assertTrue(this.shape.intersects((Shape3D) createSphere(3, 0, 1)));
+		assertTrue(this.shape.intersects((Shape3D) createRectangle(-1, -1, 1, 1)));
 	}
 
 	@Override
-	public void operator_addVector2D() {
+	public void operator_addVector3D() {
 		this.shape.operator_add(createVector(3, 4));
-		PathIterator2ai pi = this.shape.getPathIterator();
+		PathIterator3ai pi = this.shape.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 3, 4);
 		assertElement(pi, PathElementType.LINE_TO, 5, 6);
 		assertElement(pi, PathElementType.QUAD_TO, 6, 4, 7, 7);
@@ -1905,9 +1906,9 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 	}
 
 	@Override
-	public void operator_plusVector2D() {
+	public void operator_plusVector3D() {
 		T r = this.shape.operator_plus(createVector(3, 4));
-		PathIterator2ai pi = r.getPathIterator();
+		PathIterator3ai pi = r.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 3, 4);
 		assertElement(pi, PathElementType.LINE_TO, 5, 6);
 		assertElement(pi, PathElementType.QUAD_TO, 6, 4, 7, 7);
@@ -1917,9 +1918,9 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 	}
 
 	@Override
-	public void operator_removeVector2D() {
+	public void operator_removeVector3D() {
 		this.shape.operator_remove(createVector(3, 4));
-		PathIterator2ai pi = this.shape.getPathIterator();
+		PathIterator3ai pi = this.shape.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, -3, -4);
 		assertElement(pi, PathElementType.LINE_TO, -1, -2);
 		assertElement(pi, PathElementType.QUAD_TO, 0, -4, 1, -1);
@@ -1929,9 +1930,9 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 	}
 
 	@Override
-	public void operator_minusVector2D() {
+	public void operator_minusVector3D() {
 		T r = this.shape.operator_minus(createVector(3, 4));
-		PathIterator2ai pi = r.getPathIterator();
+		PathIterator3ai pi = r.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, -3, -4);
 		assertElement(pi, PathElementType.LINE_TO, -1, -2);
 		assertElement(pi, PathElementType.QUAD_TO, 0, -4, 1, -1);
@@ -1941,17 +1942,17 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 	}
 
 	@Override
-	public void operator_multiplyTransform2D() {
-		Transform2D tr = new Transform2D();
+	public void operator_multiplyTransform3D() {
+		Transform3D tr = new Transform3D();
 		tr.makeTranslationMatrix(3, 4);
-		Transform2D tr2 = new Transform2D();
+		Transform3D tr2 = new Transform3D();
 		tr2.makeRotationMatrix(-MathConstants.DEMI_PI);
-		Transform2D tr3 = new Transform2D();
+		Transform3D tr3 = new Transform3D();
 		tr3.mul(tr, tr2);
 
-		Path2ai clone = (Path2ai) this.shape.operator_multiply(tr3);
+		Path3ai clone = (Path3ai) this.shape.operator_multiply(tr3);
 
-		PathIterator2ai pi = (PathIterator2ai) clone.getPathIterator();
+		PathIterator3ai pi = (PathIterator3ai) clone.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, 3, 4);
 		assertElement(pi, PathElementType.LINE_TO, 5, 2);
 		assertElement(pi, PathElementType.QUAD_TO, 3, 1, 6, 0);
@@ -1961,7 +1962,7 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 	}
 
 	@Override
-	public void operator_andPoint2D() {
+	public void operator_andPoint3D() {
 		assertTrue(this.shape.operator_and(createPoint(0, 0)));
 		assertTrue(this.shape.operator_and(createPoint(4, 3)));
 		assertTrue(this.shape.operator_and(createPoint(2, 2)));
@@ -1974,13 +1975,13 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 	}
 
 	@Override
-	public void operator_andShape2D() {
+	public void operator_andShape3D() {
 		assertTrue(this.shape.operator_and(createCircle(3, 0, 1)));
 		assertTrue(this.shape.operator_and(createRectangle(-1, -1, 1, 1)));
 	}
 
 	@Override
-	public void operator_upToPoint2D() {
+	public void operator_upToPoint3D() {
 		assertEpsilonEquals(0f, this.shape.operator_upTo(createPoint(0, 0)));
 		assertEpsilonEquals(0f, this.shape.operator_upTo(createPoint(1, 0)));
 		assertEpsilonEquals(7.071067812f, this.shape.operator_upTo(createPoint(-5, -5)));
@@ -2232,125 +2233,6 @@ public abstract class AbstractPath3aiTest<T extends Path3ai<?, T, ?, ?, ?, B>,
 		this.shape.arcTo(5, 5, 20, 10, 0, 1, ArcType.ARC_ONLY);
 		File filename = generateTestPicture(this.shape);
 		System.out.println("Filename: " + filename);
-	}
-
-	@Test
-	public void arcToIntIntIntIntDoubleDoubleArcType_01_arcOnly() {
-		this.shape.arcTo(5, 5, 20, 10, 0, 1, ArcType.ARC_ONLY);
-		PathIterator2ai pi = this.shape.getPathIterator();
-		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
-		assertElement(pi, PathElementType.LINE_TO, 2, 2);
-		assertElement(pi, PathElementType.QUAD_TO, 3, 0, 4, 3);
-		assertElement(pi, PathElementType.CURVE_TO, 5, -1, 6, 5, 7, -5);
-		assertElement(pi, PathElementType.CLOSE, 0, 0);
-		assertElement(pi, PathElementType.CURVE_TO, 6, 1, 12, 7, 20, 10);
-		assertNoElement(pi);
-	}
-
-	@Test
-	public void arcToIntIntIntIntDoubleDoubleArcType_01_lineTo() {
-		this.shape.arcTo(5, 5, 20, 10, 0, 1, ArcType.LINE_THEN_ARC);
-		PathIterator2ai pi = this.shape.getPathIterator();
-		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
-		assertElement(pi, PathElementType.LINE_TO, 2, 2);
-		assertElement(pi, PathElementType.QUAD_TO, 3, 0, 4, 3);
-		assertElement(pi, PathElementType.CURVE_TO, 5, -1, 6, 5, 7, -5);
-		assertElement(pi, PathElementType.CLOSE, 0, 0);
-		assertElement(pi, PathElementType.CURVE_TO, 6, 1, 12, 7, 20, 10);
-		assertNoElement(pi);
-	}
-
-	@Test
-	public void arcToIntIntIntIntDoubleDoubleArcType_01_moveTo() {
-		this.shape.arcTo(5, 5, 20, 10, 0, 1, ArcType.MOVE_THEN_ARC);
-		PathIterator2ai pi = this.shape.getPathIterator();
-		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
-		assertElement(pi, PathElementType.LINE_TO, 2, 2);
-		assertElement(pi, PathElementType.QUAD_TO, 3, 0, 4, 3);
-		assertElement(pi, PathElementType.CURVE_TO, 5, -1, 6, 5, 7, -5);
-		assertElement(pi, PathElementType.CLOSE, 0, 0);
-		assertElement(pi, PathElementType.CURVE_TO, 6, 1, 12, 7, 20, 10);
-		assertNoElement(pi);
-	}
-
-	@Test
-	public void arcToIntIntIntIntDoubleDoubleArcType_0251_arcOnly() {
-		this.shape.arcTo(5, 5, 20, 10, .25, 1, ArcType.ARC_ONLY);
-		PathIterator2ai pi = this.shape.getPathIterator();
-		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
-		assertElement(pi, PathElementType.LINE_TO, 2, 2);
-		assertElement(pi, PathElementType.QUAD_TO, 3, 0, 4, 3);
-		assertElement(pi, PathElementType.CURVE_TO, 5, -1, 6, 5, 7, -5);
-		assertElement(pi, PathElementType.CLOSE, 0, 0);
-		assertElement(pi, PathElementType.CURVE_TO, 9, 4, 14, 8, 20, 10);
-		assertNoElement(pi);
-	}
-
-	@Test
-	public void arcToIntIntIntIntDoubleDoubleArcType_0251_lineTo() {
-		this.shape.arcTo(5, 5, 20, 10, .25, 1, ArcType.LINE_THEN_ARC);
-		PathIterator2ai pi = this.shape.getPathIterator();
-		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
-		assertElement(pi, PathElementType.LINE_TO, 2, 2);
-		assertElement(pi, PathElementType.QUAD_TO, 3, 0, 4, 3);
-		assertElement(pi, PathElementType.CURVE_TO, 5, -1, 6, 5, 7, -5);
-		assertElement(pi, PathElementType.CLOSE, 0, 0);
-		assertElement(pi, PathElementType.LINE_TO, 6, 0);
-		assertElement(pi, PathElementType.CURVE_TO, 9, 4, 14, 8, 20, 10);
-		assertNoElement(pi);
-	}
-
-	@Test
-	public void arcToIntIntIntIntDoubleDoubleArcType_0251_moveTo() {
-		this.shape.arcTo(5, 5, 20, 10, .25, 1, ArcType.MOVE_THEN_ARC);
-		PathIterator2ai pi = this.shape.getPathIterator();
-		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
-		assertElement(pi, PathElementType.LINE_TO, 2, 2);
-		assertElement(pi, PathElementType.QUAD_TO, 3, 0, 4, 3);
-		assertElement(pi, PathElementType.CURVE_TO, 5, -1, 6, 5, 7, -5);
-		assertElement(pi, PathElementType.CLOSE, 0, 0);
-		assertElement(pi, PathElementType.MOVE_TO, 6, 0);
-		assertElement(pi, PathElementType.CURVE_TO, 9, 4, 14, 8, 20, 10);
-		assertNoElement(pi);
-	}
-
-	@Test
-	public void arcToPoint2DPoint2DDoubleDoubleArcType_01_arcOnly() {
-		this.shape.arcTo(createPoint(5, 5), createPoint(20, 10), 0, 1, ArcType.ARC_ONLY);
-		PathIterator2ai pi = this.shape.getPathIterator();
-		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
-		assertElement(pi, PathElementType.LINE_TO, 2, 2);
-		assertElement(pi, PathElementType.QUAD_TO, 3, 0, 4, 3);
-		assertElement(pi, PathElementType.CURVE_TO, 5, -1, 6, 5, 7, -5);
-		assertElement(pi, PathElementType.CLOSE, 0, 0);
-		assertElement(pi, PathElementType.CURVE_TO, 6, 1, 12, 7, 20, 10);
-		assertNoElement(pi);
-	}
-
-	@Test
-	public void arcToIntIntIntInt() {
-		this.shape.arcTo(5, 5, 20, 10);
-		PathIterator2ai pi = this.shape.getPathIterator();
-		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
-		assertElement(pi, PathElementType.LINE_TO, 2, 2);
-		assertElement(pi, PathElementType.QUAD_TO, 3, 0, 4, 3);
-		assertElement(pi, PathElementType.CURVE_TO, 5, -1, 6, 5, 7, -5);
-		assertElement(pi, PathElementType.CLOSE, 0, 0);
-		assertElement(pi, PathElementType.CURVE_TO, 6, 1, 12, 7, 20, 10);
-		assertNoElement(pi);
-	}
-
-	@Test
-	public void arcToPoint2DPoint2D() {
-		this.shape.arcTo(createPoint(5, 5), createPoint(20, 10));
-		PathIterator2ai pi = this.shape.getPathIterator();
-		assertElement(pi, PathElementType.MOVE_TO, 0, 0);
-		assertElement(pi, PathElementType.LINE_TO, 2, 2);
-		assertElement(pi, PathElementType.QUAD_TO, 3, 0, 4, 3);
-		assertElement(pi, PathElementType.CURVE_TO, 5, -1, 6, 5, 7, -5);
-		assertElement(pi, PathElementType.CLOSE, 0, 0);
-		assertElement(pi, PathElementType.CURVE_TO, 6, 1, 12, 7, 20, 10);
-		assertNoElement(pi);
 	}
 
 }

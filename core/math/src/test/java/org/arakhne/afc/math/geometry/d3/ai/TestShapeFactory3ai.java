@@ -32,9 +32,9 @@ public interface TestShapeFactory3ai<P extends Point3D<? super P, ? super V>,
 	
 	Segment3ai<?, ?, ?, P, V, B> createSegment(int x1, int y1, int z1, int x2, int y2, int z2);
 	
-	B createRectangle(int x, int y, int z, int width, int height, int depth);
+	B createRectangularPrism(int x, int y, int z, int width, int height, int depth);
 
-	Sphere3ai<?, ?, ?, P, V, B> createCircle(int x, int y, int z, int radius);
+	Sphere3ai<?, ?, ?, P, V, B> createSphere(int x, int y, int z, int radius);
 	
 	Point3D createPoint(int x, int y, int z);
 

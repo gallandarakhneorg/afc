@@ -1,6 +1,6 @@
 /**
  * 
- * fr.utbm.v3g.core.math.Tuple2dTest.java
+ * fr.utbm.v3g.core.math.Tuple3dTest.java
  *
  * Copyright (c) 2008-10, Multiagent Team - Systems and Transportation Laboratory (SeT)
  * All rights reserved.
@@ -18,17 +18,13 @@
  */
 package org.arakhne.afc.math.geometry.d3;
 
-import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2D;
-import org.arakhne.afc.math.geometry.d2.Point2D;
-import org.arakhne.afc.math.geometry.d2.Tuple2D;
-import org.arakhne.afc.math.geometry.d2.Vector2D;
-import org.arakhne.afc.math.geometry.d2.d.Tuple2d;
+import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem3D;
+import org.arakhne.afc.math.geometry.d3.d.Tuple3d;
 import org.junit.Assume;
 import org.junit.Test;
 
 @SuppressWarnings("all")
 public abstract class AbstractUnmodifiablePoint3DTest<P extends Point3D<? super P, ? super V>, V extends Vector3D<? super V, ? super P>>
-		extends AbstractPoint3DTest<P, V, Point3D> {
 	
 	@Test(expected = UnsupportedOperationException.class)
 	public final void absolute() {
@@ -37,7 +33,7 @@ public abstract class AbstractUnmodifiablePoint3DTest<P extends Point3D<? super 
 
 	@Test(expected = UnsupportedOperationException.class)
 	public final void absoluteT() {
-		Tuple2D c = new Tuple2d();
+		Tuple3D c = new Tuple3d();
 		getT().absolute(c);
 	}
 
@@ -73,7 +69,7 @@ public abstract class AbstractUnmodifiablePoint3DTest<P extends Point3D<? super 
 
 	@Test(expected = UnsupportedOperationException.class)
 	public final void negateT() {
-		Tuple2D c = new Tuple2d();
+		Tuple3D c = new Tuple3d();
 		getT().negate(c);
 	}
 
@@ -84,13 +80,13 @@ public abstract class AbstractUnmodifiablePoint3DTest<P extends Point3D<? super 
 
 	@Test(expected = UnsupportedOperationException.class)
 	public final void scaleIntT() {
-		Tuple2D c = new Tuple2d(2, -1);
+		Tuple3D c = new Tuple3d(2, -1);
 		getT().scale(4, c);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
 	public final void scaleDoubleT() {
-		Tuple2D c = new Tuple2d(2, -1);
+		Tuple3D c = new Tuple3d(2, -1);
 		getT().scale(4.5, c);
 	}
 
@@ -105,8 +101,8 @@ public abstract class AbstractUnmodifiablePoint3DTest<P extends Point3D<? super 
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public final void setTuple2D() {
-		Tuple2D c = new Tuple2d(-45, 78);
+	public final void setTuple3D() {
+		Tuple3D c = new Tuple3d(-45, 78);
 		getT().set(c);
 	}
 
@@ -325,120 +321,120 @@ public abstract class AbstractUnmodifiablePoint3DTest<P extends Point3D<? super 
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public final void addPoint2DVector2D() {
-		Point2D point = createTuple(1, 2);
-		Vector2D vector1 = createVector(0, 0);
+	public final void addPoint3DVector3D() {
+		Point3D point = createTuple(1, 2);
+		Vector3D vector1 = createVector(0, 0);
 		point.add(point, vector1);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public final void addVector2DPoint2D() {
-		Point2D point = createTuple(1, 2);
-		Vector2D vector1 = createVector(0, 0);
+	public final void addVector3DPoint3D() {
+		Point3D point = createTuple(1, 2);
+		Vector3D vector1 = createVector(0, 0);
 		point.add(vector1, point);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public final void addVector2D() {
-		Point2D point = createTuple(1, 2);
-		Vector2D vector1 = createVector(0, 0);
+	public final void addVector3D() {
+		Point3D point = createTuple(1, 2);
+		Vector3D vector1 = createVector(0, 0);
 		point.add(vector1);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public final void scaleAddDoubleVector2DPoint2D_iffp() {
+	public final void scaleAddDoubleVector3DPoint3D_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
-		Point2D point = createTuple(1, 2);
-		Vector2D vector1 = createVector(0, 0);
+		Point3D point = createTuple(1, 2);
+		Vector3D vector1 = createVector(0, 0);
 		point.scaleAdd(2.5, vector1, point);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public final void scaleAddDoubleVector2DPoint2D_ifi() {
+	public final void scaleAddDoubleVector3DPoint3D_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
-		Point2D point = createTuple(1, 2);
-		Vector2D vector1 = createVector(0, 0);
+		Point3D point = createTuple(1, 2);
+		Vector3D vector1 = createVector(0, 0);
 		point.scaleAdd(2.5, vector1, point);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public final void scaleAddIntVector2DPoint2D() {
-		Point2D point = createTuple(1, 2);
-		Vector2D vector1 = createVector(0, 0);
+	public final void scaleAddIntVector3DPoint3D() {
+		Point3D point = createTuple(1, 2);
+		Vector3D vector1 = createVector(0, 0);
 		point.scaleAdd(2, vector1, point);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public final void scaleAddIntPoint2DVector2D() {
-		Point2D point = createTuple(1, 2);
-		Vector2D vector1 = createVector(0, 0);
+	public final void scaleAddIntPoint3DVector3D() {
+		Point3D point = createTuple(1, 2);
+		Vector3D vector1 = createVector(0, 0);
 		point.scaleAdd(2, point, vector1);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public final void scaleAddDoublePoint2DVector2D_iffp() {
+	public final void scaleAddDoublePoint3DVector3D_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
-		Point2D point = createTuple(1, 2);
-		Vector2D vector1 = createVector(0, 0);
+		Point3D point = createTuple(1, 2);
+		Vector3D vector1 = createVector(0, 0);
 		point.scaleAdd(2.5, point, vector1);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public final void scaleAddDoublePoint2DVector2D_ifi() {
+	public final void scaleAddDoublePoint3DVector3D_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
-		Point2D point = createTuple(1, 2);
-		Vector2D vector1 = createVector(0, 0);
+		Point3D point = createTuple(1, 2);
+		Vector3D vector1 = createVector(0, 0);
 		point.scaleAdd(2.5, point, vector1);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public final void scaleAddIntVector2D() {
-		Point2D point = createTuple(1, 2);
-		Vector2D vector1 = createVector(0, 0);
+	public final void scaleAddIntVector3D() {
+		Point3D point = createTuple(1, 2);
+		Vector3D vector1 = createVector(0, 0);
 		point.scaleAdd(2, vector1);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public final void scaleAddDoubleVector2D_iffp() {
+	public final void scaleAddDoubleVector3D_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
-		Point2D point = createTuple(1, 2);
-		Vector2D vector1 = createVector(0, 0);
+		Point3D point = createTuple(1, 2);
+		Vector3D vector1 = createVector(0, 0);
 		point.scaleAdd(2.5, vector1);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public final void scaleAddDoubleVector2D_ifi() {
+	public final void scaleAddDoubleVector3D_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
-		Point2D point = createTuple(1, 2);
-		Vector2D vector1 = createVector(0, 0);
+		Point3D point = createTuple(1, 2);
+		Vector3D vector1 = createVector(0, 0);
 		point.scaleAdd(2.5, vector1);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public final void subPoint2DVector2D() {
-		Point2D point = createTuple(1, 2);
-		Vector2D vector1 = createVector(0, 0);
+	public final void subPoint3DVector3D() {
+		Point3D point = createTuple(1, 2);
+		Vector3D vector1 = createVector(0, 0);
 		point.sub(point, vector1);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public final void subVector2D() {
-		Point2D point = createTuple(1, 2);
-		Vector2D vector1 = createVector(0, 0);
+	public final void subVector3D() {
+		Point3D point = createTuple(1, 2);
+		Vector3D vector1 = createVector(0, 0);
 		point.sub(vector1);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public final void operator_addVector2D() {
-		Point2D point = createTuple(1, 2);
-		Vector2D vector1 = createVector(0, 0);
+	public final void operator_addVector3D() {
+		Point3D point = createTuple(1, 2);
+		Vector3D vector1 = createVector(0, 0);
 		point.operator_add(vector1);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public final void operator_removeVector2D() {
-		Point2D point = createTuple(1, 2);
-		Vector2D vector1 = createVector(0, 0);
+	public final void operator_removeVector3D() {
+		Point3D point = createTuple(1, 2);
+		Vector3D vector1 = createVector(0, 0);
 		point.operator_remove(vector1);
 	}
 
@@ -449,144 +445,144 @@ public abstract class AbstractUnmodifiablePoint3DTest<P extends Point3D<? super 
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public final void turnDoublePoint2D_iffp() {
+	public final void turnDoublePoint3D_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
 		getT().turn(Math.PI/2, createPoint(1, 0));
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public final void turnDoublePoint2DPoint2D_origin_iffp() {
+	public final void turnDoublePoint3DPoint3D_origin_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
-		Point2D origin = createPoint(0, 0);
+		Point3D origin = createPoint(0, 0);
 		getT().turn(Math.PI/2, createPoint(1, 0), origin);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public final void turnDoublePoint2DPoint2D_aroundP_iffp() {
+	public final void turnDoublePoint3DPoint3D_aroundP_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
-		Point2D origin = createPoint(-45, 12);
+		Point3D origin = createPoint(-45, 12);
 		getT().turn(Math.PI/2, createPoint(1, 0), origin);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
 	public final void turnLeftDouble_iffp_leftHanded() {
 		Assume.assumeFalse(isIntCoordinates());		
-		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());
+		Assume.assumeTrue(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());
 		getT().turnLeft(Math.PI/2);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
 	public final void turnLeftDouble_iffp_rightHanded() {
 		Assume.assumeFalse(isIntCoordinates());		
-		Assume.assumeFalse(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
+		Assume.assumeFalse(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
 		getT().turnLeft(Math.PI/2);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public final void turnLeftDoublePoint2D_iffp_leftHanded() {
+	public final void turnLeftDoublePoint3D_iffp_leftHanded() {
 		Assume.assumeFalse(isIntCoordinates());		
-		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
+		Assume.assumeTrue(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
 		getT().turnLeft(Math.PI/2, createPoint(1, 0));
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public final void turnLeftDoublePoint2D_iffp_rightHanded() {
+	public final void turnLeftDoublePoint3D_iffp_rightHanded() {
 		Assume.assumeFalse(isIntCoordinates());		
-		Assume.assumeFalse(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
+		Assume.assumeFalse(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
 		getT().turnLeft(Math.PI/2, createPoint(1, 0));
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public final void turnLeftDoublePoint2DPoint2D_origin_iffp_leftHanded() {
+	public final void turnLeftDoublePoint3DPoint3D_origin_iffp_leftHanded() {
 		Assume.assumeFalse(isIntCoordinates());		
-		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
-		Point2D origin = createPoint(0, 0);
+		Assume.assumeTrue(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
+		Point3D origin = createPoint(0, 0);
 		getT().turnLeft(Math.PI/2, createPoint(1, 0), origin);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public final void turnLeftDoublePoint2DPoint2D_origin_iffp_rightHanded() {
+	public final void turnLeftDoublePoint3DPoint3D_origin_iffp_rightHanded() {
 		Assume.assumeFalse(isIntCoordinates());		
-		Assume.assumeFalse(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
-		Point2D origin = createPoint(0, 0);
+		Assume.assumeFalse(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
+		Point3D origin = createPoint(0, 0);
 		getT().turnLeft(Math.PI/2, createPoint(1, 0), origin);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public final void turnLeftDoublePoint2DPoint2D_aroundP_iffp_leftHanded() {
+	public final void turnLeftDoublePoint3DPoint3D_aroundP_iffp_leftHanded() {
 		Assume.assumeFalse(isIntCoordinates());		
-		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
-		Point2D origin = createPoint(-45, 12);
+		Assume.assumeTrue(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
+		Point3D origin = createPoint(-45, 12);
 		getT().turnLeft(Math.PI/2, createPoint(1, 0), origin);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public final void turnLeftDoublePoint2DPoint2D_aroundP_iffp_rightHanded() {
+	public final void turnLeftDoublePoint3DPoint3D_aroundP_iffp_rightHanded() {
 		Assume.assumeFalse(isIntCoordinates());		
-		Assume.assumeFalse(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
-		Point2D origin = createPoint(-45, 12);
+		Assume.assumeFalse(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
+		Point3D origin = createPoint(-45, 12);
 		getT().turnLeft(Math.PI/2, createPoint(1, 0), origin);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
 	public final void turnRightDouble_iffp_leftHanded() {
 		Assume.assumeFalse(isIntCoordinates());		
-		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());
+		Assume.assumeTrue(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());
 		getT().turnRight(Math.PI/2);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
 	public final void turnRightDouble_iffp_rightHanded() {
 		Assume.assumeFalse(isIntCoordinates());		
-		Assume.assumeFalse(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
+		Assume.assumeFalse(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
 		getT().turnRight(Math.PI/2);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public final void turnRightDoublePoint2D_iffp_leftHanded() {
+	public final void turnRightDoublePoint3D_iffp_leftHanded() {
 		Assume.assumeFalse(isIntCoordinates());		
-		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
+		Assume.assumeTrue(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
 		getT().turnRight(Math.PI/2, createPoint(1, 0));
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public final void turnRightDoublePoint2D_iffp_rightHanded() {
+	public final void turnRightDoublePoint3D_iffp_rightHanded() {
 		Assume.assumeFalse(isIntCoordinates());		
-		Assume.assumeFalse(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
+		Assume.assumeFalse(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
 		Assume.assumeFalse(isIntCoordinates());		
-		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
+		Assume.assumeTrue(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
 		getT().turnRight(Math.PI/2, createPoint(1, 0));
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public final void turnRightDoublePoint2DPoint2D_origin_iffp_leftHanded() {
+	public final void turnRightDoublePoint3DPoint3D_origin_iffp_leftHanded() {
 		Assume.assumeFalse(isIntCoordinates());		
-		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
-		Point2D origin = createPoint(0, 0);
+		Assume.assumeTrue(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
+		Point3D origin = createPoint(0, 0);
 		getT().turnRight(Math.PI/2, createPoint(1, 0), origin);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public final void turnRightDoublePoint2DPoint2D_origin_iffp_rightHanded() {
+	public final void turnRightDoublePoint3DPoint3D_origin_iffp_rightHanded() {
 		Assume.assumeFalse(isIntCoordinates());		
-		Assume.assumeFalse(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
-		Point2D origin = createPoint(0, 0);
+		Assume.assumeFalse(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
+		Point3D origin = createPoint(0, 0);
 		getT().turnRight(Math.PI/2, createPoint(1, 0), origin);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public final void turnRightDoublePoint2DPoint2D_aroundP_iffp_leftHanded() {
+	public final void turnRightDoublePoint3DPoint3D_aroundP_iffp_leftHanded() {
 		Assume.assumeFalse(isIntCoordinates());		
-		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
-		Point2D origin = createPoint(-45, 12);
+		Assume.assumeTrue(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
+		Point3D origin = createPoint(-45, 12);
 		getT().turnRight(Math.PI/2, createPoint(1, 0), origin);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public final void turnRightDoublePoint2DPoint2D_aroundP_iffp_rightHanded() {
+	public final void turnRightDoublePoint3DPoint3D_aroundP_iffp_rightHanded() {
 		Assume.assumeFalse(isIntCoordinates());		
-		Assume.assumeFalse(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
-		Point2D origin = createPoint(-45, 12);
+		Assume.assumeFalse(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
+		Point3D origin = createPoint(-45, 12);
 		getT().turnRight(Math.PI/2, createPoint(1, 0), origin);
 	}
 
@@ -597,144 +593,144 @@ public abstract class AbstractUnmodifiablePoint3DTest<P extends Point3D<? super 
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public final void turnDoublePoint2D_ifi() {
+	public final void turnDoublePoint3D_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
 		getT().turn(Math.PI/2, createPoint(1, 0));
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public final void turnDoublePoint2DPoint2D_origin_ifi() {
+	public final void turnDoublePoint3DPoint3D_origin_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
-		Point2D origin = createPoint(0, 0);
+		Point3D origin = createPoint(0, 0);
 		getT().turn(Math.PI/2, createPoint(1, 0), origin);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public final void turnDoublePoint2DPoint2D_aroundP_ifi() {
+	public final void turnDoublePoint3DPoint3D_aroundP_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
-		Point2D origin = createPoint(-45, 12);
+		Point3D origin = createPoint(-45, 12);
 		getT().turn(Math.PI/2, createPoint(1, 0), origin);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
 	public final void turnLeftDouble_ifi_leftHanded() {
 		Assume.assumeTrue(isIntCoordinates());		
-		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());
+		Assume.assumeTrue(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());
 		getT().turnLeft(Math.PI/2);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
 	public final void turnLeftDouble_ifi_rightHanded() {
 		Assume.assumeTrue(isIntCoordinates());		
-		Assume.assumeFalse(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
+		Assume.assumeFalse(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
 		getT().turnLeft(Math.PI/2);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public final void turnLeftDoublePoint2D_ifi_leftHanded() {
+	public final void turnLeftDoublePoint3D_ifi_leftHanded() {
 		Assume.assumeTrue(isIntCoordinates());		
-		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
+		Assume.assumeTrue(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
 		getT().turnLeft(Math.PI/2, createPoint(1, 0));
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public final void turnLeftDoublePoint2D_ifi_rightHanded() {
+	public final void turnLeftDoublePoint3D_ifi_rightHanded() {
 		Assume.assumeTrue(isIntCoordinates());		
-		Assume.assumeFalse(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
+		Assume.assumeFalse(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
 		getT().turnLeft(Math.PI/2, createPoint(1, 0));
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public final void turnLeftDoublePoint2DPoint2D_origin_ifi_leftHanded() {
+	public final void turnLeftDoublePoint3DPoint3D_origin_ifi_leftHanded() {
 		Assume.assumeTrue(isIntCoordinates());		
-		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
-		Point2D origin = createPoint(0, 0);
+		Assume.assumeTrue(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
+		Point3D origin = createPoint(0, 0);
 		getT().turnLeft(Math.PI/2, createPoint(1, 0), origin);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public final void turnLeftDoublePoint2DPoint2D_origin_ifi_rightHanded() {
+	public final void turnLeftDoublePoint3DPoint3D_origin_ifi_rightHanded() {
 		Assume.assumeTrue(isIntCoordinates());		
-		Assume.assumeFalse(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
-		Point2D origin = createPoint(0, 0);
+		Assume.assumeFalse(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
+		Point3D origin = createPoint(0, 0);
 		getT().turnLeft(Math.PI/2, createPoint(1, 0), origin);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public final void turnLeftDoublePoint2DPoint2D_aroundP_ifi_leftHanded() {
+	public final void turnLeftDoublePoint3DPoint3D_aroundP_ifi_leftHanded() {
 		Assume.assumeTrue(isIntCoordinates());		
-		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
-		Point2D origin = createPoint(-45, 12);
+		Assume.assumeTrue(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
+		Point3D origin = createPoint(-45, 12);
 		getT().turnLeft(Math.PI/2, createPoint(1, 0), origin);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public final void turnLeftDoublePoint2DPoint2D_aroundP_ifi_rightHanded() {
+	public final void turnLeftDoublePoint3DPoint3D_aroundP_ifi_rightHanded() {
 		Assume.assumeTrue(isIntCoordinates());		
-		Assume.assumeFalse(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
-		Point2D origin = createPoint(-45, 12);
+		Assume.assumeFalse(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
+		Point3D origin = createPoint(-45, 12);
 		getT().turnLeft(Math.PI/2, createPoint(1, 0), origin);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
 	public final void turnRightDouble_ifi_leftHanded() {
 		Assume.assumeTrue(isIntCoordinates());		
-		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());
+		Assume.assumeTrue(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());
 		getT().turnRight(Math.PI/2);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
 	public final void turnRightDouble_ifi_rightHanded() {
 		Assume.assumeTrue(isIntCoordinates());		
-		Assume.assumeFalse(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
+		Assume.assumeFalse(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
 		getT().turnRight(Math.PI/2);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public final void turnRightDoublePoint2D_ifi_leftHanded() {
+	public final void turnRightDoublePoint3D_ifi_leftHanded() {
 		Assume.assumeTrue(isIntCoordinates());		
-		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
+		Assume.assumeTrue(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
 		getT().turnRight(Math.PI/2, createPoint(1, 0));
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public final void turnRightDoublePoint2D_ifi_rightHanded() {
+	public final void turnRightDoublePoint3D_ifi_rightHanded() {
 		Assume.assumeTrue(isIntCoordinates());		
-		Assume.assumeFalse(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
+		Assume.assumeFalse(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
 		Assume.assumeFalse(isIntCoordinates());		
-		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
+		Assume.assumeTrue(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
 		getT().turnRight(Math.PI/2, createPoint(1, 0));
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public final void turnRightDoublePoint2DPoint2D_origin_ifi_leftHanded() {
+	public final void turnRightDoublePoint3DPoint3D_origin_ifi_leftHanded() {
 		Assume.assumeTrue(isIntCoordinates());		
-		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
-		Point2D origin = createPoint(0, 0);
+		Assume.assumeTrue(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
+		Point3D origin = createPoint(0, 0);
 		getT().turnRight(Math.PI/2, createPoint(1, 0), origin);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public final void turnRightDoublePoint2DPoint2D_origin_ifi_rightHanded() {
+	public final void turnRightDoublePoint3DPoint3D_origin_ifi_rightHanded() {
 		Assume.assumeTrue(isIntCoordinates());		
-		Assume.assumeFalse(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
-		Point2D origin = createPoint(0, 0);
+		Assume.assumeFalse(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
+		Point3D origin = createPoint(0, 0);
 		getT().turnRight(Math.PI/2, createPoint(1, 0), origin);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public final void turnRightDoublePoint2DPoint2D_aroundP_ifi_leftHanded() {
+	public final void turnRightDoublePoint3DPoint3D_aroundP_ifi_leftHanded() {
 		Assume.assumeTrue(isIntCoordinates());		
-		Assume.assumeTrue(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
-		Point2D origin = createPoint(-45, 12);
+		Assume.assumeTrue(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
+		Point3D origin = createPoint(-45, 12);
 		getT().turnRight(Math.PI/2, createPoint(1, 0), origin);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public final void turnRightDoublePoint2DPoint2D_aroundP_ifi_rightHanded() {
+	public final void turnRightDoublePoint3DPoint3D_aroundP_ifi_rightHanded() {
 		Assume.assumeTrue(isIntCoordinates());		
-		Assume.assumeFalse(CoordinateSystem2D.getDefaultCoordinateSystem().isLeftHanded());		
-		Point2D origin = createPoint(-45, 12);
+		Assume.assumeFalse(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
+		Point3D origin = createPoint(-45, 12);
 		getT().turnRight(Math.PI/2, createPoint(1, 0), origin);
 	}
 

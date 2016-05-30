@@ -37,12 +37,9 @@ import javax.imageio.ImageIO;
 import org.arakhne.afc.math.AbstractMathTestCase;
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
-import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem2DTestRule;
-import org.arakhne.afc.math.geometry.d2.Point2D;
-import org.arakhne.afc.math.geometry.d2.Vector2D;
-import org.arakhne.afc.math.geometry.d2.afp.PathElement2afp;
-import org.arakhne.afc.math.geometry.d2.afp.Rectangle2afp;
-import org.arakhne.afc.math.geometry.d2.afp.Shape2afp;
+import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem3DTestRule;
+import org.arakhne.afc.math.geometry.d3.Point3D;
+import org.arakhne.afc.math.geometry.d3.Vector3D;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -53,7 +50,7 @@ public abstract class AbstractShape3aiTest<T extends Shape3ai<?, ?, ?, ?, ?, B>,
 		B extends RectangularPrism3ai<?, ?, ?, ?, ?, B>> extends AbstractMathTestCase {
 	
 	@Rule
-	public CoordinateSystem2DTestRule csTestRule = new CoordinateSystem2DTestRule();
+	public CoordinateSystem3DTestRule csTestRule = new CoordinateSystem3DTestRule();
 	
 	/** Is the rectangular shape to test.
 	 */
@@ -80,35 +77,35 @@ public abstract class AbstractShape3aiTest<T extends Shape3ai<?, ?, ?, ?, ?, B>,
 	 */
 	protected abstract T createShape();
 	
-	public final Segment2ai<?, ?, ?, ?, ?, B> createSegment(int x1, int y1, int x2, int y2) {
-		return this.factory.createSegment(x1, y1, x2, y2);
+	public final Segment3ai<?, ?, ?, ?, ?, B> createSegment(int x1, int y1, int z1, int x2, int y2, int z2) {
+		return this.factory.createSegment(x1, y1, z1, x2, y2, z2);
 	}
 	
-	public final B createRectangle(int x, int y, int width, int height) {
-		return this.factory.createRectangle(x, y, width, height);
+	public final B createRectangle(int x, int y, int z, int width, int height, int depth) {
+		return this.factory.createRectangularPrism(x, y, z, width, height, depth);
 	}
 
-	public final Circle2ai<?, ?, ?, ?, ?, B> createCircle(int x, int y, int radius) {
-		return this.factory.createCircle(x, y, radius);
+	public final Sphere3ai<?, ?, ?, ?, ?, B> createSphere(int x, int y, int z, int radius) {
+		return this.factory.createSphere(x, y, z, radius);
 	}
 	
-	public final Point2D createPoint(int x, int y) {
-		return this.factory.createPoint(x, y);
+	public final Point3D createPoint(int x, int y, int z) {
+		return this.factory.createPoint(x, y, z);
 	}
 
-	public final Vector2D createVector(int x, int y) {
-		return this.factory.createVector(x, y);
+	public final Vector3D createVector(int x, int y, int z) {
+		return this.factory.createVector(x, y, z);
 	}
 
-	public final Path2ai<?, ?, ?, ?, ?, B> createPath() {
+	public final Path3ai<?, ?, ?, ?, ?, B> createPath() {
 		return this.factory.createPath(null);
 	}
 	
-	public final Path2ai<?, ?, ?, ?, ?, B> createPath(PathWindingRule rule) {
+	public final Path3ai<?, ?, ?, ?, ?, B> createPath(PathWindingRule rule) {
 		return this.factory.createPath(rule);
 	}
 	
-	public final MultiShape2ai<?, ?, ?, ?, ?, ?, B> createMultiShape() {
+	public final MultiShape3ai<?, ?, ?, ?, ?, ?, B> createMultiShape() {
 		return this.factory.createMultiShape();
 	}
 
@@ -127,11 +124,11 @@ public abstract class AbstractShape3aiTest<T extends Shape3ai<?, ?, ?, ?, ?, B>,
 	 * @param type
 	 * @param coords
 	 */
-	protected void assertElement(PathIterator2ai<?> pi, PathElementType type, int... coords) {
+	protected void assertElement(PathIterator3ai<?> pi, PathElementType type, int... coords) {
 		if (!pi.hasNext()) {
 			fail("expected path element but the iterator is empty"); //$NON-NLS-1$
 		}
-		PathElement2ai pe = pi.next();
+		PathElement3ai pe = pi.next();
 		if (!type.equals(pe.getType())) {
 			fail("expected: "+type+"; actual: "+pe.getType());  //$NON-NLS-1$//$NON-NLS-2$
 		}
@@ -186,7 +183,7 @@ public abstract class AbstractShape3aiTest<T extends Shape3ai<?, ?, ?, ?, ?, B>,
 	 * 
 	 * @param pi
 	 */
-	protected void assertNoElement(PathIterator2ai<?> pi) {
+	protected void assertNoElement(PathIterator3ai<?> pi) {
 		if (pi.hasNext()) {
 			fail("expected no path element but the iterator is not empty"); //$NON-NLS-1$
 		}
@@ -214,7 +211,7 @@ public abstract class AbstractShape3aiTest<T extends Shape3ai<?, ?, ?, ?, ?, B>,
 	public abstract void clear();
 
 	@Test
-	public abstract void containsPoint2D();
+	public abstract void containsPoint3D();
 	
 	@Test
 	public abstract void getClosestPointTo();
@@ -241,13 +238,13 @@ public abstract class AbstractShape3aiTest<T extends Shape3ai<?, ?, ?, ?, ?, B>,
 	public abstract void getPathIterator();
 
 	@Test
-	public abstract void getPathIteratorTransform2D();
+	public abstract void getPathIteratorTransform3D();
 
 	@Test
 	public abstract void createTransformedShape();
 
 	@Test
-	public abstract void translateVector2D(); 
+	public abstract void translateVector3D(); 
 
 	@Test
 	public abstract void toBoundingBox();
@@ -259,22 +256,22 @@ public abstract class AbstractShape3aiTest<T extends Shape3ai<?, ?, ?, ?, ?, B>,
 	public abstract void getPointIterator();
 
 	@Test
-	public abstract void containsRectangle2ai();
+	public abstract void containsRectangularPrism3ai();
 
 	@Test
-	public abstract void intersectsRectangle2ai();
+	public abstract void intersectsRectangularPrism3ai();
 
 	@Test
-	public abstract void intersectsCircle2ai();
+	public abstract void intersectsSphere3ai();
 
 	@Test
-	public abstract void intersectsSegment2ai();
+	public abstract void intersectsSegment3ai();
 	
 	@Test
-	public abstract void intersectsPath2ai();
+	public abstract void intersectsPath3ai();
 	
 	@Test
-	public abstract void intersectsPathIterator2ai();
+	public abstract void intersectsPathIterator3ai();
 
 	@Test
 	public abstract void translateIntInt(); 
@@ -288,31 +285,31 @@ public abstract class AbstractShape3aiTest<T extends Shape3ai<?, ?, ?, ?, ?, B>,
 	}
 	
 	@Test
-	public abstract void intersectsShape2D();
+	public abstract void intersectsShape3D();
 
 	@Test
-	public abstract void operator_addVector2D();
+	public abstract void operator_addVector3D();
 
 	@Test
-	public abstract void operator_plusVector2D();
+	public abstract void operator_plusVector3D();
 
 	@Test
-	public abstract void operator_removeVector2D();
+	public abstract void operator_removeVector3D();
 
 	@Test
-	public abstract void operator_minusVector2D();
+	public abstract void operator_minusVector3D();
 
 	@Test
-	public abstract void operator_multiplyTransform2D();
+	public abstract void operator_multiplyTransform3D();
 
 	@Test
-	public abstract void operator_andPoint2D();
+	public abstract void operator_andPoint3D();
 
 	@Test
-	public abstract void operator_andShape2D();
+	public abstract void operator_andShape3D();
 
 	@Test
-	public abstract void operator_upToPoint2D();
+	public abstract void operator_upToPoint3D();
 
 	/** Generate a bitmap containing the given Shape2D.
 	 *
@@ -320,14 +317,14 @@ public abstract class AbstractShape3aiTest<T extends Shape3ai<?, ?, ?, ?, ?, B>,
 	 * @return the filename
 	 * @throws IOException Input/output exception
 	 */
-	public static File generateTestPicture(Shape2ai<?, ?, ?, ?, ?, ?> shape) throws IOException {
+	public static File generateTestPicture(Shape3ai<?, ?, ?, ?, ?, ?> shape) throws IOException {
 		File filename = File.createTempFile("testShape", ".png");
-		Rectangle2ai box = shape.toBoundingBox();
-		PathIterator2ai<?> iterator = shape.getPathIterator();
+		RectangularPrism3ai box = shape.toBoundingBox();
+		PathIterator3ai<?> iterator = shape.getPathIterator();
 		Path2D path = new Path2D.Double(
 				iterator.getWindingRule() == PathWindingRule.NON_ZERO ? Path2D.WIND_NON_ZERO : Path2D.WIND_EVEN_ODD);
 		while (iterator.hasNext()) {
-			PathElement2ai element = iterator.next();
+			PathElement3ai element = iterator.next();
 			int tox = (element.getToX() - box.getMinX()) * 2;
 			int toy = (box.getMaxY() - (element.getToY() - box.getMinY())) * 2;
 			switch (element.getType()) {
