@@ -1472,18 +1472,21 @@ public class Matrix4d implements Serializable, Cloneable {
 	public boolean equals(Object t1) {
 		try {
 			final Matrix4d m2 = (Matrix4d) t1;
-			return this.m00 == m2.m00 && this.m01 == m2.m01
-					&& this.m02 == m2.m02 && this.m03 == m2.m03
-					&& this.m10 == m2.m10 && this.m11 == m2.m11
-					&& this.m12 == m2.m12 && this.m13 == m2.m13
-					&& this.m20 == m2.m20 && this.m21 == m2.m21
-					&& this.m22 == m2.m22 && this.m23 == m2.m23
-					&& this.m30 == m2.m30 && this.m31 == m2.m31
-					&& this.m32 == m2.m32 && this.m33 == m2.m33;
+			if (m2 != null) {
+                return this.m00 == m2.m00 && this.m01 == m2.m01
+                        && this.m02 == m2.m02 && this.m03 == m2.m03
+                        && this.m10 == m2.m10 && this.m11 == m2.m11
+                        && this.m12 == m2.m12 && this.m13 == m2.m13
+                        && this.m20 == m2.m20 && this.m21 == m2.m21
+                        && this.m22 == m2.m22 && this.m23 == m2.m23
+                        && this.m30 == m2.m30 && this.m31 == m2.m31
+                        && this.m32 == m2.m32 && this.m33 == m2.m33;
+            }
+
 		} catch (ClassCastException | NullPointerException e1) {
 			return false;
 		}
-
+        return false;
 	}
 
 	/**

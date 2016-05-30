@@ -273,11 +273,14 @@ public abstract class PathElement2d implements PathElement2afp {
 		public boolean equals(Object obj) {
 			try {
 				final PathElement2afp elt = (PathElement2afp) obj;
-				return getType() == elt.getType()
-						&& getToX() == elt.getToX()
-						&& getToY() == elt.getToY()
-						&& getFromX() == elt.getFromX()
-						&& getFromY() == elt.getFromY();
+				if (elt != null) {
+                    return getType() == elt.getType()
+                            && getToX() == elt.getToX()
+                            && getToY() == elt.getToY()
+                            && getFromX() == elt.getFromX()
+                            && getFromY() == elt.getFromY();
+				}
+
 			} catch (Throwable exception) {
 				//
 			}
@@ -398,13 +401,16 @@ public abstract class PathElement2d implements PathElement2afp {
 		public boolean equals(Object obj) {
 			try {
 				final PathElement2afp elt = (PathElement2afp) obj;
-				return getType() == elt.getType()
-						&& getToX() == elt.getToX()
-						&& getToY() == elt.getToY()
-						&& getCtrlX1() == elt.getCtrlX1()
-						&& getCtrlY1() == elt.getCtrlY1()
-						&& getFromX() == elt.getFromX()
-						&& getFromY() == elt.getFromY();
+                if (elt != null) {
+                    return getType() == elt.getType()
+                            && getToX() == elt.getToX()
+                            && getToY() == elt.getToY()
+                            && getCtrlX1() == elt.getCtrlX1()
+                            && getCtrlY1() == elt.getCtrlY1()
+                            && getFromX() == elt.getFromX()
+                            && getFromY() == elt.getFromY();
+                }
+
 			} catch (Throwable exception) {
 				//
 			}
@@ -554,15 +560,18 @@ public abstract class PathElement2d implements PathElement2afp {
 		public boolean equals(Object obj) {
 			try {
 				final PathElement2afp elt = (PathElement2afp) obj;
-				return getType() == elt.getType()
-						&& getToX() == elt.getToX()
-						&& getToY() == elt.getToY()
-						&& getCtrlX1() == elt.getCtrlX1()
-						&& getCtrlY1() == elt.getCtrlY1()
-						&& getCtrlX2() == elt.getCtrlX2()
-						&& getCtrlY2() == elt.getCtrlY2()
-						&& getFromX() == elt.getFromX()
-						&& getFromY() == elt.getFromY();
+                if (elt != null) {
+                    return getType() == elt.getType()
+                            && getToX() == elt.getToX()
+                            && getToY() == elt.getToY()
+                            && getCtrlX1() == elt.getCtrlX1()
+                            && getCtrlY1() == elt.getCtrlY1()
+                            && getCtrlX2() == elt.getCtrlX2()
+                            && getCtrlY2() == elt.getCtrlY2()
+                            && getFromX() == elt.getFromX()
+                            && getFromY() == elt.getFromY();
+                }
+
 			} catch (Throwable exception) {
 				//
 			}
@@ -714,11 +723,14 @@ public abstract class PathElement2d implements PathElement2afp {
 		public boolean equals(Object obj) {
 			try {
 				final PathElement2afp elt = (PathElement2afp) obj;
-				return getType() == elt.getType()
-						&& getToX() == elt.getToX()
-						&& getToY() == elt.getToY()
-						&& getFromX() == elt.getFromX()
-						&& getFromY() == elt.getFromY();
+                if (elt !=null) {
+                    return getType() == elt.getType()
+                            && getToX() == elt.getToX()
+                            && getToY() == elt.getToY()
+                            && getFromX() == elt.getFromX()
+                            && getFromY() == elt.getFromY();
+                }
+
 			} catch (Throwable exception) {
 				//
 			}
