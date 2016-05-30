@@ -43,7 +43,34 @@ import org.arakhne.afc.math.geometry.d2.afp.PathElement2afp;
 public abstract class PathElement2dfx implements PathElement2afp {
 
 	private static final long serialVersionUID = 1724746568685625149L;
-
+	/**+
+	 * Literal constant.
+	 */
+    private static final String IS_EMPTY = "isEmpty";
+    /**+
+     * Literal constant.
+     */
+    private static final String ARRAY_NOT_NULL = "Array must be not null";
+    /**+
+     * Literal constant.
+     */
+    private static final String ARRAY_TOO_SMALL = "Array size is too small";
+    /**+
+     * Literal constant.
+     */
+    private static final String FROMX_NOT_NULL = "fromX must be not null";
+    /**+
+     * Literal constant.
+     */
+    private static final String FROMY_NOT_NULL = "fromY must be not null";
+    /**+
+     * Literal constant.
+     */
+    private static final String LAST = ") >> (";
+    /**+
+     * Literal constant.
+     */
+    private static final String NEXT = ") -> (";
 	/** Type of the element.
 	 */
 	protected final PathElementType type;
@@ -336,7 +363,7 @@ public abstract class PathElement2dfx implements PathElement2afp {
 		@Override
 		public BooleanProperty isEmptyProperty() {
 			if (this.isEmpty == null) {
-				this.isEmpty = new ReadOnlyBooleanWrapper(this, "isEmpty", true); //$NON-NLS-1$
+				this.isEmpty = new ReadOnlyBooleanWrapper(this, IS_EMPTY, true); //$NON-NLS-1$
 			}
 			return this.isEmpty;
 		}
@@ -350,8 +377,8 @@ public abstract class PathElement2dfx implements PathElement2afp {
 		@Pure
 		@Override
 		public void toArray(int[] array) {
-			assert array != null : "Array must be not null"; //$NON-NLS-1$
-			assert array.length >= 2 : "Array size is too small"; //$NON-NLS-1$
+			assert array != null : ARRAY_NOT_NULL; //$NON-NLS-1$
+			assert array.length >= 2 :  ARRAY_TOO_SMALL; //$NON-NLS-1$
 			array[0] = this.toX.intValue();
 			array[1] = this.toY.intValue();
 		}
@@ -359,8 +386,8 @@ public abstract class PathElement2dfx implements PathElement2afp {
 		@Pure
 		@Override
 		public void toArray(double[] array) {
-			assert array != null : "Array must be not null"; //$NON-NLS-1$
-			assert array.length >= 2 : "Array size is too small"; //$NON-NLS-1$
+			assert array != null : ARRAY_NOT_NULL; //$NON-NLS-1$
+			assert array.length >= 2 :  ARRAY_TOO_SMALL; //$NON-NLS-1$
 			array[0] = this.toX.doubleValue();
 			array[1] = this.toY.doubleValue();
 		}
@@ -368,8 +395,8 @@ public abstract class PathElement2dfx implements PathElement2afp {
 		@Pure
 		@Override
 		public void toArray(DoubleProperty[] array) {
-			assert array != null : "Array must be not null"; //$NON-NLS-1$
-			assert array.length >= 2 : "Array size is too small"; //$NON-NLS-1$
+			assert array != null : ARRAY_NOT_NULL; //$NON-NLS-1$
+			assert array.length >= 2 :  ARRAY_TOO_SMALL; //$NON-NLS-1$
 			array[0] = this.toX;
 			array[1] = this.toY;
 		}
@@ -437,8 +464,8 @@ public abstract class PathElement2dfx implements PathElement2afp {
 		 */
 		LinePathElement2dfx(DoubleProperty fromx, DoubleProperty fromy, DoubleProperty tox, DoubleProperty toy) {
 			super(PathElementType.LINE_TO, tox, toy);
-			assert fromx != null : "fromX must be not null"; //$NON-NLS-1$
-			assert fromy != null : "fromY must be not null"; //$NON-NLS-1$
+			assert fromx != null :  FROMX_NOT_NULL; //$NON-NLS-1$
+			assert fromy != null :  FROMY_NOT_NULL; //$NON-NLS-1$
 			this.fromX = fromx;
 			this.fromY = fromy;
 		}
@@ -475,7 +502,7 @@ public abstract class PathElement2dfx implements PathElement2afp {
 		@Override
 		public BooleanProperty isEmptyProperty() {
 			if (this.isEmpty == null) {
-				this.isEmpty = new ReadOnlyBooleanWrapper(this, "isEmpty"); //$NON-NLS-1$
+				this.isEmpty = new ReadOnlyBooleanWrapper(this, IS_EMPTY); //$NON-NLS-1$
 				this.isEmpty.bind(Bindings.createBooleanBinding(() -> {
 					return MathUtil.isEpsilonEqual(fromXProperty().get(), toXProperty().get())
 							&& MathUtil.isEpsilonEqual(fromYProperty().get(), toYProperty().get());
@@ -493,8 +520,8 @@ public abstract class PathElement2dfx implements PathElement2afp {
 		@Pure
 		@Override
 		public void toArray(int[] array) {
-			assert array != null : "Array must be not null"; //$NON-NLS-1$
-			assert array.length >= 2 : "Array size is too small"; //$NON-NLS-1$
+			assert array != null : ARRAY_NOT_NULL; //$NON-NLS-1$
+			assert array.length >= 2 :  ARRAY_TOO_SMALL; //$NON-NLS-1$
 			array[0] = this.toX.intValue();
 			array[1] = this.toY.intValue();
 		}
@@ -502,8 +529,8 @@ public abstract class PathElement2dfx implements PathElement2afp {
 		@Pure
 		@Override
 		public void toArray(double[] array) {
-			assert array != null : "Array must be not null"; //$NON-NLS-1$
-			assert array.length >= 2 : "Array size is too small"; //$NON-NLS-1$
+			assert array != null : ARRAY_NOT_NULL; //$NON-NLS-1$
+			assert array.length >= 2 :  ARRAY_TOO_SMALL; //$NON-NLS-1$
 			array[0] = this.toX.doubleValue();
 			array[1] = this.toY.doubleValue();
 		}
@@ -511,8 +538,8 @@ public abstract class PathElement2dfx implements PathElement2afp {
 		@Pure
 		@Override
 		public void toArray(DoubleProperty[] array) {
-			assert array != null : "Array must be not null"; //$NON-NLS-1$
-			assert array.length >= 2 : "Array size is too small"; //$NON-NLS-1$
+			assert array != null : ARRAY_NOT_NULL; //$NON-NLS-1$
+			assert array.length >= 2 :  ARRAY_TOO_SMALL; //$NON-NLS-1$
 			array[0] = this.toX;
 			array[1] = this.toY;
 		}
@@ -528,7 +555,7 @@ public abstract class PathElement2dfx implements PathElement2afp {
 		public String toString() {
 			return "LINE:(" //$NON-NLS-1$
 					+ getFromX() + ";" //$NON-NLS-1$
-					+ getFromY() + ") -> (" //$NON-NLS-1$
+					+ getFromY() + NEXT //$NON-NLS-1$
 					+ getToX() + ";" //$NON-NLS-1$
 					+ getToY() + ")"; //$NON-NLS-1$
 		}
@@ -591,8 +618,8 @@ public abstract class PathElement2dfx implements PathElement2afp {
 		QuadPathElement2dfx(DoubleProperty fromx, DoubleProperty fromy, DoubleProperty ctrlx,
 				DoubleProperty ctrly, DoubleProperty tox, DoubleProperty toy) {
 			super(PathElementType.QUAD_TO, tox, toy);
-			assert fromx != null : "fromX must be not null"; //$NON-NLS-1$
-			assert fromy != null : "fromY must be not null"; //$NON-NLS-1$
+			assert fromx != null :  FROMX_NOT_NULL; //$NON-NLS-1$
+			assert fromy != null :  FROMY_NOT_NULL; //$NON-NLS-1$
 			assert ctrlx != null : "ctrlX must be not null"; //$NON-NLS-1$
 			assert ctrly != null : "ctrlY must be not null"; //$NON-NLS-1$
 			this.fromX = fromx;
@@ -637,7 +664,7 @@ public abstract class PathElement2dfx implements PathElement2afp {
 		@Override
 		public BooleanProperty isEmptyProperty() {
 			if (this.isEmpty == null) {
-				this.isEmpty = new ReadOnlyBooleanWrapper(this, "isEmpty"); //$NON-NLS-1$
+				this.isEmpty = new ReadOnlyBooleanWrapper(this, IS_EMPTY); //$NON-NLS-1$
 				this.isEmpty.bind(Bindings.createBooleanBinding(() -> {
 					return MathUtil.isEpsilonEqual(fromXProperty().get(), toXProperty().get())
 							&& MathUtil.isEpsilonEqual(fromYProperty().get(), toYProperty().get())
@@ -657,8 +684,8 @@ public abstract class PathElement2dfx implements PathElement2afp {
 		@Pure
 		@Override
 		public void toArray(int[] array) {
-			assert array != null : "Array must be not null"; //$NON-NLS-1$
-			assert array.length >= 4 : "Array size is too small"; //$NON-NLS-1$
+			assert array != null : ARRAY_NOT_NULL; //$NON-NLS-1$
+			assert array.length >= 4 :  ARRAY_TOO_SMALL; //$NON-NLS-1$
 			array[0] = this.ctrlX.intValue();
 			array[1] = this.ctrlY.intValue();
 			array[2] = this.toX.intValue();
@@ -668,8 +695,8 @@ public abstract class PathElement2dfx implements PathElement2afp {
 		@Pure
 		@Override
 		public void toArray(double[] array) {
-			assert array != null : "Array must be not null"; //$NON-NLS-1$
-			assert array.length >= 4 : "Array size is too small"; //$NON-NLS-1$
+			assert array != null : ARRAY_NOT_NULL; //$NON-NLS-1$
+			assert array.length >= 4 :  ARRAY_TOO_SMALL; //$NON-NLS-1$
 			array[0] = this.ctrlX.doubleValue();
 			array[1] = this.ctrlY.doubleValue();
 			array[2] = this.toX.doubleValue();
@@ -679,8 +706,8 @@ public abstract class PathElement2dfx implements PathElement2afp {
 		@Pure
 		@Override
 		public void toArray(DoubleProperty[] array) {
-			assert array != null : "Array must be not null"; //$NON-NLS-1$
-			assert array.length >= 4 : "Array size is too small"; //$NON-NLS-1$
+			assert array != null : ARRAY_NOT_NULL; //$NON-NLS-1$
+			assert array.length >= 4 :  ARRAY_TOO_SMALL; //$NON-NLS-1$
 			array[0] = this.ctrlX;
 			array[1] = this.ctrlY;
 			array[2] = this.toX;
@@ -698,9 +725,9 @@ public abstract class PathElement2dfx implements PathElement2afp {
 		public String toString() {
 			return "QUAD:(" //$NON-NLS-1$
 					+ getFromX() + ";" //$NON-NLS-1$
-					+ getFromY() + ") >> (" //$NON-NLS-1$
+					+ getFromY() +  LAST //$NON-NLS-1$
 					+ getCtrlX1() + ";" //$NON-NLS-1$
-					+ getCtrlY1() + ") >> (" //$NON-NLS-1$
+					+ getCtrlY1() +  LAST //$NON-NLS-1$
 					+ getToX() + ";" //$NON-NLS-1$
 					+ getToY() + ")"; //$NON-NLS-1$
 		}
@@ -794,8 +821,8 @@ public abstract class PathElement2dfx implements PathElement2afp {
 				DoubleProperty ctrly1, DoubleProperty ctrlx2, DoubleProperty ctrly2,
 				DoubleProperty tox, DoubleProperty toy) {
 			super(PathElementType.CURVE_TO, tox, toy);
-			assert fromx != null : "fromX must be not null"; //$NON-NLS-1$
-			assert fromy != null : "fromY must be not null"; //$NON-NLS-1$
+			assert fromx != null :  FROMX_NOT_NULL; //$NON-NLS-1$
+			assert fromy != null :  FROMY_NOT_NULL; //$NON-NLS-1$
 			assert ctrlx1 != null : "ctrlX1 must be not null"; //$NON-NLS-1$
 			assert ctrly1 != null : "ctrlY1 must be not null"; //$NON-NLS-1$
 			assert ctrlx2 != null : "ctrlX2 must be not null"; //$NON-NLS-1$
@@ -848,7 +875,7 @@ public abstract class PathElement2dfx implements PathElement2afp {
 		@Override
 		public BooleanProperty isEmptyProperty() {
 			if (this.isEmpty == null) {
-				this.isEmpty = new ReadOnlyBooleanWrapper(this, "isEmpty"); //$NON-NLS-1$
+				this.isEmpty = new ReadOnlyBooleanWrapper(this, IS_EMPTY); //$NON-NLS-1$
 				this.isEmpty.bind(Bindings.createBooleanBinding(() -> {
 					return MathUtil.isEpsilonEqual(fromXProperty().get(), toXProperty().get())
 							&& MathUtil.isEpsilonEqual(fromYProperty().get(), toYProperty().get())
@@ -870,8 +897,8 @@ public abstract class PathElement2dfx implements PathElement2afp {
 		@Pure
 		@Override
 		public void toArray(int[] array) {
-			assert array != null : "Array must be not null"; //$NON-NLS-1$
-			assert array.length >= 6 : "Array size is too small"; //$NON-NLS-1$
+			assert array != null : ARRAY_NOT_NULL; //$NON-NLS-1$
+			assert array.length >= 6 :  ARRAY_TOO_SMALL; //$NON-NLS-1$
 			array[0] = this.ctrlX1.intValue();
 			array[1] = this.ctrlY1.intValue();
 			array[2] = this.ctrlX2.intValue();
@@ -883,8 +910,8 @@ public abstract class PathElement2dfx implements PathElement2afp {
 		@Pure
 		@Override
 		public void toArray(DoubleProperty[] array) {
-			assert array != null : "Array must be not null"; //$NON-NLS-1$
-			assert array.length >= 6 : "Array size is too small"; //$NON-NLS-1$
+			assert array != null : ARRAY_NOT_NULL; //$NON-NLS-1$
+			assert array.length >= 6 :  ARRAY_TOO_SMALL; //$NON-NLS-1$
 			array[0] = this.ctrlX1;
 			array[1] = this.ctrlY1;
 			array[2] = this.ctrlX2;
@@ -896,8 +923,8 @@ public abstract class PathElement2dfx implements PathElement2afp {
 		@Pure
 		@Override
 		public void toArray(double[] array) {
-			assert array != null : "Array must be not null"; //$NON-NLS-1$
-			assert array.length >= 6 : "Array size is too small"; //$NON-NLS-1$
+			assert array != null : ARRAY_NOT_NULL; //$NON-NLS-1$
+			assert array.length >= 6 :  ARRAY_TOO_SMALL; //$NON-NLS-1$
 			array[0] = this.ctrlX1.doubleValue();
 			array[1] = this.ctrlY1.doubleValue();
 			array[2] = this.ctrlX2.doubleValue();
@@ -917,11 +944,11 @@ public abstract class PathElement2dfx implements PathElement2afp {
 		public String toString() {
 			return "CURVE:(" //$NON-NLS-1$
 					+ getFromX() + ";" //$NON-NLS-1$
-					+ getFromY() + ") >> (" //$NON-NLS-1$
+					+ getFromY() +  LAST //$NON-NLS-1$
 					+ getCtrlX1() + ";" //$NON-NLS-1$
-					+ getCtrlY1() + ") >> (" //$NON-NLS-1$
+					+ getCtrlY1() +  LAST //$NON-NLS-1$
 					+ getCtrlX2() + ";" //$NON-NLS-1$
-					+ getCtrlY2() + ") -> (" //$NON-NLS-1$
+					+ getCtrlY2() + NEXT //$NON-NLS-1$
 					+ getToX() + ";" //$NON-NLS-1$
 					+ getToY() + ")"; //$NON-NLS-1$
 		}
@@ -1025,8 +1052,8 @@ public abstract class PathElement2dfx implements PathElement2afp {
 		 */
 		ClosePathElement2dfx(DoubleProperty fromx, DoubleProperty fromy, DoubleProperty tox, DoubleProperty toy) {
 			super(PathElementType.CLOSE, tox, toy);
-			assert fromx != null : "fromX must be not null"; //$NON-NLS-1$
-			assert fromy != null : "fromY must be not null"; //$NON-NLS-1$
+			assert fromx != null :  FROMX_NOT_NULL; //$NON-NLS-1$
+			assert fromy != null :  FROMY_NOT_NULL; //$NON-NLS-1$
 			this.fromX = fromx;
 			this.fromY = fromy;
 		}
@@ -1063,7 +1090,7 @@ public abstract class PathElement2dfx implements PathElement2afp {
 		@Override
 		public BooleanProperty isEmptyProperty() {
 			if (this.isEmpty == null) {
-				this.isEmpty = new ReadOnlyBooleanWrapper(this, "isEmpty"); //$NON-NLS-1$
+				this.isEmpty = new ReadOnlyBooleanWrapper(this, IS_EMPTY); //$NON-NLS-1$
 				this.isEmpty.bind(Bindings.createBooleanBinding(() -> {
 					return MathUtil.isEpsilonEqual(fromXProperty().get(), toXProperty().get())
 							&& MathUtil.isEpsilonEqual(fromYProperty().get(), toYProperty().get());
@@ -1081,8 +1108,8 @@ public abstract class PathElement2dfx implements PathElement2afp {
 		@Pure
 		@Override
 		public void toArray(int[] array) {
-			assert array != null : "Array must be not null"; //$NON-NLS-1$
-			assert array.length >= 2 : "Array size is too small"; //$NON-NLS-1$
+			assert array != null : ARRAY_NOT_NULL; //$NON-NLS-1$
+			assert array.length >= 2 :  ARRAY_TOO_SMALL; //$NON-NLS-1$
 			array[0] = (int) this.toX.get();
 			array[1] = (int) this.toY.get();
 		}
@@ -1090,8 +1117,8 @@ public abstract class PathElement2dfx implements PathElement2afp {
 		@Pure
 		@Override
 		public void toArray(DoubleProperty[] array) {
-			assert array != null : "Array must be not null"; //$NON-NLS-1$
-			assert array.length >= 2 : "Array size is too small"; //$NON-NLS-1$
+			assert array != null : ARRAY_NOT_NULL; //$NON-NLS-1$
+			assert array.length >= 2 :  ARRAY_TOO_SMALL; //$NON-NLS-1$
 			array[0] = this.toX;
 			array[1] = this.toY;
 		}
@@ -1099,8 +1126,8 @@ public abstract class PathElement2dfx implements PathElement2afp {
 		@Pure
 		@Override
 		public void toArray(double[] array) {
-			assert array != null : "Array must be not null"; //$NON-NLS-1$
-			assert array.length >= 2 : "Array size is too small"; //$NON-NLS-1$
+			assert array != null : ARRAY_NOT_NULL; //$NON-NLS-1$
+			assert array.length >= 2 :  ARRAY_TOO_SMALL; //$NON-NLS-1$
 			array[0] = this.toX.get();
 			array[1] = this.toY.get();
 		}
@@ -1116,7 +1143,7 @@ public abstract class PathElement2dfx implements PathElement2afp {
 		public String toString() {
 			return "CLOSE:(" //$NON-NLS-1$
 					+ getFromX() + ";" //$NON-NLS-1$
-					+ getFromY() + ") -> (" //$NON-NLS-1$
+					+ getFromY() + NEXT //$NON-NLS-1$
 					+ getToX() + ";" //$NON-NLS-1$
 					+ getToY() + ")"; //$NON-NLS-1$
 		}
@@ -1188,8 +1215,8 @@ public abstract class PathElement2dfx implements PathElement2afp {
 				DoubleProperty xradius, DoubleProperty yradius, DoubleProperty xrotation,
 				BooleanProperty largeArcFlag, BooleanProperty sweepFlag) {
 			super(PathElementType.ARC_TO, tox, toy);
-			assert fromx != null : "fromx must be not null"; //$NON-NLS-1$
-			assert fromy != null : "fromy must be not null"; //$NON-NLS-1$
+			assert fromx != null :  FROMX_NOT_NULL; //$NON-NLS-1$
+			assert fromy != null :  FROMY_NOT_NULL; //$NON-NLS-1$
 			assert xradius != null : "xradius must be not null"; //$NON-NLS-1$
 			assert yradius != null : "yradius must be not null"; //$NON-NLS-1$
 			assert xrotation != null : "xrotation must be not null"; //$NON-NLS-1$
@@ -1242,7 +1269,7 @@ public abstract class PathElement2dfx implements PathElement2afp {
 		@Override
 		public BooleanProperty isEmptyProperty() {
 			if (this.isEmpty == null) {
-				this.isEmpty = new ReadOnlyBooleanWrapper(this, "isEmpty"); //$NON-NLS-1$
+				this.isEmpty = new ReadOnlyBooleanWrapper(this, IS_EMPTY); //$NON-NLS-1$
 				this.isEmpty.bind(Bindings.createBooleanBinding(() -> {
 					return MathUtil.isEpsilonEqual(fromXProperty().get(), toXProperty().get())
 							&& MathUtil.isEpsilonEqual(fromYProperty().get(), toYProperty().get());
@@ -1260,8 +1287,8 @@ public abstract class PathElement2dfx implements PathElement2afp {
 		@Pure
 		@Override
 		public void toArray(int[] array) {
-			assert array != null : "Array must be not null"; //$NON-NLS-1$
-			assert array.length >= 2 : "Array size is too small"; //$NON-NLS-1$
+			assert array != null : ARRAY_NOT_NULL; //$NON-NLS-1$
+			assert array.length >= 2 :  ARRAY_TOO_SMALL; //$NON-NLS-1$
 			array[0] = this.toX.intValue();
 			array[1] = this.toY.intValue();
 		}
@@ -1269,8 +1296,8 @@ public abstract class PathElement2dfx implements PathElement2afp {
 		@Pure
 		@Override
 		public void toArray(DoubleProperty[] array) {
-			assert array != null : "Array must be not null"; //$NON-NLS-1$
-			assert array.length >= 2 : "Array size is too small"; //$NON-NLS-1$
+			assert array != null : ARRAY_NOT_NULL; //$NON-NLS-1$
+			assert array.length >= 2 :  ARRAY_TOO_SMALL; //$NON-NLS-1$
 			array[0] = this.toX;
 			array[1] = this.toY;
 		}
@@ -1278,8 +1305,8 @@ public abstract class PathElement2dfx implements PathElement2afp {
 		@Pure
 		@Override
 		public void toArray(double[] array) {
-			assert array != null : "Array must be not null"; //$NON-NLS-1$
-			assert array.length >= 2 : "Array size is too small"; //$NON-NLS-1$
+			assert array != null : ARRAY_NOT_NULL; //$NON-NLS-1$
+			assert array.length >= 2 :  ARRAY_TOO_SMALL; //$NON-NLS-1$
 			array[0] = this.toX.doubleValue();
 			array[1] = this.toY.doubleValue();
 		}
