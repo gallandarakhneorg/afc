@@ -87,3 +87,18 @@ For using this version, you must add the Maven Repository Server of AFC in your 
 
 Issues related to the AFC are tracked on [GitHub](https://github.com/gallandarakhneorg/afc/issues)
 You must use this issue tracker to report and follow your issues.
+
+# Contributions
+
+Any contribution to the AFC library is welcome.
+For sending your contribution to the AFC master repositoty, you should request a pull (PR) to the [GitHub repository](https://github.com/gallandarakhneorg/afc/).
+
+For being merged, your PR must:
+* be compilable with Maven.
+* pass the compilation process successfully, including the code compilation, unit testing, and code style checking. This process is supported by Travis-CI;
+* sign the [Contributor License Agreement](./CLA.md) on GitHub. It is supported by [cla-assistant](https://cla-assistant.io/gallandarakhneorg/afc);
+* be reviewed by one or more of the main contributors for ensure your PR is following the development rules and philosophy related to the AFC.
+
+# License of AFC
+
+The Arakhnê Foundation Classes are distributed under the [Apache v2 license](./LICENSE), and is copyrigthed to the original authors and the other authors, as expressed in the [NOTICE](./NOTICE).
