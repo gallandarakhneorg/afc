@@ -57,18 +57,21 @@ public interface RoundRectangle2afp<
 		B extends Rectangle2afp<?, ?, IE, P, V, B>>
 		extends RectangularShape2afp<ST, IT, IE, P, V, B> {
 
-    /**+
+    /**
      * Literal constant.
      */
 	String ROUND_RECTANGLE_ARC_HEIGHT = "Round rectangle arc height must be positive or zero";
-    /**+
+
+    /**
      * Literal constant.
      */
     String ROUND_RECTANGLE_ARC_WIDTH = "Round rectangle arc width must be positive or zero";
+
     /**+
      * Literal constant.
      */
     String RY1_LOWER_OR_EQUAL_RY2 = "ry1 must be lower or equal ry2";
+
     /**+
      * Literal constant.
      */

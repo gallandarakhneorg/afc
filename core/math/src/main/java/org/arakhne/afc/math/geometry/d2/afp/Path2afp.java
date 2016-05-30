@@ -61,7 +61,7 @@ public interface Path2afp<
 		B extends Rectangle2afp<?, ?, IE, P, V, B>>
 		extends Shape2afp<ST, IT, IE, P, V, B>, Path2D<ST, IT, PathIterator2afp<IE>, P, V, B> {
 
-    /**+
+    /**
      * Literal constant.
      */
     String COLL_NOT_NULL = "Collection must be not null";
