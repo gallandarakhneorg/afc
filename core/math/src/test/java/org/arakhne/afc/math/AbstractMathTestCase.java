@@ -468,7 +468,7 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	 * @param y
 	 * @param z
 	 */
-	public void assertFpVectorEquals(double x, double y, double z, Vector3D v) {
+	public void assertFpVectorEquals(double x, double y, double z, Vector3D<?, ?> v) {
 		double dx = x - v.getX();
 		double dy = y - v.getY();
 		double dz = z - v.getZ();
@@ -488,7 +488,7 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	 * @param y
 	 * @param z
 	 */
-	public void assertIntVectorEquals(int x, int y, int z, Vector3D v) {
+	public void assertIntVectorEquals(int x, int y, int z, Vector3D<?, ?> v) {
 		if (x != v.ix() || y != v.iy() || z != v.iz()) {
 			final String str1 = "(" + x + ", " + y + ")";   
 			final String str2 = "(" + v.ix() + ", " + v.iy() + ")";   
@@ -504,7 +504,7 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	 * @param z
 	 * @param v
 	 */
-	public void assertFpVectorNotEquals(double x, double y, double z, Vector3D v) {
+	public void assertFpVectorNotEquals(double x, double y, double z, Vector3D<?, ?> v) {
 		double dx = x - v.getX();
 		double dy = y - v.getY();
 		double dz = z - v.getZ();
@@ -524,7 +524,7 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	 * @param y
 	 * @param z
 	 */
-	public void assertIntVectorNotEquals(int x, int y, int z, Vector3D v) {
+	public void assertIntVectorNotEquals(int x, int y, int z, Vector3D<?, ?> v) {
 		if (x == v.ix() && y == v.iy() && z == v.iz()) {
 			final String str1 = "(" + x + ", " + y + ")";   
 			final String str2 = "(" + v.ix() + ", " + v.iy() + ")";   
@@ -539,7 +539,7 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	 * @param x
 	 * @param y
 	 */
-	public void assertFpPointEquals(double x, double y, Point2D v) {
+	public void assertFpPointEquals(double x, double y, Point2D<?, ?> v) {
 		double dx = x - v.getX();
 		double dy = y - v.getY();
 		double distSq = dx * dx + dy * dy;
@@ -550,7 +550,7 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 					str1, str2);   
 		}
 	}
-
+	
 	/** Test if the actual point is equal to the expected values.
 	 * 
 	 * @param v
@@ -565,7 +565,7 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 					str1, str2);   
 		}
 	}
-
+	
 	/** Test if the actual point is not equal to the expected values.
 	 * 
 	 * @param v
@@ -583,7 +583,7 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 					str1, str2);   
 		}
 	}
-
+	
 	/** Test if the actual point is not equal to the expected values.
 	 * 
 	 * @param v
@@ -596,6 +596,72 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 			final String str2 = "(" + v.ix() + ", " + v.iy() + ")";   
 			throw new ComparisonFailure(formatFailMessage(null, "same point", str1, str2), 
 					str1, str2);   
+		}
+	}
+	/** Test if the actual point is equal to the expected values.
+	 * 
+	 * @param v
+	 * @param x
+	 * @param y
+	 * @param z
+	 */
+	public void assertFpPointEquals(double x, double y, double z, Point3D<?, ?> v) {
+		double dx = x - v.getX();
+		double dy = y - v.getY();
+		double dz = z - v.getZ();
+		double distSq = dx * dx + dy * dy + dz * dz;
+		if (!isEpsilonEquals(distSq, 0.)) {
+			throw new ComparisonFailure("Not same point", //$NON-NLS-1$
+					"(" + x + "; " + y + ")", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					"(" + v.getX() + "; " + v.getY() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		}
+	}
+
+	/** Test if the actual point is equal to the expected values.
+	 * 
+	 * @param v
+	 * @param x
+	 * @param y
+	 * @param z
+	 */
+	public void assertIntPointEquals(int x, int y, int z, Point3D<?, ?> v) {
+		if (x != v.ix() || y != v.iy() || z != v.iz()) {
+			throw new ComparisonFailure("Not same point", //$NON-NLS-1$
+					"(" + x + "; " + y + "; " + z + ")", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					"(" + v.ix() + "; " + v.iy() + "; " + v.iz() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		}
+	}
+
+	/** Test if the actual point is not equal to the expected values.
+	 * 
+	 * @param v
+	 * @param x
+	 * @param y
+	 * @param z
+	 */
+	public void assertFpPointNotEquals(double x, double y, double z, Point3D<?, ?> v) {
+		double dx = x - v.getX();
+		double dy = y - v.getY();
+		double dz = z - v.getZ();
+		double distSq = dx * dx + dy * dy + dz * dz;
+		if (isEpsilonEquals(distSq, 0.)) {
+			throw new ComparisonFailure("Same point", //$NON-NLS-1$
+					"(" + x + "; " + y + "; " + z + ")", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					"(" + v.getX() + "; " + v.getY() + "; " + v.getZ() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		}
+	}
+
+	/** Test if the actual point is not equal to the expected values.
+	 * 
+	 * @param v
+	 * @param x
+	 * @param y
+	 */
+	public void assertIntPointNotEquals(int x, int y, int z, Point3D<?, ?> v) {
+		if (x == v.ix() && y == v.iy() && z == v.iz()) {
+			throw new ComparisonFailure("Same point", //$NON-NLS-1$
+					"(" + x + "; " + y + "; " + z + ")", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					"(" + v.ix() + "; " + v.iy() + "; " + v.iz() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
 	}
 
