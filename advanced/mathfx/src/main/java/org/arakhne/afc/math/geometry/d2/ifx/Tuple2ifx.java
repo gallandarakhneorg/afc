@@ -138,7 +138,7 @@ public class Tuple2ifx<RT extends Tuple2ifx<? super RT>> implements Tuple2D<RT> 
 		int bits = 1;
 		bits = 31 * bits + ix();
 		bits = 31 * bits + iy();
-		return bits ^ (bits >> 32);
+		return bits ^ (bits >> 31);
 	}
 
 	@Pure
