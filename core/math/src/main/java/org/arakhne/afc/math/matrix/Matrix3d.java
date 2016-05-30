@@ -47,6 +47,18 @@ public class Matrix3d implements Serializable, Cloneable {
 
 	private static final long serialVersionUID = -7386754038391115819L;
 
+    /**+
+     *Literal constant.
+     */
+    private static final String COLUMN_INDEX_RULE = "Column index must be in [0; 2]";
+    /**+
+     *Literal constant.
+     */
+    private static final String SECOND_MATRIX_NOT_NULL = "Second matrix must not be null";
+    /**+
+     *Literal constant.
+     */
+    private static final String FIRST_MATRIX_NOT_NULL = "First matrix must not be null";
 	/**
 	 * The first matrix element in the first row.
 	 */
@@ -244,7 +256,7 @@ public class Matrix3d implements Serializable, Cloneable {
 	 */
 	public void setElement(int row, int column, double value) {
 		assert row >= 0 && row < 3 : "Row index must be in [0; 2]"; //$NON-NLS-1$
-		assert column >= 0 && column < 3 : "Column index must be in [0; 2]"; //$NON-NLS-1$
+		assert column >= 0 && column < 3 : COLUMN_INDEX_RULE; //$NON-NLS-1$
 		switch (row) {
 		case 0:
 			switch (column) {
@@ -315,7 +327,7 @@ public class Matrix3d implements Serializable, Cloneable {
 	@SuppressWarnings("checkstyle:returncount")
 	public double getElement(int row, int column) {
 		assert row >= 0 && row < 3 : "Row index must be in [0; 2]"; //$NON-NLS-1$
-		assert column >= 0 && column < 3 : "Column index must be in [0; 2]"; //$NON-NLS-1$
+		assert column >= 0 && column < 3 : COLUMN_INDEX_RULE; //$NON-NLS-1$
 		switch (row) {
 		case 0:
 			switch (column) {
@@ -425,7 +437,7 @@ public class Matrix3d implements Serializable, Cloneable {
 	 *            the vector into which the matrix row values will be copied
 	 */
 	public void getColumn(int column, Vector3D vector) {
-		assert column >= 0 && column < 3 : "Column index must be in [0; 2]"; //$NON-NLS-1$
+		assert column >= 0 && column < 3 : COLUMN_INDEX_RULE; //$NON-NLS-1$
 		assert vector != null : "Vector of values must not be null"; //$NON-NLS-1$
 		if (column == 0) {
 			vector.set(this.m00, this.m10, this.m20);
@@ -449,7 +461,7 @@ public class Matrix3d implements Serializable, Cloneable {
 	 *            the array into which the matrix row values will be copied
 	 */
 	public void getColumn(int column, double[] vector) {
-		assert column >= 0 && column < 3 : "Column index must be in [0; 2]"; //$NON-NLS-1$
+		assert column >= 0 && column < 3 : COLUMN_INDEX_RULE; //$NON-NLS-1$
 		assert vector != null : "Vector of values must not be null"; //$NON-NLS-1$
 		assert vector.length >= 3 : "Size of the vector is too small";  //$NON-NLS-1$
 		if (column == 0) {
@@ -598,7 +610,7 @@ public class Matrix3d implements Serializable, Cloneable {
 	 *            the third row element
 	 */
 	public void setColumn(int column, double x, double y, double z) {
-		assert column >= 0 && column < 3 : "Column index must be in [0; 2]"; //$NON-NLS-1$
+		assert column >= 0 && column < 3 : COLUMN_INDEX_RULE; //$NON-NLS-1$
 		switch (column) {
 		case 0:
 			this.m00 = x;
@@ -634,7 +646,7 @@ public class Matrix3d implements Serializable, Cloneable {
 	 *            the replacement column
 	 */
 	public void setColumn(int column, Vector3D vector) {
-		assert column >= 0 && column < 3 : "Column index must be in [0; 2]"; //$NON-NLS-1$
+		assert column >= 0 && column < 3 : COLUMN_INDEX_RULE; //$NON-NLS-1$
 		assert vector != null : "Vector of values must not be null"; //$NON-NLS-1$
 		switch (column) {
 		case 0:
@@ -671,7 +683,7 @@ public class Matrix3d implements Serializable, Cloneable {
 	 *            the replacement column
 	 */
 	public void setColumn(int column, double[] vector) {
-		assert column >= 0 && column < 3 : "Column index must be in [0; 2]"; //$NON-NLS-1$
+		assert column >= 0 && column < 3 : COLUMN_INDEX_RULE; //$NON-NLS-1$
 		assert vector != null : "Vector of values must not be null"; //$NON-NLS-1$
 		assert vector.length >= 3 : "Size of the vector is too small";  //$NON-NLS-1$
 		switch (column) {
@@ -757,8 +769,8 @@ public class Matrix3d implements Serializable, Cloneable {
 	 *            the second matrix
 	 */
 	public void add(Matrix3d matrix1, Matrix3d matrix2) {
-		assert matrix1 != null : "First matrix must not be null"; //$NON-NLS-1$
-		assert matrix2 != null : "Second matrix must not be null"; //$NON-NLS-1$
+		assert matrix1 != null : FIRST_MATRIX_NOT_NULL; //$NON-NLS-1$
+		assert matrix2 != null : SECOND_MATRIX_NOT_NULL; //$NON-NLS-1$
 		this.m00 = matrix1.m00 + matrix2.m00;
 		this.m01 = matrix1.m01 + matrix2.m01;
 		this.m02 = matrix1.m02 + matrix2.m02;
@@ -807,8 +819,8 @@ public class Matrix3d implements Serializable, Cloneable {
 	 *            the second matrix
 	 */
 	public void sub(Matrix3d matrix1, Matrix3d matrix2) {
-		assert matrix1 != null : "First matrix must not be null"; //$NON-NLS-1$
-		assert matrix2 != null : "Second matrix must not be null"; //$NON-NLS-1$
+		assert matrix1 != null : FIRST_MATRIX_NOT_NULL; //$NON-NLS-1$
+		assert matrix2 != null : SECOND_MATRIX_NOT_NULL; //$NON-NLS-1$
 		this.m00 = matrix1.m00 - matrix2.m00;
 		this.m01 = matrix1.m01 - matrix2.m01;
 		this.m02 = matrix1.m02 - matrix2.m02;
@@ -1378,8 +1390,8 @@ public class Matrix3d implements Serializable, Cloneable {
 	 *            the second matrix
 	 */
 	public void mul(Matrix3d matrix1, Matrix3d matrix2) {
-		assert matrix1 != null : "First matrix must not be null"; //$NON-NLS-1$
-		assert matrix2 != null : "Second matrix must not be null"; //$NON-NLS-1$
+		assert matrix1 != null : FIRST_MATRIX_NOT_NULL; //$NON-NLS-1$
+		assert matrix2 != null : SECOND_MATRIX_NOT_NULL; //$NON-NLS-1$
 		if (this != matrix1 && this != matrix2) {
 			this.m00 = matrix1.m00 * matrix2.m00 + matrix1.m01 * matrix2.m10 + matrix1.m02 * matrix2.m20;
 			this.m01 = matrix1.m00 * matrix2.m01 + matrix1.m01 * matrix2.m11 + matrix1.m02 * matrix2.m21;
@@ -1459,8 +1471,8 @@ public class Matrix3d implements Serializable, Cloneable {
 	 *            the matrix on the right hand side of the multiplication
 	 */
 	public void mulTransposeLeft(Matrix3d matrix1, Matrix3d matrix2) {
-		assert matrix1 != null : "First matrix must not be null"; //$NON-NLS-1$
-		assert matrix2 != null : "Second matrix must not be null"; //$NON-NLS-1$
+		assert matrix1 != null : FIRST_MATRIX_NOT_NULL; //$NON-NLS-1$
+		assert matrix2 != null : SECOND_MATRIX_NOT_NULL; //$NON-NLS-1$
 		if (this != matrix1 && this != matrix2) {
 			this.m00 = matrix1.m00 * matrix2.m00 + matrix1.m10 * matrix2.m10 + matrix1.m20 * matrix2.m20;
 			this.m01 = matrix1.m00 * matrix2.m01 + matrix1.m10 * matrix2.m11 + matrix1.m20 * matrix2.m21;
@@ -1554,8 +1566,8 @@ public class Matrix3d implements Serializable, Cloneable {
 	 *            the matrix on the right hand side of the multiplication
 	 */
 	public void mulNormalize(Matrix3d matrix1, Matrix3d matrix2) {
-		assert matrix1 != null : "First matrix must not be null"; //$NON-NLS-1$
-		assert matrix2 != null : "Second matrix must not be null"; //$NON-NLS-1$
+		assert matrix1 != null : FIRST_MATRIX_NOT_NULL; //$NON-NLS-1$
+		assert matrix2 != null : SECOND_MATRIX_NOT_NULL; //$NON-NLS-1$
 
 		final double[] tmp = new double[9];
 		final double[] tmpRot = new double[9];
@@ -1600,8 +1612,8 @@ public class Matrix3d implements Serializable, Cloneable {
 	 *            the matrix on the right hand side of the multiplication
 	 */
 	public void mulTransposeBoth(Matrix3d matrix1, Matrix3d matrix2) {
-		assert matrix1 != null : "First matrix must not be null"; //$NON-NLS-1$
-		assert matrix2 != null : "Second matrix must not be null"; //$NON-NLS-1$
+		assert matrix1 != null : FIRST_MATRIX_NOT_NULL; //$NON-NLS-1$
+		assert matrix2 != null : SECOND_MATRIX_NOT_NULL; //$NON-NLS-1$
 		if (this != matrix1 && this != matrix2) {
 			this.m00 = matrix1.m00 * matrix2.m00 + matrix1.m10 * matrix2.m01 + matrix1.m20 * matrix2.m02;
 			this.m01 = matrix1.m00 * matrix2.m10 + matrix1.m10 * matrix2.m11 + matrix1.m20 * matrix2.m12;
@@ -1651,8 +1663,8 @@ public class Matrix3d implements Serializable, Cloneable {
 	 *            the matrix on the right hand side of the multiplication
 	 */
 	public void mulTransposeRight(Matrix3d matrix1, Matrix3d matrix2) {
-		assert matrix1 != null : "First matrix must not be null"; //$NON-NLS-1$
-		assert matrix2 != null : "Second matrix must not be null"; //$NON-NLS-1$
+		assert matrix1 != null : FIRST_MATRIX_NOT_NULL; //$NON-NLS-1$
+		assert matrix2 != null : SECOND_MATRIX_NOT_NULL; //$NON-NLS-1$
 		if (this != matrix1 && this != matrix2) {
 			this.m00 = matrix1.m00 * matrix2.m00 + matrix1.m01 * matrix2.m01 + matrix1.m02 * matrix2.m02;
 			this.m01 = matrix1.m00 * matrix2.m10 + matrix1.m01 * matrix2.m11 + matrix1.m02 * matrix2.m12;
