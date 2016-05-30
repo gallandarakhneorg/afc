@@ -262,7 +262,7 @@ public abstract class AbstractRectangularShape2ifx<IT extends AbstractRectangula
 		bits = 31 * bits + getMinY();
 		bits = 31 * bits + getMaxX();
 		bits = 31 * bits + getMaxY();
-		return bits ^ (bits >> 32);
+		return bits ^ (bits >> 31);
 	}
 
 	@Pure

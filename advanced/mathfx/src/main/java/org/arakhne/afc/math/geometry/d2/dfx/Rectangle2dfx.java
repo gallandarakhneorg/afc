@@ -130,7 +130,7 @@ public class Rectangle2dfx extends AbstractShape2dfx<Rectangle2dfx>
 		bits = 31 * bits + Double.doubleToLongBits(getMaxX());
 		bits = 31 * bits + Double.doubleToLongBits(getMaxY());
 		final int b = (int) bits;
-		return b ^ (b >> 32);
+		return b ^ (b >> 31);
 	}
 
 	@Pure
