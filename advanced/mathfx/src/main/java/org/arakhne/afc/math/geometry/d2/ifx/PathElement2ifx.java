@@ -312,6 +312,13 @@ public abstract class PathElement2ifx implements PathElement2ai {
 		@Override
 		public boolean equals(Object obj) {
 			try {
+                if (obj == null) {
+                    return false;
+                }
+
+                if (this.getClass() != obj.getClass()) {
+                    return false;
+                }
 				final PathElement2ai elt = (PathElement2ai) obj;
 				return getType() == elt.getType()
 						&& getToX() == elt.getToX()
@@ -448,6 +455,13 @@ public abstract class PathElement2ifx implements PathElement2ai {
 		@Override
 		public boolean equals(Object obj) {
 			try {
+                if (obj == null) {
+                    return false;
+                }
+
+                if (this.getClass() != obj.getClass()) {
+                    return false;
+                }
 				final PathElement2ai elt = (PathElement2ai) obj;
 				return getType() == elt.getType()
 						&& getToX() == elt.getToX()
@@ -603,6 +617,13 @@ public abstract class PathElement2ifx implements PathElement2ai {
 		@Override
 		public boolean equals(Object obj) {
 			try {
+                if (obj == null) {
+                    return false;
+                }
+
+                if (this.getClass() != obj.getClass()) {
+                    return false;
+                }
 				final PathElement2ai elt = (PathElement2ai) obj;
 				return getType() == elt.getType()
 						&& getToX() == elt.getToX()
@@ -806,6 +827,13 @@ public abstract class PathElement2ifx implements PathElement2ai {
 		@Override
 		public boolean equals(Object obj) {
 			try {
+                if (obj == null) {
+                    return false;
+                }
+
+                if (this.getClass() != obj.getClass()) {
+                    return false;
+                }
 				final PathElement2ai elt = (PathElement2ai) obj;
 				return getType() == elt.getType()
 						&& getToX() == elt.getToX()
@@ -1027,6 +1055,13 @@ public abstract class PathElement2ifx implements PathElement2ai {
 		@Override
 		public boolean equals(Object obj) {
 			try {
+                if (obj == null) {
+                    return false;
+                }
+
+                if (this.getClass() != obj.getClass()) {
+                    return false;
+                }
 				final PathElement2ai elt = (PathElement2ai) obj;
 				return getType() == elt.getType()
 						&& getToX() == elt.getToX()
@@ -1196,6 +1231,13 @@ public abstract class PathElement2ifx implements PathElement2ai {
 		@Override
 		public boolean equals(Object obj) {
 			try {
+                if (obj == null) {
+                    return false;
+                }
+
+                if (this.getClass() != obj.getClass()) {
+                    return false;
+                }
 				final PathElement2afp elt = (PathElement2afp) obj;
 				return getType() == elt.getType()
 						&& getToX() == elt.getToX()

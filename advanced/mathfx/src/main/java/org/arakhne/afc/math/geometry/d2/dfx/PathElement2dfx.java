@@ -312,7 +312,15 @@ public abstract class PathElement2dfx implements PathElement2afp {
 		@Override
 		public boolean equals(Object obj) {
 			try {
-				final PathElement2afp elt = (PathElement2afp) obj;
+                if (obj == null) {
+                    return false;
+                }
+
+                if (this.getClass() != obj.getClass()) {
+                    return false;
+                }
+
+                final PathElement2afp elt = (PathElement2afp) obj;
 				return getType() == elt.getType()
 						&& getToX() == elt.getToX()
 						&& getToY() == elt.getToY();
@@ -447,6 +455,13 @@ public abstract class PathElement2dfx implements PathElement2afp {
 		@Override
 		public boolean equals(Object obj) {
 			try {
+                if (obj == null) {
+                    return false;
+                }
+
+                if (this.getClass() != obj.getClass()) {
+                    return false;
+                }
 				final PathElement2afp elt = (PathElement2afp) obj;
 				return getType() == elt.getType()
 						&& getToX() == elt.getToX()
@@ -605,6 +620,13 @@ public abstract class PathElement2dfx implements PathElement2afp {
 		@Override
 		public boolean equals(Object obj) {
 			try {
+                if (obj == null) {
+                    return false;
+                }
+
+                if (this.getClass() != obj.getClass()) {
+                    return false;
+                }
 				final PathElement2afp elt = (PathElement2afp) obj;
 				return getType() == elt.getType()
 						&& getToX() == elt.getToX()
@@ -812,6 +834,13 @@ public abstract class PathElement2dfx implements PathElement2afp {
 		@Override
 		public boolean equals(Object obj) {
 			try {
+                if (obj == null) {
+                    return false;
+                }
+
+                if (this.getClass() != obj.getClass()) {
+                    return false;
+                }
 				final PathElement2afp elt = (PathElement2afp) obj;
 				return getType() == elt.getType()
 						&& getToX() == elt.getToX()
@@ -1035,6 +1064,13 @@ public abstract class PathElement2dfx implements PathElement2afp {
 		@Override
 		public boolean equals(Object obj) {
 			try {
+                if (obj == null) {
+                    return false;
+                }
+
+                if (this.getClass() != obj.getClass()) {
+                    return false;
+                }
 				final PathElement2afp elt = (PathElement2afp) obj;
 				return getType() == elt.getType()
 						&& getToX() == elt.getToX()
@@ -1208,6 +1244,13 @@ public abstract class PathElement2dfx implements PathElement2afp {
 		@Override
 		public boolean equals(Object obj) {
 			try {
+                if (obj == null) {
+                    return false;
+                }
+
+                if (this.getClass() != obj.getClass()) {
+                    return false;
+                }
 				final PathElement2afp elt = (PathElement2afp) obj;
 				return getType() == elt.getType()
 						&& getToX() == elt.getToX()
