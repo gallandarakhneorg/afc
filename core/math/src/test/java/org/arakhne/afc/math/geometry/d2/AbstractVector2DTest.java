@@ -21,6 +21,7 @@
 package org.arakhne.afc.math.geometry.d2;
 
 import static org.arakhne.afc.math.MathConstants.PI;
+import static org.arakhne.afc.testtools.XbaseInlineTestUtil.assertInlineParameterUsage;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -47,21 +48,49 @@ public abstract class AbstractVector2DTest<V extends Vector2D<? super V, ? super
 	public abstract P createPoint(double x, double y);
 
 	@Test
-	public final void staticIsUnitVector() {
+	public final void staticIsUnitVectorDoubleDoubleDoubleDouble() {
 		assertTrue(Vector2D.isUnitVector(1., 0));
 		assertFalse(Vector2D.isUnitVector(1.0001, 0));
 		double length = Math.sqrt(5. * 5. + 18. * 18.);
 		assertTrue(Vector2D.isUnitVector(5. / length, 18. / length));
+		//
+		assertInlineParameterUsage(Vector2D.class, "isUnitVector", double.class, double.class);
 	}
 
 	@Test
-	public final void staticIsOrthogonal() {
+	public final void staticIsUnitVectorDoubleDoubleDoubleDoubleDouble() {
+		assertTrue(Vector2D.isUnitVector(1., 0, MathConstants.UNIT_VECTOR_EPSILON));
+		assertFalse(Vector2D.isUnitVector(1.0001, 0, MathConstants.UNIT_VECTOR_EPSILON));
+		double length = Math.sqrt(5. * 5. + 18. * 18.);
+		assertTrue(Vector2D.isUnitVector(5. / length, 18. / length, MathConstants.UNIT_VECTOR_EPSILON));
+		//
+		assertInlineParameterUsage(Vector2D.class, "isUnitVector", double.class, double.class, double.class);
+	}
+
+	@Test
+	public final void staticIsOrthogonalDoubleDoubleDoubleDouble() {
 		assertFalse(Vector2D.isOrthogonal(1., 0, 1., 0));
 		assertFalse(Vector2D.isOrthogonal(1., 0, -1., 0));
 		assertTrue(Vector2D.isOrthogonal(1., 0, 0., 1));
 		assertTrue(Vector2D.isOrthogonal(1., 0, 0., -1));
 		assertFalse(Vector2D.isOrthogonal(1., 0, 1., 2));
 		assertTrue(Vector2D.isOrthogonal(1., 0, 0, 1 + Math.ulp(1)));
+		//
+		assertInlineParameterUsage(Vector2D.class, "isOrthogonal",
+				double.class, double.class, double.class, double.class);
+	}
+
+	@Test
+	public final void staticIsOrthogonalDoubleDoubleDoubleDoubleDouble() {
+		assertFalse(Vector2D.isOrthogonal(1., 0, 1., 0, MathConstants.UNIT_VECTOR_EPSILON));
+		assertFalse(Vector2D.isOrthogonal(1., 0, -1., 0, MathConstants.UNIT_VECTOR_EPSILON));
+		assertTrue(Vector2D.isOrthogonal(1., 0, 0., 1, MathConstants.UNIT_VECTOR_EPSILON));
+		assertTrue(Vector2D.isOrthogonal(1., 0, 0., -1, MathConstants.UNIT_VECTOR_EPSILON));
+		assertFalse(Vector2D.isOrthogonal(1., 0, 1., 2, MathConstants.UNIT_VECTOR_EPSILON));
+		assertTrue(Vector2D.isOrthogonal(1., 0, 0, 1 + Math.ulp(1), MathConstants.UNIT_VECTOR_EPSILON));
+		//
+		assertInlineParameterUsage(Vector2D.class, "isOrthogonal",
+				double.class, double.class, double.class, double.class, double.class);
 	}
 
 	@Test
@@ -69,6 +98,9 @@ public abstract class AbstractVector2DTest<V extends Vector2D<? super V, ? super
 		assertTrue(Vector2D.isCollinearVectors(1, 0, 3, 0));
 		assertTrue(Vector2D.isCollinearVectors(1, 0, -3, 0));
 		assertFalse(Vector2D.isCollinearVectors(1, 0, 4, 4));
+		//
+		assertInlineParameterUsage(Vector2D.class, "isCollinearVectors",
+				double.class, double.class, double.class, double.class);
 	}
 
 	@Test
@@ -79,6 +111,9 @@ public abstract class AbstractVector2DTest<V extends Vector2D<? super V, ? super
 		assertEpsilonEquals(0, Vector2D.perpProduct(1, 2, 1, 2));
 		assertEpsilonEquals(-2, Vector2D.perpProduct(1, 2, 3, 4));
 		assertEpsilonEquals(-4, Vector2D.perpProduct(1, 2, 1, -2));
+		//
+		assertInlineParameterUsage(Vector2D.class, "perpProduct",
+				double.class, double.class, double.class, double.class);
 	}
 
 	@Test
@@ -89,6 +124,9 @@ public abstract class AbstractVector2DTest<V extends Vector2D<? super V, ? super
 		assertEpsilonEquals(5, Vector2D.dotProduct(1, 2, 1, 2));
 		assertEpsilonEquals(11, Vector2D.dotProduct(1, 2, 3, 4));
 		assertEpsilonEquals(-3, Vector2D.dotProduct(1, 2, 1, -2));
+		//
+		assertInlineParameterUsage(Vector2D.class, "dotProduct",
+				double.class, double.class, double.class, double.class);
 	}
 
 	@Test
@@ -102,32 +140,23 @@ public abstract class AbstractVector2DTest<V extends Vector2D<? super V, ? super
 
 	@Test
 	public final void staticAngleOfVectorDoubleDoubleDoubleDouble() {
-		double v1x = getRandom().nextDouble();
-		double v1y = getRandom().nextDouble();
-		double v2x = getRandom().nextDouble();
-		double v2y = getRandom().nextDouble();
-
 		assertEpsilonEquals(
 				0.,
-				Vector2D.signedAngle(v1x, v1y, v1x, v1y));
+				Vector2D.angleOfVector(0, 0, 1, 0));
 		assertEpsilonEquals(
 				0.,
-				Vector2D.signedAngle(v2x, v2y, v2x, v2y));
+				Vector2D.angleOfVector(14, 15, 18, 15));
 
-		double sAngle1 = Vector2D.signedAngle(v1x, v1y, v2x, v2y);
-		double sAngle2 = Vector2D.signedAngle(v2x, v2y, v1x, v1y);
+		assertEpsilonEquals(
+				Math.PI / 4,
+				Vector2D.angleOfVector(0, 0, 5, 5));
 
-		assertEpsilonEquals(-sAngle1, sAngle2);
-
-		double sin = v1x * v2y - v1y * v2x;
-
-		if (sin < 0) {
-			assertTrue(sAngle1 <= 0);
-			assertTrue(sAngle2 >= 0);
-		} else {
-			assertTrue(sAngle1 >= 0);
-			assertTrue(sAngle2 <= 0);
-		}
+		assertEpsilonEquals(
+				Math.PI,
+				Vector2D.angleOfVector(0, 0, -1, 0));
+		//
+		assertInlineParameterUsage(Vector2D.class, "angleOfVector",
+				double.class, double.class, double.class, double.class);
 	}
 
 	@Test
@@ -135,6 +164,9 @@ public abstract class AbstractVector2DTest<V extends Vector2D<? super V, ? super
 		assertEpsilonEquals(Math.acos(1. / Math.sqrt(5)), Vector2D.angleOfVector(1, 2));
 		assertEpsilonEquals(PI / 2. + Math.acos(1 / Math.sqrt(5)), Vector2D.angleOfVector(-2, 1));
 		assertEpsilonEquals(PI / 4., Vector2D.angleOfVector(1, 1));
+		//
+		assertInlineParameterUsage(Vector2D.class, "angleOfVector",
+				double.class, double.class);
 	}
 
 	@Test

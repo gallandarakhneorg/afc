@@ -20,11 +20,15 @@
 
 package org.arakhne.afc.math;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
+
+import static org.arakhne.afc.testtools.XbaseInlineTestUtil.*;
 
 /**
  * @author $Author: sgalland$
@@ -44,6 +48,8 @@ public class MathUtilTest extends AbstractMathTestCase {
 		assertEquals(0, MathUtil.sign(+0.));
 		assertEquals(1, MathUtil.sign(145.25));
 		assertEquals(1, MathUtil.sign(0.25));
+		//
+		assertInlineParameterUsage(MathUtil.class, "sign", double.class);
 	}
 	
 	@Test
@@ -105,6 +111,8 @@ public class MathUtilTest extends AbstractMathTestCase {
 		assertFalse(MathUtil.isEpsilonZero(Double.NaN));
 		assertFalse(MathUtil.isEpsilonZero(Double.NEGATIVE_INFINITY));
 		assertFalse(MathUtil.isEpsilonZero(Double.POSITIVE_INFINITY));
+		//
+		assertInlineParameterUsage(MathUtil.class, "isEpsilonZero", double.class);
 	}
 
 	@Test
@@ -114,6 +122,8 @@ public class MathUtilTest extends AbstractMathTestCase {
 		assertFalse(MathUtil.isEpsilonZero(Double.NaN, Math.ulp(Double.NaN)));
 		assertFalse(MathUtil.isEpsilonZero(Double.NEGATIVE_INFINITY, Math.ulp(0)));
 		assertFalse(MathUtil.isEpsilonZero(Double.POSITIVE_INFINITY, Math.ulp(0)));
+		//
+		assertInlineParameterUsage(MathUtil.class, "isEpsilonZero", double.class, double.class);
 	}
 
 	@Test
@@ -123,6 +133,8 @@ public class MathUtilTest extends AbstractMathTestCase {
 		assertFalse(MathUtil.isEpsilonEqual(Double.NaN, 0.));
 		assertFalse(MathUtil.isEpsilonEqual(Double.NEGATIVE_INFINITY, 0.));
 		assertFalse(MathUtil.isEpsilonEqual(Double.POSITIVE_INFINITY, 0.));
+		//
+		assertInlineParameterUsage(MathUtil.class, "isEpsilonEqual", double.class, double.class);
 	}
 
 	@Test
@@ -381,6 +393,36 @@ public class MathUtilTest extends AbstractMathTestCase {
 	public void getMinMaxDoubleDoubleDoublePair_12() {
 		DoubleRange range = MathUtil.getMinMax(Double.NaN, Double.NaN, Double.NaN);
 		assertNull(range);
+	}
+
+	@Test
+	public void cot() {
+		assertInlineParameterUsage(MathUtil.class, "cot", double.class);
+	}
+
+	@Test
+	public void crd() {
+		assertInlineParameterUsage(MathUtil.class, "crd", double.class);
+	}
+
+	@Test
+	public void csc() {
+		assertInlineParameterUsage(MathUtil.class, "csc", double.class);
+	}
+
+	@Test
+	public void exsec() {
+		assertInlineParameterUsage(MathUtil.class, "exsec", double.class);
+	}
+
+	@Test
+	public void sec() {
+		assertInlineParameterUsage(MathUtil.class, "sec", double.class);
+	}
+
+	@Test
+	public void versin() {
+		assertInlineParameterUsage(MathUtil.class, "versin", double.class);
 	}
 
 }

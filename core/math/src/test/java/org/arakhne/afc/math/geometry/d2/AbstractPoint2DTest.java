@@ -20,6 +20,7 @@
 
 package org.arakhne.afc.math.geometry.d2;
 
+import static org.arakhne.afc.testtools.XbaseInlineTestUtil.assertInlineParameterUsage;
 import static org.junit.Assert.*;
 
 import org.arakhne.afc.math.AbstractMathTestCase;
@@ -46,6 +47,9 @@ public abstract class AbstractPoint2DTest<P extends Point2D<? super P, ? super V
 		assertTrue(Point2D.isCollinearPoints(0, 0, 0, 0, 0, 0));
 		assertTrue(Point2D.isCollinearPoints(-6, -4, -1, 3, 4, 10));
 		assertFalse(Point2D.isCollinearPoints(0, 0, 1, 1, 1, -5));
+		//
+		assertInlineParameterUsage(Point2D.class, "isCollinearPoints",
+				double.class, double.class, double.class, double.class, double.class, double.class);
 	}
 
 	@Test
@@ -60,6 +64,8 @@ public abstract class AbstractPoint2DTest<P extends Point2D<? super P, ? super V
 		assertEpsilonEquals(0, Point2D.getDistanceSquaredPointPoint(0, 0, 0, 0));
 		assertEpsilonEquals(5, Point2D.getDistanceSquaredPointPoint(0, 0, 1, 2));
 		assertEpsilonEquals(2, Point2D.getDistanceSquaredPointPoint(0, 0, 1, 1));
+		//
+		assertInlineParameterUsage(Point2D.class, "getDistancePointPoint", double.class, double.class, double.class, double.class);
 	}
 
 	@Test
@@ -68,6 +74,8 @@ public abstract class AbstractPoint2DTest<P extends Point2D<? super P, ? super V
 		assertEpsilonEquals(0, Point2D.getDistanceL1PointPoint(1.0, 2.0, 1 ,2));
 		assertEpsilonEquals(0, Point2D.getDistanceL1PointPoint(1, 2, 1.0, 2.0));
 		assertEpsilonEquals(4, Point2D.getDistanceL1PointPoint(1.0, 2.0, -1, 0));
+		//
+		assertInlineParameterUsage(Point2D.class, "getDistanceL1PointPoint", double.class, double.class, double.class, double.class);
 	}
 
 	@Test
@@ -76,6 +84,8 @@ public abstract class AbstractPoint2DTest<P extends Point2D<? super P, ? super V
 		assertEpsilonEquals(0, Point2D.getDistanceLinfPointPoint(1.0,2.0,1,2));
 		assertEpsilonEquals(0, Point2D.getDistanceLinfPointPoint(1,2,1.0,2.0));
 		assertEpsilonEquals(2, Point2D.getDistanceLinfPointPoint(1.0,2.0,-1,0));
+		//
+		assertInlineParameterUsage(Point2D.class, "getDistanceLinfPointPoint", double.class, double.class, double.class, double.class);
 	}
 
 	@Test
@@ -87,6 +97,8 @@ public abstract class AbstractPoint2DTest<P extends Point2D<? super P, ? super V
 		assertEpsilonEquals(0, point.getDistanceSquared(point2));
 		assertEpsilonEquals(5, point.getDistanceSquared(point3));
 		assertEpsilonEquals(2, point.getDistanceSquared(point4));
+		//
+		assertInlineParameterUsage(Point2D.class, "getDistanceSquaredPointPoint", double.class, double.class, double.class, double.class);
 	}
 	
 	@Test
