@@ -99,6 +99,12 @@ For being merged, your PR must:
 * sign the [Contributor License Agreement](./CLA.md) on GitHub. It is supported by [cla-assistant](https://cla-assistant.io/gallandarakhneorg/afc);
 * be reviewed by one or more of the main contributors for ensure your PR is following the development rules and philosophy related to the AFC.
 
+If the CI process is failing on your PR, please follows the steps:
+* Go on the Travis-CI output for obtaining the cause of the failure.
+* Fix the code of your PR on your local copy.
+* Commit on your local repository, and push the changes on the same PR. **Do not create a new PR for the fix.**
+* The GitHub platform will relaunch the CI process automatically.
+
 # License of AFC
 
 The Arakhnê Foundation Classes are distributed under the [Apache v2 license](./LICENSE), and is copyrigthed to the original authors and the other authors, as expressed in the [NOTICE](./NOTICE).
