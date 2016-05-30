@@ -230,7 +230,16 @@ public class MultiShape2ifx<T extends Shape2ifx<?>> extends AbstractShape2ifx<Mu
 				fireChange(new SimpleUpdateChange<>(position, this));
 			}
 		}
-
+		public boolean equals(Object obj) {
+			if (! super.equals(obj)) {
+				return false;
+			}
+			InternalObservableList lObj = (InternalObservableList) obj;
+			if (internalList.equals(lObj.internalList)) {
+				return true;
+			}
+			return false;
+		}
 	}
 
 }

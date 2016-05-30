@@ -235,6 +235,16 @@ public class MultiShape2dfx<T extends Shape2dfx<?>> extends AbstractShape2dfx<Mu
 			}
 		}
 
+		public boolean equals(Object obj) {
+			if (! super.equals(obj)) {
+				return false;
+			}
+			InternalObservableList lObj = (InternalObservableList) obj;
+			if (internalList.equals(lObj.internalList)) {
+				return true;
+			}
+			return false;
+		}
 	}
 
 }
