@@ -246,4 +246,12 @@ public enum CoordinateSystem3D implements CoordinateSystem {
 	public final int getDimensions() {
 		return 3;
 	}
+	
+
+	/** {@inherit-doc}
+	 * @param userDefault
+	 */
+	public static void setDefaultCoordinateSystem(CoordinateSystem3D userDefault) {
+		CoordinateSystem3D.userDefault = userDefault;
+	}
 }
