@@ -181,7 +181,7 @@ public class OrientedRectangle2dfx extends AbstractShape2dfx<OrientedRectangle2d
 		bits = 31 * bits + Double.doubleToLongBits(getSecondAxisY());
 		bits = 31 * bits + Double.doubleToLongBits(getSecondAxisExtent());
 		final int b = (int) bits;
-		return b ^ (b >> 32);
+		return b ^ (b >> 31);
 	}
 
 	@Pure

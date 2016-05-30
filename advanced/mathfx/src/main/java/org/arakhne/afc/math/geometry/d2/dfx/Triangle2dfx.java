@@ -141,7 +141,7 @@ public class Triangle2dfx
 		bits = 31 * bits + Double.doubleToLongBits(getX3());
 		bits = 31 * bits + Double.doubleToLongBits(getY3());
 		final int b = (int) bits;
-		return b ^ (b >> 32);
+		return b ^ (b >> 31);
 	}
 
 	@Pure

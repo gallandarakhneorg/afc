@@ -301,7 +301,7 @@ public abstract class AbstractRectangularShape2dfx<IT extends AbstractRectangula
 		bits = 31 * bits + Double.doubleToLongBits(getMaxX());
 		bits = 31 * bits + Double.doubleToLongBits(getMaxY());
 		final int b = (int) bits;
-		return b ^ (b >> 32);
+		return b ^ (b >> 31);
 	}
 
 	@Pure

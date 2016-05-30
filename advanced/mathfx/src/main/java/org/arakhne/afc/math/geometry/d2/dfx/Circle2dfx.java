@@ -110,7 +110,7 @@ public class Circle2dfx
 		bits = 31 * bits + Double.doubleToLongBits(getY());
 		bits = 31 * bits + Double.doubleToLongBits(getRadius());
 		final int b = (int) bits;
-		return b ^ (b >> 32);
+		return b ^ (b >> 31);
 	}
 
 	@Pure

@@ -108,7 +108,7 @@ public class RoundRectangle2dfx extends AbstractRectangularShape2dfx<RoundRectan
 		bits = 31 * bits + Double.doubleToLongBits(getArcWidth());
 		bits = 31 * bits + Double.doubleToLongBits(getArcHeight());
 		final int b = (int) bits;
-		return b ^ (b >> 32);
+		return b ^ (b >> 31);
 	}
 
 	@Pure

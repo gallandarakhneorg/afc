@@ -147,7 +147,7 @@ public class MultiShape2dfx<T extends Shape2dfx<?>> extends AbstractShape2dfx<Mu
 		long bits = 1;
 		bits = 31 * bits + this.elements.hashCode();
 		final int b = (int) bits;
-		return b ^ (b >> 32);
+		return b ^ (b >> 31);
 	}
 
 	@Pure

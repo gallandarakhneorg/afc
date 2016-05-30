@@ -106,7 +106,7 @@ public class Circle2ifx
 		bits = 31 * bits + getX();
 		bits = 31 * bits + getY();
 		bits = 31 * bits + getRadius();
-		return bits ^ (bits >> 32);
+		return bits ^ (bits >> 31);
 	}
 
 	@Pure
