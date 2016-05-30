@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/advanced" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/advanced/attributes" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/advanced/mathfx" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/checkstyle" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/core" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/core/inputoutput" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/core/math" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/core/references" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/core/text" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/core/util" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/core/vmutils" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/maven" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/maven/atomicdeploy" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/maven/maventools" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/maven/tag-replacer" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ui" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ui/awt" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ui/base" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ui/swing" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ui/vector" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ui/vector-awt" charset="UTF-8" />
+  </component>
+</project>
