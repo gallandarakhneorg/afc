@@ -55,6 +55,22 @@ public interface Ellipse2afp<
 		V extends Vector2D<? super V, ? super P>,
 		B extends Rectangle2afp<?, ?, IE, P, V, B>>
 		extends RectangularShape2afp<ST, IT, IE, P, V, B> {
+    /**+
+     * literal constant.
+     */
+    String ELLIPSE_HEIGHT_POSITIVE_OR_ZERO = "Ellipse height must be positive or zero";
+    /**+
+     * literal constant.
+     */
+    String ELLIPSE_WIDTH_POSITIVE_OR_ZERO = "Ellipse width must be positive or zero";
+    /**+
+     * literal constant.
+     */
+    String VERTICAL_RADIUS_POSITIVE_OR_ZERO = "Vertical radius must be positive or zero";
+    /**+
+     * literal constant.
+     */
+    String HORIZONTAL_RADIUS_GREATER_OR_EQUAL_TO_VERTICAL_RADIUS = "Horizontal radius must be positive or zero";
 
 	/**
 	 * Replies if the given point is inside the given ellipse.
@@ -71,8 +87,8 @@ public interface Ellipse2afp<
 	@Pure
 	@SuppressWarnings("checkstyle:magicnumber")
 	static boolean containsEllipsePoint(double ellx, double elly, double ellw, double ellh, double px, double py) {
-		assert ellw >= 0. : "Ellipse width must be positive or zero"; //$NON-NLS-1$
-		assert ellh >= 0. : "Ellipse height must be positive or zero"; //$NON-NLS-1$
+		assert ellw >= 0. : ELLIPSE_WIDTH_POSITIVE_OR_ZERO; //$NON-NLS-1$
+		assert ellh >= 0. : ELLIPSE_HEIGHT_POSITIVE_OR_ZERO; //$NON-NLS-1$
 		// Copied from AWT Ellipse2D
 
 		// Normalize the coordinates compared to the ellipse
@@ -102,8 +118,8 @@ public interface Ellipse2afp<
 	static void computeClosestPointToSolidEllipse(
 			double px, double py, double ex, double ey, double ew, double eh,
 			Point2D<?, ?> result) {
-		assert ew >= 0. : "Ellipse width must be positive or zero"; //$NON-NLS-1$
-		assert eh >= 0. : "Ellipse height must be positive or zero"; //$NON-NLS-1$
+		assert ew >= 0. : ELLIPSE_WIDTH_POSITIVE_OR_ZERO; //$NON-NLS-1$
+		assert eh >= 0. : ELLIPSE_HEIGHT_POSITIVE_OR_ZERO; //$NON-NLS-1$
 		assert result != null : "Result point must be not null"; //$NON-NLS-1$
 
 		// Translate the point in the local ellipse's coordinate system.
@@ -185,8 +201,8 @@ public interface Ellipse2afp<
 	@Unefficient
 	static void computeClosestPointToShallowEllipse(double px, double py, double ex, double ey, double ew, double eh,
 			Point2D<?, ?> result) {
-		assert ew >= 0. : "Ellipse width must be positive or zero"; //$NON-NLS-1$
-		assert eh >= 0. : "Ellipse height must be positive or zero"; //$NON-NLS-1$
+		assert ew >= 0. : ELLIPSE_WIDTH_POSITIVE_OR_ZERO; //$NON-NLS-1$
+		assert eh >= 0. : ELLIPSE_HEIGHT_POSITIVE_OR_ZERO; //$NON-NLS-1$
 		assert result != null : "Result point must be not null"; //$NON-NLS-1$
 
 		// Translate the point in the local ellipse's coordinate system.
@@ -268,8 +284,8 @@ public interface Ellipse2afp<
 	@SuppressWarnings("checkstyle:parameternumber")
 	static void computeFarthestPointToShallowEllipse(double px, double py, double ex, double ey,
 			double ew, double eh, Point2D<?, ?> result) {
-		assert ew >= 0. : "Ellipse width must be positive or zero"; //$NON-NLS-1$
-		assert eh >= 0. : "Ellipse height must be positive or zero"; //$NON-NLS-1$
+		assert ew >= 0. : ELLIPSE_WIDTH_POSITIVE_OR_ZERO; //$NON-NLS-1$
+		assert eh >= 0. : ELLIPSE_HEIGHT_POSITIVE_OR_ZERO; //$NON-NLS-1$
 		assert result != null : "Result point must be not null"; //$NON-NLS-1$
 
 		// Translate the point in the local ellipse's coordinate system.
@@ -352,8 +368,8 @@ public interface Ellipse2afp<
 	@Pure
 	static boolean containsEllipseRectangle(double ex, double ey, double ewidth, double eheight,
 			double rxmin, double rymin, double rxmax, double rymax) {
-		assert ewidth >= 0. : "Ellipse width must be positive or zero"; //$NON-NLS-1$
-		assert eheight >= 0. : "Ellipse height must be positive or zero"; //$NON-NLS-1$
+		assert ewidth >= 0. : ELLIPSE_WIDTH_POSITIVE_OR_ZERO; //$NON-NLS-1$
+		assert eheight >= 0. : ELLIPSE_HEIGHT_POSITIVE_OR_ZERO; //$NON-NLS-1$
 		assert rxmin <= rxmax : "rxmin must be lower or equal to rxmax"; //$NON-NLS-1$
 		assert rymin <= rymax : "rymin must be lower or equal to rymax"; //$NON-NLS-1$
 		final double ecx = ex + ewidth / 2.;
@@ -429,8 +445,8 @@ public interface Ellipse2afp<
 	@Unefficient
 	static boolean intersectsEllipseCircle(double ex, double ey, double ewidth, double eheight,
 			double cx, double cy, double cradius) {
-		assert ewidth >= 0. : "Ellipse width must be positive or zero"; //$NON-NLS-1$
-		assert eheight >= 0. : "Ellipse height must be positive or zero"; //$NON-NLS-1$
+		assert ewidth >= 0. : ELLIPSE_WIDTH_POSITIVE_OR_ZERO; //$NON-NLS-1$
+		assert eheight >= 0. : ELLIPSE_HEIGHT_POSITIVE_OR_ZERO; //$NON-NLS-1$
 		assert cradius >= 0. : "Circle radius must be positive or zero"; //$NON-NLS-1$
 		final Point2D<?, ?> p = new InnerComputationPoint2afp();
 		computeClosestPointToSolidEllipse(cx, cy, ex, ey, ewidth, eheight, p);
@@ -456,8 +472,8 @@ public interface Ellipse2afp<
 	@Pure
 	static boolean intersectsEllipseLine(double ex, double ey, double ew, double eh,
 			double x1, double y1, double x2, double y2) {
-		assert ew >= 0. : "Ellipse width must be positive or zero"; //$NON-NLS-1$
-		assert eh >= 0. : "Ellipse height must be positive or zero"; //$NON-NLS-1$
+		assert ew >= 0. : ELLIPSE_WIDTH_POSITIVE_OR_ZERO; //$NON-NLS-1$
+		assert eh >= 0. : ELLIPSE_HEIGHT_POSITIVE_OR_ZERO; //$NON-NLS-1$
 		// If the ellipse or line segment are empty, return no intersections.
 		if (eh <= 0 || ew <= 0) {
 			return false;
@@ -512,8 +528,8 @@ public interface Ellipse2afp<
 	@SuppressWarnings("checkstyle:parameternumber")
 	static boolean intersectsEllipseSegment(double ex, double ey, double ew, double eh,
 			double x1, double y1, double x2, double y2, boolean intersectsWhenTouching) {
-		assert ew >= 0. : "Ellipse width must be positive or zero"; //$NON-NLS-1$
-		assert eh >= 0. : "Ellipse height must be positive or zero"; //$NON-NLS-1$
+		assert ew >= 0. : ELLIPSE_WIDTH_POSITIVE_OR_ZERO; //$NON-NLS-1$
+		assert eh >= 0. : ELLIPSE_HEIGHT_POSITIVE_OR_ZERO; //$NON-NLS-1$
 		// If the ellipse or line segment are empty, return no intersections.
 		if (eh <= 0. || ew <= 0.) {
 			return false;
@@ -585,8 +601,8 @@ public interface Ellipse2afp<
 	@SuppressWarnings("checkstyle:magicnumber")
 	static boolean intersectsEllipseRectangle(double ex, double ey, double ewidth, double eheight,
 			double x3, double y3, double x4, double y4) {
-		assert ewidth >= 0. : "Ellipse width must be positive or zero"; //$NON-NLS-1$
-		assert eheight >= 0. : "Ellipse height must be positive or zero"; //$NON-NLS-1$
+		assert ewidth >= 0. : ELLIPSE_WIDTH_POSITIVE_OR_ZERO; //$NON-NLS-1$
+		assert eheight >= 0. : ELLIPSE_HEIGHT_POSITIVE_OR_ZERO; //$NON-NLS-1$
 		// From AWT Ellipse2D
 
 		final double rectw = Math.abs(x4 - x3);
@@ -1246,8 +1262,8 @@ public interface Ellipse2afp<
 				boolean computeDistance) {
 			assert px >= 0 : "Point coordinate X must be positive or zero"; //$NON-NLS-1$
 			assert py >= 0 : "Point coordinate Y must be positive or zero"; //$NON-NLS-1$
-			assert horizontalRadius >= 0 : "Horizontal radius must be positive or zero"; //$NON-NLS-1$
-			assert verticalRadius >= 0 : "Vertical radius must be positive or zero"; //$NON-NLS-1$
+			assert horizontalRadius >= 0 : HORIZONTAL_RADIUS_GREATER_OR_EQUAL_TO_VERTICAL_RADIUS; //$NON-NLS-1$
+			assert verticalRadius >= 0 : VERTICAL_RADIUS_POSITIVE_OR_ZERO; //$NON-NLS-1$
 			assert horizontalRadius >= verticalRadius
 				: "Horizontal radius must be greater or equal to vertical radius"; //$NON-NLS-1$
 			final double closeX;
@@ -1330,8 +1346,8 @@ public interface Ellipse2afp<
 				boolean computeDistance) {
 			assert px >= 0 : "Point coordinate X must be positive or zero"; //$NON-NLS-1$
 			assert py >= 0 : "Point coordinate Y must be positive or zero"; //$NON-NLS-1$
-			assert horizontalRadius >= 0 : "Horizontal radius must be positive or zero"; //$NON-NLS-1$
-			assert verticalRadius >= 0 : "Vertical radius must be positive or zero"; //$NON-NLS-1$
+			assert horizontalRadius >= 0 : HORIZONTAL_RADIUS_GREATER_OR_EQUAL_TO_VERTICAL_RADIUS; //$NON-NLS-1$
+			assert verticalRadius >= 0 : VERTICAL_RADIUS_POSITIVE_OR_ZERO; //$NON-NLS-1$
 			assert horizontalRadius >= verticalRadius
 				: "Horizontal radius must be greater or equal to vertical radius"; //$NON-NLS-1$
 			final double closeX;
@@ -1456,8 +1472,8 @@ public interface Ellipse2afp<
 				boolean computeDistance) {
 			assert px <= 0 : "Point coordinate X must be negative or zero"; //$NON-NLS-1$
 			assert py <= 0 : "Point coordinate Y must be negative or zero"; //$NON-NLS-1$
-			assert horizontalRadius >= 0 : "Horizontal radius must be positive or zero"; //$NON-NLS-1$
-			assert verticalRadius >= 0 : "Vertical radius must be positive or zero"; //$NON-NLS-1$
+			assert horizontalRadius >= 0 : HORIZONTAL_RADIUS_GREATER_OR_EQUAL_TO_VERTICAL_RADIUS; //$NON-NLS-1$
+			assert verticalRadius >= 0 : VERTICAL_RADIUS_POSITIVE_OR_ZERO; //$NON-NLS-1$
 			assert horizontalRadius >= verticalRadius
 				: "Horizontal radius must be greater or equal to vertical radius"; //$NON-NLS-1$
 			final double farX;
