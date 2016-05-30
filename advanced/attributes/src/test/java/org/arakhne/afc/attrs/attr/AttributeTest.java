@@ -1,26 +1,30 @@
-/* 
+/*
  * $Id$
- * 
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (C) 2013 Stephane GALLAND.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package org.arakhne.afc.attrs.attr;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -29,16 +33,18 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
 
-import org.arakhne.afc.attrs.AbstractAttrTestCase;
+import org.junit.Ignore;
+import org.junit.Test;
+
 import org.arakhne.afc.math.continous.object2d.Point2f;
 import org.arakhne.afc.math.continous.object3d.Point3f;
 import org.arakhne.afc.math.generic.Point2D;
 import org.arakhne.afc.math.generic.Point3D;
+import org.arakhne.afc.testtools.AbstractTestCase;
 import org.arakhne.afc.ui.vector.Color;
 import org.arakhne.afc.ui.vector.Colors;
 import org.arakhne.afc.ui.vector.Image;
 import org.arakhne.afc.ui.vector.VectorToolkit;
-import org.junit.Ignore;
 
 /**
  * Test of Attribute.
@@ -50,7 +56,7 @@ import org.junit.Ignore;
  */
 @SuppressWarnings("all")
 @Ignore//TODO: fixcode
-public class AttributeTest extends AbstractAttrTestCase {
+public class AttributeTest extends AbstractTestCase {
 
 	/**
 	 * @param attr
@@ -227,9 +233,8 @@ public class AttributeTest extends AbstractAttrTestCase {
 	}
 
 	
-	/**
-	 */
-	public static void testAttributeImpl() {
+	@Test
+	public void attributeImpl() {
 		Attribute attr = new AttributeImpl();
 		
 		assertFalse(attr.isAssigned());
@@ -258,10 +263,8 @@ public class AttributeTest extends AbstractAttrTestCase {
 		}
 	}
 
-	/**
-	 * @throws Exception
-	 */
-	public static void testAttributeImplAttributeType() throws Exception {
+	@Test
+	public void attributeImplAttributeType() throws Exception {
 		AttributeType[] values = AttributeType.values();
 		//AttributeType[] values = new AttributeType[] {AttributeType.OBJECT};
 		for (AttributeType type : values) {
@@ -300,10 +303,8 @@ public class AttributeTest extends AbstractAttrTestCase {
 		}
 	}
 	
-	/**
-	 * @throws Exception
-	 */
-	public static void testAttributeImplBoolean() throws Exception {
+	@Test
+	public void attributeImplBoolean() throws Exception {
 		Attribute attr = new AttributeImpl(randomString(),false);
 		
 		assertEquals(AttributeType.BOOLEAN, attr.getType());
@@ -328,10 +329,8 @@ public class AttributeTest extends AbstractAttrTestCase {
 		assertAttributeException(attr,"getPolyline3D"); //$NON-NLS-1$
 	}
 
-	/**
-	 * @throws Exception
-	 */
-	public static void testAttributeImplColor() throws Exception {
+	@Test
+	public void attributeImplColor() throws Exception {
 		String txt = "255;0;0;255"; //$NON-NLS-1$
 		Attribute attr = new AttributeImpl(randomString(),Colors.RED);
 		
@@ -357,10 +356,8 @@ public class AttributeTest extends AbstractAttrTestCase {
 		assertAttributeException(attr,"getPolyline3D"); //$NON-NLS-1$
 	}
 
-	/**
-	 * @throws Exception
-	 */
-	public static void testAttributeImplDate() throws Exception {
+	@Test
+	public void attributeImplDate() throws Exception {
 		Date currentDate = new Date();
 		SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd"); //$NON-NLS-1$
 		String txt = fmt.format(currentDate);
@@ -388,10 +385,8 @@ public class AttributeTest extends AbstractAttrTestCase {
 		assertAttributeException(attr,"getPolyline3D"); //$NON-NLS-1$
 	}
 
-	/**
-	 * @throws Exception
-	 */
-	public static void testAttributeImplFloat() throws Exception {
+	@Test
+	public void attributeImplFloat() throws Exception {
 		float nb = (float)Math.random();
 		String txt = Double.toString(nb);
 		Attribute attr = new AttributeImpl(randomString(),nb);
@@ -418,13 +413,8 @@ public class AttributeTest extends AbstractAttrTestCase {
 		assertAttributeException(attr,"getPolyline3D"); //$NON-NLS-1$
 	}
 
-	/**
-	 * @throws Exception
-	 */
-	public static void testAttributeImplDouble() throws Exception {
-		/**
-		 * @throws Exception
-		 */
+	@Test
+	public void attributeImplDouble() throws Exception {
 		double nb = Math.random();
 		String txt = Double.toString(nb);
 		Attribute attr = new AttributeImpl(randomString(),nb);
@@ -451,10 +441,8 @@ public class AttributeTest extends AbstractAttrTestCase {
 		assertAttributeException(attr,"getPolyline3D"); //$NON-NLS-1$
 	}
 
-	/**
-	 * @throws Exception
-	 */
-	public static void testAttributeImplIcon() throws Exception {
+	@Test
+	public void attributeImplIcon() throws Exception {
 		Image ic = VectorToolkit.image(1,1,false);
 		Attribute attr = new AttributeImpl(randomString(),ic);
 		
@@ -480,10 +468,8 @@ public class AttributeTest extends AbstractAttrTestCase {
 		assertAttributeException(attr,"getPolyline3D"); //$NON-NLS-1$
 	}
 
-	/**
-	 * @throws Exception
-	 */
-	public static void testAttributeImplInt() throws Exception {
+	@Test
+	public void attributeImplInt() throws Exception {
 		int nb = new Random().nextInt();
 		String txt = Long.toString(nb);
 		Attribute attr = new AttributeImpl(randomString(),nb);
@@ -510,10 +496,8 @@ public class AttributeTest extends AbstractAttrTestCase {
 		assertAttributeException(attr,"getPolyline3D"); //$NON-NLS-1$
 	}
 
-	/**
-	 * @throws Exception
-	 */
-	public static void testAttributeImplLong() throws Exception {
+	@Test
+	public void attributeImplLong() throws Exception {
 		long nb = new Random().nextLong();
 		String txt = Long.toString(nb);
 		Attribute attr = new AttributeImpl(randomString(),nb);
@@ -540,10 +524,8 @@ public class AttributeTest extends AbstractAttrTestCase {
 		assertAttributeException(attr,"getPolyline3D"); //$NON-NLS-1$
 	}
 
-	/**
-	 * @throws Exception
-	 */
-	public static void testAttributeImplPoint2d() throws Exception {
+	@Test
+	public void attributeImplPoint2d() throws Exception {
 		Point2D pt = new Point2f(Math.random(),Math.random());
 		Point3D pt3d = new Point3f(pt.getX(),pt.getY(),0.);
 		String str = pt.getX()+";"+pt.getY(); //$NON-NLS-1$
@@ -571,10 +553,8 @@ public class AttributeTest extends AbstractAttrTestCase {
 		assertEquals(new Point3D[]{pt3d},attr.getPolyline3D());
 	}
 	
-	/**
-	 * @throws Exception
-	 */
-	public static void testAttributeImplDoubleDouble() throws Exception {
+	@Test
+	public void attributeImplDoubleDouble() throws Exception {
 		double x = Math.random();
 		double y = Math.random();
 		Point2D pt = new Point2f(x,y);
@@ -604,10 +584,8 @@ public class AttributeTest extends AbstractAttrTestCase {
 		assertEquals(new Point3D[]{pt3d},attr.getPolyline3D());
 	}
 	
-	/**
-	 * @throws Exception
-	 */
-	public static void testAttributeImplPoint3d() throws Exception {
+	@Test
+	public void attributeImplPoint3d() throws Exception {
 		double x = Math.random();
 		double y = Math.random();
 		double z = Math.random();
@@ -638,10 +616,8 @@ public class AttributeTest extends AbstractAttrTestCase {
 		assertEquals(new Point3D[]{pt},attr.getPolyline3D());
 	}
 
-	/**
-	 * @throws Exception
-	 */
-	public static void testAttributeImplDoubleDoubleDouble() throws Exception {
+	@Test
+	public void attributeImplDoubleDoubleDouble() throws Exception {
 		double x = Math.random();
 		double y = Math.random();
 		double z = Math.random();
@@ -672,10 +648,8 @@ public class AttributeTest extends AbstractAttrTestCase {
 		assertEquals(new Point3D[]{pt},attr.getPolyline3D());
 	}
 
-	/**
-	 * @throws Exception
-	 */
-	public static void testAttributeImplString_random() throws Exception {
+	@Test
+	public void attributeImplString_random() throws Exception {
 		double x = Math.random();
 		Point2D pt2d = new Point2f(x,0);
 		Point3D pt3d = new Point3f(x,0,0);
@@ -705,10 +679,8 @@ public class AttributeTest extends AbstractAttrTestCase {
 		assertEquals(new Point3D[]{pt3d},attr.getPolyline3D());
 	}
 
-	/**
-	 * @throws Exception
-	 */
-	public static void testAttributeImplString_boolean() throws Exception {
+	@Test
+	public void attributeImplString_boolean() throws Exception {
 		String str = Boolean.toString(true);
 		Attribute attr = new AttributeImpl(randomString(),str);
 		
@@ -734,10 +706,8 @@ public class AttributeTest extends AbstractAttrTestCase {
 		assertAttributeException(attr,"getPolyline3D"); //$NON-NLS-1$
 	}
 
-	/**
-	 * @throws Exception
-	 */
-	public static void testAttributeImplString_Color() throws Exception {
+	@Test
+	public void attributeImplString_Color() throws Exception {
 		Color c = Colors.RED;
 		Point2D pt2d = new Point2f(c.getRed(),c.getGreen());
 		Point2D pt2d2 = new Point2f(c.getBlue(),0);
@@ -767,10 +737,8 @@ public class AttributeTest extends AbstractAttrTestCase {
 		assertEquals(new Point3D[]{pt3d},attr.getPolyline3D());
 	}
 
-	/**
-	 * @throws Exception
-	 */
-	public static void testAttributeImplString_Date() throws Exception {
+	@Test
+	public void attributeImplString_Date() throws Exception {
 		Date currentDate = new Date();
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd"); //$NON-NLS-1$
 		String str = format.format(currentDate); 
@@ -798,10 +766,8 @@ public class AttributeTest extends AbstractAttrTestCase {
 		assertAttributeException(attr,"getPolyline3D"); //$NON-NLS-1$
 	}
 
-	/**
-	 * @throws Exception
-	 */
-	public static void testAttributeImplString_JDate() throws Exception {
+	@Test
+	public void attributeImplString_JDate() throws Exception {
 		Date currentDate = new Date();
 		String str = DateFormat.getDateTimeInstance(DateFormat.FULL,DateFormat.FULL).format(currentDate); 
 		Attribute attr = new AttributeImpl(randomString(),str);
@@ -828,10 +794,8 @@ public class AttributeTest extends AbstractAttrTestCase {
 		assertAttributeException(attr,"getPolyline3D"); //$NON-NLS-1$
 	}
 
-	/**
-	 * @throws Exception
-	 */
-	public static void testAttributeImplString_Integer() throws Exception {
+	@Test
+	public void attributeImplString_Integer() throws Exception {
 		int nb = new Random().nextInt(20000)+256;
 		Point2D pt2d = new Point2f(nb,0);
 		Point3D pt3d = new Point3f(nb,0,0);
@@ -860,10 +824,8 @@ public class AttributeTest extends AbstractAttrTestCase {
 		assertEquals(new Point3D[]{pt3d},attr.getPolyline3D());
 	}
 
-	/**
-	 * @throws Exception
-	 */
-	public static void testAttributeImplString_Long() throws Exception {
+	@Test
+	public void attributeImplString_Long() throws Exception {
 		long nb = new Random().nextInt(20000)+256;
 		Point2D pt2d = new Point2f(nb,0);
 		Point3D pt3d = new Point3f(nb,0,0);
@@ -892,10 +854,8 @@ public class AttributeTest extends AbstractAttrTestCase {
 		assertEquals(new Point3D[]{pt3d},attr.getPolyline3D());
 	}
 
-	/**
-	 * @throws Exception
-	 */
-	public static void testAttributeImplString_Double() throws Exception {
+	@Test
+	public void attributeImplString_Double() throws Exception {
 		double nb = Math.random()+256;
 		Point2D pt2d = new Point2f(nb,0);
 		Point3D pt3d = new Point3f(nb,0,0);
@@ -924,10 +884,8 @@ public class AttributeTest extends AbstractAttrTestCase {
 		assertEquals(new Point3D[]{pt3d},attr.getPolyline3D());
 	}
 
-	/**
-	 * @throws Exception
-	 */
-	public static void testAttributeImplString_Point2D() throws Exception {
+	@Test
+	public void attributeImplString_Point2D() throws Exception {
 		double x = Math.random()+256;
 		double y = Math.random()+256;
 		Point2D pt2d = new Point2f(x,y);
@@ -957,10 +915,8 @@ public class AttributeTest extends AbstractAttrTestCase {
 		assertEquals(new Point3D[]{pt3d},attr.getPolyline3D());
 	}
 
-	/**
-	 * @throws Exception
-	 */
-	public static void testAttributeImplString_Point3D() throws Exception {
+	@Test
+	public void attributeImplString_Point3D() throws Exception {
 		double x = Math.random()+256;
 		double y = Math.random()+256;
 		double z = Math.random()+256;
@@ -992,10 +948,8 @@ public class AttributeTest extends AbstractAttrTestCase {
 		assertEquals(new Point3D[]{pt3d},attr.getPolyline3D());
 	}
 
-	/**
-	 * @throws Exception
-	 */
-	public static void testAttributeImplPoint2DArray() throws Exception {
+	@Test
+	public void attributeImplPoint2DArray() throws Exception {
 		double x1 = Math.random();
 		double y1 = Math.random();
 		double x2 = Math.random();
@@ -1033,10 +987,8 @@ public class AttributeTest extends AbstractAttrTestCase {
 		assertEquals(list2,attr.getPolyline3D());
 	}
 
-	/**
-	 * @throws Exception
-	 */
-	public static void testAttributeImplPoint3DArray() throws Exception {
+	@Test
+	public void attributeImplPoint3DArray() throws Exception {
 		double x1 = Math.random();
 		double y1 = Math.random();
 		double z1 = Math.random();
@@ -1076,9 +1028,8 @@ public class AttributeTest extends AbstractAttrTestCase {
 		assertEquals(list,attr.getPolyline3D());
 	}
 
-	/**
-	 */
-	public static void testEquals() {
+	@Test
+	public void testEquals() {
 		AttributeImpl attr = new AttributeImpl("A1"); //$NON-NLS-1$
 		
 		attr.setBoolean(true);

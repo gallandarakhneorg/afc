@@ -31,8 +31,8 @@
 			<optional>true</optional>
 		</dependency>
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
+			<groupId>org.arakhne.afc.core</groupId>
+			<artifactId>testtools</artifactId>
 			<scope>test</scope>
 			<optional>true</optional>
 		</dependency>

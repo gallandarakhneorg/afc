@@ -79,7 +79,7 @@ public class URLConnectionTest {
 	/**
 	 */
 	@Test
-	public void testGetHeaderFieldKeyInt() {
+	public void getHeaderFieldKeyInt() {
 		assertEquals("content-type", this.connection.getHeaderFieldKey(0)); //$NON-NLS-1$
 		assertEquals("content-length", this.connection.getHeaderFieldKey(1)); //$NON-NLS-1$
 		assertEquals("last-modified", this.connection.getHeaderFieldKey(2)); //$NON-NLS-1$
@@ -89,7 +89,7 @@ public class URLConnectionTest {
 	/**
 	 */
 	@Test
-	public void testGetHeaderFieldInt() {
+	public void getHeaderFieldInt() {
 		assertEquals("text/plain", this.connection.getHeaderField(0)); //$NON-NLS-1$
 		assertEquals("25", this.connection.getHeaderField(1)); //$NON-NLS-1$
 		assertNotNull(this.connection.getHeaderField(2));
@@ -99,7 +99,7 @@ public class URLConnectionTest {
 	/**
 	 */
 	@Test
-	public void testGetHeaderFieldString() {
+	public void getHeaderFieldString() {
 		assertEquals("text/plain", this.connection.getHeaderField("content-type")); //$NON-NLS-1$ //$NON-NLS-2$
 		assertEquals("25", this.connection.getHeaderField("content-length")); //$NON-NLS-1$ //$NON-NLS-2$
 		assertNotNull(this.connection.getHeaderField("last-modified")); //$NON-NLS-1$
@@ -109,7 +109,7 @@ public class URLConnectionTest {
 	/**
 	 */
 	@Test
-	public void testGetHeaderFields() {
+	public void getHeaderFields() {
 		Map<?,?> map = this.connection.getHeaderFields();
 		assertNotNull(map);
 		assertEquals(3, map.size());
@@ -123,7 +123,7 @@ public class URLConnectionTest {
 	 * @throws IOException
 	 */
 	@Test
-	public void testGetInputStream() throws IOException {
+	public void getInputStream() throws IOException {
 		String line;
 		try (InputStream is = this.connection.getInputStream()) {
 			try (BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
@@ -138,7 +138,7 @@ public class URLConnectionTest {
 	 */
 	@SuppressWarnings("static-method")
 	@Test
-	public void testGetOutputStream() throws IOException {
+	public void getOutputStream() throws IOException {
 		File tmpFile = File.createTempFile("unittest", ".txt"); //$NON-NLS-1$ //$NON-NLS-2$
 		tmpFile.deleteOnExit();
 

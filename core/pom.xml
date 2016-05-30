@@ -13,6 +13,7 @@
 	<packaging>pom</packaging>
 
 	<modules>
+		<module>testtools</module>
 		<module>vmutils</module>
 		<module>references</module>
 		<module>util</module>

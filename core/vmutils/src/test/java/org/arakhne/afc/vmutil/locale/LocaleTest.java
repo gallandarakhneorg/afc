@@ -1,27 +1,21 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (c) 2005-10, Multiagent Team,
- * Laboratoire Systemes et Transports,
- * Universite de Technologie de Belfort-Montbeliard.
- * All rights reserved.
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
  *
- * Copyright (C) 2012 Stephane GALLAND, Olivier LAMOTTE.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.arakhne.afc.vmutil.locale;
@@ -59,7 +53,7 @@ public class LocaleTest {
     /**
      */
 	@Test
-    public void testGetStringWithDefaultFromStringStringStringStringArray() {
+    public void getStringWithDefaultFromStringStringStringStringArray() {
     	assert(this.tmp!=null);
     	assertEquals(
     			DEFAULT,
@@ -85,7 +79,7 @@ public class LocaleTest {
     /**
      */
 	@Test
-    public void testGetStringWithDefaultFromClassLoaderStringStringStringStringArray() {
+    public void getStringWithDefaultFromClassLoaderStringStringStringStringArray() {
     	ClassLoader l = LocaleTest.class.getClassLoader();
     	assertEquals(
     			DEFAULT,
@@ -111,7 +105,7 @@ public class LocaleTest {
     /**
      */
 	@Test
-    public void testGetStringFromStringStringStringArray() {
+    public void getStringFromStringStringStringArray() {
     	assertEquals(NOKEY,
     			Locale.getStringFrom(RESOURCE1,NOKEY,P1,P2,P3));
     	assertEquals(
@@ -135,7 +129,7 @@ public class LocaleTest {
     /**
      */
 	@Test
-    public void testGetStringFromClassLoaderStringStringStringArray() {
+    public void getStringFromClassLoaderStringStringStringArray() {
     	ClassLoader l = LocaleTest.class.getClassLoader();
     	
     	assertEquals(NOKEY,
@@ -161,7 +155,7 @@ public class LocaleTest {
     /**
      */
 	@Test
-    public void testGetStringClassStringStringArray() {
+    public void getStringClassStringStringArray() {
     	assertEquals(NOKEY,
     			Locale.getString(LocaleTest.class,NOKEY,P1,P2,P3));
     	assertEquals(
@@ -185,7 +179,7 @@ public class LocaleTest {
     /**
      */
 	@Test
-    public void testGetStringClassLoaderClassStringStringArray() {
+    public void getStringClassLoaderClassStringStringArray() {
     	ClassLoader l = LocaleTest.class.getClassLoader();
     	
     	assertEquals(NOKEY,
@@ -211,7 +205,7 @@ public class LocaleTest {
     /**
      */
 	@Test
-    public void testGetStringWithDefaultClassStringStringStringArray() {
+    public void getStringWithDefaultClassStringStringStringArray() {
     	assertEquals(
     			DEFAULT,
     			Locale.getStringWithDefault(LocaleTest.class,NOKEY,DEFAULT,P1,P2,P3));
@@ -236,7 +230,7 @@ public class LocaleTest {
     /**
      */
 	@Test
-    public void testGetStringWithDefaultClassLoaderClassStringStringStringArray() {
+    public void getStringWithDefaultClassLoaderClassStringStringStringArray() {
     	ClassLoader l = LocaleTest.class.getClassLoader();
     	
     	assertEquals(
@@ -263,7 +257,7 @@ public class LocaleTest {
     /**
      */
 	@Test
-    public void testGetStringStringStringArray() {
+    public void getStringStringStringArray() {
     	assertEquals(
     			NOKEY,
     			Locale.getString(NOKEY,P1,P2,P3));
@@ -288,7 +282,7 @@ public class LocaleTest {
     /**
      */
 	@Test
-    public void testGetStringClassLoaderStringStringArray() {
+    public void getStringClassLoaderStringStringArray() {
     	ClassLoader l = LocaleTest.class.getClassLoader();
     	
     	assertEquals(
@@ -315,7 +309,7 @@ public class LocaleTest {
     /**
      */
 	@Test
-    public void testGetStringWithDefaultStringStringStringArray() {
+    public void getStringWithDefaultStringStringStringArray() {
     	assertEquals(
     			DEFAULT,
     			Locale.getStringWithDefault(NOKEY,DEFAULT,P1,P2,P3));
@@ -340,7 +334,7 @@ public class LocaleTest {
     /**
      */
 	@Test
-    public void testGetStringWithDefaultClassLoaderStringStringStringArray() {
+    public void getStringWithDefaultClassLoaderStringStringStringArray() {
     	ClassLoader l = LocaleTest.class.getClassLoader();
     	
     	assertEquals(
@@ -367,7 +361,7 @@ public class LocaleTest {
     /**
      */
 	@Test
-    public void testGetStringWithRawFormatStyle() {
+    public void getStringWithRawFormatStyle() {
     	Number data;
     	String raw, localized;
     	
@@ -445,7 +439,7 @@ public class LocaleTest {
     /**
      */
 	@Test
-    public void testGetStringWithRawFormatStyleWithFormat1() {
+    public void getStringWithRawFormatStyleWithFormat1() {
     	Number data;
     	
     	data = Double.valueOf(123.456);
@@ -512,7 +506,7 @@ public class LocaleTest {
     /**
      */
 	@Test
-    public void testGetStringWithRawFormatStyleWithFormat2() {
+    public void getStringWithRawFormatStyleWithFormat2() {
     	Number data;
     	
     	data = Double.valueOf(123.456);
@@ -579,7 +573,7 @@ public class LocaleTest {
     /**
      */
 	@Test
-    public void testGetStringWithRawFormatStyleWithFormat3() {
+    public void getStringWithRawFormatStyleWithFormat3() {
     	Number data;
     	
     	data = Double.valueOf(123.456);
@@ -646,7 +640,7 @@ public class LocaleTest {
     /**
      */
 	@Test
-    public void testGetStringWithRawFormatStyleWithFormat4() {
+    public void getStringWithRawFormatStyleWithFormat4() {
     	Number data;
     	
     	data = Double.valueOf(123.456);
@@ -713,7 +707,7 @@ public class LocaleTest {
     /**
      */
 	@Test
-    public void testGetStringWithRawFormatStyleWithFormat5() {
+    public void getStringWithRawFormatStyleWithFormat5() {
     	Number data;
     	
     	data = Double.valueOf(123.456);
@@ -780,7 +774,7 @@ public class LocaleTest {
     /**
      */
 	@Test
-    public void testGetStringWithRawFormatStyleWithFormat6() {
+    public void getStringWithRawFormatStyleWithFormat6() {
     	Number data;
     	
     	data = Double.valueOf(123.456);
@@ -847,7 +841,7 @@ public class LocaleTest {
     /**
      */
 	@Test
-    public void testGetStringWithRawFormatStyleWithFormat7() {
+    public void getStringWithRawFormatStyleWithFormat7() {
     	Number data;
     	
     	data = Double.valueOf(123.456);

@@ -25,13 +25,8 @@
 			<artifactId>jfxrt</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.mockito</groupId>
-			<artifactId>mockito-all</artifactId>
+			<groupId>org.arakhne.afc.core</groupId>
+			<artifactId>testtools</artifactId>
 			<scope>test</scope>
 		</dependency>
 		<dependency>

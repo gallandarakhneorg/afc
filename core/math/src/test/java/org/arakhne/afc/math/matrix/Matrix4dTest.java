@@ -1,24 +1,23 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (c) 2006-10, Multiagent Team, Laboratoire Systemes et Transports, Universite de Technologie de Belfort-Montbeliard.
- * Copyright (C) 2012 Stephane GALLAND.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package org.arakhne.afc.math.matrix;
 
 import static org.junit.Assert.*;
@@ -55,7 +54,7 @@ public class Matrix4dTest extends AbstractMathTestCase{
 	public void addDouble() {
 		Matrix4d m1 = this.randomMatrix4f();
 		Matrix4d m2 = m1.clone();
-		double s = this.random.nextDouble();
+		double s = getRandom().nextDouble();
 		
 		m2.set(m2.m00+s, m2.m01+s, m2.m02+s, m2.m03+s, m2.m10+s, m2.m11+s, m2.m12+s, m2.m13+s, m2.m20+s, m2.m21+s, m2.m22+s, m2.m23+s, m2.m30+s, m2.m31+s, m2.m32+s, m2.m33+s);
 		m1.add(s);
@@ -67,7 +66,7 @@ public class Matrix4dTest extends AbstractMathTestCase{
 	public void addDoubleMatrix4D() {
 		Matrix4d m1 = this.randomMatrix4f();
 		Matrix4d m2 = m1.clone();
-		double s = this.random.nextDouble();
+		double s = getRandom().nextDouble();
 		
 		m2.set(m2.m00+s, m2.m01+s, m2.m02+s, m2.m03+s, m2.m10+s, m2.m11+s, m2.m12+s, m2.m13+s, m2.m20+s, m2.m21+s, m2.m22+s, m2.m23+s, m2.m30+s, m2.m31+s, m2.m32+s, m2.m33+s);
 		m1.add(s,m1);
@@ -177,22 +176,22 @@ public class Matrix4dTest extends AbstractMathTestCase{
 	
 	@Test
 	public void determinant() {
-		double a = this.random.nextDouble()*50;
-		double b = this.random.nextDouble()*50;
-		double c = this.random.nextDouble()*50;
-		double d = this.random.nextDouble()*50;
-		double e = this.random.nextDouble()*50;
-		double f = this.random.nextDouble()*50;
-		double g = this.random.nextDouble()*50;
-		double h = this.random.nextDouble()*50;
-		double i = this.random.nextDouble()*50;
-		double j = this.random.nextDouble()*50;
-		double k = this.random.nextDouble()*50;
-		double l = this.random.nextDouble()*50;
-		double m = this.random.nextDouble()*50;
-		double n = this.random.nextDouble()*50;
-		double o = this.random.nextDouble()*50;
-		double p = this.random.nextDouble()*50;
+		double a = getRandom().nextDouble()*50;
+		double b = getRandom().nextDouble()*50;
+		double c = getRandom().nextDouble()*50;
+		double d = getRandom().nextDouble()*50;
+		double e = getRandom().nextDouble()*50;
+		double f = getRandom().nextDouble()*50;
+		double g = getRandom().nextDouble()*50;
+		double h = getRandom().nextDouble()*50;
+		double i = getRandom().nextDouble()*50;
+		double j = getRandom().nextDouble()*50;
+		double k = getRandom().nextDouble()*50;
+		double l = getRandom().nextDouble()*50;
+		double m = getRandom().nextDouble()*50;
+		double n = getRandom().nextDouble()*50;
+		double o = getRandom().nextDouble()*50;
+		double p = getRandom().nextDouble()*50;
 		Matrix4d m1 = new Matrix4d(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p);
 		
 		
@@ -203,25 +202,25 @@ public class Matrix4dTest extends AbstractMathTestCase{
 	
 	@Test
 	public void mulDouble() {
-		double a = this.random.nextDouble()*50;
-		double b = this.random.nextDouble()*50;
-		double c = this.random.nextDouble()*50;
-		double d = this.random.nextDouble()*50;
-		double e = this.random.nextDouble()*50;
-		double f = this.random.nextDouble()*50;
-		double g = this.random.nextDouble()*50;
-		double h = this.random.nextDouble()*50;
-		double i = this.random.nextDouble()*50;
-		double j = this.random.nextDouble()*50;
-		double k = this.random.nextDouble()*50;
-		double l = this.random.nextDouble()*50;
-		double m = this.random.nextDouble()*50;
-		double n = this.random.nextDouble()*50;
-		double o = this.random.nextDouble()*50;
-		double p = this.random.nextDouble()*50;
+		double a = getRandom().nextDouble()*50;
+		double b = getRandom().nextDouble()*50;
+		double c = getRandom().nextDouble()*50;
+		double d = getRandom().nextDouble()*50;
+		double e = getRandom().nextDouble()*50;
+		double f = getRandom().nextDouble()*50;
+		double g = getRandom().nextDouble()*50;
+		double h = getRandom().nextDouble()*50;
+		double i = getRandom().nextDouble()*50;
+		double j = getRandom().nextDouble()*50;
+		double k = getRandom().nextDouble()*50;
+		double l = getRandom().nextDouble()*50;
+		double m = getRandom().nextDouble()*50;
+		double n = getRandom().nextDouble()*50;
+		double o = getRandom().nextDouble()*50;
+		double p = getRandom().nextDouble()*50;
 		Matrix4d m1 = new Matrix4d(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p);
 		
-		double s = this.random.nextDouble();
+		double s = getRandom().nextDouble();
 		Matrix4d m2 = new Matrix4d(a*s,b*s,c*s,d*s,e*s,f*s,g*s,h*s,i*s,j*s,k*s,l*s,m*s,n*s,o*s,p*s);
 		
 		m1.mul(s);
@@ -230,25 +229,25 @@ public class Matrix4dTest extends AbstractMathTestCase{
 	
 	@Test
 	public void mulDoubleMatrix4D() {
-		double a = this.random.nextDouble()*50;
-		double b = this.random.nextDouble()*50;
-		double c = this.random.nextDouble()*50;
-		double d = this.random.nextDouble()*50;
-		double e = this.random.nextDouble()*50;
-		double f = this.random.nextDouble()*50;
-		double g = this.random.nextDouble()*50;
-		double h = this.random.nextDouble()*50;
-		double i = this.random.nextDouble()*50;
-		double j = this.random.nextDouble()*50;
-		double k = this.random.nextDouble()*50;
-		double l = this.random.nextDouble()*50;
-		double m = this.random.nextDouble()*50;
-		double n = this.random.nextDouble()*50;
-		double o = this.random.nextDouble()*50;
-		double p = this.random.nextDouble()*50;
+		double a = getRandom().nextDouble()*50;
+		double b = getRandom().nextDouble()*50;
+		double c = getRandom().nextDouble()*50;
+		double d = getRandom().nextDouble()*50;
+		double e = getRandom().nextDouble()*50;
+		double f = getRandom().nextDouble()*50;
+		double g = getRandom().nextDouble()*50;
+		double h = getRandom().nextDouble()*50;
+		double i = getRandom().nextDouble()*50;
+		double j = getRandom().nextDouble()*50;
+		double k = getRandom().nextDouble()*50;
+		double l = getRandom().nextDouble()*50;
+		double m = getRandom().nextDouble()*50;
+		double n = getRandom().nextDouble()*50;
+		double o = getRandom().nextDouble()*50;
+		double p = getRandom().nextDouble()*50;
 		Matrix4d m1 = new Matrix4d(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p);
 		
-		double s = this.random.nextDouble();
+		double s = getRandom().nextDouble();
 		Matrix4d m2 = new Matrix4d(a*s,b*s,c*s,d*s,e*s,f*s,g*s,h*s,i*s,j*s,k*s,l*s,m*s,n*s,o*s,p*s);
 		
 		m1.mul(s,m1);
@@ -257,40 +256,40 @@ public class Matrix4dTest extends AbstractMathTestCase{
 	
 	@Test
 	public void mulMatrix4D() {
-		double a = this.random.nextDouble()*50;
-		double b = this.random.nextDouble()*50;
-		double c = this.random.nextDouble()*50;
-		double d = this.random.nextDouble()*50;
-		double e = this.random.nextDouble()*50;
-		double f = this.random.nextDouble()*50;
-		double g = this.random.nextDouble()*50;
-		double h = this.random.nextDouble()*50;
-		double i = this.random.nextDouble()*50;
-		double j = this.random.nextDouble()*50;
-		double k = this.random.nextDouble()*50;
-		double l = this.random.nextDouble()*50;
-		double m = this.random.nextDouble()*50;
-		double n = this.random.nextDouble()*50;
-		double o = this.random.nextDouble()*50;
-		double p = this.random.nextDouble()*50;
+		double a = getRandom().nextDouble()*50;
+		double b = getRandom().nextDouble()*50;
+		double c = getRandom().nextDouble()*50;
+		double d = getRandom().nextDouble()*50;
+		double e = getRandom().nextDouble()*50;
+		double f = getRandom().nextDouble()*50;
+		double g = getRandom().nextDouble()*50;
+		double h = getRandom().nextDouble()*50;
+		double i = getRandom().nextDouble()*50;
+		double j = getRandom().nextDouble()*50;
+		double k = getRandom().nextDouble()*50;
+		double l = getRandom().nextDouble()*50;
+		double m = getRandom().nextDouble()*50;
+		double n = getRandom().nextDouble()*50;
+		double o = getRandom().nextDouble()*50;
+		double p = getRandom().nextDouble()*50;
 		Matrix4d matrix1 = new Matrix4d(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p);
 		
-		double a1 = this.random.nextDouble()*50;
-		double b1 = this.random.nextDouble()*50;
-		double c1 = this.random.nextDouble()*50;
-		double d1 = this.random.nextDouble()*50;
-		double e1 = this.random.nextDouble()*50;
-		double f1 = this.random.nextDouble()*50;
-		double g1 = this.random.nextDouble()*50;
-		double h1 = this.random.nextDouble()*50;
-		double i1 = this.random.nextDouble()*50;
-		double j1 = this.random.nextDouble()*50;
-		double k1 = this.random.nextDouble()*50;
-		double l1 = this.random.nextDouble()*50;
-		double m1 = this.random.nextDouble()*50;
-		double n1 = this.random.nextDouble()*50;
-		double o1 = this.random.nextDouble()*50;
-		double p1 = this.random.nextDouble()*50;
+		double a1 = getRandom().nextDouble()*50;
+		double b1 = getRandom().nextDouble()*50;
+		double c1 = getRandom().nextDouble()*50;
+		double d1 = getRandom().nextDouble()*50;
+		double e1 = getRandom().nextDouble()*50;
+		double f1 = getRandom().nextDouble()*50;
+		double g1 = getRandom().nextDouble()*50;
+		double h1 = getRandom().nextDouble()*50;
+		double i1 = getRandom().nextDouble()*50;
+		double j1 = getRandom().nextDouble()*50;
+		double k1 = getRandom().nextDouble()*50;
+		double l1 = getRandom().nextDouble()*50;
+		double m1 = getRandom().nextDouble()*50;
+		double n1 = getRandom().nextDouble()*50;
+		double o1 = getRandom().nextDouble()*50;
+		double p1 = getRandom().nextDouble()*50;
 		Matrix4d matrix2 = new Matrix4d(a1,b1,c1,d1,e1,f1,g1,h1,i1,j1,k1,l1,m1,n1,o1,p1);
 		
 		
@@ -322,40 +321,40 @@ public class Matrix4dTest extends AbstractMathTestCase{
 	
 	@Test
 	public void mulMatrix4DMatrix4D() {
-		double a = this.random.nextDouble()*50;
-		double b = this.random.nextDouble()*50;
-		double c = this.random.nextDouble()*50;
-		double d = this.random.nextDouble()*50;
-		double e = this.random.nextDouble()*50;
-		double f = this.random.nextDouble()*50;
-		double g = this.random.nextDouble()*50;
-		double h = this.random.nextDouble()*50;
-		double i = this.random.nextDouble()*50;
-		double j = this.random.nextDouble()*50;
-		double k = this.random.nextDouble()*50;
-		double l = this.random.nextDouble()*50;
-		double m = this.random.nextDouble()*50;
-		double n = this.random.nextDouble()*50;
-		double o = this.random.nextDouble()*50;
-		double p = this.random.nextDouble()*50;
+		double a = getRandom().nextDouble()*50;
+		double b = getRandom().nextDouble()*50;
+		double c = getRandom().nextDouble()*50;
+		double d = getRandom().nextDouble()*50;
+		double e = getRandom().nextDouble()*50;
+		double f = getRandom().nextDouble()*50;
+		double g = getRandom().nextDouble()*50;
+		double h = getRandom().nextDouble()*50;
+		double i = getRandom().nextDouble()*50;
+		double j = getRandom().nextDouble()*50;
+		double k = getRandom().nextDouble()*50;
+		double l = getRandom().nextDouble()*50;
+		double m = getRandom().nextDouble()*50;
+		double n = getRandom().nextDouble()*50;
+		double o = getRandom().nextDouble()*50;
+		double p = getRandom().nextDouble()*50;
 		Matrix4d matrix1 = new Matrix4d(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p);
 		
-		double a1 = this.random.nextDouble()*50;
-		double b1 = this.random.nextDouble()*50;
-		double c1 = this.random.nextDouble()*50;
-		double d1 = this.random.nextDouble()*50;
-		double e1 = this.random.nextDouble()*50;
-		double f1 = this.random.nextDouble()*50;
-		double g1 = this.random.nextDouble()*50;
-		double h1 = this.random.nextDouble()*50;
-		double i1 = this.random.nextDouble()*50;
-		double j1 = this.random.nextDouble()*50;
-		double k1 = this.random.nextDouble()*50;
-		double l1 = this.random.nextDouble()*50;
-		double m1 = this.random.nextDouble()*50;
-		double n1 = this.random.nextDouble()*50;
-		double o1 = this.random.nextDouble()*50;
-		double p1 = this.random.nextDouble()*50;
+		double a1 = getRandom().nextDouble()*50;
+		double b1 = getRandom().nextDouble()*50;
+		double c1 = getRandom().nextDouble()*50;
+		double d1 = getRandom().nextDouble()*50;
+		double e1 = getRandom().nextDouble()*50;
+		double f1 = getRandom().nextDouble()*50;
+		double g1 = getRandom().nextDouble()*50;
+		double h1 = getRandom().nextDouble()*50;
+		double i1 = getRandom().nextDouble()*50;
+		double j1 = getRandom().nextDouble()*50;
+		double k1 = getRandom().nextDouble()*50;
+		double l1 = getRandom().nextDouble()*50;
+		double m1 = getRandom().nextDouble()*50;
+		double n1 = getRandom().nextDouble()*50;
+		double o1 = getRandom().nextDouble()*50;
+		double p1 = getRandom().nextDouble()*50;
 		Matrix4d matrix2 = new Matrix4d(a1,b1,c1,d1,e1,f1,g1,h1,i1,j1,k1,l1,m1,n1,o1,p1);
 		
 		
@@ -404,10 +403,10 @@ public class Matrix4dTest extends AbstractMathTestCase{
 	@Test
 	public void setDiagonalDoubleDoubleDoubleDouble() {
 		Matrix4d m1 = this.randomMatrix4f();
-		double a = this.random.nextDouble();
-		double b = this.random.nextDouble();
-		double c = this.random.nextDouble();
-		double d = this.random.nextDouble();
+		double a = getRandom().nextDouble();
+		double b = getRandom().nextDouble();
+		double c = getRandom().nextDouble();
+		double d = getRandom().nextDouble();
 				
 		m1.setDiagonal(a,b,c,d);
 		
@@ -451,16 +450,16 @@ public class Matrix4dTest extends AbstractMathTestCase{
 	
 	@Test
 	public void isSymmetric() {
-		double a = this.random.nextDouble();
-		double b = this.random.nextDouble();
-		double c = this.random.nextDouble();
-		double d = this.random.nextDouble();
-		double e = this.random.nextDouble();
-		double f = this.random.nextDouble();
-		double g = this.random.nextDouble();
-		double h = this.random.nextDouble();
-		double i = this.random.nextDouble();
-		double j = this.random.nextDouble();
+		double a = getRandom().nextDouble();
+		double b = getRandom().nextDouble();
+		double c = getRandom().nextDouble();
+		double d = getRandom().nextDouble();
+		double e = getRandom().nextDouble();
+		double f = getRandom().nextDouble();
+		double g = getRandom().nextDouble();
+		double h = getRandom().nextDouble();
+		double i = getRandom().nextDouble();
+		double j = getRandom().nextDouble();
 		
 		Matrix4d m1 = new Matrix4d(a,b,c,d,b,e,f,g,c,f,h,i,d,g,i,j);
 		
@@ -499,7 +498,7 @@ public class Matrix4dTest extends AbstractMathTestCase{
 	public void operator_addDouble() {
 		Matrix4d m1 = this.randomMatrix4f();
 		Matrix4d m2 = m1.clone();
-		double s = this.random.nextDouble();
+		double s = getRandom().nextDouble();
 		
 		m2.set(m2.m00+s, m2.m01+s, m2.m02+s, m2.m03+s, m2.m10+s, m2.m11+s, m2.m12+s, m2.m13+s, m2.m20+s, m2.m21+s, m2.m22+s, m2.m23+s, m2.m30+s, m2.m31+s, m2.m32+s, m2.m33+s);
 		m1.operator_add(s);
@@ -524,7 +523,7 @@ public class Matrix4dTest extends AbstractMathTestCase{
 	public void operator_removeDouble() {
 		Matrix4d m1 = this.randomMatrix4f();
 		Matrix4d m2 = m1.clone();
-		double s = this.random.nextDouble();
+		double s = getRandom().nextDouble();
 		
 		m2.set(m2.m00-s, m2.m01-s, m2.m02-s, m2.m03-s, m2.m10-s, m2.m11-s, m2.m12-s, m2.m13-s, m2.m20-s, m2.m21-s, m2.m22-s, m2.m23-s, m2.m30-s, m2.m31-s, m2.m32-s, m2.m33-s);
 		m1.operator_remove(s);
@@ -549,7 +548,7 @@ public class Matrix4dTest extends AbstractMathTestCase{
 	public void operator_plusDouble() {
 		Matrix4d m1 = this.randomMatrix4f();
 		Matrix4d m2 = m1.clone();
-		double s = this.random.nextDouble();
+		double s = getRandom().nextDouble();
 		
 		m2.set(m2.m00+s, m2.m01+s, m2.m02+s, m2.m03+s, m2.m10+s, m2.m11+s, m2.m12+s, m2.m13+s, m2.m20+s, m2.m21+s, m2.m22+s, m2.m23+s, m2.m30+s, m2.m31+s, m2.m32+s, m2.m33+s);
 		Matrix4d r = m1.operator_plus(s);
@@ -574,7 +573,7 @@ public class Matrix4dTest extends AbstractMathTestCase{
 	public void operator_minusDouble() {
 		Matrix4d m1 = this.randomMatrix4f();
 		Matrix4d m2 = m1.clone();
-		double s = this.random.nextDouble();
+		double s = getRandom().nextDouble();
 		
 		m2.set(m2.m00-s, m2.m01-s, m2.m02-s, m2.m03-s, m2.m10-s, m2.m11-s, m2.m12-s, m2.m13-s, m2.m20-s, m2.m21-s, m2.m22-s, m2.m23-s, m2.m30-s, m2.m31-s, m2.m32-s, m2.m33-s);
 		Matrix4d r = m1.operator_minus(s);
@@ -595,40 +594,40 @@ public class Matrix4dTest extends AbstractMathTestCase{
 
 	@Test
 	public void operator_multiplyMatrix3f() {
-		double a = this.random.nextDouble()*50;
-		double b = this.random.nextDouble()*50;
-		double c = this.random.nextDouble()*50;
-		double d = this.random.nextDouble()*50;
-		double e = this.random.nextDouble()*50;
-		double f = this.random.nextDouble()*50;
-		double g = this.random.nextDouble()*50;
-		double h = this.random.nextDouble()*50;
-		double i = this.random.nextDouble()*50;
-		double j = this.random.nextDouble()*50;
-		double k = this.random.nextDouble()*50;
-		double l = this.random.nextDouble()*50;
-		double m = this.random.nextDouble()*50;
-		double n = this.random.nextDouble()*50;
-		double o = this.random.nextDouble()*50;
-		double p = this.random.nextDouble()*50;
+		double a = getRandom().nextDouble()*50;
+		double b = getRandom().nextDouble()*50;
+		double c = getRandom().nextDouble()*50;
+		double d = getRandom().nextDouble()*50;
+		double e = getRandom().nextDouble()*50;
+		double f = getRandom().nextDouble()*50;
+		double g = getRandom().nextDouble()*50;
+		double h = getRandom().nextDouble()*50;
+		double i = getRandom().nextDouble()*50;
+		double j = getRandom().nextDouble()*50;
+		double k = getRandom().nextDouble()*50;
+		double l = getRandom().nextDouble()*50;
+		double m = getRandom().nextDouble()*50;
+		double n = getRandom().nextDouble()*50;
+		double o = getRandom().nextDouble()*50;
+		double p = getRandom().nextDouble()*50;
 		Matrix4d matrix1 = new Matrix4d(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p);
 		
-		double a1 = this.random.nextDouble()*50;
-		double b1 = this.random.nextDouble()*50;
-		double c1 = this.random.nextDouble()*50;
-		double d1 = this.random.nextDouble()*50;
-		double e1 = this.random.nextDouble()*50;
-		double f1 = this.random.nextDouble()*50;
-		double g1 = this.random.nextDouble()*50;
-		double h1 = this.random.nextDouble()*50;
-		double i1 = this.random.nextDouble()*50;
-		double j1 = this.random.nextDouble()*50;
-		double k1 = this.random.nextDouble()*50;
-		double l1 = this.random.nextDouble()*50;
-		double m1 = this.random.nextDouble()*50;
-		double n1 = this.random.nextDouble()*50;
-		double o1 = this.random.nextDouble()*50;
-		double p1 = this.random.nextDouble()*50;
+		double a1 = getRandom().nextDouble()*50;
+		double b1 = getRandom().nextDouble()*50;
+		double c1 = getRandom().nextDouble()*50;
+		double d1 = getRandom().nextDouble()*50;
+		double e1 = getRandom().nextDouble()*50;
+		double f1 = getRandom().nextDouble()*50;
+		double g1 = getRandom().nextDouble()*50;
+		double h1 = getRandom().nextDouble()*50;
+		double i1 = getRandom().nextDouble()*50;
+		double j1 = getRandom().nextDouble()*50;
+		double k1 = getRandom().nextDouble()*50;
+		double l1 = getRandom().nextDouble()*50;
+		double m1 = getRandom().nextDouble()*50;
+		double n1 = getRandom().nextDouble()*50;
+		double o1 = getRandom().nextDouble()*50;
+		double p1 = getRandom().nextDouble()*50;
 		Matrix4d matrix2 = new Matrix4d(a1,b1,c1,d1,e1,f1,g1,h1,i1,j1,k1,l1,m1,n1,o1,p1);
 		
 		
@@ -660,25 +659,25 @@ public class Matrix4dTest extends AbstractMathTestCase{
 
 	@Test
 	public void operator_multiplyDouble() {
-		double a = this.random.nextDouble()*50;
-		double b = this.random.nextDouble()*50;
-		double c = this.random.nextDouble()*50;
-		double d = this.random.nextDouble()*50;
-		double e = this.random.nextDouble()*50;
-		double f = this.random.nextDouble()*50;
-		double g = this.random.nextDouble()*50;
-		double h = this.random.nextDouble()*50;
-		double i = this.random.nextDouble()*50;
-		double j = this.random.nextDouble()*50;
-		double k = this.random.nextDouble()*50;
-		double l = this.random.nextDouble()*50;
-		double m = this.random.nextDouble()*50;
-		double n = this.random.nextDouble()*50;
-		double o = this.random.nextDouble()*50;
-		double p = this.random.nextDouble()*50;
+		double a = getRandom().nextDouble()*50;
+		double b = getRandom().nextDouble()*50;
+		double c = getRandom().nextDouble()*50;
+		double d = getRandom().nextDouble()*50;
+		double e = getRandom().nextDouble()*50;
+		double f = getRandom().nextDouble()*50;
+		double g = getRandom().nextDouble()*50;
+		double h = getRandom().nextDouble()*50;
+		double i = getRandom().nextDouble()*50;
+		double j = getRandom().nextDouble()*50;
+		double k = getRandom().nextDouble()*50;
+		double l = getRandom().nextDouble()*50;
+		double m = getRandom().nextDouble()*50;
+		double n = getRandom().nextDouble()*50;
+		double o = getRandom().nextDouble()*50;
+		double p = getRandom().nextDouble()*50;
 		Matrix4d m1 = new Matrix4d(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p);
 		
-		double s = this.random.nextDouble();
+		double s = getRandom().nextDouble();
 		Matrix4d m2 = new Matrix4d(a*s,b*s,c*s,d*s,e*s,f*s,g*s,h*s,i*s,j*s,k*s,l*s,m*s,n*s,o*s,p*s);
 		
 		Matrix4d result = m1.operator_multiply(s);
@@ -687,25 +686,25 @@ public class Matrix4dTest extends AbstractMathTestCase{
 
 	@Test
 	public void operator_divideDouble() {
-		double a = this.random.nextDouble()*50;
-		double b = this.random.nextDouble()*50;
-		double c = this.random.nextDouble()*50;
-		double d = this.random.nextDouble()*50;
-		double e = this.random.nextDouble()*50;
-		double f = this.random.nextDouble()*50;
-		double g = this.random.nextDouble()*50;
-		double h = this.random.nextDouble()*50;
-		double i = this.random.nextDouble()*50;
-		double j = this.random.nextDouble()*50;
-		double k = this.random.nextDouble()*50;
-		double l = this.random.nextDouble()*50;
-		double m = this.random.nextDouble()*50;
-		double n = this.random.nextDouble()*50;
-		double o = this.random.nextDouble()*50;
-		double p = this.random.nextDouble()*50;
+		double a = getRandom().nextDouble()*50;
+		double b = getRandom().nextDouble()*50;
+		double c = getRandom().nextDouble()*50;
+		double d = getRandom().nextDouble()*50;
+		double e = getRandom().nextDouble()*50;
+		double f = getRandom().nextDouble()*50;
+		double g = getRandom().nextDouble()*50;
+		double h = getRandom().nextDouble()*50;
+		double i = getRandom().nextDouble()*50;
+		double j = getRandom().nextDouble()*50;
+		double k = getRandom().nextDouble()*50;
+		double l = getRandom().nextDouble()*50;
+		double m = getRandom().nextDouble()*50;
+		double n = getRandom().nextDouble()*50;
+		double o = getRandom().nextDouble()*50;
+		double p = getRandom().nextDouble()*50;
 		Matrix4d m1 = new Matrix4d(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p);
 		
-		double s = this.random.nextDouble() * 50 + 2;
+		double s = getRandom().nextDouble() * 50 + 2;
 		Matrix4d m2 = new Matrix4d(a/s,b/s,c/s,d/s,e/s,f/s,g/s,h/s,i/s,j/s,k/s,l/s,m/s,n/s,o/s,p/s);
 		
 		Matrix4d result = m1.operator_divide(s);

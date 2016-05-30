@@ -1,24 +1,23 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (C) 2010-2011 Janus Core Developers
- * Copyright (C) 2012-13 Stephane GALLAND.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package org.arakhne.afc.util;
 
 import static org.junit.Assert.assertEquals;
@@ -82,14 +81,14 @@ public class IntegerListTest {
 	/**
      */
 	@Test
-	public void testComparator() {
+	public void comparator() {
 		assertNull(this.list.comparator());
 	}
 
     /**
      */
 	@Test
-	public void testGetLastValueOnSegmentInt() {
+	public void getLastValueOnSegmentInt() {
 		assertEquals(3, this.list.getLastValueOnSegment(0));
 		assertEquals(10, this.list.getLastValueOnSegment(2));
 		assertEquals(25, this.list.getLastValueOnSegment(4));
@@ -98,7 +97,7 @@ public class IntegerListTest {
     /**
      */
 	@Test
-	public void testGetFirstValueOnSegmentInt() {
+	public void getFirstValueOnSegmentInt() {
 		assertEquals(1, this.list.getFirstValueOnSegment(0));
 		assertEquals(10, this.list.getFirstValueOnSegment(2));
 		assertEquals(20, this.list.getFirstValueOnSegment(4));
@@ -107,7 +106,7 @@ public class IntegerListTest {
     /**
      */
 	@Test
-	public void testGetSegmentIndexForInt() {
+	public void getSegmentIndexForInt() {
 		assertEquals(-1, this.list.getSegmentIndexFor(0));
 		assertEquals(0, this.list.getSegmentIndexFor(1));
 		assertEquals(0, this.list.getSegmentIndexFor(2));
@@ -144,7 +143,7 @@ public class IntegerListTest {
 	/**
 	 */
 	@Test
-	public void testRemoveElementInSegmentIntInt() {
+	public void removeElementInSegmentIntInt() {
 		Iterator<Integer> i;
 
 		assertFalse(this.list.removeElementInSegment(2, 11));
@@ -175,7 +174,7 @@ public class IntegerListTest {
     /**
      */
 	@Test
-	public void testSize() {
+	public void size() {
 		assertEquals(10, this.list.size());
 		assertTrue(this.list.add(Integer.valueOf(34)));
 		assertEquals(11, this.list.size());
@@ -188,21 +187,21 @@ public class IntegerListTest {
     /**
      */
 	@Test
-	public void testAddIntInteger() {
-		testAddInteger();
+	public void addIntInteger() {
+		addInteger();
 	}
 
     /**
      */
 	@Test
-	public void testAddAllIntCollection() {
-		testAddAllCollection();
+	public void addAllIntCollection() {
+		addAllCollection();
 	}
 
 	/**
      */
 	@Test
-	public void testAddInteger() {
+	public void addInteger() {
 		Iterator<Integer> i;
 
 		this.list.add(4);
@@ -279,14 +278,14 @@ public class IntegerListTest {
 	/**
      */
 	@Test
-	public void testFirst() {
+	public void first() {
 		assertEquals(Integer.valueOf(1), this.list.first());
 	}
 
     /**
      */
 	@Test
-	public void testHeadSetInteger() {
+	public void headSetInteger() {
 		SortedSet<Integer> s;
 		Iterator<Integer> i;
 
@@ -313,14 +312,14 @@ public class IntegerListTest {
     /**
      */
 	@Test
-	public void testLast() {
+	public void last() {
 		assertEquals(Integer.valueOf(25), this.list.last());
 	}
 
     /**
      */
 	@Test
-	public void testSubSetIntegerInteger() {
+	public void subSetIntegerInteger() {
 		SortedSet<Integer> s;
 		Iterator<Integer> i;
 
@@ -360,7 +359,7 @@ public class IntegerListTest {
     /**
      */
 	@Test
-	public void testTailSetInteger() {
+	public void tailSetInteger() {
 		SortedSet<Integer> s;
 		Iterator<Integer> i;
 
@@ -391,7 +390,7 @@ public class IntegerListTest {
     /**
      */
 	@Test
-	public void testAddAllCollection() {
+	public void addAllCollection() {
 		Iterator<Integer> i;
 
 		this.list.addAll(Collections.singleton(4));
@@ -447,7 +446,7 @@ public class IntegerListTest {
     /**
      */
 	@Test
-	public void testClear() {
+	public void clear() {
 		Iterator<Integer> i;
 
 		this.list.clear();
@@ -459,7 +458,7 @@ public class IntegerListTest {
     /**
      */
 	@Test
-	public void testContainsObject() {
+	public void containsObject() {
 		assertFalse(this.list.contains(0));
 		assertTrue(this.list.contains(1));
 		assertTrue(this.list.contains(2));
@@ -481,7 +480,7 @@ public class IntegerListTest {
     /**
      */
 	@Test
-	public void testContainsAllCollection() {
+	public void containsAllCollection() {
 		assertFalse(this.list.containsAll(Collections.singleton(0)));
 		assertTrue(this.list.containsAll(Arrays.asList(1, 2, 3)));
 		assertFalse(this.list.containsAll(Arrays.asList(4, 5, 6, 7, 8, 9)));
@@ -491,7 +490,7 @@ public class IntegerListTest {
     /**
      */
 	@Test
-	public void testIsEmpty() {
+	public void isEmpty() {
 		assertFalse(this.list.isEmpty());
 		this.list.clear();
 		assertTrue(this.list.isEmpty());
@@ -500,7 +499,7 @@ public class IntegerListTest {
     /**
      */
 	@Test
-	public void testIterator() {
+	public void iterator() {
 		Iterator<Integer> i;
 
 		i = this.list.iterator();
@@ -530,7 +529,7 @@ public class IntegerListTest {
     /**
      */
 	@Test
-	public void testSegmentIterator() {
+	public void segmentIterator() {
 		Iterator<IntegerSegment> i = this.list.segmentIterator();
 		IntegerSegment s;
 		
@@ -555,7 +554,7 @@ public class IntegerListTest {
     /**
      */
 	@Test
-	public void testToSegmentIterable() {
+	public void toSegmentIterable() {
 		Iterable<IntegerSegment> it = this.list.toSegmentIterable();
 		Iterator<IntegerSegment> i = it.iterator();
 		IntegerSegment s;
@@ -581,7 +580,7 @@ public class IntegerListTest {
 	/**
      */
 	@Test
-	public void testRemoveObject() {
+	public void removeObject() {
 		Iterator<Integer> i;
 
 		assertTrue(this.list.remove(Integer.valueOf(25)));
@@ -663,7 +662,7 @@ public class IntegerListTest {
 	/**
 	 */
 	@Test
-	public void testRemoveSegmentInt() {
+	public void removeSegmentInt() {
 		Iterator<Integer> i;
 
 		assertEquals(Integer.valueOf(25), this.list.remove(9));
@@ -744,7 +743,7 @@ public class IntegerListTest {
     /**
      */
 	@Test
-	public void testRemoveAllCollection() {
+	public void removeAllCollection() {
 		Iterator<Integer> i;
 
 		assertTrue(this.list.removeAll(Collections.singleton(Integer.valueOf(25))));
@@ -827,7 +826,7 @@ public class IntegerListTest {
     /**
      */
 	@Test
-	public void testRetainAllCollection() {
+	public void retainAllCollection() {
 		Iterator<Integer> i;
 
 		assertTrue(this.list.retainAll(Arrays.asList(
@@ -848,7 +847,7 @@ public class IntegerListTest {
 	/**
 	 */
 	@Test
-	public void testSetSortedSet() {
+	public void setSortedSet() {
 		Iterator<Integer> i;
 		SortedSet<Integer> set = new TreeSet<>();
 		
@@ -877,7 +876,7 @@ public class IntegerListTest {
     /**
      */
 	@Test
-	public void testGetSegmentCount() {
+	public void getSegmentCount() {
 		assertEquals(3, this.list.getSegmentCount());
 
 		this.list.add(Integer.valueOf(00));
@@ -892,7 +891,7 @@ public class IntegerListTest {
     /**
      */
 	@Test
-	public void testGetIntIntArray() {
+	public void getIntIntArray() {
 		int[] tab = new int[2];
 		
 		assertTrue(this.list.get(0, tab));
@@ -919,7 +918,7 @@ public class IntegerListTest {
 	/**
      */
 	@Test
-	public void testToArray() {
+	public void toArray() {
 		Object[] tab = this.list.toArray();
 		
 		assertEquals(Integer.valueOf(1),  tab[0]);
@@ -937,7 +936,7 @@ public class IntegerListTest {
 	/**
      */
 	@Test
-	public void testToIntArray() {
+	public void toIntArray() {
 		int[] tab = this.list.toIntArray();
 		
 		assertEquals(1,  tab[0]);
@@ -955,7 +954,7 @@ public class IntegerListTest {
 	/**
      */
 	@Test
-	public void testToArrayTArray() {
+	public void toArrayTArray() {
 		Object[] tab, tab2;
 		
 		tab = new Object[15];
@@ -991,7 +990,7 @@ public class IntegerListTest {
 	/**
 	 */
 	@Test
-	public void testToSortedSet() {
+	public void toSortedSet() {
 		SortedSet<Integer> set;
 		Iterator<Integer> i;
 		
@@ -1024,7 +1023,7 @@ public class IntegerListTest {
     /**
      */
 	@Test
-	public void testGetInt() {
+	public void getInt() {
 		assertEquals(Integer.valueOf(1), this.list.get(0));
 		assertEquals(Integer.valueOf(2), this.list.get(1));
 		assertEquals(Integer.valueOf(3), this.list.get(2));
@@ -1040,7 +1039,7 @@ public class IntegerListTest {
     /**
      */
 	@Test
-	public void testIndexOfObject() {
+	public void indexOfObject() {
 		assertEquals(-1, this.list.indexOf(Integer.valueOf(0)));
 		assertEquals(0,  this.list.indexOf(Integer.valueOf(1)));
 		assertEquals(1,  this.list.indexOf(Integer.valueOf(2)));
@@ -1077,7 +1076,7 @@ public class IntegerListTest {
     /**
      */
 	@Test
-	public void testLastIndexOfObject() {
+	public void lastIndexOfObject() {
 		assertEquals(-1, this.list.lastIndexOf(Integer.valueOf(0)));
 		assertEquals(0,  this.list.lastIndexOf(Integer.valueOf(1)));
 		assertEquals(1,  this.list.lastIndexOf(Integer.valueOf(2)));
@@ -1114,7 +1113,7 @@ public class IntegerListTest {
     /**
      */
 	@Test
-	public void testListIterator() {
+	public void listIterator() {
 		ListIterator<Integer> i;
 		
 		i = this.list.listIterator();
@@ -1176,7 +1175,7 @@ public class IntegerListTest {
     /**
      */
 	@Test
-	public void testListIteratorInt() {
+	public void listIteratorInt() {
 		ListIterator<Integer> i;
 		
 		i = this.list.listIterator(2);
@@ -1228,7 +1227,7 @@ public class IntegerListTest {
     /**
      */
 	@Test
-	public void testRemoveInt() {
+	public void removeInt() {
 		Iterator<Integer> i;
 		
 		assertEquals(Integer.valueOf(2), this.list.remove(1));
@@ -1277,7 +1276,7 @@ public class IntegerListTest {
     /**
      */
 	@Test
-	public void testSetIntInteger() {
+	public void setIntInteger() {
 		Iterator<Integer> i;
 		
 		assertEquals(Integer.valueOf(2), this.list.set(1, Integer.valueOf(123)));
@@ -1332,7 +1331,7 @@ public class IntegerListTest {
     /**
      */
 	@Test
-	public void testSubListIntInt() {
+	public void subListIntInt() {
 		List<Integer> l;
 		Iterator<Integer> i;
 

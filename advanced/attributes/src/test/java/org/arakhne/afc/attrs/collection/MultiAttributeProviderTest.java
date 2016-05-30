@@ -1,64 +1,58 @@
-/* 
+/*
  * $Id$
- * 
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (C) 2013 Stephane GALLAND.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package org.arakhne.afc.attrs.collection;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 
-import org.arakhne.afc.attrs.AbstractAttrTestCase;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
 import org.arakhne.afc.attrs.attr.Attribute;
 import org.arakhne.afc.attrs.attr.AttributeImpl;
 import org.arakhne.afc.attrs.attr.AttributeType;
 import org.arakhne.afc.attrs.attr.AttributeValue;
 import org.arakhne.afc.attrs.attr.AttributeValueImpl;
-import org.arakhne.afc.attrs.collection.HeapAttributeCollection;
-import org.arakhne.afc.attrs.collection.MultiAttributeProvider;
+import org.arakhne.afc.testtools.AbstractTestCase;
 
-/**
- * Test of MultiAttributeContainer.
- * 
- * @author St&eacute;phane GALLAND &lt;stephane.galland@utbm.fr&gt;
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
- * @since 4.0
- */
 @SuppressWarnings("all")
-public class MultiAttributeProviderTest extends AbstractAttrTestCase {
+public class MultiAttributeProviderTest extends AbstractTestCase {
 
 	private MultiAttributeProvider container;
 	private HeapAttributeCollection subcontainer1;
 	private HeapAttributeCollection subcontainer2;
 	private HeapAttributeCollection subcontainer3;
 	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected void setUp() throws Exception {
-		super.setUp();
+	@Before
+	public void setUp() throws Exception {
 		this.container = new MultiAttributeProvider();
 		this.subcontainer1 = new HeapAttributeCollection();
 		this.subcontainer2 = new HeapAttributeCollection();
@@ -88,30 +82,23 @@ public class MultiAttributeProviderTest extends AbstractAttrTestCase {
 		this.container.addAttributeContainer(this.subcontainer3);
 	}
 	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	protected void tearDown() throws Exception {
+	@After
+	public void tearDown() throws Exception {
 		this.container = null;
 		this.subcontainer1 = this.subcontainer2 = this.subcontainer3 = null;
-		super.tearDown();
 	}
 	
-	/**
-	 */
+	@Test
 	public void testGetAttributeCount() {
 		assertEquals(8, this.container.getAttributeCount());
 	}
 	
-	/**
-	 */
+	@Test
 	public void testGetAttributeContainerCount() {
 		assertEquals(3, this.container.getAttributeContainerCount());
 	}	
 
-	/**
-	 */
+	@Test
 	public void testGetAllAttributeNames() {
 		Collection<String> names = this.container.getAllAttributeNames();
 		assertNotNull(names);
@@ -138,8 +125,7 @@ public class MultiAttributeProviderTest extends AbstractAttrTestCase {
 		return new AttributeImpl(name, type);
 	}
 
-	/**
-	 */
+	@Test
 	public void testHasAttributeString() {
 		assertTrue(this.container.hasAttribute("A")); //$NON-NLS-1$
 		assertTrue(this.container.hasAttribute("B")); //$NON-NLS-1$
@@ -153,8 +139,7 @@ public class MultiAttributeProviderTest extends AbstractAttrTestCase {
 		assertFalse(this.container.hasAttribute("Z4")); //$NON-NLS-1$
 	}
 
-	/**
-	 */
+	@Test
 	public void testGetAttributeString() {
 		assertUninitialized(AttributeType.BOOLEAN,
 				this.container.getAttribute("A")); //$NON-NLS-1$
@@ -176,8 +161,7 @@ public class MultiAttributeProviderTest extends AbstractAttrTestCase {
 		assertNull(this.container.getAttribute("Z4")); //$NON-NLS-1$
 	}
 
-	/**
-	 */
+	@Test
 	public void testGetAttributeStringAttributeValue() {
 		AttributeValue defaultValue = new AttributeValueImpl(456);
 		assertUninitialized(AttributeType.BOOLEAN,
@@ -200,8 +184,7 @@ public class MultiAttributeProviderTest extends AbstractAttrTestCase {
 		assertSame(defaultValue, this.container.getAttribute("Z4", defaultValue)); //$NON-NLS-1$
 	}
 
-	/**
-	 */
+	@Test
 	public void testGetAttributeObjectString() {
 		assertUninitialized(AttributeType.BOOLEAN,
 				this.container.getAttributeObject("A")); //$NON-NLS-1$
@@ -223,9 +206,7 @@ public class MultiAttributeProviderTest extends AbstractAttrTestCase {
 		assertNull(this.container.getAttributeObject("Z4")); //$NON-NLS-1$
 	}
 
-	/**
-	 * @throws Exception
-	 */
+	@Test
 	public void testGetAllAttributes() throws Exception {
 		Collection<Attribute> attrs = this.container.getAllAttributes();
 		assertNotNull(attrs);
@@ -242,8 +223,7 @@ public class MultiAttributeProviderTest extends AbstractAttrTestCase {
 		), attrs);
 	}
 
-	/**
-	 */
+	@Test
 	public void testGetAllAttributesByType() {
 		Map<AttributeType,Collection<Attribute>> attrsbytype = this.container.getAllAttributesByType();
 		assertNotNull(attrsbytype);

@@ -1,26 +1,32 @@
-/* 
+/*
  * $Id$
- * 
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (C) 2013 Stephane GALLAND.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package org.arakhne.afc.attrs.attr;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import java.net.InetAddress;
 import java.net.URI;
@@ -31,48 +37,33 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.UUID;
 
-import org.arakhne.afc.attrs.AbstractAttrTestCase;
+import org.junit.Test;
+
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
 import org.arakhne.afc.math.geometry.d2.i.Point2i;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Tuple3D;
+import org.arakhne.afc.testtools.AbstractTestCase;
 import org.arakhne.afc.ui.vector.Color;
 import org.arakhne.afc.ui.vector.Colors;
 import org.arakhne.afc.ui.vector.Image;
 import org.arakhne.afc.ui.vector.VectorToolkit;
 
-/**
- * Test of AttributeType.
- * 
- * @author St&eacute;phane GALLAND &lt;stephane.galland@utbm.fr&gt;
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
- */
 @SuppressWarnings("all")
-public class AttributeTypeTest extends AbstractAttrTestCase {
+public class AttributeTypeTest extends AbstractTestCase {
 
-	/** 
-	 * @param type
-	 * @param value
-	 */
 	protected static void assertCastException(AttributeType type, Object value) {
 		assertException(ClassCastException.class, type, "cast", new Class<?>[] {Object.class}, new Object[] {value}); //$NON-NLS-1$
 	}
 
-	/**
-	 * @param type
-	 * @param value
-	 */
 	protected static void assertNullException(AttributeType type, Object value) {
 		assertException(NullPointerException.class, type, "cast", new Class<?>[] {Object.class}, new Object[] {value}); //$NON-NLS-1$
 	}
 
-	/**
-	 */
-	public static void testGetName() {
+	@Test
+	public void getName() {
 		for(AttributeType type : AttributeType.values()) {
 			String name = type.getName();
 			assertNotNull(name);
@@ -80,9 +71,8 @@ public class AttributeTypeTest extends AbstractAttrTestCase {
 		}
 	}
 
-	/**
-	 */
-	public static void testIsNumberType() {
+	@Test
+	public void isNumberType() {
 		for(AttributeType t : AttributeType.values()) {
 			assertEquals(t==AttributeType.INTEGER || t==AttributeType.REAL || t==AttributeType.TIMESTAMP,
 					t.isNumberType());
@@ -90,9 +80,8 @@ public class AttributeTypeTest extends AbstractAttrTestCase {
 		}
 	}
 
-	/**
-	 */
-	public static void testFromInteger() {
+	@Test
+	public void fromInteger() {
 		AttributeType[] types = AttributeType.values();
 		assertNotNull(types);
 		assertFalse(0==types.length);
@@ -109,10 +98,8 @@ public class AttributeTypeTest extends AbstractAttrTestCase {
 		}
 	}
 
-	/**
-	 * @throws Exception
-	 */
-	public void testFromValue() throws Exception {
+	@Test
+	public void fromValue() throws Exception {
 		assertEquals(AttributeType.OBJECT, AttributeType.fromValue(null));
 		assertEquals(AttributeType.BOOLEAN, AttributeType.fromValue(true));
 		assertEquals(AttributeType.STRING, AttributeType.fromValue('c'));
@@ -147,10 +134,8 @@ public class AttributeTypeTest extends AbstractAttrTestCase {
 		assertEquals(AttributeType.TYPE, AttributeType.fromValue(double.class));
 	}
 
-	/**
-	 * @throws Exception
-	 */
-	public static void testFromClass() throws Exception {
+	@Test
+	public void fromClass() throws Exception {
 		assertEquals(AttributeType.OBJECT, AttributeType.fromClass(null));
 		assertEquals(AttributeType.BOOLEAN, AttributeType.fromClass(boolean.class));
 		assertEquals(AttributeType.BOOLEAN, AttributeType.fromClass(Boolean.class));
@@ -193,9 +178,8 @@ public class AttributeTypeTest extends AbstractAttrTestCase {
 		assertEquals(AttributeType.TYPE, AttributeType.fromClass(Class.class));
 	}
 
-	/**
-	 */
-	public static void testIsBaseType() {
+	@Test
+	public void isBaseType() {
 		assertTrue(AttributeType.BOOLEAN.isBaseType());
 		assertTrue(AttributeType.INTEGER.isBaseType());
 		assertTrue(AttributeType.REAL.isBaseType());
@@ -218,9 +202,8 @@ public class AttributeTypeTest extends AbstractAttrTestCase {
 		assertFalse(AttributeType.TYPE.isBaseType());
 	}
 	
-	/**
-	 */
-	public static void testIsNullAllowed() {
+	@Test
+	public void isNullAllowed() {
 		assertFalse(AttributeType.BOOLEAN.isNullAllowed());
 		assertFalse(AttributeType.INTEGER.isNullAllowed());
 		assertFalse(AttributeType.REAL.isNullAllowed());
@@ -243,10 +226,8 @@ public class AttributeTypeTest extends AbstractAttrTestCase {
 		assertFalse(AttributeType.TYPE.isNullAllowed());
 	}
 
-	/**
-	 * @throws Exception
-	 */
-	public static void testGetDefaultValue() throws Exception {
+	@Test
+	public void getDefaultValue() throws Exception {
 		assertEquals(Boolean.FALSE, AttributeType.BOOLEAN.getDefaultValue());
 		assertEquals(new Long(0), AttributeType.INTEGER.getDefaultValue());
 		assertEquals(new Double(0.), AttributeType.REAL.getDefaultValue());
@@ -269,10 +250,8 @@ public class AttributeTypeTest extends AbstractAttrTestCase {
 		assertEquals(Object.class, AttributeType.TYPE.getDefaultValue());
 	}
 
-	/**
-	 * @throws Exception
-	 */
-	public void testCast() throws Exception {
+	@Test
+	public void cast() throws Exception {
 		AttributeType type;
 		char vChar = 'c';
 		byte vByte = 1;
@@ -845,9 +824,8 @@ public class AttributeTypeTest extends AbstractAttrTestCase {
 		assertSame(enumeration,type.cast(enumeration));
 	}
 
-	/**
-	 */
-	public static void testIsAssignableFrom() {
+	@Test
+	public void isAssignableFrom() {
 		assertTrue(AttributeType.BOOLEAN.isAssignableFrom(AttributeType.BOOLEAN));
 		assertFalse(AttributeType.BOOLEAN.isAssignableFrom(AttributeType.COLOR));
 		assertFalse(AttributeType.BOOLEAN.isAssignableFrom(AttributeType.DATE));

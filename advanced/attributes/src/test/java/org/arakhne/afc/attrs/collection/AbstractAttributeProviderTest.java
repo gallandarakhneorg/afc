@@ -1,26 +1,32 @@
-/* 
+/*
  * $Id$
- * 
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (C) 2013 Stephane GALLAND.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package org.arakhne.afc.attrs.collection;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -30,7 +36,10 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import org.arakhne.afc.attrs.AbstractAttrTestCase;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
 import org.arakhne.afc.attrs.attr.Attribute;
 import org.arakhne.afc.attrs.attr.AttributeException;
 import org.arakhne.afc.attrs.attr.AttributeImpl;
@@ -38,55 +47,28 @@ import org.arakhne.afc.attrs.attr.AttributeType;
 import org.arakhne.afc.attrs.attr.AttributeValue;
 import org.arakhne.afc.attrs.attr.AttributeValueImpl;
 import org.arakhne.afc.attrs.attr.InvalidAttributeTypeException;
-import org.arakhne.afc.attrs.collection.AttributeCollection;
-import org.arakhne.afc.attrs.collection.AttributeProvider;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
+import org.arakhne.afc.testtools.AbstractTestCase;
 
-/**
- * Test of AbstractAttributeContainer.
- * 
- * @param <T>
- * @author St&eacute;phane GALLAND &lt;stephane.galland@utbm.fr&gt;
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
- */
 @SuppressWarnings("all")
-public abstract class AbstractAttributeProviderTest<T extends AttributeProvider> extends AbstractAttrTestCase {
+public abstract class AbstractAttributeProviderTest<T extends AttributeProvider> extends AbstractTestCase {
 
-	/**
-	 */
 	protected final String id;
+
+	protected T testData;
 	
-	/**
-	 * @param id
-	 */
+	protected Attribute[] baseData;
+
+	
 	public AbstractAttributeProviderTest(String id) {
 		super();
 		this.id = id;
 	}
 	
-	/**
-	 * Assertion on invalid value exception.
-	 * 
-	 * @param provider
-	 * @param methodName
-	 * @param parameters
-	 * @throws Exception
-	 */
 	protected static void assertInvalidValue(AttributeProvider provider, String methodName, Object... parameters) throws Exception {
 		assertInvalidValue(null, provider, methodName, parameters);
 	}
 
-	/**
-	 * Assertion on invalid value exception.
-	 * 
-	 * @param message
-	 * @param provider
-	 * @param methodName
-	 * @param parameters
-	 * @throws Exception
-	 */
 	protected static void assertInvalidValue(String message, AttributeProvider provider, String methodName, Object... parameters) throws Exception {
 		StringBuilder msg = new StringBuilder();
 		if (message!=null && !message.isEmpty()) msg.append(": "); //$NON-NLS-1$
@@ -120,14 +102,6 @@ public abstract class AbstractAttributeProviderTest<T extends AttributeProvider>
 	}	
 	
 	/**
-	 */
-	protected T testData;
-	
-	/**
-	 */
-	protected Attribute[] baseData;
-
-	/**
 	 * Fill the attribute provider with test case data.
 	 * 
 	 * @param provider
@@ -139,9 +113,8 @@ public abstract class AbstractAttributeProviderTest<T extends AttributeProvider>
 		}
 	}
 	
-	@Override
-	protected void setUp() throws Exception {
-		super.setUp();
+	@Before
+	public void setUp() throws Exception {
 		this.baseData = new Attribute[] {
 				new AttributeImpl("A",1), //$NON-NLS-1$
 				new AttributeImpl("B",2.), //$NON-NLS-1$
@@ -162,16 +135,14 @@ public abstract class AbstractAttributeProviderTest<T extends AttributeProvider>
 	 */
 	protected abstract T setUpTestCase() throws Exception;
 
-	@Override
-	protected void tearDown() throws Exception {
+	@After
+	public void tearDown() throws Exception {
 		this.testData = null;
 		this.baseData = null;
-		super.tearDown();
 	}
 
-	/**
-	 */
-	public void testIterator() {
+	@Test
+	public void iterator() {
 		ArrayList<Attribute> ref = new ArrayList<Attribute>();
 		ref.addAll(Arrays.asList(this.baseData));
 
@@ -186,9 +157,8 @@ public abstract class AbstractAttributeProviderTest<T extends AttributeProvider>
 		assertFalse(this.id, it.hasNext());
 	}
 
-	/**
-	 */
-	public void testHasAttribute() {
+	@Test
+	public void hasAttribute() {
 		assertTrue(this.id, this.testData.hasAttribute("A")); //$NON-NLS-1$
 		assertFalse(this.id, this.testData.hasAttribute("X")); //$NON-NLS-1$
 		assertTrue(this.id, this.testData.hasAttribute("B")); //$NON-NLS-1$
@@ -200,15 +170,13 @@ public abstract class AbstractAttributeProviderTest<T extends AttributeProvider>
 		assertTrue(this.id, this.testData.hasAttribute("F")); //$NON-NLS-1$
 	}
 
-	/**
-	 */
-	public void testGetAllAttributes() {
+	@Test
+	public void getAllAttributes() {
 		assertEpsilonEquals(this.id, this.baseData, this.testData.getAllAttributes().toArray());
 	}
 
-	/**
-	 */
-	public void testGetAllAttributesByType() {
+	@Test
+	public void getAllAttributesByType() {
 		HashMap<AttributeType,Collection<Attribute>> map = new HashMap<AttributeType,Collection<Attribute>>();
 		for(Attribute data : this.baseData) {
 			AttributeType type = data.getType();
@@ -224,9 +192,8 @@ public abstract class AbstractAttributeProviderTest<T extends AttributeProvider>
 	}
 
 
-	/**
-	 */
-	public void testGetAllAttributeNames() {
+	@Test
+	public void getAllAttributeNames() {
 		assertEpsilonEquals(this.id, new String[] {
 				"A", //$NON-NLS-1$
 				"B", //$NON-NLS-1$
@@ -237,9 +204,8 @@ public abstract class AbstractAttributeProviderTest<T extends AttributeProvider>
 		}, this.testData.getAllAttributeNames().toArray());
 	}
 
-	/**
-	 */
-	public void testGetAttributeString() {
+	@Test
+	public void getAttributeString() {
 		assertEquals(this.id, this.baseData[0],this.testData.getAttribute("A")); //$NON-NLS-1$
 		assertNull(this.id, this.testData.getAttribute("X")); //$NON-NLS-1$
 		assertEquals(this.id, this.baseData[1],this.testData.getAttribute("B")); //$NON-NLS-1$
@@ -252,9 +218,8 @@ public abstract class AbstractAttributeProviderTest<T extends AttributeProvider>
 		assertEquals(this.id, this.baseData[5],this.testData.getAttribute("F")); //$NON-NLS-1$
 	}
 
-	/**
-	 */
-	public void testGetAttributeStringAttributeValue() {
+	@Test
+	public void getAttributeStringAttributeValue() {
 		AttributeValue defaultValue = new AttributeValueImpl();
 		assertEquals(this.id, this.baseData[0],this.testData.getAttribute("A",defaultValue)); //$NON-NLS-1$
 		assertSame(this.id, defaultValue, this.testData.getAttribute("X", defaultValue)); //$NON-NLS-1$
@@ -268,9 +233,8 @@ public abstract class AbstractAttributeProviderTest<T extends AttributeProvider>
 		assertEquals(this.id, this.baseData[5],this.testData.getAttribute("F", defaultValue)); //$NON-NLS-1$
 	}
 
-	/**
-	 */
-	public void testGetAttributeObject() {
+	@Test
+	public void getAttributeObject() {
 		assertEquals(this.id, this.baseData[0],this.testData.getAttributeObject("A")); //$NON-NLS-1$
 		assertNull(this.id, this.testData.getAttribute("X")); //$NON-NLS-1$
 		assertEquals(this.id, this.baseData[1],this.testData.getAttributeObject("B")); //$NON-NLS-1$
@@ -283,10 +247,8 @@ public abstract class AbstractAttributeProviderTest<T extends AttributeProvider>
 		assertEquals(this.id, this.baseData[5],this.testData.getAttributeObject("F")); //$NON-NLS-1$
 	}
 
-	/**
-	 * @throws Exception
-	 */
-	public void testGetAttributeAsBoolString() throws Exception {
+	@Test
+	public void getAttributeAsBoolString() throws Exception {
 		assertTrue(this.id, this.testData.getAttributeAsBool("A"));//$NON-NLS-1$
 		assertTrue(this.id, this.testData.getAttributeAsBool("B"));//$NON-NLS-1$
 		assertTrue(this.id, this.testData.getAttributeAsBool("C"));//$NON-NLS-1$
@@ -295,10 +257,8 @@ public abstract class AbstractAttributeProviderTest<T extends AttributeProvider>
 		assertFalse(this.id, this.testData.getAttributeAsBool("F"));//$NON-NLS-1$
 	}
 
-	/**
-	 * @throws Exception
-	 */
-	public void testGetAttributeStringBoolean() throws Exception {
+	@Test
+	public void getAttributeStringBoolean() throws Exception {
 		assertTrue(this.id, this.testData.getAttribute("A",true));//$NON-NLS-1$
 		assertTrue(this.id, this.testData.getAttribute("B",false));//$NON-NLS-1$
 		assertTrue(this.id, this.testData.getAttribute("C",false));//$NON-NLS-1$
@@ -307,10 +267,8 @@ public abstract class AbstractAttributeProviderTest<T extends AttributeProvider>
 		assertFalse(this.id, this.testData.getAttribute("F",true));//$NON-NLS-1$
 	}
 
-	/**
-	 * @throws Exception
-	 */
-	public void testGetAttributeAsIntString() throws Exception {
+	@Test
+	public void getAttributeAsIntString() throws Exception {
 		assertEquals(this.id, 1,this.testData.getAttributeAsInt("A"));//$NON-NLS-1$
 		assertEquals(this.id, 2,this.testData.getAttributeAsInt("B"));//$NON-NLS-1$
 		assertEquals(this.id, 1, this.testData.getAttributeAsInt("C"));//$NON-NLS-1$
@@ -319,10 +277,8 @@ public abstract class AbstractAttributeProviderTest<T extends AttributeProvider>
 		assertInvalidValue(this.id, this.testData,"getAttributeAsInt","F");//$NON-NLS-1$ //$NON-NLS-2$
 	}
 	
-	/**
-	 * @throws Exception
-	 */
-	public void testGetAttributeStringInt() throws Exception {
+	@Test
+	public void getAttributeStringInt() throws Exception {
 		assertEquals(this.id, 1,this.testData.getAttribute("A",5));//$NON-NLS-1$
 		assertEquals(this.id, 2,this.testData.getAttribute("B",34));//$NON-NLS-1$
 		assertEquals(this.id, 1,this.testData.getAttribute("C",18));//$NON-NLS-1$
@@ -331,10 +287,8 @@ public abstract class AbstractAttributeProviderTest<T extends AttributeProvider>
 		assertEquals(this.id, 18,this.testData.getAttribute("F",18));//$NON-NLS-1$
 	}
 
-	/**
-	 * @throws Exception
-	 */
-	public void testGetAttributeAsLongString() throws Exception {
+	@Test
+	public void getAttributeAsLongString() throws Exception {
 		assertEquals(this.id, 1,this.testData.getAttributeAsLong("A"));//$NON-NLS-1$
 		assertEquals(this.id, 2,this.testData.getAttributeAsLong("B"));//$NON-NLS-1$
 		assertEquals(this.id, 1, this.testData.getAttributeAsLong("C"));//$NON-NLS-1$
@@ -343,10 +297,8 @@ public abstract class AbstractAttributeProviderTest<T extends AttributeProvider>
 		assertInvalidValue(this.id, this.testData,"getAttributeAsLong","F");//$NON-NLS-1$ //$NON-NLS-2$
 	}
 
-	/**
-	 * @throws Exception
-	 */
-	public void testGetAttributegStringLong() throws Exception {
+	@Test
+	public void getAttributegStringLong() throws Exception {
 		assertEquals(this.id, 1,this.testData.getAttribute("A",5));//$NON-NLS-1$
 		assertEquals(this.id, 2,this.testData.getAttribute("B",34));//$NON-NLS-1$
 		assertEquals(this.id, 1,this.testData.getAttribute("C",18));//$NON-NLS-1$
@@ -355,58 +307,48 @@ public abstract class AbstractAttributeProviderTest<T extends AttributeProvider>
 		assertEquals(this.id, 18,this.testData.getAttribute("F",18));//$NON-NLS-1$
 	}
 
-	/**
-	 * @throws Exception
-	 */
-	public void testGetAttributeAsFloatString() throws Exception {
-		assertEquals(this.id, 1f,this.testData.getAttributeAsFloat("A"));//$NON-NLS-1$
-		assertEquals(this.id, 2f,this.testData.getAttributeAsFloat("B"));//$NON-NLS-1$
-		assertEquals(this.id, 1f, this.testData.getAttributeAsFloat("C"));//$NON-NLS-1$
+	@Test
+	public void getAttributeAsFloatString() throws Exception {
+		assertEpsilonEquals(this.id, 1f,this.testData.getAttributeAsFloat("A"));//$NON-NLS-1$
+		assertEpsilonEquals(this.id, 2f,this.testData.getAttributeAsFloat("B"));//$NON-NLS-1$
+		assertEpsilonEquals(this.id, 1f, this.testData.getAttributeAsFloat("C"));//$NON-NLS-1$
 		assertInvalidValue(this.id, this.testData,"getAttributeAsFloat","D");//$NON-NLS-1$ //$NON-NLS-2$
 		assertInvalidValue(this.id, this.testData,"getAttributeAsFloat","E");//$NON-NLS-1$ //$NON-NLS-2$
 		assertInvalidValue(this.id, this.testData,"getAttributeAsFloat","F");//$NON-NLS-1$ //$NON-NLS-2$
 	}
 
-	/**
-	 * @throws Exception
-	 */
-	public void testGetAttributeStringFloat() throws Exception {
-		assertEquals(this.id, 1f,this.testData.getAttribute("A",5f));//$NON-NLS-1$
-		assertEquals(this.id, 2f,this.testData.getAttribute("B",34f));//$NON-NLS-1$
-		assertEquals(this.id, 1f,this.testData.getAttribute("C",18f));//$NON-NLS-1$
-		assertEquals(this.id, 24f,this.testData.getAttribute("D",24f));//$NON-NLS-1$
-		assertEquals(this.id, -34f,this.testData.getAttribute("E",-34f));//$NON-NLS-1$
-		assertEquals(this.id, 18f,this.testData.getAttribute("F",18f));//$NON-NLS-1$
+	@Test
+	public void getAttributeStringFloat() throws Exception {
+		assertEpsilonEquals(this.id, 1f,this.testData.getAttribute("A",5f));//$NON-NLS-1$
+		assertEpsilonEquals(this.id, 2f,this.testData.getAttribute("B",34f));//$NON-NLS-1$
+		assertEpsilonEquals(this.id, 1f,this.testData.getAttribute("C",18f));//$NON-NLS-1$
+		assertEpsilonEquals(this.id, 24f,this.testData.getAttribute("D",24f));//$NON-NLS-1$
+		assertEpsilonEquals(this.id, -34f,this.testData.getAttribute("E",-34f));//$NON-NLS-1$
+		assertEpsilonEquals(this.id, 18f,this.testData.getAttribute("F",18f));//$NON-NLS-1$
 	}
 
-	/**
-	 * @throws Exception
-	 */
-	public void testGetAttributeAsDoubleString() throws Exception {
-		assertEquals(this.id, 1.,this.testData.getAttributeAsDouble("A"));//$NON-NLS-1$
-		assertEquals(this.id, 2.,this.testData.getAttributeAsDouble("B"));//$NON-NLS-1$
-		assertEquals(this.id, 1., this.testData.getAttributeAsDouble("C"));//$NON-NLS-1$
+	@Test
+	public void getAttributeAsDoubleString() throws Exception {
+		assertEpsilonEquals(this.id, 1.,this.testData.getAttributeAsDouble("A"));//$NON-NLS-1$
+		assertEpsilonEquals(this.id, 2.,this.testData.getAttributeAsDouble("B"));//$NON-NLS-1$
+		assertEpsilonEquals(this.id, 1., this.testData.getAttributeAsDouble("C"));//$NON-NLS-1$
 		assertInvalidValue(this.id, this.testData,"getAttributeAsDouble","D");//$NON-NLS-1$ //$NON-NLS-2$
 		assertInvalidValue(this.id, this.testData,"getAttributeAsDouble","E");//$NON-NLS-1$ //$NON-NLS-2$
 		assertInvalidValue(this.id, this.testData,"getAttributeAsDouble","F");//$NON-NLS-1$ //$NON-NLS-2$
 	}
 
-	/**
-	 * @throws Exception
-	 */
-	public void testGetAttributeStringDouble() throws Exception {
-		assertEquals(this.id, 1.,this.testData.getAttribute("A",5.));//$NON-NLS-1$
-		assertEquals(this.id, 2.,this.testData.getAttribute("B",34.));//$NON-NLS-1$
-		assertEquals(this.id, 1.,this.testData.getAttribute("C",18.));//$NON-NLS-1$
-		assertEquals(this.id, 24.,this.testData.getAttribute("D",24.));//$NON-NLS-1$
-		assertEquals(this.id, -34.,this.testData.getAttribute("E",-34.));//$NON-NLS-1$
-		assertEquals(this.id, 18.,this.testData.getAttribute("F",18.));//$NON-NLS-1$
+	@Test
+	public void getAttributeStringDouble() throws Exception {
+		assertEpsilonEquals(this.id, 1.,this.testData.getAttribute("A",5.));//$NON-NLS-1$
+		assertEpsilonEquals(this.id, 2.,this.testData.getAttribute("B",34.));//$NON-NLS-1$
+		assertEpsilonEquals(this.id, 1.,this.testData.getAttribute("C",18.));//$NON-NLS-1$
+		assertEpsilonEquals(this.id, 24.,this.testData.getAttribute("D",24.));//$NON-NLS-1$
+		assertEpsilonEquals(this.id, -34.,this.testData.getAttribute("E",-34.));//$NON-NLS-1$
+		assertEpsilonEquals(this.id, 18.,this.testData.getAttribute("F",18.));//$NON-NLS-1$
 	}
 
-	/**
-	 * @throws Exception
-	 */
-	public void testGetAttributeAsStringString() throws Exception {
+	@Test
+	public void getAttributeAsStringString() throws Exception {
 		assertEquals(this.id, Long.toString(1),this.testData.getAttributeAsString("A"));//$NON-NLS-1$
 		assertEquals(this.id, Double.toString(2.),this.testData.getAttributeAsString("B"));//$NON-NLS-1$
 		assertEquals(this.id, Boolean.toString(true),this.testData.getAttributeAsString("C"));//$NON-NLS-1$
@@ -415,10 +357,8 @@ public abstract class AbstractAttributeProviderTest<T extends AttributeProvider>
 		assertEquals(this.id, Boolean.toString(false),this.testData.getAttributeAsString("F"));//$NON-NLS-1$
 	}
 
-	/**
-	 * @throws Exception
-	 */
-	public void testGetAttributeStringString() throws Exception {
+	@Test
+	public void getAttributeStringString() throws Exception {
 		assertEquals(this.id, Long.toString(1),this.testData.getAttribute("A","default"));//$NON-NLS-1$ //$NON-NLS-2$
 		assertEquals(this.id, Double.toString(2.),this.testData.getAttribute("B","default"));//$NON-NLS-1$ //$NON-NLS-2$
 		assertEquals(this.id, Boolean.toString(true),this.testData.getAttribute("C","default"));//$NON-NLS-1$ //$NON-NLS-2$
@@ -427,11 +367,10 @@ public abstract class AbstractAttributeProviderTest<T extends AttributeProvider>
 		assertEquals(this.id, Boolean.toString(false),this.testData.getAttribute("F","default"));//$NON-NLS-1$ //$NON-NLS-2$
 	}
 
-	/**
-	 */
-	public void testFreeMemory() {
+	@Test
+	public void freeMemory() {
 		this.testData.freeMemory();
-		testIterator();
+		iterator();
 	}
 
 }

@@ -1,24 +1,23 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (c) 2006-10, Multiagent Team, Laboratoire Systemes et Transports, Universite de Technologie de Belfort-Montbeliard.
- * Copyright (C) 2012 Stephane GALLAND.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package org.arakhne.afc.math.matrix;
 
 import static org.junit.Assert.assertEquals;
@@ -58,7 +57,7 @@ public class Matrix2dTest extends AbstractMathTestCase {
 	public void addDouble() {
 		Matrix2d m1 = this.randomMatrix2f();
 		Matrix2d m2 = m1.clone();
-		double s = this.random.nextDouble();
+		double s = getRandom().nextDouble();
 		
 		m2.set(m2.m00+s, m2.m01+s, m2.m10+s, m2.m11+s);
 		m1.add(s);
@@ -70,7 +69,7 @@ public class Matrix2dTest extends AbstractMathTestCase {
 	public void addDoubleMatrix2D() {
 		Matrix2d m1 = this.randomMatrix2f();
 		Matrix2d m2 = m1.clone();
-		double s = this.random.nextDouble();
+		double s = getRandom().nextDouble();
 		
 		m2.set(m2.m00+s, m2.m01+s, m2.m10+s, m2.m11+s);
 		m1.add(s,m1);
@@ -164,10 +163,10 @@ public class Matrix2dTest extends AbstractMathTestCase {
 	
 	@Test
 	public void determinant() {
-		double a = this.random.nextDouble();
-		double b = this.random.nextDouble();
-		double c = this.random.nextDouble();
-		double d = this.random.nextDouble();
+		double a = getRandom().nextDouble();
+		double b = getRandom().nextDouble();
+		double c = getRandom().nextDouble();
+		double d = getRandom().nextDouble();
 		
 		Matrix2d matrix = new Matrix2d(a,b,c,d);
 		
@@ -178,14 +177,14 @@ public class Matrix2dTest extends AbstractMathTestCase {
 	
 	@Test
 	public void mulDouble() {
-		double a = this.random.nextDouble();
-		double b = this.random.nextDouble();
-		double c = this.random.nextDouble();
-		double d = this.random.nextDouble();
+		double a = getRandom().nextDouble();
+		double b = getRandom().nextDouble();
+		double c = getRandom().nextDouble();
+		double d = getRandom().nextDouble();
 		
 		Matrix2d matrix = new Matrix2d(a,b,c,d);
 		
-		double s = this.random.nextDouble();
+		double s = getRandom().nextDouble();
 		Matrix2d prodScal = new Matrix2d(a*s,b*s,c*s,d*s);
 		
 		matrix.mul(s);
@@ -194,14 +193,14 @@ public class Matrix2dTest extends AbstractMathTestCase {
 	
 	@Test
 	public void mulDoubleMatrix2D() {
-		double a = this.random.nextDouble();
-		double b = this.random.nextDouble();
-		double c = this.random.nextDouble();
-		double d = this.random.nextDouble();
+		double a = getRandom().nextDouble();
+		double b = getRandom().nextDouble();
+		double c = getRandom().nextDouble();
+		double d = getRandom().nextDouble();
 		
 		Matrix2d matrix = new Matrix2d(a,b,c,d);
 		
-		double s = this.random.nextDouble();
+		double s = getRandom().nextDouble();
 		Matrix2d prodScal = new Matrix2d(a*s,b*s,c*s,d*s);
 		
 		matrix.mul(s,matrix);
@@ -210,18 +209,18 @@ public class Matrix2dTest extends AbstractMathTestCase {
 	
 	@Test
 	public void mulMatrix2D() {
-		double a = this.random.nextDouble();
-		double b = this.random.nextDouble();
-		double c = this.random.nextDouble();
-		double d = this.random.nextDouble();
+		double a = getRandom().nextDouble();
+		double b = getRandom().nextDouble();
+		double c = getRandom().nextDouble();
+		double d = getRandom().nextDouble();
 		
-		//double i = this.random.nextDouble();
+		//double i = getRandom().nextDouble();
 		Matrix2d m1 = new Matrix2d(a,b,c,d);
 		
-		double e = this.random.nextDouble();
-		double f = this.random.nextDouble();
-		double g = this.random.nextDouble();
-		double h = this.random.nextDouble();
+		double e = getRandom().nextDouble();
+		double f = getRandom().nextDouble();
+		double g = getRandom().nextDouble();
+		double h = getRandom().nextDouble();
 		
 		Matrix2d m2= new Matrix2d(e,f,g,h);
 		
@@ -251,18 +250,18 @@ public class Matrix2dTest extends AbstractMathTestCase {
 	
 	@Test
 	public void mulMatrix2DMatrix2D() {
-		double a = this.random.nextDouble();
-		double b = this.random.nextDouble();
-		double c = this.random.nextDouble();
-		double d = this.random.nextDouble();
+		double a = getRandom().nextDouble();
+		double b = getRandom().nextDouble();
+		double c = getRandom().nextDouble();
+		double d = getRandom().nextDouble();
 		
-		//double i = this.random.nextDouble();
+		//double i = getRandom().nextDouble();
 		Matrix2d m1 = new Matrix2d(a,b,c,d);
 		
-		double e = this.random.nextDouble();
-		double f = this.random.nextDouble();
-		double g = this.random.nextDouble();
-		double h = this.random.nextDouble();
+		double e = getRandom().nextDouble();
+		double f = getRandom().nextDouble();
+		double g = getRandom().nextDouble();
+		double h = getRandom().nextDouble();
 		
 		Matrix2d m2= new Matrix2d(e,f,g,h);
 		
@@ -394,7 +393,7 @@ public class Matrix2dTest extends AbstractMathTestCase {
 	@Test
 	public void setDiagonal() {
 		Matrix2d m = this.randomMatrix2f();
-		double s = this.random.nextDouble();
+		double s = getRandom().nextDouble();
 		m.setDiagonal(s,s);
 		assertEpsilonEquals(new Matrix2d(s,0,0,s), m);
 	}
@@ -618,7 +617,7 @@ public class Matrix2dTest extends AbstractMathTestCase {
 	public void operator_addDouble() {
 		Matrix2d m1 = this.randomMatrix2f();
 		Matrix2d m2 = m1.clone();
-		double s = this.random.nextDouble() * 100;
+		double s = getRandom().nextDouble() * 100;
 		
 		m2.set(m2.m00+s, m2.m01+s, m2.m10+s, m2.m11+s);
 		m1.operator_add(s);
@@ -642,7 +641,7 @@ public class Matrix2dTest extends AbstractMathTestCase {
 	public void operator_removeDouble() {
 		Matrix2d m1 = this.randomMatrix2f();
 		Matrix2d m2 = m1.clone();
-		double s = this.random.nextDouble() * 100;
+		double s = getRandom().nextDouble() * 100;
 		
 		m2.set(m2.m00-s, m2.m01-s, m2.m10-s, m2.m11-s);
 		m1.operator_remove(s);
@@ -666,7 +665,7 @@ public class Matrix2dTest extends AbstractMathTestCase {
 	public void operator_plusDouble() {
 		Matrix2d m1 = this.randomMatrix2f();
 		Matrix2d m2 = m1.clone();
-		double s = this.random.nextDouble() * 100;
+		double s = getRandom().nextDouble() * 100;
 		
 		m2.set(m2.m00+s, m2.m01+s, m2.m10+s, m2.m11+s);
 		Matrix2d r = m1.operator_plus(s);
@@ -690,7 +689,7 @@ public class Matrix2dTest extends AbstractMathTestCase {
 	public void operator_minusDouble() {
 		Matrix2d m1 = this.randomMatrix2f();
 		Matrix2d m2 = m1.clone();
-		double s = this.random.nextDouble() * 100;
+		double s = getRandom().nextDouble() * 100;
 		
 		m2.set(m2.m00-s, m2.m01-s, m2.m10-s, m2.m11-s);
 		Matrix2d r = m1.operator_minus(s);
@@ -710,18 +709,18 @@ public class Matrix2dTest extends AbstractMathTestCase {
 
 	@Test
 	public void operator_multiplyMatrix2f() {
-		double a = this.random.nextDouble() * 100;
-		double b = this.random.nextDouble() * 100;
-		double c = this.random.nextDouble() * 100;
-		double d = this.random.nextDouble() * 100;
+		double a = getRandom().nextDouble() * 100;
+		double b = getRandom().nextDouble() * 100;
+		double c = getRandom().nextDouble() * 100;
+		double d = getRandom().nextDouble() * 100;
 		
-		//double i = this.random.nextDouble();
+		//double i = getRandom().nextDouble();
 		Matrix2d m1 = new Matrix2d(a,b,c,d);
 		
-		double e = this.random.nextDouble() * 100;
-		double f = this.random.nextDouble() * 100;
-		double g = this.random.nextDouble() * 100;
-		double h = this.random.nextDouble() * 100;
+		double e = getRandom().nextDouble() * 100;
+		double f = getRandom().nextDouble() * 100;
+		double g = getRandom().nextDouble() * 100;
+		double h = getRandom().nextDouble() * 100;
 		
 		Matrix2d m2= new Matrix2d(e,f,g,h);
 		
@@ -738,14 +737,14 @@ public class Matrix2dTest extends AbstractMathTestCase {
 
 	@Test
 	public void operator_multiplyDouble() {
-		double a = this.random.nextDouble() * 100;
-		double b = this.random.nextDouble() * 100;
-		double c = this.random.nextDouble() * 100;
-		double d = this.random.nextDouble() * 100;
+		double a = getRandom().nextDouble() * 100;
+		double b = getRandom().nextDouble() * 100;
+		double c = getRandom().nextDouble() * 100;
+		double d = getRandom().nextDouble() * 100;
 		
 		Matrix2d matrix = new Matrix2d(a,b,c,d);
 		
-		double s = this.random.nextDouble() * 100;
+		double s = getRandom().nextDouble() * 100;
 		Matrix2d prodScal = new Matrix2d(a*s,b*s,c*s,d*s);
 		
 		Matrix2d r = matrix.operator_multiply(s);
@@ -754,14 +753,14 @@ public class Matrix2dTest extends AbstractMathTestCase {
 
 	@Test
 	public void operator_divideDouble() {
-		double a = this.random.nextDouble() * 100;
-		double b = this.random.nextDouble() * 100;
-		double c = this.random.nextDouble() * 100;
-		double d = this.random.nextDouble() * 100;
+		double a = getRandom().nextDouble() * 100;
+		double b = getRandom().nextDouble() * 100;
+		double c = getRandom().nextDouble() * 100;
+		double d = getRandom().nextDouble() * 100;
 		
 		Matrix2d matrix = new Matrix2d(a,b,c,d);
 		
-		double s = this.random.nextDouble() * 100;
+		double s = getRandom().nextDouble() * 100;
 		Matrix2d prodScal = new Matrix2d(a/s,b/s,c/s,d/s);
 		
 		Matrix2d r = matrix.operator_divide(s);

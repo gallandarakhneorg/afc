@@ -1,64 +1,55 @@
-/* 
+/*
  * $Id$
- * 
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
  * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
  *                        Universite de Technologie de Belfort-Montbeliard.
- * Copyright (C) 2013 Stephane GALLAND.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package org.arakhne.afc.attrs.collection;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 import org.arakhne.afc.attrs.attr.Attribute;
 import org.arakhne.afc.attrs.attr.AttributeImpl;
 import org.arakhne.afc.attrs.attr.AttributeValue;
 import org.arakhne.afc.attrs.attr.AttributeValueImpl;
-import org.arakhne.afc.attrs.collection.AttributeChangeEvent;
-import org.arakhne.afc.attrs.collection.AttributeChangeListener;
-import org.arakhne.afc.attrs.collection.AttributeCollection;
 
-/**
- * Test of AbstractAttributeProvider.
- * 
- * @param <T>
- * @author St&eacute;phane GALLAND &lt;stephane.galland@utbm.fr&gt;
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
- */
 @SuppressWarnings("all")
 public abstract class AbstractAttributeCollectionTest<T extends AttributeCollection> extends AbstractAttributeProviderTest<T> {
 
 	private Attribute[] newValues;
 	
-	/**
-	 */
 	protected ListenerStub listenerStub;
 	
-	/**
-	 * @param id
-	 */
 	public AbstractAttributeCollectionTest(String id) {
 		super(id);
 	}
 	
 	@Override
+	@Before
 	public void setUp() throws Exception {
 		super.setUp();
 		
@@ -73,6 +64,7 @@ public abstract class AbstractAttributeCollectionTest<T extends AttributeCollect
 	}
 	
 	@Override
+	@After
 	public void tearDown() throws Exception {
 		this.newValues = null;
 		this.listenerStub.reset();
@@ -125,10 +117,8 @@ public abstract class AbstractAttributeCollectionTest<T extends AttributeCollect
 				new Object[] {attr.getName(), parameter}, attr);
 	}
 
-	/**
-	 * @throws Exception
-	 */
-	public void testSetAttributeAttribute() throws Exception {
+	@Test
+	public void setAttributeAttribute() throws Exception {
 		for (Attribute attr : this.newValues) {
 			runSetAttributeValue(
 					new Class<?>[] {Attribute.class},
@@ -137,10 +127,8 @@ public abstract class AbstractAttributeCollectionTest<T extends AttributeCollect
 		}
 	}
 
-	/**
-	 * @throws Exception
-	 */
-	public void testSetAttributeStringAttributeValue() throws Exception {
+	@Test
+	public void setAttributeStringAttributeValue() throws Exception {
 		for (Attribute attr : this.newValues) {
 			runSetAttributeValue(
 					AttributeValue.class,
@@ -149,10 +137,8 @@ public abstract class AbstractAttributeCollectionTest<T extends AttributeCollect
 		}
 	}
 
-	/**
-	 * @throws Exception
-	 */
-	public void testSetAttributeStringBoolean() throws Exception {
+	@Test
+	public void setAttributeStringBoolean() throws Exception {
 		Attribute attr = new AttributeImpl("A", false); //$NON-NLS-1$
 		runSetAttributeValue(
 				boolean.class,
@@ -165,10 +151,8 @@ public abstract class AbstractAttributeCollectionTest<T extends AttributeCollect
 				attr);
 	}
 
-	/**
-	 * @throws Exception
-	 */
-	public void testSetAttributeStringInt() throws Exception {
+	@Test
+	public void setAttributeStringInt() throws Exception {
 		Attribute attr = new AttributeImpl("E", 34); //$NON-NLS-1$
 		runSetAttributeValue(
 				int.class,
@@ -181,10 +165,8 @@ public abstract class AbstractAttributeCollectionTest<T extends AttributeCollect
 				attr);
 	}
 
-	/**
-	 * @throws Exception
-	 */
-	public void testSetAttributeStringLong() throws Exception {
+	@Test
+	public void setAttributeStringLong() throws Exception {
 		Attribute attr = new AttributeImpl("E", 34); //$NON-NLS-1$
 		runSetAttributeValue(
 				long.class,
@@ -197,10 +179,8 @@ public abstract class AbstractAttributeCollectionTest<T extends AttributeCollect
 				attr);
 	}
 
-	/**
-	 * @throws Exception
-	 */
-	public void testSetAttributeStringFloat() throws Exception {
+	@Test
+	public void setAttributeStringFloat() throws Exception {
 		Attribute attr = new AttributeImpl("E", 34f); //$NON-NLS-1$
 		runSetAttributeValue(
 				float.class,
@@ -213,10 +193,8 @@ public abstract class AbstractAttributeCollectionTest<T extends AttributeCollect
 				attr);
 	}
 
-	/**
-	 * @throws Exception
-	 */
-	public void testSetAttributeStringDouble() throws Exception {
+	@Test
+	public void setAttributeStringDouble() throws Exception {
 		Attribute attr = new AttributeImpl("E", 34.); //$NON-NLS-1$
 		runSetAttributeValue(
 				double.class,
@@ -229,10 +207,8 @@ public abstract class AbstractAttributeCollectionTest<T extends AttributeCollect
 				attr);
 	}
 	
-	/**
-	 * @throws Exception
-	 */
-	public void testSetAttributeStringString() throws Exception {
+	@Test
+	public void setAttributeStringString() throws Exception {
 		Attribute attr = new AttributeImpl("E", "Toto"); //$NON-NLS-1$ //$NON-NLS-2$
 		runSetAttributeValue(
 				String.class,
@@ -245,9 +221,8 @@ public abstract class AbstractAttributeCollectionTest<T extends AttributeCollect
 				attr);
 	}
 
-	/**
-	 */
-	public void testRemoveAttributeString() {
+	@Test
+	public void removeAttributeString() {
 		String message;
 		
 		assertFalse(this.id, this.testData.removeAttribute("Y")); //$NON-NLS-1$
@@ -284,9 +259,8 @@ public abstract class AbstractAttributeCollectionTest<T extends AttributeCollect
 		
 	}
 
-	/**
-	 */
-	public void testRemoveAllAttributes() {
+	@Test
+	public void removeAllAttributes() {
 		String message;
 		
 		assertTrue(this.id, this.testData.hasAttribute("A")); //$NON-NLS-1$
@@ -333,9 +307,8 @@ public abstract class AbstractAttributeCollectionTest<T extends AttributeCollect
 		assertFalse(this.id, this.testData.hasAttribute("F")); //$NON-NLS-1$
 	}
 	
-	/**
-	 */
-	public void testRenameAttribute() {
+	@Test
+	public void renameAttribute() {
 		String message;
 		
 		assertTrue(this.id, this.testData.hasAttribute("A")); //$NON-NLS-1$
@@ -414,9 +387,8 @@ public abstract class AbstractAttributeCollectionTest<T extends AttributeCollect
 		assertEquals(this.id, oldValue2, this.testData.getAttribute("A")); //$NON-NLS-1$
 	}
 	
-	/**
-	 */
-	public void testRenameAttributeOverwrite() {
+	@Test
+	public void renameAttributeOverwrite() {
 		String message;
 		
 		assertTrue(this.id, this.testData.hasAttribute("A")); //$NON-NLS-1$
@@ -498,43 +470,23 @@ public abstract class AbstractAttributeCollectionTest<T extends AttributeCollect
 		assertEquals(this.id, oldValue, this.testData.getAttribute("A")); //$NON-NLS-1$
 	}
 	
-	/**
-	 * Stub for AttributeChangeListener.
-	 * 
-	 * @author St&eacute;phane GALLAND &lt;stephane.galland@utbm.fr&gt;
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 */
 	protected class ListenerStub implements AttributeChangeListener {
 
 		private final ArrayList<AttributeChangeEvent> eventList = new ArrayList<AttributeChangeEvent>();
 
-		/**
-		 */
 		public void reset() {
 			this.eventList.clear();
 		}
 		
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public void onAttributeChangeEvent(AttributeChangeEvent event) {
 			this.eventList.add(event);
 		}
 		
-		/**
-		 * @param message
-		 */
 		public void assertEmpty(String message) {
 			assertEquals(message, 0,this.eventList.size());
 		}
 
-		/**
-		 * @param message
-		 * @param desiredTypes
-		 */
 		public void assertTypes(String message, AttributeChangeEvent.Type... desiredTypes) {
 			assertEquals(message, desiredTypes.length, this.eventList.size());
 			for(int i=0; i<desiredTypes.length; ++i) {
@@ -542,10 +494,6 @@ public abstract class AbstractAttributeCollectionTest<T extends AttributeCollect
 			}
 		}
 
-		/**
-		 * @param message
-		 * @param desiredNames
-		 */
 		public void assertNames(String message, String... desiredNames) {
 			assertEquals(message, desiredNames.length, this.eventList.size());
 			for(int i=0; i<desiredNames.length; ++i) {
@@ -553,10 +501,6 @@ public abstract class AbstractAttributeCollectionTest<T extends AttributeCollect
 			}
 		}
 
-		/**
-		 * @param message
-		 * @param desiredNames
-		 */
 		public void assertOldNames(String message, String... desiredNames) {
 			assertEquals(message, desiredNames.length, this.eventList.size());
 			for(int i=0; i<desiredNames.length; ++i) {
@@ -564,10 +508,6 @@ public abstract class AbstractAttributeCollectionTest<T extends AttributeCollect
 			}
 		}
 
-		/**
-		 * @param message
-		 * @param desiredValues
-		 */
 		public void assertValues(String message, AttributeValue... desiredValues) {
 			assertEquals(message, desiredValues.length, this.eventList.size());
 			for(int i=0; i<desiredValues.length; ++i) {
@@ -575,10 +515,6 @@ public abstract class AbstractAttributeCollectionTest<T extends AttributeCollect
 			}
 		}
 
-		/**
-		 * @param message
-		 * @param desiredValues
-		 */
 		public void assertOldValues(String message, AttributeValue... desiredValues) {
 			assertEquals(message, desiredValues.length, this.eventList.size());
 			for(int i=0; i<desiredValues.length; ++i) {
@@ -586,10 +522,6 @@ public abstract class AbstractAttributeCollectionTest<T extends AttributeCollect
 			}
 		}
 
-		/**
-		 * @param message
-		 * @param desiredAttributes
-		 */
 		public void assertAttributes(String message, Attribute... desiredAttributes) {
 			assertEquals(message, desiredAttributes.length, this.eventList.size());
 			for(int i=0; i<desiredAttributes.length; ++i) {
