@@ -2126,7 +2126,7 @@ public interface Path3afp<
     
     @Override
     default void arcTo(Point3D<?, ?> ctrl, Point3D<?, ?> to, double tfrom, double tto,
-    		org.arakhne.afc.math.geometry.d3.Path3D.ArcType type) {
+    		ArcType type) {
     	assert (ctrl != null) : "Control point must be not null"; //$NON-NLS-1$
     	assert (to != null) : "Target point must be not null"; //$NON-NLS-1$
     	arcTo(ctrl.getX(), ctrl.getY(), ctrl.getZ(), to.getX(), to.getY(), to.getZ(), tfrom, tto, type);
