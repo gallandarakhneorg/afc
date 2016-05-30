@@ -1466,7 +1466,7 @@ public interface Path3ai<
 		curveTo(ctrl1.ix(), ctrl1.iy(), ctrl1.iz(), ctrl2.ix(), ctrl2.iy(), ctrl2.iz(), to.ix(), to.iy(), to.iz());
 	}
 
-    /**
+   /* *//**
      * Adds a section of an shallow ellipse to the current path.
      * The ellipse from which a quadrant is taken is the ellipse that would be
      * inscribed in a parallelogram defined by 3 points,
@@ -1512,7 +1512,7 @@ public interface Path3ai<
      * @param tto the fraction of the ellipse section where the curve should end
      * @param type the specification of what additional path segments should
      *               be appended to lead the current path to the starting point.
-     */
+     *//*
     default void arcTo(int ctrlx, int ctrly, int ctrlz, int tox, int toy, int toz, double tfrom, double tto, ArcType type) {
     	// Copied from JavaFX Path2D
     	assert (tfrom >= 0.) : "tfrom must be positive or zero"; //$NON-NLS-1$
@@ -1590,7 +1590,7 @@ public interface Path3ai<
     	arcTo(ctrl.ix(), ctrl.iy(), ctrl.iz(), to.ix(), to.iy(), to.iz(), tfrom, tto, type);
     }
     
-    /**
+    *//**
      * Adds a section of an shallow ellipse to the current path.
      * 
      * <p>This function is equivalent to:<pre><code>
@@ -1603,7 +1603,7 @@ public interface Path3ai<
      * @param to the x coordinate of the target point.
      * @param to the y coordinate of the target point.
      * @param to the y coordinate of the target point.
-     */
+     *//*
     default void arcTo(int ctrlx, int ctrly, int ctrlz, int tox, int toy, int toz) {
     	arcTo(ctrlx, ctrly, ctrlz, tox, toy, toz, 0., 1., ArcType.ARC_ONLY);
     }
@@ -1615,7 +1615,7 @@ public interface Path3ai<
     	arcTo(to.ix(), to.iy(), to.iz(), radii.ix(), radii.iy(), radii.iz(), xAxisRotation, largeArcFlag, sweepFlag);
     }
 
-    /**
+    *//**
      * Adds a section of an shallow ellipse to the current path.
      * The ellipse from which the portions are extracted follows the rules:
      * <ul>
@@ -1656,7 +1656,7 @@ public interface Path3ai<
      * @param largeArcFlag <code>true</code> iff the path will sweep the long way around the ellipse.
      * @param sweepFlag <code>true</code> iff the path will sweep clockwise around the ellipse.
      * @see "http://www.w3.org/TR/SVG/paths.html#PathDataEllipticalArcCommands"
-     */
+     *//*
     default void arcTo(int tox, int toy, int toz, int radiusx, int radiusy, int radiusz, double xAxisRotation, boolean largeArcFlag, boolean sweepFlag) {
     	// Copied for JavaFX
     	assert (radiusx >= 0.) : "X radius must be positive or zero."; //$NON-NLS-1$
@@ -1769,7 +1769,7 @@ public interface Path3ai<
             ux = xqp;
             uy = yqp;
         } while (!done);
-    }
+    }*/
 
     @Pure
 	@Override

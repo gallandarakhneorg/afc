@@ -29,7 +29,6 @@ import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
-import org.arakhne.afc.math.geometry.d2.afp.Circle2afp.AbstractCirclePathIterator;
 import org.arakhne.afc.math.geometry.d3.Path3D;
 import org.arakhne.afc.math.geometry.d3.PathIterator3D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
@@ -2007,8 +2006,8 @@ public interface Path3afp<
 		curveTo(ctrl1.getX(), ctrl1.getY(), ctrl1.getZ(), ctrl2.getX(), ctrl2.getY(), ctrl2.getZ(), to.getX(), to.getY(), to.getZ());
 
 	}
-
-	/**
+/*
+	*//**
      * Adds a section of an shallow ellipse to the current path.
      * The ellipse from which a quadrant is taken is the ellipse that would be
      * inscribed in a parallelogram defined by 3 points,
@@ -2053,7 +2052,7 @@ public interface Path3afp<
      * @param tto the fraction of the ellipse section where the curve should end
      * @param type the specification of what additional path segments should
      *               be appended to lead the current path to the starting point.
-     */
+     *//*
 	// TODO : integrate z coordinate
     default void arcTo(double ctrlx, double ctrly, double ctrlz, double tox, double toy, double toz, double tfrom, double tto,
     		ArcType type) {
@@ -2132,7 +2131,7 @@ public interface Path3afp<
     	arcTo(ctrl.getX(), ctrl.getY(), ctrl.getZ(), to.getX(), to.getY(), to.getZ(), tfrom, tto, type);
     }
     
-    /**
+    *//**
      * Adds a section of an shallow ellipse to the current path.
      * 
      * <p>This function is equivalent to:<pre><code>
@@ -2145,7 +2144,7 @@ public interface Path3afp<
      * @param tox the x coordinate of the target point.
      * @param toy the y coordinate of the target point.
      * @param toz the z coordinate of the target point.
-     */
+     *//*
     default void arcTo(double ctrlx, double ctrly, double ctrlz, double tox, double toy, double toz) {
     	arcTo(ctrlx, ctrly, ctrlz, tox, toy, toz, 0., 1., ArcType.ARC_ONLY);
     }
@@ -2157,7 +2156,7 @@ public interface Path3afp<
     	arcTo(to.getX(), to.getY(), to.getZ(), radii.getX(), radii.getY(), radii.getZ(), xAxisRotation, largeArcFlag, sweepFlag);
     }
 
-    /**
+    *//**
      * Adds a section of an shallow ellipse to the current path.
      * The ellipse from which the portions are extracted follows the rules:
      * <ul>
@@ -2196,7 +2195,7 @@ public interface Path3afp<
      * @param largeArcFlag <code>true</code> iff the path will sweep the long way around the ellipse.
      * @param sweepFlag <code>true</code> iff the path will sweep clockwise around the ellipse.
      * @see "http://www.w3.org/TR/SVG/paths.html#PathDataEllipticalArcCommands"
-     */
+     *//*
     // TODO : integrate z cordinate
     default void arcTo(double tox, double toy, double toz, double radiusx, double radiusy, double radiusz, double xAxisRotation, boolean largeArcFlag, boolean sweepFlag) {
     	// Copied for JavaFX
@@ -2311,7 +2310,7 @@ public interface Path3afp<
             ux = xqp;
             uy = yqp;
         } while (!done);
-    }
+    }*/
 	
 	@Pure
 	@Override
