@@ -552,12 +552,10 @@ public class PathShadow2ai<B extends Rectangle2ai<?, ?, ?, ?, ?, B>> {
 		}
 
 		public void setCrossingForYMax(int x, int y) {
-			if (y >= this.ymax) {
-				if (x < this.x4ymax) {
+			if (y >= this.ymax && x < this.x4ymax) {
 					this.x4ymax = x;
 					this.hasX4ymax = true;
 				}
-			}
 		}
 
 		public void setCrossingForYMin(int x, int y) {

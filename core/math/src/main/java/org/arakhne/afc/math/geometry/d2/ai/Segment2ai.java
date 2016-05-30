@@ -541,13 +541,11 @@ public interface Segment2ai<
 						if (y0 <= rymin) {
 							++numCrosses;
 						}
-					} else if (y1 < y0) {
+					} else if (y1 < y0 && y1 <= rymin) {
 						// y-decreasing line segment...
 						// We know that y1 < rymax and y0 > rymin
-						if (y1 <= rymin) {
 							--numCrosses;
 						}
-					}
 				} else {
 					return MathConstants.SHAPE_INTERSECTS;
 				}
@@ -562,13 +560,11 @@ public interface Segment2ai<
 						if (y0 <= rymax) {
 							++numCrosses;
 						}
-					} else if (y1 < y0) {
+					} else if (y1 < y0 && y1 <= rymax) {
 						// y-decreasing line segment...
 						// We know that y1 < rymax and y0 > rymin
-						if (y1 <= rymax) {
 							--numCrosses;
 						}
-					}
 				} else {
 					return MathConstants.SHAPE_INTERSECTS;
 				}

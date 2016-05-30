@@ -1002,11 +1002,9 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 			if (value == this.number) {
 				return;
 			}
-			if (IntegerList.this.add(value)) {
-				if (value < this.number) {
-					++this.tabIndex;
-					this.segmentIndex = getSegmentIndexFor(this.number);
-				}
+			if (IntegerList.this.add(value) && value < this.number) {
+				++this.tabIndex;
+				this.segmentIndex = getSegmentIndexFor(this.number);
 			}
 		}
 
