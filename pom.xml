@@ -204,7 +204,6 @@
 	<!-- ======================================= -->
 
 	<modules>
-		<module>checkstyle</module>
 		<module>maven</module>
 		<module>core</module>
 		<module>ui</module>
@@ -216,13 +215,13 @@
 			<name>GNU Lesser General Public License v3.0</name>
 			<url>http://www.gnu.org/licenses/lgpl.html</url>
 			<distribution>repo</distribution>
-			<comments>2005-2014</comments>
+			<comments>During the period 2005-2014</comments>
 		</license>
 		<license>
 			<name>Apache 2.0</name>
 			<url>http://www.apache.org/licenses/LICENSE-2.0</url>
 			<distribution>repo</distribution>
-			<comments>2015-${year}</comments>
+			<comments>During the period 2015-${year}</comments>
 		</license>
 	</licenses>
 
@@ -475,11 +474,6 @@
 					<version>2.17</version>
 					<dependencies>
 						<dependency>
-							<groupId>org.arakhne.afc.checkstyle</groupId>
-							<artifactId>checkstyle</artifactId>
-							<version>${project.version}</version>
-						</dependency>
-						<dependency>
 							<groupId>com.puppycrawl.tools</groupId>
 							<artifactId>checkstyle</artifactId>
 							<version>6.18</version>
@@ -494,19 +488,14 @@
 						</execution>
 					</executions>
 					<configuration>
-						<configLocation>org/arakhne/afc/checkstyle/checks.xml</configLocation>
-						<headerLocation>org/arakhne/afc/checkstyle/class_header.txt</headerLocation>
-						<enableRSS>true</enableRSS>
-						<linkXRef>true</linkXRef>
+						<configLocation>${mainbasedir}/etc/checkstyle.xml</configLocation>
+						<propertyExpansion>config_loc=${mainbasedir}/etc</propertyExpansion>
 						<consoleOutput>true</consoleOutput>
 						<failsOnError>true</failsOnError>
 						<failOnViolation>true</failOnViolation>
 						<includeResources>false</includeResources>
 						<includeTestSourceDirectory>false</includeTestSourceDirectory>
 						<includeTestResources>false</includeTestResources>
-						<enableRulesSummary>true</enableRulesSummary>
-						<propertyExpansion>mainbasedir=${mainbasedir}</propertyExpansion>
-						<propertyExpansion>checkstyleheaderdir=${mainbasedir}/checkstyle/src/main/resources/org/arakhne/afc/checkstyle</propertyExpansion>
 					</configuration>
 				</plugin>
 				<!-- This plugin's configuration is used to store Eclipse m2e settings 
@@ -601,13 +590,9 @@
 										</goals>
 									</pluginExecutionFilter>
 									<action>
-										<ignore></ignore>
+										<ignore />
 									</action>
 								</pluginExecution>
-								<!-- <pluginExecution> <pluginExecutionFilter> <groupId>org.apache.maven.plugins</groupId> 
-									<artifactId>maven-checkstyle-plugin</artifactId> <versionRange>[2.17,)</versionRange> 
-									<goals> <goal>check</goal> </goals> </pluginExecutionFilter> <action> <execute 
-									/> </action> </pluginExecution> -->
 							</pluginExecutions>
 						</lifecycleMappingMetadata>
 					</configuration>
@@ -660,7 +645,7 @@
 					<bottom>&lt;small&gt;Copyright &amp;copy;
 						${project.inceptionYear}-${year} ${copyrighters}.
 						All rights
-						reserved under the terms of the Apache 2 license.&lt;/small&gt;</bottom>
+						reserved, under the terms of the Apache 2 license.&lt;/small&gt;</bottom>
 					<tags>
 						<tag>
 							<name>mavengroupid</name>
@@ -692,10 +677,6 @@
 				<configuration>
 					<scripts>
 						<script><![CDATA[
-							def now = session.getStartTime();
-							//************************
-							// Detect root directory
-							//
 							def currentDirectory = project.basedir;
 							def previousDirectory = null;
 				            def fileObj = new File(currentDirectory, "pom.xml");
@@ -710,6 +691,7 @@
 						    }
 						    project.properties.mainbasedir = previousDirectory;
 						    log.info("set mainbasedir to: " + project.properties.mainbasedir);
+						    
 						]]></script>
 					</scripts>
 				</configuration>

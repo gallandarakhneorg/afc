@@ -50,7 +50,9 @@ import org.sonatype.plexus.build.incremental.BuildContext;
  * @phase deploy
  * @requireProject true
  * @threadSafe
+ * @deprecated since 13.0, no replacement
  */
+@Deprecated
 public class JavadocMojo extends AbstractArakhneMojo {
 
 	/**
