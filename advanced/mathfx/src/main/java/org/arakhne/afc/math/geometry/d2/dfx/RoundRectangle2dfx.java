@@ -207,9 +207,9 @@ public class RoundRectangle2dfx extends AbstractRectangularShape2dfx<RoundRectan
 
 	@Override
 	public void setFromCorners(double x1, double y1, double x2, double y2) {
-		final double arcWidth = getArcWidth();
-		final double arcHeight = getArcHeight();
-		setFromCorners(x1, y1, x2, y2, arcWidth, arcHeight);
+		final double arcWidthLocal = getArcWidth();
+		final double arcHeightLocal = getArcHeight();
+		setFromCorners(x1, y1, x2, y2, arcWidthLocal, arcHeightLocal);
 	}
 
 	@Override
