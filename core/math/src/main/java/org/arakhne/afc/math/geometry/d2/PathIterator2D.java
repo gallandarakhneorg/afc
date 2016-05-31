@@ -76,7 +76,8 @@ public interface PathIterator2D<T extends PathElement2D> extends Iterator<T> {
 
 	/** Replies the path is composed only by
 	 * one <code>MOVE_TO</code>, a sequence of <code>LINE_TO</code>
-	 * or <code>QUAD_TO</code> or <code>CURVE_TO</code>, and a
+	 * or <code>QUAD_TO</code> or <code>CURVE_TO</code>
+	 * or <code>ARC_TO</code>, and a
 	 * single <code>CLOSE</code> primitives.
 	 *
 	 * @return <code>true</code> if the path does not

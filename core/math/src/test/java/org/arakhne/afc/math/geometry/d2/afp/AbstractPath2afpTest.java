@@ -2015,23 +2015,42 @@ extends AbstractShape2afpTest<T, B> {
 		path7.closePath();
 
 		assertFalse(path1.contains(path2));
+        assertFalse(path2.contains(path1));
 
 		assertTrue(path1.contains(path3));
+        assertFalse(path3.contains(path1));
 		
 		assertTrue(path1.intersects(segment1));
 		assertFalse(path1.contains(segment1));
+        assertFalse(segment1.contains(path1));
 		
 		assertFalse(path4.intersects(path5));
 		assertFalse(path4.contains(path5));
+        assertFalse(path5.contains(path4));
 		
 		assertTrue(path4.intersects(path7));
 		assertFalse(path4.contains(path7));
+        assertFalse(path7.contains(path4));
 
 		assertTrue(path4.intersects(circle1));
 		assertTrue(path4.contains(circle1));
+        assertFalse(circle1.contains(path4));
 
 		assertTrue(path6.intersects(circle2));
 		assertFalse(path6.contains(circle2));
+        assertFalse(circle2.contains(path6));
+
+		//
+		
+		Path2afp path00 = createPath();
+		path00.moveTo(168.0, 145.0);
+		path00.lineTo(200.0, 200.0);
+		path00.lineTo(200.0, 129.0);
+		path00.lineTo(168.0, 129.0);
+		path00.closePath();
+		Segment2afp segment00 = createSegment(420.0, 297.0, 420.0, 0.0);
+        assertFalse(path00.contains(segment00));
+		assertFalse(segment00.contains(path00));
 	}
 
 	@Override

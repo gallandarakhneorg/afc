@@ -2262,9 +2262,8 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
 		assertFalse(this.shape.contains(createRectangle(0, 0, 1, 1)));
 		assertFalse(this.shape.contains(createRectangle(0, 0, 0, 0)));
 		assertFalse(this.shape.contains(createRectangle(10, 10, 1, 1)));
-
 		this.shape.set(10, 15, 10, 18);
-		assertTrue(this.shape.contains(createRectangle(10, 16, 0, 1)));
+		assertFalse(this.shape.contains(createRectangle(10, 16, 0, 1)));
 	}
 
 	@Override

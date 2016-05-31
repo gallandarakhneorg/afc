@@ -115,10 +115,12 @@ public interface Shape2afp<
 					triangle.getX2(), triangle.getY2(),
 					triangle.getX3(), triangle.getY3(),
 					CrossingComputationType.STANDARD);
+		} else if (!iterator.isPolygon()) {
+		    // Only a polygon can contain another shape.
+		    return false;
 		} else {
-			// General case: use path iterator
+            final PathIterator2afp<?> shapePathIterator = shape.getPathIterator();
 			final B shapeBounds = shape.toBoundingBox();
-			final PathIterator2afp<?> shapePathIterator = shape.getPathIterator();
 			crossings = Path2afp.computeCrossingsFromPath(
 					0, iterator,
 					new PathShadow2afp<>(shapePathIterator, shapeBounds),
