@@ -200,7 +200,7 @@ public class DefaultProgression implements Progression {
 	@Override
 	@SuppressWarnings("checkstyle:magicnumber")
 	public double getPercent() {
-		final double extent = this.max - this.min;
+		final double extent = this.max - (double) this.min;
 		if (extent == 0.) {
 			return 0.;
 		}
@@ -209,7 +209,7 @@ public class DefaultProgression implements Progression {
 
 	@Override
 	public double getProgressionFactor() {
-		final double extent = this.max - this.min;
+		final double extent = this.max - (double) this.min;
 		if (extent == 0.) {
 			return 0.;
 		}
