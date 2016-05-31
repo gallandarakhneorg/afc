@@ -1117,7 +1117,7 @@ public interface OrientedRectangle2afp<
 
 	@Pure
 	@Override
-	default boolean contains(Rectangle2afp<?, ?, ?, ?, ?, ?> rectangle) {
+	default boolean contains(Rectangle2afp<?, ?, ?, ?, ?, B> rectangle) {
 		assert rectangle != null : "Rectangle must be not null"; //$NON-NLS-1$
 		return containsOrientedRectangleRectangle(
 				getCenterX(), getCenterY(),

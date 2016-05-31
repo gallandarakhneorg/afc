@@ -214,7 +214,7 @@ public interface Circle2ai<
 	@Override
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:magicnumber",
 			"checkstyle:booleanexpressioncomplexity"})
-	default boolean contains(Rectangle2ai<?, ?, ?, ?, ?, ?> box) {
+	default boolean contains(Rectangle2ai<?, ?, ?, ?, ?, B> box) {
 		assert box != null : "Rectangle must be not null."; //$NON-NLS-1$
 		final int cx = getX();
 		final int cy = getY();

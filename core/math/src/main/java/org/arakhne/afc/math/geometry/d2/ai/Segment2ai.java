@@ -1111,7 +1111,7 @@ public interface Segment2ai<
 
 	@Pure
 	@Override
-	default boolean contains(Rectangle2ai<?, ?, ?, ?, ?, ?> rectangle) {
+	default boolean contains(Rectangle2ai<?, ?, ?, ?, ?, B> rectangle) {
 		assert rectangle != null : "Rectangle must be not be null"; //$NON-NLS-1$
 		if (rectangle.isEmpty()) {
 			return contains(rectangle.getMinX(), rectangle.getMinY());

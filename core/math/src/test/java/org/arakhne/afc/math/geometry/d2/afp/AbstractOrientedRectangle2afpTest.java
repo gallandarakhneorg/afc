@@ -509,6 +509,18 @@ public abstract class AbstractOrientedRectangle2afpTest<T extends OrientedRectan
 	}
 
 	@Override
+	public void containsShape2afp() {
+		assertTrue(this.shape.contains(createCircle(0, 0, 2)));
+		assertFalse(this.shape.contains(createCircle(0, -1, 2)));
+		assertFalse(this.shape.contains(createCircle(0, -2, 2)));
+		assertFalse(this.shape.contains(createCircle(0, -3, 2)));
+		assertFalse(this.shape.contains(createCircle(0, -4, 2)));
+		assertFalse(this.shape.contains(createCircle(0, -5, 2)));
+		assertFalse(this.shape.contains(createCircle(0, -5, 2)));
+		assertFalse(this.shape.contains(createCircle(5, 25, 2)));
+	}
+
+	@Override
 	public void testClone() {
 		T clone = this.shape.clone();
 		assertNotNull(clone);

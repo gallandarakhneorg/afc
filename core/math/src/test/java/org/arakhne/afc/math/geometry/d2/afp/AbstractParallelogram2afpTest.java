@@ -1038,6 +1038,17 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
 		assertTrue(this.shape.contains(createRectangle(0, 6, 1, 1)));
 	}
 
+	@Override
+	public void containsShape2afp() {
+		assertFalse(this.shape.contains(createCircle(0, 0, 1)));
+		assertFalse(this.shape.contains(createCircle(0, 1, 1)));
+		assertFalse(this.shape.contains(createCircle(0, 2, 1)));
+		assertFalse(this.shape.contains(createCircle(0, 3, 1)));
+		assertFalse(this.shape.contains(createCircle(0, 4, 1)));
+		assertFalse(this.shape.contains(createCircle(0, 5, 1)));
+		assertTrue(this.shape.contains(createCircle(0, 6, 1)));
+	}
+
 	@Test
 	public void rotateDouble() {
 		this.shape.rotate(-MathConstants.DEMI_PI);

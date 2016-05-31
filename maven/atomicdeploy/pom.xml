@@ -8,7 +8,7 @@
 	</parent>
 	
 	<artifactId>atomicdeploy</artifactId>
-	<name>Atomic deployement of files</name>
+	<name>Atomic deployment of files</name>
 	<packaging>maven-plugin</packaging>
 
 	<properties>

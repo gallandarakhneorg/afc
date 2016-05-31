@@ -745,7 +745,7 @@ public interface Triangle2afp<
 	}
 
 	@Override
-	default boolean contains(Rectangle2afp<?, ?, ?, ?, ?, ?> rectangle) {
+	default boolean contains(Rectangle2afp<?, ?, ?, ?, ?, B> rectangle) {
 		assert rectangle != null : "Rectangle must be not null"; //$NON-NLS-1$
 		return containsTriangleRectangle(getX1(), getY1(), getX2(), getY2(), getX3(), getY3(),
 				rectangle.getMinX(), rectangle.getMinY(), rectangle.getWidth(), rectangle.getHeight());

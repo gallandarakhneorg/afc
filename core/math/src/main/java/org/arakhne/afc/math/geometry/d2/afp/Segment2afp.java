@@ -1887,7 +1887,7 @@ public interface Segment2afp<
 	}
 
 	@Override
-	default boolean contains(Rectangle2afp<?, ?, ?, ?, ?, ?> rectangle) {
+	default boolean contains(Rectangle2afp<?, ?, ?, ?, ?, B> rectangle) {
 		assert rectangle != null : "Rectangle must be not null"; //$NON-NLS-1$
 		return (getX1() == getX2() || getY1() == getY2())
 				&& contains(rectangle.getMinX(), rectangle.getMinY())

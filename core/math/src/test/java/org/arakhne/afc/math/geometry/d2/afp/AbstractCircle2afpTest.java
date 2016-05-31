@@ -408,6 +408,21 @@ public abstract class AbstractCircle2afpTest<T extends Circle2afp<?, T, ?, ?, ?,
 	}
 
 	@Override
+	public void containsShape2afp() {
+		assertFalse(this.shape.contains(createCircle(-4, -4, 1)));
+		assertFalse(this.shape.contains(createCircle(-5, -5, 10)));
+		assertFalse(this.shape.contains(createCircle(-5, -5, 5.5)));
+		assertFalse(this.shape.contains(createCircle(-5, -4, 5.5)));
+		assertFalse(this.shape.contains(createCircle(20, .5, 1)));
+		assertFalse(this.shape.contains(createCircle(-5, -5, 1)));
+		assertFalse(this.shape.contains(createCircle(-1, -100, 1)));
+		assertFalse(this.shape.contains(createCircle(-1, -100, 1.0001)));
+		assertFalse(this.shape.contains(createCircle(-1, 2, 1.0001)));
+		assertFalse(this.shape.contains(createCircle(2, 4, 6)));
+		assertTrue(this.shape.contains(createCircle(4, 8, 1)));
+	}
+
+	@Override
 	public void intersectsRectangle2afp() {
 		assertFalse(this.shape.intersects(createRectangle(-4, -4, 1, 1)));
 		assertTrue(this.shape.intersects(createRectangle(-5, -5, 10, 10)));

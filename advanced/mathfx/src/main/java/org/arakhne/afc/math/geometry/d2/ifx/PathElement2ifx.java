@@ -390,9 +390,9 @@ public abstract class PathElement2ifx implements PathElement2ai {
 		@Pure
 		@Override
 		public String toString() {
-			return "MOVE(" //$NON-NLS-1$
-					+ this.toX + "x" //$NON-NLS-1$
-					+ this.toY + ")"; //$NON-NLS-1$
+			return "MOVE\n\tto: (" //$NON-NLS-1$
+					+ getToX() + ", " //$NON-NLS-1$
+					+ getToY() + ")\n"; //$NON-NLS-1$
 		}
 
 		@Pure
@@ -541,9 +541,11 @@ public abstract class PathElement2ifx implements PathElement2ai {
 		@Pure
 		@Override
 		public String toString() {
-			return "LINE(" //$NON-NLS-1$
-					+ this.toX + "x" //$NON-NLS-1$
-					+ this.toY + ")"; //$NON-NLS-1$
+			return "LINE\n\tfrom: (" //$NON-NLS-1$
+					+ getFromX() + ", " //$NON-NLS-1$
+					+ getFromY() + ")\n\tto: (" //$NON-NLS-1$
+					+ getToX() + ", " //$NON-NLS-1$
+					+ getToY() + ")\n"; //$NON-NLS-1$
 		}
 
 		@Pure
@@ -715,11 +717,13 @@ public abstract class PathElement2ifx implements PathElement2ai {
 		@Pure
 		@Override
 		public String toString() {
-			return "QUAD(" //$NON-NLS-1$
-					+ this.ctrlX + "x" //$NON-NLS-1$
-					+ this.ctrlY + "|" //$NON-NLS-1$
-					+ this.toX + "x" //$NON-NLS-1$
-					+ this.toY + ")"; //$NON-NLS-1$
+			return "QUAD:\n\tfrom: (" //$NON-NLS-1$
+					+ getFromX() + ", " //$NON-NLS-1$
+					+ getFromY() + ")\n\tctrl: (" //$NON-NLS-1$
+					+ getCtrlX1() + ", " //$NON-NLS-1$
+					+ getCtrlY1() + ")\n\tto: (" //$NON-NLS-1$
+					+ getToX() + ", " //$NON-NLS-1$
+					+ getToY() + ")"; //$NON-NLS-1$
 		}
 
 		@Pure
@@ -937,13 +941,15 @@ public abstract class PathElement2ifx implements PathElement2ai {
 		@Pure
 		@Override
 		public String toString() {
-			return "CURVE(" //$NON-NLS-1$
-					+ this.ctrlX1 + "x" //$NON-NLS-1$
-					+ this.ctrlY1 + "|" //$NON-NLS-1$
-					+ this.ctrlX2 + "x" //$NON-NLS-1$
-					+ this.ctrlY2 + "|" //$NON-NLS-1$
-					+ this.toX + "x" //$NON-NLS-1$
-					+ this.toY + ")"; //$NON-NLS-1$
+			return "CURVE:\n\tfrom: (" //$NON-NLS-1$
+					+ getFromX() + ", " //$NON-NLS-1$
+					+ getFromY() + ")\n\tctrl 1: (" //$NON-NLS-1$
+					+ getCtrlX1() + ", " //$NON-NLS-1$
+					+ getCtrlY1() + ")\n\tctrl 2: (" //$NON-NLS-1$
+					+ getCtrlX2() + ", " //$NON-NLS-1$
+					+ getCtrlY2() + ")\n\tto: (" //$NON-NLS-1$
+					+ this.getToX() + ", " //$NON-NLS-1$
+					+ this.getToY() + ")"; //$NON-NLS-1$
 		}
 
 		@Pure
@@ -1141,7 +1147,11 @@ public abstract class PathElement2ifx implements PathElement2ai {
 		@Pure
 		@Override
 		public String toString() {
-			return "CLOSE"; //$NON-NLS-1$
+			return "CLOSE:\n\tfrom: (" //$NON-NLS-1$
+					+ getFromX() + ", " //$NON-NLS-1$
+					+ getFromY() + ")\n\tto: " //$NON-NLS-1$
+					+ getToX() + ", " //$NON-NLS-1$
+					+ getToY() + ")"; //$NON-NLS-1$
 		}
 
 		@Pure
@@ -1323,14 +1333,16 @@ public abstract class PathElement2ifx implements PathElement2ai {
 		@Pure
 		@Override
 		public String toString() {
-			return "ARC(" //$NON-NLS-1$
-					+ getRadiusX() + "x" //$NON-NLS-1$
-					+ getRadiusY() + "|" //$NON-NLS-1$
-					+ getRotationX() + "x" //$NON-NLS-1$
-					+ getLargeArcFlag() + "x" //$NON-NLS-1$
-					+ getSweepFlag() + "|" //$NON-NLS-1$
-					+ getToX() + "x" //$NON-NLS-1$
-					+ getToY() + ")"; //$NON-NLS-1$
+			return "ARC:\n\tfrom: (" //$NON-NLS-1$
+					+ getFromX() + ", " //$NON-NLS-1$
+					+ getFromY() + ")\n\tto: (" //$NON-NLS-1$
+					+ getToX() + ", " //$NON-NLS-1$
+					+ getToY() + ")\n\tx radius: " //$NON-NLS-1$
+					+ getRadiusX() + "\n\ty radius: " //$NON-NLS-1$
+					+ getRadiusY() + "\n\trotation: " //$NON-NLS-1$
+					+ getRotationX() + "\n\tlarge arc: " //$NON-NLS-1$
+					+ getLargeArcFlag() + "\n\tsweep: " //$NON-NLS-1$
+					+ getSweepFlag();
 		}
 
 		@Pure

@@ -40,18 +40,28 @@ import org.arakhne.afc.math.geometry.PathWindingRule;
  */
 public class PathShadow2ai<B extends Rectangle2ai<?, ?, ?, ?, ?, B>> {
 
-	private final Path2ai<?, ?, ?, ?, ?, B> path;
+	private final PathIterator2ai<?> pathIterator;
 
 	private final B bounds;
 
-	/** Construct a path shadow.
-	 * @param path the path.
+	private boolean started;
+
+	/** Construct new path shadow.
+	 * @param path the path that is constituting the shadow.
 	 */
 	public PathShadow2ai(Path2ai<?, ?, ?, ?, ?, B> path) {
-		assert path != null : "Path must not be null"; //$NON-NLS-1$
-		this.path = path;
-		this.bounds = this.path.toBoundingBox();
-		assert this.bounds != null : "Bounding box of the path must not be null"; //$NON-NLS-1$
+		this(path.getPathIterator(), path.toBoundingBox());
+	}
+
+	/** Construct new path shadow.
+	 * @param pathIterator the iterator on the path that is constituting the shadow.
+	 * @param bounds the bounds of the shadow.
+	 */
+	public PathShadow2ai(PathIterator2ai<?> pathIterator, B bounds) {
+		assert pathIterator != null : "Path iterator must be not null"; //$NON-NLS-1$
+		assert bounds != null : "Bounds must be not null"; //$NON-NLS-1$
+		this.pathIterator = pathIterator;
+		this.bounds = bounds;
 	}
 
 	/** Compute the crossings between this shadow and
@@ -86,16 +96,24 @@ public class PathShadow2ai<B extends Rectangle2ai<?, ?, ?, ?, ?, B>> {
 					this.bounds.getMinY(),
 					this.bounds.getMaxY());
 
+			final PathIterator2ai<?> iterator;
+			if (this.started) {
+				iterator = this.pathIterator.restartIterations();
+			} else {
+				this.started = true;
+				iterator = this.pathIterator;
+			}
+
 			computeCrossings1(
-					this.path.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+					iterator,
 					x0, y0, x1, y1,
 					false,
-					this.path.getWindingRule(),
-					this.path.getGeomFactory(),
+					iterator.getWindingRule(),
+					iterator.getGeomFactory(),
 					data);
 			numCrosses = data.getCrossings();
 
-			final int mask = this.path.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
+			final int mask = iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
 			if (numCrosses == MathConstants.SHAPE_INTERSECTS
 					|| (numCrosses & mask) != 0) {
 				// The given line is intersecting the path shape
@@ -424,9 +442,9 @@ public class PathShadow2ai<B extends Rectangle2ai<?, ?, ?, ?, ?, B>> {
 
 		private int xmin4ymax;
 
-		private int ymin;
+		private final int ymin;
 
-		private int ymax;
+		private final int ymax;
 
 		PathShadowData(int xmax, int miny, int maxy) {
 			this.x4ymin = xmax;
@@ -517,37 +535,28 @@ public class PathShadow2ai<B extends Rectangle2ai<?, ?, ?, ?, ?, B>> {
 		@Override
 		public String toString() {
 			final StringBuilder b = new StringBuilder();
-			b.append("SHADOW {\n\tlow: ( "); //$NON-NLS-1$
-			b.append(this.xmin4ymin);
-			b.append(" | "); //$NON-NLS-1$
+			b.append("y min line:\n\tymin: "); //$NON-NLS-1$
 			b.append(this.ymin);
-			b.append(" )\n\thigh: ( "); //$NON-NLS-1$
-			b.append(this.xmin4ymax);
-			b.append(" | "); //$NON-NLS-1$
-			b.append(this.ymax);
-			b.append(")\n}\nCROSSINGS {\n\tcrossings="); //$NON-NLS-1$
-			b.append(this.crossings);
-			b.append("\n\tlow: "); //$NON-NLS-1$
+			b.append("\n\txmin: "); //$NON-NLS-1$
+			b.append(this.xmin4ymin);
+			b.append("\n\tx: "); //$NON-NLS-1$
 			if (this.hasX4ymin) {
-				b.append("( "); //$NON-NLS-1$
 				b.append(this.x4ymin);
-				b.append(" | "); //$NON-NLS-1$
-				b.append(this.ymin);
-				b.append(" )\n"); //$NON-NLS-1$
 			} else {
-				b.append("none\n"); //$NON-NLS-1$
+				b.append("none"); //$NON-NLS-1$
 			}
-			b.append("\thigh: "); //$NON-NLS-1$
+			b.append("\ny max line:\n\tymax: "); //$NON-NLS-1$
+			b.append(this.ymax);
+			b.append("\n\txmin: "); //$NON-NLS-1$
+			b.append(this.xmin4ymax);
+			b.append("\n\tx: "); //$NON-NLS-1$
 			if (this.hasX4ymax) {
-				b.append("( "); //$NON-NLS-1$
 				b.append(this.x4ymax);
-				b.append(" | "); //$NON-NLS-1$
-				b.append(this.ymax);
-				b.append(" )\n"); //$NON-NLS-1$
 			} else {
-				b.append("none\n"); //$NON-NLS-1$
+				b.append("none"); //$NON-NLS-1$
 			}
-			b.append("}\n"); //$NON-NLS-1$
+			b.append("\ncrossings: "); //$NON-NLS-1$
+			b.append(this.crossings);
 			return b.toString();
 		}
 

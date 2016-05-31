@@ -912,10 +912,8 @@ public interface Path2ai<
 	 *
 	 * @param iterator is the iterator on the path elements.
 	 * @param shadow is the description of the shape to project to the right.
-	 * @param closeable indicates if the shape is automatically closed or not.
-	 * @param onlyIntersectWhenOpen indicates if the crossings is set to 0 when
-	 *     the path is open and there is not SHAPE_INTERSECT. If <code>true</code> assumes that
-	 *     the function can only reply <code>0</code> or {@link MathConstants#SHAPE_INTERSECTS}.
+	 * @param type is the type of special computation to apply. If <code>null</code>, it
+	 *     is equivalent to {@link CrossingComputationType#STANDARD}.
 	 * @return the crossings.
 	 * @see "Weiler–Atherton clipping algorithm"
 	 */
@@ -923,8 +921,7 @@ public interface Path2ai<
 	static int computeCrossingsFromPath(
 			PathIterator2ai<?> iterator,
 			PathShadow2ai<?> shadow,
-			boolean closeable,
-			boolean onlyIntersectWhenOpen) {
+			CrossingComputationType type) {
 		assert iterator != null : "Iterator must not be null"; //$NON-NLS-1$
 		assert shadow != null : "The shadow projected on the right must not be null"; //$NON-NLS-1$
 
@@ -984,8 +981,7 @@ public interface Path2ai<
 				final int n1 = computeCrossingsFromPath(
 						subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
 						shadow,
-						false,
-						false);
+						CrossingComputationType.STANDARD);
 				if (n1 == MathConstants.SHAPE_INTERSECTS) {
 					return n1;
 				}
@@ -1006,8 +1002,7 @@ public interface Path2ai<
 				final int n2 = computeCrossingsFromPath(
 						subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
 						shadow,
-						false,
-						false);
+						CrossingComputationType.STANDARD);
 				if (n2 == MathConstants.SHAPE_INTERSECTS) {
 					return n2;
 				}
@@ -1029,8 +1024,7 @@ public interface Path2ai<
 				final int n3 = computeCrossingsFromPath(
 						subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
 						shadow,
-						false,
-						false);
+						CrossingComputationType.STANDARD);
 				if (n3 == MathConstants.SHAPE_INTERSECTS) {
 					return n3;
 				}
@@ -1059,16 +1053,22 @@ public interface Path2ai<
 
 		final boolean isOpen = (curx != movx) || (cury != movy);
 
-		if (isOpen) {
-			if (closeable) {
+		if (isOpen && type != null) {
+			switch (type) {
+			case AUTO_CLOSE:
 				// Not closed
 				crossings = shadow.computeCrossings(crossings,
 						curx, cury,
 						movx, movy);
-			} else if (onlyIntersectWhenOpen) {
+				break;
+			case SIMPLE_INTERSECTION_WHEN_NOT_POLYGON:
 				// Assume that when is the path is open, only
 				// SHAPE_INTERSECTS may be return
 				crossings = 0;
+				break;
+			case STANDARD:
+			default:
+				break;
 			}
 		}
 
@@ -1130,7 +1130,7 @@ public interface Path2ai<
 
 	@Pure
 	@Override
-	default boolean contains(Rectangle2ai<?, ?, ?, ?, ?, ?> box) {
+	default boolean contains(Rectangle2ai<?, ?, ?, ?, ?, B> box) {
 		assert box != null : "Rectangle must not be null"; //$NON-NLS-1$
 		return contains(getPathIterator(),
 				box.getMinX(), box.getMinY(), box.getWidth(), box.getHeight());
@@ -1409,8 +1409,7 @@ public interface Path2ai<
 		final int crossings = computeCrossingsFromPath(
 				iterator,
 				new PathShadow2ai<>(this),
-				false,
-				true);
+				CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
 		return crossings == MathConstants.SHAPE_INTERSECTS
 				|| (crossings & mask) != 0;
 	}

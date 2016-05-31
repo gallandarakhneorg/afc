@@ -94,4 +94,10 @@ public interface PathIterator2D<T extends PathElement2D> extends Iterator<T> {
 	 */
 	PathIterator2D<T> restartIterations();
 
+	/** Replies the factory of geometrical elements.
+	 *
+	 * @return the factory.
+	 */
+	GeomFactory<?, ?> getGeomFactory();
+
 }

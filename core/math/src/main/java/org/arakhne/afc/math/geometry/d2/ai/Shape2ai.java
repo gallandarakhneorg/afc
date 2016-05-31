@@ -85,7 +85,7 @@ public interface Shape2ai<
 	 * @return <code>true</code> if the given box is inside the shape.
 	 */
 	@Pure
-	boolean contains(Rectangle2ai<?, ?, ?, ?, ?, ?> box);
+	boolean contains(Rectangle2ai<?, ?, ?, ?, ?, B> box);
 
 	@Pure
 	@Override

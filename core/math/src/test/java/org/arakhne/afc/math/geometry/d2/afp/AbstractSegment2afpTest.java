@@ -195,6 +195,11 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
 				0,
 				1, 1, 1,
 				3, 0, 1, 3));
+		// One side of the paralleogram in "parallelogram.ggb"
+		assertEquals(-2, Segment2afp.computeCrossingsFromCircle(
+				0,
+				0, 2, 1,
+				-5.18034, 9, 12.7082, -8.88854));
 	}
 
 	@Test
@@ -2260,6 +2265,13 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
 
 		this.shape.set(10, 15, 10, 18);
 		assertTrue(this.shape.contains(createRectangle(10, 16, 0, 1)));
+	}
+
+	@Override
+	public void containsShape2afp() {
+		assertFalse(this.shape.contains(createCircle(0, 0, 1)));
+		assertFalse(this.shape.contains(createCircle(0, 0, 0)));
+		assertFalse(this.shape.contains(createCircle(10, 10, 1)));
 	}
 
 	@Override

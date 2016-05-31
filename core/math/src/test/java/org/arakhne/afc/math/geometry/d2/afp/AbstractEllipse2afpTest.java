@@ -512,6 +512,16 @@ public abstract class AbstractEllipse2afpTest<T extends Ellipse2afp<?, T, ?, ?, 
 	}
 
 	@Override
+	public void containsShape2afp() {
+		assertFalse(this.shape.contains(createCircle(0, 0, 1)));
+		assertFalse(this.shape.contains(createCircle(4, 6, 100)));
+		assertFalse(this.shape.contains(createCircle(4, 6, 4)));
+		assertFalse(this.shape.contains(createCircle(5, 8, 2.5)));
+		assertFalse(this.shape.contains(createCircle(6, 10, 2)));
+		assertTrue(this.shape.contains(createCircle(7.4, 11, 2)));
+	}
+
+	@Override
 	public void intersectsRectangle2afp() {
 		assertFalse(this.shape.intersects(createRectangle(0, 0, 1, 1)));
 		assertTrue(this.shape.intersects(createRectangle(4, 6, 100, 100)));

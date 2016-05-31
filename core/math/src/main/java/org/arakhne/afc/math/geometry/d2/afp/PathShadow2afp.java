@@ -40,17 +40,28 @@ import org.arakhne.afc.math.geometry.PathWindingRule;
  */
 public class PathShadow2afp<B extends Rectangle2afp<?, ?, ?, ?, ?, B>> {
 
-	private final Path2afp<?, ?, ?, ?, ?, B> path;
+	private final PathIterator2afp<?> pathIterator;
 
 	private final B bounds;
 
+	private boolean started;
+
 	/** Construct new path shadow.
-	 * @param path the path.
+	 * @param path the path that is constituting the shadow.
 	 */
 	public PathShadow2afp(Path2afp<?, ?, ?, ?, ?, B> path) {
-		assert path != null : "Path must be not null"; //$NON-NLS-1$
-		this.path = path;
-		this.bounds = this.path.toBoundingBox();
+		this(path.getPathIterator(), path.toBoundingBox());
+	}
+
+	/** Construct new path shadow.
+	 * @param pathIterator the iterator on the path that is constituting the shadow.
+	 * @param bounds the bounds of the shadow.
+	 */
+	public PathShadow2afp(PathIterator2afp<?> pathIterator, B bounds) {
+		assert pathIterator != null : "Path iterator must be not null"; //$NON-NLS-1$
+		assert bounds != null : "Bounds must be not null"; //$NON-NLS-1$
+		this.pathIterator = pathIterator;
+		this.bounds = bounds;
 	}
 
 	/** Compute the crossings between this shadow and
@@ -64,6 +75,7 @@ public class PathShadow2afp<B extends Rectangle2afp<?, ?, ?, ?, ?, B>> {
 	 * @return the crossings or {@link MathConstants#SHAPE_INTERSECTS}.
 	 */
 	@Pure
+	@SuppressWarnings("checkstyle:npathcomplexity")
 	public int computeCrossings(
 			int crossings,
 			double x0, double y0,
@@ -89,16 +101,24 @@ public class PathShadow2afp<B extends Rectangle2afp<?, ?, ?, ?, ?, B>> {
 					this.bounds.getMinY(),
 					this.bounds.getMaxY());
 
-			computeCrossings1(
-					this.path.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+			final PathIterator2afp<?> iterator;
+			if (this.started) {
+				iterator = this.pathIterator.restartIterations();
+			} else {
+				this.started = true;
+				iterator = this.pathIterator;
+			}
+
+			computeCrossingsOfPathIterator(
+					iterator,
 					x0, y0, x1, y1,
 					false,
-					this.path.getWindingRule(),
-					this.path.getGeomFactory(),
+					iterator.getWindingRule(),
+					iterator.getGeomFactory(),
 					data);
 			numCrosses = data.getCrossings();
 
-			final int mask = this.path.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
+			final int mask = iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
 			if (numCrosses == MathConstants.SHAPE_INTERSECTS
 					|| (numCrosses & mask) != 0) {
 				// The given line is intersecting the path shape
@@ -129,7 +149,7 @@ public class PathShadow2afp<B extends Rectangle2afp<?, ?, ?, ?, ?, B>> {
 
 	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:cyclomaticcomplexity",
 			"checkstyle:npathcomplexity"})
-	private static <E extends PathElement2afp> void computeCrossings1(
+	private static <E extends PathElement2afp> void computeCrossingsOfPathIterator(
 			Iterator<? extends PathElement2afp> pi,
 			double x1, double y1, double x2, double y2,
 			boolean closeable,
@@ -165,7 +185,7 @@ public class PathShadow2afp<B extends Rectangle2afp<?, ?, ?, ?, ?, B>> {
 			case LINE_TO:
 				endx = element.getToX();
 				endy = element.getToY();
-				computeCrossings2(
+				computeCrossingsSegmentSegmentShadow(
 						curx, cury,
 						endx, endy,
 						x1, y1, x2, y2,
@@ -185,7 +205,7 @@ public class PathShadow2afp<B extends Rectangle2afp<?, ?, ?, ?, ?, B>> {
 				localPath.quadTo(
 						element.getCtrlX1(), element.getCtrlY1(),
 						endx, endy);
-				computeCrossings1(
+				computeCrossingsOfPathIterator(
 						localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
 						x1, y1, x2, y2,
 						false,
@@ -208,7 +228,7 @@ public class PathShadow2afp<B extends Rectangle2afp<?, ?, ?, ?, ?, B>> {
 						element.getCtrlX1(), element.getCtrlY1(),
 						element.getCtrlX2(), element.getCtrlY2(),
 						endx, endy);
-				computeCrossings1(
+				computeCrossingsOfPathIterator(
 						localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
 						x1, y1, x2, y2,
 						false,
@@ -232,7 +252,7 @@ public class PathShadow2afp<B extends Rectangle2afp<?, ?, ?, ?, ?, B>> {
 						element.getRadiusX(), element.getRadiusY(),
 						element.getRotationX(), element.getLargeArcFlag(),
 						element.getSweepFlag());
-				computeCrossings1(
+				computeCrossingsOfPathIterator(
 						localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
 						x1, y1, x2, y2,
 						false,
@@ -247,7 +267,7 @@ public class PathShadow2afp<B extends Rectangle2afp<?, ?, ?, ?, ?, B>> {
 				break;
 			case CLOSE:
 				if (cury != movy || curx != movx) {
-					computeCrossings2(
+					computeCrossingsSegmentSegmentShadow(
 							curx, cury,
 							movx, movy,
 							x1, y1, x2, y2,
@@ -269,7 +289,7 @@ public class PathShadow2afp<B extends Rectangle2afp<?, ?, ?, ?, ?, B>> {
 
 		if (isOpen) {
 			if (closeable) {
-				computeCrossings2(
+				computeCrossingsSegmentSegmentShadow(
 						curx, cury,
 						movx, movy,
 						x1, y1, x2, y2,
@@ -284,7 +304,7 @@ public class PathShadow2afp<B extends Rectangle2afp<?, ?, ?, ?, ?, B>> {
 
 	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:cyclomaticcomplexity",
 			"checkstyle:npathcomplexity"})
-	private static void computeCrossings2(
+	private static void computeCrossingsSegmentSegmentShadow(
 			double shadowX0, double shadowY0,
 			double shadowX1, double shadowY1,
 			double sx0, double sy0,
@@ -360,11 +380,11 @@ public class PathShadow2afp<B extends Rectangle2afp<?, ?, ?, ?, ?, B>> {
 						sx1, sy1, 0.);
 			}
 			if (side1 > 0 || side2 > 0) {
-				computeCrossings3(
+				crossShadow(
 						shadowX0, shadowY0,
 						sx0, sy0, sx1, sy1,
 						data, isUp);
-				computeCrossings3(
+				crossShadow(
 						shadowX1, shadowY1,
 						sx0, sy0, sx1, sy1,
 						data, !isUp);
@@ -372,7 +392,7 @@ public class PathShadow2afp<B extends Rectangle2afp<?, ?, ?, ?, ?, B>> {
 		}
 	}
 
-	private static void computeCrossings3(
+	private static void crossShadow(
 			double shadowx, double shadowy,
 			double sx0, double sy0,
 			double sx1, double sy1,
@@ -425,9 +445,9 @@ public class PathShadow2afp<B extends Rectangle2afp<?, ?, ?, ?, ?, B>> {
 
 		private double xmin4ymax;
 
-		private double ymin;
+		private final double ymin;
 
-		private double ymax;
+		private final double ymax;
 
 		PathShadowData(double xmax, double miny, double maxy) {
 			this.x4ymin = xmax;
@@ -518,37 +538,28 @@ public class PathShadow2afp<B extends Rectangle2afp<?, ?, ?, ?, ?, B>> {
 		@Override
 		public String toString() {
 			final StringBuilder b = new StringBuilder();
-			b.append("SHADOW {\n\tlow: ( "); //$NON-NLS-1$
-			b.append(this.xmin4ymin);
-			b.append(" | "); //$NON-NLS-1$
+			b.append("y min line:\n\tymin: "); //$NON-NLS-1$
 			b.append(this.ymin);
-			b.append(" )\n\thigh: ( "); //$NON-NLS-1$
-			b.append(this.xmin4ymax);
-			b.append(" | "); //$NON-NLS-1$
-			b.append(this.ymax);
-			b.append(")\n}\nCROSSINGS {\n\tcrossings="); //$NON-NLS-1$
-			b.append(this.crossings);
-			b.append("\n\tlow: "); //$NON-NLS-1$
+			b.append("\n\txmin: "); //$NON-NLS-1$
+			b.append(this.xmin4ymin);
+			b.append("\n\tx: "); //$NON-NLS-1$
 			if (this.hasX4ymin) {
-				b.append("( "); //$NON-NLS-1$
 				b.append(this.x4ymin);
-				b.append(" | "); //$NON-NLS-1$
-				b.append(this.ymin);
-				b.append(" )\n"); //$NON-NLS-1$
 			} else {
-				b.append("none\n"); //$NON-NLS-1$
+				b.append("none"); //$NON-NLS-1$
 			}
-			b.append("\thigh: "); //$NON-NLS-1$
+			b.append("\ny max line:\n\tymax: "); //$NON-NLS-1$
+			b.append(this.ymax);
+			b.append("\n\txmin: "); //$NON-NLS-1$
+			b.append(this.xmin4ymax);
+			b.append("\n\tx: "); //$NON-NLS-1$
 			if (this.hasX4ymax) {
-				b.append("( "); //$NON-NLS-1$
 				b.append(this.x4ymax);
-				b.append(" | "); //$NON-NLS-1$
-				b.append(this.ymax);
-				b.append(" )\n"); //$NON-NLS-1$
 			} else {
-				b.append("none\n"); //$NON-NLS-1$
+				b.append("none"); //$NON-NLS-1$
 			}
-			b.append("}\n"); //$NON-NLS-1$
+			b.append("\ncrossings: "); //$NON-NLS-1$
+			b.append(this.crossings);
 			return b.toString();
 		}
 

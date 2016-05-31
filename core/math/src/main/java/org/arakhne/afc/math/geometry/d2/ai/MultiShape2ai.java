@@ -149,7 +149,7 @@ public interface MultiShape2ai<
 
 	@Pure
 	@Override
-	default boolean contains(Rectangle2ai<?, ?, ?, ?, ?, ?> rectangle) {
+	default boolean contains(Rectangle2ai<?, ?, ?, ?, ?, B> rectangle) {
 		assert rectangle != null : "Rectangle must be not null"; //$NON-NLS-1$
 		if (rectangle.intersects(toBoundingBox())) {
 			for (final CT shape : getBackendDataList()) {

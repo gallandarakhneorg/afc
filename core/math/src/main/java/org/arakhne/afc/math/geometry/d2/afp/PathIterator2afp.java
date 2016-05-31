@@ -34,10 +34,7 @@ import org.arakhne.afc.math.geometry.d2.PathIterator2D;
  */
 public interface PathIterator2afp<T extends PathElement2afp> extends PathIterator2D<T>, Cloneable {
 
-	/** Replies the factory of geometrical elements.
-	 *
-	 * @return the factory.
-	 */
+	@Override
 	GeomFactory2afp<T, ?, ?, ?> getGeomFactory();
 
 	@Override

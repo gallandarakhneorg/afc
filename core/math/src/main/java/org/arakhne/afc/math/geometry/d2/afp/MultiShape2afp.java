@@ -219,7 +219,7 @@ public interface MultiShape2afp<
 
 	@Pure
 	@Override
-	default boolean contains(Rectangle2afp<?, ?, ?, ?, ?, ?> rectangle) {
+	default boolean contains(Rectangle2afp<?, ?, ?, ?, ?, B> rectangle) {
 		assert rectangle != null : "Rectangle must be not null"; //$NON-NLS-1$
 		if (rectangle.intersects(toBoundingBox())) {
 			for (final CT shape : getBackendDataList()) {

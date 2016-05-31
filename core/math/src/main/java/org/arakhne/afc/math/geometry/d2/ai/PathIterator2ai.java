@@ -34,10 +34,7 @@ import org.arakhne.afc.math.geometry.d2.PathIterator2D;
  */
 public interface PathIterator2ai<T extends PathElement2ai> extends PathIterator2D<T> {
 
-	/** Replies the factory of geometrical elements.
-	 *
-	 * @return the factory.
-	 */
+	@Override
 	GeomFactory2ai<T, ?, ?, ?> getGeomFactory();
 
 	@Override

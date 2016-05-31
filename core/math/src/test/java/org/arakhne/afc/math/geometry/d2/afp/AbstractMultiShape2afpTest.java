@@ -175,6 +175,16 @@ public abstract class AbstractMultiShape2afpTest<T extends MultiShape2afp<?, T, 
 	}
 
 	@Override
+	public void containsShape2afp() {
+		assertFalse(this.shape.contains(createCircle(-20, 14, .5)));
+		assertFalse(this.shape.contains(createCircle(-2,-10, .5)));
+		assertFalse(this.shape.contains(createCircle(-6,16, .5)));
+		assertFalse(this.shape.contains(createCircle(4.75, 8, .5)));
+		assertTrue(this.shape.contains(createCircle(-4, 18, .5)));
+		assertTrue(this.shape.contains(createCircle(5.5, 8.5, .5)));
+	}
+
+	@Override
 	public void getClosestPointTo() {
 		Point2D result;
 		// Outside bounding box

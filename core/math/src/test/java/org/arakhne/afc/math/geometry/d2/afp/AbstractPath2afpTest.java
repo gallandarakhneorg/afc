@@ -25,20 +25,20 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.junit.Test;
+
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.geometry.PathElementType;
+import org.arakhne.afc.math.geometry.d2.Path2D;
 import org.arakhne.afc.math.geometry.d2.Path2D.ArcType;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Shape2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.afp.Path2afp.CrossingComputationType;
 import org.arakhne.afc.math.geometry.d2.ai.PathIterator2ai;
-import org.junit.Test;
 
 @SuppressWarnings("all")
 public abstract class AbstractPath2afpTest<T extends Path2afp<?, T, ?, ?, ?, B>, B extends Rectangle2afp<?, ?, ?, ?, ?, B>>
@@ -99,6 +99,20 @@ extends AbstractShape2afpTest<T, B> {
 		assertEquals(0, Path2afp.computeCrossingsFromCircle(0, this.shape.getPathIterator(), 10, 0, 2, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
 		assertEquals(0, Path2afp.computeCrossingsFromCircle(0, this.shape.getPathIterator(), 4, 0, 0.5, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
 		assertEquals(SHAPE_INTERSECTS, Path2afp.computeCrossingsFromCircle(0, this.shape.getPathIterator(), 2.5, 1, 0.5, CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
+	}
+
+	@Test
+	public void staticComputeCrossingsFromCircle_segmentPath() {
+		// One side of the parallelogram in "parallelogram.ggb"
+		Path2afp path = createPath();
+		path.moveTo(-5.180339887498949, 9);
+		path.lineTo(12.70820393249937, -8.888543819998318);
+		assertEquals(-2,
+				Path2afp.computeCrossingsFromCircle(
+						0,
+						(PathIterator2afp) path.getPathIterator(),
+						0, 2, 1,
+						CrossingComputationType.STANDARD));
 	}
 
 	@Test
@@ -1917,6 +1931,91 @@ extends AbstractShape2afpTest<T, B> {
 		assertFalse(this.shape.contains(createRectangle(11, 1, 2, 1)));
 		assertTrue(this.shape.contains(createRectangle(3, 0, 2, 1)));
 		assertFalse(this.shape.contains(createRectangle(4, 3, 2, 1)));
+	}
+
+	@Override
+	public void containsShape2afp() {
+		Path2afp path1 = createPath();
+		path1.moveTo(204.0, 193.5);
+		path1.lineTo(204.0, 85.5);
+		path1.lineTo(268.0, 85.5);
+		path1.lineTo(268.0, 149.5);
+		path1.lineTo(388.0, 149.5);
+		path1.lineTo(388.0, 193.5);
+		path1.closePath();
+		
+		Path2afp path2 = createPath();
+		path2.moveTo(288.0, 145.5);
+		path2.lineTo(388.0, 145.5);
+		path2.lineTo(388.0, 93.5);
+		path2.lineTo(288.0, 93.5);
+		path2.closePath();
+		
+		Path2afp path3 = createPath();
+		path3.moveTo(292.0, 185.5);
+		path3.lineTo(340.0, 185.5);
+		path3.lineTo(340.0, 153.5);
+		path3.lineTo(292.0, 153.5);
+
+		Segment2afp segment1 = createSegment(372.0, 169.5, 372.0, 255.2);
+		
+		Path2afp path4 = createPath();
+		path4.moveTo(14.0, 285.5);
+		path4.lineTo(74.0, 285.5);
+		path4.lineTo(74.0, 139.5);
+		path4.lineTo(180.0, 139.5);
+		path4.lineTo(180.0, 285.5);
+		path4.lineTo(224.0, 285.5);
+		path4.lineTo(224.0, 139.5);
+		path4.lineTo(390.0, 139.5);
+		path4.lineTo(390.0, 49.5);
+		path4.lineTo(14.0, 49.5);
+		path4.closePath();
+		
+		Path2afp path5 = createPath();
+		path5.moveTo(228.0, 239.5);
+		path5.lineTo(224.0, 239.5);
+		path5.lineTo(224.0, 257.5);
+		path5.lineTo(228.0, 257.5);
+		path5.closePath();
+		
+		Circle2afp circle1 = createCircle(324.0, 93.5, 5.66);
+
+		Path2afp path6 = createPath();
+		path6.moveTo(286.0, 131.5);
+		path6.lineTo(286.0, 111.5);
+		path6.arcTo(282.0, 111.5, 2.0, 2.0, 0.0, true, false);
+		path6.lineTo(282.0, 131.5);
+		path6.arcTo(286.0, 131.5, 2.0, 2.0, 0.0, true, false);
+		path6.closePath();
+		
+		Circle2afp circle2 = createCircle(284.0, 133.5, 0.725);
+		
+		Path2afp path7 = createPath();
+		path7.moveTo(227.5, 239.5);
+		path7.lineTo(223.5, 239.5);
+		path7.lineTo(223.5, 257.5);
+		path7.lineTo(227.5, 257.5);
+		path7.closePath();
+
+		assertFalse(path1.contains(path2));
+
+		assertTrue(path1.contains(path3));
+		
+		assertTrue(path1.intersects(segment1));
+		assertFalse(path1.contains(segment1));
+		
+		assertFalse(path4.intersects(path5));
+		assertFalse(path4.contains(path5));
+		
+		assertTrue(path4.intersects(path7));
+		assertFalse(path4.contains(path7));
+
+		assertTrue(path4.intersects(circle1));
+		assertTrue(path4.contains(circle1));
+
+		assertTrue(path6.intersects(circle2));
+		assertFalse(path6.contains(circle2));
 	}
 
 	@Override
