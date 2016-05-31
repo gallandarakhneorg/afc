@@ -1083,8 +1083,8 @@ public interface RoundRectangle2afp<
 						this.lastX, this.lastY);
 			}
 
-			final double x = this.lastX;
-			final double y = this.lastY;
+			final double xLocal = this.lastX;
+			final double yLocal = this.lastY;
 
 			final double curveX;
 			final double curveY;
@@ -1093,66 +1093,66 @@ public interface RoundRectangle2afp<
 			case 0:
 				this.lastX = this.x + this.width - this.arcWidth;
 				return getGeomFactory().newLinePathElement(
-						x, y,
+						xLocal, yLocal,
 						this.lastX, this.lastY);
 			case 1:
 				this.lastX += this.arcWidth;
 				this.lastY += this.arcHeight;
-				curveX = x + AbstractCirclePathIterator.CTRL_POINT_DISTANCE * this.arcWidth;
+				curveX = xLocal + AbstractCirclePathIterator.CTRL_POINT_DISTANCE * this.arcWidth;
 				curveY = this.lastY - AbstractCirclePathIterator.CTRL_POINT_DISTANCE * this.arcHeight;
 				return getGeomFactory().newCurvePathElement(
-						x, y,
-						curveX, y,
+						xLocal, yLocal,
+						curveX, yLocal,
 						this.lastX, curveY,
 						this.lastX, this.lastY);
 			case 2:
 				this.lastY = this.y + this.height - this.arcHeight;
 				return getGeomFactory().newLinePathElement(
-						x, y,
+						xLocal, yLocal,
 						this.lastX, this.lastY);
 			case 3:
 				this.lastX -= this.arcWidth;
 				this.lastY += this.arcHeight;
 				curveX = this.lastX + AbstractCirclePathIterator.CTRL_POINT_DISTANCE * this.arcWidth;
-				curveY = y + AbstractCirclePathIterator.CTRL_POINT_DISTANCE * this.arcHeight;
+				curveY = yLocal + AbstractCirclePathIterator.CTRL_POINT_DISTANCE * this.arcHeight;
 				return getGeomFactory().newCurvePathElement(
-						x, y,
-						x, curveY,
+						xLocal, yLocal,
+						xLocal, curveY,
 						curveX, this.lastY,
 						this.lastX, this.lastY);
 			case 4:
 				this.lastX = this.x + this.arcWidth;
 				return getGeomFactory().newLinePathElement(
-						x, y,
+						xLocal, yLocal,
 						this.lastX, this.lastY);
 			case 5:
 				this.lastX -= this.arcWidth;
 				this.lastY -= this.arcHeight;
-				curveX = x - AbstractCirclePathIterator.CTRL_POINT_DISTANCE * this.arcWidth;
+				curveX = xLocal - AbstractCirclePathIterator.CTRL_POINT_DISTANCE * this.arcWidth;
 				curveY = this.lastY + AbstractCirclePathIterator.CTRL_POINT_DISTANCE * this.arcHeight;
 				return getGeomFactory().newCurvePathElement(
-						x, y,
-						curveX, y,
+						xLocal, yLocal,
+						curveX, yLocal,
 						this.lastX, curveY,
 						this.lastX, this.lastY);
 			case 6:
 				this.lastY = this.y + this.arcHeight;
 				return getGeomFactory().newLinePathElement(
-						x, y,
+						xLocal, yLocal,
 						this.lastX, this.lastY);
 			case 7:
 				this.lastX += this.arcWidth;
 				this.lastY -= this.arcHeight;
 				curveX = this.lastX - AbstractCirclePathIterator.CTRL_POINT_DISTANCE * this.arcWidth;
-				curveY = y - AbstractCirclePathIterator.CTRL_POINT_DISTANCE * this.arcHeight;
+				curveY = yLocal - AbstractCirclePathIterator.CTRL_POINT_DISTANCE * this.arcHeight;
 				return getGeomFactory().newCurvePathElement(
-						x, y,
-						x, curveY,
+						xLocal, yLocal,
+						xLocal, curveY,
 						curveX, this.lastY,
 						this.lastX, this.lastY);
 			default:
 				return getGeomFactory().newClosePathElement(
-						x, y,
+						xLocal, yLocal,
 						this.moveX, this.moveY);
 			}
 		}
@@ -1246,8 +1246,8 @@ public interface RoundRectangle2afp<
 						this.last.getX(), this.last.getY());
 			}
 
-			final double x = this.last.getX();
-			final double y = this.last.getY();
+			final double xLocal = this.last.getX();
+			final double yLocal = this.last.getY();
 
 			switch (idx) {
 			case 0:
@@ -1256,7 +1256,7 @@ public interface RoundRectangle2afp<
 						this.y);
 				this.transform.transform(this.last);
 				return getGeomFactory().newLinePathElement(
-						x, y,
+						xLocal, yLocal,
 						this.last.getX(), this.last.getY());
 			case 1:
 				this.last.set(
@@ -1272,7 +1272,7 @@ public interface RoundRectangle2afp<
 				this.transform.transform(this.controlPoint1);
 				this.transform.transform(this.controlPoint2);
 				return getGeomFactory().newCurvePathElement(
-						x, y,
+						xLocal, yLocal,
 						this.controlPoint1.getX(), this.controlPoint1.getY(),
 						this.controlPoint2.getX(), this.controlPoint2.getY(),
 						this.last.getX(), this.last.getY());
@@ -1282,7 +1282,7 @@ public interface RoundRectangle2afp<
 						this.y + this.height - this.arcHeight);
 				this.transform.transform(this.last);
 				return getGeomFactory().newLinePathElement(
-						x, y,
+						xLocal, yLocal,
 						this.last.getX(), this.last.getY());
 			case 3:
 				this.last.set(
@@ -1298,7 +1298,7 @@ public interface RoundRectangle2afp<
 				this.transform.transform(this.controlPoint1);
 				this.transform.transform(this.controlPoint2);
 				return getGeomFactory().newCurvePathElement(
-						x, y,
+						xLocal, yLocal,
 						this.controlPoint1.getX(), this.controlPoint1.getY(),
 						this.controlPoint2.getX(), this.controlPoint2.getY(),
 						this.last.getX(), this.last.getY());
@@ -1308,7 +1308,7 @@ public interface RoundRectangle2afp<
 						this.y + this.height);
 				this.transform.transform(this.last);
 				return getGeomFactory().newLinePathElement(
-						x, y,
+						xLocal, yLocal,
 						this.last.getX(), this.last.getY());
 			case 5:
 				this.last.set(
@@ -1324,7 +1324,7 @@ public interface RoundRectangle2afp<
 				this.transform.transform(this.controlPoint1);
 				this.transform.transform(this.controlPoint2);
 				return getGeomFactory().newCurvePathElement(
-						x, y,
+						xLocal, yLocal,
 						this.controlPoint1.getX(), this.controlPoint1.getY(),
 						this.controlPoint2.getX(), this.controlPoint2.getY(),
 						this.last.getX(), this.last.getY());
@@ -1334,7 +1334,7 @@ public interface RoundRectangle2afp<
 						this.y + this.arcHeight);
 				this.transform.transform(this.last);
 				return getGeomFactory().newLinePathElement(
-						x, y,
+						xLocal, yLocal,
 						this.last.getX(), this.last.getY());
 			case 7:
 				this.controlPoint1.set(
@@ -1346,13 +1346,13 @@ public interface RoundRectangle2afp<
 				this.transform.transform(this.controlPoint1);
 				this.transform.transform(this.controlPoint2);
 				return getGeomFactory().newCurvePathElement(
-						x, y,
+						xLocal, yLocal,
 						this.controlPoint1.getX(), this.controlPoint1.getY(),
 						this.controlPoint2.getX(), this.controlPoint2.getY(),
 						this.move.getX(), this.move.getY());
 			default:
 				return getGeomFactory().newClosePathElement(
-						x, y,
+						xLocal, yLocal,
 						this.move.getX(), this.move.getY());
 			}
 		}

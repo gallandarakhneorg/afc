@@ -663,9 +663,9 @@ public class Path2dfx extends AbstractShape2dfx<Path2dfx>
 			this.coords.set(idx, y);
 		} else {
 			innerTypesProperty().add(PathElementType.MOVE_TO);
-			final ReadOnlyListWrapper<Double> coords = innerCoordinatesProperty();
-			coords.add(x);
-			coords.add(y);
+			final ReadOnlyListWrapper<Double> coordsLocal = innerCoordinatesProperty();
+			coordsLocal.add(x);
+			coordsLocal.add(y);
 		}
 	}
 
@@ -679,33 +679,33 @@ public class Path2dfx extends AbstractShape2dfx<Path2dfx>
 	public void lineTo(double x, double y) {
 		ensureMoveTo();
 		innerTypesProperty().add(PathElementType.LINE_TO);
-		final ReadOnlyListWrapper<Double> coords = innerCoordinatesProperty();
-		coords.add(x);
-		coords.add(y);
+		final ReadOnlyListWrapper<Double> coordsLocal = innerCoordinatesProperty();
+		coordsLocal.add(x);
+		coordsLocal.add(y);
 	}
 
 	@Override
 	public void quadTo(double x1, double y1, double x2, double y2) {
 		ensureMoveTo();
 		innerTypesProperty().add(PathElementType.QUAD_TO);
-		final ReadOnlyListWrapper<Double> coords = innerCoordinatesProperty();
-		coords.add(x1);
-		coords.add(y1);
-		coords.add(x2);
-		coords.add(y2);
+		final ReadOnlyListWrapper<Double> coordsLocal = innerCoordinatesProperty();
+		coordsLocal.add(x1);
+		coordsLocal.add(y1);
+		coordsLocal.add(x2);
+		coordsLocal.add(y2);
 	}
 
 	@Override
 	public void curveTo(double x1, double y1, double x2, double y2, double x3, double y3) {
 		ensureMoveTo();
 		innerTypesProperty().add(PathElementType.CURVE_TO);
-		final ReadOnlyListWrapper<Double> coords = innerCoordinatesProperty();
-		coords.add(x1);
-		coords.add(y1);
-		coords.add(x2);
-		coords.add(y2);
-		coords.add(x3);
-		coords.add(y3);
+		final ReadOnlyListWrapper<Double> coordsLocal = innerCoordinatesProperty();
+		coordsLocal.add(x1);
+		coordsLocal.add(y1);
+		coordsLocal.add(x2);
+		coordsLocal.add(y2);
+		coordsLocal.add(x3);
+		coordsLocal.add(y3);
 	}
 
 	/** Replies the private coordinates property.

@@ -98,11 +98,11 @@ public class UnitVectorProperty extends SimpleObjectProperty<Vector2dfx> {
 		}
 		if (this.fake == null) {
 			this.fake = getGeomFactory().newVector();
-			final DoubleProperty x = new SimpleDoubleProperty(this.fake, "x"); //$NON-NLS-1$
+			final DoubleProperty xLocal = new SimpleDoubleProperty(this.fake, "x"); //$NON-NLS-1$
 			x.bind(internalXProperty());
-			final DoubleProperty y = new SimpleDoubleProperty(this.fake, "y"); //$NON-NLS-1$
+			final DoubleProperty yLocal = new SimpleDoubleProperty(this.fake, "y"); //$NON-NLS-1$
 			y.bind(internalYProperty());
-			this.fake.set(x, y);
+			this.fake.set(xLocal, yLocal);
 		}
 		return this.fake;
 	}
