@@ -25,13 +25,11 @@ import org.eclipse.xtext.xbase.lib.Pure;
 /**
  * Represents the different kind of 3D referencials and provides the convertion utilities.
  *
- * <p>
- * A referencial axis is expressed by the front, left and top directions. For example <code>XYZ_LEFT_HAND</code> is for the
+ * <p>A referencial axis is expressed by the front, left and top directions. For example <code>XYZ_LEFT_HAND</code> is for the
  * coordinate system with front direction along <code>+/-X</code> axis, left direction along the <code>+/-Y</code> axis and top
  * direction along the <code>+/-Z</code> axis according to a "left-hand" heuristic.
  *
- * <p>
- * The default coordinate system is:
+ * <p>The default coordinate system is:
  * <ul>
  * <li>front: <code>(1, 0, 0)</code></li>
  * <li>left: <code>(0, 1, 0)</code></li>
@@ -40,8 +38,7 @@ import org.eclipse.xtext.xbase.lib.Pure;
  *
  * <h3>Rotations</h3>
  *
- * <p>
- * Rotations in a 3D coordinate system follow the right/left hand rules (assuming that <code>OX</code>, <code>OY</code> and
+ * <p>Rotations in a 3D coordinate system follow the right/left hand rules (assuming that <code>OX</code>, <code>OY</code> and
  * <code>OZ</code> are the three axis of the coordinate system):
  * <table border="1">
  * <tr>
@@ -81,8 +78,7 @@ public enum CoordinateSystem3D implements CoordinateSystem {
     /**
      * Left handed XZY coordinate system.
      *
-     * <p>
-     * <a hef="doc-files/xzy_left.png"><img src="doc-files/xzy_left.png" border="0" width="200" alt=
+     * <p><a hef="doc-files/xzy_left.png"><img src="doc-files/xzy_left.png" border="0" width="200" alt=
      * "[Left Handed XZY Coordinate System]"></a>
      */
     XZY_LEFT_HAND(0, 1, 1, 0),
@@ -90,8 +86,7 @@ public enum CoordinateSystem3D implements CoordinateSystem {
     /**
      * Left handed XYZ coordinate system.
      *
-     * <p>
-     * <a hef="doc-files/xyz_left.png"><img src="doc-files/xyz_left.png" border="0" width="200" alt=
+     * <p><a hef="doc-files/xyz_left.png"><img src="doc-files/xyz_left.png" border="0" width="200" alt=
      * "[Left Handed XYZ Coordinate System]"></a>
      */
     XYZ_LEFT_HAND(-1, 0, 0, 1),
@@ -99,8 +94,7 @@ public enum CoordinateSystem3D implements CoordinateSystem {
     /**
      * Right handed XZY coordinate system.
      *
-     * <p>
-     * <a hef="doc-files/xzy_right.png"><img src="doc-files/xzy_right.png" border="0" width="200" alt=
+     * <p><a hef="doc-files/xzy_right.png"><img src="doc-files/xzy_right.png" border="0" width="200" alt=
      * "[Right Handed XZY Coordinate System]"></a>
      */
     XZY_RIGHT_HAND(0, -1, 1, 0),
@@ -108,8 +102,7 @@ public enum CoordinateSystem3D implements CoordinateSystem {
     /**
      * Right handed XYZ coordinate system.
      *
-     * <p>
-     * <a hef="doc-files/xyz_right.png"><img src="doc-files/xyz_right.png" border="0" width="200" alt=
+     * <p><a hef="doc-files/xyz_right.png"><img src="doc-files/xyz_right.png" border="0" width="200" alt=
      * "[Right Handed XYZ Coordinate System]"></a>
      */
     XYZ_RIGHT_HAND(1, 0, 0, 1);
@@ -125,7 +118,7 @@ public enum CoordinateSystem3D implements CoordinateSystem {
     }
 
     @Pure
-    @SuppressWarnings({ "checkstyle:returncount", "checkstyle:cyclomaticcomplexity" })
+    @SuppressWarnings({ "checkstyle:returncount", "checkstyle:cyclomaticcomplexity", "magicnumber" })
     private static byte toSystemIndex(int lefty, int leftz, int topy, int topz) {
         if (lefty < 0) {
             if (leftz == 0 && topy == 0 && topz != 0) {
@@ -164,6 +157,7 @@ public enum CoordinateSystem3D implements CoordinateSystem {
     }
 
     @Pure
+    @SuppressWarnings("magicnumber")
     private static double[] fromSystemIndex(int index) {
         // Compute the lower right sub-matrix
         final double c1;
@@ -221,11 +215,11 @@ public enum CoordinateSystem3D implements CoordinateSystem {
             break;
         }
 
-        return new double[] {c1, c2, c3, c4 }
+        return new double[] {c1, c2, c3, c4 };
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritDoc}.
      */
     @Pure
     @Override
@@ -234,7 +228,7 @@ public enum CoordinateSystem3D implements CoordinateSystem {
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritDoc}.
      */
     @Pure
     @Override
@@ -256,7 +250,7 @@ public enum CoordinateSystem3D implements CoordinateSystem {
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritDoc}.
      */
     @Pure
     @Override
@@ -264,12 +258,12 @@ public enum CoordinateSystem3D implements CoordinateSystem {
         return 3;
     }
 
-    /**
-     * {@inherit-doc}
-     * 
-     * @param userDefault
+    /** Set the default coordinate system.
+     *
+     * @param system is the new default coordinate system.
+     * @see #getDefaultCoordinateSystem()
      */
-    public static void setDefaultCoordinateSystem(CoordinateSystem3D userDefault) {
-        CoordinateSystem3D.userDefault = userDefault;
+    public static void setDefaultCoordinateSystem(CoordinateSystem3D system) {
+        CoordinateSystem3D.userDefault = system;
     }
 }
