@@ -228,10 +228,10 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 	public void translate(int dx, int dy) {
 		if (this.coords != null && !this.coords.isEmpty()) {
 			final ListIterator<Integer> li = this.coords.listIterator();
-	        while (li.hasNext()) {
-	            li.set(li.next() + dx);
-	            li.set(li.next() + dy);
-	        }
+			while (li.hasNext()) {
+				li.set(li.next() + dx);
+				li.set(li.next() + dy);
+			}
 		}
 	}
 
@@ -242,12 +242,13 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 		if (this.coords != null && !this.coords.isEmpty()) {
 			final ListIterator<Integer> li = this.coords.listIterator();
 			int i = 0;
-	        while (li.hasNext()) {
-	        	p.set(li.next(), li.next());
+			while (li.hasNext()) {
+				p.set(li.next(), li.next());
 				transform.transform(p);
-				this.coords.set(i++, p.ix());
-				this.coords.set(i++, p.iy());
-	        }
+				this.coords.set(i, p.ix());
+				this.coords.set(i + 1, p.iy());
+                i += 2;
+			}
 		}
 	}
 
