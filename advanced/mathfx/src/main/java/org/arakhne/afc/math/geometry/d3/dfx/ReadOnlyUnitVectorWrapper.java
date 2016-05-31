@@ -35,7 +35,7 @@ import javafx.beans.property.ReadOnlyObjectPropertyBase;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public class ReadOnlyUnitVectorWrapper extends UnitVectorProperty {
+public class ReadOnlyUnitVectorWrapper extends UnitVectorProperty3dfx {
 
     private ReadOnlyPropertyImpl readOnlyProperty;
 

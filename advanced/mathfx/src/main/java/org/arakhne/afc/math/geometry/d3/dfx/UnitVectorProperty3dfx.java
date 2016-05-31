@@ -41,7 +41,7 @@ import javafx.beans.property.SimpleObjectProperty;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public class UnitVectorProperty extends SimpleObjectProperty<Vector3dfx> {
+public class UnitVectorProperty3dfx extends SimpleObjectProperty<Vector3dfx> {
 
 	private final WeakReference<GeomFactory3dfx> factory;
 	
@@ -59,7 +59,7 @@ public class UnitVectorProperty extends SimpleObjectProperty<Vector3dfx> {
 	 * @param name the name of the property.
 	 * @param factory the factory to use.
 	 */
-	public UnitVectorProperty(Object bean, String name, GeomFactory3dfx factory) {
+	public UnitVectorProperty3dfx(Object bean, String name, GeomFactory3dfx factory) {
 		super(bean, name);
 		this.factory = new WeakReference<>(factory);
 	}
