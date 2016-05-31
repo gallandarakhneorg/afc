@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<?p2f version='1.0.0'?>
+<p2f version='1.0.0'>
+  <ius size='4'>
+    <iu id='com.basistech.m2e.code.quality.checkstyle.feature.feature.group' name='Checkstyle configuration plugin for M2Eclipse' version='1.0.0.201602071612'>
+      <repositories size='1'>
+        <repository location='http://m2e-code-quality.github.com/m2e-code-quality/site/latest/'/>
+      </repositories>
+    </iu>
+    <iu id='net.sf.eclipsecs.feature.group' name='Eclipse Checkstyle Plug-in' version='6.16.0.201603042321'>
+      <repositories size='1'>
+        <repository location='http://eclipse-cs.sourceforge.net/update/'/>
+      </repositories>
+    </iu>
+    <iu id='epp.package.java' name='Eclipse IDE for Java Developers' version='4.5.2.20160218-0600'>
+      <repositories size='1'>
+        <repository location='http://download.eclipse.org/releases/mars'/>
+      </repositories>
+    </iu>
+    <iu id='com.ifedorenko.m2e.mavendev.feature.feature.group' name='Maven Development Tools' version='0.3.0.201506181201'>
+      <repositories size='1'>
+        <repository location='http://ifedorenko.github.com/m2e-extras/'/>
+      </repositories>
+    </iu>
+  </ius>
+</p2f>

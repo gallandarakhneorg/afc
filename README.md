@@ -91,7 +91,33 @@ You must use this issue tracker to report and follow your issues.
 # Contributions
 
 Any contribution to the AFC library is welcome.
-For sending your contribution to the AFC master repositoty, you should request a pull (PR) to the [GitHub repository](https://github.com/gallandarakhneorg/afc/).
+
+## Installing the Development Environment
+
+For setting up the development environment, you should follow the steps:
+* Download and install "Eclipse for Java Developers".
+* Download the [contributors.p2f](./etc/contributors.p2f) file that specifies the Eclipse plugins for the development environment.
+* Install the Eclipse plugins by selecting in Eclipse: `File > Import > Install > Install software items from file.`
+* Download the [contributors.epf](./etc/contributors.epf) file that contains the Eclipse general preferences related to the AFC project.
+* Import the general preferences: `File > Import > General > Preferences`
+
+## Obtaining the AFC Source Code
+
+For obtaining the code of the AFC library, you must clone it from the Git:
+```bash
+git clone https://github.com/gallandarakhneorg/afc
+```
+
+## Compiling the AFC Source Code
+
+Maven is the standard tool for compiling the AFC library:
+```bash
+mvn clean install
+```
+
+## Sending the Contribution
+
+For sending your contribution to the AFC master repositoty, you must request a pull (PR) to the [GitHub repository](https://github.com/gallandarakhneorg/afc/).
 
 For being merged, your PR must:
 * be compilable with Maven.
