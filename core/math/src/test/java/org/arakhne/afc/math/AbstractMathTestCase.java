@@ -420,7 +420,7 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	 * @param y
 	 */
 	public void assertIntVectorEquals(int x, int y, Vector2D<?, ?> v) {
-		if (x != v.getX() || y != v.iy()) {
+		if (x != v.ix() || y != v.iy()) {
 			final String str1 = "(" + x + "; " + y + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			final String str2 = "(" + v.ix() + "; " + v.iy() + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			throw new ComparisonFailure(formatFailMessage(null, "not same vector", str1, str2), //$NON-NLS-1$

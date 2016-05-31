@@ -124,7 +124,7 @@ public interface Shape2afp<
 					new PathShadow2afp<>(shapePathIterator, shapeBounds),
 					CrossingComputationType.STANDARD);
 		}
-		
+
 		final int mask = iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
 		return crossings != MathConstants.SHAPE_INTERSECTS
 				&& (crossings & mask) != 0;
