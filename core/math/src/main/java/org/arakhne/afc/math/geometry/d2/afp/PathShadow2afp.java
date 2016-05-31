@@ -564,20 +564,16 @@ public class PathShadow2afp<B extends Rectangle2afp<?, ?, ?, ?, ?, B>> {
 		}
 
 		public void setCrossingForYMax(double x, double y) {
-			if (y >= this.ymax) {
-				if (x < this.x4ymax) {
-					this.x4ymax = x;
-					this.hasX4ymax = true;
-				}
+			if (y >= this.ymax && x < this.x4ymax) {
+				this.x4ymax = x;
+				this.hasX4ymax = true;
 			}
 		}
 
 		public void setCrossingForYMin(double x, double y) {
-			if (y <= this.ymin) {
-				if (x < this.x4ymin) {
-					this.x4ymin = x;
-					this.hasX4ymin = true;
-				}
+			if (y <= this.ymin && x < this.x4ymin) {
+				this.x4ymin = x;
+				this.hasX4ymin = true;
 			}
 		}
 
