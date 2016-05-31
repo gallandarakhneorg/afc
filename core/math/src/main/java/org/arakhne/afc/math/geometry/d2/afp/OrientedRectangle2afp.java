@@ -193,7 +193,8 @@ public interface OrientedRectangle2afp<
 			double px, double py) {
 		assert axis1Extent >= 0 : "Extent of axis 1 must be positive or zero"; //$NON-NLS-1$
 		assert axis2Extent >= 0 : "Extent of axis 2 must be positive or zero"; //$NON-NLS-1$
-		assert Vector2D.isUnitVector(axis1X, axis1Y) : "Axis 1 is not a unit vector"; //$NON-NLS-1$
+		final boolean isUnitVector = Vector2D.isUnitVector(axis1X, axis1Y);
+		assert isUnitVector : "Axis 1 is not a unit vector"; //$NON-NLS-1$
 		final double x = px - centerX;
 		final double y = py - centerY;
 		double coordinate = projectVectorOnOrientedRectangleRAxis(axis1X, axis1Y, x, y);
