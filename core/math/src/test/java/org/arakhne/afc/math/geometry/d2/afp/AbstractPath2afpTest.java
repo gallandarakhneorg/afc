@@ -28,6 +28,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import org.arakhne.afc.math.MathConstants;
@@ -193,6 +194,21 @@ extends AbstractShape2afpTest<T, B> {
 				createShadow(1, -1, 4, 1), CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
 		assertEquals(SHAPE_INTERSECTS, Path2afp.computeCrossingsFromPath(0, this.shape.getPathIterator(),
 				createShadow(5, 2, 4, 1), CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
+	}
+
+	@Test
+	public void staticComputeCrossingsFromPath_segmentPath() {
+		// One side of the parallelogram in "parallelogram.ggb"
+		Path2afp path = createPath();
+		path.moveTo(-5.180339887498949, 9);
+		path.lineTo(12.70820393249937, -8.888543819998318);
+		Circle2afp circle = createCircle(0, 2, 1);
+		assertEquals(-2,
+				Path2afp.computeCrossingsFromPath(
+						0,
+						(PathIterator2afp) path.getPathIterator(),
+						new PathShadow2afp((PathIterator2afp) circle.getPathIterator(), circle.toBoundingBox()),
+						CrossingComputationType.STANDARD));
 	}
 
 	@Test
