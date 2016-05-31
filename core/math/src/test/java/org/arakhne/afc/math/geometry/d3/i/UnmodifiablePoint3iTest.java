@@ -34,7 +34,7 @@ public class UnmodifiablePoint3iTest extends AbstractUnmodifiablePoint3DTest<Poi
 	}
 	
 	@Override
-	public Point3D createTuple(double x, double y, double z) {
+	public Point3i createTuple(double x, double y, double z) {
 		return new Point3i(x, y, z).toUnmodifiable();
 	}
 	

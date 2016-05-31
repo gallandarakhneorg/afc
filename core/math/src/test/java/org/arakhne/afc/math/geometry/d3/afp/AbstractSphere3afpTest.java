@@ -41,7 +41,7 @@ public abstract class AbstractSphere3afpTest<T extends Sphere3afp<?, T, ?, ?, ?,
 
 	@Override
 	protected final T createShape() {
-		return (T) createSphere(5, 8, 5);
+		return (T) createSphere(5, 8, 2, 5);
 	}
 	
 	@Test

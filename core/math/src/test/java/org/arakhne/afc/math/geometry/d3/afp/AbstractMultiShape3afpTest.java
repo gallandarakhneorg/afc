@@ -51,7 +51,7 @@ public abstract class AbstractMultiShape3afpTest<T extends MultiShape3afp<?, T, 
 	@Override
 	protected final T createShape() {
 		T shape = (T) createMultiShape();
-		firstObject = (C) createRectangle(5, 8, 2, 1);
+		firstObject = (C) createRectangularPrism(5, 8, 2, 1);
 		secondObject = (C) createSphere(-5, 18, 2);
 		shape.add(firstObject);
 		shape.add(secondObject);

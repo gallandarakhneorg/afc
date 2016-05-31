@@ -25,6 +25,7 @@ import org.junit.Test;
 
 @SuppressWarnings("all")
 public abstract class AbstractUnmodifiablePoint3DTest<P extends Point3D<? super P, ? super V>, V extends Vector3D<? super V, ? super P>>
+               extends AbstractPoint3DTest<P, V, Point3D> {
 	
 	@Test(expected = UnsupportedOperationException.class)
 	public final void absolute() {
@@ -38,12 +39,12 @@ public abstract class AbstractUnmodifiablePoint3DTest<P extends Point3D<? super 
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public final void addIntInt() {
+	public final void addIntIntInt() {
 		getT().add(6, 7);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public final void addDoubleDouble() {
+	public final void addDoubleDoubleDouble() {
 		getT().add(6.5, 7.5);
 	}
 
@@ -107,12 +108,12 @@ public abstract class AbstractUnmodifiablePoint3DTest<P extends Point3D<? super 
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public final void setIntInt() {
+	public final void setIntIntInt() {
 		getT().set(-45, 78);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public final void setDoubleDouble() {
+	public final void setDoubleDoubleDouble() {
 		getT().set(-45.5, 78.5);
 	}
 
@@ -147,7 +148,7 @@ public abstract class AbstractUnmodifiablePoint3DTest<P extends Point3D<? super 
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public final void subIntInt() {
+	public final void subIntIntInt() {
 		getT().sub(45, 78);
 	}
 
@@ -162,7 +163,7 @@ public abstract class AbstractUnmodifiablePoint3DTest<P extends Point3D<? super 
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
-	public final void subDoubleDouble() {
+	public final void subDoubleDoubleDouble() {
 		getT().sub(45.5, 78.5);
 	}
 

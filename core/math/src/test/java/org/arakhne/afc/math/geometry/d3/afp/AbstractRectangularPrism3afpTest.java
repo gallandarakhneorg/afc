@@ -19,6 +19,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  * This program is free software; you can redistribute it and/or modify
  */
+
 package org.arakhne.afc.math.geometry.d3.afp;
 
 import static org.junit.Assert.assertFalse;
@@ -40,7 +41,7 @@ public abstract class AbstractRectangularPrism3afpTest<T extends RectangularPris
 
 	@Override
 	protected final T createShape() {
-		return (T) createRectangle(5, 8, 5, 10);
+		return (T) createRectangularPrism(5, 8, 2, 5, 10, 8);
 	}
 
 	@Test

@@ -329,10 +329,10 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	}
 
 	@Test
-	public abstract void operator_andShape2D();
+	public abstract void operator_andShape3D();
 
 	@Test
-	public abstract void operator_upToShape2D();
+	public abstract void operator_upToShape3D();
 
 	@Test
 	public void addPoint3DVector3D() {

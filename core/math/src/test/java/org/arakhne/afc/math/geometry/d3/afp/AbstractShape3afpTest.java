@@ -82,7 +82,7 @@ public abstract class AbstractShape3afpTest<T extends Shape3afp<?, ?, ?, ?, ?, ?
 		return this.factory.createSegment(x1, y1, z1, x2, y2, z2);
 	}
 	
-	public final B createRectangle(double x, double y, double z, double width, double height, double depth) {
+	public final B createRectangularPrism(double x, double y, double z, double width, double height, double depth) {
 		return this.factory.createRectangularPrism(x, y, z, width, height, depth);
 	}
 
