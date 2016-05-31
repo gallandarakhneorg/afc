@@ -48,7 +48,7 @@ public class Point3dTest extends AbstractPoint3DTest<Point3d, Vector3d, Point3d>
 	}
 
 	@Override
-	public void operator_andShape2D() {
+	public void operator_andShape3D() {
 		Shape3D shape = new Sphere3d(5, 8, 5);
 		assertFalse(createPoint(0,0).operator_and(shape));
 		assertFalse(createPoint(11,10).operator_and(shape));
@@ -62,7 +62,7 @@ public class Point3dTest extends AbstractPoint3DTest<Point3d, Vector3d, Point3d>
 	}
 	
 	@Override
-	public void operator_upToShape2D() {
+	public void operator_upToShape3D() {
 		Shape3D shape = new Sphere3d(5, 8, 5);
 		assertEpsilonEquals(3.74643, createPoint(.5,.5).operator_upTo(shape));
 		assertEpsilonEquals(7.9769, createPoint(-1.2,-3.4).operator_upTo(shape));
