@@ -1,23 +1,23 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (C) 2010-2013 Stephane GALLAND.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package org.arakhne.afc.math.geometry.d3.ai;
 
 import org.arakhne.afc.math.geometry.PathWindingRule;
@@ -26,7 +26,7 @@ import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
 
 /** Factory of geometrical elements.
- * 
+ *
  * @param <E> the types of the path elements.
  * @param <P> is the type of the points.
  * @param <V> is the type of the vectors.
@@ -47,7 +47,7 @@ public interface GeomFactory3ai<E extends PathElement3ai, P extends Point3D<? su
 	 * @return the new path.
 	 */
 	Path3ai<?, ?, E, P, V, B> newPath(PathWindingRule rule);
-	
+
 	/** Create a segment.
 	 *
 	 * @param x1 the x coordinate of the first point of the segment.
@@ -59,7 +59,7 @@ public interface GeomFactory3ai<E extends PathElement3ai, P extends Point3D<? su
 	 * @return the new segment.
 	 */
 	Segment3ai<?, ?, E, P, V, B> newSegment(int x1, int y1, int z1, int x2, int y2, int z2);
-	
+
 	/** Create an empty bounding box.
 	 *
 	 * @return the box.
@@ -85,16 +85,16 @@ public interface GeomFactory3ai<E extends PathElement3ai, P extends Point3D<? su
 	MultiShape3ai<?, ?, ?, E, P, V, B> newMultiShape();
 
 	/** Create a move-to path element to the given point.
-	 * 
+	 *
 	 * @param x x coordinate of the target point.
 	 * @param y y coordinate of the target point.
 	 * @param z z coordinate of the target point.
 	 * @return the path element.
 	 */
 	E newMovePathElement(int x, int y, int z);
-	
+
 	/** Create a line-to path element to the given point.
-	 * 
+	 *
 	 * @param startX x coordinate of the start point.
 	 * @param startY y coordinate of the start point.
 	 * @param startZ z coordinate of the start point.
@@ -106,7 +106,7 @@ public interface GeomFactory3ai<E extends PathElement3ai, P extends Point3D<? su
 	E newLinePathElement(int startX, int startY, int startZ, int targetX, int targetY, int targetZ);
 
 	/** Create a close path element.
-	 * 
+	 *
 	 * @param lastPointX x coordinate of the last point on the path
 	 * @param lastPointY y coordinate of the last point on the path
 	 * @param lastPointZ z coordinate of the last point on the path
@@ -118,7 +118,7 @@ public interface GeomFactory3ai<E extends PathElement3ai, P extends Point3D<? su
 	E newClosePathElement(int lastPointX, int lastPointY, int lastPointZ, int firstPointX, int firstPointY, int firstPointZ);
 
 	/** Create a quadratic curve path element to the given point through the given control point.
-	 * 
+	 *
 	 * @param startX x coordinate of the start point.
 	 * @param startY y coordinate of the start point.
 	 * @param startZ z coordinate of the start point.
@@ -130,10 +130,12 @@ public interface GeomFactory3ai<E extends PathElement3ai, P extends Point3D<? su
 	 * @param targetZ z coordinate of the target point.
 	 * @return the path element.
 	 */
-	E newCurvePathElement(int startX, int startY, int startZ, int controlX, int controlY, int controlZ, int targetX, int targetY, int targetZ);
+	@SuppressWarnings("checkstyle:parameternumber")
+    E newCurvePathElement(int startX, int startY, int startZ, int controlX, int controlY, int controlZ, int targetX, int targetY,
+            int targetZ);
 
 	/** Create a curve path element to the given point through the two given control points.
-	 * 
+	 *
 	 * @param startX x coordinate of the start point.
 	 * @param startY y coordinate of the start point.
 	 * @param startZ z coordinate of the start point.
@@ -148,6 +150,7 @@ public interface GeomFactory3ai<E extends PathElement3ai, P extends Point3D<? su
 	 * @param targetZ z coordinate of the target point.
 	 * @return the path element.
 	 */
+	@SuppressWarnings("checkstyle:parameternumber")
 	E newCurvePathElement(int startX, int startY, int startZ, int controlX1, int controlY1, int controlZ1,
 			int controlX2, int controlY2, int controlZ2, int targetX, int targetY, int targetZ);
 

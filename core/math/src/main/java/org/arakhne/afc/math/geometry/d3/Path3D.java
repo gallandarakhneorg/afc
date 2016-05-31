@@ -1,30 +1,34 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (c) 2016, Multiagent Team,
- * Laboratoire Systemes et Transports,
- * Universite de Technologie de Belfort-Montbeliard.
- * All rights reserved.
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
  *
- * This software is the confidential and proprietary information
- * of the Laboratoire Systemes et Transports (SET)
- * of Universite de Technologie de Belfort-Montbeliard.
- * You shall not disclose such Confidential Information and shall use
- * it only in accordance with the terms of the license agreement
- * you entered into with the SET.
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
  *
- * http://www.multiagent.fr/
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package org.arakhne.afc.math.geometry.d3;
 
 import java.util.Collection;
 
-import org.arakhne.afc.math.geometry.PathElementType;
-import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import org.arakhne.afc.math.geometry.PathElementType;
+import org.arakhne.afc.math.geometry.PathWindingRule;
+
 /** 3D Path.
- * 
+ *
  * @param <ST> is the type of the general implementation.
  * @param <IT> is the type of the implementation of this shape.
  * @param <I> is the type of the iterator used to obtain the elements of the path.
@@ -43,18 +47,18 @@ public interface Path3D<
 		I extends PathIterator3D<?>,
 		P extends Point3D<? super P, ? super V>,
 		V extends Vector3D<? super V, ? super P>,
-		B extends Shape3D<?, ?, I, P, V, B>> 
+		B extends Shape3D<?, ?, I, P, V, B>>
 		extends Shape3D<ST, IT, I, P, V, B> {
-	
+
 	/** Replies the winding rule for the path.
-	 * 
+	 *
 	 * @return the winding rule for the path.
 	 */
 	@Pure
 	PathWindingRule getWindingRule();
-	
+
 	/** Set the winding rule for the path.
-	 * 
+	 *
 	 * @param rule is the winding rule for the path.
 	 */
 	void setWindingRule(PathWindingRule rule);
@@ -62,28 +66,28 @@ public interface Path3D<
 	/** Replies the path is composed only by
 	 * one <code>MOVE_TO</code>, and a sequence of <code>LINE_TO</code>
 	 * primitives.
-	 * 
+	 *
 	 * @return <code>true</code> if the path does not
-	 * contain curve primitives, <code>false</code>
-	 * otherwise.
+	 *     contain curve primitives, <code>false</code>
+	 *     otherwise.
 	 */
 	@Pure
 	boolean isPolyline();
 
 	/** Replies the path contains a curve..
-	 * 
+	 *
 	 * @return <code>true</code> if the path does not
-	 * contain curve primitives, <code>false</code>
-	 * otherwise.
+	 *     contain curve primitives, <code>false</code>
+	 *     otherwise.
 	 */
 	@Pure
 	boolean isCurved();
 
 	/** Replies the path has multiple parts, i.e. multiple <code>MOVE_TO</code> are inside.
 	 * primitives.
-	 * 
+	 *
 	 * @return <code>true</code> if the path has multiple move-to primitive, <code>false</code>
-	 * otherwise.
+	 *     otherwise.
 	 */
 	@Pure
 	boolean isMultiParts();
@@ -92,36 +96,36 @@ public interface Path3D<
 	 * one <code>MOVE_TO</code>, a sequence of <code>LINE_TO</code>
 	 * or <code>QUAD_TO</code> or <code>CURVE_TO</code>, and a
 	 * single <code>CLOSE</code> primitives.
-	 * 
+	 *
 	 * @return <code>true</code> if the path does not
-	 * contain curve primitives, <code>false</code>
-	 * otherwise.
+	 *     contain curve primitives, <code>false</code>
+	 *     otherwise.
 	 */
 	@Pure
 	boolean isPolygon();
 
 	/** Replies an iterator on the path elements.
-	 * <p>
-	 * Only {@link PathElementType#MOVE_TO},
-	 * {@link PathElementType#LINE_TO}, and 
+	 *
+	 * <p>Only {@link PathElementType#MOVE_TO},
+	 * {@link PathElementType#LINE_TO}, and
 	 * {@link PathElementType#CLOSE} types are returned by the iterator.
-	 * <p>
-	 * The amount of subdivision of the curved segments is controlled by the 
-	 * flatness parameter, which specifies the maximum distance that any point 
+	 *
+	 * <p>The amount of subdivision of the curved segments is controlled by the
+	 * flatness parameter, which specifies the maximum distance that any point
 	 * on the unflattened transformed curve can deviate from the returned
 	 * flattened path segments. Note that a limit on the accuracy of the
 	 * flattened path might be silently imposed, causing very small flattening
 	 * parameters to be treated as larger values. This limit, if there is one,
 	 * is defined by the particular implementation that is used.
-	 * <p>
-	 * The iterator for this class is not multi-threaded safe.
-	 * 
+	 *
+	 * <p>The iterator for this class is not multi-threaded safe.
+	 *
 	 * @param flatness is the maximum distance that the line segments used to approximate
-	 * the curved segments are allowed to deviate from any point on the original curve.
+	 *     the curved segments are allowed to deviate from any point on the original curve.
 	 * @return an iterator on the path elements.
 	 */
 	@Pure
-	I getPathIterator(double flatness);	
+	I getPathIterator(double flatness);
 
 	/**
 	 * Adds a point to the path by moving to the specified
@@ -176,18 +180,18 @@ public interface Path3D<
 	void closePath();
 
 	/** Replies the bounding box of all the points added in this path.
-	 * <p>
-	 * The replied bounding box includes the (invisible) control points.
-	 * 
+	 *
+	 * <p>The replied bounding box includes the (invisible) control points.
+	 *
 	 * @return the bounding box with the control points.
 	 * @see #toBoundingBox()
 	 */
 	B toBoundingBoxWithCtrlPoints();
 
 	/** Compute the bounding box of all the points added in this path.
-	 * <p>
-	 * The replied bounding box includes the (invisible) control points.
-	 * 
+	 *
+	 *<p>The replied bounding box includes the (invisible) control points.
+	 *
 	 * @param box is the rectangle to set with the bounds.
 	 * @see #toBoundingBox()
 	 */
@@ -195,7 +199,7 @@ public interface Path3D<
 
 	/** Replies the coordinates of this path in an array of
 	 * integer numbers.
-	 * 
+	 *
 	 * @return the coordinates.
 	 */
 	@Pure
@@ -205,7 +209,7 @@ public interface Path3D<
 
 	/** Replies the coordinates of this path in an array of
 	 * integer numbers.
-	 * 
+	 *
 	 * @param transform is the transformation to apply to all the coordinates.
 	 * @return the coordinates.
 	 */
@@ -214,7 +218,7 @@ public interface Path3D<
 
 	/** Replies the coordinates of this path in an array of
 	 * single precision floating-point numbers.
-	 * 
+	 *
 	 * @return the coordinates.
 	 */
 	@Pure
@@ -224,7 +228,7 @@ public interface Path3D<
 
 	/** Replies the coordinates of this path in an array of
 	 * single precision floating-point numbers.
-	 * 
+	 *
 	 * @param transform is the transformation to apply to all the coordinates.
 	 * @return the coordinates.
 	 */
@@ -233,7 +237,7 @@ public interface Path3D<
 
 	/** Replies the coordinates of this path in an array of
 	 * double precision floating-point numbers.
-	 * 
+	 *
 	 * @return the coordinates.
 	 */
 	@Pure
@@ -243,7 +247,7 @@ public interface Path3D<
 
 	/** Replies the coordinates of this path in an array of
 	 * double precision floating-point numbers.
-	 * 
+	 *
 	 * @param transform is the transformation to apply to all the coordinates.
 	 * @return the coordinates.
 	 */
@@ -251,7 +255,7 @@ public interface Path3D<
 	double[] toDoubleArray(Transform3D transform);
 
 	/** Replies the points of this path in an array.
-	 * 
+	 *
 	 * @return the points.
 	 */
 	@Pure
@@ -260,7 +264,7 @@ public interface Path3D<
 	}
 
 	/** Replies the points of this path in an array.
-	 * 
+	 *
 	 * @param transform is the transformation to apply to all the points.
 	 * @return the points.
 	 */
@@ -268,7 +272,7 @@ public interface Path3D<
 	P[] toPointArray(Transform3D transform);
 
 	/** Replies the collection that is contains all the points of the path.
-	 * 
+	 *
 	 * @return the point collection.
 	 */
 	@Pure
@@ -277,7 +281,7 @@ public interface Path3D<
 	/** Replies the point at the given index.
 	 * The index is in [0;{@link #size()}).
 	 *
-	 * @param index
+	 * @param index the index.
 	 * @return the point at the given index.
 	 */
 	@Pure
@@ -335,30 +339,43 @@ public interface Path3D<
 	void removeLast();
 
 	/** Change the coordinates of the last inserted point.
-	 * 
-	 * @param point
+	 *
+	 * @param point the point.
 	 */
 	void setLastPoint(Point3D<?, ?> point);
 
 	/** Replies if the given points exists in the coordinates of this path.
-	 * 
-	 * @param point
+	 *
+	 * @param point the point.
 	 * @return <code>true</code> if the point is a control point of the path.
 	 */
 	@Pure
 	boolean containsControlPoint(Point3D<?, ?> point);
-	
-	/** Type of drawing to used when drawing an arc.
-	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 * @since 13.0
-	 */
-  enum ArcType {
-      ARC_ONLY,
-      MOVE_THEN_ARC,
-      LINE_THEN_ARC
-  }
+
+    /**
+     * Type of drawing to used when drawing an arc.
+     *
+     * @author $Author: sgalland$
+     * @version $FullVersion$
+     * @mavengroupid $GroupId$
+     * @mavenartifactid $ArtifactId$
+     * @since 13.0
+     */
+    enum ArcType {
+
+        /**
+         * Draw only the ellipse arc.
+         */
+        ARC_ONLY,
+
+        /**
+         * Move to and draw the ellipse arc.
+         */
+        MOVE_THEN_ARC,
+
+        /**
+         * Draw a line to and the ellipse arc.
+         */
+        LINE_THEN_ARC
+    }
 }
