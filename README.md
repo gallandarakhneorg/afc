@@ -141,7 +141,7 @@ git clone https://github.com/gallandarakhneorg/afc
 
 ***Caution:*** due to an issue in the Eclipse Checkstyle plugin, it is mandatory to install the `build-tools` module in the your `.m2` repository prior to the first launch of the Eclipse IDE:
 ```bash
-mvn clean install
+mvn clean install -Dcheckstyle.skip=true
 ```
 
 ## 5.3. Compiling the AFC Source Code
