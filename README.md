@@ -7,6 +7,8 @@ The Arakhnê Foundation Classes (AFC) is a collection of Java libraries that may
 
 # Content of the AFC
 
+## Alive Modules
+
 AFC library contains the following alive modules:
 
 
@@ -22,6 +24,7 @@ JavaFX Math Tools | org.arakhne.afc.advanced | mathfx | JavaFX implementation of
 Generic Attribute API | org.arakhne.afc.advanced | attributes | Library for creating generic attributes, aka. Variant attributes.
 
 
+## Deprecated and Dead Modules
 
 AFC library contains the following deprecated modules (deprecated modules are subject to removal in next version):
 
