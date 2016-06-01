@@ -20,15 +20,16 @@
 
 package org.arakhne.afc.math.geometry.d3;
 
-import org.arakhne.afc.math.MathConstants;
-import org.arakhne.afc.math.MathUtil;
-import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem3D;
 import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import org.arakhne.afc.math.MathConstants;
+import org.arakhne.afc.math.MathUtil;
+import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem3D;
+
 
 /** 3D Vector.
- * 
+ *
  * @param <RV> is the type of vector that can be returned by this tuple.
  * @param <RP> is the type of point that can be returned by this tuple.
  * @author $Author: sgalland$
@@ -36,9 +37,9 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  */
-public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extends Point3D<? super RP, ? super RV>> extends Tuple3D<RV> {
+public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extends Point3D<? super RP, ? super RV>>
+        extends Tuple3D<RV> {
 
-	
 	/**
 	 * Replies if the vector is a unit vector.
 	 *
@@ -46,7 +47,7 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 	 * must consider that the norm of the given vector is approximatively equal
 	 * to 1. The precision (i.e. the number of significant decimals) is given
 	 * by {@link MathConstants#UNIT_VECTOR_EPSILON}.
-	 * 
+	 *
 	 * @param x is the X coordinate of the vector.
 	 * @param y is the Y coordinate of the vector.
 	 * @param z is the Z coordinate of the vector.
@@ -57,12 +58,11 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 	 */
 	@Pure
 	@Inline(value = "(Vector3D.isUnitVector($1, $2, $3, MathConstants.UNIT_VECTOR_EPSILON))",
-	imported = {Vector3D.class, MathConstants.class})
+	  imported = {Vector3D.class, MathConstants.class})
 	static boolean isUnitVector(double x, double y, double z) {
 		return isUnitVector(x, y, z, MathConstants.UNIT_VECTOR_EPSILON);
 	}
-	
-	
+
 	/**
 	 * Replies if the vector is a unit vector.
 	 *
@@ -70,7 +70,7 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 	 * must consider that the norm of the given vector is approximatively equal
 	 * to 1. The precision (i.e. the number of significant decimals) is given
 	 * by <code>epsilon</code>.
-	 * 
+	 *
 	 * @param x is the X coordinate of the vector.
 	 * @param y is the Y coordinate of the vector.
 	 * @param z is the Z coordinate of the vector.
@@ -78,84 +78,107 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 	 * @return <code>true</code> if the two given vectors are colinear.
 	 * @since 13.0
 	 * @see MathUtil#isEpsilonEqual(double, double, double)
-	 * @see #isUnitVector(double, double)
+	 * @see #isUnitVector(double, double, double)
 	 */
 	@Pure
 	@Inline(value = "(MathUtil.isEpsilonEqual($1 * $1 + $2 * $2 + $3 * $3, 1., $4))",
-	imported = {MathUtil.class})
+	  imported = {MathUtil.class})
 	static boolean isUnitVector(double x, double y, double z, double epsilon) {
 		return MathUtil.isEpsilonEqual(x * x + y * y + z * z, 1., epsilon);
 	}
-	
+
+	/** Replies if this first is a unit vector.
+	 * A unit vector has a length equal to 1.
+	 *
+	 * <p>This function approximates the test on the length of the vector.
+	 * This approximation could be based on {@link MathUtil#isEpsilonEqual(double, double)}.
+	 *
+	 * @return <code>true</code> if the vector has a length equal to 1.
+	 * <code>false</code> otherwise.
+	 */
+	@Pure
+	default boolean isUnitVector() {
+	    return isUnitVector(getX(), getY(), getZ());
+	}
+
 	/** Compute the determinant of three vectors.
-	 * 
+	 *
 	 * @param x1
+	 *            is the X coordinate of the first vector
 	 * @param y1
+	 *            is the Y coordinate of the first vector
 	 * @param z1
+	 *            is the Z coordinate of the first vector
 	 * @param x2
+	 *            is the X coordinate of the second vector
 	 * @param y2
+	 *            is the Y coordinate of the second vector
 	 * @param z2
+	 *            is the Z coordinate of the second vector
 	 * @param x3
+	 *            is the X coordinate of the third vector
 	 * @param y3
+	 *            is the Y coordinate of the third vector
 	 * @param z3
+	 *            is the Z coordinate of the third vector
 	 * @return the determinant
 	 * @see #perpProduct(double, double, double, double, double, double)
 	 */
 	@Pure
-	static double determinant(
-			double x1, double y1, double z1,
-			double x2, double y2, double z2,
-			double x3, double y3, double z3) {
-		return
-				  x1 * (y2 * z3 - y3 * z2)
-				+ x2 * (y3 * z1 - y1 * z3)
-				+ x3 * (y1 * z2 - y2 * z1);
+	@SuppressWarnings("checkstyle:parameternumber")
+	static double determinant(double x1, double y1, double z1, double x2, double y2, double z2, double x3, double y3, double z3) {
+        return x1 * (y2 * z3 - y3 * z2) + x2 * (y3 * z1 - y1 * z3) + x3 * (y1 * z2 - y2 * z1);
 	}
 
 	/** Compute the determinant of two vectors.
-	 * <p>
-	 * <pre><code>det(X1,X2) = |X1|.|X2|.sin(a)</code></pre>
+	 *
+	 * <p><pre><code>det(X1,X2) = |X1|.|X2|.sin(a)</code></pre>
 	 * where <code>X1</code> and <code>X2</code> are two vectors
 	 * and <code>a</code> is the angle between <code>X1</code>
-	 * and <code>X2</code>. 
-	 * 
-	 * @param x1
-	 * @param y1
-	 * @param z1
-	 * @param x2
-	 * @param y2
-	 * @param z2
+	 * and <code>X2</code>.
+	 *
+     * @param x1
+     *            is the X coordinate of the first vector
+     * @param y1
+     *            is the Y coordinate of the first vector
+     * @param z1
+     *            is the Z coordinate of the first vector
+     * @param x2
+     *            is the X coordinate of the second vector
+     * @param y2
+     *            is the Y coordinate of the second vector
+     * @param z2
+     *            is the Z coordinate of the second vector
 	 * @return the determinant
 	 * @see #determinant(double, double, double, double, double, double, double, double, double)
 	 */
 	@Pure
 	static double perpProduct(double x1, double y1, double z1, double x2, double y2, double z2) {
-		/* First method:
-		 * 
-		 * det(A,B) = |A|.|B|.sin(theta)
-		 * A x B = |A|.|B|.sin(theta).N, where N is the unit vector
-		 * A x B = det(A,B).N
-		 * A x B = [ y1*z2 - z1*y2 ] = det(A,B).N
-		 *         [ z1*x2 - x1*z2 ]
-		 *         [ x1*y2 - y1*x2 ]
-		 * det(A,B) = sum(A x B)        
-		 * 
-		 * Second method:
-		 * 
-		 * det(A,B) = det( [ x1 x2 1 ]
-		 *                 [ y1 y2 1 ]
-		 *                 [ z1 z2 1 ] )
-		 * det(A,B) = x1*y2*1 + y1*z2*1 + z1*x2*1 - 1*y2*z1 - 1*z2*x1 - 1*x2*y1
-		 */
-		return x1*y2 + y1*z2 + z1*x2 - y2*z1 - z2*x1 - x2*y1;
+	    /* First method:
+	     *
+	     * det(A,B) = |A|.|B|.sin(theta)
+	     * A x B = |A|.|B|.sin(theta).N, where N is the unit vector
+	     * A x B = det(A,B).N
+	     * A x B = [ y1*z2 - z1*y2 ] = det(A,B).N
+	     *         [ z1*x2 - x1*z2 ]
+	     *         [ x1*y2 - y1*x2 ]
+	     * det(A,B) = sum(A x B)
+	     *
+	     * Second method:
+	     *
+	     * det(A,B) = det( [ x1 x2 1 ]
+	     *                 [ y1 y2 1 ]
+	     *                 [ z1 z2 1 ] )
+	     * det(A,B) = x1*y2*1 + y1*z2*1 + z1*x2*1 - 1*y2*z1 - 1*z2*x1 - 1*x2*y1
+	     */
+	    return x1 * y2 + y1 * z2 + z1 * x2 - y2 * z1 - z2 * x1 - x2 * y1;
 	}
-	
-	
+
 	/**
 	 * Replies if two vectors are colinear.
-	 * <p>
-	 * This function uses the equal-to-zero test with the error {@link MathConstants#EPSILON}.
-	 * 
+	 *
+	 * <p>This function uses the test {@link MathUtil#isEpsilonZero(double)}.
+	 *
 	 * @param x1
 	 *            is the X coordinate of the first vector
 	 * @param y1
@@ -175,13 +198,13 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 	@Pure
 	static boolean isCollinearVectors(double x1, double y1, double z1, double x2, double y2, double z2) {
 		// Cross product
-		double cx = y1 * z2 - z1 * y2;
-		double cy = z1 * x2 - x1 * z2;
-		double cz = x1 * y2 - y1 * x2;
+		final double cx = y1 * z2 - z1 * y2;
+		final double cy = z1 * x2 - x1 * z2;
+		final double cz = x1 * y2 - y1 * x2;
 
 		return MathUtil.isEpsilonZero(cx * cx + cy * cy + cz * cz);
 	}
-	
+
 	/** Compute the dot product of two vectors.
 	 *
 	 * @param x1 x coordinate of the first vector.
@@ -206,10 +229,10 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 	 * {@link #crossProductRightHand(double, double, double, double, double, double, Vector3D) right-handed cross product}.
 	 * The default coordinate system is given by
 	 * {@link CoordinateSystem3D#getDefaultCoordinateSystem()}.
-	 * 
+	 *
 	 * <img src="doc-files/left_handed_cross_product.png" alt="[Left-Handed Cross Product]">
 	 * <img src="doc-files/left_handed_cross_product.png" alt="[Right-Handed Cross Product]">
-	 * 
+	 *
 	 * @param x1 x coordinate of the vector v1.
 	 * @param y1 y coordinate of the vector v1.
 	 * @param z1 z coordinate of the vector v1.
@@ -231,10 +254,10 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 	 * {@link #crossProductLeftHand(double, double, double, double, double, double, Vector3D) left-handed cross product}
 	 * if the given coordinate system is left-handed. Otherwise, it uses the
 	 * {@link #crossProductRightHand(double, double, double, double, double, double, Vector3D) right-handed cross product}.
-	 * 
+	 *
 	 * <img src="doc-files/left_handed_cross_product.png" alt="[Left-Handed Cross Product]">
 	 * <img src="doc-files/left_handed_cross_product.png" alt="[Right-Handed Cross Product]">
-	 * 
+	 *
 	 * @param x1 x coordinate of the vector v1.
 	 * @param y1 y coordinate of the vector v1.
 	 * @param z1 z coordinate of the vector v1.
@@ -253,8 +276,7 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 					x1, y1, z1,
 					x2, y2, z2,
 					result);
-		}
-		else {
+		} else {
 			crossProductRightHand(
 					x1, y1, z1,
 					x2, y2, z2,
@@ -264,8 +286,8 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 
 	/**
 	 * Computes the cross product of the vectors v1 and v2
-	 * as if the vectors are inside a left-hand coordinate system;
-	 * 
+	 * as if the vectors are inside a left-hand coordinate system.
+	 *
 	 * <img src="doc-files/left_handed_cross_product.png">
 	 *
 	 * @param x1 x coordinate of the vector v1.
@@ -279,16 +301,16 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 	static void crossProductLeftHand(
 			double x1, double y1, double z1,
 			double x2, double y2, double z2, Vector3D<?, ?> result) {
-		double x = y2*z1 - z2*y1;
-		double y = z2*x1 - x2*z1;
-		double z = x2*y1 - y2*x1;
+        final double x = y2 * z1 - z2 * y1;
+        final double y = z2 * x1 - x2 * z1;
+        final double z = x2 * y1 - y2 * x1;
 		result.set(x, y, z);
 	}
 
 	/**
 	 * Computes the cross product of the vectors v1 and v2
-	 * as if the vectors are inside a right-hand coordinate system;
-	 * 
+	 * as if the vectors are inside a right-hand coordinate system.
+	 *
 	 * <img src="doc-files/right_handed_cross_product.png">
 	 *
 	 * @param x1 x coordinate of the vector v1.
@@ -302,59 +324,93 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 	static void crossProductRightHand(
 			double x1, double y1, double z1,
 			double x2, double y2, double z2, Vector3D<?, ?> result) {
-		double x = y1*z2 - z1*y2;
-		double y = z1*x2 - x1*z2;
-		double z = x1*y2 - y1*x2;
-		result.set(x,y,z);
+        final double x = y1 * z2 - z1 * y2;
+        final double y = z1 * x2 - x1 * z2;
+        final double z = x1 * y2 - y1 * x2;
+		result.set(x, y, z);
 	}
 
 	/**
 	 * Compute the signed angle between two vectors.
-	 * 
-	 * @param x1
-	 * @param y1
-	 * @param z1
-	 * @param x2
-	 * @param y2
-	 * @param z2
+	 *
+     * @param x1
+     *            is the X coordinate of the first vector
+     * @param y1
+     *            is the Y coordinate of the first vector
+     * @param z1
+     *            is the Z coordinate of the first vector
+     * @param x2
+     *            is the X coordinate of the second vector
+     * @param y2
+     *            is the Y coordinate of the second vector
+     * @param z2
+     *            is the Z coordinate of the second vector
 	 * @return the angle between <code>-PI</code> and <code>PI</code>.
 	 */
 	@Pure
 	static double signedAngle(double x1, double y1, double z1, double x2, double y2, double z2) {
-		double lengths = Math.sqrt(x1 * x1 + y1 * y1 + z1 * z1) * Math.sqrt(x2 * x2 + y2 * y2 + z2 * z2);
-		if (lengths == 0.)
-			return Double.NaN;
+		final double lengths = Math.sqrt(x1 * x1 + y1 * y1 + z1 * z1) * Math.sqrt(x2 * x2 + y2 * y2 + z2 * z2);
+		if (lengths == 0.) {
+            return Double.NaN;
+        }
 
 		// First method
 		// Angle
 		// A . B = |A|.|B|.cos(theta)
 		double dot = dotProduct(x1, y1, z1, x2, y2, z2) / lengths;
-		if (dot < -1.0)
-			dot = -1.0;
-		if (dot > 1.0)
-			dot = 1.0;
+		if (dot < -1.0) {
+            dot = -1.0;
+        }
+		if (dot > 1.0) {
+            dot = 1.0;
+        }
 		double angle = Math.acos(dot);
 
 		// On which side of A, B is located?
 		if ((dot > -1) && (dot < 1)) {
 			// det(A,B) = |A|.|B|.sin(theta)
 			dot = perpProduct(x1, y1, z1, x2, y2, z2) / lengths;
-			if (dot < 0)
-				angle = -angle;
+			if (dot < 0) {
+                angle = -angle;
+            }
 		}
 
 		return angle;
 	}
-	
-	
+
+    /** Compute a signed angle between this vector and the given vector.
+     *
+     * <p>The signed angle between this vector and the given {@code vector}
+     * is the rotation angle to apply to this vector
+     * to be colinear to the given {@code vector} and pointing the
+     * same demi-plane. It means that the angle replied
+     * by this function is be negative if the rotation
+     * to apply is clockwise, and positive if
+     * the rotation is counterclockwise.
+     *
+     * <p>The value replied by {@link #angle(Vector3D)}
+     * is the absolute value of the vlaue replied by this
+     * function.
+     *
+     * @param vector is the vector to reach.
+     * @return the rotation angle to turn this vector to reach
+     * {@code v}.
+     */
+    @Pure
+    default double signedAngle(Vector3D<?, ?> vector) {
+        assert vector != null : "Vector must be not be null"; //$NON-NLS-1$
+        return signedAngle(getX(), getY(), getZ(), vector.getX(), vector.getY(), vector.getZ());
+    }
+
+
 	/**
 	 * Sets the value of this tuple to the sum of tuples t1 and t2.
 	 * @param vector1 the first tuple
 	 * @param vector2 the second tuple
 	 */
 	default void add(Vector3D<?, ?> vector1, Vector3D<?, ?> vector2) {
-		assert (vector1 != null) : "First vector must be not null"; //$NON-NLS-1$
-		assert (vector2 != null) : "Second vector must be not null"; //$NON-NLS-1$
+		assert vector1 != null : "First vector must be not null"; //$NON-NLS-1$
+		assert vector2 != null : "Second vector must be not null"; //$NON-NLS-1$
 		set(vector1.getX() + vector2.getX(),
 			vector1.getY() + vector2.getY(),
 			vector1.getZ() + vector2.getZ());
@@ -366,7 +422,7 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 	 * @param vector the other tuple
 	 */
 	default void add(Vector3D<?, ?> vector) {
-		assert (vector != null) : "Vector must be not null"; //$NON-NLS-1$
+		assert vector != null : "Vector must be not null"; //$NON-NLS-1$
 		set(getX() + vector.getX(),
 			getY() + vector.getY(),
 			getZ() + vector.getZ());
@@ -380,8 +436,8 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 	 * @param vector2 the tuple to be added
 	 */
 	default void scaleAdd(int scale, Vector3D<?, ?> vector1, Vector3D<?, ?> vector2) {
-		assert (vector1 != null) : "First vector must be not null"; //$NON-NLS-1$
-		assert (vector2 != null) : "Second vector must be not null"; //$NON-NLS-1$
+		assert vector1 != null : "First vector must be not null"; //$NON-NLS-1$
+		assert vector2 != null : "Second vector must be not null"; //$NON-NLS-1$
 		set(scale * vector1.getX() + vector2.getX(),
 			scale * vector1.getY() + vector2.getY(),
 			scale * vector1.getZ() + vector2.getY());
@@ -395,8 +451,8 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 	 * @param vector2 the tuple to be added
 	 */
 	default void scaleAdd(double scale, Vector3D<?, ?> vector1, Vector3D<?, ?> vector2) {
-		assert (vector1 != null) : "First vector must be not null"; //$NON-NLS-1$
-		assert (vector2 != null) : "Second vector must be not null"; //$NON-NLS-1$
+		assert vector1 != null : "First vector must be not null"; //$NON-NLS-1$
+		assert vector2 != null : "Second vector must be not null"; //$NON-NLS-1$
 		set(scale * vector1.getX() + vector2.getX(),
 			scale * vector1.getY() + vector2.getY(),
 			scale * vector1.getZ() + vector2.getY());
@@ -409,7 +465,7 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 	 * @param vector the tuple to be added
 	 */
 	default void scaleAdd(int scale, Vector3D<?, ?> vector) {
-		assert (vector != null) : "Vector must be not null"; //$NON-NLS-1$
+		assert vector != null : "Vector must be not null"; //$NON-NLS-1$
 		set(scale * getX() + vector.getX(),
 			scale * getY() + vector.getY(),
 			scale * getZ() + vector.getZ());
@@ -421,8 +477,8 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 	 * @param scale the scalar value
 	 * @param vector the tuple to be added
 	 */
-	default void scaleAdd(double scale, Vector3D<?, ?> vector){
-		assert (vector != null) : "Vector must be not null"; //$NON-NLS-1$
+	default void scaleAdd(double scale, Vector3D<?, ?> vector) {
+		assert vector != null : "Vector must be not null"; //$NON-NLS-1$
 		set(scale * getX() + vector.getX(),
 			scale * getY() + vector.getY(),
 			scale * getZ() + vector.getZ());
@@ -435,8 +491,8 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 	 * @param vector2 the second tuple
 	 */
 	default void sub(Vector3D<?, ?> vector1, Vector3D<?, ?> vector2) {
-		assert (vector1 != null) : "First vector must be not null"; //$NON-NLS-1$
-		assert (vector2 != null) : "Second vector must be not null"; //$NON-NLS-1$
+		assert vector1 != null : "First vector must be not null"; //$NON-NLS-1$
+		assert vector2 != null : "Second vector must be not null"; //$NON-NLS-1$
 		set(vector1.getX() - vector2.getX(), vector1.getY() - vector2.getY(), vector1.getZ() - vector2.getZ());
 	}
 
@@ -447,8 +503,8 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 	 * @param point2 the second tuple
 	 */
 	default void sub(Point3D<?, ?> point1, Point3D<?, ?> point2) {
-		assert (point1 != null) : "First point must be not null"; //$NON-NLS-1$
-		assert (point2 != null) : "Second point must be not null"; //$NON-NLS-1$
+		assert point1 != null : "First point must be not null"; //$NON-NLS-1$
+		assert point2 != null : "Second point must be not null"; //$NON-NLS-1$
 		set(point1.getX() - point2.getX(), point1.getY() - point2.getY(), point1.getZ() - point2.getZ());
 	}
 
@@ -458,37 +514,37 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 	 * @param vector the other tuple
 	 */
 	default void sub(Vector3D<?, ?> vector) {
-		assert (vector != null) : "Vector must be not null"; //$NON-NLS-1$
+		assert vector != null : "Vector must be not null"; //$NON-NLS-1$
 		set(getX() - vector.getX(), getY() - vector.getY(), getZ() - vector.getZ());
 	}
-	
+
 	/** Compute the power of this vector.
-	 * 
+	 *
 	 * <p>If the power is even, the result is a scalar.
 	 * If the power is odd, the result is a vector.
-	 * 
+	 *
 	 * @param power the power factor.
 	 * @return the power of this vector.
 	 * @see "http://www.euclideanspace.com/maths/algebra/vectors/vecAlgebra/powers/index.htm"
 	 */
 	@Pure
 	default PowerResult<RV> power(int power) {
-		boolean isEven = ((power % 2) == 0);
-		int evenPower;
+		final boolean isEven = power % 2 == 0;
+		final int evenPower;
 		if (isEven) {
 			evenPower = power / 2;
 		} else {
 			evenPower = MathUtil.sign(power) * (Math.abs(power) - 1) / 2;
 		}
-		double x = getX();
-		double y = getY();
-		double z = getZ();
-		double dot = dotProduct(x, y, z, x, y, z);
-		double resultForEven = Math.pow(dot, evenPower);
+		final double x = getX();
+		final double y = getY();
+		final double z = getZ();
+		final double dot = dotProduct(x, y, z, x, y, z);
+		final double resultForEven = Math.pow(dot, evenPower);
 		if (isEven) {
 			return new PowerResult<>(resultForEven);
 		}
-		RV r = getGeomFactory().newVector(getX() * resultForEven, getY() * resultForEven, getZ() * resultForEven);
+		final RV r = getGeomFactory().newVector(getX() * resultForEven, getY() * resultForEven, getZ() * resultForEven);
 		return new PowerResult<>(r);
 
 	}
@@ -500,7 +556,7 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 	 */
 	@Pure
 	default double dot(Vector3D<?, ?> vector) {
-		assert(vector != null) : "Vector must be not null"; //$NON-NLS-1$
+		assert vector != null : "Vector must be not null"; //$NON-NLS-1$
 		return dotProduct(getX(), getY(), getZ(), vector.getX(), vector.getY(), vector.getZ());
 	}
 
@@ -509,14 +565,14 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 	 * <p><pre><code>det(this, V) = |this|.|V|.sin(a)</code></pre>
 	 * where <code>this</code> and <code>V</code> are two vectors
 	 * and <code>a</code> is the angle between <code>this</code>
-	 * and <code>V</code>. 
-	 * 
-	 * @param vector
+	 * and <code>V</code>.
+	 *
+	 * @param vector the vector.
 	 * @return the perp product.
 	 */
 	@Pure
 	default double perp(Vector3D<?, ?> vector) {
-		assert(vector != null) : "Vector must be not null"; //$NON-NLS-1$
+		assert vector != null : "Vector must be not null"; //$NON-NLS-1$
 		return perpProduct(getX(), getY(), getZ(), vector.getX(), vector.getY(), vector.getZ());
 	}
 
@@ -529,21 +585,15 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 	 *
 	 * <img src="doc-files/left_handed_cross_product.png" alt="[Left-Handed Cross Product]">
 	 * <img src="doc-files/right_handed_cross_product.png" alt="[Right-Handed Cross Product]">
-<<<<<<< d1890317c8ed07a4fc001c596ec999e0cff30ac0
-	 *
-	 * @param v1 the other vector
-=======
-	 * 
 	 * @param vector the other vector
->>>>>>> [math] Remaning of default implementation of Vector3D
 	 * @return the cross product.
 	 * @see #crossLeftHand(Vector3D)
 	 * @see #crossRightHand(Vector3D)
 	 */
 	@Pure
 	default RV cross(Vector3D<?, ?> vector) {
-		assert(vector != null) : "Vector must be not null"; //$NON-NLS-1$
-		RV result = getGeomFactory().newVector();
+		assert vector != null : "Vector must be not null"; //$NON-NLS-1$
+		final RV result = getGeomFactory().newVector();
 		crossProduct(getX(), getY(), getZ(), vector.getX(), vector.getY(), vector.getZ(), result);
 		return result;
 	}
@@ -559,21 +609,14 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 	 *
 	 * <img src="doc-files/left_handed_cross_product.png" alt="[Left-Handed Cross Product]">
 	 * <img src="doc-files/right_handed_cross_product.png" alt="[Right-Handed Cross Product]">
-<<<<<<< d1890317c8ed07a4fc001c596ec999e0cff30ac0
-	 *
-	 * @param v1 the left operand.
-	 * @param v2 the right operand.
-=======
-	 * 
-	 * @param vector1
-	 * @param vector2
->>>>>>> [math] Remaning of default implementation of Vector3D
+	 * @param vector1 the first vector
+	 * @param vector2 the second vector
 	 * @see #crossLeftHand(Vector3D, Vector3D)
 	 * @see #crossRightHand(Vector3D, Vector3D)
 	 */
 	default void cross(Vector3D<?, ?> vector1, Vector3D<?, ?> vector2) {
-		assert(vector1 != null) : "First vector must be not null"; //$NON-NLS-1$
-		assert(vector2 != null) : "Second vector must be not null"; //$NON-NLS-1$
+		assert vector1 != null : "First vector must be not null"; //$NON-NLS-1$
+		assert vector2 != null : "Second vector must be not null"; //$NON-NLS-1$
 		crossProduct(vector1.getX(), vector1.getY(), vector1.getZ(), vector2.getX(), vector2.getY(), vector2.getZ(), this);
 	}
 
@@ -587,9 +630,9 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 	 * @return the dot product.
 	 */
 	@Pure
-	default RV crossLeftHand(Vector3D<?, ?> vector){
-		assert(vector != null) : "Vector must be not null"; //$NON-NLS-1$
-		RV result = getGeomFactory().newVector();
+	default RV crossLeftHand(Vector3D<?, ?> vector) {
+		assert vector != null : "Vector must be not null"; //$NON-NLS-1$
+		final RV result = getGeomFactory().newVector();
 		crossProductLeftHand(getX(), getY(), getZ(), vector.getX(), vector.getY(), vector.getZ(), result);
 		return result;
 	}
@@ -601,18 +644,14 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 	 *
 	 * <img src="doc-files/left_handed_cross_product.png">
 	 *
-<<<<<<< d1890317c8ed07a4fc001c596ec999e0cff30ac0
-	 * @param v1 the left operand.
-	 * @param v2 the right operand.
-=======
-	 * @param vector1
-	 * @param vector2
->>>>>>> [math] Remaning of default implementation of Vector3D
+	 * @param vector1 the left operand.
+	 * @param vector2 the right operand.
 	 */
 	default void crossLeftHand(Vector3D<?, ?> vector1, Vector3D<?, ?> vector2) {
-		assert(vector1 != null) : "First vector must be not null"; //$NON-NLS-1$
-		assert(vector2 != null) : "Second vector must be not null"; //$NON-NLS-1$
-		crossProductLeftHand(vector1.getX(), vector1.getY(), vector1.getZ(), vector2.getX(), vector2.getY(), vector2.getZ(), this);
+		assert vector1 != null : "First vector must be not null"; //$NON-NLS-1$
+		assert vector2 != null : "Second vector must be not null"; //$NON-NLS-1$
+        crossProductLeftHand(vector1.getX(), vector1.getY(), vector1.getZ(), vector2.getX(), vector2.getY(), vector2.getZ(),
+                this);
 	}
 
 	/**
@@ -626,8 +665,8 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 	 */
 	@Pure
 	default Vector3D<?, ?> crossRightHand(Vector3D<?, ?> vector) {
-		assert(vector != null) : "Vector must be not null"; //$NON-NLS-1$
-		RV result = getGeomFactory().newVector();
+		assert vector != null : "Vector must be not null"; //$NON-NLS-1$
+		final RV result = getGeomFactory().newVector();
 		crossProductRightHand(getX(), getY(), getZ(), vector.getX(), vector.getY(), vector.getZ(), result);
 		return result;
 	}
@@ -639,18 +678,14 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 	 *
 	 * <img src="doc-files/right_handed_cross_product.png">
 	 *
-<<<<<<< d1890317c8ed07a4fc001c596ec999e0cff30ac0
-	 * @param v1 the left operand.
-	 * @param v2 the right operand.
-=======
-	 * @param vector1
-	 * @param vector2
->>>>>>> [math] Remaning of default implementation of Vector3D
+	 * @param vector1 the left operand
+	 * @param vector2 the right operand
 	 */
 	default void crossRightHand(Vector3D<?, ?> vector1, Vector3D<?, ?> vector2) {
-		assert(vector1 != null) : "First vector must be not null"; //$NON-NLS-1$
-		assert(vector2 != null) : "Second vector must be not null"; //$NON-NLS-1$
-		crossProductRightHand(vector1.getX(), vector1.getY(), vector1.getZ(), vector2.getX(), vector2.getY(), vector2.getZ(), this);
+		assert vector1 != null : "First vector must be not null"; //$NON-NLS-1$
+		assert vector2 != null : "Second vector must be not null"; //$NON-NLS-1$
+        crossProductRightHand(vector1.getX(), vector1.getY(), vector1.getZ(), vector2.getX(), vector2.getY(), vector2.getZ(),
+                this);
 	}
 
 	/**
@@ -659,9 +694,9 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 	 */
 	@Pure
 	default double getLength() {
-		double x = getX();
-		double y = getY();
-		double z = getZ();
+		final double x = getX();
+		final double y = getY();
+		final double z = getZ();
 		return Math.sqrt(x * x + y * y + z * z);
 	}
 
@@ -671,23 +706,23 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 	 */
 	@Pure
 	default double getLengthSquared() {
-		double x = getX();
-		double y = getY();
-		double z = getZ();
+		final double x = getX();
+		final double y = getY();
+		final double z = getZ();
 		return x * x + y * y + z * z;
 	}
 
 	/**
 	 * Sets the value of this vector to the normalization of vector v1.
 	 * @param vector the un-normalized vector
-	 */ 
-	default void normalize(Vector3D<?, ?> vector){
-		assert (vector != null) : "Vector must be not be null"; //$NON-NLS-1$
-		double x = vector.getX();
-		double y = vector.getY();
-		double z = vector.getZ();
+	 */
+	default void normalize(Vector3D<?, ?> vector) {
+		assert vector != null : "Vector must be not be null"; //$NON-NLS-1$
+		final double x = vector.getX();
+		final double y = vector.getY();
+		final double z = vector.getZ();
 		double sqlength = x * x + y * y + z * z;
-		if(sqlength != 0.) {
+        if (sqlength != 0.) {
 			sqlength = Math.sqrt(sqlength);
 			set(x / sqlength, y / sqlength, z / sqlength);
 		} else {
@@ -697,13 +732,13 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 
 	/**
 	 * Normalizes this vector in place.
-	 */  
+	 */
 	default void normalize() {
-		double x = getX();
-		double y = getY();
-		double z = getZ();
+		final double x = getX();
+		final double y = getY();
+		final double z = getZ();
 		double sqlength = x * x + y * y + z * z;
-		if(sqlength != 0.) {
+        if (sqlength != 0.) {
 			sqlength = Math.sqrt(sqlength);
 			set(x / sqlength, y / sqlength, z / sqlength);
 		} else {
@@ -721,8 +756,12 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 	@Pure
 	default double angle(Vector3D<?, ?> v1) {
 		double vDot = this.dot(v1) / (this.getLength() * v1.getLength());
-		if( vDot < -1.) vDot = -1.;
-		if( vDot >  1.) vDot =  1.;
+        if (vDot < -1.) {
+            vDot = -1.;
+        }
+        if (vDot > 1.) {
+            vDot =  1.;
+        }
 		return Math.acos(vDot);
 	}
 
@@ -732,33 +771,19 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 	 * @param angle is the rotation angle in radians.
 	 */
 	default void turnVector(Vector3D<?, ?> axis, double angle) {
-		Transform3D mat = new Transform3D();
+		final Transform3D mat = new Transform3D();
 		mat.setRotation(getGeomFactory().newQuaternion(axis, angle));
 		mat.transform(this);
-	}
-	
-	/** Replies if this first is a unit vector.
-	 * A unit vector has a length equal to 1.
-	 *
-	 * <p>This function approximates the test on the length of the vector.
-	 * This approximation could be based on {@link MathUtil#isEpsilonEqual(double, double)}.
-	 *
-	 * @return <code>true</code> if the vector has a length equal to 1.
-	 * <code>false</code> otherwise.
-	 */
-	@Pure
-	default boolean isUnitVector() {
-		return isUnitVector(getX(), getY(), getZ());
 	}
 
 	/** Replies if this vector is colinear to the given vector.
 	 *
-	 * @param vector
+	 * @param vector the vector
 	 * @return <code>true</code> if the vectors are colinear..
 	 */
 	@Pure
 	default boolean isColinear(Vector3D<?, ?> vector) {
-		assert(vector != null) : "Vector must be not null"; //$NON-NLS-1$
+		assert vector != null : "Vector must be not null"; //$NON-NLS-1$
 		return isCollinearVectors(getX(), getY(), getZ(), vector.getX(), vector.getY(), vector.getZ());
 	}
 
@@ -768,61 +793,37 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 	 * @param newLength - the new length.
 	 */
 	default void setLength(double newLength) {
-		assert (newLength >= 0) : "Length must be positive or zero"; //$NON-NLS-1$
-		double l = getLength();
+		assert newLength >= 0 : "Length must be positive or zero"; //$NON-NLS-1$
+		final double l = getLength();
 		if (l != 0.) {
-			double f = newLength / l;
+			final double f = newLength / l;
 			set(getX() * f, getY() * f, getZ() * f);
 		} else {
 			set(newLength, 0, 0);
 		}
 	}
-	
-	/** Compute a signed angle between this vector and the given vector.
-	 * <p>
-	 * The signed angle between this vector and the given {@code vector}
-	 * is the rotation angle to apply to this vector
-	 * to be colinear to the given {@code vector} and pointing the
-	 * same demi-plane. It means that the angle replied
-	 * by this function is be negative if the rotation
-	 * to apply is clockwise, and positive if
-	 * the rotation is counterclockwise.
-	 * <p>
-	 * The value replied by {@link #angle(Vector3D)}
-	 * is the absolute value of the vlaue replied by this
-	 * function. 
-	 *
-	 * @param vector is the vector to reach.
-	 * @return the rotation angle to turn this vector to reach
-	 * {@code v}.
-	 */
-	@Pure
-	default double signedAngle(Vector3D<?, ?> vector) {
-		assert (vector != null) : "Vector must be not be null"; //$NON-NLS-1$
-		return signedAngle(getX(), getY(), getZ(), vector.getX(), vector.getY(), vector.getZ());
-	}
-	
+
 	/** Replies the unit vector of this vector.
 	 *
 	 * @return the unit vector of this vector.
 	 */
 	@Pure
 	RV toUnitVector();
-	
+
 	/** Replies an unmodifiable copy of this vector.
 	 *
 	 * @return an unmodifiable copy.
 	 */
 	@Pure
 	UnmodifiableVector3D<RV, RP> toUnmodifiable();
-	
+
 	/** Replies the geometry factory associated to this point.
-	 * 
+	 *
 	 * @return the factory.
 	 */
 	@Pure
 	GeomFactory3D<RV, RP> getGeomFactory();
-	
+
 	/** Add a vector to this vector: {@code this += v}
 	 *
 	 * <p>This function is an implementation of the "-" operator for
@@ -835,7 +836,7 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 	default void operator_add(Vector3D<?, ?> v) {
 		add(v);
 	}
-	
+
 	/** Substract a vector to this vector: {@code this -= v}
 	 *
 	 * <p>This function is an implementation of the "-" operator for
@@ -863,6 +864,21 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 	default double operator_multiply(Vector3D<?, ?> v) {
 		return dot(v);
 	}
+
+    /** Scale this vector: {@code this * f}
+     *
+     * <p>This function is an implementation of the "-" operator for
+     * the languages that defined or based on the
+     * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+     *
+     * @param scale the scaling factor.
+     * @return the scaled vector.
+     * @see #scale(double)
+     */
+    @Pure
+    default RV operator_multiply(double scale) {
+        return getGeomFactory().newVector(getX() * scale, getY() * scale, getZ() * scale);
+    }
 
 	/** Replies if this vector and the given vector are equal: {@code this == v}
 	 *
@@ -939,6 +955,22 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 		return -signedAngle(v);
 	}
 
+    /** Subtract a vector to this vector: {@code this - v}
+     *
+     * <p>This function is an implementation of the "-" operator for
+     * the languages that defined or based on the
+     * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+     *
+     * @param v the vector
+     * @return the result.
+     * @see #sub(Vector3D)
+     */
+    @Pure
+    default RV operator_minus(Vector3D<?, ?> v) {
+        assert v != null : "Vector must be not null"; //$NON-NLS-1$
+        return getGeomFactory().newVector(getX() - v.getX(), getY() - v.getY(), getZ() - v.getZ());
+    }
+
 	/** Negation of this vector: {@code -this}
 	 *
 	 * <p>This function is an implementation of the "-" operator for
@@ -953,33 +985,18 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 		return getGeomFactory().newVector(-getX(), -getY(), -getZ());
 	}
 
-	/** Scale this vector: {@code this * f}
-	 *
-	 * <p>This function is an implementation of the "-" operator for
-	 * the languages that defined or based on the
-	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
-	 *
-	 * @param f the scaling factor.
-	 * @return the scaled vector.
-	 * @see #scale(double)
-	 */
-	@Pure
-	default RV operator_multiply(double f) {
-		return getGeomFactory().newVector(getX() * f, getY() * f, getZ() * f);
-	}
-
 	/** Scale this vector: {@code this / f}.
 	 *
 	 * <p>This function is an implementation of the "-" operator for
 	 * the languages that defined or based on the
 	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
 	 *
-	 * @param f the scaling factor
+	 * @param scale the scaling factor
 	 * @return the scaled vector.
 	 */
 	@Pure
-	default RV operator_divide(double f) {
-		return getGeomFactory().newVector(getX() / f, getY() / f, getZ() / f);
+	default RV operator_divide(double scale) {
+		return getGeomFactory().newVector(getX() / scale, getY() / scale, getZ() / scale);
 	}
 
 	/** If this vector is epsilon equal to zero then reply v else reply this: {@code this ?: v}
@@ -999,21 +1016,6 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 		return this;
 	}
 
-	/** Subtract a vector to this vector: {@code this - v}
-	 *
-	 * <p>This function is an implementation of the "-" operator for
-	 * the languages that defined or based on the
-	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
-	 *
-	 * @param v the vector
-	 * @return the result.
-	 * @see #sub(Vector3D)
-	 */
-	@Pure
-	default RV operator_minus(Vector3D<?, ?> v) {
-		assert (v != null) : "Vector must be not null"; //$NON-NLS-1$
-		return getGeomFactory().newVector(getX() - v.getX(), getY() - v.getY(), getZ() - v.getZ());
-	}
 
 	/** Sum of this vector and the given vector: {@code this + v}
 	 *
@@ -1027,8 +1029,24 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 	 */
 	@Pure
 	default RV operator_plus(Vector3D<?, ?> v) {
-		assert (v != null) : "Vector must be not null"; //$NON-NLS-1$
+		assert v != null : "Vector must be not null"; //$NON-NLS-1$
 		return getGeomFactory().newVector(getX() + v.getX(), getY() + v.getY(), getZ() + v.getZ());
+	}
+
+	/** Add this vector to a point: {@code this + p}
+	 *
+	 * <p>This function is an implementation of the "-" operator for
+	 * the languages that defined or based on the
+	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
+	 *
+	 * @param point the point.
+	 * @return the result.
+	 * @see Point3D#add(Vector3D, Point3D)
+	 */
+	@Pure
+	default RP operator_plus(Point3D<?, ?> point) {
+	    assert point != null : "Point must be not null"; //$NON-NLS-1$
+	    return getGeomFactory().newPoint(getX() + point.getX(), getY() + point.getY(), getZ() + point.getZ());
 	}
 
 	/** Perp product of this vector and the given vector: {@code this ** v}.
@@ -1047,7 +1065,7 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 	}
 
 	/** Compute the power of this vector: {@code this ** n}.
-	 * 
+	 *
 	 * <p>If the power is even, the result is a scalar.
 	 * If the power is odd, the result is a vector.
 	 *
@@ -1055,34 +1073,18 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 	 * the languages that defined or based on the
 	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
 	 *
-	 * @param n the power factor.
+	 * @param power the power factor.
 	 * @return the power of this vector.
 	 * @see #power(int)
 	 * @see "http://www.euclideanspace.com/maths/algebra/vectors/vecAlgebra/powers/index.htm"
 	 */
 	@Pure
-	default PowerResult<RV> operator_power(int n) {
-		return power(n);
+	default PowerResult<RV> operator_power(int power) {
+		return power(power);
 	}
 
-	/** Add this vector to a point: {@code this + p}
-	 *
-	 * <p>This function is an implementation of the "-" operator for
-	 * the languages that defined or based on the
-	 * <a href="https://www.eclipse.org/Xtext/">Xtext framework</a>.
-	 *
-	 * @param p the point.
-	 * @return the result.
-	 * @see Point3D#add(Vector3D, Point3D)
-	 */
-	@Pure
-	default RP operator_plus(Point3D<?, ?> p) {
-		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
-		return getGeomFactory().newPoint(getX() + p.getX(), getY() + p.getY(), getZ() + p.getZ());
-	}
-	
 	/** Result of the power of a Vector3D.
-	 * 
+	 *
 	 * @param <T> the type of the vector.
 	 * @author $Author: tpiotrow$
 	 * @author $Author: sgalland$
@@ -1111,11 +1113,11 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 		 * @param vector the vector result.
 		 */
 		PowerResult(T vector) {
-			assert (vector != null) : "Vector must be not null"; //$NON-NLS-1$
+			assert vector != null : "Vector must be not null"; //$NON-NLS-1$
 			this.scalar = Double.NaN;
 			this.vector = vector;
 		}
-		
+
 		@Pure
 		@Override
 		public String toString() {
@@ -1124,17 +1126,17 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 			}
 			return Double.toString(this.scalar);
 		}
-		
+
 		private boolean isSameScalar(Number number) {
 			return number.equals(Double.valueOf(this.scalar));
 		}
-		
+
 		private boolean isSameVector(Vector3D<?, ?> vector) {
 			if (this.vector == vector) {
 				return true;
 			}
 			if (this.vector != null) {
-				return this.vector.equals((Vector3D<?, ?>) vector); 
+                return this.vector.equals((Vector3D<?, ?>) vector);
 			}
 			return false;
 		}
@@ -1146,7 +1148,7 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 				if (this == obj) {
 					return true;
 				}
-				PowerResult<?> result = (PowerResult<?>) obj;
+				final PowerResult<?> result = (PowerResult<?>) obj;
 				if (result.vector != null) {
 					return isSameVector(result.vector);
 				}
@@ -1160,14 +1162,14 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 			}
 			return false;
 		}
-		
+
 		@Override
 		@Pure
 		public int hashCode() {
 			long bits = 1;
 			bits = 31 * bits + Double.doubleToLongBits(this.scalar);
 			bits = 31 * bits + ((this.vector == null) ? 0 : this.vector.hashCode());
-			int b = (int) bits;
+			final int b = (int) bits;
 			return b ^ (b >> 32);
 		}
 
@@ -1188,11 +1190,11 @@ public interface Vector3D<RV extends Vector3D<? super RV, ? super RP>, RP extend
 		public T getVector() {
 			return this.vector;
 		}
-		
+
 		/** Replies if the result is vectorial.
 		 *
 		 * @return <code>true</code> if the result is vectorial. <code>false</code>
-		 * if the result if scalar.
+		 *     if the result if scalar.
 		 */
 		@Pure
 		public boolean isVectorial() {

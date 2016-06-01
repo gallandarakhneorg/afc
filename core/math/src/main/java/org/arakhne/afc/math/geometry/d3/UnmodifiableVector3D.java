@@ -1,24 +1,27 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (c) 2016, Multiagent Team,
- * Laboratoire Systemes et Transports,
- * Universite de Technologie de Belfort-Montbeliard.
- * All rights reserved.
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
  *
- * This software is the confidential and proprietary information
- * of the Laboratoire Systemes et Transports (SET)
- * of Universite de Technologie de Belfort-Montbeliard.
- * You shall not disclose such Confidential Information and shall use
- * it only in accordance with the terms of the license agreement
- * you entered into with the SET.
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
  *
- * http://www.multiagent.fr/
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package org.arakhne.afc.math.geometry.d3;
 
 /** Unmodifiable 3D Vector.
- * 
+ *
  * @param <RV> is the type of vector that can be returned by this tuple.
  * @param <RP> is the type of point that can be returned by this tuple.
  * @author $Author: tpiotrow$
@@ -78,12 +81,12 @@ public interface UnmodifiableVector3D<RV extends Vector3D<? super RV, ? super RP
 	default void cross(Vector3D<?, ?> vector1, Vector3D<?, ?> vector2) {
 		throw new UnsupportedOperationException();
 	}
-	
+
 	@Override
 	default void crossLeftHand(Vector3D<?, ?> vector1, Vector3D<?, ?> vector2) {
 		throw new UnsupportedOperationException();
 	}
-	
+
 	@Override
 	default void crossRightHand(Vector3D<?, ?> vector1, Vector3D<?, ?> vector2) {
 		throw new UnsupportedOperationException();
@@ -98,7 +101,7 @@ public interface UnmodifiableVector3D<RV extends Vector3D<? super RV, ? super RP
 	default void normalize() {
 		throw new UnsupportedOperationException();
 	}
-	
+
 	@Override
 	default void turnVector(Vector3D<?, ?> axis, double angle) {
 		throw new UnsupportedOperationException();

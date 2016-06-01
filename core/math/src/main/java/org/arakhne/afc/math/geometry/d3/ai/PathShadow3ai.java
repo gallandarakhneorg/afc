@@ -1,38 +1,39 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (C) 2005-09 Stephane GALLAND.
- * Copyright (C) 2012-13 Stephane GALLAND.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package org.arakhne.afc.math.geometry.d3.ai;
 
 import java.util.Iterator;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
-import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Shadow of a path that is used for computing the crossing values
  * between a shape and the shadow.
  *
  * @param <B> the type of the bounds.
  * @author $Author: sgalland$
+ * @author $Author: tpiotrow$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
@@ -41,21 +42,22 @@ import org.eclipse.xtext.xbase.lib.Pure;
 public class PathShadow3ai<B extends RectangularPrism3ai<?, ?, ?, ?, ?, B>> {
 
 	private final Path3ai<?, ?, ?, ?, ?, B> path;
+
 	private final B bounds;
 
-	/**
-	 * @param path
-	 */
+	/** Construct new path shadow.
+     * @param path the path that is constituting the shadow.
+     */
 	public PathShadow3ai(Path3ai<?, ?, ?, ?, ?, B> path) {
-		assert (path != null) : "Path must not be null"; //$NON-NLS-1$
+		assert path != null : "Path must not be null"; //$NON-NLS-1$
 		this.path = path;
 		this.bounds = this.path.toBoundingBox();
-		assert (this.bounds != null) : "Bounding box of the path must not be null"; //$NON-NLS-1$
+		assert this.bounds != null : "Bounding box of the path must not be null"; //$NON-NLS-1$
 	}
 
 	/** Compute the crossings between this shadow and
 	 * the given segment.
-	 * 
+	 *
 	 * @param crossings is the initial value of the crossings.
 	 * @param x0 is the first point of the segment.
 	 * @param y0 is the first point of the segment.
@@ -70,7 +72,7 @@ public class PathShadow3ai<B extends RectangularPrism3ai<?, ?, ?, ?, ?, B>> {
 			int crossings,
 			int x0, int y0, int z0,
 			int x1, int y1, int z1) {
-		int numCrosses = 
+		int numCrosses =
 				Segment3ai.computeCrossingsFromRect(crossings,
 						this.bounds.getMinX(),
 						this.bounds.getMinY(),
@@ -81,10 +83,10 @@ public class PathShadow3ai<B extends RectangularPrism3ai<?, ?, ?, ?, ?, B>> {
 						x0, y0, z0,
 						x1, y1, z1);
 
-		if (numCrosses==MathConstants.SHAPE_INTERSECTS) {
+        if (numCrosses == MathConstants.SHAPE_INTERSECTS) {
 			// The segment is intersecting the bounds of the shadow path.
 			// We must consider the shape of shadow path now.
-			PathShadowData data = new PathShadowData(
+			final PathShadowData data = new PathShadowData(
 					this.bounds.getMaxX(),
 					this.bounds.getMinY(),
 					this.bounds.getMaxY());
@@ -96,30 +98,26 @@ public class PathShadow3ai<B extends RectangularPrism3ai<?, ?, ?, ?, ?, B>> {
 					this.path.getWindingRule(),
 					this.path.getGeomFactory(),
 					data);
-			numCrosses = data.crossings;
+			numCrosses = data.getCrossings();
 
-			int mask = (this.path.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2);
-			if (numCrosses == MathConstants.SHAPE_INTERSECTS ||
-					(numCrosses & mask) != 0) {
+            final int mask = this.path.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
+            if (numCrosses == MathConstants.SHAPE_INTERSECTS || (numCrosses & mask) != 0) {
 				// The given line is intersecting the path shape
 				return MathConstants.SHAPE_INTERSECTS;
 			}
 
 			// There is no intersection with the shadow path's shape.
 			int inc = 0;
-			if (data.hasX4ymin && 
-					data.x4ymin>=data.xmin4ymin) {
+            if (data.isHasX4ymin() && data.getX4ymin() >= data.getXmin4ymin()) {
 				++inc;
 			}
-			if (data.hasX4ymax && 
-					data.x4ymax>=data.xmin4ymax) {
+            if (data.isHasX4ymax() && data.getX4ymax() >= data.getXmin4ymax()) {
 				++inc;
 			}
 
-			if (y0<y1) {
+            if (y0 < y1) {
 				numCrosses += inc;
-			}
-			else {
+			} else {
 				numCrosses -= inc;
 			}
 
@@ -130,14 +128,17 @@ public class PathShadow3ai<B extends RectangularPrism3ai<?, ?, ?, ?, ?, B>> {
 		return numCrosses;
 	}
 
+	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity", "checkstyle:parameternumber"})
 	private static <E extends PathElement3ai> void computeCrossings1(
-			Iterator<? extends PathElement3ai> pi, 
-			int x1, int y1, int z1, int x2, int y2, int z2, 
+			Iterator<? extends PathElement3ai> pi,
+			int x1, int y1, int z1, int x2, int y2, int z2,
 			boolean closeable,
 			PathWindingRule rule,
 			GeomFactory3ai<E, ?, ?, ?> factory,
-			PathShadowData data) {	
-		if (!pi.hasNext() || data.crossings==MathConstants.SHAPE_INTERSECTS) return;
+			PathShadowData data) {
+        if (!pi.hasNext() || data.getCrossings() == MathConstants.SHAPE_INTERSECTS) {
+            return;
+        }
 		PathElement3ai element;
 
 		element = pi.next();
@@ -152,14 +153,19 @@ public class PathShadow3ai<B extends RectangularPrism3ai<?, ?, ?, ?, ?, B>> {
 		int curx = movx;
 		int cury = movy;
 		int curz = movz;
-		int endx, endy, endz;
-		while (data.crossings!=MathConstants.SHAPE_INTERSECTS && pi.hasNext()) {
+		int endx;
+		int endy;
+		int endz;
+        while (data.getCrossings() != MathConstants.SHAPE_INTERSECTS && pi.hasNext()) {
 			element = pi.next();
 			switch (element.getType()) {
 			case MOVE_TO:
-				movx = curx = element.getToX();
-				movy = cury = element.getToY();
-				movz = curz = element.getToZ();
+				movx = element.getToX();
+				curx = movx;
+				movy = element.getToY();
+				cury = movy;
+				movz = element.getToZ();
+				curz = movz;
 				break;
 			case LINE_TO:
 				endx = element.getToX();
@@ -170,7 +176,7 @@ public class PathShadow3ai<B extends RectangularPrism3ai<?, ?, ?, ?, ?, B>> {
 						endx, endy, endz,
 						x1, y1, z1, x2, y2, z2,
 						data);
-				if (data.crossings==MathConstants.SHAPE_INTERSECTS) {
+                if (data.getCrossings() == MathConstants.SHAPE_INTERSECTS) {
 					return;
 				}
 				curx = endx;
@@ -178,32 +184,30 @@ public class PathShadow3ai<B extends RectangularPrism3ai<?, ?, ?, ?, ?, B>> {
 				curz = endz;
 				break;
 			case QUAD_TO:
-			{
-				endx = element.getToX();
-				endy = element.getToY();
-				endz = element.getToZ();
-				// only for local use.
-				localPath = factory.newPath(rule);
-				localPath.moveTo(curx, cury, curz);
-				localPath.quadTo(
+                endx = element.getToX();
+                endy = element.getToY();
+                endz = element.getToZ();
+                // only for local use.
+                localPath = factory.newPath(rule);
+                localPath.moveTo(curx, cury, curz);
+                localPath.quadTo(
 						element.getCtrlX1(), element.getCtrlY1(), element.getCtrlZ1(),
 						endx, endy, endz);
-				computeCrossings1(
+                computeCrossings1(
 						localPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
 						x1, y1, z1, x2, y2, z2,
 						false,
 						rule,
 						factory,
 						data);
-				if (data.crossings==MathConstants.SHAPE_INTERSECTS) {
+                if (data.getCrossings() == MathConstants.SHAPE_INTERSECTS) {
 					return;
 				}
-				curx = endx;
-				cury = endy;
-				curz = endz;
-				break;
-			}
-			case CURVE_TO:
+                curx = endx;
+                cury = endy;
+                curz = endz;
+                break;
+            case CURVE_TO:
 				endx = element.getToX();
 				endy = element.getToY();
 				endz = element.getToZ();
@@ -221,7 +225,7 @@ public class PathShadow3ai<B extends RectangularPrism3ai<?, ?, ?, ?, ?, B>> {
 						rule,
 						factory,
 						data);
-				if (data.crossings==MathConstants.SHAPE_INTERSECTS) {
+                if (data.getCrossings() == MathConstants.SHAPE_INTERSECTS) {
 					return;
 				}
 				curx = endx;
@@ -236,18 +240,21 @@ public class PathShadow3ai<B extends RectangularPrism3ai<?, ?, ?, ?, ?, B>> {
 							x1, y1, z1, x2, y2, z2,
 							data);
 				}
-				if (data.crossings!=0)	return;
+                if (data.getCrossings() != 0) {
+                    return;
+                }
 				curx = movx;
 				cury = movy;
 				curz = movz;
 				break;
+			case ARC_TO:
 			default:
 			}
 		}
 
-		assert(data.crossings!=MathConstants.SHAPE_INTERSECTS);
+        assert data.getCrossings() != MathConstants.SHAPE_INTERSECTS;
 
-		boolean isOpen = (curx != movx) || (cury != movy) || (curz != movz);
+		final boolean isOpen = (curx != movx) || (cury != movy) || (curz != movz);
 
 		if (isOpen) {
 			if (closeable) {
@@ -256,71 +263,75 @@ public class PathShadow3ai<B extends RectangularPrism3ai<?, ?, ?, ?, ?, B>> {
 						movx, movy, movz,
 						x1, y1, z1, x2, y2, z2,
 						data);
-			}
-			else {
+			} else {
 				// Assume that when is the path is open, only
 				// SHAPE_INTERSECTS may be return
-				data.crossings = 0;
+				data.setCrossings(0);
 			}
 		}
 	}
 
+	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity"})
 	private static void computeCrossings2(
 			int shadow_x0, int shadow_y0, int shadow_z0,
 			int shadow_x1, int shadow_y1, int shadow_z1,
 			int sx0, int sy0, int sz0,
 			int sx1, int sy1, int sz1,
 			PathShadowData data) {
-		int shadow_xmin = Math.min(shadow_x0, shadow_x1);
-		int shadow_xmax = Math.max(shadow_x0, shadow_x1);
-		int shadow_ymin = Math.min(shadow_y0, shadow_y1);
-		int shadow_ymax = Math.max(shadow_y0, shadow_y1);
-		int shadow_zmin = Math.min(shadow_z0, shadow_z1);
-		int shadow_zmax = Math.max(shadow_z0, shadow_z1);
+		final int shadowXmin = Math.min(shadow_x0, shadow_x1);
+		final int shadowXmax = Math.max(shadow_x0, shadow_x1);
+		final int shadowYmin = Math.min(shadow_y0, shadow_y1);
+		final int shadowYmax = Math.max(shadow_y0, shadow_y1);
+		final int shadowZmin = Math.min(shadow_z0, shadow_z1);
+		final int shadowZmax = Math.max(shadow_z0, shadow_z1);
 
 		data.updateShadowLimits(shadow_x0, shadow_y0, shadow_z0, shadow_x1, shadow_y1, shadow_z1);
 
-		if (sy0<shadow_ymin && sy1<shadow_ymin) return;
-		if (sy0>shadow_ymax && sy1>shadow_ymax) return;
-		if (sx0<shadow_xmin && sx1<shadow_xmin) return;
-		if (sx0>shadow_xmax && sx1>shadow_xmax) {
+        if (sy0 < shadowYmin && sy1 < shadowYmin) {
+            return;
+        }
+        if (sy0 > shadowYmax && sy1 > shadowYmax) {
+            return;
+        }
+        if (sx0 < shadowXmin && sx1 < shadowXmin) {
+            return;
+        }
+        if (sx0 > shadowXmax && sx1 > shadowXmax) {
 			// The line is entirely at the right of the shadow
 			if (sy1 != sy0) {
-				double alpha = (sx1 - sx0) / (sy1 - sy0);
-				if (sy0<sy1) {
-					if (sy0<=shadow_ymin) {
-						int xintercept = (int) Math.round(sx0 + (shadow_ymin - sy0) * alpha);
-						data.setCrossingForYMin(xintercept, shadow_ymin);
-						++data.crossings;
+                final double alpha = (sx1 - sx0) / (sy1 - sy0);
+                if (sy0 < sy1) {
+                    if (sy0 <= shadowYmin) {
+						final int xintercept = (int) Math.round(sx0 + (shadowYmin - sy0) * alpha);
+						data.setCrossingForYMin(xintercept, shadowYmin);
+						data.setCrossings(data.getCrossings() + 1);
 					}
-					if (sy1>=shadow_ymax) {
-						int xintercept = (int) Math.round(sx0 + (shadow_ymax - sy0) * alpha);
-						data.setCrossingForYMax(xintercept, shadow_ymax);
-						++data.crossings;
+                    if (sy1 >= shadowYmax) {
+						final int xintercept = (int) Math.round(sx0 + (shadowYmax - sy0) * alpha);
+						data.setCrossingForYMax(xintercept, shadowYmax);
+						data.setCrossings(data.getCrossings() + 1);
 					}
-				}
-				else {
-					if (sy1<=shadow_ymin) {
-						int xintercept = (int) Math.round(sx0 + (shadow_ymin - sy0) * alpha);
-						data.setCrossingForYMin(xintercept, shadow_ymin);
-						--data.crossings;
+				} else {
+                    if (sy1 <= shadowYmin) {
+						final int xintercept = (int) Math.round(sx0 + (shadowYmin - sy0) * alpha);
+						data.setCrossingForYMin(xintercept, shadowYmin);
+						data.setCrossings(data.getCrossings() - 1);
 					}
-					if (sy0>=shadow_ymax) {
-						int xintercept = (int) Math.round(sx0 + (shadow_ymax - sy0) * alpha);
-						data.setCrossingForYMax(xintercept, shadow_ymax);
-						--data.crossings;
+                    if (sy0 >= shadowYmax) {
+						final int xintercept = (int) Math.round(sx0 + (shadowYmax - sy0) * alpha);
+						data.setCrossingForYMax(xintercept, shadowYmax);
+						data.setCrossings(data.getCrossings() - 1);
 					}
 				}
 			}
-		}
-		else if (Segment3ai.intersectsSegmentSegment(
+		} else if (Segment3ai.intersectsSegmentSegment(
 				shadow_x0, shadow_y0, shadow_z0, shadow_x1, shadow_y1, shadow_z1,
 				sx0, sy0, sz0, sx1, sy1, sz1)) {
-			data.crossings = MathConstants.SHAPE_INTERSECTS;
-		}
-		else {
-			int side1, side2;
-			boolean isUp = (shadow_y0<=shadow_y1);
+			data.setCrossings(MathConstants.SHAPE_INTERSECTS);
+		} else {
+			final int side1;
+			final int side2;
+            final boolean isUp = shadow_y0 <= shadow_y1;
 			if (isUp) {
 				side1 = Segment3ai.computeSideLinePoint(
 						shadow_x0, shadow_y0, shadow_z0,
@@ -330,8 +341,7 @@ public class PathShadow3ai<B extends RectangularPrism3ai<?, ?, ?, ?, ?, B>> {
 						shadow_x0, shadow_y0, shadow_z0,
 						shadow_x1, shadow_y1, shadow_z1,
 						sx1, sy1, sz1);
-			}
-			else {
+			} else {
 				side1 = Segment3ai.computeSideLinePoint(
 						shadow_x1, shadow_y1, shadow_z1,
 						shadow_x0, shadow_y0, shadow_z0,
@@ -341,7 +351,7 @@ public class PathShadow3ai<B extends RectangularPrism3ai<?, ?, ?, ?, ?, B>> {
 						shadow_x0, shadow_y0, shadow_z0,
 						sx1, sy1, sz1);
 			}
-			if (side1>0 || side2>0) {
+            if (side1 > 0 || side2 > 0) {
 				computeCrossings3(
 						shadow_x0, shadow_y0, shadow_z0,
 						sx0, sy0, sz0, sx1, sy1, sz1,
@@ -354,27 +364,35 @@ public class PathShadow3ai<B extends RectangularPrism3ai<?, ?, ?, ?, ?, B>> {
 		}
 	}
 
+	@SuppressWarnings("checkstyle:parameternumber")
 	private static void computeCrossings3(
 			int shadowx, int shadowy, int shadowz,
 			int sx0, int sy0, int sz0,
 			int sx1, int sy1, int sz1,
 			PathShadowData data,
 			boolean isUp) {
-		if (shadowy < sy0 && shadowy < sy1) return;
-		if (shadowy > sy0 && shadowy > sy1) return;
-		if (shadowx > sx0 && shadowx > sx1) return;
-		int xintercept = (int) Math.round((double) sx0 + (shadowy - sy0) * (sx1 - sx0) / (sy1 - sy0));
-		if (shadowx > xintercept) return;
+        if (shadowy < sy0 && shadowy < sy1) {
+            return;
+        }
+        if (shadowy > sy0 && shadowy > sy1) {
+            return;
+        }
+        if (shadowx > sx0 && shadowx > sx1) {
+            return;
+        }
+		final int xintercept = (int) Math.round((double) sx0 + (shadowy - sy0) * (sx1 - sx0) / (sy1 - sy0));
+		if (shadowx > xintercept) {
+            return;
+        }
 		if (isUp) {
 			data.setCrossingForYMax(xintercept, shadowy);
-		}
-		else {
+		} else {
 			data.setCrossingForYMin(xintercept, shadowy);
 		}
-		data.crossings += (sy0 < sy1) ? 1 : -1;
+		data.setCrossings(data.getCrossings() + ((sy0 < sy1) ? 1 : -1));
 	}
 
-	/** 
+	/** Data for shadow.
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
@@ -382,109 +400,193 @@ public class PathShadow3ai<B extends RectangularPrism3ai<?, ?, ?, ?, ?, B>> {
 	 */
 	private static class PathShadowData {
 
-		public int crossings = 0;
-		public boolean hasX4ymin = false;
-		public boolean hasX4ymax = false;
-		public int x4ymin;
-		public int x4ymax;
-		public int xmin4ymin;
-		public int xmin4ymax;
-		public int ymin;
-		public int ymax;
+		private int crossings;
+
+		private boolean hasX4ymin;
+
+		private boolean hasX4ymax;
+
+		private int x4ymin;
+
+		private int x4ymax;
+
+		private int xmin4ymin;
+
+		private int xmin4ymax;
+
+		private int ymin;
+
+		private int ymax;
+
+        PathShadowData(int xmax, int miny, int maxy) {
+            this.setX4ymin(this.setX4ymax(xmax));
+            this.setXmin4ymax(this.setXmin4ymin(xmax));
+            this.setYmin(miny);
+            this.setYmax(maxy);
+        }
 
 		@Pure
 		@Override
 		public String toString() {
-			StringBuilder b = new StringBuilder();
+			final StringBuilder b = new StringBuilder();
 			b.append("SHADOW {\n\tlow: ( "); //$NON-NLS-1$
-			b.append(this.xmin4ymin);
+			b.append(this.getXmin4ymin());
 			b.append(" | "); //$NON-NLS-1$
-			b.append(this.ymin);
+			b.append(this.getYmin());
 			b.append(" )\n\thigh: ( "); //$NON-NLS-1$
-			b.append(this.xmin4ymax);
+			b.append(this.getXmin4ymax());
 			b.append(" | "); //$NON-NLS-1$
-			b.append(this.ymax);
+			b.append(this.getYmax());
 			b.append(")\n}\nCROSSINGS {\n\tcrossings="); //$NON-NLS-1$
-			b.append(this.crossings);
+			b.append(this.getCrossings());
 			b.append("\n\tlow: "); //$NON-NLS-1$
-			if (this.hasX4ymin) {
+			if (this.isHasX4ymin()) {
 				b.append("( "); //$NON-NLS-1$
-				b.append(this.x4ymin);
+				b.append(this.getX4ymin());
 				b.append(" | "); //$NON-NLS-1$
-				b.append(this.ymin);
+				b.append(this.getYmin());
 				b.append(" )\n"); //$NON-NLS-1$
-			}
-			else {
+			} else {
 				b.append("none\n"); //$NON-NLS-1$
 			}
 			b.append("\thigh: "); //$NON-NLS-1$
-			if (this.hasX4ymax) {
+			if (this.isHasX4ymax()) {
 				b.append("( "); //$NON-NLS-1$
-				b.append(this.x4ymax);
+				b.append(this.getX4ymax());
 				b.append(" | "); //$NON-NLS-1$
-				b.append(this.ymax);
+				b.append(this.getYmax());
 				b.append(" )\n"); //$NON-NLS-1$
-			}
-			else {
+			} else {
 				b.append("none\n"); //$NON-NLS-1$
 			}
 			b.append("}\n"); //$NON-NLS-1$
 			return b.toString();
 		}
 
-		public PathShadowData(int xmax, int miny, int maxy) {
-			this.x4ymin = this.x4ymax = xmax;
-			this.xmin4ymax = this.xmin4ymin = xmax;
-			this.ymin = miny;
-			this.ymax = maxy;
-		}
-
 		public void setCrossingForYMax(int x, int y) {
-			if (y>=this.ymax) {
-				if (x<this.x4ymax) {
-					this.x4ymax = x;
-					this.hasX4ymax = true;
+            if (y >= this.getYmax()) {
+                if (x < this.getX4ymax()) {
+					this.setX4ymax(x);
+					this.setHasX4ymax(true);
 				}
 			}
 		}
 
 		public void setCrossingForYMin(int x, int y) {
-			if (y<=this.ymin) {
-				if (x<this.x4ymin) {
-					this.x4ymin = x;
-					this.hasX4ymin = true;
+            if (y <= this.getYmin()) {
+                if (x < this.getX4ymin()) {
+					this.setX4ymin(x);
+					this.setHasX4ymin(true);
 				}
 			}
 		}
 
 		public void updateShadowLimits(int shadow_x0, int shadow_y0, int shadow_z0, int shadow_x1, int shadow_y1, int shadow_z1) {
-			int xl, yl, zl;
-			int xh, yh, zh;
-			if (shadow_y0<shadow_y1) {
+			final int xl;
+			final int yl;
+			final int zl;
+			final int xh;
+			final int yh;
+			final int zh;
+            if (shadow_y0 < shadow_y1) {
 				xl = shadow_x0;
 				yl = shadow_y0;
 				xh = shadow_x1;
 				yh = shadow_y1;
-			}
-			else if (shadow_y1<shadow_y0) {
+            } else if (shadow_y1 < shadow_y0) {
 				xl = shadow_x1;
 				yl = shadow_y1;
 				xh = shadow_x0;
 				yh = shadow_y0;
-			}
-			else {
-				xl = xh = Math.min(shadow_x0, shadow_x1);
-				yl = yh = shadow_y0;
-			}
-
-			if (yl<=this.ymin && xl<this.xmin4ymin) {
-				this.xmin4ymin = xl;
+			} else {
+				xl = Math.min(shadow_x0, shadow_x1);
+				xh = xl;
+				yl = shadow_y0;
+				yh = yl;
 			}
 
-			if (yh>=this.ymax && xh<this.xmin4ymax) {
-				this.xmin4ymax = xh;
+            if (yl <= this.getYmin() && xl < this.getXmin4ymin()) {
+				this.setXmin4ymin(xl);
+			}
+
+            if (yh >= this.getYmax() && xh < this.getXmin4ymax()) {
+				this.setXmin4ymax(xh);
 			}
 		}
+
+        public int getCrossings() {
+            return this.crossings;
+        }
+
+        public void setCrossings(int crossings) {
+            this.crossings = crossings;
+        }
+
+        public boolean isHasX4ymin() {
+            return this.hasX4ymin;
+        }
+
+        public void setHasX4ymin(boolean hasX4ymin) {
+            this.hasX4ymin = hasX4ymin;
+        }
+
+        public boolean isHasX4ymax() {
+            return this.hasX4ymax;
+        }
+
+        public void setHasX4ymax(boolean hasX4ymax) {
+            this.hasX4ymax = hasX4ymax;
+        }
+
+        public int getX4ymin() {
+            return this.x4ymin;
+        }
+
+        public void setX4ymin(int x4ymin) {
+            this.x4ymin = x4ymin;
+        }
+
+        public int getX4ymax() {
+            return this.x4ymax;
+        }
+
+        public int setX4ymax(int x4ymax) {
+            this.x4ymax = x4ymax;
+            return x4ymax;
+        }
+
+        public int getXmin4ymin() {
+            return this.xmin4ymin;
+        }
+
+        public int setXmin4ymin(int xmin4ymin) {
+            this.xmin4ymin = xmin4ymin;
+            return xmin4ymin;
+        }
+
+        public int getXmin4ymax() {
+            return this.xmin4ymax;
+        }
+
+        public void setXmin4ymax(int xmin4ymax) {
+            this.xmin4ymax = xmin4ymax;
+        }
+
+        public int getYmin() {
+            return this.ymin;
+        }
+
+        public void setYmin(int ymin) {
+            this.ymin = ymin;
+        }
+
+        public int getYmax() {
+            return this.ymax;
+        }
+
+        public void setYmax(int ymax) {
+            this.ymax = ymax;
+        }
 
 	}
 

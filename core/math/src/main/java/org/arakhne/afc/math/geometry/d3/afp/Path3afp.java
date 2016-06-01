@@ -704,7 +704,7 @@ public interface Path3afp<
                 endx = element.getToX();
                 endy = element.getToY();
                 endz = element.getToZ();
-                numCrosses = Segment3afp.computeCrossingsFromCircle(numCrosses, cx, cy, cz, radius, curx, cury, curz, endx, endy,
+                numCrosses = Segment3afp.computeCrossingsFromSphere(numCrosses, cx, cy, cz, radius, curx, cury, curz, endx, endy,
                         endz);
                 if (numCrosses == MathConstants.SHAPE_INTERSECTS) {
                     return numCrosses;
@@ -751,7 +751,7 @@ public interface Path3afp<
                 break;
             case CLOSE:
                 if (cury != movy || curx != movx || curz != movz) {
-                    numCrosses = Segment3afp.computeCrossingsFromCircle(numCrosses, cx, cy, cz, radius, curx, cury, curz, movx,
+                    numCrosses = Segment3afp.computeCrossingsFromSphere(numCrosses, cx, cy, cz, radius, curx, cury, curz, movx,
                             movy, movz);
                     if (numCrosses == MathConstants.SHAPE_INTERSECTS) {
                         return numCrosses;
@@ -773,7 +773,7 @@ public interface Path3afp<
             switch (type) {
             case AUTO_CLOSE:
                 // Auto close
-                numCrosses = Segment3afp.computeCrossingsFromCircle(numCrosses, cx, cy, cz, radius, curx, cury, curz, movx, movy,
+                numCrosses = Segment3afp.computeCrossingsFromSphere(numCrosses, cx, cy, cz, radius, curx, cury, curz, movx, movy,
                         movz);
                 break;
             case SIMPLE_INTERSECTION_WHEN_NOT_POLYGON:
