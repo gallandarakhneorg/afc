@@ -59,8 +59,9 @@ import org.arakhne.afc.math.geometry.d2.afp.PathIterator2afp;
 @SuppressWarnings("checkstyle:magicnumber")
 public class Path2dfx extends AbstractShape2dfx<Path2dfx>
 		implements Path2afp<Shape2dfx<?>, Path2dfx, PathElement2dfx, Point2dfx, Vector2dfx, Rectangle2dfx> {
-
 	private static final long serialVersionUID = 6051061640155091109L;
+
+	private static final String PATH_WINDING_RULE = "Path winding rule must be not null";
 
 	/** Array of types.
 	 */
@@ -124,7 +125,7 @@ public class Path2dfx extends AbstractShape2dfx<Path2dfx>
 	 * @param windingRule the path winding rule.
 	 */
 	public Path2dfx(PathWindingRule windingRule) {
-		assert windingRule != null : "Path winding rule must be not null"; //$NON-NLS-1$
+		assert windingRule != null : PATH_WINDING_RULE; //$NON-NLS-1$
 		if (windingRule != DEFAULT_WINDING_RULE) {
 			windingRuleProperty().set(windingRule);
 		}
@@ -135,7 +136,7 @@ public class Path2dfx extends AbstractShape2dfx<Path2dfx>
 	 * @param iterator the iterator that provides the elements to copy.
 	 */
 	public Path2dfx(PathWindingRule windingRule, Iterator<PathElement2dfx> iterator) {
-		assert windingRule != null : "Path winding rule must be not null"; //$NON-NLS-1$
+		assert windingRule != null : PATH_WINDING_RULE; //$NON-NLS-1$
 		assert iterator != null : "Iterator must be not null"; //$NON-NLS-1$
 		if (windingRule != DEFAULT_WINDING_RULE) {
 			windingRuleProperty().set(windingRule);
@@ -314,7 +315,7 @@ public class Path2dfx extends AbstractShape2dfx<Path2dfx>
 
 	@Override
 	public void setWindingRule(PathWindingRule rule) {
-		assert rule != null : "Path winding rule must be not null"; //$NON-NLS-1$
+		assert rule != null : PATH_WINDING_RULE; //$NON-NLS-1$
 		if (this.windingRule != null || rule != DEFAULT_WINDING_RULE) {
 			windingRuleProperty().set(rule);
 		}
