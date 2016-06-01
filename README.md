@@ -14,31 +14,32 @@ AFC library contains the following alive modules:
 
 Name | Group Id | Artifact Id | Explanation
 -----|----------|-------------|------------
-VM Utilities | org.arakhne.afc.core | vmutils | Utilities related to the virtual machine, file systems, etc.
-Weak Reference Utilities | org.arakhne.afc.core | references | Set of classes for creating advanced weak references.
-Text Utilities | org.arakhne.afc.core | text | Utilities for string of characters
-Input-Output Utilities | org.arakhne.afc.core | inputoutput | General utilities related to IO
-General Utilities | org.arakhne.afc.core | util | General utility classes that do not fit in the other AFC modules
-Math Tools | org.arakhne.afc.core | math | Mathematic and Geometry tools and primitives
-JavaFX Math Tools | org.arakhne.afc.advanced | mathfx | JavaFX implementation of the mathematic and geometry tools
-Generic Attribute API | org.arakhne.afc.advanced | attributes | Library for creating generic attributes, aka. Variant attributes.
+[VM Utilities](http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/vmutil/package-summary.html) | org.arakhne.afc.core | vmutils | Utilities related to the virtual machine, file systems, etc.
+[Weak Reference Utilities](http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/references/package-summary.html) | org.arakhne.afc.core | references | Set of classes for creating advanced weak references.
+[Text Utilities](http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/text/package-summary.html) | org.arakhne.afc.core | text | Utilities for string of characters
+[Input-Output Utilities](http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/io/filefilter/package-summary.html) | org.arakhne.afc.core | inputoutput | General utilities related to IO
+[General Utilities](http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/util/package-summary.html) | org.arakhne.afc.core | util | General utility classes that do not fit in the other AFC modules
+[Math Tools](http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/math/package-summary.html) | org.arakhne.afc.core | math | Mathematic and Geometry tools and primitives
+[JavaFX Math Tools](http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/math/geometry/d2/dfx/package-summary.html) | org.arakhne.afc.advanced | mathfx | JavaFX implementation of the mathematic and geometry tools
+[Generic Attribute API](http://arakhne.org/afc/apidocs/index.html?org/arakhne/afc/attrs/collection/package-summary.html) | org.arakhne.afc.advanced | attributes | Library for creating generic attributes, aka. Variant attributes.
 
 
 ## 1.2. Deprecated and Dead Modules
 
-AFC library contains the following deprecated modules (deprecated modules are subject to removal in next version):
+AFC library contains the following deprecated modules (deprecated modules are subject to removal in next version).
+The table presents the modules, the version from which they are deprecated, and the version at which they will be totaly removed from.
 
 
-Name | Group Id | Artifact Id | Explanation
------|----------|-------------|------------
-Base UI Tools | org.arakhne.afc.ui | base | Base tools for user interfaces.
-AWT Tools | org.arakhne.afc.ui | awt | Extra AWT widgets.
-Swing Widgets | org.arakhne.afc.ui | swing |  Extra Swing widgets.
-Android Tools | org.arakhne.afc.ui | android | Extra Android widgets and activities.
-Vector Window Toolkit | org.arakhne.afc.ui | vector | Vectorial primitives for building vectorial graphical editors.
-AWT implementation of vector | org.arakhne.afc.ui | awt-vector | AWT implementation of the vectorial primitives.
-Android implementation of vector | org.arakhne.afc.ui | android-vector | Android implementation of the vectorial primitives.
-Atomic deployment of files | org.arakhne.afc.maven | atomicdeploy | Maven plugin for deploying aa single file.
+Name | Group Id | Artifact Id | Explanation | Deprecation Start | Total Removal
+-----|----------|-------------|-------------|-------------------|--------------
+Base UI Tools | org.arakhne.afc.ui | base | Base tools for user interfaces. | 13.0 | 15.0
+AWT Tools | org.arakhne.afc.ui | awt | Extra AWT widgets. | 13.0 | 15.0
+Swing Widgets | org.arakhne.afc.ui | swing |  Extra Swing widgets. | 13.0 | 15.0
+Android Tools | org.arakhne.afc.ui | android | Extra Android widgets and activities. | 13.0 | 15.0
+Vector Window Toolkit | org.arakhne.afc.ui | vector | Vectorial primitives for building vectorial graphical editors. | 13.0 | 15.0
+AWT implementation of vector | org.arakhne.afc.ui | awt-vector | AWT implementation of the vectorial primitives. | 13.0 | 15.0
+Android implementation of vector | org.arakhne.afc.ui | android-vector | Android implementation of the vectorial  primitives.| 13.0 | 15.0
+Atomic deployment of files | org.arakhne.afc.maven | atomicdeploy | Maven plugin for deploying aa single file. | 13.0 | 15.0
 
 
 # 2. Requirements
