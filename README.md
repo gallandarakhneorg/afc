@@ -157,3 +157,13 @@ If the CI process is failing on your PR, please follows the steps:
 # 6. License of AFC
 
 The Arakhnê Foundation Classes are distributed under the [Apache v2 license](./LICENSE), and is copyrigthed to the original authors and the other authors, as expressed in the [NOTICE](./NOTICE).
+
+# 7. Success Stories
+
+The following projects have sucessfully used a module of the AFC:
+* [FLO](http://www.multiagent.fr/MultiAgentWiki:FLO)
+* [Jaak Simulation Library](https://github.com/gallandarakhne.org/jaak)
+* [Janus agent platform](http://www.janusproject.io)
+* [Metro-B](http://www.multiagent.fr/MultiAgentWiki:MetroB)
+* [NetEditor](http://www.arakhne.org/neteditor)
+* [SARL agent-programming language](http://www.sarl.io)
