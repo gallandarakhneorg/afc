@@ -37,14 +37,15 @@ import org.arakhne.afc.math.geometry.d2.Vector2D;
  * @since 13.0
  */
 public class Vector2d extends Tuple2d<Vector2d> implements Vector2D<Vector2d, Point2d> {
-
 	private static final long serialVersionUID = 9183440606977893371L;
-    /**+
-     * Literal constant.
+
+	/**
+	 *Literal constant.
      */
 	private static final String SECOND_VECTOR_NOT_NULL = "Second vector must be not null";
-    /**+
-     * Literal constant.
+
+    /**
+     *Literal constant.
      */
     private static final String FIRST_VECTOR_NOT_NULL = "First vector must be not null";
 
