@@ -2,6 +2,9 @@
 
 The Arakhnê Foundation Classes (AFC) is a collection of Java libraries that may be used to build applications. The Arakhnê Foundatation Classes provides tools that are not directly available in the standard Java API. The AFC libraries are distributed under the terms of the Apache License.
 
+[![travis build](https://img.shields.io/travis/gallandarakhneorg/afc.svg?style=flat-square)](https://travis-ci.org/gallandarakhneorg/afc)
+[![Apache 2.0 License](https://img.shields.io/github/license/gallandarakhneorg/afc.svg?style=flat-square)](https://opensource.org/licenses/Apache-2.0)
+
 # Content of the AFC
 
 AFC contains (modules that are not deprecated):
