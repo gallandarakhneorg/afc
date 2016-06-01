@@ -57,40 +57,38 @@ public interface Parallelogram2afp<
 		V extends Vector2D<? super V, ? super P>,
 		B extends Rectangle2afp<?, ?, IE, P, V, B>>
 		extends Shape2afp<ST, IT, IE, P, V, B> {
-
-    /**+
-     * Literal constant.
-     */
+	   /**
+		* Literal constant.
+		*/
     String AXIS_1_EXTENT_POSITIVE_ZERO = "Extent of axis 1 must be positive or zero";
-    /**+
-     * Literal constant.
-     */
+	   /**
+		* Literal constant.
+		*/
     String AXIS_2_EXTENT_POSITIVE_ZERO = "Extent of axis 2 must be positive or zero";
-    /**+
-     * Literal constant.
-     */
+	   /**
+		* Literal constant.
+		*/
     String AXIS_1_NOT_UNIT_VECTOR =  "Axis 1 is not a unit vector";
-    /**+
-     * Literal constant.
-     */
+	   /**
+		* Literal constant.
+		*/
     String RECTANGLE_HEIGHT = "Height of the rectangle must be positive or zero";
-    /**+
-     * Literal constant.
-     */
+	   /**
+		* Literal constant.
+		*/
     String AXIS_2_NOT_UNIT_VECTOR =  "Axis 2 is not a unit vector";
-
-    /**+
-     * Literal constant.
-     */
+	   /**
+		* Literal constant.
+		*/
     String RECTANGLE_WIDTH = "Width of the rectangle must be positive or zero";
-    /**
-	 * Compute the axes of an oriented bounding rectangle that is enclosing the set of points.
-	 *
-	 * @param points is the list of the points enclosed by the OBR.
-	 * @param raxis is the vector where the R axis of the OBR is put. If <code>null</code>, S must be not <code>null</code>.
-	 * @param saxis is the vector where the S axis of the OBR is put. If <code>null</code>, R must be not <code>null</code>.
-	 * @see "MGPCG pages 219-221"
-	 */
+	/**
+	 	* Compute the axes of an oriented bounding rectangle that is enclosing the set of points.
+	 	*
+	 	* @param points is the list of the points enclosed by the OBR.
+		* @param raxis is the vector where the R axis of the OBR is put. If <code>null</code>, S must be not <code>null</code>.
+	    * @param saxis is the vector where the S axis of the OBR is put. If <code>null</code>, R must be not <code>null</code>.
+	    * @see "MGPCG pages 219-221"
+	    */
 	static void computeOrthogonalAxes(Iterable<? extends Point2D<?, ?>> points,
 			Vector2D<?, ?> raxis, Vector2D<?, ?> saxis) {
 		assert points != null : "Collection of points must be not null"; //$NON-NLS-1$

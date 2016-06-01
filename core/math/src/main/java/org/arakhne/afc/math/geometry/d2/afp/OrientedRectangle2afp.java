@@ -57,19 +57,19 @@ public interface OrientedRectangle2afp<
 		V extends Vector2D<? super V, ? super P>,
 		B extends Rectangle2afp<?, ?, IE, P, V, B>>
 		extends Parallelogram2afp<ST, IT, IE, P, V, B> {
-    /**+
+	/**
      * Literal constant.
      */
 	String AXIS_1_EXTENT_POSITIVE_ZERO = "Extent of axis 1 must be positive or zero";
-    /**+
+    /**
      * Literal constant.
      */
     String AXIS_2_EXTENT_POSITIVE_ZERO = "Extent of axis 2 must be positive or zero";
-    /**+
+    /**
      * Literal constant.
      */
     String AXIS_1_NOT_UNIT_VECTOR =  "Axis 1 is not a unit vector";
-    /**+
+    /**
      * Literal constant.
      */
     String RECTANGLE_HEIGHT = "Height of the rectangle must be positive or zero";
