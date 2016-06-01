@@ -976,7 +976,7 @@ public final class FileSystem {
 		}
 		final StringBuilder buf = new StringBuilder(urlBase.getPath());
 		for (final File elt : elements) {
-			if (!elt.isAbsolute() && buf.length() == 0 || buf.charAt(buf.length() - 1) != URL_PATH_SEPARATOR_CHAR) {
+			if (!elt.isAbsolute() && (buf.length() == 0 || buf.charAt(buf.length() - 1) != URL_PATH_SEPARATOR_CHAR)) {
 				buf.append(URL_PATH_SEPARATOR_CHAR);
 			}
 			buf.append(getFilePath(elt));
