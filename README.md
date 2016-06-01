@@ -2,8 +2,13 @@
 
 The Arakhnê Foundation Classes (AFC) is a collection of Java libraries that may be used to build applications. The Arakhnê Foundation Classes provide tools that are not directly available in the standard Java API.
 
-[![travis build](https://img.shields.io/travis/gallandarakhneorg/afc.svg?style=flat-square)](https://travis-ci.org/gallandarakhneorg/afc)
+AFC library is compatible with the languages that are defined with [Xtext](https://eclipse.org/Xtext): SARL, Xtend, etc.
+Indeed, the AFC classes uses the annotations (`@Pure`, `@Inline`), and provides the operator overriding functions (`operator_plus`, `operator_minus`, etc.) that are supported by the compilers of the Xtext-based languages.
+
+[![Compatible with SARL](https://img.shields.io/badge/compatible%20with-SARL-yellowgreen.svg?style=flat-square)](http://sarl.io)
+[![Compatible with Xtext](https://img.shields.io/badge/compatible%20with-Xtext-yellowgreen.svg?style=flat-square)](https://eclipse.org/Xtext)
 [![Apache 2.0 License](https://img.shields.io/github/license/gallandarakhneorg/afc.svg?style=flat-square)](https://opensource.org/licenses/Apache-2.0)
+[![travis build](https://img.shields.io/travis/gallandarakhneorg/afc.svg?style=flat-square)](https://travis-ci.org/gallandarakhneorg/afc)
 
 # 1. Content of the AFC
 
