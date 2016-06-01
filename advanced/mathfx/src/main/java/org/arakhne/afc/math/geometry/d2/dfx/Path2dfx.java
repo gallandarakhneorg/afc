@@ -59,12 +59,10 @@ import org.arakhne.afc.math.geometry.d2.afp.PathIterator2afp;
 @SuppressWarnings("checkstyle:magicnumber")
 public class Path2dfx extends AbstractShape2dfx<Path2dfx>
 		implements Path2afp<Shape2dfx<?>, Path2dfx, PathElement2dfx, Point2dfx, Vector2dfx, Rectangle2dfx> {
-
 	private static final long serialVersionUID = 6051061640155091109L;
-    /**+
-     * Literal constant.
-     */
-    private static final String PATH_WINDING_RULE = "Path winding rule must be not null";
+
+	private static final String PATH_WINDING_RULE = "Path winding rule must be not null";
+
 	/** Array of types.
 	 */
 	private ReadOnlyListWrapper<PathElementType> types;

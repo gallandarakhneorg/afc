@@ -45,14 +45,17 @@ public class Parallelogram2dfx extends AbstractShape2dfx<Parallelogram2dfx>
 		implements Parallelogram2afp<Shape2dfx<?>, Parallelogram2dfx, PathElement2dfx, Point2dfx, Vector2dfx, Rectangle2dfx> {
 
 	private static final long serialVersionUID = -3880367245218796375L;
-    /**+
+
+	/**
      * Literal constant.
      */
 	private static final String FIRST_AXIS_UNIT_VECTOR = "First axis must be a unit vector";
-    /**+
+
+	/**
      * Literal constant.
      */
-    private static final String EXTENT_POSITIVE_OR_ZERO = "Extent must be positive or zero";
+	private static final String EXTENT_POSITIVE_OR_ZERO = "Extent must be positive or zero";
+
 	/**
 	 * Center of the parallelogram.
 	 */

@@ -44,12 +44,13 @@ import org.arakhne.afc.math.geometry.d2.afp.Triangle2afp;
 public class Triangle2dfx
 		extends AbstractShape2dfx<Triangle2dfx>
 		implements Triangle2afp<Shape2dfx<?>, Triangle2dfx, PathElement2dfx, Point2dfx, Vector2dfx, Rectangle2dfx> {
-
 	private static final long serialVersionUID = -1872758222696617883L;
-	/**+
+
+	/**
 	 * Literal constant.
 	 */
 	private static final String POINT_ONE_NOT_NULL = "Point 1 must not be null";
+
 	private DoubleProperty x1;
 
 	private DoubleProperty y1;

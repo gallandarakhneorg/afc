@@ -46,25 +46,25 @@ import org.arakhne.afc.math.geometry.d2.afp.OrientedRectangle2afp;
 public class OrientedRectangle2dfx extends AbstractShape2dfx<OrientedRectangle2dfx>
 		implements OrientedRectangle2afp<Shape2dfx<?>, OrientedRectangle2dfx, PathElement2dfx,
 		Point2dfx, Vector2dfx, Rectangle2dfx> {
-
 	private static final long serialVersionUID = -7570709068803272507L;
-	/**+
-	 * Literal constant.
+	/**
+	 *Literal constant.
 	 */
-    private static final String EXTENT_POSITIVE_OR_ZERO = "Extent must be positive or zero";
+
+	private static final String EXTENT_POSITIVE_OR_ZERO = "Extent must be positive or zero";
 
 	/**
-	 * Center of the OBR.
+	 *Center of the OBR.
 	 */
 	private DoubleProperty cx;
 
 	/**
-	 * Center of the OBR.
+	 *Center of the OBR.
 	 */
 	private DoubleProperty cy;
 
 	/**
-	 * The first axis of the OBR.
+	 *The first axis of the OBR.
 	 */
 	private UnitVectorProperty raxis;
 
