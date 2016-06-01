@@ -202,28 +202,28 @@ public final class Android {
 	 * @see #initialize(Object)
 	 */
 	public static ClassLoader getContextClassLoader() throws AndroidException {
-		ClassLoader cl;
 		synchronized (Android.class) {
-			cl = (contextClassLoader == null) ? null : contextClassLoader.get();
-		}
-		if (cl == null) {
-			final Object context = getContext();
-			try {
-				final Method method = context.getClass().getMethod("getClassLoader"); //$NON-NLS-1$
-				final Object classLoader = method.invoke(context);
-				try {
-					cl = (ClassLoader) classLoader;
-					synchronized (Android.class) {
-						contextClassLoader = new WeakReference<>(cl);
-					}
-				} catch (ClassCastException exception) {
-					throw new AndroidException(exception);
-				}
-			} catch (Throwable e) {
-				throw new AndroidException(e);
+			final ClassLoader cl = (contextClassLoader == null) ? null : contextClassLoader.get();
+			if (cl != null) {
+				return cl;
 			}
 		}
-		return cl;
+		final Object context = getContext();
+		try {
+			final Method method = context.getClass().getMethod("getClassLoader"); //$NON-NLS-1$
+			final Object classLoader = method.invoke(context);
+			try {
+				final ClassLoader cl = (ClassLoader) classLoader;
+				synchronized (Android.class) {
+					contextClassLoader = new WeakReference<>(cl);
+				}
+				return cl;
+			} catch (ClassCastException exception) {
+				throw new AndroidException(exception);
+			}
+		} catch (Throwable e) {
+			throw new AndroidException(e);
+		}
 	}
 
 	/** Replies the current {@code ContextResolver} for the android task.
