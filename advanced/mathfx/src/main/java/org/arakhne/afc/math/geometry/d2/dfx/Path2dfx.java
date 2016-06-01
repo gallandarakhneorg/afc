@@ -536,7 +536,7 @@ public class Path2dfx extends AbstractShape2dfx<Path2dfx>
 			} else {
 				final Point2D<?, ?> p = new InnerComputationPoint2afp();
 				final Iterator<Double> iterator = this.coords.iterator();
-				for (int i = 0; i < n; i =+ 2) {
+				for (int i = 0; i < n; i += 2) {
 					p.set(iterator.next(), iterator.next());
 					transform.transform(p);
 					clone[i] = p.getX();

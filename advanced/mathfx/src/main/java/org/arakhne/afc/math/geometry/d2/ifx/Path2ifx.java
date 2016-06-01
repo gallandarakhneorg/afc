@@ -149,7 +149,7 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 		assert pt != null : "Point must be not null"; //$NON-NLS-1$
 		if (this.coords != null && !this.coords.isEmpty()) {
 			final int size = this.coords.size();
-			for (int i = 0; i < size; i =+ 2) {
+			for (int i = 0; i < size; i += 2) {
 				final int x = this.coords.get(i);
 				final int y = this.coords.get(i + 1);
 				if (x == pt.ix() && y == pt.iy()) {
@@ -526,7 +526,7 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 			} else {
 				final Point2D<?, ?> p = new InnerComputationPoint2afp(0, 0);
 				final Iterator<Integer> iterator = this.coords.iterator();
-				for (int i = 0; i < n; i =+ 2) {
+				for (int i = 0; i < n; i += 2) {
 					p.set(iterator.next(), iterator.next());
 					transform.transform(p);
 					clone[i] = (float) p.getX();
@@ -550,7 +550,7 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 			} else {
 				final Point2D<?, ?> p = new InnerComputationPoint2afp(0, 0);
 				final Iterator<Integer> iterator = this.coords.iterator();
-				for (int i = 0; i < n; i =+ 2) {
+				for (int i = 0; i < n; i += 2) {
 					p.set(iterator.next(), iterator.next());
 					transform.transform(p);
 					clone[i] = p.getX();
