@@ -58,6 +58,42 @@ public interface Parallelogram2afp<
         V extends Vector2D<? super V, ? super P>,
         B extends Rectangle2afp<?, ?, IE, P, V, B>>
         extends Shape2afp<ST, IT, IE, P, V, B> {
+    /**
+     * Literal constant.
+     */
+    String AXIS_1_EXTENT_POSITIVE_ZERO = "Extent of axis 1 must be positive or zero"; //$NON-NLS-1$
+    /**
+     * Literal constant.
+     */
+    String AXIS_2_EXTENT_POSITIVE_ZERO = "Extent of axis 2 must be positive or zero"; //$NON-NLS-1$
+    /**
+     * Literal constant.
+     */
+    String AXIS_1_NOT_UNIT_VECTOR =  "Axis 1 is not a unit vector"; //$NON-NLS-1$
+    /**
+     * Literal constant.
+     */
+    String AXIS_1_NOT_NULL =  "Axis 1 must be not null"; //$NON-NLS-1$
+    /**
+     * Literal constant.
+     */
+    String RECTANGLE_HEIGHT = "Height of the rectangle must be positive or zero"; //$NON-NLS-1$
+    /**
+     * Literal constant.
+     */
+    String AXIS_2_NOT_UNIT_VECTOR =  "Axis 2 is not a unit vector"; //$NON-NLS-1$
+    /**
+     * Literal constant.
+     */
+    String AXIS_2_NOT_NULL =  "Axis 2 must be not null"; //$NON-NLS-1$
+    /**
+     * Literal constant.
+     */
+    String RECTANGLE_WIDTH = "Width of the rectangle must be positive or zero"; //$NON-NLS-1$
+    /**
+     * Literal constant.
+     */
+    String NO_POINT_COLLECTION = "Collection of points must be not null"; //$NON-NLS-1$
 
     /**
      * Compute the axes of an oriented bounding rectangle that is enclosing the set of points.
@@ -69,7 +105,7 @@ public interface Parallelogram2afp<
      */
     static void computeOrthogonalAxes(Iterable<? extends Point2D<?, ?>> points,
             Vector2D<?, ?> raxis, Vector2D<?, ?> saxis) {
-        assert points != null : "Collection of points must be not null"; //$NON-NLS-1$
+        assert points != null : NO_POINT_COLLECTION;
         assert raxis != null || saxis != null : "One axis vector must be not null"; //$NON-NLS-1$
         // Determining the covariance matrix of the points
         // and set the center of the box
@@ -87,7 +123,7 @@ public interface Parallelogram2afp<
         }
     }
 
-    /** Project the given vector on the R axis, according to the direction of the S axis.
+    /** Project the given vector on the R (first) axis, according to the direction of the S (second) axis.
      *
      * <p>This function assumes nothing on the axes' orientations. For an efficient implementation for
      * orthogonal axes, see
@@ -104,8 +140,8 @@ public interface Parallelogram2afp<
      */
     @Pure
     static double projectVectorOnParallelogramRAxis(double rx, double ry, double sx, double sy, double x,  double y) {
-        assert Vector2D.isUnitVector(rx, ry) : "Vector R is not a unit vector"; //$NON-NLS-1$
-        assert Vector2D.isUnitVector(sx, sy) : "Vector S is not a unit vector"; //$NON-NLS-1$
+        assert Vector2D.isUnitVector(rx, ry) : AXIS_1_NOT_UNIT_VECTOR;
+        assert Vector2D.isUnitVector(sx, sy) : AXIS_2_NOT_UNIT_VECTOR;
         final double det = Vector2D.perpProduct(rx, ry, sx, sy);
         if (det == 0.) {
             return Double.NaN;
@@ -113,7 +149,7 @@ public interface Parallelogram2afp<
         return Vector2D.perpProduct(sx, sy, -x, -y) / det;
     }
 
-    /** Project the given vector on the S axis, according to the direction of the R axis.
+    /** Project the given vector on the S (second) axis, according to the direction of the R (first) axis.
      *
      * <p>This function assumes nothing on the axes' orientations. For an efficient implementation for
      * orthogonal axes, see
@@ -130,8 +166,8 @@ public interface Parallelogram2afp<
      */
     @Pure
     static double projectVectorOnParallelogramSAxis(double rx, double ry, double sx, double sy, double x,  double y) {
-        assert Vector2D.isUnitVector(rx, ry) : "Vector R is not a unit vector"; //$NON-NLS-1$
-        assert Vector2D.isUnitVector(sx, sy) : "Vector S is not a unit vector"; //$NON-NLS-1$
+        assert Vector2D.isUnitVector(rx, ry) : AXIS_1_NOT_UNIT_VECTOR;
+        assert Vector2D.isUnitVector(sx, sy) : AXIS_2_NOT_UNIT_VECTOR;
         final double det = Vector2D.perpProduct(sx, sy, rx, ry);
         if (det == 0.) {
             return Double.NaN;
@@ -158,11 +194,11 @@ public interface Parallelogram2afp<
             Iterable<? extends Point2D<?, ?>> points,
                     Vector2D<?, ?> raxis, Vector2D<?, ?> saxis,
                     Point2D<?, ?> center, Tuple2D<?> extents) {
-        assert points != null : "Collection of points must be not null"; //$NON-NLS-1$
-        assert raxis != null : "First axis vector must be not null"; //$NON-NLS-1$
-        assert raxis.isUnitVector() : "First axis vector must be unit vector"; //$NON-NLS-1$
-        assert saxis != null : "Second axis vector must be not null"; //$NON-NLS-1$
-        assert saxis.isUnitVector() : "Second axis vector must be unit vector"; //$NON-NLS-1$
+        assert points != null : NO_POINT_COLLECTION;
+        assert raxis != null : AXIS_1_NOT_NULL;
+        assert raxis.isUnitVector() : AXIS_1_NOT_UNIT_VECTOR;
+        assert saxis != null : AXIS_2_NOT_NULL;
+        assert saxis.isUnitVector() : AXIS_2_NOT_UNIT_VECTOR;
         assert center != null : "Center point must be not null"; //$NON-NLS-1$
         assert extents != null : "Extent tuple must be not null"; //$NON-NLS-1$
 
@@ -247,10 +283,10 @@ public interface Parallelogram2afp<
             double axis2X, double axis2Y,
             double axis2Extent,
             Point2D<?, ?> closest) {
-        assert Vector2D.isUnitVector(axis1X, axis1Y) : "First axis vector must be unit vector"; //$NON-NLS-1$
-        assert axis1Extent >= 0. : "Extent of the first axis must be positive or zero"; //$NON-NLS-1$
-        assert Vector2D.isUnitVector(axis2X, axis2Y) : "First axis vector must be unit vector"; //$NON-NLS-1$
-        assert axis2Extent >= 0. : "Extent of the second axis must be positive or zero"; //$NON-NLS-1$
+        assert Vector2D.isUnitVector(axis1X, axis1Y) : AXIS_1_NOT_UNIT_VECTOR;
+        assert axis1Extent >= 0. : AXIS_1_EXTENT_POSITIVE_ZERO;
+        assert Vector2D.isUnitVector(axis2X, axis2Y) : AXIS_2_NOT_UNIT_VECTOR;
+        assert axis2Extent >= 0. : AXIS_2_NOT_UNIT_VECTOR;
         assert closest != null : "Closest point must benot null"; //$NON-NLS-1$
 
         // Computation is done according to the parallelogram center
@@ -392,11 +428,11 @@ public interface Parallelogram2afp<
             double axis2X, double axis2Y,
             double axis2Extent,
             Point2D<?, ?> farthest) {
-        assert Vector2D.isUnitVector(axis1X, axis1Y) : "First axis vector must be unit vector"; //$NON-NLS-1$
-        assert axis1Extent >= 0. : "Extent of the first axis must be positive or zero"; //$NON-NLS-1$
-        assert Vector2D.isUnitVector(axis2X, axis2Y) : "First axis vector must be unit vector"; //$NON-NLS-1$
-        assert axis2Extent >= 0. : "Extent of the second axis must be positive or zero"; //$NON-NLS-1$
-        assert farthest != null : "Farthest point mustbe not null"; //$NON-NLS-1$
+        assert Vector2D.isUnitVector(axis1X, axis1Y) : AXIS_1_NOT_UNIT_VECTOR;
+        assert axis1Extent >= 0. : AXIS_1_EXTENT_POSITIVE_ZERO;
+        assert Vector2D.isUnitVector(axis2X, axis2Y) : AXIS_2_NOT_UNIT_VECTOR;
+        assert axis2Extent >= 0. : AXIS_2_EXTENT_POSITIVE_ZERO;
+        assert farthest != null : "Farthest point must be not null"; //$NON-NLS-1$
 
         // Computation is done according to the parallelogram center
         final double dx = px - centerX;
@@ -481,10 +517,10 @@ public interface Parallelogram2afp<
             double axis2X, double axis2Y,
             double axis2Extent,
             double px, double py) {
-        assert axis1Extent >= 0 : "Extent of axis 1 must be positive or zero"; //$NON-NLS-1$
-        assert axis2Extent >= 0 : "Extent of axis 2 must be positive or zero"; //$NON-NLS-1$
-        assert Vector2D.isUnitVector(axis1X, axis1Y) : "Axis 1 is not a unit vector"; //$NON-NLS-1$
-        assert Vector2D.isUnitVector(axis2X, axis2Y) : "Axis 2 is not a unit vector"; //$NON-NLS-1$
+        assert axis1Extent >= 0 : AXIS_1_EXTENT_POSITIVE_ZERO;
+        assert axis2Extent >= 0 : AXIS_2_EXTENT_POSITIVE_ZERO;
+        assert Vector2D.isUnitVector(axis1X, axis1Y) : AXIS_1_NOT_UNIT_VECTOR;
+        assert Vector2D.isUnitVector(axis2X, axis2Y) : AXIS_2_NOT_UNIT_VECTOR;
 
         final double x = px - centerX;
         final double y = py - centerY;
@@ -539,12 +575,12 @@ public interface Parallelogram2afp<
             double axis2Extent,
             double rx, double ry,
             double rwidth, double rheight) {
-        assert axis1Extent >= 0 : "Extent of axis 1 must be positive or zero"; //$NON-NLS-1$
-        assert axis2Extent >= 0 : "Extent of axis 2 must be positive or zero"; //$NON-NLS-1$
-        assert Vector2D.isUnitVector(axis1X, axis1Y) : "Axis 1 is not a unit vector"; //$NON-NLS-1$
-        assert Vector2D.isUnitVector(axis2X, axis2Y) : "Axis 2 is not a unit vector"; //$NON-NLS-1$
-        assert rwidth >= 0 : "Width of the rectangle must be positive or zero"; //$NON-NLS-1$
-        assert rheight >= 0 : "Height of the rectangle must be positive or zero"; //$NON-NLS-1$
+        assert axis1Extent >= 0 : AXIS_1_EXTENT_POSITIVE_ZERO;
+        assert axis2Extent >= 0 : AXIS_2_EXTENT_POSITIVE_ZERO;
+        assert Vector2D.isUnitVector(axis1X, axis1Y) : AXIS_1_NOT_UNIT_VECTOR;
+        assert Vector2D.isUnitVector(axis2X, axis2Y) : AXIS_2_NOT_UNIT_VECTOR;
+        assert rwidth >= 0 : RECTANGLE_WIDTH;
+        assert rheight >= 0 : RECTANGLE_HEIGHT;
 
         final double basex = rx - centerX;
         final double basey = ry - centerY;
@@ -622,10 +658,10 @@ public interface Parallelogram2afp<
             double axis2X, double axis2Y,
             double axis2Extent,
             double s1x, double s1y, double s2x, double s2y) {
-        assert axis1Extent >= 0 : "Extent of axis 1 must be positive or zero"; //$NON-NLS-1$
-        assert axis2Extent >= 0 : "Extent of axis 2 must be positive or zero"; //$NON-NLS-1$
-        assert Vector2D.isUnitVector(axis1X, axis1Y) : "Axis 1 is not a unit vector"; //$NON-NLS-1$
-        assert Vector2D.isUnitVector(axis2X, axis2Y) : "Axis 2 is not a unit vector"; //$NON-NLS-1$
+        assert axis1Extent >= 0 : AXIS_1_EXTENT_POSITIVE_ZERO;
+        assert axis2Extent >= 0 : AXIS_2_EXTENT_POSITIVE_ZERO;
+        assert Vector2D.isUnitVector(axis1X, axis1Y) : AXIS_1_NOT_UNIT_VECTOR;
+        assert Vector2D.isUnitVector(axis2X, axis2Y) : AXIS_2_NOT_UNIT_VECTOR;
 
         // Changing Segment coordinate basis.
         final double p1x = s1x - centerX;
@@ -678,10 +714,10 @@ public interface Parallelogram2afp<
             double axis2X, double axis2Y,
             double axis2Extent,
             double tx1, double ty1, double tx2, double ty2, double tx3, double ty3) {
-        assert axis1Extent >= 0 : "Extent of axis 1 must be positive or zero"; //$NON-NLS-1$
-        assert axis2Extent >= 0 : "Extent of axis 2 must be positive or zero"; //$NON-NLS-1$
-        assert Vector2D.isUnitVector(axis1X, axis1Y) : "Axis 1 is not a unit vector"; //$NON-NLS-1$
-        assert Vector2D.isUnitVector(axis2X, axis2Y) : "Axis 2 is not a unit vector"; //$NON-NLS-1$
+        assert axis1Extent >= 0 : AXIS_1_EXTENT_POSITIVE_ZERO;
+        assert axis2Extent >= 0 : AXIS_2_EXTENT_POSITIVE_ZERO;
+        assert Vector2D.isUnitVector(axis1X, axis1Y) : AXIS_1_NOT_UNIT_VECTOR;
+        assert Vector2D.isUnitVector(axis2X, axis2Y) : AXIS_2_NOT_UNIT_VECTOR;
 
         // Changing Triangle coordinate basis.
         final double p1x = tx1 - centerX;
@@ -735,10 +771,10 @@ public interface Parallelogram2afp<
             double axis2X, double axis2Y,
             double axis2Extent,
             double circleX, double circleY, double circleRadius) {
-        assert axis1Extent >= 0 : "Extent of axis 1 must be positive or zero"; //$NON-NLS-1$
-        assert axis2Extent >= 0 : "Extent of axis 2 must be positive or zero"; //$NON-NLS-1$
-        assert Vector2D.isUnitVector(axis1X, axis1Y) : "Axis 1 is not a unit vector"; //$NON-NLS-1$
-        assert Vector2D.isUnitVector(axis2X, axis2Y) : "Axis 2 is not a unit vector"; //$NON-NLS-1$
+        assert axis1Extent >= 0 : AXIS_1_EXTENT_POSITIVE_ZERO;
+        assert axis2Extent >= 0 : AXIS_2_EXTENT_POSITIVE_ZERO;
+        assert Vector2D.isUnitVector(axis1X, axis1Y) : AXIS_1_NOT_UNIT_VECTOR;
+        assert Vector2D.isUnitVector(axis2X, axis2Y) : AXIS_2_NOT_UNIT_VECTOR;
         assert circleRadius >= 0 : "Circle radius must be positive or zero"; //$NON-NLS-1$
         final Point2D<?, ?> closest = new InnerComputationPoint2afp();
         computeClosestPoint(
@@ -790,12 +826,12 @@ public interface Parallelogram2afp<
             double axis2X, double axis2Y,
             double axis2Extent,
             double ex, double ey, double ewidth, double eheight) {
-        assert axis1Extent >= 0 : "Extent of axis 1 must be positive or zero"; //$NON-NLS-1$
-        assert axis2Extent >= 0 : "Extent of axis 2 must be positive or zero"; //$NON-NLS-1$
-        assert Vector2D.isUnitVector(axis1X, axis1Y) : "Axis 1 is not a unit vector"; //$NON-NLS-1$
-        assert Vector2D.isUnitVector(axis2X, axis2Y) : "Axis 2 is not a unit vector"; //$NON-NLS-1$
-        assert ewidth >= 0 : "Width of the rectangle must be positive or zero"; //$NON-NLS-1$
-        assert eheight >= 0 : "Height of the rectangle must be positive or zero"; //$NON-NLS-1$
+        assert axis1Extent >= 0 : AXIS_1_EXTENT_POSITIVE_ZERO;
+        assert axis2Extent >= 0 : AXIS_2_EXTENT_POSITIVE_ZERO;
+        assert Vector2D.isUnitVector(axis1X, axis1Y) : AXIS_1_NOT_UNIT_VECTOR;
+        assert Vector2D.isUnitVector(axis2X, axis2Y) : AXIS_2_NOT_UNIT_VECTOR;
+        assert ewidth >= 0 : RECTANGLE_WIDTH;
+        assert eheight >= 0 : RECTANGLE_HEIGHT;
 
         if (ewidth <= 0 || eheight <= 0) {
             return false;
@@ -870,12 +906,12 @@ public interface Parallelogram2afp<
             double axis2Extent,
             double rx, double ry,
             double rwidth, double rheight) {
-        assert axis1Extent >= 0 : "Extent of axis 1 must be positive or zero"; //$NON-NLS-1$
-        assert axis2Extent >= 0 : "Extent of axis 2 must be positive or zero"; //$NON-NLS-1$
-        assert Vector2D.isUnitVector(axis1X, axis1Y) : "Axis 1 is not a unit vector"; //$NON-NLS-1$
-        assert Vector2D.isUnitVector(axis2X, axis2Y) : "Axis 2 is not a unit vector"; //$NON-NLS-1$
-        assert rwidth >= 0 : "Width of the rectangle must be positive or zero"; //$NON-NLS-1$
-        assert rheight >= 0 : "Height of the rectangle must be positive or zero"; //$NON-NLS-1$
+        assert axis1Extent >= 0 : AXIS_1_EXTENT_POSITIVE_ZERO;
+        assert axis2Extent >= 0 : AXIS_2_EXTENT_POSITIVE_ZERO;
+        assert Vector2D.isUnitVector(axis1X, axis1Y) : AXIS_1_NOT_UNIT_VECTOR;
+        assert Vector2D.isUnitVector(axis2X, axis2Y) : AXIS_2_NOT_UNIT_VECTOR;
+        assert rwidth >= 0 : RECTANGLE_WIDTH;
+        assert rheight >= 0 : RECTANGLE_HEIGHT;
         final double rx2 = rx + rwidth;
         final double ry2 = ry + rheight;
         // Test border intersections
@@ -1047,12 +1083,12 @@ public interface Parallelogram2afp<
             double rx, double ry,
             double rwidth, double rheight,
             double rArcWidth, double rArcHeight) {
-        assert axis1Extent >= 0 : "Extent of axis 1 must be positive or zero"; //$NON-NLS-1$
-        assert axis2Extent >= 0 : "Extent of axis 2 must be positive or zero"; //$NON-NLS-1$
-        assert Vector2D.isUnitVector(axis1X, axis1Y) : "Axis 1 is not a unit vector"; //$NON-NLS-1$
-        assert Vector2D.isUnitVector(axis2X, axis2Y) : "Axis 2 is not a unit vector"; //$NON-NLS-1$
-        assert rwidth >= 0 : "Width of the rectangle must be positive or zero"; //$NON-NLS-1$
-        assert rheight >= 0 : "Height of the rectangle must be positive or zero"; //$NON-NLS-1$
+        assert axis1Extent >= 0 : AXIS_1_EXTENT_POSITIVE_ZERO;
+        assert axis2Extent >= 0 : AXIS_2_EXTENT_POSITIVE_ZERO;
+        assert Vector2D.isUnitVector(axis1X, axis1Y) : AXIS_1_NOT_UNIT_VECTOR;
+        assert Vector2D.isUnitVector(axis2X, axis2Y) : AXIS_2_NOT_UNIT_VECTOR;
+        assert rwidth >= 0 : RECTANGLE_WIDTH;
+        assert rheight >= 0 : RECTANGLE_HEIGHT;
         assert rArcWidth >= 0 : "Arc width of the rectangle must be positive or zero"; //$NON-NLS-1$
         assert rArcHeight >= 0 : "Arc height of the rectangle must be positive or zero"; //$NON-NLS-1$
 
@@ -1154,10 +1190,10 @@ public interface Parallelogram2afp<
             double axis2X, double axis2Y, double extent2,
             PathIterator2afp<T> pathIterator) {
         assert pathIterator != null : "Iterator must be not null"; //$NON-NLS-1$
-        assert extent1 >= 0. : "Axis 1 extent must be positive or zero"; //$NON-NLS-1$
-        assert extent2 >= 0. : "Axis 2 extent must be positive or zero"; //$NON-NLS-1$
-        assert Vector2D.isUnitVector(axis1X, axis1Y) : "Axis must be a unit vector"; //$NON-NLS-1$
-        assert Vector2D.isUnitVector(axis2X, axis2Y) : "Axis must be a unit vector"; //$NON-NLS-1$
+        assert extent1 >= 0 : AXIS_1_EXTENT_POSITIVE_ZERO;
+        assert extent2 >= 0 : AXIS_2_EXTENT_POSITIVE_ZERO;
+        assert Vector2D.isUnitVector(axis1X, axis1Y) : AXIS_1_NOT_UNIT_VECTOR;
+        assert Vector2D.isUnitVector(axis2X, axis2Y) : AXIS_2_NOT_UNIT_VECTOR;
         final int mask = pathIterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
         final ProjectionToParallelogramLocalCoordinateSystemPathIterator<T> localIterator =
                 new ProjectionToParallelogramLocalCoordinateSystemPathIterator<>(

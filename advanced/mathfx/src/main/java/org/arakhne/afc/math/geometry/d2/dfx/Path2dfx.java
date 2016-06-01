@@ -59,8 +59,9 @@ import org.arakhne.afc.math.geometry.d2.afp.PathIterator2afp;
 @SuppressWarnings("checkstyle:magicnumber")
 public class Path2dfx extends AbstractShape2dfx<Path2dfx>
 		implements Path2afp<Shape2dfx<?>, Path2dfx, PathElement2dfx, Point2dfx, Vector2dfx, Rectangle2dfx> {
-
 	private static final long serialVersionUID = 6051061640155091109L;
+
+	private static final String PATH_WINDING_RULE = "Path winding rule must be not null"; //$NON-NLS-1$
 
 	/** Array of types.
 	 */
@@ -124,7 +125,7 @@ public class Path2dfx extends AbstractShape2dfx<Path2dfx>
 	 * @param windingRule the path winding rule.
 	 */
 	public Path2dfx(PathWindingRule windingRule) {
-		assert windingRule != null : "Path winding rule must be not null"; //$NON-NLS-1$
+		assert windingRule != null : PATH_WINDING_RULE;
 		if (windingRule != DEFAULT_WINDING_RULE) {
 			windingRuleProperty().set(windingRule);
 		}
@@ -135,7 +136,7 @@ public class Path2dfx extends AbstractShape2dfx<Path2dfx>
 	 * @param iterator the iterator that provides the elements to copy.
 	 */
 	public Path2dfx(PathWindingRule windingRule, Iterator<PathElement2dfx> iterator) {
-		assert windingRule != null : "Path winding rule must be not null"; //$NON-NLS-1$
+		assert windingRule != null : PATH_WINDING_RULE;
 		assert iterator != null : "Iterator must be not null"; //$NON-NLS-1$
 		if (windingRule != DEFAULT_WINDING_RULE) {
 			windingRuleProperty().set(windingRule);
@@ -155,9 +156,9 @@ public class Path2dfx extends AbstractShape2dfx<Path2dfx>
 	public boolean containsControlPoint(Point2D<?, ?> pt) {
 		assert pt != null : "Point must be not null"; //$NON-NLS-1$
 		if (this.coords != null && !this.coords.isEmpty()) {
-			for (int i = 0; i < this.coords.size();) {
-				final double x = this.coords.get(i++);
-				final double y = this.coords.get(i++);
+			for (int i = 0; i < this.coords.size(); i += 2) {
+				final double x = this.coords.get(i);
+				final double y = this.coords.get(i + 1);
 				if (x == pt.getX() && y == pt.getY()) {
 					return true;
 				}
@@ -314,7 +315,7 @@ public class Path2dfx extends AbstractShape2dfx<Path2dfx>
 
 	@Override
 	public void setWindingRule(PathWindingRule rule) {
-		assert rule != null : "Path winding rule must be not null"; //$NON-NLS-1$
+		assert rule != null : PATH_WINDING_RULE;
 		if (this.windingRule != null || rule != DEFAULT_WINDING_RULE) {
 			windingRuleProperty().set(rule);
 		}
@@ -488,11 +489,11 @@ public class Path2dfx extends AbstractShape2dfx<Path2dfx>
 			} else {
 				final Point2D<?, ?> p = new InnerComputationPoint2afp();
 				final Iterator<Double> iterator = this.coords.iterator();
-				for (int i = 0; i < n;) {
+				for (int i = 0; i < n; i += 2) {
 					p.set(iterator.next(), iterator.next());
 					transform.transform(p);
-					clone[i++] = p.ix();
-					clone[i++] = p.iy();
+					clone[i] = p.ix();
+					clone[i + 1] = p.iy();
 				}
 			}
 		}
@@ -512,11 +513,11 @@ public class Path2dfx extends AbstractShape2dfx<Path2dfx>
 			} else {
 				final Point2D<?, ?> p = new InnerComputationPoint2afp();
 				final Iterator<Double> iterator = this.coords.iterator();
-				for (int i = 0; i < n;) {
+				for (int i = 0; i < n; i += 2) {
 					p.set(iterator.next(), iterator.next());
 					transform.transform(p);
-					clone[i++] = (float) p.getX();
-					clone[i++] = (float) p.getY();
+					clone[i] = (float) p.getX();
+					clone[i + 1] = (float) p.getY();
 				}
 			}
 		}
@@ -536,11 +537,11 @@ public class Path2dfx extends AbstractShape2dfx<Path2dfx>
 			} else {
 				final Point2D<?, ?> p = new InnerComputationPoint2afp();
 				final Iterator<Double> iterator = this.coords.iterator();
-				for (int i = 0; i < n;) {
+				for (int i = 0; i < n; i += 2) {
 					p.set(iterator.next(), iterator.next());
 					transform.transform(p);
-					clone[i++] = p.getX();
-					clone[i++] = p.getY();
+					clone[i] = p.getX();
+					clone[i + 1] = p.getY();
 				}
 			}
 		}

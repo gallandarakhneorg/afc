@@ -46,21 +46,25 @@ import org.arakhne.afc.math.geometry.d2.afp.OrientedRectangle2afp;
 public class OrientedRectangle2dfx extends AbstractShape2dfx<OrientedRectangle2dfx>
 		implements OrientedRectangle2afp<Shape2dfx<?>, OrientedRectangle2dfx, PathElement2dfx,
 		Point2dfx, Vector2dfx, Rectangle2dfx> {
-
 	private static final long serialVersionUID = -7570709068803272507L;
+	/**
+	 *Literal constant.
+	 */
+
+	private static final String EXTENT_POSITIVE_OR_ZERO = "Extent must be positive or zero"; //$NON-NLS-1$
 
 	/**
-	 * Center of the OBR.
+	 *Center of the OBR.
 	 */
 	private DoubleProperty cx;
 
 	/**
-	 * Center of the OBR.
+	 *Center of the OBR.
 	 */
 	private DoubleProperty cy;
 
 	/**
-	 * The first axis of the OBR.
+	 *The first axis of the OBR.
 	 */
 	private UnitVectorProperty raxis;
 
@@ -339,7 +343,7 @@ public class OrientedRectangle2dfx extends AbstractShape2dfx<OrientedRectangle2d
 
 	@Override
 	public void setFirstAxisExtent(double extent) {
-		assert extent >= 0 : "Extent must be positive or zero"; //$NON-NLS-1$
+		assert extent >= 0 : EXTENT_POSITIVE_OR_ZERO;
 		firstAxisExtentProperty().set(extent);
 	}
 
@@ -370,7 +374,7 @@ public class OrientedRectangle2dfx extends AbstractShape2dfx<OrientedRectangle2d
 
 	@Override
 	public void setSecondAxisExtent(double extent) {
-		assert extent >= 0 : "Extent must be positive or zero"; //$NON-NLS-1$
+		assert extent >= 0 : EXTENT_POSITIVE_OR_ZERO;
 		secondAxisExtentProperty().set(extent);
 	}
 
@@ -396,7 +400,7 @@ public class OrientedRectangle2dfx extends AbstractShape2dfx<OrientedRectangle2d
 	@Override
 	public void setFirstAxis(double x, double y, double extent) {
 		assert Vector2D.isUnitVector(x, y) : "Axis must be unit vector"; //$NON-NLS-1$
-		assert extent >= 0 : "Extent must be positive or zero"; //$NON-NLS-1$
+		assert extent >= 0 : EXTENT_POSITIVE_OR_ZERO;
 		firstAxisProperty().set(x, y);
 		firstAxisExtentProperty().set(extent);
 	}
@@ -404,7 +408,7 @@ public class OrientedRectangle2dfx extends AbstractShape2dfx<OrientedRectangle2d
 	@Override
 	public void setSecondAxis(double x, double y, double extent) {
 		assert Vector2D.isUnitVector(x, y) : "Axis must be unit vector"; //$NON-NLS-1$
-		assert extent >= 0 : "Extent must be positive or zero"; //$NON-NLS-1$
+		assert extent >= 0 : EXTENT_POSITIVE_OR_ZERO;
 		firstAxisProperty().set(y, -x);
 		secondAxisExtentProperty().set(extent);
 	}

@@ -44,8 +44,12 @@ import org.arakhne.afc.math.geometry.d2.afp.Triangle2afp;
 public class Triangle2dfx
 		extends AbstractShape2dfx<Triangle2dfx>
 		implements Triangle2afp<Shape2dfx<?>, Triangle2dfx, PathElement2dfx, Point2dfx, Vector2dfx, Rectangle2dfx> {
-
 	private static final long serialVersionUID = -1872758222696617883L;
+
+	/**
+	 * Literal constant.
+	 */
+	private static final String POINT_ONE_NOT_NULL = "Point 1 must not be null"; //$NON-NLS-1$
 
 	private DoubleProperty x1;
 
@@ -73,9 +77,9 @@ public class Triangle2dfx
 	 * @param p3 third point.
 	 */
 	public Triangle2dfx(Point2D<?, ?> p1, Point2D<?, ?> p2, Point2D<?, ?> p3) {
-		assert p1 != null : "Point 1 must not be null"; //$NON-NLS-1$
-		assert p2 != null : "Point 1 must not be null"; //$NON-NLS-1$
-		assert p3 != null : "Point 1 must not be null"; //$NON-NLS-1$
+		assert p1 != null : POINT_ONE_NOT_NULL;
+		assert p2 != null : POINT_ONE_NOT_NULL;
+		assert p3 != null : POINT_ONE_NOT_NULL;
 		set(p1.getX(), p1.getY(), p2.getX(), p2.getY(), p3.getX(), p3.getY());
 	}
 

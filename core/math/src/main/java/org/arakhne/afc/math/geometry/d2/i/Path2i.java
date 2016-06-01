@@ -192,9 +192,9 @@ public class Path2i extends AbstractShape2i<Path2i>
 		assert pt != null : "Point must be not null"; //$NON-NLS-1$
 		final int px = pt.ix();
 		final int py = pt.iy();
-		for (int i = 0; i < this.numCoords;) {
-			final int x = this.coords[i++];
-			final int y = this.coords[i++];
+		for (int i = 0; i < this.numCoords; i += 2) {
+			final int x = this.coords[i];
+			final int y = this.coords[i + 1];
 			if (x == px && y == py) {
 				return true;
 			}
