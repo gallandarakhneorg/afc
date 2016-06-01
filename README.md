@@ -5,8 +5,11 @@ The Arakhnê Foundation Classes (AFC) is a collection of Java libraries that may
 AFC library is compatible with the languages that are defined with [Xtext](https://eclipse.org/Xtext): SARL, Xtend, etc.
 Indeed, the AFC classes use the annotations (`@Pure`, `@Inline`), and provide the operators' overriding functions (`operator_plus`, `operator_minus`, etc.) that are supported by the compilers of the Xtext-based languages.
 
+[![Compatible with Java](https://img.shields.io/badge/requires-Java 8-red.svg?style=flat-square)](https://www.java.com)
+[![Compatible with Java](https://img.shields.io/badge/compatible%20with-Java-yellowgreen.svg?style=flat-square)](https://www.java.com)
 [![Compatible with SARL](https://img.shields.io/badge/compatible%20with-SARL-yellowgreen.svg?style=flat-square)](http://sarl.io)
 [![Compatible with Xtext](https://img.shields.io/badge/compatible%20with-Xtext-yellowgreen.svg?style=flat-square)](https://eclipse.org/Xtext)
+
 [![Apache 2.0 License](https://img.shields.io/github/license/gallandarakhneorg/afc.svg?style=flat-square)](https://opensource.org/licenses/Apache-2.0)
 [![travis build](https://img.shields.io/travis/gallandarakhneorg/afc.svg?style=flat-square)](https://travis-ci.org/gallandarakhneorg/afc)
 
@@ -136,9 +139,14 @@ For obtaining the code of the AFC library, you must clone it from the Git:
 git clone https://github.com/gallandarakhneorg/afc
 ```
 
+***Caution:*** due to an issue in the Eclipse Checkstyle plugin, it is mandatory to install the `build-tools` module in the your `.m2` repository prior to the first launch of the Eclipse IDE:
+```bash
+mvn clean install
+```
+
 ## 5.3. Compiling the AFC Source Code
 
-Maven is the standard tool for compiling the AFC library:
+Maven is the standard tool for compiling the AFC library. It is recommended to launch the Maven compilation process on the command at least before submitting a pull request. The command line is:
 ```bash
 mvn clean install
 ```
