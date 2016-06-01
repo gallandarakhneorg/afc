@@ -204,6 +204,7 @@
 	<!-- ======================================= -->
 
 	<modules>
+		<module>build-tools</module>
 		<module>maven</module>
 		<module>core</module>
 		<module>ui</module>
@@ -474,6 +475,11 @@
 					<version>2.17</version>
 					<dependencies>
 						<dependency>
+							<groupId>org.arakhne.afc</groupId>
+							<artifactId>build-tools</artifactId>
+							<version>${afc.version}</version>
+						</dependency>
+						<dependency>
 							<groupId>com.puppycrawl.tools</groupId>
 							<artifactId>checkstyle</artifactId>
 							<version>6.18</version>
@@ -488,8 +494,8 @@
 						</execution>
 					</executions>
 					<configuration>
-						<configLocation>${mainbasedir}/etc/checkstyle.xml</configLocation>
-						<propertyExpansion>config_loc=${mainbasedir}/etc</propertyExpansion>
+						<configLocation>checkstyle/checkstyle.xml</configLocation>
+						<propertyExpansion>${checkstyle.config_loc}</propertyExpansion>
 						<consoleOutput>true</consoleOutput>
 						<failsOnError>true</failsOnError>
 						<failOnViolation>true</failOnViolation>
@@ -668,7 +674,7 @@
 				<executions>
 					<execution>
 						<id>compute-sarl-properties</id>
-						<phase>initialize</phase>
+						<phase>validate</phase>
 						<goals>
 							<goal>execute</goal>
 						</goals>
@@ -691,7 +697,12 @@
 						    }
 						    project.properties.mainbasedir = previousDirectory;
 						    log.info("set mainbasedir to: " + project.properties.mainbasedir);
-						    
+						    def config_loc = previousDirectory;
+						    ["build-tools", "src", "main", "resources", "checkstyle"].each {
+						    	config_loc = new File(config_loc, it);
+						    }
+						    project.properties["checkstyle.config_loc"] = "config_loc=" + config_loc.getAbsolutePath() + File.separator;
+						    log.info("set checkstyle.config_loc to: " + project.properties["checkstyle.config_loc"]);
 						]]></script>
 					</scripts>
 				</configuration>
@@ -720,16 +731,16 @@
 					</plugins>
 				</pluginManagement>
 			</build>
-<!--			<activation>-->
-<!--				<activeByDefault>true</activeByDefault>-->
-<!--			</activation>-->
-<!--			<properties>-->
-<!--				<sonar.jdbc.url>jdbc:mysql://localhost:3306/sonar?useUnicode=true&amp;characterEncoding=utf8</sonar.jdbc.url>-->
-<!--				<sonar.jdbc.driver>com.mysql.jdbc.Driver</sonar.jdbc.driver>-->
-<!--				<sonar.jdbc.username>sonar</sonar.jdbc.username>-->
-<!--				<sonar.jdbc.password>sonar</sonar.jdbc.password>-->
-<!--				<sonar.host.url>https://nemo.sonarqube.org</sonar.host.url>-->
-<!--			</properties>-->
+			<!-- <activation> -->
+			<!-- <activeByDefault>true</activeByDefault> -->
+			<!-- </activation> -->
+			<!-- <properties> -->
+			<!-- <sonar.jdbc.url>jdbc:mysql://localhost:3306/sonar?useUnicode=true&amp;characterEncoding=utf8</sonar.jdbc.url> -->
+			<!-- <sonar.jdbc.driver>com.mysql.jdbc.Driver</sonar.jdbc.driver> -->
+			<!-- <sonar.jdbc.username>sonar</sonar.jdbc.username> -->
+			<!-- <sonar.jdbc.password>sonar</sonar.jdbc.password> -->
+			<!-- <sonar.host.url>https://nemo.sonarqube.org</sonar.host.url> -->
+			<!-- </properties> -->
 		</profile>
 		<profile>
 			<id>use-jdt-compiler</id>
