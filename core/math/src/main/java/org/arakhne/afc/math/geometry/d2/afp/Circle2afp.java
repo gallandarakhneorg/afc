@@ -26,11 +26,11 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
+import org.arakhne.afc.math.geometry.CrossingComputationType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
-import org.arakhne.afc.math.geometry.d2.afp.Path2afp.CrossingComputationType;
 
 /** Fonctional interface that represented a 2D circle on a plane.
  *
@@ -231,11 +231,8 @@ public interface Circle2afp<
 	@Pure
 	double getY();
 
-	/** Replies the center.
-	 *
-	 * @return a copy of the center.
-	 */
 	@Pure
+	@Override
 	default P getCenter() {
 		return getGeomFactory().newPoint(getX(), getY());
 	}
@@ -510,6 +507,86 @@ public interface Circle2afp<
 		}
 		final double s = radius / Math.sqrt(sqLength);
 		return getGeomFactory().newPoint(x + vx * s, y + vy * s);
+	}
+
+	@Pure
+	@Override
+	default P getClosestPointTo(Ellipse2afp<?, ?, ?, ?, ?, ?> ellipse) {
+		assert ellipse != null : "Ellipse must be not null"; //$NON-NLS-1$
+		final Point2D<?, ?> point = ellipse.getClosestPointTo(getCenter());
+		return getClosestPointTo(point);
+	}
+
+	@Pure
+	@Override
+	default P getClosestPointTo(Circle2afp<?, ?, ?, ?, ?, ?> circle) {
+		assert circle != null : "Circle must be not null"; //$NON-NLS-1$
+		final Point2D<?, ?> point = circle.getClosestPointTo(getCenter());
+		return getClosestPointTo(point);
+	}
+
+	@Pure
+	@Override
+	default P getClosestPointTo(Rectangle2afp<?, ?, ?, ?, ?, ?> rectangle) {
+		assert rectangle != null : "Rectangle must be not null"; //$NON-NLS-1$
+		final Point2D<?, ?> point = rectangle.getClosestPointTo(getCenter());
+		return getClosestPointTo(point);
+	}
+
+	@Pure
+	@Override
+	default P getClosestPointTo(Segment2afp<?, ?, ?, ?, ?, ?> segment) {
+		assert segment != null : "Segment must be not null"; //$NON-NLS-1$
+		final Point2D<?, ?> point = segment.getClosestPointTo(getCenter());
+		return getClosestPointTo(point);
+	}
+
+	@Pure
+	@Override
+	default P getClosestPointTo(Triangle2afp<?, ?, ?, ?, ?, ?> triangle) {
+		assert triangle != null : "Triangle must be not null"; //$NON-NLS-1$
+		final Point2D<?, ?> point = triangle.getClosestPointTo(getCenter());
+		return getClosestPointTo(point);
+	}
+
+	@Pure
+	@Override
+	default P getClosestPointTo(Path2afp<?, ?, ?, ?, ?, ?> path) {
+		assert path != null : "Path must be not null"; //$NON-NLS-1$
+		final Point2D<?, ?> point = path.getClosestPointTo(getCenter());
+		return getClosestPointTo(point);
+	}
+
+	@Pure
+	@Override
+	default P getClosestPointTo(OrientedRectangle2afp<?, ?, ?, ?, ?, ?> orientedRectangle) {
+		assert orientedRectangle != null : "Oriented rectangle must be not null"; //$NON-NLS-1$
+		final Point2D<?, ?> point = orientedRectangle.getClosestPointTo(getCenter());
+		return getClosestPointTo(point);
+	}
+
+	@Pure
+	@Override
+	default P getClosestPointTo(Parallelogram2afp<?, ?, ?, ?, ?, ?> parallelogram) {
+		assert parallelogram != null : "Parallelogram must be not null"; //$NON-NLS-1$
+		final Point2D<?, ?> point = parallelogram.getClosestPointTo(getCenter());
+		return getClosestPointTo(point);
+	}
+
+	@Pure
+	@Override
+	default P getClosestPointTo(RoundRectangle2afp<?, ?, ?, ?, ?, ?> roundRectangle) {
+		assert roundRectangle != null : "Round rectangle must be not null"; //$NON-NLS-1$
+		final Point2D<?, ?> point = roundRectangle.getClosestPointTo(getCenter());
+		return getClosestPointTo(point);
+	}
+
+	@Pure
+	@Override
+	default P getClosestPointTo(MultiShape2afp<?, ?, ?, ?, ?, ?, ?> multishape) {
+		assert multishape != null : "Multishape must be not null"; //$NON-NLS-1$
+		final Point2D<?, ?> point = multishape.getClosestPointTo(getCenter());
+		return getClosestPointTo(point);
 	}
 
 	@Pure

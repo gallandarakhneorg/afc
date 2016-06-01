@@ -240,6 +240,31 @@ public interface MultiShape2ai<
 		return new MultiShapePointIterator<>(getBackendDataList());
 	}
 
+	@Override
+	default P getClosestPointTo(Rectangle2ai<?, ?, ?, ?, ?, ?> rectangle) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	default P getClosestPointTo(Circle2ai<?, ?, ?, ?, ?, ?> circle) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	default P getClosestPointTo(Segment2ai<?, ?, ?, ?, ?, ?> segment) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	default P getClosestPointTo(MultiShape2ai<?, ?, ?, ?, ?, ?, ?> multishape) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	default P getClosestPointTo(Path2ai<?, ?, ?, ?, ?, ?> path) {
+		throw new UnsupportedOperationException();
+	}
+
 	/** Abstract iterator on the path elements of the multishape.
 	 *
 	 * @param <IE> the type of the path elements.

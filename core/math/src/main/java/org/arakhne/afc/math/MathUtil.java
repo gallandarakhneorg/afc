@@ -498,6 +498,11 @@ public final class MathUtil {
 	 * @param rxmax is the max of the coordinates of the rectangle.
 	 * @param rymax is the max of the coordinates of the rectangle.
 	 * @return the zone
+	 * @see MathConstants#COHEN_SUTHERLAND_BOTTOM
+	 * @see MathConstants#COHEN_SUTHERLAND_TOP
+	 * @see MathConstants#COHEN_SUTHERLAND_LEFT
+	 * @see MathConstants#COHEN_SUTHERLAND_RIGHT
+	 * @see MathConstants#COHEN_SUTHERLAND_INSIDE
 	 */
 	@Pure
 	public static int getCohenSutherlandCode(int px, int py, int rxmin, int rymin, int rxmax, int rymax) {
@@ -537,6 +542,11 @@ public final class MathUtil {
 	 * @param rxmax is the max of the coordinates of the rectangle.
 	 * @param rymax is the max of the coordinates of the rectangle.
 	 * @return the zone
+	 * @see MathConstants#COHEN_SUTHERLAND_BOTTOM
+	 * @see MathConstants#COHEN_SUTHERLAND_TOP
+	 * @see MathConstants#COHEN_SUTHERLAND_LEFT
+	 * @see MathConstants#COHEN_SUTHERLAND_RIGHT
+	 * @see MathConstants#COHEN_SUTHERLAND_INSIDE
 	 */
 	@Pure
 	public static int getCohenSutherlandCode(double px, double py, double rxmin, double rymin, double rxmax, double rymax) {

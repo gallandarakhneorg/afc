@@ -26,12 +26,12 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.Unefficient;
+import org.arakhne.afc.math.geometry.CrossingComputationType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.afp.Circle2afp.AbstractCirclePathIterator;
-import org.arakhne.afc.math.geometry.d2.afp.Path2afp.CrossingComputationType;
 
 /** Fonctional interface that represented a 2D ellipse on a plane.
  *
@@ -835,6 +835,84 @@ public interface Ellipse2afp<
 	}
 
 	@Override
+	default P getClosestPointTo(Circle2afp<?, ?, ?, ?, ?, ?> circle) {
+		assert circle != null : "Circle must be not null"; //$NON-NLS-1$
+		return getClosestPointTo(circle.getCenter());
+	}
+
+	@Override
+	@Unefficient
+	default P getClosestPointTo(Ellipse2afp<?, ?, ?, ?, ?, ?> ellipse) {
+		assert ellipse != null : "Ellipse must be not null"; //$NON-NLS-1$
+		final P pointOnSecondEllipse = getGeomFactory().newPoint();
+		Path2afp.getClosestPointTo(
+				new Path2afp.FlatteningPathIterator<>(ellipse.getPathIterator(), MathConstants.SPLINE_APPROXIMATION_RATIO,
+						Path2afp.DEFAULT_FLATENING_LIMIT),
+				getPathIterator(), pointOnSecondEllipse);
+		return getClosestPointTo(pointOnSecondEllipse);
+	}
+
+	@Override
+	@Unefficient
+	default P getClosestPointTo(Rectangle2afp<?, ?, ?, ?, ?, ?> rectangle) {
+		assert rectangle != null : "Rectangle must be not null"; //$NON-NLS-1$
+		final Point2D<?, ?> pointOnRectangle = rectangle.getClosestPointTo(this);
+		return getClosestPointTo(pointOnRectangle);
+	}
+
+	@Override
+	@Unefficient
+	default P getClosestPointTo(Segment2afp<?, ?, ?, ?, ?, ?> segment) {
+		assert segment != null : "Segment must be not null"; //$NON-NLS-1$
+		final Point2D<?, ?> pointOnSegment = segment.getClosestPointTo(this);
+		return getClosestPointTo(pointOnSegment);
+	}
+
+	@Override
+	@Unefficient
+	default P getClosestPointTo(Triangle2afp<?, ?, ?, ?, ?, ?> triangle) {
+		assert triangle != null : "Triangle must be not null"; //$NON-NLS-1$
+		final Point2D<?, ?> pointOnTriangle = triangle.getClosestPointTo(this);
+		return getClosestPointTo(pointOnTriangle);
+	}
+
+	@Override
+	@Unefficient
+	default P getClosestPointTo(OrientedRectangle2afp<?, ?, ?, ?, ?, ?> orientedRectangle) {
+		assert orientedRectangle != null : "Oriented rectangle must be not null"; //$NON-NLS-1$
+		final Point2D<?, ?> pointOnRectangle = orientedRectangle.getClosestPointTo(this);
+		return getClosestPointTo(pointOnRectangle);
+	}
+
+	@Override
+	@Unefficient
+	default P getClosestPointTo(Parallelogram2afp<?, ?, ?, ?, ?, ?> parallelogram) {
+		assert parallelogram != null : "Rectangle must be not null"; //$NON-NLS-1$
+		final Point2D<?, ?> pointOnParallelogram = parallelogram.getClosestPointTo(this);
+		return getClosestPointTo(pointOnParallelogram);
+	}
+
+	@Override
+	@Unefficient
+	default P getClosestPointTo(RoundRectangle2afp<?, ?, ?, ?, ?, ?> roundRectangle) {
+		assert roundRectangle != null : "Round rectangle must be not null"; //$NON-NLS-1$
+		final Point2D<?, ?> pointOnRectangle = roundRectangle.getClosestPointTo(this);
+		return getClosestPointTo(pointOnRectangle);
+	}
+
+	@Override
+	@Unefficient
+	default P getClosestPointTo(Path2afp<?, ?, ?, ?, ?, ?> path) {
+		assert path != null : "Path must be not null"; //$NON-NLS-1$
+		final P point = getGeomFactory().newPoint();
+		Path2afp.getClosestPointTo(
+				new Path2afp.FlatteningPathIterator<>(getPathIterator(), MathConstants.SPLINE_APPROXIMATION_RATIO,
+						Path2afp.DEFAULT_FLATENING_LIMIT),
+				path.getPathIterator(), point);
+		return point;
+	}
+
+	@Override
 	default P getFarthestPointTo(Point2D<?, ?> pt) {
 		assert pt != null : "Point must be not null"; //$NON-NLS-1$
 		final P point = getGeomFactory().newPoint();
@@ -1360,28 +1438,22 @@ public interface Ellipse2afp<
 				if (px > 0) {
 					final double zx = px / horizontalRadius;
 					final double zy = py / verticalRadius;
-					if (zx <= 1. && zy <= 1.) {
-						// inside the ellipse
+					final double g = zx * zx + zy * zy - 1;
+					// g > 0, then point is outside ellipse
+					// g = 0, then point is on ellipse
+					// g < 0, then point is inside ellipse
+					if (g > 0) {
+						double r0 = horizontalRadius / verticalRadius;
+						r0 = r0 * r0;
+						final double sbar = getClosestNormalPointRoot(r0, zx, zy, g);
+						closeX = r0 * px / (sbar + r0);
+						closeY = py / (sbar + 1);
+						if (computeDistance) {
+							distance = Math.hypot(closeX - px, closeY - py);
+						}
+					} else {
 						closeX = px;
 						closeY = py;
-					} else {
-						final double g = zx * zx + zy * zy - 1;
-						// g > 0, then point is outside ellipse
-						// g = 0, then point is on ellipse
-						// g < 0, then point is inside ellipse
-						if (g != 0) {
-							double r0 = horizontalRadius / verticalRadius;
-							r0 = r0 * r0;
-							final double sbar = getClosestNormalPointRoot(r0, zx, zy, g);
-							closeX = r0 * px / (sbar + r0);
-							closeY = py / (sbar + 1);
-							if (computeDistance) {
-								distance = Math.hypot(closeX - px, closeY - py);
-							}
-						} else {
-							closeX = px;
-							closeY = py;
-						}
 					}
 				} else {
 					// px == 0
@@ -1551,3 +1623,4 @@ public interface Ellipse2afp<
 	}
 
 }
+

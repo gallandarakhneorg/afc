@@ -1532,4 +1532,122 @@ public abstract class AbstractOrientedRectangle2afpTest<T extends OrientedRectan
 		assertEpsilonEquals(159.753, this.shape.getSecondAxisExtent());
 	}
 	
+	@Test
+	public void isCCW() {
+		assertTrue(this.shape.isCCW());
+		assertTrue(createOrientedRectangle(cx, cy, ux, uy, e1, e2).isCCW());
+		assertTrue(createOrientedRectangle(
+				4.7, 15,
+				0.12403, 0.99228, 18.02776, 20).isCCW());
+		assertTrue(createOrientedRectangle(
+				-10, -3,
+				-.8944271909999159, .4472135954999579, 2, 1).isCCW());
+		assertTrue(createOrientedRectangle(
+				-10, 7,
+				-0.9863939238321437, 0.1643989873053573, 1, 2).isCCW());
+		assertTrue(createOrientedRectangle(
+				0, -6,
+				-0.9863939238321437, 0.1643989873053573, 1, 2).isCCW());
+	}
+
+	@Test
+	public void getDistanceSquaredRectangle2afp() {
+		assert(false);
+	}
+
+	@Test
+	public void getDistanceSquaredCircle2afp() {
+		assert(false);
+	}
+
+	@Test
+	public void getDistanceSquaredTriangle2afp() {
+		assert(false);
+	}
+
+	@Test
+	public void getDistanceSquaredEllipse2afp() {
+		assert(false);
+	}
+
+	@Test
+	public void getDistanceSquaredSegment2afp() {
+		assert(false);
+	}
+	
+	@Test
+	public void getDistanceSquaredPath2afp() {
+		assert(false);
+	}
+
+	@Test
+	public void getDistanceSquaredOrientedRectangle2afp() {
+		assert(false);
+	}
+
+	@Test
+	public void getDistanceSquaredMultiShape2afp() {
+		assert(false);
+	}
+
+	@Test
+	public void getDistanceSquaredParallelogram2afp() {
+		assert(false);
+	}
+
+	@Test
+	public void getDistanceSquaredRoundRectangle2afp() {
+		assert(false);
+	}
+
+	@Test
+	public void getClosestPointToEllipse2afp() {
+		assert(false);
+	}
+
+	@Test
+	public void getClosestPointToCircle2afp() {
+		assert(false);
+	}
+
+	@Test
+	public void getClosestPointToRectangle2afp() {
+		assert(false);
+	}
+
+	@Test
+	public void getClosestPointToSegment2afp() {
+		assert(false);
+	}
+
+	@Test
+	public void getClosestPointToTriangle2afp() {
+		assert(false);
+	}
+
+	@Test
+	public void getClosestPointToPath2afp() {
+		assert(false);
+	}
+
+	@Test
+	public void getClosestPointToOrientedRectangle2afp() {
+		assert(false);
+	}
+		
+	@Test
+	public void getClosestPointToParallelogram2afp() {
+		assert(false);
+	}
+
+	@Test
+	public void getClosestPointToRoundRectangle2afp() {
+		assert(false);
+	}
+
+	@Test
+	public void getClosestPointToMultiShape2afp() {
+		assert(false);
+	}
+	
 }

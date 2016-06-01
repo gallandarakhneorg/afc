@@ -1119,4 +1119,49 @@ public abstract class AbstractSegment2aiTest<T extends Segment2ai<?, T, ?, ?, ?,
 		assertEpsilonEquals(7.071067812f, this.shape.operator_upTo(createPoint(-5, 5)));
 	}
 
+	@Test
+	public void getDistanceSquaredRectangle2ai() {
+		assert(false);
+	}
+
+	@Test
+	public void getDistanceSquaredCircle2ai() {
+		assert(false);
+	}
+
+	@Test
+	public void getDistanceSquaredSegment2ai() {
+		assert(false);
+	}
+	
+	@Test
+	public void getDistanceSquaredPath2ai() {
+		assert(false);
+	}
+
+	@Test
+	public void getClosestPointToRectangle2ai() {
+		assert(false);
+	}
+
+	@Test
+	public void getClosestPointToCircle2ai() {
+		assert(false);
+	}
+
+	@Test
+	public void getClosestPointToSegment2ai() {
+		assert(false);
+	}
+	
+	@Test
+	public void getClosestPointToMultiShape2ai() {
+		assert(false);
+	}
+		
+	@Test
+	public void getClosestPointToPath2ai() {
+		assert(false);
+	}
+
 }

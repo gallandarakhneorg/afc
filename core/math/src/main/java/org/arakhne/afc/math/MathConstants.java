@@ -30,23 +30,23 @@ package org.arakhne.afc.math;
  */
 public final class MathConstants {
 
-	/** Inside zone according to the Cohen-Sutherland algorithm.
+	/** Inside zone according to the Cohen-Sutherland algorithm: {@code x in [xmin;xmax] and y in [ymin;ymax]}.
 	 */
 	public static final int COHEN_SUTHERLAND_INSIDE = 0;
 
-	/** Left zone according to the Cohen-Sutherland algorithm.
+	/** Left zone according to the Cohen-Sutherland algorithm: {@code x < xmin}.
 	 */
 	public static final int COHEN_SUTHERLAND_LEFT = 1;
 
-	/** Right zone according to the Cohen-Sutherland algorithm.
+	/** Right zone according to the Cohen-Sutherland algorithm: {@code x > xmax}.
 	 */
 	public static final int COHEN_SUTHERLAND_RIGHT = 2;
 
-	/** Bottom zone according to the Cohen-Sutherland algorithm.
+	/** Bottom zone according to the Cohen-Sutherland algorithm: {@code y < ymin}.
 	 */
 	public static final int COHEN_SUTHERLAND_BOTTOM = 4;
 
-	/** Top zone according to the Cohen-Sutherland algorithm.
+	/** Top zone according to the Cohen-Sutherland algorithm: {@code y > ymax}.
 	 */
 	public static final int COHEN_SUTHERLAND_TOP = 8;
 

@@ -222,6 +222,21 @@ public abstract class AbstractShape2aiTest<T extends Shape2ai<?, ?, ?, ?, ?, B>,
 	public abstract void getFarthestPointTo();
 
 	@Test
+	public abstract void getClosestPointToRectangle2ai();
+
+	@Test
+	public abstract void getClosestPointToCircle2ai();
+
+	@Test
+	public abstract void getClosestPointToSegment2ai();
+	
+	@Test
+	public abstract void getClosestPointToMultiShape2ai();
+		
+	@Test
+	public abstract void getClosestPointToPath2ai();
+	
+	@Test
 	public abstract void getDistance();
 
 	@Test
@@ -275,6 +290,18 @@ public abstract class AbstractShape2aiTest<T extends Shape2ai<?, ?, ?, ?, ?, B>,
 	@Test
 	public abstract void intersectsPathIterator2ai();
 
+	@Test
+	public abstract void getDistanceSquaredRectangle2ai();
+
+	@Test
+	public abstract void getDistanceSquaredCircle2ai();
+
+	@Test
+	public abstract void getDistanceSquaredSegment2ai();
+	
+	@Test
+	public abstract void getDistanceSquaredPath2ai();
+	
 	@Test
 	public abstract void translateIntInt(); 
 

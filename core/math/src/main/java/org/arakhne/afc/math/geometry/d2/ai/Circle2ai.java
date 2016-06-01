@@ -28,13 +28,13 @@ import java.util.TreeSet;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.MathConstants;
+import org.arakhne.afc.math.geometry.CrossingComputationType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.GeomFactory;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.Tuple2iComparator;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
-import org.arakhne.afc.math.geometry.d2.ai.Path2ai.CrossingComputationType;
 
 /** Fonctional interface that represented a 2D circle on a plane.
  *
@@ -679,6 +679,31 @@ public interface Circle2ai<
 		final P point = getGeomFactory().newPoint();
 		computeClosestPointTo(getX(), getY(), getRadius(), pt.ix(), pt.iy(), point);
 		return point;
+	}
+
+	@Override
+	default P getClosestPointTo(Rectangle2ai<?, ?, ?, ?, ?, ?> rectangle) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	default P getClosestPointTo(Circle2ai<?, ?, ?, ?, ?, ?> circle) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	default P getClosestPointTo(Segment2ai<?, ?, ?, ?, ?, ?> segment) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	default P getClosestPointTo(MultiShape2ai<?, ?, ?, ?, ?, ?, ?> multishape) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	default P getClosestPointTo(Path2ai<?, ?, ?, ?, ?, ?> path) {
+		throw new UnsupportedOperationException();
 	}
 
 	@Pure

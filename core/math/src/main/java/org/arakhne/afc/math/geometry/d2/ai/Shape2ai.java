@@ -186,6 +186,144 @@ public interface Shape2ai<
 	@Pure
 	boolean intersects(PathIterator2ai<?> iterator);
 
+	@Pure
+	@Unefficient
+	@Override
+	default double getDistanceSquared(Shape2D<?, ?, ?, ?, ?, ?> shape) {
+		if (shape instanceof Circle2ai) {
+			return getDistanceSquared((Circle2ai<?, ?, ?, ?, ?, ?>) shape);
+		}
+		if (shape instanceof Path2ai) {
+			return getDistanceSquared((Path2ai<?, ?, ?, ?, ?, ?>) shape);
+		}
+		if (shape instanceof Rectangle2ai) {
+			return getDistanceSquared((Rectangle2ai<?, ?, ?, ?, ?, ?>) shape);
+		}
+		if (shape instanceof Segment2ai) {
+			return getDistanceSquared((Segment2ai<?, ?, ?, ?, ?, ?>) shape);
+		}
+		throw new IllegalArgumentException();
+	}
+
+	/** Replies the minimum distance between this shape and the given rectangle.
+	 *
+	 * @param rectangle the rectangle.
+	 * @return the minimum distance between the two shapes.
+	 */
+	@Pure
+	default double getDistanceSquared(Rectangle2ai<?, ?, ?, ?, ?, ?> rectangle) {
+		assert rectangle != null : "Rectangle must be not null"; //$NON-NLS-1$
+		return rectangle.getDistanceSquared(getClosestPointTo(rectangle));
+	}
+
+	/** Replies the minimum distance between this shape and the given circle.
+	 *
+	 * @param circle the circle
+	 * @return the minimum distance between the two shapes.
+	 */
+	@Pure
+	default double getDistanceSquared(Circle2ai<?, ?, ?, ?, ?, ?> circle) {
+		assert circle != null : "Circle must be not null"; //$NON-NLS-1$
+		return circle.getDistanceSquared(getClosestPointTo(circle));
+	}
+
+	/** Replies the minimum distance between this shape and the given segment.
+	 *
+	 * @param segment the segment.
+	 * @return the minimum distance between the two shapes.
+	 */
+	@Pure
+	default double getDistanceSquared(Segment2ai<?, ?, ?, ?, ?, ?> segment) {
+		assert segment != null : "Segment must be not null"; //$NON-NLS-1$
+		return segment.getDistanceSquared(getClosestPointTo(segment));
+	}
+
+	/** Replies the minimum distance between this shape and the given multishape.
+	 *
+	 * @param multishape the multishape.
+	 * @return the minimum distance between the two shapes.
+	 */
+	@Pure
+	default double getDistanceSquared(MultiShape2ai<?, ?, ?, ?, ?, ?, ?> multishape) {
+		assert multishape != null : "Multishape must be not null"; //$NON-NLS-1$
+		return multishape.getDistanceSquared(getClosestPointTo(multishape));
+	}
+
+	/** Replies the minimum distance between this shape and the given path.
+	 *
+	 * @param path the path.
+	 * @return the minimum distance between the two shapes.
+	 */
+	@Pure
+	default double getDistanceSquared(Path2ai<?, ?, ?, ?, ?, ?> path) {
+		assert path != null : "Path must be not null"; //$NON-NLS-1$
+		return path.getDistanceSquared(getClosestPointTo(path));
+	}
+
+	@Pure
+	@Unefficient
+	@Override
+	default P getClosestPointTo(Shape2D<?, ?, ?, ?, ?, ?> shape) {
+		if (shape instanceof Circle2ai) {
+			return getClosestPointTo((Circle2ai<?, ?, ?, ?, ?, ?>) shape);
+		}
+		if (shape instanceof Path2ai) {
+			return getClosestPointTo((Path2ai<?, ?, ?, ?, ?, ?>) shape);
+		}
+		if (shape instanceof Rectangle2ai) {
+			return getClosestPointTo((Rectangle2ai<?, ?, ?, ?, ?, ?>) shape);
+		}
+		if (shape instanceof Segment2ai) {
+			return getClosestPointTo((Segment2ai<?, ?, ?, ?, ?, ?>) shape);
+		}
+		throw new IllegalArgumentException();
+	}
+
+	/** Replies the closest point on this shape to the given rectangle.
+	 *
+	 * @param rectangle the rectangle.
+	 * @return the closest point on this shape to the given shape; or the point
+	 *     if the point is in this shape.
+	 */
+	@Pure
+	P getClosestPointTo(Rectangle2ai<?, ?, ?, ?, ?, ?> rectangle);
+
+	/** Replies the closest point on this shape to the given rectangle.
+	 *
+	 * @param circle the circle.
+	 * @return the closest point on this shape to the given shape; or the point
+	 *     if the point is in this shape.
+	 */
+	@Pure
+	P getClosestPointTo(Circle2ai<?, ?, ?, ?, ?, ?> circle);
+
+	/** Replies the closest point on this shape to the given rectangle.
+	 *
+	 * @param segment the segment.
+	 * @return the closest point on this shape to the given shape; or the point
+	 *     if the point is in this shape.
+	 */
+	@Pure
+	P getClosestPointTo(Segment2ai<?, ?, ?, ?, ?, ?> segment);
+
+	/** Replies the closest point on this shape to the given rectangle.
+	 *
+	 * @param multishape the multishape.
+	 * @return the closest point on this shape to the given shape; or the point
+	 *     if the point is in this shape.
+	 */
+	@Pure
+	P getClosestPointTo(MultiShape2ai<?, ?, ?, ?, ?, ?, ?> multishape);
+
+	/** Replies the closest point on this shape to the given rectangle.
+	 *
+	 * @param path the path.
+	 * @return the closest point on this shape to the given shape; or the point
+	 *     if the point is in this shape.
+	 */
+	@Pure
+	P getClosestPointTo(Path2ai<?, ?, ?, ?, ?, ?> path);
+
 	@Override
 	GeomFactory2ai<IE, P, V, B> getGeomFactory();
 

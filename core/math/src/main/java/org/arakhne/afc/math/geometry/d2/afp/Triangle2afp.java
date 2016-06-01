@@ -25,11 +25,12 @@ import java.util.NoSuchElementException;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.MathConstants;
+import org.arakhne.afc.math.Unefficient;
+import org.arakhne.afc.math.geometry.CrossingComputationType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
-import org.arakhne.afc.math.geometry.d2.afp.Path2afp.CrossingComputationType;
 
 /** Fonctional interface that represented a 2D triangle on a plane.
  *
@@ -54,6 +55,79 @@ public interface Triangle2afp<
 		V extends Vector2D<? super V, ? super P>,
 		B extends Rectangle2afp<?, ?, IE, P, V, B>>
 		extends Shape2afp<ST, IT, IE, P, V, B> {
+
+    /** Replies the closest feature of the triangle to the given point.
+	 *
+	 * @param tx1 x coordinate of the first point of the triangle.
+	 * @param ty1 y coordinate of the first point of the triangle.
+	 * @param tx2 x coordinate of the second point of the triangle.
+	 * @param ty2 y coordinate of the second point of the triangle.
+	 * @param tx3 x coordinate of the third point of the triangle.
+	 * @param ty3 y coordinate of the third point of the triangle.
+	 * @param px x coordinate of the reference point.
+	 * @param py y coordinate of the reference point.
+	 * @return the closest triangle feature to the reference point.
+	 */
+    @SuppressWarnings({"checkstyle:returncount", "checkstyle:npathcomplexity"})
+	static TriangleFeature getClosestFeatureTrianglePoint(double tx1, double ty1, double tx2, double ty2,
+			double tx3, double ty3, double px, double py) {
+		final double apx = px - tx1;
+		final double apy = py - ty1;
+		final double abx = tx2 - tx1;
+		final double aby = ty2 - ty1;
+		double d1 = Vector2D.dotProduct(abx, aby, apx, apy);
+		if (d1 < 0.) {
+		    final double acx = tx3 - tx1;
+		    final double acy = ty3 - ty1;
+			d1 = Vector2D.dotProduct(acx, acy, apx, apy);
+			if (d1 < 0.) {
+				return TriangleFeature.FIRST_CORNER;
+			}
+			final double d2 = Vector2D.dotProduct(acx, acy, acx, acy);
+			if (d1 > d2) {
+				return TriangleFeature.THIRD_CORNER;
+			}
+			return TriangleFeature.THIRD_SEGMENT;
+		}
+
+		final double bpx = px - tx2;
+		final double bpy = py - ty2;
+		final double bcx = tx3 - tx2;
+		final double bcy = ty3 - ty2;
+		final double d2 = Vector2D.dotProduct(bcx, bcy, bpx, bpy);
+		if (d2 < 0.) {
+		    final double d3 = Vector2D.dotProduct(abx, aby, abx, aby);
+			if (d1 > d3) {
+				return TriangleFeature.SECOND_CORNER;
+			}
+			return TriangleFeature.FIRST_SEGMENT;
+		}
+
+		final double cpx = px - tx3;
+		final double cpy = py - ty3;
+		final double cax = tx1 - tx1;
+		final double cay = ty1 - ty1;
+		final double d3 = Vector2D.dotProduct(cax, cay, cpx, cpy);
+		if (d3 < 0.) {
+		    final double d4 = Vector2D.dotProduct(bcx, bcy, bcx, bcy);
+			if (d2 > d4) {
+				return TriangleFeature.THIRD_CORNER;
+			}
+			return TriangleFeature.SECOND_SEGMENT;
+		}
+
+		double d4 = Vector2D.dotProduct(abx, aby, abx, aby);
+		if (d1 > d4) {
+			return TriangleFeature.SECOND_SEGMENT;
+		}
+
+		d4 = Vector2D.perpProduct(cax, cay, cpx, cpy);
+		if (d4 < 0.) {
+			return TriangleFeature.THIRD_SEGMENT;
+		}
+
+		return TriangleFeature.INSIDE;
+	}
 
 	/**
 	 * Replies if three points of a triangle are defined in a counter-clockwise order.
@@ -168,16 +242,16 @@ public interface Triangle2afp<
 				} else if (side3 <= 0) {
 					closest.set(tx1, ty1);
 				} else {
-					Segment2afp.computeClosestPointTo(tx1, ty1, tx2, ty2, px, py, closest);
+					Segment2afp.computeClosestPointToPoint(tx1, ty1, tx2, ty2, px, py, closest);
 				}
 			} else if (side2 <= 0) {
 				if (side3 <= 0) {
 					closest.set(tx3, ty3);
 				} else {
-					Segment2afp.computeClosestPointTo(tx2, ty2, tx3, ty3, px, py, closest);
+					Segment2afp.computeClosestPointToPoint(tx2, ty2, tx3, ty3, px, py, closest);
 				}
 			} else if (side3 <= 0) {
-				Segment2afp.computeClosestPointTo(tx3, ty3, tx1, ty1, px, py, closest);
+				Segment2afp.computeClosestPointToPoint(tx3, ty3, tx1, ty1, px, py, closest);
 			} else {
 				closest.set(px, py);
 			}
@@ -868,8 +942,86 @@ public interface Triangle2afp<
 		return point;
 	}
 
-	@Pure
-	@Override
+    @Pure
+    @Override
+    default P getClosestPointTo(Circle2afp<?, ?, ?, ?, ?, ?> circle) {
+        return getClosestPointTo(circle.getCenter());
+    }
+
+    @Override
+    @Unefficient
+    default P getClosestPointTo(Ellipse2afp<?, ?, ?, ?, ?, ?> ellipse) {
+        assert ellipse != null : "Ellipse must be not null"; //$NON-NLS-1$
+        final P point = getGeomFactory().newPoint();
+        Path2afp.getClosestPointTo(getPathIterator(), ellipse.getPathIterator(), point);
+        return point;
+    }
+
+    @Override
+    @Unefficient
+    default P getClosestPointTo(Rectangle2afp<?, ?, ?, ?, ?, ?> rectangle) {
+        assert rectangle != null : "Rectangle must be not null"; //$NON-NLS-1$
+        final P point = getGeomFactory().newPoint();
+        Path2afp.getClosestPointTo(getPathIterator(), rectangle.getPathIterator(), point);
+        return point;
+    }
+
+    @Override
+    @Unefficient
+    default P getClosestPointTo(Segment2afp<?, ?, ?, ?, ?, ?> segment) {
+        assert segment != null : "Segment must be not null"; //$NON-NLS-1$
+        final P point = getGeomFactory().newPoint();
+        Path2afp.getClosestPointTo(getPathIterator(), segment.getPathIterator(), point);
+        return point;
+    }
+
+    @Override
+    @Unefficient
+    default P getClosestPointTo(Triangle2afp<?, ?, ?, ?, ?, ?> triangle) {
+        assert triangle != null : "Triangle must be not null"; //$NON-NLS-1$
+        final P point = getGeomFactory().newPoint();
+        Path2afp.getClosestPointTo(getPathIterator(), triangle.getPathIterator(), point);
+        return point;
+    }
+
+    @Override
+    @Unefficient
+    default P getClosestPointTo(OrientedRectangle2afp<?, ?, ?, ?, ?, ?> orientedRectangle) {
+        assert orientedRectangle != null : "Oriented rectangle must be not null"; //$NON-NLS-1$
+        final P point = getGeomFactory().newPoint();
+        Path2afp.getClosestPointTo(getPathIterator(), orientedRectangle.getPathIterator(), point);
+        return point;
+    }
+
+    @Override
+    @Unefficient
+    default P getClosestPointTo(Parallelogram2afp<?, ?, ?, ?, ?, ?> parallelogram) {
+        assert parallelogram != null : "Parallelogram must be not null"; //$NON-NLS-1$
+        final P point = getGeomFactory().newPoint();
+        Path2afp.getClosestPointTo(getPathIterator(), parallelogram.getPathIterator(), point);
+        return point;
+    }
+
+    @Override
+    @Unefficient
+    default P getClosestPointTo(RoundRectangle2afp<?, ?, ?, ?, ?, ?> roundRectangle) {
+        assert roundRectangle != null : "Round rectangle must be not null"; //$NON-NLS-1$
+        final P point = getGeomFactory().newPoint();
+        Path2afp.getClosestPointTo(getPathIterator(), roundRectangle.getPathIterator(), point);
+        return point;
+    }
+
+    @Override
+    @Unefficient
+    default P getClosestPointTo(Path2afp<?, ?, ?, ?, ?, ?> path) {
+        assert path != null : "Path must be not null"; //$NON-NLS-1$
+        final P point = getGeomFactory().newPoint();
+        Path2afp.getClosestPointTo(getPathIterator(), path.getPathIterator(), point);
+        return point;
+    }
+
+    @Pure
+    @Override
 	default P getFarthestPointTo(Point2D<?, ?> pt) {
 		assert pt != null : "Point must be not null"; //$NON-NLS-1$
 		final P point = getGeomFactory().newPoint();
@@ -937,7 +1089,7 @@ public interface Triangle2afp<
 
 		@Override
 		public boolean isCurved() {
-			return true;
+			return false;
 		}
 
 		@Override
@@ -1165,6 +1317,45 @@ public interface Triangle2afp<
 						this.movex, this.movey);
 			}
 		}
+
+	}
+
+	/** Features of a triangle.
+	 *
+	 * @author $Author: sgalland$
+	 * @version $FullVersion$
+	 * @mavengroupid $GroupId$
+	 * @mavenartifactid $ArtifactId$
+	 */
+	enum TriangleFeature {
+
+		/** Inside of the triangle.
+		 */
+		INSIDE,
+
+		/** The first triangle point.
+		 */
+		FIRST_CORNER,
+
+		/** The second triangle point.
+		 */
+		SECOND_CORNER,
+
+		/** The third triangle point.
+		 */
+		THIRD_CORNER,
+
+		/** The first triangle segment.
+		 */
+		FIRST_SEGMENT,
+
+		/** The second triangle segment.
+		 */
+		SECOND_SEGMENT,
+
+		/** The third triangle segment.
+		 */
+		THIRD_SEGMENT;
 
 	}
 

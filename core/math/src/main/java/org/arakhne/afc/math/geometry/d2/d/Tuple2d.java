@@ -330,7 +330,7 @@ public class Tuple2d<RT extends Tuple2d<? super RT>> implements Tuple2D<RT> {
 	public String toString() {
 		return "(" //$NON-NLS-1$
 				+ this.x
-				+ ";" //$NON-NLS-1$
+				+ ", " //$NON-NLS-1$
 				+ this.y
 				+ ")"; //$NON-NLS-1$
 	}

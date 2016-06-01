@@ -175,6 +175,15 @@ public interface RectangularShape2afp<
 	 */
 	void setMinX(double x);
 
+	/** Replies the center.
+	 *
+	 * @return the center.
+	 */
+	@Pure
+	default P getCenter() {
+		return getGeomFactory().newPoint(getCenterX(), getCenterY());
+	}
+
 	/** Replies the center x.
 	 *
 	 * @return the center x.

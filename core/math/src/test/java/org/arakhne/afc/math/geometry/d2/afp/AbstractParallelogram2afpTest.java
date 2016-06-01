@@ -20,7 +20,7 @@
 
 package org.arakhne.afc.math.geometry.d2.afp;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
@@ -125,183 +125,304 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
 	}
 
 	@Test
-	public void staticComputeClosestFarthestPoints() {
-		Point2D closest, farthest;
+	public void staticComputeClosestPoint() {
+		Point2D closest;
 
 		closest = createPoint(Double.NaN, Double.NaN);
-		farthest = createPoint(Double.NaN, Double.NaN);
-		Parallelogram2afp.computeClosestFarthestPoints(
+		Parallelogram2afp.computeClosestPoint(
 				-20, 9,
 				cx, cy, ux, uy, e1, vx, vy, e2,
-				closest, farthest);
+				closest);
 		assertFpPointEquals(pHx, pHy, closest);
-		assertFpPointEquals(pEx, pEy, farthest);
 
 		closest = createPoint(Double.NaN, Double.NaN);
-		farthest = createPoint(Double.NaN, Double.NaN);
-		Parallelogram2afp.computeClosestFarthestPoints(
+		Parallelogram2afp.computeClosestPoint(
 				0, 0,
 				cx, cy, ux, uy, e1, vx, vy, e2,
-				closest, farthest);
+				closest);
 		assertFpPointEquals(1.90983, 1.90983, closest);
-		assertFpPointEquals(pGx, pGy, farthest);
 
 		closest = createPoint(Double.NaN, Double.NaN);
-		farthest = createPoint(Double.NaN, Double.NaN);
-		Parallelogram2afp.computeClosestFarthestPoints(
+		Parallelogram2afp.computeClosestPoint(
 				5, -10,
 				cx, cy, ux, uy, e1, vx, vy, e2,
-				closest, farthest);
+				closest);
 		assertFpPointEquals(9.40983, -5.59017, closest);
-		assertFpPointEquals(pGx, pGy, farthest);
 
 		closest = createPoint(Double.NaN, Double.NaN);
-		farthest = createPoint(Double.NaN, Double.NaN);
-		Parallelogram2afp.computeClosestFarthestPoints(
+		Parallelogram2afp.computeClosestPoint(
 				14, -20,
 				cx, cy, ux, uy, e1, vx, vy, e2,
-				closest, farthest);
+				closest);
 		assertFpPointEquals(pEx, pEy, closest);
-		assertFpPointEquals(pGx, pGy, farthest);
 
 		closest = createPoint(Double.NaN, Double.NaN);
-		farthest = createPoint(Double.NaN, Double.NaN);
-		Parallelogram2afp.computeClosestFarthestPoints(
+		Parallelogram2afp.computeClosestPoint(
 				-6, 15,
 				cx, cy, ux, uy, e1, vx, vy, e2,
-				closest, farthest);
+				closest);
 		assertFpPointEquals(-3.81679, 14.4542, closest);
-		assertFpPointEquals(pEx, pEy, farthest);
 
 		closest = createPoint(Double.NaN, Double.NaN);
-		farthest = createPoint(Double.NaN, Double.NaN);
-		Parallelogram2afp.computeClosestFarthestPoints(
+		Parallelogram2afp.computeClosestPoint(
 				0, 10,
 				cx, cy, ux, uy, e1, vx, vy, e2,
-				closest, farthest);
+				closest);
 		assertFpPointEquals(0, 10, closest);
-		assertFpPointEquals(pEx, pEy, farthest);
 
 		closest = createPoint(Double.NaN, Double.NaN);
-		farthest = createPoint(Double.NaN, Double.NaN);
-		Parallelogram2afp.computeClosestFarthestPoints(
+		Parallelogram2afp.computeClosestPoint(
 				10, 0,
 				cx, cy, ux, uy, e1, vx, vy, e2,
-				closest, farthest);
+				closest);
 		assertFpPointEquals(10, 0, closest);
-		assertFpPointEquals(pGx, pGy, farthest);
 
 		closest = createPoint(Double.NaN, Double.NaN);
-		farthest = createPoint(Double.NaN, Double.NaN);
-		Parallelogram2afp.computeClosestFarthestPoints(
+		Parallelogram2afp.computeClosestPoint(
 				15, -4,
 				cx, cy, ux, uy, e1, vx, vy, e2,
-				closest, farthest);
+				closest);
 		assertFpPointEquals(13.99326, -3.74832, closest);
-		assertFpPointEquals(pGx, pGy, farthest);
 
 		closest = createPoint(Double.NaN, Double.NaN);
-		farthest = createPoint(Double.NaN, Double.NaN);
-		Parallelogram2afp.computeClosestFarthestPoints(
+		Parallelogram2afp.computeClosestPoint(
 				-5, 25,
 				cx, cy, ux, uy, e1, vx, vy, e2,
-				closest, farthest);
+				closest);
 		assertFpPointEquals(-1.40503, 24.10126, closest);
-		assertFpPointEquals(pEx, pEy, farthest);
 
 		closest = createPoint(Double.NaN, Double.NaN);
-		farthest = createPoint(Double.NaN, Double.NaN);
-		Parallelogram2afp.computeClosestFarthestPoints(
+		Parallelogram2afp.computeClosestPoint(
 				0, 20,
 				cx, cy, ux, uy, e1, vx, vy, e2,
-				closest, farthest);
+				closest);
 		assertFpPointEquals(0, 20, closest);
-		assertFpPointEquals(pEx, pEy, farthest);
 
 		closest = createPoint(Double.NaN, Double.NaN);
-		farthest = createPoint(Double.NaN, Double.NaN);
-		Parallelogram2afp.computeClosestFarthestPoints(
+		Parallelogram2afp.computeClosestPoint(
 				10, 10,
 				cx, cy, ux, uy, e1, vx, vy, e2,
-				closest, farthest);
+				closest);
 		assertFpPointEquals(10, 10, closest);
-		assertFpPointEquals(pGx, pGy, farthest);
 
 		closest = createPoint(Double.NaN, Double.NaN);
-		farthest = createPoint(Double.NaN, Double.NaN);
-		Parallelogram2afp.computeClosestFarthestPoints(
+		Parallelogram2afp.computeClosestPoint(
 				20, 0,
 				cx, cy, ux, uy, e1, vx, vy, e2,
-				closest, farthest);
+				closest);
 		assertFpPointEquals(15.22856, 1.19286, closest);
-		assertFpPointEquals(pGx, pGy, farthest);
 
 		closest = createPoint(Double.NaN, Double.NaN);
-		farthest = createPoint(Double.NaN, Double.NaN);
-		Parallelogram2afp.computeClosestFarthestPoints(
+		Parallelogram2afp.computeClosestPoint(
 				-3, 35,
 				cx, cy, ux, uy, e1, vx, vy, e2,
-				closest, farthest);
+				closest);
 		assertFpPointEquals(pGx, pGy, closest);
-		assertFpPointEquals(pEx, pEy, farthest);
 
 		closest = createPoint(Double.NaN, Double.NaN);
-		farthest = createPoint(Double.NaN, Double.NaN);
-		Parallelogram2afp.computeClosestFarthestPoints(
+		Parallelogram2afp.computeClosestPoint(
 				5, 35,
 				cx, cy, ux, uy, e1, vx, vy, e2,
-				closest, farthest);
+				closest);
 		assertFpPointEquals(pGx, pGy, closest);
-		assertFpPointEquals(pEx, pEy, farthest);
 
 		closest = createPoint(Double.NaN, Double.NaN);
-		farthest = createPoint(Double.NaN, Double.NaN);
-		Parallelogram2afp.computeClosestFarthestPoints(
+		Parallelogram2afp.computeClosestPoint(
 				20, 15,
 				cx, cy, ux, uy, e1, vx, vy, e2,
-				closest, farthest);
+				closest);
 		assertFpPointEquals(15.59017, 10.59017, closest);
-		assertFpPointEquals(pHx, pHy, farthest);
 
 		closest = createPoint(Double.NaN, Double.NaN);
-		farthest = createPoint(Double.NaN, Double.NaN);
-		Parallelogram2afp.computeClosestFarthestPoints(
+		Parallelogram2afp.computeClosestPoint(
 				35, 10,
 				cx, cy, ux, uy, e1, vx, vy, e2,
-				closest, farthest);
+				closest);
 		assertFpPointEquals(pFx, pFy, closest);
-		assertFpPointEquals(pHx, pHy, farthest);
 
 		closest = createPoint(Double.NaN, Double.NaN);
-		farthest = createPoint(Double.NaN, Double.NaN);
-		Parallelogram2afp.computeClosestFarthestPoints(
+		Parallelogram2afp.computeClosestPoint(
 				-8, 29,
 				cx, cy, ux, uy, e1, vx, vy, e2,
-				closest, farthest);
+				closest);
 		assertFpPointEquals(pGx, pGy, closest);
-		assertFpPointEquals(pEx, pEy, farthest);
 
 		closest = createPoint(Double.NaN, Double.NaN);
-		farthest = createPoint(Double.NaN, Double.NaN);
-		Parallelogram2afp.computeClosestFarthestPoints(0, 0,
+		Parallelogram2afp.computeClosestPoint(0, 0,
 				4.7, 15,
 				0.12403, 0.99228,
 				18.02776,
 				-0.44721, 0.89443,
 				20,
-				closest, farthest);
+				closest);
 		assertFpPointEquals(0.81573, 0.40786, closest);
-		assertFpPointEquals(-2.0082, 50.77719, farthest);
 
+		// In triangle.ggb
 		closest = createPoint(Double.NaN, Double.NaN);
-		Parallelogram2afp.computeClosestFarthestPoints(0, 0,
+		Parallelogram2afp.computeClosestPoint(-5.2964, 3.19501,
+				-10, 7,
+				-0.9863939238321437, 0.1643989873053573,
+				1,
+				0.9998000599800071, 0.01999600119960014,
+				2,
+				closest);
+		assertFpPointEquals(-7.01401, 6.87559, closest);
+
+		// In triangle.ggb
+		closest = createPoint(Double.NaN, Double.NaN);
+		Parallelogram2afp.computeClosestPoint(-1, -2,
+				0, -6,
+				-0.9863939238321437, 0.1643989873053573,
+				1,
+				0.9998000599800071, 0.01999600119960014,
+				2,
+				closest);
+		assertFpPointEquals(-0.92331, -5.83434, closest);
+
+		// In segment.ggb
+		closest = createPoint(Double.NaN, Double.NaN);
+		Parallelogram2afp.computeClosestPoint(0, 0,
 				-10, -3,
 				-.8944271909999159, .4472135954999579,
 				2,
 				.5547001962252290, -.8320502943378436,
 				1,
-				closest, null);
-		assertFpPointEquals(-7.65645, -4.72648, closest);
+				closest);
+		assertFpPointEquals(-7.65645, -4.72648, closest);		
+	}
+
+	@Test
+	public void staticComputeFarthestPoint() {
+		Point2D farthest;
+
+		farthest = createPoint(Double.NaN, Double.NaN);
+		Parallelogram2afp.computeFarthestPoint(
+				-20, 9,
+				cx, cy, ux, uy, e1, vx, vy, e2,
+				farthest);
+		assertFpPointEquals(pEx, pEy, farthest);
+
+		farthest = createPoint(Double.NaN, Double.NaN);
+		Parallelogram2afp.computeFarthestPoint(
+				0, 0,
+				cx, cy, ux, uy, e1, vx, vy, e2,
+				farthest);
+		assertFpPointEquals(pGx, pGy, farthest);
+
+		farthest = createPoint(Double.NaN, Double.NaN);
+		Parallelogram2afp.computeFarthestPoint(
+				5, -10,
+				cx, cy, ux, uy, e1, vx, vy, e2,
+				farthest);
+		assertFpPointEquals(pGx, pGy, farthest);
+
+		farthest = createPoint(Double.NaN, Double.NaN);
+		Parallelogram2afp.computeFarthestPoint(
+				14, -20,
+				cx, cy, ux, uy, e1, vx, vy, e2,
+				farthest);
+		assertFpPointEquals(pGx, pGy, farthest);
+
+		farthest = createPoint(Double.NaN, Double.NaN);
+		Parallelogram2afp.computeFarthestPoint(
+				-6, 15,
+				cx, cy, ux, uy, e1, vx, vy, e2,
+				farthest);
+		assertFpPointEquals(pEx, pEy, farthest);
+
+		farthest = createPoint(Double.NaN, Double.NaN);
+		Parallelogram2afp.computeFarthestPoint(
+				0, 10,
+				cx, cy, ux, uy, e1, vx, vy, e2,
+				farthest);
+		assertFpPointEquals(pEx, pEy, farthest);
+
+		farthest = createPoint(Double.NaN, Double.NaN);
+		Parallelogram2afp.computeFarthestPoint(
+				10, 0,
+				cx, cy, ux, uy, e1, vx, vy, e2,
+				farthest);
+		assertFpPointEquals(pGx, pGy, farthest);
+
+		farthest = createPoint(Double.NaN, Double.NaN);
+		Parallelogram2afp.computeFarthestPoint(
+				15, -4,
+				cx, cy, ux, uy, e1, vx, vy, e2,
+				farthest);
+		assertFpPointEquals(pGx, pGy, farthest);
+
+		farthest = createPoint(Double.NaN, Double.NaN);
+		Parallelogram2afp.computeFarthestPoint(
+				-5, 25,
+				cx, cy, ux, uy, e1, vx, vy, e2,
+				farthest);
+		assertFpPointEquals(pEx, pEy, farthest);
+
+		farthest = createPoint(Double.NaN, Double.NaN);
+		Parallelogram2afp.computeFarthestPoint(
+				0, 20,
+				cx, cy, ux, uy, e1, vx, vy, e2,
+				farthest);
+		assertFpPointEquals(pEx, pEy, farthest);
+
+		farthest = createPoint(Double.NaN, Double.NaN);
+		Parallelogram2afp.computeFarthestPoint(
+				10, 10,
+				cx, cy, ux, uy, e1, vx, vy, e2,
+				farthest);
+		assertFpPointEquals(pGx, pGy, farthest);
+
+		farthest = createPoint(Double.NaN, Double.NaN);
+		Parallelogram2afp.computeFarthestPoint(
+				20, 0,
+				cx, cy, ux, uy, e1, vx, vy, e2,
+				farthest);
+		assertFpPointEquals(pGx, pGy, farthest);
+
+		farthest = createPoint(Double.NaN, Double.NaN);
+		Parallelogram2afp.computeFarthestPoint(
+				-3, 35,
+				cx, cy, ux, uy, e1, vx, vy, e2,
+				farthest);
+		assertFpPointEquals(pEx, pEy, farthest);
+
+		farthest = createPoint(Double.NaN, Double.NaN);
+		Parallelogram2afp.computeFarthestPoint(
+				5, 35,
+				cx, cy, ux, uy, e1, vx, vy, e2,
+				farthest);
+		assertFpPointEquals(pEx, pEy, farthest);
+
+		farthest = createPoint(Double.NaN, Double.NaN);
+		Parallelogram2afp.computeFarthestPoint(
+				20, 15,
+				cx, cy, ux, uy, e1, vx, vy, e2,
+				farthest);
+		assertFpPointEquals(pHx, pHy, farthest);
+
+		farthest = createPoint(Double.NaN, Double.NaN);
+		Parallelogram2afp.computeFarthestPoint(
+				35, 10,
+				cx, cy, ux, uy, e1, vx, vy, e2,
+				farthest);
+		assertFpPointEquals(pHx, pHy, farthest);
+
+		farthest = createPoint(Double.NaN, Double.NaN);
+		Parallelogram2afp.computeFarthestPoint(
+				-8, 29,
+				cx, cy, ux, uy, e1, vx, vy, e2,
+				farthest);
+		assertFpPointEquals(pEx, pEy, farthest);
+
+		farthest = createPoint(Double.NaN, Double.NaN);
+		Parallelogram2afp.computeFarthestPoint(0, 0,
+				4.7, 15,
+				0.12403, 0.99228,
+				18.02776,
+				-0.44721, 0.89443,
+				20,
+				farthest);
+		assertFpPointEquals(-2.0082, 50.77719, farthest);
 	}
 
 	@Test
@@ -1704,4 +1825,126 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
 		assertEpsilonEquals(7.59135, this.shape.operator_upTo(createPoint(-8, 29)));
 	}
 
+	@Test
+	public void isCCW() {
+		assertTrue(this.shape.isCCW());
+		assertTrue(createParallelogram(cx, cy, ux, uy, e1, vx, vy, e2).isCCW());
+		assertTrue(createParallelogram(
+				4.7, 15,
+				0.12403, 0.99228, 18.02776,
+				-0.44721, 0.89443, 20).isCCW());
+		assertTrue(createParallelogram(
+				-10, -3,
+				-.8944271909999159, .4472135954999579, 2,
+				.5547001962252290, -.8320502943378436, 1).isCCW());
+		assertFalse(createParallelogram(
+				-10, 7,
+				-0.9863939238321437, 0.1643989873053573, 1,
+				0.9998000599800071, 0.01999600119960014, 2).isCCW());
+		assertFalse(createParallelogram(
+				0, -6,
+				-0.9863939238321437, 0.1643989873053573, 1,
+				0.9998000599800071, 0.01999600119960014, 2).isCCW());
+	}
+
+	@Test
+	public void getDistanceSquaredRectangle2afp() {
+		assert(false);
+	}
+
+	@Test
+	public void getDistanceSquaredMultiShape2afp() {
+		assert(false);
+	}
+
+	@Test
+	public void getDistanceSquaredCircle2afp() {
+		assert(false);
+	}
+
+	@Test
+	public void getDistanceSquaredTriangle2afp() {
+		assert(false);
+	}
+
+	@Test
+	public void getDistanceSquaredEllipse2afp() {
+		assert(false);
+	}
+
+	@Test
+	public void getDistanceSquaredSegment2afp() {
+		assert(false);
+	}
+	
+	@Test
+	public void getDistanceSquaredPath2afp() {
+		assert(false);
+	}
+
+	@Test
+	public void getDistanceSquaredOrientedRectangle2afp() {
+		assert(false);
+	}
+
+	@Test
+	public void getDistanceSquaredParallelogram2afp() {
+		assert(false);
+	}
+
+	@Test
+	public void getDistanceSquaredRoundRectangle2afp() {
+		assert(false);
+	}
+
+	@Test
+	public void getClosestPointToEllipse2afp() {
+		assert(false);
+	}
+
+	@Test
+	public void getClosestPointToCircle2afp() {
+		assert(false);
+	}
+
+	@Test
+	public void getClosestPointToRectangle2afp() {
+		assert(false);
+	}
+
+	@Test
+	public void getClosestPointToSegment2afp() {
+		assert(false);
+	}
+
+	@Test
+	public void getClosestPointToTriangle2afp() {
+		assert(false);
+	}
+
+	@Test
+	public void getClosestPointToPath2afp() {
+		assert(false);
+	}
+
+	@Test
+	public void getClosestPointToOrientedRectangle2afp() {
+		assert(false);
+	}
+		
+	@Test
+	public void getClosestPointToParallelogram2afp() {
+		assert(false);
+	}
+
+	@Test
+	public void getClosestPointToRoundRectangle2afp() {
+		assert(false);
+	}
+
+	@Test
+	public void getClosestPointToMultiShape2afp() {
+		assert(false);
+	}
+	
 }

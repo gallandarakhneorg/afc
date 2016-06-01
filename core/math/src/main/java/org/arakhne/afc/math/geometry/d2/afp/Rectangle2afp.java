@@ -26,11 +26,12 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
+import org.arakhne.afc.math.Unefficient;
+import org.arakhne.afc.math.geometry.CrossingComputationType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
-import org.arakhne.afc.math.geometry.d2.afp.Path2afp.CrossingComputationType;
 
 /** Fonctional interface that represented a 2D rectangle on a plane.
  *
@@ -47,6 +48,7 @@ import org.arakhne.afc.math.geometry.d2.afp.Path2afp.CrossingComputationType;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
+@SuppressWarnings("checkstyle:methodcount")
 public interface Rectangle2afp<
 		ST extends Shape2afp<?, ?, IE, P, V, B>,
 		IT extends Rectangle2afp<?, ?, IE, P, V, B>,
@@ -55,6 +57,363 @@ public interface Rectangle2afp<
 		V extends Vector2D<? super V, ? super P>,
 		B extends Rectangle2afp<?, ?, IE, P, V, B>>
 		extends RectangularShape2afp<ST, IT, IE, P, V, B>, OrientedRectangle2afp<ST, IT, IE, P, V, B> {
+
+	/** Compute the point on the rectangle that is the closest to the given point.
+	 *
+	 * @param rx the minimum x coordinate of the rectangle.
+	 * @param ry the minimum y coordinate of the rectangle.
+	 * @param rmaxx the maximum x coordinate of the rectangle.
+	 * @param rmaxy the maximum y coordinate of the rectangle.
+	 * @param px the x coordinate of the point.
+	 * @param py the y coordinate of the point.
+	 * @param closest is set with the closest point on the rectangle.
+	 */
+	@Pure
+	static void computeClosestPointRectanglePoint(
+			double rx, double ry, double rmaxx, double rmaxy,
+			double px, double py,
+			Point2D<?, ?> closest) {
+		assert rmaxx >= rx : "rmaxx must be greater or equal to rx"; //$NON-NLS-1$
+		assert rmaxy >= ry : "rmaxy must be greater or equal to ry"; //$NON-NLS-1$
+		final double x;
+		if (px < rx) {
+			x = rx;
+		} else if (px > rmaxx) {
+			x = rmaxx;
+		} else {
+			x = px;
+		}
+		final double y;
+		if (py < ry) {
+			y = ry;
+		} else if (py > rmaxy) {
+			y = rmaxy;
+		} else {
+			y = py;
+		}
+		closest.set(x, y);
+	}
+
+	/** Compute the point on the first rectangle that is the closest to the second rectangle.
+	 *
+	 * @param rx1 the minimum x coordinate of the first rectangle.
+	 * @param ry1 the minimum y coordinate of the first rectangle.
+	 * @param rmaxx1 the maximum x coordinate of the first rectangle.
+	 * @param rmaxy1 the maximum y coordinate of the first rectangle.
+	 * @param rx2 the minimum x coordinate of the second rectangle.
+	 * @param ry2 the minimum y coordinate of the second rectangle.
+	 * @param rmaxx2 the maximum x coordinate of the second rectangle.
+	 * @param rmaxy2 the maximum y coordinate of the second rectangle.
+	 * @param closest is set with the closest point on the first rectangle.
+	 */
+	@Pure
+	@SuppressWarnings("checkstyle:parameternumber")
+	static void computeClosestPointRectangleRectangle(
+			double rx1, double ry1, double rmaxx1, double rmaxy1,
+			double rx2, double ry2, double rmaxx2, double rmaxy2,
+			Point2D<?, ?> closest) {
+		assert rmaxx1 >= rx1 : "rmaxx1 must be greater or equal to rx1"; //$NON-NLS-1$
+		assert rmaxy1 >= ry1 : "rmaxy1 must be greater or equal to ry1"; //$NON-NLS-1$
+		assert rmaxx2 >= rx2 : "rmaxx2 must be greater or equal to rx2"; //$NON-NLS-1$
+		assert rmaxy2 >= ry2 : "rmaxy2 must be greater or equal to ry2"; //$NON-NLS-1$
+		final double px;
+		final double cx = (rx2 + rmaxx2) / 2.;
+		if (cx <= rx1) {
+			px = rx1;
+		} else if (cx >= rmaxx1) {
+			px = rmaxx1;
+		} else {
+			px = cx;
+		}
+		final double py;
+		final double cy = (ry2 + rmaxy2) / 2.;
+		if (cy <= rx1) {
+			py = ry1;
+		} else if (cy >= rmaxy1) {
+			py = rmaxy1;
+		} else {
+			py = cy;
+		}
+		closest.set(px, py);
+	}
+
+	/** Compute the point on the rectangle that is the closest to the segment.
+	 *
+	 * @param rx the minimum x coordinate of the rectangle.
+	 * @param ry the minimum y coordinate of the rectangle.
+	 * @param rmaxx the maximum x coordinate of the rectangle.
+	 * @param rmaxy the maximum y coordinate of the rectangle.
+	 * @param sx1 the x coordinate of the first point of the segment.
+	 * @param sy1 the y coordinate of the first point of the segment.
+	 * @param sx2 the x coordinate of the second point of the segment.
+	 * @param sy2 the y coordinate of the second point of the segment.
+	 * @param closest is set with the closest point on the rectangle.
+	 */
+	@Pure
+	@SuppressWarnings("checkstyle:parameternumber")
+    static void computeClosestPointRectangleSegment(
+			double rx, double ry, double rmaxx, double rmaxy,
+			double sx1, double sy1, double sx2, double sy2,
+			Point2D<?, ?> closest) {
+		assert rmaxx >= rx : "rmaxx must be greater or equal to rx"; //$NON-NLS-1$
+		assert rmaxy >= ry : "rmaxy must be greater or equal to ry"; //$NON-NLS-1$
+		final int code1 = MathUtil.getCohenSutherlandCode(sx1, sy1, rx, ry, rmaxx, rmaxy);
+		final int code2 = MathUtil.getCohenSutherlandCode(sx2, sy2, rx, ry, rmaxx, rmaxy);
+		final Point2D<?, ?> tmp1 = new InnerComputationPoint2afp();
+		final int zone = Rectangle2afp.reduceCohenSutherlandZoneRectangleSegment(
+				rx, ry, rmaxx, rmaxy,
+				sx1, sy1, sx2, sy2,
+				code1, code2,
+				tmp1, null);
+		final double closex;
+		final double closey;
+		if ((zone & MathConstants.COHEN_SUTHERLAND_LEFT) != 0) {
+			closex = rx;
+			if (sx1 >= sx2) {
+				closey = MathUtil.clamp(sy1, ry, rmaxy);
+			} else {
+				closey = MathUtil.clamp(sy2, ry, rmaxy);
+			}
+		} else if ((zone & MathConstants.COHEN_SUTHERLAND_RIGHT) != 0) {
+			closex = rmaxx;
+			if (sx1 <= sx2) {
+				closey = MathUtil.clamp(sy1, ry, rmaxy);
+			} else {
+				closey = MathUtil.clamp(sy2, ry, rmaxy);
+			}
+		} else if ((zone & MathConstants.COHEN_SUTHERLAND_BOTTOM) != 0) {
+			closey = ry;
+			if (sy1 >= sy2) {
+				closex = MathUtil.clamp(sx1, rx, rmaxx);
+			} else {
+				closex = MathUtil.clamp(sx2, rx, rmaxx);
+			}
+		} else if ((zone & MathConstants.COHEN_SUTHERLAND_TOP) != 0) {
+			closey = rmaxy;
+			if (sy1 <= sy2) {
+				closex = MathUtil.clamp(sx1, rx, rmaxx);
+			} else {
+				closex = MathUtil.clamp(sx2, rx, rmaxx);
+			}
+		} else {
+			closex = tmp1.getX();
+			closey = tmp1.getY();
+		}
+		closest.set(closex, closey);
+	}
+
+	/** Compute the point on the rectangle that is the closest to the parallelogram.
+	 *
+	 * @param rx the minimum x coordinate of the rectangle.
+	 * @param ry the minimum y coordinate of the rectangle.
+	 * @param rmaxx the maximum x coordinate of the rectangle.
+	 * @param rmaxy the maximum y coordinate of the rectangle.
+	 * @param centerX the x coordinate of the center of the parallelogram.
+	 * @param centerY the y coordinate of the center of the parallelogram.
+	 * @param axis1X the x coordinate of the first axis of the parallelogram.
+	 * @param axis1Y the y coordinate of the first axis of the parallelogram.
+	 * @param axis1Extent the size of the parallelogram along its first axis.
+	 * @param axis2X the x coordinate of the second axis of the parallelogram.
+	 * @param axis2Y the y coordinate of the secondaxis of the parallelogram.
+	 * @param axis2Extent the size of the parallelogram along its second axis.
+	 * @param closest is set with the closest point on the first rectangle.
+	 */
+	@Pure
+	@SuppressWarnings("checkstyle:parameternumber")
+	static void computeClosestPointRectangleParallelogram(
+			double rx, double ry, double rmaxx, double rmaxy,
+			double centerX, double centerY, double axis1X, double axis1Y, double axis1Extent,
+			double axis2X, double axis2Y, double axis2Extent,
+			Point2D<?, ?> closest) {
+		assert rmaxx >= rx : "rmaxx must be greater or equal to rx"; //$NON-NLS-1$
+		assert rmaxy >= ry : "rmaxy must be greater or equal to ry"; //$NON-NLS-1$
+		assert Vector2D.isUnitVector(axis1X,  axis1Y) : "First axis must be unit vector"; //$NON-NLS-1$
+		assert axis1Extent >= 0. : "First axis extent must be positive or zero"; //$NON-NLS-1$
+		assert Vector2D.isUnitVector(axis2X,  axis2Y) : "Second axis must be unit vector"; //$NON-NLS-1$
+		assert axis2Extent >= 0. : "Second axis extent must be positive or zero"; //$NON-NLS-1$
+		final double a1x = axis1X * axis1Extent;
+		final double a1y = axis1Y * axis1Extent;
+		final double a2x = axis2X * axis2Extent;
+		final double a2y = axis2Y * axis2Extent;
+		final Point2D<?, ?> point = new InnerComputationPoint2afp();
+		double x1 = centerX + a1x + a2x;
+		double y1 = centerY + a1y + a2y;
+		double min = Double.POSITIVE_INFINITY;
+		final double[] segments = new double[] {
+			centerX - a1x + a2x,
+			centerY - a1y + a2y,
+			centerX - a1x - a2x,
+			centerY - a1y - a2y,
+			centerX + a1x - a2x,
+			centerY + a1y - a2y,
+			x1,
+			y1,
+		};
+		for (int i = 0; i < segments.length; i += 2) {
+		    final double x2 = segments[i];
+		    final double y2 = segments[i + 1];
+			computeClosestPointRectangleSegment(rx, ry, rmaxx, rmaxy, x1, y1, x2, y2, point);
+			final double dist = Segment2afp.computeDistanceSquaredSegmentPoint(x1, y1, x2, y2, point.getX(), point.getY());
+			if (dist <= 0.) {
+				closest.set(point);
+				return;
+			}
+			if (dist < min) {
+				min = dist;
+				closest.set(point);
+			}
+			x1 = x2;
+			y1 = y2;
+		}
+	}
+
+	/** Update the given Cohen-Sutherland code that corresponds to the given segment in order
+	 * to obtain a segment restricted to a single Cohen-Sutherland zone.
+	 * This function is at the heart of the
+	 * <a href="http://en.wikipedia.org/wiki/Cohen%E2%80%93Sutherland_algorithm">Cohen-Sutherland algorithm</a>.
+	 *
+	 * <p>The result of this function may be: <ul>
+	 * <li>the code for a single zone, or</li>
+	 * <li>the code that corresponds to a single column, or </li>
+	 * <li>the code that corresponds to a single row.</li>
+	 * </ul>
+	 *
+	 * @param rx1 is the first corner of the rectangle.
+	 * @param ry1 is the first corner of the rectangle.
+	 * @param rx2 is the second corner of the rectangle.
+	 * @param ry2 is the second corner of the rectangle.
+	 * @param sx1 is the first point of the segment.
+	 * @param sy1 is the first point of the segment.
+	 * @param sx2 is the second point of the segment.
+	 * @param sy2 is the second point of the segment.
+	 * @param codePoint1 the Cohen-Sutherland code for the first point of the segment.
+	 * @param codePoint2 the Cohen-Sutherland code for the second point of the segment.
+	 * @param newSegmentP1 is set with the new coordinates of the segment first point. If <code>null</code>,
+	 *     this parameter is ignored.
+	 * @param newSegmentP2 is set with the new coordinates of the segment second point. If <code>null</code>,
+	 *     this parameter is ignored.
+	 * @return the rectricted Cohen-Sutherland zone.
+	 */
+	@Pure
+	@SuppressWarnings({"checkstyle:parameternumber", "checkstyle:npathcomplexity"})
+	static int reduceCohenSutherlandZoneRectangleSegment(double rx1, double ry1, double rx2, double ry2,
+			double sx1, double sy1, double sx2, double sy2, int codePoint1, int codePoint2,
+			Point2D<?, ?> newSegmentP1, Point2D<?, ?> newSegmentP2) {
+		assert rx1 <= rx2 : "rx1 must be lower or equal to rx2"; //$NON-NLS-1$
+		assert ry1 <= ry2 : "ry1 must be lower or equal to ry2"; //$NON-NLS-1$
+		assert codePoint1 == MathUtil.getCohenSutherlandCode(sx1, sy1, rx1, ry1, rx2, ry2)
+		        : "Invalid Cohen-Sutherland code for the first point"; //$NON-NLS-1$
+		assert codePoint2 == MathUtil.getCohenSutherlandCode(sx2, sy2, rx1, ry1, rx2, ry2)
+		        : "Invalid Cohen-Sutherland code for the second point"; //$NON-NLS-1$
+		double segmentX1 = sx1;
+		double segmentY1 = sy1;
+		double segmentX2 = sx2;
+		double segmentY2 = sy2;
+
+		int code1 = codePoint1;
+		int code2 = codePoint2;
+
+		while (true) {
+			if ((code1 | code2) == 0) {
+				// Bitwise OR is 0. Trivially accept and get out of loop
+				if (newSegmentP1 != null) {
+					newSegmentP1.set(segmentX1, segmentY1);
+				}
+				if (newSegmentP2 != null) {
+					newSegmentP2.set(segmentX2, segmentY2);
+				}
+				return 0;
+			}
+			if ((code1 & code2) != 0) {
+				// Bitwise AND is not 0. Trivially reject and get out of loop
+				if (newSegmentP1 != null) {
+					newSegmentP1.set(segmentX1, segmentY1);
+				}
+				if (newSegmentP2 != null) {
+					newSegmentP2.set(segmentX2, segmentY2);
+				}
+				return code1 & code2;
+			}
+
+			// failed both tests, so calculate the line segment intersection
+
+			// At least one endpoint is outside the clip rectangle; pick it.
+			int code3 = (code1 != 0) ? code1 : code2;
+
+			double x = 0;
+			double y = 0;
+
+			// Now find the intersection point;
+			// use formulas y = y0 + slope * (x - x0), x = x0 + (1 / slope) * (y - y0)
+			if ((code3 & MathConstants.COHEN_SUTHERLAND_TOP) != 0) {
+				// point is above the clip rectangle
+				x = segmentX1 + (segmentX2 - segmentX1) * (ry2 - segmentY1) / (segmentY2 - segmentY1);
+				y = ry2;
+			} else if ((code3 & MathConstants.COHEN_SUTHERLAND_BOTTOM) != 0) {
+				// point is below the clip rectangle
+				x = segmentX1 + (segmentX2 - segmentX1) * (ry1 - segmentY1) / (segmentY2 - segmentY1);
+				y = ry1;
+			} else if ((code3 & MathConstants.COHEN_SUTHERLAND_RIGHT) != 0) {
+				// point is to the right of clip rectangle
+				y = segmentY1 + (segmentY2 - segmentY1) * (rx2 - segmentX1) / (segmentX2 - segmentX1);
+				x = rx2;
+			} else if ((code3 & MathConstants.COHEN_SUTHERLAND_LEFT) != 0) {
+				// point is to the left of clip rectangle
+				y = segmentY1 + (segmentY2 - segmentY1) * (rx1 - segmentX1) / (segmentX2 - segmentX1);
+				x = rx1;
+			} else {
+				code3 = 0;
+			}
+
+			if (code3 != 0) {
+				// Now we move outside point to intersection point to clip
+				// and get ready for next pass.
+				if (code3 == code1) {
+					segmentX1 = x;
+					segmentY1 = y;
+					code1 = MathUtil.getCohenSutherlandCode(segmentX1, segmentY1, rx1, ry1, rx2, ry2);
+				} else {
+					segmentX2 = x;
+					segmentY2 = y;
+					code2 = MathUtil.getCohenSutherlandCode(segmentX2, segmentY2, rx1, ry1, rx2, ry2);
+				}
+			}
+		}
+	}
+
+	/** Compute the square distance between a rectangle and a point.
+	 *
+	 * @param rx the minimum x coordinate of the rectangle.
+	 * @param ry the minimum y coordinate of the rectangle.
+	 * @param rmaxx the maximum x coordinate of the rectangle.
+	 * @param rmaxy the maximum y coordinate of the rectangle.
+	 * @param px the x coordinate of the point.
+	 * @param py the y coordinate of the point.
+	 * @return the square distance.
+	 */
+	@Pure
+	static double computeDistanceSquaredRectanglePoint(double rx, double ry, double rmaxx, double rmaxy,
+			double px, double py) {
+		assert rmaxx >= rx : "rmaxx must be greater or equal to rx"; //$NON-NLS-1$
+		assert rmaxy >= ry : "rmaxy must be greater or equal to ry"; //$NON-NLS-1$
+		final double dx;
+		if (px < rx) {
+			dx = rx - px;
+		} else if (px > rmaxx) {
+			dx = px - rmaxx;
+		} else {
+			dx = 0;
+		}
+		final double dy;
+		if (py < ry) {
+			dy = ry - py;
+		} else if (py > rmaxy) {
+			dy = py - rmaxy;
+		} else {
+			dy = 0;
+		}
+		return dx * dx + dy * dy;
+	}
 
 	/** Replies if two rectangles are intersecting.
 	 *
@@ -300,6 +659,28 @@ public interface Rectangle2afp<
 			dy = pt.getY() - getMaxY();
 		} else {
 			dy = 0f;
+		}
+		return dx * dx + dy * dy;
+	}
+
+	@Override
+	default double getDistanceSquared(Rectangle2afp<?, ?, ?, ?, ?, ?> rectangle) {
+		assert rectangle != null : "Rectangle must be not null"; //$NON-NLS-1$
+		final double dx;
+		if (rectangle.getMaxX() <= getMinX()) {
+			dx = getMinX() - rectangle.getMaxX();
+		} else if (rectangle.getMinX() >= getMaxX()) {
+			dx = rectangle.getMinX() - getMaxX();
+		} else {
+			dx = 0;
+		}
+		final double dy;
+		if (rectangle.getMaxY() <= getMinY()) {
+			dy = getMinY() - rectangle.getMaxY();
+		} else if (rectangle.getMinY() >= getMaxY()) {
+			dy = rectangle.getMinY() - getMaxY();
+		} else {
+			dy = 0;
 		}
 		return dx * dx + dy * dy;
 	}
@@ -727,6 +1108,105 @@ public interface Rectangle2afp<
 			return getGeomFactory().convertToPoint(pt);
 		}
 		return getGeomFactory().newPoint(x, y);
+	}
+
+	@Override
+	default P getClosestPointTo(Circle2afp<?, ?, ?, ?, ?, ?> circle) {
+		assert circle != null : "Circle must be not null"; //$NON-NLS-1$
+		return getClosestPointTo(circle.getCenter());
+	}
+
+	@Override
+	@Unefficient
+	default P getClosestPointTo(Triangle2afp<?, ?, ?, ?, ?, ?> triangle) {
+		assert triangle != null : "Triangle must be not null"; //$NON-NLS-1$
+		final P point = getGeomFactory().newPoint();
+		Path2afp.getClosestPointTo(getPathIterator(), triangle.getPathIterator(), point);
+		return point;
+	}
+
+	@Override
+	default P getClosestPointTo(Path2afp<?, ?, ?, ?, ?, ?> path) {
+		assert path != null : "Path must be not null"; //$NON-NLS-1$
+		final P point = getGeomFactory().newPoint();
+		Path2afp.getClosestPointTo(getPathIterator(), path.getPathIterator(), point);
+		return point;
+	}
+
+	@Override
+	default P getClosestPointTo(Rectangle2afp<?, ?, ?, ?, ?, ?> rectangle) {
+		assert rectangle != null : "Rectangle must be not null"; //$NON-NLS-1$
+		final P point = getGeomFactory().newPoint();
+		computeClosestPointRectangleRectangle(getMinX(), getMinY(), getMaxX(), getMaxY(),
+				rectangle.getMinX(), rectangle.getMinY(), rectangle.getMaxX(), rectangle.getMaxY(),
+				point);
+		return point;
+	}
+
+	@Override
+	default P getClosestPointTo(Segment2afp<?, ?, ?, ?, ?, ?> segment) {
+		assert segment != null : "Segment must be not null"; //$NON-NLS-1$
+		final P point = getGeomFactory().newPoint();
+		computeClosestPointRectangleSegment(
+				getMinX(), getMinY(), getMaxX(), getMaxY(),
+				segment.getX1(), segment.getY1(), segment.getX2(), segment.getY2(), point);
+		return point;
+	}
+
+	@Override
+	default P getClosestPointTo(Ellipse2afp<?, ?, ?, ?, ?, ?> ellipse) {
+		assert ellipse != null : "Ellipse must be not null"; //$NON-NLS-1$
+		final double cx = ellipse.getCenterX();
+		final double cy = ellipse.getCenterY();
+		final double sx = ellipse.getHorizontalRadius();
+		final double sy = ellipse.getVerticalRadius();
+		// Scale the rectangle
+		final double rx = (getMinX() - cx) / sx;
+		final double ry = (getMinY() - cy) / sy;
+		final double rwidth = getWidth() / sx;
+		final double rheight = getHeight() / sy;
+		// Compute the closest point
+		final P closest = getGeomFactory().newPoint();
+		computeClosestPointRectanglePoint(rx, ry, rx + rwidth, ry + rheight, 0, 0, closest);
+		// Invert scale
+		closest.set(closest.getX() * sx + cx, closest.getY() * sy + cy);
+		return closest;
+	}
+
+	@Override
+	default P getClosestPointTo(RoundRectangle2afp<?, ?, ?, ?, ?, ?> roundRectangle) {
+		assert roundRectangle != null : "Round rectangle must be not null"; //$NON-NLS-1$
+		final P point = getGeomFactory().newPoint();
+		computeClosestPointRectangleRectangle(getMinX(), getMinY(), getMaxX(), getMaxY(),
+				roundRectangle.getMinX(), roundRectangle.getMinY(), roundRectangle.getMaxX(), roundRectangle.getMaxY(),
+				point);
+		return point;
+	}
+
+	@Override
+	default P getClosestPointTo(Parallelogram2afp<?, ?, ?, ?, ?, ?> parallelogram) {
+		assert parallelogram != null : "Parallelogram must be not null"; //$NON-NLS-1$
+		final P point = getGeomFactory().newPoint();
+		computeClosestPointRectangleParallelogram(
+				getMinX(), getMinY(), getMaxX(), getMaxY(),
+				parallelogram.getCenterX(), parallelogram.getCenterY(),
+				parallelogram.getFirstAxisX(), parallelogram.getFirstAxisY(), parallelogram.getFirstAxisExtent(),
+				parallelogram.getSecondAxisX(), parallelogram.getSecondAxisY(), parallelogram.getSecondAxisExtent(),
+				point);
+		return point;
+	}
+
+	@Override
+	default P getClosestPointTo(OrientedRectangle2afp<?, ?, ?, ?, ?, ?> orientedRectangle) {
+		assert orientedRectangle != null : "Oriented rectangle must be not null"; //$NON-NLS-1$
+		final P point = getGeomFactory().newPoint();
+		computeClosestPointRectangleParallelogram(
+				getMinX(), getMinY(), getMaxX(), getMaxY(),
+				orientedRectangle.getCenterX(), orientedRectangle.getCenterY(),
+				orientedRectangle.getFirstAxisX(), orientedRectangle.getFirstAxisY(), orientedRectangle.getFirstAxisExtent(),
+				orientedRectangle.getSecondAxisX(), orientedRectangle.getSecondAxisY(), orientedRectangle.getSecondAxisExtent(),
+				point);
+		return point;
 	}
 
 	@Pure

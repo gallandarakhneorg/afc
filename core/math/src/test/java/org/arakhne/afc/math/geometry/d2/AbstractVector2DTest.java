@@ -103,7 +103,7 @@ public abstract class AbstractVector2DTest<V extends Vector2D<? super V, ? super
 				double.class, double.class, double.class, double.class);
 	}
 
-	@Test
+    @Test
 	public final void staticPerpProduct() {
 		assertEpsilonEquals(0, Vector2D.perpProduct(1, 0, 1, 0));
 		assertEpsilonEquals(0, Vector2D.perpProduct(1, 0, 5, 0));
@@ -130,12 +130,24 @@ public abstract class AbstractVector2DTest<V extends Vector2D<? super V, ? super
 	}
 
 	@Test
-	public final void statisSignedAngle() {
+	public final void staticSignedAngle() {
 		assertEpsilonEquals(0, Vector2D.signedAngle(1, 0, 1, 0));
 		assertEpsilonEquals(0, Vector2D.signedAngle(1, 0, 5, 0));
 		assertEpsilonEquals(-MathConstants.DEMI_PI, Vector2D.signedAngle(2, 0, 0, -3));
 		assertEpsilonEquals(Math.PI, Vector2D.signedAngle(1, 0, -1, 0));
 		assertEpsilonEquals(0.29317, Vector2D.signedAngle(1, 45, -5, 18));
+	}
+
+	@Test
+	public final void staticIsCCW() {
+		assertTrue(Vector2D.isCCW(1, 0, 1, 0));
+		assertTrue(Vector2D.isCCW(1, 0, 5, 0));
+		assertFalse(Vector2D.isCCW(2, 0, 0, -3));
+		assertTrue(Vector2D.isCCW(1, 0, -1, 0));
+		assertTrue(Vector2D.isCCW(1, 45, -5, 18));
+		//
+        assertInlineParameterUsage(Vector2D.class, "isCCW",
+                double.class, double.class, double.class, double.class);
 	}
 
 	@Test

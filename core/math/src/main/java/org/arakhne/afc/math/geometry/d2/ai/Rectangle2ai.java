@@ -27,11 +27,11 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
+import org.arakhne.afc.math.geometry.CrossingComputationType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
-import org.arakhne.afc.math.geometry.d2.ai.Path2ai.CrossingComputationType;
 import org.arakhne.afc.math.geometry.d2.ai.Segment2ai.BresenhamLineIterator;
 
 /** Fonctional interface that represented a 2D rectangle on a plane.
@@ -344,6 +344,31 @@ public interface Rectangle2ai<
 		final P point = getGeomFactory().newPoint();
 		computeClosestPoint(getMinX(), getMinY(), getMaxX(), getMaxY(), pt.ix(), pt.iy(), point);
 		return point;
+	}
+
+	@Override
+	default P getClosestPointTo(Rectangle2ai<?, ?, ?, ?, ?, ?> rectangle) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	default P getClosestPointTo(Circle2ai<?, ?, ?, ?, ?, ?> circle) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	default P getClosestPointTo(Segment2ai<?, ?, ?, ?, ?, ?> segment) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	default P getClosestPointTo(MultiShape2ai<?, ?, ?, ?, ?, ?, ?> multishape) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	default P getClosestPointTo(Path2ai<?, ?, ?, ?, ?, ?> path) {
+		throw new UnsupportedOperationException();
 	}
 
 	@Pure

@@ -40,7 +40,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 @SuppressWarnings("all")
-public abstract class AbstractPath2afpPointCollectionTest<P extends Point2D<? super P, ? super V>,
+public abstract class AbstractPointCollectionTest<P extends Point2D<? super P, ? super V>,
 		V extends Vector2D<? super V, ? super P>,
 		B extends Rectangle2afp<?, ?, ?, P, V, B>> extends AbstractMathTestCase {
 	

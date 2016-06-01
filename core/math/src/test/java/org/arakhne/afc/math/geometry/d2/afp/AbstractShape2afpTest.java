@@ -276,6 +276,36 @@ public abstract class AbstractShape2afpTest<T extends Shape2afp<?, ?, ?, ?, ?, ?
 	public abstract void getFarthestPointTo();
 
 	@Test
+	public abstract void getClosestPointToEllipse2afp();
+
+	@Test
+	public abstract void getClosestPointToCircle2afp();
+
+	@Test
+	public abstract void getClosestPointToRectangle2afp();
+
+	@Test
+	public abstract void getClosestPointToSegment2afp();
+
+	@Test
+	public abstract void getClosestPointToTriangle2afp();
+
+	@Test
+	public abstract void getClosestPointToPath2afp();
+
+	@Test
+	public abstract void getClosestPointToOrientedRectangle2afp();
+		
+	@Test
+	public abstract void getClosestPointToParallelogram2afp();
+
+	@Test
+	public abstract void getClosestPointToRoundRectangle2afp();
+
+	@Test
+	public abstract void getClosestPointToMultiShape2afp();
+
+	@Test
 	public abstract void getDistance();
 
 	@Test
@@ -343,6 +373,36 @@ public abstract class AbstractShape2afpTest<T extends Shape2afp<?, ?, ?, ?, ?, ?
 
 	@Test
 	public abstract void intersectsRoundRectangle2afp();
+
+	@Test
+	public abstract void getDistanceSquaredRectangle2afp();
+
+	@Test
+	public abstract void getDistanceSquaredCircle2afp();
+
+	@Test
+	public abstract void getDistanceSquaredTriangle2afp();
+
+	@Test
+	public abstract void getDistanceSquaredEllipse2afp();
+
+	@Test
+	public abstract void getDistanceSquaredSegment2afp();
+	
+	@Test
+	public abstract void getDistanceSquaredPath2afp();
+
+	@Test
+	public abstract void getDistanceSquaredOrientedRectangle2afp();
+
+	@Test
+	public abstract void getDistanceSquaredParallelogram2afp();
+
+	@Test
+	public abstract void getDistanceSquaredRoundRectangle2afp();
+
+	@Test
+	public abstract void getDistanceSquaredMultiShape2afp();
 
 	@Test
 	public abstract void translateDoubleDouble(); 

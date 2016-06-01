@@ -27,6 +27,7 @@ import java.util.NoSuchElementException;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.MathConstants;
+import org.arakhne.afc.math.geometry.CrossingComputationType;
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Path2D;
@@ -1535,6 +1536,31 @@ public interface Path2ai<
 		return point;
 	}
 
+	@Override
+	default P getClosestPointTo(Rectangle2ai<?, ?, ?, ?, ?, ?> rectangle) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	default P getClosestPointTo(Circle2ai<?, ?, ?, ?, ?, ?> circle) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	default P getClosestPointTo(Segment2ai<?, ?, ?, ?, ?, ?> segment) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	default P getClosestPointTo(MultiShape2ai<?, ?, ?, ?, ?, ?, ?> multishape) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	default P getClosestPointTo(Path2ai<?, ?, ?, ?, ?, ?> path) {
+		throw new UnsupportedOperationException();
+	}
+
 	/** Replies the point on the path that is farthest to the given point.
 	 *
 	 * <p><strong>CAUTION:</strong> This function works only on path iterators
@@ -2665,195 +2691,6 @@ public interface Path2ai<
 
 	}
 
-	/** An collection of the points of the path.
-	 *
-	 * @param <P> the type of the points.
-	 * @param <V> the type of the vectors.
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 * @since 13.0
-	 */
-	class PointCollection<P extends Point2D<? super P, ? super V>,
-			V extends Vector2D<? super V, ? super P>> implements Collection<P> {
-
-		private final Path2ai<?, ?, ?, P, V, ?> path;
-
-		/**
-		 * @param path the path from which the points are extracted.
-		 */
-		public PointCollection(Path2ai<?, ?, ?, P, V, ?> path) {
-			assert path != null : "Path must not be null"; //$NON-NLS-1$
-			this.path = path;
-		}
-
-		@Override
-		public int size() {
-			return this.path.size();
-		}
-
-		@Override
-		public boolean isEmpty() {
-			return this.path.size() <= 0;
-		}
-
-		@Override
-		public boolean contains(Object obj) {
-			if (obj instanceof Point2D) {
-				return this.path.contains((Point2D<?, ?>) obj);
-			}
-			return false;
-		}
-
-		@Override
-		public Iterator<P> iterator() {
-			return new PointIterator<>(this.path);
-		}
-
-		@Override
-		public Object[] toArray() {
-			return this.path.toPointArray();
-		}
-
-		@SuppressWarnings("unchecked")
-		@Override
-		public <T> T[] toArray(T[] array) {
-			assert array != null : "Array must not be null"; //$NON-NLS-1$
-			final Iterator<P> iterator = new PointIterator<>(this.path);
-			for (int i = 0; i < array.length && iterator.hasNext(); ++i) {
-				array[i] = (T) iterator.next();
-			}
-			return array;
-		}
-
-		@Override
-		public boolean add(P element) {
-			if (element != null) {
-				if (this.path.size() == 0) {
-					this.path.moveTo(element.ix(), element.iy());
-				} else {
-					this.path.lineTo(element.ix(), element.iy());
-				}
-				return true;
-			}
-			return false;
-		}
-
-		@Override
-		public boolean remove(Object obj) {
-			if (obj instanceof Point2D) {
-				final Point2D<?, ?> p = (Point2D<?, ?>) obj;
-				return this.path.remove(p.ix(), p.iy());
-			}
-			return false;
-		}
-
-		@Override
-		public boolean containsAll(Collection<?> collection) {
-			assert collection != null : "Collection must not be null"; //$NON-NLS-1$
-			for (final Object obj : collection) {
-				if ((!(obj instanceof Point2D))
-						|| (!this.path.contains((Point2D<?, ?>) obj))) {
-					return false;
-				}
-			}
-			return true;
-		}
-
-		@Override
-		public boolean addAll(Collection<? extends P> collection) {
-			assert collection != null : "Collection must not be null"; //$NON-NLS-1$
-			boolean changed = false;
-			for (final P pts : collection) {
-				if (add(pts)) {
-					changed = true;
-				}
-			}
-			return changed;
-		}
-
-		@Override
-		public boolean removeAll(Collection<?> collection) {
-			assert collection != null : "Collection must not be null"; //$NON-NLS-1$
-			boolean changed = false;
-			for (final Object obj : collection) {
-				if (obj instanceof Point2D) {
-					final Point2D<?, ?> pts = (Point2D<?, ?>) obj;
-					if (this.path.remove(pts.ix(), pts.iy())) {
-						changed = true;
-					}
-				}
-			}
-			return changed;
-		}
-
-		@Override
-		public boolean retainAll(Collection<?> collection) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void clear() {
-			this.path.clear();
-		}
-
-	}
-
-	/** Iterator on the points of the path.
-	 *
-	 * @param <P> the type of the points.
-	 * @param <V> the type of the vectors.
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 * @since 13.0
-	 */
-	class PointIterator<P extends Point2D<? super P, ? super V>,
-			V extends Vector2D<? super V, ? super P>> implements Iterator<P> {
-
-		private final Path2ai<?, ?, ?, P, V, ?> path;
-
-		private int index;
-
-		private P lastReplied;
-
-		/**
-		 * @param path the path to iterate on.
-		 */
-		public PointIterator(Path2ai<?, ?, ?, P, V, ?> path) {
-			assert path != null : "Path must not be null"; //$NON-NLS-1$
-			this.path = path;
-		}
-
-		@Override
-		public boolean hasNext() {
-			return this.index < this.path.size();
-		}
-
-		@Override
-		public P next() {
-			try {
-				this.lastReplied = this.path.getPointAt(this.index++);
-				return this.lastReplied;
-			} catch (Throwable exception) {
-				throw new NoSuchElementException();
-			}
-		}
-
-		@Override
-		public void remove() {
-			final Point2D<?, ?> p = this.lastReplied;
-			this.lastReplied = null;
-			if (p == null) {
-				throw new NoSuchElementException();
-			}
-			this.path.remove(p.ix(), p.iy());
-		}
-
-	}
-
 	/** A path iterator that is flattening the path.
 	 * This iterator was copied from AWT FlatteningPathIterator.
 	 *
@@ -3420,30 +3257,6 @@ public interface Path2ai<
 			return this.path.getGeomFactory();
 		}
 
-	}
-
-	/** Type of computation for the crossing of the path's shadow with a shape.
-	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 * @since 13.0
-	 */
-	enum CrossingComputationType {
-		/** The crossing is computed with the default standard approach.
-		 */
-		STANDARD,
-
-		/** The path is automatically close by the crossing computation function.
-		 */
-		AUTO_CLOSE,
-
-		/** When the path is not a polygon, i.e. not closed, the crossings will
-		 * only consider the shape intersection only. The other crossing values
-		 * will be assumed to be always equal to zero.
-		 */
-		SIMPLE_INTERSECTION_WHEN_NOT_POLYGON;
 	}
 
 }

@@ -28,6 +28,8 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
+import org.arakhne.afc.math.Unefficient;
+import org.arakhne.afc.math.geometry.CrossingComputationType;
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Path2D;
@@ -52,13 +54,11 @@ import org.arakhne.afc.math.geometry.d2.afp.Circle2afp.AbstractCirclePathIterato
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
+@SuppressWarnings("checkstyle:methodcount")
 public interface Path2afp<
-		ST extends Shape2afp<?, ?, IE, P, V, B>,
-		IT extends Path2afp<?, ?, IE, P, V, B>,
-		IE extends PathElement2afp,
-		P extends Point2D<? super P, ? super V>,
-		V extends Vector2D<? super V, ? super P>,
-		B extends Rectangle2afp<?, ?, IE, P, V, B>>
+		ST extends Shape2afp<?, ?, IE, P, V, B>, IT extends Path2afp<?, ?, IE, P, V, B>,
+		IE extends PathElement2afp, P extends Point2D<? super P, ? super V>,
+		V extends Vector2D<? super V, ? super P>, B extends Rectangle2afp<?, ?, IE, P, V, B>>
 		extends Shape2afp<ST, IT, IE, P, V, B>, Path2D<ST, IT, PathIterator2afp<IE>, P, V, B> {
 
 	/** Multiple of cubic & quad curve size.
@@ -122,8 +122,6 @@ public interface Path2afp<
 			pathElement1 = iterator.next();
 			switch (pathElement1.getType()) {
 			case MOVE_TO:
-				// Count should always be a multiple of 2 here.
-				// assert (crossings & 1 != 0);
 				movx = pathElement1.getToX();
 				curx = movx;
 				movy = pathElement1.getToY();
@@ -132,9 +130,7 @@ public interface Path2afp<
 			case LINE_TO:
 				endx = pathElement1.getToX();
 				endy = pathElement1.getToY();
-				numCrossings = shadow.computeCrossings(numCrossings,
-						curx, cury,
-						endx, endy);
+				numCrossings = shadow.computeCrossings(numCrossings, curx, cury, endx, endy);
 				if (numCrossings == MathConstants.SHAPE_INTERSECTS) {
 					return numCrossings;
 				}
@@ -144,17 +140,13 @@ public interface Path2afp<
 			case QUAD_TO:
 				endx = pathElement1.getToX();
 				endy = pathElement1.getToY();
-				// only for local use.
 				subPath = factory.newPath(iterator.getWindingRule());
 				subPath.moveTo(curx, cury);
 				subPath.quadTo(
-						pathElement1.getCtrlX1(), pathElement1.getCtrlY1(),
-						endx, endy);
+						pathElement1.getCtrlX1(), pathElement1.getCtrlY1(), endx, endy);
 				numCrossings = computeCrossingsFromPath(
-						numCrossings,
-						subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
-						shadow,
-						CrossingComputationType.STANDARD);
+						numCrossings, subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						shadow, CrossingComputationType.STANDARD);
 				if (numCrossings == MathConstants.SHAPE_INTERSECTS) {
 					return numCrossings;
 				}
@@ -164,18 +156,13 @@ public interface Path2afp<
 			case CURVE_TO:
 				endx = pathElement1.getToX();
 				endy = pathElement1.getToY();
-				// only for local use
 				subPath = factory.newPath(iterator.getWindingRule());
 				subPath.moveTo(curx, cury);
-				subPath.curveTo(
-						pathElement1.getCtrlX1(), pathElement1.getCtrlY1(),
-						pathElement1.getCtrlX2(), pathElement1.getCtrlY2(),
-						endx, endy);
+				subPath.curveTo(pathElement1.getCtrlX1(), pathElement1.getCtrlY1(),
+						pathElement1.getCtrlX2(), pathElement1.getCtrlY2(), endx, endy);
 				numCrossings = computeCrossingsFromPath(
-						numCrossings,
-						subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
-						shadow,
-						CrossingComputationType.STANDARD);
+						numCrossings, subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						shadow, CrossingComputationType.STANDARD);
 				if (numCrossings == MathConstants.SHAPE_INTERSECTS) {
 					return numCrossings;
 				}
@@ -185,19 +172,14 @@ public interface Path2afp<
 			case ARC_TO:
 				endx = pathElement1.getToX();
 				endy = pathElement1.getToY();
-				// only for local use
 				subPath = factory.newPath(iterator.getWindingRule());
 				subPath.moveTo(curx, cury);
-				subPath.arcTo(
-						endx, endy,
-						pathElement1.getRadiusX(), pathElement1.getRadiusY(),
+				subPath.arcTo(endx, endy, pathElement1.getRadiusX(), pathElement1.getRadiusY(),
 						pathElement1.getRotationX(), pathElement1.getLargeArcFlag(),
 						pathElement1.getSweepFlag());
 				numCrossings = computeCrossingsFromPath(
-						numCrossings,
-						subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
-						shadow,
-						CrossingComputationType.STANDARD);
+						numCrossings, subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+						shadow, CrossingComputationType.STANDARD);
 				if (numCrossings == MathConstants.SHAPE_INTERSECTS) {
 					return numCrossings;
 				}
@@ -206,9 +188,7 @@ public interface Path2afp<
 				break;
 			case CLOSE:
 				if (curx != movx || cury != movy) {
-					numCrossings = shadow.computeCrossings(numCrossings,
-							curx, cury,
-							movx, movy);
+					numCrossings = shadow.computeCrossings(numCrossings, curx, cury, movx, movy);
 				}
 				// Stop as soon as possible
 				if (numCrossings != 0) {
@@ -225,14 +205,9 @@ public interface Path2afp<
 		if (isOpen && type != null) {
 			switch (type) {
 			case AUTO_CLOSE:
-				// Not closed
-				numCrossings = shadow.computeCrossings(numCrossings,
-						curx, cury,
-						movx, movy);
+				numCrossings = shadow.computeCrossings(numCrossings, curx, cury, movx, movy);
 				break;
 			case SIMPLE_INTERSECTION_WHEN_NOT_POLYGON:
-				// Assume that when is the path is open, only
-				// SHAPE_INTERSECTS may be return
 				numCrossings = 0;
 				break;
 			case STANDARD:
@@ -272,6 +247,7 @@ public interface Path2afp<
 			double candidateY = Double.NaN;
 			switch (pe.getType()) {
 			case MOVE_TO:
+				crossings = 0;
 				foundCandidate = true;
 				candidateX = pe.getToX();
 				candidateY = pe.getToY();
@@ -323,6 +299,128 @@ public interface Path2afp<
 		}
 	}
 
+	/** Replies the point on the path of pi that is closest to the given shape.
+	 *
+	 * <p><strong>CAUTION:</strong> This function works only on path iterators
+	 * that are replying not-curved primitives, ie. if the
+	 * {@link PathIterator2D#isCurved()} of {@code pi} is replying
+	 * <code>false</code>.
+	 * {@link #getClosestPointTo(org.arakhne.afc.math.geometry.d2.Shape2D)} avoids this restriction.
+	 *
+	 * @param pi is the iterator of path elements, on one of which the closest point is located.
+	 * @param shape the shape to which the closest point must be computed.
+	 * @param result the closest point on pi.
+	 * @return <code>true</code> if a point was found. Otherwise <code>false</code>.
+	 */
+	@SuppressWarnings({"unchecked", "rawtypes", "checkstyle:cyclomaticcomplexity",
+	           "checkstyle:npathcomplexity"})
+	@Unefficient
+	static boolean getClosestPointTo(PathIterator2afp<? extends PathElement2afp> pi,
+			PathIterator2afp<? extends PathElement2afp> shape, Point2D<?, ?> result) {
+		assert pi != null : "First iterator must be not null"; //$NON-NLS-1$
+		assert shape != null : "Second iterator must be not null"; //$NON-NLS-1$
+		assert !pi.isCurved() : "The first path iterator is curved"; //$NON-NLS-1$
+		assert result != null : "Result point must be not null"; //$NON-NLS-1$
+		if (!pi.hasNext() || !shape.hasNext()) {
+			return false;
+		}
+		PathElement2afp pathElement1 = pi.next();
+		PathIterator2afp<? extends PathElement2afp> pi2 = null;
+		PathElement2afp pathElement2;
+		if (pathElement1.getType() != PathElementType.MOVE_TO) {
+			throw new IllegalArgumentException("missing initial moveto in the first path definition"); //$NON-NLS-1$
+		}
+		if (shape.next().getType() != PathElementType.MOVE_TO) {
+			throw new IllegalArgumentException("missing initial moveto in the second path definition"); //$NON-NLS-1$
+		}
+		if (!pi.hasNext() || !shape.hasNext()) {
+			return false;
+		}
+		boolean foundClosestPoint = false;
+		double distance;
+		double minDistance = Double.POSITIVE_INFINITY;
+		final Point2D<?, ?> point = new InnerComputationPoint2afp();
+		Rectangle2afp<?, ?, ?, ?, ?, ?> box = null;
+		while (pi.hasNext()) {
+			pathElement1 = pi.next();
+			switch (pathElement1.getType()) {
+			case MOVE_TO:
+				break;
+			case CLOSE:
+			case LINE_TO:
+				if (shape.isCurved()) {
+					pi2 = new FlatteningPathIterator<>(shape.restartIterations(),
+							MathConstants.SPLINE_APPROXIMATION_RATIO,
+							DEFAULT_FLATENING_LIMIT);
+				} else {
+					pi2 = shape.restartIterations();
+				}
+				// Skip first moveto.
+				pi2.next();
+				final boolean computeBox = box == null;
+				while (pi2.hasNext()) {
+					pathElement2 = pi2.next();
+					switch (pathElement2.getType()) {
+					case CLOSE:
+					case LINE_TO:
+						distance = Segment2afp.computeClosestPointToSegment(
+								pathElement1.getFromX(), pathElement1.getFromY(),
+								pathElement1.getToX(), pathElement1.getToY(),
+								pathElement2.getFromX(), pathElement2.getFromY(),
+								pathElement2.getToX(), pathElement2.getToY(),
+								point);
+						if (distance <= 0.) {
+							result.set(point);
+							return true;
+						}
+						if (distance < minDistance) {
+							foundClosestPoint = true;
+							minDistance = distance;
+							result.set(point);
+						}
+						if (computeBox) {
+							if (box == null) {
+								box = shape.getGeomFactory().newBox(pathElement2.getFromX(), pathElement2.getFromY(), 0, 0);
+							} else {
+								box.add(pathElement2.getFromX(), pathElement2.getFromY());
+							}
+							box.add(pathElement2.getToX(), pathElement2.getToY());
+						}
+						break;
+					case MOVE_TO:
+						break;
+					case QUAD_TO:
+					case CURVE_TO:
+					case ARC_TO:
+					default:
+						throw new IllegalArgumentException("curved path is not supported"); //$NON-NLS-1$
+					}
+				}
+				break;
+			case QUAD_TO:
+			case CURVE_TO:
+			case ARC_TO:
+			default:
+				throw new IllegalArgumentException("curved path is not supported"); //$NON-NLS-1$
+			}
+		}
+		// Determine if the second shape is inside the first.
+		if (foundClosestPoint && box != null && pathElement1.getType() == PathElementType.CLOSE) {
+			final int mask = pi.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
+			final int crossings = computeCrossingsFromPath(
+					0, pi.restartIterations(),
+					new PathShadow2afp(shape.restartIterations(), box),
+					CrossingComputationType.STANDARD);
+			if (crossings != MathConstants.SHAPE_INTERSECTS && (crossings & mask) != 0) {
+				// The second shape is inside the first.
+				final PathElement2afp element = shape.restartIterations().next();
+				result.set(element.getFromX(), element.getFromY());
+				foundClosestPoint = true;
+			}
+		}
+		return foundClosestPoint;
+	}
+
 	@Pure
 	@Override
 	default P getClosestPointTo(Point2D<?, ?> pt) {
@@ -333,6 +431,132 @@ public interface Path2afp<
 				pt.getX(), pt.getY(),
 				point);
 		return point;
+	}
+
+	@Pure
+	@Unefficient
+	@Override
+	default P getClosestPointTo(Circle2afp<?, ?, ?, ?, ?, ?> circle) {
+	    final P result = getGeomFactory().newPoint();
+		if (isCurved()) {
+			Path2afp.getClosestPointTo(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+					circle.getCenterX(), circle.getCenterY(), result);
+		} else {
+			Path2afp.getClosestPointTo(getPathIterator(), circle.getCenterX(), circle.getCenterY(), result);
+		}
+		return result;
+	}
+
+	@Pure
+	@Unefficient
+	@Override
+	default P getClosestPointTo(Ellipse2afp<?, ?, ?, ?, ?, ?> ellipse) {
+	    final P result = getGeomFactory().newPoint();
+		if (isCurved()) {
+			Path2afp.getClosestPointTo(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+					ellipse.getPathIterator(), result);
+		} else {
+			Path2afp.getClosestPointTo(getPathIterator(), ellipse.getPathIterator(), result);
+		}
+		return result;
+	}
+
+	@Pure
+	@Unefficient
+	@Override
+	default P getClosestPointTo(Rectangle2afp<?, ?, ?, ?, ?, ?> rectangle) {
+	    final P result = getGeomFactory().newPoint();
+		if (isCurved()) {
+			Path2afp.getClosestPointTo(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+					rectangle.getPathIterator(), result);
+		} else {
+			Path2afp.getClosestPointTo(getPathIterator(), rectangle.getPathIterator(), result);
+		}
+		return result;
+	}
+
+	@Pure
+	@Unefficient
+	@Override
+	default P getClosestPointTo(Segment2afp<?, ?, ?, ?, ?, ?> segment) {
+	    final P result = getGeomFactory().newPoint();
+		if (isCurved()) {
+			Path2afp.getClosestPointTo(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+					segment.getPathIterator(), result);
+		} else {
+			Path2afp.getClosestPointTo(getPathIterator(), segment.getPathIterator(), result);
+		}
+		return result;
+	}
+
+	@Pure
+	@Unefficient
+	@Override
+	default P getClosestPointTo(Triangle2afp<?, ?, ?, ?, ?, ?> triangle) {
+	    final P result = getGeomFactory().newPoint();
+		if (isCurved()) {
+			Path2afp.getClosestPointTo(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+					triangle.getPathIterator(), result);
+		} else {
+			Path2afp.getClosestPointTo(getPathIterator(), triangle.getPathIterator(), result);
+		}
+		return result;
+	}
+
+	@Pure
+	@Unefficient
+	@Override
+	default P getClosestPointTo(Path2afp<?, ?, ?, ?, ?, ?> path) {
+	    final P result = getGeomFactory().newPoint();
+		if (isCurved()) {
+			Path2afp.getClosestPointTo(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+					path.getPathIterator(), result);
+		} else {
+			Path2afp.getClosestPointTo(getPathIterator(), path.getPathIterator(), result);
+		}
+		return result;
+	}
+
+	@Pure
+	@Unefficient
+	@Override
+	default P getClosestPointTo(OrientedRectangle2afp<?, ?, ?, ?, ?, ?> orientedRectangle) {
+	    final P result = getGeomFactory().newPoint();
+		if (isCurved()) {
+			Path2afp.getClosestPointTo(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+					orientedRectangle.getPathIterator(), result);
+		} else {
+			Path2afp.getClosestPointTo(getPathIterator(), orientedRectangle.getPathIterator(), result);
+		}
+		return result;
+	}
+
+	@Pure
+	@Unefficient
+	@Override
+	default P getClosestPointTo(Parallelogram2afp<?, ?, ?, ?, ?, ?> parallelogram) {
+	    final P result = getGeomFactory().newPoint();
+		if (isCurved()) {
+			Path2afp.getClosestPointTo(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+					parallelogram.getPathIterator(), result);
+		} else {
+			Path2afp.getClosestPointTo(getPathIterator(), parallelogram.getPathIterator(), result);
+		}
+		return result;
+	}
+
+	@Pure
+	@Unefficient
+	@Override
+	default P getClosestPointTo(RoundRectangle2afp<?, ?, ?, ?, ?, ?> roundRectangle) {
+	    final P result = getGeomFactory().newPoint();
+		if (isCurved()) {
+			Path2afp.getClosestPointTo(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
+					roundRectangle.getPathIterator(), result);
+		} else {
+			Path2afp.getClosestPointTo(getPathIterator(), roundRectangle.getPathIterator(), result);
+		}
+		return result;
 	}
 
 	/** Replies the point on the path that is farthest to the given point.
@@ -354,7 +578,6 @@ public interface Path2afp<
 		assert result != null : "Result point must be not null"; //$NON-NLS-1$
 		double bestDist = Double.NEGATIVE_INFINITY;
 		PathElement2afp pe;
-		// Only for internal use.
 		final Point2D<?, ?> point = new InnerComputationPoint2afp();
 		while (pi.hasNext()) {
 			pe = pi.next();
@@ -363,7 +586,7 @@ public interface Path2afp<
 				break;
 			case LINE_TO:
 			case CLOSE:
-				Segment2afp.computeFarthestPointTo(
+				Segment2afp.computeFarthestPointToPoint(
 						pe.getFromX(), pe.getFromY(), pe.getToX(), pe.getToY(),
 						x, y, point);
 				final double d = Point2D.getDistanceSquaredPointPoint(x, y, point.getX(), point.getY());
@@ -551,7 +774,6 @@ public interface Path2afp<
 				if (endx == px && endy == py) {
 					return MathConstants.SHAPE_INTERSECTS;
 				}
-				// For internal use only
 				subPath = factory.newPath(iterator.getWindingRule());
 				subPath.moveTo(curx, cury);
 				subPath.quadTo(
@@ -574,7 +796,6 @@ public interface Path2afp<
 				if (endx == px && endy == py) {
 					return MathConstants.SHAPE_INTERSECTS;
 				}
-				// For internal use only
 				subPath = factory.newPath(iterator.getWindingRule());
 				subPath.moveTo(curx, cury);
 				subPath.curveTo(
@@ -598,7 +819,6 @@ public interface Path2afp<
 				if (endx == px && endy == py) {
 					return MathConstants.SHAPE_INTERSECTS;
 				}
-				// For internal use only
 				subPath = factory.newPath(iterator.getWindingRule());
 				subPath.moveTo(curx, cury);
 				subPath.arcTo(
@@ -639,7 +859,6 @@ public interface Path2afp<
 		if (isOpen && type != null) {
 			switch (type) {
 			case AUTO_CLOSE:
-				// Not closed
 				if (movx == px && movy == py) {
 					return MathConstants.SHAPE_INTERSECTS;
 				}
@@ -649,8 +868,6 @@ public interface Path2afp<
 						movx, movy);
 				break;
 			case SIMPLE_INTERSECTION_WHEN_NOT_POLYGON:
-				// Assume that when is the path is open, only
-				// SHAPE_INTERSECTS may be return
 				numCrossings = 0;
 				break;
 			case STANDARD:
@@ -838,7 +1055,7 @@ public interface Path2afp<
 
 	/**
 	 * Calculates the number of times the given path
-	 * crosses the given ellipse extending to the right.
+	 * crosses the given round rectangle extending to the right.
 	 *
 	 * @param crossings is the initial value for crossing.
 	 * @param iterator is the description of the path.
@@ -2062,7 +2279,8 @@ public interface Path2afp<
 			default:
 			}
 		}
-		if (foundOneControlPoint) {			box.setFromCorners(xmin, ymin, xmax, ymax);
+		if (foundOneControlPoint) {
+			box.setFromCorners(xmin, ymin, xmax, ymax);
 		} else {
 			box.clear();
 		}
@@ -3704,7 +3922,6 @@ public interface Path2afp<
 			if (this.done) {
 				throw new NoSuchElementException("flattening iterator out of bounds"); //$NON-NLS-1$
 			}
-
 			final T element;
 			final PathElementType type = this.holdType;
 			if (type != PathElementType.CLOSE) {
@@ -3726,9 +3943,7 @@ public interface Path2afp<
 				this.lastNextX = this.moveX;
 				this.lastNextY = this.moveY;
 			}
-
 			searchNext();
-
 			return element;
 		}
 
@@ -3752,7 +3967,6 @@ public interface Path2afp<
 		@Pure
 		@Override
 		public boolean isCurved() {
-			// Because the iterator flats the path, this is no curve inside.
 			return false;
 		}
 
@@ -3774,226 +3988,6 @@ public interface Path2afp<
 			return this.pathIterator.getGeomFactory();
 		}
 
-	}
-
-	/** An collection of the points of the path.
-	 *
-	 * @param <P> the type of the points.
-	 * @param <V> the type of the vectors.
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 * @since 13.0
-	 */
-	class PointCollection<P extends Point2D<? super P, ? super V>, V extends Vector2D<? super V, ? super P>>
-			implements Collection<P> {
-
-		private final Path2afp<?, ?, ?, P, V, ?> path;
-
-		/**
-		 * @param path the path to iterate on.
-		 */
-		public PointCollection(Path2afp<?, ?, ?, P, V, ?> path) {
-			assert path != null : "Path must be not null"; //$NON-NLS-1$
-			this.path = path;
-		}
-
-		@Pure
-		@Override
-		public int size() {
-			return this.path.size();
-		}
-
-		@Pure
-		@Override
-		public boolean isEmpty() {
-			return this.path.size() <= 0;
-		}
-
-		@Pure
-		@Override
-		public boolean contains(Object obj) {
-			if (obj instanceof Point2D) {
-				return this.path.containsControlPoint((Point2D<?, ?>) obj);
-			}
-			return false;
-		}
-
-		@Pure
-		@Override
-		public Iterator<P> iterator() {
-			return new PointIterator<>(this.path);
-		}
-
-		@Pure
-		@Override
-		public Object[] toArray() {
-			return this.path.toPointArray();
-		}
-
-		@SuppressWarnings("unchecked")
-		@Override
-		public <T> T[] toArray(T[] array) {
-			assert array != null : "Array must be not null"; //$NON-NLS-1$
-			final Iterator<P> iterator = new PointIterator<>(this.path);
-			for (int i = 0; i < array.length && iterator.hasNext(); ++i) {
-				array[i] = (T) iterator.next();
-			}
-			return array;
-		}
-
-		@Override
-		public boolean add(P element) {
-			if (element != null) {
-				if (this.path.size() == 0) {
-					this.path.moveTo(element.getX(), element.getY());
-				} else {
-					this.path.lineTo(element.getX(), element.getY());
-				}
-				return true;
-			}
-			return false;
-		}
-
-		@Override
-		public boolean remove(Object obj) {
-			if (obj instanceof Point2D) {
-				final Point2D<?, ?> p = (Point2D<?, ?>) obj;
-				return this.path.remove(p.getX(), p.getY());
-			}
-			return false;
-		}
-
-		@Pure
-		@Override
-		public boolean containsAll(Collection<?> collection) {
-			assert collection != null : "Collection must be not null"; //$NON-NLS-1$
-			for (final Object obj : collection) {
-				if ((!(obj instanceof Point2D))
-						|| (!this.path.containsControlPoint((Point2D<?, ?>) obj))) {
-					return false;
-				}
-			}
-			return true;
-		}
-
-		@Override
-		public boolean addAll(Collection<? extends P> collection) {
-			assert collection != null : "Collection must be not null"; //$NON-NLS-1$
-			boolean changed = false;
-			for (final P pts : collection) {
-				if (add(pts)) {
-					changed = true;
-				}
-			}
-			return changed;
-		}
-
-		@Override
-		public boolean removeAll(Collection<?> collection) {
-			assert collection != null : "Collection must be not null"; //$NON-NLS-1$
-			boolean changed = false;
-			for (final Object obj : collection) {
-				if (obj instanceof Point2D) {
-					final Point2D<?, ?> pts = (Point2D<?, ?>) obj;
-					if (this.path.remove(pts.getX(), pts.getY())) {
-						changed = true;
-					}
-				}
-			}
-			return changed;
-		}
-
-		@Override
-		public boolean retainAll(Collection<?> collection) {
-			throw new UnsupportedOperationException();
-		}
-
-		@Override
-		public void clear() {
-			this.path.clear();
-		}
-
-	}
-
-	/** Iterator on the points of the path.
-	 *
-	 * @param <P> the type of the points.
-	 * @param <V> the type of the vectors.
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 * @since 13.0
-	 */
-	class PointIterator<P extends Point2D<? super P, ? super V>, V extends Vector2D<? super V, ? super P>>
-			implements Iterator<P> {
-
-		private final Path2afp<?, ?, ?, P, V, ?> path;
-
-		private int index;
-
-		private P lastReplied;
-
-		/**
-		 * @param path the path to iterate on.
-		 */
-		public PointIterator(Path2afp<?, ?, ?, P, V, ?> path) {
-			assert path != null : "Path must be not null"; //$NON-NLS-1$
-			this.path = path;
-		}
-
-		@Pure
-		@Override
-		public boolean hasNext() {
-			return this.index < this.path.size();
-		}
-
-		@Override
-		public P next() {
-			try {
-				this.lastReplied = this.path.getPointAt(this.index++);
-				return this.lastReplied;
-			} catch (Throwable e) {
-				throw new NoSuchElementException();
-			}
-		}
-
-		@Override
-		public void remove() {
-			final Point2D<?, ?> p = this.lastReplied;
-			this.lastReplied = null;
-			if (p == null) {
-				throw new NoSuchElementException();
-			}
-			this.path.remove(p.getX(), p.getY());
-		}
-
-	}
-
-	/** Type of computation for the crossing of the path's shadow with a shape.
-	 *
-	 * @author $Author: sgalland$
-	 * @version $FullVersion$
-	 * @mavengroupid $GroupId$
-	 * @mavenartifactid $ArtifactId$
-	 * @since 13.0
-	 */
-	enum CrossingComputationType {
-		/** The crossing is computed with the default standard approach.
-		 */
-		STANDARD,
-
-		/** The path is automatically close by the crossing computation function.
-		 */
-		AUTO_CLOSE,
-
-		/** When the path is not a polygon, i.e. not closed, the crossings will
-		 * only consider the shape intersection only. The other crossing values
-		 * will be assumed to be always equal to zero.
-		 */
-		SIMPLE_INTERSECTION_WHEN_NOT_POLYGON;
 	}
 
 }

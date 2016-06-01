@@ -33,16 +33,16 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.junit.Test;
+
 import org.arakhne.afc.math.MathConstants;
+import org.arakhne.afc.math.geometry.CrossingComputationType;
 import org.arakhne.afc.math.geometry.PathElementType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Path2D.ArcType;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Shape2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
-import org.arakhne.afc.math.geometry.d2.ai.Path2ai.CrossingComputationType;
-
-import org.junit.Test;
 
 @SuppressWarnings("all")
 public abstract class AbstractPath2aiTest<T extends Path2ai<?, T, ?, ?, ?, B>,
@@ -2159,6 +2159,50 @@ public abstract class AbstractPath2aiTest<T extends Path2ai<?, T, ?, ?, ?, B>,
 	}
 
 	@Test
+	public void getDistanceSquaredRectangle2ai() {
+		assert(false);
+	}
+
+	@Test
+	public void getDistanceSquaredCircle2ai() {
+		assert(false);
+	}
+
+	@Test
+	public void getDistanceSquaredSegment2ai() {
+		assert(false);
+	}
+	
+	@Test
+	public void getDistanceSquaredPath2ai() {
+		assert(false);
+	}
+
+	@Test
+	public void getClosestPointToRectangle2ai() {
+		assert(false);
+	}
+
+	@Test
+	public void getClosestPointToCircle2ai() {
+		assert(false);
+	}
+
+	@Test
+	public void getClosestPointToSegment2ai() {
+		assert(false);
+	}
+	
+	@Test
+	public void getClosestPointToMultiShape2ai() {
+		assert(false);
+	}
+		
+	@Test
+	public void getClosestPointToPath2ai() {
+		assert(false);
+	}
+	
 	public void generateShapeBitmap() throws IOException {
 		this.shape.arcTo(5, 5, 20, 10, 0, 1, ArcType.ARC_ONLY);
 		File filename = generateTestPicture(this.shape);

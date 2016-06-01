@@ -18,21 +18,28 @@
  * limitations under the License.
  */
 
-package org.arakhne.afc.math.geometry.d2.dfx;
+package org.arakhne.afc.math.geometry;
 
-import org.arakhne.afc.math.geometry.d2.afp.AbstractParallelogram2afpTest;
-import org.arakhne.afc.math.geometry.d2.afp.AbstractPointCollectionTest;
-import org.arakhne.afc.math.geometry.d2.afp.TestShapeFactory;
-import org.arakhne.afc.math.geometry.d2.dfx.Point2dfx;
-import org.arakhne.afc.math.geometry.d2.dfx.Rectangle2dfx;
-import org.arakhne.afc.math.geometry.d2.dfx.Vector2dfx;
+/** Type of computation for the crossing of the path's shadow with a shape.
+ *
+ * @author $Author: sgalland$
+ * @version $FullVersion$
+ * @mavengroupid $GroupId$
+ * @mavenartifactid $ArtifactId$
+ * @since 13.0
+ */
+public enum CrossingComputationType {
+    /** The crossing is computed with the default standard approach.
+     */
+    STANDARD,
 
-@SuppressWarnings("all")
-public class Path2dfxPointCollectionTest extends AbstractPointCollectionTest<Point2dfx, Vector2dfx, Rectangle2dfx> {
+    /** The path is automatically close by the crossing computation function.
+     */
+    AUTO_CLOSE,
 
-	@Override
-	protected TestShapeFactory2dfx createFactory() {
-		return TestShapeFactory2dfx.SINGLETON;
-	}
-
+    /** When the path is not a polygon, i.e. not closed, the crossings will
+     * only consider the shape intersection only. The other crossing values
+     * will be assumed to be always equal to zero.
+     */
+    SIMPLE_INTERSECTION_WHEN_NOT_POLYGON;
 }

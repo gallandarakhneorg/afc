@@ -27,12 +27,12 @@ import org.eclipse.xtext.xbase.lib.Pure;
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
 import org.arakhne.afc.math.Unefficient;
+import org.arakhne.afc.math.geometry.CrossingComputationType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.afp.Circle2afp.AbstractCirclePathIterator;
-import org.arakhne.afc.math.geometry.d2.afp.Path2afp.CrossingComputationType;
 
 /** Fonctional interface that represented a 2D round rectangle on a plane.
  *
@@ -783,6 +783,9 @@ public interface RoundRectangle2afp<
 		return multishape.intersects(this);
 	}
 
+	/** {@inheritDoc}
+	 * @see #getFlatteningPathIterator()
+	 */
 	@Pure
 	@Override
 	default PathIterator2afp<IE> getPathIterator(Transform2D transform) {
@@ -790,6 +793,26 @@ public interface RoundRectangle2afp<
 			return new RoundRectanglePathIterator<>(this);
 		}
 		return new TransformedRoundRectanglePathIterator<>(this, transform);
+	}
+
+	/** Replies a path iterator on this round rectangle that is replacing the
+	 * corner arcs by line approximations.
+	 *
+	 * @return the iterator on the approximation.
+	 * @see #getPathIterator()
+	 * @see MathConstants#SPLINE_APPROXIMATION_RATIO
+	 */
+	default PathIterator2afp<IE> getFlatteningPathIterator() {
+		final double approx = MathConstants.SPLINE_APPROXIMATION_RATIO * 2;
+		if (getArcWidth() <= approx || getArcHeight() <= approx) {
+			// Arc sizes is too small for using the default approximation ratio.
+			return new Path2afp.FlatteningPathIterator<>(getPathIterator(),
+					MathConstants.SPLINE_APPROXIMATION_RATIO / 2,
+					Path2afp.DEFAULT_FLATENING_LIMIT);
+		}
+		return new Path2afp.FlatteningPathIterator<>(getPathIterator(),
+				MathConstants.SPLINE_APPROXIMATION_RATIO,
+				Path2afp.DEFAULT_FLATENING_LIMIT);
 	}
 
 	@Pure
@@ -881,8 +904,86 @@ public interface RoundRectangle2afp<
 		return factory.newPoint(x, y);
 	}
 
-	@Pure
-	@Override
+    @Override
+    default P getClosestPointTo(Circle2afp<?, ?, ?, ?, ?, ?> circle) {
+        assert circle != null : "Circle must be not null"; //$NON-NLS-1$
+        return getClosestPointTo(circle.getCenter());
+    }
+
+    @Override
+    @Unefficient
+    default P getClosestPointTo(Ellipse2afp<?, ?, ?, ?, ?, ?> ellipse) {
+        assert ellipse != null : "Ellipse must be not null"; //$NON-NLS-1$
+        final P point = getGeomFactory().newPoint();
+        Path2afp.getClosestPointTo(getFlatteningPathIterator(), ellipse.getPathIterator(), point);
+        return point;
+    }
+
+    @Override
+    @Unefficient
+    default P getClosestPointTo(Rectangle2afp<?, ?, ?, ?, ?, ?> rectangle) {
+        assert rectangle != null : "Rectangle must be not null"; //$NON-NLS-1$
+        final P point = getGeomFactory().newPoint();
+        Path2afp.getClosestPointTo(getFlatteningPathIterator(), rectangle.getPathIterator(), point);
+        return point;
+    }
+
+    @Override
+    @Unefficient
+    default P getClosestPointTo(Segment2afp<?, ?, ?, ?, ?, ?> segment) {
+        assert segment != null : "Segment must be not null"; //$NON-NLS-1$
+        final P point = getGeomFactory().newPoint();
+        Path2afp.getClosestPointTo(getFlatteningPathIterator(), segment.getPathIterator(), point);
+        return point;
+    }
+
+    @Override
+    @Unefficient
+    default P getClosestPointTo(Triangle2afp<?, ?, ?, ?, ?, ?> triangle) {
+        assert triangle != null : "Triangle must be not null"; //$NON-NLS-1$
+        final P point = getGeomFactory().newPoint();
+        Path2afp.getClosestPointTo(getFlatteningPathIterator(), triangle.getPathIterator(), point);
+        return point;
+    }
+
+    @Override
+    @Unefficient
+    default P getClosestPointTo(OrientedRectangle2afp<?, ?, ?, ?, ?, ?> orientedRectangle) {
+        assert orientedRectangle != null : "Oriented rectangle must be not null"; //$NON-NLS-1$
+        final P point = getGeomFactory().newPoint();
+        Path2afp.getClosestPointTo(getFlatteningPathIterator(), orientedRectangle.getPathIterator(), point);
+        return point;
+    }
+
+    @Override
+    @Unefficient
+    default P getClosestPointTo(Parallelogram2afp<?, ?, ?, ?, ?, ?> parallelogram) {
+        assert parallelogram != null : "Parallelogram must be not null"; //$NON-NLS-1$
+        final P point = getGeomFactory().newPoint();
+        Path2afp.getClosestPointTo(getFlatteningPathIterator(), parallelogram.getPathIterator(), point);
+        return point;
+    }
+
+    @Override
+    @Unefficient
+    default P getClosestPointTo(RoundRectangle2afp<?, ?, ?, ?, ?, ?> roundRectangle) {
+        assert roundRectangle != null : "Round rectangle must be not null"; //$NON-NLS-1$
+        final P point = getGeomFactory().newPoint();
+        Path2afp.getClosestPointTo(getFlatteningPathIterator(), roundRectangle.getPathIterator(), point);
+        return point;
+    }
+
+    @Override
+    @Unefficient
+    default P getClosestPointTo(Path2afp<?, ?, ?, ?, ?, ?> path) {
+        assert path != null : "Path must be not null"; //$NON-NLS-1$
+        final P point = getGeomFactory().newPoint();
+        Path2afp.getClosestPointTo(getFlatteningPathIterator(), path.getPathIterator(), point);
+        return point;
+    }
+
+    @Pure
+    @Override
 	default P getFarthestPointTo(Point2D<?, ?> pt) {
 		assert pt != null : "Point must be not null"; //$NON-NLS-1$
 		final double px = pt.getX();

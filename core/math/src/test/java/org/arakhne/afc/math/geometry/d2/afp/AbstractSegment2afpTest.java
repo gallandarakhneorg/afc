@@ -29,9 +29,11 @@ import static org.junit.Assert.assertTrue;
 
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.geometry.PathElementType;
+import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Shape2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
+import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.afp.Segment2afp.UncertainIntersection;
 import org.arakhne.afc.math.geometry.d2.ai.PathIterator2ai;
 import org.junit.Test;
@@ -75,33 +77,154 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
 	}
 
 	@Test
-	public void staticComputeClosestPointTo() {
+	public void staticComputeClosestPointToPoint2D() {
 		Point2D result;
 
 		result = createPoint(Double.NaN, Double.NaN);
-		Segment2afp.computeClosestPointTo(0, 0, 1, 1, 0, 0, result);
+		Segment2afp.computeClosestPointToPoint(0, 0, 1, 1, 0, 0, result);
 		assertEpsilonEquals(0, result.getX());
 		assertEpsilonEquals(0, result.getY());
 
 		result = createPoint(Double.NaN, Double.NaN);
-		Segment2afp.computeClosestPointTo(0, 0, 1, 1, .75, .75, result);
+		Segment2afp.computeClosestPointToPoint(0, 0, 1, 1, .75, .75, result);
 		assertEpsilonEquals(.75, result.getX());
 		assertEpsilonEquals(.75, result.getY());
 
 		result = createPoint(Double.NaN, Double.NaN);
-		Segment2afp.computeClosestPointTo(0, 0, 1, 1, -10, -50, result);
+		Segment2afp.computeClosestPointToPoint(0, 0, 1, 1, -10, -50, result);
 		assertEpsilonEquals(0, result.getX());
 		assertEpsilonEquals(0, result.getY());
 
 		result = createPoint(Double.NaN, Double.NaN);
-		Segment2afp.computeClosestPointTo(0, 0, 1, 1, 200, -50, result);
+		Segment2afp.computeClosestPointToPoint(0, 0, 1, 1, 200, -50, result);
 		assertEpsilonEquals(1, result.getX());
 		assertEpsilonEquals(1, result.getY());
 
 		result = createPoint(Double.NaN, Double.NaN);
-		Segment2afp.computeClosestPointTo(0, 0, 1, 1, 0, 1, result);
+		Segment2afp.computeClosestPointToPoint(0, 0, 1, 1, 0, 1, result);
 		assertEpsilonEquals(.5, result.getX());
 		assertEpsilonEquals(.5, result.getY());
+	}
+
+	@Test
+	public void staticComputeClosestPointToSegment() {
+		Point2D result;
+		double dist;
+
+		result = createPoint(Double.NaN, Double.NaN);
+		dist = Segment2afp.computeClosestPointToSegment(0, 0, 1, 1, -2, 3, -1, 1, result);
+		assertEpsilonEquals(0, result.getX());
+		assertEpsilonEquals(0, result.getY());
+		assertEpsilonEquals(2, dist);
+
+		result = createPoint(Double.NaN, Double.NaN);
+		dist = Segment2afp.computeClosestPointToSegment(0, 0, 1, 1, -1, 1, -3, 2, result);
+		assertEpsilonEquals(0, result.getX());
+		assertEpsilonEquals(0, result.getY());
+		assertEpsilonEquals(2, dist);
+
+		result = createPoint(Double.NaN, Double.NaN);
+		dist = Segment2afp.computeClosestPointToSegment(0, 0, 1, 1, 1, 0, -1, 0, result);
+		assertEpsilonEquals(0, result.getX());
+		assertEpsilonEquals(0, result.getY());
+		assertEpsilonEquals(0, dist);
+
+		result = createPoint(Double.NaN, Double.NaN);
+		dist = Segment2afp.computeClosestPointToSegment(0, 0, 1, 1, -2, 0, 2, 1, result);
+		assertEpsilonEquals(0.66667, result.getX());
+		assertEpsilonEquals(0.66667, result.getY());
+		assertEpsilonEquals(0, dist);
+
+		result = createPoint(Double.NaN, Double.NaN);
+		dist = Segment2afp.computeClosestPointToSegment(0, 0, 1, 1, 0, -1, -3, 0, result);
+		assertEpsilonEquals(0, result.getX());
+		assertEpsilonEquals(0, result.getY());
+		assertEpsilonEquals(.9, dist);
+
+		result = createPoint(Double.NaN, Double.NaN);
+		dist = Segment2afp.computeClosestPointToSegment(0, 0, 1, 1, 0, 4, 3, 3, result);
+		assertEpsilonEquals(1, result.getX());
+		assertEpsilonEquals(1, result.getY());
+		assertEpsilonEquals(6.4, dist);
+
+		result = createPoint(Double.NaN, Double.NaN);
+		dist = Segment2afp.computeClosestPointToSegment(0, 0, 1, 1, 1, 0, 4, 1, result);
+		assertEpsilonEquals(.5, result.getX());
+		assertEpsilonEquals(.5, result.getY());
+		assertEpsilonEquals(.5, dist);
+
+		result = createPoint(Double.NaN, Double.NaN);
+		dist = Segment2afp.computeClosestPointToSegment(0, 0, 1, 1, 1, 0, 3, -1, result);
+		assertEpsilonEquals(.5, result.getX());
+		assertEpsilonEquals(.5, result.getY());
+		assertEpsilonEquals(.5, dist);
+
+		result = createPoint(Double.NaN, Double.NaN);
+		dist = Segment2afp.computeClosestPointToSegment(0, 0, 1, 1, 2, 0, 1, -1, result);
+		assertEpsilonEquals(0, result.getX());
+		assertEpsilonEquals(0, result.getY());
+		assertEpsilonEquals(2, dist);
+
+		result = createPoint(Double.NaN, Double.NaN);
+		dist = Segment2afp.computeClosestPointToSegment(0, 0, 1, 1, 3, -1, 1, .4, result);
+		assertEpsilonEquals(.7, result.getX());
+		assertEpsilonEquals(.7, result.getY());
+		assertEpsilonEquals(.18, dist);
+	}
+
+	@Test
+	public void staticComputeFarthestPointToSegment() {
+		Point2D result;
+
+		result = createPoint(Double.NaN, Double.NaN);
+		Segment2afp.computeFarthestPointToSegment(0, 0, 1, 1, -2, 3, -1, 1, result);
+		assertEpsilonEquals(1, result.getX());
+		assertEpsilonEquals(1, result.getY());
+
+		result = createPoint(Double.NaN, Double.NaN);
+		Segment2afp.computeFarthestPointToSegment(0, 0, 1, 1, -1, 1, -3, 2, result);
+		assertEpsilonEquals(1, result.getX());
+		assertEpsilonEquals(1, result.getY());
+
+		result = createPoint(Double.NaN, Double.NaN);
+		Segment2afp.computeFarthestPointToSegment(0, 0, 1, 1, 1, 0, -1, 0, result);
+		assertEpsilonEquals(1, result.getX());
+		assertEpsilonEquals(1, result.getY());
+
+		result = createPoint(Double.NaN, Double.NaN);
+		Segment2afp.computeFarthestPointToSegment(0, 0, 1, 1, -2, 0, 2, 1, result);
+		assertEpsilonEquals(0, result.getX());
+		assertEpsilonEquals(0, result.getY());
+
+		result = createPoint(Double.NaN, Double.NaN);
+		Segment2afp.computeFarthestPointToSegment(0, 0, 1, 1, 0, -1, -3, 0, result);
+		assertEpsilonEquals(1, result.getX());
+		assertEpsilonEquals(1, result.getY());
+
+		result = createPoint(Double.NaN, Double.NaN);
+		Segment2afp.computeFarthestPointToSegment(0, 0, 1, 1, 0, 4, 3, 3, result);
+		assertEpsilonEquals(0, result.getX());
+		assertEpsilonEquals(0, result.getY());
+
+		result = createPoint(Double.NaN, Double.NaN);
+		Segment2afp.computeFarthestPointToSegment(0, 0, 1, 1, 1, 0, 4, 1, result);
+		assertEpsilonEquals(1, result.getX());
+		assertEpsilonEquals(1, result.getY());
+
+		result = createPoint(Double.NaN, Double.NaN);
+		Segment2afp.computeFarthestPointToSegment(0, 0, 1, 1, 1, 0, 3, -1, result);
+		assertEpsilonEquals(1, result.getX());
+		assertEpsilonEquals(1, result.getY());
+
+		result = createPoint(Double.NaN, Double.NaN);
+		Segment2afp.computeFarthestPointToSegment(0, 0, 1, 1, 2, 0, 1, -1, result);
+		assertEpsilonEquals(1, result.getX());
+		assertEpsilonEquals(1, result.getY());
+
+		result = createPoint(Double.NaN, Double.NaN);
+		Segment2afp.computeFarthestPointToSegment(0, 0, 1, 1, 3, -1, 1, .4, result);
+		assertEpsilonEquals(0, result.getX());
+		assertEpsilonEquals(0, result.getY());
 	}
 
 	@Test
@@ -935,41 +1058,41 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
 	}
 
 	@Test
-	public void staticComputeFarthestPointTo() {
+	public void staticComputeFarthestPointToPoint2D() {
 		Point2D p;
 
 		p = createPoint(Double.NaN, Double.NaN);
-		Segment2afp.computeFarthestPointTo(0, 0, 1, 1, 0, 0, p);
+		Segment2afp.computeFarthestPointToPoint(0, 0, 1, 1, 0, 0, p);
 		assertEpsilonEquals(1, p.getX());
 		assertEpsilonEquals(1, p.getY());
 
 		p = createPoint(Double.NaN, Double.NaN);
-		Segment2afp.computeFarthestPointTo(0, 0, 1, 1, .5, .5, p);
+		Segment2afp.computeFarthestPointToPoint(0, 0, 1, 1, .5, .5, p);
 		assertEpsilonEquals(0, p.getX());
 		assertEpsilonEquals(0, p.getY());
 
 		p = createPoint(Double.NaN, Double.NaN);
-		Segment2afp.computeFarthestPointTo(0, 0, 1, 1, 1, 1, p);
+		Segment2afp.computeFarthestPointToPoint(0, 0, 1, 1, 1, 1, p);
 		assertEpsilonEquals(0, p.getX());
 		assertEpsilonEquals(0, p.getY());
 
 		p = createPoint(Double.NaN, Double.NaN);
-		Segment2afp.computeFarthestPointTo(0, 0, 1, 1, 2, 2, p);
+		Segment2afp.computeFarthestPointToPoint(0, 0, 1, 1, 2, 2, p);
 		assertEpsilonEquals(0, p.getX());
 		assertEpsilonEquals(0, p.getY());
 
 		p = createPoint(Double.NaN, Double.NaN);
-		Segment2afp.computeFarthestPointTo(0, 0, 1, 1, -2, 2, p);
+		Segment2afp.computeFarthestPointToPoint(0, 0, 1, 1, -2, 2, p);
 		assertEpsilonEquals(1, p.getX());
 		assertEpsilonEquals(1, p.getY());
 
 		p = createPoint(Double.NaN, Double.NaN);
-		Segment2afp.computeFarthestPointTo(0, 0, 1, 1, 0.1, 1.2, p);
+		Segment2afp.computeFarthestPointToPoint(0, 0, 1, 1, 0.1, 1.2, p);
 		assertEpsilonEquals(0, p.getX());
 		assertEpsilonEquals(0, p.getY());
 
 		p = createPoint(Double.NaN, Double.NaN);
-		Segment2afp.computeFarthestPointTo(0, 0, 1, 1, 10.1, -.2, p);
+		Segment2afp.computeFarthestPointToPoint(0, 0, 1, 1, 10.1, -.2, p);
 		assertEpsilonEquals(0, p.getX());
 		assertEpsilonEquals(0, p.getY());
 	}
@@ -1407,6 +1530,78 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
 		assertEpsilonEquals(0, Segment2afp.computeDistanceSquaredSegmentPoint(
 				1, 1, 0, 0,
 				.5, .5));
+	}
+
+	@Test
+	public void staticComputeDistanceSquaredSegmentSegment_v1() {
+		// A->B   &   C->D
+		assertEpsilonEquals(2, Segment2afp.computeDistanceSquaredSegmentSegment(0, 0, 1, 1, -2, 3, -1, 1));
+		assertEpsilonEquals(2, Segment2afp.computeDistanceSquaredSegmentSegment(0, 0, 1, 1, -1, 1, -3, 2));
+		assertEpsilonEquals(.9, Segment2afp.computeDistanceSquaredSegmentSegment(0, 0, 1, 1, 0, -1, -3, 0));
+		assertEpsilonEquals(6.4, Segment2afp.computeDistanceSquaredSegmentSegment(0, 0, 1, 1, 0, 4, 3, 3));
+		assertEpsilonEquals(.5, Segment2afp.computeDistanceSquaredSegmentSegment(0, 0, 1, 1, 1, 0, 4, 1));
+		assertEpsilonEquals(.5, Segment2afp.computeDistanceSquaredSegmentSegment(0, 0, 1, 1, 1, 0, 3, -1));
+		assertEpsilonEquals(0.18, Segment2afp.computeDistanceSquaredSegmentSegment(0, 0, 1, 1, 3, -1, 1, .4));
+		// Intersecting segment
+		assertEpsilonEquals(0, Segment2afp.computeDistanceSquaredSegmentSegment(0, 0, 1, 1, -2, 0, 2, 1));
+		// Parallel
+		assertEpsilonEquals(2, Segment2afp.computeDistanceSquaredSegmentSegment(0, 0, 1, 1, 2, 0, 1, -1));
+		assertEpsilonEquals(16, Segment2afp.computeDistanceSquaredSegmentSegment(0, 0, 1, 1, -4, 0, -5, -1));
+		assertEpsilonEquals(.5, Segment2afp.computeDistanceSquaredSegmentSegment(0, 0, 1, 1, 0, 1, -1, 0));
+	}
+
+	@Test
+	public void staticComputeDistanceSquaredSegmentSegment_v2() {
+		// A->B   &   D->C
+		assertEpsilonEquals(2, Segment2afp.computeDistanceSquaredSegmentSegment(0, 0, 1, 1, -1, 1, -2, 3));
+		assertEpsilonEquals(2, Segment2afp.computeDistanceSquaredSegmentSegment(0, 0, 1, 1, -3, 2, -1, 1));
+		assertEpsilonEquals(.9, Segment2afp.computeDistanceSquaredSegmentSegment(0, 0, 1, 1, -3, 0, 0, -1));
+		assertEpsilonEquals(6.4, Segment2afp.computeDistanceSquaredSegmentSegment(0, 0, 1, 1, 3, 3, 0, 4));
+		assertEpsilonEquals(.5, Segment2afp.computeDistanceSquaredSegmentSegment(0, 0, 1, 1, 4, 1, 1, 0));
+		assertEpsilonEquals(.5, Segment2afp.computeDistanceSquaredSegmentSegment(0, 0, 1, 1, 3, -1, 1, 0));
+		assertEpsilonEquals(0.18, Segment2afp.computeDistanceSquaredSegmentSegment(0, 0, 1, 1, 1, .4, 3, -1));
+		// Intersecting segment
+		assertEpsilonEquals(0, Segment2afp.computeDistanceSquaredSegmentSegment(0, 0, 1, 1, 2, 1, -2, 0));
+		// Parallel
+		assertEpsilonEquals(2, Segment2afp.computeDistanceSquaredSegmentSegment(0, 0, 1, 1, 1, -1, 2, 0));
+		assertEpsilonEquals(16, Segment2afp.computeDistanceSquaredSegmentSegment(0, 0, 1, 1, -5, -1, -4, 0));
+		assertEpsilonEquals(.5, Segment2afp.computeDistanceSquaredSegmentSegment(0, 0, 1, 1, -1, 0, 0, 1));
+	}
+
+	@Test
+	public void staticComputeDistanceSquaredSegmentSegment_v3() {
+		// B->A   &   D->C
+		assertEpsilonEquals(2, Segment2afp.computeDistanceSquaredSegmentSegment(1, 1, 0, 0, -1, 1, -2, 3));
+		assertEpsilonEquals(2, Segment2afp.computeDistanceSquaredSegmentSegment(1, 1, 0, 0, -3, 2, -1, 1));
+		assertEpsilonEquals(.9, Segment2afp.computeDistanceSquaredSegmentSegment(1, 1, 0, 0, -3, 0, 0, -1));
+		assertEpsilonEquals(6.4, Segment2afp.computeDistanceSquaredSegmentSegment(1, 1, 0, 0, 3, 3, 0, 4));
+		assertEpsilonEquals(.5, Segment2afp.computeDistanceSquaredSegmentSegment(1, 1, 0, 0, 4, 1, 1, 0));
+		assertEpsilonEquals(.5, Segment2afp.computeDistanceSquaredSegmentSegment(1, 1, 0, 0, 3, -1, 1, 0));
+		assertEpsilonEquals(0.18, Segment2afp.computeDistanceSquaredSegmentSegment(1, 1, 0, 0, 1, .4, 3, -1));
+		// Intersecting segment
+		assertEpsilonEquals(0, Segment2afp.computeDistanceSquaredSegmentSegment(1, 1, 0, 0, 2, 1, -2, 0));
+		// Parallel
+		assertEpsilonEquals(2, Segment2afp.computeDistanceSquaredSegmentSegment(1, 1, 0, 0, 1, -1, 2, 0));
+		assertEpsilonEquals(16, Segment2afp.computeDistanceSquaredSegmentSegment(1, 1, 0, 0, -5, -1, -4, 0));
+		assertEpsilonEquals(.5, Segment2afp.computeDistanceSquaredSegmentSegment(1, 1, 0, 0, -1, 0, 0, 1));
+	}
+
+	@Test
+	public void staticComputeDistanceSquaredSegmentSegment_v4() {
+		// B->A   &   C->D
+		assertEpsilonEquals(2, Segment2afp.computeDistanceSquaredSegmentSegment(1, 1, 0, 0, -2, 3, -1, 1));
+		assertEpsilonEquals(2, Segment2afp.computeDistanceSquaredSegmentSegment(1, 1, 0, 0, -1, 1, -3, 2));
+		assertEpsilonEquals(.9, Segment2afp.computeDistanceSquaredSegmentSegment(1, 1, 0, 0, 0, -1, -3, 0));
+		assertEpsilonEquals(6.4, Segment2afp.computeDistanceSquaredSegmentSegment(1, 1, 0, 0, 0, 4, 3, 3));
+		assertEpsilonEquals(.5, Segment2afp.computeDistanceSquaredSegmentSegment(1, 1, 0, 0, 1, 0, 4, 1));
+		assertEpsilonEquals(.5, Segment2afp.computeDistanceSquaredSegmentSegment(1, 1, 0, 0, 1, 0, 3, -1));
+		assertEpsilonEquals(0.18, Segment2afp.computeDistanceSquaredSegmentSegment(1, 1, 0, 0, 3, -1, 1, .4));
+		// Intersecting segment
+		assertEpsilonEquals(0, Segment2afp.computeDistanceSquaredSegmentSegment(1, 1, 0, 0, -2, 0, 2, 1));
+		// Parallel
+		assertEpsilonEquals(2, Segment2afp.computeDistanceSquaredSegmentSegment(1, 1, 0, 0, 2, 0, 1, -1));
+		assertEpsilonEquals(16, Segment2afp.computeDistanceSquaredSegmentSegment(1, 1, 0, 0, -4, 0, -5, -1));
+		assertEpsilonEquals(.5, Segment2afp.computeDistanceSquaredSegmentSegment(1, 1, 0, 0, 0, 1, -1, 0));
 	}
 
 	@Test
@@ -2679,6 +2874,414 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
 		path.lineTo(-5, 5);
 		path.lineTo(5, 5);
 		assertTrue(path.intersects(segment));
+	}
+
+	@Test
+	public void getDistanceSquaredCircle2afp() {
+		assertEpsilonEquals(19.22967, this.shape.getDistanceSquared(createCircle(-5, 2, 1)));
+		assertEpsilonEquals(324, this.shape.getDistanceSquared(createCircle(1, 20, 1)));
+		assertEpsilonEquals(1.25736, this.shape.getDistanceSquared(createCircle(-1, 2, 1)));
+		assertEpsilonEquals(0, this.shape.getDistanceSquared(createCircle(0, 1, 1)));
+		assertEpsilonEquals(0, this.shape.getDistanceSquared(createCircle(0, .6, 1)));
+	}
+
+	@Test
+	public void getClosestPointToCircle2afp() {
+		assertFpPointEquals(0,  0,  this.shape.getClosestPointTo(createCircle(-5, 2, 1)));
+		assertFpPointEquals(1,  1,  this.shape.getClosestPointTo(createCircle(1, 20, 1)));
+		assertFpPointEquals(.5,  .5,  this.shape.getClosestPointTo(createCircle(-1, 2, 1)));
+		assertFpPointEquals(.5,  .5,  this.shape.getClosestPointTo(createCircle(0, 1, 1)));
+		assertFpPointEquals(.3,  .3,  this.shape.getClosestPointTo(createCircle(0, .6, 1)));
+	}
+
+	@Test
+	public void getClosestPointToRectangle2afp() {
+		assertFpPointEquals(0, 0, this.shape.getClosestPointTo(createRectangle(-10, 5, 2, 1)));
+		assertFpPointEquals(1, 1, this.shape.getClosestPointTo(createRectangle(-.5, 5, 2, 1)));
+		assertFpPointEquals(1, 1, this.shape.getClosestPointTo(createRectangle(5, 5, 2, 1)));
+		assertFpPointEquals(0, 0, this.shape.getClosestPointTo(createRectangle(-10, -3, 2, 1)));
+		assertFpPointEquals(0, 0, this.shape.getClosestPointTo(createRectangle(-.5, -3, 2, 1)));
+		assertFpPointEquals(1, 1, this.shape.getClosestPointTo(createRectangle(5, -3, 2, 1)));
+		assertFpPointEquals(0, 0, this.shape.getClosestPointTo(createRectangle(-2.5, -.5, 2, 1)));
+		assertFpPointEquals(0, 0, this.shape.getClosestPointTo(createRectangle(-1.5, -.5, 2, 1)));
+		assertFpPointEquals(.75, .75, this.shape.getClosestPointTo(createRectangle(-1, .25, 5, .5)));
+	}
+
+	@Test
+	public void getDistanceSquaredRectangle2afp() {
+		assertEpsilonEquals(89, this.shape.getDistanceSquared(createRectangle(-10, 5, 2, 1)));
+		assertEpsilonEquals(16, this.shape.getDistanceSquared(createRectangle(-.5, 5, 2, 1)));
+		assertEpsilonEquals(32, this.shape.getDistanceSquared(createRectangle(5, 5, 2, 1)));
+		assertEpsilonEquals(68, this.shape.getDistanceSquared(createRectangle(-10, -3, 2, 1)));
+		assertEpsilonEquals(4, this.shape.getDistanceSquared(createRectangle(-.5, -3, 2, 1)));
+		assertEpsilonEquals(25, this.shape.getDistanceSquared(createRectangle(5, -3, 2, 1)));
+		assertEpsilonEquals(.25, this.shape.getDistanceSquared(createRectangle(-2.5, -.5, 2, 1)));
+		assertEpsilonEquals(0, this.shape.getDistanceSquared(createRectangle(-1.5, -.5, 2, 1)));
+		assertEpsilonEquals(0, this.shape.getDistanceSquared(createRectangle(-1, .25, 5, .5)));
+		assertEpsilonEquals(0, this.shape.getDistanceSquared(createRectangle(-1, .1, 5, .5)));
+		assertEpsilonEquals(0, this.shape.getDistanceSquared(createRectangle(-1, .4, 5, .5)));
+	}
+
+	@Test
+	public void getClosestPointToSegment2afp() {
+		Point2D result;
+
+		result = this.shape.getClosestPointTo(createSegment(-2, 3, -1, 1));
+		assertEpsilonEquals(0, result.getX());
+		assertEpsilonEquals(0, result.getY());
+
+		result = result = this.shape.getClosestPointTo(createSegment(-1, 1, -3, 2));
+		assertEpsilonEquals(0, result.getX());
+		assertEpsilonEquals(0, result.getY());
+
+		result = result = this.shape.getClosestPointTo(createSegment(1, 0, -1, 0));
+		assertEpsilonEquals(0, result.getX());
+		assertEpsilonEquals(0, result.getY());
+
+		result = result = this.shape.getClosestPointTo(createSegment(-2, 0, 2, 1));
+		assertEpsilonEquals(0.66667, result.getX());
+		assertEpsilonEquals(0.66667, result.getY());
+
+		result = result = this.shape.getClosestPointTo(createSegment(0, -1, -3, 0));
+		assertEpsilonEquals(0, result.getX());
+		assertEpsilonEquals(0, result.getY());
+
+		result = result = this.shape.getClosestPointTo(createSegment(0, 4, 3, 3));
+		assertEpsilonEquals(1, result.getX());
+		assertEpsilonEquals(1, result.getY());
+
+		result = result = this.shape.getClosestPointTo(createSegment(1, 0, 4, 1));
+		assertEpsilonEquals(.5, result.getX());
+		assertEpsilonEquals(.5, result.getY());
+
+		result = result = this.shape.getClosestPointTo(createSegment(1, 0, 3, -1));
+		assertEpsilonEquals(.5, result.getX());
+		assertEpsilonEquals(.5, result.getY());
+
+		result = result = this.shape.getClosestPointTo(createSegment(2, 0, 1, -1));
+		assertEpsilonEquals(0, result.getX());
+		assertEpsilonEquals(0, result.getY());
+
+		result = result = this.shape.getClosestPointTo(createSegment(3, -1, 1, .4));
+		assertEpsilonEquals(.7, result.getX());
+		assertEpsilonEquals(.7, result.getY());
+	}
+	
+	@Test
+	public void getDistanceSquaredSegment2afp() {
+		assertEpsilonEquals(2, this.shape.getDistanceSquared(createSegment(-2, 3, -1, 1)));
+		assertEpsilonEquals(2, this.shape.getDistanceSquared(createSegment(-1, 1, -3, 2)));
+		assertEpsilonEquals(.5, this.shape.getDistanceSquared(createSegment(0, 1, -1, 0)));
+		assertEpsilonEquals(0, this.shape.getDistanceSquared(createSegment(-2, 0, 2, 1)));
+		assertEpsilonEquals(.9, this.shape.getDistanceSquared(createSegment(0, -1, -3, 0)));
+		assertEpsilonEquals(6.4, this.shape.getDistanceSquared(createSegment(0, 4, 3, 3)));
+		assertEpsilonEquals(.5, this.shape.getDistanceSquared(createSegment(1, 0, 4, 1)));
+		assertEpsilonEquals(.5, this.shape.getDistanceSquared(createSegment(1, 0, 3, -1)));
+		assertEpsilonEquals(2, this.shape.getDistanceSquared(createSegment(2, 0, 1, -1)));
+		assertEpsilonEquals(0.18, this.shape.getDistanceSquared(createSegment(3, -1, 1, .4)));
+	}
+	
+	protected Triangle2afp createTestTriangle(double x, double y) {
+		return createTriangle(x, y, x + 1, y, x, y + 0.5);
+	}
+	
+	@Test
+	public void getClosestPointToTriangle2afp() {
+		assertFpPointEquals(0, 0, this.shape.getClosestPointTo(createTestTriangle(-10, 5)));
+		assertFpPointEquals(1, 1, this.shape.getClosestPointTo(createTestTriangle(-.5, 5)));
+		assertFpPointEquals(1, 1, this.shape.getClosestPointTo(createTestTriangle(.5, 5)));
+		assertFpPointEquals(1, 1, this.shape.getClosestPointTo(createTestTriangle(5, 5)));
+		assertFpPointEquals(0, 0, this.shape.getClosestPointTo(createTestTriangle(-10, -5)));
+		assertFpPointEquals(0, 0, this.shape.getClosestPointTo(createTestTriangle(-.5, -5)));
+		assertFpPointEquals(0, 0, this.shape.getClosestPointTo(createTestTriangle(.5, -5)));
+		assertFpPointEquals(.25, .25, this.shape.getClosestPointTo(createTestTriangle(5, -5)));
+		assertFpPointEquals(.5, .5, this.shape.getClosestPointTo(createTestTriangle(0, .5)));
+		assertFpPointEquals(.1, .1, this.shape.getClosestPointTo(createTestTriangle(0, .1)));
+		assertFpPointEquals(.75, .75, this.shape.getClosestPointTo(createTestTriangle(1, 0)));
+	}
+
+	@Test
+	public void getDistanceSquaredTriangle2afp() {
+		assertEpsilonEquals(106, this.shape.getDistanceSquared(createTestTriangle(-10, 5)));
+		assertEpsilonEquals(16.25, this.shape.getDistanceSquared(createTestTriangle(-.5, 5)));
+		assertEpsilonEquals(16, this.shape.getDistanceSquared(createTestTriangle(.5, 5)));
+		assertEpsilonEquals(32, this.shape.getDistanceSquared(createTestTriangle(5, 5)));
+		assertEpsilonEquals(106, this.shape.getDistanceSquared(createTestTriangle(-10, -5)));
+		assertEpsilonEquals(20.5, this.shape.getDistanceSquared(createTestTriangle(-.5, -5)));
+		assertEpsilonEquals(20.5, this.shape.getDistanceSquared(createTestTriangle(.5, -5)));
+		assertEpsilonEquals(45.125, this.shape.getDistanceSquared(createTestTriangle(5, -5)));
+		assertEpsilonEquals(0, this.shape.getDistanceSquared(createTestTriangle(0, .5)));
+		assertEpsilonEquals(0, this.shape.getDistanceSquared(createTestTriangle(0, .1)));
+		assertEpsilonEquals(0.125, this.shape.getDistanceSquared(createTestTriangle(1, 0)));
+	}
+	
+	protected MultiShape2afp createTestMultiShape(double x, double y) {
+		MultiShape2afp multishape = createMultiShape();
+		multishape.add(createCircle(x - 5, y + 4, 1));
+		multishape.add(createSegment(x + 4, y + 2, x + 8, y - 1));
+		return multishape;
+	}
+
+	@Test
+	public void getClosestPointToMultiShape2afp() {
+		MultiShape2afp multishape;
+		
+		multishape = createTestMultiShape(0, 0);
+		assertFpPointEquals(1, 1, this.shape.getClosestPointTo(multishape));
+
+		multishape = createTestMultiShape(5, 5);
+		assertFpPointEquals(1, 1, this.shape.getClosestPointTo(multishape));
+	}
+
+	@Test
+	public void getDistanceSquaredMultiShape2afp() {
+		MultiShape2afp multishape;
+
+		multishape = createTestMultiShape(0, 0);
+		assertEpsilonEquals(10, this.shape.getDistanceSquared(multishape));
+
+		multishape = createTestMultiShape(5, 5);
+		assertEpsilonEquals(49.87548, this.shape.getDistanceSquared(multishape));
+	}
+
+	@Test
+	public void getClosestPointToOrientedRectangle2afp() {
+		Vector2D<?, ?> u = createVector(-2, 1).toUnitVector();
+		assertFpPointEquals(0, 0, this.shape.getClosestPointTo(createOrientedRectangle(-10, 5, u.getX(), u.getY(), 2, 1)));
+		assertFpPointEquals(1, 1, this.shape.getClosestPointTo(createOrientedRectangle(-.5, 5, u.getX(), u.getY(), 2, 1)));
+		assertFpPointEquals(1, 1, this.shape.getClosestPointTo(createOrientedRectangle(5, 5, u.getX(), u.getY(), 2, 1)));
+		assertFpPointEquals(0, 0, this.shape.getClosestPointTo(createOrientedRectangle(-10, -3, u.getX(), u.getY(), 2, 1)));
+		assertFpPointEquals(0, 0, this.shape.getClosestPointTo(createOrientedRectangle(-.5, -3, u.getX(), u.getY(), 2, 1)));
+		assertFpPointEquals(1, 1, this.shape.getClosestPointTo(createOrientedRectangle(5, -3, u.getX(), u.getY(), 2, 1)));
+		assertFpPointEquals(0, 0, this.shape.getClosestPointTo(createOrientedRectangle(-1.5, -.5, u.getX(), u.getY(), 2, 1)));
+		assertFpPointEquals(0, 0, this.shape.getClosestPointTo(createOrientedRectangle(-1, .25, u.getX(), u.getY(), 2, 1)));
+		assertFpPointEquals(0, 0, this.shape.getClosestPointTo(createOrientedRectangle(-1, .1, u.getX(), u.getY(), 2, 1)));
+		assertFpPointEquals(0, 0, this.shape.getClosestPointTo(createOrientedRectangle(-1, .4, u.getX(), u.getY(), 2, 1)));
+		//
+		u = createVector(-1, -2).toUnitVector();
+		assertFpPointEquals(0, 0, this.shape.getClosestPointTo(createOrientedRectangle(-10, 5, u.getX(), u.getY(), 1, 2)));
+		assertFpPointEquals(1, 1, this.shape.getClosestPointTo(createOrientedRectangle(-.5, 5, u.getX(), u.getY(), 1, 2)));
+		assertFpPointEquals(1, 1, this.shape.getClosestPointTo(createOrientedRectangle(5, 5, u.getX(), u.getY(), 1, 2)));
+		assertFpPointEquals(0, 0, this.shape.getClosestPointTo(createOrientedRectangle(-10, -3, u.getX(), u.getY(), 1, 2)));
+		assertFpPointEquals(0, 0, this.shape.getClosestPointTo(createOrientedRectangle(-.5, -3, u.getX(), u.getY(), 1, 2)));
+		assertFpPointEquals(1, 1, this.shape.getClosestPointTo(createOrientedRectangle(5, -3, u.getX(), u.getY(), 1, 2)));
+		assertFpPointEquals(0, 0, this.shape.getClosestPointTo(createOrientedRectangle(-1.5, -.5, u.getX(), u.getY(), 1, 2)));
+		assertFpPointEquals(0, 0, this.shape.getClosestPointTo(createOrientedRectangle(-1, .25, u.getX(), u.getY(), 1, 2)));
+		assertFpPointEquals(0, 0, this.shape.getClosestPointTo(createOrientedRectangle(-1, .1, u.getX(), u.getY(), 1, 2)));
+		assertFpPointEquals(0, 0, this.shape.getClosestPointTo(createOrientedRectangle(-1, .4, u.getX(), u.getY(), 1, 2)));
+		//
+		u = createVector(2, -1).toUnitVector();
+		assertFpPointEquals(0, 0, this.shape.getClosestPointTo(createOrientedRectangle(-10, 5, u.getX(), u.getY(), 2, 1)));
+		assertFpPointEquals(1, 1, this.shape.getClosestPointTo(createOrientedRectangle(-.5, 5, u.getX(), u.getY(), 2, 1)));
+		assertFpPointEquals(1, 1, this.shape.getClosestPointTo(createOrientedRectangle(5, 5, u.getX(), u.getY(), 2, 1)));
+		assertFpPointEquals(0, 0, this.shape.getClosestPointTo(createOrientedRectangle(-10, -3, u.getX(), u.getY(), 2, 1)));
+		assertFpPointEquals(0, 0, this.shape.getClosestPointTo(createOrientedRectangle(-.5, -3, u.getX(), u.getY(), 2, 1)));
+		assertFpPointEquals(1, 1, this.shape.getClosestPointTo(createOrientedRectangle(5, -3, u.getX(), u.getY(), 2, 1)));
+		assertFpPointEquals(0, 0, this.shape.getClosestPointTo(createOrientedRectangle(-1.5, -.5, u.getX(), u.getY(), 2, 1)));
+		assertFpPointEquals(0, 0, this.shape.getClosestPointTo(createOrientedRectangle(-1, .25, u.getX(), u.getY(), 2, 1)));
+		assertFpPointEquals(0, 0, this.shape.getClosestPointTo(createOrientedRectangle(-1, .1, u.getX(), u.getY(), 2, 1)));
+		assertFpPointEquals(0, 0, this.shape.getClosestPointTo(createOrientedRectangle(-1, .4, u.getX(), u.getY(), 2, 1)));
+		//
+		u = createVector(1, 2).toUnitVector();
+		assertFpPointEquals(0, 0, this.shape.getClosestPointTo(createOrientedRectangle(-10, 5, u.getX(), u.getY(), 1, 2)));
+		assertFpPointEquals(1, 1, this.shape.getClosestPointTo(createOrientedRectangle(-.5, 5, u.getX(), u.getY(), 1, 2)));
+		assertFpPointEquals(1, 1, this.shape.getClosestPointTo(createOrientedRectangle(5, 5, u.getX(), u.getY(), 1, 2)));
+		assertFpPointEquals(0, 0, this.shape.getClosestPointTo(createOrientedRectangle(-10, -3, u.getX(), u.getY(), 1, 2)));
+		assertFpPointEquals(0, 0, this.shape.getClosestPointTo(createOrientedRectangle(-.5, -3, u.getX(), u.getY(), 1, 2)));
+		assertFpPointEquals(1, 1, this.shape.getClosestPointTo(createOrientedRectangle(5, -3, u.getX(), u.getY(), 1, 2)));
+		assertFpPointEquals(0, 0, this.shape.getClosestPointTo(createOrientedRectangle(-1.5, -.5, u.getX(), u.getY(), 1, 2)));
+		assertFpPointEquals(0, 0, this.shape.getClosestPointTo(createOrientedRectangle(-1, .25, u.getX(), u.getY(), 1, 2)));
+		assertFpPointEquals(0, 0, this.shape.getClosestPointTo(createOrientedRectangle(-1, .1, u.getX(), u.getY(), 1, 2)));
+		assertFpPointEquals(0, 0, this.shape.getClosestPointTo(createOrientedRectangle(-1, .4, u.getX(), u.getY(), 1, 2)));
+	}
+		
+	@Test
+	public void getDistanceSquaredOrientedRectangle2afp() {
+		Vector2D<?, ?> u = createVector(-2, 1).toUnitVector();
+		assertEpsilonEquals(84.27864, this.shape.getDistanceSquared(createOrientedRectangle(-10, 5, u.getX(), u.getY(), 2, 1)));
+		assertEpsilonEquals(4.91424, this.shape.getDistanceSquared(createOrientedRectangle(-.5, 5, u.getX(), u.getY(), 2, 1)));
+		assertEpsilonEquals(19.06687, this.shape.getDistanceSquared(createOrientedRectangle(5, 5, u.getX(), u.getY(), 2, 1)));
+		assertEpsilonEquals(69.27864, this.shape.getDistanceSquared(createOrientedRectangle(-10, -3, u.getX(), u.getY(), 2, 1)));
+		assertEpsilonEquals(3.63622, this.shape.getDistanceSquared(createOrientedRectangle(-.5, -3, u.getX(), u.getY(), 2, 1)));
+		assertEpsilonEquals(11.95604, this.shape.getDistanceSquared(createOrientedRectangle(5, -3, u.getX(), u.getY(), 2, 1)));
+		assertEpsilonEquals(.013932, this.shape.getDistanceSquared(createOrientedRectangle(-1.5, -.5, u.getX(), u.getY(), 2, 1)));
+		assertEpsilonEquals(0, this.shape.getDistanceSquared(createOrientedRectangle(-1, .25, u.getX(), u.getY(), 2, 1)));
+		assertEpsilonEquals(0, this.shape.getDistanceSquared(createOrientedRectangle(-1, .1, u.getX(), u.getY(), 2, 1)));
+		assertEpsilonEquals(0, this.shape.getDistanceSquared(createOrientedRectangle(-1, .4, u.getX(), u.getY(), 2, 1)));
+	}
+
+	@Test
+	public void getClosestPointToRoundRectangle2afp() {
+		assertFpPointEquals(0, 0, this.shape.getClosestPointTo(createRoundRectangle(-10, 5, 2, 1, .2, .1)));
+		assertFpPointEquals(1, 1, this.shape.getClosestPointTo(createRoundRectangle(-.5, 5, 2, 1, .2, .1)));
+		assertFpPointEquals(1, 1, this.shape.getClosestPointTo(createRoundRectangle(5, 5, 2, 1, .2, .1)));
+		assertFpPointEquals(0, 0, this.shape.getClosestPointTo(createRoundRectangle(-10, -3, 2, 1, .2, .1)));
+		assertFpPointEquals(0, 0, this.shape.getClosestPointTo(createRoundRectangle(-.5, -3, 2, 1, .2, .1)));
+		assertFpPointEquals(1, 1, this.shape.getClosestPointTo(createRoundRectangle(5, -3, 2, 1, .2, .1)));
+		assertFpPointEquals(0, 0, this.shape.getClosestPointTo(createRoundRectangle(-2.5, -.5, 2, 1, .2, .1)));
+		assertFpPointEquals(.45469, .45469, this.shape.getClosestPointTo(createRoundRectangle(-1.5, -.5, 2, 1, .2, .1)));
+		assertFpPointEquals(.25, .25, this.shape.getClosestPointTo(createRoundRectangle(-1, .25, 5, .5, .2, .1)));
+	}
+
+	@Test
+	public void getDistanceSquaredRoundRectangle2afp() {
+		assertEpsilonEquals(89.85237, this.shape.getDistanceSquared(createRoundRectangle(-10, 5, 2, 1, .2, .1)));
+		assertEpsilonEquals(16, this.shape.getDistanceSquared(createRoundRectangle(-.5, 5, 2, 1, .2, .1)));
+		assertEpsilonEquals(32.61464, this.shape.getDistanceSquared(createRoundRectangle(5, 5, 2, 1, .2, .1)));
+		assertEpsilonEquals(68.38273, this.shape.getDistanceSquared(createRoundRectangle(-10, -3, 2, 1, .2, .1)));
+		assertEpsilonEquals(4, this.shape.getDistanceSquared(createRoundRectangle(-.5, -3, 2, 1, .2, .1)));
+		assertEpsilonEquals(25.49554, this.shape.getDistanceSquared(createRoundRectangle(5, -3, 2, 1, .2, .1)));
+		assertEpsilonEquals(.25, this.shape.getDistanceSquared(createRoundRectangle(-2.5, -.5, 2, 1, .2, .1)));
+		assertEpsilonEquals(0, this.shape.getDistanceSquared(createRoundRectangle(-1.5, -.5, 2, 1, .2, .1)));
+		assertEpsilonEquals(0, this.shape.getDistanceSquared(createRoundRectangle(-1, .25, 5, .5, .2, .1)));
+	}
+
+	@Test
+	public void getClosestPointToEllipse2afp() {
+		assertFpPointEquals(0, 0, this.shape.getClosestPointTo(createEllipse(-10, 5, 2, 1)));
+		assertFpPointEquals(1, 1, this.shape.getClosestPointTo(createEllipse(5, 5, 2, 1)));
+		assertFpPointEquals(0, 0, this.shape.getClosestPointTo(createEllipse(-10, -5, 2, 1)));
+		assertFpPointEquals(0.3866, 0.3866, this.shape.getClosestPointTo(createEllipse(5, -5, 2, 1)));
+	}
+
+	@Test
+	public void getDistanceSquaredEllipse2afp() {
+		assertEpsilonEquals(93.35943, this.shape.getDistanceSquared(createEllipse(-10, 5, 2, 1)));
+		assertEpsilonEquals(35.14211, this.shape.getDistanceSquared(createEllipse(5, 5, 2, 1)));
+		assertEpsilonEquals(83.64829, this.shape.getDistanceSquared(createEllipse(-10, -5, 2, 1)));
+		assertEpsilonEquals(44.0121, this.shape.getDistanceSquared(createEllipse(5, -5, 2, 1)));
+	}
+
+	@Test
+	public void getClosestPointToParallelogram2afp() {
+		Vector2D<?, ?> u = createVector(-2, 1).toUnitVector();
+		Vector2D<?, ?> v = createVector(2, -3).toUnitVector();
+		assertFpPointEquals(0, 0, this.shape.getClosestPointTo(createParallelogram(-10, 5, u.getX(), u.getY(), 2, v.getX(), v.getY(), 1)));
+		assertFpPointEquals(1, 1, this.shape.getClosestPointTo(createParallelogram(5, 5, u.getX(), u.getY(), 2, v.getX(), v.getY(), 1)));
+		assertFpPointEquals(0, 0, this.shape.getClosestPointTo(createParallelogram(-10, -3, u.getX(), u.getY(), 2, v.getX(), v.getY(), 1)));
+		assertFpPointEquals(.69146, .69146, this.shape.getClosestPointTo(createParallelogram(5, -3, u.getX(), u.getY(), 2, v.getX(), v.getY(), 1)));
+	}
+
+	@Test
+	public void getDistanceSquaredParallelogram2afp() {
+		Vector2D<?, ?> u = createVector(-2, 1).toUnitVector();
+		Vector2D<?, ?> v = createVector(2, -3).toUnitVector();
+		assertEpsilonEquals(69.33711, this.shape.getDistanceSquared(createParallelogram(-10, 5, u.getX(), u.getY(), 2, v.getX(), v.getY(), 1)));
+		assertEpsilonEquals(24.15281, this.shape.getDistanceSquared(createParallelogram(5, 5, u.getX(), u.getY(), 2, v.getX(), v.getY(), 1)));
+		assertEpsilonEquals(80.96075, this.shape.getDistanceSquared(createParallelogram(-10, -3, u.getX(), u.getY(), 2, v.getX(), v.getY(), 1)));
+		assertEpsilonEquals(7.72232, this.shape.getDistanceSquared(createParallelogram(5, -3, u.getX(), u.getY(), 2, v.getX(), v.getY(), 1)));
+	}
+
+	protected Path2afp createTestPath(double dx, double dy, boolean close) {
+		Path2afp path = createPath();
+		path.moveTo(dx + 3, dy);
+		path.lineTo(dx + 1, dy + 3);
+		path.lineTo(dx - 2, dy + 1);
+		path.lineTo(dx - 1, dy - 1);
+		if (close) {
+			path.closePath();
+		}
+		return path;
+	}
+	
+	protected Path2afp createTestPath(double dx, double dy, boolean close, PathWindingRule rule) {
+		Path2afp path = createPath(rule);
+		path.moveTo(dx + 3, dy - 1);
+		path.lineTo(dx + 1, dy + 2);
+		path.lineTo(dx - 1, dy + 1);
+		path.lineTo(dx, dy - 1);
+		path.lineTo(dx + 3, dy + 2);
+		path.lineTo(dx, dy + 3);
+		path.lineTo(dx - 2, dy + 1);
+		path.lineTo(dx - 1, dy - 2);
+		if (close) {
+			path.closePath();
+		}
+		return path;
+	}
+
+	@Test
+	public void getClosestPointToPath2afp() {
+		assertFpPointEquals(1, 1, this.shape.getClosestPointTo(createTestPath(0, 0, false)));
+		assertFpPointEquals(0, 0, this.shape.getClosestPointTo(createTestPath(0, 0, true)));
+		assertFpPointEquals(0, 0, this.shape.getClosestPointTo(createTestPath(.5, 0, false)));
+		assertFpPointEquals(0, 0, this.shape.getClosestPointTo(createTestPath(.5, 0, true)));
+		assertFpPointEquals(1, 1, this.shape.getClosestPointTo(createTestPath(-.5, 0, false)));
+		assertFpPointEquals(0, 0, this.shape.getClosestPointTo(createTestPath(-.5, 0, true)));
+		assertFpPointEquals(0, 0, this.shape.getClosestPointTo(createTestPath(0, .5, false)));
+		assertFpPointEquals(0, 0, this.shape.getClosestPointTo(createTestPath(0, .5, true)));
+		assertFpPointEquals(1, 1, this.shape.getClosestPointTo(createTestPath(0, -.5, false)));
+		assertFpPointEquals(1, 1, this.shape.getClosestPointTo(createTestPath(0, -.5, true)));
+		assertFpPointEquals(1, 1, this.shape.getClosestPointTo(createTestPath(.5, -.5, false)));
+		assertFpPointEquals(1, 1, this.shape.getClosestPointTo(createTestPath(.5, -.5, true)));
+		//
+		assertFpPointEquals(0, 0, this.shape.getClosestPointTo(createTestPath(0, 0, false, PathWindingRule.EVEN_ODD)));
+		assertFpPointEquals(0, 0, this.shape.getClosestPointTo(createTestPath(0, 0, true, PathWindingRule.EVEN_ODD)));
+		assertFpPointEquals(0, 0, this.shape.getClosestPointTo(createTestPath(.5, 0, false, PathWindingRule.EVEN_ODD)));
+		assertFpPointEquals(0, 0, this.shape.getClosestPointTo(createTestPath(.5, 0, true, PathWindingRule.EVEN_ODD)));
+		assertFpPointEquals(1, 1, this.shape.getClosestPointTo(createTestPath(-.5, 0, false, PathWindingRule.EVEN_ODD)));
+		assertFpPointEquals(1, 1, this.shape.getClosestPointTo(createTestPath(-.5, 0, true, PathWindingRule.EVEN_ODD)));
+		assertFpPointEquals(0, 0, this.shape.getClosestPointTo(createTestPath(0, .5, false, PathWindingRule.EVEN_ODD)));
+		assertFpPointEquals(0, 0, this.shape.getClosestPointTo(createTestPath(0, .5, true, PathWindingRule.EVEN_ODD)));
+		assertFpPointEquals(1, 1, this.shape.getClosestPointTo(createTestPath(0, -.5, false, PathWindingRule.EVEN_ODD)));
+		assertFpPointEquals(1, 1, this.shape.getClosestPointTo(createTestPath(0, -.5, true, PathWindingRule.EVEN_ODD)));
+		assertFpPointEquals(1, 1, this.shape.getClosestPointTo(createTestPath(.5, -.5, false, PathWindingRule.EVEN_ODD)));
+		assertFpPointEquals(1, 1, this.shape.getClosestPointTo(createTestPath(.5, -.5, true, PathWindingRule.EVEN_ODD)));
+		//
+		assertFpPointEquals(0, 0, this.shape.getClosestPointTo(createTestPath(0, 0, false, PathWindingRule.NON_ZERO)));
+		assertFpPointEquals(0, 0, this.shape.getClosestPointTo(createTestPath(0, 0, true, PathWindingRule.NON_ZERO)));
+		assertFpPointEquals(0, 0, this.shape.getClosestPointTo(createTestPath(.5, 0, false, PathWindingRule.NON_ZERO)));
+		assertFpPointEquals(0, 0, this.shape.getClosestPointTo(createTestPath(.5, 0, true, PathWindingRule.NON_ZERO)));
+		assertFpPointEquals(1, 1, this.shape.getClosestPointTo(createTestPath(-.5, 0, false, PathWindingRule.NON_ZERO)));
+		assertFpPointEquals(1, 1, this.shape.getClosestPointTo(createTestPath(-.5, 0, true, PathWindingRule.NON_ZERO)));
+		assertFpPointEquals(0, 0, this.shape.getClosestPointTo(createTestPath(0, .5, false, PathWindingRule.NON_ZERO)));
+		assertFpPointEquals(0, 0, this.shape.getClosestPointTo(createTestPath(0, .5, true, PathWindingRule.NON_ZERO)));
+		assertFpPointEquals(1, 1, this.shape.getClosestPointTo(createTestPath(0, -.5, false, PathWindingRule.NON_ZERO)));
+		assertFpPointEquals(1, 1, this.shape.getClosestPointTo(createTestPath(0, -.5, true, PathWindingRule.NON_ZERO)));
+		assertFpPointEquals(1, 1, this.shape.getClosestPointTo(createTestPath(.5, -.5, false, PathWindingRule.NON_ZERO)));
+		assertFpPointEquals(1, 1, this.shape.getClosestPointTo(createTestPath(.5, -.5, true, PathWindingRule.NON_ZERO)));
+	}
+
+	@Test
+	public void getDistanceSquaredPath2afp() {
+		assertEpsilonEquals(1.23077, this.shape.getDistanceSquared(createTestPath(0, 0, false)));
+		assertEpsilonEquals(0, this.shape.getDistanceSquared(createTestPath(0, 0, true)));
+		assertEpsilonEquals(.8, this.shape.getDistanceSquared(createTestPath(.5, 0, false)));
+		assertEpsilonEquals(0, this.shape.getDistanceSquared(createTestPath(.5, 0, true)));
+		assertEpsilonEquals(.48077, this.shape.getDistanceSquared(createTestPath(-.5, 0, false)));
+		assertEpsilonEquals(0, this.shape.getDistanceSquared(createTestPath(-.5, 0, true)));
+		assertEpsilonEquals(1.25, this.shape.getDistanceSquared(createTestPath(0, .5, false)));
+		assertEpsilonEquals(0, this.shape.getDistanceSquared(createTestPath(0, .5, true)));
+		assertEpsilonEquals(.69231, this.shape.getDistanceSquared(createTestPath(0, -.5, false)));
+		assertEpsilonEquals(0, this.shape.getDistanceSquared(createTestPath(0, -.5, true)));
+		assertEpsilonEquals(.94231, this.shape.getDistanceSquared(createTestPath(.5, -.5, false)));
+		assertEpsilonEquals(0, this.shape.getDistanceSquared(createTestPath(.5, -.5, true)));
+		//
+		assertEpsilonEquals(.2, this.shape.getDistanceSquared(createTestPath(0, 0, false, PathWindingRule.EVEN_ODD)));
+		assertEpsilonEquals(.2, this.shape.getDistanceSquared(createTestPath(0, 0, true, PathWindingRule.EVEN_ODD)));
+		assertEpsilonEquals(0, this.shape.getDistanceSquared(createTestPath(.5, 0, false, PathWindingRule.EVEN_ODD)));
+		assertEpsilonEquals(0, this.shape.getDistanceSquared(createTestPath(.5, 0, true, PathWindingRule.EVEN_ODD)));
+		assertEpsilonEquals(.019231, this.shape.getDistanceSquared(createTestPath(-.5, 0, false, PathWindingRule.EVEN_ODD)));
+		assertEpsilonEquals(.019231, this.shape.getDistanceSquared(createTestPath(-.5, 0, true, PathWindingRule.EVEN_ODD)));
+		assertEpsilonEquals(.05, this.shape.getDistanceSquared(createTestPath(0, .5, false, PathWindingRule.EVEN_ODD)));
+		assertEpsilonEquals(.05, this.shape.getDistanceSquared(createTestPath(0, .5, true, PathWindingRule.EVEN_ODD)));
+		assertEpsilonEquals(.076923, this.shape.getDistanceSquared(createTestPath(0, -.5, false, PathWindingRule.EVEN_ODD)));
+		assertEpsilonEquals(.076923, this.shape.getDistanceSquared(createTestPath(0, -.5, true, PathWindingRule.EVEN_ODD)));
+		assertEpsilonEquals(.05, this.shape.getDistanceSquared(createTestPath(.5, -.5, false, PathWindingRule.EVEN_ODD)));
+		assertEpsilonEquals(.05, this.shape.getDistanceSquared(createTestPath(.5, -.5, true, PathWindingRule.EVEN_ODD)));
+		//
+		assertEpsilonEquals(.2, this.shape.getDistanceSquared(createTestPath(0, 0, false, PathWindingRule.NON_ZERO)));
+		assertEpsilonEquals(0, this.shape.getDistanceSquared(createTestPath(0, 0, true, PathWindingRule.NON_ZERO)));
+		assertEpsilonEquals(0, this.shape.getDistanceSquared(createTestPath(.5, 0, false, PathWindingRule.NON_ZERO)));
+		assertEpsilonEquals(0, this.shape.getDistanceSquared(createTestPath(.5, 0, true, PathWindingRule.NON_ZERO)));
+		assertEpsilonEquals(.019231, this.shape.getDistanceSquared(createTestPath(-.5, 0, false, PathWindingRule.NON_ZERO)));
+		assertEpsilonEquals(0, this.shape.getDistanceSquared(createTestPath(-.5, 0, true, PathWindingRule.NON_ZERO)));
+		assertEpsilonEquals(.05, this.shape.getDistanceSquared(createTestPath(0, .5, false, PathWindingRule.NON_ZERO)));
+		assertEpsilonEquals(0, this.shape.getDistanceSquared(createTestPath(0, .5, true, PathWindingRule.NON_ZERO)));
+		assertEpsilonEquals(.076923, this.shape.getDistanceSquared(createTestPath(0, -.5, false, PathWindingRule.NON_ZERO)));
+		assertEpsilonEquals(0, this.shape.getDistanceSquared(createTestPath(0, -.5, true, PathWindingRule.NON_ZERO)));
+		assertEpsilonEquals(.05, this.shape.getDistanceSquared(createTestPath(.5, -.5, false, PathWindingRule.NON_ZERO)));
+		assertEpsilonEquals(0, this.shape.getDistanceSquared(createTestPath(.5, -.5, true, PathWindingRule.NON_ZERO)));
 	}
 
 }

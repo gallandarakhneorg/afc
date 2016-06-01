@@ -24,12 +24,12 @@ import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.Unefficient;
+import org.arakhne.afc.math.geometry.CrossingComputationType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Shape2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
-import org.arakhne.afc.math.geometry.d2.afp.Path2afp.CrossingComputationType;
 
 /** 2D shape with 2D floating coordinates.
  *
@@ -307,6 +307,359 @@ public interface Shape2afp<
 	 */
 	@Pure
 	boolean intersects(MultiShape2afp<?, ?, ?, ?, ?, ?, ?> multishape);
+
+	@Pure
+	@Unefficient
+	@Override
+	@SuppressWarnings({"checkstyle:returncount", "checkstyle:npathcomplexity"})
+	default double getDistanceSquared(Shape2D<?, ?, ?, ?, ?, ?> shape) {
+		if (shape instanceof Circle2afp) {
+			return getDistanceSquared((Circle2afp<?, ?, ?, ?, ?, ?>) shape);
+		}
+		if (shape instanceof Ellipse2afp) {
+			return getDistanceSquared((Ellipse2afp<?, ?, ?, ?, ?, ?>) shape);
+		}
+		if (shape instanceof MultiShape2afp) {
+			return getDistanceSquared((MultiShape2afp<?, ?, ?, ?, ?, ?, ?>) shape);
+		}
+		if (shape instanceof OrientedRectangle2afp) {
+			return getDistanceSquared((OrientedRectangle2afp<?, ?, ?, ?, ?, ?>) shape);
+		}
+		if (shape instanceof Parallelogram2afp) {
+			return getDistanceSquared((Parallelogram2afp<?, ?, ?, ?, ?, ?>) shape);
+		}
+		if (shape instanceof Path2afp) {
+			return getDistanceSquared((Path2afp<?, ?, ?, ?, ?, ?>) shape);
+		}
+		if (shape instanceof Rectangle2afp) {
+			return getDistanceSquared((Rectangle2afp<?, ?, ?, ?, ?, ?>) shape);
+		}
+		if (shape instanceof RoundRectangle2afp) {
+			return getDistanceSquared((RoundRectangle2afp<?, ?, ?, ?, ?, ?>) shape);
+		}
+		if (shape instanceof Segment2afp) {
+			return getDistanceSquared((Segment2afp<?, ?, ?, ?, ?, ?>) shape);
+		}
+		if (shape instanceof Triangle2afp) {
+			return getDistanceSquared((Triangle2afp<?, ?, ?, ?, ?, ?>) shape);
+		}
+		throw new IllegalArgumentException();
+	}
+
+	/** Replies the minimum distance between this shape and the given ellipse.
+	 *
+	 * @param ellipse the ellipse.
+	 * @return the minimum distance between the two shapes.
+	 */
+	@Pure
+	default double getDistanceSquared(Ellipse2afp<?, ?, ?, ?, ?, ?> ellipse) {
+		assert ellipse != null : "Ellipse must be not null"; //$NON-NLS-1$
+		return ellipse.getDistanceSquared(getClosestPointTo(ellipse));
+	}
+
+	/** Replies the minimum distance between this shape and the given circle.
+	 *
+	 * @param circle the circle.
+	 * @return the minimum distance between the two shapes.
+	 */
+	@Pure
+	default double getDistanceSquared(Circle2afp<?, ?, ?, ?, ?, ?> circle) {
+		assert circle != null : "Circle must be not null"; //$NON-NLS-1$
+		return circle.getDistanceSquared(getClosestPointTo(circle));
+	}
+
+	/** Replies the minimum distance between this shape and the given rectangle.
+	 *
+	 * @param rectangle the rectangle.
+	 * @return the minimum distance between the two shapes.
+	 */
+	@Pure
+	default double getDistanceSquared(Rectangle2afp<?, ?, ?, ?, ?, ?> rectangle) {
+		assert rectangle != null : "Rectangle must be not null"; //$NON-NLS-1$
+		return rectangle.getDistanceSquared(getClosestPointTo(rectangle));
+	}
+
+	/** Replies the minimum distance between this shape and the given segment.
+	 *
+	 * @param segment the segment.
+	 * @return the minimum distance between the two shapes.
+	 */
+	@Pure
+	default double getDistanceSquared(Segment2afp<?, ?, ?, ?, ?, ?> segment) {
+		assert segment != null : "Segment must be not null"; //$NON-NLS-1$
+		return segment.getDistanceSquared(getClosestPointTo(segment));
+	}
+
+	/** Replies the minimum distance between this shape and the given triangle.
+	 *
+	 * @param triangle the triangle.
+	 * @return the minimum distance between the two shapes.
+	 */
+	@Pure
+	default double getDistanceSquared(Triangle2afp<?, ?, ?, ?, ?, ?> triangle) {
+		assert triangle != null : "Triangle must be not null"; //$NON-NLS-1$
+		return triangle.getDistanceSquared(getClosestPointTo(triangle));
+	}
+
+	/** Replies the minimum distance between this shape and the given path.
+	 *
+	 * @param path the path.
+	 * @return the minimum distance between the two shapes.
+	 */
+	@Pure
+	default double getDistanceSquared(Path2afp<?, ?, ?, ?, ?, ?> path) {
+		assert path != null : "Path must be not null"; //$NON-NLS-1$
+		return path.getDistanceSquared(getClosestPointTo(path));
+	}
+
+	/** Replies the minimum distance between this shape and the given oriented rectangle.
+	 *
+	 * @param orientedRectangle the oriented rectangle.
+	 * @return the minimum distance between the two shapes.
+	 */
+	@Pure
+	default double getDistanceSquared(OrientedRectangle2afp<?, ?, ?, ?, ?, ?> orientedRectangle) {
+		assert orientedRectangle != null : "Oriented rectangle must be not null"; //$NON-NLS-1$
+		return orientedRectangle.getDistanceSquared(getClosestPointTo(orientedRectangle));
+	}
+
+	/** Replies the minimum distance between this shape and the given parallelogram.
+	 *
+	 * @param parallelogram the parallelogram.
+	 * @return the minimum distance between the two shapes.
+	 */
+	@Pure
+	default double getDistanceSquared(Parallelogram2afp<?, ?, ?, ?, ?, ?> parallelogram) {
+		assert parallelogram != null : "Parallelogram must be not null"; //$NON-NLS-1$
+		return parallelogram.getDistanceSquared(getClosestPointTo(parallelogram));
+	}
+
+	/** Replies the minimum distance between this shape and the given round rectangle.
+	 *
+	 * @param roundRectangle the round rectangle.
+	 * @return the minimum distance between the two shapes.
+	 */
+	@Pure
+	default double getDistanceSquared(RoundRectangle2afp<?, ?, ?, ?, ?, ?> roundRectangle) {
+		assert roundRectangle != null : "Round rectangle must be not null"; //$NON-NLS-1$
+		return roundRectangle.getDistanceSquared(getClosestPointTo(roundRectangle));
+	}
+
+	/** Replies the minimum distance between this shape and the given multishape.
+	 *
+	 * @param multishape the multishape.
+	 * @return the minimum distance between the two shapes.
+	 */
+	@Pure
+	default double getDistanceSquared(MultiShape2afp<?, ?, ?, ?, ?, ?, ?> multishape) {
+		assert multishape != null : "Multishape must be not null"; //$NON-NLS-1$
+		return multishape.getDistanceSquared(getClosestPointTo(multishape));
+	}
+
+	@Pure
+	@Unefficient
+	@Override
+	@SuppressWarnings({"checkstyle:returncount", "checkstyle:npathcomplexity"})
+	default P getClosestPointTo(Shape2D<?, ?, ?, ?, ?, ?> shape) {
+		if (shape instanceof Circle2afp) {
+			return getClosestPointTo((Circle2afp<?, ?, ?, ?, ?, ?>) shape);
+		}
+		if (shape instanceof Ellipse2afp) {
+			return getClosestPointTo((Ellipse2afp<?, ?, ?, ?, ?, ?>) shape);
+		}
+		if (shape instanceof MultiShape2afp) {
+			return getClosestPointTo((MultiShape2afp<?, ?, ?, ?, ?, ?, ?>) shape);
+		}
+		if (shape instanceof OrientedRectangle2afp) {
+			return getClosestPointTo((OrientedRectangle2afp<?, ?, ?, ?, ?, ?>) shape);
+		}
+		if (shape instanceof Parallelogram2afp) {
+			return getClosestPointTo((Parallelogram2afp<?, ?, ?, ?, ?, ?>) shape);
+		}
+		if (shape instanceof Path2afp) {
+			return getClosestPointTo((Path2afp<?, ?, ?, ?, ?, ?>) shape);
+		}
+		if (shape instanceof Rectangle2afp) {
+			return getClosestPointTo((Rectangle2afp<?, ?, ?, ?, ?, ?>) shape);
+		}
+		if (shape instanceof RoundRectangle2afp) {
+			return getClosestPointTo((RoundRectangle2afp<?, ?, ?, ?, ?, ?>) shape);
+		}
+		if (shape instanceof Segment2afp) {
+			return getClosestPointTo((Segment2afp<?, ?, ?, ?, ?, ?>) shape);
+		}
+		if (shape instanceof Triangle2afp) {
+			return getClosestPointTo((Triangle2afp<?, ?, ?, ?, ?, ?>) shape);
+		}
+		throw new IllegalArgumentException();
+	}
+
+	/** Replies the closest point on this shape to the given ellipse.
+	 *
+	 * <p>If the two shapes are intersecting, the replied point is always at the intersection
+	 * of the two shapes. This function does not enforce the meaning of the replied point
+	 * in the case of shape intersection. In other words, this function is warranting that
+	 * the reply point is the either the penetration point, nor a perimeter point, nor any point
+	 * with a specific meaning.
+	 *
+	 * @param ellipse the ellipse.
+	 * @return the closest point on the shape; or the point itself
+	 *     if it is inside the shape.
+	 */
+	@Pure
+	P getClosestPointTo(Ellipse2afp<?, ?, ?, ?, ?, ?> ellipse);
+
+	/** Replies the closest point on this shape to the given circle.
+	 *
+	 * <p>If the two shapes are intersecting, the replied point is always at the intersection
+	 * of the two shapes. This function does not enforce the meaning of the replied point
+	 * in the case of shape intersection. In other words, this function is warranting that
+	 * the reply point is the either the penetration point, nor a perimeter point, nor any point
+	 * with a specific meaning.
+	 *
+	 * @param circle the circle.
+	 * @return the closest point on the shape; or the point itself
+	 *     if it is inside the shape.
+	 */
+	@Pure
+	@Unefficient
+	P getClosestPointTo(Circle2afp<?, ?, ?, ?, ?, ?> circle);
+
+	/** Replies the closest point on this shape to the given rectangle.
+	 *
+	 * <p>If the two shapes are intersecting, the replied point is always at the intersection
+	 * of the two shapes. This function does not enforce the meaning of the replied point
+	 * in the case of shape intersection. In other words, this function is warranting that
+	 * the reply point is the either the penetration point, nor a perimeter point, nor any point
+	 * with a specific meaning.
+	 *
+	 * @param rectangle the rectangle.
+	 * @return the closest point on the shape; or the point itself
+	 *     if it is inside the shape.
+	 */
+	@Pure
+	P getClosestPointTo(Rectangle2afp<?, ?, ?, ?, ?, ?> rectangle);
+
+	/** Replies the closest point on this shape to the given segment.
+	 *
+	 * <p>If the two shapes are intersecting, the replied point is always at the intersection
+	 * of the two shapes. This function does not enforce the meaning of the replied point
+	 * in the case of shape intersection. In other words, this function is warranting that
+	 * the reply point is the either the penetration point, nor a perimeter point, nor any point
+	 * with a specific meaning.
+	 *
+	 * @param segment the segment.
+	 * @return the closest point on the shape; or the point itself
+	 *     if it is inside the shape.
+	 */
+	@Pure
+	P getClosestPointTo(Segment2afp<?, ?, ?, ?, ?, ?> segment);
+
+	/** Replies the closest point on this shape to the given triangle.
+	 *
+	 * <p>If the two shapes are intersecting, the replied point is always at the intersection
+	 * of the two shapes. This function does not enforce the meaning of the replied point
+	 * in the case of shape intersection. In other words, this function is warranting that
+	 * the reply point is the either the penetration point, nor a perimeter point, nor any point
+	 * with a specific meaning.
+	 *
+	 * @param triangle the triangle.
+	 * @return the closest point on the shape; or the point itself
+	 *     if it is inside the shape.
+	 */
+	@Pure
+	P getClosestPointTo(Triangle2afp<?, ?, ?, ?, ?, ?> triangle);
+
+	/** Replies the closest point on this shape to the given oriented rectangle.
+	 *
+	 * <p>If the two shapes are intersecting, the replied point is always at the intersection
+	 * of the two shapes. This function does not enforce the meaning of the replied point
+	 * in the case of shape intersection. In other words, this function is warranting that
+	 * the reply point is the either the penetration point, nor a perimeter point, nor any point
+	 * with a specific meaning.
+	 *
+	 * @param orientedRectangle the oriented rectangle.
+	 * @return the closest point on the shape; or the point itself
+	 *     if it is inside the shape.
+	 */
+	@Pure
+	P getClosestPointTo(OrientedRectangle2afp<?, ?, ?, ?, ?, ?> orientedRectangle);
+
+	/** Replies the closest point on this shape to the given parallelogram.
+	 *
+	 * <p>If the two shapes are intersecting, the replied point is always at the intersection
+	 * of the two shapes. This function does not enforce the meaning of the replied point
+	 * in the case of shape intersection. In other words, this function is warranting that
+	 * the reply point is the either the penetration point, nor a perimeter point, nor any point
+	 * with a specific meaning.
+	 *
+	 * @param parallelogram the parallelogram.
+	 * @return the closest point on the shape; or the point itself
+	 *     if it is inside the shape.
+	 */
+	@Pure
+	P getClosestPointTo(Parallelogram2afp<?, ?, ?, ?, ?, ?> parallelogram);
+
+	/** Replies the closest point on this shape to the given round rectangle.
+	 *
+	 * <p>If the two shapes are intersecting, the replied point is always at the intersection
+	 * of the two shapes. This function does not enforce the meaning of the replied point
+	 * in the case of shape intersection. In other words, this function is warranting that
+	 * the reply point is the either the penetration point, nor a perimeter point, nor any point
+	 * with a specific meaning.
+	 *
+	 * @param roundRectangle the round rectangle.
+	 * @return the closest point on the shape; or the point itself
+	 *     if it is inside the shape.
+	 */
+	@Pure
+	P getClosestPointTo(RoundRectangle2afp<?, ?, ?, ?, ?, ?> roundRectangle);
+
+	/** Replies the closest point on this shape to the given path.
+	 *
+	 * <p>If the two shapes are intersecting, the replied point is always at the intersection
+	 * of the two shapes. This function does not enforce the meaning of the replied point
+	 * in the case of shape intersection. In other words, this function is warranting that
+	 * the reply point is the either the penetration point, nor a perimeter point, nor any point
+	 * with a specific meaning.
+	 *
+	 * @param path the path.
+	 * @return the closest point on the shape; or the point itself
+	 *     if it is inside the shape.
+	 */
+	@Pure
+	P getClosestPointTo(Path2afp<?, ?, ?, ?, ?, ?> path);
+
+	/** Replies the closest point on this shape to the given multishape.
+	 *
+	 * <p>If the two shapes are intersecting, the replied point is always at the intersection
+	 * of the two shapes. This function does not enforce the meaning of the replied point
+	 * in the case of shape intersection. In other words, this function is warranting that
+	 * the reply point is the either the penetration point, nor a perimeter point, nor any point
+	 * with a specific meaning.
+	 *
+	 * @param multishape the multishape.
+	 * @return the closest point on the shape; or the point itself
+	 *     if it is inside the shape.
+	 */
+	@Pure
+	default P getClosestPointTo(MultiShape2afp<?, ?, ?, ?, ?, ?, ?> multishape) {
+		assert multishape != null : "Multishape must be not null"; //$NON-NLS-1$
+		Shape2afp<?, ?, ?, ?, ?, ?> closest = null;
+		double minDist = Double.POSITIVE_INFINITY;
+		double dist;
+		for (final Shape2afp<?, ?, ?, ?, ?, ?> shape : multishape) {
+			dist = getDistanceSquared(shape);
+			if (dist < minDist) {
+				minDist = dist;
+				closest = shape;
+			}
+		}
+		if (closest == null) {
+			return getGeomFactory().newPoint();
+		}
+		return getClosestPointTo(closest);
+	}
 
 	@Override
 	GeomFactory2afp<IE, P, V, B> getGeomFactory();

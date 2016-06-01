@@ -183,15 +183,24 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	/** Compute the the perpendicular product of
 	 * the two vectors (aka. the determinant of two vectors).
 	 *
-	 * <p><pre><code>det(X1, X2) = |X1|.|X2|.sin(a)</code></pre>
+	 * <p><pre><code>det(X1,X2) = |X1|.|X2|.sin(a)</code></pre>
 	 * where <code>X1</code> and <code>X2</code> are two vectors
 	 * and <code>a</code> is the angle between <code>X1</code>
 	 * and <code>X2</code>.
 	 *
-	 * @param x1 x coordinate of the left operand.
-	 * @param y1 y coordinate of the left operand.
-	 * @param x2 x coordinate of the right operand.
-	 * @param y2 y coordinate of the right operand.
+	 * <p>Let consider that dotProduct projects the point (px,py) on the
+	 * Ox axis, and perpProduct projects the point (py,py) on the Oy
+	 * axis. Then:
+	 * <code><pre>perpProduct(ax, ay, px, py) = dotProduct(px, py, -ay, ax)</pre></code>
+	 * You could note that the semantics of the parameters differ:<ul>
+	 * <li><code>perpProduct(axisX, axisY, pointX, pointY)</code></li>
+	 * <li><code>dotProduct(pointX, pointY, axisX, axisY)</code></li>
+	 * </ul>
+	 *
+	 * @param x1 x coordinate of the first vector.
+	 * @param y1 y coordinate of the first vector.
+	 * @param x2 x coordinate of the second vector.
+	 * @param y2 y coordinate of the second vector.
 	 * @return the determinant
 	 */
 	@Pure
@@ -202,16 +211,48 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 
 	/** Compute the dot product of two vectors.
 	 *
-	 * @param x1 x coordinate of the left operand.
-	 * @param y1 y coordinate of the left operand.
-	 * @param x2 x coordinate of the right operand.
-	 * @param y2 y coordinate of the right operand.
+	 * <p>Let consider that dotProduct projects the point (px,py) on the
+	 * Ox axis, and perpProduct projects the point (py,py) on the Oy
+	 * axis. Then:
+	 * <code><pre>perpProduct(ax, ay, px, py) = dotProduct(px, py, -ay, ax)</pre></code>
+	 * You could note that the semantics of the parameters differ:<ul>
+	 * <li><code>perpProduct(axisX, axisY, pointX, pointY)</code></li>
+	 * <li><code>dotProduct(pointX, pointY, axisX, axisY)</code></li>
+	 * </ul>
+	 *
+     * @param x1 x coordinate of the first vector.
+     * @param y1 y coordinate of the first vector.
+     * @param x2 x coordinate of the second vector.
+     * @param y2 y coordinate of the second vector.
 	 * @return the dot product.
 	 */
 	@Pure
 	@Inline(value = "($1 * $3 + $2 * $4)")
 	static double dotProduct(double x1, double y1, double x2, double y2) {
 		return x1 * x2 + y1 * y2;
+	}
+
+	/** Replies if the vectors are defined in a counter-clockwise order.
+	 *
+	 * <p>The two vectors are defined in a counter-clockwise order if the sinus
+	 * from the first vector to the second vector is positive.
+	 *
+	 * <p>In other words, let the angle between the two vectors that
+	 * is replied by {@link #signedAngle(double, double, double, double)}.
+	 * The vectors are defined in an counter-clockwise order if the angle
+	 * is positive.
+	 *
+	 * @param x1 the first coordinate of the first vector.
+	 * @param y1 the second coordinate of the first vector.
+	 * @param x2 the first coordinate of the second vector.
+	 * @param y2 the second coordinate of the second vector.
+	 * @return <code>true</code> if the vectors are defined in a counter-clockwise order.
+	 * @see #signedAngle(double, double, double, double)
+	 * @see #perpProduct(double, double, double, double)
+	 */
+	@Inline("(($1 * $4 - $2 * $3) >= 0.)")
+	static boolean isCCW(double x1, double y1, double x2, double y2) {
+		return (x1 * y2 - y1 * x2) >= 0.;
 	}
 
 	/**
@@ -222,6 +263,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 * @param x2 the first coordinate of the second vector.
 	 * @param y2 the second coordinate of the second vector.
 	 * @return the angle between <code>-PI</code> and <code>PI</code>.
+	 * @see #isCCW(double, double, double, double)
 	 */
 	@Pure
 	static double signedAngle(double x1, double y1, double x2, double y2) {

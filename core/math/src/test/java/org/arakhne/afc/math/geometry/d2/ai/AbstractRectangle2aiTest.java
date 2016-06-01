@@ -926,4 +926,74 @@ public abstract class AbstractRectangle2aiTest<T extends Rectangle2ai<?, T, ?, ?
 		assertEpsilonEquals(9.433981132f, this.shape.operator_upTo(createPoint(0,0)));
 	}
 
+	@Test
+	public void getDistanceSquaredRectangle2ai() {
+		assert(false);
+	}
+
+	@Test
+	public void getDistanceSquaredCircle2ai() {
+		assert(false);
+	}
+
+	@Test
+	public void getDistanceSquaredSegment2ai() {
+		assert(false);
+	}
+	
+	@Test
+	public void getDistanceSquaredPath2ai() {
+		assert(false);
+	}
+
+	@Test
+	public void getClosestPointToRectangle2ai() {
+		assert(false);
+	}
+
+	@Test
+	public void getClosestPointToCircle2ai() {
+		assert(false);
+	}
+
+	@Test
+	public void getClosestPointToSegment2ai() {
+		assert(false);
+	}
+	
+	@Test
+	public void getClosestPointToMultiShape2ai() {
+		assert(false);
+	}
+		
+	@Test
+	public void getClosestPointToPath2ai() {
+		assert(false);
+	}
+	
+	@Test
+	public void getFarthestPointToRectangle2ai() {
+		assert(false);
+	}
+
+	@Test
+	public void getFarthestPointToCircle2ai() {
+		assert(false);
+	}
+
+	@Test
+	public void getFarthestPointToSegment2ai() {
+		assert(false);
+	}
+	
+	@Test
+	public void getFarthestPointToMultiShape2ai() {
+		assert(false);
+	}
+		
+	@Test
+	public void getFarthestPointToPath2ai() {
+		assert(false);
+	}
+
 }

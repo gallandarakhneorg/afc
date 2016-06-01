@@ -305,6 +305,186 @@ public interface MultiShape2afp<
 		return new TransformedMultiShapePathIterator<>(getBackendDataList(), getGeomFactory(), transform);
 	}
 
+	@Override
+	default P getClosestPointTo(Circle2afp<?, ?, ?, ?, ?, ?> circle) {
+		assert circle != null : "Circle must be not null"; //$NON-NLS-1$
+		double min = Double.POSITIVE_INFINITY;
+		final P closest = getGeomFactory().newPoint();
+		P point;
+		double dist;
+		for (final CT innerShape : getBackendDataList()) {
+			point = innerShape.getClosestPointTo(circle);
+			dist = circle.getDistanceSquared(point);
+			if (dist < min) {
+				min = dist;
+				closest.set(point);
+			}
+		}
+		return closest;
+	}
+
+	@Override
+	default P getClosestPointTo(Segment2afp<?, ?, ?, ?, ?, ?> segment) {
+		assert segment != null : "Segment must be not null"; //$NON-NLS-1$
+		double min = Double.POSITIVE_INFINITY;
+		final P closest = getGeomFactory().newPoint();
+		P point;
+		double dist;
+		for (final CT innerShape : getBackendDataList()) {
+			point = innerShape.getClosestPointTo(segment);
+			dist = segment.getDistanceSquared(point);
+			if (dist < min) {
+				min = dist;
+				closest.set(point);
+			}
+		}
+		return closest;
+	}
+
+	@Override
+	default P getClosestPointTo(Rectangle2afp<?, ?, ?, ?, ?, ?> rectangle) {
+		assert rectangle != null : "Rectangle must be not null"; //$NON-NLS-1$
+		double min = Double.POSITIVE_INFINITY;
+		final P closest = getGeomFactory().newPoint();
+		P point;
+		double dist;
+		for (final CT innerShape : getBackendDataList()) {
+			point = innerShape.getClosestPointTo(rectangle);
+			dist = rectangle.getDistanceSquared(point);
+			if (dist < min) {
+				min = dist;
+				closest.set(point);
+			}
+		}
+		return closest;
+	}
+
+	@Override
+	default P getClosestPointTo(RoundRectangle2afp<?, ?, ?, ?, ?, ?> roundRectangle) {
+		assert roundRectangle != null : "Round rectangle must be not null"; //$NON-NLS-1$
+		double min = Double.POSITIVE_INFINITY;
+		final P closest = getGeomFactory().newPoint();
+		P point;
+		double dist;
+		for (final CT innerShape : getBackendDataList()) {
+			point = innerShape.getClosestPointTo(roundRectangle);
+			dist = roundRectangle.getDistanceSquared(point);
+			if (dist < min) {
+				min = dist;
+				closest.set(point);
+			}
+		}
+		return closest;
+	}
+
+	@Override
+	default P getClosestPointTo(Ellipse2afp<?, ?, ?, ?, ?, ?> ellipse) {
+		assert ellipse != null : "Ellipse must be not null"; //$NON-NLS-1$
+		double min = Double.POSITIVE_INFINITY;
+		final P closest = getGeomFactory().newPoint();
+		P point;
+		double dist;
+		for (final CT innerShape : getBackendDataList()) {
+			point = innerShape.getClosestPointTo(ellipse);
+			dist = ellipse.getDistanceSquared(point);
+			if (dist < min) {
+				min = dist;
+				closest.set(point);
+			}
+		}
+		return closest;
+	}
+
+	@Override
+	default P getClosestPointTo(Triangle2afp<?, ?, ?, ?, ?, ?> triangle) {
+		assert triangle != null : "Triangle must be not null"; //$NON-NLS-1$
+		double min = Double.POSITIVE_INFINITY;
+		final P closest = getGeomFactory().newPoint();
+		P point;
+		double dist;
+		for (final CT innerShape : getBackendDataList()) {
+			point = innerShape.getClosestPointTo(triangle);
+			dist = triangle.getDistanceSquared(point);
+			if (dist < min) {
+				min = dist;
+				closest.set(point);
+			}
+		}
+		return closest;
+	}
+
+	@Override
+	default P getClosestPointTo(OrientedRectangle2afp<?, ?, ?, ?, ?, ?> orientedRectangle) {
+		assert orientedRectangle != null : "Oriented rectangle must be not null"; //$NON-NLS-1$
+		double min = Double.POSITIVE_INFINITY;
+		final P closest = getGeomFactory().newPoint();
+		P point;
+		double dist;
+		for (final CT innerShape : getBackendDataList()) {
+			point = innerShape.getClosestPointTo(orientedRectangle);
+			dist = orientedRectangle.getDistanceSquared(point);
+			if (dist < min) {
+				min = dist;
+				closest.set(point);
+			}
+		}
+		return closest;
+	}
+
+	@Override
+	default P getClosestPointTo(Parallelogram2afp<?, ?, ?, ?, ?, ?> parallelogram) {
+		assert parallelogram != null : "Parallelogram must be not null"; //$NON-NLS-1$
+		double min = Double.POSITIVE_INFINITY;
+		final P closest = getGeomFactory().newPoint();
+		P point;
+		double dist;
+		for (final CT innerShape : getBackendDataList()) {
+			point = innerShape.getClosestPointTo(parallelogram);
+			dist = parallelogram.getDistanceSquared(point);
+			if (dist < min) {
+				min = dist;
+				closest.set(point);
+			}
+		}
+		return closest;
+	}
+
+	@Override
+	default P getClosestPointTo(Path2afp<?, ?, ?, ?, ?, ?> path) {
+		assert path != null : "Path must be not null"; //$NON-NLS-1$
+		double min = Double.POSITIVE_INFINITY;
+		final P closest = getGeomFactory().newPoint();
+		P point;
+		double dist;
+		for (final CT innerShape : getBackendDataList()) {
+			point = innerShape.getClosestPointTo(path);
+			dist = path.getDistanceSquared(point);
+			if (dist < min) {
+				min = dist;
+				closest.set(point);
+			}
+		}
+		return closest;
+	}
+
+	@Override
+	default P getClosestPointTo(MultiShape2afp<?, ?, ?, ?, ?, ?, ?> multishape) {
+		assert multishape != null : "MultiShape must be not null"; //$NON-NLS-1$
+		double min = Double.POSITIVE_INFINITY;
+		final P closest = getGeomFactory().newPoint();
+		P point;
+		double dist;
+		for (final CT innerShape : getBackendDataList()) {
+			point = innerShape.getClosestPointTo(multishape);
+			dist = multishape.getDistanceSquared(point);
+			if (dist < min) {
+				min = dist;
+				closest.set(point);
+			}
+		}
+		return closest;
+	}
+
 	/** Abstract iterator on the path elements of the multishape.
 	 *
 	 * @param <IE> the type of the path elements.
