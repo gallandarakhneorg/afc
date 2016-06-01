@@ -5,9 +5,9 @@ The Arakhnê Foundation Classes (AFC) is a collection of Java libraries that may
 [![travis build](https://img.shields.io/travis/gallandarakhneorg/afc.svg?style=flat-square)](https://travis-ci.org/gallandarakhneorg/afc)
 [![Apache 2.0 License](https://img.shields.io/github/license/gallandarakhneorg/afc.svg?style=flat-square)](https://opensource.org/licenses/Apache-2.0)
 
-# Content of the AFC
+# 1. Content of the AFC
 
-## Alive Modules
+## 1.1. Alive Modules
 
 AFC library contains the following alive modules:
 
@@ -24,7 +24,7 @@ JavaFX Math Tools | org.arakhne.afc.advanced | mathfx | JavaFX implementation of
 Generic Attribute API | org.arakhne.afc.advanced | attributes | Library for creating generic attributes, aka. Variant attributes.
 
 
-## Deprecated and Dead Modules
+## 1.2. Deprecated and Dead Modules
 
 AFC library contains the following deprecated modules (deprecated modules are subject to removal in next version):
 
@@ -41,18 +41,18 @@ Android implementation of vector | org.arakhne.afc.ui | android-vector | Android
 Atomic deployment of files | org.arakhne.afc.maven | atomicdeploy | Maven plugin for deploying aa single file.
 
 
-# Requirements
+# 2. Requirements
 
 * Java Development Toolkit (JDK) 1.8 or higher.
 
-# Using AFC in a Maven project
+# 3. Using AFC in a Maven project
 
-## Recommendations
+## 3.1. Recommendations
 
 For making your experience with AFC the best, we recommend you:
 * **to enable the assertions at development time (with the `-ea` command line option).**
 
-## Use the stable version
+## 3.2. Use the stable version
 
 The lastest stable version of AFC is available on [Maven Central.](http://search.maven.org/)
 Consequently, you could directly include the AFC module that you want to use into the Maven dependencies of your project.
@@ -70,7 +70,7 @@ For example, if you want to use the "vmutils" module:
 
 Please, replace Version `12.0` in the previous snipset by the number of the version you want to use (`12.0` is the first version that is available on Maven Central).
 
-## Use of the development version
+## 3.3. Use of the development version
 
 New features, enhancements and bug fixes are available in the SNAPSHOT (development) version of AFC.
 For using this version, you must add the Maven Repository Server of AFC in your pom file:
@@ -105,16 +105,16 @@ For using this version, you must add the Maven Repository Server of AFC in your 
 	...
 ```
 
-# Issues
+# 4. Issues
 
 Issues related to the AFC are tracked on [GitHub](https://github.com/gallandarakhneorg/afc/issues)
 You must use this issue tracker to report and follow your issues.
 
-# Contributions
+# 5. Contributions
 
 Any contribution to the AFC library is welcome.
 
-## Installing the Development Environment
+## 5.1. Installing the Development Environment
 
 For setting up the development environment, you should follow the steps:
 * Download and install "Eclipse for Java Developers".
@@ -123,21 +123,21 @@ For setting up the development environment, you should follow the steps:
 * Download the [contributors.epf](./etc/contributors.epf) file that contains the Eclipse general preferences related to the AFC project.
 * Import the general preferences: `File > Import > General > Preferences`
 
-## Obtaining the AFC Source Code
+## 5.2. Obtaining the AFC Source Code
 
 For obtaining the code of the AFC library, you must clone it from the Git:
 ```bash
 git clone https://github.com/gallandarakhneorg/afc
 ```
 
-## Compiling the AFC Source Code
+## 5.3. Compiling the AFC Source Code
 
 Maven is the standard tool for compiling the AFC library:
 ```bash
 mvn clean install
 ```
 
-## Sending the Contribution
+## 5.4. Sending the Contribution
 
 For sending your contribution to the AFC master repositoty, you must request a pull (PR) to the [GitHub repository](https://github.com/gallandarakhneorg/afc/).
 
@@ -153,6 +153,6 @@ If the CI process is failing on your PR, please follows the steps:
 * Commit on your local repository, and push the changes on the same PR. **Do not create a new PR for the fix.**
 * The GitHub platform will relaunch the CI process automatically.
 
-# License of AFC
+# 6. License of AFC
 
 The Arakhnê Foundation Classes are distributed under the [Apache v2 license](./LICENSE), and is copyrigthed to the original authors and the other authors, as expressed in the [NOTICE](./NOTICE).
