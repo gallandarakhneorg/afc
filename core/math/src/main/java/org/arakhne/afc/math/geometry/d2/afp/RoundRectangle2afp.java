@@ -56,8 +56,7 @@ public interface RoundRectangle2afp<
 		V extends Vector2D<? super V, ? super P>,
 		B extends Rectangle2afp<?, ?, IE, P, V, B>>
 		extends RectangularShape2afp<ST, IT, IE, P, V, B> {
-
-    /**
+	/**
      * Literal constant.
      */
 	String ROUND_RECTANGLE_ARC_HEIGHT = "Round rectangle arc height must be positive or zero";

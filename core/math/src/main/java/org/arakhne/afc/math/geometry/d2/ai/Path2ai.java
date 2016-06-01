@@ -60,8 +60,7 @@ public interface Path2ai<
 		V extends Vector2D<? super V, ? super P>,
 		B extends Rectangle2ai<?, ?, IE, P, V, B>>
 		extends Shape2ai<ST, IT, IE, P, V, B>, Path2D<ST, IT, PathIterator2ai<IE>, P, V, B> {
-
-    /** Literal constant.
+	/** Literal constant.
      */
 	String COLL_NOT_NULL = "Collection must not be  null";
 

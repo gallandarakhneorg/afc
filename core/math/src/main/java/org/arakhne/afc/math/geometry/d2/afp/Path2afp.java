@@ -38,7 +38,6 @@ import org.arakhne.afc.math.geometry.d2.Vector2D;
 import org.arakhne.afc.math.geometry.d2.afp.Circle2afp.AbstractCirclePathIterator;
 
 /** Fonctional interface that represented a 2D path on a plane.
- *
  * @param <ST> is the type of the general implementation.
  * @param <IT> is the type of the implementation of this shape.
  * @param <IE> is the type of the path elements.
@@ -60,7 +59,6 @@ public interface Path2afp<
 		V extends Vector2D<? super V, ? super P>,
 		B extends Rectangle2afp<?, ?, IE, P, V, B>>
 		extends Shape2afp<ST, IT, IE, P, V, B>, Path2D<ST, IT, PathIterator2afp<IE>, P, V, B> {
-
     /**
      * Literal constant.
      */
@@ -89,7 +87,6 @@ public interface Path2afp<
 	 * The path must start with a SEG_MOVETO, otherwise an exception is
 	 * thrown.
 	 * The caller must check r[xy]{min, max} for NaN values.
-	 *
 	 * @param crossings is the initial value for crossing.
 	 * @param iterator is the iterator on the path elements.
 	 * @param shadow is the description of the shape to project to the right.
@@ -255,7 +252,6 @@ public interface Path2afp<
 	 * {@link PathIterator2D#isCurved()} of {@code pi} is replying
 	 * <code>false</code>.
 	 * {@link #getClosestPointTo(Point2D)} avoids this restriction.
-	 *
 	 * @param pi is the iterator on the elements of the path.
 	 * @param x x coordinate of the point.
 	 * @param y y coordinate of the point.
@@ -347,7 +343,6 @@ public interface Path2afp<
 	 * {@link PathIterator2D#isCurved()} of {@code pi} is replying
 	 * <code>false</code>.
 	 * {@link #getFarthestPointTo(Point2D)} avoids this restriction.
-	 *
 	 * @param pi is the iterator on the elements of the path.
 	 * @param x x coordinate of the point.
 	 * @param y y coordinate of the point.
@@ -427,7 +422,6 @@ public interface Path2afp<
 	 * <p>This method provides a basic facility for implementors of
 	 * the {@link Shape2afp} interface to implement support for the
 	 * {@link Shape2afp#contains(Rectangle2afp)} method.
-	 *
 	 * @param pi the specified {@code PathIterator2f}
 	 * @param rx the lowest corner of the rectangle.
 	 * @param ry the lowest corner of the rectangle.
@@ -457,7 +451,6 @@ public interface Path2afp<
 	 * Tests if the interior of the specified {@link PathIterator2afp}
 	 * intersects the interior of a specified set of rectangular
 	 * coordinates.
-	 *
 	 * @param pi the specified {@link PathIterator2afp}.
 	 * @param x the specified X coordinate of the rectangle.
 	 * @param y the specified Y coordinate of the rectangle.
@@ -670,7 +663,6 @@ public interface Path2afp<
 	/**
 	 * Calculates the number of times the given path
 	 * crosses the given ellipse extending to the right.
-	 *
 	 * @param crossings is the initial value for crossing.
 	 * @param iterator is the description of the path.
 	 * @param ex is the first point of the ellipse.
@@ -844,7 +836,6 @@ public interface Path2afp<
 	/**
 	 * Calculates the number of times the given path
 	 * crosses the given ellipse extending to the right.
-	 *
 	 * @param crossings is the initial value for crossing.
 	 * @param iterator is the description of the path.
 	 * @param x1 is the first corner of the rectangle.
@@ -1373,7 +1364,6 @@ public interface Path2afp<
 	 * The path must start with a SEG_MOVETO, otherwise an exception is
 	 * thrown.
 	 * The caller must check r[xy]{min, max} for NaN values.
-	 *
 	 * @param crossings is the initial value for crossing.
 	 * @param iterator is the iterator on the path elements.
 	 * @param rxmin is the first corner of the rectangle.
@@ -1750,7 +1740,6 @@ public interface Path2afp<
 	 * The box fits the drawn lines and the drawn curves. The control points of the
 	 * curves may be outside the output box. For obtaining the bounding box
 	 * of the path's points, use {@link #computeControlPointBoundingBox(PathIterator2afp, Rectangle2afp)}.
-	 *
 	 * @param iterator the iterator on the path elements.
 	 * @param box the box to set.
 	 * @return <code>true</code> if a drawable element was found.
