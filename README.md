@@ -1,13 +1,13 @@
 # Arakhnê Foundation Classes
 
-The Arakhnê Foundation Classes (AFC) is a collection of Java libraries that may be used to build applications. The Arakhnê Foundatation Classes provides tools that are not directly available in the standard Java API. The AFC libraries are distributed under the terms of the Apache License.
+The Arakhnê Foundation Classes (AFC) is a collection of Java libraries that may be used to build applications. The Arakhnê Foundation Classes provide tools that are not directly available in the standard Java API.
 
 [![travis build](https://img.shields.io/travis/gallandarakhneorg/afc.svg?style=flat-square)](https://travis-ci.org/gallandarakhneorg/afc)
 [![Apache 2.0 License](https://img.shields.io/github/license/gallandarakhneorg/afc.svg?style=flat-square)](https://opensource.org/licenses/Apache-2.0)
 
 # Content of the AFC
 
-AFC contains (modules that are not deprecated):
+AFC library contains the following alive modules:
 
 
 Name | Group Id | Artifact Id | Explanation
@@ -20,6 +20,22 @@ General Utilities | org.arakhne.afc.core | util | General utility classes that d
 Math Tools | org.arakhne.afc.core | math | Mathematic and Geometry tools and primitives
 JavaFX Math Tools | org.arakhne.afc.advanced | mathfx | JavaFX implementation of the mathematic and geometry tools
 Generic Attribute API | org.arakhne.afc.advanced | attributes | Library for creating generic attributes, aka. Variant attributes.
+
+
+
+AFC library contains the following deprecated modules (deprecated modules are subject to removal in next version):
+
+
+Name | Group Id | Artifact Id | Explanation
+-----|----------|-------------|------------
+Base UI Tools | org.arakhne.afc.ui | base | Base tools for user interfaces.
+AWT Tools | org.arakhne.afc.ui | awt | Extra AWT widgets.
+Swing Widgets | org.arakhne.afc.ui | swing |  Extra Swing widgets.
+Android Tools | org.arakhne.afc.ui | android | Extra Android widgets and activities.
+Vector Window Toolkit | org.arakhne.afc.ui | vector | Vectorial primitives for building vectorial graphical editors.
+AWT implementation of vector | org.arakhne.afc.ui | awt-vector | AWT implementation of the vectorial primitives.
+Android implementation of vector | org.arakhne.afc.ui | android-vector | Android implementation of the vectorial primitives.
+Atomic deployment of files | org.arakhne.afc.maven | atomicdeploy | Maven plugin for deploying aa single file.
 
 
 # Requirements
