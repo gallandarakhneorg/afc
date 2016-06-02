@@ -41,36 +41,43 @@ import org.arakhne.afc.math.geometry.d2.afp.PathElement2afp;
  */
 @SuppressWarnings({"checkstyle:magicnumber", "static-method"})
 public abstract class PathElement2dfx implements PathElement2afp {
-
 	private static final long serialVersionUID = 1724746568685625149L;
-	/**+
+
+	   /**
 	 * Literal constant.
 	 */
     private static final String IS_EMPTY = "isEmpty";
-    /**+
+
+	/**
+     *Literal constant.
+     */
+	private static final String ARRAY_NOT_NULL = "Array must be not null";
+
+	/**
      * Literal constant.
      */
-    private static final String ARRAY_NOT_NULL = "Array must be not null";
-    /**+
+	private static final String ARRAY_TOO_SMALL = "Array size is too small";
+
+	/**
      * Literal constant.
      */
-    private static final String ARRAY_TOO_SMALL = "Array size is too small";
-    /**+
-     * Literal constant.
-     */
-    private static final String FROMX_NOT_NULL = "fromX must be not null";
-    /**+
+	private static final String FROMX_NOT_NULL = "fromX must be not null";
+
+    /**
      * Literal constant.
      */
     private static final String FROMY_NOT_NULL = "fromY must be not null";
-    /**+
+
+	/**
      * Literal constant.
      */
-    private static final String LAST = ") >> (";
-    /**+
+	private static final String LAST = ") >> (";
+
+	/**
      * Literal constant.
      */
-    private static final String NEXT = ") -> (";
+	private static final String NEXT = ") -> (";
+
 	/** Type of the element.
 	 */
 	protected final PathElementType type;
