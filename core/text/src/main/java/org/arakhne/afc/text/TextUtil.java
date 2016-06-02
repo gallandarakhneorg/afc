@@ -1507,10 +1507,8 @@ public final class TextUtil {
 				if (as < 10.) {
 					seconds = "0" + seconds; //$NON-NLS-1$
 				}
-			} else if (idx < 8 && amt > 0.) {
-				if (amt < 10.) {
-					seconds = "0" + seconds; //$NON-NLS-1$
-				}
+			} else if (idx < 8 && amt > 0. && amt < 10.) {
+				seconds = "0" + seconds; //$NON-NLS-1$
 			}
 			text.append(Locale.getString("TIME_FORMAT_HMS", hours, minutes, seconds)); //$NON-NLS-1$
 		} else {
