@@ -246,7 +246,7 @@ public class MultiShape2dfx<T extends Shape2dfx<?>> extends AbstractShape2dfx<Mu
 			return false;
 		}
 
-		public int hasCode() {
+		public int hashCode() {
 			int hash = 1;
 			final int prime = 31;
 			hash = hash * prime + (int) (internalList.hashCode());

@@ -242,7 +242,7 @@ public class MultiShape2ifx<T extends Shape2ifx<?>> extends AbstractShape2ifx<Mu
 			return false;
 		}
 
-		public int hasCode() {
+		public int hashCode() {
 			int hash = 1;
 			final int prime = 31;
 			hash = hash * prime + (int) (internalList.hashCode());
