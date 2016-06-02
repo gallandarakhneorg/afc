@@ -66,12 +66,12 @@ public interface RoundRectangle2afp<
      */
     String ROUND_RECTANGLE_ARC_WIDTH = "Round rectangle arc width must be positive or zero";
 
-    /**+
+    /**
      * Literal constant.
      */
     String RY1_LOWER_OR_EQUAL_RY2 = "ry1 must be lower or equal ry2";
 
-    /**+
+    /**
      * Literal constant.
      */
     String RX1_LOWER_OR_EQUAL_RX2 = "rx1 must be lower or equal rx2";
