@@ -56,9 +56,9 @@ import org.arakhne.afc.math.geometry.d2.ai.PathIterator2ai;
  */
 public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 		implements Path2ai<Shape2ifx<?>, Path2ifx, PathElement2ifx, Point2ifx, Vector2ifx, Rectangle2ifx> {
-
 	private static final long serialVersionUID = -5410743023218999966L;
-	/**+
+
+	/**
 	 * Literal constant.
 	 */
 	private static final String PATH_WINDING_RULE = "Path winding rule must be not null";
