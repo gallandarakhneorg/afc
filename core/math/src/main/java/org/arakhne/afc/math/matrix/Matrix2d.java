@@ -47,6 +47,16 @@ public class Matrix2d implements Serializable, Cloneable {
 
 	private static final long serialVersionUID = -181335987517755500L;
 
+	   /**
+     *Literal constant.
+     */
+    private static final String COLUMN_INDEX_RULE = "Column index must be in [0;1]";
+
+	   /**
+     *Literal constant.
+     */
+    private static final String RESULT_VECTOR = "Result vector must not be null";
+
 	/**
 	 * The first matrix element in the first row.
 	 */
@@ -174,7 +184,7 @@ public class Matrix2d implements Serializable, Cloneable {
 	 */
 	public final void setElement(int row, int column, double value) {
 		assert row >= 0 && row < 2 : "Row index must be in [0;1]"; //$NON-NLS-1$
-		assert column >= 0 && column < 2 : "Column index must be in [0;1]"; //$NON-NLS-1$
+		assert column >= 0 && column < 2 : COLUMN_INDEX_RULE; //$NON-NLS-1$
 		switch (row) {
 		case 0:
 			switch (column) {
@@ -221,7 +231,7 @@ public class Matrix2d implements Serializable, Cloneable {
 	@Pure
 	public final double getElement(int row, int column) {
 		assert row >= 0 && row < 2 : "Row index must be in [0;1]"; //$NON-NLS-1$
-		assert column >= 0 && column < 2 : "Column index must be in [0;1]"; //$NON-NLS-1$
+		assert column >= 0 && column < 2 : COLUMN_INDEX_RULE; //$NON-NLS-1$
 		switch (row) {
 		case 0:
 			switch (column) {
@@ -306,7 +316,7 @@ public class Matrix2d implements Serializable, Cloneable {
 	 *            the vector into which the matrix row values will be copied
 	 */
 	public final void getColumn(int column, Tuple2D<?> vector) {
-		assert column >= 0 && column < 2 : "Column index must be in [0;1]"; //$NON-NLS-1$
+		assert column >= 0 && column < 2 : COLUMN_INDEX_RULE; //$NON-NLS-1$
 		assert vector != null : "Value vector must not be null"; //$NON-NLS-1$
 		if (column == 0) {
 			vector.set(this.m00, this.m10);
@@ -327,7 +337,7 @@ public class Matrix2d implements Serializable, Cloneable {
 	 *            the array into which the matrix row values will be copied
 	 */
 	public final void getColumn(int column, double[] vector) {
-		assert column >= 0 && column < 2 : "Column index must be in [0;1]"; //$NON-NLS-1$
+		assert column >= 0 && column < 2 : COLUMN_INDEX_RULE; //$NON-NLS-1$
 		assert vector != null : "Value vector must not be null"; //$NON-NLS-1$
 		assert vector.length >= 2 : "Size of the value vector is too small"; //$NON-NLS-1$
 		if (column == 0) {
@@ -438,7 +448,7 @@ public class Matrix2d implements Serializable, Cloneable {
 	 *            the second row element
 	 */
 	public final void setColumn(int column, double x, double y) {
-		assert column >= 0 && column < 2 : "Column index must be in [0;1]"; //$NON-NLS-1$
+		assert column >= 0 && column < 2 : COLUMN_INDEX_RULE; //$NON-NLS-1$
 		switch (column) {
 		case 0:
 			this.m00 = x;
@@ -465,7 +475,7 @@ public class Matrix2d implements Serializable, Cloneable {
 	 *            the replacement column
 	 */
 	public final void setColumn(int column, Tuple2D<?> vector) {
-		assert column >= 0 && column < 2 : "Column index must be in [0;1]"; //$NON-NLS-1$
+		assert column >= 0 && column < 2 : COLUMN_INDEX_RULE; //$NON-NLS-1$
 		assert vector != null : "Value vector must not be null"; //$NON-NLS-1$
 		switch (column) {
 		case 0:
@@ -493,7 +503,7 @@ public class Matrix2d implements Serializable, Cloneable {
 	 *            the replacement column
 	 */
 	public final void setColumn(int column, double[] vector) {
-		assert column >= 0 && column < 2 : "Column index must be in [0;1]"; //$NON-NLS-1$
+		assert column >= 0 && column < 2 : COLUMN_INDEX_RULE; //$NON-NLS-1$
 		assert vector != null : "Value vector must not be null"; //$NON-NLS-1$
 		assert vector.length >= 2 : "Size of the value vector is too small"; //$NON-NLS-1$
 		switch (column) {
@@ -1213,7 +1223,7 @@ public class Matrix2d implements Serializable, Cloneable {
 	 * @return <code>true</code> if the covariance matrix could be computed.
 	 */
 	public final boolean cov(Vector2D<?, ?> result, Vector2D<?, ?>... tuples) {
-		assert result != null : "Result vector must not be null"; //$NON-NLS-1$
+		assert result != null : RESULT_VECTOR; //$NON-NLS-1$
 		assert tuples != null : "List of tuples must be not null"; //$NON-NLS-1$
 		return cov(result, Arrays.asList(tuples));
 	}
@@ -1226,7 +1236,7 @@ public class Matrix2d implements Serializable, Cloneable {
 	 * @return <code>true</code> if the covariance matrix could be computed.
 	 */
 	public final boolean cov(Vector2D<?, ?> result, Point2D<?, ?>... tuples) {
-		assert result != null : "Result vector must not be null"; //$NON-NLS-1$
+		assert result != null : RESULT_VECTOR; //$NON-NLS-1$
 		assert tuples != null : "List of tuples must be not null"; //$NON-NLS-1$
 		return cov(result, Arrays.asList(tuples));
 	}
@@ -1239,7 +1249,7 @@ public class Matrix2d implements Serializable, Cloneable {
 	 * @return <code>true</code> if the covariance matrix could be computed.
 	 */
 	public boolean cov(Vector2D<?, ?> result, Iterable<? extends Tuple2D<?>> tuples) {
-		assert result != null : "Result vector must not be null"; //$NON-NLS-1$
+		assert result != null : RESULT_VECTOR; //$NON-NLS-1$
 		assert tuples != null : "List of tuples must be not null"; //$NON-NLS-1$
 		setZero();
 
