@@ -56,8 +56,12 @@ import org.arakhne.afc.math.geometry.d2.ai.PathIterator2ai;
  */
 public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 		implements Path2ai<Shape2ifx<?>, Path2ifx, PathElement2ifx, Point2ifx, Vector2ifx, Rectangle2ifx> {
-
 	private static final long serialVersionUID = -5410743023218999966L;
+
+	/**
+	 * Literal constant.
+	 */
+	private static final String PATH_WINDING_RULE = "Path winding rule must be not null";
 
 	/** Array of types.
 	 */
@@ -117,7 +121,7 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 	 * @param windingRule the path winding rule.
 	 */
 	public Path2ifx(PathWindingRule windingRule) {
-		assert windingRule != null : "Path winding rule must be not null"; //$NON-NLS-1$
+		assert windingRule != null : PATH_WINDING_RULE; //$NON-NLS-1$
 		if (windingRule != DEFAULT_WINDING_RULE) {
 			windingRuleProperty().set(windingRule);
 		}
@@ -128,7 +132,7 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 	 * @param iterator the iterator that provides the elements to copy.
 	 */
 	public Path2ifx(PathWindingRule windingRule, Iterator<PathElement2ifx> iterator) {
-		assert windingRule != null : "Path winding rule must be not null"; //$NON-NLS-1$
+		assert windingRule != null : PATH_WINDING_RULE; //$NON-NLS-1$
 		assert iterator != null : "Iterator must be not null"; //$NON-NLS-1$
 		if (windingRule != DEFAULT_WINDING_RULE) {
 			windingRuleProperty().set(windingRule);
@@ -343,7 +347,7 @@ public class Path2ifx extends AbstractShape2ifx<Path2ifx>
 
 	@Override
 	public void setWindingRule(PathWindingRule rule) {
-		assert rule != null : "Path winding rule must be not null"; //$NON-NLS-1$
+		assert rule != null : PATH_WINDING_RULE; //$NON-NLS-1$
 		if (this.windingRule != null || rule != DEFAULT_WINDING_RULE) {
 			windingRuleProperty().set(rule);
 		}
