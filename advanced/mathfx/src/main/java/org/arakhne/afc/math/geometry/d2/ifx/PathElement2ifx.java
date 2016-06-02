@@ -43,26 +43,32 @@ import org.arakhne.afc.math.geometry.d2.ai.PathElement2ai;
 public abstract class PathElement2ifx implements PathElement2ai {
 
 	private static final long serialVersionUID = -5532787413347691238L;
-    /**+
+
+	   /**
      * Literal constant.
      */
     private static final String IS_EMPTY = "isEmpty";
-    /**+
+
+    /**
      * Literal constant.
      */
     private static final String ARRAY_NOT_NULL = "Array must be not null";
+
     /**+
      * Literal constant.
      */
     private static final String ARRAY_SIZE_SMALL = "Array size is too small";
-    /**+
+
+	/**
      * Literal constant.
      */
-    private static final String FROMX_NOT_NULL = "Property fromX must be not null";
-    /**+
+	private static final String FROMX_NOT_NULL = "Property fromX must be not null";
+
+	   /**
      * Literal constant.
      */
     private static final String FROMY_NOT_NULL = "Property fromY must be not null";
+
 	/** Type of the element.
 	 */
 	protected final PathElementType type;
