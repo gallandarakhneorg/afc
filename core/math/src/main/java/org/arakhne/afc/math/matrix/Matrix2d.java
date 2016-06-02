@@ -46,11 +46,13 @@ import org.arakhne.afc.math.geometry.d2.Vector2D;
 public class Matrix2d implements Serializable, Cloneable {
 
 	private static final long serialVersionUID = -181335987517755500L;
-    /**+
+
+	   /**
      *Literal constant.
      */
     private static final String COLUMN_INDEX_RULE = "Column index must be in [0;1]";
-    /**+
+
+	   /**
      *Literal constant.
      */
     private static final String RESULT_VECTOR = "Result vector must not be null";

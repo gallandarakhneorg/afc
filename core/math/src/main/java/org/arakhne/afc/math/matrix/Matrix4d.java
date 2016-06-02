@@ -39,22 +39,27 @@ import org.arakhne.afc.math.MathUtil;
 public class Matrix4d implements Serializable, Cloneable {
 
 	private static final long serialVersionUID = 7216873052550769543L;
-	/**+
+
+	/**
 	 *Literal constant.
 	 */
 	private static final String COLUMN_INDEX_RULE = "Column number must be in [0; 4]";
-	/**+
+
+	/**
 	 *Literal constant.
 	 */
 	private static final String SECOND_MATRIX_NOT_NULL = "Second matrix must not be null";
-	/**+
+
+	/**
 	 *Literal constant.
 	 */
 	private static final String FIRST_MATRIX_NOT_NULL = "First matrix must not be null";
-	/**+
+
+	/**
 	 *Literal constant.
 	 */
 	private static final String ARRAY_SIZE_TOO_SMALL = "Size of the array of values is too small";
+
 	/**
 	 * The first matrix element in the first row.
 	 */

@@ -45,20 +45,23 @@ import org.arakhne.afc.vmutil.locale.Locale;
 @SuppressWarnings({"checkstyle:magicnumber", "checkstyle:methodcount"})
 public class Matrix3d implements Serializable, Cloneable {
 
-	private static final long serialVersionUID = -7386754038391115819L;
+    private static final long serialVersionUID = -7386754038391115819L;
 
-    /**+
-     *Literal constant.
-     */
+   	/**
+	 * Literal constant.
+	 */
     private static final String COLUMN_INDEX_RULE = "Column index must be in [0; 2]";
-    /**+
+
+	   /**
      *Literal constant.
      */
     private static final String SECOND_MATRIX_NOT_NULL = "Second matrix must not be null";
-    /**+
+
+	   /**
      *Literal constant.
      */
     private static final String FIRST_MATRIX_NOT_NULL = "First matrix must not be null";
+
 	/**
 	 * The first matrix element in the first row.
 	 */
