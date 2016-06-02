@@ -2062,7 +2062,8 @@ public interface Path2afp<
 			default:
 			}
 		}
-		if (foundOneControlPoint) {			box.setFromCorners(xmin, ymin, xmax, ymax);
+		if (foundOneControlPoint) {
+			box.setFromCorners(xmin, ymin, xmax, ymax);
 		} else {
 			box.clear();
 		}
@@ -2405,10 +2406,8 @@ public interface Path2afp<
 			if (currentx != ocurrentx || currenty != ocurrenty) {
 				moveTo(currentx, currenty);
 			}
-		} else if (type == ArcType.LINE_THEN_ARC) {
-			if (currentx != ocurrentx || currenty != ocurrenty) {
-				lineTo(currentx, currenty);
-			}
+		} else if (type == ArcType.LINE_THEN_ARC && (currentx != ocurrentx || currenty != ocurrenty)) {
+			lineTo(currentx, currenty);
 		}
 		if (realtfrom == tto
 				|| (currentx == cx0 && cx0 == cx1 && cx1 == targetx
@@ -3997,3 +3996,4 @@ public interface Path2afp<
 	}
 
 }
+
