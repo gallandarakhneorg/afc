@@ -1,22 +1,21 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (C) 2010-2013 Stephane GALLAND.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.arakhne.afc.math.geometry.d3.ai;
@@ -36,22 +35,24 @@ import org.arakhne.afc.math.geometry.d3.UnmodifiablePoint3D;
 public class InnerComputationPoint3ai implements Point3D<InnerComputationPoint3ai, InnerComputationVector3ai> {
 
 	private static final long serialVersionUID = 8578192819251519051L;
-	
+
 	private int x;
+
 	private int y;
+
 	private int z;
 
-	/**
-	 */
+	/** Construct point.
+     */
 	public InnerComputationPoint3ai() {
 		//
 	}
 
-	/**
-	 * @param x
-	 * @param y
-	 * @param z
-	 */
+	/** Construct point.
+     * @param x x coordinate of the point.
+     * @param y y coordinate of the point.
+     * @param z z coordinate of the point.
+     */
 	public InnerComputationPoint3ai(int x, int y, int z) {
 		this.x = x;
 		this.y = y;
@@ -60,7 +61,11 @@ public class InnerComputationPoint3ai implements Point3D<InnerComputationPoint3a
 
 	@Override
 	public InnerComputationPoint3ai clone() {
-		throw new UnsupportedOperationException();
+	    try {
+            return (InnerComputationPoint3ai) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new Error(e);
+        }
 	}
 
 	@Override
@@ -82,22 +87,22 @@ public class InnerComputationPoint3ai implements Point3D<InnerComputationPoint3a
 	public void setX(double x) {
 		this.x = (int) Math.round(x);
 	}
-	
+
 	@Override
 	public double getY() {
 		return this.y;
 	}
-	
+
 	@Override
 	public int iy() {
 		return this.y;
 	}
-	
+
 	@Override
 	public void setY(int y) {
 		this.y = y;
 	}
-	
+
 	@Override
 	public void setY(double y) {
 		this.y = (int) Math.round(y);
@@ -132,5 +137,5 @@ public class InnerComputationPoint3ai implements Point3D<InnerComputationPoint3a
 	public UnmodifiablePoint3D<InnerComputationPoint3ai, InnerComputationVector3ai> toUnmodifiable() {
 		throw new UnsupportedOperationException();
 	}
-	
+
 }

@@ -1,27 +1,28 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (C) 2010-2013 Stephane GALLAND.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.arakhne.afc.math.geometry.d3.afp;
 
 import java.util.NoSuchElementException;
+
+import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
@@ -30,7 +31,6 @@ import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Transform3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
 import org.arakhne.afc.math.geometry.d3.afp.Path3afp.CrossingComputationType;
-import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Fonctional interface that represented a 2D sphere on a plane.
  *
@@ -58,7 +58,7 @@ public interface Sphere3afp<
 
 	/**
 	 * Replies if the given point is inside the given ellipse.
-	 * 
+	 *
 	 * @param px is the point to test.
 	 * @param py is the point to test.
 	 * @param pz is the point to test.
@@ -70,15 +70,15 @@ public interface Sphere3afp<
 	 * <code>false</code> if not.
 	 */
 	@Pure
-	static boolean containsCirclePoint(double cx, double cy, double cz, double radius, double px, double py, double pz) {
-		assert (radius >= 0) : "sphere radius must be positive or zero"; //$NON-NLS-1$
+	static boolean containsSpherePoint(double cx, double cy, double cz, double radius, double px, double py, double pz) {
+		assert radius >= 0 : "sphere radius must be positive or zero"; //$NON-NLS-1$
 		return Point3D.getDistanceSquaredPointPoint(
 				px, py, pz,
 				cx, cy, cz) <= (radius * radius);
 	}
 
 	/** Replies if a rectangular prism is inside in the sphere.
-	 * 
+	 *
 	 * @param cx is the center of the sphere.
 	 * @param cy is the center of the sphere.
 	 * @param cz is the center of the sphere.
@@ -90,40 +90,42 @@ public interface Sphere3afp<
 	 * @param rymax is the uppest corner of the rectangle.
 	 * @param rzmax is the uppest corner of the rectangle.
 	 * @return <code>true</code> if the given rectangle is inside the sphere;
-	 * otherwise <code>false</code>.
+	 *     otherwise <code>false</code>.
 	 */
 	@Pure
-	static boolean containsCircleRectangularPrism(double cx, double cy, double cz, double radius, double rxmin, double rymin, double rzmin, double rxmax, double rymax, double rzmax) {
-		assert (radius >= 0) : "sphere radius must be positive or zero"; //$NON-NLS-1$
-		assert (rxmin <= rxmax) : "rxmin must be lower or equal to rxmax"; //$NON-NLS-1$
-		assert (rymin <= rymax) : "rymin must be lower or equal to rymax"; //$NON-NLS-1$
-		assert (rzmin <= rzmax) : "rzmin must be lower or equal to rzmax"; //$NON-NLS-1$
-		double rcx = (rxmin + rxmax) / 2;
-		double rcy = (rymin + rymax) / 2;
-		double rcz = (rzmin + rzmax) / 2;
-		double farX;
-		if (cx<=rcx) {
+	@SuppressWarnings("checkstyle:parameternumber")
+    static boolean containsSphereRectangularPrism(double cx, double cy, double cz, double radius, double rxmin, double rymin,
+            double rzmin, double rxmax, double rymax, double rzmax) {
+		assert radius >= 0 : "sphere radius must be positive or zero"; //$NON-NLS-1$
+		assert rxmin <= rxmax : "rxmin must be lower or equal to rxmax"; //$NON-NLS-1$
+		assert rymin <= rymax : "rymin must be lower or equal to rymax"; //$NON-NLS-1$
+		assert rzmin <= rzmax : "rzmin must be lower or equal to rzmax"; //$NON-NLS-1$
+		final double rcx = (rxmin + rxmax) / 2;
+		final double rcy = (rymin + rymax) / 2;
+		final double rcz = (rzmin + rzmax) / 2;
+		final double farX;
+        if (cx <= rcx) {
 			farX = rxmax;
 		} else {
 			farX = rxmin;
 		}
-		double farY;
-		if (cy<=rcy) {
+		final double farY;
+        if (cy <= rcy) {
 			farY = rymax;
 		} else {
 			farY = rymin;
 		}
-		double farZ;
-		if (cz<=rcz) {
+		final double farZ;
+        if (cz <= rcz) {
 			farZ = rzmax;
 		} else {
 			farZ = rzmin;
 		}
-		return containsCirclePoint(cx, cy, cz, radius, farX, farY, farZ);
+		return containsSpherePoint(cx, cy, cz, radius, farX, farY, farZ);
 	}
 
 	/** Replies if two spheres are intersecting.
-	 * 
+	 *
 	 * @param x1 is the center of the first sphere
 	 * @param y1 is the center of the first sphere
 	 * @param z1 is the center of the first sphere
@@ -136,15 +138,17 @@ public interface Sphere3afp<
 	 * <code>false</code>
 	 */
 	@Pure
-	static boolean intersectsSphereSphere(double x1, double y1, double z1, double radius1, double x2, double y2, double z2, double radius2) {
-		assert (radius1 >= 0) : "First sphere radius must be positive or zero"; //$NON-NLS-1$
-		assert (radius2 >= 0) : "Second sphere radius must be positive or zero"; //$NON-NLS-1$
-		double r = radius1 + radius2;
+	@SuppressWarnings("checkstyle:parameternumber")
+    static boolean intersectsSphereSphere(double x1, double y1, double z1, double radius1, double x2, double y2, double z2,
+            double radius2) {
+		assert radius1 >= 0 : "First sphere radius must be positive or zero"; //$NON-NLS-1$
+		assert radius2 >= 0 : "Second sphere radius must be positive or zero"; //$NON-NLS-1$
+		final double r = radius1 + radius2;
 		return Point3D.getDistanceSquaredPointPoint(x1, y1, z1, x2, y2, z2) < (r * r);
 	}
 
 	/** Replies if a sphere and a rectangle are intersecting.
-	 * 
+	 *
 	 * @param x1 is the center of the sphere
 	 * @param y1 is the center of the sphere
 	 * @param z1 is the center of the sphere
@@ -159,11 +163,14 @@ public interface Sphere3afp<
 	 * <code>false</code>
 	 */
 	@Pure
-	static boolean intersectsCircleRectangle(double x1, double y1, double z1, double radius, double x2, double y2, double z2, double x3, double y3, double z3) {
-		assert (radius >= 0) : "sphere radius must be positive or zero"; //$NON-NLS-1$
-		assert (x2 <= x3) : "x2 must be lower or equal to x3"; //$NON-NLS-1$
-		assert (y2 <= y3) : "y2 must be lower or equal to y3"; //$NON-NLS-1$
-		double dx;
+	@SuppressWarnings("checkstyle:parameternumber")
+    static boolean intersectsSpherePrism(double x1, double y1, double z1, double radius, double x2, double y2, double z2,
+            double x3, double y3, double z3) {
+		assert radius >= 0 : "sphere radius must be positive or zero"; //$NON-NLS-1$
+		assert x2 <= x3 : "x2 must be lower or equal to x3"; //$NON-NLS-1$
+		assert y2 <= y3 : "y2 must be lower or equal to y3"; //$NON-NLS-1$
+		assert z2 <= z3 : "y2 must be lower or equal to y3"; //$NON-NLS-1$
+		final double dx;
 		if (x1 < x2) {
 			dx = x2 - x1;
 		} else if (x1 > x3) {
@@ -171,7 +178,7 @@ public interface Sphere3afp<
 		} else {
 			dx = 0;
 		}
-		double dy;
+		final double dy;
 		if (y1 < y2) {
 			dy = y2 - y1;
 		} else if (y1 > y3) {
@@ -179,7 +186,7 @@ public interface Sphere3afp<
 		} else {
 			dy = 0;
 		}
-		double dz;
+		final double dz;
 		if (z1 < z2) {
 			dz = z2 - z1;
 		} else if (z1 > z3) {
@@ -191,7 +198,7 @@ public interface Sphere3afp<
 	}
 
 	/** Replies if a sphere and a line are intersecting.
-	 * 
+	 *
 	 * @param x1 is the center of the sphere
 	 * @param y1 is the center of the sphere
 	 * @param z1 is the center of the sphere
@@ -206,14 +213,15 @@ public interface Sphere3afp<
 	 * <code>false</code>
 	 */
 	@Pure
-	static boolean intersectsSphereLine(double x1, double y1, double z1, double radius, double x2, double y2, double z2, double x3, double y3, double z3) {
-		assert (radius >= 0) : "sphere radius must be positive or zero"; //$NON-NLS-1$
-		double d = Segment3afp.computeDistanceSquaredLinePoint(x2, y2, z2, x3, y3, z3, x1, y1, z1);
-		return d < (radius * radius);
+	@SuppressWarnings("checkstyle:parameternumber")
+    static boolean intersectsSphereLine(double x1, double y1, double z1, double radius, double x2, double y2, double z2,
+            double x3, double y3, double z3) {
+		assert radius >= 0 : "sphere radius must be positive or zero"; //$NON-NLS-1$
+		return Segment3afp.computeDistanceSquaredLinePoint(x2, y2, z2, x3, y3, z3, x1, y1, z1) < (radius * radius);
 	}
 
 	/** Replies if a sphere and a segment are intersecting.
-	 * 
+	 *
 	 * @param x1 is the center of the sphere
 	 * @param y1 is the center of the sphere
 	 * @param z1 is the center of the sphere
@@ -228,12 +236,13 @@ public interface Sphere3afp<
 	 * <code>false</code>
 	 */
 	@Pure
-	static boolean intersectsSphereSegment(double x1, double y1, double z1, double radius, double x2, double y2, double z2, double x3, double y3, double z3) {
-		assert (radius >= 0) : "sphere radius must be positive or zero"; //$NON-NLS-1$
-		double d = Segment3afp.computeDistanceSquaredSegmentPoint(x2, y2, z2, x3, y3, z3, x1, y1, z1);
-		return d < (radius * radius);
+	@SuppressWarnings("checkstyle:parameternumber")
+    static boolean intersectsSphereSegment(double x1, double y1, double z1, double radius, double x2, double y2, double z2,
+            double x3, double y3, double z3) {
+		assert radius >= 0 : "sphere radius must be positive or zero"; //$NON-NLS-1$
+		return Segment3afp.computeDistanceSquaredSegmentPoint(x2, y2, z2, x3, y3, z3, x1, y1, z1) < (radius * radius);
 	}
-	
+
 	@Pure
 	@Override
 	default boolean equalsToShape(IT shape) {
@@ -250,28 +259,28 @@ public interface Sphere3afp<
 	}
 
 	/** Replies the center X.
-	 * 
+	 *
 	 * @return the center x.
 	 */
 	@Pure
 	double getX();
-	
+
 	/** Replies the center y.
-	 * 
+	 *
 	 * @return the center y.
 	 */
 	@Pure
 	double getY();
 
 	/** Replies the center z.
-	 * 
+	 *
 	 * @return the center z.
 	 */
 	@Pure
 	double getZ();
 
 	/** Replies the center.
-	 * 
+	 *
 	 * @return a copy of the center.
 	 */
 	@Override
@@ -281,20 +290,20 @@ public interface Sphere3afp<
 	}
 
 	/** Change the center.
-	 * 
-	 * @param center
+	 *
+	 * @param center the center point.
 	 */
 	@Override
 	default void setCenter(Point3D<?, ?> center) {
-		assert (center != null) : "Point must be not null"; //$NON-NLS-1$
+		assert center != null : "Point must be not null"; //$NON-NLS-1$
 		set(center.getX(), center.getY(), center.getZ(), getRadius());
 	}
 
 	/** Change the center.
-	 * 
-	 * @param x
-	 * @param y
-	 * @param z
+	 *
+	 * @param x x coordinate of the center point.
+	 * @param y y coordinate of the center point.
+     * @param z z coordinate of the center point.
 	 */
 	@Override
 	default void setCenter(double x, double y, double z) {
@@ -304,74 +313,74 @@ public interface Sphere3afp<
 	}
 
 	/** Change the x coordinate of the center.
-	 * 
-	 * @param x
+	 *
+	 * @param x x coordinate of the center point.
 	 */
 	void setX(double x);
-	
+
 	/** Change the y coordinate of the center.
-	 * 
-	 * @param y
+	 *
+	 * @param y y coordinate of the center point.
 	 */
 	void setY(double y);
 
 	/** Change the z coordinate of the center.
-	 * 
-	 * @param z
+	 *
+	 * @param z z coordinate of the center point.
 	 */
 	void setZ(double z);
 
 	/** Replies the radius.
-	 * 
+	 *
 	 * @return the radius.
 	 */
 	@Pure
 	double getRadius();
 
 	/** Set the radius.
-	 * 
+	 *
 	 * @param radius is the radius.
 	 */
 	void setRadius(double radius);
-	
+
 	/** Change the frame of the sphere.
-	 * 
-	 * @param x
-	 * @param y
-	 * @param z 
-	 * @param radius
+	 *
+     * @param x x coordinate of the center point.
+     * @param y y coordinate of the center point.
+     * @param z z coordinate of the center point.
+     * @param radius the radius.
 	 */
 	// Not a default implementation for ensuring atomic change.
 	void set(double x, double y, double z, double radius);
 
 	/** Change the frame of the sphere.
-	 * 
-	 * @param center
-	 * @param radius
+	 *
+     * @param center the center point.
+     * @param radius the radius.
 	 */
 	default void set(Point3D<?, ?> center, double radius) {
-		assert (center != null) : "Point must be not null"; //$NON-NLS-1$
+		assert center != null : "Point must be not null"; //$NON-NLS-1$
 		set(center.getX(), center.getY(), center.getZ(), radius);
 	}
 
 	@Override
-	default void set(IT s) {
-		assert (s != null) : "Shape must be not null"; //$NON-NLS-1$
-		set(s.getX(), s.getY(), s.getZ(), s.getRadius());
+	default void set(IT shape) {
+		assert shape != null : "Shape must be not null"; //$NON-NLS-1$
+		set(shape.getX(), shape.getY(), shape.getZ(), shape.getRadius());
 	}
-	
+
 	@Override
 	default void clear() {
 		set(0, 0, 0, 0);
 	}
-	
+
 	@Override
 	default void toBoundingBox(B box) {
-		assert (box != null) : "Rectangle must be not null"; //$NON-NLS-1$
-		double x = getX();
-		double y = getY();
-		double z = getZ();
-		double radius = getRadius();
+		assert box != null : "Rectangle must be not null"; //$NON-NLS-1$
+		final double x = getX();
+		final double y = getY();
+		final double z = getZ();
+		final double radius = getRadius();
 		box.setFromCorners(
 				x - radius, y - radius, z - radius,
 				x + radius, y + radius, z + radius);
@@ -384,26 +393,26 @@ public interface Sphere3afp<
 
 	@Pure
 	@Override
-	default double getDistance(Point3D<?, ?> p) {
-		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
-		double d = Point3D.getDistancePointPoint(getX(), getY(), getZ(), p.getX(), p.getY(), p.getZ());
-		d = d - getRadius();
-		return Math.max(0., d);
+	default double getDistance(Point3D<?, ?> pt) {
+		assert pt != null : "Point must be not null"; //$NON-NLS-1$
+		double distance = Point3D.getDistancePointPoint(getX(), getY(), getZ(), pt.getX(), pt.getY(), pt.getZ());
+		distance = distance - getRadius();
+		return Math.max(0., distance);
 	}
-	
+
 	@Pure
 	@Override
-	default double getDistanceSquared(Point3D<?, ?> p) {
-		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
-		double x = getX();
-		double y = getY();
-		double z = getZ();
-		double radius = getRadius();
-		double vx = p.getX() - x;
-		double vy = p.getY() - y;
-		double vz = p.getZ() - z;
-		double sqLength = vx * vx + vy * vy + vz * vz;
-		double sqRadius = radius * radius;
+	default double getDistanceSquared(Point3D<?, ?> pt) {
+		assert pt != null : "Point must be not null"; //$NON-NLS-1$
+		final double x = getX();
+		final double y = getY();
+		final double z = getZ();
+		final double radius = getRadius();
+		final double vx = pt.getX() - x;
+		final double vy = pt.getY() - y;
+		final double vz = pt.getZ() - z;
+		final double sqLength = vx * vx + vy * vy + vz * vz;
+		final double sqRadius = radius * radius;
 		if (sqLength <= sqRadius) {
 			return 0;
 		}
@@ -412,33 +421,34 @@ public interface Sphere3afp<
 
 	@Pure
 	@Override
-	default double getDistanceL1(Point3D<?, ?> p) {
-		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
-		Point3D<?, ?> r = getClosestPointTo(p);
-		return r.getDistanceL1(p);
+	default double getDistanceL1(Point3D<?, ?> pt) {
+		assert pt != null : "Point must be not null"; //$NON-NLS-1$
+		final Point3D<?, ?> r = getClosestPointTo(pt);
+		return r.getDistanceL1(pt);
 	}
 
 	@Pure
 	@Override
-	default double getDistanceLinf(Point3D<?, ?> p) {
-		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
-		Point3D<?, ?> r = getClosestPointTo(p);
-		return r.getDistanceLinf(p);
+	default double getDistanceLinf(Point3D<?, ?> pt) {
+		assert pt != null : "Point must be not null"; //$NON-NLS-1$
+		final Point3D<?, ?> r = getClosestPointTo(pt);
+		return r.getDistanceLinf(pt);
 	}
 
 	@Pure
 	@Override
 	default boolean contains(double x, double y, double z) {
-		return containsCirclePoint(getX(), getY(), getZ(), getRadius(), x, y, z);
+		return containsSpherePoint(getX(), getY(), getZ(), getRadius(), x, y, z);
 	}
-	
+
 	@Override
-	default boolean contains(RectangularPrism3afp<?, ?, ?, ?, ?, ?> r) {
-		assert (r != null) : "Rectangle must be not null"; //$NON-NLS-1$
-		return containsCircleRectangularPrism(getX(), getY(), getZ(), getRadius(),
-				r.getMinX(), r.getMinY(), r.getMinZ(), r.getMaxX(), r.getMaxY(), r.getMaxZ());
+	default boolean contains(RectangularPrism3afp<?, ?, ?, ?, ?, B> rectangularPrism) {
+		assert rectangularPrism != null : "Rectangle must be not null"; //$NON-NLS-1$
+        return containsSphereRectangularPrism(getX(), getY(), getZ(), getRadius(), rectangularPrism.getMinX(),
+                rectangularPrism.getMinY(), rectangularPrism.getMinZ(), rectangularPrism.getMaxX(), rectangularPrism.getMaxY(),
+                rectangularPrism.getMaxZ());
 	}
-	
+
 	@Override
 	default void translate(double dx, double dy, double dz) {
 		setCenter(getX() + dx, getY() + dy, getZ() + dz);
@@ -446,114 +456,112 @@ public interface Sphere3afp<
 
 	@Pure
 	@Override
-	default boolean intersects(Prism3afp<?, ?, ?, ?, ?, ?> r) {
-		assert (r != null) : "Rectangle must be not null"; //$NON-NLS-1$
-		return intersectsCircleRectangle(
+	default boolean intersects(Prism3afp<?, ?, ?, ?, ?, ?> prism) {
+		assert prism != null : "Rectangle must be not null"; //$NON-NLS-1$
+		return intersectsSpherePrism(
 				getX(), getY(), getZ(), getRadius(),
-				r.getMinX(), r.getMinY(), r.getMinZ(), r.getMaxX(), r.getMaxY(), r.getMaxZ());
+				prism.getMinX(), prism.getMinY(), prism.getMinZ(), prism.getMaxX(), prism.getMaxY(), prism.getMaxZ());
 	}
-	
+
 	@Pure
 	@Override
-	default boolean intersects(Sphere3afp<?, ?, ?, ?, ?, ?> s) {
-		assert (s != null) : "sphere must be not null"; //$NON-NLS-1$
+	default boolean intersects(Sphere3afp<?, ?, ?, ?, ?, ?> sphere) {
+		assert sphere != null : "sphere must be not null"; //$NON-NLS-1$
 		return intersectsSphereSphere(
 				getX(), getY(), getZ(), getRadius(),
-				s.getX(), s.getY(), s.getZ(), s.getRadius());
+				sphere.getX(), sphere.getY(), sphere.getZ(), sphere.getRadius());
 	}
 
 	@Pure
 	@Override
-	default boolean intersects(Segment3afp<?, ?, ?, ?, ?, ?> s) {
-		assert (s != null) : "Segment must be not null"; //$NON-NLS-1$
+	default boolean intersects(Segment3afp<?, ?, ?, ?, ?, ?> segment) {
+		assert segment != null : "Segment must be not null"; //$NON-NLS-1$
 		return intersectsSphereSegment(
 				getX(), getY(), getZ(), getRadius(),
-				s.getX1(), s.getY1(), s.getZ1(),
-				s.getX2(), s.getY2(), s.getZ2());
+				segment.getX1(), segment.getY1(), segment.getZ1(),
+				segment.getX2(), segment.getY2(), segment.getZ2());
 	}
-
 
 	@Pure
 	@Override
 	default boolean intersects(PathIterator3afp<?> iterator) {
-		assert (iterator != null) : "Iterator must be not null"; //$NON-NLS-1$
-		int mask = (iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2);
-		int crossings = Path3afp.computeCrossingsFromSphere(
+		assert iterator != null : "Iterator must be not null"; //$NON-NLS-1$
+		final int mask = iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
+		final int crossings = Path3afp.computeCrossingsFromSphere(
 				0,
 				iterator,
 				getX(), getY(), getZ(), getRadius(),
 				CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
-		return (crossings == MathConstants.SHAPE_INTERSECTS ||
-				(crossings & mask) != 0);
+        return crossings == MathConstants.SHAPE_INTERSECTS || (crossings & mask) != 0;
 
 	}
 
 	@Pure
 	@Override
-	default boolean intersects(MultiShape3afp<?, ?, ?, ?, ?, ?, ?> s) {
-		assert (s != null) : "MultiShape must be not null"; //$NON-NLS-1$
-		return s.intersects(this);
+	default boolean intersects(MultiShape3afp<?, ?, ?, ?, ?, ?, ?> multishape) {
+		assert multishape != null : "MultiShape must be not null"; //$NON-NLS-1$
+		return multishape.intersects(this);
 	}
 
 	@Pure
 	@Override
-	default P getClosestPointTo(Point3D<?, ?> p) {
-		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
-		double x = getX();
-		double y = getY();
-		double z = getZ();
-		double radius = getRadius();
-		double vx = p.getX() - x;
-		double vy = p.getY() - y;
-		double vz = p.getZ() - z;
-		double sqLength = vx * vx + vy * vy + vz * vz;
+	default P getClosestPointTo(Point3D<?, ?> pt) {
+		assert pt != null : "Point must be not null"; //$NON-NLS-1$
+		final double x = getX();
+		final double y = getY();
+		final double z = getZ();
+		final double radius = getRadius();
+		final double vx = pt.getX() - x;
+		final double vy = pt.getY() - y;
+		final double vz = pt.getZ() - z;
+		final double sqLength = vx * vx + vy * vy + vz * vz;
 		if (sqLength <= (radius * radius)) {
-			return getGeomFactory().convertToPoint(p);
+			return getGeomFactory().convertToPoint(pt);
 		}
-		double s = radius / Math.sqrt(sqLength);
+		final double s = radius / Math.sqrt(sqLength);
 		return getGeomFactory().newPoint(x + vx * s, y + vy * s, z + vz * s);
 	}
 
 	@Pure
 	@Override
-	default P getFarthestPointTo(Point3D<?, ?> p) {
-		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
-		double x = getX();
-		double y = getY();
-		double z = getZ();
-		double vx = x - p.getX();
-		double vy = y - p.getY();
-		double vz = z - p.getZ();
-		double radius = getRadius();
-		double sqLength = vx * vx + vy * vy + vz * vz;
+	default P getFarthestPointTo(Point3D<?, ?> pt) {
+		assert pt != null : "Point must be not null"; //$NON-NLS-1$
+		final double x = getX();
+		final double y = getY();
+		final double z = getZ();
+		final double vx = x - pt.getX();
+		final double vy = y - pt.getY();
+		final double vz = z - pt.getZ();
+		final double radius = getRadius();
+		final double sqLength = vx * vx + vy * vy + vz * vz;
 		if (sqLength <= 0.) {
 			return getGeomFactory().newPoint(radius, 0, 0);
 		}
-		double s = radius / Math.sqrt(sqLength);
+		final double s = radius / Math.sqrt(sqLength);
 		return getGeomFactory().newPoint(x + vx * s, y + vy * s, z + vz * s);
 	}
 
 	@Pure
 	@Override
 	default PathIterator3afp<IE> getPathIterator(Transform3D transform) {
-		if (transform==null || transform.isIdentity()) {
+        if (transform == null || transform.isIdentity()) {
 			return new SpherePathIterator<>(this);
 		}
 		return new TransformedCirclePathIterator<>(this, transform);
 	}
-	
+
 	@Override
 	@Pure
 	default double getHeight() {
 		return getRadius();
 	}
-	
+
 	@Override
 	@Pure
 	default double getDepth() {
 		return getRadius();
 	}
-	
+
 	@Override
 	@Pure
 	default double getWidth() {
@@ -568,12 +576,12 @@ public interface Sphere3afp<
 	 */
 	@Override
 	default void setFromCenter(double centerX, double centerY, double centerZ, double cornerX, double cornerY, double cornerZ) {
-		double demiWidth = Math.abs(cornerX - centerX);
-		double demiHeight = Math.abs(cornerY - centerY);
-		double demiDepth = Math.abs(cornerZ - centerZ);
+		final double demiWidth = Math.abs(cornerX - centerX);
+		final double demiHeight = Math.abs(cornerY - centerY);
+		final double demiDepth = Math.abs(cornerZ - centerZ);
 		set(centerX, centerY, centerZ, MathUtil.min(demiHeight, demiWidth, demiDepth));
 	}
-	
+
 	/** {@inheritDoc}
 	 *
 	 * <p>The sphere is set in order to be enclosed inside the given box.
@@ -602,8 +610,8 @@ public interface Sphere3afp<
 	 */
 	@Override
 	default void setMinX(double x) {
-		double cx = (x + getX() + getRadius()) / 2.;
-		double radius = Math.abs(cx - x);
+		final double cx = (x + getX() + getRadius()) / 2.;
+		final double radius = Math.abs(cx - x);
 		set(cx, getY(), getZ(), radius);
 	}
 
@@ -624,16 +632,16 @@ public interface Sphere3afp<
 	 */
 	@Override
 	default void setMaxX(double x) {
-		double cx = (x + getX() - getRadius()) / 2.;
-		double radius = Math.abs(cx - x);
+		final double cx = (x + getX() - getRadius()) / 2.;
+		final double radius = Math.abs(cx - x);
 		set(cx, getY(), getZ(), radius);
 	}
-	
+
 	@Override
 	default double getMinY() {
 		return getY() - getRadius();
 	}
-	
+
 	/** {@inheritDoc}
 	 *
 	 * <p>Assuming that the maximum Y coordinate should not change, the center of
@@ -646,16 +654,16 @@ public interface Sphere3afp<
 	 */
 	@Override
 	default void setMinY(double y) {
-		double cy = (y + getY() + getRadius()) / 2.;
-		double radius = Math.abs(cy - y);
+		final double cy = (y + getY() + getRadius()) / 2.;
+		final double radius = Math.abs(cy - y);
 		set(getX(), cy, getZ(), radius);
 	}
-	
+
 	@Override
 	default double getMaxY() {
 		return getY() + getRadius();
 	}
-	
+
 	/** {@inheritDoc}
 	 *
 	 * <p>Assuming that the minimum Y coordinate should not change, the center of
@@ -668,8 +676,8 @@ public interface Sphere3afp<
 	 */
 	@Override
 	default void setMaxY(double y) {
-		double cy = (y + getY() - getRadius()) / 2.;
-		double radius = Math.abs(cy - y);
+		final double cy = (y + getY() - getRadius()) / 2.;
+		final double radius = Math.abs(cy - y);
 		set(getX(), cy, getZ(), radius);
 	}
 
@@ -690,8 +698,8 @@ public interface Sphere3afp<
 	 */
 	@Override
 	default void setMinZ(double z) {
-		double cz = (z + getZ() + getRadius()) / 2.;
-		double radius = Math.abs(cz - z);
+		final double cz = (z + getZ() + getRadius()) / 2.;
+		final double radius = Math.abs(cz - z);
 		set(getX(), getY(), cz, radius);
 	}
 
@@ -712,25 +720,25 @@ public interface Sphere3afp<
 	 */
 	@Override
 	default void setMaxZ(double z) {
-		double cz = (z + getZ() - getRadius()) / 2.;
-		double radius = Math.abs(cz - z);
+		final double cz = (z + getZ() - getRadius()) / 2.;
+		final double radius = Math.abs(cz - z);
 		set(getX(), getY(), cz, radius);
 	}
 
 	/** Abstract iterator on the path elements of the sphere.
-	 * 
+	 *
 	 * <h3>Discretization of the sphere with Bezier</h3>
-	 * 
+	 *
 	 * <p>For n segments on the sphere, the optimal distance to the control points, in the sense that the
 	 * middle of the curve lies on the sphere itself, is (4/3)*tan(pi/(2n)).
-	 * 
-	 * <p><center><img src="./doc-files/circlebezier.png" width="100%" /></center>
-	 * 
+	 *
+	 * <p><img src="./doc-files/circlebezier.png" width="100%" />
+	 *
 	 * <p>In the case of a discretization with 4 bezier curves, the distance is is
 	 * (4/3)*tan(pi/8) = 4*(sqrt(2)-1)/3 = 0.552284749831.
-	 * 
-	 * <p><center><img src="./doc-files/circlepathiterator.png" width="100%" /></center>
-	 * 
+	 *
+	 * <p><img src="./doc-files/circlepathiterator.png" width="100%" />
+	 *
 	 * @param <T> the type of the path elements.
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
@@ -738,12 +746,12 @@ public interface Sphere3afp<
 	 * @mavenartifactid $ArtifactId$
 	 */
 	abstract class AbstractSpherePathIterator<T extends PathElement3afp> implements PathIterator3afp<T> {
-		
+
 		/**
 		 * Distance from a Bezier curve control point on the sphere to the other control point.
 		 *
 		 * <p>4/3 tan (PI/(2*n)), where n is the number on points on the sphere.
-		 */ 
+		 */
 		public static final double CTRL_POINT_DISTANCE = 0.5522847498307933;
 
 		/**
@@ -752,18 +760,18 @@ public interface Sphere3afp<
 		 * centered at (0,0,0).
 		 */
 		// TODO : change from 2D to 3D
-		public static double BEZIER_CONTROL_POINTS[][] = {
+		public static final double[][] BEZIER_CONTROL_POINTS = {
 			// First quarter: max x, max y.
-			{ 1, CTRL_POINT_DISTANCE, CTRL_POINT_DISTANCE, 1, 0, 1 },
+			{1, CTRL_POINT_DISTANCE, CTRL_POINT_DISTANCE, 1, 0, 1 },
 			// Second quarter: min x, max y.
-			{ -CTRL_POINT_DISTANCE, 1, -1, CTRL_POINT_DISTANCE, -1, 0 },
+			{-CTRL_POINT_DISTANCE, 1, -1, CTRL_POINT_DISTANCE, -1, 0 },
 			// Third quarter: min x, min y.
-			{ -1, -CTRL_POINT_DISTANCE, -CTRL_POINT_DISTANCE, -1, 0, -1 },
+			{-1, -CTRL_POINT_DISTANCE, -CTRL_POINT_DISTANCE, -1, 0, -1 },
 			// Fourth quarter: max x, min y.
-			{ CTRL_POINT_DISTANCE, -1, 1, -CTRL_POINT_DISTANCE, 1, 0 },
+			{CTRL_POINT_DISTANCE, -1, 1, -CTRL_POINT_DISTANCE, 1, 0 },
 		};
-		
-		/** 4 segments + close
+
+		/** 4 segments + close.
 		 */
 		protected static final int NUMBER_ELEMENTS = 5;
 
@@ -775,7 +783,7 @@ public interface Sphere3afp<
 		 * @param sphere the sphere.
 		 */
 		public AbstractSpherePathIterator(Sphere3afp<?, ?, T, ?, ?, ?> sphere) {
-			assert (sphere != null) : "sphere must be not null"; //$NON-NLS-1$
+			assert sphere != null : "sphere must be not null"; //$NON-NLS-1$
 			this.sphere = sphere;
 		}
 
@@ -800,7 +808,7 @@ public interface Sphere3afp<
 		public boolean isCurved() {
 			return true;
 		}
-		
+
 		@Override
 		public boolean isPolygon() {
 			return true;
@@ -813,39 +821,40 @@ public interface Sphere3afp<
 		}
 
 	}
-	
+
 	/** Iterator on the path elements of the sphere.
-	 * 
+	 *
 	 * @param <T> the type of the path elements.
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
+	@SuppressWarnings("checkstyle:magicnumber")
 	class SpherePathIterator<T extends PathElement3afp> extends AbstractSpherePathIterator<T> {
 
 		private double x;
-		
+
 		private double y;
 
 		private double z;
-		
-		private double r;
-		
+
+		private double radius;
+
 		private int index;
-		
+
 		private double movex;
-		
+
 		private double movey;
 
 		private double movez;
-		
+
 		private double lastx;
-		
+
 		private double lasty;
 
 		private double lastz;
-		
+
 		/**
 		 * @param sphere the sphere to iterate on.
 		 */
@@ -854,37 +863,37 @@ public interface Sphere3afp<
 			if (sphere.isEmpty()) {
 				this.index = NUMBER_ELEMENTS;
 			} else {
-				this.r = sphere.getRadius();
+				this.radius = sphere.getRadius();
 				this.x = sphere.getX();
 				this.y = sphere.getY();
 				this.z = sphere.getZ();
 				this.index = -1;
 			}
 		}
-		
+
 		@Override
 		public PathIterator3afp<T> restartIterations() {
 			return new SpherePathIterator<>(this.sphere);
 		}
-		
+
 		@Pure
 		@Override
 		public boolean hasNext() {
 			return this.index < NUMBER_ELEMENTS;
 		}
-	
+
 		@Override
 		public T next() {
 			if (this.index >= NUMBER_ELEMENTS) {
 				throw new NoSuchElementException();
 			}
-			int idx = this.index;
+			final int idx = this.index;
 			++this.index;
 			if (idx < 0) {
-				double ctrls[] = BEZIER_CONTROL_POINTS[3];
-				this.movex = (this.x + ctrls[4] * this.r);
-				this.movey = (this.y + ctrls[5] * this.r);
-				this.movez = (this.z + ctrls[6] * this.r);
+				final double[] ctrls = BEZIER_CONTROL_POINTS[3];
+				this.movex = this.x + ctrls[4] * this.radius;
+				this.movey = this.y + ctrls[5] * this.radius;
+				this.movez = this.z + ctrls[6] * this.radius;
 				this.lastx = this.movex;
 				this.lasty = this.movey;
 				this.lastz = this.movez;
@@ -892,60 +901,61 @@ public interface Sphere3afp<
 						this.lastx, this.lasty, this.lastz);
 			}
 			if (idx < (NUMBER_ELEMENTS - 1)) {
-				double ctrls[] = BEZIER_CONTROL_POINTS[idx];
-				double ppx = this.lastx;
-				double ppy = this.lasty;
-				double ppz = this.lastz;
-				this.lastx = (this.x + ctrls[4] * this.r);
-				this.lasty = (this.y + ctrls[5] * this.r);
-				this.lastz = (this.z + ctrls[6] * this.r);
+				final double[] ctrls = BEZIER_CONTROL_POINTS[idx];
+				final double ppx = this.lastx;
+				final double ppy = this.lasty;
+				final double ppz = this.lastz;
+				this.lastx = this.x + ctrls[4] * this.radius;
+				this.lasty = this.y + ctrls[5] * this.radius;
+				this.lastz = this.z + ctrls[6] * this.radius;
 				return getGeomFactory().newCurvePathElement(
 						ppx, ppy, ppz,
-						(this.x + ctrls[0] * this.r),
-						(this.y + ctrls[1] * this.r),
-						(this.z + ctrls[2] * this.r),
-						(this.x + ctrls[3] * this.r),
-						(this.y + ctrls[4] * this.r),
-						(this.z + ctrls[5] * this.r),
+						this.x + ctrls[0] * this.radius,
+						this.y + ctrls[1] * this.radius,
+						this.z + ctrls[2] * this.radius,
+						this.x + ctrls[3] * this.radius,
+						this.y + ctrls[4] * this.radius,
+						this.z + ctrls[5] * this.radius,
 						this.lastx, this.lasty, this.lastz);
 			}
 			return getGeomFactory().newClosePathElement(
 					this.lastx, this.lasty, this.lastz,
 					this.movex, this.movey, this.movez);
 		}
-	
+
 	}
 
 	/** Iterator on the path elements of the sphere.
-	 * 
+	 *
 	 * @param <T> the type of the path elements.
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
+	@SuppressWarnings("checkstyle:magicnumber")
 	class TransformedCirclePathIterator<T extends PathElement3afp> extends AbstractSpherePathIterator<T> {
-			
+
 		private final Transform3D transform;
 
 		private final Point3D<?, ?> tmpPoint;
-		
+
 		private double x;
-		
+
 		private double y;
 
 		private double z;
-		
-		private double r;
-		
+
+		private double radius;
+
 		private double movex;
-		
+
 		private double movey;
 
 		private double movez;
 
 		private double lastx;
-		
+
 		private double lasty;
 
 		private double lastz;
@@ -958,14 +968,14 @@ public interface Sphere3afp<
 		 */
 		public TransformedCirclePathIterator(Sphere3afp<?, ?, T, ?, ?, ?> sphere, Transform3D transform) {
 			super(sphere);
-			assert(transform != null) : "Transformation must be not null"; //$NON-NLS-1$
+			assert transform != null : "Transformation must be not null"; //$NON-NLS-1$
 			this.transform = transform;
 			if (sphere.isEmpty()) {
 				this.index = NUMBER_ELEMENTS;
 				this.tmpPoint = null;
 			} else {
 				this.tmpPoint = new InnerComputationPoint3afp();
-				this.r = sphere.getRadius();
+				this.radius = sphere.getRadius();
 				this.x = sphere.getX();
 				this.y = sphere.getY();
 				this.z = sphere.getZ();
@@ -977,46 +987,53 @@ public interface Sphere3afp<
 		public PathIterator3afp<T> restartIterations() {
 			return new TransformedCirclePathIterator<>(this.sphere, this.transform);
 		}
-		
+
 		@Pure
 		@Override
 		public boolean hasNext() {
 			return this.index < NUMBER_ELEMENTS;
 		}
-	
+
 		@Override
 		public T next() {
 			if (this.index >= NUMBER_ELEMENTS) {
 				throw new NoSuchElementException();
 			}
-			int idx = this.index;
+			final int idx = this.index;
 			++this.index;
 			if (idx < 0) {
-				double ctrls[] = BEZIER_CONTROL_POINTS[3];
-				this.tmpPoint.set(this.x + ctrls[4] * this.r, this.y + ctrls[5] * this.r, this.z + ctrls[6] * this.r);
+				final double[] ctrls = BEZIER_CONTROL_POINTS[3];
+                this.tmpPoint.set(this.x + ctrls[4] * this.radius, this.y + ctrls[5] * this.radius,
+                        this.z + ctrls[6] * this.radius);
 				this.transform.transform(this.tmpPoint);
-				this.movex = this.lastx = this.tmpPoint.getX();
-				this.movey = this.lasty = this.tmpPoint.getY();
-				this.movez = this.lastz = this.tmpPoint.getZ();
+				this.movex = this.tmpPoint.getX();
+				this.lastx = this.movex;
+				this.movey = this.tmpPoint.getY();
+				this.lasty = this.movey;
+				this.movez = this.tmpPoint.getZ();
+				this.lastz = this.movez;
 				return getGeomFactory().newMovePathElement(
 						this.lastx, this.lasty, this.lastz);
 			}
 			if (idx < (NUMBER_ELEMENTS - 1)) {
-				double ctrls[] = BEZIER_CONTROL_POINTS[idx];
-				double ppx = this.lastx;
-				double ppy = this.lasty;
-				double ppz = this.lastz;
-				this.tmpPoint.set(this.x + ctrls[0] * this.r, this.y + ctrls[1] * this.r, this.z + ctrls[2] * this.r);
+				final double[] ctrls = BEZIER_CONTROL_POINTS[idx];
+				final double ppx = this.lastx;
+				final double ppy = this.lasty;
+				final double ppz = this.lastz;
+                this.tmpPoint.set(this.x + ctrls[0] * this.radius, this.y + ctrls[1] * this.radius,
+                        this.z + ctrls[2] * this.radius);
 				this.transform.transform(this.tmpPoint);
-				double ctrlX1 = this.tmpPoint.getX();
-				double ctrlY1 = this.tmpPoint.getY();
-				double ctrlZ1 = this.tmpPoint.getZ();
-				this.tmpPoint.set(this.x + ctrls[3] * this.r, this.y + ctrls[4] * this.r, this.z + ctrls[5] * this.r);
+				final double ctrlX1 = this.tmpPoint.getX();
+				final double ctrlY1 = this.tmpPoint.getY();
+				final double ctrlZ1 = this.tmpPoint.getZ();
+                this.tmpPoint.set(this.x + ctrls[3] * this.radius, this.y + ctrls[4] * this.radius,
+                        this.z + ctrls[5] * this.radius);
 				this.transform.transform(this.tmpPoint);
-				double ctrlX2 = this.tmpPoint.getX();
-				double ctrlY2 = this.tmpPoint.getY();
-				double ctrlZ2 = this.tmpPoint.getZ();
-				this.tmpPoint.set(this.x + ctrls[6] * this.r, this.y + ctrls[7] * this.r, this.z + ctrls[8] * this.r);
+				final double ctrlX2 = this.tmpPoint.getX();
+				final double ctrlY2 = this.tmpPoint.getY();
+				final double ctrlZ2 = this.tmpPoint.getZ();
+                this.tmpPoint.set(this.x + ctrls[6] * this.radius, this.y + ctrls[7] * this.radius,
+                        this.z + ctrls[8] * this.radius);
 				this.transform.transform(this.tmpPoint);
 				this.lastx = this.tmpPoint.getX();
 				this.lasty = this.tmpPoint.getY();
@@ -1031,7 +1048,7 @@ public interface Sphere3afp<
 					this.lastx, this.lasty, this.lastz,
 					this.movex, this.movey, this.movez);
 		}
-	
+
 	}
 
 }

@@ -1,40 +1,40 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (C) 2010-2013 Stephane GALLAND.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.arakhne.afc.math.geometry.d3.i;
 
-import org.arakhne.afc.math.geometry.d3.Point3D;
-import org.arakhne.afc.math.geometry.d3.ai.Prism3ai;
 import org.eclipse.xtext.xbase.lib.Pure;
+
+import org.arakhne.afc.math.geometry.d3.ai.Prism3ai;
 
 /** A rectangular shape with 2 integer numbers.
  *
  * @param <IT> is the type of the implementation of this shape.
  * @author $Author: sgalland$
+ * @author $Author: tpiotrow$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
- * @since 13.0
+ * @since 14.0
  */
-public abstract class AbstractRectangularShape3i<IT extends AbstractRectangularShape3i<?>>
+public abstract class AbstractPrism3i<IT extends AbstractPrism3i<?>>
 	extends AbstractShape3i<IT>
 	implements Prism3ai<Shape3i<?>, IT, PathElement3i, Point3i, Vector3i, RectangularPrism3i> {
 
@@ -51,40 +51,35 @@ public abstract class AbstractRectangularShape3i<IT extends AbstractRectangularS
 	private int maxy;
 
 	private int maxz;
-	
 
-	/**
-	 */
-	public AbstractRectangularShape3i() {
+
+	/** Construct an empty prism.
+     */
+	public AbstractPrism3i() {
 		super();
 	}
 
-	/**
-	 * @param min is the min corner of the rectangle.
-	 * @param max is the max corner of the rectangle.
+	/** Constructor by copy.
+	 * @param shape the shape to copy.
 	 */
-	public AbstractRectangularShape3i(Point3D<?, ?> min, Point3D<?, ?> max) {
-		assert (min != null) : "Minimum corner must be not null"; //$NON-NLS-1$
-		assert (max != null) : "Maximum corner must be not null"; //$NON-NLS-1$
-		setFromCorners(min.ix(), min.iy(), min.iz(), max.ix(), max.iy(), max.iz());
-	}
-
-	/**
-	 * @param x
-	 * @param y
-	 * @param width
-	 * @param height
-	 */
-	public AbstractRectangularShape3i(int x, int y, int z, int width, int height, int depth) {
-		assert (width >= 0.) : "Width must be positive or zero"; //$NON-NLS-1$
-		assert (height >= 0.) : "Height must be positive or zero"; //$NON-NLS-1$
-		assert (depth >= 0.) : "Depth must be positive or zero"; //$NON-NLS-1$
-		set(x, y, z, width, height, depth);
-	}
+	public AbstractPrism3i(Prism3ai<?, ?, ?, ?, ?, ?> shape) {
+	    assert shape != null : "Shape must be not null"; //$NON-NLS-1$
+	    this.minx = shape.getMinX();
+	    this.miny = shape.getMinY();
+        this.minz = shape.getMinZ();
+        this.maxx = shape.getMaxX();
+        this.maxy = shape.getMaxY();
+        this.maxz = shape.getMaxZ();
+    }
 
 	@Override
 	public void setFromCorners(int x1, int y1, int z1, int x2, int y2, int z2) {
-		int a, b, c, d, e, f;
+		final int a;
+		final int b;
+		final int c;
+		final int d;
+		final int e;
+		final int f;
 		if (x1 <= x2) {
 			a = x1;
 			b = x2;
@@ -150,13 +145,13 @@ public abstract class AbstractRectangularShape3i<IT extends AbstractRectangularS
 			fireGeometryChange();
 		}
 	}
-	
+
 	@Pure
 	@Override
 	public int getMinY() {
 		return this.miny;
 	}
-	
+
 	@Override
 	public void setMinY(int y) {
 		if (this.miny != y) {
@@ -167,13 +162,13 @@ public abstract class AbstractRectangularShape3i<IT extends AbstractRectangularS
 			fireGeometryChange();
 		}
 	}
-	
+
 	@Pure
 	@Override
 	public int getMaxY() {
 		return this.maxy;
 	}
-	
+
 	@Override
 	public void setMaxY(int y) {
 		if (this.maxy != y) {
@@ -235,7 +230,7 @@ public abstract class AbstractRectangularShape3i<IT extends AbstractRectangularS
 	@Pure
 	@Override
 	public String toString() {
-		StringBuilder b = new StringBuilder();
+		final StringBuilder b = new StringBuilder();
 		b.append("["); //$NON-NLS-1$
 		b.append(getMinX());
 		b.append(";"); //$NON-NLS-1$

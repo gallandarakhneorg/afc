@@ -641,7 +641,7 @@ public interface Path3ai<
 				endx = element.getToX();
 				endy = element.getToY();
 				endz = element.getToZ();
-				numCrosses = Segment3ai.computeCrossingsFromCircle(
+				numCrosses = Segment3ai.computeCrossingsFromSphere(
 						numCrosses,
 						cx, cy, cz, radius,
 						curx, cury, curz,
@@ -698,7 +698,7 @@ public interface Path3ai<
 				break;
 			case CLOSE:
 				if (cury != movy || curx != movx || curz != movz) {
-					numCrosses = Segment3ai.computeCrossingsFromCircle(
+					numCrosses = Segment3ai.computeCrossingsFromSphere(
 							numCrosses,
 							cx, cy, cz, radius,
 							curx, cury, curz,
@@ -724,7 +724,7 @@ public interface Path3ai<
             switch (type) {
 			case AUTO_CLOSE:
 				// Auto close
-				numCrosses = Segment3ai.computeCrossingsFromCircle(
+				numCrosses = Segment3ai.computeCrossingsFromSphere(
 						numCrosses,
 						cx, cy, cz, radius,
 						curx, cury, curz,

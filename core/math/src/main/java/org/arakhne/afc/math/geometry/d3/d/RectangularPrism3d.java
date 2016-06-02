@@ -1,29 +1,29 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (C) 2010-2013 Stephane GALLAND.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.arakhne.afc.math.geometry.d3.d;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.afp.RectangularPrism3afp;
-import org.eclipse.xtext.xbase.lib.Pure;
 
 /** A rectangle with 2 double precision floating-point numbers.
  *
@@ -50,44 +50,50 @@ public class RectangularPrism3d extends AbstractShape3d<RectangularPrism3d>
 	private double maxy;
 
 	private double maxz;
-	
 
-	/**
-	 */
+
+	/** Construct an empty rectangular prism.
+     */
 	public RectangularPrism3d() {
 		super();
 	}
 
-	/**
-	 * @param min is the min corner of the rectangle.
-	 * @param max is the max corner of the rectangle.
-	 */
+	/** Construct a rectangular prism with  the given minimum and maxium corners.
+     *
+     * @param min is the min corner of the rectangular prism.
+     * @param max is the max corner of the rectangular prism.
+     */
 	public RectangularPrism3d(Point3D<?, ?> min, Point3D<?, ?> max) {
 		setFromCorners(min.getX(), min.getY(), min.getZ(), max.getX(), max.getY(), max.getZ());
 	}
 
-	/**
-	 * @param x
-	 * @param y
-	 * @param z 
-	 * @param width
-	 * @param height
-	 * @param depth 
-	 */
+	/** Construct a rectangle with the given minimum corner and sizes.
+     * @param x x coordinate of the minimum corner.
+     * @param y y coordinate of the minimum corner.
+     * @param z z coordinate of the minimum corner.
+     * @param width width of the rectangular prism.
+     * @param height height of the rectangular prism.
+     * @param depth depth of the rectangular prism.
+     */
 	public RectangularPrism3d(double x, double y, double z, double width, double height, double depth) {
 		setFromCorners(x, y, z, x + width, y + height, z + depth);
 	}
-	
-	/**
-	 * @param r
-	 */
-	public RectangularPrism3d(RectangularPrism3d r) {
-		set(r);
+
+	/** Constructor by copy.
+     * @param rectangularPrism the rectangular prism to copy.
+     */
+	public RectangularPrism3d(RectangularPrism3d rectangularPrism) {
+		set(rectangularPrism);
 	}
 
 	@Override
 	public void setFromCorners(double x1, double y1, double z1, double x2, double y2, double z2) {
-		double a, b, c, d, e, f;
+		final double a;
+		final double b;
+		final double c;
+		final double d;
+		final double e;
+		final double f;
 		if (x1 <= x2) {
 			a = x1;
 			b = x2;
@@ -153,13 +159,13 @@ public class RectangularPrism3d extends AbstractShape3d<RectangularPrism3d>
 			fireGeometryChange();
 		}
 	}
-	
+
 	@Pure
 	@Override
 	public double getMinY() {
 		return this.miny;
 	}
-	
+
 	@Override
 	public void setMinY(double y) {
 		if (this.miny != y) {
@@ -170,13 +176,13 @@ public class RectangularPrism3d extends AbstractShape3d<RectangularPrism3d>
 			fireGeometryChange();
 		}
 	}
-	
+
 	@Pure
 	@Override
 	public double getMaxY() {
 		return this.maxy;
 	}
-	
+
 	@Override
 	public void setMaxY(double y) {
 		if (this.maxy != y) {
@@ -232,14 +238,14 @@ public class RectangularPrism3d extends AbstractShape3d<RectangularPrism3d>
 		bits = 31 * bits + Double.doubleToLongBits(this.maxx);
 		bits = 31 * bits + Double.doubleToLongBits(this.maxy);
 		bits = 31 * bits + Double.doubleToLongBits(this.maxz);
-		int b = (int) bits;
+		final int b = (int) bits;
 		return b ^ (b >> 32);
 	}
 
 	@Pure
 	@Override
 	public String toString() {
-		StringBuilder b = new StringBuilder();
+		final StringBuilder b = new StringBuilder();
 		b.append("["); //$NON-NLS-1$
 		b.append(getMinX());
 		b.append(";"); //$NON-NLS-1$

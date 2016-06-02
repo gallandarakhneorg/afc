@@ -20,11 +20,12 @@
 
 package org.arakhne.afc.math.geometry.d3.d;
 
-import org.arakhne.afc.math.geometry.d3.Point3D;
-import org.arakhne.afc.math.geometry.d3.afp.Sphere3afp;
 import org.eclipse.xtext.xbase.lib.Pure;
 
-/** A circle with 2 double precision floating-point numbers.
+import org.arakhne.afc.math.geometry.d3.Point3D;
+import org.arakhne.afc.math.geometry.d3.afp.Sphere3afp;
+
+/** A sphere with 3 double precision floating-point numbers.
  *
  * @author $Author: sgalland$
  * @author $Author: hjaffali$
@@ -41,7 +42,7 @@ public class Sphere3d
 	private static final long serialVersionUID = -8532584773530573738L;
 
 	private double centerX;
-	
+
 	private double centerY;
 
 	private double centerZ;
@@ -113,7 +114,7 @@ public class Sphere3d
 	public double getX() {
 		return this.centerX;
 	}
-	
+
 	@Pure
 	@Override
 	public double getY() {
@@ -133,7 +134,7 @@ public class Sphere3d
 			fireGeometryChange();
 		}
 	}
-	
+
 	@Override
 	public void setY(double y) {
 		if (this.centerY != y) {

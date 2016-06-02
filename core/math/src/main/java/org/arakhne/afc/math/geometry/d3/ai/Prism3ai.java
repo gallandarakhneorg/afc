@@ -1,29 +1,29 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (C) 2010-2013 Stephane GALLAND.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.arakhne.afc.math.geometry.d3.ai;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
-import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Fonctional interface that represented a rectangular shape on a plane.
  *
@@ -51,71 +51,71 @@ public interface Prism3ai<
 
 	@Override
 	default void toBoundingBox(B box) {
-		assert (box != null) : "Rectangle must not be null"; //$NON-NLS-1$
+		assert box != null : "Rectangle must not be null"; //$NON-NLS-1$
 		box.setFromCorners(getMinX(), getMinY(), getMinZ(), getMaxX(), getMaxY(), getMaxZ());
 	}
-	
+
 	@Override
 	default void clear() {
 		setFromCorners(0, 0, 0, 0, 0, 0);
 	}
 
-	/** Change the frame of the rectangle.
-	 * 
-	 * @param x
-	 * @param y
-	 * @param z
-	 * @param width
-	 * @param height
-	 * @param depth 
-	 */
+	/** Change the frame of the prism.
+    *
+    * @param x x coordinate of the lower corner.
+    * @param y y coordinate of the lower corner.
+    * @param z z coordinate of the lower corner.
+    * @param width width of the prism.
+    * @param height height of the prism.
+    * @param depth depth of the prism.
+    */
 	default void set(int x, int y, int z, int width, int height, int depth) {
-		assert (width >= 0) : "Width must be positive or zero"; //$NON-NLS-1$
-		assert (height >= 0) : "Height must be positive or zero"; //$NON-NLS-1$
-		assert (depth >= 0) : "Height must be positive or zero"; //$NON-NLS-1$
+		assert width >= 0 : "Width must be positive or zero"; //$NON-NLS-1$
+		assert height >= 0 : "Height must be positive or zero"; //$NON-NLS-1$
+		assert depth >= 0 : "Height must be positive or zero"; //$NON-NLS-1$
 		setFromCorners(x, y, z, x + width, y + height, z + depth);
 	}
-	
-	/** Change the frame of the rectangle.
-	 * 
-	 * @param min is the min corner of the rectangle.
-	 * @param max is the max corner of the rectangle.
+
+	/** Change the frame of the prism.
+	 *
+	 * @param min is the min corner of the prism.
+	 * @param max is the max corner of the prism.
 	 */
 	default void set(Point3D<?, ?> min, Point3D<?, ?> max) {
-		assert (min != null) : "Minimum point must be not be null"; //$NON-NLS-1$
-		assert (max != null) : "Maximum point must be not be null"; //$NON-NLS-1$
+		assert min != null : "Minimum point must be not be null"; //$NON-NLS-1$
+		assert max != null : "Maximum point must be not be null"; //$NON-NLS-1$
 		setFromCorners(min.ix(), min.iy(), min.iz(), max.ix(), max.iy(), max.iz());
 	}
-	
-	/** Change the width of the rectangle, not the min corner.
-	 * 
-	 * @param width
+
+	/** Change the width of the prism, not the min corner.
+	 *
+	 * @param width the width of the prism.
 	 */
 	default void setWidth(int width) {
-		assert (width >= 0) : "Width must be positive or zero"; //$NON-NLS-1$
+		assert width >= 0 : "Width must be positive or zero"; //$NON-NLS-1$
 		setMaxX(getMinX() + width);
 	}
-	
-	/** Change the height of the rectangle, not the min corner.
-	 * 
-	 * @param height
+
+	/** Change the height of the prism, not the min corner.
+	 *
+	 * @param height the height of the prism.
 	 */
 	default void setHeight(int height) {
-		assert (height >= 0) : "Height must be positive or zero"; //$NON-NLS-1$
+		assert height >= 0 : "Height must be positive or zero"; //$NON-NLS-1$
 		setMaxY(getMinY() + height);
 	}
 
-	/** Change the depth of the rectangle, not the min corner.
-	 * 
-	 * @param depth
+	/** Change the depth of the prism, not the min corner.
+	 *
+	 * @param depth the depth of the prism
 	 */
 	default void setDepth(int depth) {
-		assert (depth >= 0) : "Height must be positive or zero"; //$NON-NLS-1$
+		assert depth >= 0 : "Height must be positive or zero"; //$NON-NLS-1$
 		setMaxZ(getMinZ() + depth);
 	}
-	
-	/** Change the frame of the rectangle conserving previous min and max if needed.
-	 * 
+
+	/** Change the frame of the prism conserving previous min and max if needed.
+	 *
 	 * @param x1 is the coordinate of the first corner.
 	 * @param y1 is the coordinate of the first corner.
 	 * @param z1 is the coordinate of the first corner.
@@ -124,15 +124,15 @@ public interface Prism3ai<
 	 * @param z2 is the coordinate of the first corner.
 	 */
 	void setFromCorners(int x1, int y1, int z1, int x2, int y2, int z2);
-	
-	/** Change the frame of the rectangle conserving previous min and max if needed.
-	 * 
+
+	/** Change the frame of the prism conserving previous min and max if needed.
+	 *
 	 * @param p1 the first corner.
 	 * @param p2 the second corner.
 	 */
 	default void setFromCorners(Point3D<?, ?> p1, Point3D<?, ?> p2) {
-		assert (p1 != null) : "First corner must be not be null"; //$NON-NLS-1$
-		assert (p2 != null) : "Second corner must be not be null"; //$NON-NLS-1$
+		assert p1 != null : "First corner must be not be null"; //$NON-NLS-1$
+		assert p2 != null : "Second corner must be not be null"; //$NON-NLS-1$
 		setFromCorners(p1.ix(), p1.iy(), p1.iz(), p2.ix(), p2.iy(), p2.iz());
 	}
 
@@ -150,12 +150,13 @@ public interface Prism3ai<
      * @param cornerZ the Z coordinate of the specified corner point
      */
 	default void setFromCenter(int centerX, int centerY, int centerZ, int cornerX, int cornerY, int cornerZ) {
-		int demiWidth = Math.abs(centerX - cornerX);
-		int demiHeight = Math.abs(centerY - cornerY);
-		int demiDepth = Math.abs(centerZ - cornerZ);
-		setFromCorners(centerX - demiWidth, centerY - demiHeight, centerZ - demiDepth, centerX + demiWidth, centerY + demiHeight, centerZ + demiDepth);
+		final int demiWidth = Math.abs(centerX - cornerX);
+		final int demiHeight = Math.abs(centerY - cornerY);
+		final int demiDepth = Math.abs(centerZ - cornerZ);
+        setFromCorners(centerX - demiWidth, centerY - demiHeight, centerZ - demiDepth, centerX + demiWidth, centerY + demiHeight,
+                centerZ + demiDepth);
 	}
-	
+
 	/**
      * Sets the framing rectangle of this <code>Shape</code>
      * based on the specified center point coordinates and corner point
@@ -166,26 +167,26 @@ public interface Prism3ai<
      * @param corner the specified corner point
      */
 	default void setFromCenter(Point3D<?, ?> center, Point3D<?, ?> corner) {
-		assert (center != null) : "Center must be not be null"; //$NON-NLS-1$
-		assert (corner != null) : "Corner must be not be null"; //$NON-NLS-1$
+		assert center != null : "Center must be not be null"; //$NON-NLS-1$
+		assert corner != null : "Corner must be not be null"; //$NON-NLS-1$
 		setFromCenter(center.ix(), center.iy(), center.iz(), corner.ix(), corner.iy(), corner.iz());
 	}
 
 	/** Replies the min X.
-	 * 
+	 *
 	 * @return the min x.
 	 */
 	@Pure
 	int getMinX();
 
 	/** Set the min X conserving previous min if needed.
-	 * 
+	 *
 	 * @param x the min x.
 	 */
 	void setMinX(int x);
 
 	/** Replies the center x.
-	 * 
+	 *
 	 * @return the center x.
 	 */
 	@Pure
@@ -194,68 +195,68 @@ public interface Prism3ai<
 	}
 
 	/** Replies the max x.
-	 * 
+	 *
 	 * @return the max x.
 	 */
 	@Pure
 	int getMaxX();
 
 	/** Set the max X conserving previous max if needed.
-	 * 
+	 *
 	 * @param x the max x.
 	 */
 	void setMaxX(int x);
-	
+
 	/** Replies the min y.
-	 * 
+	 *
 	 * @return the min y.
 	 */
 	@Pure
 	int getMinY();
-	
+
 	/** Set the min Y conserving previous min if needed.
-	 * 
+	 *
 	 * @param y the min y.
 	 */
 	void setMinY(int y);
-	
+
 	/** Replies the center y.
-	 * 
+	 *
 	 * @return the center y.
 	 */
 	@Pure
 	default int getCenterY() {
 		return (getMinY() + getMaxY()) / 2;
 	}
-	
+
 	/** Replies the max y.
-	 * 
+	 *
 	 * @return the max y.
 	 */
 	@Pure
 	int getMaxY();
-	
+
 	/** Set the max Y conserving previous max if needed.
-	 * 
+	 *
 	 * @param y the max y.
 	 */
 	void setMaxY(int y);
 
 	/** Replies the min z.
-	 * 
+	 *
 	 * @return the min z.
 	 */
 	@Pure
 	int getMinZ();
 
 	/** Set the min Z conserving previous min if needed.
-	 * 
+	 *
 	 * @param z the min z.
 	 */
 	void setMinZ(int z);
 
 	/** Replies the center z.
-	 * 
+	 *
 	 * @return the center z.
 	 */
 	@Pure
@@ -264,29 +265,29 @@ public interface Prism3ai<
 	}
 
 	/** Replies the max z.
-	 * 
+	 *
 	 * @return the max z.
 	 */
 	@Pure
 	int getMaxZ();
 
 	/** Set the max Z conserving previous max if needed.
-	 * 
+	 *
 	 * @param z the max z.
 	 */
 	void setMaxZ(int z);
 
 	/** Replies the width.
-	 * 
+	 *
 	 * @return the width.
 	 */
 	@Pure
 	default int getWidth() {
 		return getMaxX() - getMinX();
 	}
-	
+
 	/** Replies the height.
-	 * 
+	 *
 	 * @return the height.
 	 */
 	@Pure
@@ -295,14 +296,14 @@ public interface Prism3ai<
 	}
 
 	/** Replies the depth.
-	 * 
+	 *
 	 * @return the depth.
 	 */
 	@Pure
 	default int getDepth() {
 		return getMaxZ() - getMinZ();
 	}
-	
+
 	@Override
 	default void translate(int dx, int dy, int dz) {
 		setFromCorners(getMinX() + dx, getMinY() + dy, getMinZ() + dz, getMaxX() + dx, getMaxY() + dy, getMaxZ() + dz);
@@ -311,17 +312,21 @@ public interface Prism3ai<
 	@Pure
 	@Override
 	default boolean isEmpty() {
-		return getMinX()==getMaxX() && getMinY()==getMaxY() && getMinZ() == getMaxZ(); 
+        return getMinX() == getMaxX() && getMinY() == getMaxY() && getMinZ() == getMaxZ();
 	}
-	
-	/** Inflate this rectangle with the given amounts.
-	 * 
-	 * @param minXBorder
-	 * @param minYBorder
-	 * @param minZBorder
-	 * @param maxXBorder
-	 * @param maxYBorder
-	 * @param maxZBorder 
+
+	/** Inflate this prism with the given amounts.
+	 *
+	 * <p>All borders may be inflated. If the value associated to a border
+	 * is positive, the border is moved outside the current rectangle.
+	 * If the value is negative, the border is moved inside the rectangle.
+	 *
+	 * @param minXBorder the value to substract to the minimum x.
+	 * @param minYBorder the value to substract to the minimum y.
+	 * @param minZBorder the value to substract to the minimum z.
+	 * @param maxXBorder the value to add to the maximum x.
+	 * @param maxYBorder the value to add to the maximum y.
+	 * @param maxZBorder the value to add to the maximum z.
 	 */
 	default void inflate(int minXBorder, int minYBorder, int minZBorder, int maxXBorder, int maxYBorder, int maxZBorder) {
 		setFromCorners(

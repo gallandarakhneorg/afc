@@ -1,29 +1,29 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (C) 2010-2013 Stephane GALLAND.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.arakhne.afc.math.geometry.d3.i;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.ai.Sphere3ai;
-import org.eclipse.xtext.xbase.lib.Pure;
 
 /** A circle with 2 integer numbers.
  *
@@ -33,51 +33,51 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public class Sphere3i
-extends AbstractShape3i<Sphere3i>
-implements Sphere3ai<Shape3i<?>, Sphere3i, PathElement3i, Point3i, Vector3i, RectangularPrism3i> {
+public class Sphere3i extends AbstractShape3i<Sphere3i>
+        implements Sphere3ai<Shape3i<?>, Sphere3i, PathElement3i, Point3i, Vector3i, RectangularPrism3i> {
 
 	private static final long serialVersionUID = -7692549016859323986L;
 
 	private int centerX;
-	
+
 	private int centerY;
 
 	private int centerZ;
 
 	private int radius;
 
-	/**
-	 */
+	/** Construct an empty sphere.
+     */
 	public Sphere3i() {
 		//
 	}
 
-	/**
-	 * @param center
-	 * @param radius
-	 */
+	/** Construct a Sphere at the given position and with the given radius.
+     * @param center the center position of the sphere.
+     * @param radius the radius of the sphere.
+     */
 	public Sphere3i(Point3D<?, ?> center, int radius) {
-		assert (center != null) : "Center point must be not null"; //$NON-NLS-1$
+		assert center != null : "Center point must be not null"; //$NON-NLS-1$
 		set(center.ix(), center.iy(), center.iz(), radius);
 	}
 
-	/**
-	 * @param x
-	 * @param y
-	 * @param z
-	 * @param radius
+
+	/** Construct a sphere at the given position and with the given radius.
+	 * @param x x coordinate of the the center position of the sphere.
+	 * @param y y coordinate of the the center position of the sphere.
+	 * @param z z coordinate of the the center position of the sphere.
+	 * @param radius the radius of the circle.
 	 */
 	public Sphere3i(int x, int y, int z, int radius) {
 		set(x, y, z, radius);
 	}
 
-	/** Construct a circle from a circle.
-	 * @param circle
+	/** Construct a sphere from a sphere.
+	 * @param sphere the sphere to copy.
 	 */
-	public Sphere3i(Sphere3ai<?, ?, ?, ?, ?, ?> circle) {
-		assert (circle != null) : "Circle must be not null"; //$NON-NLS-1$
-		set(circle.getX(), circle.getY(), circle.getZ(), circle.getRadius());
+	public Sphere3i(Sphere3ai<?, ?, ?, ?, ?, ?> sphere) {
+		assert sphere != null : "Circle must be not null"; //$NON-NLS-1$
+		set(sphere.getX(), sphere.getY(), sphere.getZ(), sphere.getRadius());
 	}
 
 	@Pure
@@ -94,7 +94,7 @@ implements Sphere3ai<Shape3i<?>, Sphere3i, PathElement3i, Point3i, Vector3i, Rec
 	@Pure
 	@Override
 	public String toString() {
-		StringBuilder b = new StringBuilder();
+		final StringBuilder b = new StringBuilder();
 		b.append("["); //$NON-NLS-1$
 		b.append(getX());
 		b.append(";"); //$NON-NLS-1$
@@ -112,7 +112,7 @@ implements Sphere3ai<Shape3i<?>, Sphere3i, PathElement3i, Point3i, Vector3i, Rec
 	public int getX() {
 		return this.centerX;
 	}
-	
+
 	@Pure
 	@Override
 	public int getY() {
@@ -132,7 +132,7 @@ implements Sphere3ai<Shape3i<?>, Sphere3i, PathElement3i, Point3i, Vector3i, Rec
 			fireGeometryChange();
 		}
 	}
-	
+
 	@Override
 	public void setY(int y) {
 		if (this.centerY != y) {
@@ -157,7 +157,7 @@ implements Sphere3ai<Shape3i<?>, Sphere3i, PathElement3i, Point3i, Vector3i, Rec
 
 	@Override
 	public void setRadius(int radius) {
-		assert (radius >= 0) : "Radius must be positive or equal"; //$NON-NLS-1$
+		assert radius >= 0 : "Radius must be positive or equal"; //$NON-NLS-1$
 		if (this.radius != radius) {
 			this.radius = radius;
 			fireGeometryChange();
@@ -166,7 +166,7 @@ implements Sphere3ai<Shape3i<?>, Sphere3i, PathElement3i, Point3i, Vector3i, Rec
 
 	@Override
 	public void set(int x, int y, int z, int radius) {
-		assert (radius >= 0) : "Radius must be positive or zero"; //$NON-NLS-1$
+		assert radius >= 0 : "Radius must be positive or zero"; //$NON-NLS-1$
 		if (this.centerX != x || this.centerY != y || this.centerZ != z || this.radius != radius) {
 			this.centerX = x;
 			this.centerY = y;

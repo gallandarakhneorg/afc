@@ -195,6 +195,7 @@ public interface Path3afp<
                 cury = movy;
                 curz = movz;
                 break;
+            case ARC_TO:
             default:
             }
         }
@@ -303,6 +304,7 @@ public interface Path3afp<
                 break;
             case QUAD_TO:
             case CURVE_TO:
+            case ARC_TO:
             default:
                 throw new IllegalStateException(pe.getType().toString());
             }
@@ -369,6 +371,7 @@ public interface Path3afp<
                 break;
             case QUAD_TO:
             case CURVE_TO:
+            case ARC_TO:
             default:
                 throw new IllegalStateException(pe.getType().toString());
             }
@@ -609,6 +612,7 @@ public interface Path3afp<
                 cury = movy;
                 curz = movz;
                 break;
+            case ARC_TO:
             default:
             }
         }
@@ -761,6 +765,7 @@ public interface Path3afp<
                 cury = movy;
                 curz = movz;
                 break;
+            case ARC_TO:
             default:
             }
         }
@@ -915,6 +920,7 @@ public interface Path3afp<
                 cury = movy;
                 curz = movz;
                 break;
+            case ARC_TO:
             default:
             }
         }
@@ -1079,6 +1085,7 @@ public interface Path3afp<
                 cury = movy;
                 curz = movz;
                 break;
+            case ARC_TO:
             default:
             }
         }
@@ -1241,6 +1248,7 @@ public interface Path3afp<
                 break;
             case MOVE_TO:
             case CLOSE:
+            case ARC_TO:
             default:
             }
         }
@@ -1455,6 +1463,7 @@ public interface Path3afp<
                 break;
             case MOVE_TO:
             case CLOSE:
+            case ARC_TO:
             default:
             }
         }
@@ -1551,6 +1560,7 @@ public interface Path3afp<
                 cury = movy;
                 curz = movz;
                 break;
+            case ARC_TO:
             default:
             }
 
@@ -1599,6 +1609,7 @@ public interface Path3afp<
             case CLOSE:
                 closePath();
                 break;
+            case ARC_TO:
             default:
             }
         }
@@ -1748,7 +1759,7 @@ public interface Path3afp<
     }
 
     @Override
-    default boolean contains(RectangularPrism3afp<?, ?, ?, ?, ?, ?> prism) {
+    default boolean contains(RectangularPrism3afp<?, ?, ?, ?, ?, B> prism) {
         assert prism != null : "Rectangle must be not null"; //$NON-NLS-1$
         return containsRectangle(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO), prism.getMinX(), prism.getMinY(),
                 prism.getMinZ(), prism.getWidth(), prism.getHeight(), prism.getDepth());
@@ -1793,7 +1804,8 @@ public interface Path3afp<
     default boolean intersects(Path3afp<?, ?, ?, ?, ?, ?> path) {
         assert path != null : "Path must be not null"; //$NON-NLS-1$
         final int mask = getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
-        final int crossings = computeCrossingsFromPath(0, path.getPathIterator(), new PathShadow3afp<>(this),
+        final int crossings = computeCrossingsFromPath(0, path.getPathIterator(),
+                new PathShadow3afp<>(this.getPathIterator(), this.toBoundingBox()),
                 CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
         return crossings == MathConstants.SHAPE_INTERSECTS || (crossings & mask) != 0;
     }
@@ -1803,7 +1815,8 @@ public interface Path3afp<
     default boolean intersects(PathIterator3afp<?> iterator) {
         assert iterator != null : "Iterator must be not null"; //$NON-NLS-1$
         final int mask = getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
-        final int crossings = computeCrossingsFromPath(0, iterator, new PathShadow3afp<>(this),
+        final int crossings = computeCrossingsFromPath(0, iterator,
+                new PathShadow3afp<>(this.getPathIterator(), this.toBoundingBox()),
                 CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
         return crossings == MathConstants.SHAPE_INTERSECTS || (crossings & mask) != 0;
     }
@@ -2140,6 +2153,7 @@ public interface Path3afp<
                 element = getGeomFactory().newClosePathElement(this.p1.getX(), this.p1.getY(), this.p1.getZ(), this.p2.getX(),
                         this.p2.getY(), this.p2.getZ());
                 break;
+            case ARC_TO:
             default:
             }
             if (element == null) {
@@ -2269,6 +2283,7 @@ public interface Path3afp<
                 element = getGeomFactory().newClosePathElement(this.p1.getX(), this.p1.getY(), this.p1.getZ(), this.p2.getX(),
                         this.p2.getY(), this.p2.getZ());
                 break;
+            case ARC_TO:
             default:
             }
             if (element == null) {
@@ -2742,6 +2757,7 @@ public interface Path3afp<
                 this.holdIndex += 6;
                 this.levelIndex--;
                 break;
+            case ARC_TO:
             default:
             }
         }

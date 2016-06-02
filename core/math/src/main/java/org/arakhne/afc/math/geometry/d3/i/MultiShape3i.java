@@ -1,23 +1,23 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (C) 2013 Christophe BOHRHAUER.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package org.arakhne.afc.math.geometry.d3.i;
 
 import java.util.AbstractList;
@@ -25,15 +25,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.arakhne.afc.math.geometry.d3.ai.MultiShape3ai;
 import org.eclipse.xtext.xbase.lib.Pure;
 
+import org.arakhne.afc.math.geometry.d3.ai.MultiShape3ai;
+
 /** Container for grouping of shapes.
- * 
+ *
  * <p>The coordinates of the shapes inside the multishape are global. They are not relative to the multishape.
  *
  * <p>Caution: The multishape does not detect the bound change of the stored shapes.
- * 
+ *
  * @param <T> the type of the shapes inside the multishape.
  * @author $Author: tpiotrow$
  * @author $Author: sgalland$
@@ -42,15 +43,15 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public class MultiShape3i<T extends Shape3i<?>> extends AbstractShape3i<MultiShape3i<T>> implements 
-	MultiShape3ai<Shape3i<?>, MultiShape3i<T>, T, PathElement3i, Point3i, Vector3i, RectangularPrism3i> {
+public class MultiShape3i<T extends Shape3i<?>> extends AbstractShape3i<MultiShape3i<T>>
+        implements MultiShape3ai<Shape3i<?>, MultiShape3i<T>, T, PathElement3i, Point3i, Vector3i, RectangularPrism3i> {
 
 	private static final long serialVersionUID = -4727279807601027239L;
 
 	private List<T> elements = new ListResponseModel();
 
-	private RectangularPrism3i bounds = null;
-	
+	private RectangularPrism3i bounds;
+
 	/**
 	 * Construct an empty multishape.
 	 */
@@ -63,7 +64,7 @@ public class MultiShape3i<T extends Shape3i<?>> extends AbstractShape3i<MultiSha
 	 * @param shapes the shapes to add into the multishape.
 	 */
 	public MultiShape3i(@SuppressWarnings("unchecked") T... shapes) {
-		assert (shapes != null) : "Shape array must be not null"; //$NON-NLS-1$
+		assert shapes != null : "Shape array must be not null"; //$NON-NLS-1$
 		addAll(Arrays.asList(shapes));
 	}
 
@@ -72,18 +73,18 @@ public class MultiShape3i<T extends Shape3i<?>> extends AbstractShape3i<MultiSha
 	 * @param shapes the shapes to add into the multishape.
 	 */
 	public MultiShape3i(Iterable<? extends T> shapes) {
-		assert (shapes != null) : "Shape list must be not null"; //$NON-NLS-1$
-		for (T element : shapes) {
+		assert shapes != null : "Shape list must be not null"; //$NON-NLS-1$
+		for (final T element : shapes) {
 			add(element);
 		}
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public MultiShape3i<T> clone() {
-		MultiShape3i<T> clone = super.clone();
-		List<T> clonedList = new ArrayList<>();
-		for (T shape : this.elements) {
+		final MultiShape3i<T> clone = super.clone();
+		final List<T> clonedList = new ArrayList<>();
+		for (final T shape : this.elements) {
 			clonedList.add((T) shape.clone());
 		}
 		clone.elements = clonedList;
@@ -92,12 +93,12 @@ public class MultiShape3i<T extends Shape3i<?>> extends AbstractShape3i<MultiSha
 		}
 		return clone;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		long bits = 1;
 		bits = 31 * bits + this.elements.hashCode();
-		int b = (int) bits;
+		final int b = (int) bits;
 		return b ^ (b >> 32);
 	}
 
@@ -106,7 +107,7 @@ public class MultiShape3i<T extends Shape3i<?>> extends AbstractShape3i<MultiSha
 		this.bounds = null;
 		fireGeometryChange();
 	}
-	
+
 	/** Invoked when the geometry of the content has changed.
 	 */
 	protected void onContentGeometryChange() {
@@ -129,22 +130,22 @@ public class MultiShape3i<T extends Shape3i<?>> extends AbstractShape3i<MultiSha
 		}
 		return this.bounds;
 	}
-	
+
 	@Pure
 	@Override
 	public void toBoundingBox(RectangularPrism3i box) {
-		assert (box != null) : "Rectangle must be not null"; //$NON-NLS-1$
+		assert box != null : "Rectangle must be not null"; //$NON-NLS-1$
 		if (this.bounds == null) {
 			this.bounds = getGeomFactory().newBox();
 			MultiShape3ai.super.toBoundingBox(this.bounds);
 		}
 		box.set(this.bounds);
 	}
-	
+
 	@Override
 	public void translate(int dx, int dy, int dz) {
 		if (dx != 0 || dy != 0 || dz != 0) {
-			RectangularPrism3i box = this.bounds;
+			final RectangularPrism3i box = this.bounds;
 			MultiShape3ai.super.translate(dx, dy, dz);
 			if (box != null) {
 				box.translate(dx, dy, dz);
@@ -168,32 +169,32 @@ public class MultiShape3i<T extends Shape3i<?>> extends AbstractShape3i<MultiSha
 
 		/** Construct an empty model.
 		 */
-		public ListResponseModel() {
+		ListResponseModel() {
 			//
 		}
 
 		@Override
 		public void add(int index, T element) {
-			assert (element != null);
+			assert element != null;
 			this.delegate.add(index, element);
 			if (element instanceof AbstractShape3i<?>) {
 				((AbstractShape3i<?>) element).addShapeGeometryChangeListener(this);
 			}
 		}
-		
+
 		@Override
 		public T remove(int index) {
-			T element = this.delegate.remove(index);
+			final T element = this.delegate.remove(index);
 			if (element instanceof AbstractShape3i<?>) {
 				((AbstractShape3i<?>) element).removeShapeGeometryChangeListener(this);
 			}
 			return element;
 		}
-		
+
 		@Override
 		public T set(int index, T element) {
-			assert (element != null);
-			T oldElement = this.delegate.set(index, element);
+			assert element != null;
+			final T oldElement = this.delegate.set(index, element);
 			if (oldElement instanceof AbstractShape3i<?>) {
 				((AbstractShape3i<?>) oldElement).removeShapeGeometryChangeListener(this);
 			}
@@ -202,7 +203,7 @@ public class MultiShape3i<T extends Shape3i<?>> extends AbstractShape3i<MultiSha
 			}
 			return oldElement;
 		}
-		
+
 		@Override
 		public T get(int index) {
 			return this.delegate.get(index);

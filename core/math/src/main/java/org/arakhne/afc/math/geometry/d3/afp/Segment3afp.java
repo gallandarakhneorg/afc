@@ -1886,7 +1886,7 @@ public interface Segment3afp<
 	}
 
 	@Override
-	default boolean contains(RectangularPrism3afp<?, ?, ?, ?, ?, ?> rectangularPrism) {
+	default boolean contains(RectangularPrism3afp<?, ?, ?, ?, ?, B> rectangularPrism) {
 		assert rectangularPrism != null : "Rectangle must be not null"; //$NON-NLS-1$
 		return (getX1() == getX2() || getY1() == getY2() || getZ1() == getZ2())
 				&& contains(rectangularPrism.getMinX(), rectangularPrism.getMinY(), rectangularPrism.getMinZ())

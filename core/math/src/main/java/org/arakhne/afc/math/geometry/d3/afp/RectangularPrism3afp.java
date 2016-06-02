@@ -1,27 +1,28 @@
-/* 
+/*
  * $Id$
- * 
- * Copyright (C) 2010-2013 Stephane GALLAND.
- * 
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- * This program is free software; you can redistribute it and/or modify
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
+ *
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 package org.arakhne.afc.math.geometry.d3.afp;
 
 import java.util.NoSuchElementException;
+
+import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.MathConstants;
 import org.arakhne.afc.math.MathUtil;
@@ -30,7 +31,6 @@ import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Transform3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
 import org.arakhne.afc.math.geometry.d3.afp.Path3afp.CrossingComputationType;
-import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Fonctional interface that represented a 2D rectangle on a plane.
  *
@@ -54,10 +54,10 @@ public interface RectangularPrism3afp<
 		P extends Point3D<? super P, ? super V>,
 		V extends Vector3D<? super V, ? super P>,
 		B extends RectangularPrism3afp<?, ?, IE, P, V, B>>
-		extends Prism3afp<ST, IT, IE, P, V, B>{
+		extends Prism3afp<ST, IT, IE, P, V, B> {
 
 	/** Replies if two rectangles are intersecting.
-	 * 
+	 *
 	 * @param x1 is the first corner of the first rectangle.
 	 * @param y1 is the first corner of the first rectangle.
 	 * @param z1 is the first corner of the first rectangle.
@@ -74,18 +74,20 @@ public interface RectangularPrism3afp<
 	 * <code>false</code>
 	 */
 	@Pure
-	static boolean intersectsRectangleRectangle(double x1, double y1, double z1, double x2, double y2, double z2, double x3, double y3, double z3, double x4, double y4, double z4) {
-		assert (x1 <= x2) : "x1 must be lower or equal to x2"; //$NON-NLS-1$
-		assert (y1 <= y2) : "y1 must be lower or equal to y2"; //$NON-NLS-1$
-		assert (z1 <= z2) : "z1 must be lower or equal to z2"; //$NON-NLS-1$
-		assert (x3 <= x4) : "x3 must be lower or equal to x4"; //$NON-NLS-1$
-		assert (y3 <= y4) : "y3 must be lower or equal to x4"; //$NON-NLS-1$
-		assert (z3 <= z4) : "z3 must be lower or equal to z4"; //$NON-NLS-1$
+	@SuppressWarnings("checkstyle:parameternumber")
+    static boolean intersectsRectangleRectangle(double x1, double y1, double z1, double x2, double y2, double z2, double x3,
+            double y3, double z3, double x4, double y4, double z4) {
+		assert x1 <= x2 : "x1 must be lower or equal to x2"; //$NON-NLS-1$
+		assert y1 <= y2 : "y1 must be lower or equal to y2"; //$NON-NLS-1$
+		assert z1 <= z2 : "z1 must be lower or equal to z2"; //$NON-NLS-1$
+		assert x3 <= x4 : "x3 must be lower or equal to x4"; //$NON-NLS-1$
+		assert y3 <= y4 : "y3 must be lower or equal to x4"; //$NON-NLS-1$
+		assert z3 <= z4 : "z3 must be lower or equal to z4"; //$NON-NLS-1$
 		return x2 > x3 && x1 < x4 && y2 > y3 && y1 < y4 && z2 > z3 && z1 < z4;
 	}
 
 	/** Replies if two rectangles are intersecting.
-	 * 
+	 *
 	 * @param x1 is the first corner of the rectangle.
 	 * @param y1 is the first corner of the rectangle.
 	 * @param z1 is the first corner of the rectangle.
@@ -103,22 +105,24 @@ public interface RectangularPrism3afp<
 	 */
 	@Pure
 	// TODO
-	static boolean intersectsRectangleLine(double x1, double y1, double z1, double x2, double y2, double z2, double x3, double y3, double z3, double x4, double y4, double z4) {
-		assert (x1 <= x2) : "x1 must be lower or equal to x2"; //$NON-NLS-1$
-		assert (y1 <= y2) : "y1 must be lower or equal to y2"; //$NON-NLS-1$
-//		int a, b;
-//		a = Segment2afp.ccw(x3, y3, x4, y4, x1, y1, 0.);
-//		b = Segment2afp.ccw(x3, y3, x4, y4, x2, y1, 0.);
-//		if (a!=b && b!=0) return true;
-//		b = Segment2afp.ccw(x3, y3, x4, y4, x2, y2, 0.);
-//		if (a!=b && b!=0) return true;
-//		b = Segment2afp.ccw(x3, y3, x4, y4, x1, y2, 0.);
-//		return (a!=b && b!=0);
-		return false;
+	@SuppressWarnings("checkstyle:parameternumber")
+    static boolean intersectsRectangleLine(double x1, double y1, double z1, double x2, double y2, double z2, double x3, double y3,
+            double z3, double x4, double y4, double z4) {
+	    assert x1 <= x2 : "x1 must be lower or equal to x2"; //$NON-NLS-1$
+	    assert y1 <= y2 : "y1 must be lower or equal to y2"; //$NON-NLS-1$
+	    //		int a, b;
+	    //		a = Segment2afp.ccw(x3, y3, x4, y4, x1, y1, 0.);
+	    //		b = Segment2afp.ccw(x3, y3, x4, y4, x2, y1, 0.);
+	    //		if (a!=b && b!=0) return true;
+	    //		b = Segment2afp.ccw(x3, y3, x4, y4, x2, y2, 0.);
+	    //		if (a!=b && b!=0) return true;
+	    //		b = Segment2afp.ccw(x3, y3, x4, y4, x1, y2, 0.);
+	    //		return (a!=b && b!=0);
+	    return false;
 	}
 
 	/** Replies if the rectangle is intersecting the segment.
-	 * 
+	 *
 	 * @param rx1 is the first corner of the rectangle.
 	 * @param ry1 is the first corner of the rectangle.
 	 * @param rx2 is the second corner of the rectangle.
@@ -132,82 +136,84 @@ public interface RectangularPrism3afp<
 	 */
 	@Pure
 	// TODO
-	static boolean intersectsRectangleSegment(double rx1, double ry1, double rx2, double ry2, double sx1, double sy1, double sx2, double sy2) {
-		assert (rx1 <= rx2) : "rx1 must be lower or equal to rx2"; //$NON-NLS-1$
-		assert (ry1 <= ry2) : "ry1 must be lower or equal to ry2"; //$NON-NLS-1$
-//		double segmentX1 = sx1;
-//		double segmentY1 = sy1;
-//		double segmentX2 = sx2;
-//		double segmentY2 = sy2;
-//		
-//		int code1 = MathUtil.getCohenSutherlandCode(segmentX1, segmentY1, rx1, ry1, rx2, ry2);
-//		int code2 = MathUtil.getCohenSutherlandCode(segmentX2, segmentY2, rx1, ry1, rx2, ry2);
-//
-//		while (true) {
-//			if ((code1 | code2) == 0) {
-//				// Bitwise OR is 0. Trivially accept and get out of loop
-//				// Special case: if the segment is empty, it is on the border => no intersection.
-//				return segmentX1 != segmentX2 || segmentY1 != segmentY2;
-//			}
-//			if ((code1 & code2) != 0) {
-//				// Bitwise AND is not 0. Trivially reject and get out of loop
-//				return false;
-//			}
-//
-//			// failed both tests, so calculate the line segment intersection
-//
-//			// At least one endpoint is outside the clip rectangle; pick it.
-//			int code3 = (code1 != 0) ? code1 : code2;
-//
-//			double x = 0;
-//			double y = 0;
-//			
-//			// Now find the intersection point;
-//			// use formulas y = y0 + slope * (x - x0), x = x0 + (1 / slope) * (y - y0)
-//			if ((code3 & MathConstants.COHEN_SUTHERLAND_TOP) != 0) {
-//				// point is above the clip rectangle
-//				x = segmentX1 + (segmentX2 - segmentX1) * (ry2 - segmentY1) / (segmentY2 - segmentY1);
-//				y = ry2;
-//			}
-//			else if ((code3 & MathConstants.COHEN_SUTHERLAND_BOTTOM) != 0) {
-//				// point is below the clip rectangle
-//				x = segmentX1 + (segmentX2 - segmentX1) * (ry1 - segmentY1) / (segmentY2 - segmentY1);
-//				y = ry1;
-//			}
-//			else if ((code3 & MathConstants.COHEN_SUTHERLAND_RIGHT) != 0) { 
-//				// point is to the right of clip rectangle
-//				y = segmentY1 + (segmentY2 - segmentY1) * (rx2 - segmentX1) / (segmentX2 - segmentX1);
-//				x = rx2;
-//			}
-//			else if ((code3 & MathConstants.COHEN_SUTHERLAND_LEFT) != 0) {
-//				// point is to the left of clip rectangle
-//				y = segmentY1 + (segmentY2 - segmentY1) * (rx1 - segmentX1) / (segmentX2 - segmentX1);
-//				x = rx1;
-//			}
-//			else {
-//				code3 = 0;
-//			}
-//
-//			if (code3 != 0) {
-//				// Now we move outside point to intersection point to clip
-//				// and get ready for next pass.
-//				if (code3 == code1) {
-//					segmentX1 = x;
-//					segmentY1 = y;
-//					code1 = MathUtil.getCohenSutherlandCode(segmentX1, segmentY1, rx1, ry1, rx2, ry2);
-//				}
-//				else {
-//					segmentX2 = x;
-//					segmentY2 = y;
-//					code2 = MathUtil.getCohenSutherlandCode(segmentX2, segmentY2, rx1, ry1, rx2, ry2);
-//				}
-//			}
-//		}
-		return false;
+	@SuppressWarnings("checkstyle:parameternumber")
+    static boolean intersectsRectangleSegment(double rx1, double ry1, double rx2, double ry2, double sx1, double sy1, double sx2,
+            double sy2) {
+	    assert rx1 <= rx2 : "rx1 must be lower or equal to rx2"; //$NON-NLS-1$
+	    assert ry1 <= ry2 : "ry1 must be lower or equal to ry2"; //$NON-NLS-1$
+	    //		double segmentX1 = sx1;
+	    //		double segmentY1 = sy1;
+	    //		double segmentX2 = sx2;
+	    //		double segmentY2 = sy2;
+	    //
+	    //		int code1 = MathUtil.getCohenSutherlandCode(segmentX1, segmentY1, rx1, ry1, rx2, ry2);
+	    //		int code2 = MathUtil.getCohenSutherlandCode(segmentX2, segmentY2, rx1, ry1, rx2, ry2);
+	    //
+	    //		while (true) {
+	    //			if ((code1 | code2) == 0) {
+	    //				// Bitwise OR is 0. Trivially accept and get out of loop
+	    //				// Special case: if the segment is empty, it is on the border => no intersection.
+	    //				return segmentX1 != segmentX2 || segmentY1 != segmentY2;
+	    //			}
+	    //			if ((code1 & code2) != 0) {
+	    //				// Bitwise AND is not 0. Trivially reject and get out of loop
+	    //				return false;
+	    //			}
+	    //
+	    //			// failed both tests, so calculate the line segment intersection
+	    //
+	    //			// At least one endpoint is outside the clip rectangle; pick it.
+	    //			int code3 = (code1 != 0) ? code1 : code2;
+	    //
+	    //			double x = 0;
+	    //			double y = 0;
+	    //
+	    //			// Now find the intersection point;
+	    //			// use formulas y = y0 + slope * (x - x0), x = x0 + (1 / slope) * (y - y0)
+	    //			if ((code3 & MathConstants.COHEN_SUTHERLAND_TOP) != 0) {
+	    //				// point is above the clip rectangle
+	    //				x = segmentX1 + (segmentX2 - segmentX1) * (ry2 - segmentY1) / (segmentY2 - segmentY1);
+	    //				y = ry2;
+	    //			}
+	    //			else if ((code3 & MathConstants.COHEN_SUTHERLAND_BOTTOM) != 0) {
+	    //				// point is below the clip rectangle
+	    //				x = segmentX1 + (segmentX2 - segmentX1) * (ry1 - segmentY1) / (segmentY2 - segmentY1);
+	    //				y = ry1;
+	    //			}
+	    //			else if ((code3 & MathConstants.COHEN_SUTHERLAND_RIGHT) != 0) {
+	    //				// point is to the right of clip rectangle
+	    //				y = segmentY1 + (segmentY2 - segmentY1) * (rx2 - segmentX1) / (segmentX2 - segmentX1);
+	    //				x = rx2;
+	    //			}
+	    //			else if ((code3 & MathConstants.COHEN_SUTHERLAND_LEFT) != 0) {
+	    //				// point is to the left of clip rectangle
+	    //				y = segmentY1 + (segmentY2 - segmentY1) * (rx1 - segmentX1) / (segmentX2 - segmentX1);
+	    //				x = rx1;
+	    //			}
+	    //			else {
+	    //				code3 = 0;
+	    //			}
+	    //
+	    //			if (code3 != 0) {
+	    //				// Now we move outside point to intersection point to clip
+	    //				// and get ready for next pass.
+	    //				if (code3 == code1) {
+	    //					segmentX1 = x;
+	    //					segmentY1 = y;
+	    //					code1 = MathUtil.getCohenSutherlandCode(segmentX1, segmentY1, rx1, ry1, rx2, ry2);
+	    //				}
+	    //				else {
+	    //					segmentX2 = x;
+	    //					segmentY2 = y;
+	    //					code2 = MathUtil.getCohenSutherlandCode(segmentX2, segmentY2, rx1, ry1, rx2, ry2);
+	    //				}
+	    //			}
+	    //		}
+	    return false;
 	}
 
 	/** Replies if a rectangle is inside in the rectangle.
-	 * 
+	 *
 	 * @param enclosingX1 is the lowest corner of the enclosing-candidate rectangle.
 	 * @param enclosingY1 is the lowest corner of the enclosing-candidate rectangle.
 	 * @param enclosingZ1 is the lowest corner of the enclosing-candidate rectangle.
@@ -221,29 +227,30 @@ public interface RectangularPrism3afp<
 	 * @param innerY2 is the uppest corner of the inner-candidate rectangle.
 	 * @param innerZ2 is the uppest corner of the inner-candidate rectangle.
 	 * @return <code>true</code> if the given rectangle is inside the ellipse;
-	 * otherwise <code>false</code>.
+	 *     otherwise <code>false</code>.
 	 */
 	@Pure
-	public static boolean containsRectangleRectangle(double enclosingX1, double enclosingY1, double enclosingZ1,
+	@SuppressWarnings("checkstyle:parameternumber")
+	static boolean containsRectangleRectangle(double enclosingX1, double enclosingY1, double enclosingZ1,
 			double enclosingX2, double enclosingY2, double enclosingZ2,
 			double innerX1, double innerY1, double innerZ1,
 			double innerX2, double innerY2, double innerZ2) {
-		assert (enclosingX1 <= enclosingX2) : "Enclosing x1 must be lower or equal to enclosing x2"; //$NON-NLS-1$
-		assert (enclosingY1 <= enclosingY2) : "Enclosing y1 must be lower or equal to enclosing y2"; //$NON-NLS-1$
-		assert (enclosingZ1 <= enclosingZ2) : "Enclosing z1 must be lower or equal to enclosing z2"; //$NON-NLS-1$
-		assert (innerX1 <= innerX2) : "Inner x1 must be lower or equal to inner x2"; //$NON-NLS-1$
-		assert (innerY1 <= innerY2) : "Inner y1 must be lower or equal to inner y2"; //$NON-NLS-1$
-		assert (innerZ1 <= innerZ2) : "Inner y1 must be lower or equal to inner y2"; //$NON-NLS-1$
-		return innerX1 >= enclosingX1 &&
-				innerY1 >= enclosingY1 &&
-				innerZ1 >= enclosingZ1 &&
-				innerX2 <= enclosingX2 &&
-				innerY2 <= enclosingY2 &&
-				innerZ2 <= enclosingZ2;
+		assert enclosingX1 <= enclosingX2 : "Enclosing x1 must be lower or equal to enclosing x2"; //$NON-NLS-1$
+		assert enclosingY1 <= enclosingY2 : "Enclosing y1 must be lower or equal to enclosing y2"; //$NON-NLS-1$
+		assert enclosingZ1 <= enclosingZ2 : "Enclosing z1 must be lower or equal to enclosing z2"; //$NON-NLS-1$
+		assert innerX1 <= innerX2 : "Inner x1 must be lower or equal to inner x2"; //$NON-NLS-1$
+		assert innerY1 <= innerY2 : "Inner y1 must be lower or equal to inner y2"; //$NON-NLS-1$
+		assert innerZ1 <= innerZ2 : "Inner y1 must be lower or equal to inner y2"; //$NON-NLS-1$
+		return innerX1 >= enclosingX1
+		    && innerY1 >= enclosingY1
+		    && innerZ1 >= enclosingZ1
+		    && innerX2 <= enclosingX2
+		    && innerY2 <= enclosingY2
+		    && innerZ2 <= enclosingZ2;
 	}
 
 	/** Replies if a point is inside in the rectangle.
-	 * 
+	 *
 	 * @param rx1 is the lowest corner of the rectangle.
 	 * @param ry1 is the lowest corner of the rectangle.
 	 * @param rz1 is the lowest corner of the rectangle.
@@ -254,18 +261,19 @@ public interface RectangularPrism3afp<
 	 * @param py is the point.
 	 * @param pz is the point.
 	 * @return <code>true</code> if the given point is inside the rectangle;
-	 * otherwise <code>false</code>.
+	 *     otherwise <code>false</code>.
 	 */
 	@Pure
+	@SuppressWarnings("checkstyle:parameternumber")
 	static boolean containsRectanglePoint(
 			double rx1, double ry1, double rz1, double rx2, double ry2, double rz2,
 			double px, double py, double pz) {
-		assert (rx1 <= rx2) : "rx1 must be lower or equal to rx2"; //$NON-NLS-1$
-		assert (ry1 <= ry2) : "ry1 must be lower or equal to ry2"; //$NON-NLS-1$
-		assert (rz1 <= rz2) : "rz1 must be lower or equal to rz2"; //$NON-NLS-1$
+		assert rx1 <= rx2 : "rx1 must be lower or equal to rx2"; //$NON-NLS-1$
+		assert ry1 <= ry2 : "ry1 must be lower or equal to ry2"; //$NON-NLS-1$
+		assert rz1 <= rz2 : "rz1 must be lower or equal to rz2"; //$NON-NLS-1$
 		return (px >= rx1 && px <= rx2) && (py >= ry1 && py <= ry2) && (pz >= rz1 && pz <= rz2);
 	}
-	
+
 	@Pure
 	@Override
 	default boolean equalsToShape(IT shape) {
@@ -284,161 +292,139 @@ public interface RectangularPrism3afp<
 	}
 
 	@Override
-	default void set(IT s) {
-		assert (s != null) : "Shape must be not null"; //$NON-NLS-1$
-		setFromCorners(s.getMinX(), s.getMinY(), s.getMinZ(), s.getMaxX(), s.getMaxY(), s.getMaxZ());
+	default void set(IT shape) {
+		assert shape != null : "Shape must be not null"; //$NON-NLS-1$
+		setFromCorners(shape.getMinX(), shape.getMinY(), shape.getMinZ(), shape.getMaxX(), shape.getMaxY(), shape.getMaxZ());
 	}
 
 	@Pure
 	@Override
-	default double getDistanceSquared(Point3D<?, ?> p) {
-		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
-		double dx;
-		if (p.getX()<getMinX()) {
-			dx = getMinX() - p.getX();
-		}
-		else if (p.getX()>getMaxX()) {
-			dx = p.getX() - getMaxX();
-		}
-		else {
-			dx = 0f;
-		}
-		double dy;
-		if (p.getY()<getMinY()) {
-			dy = getMinY() - p.getY();
-		}
-		else if (p.getY()>getMaxY()) {
-			dy = p.getY() - getMaxY();
-		}
-		else {
-			dy = 0f;
-		}
-		double dz;
-		if (p.getZ()<getMinZ()) {
-			dz = getMinZ() - p.getZ();
-		}
-		else if (p.getZ()>getMaxZ()) {
-			dz = p.getZ() - getMaxZ();
-		}
-		else {
-			dz = 0f;
-		}
-		return dx*dx+dy*dy+dz*dz;
+	default double getDistanceSquared(Point3D<?, ?> pt) {
+		assert pt != null : "Point must be not null"; //$NON-NLS-1$
+		final double dx;
+        if (pt.getX() < getMinX()) {
+            dx = getMinX() - pt.getX();
+        } else if (pt.getX() > getMaxX()) {
+            dx = pt.getX() - getMaxX();
+        } else {
+            dx = 0f;
+        }
+		final double dy;
+        if (pt.getY() < getMinY()) {
+            dy = getMinY() - pt.getY();
+        } else if (pt.getY() > getMaxY()) {
+            dy = pt.getY() - getMaxY();
+        } else {
+            dy = 0f;
+        }
+		final double dz;
+        if (pt.getZ() < getMinZ()) {
+            dz = getMinZ() - pt.getZ();
+        } else if (pt.getZ() > getMaxZ()) {
+            dz = pt.getZ() - getMaxZ();
+        } else {
+            dz = 0f;
+        }
+        return dx * dx + dy * dy + dz * dz;
 	}
 
 	@Pure
 	@Override
-	default double getDistanceL1(Point3D<?, ?> p) {
-		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
-		double dx;
-		if (p.getX()<getMinX()) {
-			dx = getMinX() - p.getX();
-		}
-		else if (p.getX()>getMaxX()) {
-			dx = p.getX() - getMaxX();
-		}
-		else {
-			dx = 0f;
-		}
-		double dy;
-		if (p.getY()<getMinY()) {
-			dy = getMinY() - p.getY();
-		}
-		else if (p.getY()>getMaxY()) {
-			dy = p.getY() - getMaxY();
-		}
-		else {
-			dy = 0f;
-		}
-		double dz;
-		if (p.getZ()<getMinZ()) {
-			dz = getMinZ() - p.getZ();
-		}
-		else if (p.getZ()>getMaxZ()) {
-			dz = p.getZ() - getMaxZ();
-		}
-		else {
-			dz = 0f;
-		}
+	default double getDistanceL1(Point3D<?, ?> pt) {
+		assert pt != null : "Point must be not null"; //$NON-NLS-1$
+		final double dx;
+        if (pt.getX() < getMinX()) {
+            dx = getMinX() - pt.getX();
+        } else if (pt.getX() > getMaxX()) {
+            dx = pt.getX() - getMaxX();
+        } else {
+            dx = 0f;
+        }
+		final double dy;
+        if (pt.getY() < getMinY()) {
+            dy = getMinY() - pt.getY();
+        } else if (pt.getY() > getMaxY()) {
+            dy = pt.getY() - getMaxY();
+        } else {
+            dy = 0f;
+        }
+		final double dz;
+        if (pt.getZ() < getMinZ()) {
+            dz = getMinZ() - pt.getZ();
+        } else if (pt.getZ() > getMaxZ()) {
+            dz = pt.getZ() - getMaxZ();
+        } else {
+            dz = 0f;
+        }
 		return dx + dy + dz;
 	}
 
 	@Pure
 	@Override
-	default double getDistanceLinf(Point3D<?, ?> p) {
-		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
-		double dx;
-		if (p.getX()<getMinX()) {
-			dx = getMinX() - p.getX();
-		}
-		else if (p.getX()>getMaxX()) {
-			dx = p.getX() - getMaxX();
-		}
-		else {
-			dx = 0f;
-		}
-		double dy;
-		if (p.getY()<getMinY()) {
-			dy = getMinY() - p.getY();
-		}
-		else if (p.getY()>getMaxY()) {
-			dy = p.getY() - getMaxY();
-		}
-		else {
-			dy = 0f;
-		}
-		double dz;
-		if (p.getZ()<getMinZ()) {
-			dz = getMinZ() - p.getZ();
-		}
-		else if (p.getZ()>getMaxZ()) {
-			dz = p.getZ() - getMaxZ();
-		}
-		else {
-			dz = 0f;
-		}
+	default double getDistanceLinf(Point3D<?, ?> pt) {
+		assert pt != null : "Point must be not null"; //$NON-NLS-1$
+		final double dx;
+        if (pt.getX() < getMinX()) {
+            dx = getMinX() - pt.getX();
+        } else if (pt.getX() > getMaxX()) {
+            dx = pt.getX() - getMaxX();
+        } else {
+            dx = 0f;
+        }
+		final double dy;
+        if (pt.getY() < getMinY()) {
+            dy = getMinY() - pt.getY();
+        } else if (pt.getY() > getMaxY()) {
+            dy = pt.getY() - getMaxY();
+        } else {
+            dy = 0f;
+        }
+		final double dz;
+        if (pt.getZ() < getMinZ()) {
+            dz = getMinZ() - pt.getZ();
+        } else if (pt.getZ() > getMaxZ()) {
+            dz = pt.getZ() - getMaxZ();
+        } else {
+            dz = 0f;
+        }
 		return MathUtil.max(dx, dy, dz);
 	}
 
 	@Pure
 	@Override
 	default boolean contains(double x, double y, double z) {
-		return (x>=getMinX() && x<=getMaxX())
-				&&
-				(y>=getMinY() && y<=getMaxY())
-				&&
-				(z>=getMinZ() && z<=getMaxZ());
+        return x >= getMinX() && x <= getMaxX() && y >= getMinY() && y <= getMaxY() && z >= getMinZ() && z <= getMaxZ();
 	}
 
 	@Pure
 	@Override
-	default boolean contains(RectangularPrism3afp<?, ?, ?, ?, ?, ?> r) {
-		assert (r != null) : "Rectangle must be not null"; //$NON-NLS-1$
-		return containsRectangleRectangle(
-				getMinX(), getMinY(), getMinZ(), getMaxX(), getMaxY(), getMaxZ(),
-				r.getMinX(), r.getMinY(), r.getMinZ(), r.getMaxX(), r.getMaxY(), r.getMaxZ());
+	default boolean contains(RectangularPrism3afp<?, ?, ?, ?, ?, B> rectangularPrism) {
+        assert rectangularPrism != null : "Rectangle must be not null"; //$NON-NLS-1$
+        return containsRectangleRectangle(getMinX(), getMinY(), getMinZ(), getMaxX(), getMaxY(), getMaxZ(),
+                rectangularPrism.getMinX(), rectangularPrism.getMinY(), rectangularPrism.getMinZ(), rectangularPrism.getMaxX(),
+                rectangularPrism.getMaxY(), rectangularPrism.getMaxZ());
 	}
 
 	/** Add the given coordinate in the rectangle.
-	 * <p>
-	 * The corners of the rectangles are moved to
-	 * enclosed the given coordinate.
-	 * 
-	 * @param p
+	 *
+	 * <p>The corners of the rectangles are moved to
+	 * enclose the given coordinate.
+	 *
+	 * @param pt the point
 	 */
-	default void add(Point3D<?, ?> p) {
-		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
-		add(p.getX(), p.getY(), p.getZ());
+	default void add(Point3D<?, ?> pt) {
+		assert pt != null : "Point must be not null"; //$NON-NLS-1$
+		add(pt.getX(), pt.getY(), pt.getZ());
 	}
 
 	/** Add the given coordinate in the rectangle.
-	 * <p>
-	 * The corners of the rectangles are moved for
-	 * enclosing the given coordinate.
-	 * 
-	 * @param x
-	 * @param y
-	 * @param z
+	 *
+	 * <p>The corners of the rectangles are moved to
+	 * enclose the given coordinates.
+	 *
+     * @param x x coordinate of the point.
+     * @param y y coordinate of the point.
+	 * @param z z coordinate of the point.
 	 */
 	default void add(double x, double y, double z) {
 		if (x < getMinX()) {
@@ -457,56 +443,55 @@ public interface RectangularPrism3afp<
 			setMaxZ(z);
 		}
 	}
-	
+
 	/** Compute and replies the union of this rectangle and the given rectangle.
 	 * This function does not change this rectangle.
-	 * <p>
-	 * It is equivalent to (where <code>ur</code> is the union):
+	 *
+	 * <p>It is equivalent to (where <code>ur</code> is the union):
 	 * <pre><code>
 	 * Rectangle2f ur = new Rectangle2f(this);
 	 * ur.setUnion(r);
 	 * </code></pre>
-	 * 
-	 * @param r
+	 *
+	 * @param prism the prism
 	 * @return the union of this rectangle and the given rectangle.
 	 * @see #setUnion(Prism3afp)
 	 */
 	@Pure
-	default B createUnion(Prism3afp<?, ?, ?, ?, ?, ?> r) {
-		assert (r != null) : "Shape must be not null"; //$NON-NLS-1$
-		B rr = getGeomFactory().newBox();
+	default B createUnion(Prism3afp<?, ?, ?, ?, ?, ?> prism) {
+		assert prism != null : "Shape must be not null"; //$NON-NLS-1$
+		final B rr = getGeomFactory().newBox();
 		rr.setFromCorners(getMinX(), getMinY(), getMinZ(), getMaxX(), getMaxY(), getMaxZ());
-		rr.setUnion(r);
+		rr.setUnion(prism);
 		return rr;
 	}
 
 	/** Compute and replies the intersection of this rectangle and the given rectangle.
 	 * This function does not change this rectangle.
-	 * 
+	 *
 	 * <p>It is equivalent to (where <code>ir</code> is the intersection):
 	 * <pre><code>
 	 * Rectangle2f ir = new Rectangle2f(this);
 	 * ir.setIntersection(r);
 	 * </code></pre>
-	 * 
-	 * @param r
+	 *
+	 * @param prism the prism
 	 * @return the union of this rectangle and the given rectangle.
 	 * @see #setIntersection(Prism3afp)
 	 */
 	@Pure
-	default B createIntersection(Prism3afp<?, ?, ?, ?, ?, ?> r) {
-		assert (r != null) : "Shape must be not null"; //$NON-NLS-1$
-		B rr = getGeomFactory().newBox();
-		double x1 = Math.max(getMinX(), r.getMinX());
-		double y1 = Math.max(getMinY(), r.getMinY());
-		double z1 = Math.max(getMinZ(), r.getMinZ());
-		double x2 = Math.min(getMaxX(), r.getMaxX());
-		double y2 = Math.min(getMaxY(), r.getMaxY());
-		double z2 = Math.min(getMaxZ(), r.getMaxZ());
-		if (x1<=x2 && y1<=y2 && z1<=z2) {
+	default B createIntersection(Prism3afp<?, ?, ?, ?, ?, ?> prism) {
+		assert prism != null : "Shape must be not null"; //$NON-NLS-1$
+		final B rr = getGeomFactory().newBox();
+		final double x1 = Math.max(getMinX(), prism.getMinX());
+		final double y1 = Math.max(getMinY(), prism.getMinY());
+		final double z1 = Math.max(getMinZ(), prism.getMinZ());
+		final double x2 = Math.min(getMaxX(), prism.getMaxX());
+		final double y2 = Math.min(getMaxY(), prism.getMaxY());
+		final double z2 = Math.min(getMaxZ(), prism.getMaxZ());
+        if (x1 <= x2 && y1 <= y2 && z1 <= z2) {
 			rr.setFromCorners(x1, y1, z1, x2, y2, z2);
-		}
-		else {
+        } else {
 			rr.clear();
 		}
 		return rr;
@@ -514,152 +499,141 @@ public interface RectangularPrism3afp<
 
 	/** Compute the union of this rectangle and the given rectangle and
 	 * change this rectangle with the result of the union.
-	 * 
-	 * @param r
+	 *
+	 * @param prism the prism
 	 * @see #createUnion(Prism3afp)
 	 */
-	default void setUnion(Prism3afp<?, ?, ?, ?, ?, ?> r) {
-		assert (r != null) : "Shape must be not null"; //$NON-NLS-1$
+	default void setUnion(Prism3afp<?, ?, ?, ?, ?, ?> prism) {
+		assert prism != null : "Shape must be not null"; //$NON-NLS-1$
 		setFromCorners(
-				Math.min(getMinX(), r.getMinX()),
-				Math.min(getMinY(), r.getMinY()),
-				Math.min(getMinZ(), r.getMinZ()),
-				Math.max(getMaxX(), r.getMaxX()),
-				Math.max(getMaxY(), r.getMaxY()),
-				Math.max(getMaxZ(), r.getMaxZ()));
+				Math.min(getMinX(), prism.getMinX()),
+				Math.min(getMinY(), prism.getMinY()),
+				Math.min(getMinZ(), prism.getMinZ()),
+				Math.max(getMaxX(), prism.getMaxX()),
+				Math.max(getMaxY(), prism.getMaxY()),
+				Math.max(getMaxZ(), prism.getMaxZ()));
 	}
 
 	/** Compute the intersection of this rectangle and the given rectangle.
 	 * This function changes this rectangle.
-	 * 
+	 *
 	 * <p>If there is no intersection, this rectangle is cleared.
-	 * 
-	 * @param r
+	 *
+	 * @param prism the prism
 	 * @see #createIntersection(Prism3afp)
 	 * @see #clear()
 	 */
-	default void setIntersection(RectangularPrism3afp<?, ?, ?, ?, ?, ?> r) {
-		assert (r != null) : "Shape must be not null"; //$NON-NLS-1$
-		double x1 = Math.max(getMinX(), r.getMinX());
-		double y1 = Math.max(getMinY(), r.getMinY());
-		double z1 = Math.max(getMinZ(), r.getMinZ());
-		double x2 = Math.min(getMaxX(), r.getMaxX());
-		double y2 = Math.min(getMaxY(), r.getMaxY());
-		double z2 = Math.min(getMaxZ(), r.getMaxZ());
-		if (x1<=x2 && y1<=y2 && z1<=z2) {
-			setFromCorners(x1, y1, z1, x2, y2, z2);
-		}
-		else {
+	default void setIntersection(Prism3afp<?, ?, ?, ?, ?, ?> prism) {
+		assert prism != null : "Shape must be not null"; //$NON-NLS-1$
+		final double x1 = Math.max(getMinX(), prism.getMinX());
+		final double y1 = Math.max(getMinY(), prism.getMinY());
+		final double z1 = Math.max(getMinZ(), prism.getMinZ());
+		final double x2 = Math.min(getMaxX(), prism.getMaxX());
+		final double y2 = Math.min(getMaxY(), prism.getMaxY());
+		final double z2 = Math.min(getMaxZ(), prism.getMaxZ());
+        if (x1 <= x2 && y1 <= y2 && z1 <= z2) {
+            setFromCorners(x1, y1, z1, x2, y2, z2);
+        } else {
 			clear();
 		}
 	}
 
 	@Pure
 	@Override
-	default boolean intersects(Prism3afp<?, ?, ?, ?, ?, ?> s) {
-		assert (s != null) : "Rectangle must be not null"; //$NON-NLS-1$
+	default boolean intersects(Prism3afp<?, ?, ?, ?, ?, ?> prism) {
+		assert prism != null : "Rectangle must be not null"; //$NON-NLS-1$
 		return intersectsRectangleRectangle(
 				getMinX(), getMinY(), getMinZ(),
 				getMaxX(), getMaxY(), getMaxZ(),
-				s.getMinX(), s.getMinY(), s.getMinZ(),
-				s.getMaxX(), s.getMaxY(), s.getMaxZ());
+				prism.getMinX(), prism.getMinY(), prism.getMinZ(),
+				prism.getMaxX(), prism.getMaxY(), prism.getMaxZ());
 	}
-	
 
-	
 	@Pure
 	@Override
-	default boolean intersects(Sphere3afp<?, ?, ?, ?, ?, ?> s) {
-		assert (s != null) : "Circle must be not null"; //$NON-NLS-1$
-		return Sphere3afp.intersectsCircleRectangle(
-				s.getX(), s.getY(), s.getZ(),
-				s.getRadius(),
+	default boolean intersects(Sphere3afp<?, ?, ?, ?, ?, ?> sphere) {
+		assert sphere != null : "Circle must be not null"; //$NON-NLS-1$
+		return Sphere3afp.intersectsSpherePrism(
+				sphere.getX(), sphere.getY(), sphere.getZ(),
+				sphere.getRadius(),
 				getMinX(), getMinY(), getMinZ(),
 				getMaxX(), getMaxY(), getMaxZ());
 	}
-	
+
 	@Pure
 	@Override
-	default boolean intersects(Segment3afp<?, ?, ?, ?, ?, ?> s) {
-		assert (s != null) : "Segment must be not null"; //$NON-NLS-1$
+	default boolean intersects(Segment3afp<?, ?, ?, ?, ?, ?> segment) {
+		assert segment != null : "Segment must be not null"; //$NON-NLS-1$
 		return intersectsRectangleSegment(
 				getMinX(), getMinY(),
 				getMaxX(), getMaxY(),
-				s.getX1(), s.getY1(),
-				s.getX2(), s.getY2());
+				segment.getX1(), segment.getY1(),
+				segment.getX2(), segment.getY2());
 	}
 
 	@Pure
 	@Override
 	default boolean intersects(PathIterator3afp<?> iterator) {
-		assert (iterator != null) : "Iterator must be not null"; //$NON-NLS-1$
-		int mask = (iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2);
-		int crossings = Path3afp.computeCrossingsFromRect(
+		assert iterator != null : "Iterator must be not null"; //$NON-NLS-1$
+		final int mask = iterator.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
+		final int crossings = Path3afp.computeCrossingsFromRect(
 				0,
 				iterator,
 				getMinX(), getMinY(), getMinZ(), getMaxX(), getMaxY(), getMaxZ(),
 				CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
-		return (crossings == MathConstants.SHAPE_INTERSECTS ||
-				(crossings & mask) != 0);
+        return crossings == MathConstants.SHAPE_INTERSECTS || (crossings & mask) != 0;
 
 	}
-	
+
 	@Pure
 	@Override
-	default boolean intersects(MultiShape3afp<?, ?, ?, ?, ?, ?, ?> s) {
-		assert (s != null) : "MultiShape must be not null"; //$NON-NLS-1$
-		return s.intersects(this);
+	default boolean intersects(MultiShape3afp<?, ?, ?, ?, ?, ?, ?> multishape) {
+		assert multishape != null : "MultiShape must be not null"; //$NON-NLS-1$
+		return multishape.intersects(this);
 	}
 
-	/** Move this rectangle to avoid collision 
-	 * with the reference rectangle.
-	 * 
-	 * @param reference is the rectangle to avoid collision with.
+	/** Move this rectangular prism to avoid collision
+	 * with the reference rectangular prism.
+	 *
+	 * @param reference is the rectangular prism we want to avoid collision with.
 	 * @param result the displacement vector.
 	 */
-	// TODO
+	// TODO : integrate z coordinate
 	default void avoidCollisionWith(RectangularPrism3afp<?, ?, ?, ?, ?, ?> reference, Vector3D<?, ?> result) {
-		assert (reference != null) : "Reference rectangle must be not null"; //$NON-NLS-1$
-		assert (result != null) : "Result vector must be not null"; //$NON-NLS-1$
-		double dx1 = reference.getMaxX() - getMinX();
-		double dx2 = getMaxX() - reference.getMinX();
-		double dy1 = reference.getMaxY() - getMinY();
-		double dy2 = getMaxY() - reference.getMinY();
-//		double dz1 = reference.getMaxZ() - getMinZ();
-//		double dz2 = getMaxZ() - reference.getMinZ();
+		assert reference != null : "Reference rectangle must be not null"; //$NON-NLS-1$
+		assert result != null : "Result vector must be not null"; //$NON-NLS-1$
+		final double dx1 = reference.getMaxX() - getMinX();
+		final double dx2 = getMaxX() - reference.getMinX();
+		final double dy1 = reference.getMaxY() - getMinY();
+		final double dy2 = getMaxY() - reference.getMinY();
 
-		double absdx1 = Math.abs(dx1);
-		double absdx2 = Math.abs(dx2);
-		double absdy1 = Math.abs(dy1);
-		double absdy2 = Math.abs(dy2);
-//		double absdz1 = Math.abs(dy1);
-//		double absdz2 = Math.abs(dy2);
+		final double absdx1 = Math.abs(dx1);
+		final double absdx2 = Math.abs(dx2);
+		final double absdy1 = Math.abs(dy1);
+		final double absdy2 = Math.abs(dy2);
 
 		double dx = 0;
 		double dy = 0;
-		double dz = 0;
+		final double dz = 0;
 
 		// TODO compute dz
-		if (dx1>=0 && absdx1<=absdx2 && absdx1<=absdy1 && absdx1<=absdy2) {
-			// Move according to dx1
-			dx = dx1; 
-		}
-		else if (dx2>=0 && absdx2<=absdx1 && absdx2<=absdy1 && absdx2<=absdy2) {
-			// Move according to dx2
-			dx = - dx2;
-		}
-		else if (dy1>=0 && absdy1<=absdx1 && absdy1<=absdx2 && absdy1<=absdy2) {
-			// Move according to dy1
-			dy = dy1; 
-		}
-		else {
-			// Move according to dy2
-			dy = - dy2;
-		}
+		if (dx1 >= 0 && absdx1 <= absdx2 && absdx1 <= absdy1 && absdx1 <= absdy2) {
+            // Move according to dx1
+            dx = dx1;
+        } else if (dx2 >= 0 && absdx2 <= absdx1 && absdx2 <= absdy1 && absdx2 <= absdy2) {
+            // Move according to dx2
+            dx = -dx2;
+        } else if (dy1 >= 0 && absdy1 <= absdx1 && absdy1 <= absdx2 && absdy1 <= absdy2) {
+            // Move according to dy1
+            dy = dy1;
+        } else {
+            // Move according to dy2
+            dy = -dy2;
+        }
 		set(
-				getMinX()+dx,
-				getMinY()+dy,
-				getMinZ()+dz,
+                getMinX() + dx,
+                getMinY() + dy,
+                getMinZ() + dz,
 				getWidth(),
 				getHeight(),
 				getDepth());
@@ -667,63 +641,63 @@ public interface RectangularPrism3afp<
 		result.set(dx, dy, dz);
 	}
 
-	/** Move this rectangle to avoid collision 
+	/** Move this rectangle to avoid collision
 	 * with the reference rectangle.
-	 * 
+	 *
 	 * @param reference is the rectangle to avoid collision with.
 	 * @param displacementDirection is the direction of the allowed displacement (it is an input).
 	 *     This vector is set according to the result before returning.
 	 * @param result the displacement vector.
 	 */
-	default void avoidCollisionWith(RectangularPrism3afp<?, ?, ?, ?, ?, ?> reference, Vector3D<?, ?> displacementDirection, Vector3D<?, ?> result) {
-		assert (reference != null) : "Reference rectangle must be not null"; //$NON-NLS-1$
-		assert (result != null) : "Result vector must be not null"; //$NON-NLS-1$
+	default void avoidCollisionWith(RectangularPrism3afp<?, ?, ?, ?, ?, ?> reference, Vector3D<?, ?> displacementDirection,
+            Vector3D<?, ?> result) {
+		assert reference != null : "Reference rectangle must be not null"; //$NON-NLS-1$
+		assert result != null : "Result vector must be not null"; //$NON-NLS-1$
 		if (displacementDirection == null || displacementDirection.getLengthSquared() == 0) {
 			avoidCollisionWith(reference, result);
 			return;
 		}
 
-		double dx1 = reference.getMaxX() - getMinX();
-		double dx2 = reference.getMinX() - getMaxX();
-		double dy1 = reference.getMaxY() - getMinY();
-		double dy2 = reference.getMinY() - getMaxY();
-		double dz1 = reference.getMaxZ() - getMinZ();
-		double dz2 = reference.getMinZ() - getMaxZ();
+		final double dx1 = reference.getMaxX() - getMinX();
+		final double dx2 = reference.getMinX() - getMaxX();
+		final double dy1 = reference.getMaxY() - getMinY();
+		final double dy2 = reference.getMinY() - getMaxY();
+		final double dz1 = reference.getMaxZ() - getMinZ();
+		final double dz2 = reference.getMinZ() - getMaxZ();
 
-		double absdx1 = Math.abs(dx1);
-		double absdx2 = Math.abs(dx2);
-		double absdy1 = Math.abs(dy1);
-		double absdy2 = Math.abs(dy2);
-		double absdz1 = Math.abs(dz1);
-		double absdz2 = Math.abs(dz2);
+		final double absdx1 = Math.abs(dx1);
+		final double absdx2 = Math.abs(dx2);
+		final double absdy1 = Math.abs(dy1);
+		final double absdy2 = Math.abs(dy2);
+		final double absdz1 = Math.abs(dz1);
+		final double absdz2 = Math.abs(dz2);
 
-		double dx, dy, dz;
+		final double dx;
+		final double dy;
+		final double dz;
 
-		if (displacementDirection.getX()<0) {
-			dx = -Math.min(absdx1, absdx2);
-		}
-		else {
-			dx = Math.min(absdx1, absdx2);
-		}
+        if (displacementDirection.getX() < 0) {
+            dx = -Math.min(absdx1, absdx2);
+        } else {
+            dx = Math.min(absdx1, absdx2);
+        }
 
-		if (displacementDirection.getY()<0) {
-			dy = -Math.min(absdy1, absdy2);
-		}
-		else {
-			dy = Math.min(absdy1, absdy2);
-		}
-		
-		if (displacementDirection.getZ()<0) {
-			dz = -Math.min(absdz1, absdz2);
-		}
-		else {
-			dz = Math.min(absdz1, absdz2);
-		}
+        if (displacementDirection.getY() < 0) {
+            dy = -Math.min(absdy1, absdy2);
+        } else {
+            dy = Math.min(absdy1, absdy2);
+        }
+
+        if (displacementDirection.getZ() < 0) {
+            dz = -Math.min(absdz1, absdz2);
+        } else {
+            dz = Math.min(absdz1, absdz2);
+        }
 
 		set(
-				getMinX()+dx,
-				getMinY()+dy,
-				getMinZ()+dz,
+                getMinX() + dx,
+                getMinY() + dy,
+                getMinZ() + dz,
 				getWidth(),
 				getHeight(),
 				getDepth());
@@ -734,73 +708,64 @@ public interface RectangularPrism3afp<
 
 	@Pure
 	@Override
-	default P getClosestPointTo(Point3D<?, ?> p) {
-		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
-		double x;
+	default P getClosestPointTo(Point3D<?, ?> pt) {
+		assert pt != null : "Point must be not null"; //$NON-NLS-1$
+		final double x;
 		int same = 0;
-		if (p.getX()<getMinX()) {
-			x = getMinX();
-		}
-		else if (p.getX()>getMaxX()) {
-			x = getMaxX();
-		}
-		else {
-			x = p.getX();
-			++same;
-		}
-		double y;
-		if (p.getY()<getMinY()) {
-			y = getMinY();
-		}
-		else if (p.getY()>getMaxY()) {
-			y = getMaxY();
-		}
-		else {
-			y = p.getY();
-			++same;
-		}
-		double z;
-		if (p.getZ()<getMinZ()) {
-			z = getMinZ();
-		}
-		else if (p.getZ()>getMaxZ()) {
-			z = getMaxZ();
-		}
-		else {
-			z = p.getZ();
-			++same;
-		}
-		if (same==3) {
-			return getGeomFactory().convertToPoint(p);
-		}
+        if (pt.getX() < getMinX()) {
+            x = getMinX();
+        } else if (pt.getX() > getMaxX()) {
+            x = getMaxX();
+        } else {
+            x = pt.getX();
+            ++same;
+        }
+        final double y;
+        if (pt.getY() < getMinY()) {
+            y = getMinY();
+        } else if (pt.getY() > getMaxY()) {
+            y = getMaxY();
+        } else {
+            y = pt.getY();
+            ++same;
+        }
+        final double z;
+        if (pt.getZ() < getMinZ()) {
+            z = getMinZ();
+        } else if (pt.getZ() > getMaxZ()) {
+            z = getMaxZ();
+        } else {
+            z = pt.getZ();
+            ++same;
+        }
+        if (same == 3) {
+            return getGeomFactory().convertToPoint(pt);
+        }
 		return getGeomFactory().newPoint(x, y, z);
 	}
 
 	@Pure
 	@Override
-	default P getFarthestPointTo(Point3D<?, ?> p) {
-		assert (p != null) : "Point must be not null"; //$NON-NLS-1$
-		double x;
-		if (p.getX()<=getCenterX()) {
-			x = getMaxX();
-		}
-		else {
-			x = getMinX();
-		}
-		double y;
-		if (p.getY()<=getCenterY()) {
-			y = getMaxY();
-		}
-		else {
-			y = getMinY();
-		}
-		double z;
-		if (p.getZ()<=getCenterZ()) {
-			z = getMaxZ();
-		}
-		else {
-			z = getMinZ();
-		}
+	default P getFarthestPointTo(Point3D<?, ?> pt) {
+		assert pt != null : "Point must be not null"; //$NON-NLS-1$
+		final double x;
+        if (pt.getX() <= getCenterX()) {
+            x = getMaxX();
+        } else {
+            x = getMinX();
+        }
+        final double y;
+        if (pt.getY() <= getCenterY()) {
+            y = getMaxY();
+        } else {
+            y = getMinY();
+        }
+        final double z;
+        if (pt.getZ() <= getCenterZ()) {
+            z = getMaxZ();
+        } else {
+            z = getMinZ();
+        }
 		return getGeomFactory().newPoint(x, y, z);
 	}
 
@@ -815,7 +780,7 @@ public interface RectangularPrism3afp<
 
 
 	/** Iterator on the path elements of the rectangle.
-	 * 
+	 *
 	 * @param <T> the type of the path elements.
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
@@ -823,30 +788,31 @@ public interface RectangularPrism3afp<
 	 * @mavenartifactid $ArtifactId$
 	 * @since 13.0
 	 */
+	@SuppressWarnings("checkstyle:magicnumber")
 	class RectanglePathIterator<T extends PathElement3afp>
 			implements PathIterator3afp<T> {
 
 		private final RectangularPrism3afp<?, ?, T, ?, ?, ?> rectangle;
 
 		private double x1;
-		
+
 		private double y1;
 
 		private double z1;
-		
+
 		private double x2;
-		
+
 		private double y2;
 
 		private double z2;
-		
-		private int index = 0;
-		
+
+		private int index;
+
 		/**
 		 * @param rectangle the iterated rectangle.
 		 */
 		public RectanglePathIterator(RectangularPrism3afp<?, ?, T, ?, ?, ?> rectangle) {
-			assert (rectangle != null) : "Rectangle must be not null"; //$NON-NLS-1$
+			assert rectangle != null : "Rectangle must be not null"; //$NON-NLS-1$
 			this.rectangle = rectangle;
 			if (rectangle.isEmpty()) {
 				this.index = 5;
@@ -859,12 +825,12 @@ public interface RectangularPrism3afp<
 				this.z2 = rectangle.getMaxZ();
 			}
 		}
-		
+
 		@Override
 		public PathIterator3afp<T> restartIterations() {
 			return new RectanglePathIterator<>(this.rectangle);
 		}
-		
+
 		@Pure
 		@Override
 		public boolean hasNext() {
@@ -872,10 +838,11 @@ public interface RectangularPrism3afp<
 		}
 
 		@Override
+		@SuppressWarnings("checkstyle:returncount")
 		public T next() {
-			int idx = this.index;
-			++ this.index;
-			switch(idx) {
+			final int idx = this.index;
+            ++this.index;
+            switch (idx) {
 			case 0:
 				return this.rectangle.getGeomFactory().newMovePathElement(
 						this.x1, this.y1, this.z1);
@@ -928,7 +895,7 @@ public interface RectangularPrism3afp<
 		public boolean isPolyline() {
 			return false;
 		}
-		
+
 		@Pure
 		@Override
 		public boolean isCurved() {
@@ -955,13 +922,14 @@ public interface RectangularPrism3afp<
 	}
 
 	/** Iterator on the path elements of the rectangle.
-	 * 
+	 *
 	 * @param <T> the type of the path elements.
 	 * @author $Author: sgalland$
 	 * @version $FullVersion$
 	 * @mavengroupid $GroupId$
 	 * @mavenartifactid $ArtifactId$
 	 */
+	@SuppressWarnings("checkstyle:magicnumber")
 	class TransformedRectanglePathIterator<T extends PathElement3afp> implements PathIterator3afp<T> {
 
 		private final Transform3D transform;
@@ -973,13 +941,13 @@ public interface RectangularPrism3afp<
 		private Point3D<?, ?> p2;
 
 		private double x1;
-		
+
 		private double y1;
 
 		private double z1;
-		
+
 		private double x2;
-		
+
 		private double y2;
 
 		private double z2;
@@ -991,8 +959,8 @@ public interface RectangularPrism3afp<
 		 * @param transform the transformation.
 		 */
 		public TransformedRectanglePathIterator(RectangularPrism3afp<?, ?, T, ?, ?, ?> rectangle, Transform3D transform) {
-			assert (rectangle != null) : "Rectangle must be not null"; //$NON-NLS-1$
-			assert (transform != null) : "Transformation must be not null"; //$NON-NLS-1$
+			assert rectangle != null : "Rectangle must be not null"; //$NON-NLS-1$
+			assert transform != null : "Transformation must be not null"; //$NON-NLS-1$
 			this.rectangle = rectangle;
 			this.transform = transform;
 			if (rectangle.isEmpty()) {
@@ -1009,7 +977,7 @@ public interface RectangularPrism3afp<
 				this.z2 = rectangle.getMaxZ();
 			}
 		}
-		
+
 		@Override
 		public PathIterator3afp<T> restartIterations() {
 			return new TransformedRectanglePathIterator<>(this.rectangle, this.transform);
@@ -1022,10 +990,11 @@ public interface RectangularPrism3afp<
 		}
 
 		@Override
+		@SuppressWarnings("checkstyle:returncount")
 		public T next() {
-			int idx = this.index;
+			final int idx = this.index;
 			++this.index;
-			switch(idx) {
+            switch (idx) {
 			case 0:
 				this.p2.set(this.x1, this.y1, this.z1);
 				this.transform.transform(this.p2);
