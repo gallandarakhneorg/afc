@@ -275,7 +275,10 @@ public abstract class AbstractShape2aiTest<T extends Shape2ai<?, ?, ?, ?, ?, B>,
 	@Test
 	public abstract void containsRectangle2ai();
 
-	@Test
+    @Test
+    public abstract void containsShape2D();
+
+    @Test
 	public abstract void intersectsRectangle2ai();
 
 	@Test

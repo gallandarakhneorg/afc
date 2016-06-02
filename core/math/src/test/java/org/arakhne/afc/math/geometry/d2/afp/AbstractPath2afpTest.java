@@ -55,11 +55,11 @@ extends AbstractShape2afpTest<T, B> {
 		return path;
 	}
 
-	protected PathShadow2afp<B> createShadow(int x1, int y1, int x2, int y2) {
+	protected PathShadow2afp createShadow(int x1, int y1, int x2, int y2) {
 		T path = (T) createPath();
 		path.moveTo(x1, y1);
 		path.lineTo(x2, y2);
-		return new PathShadow2afp<>(path);
+		return new PathShadow2afp(path);
 	}
 
 	@Test
@@ -1950,7 +1950,7 @@ extends AbstractShape2afpTest<T, B> {
 	}
 
 	@Override
-	public void containsShape2afp() {
+	public void containsShape2D() {
 		Path2afp path1 = createPath();
 		path1.moveTo(204.0, 193.5);
 		path1.lineTo(204.0, 85.5);

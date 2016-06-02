@@ -408,7 +408,7 @@ public abstract class AbstractCircle2afpTest<T extends Circle2afp<?, T, ?, ?, ?,
 	}
 
 	@Override
-	public void containsShape2afp() {
+	public void containsShape2D() {
 		assertFalse(this.shape.contains(createCircle(-4, -4, 1)));
 		assertFalse(this.shape.contains(createCircle(-5, -5, 10)));
 		assertFalse(this.shape.contains(createCircle(-5, -5, 5.5)));

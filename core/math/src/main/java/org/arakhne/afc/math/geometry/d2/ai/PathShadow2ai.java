@@ -31,37 +31,69 @@ import org.arakhne.afc.math.geometry.PathWindingRule;
 /** Shadow of a path that is used for computing the crossing values
  * between a shape and the shadow.
  *
- * @param <B> the type of the bounds.
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public class PathShadow2ai<B extends Rectangle2ai<?, ?, ?, ?, ?, B>> {
+public class PathShadow2ai {
 
     private final PathIterator2ai<?> pathIterator;
 
-    private final B bounds;
+    private final int boundingMinX;
+
+    private final int boundingMinY;
+
+    private final int boundingMaxX;
+
+    private final int boundingMaxY;
 
     private boolean started;
 
     /** Construct new path shadow.
      * @param path the path that is constituting the shadow.
      */
-    public PathShadow2ai(Path2ai<?, ?, ?, ?, ?, B> path) {
-        this(path.getPathIterator(), path.toBoundingBox());
+    public PathShadow2ai(Path2ai<?, ?, ?, ?, ?, ?> path) {
+        assert path != null : "Path must be not null"; //$NON-NLS-1$
+        this.pathIterator = path.getPathIterator();
+        final Rectangle2ai<?, ?, ?, ?, ?, ?> box = path.toBoundingBox();
+        this.boundingMinX = box.getMinX();
+        this.boundingMinY = box.getMinY();
+        this.boundingMaxX = box.getMaxX();
+        this.boundingMaxY = box.getMaxY();
     }
 
     /** Construct new path shadow.
      * @param pathIterator the iterator on the path that is constituting the shadow.
-     * @param bounds the bounds of the shadow.
+     * @param bounds the bounding box enclosing the primitives of the path iterator.
      */
-    public PathShadow2ai(PathIterator2ai<?> pathIterator, B bounds) {
+    public PathShadow2ai(PathIterator2ai<?> pathIterator, Rectangle2ai<?, ?, ?, ?, ?, ?> bounds) {
         assert pathIterator != null : "Path iterator must be not null"; //$NON-NLS-1$
-        assert bounds != null : "Bounds must be not null"; //$NON-NLS-1$
+        assert bounds != null : "Bonuding box xmust be not null"; //$NON-NLS-1$
         this.pathIterator = pathIterator;
-        this.bounds = bounds;
+        this.boundingMinX = bounds.getMinX();
+        this.boundingMinY = bounds.getMinY();
+        this.boundingMaxX = bounds.getMaxX();
+        this.boundingMaxY = bounds.getMaxY();
+    }
+
+    /** Construct new path shadow.
+     * @param pathIterator the iterator on the path that is constituting the shadow.
+     * @param minX minimum x coordinate of the bounding box enclosing the primitives of the path iterator.
+     * @param minY minimum y coordinate of the bounding box enclosing the primitives of the path iterator.
+     * @param maxX maximum x coordinate of the bounding box enclosing the primitives of the path iterator.
+     * @param maxY maximum y coordinate of the bounding box enclosing the primitives of the path iterator.
+     */
+    public PathShadow2ai(PathIterator2ai<?> pathIterator, int minX, int minY, int maxX, int maxY) {
+        assert pathIterator != null : "Path iterator must be not null"; //$NON-NLS-1$
+        assert minX <= maxX : "Minimum X coordinate must be lower than or equal to the maxmimum X coordinate"; //$NON-NLS-1$
+        assert minY <= maxY : "Minimum X coordinate must be lower than or equal to the maxmimum X coordinate"; //$NON-NLS-1$
+        this.pathIterator = pathIterator;
+        this.boundingMinX = minX;
+        this.boundingMinY = minY;
+        this.boundingMaxX = maxX;
+        this.boundingMaxY = maxY;
     }
 
     /** Compute the crossings between this shadow and
@@ -81,10 +113,10 @@ public class PathShadow2ai<B extends Rectangle2ai<?, ?, ?, ?, ?, B>> {
             int x1, int y1) {
         int numCrosses =
                 Segment2ai.computeCrossingsFromRect(crossings,
-                        this.bounds.getMinX(),
-                        this.bounds.getMinY(),
-                        this.bounds.getMaxX(),
-                        this.bounds.getMaxY(),
+                        this.boundingMinX,
+                        this.boundingMinY,
+                        this.boundingMaxX,
+                        this.boundingMaxY,
                         x0, y0,
                         x1, y1);
 
@@ -92,9 +124,9 @@ public class PathShadow2ai<B extends Rectangle2ai<?, ?, ?, ?, ?, B>> {
             // The segment is intersecting the bounds of the shadow path.
             // We must consider the shape of shadow path now.
             final PathShadowData data = new PathShadowData(
-                    this.bounds.getMinX(),
-                    this.bounds.getMinY(),
-                    this.bounds.getMaxY());
+                    this.boundingMinX,
+                    this.boundingMinY,
+                    this.boundingMaxY);
 
             final PathIterator2ai<?> iterator;
             if (this.started) {

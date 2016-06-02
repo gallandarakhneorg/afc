@@ -31,6 +31,7 @@ import org.arakhne.afc.math.Unefficient;
 import org.arakhne.afc.math.geometry.CrossingComputationType;
 import org.arakhne.afc.math.geometry.PathWindingRule;
 import org.arakhne.afc.math.geometry.d2.Point2D;
+import org.arakhne.afc.math.geometry.d2.Shape2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
 
@@ -2283,13 +2284,13 @@ public interface Segment2afp<
 
 	@Pure
 	@Override
-	default boolean contains(Rectangle2afp<?, ?, ?, ?, ?, B> rectangle) {
+	default boolean contains(Rectangle2afp<?, ?, ?, ?, ?, ?> rectangle) {
 		return false;
 	}
 
 	@Pure
 	@Override
-	default boolean contains(Shape2afp<?, ?, ?, ?, ?, B> shape) {
+	default boolean contains(Shape2D<?, ?, ?, ?, ?, ?> shape) {
 		return false;
 	}
 

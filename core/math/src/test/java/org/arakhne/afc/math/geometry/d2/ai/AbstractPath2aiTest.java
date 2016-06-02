@@ -492,6 +492,7 @@ public abstract class AbstractPath2aiTest<T extends Path2ai<?, T, ?, ?, ?, B>,
 		path2.lineTo(-31, 103);
 		path2.lineTo(-34, 103);
 		assertEquals(1, Path2ai.computeCrossingsFromPath(
+		        0,
 				(PathIterator2ai) path2.getPathIterator(),
 				new PathShadow2ai(path1),
 				CrossingComputationType.STANDARD));
@@ -508,6 +509,7 @@ public abstract class AbstractPath2aiTest<T extends Path2ai<?, T, ?, ?, ?, B>,
 		path2.lineTo(-31, 103);
 		path2.lineTo(-34, 103);
 		assertEquals(MathConstants.SHAPE_INTERSECTS, Path2ai.computeCrossingsFromPath(
+                0,
 				(PathIterator2ai) path2.getPathIterator(),
 				new PathShadow2ai(path1),
 				CrossingComputationType.STANDARD));
@@ -524,6 +526,7 @@ public abstract class AbstractPath2aiTest<T extends Path2ai<?, T, ?, ?, ?, B>,
 		path2.lineTo(-34, 103);
 		path2.closePath();
 		assertEquals(MathConstants.SHAPE_INTERSECTS, Path2ai.computeCrossingsFromPath(
+                0,
 				(PathIterator2ai) path2.getPathIterator(),
 				new PathShadow2ai(path1),
 				CrossingComputationType.STANDARD));
@@ -541,6 +544,7 @@ public abstract class AbstractPath2aiTest<T extends Path2ai<?, T, ?, ?, ?, B>,
 		path2.lineTo(-34, 103);
 		path2.closePath();
 		assertEquals(MathConstants.SHAPE_INTERSECTS, Path2ai.computeCrossingsFromPath(
+                0,
 				(PathIterator2ai) path2.getPathIterator(),
 				new PathShadow2ai(path1),
 				CrossingComputationType.STANDARD));
@@ -562,6 +566,7 @@ public abstract class AbstractPath2aiTest<T extends Path2ai<?, T, ?, ?, ?, B>,
 		path2.lineTo(-31, 103);
 		path2.lineTo(-34, 103);
 		assertEquals(MathConstants.SHAPE_INTERSECTS, Path2ai.computeCrossingsFromPath(
+                0,
 				(PathIterator2ai) path2.getPathIterator(),
 				new PathShadow2ai(path1),
 				CrossingComputationType.AUTO_CLOSE));
@@ -578,6 +583,7 @@ public abstract class AbstractPath2aiTest<T extends Path2ai<?, T, ?, ?, ?, B>,
 		path2.lineTo(-31, 103);
 		path2.lineTo(-34, 103);
 		assertEquals(MathConstants.SHAPE_INTERSECTS, Path2ai.computeCrossingsFromPath(
+                0,
 				(PathIterator2ai) path2.getPathIterator(),
 				new PathShadow2ai(path1),
 				CrossingComputationType.AUTO_CLOSE));
@@ -594,6 +600,7 @@ public abstract class AbstractPath2aiTest<T extends Path2ai<?, T, ?, ?, ?, B>,
 		path2.lineTo(-34, 103);
 		path2.closePath();
 		assertEquals(MathConstants.SHAPE_INTERSECTS, Path2ai.computeCrossingsFromPath(
+                0,
 				(PathIterator2ai) path2.getPathIterator(),
 				new PathShadow2ai(path1),
 				CrossingComputationType.AUTO_CLOSE));
@@ -611,6 +618,7 @@ public abstract class AbstractPath2aiTest<T extends Path2ai<?, T, ?, ?, ?, B>,
 		path2.lineTo(-34, 103);
 		path2.closePath();
 		assertEquals(MathConstants.SHAPE_INTERSECTS, Path2ai.computeCrossingsFromPath(
+                0,
 				(PathIterator2ai) path2.getPathIterator(),
 				new PathShadow2ai(path1),
 				CrossingComputationType.AUTO_CLOSE));
@@ -632,6 +640,7 @@ public abstract class AbstractPath2aiTest<T extends Path2ai<?, T, ?, ?, ?, B>,
 		path2.lineTo(-31, 103);
 		path2.lineTo(-34, 103);
 		assertEquals(0, Path2ai.computeCrossingsFromPath(
+                0,
 				(PathIterator2ai) path2.getPathIterator(),
 				new PathShadow2ai(path1),
 				CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
@@ -648,6 +657,7 @@ public abstract class AbstractPath2aiTest<T extends Path2ai<?, T, ?, ?, ?, B>,
 		path2.lineTo(-31, 103);
 		path2.lineTo(-34, 103);
 		assertEquals(MathConstants.SHAPE_INTERSECTS, Path2ai.computeCrossingsFromPath(
+                0,
 				(PathIterator2ai) path2.getPathIterator(),
 				new PathShadow2ai(path1),
 				CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
@@ -664,6 +674,7 @@ public abstract class AbstractPath2aiTest<T extends Path2ai<?, T, ?, ?, ?, B>,
 		path2.lineTo(-34, 103);
 		path2.closePath();
 		assertEquals(MathConstants.SHAPE_INTERSECTS, Path2ai.computeCrossingsFromPath(
+                0,
 				(PathIterator2ai) path2.getPathIterator(),
 				new PathShadow2ai(path1),
 				CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
@@ -681,6 +692,7 @@ public abstract class AbstractPath2aiTest<T extends Path2ai<?, T, ?, ?, ?, B>,
 		path2.lineTo(-34, 103);
 		path2.closePath();
 		assertEquals(MathConstants.SHAPE_INTERSECTS, Path2ai.computeCrossingsFromPath(
+                0,
 				(PathIterator2ai) path2.getPathIterator(),
 				new PathShadow2ai(path1),
 				CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON));
@@ -1101,7 +1113,28 @@ public abstract class AbstractPath2aiTest<T extends Path2ai<?, T, ?, ?, ?, B>,
 		assertFalse(this.shape.contains(createRectangle(6, 0, 1, 1)));
 	}
 
-	@Test
+    @Test
+    @Override
+    public void containsShape2D() {
+        assertFalse(this.shape.contains(createCircle(0, 0, 1)));
+        assertFalse(this.shape.contains(createCircle(4, 3, 1)));
+        assertFalse(this.shape.contains(createCircle(2, 2, 1)));
+        assertFalse(this.shape.contains(createCircle(2, 1, 1)));
+        assertFalse(this.shape.contains(createCircle(3, 0, 1)));
+        assertTrue(this.shape.contains(createCircle(3, 0, 2)));
+        assertFalse(this.shape.contains(createCircle(-1, -1, 1)));
+        assertFalse(this.shape.contains(createCircle(4, -3, 1)));
+        assertTrue(this.shape.contains(createCircle(5, -3, 1)));
+        assertFalse(this.shape.contains(createCircle(-3, 4, 1)));
+        assertFalse(this.shape.contains(createCircle(6, -5, 1)));
+        assertTrue(this.shape.contains(createCircle(4, 0, 1)));
+        assertFalse(this.shape.contains(createCircle(5, 0, 1)));
+        assertFalse(this.shape.contains(createCircle(5, 0, 0)));
+        assertFalse(this.shape.contains(createCircle(5, 0, 2)));
+        assertFalse(this.shape.contains(createCircle(6, 0, 1)));
+    }
+
+    @Test
 	@Override
 	public void intersectsRectangle2ai() {
 		assertTrue(this.shape.intersects(createRectangle(0, 0, 1, 1)));

@@ -132,6 +132,20 @@ public interface Shape2D<
     @Pure
     boolean contains(Point2D<?, ?> point);
 
+    /** Replies if this shape is inside the given shape.
+     *
+     * <p>You must use the containing functions with a specific parameter type in place of
+     * this general function. Indeed, the implementation of this function is unefficient due
+     * to the tests against the types of the given shape, and the cast operators.
+     *
+     * @param shape the shape to compare to.
+     * @return <code>true</code> if the given shape is inside this shape;
+     * <code>false</code> otherwise.
+     */
+    @Pure
+    @Unefficient
+    boolean contains(Shape2D<?, ?, ?, ?, ?, ?> shape);
+
     /** Replies the point on the shape that is closest to the given point.
      *
      * @param point the point.

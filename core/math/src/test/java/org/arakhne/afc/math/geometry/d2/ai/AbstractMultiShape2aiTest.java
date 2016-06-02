@@ -173,7 +173,16 @@ public abstract class AbstractMultiShape2aiTest<T extends MultiShape2ai<?, T, C,
 		assertTrue(this.shape.contains(createRectangle(5, 8, 1, 1)));
 	}
 
-	@Override
+    @Override
+    public void containsShape2D() {
+        assertFalse(this.shape.contains(createCircle(-20, 14, 1)));
+        assertFalse(this.shape.contains(createCircle(-2,-10, 1)));
+        assertFalse(this.shape.contains(createCircle(-6,16, 1)));
+        assertFalse(this.shape.contains(createCircle(4, 8, 1)));
+        assertTrue(this.shape.contains(createCircle(5, 8, 1)));
+    }
+
+    @Override
 	public void getClosestPointTo() {
 		Point2D result;
 		// Outside bounding box

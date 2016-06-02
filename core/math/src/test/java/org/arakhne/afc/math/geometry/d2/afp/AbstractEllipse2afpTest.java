@@ -500,7 +500,7 @@ public abstract class AbstractEllipse2afpTest<T extends Ellipse2afp<?, T, ?, ?, 
 	}
 
 	@Override
-	public void containsShape2afp() {
+	public void containsShape2D() {
 		assertFalse(this.shape.contains(createCircle(0, 0, 1)));
 		assertFalse(this.shape.contains(createCircle(4, 6, 100)));
 		assertFalse(this.shape.contains(createCircle(4, 6, 4)));
@@ -732,15 +732,22 @@ public abstract class AbstractEllipse2afpTest<T extends Ellipse2afp<?, T, ?, ?, 
 		assertTrue(this.shape.intersects(createRoundRectangle(6, 7, 2, 2, .1, .2)));
 		assertTrue(this.shape.intersects(createRoundRectangle(6, 17, 2, 2, .1, .2)));
 
-		assertTrue(this.shape.intersects(createRoundRectangle(4, 7, 2, 2, .1, .2)));
-		assertTrue(this.shape.intersects(createRoundRectangle(4, 17, 2, 2, .1, .2)));
-		assertTrue(this.shape.intersects(createRoundRectangle(9, 7, 2, 2, .1, .2)));
-		assertTrue(this.shape.intersects(createRoundRectangle(9, 17, 2, 2, .1, .2)));
+		assertFalse(this.shape.intersects(createRoundRectangle(4, 7, 2, 2, .1, .2)));
+		assertFalse(this.shape.intersects(createRoundRectangle(4, 17, 2, 2, .1, .2)));
+		assertFalse(this.shape.intersects(createRoundRectangle(9, 7, 2, 2, .1, .2)));
+		assertFalse(this.shape.intersects(createRoundRectangle(9, 17, 2, 2, .1, .2)));
 
 		assertFalse(this.shape.intersects(createRoundRectangle(3, 6, 2, 2, .1, .2)));
 		assertFalse(this.shape.intersects(createRoundRectangle(3.1, 6.1, 2, 2, .1, .2)));
 		assertFalse(this.shape.intersects(createRoundRectangle(3.2, 6.2, 2, 2, .1, .2)));
-		assertTrue(this.shape.intersects(createRoundRectangle(3.2, 6.3, 2, 2, .1, .2)));
+		assertFalse(this.shape.intersects(createRoundRectangle(3.2, 6.3, 2, 2, .1, .2)));
+
+		assertFalse(this.shape.intersects(createRoundRectangle(4.3, 6.4, 2, 2, .1, .2)));
+        assertFalse(this.shape.intersects(createRoundRectangle(4.3, 6.5, 2, 2, .1, .2)));
+        assertFalse(this.shape.intersects(createRoundRectangle(4.3, 6.6, 2, 2, .1, .2)));
+        assertTrue(this.shape.intersects(createRoundRectangle(4.3, 6.7, 2, 2, .1, .2)));
+        assertTrue(this.shape.intersects(createRoundRectangle(4.3, 6.8, 2, 2, .1, .2)));
+        assertTrue(this.shape.intersects(createRoundRectangle(4.3, 6.9, 2, 2, .1, .2)));
 	}
 
 	@Test
@@ -1054,12 +1061,14 @@ public abstract class AbstractEllipse2afpTest<T extends Ellipse2afp<?, T, ?, ?, 
 	public void staticIntersectsEllipseEllipse() {
 		assertTrue(Ellipse2afp.intersectsEllipseEllipse(0, 0, 1, 1,
 				0, 0, 1, 1));
-		assertTrue(Ellipse2afp.intersectsEllipseEllipse(0, 0, 1, 1,
+		assertFalse(Ellipse2afp.intersectsEllipseEllipse(0, 0, 1, 1,
 				-5, -5, 6, 6));
-		assertTrue(Ellipse2afp.intersectsEllipseEllipse(0, 0, 1, 1,
+        assertTrue(Ellipse2afp.intersectsEllipseEllipse(0, 0, 1, 1,
+                -5, -5, 6.1, 6.1));
+		assertFalse(Ellipse2afp.intersectsEllipseEllipse(0, 0, 1, 1,
 				.5, .5, 4.5, 4.5));
 		assertTrue(Ellipse2afp.intersectsEllipseEllipse(0, 0, 1, 1,
-				.5, .5, 4.5, .1));
+				.5, .5, 4.5, .5));
 		assertTrue(Ellipse2afp.intersectsEllipseEllipse(0, 0, 1, 1,
 				-5, -5, 10, 10));
 		assertFalse(Ellipse2afp.intersectsEllipseEllipse(0, 0, 1, 1,

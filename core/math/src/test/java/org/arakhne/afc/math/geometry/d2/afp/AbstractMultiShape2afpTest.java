@@ -178,7 +178,7 @@ public abstract class AbstractMultiShape2afpTest<T extends MultiShape2afp<?, T, 
 	}
 
 	@Override
-	public void containsShape2afp() {
+	public void containsShape2D() {
 		assertFalse(this.shape.contains(createCircle(-20, 14, .5)));
 		assertFalse(this.shape.contains(createCircle(-2,-10, .5)));
 		assertFalse(this.shape.contains(createCircle(-6,16, .5)));

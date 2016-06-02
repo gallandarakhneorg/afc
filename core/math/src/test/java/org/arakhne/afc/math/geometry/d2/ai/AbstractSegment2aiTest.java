@@ -897,7 +897,19 @@ public abstract class AbstractSegment2aiTest<T extends Segment2ai<?, T, ?, ?, ?,
 		assertTrue(this.shape.contains(createRectangle(0,0,2,0)));
 	}
 
-	@Test
+    @Test
+    public void containsShape2D() {
+        assertFalse(this.shape.contains(createCircle(0,0,1)));
+        assertFalse(this.shape.contains(createCircle(0,0,8)));
+        assertFalse(this.shape.contains(createCircle(0,0,6)));
+        assertFalse(this.shape.contains(createCircle(0,0,100)));
+        assertFalse(this.shape.contains(createCircle(7,10,1)));
+        assertFalse(this.shape.contains(createCircle(16,0,100)));
+        assertFalse(this.shape.contains(createCircle(0,3,3)));
+        assertTrue(this.shape.contains(createCircle(0,3,10)));
+    }
+
+    @Test
 	public void clipToRectangle() {
 		assertTrue(this.shape.clipToRectangle(3, 1, 7, 6));
 		assertEquals(3, this.shape.getX1());

@@ -911,6 +911,7 @@ public interface Path2ai<
 	 * thrown.
 	 * The caller must check r[xy]{min, max} for NaN values.
 	 *
+     * @param crossings the initial crossing.
 	 * @param iterator is the iterator on the path elements.
 	 * @param shadow is the description of the shape to project to the right.
 	 * @param type is the type of special computation to apply. If <code>null</code>, it
@@ -920,8 +921,9 @@ public interface Path2ai<
 	 */
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	static int computeCrossingsFromPath(
+	        int crossings,
 			PathIterator2ai<?> iterator,
-			PathShadow2ai<?> shadow,
+			PathShadow2ai shadow,
 			CrossingComputationType type) {
 		assert iterator != null : "Iterator must not be null"; //$NON-NLS-1$
 		assert shadow != null : "The shadow projected on the right must not be null"; //$NON-NLS-1$
@@ -942,11 +944,11 @@ public interface Path2ai<
 		int movx = curx;
 		int cury = pathElement1.getToY();
 		int movy = cury;
-		int crossings = 0;
+		int numCrossings = crossings;
 		int endx;
 		int endy;
 
-		while (crossings != MathConstants.SHAPE_INTERSECTS
+		while (numCrossings != MathConstants.SHAPE_INTERSECTS
 				&& iterator.hasNext()) {
 			pathElement1 = iterator.next();
 			switch (pathElement1.getType()) {
@@ -961,11 +963,11 @@ public interface Path2ai<
 			case LINE_TO:
 				endx = pathElement1.getToX();
 				endy = pathElement1.getToY();
-				crossings = shadow.computeCrossings(crossings,
+				numCrossings = shadow.computeCrossings(numCrossings,
 						curx, cury,
 						endx, endy);
-				if (crossings == MathConstants.SHAPE_INTERSECTS) {
-					return crossings;
+				if (numCrossings == MathConstants.SHAPE_INTERSECTS) {
+					return numCrossings;
 				}
 				curx = endx;
 				cury = endy;
@@ -979,14 +981,14 @@ public interface Path2ai<
 				subPath.quadTo(
 						pathElement1.getCtrlX1(), pathElement1.getCtrlY1(),
 						endx, endy);
-				final int n1 = computeCrossingsFromPath(
+				numCrossings = computeCrossingsFromPath(
+				        numCrossings,
 						subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
 						shadow,
 						CrossingComputationType.STANDARD);
-				if (n1 == MathConstants.SHAPE_INTERSECTS) {
-					return n1;
+				if (numCrossings == MathConstants.SHAPE_INTERSECTS) {
+					return numCrossings;
 				}
-				crossings += n1;
 				curx = endx;
 				cury = endy;
 				break;
@@ -1000,14 +1002,14 @@ public interface Path2ai<
 						pathElement1.getCtrlX1(), pathElement1.getCtrlY1(),
 						pathElement1.getCtrlX2(), pathElement1.getCtrlY2(),
 						endx, endy);
-				final int n2 = computeCrossingsFromPath(
+				numCrossings = computeCrossingsFromPath(
+				        numCrossings,
 						subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
 						shadow,
 						CrossingComputationType.STANDARD);
-				if (n2 == MathConstants.SHAPE_INTERSECTS) {
-					return n2;
+				if (numCrossings == MathConstants.SHAPE_INTERSECTS) {
+					return numCrossings;
 				}
-				crossings += n2;
 				curx = endx;
 				cury = endy;
 				break;
@@ -1022,26 +1024,26 @@ public interface Path2ai<
 						pathElement1.getRadiusX(), pathElement1.getRadiusY(),
 						pathElement1.getRotationX(), pathElement1.getLargeArcFlag(),
 						pathElement1.getSweepFlag());
-				final int n3 = computeCrossingsFromPath(
+				numCrossings = computeCrossingsFromPath(
+				        numCrossings,
 						subPath.getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
 						shadow,
 						CrossingComputationType.STANDARD);
-				if (n3 == MathConstants.SHAPE_INTERSECTS) {
-					return n3;
+				if (numCrossings == MathConstants.SHAPE_INTERSECTS) {
+					return numCrossings;
 				}
-				crossings += n3;
 				curx = endx;
 				cury = endy;
 				break;
 			case CLOSE:
 				if (curx != movx || cury != movy) {
-					crossings = shadow.computeCrossings(crossings,
+					numCrossings = shadow.computeCrossings(numCrossings,
 							curx, cury,
 							movx, movy);
 				}
 				// Stop as soon as possible
-				if (crossings != 0) {
-					return crossings;
+				if (numCrossings != 0) {
+					return numCrossings;
 				}
 				curx = movx;
 				cury = movy;
@@ -1050,7 +1052,7 @@ public interface Path2ai<
 			}
 		}
 
-		assert crossings != MathConstants.SHAPE_INTERSECTS;
+		assert numCrossings != MathConstants.SHAPE_INTERSECTS;
 
 		final boolean isOpen = (curx != movx) || (cury != movy);
 
@@ -1058,14 +1060,14 @@ public interface Path2ai<
 			switch (type) {
 			case AUTO_CLOSE:
 				// Not closed
-				crossings = shadow.computeCrossings(crossings,
+				numCrossings = shadow.computeCrossings(numCrossings,
 						curx, cury,
 						movx, movy);
 				break;
 			case SIMPLE_INTERSECTION_WHEN_NOT_POLYGON:
 				// Assume that when is the path is open, only
 				// SHAPE_INTERSECTS may be return
-				crossings = 0;
+				numCrossings = 0;
 				break;
 			case STANDARD:
 			default:
@@ -1073,7 +1075,7 @@ public interface Path2ai<
 			}
 		}
 
-		return crossings;
+		return numCrossings;
 	}
 
 	/**
@@ -1131,7 +1133,7 @@ public interface Path2ai<
 
 	@Pure
 	@Override
-	default boolean contains(Rectangle2ai<?, ?, ?, ?, ?, B> box) {
+	default boolean contains(Rectangle2ai<?, ?, ?, ?, ?, ?> box) {
 		assert box != null : "Rectangle must not be null"; //$NON-NLS-1$
 		return contains(getPathIterator(),
 				box.getMinX(), box.getMinY(), box.getWidth(), box.getHeight());
@@ -1408,8 +1410,8 @@ public interface Path2ai<
 		assert iterator != null : "Iterator must not be null"; //$NON-NLS-1$
 		final int mask = getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
 		final int crossings = computeCrossingsFromPath(
-				iterator,
-				new PathShadow2ai<>(this),
+		        0, iterator,
+				new PathShadow2ai(this),
 				CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
 		return crossings == MathConstants.SHAPE_INTERSECTS
 				|| (crossings & mask) != 0;

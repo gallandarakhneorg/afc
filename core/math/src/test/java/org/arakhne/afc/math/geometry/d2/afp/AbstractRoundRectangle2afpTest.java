@@ -621,7 +621,7 @@ public abstract class AbstractRoundRectangle2afpTest<T extends RoundRectangle2af
 	}
 
 	@Override
-	public void containsShape2afp() {
+	public void containsShape2D() {
 		assertFalse(this.shape.contains(createCircle(0, 0, 1)));
 		assertFalse(this.shape.contains(createCircle(0, 0, 7)));
 		assertFalse(this.shape.contains(createCircle(0, 0, 20)));

@@ -649,7 +649,7 @@ public interface RoundRectangle2afp<
 	}
 
 	@Override
-	default boolean contains(Rectangle2afp<?, ?, ?, ?, ?, B> rectangle) {
+	default boolean contains(Rectangle2afp<?, ?, ?, ?, ?, ?> rectangle) {
 		assert rectangle != null : "Rectangle must be not null"; //$NON-NLS-1$
 		return containsRoundRectangleRectangle(
 				getMinX(), getMinY(), getWidth(), getHeight(), getArcWidth(), getArcHeight(),

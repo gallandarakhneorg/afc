@@ -325,7 +325,7 @@ public interface Rectangle2ai<
 
 	@Pure
 	@Override
-	default boolean contains(Rectangle2ai<?, ?, ?, ?, ?, B> box) {
+	default boolean contains(Rectangle2ai<?, ?, ?, ?, ?, ?> box) {
 		assert box != null : "Rectangle must not be null"; //$NON-NLS-1$
 		return box.getMinX() >= getMinX() && box.getMaxX() <= getMaxX()
 				&& box.getMinY() >= getMinY() && box.getMaxY() <= getMaxY();

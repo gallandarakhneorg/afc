@@ -185,7 +185,9 @@ public abstract class AbstractTriangle2afpTest<T extends Triangle2afp<?, T, ?, ?
 		assertEpsilonEquals(15.55876, Triangle2afp.computeSquaredDistanceTrianglePoint(5, 8, -10, 1, -1, -2, 6, 2));
 		assertEpsilonEquals(1, Triangle2afp.computeSquaredDistanceTrianglePoint(5, 8, -10, 1, -1, -2, 5, 9));
 		
-		assertEpsilonEquals(3.97445, Triangle2afp.computeSquaredDistanceTrianglePoint(-10, 7, -4, 6, -10, 6, -3.156934306569343, 4.193430656934306));
+		assertEpsilonEquals(3.97445, Triangle2afp.computeSquaredDistanceTrianglePoint(
+		        -10, 7, -4, 6, -10, 6,
+		        -3.156934306569343, 4.193430656934306));
 	}
 
 	@Test
@@ -881,7 +883,7 @@ public abstract class AbstractTriangle2afpTest<T extends Triangle2afp<?, T, ?, ?
 	}
 
 	@Override
-	public void containsShape2afp() {
+	public void containsShape2D() {
 		assertFalse(this.shape.contains(createCircle(0, 0, 1)));
 		assertTrue(this.shape.contains(createCircle(-2, 1, 1)));
 		assertFalse(this.shape.contains(createCircle(-30, 20, 1)));

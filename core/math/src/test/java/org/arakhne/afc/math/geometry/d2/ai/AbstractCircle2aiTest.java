@@ -329,7 +329,18 @@ public abstract class AbstractCircle2aiTest<T extends Circle2ai<?, T, ?, ?, ?, B
 		assertFalse(this.shape.contains(createRectangle(9,11,5,5)));
 	}
 
-	@Test
+    @Test
+    public void containsShape2D() {
+        assertFalse(this.shape.contains(createCircle(0,0,1)));
+        assertFalse(this.shape.contains(createCircle(0,0,8)));
+        assertFalse(this.shape.contains(createCircle(0,0,8)));
+        assertFalse(this.shape.contains(createCircle(0,0,100)));
+        assertTrue(this.shape.contains(createCircle(7,10,1)));
+        assertFalse(this.shape.contains(createCircle(16,0,100)));
+        assertFalse(this.shape.contains(createCircle(9,11,5)));
+    }
+
+    @Test
 	public void intersectsRectangle2ai() {
 		assertFalse(this.shape.intersects(createRectangle(0,0,1,1)));
 		assertFalse(this.shape.intersects(createRectangle(0,0,8,1)));

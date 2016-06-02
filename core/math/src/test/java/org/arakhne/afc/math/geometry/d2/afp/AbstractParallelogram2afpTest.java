@@ -1160,7 +1160,7 @@ B extends Rectangle2afp<?, ?, ?, ?, ?, B>> extends AbstractShape2afpTest<T, B> {
 	}
 
 	@Override
-	public void containsShape2afp() {
+	public void containsShape2D() {
 		assertFalse(this.shape.contains(createCircle(0, 0, 1)));
 		assertFalse(this.shape.contains(createCircle(0, 1, 1)));
 		assertFalse(this.shape.contains(createCircle(0, 2, 1)));

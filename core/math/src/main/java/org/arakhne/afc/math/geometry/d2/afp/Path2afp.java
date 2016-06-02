@@ -97,7 +97,7 @@ public interface Path2afp<
 	static int computeCrossingsFromPath(
 			int crossings,
 			PathIterator2afp<?> iterator,
-			PathShadow2afp<?> shadow,
+			PathShadow2afp shadow,
 			CrossingComputationType type) {
 		assert iterator != null : "Iterator must be not null"; //$NON-NLS-1$
 		assert shadow != null : "Shadow to the right must be not null"; //$NON-NLS-1$
@@ -312,8 +312,7 @@ public interface Path2afp<
 	 * @param result the closest point on pi.
 	 * @return <code>true</code> if a point was found. Otherwise <code>false</code>.
 	 */
-	@SuppressWarnings({"unchecked", "rawtypes", "checkstyle:cyclomaticcomplexity",
-	           "checkstyle:npathcomplexity"})
+	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	@Unefficient
 	static boolean getClosestPointTo(PathIterator2afp<? extends PathElement2afp> pi,
 			PathIterator2afp<? extends PathElement2afp> shape, Point2D<?, ?> result) {
@@ -409,7 +408,8 @@ public interface Path2afp<
 			final int mask = pi.getWindingRule() == PathWindingRule.NON_ZERO ? -1 : 2;
 			final int crossings = computeCrossingsFromPath(
 					0, pi.restartIterations(),
-					new PathShadow2afp(shape.restartIterations(), box),
+					new PathShadow2afp(shape.restartIterations(),
+					        box.getMinX(), box.getMinY(), box.getMaxX(), box.getMaxY()),
 					CrossingComputationType.STANDARD);
 			if (crossings != MathConstants.SHAPE_INTERSECTS && (crossings & mask) != 0) {
 				// The second shape is inside the first.
@@ -2848,7 +2848,7 @@ public interface Path2afp<
 	}
 
 	@Override
-	default boolean contains(Rectangle2afp<?, ?, ?, ?, ?, B> rectangle) {
+	default boolean contains(Rectangle2afp<?, ?, ?, ?, ?, ?> rectangle) {
 		assert rectangle != null : "Rectangle must be not null"; //$NON-NLS-1$
 		return containsRectangle(getPathIterator(MathConstants.SPLINE_APPROXIMATION_RATIO),
 				rectangle.getMinX(), rectangle.getMinY(), rectangle.getWidth(), rectangle.getHeight());
@@ -2964,7 +2964,7 @@ public interface Path2afp<
 		final int crossings = computeCrossingsFromPath(
 				0,
 				path.getPathIterator(),
-				new PathShadow2afp<>(this),
+				new PathShadow2afp(this),
 				CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
 		return crossings == MathConstants.SHAPE_INTERSECTS
 				|| (crossings & mask) != 0;
@@ -2978,7 +2978,7 @@ public interface Path2afp<
 		final int crossings = computeCrossingsFromPath(
 				0,
 				iterator,
-				new PathShadow2afp<>(this),
+				new PathShadow2afp(this),
 				CrossingComputationType.SIMPLE_INTERSECTION_WHEN_NOT_POLYGON);
 		return crossings == MathConstants.SHAPE_INTERSECTS
 				|| (crossings & mask) != 0;

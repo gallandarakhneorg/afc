@@ -32,37 +32,69 @@ import org.arakhne.afc.math.geometry.PathWindingRule;
 /** Shadow of a path that is used for computing the crossing values
  * between a shape and the shadow.
  *
- * @param <B> the type of the bounds.
  * @author $Author: sgalland$
  * @version $FullVersion$
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @since 13.0
  */
-public class PathShadow2afp<B extends Rectangle2afp<?, ?, ?, ?, ?, B>> {
+public class PathShadow2afp {
 
     private final PathIterator2afp<?> pathIterator;
 
-    private final B bounds;
+    private final double boundingMinX;
+
+    private final double boundingMinY;
+
+    private final double boundingMaxX;
+
+    private final double boundingMaxY;
 
     private boolean started;
 
     /** Construct new path shadow.
      * @param path the path that is constituting the shadow.
      */
-    public PathShadow2afp(Path2afp<?, ?, ?, ?, ?, B> path) {
-        this(path.getPathIterator(), path.toBoundingBox());
+    public PathShadow2afp(Path2afp<?, ?, ?, ?, ?, ?> path) {
+        assert path != null : "Path must be not null"; //$NON-NLS-1$
+        this.pathIterator = path.getPathIterator();
+        final Rectangle2afp<?, ?, ?, ?, ?, ?> box = path.toBoundingBox();
+        this.boundingMinX = box.getMinX();
+        this.boundingMinY = box.getMinY();
+        this.boundingMaxX = box.getMaxX();
+        this.boundingMaxY = box.getMaxY();
     }
 
     /** Construct new path shadow.
      * @param pathIterator the iterator on the path that is constituting the shadow.
-     * @param bounds the bounds of the shadow.
+     * @param bounds the bounding box enclosing the primitives of the path iterator.
      */
-    public PathShadow2afp(PathIterator2afp<?> pathIterator, B bounds) {
+    public PathShadow2afp(PathIterator2afp<?> pathIterator, Rectangle2afp<?, ?, ?, ?, ?, ?> bounds) {
         assert pathIterator != null : "Path iterator must be not null"; //$NON-NLS-1$
-        assert bounds != null : "Bounds must be not null"; //$NON-NLS-1$
+        assert bounds != null : "Bounding box must be not null"; //$NON-NLS-1$
         this.pathIterator = pathIterator;
-        this.bounds = bounds;
+        this.boundingMinX = bounds.getMinX();
+        this.boundingMinY = bounds.getMinY();
+        this.boundingMaxX = bounds.getMaxX();
+        this.boundingMaxY = bounds.getMaxY();
+    }
+
+    /** Construct new path shadow.
+     * @param pathIterator the iterator on the path that is constituting the shadow.
+     * @param minX minimum x coordinate of the bounding box enclosing the primitives of the path iterator.
+     * @param minY minimum y coordinate of the bounding box enclosing the primitives of the path iterator.
+     * @param maxX maximum x coordinate of the bounding box enclosing the primitives of the path iterator.
+     * @param maxY maximum y coordinate of the bounding box enclosing the primitives of the path iterator.
+     */
+    public PathShadow2afp(PathIterator2afp<?> pathIterator, double minX, double minY, double maxX, double maxY) {
+        assert pathIterator != null : "Path iterator must be not null"; //$NON-NLS-1$
+        assert minX <= maxX : "Minimum X coordinate must be lower than or equal to the maxmimum X coordinate"; //$NON-NLS-1$
+        assert minY <= maxY : "Minimum X coordinate must be lower than or equal to the maxmimum X coordinate"; //$NON-NLS-1$
+        this.pathIterator = pathIterator;
+        this.boundingMinX = minX;
+        this.boundingMinY = minY;
+        this.boundingMaxX = maxX;
+        this.boundingMaxY = maxY;
     }
 
     /** Compute the crossings between this shadow and
@@ -81,16 +113,12 @@ public class PathShadow2afp<B extends Rectangle2afp<?, ?, ?, ?, ?, B>> {
             int crossings,
             double x0, double y0,
             double x1, double y1) {
-        if (this.bounds == null) {
-            return crossings;
-        }
-
         int numCrosses =
                 Segment2afp.computeCrossingsFromRect(crossings,
-                        this.bounds.getMinX(),
-                        this.bounds.getMinY(),
-                        this.bounds.getMaxX(),
-                        this.bounds.getMaxY(),
+                        this.boundingMinX,
+                        this.boundingMinY,
+                        this.boundingMaxX,
+                        this.boundingMaxY,
                         x0, y0,
                         x1, y1);
 
@@ -98,9 +126,9 @@ public class PathShadow2afp<B extends Rectangle2afp<?, ?, ?, ?, ?, B>> {
             // The segment is intersecting the bounds of the shadow path.
             // We must consider the shape of shadow path now.
             final PathShadowData data = new PathShadowData(
-                    this.bounds.getMinX(),
-                    this.bounds.getMinY(),
-                    this.bounds.getMaxY());
+                    this.boundingMinX,
+                    this.boundingMinY,
+                    this.boundingMaxY);
 
             final PathIterator2afp<?> iterator;
             if (this.started) {
@@ -306,17 +334,17 @@ public class PathShadow2afp<B extends Rectangle2afp<?, ?, ?, ?, ?, B>> {
     }
 
     /** Determine where the segment is crossing the two shadow lines.
-    *
-    * @param shadowX0 x coordinate of the reference point of the first shadow line.
-    * @param shadowY0 y coordinate of the reference point of the first shadow line.
-    * @param shadowX1 x coordinate of the reference point of the second shadow line.
-    * @param shadowY1 y coordinate of the reference point of the second shadow line.
-    * @param sx0 x coordinate of the first point of the segment.
-    * @param sy0 y coordinate of the first point of the segment.
-    * @param sx1 x coordinate of the second point of the segment.
-    * @param sy1 y coordinate of the second point of the segment.
-    * @param data the data to update.
-    */
+     *
+     * @param shadowX0 x coordinate of the reference point of the first shadow line.
+     * @param shadowY0 y coordinate of the reference point of the first shadow line.
+     * @param shadowX1 x coordinate of the reference point of the second shadow line.
+     * @param shadowY1 y coordinate of the reference point of the second shadow line.
+     * @param sx0 x coordinate of the first point of the segment.
+     * @param sy0 y coordinate of the first point of the segment.
+     * @param sx1 x coordinate of the second point of the segment.
+     * @param sy1 y coordinate of the second point of the segment.
+     * @param data the data to update.
+     */
     @SuppressWarnings({"checkstyle:parameternumber", "checkstyle:cyclomaticcomplexity",
             "checkstyle:npathcomplexity"})
     protected static void crossSegmentTwoShadowLines(

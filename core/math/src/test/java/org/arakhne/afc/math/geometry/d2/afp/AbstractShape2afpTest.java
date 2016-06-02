@@ -342,7 +342,7 @@ public abstract class AbstractShape2afpTest<T extends Shape2afp<?, ?, ?, ?, ?, ?
 	public abstract void containsRectangle2afp();
 
 	@Test
-	public abstract void containsShape2afp();
+	public abstract void containsShape2D();
 
 	@Test
 	public abstract void intersectsRectangle2afp();

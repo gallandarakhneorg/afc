@@ -30,6 +30,7 @@ import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Shape2D;
 import org.arakhne.afc.math.geometry.d2.Transform2D;
 import org.arakhne.afc.math.geometry.d2.Vector2D;
+import org.arakhne.afc.math.geometry.d2.ai.Rectangle2ai;
 
 /** 2D shape with 2D floating coordinates.
  *
@@ -61,39 +62,33 @@ public interface Shape2afp<
 		return contains(pt.getX(), pt.getY());
 	}
 
-	/** Replies if the given shape is inside this shape.
-	 *
-	 * @param shape the shape to be inside.
-	 * @return <code>true</code> if the given shape is inside this
-	 *     shape, otherwise <code>false</code>.
-	 * @since 13.0
-	 */
 	@Pure
 	@Unefficient
-	default boolean contains(Shape2afp<?, ?, ?, ?, ?, B> shape) {
+	@Override
+	default boolean contains(Shape2D<?, ?, ?, ?, ?, ?> shape) {
 		assert shape != null : "Shape must be not null"; //$NON-NLS-1$
 		if (isEmpty()) {
 			return false;
 		}
 		if (shape instanceof Rectangle2afp) {
-			return contains((Rectangle2afp<?, ?, ?, ?, ?, B>) shape);
+			return contains((Rectangle2afp<?, ?, ?, ?, ?, ?>) shape);
 		}
 		final PathIterator2afp<?> iterator = getPathIterator();
 		final int crossings;
 		if (shape instanceof Circle2afp) {
-			final Circle2afp<?, ?, ?, ?, ?, B> circle = (Circle2afp<?, ?, ?, ?, ?, B>) shape;
+			final Circle2afp<?, ?, ?, ?, ?, ?> circle = (Circle2afp<?, ?, ?, ?, ?, ?>) shape;
 			crossings = Path2afp.computeCrossingsFromCircle(
 					0, iterator,
 					circle.getCenterX(), circle.getCenterY(), circle.getRadius(),
 					CrossingComputationType.STANDARD);
 		} else if (shape instanceof Ellipse2afp) {
-			final Ellipse2afp<?, ?, ?, ?, ?, B> ellipse = (Ellipse2afp<?, ?, ?, ?, ?, B>) shape;
+			final Ellipse2afp<?, ?, ?, ?, ?, ?> ellipse = (Ellipse2afp<?, ?, ?, ?, ?, ?>) shape;
 			crossings = Path2afp.computeCrossingsFromEllipse(
 					0, iterator,
 					ellipse.getMinX(), ellipse.getMinY(), ellipse.getWidth(), ellipse.getHeight(),
 					CrossingComputationType.STANDARD);
 		} else if (shape instanceof RoundRectangle2afp) {
-			final RoundRectangle2afp<?, ?, ?, ?, ?, B> roundRectangle = (RoundRectangle2afp<?, ?, ?, ?, ?, B>) shape;
+			final RoundRectangle2afp<?, ?, ?, ?, ?, ?> roundRectangle = (RoundRectangle2afp<?, ?, ?, ?, ?, ?>) shape;
 			crossings = Path2afp.computeCrossingsFromRoundRect(
 					0, iterator,
 					roundRectangle.getMinX(), roundRectangle.getMinY(),
@@ -101,14 +96,14 @@ public interface Shape2afp<
 					roundRectangle.getArcWidth(), roundRectangle.getArcHeight(),
 					CrossingComputationType.STANDARD);
 		} else if (shape instanceof Segment2afp) {
-			final Segment2afp<?, ?, ?, ?, ?, B> segment = (Segment2afp<?, ?, ?, ?, ?, B>) shape;
+			final Segment2afp<?, ?, ?, ?, ?, ?> segment = (Segment2afp<?, ?, ?, ?, ?, ?>) shape;
 			crossings = Path2afp.computeCrossingsFromSegment(
 					0, iterator,
 					segment.getX1(), segment.getY1(),
 					segment.getX2(), segment.getY2(),
 					CrossingComputationType.STANDARD);
 		} else if (shape instanceof Triangle2afp) {
-			final Triangle2afp<?, ?, ?, ?, ?, B> triangle = (Triangle2afp<?, ?, ?, ?, ?, B>) shape;
+			final Triangle2afp<?, ?, ?, ?, ?, ?> triangle = (Triangle2afp<?, ?, ?, ?, ?, ?>) shape;
 			crossings = Path2afp.computeCrossingsFromTriangle(
 					0, iterator,
 					triangle.getX1(), triangle.getY1(),
@@ -119,11 +114,29 @@ public interface Shape2afp<
 		    // Only a polygon can contain another shape.
 		    return false;
 		} else {
-            final PathIterator2afp<?> shapePathIterator = shape.getPathIterator();
-			final B shapeBounds = shape.toBoundingBox();
+            final double minX;
+			final double minY;
+			final double maxX;
+			final double maxY;
+			final Shape2D<?, ?, ?, ?, ?, ?> originalBounds = shape.toBoundingBox();
+			if (originalBounds instanceof Rectangle2afp) {
+			    final Rectangle2afp<?, ?, ?, ?, ?, ?> rect = (Rectangle2afp<?, ?, ?, ?, ?, ?>) originalBounds;
+			    minX = rect.getMinX();
+                minY = rect.getMinY();
+                maxX = rect.getMaxX();
+                maxY = rect.getMaxY();
+			} else {
+			    assert originalBounds instanceof Rectangle2ai : "Unsupported type of bounding box"; //$NON-NLS-1$
+                final Rectangle2ai<?, ?, ?, ?, ?, ?> rect = (Rectangle2ai<?, ?, ?, ?, ?, ?>) originalBounds;
+                minX = rect.getMinX();
+                minY = rect.getMinY();
+                maxX = rect.getMaxX();
+                maxY = rect.getMaxY();
+			}
+			final PathIterator2afp<?> shapePathIterator = iterator.getGeomFactory().convert(shape.getPathIterator());
 			crossings = Path2afp.computeCrossingsFromPath(
 					0, iterator,
-					new PathShadow2afp<>(shapePathIterator, shapeBounds),
+					new PathShadow2afp(shapePathIterator, minX, minY, maxX, maxY),
 					CrossingComputationType.STANDARD);
 		}
 
@@ -139,7 +152,7 @@ public interface Shape2afp<
 	 *     shape, otherwise <code>false</code>.
 	 */
 	@Pure
-	boolean contains(Rectangle2afp<?, ?, ?, ?, ?, B> rectangle);
+	boolean contains(Rectangle2afp<?, ?, ?, ?, ?, ?> rectangle);
 
 	/** Replies if the given point is inside this shape.
 	 *
