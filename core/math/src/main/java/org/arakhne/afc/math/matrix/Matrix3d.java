@@ -51,7 +51,6 @@ public class Matrix3d implements Serializable, Cloneable {
 
     private static final long serialVersionUID = -7386754038391115819L;
 
-<<<<<<< 0423e846064a5eb7d8b18bf01e95f749e22b3e18
     /**
      * The first matrix element in the first row.
      */

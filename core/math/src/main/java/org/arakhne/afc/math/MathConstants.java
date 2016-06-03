@@ -49,15 +49,15 @@ public final class MathConstants {
 	/** Top zone according to the Cohen-Sutherland algorithm: {@code y > ymax}.
 	 */
 	public static final int COHEN_SUTHERLAND_TOP = 8;
-	
+
 	/** Front zone according to the Cohen-Sutherland algorithm.
 	 */
 	public static final int COHEN_SUTHERLAND_FRONT = 16;
-	
+
 	/** Behind zone according to the Cohen-Sutherland algorithm.
 	 */
 	public static final int COHEN_SUTHERLAND_BACK = 32;
-	
+
 	/** PI.
 	 */
 	public static final double PI = Math.PI;
