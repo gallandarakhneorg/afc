@@ -30,6 +30,8 @@ import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 import org.arakhne.afc.attrs.attr.Attribute;
 import org.arakhne.afc.attrs.attr.AttributeException;
 import org.arakhne.afc.attrs.attr.AttributeType;
@@ -52,12 +54,14 @@ public interface AttributeProvider  extends Cloneable, Serializable {
 	 *
 	 * @return the deep copy.
 	 */
+	@Pure
 	AttributeProvider clone();
 
 	/** Replies the count of attributes.
 	 *
 	 * @return the count of attributes.
 	 */
+	@Pure
 	int getAttributeCount();
 
 	/** Replies if the given attribute exists.
@@ -65,18 +69,21 @@ public interface AttributeProvider  extends Cloneable, Serializable {
 	 * @param name the name.
 	 * @return <code>true</code> is an attribute with the given name exists, otherwise <code>false</code>
 	 */
+	@Pure
 	boolean hasAttribute(String name);
 
 	/** Replies all the attributes.
 	 *
 	 * @return the list of all attributes
 	 */
+	@Pure
 	Collection<Attribute> getAllAttributes();
 
 	/** Replies all the attributes.
 	 *
 	 * @return an iterable object that contains the attributes.
 	 */
+	@Pure
 	Iterable<Attribute> attributes();
 
 	/** Replies all the attributes sorted by type.
@@ -86,6 +93,7 @@ public interface AttributeProvider  extends Cloneable, Serializable {
 	 *
 	 * @return the attributes grouped by type.
 	 */
+	@Pure
 	Map<AttributeType, Collection<Attribute>> getAllAttributesByType();
 
 	/** Replies all the attribute names.
@@ -94,6 +102,7 @@ public interface AttributeProvider  extends Cloneable, Serializable {
 	 *
 	 * @return the list of all attribute names.
 	 */
+	@Pure
 	Collection<String> getAllAttributeNames();
 
 	/** Replies the value for the given attribute.
@@ -101,6 +110,7 @@ public interface AttributeProvider  extends Cloneable, Serializable {
 	 * @param name the name.
 	 * @return the value or <code>null</code>
 	 */
+	@Pure
 	AttributeValue getAttribute(String name);
 
 	/** Replies the value for the given attribute.
@@ -110,6 +120,7 @@ public interface AttributeProvider  extends Cloneable, Serializable {
 	 *     has no value.
 	 * @return the value
 	 */
+	@Pure
 	boolean getAttribute(String name, boolean defaultValue);
 
 	/** Replies the value for the given attribute.
@@ -119,6 +130,7 @@ public interface AttributeProvider  extends Cloneable, Serializable {
 	 *     has no value.
 	 * @return the value
 	 */
+	@Pure
 	int getAttribute(String name, int defaultValue);
 
 	/** Replies the value for the given attribute.
@@ -128,6 +140,7 @@ public interface AttributeProvider  extends Cloneable, Serializable {
 	 *     has no value.
 	 * @return the value
 	 */
+	@Pure
 	long getAttribute(String name, long defaultValue);
 
 	/** Replies the value for the given attribute.
@@ -137,6 +150,7 @@ public interface AttributeProvider  extends Cloneable, Serializable {
 	 *     has no value.
 	 * @return the value
 	 */
+	@Pure
 	float getAttribute(String name, float defaultValue);
 
 	/** Replies the value for the given attribute.
@@ -146,6 +160,7 @@ public interface AttributeProvider  extends Cloneable, Serializable {
 	 *     has no value.
 	 * @return the value
 	 */
+	@Pure
 	double getAttribute(String name, double defaultValue);
 
 	/** Replies the value for the given attribute.
@@ -155,6 +170,7 @@ public interface AttributeProvider  extends Cloneable, Serializable {
 	 *     has no value.
 	 * @return the value
 	 */
+	@Pure
 	String getAttribute(String name, String defaultValue);
 
 	/** Replies the value for the given attribute.
@@ -164,6 +180,7 @@ public interface AttributeProvider  extends Cloneable, Serializable {
 	 *     has no value.
 	 * @return the value
 	 */
+	@Pure
 	UUID getAttribute(String name, UUID defaultValue);
 
 	/** Replies the value for the given attribute.
@@ -173,6 +190,7 @@ public interface AttributeProvider  extends Cloneable, Serializable {
 	 *     has no value.
 	 * @return the value
 	 */
+	@Pure
 	URL getAttribute(String name, URL defaultValue);
 
 	/** Replies the value for the given attribute.
@@ -182,6 +200,7 @@ public interface AttributeProvider  extends Cloneable, Serializable {
 	 *     has no value.
 	 * @return the value
 	 */
+	@Pure
 	URI getAttribute(String name, URI defaultValue);
 
 	/** Replies the value for the given attribute.
@@ -192,6 +211,7 @@ public interface AttributeProvider  extends Cloneable, Serializable {
 	 * @return the value
 	 * @deprecated since 13.0
 	 */
+	@Pure
 	@Deprecated
 	Image getAttribute(String name, Image defaultValue);
 
@@ -202,6 +222,7 @@ public interface AttributeProvider  extends Cloneable, Serializable {
 	 *     has no value.
 	 * @return the value
 	 */
+	@Pure
 	Date getAttribute(String name, Date defaultValue);
 
 	/** Replies the value for the given attribute.
@@ -212,6 +233,7 @@ public interface AttributeProvider  extends Cloneable, Serializable {
 	 * @return the value
 	 * @deprecated since 13.0
 	 */
+	@Pure
 	@Deprecated
 	Color getAttribute(String name, Color defaultValue);
 
@@ -222,6 +244,7 @@ public interface AttributeProvider  extends Cloneable, Serializable {
 	 *     has no value.
 	 * @return the value or <code>null</code>
 	 */
+	@Pure
 	AttributeValue getAttribute(String name, AttributeValue defaultValue);
 
 	/** Replies the value for the given attribute.
@@ -231,6 +254,7 @@ public interface AttributeProvider  extends Cloneable, Serializable {
 	 *     has no value.
 	 * @return the value
 	 */
+	@Pure
 	InetAddress getAttribute(String name, InetAddress defaultValue);
 
 	/** Replies the value for the given attribute.
@@ -240,6 +264,7 @@ public interface AttributeProvider  extends Cloneable, Serializable {
 	 *     has no value.
 	 * @return the value
 	 */
+	@Pure
 	InetAddress getAttribute(String name, InetSocketAddress defaultValue);
 
 	/** Replies the value for the given attribute.
@@ -250,6 +275,7 @@ public interface AttributeProvider  extends Cloneable, Serializable {
 	 *     has no value.
 	 * @return the value
 	 */
+	@Pure
 	<T extends Enum<T>> T getAttribute(String name, T defaultValue);
 
 	/** Replies the value for the given attribute.
@@ -259,6 +285,7 @@ public interface AttributeProvider  extends Cloneable, Serializable {
 	 *     has no value.
 	 * @return the value
 	 */
+	@Pure
 	Class<?> getAttribute(String name, Class<?> defaultValue);
 
 	/** Replies the attribute with the given name.
@@ -266,6 +293,7 @@ public interface AttributeProvider  extends Cloneable, Serializable {
 	 * @param name the name.
 	 * @return the attribute or <code>null</code>
 	 */
+	@Pure
 	Attribute getAttributeObject(String name);
 
 	/** Replies the value for the given attribute.
@@ -274,6 +302,7 @@ public interface AttributeProvider  extends Cloneable, Serializable {
 	 * @return the value
 	 * @throws AttributeException if the attribute was never set.
 	 */
+	@Pure
 	boolean getAttributeAsBool(String name) throws AttributeException;
 
 	/** Replies the value for the given attribute.
@@ -282,6 +311,7 @@ public interface AttributeProvider  extends Cloneable, Serializable {
 	 * @return the value
 	 * @throws AttributeException if the attribute was never set.
 	 */
+	@Pure
 	int getAttributeAsInt(String name) throws AttributeException;
 
 	/** Replies the value for the given attribute.
@@ -290,6 +320,7 @@ public interface AttributeProvider  extends Cloneable, Serializable {
 	 * @return the value
 	 * @throws AttributeException if the attribute was never set.
 	 */
+	@Pure
 	long getAttributeAsLong(String name) throws AttributeException;
 
 	/** Replies the value for the given attribute.
@@ -298,6 +329,7 @@ public interface AttributeProvider  extends Cloneable, Serializable {
 	 * @return the value
 	 * @throws AttributeException if the attribute was never set.
 	 */
+	@Pure
 	float getAttributeAsFloat(String name) throws AttributeException;
 
 	/** Replies the value for the given attribute.
@@ -306,6 +338,7 @@ public interface AttributeProvider  extends Cloneable, Serializable {
 	 * @return the value
 	 * @throws AttributeException if the attribute was never set.
 	 */
+	@Pure
 	double getAttributeAsDouble(String name) throws AttributeException;
 
 	/** Replies the value for the given attribute.
@@ -314,6 +347,7 @@ public interface AttributeProvider  extends Cloneable, Serializable {
 	 * @return the value
 	 * @throws AttributeException if the attribute was never set.
 	 */
+	@Pure
 	String getAttributeAsString(String name) throws AttributeException;
 
 	/** Replies the value for the given attribute.
@@ -322,6 +356,7 @@ public interface AttributeProvider  extends Cloneable, Serializable {
 	 * @return the value
 	 * @throws AttributeException if the attribute was never set.
 	 */
+	@Pure
 	UUID getAttributeAsUUID(String name) throws AttributeException;
 
 	/** Replies the value for the given attribute.
@@ -330,6 +365,7 @@ public interface AttributeProvider  extends Cloneable, Serializable {
 	 * @return the value
 	 * @throws AttributeException if the attribute was never set.
 	 */
+	@Pure
 	URL getAttributeAsURL(String name) throws AttributeException;
 
 	/** Replies the value for the given attribute.
@@ -338,6 +374,7 @@ public interface AttributeProvider  extends Cloneable, Serializable {
 	 * @return the value
 	 * @throws AttributeException if the attribute was never set.
 	 */
+	@Pure
 	URI getAttributeAsURI(String name) throws AttributeException;
 
 	/** Replies the value for the given attribute.
@@ -347,6 +384,7 @@ public interface AttributeProvider  extends Cloneable, Serializable {
 	 * @throws AttributeException if the attribute was never set.
 	 * @deprecated since 13.0
 	 */
+	@Pure
 	@Deprecated
 	Image getAttributeAsImage(String name) throws AttributeException;
 
@@ -356,6 +394,7 @@ public interface AttributeProvider  extends Cloneable, Serializable {
 	 * @return the value
 	 * @throws AttributeException if the attribute was never set.
 	 */
+	@Pure
 	Date getAttributeAsDate(String name) throws AttributeException;
 
 	/** Replies the value for the given attribute.
@@ -365,6 +404,7 @@ public interface AttributeProvider  extends Cloneable, Serializable {
 	 * @throws AttributeException if the attribute was never set.
 	 * @deprecated since 13.0
 	 */
+	@Pure
 	@Deprecated
 	Color getAttributeAsColor(String name) throws AttributeException;
 
@@ -374,6 +414,7 @@ public interface AttributeProvider  extends Cloneable, Serializable {
 	 * @return the value
 	 * @throws AttributeException if the attribute was never set.
 	 */
+	@Pure
 	InetAddress getAttributeAsInetAddress(String name) throws AttributeException;
 
 	/** Replies the value for the given attribute.
@@ -382,6 +423,7 @@ public interface AttributeProvider  extends Cloneable, Serializable {
 	 * @return the value
 	 * @throws AttributeException if the attribute was never set.
 	 */
+	@Pure
 	Enum<?> getAttributeAsEnumeration(String name) throws AttributeException;
 
 	/** Replies the value for the given attribute.
@@ -392,6 +434,7 @@ public interface AttributeProvider  extends Cloneable, Serializable {
 	 * @return the value
 	 * @throws AttributeException if the attribute was never set.
 	 */
+	@Pure
 	<T extends Enum<T>> T getAttributeAsEnumeration(String name, Class<T> type) throws AttributeException;
 
 	/** Replies the value for the given attribute.
@@ -400,6 +443,7 @@ public interface AttributeProvider  extends Cloneable, Serializable {
 	 * @return the value
 	 * @throws AttributeException if the attribute was never set.
 	 */
+	@Pure
 	Class<?> getAttributeAsJavaClass(String name) throws AttributeException;
 
 	/** Clean the internal memory-storage structures if they exist.
@@ -417,6 +461,7 @@ public interface AttributeProvider  extends Cloneable, Serializable {
 	 *
 	 * @return the map, never <code>null</code>.
 	 */
+	@Pure
 	Map<String, Object> toMap();
 
 	/** Fill the given map with the values stored in this attribute provider.

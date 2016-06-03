@@ -24,6 +24,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.NavigableSet;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /**
  * Utilities on lists.
  *
@@ -125,6 +127,7 @@ public final class ListUtil {
 	 * @param data is the data to search for.
 	 * @return <code>true</code> if the data is inside the list, otherwise <code>false</code>
 	 */
+	@Pure
 	public static <E> boolean contains(List<E> list, Comparator<? super E> comparator, E data) {
 		assert list != null;
 		assert comparator != null;
@@ -161,6 +164,7 @@ public final class ListUtil {
 	 * @return the index at which the element is, or <code>-1</code> if
 	 *     the element was not found.
 	 */
+	@Pure
 	public static <T> int indexOf(List<T> list, Comparator<? super T> comparator, T elt) {
 		try {
 			assert comparator != null;
@@ -211,6 +215,7 @@ public final class ListUtil {
 	 * @return the last index at which the element is, or <code>-1</code> if
 	 *     the element was not found.
 	 */
+	@Pure
 	public static <T> int lastIndexOf(List<T> list, Comparator<? super T> comparator, T elt) {
 		try {
 			assert comparator != null;
@@ -262,6 +267,7 @@ public final class ListUtil {
 	 * @param list is the list inside which the element should be added.
 	 * @return the index at which the element may be added.
 	 */
+	@Pure
 	public static <T> int getInsertionIndex(List<T> list, Comparator<? super T> comparator, T elt) {
 		return getInsertionIndex(list, comparator, elt, true);
 	}
@@ -284,6 +290,7 @@ public final class ListUtil {
 	 *     many times in the list, or not.
 	 * @return the index at which the element may be added.
 	 */
+	@Pure
 	public static <T> int getInsertionIndex(List<T> list, Comparator<? super T> comparator, T elt, boolean allowMultiple) {
 		try {
 			assert comparator != null;
@@ -332,6 +339,7 @@ public final class ListUtil {
 	 * <code>-1</code> if there is no such element.
 	 * @see NavigableSet#ceiling(Object)
 	 */
+	@Pure
 	public static <T> int ceilingIndex(List<T> list, Comparator<? super T> comparator, T elt) {
 		try {
 			assert comparator != null;
@@ -385,6 +393,7 @@ public final class ListUtil {
 	 * <code>-1</code> if there is no such element.
 	 * @see NavigableSet#floor(Object)
 	 */
+	@Pure
 	public static <T> int floorIndex(List<T> list, Comparator<? super T> comparator, T elt) {
 		try {
 			assert comparator != null;
@@ -435,6 +444,7 @@ public final class ListUtil {
 	 * <code>-1</code> if there is no such element.
 	 * @see NavigableSet#higher(Object)
 	 */
+	@Pure
 	public static <T> int higherIndex(List<T> list, Comparator<? super T> comparator, T elt) {
 		try {
 			assert comparator != null;
@@ -483,6 +493,7 @@ public final class ListUtil {
 	 * <code>-1</code> if there is no such element.
 	 * @see NavigableSet#lower(Object)
 	 */
+	@Pure
 	public static <T> int lowerIndex(List<T> list, Comparator<? super T> comparator, T elt) {
 		try {
 			assert comparator != null;

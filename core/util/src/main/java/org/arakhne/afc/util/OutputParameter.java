@@ -20,6 +20,10 @@
 
 package org.arakhne.afc.util;
 
+import java.util.Objects;
+
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /** Utilities class that permits to obtain output parameters for Java functions.
  *
  * <p>The generic type describes the type of the parameter.
@@ -76,6 +80,7 @@ public class OutputParameter<T> {
 		this.object = null;
 	}
 
+	@Pure
 	@Override
 	public String toString() {
 		final StringBuilder str = new StringBuilder();
@@ -88,6 +93,7 @@ public class OutputParameter<T> {
 	 *
 	 * @return the value embedded inside this output parameter.
 	 */
+	@Pure
 	public T get() {
 		return this.object;
 	}
@@ -114,6 +120,7 @@ public class OutputParameter<T> {
 	 * @return <code>true</code> is the parameter vlaue was set, otherwise <code>false</code>
 	 * @see #isEmpty()
 	 */
+	@Pure
 	public boolean isSet() {
 		return this.object != null;
 	}
@@ -123,16 +130,19 @@ public class OutputParameter<T> {
 	 * @return <code>false</code> is the parameter vlaue was set, otherwise <code>true</code>
 	 * @see #isSet()
 	 */
+	@Pure
 	public boolean isEmpty() {
 		return this.object == null;
 	}
 
+	@Pure
 	@Override
 	public boolean equals(Object obj) {
 		return (this.object == obj)
 				|| (this.object != null && this.object.equals(obj));
 	}
 
+	@Pure
 	@Override
 	public int hashCode() {
 		return this.object == null ? 0 : HashCodeUtil.hash(this.object);

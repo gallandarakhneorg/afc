@@ -27,6 +27,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /** Utilities around URLHandler.
  *
  * @author $Author: sgalland$
@@ -49,6 +51,7 @@ public final class URLHandlerUtil {
 	 * @return the iterator.
 	 * @since 7.2
 	 */
+	@Pure
 	public static Iterator<Class<? extends URLStreamHandler>> getHandlersFor(String protocol) {
 		return new HandlerIterator(protocol);
 	}

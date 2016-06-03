@@ -18,39 +18,18 @@
  * limitations under the License.
  */
 
-package org.arakhne.afc.util;
+package org.arakhne.afc.vmutil;
 
-import org.eclipse.xtext.xbase.lib.Pure;
+import static org.arakhne.afc.testtools.XbaseInlineTestUtil.assertInlineParameterUsage;
 
-/** Exception thrown when an object does not support any
- * natural order.
- *
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
- */
-public class UnsupportedNaturalOrderException extends RuntimeException {
+import org.junit.Test;
 
-	private static final long serialVersionUID = 6506767532507115987L;
+@SuppressWarnings("all")
+public class LibraryLoaderTest {
 
-	private final Object element;
-
-	/**
-	 * @param element is the element which does not provide a natural order.
-	 */
-	public UnsupportedNaturalOrderException(Object element) {
-		super();
-		this.element = element;
-	}
-
-	/** Replies the element which does not provide a natural order.
-	 *
-	 * @return the element which does not provide a natural order.
-	 */
-	@Pure
-	public Object getElement() {
-		return this.element;
+	@Test
+	public void loadPlatformDependentLibraryString() {
+		assertInlineParameterUsage(LibraryLoader.class, "loadPlatformDependentLibrary", String.class);
 	}
 
 }

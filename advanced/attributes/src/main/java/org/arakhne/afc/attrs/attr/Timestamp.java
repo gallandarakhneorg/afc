@@ -23,6 +23,8 @@ package org.arakhne.afc.attrs.attr;
 import java.text.MessageFormat;
 import java.util.Date;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /**
  * Container of timestamp.
  *
@@ -45,26 +47,31 @@ class Timestamp extends Number {
 		this.time = time;
 	}
 
+	@Pure
 	@Override
 	public double doubleValue() {
 		return this.time;
 	}
 
+	@Pure
 	@Override
 	public float floatValue() {
 		return this.time;
 	}
 
+	@Pure
 	@Override
 	public int intValue() {
 		return (int) this.time;
 	}
 
+	@Pure
 	@Override
 	public long longValue() {
 		return this.time;
 	}
 
+	@Pure
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof Number) {
@@ -73,11 +80,13 @@ class Timestamp extends Number {
 		return false;
 	}
 
+	@Pure
 	@Override
 	public int hashCode() {
 		return Long.valueOf(this.time).hashCode();
 	}
 
+	@Pure
 	@Override
 	public String toString() {
 		return MessageFormat.format("{0, date, full} {0, time, full}", //$NON-NLS-1$

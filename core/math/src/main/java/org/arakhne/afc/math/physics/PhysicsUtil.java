@@ -89,7 +89,7 @@ public final class PhysicsUtil {
 	 * @return a motion
 	 */
 	@Pure
-	@Inline(value = "(PhysicsUtil.getPhysicsEngine().motionNewtonLaw($1, $2, $3))",
+	@Inline(value = "PhysicsUtil.getPhysicsEngine().motionNewtonLaw(($1), ($2), ($3))",
 			imported = {PhysicsUtil.class})
 	public static double motionNewtonLaw(
 			double speed,
@@ -121,7 +121,7 @@ public final class PhysicsUtil {
 	 * @see "http://en.wikibooks.org/wiki/High_School_Physics/Velocity"
 	 */
 	@Pure
-	@Inline(value = "(PhysicsUtil.getPhysicsEngine().motionNewtonLaw1D($1, $2, $3, $4, $5, $6, $7))",
+	@Inline(value = "PhysicsUtil.getPhysicsEngine().motionNewtonLaw1D(($1), ($2), ($3), ($4), ($5), ($6), ($7))",
 			imported = {PhysicsUtil.class})
 	public static double motionNewtonLaw1D(
 			double velocity,
@@ -158,7 +158,7 @@ public final class PhysicsUtil {
 	 * @see "http://en.wikibooks.org/wiki/High_School_Physics/Velocity"
 	 */
 	@Pure
-	@Inline(value = "(PhysicsUtil.getPhysicsEngine().motionNewtonLaw1D5($1, $2, $3, $4, $5, $6, $7, $8))",
+	@Inline(value = "PhysicsUtil.getPhysicsEngine().motionNewtonLaw1D5(($1), ($2), ($3), ($4), ($5), ($6), ($7), ($8))",
 			imported = {PhysicsUtil.class})
 	public static void motionNewtonLaw1D5(
 			Vector2D<?, ?> velocity,
@@ -196,7 +196,7 @@ public final class PhysicsUtil {
 	 * @see "http://en.wikibooks.org/wiki/High_School_Physics/Velocity"
 	 */
 	@Pure
-	@Inline(value = "(PhysicsUtil.getPhysicsEngine().motionNewtonLaw2D($1, $2, $3, $4, $5, $6, $7, $8))",
+	@Inline(value = "PhysicsUtil.getPhysicsEngine().motionNewtonLaw2D(($1), ($2), ($3), ($4), ($5), ($6), ($7), ($8))",
 			imported = {PhysicsUtil.class})
 	public static void motionNewtonLaw2D(
 			Vector2D<?, ?> velocity,
@@ -234,7 +234,7 @@ public final class PhysicsUtil {
 	 * @see "http://en.wikibooks.org/wiki/High_School_Physics/Velocity"
 	 */
 	@Pure
-	@Inline(value = "(PhysicsUtil.getPhysicsEngine().motionNewtonLaw2D5($1, $2, $3, $4, $5, $6, $7, $8))",
+	@Inline(value = "PhysicsUtil.getPhysicsEngine().motionNewtonLaw2D5(($1), ($2), ($3), ($4), ($5), ($6), ($7), ($8))",
 			imported = {PhysicsUtil.class})
 	public static void motionNewtonLaw2D5(
 			Vector3D velocity,
@@ -272,7 +272,7 @@ public final class PhysicsUtil {
 	 * @see "http://en.wikibooks.org/wiki/High_School_Physics/Velocity"
 	 */
 	@Pure
-	@Inline(value = "(PhysicsUtil.getPhysicsEngine().motionNewtonLaw3D($1, $2, $3, $4, $5, $6, $7, $8))",
+	@Inline(value = "PhysicsUtil.getPhysicsEngine().motionNewtonLaw3D(($1), ($2), ($3), ($4), ($5), ($6), ($7), ($8))",
 			imported = {PhysicsUtil.class})
 	public static void motionNewtonLaw3D(
 			Vector3D velocity,
@@ -296,7 +296,7 @@ public final class PhysicsUtil {
 	 * @return a motion
 	 */
 	@Pure
-	@Inline(value = "(PhysicsUtil.getPhysicsEngine().motionNewtonEuler1Law($1, $2))",
+	@Inline(value = "PhysicsUtil.getPhysicsEngine().motionNewtonEuler1Law(($1), ($2))",
 			imported = {PhysicsUtil.class})
 	public static double motionNewtonEuler1Law(
 			double speed,
@@ -316,7 +316,7 @@ public final class PhysicsUtil {
 	 * @return a motion
 	 */
 	@Pure
-	@Inline(value = "(PhysicsUtil.getPhysicsEngine().motionNewtonEuler1Law1D($1, $2, $3, $4))",
+	@Inline(value = "PhysicsUtil.getPhysicsEngine().motionNewtonEuler1Law1D(($1), ($2), ($3), ($4))",
 			imported = {PhysicsUtil.class})
 	public static double motionNewtonEuler1Law1D(
 			double velocity,
@@ -338,7 +338,7 @@ public final class PhysicsUtil {
 	 * @param result a motion
 	 */
 	@Pure
-	@Inline(value = "(PhysicsUtil.getPhysicsEngine().motionNewtonEuler1Law1D5($1, $2, $3, $4, $5))",
+	@Inline(value = "PhysicsUtil.getPhysicsEngine().motionNewtonEuler1Law1D5(($1), ($2), ($3), ($4), ($5))",
 			imported = {PhysicsUtil.class})
 	public static void motionNewtonEuler1Law1D5(
 			Vector2D<?, ?> velocity,
@@ -361,7 +361,7 @@ public final class PhysicsUtil {
 	 * @param result a motion
 	 */
 	@Pure
-	@Inline(value = "(PhysicsUtil.getPhysicsEngine().motionNewtonEuler1Law2D($1, $2, $3, $4, $5))",
+	@Inline(value = "PhysicsUtil.getPhysicsEngine().motionNewtonEuler1Law2D(($1), ($2), ($3), ($4), ($5))",
 			imported = {PhysicsUtil.class})
 	public static void motionNewtonEuler1Law2D(
 			Vector2D<?, ?> velocity,
@@ -384,7 +384,7 @@ public final class PhysicsUtil {
 	 * @param result a motion
 	 */
 	@Pure
-	@Inline(value = "(PhysicsUtil.getPhysicsEngine().motionNewtonEuler1Law2D5($1, $2, $3, $4, $5))",
+	@Inline(value = "PhysicsUtil.getPhysicsEngine().motionNewtonEuler1Law2D5(($1), ($2), ($3), ($4), ($5))",
 			imported = {PhysicsUtil.class})
 	public static void motionNewtonEuler1Law2D5(
 			Vector3D velocity,
@@ -407,7 +407,7 @@ public final class PhysicsUtil {
 	 * @param result a motion
 	 */
 	@Pure
-	@Inline(value = "(PhysicsUtil.getPhysicsEngine().motionNewtonEuler1Law3D($1, $2, $3, $4, $5))",
+	@Inline(value = "PhysicsUtil.getPhysicsEngine().motionNewtonEuler1Law3D(($1), ($2), ($3), ($4), ($5))",
 			imported = {PhysicsUtil.class})
 	public static void motionNewtonEuler1Law3D(
 			Vector3D velocity,
@@ -428,7 +428,7 @@ public final class PhysicsUtil {
 	 * @return a new speed
 	 */
 	@Pure
-	@Inline(value = "(PhysicsUtil.getPhysicsEngine().speed($1, $2))",
+	@Inline(value = "PhysicsUtil.getPhysicsEngine().speed(($1), ($2))",
 			imported = {PhysicsUtil.class})
 	public static double speed(double movement, double dt) {
 		return engine.speed(movement, dt);
@@ -445,7 +445,7 @@ public final class PhysicsUtil {
 	 * @return a new acceleration
 	 */
 	@Pure
-	@Inline(value = "(PhysicsUtil.getPhysicsEngine().acceleration($1, $2, $3))",
+	@Inline(value = "PhysicsUtil.getPhysicsEngine().acceleration(($1), ($2), ($3))",
 			imported = {PhysicsUtil.class})
 	public static double acceleration(
 			double previousSpeed,

@@ -22,6 +22,8 @@ package org.arakhne.afc.sizediterator;
 
 import java.util.NoSuchElementException;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /** Single iterator.
  *
  * @param <OBJECT> is the type of the objects to iterator on.
@@ -42,6 +44,7 @@ public class SingleIterator<OBJECT> implements SizedIterator<OBJECT> {
 		this.object = obj;
 	}
 
+	@Pure
 	@Override
 	public boolean hasNext() {
 		return this.object != null;
@@ -57,6 +60,7 @@ public class SingleIterator<OBJECT> implements SizedIterator<OBJECT> {
 		throw new NoSuchElementException();
 	}
 
+	@Pure
 	@Override
 	public int index() {
 		if (this.object == null) {
@@ -65,11 +69,13 @@ public class SingleIterator<OBJECT> implements SizedIterator<OBJECT> {
 		return -1;
 	}
 
+	@Pure
 	@Override
 	public int totalSize() {
 		return 1;
 	}
 
+	@Pure
 	@Override
 	public int rest() {
 		if (this.object == null) {

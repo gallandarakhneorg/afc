@@ -31,6 +31,8 @@ import java.text.NumberFormat;
 import java.text.ParsePosition;
 import java.util.Locale;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /**
  * <code>LocaleMessageFormat</code> provides a means to produce concatenated
  * messages in a language-neutral way in the {@link Locale}
@@ -93,6 +95,7 @@ public class LocaleMessageFormat extends MessageFormat {
 	 *     is not of the type expected by the format element(s)
 	 *     that use it.
 	 */
+	@Pure
 	public static String format(String pattern, Object... arguments) {
 		final LocaleMessageFormat temp = new LocaleMessageFormat(pattern);
 		return temp.format(arguments);

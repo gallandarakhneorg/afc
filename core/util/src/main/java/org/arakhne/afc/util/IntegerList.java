@@ -34,6 +34,9 @@ import java.util.SortedSet;
 import java.util.Spliterator;
 import java.util.TreeSet;
 
+import org.eclipse.xtext.xbase.lib.Inline;
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /** This class represents a list of numbers.
  * The list is always sorted by number values.
  *
@@ -98,6 +101,7 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 		addAll(collection);
 	}
 
+	@Pure
 	@Override
 	public String toString() {
 		final StringBuilder buffer = new StringBuilder();
@@ -124,11 +128,14 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 		return buffer.toString();
 	}
 
+	@Pure
+	@Inline("null")
 	@Override
 	public Comparator<? super Integer> comparator() {
 		return null;
 	}
 
+	@Pure
 	@Override
 	public Integer first() {
 		if (this.values == null) {
@@ -137,6 +144,7 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 		return Integer.valueOf(this.values[0]);
 	}
 
+	@Pure
 	@Override
 	public SortedSet<Integer> headSet(Integer toElement) {
 		final SortedSet<Integer> theset = new TreeSet<>();
@@ -156,6 +164,7 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 		return theset;
 	}
 
+	@Pure
 	@Override
 	public Integer last() {
 		if (this.values == null) {
@@ -164,6 +173,7 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 		return this.values[this.values.length - 1];
 	}
 
+	@Inline("null")
 	@Override
 	public SortedSet<Integer> subSet(Integer fromElement, Integer toElement) {
 		final SortedSet<Integer> theset = new TreeSet<>();
@@ -203,6 +213,7 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 		return theset;
 	}
 
+	@Inline("null")
 	@Override
 	public SortedSet<Integer> tailSet(Integer fromElement) {
 		final SortedSet<Integer> theset = new TreeSet<>();
@@ -312,6 +323,7 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 		this.size = 0;
 	}
 
+	@Pure
 	@Override
 	public boolean contains(Object obj) {
 		if ((this.values != null) && (obj instanceof Number)) {
@@ -330,6 +342,7 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 		return false;
 	}
 
+	@Pure
 	@Override
 	public boolean containsAll(Collection<?> collection) {
 		if (this.values == null) {
@@ -359,11 +372,13 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 		return true;
 	}
 
+	@Pure
 	@Override
 	public boolean isEmpty() {
 		return this.size == 0;
 	}
 
+	@Pure
 	@Override
 	public Iterator<Integer> iterator() {
 		return new IntegerListIterator();
@@ -373,6 +388,7 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 	 *
 	 * @return an iterator over the segments in this list in proper sequence
 	 */
+	@Pure
 	public Iterator<IntegerSegment> segmentIterator() {
 		return new SegmentIterator();
 	}
@@ -381,6 +397,7 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 	 *
 	 * @return an iterable object over the segments in this list in proper sequence
 	 */
+	@Pure
 	public Iterable<IntegerSegment> toSegmentIterable() {
 		return new Iterable<IntegerSegment>() {
 			@Override
@@ -561,6 +578,7 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 		}
 	}
 
+	@Pure
 	@Override
 	public int size() {
 		return this.size;
@@ -635,6 +653,7 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 	}
 
 	@Override
+	@Pure
 	public Integer get(int index) {
 		if (this.values == null) {
 			throw new IndexOutOfBoundsException(Integer.toString(index));
@@ -685,6 +704,7 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 	}
 
 	@Override
+	@Pure
 	public Object[] toArray() {
 		final Object[] tab = new Object[this.size];
 		if (this.values != null) {
@@ -738,6 +758,7 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 	 *         sequence
 	 * @see Arrays#asList(Object[])
 	 */
+	@Pure
 	public int[] toIntArray() {
 		final int[] tab = new int[this.size];
 		if (this.values != null) {
@@ -755,6 +776,7 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 	 *
 	 * @return the set of values.
 	 */
+	@Pure
 	public SortedSet<Integer> toSortedSet() {
 		final SortedSet<Integer> theset = new TreeSet<>();
 		if (this.values != null) {
@@ -767,6 +789,7 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 		return theset;
 	}
 
+	@Pure
 	@Override
 	public int indexOf(Object obj) {
 		if (obj instanceof Number) {
@@ -793,6 +816,7 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 		throw new ClassCastException();
 	}
 
+	@Pure
 	@Override
 	public int lastIndexOf(Object obj) {
 		if (obj instanceof Number) {
@@ -819,16 +843,19 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 		throw new ClassCastException();
 	}
 
+	@Pure
 	@Override
 	public ListIterator<Integer> listIterator() {
 		return new IntegerListIterator();
 	}
 
+	@Pure
 	@Override
 	public ListIterator<Integer> listIterator(int index) {
 		return new IntegerListIterator(index);
 	}
 
+	@Pure
 	@Override
 	public List<Integer> subList(int fromIndex, int toIndex) {
 		final List<Integer> theList = new ArrayList<>();
@@ -871,6 +898,7 @@ public class IntegerList implements SortedSet<Integer>, List<Integer> {
 		return theList;
 	}
 
+	@Pure
 	@Override
 	public Spliterator<Integer> spliterator() {
 		return SortedSet.super.spliterator();

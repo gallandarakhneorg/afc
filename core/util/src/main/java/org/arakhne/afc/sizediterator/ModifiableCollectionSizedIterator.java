@@ -23,6 +23,8 @@ package org.arakhne.afc.sizediterator;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 
 /**
  * Sized iterator on a collection that can be changed through the iterator.
@@ -76,21 +78,25 @@ public class ModifiableCollectionSizedIterator<M> implements SizedIterator<M> {
 		this.iterator = collection.iterator();
 	}
 
+	@Pure
 	@Override
 	public int rest() {
 		return this.rest;
 	}
 
+	@Pure
 	@Override
 	public int index() {
 		return this.total - this.rest;
 	}
 
+	@Pure
 	@Override
 	public int totalSize() {
 		return this.total;
 	}
 
+	@Pure
 	@Override
 	public boolean hasNext() {
 		return this.iterator.hasNext();

@@ -22,6 +22,8 @@ package org.arakhne.afc.vmutil;
 
 import java.util.Comparator;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /**
  * This comparator permits to compare two class objects.
  *
@@ -46,6 +48,7 @@ public class ClassComparator implements Comparator<Class<?>> {
 		//
 	}
 
+	@Pure
 	@Override
 	public int compare(Class<?> o1, Class<?> o2) {
 		if (o1 == o2) {

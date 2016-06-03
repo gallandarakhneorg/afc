@@ -64,7 +64,7 @@ public interface Point2D<RP extends Point2D<? super RP, ? super RV>, RV extends 
 	 * @see MathUtil#isEpsilonZero(double)
 	 */
 	@Pure
-	@Inline(value = "(MathUtil.isEpsilonZero($1 * ($4 - $6) + $3 * ($6 - $2) + $5 * ($2 - $4)))",
+	@Inline(value = "MathUtil.isEpsilonZero(($1) * (($4) - ($6)) + ($3) * (($6) - ($2)) + ($5) * (($2) - ($4)))",
 			imported = {MathUtil.class})
 	static boolean isCollinearPoints(double x1, double y1, double x2, double y2, double x3, double y3) {
 		// Test if three points are colinears
@@ -86,7 +86,7 @@ public interface Point2D<RP extends Point2D<? super RP, ? super RV>, RV extends 
 	 * @see #getDistanceL1PointPoint(double, double, double, double)
 	 */
 	@Pure
-	@Inline(value = "(Math.hypot($1 - $3, $2- $4))",
+	@Inline(value = "Math.hypot(($1) - ($3), ($2) - ($4))",
 			imported = {Math.class})
 	static double getDistancePointPoint(double x1, double y1, double x2, double y2) {
 		return Math.hypot(x1 - x2, y1 - y2);
@@ -103,7 +103,7 @@ public interface Point2D<RP extends Point2D<? super RP, ? super RV>, RV extends 
 	 * @see #getDistanceL1PointPoint(double, double, double, double)
 	 */
 	@Pure
-	@Inline(value = "(($1-$3)*($1-$3) + ($2-$4)*($2-$4))")
+	@Inline(value = "(($1)-($3))*(($1)-($3)) + (($2)-($4))*(($2)-($4))")
 	static double getDistanceSquaredPointPoint(double x1, double y1, double x2, double y2) {
 		final double dx = x1 - x2;
 		final double dy = y1 - y2;
@@ -122,7 +122,7 @@ public interface Point2D<RP extends Point2D<? super RP, ? super RV>, RV extends 
 	 * @see #getDistanceSquaredPointPoint(double, double, double, double)
 	 */
 	@Pure
-	@Inline(value = "(Math.abs($1 - $3) + Math.abs($2 - $4))",
+	@Inline(value = "Math.abs(($1) - ($3)) + Math.abs(($2) - ($4))",
 			imported = {Math.class})
 	static double getDistanceL1PointPoint(double x1, double y1, double x2, double y2) {
 		return Math.abs(x1 - x2) + Math.abs(y1 - y2);
@@ -141,7 +141,7 @@ public interface Point2D<RP extends Point2D<? super RP, ? super RV>, RV extends 
 	 * @see #getDistanceSquaredPointPoint(double, double, double, double)
 	 */
 	@Pure
-	@Inline(value = "(Math.max(Math.abs($1 - $3), Math.abs($2 - $4)))",
+	@Inline(value = "Math.max(Math.abs(($1) - ($3)), Math.abs(($2) - ($4)))",
 			imported = {Math.class})
 	static double getDistanceLinfPointPoint(double x1, double y1, double x2, double y2) {
 		return Math.max(Math.abs(x1 - x2), Math.abs(y1 - y2));

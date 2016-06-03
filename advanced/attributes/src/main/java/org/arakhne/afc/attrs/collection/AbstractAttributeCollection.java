@@ -23,6 +23,8 @@ package org.arakhne.afc.attrs.collection;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 import org.arakhne.afc.attrs.attr.AttributeValue;
 import org.arakhne.afc.attrs.collection.AttributeChangeEvent.Type;
 
@@ -42,6 +44,7 @@ public abstract class AbstractAttributeCollection extends AbstractAttributeProvi
 
 	private boolean isEventFirable = true;
 
+	@Pure
 	@Override
 	public synchronized boolean isEventFirable() {
 		return this.isEventFirable;
@@ -56,6 +59,7 @@ public abstract class AbstractAttributeCollection extends AbstractAttributeProvi
 	 *
 	 * @return the deep copy.
 	 */
+	@Pure
 	@Override
 	public AttributeCollection clone() {
 		final AbstractAttributeCollection clone = (AbstractAttributeCollection) super.clone();

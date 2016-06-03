@@ -22,6 +22,8 @@ package org.arakhne.afc.vmutil;
 
 import java.net.URL;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /**
  * Indicates that the object implementing this interface
  * owns a external resource.
@@ -38,12 +40,14 @@ public interface ExternalizableResource {
 	 *
 	 * @return the URL to the external resource.
 	 */
+	@Pure
 	URL getExternalizableResourceLocation();
 
 	/** Replies the MIME type of the external resource.
 	 *
 	 * @return the MIME of the external resource.
 	 */
+	@Pure
 	String getExternalizableResourceType();
 
 }

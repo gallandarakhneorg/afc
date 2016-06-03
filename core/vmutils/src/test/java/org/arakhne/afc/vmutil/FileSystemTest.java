@@ -20,6 +20,7 @@
 
 package org.arakhne.afc.vmutil;
 
+import static org.arakhne.afc.testtools.XbaseInlineTestUtil.assertInlineParameterUsage;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -41,13 +42,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-/**
- * @author $Author: sgalland$
- * @version $Name$ $Revision$ $Date$
- * @mavengroupid org.arakhne.afc
- * @mavenartifactid arakhneVmutils
- */
-@SuppressWarnings("static-method")
+@SuppressWarnings("all")
 public class FileSystemTest {
 
 	private final static File f1 = new File("/home/test.x.z.z"); //$NON-NLS-1$
@@ -110,9 +105,6 @@ public class FileSystemTest {
 
 	private boolean oldLibraryLoaderState;
 	
-	/**
-	 * @throws Exception
-	 */
 	@Before
 	public void setUp() throws Exception {
 		// Disable native library loading during unit tests
@@ -120,17 +112,12 @@ public class FileSystemTest {
 		LibraryLoader.setEnable(false);
 	}
 	
-	/**
-	 * @throws Exception
-	 */
 	@After
 	public void tearDown() throws Exception {
 		// Restore library loading state
 		LibraryLoader.setEnable(this.oldLibraryLoaderState);
 	}
 	
-	/**
-	 */
 	@Test
 	public void isWindowNativeFilename() {
 		assertFalse(FileSystem.isWindowsNativeFilename("D:/vivus_test/export dae/yup/terrain_physx.dae")); //$NON-NLS-1$
@@ -178,8 +165,6 @@ public class FileSystemTest {
 		assertFalse(FileSystem.isWindowsNativeFilename("file://c.txt")); //$NON-NLS-1$
 	}
 
-	/**
-	 */
 	@Test
 	public void normalizeWindowNativeFilename() {
 		assertEquals(new File("C:/a/b/c.txt"), //$NON-NLS-1$
@@ -238,9 +223,6 @@ public class FileSystemTest {
 		assertNull(FileSystem.normalizeWindowsNativeFilename("file://c.txt")); //$NON-NLS-1$
 	}
 	
-	/**
-	 * @throws Exception
-	 */
 	@Test
 	public void isJarURLURL() throws Exception {
 		assertFalse(FileSystem.isJarURL(u1));
@@ -251,11 +233,10 @@ public class FileSystemTest {
 
 		assertFalse(FileSystem.isJarURL(new URL("file:"+STRING_WITH_SPACE)));  //$NON-NLS-1$
 		assertFalse(FileSystem.isJarURL(URL_WITH_SPACE));
+
+		assertInlineParameterUsage(FileSystem.class, "isJarURL", URL.class);
 	}
 	
-	/**
-	 * @throws Exception
-	 */
 	@Test
 	public void getJarURLURL() throws Exception {
 		assertNull(FileSystem.getJarURL(u1));
@@ -272,9 +253,6 @@ public class FileSystemTest {
 				new URL(JARJAR_TEST_URL3)));
 	}
 
-	/**
-	 * @throws Exception
-	 */
 	public void getJarFileURL() throws Exception {
 		assertNull(FileSystem.getJarFile(u1));
 		assertNull(FileSystem.getJarFile(u2));
@@ -290,43 +268,29 @@ public class FileSystemTest {
 				new URL(JARJAR_TEST_URL3)));
 	}
 
-	/**
-	 * @throws MalformedURLException
-	 */
 	@Test
 	public void toJarURLFileFile() throws MalformedURLException {
 		assertEquals(u7, FileSystem.toJarURL(f3, f4));
 	}
 
-	/**
-	 * @throws MalformedURLException
-	 */
 	@Test
 	public void toJarURLFileString() throws MalformedURLException {
 		assertEquals(u7, FileSystem.toJarURL(f3, f4.getPath()));
+		assertInlineParameterUsage(FileSystem.class, "toJarURL", File.class, String.class);
 	}
 
-	/**
-	 * @throws MalformedURLException
-	 */
 	@Test
 	public void toJarURLURLFile() throws MalformedURLException {
 		assertEquals(u7, FileSystem.toJarURL(u11, f4));
 		assertEquals(new URL(JARJAR_TEST_URL3), FileSystem.toJarURL(new URL(JARJAR_TEST_URL1), new File(JARJAR_TEST_URL2)));
 	}
 
-	/**
-	 * @throws MalformedURLException
-	 */
 	@Test
 	public void toJarURLURLString() throws MalformedURLException {
 		assertEquals(u7, FileSystem.toJarURL(u11, f4.getPath()));
 		assertEquals(new URL(JARJAR_TEST_URL3), FileSystem.toJarURL(new URL(JARJAR_TEST_URL1), JARJAR_TEST_URL2));
 	}
 
-	/**
-	 * @throws Exception
-	 */
 	@Test
 	public void dirnameFile() throws Exception {
 		assertEquals(new URL("file", "", "/home"),  //$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$
@@ -405,6 +369,8 @@ public class FileSystemTest {
 
 		assertEquals("file with space.toto",  //$NON-NLS-1$
 				FileSystem.largeBasename(new File(STRING_WITH_SPACE)));
+		
+		assertInlineParameterUsage(FileSystem.class, "largeBasename", File.class);
 	}
 
 	/**
@@ -646,9 +612,6 @@ public class FileSystemTest {
 				FileSystem.split(new File(STRING_WITH_SPACE))));
 	}
 
-	/**
-	 * @throws Exception
-	 */
 	@Test
 	public void splitURL() throws Exception {
 		String[] tab;
@@ -737,9 +700,6 @@ public class FileSystemTest {
 				new File("test.x.z.z"))); //$NON-NLS-1$
 	}
 
-	/**
-	 * @throws Exception
-	 */
 	@Test
 	public void joinURLStringArray() throws Exception {
 		assertEquals(new File(new File(f1, "home"), "test.x.z.z").toURI().toURL(), //$NON-NLS-1$ //$NON-NLS-2$
@@ -772,9 +732,6 @@ public class FileSystemTest {
 				FileSystem.join(URL_WITH_SPACE, "a", "b")); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
-	/**
-	 * @throws Exception
-	 */
 	@Test
 	public void joinURLFileArray() throws Exception {
 		assertEquals(new File(new File(f1, "home"), "test.x.z.z").toURI().toURL(), //$NON-NLS-1$ //$NON-NLS-2$
@@ -821,9 +778,6 @@ public class FileSystemTest {
 		assertFalse(FileSystem.hasExtension(new File(STRING_WITH_SPACE), "zip"));  //$NON-NLS-1$
 	}
 
-	/**
-	 * @throws Exception
-	 */
 	@Test
 	public void hasExtensionURLString() throws Exception {
 		assertTrue(FileSystem.hasExtension(u1, ".z")); //$NON-NLS-1$
@@ -862,9 +816,6 @@ public class FileSystemTest {
 				FileSystem.removeExtension(new File(STRING_WITH_SPACE)));
 	}
 
-	/**
-	 * @throws Exception
-	 */
 	@Test
 	public void removeExtensionURL() throws Exception {
 		assertEquals(new File("/home/test.x.z").toURI().toURL(), //$NON-NLS-1$
@@ -890,9 +841,6 @@ public class FileSystemTest {
 				FileSystem.replaceExtension(new File(STRING_WITH_SPACE), ".zip")); //$NON-NLS-1$
 	}
 
-	/**
-	 * @throws Exception
-	 */
 	@Test
 	public void replaceExtensionURLString() throws Exception {
 		assertEquals(new File("/home/test.x.z.toto").toURI().toURL(), //$NON-NLS-1$ 
@@ -920,9 +868,6 @@ public class FileSystemTest {
 				FileSystem.addExtension(new File(STRING_WITH_SPACE), "zip")); //$NON-NLS-1$
 	}
 
-	/**
-	 * @throws Exception
-	 */
 	@Test
 	public void addExtensionURLString() throws Exception {
 		assertEquals(new File("/home/test.x.z.z").toURI().toURL(), //$NON-NLS-1$ 
@@ -936,11 +881,8 @@ public class FileSystemTest {
 				FileSystem.addExtension(new URL("file:"+STRING_WITH_SPACE), ".zip")); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
-	/**
-	 * @throws Exception
-	 */
 	@Test
-	public void convertStringToUrl() throws Exception {
+	public void convertStringToURL() throws Exception {
 		URL rr;
 
 		// The following test permits to check if a specifical behaviour of URL
@@ -1023,9 +965,6 @@ public class FileSystemTest {
 				FileSystem.convertStringToURL(STRING_WITH_SPACE, false));
 	}
 
-	/**
-	 * @throws Exception
-	 */
 	@Test
 	public void convertURLToFile() throws Exception {
 		assertEquals(f1,
@@ -1077,9 +1016,6 @@ public class FileSystemTest {
 				FileSystem.makeAbsolute(new File("toto"), root)); //$NON-NLS-1$
 	}
 
-	/**
-	 * @throws Exception
-	 */
 	@Test
 	public void makeAbsoluteURLFile() throws Exception {
 		File root = new File(File.separator+"myroot"); //$NON-NLS-1$
@@ -1133,9 +1069,6 @@ public class FileSystemTest {
 				FileSystem.makeAbsolute(new URL("jar:file:home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties"), root)); //$NON-NLS-1$
 	}
 
-	/**
-	 * @throws Exception
-	 */
 	@Test
 	public void makeAbsoluteURLURL_withfileroot() throws Exception {
 		URL root = new File(File.separator+"myroot").toURI().toURL(); //$NON-NLS-1$
@@ -1189,9 +1122,6 @@ public class FileSystemTest {
 				FileSystem.makeAbsolute(new URL("jar:file:home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties"), root)); //$NON-NLS-1$
 	}
 	
-	/**
-	 * @throws Exception
-	 */
 	@Test
 	public void makeAbsoluteURLURL_withhttproot() throws Exception {
 		URL root = new URL("http://maven.arakhne.org"); //$NON-NLS-1$
@@ -1245,9 +1175,6 @@ public class FileSystemTest {
 				FileSystem.makeAbsolute(new URL("jar:file:home/test/j.jar!/org/arakhne/afc/vmutil/ff.properties"), root)); //$NON-NLS-1$
 	}
 
-	/**
-	 * @throws Exception
-	 */
 	@Test
 	public void makeAbsoluteFileURL_withfileroot() throws Exception {
 		URL root = new URL("http://maven.arakhne.org/myroot"); //$NON-NLS-1$
@@ -1270,9 +1197,6 @@ public class FileSystemTest {
 				FileSystem.makeAbsolute(new File("a/b/c"), URL_WITH_SPACE));  //$NON-NLS-1$
 	}
 
-	/**
-	 * @throws Exception
-	 */
 	@Test
 	public void makeAbsoluteFileURL_withhttproot() throws Exception {
 		URL root = new File(File.separator+"myroot").toURI().toURL(); //$NON-NLS-1$
@@ -1290,9 +1214,6 @@ public class FileSystemTest {
 				FileSystem.makeAbsolute(new File("toto"), root)); //$NON-NLS-1$
 	}
 
-	/**
-	 * @throws Exception
-	 */
 	@Test
 	public void getParentURLURL() throws Exception {
 		assertEquals(
@@ -1411,9 +1332,6 @@ public class FileSystemTest {
 				FileSystem.getParentURL(URL_WITH_SPACE));
 	}
 	
-	/**
-	 * @throws Exception
-	 */
 	@Test
 	public void convertFileToURLFile() throws Exception {
 		URLHandlerUtil.installArakhneHandlers();
@@ -1440,9 +1358,6 @@ public class FileSystemTest {
 				FileSystem.convertFileToURL(new File(STRING_WITH_SPACE)));
 	}
 	
-	/**
-	 * @throws Exception
-	 */
 	@Test
 	public void toShortestURLURL() throws Exception {
 		URLHandlerUtil.installArakhneHandlers();
@@ -1471,9 +1386,6 @@ public class FileSystemTest {
 		assertEquals(u1, u2);
 	}
 	
-	/**
-	 * @throws Exception 
-	 */
 	@Test
 	public void makeRelativeFileFile() throws Exception {
 		File root, abs, rel;
@@ -1515,9 +1427,6 @@ public class FileSystemTest {
 		assertEquals(rel, FileSystem.makeRelative(abs, root));
 	}
 
-	/**
-	 * @throws Exception 
-	 */
 	@Test
 	public void makeRelativeFileURL() throws Exception {
 		File abs, rel;
@@ -1560,9 +1469,6 @@ public class FileSystemTest {
 		assertEquals(rel, FileSystem.makeRelative(abs, root));
 	}
 
-	/**
-	 * @throws Exception 
-	 */
 	@Test
 	public void makeRelativeURLURL() throws Exception {
 		File rel;
@@ -1601,9 +1507,6 @@ public class FileSystemTest {
 		assertEquals(rel, FileSystem.makeRelative(abs, root));
 	}
 	
-	/**
-	 * @throws MalformedURLException
-	 */
 	@Test
 	public void makeCanonicalURL() throws MalformedURLException {
 		assertEquals(
@@ -1661,9 +1564,6 @@ public class FileSystemTest {
 		FileSystem.zipFile(testDir, testArchive);
 	}
 	
-	/**
-	 * @throws IOException
-	 */
 	@Test
 	public void zipFileFile() throws IOException {
 		File testArchive = File.createTempFile("unittest", ".zip"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -1687,9 +1587,6 @@ public class FileSystemTest {
 		}
 	}
 
-	/**
-	 * @throws IOException
-	 */
 	@Test
 	public void testUnzipFileFile() throws IOException {
 		File testArchive = File.createTempFile("unittest", ".zip"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -1724,6 +1621,11 @@ public class FileSystemTest {
 			txt = readInputStream(fis);
 		}
 		assertEquals("TEST1: FOR UNIT TEST ONLY", txt); //$NON-NLS-1$
+	}
+
+	@Test
+	public void getFileExtensionCharacter() {
+		assertInlineParameterUsage(FileSystem.class, "getFileExtensionCharacter");
 	}
 
 }

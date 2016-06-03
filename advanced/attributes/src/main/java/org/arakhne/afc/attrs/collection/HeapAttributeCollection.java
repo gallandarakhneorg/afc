@@ -35,6 +35,8 @@ import java.util.Map.Entry;
 import java.util.TreeMap;
 import java.util.UUID;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 import org.arakhne.afc.attrs.attr.Attribute;
 import org.arakhne.afc.attrs.attr.AttributeException;
 import org.arakhne.afc.attrs.attr.AttributeImpl;
@@ -65,6 +67,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 	 *
 	 * @return the deep copy.
 	 */
+	@Pure
 	@Override
 	public HeapAttributeCollection clone() {
 		final HeapAttributeCollection clone = (HeapAttributeCollection) super.clone();
@@ -154,16 +157,19 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 		mapToFill.putAll(this.heap);
 	}
 
+	@Pure
 	@Override
 	public int getAttributeCount() {
 		return this.heap.size();
 	}
 
+	@Pure
 	@Override
 	public boolean hasAttribute(String name) {
 		return this.heap.containsKey(name);
 	}
 
+	@Pure
 	@Override
 	public Collection<Attribute> getAllAttributes() {
 		final List<Attribute> list = new ArrayList<>(getAttributeCount());
@@ -181,6 +187,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 		return list;
 	}
 
+	@Pure
 	@Override
 	public Map<AttributeType, Collection<Attribute>> getAllAttributesByType() {
 		final Map<AttributeType, Collection<Attribute>> map = new TreeMap<>();
@@ -202,16 +209,19 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 		return map;
 	}
 
+	@Pure
 	@Override
 	public Collection<String> getAllAttributeNames() {
 		return Collections.unmodifiableCollection(this.heap.keySet());
 	}
 
+	@Pure
 	@Override
 	public AttributeValue getAttribute(String name) {
 		return getStoredAttributeValue(name, null);
 	}
 
+	@Pure
 	@Override
 	public AttributeValue getAttribute(String name, AttributeValue default_value) {
 		final AttributeValue value = getStoredAttributeValue(name,
@@ -222,6 +232,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 		return value;
 	}
 
+	@Pure
 	@Override
 	public Attribute getAttributeObject(String name) {
 		return getStoredAttribute(name, null);
@@ -233,6 +244,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 	 * @param expectedType is the expected type for the attribute.
 	 * @return the value or <code>null</code>
 	 */
+	@Pure
 	protected Attribute getStoredAttribute(String name, AttributeType expectedType) {
 		Object val = this.heap.get(name);
 		if (val != null) {
@@ -255,6 +267,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 	 * @param expectedType is the expected type for the attribute.
 	 * @return the value or <code>null</code>
 	 */
+	@Pure
 	protected AttributeValue getStoredAttributeValue(String name, AttributeType expectedType) {
 		Object val = this.heap.get(name);
 		if (val != null) {
@@ -793,6 +806,7 @@ public class HeapAttributeCollection extends AbstractAttributeCollection {
 		// Do nothing
 	}
 
+	@Pure
 	@Override
 	public String toString() {
 		return this.heap.toString();

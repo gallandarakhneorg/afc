@@ -30,6 +30,8 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.UUID;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 import org.arakhne.afc.attrs.attr.Attribute;
 import org.arakhne.afc.attrs.attr.AttributeException;
 import org.arakhne.afc.attrs.attr.AttributeType;
@@ -84,6 +86,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 		return rawAttributeValue;
 	}
 
+	@Pure
 	@Override
 	public final Map<String, Object> toMap() {
 		final Map<String, Object> map = new TreeMap<>();
@@ -95,6 +98,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 	 *
 	 * @return {@inheritDoc}
 	 */
+	@Pure
 	@Override
 	public Iterator<Attribute> iterator() {
 		return new AttributeIterator(this);
@@ -104,6 +108,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 	 *
 	 * @return the deep copy.
 	 */
+	@Pure
 	@Override
 	public AttributeProvider clone() {
 		try {
@@ -113,11 +118,13 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 		}
 	}
 
+	@Pure
 	@Override
 	public Iterable<Attribute> attributes() {
 		return this;
 	}
 
+	@Pure
 	@Override
 	public boolean getAttributeAsBool(String name) throws AttributeException {
 		final AttributeValue value = getAttribute(name);
@@ -127,6 +134,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 		return value.getBoolean();
 	}
 
+	@Pure
 	@Override
 	public int getAttributeAsInt(String name) throws AttributeException {
 		final AttributeValue value = getAttribute(name);
@@ -136,6 +144,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 		return (int) value.getInteger();
 	}
 
+	@Pure
 	@Override
 	public long getAttributeAsLong(String name) throws AttributeException {
 		final AttributeValue value = getAttribute(name);
@@ -145,6 +154,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 		return value.getInteger();
 	}
 
+	@Pure
 	@Override
 	public float getAttributeAsFloat(String name) throws AttributeException {
 		final AttributeValue value = getAttribute(name);
@@ -154,6 +164,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 		return (float) value.getReal();
 	}
 
+	@Pure
 	@Override
 	public double getAttributeAsDouble(String name) throws AttributeException {
 		final AttributeValue value = getAttribute(name);
@@ -163,6 +174,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 		return value.getReal();
 	}
 
+	@Pure
 	@Override
 	public String getAttributeAsString(String name) throws AttributeException {
 		final AttributeValue value = getAttribute(name);
@@ -172,6 +184,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 		return value.getString();
 	}
 
+	@Pure
 	@Override
 	public UUID getAttributeAsUUID(String name) throws AttributeException {
 		final AttributeValue value = getAttribute(name);
@@ -181,6 +194,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 		return value.getUUID();
 	}
 
+	@Pure
 	@Override
 	public URL getAttributeAsURL(String name) throws AttributeException {
 		final AttributeValue value = getAttribute(name);
@@ -190,6 +204,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 		return value.getURL();
 	}
 
+	@Pure
 	@Override
 	public URI getAttributeAsURI(String name) throws AttributeException {
 		final AttributeValue value = getAttribute(name);
@@ -202,6 +217,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 	/** {@inheritDoc}
 	 * @deprecated since 13.0
 	 */
+	@Pure
 	@Deprecated
 	@Override
 	public Image getAttributeAsImage(String name) throws AttributeException {
@@ -212,6 +228,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 		return value.getImage();
 	}
 
+	@Pure
 	@Override
 	public Date getAttributeAsDate(String name) throws AttributeException {
 		final AttributeValue value = getAttribute(name);
@@ -224,6 +241,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 	/** {@inheritDoc}
 	 * @deprecated 13.0
 	 */
+	@Pure
 	@Deprecated
 	@Override
 	public Color getAttributeAsColor(String name) throws AttributeException {
@@ -234,6 +252,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 		return value.getColor();
 	}
 
+	@Pure
 	@Override
 	public InetAddress getAttributeAsInetAddress(String name) throws AttributeException {
 		final AttributeValue value = getAttribute(name);
@@ -243,6 +262,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 		return value.getInetAddress();
 	}
 
+	@Pure
 	@Override
 	public Enum<?> getAttributeAsEnumeration(String name) throws AttributeException {
 		final AttributeValue value = getAttribute(name);
@@ -252,6 +272,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 		return value.getEnumeration();
 	}
 
+	@Pure
 	@Override
 	public <T extends Enum<T>> T getAttributeAsEnumeration(String name, Class<T> type) throws AttributeException {
 		final AttributeValue value = getAttribute(name);
@@ -261,6 +282,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 		return value.getEnumeration(type);
 	}
 
+	@Pure
 	@Override
 	public Class<?> getAttributeAsJavaClass(String name) throws AttributeException {
 		final AttributeValue value = getAttribute(name);
@@ -270,6 +292,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 		return value.getJavaClass();
 	}
 
+	@Pure
 	@Override
 	public boolean getAttribute(String name, boolean defaultValue) {
 		final AttributeValue value = getAttribute(name);
@@ -283,6 +306,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 		return defaultValue;
 	}
 
+	@Pure
 	@Override
 	public int getAttribute(String name, int defaultValue) {
 		final AttributeValue value = getAttribute(name);
@@ -296,6 +320,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 		return defaultValue;
 	}
 
+	@Pure
 	@Override
 	public long getAttribute(String name, long defaultValue) {
 		final AttributeValue value = getAttribute(name);
@@ -309,6 +334,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 		return defaultValue;
 	}
 
+	@Pure
 	@Override
 	public float getAttribute(String name, float defaultValue) {
 		final AttributeValue value = getAttribute(name);
@@ -322,6 +348,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 		return defaultValue;
 	}
 
+	@Pure
 	@Override
 	public double getAttribute(String name, double defaultValue) {
 		final AttributeValue value = getAttribute(name);
@@ -335,6 +362,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 		return defaultValue;
 	}
 
+	@Pure
 	@Override
 	public String getAttribute(String name, String defaultValue) {
 		final AttributeValue value = getAttribute(name);
@@ -348,6 +376,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 		return defaultValue;
 	}
 
+	@Pure
 	@Override
 	public UUID getAttribute(String name, UUID defaultValue) {
 		final AttributeValue value = getAttribute(name);
@@ -361,6 +390,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 		return defaultValue;
 	}
 
+	@Pure
 	@Override
 	public URL getAttribute(String name, URL defaultValue) {
 		final AttributeValue value = getAttribute(name);
@@ -374,6 +404,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 		return defaultValue;
 	}
 
+	@Pure
 	@Override
 	public URI getAttribute(String name, URI defaultValue) {
 		final AttributeValue value = getAttribute(name);
@@ -390,6 +421,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 	/** {@inheritDoc}
 	 * @deprecated 13.0
 	 */
+	@Pure
 	@Deprecated
 	@Override
 	public Image getAttribute(String name, Image defaultValue) {
@@ -404,6 +436,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 		return defaultValue;
 	}
 
+	@Pure
 	@Override
 	public Date getAttribute(String name, Date defaultValue) {
 		final AttributeValue value = getAttribute(name);
@@ -420,6 +453,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 	/** {@inheritDoc}
 	 * @deprecated 13.0
 	 */
+	@Pure
 	@Deprecated
 	@Override
 	public Color getAttribute(String name, Color defaultValue) {
@@ -434,6 +468,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 		return defaultValue;
 	}
 
+	@Pure
 	@Override
 	public InetAddress getAttribute(String name, InetAddress defaultValue) {
 		final AttributeValue value = getAttribute(name);
@@ -447,6 +482,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 		return defaultValue;
 	}
 
+	@Pure
 	@Override
 	public InetAddress getAttribute(String name, InetSocketAddress defaultValue) {
 		final AttributeValue value = getAttribute(name);
@@ -460,6 +496,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 		return defaultValue == null ? null : defaultValue.getAddress();
 	}
 
+	@Pure
 	@Override
 	@SuppressWarnings("unchecked")
 	public <T extends Enum<T>> T getAttribute(String name, T defaultValue) {
@@ -476,6 +513,7 @@ public abstract class AbstractAttributeProvider implements AttributeProvider, It
 		return defaultValue;
 	}
 
+	@Pure
 	@Override
 	public Class<?> getAttribute(String name, Class<?> defaultValue) {
 		final AttributeValue value = getAttribute(name);

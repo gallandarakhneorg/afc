@@ -23,6 +23,8 @@ package org.arakhne.afc.attrs.attr;
 import java.io.Serializable;
 import java.util.Comparator;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 
 
 /**
@@ -75,6 +77,7 @@ public class AttributeValueComparator implements Comparator<AttributeValue>, Ser
      * @throws ClassCastException if the arguments' types prevent them from
      * 	       being compared by this comparator.
      */
+	@Pure
 	@Override
 	public int compare(AttributeValue arg0, AttributeValue arg1) {
 		return AttributeValueImpl.compareValues(arg0, arg1);

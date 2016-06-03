@@ -23,6 +23,8 @@ package org.arakhne.afc.util;
 import java.util.Collections;
 import java.util.Iterator;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 import org.arakhne.afc.sizediterator.UnmodifiableSizedIterator;
 
 /**
@@ -64,6 +66,7 @@ public class UnmodifiableIterator<M> implements Iterator<M> {
 		this.original = iterable.iterator();
 	}
 
+	@Pure
 	@Override
 	public boolean hasNext() {
 		return this.original.hasNext();

@@ -24,6 +24,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 import org.arakhne.afc.attrs.attr.Attribute;
 
 /**
@@ -52,6 +54,7 @@ public class AttributeIterator implements Iterator<Attribute> {
 		this.names.addAll(provider.getAllAttributeNames());
 	}
 
+	@Pure
 	@Override
 	public boolean hasNext() {
 		if ((this.provider == null) || (this.names.isEmpty())) {

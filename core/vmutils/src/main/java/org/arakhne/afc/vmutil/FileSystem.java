@@ -50,6 +50,9 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
+import org.eclipse.xtext.xbase.lib.Inline;
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /** An utility class that permits to deal with filenames.
  *
  * @author $Author: sgalland$
@@ -209,6 +212,8 @@ public final class FileSystem {
 	 * @param url the URL to test.
 	 * @return <code>true</code> if the given URL uses a jar scheme.
 	 */
+	@Pure
+	@Inline(value = "URISchemeType.JAR.isURL($1)", imported = {URISchemeType.class})
 	public static boolean isJarURL(URL url) {
 		return URISchemeType.JAR.isURL(url);
 	}
@@ -219,6 +224,7 @@ public final class FileSystem {
 	 * @return the URL of the jar file in the given URL, or <code>null</code>
 	 *     if the given URL does not use jar scheme.
 	 */
+	@Pure
 	public static URL getJarURL(URL url) {
 		if (!isJarURL(url)) {
 			return null;
@@ -241,6 +247,7 @@ public final class FileSystem {
 	 * @return the file in the given URL, or <code>null</code>
 	 *     if the given URL does not use jar scheme.
 	 */
+	@Pure
 	public static File getJarFile(URL url) {
 		if (isJarURL(url)) {
 			final String path = url.getPath();
@@ -259,6 +266,7 @@ public final class FileSystem {
 	 * @return the jar-schemed URL.
 	 * @throws MalformedURLException when the URL is malformed.
 	 */
+	@Pure
 	public static URL toJarURL(File jarFile, File insideFile) throws MalformedURLException {
 		if (jarFile == null || insideFile == null) {
 			return null;
@@ -273,6 +281,8 @@ public final class FileSystem {
 	 * @return the jar-schemed URL.
 	 * @throws MalformedURLException when the URL is malformed.
 	 */
+	@Pure
+	@Inline("toJarURL(($1).toURI().toURL(), ($2))")
 	public static URL toJarURL(File jarFile, String insideFile) throws MalformedURLException {
 		return toJarURL(jarFile.toURI().toURL(), insideFile);
 	}
@@ -284,6 +294,7 @@ public final class FileSystem {
 	 * @return the jar-schemed URL.
 	 * @throws MalformedURLException when the URL is malformed.
 	 */
+	@Pure
 	public static URL toJarURL(URL jarFile, File insideFile) throws MalformedURLException {
 		if (jarFile == null || insideFile == null) {
 			return null;
@@ -298,6 +309,7 @@ public final class FileSystem {
 	 * @return the jar-schemed URL.
 	 * @throws MalformedURLException when the URL is malformed.
 	 */
+	@Pure
 	public static URL toJarURL(URL jarFile, String insideFile) throws MalformedURLException {
 		if (jarFile == null || insideFile == null) {
 			return null;
@@ -320,6 +332,7 @@ public final class FileSystem {
 	 * @return <code>true</code> if the filenames on the current file system are case sensitive,
 	 *     otherwise <code>false</code>
 	 */
+	@Pure
 	public static boolean isCaseSensitiveFilenameSystem() {
 		switch (OperatingSystem.getCurrentOS()) {
 		case AIX:
@@ -344,6 +357,8 @@ public final class FileSystem {
 	 *
 	 * @return the character used to separate the basename and the file extension.
 	 */
+	@Pure
+	@Inline("EXTENSION_SEPARATOR_CHAR")
 	public static char getFileExtensionCharacter() {
 		return EXTENSION_SEPARATOR_CHAR;
 	}
@@ -357,6 +372,7 @@ public final class FileSystem {
 	 * @see #basename(File)
 	 * @see #extension(File)
 	 */
+	@Pure
 	public static URL dirname(File filename) {
 		if (filename == null) {
 			return null;
@@ -384,6 +400,7 @@ public final class FileSystem {
 	 * @see #basename(URL)
 	 * @see #extension(URL)
 	 */
+	@Pure
 	@SuppressWarnings("checkstyle:npathcomplexity")
 	public static URL dirname(URL filename) {
 		if (filename == null) {
@@ -451,6 +468,7 @@ public final class FileSystem {
 	 * @param filename is the name to parse.
 	 * @return the basename of the specified file with the extension.
 	 */
+	@Pure
 	public static String largeBasename(String filename) {
 		if (filename == null) {
 			return null;
@@ -477,6 +495,8 @@ public final class FileSystem {
 	 * @param filename is the name to parse.
 	 * @return the basename of the specified file with the extension.
 	 */
+	@Pure
+	@Inline("((($1) == null) ? null : ($1).getName())")
 	public static String largeBasename(File filename) {
 		if (filename == null) {
 			return null;
@@ -489,6 +509,7 @@ public final class FileSystem {
 	 * @param filename is the name to parse.
 	 * @return the basename of the specified file with the extension.
 	 */
+	@Pure
 	public static String largeBasename(URL filename) {
 		if (filename == null) {
 			return null;
@@ -524,6 +545,7 @@ public final class FileSystem {
 	 * @see #shortBasename(String)
 	 * @see #largeBasename(String)
 	 */
+	@Pure
 	public static String basename(String filename) {
 		if (filename == null) {
 			return null;
@@ -562,6 +584,7 @@ public final class FileSystem {
 	 * @see #dirname(File)
 	 * @see #extension(File)
 	 */
+	@Pure
 	public static String basename(File filename) {
 		if (filename == null) {
 			return null;
@@ -583,6 +606,7 @@ public final class FileSystem {
 	 * @see #dirname(URL)
 	 * @see #extension(URL)
 	 */
+	@Pure
 	public static String basename(URL filename) {
 		if (filename == null) {
 			return null;
@@ -620,6 +644,7 @@ public final class FileSystem {
 	 * @param filename is the name to parse.
 	 * @return the basename of the specified file without all the extensions.
 	 */
+	@Pure
 	public static String shortBasename(String filename) {
 		if (filename == null) {
 			return null;
@@ -657,6 +682,7 @@ public final class FileSystem {
 	 * @param filename is the name to parse.
 	 * @return the basename of the specified file without all the extensions.
 	 */
+	@Pure
 	public static String shortBasename(File filename) {
 		if (filename == null) {
 			return null;
@@ -674,6 +700,7 @@ public final class FileSystem {
 	 * @param filename is the name to parse.
 	 * @return the basename of the specified file without all the extensions.
 	 */
+	@Pure
 	public static String shortBasename(URL filename) {
 		if (filename == null) {
 			return null;
@@ -715,6 +742,7 @@ public final class FileSystem {
 	 * @see #dirname(File)
 	 * @see #extensions(File)
 	 */
+	@Pure
 	public static String extension(File filename) {
 		if (filename == null) {
 			return null;
@@ -738,6 +766,7 @@ public final class FileSystem {
 	 * @see #dirname(File)
 	 * @see #extensions(File)
 	 */
+	@Pure
 	public static String extension(String filename) {
 		if (filename == null) {
 			return null;
@@ -760,6 +789,7 @@ public final class FileSystem {
 	 * @see #dirname(URL)
 	 * @see #extensions(URL)
 	 */
+	@Pure
 	public static String extension(URL filename) {
 		if (filename == null) {
 			return null;
@@ -777,6 +807,7 @@ public final class FileSystem {
 	 * @param filename is the name to parse.
 	 * @return the extensions of the specified file
 	 */
+	@Pure
 	public static String[] extensions(File filename) {
 		if (filename == null) {
 			return new String[0];
@@ -797,6 +828,7 @@ public final class FileSystem {
 	 * @return the extensions of the specified file
 	 * @since 7.0
 	 */
+	@Pure
 	public static String[] extensions(String filename) {
 		if (filename == null) {
 			return new String[0];
@@ -816,6 +848,7 @@ public final class FileSystem {
 	 * @param filename is the name to parse.
 	 * @return the extensions of the specified file
 	 */
+	@Pure
 	public static String[] extensions(URL filename) {
 		if (filename == null) {
 			return new String[0];
@@ -837,6 +870,7 @@ public final class FileSystem {
 	 * @param filename is the name to parse.
 	 * @return the parts of a path.
 	 */
+	@Pure
 	public static String[] split(File filename) {
 		if (filename == null) {
 			return new String[0];
@@ -849,6 +883,7 @@ public final class FileSystem {
 	 * @param filename is the name to parse.
 	 * @return the parts of a path.
 	 */
+	@Pure
 	public static String[] split(URL filename) {
 		if (filename == null) {
 			return new String[0];
@@ -870,6 +905,7 @@ public final class FileSystem {
 	 * @param elements are the path's elements to join.
 	 * @return the result of the join of the path's elements.
 	 */
+	@Pure
 	public static File join(File fileBase, String... elements) {
 		if (fileBase == null) {
 			return null;
@@ -897,6 +933,7 @@ public final class FileSystem {
 	 * @param elements are the path's elements to join.
 	 * @return the result of the join of the path's elements.
 	 */
+	@Pure
 	public static File join(File fileBase, File... elements) {
 		if (fileBase == null) {
 			return null;
@@ -919,6 +956,7 @@ public final class FileSystem {
 	 * @param elements are the path's elements to join.
 	 * @return the result of the join of the path's elements.
 	 */
+	@Pure
 	public static URL join(URL urlBase, String... elements) {
 		if (urlBase == null) {
 			return null;
@@ -972,6 +1010,7 @@ public final class FileSystem {
 	 * @param elements are the path's elements to join.
 	 * @return the result of the join of the path's elements.
 	 */
+	@Pure
 	public static URL join(URL urlBase, File... elements) {
 		if (urlBase == null) {
 			return null;
@@ -1023,6 +1062,7 @@ public final class FileSystem {
 	 * @return <code>true</code> if the given filename has the given extension,
 	 *     otherwise <code>false</code>
 	 */
+	@Pure
 	public static boolean hasExtension(File filename, String extension) {
 		if (filename == null) {
 			return false;
@@ -1052,6 +1092,7 @@ public final class FileSystem {
 	 *     otherwise <code>false</code>
 	 * @since 7.0
 	 */
+	@Pure
 	public static boolean hasExtension(String filename, String extension) {
 		if (filename == null) {
 			return false;
@@ -1080,6 +1121,7 @@ public final class FileSystem {
 	 * @return <code>true</code> if the given filename has the given extension,
 	 *     otherwise <code>false</code>
 	 */
+	@Pure
 	public static boolean hasExtension(URL filename, String extension) {
 		if (filename == null) {
 			return false;
@@ -1104,6 +1146,7 @@ public final class FileSystem {
 	 * @param filename is the filename to parse.
 	 * @return the filename without the extension.
 	 */
+	@Pure
 	public static File removeExtension(File filename) {
 		if (filename == null) {
 			return null;
@@ -1122,6 +1165,7 @@ public final class FileSystem {
 	 * @param filename is the filename to parse.
 	 * @return the filename without the extension.
 	 */
+	@Pure
 	public static URL removeExtension(URL filename) {
 		if (filename == null) {
 			return null;
@@ -1176,6 +1220,7 @@ public final class FileSystem {
 	 * @param extension is the extension to remove if it is existing.
 	 * @return the filename without the extension.
 	 */
+	@Pure
 	public static File replaceExtension(File filename, String extension) {
 		if (filename == null) {
 			return null;
@@ -1206,6 +1251,7 @@ public final class FileSystem {
 	 * @param extension is the extension to remove if it is existing.
 	 * @return the filename without the extension.
 	 */
+	@Pure
 	@SuppressWarnings("checkstyle:npathcomplexity")
 	public static URL replaceExtension(URL filename, String extension) {
 		if (filename == null) {
@@ -1277,6 +1323,7 @@ public final class FileSystem {
 	 * @return the filename with the extension.
 	 * @since 6.0
 	 */
+	@Pure
 	public static File addExtension(File filename, String extension) {
 		if (filename != null && !hasExtension(filename, extension)) {
 			String extent = extension;
@@ -1297,6 +1344,7 @@ public final class FileSystem {
 	 * @return the filename with the extension.
 	 * @since 6.0
 	 */
+	@Pure
 	public static URL addExtension(URL filename, String extension) {
 		if (filename != null && !hasExtension(filename, extension)) {
 			final String basename = largeBasename(filename);
@@ -1487,6 +1535,7 @@ public final class FileSystem {
 	 * @return the home directory of the current user.
 	 * @throws FileNotFoundException when the home directory does not exist.
 	 */
+	@Pure
 	public static File getUserHomeDirectory() throws FileNotFoundException {
 		final String userHome = System.getProperty("user.home"); //$NON-NLS-1$
 		if (userHome != null && !userHome.isEmpty()) {
@@ -1505,6 +1554,7 @@ public final class FileSystem {
 	 *
 	 * @return the home directory of the current user.
 	 */
+	@Pure
 	public static String getUserHomeDirectoryName() {
 		final String userHome = System.getProperty("user.home"); //$NON-NLS-1$
 		if ((userHome == null || userHome.isEmpty()) && (OperatingSystem.ANDROID.isCurrentOS())) {
@@ -1527,6 +1577,7 @@ public final class FileSystem {
 	 * @param software is the name of the concerned software.
 	 * @return the configuration directory of the software for the current user.
 	 */
+	@Pure
 	public static File getUserConfigurationDirectoryFor(String software) {
 		if (software == null || "".equals(software)) { //$NON-NLS-1$
 			throw new IllegalArgumentException();
@@ -1571,6 +1622,7 @@ public final class FileSystem {
 	 * @param software is the name of the concerned software.
 	 * @return the configuration directory of the software for the current user.
 	 */
+	@Pure
 	public static String getUserConfigurationDirectoryNameFor(String software) {
 		final File directory = getUserConfigurationDirectoryFor(software);
 		if (directory != null) {
@@ -1591,6 +1643,7 @@ public final class FileSystem {
 	 * @param software is the name of the concerned software.
 	 * @return the configuration directory of the software for the current user.
 	 */
+	@Pure
 	public static File getSystemConfigurationDirectoryFor(String software) {
 		if (software == null || "".equals(software)) { //$NON-NLS-1$
 			throw new IllegalArgumentException();
@@ -1626,6 +1679,7 @@ public final class FileSystem {
 	 * @param software is the name of the concerned software.
 	 * @return the configuration directory of the software for the current user.
 	 */
+	@Pure
 	public static String getSystemConfigurationDirectoryNameFor(String software) {
 		final File directory = getSystemConfigurationDirectoryFor(software);
 		if (directory != null) {
@@ -1646,6 +1700,7 @@ public final class FileSystem {
 	 * @param software is the name of the concerned software.
 	 * @return the configuration directory of the software for the current user.
 	 */
+	@Pure
 	public static File getSystemSharedLibraryDirectoryFor(String software) {
 		if (software == null || "".equals(software)) { //$NON-NLS-1$
 			throw new IllegalArgumentException();
@@ -1681,6 +1736,7 @@ public final class FileSystem {
 	 * @param software is the name of the concerned software.
 	 * @return the configuration directory of the software for the current user.
 	 */
+	@Pure
 	public static String getSystemSharedLibraryDirectoryNameFor(String software) {
 		final File f = getSystemSharedLibraryDirectoryFor(software);
 		if (f == null) {
@@ -1695,6 +1751,7 @@ public final class FileSystem {
 	 * @return the file.
 	 * @throws IllegalArgumentException is the URL was malformed.
 	 */
+	@Pure
 	@SuppressWarnings("checkstyle:npathcomplexity")
 	public static File convertURLToFile(URL url) {
 		URL theUrl = url;
@@ -1782,6 +1839,7 @@ public final class FileSystem {
 	 * @throws IllegalArgumentException is the string could not be formatted to URL.
 	 * @see Resources#getResource(String)
 	 */
+	@Pure
 	public static URL convertStringToURL(String urlDescription, boolean allowResourceSearch) {
 		return convertStringToURL(urlDescription, allowResourceSearch, true, true);
 	}
@@ -1812,6 +1870,7 @@ public final class FileSystem {
 	 * @throws IllegalArgumentException is the string could not be formatted to URL.
 	 * @see Resources#getResource(String)
 	 */
+	@Pure
 	public static URL convertStringToURL(String urlDescription, boolean allowResourceSearch, boolean repliesFileURL) {
 		return convertStringToURL(urlDescription, allowResourceSearch, repliesFileURL, true);
 	}
@@ -1843,6 +1902,7 @@ public final class FileSystem {
 	 * @throws IllegalArgumentException is the string could not be formatted to URL.
 	 * @see Resources#getResource(String)
 	 */
+	@Pure
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity",
 			"checkstyle:nestedifdepth"})
 	static URL convertStringToURL(String urlDescription, boolean allowResourceSearch,
@@ -1968,6 +2028,7 @@ public final class FileSystem {
 	 * @param current is the current directory which permits to make absolute.
 	 * @return an absolute filename.
 	 */
+	@Pure
 	public static File makeAbsolute(File filename, File current) {
 		if (filename == null) {
 			return null;
@@ -2057,6 +2118,7 @@ public final class FileSystem {
 	 * @param current is the current directory which permits to make absolute.
 	 * @return an absolute filename.
 	 */
+	@Pure
 	public static URL makeAbsolute(URL filename, File current) {
 		try {
 			return makeAbsolute(filename, current == null ? null : current.toURI().toURL());
@@ -2156,6 +2218,7 @@ public final class FileSystem {
 	 * @param current is the current directory which permits to make absolute.
 	 * @return an absolute filename.
 	 */
+	@Pure
 	@SuppressWarnings("checkstyle:cyclomaticcomplexity")
 	public static URL makeAbsolute(URL filename, URL current) {
 		if (filename == null) {
@@ -2257,6 +2320,7 @@ public final class FileSystem {
 	 * @return an absolute filename.
 	 * @since 5.0
 	 */
+	@Pure
 	public static URL makeAbsolute(File filename, URL current) {
 		if (filename != null) {
 			if (!filename.isAbsolute() && current != null) {
@@ -2277,6 +2341,7 @@ public final class FileSystem {
 	 * @return the parent URL
 	 * @throws MalformedURLException if the parent URL cannot be built.
 	 */
+	@Pure
 	@SuppressWarnings("checkstyle:cyclomaticcomplexity")
 	public static URL getParentURL(URL url) throws MalformedURLException {
 		if (url == null) {
@@ -2342,6 +2407,7 @@ public final class FileSystem {
 	 * @param filename the filename.
 	 * @return the path.
 	 */
+	@Pure
 	@SuppressWarnings("checkstyle:magicnumber")
 	private static String extractLocalPath(String filename) {
 		if (filename == null) {
@@ -2381,6 +2447,7 @@ public final class FileSystem {
 	 *     otherwise <code>false</code>
 	 * @see #normalizeWindowsNativeFilename(String)
 	 */
+	@Pure
 	public static boolean isWindowsNativeFilename(String filename) {
 		final String fn = extractLocalPath(filename);
 		if (fn == null || fn.length() == 0) {
@@ -2414,6 +2481,7 @@ public final class FileSystem {
 	 * @return the normalized path or <code>null</code> if not a windows native path.
 	 * @see #isWindowsNativeFilename(String)
 	 */
+	@Pure
 	public static File normalizeWindowsNativeFilename(String filename) {
 		final String fn = extractLocalPath(filename);
 		if (fn != null && fn.length() > 0) {
@@ -2433,6 +2501,7 @@ public final class FileSystem {
 	 * @return the URL which is corresponding to file, or <code>null</code> if
 	 *     the url cannot be computed.
 	 */
+	@Pure
 	public static URL convertFileToURL(File file) {
 		if (file == null) {
 			return null;
@@ -2460,6 +2529,7 @@ public final class FileSystem {
 	 *     the url cannot be computed.
 	 * @since 4.0
 	 */
+	@Pure
 	public static URL toShortestURL(URL url) {
 		if (url == null) {
 			return null;
@@ -2494,6 +2564,7 @@ public final class FileSystem {
 	 * @return a relative filename.
 	 * @throws IOException when is is impossible to retreive canonical paths.
 	 */
+	@Pure
 	public static File makeRelative(File filenameToMakeRelative, File rootPath) throws IOException {
 		return makeRelative(filenameToMakeRelative, rootPath, true);
 	}
@@ -2545,6 +2616,7 @@ public final class FileSystem {
 	 * @throws IOException when is is impossible to retreive canonical paths.
 	 * @since 6.0
 	 */
+	@Pure
 	public static File makeRelative(File filenameToMakeRelative, URL rootPath) throws IOException {
 		if (filenameToMakeRelative == null || rootPath == null) {
 			throw new IllegalArgumentException();
@@ -2573,6 +2645,7 @@ public final class FileSystem {
 	 * @throws IOException when is is impossible to retreive canonical paths.
 	 * @since 6.0
 	 */
+	@Pure
 	public static File makeRelative(URL filenameToMakeRelative, URL rootPath) throws IOException {
 		if (filenameToMakeRelative == null || rootPath == null) {
 			throw new IllegalArgumentException();
@@ -2636,6 +2709,7 @@ public final class FileSystem {
 	 * @return the canonical form of the given URL.
 	 * @since 6.0
 	 */
+	@Pure
 	public static URL makeCanonicalURL(URL url) {
 		if (url != null) {
 			final String[] pathComponents = url.getPath().split(Pattern.quote(URL_PATH_SEPARATOR));

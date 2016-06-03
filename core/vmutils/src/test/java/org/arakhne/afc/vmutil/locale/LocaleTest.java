@@ -20,6 +20,7 @@
 
 package org.arakhne.afc.vmutil.locale;
 
+import static org.arakhne.afc.testtools.XbaseInlineTestUtil.assertInlineParameterUsage;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
@@ -29,13 +30,7 @@ import java.text.MessageFormat;
 
 import org.junit.Test;
 
-/**
- * @author $Author: sgalland$
- * @version $FullVersion$
- * @mavengroupid $GroupId$
- * @mavenartifactid $ArtifactId$
- */
-@SuppressWarnings("static-method")
+@SuppressWarnings("all")
 public class LocaleTest {
 
 	private final LocaleStub tmp = new LocaleStub();
@@ -50,8 +45,6 @@ public class LocaleTest {
 	private static final String P2 = "P2"; //$NON-NLS-1$
 	private static final String P3 = "P3"; //$NON-NLS-1$
 	
-    /**
-     */
 	@Test
     public void getStringWithDefaultFromStringStringStringStringArray() {
     	assert(this.tmp!=null);
@@ -74,10 +67,11 @@ public class LocaleTest {
     	assertEquals(
     			"DEF P3 'P1' {2}", //$NON-NLS-1$
     			Locale.getStringWithDefaultFrom(RESOURCE2,KEY1,DEFAULT,P3,P1,P2));
+
+    	assertInlineParameterUsage(Locale.class, "getStringWithDefaultFrom",
+    			String.class, String.class, String.class, Object[].class);
     }
 
-    /**
-     */
 	@Test
     public void getStringWithDefaultFromClassLoaderStringStringStringStringArray() {
     	ClassLoader l = LocaleTest.class.getClassLoader();
@@ -102,10 +96,8 @@ public class LocaleTest {
     			Locale.getStringWithDefaultFrom(l, RESOURCE2,KEY1,DEFAULT,P3,P1,P2));
     }
 
-    /**
-     */
 	@Test
-    public void getStringFromStringStringStringArray() {
+    public void getStringFromStringStringObjectArray() {
     	assertEquals(NOKEY,
     			Locale.getStringFrom(RESOURCE1,NOKEY,P1,P2,P3));
     	assertEquals(
@@ -124,12 +116,12 @@ public class LocaleTest {
     	assertEquals(
     			"DEF P3 'P1' {2}", //$NON-NLS-1$
     			Locale.getStringFrom(RESOURCE2,KEY1,P3,P1,P2));
+    	
+    	assertInlineParameterUsage(Locale.class, "getStringFrom", String.class, String.class, Object[].class);
     }
     
-    /**
-     */
 	@Test
-    public void getStringFromClassLoaderStringStringStringArray() {
+    public void getStringFromClassLoaderStringStringObjectArray() {
     	ClassLoader l = LocaleTest.class.getClassLoader();
     	
     	assertEquals(NOKEY,
@@ -150,10 +142,11 @@ public class LocaleTest {
     	assertEquals(
     			"DEF P3 'P1' {2}", //$NON-NLS-1$
     			Locale.getStringFrom(l, RESOURCE2,KEY1,P3,P1,P2));
-    }
 
-    /**
-     */
+    	
+    	assertInlineParameterUsage(Locale.class, "getStringFrom", ClassLoader.class, String.class, String.class, Object[].class);
+	}
+
 	@Test
     public void getStringClassStringStringArray() {
     	assertEquals(NOKEY,
@@ -176,8 +169,6 @@ public class LocaleTest {
     			Locale.getString(LocaleStub.class,KEY1,P3,P1,P2));
     }
     
-    /**
-     */
 	@Test
     public void getStringClassLoaderClassStringStringArray() {
     	ClassLoader l = LocaleTest.class.getClassLoader();
@@ -202,8 +193,6 @@ public class LocaleTest {
     			Locale.getString(l, LocaleStub.class,KEY1,P3,P1,P2));
     }
 
-    /**
-     */
 	@Test
     public void getStringWithDefaultClassStringStringStringArray() {
     	assertEquals(
@@ -227,8 +216,6 @@ public class LocaleTest {
     			Locale.getStringWithDefault(LocaleStub.class,KEY1,DEFAULT,P3,P1,P2));
     }
 
-    /**
-     */
 	@Test
     public void getStringWithDefaultClassLoaderClassStringStringStringArray() {
     	ClassLoader l = LocaleTest.class.getClassLoader();
@@ -254,8 +241,6 @@ public class LocaleTest {
     			Locale.getStringWithDefault(l, LocaleStub.class,KEY1,DEFAULT,P3,P1,P2));
     }
 
-    /**
-     */
 	@Test
     public void getStringStringStringArray() {
     	assertEquals(
@@ -279,8 +264,6 @@ public class LocaleTest {
     			Locale.getString(KEY3));
     }
     
-    /**
-     */
 	@Test
     public void getStringClassLoaderStringStringArray() {
     	ClassLoader l = LocaleTest.class.getClassLoader();
@@ -306,8 +289,6 @@ public class LocaleTest {
     			Locale.getString(l, KEY3));
     }
 
-    /**
-     */
 	@Test
     public void getStringWithDefaultStringStringStringArray() {
     	assertEquals(
@@ -331,8 +312,6 @@ public class LocaleTest {
     			Locale.getStringWithDefault(KEY3,DEFAULT));
     }
 
-    /**
-     */
 	@Test
     public void getStringWithDefaultClassLoaderStringStringStringArray() {
     	ClassLoader l = LocaleTest.class.getClassLoader();
@@ -358,8 +337,6 @@ public class LocaleTest {
     			Locale.getStringWithDefault(l, KEY3, DEFAULT));
     }
     
-    /**
-     */
 	@Test
     public void getStringWithRawFormatStyle() {
     	Number data;
@@ -436,8 +413,6 @@ public class LocaleTest {
     			Locale.getString("FOUR", data)); //$NON-NLS-1$
     }
     
-    /**
-     */
 	@Test
     public void getStringWithRawFormatStyleWithFormat1() {
     	Number data;
@@ -503,8 +478,6 @@ public class LocaleTest {
     			Locale.getString("FORMAT_1", data)); //$NON-NLS-1$
     }
  
-    /**
-     */
 	@Test
     public void getStringWithRawFormatStyleWithFormat2() {
     	Number data;
@@ -570,8 +543,6 @@ public class LocaleTest {
     			Locale.getString("FORMAT_2", data)); //$NON-NLS-1$
     }
    
-    /**
-     */
 	@Test
     public void getStringWithRawFormatStyleWithFormat3() {
     	Number data;
@@ -637,8 +608,6 @@ public class LocaleTest {
     			Locale.getString("FORMAT_3", data)); //$NON-NLS-1$
     }
 
-    /**
-     */
 	@Test
     public void getStringWithRawFormatStyleWithFormat4() {
     	Number data;
@@ -704,8 +673,6 @@ public class LocaleTest {
     			Locale.getString("FORMAT_4", data)); //$NON-NLS-1$
     }
     
-    /**
-     */
 	@Test
     public void getStringWithRawFormatStyleWithFormat5() {
     	Number data;
@@ -771,8 +738,6 @@ public class LocaleTest {
     			Locale.getString("FORMAT_5", data)); //$NON-NLS-1$
     }
     
-    /**
-     */
 	@Test
     public void getStringWithRawFormatStyleWithFormat6() {
     	Number data;
@@ -838,8 +803,6 @@ public class LocaleTest {
     			Locale.getString("FORMAT_6", data)); //$NON-NLS-1$
     }
     
-    /**
-     */
 	@Test
     public void getStringWithRawFormatStyleWithFormat7() {
     	Number data;

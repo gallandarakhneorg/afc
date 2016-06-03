@@ -22,6 +22,8 @@ package org.arakhne.afc.attrs.collection;
 
 import java.util.Collection;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 import org.arakhne.afc.attrs.attr.Attribute;
 
 /**
@@ -43,6 +45,7 @@ public interface ROMBasedAttributeCollection extends AttributeCollection {
 	 *
 	 * @return the list of the names of the attributes which are stored inside the memory buffer.
 	 */
+	@Pure
 	Collection<String> getAllBufferedAttributeNames();
 
 	/** Replies the list of attributes that have
@@ -50,6 +53,7 @@ public interface ROMBasedAttributeCollection extends AttributeCollection {
 	 *
 	 * @return the list of attributes stored inside the memory buffer.
 	 */
+	@Pure
 	Collection<Attribute> getAllBufferedAttributes();
 
 	/** Replies if the specified attribute name corresponds to
@@ -59,12 +63,14 @@ public interface ROMBasedAttributeCollection extends AttributeCollection {
 	 * @return <code>true</code> if an attribute with the given name
 	 *     is stored inside the memory buffer, otherwise <code>false</code>
 	 */
+	@Pure
 	boolean isBufferedAttribute(String attributeName);
 
 	/** Replies the count of buffered attributes.
 	 *
 	 * @return the count of buffered attributes.
 	 */
+	@Pure
 	int getBufferedAttributeCount();
 
 }

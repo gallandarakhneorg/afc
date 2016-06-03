@@ -34,6 +34,9 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.regex.Pattern;
 
+import org.eclipse.xtext.xbase.lib.Inline;
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /**
  * This utility class provides a way to extend the reflection API and
  * the Class class with autoboxing-compliant functions.
@@ -60,6 +63,7 @@ public final class ReflectionUtil {
 	 * @return <code>true</code> if <code>obj</code> is an instance of the type
 	 * @see Class#isInstance(Object)
 	 */
+	@Pure
 	@SuppressWarnings({"checkstyle:npathcomplexity", "checkstyle:cyclomaticcomplexity", "checkstyle:returncount"})
 	public static boolean isInstance(Class<?> type, Object obj) {
 		assert type != null;
@@ -158,6 +162,7 @@ public final class ReflectionUtil {
 	 *     could be assigned to a variable of {@code assignementTarget} type,
 	 *     otherwise <code>false</code>.
 	 */
+	@Pure
 	public static boolean isAssignableFrom(Class<?> assignementTarget, Class<?> assignementSource) {
 		assert assignementSource != null;
 		assert assignementTarget != null;
@@ -188,6 +193,7 @@ public final class ReflectionUtil {
 	 * @throws ClassNotFoundException  if name names an
 	 *     unknown class or primitive
 	 */
+	@Pure
 	@SuppressWarnings({"checkstyle:returncount", "checkstyle:npathcomplexity"})
 	public static Class<?> forName(String name) throws ClassNotFoundException {
 		if (name == null || "".equals(name) || "null".equals(name) //$NON-NLS-1$ //$NON-NLS-2$
@@ -233,6 +239,8 @@ public final class ReflectionUtil {
 	 * @throws ClassNotFoundException  if name names an
 	 *     unknown class or primitive
 	 */
+	@Pure
+	@Inline(value = "ReflectionUtil.forName(($1), true, ($2))", imported = {ReflectionUtil.class})
 	public static Class<?> forName(String name, ClassLoader loader) throws ClassNotFoundException {
 		return forName(name, true, loader);
 	}
@@ -250,6 +258,7 @@ public final class ReflectionUtil {
 	 * @throws ClassNotFoundException  if name names an
 	 *     unknown class or primitive
 	 */
+	@Pure
 	@SuppressWarnings({"checkstyle:returncount", "checkstyle:npathcomplexity"})
 	public static Class<?> forName(String name, boolean typeInitialization, ClassLoader loader) throws ClassNotFoundException {
 		if (name == null || "".equals(name) || "null".equals(name) //$NON-NLS-1$//$NON-NLS-2$
@@ -289,6 +298,8 @@ public final class ReflectionUtil {
 	 * @param pkg is the package to explore.
 	 * @return the list of classes in the package.
 	 */
+	@Pure
+	@Inline(value = "ReflectionUtil.getPackageClasses(($1).getName())", imported = {ReflectionUtil.class})
 	public static Collection<Class<?>> getPackageClasses(Package pkg) {
 		return getPackageClasses(pkg.getName());
 	}
@@ -299,6 +310,7 @@ public final class ReflectionUtil {
 	 * @param packageName is the name of the package to explore.
 	 * @return the list of classes in the package.
 	 */
+	@Pure
 	public static Collection<Class<?>> getPackageClasses(String packageName) {
 		final Collection<Class<?>> classes = new ArrayList<>();
 
@@ -397,6 +409,7 @@ public final class ReflectionUtil {
 	 * @param className is the name of the class to explore.
 	 * @return the list of subclasses.
 	 */
+	@Pure
 	public static <T> Collection<Class<? extends T>> getSubClasses(Class<T> className) {
 		final Collection<Class<? extends T>> list = new ArrayList<>();
 		getSubClasses(className, true, true, true, list);
@@ -414,6 +427,7 @@ public final class ReflectionUtil {
 	 * @param allowEnum is <code>true</code> to allow enumeration to be put in the replied list.
 	 * @param result is the list of subclasses which will be filled by this function.
 	 */
+	@Pure
 	public static <T> void getSubClasses(Class<T> className, boolean allowAbstract, boolean allowInterface,
 			boolean allowEnum, Collection<Class<? extends T>> result) {
 		final String[] entries = System.getProperty("java.class.path") //$NON-NLS-1$
@@ -562,6 +576,7 @@ public final class ReflectionUtil {
 	 * @return the implemented interfaces.
 	 * @since 5.0
 	 */
+	@Pure
 	@SuppressWarnings("unchecked")
 	public static <T, I> Set<Class<? extends I>> getAllDirectInterfaces(Class<? extends T> lowestType,
 			Class<T> highestType, Class<I> interfaceType) {
@@ -642,6 +657,7 @@ public final class ReflectionUtil {
 	 * @return the list of superclasses.
 	 * @since 5.0
 	 */
+	@Pure
 	public static <T> Collection<Class<? super T>> getSuperClasses(Class<T> className) {
 		assert className != null;
 		final Collection<Class<? super T>> list = new ArrayList<>();
@@ -682,6 +698,7 @@ public final class ReflectionUtil {
 	 * @return the top-most type which is common to both given objects.
 	 * @since 6.0
 	 */
+	@Pure
 	public static Class<?> getCommonType(Object instance1, Object instance2) {
 		if (instance1 == null) {
 			return instance2 == null ? null : instance2.getClass();
@@ -703,6 +720,7 @@ public final class ReflectionUtil {
 	 * @return the outboxing of the given type.
 	 * @since 7.1
 	 */
+	@Pure
 	@SuppressWarnings({"checkstyle:returncount", "npathcomplexity"})
 	public static Class<?> getOutboxingType(Class<?> type) {
 		if (void.class.equals(type)) {
@@ -741,6 +759,7 @@ public final class ReflectionUtil {
 	 * @return the outboxing of the given type.
 	 * @since 7.1
 	 */
+	@Pure
 	@SuppressWarnings({"checkstyle:returncount", "npathcomplexity"})
 	public static Class<?> getInboxingType(Class<?> type) {
 		if (Void.class.equals(type)) {
@@ -780,6 +799,7 @@ public final class ReflectionUtil {
 	 * @return <code>true</code> if the values could be passed to the method.
 	 * @since 7.1
 	 */
+	@Pure
 	public static boolean matchesParameters(Class<?>[] formalParameters, Object... parameterValues) {
 		if (formalParameters == null) {
 			return parameterValues == null;
@@ -802,6 +822,8 @@ public final class ReflectionUtil {
 	 * @return <code>true</code> if the values could be passed to the method.
 	 * @since 7.1
 	 */
+	@Pure
+	@Inline(value = "ReflectionUtil.matchesParameters(($1).getParameterTypes(), ($2))", imported = {ReflectionUtil.class})
 	public static boolean matchesParameters(Method method, Object... parameters) {
 		return matchesParameters(method.getParameterTypes(), parameters);
 	}

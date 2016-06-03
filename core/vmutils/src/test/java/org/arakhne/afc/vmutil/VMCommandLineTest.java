@@ -20,24 +20,24 @@
 
 package org.arakhne.afc.vmutil;
 
+import static org.arakhne.afc.testtools.XbaseInlineTestUtil.assertInlineParameterUsage;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
+import java.io.File;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import org.arakhne.afc.vmutil.VMCommandLine;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
-/**
-* @author $Author: sgalland$
-* @version $Name$ $Revision$ $Date$
-* @mavengroupid org.arakhne.afc
-* @mavenartifactid arakhneVmutils
-*/
-@SuppressWarnings("static-method")
+@SuppressWarnings("all")
 public class VMCommandLineTest {
 
 	private static final String[] commandLine = new String[] { 
@@ -51,9 +51,6 @@ public class VMCommandLineTest {
 	private static final String[] optionDefinitions = new String[] {
 			"D=b", "S=s", "F:f", "v+", "b!"}; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$//$NON-NLS-4$//$NON-NLS-5$
 
-	/**
-	 * @throws Exception
-	 */
 	@Before
 	public void setUp() throws Exception {
 		VMCommandLine.saveVMParameters((Class<?>)null, new String[0]);
@@ -70,8 +67,6 @@ public class VMCommandLineTest {
 		assertTrue(Arrays.equals(commandLine2, VMCommandLine.getCommandLineParameters()));
 	}
 
-	/**
-	 */
 	@Test
 	public void saveVMParametersIfNotSet() {
 		assertTrue(Arrays.equals(new String[0], VMCommandLine.getCommandLineParameters()));
@@ -81,8 +76,6 @@ public class VMCommandLineTest {
 		assertTrue(Arrays.equals(commandLine, VMCommandLine.getCommandLineParameters()));
 	}
 
-	/**
-	 */
 	@Test
 	public void shiftCommandLineParameters() {
 		VMCommandLine.saveVMParameters(VMCommandLineTest.class, commandLine);
@@ -95,15 +88,11 @@ public class VMCommandLineTest {
 				VMCommandLine.getCommandLineParameters()));
 	}
 
-	/**
-	 */
 	@Test
 	public void getCommandLineOptions() {
 		assertEquals(Collections.emptyMap(), VMCommandLine.getCommandLineOptions());
 	}
 
-	/**
-	 */
 	@Test
 	public void splitOptionsAndParameters() {
 		VMCommandLine.saveVMParameters(VMCommandLineTest.class, commandLine);
@@ -158,8 +147,6 @@ public class VMCommandLineTest {
 		assertEquals("-v", parameters[3]); //$NON-NLS-1$
 	}
 
-	/**
-	 */
 	@Test
 	public void getCommandLineOption() {
 		assertNull(VMCommandLine.getCommandLineOption("S")); //$NON-NLS-1$
@@ -176,8 +163,6 @@ public class VMCommandLineTest {
 		assertNull(VMCommandLine.getCommandLineOption("nob")); //$NON-NLS-1$
 	}
 
-	/**
-	 */
 	@Test
 	public void hasCommandLineOption() {
 		assertFalse(VMCommandLine.hasCommandLineOption("S")); //$NON-NLS-1$
@@ -189,16 +174,12 @@ public class VMCommandLineTest {
 		assertFalse(VMCommandLine.hasCommandLineOption("nob")); //$NON-NLS-1$
 	}
 
-	/**
-	 */
 	@Test
 	public void testVMCommandLineClassOfQStringArray() {
 		VMCommandLine c = new VMCommandLine(VMCommandLineTest.class, commandLine);
 		assertTrue(Arrays.equals(commandLine, c.getParameters()));
 	}
 
-	/**
-	 */
 	@Test
 	public void vmCommandLineClassOfQStringArrayStringArray() {
 		VMCommandLine c = new VMCommandLine(VMCommandLineTest.class, optionDefinitions, commandLine);
@@ -207,8 +188,6 @@ public class VMCommandLineTest {
 		}, c.getParameters()));
 	}
 
-	/**
-	 */
 	@Test
 	public void hasOption() {
 		VMCommandLine c = new VMCommandLine(VMCommandLineTest.class, optionDefinitions, commandLine);
@@ -217,8 +196,6 @@ public class VMCommandLineTest {
 		assertFalse(c.hasOption("nob")); //$NON-NLS-1$
 	}
 
-	/**
-	 */
 	@Test
 	public void getFirstOptionValue() {
 		VMCommandLine c = new VMCommandLine(VMCommandLineTest.class, optionDefinitions, commandLine);
@@ -228,8 +205,6 @@ public class VMCommandLineTest {
 		assertNull(c.getFirstOptionValue("nob")); //$NON-NLS-1$
 	}
 
-	/**
-	 */
 	@Test
 	public void getOptionValues() {
 		VMCommandLine c = new VMCommandLine(VMCommandLineTest.class, optionDefinitions, commandLine);
@@ -264,8 +239,6 @@ public class VMCommandLineTest {
 		assertNull(c.getOptionValues("nob")); //$NON-NLS-1$
 	}
 
-	/**
-	 */
 	@Test
 	public void getParameters() {
 		VMCommandLine c = new VMCommandLine(VMCommandLineTest.class, optionDefinitions, commandLine);
@@ -275,8 +248,6 @@ public class VMCommandLineTest {
 		}, c.getParameters()));
 	}
 
-	/**
-	 */
 	@Test
 	public void shiftParameters() {
 		VMCommandLine c = new VMCommandLine(VMCommandLineTest.class, optionDefinitions, commandLine);
@@ -287,16 +258,12 @@ public class VMCommandLineTest {
 		}, c.getParameters()));
 	}
 
-	/**
-	 */
 	@Test
 	public void getParameterCount() {
 		VMCommandLine c = new VMCommandLine(VMCommandLineTest.class, optionDefinitions, commandLine);
 		assertEquals(4, c.getParameterCount());
 	}
 
-	/**
-	 */
 	@Test
 	public void getParameterAt() {
 		VMCommandLine c = new VMCommandLine(VMCommandLineTest.class, optionDefinitions, commandLine);
@@ -306,8 +273,6 @@ public class VMCommandLineTest {
 		assertEquals("-v", c.getParameterAt(3)); //$NON-NLS-1$
 	}
 
-	/**
-	 */
 	@Test
 	public void isParameterExists() {
 		VMCommandLine c = new VMCommandLine(VMCommandLineTest.class, optionDefinitions, commandLine);
@@ -316,6 +281,36 @@ public class VMCommandLineTest {
 		assertTrue(c.isParameterExists(2));
 		assertTrue(c.isParameterExists(3));
 		assertFalse(c.isParameterExists(5));
+	}
+
+	@Test
+	public void launchVMWithClassPathClassStringStringArray() {
+		assertInlineParameterUsage(VMCommandLine.class, "launchVMWithClassPath", Class.class, String.class, String[].class);
+	}
+
+	@Test
+	public void launchVMWithClassPathClassFileArrayStringArray() {
+		assertInlineParameterUsage(VMCommandLine.class, "launchVMWithClassPath", Class.class, File[].class, String[].class);
+	}
+
+	@Test
+	public void launchVMClassStringArray() {
+		assertInlineParameterUsage(VMCommandLine.class, "launchVM", Class.class, String[].class);
+	}
+
+	@Test
+	public void launchVMStringStringArray() {
+		assertInlineParameterUsage(VMCommandLine.class, "launchVM", String.class, String[].class);
+	}
+	
+	@Test
+	public void saveVMParametersClassStringArray() {
+		assertInlineParameterUsage(VMCommandLine.class, "saveVMParameters", Class.class, String[].class);
+	}
+
+	@Test
+	public void saveVMParametersIfNotSetClassStringArray() {
+		assertInlineParameterUsage(VMCommandLine.class, "saveVMParametersIfNotSet", Class.class, String[].class);
 	}
 
 }

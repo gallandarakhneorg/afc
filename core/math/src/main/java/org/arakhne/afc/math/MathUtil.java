@@ -61,7 +61,7 @@ public final class MathUtil {
 	 * @return the sign of the argument
 	 */
 	@Pure
-	@Inline(value = "(($1 == 0.) ? 0 : (($1 < -0.) ? -1 : 1))")
+	@Inline(value = "($1 == 0.) ? 0 : (($1 < -0.) ? -1 : 1)")
 	public static int sign(double value) {
 		return (value == 0.) ? 0 : ((value < -0.) ? -1 : 1);
 	}
@@ -138,7 +138,7 @@ public final class MathUtil {
 	 * @see Math#ulp(double)
 	 */
 	@Pure
-	@Inline(value = "(Math.abs($1) < Math.ulp($1))", imported = Math.class)
+	@Inline(value = "Math.abs($1) < Math.ulp($1)", imported = Math.class)
 	public static boolean isEpsilonZero(double value) {
 		return Math.abs(value) < Math.ulp(value);
 	}
@@ -152,7 +152,7 @@ public final class MathUtil {
 	 *     is near zero, otherwise <code>false</code>.
 	 */
 	@Pure
-	@Inline(value = "(Math.abs($1) < (Double.isNaN($2) ? Math.ulp($1) : $2))", imported = Math.class)
+	@Inline(value = "Math.abs($1) < (Double.isNaN($2) ? Math.ulp($1) : ($2))", imported = Math.class)
 	public static boolean isEpsilonZero(double value, double epsilon) {
 		final double eps = Double.isNaN(epsilon) ? Math.ulp(value) : epsilon;
 		return Math.abs(value) <= eps;
@@ -167,7 +167,7 @@ public final class MathUtil {
 	 * @see Math#ulp(double)
 	 */
 	@Pure
-	@Inline(value = "(MathUtil.isEpsilonEqual($1, $2, Double.NaN))", imported = {MathUtil.class})
+	@Inline(value = "MathUtil.isEpsilonEqual($1, $2, Double.NaN)", imported = {MathUtil.class})
 	public static boolean isEpsilonEqual(double v1, double v2) {
 		return isEpsilonEqual(v1, v2, Double.NaN);
 	}
@@ -690,7 +690,7 @@ public final class MathUtil {
 	 * @return the cosecant of the angle.
 	 */
 	@Pure
-	@Inline(value = "(1./Math.sin($1))", imported = {Math.class})
+	@Inline(value = "1./Math.sin($1)", imported = {Math.class})
 	public static double csc(double angle) {
 		return 1. / Math.sin(angle);
 	}
@@ -706,7 +706,7 @@ public final class MathUtil {
 	 * @return the secant of the angle.
 	 */
 	@Pure
-	@Inline(value = "(1./Math.cos($1))", imported = {Math.class})
+	@Inline(value = "1./Math.cos($1)", imported = {Math.class})
 	public static double sec(double angle) {
 		return 1. / Math.cos(angle);
 	}
@@ -722,7 +722,7 @@ public final class MathUtil {
 	 * @return the cotangent of the angle.
 	 */
 	@Pure
-	@Inline(value = "(1./Math.tan($1))", imported = {Math.class})
+	@Inline(value = "1./Math.tan($1)", imported = {Math.class})
 	public static double cot(double angle) {
 		return 1. / Math.tan(angle);
 	}
@@ -737,7 +737,7 @@ public final class MathUtil {
 	 * @return the versine of the angle.
 	 */
 	@Pure
-	@Inline(value = "(1.-Math.cos($1))", imported = {Math.class})
+	@Inline(value = "1.-Math.cos($1)", imported = {Math.class})
 	public static double versin(double angle) {
 		return 1. - Math.cos(angle);
 	}
@@ -752,7 +752,7 @@ public final class MathUtil {
 	 * @return the exsecant of the angle..
 	 */
 	@Pure
-	@Inline(value = "(MathUtil.sec($1)-1.)", imported = {MathUtil.class})
+	@Inline(value = "MathUtil.sec($1)-1.", imported = {MathUtil.class})
 	public static double exsec(double angle) {
 		return sec(angle) - 1.;
 	}
@@ -767,7 +767,7 @@ public final class MathUtil {
 	 * @return the chord of the angle.
 	 */
 	@Pure
-	@Inline(value = "(2.*Math.sin(($1)/2.)", imported = {Math.class})
+	@Inline(value = "2.*Math.sin(($1)/2.)", imported = {Math.class})
 	public static double crd(double angle) {
 		return 2. * Math.sin(angle / 2.);
 	}

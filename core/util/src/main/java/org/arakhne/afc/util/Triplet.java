@@ -21,6 +21,9 @@
 package org.arakhne.afc.util;
 
 import java.io.Serializable;
+import java.util.Objects;
+
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /** This class implements triplet of values.
  *
@@ -73,6 +76,7 @@ public class Triplet<A, B, C> implements Serializable {
 	 *
 	 * @return the first value of the pair.
 	 */
+	@Pure
 	public A getA() {
 		return this.avalue;
 	}
@@ -81,6 +85,7 @@ public class Triplet<A, B, C> implements Serializable {
 	 *
 	 * @return the second value of the pair.
 	 */
+	@Pure
 	public B getB() {
 		return this.bvalue;
 	}
@@ -89,6 +94,7 @@ public class Triplet<A, B, C> implements Serializable {
 	 *
 	 * @return the third value of the pair.
 	 */
+	@Pure
 	public C getC() {
 		return this.cvalue;
 	}
@@ -117,12 +123,14 @@ public class Triplet<A, B, C> implements Serializable {
 		this.cvalue = thirdValue;
 	}
 
+	@Pure
 	@Override
 	public String toString() {
 		return "<" + this.avalue + ";" + this.bvalue //$NON-NLS-1$//$NON-NLS-2$
 				+ ";" + this.cvalue + ">";  //$NON-NLS-1$//$NON-NLS-2$
 	}
 
+	@Pure
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == this) {
@@ -147,6 +155,7 @@ public class Triplet<A, B, C> implements Serializable {
 		return value1.equals(value2);
 	}
 
+	@Pure
 	@Override
 	public int hashCode() {
 		int hash = HashCodeUtil.hash(this.avalue);

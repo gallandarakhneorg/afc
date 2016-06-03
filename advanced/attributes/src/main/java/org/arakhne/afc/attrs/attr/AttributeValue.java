@@ -29,6 +29,8 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.UUID;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.ui.vector.Color;
@@ -50,6 +52,7 @@ public interface AttributeValue extends Cloneable, Serializable {
 	 *
 	 * @return a comparator, never <code>null</code>
 	 */
+	@Pure
 	Comparator<? extends AttributeValue> valueComparator();
 
 	/**
@@ -65,6 +68,7 @@ public interface AttributeValue extends Cloneable, Serializable {
 	 * @see #isNullAllowed()
 	 * @see #isObjectValue()
 	 */
+	@Pure
 	boolean isBaseType();
 
 	/**
@@ -72,6 +76,7 @@ public interface AttributeValue extends Cloneable, Serializable {
 	 *
 	 * @return the type of the attribute
 	 */
+	@Pure
 	AttributeType getType();
 
 	/**
@@ -115,6 +120,7 @@ public interface AttributeValue extends Cloneable, Serializable {
 	 * @throws InvalidAttributeTypeException when type is invalid.
 	 * @throws AttributeNotInitializedException when attribute is not initialized.
 	 */
+	@Pure
 	Object getValue() throws InvalidAttributeTypeException, AttributeNotInitializedException;
 
 	/** Replies the type of the internal value of this implementation of AttributeValue.
@@ -122,6 +128,7 @@ public interface AttributeValue extends Cloneable, Serializable {
 	 * @return the type of the value stored inside this attribute value implementation.
 	 * @since 4.0
 	 */
+	@Pure
 	Class<?> getInternalStorageType();
 
 	/** Set this value with the content of the specified one.
@@ -154,6 +161,7 @@ public interface AttributeValue extends Cloneable, Serializable {
 	 * @throws InvalidAttributeTypeException when type is invalid.
 	 * @throws AttributeNotInitializedException when attribute is not initialized.
 	 */
+	@Pure
 	long getInteger() throws InvalidAttributeTypeException, AttributeNotInitializedException;
 
 	/**
@@ -177,6 +185,7 @@ public interface AttributeValue extends Cloneable, Serializable {
 	 * @throws InvalidAttributeTypeException when type is invalid.
 	 * @throws AttributeNotInitializedException when attribute is not initialized.
 	 */
+	@Pure
 	double getReal() throws InvalidAttributeTypeException, AttributeNotInitializedException;
 
 	/**
@@ -193,6 +202,7 @@ public interface AttributeValue extends Cloneable, Serializable {
 	 * @throws InvalidAttributeTypeException when type is invalid.
 	 * @throws AttributeNotInitializedException when attribute is not initialized.
 	 */
+	@Pure
 	String getString() throws InvalidAttributeTypeException, AttributeNotInitializedException;
 
 	/**
@@ -209,6 +219,7 @@ public interface AttributeValue extends Cloneable, Serializable {
 	 * @throws InvalidAttributeTypeException when type is invalid.
 	 * @throws AttributeNotInitializedException when attribute is not initialized.
 	 */
+	@Pure
 	Date getDate() throws InvalidAttributeTypeException, AttributeNotInitializedException;
 
 	/**
@@ -225,6 +236,7 @@ public interface AttributeValue extends Cloneable, Serializable {
 	 * @throws InvalidAttributeTypeException when type is invalid.
 	 * @throws AttributeNotInitializedException when attribute is not initialized.
 	 */
+	@Pure
 	boolean getBoolean() throws InvalidAttributeTypeException, AttributeNotInitializedException;
 
 	/**
@@ -246,6 +258,7 @@ public interface AttributeValue extends Cloneable, Serializable {
 	 * @see #isBaseType()
 	 * @see #isNullAllowed()
 	 */
+	@Pure
 	boolean isObjectValue();
 
 	/**
@@ -260,6 +273,7 @@ public interface AttributeValue extends Cloneable, Serializable {
 	 * @throws AttributeNotInitializedException when attribute is not initialized.
 	 * @see #getValue()
 	 */
+	@Pure
 	<T extends Object> T getJavaObject() throws InvalidAttributeTypeException, AttributeNotInitializedException;
 
 	/**
@@ -277,6 +291,7 @@ public interface AttributeValue extends Cloneable, Serializable {
 	 * @throws InvalidAttributeTypeException when type is invalid.
 	 * @throws AttributeNotInitializedException when attribute is not initialized.
 	 */
+	@Pure
 	long getTimestamp() throws InvalidAttributeTypeException, AttributeNotInitializedException;
 
 	/**
@@ -293,6 +308,7 @@ public interface AttributeValue extends Cloneable, Serializable {
 	 * @throws InvalidAttributeTypeException when type is invalid.
 	 * @throws AttributeNotInitializedException when attribute is not initialized.
 	 */
+	@Pure
 	Point3D getPoint3D() throws InvalidAttributeTypeException, AttributeNotInitializedException;
 
 	/**
@@ -318,6 +334,7 @@ public interface AttributeValue extends Cloneable, Serializable {
 	 * @throws InvalidAttributeTypeException when type is invalid.
 	 * @throws AttributeNotInitializedException when attribute is not initialized.
 	 */
+	@Pure
 	Point2D<?, ?> getPoint() throws InvalidAttributeTypeException, AttributeNotInitializedException;
 
 	/**
@@ -343,6 +360,7 @@ public interface AttributeValue extends Cloneable, Serializable {
 	 * @throws AttributeNotInitializedException when attribute is not initialized.
 	 * @deprecated since 13.0
 	 */
+	@Pure
 	@Deprecated
 	Color getColor() throws InvalidAttributeTypeException, AttributeNotInitializedException;
 
@@ -401,6 +419,7 @@ public interface AttributeValue extends Cloneable, Serializable {
 	 * @throws AttributeNotInitializedException when attribute is not initialized.
 	 * @deprecated since 13.0
 	 */
+	@Pure
 	@Deprecated
 	Image getImage() throws InvalidAttributeTypeException, AttributeNotInitializedException;
 
@@ -421,6 +440,7 @@ public interface AttributeValue extends Cloneable, Serializable {
 	 * @throws AttributeNotInitializedException when attribute is not initialized.
 	 * @since 4.0
 	 */
+	@Pure
 	UUID getUUID() throws InvalidAttributeTypeException, AttributeNotInitializedException;
 
 	/**
@@ -439,6 +459,7 @@ public interface AttributeValue extends Cloneable, Serializable {
 	 * @throws AttributeNotInitializedException when attribute is not initialized.
 	 * @since 4.0
 	 */
+	@Pure
 	URL getURL() throws InvalidAttributeTypeException, AttributeNotInitializedException;
 
 	/**
@@ -457,6 +478,7 @@ public interface AttributeValue extends Cloneable, Serializable {
 	 * @throws AttributeNotInitializedException when attribute is not initialized.
 	 * @since 4.0
 	 */
+	@Pure
 	URI getURI() throws InvalidAttributeTypeException, AttributeNotInitializedException;
 
 	/**
@@ -474,6 +496,7 @@ public interface AttributeValue extends Cloneable, Serializable {
 	 * @throws InvalidAttributeTypeException when type is invalid.
 	 * @throws AttributeNotInitializedException when attribute is not initialized.
 	 */
+	@Pure
 	Point3D[] getPolyline3D() throws InvalidAttributeTypeException, AttributeNotInitializedException;
 
 	/**
@@ -511,6 +534,7 @@ public interface AttributeValue extends Cloneable, Serializable {
 	 * @throws InvalidAttributeTypeException when type is invalid.
 	 * @throws AttributeNotInitializedException when attribute is not initialized.
 	 */
+	@Pure
 	Point2D<?, ?>[] getPolyline() throws InvalidAttributeTypeException, AttributeNotInitializedException;
 
 	/**
@@ -548,6 +572,7 @@ public interface AttributeValue extends Cloneable, Serializable {
 	 * @throws InvalidAttributeTypeException when type is invalid.
 	 * @throws AttributeNotInitializedException when attribute is not initialized.
 	 */
+	@Pure
 	InetAddress getInetAddress() throws InvalidAttributeTypeException, AttributeNotInitializedException;
 
 	/**
@@ -564,6 +589,7 @@ public interface AttributeValue extends Cloneable, Serializable {
 	 * @throws InvalidAttributeTypeException when type is invalid.
 	 * @throws AttributeNotInitializedException when attribute is not initialized.
 	 */
+	@Pure
 	Enum<?> getEnumeration() throws InvalidAttributeTypeException, AttributeNotInitializedException;
 
 	/**
@@ -575,6 +601,7 @@ public interface AttributeValue extends Cloneable, Serializable {
 	 * @throws InvalidAttributeTypeException when type is invalid.
 	 * @throws AttributeNotInitializedException when attribute is not initialized.
 	 */
+	@Pure
 	<T extends Enum<T>> T getEnumeration(Class<T> type) throws InvalidAttributeTypeException, AttributeNotInitializedException;
 
 	/**
@@ -591,6 +618,7 @@ public interface AttributeValue extends Cloneable, Serializable {
 	 * @throws InvalidAttributeTypeException when type is invalid.
 	 * @throws AttributeNotInitializedException when attribute is not initialized.
 	 */
+	@Pure
 	Class<?> getJavaClass() throws InvalidAttributeTypeException, AttributeNotInitializedException;
 
 	/**
@@ -606,6 +634,7 @@ public interface AttributeValue extends Cloneable, Serializable {
 	 * @return <code>true</code> if this attribute is containing a value,
 	 *     otherwise <code>false</code>
 	 */
+	@Pure
 	boolean isAssigned();
 
 	/**
@@ -619,6 +648,7 @@ public interface AttributeValue extends Cloneable, Serializable {
 	 * @see #isBaseType()
 	 * @see #isObjectValue()
 	 */
+	@Pure
 	boolean isNullAllowed();
 
 	/**
@@ -655,6 +685,7 @@ public interface AttributeValue extends Cloneable, Serializable {
 	 *     otherwise <code>false</code>.
 	 * @since 4.0
 	 */
+	@Pure
 	boolean isAssignableFrom(AttributeType type);
 
 	/** Replies if a value of the given attribute type may
@@ -677,6 +708,7 @@ public interface AttributeValue extends Cloneable, Serializable {
 	 *     otherwise <code>false</code>.
 	 * @since 4.0
 	 */
+	@Pure
 	boolean isAssignableFrom(AttributeValue value);
 
 }

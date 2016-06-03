@@ -23,6 +23,8 @@ package org.arakhne.afc.vmutil;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ScheduledExecutorService;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /**
  * This interface describes a provider of thread's service.
  *
@@ -37,12 +39,14 @@ public interface ThreadServiceProvider {
 	 *
 	 * @return the default executor service.
 	 */
+	@Pure
 	ExecutorService getExecutorService();
 
 	/** Replies the scheduled thread executor for this provider.
 	 *
 	 * @return the default scheduled executor service.
 	 */
+	@Pure
 	ScheduledExecutorService getScheduledExecutorService();
 
 }

@@ -26,6 +26,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /**
  * This class permits to centralize the identify of the thread service providers.
  *
@@ -47,11 +49,12 @@ public final class ThreadServiceFinder {
 		//
 	}
 
-    /**
+	/**
      * Replies the current service provider.
 	 *
      * @return the thread service provider or <code>null</code>
      */
+	@Pure
     public static ThreadServiceProvider getProvider() {
     	try {
     		return SERVICES.peek();
@@ -99,6 +102,7 @@ public final class ThreadServiceFinder {
     	private ScheduledExecutorService scheduledExecutorService;
 
 		@Override
+		@Pure
 		public ExecutorService getExecutorService() {
 			if (this.executorService == null) {
 				this.executorService = Executors.newCachedThreadPool();
@@ -107,6 +111,7 @@ public final class ThreadServiceFinder {
 		}
 
 		@Override
+		@Pure
 		public ScheduledExecutorService getScheduledExecutorService() {
 			if (this.scheduledExecutorService == null) {
 				this.scheduledExecutorService = Executors.newScheduledThreadPool(3);

@@ -296,7 +296,7 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 	 * @return the front vector.
 	 */
 	@Pure
-	@Inline(value = "(new ImmutableVector2D(1, 0))", imported = {ImmutableVector2D.class})
+	@Inline(value = "new ImmutableVector2D(1, 0)", imported = {ImmutableVector2D.class})
 	public static Vector2D<?, ?> getViewVector() {
 		return new ImmutableVector2D(1, 0);
 	}
@@ -318,7 +318,7 @@ public enum CoordinateSystem2D implements CoordinateSystem {
 	 * @return the back vector.
 	 */
 	@Pure
-	@Inline(value = "(new ImmutableVector2D(-1, 0))", imported = {ImmutableVector2D.class})
+	@Inline(value = "new ImmutableVector2D(-1, 0)", imported = {ImmutableVector2D.class})
 	public static Vector2D<?, ?> getBackVector() {
 		return new ImmutableVector2D(-1, 0);
 	}

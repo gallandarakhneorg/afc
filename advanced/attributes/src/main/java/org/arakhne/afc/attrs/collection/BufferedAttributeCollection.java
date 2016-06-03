@@ -31,6 +31,8 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.UUID;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 import org.arakhne.afc.attrs.attr.Attribute;
 import org.arakhne.afc.attrs.attr.AttributeException;
 import org.arakhne.afc.attrs.attr.AttributeImpl;
@@ -62,6 +64,7 @@ public abstract class BufferedAttributeCollection extends AbstractAttributeColle
 	 *
 	 * @return the deep copy.
 	 */
+	@Pure
 	@Override
 	public BufferedAttributeCollection clone() {
 		final BufferedAttributeCollection clone = (BufferedAttributeCollection) super.clone();
@@ -77,6 +80,7 @@ public abstract class BufferedAttributeCollection extends AbstractAttributeColle
 	 */
 	protected abstract AttributeValue loadValue(String name) throws AttributeException;
 
+	@Pure
 	@Override
 	public abstract Collection<String> getAllAttributeNames();
 
@@ -117,11 +121,13 @@ public abstract class BufferedAttributeCollection extends AbstractAttributeColle
 		return value;
 	}
 
+	@Pure
 	@Override
 	public boolean hasAttribute(String name) {
 		return getAllAttributeNames().contains(name);
 	}
 
+	@Pure
 	@Override
 	public Collection<Attribute> getAllAttributes() {
 		final ArrayList<Attribute> list = new ArrayList<>(getAttributeCount());
@@ -138,6 +144,7 @@ public abstract class BufferedAttributeCollection extends AbstractAttributeColle
 		return list;
 	}
 
+	@Pure
 	@Override
 	public Map<AttributeType, Collection<Attribute>> getAllAttributesByType() {
 		final Map<AttributeType, Collection<Attribute>> map = new TreeMap<>();
@@ -159,6 +166,7 @@ public abstract class BufferedAttributeCollection extends AbstractAttributeColle
 		return map;
 	}
 
+	@Pure
 	@Override
 	public AttributeValue getAttribute(String name) {
 		try {
@@ -169,6 +177,7 @@ public abstract class BufferedAttributeCollection extends AbstractAttributeColle
 		return null;
 	}
 
+	@Pure
 	@Override
 	public AttributeValue getAttribute(String name, AttributeValue default_value) {
 		AttributeValue value;
@@ -180,6 +189,7 @@ public abstract class BufferedAttributeCollection extends AbstractAttributeColle
 		return value;
 	}
 
+	@Pure
 	@Override
 	public Attribute getAttributeObject(String name) {
 		try {

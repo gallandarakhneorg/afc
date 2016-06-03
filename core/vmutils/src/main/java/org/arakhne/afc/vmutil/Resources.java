@@ -26,6 +26,9 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.eclipse.xtext.xbase.lib.Inline;
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /**
  * This utility class provides to load resources according to
  * several heuristics:<ul>
@@ -94,6 +97,7 @@ public final class Resources {
 	 * @return the url of the resource or <code>null</code> if the resource was
 	 *     not found in class paths.
 	 */
+	@Pure
 	public static URL getResource(String path) {
 		return getResource((ClassLoader) null, path);
 	}
@@ -124,6 +128,7 @@ public final class Resources {
 	 *     not found in class paths.
 	 * @since 6.2
 	 */
+	@Pure
 	public static URL getResource(ClassLoader classLoader, Package packagename, String path) {
 		if (packagename == null || path == null) {
 			return null;
@@ -162,6 +167,7 @@ public final class Resources {
 	 * @return the url of the resource or <code>null</code> if the resource was
 	 *     not found in class paths.
 	 */
+	@Pure
 	public static URL getResource(Class<?> classname, String path) {
 		if (classname == null) {
 			return null;
@@ -190,6 +196,7 @@ public final class Resources {
 	 * @return the url of the resource or <code>null</code> if the resource was
 	 *     not found in class paths.
 	 */
+	@Pure
 	public static URL getResource(ClassLoader classLoader, String path) {
 		return currentResourceInstance.getResource(classLoader, path);
 	}
@@ -209,6 +216,7 @@ public final class Resources {
 	 * @return the url of the resource or <code>null</code> if the resource was
 	 *     not found in class paths.
 	 */
+	@Pure
 	public static InputStream getResourceAsStream(String path) {
 		return getResourceAsStream((ClassLoader) null, path);
 	}
@@ -239,6 +247,7 @@ public final class Resources {
 	 *     not found in class paths.
 	 * @since 6.2
 	 */
+	@Pure
 	public static InputStream getResourceAsStream(ClassLoader classLoader, Package packagename, String path) {
 		if (packagename == null || path == null) {
 			return null;
@@ -277,6 +286,7 @@ public final class Resources {
 	 * @return the url of the resource or <code>null</code> if the resource was
 	 *     not found in class paths.
 	 */
+	@Pure
 	@SuppressWarnings("resource")
 	public static InputStream getResourceAsStream(Class<?> classname, String path) {
 		if (classname == null) {
@@ -307,6 +317,7 @@ public final class Resources {
 	 * @return the url of the resource or <code>null</code> if the resource was
 	 *     not found in class paths.
 	 */
+	@Pure
 	public static InputStream getResourceAsStream(ClassLoader classLoader, String path) {
 		return currentResourceInstance.getResourceAsStream(classLoader, path);
 	}
@@ -321,6 +332,8 @@ public final class Resources {
 	 *     not found in class paths.
 	 * @since 7.0
 	 */
+	@Pure
+	@Inline(value = "Resources.getPropertyFile(($1).getClassLoader(), ($1), ($2))", imported = {Resources.class})
 	public static URL getPropertyFile(Class<?> classname, Locale locale) {
 		return getPropertyFile(classname.getClassLoader(), classname, locale);
 	}
@@ -336,6 +349,7 @@ public final class Resources {
 	 * @return the url of the property resource or <code>null</code> if the resource was
 	 *     not found in class paths.
 	 */
+	@Pure
 	public static URL getPropertyFile(ClassLoader classLoader, Class<?> classname, Locale locale) {
 		final StringBuilder name = new StringBuilder();
 
@@ -376,6 +390,7 @@ public final class Resources {
 	 * @return the translated resource name.
 	 * @since 7.0
 	 */
+	@Pure
 	public static String translateResourceName(String resourceName) {
 		return currentResourceInstance.translateResourceName(resourceName);
 	}

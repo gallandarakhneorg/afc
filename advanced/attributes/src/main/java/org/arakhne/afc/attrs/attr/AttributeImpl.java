@@ -26,7 +26,10 @@ import java.net.URI;
 import java.net.URL;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.Objects;
 import java.util.UUID;
+
+import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d3.Point3D;
@@ -361,6 +364,7 @@ public class AttributeImpl extends AttributeValueImpl implements Attribute {
 	 *     {@code arg1}, or <code>0</code> if they are equal.
 	 * @see AttributeComparator
 	 */
+	@Pure
 	public static int compareAttrs(Attribute arg0, Attribute arg1) {
 		if (arg0 == arg1) {
 			return 0;
@@ -392,6 +396,7 @@ public class AttributeImpl extends AttributeValueImpl implements Attribute {
 	 * {@code arg1}, or <code>0</code> if they are equal.
 	 * @see AttributeNameComparator
 	 */
+	@Pure
 	public static int compareAttrNames(String arg0, String arg1) {
 		if (arg0 == arg1) {
 			return 0;
@@ -405,6 +410,7 @@ public class AttributeImpl extends AttributeValueImpl implements Attribute {
 		return arg0.compareToIgnoreCase(arg1);
 	}
 
+	@Pure
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof Attribute) {
@@ -413,6 +419,7 @@ public class AttributeImpl extends AttributeValueImpl implements Attribute {
 		return super.equals(obj);
 	}
 
+	@Pure
 	@Override
 	public int hashCode() {
         final int prime = 31;
@@ -422,6 +429,7 @@ public class AttributeImpl extends AttributeValueImpl implements Attribute {
         return result;
 	}
 
+	@Pure
 	@Override
 	public String toString() {
 		final StringBuilder str = new StringBuilder();
@@ -454,6 +462,7 @@ public class AttributeImpl extends AttributeValueImpl implements Attribute {
 		}
 	}
 
+	@Pure
 	@Override
 	public String getName() {
 		return this.name;
@@ -470,11 +479,13 @@ public class AttributeImpl extends AttributeValueImpl implements Attribute {
 		this.name = value.getName();
 	}
 
+	@Pure
 	@Override
 	public Comparator<? extends Attribute> nameComparator() {
 		return new AttributeNameComparator();
 	}
 
+	@Pure
 	@Override
 	public Comparator<? extends Attribute> comparator() {
 		return new AttributeComparator();

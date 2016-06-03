@@ -20,6 +20,8 @@
 
 package org.arakhne.afc.vmutil;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /**
  * Wrapper to the OS dependent functions.
  * This class was introduced to avoid to kill the current
@@ -39,6 +41,7 @@ interface OperatingSystemWrapper {
 	 *
 	 * @return the type of identification provided by this wrapper.
 	 */
+	@Pure
 	OperatingSystemIdentificationType getIdentificationType();
 
 	/** Get the OS serial number.
@@ -47,6 +50,7 @@ interface OperatingSystemWrapper {
 	 * @param enableGUI indicates if any additional GUI could be opened, or not.
 	 * @return the serial number associated to the current operating system.
 	 */
+	@Pure
 	String getOSSerialNumber(boolean enableSuperUser, boolean enableGUI);
 
 	/** Get the OS UUID.
@@ -55,6 +59,7 @@ interface OperatingSystemWrapper {
 	 * @param enableGUI indicates if any additional GUI could be opened, or not.
 	 * @return an unique identifier for the current operating system.
 	 */
+	@Pure
 	String getOSUUID(boolean enableSuperUser, boolean enableGUI);
 
 }

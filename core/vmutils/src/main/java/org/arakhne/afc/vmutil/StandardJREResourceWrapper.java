@@ -23,6 +23,8 @@ package org.arakhne.afc.vmutil;
 import java.io.InputStream;
 import java.net.URL;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /**
  * This interface provides the standard JRE implementation to load resources according to
  * several heuristics:<ul>
@@ -49,6 +51,7 @@ class StandardJREResourceWrapper implements ResourceWrapper {
 	}
 
 	@Override
+	@Pure
 	public URL getResource(ClassLoader classLoader, String path) {
 		if (path == null) {
 			return null;
@@ -74,6 +77,7 @@ class StandardJREResourceWrapper implements ResourceWrapper {
 
 	@SuppressWarnings("resource")
 	@Override
+	@Pure
 	public InputStream getResourceAsStream(ClassLoader classLoader, String path) {
 		if (path == null) {
 			return null;
@@ -100,6 +104,7 @@ class StandardJREResourceWrapper implements ResourceWrapper {
 	}
 
 	@Override
+	@Pure
 	public String translateResourceName(String resourceName) {
 		return resourceName;
 	}

@@ -28,6 +28,9 @@ import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
 
+import org.eclipse.xtext.xbase.lib.Inline;
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /**
  * This class provides more generic means for loading
  * dynamical libraries.
@@ -62,6 +65,7 @@ public final class LibraryLoader {
 	 *     otherwise <code>false</code>
 	 * @since 5.0
 	 */
+	@Pure
 	public static boolean isEnable() {
 		return !disable;
 	}
@@ -226,6 +230,7 @@ public final class LibraryLoader {
 	 * @param libName is the name of the library
 	 * @return the URL where the specified library was located.
 	 */
+	@Pure
 	public static URL findLibraryURL(String libName) {
 		return findLibraryURL(null, libName, null, null);
 	}
@@ -242,6 +247,7 @@ public final class LibraryLoader {
 	 * @param libName is the name of the library
 	 * @return the URL where the specified library was located.
 	 */
+	@Pure
 	public static URL findLibraryURL(String path, String libName) {
 		return findLibraryURL(path, libName, null, null);
 	}
@@ -288,6 +294,7 @@ public final class LibraryLoader {
 	 * @return the integer which is corresponding to the data model, or <code>0</code> if
 	 *     it could not be determined.
 	 */
+	@Pure
 	static int getOperatingSystemArchitectureDataModel() {
 		final String arch = System.getProperty("sun.arch.data.model"); //$NON-NLS-1$
 		if (arch != null) {
@@ -350,6 +357,7 @@ public final class LibraryLoader {
 	 *             <code>null</code>
 	 * @see        java.lang.System#load(java.lang.String)
 	 */
+	@Inline(value = "LibraryLoader.loadPlatformDependentLibrary(null, $1)", imported = {LibraryLoader.class})
 	public static void loadPlatformDependentLibrary(String libname) throws IOException {
 		loadPlatformDependentLibrary(null, libname);
 	}

@@ -36,6 +36,8 @@ public interface AttributeChangeListener extends EventListener {
 	 *
 	 * @param event describes the changes.
 	 */
-	void onAttributeChangeEvent(AttributeChangeEvent event);
+	default void onAttributeChangeEvent(AttributeChangeEvent event) {
+		//
+	}
 
 }

@@ -23,6 +23,8 @@ package org.arakhne.afc.attrs.attr;
 import java.io.Serializable;
 import java.util.Comparator;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 
 
 /**
@@ -37,6 +39,7 @@ public class AttributeNameComparator implements Comparator<Attribute>, Serializa
 
 	private static final long serialVersionUID = -2416416144079568908L;
 
+	@Pure
 	@Override
 	public int compare(Attribute arg0, Attribute arg1) {
 		return AttributeImpl.compareAttrNames(arg0.getName(), arg1.getName());

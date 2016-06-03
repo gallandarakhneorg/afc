@@ -23,6 +23,8 @@ package org.arakhne.afc.sizediterator;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /** Iterator on collection.
  *
  * @param <OBJECTT> is the type of the objects to iterator on.
@@ -49,6 +51,7 @@ public class CollectionSizedIterator<OBJECTT> implements SizedIterator<OBJECTT> 
 		this.index = -1;
 	}
 
+	@Pure
 	@Override
 	public boolean hasNext() {
 		return this.iterator.hasNext();
@@ -68,16 +71,19 @@ public class CollectionSizedIterator<OBJECTT> implements SizedIterator<OBJECTT> 
 		--this.index;
 	}
 
+	@Pure
 	@Override
 	public int index() {
 		return this.index;
 	}
 
+	@Pure
 	@Override
 	public int totalSize() {
 		return this.length;
 	}
 
+	@Pure
 	@Override
 	public int rest() {
 		return this.length - (this.index + 1);

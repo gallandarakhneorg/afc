@@ -30,6 +30,9 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Random;
 
+import org.eclipse.xtext.xbase.lib.Inline;
+import org.eclipse.xtext.xbase.lib.Pure;
+
 import org.arakhne.afc.sizediterator.ArraySizedIterator;
 import org.arakhne.afc.sizediterator.SizedIterator;
 
@@ -69,6 +72,7 @@ public final class ArrayUtil {
 	 * @param clazz is the type of the elements.
 	 * @return the array.
 	 */
+	@Pure
 	public static <T> T[] toArray(Collection<? extends T> collection, Class<T> clazz) {
 		final int size = (collection == null) ? 0 : collection.size();
 		final T[] tab = newInstance(clazz, size);
@@ -102,6 +106,7 @@ public final class ArrayUtil {
 	 * @param arrays are the arrays to merge.
 	 * @return the array.
 	 */
+	@Pure
 	public static <T> T[] merge(Class<T> clazz, @SuppressWarnings("unchecked") T[]... arrays) {
 		int length = 0;
 		for (final T[] tab : arrays) {
@@ -129,6 +134,7 @@ public final class ArrayUtil {
 	 * @param elements are the elements to merge.
 	 * @return the array.
 	 */
+	@Pure
 	public static <T> T[] merge(Class<T> clazz, @SuppressWarnings("unchecked") T... elements) {
 		final T[] result = newInstance(clazz, elements.length);
 		System.arraycopy(elements, 0, result, 0, elements.length);
@@ -145,6 +151,7 @@ public final class ArrayUtil {
 	 * @param elements are the elements to merge.
 	 * @return the array.
 	 */
+	@Pure
 	public static <T> T[] merge(Class<T> clazz, T[] source, @SuppressWarnings("unchecked") T... elements) {
 		final T[] result = newInstance(clazz, source.length + elements.length);
 		System.arraycopy(source, 0, result, 0, source.length);
@@ -162,6 +169,8 @@ public final class ArrayUtil {
 	 * @return the array.
 	 * @deprecated see {@link #mergeWithoutNull(Class, Object[]...)}
 	 */
+	@Pure
+	@Inline(value = "ArrayUtil.mergeWithoutNull($1, $2)", imported = {ArrayUtil.class})
 	@SuppressWarnings("all")
 	@Deprecated
 	public static <T> T[] merge_without_null(Class<T> clazz, @SuppressWarnings("unchecked") T[]... arrays) {
@@ -178,6 +187,8 @@ public final class ArrayUtil {
 	 * @return the array.
 	 * @deprecated see {@link #mergeWithoutNull(Class, T...)}
 	 */
+	@Pure
+	@Inline(value = "ArrayUtil.mergeWithoutNull($1, $2)", imported = {ArrayUtil.class})
 	@SuppressWarnings("all")
 	@Deprecated
 	public static <T> T[] merge_without_null(Class<T> clazz, @SuppressWarnings("unchecked") T... elements) {
@@ -195,6 +206,8 @@ public final class ArrayUtil {
 	 * @return the array.
 	 * @deprecated see {@link #mergeWithoutNull(Class, T[], T...)}
 	 */
+	@Pure
+	@Inline(value = "ArrayUtil.mergeWithoutNull($1, $2, $3)", imported = {ArrayUtil.class})
 	@SuppressWarnings("all")
 	@Deprecated
 	public static <T> T[] merge_without_null(Class<T> clazz, T[] source, @SuppressWarnings("unchecked") T... elements) {
@@ -210,6 +223,7 @@ public final class ArrayUtil {
 	 * @param arrays are the arrays to merge.
 	 * @return the array.
 	 */
+	@Pure
 	public static <T> T[] mergeWithoutNull(Class<T> clazz, @SuppressWarnings("unchecked") T[]... arrays) {
 		int length = 0;
 		for (final T[] tab : arrays) {
@@ -245,6 +259,7 @@ public final class ArrayUtil {
 	 * @param elements are the elements to merge.
 	 * @return the array.
 	 */
+	@Pure
 	public static <T> T[] mergeWithoutNull(Class<T> clazz, @SuppressWarnings("unchecked") T... elements) {
 		int nbNotNull = 0;
 		for (final T t : elements) {
@@ -272,6 +287,7 @@ public final class ArrayUtil {
 	 * @param elements are the elements to merge.
 	 * @return the array.
 	 */
+	@Pure
 	public static <T> T[] mergeWithoutNull(Class<T> clazz, T[] source, @SuppressWarnings("unchecked") T... elements) {
 		int nbNotNull = 0;
 		for (final T t : source) {
@@ -307,6 +323,7 @@ public final class ArrayUtil {
 	 * @param toRemove are the elements to remove.
 	 * @return the array without the removed elements.
 	 */
+	@Pure
 	public static <T> T[] removeElements(Class<T> clazz, T[] source, @SuppressWarnings("unchecked") T... toRemove) {
 		final List<T> list = new ArrayList<>();
 		list.addAll(Arrays.asList(source));
@@ -326,6 +343,7 @@ public final class ArrayUtil {
 	 * @return the array in which each element was casted according to the given type.
 	 * @see #castRestrictedArray(Object[], Class)
 	 */
+	@Pure
 	public static <I, T> T[] castArray(I[] originalArray, Class<T> clazz) {
 		final int size = (originalArray == null) ? 0 : originalArray.length;
 		final T[] result = newInstance(clazz, size);
@@ -349,6 +367,7 @@ public final class ArrayUtil {
 	 * @return the array in which each element was casted according to the given type.
 	 * @see #castRestrictedArray(Object[], Class)
 	 */
+	@Pure
 	public static <I, O> O[] castArray(Collection<I> originalArray, Class<O> clazz) {
 		final int size = (originalArray == null) ? 0 : originalArray.size();
 		final O[] result = newInstance(clazz, size);
@@ -374,6 +393,7 @@ public final class ArrayUtil {
 	 * @param comparator is filtering the elements.
 	 * @return the array in which each element was casted according to the given type.
 	 */
+	@Pure
 	public static <T> T[] restrictArray(T[] originalArray, Class<T> clazz, Filter<T> comparator) {
 		final int size = (originalArray == null) ? 0 : originalArray.length;
 		final List<T> result = new ArrayList<>();
@@ -397,6 +417,7 @@ public final class ArrayUtil {
 	 * @see #castArray(Object[], Class)
 	 */
 	@SuppressWarnings("unchecked")
+	@Pure
 	public static <I, O> O[] castRestrictedArray(I[] originalArray, Class<O> clazz) {
 		final int size = (originalArray == null) ? 0 : originalArray.length;
 		final List<O> result = new ArrayList<>();
@@ -420,6 +441,7 @@ public final class ArrayUtil {
 	 * @see #castArray(Object[], Class)
 	 */
 	@SuppressWarnings("unchecked")
+	@Pure
 	public static <I, O> O[] castRestrictedArray(Collection<I> originalArray, Class<O> clazz) {
 		final int size = (originalArray == null) ? 0 : originalArray.size();
 		final ArrayList<O> result = new ArrayList<>();
@@ -443,6 +465,7 @@ public final class ArrayUtil {
 	 * @param array is the array inside which the search must be done.
 	 * @return <code>true</code> if the element is inside the array, otherwise <code>false</code>
 	 */
+	@Pure
 	public static <T> boolean containsObject(T elt, T[] array) {
 		for (final T t : array) {
 			if (t == elt) {
@@ -462,6 +485,7 @@ public final class ArrayUtil {
 	 * @param array is the array inside which the search must be done.
 	 * @return <code>true</code> if the elements are inside the array, otherwise <code>false</code>
 	 */
+	@Pure
 	public static <T> boolean containsAllObjects(T[] elts, T[] array) {
 		boolean found;
 		for (final T elt : elts) {
@@ -488,6 +512,7 @@ public final class ArrayUtil {
 	 * @param array is the array inside which the search must be done.
 	 * @return <code>true</code> if the element is inside the array, otherwise <code>false</code>
 	 */
+	@Pure
 	public static <T> boolean contains(T elt, @SuppressWarnings("unchecked") T... array) {
 		for (final T t : array) {
 			if ((t == elt) || ((t != null) && (t.equals(elt)))) {
@@ -510,6 +535,7 @@ public final class ArrayUtil {
 	 * @return <code>true</code> if the element is inside the array, otherwise <code>false</code>
 	 * @since 4.0
 	 */
+	@Pure
 	public static <T> boolean contains(Comparator<T> comparator, T elt, @SuppressWarnings("unchecked") T... array) {
 		assert comparator != null;
 		assert elt != null;
@@ -544,6 +570,7 @@ public final class ArrayUtil {
 	 * @param array is the array inside which the search must be done.
 	 * @return <code>true</code> if the elements are inside the array, otherwise <code>false</code>
 	 */
+	@Pure
 	public static <T> boolean containsAll(T[] elts, T[] array) {
 		boolean found;
 		for (final T elt : elts) {
@@ -570,6 +597,7 @@ public final class ArrayUtil {
 	 * @param array is the second array.
 	 * @return <code>true</code> if an intersection is existing, otherwise <code>false</code>
 	 */
+	@Pure
 	public static <T> boolean intersects(T[] elts, T[] array) {
 		for (final T t : array) {
 			for (final T elt : elts) {
@@ -588,6 +616,7 @@ public final class ArrayUtil {
 	 * @param size is the size of the new array.
 	 * @return the new array.
 	 */
+	@Pure
 	@SuppressWarnings("unchecked")
 	public static <T> T[] newInstance(Class<T> clazz, int size) {
 		if (size < 0) {
@@ -601,6 +630,8 @@ public final class ArrayUtil {
 	 * @param <T> is the type of the elements.
 	 * @param array is the array to shuffle.
 	 */
+	@Pure
+	@Inline(value = "ArrayUtil.shuffle($1, new Random())", imported = {ArrayUtil.class, Random.class})
 	public static <T> void shuffle(T[] array) {
 		shuffle(array, new Random());
 	}
@@ -611,6 +642,7 @@ public final class ArrayUtil {
 	 * @param array is the array to shuffle.
 	 * @param rnd is the random number generator to use.
 	 */
+	@Pure
 	public static <T> void shuffle(T[] array, Random rnd) {
 		int ir;
 		T tmp;
@@ -626,6 +658,8 @@ public final class ArrayUtil {
 	 *
 	 * @param array is the array to shuffle.
 	 */
+	@Pure
+	@Inline(value = "ArrayUtil.shuffle($1, new Random())", imported = {ArrayUtil.class, Random.class})
 	public static void shuffle(boolean[] array) {
 		shuffle(array, new Random());
 	}
@@ -635,6 +669,7 @@ public final class ArrayUtil {
 	 * @param array is the array to shuffle.
 	 * @param rnd is the random number generator to use.
 	 */
+	@Pure
 	public static void shuffle(boolean[] array, Random rnd) {
 		int ir;
 		boolean tmp;
@@ -650,6 +685,8 @@ public final class ArrayUtil {
 	 *
 	 * @param array is the array to shuffle.
 	 */
+	@Pure
+	@Inline(value = "ArrayUtil.shuffle($1, new Random())", imported = {ArrayUtil.class, Random.class})
 	public static void shuffle(byte[] array) {
 		shuffle(array, new Random());
 	}
@@ -659,6 +696,7 @@ public final class ArrayUtil {
 	 * @param array is the array to shuffle.
 	 * @param rnd is the random number generator to use.
 	 */
+	@Pure
 	public static void shuffle(byte[] array, Random rnd) {
 		int ir;
 		byte tmp;
@@ -674,6 +712,8 @@ public final class ArrayUtil {
 	 *
 	 * @param array is the array to shuffle.
 	 */
+	@Pure
+	@Inline(value = "ArrayUtil.shuffle($1, new Random())", imported = {ArrayUtil.class, Random.class})
 	public static void shuffle(char[] array) {
 		shuffle(array, new Random());
 	}
@@ -683,6 +723,7 @@ public final class ArrayUtil {
 	 * @param array is the array to shuffle.
 	 * @param rnd is the random number generator to use.
 	 */
+	@Pure
 	public static void shuffle(char[] array, Random rnd) {
 		int ir;
 		char tmp;
@@ -698,6 +739,8 @@ public final class ArrayUtil {
 	 *
 	 * @param array is the array to shuffle.
 	 */
+	@Pure
+	@Inline(value = "ArrayUtil.shuffle($1, new Random())", imported = {ArrayUtil.class, Random.class})
 	public static void shuffle(int[] array) {
 		shuffle(array, new Random());
 	}
@@ -707,6 +750,7 @@ public final class ArrayUtil {
 	 * @param array is the array to shuffle.
 	 * @param rnd is the random number generator to use.
 	 */
+	@Pure
 	public static void shuffle(int[] array, Random rnd) {
 		int ir;
 		int tmp;
@@ -722,6 +766,8 @@ public final class ArrayUtil {
 	 *
 	 * @param array is the array to shuffle.
 	 */
+	@Pure
+	@Inline(value = "ArrayUtil.shuffle($1, new Random())", imported = {ArrayUtil.class, Random.class})
 	public static void shuffle(long[] array) {
 		shuffle(array, new Random());
 	}
@@ -731,6 +777,7 @@ public final class ArrayUtil {
 	 * @param array is the array to shuffle.
 	 * @param rnd is the random number generator to use.
 	 */
+	@Pure
 	public static void shuffle(long[] array, Random rnd) {
 		int ir;
 		long tmp;
@@ -746,6 +793,8 @@ public final class ArrayUtil {
 	 *
 	 * @param array is the array to shuffle.
 	 */
+	@Pure
+	@Inline(value = "ArrayUtil.shuffle($1, new Random())", imported = {ArrayUtil.class, Random.class})
 	public static void shuffle(float[] array) {
 		shuffle(array, new Random());
 	}
@@ -755,6 +804,7 @@ public final class ArrayUtil {
 	 * @param array is the array to shuffle.
 	 * @param rnd is the random number generator to use.
 	 */
+	@Pure
 	public static void shuffle(float[] array, Random rnd) {
 		int ir;
 		float tmp;
@@ -770,6 +820,8 @@ public final class ArrayUtil {
 	 *
 	 * @param array is the array to shuffle.
 	 */
+	@Pure
+	@Inline(value = "ArrayUtil.shuffle($1, new Random())", imported = {ArrayUtil.class, Random.class})
 	public static void shuffle(double[] array) {
 		shuffle(array, new Random());
 	}
@@ -779,6 +831,7 @@ public final class ArrayUtil {
 	 * @param array is the array to shuffle.
 	 * @param rnd is the random number generator to use.
 	 */
+	@Pure
 	public static void shuffle(double[] array, Random rnd) {
 		int ir;
 		double tmp;
@@ -798,6 +851,7 @@ public final class ArrayUtil {
 	 * @param obj is the object to translate.
 	 * @return a string representation of the given object.
 	 */
+	@Pure
 	@SuppressWarnings({"checkstyle:returncount", "checkstyle:npathcomplexity"})
 	public static String toString(Object obj) {
 		if (obj == null) {
@@ -839,6 +893,8 @@ public final class ArrayUtil {
 	 * @param array are the objects to iterate on.
 	 * @return an iterator
 	 */
+	@Pure
+	@Inline(value = "new ArraySizedIterator<>($1)", imported = {ArraySizedIterator.class})
 	public static <T> SizedIterator<T> sizedIterator(T[] array) {
 		return new ArraySizedIterator<>(array);
 	}
@@ -849,6 +905,7 @@ public final class ArrayUtil {
 	 * @return an iterator
 	 * @since 4.1
 	 */
+	@Pure
 	public static SizedIterator<Character> sizedIterator(char[] array) {
 		return new NativeCharacterToObjectCharacterIterator(array);
 	}
@@ -859,6 +916,7 @@ public final class ArrayUtil {
 	 * @return an iterator
 	 * @since 4.1
 	 */
+	@Pure
 	public static SizedIterator<Byte> sizedIterator(byte[] array) {
 		return new NativeByteToObjectByteIterator(array);
 	}
@@ -869,6 +927,7 @@ public final class ArrayUtil {
 	 * @return an iterator
 	 * @since 4.1
 	 */
+	@Pure
 	public static SizedIterator<Short> sizedIterator(short[] array) {
 		return new NativeShortToObjectShortIterator(array);
 	}
@@ -879,6 +938,7 @@ public final class ArrayUtil {
 	 * @return an iterator
 	 * @since 4.1
 	 */
+	@Pure
 	public static SizedIterator<Integer> sizedIterator(int[] array) {
 		return new NativeIntegerToObjectIntegerIterator(array);
 	}
@@ -889,6 +949,7 @@ public final class ArrayUtil {
 	 * @return an iterator
 	 * @since 4.1
 	 */
+	@Pure
 	public static SizedIterator<Long> sizedIterator(long[] array) {
 		return new NativeLongToObjectLongIterator(array);
 	}
@@ -899,6 +960,7 @@ public final class ArrayUtil {
 	 * @return an iterator
 	 * @since 4.1
 	 */
+	@Pure
 	public static SizedIterator<Float> sizedIterator(float[] array) {
 		return new NativeFloatToObjectFloatIterator(array);
 	}
@@ -909,6 +971,7 @@ public final class ArrayUtil {
 	 * @return an iterator
 	 * @since 4.1
 	 */
+	@Pure
 	public static SizedIterator<Double> sizedIterator(double[] array) {
 		return new NativeDoubleToObjectDoubleIterator(array);
 	}
@@ -919,6 +982,7 @@ public final class ArrayUtil {
 	 * @return an iterator
 	 * @since 4.1
 	 */
+	@Pure
 	public static SizedIterator<Boolean> sizedIterator(boolean[] array) {
 		return new NativeBooleanToObjectBooleanIterator(array);
 	}
@@ -930,6 +994,8 @@ public final class ArrayUtil {
 	 * @return an iterator
 	 * @since 4.1
 	 */
+	@Pure
+	@Inline(value = "new ArraySizedIterator<>($1)", imported = {ArraySizedIterator.class})
 	public static <T> Iterator<T> iterator(T[] array) {
 		return new ArraySizedIterator<>(array);
 	}
@@ -940,6 +1006,7 @@ public final class ArrayUtil {
 	 * @return an iterator
 	 * @since 4.1
 	 */
+	@Pure
 	public static Iterator<Boolean> iterator(boolean[] array) {
 		return new NativeBooleanToObjectBooleanIterator(array);
 	}
@@ -950,6 +1017,7 @@ public final class ArrayUtil {
 	 * @return an iterator
 	 * @since 4.1
 	 */
+	@Pure
 	public static Iterator<Character> iterator(char[] array) {
 		return new NativeCharacterToObjectCharacterIterator(array);
 	}
@@ -960,6 +1028,7 @@ public final class ArrayUtil {
 	 * @return an iterator
 	 * @since 4.1
 	 */
+	@Pure
 	public static Iterator<Byte> iterator(byte[] array) {
 		return new NativeByteToObjectByteIterator(array);
 	}
@@ -970,6 +1039,7 @@ public final class ArrayUtil {
 	 * @return an iterator
 	 * @since 4.1
 	 */
+	@Pure
 	public static Iterator<Short> iterator(short[] array) {
 		return new NativeShortToObjectShortIterator(array);
 	}
@@ -980,6 +1050,7 @@ public final class ArrayUtil {
 	 * @return an iterator
 	 * @since 4.1
 	 */
+	@Pure
 	public static Iterator<Integer> iterator(int[] array) {
 		return new NativeIntegerToObjectIntegerIterator(array);
 	}
@@ -990,6 +1061,7 @@ public final class ArrayUtil {
 	 * @return an iterator
 	 * @since 4.1
 	 */
+	@Pure
 	public static Iterator<Long> iterator(long[] array) {
 		return new NativeLongToObjectLongIterator(array);
 	}
@@ -1000,6 +1072,7 @@ public final class ArrayUtil {
 	 * @return an iterator
 	 * @since 4.1
 	 */
+	@Pure
 	public static Iterator<Float> iterator(float[] array) {
 		return new NativeFloatToObjectFloatIterator(array);
 	}
@@ -1010,6 +1083,7 @@ public final class ArrayUtil {
 	 * @return an iterator
 	 * @since 4.1
 	 */
+	@Pure
 	public static Iterator<Double> iterator(double[] array) {
 		return new NativeDoubleToObjectDoubleIterator(array);
 	}
@@ -1030,6 +1104,7 @@ public final class ArrayUtil {
 		 * @param obj is the value to filter.
 		 * @return <code>true</code> if the given value is acceptable, otherwise <code>false</code>
 		 */
+		@Pure
 		boolean filter(T obj);
 
 	}

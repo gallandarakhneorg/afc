@@ -23,6 +23,8 @@ package org.arakhne.afc.sizediterator;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /**
  * A sized iterator that is based on the used of
  * a collection of sized iterators.
@@ -75,6 +77,7 @@ public class MultiSizedIterator<M> implements SizedIterator<M> {
 		this.update = false;
 	}
 
+	@Pure
 	@Override
 	public boolean hasNext() {
 		if (this.next == null && this.update) {
@@ -97,16 +100,19 @@ public class MultiSizedIterator<M> implements SizedIterator<M> {
 		return v;
 	}
 
+	@Pure
 	@Override
 	public int totalSize() {
 		return this.total;
 	}
 
+	@Pure
 	@Override
 	public int rest() {
 		return this.total - this.returned;
 	}
 
+	@Pure
 	@Override
 	public int index() {
 		return totalSize() - rest();

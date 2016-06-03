@@ -22,6 +22,8 @@ package org.arakhne.afc.sizediterator;
 
 import java.util.Collections;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 import org.arakhne.afc.util.UnmodifiableIterator;
 
 /**
@@ -59,6 +61,7 @@ public class UnmodifiableSizedIterator<M> implements SizedIterator<M> {
 		this.original = iterator;
 	}
 
+	@Pure
 	@Override
 	public boolean hasNext() {
 		return this.original.hasNext();
@@ -69,16 +72,19 @@ public class UnmodifiableSizedIterator<M> implements SizedIterator<M> {
 		return this.original.next();
 	}
 
+	@Pure
 	@Override
 	public int rest() {
 		return this.original.rest();
 	}
 
+	@Pure
 	@Override
 	public int index() {
 		return this.original.index();
 	}
 
+	@Pure
 	@Override
 	public int totalSize() {
 		return this.original.totalSize();

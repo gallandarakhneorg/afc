@@ -22,6 +22,8 @@ package org.arakhne.afc.util;
 
 import java.util.Comparator;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /** Comparator which is using the natural order of the elements, i.e.
  * the elements must implements {@link Comparable}
  *
@@ -33,6 +35,7 @@ import java.util.Comparator;
  */
 public class NaturalOrderComparator<OBJECT> implements Comparator<OBJECT> {
 
+	@Pure
 	@Override
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public int compare(OBJECT o1, OBJECT o2) {

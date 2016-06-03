@@ -20,6 +20,8 @@
 
 package org.arakhne.afc.math.geometry.d2;
 
+import java.util.Objects;
+
 import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
 
@@ -58,7 +60,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 * @see #isUnitVector(double, double, double)
 	 */
 	@Pure
-	@Inline(value = "(Vector2D.isUnitVector($1, $2, MathConstants.UNIT_VECTOR_EPSILON))",
+	@Inline(value = "Vector2D.isUnitVector(($1), ($2), MathConstants.UNIT_VECTOR_EPSILON)",
 			imported = {Vector2D.class, MathConstants.class})
 	static boolean isUnitVector(double x, double y) {
 		return isUnitVector(x, y, MathConstants.UNIT_VECTOR_EPSILON);
@@ -81,7 +83,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 * @see #isUnitVector(double, double)
 	 */
 	@Pure
-	@Inline(value = "(MathUtil.isEpsilonEqual($1 * $1 + $2 * $2, 1., $3))",
+	@Inline(value = "MathUtil.isEpsilonEqual(($1) * ($1) + ($2) * ($2), 1., ($3))",
 			imported = {MathUtil.class})
 	static boolean isUnitVector(double x, double y, double epsilon) {
 		return MathUtil.isEpsilonEqual(x * x + y * y, 1., epsilon);
@@ -115,7 +117,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 * @see #isUnitVector(double, double, double)
 	 */
 	@Pure
-	@Inline(value = "(Vector2D.isOrthogonal($1, $2, $3, $4, MathConstants.ORTHOGONAL_VECTOR_EPSILON))",
+	@Inline(value = "Vector2D.isOrthogonal(($1), ($2), ($3), ($4), MathConstants.ORTHOGONAL_VECTOR_EPSILON)",
 			imported = {Vector2D.class, MathConstants.class})
 	static boolean isOrthogonal(double x1, double y1, double x2, double y2) {
 		return isOrthogonal(x1, y1, x2, y2, MathConstants.ORTHOGONAL_VECTOR_EPSILON);
@@ -134,7 +136,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 * @see #isOrthogonal(double, double, double,  double)
 	 */
 	@Pure
-	@Inline(value = "(MathUtil.isEpsilonZero(Vector2D.dotProduct($1, $2, $3, $4), $5))",
+	@Inline(value = "MathUtil.isEpsilonZero(Vector2D.dotProduct(($1), ($2), ($3), ($4)), ($5))",
 			imported = {Vector2D.class, MathUtil.class})
 	static boolean isOrthogonal(double x1, double y1, double x2, double y2, double epsilon) {
 		return MathUtil.isEpsilonZero(dotProduct(x1, y1, x2, y2), epsilon);
@@ -170,7 +172,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 * @see MathUtil#isEpsilonZero(double)
 	 */
 	@Pure
-	@Inline(value = "(MathUtil.isEpsilonZero($1 * $4 - $3 * $2))",
+	@Inline(value = "MathUtil.isEpsilonZero(($1) * ($4) - ($3) * ($2))",
 			imported = {MathUtil.class})
 	static boolean isCollinearVectors(double x1, double y1, double x2, double y2) {
 		// Test if three points are colinears
@@ -204,7 +206,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 * @return the determinant
 	 */
 	@Pure
-	@Inline(value = "($1 * $4 - $3 * $2)")
+	@Inline(value = "($1) * ($4) - ($3) * ($2)")
 	static double perpProduct(double x1, double y1, double x2, double y2) {
 		return x1 * y2 - x2 * y1;
 	}
@@ -227,7 +229,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 * @return the dot product.
 	 */
 	@Pure
-	@Inline(value = "($1 * $3 + $2 * $4)")
+	@Inline(value = "($1) * ($3) + ($2) * ($4)")
 	static double dotProduct(double x1, double y1, double x2, double y2) {
 		return x1 * x2 + y1 * y2;
 	}
@@ -250,7 +252,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 * @see #signedAngle(double, double, double, double)
 	 * @see #perpProduct(double, double, double, double)
 	 */
-	@Inline("(($1 * $4 - $2 * $3) >= 0.)")
+	@Inline("(($1) * ($4) - ($2) * ($3)) >= 0.")
 	static boolean isCCW(double x1, double y1, double x2, double y2) {
 		return (x1 * y2 - y1 * x2) >= 0.;
 	}
@@ -337,7 +339,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 * @return the trigonometric angle in radians in [-PI;PI].
 	 */
 	@Pure
-	@Inline(value = "(Vector2D.signedAngle(1, 0, $3 - $1, $4 - $2))",
+	@Inline(value = "Vector2D.signedAngle(1, 0, ($3) - ($1), ($4) - ($2))",
 			imported = {Vector2D.class})
 	static double angleOfVector(double x1, double y1, double x2, double y2) {
 		return signedAngle(
@@ -357,7 +359,7 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 	 * @return the trigonometric angle in radians in [-PI;PI].
 	 */
 	@Pure
-	@Inline(value = "(Vector2D.signedAngle(1, 0, $1, $2))",
+	@Inline(value = "Vector2D.signedAngle(1, 0, ($1), ($2))",
 			imported = {Vector2D.class})
 	static double angleOfVector(double x, double y) {
 		return signedAngle(

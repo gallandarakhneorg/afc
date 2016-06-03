@@ -22,6 +22,8 @@ package org.arakhne.afc.inputoutput.filefilter;
 
 import java.io.File;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 import org.arakhne.afc.vmutil.FileSystem;
 
 /** Abstract implementation of a file filter that may be
@@ -69,6 +71,7 @@ public abstract class AbstractFileFilter implements FileFilter {
 		this.description = b.toString();
 	}
 
+	@Pure
 	@Override
 	public final boolean accept(File file) {
 		if (file.isDirectory()) {
@@ -82,16 +85,19 @@ public abstract class AbstractFileFilter implements FileFilter {
 		return false;
 	}
 
+	@Pure
 	@Override
 	public final boolean accept(File dir, String name) {
 		return accept(new File(dir, name));
 	}
 
+	@Pure
 	@Override
 	public final String getDescription() {
 		return this.description;
 	}
 
+	@Pure
 	@Override
 	public final String[] getExtensions() {
 		return this.extensions;

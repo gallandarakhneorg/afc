@@ -94,7 +94,7 @@ public class UniformStochasticLaw extends StochasticLaw {
 	 * @return a value depending of the stochastic law parameters
 	 * @throws MathException when math definition error.
 	 */
-	@Inline(value = "(StochasticGenerator.generateRandomValue(new UniformStochasticLaw($1, $2)))",
+	@Inline(value = "StochasticGenerator.generateRandomValue(new UniformStochasticLaw(($1), ($2)))",
 			imported = {StochasticGenerator.class, UniformStochasticLaw.class})
 	public static double random(double minX, double maxX) throws MathException {
 		return StochasticGenerator.generateRandomValue(new UniformStochasticLaw(minX, maxX));

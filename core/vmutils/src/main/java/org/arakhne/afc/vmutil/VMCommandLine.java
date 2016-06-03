@@ -31,6 +31,9 @@ import java.util.Map.Entry;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import org.eclipse.xtext.xbase.lib.Inline;
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /**
  * This utility class permits to get the java command line for the current VM.
  *
@@ -118,6 +121,7 @@ public class VMCommandLine {
 	 * @param name is the name which must be converted into a binary executable filename.
 	 * @return the binary executable filename.
 	 */
+	@Pure
 	public static String getExecutableFilename(String name) {
 		if (OperatingSystem.WIN.isCurrentOS()) {
 			return name + ".exe"; //$NON-NLS-1$
@@ -129,6 +133,7 @@ public class VMCommandLine {
 	 *
 	 * @return the binary executable filename that was used to launch the virtual machine.
 	 */
+	@Pure
 	public static String getVMBinary() {
 		final String javaHome = System.getProperty("java.home"); //$NON-NLS-1$
 		final File binDir = new File(new File(javaHome), "bin"); //$NON-NLS-1$
@@ -154,6 +159,9 @@ public class VMCommandLine {
 	 * @throws IOException when a IO error occurs.
 	 * @since 6.2
 	 */
+	@Pure
+	@Inline(value = "VMCommandLine.launchVMWithClassPath(($1).getCanonicalName(), ($2), ($3))",
+			imported = {VMCommandLine.class})
 	public static Process launchVMWithClassPath(Class<?> classToLaunch, String classpath,
 			String... additionalParams) throws IOException {
 		return launchVMWithClassPath(classToLaunch.getCanonicalName(), classpath, additionalParams);
@@ -168,6 +176,7 @@ public class VMCommandLine {
 	 * @throws IOException when a IO error occurs.
 	 * @since 6.2
 	 */
+	@Pure
 	@SuppressWarnings({"checkstyle:magicnumber"})
 	public static Process launchVMWithClassPath(String classToLaunch, String classpath,
 			String... additionalParams) throws IOException {
@@ -207,6 +216,9 @@ public class VMCommandLine {
 	 * @throws IOException when a IO error occurs.
 	 * @since 6.2
 	 */
+	@Pure
+	@Inline(value = "VMCommandLine.launchVMWithClassPath(($1).getCanonicalName(), ($2), ($3))",
+			imported = {VMCommandLine.class})
 	public static Process launchVMWithClassPath(Class<?> classToLaunch, File[] classpath,
 			String... additionalParams) throws IOException {
 		return launchVMWithClassPath(classToLaunch.getCanonicalName(), classpath, additionalParams);
@@ -221,6 +233,7 @@ public class VMCommandLine {
 	 * @throws IOException when a IO error occurs.
 	 * @since 6.2
 	 */
+	@Pure
 	public static Process launchVMWithClassPath(String classToLaunch, File[] classpath,
 			String... additionalParams) throws IOException {
 		final StringBuilder b = new StringBuilder();
@@ -241,6 +254,7 @@ public class VMCommandLine {
 	 * @throws IOException when a IO error occurs.
 	 * @since 6.2
 	 */
+	@Pure
 	@SuppressWarnings("checkstyle:magicnumber")
 	public static Process launchVMWithJar(File jarFile, String... additionalParams) throws IOException {
 		final String javaBin = getVMBinary();
@@ -266,6 +280,8 @@ public class VMCommandLine {
 	 * @return the process that is running the new virtual machine, neither <code>null</code>
 	 * @throws IOException when a IO error occurs.
 	 */
+	@Pure
+	@Inline(value = "VMCommandLine.launchVM(($1).getCanonicalName(), ($2))", imported = {VMCommandLine.class})
 	public static Process launchVM(Class<?> classToLaunch, String... additionalParams) throws IOException {
 		return launchVM(classToLaunch.getCanonicalName(), additionalParams);
 	}
@@ -278,6 +294,8 @@ public class VMCommandLine {
 	 * @throws IOException when a IO error occurs.
 	 * @since 6.2
 	 */
+	@Inline(value = "VMCommandLine.launchVMWithClassPath(($1), System.getProperty(\"java.class.path\"), ($2))",
+			imported = {VMCommandLine.class})
 	public static Process launchVM(String classToLaunch, String... additionalParams) throws IOException {
 		return launchVMWithClassPath(
 				classToLaunch,
@@ -291,6 +309,8 @@ public class VMCommandLine {
 	 * @param classToLaunch is the class which contains a <code>main</code>.
 	 * @param parameters is the parameters to pass to the <code>main</code>.
 	 */
+	@Inline(value = "VMCommandLine.saveVMParameters((($1) != null) ? ($1).getCanonicalName() : null, ($2))",
+			imported = {VMCommandLine.class})
 	public static void saveVMParameters(Class<?> classToLaunch, String... parameters) {
  		saveVMParameters(
  				(classToLaunch != null)
@@ -321,6 +341,8 @@ public class VMCommandLine {
 	 * @param classToLaunch is the class which contains a <code>main</code>.
 	 * @param parameters is the parameters to pass to the <code>main</code>.
 	 */
+	@Inline(value = "VMCommandLine.saveVMParametersIfNotSet(($1).getCanonicalName(), ($2))",
+			imported = {VMCommandLine.class})
 	public static void saveVMParametersIfNotSet(Class<?> classToLaunch, String... parameters) {
 		saveVMParametersIfNotSet(classToLaunch.getCanonicalName(), parameters);
 	}
@@ -355,6 +377,7 @@ public class VMCommandLine {
 	 *
 	 * @return  the command line.
 	 */
+	@Pure
 	@SuppressWarnings({"checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	public static String[] getAllCommandLineParameters() {
 		final int osize = commandLineOptions == null ? 0 : commandLineOptions.size();
@@ -404,6 +427,7 @@ public class VMCommandLine {
 	 *
 	 * @return the list of the parameters on the command line
 	 */
+	@Pure
 	public static String[] getCommandLineParameters() {
 		return commandLineParameters == null ? new String[0] : commandLineParameters;
 	}
@@ -435,6 +459,7 @@ public class VMCommandLine {
 	 *
 	 * @return the list of options passed on the command line
 	 */
+	@Pure
 	public static Map<String, List<Object>> getCommandLineOptions() {
 		if (commandLineOptions != null) {
 			return Collections.unmodifiableSortedMap(commandLineOptions);
@@ -447,6 +472,7 @@ public class VMCommandLine {
 	 * @param name is the name of the option
 	 * @return the option value or <code>null</code> if the option is not on the command line.
 	 */
+	@Pure
 	public static List<Object> getCommandLineOption(String name) {
 		if (commandLineOptions != null) {
 			if (commandLineOptions.containsKey(name)) {
@@ -462,6 +488,7 @@ public class VMCommandLine {
 	 * @param name is the name of the option
 	 * @return <code>true</code> if the option was found on the command line, otherwise <code>false</code>.
 	 */
+	@Pure
 	public static boolean hasCommandLineOption(String name) {
 		return commandLineOptions != null && commandLineOptions.containsKey(name);
 	}
@@ -778,6 +805,7 @@ public class VMCommandLine {
 	 * @param optionLabel is the name of the option
 	 * @return <code>true</code> if the option is present, otherwise <code>false</code>
 	 */
+	@Pure
 	@SuppressWarnings("static-method")
 	public boolean hasOption(String optionLabel) {
 		return hasCommandLineOption(optionLabel);
@@ -788,6 +816,7 @@ public class VMCommandLine {
 	 * @param optionLabel is the name of the option
 	 * @return the option value or <code>null</code> if the option is not present or has no value.
 	 */
+	@Pure
 	@SuppressWarnings("static-method")
 	public Object getFirstOptionValue(String optionLabel) {
 		final List<Object> options = getCommandLineOption(optionLabel);
@@ -802,6 +831,7 @@ public class VMCommandLine {
 	 * @param optionLabel is the name of the option
 	 * @return the option values or <code>null</code> if the option is not present.
 	 */
+	@Pure
 	@SuppressWarnings("static-method")
 	public List<Object> getOptionValues(String optionLabel) {
 		final List<Object> options = getCommandLineOption(optionLabel);
@@ -815,6 +845,7 @@ public class VMCommandLine {
 	 *
 	 * @return the parameters.
 	 */
+	@Pure
 	@SuppressWarnings("static-method")
 	public String[] getParameters() {
 		return getCommandLineParameters();
@@ -834,6 +865,7 @@ public class VMCommandLine {
 	 *
 	 * @return the count of parameters
 	 */
+	@Pure
 	@SuppressWarnings("static-method")
 	public int getParameterCount() {
 		return getCommandLineParameters().length;
@@ -845,6 +877,7 @@ public class VMCommandLine {
 	 * @return the value of the parameter.
 	 * @throws IndexOutOfBoundsException if the given index is out of bounds.
 	 */
+	@Pure
 	@SuppressWarnings("static-method")
 	public String getParameterAt(int index) {
 		return getCommandLineParameters()[index];
@@ -857,6 +890,7 @@ public class VMCommandLine {
 	 *     otherwise <code>false</code>
 	 * @throws IndexOutOfBoundsException if the given index is out of bounds.
 	 */
+	@Pure
 	@SuppressWarnings("static-method")
 	public boolean isParameterExists(int index) {
 		final String[] params = getCommandLineParameters();
@@ -921,6 +955,7 @@ public class VMCommandLine {
 		 *
 		 * @return <code>true</code> if the value is mandatory, otherwise <code>false</code>
 		 */
+		@Pure
 		public boolean isMandatory() {
 			return this == MANDATORY_BOOLEAN
 					|| this == MANDATORY_FLOAT
@@ -932,6 +967,7 @@ public class VMCommandLine {
 		 *
 		 * @return <code>true</code> if the value is not mandatory, otherwise <code>false</code>
 		 */
+		@Pure
 		public boolean isOptional() {
 			return this == OPTIONAL_BOOLEAN
 					|| this == OPTIONAL_FLOAT

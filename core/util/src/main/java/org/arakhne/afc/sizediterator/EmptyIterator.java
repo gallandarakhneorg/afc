@@ -22,6 +22,8 @@ package org.arakhne.afc.sizediterator;
 
 import java.util.NoSuchElementException;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /** Sized iterator on an empty collection.
  *
  * <p>A sized iterator is an Iterator that is able to
@@ -52,11 +54,13 @@ public class EmptyIterator<M> implements SizedIterator<M> {
 	 * @param <M> is the type of the element to iterate on.
 	 * @return the singleton.
 	 */
+	@Pure
 	@SuppressWarnings("unchecked")
 	public static <M> EmptyIterator<M> singleton() {
 		return SINGLETON;
 	}
 
+	@Pure
 	@Override
 	public final boolean hasNext() {
 		return false;
@@ -67,16 +71,19 @@ public class EmptyIterator<M> implements SizedIterator<M> {
 		throw new NoSuchElementException();
 	}
 
+	@Pure
 	@Override
 	public final int rest() {
 		return 0;
 	}
 
+	@Pure
 	@Override
 	public final int index() {
 		return -1;
 	}
 
+	@Pure
 	@Override
 	public final int totalSize() {
 		return 0;

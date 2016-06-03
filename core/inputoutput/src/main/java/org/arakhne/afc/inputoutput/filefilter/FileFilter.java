@@ -22,6 +22,8 @@ package org.arakhne.afc.inputoutput.filefilter;
 
 import java.io.FilenameFilter;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /** File filter.
  *
  * @author $Author: sgalland$
@@ -35,12 +37,14 @@ public interface FileFilter extends java.io.FileFilter, FilenameFilter {
 	 *
 	 * @return a string that is describing the file filtering.
 	 */
+	@Pure
 	String getDescription();
 
 	/** Replies the extensions supported by this file filter.
 	 *
 	 * @return the extensions.
 	 */
+	@Pure
 	String[] getExtensions();
 
 }

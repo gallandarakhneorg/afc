@@ -20,24 +20,20 @@
 
 package org.arakhne.afc.vmutil;
 
+import static org.arakhne.afc.testtools.XbaseInlineTestUtil.assertInlineParameterUsage;
+
 import java.lang.reflect.Array;
+import java.lang.reflect.Method;
+import java.util.Locale;
 
 import org.arakhne.afc.vmutil.ReflectionUtil;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-/**
- * @author $Author: sgalland$
- * @version $Name$ $Revision$ $Date$
- * @mavengroupid org.arakhne.afc
- * @mavenartifactid arakhneVmutils
- */
-@SuppressWarnings("static-method")
+@SuppressWarnings("all")
 public class ReflectionUtilTest {
 
-	/**
-	 */
 	@Test
 	public void matchesParametersClassObjectArray() {
 		assertTrue(ReflectionUtil.matchesParameters(
@@ -127,4 +123,19 @@ public class ReflectionUtilTest {
 				new Object[] { 1., "a", new int[0] })); //$NON-NLS-1$
 	}
 	
+	@Test
+	public void forNameStringClassLoader() {
+		assertInlineParameterUsage(ReflectionUtil.class, "forName", String.class, ClassLoader.class);
+	}
+	
+	@Test
+	public void getPackageClassesPackage() {
+		assertInlineParameterUsage(ReflectionUtil.class, "getPackageClasses", Package.class);
+	}
+
+	@Test
+	public void matchesParametersMethodObjectArray() {
+		assertInlineParameterUsage(ReflectionUtil.class, "matchesParameters", Method.class, Object[].class);
+	}
+
 }

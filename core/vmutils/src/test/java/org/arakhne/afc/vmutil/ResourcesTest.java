@@ -20,6 +20,8 @@
 
 package org.arakhne.afc.vmutil;
 
+import static org.arakhne.afc.testtools.XbaseInlineTestUtil.assertInlineParameterUsage;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -27,6 +29,7 @@ import static org.junit.Assert.assertNull;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.Locale;
 
 import org.junit.Test;
 
@@ -36,7 +39,7 @@ import org.junit.Test;
  * @mavengroupid org.arakhne.afc
  * @mavenartifactid arakhneVmutils
  */
-@SuppressWarnings("static-method")
+@SuppressWarnings("all")
 public class ResourcesTest {
 
 	private static final String TEST_NAME_1 = "/org/arakhne/afc/vmutil/test.txt"; //$NON-NLS-1$
@@ -45,8 +48,6 @@ public class ResourcesTest {
 	private static final String TEST_NAME_4 = "/test.txt"; //$NON-NLS-1$
 	private static final String PACKAGE_NAME = "org.arakhne.afc.vmutil"; //$NON-NLS-1$
 	
-	/**
-	 */
 	@Test
 	public void getResourceString() {
 		assertNull(Resources.getResource(null));
@@ -60,8 +61,6 @@ public class ResourcesTest {
 		assertEquals(u1,u2);
 	}
 
-	/**
-	 */
 	@Test
 	public void getResourceClassString() {
 		assertNull(Resources.getResource(ResourcesTest.class, null));
@@ -87,8 +86,6 @@ public class ResourcesTest {
 		assertNull(u2);
 	}
 
-	/**
-	 */
 	@Test
 	public void getResourcePackageString() {
 		ClassLoader l = ResourcesTest.class.getClassLoader();
@@ -118,8 +115,6 @@ public class ResourcesTest {
 		assertNull(u2);
 	}
 
-	/**
-	 */
 	@Test
 	public void getResourceClassLoaderString() {
 		assertNull(Resources.getResource(ResourcesTest.class.getClassLoader(), null));    	
@@ -143,9 +138,6 @@ public class ResourcesTest {
 		assertEquals(u1,u2);
 	}
 
-	/**
-	 * @throws IOException 
-	 */
 	@Test
 	public void getResourceAsStreamString() throws IOException {
 		assertNull(Resources.getResourceAsStream(null));
@@ -159,9 +151,6 @@ public class ResourcesTest {
 		}
 	}
 
-	/**
-	 * @throws IOException 
-	 */
 	@Test
 	public void getResourceAsStreamClassString() throws IOException {
 		assertNull(Resources.getResourceAsStream(ResourcesTest.class, null));
@@ -197,9 +186,6 @@ public class ResourcesTest {
 		}
 	}
 
-	/**
-	 * @throws IOException 
-	 */
 	@Test
 	public void getResourceAsStreamPackageString() throws IOException {
 		ClassLoader l = ResourcesTest.class.getClassLoader();
@@ -237,9 +223,6 @@ public class ResourcesTest {
 		}
 	}
 
-	/**
-	 * @throws IOException 
-	 */
 	@Test
 	public void getResourceAsStreamClassLoaderString() throws IOException {
 		assertNull(Resources.getResourceAsStream(ResourcesTest.class.getClassLoader(), null));
@@ -261,6 +244,11 @@ public class ResourcesTest {
 		try (InputStream is = Resources.getResourceAsStream((ClassLoader)null, TEST_NAME_2)) {
 			assertNotNull(is);
 		}
+	}
+
+	@Test
+	public void getPropertyFileClassLocale() {
+		assertInlineParameterUsage(Resources.class, "getPropertyFile", Class.class, Locale.class);
 	}
 
 }

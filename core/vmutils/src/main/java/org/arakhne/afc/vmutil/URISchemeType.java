@@ -23,6 +23,8 @@ package org.arakhne.afc.vmutil;
 import java.net.URI;
 import java.net.URL;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /** Commonly supported types of schemes for URL.
  *
  * @author $Author: sgalland$
@@ -331,6 +333,7 @@ public enum URISchemeType {
 	 * @return the scheme string with a column.
 	 */
 	@Override
+	@Pure
 	public String toString() {
 		return name().toLowerCase() + ":"; //$NON-NLS-1$
 	}
@@ -341,6 +344,7 @@ public enum URISchemeType {
 	 * @return <code>true</code> if the url uses this scheme,
 	 *     otherwise <code>false</code>.
 	 */
+	@Pure
 	public boolean isURL(URL url) {
 		return getSchemeType(url) == this;
 	}
@@ -361,6 +365,7 @@ public enum URISchemeType {
 	 * @return <code>true</code> if the string corresponds to this scheme,
 	 *     otherwise <code>false</code>
 	 */
+	@Pure
 	public boolean isScheme(String string) {
 		return getSchemeType(string) == this;
 	}
@@ -370,6 +375,7 @@ public enum URISchemeType {
 	 * @param string the string to change.
 	 * @return the {@code string} without the URI scheme.
 	 */
+	@Pure
 	public String removeScheme(String string) {
 		if (string != null) {
 			final int idx = string.indexOf(':');
@@ -392,6 +398,7 @@ public enum URISchemeType {
 	 * @param string the string to change.
 	 * @return the {@code string} without the URI scheme.
 	 */
+	@Pure
 	public static String removeAnyScheme(String string) {
 		if (string != null) {
 			final int idx = string.indexOf(':');
@@ -459,6 +466,7 @@ public enum URISchemeType {
 	 * @param url the url.
 	 * @return the type of scheme for the given URL.
 	 */
+	@Pure
 	public static URISchemeType getSchemeType(URL url) {
 		if (url != null) {
 			return getSchemeType(url.getProtocol());
@@ -471,6 +479,7 @@ public enum URISchemeType {
 	 * @param uri the uri.
 	 * @return the type of scheme for the given URI.
 	 */
+	@Pure
 	public static URISchemeType getSchemeType(URI uri) {
 		if (uri != null) {
 			return getSchemeType(uri.getScheme());
@@ -483,6 +492,7 @@ public enum URISchemeType {
 	 * @return <code>true</code> if this scheme is file-based,
 	 *     otherwise <code>false</code>
 	 */
+	@Pure
 	public abstract boolean isFileBasedScheme();
 
 	static {

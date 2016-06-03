@@ -32,6 +32,8 @@ import java.util.Map.Entry;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 import org.arakhne.afc.attrs.attr.Attribute;
 import org.arakhne.afc.attrs.attr.AttributeError;
 import org.arakhne.afc.attrs.attr.AttributeException;
@@ -87,6 +89,7 @@ public class MultiAttributeCollection extends MultiAttributeProvider implements 
 
 	private boolean isEventFirable = true;
 
+	@Pure
 	@Override
 	public synchronized boolean isEventFirable() {
 		return this.isEventFirable;

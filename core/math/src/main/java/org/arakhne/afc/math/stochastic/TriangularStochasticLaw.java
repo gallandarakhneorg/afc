@@ -115,7 +115,7 @@ public class TriangularStochasticLaw extends StochasticLaw {
 	 * @return a value depending of the stochastic law parameters
 	 * @throws MathException when math definition error.
 	 */
-	@Inline(value = "(StochasticGenerator.generateRandomValue(new TriangularStochasticLaw($1, $2, $3)))",
+	@Inline(value = "StochasticGenerator.generateRandomValue(new TriangularStochasticLaw(($1), ($2), ($3)))",
 			imported = {StochasticGenerator.class, TriangularStochasticLaw.class})
 	public static double random(double minX, double mode, double maxX) throws MathException {
 		return StochasticGenerator.generateRandomValue(new TriangularStochasticLaw(minX, mode, maxX));

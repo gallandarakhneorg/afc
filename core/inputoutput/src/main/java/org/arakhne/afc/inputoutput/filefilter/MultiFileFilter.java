@@ -25,6 +25,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /** Multi file filter.
  *
  * @author $Author: sgalland$
@@ -62,6 +64,7 @@ public class MultiFileFilter implements FileFilter {
 		this.description = description;
 	}
 
+	@Pure
 	@Override
 	public boolean accept(File file) {
 		if (file.isDirectory()) {
@@ -75,16 +78,19 @@ public class MultiFileFilter implements FileFilter {
 		return false;
 	}
 
+	@Pure
 	@Override
 	public final boolean accept(File dir, String name) {
 		return accept(new File(dir, name));
 	}
 
+	@Pure
 	@Override
 	public String getDescription() {
 		return this.description;
 	}
 
+	@Pure
 	@Override
 	public String[] getExtensions() {
 		final List<String> extensions = new ArrayList<>();

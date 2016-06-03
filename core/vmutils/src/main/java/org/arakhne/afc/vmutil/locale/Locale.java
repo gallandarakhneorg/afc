@@ -35,6 +35,9 @@ import java.util.Map.Entry;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
+import org.eclipse.xtext.xbase.lib.Inline;
+import org.eclipse.xtext.xbase.lib.Pure;
+
 import org.arakhne.afc.vmutil.Caller;
 import org.arakhne.afc.vmutil.ClassLoaderFinder;
 
@@ -96,6 +99,9 @@ public final class Locale {
 	 *     replaces the <code>#1</code>, <code>#2</code>... into the string.
 	 * @return the text that corresponds to the specified resource
 	 */
+	@Pure
+	@Inline(value = "Locale.getStringWithDefaultFrom(ClassLoaderFinder.findClassLoader(), ($1), ($2), ($3), ($4))",
+		imported = {Locale.class, ClassLoaderFinder.class})
 	public static String getStringWithDefaultFrom(String resourcePath, String key, String defaultValue, Object... params) {
 		// This method try to use the plugin manager class loader
 		// if it exists, otherwhise, it use the default class loader
@@ -122,6 +128,7 @@ public final class Locale {
 	 *     replaces the <code>#1</code>, <code>#2</code>... into the string.
 	 * @return the text that corresponds to the specified resource
 	 */
+	@Pure
 	public static String getStringWithDefaultFrom(ClassLoader classLoader, String resourcePath, String key,
 			String defaultValue, Object... params) {
 
@@ -173,6 +180,9 @@ public final class Locale {
 	 *     replaces the <code>#1</code>, <code>#2</code>... into the string.
 	 * @return the text that corresponds to the specified resource
 	 */
+	@Pure
+	@Inline(value = "Locale.getStringWithDefaultFrom(($1), ($2), ($3), ($4))",
+			imported = {Locale.class})
 	public static String getStringFrom(String resourcePath, String key, Object... params) {
 		return getStringWithDefaultFrom(resourcePath, key, key, params);
 	}
@@ -194,6 +204,9 @@ public final class Locale {
 	 *     replaces the <code>#1</code>, <code>#2</code>... into the string.
 	 * @return the text that corresponds to the specified resource
 	 */
+	@Pure
+	@Inline(value = "Locale.getStringWithDefaultFrom(($1), ($2), ($3), ($3), ($4))",
+			imported = {Locale.class})
 	public static String getStringFrom(ClassLoader classLoader, String resourcePath, String key, Object... params) {
 		return getStringWithDefaultFrom(classLoader, resourcePath, key, key, params);
 	}
@@ -207,9 +220,9 @@ public final class Locale {
 	 *     replaces the <code>#1</code>, <code>#2</code>... into the string.
 	 * @return the text that corresponds to the specified resource
 	 */
+	@Pure
 	public static String getString(Class<?> resource, String key, Object... params) {
-		final Class<?> res = detectResourceClass(resource);
-		return getString(ClassLoaderFinder.findClassLoader(), res, key, params);
+		return getString(ClassLoaderFinder.findClassLoader(), detectResourceClass(resource), key, params);
 	}
 
 	/**
@@ -222,6 +235,7 @@ public final class Locale {
 	 *     replaces the <code>#1</code>, <code>#2</code>... into the string.
 	 * @return the text that corresponds to the specified resource
 	 */
+	@Pure
 	public static String getString(ClassLoader classLoader, Class<?> resource, String key, Object... params) {
 		Class<?> res = detectResourceClass(resource);
 		if (res == null) {
@@ -271,9 +285,9 @@ public final class Locale {
 	 *     replaces the <code>#1</code>, <code>#2</code>... into the string.
 	 * @return the text that corresponds to the specified resource
 	 */
+	@Pure
 	public static String getString(ClassLoader classLoader, String key, Object... params) {
-		final Class<?> resource = detectResourceClass(null);
-		return getString(classLoader, resource, key, params);
+		return getString(classLoader, detectResourceClass(null), key, params);
 	}
 
 	/**
@@ -286,9 +300,10 @@ public final class Locale {
 	 *     replaces the <code>#1</code>, <code>#2</code>... into the string.
 	 * @return the text that corresponds to the specified resource
 	 */
+	@Pure
 	public static String getStringWithDefault(Class<?> resource, String key, String defaultValue, Object... params) {
-		final Class<?> res = detectResourceClass(resource);
-		return getStringWithDefault(ClassLoaderFinder.findClassLoader(), res, key, defaultValue, params);
+		return getStringWithDefault(ClassLoaderFinder.findClassLoader(), detectResourceClass(resource),
+				key, defaultValue, params);
 	}
 
 	/**
@@ -302,6 +317,7 @@ public final class Locale {
 	 *     replaces the <code>#1</code>, <code>#2</code>... into the string.
 	 * @return the text that corresponds to the specified resource
 	 */
+	@Pure
 	public static String getStringWithDefault(ClassLoader classLoader, Class<?> resource, String key,
 			String defaultValue, Object... params) {
 		Class<?> res = detectResourceClass(resource);
@@ -333,9 +349,9 @@ public final class Locale {
 	 *     replaces the <code>#1</code>, <code>#2</code>... into the string.
 	 * @return the text that corresponds to the specified resource
 	 */
+	@Pure
 	public static String getStringWithDefault(String key, String defaultValue, Object... params) {
-		final Class<?> resource = detectResourceClass(null);
-		return getStringWithDefault(ClassLoaderFinder.findClassLoader(), resource, key, defaultValue, params);
+		return getStringWithDefault(ClassLoaderFinder.findClassLoader(), detectResourceClass(null), key, defaultValue, params);
 	}
 
 	/**
@@ -348,9 +364,9 @@ public final class Locale {
 	 *     replaces the <code>#1</code>, <code>#2</code>... into the string.
 	 * @return the text that corresponds to the specified resource
 	 */
+	@Pure
 	public static String getStringWithDefault(ClassLoader classLoader, String key, String defaultValue, Object... params) {
-		final Class<?> resource = detectResourceClass(null);
-		return getStringWithDefault(classLoader, resource, key, defaultValue, params);
+		return getStringWithDefault(classLoader, detectResourceClass(null), key, defaultValue, params);
 	}
 
 	/** Decode the specified array of bytes according to
@@ -370,6 +386,7 @@ public final class Locale {
 	 * @param bytes is the array of bytes to decode.
 	 * @return the decoded string with the appropriate charset set.
 	 */
+	@Pure
 	public static String decodeString(byte[] bytes) {
 		final Charset defaultCharset = Charset.defaultCharset();
 		final Charset westEuropean = Charset.forName("ISO-8859-1"); //$NON-NLS-1$

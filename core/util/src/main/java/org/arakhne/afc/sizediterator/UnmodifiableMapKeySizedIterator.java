@@ -24,6 +24,8 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 
 /**
  * Class that map the keys of a Map to an unmodifiable  sized iterator.
@@ -65,21 +67,25 @@ public class UnmodifiableMapKeySizedIterator<K> implements SizedIterator<K> {
 		this.iterator = map.keySet().iterator();
 	}
 
+	@Pure
 	@Override
 	public int rest() {
 		return this.rest;
 	}
 
+	@Pure
 	@Override
 	public int index() {
 		return this.total - this.rest;
 	}
 
+	@Pure
 	@Override
 	public int totalSize() {
 		return this.total;
 	}
 
+	@Pure
 	@Override
 	public boolean hasNext() {
 		return this.iterator.hasNext();

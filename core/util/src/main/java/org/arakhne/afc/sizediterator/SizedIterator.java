@@ -22,6 +22,8 @@ package org.arakhne.afc.sizediterator;
 
 import java.util.Iterator;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /**
  * A sized iterator is an Iterator that is able to
  * reply the size of the iterated collection and
@@ -40,18 +42,21 @@ public interface SizedIterator<M> extends Iterator<M> {
 	 *
 	 * @return the count of elements in the iterated collection.
 	 */
+	@Pure
 	int totalSize();
 
 	/** Replies the count of elements which are not replied by the iterator.
 	 *
 	 * @return the count of elements which are not replied by the iterator.
 	 */
+	@Pure
 	int rest();
 
 	/** Replies the position of the last replied element in the iterated collection.
 	 *
 	 * @return the index of the last element replied by <code>next()</code>.
 	 */
+	@Pure
 	int index();
 
 }

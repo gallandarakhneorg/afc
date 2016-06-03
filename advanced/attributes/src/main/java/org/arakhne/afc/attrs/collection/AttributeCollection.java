@@ -28,6 +28,8 @@ import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 import org.arakhne.afc.attrs.attr.Attribute;
 import org.arakhne.afc.attrs.attr.AttributeException;
 import org.arakhne.afc.attrs.attr.AttributeType;
@@ -51,6 +53,7 @@ public interface AttributeCollection extends AttributeProvider {
 	 *
 	 * @return the deep copy.
 	 */
+	@Pure
 	@Override
 	AttributeCollection clone();
 
@@ -319,6 +322,7 @@ public interface AttributeCollection extends AttributeProvider {
 	 * @return <code>true</code> if the events are fired; otherwise <code>false</code>
 	 *     if events are not fired.
 	 */
+	@Pure
 	boolean isEventFirable();
 
 	/** Set if the events are fired by this container.

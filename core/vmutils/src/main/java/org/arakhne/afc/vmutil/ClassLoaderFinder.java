@@ -20,6 +20,8 @@
 
 package org.arakhne.afc.vmutil;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /**
  * This utility class permits to find the better class loader
  * for your application.
@@ -48,6 +50,7 @@ public final class ClassLoaderFinder {
 	 *
 	 * @return the class loader, never <code>null</code>
 	 */
+	@Pure
 	public static ClassLoader findClassLoader() {
 		if (dynamicLoader == null) {
 			return ClassLoaderFinder.class.getClassLoader();

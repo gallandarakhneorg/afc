@@ -22,6 +22,8 @@ package org.arakhne.afc.vmutil;
 
 import java.util.Comparator;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /**
  * This comparator permits to compare two objects according to there references.
  *
@@ -47,6 +49,7 @@ public class ObjectReferenceComparator implements Comparator<Object> {
 	}
 
 	@Override
+	@Pure
 	public int compare(Object o1, Object o2) {
 		if (o1 == o2) {
 			return 0;

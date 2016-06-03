@@ -22,6 +22,8 @@ package org.arakhne.afc.sizediterator;
 
 import java.util.NoSuchElementException;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /** Iterator which is disabling the {@code remove()} function.
  *
  * @param <OBJECT> is the type of the objects to iterator on.
@@ -65,6 +67,7 @@ public class ArraySizedIterator<OBJECT> implements SizedIterator<OBJECT> {
 		this.index = -1;
 	}
 
+	@Pure
 	@Override
 	public boolean hasNext() {
 		return this.next != null;
@@ -81,6 +84,7 @@ public class ArraySizedIterator<OBJECT> implements SizedIterator<OBJECT> {
 		return obj;
 	}
 
+	@Pure
 	@Override
 	public int index() {
 		if (this.nextIndex < 0) {
@@ -89,11 +93,13 @@ public class ArraySizedIterator<OBJECT> implements SizedIterator<OBJECT> {
 		return this.nextIndex;
 	}
 
+	@Pure
 	@Override
 	public int totalSize() {
 		return this.length;
 	}
 
+	@Pure
 	@Override
 	public int rest() {
 		return this.length - this.nextIndex;

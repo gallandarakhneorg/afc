@@ -31,6 +31,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /** A MACNumber is the unique number associated to a network interface.
  *
  * @author $Author: sgalland$
@@ -118,6 +120,7 @@ public final class MACNumber {
 	 * @return a list of addresses.
 	 * @throws IllegalArgumentException is the argument has not the right syntax.
 	 */
+	@Pure
 	public static MACNumber[] parse(String addresses) {
 		if ((addresses == null) || ("".equals(addresses))) { //$NON-NLS-1$
 			return new MACNumber[0];
@@ -139,6 +142,7 @@ public final class MACNumber {
 	 * @return a list of addresses.
 	 * @throws IllegalArgumentException is the argument has not the right syntax.
 	 */
+	@Pure
 	public static String[] parseAsString(String addresses) {
 		if ((addresses == null) || ("".equals(addresses))) { //$NON-NLS-1$
 			return new String[0];
@@ -159,6 +163,7 @@ public final class MACNumber {
 	 * @param addresses is the list of mac addresses to join.
 	 * @return the joined string.
 	 */
+	@Pure
 	public static String join(MACNumber... addresses) {
 		if ((addresses == null) || (addresses.length == 0)) {
 			return null;
@@ -184,6 +189,7 @@ public final class MACNumber {
 	 * @return the list of MAC numbers associated to the physical devices.
 	 * @see #getPrimaryAdapter
 	 */
+	@Pure
 	public static Collection<MACNumber> getAllAdapters() {
 		final List<MACNumber> av = new ArrayList<>();
 		try {
@@ -220,6 +226,7 @@ public final class MACNumber {
 	 * @return the map internet address and ethernet address mapping.
 	 * @see #getPrimaryAdapterAddresses
 	 */
+	@Pure
 	public static Map<InetAddress, MACNumber> getAllMappings() {
 		final Map<InetAddress, MACNumber> av = new HashMap<>();
 		try {
@@ -255,6 +262,7 @@ public final class MACNumber {
 	 *
 	 * @return the primary MACNumber or <code>null</code>
 	 */
+	@Pure
 	public static MACNumber getPrimaryAdapter() {
 		try {
 			final Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
@@ -283,6 +291,7 @@ public final class MACNumber {
 	 *
 	 * @return the internet addresses of the primary network interface.
 	 */
+	@Pure
 	public static Collection<InetAddress> getPrimaryAdapterAddresses() {
 		try {
 			final Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
@@ -313,6 +322,7 @@ public final class MACNumber {
 	}
 
 	@Override
+	@Pure
 	public boolean equals(Object object) {
 		if (!(object instanceof MACNumber)) {
 			return false;
@@ -332,6 +342,7 @@ public final class MACNumber {
 	}
 
 	@Override
+	@Pure
 	public int hashCode() {
 		final int blen = this.bytes.length;
 		if (blen == 0) {
@@ -348,6 +359,7 @@ public final class MACNumber {
 
 	@SuppressWarnings("checkstyle:magicnumber")
 	@Override
+	@Pure
 	public String toString() {
 		final int blen = this.bytes.length;
 		final StringBuilder sb = new StringBuilder(blen * 3);
@@ -369,6 +381,7 @@ public final class MACNumber {
 	 * @return <code>true</code> if all the bytes are zero.
 	 * @see #NULL
 	 */
+	@Pure
 	public boolean isNull() {
 		for (int i = 0; i < this.bytes.length; ++i) {
 			if (this.bytes[i] != 0) {
@@ -382,6 +395,7 @@ public final class MACNumber {
 	 *
 	 * @return a copy of the current bytes.
 	 */
+	@Pure
 	public byte[] getBytes() {
 		return this.bytes.clone();
 	}

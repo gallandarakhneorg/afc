@@ -29,6 +29,8 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /**
  * A <tt>Set</tt> implementation with {@link SoftReference soft values}
  * or {@link WeakReference weak values}. An entry in a
@@ -91,6 +93,7 @@ public abstract class AbstractReferencedSet<E, R extends Reference<E>> extends A
 	 * @return <code>true</code> is the values are deeply expurged when they
 	 *     are released from the moemory, otherwise <code>false</code>
 	 */
+	@Pure
 	public final boolean isDeeplyExpurge() {
 		return this.autoExpurge;
 	}
@@ -147,24 +150,28 @@ public abstract class AbstractReferencedSet<E, R extends Reference<E>> extends A
 		}
 	}
 
+	@Pure
 	@Override
 	public final boolean equals(Object obj) {
 		expurgeNow();
 		return super.equals(obj);
 	}
 
+	@Pure
 	@Override
 	public final int hashCode() {
 		expurgeNow();
 		return super.hashCode();
 	}
 
+	@Pure
 	@Override
 	public Iterator<E> iterator() {
 		expurgeNow();
 		return new InnerIterator();
 	}
 
+	@Pure
 	@Override
 	public int size() {
 		expurgeNow();

@@ -21,8 +21,8 @@
 			<artifactId>vmutils</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
+			<groupId>org.arakhne.afc.core</groupId>
+			<artifactId>testtools</artifactId>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

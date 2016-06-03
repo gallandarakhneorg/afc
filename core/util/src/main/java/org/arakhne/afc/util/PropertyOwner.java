@@ -22,6 +22,8 @@ package org.arakhne.afc.util;
 
 import java.util.Map;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /** This interface defines the services for an objects
  * that is owning properties.
  *
@@ -37,6 +39,7 @@ public interface PropertyOwner {
 	 * @return the properties, never <code>null</code>.
 	 * @see #setProperties(Map)
 	 */
+	@Pure
 	Map<String, Object> getProperties();
 
 	/** Set the properties of the model object, except the UUID.

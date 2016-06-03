@@ -26,6 +26,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /**
  * A collection composed of collections.
  *
@@ -91,6 +93,7 @@ public class MultiCollection<E> implements Collection<E> {
 	}
 
 	@Override
+	@Pure
 	public boolean contains(Object obj) {
 		for (final Collection<? extends E> c : this.collections) {
 			if (c.contains(obj)) {
@@ -101,6 +104,7 @@ public class MultiCollection<E> implements Collection<E> {
 	}
 
 	@Override
+	@Pure
 	public boolean containsAll(Collection<?> collection) {
 		for (final Object o : collection) {
 			if (!contains(o)) {
@@ -111,6 +115,7 @@ public class MultiCollection<E> implements Collection<E> {
 	}
 
 	@Override
+	@Pure
 	public boolean isEmpty() {
 		for (final Collection<? extends E> c : this.collections) {
 			if (!c.isEmpty()) {
@@ -121,6 +126,7 @@ public class MultiCollection<E> implements Collection<E> {
 	}
 
 	@Override
+	@Pure
 	public Iterator<E> iterator() {
 		return new MultiIterator<>(this.collections.iterator());
 	}
@@ -150,6 +156,7 @@ public class MultiCollection<E> implements Collection<E> {
 	}
 
 	@Override
+	@Pure
 	public int size() {
 		int t = 0;
 		for (final Collection<? extends E> c : this.collections) {
@@ -159,6 +166,7 @@ public class MultiCollection<E> implements Collection<E> {
 	}
 
 	@Override
+	@Pure
 	public Object[] toArray() {
 		throw new UnsupportedOperationException();
 	}

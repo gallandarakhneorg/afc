@@ -24,6 +24,8 @@ import java.lang.ref.SoftReference;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Method;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /**
  * This class stores several information given by
  * the Android operating systems.
@@ -67,6 +69,7 @@ public final class Android {
 	 * @param applicationName is the simple application name.
 	 * @return the android application name.
 	 */
+	@Pure
 	public static String makeAndroidApplicationName(String applicationName) {
 		final String fullName;
 		if (applicationName.indexOf('.') >= 0) {
@@ -82,6 +85,7 @@ public final class Android {
 	 * @return the class {@code Context} from Android.
 	 * @throws AndroidException when the class cannot be found.
 	 */
+	@Pure
 	public static Class<?> getContextClass() throws AndroidException {
 		try {
 			final ClassLoader loader = ClassLoaderFinder.findClassLoader();
@@ -96,6 +100,7 @@ public final class Android {
 	 * @return the class {@code ContextResolver} from Android.
 	 * @throws AndroidException when the class cannot be found.
 	 */
+	@Pure
 	public static Class<?> getContextResolverClass() throws AndroidException {
 		try {
 			final ClassLoader loader = ClassLoaderFinder.findClassLoader();
@@ -133,6 +138,7 @@ public final class Android {
 	 * @return the class {@code Secure} from Android.
 	 * @throws AndroidException when the class cannot be found.
 	 */
+	@Pure
 	public static Class<?> getSecureSettingsClass() throws AndroidException {
 		return getInnerClass(
 				"android.provider.Settings", //$NON-NLS-1$
@@ -144,6 +150,7 @@ public final class Android {
 	 * @return the class {@code Secure} from Android.
 	 * @throws AndroidException when the class cannot be found.
 	 */
+	@Pure
 	public static Class<?> getSystemSettingsClass() throws AndroidException {
 		return getInnerClass(
 				"android.provider.Settings", //$NON-NLS-1$
@@ -181,6 +188,7 @@ public final class Android {
 	 * @throws AndroidException when the context is <code>null</code>.
 	 * @see #initialize(Object)
 	 */
+	@Pure
 	public static Object getContext() throws AndroidException {
 		final Object ctx;
 		synchronized (Android.class) {
@@ -201,6 +209,7 @@ public final class Android {
 	 * @throws AndroidException when the context is <code>null</code>.
 	 * @see #initialize(Object)
 	 */
+	@Pure
 	public static ClassLoader getContextClassLoader() throws AndroidException {
 		synchronized (Android.class) {
 			final ClassLoader cl = (contextClassLoader == null) ? null : contextClassLoader.get();
@@ -232,6 +241,7 @@ public final class Android {
 	 * @throws AndroidException when the context is <code>null</code>.
 	 * @see #initialize
 	 */
+	@Pure
 	public static Object getContextResolver() throws AndroidException {
 		Object resolver;
 		synchronized (Android.class) {

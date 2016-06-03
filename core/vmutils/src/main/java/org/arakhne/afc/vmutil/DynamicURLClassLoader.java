@@ -47,6 +47,8 @@ import java.util.jar.Attributes.Name;
 import java.util.jar.Manifest;
 import java.util.regex.Pattern;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /** This class loader permits to load classes from
  * a set of classpaths.
  *
@@ -157,6 +159,7 @@ public class DynamicURLClassLoader extends SecureClassLoader {
 	 * along with any URLs subsequently appended by the addURL() method.
 	 * @return the search path of URLs for loading classes and resources.
 	 */
+	@Pure
 	public URL[] getURLs() {
 		return this.ucp.getURLs();
 	}
@@ -171,6 +174,7 @@ public class DynamicURLClassLoader extends SecureClassLoader {
 	 * @exception ClassNotFoundException if the class could not be found
 	 */
 	@Override
+	@Pure
 	protected Class<?> findClass(final String name) throws ClassNotFoundException {
 		try {
 			return AccessController.doPrivileged(new PrivilegedExceptionAction<Class<?>>() {
@@ -349,6 +353,7 @@ public class DynamicURLClassLoader extends SecureClassLoader {
 	 *     if the resource could not be found.
 	 */
 	@Override
+	@Pure
 	public URL findResource(final String name) {
 		/*
 		 * The same restriction to finding classes applies to resources
@@ -372,6 +377,7 @@ public class DynamicURLClassLoader extends SecureClassLoader {
 	 * @return an <code>Enumeration</code> of <code>URL</code>s
 	 */
 	@Override
+	@Pure
 	public Enumeration<URL> findResources(final String name) throws IOException {
 		final Enumeration<?> e = this.ucp.findResources(name, true);
 
@@ -512,6 +518,7 @@ public class DynamicURLClassLoader extends SecureClassLoader {
 	 * @param urls the URLs to search for classes and resources
 	 * @return the resulting class loader
 	 */
+	@Pure
 	public static DynamicURLClassLoader newInstance(final ClassLoader parent, final URL... urls) {
 		// Save the caller's context
 		final AccessControlContext acc = AccessController.getContext();

@@ -22,6 +22,8 @@ package org.arakhne.afc.attrs.collection;
 
 import java.util.EventObject;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 import org.arakhne.afc.attrs.attr.Attribute;
 import org.arakhne.afc.attrs.attr.AttributeImpl;
 import org.arakhne.afc.attrs.attr.AttributeValue;
@@ -72,6 +74,7 @@ public class AttributeChangeEvent extends EventObject {
 	 * @return the name attribute, or <code>null</code> if this
 	 *     event has no name attribute.
 	 */
+	@Pure
 	public String getName() {
 		return this.name;
 	}
@@ -81,6 +84,7 @@ public class AttributeChangeEvent extends EventObject {
 	 * @return the old name attribute, or <code>null</code> if this
 	 *     event has no old name attribute.
 	 */
+	@Pure
 	public String getOldName() {
 		return this.oldName;
 	}
@@ -89,6 +93,7 @@ public class AttributeChangeEvent extends EventObject {
 	 *
 	 * @return the attribute value or <code>null</code>
 	 */
+	@Pure
 	public AttributeValue getOldValue() {
 		return this.oldValue;
 	}
@@ -97,6 +102,7 @@ public class AttributeChangeEvent extends EventObject {
 	 *
 	 * @return the attribute value, never <code>null</code>
 	 */
+	@Pure
 	public AttributeValue getValue() {
 		return this.newValue;
 	}
@@ -105,6 +111,7 @@ public class AttributeChangeEvent extends EventObject {
 	 *
 	 * @return the attribute, never <code>null</code>
 	 */
+	@Pure
 	public Attribute getAttribute() {
 		return new AttributeImpl(this.name, this.newValue);
 	}
@@ -113,6 +120,7 @@ public class AttributeChangeEvent extends EventObject {
 	 *
 	 * @return the type of the event, neither <code>null</code>
 	 */
+	@Pure
 	public Type getType() {
 		return this.type;
 	}

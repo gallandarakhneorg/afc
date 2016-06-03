@@ -31,7 +31,10 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
+
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * A <tt>Map</tt> implementation with <em>weak/soft values</em>. An entry in a
@@ -86,6 +89,7 @@ public abstract class AbstractReferencedValueMap<K, V> extends AbstractMap<K, V>
 	 * @return the internal representation of the value.
 	 * @see #unmaskNull(Object)
 	 */
+	@Pure
 	@SuppressWarnings("unchecked")
 	protected static <VALUET> VALUET maskNull(VALUET value) {
 		return (value == null) ? (VALUET) NULL_VALUE : value;
@@ -102,6 +106,7 @@ public abstract class AbstractReferencedValueMap<K, V> extends AbstractMap<K, V>
 	 * @return the internal representation of the value.
 	 * @see #maskNull(Object)
 	 */
+	@Pure
 	protected static <VALUET> VALUET unmaskNull(VALUET value) {
 		return (value == NULL_VALUE) ? null : value;
 	}
@@ -157,6 +162,7 @@ public abstract class AbstractReferencedValueMap<K, V> extends AbstractMap<K, V>
 	 * @return <code>true</code> is the values are deeply expurged when they
 	 *     are released from the moemory, otherwise <code>false</code>.
 	 */
+	@Pure
 	public final boolean isDeeplyExpurge() {
 		return this.autoExpurge;
 	}
@@ -247,18 +253,21 @@ public abstract class AbstractReferencedValueMap<K, V> extends AbstractMap<K, V>
 		return ret.getValue();
 	}
 
+	@Pure
 	@Override
 	public final Set<Entry<K, V>> entrySet() {
 		expurgeNow();
 		return new InnerEntrySet();
 	}
 
+	@Pure
 	@Override
 	public final boolean equals(Object obj) {
 		expurgeNow();
 		return super.equals(obj);
 	}
 
+	@Pure
 	@Override
 	public final int hashCode() {
 		expurgeNow();

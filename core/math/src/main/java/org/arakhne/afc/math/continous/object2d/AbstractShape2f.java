@@ -20,6 +20,8 @@
 
 package org.arakhne.afc.math.continous.object2d;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 import org.arakhne.afc.math.generic.Point2D;
 import org.arakhne.afc.math.geometry.d2.d.AbstractShape2d;
 import org.arakhne.afc.math.matrix.Transform2D;
@@ -74,23 +76,17 @@ public abstract class AbstractShape2f<T extends Shape2f> implements Shape2f {
 		return getPathIterator(null);
 	}
 	
-	/** {@inheritDoc}
-	 */
 	@Override
 	public float distance(Point2D p) {
 		return (float)Math.sqrt(distanceSquared(p));
 	}
 
-	/** {@inheritDoc}
-	 */
 	@Override
 	public final boolean contains(Point2D p) {
 		return contains(p.getX(), p.getY());
 	}
 
 	
-	/** {@inheritDoc}
-	 */
     @Override
     public abstract boolean equals(Object obj);
     
@@ -107,9 +103,8 @@ public abstract class AbstractShape2f<T extends Shape2f> implements Shape2f {
 		return Float.floatToIntBits(d);
 	}
     
-	/** {@inheritDoc}
-	 */
     @Override
+    @Pure
     public abstract int hashCode();
     
 }

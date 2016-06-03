@@ -29,6 +29,8 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /**
  * A array-based <tt>List</tt> implementation with <em>weak keys</em>.
  * An entry in a <tt>WeakArrayList</tt> will automatically be removed when
@@ -139,6 +141,7 @@ public class WeakArrayList<T> extends AbstractList<T> {
 		return (value == NULL_VALUE) ? null : value;
 	}
 
+	@Pure
 	@Override
 	@SuppressWarnings("unchecked")
 	public String toString() {
@@ -277,11 +280,13 @@ public class WeakArrayList<T> extends AbstractList<T> {
 		}
 	}
 
+	@Pure
 	@Override
 	public int size() {
 		return expurge();
 	}
 
+	@Pure
 	@SuppressWarnings("unchecked")
 	@Override
 	public T get(int index) {

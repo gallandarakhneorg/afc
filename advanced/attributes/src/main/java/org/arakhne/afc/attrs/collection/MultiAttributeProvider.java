@@ -30,6 +30,8 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 import org.arakhne.afc.attrs.attr.Attribute;
 import org.arakhne.afc.attrs.attr.AttributeImpl;
 import org.arakhne.afc.attrs.attr.AttributeType;
@@ -158,6 +160,7 @@ public class MultiAttributeProvider extends AbstractAttributeProvider {
 	 *
 	 * @return a collection on the containers.
 	 */
+	@Pure
 	protected Collection<AttributeProvider> containers() {
 		return Collections.unmodifiableCollection(this.containers);
 	}
@@ -194,10 +197,12 @@ public class MultiAttributeProvider extends AbstractAttributeProvider {
 	 *
 	 * @return the number of attribute containers in this MultiAttributeContainer.
 	 */
+	@Pure
 	public int getAttributeContainerCount() {
 		return this.containers.size();
 	}
 
+	@Pure
 	@Override
 	public MultiAttributeProvider clone() {
 		final MultiAttributeProvider clone = (MultiAttributeProvider) super.clone();
@@ -222,6 +227,7 @@ public class MultiAttributeProvider extends AbstractAttributeProvider {
 		this.names = null;
 	}
 
+	@Pure
 	@Override
 	public Collection<Attribute> getAllAttributes() {
 		final List<Attribute> list = new ArrayList<>(getAttributeCount());
@@ -237,6 +243,7 @@ public class MultiAttributeProvider extends AbstractAttributeProvider {
 		return list;
 	}
 
+	@Pure
 	@Override
 	public Map<AttributeType, Collection<Attribute>> getAllAttributesByType() {
 		final Map<AttributeType, Collection<Attribute>> map = new TreeMap<>();
@@ -257,11 +264,13 @@ public class MultiAttributeProvider extends AbstractAttributeProvider {
 		return map;
 	}
 
+	@Pure
 	@Override
 	public AttributeValue getAttribute(String name) {
 		return extract(name);
 	}
 
+	@Pure
 	@Override
 	public AttributeValue getAttribute(String name, AttributeValue defaultValue) {
 		AttributeValue value = extract(name);
@@ -271,11 +280,13 @@ public class MultiAttributeProvider extends AbstractAttributeProvider {
 		return value;
 	}
 
+	@Pure
 	@Override
 	public int getAttributeCount() {
 		return getAllAttributeNames().size();
 	}
 
+	@Pure
 	@Override
 	public Collection<String> getAllAttributeNames() {
 		if (this.names == null) {
@@ -288,11 +299,13 @@ public class MultiAttributeProvider extends AbstractAttributeProvider {
 		return Collections.unmodifiableSet(this.names);
 	}
 
+	@Pure
 	@Override
 	public Attribute getAttributeObject(String name) {
 		return extract(name);
 	}
 
+	@Pure
 	@Override
 	public boolean hasAttribute(String name) {
 		for (final AttributeProvider c : this.containers) {
@@ -325,6 +338,7 @@ public class MultiAttributeProvider extends AbstractAttributeProvider {
 		 *
 		 * @return the top type associated to this attribute value.
 		 */
+		@Pure
 		public AttributeType getTopType() {
 			return this.topType;
 		}
@@ -362,6 +376,7 @@ public class MultiAttributeProvider extends AbstractAttributeProvider {
 		 * @return <code>true</code> if this attribute has multiple
 		 *     values, otherwise <code>false</code>.
 		 */
+		@Pure
 		public boolean hasMultipleValues() {
 			return this.hasMultipleValues;
 		}

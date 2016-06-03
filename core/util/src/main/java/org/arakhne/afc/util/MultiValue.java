@@ -20,6 +20,10 @@
 
 package org.arakhne.afc.util;
 
+import java.util.Objects;
+
+import org.eclipse.xtext.xbase.lib.Pure;
+
 import org.arakhne.afc.vmutil.locale.Locale;
 
 /** Utilities class that permits to represent a collection of values
@@ -55,6 +59,7 @@ public class MultiValue<T> {
 	}
 
 	@Override
+	@Pure
 	public String toString() {
 		return toString(Locale.getString("MULTIPLE_VALUES")); //$NON-NLS-1$
 	}
@@ -70,6 +75,7 @@ public class MultiValue<T> {
 	 * @param multiValueLabel is the label to reply if this object is containing many different values.
 	 * @return the string representation of this object.
 	 */
+	@Pure
 	public String toString(String multiValueLabel) {
 		if (this.isSet) {
 			if (this.isMultiple) {
@@ -86,6 +92,7 @@ public class MultiValue<T> {
 	 *
 	 * @return the value embedded inside this object.
 	 */
+	@Pure
 	public T get() {
 		return this.object;
 	}
@@ -94,6 +101,7 @@ public class MultiValue<T> {
 	 *
 	 * @return the type or <code>null</code> if there is no value.
 	 */
+	@Pure
 	@SuppressWarnings("unchecked")
 	public Class<? extends T> getValueType() {
 		if (this.object == null) {
@@ -132,6 +140,7 @@ public class MultiValue<T> {
 	 *
 	 * @return <code>true</code> is the value was set, otherwise <code>false</code>
 	 */
+	@Pure
 	public boolean isSet() {
 		return this.isSet;
 	}
@@ -140,6 +149,7 @@ public class MultiValue<T> {
 	 *
 	 * @return <code>true</code> is values are different, otherwise <code>false</code>
 	 */
+	@Pure
 	public boolean isMultipleDifferentValues() {
 		return this.isMultiple;
 	}
@@ -153,6 +163,7 @@ public class MultiValue<T> {
 		this.isSet = true;
 	}
 
+	@Pure
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof MultiValue<?>) {
@@ -165,6 +176,7 @@ public class MultiValue<T> {
 				|| (this.object != null && this.object.equals(obj));
 	}
 
+	@Pure
 	@Override
 	public int hashCode() {
 		int hash = HashCodeUtil.hash(this.isSet);

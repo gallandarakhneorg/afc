@@ -49,7 +49,10 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.UUID;
+
+import org.eclipse.xtext.xbase.lib.Pure;
 
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
@@ -398,6 +401,7 @@ public class AttributeValueImpl implements AttributeValue {
 	 * @param text the text.
 	 * @return the attribute value, never <code>null</code>.
 	 */
+	@Pure
 	@SuppressWarnings("checkstyle:cyclomaticcomplexity")
 	public static AttributeValueImpl parse(String text) {
 		final AttributeValueImpl value = new AttributeValueImpl(text);
@@ -487,6 +491,7 @@ public class AttributeValueImpl implements AttributeValue {
 	 * {@code arg1}, or <code>0</code> if they are equal.
 	 * @see AttributeValueComparator
 	 */
+	@Pure
 	public static int compareValues(AttributeValue arg0, AttributeValue arg1) {
 		if (arg0 == arg1) {
 			return 0;
@@ -524,6 +529,7 @@ public class AttributeValueImpl implements AttributeValue {
 	 * {@code arg1}, a positive value if {@code arg0} is greater than
 	 * {@code arg1}, or <code>0</code> if they are equal.
 	 */
+	@Pure
 	@SuppressWarnings({"unchecked", "rawtypes", "checkstyle:returncount", "checkstyle:npathcomplexity"})
 	private static int compareRawValues(Object arg0, Object arg1) {
 		if (arg0 == arg1) {
@@ -576,6 +582,7 @@ public class AttributeValueImpl implements AttributeValue {
 		return sv0.compareTo(sv1);
 	}
 
+	@Pure
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof AttributeValue) {
@@ -584,11 +591,13 @@ public class AttributeValueImpl implements AttributeValue {
 		return compareRawValues(this.value, obj) == 0;
 	}
 
+	@Pure
 	@Override
 	public int hashCode() {
 		return 31 + (this.value != null ? this.value.hashCode() : 0);
 	}
 
+	@Pure
 	@Override
 	public String toString() {
 		final StringBuilder str = new StringBuilder();
@@ -602,11 +611,13 @@ public class AttributeValueImpl implements AttributeValue {
 		return str.toString();
 	}
 
+	@Pure
 	@Override
 	public boolean isAssignableFrom(AttributeType type) {
 		return getType().isAssignableFrom(type);
 	}
 
+	@Pure
 	@Override
 	public boolean isAssignableFrom(AttributeValue value) {
 		return getType().isAssignableFrom(value.getType());
@@ -640,16 +651,19 @@ public class AttributeValueImpl implements AttributeValue {
 		}
 	}
 
+	@Pure
 	@Override
 	public boolean isBaseType() {
 		return this.type.isBaseType();
 	}
 
+	@Pure
 	@Override
 	public boolean isNullAllowed() {
 		return this.type.isNullAllowed();
 	}
 
+	@Pure
 	@Override
 	public AttributeType getType() {
 		return this.type;
@@ -770,12 +784,14 @@ public class AttributeValueImpl implements AttributeValue {
 		}
 	}
 
+	@Pure
 	@Override
 	public Object getValue() throws InvalidAttributeTypeException, AttributeNotInitializedException {
 		assertAssigned();
 		return this.value;
 	}
 
+	@Pure
 	@Override
 	@SuppressWarnings({"checkstyle:returncount", "checkstyle:cyclomaticcomplexity"})
 	public final Class<?> getInternalStorageType() {
@@ -885,6 +901,7 @@ public class AttributeValueImpl implements AttributeValue {
 		}
 	}
 
+	@Pure
 	@Override
 	@SuppressWarnings({"checkstyle:returncount", "checkstyle:cyclomaticcomplexity"})
 	public long getInteger() throws InvalidAttributeTypeException, AttributeNotInitializedException {
@@ -949,6 +966,7 @@ public class AttributeValueImpl implements AttributeValue {
 		this.assigned = true;
 	}
 
+	@Pure
 	@Override
 	@SuppressWarnings({"checkstyle:returncount", "checkstyle:cyclomaticcomplexity"})
 	public double getReal() throws InvalidAttributeTypeException, AttributeNotInitializedException {
@@ -1007,6 +1025,7 @@ public class AttributeValueImpl implements AttributeValue {
 		this.assigned = true;
 	}
 
+	@Pure
 	@Override
 	@SuppressWarnings({"checkstyle:returncount", "checkstyle:cyclomaticcomplexity"})
 	public String getString() throws InvalidAttributeTypeException, AttributeNotInitializedException {
@@ -1151,6 +1170,7 @@ public class AttributeValueImpl implements AttributeValue {
 		return null;
 	}
 
+	@Pure
 	@Override
 	@SuppressWarnings({"checkstyle:returncount", "checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	public Date getDate() throws InvalidAttributeTypeException, AttributeNotInitializedException {
@@ -1232,6 +1252,7 @@ public class AttributeValueImpl implements AttributeValue {
 		this.assigned = this.value != null;
 	}
 
+	@Pure
 	@Override
 	@SuppressWarnings({"checkstyle:returncount", "checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	public boolean getBoolean() throws InvalidAttributeTypeException, AttributeNotInitializedException {
@@ -1318,11 +1339,13 @@ public class AttributeValueImpl implements AttributeValue {
 		this.assigned = true;
 	}
 
+	@Pure
 	@Override
 	public boolean isObjectValue() {
 		return !isBaseType();
 	}
 
+	@Pure
 	@Override
 	@SuppressWarnings("unchecked")
 	public <T> T getJavaObject() throws InvalidAttributeTypeException, AttributeNotInitializedException {
@@ -1346,6 +1369,7 @@ public class AttributeValueImpl implements AttributeValue {
 		this.assigned = true;
 	}
 
+	@Pure
 	@Override
 	@SuppressWarnings({"checkstyle:returncount", "checkstyle:cyclomaticcomplexity", "checkstyle:npathcomplexity"})
 	public long getTimestamp() throws InvalidAttributeTypeException, AttributeNotInitializedException {
@@ -1418,6 +1442,7 @@ public class AttributeValueImpl implements AttributeValue {
 		return pt3;
 	}
 
+	@Pure
 	@Override
 	public Point3D getPoint3D() throws InvalidAttributeTypeException, AttributeNotInitializedException {
 		//FIXME: fix code
@@ -1515,6 +1540,7 @@ public class AttributeValueImpl implements AttributeValue {
 
 	}
 
+	@Pure
 	@Override
 	@SuppressWarnings({"checkstyle:returncount", "checkstyle:cyclomaticcomplexity"})
 	public Point2D<?, ?> getPoint() throws InvalidAttributeTypeException, AttributeNotInitializedException {
@@ -1618,6 +1644,7 @@ public class AttributeValueImpl implements AttributeValue {
 		return null;
 	}
 
+	@Pure
 	@Override
 	@SuppressWarnings({"checkstyle:returncount", "checkstyle:cyclomaticcomplexity"})
 	public Color getColor() throws InvalidAttributeTypeException, AttributeNotInitializedException {
@@ -1734,6 +1761,7 @@ public class AttributeValueImpl implements AttributeValue {
 		return null;
 	}
 
+	@Pure
 	@Override
 	@SuppressWarnings({"checkstyle:returncount", "checkstyle:cyclomaticcomplexity",
 			"checkstyle:npathcomplexity"})
@@ -1812,6 +1840,7 @@ public class AttributeValueImpl implements AttributeValue {
 		return UUID.nameUUIDFromBytes(s.getBytes());
 	}
 
+	@Pure
 	@Override
 	@SuppressWarnings({"checkstyle:returncount", "checkstyle:cyclomaticcomplexity",
 			"checkstyle:npathcomplexity"})
@@ -1882,6 +1911,7 @@ public class AttributeValueImpl implements AttributeValue {
 		return null;
 	}
 
+	@Pure
 	@Override
 	@SuppressWarnings({"checkstyle:returncount", "checkstyle:cyclomaticcomplexity",
 			"checkstyle:npathcomplexity"})
@@ -2011,6 +2041,7 @@ public class AttributeValueImpl implements AttributeValue {
 		this.assigned = this.value != null;
 	}
 
+	@Pure
 	@Override
 	@SuppressWarnings({"checkstyle:returncount", "checkstyle:cyclomaticcomplexity",
 			"checkstyle:npathcomplexity"})
@@ -2083,6 +2114,7 @@ public class AttributeValueImpl implements AttributeValue {
 		return tab;
 	}
 
+	@Pure
 	@Override
 	@SuppressWarnings({"checkstyle:returncount", "checkstyle:cyclomaticcomplexity",
 			"checkstyle:npathcomplexity"})
@@ -2244,6 +2276,7 @@ public class AttributeValueImpl implements AttributeValue {
 		return tab;
 	}
 
+	@Pure
 	@Override
 	@SuppressWarnings({"checkstyle:returncount", "checkstyle:cyclomaticcomplexity",
 			"checkstyle:npathcomplexity"})
@@ -2376,6 +2409,7 @@ public class AttributeValueImpl implements AttributeValue {
 		this.type = AttributeType.POLYLINE;
 	}
 
+	@Pure
 	@Override
 	@SuppressWarnings({"checkstyle:returncount", "checkstyle:cyclomaticcomplexity",
 			"checkstyle:npathcomplexity"})
@@ -2481,6 +2515,7 @@ public class AttributeValueImpl implements AttributeValue {
 		this.assigned = this.value != null;
 	}
 
+	@Pure
 	@Override
 	@SuppressWarnings({"unchecked", "rawtypes", "checkstyle:cyclomaticcomplexity"})
 	public Enum<?> getEnumeration() throws InvalidAttributeTypeException, AttributeNotInitializedException {
@@ -2533,6 +2568,7 @@ public class AttributeValueImpl implements AttributeValue {
 		throw new InvalidAttributeTypeException();
 	}
 
+	@Pure
 	@Override
 	@SuppressWarnings("checkstyle:cyclomaticcomplexity")
 	public <T extends Enum<T>> T getEnumeration(Class<T> type) throws InvalidAttributeTypeException,
@@ -2592,6 +2628,7 @@ public class AttributeValueImpl implements AttributeValue {
 		this.assigned = this.value != null;
 	}
 
+	@Pure
 	@Override
 	@SuppressWarnings("checkstyle:cyclomaticcomplexity")
 	public Class<?> getJavaClass() throws InvalidAttributeTypeException, AttributeNotInitializedException {
@@ -2634,6 +2671,7 @@ public class AttributeValueImpl implements AttributeValue {
 		this.assigned = this.value != null;
 	}
 
+	@Pure
 	@Override
 	public boolean isAssigned() {
 		return this.assigned;
@@ -2650,6 +2688,7 @@ public class AttributeValueImpl implements AttributeValue {
 		return true;
 	}
 
+	@Pure
 	@Override
 	public Comparator<? extends AttributeValue> valueComparator() {
 		return new AttributeValueComparator();

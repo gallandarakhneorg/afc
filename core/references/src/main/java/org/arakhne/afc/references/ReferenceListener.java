@@ -39,6 +39,8 @@ public interface ReferenceListener extends EventListener {
 	 *
 	 * @param released is the count of released objects.
 	 */
-	void referenceReleased(int released);
+	default void referenceReleased(int released) {
+		//
+	}
 
 }

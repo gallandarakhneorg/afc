@@ -27,6 +27,8 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /**
  * Current classpath and associated utility functions.
  *
@@ -47,6 +49,7 @@ public final class ClasspathUtil {
 	 * @return the startup classpath, never <code>null</code>.
 	 * @since 6.0
 	 */
+	@Pure
 	public static Iterator<URL> getStartClasspath() {
 		return new PathIterator(System.getProperty("java.class.path")); //$NON-NLS-1$
 	}
@@ -56,6 +59,7 @@ public final class ClasspathUtil {
 	 * @return the current classpath, never <code>null</code>.
 	 * @since 6.0
 	 */
+	@Pure
 	@SuppressWarnings("resource")
 	public static Iterator<URL> getClasspath() {
 		Iterator<URL> iterator = getStartClasspath();

@@ -69,7 +69,7 @@ public final class MeasureUnitUtil {
 	 * @return {@code ms} * 3.6
 	 */
 	@Pure
-	@Inline(value = "($1 * 3.6)")
+	@Inline(value = "($1) * 3.6")
 	public static double ms2kmh(double ms) {
 		//return ((ms/1000.0)*3600.0);
 		return ms * 3.6;
@@ -81,7 +81,7 @@ public final class MeasureUnitUtil {
 	 * @return {@code kmh} / 3.6
 	 */
 	@Pure
-	@Inline(value = "($1 / 3.6)")
+	@Inline(value = "($1) / 3.6")
 	public static double kmh2ms(double kmh) {
 		//return ((kmh/3600.0)*1000.0);
 		return kmh / 3.6;
@@ -93,7 +93,7 @@ public final class MeasureUnitUtil {
 	 * @return {@code m} / 1000
 	 */
 	@Pure
-	@Inline(value = "($1 / 1000.0)")
+	@Inline(value = "($1) / 1000.")
 	public static double m2km(double m) {
 		return m / 1000.;
 	}
@@ -104,7 +104,7 @@ public final class MeasureUnitUtil {
 	 * @return {@code km} * 1000
 	 */
 	@Pure
-	@Inline(value = "($1 * 1000)")
+	@Inline(value = "($1) * 1000.")
 	public static double km2m(double km) {
 		return km * 1000.;
 	}
@@ -115,7 +115,7 @@ public final class MeasureUnitUtil {
 	 * @return the given value rounded to the nearest integer.
 	 */
 	@Pure
-	@Inline(value = "((int) Math.round($1))", imported = {Math.class})
+	@Inline(value = "(int) Math.round($1)", imported = {Math.class})
 	public static int pix2pix(double pixelCoord) {
 		return (int) Math.round(pixelCoord);
 	}
@@ -126,7 +126,7 @@ public final class MeasureUnitUtil {
 	 * @return the given value rounded to the nearest integer.
 	 */
 	@Pure
-	@Inline(value = "((int) ($1))")
+	@Inline(value = "(int) ($1)")
 	public static int pix2pix(long pixelCoord) {
 		return (int) pixelCoord;
 	}
@@ -137,7 +137,7 @@ public final class MeasureUnitUtil {
 	 * @return the given value rounded to the nearest integer.
 	 */
 	@Pure
-	@Inline(value = "(Math.round($1))", imported = {Math.class})
+	@Inline(value = "Math.round($1)", imported = {Math.class})
 	public static int pix2pix(float pixel_coord) {
 		return Math.round(pixel_coord);
 	}
@@ -148,7 +148,7 @@ public final class MeasureUnitUtil {
 	 * @return {@code unit} / 1e-9
 	 */
 	@Pure
-	@Inline(value = "($1 / 1e-9)")
+	@Inline(value = "($1) / 1e-9")
 	public static double unit2nano(double unit) {
 		return unit / 1e-9;
 	}
@@ -159,7 +159,7 @@ public final class MeasureUnitUtil {
 	 * @return {@code nano} * 1e-9
 	 */
 	@Pure
-	@Inline(value = "($1 * 1e-9)")
+	@Inline(value = "($1) * 1e-9")
 	public static double nano2unit(double nano) {
 		return nano * 1e-9;
 	}
@@ -170,7 +170,7 @@ public final class MeasureUnitUtil {
 	 * @return {@code unit} / 1e-6
 	 */
 	@Pure
-	@Inline(value = "($1 / 1e-6)")
+	@Inline(value = "($1) / 1e-6")
 	public static double unit2micro(double unit) {
 		return unit / 1e-6;
 	}
@@ -181,7 +181,7 @@ public final class MeasureUnitUtil {
 	 * @return {@code micro} * 1e-6
 	 */
 	@Pure
-	@Inline(value = "($1 * 1e-6)")
+	@Inline(value = "($1) * 1e-6")
 	public static double micro2unit(double micro) {
 		return micro * 1e-6;
 	}
@@ -192,7 +192,7 @@ public final class MeasureUnitUtil {
 	 * @return {@code unit} / 1e-3
 	 */
 	@Pure
-	@Inline(value = "($1 / 1e-3)")
+	@Inline(value = "($1) / 1e-3")
 	public static double unit2milli(double unit) {
 		return unit / 1e-3;
 	}
@@ -203,7 +203,7 @@ public final class MeasureUnitUtil {
 	 * @return {@code milli} * 1e-3
 	 */
 	@Pure
-	@Inline(value = "($1 * 1e-3)")
+	@Inline(value = "($1) * 1e-3")
 	public static double milli2unit(double milli) {
 		return milli * 1e-3;
 	}
@@ -214,7 +214,7 @@ public final class MeasureUnitUtil {
 	 * @return {@code milli} / 1e-3
 	 */
 	@Pure
-	@Inline(value = "($1 / 1e-3)")
+	@Inline(value = "($1) / 1e-3")
 	public static double milli2micro(double milli) {
 		return milli / 1e-3;
 	}
@@ -225,7 +225,7 @@ public final class MeasureUnitUtil {
 	 * @return {@code milli} / 1e-6
 	 */
 	@Pure
-	@Inline(value = "($1 / 1e-6)")
+	@Inline(value = "($1) / 1e-6")
 	public static double milli2nano(double milli) {
 		return milli / 1e-6;
 	}
@@ -236,7 +236,7 @@ public final class MeasureUnitUtil {
 	 * @return {@code milli} / 1e-3
 	 */
 	@Pure
-	@Inline(value = "($1 / 1e-3)")
+	@Inline(value = "($1) / 1e-3")
 	public static double micro2nano(double milli) {
 		return milli / 1e-3;
 	}
@@ -247,7 +247,7 @@ public final class MeasureUnitUtil {
 	 * @return {@code micro} * 1e-3
 	 */
 	@Pure
-	@Inline(value = "($1 * 1e-3)")
+	@Inline(value = "($1) * 1e-3")
 	public static double micro2milli(double micro) {
 		return micro * 1e-3;
 	}
@@ -258,7 +258,7 @@ public final class MeasureUnitUtil {
 	 * @return {@code nano} * 1e-3
 	 */
 	@Pure
-	@Inline(value = "($1 * 1e-3)")
+	@Inline(value = "($1) * 1e-3")
 	public static double nano2micro(double nano) {
 		return nano * 1e-3;
 	}
@@ -269,7 +269,7 @@ public final class MeasureUnitUtil {
 	 * @return {@code nano} * 1e-6
 	 */
 	@Pure
-	@Inline(value = "($1 * 1e-6)")
+	@Inline(value = "($1) * 1e-6")
 	public static double nano2milli(double nano) {
 		return nano * 1e-6;
 	}
@@ -280,7 +280,7 @@ public final class MeasureUnitUtil {
 	 * @return {@code m} * 0.5468
 	 */
 	@Pure
-	@Inline(value = "($1 * 0.5468)")
+	@Inline(value = "($1) * 0.5468")
 	public static double m2fh(double m) {
 		return m * 0.5468;
 	}
@@ -291,7 +291,7 @@ public final class MeasureUnitUtil {
 	 * @return {@code ft} * 0.1667
 	 */
 	@Pure
-	@Inline(value = "($1 * 0.1667)")
+	@Inline(value = "($1) * 0.1667")
 	public static double ft2fh(double ft) {
 		return ft * 0.1667;
 	}
@@ -302,7 +302,7 @@ public final class MeasureUnitUtil {
 	 * @return {@code in} / 72
 	 */
 	@Pure
-	@Inline(value = "($1 / 72)")
+	@Inline(value = "($1) / 72.")
 	public static double in2fh(double in) {
 		return in / 72;
 	}
@@ -313,7 +313,7 @@ public final class MeasureUnitUtil {
 	 * @return {@code m} * 0.3048
 	 */
 	@Pure
-	@Inline(value = "($1 * 0.3048)")
+	@Inline(value = "($1) * 0.3048")
 	public static double m2ft(double m) {
 		return m * 0.3048;
 	}
@@ -335,7 +335,7 @@ public final class MeasureUnitUtil {
 	 * @return {@code fh} / 0.1667
 	 */
 	@Pure
-	@Inline(value = "($1 / 0.1667)")
+	@Inline(value = "($1) / 0.1667")
 	public static double fh2ft(double fh) {
 		return fh / 0.1667;
 	}
@@ -346,7 +346,7 @@ public final class MeasureUnitUtil {
 	 * @return {@code m} * 0.025
 	 */
 	@Pure
-	@Inline(value = "($1 * 0.025)")
+	@Inline(value = "($1) * 0.025")
 	public static double m2in(double m) {
 		return m * 0.025;
 	}
@@ -357,7 +357,7 @@ public final class MeasureUnitUtil {
 	 * @return {@code ft} * 12
 	 */
 	@Pure
-	@Inline(value = "($1 * 12)")
+	@Inline(value = "($1) * 12.")
 	public static double ft2in(double ft) {
 		return ft * 12;
 	}
@@ -368,7 +368,7 @@ public final class MeasureUnitUtil {
 	 * @return a value in centimeters
 	 */
 	@Pure
-	@Inline(value = "($1 / 0.3937)")
+	@Inline(value = "($1) / 0.3937")
 	public static double inchToMetric(double i) {
 		return i / 0.3937;
 	}
@@ -379,7 +379,7 @@ public final class MeasureUnitUtil {
 	 * @return a value in inches
 	 */
 	@Pure
-	@Inline(value = "($1 * 0.3937)")
+	@Inline(value = "($1) * 0.3937")
 	public static double metricToInch(double m) {
 		return m * 0.3937;
 	}
@@ -539,7 +539,8 @@ public final class MeasureUnitUtil {
 	 * @return the result of the convertion.
 	 */
 	@Pure
-	@Inline(value = "(MeasureUnitUtil.fromSeconds(MeasureUnitUtil.toSeconds($1, $2), $3))", imported = {MeasureUnitUtil.class})
+	@Inline(value = "MeasureUnitUtil.fromSeconds(MeasureUnitUtil.toSeconds(($1), ($2)), ($3))",
+	        imported = {MeasureUnitUtil.class})
 	public static double convert(long value, TimeUnit inputUnit, TimeUnit outputUnit) {
 		final double v = toSeconds(value, inputUnit);
 		return fromSeconds(v, outputUnit);
@@ -554,7 +555,8 @@ public final class MeasureUnitUtil {
 	 * @return the result of the convertion.
 	 */
 	@Pure
-	@Inline(value = "(MeasureUnitUtil.fromSeconds(MeasureUnitUtil.toSeconds($1, $2), $3))", imported = {MeasureUnitUtil.class})
+	@Inline(value = "MeasureUnitUtil.fromSeconds(MeasureUnitUtil.toSeconds(($1), ($2)), ($3))",
+	        imported = {MeasureUnitUtil.class})
 	public static double convert(double value, TimeUnit inputUnit, TimeUnit outputUnit) {
 		final double v = toSeconds(value, inputUnit);
 		return fromSeconds(v, outputUnit);
@@ -569,7 +571,7 @@ public final class MeasureUnitUtil {
 	 * @return the result of the convertion.
 	 */
 	@Pure
-	@Inline(value = "(MeasureUnitUtil.fromMetersPerSecond(MeasureUnitUtil.toMetersPerSecond($1, $2), $3))",
+	@Inline(value = "MeasureUnitUtil.fromMetersPerSecond(MeasureUnitUtil.toMetersPerSecond(($1), ($2)), ($3))",
 			imported = {MeasureUnitUtil.class})
 	public static double convert(double value, SpeedUnit inputUnit, SpeedUnit outputUnit) {
 		final double v = toMetersPerSecond(value, inputUnit);
@@ -585,7 +587,7 @@ public final class MeasureUnitUtil {
 	 * @return the result of the convertion.
 	 */
 	@Pure
-	@Inline(value = "(MeasureUnitUtil.fromRadiansPerSecond(MeasureUnitUtil.toRadiansPerSecond($1, $2), $3))",
+	@Inline(value = "MeasureUnitUtil.fromRadiansPerSecond(MeasureUnitUtil.toRadiansPerSecond(($1), ($2)), ($3))",
 			imported = {MeasureUnitUtil.class})
 	public static double convert(double value, AngularUnit inputUnit, AngularUnit outputUnit) {
 		final double v = toRadiansPerSecond(value, inputUnit);
@@ -602,7 +604,7 @@ public final class MeasureUnitUtil {
 	 * @return the result of the convertion.
 	 */
 	@Pure
-	@Inline(value = "(MeasureUnitUtil.fromMeters(MeasureUnitUtil.toMeters($1, $2), $3))",
+	@Inline(value = "MeasureUnitUtil.fromMeters(MeasureUnitUtil.toMeters(($1), ($2)), ($3))",
 			imported = {MeasureUnitUtil.class})
 	public static double convert(double value, SpaceUnit inputUnit, SpaceUnit outputUnit) {
 		final double v = toMeters(value, inputUnit);

@@ -22,6 +22,8 @@ package org.arakhne.afc.attrs.attr;
 
 import java.util.Comparator;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 
 /**
  * This interface contains a metadata with a name.
@@ -41,6 +43,7 @@ public interface Attribute extends AttributeValue {
 	 * @see #valueComparator()
 	 * @see #comparator()
 	 */
+	@Pure
 	Comparator<? extends Attribute> nameComparator();
 
 	/**
@@ -51,6 +54,7 @@ public interface Attribute extends AttributeValue {
 	 * @see #nameComparator()
 	 * @see #valueComparator()
 	 */
+	@Pure
 	Comparator<? extends Attribute> comparator();
 
 	/** The this value with the content of the specified one.
@@ -65,6 +69,7 @@ public interface Attribute extends AttributeValue {
 	 *
 	 * @return the name of the attribute.
 	 */
+	@Pure
 	String getName();
 
 	/**

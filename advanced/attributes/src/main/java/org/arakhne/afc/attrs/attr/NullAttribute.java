@@ -22,6 +22,8 @@ package org.arakhne.afc.attrs.attr;
 
 import java.io.Serializable;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 
 /**
  * Class that is representing a <code>null</code> value
@@ -50,10 +52,12 @@ public final class NullAttribute implements Serializable, Cloneable {
 	 *
 	 * @return the type.
 	 */
+	@Pure
 	public AttributeType getType() {
 		return this.type;
 	}
 
+	@Pure
 	@Override
 	public NullAttribute clone() {
 		try {
@@ -63,6 +67,7 @@ public final class NullAttribute implements Serializable, Cloneable {
 		}
 	}
 
+	@Pure
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == null) {
@@ -74,11 +79,13 @@ public final class NullAttribute implements Serializable, Cloneable {
 		return false;
 	}
 
+	@Pure
 	@Override
 	public int hashCode() {
 		return this.type.hashCode();
 	}
 
+	@Pure
 	@Override
 	public String toString() {
 		return "null"; //$NON-NLS-1$

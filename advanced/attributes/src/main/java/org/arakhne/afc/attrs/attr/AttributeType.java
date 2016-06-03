@@ -35,6 +35,8 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
 import org.arakhne.afc.math.geometry.d2.d.Point2d;
@@ -154,6 +156,7 @@ public enum AttributeType {
 	 *
 	 * @return the localized name of this type.
 	 */
+	@Pure
 	@SuppressWarnings({"checkstyle:returncount", "checkstyle:cyclomaticcomplexity"})
 	public String getName() {
 		switch (this) {
@@ -200,6 +203,7 @@ public enum AttributeType {
 		return Locale.getStringFrom(NAME_RESOURCE_FILE, "OTHER"); //$NON-NLS-1$
 	}
 
+	@Pure
 	@Override
 	public String toString() {
 		return getName();
@@ -211,6 +215,7 @@ public enum AttributeType {
 	 * @param type is an integer representing an attribute type.
 	 * @return the type that corresponds to the given integer.
 	 */
+	@Pure
 	public static AttributeType fromInteger(int type) {
 		final AttributeType[] vals = values();
 		if ((type >= 0) && (type < vals.length)) {
@@ -225,6 +230,7 @@ public enum AttributeType {
 	 *  @param value is the value to test.
 	 *  @return the type that corresponds to the given value.
 	 */
+	@Pure
 	public static AttributeType fromValue(Object value) {
 		if (value != null) {
 			if (value instanceof NullAttribute) {
@@ -241,6 +247,7 @@ public enum AttributeType {
 	 *  @param type is the type to test.
 	 *  @return the type that corresponds to the given value.
 	 */
+	@Pure
 	@SuppressWarnings({"checkstyle:returncount", "checkstyle:cyclomaticcomplexity",
 			"checkstyle:npathcomplexity"})
 	public static AttributeType fromClass(Class<?> type) {
@@ -392,6 +399,7 @@ public enum AttributeType {
 	 *  @return <code>true</code> if the given value is an instance of
 	 *      this attribute type, otherwise <code>false</code>.
 	 */
+	@Pure
 	public boolean instanceOf(Object value) {
 		return this == fromValue(value);
 	}
@@ -400,6 +408,7 @@ public enum AttributeType {
 	 *
 	 * @return the default value.
 	 */
+	@Pure
 	@SuppressWarnings({"checkstyle:returncount", "checkstyle:cyclomaticcomplexity",
 			"checkstyle:npathcomplexity"})
 	public Object getDefaultValue() {
@@ -459,6 +468,7 @@ public enum AttributeType {
 	 * @return <code>true</code> if this type is a base type,
 	 *     otherwise <code>false</code>
 	 */
+	@Pure
 	public boolean isBaseType() {
 		return this == INTEGER
 				|| this == REAL
@@ -476,6 +486,7 @@ public enum AttributeType {
 	 *     otherwise <code>false</code>
 	 * @since 4.0
 	 */
+	@Pure
 	public boolean isNumberType() {
 		return this == INTEGER
 				|| this == REAL
@@ -488,6 +499,7 @@ public enum AttributeType {
 	 * @return <code>true</code> if this type allows <code>null</code> value,
 	 *     otherwise <code>false</code>
 	 */
+	@Pure
 	public boolean isNullAllowed() {
 		return this == OBJECT
 				|| this == IMAGE
@@ -514,6 +526,7 @@ public enum AttributeType {
 	 *     otherwise <code>false</code>.
 	 * @since 4.0
 	 */
+	@Pure
 	@SuppressWarnings({"checkstyle:returncount", "checkstyle:cyclomaticcomplexity",
 			"checkstyle:booleanexpressioncomplexity"})
 	public boolean isAssignableFrom(AttributeType type) {
@@ -568,6 +581,7 @@ public enum AttributeType {
 	 * @throws ClassCastException if is impossible to cast.
 	 * @throws NullPointerException if null value is not allowed.
 	 */
+	@Pure
 	@SuppressWarnings({"unchecked", "rawtypes", "checkstyle:returncount", "checkstyle:cyclomaticcomplexity",
 			"checkstyle:booleanexpressioncomplexity", "checkstyle:methodlength", "checkstyle:npathcomplexity"})
 	public Object cast(Object obj) {

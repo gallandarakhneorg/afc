@@ -22,6 +22,8 @@ package org.arakhne.afc.attrs.collection;
 
 import java.util.Comparator;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 import org.arakhne.afc.attrs.attr.AttributeImpl;
 
 
@@ -35,6 +37,7 @@ import org.arakhne.afc.attrs.attr.AttributeImpl;
  */
 public class AttributeNameStringComparator implements Comparator<String> {
 
+	@Pure
 	@Override
 	public int compare(String arg0, String arg1) {
 		return AttributeImpl.compareAttrNames(arg0, arg1);

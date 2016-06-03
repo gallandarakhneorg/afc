@@ -20,6 +20,8 @@
 
 package org.arakhne.afc.vmutil.caller;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /**
  * This utility class provides a way to determine which class
  * call a function.
@@ -47,6 +49,7 @@ public interface Caller {
      * @param level is the desired level of the class
      * @return the class from the call stack according to the given level.
      */
+	@Pure
 	Class<?> getCallerClass(int level);
 
 	/** Replies the method from the stack according to its level.
@@ -95,6 +98,7 @@ public interface Caller {
      * @param level is the desired level of the class
      * @return the method from the call stack according to the given level.
      */
+	@Pure
 	String getCallerMethod(int level);
 
 	/** Replies the line number of the caller from the stack according to its level.
@@ -116,6 +120,7 @@ public interface Caller {
      * @return the line number of method from the call stack
      *     according to the given level.
      */
+	@Pure
 	long getCallerLine(int level);
 
 	/** Replies the filename of the method of the caller from the stack according to its level.
@@ -135,6 +140,7 @@ public interface Caller {
      * @return the filename of the method from the call
      *     stack according to the given level.
      */
+	@Pure
 	String getCallerFilename(int level);
 
 }

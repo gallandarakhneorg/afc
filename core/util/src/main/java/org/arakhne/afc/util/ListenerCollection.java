@@ -27,6 +27,8 @@ import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.EventListener;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /**
  * A collection of listeners.
  *
@@ -59,6 +61,7 @@ public class ListenerCollection<L extends EventListener> {
 	 * @return <code>true</code> if this collection does not
 	 *     contains any listener, otherwise <code>false</code>
 	 */
+	@Pure
 	public boolean isEmpty() {
 		return this.listeners == NULL;
 	}
@@ -88,6 +91,7 @@ public class ListenerCollection<L extends EventListener> {
 	 *
 	 * @return the listeners.
 	 */
+	@Pure
 	public Object[] getListenerList() {
 		return this.listeners;
 	}
@@ -101,6 +105,7 @@ public class ListenerCollection<L extends EventListener> {
 	 * @throws ClassCastException if the supplied class is not assignable to EventListener
 	 */
 	@SuppressWarnings("unchecked")
+	@Pure
 	public <T extends EventListener> T[] getListeners(Class<T> type) {
 		final Object[] l = this.listeners;
 		final int n = getListenerCount(l, type);
@@ -119,6 +124,7 @@ public class ListenerCollection<L extends EventListener> {
 	 *
 	 * @return the total number of listeners for this listener list.
 	 */
+	@Pure
 	public int size() {
 		return this.listeners.length / 2;
 	}
@@ -131,6 +137,7 @@ public class ListenerCollection<L extends EventListener> {
 	 * @return the total number of listeners of the supplied type
 	 *     for this listener list.
 	 */
+	@Pure
 	public int getListenerCount(Class<?> type) {
 		return getListenerCount(this.listeners, type);
 	}
@@ -242,6 +249,7 @@ public class ListenerCollection<L extends EventListener> {
 	}
 
 	@Override
+	@Pure
 	public String toString() {
 		final Object[] lList = this.listeners;
 		String string = "EventListenerList: "; //$NON-NLS-1$

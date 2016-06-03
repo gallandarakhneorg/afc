@@ -22,6 +22,8 @@ package org.arakhne.afc.vmutil;
 
 import java.lang.reflect.Method;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 import org.arakhne.afc.vmutil.caller.StackTraceCaller;
 
 /**
@@ -48,6 +50,7 @@ public final class Caller {
 	 *
 	 * @return the stack trace mamager.
 	 */
+	@Pure
 	public static org.arakhne.afc.vmutil.caller.Caller getCaller() {
 		synchronized (Caller.class) {
 			if (caller == null) {
@@ -94,6 +97,7 @@ public final class Caller {
 	 * @return the method of the caller that invoked the function
 	 *     from which <code>getCallerMethod()</code> was invoked.
 	 */
+	@Pure
 	public static String getCallerMethod() {
     	return getCaller().getCallerMethod(2);
 	}
@@ -145,6 +149,7 @@ public final class Caller {
 	 * @param level is the desired level of the class
 	 * @return the method from the call stack according to the given level.
 	 */
+	@Pure
 	public static String getCallerMethod(int level) {
 		return getCaller().getCallerMethod(level + 1);
 	}
@@ -155,6 +160,7 @@ public final class Caller {
 	 * @return the class of the caller that invoked the function
 	 *     from which <code>getCallerClass()</code> was invoked.
 	 */
+	@Pure
 	public static Class<?> getCallerClass() {
     	return getCaller().getCallerClass(2);
 	}
@@ -175,6 +181,7 @@ public final class Caller {
 	 * @param level is the desired level of the class
 	 * @return the class from the call stack according to the given level.
 	 */
+	@Pure
 	public static Class<?> getCallerClass(int level) {
     	return getCaller().getCallerClass(level + 1);
 	}

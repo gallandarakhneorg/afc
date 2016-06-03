@@ -23,6 +23,9 @@ package org.arakhne.afc.references;
 import java.lang.ref.Reference;
 import java.lang.ref.ReferenceQueue;
 import java.lang.ref.WeakReference;
+import java.util.Objects;
+
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * This class is a WeakReference that allows to be
@@ -51,17 +54,20 @@ public class ComparableWeakReference<T> extends WeakReference<T> implements Comp
 		super(referent, queue);
 	}
 
+	@Pure
 	@Override
 	public boolean equals(Object obj) {
 		return compareTo(obj) == 0;
 	}
 
+	@Pure
 	@Override
 	public int hashCode() {
 		final T cur = get();
 		return cur == null ? 0 : cur.hashCode();
 	}
 
+	@Pure
 	@Override
 	@SuppressWarnings({"unchecked", "checkstyle:npathcomplexity"})
 	public int compareTo(Object obj) {
@@ -101,6 +107,7 @@ public class ComparableWeakReference<T> extends WeakReference<T> implements Comp
 		return oth.hashCode() - cur.hashCode();
 	}
 
+	@Pure
 	@Override
 	public String toString() {
 		final StringBuilder buffer = new StringBuilder();

@@ -20,6 +20,8 @@
 
 package org.arakhne.afc.vmutil;
 
+import org.eclipse.xtext.xbase.lib.Inline;
+import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
  * This is a list of supported operating system.
@@ -145,6 +147,7 @@ public enum OperatingSystem {
 	 *
 	 * @return the type of identification found on this operating system.
 	 */
+	@Pure
 	public static OperatingSystemIdentificationType getIdentificationType() {
 		if (nativeWrapper == null) {
 			return OperatingSystemIdentificationType.BIOS;
@@ -158,6 +161,7 @@ public enum OperatingSystem {
 	 * @return <code>true</code> if the current operating system corresponds to this constant,
 	 *     otherwise <code>false</code>
 	 */
+	@Pure
 	public boolean isCurrentOS() {
 		return getCurrentOS() == this;
 	}
@@ -167,6 +171,7 @@ public enum OperatingSystem {
 	 * @return <code>true</code> if this constant corresponds to a Unix-like operating system,
 	 *     otherwise <code>false</code>
 	 */
+	@Pure
 	public boolean isUnixCompliant() {
 		switch (this) {
 		case AIX:
@@ -194,6 +199,8 @@ public enum OperatingSystem {
 	 * @return the name of the current operating system.
 	 * @see System#getProperty(java.lang.String)
 	 */
+	@Pure
+	@Inline("System.getProperty(\"os.name\")")
 	public static String getCurrentOSName() {
 		return System.getProperty("os.name"); //$NON-NLS-1$
 	}
@@ -203,6 +210,8 @@ public enum OperatingSystem {
 	 * @return the version of the current operating system.
 	 * @see System#getProperty(java.lang.String)
 	 */
+	@Pure
+	@Inline("System.getProperty(\"os.version\")")
 	public static String getCurrentOSVersion() {
 		return System.getProperty("os.version"); //$NON-NLS-1$
 	}
@@ -224,6 +233,7 @@ public enum OperatingSystem {
 	 *
 	 * @return the current operating system constant.
 	 */
+	@Pure
 	@SuppressWarnings("checkstyle:cyclomaticcomplexity")
 	public static OperatingSystem getCurrentOS() {
 		if (currentOSInstance == null) {
@@ -277,6 +287,7 @@ public enum OperatingSystem {
 	 * @return the integer which is corresponding to the data model, or <code>0</code> if
 	 *     it could not be determined.
 	 */
+	@Pure
 	public static int getOperatingSystemArchitectureDataModel() {
 		return LibraryLoader.getOperatingSystemArchitectureDataModel();
 	}
@@ -286,6 +297,8 @@ public enum OperatingSystem {
 	 * @return <code>true</code> if the operating system is 64bits, othewise
 	 *     <code>false</code>
 	 */
+	@Pure
+	@Inline(value = "OperatingSystem.getOperatingSystemArchitectureDataModel() == 64", imported = {OperatingSystem.class})
 	@SuppressWarnings("checkstyle:magicnumber")
 	public static boolean is64BitOperatingSystem() {
 		return getOperatingSystemArchitectureDataModel() == 64;
@@ -296,6 +309,7 @@ public enum OperatingSystem {
 	 * @return <code>true</code> if the operating system is 32bits, othewise
 	 * <code>false</code>
 	 */
+	@Pure
 	@SuppressWarnings("checkstyle:magicnumber")
 	public static boolean is32BitOperatingSystem() {
 		final int dataModel = getOperatingSystemArchitectureDataModel();
@@ -309,6 +323,8 @@ public enum OperatingSystem {
 	 *
 	 * @return the serial number associated to the current operating system.
 	 */
+	@Pure
+	@Inline(value = "OperatingSystem.getOSSerialNumber(false, false)", imported = {OperatingSystem.class})
 	public static String getOSSerialNumber() {
 		return getOSSerialNumber(false, false);
 	}
@@ -320,6 +336,7 @@ public enum OperatingSystem {
 	 * @return the serial number associated to the current operating system.
 	 * @sine 6.1
 	 */
+	@Pure
 	public static String getOSSerialNumber(boolean enableSuperUser, boolean enableGUI) {
 		if (osSerialNumber == null) {
 			if (nativeWrapper != null) {
@@ -339,6 +356,8 @@ public enum OperatingSystem {
 	 *
 	 * @return an unique identifier for the current operating system.
 	 */
+	@Pure
+	@Inline(value = "OperatingSystem.getOSUUID(false, false)", imported = {OperatingSystem.class})
 	public static String getOSUUID() {
 		return getOSUUID(false, false);
 	}
@@ -350,6 +369,7 @@ public enum OperatingSystem {
 	 * @return an unique identifier for the current operating system.
 	 * @since 6.1
 	 */
+	@Pure
 	public static String getOSUUID(boolean enableSuperUser, boolean enableGUI) {
 		if (osUUID == null) {
 			if (nativeWrapper != null) {

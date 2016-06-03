@@ -23,6 +23,8 @@ package org.arakhne.afc.vmutil;
 import java.io.InputStream;
 import java.net.URL;
 
+import org.eclipse.xtext.xbase.lib.Pure;
+
 /**
  * This interface provides implementations to load resources according to
  * several heuristics:<ul>
@@ -38,59 +40,62 @@ import java.net.URL;
  */
 public interface ResourceWrapper {
 
-    /**
-     * Replies the URL of a resource.
-     *
-     * <p>You may use Unix-like syntax to write the resource path, ie.
-     * you may use slashes to separate filenames.
-     *
-     * <p>If the {@code classLoader} parameter is <code>null</code>,
-     * the class loader replied by {@link ClassLoaderFinder} is used.
-     * If this last is <code>null</code>, the class loader of
-     * the Resources class is used.
-     *
-     * @param classLoader is the research scope. If <code>null</code>,
-     *     the class loader replied by {@link ClassLoaderFinder} is used.
-     * @param path is the absolute path of the resource.
-     * @return the url of the resource or <code>null</code> if the resource was
-     *     not found in class paths.
-     */
-    URL getResource(ClassLoader classLoader, String path);
+	/**
+	 * Replies the URL of a resource.
+	 *
+	 * <p>You may use Unix-like syntax to write the resource path, ie.
+	 * you may use slashes to separate filenames.
+	 *
+	 * <p>If the {@code classLoader} parameter is <code>null</code>,
+	 * the class loader replied by {@link ClassLoaderFinder} is used.
+	 * If this last is <code>null</code>, the class loader of
+	 * the Resources class is used.
+	 *
+	 * @param classLoader is the research scope. If <code>null</code>,
+	 *     the class loader replied by {@link ClassLoaderFinder} is used.
+	 * @param path is the absolute path of the resource.
+	 * @return the url of the resource or <code>null</code> if the resource was
+	 *     not found in class paths.
+	 */
+	@Pure
+	URL getResource(ClassLoader classLoader, String path);
 
-    /**
-     * Replies the input stream of a resource.
-     *
-     * <p>You may use Unix-like syntax to write the resource path, ie.
-     * you may use slashes to separate filenames, and may not start the
-     * path with a slash.
-     *
-     * <p>If the {@code classLoader} parameter is <code>null</code>,
-     * the class loader replied by {@link ClassLoaderFinder} is used.
-     * If this last is <code>null</code>, the class loader of
-     * the Resources class is used.
-     *
-     * @param classLoader is the research scope. If <code>null</code>,
-     *     the class loader replied by {@link ClassLoaderFinder} is used.
-     * @param path is the absolute path of the resource.
-     * @return the url of the resource or <code>null</code> if the resource was
-     *     not found in class paths.
-     */
-    InputStream getResourceAsStream(ClassLoader classLoader, String path);
+	/**
+	 * Replies the input stream of a resource.
+	 *
+	 * <p>You may use Unix-like syntax to write the resource path, ie.
+	 * you may use slashes to separate filenames, and may not start the
+	 * path with a slash.
+	 *
+	 * <p>If the {@code classLoader} parameter is <code>null</code>,
+	 * the class loader replied by {@link ClassLoaderFinder} is used.
+	 * If this last is <code>null</code>, the class loader of
+	 * the Resources class is used.
+	 *
+	 * @param classLoader is the research scope. If <code>null</code>,
+	 *     the class loader replied by {@link ClassLoaderFinder} is used.
+	 * @param path is the absolute path of the resource.
+	 * @return the url of the resource or <code>null</code> if the resource was
+	 *     not found in class paths.
+	 */
+	@Pure
+	InputStream getResourceAsStream(ClassLoader classLoader, String path);
 
-    /** Translate the given resource name according to the current JVM standard.
-     *
-     * <p>The <code>resourceName</code> argument should be a fully
-     * qualified class name. However, for compatibility with earlier
-     * versions, Sun's Java SE Runtime Environments do not verify this,
-     * and so it is possible to access <code>PropertyResourceBundle</code>s
-     * by specifying a path name (using "/") instead of a fully
-     * qualified class name (using ".").
-     * In several VM, such as Dalvik, the translation from "." to "/" is not
-     * automatically done by the VM to retreive the file.
-     *
-     * @param resourceName the name to translate.
-     * @return the translated resource name.
-     */
-    String translateResourceName(String resourceName);
+	/** Translate the given resource name according to the current JVM standard.
+	 *
+	 * <p>The <code>resourceName</code> argument should be a fully
+	 * qualified class name. However, for compatibility with earlier
+	 * versions, Sun's Java SE Runtime Environments do not verify this,
+	 * and so it is possible to access <code>PropertyResourceBundle</code>s
+	 * by specifying a path name (using "/") instead of a fully
+	 * qualified class name (using ".").
+	 * In several VM, such as Dalvik, the translation from "." to "/" is not
+	 * automatically done by the VM to retreive the file.
+	 *
+	 * @param resourceName the name to translate.
+	 * @return the translated resource name.
+	 */
+	@Pure
+	String translateResourceName(String resourceName);
 
 }
