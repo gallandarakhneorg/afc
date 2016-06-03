@@ -23,8 +23,6 @@ package org.arakhne.afc.math.geometry.d3.dfx;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import org.arakhne.afc.math.geometry.d2.Shape2D;
-import org.arakhne.afc.math.geometry.d2.dfx.Circle2dfx;
 import org.arakhne.afc.math.geometry.d3.AbstractUnmodifiablePoint3DTest;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Shape3D;
@@ -54,7 +52,7 @@ public class UnmodifiablePoint3dfxTest extends AbstractUnmodifiablePoint3DTest<P
 
 	@Override
 	public void operator_andShape3D() {
-		Shape3D shape = new Sphere3dfx(5, 8, 5);
+		Shape3D shape = new Sphere3dfx(5, 8, 2, 5);
 		assertFalse(createPoint(0,0).operator_and(shape));
 		assertFalse(createPoint(11,10).operator_and(shape));
 		assertFalse(createPoint(11,50).operator_and(shape));
@@ -68,7 +66,7 @@ public class UnmodifiablePoint3dfxTest extends AbstractUnmodifiablePoint3DTest<P
 	
 	@Override
 	public void operator_upToShape3D() {
-		Shape2D shape = new Circle2dfx(5, 8, 5);
+		Shape3D shape = new Sphere3dfx(5, 8, 2, 5);
 		assertEpsilonEquals(3.74643, createPoint(.5,.5).operator_upTo(shape));
 		assertEpsilonEquals(7.9769, createPoint(-1.2,-3.4).operator_upTo(shape));
 		assertEpsilonEquals(1.6483, createPoint(-1.2,5.6).operator_upTo(shape));

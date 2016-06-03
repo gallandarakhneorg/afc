@@ -20,14 +20,15 @@
 
 package org.arakhne.afc.math.geometry.d3.ifx;
 
-import org.arakhne.afc.math.geometry.d2.ai.AbstractMultiShape2aiTest;
+import org.arakhne.afc.math.geometry.d3.ai.AbstractMultiShape3aiTest;
 
 @SuppressWarnings("all")
-public class MultiShape3ifxTest extends AbstractMultiShape2aiTest<MultiShape2ifx<Shape2ifx<?>>, Shape2ifx<?>, Rectangle2ifx> {
+public class MultiShape3ifxTest
+        extends AbstractMultiShape3aiTest<MultiShape3ifx<Shape3ifx<?>>, Shape3ifx<?>, RectangularPrism3ifx> {
 
-	@Override
-	protected TestShapeFactory3ifx createFactory() {
-		return TestShapeFactory3ifx.SINGLETON;
-	}
+    @Override
+    protected TestShapeFactory3ifx createFactory() {
+        return TestShapeFactory3ifx.SINGLETON;
+    }
 
 }

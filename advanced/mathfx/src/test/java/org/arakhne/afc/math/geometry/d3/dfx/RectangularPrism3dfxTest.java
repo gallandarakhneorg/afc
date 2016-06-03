@@ -22,13 +22,13 @@ package org.arakhne.afc.math.geometry.d3.dfx;
 
 import static org.junit.Assert.assertNotNull;
 
-import org.arakhne.afc.math.geometry.d2.dfx.Rectangle2dfx;
-import org.arakhne.afc.math.geometry.d3.afp.AbstractRectangularPrism3afpTest;
-import org.junit.Test;
-
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
+import org.junit.Test;
+
+import org.arakhne.afc.math.geometry.d3.afp.AbstractRectangularPrism3afpTest;
+
 
 @SuppressWarnings("all")
 public class RectangularPrism3dfxTest extends AbstractRectangularPrism3afpTest<RectangularPrism3dfx, RectangularPrism3dfx> {

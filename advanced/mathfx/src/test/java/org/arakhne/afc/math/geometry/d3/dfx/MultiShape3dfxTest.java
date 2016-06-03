@@ -24,11 +24,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 
-import org.arakhne.afc.math.geometry.d3.afp.AbstractMultiShape3afpTest;
-import org.junit.Test;
-
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.ObjectProperty;
+import org.junit.Test;
+
+import org.arakhne.afc.math.geometry.d3.afp.AbstractMultiShape3afpTest;
 
 @SuppressWarnings("all")
 public class MultiShape3dfxTest extends AbstractMultiShape3afpTest<MultiShape3dfx<Shape3dfx<?>>, Shape3dfx<?>, RectangularPrism3dfx> {

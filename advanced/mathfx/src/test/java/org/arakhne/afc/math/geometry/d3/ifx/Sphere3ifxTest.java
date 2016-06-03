@@ -25,11 +25,10 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
 
-import org.arakhne.afc.math.geometry.d2.ifx.Circle2ifx;
-import org.arakhne.afc.math.geometry.d3.ai.AbstractSphere3aiTest;
+import javafx.beans.property.IntegerProperty;
 import org.junit.Test;
 
-import javafx.beans.property.IntegerProperty;
+import org.arakhne.afc.math.geometry.d3.ai.AbstractSphere3aiTest;
 
 @SuppressWarnings("all")
 public class Sphere3ifxTest extends AbstractSphere3aiTest<Sphere3ifx, RectangularPrism3ifx> {

@@ -1,27 +1,28 @@
-/**
- * 
- * fr.utbm.v3g.core.math.Tuple2dTest.java
+/*
+ * $Id$
+ * This file is a part of the Arakhne Foundation Classes, http://www.arakhne.org/afc
  *
- * Copyright (c) 2008-10, Multiagent Team - Systems and Transportation Laboratory (SeT)
- * All rights reserved.
+ * Copyright (c) 2000-2012 Stephane GALLAND.
+ * Copyright (c) 2005-10, Multiagent Team, Laboratoire Systemes et Transports,
+ *                        Universite de Technologie de Belfort-Montbeliard.
+ * Copyright (c) 2013-2016 The original authors, and other authors.
  *
- * This software is the confidential and proprietary information
- * of the Systems and Transportation Laboratory ("Confidential Information").
- * You shall not disclose such Confidential Information and shall use
- * it only in accordance with the terms of the license agreement
- * you entered into with the SeT.
- * 
- * http://www.multiagent.fr/
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  *
- * Primary author : Olivier LAMOTTE (olivier.lamotte@utbm.fr) - 2015
- *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
+
 package org.arakhne.afc.math.geometry.d3.d;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import org.arakhne.afc.math.geometry.d2.Shape2D;
 import org.arakhne.afc.math.geometry.d3.AbstractUnmodifiablePoint3DTest;
 import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Shape3D;
@@ -50,7 +51,7 @@ public class UnmodifiablePoint3dTest extends AbstractUnmodifiablePoint3DTest<Poi
 	}
 
 	@Override
-	public void operator_andShape2D() {
+	public void operator_andShape3D() {
 		Shape3D shape = new Sphere3d(5, 8, 5);
 		assertFalse(createPoint(0,0).operator_and(shape));
 		assertFalse(createPoint(11,10).operator_and(shape));
@@ -64,7 +65,7 @@ public class UnmodifiablePoint3dTest extends AbstractUnmodifiablePoint3DTest<Poi
 	}
 	
 	@Override
-	public void operator_upToShape2D() {
+	public void operator_upToShape3D() {
 		Shape3D shape = new Sphere3d(5, 8, 5);
 		assertEpsilonEquals(3.74643, createPoint(.5,.5).operator_upTo(shape));
 		assertEpsilonEquals(7.9769, createPoint(-1.2,-3.4).operator_upTo(shape));

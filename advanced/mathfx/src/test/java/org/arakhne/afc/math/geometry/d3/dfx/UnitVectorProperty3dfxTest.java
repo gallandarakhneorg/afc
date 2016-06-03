@@ -22,14 +22,12 @@ package org.arakhne.afc.math.geometry.d3.dfx;
 
 import static org.junit.Assert.assertNotNull;
 
-import org.arakhne.afc.math.AbstractMathTestCase;
-import org.arakhne.afc.math.geometry.d2.Vector2D;
-import org.arakhne.afc.math.geometry.d2.dfx.Vector2dfx;
-import org.arakhne.afc.math.geometry.d3.Vector3D;
+import javafx.beans.property.ReadOnlyDoubleProperty;
 import org.junit.Before;
 import org.junit.Test;
 
-import javafx.beans.property.ReadOnlyDoubleProperty;
+import org.arakhne.afc.math.AbstractMathTestCase;
+import org.arakhne.afc.math.geometry.d3.Vector3D;
 
 @SuppressWarnings("all")
 public class UnitVectorProperty3dfxTest extends AbstractMathTestCase {

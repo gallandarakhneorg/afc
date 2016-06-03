@@ -22,11 +22,10 @@ package org.arakhne.afc.math.geometry.d3.dfx;
 
 import static org.junit.Assert.assertNotNull;
 
-import org.arakhne.afc.math.geometry.d2.dfx.Vector2dfx;
-import org.arakhne.afc.math.geometry.d3.AbstractVector3DTest;
+import javafx.beans.property.ReadOnlyDoubleProperty;
 import org.junit.Test;
 
-import javafx.beans.property.ReadOnlyDoubleProperty;
+import org.arakhne.afc.math.geometry.d3.AbstractVector3DTest;
 
 @SuppressWarnings("all")
 public class Vector3dfxTest extends AbstractVector3DTest<Vector3dfx, Point3dfx, Vector3dfx> {
@@ -49,14 +48,6 @@ public class Vector3dfxTest extends AbstractVector3DTest<Vector3dfx, Point3dfx, 
 	@Override
 	public Point3dfx createPoint(double x, double y, double z) {
 		return new Point3dfx(x, y, z);
-	}
-
-	@Test
-	public void staticToOrientationVector() {
-		assertFpVectorEquals(1, 0, Vector2dfx.toOrientationVector(0));
-		assertFpVectorEquals(-1, 0, Vector2dfx.toOrientationVector(Math.PI));
-		assertFpVectorEquals(0, 1, Vector2dfx.toOrientationVector(Math.PI/2));
-		assertFpVectorEquals(0, -1, Vector2dfx.toOrientationVector(-Math.PI/2));
 	}
 
 	@Test

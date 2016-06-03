@@ -26,16 +26,14 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
-import org.arakhne.afc.math.geometry.PathElementType;
-import org.arakhne.afc.math.geometry.PathWindingRule;
-import org.arakhne.afc.math.geometry.d2.ifx.Path2ifx;
-import org.arakhne.afc.math.geometry.d2.ifx.Rectangle2ifx;
-import org.arakhne.afc.math.geometry.d3.ai.AbstractPath3aiTest;
-import org.junit.Test;
-
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyListProperty;
+import org.junit.Test;
+
+import org.arakhne.afc.math.geometry.PathElementType;
+import org.arakhne.afc.math.geometry.PathWindingRule;
+import org.arakhne.afc.math.geometry.d3.ai.AbstractPath3aiTest;
 
 @SuppressWarnings("all")
 public class Path3ifxTest extends AbstractPath3aiTest<Path3ifx, RectangularPrism3ifx> {

@@ -25,17 +25,11 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
 
-import org.arakhne.afc.math.geometry.d2.Point2D;
-import org.arakhne.afc.math.geometry.d2.Vector2D;
-import org.arakhne.afc.math.geometry.d2.ai.AbstractRectangle2aiTest;
-import org.arakhne.afc.math.geometry.d2.ai.Path2ai;
-import org.arakhne.afc.math.geometry.d2.ai.Segment2ai;
-import org.arakhne.afc.math.geometry.d2.ai.TestShapeFactory;
-import org.arakhne.afc.math.geometry.d3.ai.AbstractRectangularPrism3aiTest;
-import org.junit.Test;
-
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ReadOnlyIntegerProperty;
+import org.junit.Test;
+
+import org.arakhne.afc.math.geometry.d3.ai.AbstractRectangularPrism3aiTest;
 
 @SuppressWarnings("all")
 public class RectangularPrism3ifxTest extends AbstractRectangularPrism3aiTest<RectangularPrism3ifx> {
@@ -141,7 +135,7 @@ public class RectangularPrism3ifxTest extends AbstractRectangularPrism3aiTest<Re
 	@Override
 	public void testClone() {
 		super.testClone();
-		Rectangle2ifx clone = this.shape.clone();
+		RectangularPrism3ifx clone = this.shape.clone();
 		assertNotSame(this.shape.minXProperty(), clone.minXProperty());
 		assertNotSame(this.shape.maxXProperty(), clone.maxXProperty());
 		assertNotSame(this.shape.minYProperty(), clone.minYProperty());

@@ -22,12 +22,11 @@ package org.arakhne.afc.math.geometry.d3.dfx;
 
 import static org.junit.Assert.assertNotNull;
 
-import org.arakhne.afc.math.geometry.d2.dfx.Rectangle2dfx;
-import org.arakhne.afc.math.geometry.d3.afp.AbstractSegment3afpTest;
-import org.junit.Test;
-
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
+import org.junit.Test;
+
+import org.arakhne.afc.math.geometry.d3.afp.AbstractSegment3afpTest;
 
 @SuppressWarnings("all")
 public class Segment3dfxTest extends AbstractSegment3afpTest<Segment3dfx, RectangularPrism3dfx> {
@@ -97,7 +96,7 @@ public class Segment3dfxTest extends AbstractSegment3afpTest<Segment3dfx, Rectan
 	public void boundingBoxProperty() {
 		ObjectProperty<RectangularPrism3dfx> property = this.shape.boundingBoxProperty();
 		assertNotNull(property);
-		Rectangle2dfx box = property.get();
+		RectangularPrism3dfx box = property.get();
 		assertNotNull(box);
 		assertEpsilonEquals(0, box.getMinX());
 		assertEpsilonEquals(0, box.getMinY());

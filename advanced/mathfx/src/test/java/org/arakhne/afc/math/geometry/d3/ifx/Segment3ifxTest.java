@@ -25,11 +25,10 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertSame;
 
-import org.arakhne.afc.math.geometry.d2.ifx.Segment2ifx;
-import org.arakhne.afc.math.geometry.d3.ai.AbstractSegment3aiTest;
+import javafx.beans.property.IntegerProperty;
 import org.junit.Test;
 
-import javafx.beans.property.IntegerProperty;
+import org.arakhne.afc.math.geometry.d3.ai.AbstractSegment3aiTest;
 
 @SuppressWarnings("all")
 public class Segment3ifxTest extends AbstractSegment3aiTest<Segment3ifx, RectangularPrism3ifx> {

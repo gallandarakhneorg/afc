@@ -24,10 +24,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 
-import org.arakhne.afc.math.geometry.d3.AbstractTuple3DTest;
+import javafx.beans.property.IntegerProperty;
 import org.junit.Test;
 
-import javafx.beans.property.IntegerProperty;
+import org.arakhne.afc.math.geometry.d3.AbstractTuple3DTest;
 
 @SuppressWarnings("all")
 public class Tuple3ifxTest extends AbstractTuple3DTest<Tuple3ifx, Tuple3ifx> {
