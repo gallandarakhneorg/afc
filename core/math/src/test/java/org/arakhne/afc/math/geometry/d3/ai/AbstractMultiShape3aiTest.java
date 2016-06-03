@@ -48,8 +48,8 @@ public abstract class AbstractMultiShape3aiTest<T extends MultiShape3ai<?, T, C,
 	@Override
 	protected final T createShape() {
 		T shape = (T) createMultiShape();
-		firstObject = (C) createRectangle(5, 8, 2, 1);
-		secondObject = (C) createCircle(-5, 18, 2);
+		firstObject = (C) createRectangularPrism(5, 8, 0, 2, 1, 0);
+		secondObject = (C) createSphere(-5, 18, 0, 2);
 		shape.add(firstObject);
 		shape.add(secondObject);
 		return shape;
@@ -59,17 +59,17 @@ public abstract class AbstractMultiShape3aiTest<T extends MultiShape3ai<?, T, C,
 	public void testClone() {
 		MultiShape3ai clone = this.shape.clone();
 		PathIterator3ai pi = (PathIterator3ai) clone.getPathIterator();
-		assertElement(pi, PathElementType.MOVE_TO, 5, 8);
-		assertElement(pi, PathElementType.LINE_TO, 7, 8);
-		assertElement(pi, PathElementType.LINE_TO, 7, 9);
-		assertElement(pi, PathElementType.LINE_TO, 5, 9);
-		assertElement(pi, PathElementType.CLOSE, 5, 8);
-		assertElement(pi, PathElementType.MOVE_TO, -3, 18);
-		assertElement(pi, PathElementType.CURVE_TO, -3, 19, -3, 20, -5, 20);
-		assertElement(pi, PathElementType.CURVE_TO, -6, 20, -7, 19, -7, 18);
-		assertElement(pi, PathElementType.CURVE_TO, -7, 16, -6, 16, -5, 16);
-		assertElement(pi, PathElementType.CURVE_TO, -3, 16, -3, 16, -3, 18);
-		assertElement(pi, PathElementType.CLOSE, -3, 18);
+		assertElement(pi, PathElementType.MOVE_TO, 5, 8, 0);
+		assertElement(pi, PathElementType.LINE_TO, 7, 8, 0);
+		assertElement(pi, PathElementType.LINE_TO, 7, 9, 0);
+		assertElement(pi, PathElementType.LINE_TO, 5, 9, 0);
+		assertElement(pi, PathElementType.CLOSE, 5, 8, 0);
+		assertElement(pi, PathElementType.MOVE_TO, -3, 18, 0);
+		assertElement(pi, PathElementType.CURVE_TO, -3, 19, 0, -3, 20, 0, -5, 20, 0);
+		assertElement(pi, PathElementType.CURVE_TO, -6, 20, 0, -7, 19, 0, -7, 18, 0);
+		assertElement(pi, PathElementType.CURVE_TO, -7, 16, 0, -6, 16, 0, -5, 16, 0);
+		assertElement(pi, PathElementType.CURVE_TO, -3, 16, 0, -3, 16, 0, -3, 18, 0);
+		assertElement(pi, PathElementType.CLOSE, -3, 18, 0);
 		assertNoElement(pi);
 	}
 
@@ -78,7 +78,7 @@ public abstract class AbstractMultiShape3aiTest<T extends MultiShape3ai<?, T, C,
 		assertFalse(this.shape.equals(null));
 		assertFalse(this.shape.equals(new Object()));
 		assertFalse(this.shape.equals(createMultiShape()));
-		assertFalse(this.shape.equals(createSegment(5, 8, 5, 10)));
+		assertFalse(this.shape.equals(createSegment(5, 8, 0, 5, 10, 0)));
 		assertTrue(this.shape.equals(this.shape));
 		assertTrue(this.shape.equals(this.shape.clone()));
 	}
@@ -86,7 +86,7 @@ public abstract class AbstractMultiShape3aiTest<T extends MultiShape3ai<?, T, C,
 	@Override
 	public void equalsObject_withPathIterator() {
 		assertFalse(this.shape.equals(createMultiShape().getPathIterator()));
-		assertFalse(this.shape.equals(createSegment(5, 8, 5, 10).getPathIterator()));
+		assertFalse(this.shape.equals(createSegment(5, 8, 0, 5, 10, 0).getPathIterator()));
 		assertTrue(this.shape.equals(this.shape.getPathIterator()));
 		assertTrue(this.shape.equals(this.shape.clone().getPathIterator()));
 	}
@@ -95,7 +95,7 @@ public abstract class AbstractMultiShape3aiTest<T extends MultiShape3ai<?, T, C,
 	public void equalsToPathIterator() {
 		assertFalse(this.shape.equalsToPathIterator((PathIterator3ai) null));
 		assertFalse(this.shape.equalsToPathIterator(createMultiShape().getPathIterator()));
-		assertFalse(this.shape.equalsToPathIterator(createSegment(5, 8, 5, 10).getPathIterator()));
+		assertFalse(this.shape.equalsToPathIterator(createSegment(5, 8, 0, 5, 10, 0).getPathIterator()));
 		assertTrue(this.shape.equalsToPathIterator(this.shape.getPathIterator()));
 		assertTrue(this.shape.equalsToPathIterator(this.shape.clone().getPathIterator()));
 	}
@@ -125,53 +125,53 @@ public abstract class AbstractMultiShape3aiTest<T extends MultiShape3ai<?, T, C,
 	@Override
 	public void containsIntInt() {
 		// Outside bounding box
-		assertFalse(this.shape.contains(-10, 2));
-		assertFalse(this.shape.contains(-10, 14));
-		assertFalse(this.shape.contains(-10, 25));
-		assertFalse(this.shape.contains(-1, 25));
-		assertFalse(this.shape.contains(1, 2));
-		assertFalse(this.shape.contains(12, 2));
-		assertFalse(this.shape.contains(12, 14));
-		assertFalse(this.shape.contains(12, 25));
+		assertFalse(this.shape.contains(-10, 2, 0));
+		assertFalse(this.shape.contains(-10, 14, 0));
+		assertFalse(this.shape.contains(-10, 25, 0));
+		assertFalse(this.shape.contains(-1, 25, 0));
+		assertFalse(this.shape.contains(1, 2, 0));
+		assertFalse(this.shape.contains(12, 2, 0));
+		assertFalse(this.shape.contains(12, 14, 0));
+		assertFalse(this.shape.contains(12, 25, 0));
 		// Inside bounding box - outside subshape
-		assertFalse(this.shape.contains(-6, 8));
-		assertFalse(this.shape.contains(4, 17));
+		assertFalse(this.shape.contains(-6, 8, 0));
+		assertFalse(this.shape.contains(4, 17, 0));
 		// Inside circle
-		assertTrue(this.shape.contains(-4, 19));
+		assertTrue(this.shape.contains(-4, 19, 0));
 		// Inside rectangle
-		assertTrue(this.shape.contains(6, 8));
+		assertTrue(this.shape.contains(6, 8, 0));
 	}
 
 	@Override
 	public void containsPoint3D() {
 		// Outside bounding box
-		assertFalse(this.shape.contains(createPoint(-10, 2)));
-		assertFalse(this.shape.contains(createPoint(-10, 14)));
-		assertFalse(this.shape.contains(createPoint(-10, 25)));
-		assertFalse(this.shape.contains(createPoint(-1, 25)));
-		assertFalse(this.shape.contains(createPoint(1, 2)));
-		assertFalse(this.shape.contains(createPoint(12, 2)));
-		assertFalse(this.shape.contains(createPoint(12, 14)));
-		assertFalse(this.shape.contains(createPoint(12, 25)));
+		assertFalse(this.shape.contains(createPoint(-10, 2, 0)));
+		assertFalse(this.shape.contains(createPoint(-10, 14, 0)));
+		assertFalse(this.shape.contains(createPoint(-10, 25, 0)));
+		assertFalse(this.shape.contains(createPoint(-1, 25, 0)));
+		assertFalse(this.shape.contains(createPoint(1, 2, 0)));
+		assertFalse(this.shape.contains(createPoint(12, 2, 0)));
+		assertFalse(this.shape.contains(createPoint(12, 14, 0)));
+		assertFalse(this.shape.contains(createPoint(12, 25, 0)));
 		// Inside bounding box - outside subshape
-		assertFalse(this.shape.contains(createPoint(-6, 8)));
-		assertFalse(this.shape.contains(createPoint(4, 17)));
+		assertFalse(this.shape.contains(createPoint(-6, 8, 0)));
+		assertFalse(this.shape.contains(createPoint(4, 17, 0)));
 		// Inside circle
-		assertTrue(this.shape.contains(createPoint(-4, 19)));
+		assertTrue(this.shape.contains(createPoint(-4, 19, 0)));
 		// Inside rectangle
-		assertTrue(this.shape.contains(createPoint(6, 8)));
+		assertTrue(this.shape.contains(createPoint(6, 8, 0)));
 	}
 
 	@Override
 	public void containsRectangularPrism3ai() {
 		// Outside
-		assertFalse(this.shape.contains(createRectangle(-20, 14, 1, 1)));
-		assertFalse(this.shape.contains(createRectangle(-2,-10, 1, 1)));
+		assertFalse(this.shape.contains(createRectangularPrism(-20, 14, 0, 1, 1, 0)));
+		assertFalse(this.shape.contains(createRectangularPrism(-2,-10, 0, 1, 1, 0)));
 		// Intersecting
-		assertFalse(this.shape.contains(createRectangle(-6,16, 1, 1)));
-		assertFalse(this.shape.contains(createRectangle(4, 8, 1, 1)));
+		assertFalse(this.shape.contains(createRectangularPrism(-6,16, 0, 1, 1, 0)));
+		assertFalse(this.shape.contains(createRectangularPrism(4, 8, 0, 1, 1, 0)));
 		// Inside
-		assertTrue(this.shape.contains(createRectangle(5, 8, 1, 1)));
+		assertTrue(this.shape.contains(createRectangularPrism(5, 8, 0, 1, 1, 0)));
 	}
 
 	@Override
@@ -350,7 +350,7 @@ public abstract class AbstractMultiShape3aiTest<T extends MultiShape3ai<?, T, C,
 		PathIterator3ai pi = this.shape.getPathIterator();
 		assertNoElement(pi);
 		MultiShape3ai newShape = createMultiShape();
-		newShape.add(createRectangle(-6, 48, 5, 7));
+		newShape.add(createRectangularPrism(-6, 48, 5, 7));
 		this.shape.set((T) newShape);
 		pi = this.shape.getPathIterator();
 		assertElement(pi, PathElementType.MOVE_TO, -6, 48);
@@ -409,7 +409,7 @@ public abstract class AbstractMultiShape3aiTest<T extends MultiShape3ai<?, T, C,
 
 	@Override
 	public void toBoundingBoxB() {
-		B box = createRectangle(0, 0, 0, 0);
+		B box = createRectangularPrism(0, 0, 0, 0);
 		this.shape.toBoundingBox(box);
 		assertEpsilonEquals(-7, box.getMinX());
 		assertEpsilonEquals(8, box.getMinY());
@@ -504,27 +504,27 @@ public abstract class AbstractMultiShape3aiTest<T extends MultiShape3ai<?, T, C,
 	@Override
 	public void intersectsRectangularPrism3ai() {
 		// Outside
-		assertFalse(this.shape.intersects(createRectangle(-20, 14, 1, 1)));
-		assertFalse(this.shape.intersects(createRectangle(-2, -10, 1, 1)));
+		assertFalse(this.shape.intersects(createRectangularPrism(-20, 14, 1, 1)));
+		assertFalse(this.shape.intersects(createRectangularPrism(-2, -10, 1, 1)));
 		// Intersecting
-		assertTrue(this.shape.intersects(createRectangle(-6, 16, 1, 1)));
-		assertTrue(this.shape.intersects(createRectangle(4, 8, 2, 2)));
+		assertTrue(this.shape.intersects(createRectangularPrism(-6, 16, 1, 1)));
+		assertTrue(this.shape.intersects(createRectangularPrism(4, 8, 2, 2)));
 		// Inside
-		assertTrue(this.shape.intersects(createRectangle(-4, 18, 1, 1)));
-		assertTrue(this.shape.intersects(createRectangle(5, 8, 1, 1)));
+		assertTrue(this.shape.intersects(createRectangularPrism(-4, 18, 1, 1)));
+		assertTrue(this.shape.intersects(createRectangularPrism(5, 8, 1, 1)));
 	}
 
 	@Override
 	public void intersectsSphere3ai() {
 		// Outside
-		assertFalse(this.shape.intersects(createCircle(-20, 14, 1)));
-		assertFalse(this.shape.intersects(createCircle(-2,- 10, 1)));
+		assertFalse(this.shape.intersects(createSphere(-20, 14, 1)));
+		assertFalse(this.shape.intersects(createSphere(-2,- 10, 1)));
 		// Intersecting
-		assertTrue(this.shape.intersects(createCircle(-6, 16, 1)));
-		assertTrue(this.shape.intersects(createCircle(4, 8, 1)));
+		assertTrue(this.shape.intersects(createSphere(-6, 16, 1)));
+		assertTrue(this.shape.intersects(createSphere(4, 8, 1)));
 		// Inside
-		assertTrue(this.shape.intersects(createCircle(-4, 18, 1)));
-		assertTrue(this.shape.intersects(createCircle(5, 8, 1)));
+		assertTrue(this.shape.intersects(createSphere(-4, 18, 1)));
+		assertTrue(this.shape.intersects(createSphere(5, 8, 1)));
 	}
 
 	@Override
@@ -718,8 +718,8 @@ public abstract class AbstractMultiShape3aiTest<T extends MultiShape3ai<?, T, C,
 
 	@Override
 	public void operator_andShape3D() {
-		assertTrue(this.shape.operator_and(createCircle(-6, 16, 1)));
-		assertTrue(this.shape.operator_and(createRectangle(-6, 16, 1, 1)));
+		assertTrue(this.shape.operator_and(createSphere(-6, 16, 1)));
+		assertTrue(this.shape.operator_and(createRectangularPrism(-6, 16, 1, 1)));
 
 	}
 
@@ -741,8 +741,8 @@ public abstract class AbstractMultiShape3aiTest<T extends MultiShape3ai<?, T, C,
 	
 	@Override
 	public void intersectsShape3D() {
-		assertTrue(this.shape.intersects((Shape3D) createCircle(-6, 16, 1)));
-		assertTrue(this.shape.intersects((Shape3D) createRectangle(-6, 16, 1, 1)));
+		assertTrue(this.shape.intersects((Shape3D) createSphere(-6, 16, 1)));
+		assertTrue(this.shape.intersects((Shape3D) createRectangularPrism(-6, 16, 1, 1)));
 	}
 
 	@Test
@@ -1027,7 +1027,7 @@ public abstract class AbstractMultiShape3aiTest<T extends MultiShape3ai<?, T, C,
 		assertEquals(7, box.getMaxX());
 		assertEquals(20, box.getMaxY());
 
-		this.shape.add((C) createCircle(10, 14, 1));
+		this.shape.add((C) createSphere(10, 14, 1));
 		
 		// C:  -7; 16; -3; 20
 		// R:   5;  8;  7;  9

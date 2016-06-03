@@ -51,25 +51,25 @@ public class Point3dTest extends AbstractPoint3DTest<Point3d, Vector3d, Point3d>
 
 	@Override
 	public void operator_andShape3D() {
-		Shape3D shape = new Sphere3d(5, 8, 5);
-		assertFalse(createPoint(0,0).operator_and(shape));
-		assertFalse(createPoint(11,10).operator_and(shape));
-		assertFalse(createPoint(11,50).operator_and(shape));
-		assertFalse(createPoint(9,12).operator_and(shape));
-		assertTrue(createPoint(9,11).operator_and(shape));
-		assertTrue(createPoint(8,12).operator_and(shape));
-		assertTrue(createPoint(3,7).operator_and(shape));
-		assertFalse(createPoint(10,11).operator_and(shape));
-		assertTrue(createPoint(9,10).operator_and(shape));
+		Shape3D shape = new Sphere3d(5, 8, 0, 5);
+		assertFalse(createPoint(0,0, 0).operator_and(shape));
+		assertFalse(createPoint(11,10, 0).operator_and(shape));
+		assertFalse(createPoint(11,50, 0).operator_and(shape));
+		assertFalse(createPoint(9,12, 0).operator_and(shape));
+		assertTrue(createPoint(9,11, 0).operator_and(shape));
+		assertTrue(createPoint(8,12, 0).operator_and(shape));
+		assertTrue(createPoint(3,7, 0).operator_and(shape));
+		assertFalse(createPoint(10,11, 0).operator_and(shape));
+		assertTrue(createPoint(9,10, 0).operator_and(shape));
 	}
 	
 	@Override
 	public void operator_upToShape3D() {
-		Shape3D shape = new Sphere3d(5, 8, 5);
-		assertEpsilonEquals(3.74643, createPoint(.5,.5).operator_upTo(shape));
-		assertEpsilonEquals(7.9769, createPoint(-1.2,-3.4).operator_upTo(shape));
-		assertEpsilonEquals(1.6483, createPoint(-1.2,5.6).operator_upTo(shape));
-		assertEpsilonEquals(0, createPoint(7.6,5.6).operator_upTo(shape));
+		Shape3D shape = new Sphere3d(5, 8, 0, 5);
+		assertEpsilonEquals(3.74643, createPoint(.5,.5, 0).operator_upTo(shape));
+		assertEpsilonEquals(7.9769, createPoint(-1.2,-3.4, 0).operator_upTo(shape));
+		assertEpsilonEquals(1.6483, createPoint(-1.2,5.6, 0).operator_upTo(shape));
+		assertEpsilonEquals(0, createPoint(7.6,5.6, 0).operator_upTo(shape));
 	}
 
 }

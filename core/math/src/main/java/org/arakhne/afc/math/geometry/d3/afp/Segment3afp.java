@@ -1364,20 +1364,24 @@ public interface Segment3afp<
 	 *
 	 * @param x1 is the first point of the first segment.
 	 * @param y1 is the first point of the first segment.
+	 * @param z1 is the first point of the first segment.
 	 * @param x2 is the second point of the first segment.
 	 * @param y2 is the second point of the first segment.
+	 * @param z2 is the second point of the first segment.
 	 * @param x3 is the first point of the second segment.
 	 * @param y3 is the first point of the second segment.
+	 * @param z3 is the first point of the second segment.
 	 * @param x4 is the second point of the second segment.
 	 * @param y4 is the second point of the second segment.
+	 * @param z4 is the second point of the second segment.
 	 * @return the type of intersection.
 	 * @see #intersectsSegmentSegmentWithEnds(double, double, double, double, double,
 	 *     double, double, double, double, double, double, double)
 	 */
 	@Pure
 	// TODO : implement 3D
-	static UncertainIntersection getNoSegmentSegmentWithEndsIntersection(double x1, double y1, double x2, double y2,
-			double x3, double y3, double x4, double y4) {
+	static UncertainIntersection getNoSegmentSegmentWithEndsIntersection(double x1, double y1, double z1, double x2, double y2, double z2,
+			double x3, double y3, double z3, double x4, double y4, double z4) {
 		final double vx1 = x2 - x1;
 		final double vy1 = y2 - y1;
 
@@ -1606,11 +1610,11 @@ public interface Segment3afp<
 	static boolean intersectsSegmentSegmentWithEnds(double x1, double y1, double z1, double x2, double y2, double z2,
 			double x3, double y3, double z3, double x4, double y4, double z4) {
 		final UncertainIntersection r;
-		r = getNoSegmentSegmentWithEndsIntersection(x1, y1, x2, y2, x3, y3, x4, y4);
+		r = getNoSegmentSegmentWithEndsIntersection(x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4);
 		if (!r.booleanValue()) {
             return r.booleanValue();
         }
-		return getNoSegmentSegmentWithEndsIntersection(x3, y3, x4, y4, x1, y1, x2, y2).booleanValue();
+		return getNoSegmentSegmentWithEndsIntersection(x3, y3, z3, x4, y4, z4, x1, y1, z1, x2, y2, z2).booleanValue();
 	}
 
 	@Pure

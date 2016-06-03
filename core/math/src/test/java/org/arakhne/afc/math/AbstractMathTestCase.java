@@ -20,12 +20,8 @@
 
 package org.arakhne.afc.math;
 
-import static org.junit.Assert.fail;
-
-import java.math.BigDecimal;
-import java.util.Iterator;
-import java.util.Objects;
-import java.util.Random;
+import org.junit.AssumptionViolatedException;
+import org.junit.ComparisonFailure;
 
 import org.arakhne.afc.math.geometry.d2.Point2D;
 import org.arakhne.afc.math.geometry.d2.Tuple2D;
@@ -36,13 +32,12 @@ import org.arakhne.afc.math.geometry.d3.Point3D;
 import org.arakhne.afc.math.geometry.d3.Quaternion;
 import org.arakhne.afc.math.geometry.d3.Tuple3D;
 import org.arakhne.afc.math.geometry.d3.Vector3D;
+import org.arakhne.afc.math.geometry.d3.d.Point3d;
+import org.arakhne.afc.math.geometry.d3.d.Vector3d;
 import org.arakhne.afc.math.matrix.Matrix2d;
 import org.arakhne.afc.math.matrix.Matrix3d;
 import org.arakhne.afc.math.matrix.Matrix4d;
 import org.arakhne.afc.testtools.AbstractTestCase;
-
-import org.junit.AssumptionViolatedException;
-import org.junit.ComparisonFailure;
 
 /**
  * @author $Author: sgalland$
@@ -318,26 +313,22 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	 *
 	 * @return the random point.
 	 */
-	public Point3D randomPoint3f() {
-		// TODO
-		throw new UnsupportedOperationException();
-//		return new Point3D(
-//				getRandom().nextDouble() * 1000 - 500,
-//				getRandom().nextDouble() * 1000 - 500,
-//				getRandom().nextDouble() * 1000 - 500);
+	public Point3d randomPoint3f() {
+		return new Point3d(
+		        getRandom().nextDouble() * 1000 - 500,
+		        getRandom().nextDouble() * 1000 - 500,
+		        getRandom().nextDouble() * 1000 - 500);
 	}
 	
 	/** Create a random vector.
 	 *
 	 * @return the random vector.
 	 */
-	public Vector3D randomVector3f() {
-		// TODO
-		throw new UnsupportedOperationException();
-//		return new Vector3f(
-//				getRandom().nextDouble() * 1000 - 500,
-//				getRandom().nextDouble() * 1000 - 500,
-//				getRandom().nextDouble() * 1000 - 500);
+	public Vector3d randomVector3f() {
+	    return new Vector3d(
+                getRandom().nextDouble() * 1000 - 500,
+                getRandom().nextDouble() * 1000 - 500,
+                getRandom().nextDouble() * 1000 - 500);
 	}
 
 	/** Create a random matrix.
@@ -794,14 +785,39 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 					expected.toString(), actual.toString());
 		}
 	}
-
+	
 	/** Assume that the given tuple is mutable.
 	 * 
 	 * @param tuple
 	 */
 	public void assumeMutable(Tuple2D<?> tuple) {
+	    try {
+	        tuple.add(0, 0);
+	    } catch (UnsupportedOperationException exception) {
+	        throw new AssumptionViolatedException("Object is immutable");
+	    }
+	}
+	
+	/** Assume that the given tuple is mutable.
+	 * 
+	 * @param tuple
+	 */
+	public void assumeImmutable(Tuple2D<?> tuple) {
+	    try {
+	        tuple.add(0, 0);
+	    } catch (UnsupportedOperationException exception) {
+	        return;
+	    }
+	    throw new AssumptionViolatedException("Object is mutable");
+	}
+
+	/** Assume that the given tuple is mutable.
+	 * 
+	 * @param tuple
+	 */
+	public void assumeMutable(Tuple3D<?> tuple) {
 		try {
-			tuple.add(0, 0);
+			tuple.add(0, 0, 0);
 		} catch (UnsupportedOperationException exception) {
 			throw new AssumptionViolatedException("Object is immutable");
 		}
@@ -811,9 +827,9 @@ public abstract class AbstractMathTestCase extends AbstractTestCase {
 	 * 
 	 * @param tuple
 	 */
-	public void assumeImmutable(Tuple2D<?> tuple) {
+	public void assumeImmutable(Tuple3D<?> tuple) {
 		try {
-			tuple.add(0, 0);
+			tuple.add(0, 0, 0);
 		} catch (UnsupportedOperationException exception) {
 			return;
 		}

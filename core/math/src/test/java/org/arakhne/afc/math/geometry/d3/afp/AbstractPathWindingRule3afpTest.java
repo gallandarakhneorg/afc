@@ -57,22 +57,22 @@ public abstract class AbstractPathWindingRule3afpTest<P extends Point3D<? super 
 	public void setUp() throws Exception {
 		this.factory = createFactory();
 		this.shape = (Path3afp<?, ?, ?, P, V, B>) this.factory.createPath(PathWindingRuleTestRule.CURRENT_RULE);
-		this.shape.moveTo(1, -3);
-		this.shape.lineTo(4, -4);
-		this.shape.lineTo(6, -2);
-		this.shape.lineTo(7, 2);
-		this.shape.lineTo(5, 5);
-		this.shape.lineTo(4, 1);
-		this.shape.lineTo(5, 0);
-		this.shape.lineTo(12, -1);
-		this.shape.lineTo(13, -4);
-		this.shape.lineTo(10, -5);
-		this.shape.lineTo(4, -2);
-		this.shape.lineTo(1, 2);
-		this.shape.lineTo(3, 4);
-		this.shape.lineTo(9, 4);
-		this.shape.lineTo(9, -3);
-		this.shape.lineTo(4, -6);
+		this.shape.moveTo(1, -3, 0);
+		this.shape.lineTo(4, -4, 0);
+		this.shape.lineTo(6, -2, 0);
+		this.shape.lineTo(7, 2, 0);
+		this.shape.lineTo(5, 5, 0);
+		this.shape.lineTo(4, 1, 0);
+		this.shape.lineTo(5, 0, 0);
+		this.shape.lineTo(12, -1, 0);
+		this.shape.lineTo(13, -4, 0);
+		this.shape.lineTo(10, -5, 0);
+		this.shape.lineTo(4, -2, 0);
+		this.shape.lineTo(1, 2, 0);
+		this.shape.lineTo(3, 4, 0);
+		this.shape.lineTo(9, 4, 0);
+		this.shape.lineTo(9, -3, 0);
+		this.shape.lineTo(4, -6, 0);
 		this.shape.closePath();
 	}
 	
@@ -85,71 +85,71 @@ public abstract class AbstractPathWindingRule3afpTest<P extends Point3D<? super 
 	@Test
     public void containsPoint_outsideExternal_evenOdd() {
 		Assume.assumeTrue(this.shape.getWindingRule() == PathWindingRule.EVEN_ODD);
-		assertFalse(this.shape.contains(0, 0));
-		assertFalse(this.shape.contains(-4, 10));
-		assertFalse(this.shape.contains(2, -2));
-		assertFalse(this.shape.contains(10, 0));
-		assertFalse(this.shape.contains(8, -5));
+		assertFalse(this.shape.contains(0, 0, 0));
+		assertFalse(this.shape.contains(-4, 10, 0));
+		assertFalse(this.shape.contains(2, -2, 0));
+		assertFalse(this.shape.contains(10, 0, 0));
+		assertFalse(this.shape.contains(8, -5, 0));
     }
    
 	@Test
     public void containsPoint_outsideExternal_nonZero() {
 		Assume.assumeTrue(this.shape.getWindingRule() == PathWindingRule.NON_ZERO);
-		assertFalse(this.shape.contains(0, 0));
-		assertFalse(this.shape.contains(-4, 10));
-		assertFalse(this.shape.contains(2, -2));
-		assertFalse(this.shape.contains(10, 0));
-		assertFalse(this.shape.contains(8, -5));
+		assertFalse(this.shape.contains(0, 0, 0));
+		assertFalse(this.shape.contains(-4, 10, 0));
+		assertFalse(this.shape.contains(2, -2, 0));
+		assertFalse(this.shape.contains(10, 0, 0));
+		assertFalse(this.shape.contains(8, -5, 0));
     }
 
 	@Test
     public void containsPoint_outsideInternal_evenOdd() {
 		Assume.assumeTrue(this.shape.getWindingRule() == PathWindingRule.EVEN_ODD);
-		assertFalse(this.shape.contains(6, 2));
-		assertFalse(this.shape.contains(5, 2));
+		assertFalse(this.shape.contains(6, 2, 0));
+		assertFalse(this.shape.contains(5, 2, 0));
     }
 
 	@Test
     public void containsPoint_outsideInternal_nonZero() {
 		Assume.assumeTrue(this.shape.getWindingRule() == PathWindingRule.NON_ZERO);
-		assertFalse(this.shape.contains(6, 2));
-		assertFalse(this.shape.contains(5, 2));
+		assertFalse(this.shape.contains(6, 2, 0));
+		assertFalse(this.shape.contains(5, 2, 0));
     }
 
 	@Test
     public void containsPoint_inside_evenOdd() {
 		Assume.assumeTrue(this.shape.getWindingRule() == PathWindingRule.EVEN_ODD);
-		assertTrue(this.shape.contains(3, 2));
-		assertTrue(this.shape.contains(5, 4.1));
-		assertTrue(this.shape.contains(8, 3));
-		assertTrue(this.shape.contains(11, -3));
-		assertTrue(this.shape.contains(5, -4));
+		assertTrue(this.shape.contains(3, 2, 0));
+		assertTrue(this.shape.contains(5, 4.1, 0));
+		assertTrue(this.shape.contains(8, 3, 0));
+		assertTrue(this.shape.contains(11, -3, 0));
+		assertTrue(this.shape.contains(5, -4, 0));
     }
 
 	@Test
     public void containsPoint_inside_nonZero() {
 		Assume.assumeTrue(this.shape.getWindingRule() == PathWindingRule.NON_ZERO);
-		assertTrue(this.shape.contains(3, 2));
-		assertTrue(this.shape.contains(5, 4.1));
-		assertTrue(this.shape.contains(8, 3));
-		assertTrue(this.shape.contains(11, -3));
-		assertTrue(this.shape.contains(5, -4));
+		assertTrue(this.shape.contains(3, 2, 0));
+		assertTrue(this.shape.contains(5, 4.1, 0));
+		assertTrue(this.shape.contains(8, 3, 0));
+		assertTrue(this.shape.contains(11, -3, 0));
+		assertTrue(this.shape.contains(5, -4, 0));
     }
 
 	@Test
     public void containsPoint_insideWindingZone_evenOdd() {
 		Assume.assumeTrue(this.shape.getWindingRule() == PathWindingRule.EVEN_ODD);
-		assertFalse(this.shape.contains(7, -1));
-		assertFalse(this.shape.contains(8, -2));
-		assertFalse(this.shape.contains(6, -2.5));
+		assertFalse(this.shape.contains(7, -1, 0));
+		assertFalse(this.shape.contains(8, -2, 0));
+		assertFalse(this.shape.contains(6, -2.5, 0));
     }
 
 	@Test
     public void containsPoint_insideWindingZone_nonZero() {
 		Assume.assumeTrue(this.shape.getWindingRule() == PathWindingRule.NON_ZERO);
-		assertTrue(this.shape.contains(7, -1));
-		assertTrue(this.shape.contains(8, -2));
-		assertTrue(this.shape.contains(6, -2.5));
+		assertTrue(this.shape.contains(7, -1, 0));
+		assertTrue(this.shape.contains(8, -2, 0));
+		assertTrue(this.shape.contains(6, -2.5, 0));
     }
 
 }

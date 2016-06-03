@@ -37,7 +37,7 @@ public abstract class AbstractPrism3afpTest<T extends Prism3afp<?, T, ?, ?, ?, B
 
 	@Test
 	public void setDoubleDoubleDoubleDouble() {
-		this.shape.set(123.456, 456.789, 789.123, 159.753);
+		this.shape.set(123.456, 456.789, 0, 789.123, 159.753, 0);
 		assertEpsilonEquals(123.456, this.shape.getMinX());
 		assertEpsilonEquals(456.789, this.shape.getMinY());
 		assertEpsilonEquals(912.579, this.shape.getMaxX());
@@ -46,7 +46,7 @@ public abstract class AbstractPrism3afpTest<T extends Prism3afp<?, T, ?, ?, ?, B
 	
 	@Test
 	public void setPoint2DPoint2D() {
-		this.shape.set(createPoint(123.456, 456.789), createPoint(789.123, 159.753));
+		this.shape.set(createPoint(123.456, 456.789, 0), createPoint(789.123, 159.753, 0));
 		assertEpsilonEquals(123.456, this.shape.getMinX());
 		assertEpsilonEquals(159.753, this.shape.getMinY());
 		assertEpsilonEquals(789.123, this.shape.getMaxX());
@@ -73,7 +73,7 @@ public abstract class AbstractPrism3afpTest<T extends Prism3afp<?, T, ?, ?, ?, B
 	
 	@Test
 	public void setFromCornersDoubleDoubleDoubleDouble() {
-		this.shape.setFromCorners(123.456, 456.789, 789.123, 159.753);
+		this.shape.setFromCorners(123.456, 456.789, 0, 789.123, 159.753, 0);
 		assertEpsilonEquals(123.456, this.shape.getMinX());
 		assertEpsilonEquals(159.753, this.shape.getMinY());
 		assertEpsilonEquals(789.123, this.shape.getMaxX());
@@ -82,7 +82,7 @@ public abstract class AbstractPrism3afpTest<T extends Prism3afp<?, T, ?, ?, ?, B
 	
 	@Test
 	public void setFromCornersPoint2DPoint2D() {
-		this.shape.setFromCorners(createPoint(123.456, 456.789), createPoint(789.123, 159.753));
+		this.shape.setFromCorners(createPoint(123.456, 456.789, 0), createPoint(789.123, 159.753, 0));
 		assertEpsilonEquals(123.456, this.shape.getMinX());
 		assertEpsilonEquals(159.753, this.shape.getMinY());
 		assertEpsilonEquals(789.123, this.shape.getMaxX());
@@ -91,7 +91,7 @@ public abstract class AbstractPrism3afpTest<T extends Prism3afp<?, T, ?, ?, ?, B
 
 	@Test
 	public void setFromCenterDoubleDoubleDoubleDouble() {
-		this.shape.setFromCenter(123.456, 456.789, 789.123, 159.753);
+		this.shape.setFromCenter(123.456, 456.789, 0, 789.123, 159.753, 0);
 		assertEpsilonEquals(-542.211, this.shape.getMinX());
 		assertEpsilonEquals(159.753, this.shape.getMinY());
 		assertEpsilonEquals(789.123, this.shape.getMaxX());
@@ -100,7 +100,7 @@ public abstract class AbstractPrism3afpTest<T extends Prism3afp<?, T, ?, ?, ?, B
 	
 	@Test
 	public void setFromCenterPoint2DPoint2D() {
-		this.shape.setFromCenter(createPoint(123.456, 456.789), createPoint(789.123, 159.753));
+		this.shape.setFromCenter(createPoint(123.456, 456.789, 0), createPoint(789.123, 159.753, 0));
 		assertEpsilonEquals(-542.211, this.shape.getMinX());
 		assertEpsilonEquals(159.753, this.shape.getMinY());
 		assertEpsilonEquals(789.123, this.shape.getMaxX());
@@ -216,7 +216,7 @@ public abstract class AbstractPrism3afpTest<T extends Prism3afp<?, T, ?, ?, ?, B
 
 	@Override
 	public void translateDoubleDouble() {
-		this.shape.translate(123.456, 456.789);
+		this.shape.translate(123.456, 456.789, 0);
 		assertEpsilonEquals(128.456, this.shape.getMinX());
 		assertEpsilonEquals(464.789, this.shape.getMinY());
 		assertEpsilonEquals(133.456, this.shape.getMaxX());
@@ -225,7 +225,7 @@ public abstract class AbstractPrism3afpTest<T extends Prism3afp<?, T, ?, ?, ?, B
 
 	@Override
 	public void translateVector3D() {
-		this.shape.translate(createVector(123.456, 456.789));
+		this.shape.translate(createVector(123.456, 456.789, 0));
 		assertEpsilonEquals(128.456, this.shape.getMinX());
 		assertEpsilonEquals(464.789, this.shape.getMinY());
 		assertEpsilonEquals(133.456, this.shape.getMaxX());
@@ -244,7 +244,7 @@ public abstract class AbstractPrism3afpTest<T extends Prism3afp<?, T, ?, ?, ?, B
 
 	@Override
 	public void toBoundingBoxB() {
-		B box = createRectangle(0, 0, 0, 0);
+		B box = createRectangularPrism(0, 0, 0, 0, 0, 0);
 		this.shape.toBoundingBox(box);
 		assertEpsilonEquals(5, box.getMinX());
 		assertEpsilonEquals(8, box.getMinY());

@@ -41,12 +41,12 @@ public abstract class AbstractUnmodifiableTuple3DTest<T extends Tuple3D, TT exte
 
 	@Test(expected = UnsupportedOperationException.class)
 	public final void addIntInt() {
-		getT().add(6, 7);
+		getT().add(6, 7, 0);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
 	public final void addDoubleDouble() {
-		getT().add(6.5, 7.5);
+		getT().add(6.5, 7.5, 0);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
@@ -82,13 +82,13 @@ public abstract class AbstractUnmodifiableTuple3DTest<T extends Tuple3D, TT exte
 
 	@Test(expected = UnsupportedOperationException.class)
 	public final void scaleIntT() {
-		Tuple3D c = new Tuple3d(2, -1);
+		Tuple3D c = new Tuple3d(2, -1, 0);
 		getT().scale(4, c);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
 	public final void scaleDoubleT() {
-		Tuple3D c = new Tuple3d(2, -1);
+		Tuple3D c = new Tuple3d(2, -1, 0);
 		getT().scale(4.5, c);
 	}
 
@@ -104,28 +104,28 @@ public abstract class AbstractUnmodifiableTuple3DTest<T extends Tuple3D, TT exte
 
 	@Test(expected = UnsupportedOperationException.class)
 	public final void setTuple3D() {
-		Tuple3D c = new Tuple3d(-45, 78);
+		Tuple3D c = new Tuple3d(-45, 78, 0);
 		getT().set(c);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
 	public final void setIntInt() {
-		getT().set(-45, 78);
+		getT().set(-45, 78, 0);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
 	public final void setDoubleDouble() {
-		getT().set(-45.5, 78.5);
+		getT().set(-45.5, 78.5, 0);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
 	public final void setIntArray() {
-		getT().set(new int[]{-45, 78});
+		getT().set(new int[]{-45, 78, 0});
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
 	public final void setDoubleArray() {
-		getT().set(new double[]{-45.5, 78.5});
+		getT().set(new double[]{-45.5, 78.5, 0});
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
@@ -150,7 +150,7 @@ public abstract class AbstractUnmodifiableTuple3DTest<T extends Tuple3D, TT exte
 
 	@Test(expected = UnsupportedOperationException.class)
 	public final void subIntInt() {
-		getT().sub(45, 78);
+		getT().sub(45, 78, 0);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
@@ -165,7 +165,7 @@ public abstract class AbstractUnmodifiableTuple3DTest<T extends Tuple3D, TT exte
 
 	@Test(expected = UnsupportedOperationException.class)
 	public final void subDoubleDouble() {
-		getT().sub(45.5, 78.5);
+		getT().sub(45.5, 78.5, 0);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
@@ -181,13 +181,13 @@ public abstract class AbstractUnmodifiableTuple3DTest<T extends Tuple3D, TT exte
 	@Test(expected = UnsupportedOperationException.class)
 	public final void addDoubleDouble_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
-		getT().add(12.3, 4.56);
+		getT().add(12.3, 4.56, 0);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
 	public final void addDoubleDouble_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
-		getT().add(12.3, 4.56);
+		getT().add(12.3, 4.56, 0);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
@@ -217,13 +217,13 @@ public abstract class AbstractUnmodifiableTuple3DTest<T extends Tuple3D, TT exte
 	@Test(expected = UnsupportedOperationException.class)
 	public final void scaleDoubleT_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
-		getT().scale(12.3, createTuple(1,2));
+		getT().scale(12.3, createTuple(1,2, 0));
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
 	public final void scaleDoubleT_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
-		getT().scale(12.3, createTuple(1,2));
+		getT().scale(12.3, createTuple(1,2, 0));
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
@@ -241,25 +241,25 @@ public abstract class AbstractUnmodifiableTuple3DTest<T extends Tuple3D, TT exte
 	@Test(expected = UnsupportedOperationException.class)
 	public final void setDoubleDouble_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
-		getT().set(12.3, 4.56);
+		getT().set(12.3, 4.56, 0);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
 	public final void setDoubleDouble_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
-		getT().set(12.3, 4.56);
+		getT().set(12.3, 4.56, 0);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
 	public final void setDoubleArray_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
-		getT().set(new double[] {12.3, 4.56});
+		getT().set(new double[] {12.3, 4.56, 0});
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
 	public final void setDoubleArray_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
-		getT().set(new double[] {12.3, 4.56});
+		getT().set(new double[] {12.3, 4.56, 0});
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
@@ -289,13 +289,13 @@ public abstract class AbstractUnmodifiableTuple3DTest<T extends Tuple3D, TT exte
 	@Test(expected = UnsupportedOperationException.class)
 	public final void subDoubleDouble_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
-		getT().sub(12.3, 4.56);
+		getT().sub(12.3, 4.56, 0);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)
 	public final void subDoubleDouble_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
-		getT().sub(12.3, 4.56);
+		getT().sub(12.3, 4.56, 0);
 	}
 
 	@Test(expected = UnsupportedOperationException.class)

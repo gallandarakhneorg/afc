@@ -266,6 +266,13 @@ public class Transform3D extends Matrix4d {
         this.m22 = 1.0f - 2.0f * rotation.getX() * rotation.getX() - 2.0f * rotation.getY() * rotation.getY();
     }
 
+    /** Set this transform's rotation.
+     * @param angle the rotation angle.
+     */
+    public void setRotation(double angle) {
+        // TODO
+    }
+
     /**
      * Rotate the object.
 	 *
@@ -327,6 +334,13 @@ public class Transform3D extends Matrix4d {
         this.m32 = 0.0;
         this.m33 = 1.0;
 	}
+
+    /** Sets the value of this matrix to a rotation matrix, and no translation.
+     * @param angle the angle of the rotation
+     */
+    public void makeRotationMatrix(double angle) {
+        // TODO
+    }
 
     /**
      * Sets the value of this matrix to the given translation, without rotation.

@@ -31,8 +31,6 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Assume;
 import org.junit.Test;
 
-import org.arakhne.afc.math.geometry.coordinatesystem.CoordinateSystem3D;
-
 @SuppressWarnings("all")
 public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V>, V extends Vector3D<? super V, ? super P>,
 		TT extends Tuple3D>
@@ -45,46 +43,46 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	@Test
 	public final void staticIsCollinearPoints() {
 		assertTrue(Point3D.isCollinearPoints(0, 0, 0, 0, 0, 0, 0, 0, 0));
-		assertTrue(Point3D.isCollinearPoints(-6, -4, -1, 3, 4, 10));
-		assertFalse(Point3D.isCollinearPoints(0, 0, 1, 1, 1, -5));
+		assertTrue(Point3D.isCollinearPoints(-6, -4, 0, -1, 3, 0, 4, 10, 0));
+		assertFalse(Point3D.isCollinearPoints(0, 0, 0, 1, 1, 0, 1, -5, 0));
 	}
 
 	@Test
 	public final void staticGetDistancePointPoint() {
-		assertEpsilonEquals(0, Point3D.getDistancePointPoint(0, 0, 0, 0));
-		assertEpsilonEquals(Math.sqrt(5), Point3D.getDistancePointPoint(0, 0, 1, 2));
-		assertEpsilonEquals(Math.sqrt(2), Point3D.getDistancePointPoint(0, 0, 1, 1));
+		assertEpsilonEquals(0, Point3D.getDistancePointPoint(0, 0, 0, 0, 0, 0));
+		assertEpsilonEquals(Math.sqrt(5), Point3D.getDistancePointPoint(0, 0, 0, 1, 2, 0));
+		assertEpsilonEquals(Math.sqrt(2), Point3D.getDistancePointPoint(0, 0, 0, 1, 1, 0));
 	}
 
 	@Test
 	public final void staticGetDistanceSquaredPointPoint() {
-		assertEpsilonEquals(0, Point3D.getDistanceSquaredPointPoint(0, 0, 0, 0));
-		assertEpsilonEquals(5, Point3D.getDistanceSquaredPointPoint(0, 0, 1, 2));
-		assertEpsilonEquals(2, Point3D.getDistanceSquaredPointPoint(0, 0, 1, 1));
+		assertEpsilonEquals(0, Point3D.getDistanceSquaredPointPoint(0, 0, 0, 0, 0, 0));
+		assertEpsilonEquals(5, Point3D.getDistanceSquaredPointPoint(0, 0, 0, 1, 2, 0));
+		assertEpsilonEquals(2, Point3D.getDistanceSquaredPointPoint(0, 0, 0, 1, 1, 0));
 	}
 
 	@Test
 	public final void staticGetDistanceL1PointPoint() {
-		assertEpsilonEquals(4, Point3D.getDistanceL1PointPoint(1.0, 2.0, 3.0, 0));
-		assertEpsilonEquals(0, Point3D.getDistanceL1PointPoint(1.0, 2.0, 1 ,2));
-		assertEpsilonEquals(0, Point3D.getDistanceL1PointPoint(1, 2, 1.0, 2.0));
-		assertEpsilonEquals(4, Point3D.getDistanceL1PointPoint(1.0, 2.0, -1, 0));
+		assertEpsilonEquals(4, Point3D.getDistanceL1PointPoint(1.0, 2.0, 0, 3.0, 0, 0));
+		assertEpsilonEquals(0, Point3D.getDistanceL1PointPoint(1.0, 2.0, 0, 1 ,2, 0));
+		assertEpsilonEquals(0, Point3D.getDistanceL1PointPoint(1, 2, 0, 1.0, 2.0, 0));
+		assertEpsilonEquals(4, Point3D.getDistanceL1PointPoint(1.0, 2.0, 0, -1, 0, 0));
 	}
 
 	@Test
 	public final void staticGetDistanceLinfPointPoint() {
-		assertEpsilonEquals(2, Point3D.getDistanceLinfPointPoint(1.0,2.0,3.0,0));
-		assertEpsilonEquals(0, Point3D.getDistanceLinfPointPoint(1.0,2.0,1,2));
-		assertEpsilonEquals(0, Point3D.getDistanceLinfPointPoint(1,2,1.0,2.0));
-		assertEpsilonEquals(2, Point3D.getDistanceLinfPointPoint(1.0,2.0,-1,0));
+		assertEpsilonEquals(2, Point3D.getDistanceLinfPointPoint(1.0, 2.0, 0, 3.0, 0, 0));
+		assertEpsilonEquals(0, Point3D.getDistanceLinfPointPoint(1.0, 2.0, 0, 1, 2, 0));
+		assertEpsilonEquals(0, Point3D.getDistanceLinfPointPoint(1, 2, 1.0, 0, 2.0, 0));
+		assertEpsilonEquals(2, Point3D.getDistanceLinfPointPoint(1.0, 2.0, 0, -1, 0, 0));
 	}
 
 	@Test
 	public final void getDistanceSquaredPoint3D() {
-		Point3D point = createPoint(0, 0);
-		Point3D point2 = createPoint(0, 0);
-		Point3D point3 = createPoint(1, 2);
-		Point3D point4 = createPoint(1, 1);
+		Point3D point = createPoint(0, 0, 0);
+		Point3D point2 = createPoint(0, 0, 0);
+		Point3D point3 = createPoint(1, 2, 0);
+		Point3D point4 = createPoint(1, 1, 0);
 		assertEpsilonEquals(0, point.getDistanceSquared(point2));
 		assertEpsilonEquals(5, point.getDistanceSquared(point3));
 		assertEpsilonEquals(2, point.getDistanceSquared(point4));
@@ -92,10 +90,10 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 	
 	@Test
 	public final void getDistancePoint3D() {
-		Point3D point = createPoint(0, 0);
-		Point3D point2 = createPoint(0, 0);
-		Point3D point3 = createPoint(1, 2);
-		Point3D point4 = createPoint(1, 1);
+		Point3D point = createPoint(0, 0, 0);
+		Point3D point2 = createPoint(0, 0, 0);
+		Point3D point3 = createPoint(1, 2, 0);
+		Point3D point4 = createPoint(1, 1, 0);
 		assertEpsilonEquals(0, point.getDistance(point2));
 		assertEpsilonEquals(Math.sqrt(5), point.getDistance(point3));
 		assertEpsilonEquals(Math.sqrt(2), point.getDistance(point4));
@@ -103,10 +101,10 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 
 	@Test
 	public final void getDistanceL1Point3D() {
-		Point3D point = createPoint(1, 2);
-		Point3D point2 = createPoint(3, 0);
-		Point3D point3 = createPoint(1, 2);
-		Point3D point4 = createPoint(-1, 0);
+		Point3D point = createPoint(1, 2, 0);
+		Point3D point2 = createPoint(3, 0, 0);
+		Point3D point3 = createPoint(1, 2, 0);
+		Point3D point4 = createPoint(-1, 0, 0);
 		assertEpsilonEquals(4, point.getDistanceL1(point2));
 		assertEpsilonEquals(0, point.getDistanceL1(point));
 		assertEpsilonEquals(0, point.getDistanceL1(point3));
@@ -115,10 +113,10 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 
 	@Test
 	public final void getDistanceLinfPoint3D() {
-		Point3D point = createPoint(1, 2);
-		Point3D point2 = createPoint(3, 0);
-		Point3D point3 = createPoint(1, 2);
-		Point3D point4 = createPoint(-1, 0);
+		Point3D point = createPoint(1, 2, 0);
+		Point3D point2 = createPoint(3, 0, 0);
+		Point3D point3 = createPoint(1, 2, 0);
+		Point3D point4 = createPoint(-1, 0, 0);
 		assertEpsilonEquals(2, point.getDistanceLinf(point2));
 		assertEpsilonEquals(0, point.getDistanceLinf(point));
 		assertEpsilonEquals(0, point.getDistanceLinf(point3));
@@ -127,10 +125,10 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 
 	@Test
 	public final void getIdistanceL1Point3D() {
-		Point3D point = createPoint(1, 2);
-		Point3D point2 = createPoint(3, 0);
-		Point3D point3 = createPoint(1, 2);
-		Point3D point4 = createPoint(-1, 0);
+		Point3D point = createPoint(1, 2, 0);
+		Point3D point2 = createPoint(3, 0, 0);
+		Point3D point3 = createPoint(1, 2, 0);
+		Point3D point4 = createPoint(-1, 0, 0);
 		assertEquals(4, point.getIdistanceL1(point2));
 		assertEquals(0, point.getIdistanceL1(point));
 		assertEquals(0, point.getIdistanceL1(point3));
@@ -139,10 +137,10 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 
 	@Test
 	public final void getIdistanceLinfPoint3D() {
-		Point3D point = createPoint(1, 2);
-		Point3D point2 = createPoint(3, 0);
-		Point3D point3 = createPoint(1, 2);
-		Point3D point4 = createPoint(-1, 0);
+		Point3D point = createPoint(1, 2, 0);
+		Point3D point2 = createPoint(3, 0, 0);
+		Point3D point3 = createPoint(1, 2, 0);
+		Point3D point4 = createPoint(-1, 0, 0);
 		assertEquals(2, point.getIdistanceLinf(point2));
 		assertEquals(0, point.getIdistanceLinf(point));
 		assertEquals(0, point.getIdistanceLinf(point3));
@@ -151,15 +149,15 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 
 	@Test(expected = UnsupportedOperationException.class)
 	public final void toUnmodifiable_exception() {
-		Point3D origin = createPoint(2, 3);
+		Point3D origin = createPoint(2, 3, 0);
 		Point3D immutable = origin.toUnmodifiable();
 		assertEpsilonEquals(origin, immutable);
-		immutable.add(1, 2);
+		immutable.add(1, 2, 0);
 	}
 
 	@Test
 	public final void toUnmodifiable_changeInOrigin() {
-		Point3D origin = createPoint(2, 3);
+		Point3D origin = createPoint(2, 3, 0);
 		assumeMutable(origin);
 		Point3D immutable = origin.toUnmodifiable();
 		assertEpsilonEquals(origin, immutable);
@@ -168,7 +166,7 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 
 	@Test
 	public final void testClonePoint() {
-		Point3D origin = createPoint(23, 45);
+		Point3D origin = createPoint(23, 45, 0);
 		Tuple3D clone = origin.clone();
 		assertNotNull(clone);
 		assertNotSame(origin, clone);
@@ -178,128 +176,128 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 
 	@Test
 	public final void operator_plusVector3D() {
-		Point3D point = createPoint(1, 2);
-		Point3D point2 = createPoint(3, 0);
-		Vector3D vector1 = createVector(0, 0);
-		Vector3D vector2 = createVector(1, 2);
-		Vector3D vector3 = createVector(1, -5);
+		Point3D point = createPoint(1, 2, 0);
+		Point3D point2 = createPoint(3, 0, 0);
+		Vector3D vector1 = createVector(0, 0, 0);
+		Vector3D vector2 = createVector(1, 2, 0);
+		Vector3D vector3 = createVector(1, -5, 0);
 		Point3D r;
 		
 		r = point.operator_plus(vector1);
-		assertFpPointEquals(1, 2, r);
+		assertFpPointEquals(1, 2, 0, r);
 
 		r = point.operator_plus(vector2);
-		assertFpPointEquals(2, 4, r);
+		assertFpPointEquals(2, 4, 0, r);
 
 		r = point.operator_plus(vector3);
-		assertFpPointEquals(2, -3, r);
+		assertFpPointEquals(2, -3, 0, r);
 
 		r = point2.operator_plus(vector1);
-		assertFpPointEquals(3, 0, r);
+		assertFpPointEquals(3, 0, 0, r);
 
 		r = point2.operator_plus(vector2);
-		assertFpPointEquals(4, 2, r);
+		assertFpPointEquals(4, 2, 0, r);
 
 		r = point2.operator_plus(vector3);
-		assertFpPointEquals(4, -5, r);
+		assertFpPointEquals(4, -5, 0, r);
 	}
 
 	@Test
 	public final void operator_minusVector3D() {
-		Point3D point = createPoint(1, 2);
-		Point3D point2 = createPoint(3, 0);
-		Vector3D vector1 = createVector(0, 0);
-		Vector3D vector2 = createVector(1, 2);
-		Vector3D vector3 = createVector(1, -5);
+		Point3D point = createPoint(1, 2, 0);
+		Point3D point2 = createPoint(3, 0, 0);
+		Vector3D vector1 = createVector(0, 0, 0);
+		Vector3D vector2 = createVector(1, 2, 0);
+		Vector3D vector3 = createVector(1, -5, 0);
 		Point3D r;
 		
 		r = point.operator_minus(vector1);
-		assertFpPointEquals(1, 2, r);
+		assertFpPointEquals(1, 2, 0, r);
 
 		r = point.operator_minus(vector2);
-		assertFpPointEquals(0, 0, r);
+		assertFpPointEquals(0, 0, 0, r);
 
 		r = point.operator_minus(vector3);
-		assertFpPointEquals(0, 7, r);
+		assertFpPointEquals(0, 7, 0, r);
 
 		r = point2.operator_minus(vector1);
-		assertFpPointEquals(3, 0, r);
+		assertFpPointEquals(3, 0, 0, r);
 
 		r = point2.operator_minus(vector2);
-		assertFpPointEquals(2, -2, r);
+		assertFpPointEquals(2, -2, 0, r);
 
 		r = point2.operator_minus(vector3);
-		assertFpPointEquals(2, 5, r);
+		assertFpPointEquals(2, 5, 0, r);
 	}
 
 	@Test
 	public final void operator_minusPoint3D_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
-		Point3D point = createPoint(0, 0);
-		Point3D point2 = createPoint(1, 0);
-		Point3D vector = createPoint(-1.2, -1.2);
-		Point3D vector2 = createPoint(2.0, 1.5);
+		Point3D point = createPoint(0, 0, 0);
+		Point3D point2 = createPoint(1, 0, 0);
+		Point3D vector = createPoint(-1.2, -1.2, 0);
+		Point3D vector2 = createPoint(2.0, 1.5, 0);
 		Vector3D newVector;
 
 		newVector = point.operator_minus(vector);
-		assertFpVectorEquals(1.2, 1.2, newVector);
+		assertFpVectorEquals(1.2, 1.2, 0, newVector);
 
 		newVector = point2.operator_minus(vector2);
-		assertFpVectorEquals(-1.0, -1.5, newVector); 
+		assertFpVectorEquals(-1.0, -1.5, 0, newVector); 
 	}
 
 	@Test
 	public final void operator_minusPoint3D_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
-		Point3D point = createPoint(0, 0);
-		Point3D point2 = createPoint(1, 0);
-		Point3D vector = createPoint(-1.2, -1.2);
-		Point3D vector2 = createPoint(2.0, 1.5);
+		Point3D point = createPoint(0, 0, 0);
+		Point3D point2 = createPoint(1, 0, 0);
+		Point3D vector = createPoint(-1.2, -1.2, 0);
+		Point3D vector2 = createPoint(2.0, 1.5, 0);
 		Vector3D newVector;
 
 		newVector = point.operator_minus(vector);
-		assertFpVectorEquals(1, 1, newVector);
+		assertFpVectorEquals(1, 1, 0, newVector);
 
 		newVector = point2.operator_minus(vector2);
-		assertFpVectorEquals(-1, -2, newVector); 
+		assertFpVectorEquals(-1, -2, 0, newVector); 
 	}
 
 	@Test
 	public final void operator_equalsTuple3D() {
-		Point3D point = createPoint(49, -2);
+		Point3D point = createPoint(49, -2, 0);
 		assertFalse(point.operator_equals(null));
 		assertTrue(point.operator_equals(point));
-		assertFalse(point.operator_equals(createPoint(49, -3)));
-		assertFalse(point.operator_equals(createPoint(0, 0)));
-		assertTrue(point.operator_equals(createPoint(49, -2)));
+		assertFalse(point.operator_equals(createPoint(49, -3, 0)));
+		assertFalse(point.operator_equals(createPoint(0, 0, 0)));
+		assertTrue(point.operator_equals(createPoint(49, -2, 0)));
 	}
 
 	@Test
 	public final void operator_notEqualsTuple3D() {
-		Point3D point = createPoint(49, -2);
+		Point3D point = createPoint(49, -2, 0);
 		assertTrue(point.operator_notEquals(null));
 		assertFalse(point.operator_notEquals(point));
-		assertTrue(point.operator_notEquals(createPoint(49, -3)));
-		assertTrue(point.operator_notEquals(createPoint(0, 0)));
-		assertFalse(point.operator_notEquals(createPoint(49, -2)));
+		assertTrue(point.operator_notEquals(createPoint(49, -3, 0)));
+		assertTrue(point.operator_notEquals(createPoint(0, 0, 0)));
+		assertFalse(point.operator_notEquals(createPoint(49, -2, 0)));
 	}
 
 	@Test
 	public final void testEqualsObject() {
-		Point3D point = createPoint(49, -2);
+		Point3D point = createPoint(49, -2, 0);
 		assertFalse(point.equals((Object) null));
 		assertTrue(point.equals((Object) point));
-		assertFalse(point.equals((Object) createPoint(49, -3)));
-		assertFalse(point.equals((Object) createPoint(0, 0)));
-		assertTrue(point.equals((Object) createPoint(49, -2)));
+		assertFalse(point.equals((Object) createPoint(49, -3, 0)));
+		assertFalse(point.equals((Object) createPoint(0, 0, 0)));
+		assertTrue(point.equals((Object) createPoint(49, -2, 0)));
 	}
 
 	@Test
 	public final void operator_upToPoint3D() {
-		Point3D point = createPoint(0, 0);
-		Point3D point2 = createPoint(0, 0);
-		Point3D point3 = createPoint(1, 2);
-		Point3D point4 = createPoint(1, 1);
+		Point3D point = createPoint(0, 0, 0);
+		Point3D point2 = createPoint(0, 0, 0);
+		Point3D point3 = createPoint(1, 2, 0);
+		Point3D point4 = createPoint(1, 1, 0);
 		assertEpsilonEquals(0, point.operator_upTo(point2));
 		assertEpsilonEquals(Math.sqrt(5), point.operator_upTo(point3));
 		assertEpsilonEquals(Math.sqrt(2), point.operator_upTo(point4));
@@ -307,9 +305,9 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 
 	@Test
 	public final void operator_elvisPoint3D() {
-		Point3D orig1 = createPoint(45, -78);
-		Point3D orig2 = createPoint(0, 0);
-		Point3D param = createPoint(-5, -1.4);
+		Point3D orig1 = createPoint(45, -78, 0);
+		Point3D orig2 = createPoint(0, 0, 0);
+		Point3D param = createPoint(-5, -1.4, 0);
 		Point3D result;
 		
 		result = orig1.operator_elvis(null);
@@ -339,2305 +337,441 @@ public abstract class AbstractPoint3DTest<P extends Point3D<? super P, ? super V
 
 	@Test
 	public void addPoint3DVector3D() {
-		Point3D point = createPoint(1, 2);
-		Point3D point2 = createPoint(3, 0);
-		Vector3D vector1 = createVector(0, 0);
-		Vector3D vector2 = createVector(1, 2);
-		Vector3D vector3 = createVector(1, -5);
+		Point3D point = createPoint(1, 2, 0);
+		Point3D point2 = createPoint(3, 0, 0);
+		Vector3D vector1 = createVector(0, 0, 0);
+		Vector3D vector2 = createVector(1, 2, 0);
+		Vector3D vector3 = createVector(1, -5, 0);
 		
 		point.add(point, vector1);
-		assertFpPointEquals(1, 2, point);
+		assertFpPointEquals(1, 2, 0, point);
 
 		point.add(point, vector2);
-		assertFpPointEquals(2, 4, point);
+		assertFpPointEquals(2, 4, 0, point);
 
 		point.add(point, vector3);
-		assertFpPointEquals(3, -1, point);
+		assertFpPointEquals(3, -1, 0, point);
 
 		point.add(point2, vector1);
-		assertFpPointEquals(3, 0, point);
+		assertFpPointEquals(3, 0, 0, point);
 
 		point.add(point2, vector2);
-		assertFpPointEquals(4, 2, point);
+		assertFpPointEquals(4, 2, 0, point);
 
 		point.add(point2, vector3);
-		assertFpPointEquals(4, -5, point);
+		assertFpPointEquals(4, -5, 0, point);
 	}
 
 	@Test
 	public void addVector3DPoint3D() {
-		Point3D point = createPoint(1, 2);
-		Point3D point2 = createPoint(3, 0);
-		Vector3D vector1 = createVector(0, 0);
-		Vector3D vector2 = createVector(1, 2);
-		Vector3D vector3 = createVector(1, -5);
+		Point3D point = createPoint(1, 2, 0);
+		Point3D point2 = createPoint(3, 0, 0);
+		Vector3D vector1 = createVector(0, 0, 0);
+		Vector3D vector2 = createVector(1, 2, 0);
+		Vector3D vector3 = createVector(1, -5, 0);
 		
 		point.add(vector1, point);
-		assertFpPointEquals(1, 2, point);
+		assertFpPointEquals(1, 2, 0, point);
 
 		point.add(vector2, point);
-		assertFpPointEquals(2, 4, point);
+		assertFpPointEquals(2, 4, 0, point);
 
 		point.add(vector3, point);
-		assertFpPointEquals(3, -1, point);
+		assertFpPointEquals(3, -1, 0, point);
 
 		point.add(vector1, point2);
-		assertFpPointEquals(3, 0, point);
+		assertFpPointEquals(3, 0, 0, point);
 
 		point.add(vector2, point2);
-		assertFpPointEquals(4, 2, point);
+		assertFpPointEquals(4, 2, 0, point);
 
 		point.add(vector3, point2);
-		assertFpPointEquals(4, -5, point);
+		assertFpPointEquals(4, -5, 0, point);
 	}
 
 	@Test
 	public void addVector3D() {
-		Point3D point = createPoint(1, 2);
-		Point3D point2 = createPoint(3, 0);
-		Vector3D vector1 = createVector(0, 0);
-		Vector3D vector2 = createVector(1, 2);
-		Vector3D vector3 = createVector(1, -5);
+		Point3D point = createPoint(1, 2, 0);
+		Point3D point2 = createPoint(3, 0, 0);
+		Vector3D vector1 = createVector(0, 0, 0);
+		Vector3D vector2 = createVector(1, 2, 0);
+		Vector3D vector3 = createVector(1, -5, 0);
 		
 		point.add(vector1);
-		assertFpPointEquals(1, 2, point);
+		assertFpPointEquals(1, 2, 0, point);
 
 		point.add(vector2);
-		assertFpPointEquals(2, 4, point);
+		assertFpPointEquals(2, 4, 0, point);
 
 		point.add(vector3);
-		assertFpPointEquals(3, -1, point);
+		assertFpPointEquals(3, -1, 0, point);
 
 		point.add(vector1);
-		assertFpPointEquals(3, -1, point);
+		assertFpPointEquals(3, -1, 0, point);
 
 		point.add(vector2);
-		assertFpPointEquals(4, 1, point);
+		assertFpPointEquals(4, 1, 0, point);
 
 		point.add(vector3);
-		assertFpPointEquals(5, -4, point);
+		assertFpPointEquals(5, -4, 0, point);
 	}
 
 	@Test
 	public void scaleAddDoubleVector3DPoint3D_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
-		Point3D point = createPoint(1, 2);
-		Point3D point2 = createPoint(3, 0);
-		Vector3D vector1 = createVector(0, 0);
-		Vector3D vector2 = createVector(1, 2);
-		Vector3D vector3 = createVector(1, -5);
+		Point3D point = createPoint(1, 2, 0);
+		Point3D point2 = createPoint(3, 0, 0);
+		Vector3D vector1 = createVector(0, 0, 0);
+		Vector3D vector2 = createVector(1, 2, 0);
+		Vector3D vector3 = createVector(1, -5, 0);
 		
 		point.scaleAdd(2.5, vector1, point);
-		assertFpPointEquals(1, 2, point);
+		assertFpPointEquals(1, 2, 0, point);
 
 		point.scaleAdd(-2.5, vector2, point);
-		assertFpPointEquals(-1.5, -3, point);
+		assertFpPointEquals(-1.5, -3, 0, point);
 
 		point.scaleAdd(2.5, vector3, point);
-		assertFpPointEquals(1, -15.5, point);
+		assertFpPointEquals(1, -15.5, 0, point);
 
 		point.scaleAdd(-2.5, vector1, point2);
-		assertFpPointEquals(3, 0, point);
+		assertFpPointEquals(3, 0, 0, point);
 
 		point.scaleAdd(2.5, vector2, point2);
-		assertFpPointEquals(5.5, 5, point);
+		assertFpPointEquals(5.5, 5, 0, point);
 
 		point.scaleAdd(-2.5, vector3, point2);
-		assertFpPointEquals(0.5, 12.5, point);
+		assertFpPointEquals(0.5, 12.5, 0, point);
 	}
 
 	@Test
 	public void scaleAddDoubleVector3DPoint3D_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
-		Point3D point = createPoint(1, 2);
-		Point3D point2 = createPoint(3, 0);
-		Vector3D vector1 = createVector(0, 0);
-		Vector3D vector2 = createVector(1, 2);
-		Vector3D vector3 = createVector(1, -5);
+		Point3D point = createPoint(1, 2, 0);
+		Point3D point2 = createPoint(3, 0, 0);
+		Vector3D vector1 = createVector(0, 0, 0);
+		Vector3D vector2 = createVector(1, 2, 0);
+		Vector3D vector3 = createVector(1, -5, 0);
 		
 		point.scaleAdd(2.5, vector1, point);
-		assertIntPointEquals(1, 2, point);
+		assertIntPointEquals(1, 2, 0, point);
 
 		point.scaleAdd(-2.5, vector2, point);
-		assertIntPointEquals(-1, -3, point);
+		assertIntPointEquals(-1, -3, 0, point);
 
 		point.scaleAdd(2.5, vector3, point);
-		assertIntPointEquals(2, -15, point);
+		assertIntPointEquals(2, -15, 0, point);
 
 		point.scaleAdd(-2.5, vector1, point2);
-		assertIntPointEquals(3, 0, point);
+		assertIntPointEquals(3, 0, 0, point);
 
 		point.scaleAdd(2.5, vector2, point2);
-		assertIntPointEquals(6, 5, point);
+		assertIntPointEquals(6, 5, 0, point);
 
 		point.scaleAdd(-2.5, vector3, point2);
-		assertIntPointEquals(1, 13, point);
+		assertIntPointEquals(1, 13, 0, point);
 	}
 
 	@Test
 	public void scaleAddIntVector3DPoint3D() {
-		Point3D point = createPoint(1, 2);
-		Point3D point2 = createPoint(3, 0);
-		Vector3D vector1 = createVector(0, 0);
-		Vector3D vector2 = createVector(1, 2);
-		Vector3D vector3 = createVector(1, -5);
+		Point3D point = createPoint(1, 2, 0);
+		Point3D point2 = createPoint(3, 0, 0);
+		Vector3D vector1 = createVector(0, 0, 0);
+		Vector3D vector2 = createVector(1, 2, 0);
+		Vector3D vector3 = createVector(1, -5, 0);
 		
 		point.scaleAdd(2, vector1, point);
-		assertFpPointEquals(1, 2, point);
+		assertFpPointEquals(1, 2, 0, point);
 
 		point.scaleAdd(-2, vector2, point);
-		assertFpPointEquals(-1, -2, point);
+		assertFpPointEquals(-1, -2, 0, point);
 
 		point.scaleAdd(2, vector3, point);
-		assertFpPointEquals(1, -12, point);
+		assertFpPointEquals(1, -12, 0, point);
 
 		point.scaleAdd(-2, vector1, point2);
-		assertFpPointEquals(3, 0, point);
+		assertFpPointEquals(3, 0, 0, point);
 
 		point.scaleAdd(2, vector2, point2);
-		assertFpPointEquals(5, 4, point);
+		assertFpPointEquals(5, 4, 0, point);
 
 		point.scaleAdd(-2, vector3, point2);
-		assertFpPointEquals(1, 10, point);
+		assertFpPointEquals(1, 10, 0, point);
 	}
 
 	@Test
 	public void scaleAddIntPoint3DVector3D() {
-		Point3D point = createPoint(1, 2);
-		Point3D point2 = createPoint(3, 0);
-		Vector3D vector1 = createVector(0, 0);
-		Vector3D vector2 = createVector(1, 2);
-		Vector3D vector3 = createVector(1, -5);
+		Point3D point = createPoint(1, 2, 0);
+		Point3D point2 = createPoint(3, 0, 0);
+		Vector3D vector1 = createVector(0, 0, 0);
+		Vector3D vector2 = createVector(1, 2, 0);
+		Vector3D vector3 = createVector(1, -5, 0);
 		
 		point.scaleAdd(2, point, vector1);
-		assertFpPointEquals(2, 4, point);
+		assertFpPointEquals(2, 4, 0, point);
 
 		point.scaleAdd(-2, point, vector2);
-		assertFpPointEquals(-3, -6, point);
+		assertFpPointEquals(-3, -6, 0, point);
 
 		point.scaleAdd(2, point, vector3);
-		assertFpPointEquals(-5, -17, point);
+		assertFpPointEquals(-5, -17, 0, point);
 
 		point.scaleAdd(-2, point2, vector1);
-		assertFpPointEquals(-6, 0, point);
+		assertFpPointEquals(-6, 0, 0, point);
 
 		point.scaleAdd(2, point2, vector2);
-		assertFpPointEquals(7, 2, point);
+		assertFpPointEquals(7, 2, 0, point);
 
 		point.scaleAdd(-2, point2, vector3);
-		assertFpPointEquals(-5, -5, point);
+		assertFpPointEquals(-5, -5, 0, point);
 	}
 
 	@Test
 	public void scaleAddDoublePoint3DVector3D_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
-		Point3D point = createPoint(1, 2);
-		Point3D point2 = createPoint(3, 0);
-		Vector3D vector1 = createVector(0, 0);
-		Vector3D vector2 = createVector(1, 2);
-		Vector3D vector3 = createVector(1, -5);
+		Point3D point = createPoint(1, 2, 0);
+		Point3D point2 = createPoint(3, 0, 0);
+		Vector3D vector1 = createVector(0, 0, 0);
+		Vector3D vector2 = createVector(1, 2, 0);
+		Vector3D vector3 = createVector(1, -5, 0);
 		
 		point.scaleAdd(2.5, point, vector1);
-		assertFpPointEquals(2.5, 5, point);
+		assertFpPointEquals(2.5, 5, 0, point);
 
 		point.scaleAdd(-2.5, point, vector2);
-		assertFpPointEquals(-5.25, -10.5, point);
+		assertFpPointEquals(-5.25, -10.5, 0, point);
 
 		point.scaleAdd(2.5, point, vector3);
-		assertFpPointEquals(-12.125, -31.25, point);
+		assertFpPointEquals(-12.125, -31.25, 0, point);
 
 		point.scaleAdd(-2.5, point2, vector1);
-		assertFpPointEquals(-7.5, 0, point);
+		assertFpPointEquals(-7.5, 0, 0, point);
 
 		point.scaleAdd(2.5, point2, vector2);
-		assertFpPointEquals(8.5, 2, point);
+		assertFpPointEquals(8.5, 2, 0, point);
 
 		point.scaleAdd(-2.5, point2, vector3);
-		assertFpPointEquals(-6.5, -5, point);
+		assertFpPointEquals(-6.5, -5, 0, point);
 	}
 
 	@Test
 	public void scaleAddDoublePoint3DVector3D_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
-		Point3D point = createPoint(1, 2);
-		Point3D point2 = createPoint(3, 0);
-		Vector3D vector1 = createVector(0, 0);
-		Vector3D vector2 = createVector(1, 2);
-		Vector3D vector3 = createVector(1, -5);
+		Point3D point = createPoint(1, 2, 0);
+		Point3D point2 = createPoint(3, 0, 0);
+		Vector3D vector1 = createVector(0, 0, 0);
+		Vector3D vector2 = createVector(1, 2, 0);
+		Vector3D vector3 = createVector(1, -5, 0);
 		
 		point.scaleAdd(2.5, point, vector1);
-		assertIntPointEquals(3, 5, point);
+		assertIntPointEquals(3, 5, 0, point);
 
 		point.scaleAdd(-2.5, point, vector2);
-		assertIntPointEquals(-6, -10, point);
+		assertIntPointEquals(-6, -10, 0, point);
 
 		point.scaleAdd(2.5, point, vector3);
-		assertIntPointEquals(-14, -30, point);
+		assertIntPointEquals(-14, -30, 0, point);
 
 		point.scaleAdd(-2.5, point2, vector1);
-		assertIntPointEquals(-7, 0, point);
+		assertIntPointEquals(-7, 0, 0, point);
 
 		point.scaleAdd(2.5, point2, vector2);
-		assertIntPointEquals(9, 2, point);
+		assertIntPointEquals(9, 2, 0, point);
 
 		point.scaleAdd(-2.5, point2, vector3);
-		assertIntPointEquals(-6, -5, point);
+		assertIntPointEquals(-6, -5, 0, point);
 	}
 
 	@Test
 	public void scaleAddIntVector3D() {
-		Point3D point = createPoint(1, 2);
-		Point3D point2 = createPoint(3, 0);
-		Vector3D vector1 = createVector(0, 0);
-		Vector3D vector2 = createVector(1, 2);
-		Vector3D vector3 = createVector(1, -5);
+		Point3D point = createPoint(1, 2, 0);
+		Point3D point2 = createPoint(3, 0, 0);
+		Vector3D vector1 = createVector(0, 0, 0);
+		Vector3D vector2 = createVector(1, 2, 0);
+		Vector3D vector3 = createVector(1, -5, 0);
 		
 		point.scaleAdd(2, vector1);
-		assertFpPointEquals(2, 4, point);
+		assertFpPointEquals(2, 4, 0, point);
 
 		point.scaleAdd(-2, vector2);
-		assertFpPointEquals(-3, -6, point);
+		assertFpPointEquals(-3, -6, 0, point);
 
 		point.scaleAdd(2, vector3);
-		assertFpPointEquals(-5, -17, point);
+		assertFpPointEquals(-5, -17, 0, point);
 
 		point.scaleAdd(-2, vector1);
-		assertFpPointEquals(10, 34, point);
+		assertFpPointEquals(10, 34, 0, point);
 
 		point.scaleAdd(2, vector2);
-		assertFpPointEquals(21, 70, point);
+		assertFpPointEquals(21, 70, 0, point);
 
 		point.scaleAdd(-2, vector3);
-		assertFpPointEquals(-41, -145, point);
+		assertFpPointEquals(-41, -145, 0, point);
 	}
 
 	@Test
 	public void scaleAddDoubleVector3D_iffp() {
 		Assume.assumeFalse(isIntCoordinates());
-		Point3D point = createPoint(1, 2);
-		Point3D point2 = createPoint(3, 0);
-		Vector3D vector1 = createVector(0, 0);
-		Vector3D vector2 = createVector(1, 2);
-		Vector3D vector3 = createVector(1, -5);
+		Point3D point = createPoint(1, 2, 0);
+		Point3D point2 = createPoint(3, 0, 0);
+		Vector3D vector1 = createVector(0, 0, 0);
+		Vector3D vector2 = createVector(1, 2, 0);
+		Vector3D vector3 = createVector(1, -5, 0);
 		
 		point.scaleAdd(2.5, vector1);
-		assertFpPointEquals(2.5, 5, point);
+		assertFpPointEquals(2.5, 5, 0, point);
 
 		point.scaleAdd(-2.5, vector2);
-		assertFpPointEquals(-5.25, -10.5, point);
+		assertFpPointEquals(-5.25, -10.5, 0, point);
 
 		point.scaleAdd(2.5, vector3);
-		assertFpPointEquals(-12.125, -31.25, point);
+		assertFpPointEquals(-12.125, -31.25, 0, point);
 
 		point.scaleAdd(-2.5, vector1);
-		assertFpPointEquals(30.312, 78.125, point);
+		assertFpPointEquals(30.312, 78.125, 0, point);
 
 		point.scaleAdd(2.5, vector2);
-		assertFpPointEquals(76.781, 197.312, point);
+		assertFpPointEquals(76.781, 197.312, 0, point);
 
 		point.scaleAdd(-2.5, vector3);
-		assertFpPointEquals(-190.95, -498.28, point);
+		assertFpPointEquals(-190.95, -498.28, 0, point);
 	}
 
 	@Test
 	public void scaleAddDoubleVector3D_ifi() {
 		Assume.assumeTrue(isIntCoordinates());
-		Point3D point = createPoint(1, 2);
-		Point3D point2 = createPoint(3, 0);
-		Vector3D vector1 = createVector(0, 0);
-		Vector3D vector2 = createVector(1, 2);
-		Vector3D vector3 = createVector(1, -5);
+		Point3D point = createPoint(1, 2, 0);
+		Point3D point2 = createPoint(3, 0, 0);
+		Vector3D vector1 = createVector(0, 0, 0);
+		Vector3D vector2 = createVector(1, 2, 0);
+		Vector3D vector3 = createVector(1, -5, 0);
 		
 		point.scaleAdd(2.5, vector1);
-		assertIntPointEquals(3, 5, point);
+		assertIntPointEquals(3, 5, 0, point);
 
 		point.scaleAdd(-2.5, vector2);
-		assertIntPointEquals(-6, -10, point);
+		assertIntPointEquals(-6, -10, 0, point);
 
 		point.scaleAdd(2.5, vector3);
-		assertIntPointEquals(-14, -30, point);
+		assertIntPointEquals(-14, -30, 0, point);
 
 		point.scaleAdd(-2.5, vector1);
-		assertIntPointEquals(35, 75, point);
+		assertIntPointEquals(35, 75, 0, point);
 
 		point.scaleAdd(2.5, vector2);
-		assertIntPointEquals(89, 190, point);
+		assertIntPointEquals(89, 190, 0, point);
 
 		point.scaleAdd(-2.5, vector3);
-		assertIntPointEquals(-221, -480, point);
+		assertIntPointEquals(-221, -480, 0, point);
 	}
 
 	@Test
 	public void subPoint3DVector3D() {
-		Point3D point = createPoint(1, 2);
-		Point3D point2 = createPoint(3, 0);
-		Vector3D vector1 = createVector(0, 0);
-		Vector3D vector2 = createVector(1, 2);
-		Vector3D vector3 = createVector(1, -5);
+		Point3D point = createPoint(1, 2, 0);
+		Point3D point2 = createPoint(3, 0, 0);
+		Vector3D vector1 = createVector(0, 0, 0);
+		Vector3D vector2 = createVector(1, 2, 0);
+		Vector3D vector3 = createVector(1, -5, 0);
 		
 		point.sub(point, vector1);
-		assertFpPointEquals(1, 2, point);
+		assertFpPointEquals(1, 2, 0, point);
 
 		point.sub(point, vector2);
-		assertFpPointEquals(0, 0, point);
+		assertFpPointEquals(0, 0, 0, point);
 
 		point.sub(point, vector3);
-		assertFpPointEquals(-1, 5, point);
+		assertFpPointEquals(-1, 5, 0, point);
 
 		point.sub(point2, vector1);
-		assertFpPointEquals(3, 0, point);
+		assertFpPointEquals(3, 0, 0, point);
 
 		point.sub(point2, vector2);
-		assertFpPointEquals(2, -2, point);
+		assertFpPointEquals(2, -2, 0, point);
 
 		point.sub(point2, vector3);
-		assertFpPointEquals(2, 5, point);
+		assertFpPointEquals(2, 5, 0, point);
 	}
 
 	@Test
 	public void subVector3D() {
-		Point3D point = createPoint(1, 2);
-		Point3D point2 = createPoint(3, 0);
-		Vector3D vector1 = createVector(0, 0);
-		Vector3D vector2 = createVector(1, 2);
-		Vector3D vector3 = createVector(1, -5);
+		Point3D point = createPoint(1, 2, 0);
+		Point3D point2 = createPoint(3, 0, 0);
+		Vector3D vector1 = createVector(0, 0, 0);
+		Vector3D vector2 = createVector(1, 2, 0);
+		Vector3D vector3 = createVector(1, -5, 0);
 		
 		point.sub(vector1);
-		assertFpPointEquals(1, 2, point);
+		assertFpPointEquals(1, 2, 0, point);
 
 		point.sub(vector2);
-		assertFpPointEquals(0, 0, point);
+		assertFpPointEquals(0, 0, 0, point);
 
 		point.sub(vector3);
-		assertFpPointEquals(-1, 5, point);
+		assertFpPointEquals(-1, 5, 0, point);
 
 		point.sub(vector1);
-		assertFpPointEquals(-1, 5, point);
+		assertFpPointEquals(-1, 5, 0, point);
 
 		point.sub(vector2);
-		assertFpPointEquals(-2, 3, point);
+		assertFpPointEquals(-2, 3, 0, point);
 
 		point.sub(vector3);
-		assertFpPointEquals(-3, 8, point);
+		assertFpPointEquals(-3, 8, 0, point);
 	}
 
 	@Test
 	public void operator_addVector3D() {
-		Point3D point = createPoint(1, 2);
-		Point3D point2 = createPoint(3, 0);
-		Vector3D vector1 = createVector(0, 0);
-		Vector3D vector2 = createVector(1, 2);
-		Vector3D vector3 = createVector(1, -5);
+		Point3D point = createPoint(1, 2, 0);
+		Point3D point2 = createPoint(3, 0, 0);
+		Vector3D vector1 = createVector(0, 0, 0);
+		Vector3D vector2 = createVector(1, 2, 0);
+		Vector3D vector3 = createVector(1, -5, 0);
 		Point3D r;
 		
 		point.operator_add(vector1);
-		assertFpPointEquals(1, 2, point);
+		assertFpPointEquals(1, 2, 0, point);
 
 		point.operator_add(vector2);
-		assertFpPointEquals(2, 4, point);
+		assertFpPointEquals(2, 4, 0, point);
 
 		point.operator_add(vector3);
-		assertFpPointEquals(3, -1, point);
+		assertFpPointEquals(3, -1, 0, point);
 
 		point.operator_add(vector1);
-		assertFpPointEquals(3, -1, point);
+		assertFpPointEquals(3, -1, 0, point);
 
 		point.operator_add(vector2);
-		assertFpPointEquals(4, 1, point);
+		assertFpPointEquals(4, 1, 0, point);
 
 		point.operator_add(vector3);
-		assertFpPointEquals(5, -4, point);
+		assertFpPointEquals(5, -4, 0, point);
 	}
 
 	@Test
 	public void operator_removeVector3D() {
-		Point3D point = createPoint(1, 2);
-		Point3D point2 = createPoint(3, 0);
-		Vector3D vector1 = createVector(0, 0);
-		Vector3D vector2 = createVector(1, 2);
-		Vector3D vector3 = createVector(1, -5);
+		Point3D point = createPoint(1, 2, 0);
+		Point3D point2 = createPoint(3, 0, 0);
+		Vector3D vector1 = createVector(0, 0, 0);
+		Vector3D vector2 = createVector(1, 2, 0);
+		Vector3D vector3 = createVector(1, -5, 0);
 		
 		point.operator_remove(vector1);
-		assertFpPointEquals(1, 2, point);
+		assertFpPointEquals(1, 2, 0, point);
 
 		point.operator_remove(vector2);
-		assertFpPointEquals(0, 0, point);
+		assertFpPointEquals(0, 0, 0, point);
 
 		point.operator_remove(vector3);
-		assertFpPointEquals(-1, 5, point);
+		assertFpPointEquals(-1, 5, 0, point);
 
 		point.operator_remove(vector1);
-		assertFpPointEquals(-1, 5, point);
+		assertFpPointEquals(-1, 5, 0, point);
 
 		point.operator_remove(vector2);
-		assertFpPointEquals(-2, 3, point);
+		assertFpPointEquals(-2, 3, 0, point);
 
 		point.operator_remove(vector3);
-		assertFpPointEquals(-3, 8, point);
-	}
-
-	@Test
-	public void turnDouble_iffp() {
-		Assume.assumeFalse(isIntCoordinates());
-		
-		Point3D p;
-		
-		p = createPoint(1, 0);
-		p.turn(Math.PI/2);
-		assertFpPointEquals(0, 1, p);
-
-		p = createPoint(0, 1);
-		p.turn(Math.PI/2);
-		assertFpPointEquals(-1, 0, p);
-
-		p = createPoint(-1, 0);
-		p.turn(Math.PI/2);
-		assertFpPointEquals(0, -1, p);
-
-		p = createPoint(0, -1);
-		p.turn(Math.PI/2);
-		assertFpPointEquals(1, 0, p);
-
-		p = createPoint(1, 0);
-		p.turn(-Math.PI/2);
-		assertFpPointEquals(0, -1, p);
-
-		p = createPoint(0, -1);
-		p.turn(-Math.PI/2);
-		assertFpPointEquals(-1, 0, p);
-
-		p = createPoint(-1, 0);
-		p.turn(-Math.PI/2);
-		assertFpPointEquals(0, 1, p);
-
-		p = createPoint(0, 1);
-		p.turn(-Math.PI/2);
-		assertFpPointEquals(1, 0, p);
-
-		p = createPoint(12, 0);
-		p.turn(Math.PI/6);
-		assertFpPointEquals(10.392304, 6, p);
-
-		p = createPoint(12, 0);
-		p.turn(-Math.PI/6);
-		assertFpPointEquals(10.39230, -6, p);
-
-		p = createPoint(-4, 18);
-		p.turn(Math.PI/11);
-		assertFpPointEquals(-8.90916, 16.14394, p);
-
-		p = createPoint(-4, 18);
-		p.turn(-Math.PI/11);
-		assertFpPointEquals(1.23321, 18.39780, p);
-	}
-
-	@Test
-	public void turnDoublePoint3D_iffp() {
-		Assume.assumeFalse(isIntCoordinates());
-		
-		Point3D p = createPoint(0, 0);
-		
-		p.turn(Math.PI/2, createPoint(1, 0));
-		assertFpPointEquals(0, 1, p);
-
-		p.turn(Math.PI/2, createPoint(0, 1));
-		assertFpPointEquals(-1, 0, p);
-
-		p.turn(Math.PI/2, createPoint(-1, 0));
-		assertFpPointEquals(0, -1, p);
-
-		p.turn(Math.PI/2, createPoint(0, -1));
-		assertFpPointEquals(1, 0, p);
-
-		p.turn(-Math.PI/2, createPoint(1, 0));
-		assertFpPointEquals(0, -1, p);
-
-		p.turn(-Math.PI/2, createPoint(0, -1));
-		assertFpPointEquals(-1, 0, p);
-
-		p.turn(-Math.PI/2, createPoint(-1, 0));
-		assertFpPointEquals(0, 1, p);
-
-		p.turn(-Math.PI/2, createPoint(0, 1));
-		assertFpPointEquals(1, 0, p);
-
-		p.turn(Math.PI/6, createPoint(12, 0));
-		assertFpPointEquals(10.392304, 6, p);
-
-		p.turn(-Math.PI/6, createPoint(12, 0));
-		assertFpPointEquals(10.39230, -6, p);
-
-		p.turn(Math.PI/11, createPoint(-4, 18));
-		assertFpPointEquals(-8.90916, 16.14394, p);
-
-		p.turn(-Math.PI/11, createPoint(-4, 18));
-		assertFpPointEquals(1.23321, 18.39780, p);
-	}
-
-	@Test
-	public void turnDoublePoint3DPoint3D_origin_iffp() {
-		Assume.assumeFalse(isIntCoordinates());
-		
-		Point3D origin = createPoint(0, 0);
-		Point3D p = createPoint(0, 0);
-		
-		p.turn(Math.PI/2, createPoint(1, 0), origin);
-		assertFpPointEquals(0, 1, p);
-
-		p.turn(Math.PI/2, createPoint(0, 1), origin);
-		assertFpPointEquals(-1, 0, p);
-
-		p.turn(Math.PI/2, createPoint(-1, 0), origin);
-		assertFpPointEquals(0, -1, p);
-
-		p.turn(Math.PI/2, createPoint(0, -1), origin);
-		assertFpPointEquals(1, 0, p);
-
-		p.turn(-Math.PI/2, createPoint(1, 0), origin);
-		assertFpPointEquals(0, -1, p);
-
-		p.turn(-Math.PI/2, createPoint(0, -1), origin);
-		assertFpPointEquals(-1, 0, p);
-
-		p.turn(-Math.PI/2, createPoint(-1, 0), origin);
-		assertFpPointEquals(0, 1, p);
-
-		p.turn(-Math.PI/2, createPoint(0, 1), origin);
-		assertFpPointEquals(1, 0, p);
-
-		p.turn(Math.PI/6, createPoint(12, 0), origin);
-		assertFpPointEquals(10.392304, 6, p);
-
-		p.turn(-Math.PI/6, createPoint(12, 0), origin);
-		assertFpPointEquals(10.39230, -6, p);
-
-		p.turn(Math.PI/11, createPoint(-4, 18), origin);
-		assertFpPointEquals(-8.90916, 16.14394, p);
-
-		p.turn(-Math.PI/11, createPoint(-4, 18), origin);
-		assertFpPointEquals(1.23321, 18.39780, p);
-	}
-
-	@Test
-	public void turnDoublePoint3DPoint3D_aroundP_iffp() {
-		Assume.assumeFalse(isIntCoordinates());
-		
-		Point3D origin = createPoint(-45, 12);
-		Point3D p = createPoint(0, 0);
-		
-		p.turn(Math.PI/2, createPoint(1, 0), origin);
-		assertFpPointEquals(-33, 58, p);
-
-		p.turn(Math.PI/2, createPoint(0, 1), origin);
-		assertFpPointEquals(-34, 57, p);
-
-		p.turn(Math.PI/2, createPoint(-1, 0), origin);
-		assertFpPointEquals(-33, 56, p);
-
-		p.turn(Math.PI/2, createPoint(0, -1), origin);
-		assertFpPointEquals(-32, 57, p);
-
-		p.turn(-Math.PI/2, createPoint(1, 0), origin);
-		assertFpPointEquals(-57, -34, p);
-
-		p.turn(-Math.PI/2, createPoint(0, -1), origin);
-		assertFpPointEquals(-58, -33, p);
-
-		p.turn(-Math.PI/2, createPoint(-1, 0), origin);
-		assertFpPointEquals(-57, -32, p);
-
-		p.turn(-Math.PI/2, createPoint(0, 1), origin);
-		assertFpPointEquals(-56, -33, p);
-
-		p.turn(Math.PI/6, createPoint(12, 0), origin);
-		assertFpPointEquals(10.36345, 30.1077, p);
-
-		p.turn(-Math.PI/6, createPoint(12, 0), origin);
-		assertFpPointEquals(-1.63655, -26.89230, p);
-
-		p.turn(Math.PI/11, createPoint(-4, 18), origin);
-		assertFpPointEquals(-7.35118, 29.30799, p);
-
-		p.turn(-Math.PI/11, createPoint(-4, 18), origin);
-		assertFpPointEquals(-3.97039, 6.20592, p);
-	}
-
-	@Test
-	public void turnLeftDouble_iffp_leftHanded() {
-		Assume.assumeFalse(isIntCoordinates());		
-		Assume.assumeTrue(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());
-		Point3D p;
-		
-		p = createPoint(1, 0);
-		p.turnLeft(Math.PI/2);
-		assertFpPointEquals(0, -1, p);
-
-		p = createPoint(0, 1);
-		p.turnLeft(Math.PI/2);
-		assertFpPointEquals(1, 0, p);
-
-		p = createPoint(-1, 0);
-		p.turnLeft(Math.PI/2);
-		assertFpPointEquals(0, 1, p);
-
-		p = createPoint(0, -1);
-		p.turnLeft(Math.PI/2);
-		assertFpPointEquals(-1, 0, p);
-
-		p = createPoint(1, 0);
-		p.turnLeft(-Math.PI/2);
-		assertFpPointEquals(0, 1, p);
-
-		p = createPoint(0, -1);
-		p.turnLeft(-Math.PI/2);
-		assertFpPointEquals(1, 0, p);
-
-		p = createPoint(-1, 0);
-		p.turnLeft(-Math.PI/2);
-		assertFpPointEquals(0, -1, p);
-
-		p = createPoint(0, 1);
-		p.turnLeft(-Math.PI/2);
-		assertFpPointEquals(-1, 0, p);
-
-		p = createPoint(12, 0);
-		p.turnLeft(Math.PI/6);
-		assertFpPointEquals(10.392304, -6, p);
-
-		p = createPoint(12, 0);
-		p.turnLeft(-Math.PI/6);
-		assertFpPointEquals(10.39230, 6, p);
-
-		p = createPoint(-4, 18);
-		p.turnLeft(Math.PI/11);
-		assertFpPointEquals(1.23321, 18.39780, p);
-
-		p = createPoint(-4, 18);
-		p.turnLeft(-Math.PI/11);
-		assertFpPointEquals(-8.90916, 16.14394, p);
-	}
-
-	@Test
-	public void turnLeftDouble_iffp_rightHanded() {
-		Assume.assumeFalse(isIntCoordinates());		
-		Assume.assumeFalse(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
-		Point3D p;
-		
-		p = createPoint(1, 0);
-		p.turnLeft(Math.PI/2);
-		assertFpPointEquals(0, 1, p);
-
-		p = createPoint(0, 1);
-		p.turnLeft(Math.PI/2);
-		assertFpPointEquals(-1, 0, p);
-
-		p = createPoint(-1, 0);
-		p.turnLeft(Math.PI/2);
-		assertFpPointEquals(0, -1, p);
-
-		p = createPoint(0, -1);
-		p.turnLeft(Math.PI/2);
-		assertFpPointEquals(1, 0, p);
-
-		p = createPoint(1, 0);
-		p.turnLeft(-Math.PI/2);
-		assertFpPointEquals(0, -1, p);
-
-		p = createPoint(0, -1);
-		p.turnLeft(-Math.PI/2);
-		assertFpPointEquals(-1, 0, p);
-
-		p = createPoint(-1, 0);
-		p.turnLeft(-Math.PI/2);
-		assertFpPointEquals(0, 1, p);
-
-		p = createPoint(0, 1);
-		p.turnLeft(-Math.PI/2);
-		assertFpPointEquals(1, 0, p);
-
-		p = createPoint(12, 0);
-		p.turnLeft(Math.PI/6);
-		assertFpPointEquals(10.392304, 6, p);
-
-		p = createPoint(12, 0);
-		p.turnLeft(-Math.PI/6);
-		assertFpPointEquals(10.39230, -6, p);
-
-		p = createPoint(-4, 18);
-		p.turnLeft(Math.PI/11);
-		assertFpPointEquals(-8.90916, 16.14394, p);
-
-		p = createPoint(-4, 18);
-		p.turnLeft(-Math.PI/11);
-		assertFpPointEquals(1.23321, 18.39780, p);
-	}
-
-	@Test
-	public void turnLeftDoublePoint3D_iffp_leftHanded() {
-		Assume.assumeFalse(isIntCoordinates());		
-		Assume.assumeTrue(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
-		Point3D p = createPoint(0, 0);
-		
-		p.turnLeft(Math.PI/2, createPoint(1, 0));
-		assertFpPointEquals(0, -1, p);
-
-		p.turnLeft(Math.PI/2, createPoint(0, 1));
-		assertFpPointEquals(1, 0, p);
-
-		p.turnLeft(Math.PI/2, createPoint(-1, 0));
-		assertFpPointEquals(0, 1, p);
-
-		p.turnLeft(Math.PI/2, createPoint(0, -1));
-		assertFpPointEquals(-1, 0, p);
-
-		p.turnLeft(-Math.PI/2, createPoint(1, 0));
-		assertFpPointEquals(0, 1, p);
-
-		p.turnLeft(-Math.PI/2, createPoint(0, -1));
-		assertFpPointEquals(1, 0, p);
-
-		p.turnLeft(-Math.PI/2, createPoint(-1, 0));
-		assertFpPointEquals(0, -1, p);
-
-		p.turnLeft(-Math.PI/2, createPoint(0, 1));
-		assertFpPointEquals(-1, 0, p);
-
-		p.turnLeft(Math.PI/6, createPoint(12, 0));
-		assertFpPointEquals(10.392304, -6, p);
-
-		p.turnLeft(-Math.PI/6, createPoint(12, 0));
-		assertFpPointEquals(10.39230, 6, p);
-
-		p.turnLeft(Math.PI/11, createPoint(-4, 18));
-		assertFpPointEquals(1.23321, 18.39780, p);
-
-		p.turnLeft(-Math.PI/11, createPoint(-4, 18));
-		assertFpPointEquals(-8.90916, 16.14394, p);
-	}
-
-	@Test
-	public void turnLeftDoublePoint3D_iffp_rightHanded() {
-		Assume.assumeFalse(isIntCoordinates());		
-		Assume.assumeFalse(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
-		Point3D p = createPoint(0, 0);
-		
-		p.turnLeft(Math.PI/2, createPoint(1, 0));
-		assertFpPointEquals(0, 1, p);
-
-		p.turnLeft(Math.PI/2, createPoint(0, 1));
-		assertFpPointEquals(-1, 0, p);
-
-		p.turnLeft(Math.PI/2, createPoint(-1, 0));
-		assertFpPointEquals(0, -1, p);
-
-		p.turnLeft(Math.PI/2, createPoint(0, -1));
-		assertFpPointEquals(1, 0, p);
-
-		p.turnLeft(-Math.PI/2, createPoint(1, 0));
-		assertFpPointEquals(0, -1, p);
-
-		p.turnLeft(-Math.PI/2, createPoint(0, -1));
-		assertFpPointEquals(-1, 0, p);
-
-		p.turnLeft(-Math.PI/2, createPoint(-1, 0));
-		assertFpPointEquals(0, 1, p);
-
-		p.turnLeft(-Math.PI/2, createPoint(0, 1));
-		assertFpPointEquals(1, 0, p);
-
-		p.turnLeft(Math.PI/6, createPoint(12, 0));
-		assertFpPointEquals(10.392304, 6, p);
-
-		p.turnLeft(-Math.PI/6, createPoint(12, 0));
-		assertFpPointEquals(10.39230, -6, p);
-
-		p.turnLeft(Math.PI/11, createPoint(-4, 18));
-		assertFpPointEquals(-8.90916, 16.14394, p);
-
-		p.turnLeft(-Math.PI/11, createPoint(-4, 18));
-		assertFpPointEquals(1.23321, 18.39780, p);
-	}
-
-	@Test
-	public void turnLeftDoublePoint3DPoint3D_origin_iffp_leftHanded() {
-		Assume.assumeFalse(isIntCoordinates());		
-		Assume.assumeTrue(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
-		Point3D origin = createPoint(0, 0);
-		Point3D p = createPoint(0, 0);
-		
-		p.turnLeft(Math.PI/2, createPoint(1, 0), origin);
-		assertFpPointEquals(0, -1, p);
-
-		p.turnLeft(Math.PI/2, createPoint(0, 1), origin);
-		assertFpPointEquals(1, 0, p);
-
-		p.turnLeft(Math.PI/2, createPoint(-1, 0), origin);
-		assertFpPointEquals(0, 1, p);
-
-		p.turnLeft(Math.PI/2, createPoint(0, -1), origin);
-		assertFpPointEquals(-1, 0, p);
-
-		p.turnLeft(-Math.PI/2, createPoint(1, 0), origin);
-		assertFpPointEquals(0, 1, p);
-
-		p.turnLeft(-Math.PI/2, createPoint(0, -1), origin);
-		assertFpPointEquals(1, 0, p);
-
-		p.turnLeft(-Math.PI/2, createPoint(-1, 0), origin);
-		assertFpPointEquals(0, -1, p);
-
-		p.turnLeft(-Math.PI/2, createPoint(0, 1), origin);
-		assertFpPointEquals(-1, 0, p);
-
-		p.turnLeft(Math.PI/6, createPoint(12, 0), origin);
-		assertFpPointEquals(10.392304, -6, p);
-
-		p.turnLeft(-Math.PI/6, createPoint(12, 0), origin);
-		assertFpPointEquals(10.39230, 6, p);
-
-		p.turnLeft(Math.PI/11, createPoint(-4, 18), origin);
-		assertFpPointEquals(1.23321, 18.39780, p);
-
-		p.turnLeft(-Math.PI/11, createPoint(-4, 18), origin);
-		assertFpPointEquals(-8.90916, 16.14394, p);
-	}
-
-	@Test
-	public void turnLeftDoublePoint3DPoint3D_origin_iffp_rightHanded() {
-		Assume.assumeFalse(isIntCoordinates());		
-		Assume.assumeFalse(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
-		Point3D origin = createPoint(0, 0);
-		Point3D p = createPoint(0, 0);
-		
-		p.turnLeft(Math.PI/2, createPoint(1, 0), origin);
-		assertFpPointEquals(0, 1, p);
-
-		p.turnLeft(Math.PI/2, createPoint(0, 1), origin);
-		assertFpPointEquals(-1, 0, p);
-
-		p.turnLeft(Math.PI/2, createPoint(-1, 0), origin);
-		assertFpPointEquals(0, -1, p);
-
-		p.turnLeft(Math.PI/2, createPoint(0, -1), origin);
-		assertFpPointEquals(1, 0, p);
-
-		p.turnLeft(-Math.PI/2, createPoint(1, 0), origin);
-		assertFpPointEquals(0, -1, p);
-
-		p.turnLeft(-Math.PI/2, createPoint(0, -1), origin);
-		assertFpPointEquals(-1, 0, p);
-
-		p.turnLeft(-Math.PI/2, createPoint(-1, 0), origin);
-		assertFpPointEquals(0, 1, p);
-
-		p.turnLeft(-Math.PI/2, createPoint(0, 1), origin);
-		assertFpPointEquals(1, 0, p);
-
-		p.turnLeft(Math.PI/6, createPoint(12, 0), origin);
-		assertFpPointEquals(10.392304, 6, p);
-
-		p.turnLeft(-Math.PI/6, createPoint(12, 0), origin);
-		assertFpPointEquals(10.39230, -6, p);
-
-		p.turnLeft(Math.PI/11, createPoint(-4, 18), origin);
-		assertFpPointEquals(-8.90916, 16.14394, p);
-
-		p.turnLeft(-Math.PI/11, createPoint(-4, 18), origin);
-		assertFpPointEquals(1.23321, 18.39780, p);
-	}
-
-	@Test
-	public void turnLeftDoublePoint3DPoint3D_aroundP_iffp_leftHanded() {
-		Assume.assumeFalse(isIntCoordinates());		
-		Assume.assumeTrue(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
-		Point3D origin = createPoint(-45, 12);
-		Point3D p = createPoint(0, 0);
-		
-		p.turnLeft(Math.PI/2, createPoint(1, 0), origin);
-		assertFpPointEquals(-57, -34, p);
-
-		p.turnLeft(Math.PI/2, createPoint(0, 1), origin);
-		assertFpPointEquals(-56, -33, p);
-
-		p.turnLeft(Math.PI/2, createPoint(-1, 0), origin);
-		assertFpPointEquals(-57, -32, p);
-
-		p.turnLeft(Math.PI/2, createPoint(0, -1), origin);
-		assertFpPointEquals(-58, -33, p);
-
-		p.turnLeft(-Math.PI/2, createPoint(1, 0), origin);
-		assertFpPointEquals(-33, 58, p);
-
-		p.turnLeft(-Math.PI/2, createPoint(0, -1), origin);
-		assertFpPointEquals(-32, 57, p);
-
-		p.turnLeft(-Math.PI/2, createPoint(-1, 0), origin);
-		assertFpPointEquals(-33, 56, p);
-
-		p.turnLeft(-Math.PI/2, createPoint(0, 1), origin);
-		assertFpPointEquals(-34, 57, p);
-
-		p.turnLeft(Math.PI/6, createPoint(12, 0), origin);
-		assertFpPointEquals(-1.63655, -26.89230, p);
-
-		p.turnLeft(-Math.PI/6, createPoint(12, 0), origin);
-		assertFpPointEquals(10.36345, 30.1077, p);
-
-		p.turnLeft(Math.PI/11, createPoint(-4, 18), origin);
-		assertFpPointEquals(-3.97039, 6.20592, p);
-
-		p.turnLeft(-Math.PI/11, createPoint(-4, 18), origin);
-		assertFpPointEquals(-7.35118, 29.30799, p);
-	}
-
-	@Test
-	public void turnLeftDoublePoint3DPoint3D_aroundP_iffp_rightHanded() {
-		Assume.assumeFalse(isIntCoordinates());		
-		Assume.assumeFalse(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
-		Point3D origin = createPoint(-45, 12);
-		Point3D p = createPoint(0, 0);
-		
-		p.turnLeft(Math.PI/2, createPoint(1, 0), origin);
-		assertFpPointEquals(-33, 58, p);
-
-		p.turnLeft(Math.PI/2, createPoint(0, 1), origin);
-		assertFpPointEquals(-34, 57, p);
-
-		p.turnLeft(Math.PI/2, createPoint(-1, 0), origin);
-		assertFpPointEquals(-33, 56, p);
-
-		p.turnLeft(Math.PI/2, createPoint(0, -1), origin);
-		assertFpPointEquals(-32, 57, p);
-
-		p.turnLeft(-Math.PI/2, createPoint(1, 0), origin);
-		assertFpPointEquals(-57, -34, p);
-
-		p.turnLeft(-Math.PI/2, createPoint(0, -1), origin);
-		assertFpPointEquals(-58, -33, p);
-
-		p.turnLeft(-Math.PI/2, createPoint(-1, 0), origin);
-		assertFpPointEquals(-57, -32, p);
-
-		p.turnLeft(-Math.PI/2, createPoint(0, 1), origin);
-		assertFpPointEquals(-56, -33, p);
-
-		p.turnLeft(Math.PI/6, createPoint(12, 0), origin);
-		assertFpPointEquals(10.36345, 30.1077, p);
-
-		p.turnLeft(-Math.PI/6, createPoint(12, 0), origin);
-		assertFpPointEquals(-1.63655, -26.89230, p);
-
-		p.turnLeft(Math.PI/11, createPoint(-4, 18), origin);
-		assertFpPointEquals(-7.35118, 29.30799, p);
-
-		p.turnLeft(-Math.PI/11, createPoint(-4, 18), origin);
-		assertFpPointEquals(-3.97039, 6.20592, p);
-	}
-
-	@Test
-	public void turnRightDouble_iffp_leftHanded() {
-		Assume.assumeFalse(isIntCoordinates());		
-		Assume.assumeTrue(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());
-		Point3D p;
-		
-		p = createPoint(1, 0);
-		p.turnRight(Math.PI/2);
-		assertFpPointEquals(0, 1, p);
-
-		p = createPoint(0, 1);
-		p.turnRight(Math.PI/2);
-		assertFpPointEquals(-1, 0, p);
-
-		p = createPoint(-1, 0);
-		p.turnRight(Math.PI/2);
-		assertFpPointEquals(0, -1, p);
-
-		p = createPoint(0, -1);
-		p.turnRight(Math.PI/2);
-		assertFpPointEquals(1, 0, p);
-
-		p = createPoint(1, 0);
-		p.turnRight(-Math.PI/2);
-		assertFpPointEquals(0, -1, p);
-
-		p = createPoint(0, -1);
-		p.turnRight(-Math.PI/2);
-		assertFpPointEquals(-1, 0, p);
-
-		p = createPoint(-1, 0);
-		p.turnRight(-Math.PI/2);
-		assertFpPointEquals(0, 1, p);
-
-		p = createPoint(0, 1);
-		p.turnRight(-Math.PI/2);
-		assertFpPointEquals(1, 0, p);
-
-		p = createPoint(12, 0);
-		p.turnRight(Math.PI/6);
-		assertFpPointEquals(10.39230, 6, p);
-
-		p = createPoint(12, 0);
-		p.turnRight(-Math.PI/6);
-		assertFpPointEquals(10.392304, -6, p);
-
-		p = createPoint(-4, 18);
-		p.turnRight(Math.PI/11);
-		assertFpPointEquals(-8.90916, 16.14394, p);
-
-		p = createPoint(-4, 18);
-		p.turnRight(-Math.PI/11);
-		assertFpPointEquals(1.23321, 18.39780, p);
-	}
-
-	@Test
-	public void turnRightDouble_iffp_rightHanded() {
-		Assume.assumeFalse(isIntCoordinates());		
-		Assume.assumeFalse(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
-		Point3D p;
-		
-		p = createPoint(1, 0);
-		p.turnRight(Math.PI/2);
-		assertFpPointEquals(0, -1, p);
-
-		p = createPoint(0, 1);
-		p.turnRight(Math.PI/2);
-		assertFpPointEquals(1, 0, p);
-
-		p = createPoint(-1, 0);
-		p.turnRight(Math.PI/2);
-		assertFpPointEquals(0, 1, p);
-
-		p = createPoint(0, -1);
-		p.turnRight(Math.PI/2);
-		assertFpPointEquals(-1, 0, p);
-
-		p = createPoint(1, 0);
-		p.turnRight(-Math.PI/2);
-		assertFpPointEquals(0, 1, p);
-
-		p = createPoint(0, -1);
-		p.turnRight(-Math.PI/2);
-		assertFpPointEquals(1, 0, p);
-
-		p = createPoint(-1, 0);
-		p.turnRight(-Math.PI/2);
-		assertFpPointEquals(0, -1, p);
-
-		p = createPoint(0, 1);
-		p.turnRight(-Math.PI/2);
-		assertFpPointEquals(-1, 0, p);
-
-		p = createPoint(12, 0);
-		p.turnRight(Math.PI/6);
-		assertFpPointEquals(10.39230, -6, p);
-
-		p = createPoint(12, 0);
-		p.turnRight(-Math.PI/6);
-		assertFpPointEquals(10.392304, 6, p);
-
-		p = createPoint(-4, 18);
-		p.turnRight(Math.PI/11);
-		assertFpPointEquals(1.23321, 18.39780, p);
-
-		p = createPoint(-4, 18);
-		p.turnRight(-Math.PI/11);
-		assertFpPointEquals(-8.90916, 16.14394, p);
-	}
-
-	@Test
-	public void turnRightDoublePoint3D_iffp_leftHanded() {
-		Assume.assumeFalse(isIntCoordinates());		
-		Assume.assumeTrue(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
-		Point3D p = createPoint(0, 0);
-		
-		p.turnRight(Math.PI/2, createPoint(1, 0));
-		assertFpPointEquals(0, 1, p);
-
-		p.turnRight(Math.PI/2, createPoint(0, 1));
-		assertFpPointEquals(-1, 0, p);
-
-		p.turnRight(Math.PI/2, createPoint(-1, 0));
-		assertFpPointEquals(0, -1, p);
-
-		p.turnRight(Math.PI/2, createPoint(0, -1));
-		assertFpPointEquals(1, 0, p);
-
-		p.turnRight(-Math.PI/2, createPoint(1, 0));
-		assertFpPointEquals(0, -1, p);
-
-		p.turnRight(-Math.PI/2, createPoint(0, -1));
-		assertFpPointEquals(-1, 0, p);
-
-		p.turnRight(-Math.PI/2, createPoint(-1, 0));
-		assertFpPointEquals(0, 1, p);
-
-		p.turnRight(-Math.PI/2, createPoint(0, 1));
-		assertFpPointEquals(1, 0, p);
-
-		p.turnRight(Math.PI/6, createPoint(12, 0));
-		assertFpPointEquals(10.392304, 6, p);
-
-		p.turnRight(-Math.PI/6, createPoint(12, 0));
-		assertFpPointEquals(10.39230, -6, p);
-
-		p.turnRight(Math.PI/11, createPoint(-4, 18));
-		assertFpPointEquals(-8.90916, 16.14394, p);
-
-		p.turnRight(-Math.PI/11, createPoint(-4, 18));
-		assertFpPointEquals(1.23321, 18.39780, p);
-	}
-
-	@Test
-	public void turnRightDoublePoint3D_iffp_rightHanded() {
-		Assume.assumeFalse(isIntCoordinates());		
-		Assume.assumeFalse(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
-		Assume.assumeFalse(isIntCoordinates());		
-		Assume.assumeTrue(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
-		Point3D p = createPoint(0, 0);
-		
-		p.turnRight(Math.PI/2, createPoint(1, 0));
-		assertFpPointEquals(0, -1, p);
-
-		p.turnRight(Math.PI/2, createPoint(0, 1));
-		assertFpPointEquals(1, 0, p);
-
-		p.turnRight(Math.PI/2, createPoint(-1, 0));
-		assertFpPointEquals(0, 1, p);
-
-		p.turnRight(Math.PI/2, createPoint(0, -1));
-		assertFpPointEquals(-1, 0, p);
-
-		p.turnRight(-Math.PI/2, createPoint(1, 0));
-		assertFpPointEquals(0, 1, p);
-
-		p.turnRight(-Math.PI/2, createPoint(0, -1));
-		assertFpPointEquals(1, 0, p);
-
-		p.turnRight(-Math.PI/2, createPoint(-1, 0));
-		assertFpPointEquals(0, -1, p);
-
-		p.turnRight(-Math.PI/2, createPoint(0, 1));
-		assertFpPointEquals(-1, 0, p);
-
-		p.turnRight(Math.PI/6, createPoint(12, 0));
-		assertFpPointEquals(10.392304, -6, p);
-
-		p.turnRight(-Math.PI/6, createPoint(12, 0));
-		assertFpPointEquals(10.39230, 6, p);
-
-		p.turnRight(Math.PI/11, createPoint(-4, 18));
-		assertFpPointEquals(1.23321, 18.39780, p);
-
-		p.turnRight(-Math.PI/11, createPoint(-4, 18));
-		assertFpPointEquals(-8.90916, 16.14394, p);
-	}
-
-	@Test
-	public void turnRightDoublePoint3DPoint3D_origin_iffp_leftHanded() {
-		Assume.assumeFalse(isIntCoordinates());		
-		Assume.assumeTrue(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
-		Point3D origin = createPoint(0, 0);
-		Point3D p = createPoint(0, 0);
-		
-		p.turnRight(Math.PI/2, createPoint(1, 0), origin);
-		assertFpPointEquals(0, 1, p);
-
-		p.turnRight(Math.PI/2, createPoint(0, 1), origin);
-		assertFpPointEquals(-1, 0, p);
-
-		p.turnRight(Math.PI/2, createPoint(-1, 0), origin);
-		assertFpPointEquals(0, -1, p);
-
-		p.turnRight(Math.PI/2, createPoint(0, -1), origin);
-		assertFpPointEquals(1, 0, p);
-
-		p.turnRight(-Math.PI/2, createPoint(1, 0), origin);
-		assertFpPointEquals(0, -1, p);
-
-		p.turnRight(-Math.PI/2, createPoint(0, -1), origin);
-		assertFpPointEquals(-1, 0, p);
-
-		p.turnRight(-Math.PI/2, createPoint(-1, 0), origin);
-		assertFpPointEquals(0, 1, p);
-
-		p.turnRight(-Math.PI/2, createPoint(0, 1), origin);
-		assertFpPointEquals(1, 0, p);
-
-		p.turnRight(Math.PI/6, createPoint(12, 0), origin);
-		assertFpPointEquals(10.39230, 6, p);
-
-		p.turnRight(-Math.PI/6, createPoint(12, 0), origin);
-		assertFpPointEquals(10.392304, -6, p);
-
-		p.turnRight(Math.PI/11, createPoint(-4, 18), origin);
-		assertFpPointEquals(-8.90916, 16.14394, p);
-
-		p.turnRight(-Math.PI/11, createPoint(-4, 18), origin);
-		assertFpPointEquals(1.23321, 18.39780, p);
-	}
-
-	@Test
-	public void turnRightDoublePoint3DPoint3D_origin_iffp_rightHanded() {
-		Assume.assumeFalse(isIntCoordinates());		
-		Assume.assumeFalse(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
-		Point3D origin = createPoint(0, 0);
-		Point3D p = createPoint(0, 0);
-		
-		p.turnRight(Math.PI/2, createPoint(1, 0), origin);
-		assertFpPointEquals(0, -1, p);
-
-		p.turnRight(Math.PI/2, createPoint(0, 1), origin);
-		assertFpPointEquals(1, 0, p);
-
-		p.turnRight(Math.PI/2, createPoint(-1, 0), origin);
-		assertFpPointEquals(0, 1, p);
-
-		p.turnRight(Math.PI/2, createPoint(0, -1), origin);
-		assertFpPointEquals(-1, 0, p);
-
-		p.turnRight(-Math.PI/2, createPoint(1, 0), origin);
-		assertFpPointEquals(0, 1, p);
-
-		p.turnRight(-Math.PI/2, createPoint(0, -1), origin);
-		assertFpPointEquals(1, 0, p);
-
-		p.turnRight(-Math.PI/2, createPoint(-1, 0), origin);
-		assertFpPointEquals(0, -1, p);
-
-		p.turnRight(-Math.PI/2, createPoint(0, 1), origin);
-		assertFpPointEquals(-1, 0, p);
-
-		p.turnRight(Math.PI/6, createPoint(12, 0), origin);
-		assertFpPointEquals(10.39230, -6, p);
-
-		p.turnRight(-Math.PI/6, createPoint(12, 0), origin);
-		assertFpPointEquals(10.392304, 6, p);
-
-		p.turnRight(Math.PI/11, createPoint(-4, 18), origin);
-		assertFpPointEquals(1.23321, 18.39780, p);
-
-		p.turnRight(-Math.PI/11, createPoint(-4, 18), origin);
-		assertFpPointEquals(-8.90916, 16.14394, p);
-	}
-
-	@Test
-	public void turnRightDoublePoint3DPoint3D_aroundP_iffp_leftHanded() {
-		Assume.assumeFalse(isIntCoordinates());		
-		Assume.assumeTrue(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
-		Point3D origin = createPoint(-45, 12);
-		Point3D p = createPoint(0, 0);
-		
-		p.turnRight(Math.PI/2, createPoint(1, 0), origin);
-		assertFpPointEquals(-33, 58, p);
-
-		p.turnRight(Math.PI/2, createPoint(0, 1), origin);
-		assertFpPointEquals(-34, 57, p);
-
-		p.turnRight(Math.PI/2, createPoint(-1, 0), origin);
-		assertFpPointEquals(-33, 56, p);
-
-		p.turnRight(Math.PI/2, createPoint(0, -1), origin);
-		assertFpPointEquals(-32, 57, p);
-
-		p.turnRight(-Math.PI/2, createPoint(1, 0), origin);
-		assertFpPointEquals(-57, -34, p);
-
-		p.turnRight(-Math.PI/2, createPoint(0, -1), origin);
-		assertFpPointEquals(-58, -33, p);
-
-		p.turnRight(-Math.PI/2, createPoint(-1, 0), origin);
-		assertFpPointEquals(-57, -32, p);
-
-		p.turnRight(-Math.PI/2, createPoint(0, 1), origin);
-		assertFpPointEquals(-56, -33, p);
-
-		p.turnRight(Math.PI/6, createPoint(12, 0), origin);
-		assertFpPointEquals(10.36345, 30.1077, p);
-
-		p.turnRight(-Math.PI/6, createPoint(12, 0), origin);
-		assertFpPointEquals(-1.63655, -26.89230, p);
-
-		p.turnRight(Math.PI/11, createPoint(-4, 18), origin);
-		assertFpPointEquals(-7.35118, 29.30799, p);
-
-		p.turnRight(-Math.PI/11, createPoint(-4, 18), origin);
-		assertFpPointEquals(-3.97039, 6.20592, p);
-	}
-
-	@Test
-	public void turnRightDoublePoint3DPoint3D_aroundP_iffp_rightHanded() {
-		Assume.assumeFalse(isIntCoordinates());		
-		Assume.assumeFalse(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
-		Point3D origin = createPoint(-45, 12);
-		Point3D p = createPoint(0, 0);
-		
-		p.turnRight(Math.PI/2, createPoint(1, 0), origin);
-		assertFpPointEquals(-57, -34, p);
-
-		p.turnRight(Math.PI/2, createPoint(0, 1), origin);
-		assertFpPointEquals(-56, -33, p);
-
-		p.turnRight(Math.PI/2, createPoint(-1, 0), origin);
-		assertFpPointEquals(-57, -32, p);
-
-		p.turnRight(Math.PI/2, createPoint(0, -1), origin);
-		assertFpPointEquals(-58, -33, p);
-
-		p.turnRight(-Math.PI/2, createPoint(1, 0), origin);
-		assertFpPointEquals(-33, 58, p);
-
-		p.turnRight(-Math.PI/2, createPoint(0, -1), origin);
-		assertFpPointEquals(-32, 57, p);
-
-		p.turnRight(-Math.PI/2, createPoint(-1, 0), origin);
-		assertFpPointEquals(-33, 56, p);
-
-		p.turnRight(-Math.PI/2, createPoint(0, 1), origin);
-		assertFpPointEquals(-34, 57, p);
-
-		p.turnRight(Math.PI/6, createPoint(12, 0), origin);
-		assertFpPointEquals(-1.63655, -26.89230, p);
-
-		p.turnRight(-Math.PI/6, createPoint(12, 0), origin);
-		assertFpPointEquals(10.36345, 30.1077, p);
-
-		p.turnRight(Math.PI/11, createPoint(-4, 18), origin);
-		assertFpPointEquals(-3.97039, 6.20592, p);
-
-		p.turnRight(-Math.PI/11, createPoint(-4, 18), origin);
-		assertFpPointEquals(-7.35118, 29.30799, p);
-	}
-
-	@Test
-	public void turnDouble_ifi() {
-		Assume.assumeTrue(isIntCoordinates());
-		
-		Point3D p;
-		
-		p = createPoint(1, 0);
-		p.turn(Math.PI/2);
-		assertIntPointEquals(0, 1, p);
-
-		p = createPoint(0, 1);
-		p.turn(Math.PI/2);
-		assertIntPointEquals(-1, 0, p);
-
-		p = createPoint(-1, 0);
-		p.turn(Math.PI/2);
-		assertIntPointEquals(0, -1, p);
-
-		p = createPoint(0, -1);
-		p.turn(Math.PI/2);
-		assertIntPointEquals(1, 0, p);
-
-		p = createPoint(1, 0);
-		p.turn(-Math.PI/2);
-		assertIntPointEquals(0, -1, p);
-
-		p = createPoint(0, -1);
-		p.turn(-Math.PI/2);
-		assertIntPointEquals(-1, 0, p);
-
-		p = createPoint(-1, 0);
-		p.turn(-Math.PI/2);
-		assertIntPointEquals(0, 1, p);
-
-		p = createPoint(0, 1);
-		p.turn(-Math.PI/2);
-		assertIntPointEquals(1, 0, p);
-
-		p = createPoint(12, 0);
-		p.turn(Math.PI/6);
-		assertIntPointEquals(10, 6, p);
-
-		p = createPoint(12, 0);
-		p.turn(-Math.PI/6);
-		assertIntPointEquals(10, -6, p);
-
-		p = createPoint(-4, 18);
-		p.turn(Math.PI/11);
-		assertIntPointEquals(-9, 16, p);
-
-		p = createPoint(-4, 18);
-		p.turn(-Math.PI/11);
-		assertIntPointEquals(1, 18, p);
-	}
-
-	@Test
-	public void turnDoublePoint3D_ifi() {
-		Assume.assumeTrue(isIntCoordinates());
-		
-		Point3D p = createPoint(0, 0);
-		
-		p.turn(Math.PI/2, createPoint(1, 0));
-		assertIntPointEquals(0, 1, p);
-
-		p.turn(Math.PI/2, createPoint(0, 1));
-		assertIntPointEquals(-1, 0, p);
-
-		p.turn(Math.PI/2, createPoint(-1, 0));
-		assertIntPointEquals(0, -1, p);
-
-		p.turn(Math.PI/2, createPoint(0, -1));
-		assertIntPointEquals(1, 0, p);
-
-		p.turn(-Math.PI/2, createPoint(1, 0));
-		assertIntPointEquals(0, -1, p);
-
-		p.turn(-Math.PI/2, createPoint(0, -1));
-		assertIntPointEquals(-1, 0, p);
-
-		p.turn(-Math.PI/2, createPoint(-1, 0));
-		assertIntPointEquals(0, 1, p);
-
-		p.turn(-Math.PI/2, createPoint(0, 1));
-		assertIntPointEquals(1, 0, p);
-
-		p.turn(Math.PI/6, createPoint(12, 0));
-		assertIntPointEquals(10, 6, p);
-
-		p.turn(-Math.PI/6, createPoint(12, 0));
-		assertIntPointEquals(10, -6, p);
-
-		p.turn(Math.PI/11, createPoint(-4, 18));
-		assertIntPointEquals(-9, 16, p);
-
-		p.turn(-Math.PI/11, createPoint(-4, 18));
-		assertIntPointEquals(1, 18, p);
-	}
-
-	@Test
-	public void turnDoublePoint3DPoint3D_origin_ifi() {
-		Assume.assumeTrue(isIntCoordinates());
-		
-		Point3D origin = createPoint(0, 0);
-		Point3D p = createPoint(0, 0);
-		
-		p.turn(Math.PI/2, createPoint(1, 0), origin);
-		assertIntPointEquals(0, 1, p);
-
-		p.turn(Math.PI/2, createPoint(0, 1), origin);
-		assertIntPointEquals(-1, 0, p);
-
-		p.turn(Math.PI/2, createPoint(-1, 0), origin);
-		assertIntPointEquals(0, -1, p);
-
-		p.turn(Math.PI/2, createPoint(0, -1), origin);
-		assertIntPointEquals(1, 0, p);
-
-		p.turn(-Math.PI/2, createPoint(1, 0), origin);
-		assertIntPointEquals(0, -1, p);
-
-		p.turn(-Math.PI/2, createPoint(0, -1), origin);
-		assertIntPointEquals(-1, 0, p);
-
-		p.turn(-Math.PI/2, createPoint(-1, 0), origin);
-		assertIntPointEquals(0, 1, p);
-
-		p.turn(-Math.PI/2, createPoint(0, 1), origin);
-		assertIntPointEquals(1, 0, p);
-
-		p.turn(Math.PI/6, createPoint(12, 0), origin);
-		assertIntPointEquals(10, 6, p);
-
-		p.turn(-Math.PI/6, createPoint(12, 0), origin);
-		assertIntPointEquals(10, -6, p);
-
-		p.turn(Math.PI/11, createPoint(-4, 18), origin);
-		assertIntPointEquals(-9, 16, p);
-
-		p.turn(-Math.PI/11, createPoint(-4, 18), origin);
-		assertIntPointEquals(1, 18, p);
-	}
-
-	@Test
-	public void turnDoublePoint3DPoint3D_aroundP_ifi() {
-		Assume.assumeTrue(isIntCoordinates());
-		
-		Point3D origin = createPoint(-45, 12);
-		Point3D p = createPoint(0, 0);
-		
-		p.turn(Math.PI/2, createPoint(1, 0), origin);
-		assertIntPointEquals(-33, 58, p);
-
-		p.turn(Math.PI/2, createPoint(0, 1), origin);
-		assertIntPointEquals(-34, 57, p);
-
-		p.turn(Math.PI/2, createPoint(-1, 0), origin);
-		assertIntPointEquals(-33, 56, p);
-
-		p.turn(Math.PI/2, createPoint(0, -1), origin);
-		assertIntPointEquals(-32, 57, p);
-
-		p.turn(-Math.PI/2, createPoint(1, 0), origin);
-		assertIntPointEquals(-57, -34, p);
-
-		p.turn(-Math.PI/2, createPoint(0, -1), origin);
-		assertIntPointEquals(-58, -33, p);
-
-		p.turn(-Math.PI/2, createPoint(-1, 0), origin);
-		assertIntPointEquals(-57, -32, p);
-
-		p.turn(-Math.PI/2, createPoint(0, 1), origin);
-		assertIntPointEquals(-56, -33, p);
-
-		p.turn(Math.PI/6, createPoint(12, 0), origin);
-		assertIntPointEquals(10, 30, p);
-
-		p.turn(-Math.PI/6, createPoint(12, 0), origin);
-		assertIntPointEquals(-2, -27, p);
-
-		p.turn(Math.PI/11, createPoint(-4, 18), origin);
-		assertIntPointEquals(-7, 29, p);
-
-		p.turn(-Math.PI/11, createPoint(-4, 18), origin);
-		assertIntPointEquals(-4, 6, p);
-	}
-
-	@Test
-	public void turnLeftDouble_ifi_leftHanded() {
-		Assume.assumeTrue(isIntCoordinates());		
-		Assume.assumeTrue(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());
-		Point3D p;
-		
-		p = createPoint(1, 0);
-		p.turnLeft(Math.PI/2);
-		assertIntPointEquals(0, -1, p);
-
-		p = createPoint(0, 1);
-		p.turnLeft(Math.PI/2);
-		assertIntPointEquals(1, 0, p);
-
-		p = createPoint(-1, 0);
-		p.turnLeft(Math.PI/2);
-		assertIntPointEquals(0, 1, p);
-
-		p = createPoint(0, -1);
-		p.turnLeft(Math.PI/2);
-		assertIntPointEquals(-1, 0, p);
-
-		p = createPoint(1, 0);
-		p.turnLeft(-Math.PI/2);
-		assertIntPointEquals(0, 1, p);
-
-		p = createPoint(0, -1);
-		p.turnLeft(-Math.PI/2);
-		assertIntPointEquals(1, 0, p);
-
-		p = createPoint(-1, 0);
-		p.turnLeft(-Math.PI/2);
-		assertIntPointEquals(0, -1, p);
-
-		p = createPoint(0, 1);
-		p.turnLeft(-Math.PI/2);
-		assertIntPointEquals(-1, 0, p);
-
-		p = createPoint(12, 0);
-		p.turnLeft(Math.PI/6);
-		assertIntPointEquals(10, -6, p);
-
-		p = createPoint(12, 0);
-		p.turnLeft(-Math.PI/6);
-		assertIntPointEquals(10, 6, p);
-
-		p = createPoint(-4, 18);
-		p.turnLeft(Math.PI/11);
-		assertIntPointEquals(1, 18, p);
-
-		p = createPoint(-4, 18);
-		p.turnLeft(-Math.PI/11);
-		assertIntPointEquals(-9, 16, p);
-	}
-
-	@Test
-	public void turnLeftDouble_ifi_rightHanded() {
-		Assume.assumeTrue(isIntCoordinates());		
-		Assume.assumeFalse(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
-		Point3D p;
-		
-		p = createPoint(1, 0);
-		p.turnLeft(Math.PI/2);
-		assertIntPointEquals(0, 1, p);
-
-		p = createPoint(0, 1);
-		p.turnLeft(Math.PI/2);
-		assertIntPointEquals(-1, 0, p);
-
-		p = createPoint(-1, 0);
-		p.turnLeft(Math.PI/2);
-		assertIntPointEquals(0, -1, p);
-
-		p = createPoint(0, -1);
-		p.turnLeft(Math.PI/2);
-		assertIntPointEquals(1, 0, p);
-
-		p = createPoint(1, 0);
-		p.turnLeft(-Math.PI/2);
-		assertIntPointEquals(0, -1, p);
-
-		p = createPoint(0, -1);
-		p.turnLeft(-Math.PI/2);
-		assertIntPointEquals(-1, 0, p);
-
-		p = createPoint(-1, 0);
-		p.turnLeft(-Math.PI/2);
-		assertIntPointEquals(0, 1, p);
-
-		p = createPoint(0, 1);
-		p.turnLeft(-Math.PI/2);
-		assertIntPointEquals(1, 0, p);
-
-		p = createPoint(12, 0);
-		p.turnLeft(Math.PI/6);
-		assertIntPointEquals(10, 6, p);
-
-		p = createPoint(12, 0);
-		p.turnLeft(-Math.PI/6);
-		assertIntPointEquals(10, -6, p);
-
-		p = createPoint(-4, 18);
-		p.turnLeft(Math.PI/11);
-		assertIntPointEquals(-9, 16, p);
-
-		p = createPoint(-4, 18);
-		p.turnLeft(-Math.PI/11);
-		assertIntPointEquals(1, 18, p);
-	}
-
-	@Test
-	public void turnLeftDoublePoint3D_ifi_leftHanded() {
-		Assume.assumeTrue(isIntCoordinates());		
-		Assume.assumeTrue(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
-		Point3D p = createPoint(0, 0);
-		
-		p.turnLeft(Math.PI/2, createPoint(1, 0));
-		assertIntPointEquals(0, -1, p);
-
-		p.turnLeft(Math.PI/2, createPoint(0, 1));
-		assertIntPointEquals(1, 0, p);
-
-		p.turnLeft(Math.PI/2, createPoint(-1, 0));
-		assertIntPointEquals(0, 1, p);
-
-		p.turnLeft(Math.PI/2, createPoint(0, -1));
-		assertIntPointEquals(-1, 0, p);
-
-		p.turnLeft(-Math.PI/2, createPoint(1, 0));
-		assertIntPointEquals(0, 1, p);
-
-		p.turnLeft(-Math.PI/2, createPoint(0, -1));
-		assertIntPointEquals(1, 0, p);
-
-		p.turnLeft(-Math.PI/2, createPoint(-1, 0));
-		assertIntPointEquals(0, -1, p);
-
-		p.turnLeft(-Math.PI/2, createPoint(0, 1));
-		assertIntPointEquals(-1, 0, p);
-
-		p.turnLeft(Math.PI/6, createPoint(12, 0));
-		assertIntPointEquals(10, -6, p);
-
-		p.turnLeft(-Math.PI/6, createPoint(12, 0));
-		assertIntPointEquals(10, 6, p);
-
-		p.turnLeft(Math.PI/11, createPoint(-4, 18));
-		assertIntPointEquals(1, 18, p);
-
-		p.turnLeft(-Math.PI/11, createPoint(-4, 18));
-		assertIntPointEquals(-9, 16, p);
-	}
-
-	@Test
-	public void turnLeftDoublePoint3D_ifi_rightHanded() {
-		Assume.assumeTrue(isIntCoordinates());		
-		Assume.assumeFalse(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
-		Point3D p = createPoint(0, 0);
-		
-		p.turnLeft(Math.PI/2, createPoint(1, 0));
-		assertIntPointEquals(0, 1, p);
-
-		p.turnLeft(Math.PI/2, createPoint(0, 1));
-		assertIntPointEquals(-1, 0, p);
-
-		p.turnLeft(Math.PI/2, createPoint(-1, 0));
-		assertIntPointEquals(0, -1, p);
-
-		p.turnLeft(Math.PI/2, createPoint(0, -1));
-		assertIntPointEquals(1, 0, p);
-
-		p.turnLeft(-Math.PI/2, createPoint(1, 0));
-		assertIntPointEquals(0, -1, p);
-
-		p.turnLeft(-Math.PI/2, createPoint(0, -1));
-		assertIntPointEquals(-1, 0, p);
-
-		p.turnLeft(-Math.PI/2, createPoint(-1, 0));
-		assertIntPointEquals(0, 1, p);
-
-		p.turnLeft(-Math.PI/2, createPoint(0, 1));
-		assertIntPointEquals(1, 0, p);
-
-		p.turnLeft(Math.PI/6, createPoint(12, 0));
-		assertIntPointEquals(10, 6, p);
-
-		p.turnLeft(-Math.PI/6, createPoint(12, 0));
-		assertIntPointEquals(10, -6, p);
-
-		p.turnLeft(Math.PI/11, createPoint(-4, 18));
-		assertIntPointEquals(-9, 16, p);
-
-		p.turnLeft(-Math.PI/11, createPoint(-4, 18));
-		assertIntPointEquals(1, 18, p);
-	}
-
-	@Test
-	public void turnLeftDoublePoint3DPoint3D_origin_ifi_leftHanded() {
-		Assume.assumeTrue(isIntCoordinates());		
-		Assume.assumeTrue(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
-		Point3D origin = createPoint(0, 0);
-		Point3D p = createPoint(0, 0);
-		
-		p.turnLeft(Math.PI/2, createPoint(1, 0), origin);
-		assertIntPointEquals(0, -1, p);
-
-		p.turnLeft(Math.PI/2, createPoint(0, 1), origin);
-		assertIntPointEquals(1, 0, p);
-
-		p.turnLeft(Math.PI/2, createPoint(-1, 0), origin);
-		assertIntPointEquals(0, 1, p);
-
-		p.turnLeft(Math.PI/2, createPoint(0, -1), origin);
-		assertIntPointEquals(-1, 0, p);
-
-		p.turnLeft(-Math.PI/2, createPoint(1, 0), origin);
-		assertIntPointEquals(0, 1, p);
-
-		p.turnLeft(-Math.PI/2, createPoint(0, -1), origin);
-		assertIntPointEquals(1, 0, p);
-
-		p.turnLeft(-Math.PI/2, createPoint(-1, 0), origin);
-		assertIntPointEquals(0, -1, p);
-
-		p.turnLeft(-Math.PI/2, createPoint(0, 1), origin);
-		assertIntPointEquals(-1, 0, p);
-
-		p.turnLeft(Math.PI/6, createPoint(12, 0), origin);
-		assertIntPointEquals(10, -6, p);
-
-		p.turnLeft(-Math.PI/6, createPoint(12, 0), origin);
-		assertIntPointEquals(10, 6, p);
-
-		p.turnLeft(Math.PI/11, createPoint(-4, 18), origin);
-		assertIntPointEquals(1, 18, p);
-
-		p.turnLeft(-Math.PI/11, createPoint(-4, 18), origin);
-		assertIntPointEquals(-9, 16, p);
-	}
-
-	@Test
-	public void turnLeftDoublePoint3DPoint3D_origin_ifi_rightHanded() {
-		Assume.assumeTrue(isIntCoordinates());		
-		Assume.assumeFalse(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
-		Point3D origin = createPoint(0, 0);
-		Point3D p = createPoint(0, 0);
-		
-		p.turnLeft(Math.PI/2, createPoint(1, 0), origin);
-		assertIntPointEquals(0, 1, p);
-
-		p.turnLeft(Math.PI/2, createPoint(0, 1), origin);
-		assertIntPointEquals(-1, 0, p);
-
-		p.turnLeft(Math.PI/2, createPoint(-1, 0), origin);
-		assertIntPointEquals(0, -1, p);
-
-		p.turnLeft(Math.PI/2, createPoint(0, -1), origin);
-		assertIntPointEquals(1, 0, p);
-
-		p.turnLeft(-Math.PI/2, createPoint(1, 0), origin);
-		assertIntPointEquals(0, -1, p);
-
-		p.turnLeft(-Math.PI/2, createPoint(0, -1), origin);
-		assertIntPointEquals(-1, 0, p);
-
-		p.turnLeft(-Math.PI/2, createPoint(-1, 0), origin);
-		assertIntPointEquals(0, 1, p);
-
-		p.turnLeft(-Math.PI/2, createPoint(0, 1), origin);
-		assertIntPointEquals(1, 0, p);
-
-		p.turnLeft(Math.PI/6, createPoint(12, 0), origin);
-		assertIntPointEquals(10, 6, p);
-
-		p.turnLeft(-Math.PI/6, createPoint(12, 0), origin);
-		assertIntPointEquals(10, -6, p);
-
-		p.turnLeft(Math.PI/11, createPoint(-4, 18), origin);
-		assertIntPointEquals(-9, 16, p);
-
-		p.turnLeft(-Math.PI/11, createPoint(-4, 18), origin);
-		assertIntPointEquals(1, 18, p);
-	}
-
-	@Test
-	public void turnLeftDoublePoint3DPoint3D_aroundP_ifi_leftHanded() {
-		Assume.assumeTrue(isIntCoordinates());		
-		Assume.assumeTrue(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
-		Point3D origin = createPoint(-45, 12);
-		Point3D p = createPoint(0, 0);
-		
-		p.turnLeft(Math.PI/2, createPoint(1, 0), origin);
-		assertIntPointEquals(-57, -34, p);
-
-		p.turnLeft(Math.PI/2, createPoint(0, 1), origin);
-		assertIntPointEquals(-56, -33, p);
-
-		p.turnLeft(Math.PI/2, createPoint(-1, 0), origin);
-		assertIntPointEquals(-57, -32, p);
-
-		p.turnLeft(Math.PI/2, createPoint(0, -1), origin);
-		assertIntPointEquals(-58, -33, p);
-
-		p.turnLeft(-Math.PI/2, createPoint(1, 0), origin);
-		assertIntPointEquals(-33, 58, p);
-
-		p.turnLeft(-Math.PI/2, createPoint(0, -1), origin);
-		assertIntPointEquals(-32, 57, p);
-
-		p.turnLeft(-Math.PI/2, createPoint(-1, 0), origin);
-		assertIntPointEquals(-33, 56, p);
-
-		p.turnLeft(-Math.PI/2, createPoint(0, 1), origin);
-		assertIntPointEquals(-34, 57, p);
-
-		p.turnLeft(Math.PI/6, createPoint(12, 0), origin);
-		assertIntPointEquals(-2, -27, p);
-
-		p.turnLeft(-Math.PI/6, createPoint(12, 0), origin);
-		assertIntPointEquals(10, 30, p);
-
-		p.turnLeft(Math.PI/11, createPoint(-4, 18), origin);
-		assertIntPointEquals(-4, 6, p);
-
-		p.turnLeft(-Math.PI/11, createPoint(-4, 18), origin);
-		assertIntPointEquals(-7, 29, p);
-	}
-
-	@Test
-	public void turnLeftDoublePoint3DPoint3D_aroundP_ifi_rightHanded() {
-		Assume.assumeTrue(isIntCoordinates());		
-		Assume.assumeFalse(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
-		Point3D origin = createPoint(-45, 12);
-		Point3D p = createPoint(0, 0);
-		
-		p.turnLeft(Math.PI/2, createPoint(1, 0), origin);
-		assertIntPointEquals(-33, 58, p);
-
-		p.turnLeft(Math.PI/2, createPoint(0, 1), origin);
-		assertIntPointEquals(-34, 57, p);
-
-		p.turnLeft(Math.PI/2, createPoint(-1, 0), origin);
-		assertIntPointEquals(-33, 56, p);
-
-		p.turnLeft(Math.PI/2, createPoint(0, -1), origin);
-		assertIntPointEquals(-32, 57, p);
-
-		p.turnLeft(-Math.PI/2, createPoint(1, 0), origin);
-		assertIntPointEquals(-57, -34, p);
-
-		p.turnLeft(-Math.PI/2, createPoint(0, -1), origin);
-		assertIntPointEquals(-58, -33, p);
-
-		p.turnLeft(-Math.PI/2, createPoint(-1, 0), origin);
-		assertIntPointEquals(-57, -32, p);
-
-		p.turnLeft(-Math.PI/2, createPoint(0, 1), origin);
-		assertIntPointEquals(-56, -33, p);
-
-		p.turnLeft(Math.PI/6, createPoint(12, 0), origin);
-		assertIntPointEquals(10, 30, p);
-
-		p.turnLeft(-Math.PI/6, createPoint(12, 0), origin);
-		assertIntPointEquals(-2, -27, p);
-
-		p.turnLeft(Math.PI/11, createPoint(-4, 18), origin);
-		assertIntPointEquals(-7, 29, p);
-
-		p.turnLeft(-Math.PI/11, createPoint(-4, 18), origin);
-		assertIntPointEquals(-4, 6, p);
-	}
-
-	@Test
-	public void turnRightDouble_ifi_leftHanded() {
-		Assume.assumeTrue(isIntCoordinates());		
-		Assume.assumeTrue(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());
-		Point3D p;
-		
-		p = createPoint(1, 0);
-		p.turnRight(Math.PI/2);
-		assertIntPointEquals(0, 1, p);
-
-		p = createPoint(0, 1);
-		p.turnRight(Math.PI/2);
-		assertIntPointEquals(-1, 0, p);
-
-		p = createPoint(-1, 0);
-		p.turnRight(Math.PI/2);
-		assertIntPointEquals(0, -1, p);
-
-		p = createPoint(0, -1);
-		p.turnRight(Math.PI/2);
-		assertIntPointEquals(1, 0, p);
-
-		p = createPoint(1, 0);
-		p.turnRight(-Math.PI/2);
-		assertIntPointEquals(0, -1, p);
-
-		p = createPoint(0, -1);
-		p.turnRight(-Math.PI/2);
-		assertIntPointEquals(-1, 0, p);
-
-		p = createPoint(-1, 0);
-		p.turnRight(-Math.PI/2);
-		assertIntPointEquals(0, 1, p);
-
-		p = createPoint(0, 1);
-		p.turnRight(-Math.PI/2);
-		assertIntPointEquals(1, 0, p);
-
-		p = createPoint(12, 0);
-		p.turnRight(Math.PI/6);
-		assertIntPointEquals(10, 6, p);
-
-		p = createPoint(12, 0);
-		p.turnRight(-Math.PI/6);
-		assertIntPointEquals(10, -6, p);
-
-		p = createPoint(-4, 18);
-		p.turnRight(Math.PI/11);
-		assertIntPointEquals(-9, 16, p);
-
-		p = createPoint(-4, 18);
-		p.turnRight(-Math.PI/11);
-		assertIntPointEquals(1, 18, p);
-	}
-
-	@Test
-	public void turnRightDouble_ifi_rightHanded() {
-		Assume.assumeTrue(isIntCoordinates());		
-		Assume.assumeFalse(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
-		Point3D p;
-		
-		p = createPoint(1, 0);
-		p.turnRight(Math.PI/2);
-		assertIntPointEquals(0, -1, p);
-
-		p = createPoint(0, 1);
-		p.turnRight(Math.PI/2);
-		assertIntPointEquals(1, 0, p);
-
-		p = createPoint(-1, 0);
-		p.turnRight(Math.PI/2);
-		assertIntPointEquals(0, 1, p);
-
-		p = createPoint(0, -1);
-		p.turnRight(Math.PI/2);
-		assertIntPointEquals(-1, 0, p);
-
-		p = createPoint(1, 0);
-		p.turnRight(-Math.PI/2);
-		assertIntPointEquals(0, 1, p);
-
-		p = createPoint(0, -1);
-		p.turnRight(-Math.PI/2);
-		assertIntPointEquals(1, 0, p);
-
-		p = createPoint(-1, 0);
-		p.turnRight(-Math.PI/2);
-		assertIntPointEquals(0, -1, p);
-
-		p = createPoint(0, 1);
-		p.turnRight(-Math.PI/2);
-		assertIntPointEquals(-1, 0, p);
-
-		p = createPoint(12, 0);
-		p.turnRight(Math.PI/6);
-		assertIntPointEquals(10, -6, p);
-
-		p = createPoint(12, 0);
-		p.turnRight(-Math.PI/6);
-		assertIntPointEquals(10, 6, p);
-
-		p = createPoint(-4, 18);
-		p.turnRight(Math.PI/11);
-		assertIntPointEquals(1, 18, p);
-
-		p = createPoint(-4, 18);
-		p.turnRight(-Math.PI/11);
-		assertIntPointEquals(-9, 16, p);
-	}
-
-	@Test
-	public void turnRightDoublePoint3D_ifi_leftHanded() {
-		Assume.assumeTrue(isIntCoordinates());		
-		Assume.assumeTrue(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
-		Point3D p = createPoint(0, 0);
-		
-		p.turnRight(Math.PI/2, createPoint(1, 0));
-		assertIntPointEquals(0, 1, p);
-
-		p.turnRight(Math.PI/2, createPoint(0, 1));
-		assertIntPointEquals(-1, 0, p);
-
-		p.turnRight(Math.PI/2, createPoint(-1, 0));
-		assertIntPointEquals(0, -1, p);
-
-		p.turnRight(Math.PI/2, createPoint(0, -1));
-		assertIntPointEquals(1, 0, p);
-
-		p.turnRight(-Math.PI/2, createPoint(1, 0));
-		assertIntPointEquals(0, -1, p);
-
-		p.turnRight(-Math.PI/2, createPoint(0, -1));
-		assertIntPointEquals(-1, 0, p);
-
-		p.turnRight(-Math.PI/2, createPoint(-1, 0));
-		assertIntPointEquals(0, 1, p);
-
-		p.turnRight(-Math.PI/2, createPoint(0, 1));
-		assertIntPointEquals(1, 0, p);
-
-		p.turnRight(Math.PI/6, createPoint(12, 0));
-		assertIntPointEquals(10, 6, p);
-
-		p.turnRight(-Math.PI/6, createPoint(12, 0));
-		assertIntPointEquals(10, -6, p);
-
-		p.turnRight(Math.PI/11, createPoint(-4, 18));
-		assertIntPointEquals(-9, 16, p);
-
-		p.turnRight(-Math.PI/11, createPoint(-4, 18));
-		assertIntPointEquals(1, 18, p);
-	}
-
-	@Test
-	public void turnRightDoublePoint3D_ifi_rightHanded() {
-		Assume.assumeTrue(isIntCoordinates());		
-		Assume.assumeFalse(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
-		Assume.assumeFalse(isIntCoordinates());		
-		Assume.assumeTrue(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
-		Point3D p = createPoint(0, 0);
-		
-		p.turnRight(Math.PI/2, createPoint(1, 0));
-		assertIntPointEquals(0, -1, p);
-
-		p.turnRight(Math.PI/2, createPoint(0, 1));
-		assertIntPointEquals(1, 0, p);
-
-		p.turnRight(Math.PI/2, createPoint(-1, 0));
-		assertIntPointEquals(0, 1, p);
-
-		p.turnRight(Math.PI/2, createPoint(0, -1));
-		assertIntPointEquals(-1, 0, p);
-
-		p.turnRight(-Math.PI/2, createPoint(1, 0));
-		assertIntPointEquals(0, 1, p);
-
-		p.turnRight(-Math.PI/2, createPoint(0, -1));
-		assertIntPointEquals(1, 0, p);
-
-		p.turnRight(-Math.PI/2, createPoint(-1, 0));
-		assertIntPointEquals(0, -1, p);
-
-		p.turnRight(-Math.PI/2, createPoint(0, 1));
-		assertIntPointEquals(-1, 0, p);
-
-		p.turnRight(Math.PI/6, createPoint(12, 0));
-		assertIntPointEquals(10, -6, p);
-
-		p.turnRight(-Math.PI/6, createPoint(12, 0));
-		assertIntPointEquals(10, 6, p);
-
-		p.turnRight(Math.PI/11, createPoint(-4, 18));
-		assertIntPointEquals(1, 18, p);
-
-		p.turnRight(-Math.PI/11, createPoint(-4, 18));
-		assertIntPointEquals(-9, 16, p);
-	}
-
-	@Test
-	public void turnRightDoublePoint3DPoint3D_origin_ifi_leftHanded() {
-		Assume.assumeTrue(isIntCoordinates());		
-		Assume.assumeTrue(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
-		Point3D origin = createPoint(0, 0);
-		Point3D p = createPoint(0, 0);
-		
-		p.turnRight(Math.PI/2, createPoint(1, 0), origin);
-		assertIntPointEquals(0, 1, p);
-
-		p.turnRight(Math.PI/2, createPoint(0, 1), origin);
-		assertIntPointEquals(-1, 0, p);
-
-		p.turnRight(Math.PI/2, createPoint(-1, 0), origin);
-		assertIntPointEquals(0, -1, p);
-
-		p.turnRight(Math.PI/2, createPoint(0, -1), origin);
-		assertIntPointEquals(1, 0, p);
-
-		p.turnRight(-Math.PI/2, createPoint(1, 0), origin);
-		assertIntPointEquals(0, -1, p);
-
-		p.turnRight(-Math.PI/2, createPoint(0, -1), origin);
-		assertIntPointEquals(-1, 0, p);
-
-		p.turnRight(-Math.PI/2, createPoint(-1, 0), origin);
-		assertIntPointEquals(0, 1, p);
-
-		p.turnRight(-Math.PI/2, createPoint(0, 1), origin);
-		assertIntPointEquals(1, 0, p);
-
-		p.turnRight(Math.PI/6, createPoint(12, 0), origin);
-		assertIntPointEquals(10, 6, p);
-
-		p.turnRight(-Math.PI/6, createPoint(12, 0), origin);
-		assertIntPointEquals(10, -6, p);
-
-		p.turnRight(Math.PI/11, createPoint(-4, 18), origin);
-		assertIntPointEquals(-9, 16, p);
-
-		p.turnRight(-Math.PI/11, createPoint(-4, 18), origin);
-		assertIntPointEquals(1, 18, p);
-	}
-
-	@Test
-	public void turnRightDoublePoint3DPoint3D_origin_ifi_rightHanded() {
-		Assume.assumeTrue(isIntCoordinates());		
-		Assume.assumeFalse(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
-		Point3D origin = createPoint(0, 0);
-		Point3D p = createPoint(0, 0);
-		
-		p.turnRight(Math.PI/2, createPoint(1, 0), origin);
-		assertIntPointEquals(0, -1, p);
-
-		p.turnRight(Math.PI/2, createPoint(0, 1), origin);
-		assertIntPointEquals(1, 0, p);
-
-		p.turnRight(Math.PI/2, createPoint(-1, 0), origin);
-		assertIntPointEquals(0, 1, p);
-
-		p.turnRight(Math.PI/2, createPoint(0, -1), origin);
-		assertIntPointEquals(-1, 0, p);
-
-		p.turnRight(-Math.PI/2, createPoint(1, 0), origin);
-		assertIntPointEquals(0, 1, p);
-
-		p.turnRight(-Math.PI/2, createPoint(0, -1), origin);
-		assertIntPointEquals(1, 0, p);
-
-		p.turnRight(-Math.PI/2, createPoint(-1, 0), origin);
-		assertIntPointEquals(0, -1, p);
-
-		p.turnRight(-Math.PI/2, createPoint(0, 1), origin);
-		assertIntPointEquals(-1, 0, p);
-
-		p.turnRight(Math.PI/6, createPoint(12, 0), origin);
-		assertIntPointEquals(10, -6, p);
-
-		p.turnRight(-Math.PI/6, createPoint(12, 0), origin);
-		assertIntPointEquals(10, 6, p);
-
-		p.turnRight(Math.PI/11, createPoint(-4, 18), origin);
-		assertIntPointEquals(1, 18, p);
-
-		p.turnRight(-Math.PI/11, createPoint(-4, 18), origin);
-		assertIntPointEquals(-9, 16, p);
-	}
-
-	@Test
-	public void turnRightDoublePoint3DPoint3D_aroundP_ifi_leftHanded() {
-		Assume.assumeTrue(isIntCoordinates());		
-		Assume.assumeTrue(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
-		Point3D origin = createPoint(-45, 12);
-		Point3D p = createPoint(0, 0);
-		
-		p.turnRight(Math.PI/2, createPoint(1, 0), origin);
-		assertIntPointEquals(-33, 58, p);
-
-		p.turnRight(Math.PI/2, createPoint(0, 1), origin);
-		assertIntPointEquals(-34, 57, p);
-
-		p.turnRight(Math.PI/2, createPoint(-1, 0), origin);
-		assertIntPointEquals(-33, 56, p);
-
-		p.turnRight(Math.PI/2, createPoint(0, -1), origin);
-		assertIntPointEquals(-32, 57, p);
-
-		p.turnRight(-Math.PI/2, createPoint(1, 0), origin);
-		assertIntPointEquals(-57, -34, p);S
-
-		p.turnRight(-Math.PI/2, createPoint(0, -1), origin);
-		assertIntPointEquals(-58, -33, p);
-
-		p.turnRight(-Math.PI/2, createPoint(-1, 0), origin);
-		assertIntPointEquals(-57, -32, p);
-
-		p.turnRight(-Math.PI/2, createPoint(0, 1), origin);
-		assertIntPointEquals(-56, -33, p);
-
-		p.turnRight(Math.PI/6, createPoint(12, 0), origin);
-		assertIntPointEquals(10, 30, p);
-
-		p.turnRight(-Math.PI/6, createPoint(12, 0), origin);
-		assertIntPointEquals(-2, -27, p);
-
-		p.turnRight(Math.PI/11, createPoint(-4, 18), origin);
-		assertIntPointEquals(-7, 29, p);
-
-		p.turnRight(-Math.PI/11, createPoint(-4, 18), origin);
-		assertIntPointEquals(-4, 6, p);
-	}
-
-	@Test
-	public void turnRightDoublePoint3DPoint3D_aroundP_ifi_rightHanded() {
-		Assume.assumeTrue(isIntCoordinates());		
-		Assume.assumeFalse(CoordinateSystem3D.getDefaultCoordinateSystem().isLeftHanded());		
-		Point3D origin = createPoint(-45, 12);
-		Point3D p = createPoint(0, 0);
-		
-		p.turnRight(Math.PI/2, createPoint(1, 0), origin);
-		assertIntPointEquals(-57, -34, p);
-
-		p.turnRight(Math.PI/2, createPoint(0, 1), origin);
-		assertIntPointEquals(-56, -33, p);
-
-		p.turnRight(Math.PI/2, createPoint(-1, 0), origin);
-		assertIntPointEquals(-57, -32, p);
-
-		p.turnRight(Math.PI/2, createPoint(0, -1), origin);
-		assertIntPointEquals(-58, -33, p);
-
-		p.turnRight(-Math.PI/2, createPoint(1, 0), origin);
-		assertIntPointEquals(-33, 58, p);
-
-		p.turnRight(-Math.PI/2, createPoint(0, -1), origin);
-		assertIntPointEquals(-32, 57, p);
-
-		p.turnRight(-Math.PI/2, createPoint(-1, 0), origin);
-		assertIntPointEquals(-33, 56, p);
-
-		p.turnRight(-Math.PI/2, createPoint(0, 1), origin);
-		assertIntPointEquals(-34, 57, p);
-
-		p.turnRight(Math.PI/6, createPoint(12, 0), origin);
-		assertIntPointEquals(-2, -27, p);
-
-		p.turnRight(-Math.PI/6, createPoint(12, 0), origin);
-		assertIntPointEquals(10, 30, p);
-
-		p.turnRight(Math.PI/11, createPoint(-4, 18), origin);
-		assertIntPointEquals(-4, 6, p);
-
-		p.turnRight(-Math.PI/11, createPoint(-4, 18), origin);
-		assertIntPointEquals(-7, 29, p);
+		assertFpPointEquals(-3, 8, 0, point);
 	}
 
 }
