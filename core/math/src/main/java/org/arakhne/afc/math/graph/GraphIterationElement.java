@@ -20,6 +20,8 @@
 
 package org.arakhne.afc.math.graph;
 
+import java.util.Objects;
+
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /** Describe an element of the graph during an iteration.
@@ -157,7 +159,7 @@ public class GraphIterationElement<ST extends GraphSegment<ST, PT>, PT extends G
 	@Pure
 	@Override
 	public int hashCode() {
-		return this.currentSegment == null ? 0 : this.currentSegment.hashCode();
+		return Objects.hashCode(this.currentSegment);
 	}
 
 	@Pure

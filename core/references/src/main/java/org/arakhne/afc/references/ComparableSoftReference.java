@@ -63,8 +63,7 @@ public class ComparableSoftReference<T> extends SoftReference<T> implements Comp
 	@Pure
 	@Override
 	public int hashCode() {
-		final T cur = get();
-		return cur == null ? 0 : cur.hashCode();
+		return Objects.hashCode(get());
 	}
 
 	/** Compare this reference to the specified object

@@ -80,10 +80,10 @@ public class Circle2i extends AbstractShape2i<Circle2i>
 	@Override
 	public int hashCode() {
 		int bits = 1;
-		bits = 31 * bits + this.centerX;
-		bits = 31 * bits + this.centerY;
-		bits = 31 * bits + this.radius;
-		return bits ^ (bits >> 32);
+		bits = 31 * bits + Integer.hashCode(this.centerX);
+		bits = 31 * bits + Integer.hashCode(this.centerY);
+		bits = 31 * bits + Integer.hashCode(this.radius);
+		return bits ^ (bits >> 31);
 	}
 
 	@Pure

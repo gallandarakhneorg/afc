@@ -179,12 +179,12 @@ public class MultiValue<T> {
 	@Pure
 	@Override
 	public int hashCode() {
-		int hash = HashCodeUtil.hash(this.isSet);
-		hash = HashCodeUtil.hash(hash, this.isMultiple);
+		int hash = Boolean.hashCode(this.isSet);
+		hash = 31 * hash + Boolean.hashCode(this.isMultiple);
 		if (this.object != null) {
-			hash = HashCodeUtil.hash(hash, this.object);
+			hash = 31 * hash + Objects.hashCode(this.object);
 		}
-		return hash;
+		return hash ^ (hash >> 31);
 	}
 
 }

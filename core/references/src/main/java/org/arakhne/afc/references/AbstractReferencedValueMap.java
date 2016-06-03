@@ -649,9 +649,7 @@ public abstract class AbstractReferencedValueMap<K, V> extends AbstractMap<K, V>
 
 		@Override
 		public int hashCode() {
-			final Object val = getValue();
-			return (getKey() == null   ? 0 : getKey().hashCode())
-					^ (val == null ? 0 : val.hashCode());
+            return Objects.hashCode(getKey()) ^ Objects.hashCode(getValue());
 		}
 
 		@SuppressWarnings("unchecked")
@@ -730,9 +728,7 @@ public abstract class AbstractReferencedValueMap<K, V> extends AbstractMap<K, V>
 
 		@Override
 		public int hashCode() {
-			final Object val = getValue();
-			return (getKey() == null ? 0 : getKey().hashCode())
-					^ (val == null ? 0 : val.hashCode());
+            return Objects.hashCode(getKey()) ^ Objects.hashCode(getValue());
 		}
 
 		@SuppressWarnings("unchecked")
@@ -810,9 +806,7 @@ public abstract class AbstractReferencedValueMap<K, V> extends AbstractMap<K, V>
 
 		@Override
 		public int hashCode() {
-			final Object val = getValue();
-			return (getKey() == null ? 0 : getKey().hashCode())
-					^ (val == null ? 0 : val.hashCode());
+			return Objects.hashCode(getKey()) ^ Objects.hashCode(getValue());
 		}
 
 		@SuppressWarnings("unchecked")

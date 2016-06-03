@@ -165,12 +165,12 @@ public abstract class AbstractRectangularShape2d<IT extends AbstractRectangularS
 	@Override
 	public int hashCode() {
 		long bits = 1;
-		bits = 31 * bits + Double.doubleToLongBits(this.minx);
-		bits = 31 * bits + Double.doubleToLongBits(this.miny);
-		bits = 31 * bits + Double.doubleToLongBits(this.maxx);
-		bits = 31 * bits + Double.doubleToLongBits(this.maxy);
+		bits = 31 * bits + Double.hashCode(this.minx);
+		bits = 31 * bits + Double.hashCode(this.miny);
+		bits = 31 * bits + Double.hashCode(this.maxx);
+		bits = 31 * bits + Double.hashCode(this.maxy);
 		final int b = (int) bits;
-		return b ^ (b >> 32);
+		return b ^ (b >> 31);
 	}
 
 	@Pure

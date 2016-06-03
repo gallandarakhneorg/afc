@@ -189,14 +189,14 @@ public class Parallelogram2dfx extends AbstractShape2dfx<Parallelogram2dfx>
 	@Override
 	public int hashCode() {
 		long bits = 1;
-		bits = 31 * bits + Double.doubleToLongBits(getCenterX());
-		bits = 31 * bits + Double.doubleToLongBits(getCenterY());
-		bits = 31 * bits + Double.doubleToLongBits(getFirstAxisX());
-		bits = 31 * bits + Double.doubleToLongBits(getFirstAxisY());
-		bits = 31 * bits + Double.doubleToLongBits(getFirstAxisExtent());
-		bits = 31 * bits + Double.doubleToLongBits(getSecondAxisX());
-		bits = 31 * bits + Double.doubleToLongBits(getSecondAxisY());
-		bits = 31 * bits + Double.doubleToLongBits(getSecondAxisExtent());
+		bits = 31 * bits + Double.hashCode(getCenterX());
+		bits = 31 * bits + Double.hashCode(getCenterY());
+		bits = 31 * bits + Double.hashCode(getFirstAxisX());
+		bits = 31 * bits + Double.hashCode(getFirstAxisY());
+		bits = 31 * bits + Double.hashCode(getFirstAxisExtent());
+		bits = 31 * bits + Double.hashCode(getSecondAxisX());
+		bits = 31 * bits + Double.hashCode(getSecondAxisY());
+		bits = 31 * bits + Double.hashCode(getSecondAxisExtent());
 		final int b = (int) bits;
 		return b ^ (b >> 31);
 	}

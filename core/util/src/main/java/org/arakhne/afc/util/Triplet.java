@@ -158,10 +158,10 @@ public class Triplet<A, B, C> implements Serializable {
 	@Pure
 	@Override
 	public int hashCode() {
-		int hash = HashCodeUtil.hash(this.avalue);
-		hash = HashCodeUtil.hash(hash, this.bvalue);
-		hash = HashCodeUtil.hash(hash, this.cvalue);
-		return hash;
+		int hash = Objects.hashCode(this.avalue);
+		hash = 31 * hash + Objects.hashCode(this.bvalue);
+		hash = 31 * hash + Objects.hashCode(this.cvalue);
+		return hash ^ (hash >> 31);
 	}
 
 }

@@ -1937,25 +1937,16 @@ public class Matrix3d implements Serializable, Cloneable {
 	@Override
 	public int hashCode() {
 		long bits = 1L;
-		bits = 31L * bits + doubleToLongBits(this.m00);
-		bits = 31L * bits + doubleToLongBits(this.m01);
-		bits = 31L * bits + doubleToLongBits(this.m02);
-		bits = 31L * bits + doubleToLongBits(this.m10);
-		bits = 31L * bits + doubleToLongBits(this.m11);
-		bits = 31L * bits + doubleToLongBits(this.m12);
-		bits = 31L * bits + doubleToLongBits(this.m20);
-		bits = 31L * bits + doubleToLongBits(this.m21);
-		bits = 31L * bits + doubleToLongBits(this.m22);
-		return (int) (bits ^ (bits >> 32));
-	}
-
-	@Pure
-	private static long doubleToLongBits(double doubleValue) {
-		// Check for +0 or -0
-		if (doubleValue == 0.) {
-			return 0L;
-		}
-		return Double.doubleToLongBits(doubleValue);
+		bits = 31L * bits + Double.hashCode(this.m00);
+		bits = 31L * bits + Double.hashCode(this.m01);
+		bits = 31L * bits + Double.hashCode(this.m02);
+		bits = 31L * bits + Double.hashCode(this.m10);
+		bits = 31L * bits + Double.hashCode(this.m11);
+		bits = 31L * bits + Double.hashCode(this.m12);
+		bits = 31L * bits + Double.hashCode(this.m20);
+		bits = 31L * bits + Double.hashCode(this.m21);
+		bits = 31L * bits + Double.hashCode(this.m22);
+		return (int) (bits ^ (bits >> 31));
 	}
 
 	/**

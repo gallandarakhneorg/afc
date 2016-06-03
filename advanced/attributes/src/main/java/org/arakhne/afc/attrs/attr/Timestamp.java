@@ -83,7 +83,7 @@ class Timestamp extends Number {
 	@Pure
 	@Override
 	public int hashCode() {
-		return Long.valueOf(this.time).hashCode();
+		return Long.hashCode(this.time);
 	}
 
 	@Pure

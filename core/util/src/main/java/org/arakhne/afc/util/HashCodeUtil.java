@@ -22,6 +22,7 @@ package org.arakhne.afc.util;
 
 import java.lang.ref.Reference;
 import java.util.Arrays;
+import java.util.Objects;
 
 import org.eclipse.xtext.xbase.lib.Inline;
 import org.eclipse.xtext.xbase.lib.Pure;
@@ -36,7 +37,9 @@ import org.eclipse.xtext.xbase.lib.Pure;
  * @mavengroupid $GroupId$
  * @mavenartifactid $ArtifactId$
  * @see Arrays
+ * @deprecated since 13.0, see Java API hashCode utility functions.
  */
+@Deprecated
 public final class HashCodeUtil {
 
 	private static final int HASH_VALUE = 31;
@@ -316,11 +319,7 @@ public final class HashCodeUtil {
 	@Inline("Objects.hashCode($1)")
 	@Deprecated
 	public static int hash(Object... attributes) {
-		int hash = iddleHash();
-		for (final Object o : attributes) {
-			hash = hash(hash, o);
-		}
-	    return hash;
+		return Objects.hashCode(attributes);
 	}
 
 	/** Compute the hash code from the given primitive value.
@@ -334,7 +333,7 @@ public final class HashCodeUtil {
 	@Inline(value = "Byte.hashCode($1)")
 	@Deprecated
 	public static int hash(byte value) {
-		return Byte.valueOf(value).hashCode();
+		return Byte.hashCode(value);
 	}
 
 	/** Compute the hash code from the given primitive value.
@@ -348,7 +347,7 @@ public final class HashCodeUtil {
 	@Inline(value = "Short.hashCode($1)")
 	@Deprecated
 	public static int hash(short value) {
-		return Short.valueOf(value).hashCode();
+		return Short.hashCode(value);
 	}
 
 	/** Compute the hash code from the given primitive value.
@@ -362,7 +361,7 @@ public final class HashCodeUtil {
 	@Inline(value = "Long.hashCode($1)")
 	@Deprecated
 	public static int hash(long value) {
-		return Long.valueOf(value).intValue();
+		return Long.hashCode(value);
 	}
 
 	/** Compute the hash code from the given primitive value.
@@ -376,7 +375,7 @@ public final class HashCodeUtil {
 	@Inline(value = "Float.hashCode($1)")
 	@Deprecated
 	public static int hash(float value) {
-		return Float.valueOf(value).hashCode();
+		return Float.hashCode(value);
 	}
 
 	/** Compute the hash code from the given primitive value.
@@ -390,7 +389,7 @@ public final class HashCodeUtil {
 	@Inline(value = "Double.hashCode($1)")
 	@Deprecated
 	public static int hash(double value) {
-		return Double.valueOf(value).hashCode();
+		return Double.hashCode(value);
 	}
 
 	/** Compute the hash code from the given primitive value.
@@ -404,7 +403,7 @@ public final class HashCodeUtil {
 	@Inline(value = "Character.hashCode($1)")
 	@Deprecated
 	public static int hash(char value) {
-		return Character.valueOf(value).hashCode();
+		return Character.hashCode(value);
 	}
 
 	/** Compute the hash code from the given primitive value.
@@ -418,7 +417,7 @@ public final class HashCodeUtil {
 	@Inline(value = "Boolean.hashCode($1)")
 	@Deprecated
 	public static int hash(boolean value) {
-		return Boolean.valueOf(value).hashCode();
+		return Boolean.hashCode(value);
 	}
 
 	/** Compute the hash code from the given primitive value.

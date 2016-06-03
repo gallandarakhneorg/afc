@@ -183,11 +183,11 @@ public class Quadruplet<A, B, C, D> implements Serializable {
 	@Pure
 	@Override
 	public int hashCode() {
-		int hash = HashCodeUtil.hash(this.avalue);
-		hash = HashCodeUtil.hash(hash, this.bvalue);
-		hash = HashCodeUtil.hash(hash, this.cvalue);
-		hash = HashCodeUtil.hash(hash, this.dvalue);
-		return hash;
+		int hash = Objects.hashCode(this.avalue);
+		hash = 31 * hash + Objects.hashCode(this.bvalue);
+		hash = 31 * hash + Objects.hashCode(this.cvalue);
+		hash = 31 * hash + Objects.hashCode(this.dvalue);
+		return hash ^ (hash >> 31);
 	}
 
 }

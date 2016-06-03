@@ -1155,10 +1155,10 @@ public interface Vector2D<RV extends Vector2D<? super RV, ? super RP>, RP extend
 		@Override
 		public int hashCode() {
 			long bits = 1;
-			bits = 31 * bits + Double.doubleToLongBits(this.scalar);
-			bits = 31 * bits + ((this.vector == null) ? 0 : this.vector.hashCode());
+			bits = 31 * bits + Double.hashCode(this.scalar);
+			bits = 31 * bits + Objects.hashCode(this.vector);
 			final int b = (int) bits;
-			return b ^ (b >> 32);
+			return b ^ (b >> 31);
 		}
 
 		/** Replies the scalar result.

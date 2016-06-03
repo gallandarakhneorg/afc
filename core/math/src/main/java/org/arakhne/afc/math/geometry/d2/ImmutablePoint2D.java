@@ -79,10 +79,10 @@ public final class ImmutablePoint2D implements UnmodifiablePoint2D<ImmutablePoin
 	@Override
 	public int hashCode() {
 		long bits = 1;
-		bits = 31 * bits + Double.doubleToLongBits(this.x);
-		bits = 31 * bits + Double.doubleToLongBits(this.y);
+		bits = 31 * bits + Double.hashCode(this.x);
+		bits = 31 * bits + Double.hashCode(this.y);
 		final int b = (int) bits;
-		return b ^ (b >> 32);
+		return b ^ (b >> 31);
 	}
 
 	@Pure

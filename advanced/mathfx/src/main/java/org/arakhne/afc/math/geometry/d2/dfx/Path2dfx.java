@@ -23,6 +23,7 @@ package org.arakhne.afc.math.geometry.d2.dfx;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.ListIterator;
+import java.util.Objects;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
@@ -209,10 +210,10 @@ public class Path2dfx extends AbstractShape2dfx<Path2dfx>
 	@Override
 	public int hashCode() {
 		long bits = 1L;
-		bits = 31L * bits + ((this.coords == null) ? 0 : this.coords.hashCode());
-		bits = 31L * bits + ((this.types == null) ? 0 : this.types.hashCode());
-		bits = 31L * bits + ((this.windingRule == null) ? 0 : this.windingRule.hashCode());
-		return (int) (bits ^ (bits >> 32));
+		bits = 31L * bits + Objects.hashCode(this.coords);
+		bits = 31L * bits + Objects.hashCode(this.types);
+		bits = 31L * bits + Objects.hashCode(this.windingRule);
+		return (int) (bits ^ (bits >> 31));
 	}
 
 	@Pure

@@ -138,14 +138,13 @@ public class OutputParameter<T> {
 	@Pure
 	@Override
 	public boolean equals(Object obj) {
-		return (this.object == obj)
-				|| (this.object != null && this.object.equals(obj));
+		return Objects.equals(this.object, obj);
 	}
 
 	@Pure
 	@Override
 	public int hashCode() {
-		return this.object == null ? 0 : HashCodeUtil.hash(this.object);
+		return Objects.hashCode(this.object);
 	}
 
 }

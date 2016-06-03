@@ -81,11 +81,11 @@ public class Circle2d
 	@Override
 	public int hashCode() {
 		long bits = 1;
-		bits = 31 * bits + Double.doubleToLongBits(this.centerX);
-		bits = 31 * bits + Double.doubleToLongBits(this.centerY);
-		bits = 31 * bits + Double.doubleToLongBits(this.radius);
+		bits = 31 * bits + Double.hashCode(this.centerX);
+		bits = 31 * bits + Double.hashCode(this.centerY);
+		bits = 31 * bits + Double.hashCode(this.radius);
 		final int b = (int) bits;
-		return b ^ (b >> 32);
+		return b ^ (b >> 31);
 	}
 
 	@Pure

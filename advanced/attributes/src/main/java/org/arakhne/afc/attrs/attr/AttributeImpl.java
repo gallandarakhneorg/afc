@@ -424,9 +424,9 @@ public class AttributeImpl extends AttributeValueImpl implements Attribute {
 	public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + (this.name != null ? this.name.hashCode() : 0);
+        result = prime * result + Objects.hashCode(this.name);
         result = prime * result + super.hashCode();
-        return result;
+        return result ^ (result >> 31);
 	}
 
 	@Pure

@@ -345,16 +345,11 @@ public final class MACNumber {
 	@Pure
 	public int hashCode() {
 		final int blen = this.bytes.length;
-		if (blen == 0) {
-			return 0;
+		int hash = 1;
+		for (int i = 0; i < blen; ++i) {
+			hash = 31 * hash +  Byte.hashCode(this.bytes[i]);
 		}
-
-		int hc = this.bytes[0];
-		for (int i = 1; i < blen; ++i) {
-			hc *= 37;
-			hc += this.bytes[i];
-		}
-		return hc;
+		return hash ^ (hash >> 31);
 	}
 
 	@SuppressWarnings("checkstyle:magicnumber")

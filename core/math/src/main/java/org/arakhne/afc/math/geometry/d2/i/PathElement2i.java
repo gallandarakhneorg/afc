@@ -179,10 +179,10 @@ public abstract class PathElement2i implements PathElement2ai {
 		@Override
 		public int hashCode() {
 			int bits = 1;
-			bits = 31 * bits + this.type.ordinal();
-			bits = 31 * bits + getToX();
-			bits = 31 * bits + getToY();
-			return bits ^ (bits >> 32);
+			bits = 31 * bits + this.type.hashCode();
+			bits = 31 * bits + Integer.hashCode(getToX());
+			bits = 31 * bits + Integer.hashCode(getToY());
+			return bits ^ (bits >> 31);
 		}
 
 		@Pure
@@ -287,12 +287,12 @@ public abstract class PathElement2i implements PathElement2ai {
 		@Override
 		public int hashCode() {
 			int bits = 1;
-			bits = 31 * bits + this.type.ordinal();
-			bits = 31 * bits + getToX();
-			bits = 31 * bits + getToY();
-			bits = 31 * bits + getFromX();
-			bits = 31 * bits + getFromY();
-			return bits ^ (bits >> 32);
+			bits = 31 * bits + this.type.hashCode();
+			bits = 31 * bits + Integer.hashCode(getToX());
+			bits = 31 * bits + Integer.hashCode(getToY());
+			bits = 31 * bits + Integer.hashCode(getFromX());
+			bits = 31 * bits + Integer.hashCode(getFromY());
+			return bits ^ (bits >> 31);
 		}
 
 		@Pure
@@ -409,14 +409,14 @@ public abstract class PathElement2i implements PathElement2ai {
 		@Override
 		public int hashCode() {
 			int bits = 1;
-			bits = 31 * bits + this.type.ordinal();
-			bits = 31 * bits + getToX();
-			bits = 31 * bits + getToY();
-			bits = 31 * bits + getCtrlX1();
-			bits = 31 * bits + getCtrlY1();
-			bits = 31 * bits + getFromX();
-			bits = 31 * bits + getFromY();
-			return bits ^ (bits >> 32);
+			bits = 31 * bits + this.type.hashCode();
+			bits = 31 * bits + Integer.hashCode(getToX());
+			bits = 31 * bits + Integer.hashCode(getToY());
+			bits = 31 * bits + Integer.hashCode(getCtrlX1());
+			bits = 31 * bits + Integer.hashCode(getCtrlY1());
+			bits = 31 * bits + Integer.hashCode(getFromX());
+			bits = 31 * bits + Integer.hashCode(getFromY());
+			return bits ^ (bits >> 31);
 		}
 
 		@Pure
@@ -560,16 +560,16 @@ public abstract class PathElement2i implements PathElement2ai {
 		@Override
 		public int hashCode() {
 			int bits = 1;
-			bits = 31 * bits + this.type.ordinal();
-			bits = 31 * bits + getToX();
-			bits = 31 * bits + getToY();
-			bits = 31 * bits + getCtrlX1();
-			bits = 31 * bits + getCtrlY1();
-			bits = 31 * bits + getCtrlX2();
-			bits = 31 * bits + getCtrlY2();
-			bits = 31 * bits + getFromX();
-			bits = 31 * bits + getFromY();
-			return bits ^ (bits >> 32);
+			bits = 31 * bits + this.type.hashCode();
+			bits = 31 * bits + Integer.hashCode(getToX());
+			bits = 31 * bits + Integer.hashCode(getToY());
+			bits = 31 * bits + Integer.hashCode(getCtrlX1());
+			bits = 31 * bits + Integer.hashCode(getCtrlY1());
+			bits = 31 * bits + Integer.hashCode(getCtrlX2());
+			bits = 31 * bits + Integer.hashCode(getCtrlY2());
+			bits = 31 * bits + Integer.hashCode(getFromX());
+			bits = 31 * bits + Integer.hashCode(getFromY());
+			return bits ^ (bits >> 31);
 		}
 
 		@Pure
@@ -711,12 +711,12 @@ public abstract class PathElement2i implements PathElement2ai {
 		@Override
 		public int hashCode() {
 			int bits = 1;
-			bits = 31 * bits + this.type.ordinal();
-			bits = 31 * bits + getToX();
-			bits = 31 * bits + getToY();
-			bits = 31 * bits + getFromX();
-			bits = 31 * bits + getFromY();
-			return bits ^ (bits >> 32);
+			bits = 31 * bits + this.type.hashCode();
+			bits = 31 * bits + Integer.hashCode(getToX());
+			bits = 31 * bits + Integer.hashCode(getToY());
+			bits = 31 * bits + Integer.hashCode(getFromX());
+			bits = 31 * bits + Integer.hashCode(getFromY());
+			return bits ^ (bits >> 31);
 		}
 
 		@Pure
@@ -857,15 +857,15 @@ public abstract class PathElement2i implements PathElement2ai {
 		@Override
 		public int hashCode() {
 			long bits = 1L;
-			bits = 31L * bits + this.type.ordinal();
-			bits = 31L * bits + getToX();
-			bits = 31L * bits + getToY();
-			bits = 31L * bits + getRadiusX();
-			bits = 31L * bits + getRadiusY();
+			bits = 31L * bits + this.type.hashCode();
+			bits = 31L * bits + Integer.hashCode(getToX());
+			bits = 31L * bits + Integer.hashCode(getToY());
+			bits = 31L * bits + Integer.hashCode(getRadiusX());
+			bits = 31L * bits + Integer.hashCode(getRadiusY());
 			bits = 31L * bits + Double.doubleToLongBits(getRotationX());
 			bits = 31L * bits + Boolean.hashCode(getLargeArcFlag());
 			bits = 31L * bits + Boolean.hashCode(getSweepFlag());
-			return (int) (bits ^ (bits >> 32));
+			return (int) (bits ^ (bits >> 31));
 		}
 
 		@Pure

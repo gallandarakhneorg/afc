@@ -106,9 +106,9 @@ public class Circle2dfx
 	@Override
 	public int hashCode() {
 		long bits = 1;
-		bits = 31 * bits + Double.doubleToLongBits(getX());
-		bits = 31 * bits + Double.doubleToLongBits(getY());
-		bits = 31 * bits + Double.doubleToLongBits(getRadius());
+		bits = 31 * bits + Double.hashCode(getX());
+		bits = 31 * bits + Double.hashCode(getY());
+		bits = 31 * bits + Double.hashCode(getRadius());
 		final int b = (int) bits;
 		return b ^ (b >> 31);
 	}

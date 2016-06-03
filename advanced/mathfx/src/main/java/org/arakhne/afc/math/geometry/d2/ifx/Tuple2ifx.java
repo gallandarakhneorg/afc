@@ -136,8 +136,8 @@ public class Tuple2ifx<RT extends Tuple2ifx<? super RT>> implements Tuple2D<RT> 
 	@Override
 	public int hashCode() {
 		int bits = 1;
-		bits = 31 * bits + ix();
-		bits = 31 * bits + iy();
+		bits = 31 * bits + Integer.hashCode(ix());
+		bits = 31 * bits + Integer.hashCode(iy());
 		return bits ^ (bits >> 31);
 	}
 

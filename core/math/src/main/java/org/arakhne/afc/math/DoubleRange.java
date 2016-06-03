@@ -74,10 +74,10 @@ public class DoubleRange implements Cloneable, Serializable, Comparable<DoubleRa
 	@Pure
 	public int hashCode() {
 		long bits = 1;
-		bits = 31 * bits + Double.doubleToLongBits(this.min);
-		bits = 31 * bits + Double.doubleToLongBits(this.max);
+		bits = 31 * bits + Double.hashCode(this.min);
+		bits = 31 * bits + Double.hashCode(this.max);
 		final int b = (int) bits;
-		return b ^ (b >> 32);
+		return b ^ (b >> 31);
 	}
 
 	/** Replies the minimum value.

@@ -103,9 +103,9 @@ public class Circle2ifx
 	@Override
 	public int hashCode() {
 		int bits = 1;
-		bits = 31 * bits + getX();
-		bits = 31 * bits + getY();
-		bits = 31 * bits + getRadius();
+		bits = 31 * bits + Integer.hashCode(getX());
+		bits = 31 * bits + Integer.hashCode(getY());
+		bits = 31 * bits + Integer.hashCode(getRadius());
 		return bits ^ (bits >> 31);
 	}
 

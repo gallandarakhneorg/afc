@@ -1601,23 +1601,23 @@ public class Matrix4d implements Serializable, Cloneable {
 	@Override
 	public int hashCode() {
 		long bits = 1L;
-		bits = 31L * bits + doubleToLongBits(this.m00);
-		bits = 31L * bits + doubleToLongBits(this.m01);
-		bits = 31L * bits + doubleToLongBits(this.m02);
-		bits = 31L * bits + doubleToLongBits(this.m03);
-		bits = 31L * bits + doubleToLongBits(this.m10);
-		bits = 31L * bits + doubleToLongBits(this.m11);
-		bits = 31L * bits + doubleToLongBits(this.m12);
-		bits = 31L * bits + doubleToLongBits(this.m13);
-		bits = 31L * bits + doubleToLongBits(this.m20);
-		bits = 31L * bits + doubleToLongBits(this.m21);
-		bits = 31L * bits + doubleToLongBits(this.m22);
-		bits = 31L * bits + doubleToLongBits(this.m23);
-		bits = 31L * bits + doubleToLongBits(this.m30);
-		bits = 31L * bits + doubleToLongBits(this.m31);
-		bits = 31L * bits + doubleToLongBits(this.m32);
-		bits = 31L * bits + doubleToLongBits(this.m33);
-		return (int) (bits ^ (bits >> 32));
+		bits = 31L * bits + Double.hashCode(this.m00);
+		bits = 31L * bits + Double.hashCode(this.m01);
+		bits = 31L * bits + Double.hashCode(this.m02);
+		bits = 31L * bits + Double.hashCode(this.m03);
+		bits = 31L * bits + Double.hashCode(this.m10);
+		bits = 31L * bits + Double.hashCode(this.m11);
+		bits = 31L * bits + Double.hashCode(this.m12);
+		bits = 31L * bits + Double.hashCode(this.m13);
+		bits = 31L * bits + Double.hashCode(this.m20);
+		bits = 31L * bits + Double.hashCode(this.m21);
+		bits = 31L * bits + Double.hashCode(this.m22);
+		bits = 31L * bits + Double.hashCode(this.m23);
+		bits = 31L * bits + Double.hashCode(this.m30);
+		bits = 31L * bits + Double.hashCode(this.m31);
+		bits = 31L * bits + Double.hashCode(this.m32);
+		bits = 31L * bits + Double.hashCode(this.m33);
+		return (int) (bits ^ (bits >> 31));
 	}
 
 	@Pure

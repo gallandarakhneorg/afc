@@ -142,14 +142,14 @@ public class OrientedRectangle2d extends AbstractShape2d<OrientedRectangle2d>
 	@Override
 	public int hashCode() {
 		long bits = 1;
-		bits = 31 * bits + Double.doubleToLongBits(this.cx);
-		bits = 31 * bits + Double.doubleToLongBits(this.cy);
-		bits = 31 * bits + Double.doubleToLongBits(this.rx);
-		bits = 31 * bits + Double.doubleToLongBits(this.ry);
-		bits = 31 * bits + Double.doubleToLongBits(this.extentR);
-		bits = 31 * bits + Double.doubleToLongBits(this.extentS);
+		bits = 31 * bits + Double.hashCode(this.cx);
+		bits = 31 * bits + Double.hashCode(this.cy);
+		bits = 31 * bits + Double.hashCode(this.rx);
+		bits = 31 * bits + Double.hashCode(this.ry);
+		bits = 31 * bits + Double.hashCode(this.extentR);
+		bits = 31 * bits + Double.hashCode(this.extentS);
 		final int b = (int) bits;
-		return b ^ (b >> 32);
+		return b ^ (b >> 31);
 	}
 
 	@Pure

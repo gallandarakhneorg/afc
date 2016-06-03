@@ -1024,20 +1024,11 @@ public class Matrix2d implements Serializable, Cloneable {
 	@Override
 	public int hashCode() {
 		long bits = 1L;
-		bits = 31L * bits + doubleToLongBits(this.m00);
-		bits = 31L * bits + doubleToLongBits(this.m01);
-		bits = 31L * bits + doubleToLongBits(this.m10);
-		bits = 31L * bits + doubleToLongBits(this.m11);
-		return (int) (bits ^ (bits >> 32));
-	}
-
-	@Pure
-	private static long doubleToLongBits(double doubleValue) {
-		// Check for +0 or -0
-		if (doubleValue == 0.) {
-			return 0;
-		}
-		return Double.doubleToLongBits(doubleValue);
+		bits = 31L * bits + Double.hashCode(this.m00);
+		bits = 31L * bits + Double.hashCode(this.m01);
+		bits = 31L * bits + Double.hashCode(this.m10);
+		bits = 31L * bits + Double.hashCode(this.m11);
+		return (int) (bits ^ (bits >> 31));
 	}
 
 	/**

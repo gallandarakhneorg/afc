@@ -138,12 +138,12 @@ public class Triangle2dfx
 	@Override
 	public int hashCode() {
 		long bits = 1;
-		bits = 31 * bits + Double.doubleToLongBits(getX1());
-		bits = 31 * bits + Double.doubleToLongBits(getY1());
-		bits = 31 * bits + Double.doubleToLongBits(getX2());
-		bits = 31 * bits + Double.doubleToLongBits(getY2());
-		bits = 31 * bits + Double.doubleToLongBits(getX3());
-		bits = 31 * bits + Double.doubleToLongBits(getY3());
+		bits = 31 * bits + Double.hashCode(getX1());
+		bits = 31 * bits + Double.hashCode(getY1());
+		bits = 31 * bits + Double.hashCode(getX2());
+		bits = 31 * bits + Double.hashCode(getY2());
+		bits = 31 * bits + Double.hashCode(getX3());
+		bits = 31 * bits + Double.hashCode(getY3());
 		final int b = (int) bits;
 		return b ^ (b >> 31);
 	}

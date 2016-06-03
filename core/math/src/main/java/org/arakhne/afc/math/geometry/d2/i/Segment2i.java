@@ -82,11 +82,11 @@ public class Segment2i extends AbstractShape2i<Segment2i>
 	@Override
 	public int hashCode() {
 		int bits = 1;
-		bits = 31 * bits + this.ax;
-		bits = 31 * bits + this.ay;
-		bits = 31 * bits + this.bx;
-		bits = 31 * bits + this.by;
-		return bits ^ (bits >> 32);
+		bits = 31 * bits + Integer.hashCode(this.ax);
+		bits = 31 * bits + Integer.hashCode(this.ay);
+		bits = 31 * bits + Integer.hashCode(this.bx);
+		bits = 31 * bits + Integer.hashCode(this.by);
+		return bits ^ (bits >> 31);
 	}
 
 	@Pure

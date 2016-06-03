@@ -329,9 +329,9 @@ public class Tuple2i<RT extends Tuple2i<? super RT>> implements Tuple2D<RT> {
 	@Override
 	public int hashCode() {
 		int bits = 1;
-		bits = 31 * bits + this.x;
-		bits = 31 * bits + this.y;
-		return bits ^ (bits >> 32);
+		bits = 31 * bits + Integer.hashCode(this.x);
+		bits = 31 * bits + Integer.hashCode(this.y);
+		return bits ^ (bits >> 31);
 	}
 
 	@Pure

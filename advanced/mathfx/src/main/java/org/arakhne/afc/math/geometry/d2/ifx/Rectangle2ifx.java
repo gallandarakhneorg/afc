@@ -271,10 +271,10 @@ public class Rectangle2ifx extends AbstractShape2ifx<Rectangle2ifx>
 	@Override
 	public int hashCode() {
 		int bits = 1;
-		bits = 31 * bits + getMinX();
-		bits = 31 * bits + getMinY();
-		bits = 31 * bits + getMaxX();
-		bits = 31 * bits + getMaxY();
+		bits = 31 * bits + Integer.hashCode(getMinX());
+		bits = 31 * bits + Integer.hashCode(getMinY());
+		bits = 31 * bits + Integer.hashCode(getMaxX());
+		bits = 31 * bits + Integer.hashCode(getMaxY());
 		return bits ^ (bits >> 31);
 	}
 

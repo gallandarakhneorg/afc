@@ -63,8 +63,7 @@ public class ComparableWeakReference<T> extends WeakReference<T> implements Comp
 	@Pure
 	@Override
 	public int hashCode() {
-		final T cur = get();
-		return cur == null ? 0 : cur.hashCode();
+		return Objects.hashCode(get());
 	}
 
 	@Pure

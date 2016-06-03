@@ -105,8 +105,8 @@ public class RoundRectangle2dfx extends AbstractRectangularShape2dfx<RoundRectan
 	@Override
 	public int hashCode() {
 		long bits = super.hashCode();
-		bits = 31 * bits + Double.doubleToLongBits(getArcWidth());
-		bits = 31 * bits + Double.doubleToLongBits(getArcHeight());
+		bits = 31 * bits + Double.hashCode(getArcWidth());
+		bits = 31 * bits + Double.hashCode(getArcHeight());
 		final int b = (int) bits;
 		return b ^ (b >> 31);
 	}

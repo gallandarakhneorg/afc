@@ -99,7 +99,7 @@ public class FloatDimension extends Dimension2D {
 	
 	@Override
 	public int hashCode() {
-		int h = HashCodeUtil.hash(this.width);
+		int h = Float.hashCode(this.width);
 		h = HashCodeUtil.hash(h, this.height);
 		return h;
 	}

@@ -101,7 +101,7 @@ public class MultiShape2d<T extends Shape2d<?>> extends AbstractShape2d<MultiSha
 		long bits = 1;
 		bits = 31 * bits + this.elements.hashCode();
 		final int b = (int) bits;
-		return b ^ (b >> 32);
+		return b ^ (b >> 31);
 	}
 
 	@Override

@@ -334,10 +334,10 @@ public abstract class PathElement2dfx implements PathElement2afp {
 		@Override
 		public int hashCode() {
 			long bits = 1L;
-			bits = 31L * bits + this.type.ordinal();
-			bits = 31L * bits + Double.doubleToLongBits(getToX());
-			bits = 31L * bits + Double.doubleToLongBits(getToY());
-			return (int) (bits ^ (bits >> 32));
+			bits = 31L * bits + this.type.hashCode();
+			bits = 31L * bits + Double.hashCode(getToX());
+			bits = 31L * bits + Double.hashCode(getToY());
+			return (int) (bits ^ (bits >> 31));
 		}
 
 		@Pure
@@ -478,12 +478,12 @@ public abstract class PathElement2dfx implements PathElement2afp {
 		@Override
 		public int hashCode() {
 			long bits = 1L;
-			bits = 31L * bits + this.type.ordinal();
-			bits = 31L * bits + Double.doubleToLongBits(getToX());
-			bits = 31L * bits + Double.doubleToLongBits(getToY());
-			bits = 31L * bits + Double.doubleToLongBits(getFromX());
-			bits = 31L * bits + Double.doubleToLongBits(getFromY());
-			return (int) (bits ^ (bits >> 32));
+			bits = 31L * bits + this.type.hashCode();
+			bits = 31L * bits + Double.hashCode(getToX());
+			bits = 31L * bits + Double.hashCode(getToY());
+			bits = 31L * bits + Double.hashCode(getFromX());
+			bits = 31L * bits + Double.hashCode(getFromY());
+			return (int) (bits ^ (bits >> 31));
 		}
 
 		@Pure
@@ -645,14 +645,14 @@ public abstract class PathElement2dfx implements PathElement2afp {
 		@Override
 		public int hashCode() {
 			long bits = 1L;
-			bits = 31L * bits + this.type.ordinal();
-			bits = 31L * bits + Double.doubleToLongBits(getToX());
-			bits = 31L * bits + Double.doubleToLongBits(getToY());
-			bits = 31L * bits + Double.doubleToLongBits(getCtrlX1());
-			bits = 31L * bits + Double.doubleToLongBits(getCtrlY1());
-			bits = 31L * bits + Double.doubleToLongBits(getFromX());
-			bits = 31L * bits + Double.doubleToLongBits(getFromY());
-			return (int) (bits ^ (bits >> 32));
+			bits = 31L * bits + this.type.hashCode();
+			bits = 31L * bits + Double.hashCode(getToX());
+			bits = 31L * bits + Double.hashCode(getToY());
+			bits = 31L * bits + Double.hashCode(getCtrlX1());
+			bits = 31L * bits + Double.hashCode(getCtrlY1());
+			bits = 31L * bits + Double.hashCode(getFromX());
+			bits = 31L * bits + Double.hashCode(getFromY());
+			return (int) (bits ^ (bits >> 31));
 		}
 
 		@Pure
@@ -861,16 +861,16 @@ public abstract class PathElement2dfx implements PathElement2afp {
 		@Override
 		public int hashCode() {
 			long bits = 1L;
-			bits = 31L * bits + this.type.ordinal();
-			bits = 31L * bits + Double.doubleToLongBits(getToX());
-			bits = 31L * bits + Double.doubleToLongBits(getToY());
-			bits = 31L * bits + Double.doubleToLongBits(getCtrlX1());
-			bits = 31L * bits + Double.doubleToLongBits(getCtrlY1());
-			bits = 31L * bits + Double.doubleToLongBits(getCtrlX2());
-			bits = 31L * bits + Double.doubleToLongBits(getCtrlY2());
-			bits = 31L * bits + Double.doubleToLongBits(getFromX());
-			bits = 31L * bits + Double.doubleToLongBits(getFromY());
-			return (int) (bits ^ (bits >> 32));
+			bits = 31L * bits + this.type.hashCode();
+			bits = 31L * bits + Double.hashCode(getToX());
+			bits = 31L * bits + Double.hashCode(getToY());
+			bits = 31L * bits + Double.hashCode(getCtrlX1());
+			bits = 31L * bits + Double.hashCode(getCtrlY1());
+			bits = 31L * bits + Double.hashCode(getCtrlX2());
+			bits = 31L * bits + Double.hashCode(getCtrlY2());
+			bits = 31L * bits + Double.hashCode(getFromX());
+			bits = 31L * bits + Double.hashCode(getFromY());
+			return (int) (bits ^ (bits >> 31));
 		}
 
 		@Pure
@@ -1087,12 +1087,12 @@ public abstract class PathElement2dfx implements PathElement2afp {
 		@Override
 		public int hashCode() {
 			long bits = 1L;
-			bits = 31L * bits + this.type.ordinal();
-			bits = 31L * bits + Double.doubleToLongBits(getToX());
-			bits = 31L * bits + Double.doubleToLongBits(getToY());
-			bits = 31L * bits + Double.doubleToLongBits(getFromX());
-			bits = 31L * bits + Double.doubleToLongBits(getFromY());
-			return (int) (bits ^ (bits >> 32));
+			bits = 31L * bits + this.type.hashCode();
+			bits = 31L * bits + Double.hashCode(getToX());
+			bits = 31L * bits + Double.hashCode(getToY());
+			bits = 31L * bits + Double.hashCode(getFromX());
+			bits = 31L * bits + Double.hashCode(getFromY());
+			return (int) (bits ^ (bits >> 31));
 		}
 
 		@Pure
@@ -1270,15 +1270,15 @@ public abstract class PathElement2dfx implements PathElement2afp {
 		@Override
 		public int hashCode() {
 			long bits = 1L;
-			bits = 31L * bits + this.type.ordinal();
-			bits = 31L * bits + Double.doubleToLongBits(getToX());
-			bits = 31L * bits + Double.doubleToLongBits(getToY());
-			bits = 31L * bits + Double.doubleToLongBits(getRadiusX());
-			bits = 31L * bits + Double.doubleToLongBits(getRadiusY());
-			bits = 31L * bits + Double.doubleToLongBits(getRotationX());
+			bits = 31L * bits + this.type.hashCode();
+			bits = 31L * bits + Double.hashCode(getToX());
+			bits = 31L * bits + Double.hashCode(getToY());
+			bits = 31L * bits + Double.hashCode(getRadiusX());
+			bits = 31L * bits + Double.hashCode(getRadiusY());
+			bits = 31L * bits + Double.hashCode(getRotationX());
 			bits = 31L * bits + Boolean.hashCode(getLargeArcFlag());
 			bits = 31L * bits + Boolean.hashCode(getSweepFlag());
-			return (int) (bits ^ (bits >> 32));
+			return (int) (bits ^ (bits >> 31));
 		}
 
 		@Pure

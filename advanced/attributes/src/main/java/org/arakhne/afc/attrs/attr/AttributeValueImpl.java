@@ -594,7 +594,7 @@ public class AttributeValueImpl implements AttributeValue {
 	@Pure
 	@Override
 	public int hashCode() {
-		return 31 + (this.value != null ? this.value.hashCode() : 0);
+		return 31 + Objects.hashCode(this.value);
 	}
 
 	@Pure

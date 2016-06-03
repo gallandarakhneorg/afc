@@ -232,12 +232,12 @@ public class Path2i extends AbstractShape2i<Path2i>
 	@Override
 	public int hashCode() {
 		int bits = 1;
-		bits = 31 * bits + this.numCoords;
-		bits = 31 * bits + this.numTypes;
+		bits = 31 * bits + Integer.hashCode(this.numCoords);
+		bits = 31 * bits + Integer.hashCode(this.numTypes);
 		bits = 31 * bits + Arrays.hashCode(this.coords);
 		bits = 31 * bits + Arrays.hashCode(this.types);
-		bits = 31 * bits + this.windingRule.ordinal();
-		return bits ^ (bits >> 32);
+		bits = 31 * bits + this.windingRule.hashCode();
+		return bits ^ (bits >> 31);
 	}
 
 	@Pure

@@ -109,10 +109,10 @@ public class Segment2ifx extends AbstractShape2ifx<Segment2ifx>
 	@Override
 	public int hashCode() {
 		int bits = 1;
-		bits = 31 * bits + getX1();
-		bits = 31 * bits + getY1();
-		bits = 31 * bits + getX2();
-		bits = 31 * bits + getY2();
+		bits = 31 * bits + Integer.hashCode(getX1());
+		bits = 31 * bits + Integer.hashCode(getY1());
+		bits = 31 * bits + Integer.hashCode(getX2());
+		bits = 31 * bits + Integer.hashCode(getY2());
 		return bits ^ (bits >> 31);
 	}
 
