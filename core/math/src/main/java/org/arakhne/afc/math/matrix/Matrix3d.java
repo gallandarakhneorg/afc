@@ -46,7 +46,7 @@ import org.arakhne.afc.vmutil.locale.Locale;
 @SuppressWarnings({"checkstyle:magicnumber", "checkstyle:methodcount"})
 public class Matrix3d implements Serializable, Cloneable {
 
-	private static final long serialVersionUID = -7386754038391115819L;
+    private static final long serialVersionUID = -7386754038391115819L;
 
 	/**
 	 * The first matrix element in the first row.

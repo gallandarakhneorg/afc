@@ -233,6 +233,26 @@ public class MultiShape2ifx<T extends Shape2ifx<?>> extends AbstractShape2ifx<Mu
 			}
 		}
 
+		@Override
+		public boolean equals(Object obj) {
+			if (!super.equals(obj)) {
+				return false;
+			}
+			final InternalObservableList<?> lObj = (InternalObservableList<?>) obj;
+			if (this.internalList.equals(lObj.internalList)) {
+				return this.internalList.equals(lObj.internalList);
+			}
+			return false;
+		}
+
+		@Override
+		public int hashCode() {
+			int hash = 1;
+			final int prime = 31;
+			hash = hash * prime + this.internalList.hashCode();
+			return hash;
+		}
+
 	}
 
 }

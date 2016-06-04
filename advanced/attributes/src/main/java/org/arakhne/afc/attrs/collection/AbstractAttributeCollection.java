@@ -188,12 +188,10 @@ public abstract class AbstractAttributeCollection extends AbstractAttributeProvi
 
 	@Override
 	public synchronized void removeAttributeChangeListener(AttributeChangeListener listener) {
-		if (listener != null) {
-			if (this.listenerList != null) {
-				this.listenerList.remove(listener);
-				if (this.listenerList.isEmpty()) {
-					this.listenerList = null;
-				}
+		if (listener != null && this.listenerList != null) {
+			this.listenerList.remove(listener);
+			if (this.listenerList.isEmpty()) {
+				this.listenerList = null;
 			}
 		}
 	}

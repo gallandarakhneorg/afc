@@ -942,10 +942,8 @@ public final class FileSystem {
 		}
 		final StringBuilder buf = new StringBuilder(fileBase.getPath());
 		for (final File elt : elements) {
-			if (!elt.isAbsolute()) {
-				if (buf.length() >= 0 && buf.charAt(buf.length() - 1) != File.separatorChar) {
-					buf.append(File.separatorChar);
-				}
+			if (!elt.isAbsolute() && buf.length() >= 0 && buf.charAt(buf.length() - 1) != File.separatorChar) {
+				buf.append(File.separatorChar);
 			}
 			buf.append(elt.getPath());
 		}
@@ -1019,10 +1017,8 @@ public final class FileSystem {
 		}
 		final StringBuilder buf = new StringBuilder(urlBase.getPath());
 		for (final File elt : elements) {
-			if (!elt.isAbsolute()) {
-				if (buf.length() == 0 || buf.charAt(buf.length() - 1) != URL_PATH_SEPARATOR_CHAR) {
-					buf.append(URL_PATH_SEPARATOR_CHAR);
-				}
+			if (!elt.isAbsolute() && (buf.length() == 0 || buf.charAt(buf.length() - 1) != URL_PATH_SEPARATOR_CHAR)) {
+				buf.append(URL_PATH_SEPARATOR_CHAR);
 			}
 			buf.append(getFilePath(elt));
 		}
@@ -2240,10 +2236,8 @@ public final class FileSystem {
 			break;
 		case FILE:
 			final File file = new File(filename.getFile());
-			if (!file.isAbsolute()) {
-				if (current != null) {
-					return join(current, file);
-				}
+			if (!file.isAbsolute() && current != null) {
+				return join(current, file);
 			}
 			break;
 		case UNSUPPORTED:

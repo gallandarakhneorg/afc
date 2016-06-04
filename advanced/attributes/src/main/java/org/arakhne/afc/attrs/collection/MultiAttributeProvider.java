@@ -350,13 +350,11 @@ public class MultiAttributeProvider extends AbstractAttributeProvider {
 		public void setTopType(AttributeType type) {
 			if (this.topType == null) {
 				this.topType = type;
-			} else if (this.topType != type) {
-				if (!this.topType.isAssignableFrom(type)) {
-					if (type.isAssignableFrom(this.topType)) {
-						this.topType = type;
-					} else {
-						this.topType = AttributeType.OBJECT;
-					}
+			} else if (this.topType != type && !this.topType.isAssignableFrom(type)) {
+				if (type.isAssignableFrom(this.topType)) {
+					this.topType = type;
+				} else {
+					this.topType = AttributeType.OBJECT;
 				}
 			}
 		}

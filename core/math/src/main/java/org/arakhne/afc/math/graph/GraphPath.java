@@ -310,12 +310,10 @@ public class GraphPath<GP extends GraphPath<GP, ST, PT>, ST extends GraphSegment
 
 		// The segment is connectable to the last point
 		PT endPoint = this.endingPoint;
-		if (endPoint != null && endPoint.isConnectedSegment(segment)) {
-			if (this.segmentList.add(segment)) {
-				this.endingPoint = segment.getOtherSidePoint(endPoint);
-				this.length += segment.getLength();
-				return true;
-			}
+		if (endPoint != null && endPoint.isConnectedSegment(segment) && this.segmentList.add(segment)) {
+			this.endingPoint = segment.getOtherSidePoint(endPoint);
+			this.length += segment.getLength();
+			return true;
 		}
 
 		// The segment is connectable to the first point

@@ -237,6 +237,26 @@ public class MultiShape2dfx<T extends Shape2dfx<?>> extends AbstractShape2dfx<Mu
 			}
 		}
 
+		@Override
+		public boolean equals(Object obj) {
+			if (!super.equals(obj)) {
+				return false;
+			}
+			final InternalObservableList<?> lObj = (InternalObservableList<?>) obj;
+			if (this.internalList.equals(lObj.internalList)) {
+				return this.internalList.equals(lObj.internalList);
+			}
+			return false;
+		}
+
+		@Override
+		public int hashCode() {
+			int hash = 1;
+			final int prime = 31;
+			hash = hash * prime + this.internalList.hashCode();
+			return hash;
+		}
+
 	}
 
 }

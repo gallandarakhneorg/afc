@@ -476,11 +476,9 @@ public class VMCommandLine {
 	 */
 	@Pure
 	public static List<Object> getCommandLineOption(String name) {
-		if (commandLineOptions != null) {
-			if (commandLineOptions.containsKey(name)) {
-				final List<Object> value = commandLineOptions.get(name);
-				return value == null ? Collections.emptyList() : value;
-			}
+		if (commandLineOptions != null && commandLineOptions.containsKey(name)) {
+			final List<Object> value = commandLineOptions.get(name);
+			return value == null ? Collections.emptyList() : value;
 		}
 		return null;
 	}

@@ -554,7 +554,7 @@ public class Matrix4d implements Serializable, Cloneable {
 	 *            the array into which the matrix row values will be copied
 	 */
 	public final void getColumn(int column, double[] v) {
-		assert column >= 0 && column < 4 : AssertMessages.outsideRangeInclusiveParameter(0, column, 0, 3);
+	    assert column >= 0 && column < 4 : AssertMessages.outsideRangeInclusiveParameter(0, column, 0, 3);
 		assert v != null : AssertMessages.notNullParameter(1);
 		assert v.length >= 4 : AssertMessages.tooSmallArrayParameter(1, v.length, 4);
 		if (column == 0) {
